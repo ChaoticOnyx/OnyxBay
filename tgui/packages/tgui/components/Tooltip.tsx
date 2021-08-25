@@ -1,6 +1,8 @@
-import { Placement } from '@popperjs/core'
-import { Component, findDOMfromVNode, InfernoNode } from 'inferno'
-import { Popper } from './Popper'
+import { Placement } from '@popperjs/core';
+import { Component, findDOMfromVNode, InfernoNode } from 'inferno';
+import { Popper } from './Popper';
+
+const DEFAULT_PLACEMENT = 'top';
 
 type TooltipProps = {
   children?: InfernoNode;
@@ -13,15 +15,15 @@ type TooltipState = {
 };
 
 export class Tooltip extends Component<TooltipProps, TooltipState> {
-  constructor () {
-    super()
+  constructor() {
+    super();
 
     this.state = {
-      hovered: false
-    }
+      hovered: false,
+    };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // HACK: We don't want to create a wrapper, as it could break the layout
     // of consumers, so we do the inferno equivalent of `findDOMNode(this)`.
     // My attempt to avoid this was a render prop that passed in
@@ -30,41 +32,41 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     // This code is copied from `findDOMNode` in inferno-extras.
     // Because this component is written in TypeScript, we will know
     // immediately if this internal variable is removed.
-    const domNode = findDOMfromVNode(this.$LI, true)
+    const domNode = findDOMfromVNode(this.$LI, true);
 
     domNode.addEventListener('mouseenter', () => {
       this.setState({
-        hovered: true
-      })
-    })
+        hovered: true,
+      });
+    });
 
     domNode.addEventListener('mouseleave', () => {
       this.setState({
-        hovered: false
-      })
-    })
+        hovered: false,
+      });
+    });
   }
 
-  render () {
+  render() {
     return (
       <Popper
         options={{
-          placement: this.props.position || 'auto'
+          placement: this.props.position || 'auto',
         }}
         popperContent={
           <div
             className='Tooltip'
             style={{
-              opacity: this.state.hovered ? 1 : 0
+              opacity: this.state.hovered ? 1 : 0,
             }}>
             {this.props.content}
           </div>
         }
         additionalStyles={{
-          'pointer-events': 'none'
+          'pointer-events': 'none',
         }}>
         {this.props.children}
       </Popper>
-    )
+    );
   }
 }

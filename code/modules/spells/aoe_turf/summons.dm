@@ -53,7 +53,7 @@
 
 	duration = 600
 	cooldown_min = 600
-	level_max = list(SP_TOTAL = 4, SP_SPEED = 1, SP_POWER = 3)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 2, SP_POWER = 3)
 
 	summon_type = list(/mob/living/simple_animal/hostile/carp)
 

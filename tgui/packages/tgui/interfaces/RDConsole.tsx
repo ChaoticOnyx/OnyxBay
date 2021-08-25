@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable camelcase */
-import { useBackend, useLocalState } from '../backend'
+import { useBackend, useLocalState } from '../backend';
 import {
   Tabs,
   Stack,
@@ -13,53 +11,41 @@ import {
   Box,
   AnimatedNumber,
   Input,
-  Flex
-} from '../components'
-import { GameIcon } from '../components/GameIcon'
-import { Window } from '../layouts'
+  Flex,
+} from '../components';
+import { GameIcon } from '../components/GameIcon';
+import { Window } from '../layouts';
 
 const capitalize = (str: string) => {
-  return str[0].toUpperCase() + str.substr(1)
+  return str[0].toUpperCase() + str.substr(1);
+};
+
+interface InputData {
+  sync: boolean;
+  disk: Disk;
+  techs: Tech[];
+  devices: Device[];
 }
 
-enum BuildType {
-  CircuitImprinter = 'Circuit Imprinter',
-  ProtoLathe = 'Proto-lathe',
+interface Disk {
+  type: DiskType;
+  data: Tech | Design;
 }
 
-enum DiskType {
-  Tech = 'tech',
-  Design = 'design',
-}
-
-interface Material {
+interface Device {
   name: string;
-  amount: number;
-  icon: string;
-  per_sheet: number;
+  connected: number;
+  data: Data;
+  busy: boolean;
 }
 
-interface Chemical {
-  ref: string;
-  name: string;
-  units: number;
-}
-
-interface MaterialElement {
-  name: string;
-  required: number;
-}
-
-interface ChemicalElement {
-  name: string;
-  required: number;
-}
-
-interface Tech {
-  id: string;
-  name: string;
-  level: number;
-  description: string;
+interface Data {
+  item?: Item;
+  techs?: OriginTech[];
+  storage?: Storage;
+  filters?: string[];
+  designs?: Design[];
+  queue?: Design[];
 }
 
 interface Item {
@@ -79,15 +65,29 @@ interface Design {
   multipliers: { [key: string]: boolean };
 }
 
-interface OriginTech {
-  name: string;
-  level: number;
+enum BuildType {
+  CircuitImprinter = 'Circuit Imprinter',
+  ProtoLathe = 'Proto-lathe',
 }
 
-interface StorageChemical {
-  total: number;
-  maximum: number;
-  chemicals: Chemical[];
+enum DiskType {
+  Tech = 'tech',
+  Design = 'design',
+}
+
+interface MaterialElement {
+  name: string;
+  required: number;
+}
+
+interface ChemicalElement {
+  name: string;
+  required: number;
+}
+
+interface Storage {
+  material: StorageMaterial;
+  chemical: StorageChemical;
 }
 
 interface StorageMaterial {
@@ -96,55 +96,53 @@ interface StorageMaterial {
   materials: Material[];
 }
 
-interface Storage {
-  material: StorageMaterial;
-  chemical: StorageChemical;
-}
-
-interface Data {
-  item?: Item;
-  techs?: OriginTech[];
-  storage?: Storage;
-  filters?: string[];
-  designs?: Design[];
-  queue?: Design[];
-}
-
-interface Disk {
-  type: DiskType;
-  data: Tech | Design;
-}
-
-interface Device {
+interface Material {
   name: string;
-  connected: number;
-  data: Data;
-  busy: boolean;
+  amount: number;
+  icon: string;
+  per_sheet: number;
 }
 
-interface InputData {
-  sync: boolean;
-  disk: Disk;
-  techs: Tech[];
-  devices: Device[];
+interface StorageChemical {
+  total: number;
+  maximum: number;
+  chemicals: Chemical[];
+}
+
+interface Chemical {
+  ref: string;
+  name: string;
+  units: number;
+}
+
+interface OriginTech {
+  name: string;
+  level: number;
+}
+
+interface Tech {
+  id: string;
+  name: string;
+  level: number;
+  description: string;
 }
 
 const diskContent = (disk: Disk) => {
   const designDiskContent = (disk: Disk) => {
-    const diskData: Design = disk.data as Design
+    const diskData: Design = disk.data as Design;
 
     if (!diskData) {
-      return <LabeledList.Item label='Content'>Empty</LabeledList.Item>
+      return <LabeledList.Item label='Content'>Empty</LabeledList.Item>;
     }
 
-    return <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>
-  }
+    return <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>;
+  };
 
   const techDiskContent = (disk: Disk) => {
-    const diskData: Tech = disk.data as Tech
+    const diskData: Tech = disk.data as Tech;
 
     if (!diskData) {
-      return <LabeledList.Item label='Content'>Empty</LabeledList.Item>
+      return <LabeledList.Item label='Content'>Empty</LabeledList.Item>;
     }
 
     return (
@@ -155,43 +153,43 @@ const diskContent = (disk: Disk) => {
           {diskData.description}
         </LabeledList.Item>
       </>
-    )
-  }
+    );
+  };
 
   if (!disk) {
     return (
       <LabeledList>
         <LabeledList.Item label='Disk'>No Disk Inserted</LabeledList.Item>
       </LabeledList>
-    )
+    );
   }
 
   return (
     <LabeledList>
       <LabeledList.Item label='Disk'>
-        {(disk.type === DiskType.Design && 'Design Data Disk') ||
-          'Technology Data Disk'}
+        {(disk.type === DiskType.Design && 'Design Data Disk')
+          || 'Technology Data Disk'}
       </LabeledList.Item>
-      {(disk.type === DiskType.Design && designDiskContent(disk)) ||
-        techDiskContent(disk)}
+      {(disk.type === DiskType.Design && designDiskContent(disk))
+        || techDiskContent(disk)}
     </LabeledList>
-  )
-}
+  );
+};
 
 const getDeviceName = (device: Device) => {
   if (device.name === 'destructor') {
-    return 'Destructive Analyzer'
+    return 'Destructive Analyzer';
   } else if (device.name === 'imprinter') {
-    return 'Circuit Imprinter'
+    return 'Circuit Imprinter';
   } else if (device.name === 'protolathe') {
-    return 'Protolathe'
+    return 'Protolathe';
   } else {
-    throw new Error(`${device.name} is incorrect`)
+    throw `${device.name} is incorrect`;
   }
-}
+};
 
 const summaryTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
+  const { act, data } = useBackend<InputData>(context);
 
   return (
     <Stack vertical width='100%'>
@@ -237,10 +235,10 @@ const summaryTab = (props: any, context: any) => {
           <LabeledList>
             {data.devices.map((device, i) => {
               return (
-                <LabeledList.Item key={i} label={getDeviceName(device)}>
+                <LabeledList.Item label={getDeviceName(device)}>
                   {device.connected ? 'Connected' : 'Disconnected'}
                 </LabeledList.Item>
-              )
+              );
             })}
           </LabeledList>
         </Stack.Item>
@@ -285,14 +283,13 @@ const summaryTab = (props: any, context: any) => {
         {techsTable(data.techs, context)}
       </Stack.Item>
     </Stack>
-  )
-}
+  );
+};
 
 const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
-  const { act, data } = useBackend<InputData>(context)
+  const { act, data } = useBackend<InputData>(context);
   const saveButton = (tech: Tech) => {
-    return data.disk?.data
-      ? (
+    return data.disk?.data ? (
       <Button.Confirm
         textAlign='center'
         mt='0.2rem'
@@ -305,8 +302,7 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
       />
-        )
-      : (
+    ) : (
       <Button
         textAlign='center'
         mt='0.2rem'
@@ -318,8 +314,8 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
       />
-        )
-  }
+    );
+  };
 
   return (
     <Table className='Table--bordered'>
@@ -332,7 +328,7 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
       </Table.Row>
       {techs.length
         ? techs.map((tech: Tech, i: any) => {
-          return (
+            return (
               <Table.Row className='candystripe' key={tech.id}>
                 <Table.Cell>{tech.id && saveButton(tech)}</Table.Cell>
                 <Table.Cell>
@@ -340,27 +336,27 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
                 </Table.Cell>
                 <Table.Cell textAlign='center'>{tech.level}</Table.Cell>
               </Table.Row>
-          )
-        })
+            );
+          })
         : null}
     </Table>
-  )
-}
+  );
+};
 
 const destructorTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const destructor = data.devices.filter((d) => d.name === 'destructor')[0]
+  const { act, data } = useBackend<InputData>(context);
+  const destructor = data.devices.filter((d) => d.name === 'destructor')[0];
 
   if (!destructor.connected) {
     return (
       <h2>
         Destructive Analyzer - Not Connected <Icon name='unlink' />
       </h2>
-    )
+    );
   }
 
-  const item = destructor.data.item
-  const capitalizedName = (item && capitalize(item.name)) || null
+  const item = destructor.data.item;
+  const capitalizedName = (item && capitalize(item.name)) || null;
 
   return (
     <>
@@ -395,14 +391,14 @@ const destructorTab = (props: any, context: any) => {
         </LabeledList.Item>
       </LabeledList>
     </>
-  )
-}
+  );
+};
 
 const device = (device: Device, context: any) => {
-  const { act } = useBackend<InputData>(context)
-  const { storage } = device.data
-  const material = storage?.material
-  const chemical = storage?.chemical
+  const { act } = useBackend<InputData>(context);
+  const { storage } = device.data;
+  const material = storage?.material;
+  const chemical = storage?.chemical;
 
   const emptyRow = () => {
     return (
@@ -411,8 +407,8 @@ const device = (device: Device, context: any) => {
         <Table.Cell pl='0.5rem'>Empty</Table.Cell>
         <Table.Cell />
       </Table.Row>
-    )
-  }
+    );
+  };
 
   const ejectButtons = (material: Material) => {
     return (
@@ -422,7 +418,7 @@ const device = (device: Device, context: any) => {
             act('eject_sheet', {
               from: device.name,
               thing: material.name,
-              amount: 1
+              amount: 1,
             })
           }
           disabled={!material.amount}
@@ -436,7 +432,7 @@ const device = (device: Device, context: any) => {
             act('eject_sheet', {
               from: device.name,
               thing: material.name,
-              amount: 5
+              amount: 5,
             })
           }
           disabled={!material.amount}
@@ -449,7 +445,7 @@ const device = (device: Device, context: any) => {
             act('eject_sheet', {
               from: device.name,
               thing: material.name,
-              amount: -1
+              amount: -1,
             })
           }
           disabled={!material.amount}
@@ -458,8 +454,8 @@ const device = (device: Device, context: any) => {
           content='All'
         />
       </>
-    )
-  }
+    );
+  };
 
   return (
     <Stack width='100%'>
@@ -478,20 +474,20 @@ const device = (device: Device, context: any) => {
           disabled={!material?.materials.filter((mat) => mat.amount > 0).length}
           onClick={() => {
             material?.materials.forEach((mat, i) => {
-              mat.amount > 0 &&
-                act('eject_sheet', {
+              mat.amount > 0
+                && act('eject_sheet', {
                   from: device.name,
                   thing: mat.name,
-                  amount: -1
-                })
-            })
+                  amount: -1,
+                });
+            });
           }}
         />
         <Divider />
         <Box
           maxHeight='20rem'
           style={{
-            'overflow-y': 'auto'
+            'overflow-y': 'auto',
           }}>
           <Table className='Table--bordered'>
             <Table.Row className='candystripe'>
@@ -519,7 +515,7 @@ const device = (device: Device, context: any) => {
                     />
                   </Table.Cell>
                 </Table.Row>
-              )
+              );
             })}
           </Table>
         </Box>
@@ -544,7 +540,7 @@ const device = (device: Device, context: any) => {
         <Box
           maxHeight='20rem'
           style={{
-            'overflow-y': 'auto'
+            'overflow-y': 'auto',
           }}>
           <Table className='Table--bordered'>
             <Table.Row className='candystripe'>
@@ -558,14 +554,14 @@ const device = (device: Device, context: any) => {
             </Table.Row>
             {chemical?.chemicals.length
               ? chemical.chemicals.map((chem, i) => {
-                return (
+                  return (
                     <Table.Row key={chem.ref} className='candystripe'>
                       <Table.Cell>
                         <Button
                           onClick={() =>
                             act('dispose', {
                               from: device.name,
-                              thing: chem.ref
+                              thing: chem.ref,
                             })
                           }
                           disabled={!chem.units}
@@ -588,61 +584,62 @@ const device = (device: Device, context: any) => {
                         />
                       </Table.Cell>
                     </Table.Row>
-                )
-              })
+                  );
+                })
               : emptyRow()}
           </Table>
         </Box>
       </Stack.Item>
       <Stack.Item width='33.3%'>{queue(device, context)}</Stack.Item>
     </Stack>
-  )
-}
+  );
+};
 
 const designs = (device: Device, context: any) => {
-  const MAX_PER_PAGE = 10
-  const { act, data } = useBackend<InputData>(context)
-  const { designs, filters } = device.data
+  const MAX_PER_PAGE = 10;
+  const { act, data } = useBackend<InputData>(context);
+  const { designs, filters } = device.data;
   const [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null
-  )
+    null,
+  );
 
   const [currentPage, setCurrentPage] = useLocalState(
     context,
     `currentPage${device.name}`,
-    1
-  )
+    1,
+  );
 
-  const categories = ['All'].concat(filters)
-  const [currentFilter, setFilter] = useLocalState(context, 'filter', 'All')
+  const categories = ['All'].concat(filters);
+  const [currentFilter, setFilter] = useLocalState(context, 'filter', 'All');
 
-  if (!categories.find((c) => c === currentFilter)) {
-    setFilter('All')
+  if (!categories.find((c) => c === currentFilter))
+  {
+    setFilter('All');
   }
 
-  let found: Design[] = designs
+  let found: Design[] = designs;
 
   if (searchQuery !== null) {
-    found = found?.filter((design, _) => design.name.search(searchQuery) >= 0)
+    found = found?.filter((design, _) => design.name.search(searchQuery) >= 0);
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
     found = found?.filter((design, _) =>
-      design.category.find((s) => s === currentFilter)
-    )
+      design.category.find((s) => s === currentFilter),
+    );
   }
 
   const paginator = (designs: Design[], id: string, context: any) => {
     const numberWithinRange = (min: number, n: number, max: number) =>
-      Math.min(Math.max(n, min), max)
+      Math.min(Math.max(n, min), max);
     const [currentPage, setCurrentPage] = useLocalState(
       context,
       `currentPage${id}`,
-      1
-    )
-    const totalPages = Math.ceil(designs?.length / MAX_PER_PAGE)
+      1,
+    );
+    const totalPages = Math.ceil(designs?.length / MAX_PER_PAGE);
 
     return (
       <Stack width='100%' justify='space-between'>
@@ -674,8 +671,8 @@ const designs = (device: Device, context: any) => {
           />
         </Stack.Item>
       </Stack>
-    )
-  }
+    );
+  };
 
   const emptyRow = () => {
     return (
@@ -684,11 +681,11 @@ const designs = (device: Device, context: any) => {
         <Table.Cell pl='0.5rem'>Empty</Table.Cell>
         <Table.Cell />
       </Table.Row>
-    )
-  }
+    );
+  };
 
   const buildButtons = (design: Design) => {
-    const act_type = device.name === 'protolathe' ? 'build' : 'imprint'
+    const act_type = device.name === 'protolathe' ? 'build' : 'imprint';
 
     return (
       <>
@@ -709,8 +706,8 @@ const designs = (device: Device, context: any) => {
           onClick={() => act(act_type, { id: design.id, count: 10 })}
         />
       </>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -719,8 +716,8 @@ const designs = (device: Device, context: any) => {
         placeholder='Search'
         fluid
         onInput={(e: any) => {
-          setCurrentPage(1)
-          return setSearchQuery(e.target.value)
+          setCurrentPage(1);
+          return setSearchQuery(e.target.value);
         }}
       />
       <Divider />
@@ -733,13 +730,13 @@ const designs = (device: Device, context: any) => {
                 selected={filter === currentFilter}
                 content={filter}
                 onClick={() => {
-                  setCurrentPage(1)
-                  act('') // For click sound
-                  setFilter(filter)
+                  setCurrentPage(1);
+                  act(''); // For click sound
+                  setFilter(filter);
                 }}
               />
             </Flex.Item>
-          )
+          );
         })}
       </Flex>
       <Divider />
@@ -758,19 +755,18 @@ const designs = (device: Device, context: any) => {
         </Table.Row>
         {found?.length
           ? found
-            .slice(
-              (currentPage - 1) * MAX_PER_PAGE,
-              currentPage * MAX_PER_PAGE
-            )
-            .map((design, i) => {
-              return (
+              .slice(
+                (currentPage - 1) * MAX_PER_PAGE,
+                currentPage * MAX_PER_PAGE,
+              )
+              .map((design, i) => {
+                return (
                   <Table.Row key={design.id} className='candystripe'>
                     <Table.Cell
                       style={{
-                        'vertical-align': 'middle'
+                        'vertical-align': 'middle',
                       }}>
-                      {data.disk?.data
-                        ? (
+                      {data.disk?.data ? (
                         <Button.Confirm
                           textAlign='center'
                           ml='0.2rem'
@@ -782,12 +778,11 @@ const designs = (device: Device, context: any) => {
                           onClick={() =>
                             act('save', {
                               thing: DiskType.Design,
-                              id: design.id
+                              id: design.id,
                             })
                           }
                         />
-                          )
-                        : (
+                      ) : (
                         <Button
                           textAlign='center'
                           ml='0.2rem'
@@ -797,22 +792,22 @@ const designs = (device: Device, context: any) => {
                           onClick={() =>
                             act('save', {
                               thing: DiskType.Design,
-                              id: design.id
+                              id: design.id,
                             })
                           }
                         />
-                          )}
+                      )}
                     </Table.Cell>
                     <Table.Cell
                       style={{
-                        'vertical-align': 'middle'
+                        'vertical-align': 'middle',
                       }}
                       width='11ch'>
                       {buildButtons(design)}
                     </Table.Cell>
                     <Table.Cell
                       style={{
-                        'vertical-align': 'middle'
+                        'vertical-align': 'middle',
                       }}
                       className='Materials--small'>
                       {design.name}
@@ -821,37 +816,37 @@ const designs = (device: Device, context: any) => {
                       style={{
                         'vertical-align': 'middle',
                         'padding-top': '0.2rem',
-                        'padding-bottom': '0.2rem'
+                        'padding-bottom': '0.2rem',
                       }}>
                       {design.materials.map((material, i) => {
                         return (
                           <Box key={i}>
-                            {capitalize(material.name) +
-                              ' ' +
-                              material.required.toLocaleString()}
+                            {capitalize(material.name)
+                              + ' '
+                              + material.required.toLocaleString()}
                           </Box>
-                        )
+                        );
                       })}
                       {design.chemicals.map((chem, i) => {
                         return (
                           <Box key={i}>
                             {chem.name + ' ' + chem.required.toLocaleString()}
                           </Box>
-                        )
+                        );
                       })}
                     </Table.Cell>
                   </Table.Row>
-              )
-            })
+                );
+              })
           : emptyRow()}
       </Table>
     </>
-  )
-}
+  );
+};
 
 const queue = (device: Device, context: any) => {
-  const { act } = useBackend<InputData>(context)
-  const { queue } = device.data
+  const { act } = useBackend<InputData>(context);
+  const { queue } = device.data;
 
   const emptyRow = () => {
     return (
@@ -859,8 +854,8 @@ const queue = (device: Device, context: any) => {
         <Table.Cell />
         <Table.Cell>Empty</Table.Cell>
       </Table.Row>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -875,7 +870,7 @@ const queue = (device: Device, context: any) => {
       <Box
         maxHeight='20rem'
         style={{
-          'overflow-y': 'auto'
+          'overflow-y': 'auto',
         }}>
         <Table className='Table--bordered'>
           <Table.Row className='candystripe'>
@@ -884,7 +879,7 @@ const queue = (device: Device, context: any) => {
           </Table.Row>
           {queue?.length
             ? queue.map((design, i) => {
-              return (
+                return (
                   <Table.Row className='candystripe' key={design.id}>
                     <Table.Cell
                       style={{ 'vertical-align': 'middle' }}
@@ -901,25 +896,25 @@ const queue = (device: Device, context: any) => {
                       {design.name}
                     </Table.Cell>
                   </Table.Row>
-              )
-            })
+                );
+              })
             : emptyRow()}
         </Table>
       </Box>
     </>
-  )
-}
+  );
+};
 
 const protolatheTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const protolathe = data.devices.filter((d) => d.name === 'protolathe')[0]
+  const { act, data } = useBackend<InputData>(context);
+  const protolathe = data.devices.filter((d) => d.name === 'protolathe')[0];
 
   if (!protolathe.connected) {
     return (
       <h2>
         Protolathe - Not Connected <Icon name='unlink' />
       </h2>
-    )
+    );
   }
 
   return (
@@ -935,19 +930,19 @@ const protolatheTab = (props: any, context: any) => {
       {device(protolathe, context)}
       {designs(protolathe, context)}
     </>
-  )
-}
+  );
+};
 
 const imprinterTab = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const imprinter = data.devices.filter((d) => d.name === 'imprinter')[0]
+  const { act, data } = useBackend<InputData>(context);
+  const imprinter = data.devices.filter((d) => d.name === 'imprinter')[0];
 
   if (!imprinter.connected) {
     return (
       <h2>
         Circuit Imprinter - Not Connected <Icon name='unlink' />
       </h2>
-    )
+    );
   }
 
   return (
@@ -962,8 +957,8 @@ const imprinterTab = (props: any, context: any) => {
       {device(imprinter, context)}
       {designs(imprinter, context)}
     </>
-  )
-}
+  );
+};
 
 interface Tab {
   name: string;
@@ -976,35 +971,35 @@ const TABS: Tab[] = [
   {
     name: 'Summary',
     icon: 'info',
-    render: summaryTab
+    render: summaryTab,
   },
   {
     name: 'Destructive Analyzer',
     icon: 'atom',
     render: destructorTab,
-    action: (act) => act('select_device', { device: 'destructor' })
+    action: (act) => act('select_device', { device: 'destructor' }),
   },
   {
     name: 'Protolathe',
     icon: 'drafting-compass',
     render: protolatheTab,
-    action: (act) => act('select_device', { device: 'protolathe' })
+    action: (act) => act('select_device', { device: 'protolathe' }),
   },
   {
     name: 'Circuit Imprinter',
     icon: 'microchip',
     render: imprinterTab,
-    action: (act) => act('select_device', { device: 'imprinter' })
-  }
-]
+    action: (act) => act('select_device', { device: 'imprinter' }),
+  },
+];
 
 export const RDConsole = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context)
+  const { act, data, getTheme } = useBackend<InputData>(context);
   const [selectedTab, setSelectedTab] = useLocalState(
     context,
     'selectedTab',
-    TABS[0].name
-  )
+    TABS[0].name,
+  );
 
   return (
     <Window
@@ -1019,24 +1014,24 @@ export const RDConsole = (props: any, context: any) => {
               return (
                 <Tabs.Tab
                   onClick={() => {
-                    act('') // For clicking sound
-                    tab.action && tab.action(act)
-                    setSelectedTab(tab.name)
+                    act(''); // For clicking sound
+                    tab.action && tab.action(act);
+                    setSelectedTab(tab.name);
                   }}
                   selected={tab.name === selectedTab}
                   icon={tab.icon}
                   key={i}>
                   {tab.name}
                 </Tabs.Tab>
-              )
+              );
             })}
           </Tabs>
           {TABS.filter((tab) => tab.name === selectedTab)[0].render(
             props,
-            context
+            context,
           )}
         </Section>
       </Window.Content>
     </Window>
-  )
-}
+  );
+};

@@ -1,55 +1,57 @@
-import { perf } from 'common/perf'
-import { render } from 'inferno'
-import { createLogger } from './logging'
+import { perf } from 'common/perf';
+import { render } from 'inferno';
+import { createLogger } from './logging';
 
-const logger = createLogger('renderer')
+const logger = createLogger('renderer');
 
-let reactRoot
-let initialRender = true
-let suspended = false
+let reactRoot;
+let initialRender = true;
+let suspended = false;
 
 // These functions are used purely for profiling.
 export const resumeRenderer = () => {
-  initialRender = initialRender || 'resumed'
-  suspended = false
-}
+  initialRender = initialRender || 'resumed';
+  suspended = false;
+};
 
 export const suspendRenderer = () => {
-  suspended = true
-}
+  suspended = true;
+};
 
 export const createRenderer = getVNode => () => {
-  perf.mark('render/start')
+  perf.mark('render/start');
   // Start rendering
   if (!reactRoot) {
-    reactRoot = document.getElementById('react-root')
+    reactRoot = document.getElementById('react-root');
   }
-  render(getVNode(), reactRoot)
-  perf.mark('render/finish')
+  render(getVNode(), reactRoot);
+  perf.mark('render/finish');
   if (suspended) {
-    return
+    return;
   }
   // Report rendering time
   if (process.env.NODE_ENV !== 'production') {
     if (initialRender === 'resumed') {
       logger.log('rendered in',
-        perf.measure('render/start', 'render/finish'))
-    } else if (initialRender) {
-      logger.debug('serving from:', location.href)
+        perf.measure('render/start', 'render/finish'));
+    }
+    else if (initialRender) {
+      logger.debug('serving from:', location.href);
       logger.debug('bundle entered in',
-        perf.measure('inception', 'init'))
+        perf.measure('inception', 'init'));
       logger.debug('initialized in',
-        perf.measure('init', 'render/start'))
+        perf.measure('init', 'render/start'));
       logger.log('rendered in',
-        perf.measure('render/start', 'render/finish'))
+        perf.measure('render/start', 'render/finish'));
       logger.log('fully loaded in',
-        perf.measure('inception', 'render/finish'))
-    } else {
+        perf.measure('inception', 'render/finish'));
+    }
+    else {
       logger.debug('rendered in',
-        perf.measure('render/start', 'render/finish'))
+        perf.measure('render/start', 'render/finish'));
     }
   }
   if (initialRender) {
-    initialRender = false
+    initialRender = false;
   }
-}
+};

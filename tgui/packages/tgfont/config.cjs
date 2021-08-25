@@ -10,5 +10,5 @@ module.exports = {
   outputDir: './dist',
   fontTypes: ['woff2', 'eot'],
   assetTypes: ['css'],
-  prefix: 'tg'
-}
+  prefix: 'tg',
+};

@@ -41,6 +41,7 @@ var/list/artefact_feedback = list(
 			"name"            = user.name,
 			"spells"          = list(),
 			"can_reset_class" = W.can_reset_class,
+			"can_invest"      = W.can_invest()
 		)
 	)
 
@@ -104,9 +105,56 @@ var/list/artefact_feedback = list(
 		if("upgrade_spell")
 			upgrade_spell(usr, text2path(params["path"]), params["type"])
 			return TRUE
+		if("invest")
+			invest(usr)
+			return TRUE
 		if("contract")
 			make_contract(usr, text2path(params["path"]))
 			return TRUE
+
+/obj/item/weapon/spellbook/attackby(obj/item/item, mob/user)
+	var/datum/wizard/W = user.mind?.wizard
+
+	if(!W?.can_sacrifice())
+		return ..()
+
+	var/list/objects = W.class.sacrifice_objects
+	if(objects)
+		for(var/O in objects)
+			if(istype(item, O["path"]))
+				make_sacrifice(item, user)
+				return
+	
+	var/list/reagents = W.class.sacrifice_reagents
+	var/datum/reagents/R = item.reagents
+	if(reagents && R)
+		for(var/id in reagents)
+			if(R.has_reagent(id, 5))
+				make_sacrifice(item, user, id)
+				return
+
+	..()
+
+/obj/item/weapon/spellbook/proc/make_sacrifice(obj/item/item, mob/user, reagent = null)
+	var/datum/wizard/W = user.mind.wizard
+
+	ASSERT(W.can_sacrifice())
+	
+	if(reagent)
+		var/datum/reagents/R = item.reagents
+		R.remove_reagent(reagent, 5)
+	else
+		var/obj/item/stack/S = item
+		if(istype(S))
+			if(S.amount < S.max_amount)
+				to_chat(user, SPAN("warning", "You must sacrifice [S.max_amount] stacks of [S]!"))
+				return
+			
+		user.remove_from_mob(item)
+		qdel(item)
+	
+	to_chat(user, SPAN("notice", "Your sacrifice was accepted!"))
+	W.sacrifice()
 
 /obj/item/weapon/spellbook/proc/make_contract(mob/user, spell_path)
 	var/datum/wizard/W = user.mind.wizard
@@ -118,6 +166,16 @@ var/list/artefact_feedback = list(
 	W.spend(spell_cost)
 	var/obj/O = new /obj/item/weapon/contract/boon(get_turf(user), spell_path)
 	to_chat(user, "You have purchased \the [O].")
+
+/obj/item/weapon/spellbook/proc/invest(mob/user)
+	var/datum/wizard/W = user.mind.wizard
+
+	ASSERT(W.class.investable)
+	ASSERT(W.can_spend(1))
+	ASSERT(W.can_invest())
+
+	W.spend(1)
+	W.invest_begin()
 
 /obj/item/weapon/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
 	var/datum/wizard/W = user.mind.wizard
@@ -166,7 +224,7 @@ var/list/artefact_feedback = list(
 
 	user.spellremove()
 	W.reset()
-	to_chat(user, "All spells have been removed. You may now memorize a new set of spells.")
+	to_chat(user, "All spells and investments have been removed. You may now memorize a new set of spells.")
 	feedback_add_details("wizard_class_reset", "UM")
 
 /obj/item/weapon/spellbook/proc/buy_spell(mob/user, datum/spell/path)

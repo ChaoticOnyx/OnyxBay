@@ -4,17 +4,16 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend'
-import { Input, LabeledList, Section } from '../components'
+import { useLocalState } from '../backend';
+import { Input, LabeledList, Section } from '../components';
 
 export const meta = {
   title: 'Themes',
-  // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
-  const [theme, setTheme] = useLocalState(context, 'kitchenSinkTheme')
+  const [theme, setTheme] = useLocalState(context, 'kitchenSinkTheme');
   return (
     <Section>
       <LabeledList>
@@ -26,5 +25,5 @@ const Story = (props, context) => {
         </LabeledList.Item>
       </LabeledList>
     </Section>
-  )
-}
+  );
+};

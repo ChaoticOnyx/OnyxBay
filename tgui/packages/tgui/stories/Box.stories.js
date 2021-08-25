@@ -4,13 +4,12 @@
  * @license MIT
  */
 
-import { Box, Section } from '../components'
+import { Box, Section } from '../components';
 
 export const meta = {
   title: 'Box',
-  // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
   return (
@@ -40,5 +39,5 @@ const Story = (props, context) => {
         right
       </Box>
     </Section>
-  )
-}
+  );
+};

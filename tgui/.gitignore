@@ -1,8 +1,9 @@
-## NPM Stuff
+## NPM garbage
 node_modules
 *.log
+package-lock.json
 
-## Yarn Garbage
+## Yarn stuff
 /.pnp.*
 /.yarn/*
 !/.yarn/releases

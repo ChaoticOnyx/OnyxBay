@@ -1,7 +1,3 @@
-var/const/NETWORK_COMMAND = "Command"
-var/const/NETWORK_ENGINE  = "Engine"
-var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
-
 /datum/map/exodus/get_network_access(network)
 	switch(network)
 		if(NETWORK_CIVILIAN_WEST)
@@ -10,12 +6,7 @@ var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 			return access_research
 		if(NETWORK_TELECOM)
 			return access_heads
-		if(NETWORK_COMMAND)
-			return access_heads
-		if(NETWORK_ENGINE, NETWORK_ENGINEERING_OUTPOST)
-			return access_engine
-
-	return ..()
+	return get_shared_network_access(network) || ..()
 
 /datum/map/exodus
 	station_networks = list(
@@ -79,9 +70,6 @@ var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 /obj/machinery/camera/network/engineering_outpost
 	network = list(NETWORK_ENGINEERING_OUTPOST)
 
-/obj/machinery/camera/network/engine
-	network = list(NETWORK_ENGINE, NETWORK_MASTER)
-
 // Motion
 /obj/machinery/camera/motion/command
 	network = list(NETWORK_COMMAND, NETWORK_MASTER)
@@ -95,10 +83,3 @@ var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 
 /obj/machinery/camera/xray/security
 	network = list(NETWORK_SECURITY, NETWORK_MASTER)
-
-/obj/machinery/camera/network/crescent
-	network = list(NETWORK_CRESCENT)
-
-// All Upgrades
-/obj/machinery/camera/all/command
-	network = list(NETWORK_COMMAND)

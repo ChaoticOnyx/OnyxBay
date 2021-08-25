@@ -4,6 +4,7 @@
 	description = "Mix physical with the mystical in head to head combat."
 	points = 6
 	can_make_contracts = TRUE
+	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/passage,  1),
@@ -29,4 +30,9 @@
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/xray,      1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+	)
+
+	sacrifice_objects = list(
+		SACRIFICE_DATA(/obj/item/weapon/material/sword),
+		SACRIFICE_DATA(/obj/item/weapon/material/twohanded/fireaxe)
 	)

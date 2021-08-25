@@ -1,19 +1,20 @@
-import { useDispatch, useSelector } from '../../common/redux'
+import { useDispatch, useSelector } from '../../common/redux';
 import {
   Box,
   Divider,
+  Flex,
   LabeledList,
   Section,
   TextArea,
-  Button
-} from '../../tgui/components'
-import { updateSpellCheckerSettings } from './actions'
-import { defaultBlacklist } from './reducer'
-import { selectSpellChecker } from './selector'
+} from '../../tgui/components';
+import { Button } from '../../tgui/components';
+import { updateSpellCheckerSettings } from './actions';
+import { defaultBlacklist } from './reducer';
+import { selectSpellChecker } from './selector';
 
 export const SpellCheckerSettings = (props, context) => {
-  const { enabled, blacklist } = useSelector(context, selectSpellChecker)
-  const dispatch = useDispatch(context)
+  const { enabled, blacklist } = useSelector(context, selectSpellChecker);
+  const dispatch = useDispatch(context);
 
   return (
     <Section>
@@ -26,9 +27,9 @@ export const SpellCheckerSettings = (props, context) => {
             onClick={() =>
               dispatch(
                 updateSpellCheckerSettings({
-                  enabled: !enabled
-                })
-              )
+                  enabled: !enabled,
+                }),
+            )
             }
           />
         </LabeledList.Item>
@@ -40,9 +41,9 @@ export const SpellCheckerSettings = (props, context) => {
             onClick={() =>
               dispatch(
                 updateSpellCheckerSettings({
-                  blacklist: defaultBlacklist
-                })
-              )
+                  blacklist: defaultBlacklist,
+                }),
+            )
             }
           />
         </LabeledList.Item>
@@ -56,12 +57,12 @@ export const SpellCheckerSettings = (props, context) => {
           onChange={(e, value) =>
             dispatch(
               updateSpellCheckerSettings({
-                blacklist: value
-              })
-            )
+                blacklist: value,
+              }),
+          )
           }
         />
       </Box>
     </Section>
-  )
-}
+  );
+};

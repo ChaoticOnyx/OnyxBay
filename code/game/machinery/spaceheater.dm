@@ -156,7 +156,6 @@
 					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")
 
 	updateDialog()
-	return TOPIC_REFRESH
 
 /obj/machinery/space_heater/Process()
 	if(on)

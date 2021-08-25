@@ -5,9 +5,10 @@
  */
 
 // Change working directory to project root
-process.chdir(__dirname)
+process.chdir(__dirname);
 
 // Silently make a dist folder
 try {
-  require('fs').mkdirSync('dist')
-} catch (err) {}
+  require('fs').mkdirSync('dist');
+}
+catch (err) {}

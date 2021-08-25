@@ -4,6 +4,7 @@
 	description = "Movement and teleportation. Run from your problems!"
 	points = 11
 	can_make_contracts = TRUE
+	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/ethereal_jaunt,              1),
@@ -29,4 +30,12 @@
 		ARTIFACT_DATA(/obj/item/weapon/magic_rock,                1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+	)
+
+	sacrifice_objects = list(
+		SACRIFICE_DATA(/obj/item/stack/telecrystal)
+	)
+
+	sacrifice_reagents = list(
+		SACRIFICE_DATA(/datum/reagent/hyperzine)
 	)

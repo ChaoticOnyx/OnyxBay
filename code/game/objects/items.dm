@@ -83,7 +83,6 @@
 	var/pickup_sound = null
 
 	var/ear_protection = 0
-	var/clumsy_unaffected = FALSE
 
 /obj/item/New()
 	..()

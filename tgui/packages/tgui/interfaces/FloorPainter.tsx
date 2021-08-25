@@ -1,8 +1,7 @@
-/* eslint-disable camelcase */
-import { useBackend } from '../backend'
-import { Button, ColorBox, Divider, Stack } from '../components'
-import { GameIcon } from '../components/GameIcon'
-import { Window } from '../layouts'
+import { useBackend } from '../backend';
+import { Button, Collapsible, ColorBox, Divider, Stack } from '../components';
+import { GameIcon } from '../components/GameIcon';
+import { Window } from '../layouts';
 
 interface Settings {
   paint_colour: string;
@@ -19,16 +18,16 @@ interface Decal {
 }
 
 const Directions = {
-  north: 180,
-  northwest: 145,
-  west: 90,
-  southwest: 45,
-  south: 0,
-  southeast: 315,
-  east: 270,
-  northeast: 225,
-  precise: 0
-}
+  'north': 180,
+  'northwest': 145,
+  'west': 90,
+  'southwest': 45,
+  'south': 0,
+  'southeast': 315,
+  'east': 270,
+  'northeast': 225,
+  'precise': 0,
+};
 
 interface InputData {
   settings: Settings;
@@ -36,9 +35,9 @@ interface InputData {
 }
 
 const decalButton = (decal: Decal, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const { settings, decals } = data
-  const selectedDecal = decals.find((d) => d.path === settings.decal)
+  const { act, data } = useBackend<InputData>(context);
+  const { settings, decals } = data;
+  const selectedDecal = decals.find((d) => d.path === settings.decal);
 
   return (
     <Button
@@ -48,14 +47,14 @@ const decalButton = (decal: Decal, context: any) => {
       selected={decal.name === selectedDecal.name}>
       <GameIcon html={decal.icon} />
     </Button>
-  )
-}
+  );
+};
 
 const directionButtons = (context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const { settings, decals } = data
-  const { paint_dir } = settings
-  const selectedDecal = decals.find((d) => d.path === settings.decal)
+  const { act, data } = useBackend<InputData>(context);
+  const { settings, decals } = data;
+  const { paint_dir, paint_colour } = settings;
+  const selectedDecal = decals.find((d) => d.path === settings.decal);
 
   return (
     <Stack vertical>
@@ -125,13 +124,13 @@ const directionButtons = (context: any) => {
         />
       </Stack.Item>
     </Stack>
-  )
-}
+  );
+};
 
 export const FloorPainter = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const { settings, decals } = data
-  const selectedDecal = decals.find((d) => d.path === settings.decal)
+  const { act, data } = useBackend<InputData>(context);
+  const { settings, decals } = data;
+  const selectedDecal = decals.find((d) => d.path === settings.decal);
 
   return (
     <Window width={300} height={340}>
@@ -143,7 +142,7 @@ export const FloorPainter = (props: any, context: any) => {
               <Stack.Item>
                 <GameIcon
                   style={{
-                    transform: `rotate(${Directions[settings.paint_dir]}deg)`
+                    'transform': `rotate(${Directions[settings.paint_dir]}deg)`,
                   }}
                   html={selectedDecal.icon}
                 />
@@ -166,9 +165,9 @@ export const FloorPainter = (props: any, context: any) => {
         </Stack>
         <Divider />
         {decals.map((decal) => {
-          return decalButton(decal, context)
+          return decalButton(decal, context);
         })}
       </Window.Content>
     </Window>
-  )
-}
+  );
+};

@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-import { classes } from 'common/react'
-import { Flex, FlexItemProps, FlexProps } from './Flex'
+import { classes } from 'common/react';
+import { Flex, FlexItemProps, FlexProps } from './Flex';
 
 interface StackProps extends FlexProps {
   vertical?: boolean;
@@ -13,7 +13,7 @@ interface StackProps extends FlexProps {
 }
 
 export const Stack = (props: StackProps) => {
-  const { className, vertical, fill, ...rest } = props
+  const { className, vertical, fill, ...rest } = props;
   return (
     <Flex
       className={classes([
@@ -22,43 +22,43 @@ export const Stack = (props: StackProps) => {
         vertical
           ? 'Stack--vertical'
           : 'Stack--horizontal',
-        className
+        className,
       ])}
       direction={vertical ? 'column' : 'row'}
       {...rest} />
-  )
-}
+  );
+};
 
 const StackItem = (props: FlexProps) => {
-  const { className, ...rest } = props
+  const { className, ...rest } = props;
   return (
     <Flex.Item
       className={classes([
         'Stack__item',
-        className
+        className,
       ])}
       {...rest} />
-  )
-}
+  );
+};
 
-Stack.Item = StackItem
+Stack.Item = StackItem;
 
 interface StackDividerProps extends FlexItemProps {
   hidden?: boolean;
 }
 
 const StackDivider = (props: StackDividerProps) => {
-  const { className, hidden, ...rest } = props
+  const { className, hidden, ...rest } = props;
   return (
     <Flex.Item
       className={classes([
         'Stack__item',
         'Stack__divider',
         hidden && 'Stack__divider--hidden',
-        className
+        className,
       ])}
       {...rest} />
-  )
-}
+  );
+};
 
-Stack.Divider = StackDivider
+Stack.Divider = StackDivider;

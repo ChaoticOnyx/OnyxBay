@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import { useBackend } from '../backend'
+import { useBackend } from '../backend';
 import {
   NoticeBox,
   Section,
@@ -8,9 +7,9 @@ import {
   Table,
   Flex,
   LabeledList,
-  Divider
-} from '../components'
-import { Window } from '../layouts'
+  Divider,
+} from '../components';
+import { Window } from '../layouts';
 
 interface Organ {
   name: string;
@@ -49,23 +48,25 @@ interface InputData {
 }
 
 export const BodyScanner = (props: any, context: any) => {
+  const { act, data } = useBackend(context);
+
   return (
     <Window width={800} height={800}>
       <Window.Content scrollable>
         <ScanData />
       </Window.Content>
     </Window>
-  )
-}
+  );
+};
 
 const ScanData = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
+  const { act, data } = useBackend<InputData>(context);
   if (!data.medical_data) {
-    return <NoticeBox>Body Scanner is empty.</NoticeBox>
+    return <NoticeBox>Body Scanner is empty.</NoticeBox>;
   }
 
   if (!data.connected) {
-    return <NoticeBox>Error: No Body Scanner connected.</NoticeBox>
+    return <NoticeBox>Error: No Body Scanner connected.</NoticeBox>;
   }
 
   return (
@@ -99,8 +100,8 @@ const ScanData = (props: any, context: any) => {
         <Section title='Warnings'>
           {data.medical_data.warnings.length
             ? data.medical_data.warnings.map((warning, i) => {
-              return <NoticeBox key={i}>{warning}</NoticeBox>
-            })
+                return <NoticeBox key={i}>{warning}</NoticeBox>;
+              })
             : 'Nothing'}
         </Section>
 
@@ -116,20 +117,18 @@ const ScanData = (props: any, context: any) => {
             </LabeledList.Item>
 
             <LabeledList.Item label='Brain Activity'>
-              {data.medical_data.brain_activity >= 0
-                ? (
+              {data.medical_data.brain_activity >= 0 ? (
                 <ProgressBar
                   value={data.medical_data.brain_activity}
                   ranges={{
                     good: [0.8, 1.0],
                     average: [0.5, 0.8],
-                    bad: [0.0, 0.5]
+                    bad: [0.0, 0.5],
                   }}
                 />
-                  )
-                : (
-                    'Nonstandard biology'
-                  )}
+              ) : (
+                'Nonstandard biology'
+              )}
             </LabeledList.Item>
 
             <LabeledList.Item label='Immunity'>
@@ -138,7 +137,7 @@ const ScanData = (props: any, context: any) => {
                 ranges={{
                   good: [0.8, 2.0],
                   average: [0.5, 0.8],
-                  bad: [0.0, 0.5]
+                  bad: [0.0, 0.5],
                 }}
               />
             </LabeledList.Item>
@@ -162,17 +161,17 @@ const ScanData = (props: any, context: any) => {
                 value={data.medical_data.blood_volume / 100}
                 // eslint-disable-next-line max-len
                 content={
-                  data.medical_data.blood_volume_abs +
-                  '/' +
-                  data.medical_data.blood_volume_max +
-                  'u (' +
-                  data.medical_data.blood_volume +
-                '%)'
+                  data.medical_data.blood_volume_abs
+                  + '/'
+                  + data.medical_data.blood_volume_max
+                  + 'u ('
+                  + data.medical_data.blood_volume
+                + '%)'
                 }
                 ranges={{
                   good: [0.8, 1.0],
                   average: [0.5, 0.8],
-                  bad: [0.0, 0.5]
+                  bad: [0.0, 0.5],
                 }}
               />
             </LabeledList.Item>
@@ -183,7 +182,7 @@ const ScanData = (props: any, context: any) => {
                 ranges={{
                   good: [0.8, 1.0],
                   average: [0.5, 0.8],
-                  bad: [0.0, 0.5]
+                  bad: [0.0, 0.5],
                 }}
               />
             </LabeledList.Item>
@@ -198,8 +197,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.brute_severity === 'None'
                   ? 'good'
                   : data.medical_data.brute_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.brute_severity}
             </LabeledList.Item>
@@ -210,8 +209,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.burn_severity === 'None'
                   ? 'good'
                   : data.medical_data.burn_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.burn_severity}
             </LabeledList.Item>
@@ -222,8 +221,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.tox_severity === 'None'
                   ? 'good'
                   : data.medical_data.tox_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.tox_severity}
             </LabeledList.Item>
@@ -234,8 +233,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.oxy_severity === 'None'
                   ? 'good'
                   : data.medical_data.oxy_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.oxy_severity}
             </LabeledList.Item>
@@ -246,8 +245,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.rad_severity === 'None'
                   ? 'good'
                   : data.medical_data.rad_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.rad_severity}
             </LabeledList.Item>
@@ -258,8 +257,8 @@ const ScanData = (props: any, context: any) => {
                 data.medical_data.clone_severity === 'None'
                   ? 'good'
                   : data.medical_data.clone_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+              : 'average'
               }>
               {data.medical_data.clone_severity}
             </LabeledList.Item>
@@ -300,7 +299,7 @@ const ScanData = (props: any, context: any) => {
                           {organ_damage + '\n'}
                           <Divider />
                         </>
-                      )
+                      );
                     })}
                   </Table.Cell>
                   <Table.Cell color={organ.status[0] === '' ? 'good' : 'bad'}>
@@ -310,11 +309,11 @@ const ScanData = (props: any, context: any) => {
                           {organ_status === '' ? 'Good' : organ_status}
                           <Divider />
                         </>
-                      )
+                      );
                     })}
                   </Table.Cell>
                 </Table.Row>
-              )
+              );
             })}
           </Table>
         </Section>
@@ -351,7 +350,7 @@ const ScanData = (props: any, context: any) => {
                           {organ_damage + '\n'}
                           <Divider />
                         </>
-                      )
+                      );
                     })}
                   </Table.Cell>
                   <Table.Cell color={organ.status[0] === '' ? 'good' : 'bad'}>
@@ -361,15 +360,15 @@ const ScanData = (props: any, context: any) => {
                           {organ_status === '' ? 'Good' : organ_status}
                           <Divider />
                         </>
-                      )
+                      );
                     })}
                   </Table.Cell>
                 </Table.Row>
-              )
+              );
             })}
           </Table>
         </Section>
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};

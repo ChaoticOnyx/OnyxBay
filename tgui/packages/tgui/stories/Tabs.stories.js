@@ -1,27 +1,26 @@
-/* eslint-disable react/display-name */
 /**
  * @file
  * @copyright 2021 Aleksej Komarov
  * @license MIT
  */
 
-import { useLocalState } from '../backend'
-import { Button, Section, Tabs } from '../components'
+import { useLocalState } from '../backend';
+import { Box, Button, Divider, Section, Tabs } from '../components';
 
 export const meta = {
   title: 'Tabs',
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const TAB_RANGE = [
   'Tab #1',
   'Tab #2',
   'Tab #3',
-  'Tab #4'
-]
+  'Tab #4',
+];
 
 const Story = (props, context) => {
-  const [tabProps, setTabProps] = useLocalState(context, 'tabProps', {})
+  const [tabProps, setTabProps] = useLocalState(context, 'tabProps', {});
   return (
     <>
       <Section>
@@ -31,7 +30,7 @@ const Story = (props, context) => {
           checked={tabProps.vertical}
           onClick={() => setTabProps({
             ...tabProps,
-            vertical: !tabProps.vertical
+            vertical: !tabProps.vertical,
           })} />
         <Button.Checkbox
           inline
@@ -39,7 +38,7 @@ const Story = (props, context) => {
           checked={tabProps.leftSlot}
           onClick={() => setTabProps({
             ...tabProps,
-            leftSlot: !tabProps.leftSlot
+            leftSlot: !tabProps.leftSlot,
           })} />
         <Button.Checkbox
           inline
@@ -47,7 +46,7 @@ const Story = (props, context) => {
           checked={tabProps.rightSlot}
           onClick={() => setTabProps({
             ...tabProps,
-            rightSlot: !tabProps.rightSlot
+            rightSlot: !tabProps.rightSlot,
           })} />
         <Button.Checkbox
           inline
@@ -55,7 +54,7 @@ const Story = (props, context) => {
           checked={tabProps.icon}
           onClick={() => setTabProps({
             ...tabProps,
-            icon: !tabProps.icon
+            icon: !tabProps.icon,
           })} />
         <Button.Checkbox
           inline
@@ -63,7 +62,7 @@ const Story = (props, context) => {
           checked={tabProps.fluid}
           onClick={() => setTabProps({
             ...tabProps,
-            fluid: !tabProps.fluid
+            fluid: !tabProps.fluid,
           })} />
         <Button.Checkbox
           inline
@@ -71,7 +70,7 @@ const Story = (props, context) => {
           checked={tabProps.centered}
           onClick={() => setTabProps({
             ...tabProps,
-            centered: !tabProps.centered
+            centered: !tabProps.centered,
           })} />
       </Section>
       <Section fitted>
@@ -86,12 +85,12 @@ const Story = (props, context) => {
       </Section>
       <TabsPrefab />
     </>
-  )
-}
+  );
+};
 
 const TabsPrefab = (props, context) => {
-  const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0)
-  const [tabProps] = useLocalState(context, 'tabProps', {})
+  const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0);
+  const [tabProps] = useLocalState(context, 'tabProps', {});
   return (
     <Tabs
       vertical={tabProps.vertical}
@@ -121,5 +120,5 @@ const TabsPrefab = (props, context) => {
         </Tabs.Tab>
       ))}
     </Tabs>
-  )
-}
+  );
+};

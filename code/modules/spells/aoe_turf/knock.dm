@@ -4,7 +4,6 @@
 	feedback = "KN"
 	school = "transmutation"
 	charge_max = 100
-	cooldown_reduc = 20
 	spell_flags = 0
 	invocation = "Aulie Oxin Fiera."
 	invocation_type = SPI_WHISPER

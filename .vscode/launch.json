@@ -62,20 +62,6 @@
             "cwd": "${workspaceFolder}"
         },
         {
-            "command": "npm run dev",
-            "name": "TGUI Dev",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceFolder}/tgui"
-        },
-        {
-            "command": "npm run build",
-            "name": "TGUI Build",
-            "request": "launch",
-            "type": "node-terminal",
-            "cwd": "${workspaceFolder}/tgui"
-        },
-        {
             "name": "PowerShell Launch Current File",
             "type": "PowerShell",
             "request": "launch",

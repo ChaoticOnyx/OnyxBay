@@ -1,12 +1,11 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react'
-import { Box, BoxProps, unit } from './Box'
+import { BooleanLike, classes, pureComponentHooks } from 'common/react';
+import { Box, BoxProps, unit } from './Box';
 
 export interface FlexProps extends BoxProps {
   direction?: string | BooleanLike;
@@ -25,7 +24,7 @@ export const computeFlexProps = (props: FlexProps) => {
     justify,
     inline,
     ...rest
-  } = props
+  } = props;
   return {
     className: classes([
       'Flex',
@@ -35,24 +34,24 @@ export const computeFlexProps = (props: FlexProps) => {
           : 'Flex--iefix'
       ),
       inline && 'Flex--inline',
-      className
+      className,
     ]),
     style: {
       ...rest.style,
       'flex-direction': direction,
       'flex-wrap': wrap === true ? 'wrap' : wrap,
       'align-items': align,
-      'justify-content': justify
+      'justify-content': justify,
     },
-    ...rest
-  }
-}
+    ...rest,
+  };
+};
 
 export const Flex = props => (
   <Box {...computeFlexProps(props)} />
-)
+);
 
-Flex.defaultHooks = pureComponentHooks
+Flex.defaultHooks = pureComponentHooks;
 
 export interface FlexItemProps extends BoxProps {
   grow?: number;
@@ -74,30 +73,30 @@ export const computeFlexItemProps = (props: FlexItemProps) => {
     basis = props.width,
     align,
     ...rest
-  } = props
+  } = props;
   return {
     className: classes([
       'Flex__item',
       Byond.IS_LTE_IE10 && 'Flex__item--iefix',
       Byond.IS_LTE_IE10 && grow > 0 && 'Flex__item--iefix--grow',
-      className
+      className,
     ]),
     style: {
       ...style,
       'flex-grow': grow !== undefined && Number(grow),
       'flex-shrink': shrink !== undefined && Number(shrink),
       'flex-basis': unit(basis),
-      order: order,
-      'align-self': align
+      'order': order,
+      'align-self': align,
     },
-    ...rest
-  }
-}
+    ...rest,
+  };
+};
 
 const FlexItem = props => (
   <Box {...computeFlexItemProps(props)} />
-)
+);
 
-FlexItem.defaultHooks = pureComponentHooks
+FlexItem.defaultHooks = pureComponentHooks;
 
-Flex.Item = FlexItem
+Flex.Item = FlexItem;

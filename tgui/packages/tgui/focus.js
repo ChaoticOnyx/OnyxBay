@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * Various focus helpers.
  *
@@ -12,15 +11,15 @@
  */
 export const focusMap = () => {
   Byond.winset('mapwindow.map', {
-    focus: true
-  })
-}
+    focus: true,
+  });
+};
 
 /**
  * Moves focus to the browser window.
  */
 export const focusWindow = () => {
   Byond.winset(window.__windowId__, {
-    focus: true
-  })
-}
+    focus: true,
+  });
+};

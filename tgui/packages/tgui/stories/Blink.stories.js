@@ -4,13 +4,12 @@
  * @license MIT
  */
 
-import { Blink, Section } from '../components'
+import { Blink, Section } from '../components';
 
 export const meta = {
   title: 'Blink',
-  // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
   return (
@@ -19,5 +18,5 @@ const Story = (props, context) => {
         Blink
       </Blink>
     </Section>
-  )
-}
+  );
+};

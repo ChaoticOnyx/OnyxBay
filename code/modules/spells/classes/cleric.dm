@@ -4,6 +4,7 @@
 	description = "All about healing. Mobility and offense comes at a higher price but not impossible."
 	points = 8
 	can_make_contracts = TRUE
+	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/heal_target/major,            1),
@@ -29,4 +30,13 @@
 		ARTIFACT_DATA(/obj/structure/closet/wizard/scrying,       2),
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+	)
+
+	sacrifice_objects = list(
+		SACRIFICE_DATA(/obj/item/seeds/mtearseed)
+	)
+
+	sacrifice_reagents = list(
+		SACRIFICE_DATA(/datum/reagent/peridaxon),
+		SACRIFICE_DATA(/datum/reagent/adminordrazine)
 	)

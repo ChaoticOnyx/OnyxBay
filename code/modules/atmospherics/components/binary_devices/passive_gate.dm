@@ -238,7 +238,7 @@
 	usr.set_machine(src)	//Is this even needed with NanoUI?
 	src.update_icon()
 	src.add_fingerprint(usr)
-	return TOPIC_REFRESH
+	return
 
 /obj/machinery/atmospherics/binary/passive_gate/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!isWrench(W))

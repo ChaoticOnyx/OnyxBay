@@ -25,7 +25,7 @@
 	spell_flags = NEEDSCLOTHES
 	invocation = "Bla'yo daya!"
 	invocation_type = SPI_SHOUT
-	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 3)
 	cooldown_min = 600
 
 	range = 1

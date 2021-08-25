@@ -11,7 +11,7 @@
 	icon_state = "wiz_dominate"
 	show_message = " puts his hand on target head, it's starting to glow brightly."
 	spell_flags = NEEDSCLOTHES
-	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 0)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
 	spell_delay = 3000
 	compatible_targets = list(/mob/living/carbon/human)
 	var/list/instructions = list("Serve the Wizard Federation!")

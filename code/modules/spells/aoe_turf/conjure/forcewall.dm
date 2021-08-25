@@ -9,7 +9,7 @@
 	spell_flags = 0
 	range = 0
 	cast_sound = null
-	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
+
 	icon_state = "wiz_shield"
 
 /datum/spell/aoe_turf/conjure/forcewall/mime

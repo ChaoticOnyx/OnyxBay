@@ -177,7 +177,7 @@
 
 	drop_items = 0
 	share_damage = 0
-	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 2)
 
 	newVars = list("name" = "corrupted soul")
 

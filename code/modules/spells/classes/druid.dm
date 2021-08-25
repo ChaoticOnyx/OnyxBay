@@ -4,6 +4,7 @@
 	description = "Summons, nature, and a bit o' healin."
 	points = 6
 	can_make_contracts = TRUE
+	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/heal_target,             1),
@@ -29,4 +30,9 @@
 		ARTIFACT_DATA(/obj/item/weapon/monster_manual,            1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+	)
+
+	sacrifice_objects = list(
+		SACRIFICE_DATA(/obj/item/seeds/ambrosiavulgarisseed),
+		SACRIFICE_DATA(/obj/item/seeds/ambrosiadeusseed)
 	)

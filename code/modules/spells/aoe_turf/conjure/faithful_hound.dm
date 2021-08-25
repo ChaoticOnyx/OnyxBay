@@ -4,7 +4,6 @@
 	feedback = "FH"
 
 	charge_max = 600
-	cooldown_min = 100
 	spell_flags = NEEDSCLOTHES
 	invocation = "Du korilath tangus"
 	invocation_type = SPI_WHISPER
@@ -12,8 +11,6 @@
 
 	summon_amt = 1
 	summon_type = list(/mob/living/simple_animal/faithful_hound)
-	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
-	cooldown_reduc = 150
 	icon_state = "wiz_hound"
 
 /datum/spell/aoe_turf/conjure/faithful_hound/before_cast()
