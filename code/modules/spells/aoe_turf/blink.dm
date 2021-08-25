@@ -10,8 +10,8 @@
 	range = 7
 	inner_radius = 1
 
-	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 4)
-	cooldown_min = 5 //4 deciseconds reduction per rank
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 3, SP_POWER = 4)
+	cooldown_min = 5 //5 deciseconds reduction per rank
 	icon_state = "wiz_blink"
 
 /datum/spell/aoe_turf/blink/cast(list/targets, mob/user)

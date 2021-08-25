@@ -4,43 +4,44 @@
  * @license MIT
  */
 
-import { sendLogEntry } from 'tgui-dev-server/link/client';
+import { sendLogEntry } from 'tgui-dev-server/link/client'
 
-const LEVEL_DEBUG = 0;
-const LEVEL_LOG = 1;
-const LEVEL_INFO = 2;
-const LEVEL_WARN = 3;
-const LEVEL_ERROR = 4;
+const LEVEL_DEBUG = 0
+const LEVEL_LOG = 1
+const LEVEL_INFO = 2
+const LEVEL_WARN = 3
+const LEVEL_ERROR = 4
 
 const log = (level, ns, ...args) => {
   // Send logs to a remote log collector
   if (process.env.NODE_ENV !== 'production') {
-    sendLogEntry(level, ns, ...args);
+    sendLogEntry(level, ns, ...args)
   }
   // Send important logs to the backend
   if (level >= LEVEL_INFO) {
     const logEntry = [ns, ...args]
       .map(value => {
         if (typeof value === 'string') {
-          return value;
+          return value
         }
         if (value instanceof Error) {
-          return value.stack || String(value);
+          return value.stack || String(value)
         }
-        return JSON.stringify(value);
+        return JSON.stringify(value)
       })
       .filter(value => value)
-      .join(' ')
-      + '\nUser Agent: ' + navigator.userAgent;
+      .join(' ') +
+      '\nUser Agent: ' + navigator.userAgent
+    // eslint-disable-next-line no-undef
     Byond.topic({
       tgui: 1,
       window_id: window.__windowId__,
       type: 'log',
       ns,
-      message: logEntry,
-    });
+      message: logEntry
+    })
   }
-};
+}
 
 export const createLogger = ns => {
   return {
@@ -48,13 +49,13 @@ export const createLogger = ns => {
     log: (...args) => log(LEVEL_LOG, ns, ...args),
     info: (...args) => log(LEVEL_INFO, ns, ...args),
     warn: (...args) => log(LEVEL_WARN, ns, ...args),
-    error: (...args) => log(LEVEL_ERROR, ns, ...args),
-  };
-};
+    error: (...args) => log(LEVEL_ERROR, ns, ...args)
+  }
+}
 
 /**
  * A generic instance of the logger.
  *
  * Does not have a namespace associated with it.
  */
-export const logger = createLogger();
+export const logger = createLogger()

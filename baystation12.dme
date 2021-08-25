@@ -2771,6 +2771,7 @@
 #include "maps\exodus\alpha\sunset_define.dm"
 #include "maps\exodus\derelicts\bearcat\bearcat.dm"
 #include "maps\exodus\derelicts\original\derelict_areas.dm"
+#include "maps\exodus\frontier\frontier_areas.dm"
 #include "maps\exodus\frontier\frontier_define.dm"
 #include "maps\exodus\genesis\genesis_define.dm"
 #include "maps\~mapsystem\map_preferences.dm"

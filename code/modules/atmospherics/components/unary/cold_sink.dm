@@ -117,6 +117,7 @@
 		set_power_level(new_setting)
 
 	add_fingerprint(usr)
+	return TOPIC_REFRESH
 
 /obj/machinery/atmospherics/unary/freezer/Process()
 	..()

@@ -4,7 +4,6 @@
 	description = "All its spells are easy to use but hard to master."
 	points = 6
 	can_make_contracts = TRUE
-	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/projectile/magic_missile,     1),
@@ -36,9 +35,4 @@
 		ARTIFACT_DATA(/obj/item/weapon/magic_rock,                1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
 		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
-	)
-
-	sacrifice_objects = list(
-		SACRIFICE_DATA(/obj/item/stack/material/gold),
-		SACRIFICE_DATA(/obj/item/stack/material/silver)
 	)

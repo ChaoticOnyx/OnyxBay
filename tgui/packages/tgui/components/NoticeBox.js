@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react';
-import { Box } from './Box';
+import { classes, pureComponentHooks } from 'common/react'
+import { Box } from './Box'
 
 export const NoticeBox = props => {
   const {
@@ -16,7 +16,7 @@ export const NoticeBox = props => {
     success,
     danger,
     ...rest
-  } = props;
+  } = props
   return (
     <Box
       className={classes([
@@ -25,10 +25,10 @@ export const NoticeBox = props => {
         info && 'NoticeBox--type--info',
         success && 'NoticeBox--type--success',
         danger && 'NoticeBox--type--danger',
-        className,
+        className
       ])}
       {...rest} />
-  );
-};
+  )
+}
 
-NoticeBox.defaultHooks = pureComponentHooks;
+NoticeBox.defaultHooks = pureComponentHooks

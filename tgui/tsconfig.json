@@ -19,7 +19,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": false
+    "isolatedModules": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false
   },
   "include": [
     "./global.d.ts",

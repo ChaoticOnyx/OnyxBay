@@ -289,7 +289,7 @@
 	if(wrapped)
 		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
 			var/obj/item/device/electronic_assembly/AS = target
-			wrapped.forceMove(user, params)
+			wrapped.forceMove(get_turf(AS), params)
 			AS.try_add_component(wrapped, user, AS)
 			wrapped = null
 			return
