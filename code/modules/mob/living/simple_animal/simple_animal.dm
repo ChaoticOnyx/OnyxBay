@@ -19,6 +19,7 @@
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
 
+	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 	var/turns_per_move = 1
 	var/turns_since_move = 0
 	universal_speak = 0		//No, just no.
@@ -73,31 +74,28 @@
 	// contained in a cage
 	var/in_stasis = 0
 
-	var/datum/mob_ai/ai_controller
+	var/datum/mob_ai/mob_ai
 	var/is_pet = FALSE
 
 /mob/living/simple_animal/Initialize()
 	. = ..()
 	if(is_pet)
-		ai_controller = new /datum/mob_ai/pet()
+		mob_ai = new /datum/mob_ai/pet()
 	else
-		ai_controller = new()
-	ai_controller.holder = src
-	ai_controller.faction = faction
+		mob_ai = new()
+	mob_ai.holder = src
+
+/mob/living/simple_animal/Destroy()
+	QDEL_NULL(mob_ai)
+	. = ..()
 
 /mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
-	if(is_pet)
-		if(speaker == ai_controller.master)
-			ai_controller.listen(speaker, lowertext(message))
-		return 0
 	..()
+	mob_ai.listen(speaker, message)
 
 /mob/living/simple_animal/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
-	if(is_pet)
-		if(speaker == ai_controller.master)
-			ai_controller.listen(speaker, lowertext(message))
-		return 0
 	..()
+	mob_ai.listen(speaker, message)
 
 /mob/living/simple_animal/Life()
 	if(stat == DEAD)
@@ -112,13 +110,13 @@
 	handle_paralysed()
 	handle_supernatural()
 
-	ai_controller.attempt_escape()
+	mob_ai.attempt_escape()
 
-	ai_controller.process_moving()
+	mob_ai.process_moving()
 
-	ai_controller.process_speaking()
+	mob_ai.process_speaking()
 
-	ai_controller.process_special_actions()
+	mob_ai.process_special_actions()
 
 	if(in_stasis)
 		return 1
