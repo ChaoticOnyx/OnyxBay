@@ -97,7 +97,7 @@ var/server_name = "OnyxBay"
 
 	return match
 
-#define RECOMMENDED_VERSION 511
+#define RECOMMENDED_VERSION 514
 /world/New()
 	SetupLogs()
 
