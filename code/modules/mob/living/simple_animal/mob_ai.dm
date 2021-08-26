@@ -46,11 +46,11 @@ GLOBAL_LIST_INIT(pets_wander, world.file2list("config/names/animal_commands/stop
 
 			switch(action)
 				if("speak")
-					holder.say(pick(holder.speak))
+					holder.say(pickweight(holder.speak))
 				if("emote_hear")
-					holder.audible_emote("[pick(holder.emote_hear)].")
+					holder.audible_emote("[pickweight(holder.emote_hear)].")
 				if("emote_see")
-					holder.visible_emote("[pick(holder.emote_see)].")
+					holder.visible_emote("[pickweight(holder.emote_see)].")
 
 /datum/mob_ai/proc/process_special_actions()
 	return
