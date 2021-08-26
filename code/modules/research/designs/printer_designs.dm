@@ -72,7 +72,7 @@
 	id = BP_L_ARM
 	category = "Limbs"
 	time = 60
-	matter = 10100
+	matter = 8500
 	build_path = /obj/item/organ/external/arm
 
 /datum/printer/recipe/r_arm
@@ -80,7 +80,7 @@
 	id = BP_R_ARM
 	category = "Limbs"
 	time = 60
-	matter = 10100
+	matter = 8500
 	build_path = /obj/item/organ/external/arm/right
 
 /datum/printer/recipe/l_hand
@@ -88,7 +88,7 @@
 	id = BP_L_HAND
 	category = "Limbs"
 	time = 60
-	matter = 5600
+	matter = 5500
 	build_path = /obj/item/organ/external/hand
 
 /datum/printer/recipe/r_hand
@@ -96,7 +96,7 @@
 	id = BP_R_HAND
 	category = "Limbs"
 	time = 60
-	matter = 5600
+	matter = 5500
 	build_path = /obj/item/organ/external/hand/right
 
 /datum/printer/recipe/l_leg
@@ -104,7 +104,7 @@
 	id = BP_L_LEG
 	category = "Limbs"
 	time = 60
-	matter = 10100
+	matter = 8500
 	build_path = /obj/item/organ/external/leg
 
 /datum/printer/recipe/r_leg
@@ -112,7 +112,7 @@
 	id = BP_R_LEG
 	category = "Limbs"
 	time = 60
-	matter = 10100
+	matter = 8500
 	build_path = /obj/item/organ/external/leg/right
 
 /datum/printer/recipe/l_foot
@@ -120,7 +120,7 @@
 	id = BP_L_FOOT
 	category = "Limbs"
 	time = 60
-	matter = 5600
+	matter = 5500
 	build_path = /obj/item/organ/external/foot
 
 /datum/printer/recipe/r_foot
@@ -128,5 +128,5 @@
 	id = BP_R_FOOT
 	category = "Limbs"
 	time = 60
-	matter = 5600
+	matter = 5500
 	build_path = /obj/item/organ/external/foot/right
