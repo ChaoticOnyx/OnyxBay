@@ -43,14 +43,6 @@ var/datum/robolimb/basic_robolimb
 	// Spicies alternatives
 	var/list/species_alternates = list(SPECIES_TAJARA = "Unbranded - Tajaran", SPECIES_UNATHI = "Unbranded - Unathi")
 
-/datum/robolimb/unbranded_alt1
-	company = "Unbranded - Mantis Prosis"
-	desc = "This limb has a casing of sleek black metal and repulsive insectile design."
-	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
-	has_eyes = TRUE
-	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
-
-
 /datum/robolimb/unbranded_tajaran
 	company = "Unbranded - Tajaran"
 	desc = "A simple robotic limb with feline design. Seems rather stiff."
@@ -178,16 +170,6 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
-//EINSTEIN
-/datum/robolimb/einstein
-	company = "Einstein Engines"
-	desc = "This limb is lightweight with a sleek design."
-	icon = 'icons/mob/human_races/cyberlimbs/einstein/einstein.dmi'
-	unavailable_to_build = TRUE
-	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
 //ANCIENT
 /datum/robolimb/ancient
 	company = "Uesseka Prototyping Ltd."
@@ -224,24 +206,6 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/cybersolutions_alt1
-	company = "Cyber Solutions - Wight"
-	desc = "This limb has cheap plastic panels mounted on grey metal."
-	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt1.dmi'
-	unavailable_to_build = TRUE
-	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/cybersolutions_alt2
-	company = "Cyber Solutions - Outdated"
-	desc = "This limb is of severely outdated design; there's no way it's comfortable or very functional to use."
-	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt2.dmi'
-	unavailable_to_build = TRUE
-	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
