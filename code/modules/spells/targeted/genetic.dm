@@ -4,7 +4,7 @@ code\game\dna\genes\vg_powers.dm //hulk is in this file
 code\game\dna\genes\goon_disabilities.dm
 code\game\dna\genes\goon_powers.dm
 */
-/spell/targeted/genetic
+/datum/spell/targeted/genetic
 	name = "Genetic modifier"
 	desc = "This spell inflicts a set of mutations and disabilities upon the target."
 
@@ -13,7 +13,7 @@ code\game\dna\genes\goon_powers.dm
 	duration = 100 //deciseconds
 
 
-/spell/targeted/genetic/cast(list/targets)
+/datum/spell/targeted/genetic/cast(list/targets)
 	..()
 	for(var/mob/living/target in targets)
 		for(var/x in mutations)
@@ -27,7 +27,7 @@ code\game\dna\genes\goon_powers.dm
 			target.update_mutations()
 	return
 
-/spell/targeted/genetic/blind
+/datum/spell/targeted/genetic/blind
 	name = "Blind"
 	desc = "This spell inflicts a target with temporary blindness. Does not require wizard garb."
 	feedback = "BD"
@@ -39,9 +39,9 @@ code\game\dna\genes\goon_powers.dm
 
 	spell_flags = 0
 	invocation = "Sty Kaly."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	message = "<span class='danger'>Your eyes cry out in pain!</span>"
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 1, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 3)
 	cooldown_min = 50
 
 	range = 7
@@ -50,16 +50,16 @@ code\game\dna\genes\goon_powers.dm
 	amt_eye_blind = 10
 	amt_eye_blurry = 20
 
-	hud_state = "wiz_blind"
+	icon_state = "wiz_blind"
 
-/spell/targeted/genetic/blind/empower_spell()
+/datum/spell/targeted/genetic/blind/empower_spell()
 	if(!..())
 		return 0
 	duration += 100
 
 	return "[src] will now blind for a longer period of time."
 
-/spell/targeted/genetic/mutate
+/datum/spell/targeted/genetic/mutate
 	name = "Mutate"
 	desc = "This spell causes you to turn into a hulk and gain laser vision for a short while."
 	feedback = "MU"
@@ -67,7 +67,7 @@ code\game\dna\genes\goon_powers.dm
 	charge_max = 400
 	spell_flags = Z2NOCAST | NEEDSCLOTHES | INCLUDEUSER
 	invocation = "BIRUZ BENNAR"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	message = "<span class='notice'>You feel strong! You feel a pressure building behind your eyes!</span>"
 	range = 0
 	max_targets = 1
@@ -75,7 +75,7 @@ code\game\dna\genes\goon_powers.dm
 	mutations = list(MUTATION_LASER, MUTATION_HULK)
 	duration = 300
 
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
 	cooldown_min = 300
 
-	hud_state = "wiz_hulk"
+	icon_state = "wiz_hulk"

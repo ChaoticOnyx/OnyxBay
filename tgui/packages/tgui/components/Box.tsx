@@ -1,13 +1,14 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-import { createVNode, InfernoNode } from 'inferno';
-import { ChildFlags, VNodeFlags } from 'inferno-vnode-flags';
-import { CSS_COLORS } from '../constants';
+import { BooleanLike, classes, pureComponentHooks } from 'common/react'
+import { createVNode, InfernoNode } from 'inferno'
+import { ChildFlags, VNodeFlags } from 'inferno-vnode-flags'
+import { CSS_COLORS } from '../constants'
 
 export interface BoxProps {
   [key: string]: any;
@@ -66,69 +67,69 @@ export const unit = (value: unknown): string | undefined => {
   if (typeof value === 'string') {
     // Transparently convert pixels into rem units
     if (value.endsWith('px') && !Byond.IS_LTE_IE8) {
-      return parseFloat(value) / 12 + 'rem';
+      return parseFloat(value) / 12 + 'rem'
     }
-    return value;
+    return value
   }
   if (typeof value === 'number') {
     if (Byond.IS_LTE_IE8) {
-      return value * 12 + 'px';
+      return value * 12 + 'px'
     }
-    return value + 'rem';
+    return value + 'rem'
   }
-};
+}
 
 /**
  * Same as `unit`, but half the size for integers numbers.
  */
 export const halfUnit = (value: unknown): string | undefined => {
   if (typeof value === 'string') {
-    return unit(value);
+    return unit(value)
   }
   if (typeof value === 'number') {
-    return unit(value * 0.5);
+    return unit(value * 0.5)
   }
-};
+}
 
-const isColorCode = (str: unknown) => !isColorClass(str);
+const isColorCode = (str: unknown) => !isColorClass(str)
 
 const isColorClass = (str: unknown): boolean => {
   if (typeof str === 'string') {
-    return CSS_COLORS.includes(str);
+    return CSS_COLORS.includes(str)
   }
-};
+}
 
 const mapRawPropTo = attrName => (style, value) => {
   if (typeof value === 'number' || typeof value === 'string') {
-    style[attrName] = value;
+    style[attrName] = value
   }
-};
+}
 
 const mapUnitPropTo = (attrName, unit) => (style, value) => {
   if (typeof value === 'number' || typeof value === 'string') {
-    style[attrName] = unit(value);
+    style[attrName] = unit(value)
   }
-};
+}
 
 const mapBooleanPropTo = (attrName, attrValue) => (style, value) => {
   if (value) {
-    style[attrName] = attrValue;
+    style[attrName] = attrValue
   }
-};
+}
 
 const mapDirectionalUnitPropTo = (attrName, unit, dirs) => (style, value) => {
   if (typeof value === 'number' || typeof value === 'string') {
     for (let i = 0; i < dirs.length; i++) {
-      style[attrName + '-' + dirs[i]] = unit(value);
+      style[attrName + '-' + dirs[i]] = unit(value)
     }
   }
-};
+}
 
 const mapColorPropTo = attrName => (style, value) => {
   if (isColorCode(value)) {
-    style[attrName] = value;
+    style[attrName] = value
   }
-};
+}
 
 const styleMapperByPropName = {
   // Direct mapping
@@ -150,10 +151,9 @@ const styleMapperByPropName = {
   fontFamily: mapRawPropTo('font-family'),
   lineHeight: (style, value) => {
     if (typeof value === 'number') {
-      style['line-height'] = value;
-    }
-    else if (typeof value === 'string') {
-      style['line-height'] = unit(value);
+      style['line-height'] = value
+    } else if (typeof value === 'string') {
+      style['line-height'] = unit(value)
     }
   },
   opacity: mapRawPropTo('opacity'),
@@ -167,13 +167,13 @@ const styleMapperByPropName = {
   preserveWhitespace: mapBooleanPropTo('white-space', 'pre-wrap'),
   // Margins
   m: mapDirectionalUnitPropTo('margin', halfUnit, [
-    'top', 'bottom', 'left', 'right',
+    'top', 'bottom', 'left', 'right'
   ]),
   mx: mapDirectionalUnitPropTo('margin', halfUnit, [
-    'left', 'right',
+    'left', 'right'
   ]),
   my: mapDirectionalUnitPropTo('margin', halfUnit, [
-    'top', 'bottom',
+    'top', 'bottom'
   ]),
   mt: mapUnitPropTo('margin-top', halfUnit),
   mb: mapUnitPropTo('margin-bottom', halfUnit),
@@ -181,13 +181,13 @@ const styleMapperByPropName = {
   mr: mapUnitPropTo('margin-right', halfUnit),
   // Margins
   p: mapDirectionalUnitPropTo('padding', halfUnit, [
-    'top', 'bottom', 'left', 'right',
+    'top', 'bottom', 'left', 'right'
   ]),
   px: mapDirectionalUnitPropTo('padding', halfUnit, [
-    'left', 'right',
+    'left', 'right'
   ]),
   py: mapDirectionalUnitPropTo('padding', halfUnit, [
-    'top', 'bottom',
+    'top', 'bottom'
   ]),
   pt: mapUnitPropTo('padding-top', halfUnit),
   pb: mapUnitPropTo('padding-bottom', halfUnit),
@@ -200,63 +200,62 @@ const styleMapperByPropName = {
   // Utility props
   fillPositionedParent: (style, value) => {
     if (value) {
-      style['position'] = 'absolute';
-      style['top'] = 0;
-      style['bottom'] = 0;
-      style['left'] = 0;
-      style['right'] = 0;
+      style.position = 'absolute'
+      style.top = 0
+      style.bottom = 0
+      style.left = 0
+      style.right = 0
     }
-  },
-};
+  }
+}
 
 export const computeBoxProps = (props: BoxProps) => {
-  const computedProps: HTMLAttributes<any> = {};
-  const computedStyles = {};
+  const computedProps: HTMLAttributes<any> = {}
+  const computedStyles = {}
   // Compute props
-  for (let propName of Object.keys(props)) {
+  for (const propName of Object.keys(props)) {
     if (propName === 'style') {
-      continue;
+      continue
     }
     // IE8: onclick workaround
     if (Byond.IS_LTE_IE8 && propName === 'onClick') {
-      computedProps.onclick = props[propName];
-      continue;
+      computedProps.onclick = props[propName]
+      continue
     }
-    const propValue = props[propName];
-    const mapPropToStyle = styleMapperByPropName[propName];
+    const propValue = props[propName]
+    const mapPropToStyle = styleMapperByPropName[propName]
     if (mapPropToStyle) {
-      mapPropToStyle(computedStyles, propValue);
-    }
-    else {
-      computedProps[propName] = propValue;
+      mapPropToStyle(computedStyles, propValue)
+    } else {
+      computedProps[propName] = propValue
     }
   }
   // Concatenate styles
-  let style = '';
-  for (let attrName of Object.keys(computedStyles)) {
-    const attrValue = computedStyles[attrName];
-    style += attrName + ':' + attrValue + ';';
+  let style = ''
+  for (const attrName of Object.keys(computedStyles)) {
+    const attrValue = computedStyles[attrName]
+    style += attrName + ':' + attrValue + ';'
   }
   if (props.style) {
-    for (let attrName of Object.keys(props.style)) {
-      const attrValue = props.style[attrName];
-      style += attrName + ':' + attrValue + ';';
+    for (const attrName of Object.keys(props.style)) {
+      const attrValue = props.style[attrName]
+      style += attrName + ':' + attrValue + ';'
     }
   }
   if (style.length > 0) {
-    computedProps.style = style;
+    computedProps.style = style
   }
-  return computedProps;
-};
+  return computedProps
+}
 
 export const computeBoxClassName = (props: BoxProps) => {
-  const color = props.textColor || props.color;
-  const backgroundColor = props.backgroundColor;
+  const color = props.textColor || props.color
+  const backgroundColor = props.backgroundColor
   return classes([
     isColorClass(color) && 'color-' + color,
-    isColorClass(backgroundColor) && 'color-bg-' + backgroundColor,
-  ]);
-};
+    isColorClass(backgroundColor) && 'color-bg-' + backgroundColor
+  ])
+}
 
 export const Box = (props: BoxProps) => {
   const {
@@ -264,15 +263,15 @@ export const Box = (props: BoxProps) => {
     className,
     children,
     ...rest
-  } = props;
+  } = props
   // Render props
   if (typeof children === 'function') {
-    return children(computeBoxProps(props));
+    return children(computeBoxProps(props))
   }
   const computedClassName = typeof className === 'string'
     ? className + ' ' + computeBoxClassName(rest)
-    : computeBoxClassName(rest);
-  const computedProps = computeBoxProps(rest);
+    : computeBoxClassName(rest)
+  const computedProps = computeBoxProps(rest)
   // Render a wrapper element
   return createVNode(
     VNodeFlags.HtmlElement,
@@ -280,7 +279,7 @@ export const Box = (props: BoxProps) => {
     computedClassName,
     children,
     ChildFlags.UnknownChildren,
-    computedProps);
-};
+    computedProps)
+}
 
-Box.defaultHooks = pureComponentHooks;
+Box.defaultHooks = pureComponentHooks

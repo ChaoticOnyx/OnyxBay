@@ -30,7 +30,7 @@
 		var/obj/item/device/destTagger/O = W
 		if(O.currTag)
 			if(src.sortTag != O.currTag)
-				to_chat(user, "<span class='notice'>You have labeled the destination as [O.currTag].</span>")
+				to_chat(user, SPAN("notice", "You have labeled the destination as [O.currTag]"))
 				if(!src.sortTag)
 					src.sortTag = O.currTag
 					update_icon()
@@ -38,40 +38,50 @@
 					src.sortTag = O.currTag
 				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
-				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
+				to_chat(user, SPAN("warning", "The package is already labeled for [O.currTag]"))
 		else
-			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
+			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'> Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
 					update_icon()
 				else
 					nameset = 1
+
 			if("Description")
 				var/str = sanitize(input(usr,"Label text?","Set label",""))
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'>Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(!examtext && !nameset)
 					examtext = str
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
-	return
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
 	overlays = new()
@@ -161,7 +171,7 @@
 		var/obj/item/device/destTagger/O = W
 		if(O.currTag)
 			if(src.sortTag != O.currTag)
-				to_chat(user, "<span class='notice'>You have labeled the destination as [O.currTag].</span>")
+				to_chat(user, SPAN("notice", "You have labeled the destination as [O.currTag]"))
 				if(!src.sortTag)
 					src.sortTag = O.currTag
 					update_icon()
@@ -169,20 +179,25 @@
 					src.sortTag = O.currTag
 				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
-				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
+				to_chat(user, SPAN("warning", "The package is already labeled for [O.currTag]"))
 		else
-			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
+			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'> Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
@@ -193,16 +208,21 @@
 			if("Description")
 				var/str = sanitize(input(usr,"Label text?","Set label",""))
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'>Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(!examtext && !nameset)
 					examtext = str
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 	return
 
 /obj/item/smallDelivery/update_icon()
@@ -299,7 +319,7 @@
 			src.add_fingerprint(usr)
 			src.amount -= 1
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
 			"You hear someone taping paper around a small object.")
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
@@ -310,10 +330,10 @@
 			O.forceMove(P)
 			src.amount -= 3
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
 		else if(src.amount < 3)
-			to_chat(user, "<span class='warning'>You need more paper.</span>")
+			to_chat(user, SPAN("warning", "You need more paper"))
 	else if (istype (target, /obj/structure/closet))
 		var/obj/structure/closet/O = target
 		if (src.amount > 3 && !O.opened)
@@ -323,12 +343,12 @@
 			O.forceMove(P)
 			src.amount -= 3
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
 		else if(src.amount < 3)
-			to_chat(user, "<span class='warning'>You need more paper.</span>")
+			to_chat(user, SPAN("warning", "You need more paper"))
 	else
-		to_chat(user, "<span class='notice'>The object you are trying to wrap is unsuitable for the sorting machinery!</span>")
+		to_chat(user, SPAN("notice", "The object you are trying to wrap is unsuitable for the sorting machinery!"))
 	if (src.amount <= 0)
 		new /obj/item/weapon/c_tube( src.loc )
 		qdel(src)

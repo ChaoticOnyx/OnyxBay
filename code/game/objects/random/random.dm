@@ -192,7 +192,7 @@
 				/obj/item/weapon/storage/firstaid/o2 = 6,
 				/obj/item/weapon/storage/firstaid/adv = 3,
 				/obj/item/weapon/storage/firstaid/combat = 1,
-				/obj/item/weapon/storage/firstaid/empty = 6,
+				/obj/item/weapon/storage/firstaid = 6,
 				/obj/item/weapon/storage/firstaid/fire = 6)
 
 /obj/random/contraband
@@ -1305,10 +1305,10 @@ var/list/random_useful_
 			random_junk_ += /obj/item/weapon/material/shard
 			random_junk_ += /obj/item/weapon/hand/missing_card
 
-			random_junk_ -= /obj/item/trash/plate
-			random_junk_ -= /obj/item/trash/snack_bowl
+			random_junk_ -= /obj/item/trash/dish/plate
+			random_junk_ -= /obj/item/trash/dish/bowl
 			random_junk_ -= /obj/item/trash/syndi_cakes
-			random_junk_ -= /obj/item/trash/tray
+			random_junk_ -= /obj/item/trash/dish/tray
 		return pick(random_junk_)
 
 	// Misc. actually useful stuff or perhaps even food
