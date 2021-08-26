@@ -241,10 +241,10 @@ var/datum/robolimb/basic_robolimb
 		name = "[company[1]] [initial(name)]"
 
 /obj/item/weapon/disk/limb/bishop
-	company = list("Bishop", "Bishop - Rook")
+	company = list("Bishop")
 
 /obj/item/weapon/disk/limb/cybersolutions
-	company = list("Cyber Solutions", "Cyber Solutions - Wight", "Cyber Solutions - Outdated")
+	company = list("Cyber Solutions")
 
 /obj/item/weapon/disk/limb/hephaestus
 	company = list("Hephaestus", "Hephaestus - Athena")
@@ -253,7 +253,7 @@ var/datum/robolimb/basic_robolimb
 	company = list("Vey-Med", "Vey-Med - Skrell")
 
 /obj/item/weapon/disk/limb/wardtakahashi
-	company = list("Ward-Takahashi", "Ward-Takahashi - Spirit")
+	company = list("Ward-Takahashi")
 
 /obj/item/weapon/disk/limb/xion
 	company = list("Xion", "Xion - Whiteout")
@@ -264,3 +264,9 @@ var/datum/robolimb/basic_robolimb
 // Rare ones
 /obj/item/weapon/disk/limb/ancient
 	company = list("Uesseka Prototyping Ltd.")
+
+/obj/item/weapon/disk/limb/wardspirit
+	company = list("Ward-Takahashi - Spirit")
+
+/obj/item/weapon/disk/limb/bishoprook
+	company = list("Bishop - Rook")
