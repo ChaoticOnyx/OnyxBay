@@ -25,7 +25,6 @@
 		O.species = all_species[new_species]
 
 		O.robotize(manf.company)
-		O.dna = new/datum/dna()
 		O.dna.ResetUI()
 		O.dna.ResetSE()
 
@@ -93,7 +92,7 @@
 		for(var/obj/item/organ/external/O in H.organs)
 
 			O.robotize(manf.company)
-			O.dna = new/datum/dna()
+			O.set_dna(H.dna)
 			O.dna.ResetUI()
 			O.dna.ResetSE()
 
