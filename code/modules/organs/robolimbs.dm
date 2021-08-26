@@ -122,18 +122,9 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/bishop_alt1
-	company = "Bishop - Glyph"
-	desc = "This limb has a white polymer casing with blue holo-displays."
-	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
-	unavailable_to_build = TRUE
-	applies_to_part = list(BP_HEAD)
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/bishop_alt2
 	company = "Bishop - Rook"
 	desc = "This limb has a white polymer casing with blue holo-displays."
-	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
 	has_eyes = TRUE
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
@@ -219,18 +210,9 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/wardtakahashi_alt1
-	company = "Ward-Takahashi - Shroud"
-	desc = "This limb features sleek black and white polymers. This one looks more like a helmet of some sort."
-	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
-	unavailable_to_build = TRUE
-	applies_to_part = list(BP_HEAD)
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/wardtakahashi_alt2
 	company = "Ward-Takahashi - Spirit"
 	desc = "This limb has white and purple features, with a heavier casing."
-	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt2.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
@@ -264,15 +246,6 @@ var/datum/robolimb/basic_robolimb
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/cybersolutions_alt3
-	company = "Cyber Solutions - Array"
-	desc = "This limb is simple and functional; array of sensors on a featureless case."
-	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt3.dmi'
-	unavailable_to_build = TRUE
-	applies_to_part = list(BP_HEAD)
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
 //XION
 /datum/robolimb/xion
 	company = "Xion"
@@ -283,30 +256,12 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/xion_alt1
-	company = "Xion - Breach"
-	desc = "This limb has a minimalist black and red casing. Looks a bit menacing."
-	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt1.dmi'
-	unavailable_to_build = TRUE
-	applies_to_part = list(BP_HEAD)
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/xion_alt2
 	company = "Xion - Whiteout"
 	desc = "This limb has a minimalist black and white casing."
-	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt2.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt1.dmi'
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
-
-/datum/robolimb/xion_alt3
-	company = "Xion - Breach - Whiteout"
-	desc = "This limb has a minimalist black and white casing. Looks a bit menacing."
-	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt3.dmi'
-	unavailable_to_build = TRUE
-	applies_to_part = list(BP_HEAD)
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 // DESIGN DISKS
 /obj/item/weapon/disk/limb
