@@ -4,11 +4,13 @@
 	feedback = "TP"
 	school = "conjuration"
 	charge_max = 600
+	cooldown_reduc = 200
 	spell_flags = NEEDSCLOTHES
 	invocation = "Scyar Nila!"
 	invocation_type = SPI_SHOUT
-	cooldown_min = 200 //100 deciseconds reduction per rank
+	cooldown_min = 200 //200 deciseconds reduction per rank
 	need_target = FALSE
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 2, SP_POWER = 0)
 
 	smoke_spread = 1
 	smoke_amt = 5

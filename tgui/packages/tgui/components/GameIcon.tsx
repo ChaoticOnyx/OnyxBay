@@ -7,16 +7,16 @@ interface GameIconProps {
 }
 
 export const GameIcon = (props: GameIconProps) => {
-  const { html, className, style, key } = props;
-  const iconSrc = html.match('src=["\'](.*)["\']')[1];
+  const { html, className, style, key } = props
+  const iconSrc = html.match('src=["\'](.*)["\']')[1]
 
   return (
     <img
       key={key}
       {...props}
-      class={`game-icon ${className || ''}`}
+      className={`game-icon ${className || ''}`}
       src={iconSrc}
       style={{ '-ms-interpolation-mode': 'nearest-neighbor', ...style }}
     />
-  );
-};
+  )
+}

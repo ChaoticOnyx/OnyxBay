@@ -6,10 +6,10 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react';
-import { Box } from './Box';
+import { classes, pureComponentHooks } from 'common/react'
+import { Box } from './Box'
 
-const FA_OUTLINE_REGEX = /-o$/;
+const FA_OUTLINE_REGEX = /-o$/
 
 export const Icon = (props) => {
   const {
@@ -21,23 +21,23 @@ export const Icon = (props) => {
     rotation,
     inverse,
     ...rest
-  } = props;
+  } = props
   if (size) {
-    style['font-size'] = size * 100 + '%';
+    style['font-size'] = size * 100 + '%'
   }
   if (typeof rotation === 'number') {
-    style['transform'] = `rotate(${rotation}deg)`;
+    style.transform = `rotate(${rotation}deg)`
   }
-  let iconClass = '';
+  let iconClass = ''
   if (name.startsWith('tg-')) {
     // tgfont icon
-    iconClass = name;
+    iconClass = name
   } else {
     // font awesome icon
-    const faRegular = FA_OUTLINE_REGEX.test(name);
-    const faName = name.replace(FA_OUTLINE_REGEX, '');
-    iconClass
-      = (faRegular ? 'far ' : 'fas ') + 'fa-' + faName + (spin ? ' fa-spin' : '');
+    const faRegular = FA_OUTLINE_REGEX.test(name)
+    const faName = name.replace(FA_OUTLINE_REGEX, '')
+    iconClass =
+      (faRegular ? 'far ' : 'fas ') + 'fa-' + faName + (spin ? ' fa-spin' : '')
   }
   return (
     <Box
@@ -46,13 +46,13 @@ export const Icon = (props) => {
       style={style}
       {...rest}
     />
-  );
-};
+  )
+}
 
-Icon.defaultHooks = pureComponentHooks;
+Icon.defaultHooks = pureComponentHooks
 
 export const IconStack = (props) => {
-  const { className, style = {}, children, ...rest } = props;
+  const { className, style = {}, children, ...rest } = props
   return (
     <Box
       as='span'
@@ -61,7 +61,7 @@ export const IconStack = (props) => {
       {...rest}>
       {children}
     </Box>
-  );
-};
+  )
+}
 
-Icon.Stack = IconStack;
+Icon.Stack = IconStack

@@ -4,13 +4,13 @@
  * @license MIT
  */
 
-import { Placement } from '@popperjs/core';
-import { Box, Button, Section, Tooltip } from '../components';
+import { Box, Button, Section, Tooltip } from '../components'
 
 export const meta = {
   title: 'Tooltip',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = () => {
   const positions = [
@@ -19,8 +19,8 @@ const Story = () => {
     'right',
     'bottom',
     'bottom-start',
-    'bottom-end',
-  ];
+    'bottom-end'
+  ]
 
   return (
     <Section>
@@ -45,5 +45,5 @@ const Story = () => {
         ))}
       </Box>
     </Section>
-  );
-};
+  )
+}

@@ -13,18 +13,15 @@
 	var/no_revert = FALSE
 	var/locked = FALSE
 	var/can_make_contracts = FALSE
-	var/investable = FALSE
 
 	var/list/spells = list()
 	var/list/artifacts = list()
-	var/list/sacrifice_objects = list()
-	var/list/sacrifice_reagents = list()
 
 /datum/wizard_class/proc/get_spell_data(datum/spell/path)
 	for(var/S in spells)
 		if(S["path"] == path)
 			return S
-	
+
 	return null
 
 /datum/wizard_class/proc/get_spell_cost(datum/spell/path)
@@ -37,7 +34,7 @@
 	for(var/A in artifacts)
 		if(A["path"] == path)
 			return A
-	
+
 	return null
 
 /datum/wizard_class/proc/get_artifact_cost(obj/path)
@@ -45,20 +42,6 @@
 
 /datum/wizard_class/proc/has_artifact(obj/path)
 	return !!get_artifact_data(path)
-
-/datum/wizard_class/proc/has_sacrifice_object(obj/path)
-	for(var/O in sacrifice_objects)
-		if(O["path"] == path)
-			return TRUE
-	
-	return FALSE
-
-/datum/wizard_class/proc/has_sacrifice_reagent(datum/reagent/path)
-	for(var/R in sacrifice_reagents)
-		if(R["path"] == path)
-			return TRUE
-	
-	return FALSE
 
 /// Perfomance heavy proc.
 /datum/wizard_class/proc/to_list()
@@ -71,13 +54,10 @@
 		"flags"        = list(
 			"no_revert"          = no_revert,
 			"locked"             = locked,
-			"can_make_contracts" = can_make_contracts,
-			"investable"         = investable
+			"can_make_contracts" = can_make_contracts
 		),
 		"spells"             = list(),
-		"artifacts"          = list(),
-		"sacrifice_objects"  = list(),
-		"sacrifice_reagents" = list()
+		"artifacts"          = list()
 	)
 
 	for(var/T in spells)
@@ -109,25 +89,12 @@
 			T["ability"] = "No Target"
 
 		data["spells"] += list(T)
-	
+
 	for(var/T in artifacts)
 		var/obj/artefact = T["path"]
 		T["icon"]        = icon2base64html(T["path"])
 		T["name"]        = initial(artefact.name)
 		T["description"] = initial(artefact.desc)
 		data["artifacts"] += list(T)
-	
-	for(var/T in sacrifice_objects)
-		var/obj/object   = T["path"]
-		T["icon"]        = icon2base64html(T["path"])
-		T["name"]        = initial(object.name)
-		T["description"] = initial(object.desc)
-		data["sacrifice_objects"] += list(T)
-
-	for(var/T in sacrifice_reagents)
-		var/datum/reagent/reagent = T["path"]
-		T["name"]                 = initial(reagent.name)
-		T["description"]          = initial(reagent.description)
-		data["sacrifice_reagents"] += list(T)
 
 	return data

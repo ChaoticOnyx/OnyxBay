@@ -4,12 +4,13 @@
  * @license MIT
  */
 
-import { selectBackend } from './backend';
-import { selectDebug } from './debug/selectors';
-import { Window } from './layouts';
+import { selectBackend } from './backend'
+import { selectDebug } from './debug/selectors'
+import { Window } from './layouts'
 
-const requireInterface = require.context('./interfaces');
+const requireInterface = require.context('./interfaces')
 
+// eslint-disable-next-line react/display-name
 const routingError = (type, name) => () => {
   return (
     <Window>
@@ -22,56 +23,55 @@ const routingError = (type, name) => () => {
         )}
       </Window.Content>
     </Window>
-  );
-};
+  )
+}
 
 const SuspendedWindow = () => {
   return (
     <Window>
       <Window.Content scrollable />
     </Window>
-  );
-};
+  )
+}
 
 export const getRoutedComponent = store => {
-  const state = store.getState();
-  const { suspended, config } = selectBackend(state);
+  const state = store.getState()
+  const { suspended, config } = selectBackend(state)
   if (suspended) {
-    return SuspendedWindow;
+    return SuspendedWindow
   }
   if (process.env.NODE_ENV !== 'production') {
-    const debug = selectDebug(state);
+    const debug = selectDebug(state)
     // Show a kitchen sink
     if (debug.kitchenSink) {
-      return require('./debug').KitchenSink;
+      return require('./debug').KitchenSink
     }
   }
-  const name = config?.interface;
+  const name = config?.interface
   const interfacePathBuilders = [
     name => `./${name}.tsx`,
     name => `./${name}.js`,
     name => `./${name}/index.tsx`,
-    name => `./${name}/index.js`,
-  ];
-  let esModule;
+    name => `./${name}/index.js`
+  ]
+  let esModule
   while (!esModule && interfacePathBuilders.length > 0) {
-    const interfacePathBuilder = interfacePathBuilders.shift();
-    const interfacePath = interfacePathBuilder(name);
+    const interfacePathBuilder = interfacePathBuilders.shift()
+    const interfacePath = interfacePathBuilder(name)
     try {
-      esModule = requireInterface(interfacePath);
-    }
-    catch (err) {
+      esModule = requireInterface(interfacePath)
+    } catch (err) {
       if (err.code !== 'MODULE_NOT_FOUND') {
-        throw err;
+        throw err
       }
     }
   }
   if (!esModule) {
-    return routingError('notFound', name);
+    return routingError('notFound', name)
   }
-  const Component = esModule[name];
+  const Component = esModule[name]
   if (!Component) {
-    return routingError('missingExport', name);
+    return routingError('missingExport', name)
   }
-  return Component;
-};
+  return Component
+}
