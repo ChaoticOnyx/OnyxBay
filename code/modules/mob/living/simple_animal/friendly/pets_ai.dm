@@ -97,6 +97,7 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 
 /datum/mob_ai/pet/proc/wandering()
 	current_command = COMMAND_WANDERING
+	target_mob = null
 	holder.stop_automated_movement = FALSE
 	safe_area = null
 
