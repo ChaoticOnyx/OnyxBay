@@ -88,9 +88,9 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 			var/command = text_to_command[command_text]
 			switch(command)
 				if(COMMAND_STOP)
-					toggle_to_stay_command(speaker, text)
+					toggle_to_stay_command()
 				if(COMMAND_FOLLOW)
-					toggle_to_follow_command(speaker,text)
+					toggle_to_follow_command(speaker)
 				if(COMMAND_WANDERING)
 					wandering()
 			break
@@ -100,7 +100,7 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 	holder.stop_automated_movement = FALSE
 	safe_area = null
 
-/datum/mob_ai/pet/proc/toggle_to_stay_command(mob/speaker,text)
+/datum/mob_ai/pet/proc/toggle_to_stay_command()
 	target_mob = null
 	current_command = COMMAND_STOP
 	holder.stop_automated_movement = TRUE
@@ -108,7 +108,7 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 	safe_area = T?.loc
 	walk_to(holder,0)
 
-/datum/mob_ai/pet/proc/toggle_to_follow_command(mob/speaker,text)
+/datum/mob_ai/pet/proc/toggle_to_follow_command(mob/speaker)
 	current_command = COMMAND_FOLLOW
 	safe_area = null
 	target_mob = speaker //this wont bite me in the ass later.
