@@ -38,7 +38,7 @@
 
 	var/obj/item/organ/external/O = H.get_organ(body_part)
 	O.robotize(company)
-	O.dna = new/datum/dna()
+	O.set_dna(H.dna)
 	O.dna.ResetUI()
 	O.dna.ResetSE()
 

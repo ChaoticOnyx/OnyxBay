@@ -122,7 +122,6 @@
 
 	O.robotize("Unbranded")
 
-	O.dna = new/datum/dna()
 	O.dna.ResetUI()
 	O.dna.ResetSE()
 
