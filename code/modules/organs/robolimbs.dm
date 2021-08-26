@@ -177,7 +177,6 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
-	applies_to_part = list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
 //EINSTEIN
 /datum/robolimb/einstein
