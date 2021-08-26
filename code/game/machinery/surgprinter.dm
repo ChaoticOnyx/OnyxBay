@@ -122,9 +122,6 @@
 
 	O.robotize("Unbranded")
 
-	O.dna.ResetUI()
-	O.dna.ResetSE()
-
 	O.status |= ORGAN_CUT_AWAY
 	O.dir = SOUTH
 

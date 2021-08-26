@@ -25,8 +25,6 @@
 		O.species = all_species[new_species]
 
 		O.robotize(manf.company)
-		O.dna.ResetUI()
-		O.dna.ResetSE()
 
 		O.status |= ORGAN_CUT_AWAY
 		O.dir = SOUTH
@@ -90,11 +88,7 @@
 
 		// Robotize remaining organs.
 		for(var/obj/item/organ/external/O in H.organs)
-
 			O.robotize(manf.company)
-			O.set_dna(H.dna)
-			O.dna.ResetUI()
-			O.dna.ResetSE()
 
 		H.real_name = "Synthmorph #[rand(100,999)]"
 		H.name = H.real_name
