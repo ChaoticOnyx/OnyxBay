@@ -19,7 +19,7 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 	faction = "syndicate"
 
 	station_crew_involved = FALSE
-	can_spawn_from_ghost = TRUE
+	can_be_spawned_from_ghost = TRUE
 
 /datum/antagonist/syndicate/Initialize()
 	. = ..()

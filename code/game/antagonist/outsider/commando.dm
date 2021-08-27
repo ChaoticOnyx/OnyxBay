@@ -18,7 +18,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 	initial_spawn_target = 6
 
 	station_crew_involved = FALSE
-	can_spawn_from_ghost = TRUE
+	can_be_spawned_from_ghost = TRUE
 
 /datum/antagonist/deathsquad/syndicate/Initialize()
 	. = ..()

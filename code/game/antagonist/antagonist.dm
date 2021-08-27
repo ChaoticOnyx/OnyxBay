@@ -41,7 +41,7 @@
 	var/spawn_announcement_title            // Report title.
 	var/spawn_announcement_sound            // Report sound clip.
 	var/spawn_announcement_delay            // Time between initial spawn and round announcement.
-	var/can_spawn_from_ghost = FALSE
+	var/can_be_spawned_from_ghost = FALSE
 
 	// Misc.
 	var/landmark_id                         // Spawn point identifier.
@@ -236,7 +236,7 @@
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
 		var/answer = alert_timeout(
 			recipient = player.current,
-			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?",
 			title = "Do you want to play [role_text]?",
 			timeout = 100,
 			button1 = "Yes",
@@ -297,8 +297,8 @@
 		return TRUE
 	if (istype(player.current, /mob/living/silicon/ai))
 		return TRUE
-	if (isghostmind(player) && can_spawn_from_ghost)
+	if (isghostmind(player) && can_be_spawned_from_ghost)
 		return TRUE
-	if (istype(player.current, /mob/new_player) && can_spawn_from_ghost) // also counts as ghost.
+	if (istype(player.current, /mob/new_player) && can_be_spawned_from_ghost) // also counts as ghost.
 		return TRUE
 	return FALSE

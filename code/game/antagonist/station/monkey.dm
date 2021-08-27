@@ -6,7 +6,7 @@
 	mob_type = /mob/living/carbon/monkey
 	id = MODE_MONKEY
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB
-	can_spawn_from_ghost = TRUE
+	can_be_spawned_from_ghost = TRUE
 
 /datum/antagonist/monkey/apply(datum/mind/player)
 

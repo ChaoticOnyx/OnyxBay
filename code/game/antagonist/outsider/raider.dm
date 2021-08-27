@@ -22,7 +22,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	faction = "pirate"
 
 	station_crew_involved = FALSE
-	can_spawn_from_ghost = TRUE
+	can_be_spawned_from_ghost = TRUE
 
 	var/list/safe_areas = list(/area/skipjack_station/base, /area/skipjack_station/start)
 
