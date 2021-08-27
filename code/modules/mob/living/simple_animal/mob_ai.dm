@@ -26,7 +26,7 @@
 	var/list/cardinals_to_go = GLOB.cardinal.Copy()
 	while(length(cardinals_to_go))
 		dir = pick(cardinals_to_go)
-		cardinals_to_go.len--
+		cardinals_to_go.Remove(dir)
 		if(!safe_area) // we don't have safe_area, free moving allowed.
 			break
 		var/turf/T = get_step(holder, dir)
