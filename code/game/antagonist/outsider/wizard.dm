@@ -17,7 +17,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	faction = "wizard"
 
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/wizard/Initialize()
 	. = ..()

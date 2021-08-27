@@ -41,7 +41,6 @@
 	var/spawn_announcement_title            // Report title.
 	var/spawn_announcement_sound            // Report sound clip.
 	var/spawn_announcement_delay            // Time between initial spawn and round announcement.
-	var/can_be_spawned_from_ghost = FALSE
 
 	// Misc.
 	var/landmark_id                         // Spawn point identifier.
@@ -297,11 +296,8 @@
 		return TRUE
 	if (istype(player.current, /mob/living/silicon/ai))
 		return TRUE
-	if (isghostmind(player) && can_be_spawned_from_ghost)
+	if (isghostmind(player))
 		return TRUE
 	if (istype(player.current, /mob/new_player))
-		// I'm sorry for this, but antag (((spawn))) code is so shit, so it's only way, TODO: rewrite antag (((spawn))) code
-		if(GAME_STATE != RUNLEVEL_SETUP && !can_be_spawned_from_ghost)
-			return FALSE
 		return TRUE
 	return FALSE

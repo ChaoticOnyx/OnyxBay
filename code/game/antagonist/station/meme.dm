@@ -6,7 +6,7 @@
 	flags = ANTAG_RANDSPAWN | ANTAG_VOTABLE | ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB
 	antaghud_indicator = "hudmeme"
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/meme/Initialize()
 	. = ..()

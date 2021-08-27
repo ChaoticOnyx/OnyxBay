@@ -16,7 +16,7 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 	initial_spawn_target = 1
 
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/deity/Initialize()
 	. = ..()

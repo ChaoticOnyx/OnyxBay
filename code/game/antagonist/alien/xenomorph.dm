@@ -26,7 +26,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	spawn_announcement_delay = 5000
 
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/xenos/Initialize()
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())

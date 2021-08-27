@@ -21,7 +21,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 
 	var/deployed = 0
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/deathsquad/Initialize()
 	. = ..()

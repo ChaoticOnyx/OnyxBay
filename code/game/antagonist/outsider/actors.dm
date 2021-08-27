@@ -17,7 +17,7 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	show_objectives_on_creation = 0 //actors are not antagonists and do not need the antagonist greet text
 
 	station_crew_involved = FALSE
-	can_be_spawned_from_ghost = TRUE
+
 
 /datum/antagonist/actor/Initialize()
 	. = ..()
