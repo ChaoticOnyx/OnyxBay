@@ -299,6 +299,9 @@
 		return TRUE
 	if (isghostmind(player) && can_be_spawned_from_ghost)
 		return TRUE
-	if (istype(player.current, /mob/new_player) && can_be_spawned_from_ghost) // also counts as ghost.
+	if (istype(player.current, /mob/new_player))
+		// I'm sorry for this, but antag (((spawn))) code is so shit, so it's only way, TODO: rewrite antag (((spawn))) code
+		if(GAME_STATE != RUNLEVEL_SETUP && !can_be_spawned_from_ghost)
+			return FALSE
 		return TRUE
 	return FALSE
