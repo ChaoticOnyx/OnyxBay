@@ -296,7 +296,7 @@
 		return TRUE
 	if (istype(player.current, /mob/living/silicon/ai))
 		return TRUE
-	if (isghostmind(player))
+	if (isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
 		return TRUE
 	if (istype(player.current, /mob/new_player))
 		return TRUE
