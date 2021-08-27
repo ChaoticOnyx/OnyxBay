@@ -4,14 +4,15 @@
  * @license MIT
  */
 
-import { storage } from 'common/storage';
-import { Button, LabeledList, NoticeBox, Section } from '../components';
-import { formatSiUnit } from '../format';
+import { storage } from 'common/storage'
+import { Button, LabeledList, NoticeBox, Section } from '../components'
+import { formatSiUnit } from '../format'
 
 export const meta = {
   title: 'Storage',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = (props, context) => {
   if (!window.localStorage) {
@@ -19,7 +20,7 @@ const Story = (props, context) => {
       <NoticeBox>
         Local storage is not available.
       </NoticeBox>
-    );
+    )
   }
   return (
     <Section
@@ -28,8 +29,8 @@ const Story = (props, context) => {
         <Button
           icon='recycle'
           onClick={() => {
-            localStorage.clear();
-            storage.clear();
+            localStorage.clear()
+            storage.clear()
           }}>
           Clear
         </Button>
@@ -43,5 +44,5 @@ const Story = (props, context) => {
         </LabeledList.Item>
       </LabeledList>
     </Section>
-  );
-};
+  )
+}

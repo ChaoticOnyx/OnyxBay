@@ -123,10 +123,11 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 /*
 	Simple throttle realization.
+	Initial value is TRUE.
 	Using example:
 
 	THROTTLE(my_cooldown, 1 SECOND)
 	if(my_cooldown)
 		do_something()
 */
-#define THROTTLE(variable, delay) var/static/__throttle##variable=world.time; var/##variable = 0; if(__throttle##variable + delay < world.time) {__throttle##variable=world.time; variable=TRUE} else{variable=FALSE}
+#define THROTTLE(variable, delay) var/static/__throttle##variable=list(); var/##variable = 0; if(__throttle##variable["\ref[src]"] == null){__throttle##variable["\ref[src]"] = world.time-delay-1} if(__throttle##variable["\ref[src]"] + delay < world.time) {__throttle##variable["\ref[src]"]=world.time; variable=TRUE} else{variable=FALSE}

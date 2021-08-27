@@ -12,12 +12,14 @@
 	)
 
 
-////////////
-//SHUTTLES//
-////////////
-//shuttle areas must contain at least two areas in a subgroup if you want to move a shuttle from one
-//place to another. Look at escape shuttle for example.
-//All shuttles should now be under shuttle since we have smooth-wall code.
+// SHUTTLES
+// Shuttle areas must contain at least two areas in a subgroup if you want to move a shuttle from one place to another.
+// Look at escape shuttle for example.
+// All shuttles should now be under shuttle since we have smooth-wall code.
+/area/shuttle/administration/centcom
+	name = "\improper Administration Shuttle"
+	icon_state = "shuttlered"
+
 /area/shuttle/administration/station
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
@@ -71,6 +73,12 @@
 
 /area/crew_quarters/heads/cmo
 	name = "\improper Command - CMO's Office"
+
+/area/bridge/meeting_room
+	name = "\improper Heads of Staff Meeting Room"
+	icon_state = "bridge"
+	ambience = list()
+	sound_env = MEDIUM_SOFTFLOOR
 
 // Shuttles
 
@@ -134,6 +142,11 @@
 	name = "\improper Alien Shuttle Mine"
 	requires_power = 1
 
+/area/shuttle/alien/base
+	icon_state = "shuttle"
+	name = "\improper Alien Shuttle Base"
+	requires_power = 1
+
 /area/shuttle/arrival
 	name = "\improper Arrival Shuttle"
 
@@ -189,7 +202,7 @@
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/east
 
-/area/shuttle/escape_pod5 //Pod 4 was lost to meteors
+/area/shuttle/escape_pod5 // Pod 4 was lost to meteors
 	name = "\improper Escape Pod Five"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
@@ -221,7 +234,7 @@
 	name = "Research Shuttle Transit"
 	icon_state = "shuttle"
 
-//SYNDICATES
+// SYNDICATES
 
 /area/syndicate_mothership
 	name = "\improper Syndicate Base"
@@ -234,9 +247,9 @@
 	requires_power = 0
 	base_turf = /turf/space/transit/north
 
-//RESCUE
+// RESCUE
 
-//names are used
+// names are used
 /area/rescue_base
 	name = "\improper Response Team Base"
 	icon_state = "yellow"
@@ -286,7 +299,7 @@
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
 
-//MINING MOTHERSHIP
+// MINING MOTHERSHIP
 
 /area/creaker
 	name = "\improper Mining Ship 'Creaker'"
@@ -309,9 +322,9 @@
 	name = "eastern asteroid field"
 	icon_state = "northeast"
 
-//ENEMY
+// ENEMY
 
-//names are used
+// names are used
 /area/syndicate_station
 	name = "\improper Independant Station"
 	icon_state = "yellow"
@@ -870,6 +883,9 @@
 	name = "\improper RnD Maintenance"
 	icon_state = "maint_cargo"
 
+/area/maintenance/disposal/underground
+	name = "Underground Waste Disposal"
+	icon_state = "disposal"
 
 // Dank Maintenance
 /area/maintenance/sub
@@ -905,9 +921,7 @@
 	icon_state = "sub_maint_command"
 	turf_initializer = null
 
-/////////////
-//ELEVATORS//
-/////////////
+// ELEVATORS
 /area/turbolift/security_station
 	name = "Station - By Security"
 	lift_announce_str = "Arriving at the station level, by the Security department."
@@ -1073,6 +1087,7 @@
 
 // Crew
 
+
 /area/crew_quarters
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
@@ -1092,6 +1107,10 @@
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
+
+/area/crew_quarters/sleep/cryo
+	name = "\improper Cryogenic Storage"
+	icon_state = "Cryopods"
 
 /area/crew_quarters/sleep2
 	name = "\improper Dormitories Hallway North"
@@ -1244,7 +1263,7 @@
 	name = "\improper Bar Backroom"
 	icon_state = "barBR"
 
-/area/crew_quarters/ubarbackroom //new room for bartender
+/area/crew_quarters/ubarbackroom // new room for bartender
 	name = "\improper Underground Bar Backroom"
 	icon_state = "ubarBR"
 
@@ -1258,6 +1277,16 @@
  	icon_state = "library"
  	sound_env = LARGE_SOFTFLOOR
 
+/area/janitor
+	name = "\improper Custodial Closet"
+	icon_state = "janitor"
+
+/area/chapel/main
+	name = "\improper Chapel"
+	icon_state = "chapel"
+	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
+	sound_env = LARGE_ENCLOSED
+
 /area/chapel/office
 	name = "\improper Chapel Office"
 	icon_state = "chapeloffice"
@@ -1270,12 +1299,17 @@
 	name = "\improper Internal Affairs"
 	icon_state = "law"
 
-//Engineering
+// Engineering
 
 /area/engineering/
 	name = "\improper Engineering"
 	icon_state = "engineering"
 	ambience = list("engineering_ambient")
+
+/area/engineering/grav_generator
+	name = "\improper Gravitational Generator Room"
+	icon_state = "engine"
+	sound_env = LARGE_ENCLOSED
 
 /area/engineering/lower
 	name = "\improper Engineering Lower Deck"
@@ -1347,6 +1381,40 @@
 	name = "\improper Atmospherics Monitoring Room"
 	icon_state = "engine_monitoring"
 
+/area/engineering/storage
+	name = "\improper Engineering Storage"
+	icon_state = "engineering_storage"
+
+/area/engineering/engine_eva
+	name = "\improper Engine EVA"
+	icon_state = "engine_eva"
+
+/area/engineering/engine_monitoring
+	name = "\improper Engine Monitoring Room"
+	icon_state = "engine_monitoring"
+
+/area/engineering/locker_room
+	name = "\improper Engineering Locker Room"
+	icon_state = "engineering_locker"
+
+/area/engineering/engineering_monitoring
+	name = "\improper Engineering Monitoring Room"
+	icon_state = "engine_monitoring"
+
+/area/engineering/drone_fabrication
+	name = "\improper Engineering Drone Fabrication"
+	icon_state = "drone_fab"
+	sound_env = SMALL_ENCLOSED
+
+/area/engineering/engine_smes
+	name = "\improper Engineering SMES"
+	icon_state = "engine_smes"
+	sound_env = SMALL_ENCLOSED
+
+/area/engineering/engine_room
+	name = "\improper Engine Room"
+	icon_state = "engine"
+	sound_env = LARGE_ENCLOSED
 
 // Medbay
 
@@ -1357,6 +1425,31 @@
 /area/medical/genetics_cloning
 	name = "\improper Cloning Lab"
 	icon_state = "cloning"
+
+/area/medical/biostorage/underground
+	name = "\improper Undergound Medbay Storage"
+	icon_state = "medbay4"
+
+/area/medical/sleeper/underground
+	name = "\improper Underground Emergency Treatment Room"
+	icon_state = "exam_room"
+
+/area/medical/chemistry
+	name = "\improper Chemistry"
+	icon_state = "chem"
+
+/area/medical/exam_room
+	name = "\improper Exam Room"
+	icon_state = "exam_room"
+
+/area/medical/morgue
+	name = "\improper Morgue"
+	icon_state = "morgue"
+	ambience = list('sound/ambience/morgue/ambimo1.ogg')
+
+/area/medical/surgery
+	name = "\improper Operating Theatre"
+	icon_state = "surgery"
 
 // Solars
 
@@ -1371,6 +1464,10 @@
 /area/solar/fore
 	name = "\improper Fore Solar Array"
 	icon_state = "yellow"
+
+/area/solar/port
+	name = "\improper Port Auxiliary Solar Array"
+	icon_state = "panelsP"
 
 /area/maintenance/foresolar
 	name = "\improper Solar Maintenance - Fore"
@@ -1387,7 +1484,7 @@
 	icon_state = "SolarcontrolS"
 	sound_env = SMALL_ENCLOSED
 
-//Teleporter
+// Teleporter
 
 /area/teleporter
 	name = "\improper Teleporter"
@@ -1397,13 +1494,13 @@
 	name = "\improper Gateway"
 	icon_state = "teleporter"
 
-//MedBay
+// MedBay
 
 /area/medical/medbay
 	name = "\improper Medbay Hallway - Port"
 	icon_state = "medbay"
 
-//Medbay is a large area, these additional areas help level out APC load.
+// Medbay is a large area, these additional areas help level out APC load.
 /area/medical/medbay2
 	name = "\improper Medbay Hallway - Starboard"
 	icon_state = "medbay2"
@@ -1511,11 +1608,35 @@
 	name = "\improper Neural Lace Resleever"
 	icon_state = "cloning"
 
-//Security
+// Security
 
 /area/security/main
 	name = "\improper Security Office"
 	icon_state = "security"
+
+/area/security/briefingroom
+	name = "\improper Security - Briefing Room"
+	icon_state = "briefroom"
+
+/area/security/storage
+	name = "\improper Security Storage"
+	icon_state = "brigstorage"
+
+/area/security/execution
+	name = "\improper Security - Execution Room"
+	icon_state = "execution"
+
+/area/security/evidence
+	name = "\improper Security - Evidence Storage"
+	icon_state = "evidence"
+
+/area/security/brigmorgue
+	name = "\improper Security - Morgue"
+	icon_state = "brigmorgue"
+
+/area/security/brigswstorage
+	name = "\improper Security - S-W Storage"
+	icon_state = "brigswstorage"
 
 /area/security/meeting
 	name = "\improper Security Meeting Room"
@@ -1584,6 +1705,14 @@
 	name = "\improper Vacant Office"
 	icon_state = "security"
 
+/area/security/nuke_storage
+	name = "\improper Vault"
+	icon_state = "nuke_storage"
+
+/area/security/checkpoint2
+	name = "\improper Command Security - Checkpoint"
+	icon_state = "checkpoint1"
+
 /area/quartermaster
 	name = "\improper Quartermasters"
 	icon_state = "quart"
@@ -1613,6 +1742,10 @@
 	name = "\improper Cargo Mining Dock"
 	icon_state = "mining"
 
+/area/quartermaster/office
+	name = "\improper Supply Office"
+	icon_state = "quartoffice"
+
 /area/hydroponics/garden
 	name = "\improper Garden"
 	icon_state = "garden"
@@ -1625,12 +1758,26 @@
 	name = "\improper Central Biodome"
 	icon_state = "garden"
 
-
-
 // Research
 /area/rnd/docking
 	name = "\improper Research Dock"
 	icon_state = "research_dock"
+
+/area/assembly/robotics
+	name = "\improper Robotics Lab"
+	icon_state = "robotics"
+
+/area/assembly/chargebay
+	name = "\improper Mech Bay"
+	icon_state = "mechbay"
+
+/area/rnd/lab
+	name = "\improper Research Lab"
+	icon_state = "toxlab"
+
+/area/rnd/misc_lab
+	name = "\improper Miscellaneous Research"
+	icon_state = "toxmisc"
 
 /area/rnd/mixing
 	name = "\improper Toxins Mixing Room"
@@ -1648,7 +1795,23 @@
 	name = "\improper Research Server Room"
 	icon_state = "server"
 
-//Storage
+/area/rnd/research_under
+	name = "\improper Underground Research Wing"
+	icon_state = "uresearch"
+
+/area/rnd/research_under/breakroom
+	name = "\improper Underground Research Wing - Break Room"
+	icon_state = "uresearchbreak"
+
+/area/rnd/restroom
+	name = "\improper Research Restroom"
+	icon_state = "research"
+
+/area/rnd/research
+	name = "\improper Research and Development"
+	icon_state = "research"
+
+// Storage
 
 /area/storage/art
 	name = "Art Supply Storage"
@@ -1662,20 +1825,54 @@
 	name = "Port Emergency Storage"
 	icon_state = "emergencystorage"
 
-//HALF-BUILT STATION (REPLACES DERELICT IN BAYCODE, ABOVE IS LEFT FOR DOWNSTREAM)
+/area/storage/primary
+	name = "Primary Tool Storage"
+	icon_state = "primarystorage"
+
+/area/storage/tools
+	name = "Auxiliary Tool Storage"
+	icon_state = "auxstorage"
+
+/area/storage/tech
+	name = "Technical Storage"
+	icon_state = "storage"
+
+// HALF-BUILT STATION (REPLACES DERELICT IN BAYCODE, ABOVE IS LEFT FOR DOWNSTREAM)
 
 /area/shuttle/constructionsite/site
 	name = "\improper Construction Site Shuttle"
 	base_turf = /turf/simulated/floor/asteroid
 
-//AI
+// AI
 
 /area/turret_protected
 	ambience = list("ai_ambient", "science_ambient")
 
+/area/turret_protected/ai
+	name = "\improper AI Chamber"
+	icon_state = "ai_chamber"
+	ambience = list("ai_ambient")
+
 /area/turret_protected/ai_server_room
 	name = "Messaging Server Room"
 	icon_state = "ai_server"
+	sound_env = SMALL_ENCLOSED
+
+/area/turret_protected/ai_cyborg_station
+	name = "\improper Cyborg Station"
+	icon_state = "ai_cyborg"
+	sound_env = SMALL_ENCLOSED
+	ambience = list("ai_ambient")
+
+/area/turret_protected/ai_upload
+	name = "\improper AI Upload Chamber"
+	icon_state = "ai_upload"
+	ambience = list("ai_ambient")
+
+/area/turret_protected/ai_upload_foyer
+	name = "\improper  AI Upload Access"
+	icon_state = "ai_foyer"
+	ambience = list("ai_ambient")
 	sound_env = SMALL_ENCLOSED
 
 /area/turret_protected/tcomsat/port
@@ -1684,7 +1881,16 @@
 /area/turret_protected/tcomsat/starboard
 	name = "\improper Telecoms Satellite - Starboard"
 
-//Misc
+/area/ai_monitored/storage/eva
+	name = "\improper EVA Storage"
+	icon_state = "eva"
+
+// Misc
+
+/area/alien
+	name = "\improper Alien base"
+	icon_state = "yellow"
+	requires_power = 0
 
 // Telecommunications Satellite
 
@@ -1907,7 +2113,7 @@
 	name = "\improper Engineering Construction Area"
 	icon_state = "yellow"
 
-//CentComm
+// CentComm
 /area/centcom/control
 	name = "\improper Centcom Control"
 
@@ -1922,7 +2128,7 @@
 	name = "\improper Museum"
 	icon_state = "museum"
 
-//Thunderdr
+// Thunderdr
 /area/tdome/tdome1
 	name = "\improper Thunderdome (Team 1)"
 	icon_state = "green"
@@ -1997,6 +2203,9 @@
 /area/holodeck/source_chess
 	name = "\improper Holodeck - Chess Field"
 
+/area/holodeck/alphadeck
+	name = "\improper Holodeck Alpha"
+
 /area/prison/solitary
 	name = "Solitary Confinement"
 	icon_state = "brig"
@@ -2007,7 +2216,7 @@
 
 /area/mine
 	icon_state = "mining"
-	sound_env = 5 //stoneroom
+	sound_env = 5 // stoneroom
 
 /area/mine/explored
 	name = "Mine"

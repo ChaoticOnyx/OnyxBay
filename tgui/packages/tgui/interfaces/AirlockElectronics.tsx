@@ -1,6 +1,6 @@
-import { useBackend, useLocalState } from '../backend';
-import { Button, Flex, LabeledList, Section, Tabs } from '../components';
-import { Window } from '../layouts';
+import { useBackend, useLocalState } from '../backend'
+import { Button, Flex, LabeledList, Section, Tabs } from '../components'
+import { Window } from '../layouts'
 
 interface Access {
   name: string;
@@ -21,16 +21,16 @@ interface InputData {
 }
 
 export const AirlockElectronics = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const regions = data.regions || [];
-  const oneAccess = data.oneAccess;
-  let accesses: Access[] = [];
+  const { act, data } = useBackend<InputData>(context)
+  const regions = data.regions || []
+  const oneAccess = data.oneAccess
+  let accesses: Access[] = []
   data.regions.map(
     (region) =>
       (accesses = accesses.concat(
-        region.accesses.filter((access) => access.req !== 0),
-      )),
-  );
+        region.accesses.filter((access) => access.req !== 0)
+      ))
+  )
 
   return (
     <Window width={420} height={485}>
@@ -51,68 +51,68 @@ export const AirlockElectronics = (props: any, context: any) => {
           selectedList={accesses}
           accessMod={(id: number) =>
             act('set', {
-              access: id,
+              access: id
             })
           }
         />
       </Window.Content>
     </Window>
-  );
-};
+  )
+}
 
 const diffMap = {
   0: {
     icon: 'times-circle',
-    color: 'bad',
+    color: 'bad'
   },
   1: {
     icon: 'stop-circle',
-    color: null,
+    color: null
   },
   2: {
     icon: 'check-circle',
-    color: 'good',
-  },
-};
+    color: 'good'
+  }
+}
 
-export const AirlockAccessList = (props: any, context: any) => {
+const AirlockAccessList = (props: any, context: any) => {
   const {
     regions = [],
     selectedList = [],
-    accessMod,
+    accessMod
   }: {
     regions: Region[];
     selectedList: any[];
     accessMod: (id: number) => void;
-  } = props;
+  } = props
   const [selectedRegionName, setSelectedRegionName] = useLocalState(
     context,
     'accessName',
-    regions[0]?.name,
-  );
+    regions[0]?.name
+  )
   const selectedAccess = regions.find(
-    (region) => region.name === selectedRegionName,
-  );
-  const selectedAccessEntries = selectedAccess?.accesses || [];
+    (region) => region.name === selectedRegionName
+  )
+  const selectedAccessEntries = selectedAccess?.accesses || []
 
   const checkAccessIcon = (accesses: Access[]) => {
-    let oneAccess = false;
-    let oneInaccess = false;
-    for (let element of accesses) {
+    let oneAccess = false
+    let oneInaccess = false
+    for (const element of accesses) {
       if (selectedList.includes(element)) {
-        oneAccess = true;
+        oneAccess = true
       } else {
-        oneInaccess = true;
+        oneInaccess = true
       }
     }
     if (!oneAccess && oneInaccess) {
-      return 0;
+      return 0
     } else if (oneAccess && oneInaccess) {
-      return 1;
+      return 1
     } else {
-      return 2;
+      return 2
     }
-  };
+  }
 
   return (
     <Section title='Access' fill>
@@ -120,9 +120,9 @@ export const AirlockAccessList = (props: any, context: any) => {
         <Flex.Item>
           <Tabs vertical>
             {regions.map((access) => {
-              const entries = access.accesses || [];
-              const icon = diffMap[checkAccessIcon(entries)].icon;
-              const color = diffMap[checkAccessIcon(entries)].color;
+              const entries = access.accesses || []
+              const icon = diffMap[checkAccessIcon(entries)].icon
+              const color = diffMap[checkAccessIcon(entries)].color
               return (
                 <Tabs.Tab
                   key={access.name}
@@ -133,7 +133,7 @@ export const AirlockAccessList = (props: any, context: any) => {
                   onClick={() => setSelectedRegionName(access.name)}>
                   {access.name}
                 </Tabs.Tab>
-              );
+              )
             })}
           </Tabs>
         </Flex.Item>
@@ -150,5 +150,5 @@ export const AirlockAccessList = (props: any, context: any) => {
         </Flex.Item>
       </Flex>
     </Section>
-  );
-};
+  )
+}
