@@ -1,4 +1,4 @@
-//Procedures in this file: Gneric surgery steps
+//Procedures in this file: Generic surgery steps
 //////////////////////////////////////////////////////////////////
 //						COMMON STEPS							//
 //////////////////////////////////////////////////////////////////
@@ -79,27 +79,28 @@
 /datum/surgery_step/generic/incision_manager/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		return affected && affected.open() == SURGERY_CLOSED && target_zone != BP_MOUTH
+		return affected && (affected.open() == SURGERY_CLOSED || affected.open() == SURGERY_OPEN) && target_zone != BP_MOUTH
 
 /datum/surgery_step/generic/incision_manager/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("[user] starts to construct a prepared incision on and within [target]'s [affected.name] with \the [tool].", \
-	"You start to construct a prepared incision on and within [target]'s [affected.name] with \the [tool].")
+	if(affected.open() == SURGERY_CLOSED)
+		user.visible_message("[user] starts to construct a prepared incision on [target]'s [affected.name] with \the [tool].", \
+		"You carefully start incision on [target]'s [affected.name], while \the [tool] makes all the side work for you.")
+	else
+		user.visible_message("[user] starts sliding \the [tool] above the cut on [target]'s [affected.name].", \
+		"You carefully start sliding \the [tool] above the cut on [target]'s [affected.name], while it makes all the side work for you.")
 	target.custom_pain("You feel a horrible, searing pain in your [affected.name] as it is pushed apart!",50, affecting = affected)
 	..()
 
 /datum/surgery_step/generic/incision_manager/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='notice'>[user] has constructed a prepared incision on and within [target]'s [affected.name] with \the [tool].</span>", \
-	"<span class='notice'>You have constructed a prepared incision on and within [target]'s [affected.name] with \the [tool].</span>",)
+	user.visible_message("<span class='notice'>[user] has constructed a prepared incision on [target]'s [affected.name] with \the [tool].</span>", \
+	"<span class='notice'>You have constructed a prepared incision on [target]'s [affected.name] with \the [tool].</span>",)
 
-	affected.createwound(CUT, affected.min_broken_damage/2, 1)
+	if(affected.open() == SURGERY_CLOSED)
+		affected.createwound(CUT, affected.min_broken_damage/2, 1)
 	affected.clamp_organ()
-	var/datum/wound/W = affected.get_incision()
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage)) //damage up to the max of the wound.
-	if(!affected.encased)
-		for(var/obj/item/weapon/implant/I in affected.implants)
-			I.exposed()
+	affected.open_incision()
 
 /datum/surgery_step/generic/incision_manager/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -220,11 +221,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='notice'>[user] keeps the incision open on [target]'s [affected.name] with \the [tool].</span>",	\
 	"<span class='notice'>You keep the incision open on [target]'s [affected.name] with \the [tool].</span>")
-	var/datum/wound/W = affected.get_incision()
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage)) //damage up to the max of the wound.
-	if(!affected.encased)
-		for(var/obj/item/weapon/implant/I in affected.implants)
-			I.exposed()
+	affected.open_incision()
 
 /datum/surgery_step/generic/retract_skin/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
