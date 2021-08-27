@@ -30,7 +30,7 @@
 		if(!safe_area) // we don't have safe_area, free moving allowed.
 			break
 		var/turf/T = get_step(holder, dir)
-		if(!T && T.loc != safe_area)
+		if(T?.loc == safe_area)
 			break
 		dir = null
 	holder.SelfMove(dir)

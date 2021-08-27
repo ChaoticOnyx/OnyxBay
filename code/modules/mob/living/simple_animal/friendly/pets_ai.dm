@@ -2,10 +2,6 @@
 #define COMMAND_FOLLOW 2 //follows a owner
 #define COMMAND_WANDERING 3 // set pet behaviour to basic simple animal behaviour: wandering
 
-GLOBAL_LIST_INIT(pet_commands_follow, world.file2list("config/names/animal_commands/follow.txt"))
-GLOBAL_LIST_INIT(pet_commands_stop, world.file2list("config/names/animal_commands/wander.txt"))
-GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_commands/stop.txt"))
-
 /datum/mob_ai/pet
 	var/current_command
 	var/mob/target_mob
@@ -17,13 +13,18 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 /datum/mob_ai/pet/New()
 	. = ..()
 	if(!length(text_to_command))
-		for(var/command_text in GLOB.pet_commands_stop)
+		for(var/command_text in world.file2list("config/names/animal_commands/stop.txt"))
+			if(!command_text)
+				continue
 			text_to_command[command_text] = COMMAND_STOP
-		for(var/command_text in GLOB.pet_commands_follow)
+		for(var/command_text in world.file2list("config/names/animal_commands/follow.txt"))
+			if(!command_text)
+				continue
 			text_to_command[command_text] = COMMAND_FOLLOW
-		for(var/command_text in GLOB.pet_commands_wander)
+		for(var/command_text in world.file2list("config/names/animal_commands/wander.txt"))
+			if(!command_text)
+				continue
 			text_to_command[command_text] = COMMAND_WANDERING
-		text_to_command.Remove("") // remove error data
 
 /datum/mob_ai/pet/do_move()
 	..()
@@ -35,20 +36,18 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 
 /datum/mob_ai/pet/process_special_actions()
 	switch(current_command)
-		if(COMMAND_WANDERING)
-			wandering()
 		if(COMMAND_STOP)
-			process_commanded_stop()
+			process_waiting()
 		if(COMMAND_FOLLOW)
-			process_follow_target()
+			process_following()
 
 /datum/mob_ai/pet/return_mob_friendness(mob/M)
 	. = ..() || M == master
 
-/datum/mob_ai/pet/proc/process_commanded_stop()
+/datum/mob_ai/pet/proc/process_waiting()
 	var/turf/T = get_turf(holder)
 	if(T.loc != safe_area)
-		wandering()
+		toggle_to_wandering()
 		return
 
 /datum/mob_ai/pet/proc/ListTargets(vision_range)
@@ -60,7 +59,7 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 
 	return L
 
-/datum/mob_ai/pet/proc/process_follow_target()
+/datum/mob_ai/pet/proc/process_following()
 	holder.stop_automated_movement = TRUE
 	if(!target_mob)
 		return
@@ -77,7 +76,7 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 /datum/mob_ai/pet/proc/create_wandering_timer(duration)
 	if(timer_to_forget_target)
 		return
-	timer_to_forget_target = addtimer(CALLBACK(src, .proc/wandering), duration, TIMER_STOPPABLE)
+	timer_to_forget_target = addtimer(CALLBACK(src, .proc/toggle_to_wandering), duration, TIMER_STOPPABLE)
 
 /datum/mob_ai/pet/listen(mob/speaker, text)
 	if(speaker != master)
@@ -92,10 +91,10 @@ GLOBAL_LIST_INIT(pet_commands_wander, world.file2list("config/names/animal_comma
 				if(COMMAND_FOLLOW)
 					toggle_to_follow_command(speaker)
 				if(COMMAND_WANDERING)
-					wandering()
+					toggle_to_wandering()
 			break
 
-/datum/mob_ai/pet/proc/wandering()
+/datum/mob_ai/pet/proc/toggle_to_wandering()
 	current_command = COMMAND_WANDERING
 	target_mob = null
 	holder.stop_automated_movement = FALSE
