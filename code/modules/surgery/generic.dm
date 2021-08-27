@@ -275,6 +275,8 @@
 	var/datum/wound/cut/W = affected.get_incision()
 	user.visible_message("<span class='notice'>[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>", \
 	"<span class='notice'>You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>")
+	if(affected.clamped())
+		affected.remove_clamps()
 	if(W)
 		W.close()
 	if(affected.is_stump())
