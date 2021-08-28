@@ -57,16 +57,16 @@ var/datum/robolimb/basic_robolimb
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
+/datum/robolimb/unbranded_alt1
+	company = "Unbranded - Protez"
+	desc = "A generic unbranded robotic prosthesis with shiny, modern casing."
+	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/unbranded_alt1.dmi'
+
 //NANOTRASEN
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
-
-/datum/robolimb/nanotrasen_alt1
-	company = "NanoTrasen Plus"
-	desc = "A simple but efficient robotic limb, created by NanoTrasen."
-	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
 
 /datum/robolimb/nanotrasen_tajaran
 	company = "NanoTrasen - Tajaran"
@@ -81,6 +81,12 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_unathi.dmi'
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
+
+/datum/robolimb/nanotrasen_alt1
+	company = "NanoTrasen - Premium"
+	desc = "A simple but efficient robotic limb with synthetic skin on it's face, created by NanoTrasen."
+	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
+	skintone = 1
 
 //ZENG-HU
 /datum/robolimb/zenghu
