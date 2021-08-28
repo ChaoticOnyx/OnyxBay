@@ -60,7 +60,7 @@ var/datum/robolimb/basic_robolimb
 /datum/robolimb/unbranded_alt1
 	company = "Unbranded - Protez"
 	desc = "A generic unbranded robotic prosthesis with shiny, modern casing."
-	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/unbranded_alt1.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
 
 //NANOTRASEN
 /datum/robolimb/nanotrasen
