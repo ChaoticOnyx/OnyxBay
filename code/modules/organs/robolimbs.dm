@@ -27,7 +27,7 @@ var/datum/robolimb/basic_robolimb
 	var/unavailable_at_chargen                           // If set, not available at chargen.
 	var/unavailable_to_build                             // If set, cannot be fabricated.
 	var/can_feel_pain
-	// Eyes stuff
+	// Appearance stuff
 	var/has_eyes
 	var/use_eye_icon = "eyes_s"
 	// Skin & BP stuff
