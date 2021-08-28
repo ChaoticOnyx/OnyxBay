@@ -252,69 +252,70 @@ SUBSYSTEM_DEF(eams)
 	var/computer_id = C.computer_id
 	var/static/list/address_to_cid = list() // adress = list(cids)
 
-	// our task only to detect spoofer activity, so we need to get all "legal" cids
-	// step 1: get all ip-cid by ip
-	var/DBQuery/query = sql_query({"
-		SELECT
-			ip,
-			computerid
-		FROM
-			erro_player
-		WHERE
-			computerid
-			IN
-				(SELECT DISTINCT
-					computerid
-				FROM
-					erro_player
-				WHERE
-					ckey LIKE $targetkey
-				)
-		"}, dbcon, list(targetkey = ckey))
-	while(query.NextRow())
-		var/ip = query.item[1]
-		var/cid = query.item[2]
+	if(!address_to_cid[C.address])
+		// our task only to detect spoofer activity, so we need to get all "legal" cids
+		// step 1: get all ip-cid by ip
+		var/DBQuery/query = sql_query({"
+			SELECT
+				ip,
+				computerid
+			FROM
+				erro_player
+			WHERE
+				computerid
+				IN
+					(SELECT DISTINCT
+						computerid
+					FROM
+						erro_player
+					WHERE
+						ckey LIKE $targetkey
+					)
+			"}, dbcon, list(targetkey = ckey))
+		while(query.NextRow())
+			var/ip = query.item[1]
+			var/cid = query.item[2]
 
-		if(ip in address_to_cid)
-			address_to_cid[ip] |= cid
-		else
-			address_to_cid[ip] = list(cid)
+			if(ip in address_to_cid)
+				address_to_cid[ip] |= cid
+			else
+				address_to_cid[ip] = list(cid)
 
-	// step 2: get all ip-cid by cid
-	query = sql_query({"
-		SELECT
-			ip,
-			computerid
-		FROM
-			erro_player
-		WHERE
-			ip
-			IN
-				(SELECT DISTINCT
-					ip
-				FROM
-					erro_player
-				WHERE
-					computerid
-					IN
-						(SELECT DISTINCT
-							computerid
-						FROM
-							erro_player
-						WHERE
-							ckey LIKE $targetkey
-						)
-				)
-		"}, dbcon, list(targetkey = ckey))
+		// step 2: get all ip-cid by cid
+		query = sql_query({"
+			SELECT
+				ip,
+				computerid
+			FROM
+				erro_player
+			WHERE
+				ip
+				IN
+					(SELECT DISTINCT
+						ip
+					FROM
+						erro_player
+					WHERE
+						computerid
+						IN
+							(SELECT DISTINCT
+								computerid
+							FROM
+								erro_player
+							WHERE
+								ckey LIKE $targetkey
+							)
+					)
+			"}, dbcon, list(targetkey = ckey))
 
-	while(query.NextRow())
-		var/ip = query.item[1]
-		var/cid = query.item[2]
+		while(query.NextRow())
+			var/ip = query.item[1]
+			var/cid = query.item[2]
 
-		if(ip in address_to_cid)
-			address_to_cid[ip] |= cid
-		else
-			address_to_cid[ip] = list(cid)
+			if(ip in address_to_cid)
+				address_to_cid[ip] |= cid
+			else
+				address_to_cid[ip] = list(cid)
 
 	if(!length(address_to_cid)) // new player (or smart spoofer), set current know data
 		address_to_cid[C.address] = address_to_cid[computer_id]
