@@ -348,6 +348,7 @@ SUBSYSTEM_DEF(eams)
 			C.eams_info.ip_country = "unknown"
 
 		block_message(C)
+		log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 
 		return FALSE
 
@@ -356,7 +357,6 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/block_message(client/C)
 	to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
-	log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 
 //
 //	Toggle Verb
