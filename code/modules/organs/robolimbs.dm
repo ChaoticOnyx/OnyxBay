@@ -119,6 +119,7 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
 	has_eyes = TRUE
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
@@ -135,6 +136,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This rather thick limb has a militaristic green plating."
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt1.dmi'
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 
 //VEY-MED
@@ -146,6 +148,7 @@ var/datum/robolimb/basic_robolimb
 	can_eat = TRUE
 	lifelike = TRUE
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
@@ -159,6 +162,7 @@ var/datum/robolimb/basic_robolimb
 	can_eat = TRUE
 	lifelike = TRUE
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	restricted_to = list(SPECIES_SKRELL)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
@@ -195,6 +199,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb has white and purple features, with a heavier casing."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
