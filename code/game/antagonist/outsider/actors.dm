@@ -18,7 +18,6 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/actor/Initialize()
 	. = ..()
 	if(config.actor_min_age)

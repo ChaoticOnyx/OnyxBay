@@ -7,7 +7,6 @@
 	antaghud_indicator = "hudmeme"
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/meme/Initialize()
 	. = ..()
 	if(config.meme_min_age)

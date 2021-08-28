@@ -23,7 +23,6 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 	station_crew_involved = FALSE
 
-
 	var/list/safe_areas = list(/area/skipjack_station/base, /area/skipjack_station/start)
 
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.

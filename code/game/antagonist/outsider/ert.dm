@@ -27,7 +27,6 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 
 	station_crew_involved = FALSE
 
-
 	var/is_station_secure = TRUE
 
 /datum/antagonist/ert/create_default(mob/source)

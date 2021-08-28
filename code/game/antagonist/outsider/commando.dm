@@ -19,7 +19,6 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/deathsquad/syndicate/Initialize()
 	. = ..()
 	if(config.commando_min_age)

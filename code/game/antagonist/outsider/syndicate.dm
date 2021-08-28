@@ -20,7 +20,6 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/syndicate/Initialize()
 	. = ..()
 	if(config.nuke_min_age)

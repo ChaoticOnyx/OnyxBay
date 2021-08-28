@@ -21,7 +21,6 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/ninja/Initialize()
 	. = ..()
 	if(config.ninja_min_age)

@@ -22,7 +22,6 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	var/deployed = 0
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/deathsquad/Initialize()
 	. = ..()
 	if(config.deathsquad_min_age)

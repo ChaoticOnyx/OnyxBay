@@ -235,7 +235,7 @@
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
 		var/answer = alert_timeout(
 			recipient = player.current,
-			message = "You were selected for role [role_text] by lottery. Are you ready to play it?",
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
 			title = "Do you want to play [role_text]?",
 			timeout = 100,
 			button1 = "Yes",

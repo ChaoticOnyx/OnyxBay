@@ -27,7 +27,6 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/xenos/Initialize()
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound

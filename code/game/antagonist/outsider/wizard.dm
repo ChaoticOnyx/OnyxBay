@@ -18,7 +18,6 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 	station_crew_involved = FALSE
 
-
 /datum/antagonist/wizard/Initialize()
 	. = ..()
 	if(config.wizard_min_age)
