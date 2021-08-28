@@ -145,7 +145,7 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
-	
+
 	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
@@ -243,6 +243,85 @@ SUBSYSTEM_DEF(eams)
 	return
 
 //
+//	Check to detect spoofed computer id
+//
+/datum/controller/subsystem/eams/proc/CheckClientComputerID(client/C, topic)
+	set waitfor = FALSE
+	ASSERT(C)
+	var/ckey = C.key
+	var/computer_id = C.computer_id
+	var/static/list/address_to_cid = list() // adress = list(cids)
+
+	// our task only to detect spoofer activity, so we need to get all "legal" cids
+	// step 1: get all ip-cid by ip
+	var/DBQuery/query = sql_query({"
+		SELECT
+			ip,
+			computerid
+		FROM
+			erro_player
+		WHERE
+			computerid
+			IN
+				(SELECT DISTINCT
+					computerid
+				FROM
+					erro_player
+				WHERE
+					ckey LIKE $targetkey
+				)
+		"}, dbcon, list(targetkey = ckey))
+	while(query.NextRow())
+		var/ip = query.item[1]
+		var/cid = query.item[2]
+
+		if(ip in address_to_cid)
+			address_to_cid[ip] |= cid
+		else
+			address_to_cid[ip] = list(cid)
+
+	// step 2: get all ip-cid by cid
+	query = sql_query({"
+		SELECT
+			ip,
+			computerid
+		FROM
+			erro_player
+		WHERE
+			ip
+			IN
+				(SELECT DISTINCT
+					ip
+				FROM
+					erro_player
+				WHERE
+					computerid
+					IN
+						(SELECT DISTINCT
+							computerid
+						FROM
+							erro_player
+						WHERE
+							ckey LIKE $targetkey
+						)
+				)
+		"}, dbcon, list(targetkey = ckey))
+
+	while(query.NextRow())
+		var/ip = query.item[1]
+		var/cid = query.item[2]
+
+		if(ip in address_to_cid)
+			address_to_cid[ip] |= cid
+		else
+			address_to_cid[ip] = list(cid)
+
+	if(!length(address_to_cid)) // new player (or smart spoofer), set current know data
+		address_to_cid[C.address] = address_to_cid[computer_id]
+
+	return C.check_cid(topic, address_to_cid)
+
+//
 //	Check for access before joining the game
 //
 /datum/controller/subsystem/eams/proc/CheckForAccess(client/C)
@@ -256,6 +335,10 @@ SUBSYSTEM_DEF(eams)
 	if (C.eams_info.whitelisted) // check whitelist
 		return TRUE
 
+	if(CheckClientComputerID(C, C.client_topic))
+		block_message(C)
+		return FALSE
+
 	if (C.eams_info.loaded)
 		if ((C.eams_info.ip_countryCode in __allowed_countries) && !C.eams_info.ip_proxy)
 			return TRUE
@@ -264,13 +347,16 @@ SUBSYSTEM_DEF(eams)
 		if (C.eams_info.ip_country == "")
 			C.eams_info.ip_country = "unknown"
 
-		to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
-		log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
+		block_message(C)
 
 		return FALSE
 
 	log_and_message_admins("EAMS failed to load info for [C.key]", 0)
 	return TRUE
+
+/datum/controller/subsystem/eams/proc/block_message(client/C)
+	to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
+	log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 
 //
 //	Toggle Verb

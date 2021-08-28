@@ -1,6 +1,7 @@
 /client
 	// * Black magic things *
 	parent_type = /datum
+	var/client_topic
 
 	// * Admin things *
 	var/datum/admins/holder = null

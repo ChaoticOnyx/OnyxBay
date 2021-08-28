@@ -164,6 +164,7 @@
 	//CONNECT//
 	///////////
 /client/New(TopicData)
+	client_topic = TopicData
 	TopicData = null							// Prevent calls to client.Topic from connect
 
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
@@ -369,6 +370,89 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
+
+// randomized cid check
+/client/proc/check_cid(topic, address_to_cid)
+	. = FALSE
+	if (connection != "seeker")
+		return
+	topic = params2list(topic)
+	if(!config.check_randomizer)
+		return
+
+	var/ckey = key
+
+	var/static/cidcheck = list()
+	var/static/tokens = list()
+	var/static/cidcheck_failedckeys = list() //to avoid spamming the admins if the same guy keeps trying.
+	var/static/cidcheck_spoofckeys = list()
+
+	var/oldcid = cidcheck[ckey]
+	var/list/cids = address_to_cid[address]
+
+	if(oldcid)
+		if(!topic || !topic["token"] || !tokens[ckey] || topic["token"] != tokens[ckey])
+			if(!cidcheck_spoofckeys[ckey])
+				message_admins(SPAN("adminnotice", "[key_name(src)] appears to have attempted to spoof a cid randomizer check."))
+				cidcheck_spoofckeys[ckey] = TRUE
+			cidcheck[ckey] = computer_id
+			tokens[ckey] = cid_check_reconnect()
+
+			sleep(15 SECONDS) //Longer sleep here since this would trigger if a client tries to reconnect manually because the inital reconnect failed
+
+			//we sleep after telling the client to reconnect, so if we still exist something is up
+			log_access("Forced disconnect: [ckey] [computer_id] [address] - CID randomizer check failed.")
+
+			qdel(src)
+			return TRUE
+		if(oldcid != computer_id && !(computer_id in cids)) //IT CHANGED!!!
+			cidcheck -= ckey //so they can try again after removing the cid randomizer.
+
+			to_chat(src, SPAN("userdanger", "Connection Error:"))
+			to_chat(src, SPAN("danger", "Invalid ComputerID(spoofed). Please remove the ComputerID spoofer from your byond installation and try again."))
+
+			if (!cidcheck_failedckeys[ckey])
+				log_and_message_admins(SPAN("adminnotice", "[key_name(src)] has been detected as using a cid randomizer. Connection rejected."))
+				cidcheck_failedckeys[ckey] = TRUE
+				note_randomizer_user()
+
+			log_access("Failed Login: [key] [computer_id] [address] - CID randomizer confirmed (oldcid: [oldcid])")
+
+			qdel(src)
+			return TRUE
+		else
+			if (cidcheck_failedckeys[ckey])
+				log_and_message_admins(SPAN("adminnotice", "[key_name_admin(src)] has been allowed to connect after showing they removed their cid randomizer"))
+				cidcheck_failedckeys -= ckey
+			if (cidcheck_spoofckeys[ckey])
+				message_admins(SPAN("adminnotice", "[key_name_admin(src)] has been allowed to connect after appearing to have attempted to spoof a cid randomizer check because it <i>appears</i> they aren't spoofing one this time"))
+				cidcheck_spoofckeys -= ckey
+			cidcheck -= ckey
+	else
+		if(!(computer_id in cids))
+			cidcheck[ckey] = computer_id
+			tokens[ckey] = cid_check_reconnect()
+
+			sleep(5 SECONDS) //browse is queued, we don't want them to disconnect before getting the browse() command.
+
+			//we sleep after telling the client to reconnect, so if we still exist something is up
+			log_access("Forced disconnect: [ckey] [computer_id] [address] - CID randomizer check failed.")
+
+			qdel(src)
+			return TRUE
+
+// unique token to identify our "spoofer"
+/client/proc/cid_check_reconnect()
+	var/token = md5("[rand(0,9999)][world.time][rand(0,9999)][ckey][rand(0,9999)][address][rand(0,9999)][computer_id][rand(0,9999)]")
+	. = token
+	log_access("Failed Login: [key] [computer_id] [address] - CID randomizer check action.")
+	var/url = winget(src, null, "url")
+	//special javascript to make them reconnect under a new window.
+	src << browse({"<a id='link' href="byond://[url]?token=[token]">byond://[url]?token=[token]</a><script type="text/javascript">document.getElementById("link").click();window.location="byond://winset?command=.quit"</script>"}, "border=0;titlebar=0;size=1x1;window=redirect")
+	to_chat(src, {"<a href="byond://[url]?token=[token]">You will be automatically taken to the game, if not, click here to be taken manually</a>"})
+
+/client/proc/note_randomizer_user()
+	notes_add(key, "Triggered automatic CID randomizer detection.", "EAMS")
 
 // checks if a client is afk
 // 3000 frames = 5 minutes

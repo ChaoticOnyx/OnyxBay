@@ -257,6 +257,8 @@ var/list/gamemode_cache = list()
 	var/auto_map_vote = 0 // Automatically call a map vote at end of round and switch to the selected map
 	var/wait_for_sigusr1_reboot = 0 // Don't allow reboot unless it was caused by SIGUSR1
 
+	var/check_randomizer = FALSE
+
 	var/radiation_decay_rate = 1 //How much radiation is reduced by each tick
 	var/radiation_resistance_multiplier = 1.25
 	var/radiation_material_resistance_divisor = 2 //A turf's possible radiation resistance is divided by this number, to get the real value.
@@ -638,6 +640,9 @@ var/list/gamemode_cache = list()
 
 				if ("ninjas_allowed")
 					config.ninjas_allowed = 1
+
+				if ("check_randomizer")
+					config.check_randomizer = TRUE
 
 				if ("objectives_disabled")
 					if(!value)

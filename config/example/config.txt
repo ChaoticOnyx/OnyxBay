@@ -64,6 +64,9 @@ MINUTE_TOPIC_LIMIT 100
 ## Uncomment to make Dream Daemon refuse to reboot for any reason other than SIGUSR1
 # WAIT_FOR_SIGUSR1
 
+## Comment this out to disable checking for the cid randomizer dll. (disabled if database isn't enabled or connected)
+check_randomizer
+
 # # # # # # # # # # # # # # # # # # # # # #
 #               LOG ACTIONS               #
 # # # # # # # # # # # # # # # # # # # # # #
