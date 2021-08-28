@@ -17,6 +17,7 @@
 	delete_old = TRUE
 	single_item = TRUE
 	icon_state = "gen_immolate"
+
 /obj/item/weapon/melee/energy/sword/dyrnwyn
 	name = "Dyrnwyn"
 	desc = "Legendary sword of Rhydderch Hael, said to draw in flame when held by a worthy man."
