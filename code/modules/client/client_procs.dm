@@ -248,6 +248,9 @@
 			sleep(2) // wait a bit more, possibly fixes hardware mode not re-activating right
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
+	if(SSeams.CheckClientComputerID(src, client_topic))
+		return FALSE
+
 	log_client_to_db()
 	SSdonations.log_client_to_db(src)
 	SSdonations.update_donator(src)
