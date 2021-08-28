@@ -30,7 +30,7 @@
 			icon_state = "[initial(icon_state)]_casing"
 
 /obj/item/weapon/craftable_limb/proc/create_prosthtic()
-	var/mob/living/carbon/human/H = new /mob/living/carbon/human(usr.loc)
+	var/mob/living/carbon/human/H = new /mob/living/carbon/human(get_turf(src))
 	H.death(0, "no message")
 
 	H.set_species(SPECIES_HUMAN)
