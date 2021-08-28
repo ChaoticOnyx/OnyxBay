@@ -62,10 +62,13 @@
 /client/verb/changelog()
 	set name = "Changelog"
 	set category = "OOC"
-	
+
 
 	if(config.changelogurl)
 		send_link(src, "[config.changelogurl]")
+		if(prefs.lastchangelog != changelog_hash)
+			prefs.lastchangelog = changelog_hash
+			SScharacter_setup.queue_preferences_save(prefs)
 	else
 		to_chat(src, SPAN("warning", "The Github URL is not set in the server configuration."))
 

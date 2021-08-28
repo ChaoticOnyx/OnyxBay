@@ -71,13 +71,12 @@ var/server_name = "OnyxBay"
 /world/New()
 	SetupLogs()
 
-	// Used for telling if the changelog has changed recently
-	changelog_hash = md5('html/changelogs/.all_changelog.json')
-
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
 	load_configuration()
+
+	update_changelog()
 
 	if(config.server_port)
 		var/port = OpenPort(config.server_port)
@@ -111,6 +110,21 @@ var/server_name = "OnyxBay"
 
 	Master.Initialize(10, FALSE)
 	webhook_send_roundstatus("lobby", "[config.server_id]")
+
+/proc/update_changelog()
+	// black magic
+	// use sleep in world/New() will cause world termination, so we return control as soon as update changelog proc start http request and sleeps.
+	set waitfor = FALSE
+	_update_changelog()
+
+/proc/_update_changelog()
+	if(config.changelogurl)
+		var/list/changelog_http = world.Export(config.changelogurl)
+		if(changelog_http)
+			var/changelog_content = changelog_http["CONTENT"]
+			if(changelog_content)
+				// Used for telling if the changelog has changed recently
+				changelog_hash = md5(changelog_content)
 
 #undef RECOMMENDED_VERSION
 
