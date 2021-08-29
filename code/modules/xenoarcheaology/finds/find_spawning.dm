@@ -563,9 +563,9 @@
 /obj/item/weapon/archaeological_find/disk/spawn_item()
 	var/obj/item/new_item
 	if(prob(25))
-		new_item = new /obj/item/weapon/disk/limb/wardspirit(loc)
+		new_item = new /obj/item/weapon/disk/limb/spirit(loc)
 	else if(prob(50))
-		new_item = new /obj/item/weapon/disk/limb/bishoprook(loc)
+		new_item = new /obj/item/weapon/disk/limb/rook(loc)
 	else
 		new_item = new /obj/item/weapon/disk/limb/ancient(loc)
 	return new_item
