@@ -555,3 +555,17 @@
 	else
 		new_item = new /obj/item/clothing/mask/gas(loc)
 	return new_item
+
+/obj/item/weapon/archaeological_find/disk
+	item_type = "prosthrtics blueprints"
+	find_type = ARCHAEO_DISK
+
+/obj/item/weapon/archaeological_find/disk/spawn_item()
+	var/obj/item/new_item
+	if(prob(25))
+		new_item = new /obj/item/weapon/disk/limb/wardspirit(loc)
+	else if(prob(50))
+		new_item = new /obj/item/weapon/disk/limb/bishoprook(loc)
+	else
+		new_item = new /obj/item/weapon/disk/limb/ancient(loc)
+	return new_item

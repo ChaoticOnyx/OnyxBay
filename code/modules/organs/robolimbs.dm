@@ -61,6 +61,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Unbranded - Protez"
 	desc = "A generic unbranded robotic prosthesis with shiny, modern casing."
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
+	unavailable_to_build = TRUE
 
 //NANOTRASEN
 /datum/robolimb/nanotrasen
@@ -87,6 +88,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "A simple but efficient robotic limb with synthetic skin on it's face, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
 	skintone = 1
+	unavailable_to_build = TRUE
 
 //ZENG-HU
 /datum/robolimb/zenghu
@@ -120,7 +122,7 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/bishop_alt1
-	company = "Bishop - Rook"
+	company = "Rook IV"
 	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
 	has_eyes = TRUE
@@ -201,7 +203,7 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/wardtakahashi_alt1
-	company = "Ward-Takahashi - Spirit"
+	company = "Spirit"
 	desc = "This limb has white and purple features, with a heavier casing."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
 	unavailable_to_build = TRUE
@@ -272,12 +274,21 @@ var/datum/robolimb/basic_robolimb
 /obj/item/weapon/disk/limb/zenghu
 	company = list("Zeng-Hu", "Zeng-Hu - Tajaran")
 
-// Rare ones
+// Premium versions of "beloved" branded prosthetics.
+/obj/item/weapon/disk/limb/unbranded
+	company = list("Unbranded - Protez")
+
+/obj/item/weapon/disk/limb/nanotrasen
+	company = list("NanoTrasen - Premium")
+
+// Rare ones.
+/obj/item/weapon/disk/limb/rook
+	company = list("Rook IV")
+
+/obj/item/weapon/disk/limb/spirit
+	company = list("Spirit")
+
 /obj/item/weapon/disk/limb/ancient
 	company = list("Uesseka Prototyping Ltd.")
 
-/obj/item/weapon/disk/limb/wardspirit
-	company = list("Ward-Takahashi - Spirit")
 
-/obj/item/weapon/disk/limb/bishoprook
-	company = list("Bishop - Rook")

@@ -66,6 +66,7 @@ var/global/list/finds_as_strings = list(
 			25;ARCHAEO_METAL)
 		if(DIGSITE_TECHNICAL)
 			. = pick(
+			125;ARCHAEO_DISK,
 			125;ARCHAEO_GASMASK,
 			100;ARCHAEO_METAL,
 			100;ARCHAEO_GASTANK,
