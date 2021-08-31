@@ -140,7 +140,7 @@ var/datum/robolimb/basic_robolimb
 	restricted_to = list(SPECIES_HUMAN)
 
 /datum/robolimb/hephaestus/hephaestus_alt1
-	company = "Hephaestus - Athena"
+	company = "Athena"
 	desc = "This rather thick limb has a militaristic green plating."
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt1.dmi'
 	unavailable_to_build = TRUE
@@ -260,7 +260,7 @@ var/datum/robolimb/basic_robolimb
 	company = list("Cyber Solutions")
 
 /obj/item/weapon/disk/limb/hephaestus
-	company = list("Hephaestus", "Hephaestus - Athena")
+	company = list("Hephaestus")
 
 /obj/item/weapon/disk/limb/veymed
 	company = list("Vey-Med", "Vey-Med - Skrell")
@@ -282,6 +282,9 @@ var/datum/robolimb/basic_robolimb
 	company = list("NanoTrasen - Premium")
 
 // Rare ones.
+/obj/item/weapon/disk/limb/athena
+	company = list("Athena")
+
 /obj/item/weapon/disk/limb/rook
 	company = list("Rook IV")
 
