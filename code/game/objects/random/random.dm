@@ -134,7 +134,8 @@
 				/obj/item/weapon/storage/belt/utility = 2,
 				/obj/item/weapon/storage/belt/utility/atmostech = 1,
 				/obj/random/tool = 5,
-				/obj/item/weapon/tape_roll = 2)
+				/obj/item/weapon/tape_roll = 2,
+				/obj/random/limb_disk = 2)
 
 /obj/random/medical
 	name = "Random Medical equipment"
@@ -1214,6 +1215,23 @@ something, make sure it's not in one of the other lists.*/
 				/obj/structure/sign/christmas/sockninja = 1,
 				/obj/structure/sign/christmas/sockwizard = 1,
 				/obj/structure/sign/christmas/socksindy = 2)
+
+/obj/random/limb_disk
+	name = "random prosthetics blueprints"
+	desc = "Please, I want to get SUPER SECRET prosthetics design disk!"
+	icon = 'icons/obj/cloning.dmi'
+	icon_state = "datadisk1"
+
+/obj/random/sock/spawn_choices()
+	return list(/obj/item/weapon/disk/limb/unbranded,
+				/obj/item/weapon/disk/limb/nanotrasen,
+				/obj/item/weapon/disk/limb/bishop,
+				/obj/item/weapon/disk/limb/cybersolutions,
+				/obj/item/weapon/disk/limb/hephaestus,
+				/obj/item/weapon/disk/limb/veymed,
+				/obj/item/weapon/disk/limb/wardtakahashi,
+				/obj/item/weapon/disk/limb/xion,
+				/obj/item/weapon/disk/limb/zenghu)
 
 /*
 	Selects one spawn point out of a group of points with the same ID and asks it to generate its items
