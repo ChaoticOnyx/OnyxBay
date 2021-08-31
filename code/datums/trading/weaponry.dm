@@ -72,6 +72,7 @@
 				)
 
 	possible_trading_items = list(/obj/item/weapon/disk/limb/cybersolutions					= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/athena					        = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/taser							= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/stunrevolver					= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/xray							= TRADER_ALL,

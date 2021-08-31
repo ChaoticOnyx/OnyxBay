@@ -277,6 +277,8 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/organ/internal/posibrain					= TRADER_THIS_TYPE,
 								/obj/item/robot_parts								= TRADER_SUBTYPES_ONLY,
 								/obj/item/weapon/stock_parts/manipulator			= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/unbranded		    	= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/nanotrasen				= TRADER_THIS_TYPE,
 								/obj/item/weapon/disk/limb/bishop					= TRADER_THIS_TYPE,
 								/obj/item/weapon/disk/limb/wardtakahashi			= TRADER_THIS_TYPE
 								)
