@@ -91,6 +91,7 @@
 				eye_icon = "eyes"
 				eye_icon_location = R.icon
 			else
+				eye_icon_location = initial(eye_icon_location)
 				eye_icon = R.use_eye_icon
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
