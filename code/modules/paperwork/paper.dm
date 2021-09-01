@@ -312,7 +312,7 @@
 		forceMove(B)
 		P.forceMove(B)
 
-		to_chat(user, "<span class='notice'>You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name]."))
 
 		B.pages.Add(src)
 		B.pages.Add(P)
