@@ -365,7 +365,7 @@
 		stamped += P.type
 		overlays += stampoverlay
 
-		to_chat(user, "<span class='notice'>You stamp the paper with your [P.name].</span>")
+		to_chat(user, SPAN_NOTICE("You stamp the paper with your [P.name]."))
 
 	else if(istype(P, /obj/item/weapon/flame))
 		burnpaper(P, user)
