@@ -97,6 +97,11 @@
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
+			
+		if(isghost(M))
+			message += " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)"
+			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
+			continue
 
 		if(M.see_invisible >= invisibility || narrate)
 			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
