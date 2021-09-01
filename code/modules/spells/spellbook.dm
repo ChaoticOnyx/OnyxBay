@@ -209,6 +209,7 @@ var/list/artefact_feedback = list(
 	var/cost = W.class.get_artifact_cost(path)
 
 	ASSERT(W.can_spend(cost))
+	W.can_reset_class = FALSE
 
 	W.spend(cost)
 	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
