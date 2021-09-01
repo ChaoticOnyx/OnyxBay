@@ -8,20 +8,6 @@
 	containertype = /obj/structure/largecrate/animal/mulebot
 	containername = "Mulebot Crate"
 
-/decl/hierarchy/supply_pack/operations/cargotrain
-	name = "Cargo Train Tug"
-	contains = list(/obj/vehicle/train/cargo/engine)
-	cost = 45
-	containertype = /obj/structure/largecrate
-	containername = "\improper Cargo Train Tug Crate"
-
-/decl/hierarchy/supply_pack/operations/cargotrailer
-	name = "Cargo Train Trolley"
-	contains = list(/obj/vehicle/train/cargo/trolley)
-	cost = 15
-	containertype = /obj/structure/largecrate
-	containername = "\improper Cargo Train Trolley Crate"
-
 /decl/hierarchy/supply_pack/operations/artscrafts
 	name = "Arts and Crafts supplies"
 	contains = list(/obj/item/weapon/storage/fancy/crayons,

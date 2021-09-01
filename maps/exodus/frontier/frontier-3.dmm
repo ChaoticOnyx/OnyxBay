@@ -601,7 +601,7 @@
 "alG" = (/obj/structure/bed/chair/comfy/black{dir = 8},/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
 "alH" = (/obj/structure/table/reinforced,/obj/item/weapon/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/turf/unsimulated/floor{icon_state = "white"},/area/syndicate_mothership)
 "alI" = (/obj/structure/table/rack,/obj/item/clothing/shoes/magboots,/obj/item/clothing/suit/space/syndicate/black/green,/obj/item/clothing/mask/breath,/obj/item/clothing/head/helmet/space/syndicate/black/green,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
-"alJ" = (/obj/vehicle/bike/electric,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
+"alJ" = (/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
 "alK" = (/obj/structure/table/rack,/obj/item/clothing/shoes/magboots,/obj/item/clothing/suit/space/syndicate/black/blue,/obj/item/clothing/mask/breath,/obj/item/clothing/head/helmet/space/syndicate/black/blue,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
 "alL" = (/obj/structure/flora/ausbushes/sunnybush,/turf/unsimulated/floor{icon_state = "asteroid"},/area/rescue_base/base)
 "alM" = (/obj/machinery/computer/arcade,/turf/unsimulated/floor{dir = 1; icon_state = "vault"},/area/rescue_base/base)
