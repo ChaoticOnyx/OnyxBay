@@ -320,7 +320,7 @@
 
 	else if(istype(P, /obj/item/weapon/pen))
 		if(icon_state == "scrap")
-			to_chat(usr, "<span class='warning'>\The [src] is too crumpled to write on.</span>")
+			to_chat(usr, SPAN_WARNING("\The [src] is too crumpled to write on."))
 			return
 
 		var/obj/item/weapon/pen/robopen/RP = P
