@@ -309,7 +309,7 @@
 		user.drop_from_inventory(P)
 		user.drop_from_inventory(src)
 		user.put_in_hands(B)
-		src.forceMove(B)
+		forceMove(B)
 		P.forceMove(B)
 
 		to_chat(user, "<span class='notice'>You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name].</span>")
