@@ -49,7 +49,7 @@
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] already broken!"))
 			. = ..()
-		if(WS.can_hack)
+		if(WS.active)
 			emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying.")
 
 	. = ..()

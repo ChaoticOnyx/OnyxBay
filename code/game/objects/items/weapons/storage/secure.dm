@@ -141,7 +141,7 @@
 
 /obj/item/weapon/storage/secure/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
 	var/obj/item/weapon/melee/energy/WS = emag_source
-	if(WS.can_hack)
+	if(WS.active)
 		on_hack_behavior(WS, user)
 		return TRUE
 

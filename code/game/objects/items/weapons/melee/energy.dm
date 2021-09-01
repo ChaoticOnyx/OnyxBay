@@ -14,7 +14,6 @@
 	var/active_outer_range = 1.6
 	var/brightness_color
 	var/needs_blocking = TRUE
-	var/can_hack = FALSE
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -45,7 +44,6 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
-	can_hack = FALSE
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
@@ -192,7 +190,6 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
 	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
-	can_hack = TRUE
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
@@ -201,7 +198,6 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 	set_light(0)
-	can_hack = FALSE
 
 /obj/item/weapon/melee/energy/sword/one_hand
 	name = "energy sword"
@@ -325,7 +321,6 @@
 	mod_shield = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = 0
-	can_hack = TRUE
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/mob/living/creator
@@ -375,4 +370,3 @@
 	blade_color = "red"
 	brightness_color = "#ff5959"
 	needs_blocking = FALSE
-	can_hack = TRUE

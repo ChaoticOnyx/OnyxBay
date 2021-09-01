@@ -403,7 +403,7 @@
 		return
 	else if(istype(W, /obj/item/weapon/melee/energy))
 		var/obj/item/weapon/melee/energy/WS = W
-		if(WS.can_hack)
+		if(WS.active)
 			emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying."))
 	else if(istype(W, /obj/item/weapon/packageWrap))
 		return
