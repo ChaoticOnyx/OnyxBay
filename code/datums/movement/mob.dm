@@ -107,7 +107,7 @@
 		//drunk driving
 		if(mob.confused && prob(20)) //vehicles tend to keep moving in the same direction
 			direction = turn(direction, pick(90, -90))
-		mob.buckled.relaymove(mob, direction)
+		mob.buckled.DoMove(direction, mob)
 		return MOVEMENT_HANDLED
 
 	if(mob.pulledby || mob.buckled) // Wheelchair driving!
