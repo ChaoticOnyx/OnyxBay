@@ -59,6 +59,8 @@
 				to_chat(D, "<span class='warning'>You hit [M]!</span>")
 				msg_admin_attack("[D.name] ([D.ckey]) hit [M.name] ([M.ckey]) with [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
 
+	..()
+
 
 //-------------------------------------------
 // Vehicle procs
