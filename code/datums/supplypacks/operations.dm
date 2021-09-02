@@ -6,7 +6,6 @@
 	cost = 10
 	contains = list(
 		/obj/structure/easel,
-		/obj/item/canvas/twentyfour_twentyfour,
 		/obj/item/canvas/twentythree_twentythree,
 		/obj/item/canvas/twentythree_nineteen,
 		/obj/item/canvas/nineteen_nineteen,
