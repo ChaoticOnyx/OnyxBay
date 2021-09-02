@@ -65,7 +65,7 @@
 	reset_grid()
 
 /obj/item/canvas/proc/reset_grid()
-	grid = new/list(width,height)
+	grid = new /list(width,height)
 	for(var/x in 1 to width)
 		for(var/y in 1 to height)
 			grid[x][y] = canvas_color
