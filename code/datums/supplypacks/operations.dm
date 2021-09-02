@@ -1,6 +1,20 @@
 /decl/hierarchy/supply_pack/operations
 	name = "Operations"
 
+/decl/hierarchy/supply_pack/operations/arts
+	name = "Arts Supplies"
+	cost = 10
+	contains = list(
+		/obj/structure/easel,
+		/obj/item/canvas/twentyfour_twentyfour,
+		/obj/item/canvas/twentythree_twentythree,
+		/obj/item/canvas/twentythree_nineteen,
+		/obj/item/canvas/nineteen_nineteen,
+		/obj/item/canvas = 2,
+		/obj/item/weapon/pen/crayon/rainbow = 2
+	)
+	containername = "Arts Crate"
+
 /decl/hierarchy/supply_pack/operations/mule
 	name = "MULEbot Crate"
 	contains = list()
