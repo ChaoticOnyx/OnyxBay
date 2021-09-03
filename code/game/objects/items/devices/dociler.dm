@@ -34,7 +34,7 @@
 		return
 	to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
 	log_game("[key_name(usr)] named [L.name] as [new_name]")
-	L.real_name = L.name = new_name
+	L.real_name = new_name
 	if(L?.renamable)
 		L.renamable = FALSE
 
