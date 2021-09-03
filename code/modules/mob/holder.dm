@@ -114,21 +114,22 @@ var/list/holder_mob_icon_cache = list()
 
 	update_held_icon()
 
-/obj/item/weapon/holder/proc/rename(new_name, mob/living/simple_animal/M, mob/U)
-	if(new_name)
-		log_game("[key_name(U)] named [M.name] as [new_name]")
-		M.real_name = M.name = new_name
-		M.renamable = FALSE
-		sync(M)
-
-/obj/item/weapon/holder/verb/name_pet(mob/living/simple_animal/held_mob, mob/user)
-	set category = "Object"
-	set name = "Name"
-	held_mob = locate() in contents
+/obj/item/weapon/holder/proc/rename()
+	var/mob/living/simple_animal/held_mob = locate() in contents
 	if(held_mob?.renamable && held_mob.stat != DEAD)
 		var/new_name = sanitizeName(input("How do you want to name this creature?", "Rename \the [held_mob.name]", held_mob.name) as null|text)
+		if(!new_name)
+			return
 		to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
-		rename(new_name, held_mob, user)
+		log_game("[key_name(usr)] named [held_mob.name] as [new_name]")
+		held_mob.real_name = held_mob.name = new_name
+		held_mob.renamable = FALSE
+		sync(held_mob)
+
+/obj/item/weapon/holder/verb/name_pet()
+	set category = "Object"
+	set name = "Name"
+	rename()
 
 //Mob specific holders.
 /obj/item/weapon/holder/diona

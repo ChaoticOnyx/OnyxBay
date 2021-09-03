@@ -28,24 +28,27 @@
 			mode = "naming"
 	to_chat(user, "You set \the [src] to [mode] docile mode.")
 
-/obj/item/device/dociler/proc/rename(mob/living/simple_animal/L, mob/U)
+/obj/item/device/dociler/proc/rename(mob/living/simple_animal/L)
 	var/new_name = sanitizeName(input("How do you want to name this creature?", "Rename \the [L.name]", L.name) as null|text)
-	if(new_name)
-		log_game("[key_name(U)] named [L.name] as [new_name]")
-		L.real_name = L.name = new_name
-		L.renamable = FALSE
+	if(!new_name)
+		return
+	to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
+	log_game("[key_name(usr)] named [L.name] as [new_name]")
+	L.real_name = L.name = new_name
+	L.renamable = FALSE
 
-/obj/item/device/dociler/proc/inject(mob/living/simple_animal/hostile/H, mob/U)
+/obj/item/device/dociler/proc/inject(mob/living/simple_animal/hostile/H)
 	//Dociler cooldown
 	loaded = FALSE
 	icon_state = "animal_tagger0"
 	addtimer(CALLBACK(src, .proc/refill), 5 MINUTES)
 	//Mob
-	U.visible_message("\The [U] thrusts \the [src] deep into \the [H]'s head, injecting something!")
+	rename(H)
+	usr.visible_message("\The [usr] thrusts \the [src] deep into \the [H]'s head, injecting something!")
 	H.LoseTarget()
-	H.faction = (mode == "somewhat") ? U.faction : null
+	H.faction = (mode == "somewhat") ? usr.faction : null
 	H.attack_same = 0
-	H.friends += weakref(U)
+	H.friends += weakref(usr)
 	H.desc += SPAN("notice", " It looks especially docile.")
 
 /obj/item/device/dociler/proc/refill()
@@ -68,14 +71,12 @@
 			if("completely")
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if all the galaxy are your friends."))
-					inject(L, user)
-					rename(L, user)
+					inject(L)
 			if("somewhat")
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if [user] is the friendliest and nicest person you've ever know. You want to be friends with him and all his friends."))
-					inject(L, user)
-					rename(L, user)
+					inject(L)
 			if("naming")
 				var/mob/living/simple_animal/A = L
 				if(A?.renamable)
-					rename(L, user)
+					rename(L)
