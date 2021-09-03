@@ -25,6 +25,7 @@ jobs:
           shopt -s globstar
           (! grep 'step_[xy]' maps/**/*.dmm)
           (! grep '\bnew/' **/*.dm)
+          (! grep -E '^/\S+\([^)]*\bvar/' **/*.dm)
       - name: Build
         run: |
           source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
