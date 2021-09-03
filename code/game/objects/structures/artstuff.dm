@@ -154,7 +154,7 @@
 		return
 	for(var/y in 1 to height)
 		for(var/x in 1 to width)
-			var/image/pixel = image(icon, "onepixel", pixel_x = x, pixel_y = height - y)
+			var/image/pixel = image(icon, "onepixel", pixel_x = x, pixel_y = height - y + 1)
 			pixel.color = grid[x][y]
 			generated_icon.overlays += pixel
 	icon_generated = TRUE
