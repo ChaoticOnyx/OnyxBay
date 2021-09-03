@@ -223,7 +223,7 @@
 	swap_hand()
 	return
 
-/mob/proc/ShiftMiddleClickOn(var/atom/A)
+/mob/proc/ShiftMiddleClickOn(atom/A)
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
 		if(pointed(A))
 			return
