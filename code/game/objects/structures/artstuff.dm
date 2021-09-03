@@ -130,6 +130,10 @@
 	author_ckey = user.ckey
 	paint_image()
 	try_rename(user)
+	var/turf/epicenter = get_turf(src)
+	if(!epicenter)
+		return
+	message_admins("The new art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
 
 /obj/item/canvas/update_icon()
 	. = ..()
