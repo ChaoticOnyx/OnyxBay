@@ -892,6 +892,7 @@
 	item_types += new /datum/dispense_type("canvas 19x19", /obj/item/canvas/nineteen_nineteen, 45, 100)
 	item_types += new /datum/dispense_type("canvas 23x19", /obj/item/canvas/twentythree_nineteen, 65, 100)
 	item_types += new /datum/dispense_type("canvas 23x23", /obj/item/canvas/twentythree_twentythree, 85, 100)
+	item_types += new /datum/dispense_type("canvas 24x24", /obj/item/canvas/twentyfour_twentyfour, 90, 100)
 	..()
 
 /obj/item/weapon/robot_item_dispenser/crates

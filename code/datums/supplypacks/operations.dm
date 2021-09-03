@@ -9,6 +9,7 @@
 		/obj/item/canvas/twentythree_twentythree,
 		/obj/item/canvas/twentythree_nineteen,
 		/obj/item/canvas/nineteen_nineteen,
+		/obj/item/canvas/twentyfour_twentyfour,
 		/obj/item/canvas = 2,
 		/obj/item/weapon/pen/crayon/rainbow = 2
 	)

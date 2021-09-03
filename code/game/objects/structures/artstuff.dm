@@ -215,8 +215,6 @@
 	framed_offset_y = 6
 
 /obj/item/canvas/twentyfour_twentyfour
-	name = "ai universal standard canvas"
-	desc = "Besides being very large, the AI can accept these as a display from their internal database after you've hung it up."
 	icon_state = "24x24"
 	width = 24
 	height = 24
