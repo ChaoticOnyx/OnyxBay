@@ -139,7 +139,7 @@
 		return
 
 	var/response = alert(user, "Are you sure you want to harvest this [seed.display_name]?", "Living plant request", "Yes", "No")
-	if(response == "es")
+	if(response == "Yes")
 		harvest()
 
 /obj/machinery/portable_atmospherics/hydroponics/attack_generic(mob/user)
