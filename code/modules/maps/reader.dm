@@ -33,7 +33,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
  * 2) Read the map line by line, parsing the result (using parse_grid)
  *
  */
-/dmm_suite/load_map(var/dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, lower_crop_y, upper_crop_x, upper_crop_y)
+/dmm_suite/load_map(dmm_file, x_offset, y_offset, z_offset, cropMap, measureOnly, no_changeturf, clear_contents, lower_crop_x, lower_crop_y, upper_crop_x, upper_crop_y)
 	//How I wish for RAII
 	Master.StartLoadingMap()
 	space_key = null

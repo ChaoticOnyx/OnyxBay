@@ -34,7 +34,7 @@
 	if(hat)
 		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
 
-/mob/living/carbon/alien/diona/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
+/mob/living/carbon/alien/diona/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
 	. = ..()
 	if(W == hat)
 		hat = null
@@ -54,14 +54,14 @@
 	verbs += /mob/living/carbon/alien/diona/proc/merge
 	verbs += /mob/living/carbon/alien/diona/proc/drop_holding_item
 
-/mob/living/carbon/alien/diona/put_in_hands(var/obj/item/W) // No hands. Use mouth.
+/mob/living/carbon/alien/diona/put_in_hands(obj/item/W) // No hands. Use mouth.
 	if(can_collect(W))
 		collect(W)
 	else
 		W.forceMove(get_turf(src))
 	return 1
 
-/mob/living/carbon/alien/diona/proc/wear_hat(var/obj/item/clothing/head/new_hat)
+/mob/living/carbon/alien/diona/proc/wear_hat(obj/item/clothing/head/new_hat)
 	if(hat || !istype(new_hat))
 		return FALSE
 	hat = new_hat
@@ -70,7 +70,7 @@
 	verbs += /mob/living/carbon/alien/diona/proc/drop_hat
 	return TRUE
 
-/mob/living/carbon/alien/diona/proc/handle_npc(var/mob/living/carbon/alien/diona/D)
+/mob/living/carbon/alien/diona/proc/handle_npc(mob/living/carbon/alien/diona/D)
 	if(D.stat != CONSCIOUS)
 		return
 	if(prob(66) && isturf(D.loc) && !D.pulledby) //won't move if being pulled
@@ -92,10 +92,10 @@
 	collect(A)
 	return 1
 
-/mob/living/carbon/alien/diona/proc/can_collect(var/obj/item/collecting)
+/mob/living/carbon/alien/diona/proc/can_collect(obj/item/collecting)
 	return (!holding_item && istype(collecting) && !collecting.anchored && collecting.simulated && collecting.w_class <= ITEM_SIZE_SMALL)
 
-/mob/living/carbon/alien/diona/proc/collect(var/obj/item/collecting)
+/mob/living/carbon/alien/diona/proc/collect(obj/item/collecting)
 	collecting.forceMove(src)
 	holding_item = collecting
 	visible_message(SPAN("notice", "\The [src] engulfs \the [holding_item]."))

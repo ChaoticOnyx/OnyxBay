@@ -22,7 +22,7 @@
 			return
 	..()
 
-/mob/living/ShiftMiddleClickOn(var/atom/A)
+/mob/living/ShiftMiddleClickOn(atom/A)
 	if(get_preference_value(/datum/client_preference/hardsuit_activation) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
 		if(HardsuitClickOn(A))
 			return

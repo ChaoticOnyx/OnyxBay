@@ -139,11 +139,10 @@
 		return
 
 	var/response = alert(user, "Are you sure you want to harvest this [seed.display_name]?", "Living plant request", "Yes", "No")
-	if(response == "Yes")
+	if(response == "es")
 		harvest()
 
-/obj/machinery/portable_atmospherics/hydroponics/attack_generic(var/mob/user)
-
+/obj/machinery/portable_atmospherics/hydroponics/attack_generic(mob/user)
 	// Why did I ever think this was a good idea. TODO: move this onto the nymph mob.
 	if(istype(user,/mob/living/carbon/alien/diona))
 		var/mob/living/carbon/alien/diona/nymph = user
