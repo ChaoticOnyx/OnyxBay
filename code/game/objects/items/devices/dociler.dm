@@ -35,7 +35,8 @@
 	to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
 	log_game("[key_name(usr)] named [L.name] as [new_name]")
 	L.real_name = L.name = new_name
-	L.renamable = FALSE
+	if(L?.renamable)
+		L.renamable = FALSE
 
 /obj/item/device/dociler/proc/inject(mob/living/simple_animal/hostile/H)
 	//Dociler cooldown
@@ -69,7 +70,7 @@
 	else
 		switch(mode)
 			if("completely")
-				if(istype(L,/mob/living/simple_animal/hostile))
+				if(istype(L, /mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if all the galaxy are your friends."))
 					inject(L)
 			if("somewhat")
