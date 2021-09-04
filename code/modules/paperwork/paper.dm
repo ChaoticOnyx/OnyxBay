@@ -29,6 +29,7 @@
 	var/list/offset_x[0] //offsets stored for later
 	var/list/offset_y[0] //usage by the photocopier
 	var/taped = FALSE
+	var/crumpled = FALSE
 	var/rigged = FALSE
 	var/spam_flag = FALSE
 	var/readonly = FALSE
@@ -58,7 +59,7 @@
 	set_content(text ? text : info, title, rawhtml || src.rawhtml)
 
 /obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
-	var/obj/item/weapon/paper/P = new src.type(loc)
+	var/obj/item/weapon/paper/P = new (loc)
 	P.name = (taped) ? copytext(name, 1, length(name)-7) : name
 	P.info = info
 	P.info_links = info_links
@@ -132,11 +133,11 @@
 /obj/item/weapon/paper/update_icon()
 	if(dynamic_icon)
 		return
-	if(findtext(icon_state,"scrap"))
+	if(crumpled)
 		icon_state = "scrap"
 	else
 		icon_state = "paper"
-		if(length(info)>length("<!--paper_field_end-->"))
+		if(!is_clean())
 			icon_state += "_words"
 	if(taped)
 		icon_state += "_taped"
@@ -155,7 +156,7 @@
 	if(user && (in_range(user, src) || isghost(user)))
 		show_content(user)
 	else
-		. += "\n<span class='notice'>You have to go closer if you want to read it.</span>"
+		. += "\n[SPAN_NOTICE("You have to go closer if you want to read it.")]"
 
 /obj/item/weapon/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
@@ -171,7 +172,7 @@
 	set src in usr
 
 	if((MUTATION_CLUMSY in usr.mutations) && prob(50))
-		to_chat(usr, "<span class='warning'>You cut yourself on the paper.</span>")
+		to_chat(usr, SPAN_WARNING("You cut yourself on the paper."))
 		return
 	var/n_name = sanitizeSafe(input(usr, "What would you like to label the paper?", "Paper Labelling", null)  as text, MAX_NAME_LEN)
 
@@ -182,22 +183,22 @@
 			name += " (taped)"
 		add_fingerprint(usr)
 
-/obj/item/weapon/paper/attack_self(mob/living/user as mob)
+/obj/item/weapon/paper/attack_self(mob/living/user)
 	if(user.a_intent == I_HURT)
-		if(icon_state == "scrap")
-			user.show_message("<span class='warning'>\The [src] is already crumpled.</span>")
+		if(crumpled)
+			user.show_message(SPAN_NOTICE("\The [src] is already crumpled."))
 			return
 		//crumple dat paper
 		info = stars(info,85)
-		user.visible_message("\The [user] crumples \the [src] into a ball!")
-		icon_state = "scrap"
+		user.visible_message(SPAN_WARNING("\The [user] crumples \the [src] into a ball!"))
+		crumpled = TRUE
 		update_icon()
 		throw_range = 7
 		throw_speed = 2
 		return
 	if(taped)
 		name = copytext(name, 1, length(name)-7)
-		to_chat(user, "You remove the piece of tape from [name].")
+		to_chat(user, "You removed the piece of tape from [name].")
 		taped = FALSE
 		anchored = FALSE
 		update_icon()
@@ -217,25 +218,25 @@
 /obj/item/weapon/paper/attack_ai(mob/living/silicon/ai/user)
 	show_content(user)
 
-/obj/item/weapon/paper/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/weapon/paper/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(user.zone_sel.selecting == BP_EYES)
-		user.visible_message("<span class='notice'>You show the paper to [M]. </span>", \
-			"<span class='notice'> [user] holds up a paper and shows it to [M]. </span>")
+		user.visible_message(SPAN_NOTICE("You show the paper to [M]."), \
+		                     SPAN_NOTICE("[user] holds up a paper and shows it to [M]."))
 		M.examinate(src)
 
 	else if(user.zone_sel.selecting == BP_MOUTH) // lipstick wiping
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H == user)
-				to_chat(user, "<span class='notice'>You wipe off the lipstick with [src].</span>")
+				to_chat(user, SPAN_NOTICE("You wipe off the lipstick with [src]."))
 				H.lip_style = null
 				H.update_body()
 			else
-				user.visible_message("<span class='warning'>[user] begins to wipe [H]'s lipstick off with \the [src].</span>", \
-								 	 "<span class='notice'>You begin to wipe off [H]'s lipstick.</span>")
+				user.visible_message(SPAN_WARNING("[user] begins to wipe [H]'s lipstick off with \the [src]."), \
+								 	 SPAN_NOTICE("You begin to wipe off [H]'s lipstick."))
 				if(do_after(user, 10, H) && do_after(H, 10, needhand = 0))	//user needs to keep their active hand, H does not.
-					user.visible_message("<span class='notice'>[user] wipes [H]'s lipstick off with \the [src].</span>", \
-										 "<span class='notice'>You wipe off [H]'s lipstick.</span>")
+					user.visible_message(SPAN_NOTICE("[user] wipes [H]'s lipstick off with \the [src]."), \
+										 SPAN_NOTICE("You wipe off [H]'s lipstick."))
 					H.lip_style = null
 					H.update_body()
 
@@ -256,7 +257,7 @@
 	if(target_turf != source_turf)
 		dir_offset = get_dir(source_turf, target_turf)
 		if(!(dir_offset in GLOB.cardinal))
-			to_chat(user, "You cannot reach that from here.")// can only place stuck papers in cardinal directions, to
+			to_chat(user, SPAN_NOTICE("You cannot reach that from here."))// can only place stuck papers in cardinal directions, to
 			return											// reduce papers around corners issue.
 
 	user.drop_from_inventory(src)
@@ -286,7 +287,7 @@
 
 	if(istype(P, /obj/item/weapon/tape_roll))
 		if(taped)
-			to_chat(user, "It has been taped already!")
+			to_chat(user, SPAN_NOTICE("It has been taped already!"))
 			return
 		name += " (taped)"
 		taped = TRUE
@@ -296,7 +297,7 @@
 	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/photo))
 		if (istype(P, /obj/item/weapon/paper/carbon))
 			var/obj/item/weapon/paper/carbon/C = P
-			if (!C.iscopy && !C.copied)
+			if (!C.copied)
 				to_chat(user, SPAN_NOTICE("Take off the carbon copy first."))
 				add_fingerprint(user)
 				return
@@ -319,7 +320,7 @@
 		B.update_icon()
 
 	else if(istype(P, /obj/item/weapon/pen))
-		if(icon_state == "scrap")
+		if(crumpled)
 			to_chat(usr, SPAN_WARNING("\The [src] is too crumpled to write on."))
 			return
 
@@ -331,7 +332,7 @@
 		return
 
 	else if(istype(P, /obj/item/weapon/stamp) || istype(P, /obj/item/clothing/ring/seal))
-		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
+		if((!in_range(src, user) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
 			return
 
 		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
@@ -352,7 +353,7 @@
 
 		if(istype(P, /obj/item/weapon/stamp/clown))
 			if(!clown)
-				to_chat(user, "<span class='notice'>You are totally unable to use the stamp. HONK!</span>")
+				to_chat(user, SPAN_NOTICE("You are totally unable to use the stamp. HONK!"))
 				return
 
 		if(!ico)
@@ -378,7 +379,7 @@
 	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
 		if(!G.dry)
-			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
+			to_chat(user, SPAN_NOTICE("[G] must be dried before you can grind and roll it."))
 			return
 		var/R_loc = loc
 		var/roll_in_hands = FALSE
@@ -391,7 +392,7 @@
 				G.reagents.del_reagent(/datum/reagent/nutriment)
 			G.reagents.trans_to_obj(R, G.reagents.total_volume)
 		R.desc += " Looks like it contains some [G]."
-		to_chat(user, SPAN("notice", "You grind \the [G] and roll a big joint!"))
+		to_chat(user, SPAN_NOTICE("You grind \the [G] and roll a big joint!"))
 		R.add_fingerprint(user)
 		qdel(src)
 		qdel(G)
@@ -528,7 +529,7 @@
 				qdel(src)
 
 			else
-				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
+				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
 
 /obj/item/weapon/paper/proc/get_pen()
@@ -581,7 +582,7 @@
 		//var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as message
 
 		if(free_space <= 0)
-			to_chat(usr, "<span class='info'>There isn't enough space left on \the [src] to write anything.</span>")
+			to_chat(usr, SPAN("info", "There isn't enough space left on \the [src] to write anything."))
 			return
 
 		var/t =  sanitize(input("Enter what you want to write:", "Write", null, null) as message, free_space, extra = 0, trim = 0)

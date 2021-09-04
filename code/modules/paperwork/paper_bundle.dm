@@ -20,8 +20,8 @@
 
 	if (istype(W, /obj/item/weapon/paper/carbon))
 		var/obj/item/weapon/paper/carbon/C = W
-		if (!C.iscopy && !C.copied)
-			to_chat(user, "<span class='notice'>Take off the carbon copy first.</span>")
+		if (!C.copied)
+			to_chat(user, SPAN_NOTICE("Take off the carbon copy first."))
 			add_fingerprint(user)
 			return
 	// adding sheets
@@ -40,7 +40,7 @@
 			O.add_fingerprint(usr)
 			pages.Add(O)
 
-		to_chat(user, "<span class='notice'>You add \the [W.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You add \the [W.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
 		qdel(W)
 	else
 		if(istype(W, /obj/item/weapon/tape_roll))
@@ -57,9 +57,9 @@
 
 /obj/item/weapon/paper_bundle/proc/insert_sheet_at(mob/user, index, obj/item/weapon/sheet)
 	if(istype(sheet, /obj/item/weapon/paper))
-		to_chat(user, "<span class='notice'>You add [(sheet.name == "paper") ? "the paper" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "paper") ? "the paper" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
 	else if(istype(sheet, /obj/item/weapon/photo))
-		to_chat(user, "<span class='notice'>You add [(sheet.name == "photo") ? "the photo" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name].</span>")
+		to_chat(user, SPAN_NOTICE("You add [(sheet.name == "photo") ? "the photo" : sheet.name] to [(src.name == "paper bundle") ? "the paper bundle" : src.name]."))
 
 	user.drop_from_inventory(sheet)
 	sheet.loc = src
@@ -91,14 +91,14 @@
 				qdel(src)
 
 			else
-				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
+				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
 /obj/item/weapon/paper_bundle/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
-		. += "\n<span class='notice'>It is too far away.</span>"
+		. += "\n[SPAN_NOTICE("It is too far away.")]"
 	return
 
 /obj/item/weapon/paper_bundle/proc/show_content(mob/user as mob)
@@ -167,7 +167,7 @@
 			usr.put_in_hands(W)
 			pages.Remove(pages[page])
 
-			to_chat(usr, "<span class='notice'>You remove the [W.name] from the bundle.</span>")
+			to_chat(usr, SPAN_NOTICE("You remove the [W.name] from the bundle."))
 
 			if(pages.len <= 1)
 				var/obj/item/weapon/paper/P = src[1]
@@ -185,7 +185,7 @@
 		src.attack_self(usr)
 		updateUsrDialog()
 	else
-		to_chat(usr, "<span class='notice'>You need to hold it in hands!</span>")
+		to_chat(usr, SPAN_NOTICE("You need to hold it in hands!"))
 
 /obj/item/weapon/paper_bundle/verb/rename()
 	set name = "Rename bundle"
@@ -204,7 +204,7 @@
 	set category = "Object"
 	set src in usr
 
-	to_chat(usr, "<span class='notice'>You loosen the bundle.</span>")
+	to_chat(usr, SPAN_NOTICE("You loosen the bundle."))
 	for(var/obj/O in src)
 		O.dropInto(usr.loc)
 		O.reset_plane_and_layer()

@@ -3,18 +3,15 @@
 	icon_state = "paper_stack"
 	item_state = "paper"
 	var/copied = FALSE
-	var/iscopy = FALSE
 
 
 /obj/item/weapon/paper/carbon/update_icon()
-	if(!findtext(icon_state,"scrap"))
-		if(iscopy)
+	if(!crumpled)
+		if(copied)
 			icon_state = "cpaper"
-		else if (copied)
-			icon_state = "paper"
 		else
 			icon_state = "paper_stack"
-		if(length(info)>length("<!--paper_field_end-->"))
+		if(!is_clean())
 			icon_state += "_words"
 	else
 		icon_state = "scrap"
@@ -28,13 +25,12 @@
 	set src in usr
 
 	if (!copied)
-		var/obj/item/weapon/paper/carbon/copy = copy(usr.loc, generate_stamps = FALSE)
+		var/obj/item/weapon/paper/copy = copy(usr.loc, generate_stamps = FALSE)
 		copy.recolorize(saturation = 1, grayscale = TRUE)
 		copy.SetName("Copy - " + copy.name)
-		to_chat(usr, "<span class='notice'>You tear off the carbon-copy!</span>")
+		to_chat(usr, SPAN_NOTICE("You tear off the carbon-copy!"))
 		copied = TRUE
 		update_icon()
-		copy.iscopy = TRUE
 		copy.update_icon()
 	else
-		to_chat(usr, "There are no more carbon copies attached to this paper!")
+		to_chat(usr, SPAN_NOTICE("There are no more carbon copies attached to this paper!"))
