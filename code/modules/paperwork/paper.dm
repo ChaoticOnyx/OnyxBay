@@ -278,7 +278,7 @@
 			else if(dir_offset & SOUTH)
 				pixel_y -= 32
 
-/obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
+/obj/item/weapon/paper/attackby(obj/item/weapon/P, mob/user)
 	..()
 	var/clown = 0
 	if(user.mind && (user.mind.assigned_role == "Clown"))
