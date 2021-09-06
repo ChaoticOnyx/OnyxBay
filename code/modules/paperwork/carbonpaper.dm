@@ -21,13 +21,13 @@
 	set category = "Object"
 	set src in usr
 
-	if (!copied)
-		var/obj/item/weapon/paper/copy = copy(usr.loc, generate_stamps = FALSE)
-		copy.recolorize(saturation = 1, grayscale = TRUE)
-		copy.SetName("Copy - " + copy.name)
-		to_chat(usr, SPAN_NOTICE("You tear off the carbon-copy!"))
-		copied = TRUE
-		update_icon()
-		copy.update_icon()
-	else
+	if (copied)
 		to_chat(usr, SPAN_NOTICE("There are no more carbon copies attached to this paper!"))
+		return
+	var/obj/item/weapon/paper/copy = copy(usr.loc, generate_stamps = FALSE)
+	copy.recolorize(saturation = 1, grayscale = TRUE)
+	copy.SetName("Copy - " + copy.name)
+	to_chat(usr, SPAN_NOTICE("You tear off the carbon-copy!"))
+	copied = TRUE
+	update_icon()
+	copy.update_icon()
