@@ -9,11 +9,11 @@
 	if(!crumpled)
 		icon_state = copied ? "cpaper" : "paper_stack"
 		if(!is_clean())
-			icon_state += "_words"
+			icon_state = "[icon_state]_words"
 	else
 		icon_state = "scrap"
 	if(taped)
-		icon_state += "_taped"
+		icon_state = "[icon_state]_taped"
 
 
 /obj/item/weapon/paper/carbon/verb/removecopy()

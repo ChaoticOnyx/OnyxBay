@@ -180,7 +180,7 @@
 	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0 && n_name)
 		SetName(n_name)
 		if(taped)
-			name += " (taped)"
+			name = "[name] (taped)"
 		add_fingerprint(usr)
 
 /obj/item/weapon/paper/attack_self(mob/living/user)
@@ -285,7 +285,7 @@
 		if(taped)
 			to_chat(user, SPAN_NOTICE("It has been taped already!"))
 			return
-		name += " (taped)"
+		name = "[name] (taped)"
 		taped = TRUE
 		update_icon()
 		return
