@@ -7,10 +7,7 @@
 
 /obj/item/weapon/paper/carbon/update_icon()
 	if(!crumpled)
-		if(copied)
-			icon_state = "cpaper"
-		else
-			icon_state = "paper_stack"
+		icon_state = copied ? "cpaper" : "paper_stack"
 		if(!is_clean())
 			icon_state += "_words"
 	else
