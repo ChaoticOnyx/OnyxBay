@@ -138,9 +138,9 @@
 	else
 		icon_state = "paper"
 		if(!is_clean())
-			icon_state += "_words"
+			icon_state = "[icon_state]_words"
 	if(taped)
-		icon_state += "_taped"
+		icon_state = "[icon_state]_taped"
 
 /obj/item/weapon/paper/proc/update_space()
 	free_space = initial(free_space)
@@ -204,12 +204,10 @@
 		update_icon()
 	else
 		user.examinate(src)
-		if(rigged && (Holiday == "April Fool's Day"))
-			if(!spam_flag)
-				spam_flag = TRUE
-				playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
-				spawn(20)
-					spam_flag = FALSE
+		if(rigged && (Holiday == "April Fool's Day") && !spam_flag)
+			spam_flag = TRUE
+			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
+			spawn(20) spam_flag = FALSE
 
 /obj/item/weapon/paper/attack_hand(mob/user)
 	anchored = FALSE // Unattach it from whereever it's on, if anything.
@@ -233,10 +231,10 @@
 				H.update_body()
 			else
 				user.visible_message(SPAN_WARNING("[user] begins to wipe [H]'s lipstick off with \the [src]."), \
-								 	 SPAN_NOTICE("You begin to wipe off [H]'s lipstick."))
+				                     SPAN_NOTICE("You begin to wipe off [H]'s lipstick."))
 				if(do_after(user, 10, H) && do_after(H, 10, needhand = 0))	//user needs to keep their active hand, H does not.
 					user.visible_message(SPAN_NOTICE("[user] wipes [H]'s lipstick off with \the [src]."), \
-										 SPAN_NOTICE("You wipe off [H]'s lipstick."))
+					                     SPAN_NOTICE("You wipe off [H]'s lipstick."))
 					H.lip_style = null
 					H.update_body()
 
@@ -264,26 +262,24 @@
 	forceMove(source_turf)
 	anchored = TRUE
 
-	if(params)
-		var/list/mouse_control = params2list(params)
-		if(mouse_control["icon-x"])
-			pixel_x = text2num(mouse_control["icon-x"]) - 16
-			if(dir_offset & EAST)
-				pixel_x += 32
-			else if(dir_offset & WEST)
-				pixel_x -= 32
-		if(mouse_control["icon-y"])
-			pixel_y = text2num(mouse_control["icon-y"]) - 16
-			if(dir_offset & NORTH)
-				pixel_y += 32
-			else if(dir_offset & SOUTH)
-				pixel_y -= 32
+	if(!params)
+		return
+	var/list/mouse_control = params2list(params)
+	if(mouse_control["icon-x"])
+		pixel_x = text2num(mouse_control["icon-x"]) - 16
+		if(dir_offset & EAST)
+			pixel_x += 32
+		else if(dir_offset & WEST)
+			pixel_x -= 32
+	if(mouse_control["icon-y"])
+		pixel_y = text2num(mouse_control["icon-y"]) - 16
+		if(dir_offset & NORTH)
+			pixel_y += 32
+		else if(dir_offset & SOUTH)
+			pixel_y -= 32
 
 /obj/item/weapon/paper/attackby(obj/item/weapon/P, mob/user)
 	..()
-	var/clown = 0
-	if(user.mind && (user.mind.assigned_role == "Clown"))
-		clown = 1
 
 	if(istype(P, /obj/item/weapon/tape_roll))
 		if(taped)
@@ -352,6 +348,7 @@
 		stampoverlay.pixel_y = y
 
 		if(istype(P, /obj/item/weapon/stamp/clown))
+			var/clown = user.mind && (user.mind.assigned_role == "Clown")
 			if(!clown)
 				to_chat(user, SPAN_NOTICE("You are totally unable to use the stamp. HONK!"))
 				return
