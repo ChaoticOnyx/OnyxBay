@@ -318,7 +318,7 @@
 			return
 
 		var/obj/item/weapon/pen/robopen/RP = P
-		if ( istype(RP) && RP.mode == 2 )
+		if (istype(RP) && RP.mode == 2)
 			RP.RenamePaper(user,src)
 		else
 			show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]")
