@@ -256,7 +256,7 @@
 		dir_offset = get_dir(source_turf, target_turf)
 		if(!(dir_offset in GLOB.cardinal))
 			to_chat(user, SPAN_NOTICE("You cannot reach that from here.")) // Can only place stuck papers in cardinal directions, to
-			return											// reduce papers around corners issue.
+			return											// Reduce papers around corners issue.
 
 	user.drop_from_inventory(src)
 	forceMove(source_turf)
