@@ -21,7 +21,7 @@
 	set category = "Object"
 	set src in usr
 
-	if (copied)
+	if(copied)
 		to_chat(usr, SPAN_NOTICE("There are no more carbon copies attached to this paper!"))
 		return
 	var/obj/item/weapon/paper/copy = copy(usr.loc, generate_stamps = FALSE)
