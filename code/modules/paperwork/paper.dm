@@ -247,7 +247,7 @@
 	if(!in_range(user, A) || istype(A, /obj/machinery/door) || istype(A, /obj/item))
 		return
 
-	if(src != user.get_active_hand())//if anything took paper
+	if(src != user.get_active_hand()) // If anything took paper
 		return
 
 	var/turf/target_turf = get_turf(A)
