@@ -133,10 +133,7 @@
 /obj/item/weapon/paper/update_icon()
 	if(dynamic_icon)
 		return
-	if(crumpled)
-		icon_state = "scrap"
-	else
-		icon_state = "paper"
+	icon_state = crumpled ? "scrap" : "paper"
 		if(!is_clean())
 			icon_state = "[icon_state]_words"
 	if(taped)
