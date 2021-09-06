@@ -308,8 +308,8 @@
 
 		to_chat(user, SPAN_NOTICE("You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name]."))
 
-		B.pages.Add(src)
-		B.pages.Add(P)
+		B.pages += src
+		B.pages += P
 		B.update_icon()
 
 	else if(istype(P, /obj/item/weapon/pen))
