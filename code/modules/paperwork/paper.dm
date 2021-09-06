@@ -398,7 +398,6 @@
 		return
 
 	add_fingerprint(user)
-	return
 
 /obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
 	var/token = "<!--paper_field_[id]-->"
