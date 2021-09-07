@@ -270,6 +270,8 @@
 		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
 		modules += "Combat"
 	selected_module = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
+	if(!(selected_module in GLOB.robot_module_types))
+		return
 	setup_module()
 
 /mob/living/silicon/robot/proc/setup_module()
