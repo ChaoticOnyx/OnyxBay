@@ -262,6 +262,7 @@
 
 /mob/living/silicon/robot/proc/choose_module()
 	if(module)
+		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
 	var/list/modules = list()
 	modules.Add(GLOB.robot_module_types)
