@@ -26,7 +26,7 @@ GLOBAL_LIST_EMPTY(wayfindingbeacons)
 			if(A)
 				location = A.name
 			else
-				location = get_area(src)?.name | "Unknown"
+				location = get_area(src)?.name || "Unknown"
 		codes += list("wayfinding" = "[location]")
 		GLOB.wayfindingbeacons += src
 
