@@ -306,7 +306,7 @@
 		forceMove(B)
 		P.forceMove(B)
 
-		to_chat(user, SPAN_NOTICE("You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name]."))
+		to_chat(user, SPAN_NOTICE("You clip the [P.name] to \the [src.name]."))
 
 		B.pages += src
 		B.pages += P
