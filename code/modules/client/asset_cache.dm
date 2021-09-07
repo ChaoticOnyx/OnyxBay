@@ -304,6 +304,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"nano/images/source/",
 		"nano/images/modular_computers/",
 		"nano/images/exodus/",
+		"nano/images/frontier/",
 		"nano/images/example/"
 	)
 
