@@ -22,7 +22,7 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
 	var/can_move = 1
-	var/mob/living/carbon/occupant = null
+	var/mob/living/occupant = null
 	var/list/dropped_items = list()
 	var/step_in = 10 //make a step in step_in/10 sec.
 	var/dir_in = 2//What direction will the mech face when entered/powered on? Defaults to South.
@@ -79,6 +79,9 @@
 	var/max_equip = 3
 	var/datum/events/events
 
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
+	var/is_occupant_brain = FALSE // occupant is MMI or posibrain or AI card
+
 /obj/mecha/drain_power(drain_check)
 
 	if(drain_check)
@@ -103,7 +106,6 @@
 	add_iterators()
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
-	loc.Entered(src)
 	mechas_list += src //global mech list
 	return
 
@@ -709,6 +711,38 @@
 
 /obj/mecha/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
+	if(!occupant)
+		if(istype(W, /obj/item/weapon/aicard))
+			var/obj/item/weapon/aicard/card = W
+			if(card.carded_ai)
+				occupant = card.carded_ai
+				user.drop_item()
+				card.forceMove(src)
+				card.carded_ai.forceMove(src)
+				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+				is_occupant_brain = TRUE
+				return
+		else if(istype(W, /obj/item/device/mmi))
+			var/obj/item/device/mmi/card = W
+			if(card.brainmob)
+				occupant = card.brainmob
+				user.drop_item()
+				card.forceMove(src)
+				card.brainmob.forceMove(src)
+				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+				is_occupant_brain = TRUE
+				return
+		else if(istype(W, /obj/item/organ/internal/posibrain))
+			var/obj/item/organ/internal/posibrain/card = W
+			if(card.brainmob)
+				occupant = card.brainmob
+				user.drop_item()
+				card.forceMove(src)
+				card.brainmob.forceMove(src)
+				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+				is_occupant_brain = TRUE
+				return
+
 	if(istype(W, /obj/item/mecha_parts/mecha_equipment))
 		var/obj/item/mecha_parts/mecha_equipment/E = W
 		spawn()
@@ -771,15 +805,15 @@
 		return
 
 	else if(isMultitool(W))
-		if(state>=3 && src.occupant)
+		if(state>=3 && occupant)
 			to_chat(user, "You attempt to eject the pilot using the maintenance controls.")
-			if(src.occupant.stat)
-				src.go_out()
-				src.log_message("[src.occupant] was ejected using the maintenance controls.")
+			if(occupant.stat || is_occupant_brain)
+				go_out()
+				log_message("[occupant] was ejected using the maintenance controls.")
 			else
-				to_chat(user, "<span class='warning'>Your attempt is rejected.</span>")
-				src.occupant_message("<span class='warning'>An attempt to eject you was made using the maintenance controls.</span>")
-				src.log_message("Eject attempt made using maintenance controls - rejected.")
+				to_chat(user, SPAN("warning", "Your attempt is rejected."))
+				occupant_message(SPAN("warning", "An attempt to eject you was made using the maintenance controls."))
+				log_message("Eject attempt made using maintenance controls - rejected.")
 		return
 
 	else if(istype(W, /obj/item/weapon/cell))
@@ -1105,12 +1139,22 @@
 
 /obj/mecha/proc/go_out()
 	if(!src.occupant) return
+	is_occupant_brain = FALSE
 	var/atom/movable/mob_container
 	if(ishuman(occupant))
 		mob_container = src.occupant
 	else if(istype(occupant, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain = occupant
 		mob_container = brain.container
+		brain.forceMove(mob_container)
+	else if(istype(occupant, /mob/living/silicon/sil_brainmob))
+		var/mob/living/silicon/sil_brainmob/sil_brainmob = occupant
+		mob_container = sil_brainmob.container
+		sil_brainmob.forceMove(mob_container)
+	else if(istype(occupant, /mob/living/silicon/ai))
+		var/mob/living/silicon/ai/AI = occupant
+		mob_container = AI.container
+		AI.forceMove(mob_container)
 	else
 		return
 	for(var/item in dropped_items)
@@ -1587,7 +1631,7 @@
 		return
 	if(href_list["dna_lock"])
 		if(usr != src.occupant)	return
-		if(istype(occupant, /mob/living/carbon/brain))
+		if(is_occupant_brain)
 			occupant_message("You are a brain. No.")
 			return
 		if(src.occupant)

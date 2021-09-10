@@ -19,6 +19,9 @@
 	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))
 		var/obj/item/integrated_circuit/input/pAI_connector/tank = loc
 		tank.relaymove(user, direction)
+	else if(istype(loc, /obj/mecha))
+		var/obj/mecha/M = loc
+		M.relaymove(user, direction)
 
 /obj/item/device/paicard/New()
 	..()

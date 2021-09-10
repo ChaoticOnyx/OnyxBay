@@ -105,6 +105,7 @@ var/list/ai_verbs_default = list(
 
 	var/default_ai_icon = /datum/ai_icon/blue
 	var/static/list/custom_ai_icons_by_ckey_and_name
+	var/obj/item/weapon/aicard/container
 
 	give_ghost_proc_at_initialize = FALSE
 

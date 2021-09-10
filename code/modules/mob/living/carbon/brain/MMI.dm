@@ -135,6 +135,9 @@
 	if(istype(loc, /obj/item/integrated_circuit/input/mmi_tank))
 		var/obj/item/integrated_circuit/input/mmi_tank/tank = loc
 		tank.relaymove(user, direction)
+	else if(istype(loc, /obj/mecha))
+		var/obj/mecha/M = loc
+		M.relaymove(user, direction)
 
 /obj/item/device/mmi/Destroy()
 	if(isrobot(loc))

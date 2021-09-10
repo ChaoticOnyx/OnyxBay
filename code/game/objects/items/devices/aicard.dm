@@ -114,6 +114,7 @@
 	ai.control_disabled = 1
 	ai.aiRestorePowerRoutine = 0
 	ai.calculate_power_usage()
+	ai.container = src
 	carded_ai = ai
 
 	if(ai.client)
@@ -150,3 +151,6 @@
 	var/obj/item/weapon/rig/rig = src.get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
+	if(istype(loc, /obj/mecha))
+		var/obj/mecha/M = loc
+		M.relaymove(user, direction)
