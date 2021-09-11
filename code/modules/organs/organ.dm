@@ -2,7 +2,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ
 	name = "organ"
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
 	dir = SOUTH
