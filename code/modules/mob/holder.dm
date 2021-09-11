@@ -123,10 +123,10 @@ var/list/holder_mob_icon_cache = list()
 		to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
 		log_game("[key_name(usr)] named [held_mob.name] as [new_name]")
 		held_mob.real_name = held_mob.name = new_name
-		held_mob.renamable = FALSE
+		held_mob?.renamable = FALSE
 		sync(held_mob)
 
-/obj/item/weapon/holder/verb/name_pet()
+/obj/item/weapon/holder/verb/name_pet(mob/user)
 	set category = "Object"
 	set name = "Name"
 	rename()
