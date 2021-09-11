@@ -3,7 +3,7 @@ var/global/list/narsie_list = list()
 	name = "Nar-Sie"
 	desc = "Your mind begins to bubble and ooze as it tries to comprehend what it sees."
 	icon = 'icons/obj/narsie.dmi'
-	icon_state = "narsie-small"
+	icon_state = "narsie-small-chains"
 	pixel_x = -236
 	pixel_y = -256
 
@@ -18,8 +18,7 @@ var/global/list/narsie_list = list()
 	var/announce = 1
 	var/cause_hell = 1
 
-/obj/singularity/narsie/New()
-	..()
+/obj/singularity/narsie/Initialize()
 	narsie_list.Add(src)
 	if(announce)
 		to_world("<font size='15' color='red'><b>[uppertext(name)] HAS RISEN</b></font>")
@@ -35,6 +34,7 @@ var/global/list/narsie_list = list()
 		if(evacuation_controller)
 			evacuation_controller.call_evacuation(null, TRUE, 1)
 			evacuation_controller.evac_no_return = 0 // Cannot recall
+	. = ..()
 
 /obj/singularity/narsie/Destroy()
 	narsie_list.Remove(src)
@@ -172,27 +172,10 @@ var/global/list/narsie_list = list()
 		to_chat(target, "<span class='danger'>[capname] HAS CHOSEN YOU TO LEAD HIM TO HIS NEXT MEAL.</span>")
 
 /obj/singularity/narsie/on_capture()
-	chained = 1
-	move_self = 0
-	icon_state ="narsie-small-chains"
+	return
 
 /obj/singularity/narsie/on_release()
-	chained = 0
-	move_self = 1
-	icon_state ="narsie-small"
-
-/obj/singularity/narsie/on_capture()
-	chained = 1
-	move_self = 0
-	icon_state ="narsie-chains"
-	for(var/mob/M in SSmobs.mob_list)//removing the client image of nar-sie while it is chained
-		if(M.client)
-			M.see_narsie(src)
-
-/obj/singularity/narsie/on_release()
-	chained = 0
-	move_self = 1
-	icon_state ="narsie"
+	return
 
 /**
  * Wizard narsie.
