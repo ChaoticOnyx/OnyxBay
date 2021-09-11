@@ -68,10 +68,11 @@
 		return
 	if(!mob.eyeobj)
 		return
-	var/turf/destination = (direction == UP) ? GetAbove(mob) : GetBelow(mob)
-	if(!destination)
-		to_chat(mob, SPAN("notice", "There is nothing of interest in this direction."))
-		return MOVEMENT_HANDLED
+	if(direction & (UP|DOWN))
+		var/turf/destination = (direction == UP) ? GetAbove(mob.eyeobj) : GetBelow(mob.eyeobj)
+		if(!destination)
+			to_chat(mob, SPAN("notice", "There is nothing of interest in this direction."))
+			return MOVEMENT_HANDLED
 	mob.eyeobj.EyeMove(direction)
 	return MOVEMENT_HANDLED
 
