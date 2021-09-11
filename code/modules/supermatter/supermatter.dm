@@ -40,7 +40,7 @@
 
 /obj/machinery/power/supermatter
 	name = "Supermatter"
-	desc = "A strangely translucent and iridescent crystal. <span class='danger'>You get headaches just from looking at it.</span>"
+	desc = "A strangely translucent and iridescent crystal."
 	icon = 'icons/obj/engine.dmi'
 	icon_state = "darkmatter"
 	density = 1
@@ -103,6 +103,11 @@
 	var/aw_emerg = FALSE
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
+
+/obj/machinery/power/supermatter/examine(mob/H)
+	. = ..()
+	if(!check_eye_protection(H))
+		. += "<span class='danger'>You get headaches just from looking at it.</span>"
 
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
@@ -386,14 +391,7 @@
 		env.merge(removed)
 
 	for(var/mob/living/carbon/human/H in view(src, min(7, round(sqrt(power/6))))) // If they can see it without mesons on.  Bad on them.
-		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
-		if(E && !BP_IS_ROBOTIC(E)) //Synthetics eyes stop evil hallucination rays
-			var/obj/item/clothing/glasses/hud/G = H.glasses
-			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
-				continue
-			var/obj/item/weapon/rig/R = H.back
-			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
-				continue
+		if(!check_eye_protection(H))
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
 			H.adjust_hallucination(effect, 0.25 * effect)
 
@@ -403,6 +401,15 @@
 
 	return 1
 
+/obj/machinery/power/supermatter/check_eye_protection(mob/H)
+	var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
+	if(E && !BP_IS_ROBOTIC(E)) //Synthetics eyes stop evil hallucination rays
+		var/obj/item/clothing/glasses/hud/G = H.glasses
+		if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
+			return 1
+		var/obj/item/weapon/rig/R = H.back
+		if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
+			return 1
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
 	var/turf/L = loc
