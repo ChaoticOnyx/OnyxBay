@@ -30,7 +30,7 @@
 	else
 		dust()
 
-/mob/proc/see_narsie(obj/singularity/narsie/large/N, dir)
+/mob/proc/see_narsie(obj/singularity/narsie/N, dir)
 	if(N.chained)
 		if(narsimage)
 			qdel(narsimage)
