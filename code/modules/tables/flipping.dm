@@ -115,7 +115,9 @@
 
 	return TRUE
 
-/obj/structure/table/CtrlClick()
+/obj/structure/table/CtrlClick(mob/living/L)
+	if(L.is_ventcrawling)
+		return
 	if(!flipped)
 		do_flip()
 	else

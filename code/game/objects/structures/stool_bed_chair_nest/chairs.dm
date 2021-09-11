@@ -76,7 +76,9 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/AltClick()
+/obj/structure/bed/chair/AltClick(mob/living/L)
+	if(L.is_ventcrawling)
+		return
 	rotate()
 
 /obj/structure/bed/chair/verb/rotate()
