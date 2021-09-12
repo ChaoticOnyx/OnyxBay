@@ -42,6 +42,10 @@
 		to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
 		return
 
+	THROTTLE(emote_cooldown, 1 SECOND)
+	if(!emote_cooldown && act != "deathgasp")
+		return
+
 	var/decl/emote/use_emote = usable_emotes[act]
 	if(!use_emote)
 		to_chat(src, "<span class='warning'>Unknown emote '[act]'. Type <b>say *help</b> for a list of usable emotes.</span>")

@@ -54,9 +54,10 @@
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
-	var/datum/faction/faction 			//associated faction
-	var/datum/changeling/changeling		//changeling holder
-	var/datum/vampire/vampire 			//vampire holder
+	var/datum/faction/faction 			// Associated faction
+	var/datum/changeling/changeling		// Changeling holder
+	var/datum/vampire/vampire 			// Vampire holder
+	var/datum/wizard/wizard				// Wizard holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all

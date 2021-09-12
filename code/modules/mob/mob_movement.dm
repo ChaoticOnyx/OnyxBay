@@ -1,7 +1,7 @@
 /mob
 	var/moving = FALSE
 
-/mob/proc/SelfMove(var/direction)
+/mob/proc/SelfMove(direction)
 	if(DoMove(direction, src) & MOVEMENT_HANDLED)
 		return TRUE // Doesn't necessarily mean the mob physically moved
 
@@ -12,12 +12,12 @@
 			return TRUE
 	return (!mover.density || !density || lying)
 
-/mob/proc/setMoveCooldown(var/timeout)
+/mob/proc/setMoveCooldown(timeout)
 	var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
 	if(delay)
 		delay.SetDelay(timeout)
 
-/mob/proc/addMoveCooldown(var/timeout)
+/mob/proc/addMoveCooldown(timeout)
 	var/datum/movement_handler/mob/delay/delay = GetMovementHandler(/datum/movement_handler/mob/delay)
 	if(delay)
 		delay.AddDelay(timeout)

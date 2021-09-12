@@ -436,7 +436,7 @@
 	holder.client.images |= fake_look
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
-/datum/hallucination/fake_appearance/proc/get_living_sublist(var/list/subtypes, var/list/exclude)
+/datum/hallucination/fake_appearance/proc/get_living_sublist(list/subtypes, list/exclude)
 	var/list/same_z_candidates = new()
 	var/list/other_z_candidates = new()
 	for(var/mob/living/F in GLOB.living_mob_list_)

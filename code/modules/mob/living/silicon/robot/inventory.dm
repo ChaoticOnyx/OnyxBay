@@ -232,7 +232,7 @@
 	W.forceMove(get_turf(src))
 	return 1
 
-/mob/living/silicon/robot/proc/examine_module(var/slot)
+/mob/living/silicon/robot/proc/examine_module(slot)
 	var/list/index_module = list(module_state_1,module_state_2,module_state_3)
 	var/result = "	Module [slot] is "
 	result += (index_module[slot]) ? "\icon[index_module[slot]] [index_module[slot]]." : "empty."

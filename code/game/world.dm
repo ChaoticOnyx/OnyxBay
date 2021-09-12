@@ -23,6 +23,36 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
+/proc/toggle_ooc()
+	config.ooc_allowed = !config.ooc_allowed
+	if(config.ooc_allowed)
+		to_world("<b>The OOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The OOC channel has been globally disabled!</b>")
+
+/proc/disable_ooc()
+	if(config.ooc_allowed)
+		toggle_ooc()
+
+/proc/enable_ooc()
+	if(!config.ooc_allowed)
+		toggle_ooc()
+
+/proc/toggle_looc()
+	config.looc_allowed = !config.looc_allowed
+	if(config.looc_allowed)
+		to_world("<b>The LOOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The LOOC channel has been globally disabled!</b>")
+
+/proc/disable_looc()
+	if(config.ooc_allowed)
+		toggle_ooc()
+
+/proc/enable_looc()
+	if(!config.looc_allowed)
+		toggle_looc()
+
 // Find mobs matching a given string
 //
 // search_string: the string to search for, in params format; for example, "some_key;mob_name"
@@ -71,7 +101,8 @@ var/server_name = "OnyxBay"
 /world/New()
 	SetupLogs()
 
-	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
+	// Used for telling if the changelog has changed recently
+	changelog_hash = md5('html/changelogs/.all_changelog.json')
 
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
@@ -400,11 +431,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		config.ooc_allowed = !(config.ooc_allowed)
-		if (config.ooc_allowed)
-			to_world("<B>The OOC channel has been globally enabled!</B>")
-		else
-			to_world("<B>The OOC channel has been globally disabled!</B>")
+		toggle_ooc()
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 

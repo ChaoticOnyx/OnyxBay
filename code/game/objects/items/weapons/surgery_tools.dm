@@ -104,14 +104,14 @@
  * Researchable Scalpels
  */
 /obj/item/weapon/scalpel/laser1
-	name = "laser scalpel"
+	name = "basic laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks basic and could be improved."
 	icon_state = "scalpel_laser1_on"
 	damtype = "fire"
 	surgery_speed = 0.8
 
 /obj/item/weapon/scalpel/laser2
-	name = "laser scalpel"
+	name = "improved laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks somewhat advanced."
 	icon_state = "scalpel_laser2_on"
 	damtype = "fire"
@@ -119,7 +119,7 @@
 	surgery_speed = 0.6
 
 /obj/item/weapon/scalpel/laser3
-	name = "laser scalpel"
+	name = "advanced laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks to be the pinnacle of precision energy cutlery!"
 	icon_state = "scalpel_laser3_on"
 	damtype = "fire"
