@@ -253,17 +253,14 @@
 
 	// TODO: refactor external organ's /New, /update_icon and more so they'll generate proper icons upon being spawned outside a mob.
 	if(H && istype(H))
+		var/new_organ
 		if(H.species && H.species.has_organ[R.id])
-			var/new_organ = H.species.has_organ[R.id]
-			O = new new_organ(get_turf(src))
-			O.status |= ORGAN_CUT_AWAY
-			O.dir = SOUTH
+			new_organ = H.species.has_organ[R.id]
 		else
-			var/new_organ = R.build_path
-			O = new new_organ(get_turf(src))
-			O.status |= ORGAN_CUT_AWAY
-			O.dir = SOUTH
-
+			new_organ = R.build_path
+		O = new new_organ(get_turf(src))
+		O.status |= ORGAN_CUT_AWAY
+		O.dir = SOUTH
 		O.set_dna(H.dna)
 
 		// This is a very hacky way of doing of what organ/New() does if it has an owner.

@@ -149,7 +149,7 @@
 				return
 
 			if(D.company[A] in manufacturer_list)
-				to_chat(user, SPAN("warning", "Fabricator already contains [D.company[1]] blueprints."))
+				to_chat(user, SPAN("warning", "Fabricator already contains [D.company[A]] blueprints."))
 				return
 
 		to_chat(user, SPAN("notice", "Installing blueprint files for [D.company[1]]..."))
@@ -184,10 +184,9 @@
 			if(stack && stack.get_amount() >= 1)
 				var/count = 0
 				flick("prosfab-loading", src)
-				while(materials[material] + amnt <= res_max_amount && stack.amount >= 1)
-					materials[material] += amnt
-					stack.use(1)
-					count++
+				count = min(stack.amount, round((res_max_amount - materials[material]) / amnt))
+				materials[material] += amnt * count
+				stack.use(count)
 				to_chat(user, "You insert [count] [count==1 ? stack_singular : stack_plural] into the fabricator.")
 
 			update_busy()
@@ -235,7 +234,7 @@
 	if(amount <= 0)
 		amount = S.max_amount
 	var/ejected = min(round(materials[material] / S.perunit), amount)
-	S.amount = min(ejected, amount)
+	S.amount = ejected
 	if(S.amount <= 0)
 		qdel(S)
 		return
