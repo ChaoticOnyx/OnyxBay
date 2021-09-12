@@ -126,8 +126,8 @@
 	for(var/path in amount_list)
 		if(istype(O, path))
 
-			if(max_stored_matter == stored_matter)
-				to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
+			if(max_stored_matter >= stored_matter)
+				to_chat(user, SPAN("warning", "\The [src] is too full."))
 				return
 
 			stored_matter += min(amount_list[path], max_stored_matter - stored_matter)
@@ -148,8 +148,8 @@
 		var/datum/reagent/blood/injected = locate() in S.reagents.reagent_list
 
 		if(injected && injected.data)
-			loaded_dna = injected.data
 			to_chat(user, SPAN("info", "You inject the blood sample into the bioprinter."))
+			loaded_dna = injected.data
 
 			get_owner_name()
 			update_busy()
@@ -180,13 +180,8 @@
 
 // Categories, build options & material getters.
 /obj/machinery/bioprinter/proc/get_categories()
-	category = null
-	categories = list()
-
 	categories = printer_categories
-
-	if(!category)
-		category = categories[1]
+	category = categories[1]
 
 /obj/machinery/bioprinter/proc/get_build_options()
 	. = list()

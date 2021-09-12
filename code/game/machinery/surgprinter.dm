@@ -130,13 +130,8 @@
 
 // Getters.
 /obj/machinery/surg_printer/proc/get_categories()
-	category = null
-	categories = list()
-
 	categories = printer_categories
-
-	if(!category)
-		category = categories[1]
+	category = categories[1]
 
 /obj/machinery/surg_printer/proc/get_build_options()
 	. = list()
