@@ -5,7 +5,7 @@
 		if(!isnull(manufacturer?.modular_bodyparts))
 			. = manufacturer.modular_bodyparts
 
-/obj/item/organ/external/proc/can_remove_modular_limb(var/mob/living/carbon/human/user)
+/obj/item/organ/external/proc/can_remove_modular_limb(mob/living/carbon/human/user)
 	var/bodypart_cat = get_modular_limb_category()
 	if(bodypart_cat == MODULAR_BODYPART_CYBERNETIC)
 		if(!parent_organ)
@@ -15,12 +15,12 @@
 			return FALSE
 	. = (bodypart_cat != MODULAR_BODYPART_INVALID)
 
-/obj/item/organ/external/proc/can_attach_modular_limb(var/mob/living/carbon/human/user)
+/obj/item/organ/external/proc/can_attach_modular_limb(mob/living/carbon/human/user)
 	var/list/limb_data = user?.species?.has_limbs[organ_tag]
 	if(islist(limb_data) && limb_data["has_children"] > 0)
 		. = (length(children) < limb_data["has_children"])
 
-/obj/item/organ/external/proc/can_be_attached_modular_limb(var/mob/living/carbon/human/user)
+/obj/item/organ/external/proc/can_be_attached_modular_limb(mob/living/carbon/human/user)
 	var/bodypart_cat = get_modular_limb_category()
 	if(bodypart_cat == MODULAR_BODYPART_INVALID)
 		return FALSE
@@ -35,7 +35,7 @@
 		return FALSE
 	return TRUE
 
-/obj/item/organ/external/proc/check_modular_limb_damage(var/mob/living/carbon/human/user)
+/obj/item/organ/external/proc/check_modular_limb_damage(mob/living/carbon/human/user)
 	. =  damage >= min_broken_damage || (status & ORGAN_BROKEN) || is_stump()
 
 /mob/living/carbon/human/proc/get_modular_limbs(var/return_first_found = FALSE, var/validate_proc)
@@ -61,7 +61,7 @@
 	else
 		verbs -= .proc/detach_limb_verb
 
-/mob/living/carbon/human/proc/check_can_attach_modular_limb(var/obj/item/organ/external/E)
+/mob/living/carbon/human/proc/check_can_attach_modular_limb(obj/item/organ/external/E)
 	if(world.time < last_special + (2 SECONDS) || get_active_hand() != E)
 		return FALSE
 	if(incapacitated() || restrained())
@@ -92,7 +92,7 @@
 		return FALSE
 	return TRUE
 
-/mob/living/carbon/human/proc/check_can_detach_modular_limb(var/obj/item/organ/external/E)
+/mob/living/carbon/human/proc/check_can_detach_modular_limb(obj/item/organ/external/E)
 	if(world.time < last_special + (2 SECONDS))
 		return FALSE
 	if(incapacitated() || restrained())
