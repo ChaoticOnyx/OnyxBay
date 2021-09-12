@@ -859,7 +859,7 @@
 	cultname = "tear reality"
 	var/the_end_comes = 0
 	var/the_time_has_come = 300
-	var/obj/singularity/narsie/large/HECOMES = null
+	var/obj/singularity/narsie/HECOMES = null
 	strokes = 9
 
 /obj/effect/rune/tearreality/cast(mob/living/user)
@@ -901,7 +901,7 @@
 		sleep(10)
 
 	if(the_end_comes >= the_time_has_come)
-		HECOMES = new /obj/singularity/narsie/large(get_turf(src))
+		HECOMES = new /obj/singularity/narsie(get_turf(src))
 	else
 		command_announcement.Announce("Bluespace anomaly has ceased.")
 		qdel(src)

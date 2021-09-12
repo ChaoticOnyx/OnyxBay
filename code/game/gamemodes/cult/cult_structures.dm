@@ -13,7 +13,6 @@
 	name = "Daemon forge"
 	desc = "A forge used in crafting the unholy weapons used by the armies of Nar-Sie."
 	icon_state = "forge"
-
 /obj/structure/cult/pylon
 	name = "Pylon"
 	desc = "A floating crystal that hums with an unearthly energy."
@@ -25,16 +24,16 @@
 	light_color = "#3e0000"
 	var/obj/item/wepon = null
 
-/obj/structure/cult/pylon/attack_hand(mob/M as mob)
+/obj/structure/cult/pylon/attack_hand(mob/M)
 	attackpylon(M, 5)
 
 /obj/structure/cult/pylon/attack_generic(mob/user, damage)
 	attackpylon(user, damage)
 
-/obj/structure/cult/pylon/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/cult/pylon/attackby(obj/item/W, mob/user)
 	attackpylon(user, W.force)
 
-/obj/structure/cult/pylon/proc/attackpylon(mob/user as mob, damage)
+/obj/structure/cult/pylon/proc/attackpylon(mob/user, damage)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if(!isbroken)
 		if(prob(1+ damage * 5))
