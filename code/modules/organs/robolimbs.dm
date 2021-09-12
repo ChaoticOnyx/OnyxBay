@@ -248,8 +248,8 @@ var/datum/robolimb/basic_robolimb
 	w_class = ITEM_SIZE_TINY
 	var/list/company = list()
 
-/obj/item/weapon/disk/limb/New(var/newloc)
-	..()
+/obj/item/weapon/disk/limb/Initialize(newloc)
+	. = ..()
 	if(company)
 		name = "[company[1]] [initial(name)]"
 
