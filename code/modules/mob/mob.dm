@@ -99,8 +99,7 @@
 			continue
 			
 		if(isghost(M))
-			message += " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)"
-			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
+			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
 
 		if(M.see_invisible >= invisibility || narrate)
