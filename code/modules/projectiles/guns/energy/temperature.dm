@@ -83,6 +83,11 @@
 		else
 			temperature = current_temperature
 
+/obj/item/weapon/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
+	if(temperature >= 450)
+		temperature -= rand(0,100)
+	. = ..()
+
 /obj/item/weapon/gun/energy/temperature/consume_next_projectile()
 	if(!power_supply) return null
 	if(!ispath(projectile_type)) return null
