@@ -1,5 +1,5 @@
 $paths = @()
-$maps = Get-ChildItem -Path maps -Include *.dmm -Exclude exodus*,null* -Recurse
+$maps = Get-ChildItem -Path maps -Include *.dmm -Exclude null* -Recurse
 
 Push-Location ./maps
 
