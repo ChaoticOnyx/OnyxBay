@@ -142,14 +142,16 @@
 
 	// DNA sample from syringe or dna sampler.
 	if(istype(O, /obj/item/weapon/reagent_containers/syringe) || istype(O, /obj/item/weapon/reagent_containers/dna_sampler))
-		var/obj/item/weapon/reagent_containers/S = O
-
 		//Grab some blood
+		var/obj/item/weapon/reagent_containers/S = O
 		var/datum/reagent/blood/injected = locate() in S.reagents.reagent_list
 
 		if(injected && injected.data)
-			to_chat(user, SPAN("info", "You inject the blood sample into the bioprinter."))
 			loaded_dna = injected.data
+			to_chat(user, SPAN("info", "You inject the blood sample into the bioprinter."))
+
+			S.reagents.reagent_list["blood"] -= 1
+			S.update_icon()
 
 			get_owner_name()
 			update_busy()
