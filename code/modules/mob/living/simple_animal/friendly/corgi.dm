@@ -262,7 +262,6 @@
 	renamable = FALSE
 	var/puppies = 0
 
-
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
