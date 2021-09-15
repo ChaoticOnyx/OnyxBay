@@ -34,7 +34,6 @@
 
 	renamable = TRUE
 
-
 /mob/living/simple_animal/crab/Crossed(AM as mob|obj)
 	if(!client && ishuman(AM) && !stat)
 		var/mob/M = AM
