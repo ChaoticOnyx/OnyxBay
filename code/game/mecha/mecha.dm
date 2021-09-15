@@ -103,7 +103,6 @@
 	add_iterators()
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
-	loc.Entered(src)
 	mechas_list += src //global mech list
 	return
 
