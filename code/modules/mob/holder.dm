@@ -41,7 +41,6 @@ var/list/holder_mob_icon_cache = list()
 		update_state()
 
 /obj/item/weapon/holder/proc/update_state()
-
 	if(last_holder != loc)
 		for(var/mob/M in contents)
 			unregister_all_movement(last_holder, M)
