@@ -103,7 +103,6 @@
 	add_iterators()
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
-	loc.Entered(src)
 	mechas_list += src //global mech list
 	return
 
@@ -115,8 +114,8 @@
 	if(loc)
 		loc.Exited(src)
 
-	if(prob(30))
-		explosion(get_turf(loc), 0, 0, 1, 3)
+		if(prob(30))
+			explosion(get_turf(loc), 0, 0, 1, 3)
 
 	if(wreckage)
 		var/obj/effect/decal/mecha_wreckage/WR = new wreckage(loc)
