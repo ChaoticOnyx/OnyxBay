@@ -68,7 +68,7 @@
 
 	update_pros_list()
 
-	files = new /datum/research(src)
+	files = new /datum/research
 	update_categories()
 
 /obj/machinery/pros_fabricator/Process()
@@ -123,7 +123,7 @@
 	var/T = 0
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
 		T += M.rating
-	mat_efficiency = 1 - (T - 1) / 4 // 1 -> 0.5
+	mat_efficiency = 1 - (T - 1) / 4
 	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts)
 		T += M.rating
 	speed = T / 2
@@ -152,10 +152,11 @@
 				to_chat(user, SPAN("warning", "Fabricator already contains [D.company[A]] blueprints."))
 				return
 
-		to_chat(user, SPAN("notice", "Installing blueprint files for [D.company[1]]..."))
+		to_chat(user, SPAN("notice", "Installing blueprint files from [D.name]..."))
+
 		if(do_after(user, 50, src))
 			flick("prosfab-disk", src)
-			to_chat(user, SPAN("notice", "Installed [D.company[1]] blueprints!"))
+			to_chat(user, SPAN("notice",  "Blueprint files successfully installed!"))
 			user.drop_from_inventory(O)
 			contents += O
 			manufacturer_list += D.company
