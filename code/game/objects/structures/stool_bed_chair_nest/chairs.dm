@@ -89,6 +89,9 @@
 	if(!usr || !Adjacent(usr))
 		return
 
+	if(istype(usr, /mob/living/carbon/brain))
+		return
+
 	if(usr.stat == DEAD)
 		var/area/A = get_area(src)
 		if(A?.holy)
