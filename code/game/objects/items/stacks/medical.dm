@@ -84,8 +84,10 @@
 
 		if(BP_IS_ROBOTIC(affecting))
 			if(BP_IS_LIFELIKE(affecting))
-				to_chat(user, SPAN("notice", "[M] has been applied with [src] by [user]."))
-				to_chat(user, SPAN("warning", "You apply \the [src] to [M], but it seems to have no effect..."))
+				user.visible_message( \
+					SPAN("notice", "[M] has been applied with [src] by [user]."), \
+					SPAN("warning", "You apply \the [src] to [M], but it seems to have no effect...") \
+				)
 				use(1)
 				return 1
 			else
@@ -95,7 +97,6 @@
 		H.UpdateDamageIcon()
 
 	else
-
 		M.heal_organ_damage((src.heal_brute/2), (src.heal_burn/2))
 		user.visible_message( \
 			SPAN("notice", "[M] has been applied with [src] by [user]."), \
