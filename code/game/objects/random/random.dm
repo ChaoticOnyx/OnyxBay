@@ -1222,7 +1222,7 @@ something, make sure it's not in one of the other lists.*/
 	icon = 'icons/obj/cloning.dmi'
 	icon_state = "datadisk1"
 
-/obj/random/sock/spawn_choices()
+/obj/random/limb_disk/spawn_choices()
 	return list(/obj/item/weapon/disk/limb/unbranded,
 				/obj/item/weapon/disk/limb/nanotrasen,
 				/obj/item/weapon/disk/limb/bishop,
