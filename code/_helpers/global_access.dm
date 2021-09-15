@@ -227,10 +227,6 @@
 			return global.autolathe_categories;
 		if("autolathe_recipes")
 			return global.autolathe_recipes;
-		if("printer_categories")
-			return global.printer_categories;
-		if("printer_recipes")
-			return global.printer_recipes;
 		if("base_miss_chance")
 			return global.base_miss_chance;
 		if("basic_robolimb")
@@ -1146,10 +1142,6 @@
 			global.autolathe_categories=newval;
 		if("autolathe_recipes")
 			global.autolathe_recipes=newval;
-		if("printer_categories")
-			global.printer_categories=newval;
-		if("printer_recipes")
-			global.printer_recipes=newval;
 		if("base_miss_chance")
 			global.base_miss_chance=newval;
 		if("basic_robolimb")
@@ -1957,8 +1949,6 @@
 	"attack_log_repository",
 	"autolathe_categories",
 	"autolathe_recipes",
-	"printer_categories",
-	"printer_recipes",
 	"base_miss_chance",
 	"basic_robolimb",
 	"blackbox",

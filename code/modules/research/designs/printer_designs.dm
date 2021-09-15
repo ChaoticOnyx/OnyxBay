@@ -1,13 +1,13 @@
-/var/global/list/printer_recipes
-/var/global/list/printer_categories
+GLOBAL_LIST_EMPTY(printer_recipes)
+GLOBAL_LIST_EMPTY(printer_categories)
 
 /proc/populate_printer_recipes()
-	printer_recipes = list()
-	printer_categories = list()
+	GLOB.printer_recipes = list()
+	GLOB.printer_categories = list()
 	for(var/R in typesof(/datum/printer/recipe)-/datum/printer/recipe)
 		var/datum/printer/recipe/recipe = new R
-		printer_recipes += recipe
-		printer_categories |= recipe.category
+		GLOB.printer_recipes += recipe
+		GLOB.printer_categories |= recipe.category
 
 // Organs
 /datum/printer/recipe

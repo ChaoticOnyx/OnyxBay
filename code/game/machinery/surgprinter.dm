@@ -84,7 +84,7 @@
 	if(!choice || busy || (stat & (BROKEN|NOPOWER)))
 		return
 
-	var/datum/printer/recipe/R = printer_recipes[choice]
+	var/datum/printer/recipe/R = GLOB.printer_recipes[choice]
 
 	if(!can_print(R))
 		return
@@ -130,13 +130,13 @@
 
 // Getters.
 /obj/machinery/surg_printer/proc/get_categories()
-	categories = printer_categories
+	categories = GLOB.printer_categories
 	category = categories[1]
 
 /obj/machinery/surg_printer/proc/get_build_options()
 	. = list()
-	for(var/i = 1 to printer_recipes.len)
-		var/datum/printer/recipe/R = printer_recipes[i]
+	for(var/i = 1 to GLOB.printer_recipes.len)
+		var/datum/printer/recipe/R = GLOB.printer_recipes[i]
 		if(R.build_path)
 			. += list(list("name" = R.name, "id" = i, "category" = R.category, "resources" = R.matter))
 

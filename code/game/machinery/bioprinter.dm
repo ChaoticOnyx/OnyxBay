@@ -182,13 +182,13 @@
 
 // Categories, build options & material getters.
 /obj/machinery/bioprinter/proc/get_categories()
-	categories = printer_categories
+	categories = GLOB.printer_categories
 	category = categories[1]
 
 /obj/machinery/bioprinter/proc/get_build_options()
 	. = list()
-	for(var/i = 1 to printer_recipes.len)
-		var/datum/printer/recipe/R = printer_recipes[i]
+	for(var/i = 1 to GLOB.printer_recipes.len)
+		var/datum/printer/recipe/R = GLOB.printer_recipes[i]
 		if(R.build_path)
 			. += list(list("name" = R.name, "id" = i, "category" = R.category, "time" = get_design_time(R), "resources" = R.matter * mat_efficiency))
 
@@ -203,7 +203,7 @@
 		. += R.name
 
 /obj/machinery/bioprinter/proc/add_to_queue(index)
-	var/datum/printer/recipe/R = printer_recipes[index]
+	var/datum/printer/recipe/R = GLOB.printer_recipes[index]
 	queue += R
 	update_busy()
 
