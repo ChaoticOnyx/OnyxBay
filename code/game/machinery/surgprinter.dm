@@ -176,7 +176,7 @@
 
 /obj/machinery/surg_printer/Topic(href, href_list)
 	if(..())
-		return
+		return 1
 
 	if(href_list["category"])
 		if(href_list["category"] in categories)

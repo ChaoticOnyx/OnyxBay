@@ -325,7 +325,7 @@
 
 /obj/machinery/bioprinter/Topic(href, href_list, datum/topic_state/state)
 	if(..())
-		return
+		return 1
 
 	if(href_list["build"])
 		add_to_queue(text2num(href_list["build"]))
