@@ -3,7 +3,9 @@ $maps = Get-ChildItem -Path maps -Include *.dmm -Exclude null* -Recurse
 
 Push-Location ./maps
 
-$maps | ForEach-Object -Process { 
+Write-Host 'Обнаружены карты:'
+$maps | ForEach-Object -Process {
+    Write-Host $($_)
     $relativePath = Resolve-Path $_ -Relative
     $relativePath = "#include ""$($relativePath.Substring(2))"""
     $paths += $relativePath

@@ -2777,6 +2777,7 @@
 #include "maps\example\example_shuttles.dm"
 #include "maps\exodus\exodus.dm"
 #include "maps\exodus\exodus_define.dm"
+#include "maps\exodus\alpha\sunset_define.dm"
 #include "maps\exodus\derelicts\bearcat\bearcat.dm"
 #include "maps\exodus\derelicts\original\derelict_areas.dm"
 #include "maps\exodus\frontier\frontier_areas.dm"
