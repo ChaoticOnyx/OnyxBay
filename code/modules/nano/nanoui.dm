@@ -205,7 +205,7 @@ nanoui is used to open and update nano browser uis
 			"autoUpdateLayout" = auto_update_layout,
 			"autoUpdateContent" = auto_update_content,
 			"showMap" = show_map,
-			"mapName" = GLOB.using_map.path,
+			"mapName" = copytext(GLOB.using_map.path, findlasttext(GLOB.using_map.path, "/") + 1),
 			"mapZLevel" = map_z_level,
 			"mapZLevels" = GLOB.using_map.map_levels,
 			"user" = list("name" = user? user.name : "Unknown")
