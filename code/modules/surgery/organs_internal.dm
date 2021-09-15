@@ -85,7 +85,7 @@
 	user.visible_message("[user] starts repairing [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start repairing [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/fix_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -104,7 +104,7 @@
 			user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 			SPAN("warning", "Something goes wrong and \the [O] shreds [target]'s [affected.name] before you have a chance to react!"))
 
-			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150,affecting = target.op_stage.current_organ)
+			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150)
 			target.adjustToxLoss(30)
 			target.get_organ(target_zone).take_external_damage(10, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 			affected.take_internal_damage((affected.max_damage - affected.damage), 0)
@@ -174,7 +174,7 @@
 			user.visible_message("[user] starts treating damage to [target]'s [I.name] with \the [tool].", \
 			"You start treating damage to [target]'s [I.name] with \the [tool]." )
 
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_multiple/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -205,7 +205,7 @@
 		user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 		SPAN("warning", "Something goes wrong and \the [O] shreds everything inside [target]'s [affected.name] before you have a chance to react!"))
 
-		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150,affecting = affected)
+		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150)
 		target.adjustToxLoss(30)
 		affected.take_external_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 		for(var/obj/item/organ/internal/I in affected.internal_organs)
@@ -295,7 +295,7 @@
 		return
 	user.visible_message("[user] starts treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name]." , \
 			       	         "You start treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_ghetto/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -462,7 +462,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts removing [target]'s [target.op_stage.current_organ] with \the [tool].", \
 	"You start removing [target]'s [target.op_stage.current_organ] with \the [tool].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/remove_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -560,7 +560,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts transplanting \the [tool] into [target]'s [affected.name].", \
 	"You start transplanting \the [tool] into [target]'s [affected.name].")
-	target.custom_pain("Someone's rooting around in your [affected.name]!",100,affecting = affected)
+	target.custom_pain("Someone's rooting around in your [affected.name]!",100)
 	..()
 
 /datum/surgery_step/internal/replace_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -722,7 +722,7 @@
 	user.visible_message("[user] starts applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/treat_necrosis/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
