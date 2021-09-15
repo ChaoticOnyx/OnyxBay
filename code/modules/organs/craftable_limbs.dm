@@ -29,7 +29,7 @@
 		if(3)
 			icon_state = "[initial(icon_state)]_casing"
 
-/obj/item/weapon/craftable_limb/proc/create_prosthtic()
+/obj/item/weapon/craftable_limb/proc/create_prosthetic()
 	var/mob/living/carbon/human/H = new /mob/living/carbon/human(get_turf(src))
 	H.death(0, "no message")
 
@@ -95,7 +95,7 @@
 				to_chat(user, SPAN("notice", "You start securing \the [src]'s cover."))
 				if(do_after(user, 20, src))
 					to_chat(user, SPAN("notice", "You secure \the [src]'s cover."))
-					create_prosthtic()
+					create_prosthetic()
 					qdel(src)
 	return ..()
 
