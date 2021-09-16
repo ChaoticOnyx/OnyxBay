@@ -31,8 +31,8 @@
 		qdel(src)
 	else
 		var/view_size = owner.client.view
-		var/view_maxx = 0
-		var/view_maxy = 0
+		var/view_maxx
+		var/view_maxy
 
 		if(istext(view_size))
 			var/splitted = splittext(view_size, "x")
