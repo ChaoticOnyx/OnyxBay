@@ -121,7 +121,7 @@ for reference:
 			if("brute")
 				user.do_attack_animation(src)
 				visible_message(SPAN_DANGER("\The [user] attacks \the [src] with \the [W]!"))
-				playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
+				playsound(src, 'sound/effects/metalhit2.ogg', rand(50, 75), 1, -1)
 				take_damage(W.force*0.75)
 				return
 		..()
