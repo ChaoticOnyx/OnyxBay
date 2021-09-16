@@ -150,7 +150,7 @@
 			loaded_dna = injected.data
 			to_chat(user, SPAN("info", "You inject the blood sample into the bioprinter."))
 
-			S.reagents.reagent_list["blood"] -= 1
+			S.reagents.remove_reagent(/datum/reagent/blood, 1)
 			S.update_icon()
 
 			get_owner_name()
