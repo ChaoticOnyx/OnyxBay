@@ -54,6 +54,8 @@
 		to_chat(user, "You ready the [name] spell ([casts]/[casts] charges).")
 
 /datum/spell/hand/charges/cast_hand()
-	if(casts-- && ..())
+	casts--
+	. = casts > 0
+
+	if(. && ..())
 		to_chat(holder, "<span class='notice'>The [name] spell has [casts] out of [max_casts] charges left</span>")
-	return !!casts
