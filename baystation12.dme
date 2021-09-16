@@ -2782,7 +2782,6 @@
 #include "maps\exodus\frontier\frontier_areas.dm"
 #include "maps\exodus\frontier\frontier_define.dm"
 #include "maps\exodus\frontier-SCP\frontier-SCP_define.dm"
-#include "maps\exodus\genesis\genesis_define.dm"
 #include "maps\~mapsystem\map_preferences.dm"
 #include "maps\~mapsystem\map_ranks.dm"
 #include "maps\~mapsystem\maps.dm"
