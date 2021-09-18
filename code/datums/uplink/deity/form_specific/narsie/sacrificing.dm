@@ -12,7 +12,7 @@
 	name = "Sacrifice Spell"
 	desc = "This ability makes the user take INCREDIBLE amounts of damage to heal a target for a similar amount of damage."
 	item_cost = 10
-	path = /spell/targeted/heal_target/sacrifice
+	path = /datum/spell/targeted/heal_target/sacrifice
 
 /datum/uplink_item/deity/boon/narsie_sacrificing/execution_axe
 	name = "Greedy Axe"

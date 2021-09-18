@@ -264,6 +264,8 @@
 	// Other incidentals.
 	if(istype(suit))
 		dat += "<BR><b>Pockets:</b> <A href='?src=\ref[src];item=pockets'>Empty or Place Item</A>"
+		if(suit.rolled_down != -1)
+			dat += "<BR><A href='?src=\ref[src];item=rolldown'>Roll Down Jumpsuit</A>"
 		if(suit.has_sensor == 1)
 			dat += "<BR><A href='?src=\ref[src];item=sensors'>Set sensors</A>"
 	if(handcuffed)

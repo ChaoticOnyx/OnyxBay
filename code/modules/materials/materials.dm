@@ -402,7 +402,7 @@ var/list/name_to_material
 /material/diona/place_dismantled_product()
 	return
 
-/material/diona/place_dismantled_girder(var/turf/target)
+/material/diona/place_dismantled_girder(turf/target)
 	spawn_diona_nymph(target)
 
 /material/steel/holographic

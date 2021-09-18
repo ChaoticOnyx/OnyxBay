@@ -4,113 +4,113 @@
  * @license MIT
  */
 
-import { createLogger, directLog } from 'common/logging.js';
-import http from 'http';
-import { inspect } from 'util';
-import WebSocket from 'ws';
-import { retrace, loadSourceMaps } from './retrace.js';
+import { createLogger, directLog } from 'common/logging.js'
+import http from 'http'
+import { inspect } from 'util'
+import WebSocket from 'ws'
+import { retrace, loadSourceMaps } from './retrace.js'
 
-const logger = createLogger('link');
+const logger = createLogger('link')
 
-const DEBUG = process.argv.includes('--debug');
+const DEBUG = process.argv.includes('--debug')
 
-export { loadSourceMaps };
+export { loadSourceMaps }
 
-export const setupLink = () => new LinkServer();
+export const setupLink = () => new LinkServer()
 
 class LinkServer {
-  constructor() {
-    logger.log('setting up');
-    this.wss = null;
-    this.setupWebSocketLink();
-    this.setupHttpLink();
+  constructor () {
+    logger.log('setting up')
+    this.wss = null
+    this.setupWebSocketLink()
+    this.setupHttpLink()
   }
 
   // WebSocket-based client link
-  setupWebSocketLink() {
-    const port = 3000;
-    this.wss = new WebSocket.Server({ port });
+  setupWebSocketLink () {
+    const port = 3000
+    this.wss = new WebSocket.Server({ port })
     this.wss.on('connection', ws => {
-      logger.log('client connected');
+      logger.log('client connected')
       ws.on('message', json => {
-        const msg = deserializeObject(json);
-        this.handleLinkMessage(ws, msg);
-      });
+        const msg = deserializeObject(json)
+        this.handleLinkMessage(ws, msg)
+      })
       ws.on('close', () => {
-        logger.log('client disconnected');
-      });
-    });
-    logger.log(`listening on port ${port} (WebSocket)`);
+        logger.log('client disconnected')
+      })
+    })
+    logger.log(`listening on port ${port} (WebSocket)`)
   }
 
   // One way HTTP-based client link for IE8
-  setupHttpLink() {
-    const port = 3001;
+  setupHttpLink () {
+    const port = 3001
     this.httpServer = http.createServer((req, res) => {
       if (req.method === 'POST') {
-        let body = '';
+        let body = ''
         req.on('data', chunk => {
-          body += chunk.toString();
-        });
+          body += chunk.toString()
+        })
         req.on('end', () => {
-          const msg = deserializeObject(body);
-          this.handleLinkMessage(null, msg);
-          res.end();
-        });
-        return;
+          const msg = deserializeObject(body)
+          this.handleLinkMessage(null, msg)
+          res.end()
+        })
+        return
       }
-      res.write('Hello');
-      res.end();
-    });
-    this.httpServer.listen(port);
-    logger.log(`listening on port ${port} (HTTP)`);
+      res.write('Hello')
+      res.end()
+    })
+    this.httpServer.listen(port)
+    logger.log(`listening on port ${port} (HTTP)`)
   }
 
-  handleLinkMessage(ws, msg) {
-    const { type, payload } = msg;
+  handleLinkMessage (ws, msg) {
+    const { type, payload } = msg
     if (type === 'log') {
-      const { level, ns, args } = payload;
+      const { level, ns, args } = payload
       // Skip debug messages
       if (level <= 0 && !DEBUG) {
-        return;
+        return
       }
       directLog(ns, ...args.map(arg => {
         if (typeof arg === 'object') {
           return inspect(arg, {
             depth: Infinity,
             colors: true,
-            compact: 8,
-          });
+            compact: 8
+          })
         }
-        return arg;
-      }));
-      return;
+        return arg
+      }))
+      return
     }
     if (type === 'relay') {
-      for (let client of this.wss.clients) {
+      for (const client of this.wss.clients) {
         if (client === ws) {
-          continue;
+          continue
         }
-        this.sendMessage(client, msg);
+        this.sendMessage(client, msg)
       }
-      return;
+      return
     }
-    logger.log('unhandled message', msg);
+    logger.log('unhandled message', msg)
   }
 
-  sendMessage(ws, msg) {
-    ws.send(JSON.stringify(msg));
+  sendMessage (ws, msg) {
+    ws.send(JSON.stringify(msg))
   }
 
-  broadcastMessage(msg) {
-    const clients = [...this.wss.clients];
+  broadcastMessage (msg) {
+    const clients = [...this.wss.clients]
     if (clients.length === 0) {
-      return;
+      return
     }
-    logger.log(`broadcasting ${msg.type} to ${clients.length} clients`);
-    for (let client of clients) {
-      const json = JSON.stringify(msg);
-      client.send(json);
+    logger.log(`broadcasting ${msg.type} to ${clients.length} clients`)
+    for (const client of clients) {
+      const json = JSON.stringify(msg)
+      client.send(json)
     }
   }
 }
@@ -122,20 +122,20 @@ const deserializeObject = str => {
         // NOTE: You should not rely on deserialized object's undefined,
         // this is purely for inspection purposes.
         return {
-          [inspect.custom]: () => undefined,
-        };
+          [inspect.custom]: () => undefined
+        }
       }
       if (value.__number__) {
-        return parseFloat(value.__number__);
+        return parseFloat(value.__number__)
       }
       if (value.__error__) {
         if (!value.stack) {
-          return value.string;
+          return value.string
         }
-        return retrace(value.stack);
+        return retrace(value.stack)
       }
-      return value;
+      return value
     }
-    return value;
-  });
-};
+    return value
+  })
+}

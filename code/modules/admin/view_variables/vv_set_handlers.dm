@@ -120,7 +120,7 @@
 	handled_type = /atom
 	handled_vars = list("light_max_bright", "light_inner_range", "light_outer_range", "light_falloff_curve")
 
-/decl/vv_set_handler/light_handler/handle_set_var(var/atom/A, variable, var_value, client)
+/decl/vv_set_handler/light_handler/handle_set_var(atom/A, variable, var_value, client)
 	var_value = text2num(var_value)
 	if(!is_num_predicate(var_value, client))
 		return

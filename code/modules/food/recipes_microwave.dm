@@ -408,7 +408,7 @@ I said no!
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fortunecookie
 
-/datum/recipe/fortunecookie/make_food(var/obj/container)
+/datum/recipe/fortunecookie/make_food(obj/container)
 	var/obj/item/weapon/paper/paper = locate() in container
 	paper.loc = null //prevent deletion
 	var/obj/item/weapon/reagent_containers/food/snacks/fortunecookie/being_cooked = ..(container)
@@ -416,7 +416,7 @@ I said no!
 	being_cooked.trash = paper //so the paper is left behind as trash without special-snowflake(TM Nodrak) code ~carn
 	return being_cooked
 
-/datum/recipe/fortunecookie/check_items(var/obj/container)
+/datum/recipe/fortunecookie/check_items(obj/container)
 	. = ..()
 	if(.)
 		var/obj/item/weapon/paper/paper = locate() in container

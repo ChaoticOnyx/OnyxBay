@@ -4,23 +4,24 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
-import { Button, Flex, Section } from '../components';
+import { useLocalState } from '../backend'
+import { Button, Flex, Section } from '../components'
 
 export const meta = {
   title: 'Flex & Sections',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = (props, context) => {
   const [grow, setGrow] = useLocalState(
-    context, 'fs_grow', 1);
+    context, 'fs_grow', 1)
   const [direction, setDirection] = useLocalState(
-    context, 'fs_direction', 'column');
+    context, 'fs_direction', 'column')
   const [fill, setFill] = useLocalState(
-    context, 'fs_fill', true);
+    context, 'fs_fill', true)
   const [hasTitle, setHasTitle] = useLocalState(
-    context, 'fs_title', true);
+    context, 'fs_title', true)
   return (
     <Flex
       height='100%'
@@ -48,7 +49,7 @@ const Story = (props, context) => {
             fluid
             selected={hasTitle}
             onClick={() => setHasTitle(!hasTitle)}>
-            {`Section title`}
+            {'Section title'}
           </Button>
         </Section>
       </Flex.Item>
@@ -76,5 +77,5 @@ const Story = (props, context) => {
         </Flex>
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
