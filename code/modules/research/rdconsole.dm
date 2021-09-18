@@ -435,15 +435,15 @@
 	files = new /datum/research(src)
 
 /obj/machinery/computer/rdconsole/proc/disconnect_destructor()
-	linked_destroy.linked_console = null
+	linked_destroy?.linked_console = null
 	linked_destroy = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect_imprinter()
-	linked_imprinter.linked_console = null
+	linked_imprinter?.linked_console = null
 	linked_imprinter = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect_protolathe()
-	linked_lathe.linked_console = null
+	linked_lathe?.linked_console = null
 	linked_lathe = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect(thing)
