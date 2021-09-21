@@ -110,7 +110,7 @@
 /obj/machinery/bioprinter/attackby(obj/item/O, mob/user)
 
 	if(busy)
-		to_chat(user, SPAN("warning", "The [src] is busy. Please wait for completion of previous operation."))
+		to_chat(user, SPAN("warning", "\The [src] is busy. Please wait for completion of previous operation."))
 		return 1
 
 	if(default_deconstruction_screwdriver(user, O))
