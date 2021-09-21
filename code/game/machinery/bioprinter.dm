@@ -198,7 +198,7 @@
 // Queue manipulations.
 /obj/machinery/bioprinter/proc/get_queue_names()
 	. = list()
-	for(var/i = 2 to queue.len)
+	for(var/i = 2 to length(queue))
 		var/datum/printer/recipe/R = queue[i]
 		. += R.name
 
