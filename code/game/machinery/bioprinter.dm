@@ -133,7 +133,7 @@
 			stored_matter += min(amount_list[path], max_stored_matter - stored_matter)
 			user.drop_item()
 
-			to_chat(user, SPAN("info", "The [src] processes \the [O]."))
+			to_chat(user, SPAN("info", "\The [src] processes \the [O]."))
 			qdel(O)
 
 			update_busy()
