@@ -158,7 +158,7 @@
 			flick("prosfab-disk", src)
 			to_chat(user, SPAN("notice",  "Blueprint files successfully installed!"))
 			user.drop_from_inventory(O)
-			contents += O
+			O.forceMove(src)
 			manufacturer_list += D.company
 			update_pros_list()
 
