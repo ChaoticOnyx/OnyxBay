@@ -143,7 +143,7 @@
 	if(istype(O, /obj/item/weapon/disk/limb))
 		var/obj/item/weapon/disk/limb/D = O
 
-		for(var/A = 1 to D.company.len)
+		for(var/A = 1 to length(D.company))
 			if(!D.company[A] || !(D.company[A] in all_robolimbs))
 				to_chat(user, SPAN("warning", "This disk seems to be corrupted!"))
 				return
