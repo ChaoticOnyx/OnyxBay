@@ -396,7 +396,7 @@
 /obj/machinery/pros_fabricator/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
-	var/datum/design/current = queue.len ? queue[1] : null
+	var/datum/design/current = length(queue) ? queue[1] : null
 	if(current)
 		data["current"] = current.name
 
