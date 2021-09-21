@@ -187,7 +187,7 @@
 
 /obj/machinery/bioprinter/proc/get_build_options()
 	. = list()
-	for(var/i = 1 to GLOB.printer_recipes.len)
+	for(var/i = 1 to length(GLOB.printer_recipes))
 		var/datum/printer/recipe/R = GLOB.printer_recipes[i]
 		if(R.build_path)
 			. += list(list("name" = R.name, "id" = i, "category" = R.category, "time" = get_design_time(R), "resources" = R.matter * mat_efficiency))
