@@ -170,7 +170,7 @@
 		return
 
 	if(get_dist(get_turf(T), get_turf(src)) > 4)
-		to_chat(src, SPAN("warning", "You must be closer to leap!"))
+		to_chat(src, SPAN("warning", "You must be closer to target for leaping!"))
 		return
 
 	playsound(src.loc, 'sound/voice/shriek1.ogg', 50, 1)
