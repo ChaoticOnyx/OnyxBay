@@ -138,7 +138,7 @@
 		return
 
 	var/mob/living/target
-	var/list/targets = list()
+	var/list/mob/living/targets = list()
 	for(var/mob/living/M in oview(4, src))
 		if(!istype(M,/mob/living/silicon))
 			targets += M
