@@ -168,7 +168,7 @@
 		return
 
 	var/mob/living/target
-	var/list/targets = list()
+	var/list/mob/living/targets = list()
 	for(var/mob/living/L in oview(7, src))
 		targets += L
 	target = input(src, "Who do you wish to spit at?") as null|anything in targets
