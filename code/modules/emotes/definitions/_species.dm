@@ -48,7 +48,8 @@ GLOBAL_LIST_INIT(default_humanoid_emotes, list(
 	/decl/emote/audible/scream,
 	/decl/emote/audible/long_scream,
 	/decl/emote/audible/gasp,
-	/decl/emote/visible/faint))
+	/decl/emote/visible/faint,
+	/decl/emote/visible/collapse))
 
 GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 	/mob/proc/emote_pale,

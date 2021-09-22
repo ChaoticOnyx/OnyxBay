@@ -269,8 +269,12 @@
 /mob/proc/emote_vomit()
 	set name = "Induce vomit"
 	set category = "Emotes"
-	visible_message(SPAN("danger", "[src] puts two fingers in his mouth."))
-	usr.emote("vomit")
+	var/mob/living/carbon/human/H = src
+	if(H.isSynthetic())
+		visible_message(SPAN("danger", "[src] puts two fingers in his mouth, however nothing happens."))
+	else
+		visible_message(SPAN("danger", "[src] puts two fingers in his mouth."))
+		usr.emote("vomit")
 
 /mob/proc/emote_scratch()
 	set name = "Scratch"
