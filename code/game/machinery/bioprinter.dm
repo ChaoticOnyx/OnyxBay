@@ -11,6 +11,14 @@
 	density = 1
 	anchored = 1
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/bioprinter,
+		/obj/item/weapon/stock_parts/micro_laser,
+		/obj/item/weapon/stock_parts/manipulator,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/stock_parts/matter_bin = 2
+	)
+
 	// Power
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 20
@@ -41,15 +49,7 @@
 	var/list/categories = list()
 
 /obj/machinery/bioprinter/Initialize()
-	..()
-
-	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/bioprinter(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/device/healthanalyzer(src)
+	. = ..()
 
 	RefreshParts()
 

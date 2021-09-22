@@ -37,7 +37,7 @@
 	name = "prosthetics fabricator"
 	id = "roboprinter"
 	req_tech = list(TECH_ENGINEERING = 2, TECH_DATA = 3)
-	build_path = /obj/item/weapon/circuitboard/prosfab
+	build_path = /obj/item/weapon/circuitboard/pros_fabricator
 	sort_string = "FAGAM"
 
 /datum/design/circuit/cryochamber

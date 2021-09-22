@@ -11,6 +11,14 @@
 
 	req_access = list(access_robotics)
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/pros_fabricator,
+		/obj/item/weapon/stock_parts/micro_laser,
+		/obj/item/weapon/stock_parts/manipulator,
+		/obj/item/weapon/stock_parts/console_screen,
+		/obj/item/weapon/stock_parts/matter_bin = 2
+	)
+
 	// Power
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 20
@@ -47,14 +55,6 @@
 
 /obj/machinery/pros_fabricator/Initialize()
 	. = ..()
-
-	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/prosfab(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
 
 	get_genders()
 	get_species()

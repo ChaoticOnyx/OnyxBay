@@ -9,6 +9,12 @@
 	density = 1
 	anchored = 1
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/pros_printer,
+		/obj/item/weapon/stock_parts/manipulator,
+		/obj/item/weapon/stock_parts/matter_bin = 2
+	)
+
 	// Power
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 20
@@ -27,13 +33,7 @@
 	var/list/categories = list()
 
 /obj/machinery/pros_printer/Initialize()
-	..()
-
-	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/pros_printer(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
+	. = ..()
 
 /obj/machinery/pros_printer/Destroy()
 	var/obj/item/stack/material/steel/S

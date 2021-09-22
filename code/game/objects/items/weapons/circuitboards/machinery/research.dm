@@ -63,7 +63,7 @@
 							/obj/item/weapon/stock_parts/micro_laser = 1,
 							/obj/item/weapon/stock_parts/console_screen = 1)
 
-/obj/item/weapon/circuitboard/prosfab
+/obj/item/weapon/circuitboard/pros_fabricator
 	name = T_BOARD("Prosthetics Fabricator")
 	build_path = /obj/machinery/pros_fabricator
 	board_type = "machine"
