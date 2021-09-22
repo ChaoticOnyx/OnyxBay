@@ -76,7 +76,7 @@
 		return
 
 	var/mob/living/target
-	var/list/targets = list()
+	var/list/mob/living/targets = list()
 	for(var/mob/living/M in view(1, src))
 		if(!istype(M, /mob/living/silicon) && Adjacent(M))
 			targets += M
