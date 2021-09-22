@@ -75,7 +75,7 @@
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	var/target
+	var/mob/living/target
 	var/list/targets = list()
 	for(var/mob/living/M in view(1, src))
 		if(!istype(M, /mob/living/silicon) && Adjacent(M))
