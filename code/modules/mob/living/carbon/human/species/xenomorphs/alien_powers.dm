@@ -167,7 +167,7 @@
 		to_chat(src, SPAN("warning", "I have not yet prepared my chemical glands. I must wait before spitting again."))
 		return
 
-	var/target
+	var/mob/living/target
 	var/list/targets = list()
 	for(var/mob/living/L in oview(7, src))
 		targets += L
