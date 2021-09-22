@@ -85,7 +85,7 @@
 
 	process_tackle(target)
 
-/mob/living/carbon/human/proc/process_tackle(mob/living/T = null)
+/mob/living/carbon/human/proc/process_tackle(mob/living/T)
 	if(!T || !src || src.stat)
 		return
 
