@@ -99,9 +99,8 @@
 		eject_materials(f, -1)
 
 	if(T)
-		for(var/obj/I in contents)
-			if(istype(I, /obj/item/weapon/disk/limb))
-				I.forceMove(T)
+		for(var/obj/item/weapon/disk/limb/D in contents)
+			D.forceMove(T)
 
 	..()
 
