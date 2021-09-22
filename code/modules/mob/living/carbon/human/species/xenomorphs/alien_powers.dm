@@ -175,7 +175,7 @@
 
 	process_spit(target)
 
-/mob/living/carbon/human/proc/process_spit(mob/T = null)
+/mob/living/carbon/human/proc/process_spit(mob/T)
 	if(!T || !src || src.stat)
 		return
 
