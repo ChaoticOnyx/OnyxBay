@@ -13,9 +13,9 @@
 							/obj/item/weapon/stock_parts/manipulator = 3,
 							/obj/item/weapon/stock_parts/console_screen = 1)
 
-/obj/item/weapon/circuitboard/surg_printer
+/obj/item/weapon/circuitboard/pros_printer
 	name = T_BOARD("surgical printer")
-	build_path = /obj/machinery/surg_printer
+	build_path = /obj/machinery/pros_printer
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 3, TECH_DATA = 3)
 	req_components = list(

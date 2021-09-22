@@ -2777,6 +2777,7 @@
 #include "maps\_map_include.dm"
 #include "maps\cache_ref.dm"
 #include "maps\away\casino\casino.dm"
+#include "maps\example\example.dm"
 #include "maps\example\example_areas.dm"
 #include "maps\example\example_define.dm"
 #include "maps\example\example_jobs.dm"

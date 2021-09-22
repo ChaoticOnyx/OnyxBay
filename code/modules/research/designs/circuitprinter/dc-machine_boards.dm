@@ -207,5 +207,5 @@
 	name = "surgical printer"
 	id = "surgprinter"
 	req_tech = list(TECH_BIO = 2, TECH_DATA = 1)
-	build_path = /obj/item/weapon/circuitboard/surg_printer
+	build_path = /obj/item/weapon/circuitboard/pros_printer
 	sort_string = "WAAAS"

@@ -385,16 +385,15 @@
 
 // NanoUI stuff.
 /obj/machinery/pros_fabricator/attack_hand(user)
-	if(..(user))
+	if(..())
 		return
-
 	if(!allowed(user))
 		return
-
 	ui_interact(user)
 
 /obj/machinery/pros_fabricator/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
-	var/data[0]
+	user.set_machine(src)
+	var/list/data = list()
 
 	var/datum/design/current = length(queue) ? queue[1] : null
 	if(current)
@@ -434,9 +433,6 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/pros_fabricator/Topic(href, href_list)
-	if(..())
-		return 1
-
 	if(href_list["build"])
 		add_to_queue(text2num(href_list["build"]))
 
@@ -474,4 +470,4 @@
 	else
 		sync_message = ""
 
-	return 1
+	return TOPIC_REFRESH

@@ -1,4 +1,4 @@
-/obj/machinery/surg_printer
+/obj/machinery/pros_printer
 	name = "Surgical Printer"
 	desc = "It's a machine that prints prosthetic organs."
 
@@ -26,30 +26,30 @@
 	var/category = null
 	var/list/categories = list()
 
-/obj/machinery/surg_printer/Initialize()
+/obj/machinery/pros_printer/Initialize()
 	..()
 
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/surg_printer(src)
+	component_parts += new /obj/item/weapon/circuitboard/pros_printer(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
 
-/obj/machinery/surg_printer/Destroy()
+/obj/machinery/pros_printer/Destroy()
 	var/obj/item/stack/material/steel/S
 	var/amnt = S.perunit
 	if(stored_matter >= amnt)
 		new S(get_turf(src), Floor(stored_matter/amnt))
 	return ..()
 
-/obj/machinery/surg_printer/update_icon()
+/obj/machinery/pros_printer/update_icon()
 	overlays.Cut()
 	if(panel_open)
 		overlays.Add(image(icon, "_panel"))
 	if(busy)
 		overlays.Add(image(icon, "_work"))
 
-/obj/machinery/surg_printer/attackby(obj/item/O, mob/user)
+/obj/machinery/pros_printer/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		updateUsrDialog()
 		return
@@ -80,7 +80,7 @@
 	return ..()
 
 // Printing checks.
-/obj/machinery/surg_printer/proc/check_print(choice)
+/obj/machinery/pros_printer/proc/check_print(choice)
 	if(!choice || busy || (stat & (BROKEN|NOPOWER)))
 		return
 
@@ -109,13 +109,13 @@
 
 	return
 
-/obj/machinery/surg_printer/proc/can_print(datum/printer/recipe/R)
+/obj/machinery/pros_printer/proc/can_print(datum/printer/recipe/R)
 	if(stored_matter < R.matter)
 		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [R.matter] needed.'"))
 		return 0
 	return 1
 
-/obj/machinery/surg_printer/proc/print_organ(datum/printer/recipe/R)
+/obj/machinery/pros_printer/proc/print_organ(datum/printer/recipe/R)
 	var/obj/item/organ/O = new R.build_path(get_turf(src))
 
 	O.species = all_species[SPECIES_HUMAN]
@@ -129,11 +129,11 @@
 	return O
 
 // Getters.
-/obj/machinery/surg_printer/proc/get_categories()
+/obj/machinery/pros_printer/proc/get_categories()
 	categories = GLOB.printer_categories
 	category = categories[1]
 
-/obj/machinery/surg_printer/proc/get_build_options()
+/obj/machinery/pros_printer/proc/get_build_options()
 	. = list()
 	for(var/i = 1 to GLOB.printer_recipes.len)
 		var/datum/printer/recipe/R = GLOB.printer_recipes[i]
@@ -141,20 +141,16 @@
 			. += list(list("name" = R.name, "id" = i, "category" = R.category, "resources" = R.matter))
 
 // NanoUI stuff.
-/obj/machinery/surg_printer/attack_hand(user)
-	if(..(user))
+/obj/machinery/pros_printer/attack_hand(user)
+	if(..())
 		return
-
-	if(busy)
-		return
-
 	if(!allowed(user))
 		return
-
 	ui_interact(user)
 
-/obj/machinery/surg_printer/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
-	var/data[0]
+/obj/machinery/pros_printer/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
+	user.set_machine(src)
+	var/list/data = list()
 
 	if(!category)
 		get_categories()
@@ -174,10 +170,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/surg_printer/Topic(href, href_list)
-	if(..())
-		return 1
-
+/obj/machinery/pros_printer/Topic(href, href_list)
 	if(href_list["category"])
 		if(href_list["category"] in categories)
 			category = href_list["category"]
@@ -185,4 +178,4 @@
 	if(href_list["build"])
 		check_print(text2num(href_list["build"]))
 
-	return 1
+	return TOPIC_REFRESH

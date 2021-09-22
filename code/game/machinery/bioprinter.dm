@@ -282,16 +282,15 @@
 		. += list(list("dna_name" = H.real_name, "dna_species" = H.species))
 
 /obj/machinery/bioprinter/attack_hand(user)
-	if(..(user))
+	if(..())
 		return
-
 	if(!allowed(user))
 		return
-
 	ui_interact(user)
 
 /obj/machinery/bioprinter/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
-	var/data[0]
+	user.set_machine(src)
+	var/list/data = list()
 
 	if(!category)
 		get_categories()
@@ -324,9 +323,6 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/bioprinter/Topic(href, href_list, datum/topic_state/state)
-	if(..())
-		return 1
-
 	if(href_list["build"])
 		add_to_queue(text2num(href_list["build"]))
 
@@ -337,4 +333,4 @@
 		if(href_list["category"] in categories)
 			category = href_list["category"]
 
-	return 1
+	return TOPIC_REFRESH
