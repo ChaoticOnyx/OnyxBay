@@ -150,7 +150,7 @@
 
 	process_leap(target)
 
-/mob/living/carbon/human/proc/process_leap(mob/living/T = null)
+/mob/living/carbon/human/proc/process_leap(mob/living/T)
 	if(last_special > world.time)
 		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
 		return
