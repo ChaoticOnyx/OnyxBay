@@ -845,6 +845,11 @@
 	name = "Nia"
 	icon_state = "hair_nia"
 
+/datum/sprite_accessory/hair/bluntbangs
+	name = "Blunt Bangs"
+	icon_state = "hair_bluntbangs"
+	gender = FEMALE
+
 /datum/sprite_accessory/hair/oxton
 	name = "Oxton"
 	icon_state = "hair_oxton"
