@@ -38,6 +38,12 @@
 	var/obj/item/organ/external/affecting = T.get_organ(zone_sel.selecting)
 	if(!affecting)
 		to_chat(src, SPAN("changeling", "They are missing that body part!"))
+		return
+
+	for(var/datum/absorbed_dna/knownDNA in mind?.changeling?.absorbed_dna)
+		if(knownDNA.dna == T.dna)
+			to_chat(src, SPAN("changeling", "You are already have this creature's DNA!"))
+			return
 
 	changeling.isabsorbing = TRUE
 	for(var/stage = 1 to 3)
