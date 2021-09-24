@@ -167,12 +167,6 @@
 	queue += D
 	update_busy()
 
-/obj/machinery/organ_printer/pros_fabricator/remove_from_queue(index)
-	if(index == 1)
-		progress = 0
-	queue.Cut(index, index + 1)
-	update_busy()
-
 /obj/machinery/organ_printer/pros_fabricator/get_queue_names()
 	. = list()
 	for(var/i = 2 to queue.len)
@@ -215,7 +209,7 @@
 // Getters and other stuff...
 /obj/machinery/organ_printer/pros_fabricator/get_build_options()
 	. = list()
-	for(var/i = 1 to files.known_designs.len)
+	for(var/i = 1 to length(files.known_designs))
 		var/datum/design/D = files.known_designs[i]
 		if(D.build_path && (D.build_type & PROSFAB))
 			. += list(list("name" = D.name, "id" = i, "category" = D.category, "resources" = get_design_resources(D), "time" = get_design_time(D)))
