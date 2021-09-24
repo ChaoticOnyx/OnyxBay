@@ -126,8 +126,8 @@
 	if(!rawhtml)
 		info = html_encode(text)
 	info = parsepencode(info, is_init = TRUE)
-	update_icon()
 	update_space()
+	update_icon()
 	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
