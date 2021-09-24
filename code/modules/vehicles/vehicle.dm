@@ -18,7 +18,11 @@
 	buckle_movable = 1
 	buckle_lying = 0
 
-	movement_handlers = list(/datum/movement_handler/deny_multiz, /datum/movement_handler/move_relay_self)
+	movement_handlers = list(
+		/datum/movement_handler/deny_stairs,
+		/datum/movement_handler/deny_multiz,
+		/datum/movement_handler/move_relay_self
+	)
 
 	var/attack_log = null
 	var/on = 0

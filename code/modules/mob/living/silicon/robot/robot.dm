@@ -80,6 +80,7 @@
 	var/ident = 0
 	var/viewalerts = 0
 	var/modtype = "Default"
+	var/selected_module
 	var/lower_mod = 0
 	var/jetpack = 0
 	var/datum/effect/effect/system/trail/ion/ion_trail = null
@@ -259,22 +260,28 @@
 	update_icon()
 	return module_sprites
 
-/mob/living/silicon/robot/proc/pick_module()
+/mob/living/silicon/robot/proc/choose_module()
 	if(module)
+		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
-	sensor_mode = 0
-	active_hud = null
 	var/list/modules = list()
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
 		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
 		modules += "Combat"
-	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
+	selected_module = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
+	if(!(selected_module in GLOB.robot_module_types))
+		return
+	setup_module()
+
+/mob/living/silicon/robot/proc/setup_module()
 	if(module)
+		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
-	if(!(modtype in GLOB.robot_module_types))
-		return
+	modtype = selected_module
+	sensor_mode = 0
+	active_hud = null
 
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
@@ -820,7 +827,7 @@
 		return
 
 	if(!module)
-		pick_module()
+		choose_module()
 		return
 	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
 	dat += {"

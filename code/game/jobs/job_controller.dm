@@ -3,6 +3,7 @@ var/global/datum/controller/occupations/job_master
 #define GET_RANDOM_JOB 0
 #define BE_ASSISTANT 1
 #define RETURN_TO_LOBBY 2
+#define NEW_PLAYER_WAYFINDING_TRACKER 21 // 3 weeks
 
 /datum/controller/occupations
 		//List of all jobs
@@ -565,6 +566,17 @@ var/global/datum/controller/occupations/job_master
 				var/obj/item/clothing/glasses/G = H.glasses
 				G.prescription = 7
 
+		// give pinpointer to new players
+		var/wayfinding_pref = H.get_preference_value(/datum/client_preference/give_wayfinding)
+		var/player_age = H?.client?.player_age
+		if(istext(player_age)) // database not initialized
+			player_age = 0
+		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
+			var/obj/item/weapon/pinpointer/wayfinding/W = new(H)
+			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
+			if(equipped)
+				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))
+
 		BITSET(H.hud_updateflag, ID_HUD)
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
@@ -790,3 +802,5 @@ GLOBAL_LIST_EMPTY(vacancies)
 /datum/job_vacancy/Destroy()
 	GLOB.vacancies -= src
 	return ..()
+
+#undef NEW_PLAYER_WAYFINDING_TRACKER

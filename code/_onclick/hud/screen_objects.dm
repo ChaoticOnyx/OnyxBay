@@ -358,7 +358,7 @@
 //				if(R.module)
 //					R.hud_used.toggle_show_robot_modules()
 //					return 1
-				R.pick_module()
+				R.choose_module()
 
 		if("inventory")
 			if(isrobot(usr))
