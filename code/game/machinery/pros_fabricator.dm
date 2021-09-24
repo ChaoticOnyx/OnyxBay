@@ -1,4 +1,4 @@
-/obj/machinery/pros_fabricator
+/obj/machinery/organ_printer/pros_fabricator
 	name = "Prosthetics Fabricator"
 	desc = "It's a machine that prints replacement organs."
 
@@ -25,18 +25,10 @@
 	active_power_usage = 5000
 
 	// Resources
-	var/speed = 1
-	var/mat_efficiency = 1
 	var/list/materials = list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0, MATERIAL_PLASTIC = 0)
 	var/res_max_amount = 100000
 
 	var/datum/research/files
-	var/list/datum/design/queue = list()
-	var/progress = 0
-	var/busy = FALSE
-
-	var/category = null
-	var/list/categories = list()
 
 	var/manufacturer = null
 	var/list/manufacturer_list = list()
@@ -53,7 +45,9 @@
 
 	var/sync_message = ""
 
-/obj/machinery/pros_fabricator/Initialize()
+	icon_state_overlay_parent = "prosfab"
+
+/obj/machinery/organ_printer/pros_fabricator/Initialize()
 	. = ..()
 
 	get_genders()
@@ -71,30 +65,7 @@
 	files = new /datum/research
 	update_categories()
 
-/obj/machinery/pros_fabricator/Process()
-	..()
-	if(stat)
-		return
-	if(busy)
-		update_use_power(POWER_USE_ACTIVE)
-		progress += speed
-		check_build()
-	else
-		update_use_power(POWER_USE_IDLE)
-	update_icon()
-
-/obj/machinery/pros_fabricator/proc/update_busy()
-	if(queue.len)
-		if(can_build(queue[1]))
-			busy = TRUE
-		else
-			busy = FALSE
-	else
-		busy = FALSE
-
-/obj/machinery/pros_fabricator/Destroy()
-	var/turf/T = get_turf(src)
-
+/obj/machinery/organ_printer/pros_fabricator/remove_objects_from_machine(turf/T)
 	for(var/f in materials)
 		eject_materials(f, -1)
 
@@ -102,43 +73,7 @@
 		for(var/obj/item/weapon/disk/limb/D in contents)
 			D.forceMove(T)
 
-	..()
-
-/obj/machinery/pros_fabricator/update_icon()
-	overlays.Cut()
-	if(panel_open)
-		overlays.Add(image(icon, "prosfab-panel"))
-	if(stat & (BROKEN|NOPOWER))
-		icon_state = "prosfab-idle"
-	if(busy)
-		icon_state = "prosfab-work"
-	else
-		icon_state = "prosfab-pause"
-
-/obj/machinery/pros_fabricator/RefreshParts()
-	res_max_amount = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
-		res_max_amount += M.rating * 100000
-	var/T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
-		T += M.rating
-	mat_efficiency = 1 - (T - 1) / 4
-	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts)
-		T += M.rating
-	speed = T / 2
-
-/obj/machinery/pros_fabricator/attackby(obj/item/O, mob/user)
-	if(busy)
-		to_chat(user, SPAN("warning", "The [src] is busy. Please wait for completion of previous operation."))
-		return 1
-
-	if(default_deconstruction_screwdriver(user, O))
-		return
-	if(default_deconstruction_crowbar(user, O))
-		return
-	if(default_part_replacement(user, O))
-		return
-
+/obj/machinery/organ_printer/pros_fabricator/special_attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/disk/limb))
 		var/obj/item/weapon/disk/limb/D = O
 
@@ -193,28 +128,11 @@
 
 		else
 			to_chat(user, "The fabricator cannot hold more [stack_plural].")
+		return
 
-/obj/machinery/pros_fabricator/emag_act(remaining_charges, mob/user)
-	switch(emagged)
-		if(0)
-			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-			emagged = 0.5
-			visible_message("\icon[src] <b>[src]</b> beeps: \"DB error \[Code 0x00F1\]\"")
-			sleep(10)
-			visible_message("\icon[src] <b>[src]</b> beeps: \"Attempting auto-repair\"")
-			sleep(15)
-			visible_message("\icon[src] <b>[src]</b> beeps: \"User DB corrupted \[Code 0x00FA\]. Truncating data structure...\"")
-			sleep(30)
-			visible_message("\icon[src] <b>[src]</b> beeps: \"User DB truncated. Please contact your [GLOB.using_map.company_name] system operator for future assistance.\"")
-			req_access = null
-			emagged = 1
-			return 1
-		if(0.5)
-			visible_message("\icon[src] <b>[src]</b> beeps: \"DB not responding \[Code 0x0003\]...\"")
-		if(1)
-			visible_message("\icon[src] <b>[src]</b> beeps: \"No records in User DB\"")
+	return TRUE
 
-/obj/machinery/pros_fabricator/proc/eject_materials(material, amount)
+/obj/machinery/organ_printer/pros_fabricator/proc/eject_materials(material, amount)
 	var/recursive = amount == -1 ? 1 : 0
 	material = lowertext(material)
 	var/mattype
@@ -244,31 +162,31 @@
 	update_busy()
 
 // Queue manipulations.
-/obj/machinery/pros_fabricator/proc/add_to_queue(index)
+/obj/machinery/organ_printer/pros_fabricator/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]
 	queue += D
 	update_busy()
 
-/obj/machinery/pros_fabricator/proc/remove_from_queue(index)
+/obj/machinery/organ_printer/pros_fabricator/remove_from_queue(index)
 	if(index == 1)
 		progress = 0
 	queue.Cut(index, index + 1)
 	update_busy()
 
-/obj/machinery/pros_fabricator/proc/get_queue_names()
+/obj/machinery/organ_printer/pros_fabricator/get_queue_names()
 	. = list()
 	for(var/i = 2 to queue.len)
 		var/datum/design/D = queue[i]
 		. += D.name
 
 // Build checks and etc.
-/obj/machinery/pros_fabricator/proc/can_build(datum/design/D)
+/obj/machinery/organ_printer/pros_fabricator/can_build(datum/design/D)
 	for(var/M in D.materials)
 		if(materials[M] <= D.materials[M] * mat_efficiency)
 			return 0
 	return 1
 
-/obj/machinery/pros_fabricator/proc/check_build()
+/obj/machinery/organ_printer/pros_fabricator/check_build()
 	if(!queue.len)
 		progress = 0
 		return
@@ -295,28 +213,28 @@
 		remove_from_queue(1)
 
 // Getters and other stuff...
-/obj/machinery/pros_fabricator/proc/get_build_options()
+/obj/machinery/organ_printer/pros_fabricator/get_build_options()
 	. = list()
 	for(var/i = 1 to files.known_designs.len)
 		var/datum/design/D = files.known_designs[i]
 		if(D.build_path && (D.build_type & PROSFAB))
 			. += list(list("name" = D.name, "id" = i, "category" = D.category, "resources" = get_design_resources(D), "time" = get_design_time(D)))
 
-/obj/machinery/pros_fabricator/proc/get_design_resources(datum/design/D)
+/obj/machinery/organ_printer/pros_fabricator/proc/get_design_resources(datum/design/D)
 	var/list/F = list()
 	for(var/T in D.materials)
 		F += "[capitalize(T)]: [D.materials[T] * mat_efficiency]"
 	return english_list(F, and_text = ", ")
 
-/obj/machinery/pros_fabricator/proc/get_design_time(datum/design/D)
+/obj/machinery/organ_printer/pros_fabricator/get_design_time(datum/design/D)
 	return time2text(round(10 * D.time / speed), "mm:ss")
 
-/obj/machinery/pros_fabricator/proc/get_materials()
+/obj/machinery/organ_printer/pros_fabricator/proc/get_materials()
 	. = list()
 	for(var/T in materials)
 		. += list(list("mat" = capitalize(T), "amt" = materials[T]))
 
-/obj/machinery/pros_fabricator/proc/get_species()
+/obj/machinery/organ_printer/pros_fabricator/proc/get_species()
 	species_list = list()
 	for(var/N in playable_species)
 		var/datum/species/S = all_species[N]
@@ -326,11 +244,11 @@
 			species = N
 		species_list += N
 
-/obj/machinery/pros_fabricator/proc/get_genders()
+/obj/machinery/organ_printer/pros_fabricator/proc/get_genders()
 	if(!pros_gender)
 		pros_gender = pros_gender_list[1]
 
-/obj/machinery/pros_fabricator/proc/update_categories()
+/obj/machinery/organ_printer/pros_fabricator/proc/update_categories()
 	categories = list()
 	if(files)
 		for(var/datum/design/D in files.known_designs)
@@ -340,7 +258,7 @@
 	if(!category || !(category in categories))
 		category = categories[1]
 
-/obj/machinery/pros_fabricator/proc/update_pros_list()
+/obj/machinery/organ_printer/pros_fabricator/proc/update_pros_list()
 	manufacturer = null
 	valid_manufacturer_list = list()
 
@@ -354,7 +272,7 @@
 
 			valid_manufacturer_list += list(list("id" = A, "company" = R.company))
 
-/obj/machinery/pros_fabricator/proc/update_builds_list()
+/obj/machinery/organ_printer/pros_fabricator/proc/update_builds_list()
 	pros_build = null
 	pros_build_list = list()
 
@@ -369,7 +287,7 @@
 		pros_build = pros_build_list[1]
 
 // Sync.
-/obj/machinery/pros_fabricator/proc/sync()
+/obj/machinery/organ_printer/pros_fabricator/proc/sync()
 	sync_message = "Error: no console found."
 	for(var/obj/machinery/computer/rdconsole/RDC in get_area_all_atoms(get_area(src)))
 		if(!RDC.sync)
@@ -383,14 +301,8 @@
 	update_categories()
 
 // NanoUI stuff.
-/obj/machinery/pros_fabricator/attack_hand(user)
-	if(..())
-		return
-	if(!allowed(user))
-		return
-	ui_interact(user)
 
-/obj/machinery/pros_fabricator/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
+/obj/machinery/organ_printer/pros_fabricator/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	user.set_machine(src)
 	var/list/data = list()
 
@@ -426,17 +338,13 @@
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "prosfab.tmpl", "Prosthetics Fabricator UI", 620, 550 )
+		ui = new(user, src, ui_key, "prosfab.tmpl", "Prosthetics Fabricator", 620, 550 )
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/pros_fabricator/Topic(href, href_list)
-	if(href_list["build"])
-		add_to_queue(text2num(href_list["build"]))
-
-	if(href_list["remove"])
-		remove_from_queue(text2num(href_list["remove"]))
+/obj/machinery/organ_printer/pros_fabricator/Topic(href, href_list)
+	. = ..()
 
 	if(href_list["gender"])
 		if(href_list["gender"] in pros_gender_list)
@@ -452,10 +360,6 @@
 	if(href_list["body_build"])
 		if(href_list["body_build"] in pros_build_list)
 			pros_build = href_list["body_build"]
-
-	if(href_list["category"])
-		if(href_list["category"] in categories)
-			category = href_list["category"]
 
 	if(href_list["manufacturer"])
 		if(href_list["manufacturer"] in all_robolimbs)

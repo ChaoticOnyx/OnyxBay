@@ -1,4 +1,4 @@
-/obj/machinery/pros_printer
+/obj/machinery/organ_printer/prosthetic
 	name = "Surgical Printer"
 	desc = "It's a machine that prints prosthetic organs."
 
@@ -22,41 +22,20 @@
 
 	// Resources
 	var/matter_type = MATERIAL_STEEL
-	var/stored_matter = 0
-	var/max_stored_matter = 10000
+	max_stored_matter = 10000
+	max_multiplier = 5000
 
 	// Printing stuff
-	var/busy = 	FALSE
 	var/print_delay = 100
 
-	var/category = null
-	var/list/categories = list()
-
-/obj/machinery/pros_printer/Initialize()
-	. = ..()
-
-/obj/machinery/pros_printer/Destroy()
+/obj/machinery/organ_printer/prosthetic/Destroy()
 	var/obj/item/stack/material/steel/S
 	var/amnt = S.perunit
 	if(stored_matter >= amnt)
 		new S(get_turf(src), Floor(stored_matter/amnt))
 	return ..()
 
-/obj/machinery/pros_printer/update_icon()
-	overlays.Cut()
-	if(panel_open)
-		overlays.Add(image(icon, "_panel"))
-	if(busy)
-		overlays.Add(image(icon, "_work"))
-
-/obj/machinery/pros_printer/attackby(obj/item/O, mob/user)
-	if(default_deconstruction_screwdriver(user, O))
-		updateUsrDialog()
-		return
-
-	if(default_deconstruction_crowbar(user, O))
-		return
-
+/obj/machinery/organ_printer/prosthetic/special_attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/stack/material) && O.get_material_name() == matter_type)
 		var/obj/item/stack/material/S = O
 		var/amnt = S.perunit
@@ -77,16 +56,14 @@
 		S.use(sheets_to_take)
 		return
 
-	return ..()
-
 // Printing checks.
-/obj/machinery/pros_printer/proc/check_print(choice)
+/obj/machinery/organ_printer/prosthetic/proc/check_print(choice)
 	if(!choice || busy || (stat & (BROKEN|NOPOWER)))
 		return
 
 	var/datum/printer/recipe/R = GLOB.printer_recipes[choice]
 
-	if(!can_print(R))
+	if(!can_build(R))
 		return
 
 	// Machine starts printing.
@@ -109,13 +86,13 @@
 
 	return
 
-/obj/machinery/pros_printer/proc/can_print(datum/printer/recipe/R)
+/obj/machinery/organ_printer/prosthetic/can_build(datum/printer/recipe/R)
 	if(stored_matter < R.matter)
 		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [R.matter] needed.'"))
 		return 0
 	return 1
 
-/obj/machinery/pros_printer/proc/print_organ(datum/printer/recipe/R)
+/obj/machinery/organ_printer/prosthetic/print_organ(datum/printer/recipe/R)
 	var/obj/item/organ/O = new R.build_path(get_turf(src))
 
 	O.species = all_species[SPECIES_HUMAN]
@@ -128,27 +105,8 @@
 	visible_message(SPAN("notice", "\The [src] churns for a moment, then spits out \a [O]."))
 	return O
 
-// Getters.
-/obj/machinery/pros_printer/proc/get_categories()
-	categories = GLOB.printer_categories
-	category = categories[1]
-
-/obj/machinery/pros_printer/proc/get_build_options()
-	. = list()
-	for(var/i = 1 to GLOB.printer_recipes.len)
-		var/datum/printer/recipe/R = GLOB.printer_recipes[i]
-		if(R.build_path)
-			. += list(list("name" = R.name, "id" = i, "category" = R.category, "resources" = R.matter))
-
 // NanoUI stuff.
-/obj/machinery/pros_printer/attack_hand(user)
-	if(..())
-		return
-	if(!allowed(user))
-		return
-	ui_interact(user)
-
-/obj/machinery/pros_printer/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
+/obj/machinery/organ_printer/prosthetic/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	user.set_machine(src)
 	var/list/data = list()
 
@@ -165,17 +123,13 @@
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "surgprinter.tmpl", "Surgical Priner UI", 360, 410)
+		ui = new(user, src, ui_key, "surgprinter.tmpl", "Surgical Printer", 360, 410)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/pros_printer/Topic(href, href_list)
-	if(href_list["category"])
-		if(href_list["category"] in categories)
-			category = href_list["category"]
-
+/obj/machinery/organ_printer/prosthetic/Topic(href, href_list)
 	if(href_list["build"])
 		check_print(text2num(href_list["build"]))
-
-	return TOPIC_REFRESH
+		return TOPIC_REFRESH
+	..()

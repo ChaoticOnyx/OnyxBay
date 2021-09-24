@@ -15,7 +15,7 @@
 
 /obj/item/weapon/circuitboard/pros_printer
 	name = T_BOARD("surgical printer")
-	build_path = /obj/machinery/pros_printer
+	build_path = /obj/machinery/organ_printer/prosthetic
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 3, TECH_DATA = 3)
 	req_components = list(
@@ -25,7 +25,7 @@
 
 /obj/item/weapon/circuitboard/bioprinter
 	name = T_BOARD("bioprinter")
-	build_path = /obj/machinery/bioprinter
+	build_path = /obj/machinery/organ_printer
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 3, TECH_DATA = 3)
 	req_components = list(
@@ -37,7 +37,7 @@
 
 /obj/item/weapon/circuitboard/roboprinter
 	name = T_BOARD("prosthetic fabricator")
-	build_path = /obj/machinery/pros_fabricator
+	build_path = /obj/machinery/organ_printer/pros_fabricator
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_DATA = 3)
 	req_components = list(

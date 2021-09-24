@@ -6,9 +6,9 @@
 	category = "Prosthetics"
 
 /datum/design/item/prosfab/pros/Fabricate(newloc, fabricator)
-	if(istype(fabricator, /obj/machinery/pros_fabricator))
+	if(istype(fabricator, /obj/machinery/organ_printer/pros_fabricator))
 
-		var/obj/machinery/pros_fabricator/prosfab = fabricator
+		var/obj/machinery/organ_printer/pros_fabricator/prosfab = fabricator
 		var/obj/item/organ/O = new build_path(newloc)
 
 		var/datum/robolimb/manf = all_robolimbs["Unbranded"]
@@ -34,9 +34,9 @@
 	return ..()
 
 /datum/design/item/prosfab/pros/torso/Fabricate(newloc, fabricator)
-	if(istype(fabricator, /obj/machinery/pros_fabricator))
+	if(istype(fabricator, /obj/machinery/organ_printer/pros_fabricator))
 
-		var/obj/machinery/pros_fabricator/prosfab = fabricator
+		var/obj/machinery/organ_printer/pros_fabricator/prosfab = fabricator
 
 		var/datum/robolimb/manf = all_robolimbs["Unbranded"]
 		var/new_species

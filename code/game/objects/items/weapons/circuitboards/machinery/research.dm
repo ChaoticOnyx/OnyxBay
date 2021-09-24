@@ -65,7 +65,7 @@
 
 /obj/item/weapon/circuitboard/pros_fabricator
 	name = T_BOARD("Prosthetics Fabricator")
-	build_path = /obj/machinery/pros_fabricator
+	build_path = /obj/machinery/organ_printer/pros_fabricator
 	board_type = "machine"
 	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
 	req_components = list(
