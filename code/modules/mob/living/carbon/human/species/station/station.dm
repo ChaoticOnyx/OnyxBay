@@ -175,8 +175,7 @@
 
 	body_builds = list(
 		new /datum/body_build,
-		new /datum/body_build/slim,
-		new /datum/body_build/slim/alt
+		new /datum/body_build/slim/skrell
 	)
 
 	burn_mod = 0.9
