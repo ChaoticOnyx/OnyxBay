@@ -2,11 +2,11 @@
 	name = "Battlemage"
 	feedback_tag = "BM"
 	description = "Mix physical with the mystical in head to head combat."
-	points = 6
+	points = 7
 	can_make_contracts = TRUE
 
 	spells = list(
-		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/passage,  1),
+		SPELL_DATA(/datum/spell/mark_recall,                           1),
 		SPELL_DATA(/datum/spell/targeted/equip_item/dyrnwyn,           1),
 		SPELL_DATA(/datum/spell/targeted/equip_item/shield,            1),
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/fireball, 1),
