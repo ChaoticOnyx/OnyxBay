@@ -29,9 +29,7 @@
 
 /obj/singularity_act()
 	if(simulated)
-		ex_act(1)
-		if(src)
-			qdel(src)
+		qdel(src)
 		return 2
 
 /obj/singularity_pull(S, current_size)

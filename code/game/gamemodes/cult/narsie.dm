@@ -17,6 +17,7 @@ var/global/list/narsie_list = list()
 	plane = ABOVE_LIGHTING_LAYER
 	var/announce = 1
 	var/cause_hell = 1
+	create_childs = FALSE
 
 /obj/singularity/narsie/Initialize()
 	narsie_list.Add(src)
