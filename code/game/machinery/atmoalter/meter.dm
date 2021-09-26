@@ -5,7 +5,7 @@
 	icon_state = "meterX"
 	var/atom/target = null //A pipe for the base type
 	anchored = 1.0
-	power_channel = STATIC_ENVIRON
+	power_channel = ENVIRON
 	var/frequency = 0
 	var/id
 	idle_power_usage = 15
@@ -23,7 +23,7 @@
 /obj/machinery/meter/proc/clear_target()
 	if(target)
 		GLOB.destroyed_event.unregister(target, src)
-		target = null
+		target = null	
 
 /obj/machinery/meter/Destroy()
 	clear_target()

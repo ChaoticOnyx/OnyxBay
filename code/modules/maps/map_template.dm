@@ -56,6 +56,9 @@
 
 	SSatoms.InitializeAtoms(atoms)
 
+	SSmachines.setup_powernets_for_cables(cables)
+	SSmachines.setup_atmos_machinery(atmos_machines)
+
 	for (var/i in machines)
 		var/obj/machinery/machine = i
 		machine.power_change()

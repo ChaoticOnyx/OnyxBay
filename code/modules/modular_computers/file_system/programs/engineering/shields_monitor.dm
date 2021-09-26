@@ -27,7 +27,7 @@
 
 	var/list/shields = list()
 	var/connected_z_levels = GetConnectedZlevels(T.z)
-	for(var/obj/machinery/power/shield_generator/S in GLOB.machines)
+	for(var/obj/machinery/power/shield_generator/S in SSmachines.machinery)
 		if(!(S.z in connected_z_levels))
 			continue
 		shields.Add(S)

@@ -898,7 +898,7 @@
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
+	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			teleporters_id.Add(com.id)
@@ -920,7 +920,7 @@
 
 	var/output = "Current selection: [(current_console && current_console.id) || "None"]"
 	output += "\nList of avaliable teleporters:"
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
+	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			output += "\n[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"
@@ -933,7 +933,7 @@
 	. = list()
 	. += "Current selection: [(current_console && current_console.id) || "None"]"
 	. += "Please select a teleporter to lock in on:"
-	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
+	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			.["[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"] = "tport=[any2ref(com)]"

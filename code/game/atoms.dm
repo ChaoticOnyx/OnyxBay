@@ -578,7 +578,3 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
-
-// Called after we wrench/unwrench this object
-/obj/proc/wrenched_change()
-	return

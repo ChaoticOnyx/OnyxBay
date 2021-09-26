@@ -34,11 +34,11 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door_timer/LateInitialize()
-	for(var/obj/machinery/door/window/brigdoor/M in GLOB.all_doors)
+	for(var/obj/machinery/door/window/brigdoor/M in SSmachines.machinery)
 		if (M.id == src.id)
 			targets += M
 
-	for(var/obj/machinery/flasher/F in GLOB.machines)
+	for(var/obj/machinery/flasher/F in SSmachines.machinery)
 		if(F.id == src.id)
 			targets += F
 

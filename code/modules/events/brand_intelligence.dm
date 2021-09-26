@@ -12,7 +12,7 @@
 
 
 /datum/event/brand_intelligence/start()
-	for(var/obj/machinery/vending/V in GLOB.machines)
+	for(var/obj/machinery/vending/V in SSmachines.machinery)
 		if(V.z in affecting_z)
 			vendingMachines += weakref(V)
 

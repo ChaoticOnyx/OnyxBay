@@ -7,7 +7,7 @@
 	density = 1
 	idle_power_usage = 30
 	active_power_usage = 200
-	power_channel = STATIC_EQUIP
+	power_channel = EQUIP
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/obj/item/copyitem = null	//what's in the copier!
@@ -17,10 +17,10 @@
 	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
 	var/busy = FALSE
 
-/obj/machinery/photocopier/attack_ai(mob/user)
+/obj/machinery/photocopier/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/photocopier/attack_hand(mob/user)
+/obj/machinery/photocopier/attack_hand(mob/user as mob)
 	user.set_machine(src)
 
 	var/dat = "<meta charset=\"utf-8\">Photocopier<BR><BR>"

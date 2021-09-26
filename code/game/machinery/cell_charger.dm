@@ -6,7 +6,7 @@
 	anchored = 1
 	idle_power_usage = 5
 	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
-	power_channel = STATIC_EQUIP
+	power_channel = EQUIP
 	var/obj/item/weapon/cell/charging = null
 	var/chargelevel = -1
 
