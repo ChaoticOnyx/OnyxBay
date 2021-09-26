@@ -22,7 +22,7 @@
 	var/state_base = "jukebox"
 	anchored = 1
 	density = 1
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	idle_power_usage = 10
 	active_power_usage = 100
 	clicksound = 'sound/machines/buttonbeep.ogg'
