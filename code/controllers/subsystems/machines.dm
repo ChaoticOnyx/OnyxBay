@@ -49,8 +49,10 @@ SUBSYSTEM_DEF(machines)
 	for(var/datum/powernet/PN in powernets)
 		qdel(PN)
 	powernets.Cut()
+	setup_powernets_for_cables(cable_list)
 
-	for(var/obj/structure/cable/PC in cable_list)
+/datum/controller/subsystem/machines/proc/setup_powernets_for_cables(list/cables)
+	for(var/obj/structure/cable/PC in cables)
 		if(!PC.powernet)
 			var/datum/powernet/NewPN = new()
 			NewPN.add_cable(PC)
@@ -58,7 +60,10 @@ SUBSYSTEM_DEF(machines)
 
 
 /datum/controller/subsystem/machines/stat_entry()
-	..("M:[processing.len]|PN:[powernets.len]")
+	var/msg = list()
+	msg += "M:[processing.len]|"
+	msg += "PN:[powernets.len]"
+	..(jointext(msg, null))
 
 
 /datum/controller/subsystem/machines/fire(resumed = 0)
