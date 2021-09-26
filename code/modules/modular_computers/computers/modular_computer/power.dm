@@ -24,7 +24,7 @@
 	if(!tesla_link || !tesla_link.check_functionality())
 		return FALSE
 	var/area/A = get_area(src)
-	if(!istype(A) || !A.powered(STATIC_EQUIP))
+	if(!istype(A) || !A.powered(EQUIP))
 		return FALSE
 
 	// At this point, we know that APC can power us for this tick. Check if we also need to charge our battery, and then actually use the power.
@@ -32,7 +32,7 @@
 		power_usage += tesla_link.passive_charging_rate
 		battery_module.battery.give(tesla_link.passive_charging_rate * CELLRATE)
 
-	A.use_power_oneoff(power_usage, STATIC_EQUIP)
+	A.use_power_oneoff(power_usage, EQUIP)
 	return TRUE
 
 // Handles power-related things, such as battery interaction, recharging, shutdown when it's discharged

@@ -164,7 +164,6 @@
 
 	wires = new(src)
 
-	GLOB.apc_list += src
 	// offset 24 pixels in direction of dir
 	// this allows the APC to be embedded in a wall, yet still inside an area
 	if (building)
@@ -204,7 +203,6 @@
 		cell.forceMove(loc)
 		cell = null
 
-	GLOB.apc_list -= src
 	// Malf AI, removes the APC from AI's hacked APCs list.
 	if((hacker) && (hacker.hacked_apcs) && (src in hacker.hacked_apcs))
 		hacker.hacked_apcs -= src
@@ -1012,9 +1010,9 @@
 			force_update = 1
 		return
 
-	lastused_light = area.usage(STATIC_LIGHT)
-	lastused_equip = area.usage(STATIC_EQUIP)
-	lastused_environ = area.usage(STATIC_ENVIRON)
+	lastused_light = area.usage(LIGHT)
+	lastused_equip = area.usage(EQUIP)
+	lastused_environ = area.usage(ENVIRON)
 	area.clear_usage()
 
 	lastused_total = lastused_light + lastused_equip + lastused_environ

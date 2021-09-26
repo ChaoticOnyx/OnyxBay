@@ -192,7 +192,7 @@
 	name="Power Supply"
 	active_power_usage = AI_POWERUSAGE_NORMAL * AI_POWERUSAGE_OXYLOSS_TO_WATTS_MULTIPLIER
 	use_power = POWER_USE_ACTIVE
-	power_channel = STATIC_EQUIP
+	power_channel = EQUIP
 	var/mob/living/silicon/ai/powered_ai = null
 	invisibility = 100
 

@@ -29,7 +29,7 @@
 
 	var/chained = 0// Adminbus chain-grab
 
-	var/create_childs = TRUE // if true - creates a dummy-singularity for each connected Z-level
+	var/create_childs = TRUE // if true - creates a dummy-singularity for each connected Z-level 
 	var/list/obj/singularity/child/childs = list()
 
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
@@ -43,7 +43,7 @@
 
 	..()
 	START_PROCESSING(SSobj, src)
-	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in SSmachines.machinery)
 		if(singubeacon.active)
 			target = singubeacon
 			break
@@ -269,7 +269,7 @@
 	for(var/direction in GLOB.cardinal)
 		if(!check_turfs_in(direction, step_size))
 			return FALSE
-
+	
 	for(var/obj/singularity/child/SC in childs)
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
@@ -454,7 +454,7 @@
 			continue
 		toxdamage = (toxdamage - (toxdamage * M.getarmor(null, "rad")))
 		M.apply_effect(toxdamage, TOX)
-
+	
 	for(var/obj/singularity/child/SC in childs)
 		SC.toxmob()
 
@@ -475,7 +475,7 @@
 		to_chat(M, SPAN("danger", "You look directly into The [name] and feel [current_size == STAGE_SUPER ? "helpless" : "weak"]."))
 		M.apply_effect(3, STUN)
 		visible_message(SPAN("danger", "[M] stares blankly at The [src]!"))
-
+	
 	for(var/obj/singularity/child/SC in childs)
 		SC.mezzer()
 
@@ -564,7 +564,7 @@
 
 /obj/singularity/child/move()
 	forceMove(locate(parent.x, parent.y, assigned_level))
-
+	
 /obj/singularity/child/consume(const/atom/A)
 	parent.consume(A)
 

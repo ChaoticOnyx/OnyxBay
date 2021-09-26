@@ -24,13 +24,8 @@
 
 /obj/machinery/computer/Initialize()
 	. = ..()
-	GLOB.computer_list += src
 	power_change()
 	update_icon()
-
-/obj/machinery/computer/Destroy()
-	GLOB.computer_list -= src
-	..()
 
 /obj/machinery/computer/emp_act(severity)
 	if(prob(20/severity)) set_broken(TRUE)

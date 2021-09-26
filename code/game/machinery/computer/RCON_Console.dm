@@ -1,3 +1,9 @@
+// RCON REMOTE CONTROL CONSOLE
+//
+// Last Change 1.1.2015 by Atlantis
+//
+// Allows remote operation of electrical systems on station (SMESs and Breaker Boxes)
+
 /obj/machinery/computer/rcon
 	name = "\improper RCON console"
 	desc = "Console used to remotely control machinery."
@@ -22,7 +28,7 @@
 // Proc: attack_hand()
 // Parameters: 1 (user - Person which clicked this computer)
 // Description: Opens UI of this machine.
-/obj/machinery/computer/rcon/attack_hand(mob/user)
+/obj/machinery/computer/rcon/attack_hand(mob/user as mob)
 	..()
 	ui_interact(user)
 
