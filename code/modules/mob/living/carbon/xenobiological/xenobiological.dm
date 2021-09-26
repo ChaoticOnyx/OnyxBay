@@ -206,11 +206,11 @@
 	if(Victim)
 		if(Victim == M)
 			if(prob(60))
-				visible_message("<span class='warning'>\The [M] attempts to wrestle \the [src] off!</span>")
+				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off!"))
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 
 			else
-				visible_message("<span class='warning'>\The [M] manages to wrestle \the [src] off!</span>")
+				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off!"))
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 				confused = max(confused, 2)
@@ -221,11 +221,11 @@
 
 		else
 			if(prob(30))
-				visible_message("<span class='warning'>\The [M] attempts to wrestle \the [src] off \the [Victim]!</span>")
+				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off \the [Victim]!"))
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 
 			else
-				visible_message("<span class='warning'>\The [M] manages to wrestle \the [src] off \the [Victim]!</span>")
+				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off \the [Victim]!"))
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 				confused = max(confused, 2)
@@ -236,12 +236,12 @@
 
 	switch(M.a_intent)
 
-		if (I_HELP)
+		if(I_HELP)
 			help_shake_act(M)
 
-		if (I_DISARM)
+		if(I_DISARM)
 			var/success = prob(40)
-			visible_message("<span class='warning'>\The [M] pushes \the [src]![success ? " \The [src] looks momentarily disoriented!" : ""]</span>")
+			visible_message(SPAN("warning", "The [M] pushes \the [src]!"+(success ? " \The [src] looks momentarily disoriented!" : "")))
 			if(success)
 				confused = max(confused, 2)
 				UpdateFace()
@@ -252,6 +252,15 @@
 		else
 
 			var/damage = rand(1, 9)
+
+			var/mob/living/carbon/human/H = M
+			var/hit_zone = H.zone_sel.selecting
+			var/datum/unarmed_attack/attack = H.get_unarmed_attack(src, hit_zone)
+
+			if(attack)
+				damage += attack.get_unarmed_damage(H)
+
+			var/attack_verb = attack ? pick(attack.attack_verb) : "punch"
 
 			attacked += 10
 			if (prob(90))
@@ -265,15 +274,17 @@
 						sleep(3)
 						step_away(src,M,15)
 
-				playsound(loc, "punch", rand(80, 100), 1, -1)
-				visible_message("<span class='danger'>[M] has punched [src]!</span>", \
-						"<span class='danger'>[M] has punched [src]!</span>")
+				playsound(loc, attack ? attack.attack_sound : "punch", rand(80, 100), 1, -1)
+				visible_message(
+					SPAN("danger", "[M] has [attack_verb]ed [src]!"),
+					SPAN("danger", "You has been [attack_verb]ed by [src]!")
+				)
 
 				adjustBruteLoss(damage)
 				updatehealth()
 			else
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message("<span class='danger'>[M] has attempted to punch [src]!</span>")
+				visible_message(SPAN("danger", "[M] has attempted to [attack_verb] [src]!"))
 	return
 
 /mob/living/carbon/metroid/attackby(obj/item/W, mob/user)

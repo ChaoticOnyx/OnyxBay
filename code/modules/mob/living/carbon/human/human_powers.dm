@@ -192,7 +192,7 @@
 
 	T.Weaken(3)
 
-	if(make_grab(src, T))
+	if(ishuman(T) && make_grab(src, T))
 		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()

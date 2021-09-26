@@ -79,7 +79,7 @@
 
 	health = maxHealth - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 
-	if(health < 0 && stat != DEAD)
+	if(health <= 0 && stat != DEAD)
 		death()
 		return
 
