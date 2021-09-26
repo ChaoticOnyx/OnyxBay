@@ -46,6 +46,7 @@
 
 /obj/machinery/door/New()
 	. = ..()
+	GLOB.all_doors += src
 	if(density)
 		layer = closed_layer
 		explosion_resistance = initial(explosion_resistance)
@@ -70,6 +71,7 @@
 	return
 
 /obj/machinery/door/Destroy()
+	GLOB.all_doors -= src
 	set_density(0)
 	update_nearby_tiles()
 	. = ..()
