@@ -53,11 +53,8 @@
 	var/no_save = FALSE
 
 	// Painting overlay offset when framed
-	var/framed_offset_x = 11
+	var/framed_offset_x = 9
 	var/framed_offset_y = 10
-
-	pixel_x = 10
-	pixel_y = 9
 
 /obj/item/canvas/Initialize()
 	. = ..()
@@ -128,7 +125,7 @@
 /obj/item/canvas/proc/finalize(mob/user)
 	finalized = TRUE
 	author_ckey = user.ckey
-	paint_image()
+	paint_image(framed_offset_x, framed_offset_y)
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
 	if(!epicenter)
@@ -144,17 +141,17 @@
 		return
 	if(!wip_detail_added && used)
 		var/mutable_appearance/detail = new(image(icon, "[icon_state]wip"))
-		detail.pixel_x = 1
-		detail.pixel_y = 1
+		detail.pixel_x = framed_offset_x
+		detail.pixel_y = framed_offset_y
 		wip_detail_added = TRUE
 		overlays += detail
 
-/obj/item/canvas/proc/paint_image()
+/obj/item/canvas/proc/paint_image(x_offset = 0, y_offset = 1)
 	if(icon_generated)
 		return
 	for(var/y in 1 to height)
 		for(var/x in 1 to width)
-			var/image/pixel = image(icon, "onepixel", pixel_x = x, pixel_y = height - y + 1)
+			var/image/pixel = image(icon, "onepixel", pixel_x = x + x_offset, pixel_y = height - y + y_offset)
 			pixel.color = grid[x][y]
 			generated_icon.overlays += pixel
 	icon_generated = TRUE
@@ -191,34 +188,26 @@
 	icon_state = "19x19"
 	width = 19
 	height = 19
-	pixel_x = 6
-	pixel_y = 9
-	framed_offset_x = 8
-	framed_offset_y = 9
+	framed_offset_x = 6
+	framed_offset_y = 8
 
 /obj/item/canvas/twentythree_nineteen
 	icon_state = "23x19"
 	width = 23
 	height = 19
-	pixel_x = 4
-	pixel_y = 10
-	framed_offset_x = 6
-	framed_offset_y = 8
+	framed_offset_x = 4
+	framed_offset_y = 7
 
 /obj/item/canvas/twentythree_twentythree
 	icon_state = "23x23"
 	width = 23
 	height = 23
-	pixel_x = 5
-	pixel_y = 9
-	framed_offset_x = 5
-	framed_offset_y = 6
+	framed_offset_x = 4
+	framed_offset_y = 4
 
 /obj/item/canvas/twentyfour_twentyfour
 	icon_state = "24x24"
 	width = 24
 	height = 24
-	pixel_x = 2
-	pixel_y = 1
-	framed_offset_x = 4
-	framed_offset_y = 5
+	framed_offset_x = 3
+	framed_offset_y = 3
