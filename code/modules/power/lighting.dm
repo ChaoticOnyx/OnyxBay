@@ -142,7 +142,7 @@
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off
 	var/flickering = 0

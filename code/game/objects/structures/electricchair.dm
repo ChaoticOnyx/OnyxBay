@@ -32,9 +32,9 @@
 	var/area/A = get_area(src)
 	if(!isarea(A))
 		return
-	if(!A.powered(STATIC_EQUIP))
+	if(!A.powered(EQUIP))
 		return
-	A.use_power_oneoff(5000, STATIC_EQUIP)
+	A.use_power_oneoff(5000, EQUIP)
 	var/light = A.power_light
 	A.update_icon()
 

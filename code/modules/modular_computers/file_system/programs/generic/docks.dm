@@ -28,7 +28,7 @@
 		return
 	docking_controllers.Cut()
 	var/list/zlevels = GetConnectedZlevels(AM.z)
-	for(var/obj/machinery/embedded_controller/radio/airlock/docking_port/D in GLOB.all_doors)
+	for(var/obj/machinery/embedded_controller/radio/airlock/docking_port/D in SSmachines.machinery)
 		if(D.z in zlevels)
 			var/shuttleside = 0
 			for(var/sname in SSshuttle.shuttles) //do not touch shuttle-side ones
