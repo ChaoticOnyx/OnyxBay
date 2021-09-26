@@ -17,7 +17,7 @@
 /datum/event/electrical_storm/start()
 	..()
 	valid_apcs = list()
-	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
+	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(A.z in affecting_z)
 			valid_apcs.Add(A)
 	endWhen = (severity * 60) + startWhen
@@ -26,7 +26,7 @@
 	..()
 	//See if shields can stop it first
 	var/list/shields = list()
-	for(var/obj/machinery/power/shield_generator/G in SSmachines.machinery)
+	for(var/obj/machinery/power/shield_generator/G in GLOB.machines)
 		if((G.z in affecting_z) && G.running && G.check_flag(MODEFLAG_EM))
 			shields += G
 	if(shields.len)
