@@ -78,6 +78,7 @@
 		if(MODE_REVOLUTIONARY) return 2
 		if(MODE_COMMANDO)      return 4
 		if(MODE_TRAITOR)       return 4
+		if(MODE_VAMPIRE)       return 4
 		if(MODE_CULTIST)       return 4
 		if(MODE_RENEGADE)      return 4
 		if(MODE_RAIDER)        return 4
