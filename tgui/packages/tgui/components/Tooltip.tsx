@@ -49,7 +49,11 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     return (
       <Popper
         options={{
-          placement: this.props.position || 'auto'
+          placement: this.props.position || 'auto',
+          modifiers: [{
+            name: 'eventListeners',
+            enabled: false
+          }]
         }}
         popperContent={
           <div
