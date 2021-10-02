@@ -7,6 +7,12 @@
 	var/global/global_uid = 0
 	var/uid
 	var/area_flags
+	var/used_equip = 0
+	var/used_light = 0
+	var/used_environ = 0
+	var/static_equip
+	var/static_light = 0
+	var/static_environ
 
 /area/New()
 	icon_state = ""
@@ -199,12 +205,12 @@
 	else if(mode in enabled_lighting_modes)
 		enabled_lighting_modes -= mode
 
-	var/power_channel = LIGHT
+	var/power_channel = STATIC_LIGHT
 	var/old_lighting_mode = lighting_mode
 
 	if(LIGHTMODE_EMERGENCY in enabled_lighting_modes)
 		lighting_mode = LIGHTMODE_EMERGENCY
-		power_channel = ENVIRON
+		power_channel = STATIC_ENVIRON
 	else if(LIGHTMODE_RADSTORM in enabled_lighting_modes)
 		lighting_mode = LIGHTMODE_RADSTORM
 	else if(LIGHTMODE_EVACUATION in enabled_lighting_modes)

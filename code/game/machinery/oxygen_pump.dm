@@ -18,7 +18,7 @@
 	var/icon_state_open = "emerg_open"
 	var/icon_state_closed = "emerg"
 
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	idle_power_usage = 10
 	active_power_usage = 120 // No idea what the realistic amount would be.
 
@@ -95,7 +95,7 @@
 				breather.internals.icon_state = "internal1"
 		update_use_power(POWER_USE_ACTIVE)
 
-/obj/machinery/oxygen_pump/proc/can_apply_to_target(mob/living/carbon/human/target, mob/user as mob)
+/obj/machinery/oxygen_pump/proc/can_apply_to_target(mob/living/carbon/human/target, mob/user)
 	if(!user)
 		user = target
 	// Check target validity
@@ -130,7 +130,7 @@
 		return
 	return 1
 
-/obj/machinery/oxygen_pump/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/oxygen_pump/attackby(obj/item/weapon/W, mob/user)
 	if(isScrewdriver(W))
 		stat ^= MAINT
 		user.visible_message("<span class='notice'>\The [user] [stat & MAINT ? "opens" : "closes"] \the [src].</span>", "<span class='notice'>You [stat & MAINT ? "open" : "close"] \the [src].</span>")

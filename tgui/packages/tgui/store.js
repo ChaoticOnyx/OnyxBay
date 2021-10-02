@@ -15,6 +15,7 @@ import { createLogger } from './logging'
 const logger = createLogger('store')
 
 export const configureStore = (options = {}) => {
+  const { sideEffects = true } = options
   const reducer = flow([
     combineReducers({
       debug: debugReducer,
@@ -22,17 +23,20 @@ export const configureStore = (options = {}) => {
     }),
     options.reducer
   ])
-  const middleware = [
-    ...(options.middleware?.pre || []),
-    assetMiddleware,
-    backendMiddleware,
-    ...(options.middleware?.post || [])
-  ]
+  const middleware = !sideEffects
+    ? []
+    : [
+        ...(options.middleware?.pre || []),
+        assetMiddleware,
+        backendMiddleware,
+        ...(options.middleware?.post || [])
+      ]
   if (process.env.NODE_ENV !== 'production') {
-    middleware.unshift(
-      loggingMiddleware,
-      debugMiddleware,
-      relayMiddleware)
+    // We are using two if statements because Webpack is capable of
+    // removing this specific block as dead code.
+    if (sideEffects) {
+      middleware.unshift(loggingMiddleware, debugMiddleware, relayMiddleware)
+    }
   }
   const enhancer = applyMiddleware(...middleware)
   const store = createStore(reducer, enhancer)
@@ -68,11 +72,13 @@ const createStackAugmentor = store => (stack, error) => {
   const config = state?.backend?.config
   let augmentedStack = stack
   augmentedStack += '\nUser Agent: ' + navigator.userAgent
-  augmentedStack += '\nState: ' + JSON.stringify({
-    ckey: config?.client?.ckey,
-    interface: config?.interface,
-    window: config?.window
-  })
+  augmentedStack +=
+    '\nState: ' +
+    JSON.stringify({
+      ckey: config?.client?.ckey,
+      interface: config?.interface,
+      window: config?.window
+    })
   return augmentedStack
 }
 
