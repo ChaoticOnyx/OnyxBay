@@ -36,7 +36,7 @@
 
 	var/hatch_open = 0
 
-	power_channel = STATIC_ENVIRON
+	power_channel = ENVIRON
 	idle_power_usage = 5
 
 	var/list/tile_info[4]
