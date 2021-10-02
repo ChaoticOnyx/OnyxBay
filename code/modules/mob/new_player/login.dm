@@ -71,7 +71,7 @@
 	to_chat(client, SPAN("info", "You have unread updates in the changelog."))
 
 	if(config.aggressive_changelog)
-		client.changelog()
+		client.changes()
 
 // This is called when the charcter setup system has been sufficiently initialized and prefs are available.
 // Do not make any calls in mob/Login which may require prefs having been loaded.

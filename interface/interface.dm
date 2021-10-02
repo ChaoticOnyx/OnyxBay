@@ -3,71 +3,61 @@
 	set name = "Wiki"
 	set desc = "Visit the wiki."
 	set hidden = 1
-	if(config.wikiurl)
+	if( config.wikiurl )
 		send_link(src, config.wikiurl)
 	else
-		to_chat(src, SPAN("warning", "The wiki URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The wiki URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/rules()
 	set name = "Rules"
 	set desc = "Show Server Rules."
 	set hidden = 1
-	if(config.rulesurl)
+	if( config.rulesurl )
 		send_link(src, config.rulesurl)
 	else
-		to_chat(src, SPAN("warning", "The rules URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The rules URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/backstory()
 	set name = "Backstory"
 	set desc = "Show server Backstory."
 	set hidden = 1
-	if(config.backstoryurl)
+	if( config.backstoryurl )
 		send_link(src, config.backstoryurl)
 	else
-		to_chat(src, SPAN("warning", "The backstory URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The backstory URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/forum()
 	set name = "Forum"
 	set desc = "Visit the forum."
 	set hidden = 1
-	if(config.forumurl)
+	if( config.forumurl )
 		send_link(src, config.forumurl)
 	else
-		to_chat(src, SPAN("warning", "The forum URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The forum URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/discord()
 	set name = "Discord"
 	set desc = "Visit the community Discord."
 	set hidden = 1
-	if(config.discordurl)
+	if( config.discordurl )
 		send_link(src, config.discordurl)
 	else
-		to_chat(src, SPAN("warning", "The Discord URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The Discord URL is not set in the server configuration.</span>")
 	return
 
 /client/verb/bugreport()
 	set name = "Bug Report"
 	set desc = "Create bug report to developers."
 	set hidden = 1
-	if(config.githuburl)
+	if( config.githuburl )
 		send_link(src, "[config.githuburl]/issues")
 	else
-		to_chat(src, SPAN("warning", "The Github URL is not set in the server configuration."))
+		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
 	return
-
-/client/verb/changelog()
-	set name = "Changelog"
-	set category = "OOC"
-	
-
-	if(config.changelogurl)
-		send_link(src, "[config.changelogurl]")
-	else
-		to_chat(src, SPAN("warning", "The Github URL is not set in the server configuration."))
 
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"
