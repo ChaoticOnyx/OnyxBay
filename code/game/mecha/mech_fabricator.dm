@@ -112,21 +112,21 @@
 		for(var/A in all_robolimbs)
 			var/datum/robolimb/R = all_robolimbs[A]
 
-			if(R.unavailable_at_fab || R.applies_to_part.len)
+			if(R.unavailable_to_build || R.applies_to_part.len)
 				continue
-			
+
 			T += list(list(
 				"id" = A,
 				"company" = R.company
 			))
-		
+
 		data["manufacturers"] = T
 		data["manufacturer"] = manufacturer
-	
+
 	data["materials"] = get_materials()
 	data["maxres"] = res_max_amount
 	data["sync"] = sync_message
-	
+
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
 
@@ -134,7 +134,7 @@
 
 /obj/machinery/mecha_part_fabricator/tgui_act(action, params)
 	. = ..()
-	
+
 	if(.)
 		return
 
@@ -158,7 +158,7 @@
 		if("manufacturer")
 			manufacturer = params["manufacturer"]
 			. = TRUE
-	
+
 	if(.)
 		tgui_update()
 
@@ -234,7 +234,7 @@
 			busy = 0
 	else
 		busy = 0
-	
+
 	tgui_update()
 
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(index)

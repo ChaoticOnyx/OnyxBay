@@ -1270,11 +1270,14 @@
 	var/obj/item/organ/external/affecting = get_organ(target_zone)
 
 	if(!affecting)
-		to_chat(user, "<span class='warning'>They are missing that limb.</span>")
+		to_chat(user, SPAN("warning", "They are missing that limb."))
 		return 0
 
 	if(BP_IS_ROBOTIC(affecting))
-		to_chat(user, "<span class='warning'>That limb is robotic.</span>")
+		if(BP_IS_LIFELIKE(affecting))
+			to_chat(user, SPAN("warning", "Your needle refuses to penetrate more than a short distance..."))
+		else
+			to_chat(user, SPAN("warning", "That limb is robotic."))
 		return 0
 
 	. = CAN_INJECT
@@ -1283,7 +1286,7 @@
 			if(istype(C, /obj/item/clothing/suit/space))
 				. = INJECTION_PORT //it was going to block us, but it's a space suit so it doesn't because it has some kind of port
 			else
-				to_chat(user, "<span class='warning'>There is no exposed flesh or thin material on [src]'s [affecting.name] to inject into.</span>")
+				to_chat(user, SPAN("warning", "There is no exposed flesh or thin material on [src]'s [affecting.name] to inject into."))
 				return 0
 
 

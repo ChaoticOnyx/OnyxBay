@@ -251,6 +251,7 @@
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
 #define BP_IS_ASSISTED(org) (org.status & ORGAN_ASSISTED)
+#define BP_IS_LIFELIKE(org) (org.status & ORGAN_LIFELIKE)
 
 #define SYNTH_BLOOD_COLOUR "#030303"
 #define SYNTH_FLESH_COLOUR "#575757"
