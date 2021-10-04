@@ -80,6 +80,7 @@ var/global/datum/body_build/default_body_build = new
 	name                 = "Slim Alt"
 
 	index                = "_slim_alt"
+	roboindex            = "_slim_alt"
 	genders              = list(FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
