@@ -85,6 +85,7 @@
 
 		src.charging = null
 		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
+		STOP_PROCESSING(SSmachines, src)
 		chargelevel = -1
 		update_icon()
 
@@ -127,8 +128,6 @@
 	queue_icon_update()
 
 /obj/machinery/cell_charger/Process()
-	if(!charging)
-		return PROCESS_KILL
 	if(stat & NOPOWER)
 		return
 	charging.give(active_power_usage*CELLRATE)
