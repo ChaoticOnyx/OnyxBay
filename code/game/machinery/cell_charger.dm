@@ -128,6 +128,8 @@
 	queue_icon_update()
 
 /obj/machinery/cell_charger/Process()
+	if(!charging)
+		return
 	if(stat & NOPOWER)
 		return
 	charging.give(active_power_usage*CELLRATE)
