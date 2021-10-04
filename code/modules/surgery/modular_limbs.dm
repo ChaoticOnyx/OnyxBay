@@ -38,7 +38,7 @@
 /obj/item/organ/external/proc/check_modular_limb_damage(mob/living/carbon/human/user)
 	. =  damage >= min_broken_damage || (status & ORGAN_BROKEN) || is_stump()
 
-/mob/living/carbon/human/proc/get_modular_limbs(return_first_found = FALSE)
+/mob/living/carbon/human/proc/get_modular_limbs(return_first_found = FALSE, validate_proc)
 	for(var/bp in organs)
 		var/obj/item/organ/external/E = bp
 		if(!validate_proc || call(E, validate_proc)(src) > MODULAR_BODYPART_INVALID)
@@ -62,7 +62,8 @@
 		verbs -= .proc/detach_limb_verb
 
 /mob/living/carbon/human/proc/check_can_attach_modular_limb(obj/item/organ/external/E)
-	if(world.time < last_special + (2 SECONDS) || get_active_hand() != E)
+	THROTTLE(last_special, 8)
+	if(!last_special || get_active_hand() != E)
 		return FALSE
 	if(incapacitated() || restrained())
 		to_chat(src, SPAN_WARNING("You can't do that in your current state!"))
@@ -93,7 +94,8 @@
 	return TRUE
 
 /mob/living/carbon/human/proc/check_can_detach_modular_limb(obj/item/organ/external/E)
-	if(world.time < last_special + (2 SECONDS))
+	THROTTLE(last_special, 8)
+	if(!last_special)
 		return FALSE
 	if(incapacitated() || restrained())
 		to_chat(src, SPAN_WARNING("You can't do that in your current state!"))

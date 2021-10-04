@@ -312,7 +312,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	for(var/limb_type in has_limbs)
 		var/list/organ_data = has_limbs[limb_type]
 		var/limb_path = organ_data["path"]
-		new limb_path(H)
+		var/obj/item/organ/O = new limb_path(H)
+		if(O.parent_organ)
+			organ_data = has_limbs[O.parent_organ]
+			organ_data["has_children"] = organ_data["has_children"] + 1
 
 	for(var/organ_tag in has_organ)
 		var/organ_type = has_organ[organ_tag]

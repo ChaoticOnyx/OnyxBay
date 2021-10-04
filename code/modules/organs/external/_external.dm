@@ -351,9 +351,12 @@
 	..()
 
 	if(istype(owner))
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP)
+			owner.grasp_limbs[src] = TRUE
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_STAND)
+			owner.stance_limbs[src] = TRUE
+
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
@@ -372,6 +375,8 @@
 
 		for(var/obj/item/organ/external/organ in children)
 			organ.replaced(owner)
+
+		owner.refresh_modular_limb_verbs()
 
 	if(!parent && parent_organ)
 		parent = owner.organs_by_name[src.parent_organ]
@@ -1112,10 +1117,14 @@ Note that amputating the affected organ does in fact remove the infection from t
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
 		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
 			R = basic_robolimb
-		else
+		if(R)
 			model = company
 			force_icon = R.icon
-			name = "robotic [initial(name)]"
+			if(R.lifelike)
+				status |= ORGAN_LIFELIKE
+				name = "[initial(name)]"
+			else
+				name = "robotic [initial(name)]"
 			desc = "[R.desc] It looks like it was produced by [R.company]."
 
 	dislocated = -1
@@ -1144,6 +1153,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
+
+		owner.refresh_modular_limb_verbs()
 
 	return 1
 
@@ -1278,6 +1289,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 	else if(is_stump())
 		qdel(src)
 
+	victim.refresh_modular_limb_verbs()
+	victim.update_body()
+
 /obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
@@ -1341,19 +1355,24 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 /obj/item/organ/external/proc/get_wounds_desc()
 	if(BP_IS_ROBOTIC(src))
+		var/LL
 		var/list/descriptors = list()
+
+		if(BP_IS_LIFELIKE(src))
+			LL = TRUE
+
 		if(brute_dam)
 			switch(brute_dam)
 				if(0 to 20)
-					descriptors += "some dents"
+					descriptors += "some [LL ? "cuts" : "dents"]"
 				if(21 to INFINITY)
-					descriptors += pick("a lot of dents","severe denting")
+					descriptors += "[LL? pick("exposed wiring", "torn-back synthflesh") : pick("a lot of dents", "severe denting")]"
 		if(burn_dam)
 			switch(burn_dam)
 				if(0 to 20)
 					descriptors += "some burns"
 				if(21 to INFINITY)
-					descriptors += pick("a lot of burns","severe melting")
+					descriptors += "[LL ? pick("roasted synth-flesh", "melted internal wiring") : pick("a lot of burns", "severe melting")]"
 		switch(hatch_state)
 			if(HATCH_UNSCREWED)
 				descriptors += "a closed but unsecured panel"
