@@ -81,6 +81,7 @@ SUBSYSTEM_DEF(machines)
 		currentrun.len--
 		if (QDELETED(thing) || thing.Process(seconds) == PROCESS_KILL)
 			processing -= thing
+			thing.is_processing = null
 		if (MC_TICK_CHECK)
 			return
 
