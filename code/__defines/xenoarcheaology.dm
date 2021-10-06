@@ -49,6 +49,13 @@
 
 #define EFFECTS_COUNT  3
 
+#define EFFECTS_LIST \
+list(\
+EFFECT_TOUCH,\
+EFFECT_AURA,\
+EFFECT_PULSE,\
+)
+
 
 #define TRIGGER_TOUCH       0x0001
 #define TRIGGER_WATER       0x0002

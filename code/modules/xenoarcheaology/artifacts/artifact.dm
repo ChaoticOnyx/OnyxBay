@@ -69,8 +69,8 @@
 	if(pulledby)
 		Bumped(pulledby)
 
-	var/triggers = 0
 	if((main_effect.trigger | secondary_effect?.trigger) & TRIGGERS_ENVIROMENT)
+		var/triggers = 0
 		var/turf/T = get_turf(src)
 		var/datum/gas_mixture/env = T.return_air()
 		if(env)
@@ -92,10 +92,10 @@
 		else
 			triggers |= TRIGGER_DARK
 
-	if((main_effect.trigger & triggers && !main_effect.activated) || (!(main_effect.trigger & triggers) && main_effect.activated))
-		main_effect.ToggleActivate(VISIBLE_TOGGLE)
-	if(secondary_effect && (secondary_effect.trigger & triggers && !secondary_effect.activated) || (!(secondary_effect.trigger & triggers) && secondary_effect.activated))
-		secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+		if(main_effect.trigger & TRIGGERS_ENVIROMENT && ((main_effect.trigger & triggers && !main_effect.activated) || (!(main_effect.trigger & triggers) && main_effect.activated)))
+			main_effect.ToggleActivate(VISIBLE_TOGGLE)
+		if(secondary_effect?.trigger & TRIGGERS_ENVIROMENT && ((secondary_effect.trigger & triggers && !secondary_effect.activated) || (!(secondary_effect.trigger & triggers) && secondary_effect.activated)))
+			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
 
 
 /obj/machinery/artifact/attack_hand(mob/user as mob)
@@ -141,9 +141,9 @@
 			istype(W,/obj/item/weapon/card/emag) ||\
 			istype(W,/obj/item/device/multitool))
 		triggers |= TRIGGER_ENERGY
-	else if (istype(W,/obj/item/weapon/flame) && W:lit ||\
+	else if(istype(W,/obj/item/weapon/flame) && W:lit ||\
 			isWelder(W) && W:welding)
-		triggers |= TRIGGER_HEAT)
+		triggers |= TRIGGER_HEAT
 	else
 		..()
 		if (main_effect.trigger & TRIGGER_FORCE && W.force >= 10)

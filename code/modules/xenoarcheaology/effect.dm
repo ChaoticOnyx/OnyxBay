@@ -8,13 +8,13 @@
 	var/chargelevel = 0
 	var/chargelevelmax = 10
 	var/artifact_id = ""
-	var/effect_type = 0
+	var/effect_type = EFFECT_UNKNOWN
 
 /datum/artifact_effect/New(atom/location)
 	..()
 	holder = location
-	effect = 1 << rand(0, EFFECTS_COUNT)
-	trigger = 1 << rand(0, TRIGGERS_COUNT)
+	effect = pick(EFFECTS_LIST)
+	trigger = pick(TRIGGERS_LIST)
 
 	//this will be replaced by the excavation code later, but it's here just in case
 	artifact_id = "[pick("kappa","sigma","antaeres","beta","omicron","iota","epsilon","omega","gamma","delta","tau","alpha")]-[rand(100,999)]"
