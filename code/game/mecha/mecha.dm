@@ -1117,7 +1117,7 @@
 	for(var/item in dropped_items)
 		var/atom/movable/I = item
 		if(ishuman(occupant) && is_type_in_list(I, onmob_items))
-			break
+			continue
 		I.forceMove(loc)
 	dropped_items.Cut()
 	if(mob_container.forceMove(src.loc))//ejecting mob container
