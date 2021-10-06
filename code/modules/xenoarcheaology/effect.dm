@@ -4,7 +4,7 @@
 	var/effectrange = 4
 	var/trigger = TRIGGER_TOUCH
 	var/atom/holder
-	var/activated = 0
+	var/activated = FALSE
 	var/chargelevel = 0
 	var/chargelevelmax = 10
 	var/artifact_id = ""
@@ -13,8 +13,8 @@
 /datum/artifact_effect/New(atom/location)
 	..()
 	holder = location
-	effect = rand(0, MAX_EFFECT)
-	trigger = rand(0, MAX_TRIGGER)
+	effect = 1 << rand(0, EFFECTS_COUNT)
+	trigger = 1 << rand(0, TRIGGERS_COUNT)
 
 	//this will be replaced by the excavation code later, but it's here just in case
 	artifact_id = "[pick("kappa","sigma","antaeres","beta","omicron","iota","epsilon","omega","gamma","delta","tau","alpha")]-[rand(100,999)]"
@@ -34,14 +34,11 @@
 			chargelevelmax = rand(20, 120)
 			effectrange = rand(20, 200)
 
-/datum/artifact_effect/proc/ToggleActivate(reveal_toggle = 1)
+/datum/artifact_effect/proc/ToggleActivate(visible_toggle = TRUE)
 	//so that other stuff happens first
 	spawn(0)
-		if(activated)
-			activated = 0
-		else
-			activated = 1
-		if(reveal_toggle && holder)
+		activated = !activated
+		if(visible_toggle && holder)
 			if(istype(holder, /obj/machinery/artifact))
 				var/obj/machinery/artifact/A = holder
 				A.icon_state = "ano[A.icon_num][activated]"
@@ -65,9 +62,9 @@
 		chargelevel++
 
 	if(activated)
-		if(effect == EFFECT_AURA)
+		if(effect & EFFECT_AURA)
 			DoEffectAura()
-		else if(effect == EFFECT_PULSE && chargelevel >= chargelevelmax)
+		else if(effect & EFFECT_PULSE && chargelevel >= chargelevelmax)
 			chargelevel = 0
 			DoEffectPulse()
 
@@ -146,4 +143,4 @@
 	if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/science))
 		protected += 0.1
 
-	return 1 - protected
+	return max(1 - protected, 0)

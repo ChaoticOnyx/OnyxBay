@@ -148,10 +148,10 @@
 			var/obj/machinery/artifact/A = scanned_obj
 			var/out = "Anomalous alien device - composed of an unknown alloy.<br><br>"
 
-			if(A.my_effect)
-				out += A.my_effect.getDescription()
+			if(A.main_effect)
+				out += A.main_effect.getDescription()
 
-			if(A.secondary_effect && A.secondary_effect.activated)
+			if(A.secondary_effect?.activated)
 				out += "<br><br>Internal scans indicate ongoing secondary activity operating independently from primary systems.<br><br>"
 				out += A.secondary_effect.getDescription()
 
