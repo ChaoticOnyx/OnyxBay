@@ -197,8 +197,8 @@
 	if(brainmob.stat)
 		to_chat(brainmob, "Can't do that while incapacitated or dead.")
 
-	radio.listening = radio.listening==1 ? 0 : 1
-	to_chat(brainmob, SPAN("notice", "Radio is [radio.listening==1 ? "now" : "no longer"] receiving broadcast."))
+	radio.listening = !radio.listening
+	to_chat(brainmob, SPAN("notice", "Radio is [radio.broadcasting ? "now" : "no longer"] receiving broadcast."))
 
 /obj/item/device/mmi/emp_act(severity)
 	if(!brainmob)
