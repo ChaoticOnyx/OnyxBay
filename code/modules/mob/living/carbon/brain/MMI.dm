@@ -184,8 +184,8 @@
 	if(brainmob.stat) //Only the brainmob will trigger these so no further check is necessary.
 		to_chat(brainmob, "Can't do that while incapacitated or dead.")
 
-	radio.broadcasting = radio.broadcasting==1 ? 0 : 1
-	to_chat(brainmob, SPAN("notice", "Radio is [radio.broadcasting==1 ? "now" : "no longer"] broadcasting."))
+	radio.broadcasting = !radio.broadcasting
+	to_chat(brainmob, SPAN("notice", "Radio is [radio.broadcasting ? "now" : "no longer"] broadcasting."))
 
 /obj/item/device/mmi/radio_enabled/verb/Toggle_Listening()
 	set name = "Toggle Listening"
