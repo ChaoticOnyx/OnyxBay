@@ -92,9 +92,9 @@
 		else
 			triggers |= TRIGGER_DARK
 
-	if(main_effect.trigger & triggers)
+	if((main_effect.trigger & triggers && !main_effect.activated) || (!(main_effect.trigger & triggers) && main_effect.activated))
 		main_effect.ToggleActivate(VISIBLE_TOGGLE)
-	if(secondary_effect?.trigger & triggers)
+	if(secondary_effect && (secondary_effect.trigger & triggers && !secondary_effect.activated) || (!(secondary_effect.trigger & triggers) && secondary_effect.activated))
 		secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
 
 
@@ -124,50 +124,38 @@
 		secondary_effect.DoEffectTouch(user)
 
 /obj/machinery/artifact/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
+	var/triggers = 0
 
-	if (istype(W, /obj/item/weapon/reagent_containers/))
+	if(istype(W, /obj/item/weapon/reagent_containers/))
 		if(W.reagents.has_reagent(/datum/reagent/hydrazine, 1) || W.reagents.has_reagent(/datum/reagent/water, 1))
-			if(main_effect.trigger & TRIGGER_WATER)
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
-			if(secondary_effect?.trigger & TRIGGER_WATER && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
-		else if(W.reagents.has_reagent(/datum/reagent/acid, 1) || W.reagents.has_reagent(/datum/reagent/acid/polyacid, 1) || W.reagents.has_reagent(/datum/reagent/diethylamine, 1))
-			if(main_effect.trigger & TRIGGER_ACID)
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
-			if(secondary_effect?.trigger & TRIGGER_ACID && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
-		else if(W.reagents.has_reagent(/datum/reagent/toxin/plasma, 1) || W.reagents.has_reagent(/datum/reagent/thermite, 1))
-			if(main_effect.trigger & TRIGGER_VOLATILE)
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
-			if(secondary_effect?.trigger & TRIGGER_VOLATILE && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
-		else if(W.reagents.has_reagent(/datum/reagent/toxin, 1) || W.reagents.has_reagent(/datum/reagent/toxin/cyanide, 1) || W.reagents.has_reagent(/datum/reagent/toxin/amatoxin, 1) || W.reagents.has_reagent(/datum/reagent/ethanol/neurotoxin, 1))
-			if(main_effect.trigger & TRIGGER_TOXIN)
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
-			if(secondary_effect?.trigger & TRIGGER_TOXIN && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+			triggers |= TRIGGER_WATER
+		if(W.reagents.has_reagent(/datum/reagent/acid, 1) || W.reagents.has_reagent(/datum/reagent/acid/polyacid, 1) || W.reagents.has_reagent(/datum/reagent/diethylamine, 1))
+			triggers |= TRIGGER_ACID
+		if(W.reagents.has_reagent(/datum/reagent/toxin/plasma, 1) || W.reagents.has_reagent(/datum/reagent/thermite, 1))
+			triggers |= TRIGGER_VOLATILE
+		if(W.reagents.has_reagent(/datum/reagent/toxin, 1) || W.reagents.has_reagent(/datum/reagent/toxin/cyanide, 1) || W.reagents.has_reagent(/datum/reagent/toxin/amatoxin, 1) || W.reagents.has_reagent(/datum/reagent/ethanol/neurotoxin, 1))
+			triggers |= TRIGGER_TOXIN
 	else if(istype(W,/obj/item/weapon/melee/baton) && W:status ||\
 			istype(W,/obj/item/weapon/melee/energy) ||\
 			istype(W,/obj/item/weapon/melee/cultblade) ||\
 			istype(W,/obj/item/weapon/card/emag) ||\
 			istype(W,/obj/item/device/multitool))
-		if (main_effect.trigger & TRIGGER_ENERGY)
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
-		if(secondary_effect?.trigger & TRIGGER_ENERGY && prob(25))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
-
+		triggers |= TRIGGER_ENERGY
 	else if (istype(W,/obj/item/weapon/flame) && W:lit ||\
 			isWelder(W) && W:welding)
-		if(main_effect.trigger & TRIGGER_HEAT)
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
-		if(secondary_effect?.trigger & TRIGGER_HEAT && prob(25))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+		triggers |= TRIGGER_HEAT)
 	else
 		..()
 		if (main_effect.trigger & TRIGGER_FORCE && W.force >= 10)
 			main_effect.ToggleActivate(VISIBLE_TOGGLE)
 		if(secondary_effect?.trigger & TRIGGER_FORCE && prob(25))
 			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+		return
+
+	if(main_effect.trigger & triggers)
+		main_effect.ToggleActivate(VISIBLE_TOGGLE)
+	if(secondary_effect?.trigger & triggers && prob(25))
+		secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
 
 /obj/machinery/artifact/Bumped(M as mob|obj)
 	..()
