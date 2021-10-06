@@ -37,7 +37,7 @@
 	..()
 
 /obj/machinery/computer/ex_act(severity)
-	playsound(src, "console_breaking", 75, FALSE)
+	playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
 
 	switch(severity)
 		if(1.0)

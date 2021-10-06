@@ -41,7 +41,7 @@
 			if(MUTATION_HULK in H.mutations)
 				damage += 5
 
-			playsound(loc, "punch", rand(80, 100), 1, -1)
+			playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 
 			visible_message("<span class='danger'>[H] has punched \the [src]!</span>")
 

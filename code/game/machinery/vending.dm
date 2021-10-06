@@ -11,7 +11,7 @@
 	anchored = 1
 	density = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 40
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
@@ -682,7 +682,7 @@
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, loc)
 		spark_system.start()
-		playsound(loc, "spark", 50, 1)
+		playsound(loc, SFX_SPARK, 50, 1)
 
 /*
  * Vending machine types

@@ -19,7 +19,7 @@
 		/obj/item/weapon/stock_parts/manipulator = 4
 	)
 
-	beepsounds = "medical_beep"
+	beepsounds = SFX_BEEP_MEDICAL
 
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS

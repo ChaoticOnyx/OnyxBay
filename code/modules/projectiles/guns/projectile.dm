@@ -30,10 +30,10 @@
 	var/allowed_magazines		//magazine types that may be loaded. Can be a list or single path
 	var/auto_eject = 0			//if the magazine should automatically eject itself when empty.
 	var/auto_eject_sound = null
-	var/mag_insert_sound = "magazine_insert"
+	var/mag_insert_sound = SFX_MAGAZINE_INSERT
 	var/mag_eject_sound = 'sound/weapons/empty.ogg'
 
-	far_fire_sound = "far_fire"
+	far_fire_sound = SFX_FAR_FIRE
 
 	var/is_jammed = 0           //Whether this gun is jammed
 	var/jam_chance = 0          //Chance it jams on fire
@@ -151,9 +151,9 @@
 		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
 
 		if (istype(C, /obj/item/ammo_casing/shotgun))
-			playsound(user, "shell_insert", rand(45, 60), FALSE)
+			playsound(user, SFX_SHELL_INSERT, rand(45, 60), FALSE)
 		else
-			playsound(user, "bullet_insert", rand(45, 60), FALSE)
+			playsound(user, SFX_BULLET_INSERT, rand(45, 60), FALSE)
 	update_icon()
 
 //attempts to unload src. If allow_dump is set to 0, the speedloader unloading method will be disabled
@@ -188,7 +188,7 @@
 					if(istype(C, /obj/item/ammo_casing/shotgun))
 						playsound(C, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
 					else
-						playsound(C, "casing_drop", rand(45, 60), TRUE)
+						playsound(C, SFX_CASING_DROP, rand(45, 60), TRUE)
 					count++
 				loaded.Cut()
 			if(count)
@@ -260,7 +260,7 @@
 		chambered.loc = get_turf(src)
 		chambered.SpinAnimation(4,1)
 		chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
-		playsound(chambered, "casing_drop", rand(45, 60), TRUE)
+		playsound(chambered, SFX_CASING_DROP, rand(45, 60), TRUE)
 
 /* Unneeded -- so far.
 //in case the weapon has firemodes and can't unload using attack_hand()

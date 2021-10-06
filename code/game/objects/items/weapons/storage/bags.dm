@@ -6,7 +6,7 @@
 	allow_quick_empty = 1
 	use_to_pickup = 1
 	slot_flags = SLOT_BELT
-	use_sound = "searching_clothes"
+	use_sound = SFX_SEARCH_CLOTHES
 
 /obj/item/weapon/storage/bag/handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
 	. = ..()

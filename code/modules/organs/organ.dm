@@ -281,7 +281,7 @@ var/list/organ_cache = list()
 	if(drop_organ)
 		dropInto(owner.loc)
 
-	playsound(src, "crunch", rand(65, 80), FALSE)
+	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
 	START_PROCESSING(SSobj, src)

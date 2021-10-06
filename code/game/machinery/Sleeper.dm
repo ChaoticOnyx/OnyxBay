@@ -29,7 +29,7 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
-	beepsounds = "medical_beep"
+	beepsounds = SFX_BEEP_MEDICAL
 
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
@@ -327,13 +327,13 @@
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 	if(locked)
 		to_chat(user, "<span class='danger'>You short out locking system.</span>")
 		toggle_lock()
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 
 /obj/machinery/sleeper/proc/toggle_filter()

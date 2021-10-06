@@ -101,7 +101,7 @@
 			user.visible_message("<span class='danger'>[user] feeds [M] [src].</span>")
 
 		if(reagents)								//Handle ingestion of the reagent.
-			playsound(M.loc, "eat", rand(45, 60), FALSE)
+			playsound(M.loc, SFX_EAT, rand(45, 60), FALSE)
 			if(reagents.total_volume)
 				if(reagents.total_volume > bitesize)
 					reagents.trans_to_mob(M, bitesize, CHEM_INGEST)
@@ -144,7 +144,7 @@
 	update_icon()
 	On_Consume(H)
 
-	playsound(H.loc, "eat", rand(45, 60), FALSE)
+	playsound(H.loc, SFX_EAT, rand(45, 60), FALSE)
 	if(H.stat == CONSCIOUS)
 		to_chat(H, SPAN("notice", "You take a bite of [src]."))
 

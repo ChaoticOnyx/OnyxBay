@@ -74,7 +74,7 @@
 	desc = "It's a spoon. You can see your own upside-down face in it. Looks like an extremely inefficient weapon"
 	icon_state = "spoon"
 	attack_verb = list("attacked", "poked")
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	sharp = 0
 	force_divisor = 0.1 //2 when wielded with weight 20 (steel)
 	mod_weight = 0.3
@@ -148,7 +148,7 @@
 	default_material = MATERIAL_WOOD
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 0.8 // 12 dmg (wood)
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	mod_weight = 1.2
 	mod_reach = 0.85
 	mod_handy = 0.9

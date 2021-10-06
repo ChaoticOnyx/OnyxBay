@@ -572,7 +572,7 @@
 
 	if(!skip_sound_and_sparks)
 		if(lightbulb && !(lightbulb.status == LIGHT_BROKEN))
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		if(on)
 			s.set_up(3, 1, src)
 			s.start()
@@ -850,7 +850,7 @@
 		status = LIGHT_BROKEN
 		force = 5
 		sharp = 1
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		update_icon()
 
 /obj/item/weapon/light/proc/switch_on()

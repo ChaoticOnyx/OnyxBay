@@ -1284,7 +1284,7 @@
 /area/chapel/main
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
+	ambience = list('sound/ambient/chapel/ambicha1.ogg','sound/ambient/chapel/ambicha2.ogg','sound/ambient/chapel/ambicha3.ogg','sound/ambient/chapel/ambicha4.ogg')
 	sound_env = LARGE_ENCLOSED
 
 /area/chapel/office
@@ -1304,7 +1304,7 @@
 /area/engineering/
 	name = "\improper Engineering"
 	icon_state = "engineering"
-	ambience = list("engineering_ambient")
+	ambience = list(SFX_AMBIENT_ENGINEERING)
 
 /area/engineering/grav_generator
 	name = "\improper Gravitational Generator Room"
@@ -1314,7 +1314,7 @@
 /area/engineering/lower
 	name = "\improper Engineering Lower Deck"
 	icon_state = "lower_engi"
-	ambience = list("engineering_ambient")
+	ambience = list(SFX_AMBIENT_ENGINEERING)
 
 /area/engineering/lower/rust
 	name = "\improper R-UST Engine"
@@ -1363,7 +1363,7 @@
 /area/engineering/atmos
 	name = "\improper Atmospherics"
 	icon_state = "atmos"
-	ambience = list('sound/ambience/atmospherics/ambiatm1.ogg')
+	ambience = list('sound/ambient/atmospherics/ambiatm1.ogg')
 
 /area/engineering/atmos/storage
 	name = "\improper Atmospherics Storage"
@@ -1445,7 +1445,7 @@
 /area/medical/morgue
 	name = "\improper Morgue"
 	icon_state = "morgue"
-	ambience = list('sound/ambience/morgue/ambimo1.ogg')
+	ambience = list('sound/ambient/morgue/ambimo1.ogg')
 
 /area/medical/surgery
 	name = "\improper Operating Theatre"
@@ -1528,12 +1528,12 @@
 /area/medical/psych
 	name = "\improper Psych Room"
 	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg')
+	ambience = list('sound/ambient/signal.ogg')
 
 /area/crew_quarters/medbreak
 	name = "\improper Break Room"
 	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg')
+	ambience = list('sound/ambient/signal.ogg')
 
 /area/medical/ward
 	name = "\improper Recovery Ward"
@@ -1597,12 +1597,12 @@
 /area/medical/storage1
 	name = "\improper Primary Storage"
 	icon_state = "medbay4"
-	ambience = list('sound/ambience/signal.ogg')
+	ambience = list('sound/ambient/signal.ogg')
 
 /area/medical/storage2
 	name = "\improper Medbay Storage"
 	icon_state = "medbay3"
-	ambience = list('sound/ambience/signal.ogg')
+	ambience = list('sound/ambient/signal.ogg')
 
 /area/medical/resleever
 	name = "\improper Neural Lace Resleever"
@@ -1846,12 +1846,12 @@
 // AI
 
 /area/turret_protected
-	ambience = list("ai_ambient", "science_ambient")
+	ambience = list(SFX_AMBIENT_AI, SFX_AMBIENT_SCIENCE)
 
 /area/turret_protected/ai
 	name = "\improper AI Chamber"
 	icon_state = "ai_chamber"
-	ambience = list("ai_ambient")
+	ambience = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_server_room
 	name = "Messaging Server Room"
@@ -1862,17 +1862,17 @@
 	name = "\improper Cyborg Station"
 	icon_state = "ai_cyborg"
 	sound_env = SMALL_ENCLOSED
-	ambience = list("ai_ambient")
+	ambience = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_upload
 	name = "\improper AI Upload Chamber"
 	icon_state = "ai_upload"
-	ambience = list("ai_ambient")
+	ambience = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_upload_foyer
 	name = "\improper  AI Upload Access"
 	icon_state = "ai_foyer"
-	ambience = list("ai_ambient")
+	ambience = list(SFX_AMBIENT_AI)
 	sound_env = SMALL_ENCLOSED
 
 /area/turret_protected/tcomsat/port
@@ -1895,7 +1895,7 @@
 // Telecommunications Satellite
 
 /area/tcommsat
-	ambience = list("ai_ambient", "comms_ambient")
+	ambience = list(SFX_AMBIENT_AI, SFX_AMBIENT_COMMS)
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"
@@ -1958,7 +1958,7 @@
 // Main Outpost
 /area/outpost/main_outpost
 	icon_state = "green"
-	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/main_outpost/shallway
 	name = "Outpost Southern Hallway"
@@ -1975,7 +1975,7 @@
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
-	ambience = list("global_ambient", "science_ambient", "outpost_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_SCIENCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/main_outpost/canteen
 	name = "Outpost Canteen"
@@ -2008,12 +2008,12 @@
 /area/outpost/mining_north
 	name = "North Mining Outpost"
 	icon_state = "outpost_mine_north"
-	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/mining_west
 	name = "West Mining Outpost"
 	icon_state = "outpost_mine_west"
-	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/abandoned
 	name = "Abandoned Outpost"
@@ -2031,7 +2031,7 @@
 
 /area/outpost/engineering
 	icon_state = "outpost_engine"
-	ambience = list("global_ambient", "maintenance_ambient", "engineering_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE, SFX_AMBIENT_ENGINEERING)
 
 /area/outpost/engineering/atmospherics
 	name = "Engineering Outpost Atmospherics"
@@ -2221,12 +2221,12 @@
 /area/mine/explored
 	name = "Mine"
 	icon_state = "explored"
-	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
 
 /area/mine/unexplored
 	name = "Mine"
 	icon_state = "unexplored"
-	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
+	ambience = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
 
 /area/constructionsite
 	name = "\improper Construction Site"
@@ -2311,7 +2311,7 @@
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience = list("ai_ambient")
+	ambience = list(SFX_AMBIENT_AI)
 	has_gravity = FALSE
 
 /area/constructionsite/atmospherics
