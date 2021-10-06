@@ -1105,8 +1105,10 @@
 /obj/mecha/proc/go_out()
 	if(!src.occupant) return
 	var/atom/movable/mob_container
+	var/list/onmob_items //prevents duplication of objects with which the human interacted in the mech
 	if(ishuman(occupant))
 		mob_container = src.occupant
+		onmob_items = occupant.get_equipped_items(TRUE)
 	else if(istype(occupant, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain = occupant
 		mob_container = brain.container
@@ -1114,6 +1116,8 @@
 		return
 	for(var/item in dropped_items)
 		var/atom/movable/I = item
+		if(ishuman(occupant) && is_type_in_list(I, onmob_items))
+			break
 		I.forceMove(loc)
 	dropped_items.Cut()
 	if(mob_container.forceMove(src.loc))//ejecting mob container
