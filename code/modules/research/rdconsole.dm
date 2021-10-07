@@ -1,19 +1,19 @@
 /*
  *	Research and Development (R&D) Console
- *	
+ *
  *	This is the main work horse of the R&D system. It contains the menus/controls for the Destructive Analyzer, Protolathe, and Circuit
  *	imprinter. It also contains the /datum/research holder with all the known/possible technology paths and device designs.
- *	
+ *
  *	Basic use: When it first is created, it will attempt to link up to related devices within 3 squares. It'll only link up if they
  *	aren't already linked to another console. Any consoles it cannot link up with (either because all of a certain type are already
  *	linked or there aren't any in range), you'll just not have access to that menu. In the settings menu, there are menu options that
  *	allow a player to attempt to re-sync with nearby consoles. You can also force it to disconnect from a specific console.
- *	
+ *
  *	The imprinting and construction menus do NOT require toxins access to access but all the other menus do. However, if you leave it
  *	on a menu, nothing is to stop the person from using the options on that menu (although they won't be able to change to a different
  *	one). You can also lock the console on the settings menu if you're feeling paranoid and you don't want anyone messing with it who
  *	doesn't have toxins access.
- *	
+ *
  *	When a R&D console is destroyed or even partially disassembled, you lose all research data on it. However, there are two ways around
  *	this dire fate:
  *	- The easiest way is to go to the settings menu and select "Sync Database with Network." That causes it to upload (but not download)
@@ -75,7 +75,7 @@
 
 // Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
 /obj/machinery/computer/rdconsole/proc/griefProtection()
-	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachines.machinery)
+	for(var/obj/machinery/r_n_d/server/centcom/C in GLOB.machines)
 		for(var/datum/tech/T in files.known_tech)
 			C.files.AddTech2Known(T)
 		for(var/datum/design/D in files.known_designs)
@@ -86,7 +86,7 @@
 	..()
 	files = new /datum/research(src) // Setup the research data holder.
 	if(!id)
-		for(var/obj/machinery/r_n_d/server/centcom/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/centcom/S in GLOB.machines)
 			S.update_connections()
 			break
 
@@ -114,11 +114,14 @@
 		tgui_update()
 	else
 		// The construction/deconstruction of the console code.
+		disconnect_destructor()
+		disconnect_imprinter()
+		disconnect_protolathe()
 		..()
 
 /obj/machinery/computer/rdconsole/attack_hand(mob/user)
 	. = ..()
-	
+
 	tgui_interact(user)
 
 /obj/machinery/computer/rdconsole/proc/finish_deconstruct(weakref/W)
@@ -202,14 +205,14 @@
 	for(var/datum/tech/T in files.known_tech)
 		if(T.level < 1)
 			continue
-		
+
 		data["techs"] += list(get_tech_data(T))
 
 	return data
 
 /obj/machinery/computer/rdconsole/tgui_act(action, params)
 	. = ..()
-	
+
 	if(.)
 		return TRUE
 
@@ -268,7 +271,7 @@
 		if("select_device")
 			set_selected_device(params["device"])
 			. = TRUE
-	
+
 	if(.)
 		tgui_update()
 
@@ -320,7 +323,7 @@
 		flag = PROTOLATHE
 	else
 		CRASH("Device [device] must be 'circuit_imprinter' or 'protolathe' type of.")
-	
+
 	var/list/data = list(
 		"storage" = list(
 			"material" = list(
@@ -359,11 +362,11 @@
 
 	for(var/type in device:item_type)
 		data["filters"] += type
-	
+
 	for(var/datum/design/D in files.known_designs)
 		if(!D.build_path || !(D.build_type & flag))
 			continue
-		
+
 		data["designs"] += list(get_design_data(D))
 
 	for(var/datum/design/D in device:queue)
@@ -432,15 +435,15 @@
 	files = new /datum/research(src)
 
 /obj/machinery/computer/rdconsole/proc/disconnect_destructor()
-	linked_destroy.linked_console = null
+	linked_destroy?.linked_console = null
 	linked_destroy = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect_imprinter()
-	linked_imprinter.linked_console = null
+	linked_imprinter?.linked_console = null
 	linked_imprinter = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect_protolathe()
-	linked_lathe.linked_console = null
+	linked_lathe?.linked_console = null
 	linked_lathe = null
 
 /obj/machinery/computer/rdconsole/proc/disconnect(thing)
@@ -454,7 +457,7 @@
 		if("protolathe")
 			disconnect_protolathe()
 			return
-	
+
 	CRASH("Invalid thing [thing]")
 
 /obj/machinery/computer/rdconsole/proc/find_device()
@@ -477,7 +480,7 @@
 		if("protolathe")
 			eject_sheet_from_protolathe(thing, amount)
 			return TRUE
-	
+
 	CRASH("Invalid thing [thing]")
 
 /obj/machinery/computer/rdconsole/proc/remove_from_imprinter_queue(index)
@@ -494,7 +497,7 @@
 		if ("protolathe")
 			remove_from_protolathe_queue(index)
 			return
-	
+
 	CRASH("Invalid from [from]")
 
 /obj/machinery/computer/rdconsole/proc/dispose_imprinter(thing)
@@ -510,7 +513,7 @@
 	if(thing == "all")
 		linked_lathe.reagents.clear_reagents()
 		return
-	
+
 	var/datum/reagent/R = locate(thing) in linked_lathe.reagents.reagent_list
 	if(R)
 		linked_lathe.reagents.del_reagent(R.type)
@@ -523,13 +526,13 @@
 		if("protolathe")
 			dispose_protolathe(thing)
 			return
-	
+
 	CRASH("Invalid from [from]")
 
 /obj/machinery/computer/rdconsole/proc/build(id, count)
 	if(!linked_lathe)
 		return
-	
+
 	playsound(src.loc, 'sound/signals/processing23.ogg', 50)
 	var/datum/design/being_built = null
 
@@ -573,7 +576,7 @@
 		if(!src)
 			return
 
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
 			var/server_processed = 0
 			if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
 				for(var/datum/tech/T in files.known_tech)
@@ -606,7 +609,7 @@
 	if(linked_destroy.busy)
 		to_chat(user, SPAN("notice", "The destructive analyzer is busy at the moment."))
 		return
-	
+
 	if(linked_destroy.loaded_item)
 		linked_destroy.loaded_item.dropInto(linked_destroy.loc)
 		linked_destroy.loaded_item = null
@@ -640,7 +643,7 @@
 		body +=  "<p>Summary: [T.desc]</p></li>"
 
 	body += "</ul>"
-	
+
 	make_report(body)
 
 /obj/machinery/computer/rdconsole/proc/print_designs()
@@ -707,7 +710,7 @@
 		if("design")
 			save_design_to_disk(id)
 			return
-	
+
 	CRASH("Invalid thing [thing]")
 
 /obj/machinery/computer/rdconsole/proc/erase_disk()

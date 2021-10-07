@@ -40,9 +40,6 @@ var/list/solars_list = list()
 		return 0
 	control = SC
 
-	if (!is_processing)
-		START_PROCESSING(SSmachines, src)
-
 	return 1
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
@@ -118,9 +115,9 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar/Process()
 	if(stat & BROKEN)
-		return PROCESS_KILL
+		return
 	if(!GLOB.sun || !control) //if there's no sun or the panel is not linked to a solar control computer, no need to proceed
-		return PROCESS_KILL
+		return
 
 	if(powernet)
 		if(powernet == control.powernet)//check if the panel is still connected to the computer

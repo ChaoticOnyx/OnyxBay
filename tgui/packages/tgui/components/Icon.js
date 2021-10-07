@@ -7,26 +7,24 @@
  */
 
 import { classes, pureComponentHooks } from 'common/react'
-import { Box } from './Box'
+import { computeBoxClassName, computeBoxProps } from './Box'
 
 const FA_OUTLINE_REGEX = /-o$/
 
-export const Icon = (props) => {
-  const {
-    name,
-    size,
-    spin,
-    className,
-    style = {},
-    rotation,
-    inverse,
-    ...rest
-  } = props
+export const Icon = props => {
+  const { name, size, spin, className, rotation, inverse, ...rest } = props
+  const boxProps = computeBoxProps(rest)
   if (size) {
-    style['font-size'] = size * 100 + '%'
+    if (!boxProps.style) {
+      boxProps.style = {}
+    }
+    boxProps.style['font-size'] = size * 100 + '%'
   }
   if (typeof rotation === 'number') {
-    style.transform = `rotate(${rotation}deg)`
+    if (!boxProps.style) {
+      boxProps.style = {}
+    }
+    boxProps.style.transform = `rotate(${rotation}deg)`
   }
   let iconClass = ''
   if (name.startsWith('tg-')) {
@@ -40,27 +38,29 @@ export const Icon = (props) => {
       (faRegular ? 'far ' : 'fas ') + 'fa-' + faName + (spin ? ' fa-spin' : '')
   }
   return (
-    <Box
-      as='i'
-      className={classes(['Icon', className, iconClass])}
-      style={style}
-      {...rest}
+    <i
+      className={classes([
+        'Icon',
+        iconClass,
+        className,
+        computeBoxClassName(rest)
+      ])}
+      {...boxProps}
     />
   )
 }
 
 Icon.defaultHooks = pureComponentHooks
 
-export const IconStack = (props) => {
-  const { className, style = {}, children, ...rest } = props
+export const IconStack = props => {
+  const { className, children, ...rest } = props
   return (
-    <Box
-      as='span'
-      class={classes(['IconStack', className])}
-      style={style}
-      {...rest}>
+    <span
+      // eslint-disable-next-line react/no-unknown-property
+      class={classes(['IconStack', className, computeBoxClassName(rest)])}
+      {...computeBoxProps(rest)}>
       {children}
-    </Box>
+    </span>
   )
 }
 

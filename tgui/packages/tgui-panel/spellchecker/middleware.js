@@ -36,16 +36,12 @@ const yandexRequest = (text, callback) => {
 }
 
 const handleYandexResponse = (response) => {
-  let result = []
-
-  for (const mistake of response) {
-    result = result.concat({
+  return response
+    .filter(mistake => mistake.s.length > 0)
+    .map(mistake => ({
       mistake: mistake.word,
-      correct: mistake.s.length === 1 ? mistake.s[0] : mistake.s.join(',')
-    })
-  }
-
-  return result
+      correct: mistake.s.join(',')
+    }))
 }
 
 const makeSpellErrorMessage = (errors) => {

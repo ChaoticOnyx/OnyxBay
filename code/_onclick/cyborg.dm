@@ -178,3 +178,4 @@
 
 /turf/BorgShiftClick(mob/living/silicon/robot/user)
 	AIShiftClick(user)
+	..()

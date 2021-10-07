@@ -1,7 +1,15 @@
 // Safe Class
 
+/area/rnd/SCP/suitstorage
+	name = "\improper Emergency Suits Storage"
+	icon_state = "research"
+
 /area/rnd/SCP/dorms
 	name = "\improper D-personnel Dormitories"
+	icon_state = "research"
+
+/area/rnd/SCP/lockerroom
+	name = "\improper D-personnel Locker Room"
 	icon_state = "research"
 
 /area/rnd/SCP/breakroom

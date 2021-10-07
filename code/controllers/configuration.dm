@@ -112,7 +112,6 @@ var/list/gamemode_cache = list()
 	var/discordurl
 	var/githuburl
 	var/patreonurl
-	var/changelogurl
 
 	var/minutetopiclimit
 	var/secondtopiclimit
@@ -579,9 +578,6 @@ var/list/gamemode_cache = list()
 
 				if ("patreonurl")
 					config.patreonurl = value
-
-				if ("changelogurl")
-					config.changelogurl = value
 
 				if ("ghosts_can_possess_animals")
 					config.ghosts_can_possess_animals = value

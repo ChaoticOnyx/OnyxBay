@@ -99,8 +99,7 @@
 			continue
 			
 		if(isghost(M))
-			message += " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)"
-			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
+			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
 
 		if(M.see_invisible >= invisibility || narrate)
@@ -410,6 +409,19 @@
 	show_browser(src, 'html/help.html', "window=help")
 	return
 */
+
+/client/verb/changes()
+	set name = "Changelog"
+	set category = "OOC"
+	getFiles(
+		'html/pie.htc',
+		'html/changelog.css',
+		'html/changelog.html'
+		)
+	show_browser(src, 'html/changelog.html', "window=changes;size=675x800")
+	if(prefs.lastchangelog != changelog_hash)
+		prefs.lastchangelog = changelog_hash
+		SScharacter_setup.queue_preferences_save(prefs)
 
 /mob/new_player/verb/observe()
 	set name = "Observe"

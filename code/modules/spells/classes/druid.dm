@@ -2,7 +2,7 @@
 	name = "Druid"
 	feedback_tag = "DL"
 	description = "Summons, nature, and a bit o' healin."
-	points = 6
+	points = 8
 	can_make_contracts = TRUE
 
 	spells = list(

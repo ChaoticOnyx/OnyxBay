@@ -18,7 +18,6 @@
 	#include "exodus-7.dmm"
 	#include "derelicts/snowasteroid.dmm"
 	#include "derelicts/original/derelict.dmm"
-	#include "derelicts/casino.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"
 

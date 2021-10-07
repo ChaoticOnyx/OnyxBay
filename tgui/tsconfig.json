@@ -24,7 +24,7 @@
     "noUnusedParameters": false
   },
   "include": [
-    "./global.d.ts",
+    "./*.d.ts",
     "./packages"
   ]
 }
