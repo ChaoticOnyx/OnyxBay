@@ -1,7 +1,5 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
-#define PLASMA_RELEASE_MODIFIER 1500		//Higher == less plasma released by reaction
-#define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
 
 /*
@@ -50,7 +48,8 @@
 	layer = ABOVE_OBJ_LAYER
 
 	var/gasefficency = 0.25
-
+	var/plasma_release_modifier = 15000 //Higher == less gas released per reaction
+	var/oxygen_release_modifier = 1500 //Higher == less gas released per reaction
 	var/base_icon_state = "darkmatter"
 
 	var/damage = 0
@@ -61,7 +60,7 @@
 	var/warning_point = 100
 	var/warning_alert = "Danger! Crystal hyperstructure instability!"
 	var/emergency_point = 700
-	var/emergency_alert = "CRYSTAL DELAMINATION IMMINENT."
+	var/emergency_alert = "CRYSTAL THERMAL RUNAWAY REACTION, DELAMINATION IMMINIENT!"
 	var/explosion_point = 1000
 
 	light_color = "#8a8a00"
@@ -376,8 +375,8 @@
 
 		//Release reaction gasses
 		var/heat_capacity = removed.heat_capacity()
-		removed.adjust_multi("plasma", max(device_energy / PLASMA_RELEASE_MODIFIER, 0), \
-		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
+		removed.adjust_multi("plasma", max(device_energy / plasma_release_modifier, 0), \
+		                     "oxygen", max((device_energy + removed.temperature - T0C) / oxygen_release_modifier, 0))
 
 		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
 		if (debug)
