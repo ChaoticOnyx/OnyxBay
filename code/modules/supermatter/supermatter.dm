@@ -1,5 +1,4 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
-#define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
 
 /*
@@ -50,6 +49,7 @@
 	var/gasefficency = 0.25
 	var/plasma_release_modifier = 15000 //Higher == less gas released per reaction
 	var/oxygen_release_modifier = 1500 //Higher == less gas released per reaction
+	var/thermal_release_modifier = 10000 //Higher == more heat released during reaction
 	var/base_icon_state = "darkmatter"
 
 	var/damage = 0
@@ -292,7 +292,7 @@
 		GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"), "Engineering")
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", get_announcement_computer("Supermatter Monitor"))
+			GLOB.global_announcer.autosay("WARNING: CRYSTAL THERMAL RUNAWAY REACTION, DELAMINATION IMMINIENT!", get_announcement_computer("Supermatter Monitor"))
 			if(power >= 1400)
 				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", get_announcement_computer("Supermatter Monitor"))
 			public_alert = 1
@@ -378,7 +378,7 @@
 		removed.adjust_multi("plasma", max(device_energy / plasma_release_modifier, 0), \
 		                     "oxygen", max((device_energy + removed.temperature - T0C) / oxygen_release_modifier, 0))
 
-		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
+		var/thermal_power = thermal_release_modifier * device_energy
 		if (debug)
 			var/heat_capacity_new = removed.heat_capacity()
 			visible_message("[src]: Releasing [round(thermal_power)] W.")
