@@ -2,7 +2,7 @@
 	. = MODULAR_BODYPART_INVALID
 	if(status == ORGAN_ROBOTIC && model)
 		var/datum/robolimb/manufacturer = all_robolimbs[model]
-		if(!isnull(manufacturer?.modular_bodyparts))
+		if(!!manufacturer?.modular_bodyparts)
 			. = manufacturer.modular_bodyparts
 
 /obj/item/organ/external/proc/can_remove_modular_limb(mob/living/carbon/human/user)
