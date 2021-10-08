@@ -162,6 +162,8 @@
 /obj/structure/bed/chair/proc/fold(mob/user)
 	if(!foldable)
 		return
+	if(!user.Adjacent(src))
+		return
 
 	var/list/collapse_message = list(SPAN_WARNING("\The [src.name] has collapsed!"), null)
 
