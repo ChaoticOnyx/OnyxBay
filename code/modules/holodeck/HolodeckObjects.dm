@@ -207,12 +207,12 @@
 	if(!foldable)
 		return
 
-	var/list/collapse_message = list(SPAN_WARNING("\The [src.name] has collapsed!"), null)
+	var/list/collapse_message = list(SPAN_WARNING("\The [name] has collapsed!"), null)
 
 	if(buckled_mob)
 		collapse_message = list(\
-			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [src.name]!"),\
-			user ? SPAN_NOTICE("You collapse \the [src.name] and made [buckled_mob] fall down!") : null)
+			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [name]!"),\
+			user ? SPAN_NOTICE("You collapse \the [name] and made [buckled_mob] fall down!") : null)
 
 		var/mob/living/occupant = unbuckle_mob()
 		var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
@@ -222,7 +222,7 @@
 		occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
 		playsound(src, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
 	else if(user)
-		collapse_message = list("[user] collapses \the [src.name].", "You collapse \the [src.name].")
+		collapse_message = list("[user] collapses \the [name].", "You collapse \the [name].")
 
 	visible_message(collapse_message[1], collapse_message[2])
 	var/obj/item/weapon/foldchair/holochair/O = new /obj/item/weapon/foldchair/holochair(get_turf(src))
@@ -230,7 +230,7 @@
 		O.add_fingerprint(user)
 	QDEL_IN(src, 0)
 
-/obj/item/weapon/foldchair/holochair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/foldchair/holochair/attackby(obj/item/weapon/W, mob/user)
 	if(isWrench(W))
 		to_chat(user,SPAN("notice", "It's a holochair, you can't dismantle it!"))
 
