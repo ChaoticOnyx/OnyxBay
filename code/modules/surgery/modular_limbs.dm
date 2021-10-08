@@ -78,7 +78,7 @@
 		to_chat(src, SPAN_WARNING("\The [E] cannot be attached by your own hand."))
 		return FALSE
 	var/install_to_zone = E.organ_tag
-	if(!isnull(get_organ(install_to_zone)))
+	if(!!(get_organ(install_to_zone)))
 		to_chat(src, SPAN_WARNING("There is already a limb attached at that part of your body."))
 		return FALSE
 	if(E.check_modular_limb_damage(src))
