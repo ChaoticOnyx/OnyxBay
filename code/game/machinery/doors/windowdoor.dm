@@ -19,7 +19,7 @@
 	can_atmos_pass = ATMOS_PASS_PROC
 	air_properties_vary_with_direction = 1
 	var/timer = null
-	hitby_sound = "glass_hit"
+	hitby_sound = SFX_GLASS_HIT
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
@@ -59,7 +59,7 @@
 		ae.icon_state = "door_electronics_smoked"
 		operating = 0
 	set_density(0)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
 	qdel(src)
@@ -177,7 +177,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H))
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
 			user.do_attack_animation(src)
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
@@ -205,7 +205,7 @@
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, loc)
 			spark_system.start()
-			playsound(loc, "spark", 50, 1)
+			playsound(loc, SFX_SPARK, 50, 1)
 			playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
 			visible_message("<span class='warning'>The glass door was sliced open by [user]!</span>")
 		return 1
@@ -252,7 +252,7 @@
 	//If it's a weapon, smash windoor. Unless it's an id card, agent card, ect.. then ignore it (Cards really shouldnt damage a door anyway)
 	if(density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
-		playsound(loc, get_sfx("glass_hit"), 75, 1)
+		playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>[src] was hit by [I].</span>")
 		user.setClickCooldown(I.update_attack_cooldown())
 		user.do_attack_animation(src)

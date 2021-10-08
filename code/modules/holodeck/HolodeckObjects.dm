@@ -143,12 +143,12 @@
 				update_nearby_icons()
 				step(src, get_dir(user, src))
 		else
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		..()
 	return
 
 /obj/structure/window/reinforced/holowindow/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
@@ -167,7 +167,7 @@
 
 	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)
@@ -190,7 +190,7 @@
 
 /obj/machinery/door/window/holowindoor/shatter(display_message = 1)
 	src.set_density(0)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)

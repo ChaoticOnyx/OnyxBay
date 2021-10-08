@@ -12,7 +12,7 @@
 	var/active = 0
 	var/heating_power = 40 KILOWATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 
 /obj/machinery/space_heater/New()

@@ -280,7 +280,7 @@
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)
 		occupant.apply_damage(10, BRUTE, def_zone, blocked)
-		playsound(src.loc, "punch", rand(80, 100), 1, -1)
+		playsound(src.loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 		if(istype(A, /mob/living))
 			var/mob/living/victim = A
 			def_zone = ran_zone()

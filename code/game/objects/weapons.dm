@@ -1,7 +1,7 @@
 /obj/item/weapon
 	name = "weapon"
 	icon = 'icons/obj/weapons.dmi'
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	var/clumsy_unaffected = FALSE
 
 /obj/item/weapon/Bump(mob/M as mob)

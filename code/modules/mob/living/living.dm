@@ -154,7 +154,7 @@
 						forceMove(AM)
 					else
 						Weaken(2)
-						playsound(loc, "punch", rand(80, 100), 1, -1)
+						playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
@@ -531,7 +531,7 @@
 	var/turf/old_loc = get_turf(src)
 
 	if(lying)
-		pull_sound = "pull_body"
+		pull_sound = SFX_PULL_BODY
 	else
 		pull_sound = null
 

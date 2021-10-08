@@ -244,7 +244,7 @@
 		var/obj/item/I = AM
 		sound_to_play = I.hitsound
 	else if(isliving(AM))
-		sound_to_play = "punch"
+		sound_to_play = SFX_FIGHTING_PUNCH
 	if(!sound_to_play)
 		return
 

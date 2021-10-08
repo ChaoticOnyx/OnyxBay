@@ -270,7 +270,7 @@ var/list/mob/living/forced_ambiance_list = new
 	if(hum)
 		if(L.client && !L.client.ambience_playing)
 			L.client.ambience_playing = 1
-			L.playsound_local(T,sound('sound/ambience/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
+			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
 	else
 		if(L.client && L.client.ambience_playing)
 			L.client.ambience_playing = 0
@@ -278,13 +278,13 @@ var/list/mob/living/forced_ambiance_list = new
 
 	if(forced_ambience)
 		if(forced_ambience.len)
-			var/S = get_sfx(pick(forced_ambience))
+			var/S = GET_SFX(pick(forced_ambience))
 			forced_ambiance_list |= L
 			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(src.ambience.len && prob(35) && (world.time >= L.client.played + custom_period))
-		var/S = get_sfx(pick(ambience))
+		var/S = GET_SFX(pick(ambience))
 		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
 		L.client.played = world.time
 

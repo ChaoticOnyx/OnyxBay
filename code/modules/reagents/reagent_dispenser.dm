@@ -6,7 +6,7 @@
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 	var/initial_capacity = 1000
@@ -175,11 +175,11 @@
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode()
 	if (reagents.total_volume > 500)
-		explosion(src.loc,1,2,4,sfx_to_play="fuel_explosion")
+		explosion(src.loc,1,2,4,sfx_to_play=SFX_EXPLOSION_FUEL)
 	else if (reagents.total_volume > 100)
-		explosion(src.loc,0,1,3,sfx_to_play="fuel_explosion")
+		explosion(src.loc,0,1,3,sfx_to_play=SFX_EXPLOSION_FUEL)
 	else if (reagents.total_volume > 50)
-		explosion(src.loc,-1,1,2,sfx_to_play="fuel_explosion")
+		explosion(src.loc,-1,1,2,sfx_to_play=SFX_EXPLOSION_FUEL)
 	if(src)
 		qdel(src)
 

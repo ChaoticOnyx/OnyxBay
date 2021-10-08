@@ -136,7 +136,7 @@ var/last_chew = 0
 	desc = "Looks like some cables tied together. Could be used to tie something up."
 	icon_state = "cuff_white"
 	breakouttime = 300 //Deciseconds = 30s
-	cuff_sound = "cable_handcuffs"
+	cuff_sound = SFX_USE_CABLE_HANDCUFFS
 	cuff_type = "cable restraints"
 	elastic = 1
 

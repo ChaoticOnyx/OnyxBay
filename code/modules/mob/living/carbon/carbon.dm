@@ -105,7 +105,7 @@
 
 	stun_effect_act(agony_amount=shock_damage, def_zone=def_zone)
 
-	playsound(loc, "spark", 50, 1, -1)
+	playsound(loc, SFX_SPARK, 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
 			"<span class='warning'>[src] was electrocuted[source ? " by the [source]" : ""]!</span>", \
@@ -328,7 +328,7 @@
 	//actually throw it!
 	visible_message(SPAN("warning", "[src] has thrown [item]."), range = min(itemsize * 2, world.view))
 	var/sfx_loudness = min(100, 5 + (itemsize * 5))
-	playsound(src, "throwing", sfx_loudness, 1)
+	playsound(src, SFX_THROWING, sfx_loudness, 1)
 
 	if(!lastarea)
 		lastarea = get_area(loc)
