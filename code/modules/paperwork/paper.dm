@@ -147,7 +147,13 @@
 	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
 
 /obj/item/weapon/paper/proc/is_clean()
-	return free_space == initial(free_space)
+	var/list/visible_html_tags = list("<table","<img","<hr")
+	var/is_visible_html_tag = FALSE
+	for(var/tag in visible_html_tags)
+		if(findtext(info,tag))
+			is_visible_html_tag = TRUE
+			break
+	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
 /obj/item/weapon/paper/examine(mob/user)
 	. = ..()
