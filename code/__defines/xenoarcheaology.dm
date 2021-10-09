@@ -47,8 +47,6 @@
 #define EFFECT_AURA    (1<<1)
 #define EFFECT_PULSE   (1<<2)
 
-#define EFFECTS_COUNT  3
-
 #define EFFECTS_LIST \
 list(\
 EFFECT_TOUCH,\
@@ -72,8 +70,6 @@ EFFECT_PULSE,\
 #define TRIGGER_NITRO       (1<<12)
 #define TRIGGER_DARK        (1<<13)
 #define TRIGGER_LIGHT       (1<<14)
-
-#define TRIGGERS_COUNT      15
 
 #define TRIGGERS_ENVIROMENT \
 (\
