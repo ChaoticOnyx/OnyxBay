@@ -448,7 +448,7 @@
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
-		vars["fps"] = client_fps
+		fps = client_fps
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
