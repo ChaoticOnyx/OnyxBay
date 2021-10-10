@@ -217,6 +217,7 @@
 	anchored = 0
 	buckle_pixel_shift = "x=0;y=6"
 	pull_slowdown = PULL_SLOWDOWN_TINY
+	appearance_flags = LONG_GLIDE
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
 
