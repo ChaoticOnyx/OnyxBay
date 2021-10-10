@@ -104,7 +104,7 @@
 		return mob.drop_item()
 	return
 
-/atom/movable/proc/set_glide_size(glide_size_override = 0, var/min = 0.9, var/max = world.icon_size / 2)
+/atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
 	if (!glide_size_override || glide_size_override > max)
 		glide_size = 0
 	else
@@ -161,7 +161,7 @@
 			src.last_move = get_dir(A, src.loc)
 	return
 
-/proc/step_glide(var/atom/movable/am, var/dir, var/glide_size_override)
+/proc/step_glide(atom/movable/am, dir, glide_size_override)
 	am.set_glide_size(glide_size_override)
 	return step(am, dir)
 
