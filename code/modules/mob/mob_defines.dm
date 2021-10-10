@@ -1,7 +1,7 @@
 /mob
 	density = 1
 
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
