@@ -1,5 +1,5 @@
 /atom/movable
-	appearance_flags = TILE_BOUND | LONG_GLIDE
+	appearance_flags = TILE_BOUND
 	glide_size = 8
 
 	var/last_move = null

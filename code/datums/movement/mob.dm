@@ -169,7 +169,10 @@
 	UpdateGlideSize()
 
 /datum/movement_handler/mob/delay/proc/UpdateGlideSize()
-	host.set_glide_size(DELAY2GLIDESIZE(delay))
+	if(mob.buckled)
+		mob.buckled.set_glide_size(DELAY2GLIDESIZE(delay))
+	else
+		host.set_glide_size(DELAY2GLIDESIZE(delay))
 
 /datum/movement_handler/mob/delay/proc/GetGrabSlowdown()
 	. = 0
