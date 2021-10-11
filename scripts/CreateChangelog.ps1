@@ -15,7 +15,7 @@ Write-Output "Новый хэш .all_changelog.json: ${new_hash}"
 if ($new_hash -eq $old_hash)
 {
     Write-Output 'Изменений нет.'
-    return 0
+    exit 1
 }
 
 $date = Get-Date -Format 'd.M.yyyy'
