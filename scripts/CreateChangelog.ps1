@@ -12,7 +12,8 @@ $new_hash = Get-FileHash ./html/changelogs/.all_changelog.json | Select-Object -
 Write-Output "Старый хэш .all_changelog.json: ${old_hash}"
 Write-Output "Новый хэш .all_changelog.json: ${new_hash}"
 
-if ($new_hash -eq $old_hash) {
+if ($new_hash -eq $old_hash)
+{
     Write-Output 'Изменений нет.'
     return 0
 }
@@ -23,4 +24,3 @@ git config user.name github-actions
 git config user.email github-actions@github.com
 git add --all
 git commit -m "update(changelog): ${date}"
-git push
