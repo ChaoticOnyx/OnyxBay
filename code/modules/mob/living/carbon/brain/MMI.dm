@@ -48,12 +48,12 @@
 
 /obj/item/device/mmi/update_icon()
 	overlays.Cut()
-	if(!brainmob)
+	if(!brainobj)
 		icon_state = "mmi-empty"
 		return
 
 	icon_state = "mmi-inner"
-	overlays += "mmi-[lowertext(brainobj.species)]"
+	overlays += "mmi-[lowertext(brainobj.species.name)]"
 	if(brainmob.stat == DEAD)
 		overlays += "mmi-outer-dead"
 	else
