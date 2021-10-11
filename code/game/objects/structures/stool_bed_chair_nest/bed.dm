@@ -17,6 +17,7 @@
 	buckle_dir = SOUTH
 	buckle_lying = 1
 	buckle_pixel_shift = "x=0;y=3"
+	appearance_flags = LONG_GLIDE
 	var/material/material
 	var/material/padding_material
 	var/base_icon = "bed"
@@ -217,7 +218,6 @@
 	anchored = 0
 	buckle_pixel_shift = "x=0;y=6"
 	pull_slowdown = PULL_SLOWDOWN_TINY
-	appearance_flags = LONG_GLIDE
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
 
