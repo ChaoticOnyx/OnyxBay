@@ -2,7 +2,7 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	514
+#define MIN_CLIENT_VERSION	513
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
