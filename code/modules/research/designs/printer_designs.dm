@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(printer_categories)
 /proc/populate_printer_recipes()
 	GLOB.printer_recipes = list()
 	GLOB.printer_categories = list()
-	for(var/R in typesof(/datum/printer/recipe)-/datum/printer/recipe)
+	for(var/R in subtypesof(/datum/printer/recipe)
 		var/datum/printer/recipe/recipe = new R
 		GLOB.printer_recipes += recipe
 		GLOB.printer_categories |= recipe.category
