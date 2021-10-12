@@ -54,7 +54,6 @@
 		stored_matter = min(max_stored_matter, stored_matter + (sheets_to_take*amnt))
 		to_chat(user, SPAN("info", "\The [src] processes \the [O]. Levels of stored matter now: [stored_matter]"))
 		S.use(sheets_to_take)
-		return
 
 // Printing checks.
 /obj/machinery/organ_printer/prosthetic/proc/check_print(choice)
