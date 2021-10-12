@@ -1355,24 +1355,24 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 /obj/item/organ/external/proc/get_wounds_desc()
 	if(BP_IS_ROBOTIC(src))
-		var/LL
+		var/lifelike
 		var/list/descriptors = list()
 
 		if(BP_IS_LIFELIKE(src))
-			LL = TRUE
+			lifelike = TRUE
 
 		if(brute_dam)
 			switch(brute_dam)
 				if(0 to 20)
-					descriptors += "some [LL ? "cuts" : "dents"]"
+					descriptors += "some [lifelike ? "cuts" : "dents"]"
 				if(21 to INFINITY)
-					descriptors += "[LL? pick("exposed wiring", "torn-back synthflesh") : pick("a lot of dents", "severe denting")]"
+					descriptors += "[lifelike? pick("exposed wiring", "torn-back synthflesh") : pick("a lot of dents", "severe denting")]"
 		if(burn_dam)
 			switch(burn_dam)
 				if(0 to 20)
 					descriptors += "some burns"
 				if(21 to INFINITY)
-					descriptors += "[LL ? pick("roasted synth-flesh", "melted internal wiring") : pick("a lot of burns", "severe melting")]"
+					descriptors += "[lifelike ? pick("roasted synth-flesh", "melted internal wiring") : pick("a lot of burns", "severe melting")]"
 		switch(hatch_state)
 			if(HATCH_UNSCREWED)
 				descriptors += "a closed but unsecured panel"
