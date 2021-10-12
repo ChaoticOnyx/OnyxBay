@@ -89,7 +89,7 @@
 /obj/machinery/organ_printer/prosthetic/can_build(datum/printer/recipe/R)
 	if(stored_matter < R.matter)
 		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [R.matter] needed.'"))
-		return 0
+		return FALSE
 	return 1
 
 /obj/machinery/organ_printer/prosthetic/print_organ(datum/printer/recipe/R)
