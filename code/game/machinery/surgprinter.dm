@@ -88,7 +88,7 @@
 	if(stored_matter < R.matter)
 		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [R.matter] needed.'"))
 		return FALSE
-	return 1
+	return TRUE
 
 /obj/machinery/organ_printer/prosthetic/print_organ(datum/printer/recipe/R)
 	var/obj/item/organ/O = new R.build_path(get_turf(src))
