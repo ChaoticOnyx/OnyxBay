@@ -69,7 +69,8 @@
 	for(var/f in materials)
 		eject_materials(f, -1)
 
-	if(T)
+	if(!T)
+		return
 		for(var/obj/item/weapon/disk/limb/D in contents)
 			D.forceMove(T)
 
