@@ -83,7 +83,6 @@
 	stored_matter -= R.matter
 	print_organ(R)
 
-	return
 
 /obj/machinery/organ_printer/prosthetic/can_build(datum/printer/recipe/R)
 	if(stored_matter < R.matter)
