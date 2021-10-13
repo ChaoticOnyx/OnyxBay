@@ -7,6 +7,10 @@
 	mute_setting = MUTE_OOC
 
 /decl/communication_channel/ooc/can_communicate(client/C, message)
+	if(isliving(C.mob) && C.get_preference_value(/datum/client_preference/OOC_fuse) == GLOB.PREF_YES && \
+		alert(C, "Are you sure that you want to send this message to OOC?\n\"[message]\"\nNote that you are in a living body.", "OOC Fuse", "Yes", "No") == "No")
+		return
+
 	. = ..()
 	if(!.)
 		return
