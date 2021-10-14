@@ -640,10 +640,12 @@
 
 	var/mob/living/U = user
 
-	if (U.stat || U.last_special <= world.time)
+	if (U.stat)
 		return
 
-	U.last_special = world.time+100
+	THROTTLE_SHARED(cooldown, 100, U.last_special)
+	if(!cooldown)
+		return
 
 	if (src.loc)
 		for (var/mob/M in hearers(src.loc.loc))
