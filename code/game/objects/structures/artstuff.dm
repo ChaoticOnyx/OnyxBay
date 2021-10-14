@@ -47,7 +47,8 @@
 	var/finalized = FALSE //Blocks edits
 	var/author_ckey
 	var/icon_generated = FALSE
-	var/image/generated_icon
+	var/list/image/canvas_overlay = list()
+	var/taped = FALSE
 	var/wip_detail_added = FALSE
 	///boolean that blocks persistence from saving it. enabled from printing copies, because we do not want to save copies.
 	var/no_save = FALSE
@@ -58,7 +59,6 @@
 
 /obj/item/canvas/Initialize()
 	. = ..()
-	generated_icon = image(icon, icon_state)
 	reset_grid()
 
 /obj/item/canvas/proc/reset_grid()
@@ -85,6 +85,9 @@
 		ui.open()
 
 /obj/item/canvas/attackby(obj/item/I, mob/living/user, params)
+	if(istype(I, /obj/item/weapon/tape_roll))
+		to_chat(user, SPAN_NOTICE("You add some tape to back of canvas."))
+		taped = TRUE
 	if(user.a_intent == I_HELP)
 		tgui_interact(user)
 	else
@@ -125,17 +128,55 @@
 /obj/item/canvas/proc/finalize(mob/user)
 	finalized = TRUE
 	author_ckey = user.ckey
-	paint_image(framed_offset_x, framed_offset_y)
+	paint_image()
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
 	if(!epicenter)
 		return
 	message_admins("The new art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
 
+/obj/item/canvas/afterattack(atom/a, mob/user, proximity)
+	if(proximity && istype(a ,/turf) && a.density && taped)
+		var/turf/T = a
+		mount_canvas(T,user)
+
+/obj/item/canvas/proc/mount_canvas(turf/on_wall, mob/user)
+	if(get_dist(on_wall,user)>1)
+		return
+	var/ndir = get_dir(on_wall, user)
+	if(!(ndir in GLOB.cardinal))
+		return
+	var/turf/T = get_turf(user)
+	if(!isfloor(T) && on_wall.density)
+		to_chat(user, SPAN_WARNING("You cannot place [src] on this spot!"))
+		return
+	if(gotwallitem(T, ndir))
+		to_chat(user, SPAN_WARNING("There's already an item on this wall!"))
+		return
+	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
+	user.visible_message("[user.name] attaches [src] to the wall.",
+		SPAN_NOTICE("You attach [src] to the wall."),
+		SPAN_NOTICE("You hear clicking."))
+	if(user.unEquip(src,T))
+		switch(ndir)
+			if(NORTH)
+				pixel_y = -32
+				pixel_x = 0
+			if(SOUTH)
+				pixel_y = 21
+				pixel_x = 0
+			if(EAST)
+				pixel_x = -27
+				pixel_y = 0
+			if(WEST)
+				pixel_x = 27
+				pixel_y = 0
+		update_icon()
+
 /obj/item/canvas/update_icon()
 	. = ..()
 	if(icon_generated)
-		overlays = generated_icon.overlays
+		overlays = canvas_overlay
 		if(blood_overlay)
 			overlays += blood_overlay
 		return
@@ -146,14 +187,15 @@
 		wip_detail_added = TRUE
 		overlays += detail
 
-/obj/item/canvas/proc/paint_image(x_offset = 0, y_offset = 1)
+/obj/item/canvas/proc/paint_image(x_offset = framed_offset_x, y_offset = framed_offset_y) // y_offset = 1
 	if(icon_generated)
 		return
+	QDEL_LIST(canvas_overlay)
 	for(var/y in 1 to height)
 		for(var/x in 1 to width)
 			var/image/pixel = image(icon, "onepixel", pixel_x = x + x_offset, pixel_y = height - y + y_offset)
 			pixel.color = grid[x][y]
-			generated_icon.overlays += pixel
+			canvas_overlay.Add(pixel)
 	icon_generated = TRUE
 	update_icon()
 
