@@ -1538,7 +1538,6 @@
 #include "code\modules\emojis\emoji_parse.dm"
 #include "code\modules\emotes\emote_define.dm"
 #include "code\modules\emotes\emote_mob.dm"
-#include "code\modules\emotes\emotes_verb.dm"
 #include "code\modules\emotes\definitions\_mob.dm"
 #include "code\modules\emotes\definitions\_species.dm"
 #include "code\modules\emotes\definitions\audible.dm"

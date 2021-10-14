@@ -190,5 +190,5 @@
 	var/datum/browser/show_inventory
 
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
-
+	
 	var/last_time_pointed_at = 0
