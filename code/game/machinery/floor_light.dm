@@ -70,7 +70,7 @@ var/floor_light_color_cache = list()
 /obj/machinery/floor_light/proc/levelupdate()
 	for(var/obj/O in src)
 		O.hide(O.hides_under_flooring() && src.anchored)
-	if(anchored)
+	layer = anchored ? TURF_LAYER : ABOVE_TILE_LAYER
 		layer = TURF_LAYER
 	else
 		layer = ABOVE_TILE_LAYER
@@ -243,11 +243,14 @@ var/floor_light_color_cache = list()
 			playsound(loc, get_sfx("sound/effects/glass_step.ogg"), 100, 1)
 			update_light_cache(ID, cache_key, I, crack_layer)
 			cracks++
-	else overlays.Cut()
-	if(glow)
+	else 
+	    overlays.Cut()
+	if(!glow)
+	    return
 		overlays -= floor_light_cache["floorlight[ID]-glowing"]
 		overlays -= floor_light_color_cache["floorlight[ID]-glowing"]
-		if(!broken())
+		if(broken())
+		    return
 			var/image/I
 			var/cache_key = "floorlight[ID]-glowing"
 			switch(light_intensity)
@@ -269,7 +272,7 @@ var/floor_light_color_cache = list()
 	return
 
 /obj/machinery/floor_light/proc/broken()
-	if(health <= shield)
+	return health > shield
 		return TRUE
 	return FALSE
 
