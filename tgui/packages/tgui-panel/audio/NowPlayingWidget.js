@@ -4,17 +4,17 @@
  * @license MIT
  */
 
-import { toFixed } from 'common/math';
-import { useDispatch, useSelector } from 'common/redux';
-import { Button, Flex, Knob } from 'tgui/components';
-import { useSettings } from '../settings';
-import { selectAudio } from './selectors';
+import { toFixed } from 'common/math'
+import { useDispatch, useSelector } from 'common/redux'
+import { Button, Flex, Knob } from 'tgui/components'
+import { useSettings } from '../settings'
+import { selectAudio } from './selectors'
 
 export const NowPlayingWidget = (props, context) => {
-  const audio = useSelector(context, selectAudio);
-  const dispatch = useDispatch(context);
-  const settings = useSettings(context);
-  const title = audio.meta?.title;
+  const audio = useSelector(context, selectAudio)
+  const dispatch = useDispatch(context)
+  const settings = useSettings(context)
+  const title = audio.meta?.title
   return (
     <Flex align='center'>
       {(audio.playing && (
@@ -27,8 +27,8 @@ export const NowPlayingWidget = (props, context) => {
             grow={1}
             style={{
               'white-space': 'nowrap',
-              'overflow': 'hidden',
-              'text-overflow': 'ellipsis',
+              overflow: 'hidden',
+              'text-overflow': 'ellipsis'
             }}>
             {title || 'Unknown Track'}
           </Flex.Item>
@@ -45,7 +45,7 @@ export const NowPlayingWidget = (props, context) => {
             icon='stop'
             onClick={() =>
               dispatch({
-                type: 'audio/stopMusic',
+                type: 'audio/stopMusic'
               })
             }
           />
@@ -61,11 +61,11 @@ export const NowPlayingWidget = (props, context) => {
           format={(value) => toFixed(value * 100) + '%'}
           onDrag={(e, value) =>
             settings.update({
-              adminMusicVolume: value,
+              adminMusicVolume: value
             })
           }
         />
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}

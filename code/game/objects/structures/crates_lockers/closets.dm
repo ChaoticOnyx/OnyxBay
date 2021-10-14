@@ -3,7 +3,7 @@
 	desc = "It's a basic storage unit."
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
-	pull_sound = "pull_closet"
+	pull_sound = SFX_PULL_CLOSET
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
@@ -23,8 +23,8 @@
 	var/breakout = 0 //if someone is currently breaking out. mutex
 	var/storage_capacity = 2 * MOB_MEDIUM //This is so that someone can't pack hundreds of items in a locker/crate
 							  //then open it in a populated area to crash clients.
-	var/open_sound = "closet_open"
-	var/close_sound = "closet_close"
+	var/open_sound = SFX_OPEN_CLOSET
+	var/close_sound = SFX_CLOSE_CLOSET
 
 	var/storage_types = CLOSET_STORAGE_ALL
 	var/setup = CLOSET_CAN_BE_WELDED
@@ -342,12 +342,6 @@
 			if(!(--Proj.penetrating))
 				break
 
-/obj/structure/closet/blob_act(destroy)
-	if(opened)
-		qdel(src)
-	else
-		break_open()
-
 /obj/structure/closet/attackby(obj/item/weapon/W, mob/user)
 	if(src.opened)
 		if(istype(W, /obj/item/grab))
@@ -405,6 +399,12 @@
 		var/obj/item/weapon/melee/energy/WS = W
 		if(WS.active)
 			emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying."))
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(5, 0, src.loc)
+			spark_system.start()
+			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
+			playsound(src.loc, SFX_SPARK, 50, 1)
+			open()
 	else if(istype(W, /obj/item/weapon/packageWrap))
 		return
 	else if(isWelder(W) && (setup & CLOSET_CAN_BE_WELDED))
@@ -428,7 +428,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200)|| locked != prev_locked || opened || !cdoor)
+			if(!do_after(user, 200)|| locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked

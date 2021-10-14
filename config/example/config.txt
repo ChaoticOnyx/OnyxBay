@@ -37,6 +37,9 @@ TICKLAG 0.625
 ## Defines world FPS. Defaults to 20. Should be 10 / TICKLAG = FPS
 FPS 16
 
+##Defines the fps for the players with 0 in preferences. -1 for synced with server fps. 65 recommended
+CLIENTFPS 65
+
 ## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list)
 # OVERRIDE_SPLASH icons/splashes/onyx_new.png
 
@@ -332,6 +335,10 @@ JOBS_HAVE_MINIMAL_ACCESS
 # DEITY_MIN_AGE          14
 # GODCULTIST_MIN_AGE     14
 # LOYALISTS_MIN_AGE      14
+
+# SETTINGS TO DISABLE OOC THINGS AFTER ROUND START.
+# DISABLE_OOC_AT_ROUNDSTART
+# DISABLE_LOOC_AT_ROUNDSTART
 
 ## Unhash this to use recursive explosions, keep it hashed to use circle explosions.
 ## Recursive explosions react to walls, airlocks and blast doors, making them look a lot cooler than the boring old circular explosions.

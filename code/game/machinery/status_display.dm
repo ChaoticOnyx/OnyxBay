@@ -49,6 +49,7 @@
 	var/const/STATUS_DISPLAY_CUSTOM = 99
 
 /obj/machinery/status_display/Destroy()
+	GLOB.ai_status_display_list -= src
 	if(radio_controller)
 		radio_controller.remove_object(src,frequency)
 	return ..()
@@ -56,6 +57,7 @@
 // register for radio system
 /obj/machinery/status_display/Initialize()
 	. = ..()
+	GLOB.ai_status_display_list += src
 	if(radio_controller)
 		radio_controller.add_object(src, frequency)
 

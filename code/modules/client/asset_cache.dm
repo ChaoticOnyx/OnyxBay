@@ -249,6 +249,17 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"codicon.ttf" = 'html/codicon/codicon.ttf'
 	)
 
+/datum/asset/simple/reaver
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"reaver.css" = 'html/reaver/reaver.css',
+		"Reaver-Black.woff" = 'html/reaver/Reaver-Black.woff',
+		"Reaver-Bold.woff" = 'html/reaver/Reaver-Bold.woff',
+		"Reaver-Regular.woff" = 'html/reaver/Reaver-Regular.woff',
+		"Reaver-SemiBold.woff" = 'html/reaver/Reaver-SemiBold.woff',
+	)
+
 /datum/asset/simple/tgui_common
 	isTrivial = TRUE
 	verify = FALSE
@@ -293,6 +304,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"nano/images/source/",
 		"nano/images/modular_computers/",
 		"nano/images/exodus/",
+		"nano/images/frontier/",
 		"nano/images/example/"
 	)
 

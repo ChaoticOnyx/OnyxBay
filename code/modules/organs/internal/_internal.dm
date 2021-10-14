@@ -109,6 +109,8 @@
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
+
 /obj/item/organ/internal/proc/getToxLoss()
 	if(BP_IS_ROBOTIC(src))
 		return damage * 0.5

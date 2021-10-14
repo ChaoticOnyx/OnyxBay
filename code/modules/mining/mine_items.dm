@@ -688,11 +688,11 @@
 			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
 				"<span class='notice'>You continue sculpting.</span>")
 
-			playsound(user, get_sfx("chisel"), 30, 1)
+			playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 			spawn(3)
-				playsound(user, get_sfx("chisel"), 30, 1)
+				playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 				spawn(3)
-					playsound(user, get_sfx("chisel"), 30, 1)
+					playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 
 			last_struck = 1
 			if(do_after(user,(20)))

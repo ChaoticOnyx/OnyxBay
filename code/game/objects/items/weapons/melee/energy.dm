@@ -14,6 +14,8 @@
 	var/active_outer_range = 1.6
 	var/brightness_color
 	var/needs_blocking = TRUE
+	var/activate_sound = 'sound/weapons/saberon.ogg'
+	var/deactivate_sound = 'sound/weapons/saberon.ogg'
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -28,12 +30,12 @@
 	mod_weight = mod_weight_a
 	mod_reach = mod_reach_a
 	mod_shield = mod_shield_a
-	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
+	playsound(user, activate_sound, 50, 1)
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
 	if(!active)
 		return
-	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
+	playsound(user, deactivate_sound, 50, 1)
 	active = FALSE
 	force = initial(force)
 	throwforce = initial(throwforce)
@@ -47,7 +49,7 @@
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
-		if((MUTATION_CLUMSY in user.mutations) && prob(50))
+		if(!clumsy_unaffected && (MUTATION_CLUMSY in user.mutations) && prob(50))
 			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
 								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
 			user.take_organ_damage(5, 5)

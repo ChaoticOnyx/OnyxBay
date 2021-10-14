@@ -19,6 +19,7 @@
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
 
+	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 	var/turns_per_move = 1
 	var/turns_since_move = 0
 	universal_speak = 0		//No, just no.
@@ -73,6 +74,29 @@
 	// contained in a cage
 	var/in_stasis = 0
 
+	var/datum/mob_ai/mob_ai
+	var/is_pet = FALSE
+
+/mob/living/simple_animal/Initialize()
+	. = ..()
+	if(is_pet)
+		mob_ai = new /datum/mob_ai/pet()
+	else
+		mob_ai = new()
+	mob_ai.holder = src
+
+/mob/living/simple_animal/Destroy()
+	QDEL_NULL(mob_ai)
+	. = ..()
+
+/mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+	..()
+	mob_ai.listen(speaker, message)
+
+/mob/living/simple_animal/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
+	..()
+	mob_ai.listen(speaker, message)
+
 /mob/living/simple_animal/Life()
 	if(stat == DEAD)
 		return 0
@@ -86,39 +110,13 @@
 	handle_paralysed()
 	handle_supernatural()
 
-	if(buckled && can_escape)
-		if(istype(buckled, /obj/effect/energy_net))
-			var/obj/effect/energy_net/Net = buckled
-			Net.escape_net(src)
-		else if(prob(50))
-			escape(src, buckled)
-		else if(prob(50))
-			visible_message("<span class='warning'>\The [src] struggles against \the [buckled]!</span>")
+	mob_ai.attempt_escape()
 
-	//Movement
-	if(!client && !stop_automated_movement && wander && !anchored)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Some animals don't move when pulled
-					SelfMove(pick(GLOB.cardinal))
+	mob_ai.process_moving()
 
-	//Speaking
-	if(!client && speak_chance)
-		if(rand(0,200) < speak_chance)
-			var/action = pick(
-				speak.len;      "speak",
-				emote_hear.len; "emote_hear",
-				emote_see.len;  "emote_see"
-				)
+	mob_ai.process_speaking()
 
-			switch(action)
-				if("speak")
-					say(pick(speak))
-				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
-				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+	mob_ai.process_special_actions()
 
 	if(in_stasis)
 		return 1

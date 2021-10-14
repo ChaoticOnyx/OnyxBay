@@ -294,10 +294,6 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
-	CAN_BE_REDEFINED(TRUE)
-	return
-
 /atom/proc/ex_act()
 	CAN_BE_REDEFINED(TRUE)
 	return
@@ -582,3 +578,7 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+// Called after we wrench/unwrench this object
+/obj/proc/wrenched_change()
+	return

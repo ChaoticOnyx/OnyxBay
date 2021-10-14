@@ -98,7 +98,7 @@
 	disable()
 	state = HAS_BEEN_ACTIVATED
 	update_icon()
-	playsound(loc, "spark", 50, 1)
+	playsound(loc, SFX_SPARK, 50, 1)
 	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
 /obj/item/device/uplink_service/update_icon()

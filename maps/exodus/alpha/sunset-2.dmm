@@ -1479,7 +1479,7 @@
 "CO" = (/obj/machinery/organ_printer/robot/mapped,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "CP" = (/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "CQ" = (/obj/structure/closet,/obj/effect/floor_decal/industrial/outline/yellow,/obj/item/bodybag,/obj/item/bodybag,/obj/item/bodybag,/obj/item/bodybag,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
-"CR" = (/obj/structure/table/standard,/obj/item/weapon/storage/firstaid/empty,/obj/item/weapon/storage/firstaid/empty,/obj/item/weapon/storage/firstaid/empty,/obj/item/device/healthanalyzer,/obj/item/device/healthanalyzer,/obj/item/device/healthanalyzer,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
+"CR" = (/obj/structure/table/standard,/obj/item/weapon/storage/firstaid,/obj/item/device/healthanalyzer,/obj/item/device/healthanalyzer,/obj/item/device/healthanalyzer,/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled/dark,/area/assembly/robotics)
 "CT" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/tiled/freezer,/area/medical/medbay3)
 "CU" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/freezer,/area/medical/medbay3)
 "CV" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/tiled/freezer,/area/medical/medbay3)

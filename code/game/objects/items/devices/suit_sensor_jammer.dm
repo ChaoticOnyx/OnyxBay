@@ -116,6 +116,7 @@
 	if(!ui)
 		ui = new(user, src, "SuitSensorJammer", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/item/device/suit_sensor_jammer/tgui_data()
 	var/list/methods = new

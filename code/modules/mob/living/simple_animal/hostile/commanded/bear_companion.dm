@@ -1,6 +1,8 @@
 /mob/living/simple_animal/hostile/commanded/bear
 	name = "bear"
 	desc = "A large brown bear."
+	stance = HOSTILE_STANCE_ALERT
+
 
 	icon_state = "brownbear"
 	icon_living = "brownbear"

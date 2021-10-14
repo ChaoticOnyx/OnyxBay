@@ -34,11 +34,11 @@
 	return INITIALIZE_HINT_LATELOAD
 
 /obj/machinery/door_timer/LateInitialize()
-	for(var/obj/machinery/door/window/brigdoor/M in SSmachines.machinery)
+	for(var/obj/machinery/door/window/brigdoor/M in GLOB.all_doors)
 		if (M.id == src.id)
 			targets += M
 
-	for(var/obj/machinery/flasher/F in SSmachines.machinery)
+	for(var/obj/machinery/flasher/F in GLOB.machines)
 		if(F.id == src.id)
 			targets += F
 
@@ -219,6 +219,7 @@
 	if(!ui)
 		ui = new(user, src, "BrigTimer", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 // icon update function
 // if NOPOWER, display blank

@@ -138,6 +138,7 @@
 		set_power_level(new_setting)
 
 	add_fingerprint(usr)
+	return TOPIC_REFRESH
 
 //upgrading parts
 /obj/machinery/atmospherics/unary/heater/RefreshParts()

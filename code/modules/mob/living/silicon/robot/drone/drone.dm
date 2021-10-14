@@ -181,7 +181,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/choose_icon()
 	return
 
-/mob/living/silicon/robot/drone/pick_module()
+/mob/living/silicon/robot/drone/choose_module()
 	return
 
 /mob/living/silicon/robot/drone/proc/wear_hat(obj/item/new_hat)

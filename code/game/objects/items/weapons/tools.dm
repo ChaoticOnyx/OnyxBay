@@ -35,10 +35,37 @@
 	matter = list(MATERIAL_STEEL = 150)
 	center_of_mass = "x=17;y=16"
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
+	var/randicon = TRUE
 
 /obj/item/weapon/wrench/Initialize()
-	icon_state = "wrench[pick("","_red","_black")]"
+	if(randicon)
+		icon_state = "wrench[pick("","_red","_black")]"
 	. = ..()
+
+/obj/item/weapon/wrench/plain
+	icon_state = "wrench"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/red
+	icon_state = "wrench_red"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/black
+	icon_state = "wrench_black"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/old
+	name = "old wrench"
+	desc = "It wrenches. It unwrenches. But more importantly, it's old as hell."
+	icon_state = "legacywrench"
+	center_of_mass = "x=16;y=16"
+	matter = list(MATERIAL_PLASTEEL = 150)
+	force = 9.5
+	throwforce = 7.5
+	mod_weight = 0.85
+	mod_reach = 0.75
+	mod_handy = 1.1
+	randicon = FALSE
 
 /*
  * Screwdriver
@@ -66,34 +93,37 @@
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	var/randicon = TRUE
 
 /obj/item/weapon/screwdriver/Initialize()
-	switch(pick("red", "blue", "purple", "brown", "green", "cyan", "yellow"))
-		if("red")
-			icon_state = "screwdriver2"
-			item_state = "screwdriver"
-		if("blue")
-			icon_state = "screwdriver"
-			item_state = "screwdriver_blue"
-		if("purple")
-			icon_state = "screwdriver3"
-			item_state = "screwdriver_purple"
-		if("brown")
-			icon_state = "screwdriver4"
-			item_state = "screwdriver_brown"
-		if("green")
-			icon_state = "screwdriver5"
-			item_state = "screwdriver_green"
-		if("cyan")
-			icon_state = "screwdriver6"
-			item_state = "screwdriver_cyan"
-		if("yellow")
-			icon_state = "screwdriver7"
-			item_state = "screwdriver_yellow"
+	if(randicon)
+		switch(pick("red", "blue", "purple", "brown", "green", "cyan", "yellow"))
+			if("red")
+				icon_state = "screwdriver2"
+				item_state = "screwdriver"
+			if("blue")
+				icon_state = "screwdriver"
+				item_state = "screwdriver_blue"
+			if("purple")
+				icon_state = "screwdriver3"
+				item_state = "screwdriver_purple"
+			if("brown")
+				icon_state = "screwdriver4"
+				item_state = "screwdriver_brown"
+			if("green")
+				icon_state = "screwdriver5"
+				item_state = "screwdriver_green"
+			if("cyan")
+				icon_state = "screwdriver6"
+				item_state = "screwdriver_cyan"
+			if("yellow")
+				icon_state = "screwdriver7"
+				item_state = "screwdriver_yellow"
 
-	if (prob(75))
-		src.pixel_y = rand(0, 16)
+	if(prob(75))
+		pixel_y = rand(0, 16)
 	. = ..()
+	update_icon()
 
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
@@ -105,6 +135,40 @@
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		M = user
 	return eyestab(M,user)
+
+/obj/item/weapon/screwdriver/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/on_enter_storage(obj/item/weapon/storage/S)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/update_icon()
+	icon_rotation = istype(loc, /obj/item/weapon/storage) ? -90 : 0
+	update_transform()
+
+/obj/item/weapon/screwdriver/old
+	name = "old screwdriver"
+	desc = "Old-school flathead screwdriver made of plasteel, with a sturdy and heavy duraplastic handle."
+	icon_state = "legacyscrewdriver"
+	item_state = "screwdriver"
+	force = 8.5
+	mod_weight = 0.4
+	mod_reach = 0.3
+	mod_handy = 1.1
+	throwforce = 6.0
+	matter = list(MATERIAL_PLASTEEL = 75)
+	attack_verb = list("stabbed", "screwed", "unscrewed")
+	randicon = FALSE
 
 /*
  * Wirecutters
@@ -134,9 +198,10 @@
 	sharp = 1
 	edge = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
+	var/randicon = TRUE
 
 /obj/item/weapon/wirecutters/Initialize()
-	if(prob(50))
+	if(randicon && prob(50))
 		icon_state = "cutters-y"
 		item_state = "cutters_yellow"
 	. = ..()
@@ -153,6 +218,20 @@
 		return
 	else
 		..()
+
+/obj/item/weapon/wirecutters/old
+	name = "old wirecutters"
+	desc = "A very special pair of pliers with cutting edges. No excessive brackets and manipulators are needed to allow it to repair severed wiring."
+	icon_state = "legacycutters"
+	item_state = "cutters"
+	force = 6.5
+	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.3
+	mod_handy = 0.8
+	matter = list(MATERIAL_PLASTEEL = 80)
+	center_of_mass = "x=20;y=16"
+	randicon = FALSE
 
 /*
  * Welding Tool
@@ -454,7 +533,7 @@
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
-		if(!E || E.isRobotize == 1)
+		if(!E || BP_IS_ROBOTIC(E))
 			return
 		var/safety = H.eyecheck()
 		switch(safety)
@@ -606,6 +685,17 @@
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
+
+/obj/item/weapon/weldingtool/old
+	name = "old welding tool"
+	icon_state = "legacywelder"
+	item_state = "welder"
+	desc = "It would go through plasteel just like energy swords go through limbs. But modern welding fuel is but a clown's piss."
+	matter = list(MATERIAL_PLASTEEL = 70, MATERIAL_GLASS = 60)
+	mod_weight = 1.35
+	mod_reach = 0.75
+	mod_handy = 0.9
+	tank = /obj/item/weapon/welder_tank/large
 
 /*
  * Crowbar

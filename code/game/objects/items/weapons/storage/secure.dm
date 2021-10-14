@@ -36,6 +36,11 @@
 	if(locked)
 		if(istype(W, /obj/item/weapon/melee/energy))
 			emag_act(INFINITY, user, W, "You slice through the lock of \the [src]")
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(5, 0, src.loc)
+			spark_system.start()
+			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
+			playsound(src.loc, SFX_SPARK, 50, 1)
 			return
 		if(isScrewdriver(W))
 			if(do_after(user, 20, src))

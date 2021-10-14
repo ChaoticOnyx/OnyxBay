@@ -26,7 +26,7 @@
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 1)
 	attack_verb = list("chopped", "torn", "cut")
 	applies_material_colour = 0
-	hitsound = "chop"
+	hitsound = SFX_CHOP
 
 /obj/item/weapon/material/hatchet/tacknife
 	name = "tactical knife"
@@ -46,6 +46,7 @@
 /obj/item/weapon/material/hatchet/machete
 	name = "machete"
 	desc = "A long, sturdy blade with a rugged handle. Leading the way to cursed treasures since before space travel."
+	icon_state = "machete"
 	item_state = "machete"
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT

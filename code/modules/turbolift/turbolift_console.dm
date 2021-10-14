@@ -52,7 +52,7 @@
 /obj/structure/lift/button
 	name = "elevator button"
 	desc = "A call button for an elevator. Be sure to hit it three hundred times."
-	icon_state = "button"
+	icon_state = SFX_USE_BUTTON
 	var/light_up = FALSE
 	var/datum/turbolift_floor/floor
 

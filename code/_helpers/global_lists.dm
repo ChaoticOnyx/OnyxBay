@@ -12,6 +12,17 @@ var/global/list/joblist = list()					//list of all jobstypes, minus borg and AI
 #define all_genders_define_list list(MALE,FEMALE,PLURAL,NEUTER)
 #define all_genders_text_list list("Male","Female","Plural","Neuter")
 
+//Machinery lists
+GLOBAL_LIST_EMPTY(alarm_list)
+GLOBAL_LIST_EMPTY(ai_status_display_list)
+GLOBAL_LIST_EMPTY(apc_list)
+GLOBAL_LIST_EMPTY(smes_list)
+GLOBAL_LIST_EMPTY(machines)
+GLOBAL_LIST_EMPTY(firealarm_list)
+GLOBAL_LIST_EMPTY(computer_list)
+GLOBAL_LIST_EMPTY(all_doors)
+GLOBAL_LIST_EMPTY(atmos_machinery)
+
 //Languages/species/whitelist.
 var/global/list/all_species[0]
 var/global/list/all_languages[0]
@@ -67,6 +78,20 @@ var/global/list/string_part_flags = list(
 	"feet" = FEET,
 	"arms" = ARMS,
 	"hands" = HANDS
+)
+
+var/global/list/body_part_flags = list(
+	BP_HEAD = HEAD,
+	BP_CHEST = UPPER_TORSO,
+	BP_GROIN = LOWER_TORSO,
+	BP_L_LEG = LEGS,
+	BP_R_LEG = LEGS,
+	BP_L_FOOT = FEET,
+	BP_R_FOOT = FEET,
+	BP_L_ARM = ARMS,
+	BP_R_ARM = ARMS,
+	BP_L_HAND = HANDS,
+	BP_R_HAND = HANDS
 )
 
 // Strings which corraspond to slot flags, useful for outputting what slot something is.

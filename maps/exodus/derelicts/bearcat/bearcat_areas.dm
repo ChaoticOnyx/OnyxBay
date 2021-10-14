@@ -1,6 +1,6 @@
 /area/ship/scrap
 	name = "Generic Ship"
-	ambience = list('sound/ambience/mine/ambimine.ogg')
+	ambience = list('sound/ambient/mine/ambimine.ogg')
 /area/ship/scrap/crew
 	name = "Crew Compartements"
 	icon_state = "crew_quarters"

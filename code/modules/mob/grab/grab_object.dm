@@ -116,10 +116,14 @@
 	if(!is_eligible())
 		return FALSE
 
+	if(length(affecting.grabbed_by))
+		to_chat(assailant, SPAN("notice", "Someone already grabbed [affecting]!"))
+		return FALSE
+
 	for(var/obj/item/grab/G in affecting.grabbed_by)
 		if(G.assailant == assailant && G.target_zone == target_zone)
 			var/obj/O = G.get_targeted_organ()
-			to_chat(assailant, "<span class='notice'>You already grabbed [affecting]'s [O.name].</span>")
+			to_chat(assailant, SPAN("notice", "You already grabbed [affecting]'s [O.name]."))
 			return FALSE
 
 	return TRUE

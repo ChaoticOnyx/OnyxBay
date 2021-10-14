@@ -114,9 +114,9 @@
 	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/smash.ogg')
 
 /datum/hallucination/sound/danger/start()
-	sounds.Add(get_sfx("explosion"))
-	sounds.Add(get_sfx("electric_explosion"))
-	sounds.Add(get_sfx("punch"))
+	sounds.Add(GET_SFX(SFX_EXPLOSION))
+	sounds.Add(GET_SFX(SFX_EXPLOSION_ELECTRIC))
+	sounds.Add(GET_SFX(SFX_FIGHTING_PUNCH))
 	..()
 
 /datum/hallucination/sound/spooky
@@ -342,7 +342,7 @@
 /datum/hallucination/fakeattack/start()
 	for(var/mob/living/M in oview(holder,1))
 		to_chat(holder, "<span class='danger'>[M] has punched [holder]!</span>")
-		holder.playsound_local(get_turf(holder),"punch",rand(80, 100))
+		holder.playsound_local(get_turf(holder),SFX_FIGHTING_PUNCH,rand(80, 100))
 
 //Fake injection
 /datum/hallucination/fakeattack/hypo
@@ -436,7 +436,7 @@
 	holder.client.images |= fake_look
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
-/datum/hallucination/fake_appearance/proc/get_living_sublist(var/list/subtypes, var/list/exclude)
+/datum/hallucination/fake_appearance/proc/get_living_sublist(list/subtypes, list/exclude)
 	var/list/same_z_candidates = new()
 	var/list/other_z_candidates = new()
 	for(var/mob/living/F in GLOB.living_mob_list_)

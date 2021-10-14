@@ -11,15 +11,15 @@
 	var/insults = 0
 	var/list/insultmsg = list("FUCK EVERYONE!", "I'M A TATER!", "ALL SECURITY TO SHOOT ME ON SIGHT!", "I HAVE A BOMB!", "CAPTAIN IS A COMDOM!", "FOR THE SYNDICATE!")
 
-/obj/item/device/megaphone/attack_self(mob/living/user as mob)
+/obj/item/device/megaphone/attack_self(mob/living/user)
 	if (user.client)
 		if(user.client.prefs.muted & MUTE_IC)
-			to_chat(src, "<span class='warning'>You cannot speak in IC (muted).</span>")
+			to_chat(src, SPAN_WARNING("You cannot speak in IC (muted)."))
 			return
 	if(user.silent)
 		return
 	if(spamcheck)
-		to_chat(user, "<span class='warning'>\The [src] needs to recharge!</span>")
+		to_chat(user, SPAN_WARNING("\The [src] needs to recharge!"))
 		return
 
 	var/message = sanitize(input(user, "Shout a message?", "Megaphone", null)  as text)
@@ -30,13 +30,13 @@
 		if(emagged)
 			if(insults)
 				for(var/mob/O in (viewers(user)))
-					O.show_message("<B>[user]</B> broadcasts, <FONT size=3>\"[pick(insultmsg)]\"</FONT>",2) // 2 stands for hearable message
+					O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[pick(insultmsg)]\"")]", AUDIBLE_MESSAGE)
 				insults--
 			else
-				to_chat(user, "<span class='warning'>*BZZZZzzzzzt*</span>")
+				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
 			for(var/mob/O in (viewers(user)))
-				O.show_message("<B>[user]</B> broadcasts, <FONT size=3>\"[message]\"</FONT>",2) // 2 stands for hearable message
+				O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[message]\"")]", AUDIBLE_MESSAGE)
 
 		spamcheck = 1
 		spawn(20)
@@ -45,7 +45,7 @@
 
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
 	if(!emagged)
-		to_chat(user, "<span class='warning'>You overload \the [src]'s voice synthesizer.</span>")
+		to_chat(user, SPAN_WARNING("You overload \the [src]'s voice synthesizer."))
 		emagged = 1
 		insults = rand(1, 3)//to prevent dickflooding
 		return 1

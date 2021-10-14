@@ -106,8 +106,6 @@
 
 #define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
 
-#define isovermind(A) istype(A, /mob/blob)
-
 #define ismech(A) istype(A, /obj/mecha)
 
 #define iseffect(A) istype(A, /obj/effect)

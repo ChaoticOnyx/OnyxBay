@@ -51,6 +51,14 @@
 			. = ..()
 		if(WS.active)
 			emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying.")
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(5, 0, loc)
+			spark_system.start()
+			playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
+			playsound(loc, SFX_SPARK, 50, 1)
+			broken = !broken
+			update_icon()
+			return
 
 	. = ..()
 

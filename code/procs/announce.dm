@@ -117,7 +117,7 @@
 /proc/ion_storm_announcement()
 	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
 
-/proc/AnnounceArrival(name, datum/job/job, var/datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
+/proc/AnnounceArrival(name, datum/job/job, datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
 

@@ -64,7 +64,7 @@
 
 	min_gas = null
 
-	wizardy_spells = list(/spell/aoe_turf/conjure/forcewall)
+	wizardy_spells = list(/datum/spell/aoe_turf/conjure/forcewall)
 
 /mob/living/simple_animal/familiar/pike/Allow_Spacemove(check_drift = 0)
 	return 1	//No drifting in space for space carp!	//original comments do not steal
@@ -86,7 +86,7 @@
 	melee_damage_upper = 8
 	attacktext = "touches"
 
-	wizardy_spells = list(/spell/targeted/torment)
+	wizardy_spells = list(/datum/spell/targeted/torment)
 
 /mob/living/simple_animal/familiar/horror/death(gibbed, deathmessage, show_dead_message)
 	..(null,"rapidly deteriorates","The bonds tying you to this mortal plane have been severed.")
@@ -110,8 +110,8 @@
 	health = 25
 	maxHealth = 25
 
-	wizardy_spells = list(/spell/targeted/heal_target,
-						/spell/targeted/heal_target/area)
+	wizardy_spells = list(/datum/spell/targeted/heal_target,
+						/datum/spell/targeted/heal_target/area)
 
 
 
@@ -148,7 +148,7 @@
 	can_escape = 1
 	attacktext = "nibbles"
 
-	wizardy_spells = list(/spell/aoe_turf/smoke)
+	wizardy_spells = list(/datum/spell/aoe_turf/smoke)
 
 /mob/living/simple_animal/familiar/pet/mouse/New()
 	..()
@@ -175,4 +175,22 @@
 	melee_damage_upper = 4
 	attacktext = "claws"
 
-	wizardy_spells = list(/spell/targeted/subjugation)
+	wizardy_spells = list(/datum/spell/targeted/subjugation)
+
+/mob/living/simple_animal/familiar/goat
+	name = "goat"
+	desc = "A goat. This one looks a bit satanic."
+	icon = 'icons/mob/animal.dmi'
+	icon_state = "goat"
+	icon_living = "goat"
+	icon_dead = "goat_dead"
+	speak_emote = list("brays")
+	mob_size = MOB_MEDIUM
+
+	health = 60
+	maxHealth = 60
+	melee_damage_lower = 10
+	melee_damage_upper = 20
+	attacktext = "kicked"
+
+	wizardy_spells = list(/datum/spell/targeted/projectile/magic_missile)

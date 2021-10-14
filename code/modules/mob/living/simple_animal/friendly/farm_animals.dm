@@ -5,7 +5,7 @@
 	icon_state = "goat"
 	icon_living = "goat"
 	icon_dead = "goat_dead"
-	speak = list("EHEHEHEHEH","eh?")
+	speak = list("EHEHEHEHEH", "eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Eh-meeeed..." = 0.001, "Beedaun." = 0.0000001)
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
@@ -23,6 +23,7 @@
 	melee_damage_lower = 1
 	melee_damage_upper = 5
 	var/datum/reagents/udder = null
+	var/isragemode = FALSE
 
 /mob/living/simple_animal/hostile/retaliate/goat/New()
 	udder = new(50, src)
@@ -42,7 +43,8 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			src.visible_message("<span class='notice'>\The [src] calms down.</span>")
+			visible_message(SPAN("notice", "\The [src] calms down."))
+			isragemode = FALSE
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
@@ -51,13 +53,13 @@
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
 			if(prob(60))
-				src.visible_message("<span class='notice'>\The [src] eats the plants.</span>")
+				src.visible_message(SPAN("notice", "\The [src] eats the plants."))
 				SV.die_off(1)
 				if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
 					var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/SP = locate() in loc
 					qdel(SP)
 			else if(prob(20))
-				src.visible_message("<span class='notice'>\The [src] chews on the plants.</span>")
+				src.visible_message(SPAN("notice", "\The [src] chews on the plants."))
 			return
 
 		if(!pulledby)
@@ -70,21 +72,47 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(50))
-		visible_message("<span class='warning'>\The [src] gets an evil-looking gleam in their eye.</span>")
+		visible_message(SPAN("warning", "\The [src] gets an evil-looking gleam in their eye."))
+	isragemode = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
-	var/obj/item/weapon/reagent_containers/glass/G = O
+	var/obj/item/weapon/reagent_containers/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
-		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
-		if(G.reagents.total_volume >= G.volume)
-			to_chat(user, "<span class='warning'>\The [O] is full.</span>")
-		if(!transfered)
-			to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
+		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10) || G.reagents.has_reagent(/datum/reagent/capsaicin, 3))
+			if(isragemode)
+				to_chat(user, SPAN("notice", "\The [src] is already angry."))
+				return
+			G.reagents.remove_any(1)
+			user.visible_message(SPAN("warning", "[user] gives something to \the [src]."))
+			Retaliate()
+		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
+			if(G.reagents.total_volume >= G.volume)
+				to_chat(user, SPAN("notice", "The [O] is full."))
+				return
+			if(isragemode && prob(50))
+				user.visible_message(SPAN("notice", "[user] tries to milk [src], but [src] hits \him."))
+				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
+				return
+			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5, 10))
+			if(!transfered)
+				to_chat(user, SPAN("notice", "The udder is dry. Wait a bit longer..."))
+				return
+			user.visible_message(SPAN("notice", "[user] milks [src] using \the [O]."))
 	else
 		..()
 
-//cow
+/mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
+	. = ..()
+	var/mob/living/L = .
+	if(istype(L))
+		if(prob(15))
+			L.Weaken(3)
+			L.visible_message(SPAN_DANGER("The [src] knocks down \the [L]!"))
+
+/mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
+	new /obj/item/stack/material/animalhide/goat(get_turf(src))
+	..()
+// cow
 /mob/living/simple_animal/cow
 	name = "cow"
 	desc = "Known for their milk, just don't tip them over."

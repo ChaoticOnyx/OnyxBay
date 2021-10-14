@@ -39,9 +39,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/power_equip = 1 // Status
 	var/power_light = 1
 	var/power_environ = 1
-	var/used_equip = 0  // Continuous drain; don't mess with these directly.
-	var/used_light = 0
-	var/used_environ = 0
 	var/oneoff_equip   = 0 //Used once and cleared each tick.
 	var/oneoff_light   = 0
 	var/oneoff_environ = 0
@@ -53,7 +50,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
-	var/list/ambience = list("global_ambient")
+	var/list/ambience = list(SFX_AMBIENT_GLOBAL)
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
@@ -76,7 +73,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambience = list("space_ambient")
+	ambience = list(SFX_AMBIENT_SPACE)
 
 /area/space/update_icon()
 	return
@@ -124,7 +121,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	GLOB.hallway += src
 
 /area/medical
-	ambience = list("global_ambient", "science_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_SCIENCE)
 
 /area/medical/virology
 	name = "\improper Virology"
@@ -149,10 +146,10 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
-	ambience = list("global_ambient", "maintenance_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_MAINTENANCE)
 
 /area/rnd
-	ambience = list("global_ambient", "science_ambient")
+	ambience = list(SFX_AMBIENT_GLOBAL, SFX_AMBIENT_SPACE)
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
@@ -227,7 +224,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	..()
 	var/sound/S = new /sound()
 	mysound = S
-	S.file = 'sound/ambience/shore.ogg'
+	S.file = 'sound/ambient/shore.ogg'
 	S.repeat = 1
 	S.wait = 0
 	S.channel = 123
@@ -257,7 +254,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/sound/S = null
 	var/sound_delay = 0
 	if(prob(25))
-		S = sound(file=pick('sound/ambience/seag1.ogg','sound/ambience/seag2.ogg','sound/ambience/seag3.ogg'), volume=100)
+		S = sound(file=pick('sound/ambient/seag1.ogg','sound/ambient/seag2.ogg','sound/ambient/seag3.ogg'), volume=100)
 		sound_delay = rand(0, 50)
 
 	for(var/mob/living/carbon/human/H in src)
