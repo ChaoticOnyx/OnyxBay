@@ -23,7 +23,7 @@
 	var/obj/crayon
 	var/obj/item/weapon/reagent_containers/pill/detergent/detergent
 	obj_flags = OBJ_FLAG_ANCHORABLE
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 40
 
 	// Power

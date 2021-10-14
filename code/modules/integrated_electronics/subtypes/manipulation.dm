@@ -644,7 +644,7 @@
 	var/turf/rift_location = get_turf(src)
 
 	if(!rift_location || !isPlayerLevel(rift_location.z))
-		playsound(src, get_sfx("spark"), 50, 1)
+		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 
 	if(isnum_safe(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
@@ -657,7 +657,7 @@
 		if(destination)
 			new /obj/effect/portal(rift_location, destination, 30 SECONDS, 33)
 		else
-			playsound(src, get_sfx("spark"), 50, 1)
+			playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 	var/atom/A = get_object()
 	A.investigate_log("was opened rift with [src].", INVESTIGATE_CIRCUIT)
 

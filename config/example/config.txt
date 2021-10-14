@@ -37,6 +37,9 @@ TICKLAG 0.625
 ## Defines world FPS. Defaults to 20. Should be 10 / TICKLAG = FPS
 FPS 16
 
+##Defines the fps for the players with 0 in preferences. -1 for synced with server fps. 65 recommended
+CLIENTFPS 65
+
 ## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list)
 # OVERRIDE_SPLASH icons/splashes/onyx_new.png
 
@@ -625,9 +628,6 @@ DEFAULT_NO_VOTE
 
 ## Patreon URL
 # PATREONURL http://example.com
-
-## Changelog URL
-# CHANGELOGURL http://example.com
 
 # # # # # # # # # # # # # # # # # # # # # #
 #     EXTERNAL CONNECTIONS / DATABASE     #

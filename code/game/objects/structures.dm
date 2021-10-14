@@ -1,7 +1,7 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
-	pull_sound = "pull_wood"
+	pull_sound = SFX_PULL_WOOD
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 	var/breakable

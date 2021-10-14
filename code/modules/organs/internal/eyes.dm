@@ -23,12 +23,10 @@
 
 /obj/item/organ/internal/eyes/robotize()
 	..()
-	name = "optical sensor"
-	icon = 'icons/obj/robot_component.dmi'
-	icon_state = "camera"
-	dead_icon = "camera_broken"
+	name = "optical sensors"
+	icon_state = "eyes-prosthetic"
+	dead_icon = "eyes-prosthetic-br"
 	update_colour()
-	isRobotize = 1
 
 /obj/item/organ/internal/eyes/robot
 	name = "optical sensor"

@@ -40,10 +40,10 @@
 			src.set_density(0)
 			src.destroyed = 1
 			new /obj/item/weapon/material/shard( src.loc )
-			playsound(src, "window_breaking", 70, 1)
+			playsound(src, SFX_BREAK_WINDOW, 70, 1)
 			update_icon()
 	else
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
 /obj/structure/displaycase/update_icon()

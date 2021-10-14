@@ -8,7 +8,7 @@
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working
 
-/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/attach(obj/mecha/M as obj)
+/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/attach(obj/mecha/M)
 	..()
 	cargo_holder = M
 	return
@@ -329,7 +329,7 @@
 					var/obj/machinery/door/airlock/T = new /obj/machinery/door/airlock(target)
 					T.autoclose = 1
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
-					playsound(target, get_sfx("spark"), 50, 1)
+					playsound(target, GET_SFX(SFX_SPARK), 50, 1)
 					chassis.use_power(energy_drain*2)
 	return
 
@@ -698,7 +698,7 @@
 	range = 0
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
-	var/list/use_channels = list(EQUIP,ENVIRON,LIGHT)
+	var/list/use_channels = list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT)
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/New()
 	..()
@@ -761,7 +761,7 @@
 		var/area/A = get_area(ER.chassis)
 		if(A)
 			var/pow_chan
-			for(var/c in list(EQUIP,ENVIRON,LIGHT))
+			for(var/c in list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT))
 				if(A.powered(c))
 					pow_chan = c
 					break

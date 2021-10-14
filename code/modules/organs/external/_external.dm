@@ -8,7 +8,7 @@
 	max_damage = 0
 	dir = SOUTH
 	organ_tag = "limb"
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE
 
 	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
 
@@ -1042,7 +1042,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(can_feel_pain())
 			owner.emote("scream")
 
-	playsound(src.loc, "fracture", 100, 1, -2)
+	playsound(src.loc, SFX_BREAK_BONE, 100, 1, -2)
 	status |= ORGAN_BROKEN
 	movement_tally += broken_tally * damage_multiplier
 
@@ -1052,7 +1052,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			owner.Weaken(2)
 			owner.Stun(1)
 
-	broken_description = pick("broken","fracture","hairline fracture")
+	broken_description = pick("broken", SFX_BREAK_BONE, "hairline fracture")
 
 	// Fractures have a chance of getting you out of restraints
 	if (prob(25))

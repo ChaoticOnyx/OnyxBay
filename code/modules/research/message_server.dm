@@ -92,7 +92,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			update_icon()
 
 /obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "")
-	playsound(src.loc, "device_trr", 50)
+	playsound(src.loc, SFX_TRR, 50)
 	var/result
 	for (var/token in spamfilter)
 		if (findtextEx(message,token))
@@ -102,7 +102,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return result
 
 /obj/machinery/message_server/proc/send_rc_message(recipient = "",sender = "",message = "",stamp = "", id_auth = "", priority = 1)
-	playsound(src.loc, "device_trr", 50)
+	playsound(src.loc, SFX_TRR, 50)
 	rc_msgs += new /datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 	var/authmsg = "[message]<br>"
 	if (id_auth)
@@ -300,7 +300,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/pda_msg_amt = 0
 	var/rc_msg_amt = 0
 
-	for(var/obj/machinery/message_server/MS in SSmachines.machinery)
+	for(var/obj/machinery/message_server/MS in GLOB.machines)
 		if(MS.pda_msgs.len > pda_msg_amt)
 			pda_msg_amt = MS.pda_msgs.len
 		if(MS.rc_msgs.len > rc_msg_amt)

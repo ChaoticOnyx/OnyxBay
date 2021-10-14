@@ -2,7 +2,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ
 	name = "organ"
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
 	dir = SOUTH
@@ -281,7 +281,7 @@ var/list/organ_cache = list()
 	if(drop_organ)
 		dropInto(owner.loc)
 
-	playsound(src, "crunch", rand(65, 80), FALSE)
+	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
 	START_PROCESSING(SSobj, src)
