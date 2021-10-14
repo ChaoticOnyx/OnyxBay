@@ -40,6 +40,10 @@
 	..()
 	update_icon()
 
+/obj/item/weapon/reagent_containers/syringe/on_enter_storage(obj/item/weapon/storage/S)
+	..()
+	update_icon()
+
 /obj/item/weapon/reagent_containers/syringe/attack_self(mob/user)
 	switch(mode)
 		if(SYRINGE_DRAW)
@@ -105,6 +109,9 @@
 
 /obj/item/weapon/reagent_containers/syringe/update_icon()
 	overlays.Cut()
+
+	icon_rotation = istype(loc, /obj/item/weapon/storage) ? 90 : 0
+	update_transform()
 
 	if(mode == SYRINGE_BROKEN)
 		icon_state = "broken"
@@ -343,10 +350,15 @@
 	amount_per_transfer_from_this = 5
 	volume = 5
 
+/obj/item/weapon/reagent_containers/dna_sampler/update_icon()
+	icon_state = "dna_sampler"
+	if(reagents.total_volume)
+		icon_state = "[icon_state]_full"
+
 /obj/item/weapon/reagent_containers/dna_sampler/attack_self(mob/user as mob)
 	if (!reagents.get_free_space())
 		src.reagents.del_reagent(/datum/reagent/blood)
-		icon_state = "dna_sampler"
+		update_icon()
 		to_chat(user, SPAN("notice", "You reset \the [src]."))
 
 /obj/item/weapon/reagent_containers/dna_sampler/attackby(obj/item/I as obj, mob/user as mob)
@@ -372,7 +384,7 @@
 			user.do_attack_animation(target)
 
 			T.take_blood(src, amount_per_transfer_from_this)
-			icon_state = "dna_sampler_full"
+			update_icon()
 			to_chat(user, SPAN("notice", "You take a blood sample from [target]."))
 			to_chat(T, SPAN("notice", "You feel a tiny prick."))
 			for(var/mob/O in viewers(4, user))
@@ -389,7 +401,7 @@
 
 		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
 		to_chat(user, SPAN("notice", "You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
-		icon_state = "dna_sampler"
+		update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Presets

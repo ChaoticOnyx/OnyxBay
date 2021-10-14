@@ -201,26 +201,28 @@
 			else
 				slab_count++
 
-	// Small mobs don't give as much nutrition.
-	if(issmall(src.occupant))
-		slab_nutrition *= 0.5
 
-	slab_nutrition /= slab_count
+	if(slab_count > 0)
+		// Small mobs don't give as much nutrition.
+		if(issmall(src.occupant))
+			slab_nutrition *= 0.5
 
-	var/reagent_transfer_amt
-	if (occupant.reagents)
-		reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
+		slab_nutrition /= slab_count
 
-	for(var/i=1 to slab_count)
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
-		if(istype(new_meat))
-			new_meat.SetName("[slab_name] [new_meat.name]")
-			new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition)
-			if(src.occupant.reagents)
-				src.occupant.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
+		var/reagent_transfer_amt
+		if(occupant.reagents)
+			reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
 
-	for (var/i = 1 to robotic_slab_count)
-		new robotic_slab_type(src, rand(3,8))
+		for(var/i=1 to slab_count)
+			var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
+			if(istype(new_meat))
+				new_meat.SetName("[slab_name] [new_meat.name]")
+				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)
+				if(src.occupant.reagents)
+					src.occupant.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
+
+	for(var/i=1 to robotic_slab_count)
+		new robotic_slab_type(src, rand(3,5))
 
 
 	admin_attack_log(user, occupant, "Gibbed the victim", "Was gibbed", "gibbed")

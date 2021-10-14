@@ -3,7 +3,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "dispenser"
 	layer = BELOW_OBJ_LAYER
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 
 	var/list/spawn_cartridges = null // Set to a list of types to spawn one of each on New()
@@ -15,6 +15,14 @@
 
 	var/accept_drinking = 0
 	var/amount = 30
+
+	component_types = list(
+		/obj/item/weapon/circuitboard/chemical_dispenser,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/stock_parts/scanning_module = 2,
+		/obj/item/weapon/stock_parts/manipulator = 4,
+		/obj/item/weapon/stock_parts/console_screen,
+	)
 
 	idle_power_usage = 100
 	density = 1
@@ -67,10 +75,17 @@
 	SSnano.update_uis(src)
 
 /obj/machinery/chemical_dispenser/attackby(obj/item/weapon/W, mob/user)
+	if(default_deconstruction_crowbar(user, W))
+		return
+	if(default_part_replacement(user, W))
+		return
+
 	if(istype(W, /obj/item/weapon/reagent_containers/chem_disp_cartridge))
 		add_cartridge(W, user)
 
 	else if(isScrewdriver(W))
+		if(!length(cartridges) && default_deconstruction_screwdriver(user, W))
+			return
 		var/label = input(user, "Which cartridge would you like to remove?", "Chemical Dispenser") as null|anything in cartridges
 		if(!label) return
 		var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = remove_cartridge(label)

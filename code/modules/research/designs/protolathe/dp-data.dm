@@ -1,7 +1,7 @@
 /datum/design/item/disk
 	req_tech = list(TECH_DATA = 1)
 	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 10)
-	category_items = "Data"
+	category_items = list("Data")
 
 /datum/design/item/disk/design
 	name = "component design disk"

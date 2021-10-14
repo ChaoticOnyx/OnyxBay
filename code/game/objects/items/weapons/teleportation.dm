@@ -415,7 +415,7 @@ Frequency:
 				localteleport(M, 1)
 			return
 		localteleport(H, 1)
-	playsound(src, "spark", 50, 1)
+	playsound(src, SFX_SPARK, 50, 1)
 	var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 	sparks.set_up(3, 0, get_turf(src))
 	sparks.start()

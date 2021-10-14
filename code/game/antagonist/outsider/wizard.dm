@@ -13,11 +13,15 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	hard_cap_round = 3
 	initial_spawn_req = 1
 	initial_spawn_target = 1
-	min_player_age = 18
 
 	faction = "wizard"
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/wizard/Initialize()
+	. = ..()
+	if(config.wizard_min_age)
+		min_player_age = config.wizard_min_age
 
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 
@@ -68,6 +72,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.current.real_name = "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 	wizard.current.SetName(wizard.current.real_name)
 	wizard.current.mutations.Add(MUTATION_CLUMSY)
+	wizard.wizard = new()
 
 /datum/antagonist/wizard/equip(mob/living/carbon/human/wizard_mob)
 
@@ -101,7 +106,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 			text += "<br>None!"
 		else
 			for(var/s in player.learned_spells)
-				var/spell/spell = s
+				var/datum/spell/spell = s
 				text += "<br><b>[spell.name]</b> - "
 				text += "Speed: [spell.spell_levels["speed"]] Power: [spell.spell_levels["power"]]"
 		text += "<br>"
@@ -112,7 +117,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 /mob/proc/spellremove()
 	if(!mind || !mind.learned_spells)
 		return
-	for(var/spell/spell_to_remove in mind.learned_spells)
+	for(var/datum/spell/spell_to_remove in mind.learned_spells)
 		remove_spell(spell_to_remove)
 
 /obj/item/clothing

@@ -13,11 +13,11 @@
 	hitter.visible_message("<span class='notice'>\The [hitter] dips their hands into \the [src], a soft glow emanating from them.</span>")
 	if(do_after(hitter,600,src,needhand=0))
 		for(var/s in hitter.mind.learned_spells)
-			var/spell/spell = s
+			var/datum/spell/spell = s
 			switch(spell.charge_type)
-				if(Sp_RECHARGE)
+				if(SP_RECHARGE)
 					spell.charge_counter = spell.charge_max
-				if(Sp_CHARGES)
+				if(SP_CHARGES)
 					spell.charge_counter = min(spell.charge_counter + 1, spell.charge_max)
 		to_chat(hitter, "<span class='notice'>You feel refreshed!</span>")
 		return

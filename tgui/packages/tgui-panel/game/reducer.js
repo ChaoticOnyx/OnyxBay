@@ -4,36 +4,35 @@
  * @license MIT
  */
 
-import { connectionLost } from './actions';
-import { connectionRestored } from './actions';
+import { connectionLost, connectionRestored } from './actions'
 
 const initialState = {
   // TODO: This is where round info should be.
   roundId: null,
   roundTime: null,
   roundRestartedAt: null,
-  connectionLostAt: null,
-};
+  connectionLostAt: null
+}
 
 export const gameReducer = (state = initialState, action) => {
-  const { type, payload, meta } = action;
+  const { type, meta } = action
   if (type === 'roundrestart') {
     return {
       ...state,
-      roundRestartedAt: meta.now,
-    };
+      roundRestartedAt: meta.now
+    }
   }
   if (type === connectionLost.type) {
     return {
       ...state,
-      connectionLostAt: meta.now,
-    };
+      connectionLostAt: meta.now
+    }
   }
   if (type === connectionRestored.type) {
     return {
       ...state,
-      connectionLostAt: null,
-    };
+      connectionLostAt: null
+    }
   }
-  return state;
-};
+  return state
+}

@@ -97,14 +97,12 @@
 					"<span class='notice'>I caress [target] with my scythe-like arm.</span>")
 
 /datum/species/xenos/handle_post_spawn(mob/living/carbon/human/H)
-	if(H.mind)
-		GLOB.xenomorphs.add_antagonist(H.mind, 1)
-
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
-
 	..()
+	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
+		GLOB.xenomorphs.add_antagonist(H.mind, 1)
 
 /datum/species/xenos/get_random_name()
 	return "alien [caste_name] ([rand(100,999)])"
@@ -244,7 +242,7 @@
 		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_acidspit,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
@@ -328,7 +326,7 @@
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/tackle,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid
@@ -382,7 +380,7 @@
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/tackle,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
 		/mob/living/carbon/human/proc/regurgitate,

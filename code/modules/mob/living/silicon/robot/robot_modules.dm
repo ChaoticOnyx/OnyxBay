@@ -200,7 +200,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/lightreplacer(src)
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
 	src.modules += new /obj/item/weapon/matter_decompiler(src)
-	src.emag = new /obj/item/weapon/melee/energy/sword/one_hand(src)
+	src.emag = new /obj/item/weapon/melee/energy/sword/robot(src)
 
 	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(5000)
 	synths += medicine
@@ -903,7 +903,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
-	src.modules += new /obj/item/weapon/melee/energy/sword/one_hand(src)
+	src.modules += new /obj/item/weapon/melee/energy/sword/robot(src)
 	src.modules += new /obj/item/weapon/gun/energy/pulse_rifle/destroyer(src)
 	src.modules += new /obj/item/weapon/card/emag(src)
 	var/jetpack = new /obj/item/weapon/tank/jetpack/carbondioxide(src)

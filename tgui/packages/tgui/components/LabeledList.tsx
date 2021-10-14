@@ -4,21 +4,21 @@
  * @license MIT
  */
 
-import { BooleanLike, classes, pureComponentHooks } from 'common/react';
-import { InfernoNode } from 'inferno';
-import { Box, unit } from './Box';
-import { Divider } from './Divider';
+import { BooleanLike, classes, pureComponentHooks } from 'common/react'
+import { InfernoNode } from 'inferno'
+import { Box, unit } from './Box'
+import { Divider } from './Divider'
 
 type LabeledListProps = {
   children?: any;
 };
 
 export const LabeledList = (props: LabeledListProps) => {
-  const { children } = props;
-  return <table className='LabeledList'>{children}</table>;
-};
+  const { children } = props
+  return <table className='LabeledList'>{children}</table>
+}
 
-LabeledList.defaultHooks = pureComponentHooks;
+LabeledList.defaultHooks = pureComponentHooks
 
 type LabeledListItemProps = {
   className?: string | BooleanLike;
@@ -41,8 +41,8 @@ const LabeledListItem = (props: LabeledListItemProps) => {
     textAlign,
     buttons,
     content,
-    children,
-  } = props;
+    children
+  } = props
   return (
     <tr className={classes(['LabeledList__row', className])}>
       <Box
@@ -64,32 +64,32 @@ const LabeledListItem = (props: LabeledListItemProps) => {
         <td className='LabeledList__cell LabeledList__buttons'>{buttons}</td>
       )}
     </tr>
-  );
-};
+  )
+}
 
-LabeledListItem.defaultHooks = pureComponentHooks;
+LabeledListItem.defaultHooks = pureComponentHooks
 
 type LabeledListDividerProps = {
   size?: number;
 };
 
 const LabeledListDivider = (props: LabeledListDividerProps) => {
-  const padding = props.size ? unit(Math.max(0, props.size - 1)) : 0;
+  const padding = props.size ? unit(Math.max(0, props.size - 1)) : 0
   return (
     <tr className='LabeledList__row'>
       <td
         colSpan={3}
         style={{
           'padding-top': padding,
-          'padding-bottom': padding,
+          'padding-bottom': padding
         }}>
         <Divider />
       </td>
     </tr>
-  );
-};
+  )
+}
 
-LabeledListDivider.defaultHooks = pureComponentHooks;
+LabeledListDivider.defaultHooks = pureComponentHooks
 
-LabeledList.Item = LabeledListItem;
-LabeledList.Divider = LabeledListDivider;
+LabeledList.Item = LabeledListItem
+LabeledList.Divider = LabeledListDivider

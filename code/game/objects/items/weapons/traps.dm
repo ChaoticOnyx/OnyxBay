@@ -15,7 +15,7 @@
 	var/deployed = 0
 
 /obj/item/weapon/beartrap/proc/can_use(mob/user)
-	return (user.IsAdvancedToolUser() && !issilicon(user) && !user.stat && !user.restrained())
+	return (user.IsAdvancedToolUser() && !user.stat && !user.restrained())
 
 /obj/item/weapon/beartrap/user_unbuckle_mob(mob/user as mob)
 	if(buckled_mob && can_use(user))

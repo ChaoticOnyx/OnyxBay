@@ -137,7 +137,7 @@
 				if(announcment_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return TRUE
-				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text)
+				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as message|null)
 				if(!input || !can_still_topic())
 					return 1
 				usr.client?.spellcheck(input)
@@ -154,7 +154,7 @@
 							to_chat(usr, SPAN("warning", "Arrays recycling. Please stand by."))
 							SSnano.update_uis(src)
 							return
-						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
+						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as message|null)
 						if(!input || !can_still_topic())
 							return 1
 						usr.client?.spellcheck(input)
@@ -173,12 +173,9 @@
 					if(!is_relay_online()) // Contact Centcom has a check, Syndie doesn't to allow for Traitor funs.
 						to_chat(usr, SPAN("warning", "No Emergency Bluespace Relay detected. Unable to transmit message."))
 						return 1
-					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
+					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as message|null)
 					if(!input || !can_still_topic())
 						return 1
-					// TOOD: spellcheck
-					// if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
-					//	usr.client.chatOutput.spell_check(input)
 					Centcomm_announce(input, usr)
 					to_chat(usr, SPAN("notice", "Message transmitted."))
 					log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
@@ -326,7 +323,7 @@ var/last_message_id = 0
 
 
 /proc/is_relay_online()
-	for(var/obj/machinery/bluespacerelay/M in SSmachines.machinery)
+	for(var/obj/machinery/bluespacerelay/M in GLOB.machines)
 		if(M.stat == 0)
 			return 1
 	return 0

@@ -69,9 +69,9 @@
 	update_icon()
 
 /obj/item/weapon/material/twohanded/update_icon()
-	icon_state = "[base_icon][wielded]"
-	item_state_slots[slot_l_hand_str] = icon_state
-	item_state_slots[slot_r_hand_str] = icon_state
+	var/new_item_state = "[base_icon][wielded]"
+	item_state_slots[slot_l_hand_str] = new_item_state
+	item_state_slots[slot_r_hand_str] = new_item_state
 
 /*
  * Fireaxe
@@ -151,7 +151,6 @@
 	desc = "HOME RUN!"
 	icon_state = "metalbat0"
 	base_icon = "metalbat"
-	item_state = "metalbat"
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.5
 	mod_reach = 1.0
@@ -166,7 +165,7 @@
 
 	throwforce = 7
 	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	default_material = MATERIAL_WOOD
 	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
 	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.

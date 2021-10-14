@@ -13,6 +13,9 @@
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
+	///Value used to increment ex_act() if reactionary_explosions is on
+	var/explosion_block = 0
+
 	///Proximity monitor associated with this atom
 	var/datum/proximity_monitor/proximity_monitor
 
@@ -288,10 +291,6 @@ its easier to just keep the beam vertical.
 		icon_state = new_icon_state
 
 /atom/proc/update_icon()
-	CAN_BE_REDEFINED(TRUE)
-	return
-
-/atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
 	CAN_BE_REDEFINED(TRUE)
 	return
 
@@ -579,3 +578,7 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+// Called after we wrench/unwrench this object
+/obj/proc/wrenched_change()
+	return

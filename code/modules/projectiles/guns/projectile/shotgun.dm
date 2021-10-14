@@ -32,14 +32,14 @@
 		pump(user)
 
 /obj/item/weapon/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
-	playsound(M, "shotgun_pump_in", rand(45, 60), FALSE)
+	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
 		ejectCasing()
 		chambered = null
 
 	sleep(5)
-	playsound(M, "shotgun_pump_out", rand(45, 60), FALSE)
+	playsound(M, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
 
 	if(loaded.len)
 		var/obj/item/ammo_casing/AC = loaded[1] //load next casing.

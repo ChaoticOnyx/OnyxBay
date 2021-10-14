@@ -8,7 +8,7 @@
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working
 
-/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/attach(obj/mecha/M as obj)
+/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/attach(obj/mecha/M)
 	..()
 	cargo_holder = M
 	return
@@ -329,7 +329,7 @@
 					var/obj/machinery/door/airlock/T = new /obj/machinery/door/airlock(target)
 					T.autoclose = 1
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
-					playsound(target, get_sfx("spark"), 50, 1)
+					playsound(target, GET_SFX(SFX_SPARK), 50, 1)
 					chassis.use_power(energy_drain*2)
 	return
 
@@ -657,7 +657,7 @@
 		send_byjax(chassis.occupant, "exosuit.browser", "\ref[src]", src.get_equip_info())
 	return
 
-/datum/global_iterator/mecha_repair_droid/process(var/obj/item/mecha_parts/mecha_equipment/repair_droid/RD as obj)
+/datum/global_iterator/mecha_repair_droid/process(obj/item/mecha_parts/mecha_equipment/repair_droid/RD)
 	if(!RD.chassis)
 		stop()
 		RD.set_ready_state(1)
@@ -698,7 +698,7 @@
 	range = 0
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
-	var/list/use_channels = list(EQUIP,ENVIRON,LIGHT)
+	var/list/use_channels = list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT)
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/New()
 	..()
@@ -721,7 +721,7 @@
 	..()
 	return
 
-/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/proc/get_power_channel(var/area/A)
+/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/proc/get_power_channel(area/A)
 	var/pow_chan
 	if(A)
 		for(var/c in use_channels)
@@ -746,7 +746,7 @@
 		return
 	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name] - <a href='?src=\ref[src];toggle_relay=1'>[pr_energy_relay.active()?"Dea":"A"]ctivate</a>"
 
-/datum/global_iterator/mecha_energy_relay/process(var/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/ER)
+/datum/global_iterator/mecha_energy_relay/process(obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/ER)
 	if(!ER.chassis || ER.chassis.hasInternalDamage(MECHA_INT_SHORT_CIRCUIT))
 		stop()
 		ER.set_ready_state(1)
@@ -761,7 +761,7 @@
 		var/area/A = get_area(ER.chassis)
 		if(A)
 			var/pow_chan
-			for(var/c in list(EQUIP,ENVIRON,LIGHT))
+			for(var/c in list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT))
 				if(A.powered(c))
 					pow_chan = c
 					break
@@ -843,7 +843,7 @@
 		occupant_message(message)
 	return
 
-/obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(var/obj/item/stack/material/P)
+/obj/item/mecha_parts/mecha_equipment/generator/proc/load_fuel(obj/item/stack/material/P)
 	if(P.type == fuel.type && P.amount)
 		var/to_load = max(max_fuel - fuel.amount * fuel.perunit,0)
 		if(to_load)
@@ -882,7 +882,7 @@
 	T.assume_air(GM)
 	return
 
-/datum/global_iterator/mecha_generator/process(var/obj/item/mecha_parts/mecha_equipment/generator/EG)
+/datum/global_iterator/mecha_generator/process(obj/item/mecha_parts/mecha_equipment/generator/EG)
 	if(!EG.chassis)
 		stop()
 		EG.set_ready_state(1)
@@ -930,7 +930,7 @@
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/critfail()
 	return
 
-/datum/global_iterator/mecha_generator/nuclear/process(var/obj/item/mecha_parts/mecha_equipment/generator/nuclear/EG)
+/datum/global_iterator/mecha_generator/nuclear/process(obj/item/mecha_parts/mecha_equipment/generator/nuclear/EG)
 	if(..())
 		SSradiation.radiate(EG, (EG.rad_per_cycle * 3))
 	return 1

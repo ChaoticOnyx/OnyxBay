@@ -1,27 +1,26 @@
 //These spells are given to the owner of a contract when a victim signs it.
 //As such they are REALLY REALLY powerful (because the victim is rewarded for signing it, and signing contracts is completely voluntary)
 
-/spell/contract
+/datum/spell/contract
 	name = "Contract Spell"
 	desc = "A spell perfecting the techniques of keeping a servant happy and obedient."
 
 	school = "transmutation"
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
-
+	invocation_type = SPI_NONE
 
 	var/mob/subject
 
-/spell/contract/New(mob/M)
+/datum/spell/contract/New(mob/M)
 	..()
 	subject = M
 	name += " ([M.real_name])"
 
-/spell/contract/choose_targets()
+/datum/spell/contract/choose_targets()
 	return list(subject)
 
-/spell/contract/cast(mob/target,mob/user)
+/datum/spell/contract/cast(mob/target, mob/user)
 	if(!subject)
 		to_chat(usr, "This spell was not properly given a target. Contact a coder.")
 		return null
@@ -31,37 +30,35 @@
 	return target
 
 
-/spell/contract/reward
+/datum/spell/contract/reward
 	name = "Reward Contractee"
 	desc = "A spell that makes your contracted victim feel better."
-
+	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
+	icon_state = "wiz_jaunt_old"
 
-	hud_state = "wiz_jaunt_old"
-
-/spell/contract/reward/cast(mob/living/target,mob/user)
+/datum/spell/contract/reward/cast(mob/living/target, mob/user)
 	target = ..(target,user)
 	if(!target)
 		return
 
-	to_chat(target, "<span class='info'>You feel great!</span>")
+	to_chat(target, SPAN("info", "You feel great!"))
 	target.ExtinguishMob()
 
-/spell/contract/punish
+/datum/spell/contract/punish
 	name = "Punish Contractee"
 	desc = "A spell that sets your contracted victim ablaze."
-
+	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
+	icon_state = "gen_immolate"
 
-	hud_state = "gen_immolate"
-
-/spell/contract/punish/cast(mob/living/target,mob/user)
+/datum/spell/contract/punish/cast(mob/living/target, mob/user)
 	target = ..(target,user)
 	if(!target)
 		return
 
-	to_chat(target, "<span class='danger'>You feel punished!</span>")
+	to_chat(target, SPAN_DANGER("You feel punished!"))
 	target.fire_stacks += 15
 	target.IgniteMob()

@@ -39,9 +39,9 @@
 			SetName("bookcase ([newname])")
 	else if(isScrewdriver(O))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-		to_chat(user, "<span class='notice'>You begin dismantling \the [src].</span>")
+		to_chat(user, SPAN("notice", "You begin dismantling \the [src]."))
 		if(do_after(user,25,src))
-			to_chat(user, "<span class='notice'>You dismantle \the [src].</span>")
+			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
 			new /obj/item/stack/material/wood(get_turf(src), 5)
 			for(var/obj/item/weapon/book/b in contents)
 				b.loc = (get_turf(src))
@@ -160,12 +160,12 @@
 /obj/item/weapon/book/attack_self(mob/user as mob)
 	if(carved)
 		if(store)
-			to_chat(user, "<span class='notice'>[store] falls out of [title]!</span>")
+			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
 			store.loc = get_turf(src.loc)
 			store = null
 			return
 		else
-			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
+			to_chat(user, SPAN("notice", "The pages of [title] have been cut out!"))
 			return
 	if(src.dat)
 		show_browser(user, dat, "window=book_[title];size=[window_width]x[window_height]")
@@ -181,13 +181,13 @@
 				user.drop_item()
 				W.loc = src
 				store = W
-				to_chat(user, "<span class='notice'>You put [W] in [title].</span>")
+				to_chat(user, SPAN("notice", "You put [W] in [title]."))
 				return
 			else
-				to_chat(user, "<span class='notice'>[W] won't fit in [title].</span>")
+				to_chat(user, SPAN("notice", "[W] won't fit in [title]."))
 				return
 		else
-			to_chat(user, "<span class='notice'>There's already something in [title]!</span>")
+			to_chat(user, SPAN("notice", "There's already something in [title]!"))
 			return
 	if(istype(W, /obj/item/weapon/pen))
 		if(unique)
@@ -221,9 +221,9 @@
 				return
 	else if(istype(W, /obj/item/weapon/material/knife) || isWirecutter(W))
 		if(carved)	return
-		to_chat(user, "<span class='notice'>You begin to carve out [title].</span>")
+		to_chat(user, SPAN("notice", "You begin to carve out [title]."))
 		if(do_after(user, 30, src))
-			to_chat(user, "<span class='notice'>You carve out the pages from [title]! You didn't want to read it anyway.</span>")
+			to_chat(user, SPAN("notice", "You carve out the pages from [title]! You didn't want to read it anyway."))
 			carved = 1
 			return
 	else
@@ -231,8 +231,10 @@
 
 /obj/item/weapon/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(user.zone_sel.selecting == BP_EYES)
-		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
-			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
+		user.visible_message(
+			SPAN("notice", "[user] opens up a book and shows it to [M]."),
+			SPAN("notice", "You open up the book and show it to [M].")
+		)
 		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 

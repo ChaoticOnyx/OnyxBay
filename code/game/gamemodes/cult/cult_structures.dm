@@ -13,7 +13,6 @@
 	name = "Daemon forge"
 	desc = "A forge used in crafting the unholy weapons used by the armies of Nar-Sie."
 	icon_state = "forge"
-
 /obj/structure/cult/pylon
 	name = "Pylon"
 	desc = "A floating crystal that hums with an unearthly energy."
@@ -25,16 +24,16 @@
 	light_color = "#3e0000"
 	var/obj/item/wepon = null
 
-/obj/structure/cult/pylon/attack_hand(mob/M as mob)
+/obj/structure/cult/pylon/attack_hand(mob/M)
 	attackpylon(M, 5)
 
 /obj/structure/cult/pylon/attack_generic(mob/user, damage)
 	attackpylon(user, damage)
 
-/obj/structure/cult/pylon/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/cult/pylon/attackby(obj/item/W, mob/user)
 	attackpylon(user, W.force)
 
-/obj/structure/cult/pylon/proc/attackpylon(mob/user as mob, damage)
+/obj/structure/cult/pylon/proc/attackpylon(mob/user, damage)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if(!isbroken)
 		if(prob(1+ damage * 5))
@@ -44,21 +43,21 @@
 				"You hear a tinkle of crystal shards"
 				)
 			user.do_attack_animation(src)
-			playsound(src, get_sfx("window_breaking"), 75, 1)
+			playsound(src, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
 			isbroken = 1
 			set_density(0)
 			icon_state = "pylon-broken"
 			set_light(0)
 		else
 			to_chat(user, "You hit the pylon!")
-			playsound(src, get_sfx("glass_hit"), 75, 1)
+			playsound(src, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	else
 		if(prob(damage * 2))
 			to_chat(user, "You pulverize what was left of the pylon!")
 			qdel(src)
 		else
 			to_chat(user, "You hit the pylon!")
-		playsound(src, get_sfx("glass_hit"), 75, 1)
+		playsound(src, GET_SFX(SFX_GLASS_HIT), 75, 1)
 
 
 /obj/structure/cult/pylon/proc/repair(mob/user as mob)

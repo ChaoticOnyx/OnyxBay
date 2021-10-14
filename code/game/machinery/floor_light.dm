@@ -11,7 +11,7 @@ var/floor_light_color_cache = list()
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/ID
@@ -96,7 +96,7 @@ var/floor_light_color_cache = list()
 			hit(W.force, user)
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX("glass_hit"), 75, 1)
 		return
 
 	if(isMultitool(W))
@@ -179,7 +179,7 @@ var/floor_light_color_cache = list()
 		return
 	else
 		user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
-		playsound(loc, get_sfx("glass_hit"), 100, 1)
+		playsound(loc, GET_SFX("glass_hit"), 100, 1)
 		if(health <= shield / 2)
 			visible_message("[src] looks like it's about to shatter!")
 		else if(broken())
@@ -190,7 +190,7 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/attack_hand(mob/user)
 	if(user.a_intent == I_HURT && !issmall(user))
-		playsound(src.loc, get_sfx("glass_knock"), 80, 1)
+		playsound(src.loc, GET_SFX("glass_knock"), 80, 1)
 		user.visible_message("[user.name] knocks on the [src.name].", "You knock on the [src.name].", "You hear a knocking sound.")
 		return
 	else
@@ -237,7 +237,7 @@ var/floor_light_color_cache = list()
 			crack = rand(1,8)
 			var/cache_key = "floorlight[ID]-damaged[crack]"
 			var/image/I = image("damaged[crack]")
-			playsound(loc, get_sfx("sound/effects/glass_step.ogg"), 100, 1)
+			playsound(loc, GET_SFX("sound/effects/glass_step.ogg"), 100, 1)
 			update_light_cache(ID, cache_key, I, crack_layer)
 			cracks++
 	else overlays.Cut()

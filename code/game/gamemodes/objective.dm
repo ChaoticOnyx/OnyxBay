@@ -299,7 +299,23 @@ datum/objective/escape
 		var/area/check_area = location.loc
 		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas)
 
+/datum/objective/escape/changeling/find_target()
+	. = ..()
 
+	if(target?.current)
+		explanation_text = "Escape on the shuttle or an escape pod alive and free with the identity of [target.current.real_name], the [target.assigned_role]."
+		target = target.current.real_name
+
+/datum/objective/escape/changeling/check_completion()
+	if(!..())
+		return FALSE
+	if(!target)
+		return TRUE
+
+	var/obj/item/weapon/card/id/id_card = owner.current.GetIdCard()
+	if(id_card?.registered_name == target && owner.current.real_name == target && owner.changeling?.last_transformation_at + 3 MINUTES <= world.time)
+		return TRUE
+	return FALSE
 
 datum/objective/survive
 	explanation_text = "Stay alive until the end."
@@ -405,9 +421,6 @@ datum/objective/harm
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()
-	if(SSticker.mode.blob_domination)
-		GLOB.ert.is_station_secure = FALSE
-
 	if(GLOB.revs.global_objectives.len > 0)
 		var/completed = 0
 		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)

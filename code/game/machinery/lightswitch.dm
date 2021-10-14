@@ -8,7 +8,7 @@
 	icon_state = "light0"
 	anchored = 1.0
 	idle_power_usage = 20
-	power_channel = LIGHT
+	power_channel = STATIC_LIGHT
 	var/on = 0
 	var/area/connected_area = null
 	var/other_area = null
@@ -61,7 +61,7 @@
 		return 1
 
 /obj/machinery/light_switch/attack_hand(mob/user)
-	playsound(src, "switch_small", 75)
+	playsound(src, SFX_USE_SMALL_SWITCH, 75)
 	set_state(!on)
 
 /obj/machinery/light_switch/powered()

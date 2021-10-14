@@ -108,7 +108,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(value == mode)
 		return
 
-	playsound(src, mode == (PLAYER_STATE_OFF || PLAYER_STATE_PAUSE) ? GLOB.switch_small_sound[1] : GLOB.switch_small_sound[2], 35)
+	playsound(src, GET_SFX(SFX_USE_SMALL_SWITCH), 35)
 
 	if(broken)
 		return

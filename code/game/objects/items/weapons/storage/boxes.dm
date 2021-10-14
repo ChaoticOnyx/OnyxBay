@@ -26,7 +26,7 @@
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
 	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
-	use_sound = "searching_clothes"
+	use_sound = SFX_SEARCH_CLOTHES
 
 /obj/item/weapon/storage/box/large
 	name = "large box"
@@ -404,6 +404,7 @@
 			W.lit = 1
 			W.damtype = "burn"
 			W.icon_state = "match_lit"
+			W.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
 			START_PROCESSING(SSobj, W)
 			playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
 			user.visible_message("<span class='notice'>[user] strikes the match on the matchbox.</span>")

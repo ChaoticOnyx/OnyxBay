@@ -6,7 +6,7 @@
 /turf/simulated/floor/holofloor
 	thermal_conductivity = 0
 
-/turf/simulated/floor/holofloor/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/turf/simulated/floor/holofloor/attackby(obj/item/weapon/W, mob/user)
 	return
 	// HOLOFLOOR DOES NOT GIVE A FUCK
 
@@ -98,10 +98,10 @@
 	base_name = "desert sand"
 	desc = "Uncomfortably gritty for a hologram."
 	base_desc = "Uncomfortably gritty for a hologram."
-	icon_state = "asteroid"
-	base_icon_state = "asteroid"
-	icon = 'icons/turf/flooring/asteroid.dmi'
-	base_icon = 'icons/turf/flooring/asteroid.dmi'
+	icon_state = "sand0"
+	base_icon_state = "sand0"
+	icon = 'icons/turf/flooring/sand.dmi'
+	base_icon = 'icons/turf/flooring/sand.dmi'
 	initial_flooring = null
 
 /turf/simulated/floor/holofloor/desert/New()
@@ -125,7 +125,7 @@
 /obj/structure/window/reinforced/holowindow/Destroy()
 	return ..()
 
-/obj/structure/window/reinforced/holowindow/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/window/reinforced/holowindow/attackby(obj/item/W, mob/user)
 
 	if(!istype(W) || W.item_flags & ITEM_FLAG_NO_BLUDGEON) return
 
@@ -143,12 +143,12 @@
 				update_nearby_icons()
 				step(src, get_dir(user, src))
 		else
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		..()
 	return
 
 /obj/structure/window/reinforced/holowindow/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
@@ -160,14 +160,14 @@
 /obj/machinery/door/window/holowindoor/Destroy()
 	return ..()
 
-/obj/machinery/door/window/holowindoor/attackby(obj/item/weapon/I as obj, mob/user as mob)
+/obj/machinery/door/window/holowindoor/attackby(obj/item/weapon/I, mob/user)
 
 	if (src.operating == 1)
 		return
 
 	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)
@@ -190,7 +190,7 @@
 
 /obj/machinery/door/window/holowindoor/shatter(display_message = 1)
 	src.set_density(0)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
@@ -198,10 +198,49 @@
 /obj/structure/bed/chair/holochair/Destroy()
 	return ..()
 
-/obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
-		to_chat(user, ("<span class='notice'>It's a holochair, you can't dismantle it!</span>"))
+/obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W, mob/user)
+	if(isWrench(W))
+		to_chat(user, SPAN("notice", "It's a holochair, you can't dismantle it!"))
 	return
+
+/obj/structure/bed/chair/holochair/fold(mob/user)
+	if(!foldable)
+		return
+
+	var/list/collapse_message = list(SPAN_WARNING("\The [name] has collapsed!"), null)
+
+	if(buckled_mob)
+		collapse_message = list(\
+			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [name]!"),\
+			user ? SPAN_NOTICE("You collapse \the [name] and made [buckled_mob] fall down!") : null)
+
+		var/mob/living/occupant = unbuckle_mob()
+		var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
+
+		occupant.apply_effect(4, STUN, blocked)
+		occupant.apply_effect(4, WEAKEN, blocked)
+		occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
+		playsound(src, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
+	else if(user)
+		collapse_message = list("[user] collapses \the [name].", "You collapse \the [name].")
+
+	visible_message(collapse_message[1], collapse_message[2])
+	var/obj/item/weapon/foldchair/holochair/O = new /obj/item/weapon/foldchair/holochair(get_turf(src))
+	if(user)
+		O.add_fingerprint(user)
+	QDEL_IN(src, 0)
+
+/obj/item/weapon/foldchair/holochair/attackby(obj/item/weapon/W, mob/user)
+	if(isWrench(W))
+		to_chat(user,SPAN("notice", "It's a holochair, you can't dismantle it!"))
+
+/obj/item/weapon/foldchair/holochair/attack_self(mob/user)
+	var/obj/structure/bed/chair/holochair/O = new /obj/structure/bed/chair/holochair(user.loc)
+	O.add_fingerprint(user)
+	O.dir = user.dir
+	O.update_icon()
+	visible_message("[user] unfolds \the [O.name].")
+	qdel(src)
 
 /obj/item/weapon/holo
 	damtype = PAIN
@@ -231,7 +270,7 @@
 /obj/item/weapon/holo/esword/New()
 	item_color = pick("red","blue","green","purple")
 
-/obj/item/weapon/holo/esword/attack_self(mob/living/user as mob)
+/obj/item/weapon/holo/esword/attack_self(mob/living/user)
 	active = !active
 	if (active)
 		force = 30
@@ -294,9 +333,9 @@
 	var/eventstarted = 0
 
 	anchored = 1.0
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 
-/obj/machinery/readybutton/attack_ai(mob/user as mob)
+/obj/machinery/readybutton/attack_ai(mob/user)
 	to_chat(user, "The AI is not to interact with these devices!")
 	return
 
@@ -304,10 +343,10 @@
 	..()
 
 
-/obj/machinery/readybutton/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/readybutton/attackby(obj/item/weapon/W, mob/user)
 	to_chat(user, "The device is a holographic button, there's nothing you can do with it!")
 
-/obj/machinery/readybutton/attack_hand(mob/user as mob)
+/obj/machinery/readybutton/attack_hand(mob/user)
 
 	if(user.stat)
 		to_chat(src, "You are incapacitated.")

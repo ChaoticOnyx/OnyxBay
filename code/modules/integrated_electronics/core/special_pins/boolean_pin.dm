@@ -20,7 +20,7 @@
 /datum/integrated_io/boolean/display_pin_type()
 	return IC_FORMAT_BOOLEAN
 
-/datum/integrated_io/boolean/display_data(var/input)
+/datum/integrated_io/boolean/display_data(input)
 	if(data)
 		return "(TRUE)"
 	return "(FALSE)"

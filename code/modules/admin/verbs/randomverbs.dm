@@ -401,10 +401,10 @@ Ccomp's first proc.
 	message_admins("Admin [key_name_admin(usr)] has [action] on joining the round if they use AntagHUD", 1)
 
 /*
-If a guy was gibbed and you want to revive him, this is a good way to do so.
-Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
-Traitors and the like can also be revived with the previous role mostly intact.
-/N */
+	If a guy was gibbed and you want to revive him, this is a good way to do so.
+	Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
+	Traitors and the like can also be revived with the previous role mostly intact.
+ */
 /client/proc/respawn_character()
 	set category = "Special Verbs"
 	set name = "Respawn Character"
@@ -434,12 +434,12 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(record_found)//If they have a record we can determine a few things.
 		new_character.real_name = record_found.get_name()
-		new_character.gender = record_found.get_sex()
+		new_character.gender = lowertext(record_found.get_sex())
 		new_character.age = record_found.get_age()
 		new_character.b_type = record_found.get_bloodtype()
 	else
 		new_character.gender = pick(MALE,FEMALE)
-		var/datum/preferences/A = new()
+		var/datum/preferences/A = new(G_found.client)
 		A.randomize_appearance_and_body_for(new_character)
 		new_character.real_name = G_found.real_name
 
@@ -840,7 +840,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Server"
 	set name = "Toggle random events on/off"
 
-	set desc = "Toggles random events such as meteors, black holes, blob (but not space dust) on/off"
+	set desc = "Toggles random events such as meteors, black holes on/off"
 	if(!check_rights(R_SERVER))	return
 
 	if(!config.allow_random_events)

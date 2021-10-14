@@ -285,6 +285,10 @@
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 
+	var/active_max_bright = 0.3
+	var/active_outer_range = 1.6
+	var/brightness_color = "#4de4ff"
+
 	attack_self(mob/user)
 		src.active = !( src.active )
 		if (src.active)
@@ -293,12 +297,14 @@
 			src.icon_state = "swordblue"
 			src.item_state = "swordblue"
 			src.w_class = ITEM_SIZE_HUGE
+			set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 		else
 			to_chat(user, "<span class='notice'>You push the plastic blade back down into the handle.</span>")
 			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 			src.icon_state = "sword0"
 			src.item_state = "sword0"
 			src.w_class = initial(w_class)
+			set_light(0)
 
 		update_held_icon()
 
@@ -361,15 +367,14 @@
 	desc = "A genuine Admiral Krush Bosun's Whistle, for the aspiring ship's captain! Suitable for ages 8 and up, do not swallow."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "bosunwhistle"
-	var/cooldown = 0
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 
 /obj/item/toy/bosunwhistle/attack_self(mob/user)
-	if(cooldown < world.time - 35)
+	THROTTLE(cooldown, 35)
+	if(cooldown)
 		to_chat(user, "<span class='notice'>You blow on [src], creating an ear-splitting noise!</span>")
 		playsound(user, 'sound/misc/boatswain.ogg', 20, 1)
-		cooldown = world.time
 
 /*
  * Mech prizes
@@ -377,21 +382,21 @@
 /obj/item/toy/prize
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "ripleytoy"
-	var/cooldown = 0
 
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize/attack_self(mob/user)
-	if(cooldown < world.time - 8)
+	THROTTLE(cooldown, 8)
+	if(cooldown)
 		to_chat(user, "<span class='notice'>You play with [src].</span>")
 		playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
 		cooldown = world.time
 
 /obj/item/toy/prize/attack_hand(mob/user)
 	if(loc == user)
-		if(cooldown < world.time - 8)
+		THROTTLE(cooldown, 8)
+		if(cooldown)
 			to_chat(user, "<span class='notice'>You play with [src].</span>")
 			playsound(user, 'sound/mecha/mechturn.ogg', 20, 1)
-			cooldown = world.time
 			return
 	..()
 
@@ -791,6 +796,11 @@
 	name = "farwa plush"
 	desc = "A farwa plush doll. It's soft and comforting!"
 	icon_state = "farwaplushie"
+
+/obj/item/toy/plushie/snail
+	name = "snail plush"
+	desc = "A plushie of a snail. Still can't figure out where I've seen this before."
+	icon_state = "snailplushie"
 
 //Toy cult sword
 /obj/item/toy/cultsword

@@ -60,6 +60,8 @@
 
 #define isstack(A) istype(A, /obj/item/stack)
 
+#define isspaceturf(A) istype(A, /turf/space)
+
 #define isspace(A) istype(A, /area/space)
 
 #define ispAI(A) istype(A, /mob/living/silicon/pai)
@@ -103,8 +105,6 @@
 #define isscanner(A) istype(A, /obj/item/weapon/stock_parts/scanning_module)
 
 #define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
-
-#define isovermind(A) istype(A, /mob/blob)
 
 #define ismech(A) istype(A, /obj/mecha)
 

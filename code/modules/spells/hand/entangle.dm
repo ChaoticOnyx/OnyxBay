@@ -1,4 +1,4 @@
-/spell/hand/charges/entangle
+/datum/spell/hand/charges/entangle
 	name = "Entangle"
 	desc = "This spell creates vines that immediately entangle a nearby victim."
 	feedback = "ET"
@@ -6,20 +6,20 @@
 	charge_max = 600
 	spell_flags = NEEDSCLOTHES | SELECTABLE | IGNOREPREV
 	invocation = "Bu-Ekel'Inas!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 3
 	max_casts = 1
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 	cooldown_min = 300
 	duration = 30
 	compatible_targets = list(/mob)
 
-	hud_state = "wiz_entangle"
+	icon_state = "wiz_entangle"
 	show_message = " points towards the ground, causing plants to erupt"
 	var/datum/seed/seed
 
-/spell/hand/charges/entangle/New()
+/datum/spell/hand/charges/entangle/New()
 	..()
 	seed = new()
 	seed.set_trait(TRAIT_PLANT_ICON,"flower")
@@ -31,7 +31,7 @@
 	seed.display_name = "vines"
 	seed.chems = list(/datum/reagent/nutriment = list(1,20))
 
-/spell/hand/charges/entangle/cast_hand(mob/M,mob/user)
+/datum/spell/hand/charges/entangle/cast_hand(mob/M,mob/user)
 	var/turf/T = get_turf(M)
 	var/obj/effect/vine/single/P = new(T,seed, start_matured =1)
 	P.can_buckle = 1
@@ -41,7 +41,7 @@
 	M.visible_message("<span class='danger'>[P] appear from the floor, spinning around \the [M] tightly!</span>")
 	return ..()
 
-/spell/hand/charges/entangle/empower_spell()
+/datum/spell/hand/charges/entangle/empower_spell()
 	if(!..())
 		return 0
 

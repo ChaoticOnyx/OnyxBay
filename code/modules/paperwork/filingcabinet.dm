@@ -49,7 +49,7 @@
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
 	if(is_type_in_list(P, can_hold))
-		playsound(loc, "searching_cabinet", 75, 1)
+		playsound(loc, SFX_SEARCH_CABINET, 75, 1)
 		add_fingerprint(user)
 		to_chat(user, "<span class='notice'>You put [P] in [src].</span>")
 		user.drop_item()
@@ -66,7 +66,7 @@
 
 
 /obj/structure/filingcabinet/attack_hand(mob/user as mob)
-	playsound(loc, "searching_cabinet", 75, 1)
+	playsound(loc, SFX_SEARCH_CABINET, 75, 1)
 
 	if(contents.len <= 0)
 		to_chat(user, "<span class='notice'>\The [src] is empty.</span>")

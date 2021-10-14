@@ -70,7 +70,6 @@
 	var/one_hand_penalty
 	var/wielded_item_state
 	var/combustion = TRUE //whether it creates hotspot when fired
-	var/clumsy_unaffected
 
 	var/next_fire_time = 0
 
@@ -458,7 +457,7 @@
 			return
 		var/obj/item/projectile/in_chamber = consume_next_projectile()
 		if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
-			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash)
+			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash) || !in_chamber.damage
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))
 			var/shot_sound = in_chamber.fire_sound ? in_chamber.fire_sound : fire_sound
 			if(silenced)
