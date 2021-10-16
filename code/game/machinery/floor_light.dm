@@ -66,11 +66,8 @@ var/floor_light_color_cache = list()
 				update_brightness()
 			else if(prob(on ? 30 : 15))
 				flicker()
-		else if(must_work && !on)
-			must_work = FALSE
-			update_brightness()
-		else if(!must_work && on)
-			must_work = TRUE
+		else if(must_work != on)
+			must_work = on
 			update_brightness()
 	else if(must_work)
 		must_work = FALSE
@@ -115,41 +112,33 @@ var/floor_light_color_cache = list()
 			return
 
 		var/settings_choice = show_radial_menu(user, src, isAI(user) ? ai_settings_options : settings_options, require_near = !issilicon(user))
+		playsound(src.loc, "button", 50, 1)
 		switch(settings_choice)
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
-				update_brightness()
-				visible_message(SPAN("notice", "\The [user] change \the [src] color."))
 				playsound(src.loc, "button", 50, 1)
-				return
+				visible_message(SPAN("notice", "\The [user] change \the [src] color."))
 			if("Intensity")
 				var/intensity_choice = show_radial_menu(user, src, isAI(user) ? ai_intensity_options : intensity_options, require_near = !issilicon(user))
+				playsound(src.loc, "button", 50, 1)
 				switch(intensity_choice)
 					if("slow")
 						light_intensity = 0
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to slow."))
-						update_brightness()
-						playsound(src.loc, "button", 50, 1)
-						return
 					if("normal")
 						light_intensity = 1
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to normal."))
-						update_brightness()
-						playsound(src.loc, "button", 50, 1)
-						return
 					if("fast")
 						light_intensity = 2
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to fast."))
-						update_brightness()
-						playsound(src.loc, "button", 50, 1)
+					else
 						return
-				return
 			if("Invert")
 				inverted = !inverted
-				update_brightness()
 				visible_message(SPAN("notice", "\The [user] inverted \the [src] rhythm."))
-				playsound(src.loc, "button", 50, 1)
+			else
 				return
+		update_brightness()
 		return
 
 	if(isWelder(W) && (damaged || (stat & BROKEN)))
