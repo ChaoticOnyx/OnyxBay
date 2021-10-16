@@ -7,7 +7,7 @@
 /obj/proc/allowed(mob/M)
 	if(isanimal(M))
 		playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 0)
-		return 0
+		return FALSE
 	//check if it doesn't require any access at all
 	if(src.check_access(null))
 		return 1
