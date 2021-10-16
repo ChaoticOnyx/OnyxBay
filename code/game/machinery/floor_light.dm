@@ -23,8 +23,7 @@ var/floor_light_color_cache = list()
 	var/crack_layer
 
 	var/light_layer
-	var/glow = FALSE
-	var/must_work
+	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
 	var/inverted = FALSE
@@ -60,23 +59,31 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/Process()
 	..()
-	if(!glow && on && powered(power_channel) && anchored)	//Yes, the floor should blink when it is broken.
-		must_work = TRUE
-		update_brightness()
-	else if((!powered(power_channel) || ((glow && !on) || (glow && (broken() || !anchored)))))
+	if(powered(power_channel) && anchored)
+		if(broken())
+			if(must_work)
+				must_work = FALSE
+				update_brightness()
+			else if(prob(on ? 30 : 15))
+				flicker()
+		else if(must_work && !on)
+			must_work = FALSE
+			update_brightness()
+		else if(!must_work && on)
+			must_work = TRUE
+			update_brightness()
+	else if(must_work)
 		must_work = FALSE
 		update_brightness()
 
 /obj/machinery/floor_light/proc/levelupdate()
-	for(var/obj/O in src)
-		O.hide(O.hides_under_flooring() && src.anchored)
 	layer = anchored ? TURF_LAYER : ABOVE_TILE_LAYER
 	return
 
 /obj/machinery/floor_light/Destroy()
 	var/area/A = get_area(src)
 	if(A)
-		glow = 0
+		must_work = FALSE
 
 	overlays -= floor_light_cache["floorlight[ID]-glowing"]
 	overlays -= floor_light_cache["floorlight[ID]-flickering"]
@@ -92,11 +99,11 @@ var/floor_light_color_cache = list()
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
 		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 5)
-			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]. [W.force] damage"))
+			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 			hit(W.force, user)
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, GET_SFX("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		return
 
 	if(isMultitool(W))
@@ -163,7 +170,7 @@ var/floor_light_color_cache = list()
 		return
 
 	if(isScrewdriver(W))
-		if(!T.is_plating() || anchored)
+		if(!T.is_plating() && !anchored)
 			to_chat(user, "You can only attach the [name] if the floor plating is removed.")
 			return
 		else
@@ -177,25 +184,24 @@ var/floor_light_color_cache = list()
 	if((health - damage) <= 0)
 		Destroy()
 		return
-	else
-		user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
-		playsound(loc, GET_SFX("glass_hit"), 100, 1)
-		if(health <= shield / 2)
-			visible_message("[src] looks like it's about to shatter!")
-		else if(broken())
-			visible_message("[src] looks seriously damaged!")
-		damaged++
-		health -= damage
-		update_brightness()
+	user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
+	playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
+	if(health <= shield / 2)
+		visible_message("[src] looks like it's about to shatter!")
+	else if(broken())
+		visible_message("[src] looks seriously damaged!")
+	damaged++
+	health -= damage
+	update_brightness()
 
 /obj/machinery/floor_light/attack_hand(mob/user)
 	if(user.a_intent == I_HURT && !issmall(user))
-		playsound(src.loc, GET_SFX("glass_knock"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
 		user.visible_message("[user.name] knocks on the [src.name].", "You knock on the [src.name].", "You hear a knocking sound.")
 		return
 	else
 		on = !on
-		playsound(src, "switch_small", 75, 1)
+		playsound(src, GET_SFX(SFX_USE_SMALL_SWITCH), 75, 1)
 		to_chat(user, SPAN("notice", "You switch \the [src]  [on ? "on" : "off"]."))
 		if(on)
 			if(stat && BROKEN)
@@ -220,12 +226,12 @@ var/floor_light_color_cache = list()
 			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_color_check(ID))
 			update_use_power(POWER_USE_ACTIVE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
-		glow = TRUE
+		must_work = TRUE
 	else
 		set_light(0)
 		update_use_power(POWER_USE_OFF)
 		change_power_consumption(0, POWER_USE_OFF)
-		glow = FALSE
+		must_work = FALSE
 	update_icon(ID)
 	light_colour = null
 	return
@@ -237,11 +243,11 @@ var/floor_light_color_cache = list()
 			crack = rand(1,8)
 			var/cache_key = "floorlight[ID]-damaged[crack]"
 			var/image/I = image("damaged[crack]")
-			playsound(loc, GET_SFX("sound/effects/glass_step.ogg"), 100, 1)
+			playsound(loc, "sound/effects/glass_step.ogg", 100, 1)
 			update_light_cache(ID, cache_key, I, crack_layer)
 			cracks++
 	else overlays.Cut()
-	if(glow)
+	if(must_work)
 		overlays -= floor_light_cache["floorlight[ID]-glowing"]
 		overlays -= floor_light_color_cache["floorlight[ID]-glowing"]
 		if(!broken())
@@ -264,6 +270,16 @@ var/floor_light_color_cache = list()
 	floor_light_color_cache[cache_key] = I.color
 	overlays |= floor_light_cache[cache_key]
 	return
+
+/obj/machinery/floor_light/proc/flicker()
+	do
+		must_work = TRUE
+		update_brightness()
+		sleep(rand(1, 10))
+		must_work = FALSE
+		update_brightness()
+		sleep(rand(1, 5))
+	while(prob(50))
 
 /obj/machinery/floor_light/proc/broken()
 	return health <= shield
