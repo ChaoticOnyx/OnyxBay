@@ -16,13 +16,13 @@
 	..()
 
 	var/effecttype = pick(subtypesof(/datum/artifact_effect))
-	main_effect = new effecttype(src)
+	main_effect = new effecttype(src, VISIBLE_TOGGLE)
 
 	if(prob(75))
 		effecttype = pick(subtypesof(/datum/artifact_effect))
-		secondary_effect = new effecttype(src)
+		secondary_effect = new effecttype(src, INVISIBLE_TOGGLE)
 		if(prob(75))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+			secondary_effect.ToggleActivate()
 
 	icon_num = rand(0, 11)
 
@@ -61,42 +61,41 @@
 	if(!istype(L)) 	// We're inside a container or on null turf, either way stop processing effects
 		return
 
-	if(main_effect)
-		main_effect.process()
-	if(secondary_effect)
-		secondary_effect.process()
+	main_effect.process()
+	secondary_effect?.process()
 
 	if(pulledby)
 		Bumped(pulledby)
 
 	if((main_effect.trigger | secondary_effect?.trigger) & TRIGGERS_ENVIROMENT)
-		var/triggers = 0
-		var/turf/T = get_turf(src)
-		var/datum/gas_mixture/env = T.return_air()
-		if(env)
-			if(env.temperature < 225)
-				triggers |= TRIGGER_COLD
-			else if(env.temperature > 375)
-				triggers |= TRIGGER_HEAT
+		var/triggers = check_env()
 
-			if(env.gas["plasma"] >= 10)
-				triggers |= TRIGGER_PLASMA
-			if(env.gas["oxygen"] >= 10)
-				triggers |= TRIGGER_OXY
-			if(env.gas["carbon_dioxide"] >= 10)
-				triggers |= TRIGGER_CO2
-			if(env.gas["nitrogen"] >= 10)
-				triggers |= TRIGGER_NITRO
-		if(min(1, T.get_lumcount()) > 0.33)
-			triggers |= TRIGGER_LIGHT
-		else
-			triggers |= TRIGGER_DARK
+		main_effect.AdjustActivate(triggers)
+		secondary_effect?.AdjustActivate(triggers)
 
-		if(main_effect.trigger & TRIGGERS_ENVIROMENT && ((main_effect.trigger & triggers && !main_effect.activated) || (!(main_effect.trigger & triggers) && main_effect.activated)))
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
-		if(secondary_effect?.trigger & TRIGGERS_ENVIROMENT && ((secondary_effect.trigger & triggers && !secondary_effect.activated) || (!(secondary_effect.trigger & triggers) && secondary_effect.activated)))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+/obj/machinery/artifact/proc/check_env()
+	var/triggers = 0
+	var/turf/T = get_turf(src)
+	var/datum/gas_mixture/env = T.return_air()
+	if(env)
+		if(env.temperature < 225)
+			triggers |= TRIGGER_COLD
+		else if(env.temperature > 375)
+			triggers |= TRIGGER_HEAT
+		if(env.gas["plasma"] >= 10)
+			triggers |= TRIGGER_PLASMA
+		if(env.gas["oxygen"] >= 10)
+			triggers |= TRIGGER_OXY
+		if(env.gas["carbon_dioxide"] >= 10)
+			triggers |= TRIGGER_CO2
+		if(env.gas["nitrogen"] >= 10)
+			triggers |= TRIGGER_NITRO
+	if(min(1, T.get_lumcount()) > 0.33)
+		triggers |= TRIGGER_LIGHT
+	else
+		triggers |= TRIGGER_DARK
 
+	return triggers
 
 /obj/machinery/artifact/attack_hand(mob/user as mob)
 	if (get_dist(user, src) > 1)
@@ -110,12 +109,12 @@
 
 	if(main_effect.trigger & TRIGGER_TOUCH)
 		to_chat(user, "<b>You touch [src].</b>")
-		main_effect.ToggleActivate(VISIBLE_TOGGLE)
+		main_effect.ToggleActivate()
 	else
 		to_chat(user, "<b>You touch [src],</b> [pick("but nothing of note happens","but nothing happens","but nothing interesting happens","but you notice nothing different","but nothing seems to have happened")].")
 
 	if(prob(25) && secondary_effect?.trigger & TRIGGER_TOUCH)
-		secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+		secondary_effect.ToggleActivate()
 
 	if(main_effect.effect & EFFECT_TOUCH && main_effect.activated)
 		main_effect.DoEffectTouch(user)
@@ -147,15 +146,15 @@
 	else
 		..()
 		if (main_effect.trigger & TRIGGER_FORCE && W.force >= 10)
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
+			main_effect.ToggleActivate()
 		if(secondary_effect?.trigger & TRIGGER_FORCE && prob(25))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+			secondary_effect.ToggleActivate()
 		return
 
 	if(main_effect.trigger & triggers)
-		main_effect.ToggleActivate(VISIBLE_TOGGLE)
+		main_effect.ToggleActivate()
 	if(secondary_effect?.trigger & triggers && prob(25))
-		secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+		secondary_effect.ToggleActivate()
 
 /obj/machinery/artifact/Bumped(M as mob|obj)
 	..()
@@ -163,19 +162,19 @@
 		var/obj/O = M
 		if(O.throwforce >= 10)
 			if(main_effect.trigger & TRIGGER_FORCE)
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
+				main_effect.ToggleActivate()
 			if(secondary_effect?.trigger & TRIGGER_FORCE && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+				secondary_effect.ToggleActivate()
 	else if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(!istype(H.gloves, /obj/item/clothing/gloves))
 			var/warn = 0
 
 			if (main_effect.trigger & TRIGGER_TOUCH && prob(50))
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
+				main_effect.ToggleActivate()
 				warn = 1
 			if(secondary_effect?.trigger & TRIGGER_TOUCH && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+				secondary_effect.ToggleActivate()
 				warn = 1
 
 			if (main_effect.effect & EFFECT_TOUCH && main_effect.activated && prob(50))
@@ -193,17 +192,17 @@
 	if(istype(P,/obj/item/projectile/bullet) ||\
 		istype(P,/obj/item/projectile/hivebotbullet))
 		if(main_effect.trigger & TRIGGER_FORCE)
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
+			main_effect.ToggleActivate()
 		if(secondary_effect?.trigger & TRIGGER_FORCE && prob(25))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+			secondary_effect.ToggleActivate()
 
 	else if(istype(P,/obj/item/projectile/beam) ||\
 		istype(P,/obj/item/projectile/ion) ||\
 		istype(P,/obj/item/projectile/energy))
 		if(main_effect.trigger & TRIGGER_ENERGY)
-			main_effect.ToggleActivate(VISIBLE_TOGGLE)
+			main_effect.ToggleActivate()
 		if(secondary_effect?.trigger & TRIGGER_ENERGY && prob(25))
-			secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+			secondary_effect.ToggleActivate()
 
 /obj/machinery/artifact/ex_act(severity)
 	switch(severity)
@@ -213,14 +212,14 @@
 				qdel(src)
 			else
 				if(main_effect.trigger & (TRIGGER_FORCE | TRIGGER_HEAT))
-					main_effect.ToggleActivate(VISIBLE_TOGGLE)
+					main_effect.ToggleActivate()
 				if(secondary_effect?.trigger & (TRIGGER_FORCE | TRIGGER_HEAT) && prob(25))
-					secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+					secondary_effect.ToggleActivate()
 		if(3.0)
 			if (main_effect.trigger & (TRIGGER_FORCE | TRIGGER_HEAT))
-				main_effect.ToggleActivate(VISIBLE_TOGGLE)
+				main_effect.ToggleActivate()
 			if(secondary_effect?.trigger & (TRIGGER_FORCE | TRIGGER_HEAT) && prob(25))
-				secondary_effect.ToggleActivate(INVISIBLE_TOGGLE)
+				secondary_effect.ToggleActivate()
 	return
 
 /obj/machinery/artifact/Move()

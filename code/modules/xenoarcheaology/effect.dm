@@ -5,14 +5,17 @@
 	var/trigger = TRIGGER_TOUCH
 	var/atom/holder
 	var/activated = FALSE
+	var/is_visible_toggle = TRUE
 	var/chargelevel = 0
 	var/chargelevelmax = 10
 	var/artifact_id = ""
 	var/effect_type = EFFECT_UNKNOWN
 
-/datum/artifact_effect/New(atom/location)
+/datum/artifact_effect/New(atom/location, visible_toggle = TRUE)
 	..()
 	holder = location
+	is_visible_toggle = visible_toggle
+
 	effect = pick(EFFECTS_LIST)
 	trigger = pick(TRIGGERS_LIST)
 
@@ -34,11 +37,15 @@
 			chargelevelmax = rand(20, 120)
 			effectrange = rand(20, 200)
 
-/datum/artifact_effect/proc/ToggleActivate(visible_toggle = TRUE)
+/datum/artifact_effect/proc/AdjustActivate(triggers)
+	if(trigger & TRIGGERS_ENVIROMENT && ((trigger & triggers  && !activated) || (!(trigger & triggers) &&  activated)))
+		ToggleActivate()
+
+/datum/artifact_effect/proc/ToggleActivate()
 	//so that other stuff happens first
 	spawn(0)
 		activated = !activated
-		if(visible_toggle && holder)
+		if(is_visible_toggle && holder)
 			if(istype(holder, /obj/machinery/artifact))
 				var/obj/machinery/artifact/A = holder
 				A.icon_state = "ano[A.icon_num][activated]"
