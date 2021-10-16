@@ -329,54 +329,54 @@ Transponder Codes:<UL>"}
 
 // Delivery types below.
 
-/obj/machinery/navbeacon/QM1
+/obj/machinery/navbeacon/delivery/QM1
 	location = "QM #1"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/QM2
+/obj/machinery/navbeacon/delivery/QM2
 	location = "QM #2"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/QM3
+/obj/machinery/navbeacon/delivery/QM3
 	location = "QM #3"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/QM4
+/obj/machinery/navbeacon/delivery/QM4
 	location = "QM #4"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/Research
+/obj/machinery/navbeacon/delivery/Research
 	location = "Research Division"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/Janitor
+/obj/machinery/navbeacon/delivery/Janitor
 	location = "Janitor"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/SecurityD
+/obj/machinery/navbeacon/delivery/SecurityD
 	location = "Security"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/ToolStorage
+/obj/machinery/navbeacon/delivery/ToolStorage
 	location = "Tool Storage"
 	codes = list("delivery" = 1, "dir" = 8)
 
-/obj/machinery/navbeacon/Medbay
+/obj/machinery/navbeacon/delivery/Medbay
 	location = "Medbay"
 	codes = list("delivery" = 1, "dir" = 4)
 
-/obj/machinery/navbeacon/Engineering
+/obj/machinery/navbeacon/delivery/Engineering
 	location = "Engineering"
 	codes = list("delivery" = 1, "dir" = 4)
 
-/obj/machinery/navbeacon/Bar
+/obj/machinery/navbeacon/delivery/Bar
 	location = "Bar"
 	codes = list("delivery" = 1, "dir" = 2)
 
-/obj/machinery/navbeacon/Kitchen
+/obj/machinery/navbeacon/delivery/Kitchen
 	location = "Kitchen"
 	codes = list("delivery" = 1, "dir" = 2)
 
-/obj/machinery/navbeacon/Hydroponics
+/obj/machinery/navbeacon/delivery/Hydroponics
 	location = "Hydroponics"
 	codes = list("delivery" = 1, "dir" = 2)
