@@ -118,8 +118,8 @@ var/floor_light_color_cache = list()
 				light_colour = input(user, "Choose your floor light's color:") as color
 				visible_message(SPAN("notice", "\The [user] change \the [src] color."))
 			if("Intensity")
-				var/intensity_choice = show_radial_menu(user, src, isAI(user) ? ai_intensity_options : intensity_options, require_near = !issilicon(user))
 				playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
+				var/intensity_choice = show_radial_menu(user, src, isAI(user) ? ai_intensity_options : intensity_options, require_near = !issilicon(user))
 				switch(intensity_choice)
 					if("slow")
 						light_intensity = 0
