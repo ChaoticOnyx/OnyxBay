@@ -110,17 +110,16 @@ var/floor_light_color_cache = list()
 		if(broken())
 			to_chat(user, SPAN("warning", "\The [src] needs to be repaired for the setup."))
 			return
+		playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
 
 		var/settings_choice = show_radial_menu(user, src, isAI(user) ? ai_settings_options : settings_options, require_near = !issilicon(user))
-		playsound(src.loc, "button", 50, 1)
 		switch(settings_choice)
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
-				playsound(src.loc, "button", 50, 1)
 				visible_message(SPAN("notice", "\The [user] change \the [src] color."))
 			if("Intensity")
 				var/intensity_choice = show_radial_menu(user, src, isAI(user) ? ai_intensity_options : intensity_options, require_near = !issilicon(user))
-				playsound(src.loc, "button", 50, 1)
+				playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
 				switch(intensity_choice)
 					if("slow")
 						light_intensity = 0
@@ -138,8 +137,8 @@ var/floor_light_color_cache = list()
 				visible_message(SPAN("notice", "\The [user] inverted \the [src] rhythm."))
 			else
 				return
+		playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
 		update_brightness()
-		return
 
 	if(isWelder(W) && (damaged || (stat & BROKEN)))
 		var/obj/item/weapon/weldingtool/WT = W
@@ -161,13 +160,11 @@ var/floor_light_color_cache = list()
 	if(isScrewdriver(W))
 		if(!T.is_plating() && !anchored)
 			to_chat(user, "You can only attach the [name] if the floor plating is removed.")
-			return
 		else
 			anchored = !anchored
 			levelupdate()
 			visible_message(SPAN("notice", "\The [user] has [anchored ? "attached" : "detached"] \the [src]."))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		return
 
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
 	if((health - damage) <= 0)
@@ -205,7 +202,7 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	ID = "\ref[src]"
-	layers_check()
+	layers_update()
 	if(must_work)
 		if(broken())
 			set_light(default_light_max_bright / 2, default_light_inner_range / 2, default_light_outer_range / 2, 2, broken_light_colour)
@@ -215,15 +212,12 @@ var/floor_light_color_cache = list()
 			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_color_check(ID))
 			update_use_power(POWER_USE_ACTIVE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
-		must_work = TRUE
 	else
 		set_light(0)
 		update_use_power(POWER_USE_OFF)
 		change_power_consumption(0, POWER_USE_OFF)
-		must_work = FALSE
 	update_icon(ID)
 	light_colour = null
-	return
 
 /obj/machinery/floor_light/update_icon(ID)
 	if(broken())
@@ -258,7 +252,6 @@ var/floor_light_color_cache = list()
 	floor_light_cache[cache_key] = I
 	floor_light_color_cache[cache_key] = I.color
 	overlays |= floor_light_cache[cache_key]
-	return
 
 /obj/machinery/floor_light/proc/flicker()
 	do
@@ -282,7 +275,6 @@ var/floor_light_color_cache = list()
 		return default_light_colour
 	return light_colour
 
-/obj/machinery/floor_light/proc/layers_check()
+/obj/machinery/floor_light/proc/layers_update()
 	light_layer = layer + 0.001
 	crack_layer = layer + 0.002
-	return
