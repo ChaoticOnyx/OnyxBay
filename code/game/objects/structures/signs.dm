@@ -84,6 +84,10 @@
 	..()
 	desc = "A framed map of the [station_name()]."
 
+/obj/structure/sign/double/map/attack_hand(mob/user)
+	. = ..()
+	usr << link("https://wiki.ss13.ru/index.php?title=Maps")
+
 /obj/structure/sign/double/map/left
 	icon_state = "map-left"
 
@@ -102,8 +106,12 @@
 
 /obj/structure/sign/periodic
 	name = "\improper Periodic table"
-	desc = "Say my name."
+	desc = "Click on me."
 	icon_state = "periodic"
+
+/obj/structure/sign/periodic/attack_hand(mob/user)
+	. = ..()
+	usr << link("https://periodic.artlebedev.ru")
 
 /obj/structure/sign/recruitment
 	name = "\improper Recruitment poster"
