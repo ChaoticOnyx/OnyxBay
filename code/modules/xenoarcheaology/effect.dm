@@ -37,9 +37,11 @@
 			chargelevelmax = rand(20, 120)
 			effectrange = rand(20, 200)
 
-/datum/artifact_effect/proc/AdjustActivate(triggers)
-	if(trigger & TRIGGERS_ENVIROMENT && ((trigger & triggers  && !activated) || (!(trigger & triggers) &&  activated)))
-		ToggleActivate()
+/datum/artifact_effect/proc/AdjustActivate(env_triggers)
+	// Check that effect's trigger is in enviroment triggers and true. Also make value 1 or 0(TRUE or FALSE)
+    var/is_activation_trigger = (trigger & TRIGGERS_ENVIROMENT & env_triggers)/trigger
+    if(is_activation_trigger != activated)
+        ToggleActivate()
 
 /datum/artifact_effect/proc/ToggleActivate()
 	//so that other stuff happens first

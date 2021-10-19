@@ -68,34 +68,34 @@
 		Bumped(pulledby)
 
 	if((main_effect.trigger | secondary_effect?.trigger) & TRIGGERS_ENVIROMENT)
-		var/triggers = check_env()
+		var/env_triggers = check_env()
 
-		main_effect.AdjustActivate(triggers)
-		secondary_effect?.AdjustActivate(triggers)
+		main_effect.AdjustActivate(env_triggers)
+		secondary_effect?.AdjustActivate(env_triggers)
 
 /obj/machinery/artifact/proc/check_env()
-	var/triggers = 0
+	var/env_triggers = 0
 	var/turf/T = get_turf(src)
 	var/datum/gas_mixture/env = T.return_air()
 	if(env)
 		if(env.temperature < 225)
-			triggers |= TRIGGER_COLD
+			env_triggers |= TRIGGER_COLD
 		else if(env.temperature > 375)
-			triggers |= TRIGGER_HEAT
+			env_triggers |= TRIGGER_HEAT
 		if(env.gas["plasma"] >= 10)
-			triggers |= TRIGGER_PLASMA
+			env_triggers |= TRIGGER_PLASMA
 		if(env.gas["oxygen"] >= 10)
-			triggers |= TRIGGER_OXY
+			env_triggers |= TRIGGER_OXY
 		if(env.gas["carbon_dioxide"] >= 10)
-			triggers |= TRIGGER_CO2
+			env_triggers |= TRIGGER_CO2
 		if(env.gas["nitrogen"] >= 10)
-			triggers |= TRIGGER_NITRO
+			env_triggers |= TRIGGER_NITRO
 	if(min(1, T.get_lumcount()) > 0.33)
-		triggers |= TRIGGER_LIGHT
+		env_triggers |= TRIGGER_LIGHT
 	else
-		triggers |= TRIGGER_DARK
+		env_triggers |= TRIGGER_DARK
 
-	return triggers
+	return env_triggers
 
 /obj/machinery/artifact/attack_hand(mob/user as mob)
 	if (get_dist(user, src) > 1)
@@ -123,26 +123,35 @@
 		secondary_effect.DoEffectTouch(user)
 
 /obj/machinery/artifact/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
-	var/triggers = 0
+	var/action_triggers = 0
 
 	if(istype(W, /obj/item/weapon/reagent_containers/))
 		if(W.reagents.has_reagent(/datum/reagent/hydrazine, 1) || W.reagents.has_reagent(/datum/reagent/water, 1))
-			triggers |= TRIGGER_WATER
+			action_triggers |= TRIGGER_WATER
 		if(W.reagents.has_reagent(/datum/reagent/acid, 1) || W.reagents.has_reagent(/datum/reagent/acid/polyacid, 1) || W.reagents.has_reagent(/datum/reagent/diethylamine, 1))
-			triggers |= TRIGGER_ACID
+			action_triggers |= TRIGGER_ACID
 		if(W.reagents.has_reagent(/datum/reagent/toxin/plasma, 1) || W.reagents.has_reagent(/datum/reagent/thermite, 1))
-			triggers |= TRIGGER_VOLATILE
+			action_triggers |= TRIGGER_VOLATILE
 		if(W.reagents.has_reagent(/datum/reagent/toxin, 1) || W.reagents.has_reagent(/datum/reagent/toxin/cyanide, 1) || W.reagents.has_reagent(/datum/reagent/toxin/amatoxin, 1) || W.reagents.has_reagent(/datum/reagent/ethanol/neurotoxin, 1))
-			triggers |= TRIGGER_TOXIN
-	else if(istype(W,/obj/item/weapon/melee/baton) && W:status ||\
-			istype(W,/obj/item/weapon/melee/energy) ||\
-			istype(W,/obj/item/weapon/melee/cultblade) ||\
-			istype(W,/obj/item/weapon/card/emag) ||\
-			istype(W,/obj/item/device/multitool))
-		triggers |= TRIGGER_ENERGY
-	else if(istype(W,/obj/item/weapon/flame) && W:lit ||\
-			isWelder(W) && W:welding)
-		triggers |= TRIGGER_HEAT
+			action_triggers |= TRIGGER_TOXIN
+	else if(istype(W,/obj/item/weapon/melee/baton))
+		var/obj/item/weapon/melee/baton/B = W
+		if(B.status)
+			action_triggers |= TRIGGER_ENERGY
+	else if(istype(W,/obj/item/weapon/melee/energy) ||\
+		    istype(W,/obj/item/weapon/melee/cultblade) ||\
+		    istype(W,/obj/item/weapon/card/emag) ||\
+		    istype(W,/obj/item/device/multitool)
+		   )
+		action_triggers |= TRIGGER_ENERGY
+	else if(istype(W,/obj/item/weapon/flame))
+		var/obj/item/weapon/flame/F = W
+		if(F.lit)
+			action_triggers |= TRIGGER_HEAT
+	else if(isWelder(W))
+		var/obj/item/weapon/weldingtool/Welder = W
+		if(Welder.welding)
+			action_triggers |= TRIGGER_HEAT
 	else
 		..()
 		if (main_effect.trigger & TRIGGER_FORCE && W.force >= 10)
@@ -151,9 +160,9 @@
 			secondary_effect.ToggleActivate()
 		return
 
-	if(main_effect.trigger & triggers)
+	if(main_effect.trigger & action_triggers)
 		main_effect.ToggleActivate()
-	if(secondary_effect?.trigger & triggers && prob(25))
+	if(secondary_effect?.trigger & action_triggers && prob(25))
 		secondary_effect.ToggleActivate()
 
 /obj/machinery/artifact/Bumped(M as mob|obj)
