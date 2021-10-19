@@ -93,9 +93,6 @@
 	if(!istype(owner))
 		return ..()
 
-	if(name == initial(name))
-		name = "\the [owner.real_name]'s [initial(name)]"
-
 	var/mob/living/simple_animal/borer/borer = owner.has_brain_worms()
 
 	if(borer)
