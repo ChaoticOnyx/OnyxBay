@@ -26,6 +26,8 @@
 
 /obj/item/organ/internal/stack/vox
 	name = "cortical stack"
+	icon = 'icons/mob/human_races/organs/vox.dmi'
+	icon_state = "cortical-stack"
 	invasive = 1
 
 /obj/item/organ/internal/stack/proc/do_backup()

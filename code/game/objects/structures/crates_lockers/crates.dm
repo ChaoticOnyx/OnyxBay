@@ -6,7 +6,7 @@
 	icon_opened = "crateopen"
 	icon_closed = "crate"
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	pull_sound = "pull_box"
+	pull_sound = SFX_PULL_BOX
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 	setup = 0
 	open_delay = 3

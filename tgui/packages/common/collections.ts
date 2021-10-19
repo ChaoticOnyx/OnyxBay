@@ -1,3 +1,4 @@
+/* eslint-disable no-labels */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -15,20 +16,20 @@
  */
 export const toArray = collection => {
   if (Array.isArray(collection)) {
-    return collection;
+    return collection
   }
   if (typeof collection === 'object') {
-    const hasOwnProperty = Object.prototype.hasOwnProperty;
-    const result = [];
-    for (let i in collection) {
+    const hasOwnProperty = Object.prototype.hasOwnProperty
+    const result = []
+    for (const i in collection) {
       if (hasOwnProperty.call(collection, i)) {
-        result.push(collection[i]);
+        result.push(collection[i])
       }
     }
-    return result;
+    return result
   }
-  return [];
-};
+  return []
+}
 
 /**
  * Converts a given object to an array, and appends a key to every
@@ -58,9 +59,9 @@ export const toArray = collection => {
 export const toKeyedArray = (obj, keyProp = 'key') => {
   return map((item, key) => ({
     [keyProp]: key,
-    ...item,
-  }))(obj);
-};
+    ...item
+  }))(obj)
+}
 
 /**
  * Iterates over elements of collection, returning an array of all elements
@@ -74,20 +75,20 @@ export const toKeyedArray = (obj, keyProp = 'key') => {
  */
 export const filter = iterateeFn => collection => {
   if (collection === null || collection === undefined) {
-    return collection;
+    return collection
   }
   if (Array.isArray(collection)) {
-    const result = [];
+    const result = []
     for (let i = 0; i < collection.length; i++) {
-      const item = collection[i];
+      const item = collection[i]
       if (iterateeFn(item, i, collection)) {
-        result.push(item);
+        result.push(item)
       }
     }
-    return result;
+    return result
   }
-  throw new Error(`filter() can't iterate on type ${typeof collection}`);
-};
+  throw new Error(`filter() can't iterate on type ${typeof collection}`)
+}
 
 /**
  * Creates an array of values by running each element in collection
@@ -101,44 +102,44 @@ export const filter = iterateeFn => collection => {
  */
 export const map = iterateeFn => collection => {
   if (collection === null || collection === undefined) {
-    return collection;
+    return collection
   }
   if (Array.isArray(collection)) {
-    const result = [];
+    const result = []
     for (let i = 0; i < collection.length; i++) {
-      result.push(iterateeFn(collection[i], i, collection));
+      result.push(iterateeFn(collection[i], i, collection))
     }
-    return result;
+    return result
   }
   if (typeof collection === 'object') {
-    const hasOwnProperty = Object.prototype.hasOwnProperty;
-    const result = [];
-    for (let i in collection) {
+    const hasOwnProperty = Object.prototype.hasOwnProperty
+    const result = []
+    for (const i in collection) {
       if (hasOwnProperty.call(collection, i)) {
-        result.push(iterateeFn(collection[i], i, collection));
+        result.push(iterateeFn(collection[i], i, collection))
       }
     }
-    return result;
+    return result
   }
-  throw new Error(`map() can't iterate on type ${typeof collection}`);
-};
+  throw new Error(`map() can't iterate on type ${typeof collection}`)
+}
 
 const COMPARATOR = (objA, objB) => {
-  const criteriaA = objA.criteria;
-  const criteriaB = objB.criteria;
-  const length = criteriaA.length;
+  const criteriaA = objA.criteria
+  const criteriaB = objB.criteria
+  const length = criteriaA.length
   for (let i = 0; i < length; i++) {
-    const a = criteriaA[i];
-    const b = criteriaB[i];
+    const a = criteriaA[i]
+    const b = criteriaB[i]
     if (a < b) {
-      return -1;
+      return -1
     }
     if (a > b) {
-      return 1;
+      return 1
     }
   }
-  return 0;
-};
+  return 0
+}
 
 /**
  * Creates an array of elements, sorted in ascending order by the results
@@ -150,56 +151,55 @@ const COMPARATOR = (objA, objB) => {
  */
 export const sortBy = (...iterateeFns) => array => {
   if (!Array.isArray(array)) {
-    return array;
+    return array
   }
-  let length = array.length;
+  let length = array.length
   // Iterate over the array to collect criteria to sort it by
-  let mappedArray = [];
+  const mappedArray = []
   for (let i = 0; i < length; i++) {
-    const value = array[i];
+    const value = array[i]
     mappedArray.push({
       criteria: iterateeFns.map(fn => fn(value)),
-      value,
-    });
+      value
+    })
   }
   // Sort criteria using the base comparator
-  mappedArray.sort(COMPARATOR);
+  mappedArray.sort(COMPARATOR)
   // Unwrap values
   while (length--) {
-    mappedArray[length] = mappedArray[length].value;
+    mappedArray[length] = mappedArray[length].value
   }
-  return mappedArray;
-};
+  return mappedArray
+}
 
-export const sort = sortBy();
+export const sort = sortBy()
 
 /**
  * Returns a range of numbers from start to end, exclusively.
  * For example, range(0, 5) will return [0, 1, 2, 3, 4].
  */
 export const range = (start: number, end: number): number[] =>
-  new Array(end - start).fill(null).map((_, index) => index + start);
+  new Array(end - start).fill(null).map((_, index) => index + start)
 
 /**
  * A fast implementation of reduce.
  */
 export const reduce = (reducerFn, initialValue) => array => {
-  const length = array.length;
-  let i;
-  let result;
+  const length = array.length
+  let i
+  let result
   if (initialValue === undefined) {
-    i = 1;
-    result = array[0];
-  }
-  else {
-    i = 0;
-    result = initialValue;
+    i = 1
+    result = array[0]
+  } else {
+    i = 0
+    result = initialValue
   }
   for (; i < length; i++) {
-    result = reducerFn(result, array[i], i, array);
+    result = reducerFn(result, array[i], i, array)
   }
-  return result;
-};
+  return result
+}
 
 /**
  * Creates a duplicate-free version of an array, using SameValueZero for
@@ -216,39 +216,38 @@ export const reduce = (reducerFn, initialValue) => array => {
 export const uniqBy = <T extends unknown>(
   iterateeFn?: (value: T) => unknown
 ) => (array: T[]) => {
-  const { length } = array;
-  const result = [];
-  const seen = iterateeFn ? [] : result;
-  let index = -1;
+  const { length } = array
+  const result = []
+  const seen = iterateeFn ? [] : result
+  let index = -1
   outer:
   while (++index < length) {
-    let value: T | 0 = array[index];
-    const computed = iterateeFn ? iterateeFn(value) : value;
-    value = value !== 0 ? value : 0;
-    if (computed === computed) {
-      let seenIndex = seen.length;
+    let value: T | 0 = array[index]
+    const computed = iterateeFn ? iterateeFn(value) : value
+    value = value !== 0 ? value : 0
+    if (!Number.isNaN(computed)) {
+      let seenIndex = seen.length
       while (seenIndex--) {
         if (seen[seenIndex] === computed) {
-          continue outer;
+          continue outer
         }
       }
       if (iterateeFn) {
-        seen.push(computed);
+        seen.push(computed)
       }
-      result.push(value);
-    }
-    else if (!seen.includes(computed)) {
+      result.push(value)
+    } else if (!seen.includes(computed)) {
       if (seen !== result) {
-        seen.push(computed);
+        seen.push(computed)
       }
-      result.push(value);
+      result.push(value)
     }
   }
-  return result;
-};
+  return result
+}
 /* eslint-enable indent */
 
-export const uniq = uniqBy();
+export const uniq = uniqBy()
 
 type Zip<T extends unknown[][]> = {
   [I in keyof T]: T[I] extends (infer U)[] ? U : never;
@@ -261,20 +260,20 @@ type Zip<T extends unknown[][]> = {
  */
 export const zip = <T extends unknown[][]>(...arrays: T): Zip<T> => {
   if (arrays.length === 0) {
-    return;
+    return
   }
-  const numArrays = arrays.length;
-  const numValues = arrays[0].length;
-  const result = [];
+  const numArrays = arrays.length
+  const numValues = arrays[0].length
+  const result = []
   for (let valueIndex = 0; valueIndex < numValues; valueIndex++) {
-    const entry = [];
+    const entry = []
     for (let arrayIndex = 0; arrayIndex < numArrays; arrayIndex++) {
-      entry.push(arrays[arrayIndex][valueIndex]);
+      entry.push(arrays[arrayIndex][valueIndex])
     }
-    result.push(entry);
+    result.push(entry)
   }
-  return result;
-};
+  return result
+}
 
 /**
  * This method is like "zip" except that it accepts iteratee to
@@ -284,5 +283,5 @@ export const zip = <T extends unknown[][]>(...arrays: T): Zip<T> => {
  * @returns {any[]}
  */
 export const zipWith = iterateeFn => (...arrays) => {
-  return map(values => iterateeFn(...values))(zip(...arrays));
-};
+  return map(values => iterateeFn(...values))(zip(...arrays))
+}

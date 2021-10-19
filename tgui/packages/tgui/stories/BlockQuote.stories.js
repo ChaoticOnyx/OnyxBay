@@ -4,13 +4,14 @@
  * @license MIT
  */
 
-import { BlockQuote, Section } from '../components';
-import { BoxWithSampleText } from './common';
+import { BlockQuote, Section } from '../components'
+import { BoxWithSampleText } from './common'
 
 export const meta = {
   title: 'BlockQuote',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = (props, context) => {
   return (
@@ -19,5 +20,5 @@ const Story = (props, context) => {
         <BoxWithSampleText />
       </BlockQuote>
     </Section>
-  );
-};
+  )
+}

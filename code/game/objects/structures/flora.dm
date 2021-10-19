@@ -180,7 +180,8 @@
 	var/obj/item/stored_item
 
 /obj/structure/flora/pottedplant/Destroy()
-	stored_item.forceMove(loc)
+	if(stored_item)
+		stored_item.dropInto(loc)
 	return ..()
 
 /obj/structure/flora/pottedplant/proc/death()

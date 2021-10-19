@@ -160,11 +160,15 @@
 		/obj/item/mecha_parts,
 		/obj/item/weapon/computer_hardware,
 		/obj/item/device/transfer_valve,
-		/obj/item/device/assembly/signaler,
-		/obj/item/device/assembly/timer,
-		/obj/item/device/assembly/igniter,
-		/obj/item/device/assembly/infra,
+		/obj/item/device/assembly,
+		/obj/item/device/healthanalyzer,
+		/obj/item/device/analyzer/plant_analyzer,
+		/obj/item/weapon/material/minihoe,
+		/obj/item/weapon/storage/firstaid,
+		/obj/item/weapon/storage/toolbox,
 		/obj/item/weapon/tank,
+		/obj/item/weapon/smes_coil,
+		/obj/item/weapon/disk,
 		/obj/item/weapon/paper
 		)
 
@@ -289,7 +293,7 @@
 	if(wrapped)
 		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
 			var/obj/item/device/electronic_assembly/AS = target
-			wrapped.forceMove(user, params)
+			wrapped.forceMove(get_turf(AS), params)
 			AS.try_add_component(wrapped, user, AS)
 			wrapped = null
 			return

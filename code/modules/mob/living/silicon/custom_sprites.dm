@@ -6,6 +6,8 @@ GLOBAL_LIST_EMPTY(robot_custom_icons)
 GLOBAL_LIST_EMPTY(ai_custom_icons)
 
 /hook/startup/proc/load_silicon_custom_sprites()
+	if(!fexists("config/custom_sprites.json"))
+		return
 	var/list/config_json = json_decode(file2text("config/custom_sprites.json"))
 #ifdef CUSTOM_ITEM_AI_HOLO
 	for(var/list/item in config_json["aiholo"])

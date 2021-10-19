@@ -265,7 +265,7 @@
 	qdel(src)
 	return
 
-/obj/structure/table/proc/throw_contents_around(var/max_size = ITEM_SIZE_HUGE, var/dropchance = -1)
+/obj/structure/table/proc/throw_contents_around(max_size = ITEM_SIZE_HUGE, dropchance = -1)
 	var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
 	for(var/atom/movable/A in get_turf(src))
 		if(!A.anchored)

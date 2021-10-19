@@ -9,10 +9,10 @@
 	if(incapacitated())
 		return
 
-	if(world.time < last_special + 5 SECONDS)
+	THROTTLE_SHARED(cooldown, 5 SECONDS, last_special)
+	if(!cooldown)
 		to_chat(src, SPAN_WARNING("You need to wait a bit!"))
 		return
-	last_special = world.time
 
 	hiding = !hiding
 	if(hiding)

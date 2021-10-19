@@ -23,9 +23,9 @@
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
 
-	hitby_sound = "glass_hit"
+	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
-	pull_sound = "pull_stone"
+	pull_sound = SFX_PULL_STONE
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -65,7 +65,7 @@
 		shatter()
 	else
 		if(sound_effect)
-			playsound(loc, get_sfx("glass_hit"), 100, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 		if(health < maxhealth / 4 && initialhealth >= maxhealth / 4)
 			visible_message("[src] looks like it's about to shatter!" )
 		else if(health < maxhealth / 2 && initialhealth >= maxhealth / 2)
@@ -93,7 +93,7 @@
 	overlays += img
 
 /obj/structure/window/proc/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
 
@@ -101,12 +101,6 @@
 	if(reinf) cast_new(/obj/item/stack/rods, is_fulltile() ? 4 : 1, loc)
 	qdel(src)
 	return
-
-/obj/structure/window/blob_act(destroy)
-	if (destroy)
-		shatter()
-	else
-		take_damage(25)
 
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
@@ -199,7 +193,7 @@
 
 /obj/structure/window/attack_tk(mob/user as mob)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
-	playsound(loc, get_sfx("glass_knock"), 50, 1)
+	playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -217,13 +211,13 @@
 				attack_generic(H,25)
 				return
 
-		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
 		user.do_attack_animation(src)
 		user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
-		playsound(src.loc, get_sfx("glass_knock"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
 		user.visible_message("[user.name] knocks on the [src.name].",
 							"You knock on the [src.name].",
 							"You hear a knocking sound.")
@@ -280,7 +274,7 @@
 	else if(isCoil(W) && reinf && !polarized)
 		var/obj/item/stack/cable_coil/C = W
 		if (C.use(1))
-			playsound(src.loc, get_sfx("spark"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_SPARK), 75, 1)
 			var/obj/structure/window/reinforced/polarized/P = new(loc)
 			P.set_dir(dir)
 			P.health = health
@@ -298,7 +292,7 @@
 				update_verbs()
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
 /obj/structure/window/proc/hit(damage, sound_effect = 1)

@@ -5,7 +5,7 @@
 	organ_tag = BP_CHANG
 	parent_organ = BP_CHEST
 	vital = TRUE
-	icon_state = "Strange_biostructure"
+	icon_state = "strange-biostructure"
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
@@ -129,7 +129,7 @@
 		if(istype(host))
 			host.mind.changeling.true_dead = TRUE
 			host.death()
-	dead_icon = "Strange_biostructure_dead"
+	dead_icon = "strange-biostructure-dead"
 	QDEL_NULL(brainchan)
 	return ..()
 

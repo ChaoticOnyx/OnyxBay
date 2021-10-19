@@ -10,7 +10,7 @@
 	mod_reach = 0.3
 	mod_handy = 0.5
 	w_class = ITEM_SIZE_SMALL
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	var/max_butts = 10
 
 /obj/item/weapon/material/ashtray/examine(mob/user)

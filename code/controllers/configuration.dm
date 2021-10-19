@@ -6,6 +6,8 @@ var/list/gamemode_cache = list()
 	var/server_suffix = 0					// generate numeric suffix based on server port
 	var/subserver_name = null               // subserver name in window title, ignored if null
 
+	var/clientfps = 65				     	// Default fps for clients with "0" in prefs. -1 for synced with server.
+
 	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -173,7 +175,6 @@ var/list/gamemode_cache = list()
 	var/xeno_min_age
 	var/malf_min_age
 	var/cultist_min_age
-	var/blob_min_age
 	var/actor_min_age
 	var/ert_min_age
 	var/revolutionary_min_age
@@ -284,6 +285,10 @@ var/list/gamemode_cache = list()
 
 	var/db_uses_cp1251_encoding = FALSE
 
+	// round OOC disable
+	var/disable_ooc_roundstart = FALSE
+	var/disable_looc_roundstart = FALSE
+
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -357,6 +362,12 @@ var/list/gamemode_cache = list()
 				if ("use_age_restriction_for_antags")
 					config.use_age_restriction_for_antags = 1
 
+				if ("disable_ooc_at_roundstart")
+					disable_ooc_roundstart = TRUE
+
+				if ("disable_looc_at_roundstart")
+					disable_looc_roundstart = TRUE
+
 				if ("traitor_min_age")
 					config.traitor_min_age = text2num(value)
 				if ("changeling_min_age")
@@ -375,8 +386,6 @@ var/list/gamemode_cache = list()
 					config.malf_min_age = text2num(value)
 				if ("cultist_min_age")
 					config.cultist_min_age = text2num(value)
-				if ("blob_min_age")
-					config.blob_min_age = text2num(value)
 				if ("actor_min_age")
 					config.actor_min_age = text2num(value)
 				if ("ert_min_age")
@@ -703,6 +712,9 @@ var/list/gamemode_cache = list()
 
 				if("fps")
 					fps = text2num(value)
+
+				if("clientfps")
+					clientfps = text2num(value)
 
 				if("tick_limit_mc_init")
 					tick_limit_mc_init = text2num(value)

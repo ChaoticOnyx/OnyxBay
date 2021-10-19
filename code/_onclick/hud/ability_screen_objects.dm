@@ -149,7 +149,7 @@
 			return O
 	return null
 
-/obj/screen/movable/ability_master/proc/get_ability_by_spell(spell/s)
+/obj/screen/movable/ability_master/proc/get_ability_by_spell(datum/spell/s)
 	for(var/screen in spell_objects)
 		var/obj/screen/ability/spell/S = screen
 		if(S.spell == s)
@@ -313,7 +313,7 @@
 
 // Wizard
 /obj/screen/ability/spell
-	var/spell/spell
+	var/datum/spell/spell
 	var/spell_base
 	var/last_charge = 0
 	var/icon/last_charged_icon
@@ -324,7 +324,7 @@
 		spell = null
 	return ..()
 
-/obj/screen/movable/ability_master/proc/add_spell(spell/spell)
+/obj/screen/movable/ability_master/proc/add_spell(datum/spell/spell)
 	if(!spell) return
 
 	if(spell.spell_flags & NO_BUTTON) //no button to add if we don't get one
@@ -368,9 +368,9 @@
 	if(last_charge == spell.charge_counter && !forced_update)
 		return //nothing to see here
 
-	overlays -= spell.hud_state
+	overlays -= spell.icon_state
 
-	if(spell.charge_type == Sp_RECHARGE || spell.charge_type == Sp_CHARGES)
+	if(spell.charge_type == SP_RECHARGE || spell.charge_type == SP_CHARGES)
 		if(spell.charge_counter < spell.charge_max)
 			icon_state = "[spell_base]_spell_base"
 			if(spell.charge_counter > 0)
@@ -390,7 +390,7 @@
 	else
 		icon_state = "[spell_base]_spell_ready"
 
-	overlays += spell.hud_state
+	overlays += spell.icon_state
 
 	last_charge = spell.charge_counter
 

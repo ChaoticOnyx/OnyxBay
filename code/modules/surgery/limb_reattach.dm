@@ -15,10 +15,14 @@
 	clothes_penalty = FALSE
 
 /datum/surgery_step/limb/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if (!hasorgans(target))
+	if(!hasorgans(target))
 		return 0
 
 	var/obj/item/organ/external/E = tool
+
+	if(!istype(E))
+		return 0
+
 	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	if(!P || P.is_stump())
 		to_chat(user, SPAN("notice", "The [E.amputation_point] is missing!"))

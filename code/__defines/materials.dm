@@ -63,7 +63,7 @@
 
 #define TABLE_BRITTLE_MATERIAL_MULTIPLIER 4 // Amount table damage is multiplied by if it is made of a brittle material (e.g. glass)
 
-/proc/get_icon_for_material(var/material)
+/proc/get_icon_for_material(material)
 	var/static/list/material_icons = list(
 		MATERIAL_PLASTIC                    = icon(MATERIALS_ICON, "plastic"),
 		MATERIAL_PLASTEEL                   = icon(MATERIALS_ICON, "plasteel"),

@@ -1,4 +1,4 @@
-/spell/aoe_turf/blink
+/datum/spell/aoe_turf/blink
 	name = "Blink"
 	desc = "This spell randomly teleports you a short distance."
 	feedback = "BL"
@@ -6,15 +6,15 @@
 	charge_max = 20
 	spell_flags = Z2NOCAST | IGNOREDENSE | IGNORESPACE
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 7
 	inner_radius = 1
 
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 4)
-	cooldown_min = 5 //4 deciseconds reduction per rank
-	hud_state = "wiz_blink"
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 3, SP_POWER = 4)
+	cooldown_min = 5 //5 deciseconds reduction per rank
+	icon_state = "wiz_blink"
 
-/spell/aoe_turf/blink/cast(list/targets, mob/user)
+/datum/spell/aoe_turf/blink/cast(list/targets, mob/user)
 	if(!targets.len)
 		return
 
@@ -36,7 +36,7 @@
 
 	return
 
-/spell/aoe_turf/blink/empower_spell()
+/datum/spell/aoe_turf/blink/empower_spell()
 	if(!..())
 		return 0
 	inner_radius += 1

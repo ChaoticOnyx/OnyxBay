@@ -728,18 +728,18 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			if(W.force <15)
 				for (var/mob/O in hearers(5, src.loc))
 					O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [W.name] with no visible effect.</span>" )
-					playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+					playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			else
 				src.hitstaken++
 				if(hitstaken==3)
 					for (var/mob/O in hearers(5, src.loc))
 						O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
 					set_broken(TRUE)
-					playsound(src.loc, get_sfx("window_breaking"), 75, 1)
+					playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
 				else
 					for (var/mob/O in hearers(5, src.loc))
 						O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
-					playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+					playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			user.setClickCooldown(I.update_attack_cooldown())
 			user.do_attack_animation(src)
 		else
@@ -896,7 +896,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				if(curr_page == 0) //We're at the start, get to the middle
 					src.screen=1
 			src.curr_page++
-			playsound(src.loc, "pageturn", 50, 1)
+			playsound(src.loc, SFX_USE_PAGE, 50, 1)
 
 		else if(href_list["prev_page"])
 			if(curr_page == 0)
@@ -908,7 +908,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				if(curr_page == src.pages+1) //we're at the end, let's go back to the middle.
 					src.screen = 1
 			src.curr_page--
-			playsound(src.loc, "pageturn", 50, 1)
+			playsound(src.loc, SFX_USE_PAGE, 50, 1)
 
 		if (istype(src.loc, /mob))
 			src.attack_self(src.loc)

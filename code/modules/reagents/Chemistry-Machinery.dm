@@ -13,7 +13,7 @@
 	icon_state = "mixer0"
 	layer = BELOW_OBJ_LAYER
 	idle_power_usage = 20
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 	var/obj/item/weapon/reagent_containers/glass/beaker
 	var/obj/item/weapon/storage/pill_bottle/loaded_pill_bottle
@@ -330,7 +330,7 @@
 		/obj/item/weapon/stock_parts/console_screen,
 	)
 	var/inuse = 0
-	var/obj/item/weapon/reagent_containers/beaker = null
+	var/obj/item/weapon/reagent_containers/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
 	var/list/sheet_reagents = list(
@@ -344,10 +344,11 @@
 		/obj/item/stack/material/mhydrogen = /datum/reagent/hydrazine
 		)
 
-/obj/machinery/reagentgrinder/New()
-	..()
-	beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
-	return
+/obj/machinery/reagentgrinder/Initialize(mapload)
+	. = ..()
+	if(mapload)
+		beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
+	update_icon()
 
 /obj/machinery/reagentgrinder/update_icon()
 	icon_state = "juicer"+num2text(!isnull(beaker))

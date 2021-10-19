@@ -120,3 +120,32 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	while (world.tick_usage > min(TICK_LIMIT_TO_RUN, Master.current_ticklimit))
 
 #undef DELTA_CALC
+
+/*
+	Simple throttle realization.
+	Initial value is TRUE.
+	Using example:
+
+	THROTTLE(cooldown, 1 SECOND)
+	if(cooldown)
+		do_something()
+*/
+#define THROTTLE(variable, delay) var/static/__throttle##variable=list(); var/##variable = FALSE; if(__throttle##variable["\ref[src]"] == null) {__throttle##variable["\ref[src]"] = world.time-delay-1} if(world.time > __throttle##variable["\ref[src]"] + delay) {__throttle##variable["\ref[src]"] = world.time; variable = TRUE} else{variable = FALSE}
+
+/*
+	Works like THROTTLE but uses a shared counter.
+	Example:
+	/datum/foo
+		var/last_action = 0
+	
+	/datum/foo/proc/do()
+		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
+		if(cooldown)
+			do_something()
+	
+	/datum/foo/proc/do2()
+		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
+		if(cooldown)
+			do_something2()
+*/
+#define THROTTLE_SHARED(variable, delay, counter) var/##variable = (world.time > counter + delay); if(variable) {counter = world.time}

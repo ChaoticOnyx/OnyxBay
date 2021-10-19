@@ -19,11 +19,11 @@
 		/obj/item/weapon/stock_parts/manipulator = 4
 	)
 
-	beepsounds = "medical_beep"
+	beepsounds = SFX_BEEP_MEDICAL
 
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS
-    var/efficiency = 0 
+    var/efficiency = 0
     for(var/obj/item/weapon/stock_parts/P in component_parts)
         if(ismanipulator(P))
             efficiency += 0.25 * P.rating

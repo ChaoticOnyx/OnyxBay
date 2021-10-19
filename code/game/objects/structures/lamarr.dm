@@ -41,10 +41,10 @@
 			if(occupied)
 				new /mob/living/simple_animal/hostile/facehugger/lamarr(get_turf(src))
 				occupied = 0
-			playsound(src, "window_breaking", 70, 1)
+			playsound(src, SFX_BREAK_WINDOW, 70, 1)
 			update_icon()
 	else
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
 /obj/structure/lamarr/update_icon()

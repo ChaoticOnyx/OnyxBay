@@ -421,9 +421,6 @@ datum/objective/harm
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()
-	if(SSticker.mode.blob_domination)
-		GLOB.ert.is_station_secure = FALSE
-
 	if(GLOB.revs.global_objectives.len > 0)
 		var/completed = 0
 		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)

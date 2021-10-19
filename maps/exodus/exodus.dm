@@ -9,8 +9,6 @@
 	#include "exodus_shuttles.dm"
 	#include "exodus_jobs.dm"
 
-	#include "../shared/exodus_torch/_include.dm"
-
 	#include "dynamic/null-1.dmm"
 	#include "dynamic/null-2.dmm"
 	#include "dynamic/null-3.dmm"
@@ -20,7 +18,6 @@
 	#include "exodus-7.dmm"
 	#include "derelicts/snowasteroid.dmm"
 	#include "derelicts/original/derelict.dmm"
-	#include "derelicts/casino.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"
 

@@ -48,7 +48,7 @@
 	if(target_entry)
 		my_list.Remove(target_entry)
 
-/datum/integrated_io/lists/proc/remove_from_list(mob/user, var/target_entry)
+/datum/integrated_io/lists/proc/remove_from_list(mob/user, target_entry)
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, SPAN("warning", "The list is empty, there's nothing to remove."))
@@ -58,7 +58,7 @@
 	if(holder.check_interactivity(user) && target_entry)
 		my_list.Remove(target_entry)
 
-/datum/integrated_io/lists/proc/edit_in_list(mob/user, var/target_entry)
+/datum/integrated_io/lists/proc/edit_in_list(mob/user, target_entry)
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, SPAN("warning", "The list is empty, there's nothing to modify."))
@@ -70,7 +70,7 @@
 		if(edited_entry)
 			my_list[my_list.Find(target_entry)] = edited_entry
 
-/datum/integrated_io/lists/proc/edit_in_list_by_position(mob/user, var/position)
+/datum/integrated_io/lists/proc/edit_in_list_by_position(mob/user, position)
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, SPAN("warning", "The list is empty, there's nothing to modify."))
@@ -83,7 +83,7 @@
 		if(edited_entry)
 			my_list[position] = edited_entry
 
-/datum/integrated_io/lists/proc/swap_inside_list(mob/user, var/first_target, var/second_target)
+/datum/integrated_io/lists/proc/swap_inside_list(mob/user, first_target, second_target)
 	var/list/my_list = data
 	if(my_list.len <= 1)
 		to_chat(user, SPAN("warning", "The list is empty, or too small to do any meaningful swapping."))
@@ -109,7 +109,7 @@
 	my_list = shuffle(my_list)
 	push_data()
 
-/datum/integrated_io/lists/write_data_to_pin(var/new_data)
+/datum/integrated_io/lists/write_data_to_pin(new_data)
 	if(islist(new_data))
 		var/list/new_list = new_data
 		data = new_list.Copy(max(1,new_list.len - IC_MAX_LIST_LENGTH+1),0)

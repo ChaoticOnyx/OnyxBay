@@ -575,10 +575,6 @@
 			return global.multi_point_spawns;
 		if("name_to_material")
 			return global.name_to_material;
-		if("narsie_behaviour")
-			return global.narsie_behaviour;
-		if("narsie_cometh")
-			return global.narsie_cometh;
 		if("narsie_list")
 			return global.narsie_list;
 		if("navbeacons")
@@ -753,8 +749,6 @@
 			return global.spacevines_spawned;
 		if("sparring_attack_cache")
 			return global.sparring_attack_cache;
-		if("spells")
-			return global.spells;
 		if("splatter_cache")
 			return global.splatter_cache;
 		if("sqladdress")
@@ -1490,10 +1484,6 @@
 			global.multi_point_spawns=newval;
 		if("name_to_material")
 			global.name_to_material=newval;
-		if("narsie_behaviour")
-			global.narsie_behaviour=newval;
-		if("narsie_cometh")
-			global.narsie_cometh=newval;
 		if("narsie_list")
 			global.narsie_list=newval;
 		if("navbeacons")
@@ -1668,8 +1658,6 @@
 			global.spacevines_spawned=newval;
 		if("sparring_attack_cache")
 			global.sparring_attack_cache=newval;
-		if("spells")
-			global.spells=newval;
 		if("splatter_cache")
 			global.splatter_cache=newval;
 		if("sqladdress")

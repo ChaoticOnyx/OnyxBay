@@ -36,7 +36,7 @@
 
 	var/hatch_open = 0
 
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	idle_power_usage = 5
 
 	var/list/tile_info[4]
@@ -75,7 +75,7 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	if(get_dist(src, user) > 1 || !density)
+	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
