@@ -61,67 +61,56 @@
 		else
 			adminwho += ", [C]"
 
-	if(isnull(config.server_id))
-		sql_query({"
-			INSERT INTO
-				erro_ban
-			VALUES
-				(null,
-				Now(),
-				$serverip,
-				$bantype_str,
-				$reason,
-				$job,
-				$duration,
-				$rounds,
-				Now() + INTERVAL $duration MINUTE,
-				$ckey,
-				$computerid,
-				$ip,
-				$a_ckey,
-				$a_computerid,
-				$a_ip,
-				$who,
-				$adminwho,
-				'', null, null, null, null, null, null, null)
-			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
-				duration = duration ? duration : 0,
-				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
-				computerid = computerid ? computerid : "",
-				ip = ip ? ip : "", a_ckey = a_ckey,
-				a_computerid = a_computerid ? a_computerid : "",
-				a_ip = a_ip ? a_ip : "",
-				who = who, adminwho = adminwho))
-	else
-		sql_query({"
-			INSERT INTO
-				erro_ban
-			VALUES
-				(null,
-				Now(),
-				$serverip,
-				$bantype_str,
-				$reason,
-				$job,
-				$duration,
-				$rounds,
-				Now() + INTERVAL $duration MINUTE,
-				$ckey,
-				$computerid,
-				$ip,
-				$a_ckey,
-				$a_computer_id,
-				$a_ip,
-				$who,
-				$adminwho,
-				'', null, null, null, null, null, null, $server_id)
-			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
-			duration = duration ? duration : 0,
-			rounds = rounds ? "[rounds]" : "0", ckey = ckey,
-			computerid = computerid ? computerid : "",
-			ip = ip ? ip : "", a_ckey = a_ckey,
-			a_computer_id = a_computerid ? a_computerid : "",
-			a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
+	ASSERT(config.server_id)
+
+	sql_query({"
+		INSERT INTO
+			erro_ban(
+				bantime,
+				serverip,
+				bantype,
+				reason,
+				job,
+				duration,
+				rounds,
+				expiration_time,
+				ckey,
+				computerid,
+				ip,
+				a_ckey,
+				a_computerid,
+				a_ip,
+				who,
+				adminwho,
+				edits,
+				server_id
+			)
+		VALUES (
+			Now(),
+			$serverip,
+			$bantype_str,
+			$reason,
+			$job,
+			$duration,
+			$rounds,
+			Now() + INTERVAL $duration MINUTE,
+			$ckey,
+			$computerid,
+			$ip,
+			$a_ckey,
+			$a_computer_id,
+			$a_ip,
+			$who,
+			$adminwho,
+			'',
+			$server_id
+		)"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+		duration = duration ? duration : 0,
+		rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+		computerid = computerid ? computerid : "",
+		ip = ip ? ip : "", a_ckey = a_ckey,
+		a_computer_id = a_computerid ? a_computerid : "",
+		a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
 
 	var/setter = a_ckey
 	if(usr)
@@ -250,17 +239,17 @@
 					to_chat(usr, "Cancelled")
 					return
 
+			var/edits_log = "- [eckey] changed ban reason from <cite><b>\"[reason]\"</b></cite> to <cite><b>\"[value]\"</b></cite><BR>"
+
 			sql_query({"
 				UPDATE
 					erro_ban
 				SET
 					reason = $value,
-					edits = CONCAT
-						(edits,
-						'- $eckey changed ban reason from <cite><b>\"$reason\"</b></cite> to <cite><b>\"$value\"</b></cite><BR>')
+					edits = CONCAT(edits, $edits_log)
 				WHERE
 					id = $banid
-				"}, dbcon, list(value = value, eckey = eckey, reason = reason, banid = banid))
+				"}, dbcon, list(value = value, edits_log = edits_log, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Reason set from [reason] to [value]",1)
 			else
@@ -272,20 +261,18 @@
 					to_chat(usr, "Cancelled")
 					return
 
+			var/edits_log = "- [eckey] changed ban duration from [duration] to [value]<br>"
+
 			sql_query({"
 				UPDATE
 					erro_ban
 				SET
 					duration = $value,
-					edits = CONCAT
-						(edits,
-						'- $eckey changed ban duration from $duration to $value<br>'),
-					expiration_time = DATE_ADD
-						(bantime,
-						INTERVAL $value MINUTE)
+					edits = CONCAT(edits, $edits_log),
+					expiration_time = DATE_ADD(bantime, INTERVAL $value MINUTE)
 				WHERE
 					id = $banid
-				"}, dbcon, list(value = value, eckey = eckey, duration = duration, banid = banid))
+				"}, dbcon, list(value = value, edits_log = edits_log, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
 			else
