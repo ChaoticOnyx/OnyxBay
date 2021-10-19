@@ -34,6 +34,14 @@
 #define BLOB_CORE_BRUTE_RESIST 5
 #define BLOB_CORE_DAMAGE 26
 
+/*
+	Structure:
+	list(
+		current_blob_type = list(
+			new_type = chance_to_upgrade
+		)
+	)
+*/
 #define BLOB_UPGRADE_TREE list(\
 	/obj/structure/blob = list(\
 		/obj/structure/blob/node = 20,\
