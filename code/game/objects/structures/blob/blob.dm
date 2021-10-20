@@ -59,22 +59,38 @@
 		return
 
 /obj/structure/blob/proc/expand()
-	var/list/free_locs = list()
-	for(var/dir in list(NORTH, EAST, SOUTH, WEST))
-		var/loc = get_step(src, dir)
-		var/loc_is_not_suitable = istype(loc, /turf/space)\
-								|| istype(loc, /turf/simulated/wall)\
-								|| (locate(/obj/structure/blob) in loc)
+	var/list/possible_locs = list()
+	var/turf/current_loc = loc
+	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))
+		var/possible_loc = get_step(src, dir)
+
+		if(dir == UP)
+			if(istype(possible_loc, /turf/simulated/open))
+				possible_locs += possible_loc
+				continue
+			
+			continue
+		
+		if(dir == DOWN)
+			if(istype(current_loc, /turf/simulated/open))
+				possible_locs += possible_loc
+				continue
+			
+			continue
+
+		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
+								|| istype(possible_loc, /turf/simulated/wall)\
+								|| (locate(/obj/structure/blob) in possible_loc)
 
 		if(loc_is_not_suitable)
 			continue
 	
-		free_locs += loc
+		possible_locs += possible_loc
 	
-	if(length(free_locs) == 0)
+	if(length(possible_locs) == 0)
 		return
 	
-	var/target_loc = pick(free_locs)
+	var/target_loc = pick(possible_locs)
 	new /obj/structure/blob(target_loc)
 
 /obj/structure/blob/Process()
