@@ -102,11 +102,11 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	if(world.time < last_special)
+
+	THROTTLE_SHARED(cooldown, 50, last_special)
+	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
 		return
-
-	last_special = world.time + 50
 
 	var/new_gender = input("Please select a gender.", "Shapeshifter Gender") as null|anything in list(FEMALE, MALE)
 	if(!new_gender)
@@ -124,11 +124,11 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	if(world.time < last_special)
+
+	THROTTLE_SHARED(cooldown, 50, last_special)
+	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
 		return
-
-	last_special = world.time + 50
 
 	var/new_species = input("Please select a species to emulate.", "Shapeshifter Body") as null|anything in species.get_valid_shapeshifter_forms(src)
 	if(!new_species || !all_species[new_species] || wrapped_species_by_ref["\ref[src]"] == new_species)
@@ -147,11 +147,11 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	if(world.time < last_special)
+
+	THROTTLE_SHARED(cooldown, 50, last_special)
+	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
 		return
-
-	last_special = world.time + 50
 
 	var/new_skin = input("Please select a new body color.", "Shapeshifter Colour") as color
 	if(!new_skin)
@@ -186,11 +186,11 @@ var/list/wrapped_species_by_ref = list()
 	if(stat)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
 		return
-	if(world.time < last_special)
+	
+	THROTTLE_SHARED(cooldown, 30, last_special)
+	if(!cooldown)
 		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
 		return
-
-	last_special = world.time + 30
 
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
 

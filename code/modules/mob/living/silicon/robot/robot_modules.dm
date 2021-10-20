@@ -40,7 +40,16 @@ var/global/list/robot_modules = list(
 	var/list/datum/matter_synth/synths = list()
 	var/obj/item/emag = null
 	var/list/subsystems = list()
-	var/list/obj/item/borg/upgrade/supported_upgrades = list(/obj/item/borg/upgrade/paperwork,/obj/item/borg/upgrade/visor/nvg,/obj/item/borg/upgrade/jetpack,/obj/item/borg/upgrade/visor/x_ray,/obj/item/borg/upgrade/storage,/obj/item/borg/upgrade/visor/flash_screen,/obj/item/borg/upgrade/death_alarm)
+	var/list/obj/item/borg/upgrade/supported_upgrades = list(
+		/obj/item/borg/upgrade/art,
+		/obj/item/borg/upgrade/paperwork,
+		/obj/item/borg/upgrade/visor/nvg,
+		/obj/item/borg/upgrade/jetpack,
+		/obj/item/borg/upgrade/visor/x_ray,
+		/obj/item/borg/upgrade/storage,
+		/obj/item/borg/upgrade/visor/flash_screen,
+		/obj/item/borg/upgrade/death_alarm
+	)
 
 	// Bookkeeping
 	var/list/original_languages = list()

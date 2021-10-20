@@ -6,7 +6,7 @@
 	var/emp_damage = 0//Handles a type of MMI damage
 	var/alert = null
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	icon_state = "brain1"
 
 /mob/living/carbon/brain/New()
