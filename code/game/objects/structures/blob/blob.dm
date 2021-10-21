@@ -67,14 +67,13 @@
 		if(dir == UP)
 			if(istype(possible_loc, /turf/simulated/open))
 				possible_locs += possible_loc
-				continue
-			
+
+			// Skip not suitable for z-level checks
 			continue
 		
 		if(dir == DOWN)
 			if(istype(current_loc, /turf/simulated/open))
 				possible_locs += possible_loc
-				continue
 			
 			continue
 
