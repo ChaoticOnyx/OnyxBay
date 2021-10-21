@@ -2373,7 +2373,8 @@
 
 /area/acting/stage
 	name = "\improper Stage"
-	dynamic_lighting = 1
+	dynamic_lighting = 0
+	requires_power = 0
 	icon_state = "yellow"
 
 /area/merchant_station
@@ -2390,6 +2391,9 @@
 
 /area/acting/backstage
 	name = "\improper Backstage"
+	luminosity = 1
+	dynamic_lighting = 0
+	requires_power = 0
 
 /area/solar/auxstarboard
 	name = "\improper Fore Starboard Solar Array"
