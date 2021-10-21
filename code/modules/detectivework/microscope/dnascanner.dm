@@ -36,7 +36,7 @@
 		to_chat(user, "<span class='warning'>\The [src] only accepts used swabs.</span>")
 		return
 
-/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main",datum/nanoui/ui = null)
+/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(stat & (NOPOWER)) return
 	if(user.stat || user.restrained()) return
 	var/list/data = list()
@@ -46,7 +46,7 @@
 	data["bloodsamp_desc"] = (bloodsamp ? (bloodsamp.desc ? bloodsamp.desc : "No information on record.") : "")
 	data["lidstate"] = closed
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "dnaforensics.tmpl", "QuikScan DNA Analyzer", 540, 326)
 		ui.set_initial_data(data)
