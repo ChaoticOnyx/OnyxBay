@@ -45,6 +45,9 @@
 	var/contains_body = 0
 	dremovable = 0
 	open_delay = 6
+	var/obj/structure/bed/roller/roller_buckled //the roller bed this bodybag is attached to.
+	var/buckle_offset = 5
+	layer = ABOVE_OBJ_LAYER
 
 /obj/structure/closet/body_bag/attackby(W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/pen))
