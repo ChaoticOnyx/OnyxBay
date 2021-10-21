@@ -198,16 +198,12 @@
 		buckled_bodybag = null
 		density = 0
 		update_icon()
-	else
-		..()
 
 /obj/structure/bed/proc/manual_unbuckle(mob/user)
 	if(buckled_bodybag)
 		unbuckle()
 		add_fingerprint(user)
 		return 1
-	else
-		. = ..()
 
 /obj/structure/bed/buckle_mob(mob/living/M)
 	if(buckled_bodybag)
