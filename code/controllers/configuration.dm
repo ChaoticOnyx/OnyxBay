@@ -710,9 +710,6 @@ var/list/gamemode_cache = list()
 					if(ticklag > 0)
 						fps = 10 / ticklag
 
-				if("fps")
-					fps = text2num(value)
-
 				if("clientfps")
 					clientfps = text2num(value)
 
