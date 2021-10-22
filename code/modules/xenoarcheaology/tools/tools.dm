@@ -225,7 +225,7 @@
 				qdel(D)
 		else
 			current = null
-			QDEL_LIST(depth_scan)
+			QDEL_LIST(positive_locations)
 		. = TOPIC_REFRESH
 	else if(href_list["refresh"])
 		. = TOPIC_REFRESH
