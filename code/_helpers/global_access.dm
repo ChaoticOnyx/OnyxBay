@@ -589,8 +589,6 @@
 			return global.next_duration_update;
 		if("next_station_date_change")
 			return global.next_station_date_change;
-		if("ninjastart")
-			return global.ninjastart;
 		if("ntnet_card_uid")
 			return global.ntnet_card_uid;
 		if("ntnet_global")
@@ -1498,8 +1496,6 @@
 			global.next_duration_update=newval;
 		if("next_station_date_change")
 			global.next_station_date_change=newval;
-		if("ninjastart")
-			global.ninjastart=newval;
 		if("ntnet_card_uid")
 			global.ntnet_card_uid=newval;
 		if("ntnet_global")
@@ -2127,7 +2123,6 @@
 	"next_account_number",
 	"next_duration_update",
 	"next_station_date_change",
-	"ninjastart",
 	"not_incapacitated_turf_state",
 	"ntnet_card_uid",
 	"ntnet_global",

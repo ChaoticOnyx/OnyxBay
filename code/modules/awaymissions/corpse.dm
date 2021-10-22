@@ -17,11 +17,13 @@
 #define CORPSE_SPAWNER_RANDOM_EYE_COLOR    0x0100
 #define CORPSE_SPAWNER_RANDOM_GENDER       0x0200
 
-#define CORPSE_SPAWNER_NO_RANDOMIZATION ~(CORPSE_SPAWNER_RANDOM_NAME|CORPSE_SPAWNER_RANDOM_SKIN_TONE|CORPSE_SPAWNER_RANDOM_SKIN_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_STYLE|CORPSE_SPAWNER_RANDOM_FACIAL_STYLE|CORPSE_SPAWNER_RANDOM_EYE_COLOR)
+#define CORPSE_SPAWNER_NO_RANDOMIZATION ~ (CORPSE_SPAWNER_RANDOM_NAME|CORPSE_SPAWNER_RANDOM_SKIN_TONE|CORPSE_SPAWNER_RANDOM_SKIN_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_STYLE|CORPSE_SPAWNER_RANDOM_FACIAL_STYLE|CORPSE_SPAWNER_RANDOM_EYE_COLOR)
 
 
 /obj/effect/landmark/corpse
 	name = "Unknown"
+	icon_state = "landmark_corpse"
+
 	var/species = list(SPECIES_HUMAN)                 // List of species to pick from.
 	var/corpse_outfits = list(/decl/hierarchy/outfit) // List of outfits to pick from. Uses pickweight()
 	var/spawn_flags = (~0)
@@ -42,13 +44,20 @@
 	randomize_appearance(M)
 	equip_outfit(M)
 
-	M.adjustOxyLoss(M.maxHealth)//cease life functions
+	M.adjustOxyLoss(M.maxHealth) // Cease life functions.
 	M.setBrainLoss(M.maxHealth)
+
 	var/obj/item/organ/internal/heart/corpse_heart = M.internal_organs_by_name[BP_HEART]
-	if (corpse_heart)
-		corpse_heart.pulse = PULSE_NONE//actually stops heart to make worried explorers not care too much
+	if(corpse_heart)
+		corpse_heart.pulse = PULSE_NONE // Actually stops heart to make worried explorers not care too much.
+
 	M.update_dna()
 	M.update_icon()
+
+	var/turf/T = get_turf(src)
+	var/obj/structure/bed/C = locate() in T
+	if(C)
+		C.buckle_mob(M)
 
 	return INITIALIZE_HINT_QDEL
 
@@ -178,3 +187,8 @@
 /obj/effect/landmark/corpse/syndicate/commando
 	name = "Syndicate Commando"
 	corpse_outfits = list(/decl/hierarchy/outfit/syndicate/armored/commando)
+
+/obj/effect/landmark/corpse/deadcap
+	name = "Dead Captain"
+	corpse_outfits = list(/decl/hierarchy/outfit/deadcap)
+	spawn_flags = CORPSE_SPAWNER_NO_RANDOMIZATION

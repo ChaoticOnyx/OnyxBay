@@ -1,7 +1,3 @@
-GLOBAL_LIST_EMPTY(monkeystart)
-GLOBAL_LIST_EMPTY(newplayer_start)
-var/list/ninjastart         = list()
-
 //Spawnpoints.
 GLOBAL_LIST_EMPTY(latejoin)
 GLOBAL_LIST_EMPTY(latejoin_gateway)
