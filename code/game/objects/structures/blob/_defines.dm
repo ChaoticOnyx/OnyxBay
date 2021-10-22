@@ -61,4 +61,3 @@
 		/obj/structure/blob/reinforced = 20\
 	),\
 )
-I
