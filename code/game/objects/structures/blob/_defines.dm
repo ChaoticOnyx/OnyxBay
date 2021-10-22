@@ -22,16 +22,22 @@
 #define BLOB_BRUTE_RESIST 1
 #define BLOB_DAMAGE 6
 
+// Reinforced blob.
+#define BLOB_REINFORCED_HEALTH 80
+#define BLOB_REINFORCED_FIRE_RESIST 4
+#define BLOB_REINFORCED_BRUTE_RESIST 6
+#define BLOB_REINFORCED_DAMAGE 15
+
 // Node blob.
-#define BLOB_NODE_HEALTH 90
-#define BLOB_NODE_FIRE_RESIST 6
+#define BLOB_NODE_HEALTH 150
+#define BLOB_NODE_FIRE_RESIST 7
 #define BLOB_NODE_BRUTE_RESIST 10
-#define BLOB_NODE_DAMAGE 15
+#define BLOB_NODE_DAMAGE 9
 
 // Core blob.
 #define BLOB_CORE_HEALTH 200
 #define BLOB_CORE_FIRE_RESIST 3
-#define BLOB_CORE_BRUTE_RESIST 5
+#define BLOB_CORE_BRUTE_RESIST 4
 #define BLOB_CORE_DAMAGE 26
 
 /*
@@ -44,10 +50,8 @@
 */
 #define BLOB_UPGRADE_TREE list(\
 	/obj/structure/blob = list(\
-		/obj/structure/blob/node = 20,\
-		/obj/structure/blob/core = 1\
+		/obj/structure/blob/node = 5,\
+		/obj/structure/blob/reinforced = 20\
 	),\
-	/obj/structure/blob/node = list(\
-		/obj/structure/blob/core = 5\
-	)\
 )
+I
