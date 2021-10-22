@@ -27,7 +27,6 @@
 /obj/structure/blob/Initialize()
 	. = ..()
 
-	health = max_health
 	START_PROCESSING(SSobj, src)
 
 /obj/structure/blob/core/Destroy()
@@ -38,11 +37,26 @@
 /obj/structure/blob/proc/can_expand()
 	return (core && !QDELETED(core))
 
+/// When a blob is far than `BLOB_EFFICIENT_REGENERATION_DISTANCE` then a distance penalty applies to `BLOB_REGENERATION_MULTIPLIER`.
+/obj/structure/blob/proc/heal()
+	if(health >= max_health)
+		return
+
+	var/distance = get_dist(src, core)
+	var/coefficient = BLOB_REGENERATION_MULTIPLIER
+	
+	if(distance > BLOB_EFFICIENT_REGENERATION_DISTANCE)
+		coefficient = distance / BLOB_EFFICIENT_REGENERATION_DISTANCE / coefficient
+		coefficient = max(0.01, coefficient)
+
+	health += max_health * coefficient
+	health = min(health, max_health)
+
 /obj/structure/blob/proc/life()
 	if(health <= 0)
 		die()
 		return FALSE
-	
+
 	return TRUE
 
 /obj/structure/blob/proc/attack()
@@ -105,7 +119,8 @@
 		return
 	
 	var/target_loc = pick(possible_locs)
-	new /obj/structure/blob(target_loc)
+	var/obj/structure/blob/new_blob = new /obj/structure/blob(target_loc, core)
+	new_blob.health = new_blob.max_health / 2
 
 /obj/structure/blob/Process()
 	. = ..()
@@ -116,7 +131,11 @@
 	THROTTLE(attack_cooldown, BLOB_ATTACK_COOLDOWN)
 	THROTTLE(expand_cooldown, BLOB_EXPAND_COOLODNW)
 	THROTTLE(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN)
+	THROTTLE(health_cooldown, BLOB_HEAL_COOLDOWN)
 	
+	if(health_cooldown)
+		heal()
+
 	if(attack_cooldown)
 		attack()
 

@@ -7,10 +7,17 @@
 #define BLOB_EDGE_BASE_DAMAGE 10
 #define BLOB_BLUNT_BASE_DAMAGE 2
 
+// Health regeneration.
+/// In percents of max health.
+#define BLOB_REGENERATION_MULTIPLIER 0.2
+/// The distance in tiles where a blob regenerates by that multiplier without penalties.
+#define BLOB_EFFICIENT_REGENERATION_DISTANCE 6
+
 // Cooldowns.
 #define BLOB_ATTACK_COOLDOWN 3 SECOND
 #define BLOB_EXPAND_COOLODNW 5 SECONDS
 #define BLOB_UPGRADE_COOLDOWN 10 SECONDS
+#define BLOB_HEAL_COOLDOWN 5 SECOND
 
 // Chances.
 #define BLOB_EXPAND_CHANCE 13
