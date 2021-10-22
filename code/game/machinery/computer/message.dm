@@ -305,7 +305,15 @@
 	//Find a server
 	if (href_list["find"])
 		if(message_servers && message_servers.len > 1)
-			src.linkedServer = input(usr,"Please select a server.", "Select a server.", null) as null|anything in message_servers
+			var/list/obj/machinery/message_server/servers = list()
+			var/server_count = 0
+			for(var/obj/machinery/message_server/server in message_servers)
+				server_count += 1
+				servers["[server.name] [server_count]"] = server
+			var/server_name = input(usr,"Please select a server.", "Select a server.", null) as null|anything in servers
+			if(!server_name)
+				return
+			src.linkedServer = servers[server_name]
 			message = "<span class='alert'>NOTICE: Server selected.</span>"
 		else if(message_servers && message_servers.len > 0)
 			linkedServer = message_servers[1]
