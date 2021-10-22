@@ -3,11 +3,13 @@
 	name = "start"
 	icon_state = "landmark_assistant"
 	delete_after = TRUE
+	var/crew_spawn = TRUE
 
 /obj/effect/landmark/start/New()
 	..()
 
-	tag = "start*[name]"
+	if(crew_spawn)
+		tag = "start*[name]"
 
 // Heads
 /obj/effect/landmark/start/crew/captain
@@ -70,6 +72,7 @@
 /obj/effect/landmark/start/crew/actor
 	name = "Actor"
 	icon_state = "landmark_actor"
+	crew_spawn = FALSE
 
 /obj/effect/landmark/start/crew/clown
 	name = "Clown"
@@ -175,94 +178,80 @@
 
 // Antagonists
 // Magic creatures
-/obj/effect/landmark/start/antagonists
+/obj/effect/landmark/start/antags
 	icon_state = "landmark_monster"
 	delete_after = FALSE
+	crew_spawn = FALSE
 
-/obj/effect/landmark/start/antagonists/New()
-	tag = "landmark*[name]"
-
-	landmarks_list += src
-
-	return 1
-
-/obj/effect/landmark/start/antagonists/wizard
+/obj/effect/landmark/start/antags/wizard
 	name = "Wizard"
 	icon_state = "landmark_wizard"
 
-/obj/effect/landmark/start/antagonists/deity
+/obj/effect/landmark/start/antags/deity
 	name = "Deity"
 	icon_state = "landmark_deity"
 
 // Syndicate operatives
-/obj/effect/landmark/start/antagonists/operatives
+/obj/effect/landmark/start/antags/operatives
 	name = "Syndicate Operative"
 	icon_state = "landmark_syndicate"
 
-/obj/effect/landmark/start/antagonists/commando
+/obj/effect/landmark/start/antags/commando
 	name = "Syndicate Commando"
 	icon_state = "landmark_commando"
 
 // Raiders
-/obj/effect/landmark/start/antagonists/vox
+/obj/effect/landmark/start/antags/vox
 	name = "Vox"
 	icon_state = "landmark_raider"
 
-/obj/effect/landmark/start/antagonists/ninja
+/obj/effect/landmark/start/antags/ninja
 	name = "Ninja"
 	icon_state = "landmark_ninja"
 
 // Creatures
-/obj/effect/landmark/start/antagonists/xeno
+/obj/effect/landmark/start/antags/xeno
 	name = "Xenomorph"
 	icon_state = "landmark_xeno"
 	delete_after = TRUE
 
-/obj/effect/landmark/start/antagonists/xeno/New()
+/obj/effect/landmark/start/antags/xeno/New()
 	..()
+
 	GLOB.xenospawn_areas += loc.loc
 
 // Latejoin landmarks.
 /obj/effect/landmark/joinlate
 	name = "JoinLate"
-	icon_state = "landmark_actor"
+	icon_state = "landmark_assistant"
 	delete_after = TRUE
 
 /obj/effect/landmark/joinlate/New()
+	..()
 
-	GLOB.latejoin += loc
-
-	return
+	switch(name)
+		if("JoinLate")
+			GLOB.latejoin += loc
+			return
+		if("JoinLateGateway")
+			GLOB.latejoin_gateway += loc
+			return
+		if("JoinLateCryo")
+			GLOB.latejoin_cryo += loc
+			return
+		if("JoinLateCyborg")
+			GLOB.latejoin_cyborg += loc
+			return
 
 /obj/effect/landmark/joinlate/gate
 	name = "JoinLateGateway"
 
-/obj/effect/landmark/joinlate/gate/Initialize()
-	tag = "landmark*[name]"
-
-	GLOB.latejoin_gateway += loc
-
-	return
-
 /obj/effect/landmark/joinlate/cryo
 	name = "JoinLateCryo"
-
-/obj/effect/landmark/joinlate/cryo/Initialize()
-	tag = "landmark*[name]"
-
-	GLOB.latejoin_cryo += loc
-
-	return
 
 /obj/effect/landmark/joinlate/cyborg
 	name = "JoinLateCyborg"
 	icon_state = "landmark_cyborg"
 
-/obj/effect/landmark/joinlate/cyborg/Initialize()
-	tag = "landmark*[name]"
-
-	GLOB.latejoin_cyborg += loc
-
-	return
 
 

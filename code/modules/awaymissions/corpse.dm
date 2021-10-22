@@ -24,6 +24,8 @@
 	name = "Unknown"
 	icon_state = "landmark_corpse"
 
+	delete_after = TRUE
+
 	var/species = list(SPECIES_HUMAN)                 // List of species to pick from.
 	var/corpse_outfits = list(/decl/hierarchy/outfit) // List of outfits to pick from. Uses pickweight()
 	var/spawn_flags = (~0)
@@ -37,8 +39,6 @@
 	var/genders_per_species       = list() // For gender biases per species -type-
 
 /obj/effect/landmark/corpse/Initialize()
-	..()
-
 	var/mob/living/carbon/human/M = new /mob/living/carbon/human(loc)
 
 	randomize_appearance(M)
@@ -59,7 +59,7 @@
 	if(C)
 		C.buckle_mob(M)
 
-	return INITIALIZE_HINT_QDEL
+	. = ..()
 
 #define HEX_COLOR_TO_RGB_ARGS(X) arglist(GetHexColors(X))
 /obj/effect/landmark/corpse/proc/randomize_appearance(mob/living/carbon/human/M)
@@ -152,7 +152,6 @@
 /obj/effect/landmark/corpse/miner/rig
 	corpse_outfits = list(/decl/hierarchy/outfit/job/cargo/mining/void)
 
-
 /obj/effect/landmark/corpse/bridgeofficer
 	name = "Bridge Officer"
 	corpse_outfits = list(/decl/hierarchy/outfit/nanotrasen/officer)
@@ -160,7 +159,6 @@
 /obj/effect/landmark/corpse/commander
 	name = "Commander"
 	corpse_outfits = list(/decl/hierarchy/outfit/nanotrasen/commander)
-
 
 /obj/effect/landmark/corpse/pirate
 	name = "Pirate"
@@ -183,7 +181,6 @@
 	name = "Syndicate Operative"
 	corpse_outfits = list(/decl/hierarchy/outfit/syndicate/armored)
 	spawn_flags = CORPSE_SPAWNER_NO_RANDOMIZATION
-
 /obj/effect/landmark/corpse/syndicate/commando
 	name = "Syndicate Commando"
 	corpse_outfits = list(/decl/hierarchy/outfit/syndicate/armored/commando)
