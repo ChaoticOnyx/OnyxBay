@@ -40,9 +40,9 @@
 					"<span class='notice'>You hear squelching...</span>")
 				unbuckle_mob()
 			else
-				if(world.time <= M.last_special + NEST_RESIST_TIME)
+				THROTTLE_SHARED(cooldown, NEST_RESIST_TIME, M.last_special)
+				if(!cooldown)
 					return
-				M.last_special = world.time
 				M.visible_message(\
 					"<span class='warning'>[buckled_mob.name] struggles to break free of the gelatinous resin...</span>",\
 					"<span class='warning'>You struggle to break free from the gelatinous resin...</span>",\

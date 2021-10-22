@@ -50,11 +50,11 @@ var/list/floor_light_cache = list()
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
-			playsound(src, "window_breaking", 70, 1)
+			playsound(src, SFX_BREAK_WINDOW, 70, 1)
 			set_broken(TRUE)
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			if(isnull(damaged)) damaged = 0
 		update_brightness()
 		return

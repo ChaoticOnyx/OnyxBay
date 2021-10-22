@@ -1,8 +1,9 @@
 /obj/item/organ/internal/cell
 	name = "microbattery"
 	desc = "A small, powerful cell for use in fully prosthetic bodies."
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cell"
-	dead_icon = "cell_bork"
+	dead_icon = "cell-br"
 	organ_tag = BP_CELL
 	parent_organ = BP_CHEST
 	vital = 1
@@ -106,6 +107,7 @@
 // Used for an MMI or posibrain being installed into a human.
 /obj/item/organ/internal/mmi_holder
 	name = "brain interface"
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
 	organ_tag = BP_BRAIN
 	parent_organ = BP_HEAD

@@ -170,5 +170,5 @@
 		var/dist = get_dist(get_turf(M), T)
 
 		if(dist >= world.view && dist <= world.view * 3)
-			M.playsound_local(src.loc, "distant_movement", 100)
+			M.playsound_local(src.loc, SFX_DISTANT_MOVEMENT, 100)
 

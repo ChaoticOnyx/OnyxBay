@@ -41,7 +41,7 @@
 	active_power_usage = 1000 //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
 	power_channel = STATIC_ENVIRON
 	req_one_access = list(access_atmospherics, access_engine_equip)
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 30
 
 	layer = ABOVE_WINDOW_LAYER

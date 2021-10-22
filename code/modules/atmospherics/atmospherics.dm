@@ -47,6 +47,7 @@ Pipelines + Other Objects -> Pipe network
 
 /obj/machinery/atmospherics/Destroy()
 	GLOB.atmos_machinery -= src
+	..()
 
 /obj/machinery/atmospherics/proc/atmos_init()
 	atmos_initalized = TRUE

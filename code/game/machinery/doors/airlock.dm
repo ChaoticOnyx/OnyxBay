@@ -213,7 +213,7 @@ About the new airlock wires panel:
 	if(feedback && message)
 		to_chat(usr, message)
 	if(.)
-		playsound(src, get_sfx("spark"), 30, 0, -6)
+		playsound(src, GET_SFX(SFX_SPARK), 30, 0, -6)
 
 /obj/machinery/door/airlock/proc/set_idscan(activate, feedback = 0)
 	var/message = ""
