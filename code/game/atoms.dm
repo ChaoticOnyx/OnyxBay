@@ -572,7 +572,7 @@ its easier to just keep the beam vertical.
 			H.updatehealth()
 	return
 
-/atom/MouseDrop_T(atom/target, mob/user)
+/atom/MouseDrop_T(atom/movable/target, mob/user)
 	var/mob/living/H = user
 	if(istype(H) && can_climb(H) && target == user)
 		do_climb(target)

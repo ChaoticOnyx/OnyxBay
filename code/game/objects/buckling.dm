@@ -13,7 +13,7 @@
 	if(can_buckle && buckled_mob)
 		user_unbuckle_mob(user)
 
-/obj/MouseDrop_T(atom/dropping, mob/living/user)
+/obj/MouseDrop_T(atom/movable/dropping, mob/living/user)
 	. = ..()
 	if(can_buckle && istype(dropping, /mob/living))
 		user_buckle_mob(dropping, user)

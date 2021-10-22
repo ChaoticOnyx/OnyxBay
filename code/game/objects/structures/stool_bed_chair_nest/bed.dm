@@ -107,7 +107,7 @@
 	qdel(src)
 	return
 
-/obj/structure/bed/MouseDrop_T(atom/dropping, mob/user)
+/obj/structure/bed/MouseDrop_T(atom/movable/dropping, mob/user)
 	if(accepts_bodybag && !buckled_bodybag && !buckled_mob && istype(dropping,/obj/structure/closet/body_bag) && ishuman(user))
 		var/obj/structure/closet/body_bag/B = dropping
 		if(!B.roller_buckled)
