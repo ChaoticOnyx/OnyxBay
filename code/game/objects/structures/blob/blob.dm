@@ -14,6 +14,15 @@
 	var/brute_resist = BLOB_BRUTE_RESIST
 
 	var/static/upgrade_tree = BLOB_UPGRADE_TREE
+	/// Contains the "core" blob.
+	/// When that core is dead (deleted) - our blob can't expand anymore.
+	var/obj/structure/blob/core = null
+
+/obj/structure/blob/New(loc, obj/structure/blob/core)
+	. = ..()
+
+	src.core = core
+	health = max_health
 
 /obj/structure/blob/Initialize()
 	. = ..()
@@ -25,6 +34,9 @@
 	. = ..()
 	
 	STOP_PROCESSING(SSobj, src)
+
+/obj/structure/blob/proc/can_expand()
+	return (core && !QDELETED(core))
 
 /obj/structure/blob/proc/life()
 	if(health <= 0)
@@ -59,6 +71,9 @@
 		return
 
 /obj/structure/blob/proc/expand()
+	if(!can_expand())
+		return
+
 	var/list/possible_locs = list()
 	var/turf/current_loc = loc
 	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))

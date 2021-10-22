@@ -6,3 +6,11 @@
 	fire_resist = BLOB_CORE_FIRE_RESIST
 	brute_resist = BLOB_CORE_BRUTE_RESIST
 	damage = BLOB_CORE_DAMAGE
+
+/obj/structure/blob/core/New(loc, ...)
+	. = ..()
+	
+	core = src
+
+/obj/structure/blob/core/can_expand()
+	return TRUE
