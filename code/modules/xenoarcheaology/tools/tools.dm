@@ -219,16 +219,22 @@
 		if(index)
 			if(index <= positive_locations.len)
 				var/datum/depth_scan/D = positive_locations[index]
+				if(current == D)
+					current = null
 				positive_locations.Remove(D)
 				qdel(D)
 		else
-			//GC will hopefully pick them up before too long
-			positive_locations = list()
-			QDEL_NULL(current)
+			current = null
+			QDEL_LIST(depth_scan)
+		. = TOPIC_REFRESH
+	else if(href_list["refresh"])
 		. = TOPIC_REFRESH
 	else if(href_list["close"])
 		close_browser(user, "window=depth_scanner")
-	updateSelfDialog()
+		. = TOPIC_HANDLED
+
+	if(. == TOPIC_REFRESH)
+		interact(user)
 
 //Radio beacon locator
 /obj/item/weapon/pinpointer/radio
