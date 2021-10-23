@@ -144,39 +144,22 @@
 // Movement delay
 /datum/movement_handler/mob/delay
 	var/next_move
-	var/delay = 1
 
 /datum/movement_handler/mob/delay/DoMove(direction, mover, is_external)
 	if(is_external)
 		return
-	delay = max(1, mob.movement_delay() + GetGrabSlowdown())
-	next_move = world.time + delay
-	UpdateGlideSize()
+	next_move = world.time + max(1, mob.movement_delay())
 
 /datum/movement_handler/mob/delay/MayMove(mover, is_external)
 	if(IS_NOT_SELF(mover) && is_external)
 		return MOVEMENT_PROCEED
 	return ((mover && mover != mob) ||  world.time >= next_move) ? MOVEMENT_PROCEED : MOVEMENT_STOP
 
-/datum/movement_handler/mob/delay/proc/SetDelay(new_delay)
-	delay = new_delay
+/datum/movement_handler/mob/delay/proc/SetDelay(delay)
 	next_move = max(next_move, world.time + delay)
-	UpdateGlideSize()
 
-/datum/movement_handler/mob/delay/proc/AddDelay(add_delay)
-	delay += add_delay
-	next_move += max(0, add_delay)
-	UpdateGlideSize()
-
-/datum/movement_handler/mob/delay/proc/UpdateGlideSize()
-	host.set_glide_size(DELAY2GLIDESIZE(delay))
-
-/datum/movement_handler/mob/delay/proc/GetGrabSlowdown()
-	. = 0
-	for (var/obj/item/grab/G in mob)
-		if(G.assailant == G.affecting)
-			return
-		. = max(., G.grab_slowdown())
+/datum/movement_handler/mob/delay/proc/AddDelay(delay)
+	next_move += max(0, delay)
 
 // Stop effect
 /datum/movement_handler/mob/stop_effect/DoMove()
@@ -274,7 +257,8 @@
 	if(!mob)
 		return // If the mob gets deleted on move (e.g. Entered, whatever), it wipes this reference on us in Destroy (and we should be aborting all action anyway).
 	// Something with pulling things
-	HandleGrabs(direction, old_turf)
+	var/extra_delay = HandleGrabs(direction, old_turf)
+	mob.addMoveCooldown(extra_delay)
 
 	for(var/obj/item/grab/G in mob)
 		if(G.assailant_reverse_facing())
@@ -292,8 +276,7 @@
 	. = 0
 	// TODO: Look into making grabs use movement events instead, this is a mess.
 	for(var/obj/item/grab/G in mob)
-		if(G.assailant == G.affecting)
-			return
+		. = max(., G.grab_slowdown())
 		var/list/L = mob.ret_grab()
 		if(istype(L, /list))
 			if(L.len == 2)
@@ -303,7 +286,7 @@
 					if(get_dist(old_turf, M) <= 1)
 						if(isturf(M.loc) && isturf(mob.loc))
 							if(mob.loc != old_turf && M.loc != mob.loc)
-								step_glide(M, get_dir(M.loc, old_turf), host.glide_size)
+								step(M, get_dir(M.loc, old_turf))
 			else
 				for(var/mob/M in L)
 					M.other_mobs = 1

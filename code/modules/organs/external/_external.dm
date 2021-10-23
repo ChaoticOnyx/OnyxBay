@@ -8,7 +8,7 @@
 	max_damage = 0
 	dir = SOUTH
 	organ_tag = "limb"
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = PIXEL_SCALE
 
 	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
 
