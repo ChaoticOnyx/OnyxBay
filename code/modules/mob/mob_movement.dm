@@ -112,10 +112,6 @@
 
 	for (var/atom/movable/AM in contents)
 		AM.set_glide_size(glide_size, min, max)
-	if(istype(src, /obj))
-		var/obj/O = src
-		if(O.buckled_mob)
-			O.buckled_mob.set_glide_size(glide_size, min, max)
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
