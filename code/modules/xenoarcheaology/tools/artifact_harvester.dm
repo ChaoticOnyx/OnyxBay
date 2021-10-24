@@ -1,3 +1,6 @@
+#define VISIBLE_TOGGLE TRUE
+#define INVISIBLE_TOGGLE FALSE
+
 /obj/machinery/artifact_harvester
 	name = "Exotic Particle Harvester"
 	icon = 'icons/obj/virology.dmi'
@@ -152,11 +155,9 @@
 					else
 						//see if we can clear out an old effect
 						//delete it when the ids match to account for duplicate ids having different effects
-						if(inserted_battery.battery_effect && inserted_battery.stored_charge <= 0)
-							qdel(inserted_battery.battery_effect)
-							return
+						if(inserted_battery.stored_charge <= 0)
+							QDEL_NULL(inserted_battery.battery_effect)
 
-						//
 						var/datum/artifact_effect/source_effect
 
 						//if we already have charge in the battery, we can only recharge it from the source artifact
@@ -169,7 +170,7 @@
 								source_effect = cur_artifact.main_effect
 
 							var/battery_matches_secondary_id = 0
-							if(inserted_battery.battery_effect && inserted_battery.battery_effect.artifact_id == cur_artifact.secondary_effect.artifact_id)
+							if(inserted_battery.battery_effect && inserted_battery.battery_effect.artifact_id == cur_artifact.secondary_effect?.artifact_id)
 								battery_matches_secondary_id = 1
 							if(battery_matches_secondary_id && cur_artifact.secondary_effect.activated)
 								//we're good to recharge the secondary effect!
@@ -201,7 +202,7 @@
 							//duplicate the artifact's effect datum
 							if(!inserted_battery.battery_effect)
 								var/effecttype = source_effect.type
-								var/datum/artifact_effect/E = new effecttype(inserted_battery)
+								var/datum/artifact_effect/E = new effecttype(inserted_battery, VISIBLE_TOGGLE)
 
 								//duplicate it's unique settings
 								for(var/varname in list("chargelevelmax","artifact_id","effect","effectrange","trigger"))
@@ -214,7 +215,7 @@
 
 	else if (href_list["stopharvest"])
 		if(harvesting)
-			if(harvesting < 0 && inserted_battery.battery_effect && inserted_battery.battery_effect.activated)
+			if(harvesting < 0 && inserted_battery.battery_effect?.activated)
 				inserted_battery.battery_effect.ToggleActivate()
 			harvesting = 0
 			cur_artifact.anchored = 0
@@ -225,6 +226,7 @@
 		. = TOPIC_REFRESH
 
 	else if (href_list["ejectbattery"])
+		src.inserted_battery.update_icon()
 		src.inserted_battery.dropInto(loc)
 		src.inserted_battery = null
 		. = TOPIC_REFRESH
@@ -234,7 +236,7 @@
 			if(inserted_battery.battery_effect && inserted_battery.stored_charge > 0)
 				if(alert("This action will dump all charge, safety gear is recommended before proceeding","Warning","Continue","Cancel"))
 					if(!inserted_battery.battery_effect.activated)
-						inserted_battery.battery_effect.ToggleActivate(1)
+						inserted_battery.battery_effect.ToggleActivate()
 					last_process = world.time
 					harvesting = -1
 					update_use_power(POWER_USE_ACTIVE)
@@ -248,10 +250,14 @@
 			var/message = "<b>[src]</b> states, \"Cannot dump energy. No battery inserted.\""
 			src.visible_message(message)
 		. = TOPIC_REFRESH
-
+	else if(href_list["refresh"])
+		. = TOPIC_REFRESH
 	else if(href_list["close"])
 		close_browser(user, "window=artharvester")
 		return TOPIC_HANDLED
 
 	if(. == TOPIC_REFRESH)
 		interact(user)
+
+#undef VISIBLE_TOGGLE
+#undef INVISIBLE_TOGGLE
