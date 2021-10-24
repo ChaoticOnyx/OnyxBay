@@ -12,6 +12,7 @@ var/bomb_set
 	var/deployable = 0
 	var/extended = 0
 	var/lighthack = 0
+	var/last_process = 0
 	var/timeleft = 120
 	var/timing = 0
 	var/r_code = "ADMIN"
@@ -37,12 +38,13 @@ var/bomb_set
 	auth = null
 	return ..()
 
-/obj/machinery/nuclearbomb/Process(wait)
+/obj/machinery/nuclearbomb/Process()
 	if(timing)
-		timeleft = max(timeleft - (wait / 10), 0)
+		timeleft = max(timeleft - (world.time - last_process)/10, 0)
 		if(timeleft <= 0)
 			addtimer(CALLBACK(src, .proc/explode), 0)
 		SSnano.update_uis(src)
+	last_process = world.time
 
 /obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob, params)
 	if(isScrewdriver(O))
