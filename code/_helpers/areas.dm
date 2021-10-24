@@ -1,3 +1,7 @@
+GLOBAL_LIST_EMPTY(station_areas)
+/hook/roundstart/proc/setup_station_areas()
+	GLOB.station_areas = get_filtered_areas(list(/proc/is_not_space_area, /proc/is_station_area))
+
 /*
 	List generation helpers
 */

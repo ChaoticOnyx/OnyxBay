@@ -15,6 +15,10 @@
 	var/static_environ
 	var/list/ambient_music_meta_tags = list(META_NORMAL)
 
+	var/area_cost = 1
+	var/corp_posters_count = 0
+	var/rev_posters_count = 0
+
 /area/New()
 	icon_state = ""
 	uid = ++global_uid
@@ -229,6 +233,18 @@
 	for(var/obj/machinery/light/L in src)
 		L.set_mode(lighting_mode)
 		L.update_power_channel(power_channel)
+
+/area/proc/add_rev_poster(obj/structure/sign/poster/P)
+	rev_posters_count += 1
+
+/area/proc/remove_rev_poster(obj/structure/sign/poster/P)
+	rev_posters_count -= 1
+
+/area/proc/add_corp_poster(obj/structure/sign/poster/P)
+	corp_posters_count += 1
+
+/area/proc/remove_corp_poster(obj/structure/sign/poster/P)
+	corp_posters_count -= 1
 
 var/list/mob/living/forced_ambiance_list = new
 

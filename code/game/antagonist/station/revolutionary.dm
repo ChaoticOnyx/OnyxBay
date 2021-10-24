@@ -37,6 +37,13 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 	if(config.revolutionary_min_age)
 		min_player_age = config.revolutionary_min_age
 
+/datum/antagonist/revolutionary/proc/count_score()
+	var/rev_score = 0
+	for(var/area/A in GLOB.station_areas)
+		if(A.rev_posters_count > A.corp_posters_count)
+			rev_score += A.area_cost
+	return rev_score
+
 /datum/antagonist/revolutionary/create_global_objectives()
 	if(!..())
 		return
