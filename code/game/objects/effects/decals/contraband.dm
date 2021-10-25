@@ -14,6 +14,7 @@
 	icon_state = "rolled_poster"
 	var/serial_number = 0
 
+
 /obj/item/weapon/contraband/poster/New(turf/loc, given_serial = 0)
 	if(given_serial == 0)
 		serial_number = rand(1, poster_designs.len)
@@ -85,7 +86,7 @@
 	var/poster_type		//So mappers can specify a desired poster
 	var/ruined = 0
 
-/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null, corp = FALSE, rev = FALSE)
+/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null)
 	..(newloc)
 
 	if(!serial)
