@@ -77,11 +77,11 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	anchored = 1
 
 /obj/machinery/message_server/New()
-	message_servers += src
-	if(message_servers.len >= 2)
+	if(message_servers.len >= 1)
 		new /obj/machinery/dead_message_server(src.loc)
 		qdel(src)
 		crash_with("Second or more message server is placed in the world. Please, check out message servers placement and remove them until one left.")
+	message_servers += src
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
 	..()
