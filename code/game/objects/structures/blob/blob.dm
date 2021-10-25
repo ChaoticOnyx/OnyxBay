@@ -16,6 +16,7 @@
 	var/static/upgrade_tree = BLOB_UPGRADE_TREE
 	/// Contains the "core" blob.
 	/// When that core is dead (deleted) - our blob can't expand anymore.
+	/// FIXME: These links prevents the core blob from garbage collecting (somehow even weakrefs doesn't help).
 	var/obj/structure/blob/core = null
 
 /obj/structure/blob/New(loc, obj/structure/blob/core)
