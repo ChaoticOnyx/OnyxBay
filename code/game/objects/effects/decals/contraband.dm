@@ -13,8 +13,6 @@
 	desc = "The poster comes with its own automatic adhesive mechanism, for easy pinning to any vertical surface."
 	icon_state = "rolled_poster"
 	var/serial_number = 0
-	var/is_corp = FALSE
-	var/is_rev = FALSE
 
 /obj/item/weapon/contraband/poster/New(turf/loc, given_serial = 0)
 	if(given_serial == 0)
@@ -59,7 +57,7 @@
 	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>")//Looks like it's uncluttered enough. Place the poster.
 
 
-	var/obj/structure/sign/poster/P = new(user.loc, placement_dir=get_dir(user, W), serial = serial_number, corp = is_corp, rev = is_rev)
+	var/obj/structure/sign/poster/P = new(user.loc, placement_dir=get_dir(user, W), serial=serial_number)
 
 	flick("poster_being_set", P)
 	//playsound(W, 'sound/items/poster_being_created.ogg', 100, 1) //why the hell does placing a poster make printer sounds?
@@ -76,30 +74,6 @@
 
 	qdel(oldsrc)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 
-/obj/item/weapon/contraband/poster/verb/make_rev_poster()
-	set name = "Make Revolutionary Poster"
-	set desc = "Die corporation die!"
-	set category = "Poster"
-	var/mob/living/carbon/human/H = usr
-	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
-	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind))
-		return
-	is_corp = FALSE
-	is_rev = TRUE
-	to_chat(usr, "You're add some revolutionary slogan to poster.")
-
-/obj/item/weapon/contraband/poster/verb/make_corp_poster()
-	set name = "Make Corporate Poster"
-	set desc = "Make the corporation great again!"
-	set category = "Poster"
-	var/mob/living/carbon/human/H = usr
-	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
-	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)))
-		return
-	is_corp = TRUE
-	is_rev = FALSE
-	to_chat(usr, "You're add some corporate slogan to poster.")
-
 //############################## THE ACTUAL DECALS ###########################
 
 /obj/structure/sign/poster
@@ -110,8 +84,6 @@
 	var/serial_number	//Will hold the value of src.loc if nobody initialises it
 	var/poster_type		//So mappers can specify a desired poster
 	var/ruined = 0
-	var/is_corp = FALSE
-	var/is_rev = FALSE
 
 /obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null, corp = FALSE, rev = FALSE)
 	..(newloc)
@@ -122,17 +94,6 @@
 	serial_number = serial
 	var/datum/poster/design = poster_designs[serial_number]
 	set_poster(design)
-
-	is_corp = corp
-	is_rev = rev
-	var/turf/T = get_turf(src)
-	var/area/A = T?.loc
-	if(!A)
-		return .
-	if(is_corp)
-		A.add_corp_poster(src)
-	if(is_rev)
-		A.add_rev_poster(src)
 
 	switch (placement_dir)
 		if (NORTH)
@@ -154,32 +115,6 @@
 		var/datum/poster/design = new path
 		set_poster(design)
 	. = ..()
-
-/obj/structure/sign/poster/Destroy()
-	var/turf/T = get_turf(src)
-	var/area/A = T?.loc
-	if(!A)
-		return .
-	if(is_corp)
-		A.remove_corp_poster(src)
-	if(is_rev)
-		A.remove_rev_poster(src)
-	. = ..()
-
-/obj/structure/sign/poster/examine(mob/user, infix, suffix)
-	. = ..()
-	var/mob/living/carbon/human/H = user
-	if(!istype(H) || !H.mind)
-		return
-	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
-	var/is_loyalist_user = antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)
-	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
-	var/is_rev_user = antag.is_antagonist(H.mind)
-	var/message = SPAN_DANGER("You hate it. You want to rip down \the [src]!")
-	to_world("[is_rev_user], [is_loyalist_user]")
-	if((is_rev && is_loyalist_user) || (is_rev_user && is_corp))
-		. += "\n" + message
-
 
 /obj/structure/sign/poster/proc/set_poster(datum/poster/design)
 	SetName("[initial(name)] - [design.name]")

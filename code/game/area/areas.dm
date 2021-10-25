@@ -234,16 +234,16 @@
 		L.set_mode(lighting_mode)
 		L.update_power_channel(power_channel)
 
-/area/proc/add_rev_poster(obj/structure/sign/poster/P)
+/area/proc/add_rev_poster(obj/item/canvas/C)
 	rev_posters_count += 1
 
-/area/proc/remove_rev_poster(obj/structure/sign/poster/P)
+/area/proc/remove_rev_poster(obj/item/canvas/C)
 	rev_posters_count -= 1
 
-/area/proc/add_corp_poster(obj/structure/sign/poster/P)
+/area/proc/add_corp_poster(obj/item/canvas/C)
 	corp_posters_count += 1
 
-/area/proc/remove_corp_poster(obj/structure/sign/poster/P)
+/area/proc/remove_corp_poster(obj/item/canvas/C)
 	corp_posters_count -= 1
 
 var/list/mob/living/forced_ambiance_list = new
