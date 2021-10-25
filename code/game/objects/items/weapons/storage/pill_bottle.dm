@@ -230,3 +230,10 @@
 	starting_label = "glucose"
 
 	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 14)
+
+/obj/item/weapon/storage/pill_bottle/sugar_cubes
+	name = "sugar box"
+	desc = "A small box containing some precious cubes of sweetness."
+	icon_state = "sugar_bottle"
+
+	startswith = list(/obj/item/weapon/reagent_containers/pill/sugar_cube = 14)
