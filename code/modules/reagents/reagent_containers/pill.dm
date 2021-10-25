@@ -327,3 +327,14 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/leporazine, 15)
 	color = reagents.get_color()
+
+//Not actually a pill, but pills type provide everything needed for this
+/obj/item/weapon/reagent_containers/pill/sugar_cube
+	name = "sugar cube"
+	desc = "Sugar pressed together in block shape that is used to sweeten drinks."
+	icon_state = "sugar_cubes"
+
+/obj/item/weapon/reagent_containers/pill/sugar_cube/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/sugar, 5)
+	color = reagents.get_color()
