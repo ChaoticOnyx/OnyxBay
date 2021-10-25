@@ -278,7 +278,7 @@
 	is_marked = TRUE
 	is_corp = FALSE
 	is_rev = TRUE
-	to_chat(usr, "You've added a revolutionary slogan to the poster.")
+	to_chat(usr, "You've marked canvas as revolutionary.")
 
 /obj/item/canvas/verb/make_corp_poster()
 	set name = "Make Corporate Poster"
@@ -291,7 +291,7 @@
 	is_marked = TRUE
 	is_corp = TRUE
 	is_rev = FALSE
-	to_chat(usr, "You've added a corporate slogan to poster.")
+	to_chat(usr, "You've marked canvas as corporate.")
 
 /obj/item/canvas/nineteen_nineteen
 	icon_state = "19x19"
