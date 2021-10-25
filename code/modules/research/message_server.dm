@@ -47,7 +47,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			else
 				priority = "Undetermined"
 
-/obj/machinery/message_server // do not place more than one of these in world
+/obj/machinery/message_server // do NOT place more than one of these in world
 	icon = 'icons/obj/machines/research.dmi'
 	icon_state = "server"
 	name = "Messaging Server"
@@ -78,6 +78,10 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 
 /obj/machinery/message_server/New()
 	message_servers += src
+	if(message_servers.len >= 2)
+		new /obj/machinery/dead_message_server(src.loc)
+		qdel(src)
+		crash_with("Second or more message server is placed in the world. Please, check out message servers placement and remove them until one left.")
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
 	..()
