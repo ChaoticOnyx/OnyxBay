@@ -13,6 +13,7 @@ GLOBAL_LIST_EMPTY(prisonwarp) // Prisoners go to there.
 GLOBAL_LIST_EMPTY(prisonwarped) // List of players already warped.
 GLOBAL_LIST_EMPTY(prisonsecuritywarp) // Prison security goes to these.
 
+// Thunderfield.
 GLOBAL_LIST_EMPTY(tdome1)
 GLOBAL_LIST_EMPTY(tdome2)
 GLOBAL_LIST_EMPTY(tdomeobserve)

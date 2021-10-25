@@ -473,8 +473,6 @@
 			return global.join_motd;
 		if("join_regular_announcement")
 			return global.join_regular_announcement;
-		if("landmarks_list")
-			return global.landmarks_list;
 		if("language_keys")
 			return global.language_keys;
 		if("last_chew")
@@ -1376,8 +1374,6 @@
 			global.join_motd=newval;
 		if("join_regular_announcement")
 			global.join_regular_announcement=newval;
-		if("landmarks_list")
-			global.landmarks_list=newval;
 		if("language_keys")
 			global.language_keys=newval;
 		if("last_chew")
@@ -2052,7 +2048,6 @@
 	"joblist",
 	"join_motd",
 	"join_regular_announcement",
-	"landmarks_list",
 	"language_keys",
 	"last_chew",
 	"last_message_id",

@@ -3,13 +3,13 @@
 	name = "start"
 	icon_state = "landmark_assistant"
 	delete_after = TRUE
+	should_be_added = TRUE
 	var/crew_spawn = TRUE
 
-/obj/effect/landmark/start/New()
-	..()
-
+/obj/effect/landmark/start/Initialize()
 	if(crew_spawn)
 		tag = "start*[name]"
+	return ..()
 
 // Heads
 /obj/effect/landmark/start/crew/captain
@@ -171,10 +171,12 @@
 /obj/effect/landmark/start/crew/ert
 	name = "Emergency Responder"
 	icon_state = "landmark_ert"
+	crew_spawn = FALSE
 
 /obj/effect/landmark/start/crew/deathsquad
 	name = "Death Commando"
 	icon_state = "landmark_deathsquad"
+	crew_spawn = FALSE
 
 // Antagonists
 // Magic creatures
@@ -215,10 +217,13 @@
 	icon_state = "landmark_xeno"
 	delete_after = TRUE
 
-/obj/effect/landmark/start/antags/xeno/New()
-	..()
-
+/obj/effect/landmark/start/antags/xeno/Initialize()
 	GLOB.xenospawn_areas += loc.loc
+	return ..()
+
+/obj/effect/landmark/start/antags/borer
+	name = "Borer"
+	icon_state = "landmark_borer"
 
 // Latejoin landmarks.
 /obj/effect/landmark/joinlate
@@ -226,9 +231,7 @@
 	icon_state = "landmark_assistant"
 	delete_after = TRUE
 
-/obj/effect/landmark/joinlate/New()
-	..()
-
+/obj/effect/landmark/joinlate/Initialize()
 	switch(name)
 		if("JoinLate")
 			GLOB.latejoin += loc
@@ -242,6 +245,7 @@
 		if("JoinLateCyborg")
 			GLOB.latejoin_cyborg += loc
 			return
+	return ..()
 
 /obj/effect/landmark/joinlate/gate
 	name = "JoinLateGateway"

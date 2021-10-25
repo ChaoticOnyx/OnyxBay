@@ -700,13 +700,13 @@ var/global/datum/controller/occupations/job_master
 
 /datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
-	for(var/obj/effect/landmark/start/sloc in landmarks_list)
+	for(var/obj/effect/landmark/sloc in GLOB.landmarks_list)
 		if(sloc.name != rank)
 			continue
 		if(locate(/mob/living) in sloc.loc)
 			continue
 		loc_list += sloc
-	if(loc_list.len)
+	if(length(loc_list))
 		return pick(loc_list)
 	else
 		return locate("start*[rank]") // use old stype
