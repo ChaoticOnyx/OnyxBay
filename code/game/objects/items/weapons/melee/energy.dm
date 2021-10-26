@@ -31,6 +31,7 @@
 	mod_reach = mod_reach_a
 	mod_shield = mod_shield_a
 	playsound(user, activate_sound, 50, 1)
+	damtype = BURN
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
 	if(!active)
@@ -46,6 +47,7 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
+	damtype = BRUTE
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
