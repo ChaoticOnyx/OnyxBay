@@ -26,9 +26,7 @@
 
 	var/datum/gas_mixture/env = src.loc.return_air()
 	if(env)
-		if (reagents.total_volume > 750)
-			env.temperature = 0
-		else if (reagents.total_volume > 500)
+		if (reagents.total_volume > 500)
 			env.temperature -= 100
 		else
 			env.temperature -= 50
