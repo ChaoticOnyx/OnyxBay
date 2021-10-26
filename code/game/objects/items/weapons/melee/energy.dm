@@ -30,6 +30,7 @@
 	mod_weight = mod_weight_a
 	mod_reach = mod_reach_a
 	mod_shield = mod_shield_a
+	check_armour = "laser"
 	playsound(user, activate_sound, 50, 1)
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
@@ -46,6 +47,7 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
+	check_armour = "melee"
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
@@ -312,6 +314,7 @@
 	armor_penetration = 100
 	sharp = 1
 	edge = 1
+	check_armour = "laser"
 	anchored = TRUE    // Never spawned outside of inventory, should be fine.
 	throwforce = 1  //Throwing or dropping the item deletes it.
 	throw_speed = 1
