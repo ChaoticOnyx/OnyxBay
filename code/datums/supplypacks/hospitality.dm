@@ -7,7 +7,7 @@
 			/obj/item/weapon/storage/box/mixedglasses = 2,
 			/obj/item/weapon/storage/box/glasses/square,
 			/obj/item/weapon/reagent_containers/food/drinks/shaker,
-			/obj/item/weapon/reagent_containers/food/drinks/flask/barflask,
+			/obj/item/weapon/reagent_containers/food/drinks/flask,
 			/obj/item/weapon/reagent_containers/food/drinks/bottle/patron,
 			/obj/item/weapon/reagent_containers/food/drinks/bottle/goldschlager,
 			/obj/item/weapon/reagent_containers/food/drinks/bottle/specialwhiskey,

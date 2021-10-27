@@ -2212,7 +2212,7 @@
 "aQF" = (/obj/machinery/shower{icon_state = "shower"; dir = 8},/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/wizard_station)
 "aQG" = (/obj/structure/bookcase{name = "bookcase (Tactics)"},/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
 "aQH" = (/obj/structure/closet/coffin,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
-"aQI" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp/green{on = 0; pixel_x = -3; pixel_y = 8},/obj/item/weapon/reagent_containers/food/drinks/flask/barflask,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/simulated/floor/trim/carpet,/area/wizard_station)
+"aQI" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp/green{on = 0; pixel_x = -3; pixel_y = 8},/obj/item/weapon/reagent_containers/food/drinks/flask,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/simulated/floor/trim/carpet,/area/wizard_station)
 "aQJ" = (/obj/structure/table/woodentable,/obj/item/weapon/storage/bag/cash,/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
 "aQK" = (/turf/unsimulated/floor{icon_state = "lino"},/area/wizard_station)
 "aQL" = (/obj/structure/bed,/obj/item/weapon/bedsheet/rd,/turf/unsimulated/floor{icon_state = "lino"},/area/wizard_station)

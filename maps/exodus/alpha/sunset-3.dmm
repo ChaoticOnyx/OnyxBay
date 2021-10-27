@@ -13,7 +13,7 @@
 "am" = (/obj/structure/bed/chair{dir = 4},/obj/effect/landmark/start{name = "Security Officer"},/turf/simulated/floor/trim/wood,/area/security/main)
 "an" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/trim/wood,/area/security/main)
 "ao" = (/obj/machinery/vending/coffee,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/tiled/dark,/area/security/main)
-"ap" = (/obj/structure/table/woodentable,/obj/item/clothing/mask/smokable/cigarette/cigar,/obj/item/weapon/reagent_containers/food/drinks/flask{pixel_x = 8},/turf/simulated/floor/trim/carpet/blue2,/area/crew_quarters/captain)
+"ap" = (/obj/structure/table/woodentable,/obj/item/clothing/mask/smokable/cigarette/cigar,/obj/item/weapon/reagent_containers/food/drinks/capiain{pixel_x = 8},/turf/simulated/floor/trim/carpet/blue2,/area/crew_quarters/captain)
 "aq" = (/obj/structure/table/woodentable,/obj/item/weapon/melee/whip/chainofcommand,/obj/item/weapon/paper_bin,/obj/item/weapon/pen,/turf/simulated/floor/tiled/dark,/area/crew_quarters/captain)
 "ar" = (/obj/structure/flora/pottedplant/minitree,/obj/effect/floor_decal/corner/red/full,/obj/machinery/power/apc{dir = 1; name = "north bump"; pixel_x = 0; pixel_y = 24},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/tiled,/area/security/main)
 "as" = (/obj/structure/table/standard,/obj/machinery/recharger,/obj/effect/floor_decal/corner/red/full,/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled,/area/security/main)

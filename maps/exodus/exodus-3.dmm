@@ -2112,7 +2112,7 @@
 "aTe" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9},/turf/simulated/floor/tiled/dark,/area/merchant_station)
 "aTf" = (/obj/structure/bookcase{name = "bookcase (Tactics)"},/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
 "aTg" = (/obj/structure/closet/coffin,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
-"aTh" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp/green{on = 0; pixel_x = -3; pixel_y = 8},/obj/item/weapon/reagent_containers/food/drinks/flask/barflask,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/simulated/floor/trim/carpet,/area/wizard_station)
+"aTh" = (/obj/structure/table/woodentable,/obj/item/device/flashlight/lamp/green{on = 0; pixel_x = -3; pixel_y = 8},/obj/item/weapon/reagent_containers/food/drinks/flask,/obj/item/device/radio/intercom/syndicate{dir = 8; pixel_x = 22},/turf/simulated/floor/trim/carpet,/area/wizard_station)
 "aTj" = (/obj/structure/table/rack,/obj/random/action_figure,/obj/effect/floor_decal/industrial/outline/grey,/obj/item/clothing/accessory/holster,/turf/simulated/floor/tiled/dark,/area/merchant_station)
 "aTk" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/tiled/dark,/area/merchant_station)
 "aTl" = (/obj/machinery/light/small,/obj/machinery/alarm{dir = 1; pixel_y = -24},/turf/simulated/floor/tiled/dark,/area/merchant_station)

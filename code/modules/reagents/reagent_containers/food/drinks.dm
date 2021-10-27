@@ -335,11 +335,16 @@
 	base_icon = "pitcher"
 
 /obj/item/weapon/reagent_containers/food/drinks/flask
-	name = "\improper Captain's flask"
-	desc = "A metal flask belonging to the captain."
+	name = "flask"
+	desc = "For those who can't be bothered to hang out at the bar to drink."
 	icon_state = "flask"
 	volume = 60
 	center_of_mass = "x=17;y=7"
+
+/obj/item/weapon/reagent_containers/food/drinks/flask/capitain
+	name = "\improper Captain's flask"
+	desc = "A metal flask belonging to the captain."
+	icon_state = "capitain_flask"
 
 /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
 	name = "shiny flask"
@@ -355,20 +360,12 @@
 	name = "\improper Detective's flask"
 	desc = "A metal flask with a leather band and golden badge belonging to the detective."
 	icon_state = "detflask"
-	volume = 60
 	center_of_mass = "x=17;y=8"
 
-/obj/item/weapon/reagent_containers/food/drinks/flask/barflask
-	name = "flask"
-	desc = "For those who can't be bothered to hang out at the bar to drink."
-	icon_state = "barflask"
-	volume = 60
-	center_of_mass = "x=17;y=7"
-
-/obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
-	name = "vacuum flask"
+/obj/item/weapon/reagent_containers/food/drinks/thermos
+	name = "thermos"
 	desc = "Keeping your drinks at the perfect temperature since 1892."
-	icon_state = "vacuumflask"
+	icon_state = "thermos"
 	volume = 60
 	center_of_mass = "x=15;y=4"
 

@@ -70,20 +70,24 @@
 	sort_category = "Food and Drinks"
 	display_name = "flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask
-	price = 5
+	price = 0
 
 /datum/gear/flask/New()
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
-/datum/gear/flask/bar
-	display_name = "bar flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
-	price = 0
+/datum/gear/thermos/New()
+	..()
+	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_drink_reagents())
 
-/datum/gear/flask/vacuum
-	display_name = "vacuum flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
+/datum/gear/flask/capitain
+	display_name = "capitain flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/capitain
+	price = 5
+
+/datum/gear/drinks/thermos
+	display_name = "thermos"
+	path = /obj/item/weapon/reagent_containers/food/drinks/thermos
 	price = 0
 
 /datum/gear/flask/lithium
