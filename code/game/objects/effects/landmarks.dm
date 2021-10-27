@@ -11,17 +11,21 @@
 	var/should_be_added = FALSE
 	var/delete_after = FALSE
 
-/obj/effect/landmark/Initialize()
-	. = ..()
+/obj/effect/landmark/New()
+	..()
 
 	if(should_be_added)
 		if(!tag)
 			tag = "landmark*[name]"
-		GLOB.landmarks_list += src
-		to_world("Это Initialize() [name], лендмарк был добавлен в список.")
+		LAZYADD(GLOB.landmarks_list, src)
+		to_world("Это New() [name], лендмарк был добавлен в список.")
 
+	 return 1
+
+/obj/effect/landmark/Initialize()
+	. = ..()
 	if(delete_after)
-		to_world("Это Initialize() [name], лендмарк был удален")
+		to_world("Это Initialize() [name], лендмарк был удален.")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/landmark/Destroy()

@@ -2,14 +2,17 @@
 /obj/effect/landmark/start
 	name = "start"
 	icon_state = "landmark_assistant"
-	delete_after = TRUE
 	should_be_added = TRUE
-	var/crew_spawn = TRUE
+	var/crew_spawn = FALSE
 
-/obj/effect/landmark/start/Initialize()
+/obj/effect/landmark/start/New()
 	if(crew_spawn)
 		tag = "start*[name]"
+		delete_after = TRUE
 	return ..()
+
+/obj/effect/landmark/start/crew
+	crew_spawn = TRUE
 
 // Heads
 /obj/effect/landmark/start/crew/captain
@@ -181,9 +184,8 @@
 // Antagonists
 // Magic creatures
 /obj/effect/landmark/start/antags
-	icon_state = "landmark_monster"
+	icon_state = "landmark_syndicate"
 	delete_after = FALSE
-	crew_spawn = FALSE
 
 /obj/effect/landmark/start/antags/wizard
 	name = "Wizard"
@@ -196,7 +198,6 @@
 // Syndicate operatives
 /obj/effect/landmark/start/antags/operatives
 	name = "Syndicate Operative"
-	icon_state = "landmark_syndicate"
 
 /obj/effect/landmark/start/antags/commando
 	name = "Syndicate Commando"
@@ -231,7 +232,7 @@
 	icon_state = "landmark_assistant"
 	delete_after = TRUE
 
-/obj/effect/landmark/joinlate/Initialize()
+/obj/effect/landmark/joinlate/New()
 	switch(name)
 		if("JoinLate")
 			GLOB.latejoin += loc
@@ -256,6 +257,12 @@
 /obj/effect/landmark/joinlate/cyborg
 	name = "JoinLateCyborg"
 	icon_state = "landmark_cyborg"
+
+/obj/effect/landmark/joinlate/observer
+	name = "Observer"
+	icon_state = "landmark_observer"
+	delete_after = FALSE
+	should_be_added = TRUE
 
 
 

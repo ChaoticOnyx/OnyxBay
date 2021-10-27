@@ -2,6 +2,9 @@
 	icon_state = "landmark_event"
 	should_be_added = TRUE
 
+/obj/effect/landmark/event/other
+	should_be_added = TRUE
+
 /obj/effect/landmark/event/other/lightsout
 	name = "lightsout"
 
@@ -11,11 +14,11 @@
 
 /obj/effect/landmark/event/other/drones
 	name = "Drone Swarm"
-	icon_state = "landmark_monster"
+	icon_state = "landmark_drone"
 
 /obj/effect/landmark/event/other/carps
 	name = "Carp Pack"
-	icon_state = "landmark_monster"
+	icon_state = "landmark_carp"
 
 /obj/effect/landmark/event/other/holodeck/atmos
 	name = "Atmospheric Test Start"
