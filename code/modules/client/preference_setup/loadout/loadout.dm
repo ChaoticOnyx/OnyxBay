@@ -265,7 +265,7 @@ var/list/gear_datums = list()
 		var/datum/gear_data/gd = new(selected_gear.path)
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_gear_data(selected_tweaks["[gt]"], gd)
-		var/obj/gear_virtual_item = new gd.path
+		var/atom/gear_virtual_item = new gd.path
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
 		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)

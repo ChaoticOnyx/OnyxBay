@@ -1,7 +1,14 @@
 /datum/gear/pet
 	sort_category = "Pets"
-	patron_tier = PATREON_WIZARD
-	cost = 5
+	path = /mob/living/simple_animal/corgi/pet
+	var/list/paths
+	// patron_tier = PATREON_WIZARD
+	// cost = 200
+
+/datum/gear/pet/New()
+	..()
+	if(length(paths))
+		gear_tweaks += new /datum/gear_tweak/contents/atoms(paths)
 
 /datum/gear/pet/spawn_item(location, metadata)
 	var/datum/gear_data/gd = new(path, location)
@@ -33,18 +40,17 @@
 
 	return !!animal
 
-/datum/gear/pet/cat
-	display_name = "Nice cat"
-	path = /mob/living/simple_animal/cat/fluff/pet
+/datum/gear/pet/capital
+	cost = 200
+	display_name = "Capitalist's pets"
+	paths = list(/mob/living/simple_animal/lizard/pet)
 
-/datum/gear/pet/kitten
-	display_name = "Cute kitten"
-	path = /mob/living/simple_animal/cat/kitten/pet
-
-/datum/gear/pet/corgi
-	display_name = "Cool corgi"
-	path = /mob/living/simple_animal/corgi/pet
-
-/datum/gear/pet/lizard
-	display_name = "Сold-blooded lizard"
-	path = /mob/living/simple_animal/lizard/pet
+/datum/gear/pet/wizard
+	patron_tier = PATREON_WIZARD
+	display_name = "Patron's pets"
+	paths = list(
+		/mob/living/simple_animal/cat/fluff/pet,
+		/mob/living/simple_animal/cat/kitten/pet,
+		/mob/living/simple_animal/corgi/pet,
+		/mob/living/simple_animal/lizard/pet
+	)

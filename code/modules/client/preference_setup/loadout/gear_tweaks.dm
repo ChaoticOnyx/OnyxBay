@@ -117,6 +117,7 @@
 */
 
 /datum/gear_tweak/contents
+	var/default_choices = list("Random", "None")
 	var/list/valid_contents
 
 /datum/gear_tweak/contents/New()
@@ -139,7 +140,7 @@
 	for(var/i = metadata.len to (valid_contents.len - 1))
 		metadata += "Random"
 	for(var/i = 1 to valid_contents.len)
-		var/entry = input(user, "Choose an entry.", CHARACTER_PREFERENCE_INPUT_TITLE, metadata[i]) as null|anything in (valid_contents[i] + list("Random", "None"))
+		var/entry = input(user, "Choose an entry.", CHARACTER_PREFERENCE_INPUT_TITLE, metadata[i]) as null|anything in (valid_contents[i] + default_choices)
 		if(entry)
 			. += entry
 		else
@@ -162,6 +163,14 @@
 			new path(I)
 		else
 			log_debug("Failed to tweak item: Index [i] in [json_encode(metadata)] did not result in a valid path. Valid contents: [json_encode(valid_contents)]")
+
+/datum/gear_tweak/contents/atoms
+	default_choices = list("Random")
+
+/datum/gear_tweak/contents/atoms/New()
+	. = ..()
+	for(var/i = 1 to length(valid_contents))
+		valid_contents[i] = atomtypes2nameassoclist(valid_contents[i])
 
 /*
 * Ragent adjustment
