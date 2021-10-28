@@ -279,12 +279,11 @@
 						H.skull_path = null // So no skulls dupe in case of lags
 						qdel(src)
 					else
-						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
-							if(src && !QDELETED(src))
-								food_organ.appearance = food_organ_type
-								food_organ.forceMove(get_turf(loc))
-								food_organ = null
-								qdel(src)
+						if(src && !QDELETED(src))
+							food_organ.appearance = food_organ_type
+							food_organ.forceMove(get_turf(loc))
+							food_organ = null
+							qdel(src)
 						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
