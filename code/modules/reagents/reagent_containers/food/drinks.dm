@@ -362,10 +362,10 @@
 	icon_state = "detflask"
 	center_of_mass = "x=17;y=8"
 
-/obj/item/weapon/reagent_containers/food/drinks/thermos
-	name = "thermos"
+/obj/item/weapon/reagent_containers/food/drinks/vacuum
+	name = "vacuum"
 	desc = "Keeping your drinks at the perfect temperature since 1892."
-	icon_state = "thermos"
+	icon_state = "vacuum"
 	volume = 60
 	center_of_mass = "x=15;y=4"
 

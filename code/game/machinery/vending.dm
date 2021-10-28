@@ -723,7 +723,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/carafe = 2,
 					/obj/item/weapon/reagent_containers/food/drinks/coffeecup/metal = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/flask = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/thermos = 5,
+					/obj/item/weapon/reagent_containers/food/drinks/flask/vacuum = 5,
 					/obj/item/weapon/bottle_extra/pourer = 15,
 					/obj/item/weapon/glass_extra/stick = 25,
 					/obj/item/weapon/glass_extra/straw = 25,

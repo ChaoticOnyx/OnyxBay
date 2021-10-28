@@ -76,7 +76,7 @@
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
-/datum/gear/thermos/New()
+/datum/gear/vacuum/New()
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_drink_reagents())
 
@@ -85,9 +85,9 @@
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/capitain
 	price = 5
 
-/datum/gear/drinks/thermos
-	display_name = "thermos"
-	path = /obj/item/weapon/reagent_containers/food/drinks/thermos
+/datum/gear/drinks/vacuum
+	display_name = "vacuum"
+	path = /obj/item/weapon/reagent_containers/food/drinks/vacuum
 	price = 0
 
 /datum/gear/flask/lithium
