@@ -410,10 +410,6 @@
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
 
-	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
-		var/obj/machinery/portable_atmospherics/canister/A = target
-		A.ui_interact(user)
-
 	else if(istype(target, /obj/machinery/mining/drill))
 		var/obj/machinery/mining/drill/hdrill = target
 		if(hdrill.panel_open && hdrill.cell && user.Adjacent(hdrill))

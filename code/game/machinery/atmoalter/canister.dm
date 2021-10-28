@@ -277,8 +277,9 @@ update_flag
 
 	SSnano.update_uis(src) // Update all NanoUIs attached to src
 
-/obj/machinery/portable_atmospherics/canister/attack_ai(mob/user as mob)
-	return
+/obj/machinery/portable_atmospherics/canister/attack_ai(mob/user)
+	if(isrobot(user))
+		ui_interact(user)
 
 /obj/machinery/portable_atmospherics/canister/attack_hand(mob/user as mob)
 	ui_interact(user)
@@ -364,9 +365,11 @@ update_flag
 		update_icon()
 		. = TOPIC_REFRESH
 
-/obj/machinery/portable_atmospherics/canister/CanUseTopic()
+/obj/machinery/portable_atmospherics/canister/CanUseTopic(mob/user)
 	if(destroyed)
 		return STATUS_CLOSE
+	if(isrobot(user) && !Adjacent(user))
+		return STATUS_DISABLED
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/plasma/New()
