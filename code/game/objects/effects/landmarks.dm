@@ -18,14 +18,12 @@
 		if(!tag)
 			tag = "landmark*[name]"
 		LAZYADD(GLOB.landmarks_list, src)
-		to_world("Это New() [name], лендмарк был добавлен в список.")
 
 	 return 1
 
 /obj/effect/landmark/Initialize()
 	. = ..()
 	if(delete_after)
-		to_world("Это Initialize() [name], лендмарк был удален.")
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/landmark/Destroy()

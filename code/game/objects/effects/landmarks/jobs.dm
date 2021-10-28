@@ -3,16 +3,10 @@
 	name = "start"
 	icon_state = "landmark_assistant"
 	should_be_added = TRUE
-	var/crew_spawn = FALSE
 
-/obj/effect/landmark/start/New()
-	if(crew_spawn)
-		tag = "start*[name]"
-		delete_after = TRUE
+/obj/effect/landmark/start/crew/New()
+	tag = "start*[name]"
 	return ..()
-
-/obj/effect/landmark/start/crew
-	crew_spawn = TRUE
 
 // Heads
 /obj/effect/landmark/start/crew/captain
@@ -72,11 +66,6 @@
 	icon_state = "landmark_merchant"
 
 // Actors
-/obj/effect/landmark/start/crew/actor
-	name = "Actor"
-	icon_state = "landmark_actor"
-	crew_spawn = FALSE
-
 /obj/effect/landmark/start/crew/clown
 	name = "Clown"
 	icon_state = "landmark_clown"
@@ -114,6 +103,7 @@
 /obj/effect/landmark/start/crew/roboticist
 	name = "Roboticist"
 	icon_state = "landmark_roboticist"
+	delete_after = TRUE
 
 // Security department
 /obj/effect/landmark/start/crew/hos
@@ -170,23 +160,25 @@
 	name = "Atmospheric Technician"
 	icon_state = "landmark_atmos"
 
-// NanoTrasen operatives
-/obj/effect/landmark/start/crew/ert
-	name = "Emergency Responder"
-	icon_state = "landmark_ert"
-	crew_spawn = FALSE
-
-/obj/effect/landmark/start/crew/deathsquad
-	name = "Death Commando"
-	icon_state = "landmark_deathsquad"
-	crew_spawn = FALSE
-
 // Antagonists
-// Magic creatures
 /obj/effect/landmark/start/antags
 	icon_state = "landmark_syndicate"
-	delete_after = FALSE
+	should_be_added = TRUE
 
+/obj/effect/landmark/start/antags/actor
+	name = "Actor"
+	icon_state = "landmark_actor"
+
+// NanoTrasen operatives
+/obj/effect/landmark/start/antags/ert
+	name = "Emergency Responder"
+	icon_state = "landmark_ert"
+
+/obj/effect/landmark/start/antags/deathsquad
+	name = "Death Commando"
+	icon_state = "landmark_deathsquad"
+
+// Magic creatures
 /obj/effect/landmark/start/antags/wizard
 	name = "Wizard"
 	icon_state = "landmark_wizard"
