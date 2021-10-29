@@ -156,6 +156,9 @@
 				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
 		return
 
+/turf/simulated/wall/blob_act(damage)
+	take_damage(damage)
+
 /turf/simulated/wall/bullet_act(obj/item/projectile/Proj)
 	var/proj_damage = Proj.get_structure_damage()
 	if(ricochet_id != 0)
