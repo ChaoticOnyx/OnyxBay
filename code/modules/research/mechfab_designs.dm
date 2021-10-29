@@ -432,7 +432,7 @@
 	name = "Art module"
 	id = "borg_art"
 	req_tech = list(TECH_DATA = 3, TECH_MATERIAL = 2)
-	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 2000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 2000)
 	build_path = /obj/item/borg/upgrade/art
 
 /datum/design/item/robot_upgrade/bb_printer
