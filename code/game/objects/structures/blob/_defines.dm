@@ -45,7 +45,7 @@
 #define BLOB_CORE_HEALTH 200
 #define BLOB_CORE_FIRE_RESIST 3
 #define BLOB_CORE_BRUTE_RESIST 4
-#define BLOB_CORE_DAMAGE 6
+#define BLOB_CORE_DAMAGE 13
 
 /*
 	Structure:
