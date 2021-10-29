@@ -2789,7 +2789,7 @@
 "bbL" = (/obj/structure/cable/white{icon_state = "1-2"},/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/trim/carpet,/area/library)
 "bbM" = (/obj/machinery/hologram/holopad,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/wood,/area/library)
 "bbN" = (/obj/structure/table/woodentable,/obj/machinery/recharger,/obj/item/weapon/packageWrap,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/trim/wood,/area/library)
-"bbO" = (/obj/structure/bed/chair/office/dark{dir = 8},/obj/effect/landmark/start{name = "Librarian"},/turf/simulated/floor/trim/wood,/area/library)
+"bbO" = (/obj/structure/bed/chair/office/dark{dir = 8},/obj/effect/landmark/start/crew/librarian,/turf/simulated/floor/trim/wood,/area/library)
 "bbP" = (/obj/machinery/camera/autoname,/obj/structure/disposalpipe/segment{dir = 4},/obj/item/device/radio/intercom{pixel_y = 22},/turf/simulated/floor/tiled,/area/hallway/primary/frontier/central_west)
 "bbQ" = (/obj/effect/floor_decal/corner/yellow/full,/obj/machinery/door/morgue{name = "Private Study"; req_access = list(37)},/turf/simulated/floor/tiled,/area/library)
 "bbR" = (/obj/effect/floor_decal/corner/yellow/full,/turf/simulated/floor/tiled,/area/library)
