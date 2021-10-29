@@ -390,7 +390,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		GLOB.dir_set_event.unregister(following, src)
 		GLOB.destroyed_event.unregister(following, src)
 		following = null
-		src.glide_size = glide_before_follow
+		glide_size = glide_before_follow
 		glide_before_follow = 0
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
