@@ -54,6 +54,7 @@
 */
 
 /datum/gear_tweak/path
+	var/check_type = /obj/item
 	var/list/valid_paths
 
 /datum/gear_tweak/path/New(list/valid_paths)
@@ -71,8 +72,8 @@
 		if(!istext(path_name))
 			CRASH("Expected a text key, was [log_info_line(path_name)]")
 		var/selection_type = valid_paths[path_name]
-		if(!ispath(selection_type, /obj/item))
-			CRASH("Expected an /obj/item path, was [log_info_line(selection_type)]")
+		if(!ispath(selection_type, check_type))
+			CRASH("Expected an [log_info_line(check_type)] path, was [log_info_line(selection_type)]")
 		var/path_name_san = replacetext(path_name, "\improper", "")
 		valid_paths_san[path_name_san] = selection_type
 	src.valid_paths = sortAssoc(valid_paths)
@@ -85,6 +86,9 @@
 
 /datum/gear_tweak/path/specified_types_list/New(type_paths)
 	..(atomtypes2nameassoclist(type_paths))
+
+/datum/gear_tweak/path/specified_types_list/atoms
+	check_type = /atom
 
 /datum/gear_tweak/path/specified_types_args/New()
 	..(atomtypes2nameassoclist(args))
@@ -117,7 +121,6 @@
 */
 
 /datum/gear_tweak/contents
-	var/default_choices = list("Random", "None")
 	var/list/valid_contents
 
 /datum/gear_tweak/contents/New()
@@ -140,7 +143,7 @@
 	for(var/i = metadata.len to (valid_contents.len - 1))
 		metadata += "Random"
 	for(var/i = 1 to valid_contents.len)
-		var/entry = input(user, "Choose an entry.", CHARACTER_PREFERENCE_INPUT_TITLE, metadata[i]) as null|anything in (valid_contents[i] + default_choices)
+		var/entry = input(user, "Choose an entry.", CHARACTER_PREFERENCE_INPUT_TITLE, metadata[i]) as null|anything in (valid_contents[i] + list("Random", "None"))
 		if(entry)
 			. += entry
 		else
@@ -163,14 +166,6 @@
 			new path(I)
 		else
 			log_debug("Failed to tweak item: Index [i] in [json_encode(metadata)] did not result in a valid path. Valid contents: [json_encode(valid_contents)]")
-
-/datum/gear_tweak/contents/atoms
-	default_choices = list("Random")
-
-/datum/gear_tweak/contents/atoms/New()
-	. = ..()
-	for(var/i = 1 to length(valid_contents))
-		valid_contents[i] = atomtypes2nameassoclist(valid_contents[i])
 
 /*
 * Ragent adjustment

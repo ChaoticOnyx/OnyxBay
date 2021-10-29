@@ -8,7 +8,21 @@
 /datum/gear/pet/New()
 	..()
 	if(length(paths))
-		gear_tweaks += new /datum/gear_tweak/contents/atoms(paths)
+		gear_tweaks += new /datum/gear_tweak/path/specified_types_list/atoms(paths)
+
+/datum/gear/pet/is_allowed_to_equip(mob/user)
+	. = ..()
+	if(.)
+		var/list/gears = user.client.prefs.gear_list[user.client.prefs.gear_slot]
+		var/list/pets = list()
+		for(var/pet_type in subtypesof(/datum/gear/pet))
+			var/datum/gear/pet/pet = new pet_type()
+			pets.Add(pet.display_name)
+			qdel(pet)
+		pets.Remove(display_name)
+		for(var/gear in gears)
+			if(gear in pets)
+				return FALSE
 
 /datum/gear/pet/spawn_item(location, metadata)
 	var/datum/gear_data/gd = new(path, location)

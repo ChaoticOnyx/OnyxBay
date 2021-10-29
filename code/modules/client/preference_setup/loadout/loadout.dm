@@ -228,7 +228,7 @@ var/list/gear_datums = list()
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(!gear_allowed_to_equip(G, user))
+			else if(!gear_allowed_to_equip(G, user) && G.price)
 				display_class = "gold"
 				discountText = G.price && G.discount ? "<b>(-[round(G.discount * 100)]%)</b>" : ""
 			else if(!allowed_to_see)
@@ -360,17 +360,20 @@ var/list/gear_datums = list()
 			flag_not_enough_opyxes = FALSE
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
+		var/not_available_message = SPAN_NOTICE("This item will never spawn with you, using your current preferences.")
 		if(gear_allowed_to_equip(selected_gear, user))
 			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
-			if (selected_gear.price)
-				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
-			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			if(selected_gear.price)
+				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
+				. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			else
+				. += not_available_message
 
 		if(!gear_allowed_to_see(selected_gear))
 			. += "<br>"
-			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
+			. += not_available_message
 
 		. += "</td>"
 
@@ -561,13 +564,7 @@ var/list/gear_datums = list()
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
 	ASSERT(G)
-	ASSERT(user && user.client)
-	ASSERT(user.client.donator_info)
-	if(G.price && !user.client.donator_info.has_item(G.type))
-		return FALSE
-	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
-		return FALSE
-	return TRUE
+	return G.is_allowed_to_equip(user)
 
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
@@ -596,6 +593,15 @@ var/list/gear_datums = list()
 		gear_tweaks += new /datum/gear_tweak/path/type(path)
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
 		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
+
+/datum/gear/proc/is_allowed_to_equip(mob/user)
+	ASSERT(user && user.client)
+	ASSERT(user.client.donator_info)
+	if(price && !user.client.donator_info.has_item(type))
+		return FALSE
+	if(patron_tier && !user.client.donator_info.patreon_tier_available(patron_tier))
+		return FALSE
+	return TRUE
 
 /datum/gear/proc/get_description(metadata)
 	. = description
