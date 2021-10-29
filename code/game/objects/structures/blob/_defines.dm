@@ -27,7 +27,7 @@
 #define BLOB_HEALTH 40
 #define BLOB_FIRE_RESIST 1
 #define BLOB_BRUTE_RESIST 1
-#define BLOB_DAMAGE 1
+#define BLOB_DAMAGE 3
 
 // Reinforced blob.
 #define BLOB_REINFORCED_HEALTH 80
