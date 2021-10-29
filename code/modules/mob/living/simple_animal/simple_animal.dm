@@ -391,14 +391,7 @@
 	return
 
 /mob/living/simple_animal/proc/handle_panic_target()
-	//see if we should stop panicing
-	if(panic_target)
-		if (!(panic_target.loc in view(src)))
-			panic_target = null
-			stop_automated_movement = 0
-		else
-			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 4)
+	mob_ai.handle_panic_target()
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)

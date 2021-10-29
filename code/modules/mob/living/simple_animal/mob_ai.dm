@@ -62,3 +62,14 @@
 
 /datum/mob_ai/proc/return_mob_friendness(mob/M)
 	return M.faction == holder.faction
+
+/datum/mob_ai/proc/handle_panic_target()
+	ASSERT(holder)
+	//see if we should stop panicing
+	if(holder.panic_target)
+		if (!(holder.panic_target.loc in view(holder)))
+			holder.panic_target = null
+			holder.stop_automated_movement = 0
+		else
+			holder.stop_automated_movement = 1
+			walk_away(holder, holder.panic_target, 7, 4)

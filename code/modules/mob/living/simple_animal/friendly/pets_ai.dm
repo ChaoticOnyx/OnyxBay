@@ -44,6 +44,11 @@
 /datum/mob_ai/pet/return_mob_friendness(mob/M)
 	. = ..() || M == master
 
+/datum/mob_ai/pet/handle_panic_target()
+	ASSERT(holder)
+	if(holder.panic_target != master)
+		..()
+
 /datum/mob_ai/pet/proc/process_waiting()
 	var/turf/T = get_turf(holder)
 	if(T.loc != safe_area)
