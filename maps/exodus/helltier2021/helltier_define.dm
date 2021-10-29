@@ -59,7 +59,7 @@
 				'sound/voice/shriek1.ogg',
 				'sound/hallucinations/wail.ogg',
 				'sound/effects/changeling/centipede.ogg',
-				'sound/effects/changeling/centipededeath.ogg'
+				'sound/effects/changeling/centipededeath.ogg',
 				'sound/items/trayhit2.ogg',
 				'sound/items/Ratchet.ogg',
 				'sound/effects/angrybug.ogg',
