@@ -73,8 +73,9 @@
 /client/verb/swap_hand()
 	set hidden = 1
 	if(istype(mob, /mob/living/carbon))
-		mob:swap_hand()
-	if(istype(mob,/mob/living/silicon/robot))
+		var/mob/living/carbon/C = mob
+		C.swap_hand()
+	if(istype(mob, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = mob
 		R.cycle_modules()
 	return
@@ -112,9 +113,9 @@
 
 	for (var/atom/movable/AM in contents)
 		AM.set_glide_size(glide_size, min, max)
-	if(istype(src, /obj))
+	if (istype(src, /obj))
 		var/obj/O = src
-		if(O.buckled_mob)
+		if (O.buckled_mob)
 			O.buckled_mob.set_glide_size(glide_size, min, max)
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
