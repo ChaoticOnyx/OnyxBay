@@ -261,10 +261,8 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/damage/falling/m_fall_dead11.ogg'
 	),
 	// AMBIENT
-	SFX_AMBIENT_GLOBAL = list(
-		'sound/ambient/global/amb1.ogg',
+	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',
-		'sound/ambient/global/amb3.ogg',
 		'sound/ambient/global/amb4.ogg',
 		'sound/ambient/global/amb5.ogg',
 		'sound/ambient/global/amb6.ogg',
@@ -273,11 +271,15 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/global/amb9.ogg',
 		'sound/ambient/global/amb10.ogg',
 		'sound/ambient/global/amb11.ogg',
-		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb13.ogg',
+	),
+	SFX_AMBIENT_OFF_GLOBAL = list(
+		'sound/ambient/global/amb1.ogg',
+		'sound/ambient/global/amb3.ogg',
+		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb14.ogg'
 	),
-	SFX_AMBIENT_SCIENCE = list(
+	SFX_AMBIENT_POWERED_SCIENCE = list(
 		'sound/ambient/science/amb1.ogg',
 		'sound/ambient/science/amb2.ogg',
 		'sound/ambient/science/amb3.ogg',
@@ -291,7 +293,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/science/amb11.ogg',
 		'sound/ambient/science/amb12.ogg'
 	),
-	SFX_AMBIENT_AI = list(
+	SFX_AMBIENT_POWERED_AI = list(
 		'sound/ambient/ai/amb1.ogg',
 		'sound/ambient/ai/amb2.ogg',
 		'sound/ambient/ai/amb3.ogg',
@@ -315,7 +317,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/ai/amb22.ogg',
 		'sound/ambient/ai/amb23.ogg'
 	),
-	SFX_AMBIENT_COMMS = list(
+	SFX_AMBIENT_POWERED_COMMS = list(
 		'sound/ambient/comms/amb1.ogg',
 		'sound/ambient/comms/amb2.ogg',
 		'sound/ambient/comms/amb3.ogg',
@@ -334,7 +336,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/comms/amb17.ogg',
 		'sound/ambient/comms/amb18.ogg'
 	),
-	SFX_AMBIENT_MAINTENANCE = list(
+	SFX_AMBIENT_POWERED_MAINTENANCE = list(
 		'sound/ambient/maintenance/amb1.ogg',
 		'sound/ambient/maintenance/amb2.ogg',
 		'sound/ambient/maintenance/amb3.ogg',
@@ -342,7 +344,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb5.ogg',
 		'sound/ambient/maintenance/amb6.ogg',
 		'sound/ambient/maintenance/amb7.ogg',
-		'sound/ambient/maintenance/amb8.ogg',
 		'sound/ambient/maintenance/amb9.ogg',
 		'sound/ambient/maintenance/amb10.ogg',
 		'sound/ambient/maintenance/amb12.ogg',
@@ -362,28 +363,33 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb28.ogg',
 		'sound/ambient/maintenance/amb29.ogg',
 		'sound/ambient/maintenance/amb30.ogg',
-		'sound/ambient/maintenance/amb31.ogg',
-		'sound/ambient/maintenance/amb32.ogg',
-		'sound/ambient/maintenance/amb33.ogg',
 		'sound/ambient/maintenance/amb34.ogg',
 		'sound/ambient/maintenance/amb35.ogg',
-		'sound/ambient/maintenance/amb36.ogg',
 		'sound/ambient/maintenance/amb37.ogg',
-		'sound/ambient/maintenance/amb38.ogg',
 		'sound/ambient/maintenance/amb39.ogg',
 		'sound/ambient/maintenance/amb40.ogg',
 		'sound/ambient/maintenance/amb42.ogg',
-		'sound/ambient/maintenance/amb43.ogg',
 		'sound/ambient/maintenance/amb44.ogg',
-		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb46.ogg',
 		'sound/ambient/maintenance/amb47.ogg',
 		'sound/ambient/maintenance/amb48.ogg',
 		'sound/ambient/maintenance/amb49.ogg',
+	),
+	SFX_AMBIENT_OFF_MAINTENANCE = list(
+		'sound/ambient/maintenance/amb8.ogg',
+		'sound/ambient/maintenance/amb11.ogg',
+		'sound/ambient/maintenance/amb31.ogg',
+		'sound/ambient/maintenance/amb32.ogg',
+		'sound/ambient/maintenance/amb33.ogg',
+		'sound/ambient/maintenance/amb36.ogg',
+		'sound/ambient/maintenance/amb38.ogg',
+		'sound/ambient/maintenance/amb41.ogg',
+		'sound/ambient/maintenance/amb43.ogg',
+		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb50.ogg',
 		'sound/ambient/maintenance/amb51.ogg'
 	),
-	SFX_AMBIENT_ENGINEERING = list(
+	SFX_AMBIENT_POWERED_ENGINEERING = list(
 		'sound/ambient/engineering/amb1.ogg',
 		'sound/ambient/engineering/amb2.ogg',
 		'sound/ambient/engineering/amb3.ogg',
@@ -418,7 +424,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/engineering/amb33.ogg',
 		'sound/ambient/engineering/amb34.ogg'
 	),
-	SFX_AMBIENT_SPACE = list(
+	SFX_AMBIENT_OFF_SPACE = list(
 		'sound/ambient/space/exterior1.ogg',
 		'sound/ambient/space/exterior2.ogg',
 		'sound/ambient/space/exterior3.ogg',
@@ -441,7 +447,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/space/exterior20.ogg',
 		'sound/ambient/space/exterior21.ogg'
 	),
-	SFX_AMBIENT_OUTPOST = list(
+	SFX_AMBIENT_POWERED_OUTPOST = list(
 		'sound/ambient/outpost/amb1.ogg',
 		'sound/ambient/outpost/amb2.ogg',
 		'sound/ambient/outpost/amb3.ogg'
