@@ -137,11 +137,11 @@ Frequency:
 	var/chargecost_area = 1000
 	var/chargecost_beacon = 100
 	var/chargecost_local = 100
-	var/cover_open = 0
-	var/timelord_mode = 0
+	var/cover_open = FALSE
+	var/timelord_mode = FALSE
 	var/unique_id = 0
-	var/teleport_on_click = 0
-	var/active = 0
+	var/teleport_on_click = FALSE
+	var/active = FALSE
 	var/list/possible_ids = list(1, 2, 3)
 	var/list/beacon_locations = list()
 	var/obj/item/weapon/cell/vcell
@@ -190,7 +190,7 @@ Frequency:
 		return
 	else
 		to_chat(user, SPAN_NOTICE("You flip Vortex Manipulator's protective cover open"))
-		cover_open = 1
+		cover_open = TRUE
 
 		if(vcell)
 			icon_state = "vm_open"
@@ -261,7 +261,7 @@ Frequency:
 			teleport_on_click = !teleport_on_click
 			to_chat(H, SPAN_NOTICE("You toggle the ability of your Vortex Manipulator to teleport you with just aiming it at some location. Is it on or off now?"))
 		else if (href_list["close_cover"])
-			cover_open = 0
+			cover_open = FALSE
 			icon_state = "vm_closed"
 			to_chat(H, SPAN_NOTICE("You flip Vortex Manipulator's protective cover closed"))
 			update_icon()
@@ -343,7 +343,7 @@ Frequency:
 			if (counter > 3)
 				to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
 				return
-		active = 1
+		active = TRUE
 		unique_id = random_id(/obj/item/weapon/vortex_manipulator, 1111, 9999)
 		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
 		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
@@ -352,8 +352,8 @@ Frequency:
 		//currently not used
 		to_chat(user, SPAN_NOTICE("You deactivate your Vortex Manipulator and clean all personal settings"))
 		unique_id = 0
-		active = 0
-		timelord_mode = 0
+		active = FALSE
+		timelord_mode = FALSE
 
 // Gets CURRENT HOLDER (or turf, if no mob is holding it) of VM, avoiding runtimes. Returns 0 just in case it's located in sth wrong.
 /obj/item/weapon/vortex_manipulator/proc/get_owner()
@@ -477,14 +477,14 @@ Frequency:
 	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
 	var/turf/temp_turf = get_turf(user)
 	for(var/mob/M in range(5, temp_turf))
-		var/vortexchecktemp = 0
+		var/vortexchecktemp = FALSE
 		for(var/obj/item/weapon/vortex_manipulator/VM in M.contents)
-			if(VM.active == 1)
-				vortexchecktemp = 1
+			if(VM.active)
+				vortexchecktemp = TRUE
 		if(!vortexchecktemp)
 			localteleport(M, 1)
 	phase_out(user, get_turf(user))
-	user.forceMove(temp_turf)
+	vortex_teleport(user, temp_turf)
 	phase_in(user, get_turf(user))
 	deductcharge(chargecost_area)
 
@@ -494,7 +494,7 @@ Frequency:
  * TODO: add CD
  */
 
-/obj/item/weapon/vortex_manipulator/proc/vortexannounce(mob/user, nonactive_announce = 0)
+/obj/item/weapon/vortex_manipulator/proc/vortexannounce(mob/user, nonactive_announce = FALSE)
 	var/input = sanitize(input(user, "Enter what you want to announce"))
 	for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 		var/H = VM.get_owner()
@@ -518,7 +518,7 @@ Frequency:
  */
 /obj/item/weapon/vortex_manipulator/proc/localteleport(mob/user, malf_use, new_x = 0, new_y = 0)
 	if(!active)
-		malf_use = 1
+		malf_use = TRUE
 	var/list/possible_x = list(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
 	var/list/possible_y = list(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
 	var/A = pick(possible_x)
@@ -540,7 +540,7 @@ Frequency:
 		if(Q.partner)
 			bluespace_malf(user)
 	else
-		user.forceMove(targetturf)
+		vortex_teleport(user, targetturf)
 	phase_in(user,get_turf(user))
 	for(var/obj/item/grab/G in user.contents)
 		if(G.affecting)
@@ -559,7 +559,7 @@ Frequency:
  */
 /obj/item/weapon/vortex_manipulator/proc/beaconteleport(mob/user, malf_use)
 	if(!active)
-		malf_use = 1
+		malf_use = TRUE
 	get_beacon_locations()
 	var/A = pick(beacon_locations)
 	if(!malf_use)
@@ -580,7 +580,7 @@ Frequency:
 				if(Q.partner)
 					bluespace_malf(user)
 			else
-				user.forceMove(T)
+				vortex_teleport(user, T)
 			phase_in(user,get_turf(user))
 			deductcharge(chargecost_beacon)
 			for(var/obj/item/grab/G in user.contents)
@@ -598,7 +598,7 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
 	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
 	var/obj/item/weapon/cell/quantum/quacell = vcell
-	user.forceMove(get_turf(quacell.partner))
+	vortex_teleport(user, get_turf(quacell.partner))
 
 /*
  * Area teleport.
@@ -609,7 +609,7 @@ Frequency:
  */
 /obj/item/weapon/vortex_manipulator/proc/areateleport(mob/user, malf_use)
 	if(!active)
-		malf_use = 1
+		malf_use = TRUE
 	var/A = pick(teleportlocs)
 	if(!malf_use)
 		A = input(user, "Area to jump to", "JEEROOONIMOOO") in teleportlocs
@@ -640,7 +640,7 @@ Frequency:
 		if(Q.partner)
 			bluespace_malf(user)
 	else
-		user.forceMove(T)
+		vortex_teleport(user, T)
 	phase_in(user,get_turf(user))
 	deductcharge(chargecost_area)
 	for(var/obj/item/grab/G in user.contents)
@@ -650,3 +650,8 @@ Frequency:
 			phase_in(G.affecting,get_turf(G.affecting))
 	if(prob(13 - (malf_use * 13)))
 		malfunction()
+
+/obj/item/weapon/vortex_manipulator/proc/vortex_teleport(mob/user, turf/destination_turf)
+	if(user && user.buckled)
+		user.buckled.unbuckle_mob()
+	user.forceMove(destination_turf)
