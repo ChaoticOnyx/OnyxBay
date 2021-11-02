@@ -24,6 +24,7 @@ var/bomb_set
 	var/previous_level = ""
 	var/datum/wires/nuclearbomb/wires = null
 	var/decl/security_level/original_level
+	var/timer_created = FALSE
 
 /obj/machinery/nuclearbomb/New()
 	..()
@@ -39,10 +40,19 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/Process(wait)
 	if(timing)
-		timeleft = max(timeleft - (wait / 10), 0)
 		if(timeleft <= 0)
 			addtimer(CALLBACK(src, .proc/explode), 0)
+			return
+		if(!timer_created)
+			addtimer(CALLBACK(src, .proc/do_timing), 1 SECONDS)
+			timer_created = TRUE
 		SSnano.update_uis(src)
+
+/obj/machinery/nuclearbomb/proc/do_timing()
+	timer_created = FALSE
+	if(!timing)
+		return
+	timeleft -= 1
 
 /obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob, params)
 	if(isScrewdriver(O))
