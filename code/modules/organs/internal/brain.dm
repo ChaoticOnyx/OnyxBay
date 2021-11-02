@@ -71,6 +71,7 @@
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()
 		brainmob.timeofhostdeath = H.timeofdeath
+		brainmob.languages = H.languages
 		// Copy modifiers.
 		for(var/datum/modifier/M in H.modifiers)
 			if(M.flags & MODIFIER_GENETIC)
