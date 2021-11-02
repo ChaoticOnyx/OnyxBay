@@ -9,7 +9,7 @@
 	var/max_health = BLOB_HEALTH
 
 	var/damage = BLOB_DAMAGE
-	
+
 	var/fire_resist = BLOB_FIRE_RESIST
 	var/brute_resist = BLOB_BRUTE_RESIST
 
@@ -32,7 +32,7 @@
 
 /obj/structure/blob/core/Destroy()
 	. = ..()
-	
+
 	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/blob/proc/can_expand()
@@ -45,7 +45,7 @@
 
 	var/distance = get_dist(src, core)
 	var/coefficient = BLOB_REGENERATION_MULTIPLIER
-	
+
 	if(distance > BLOB_EFFICIENT_REGENERATION_DISTANCE)
 		coefficient = distance / BLOB_EFFICIENT_REGENERATION_DISTANCE / coefficient
 		coefficient = max(0.01, coefficient)
@@ -100,11 +100,11 @@
 
 			// Skip not suitable for z-level checks
 			continue
-		
+
 		if(dir == DOWN)
 			if(istype(current_loc, /turf/simulated/open))
 				possible_locs += possible_loc
-			
+
 			continue
 
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
@@ -113,19 +113,19 @@
 
 		if(loc_is_not_suitable)
 			continue
-	
+
 		possible_locs += possible_loc
-	
+
 	if(length(possible_locs) == 0)
 		return
-	
+
 	var/target_loc = pick(possible_locs)
 	var/obj/structure/blob/new_blob = new /obj/structure/blob(target_loc, core)
 	new_blob.health = new_blob.max_health / 2
 
 /obj/structure/blob/Process()
 	. = ..()
-	
+
 	if(!life())
 		return TRUE
 
@@ -133,7 +133,7 @@
 	THROTTLE(expand_cooldown, BLOB_EXPAND_COOLODNW)
 	THROTTLE(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN)
 	THROTTLE(health_cooldown, BLOB_HEAL_COOLDOWN)
-	
+
 	if(health_cooldown)
 		heal()
 
@@ -205,3 +205,12 @@
 			health -= (P.damage / fire_resist)
 
 	update_icon()
+
+/obj/structure/blob/Crossed(O)
+	. = ..()
+
+	var/obj/item/projectile/P = O
+	if(!istype(P))
+		return
+
+	bullet_act(P)
