@@ -18,7 +18,7 @@ var/global/datum/controller/occupations/job_master
 	var/list/job_debug = list()
 
 
-	proc/SetupOccupations(var/setup_titles = 0)
+	proc/SetupOccupations(setup_titles = 0)
 		occupations = list()
 		occupations_by_type = list()
 		occupations_by_title = list()
@@ -62,20 +62,20 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/Debug(var/text)
+	proc/Debug(text)
 		if(!Debug2)	return 0
 		job_debug.Add(text)
 		return 1
 
 
-	proc/GetJob(var/rank)
+	proc/GetJob(rank)
 		if(!rank)	return null
 		for(var/datum/job/J in occupations)
 			if(!J)	continue
 			if(J.title == rank)	return J
 		return null
 
-	proc/ShouldCreateRecords(var/rank)
+	proc/ShouldCreateRecords(rank)
 		if(!rank) return 0
 		var/datum/job/job = GetJob(rank)
 		if(!job) return 0
@@ -84,7 +84,7 @@ var/global/datum/controller/occupations/job_master
 	proc/GetPlayerAltTitle(mob/new_player/player, rank)
 		return player.client.prefs.GetPlayerAltTitle(GetJob(rank))
 
-	proc/CheckGeneralJoinBlockers(var/mob/new_player/joining, var/datum/job/job)
+	proc/CheckGeneralJoinBlockers(mob/new_player/joining, datum/job/job)
 		if(!istype(joining) || !joining.client || !joining.client.prefs)
 			return FALSE
 		if(!istype(job))
@@ -118,7 +118,7 @@ var/global/datum/controller/occupations/job_master
 			return FALSE
 		return TRUE
 
-	proc/CheckUnsafeSpawn(var/mob/living/spawner, var/turf/spawn_turf)
+	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
 		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
 		if(airstatus || radlevel > 0)
@@ -164,7 +164,7 @@ var/global/datum/controller/occupations/job_master
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return FALSE
 
-	proc/FreeRole(var/rank)	//making additional slot on the fly
+	proc/FreeRole(rank)	//making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
 		if(job && job.current_positions >= job.total_positions && job.total_positions != -1)
 			job.total_positions++
@@ -195,7 +195,7 @@ var/global/datum/controller/occupations/job_master
 				candidates += player
 		return candidates
 
-	proc/GiveRandomJob(var/mob/new_player/player)
+	proc/GiveRandomJob(mob/new_player/player)
 		Debug("GRJ Giving random job, Player: [player]")
 		for(var/datum/job/job in shuffle(occupations))
 			if(!job)
@@ -282,7 +282,7 @@ var/global/datum/controller/occupations/job_master
 
 
 	///This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
-	proc/CheckHeadPositions(var/level)
+	proc/CheckHeadPositions(level)
 		for(var/command_position in GLOB.command_positions)
 			var/datum/job/job = GetJob(command_position)
 			if(!job)	continue
@@ -406,7 +406,7 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
+	proc/EquipRank(mob/living/carbon/human/H, rank, joined_late = 0)
 		if(!H)	return null
 
 		var/datum/job/job = GetJob(rank)
