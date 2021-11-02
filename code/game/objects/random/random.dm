@@ -574,6 +574,7 @@
 /obj/random/pottedplant
 	name = "random potted plant"
 	desc = "This is a random potted plant."
+	icon = 'icons/obj/plants.dmi'
 	icon_state = "random_plant_spawner"
 
 /obj/random/pottedplant/spawn_choices()
