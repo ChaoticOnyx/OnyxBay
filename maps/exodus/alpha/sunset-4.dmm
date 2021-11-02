@@ -525,7 +525,7 @@
 "akk" = (/obj/structure/table/rack,/obj/item/clothing/suit/space/vox,/obj/item/clothing/head/helmet/space/vox,/obj/item/clothing/shoes/magboots/vox,/obj/item/clothing/gloves/vox,/obj/item/clothing/under/vox/vox_robes,/turf/unsimulated/floor{icon_state = "asteroid"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
 "akl" = (/obj/effect/decal/mecha_wreckage/hoverpod,/turf/unsimulated/floor{icon_state = "asteroid"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
 "akm" = (/obj/structure/flora/pottedplant/ugly,/turf/unsimulated/floor{icon_state = "dark"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
-"akn" = (/obj/effect/decal/cleanable/cobweb,/obj/structure/closet,/obj/random/hat,/obj/random/junk,/turf/unsimulated/floor{icon_state = "dark"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
+"akn" = (/obj/effect/decal/cleanable/cobweb,/obj/structure/closet,/obj/random/clothing/hat,/obj/random/junk,/turf/unsimulated/floor{icon_state = "dark"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
 "ako" = (/obj/machinery/door/airlock/centcom{name = "Head"; opacity = 1; req_access = list(103)},/turf/unsimulated/floor{icon_state = "freezerfloor"},/area/rescue_base/base)
 "akp" = (/turf/unsimulated/floor{icon_state = "asteroid"},/area/rescue_base/base)
 "akq" = (/turf/unsimulated/floor{icon_state = "asteroidplating"},/area/rescue_base/base)

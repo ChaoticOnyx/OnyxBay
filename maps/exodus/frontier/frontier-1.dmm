@@ -5630,7 +5630,7 @@
 "ceJ" = (/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "escape_pod_3_berth_hatch"; locked = 1; name = "Escape Pod"; req_access = list(13)},/obj/machinery/shield_diffuser,/turf/simulated/floor/plating,/area/maintenance/chapel/south)
 "ceK" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/maintenance{req_one_access = list(7,12)},/obj/structure/barricade{layer = 6},/turf/simulated/floor/plating,/area/maintenance/chapel/south)
 "ceL" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/barricade{layer = 6},/turf/simulated/floor/plating,/area/maintenance/chapel/south)
-"ceM" = (/obj/machinery/atmospherics/unary/vent_pump/on,/obj/structure/table/rack{dir = 8},/obj/random/maintenance,/obj/random/maintenance,/obj/random/maintenance,/obj/random/hat,/obj/item/clothing/mask/gas/cyborg,/turf/simulated/floor/tiled,/area/maintenance/research_starboard)
+"ceM" = (/obj/machinery/atmospherics/unary/vent_pump/on,/obj/structure/table/rack{dir = 8},/obj/random/maintenance,/obj/random/maintenance,/obj/random/maintenance,/obj/random/clothing/hat,/obj/item/clothing/mask/gas/cyborg,/turf/simulated/floor/tiled,/area/maintenance/research_starboard)
 "ceN" = (/obj/structure/closet/secure_closet/bar,/obj/item/weapon/gun/projectile/shotgun/doublebarrel,/obj/item/weapon/storage/box/shotgun/beanbags,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/obj/machinery/alarm{dir = 4; pixel_x = -24},/obj/machinery/light/small{dir = 1},/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "ceO" = (/turf/simulated/floor/trim/darkwood,/area/crew_quarters/barbackroom)
 "ceP" = (/obj/random/trash,/turf/simulated/floor/plating,/area/maintenance/chapel/south)
