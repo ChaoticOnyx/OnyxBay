@@ -329,7 +329,9 @@
 		if(H && BP_IS_ROBOTIC(H) && !BP_IS_LIFELIKE(H))
 			return TRUE
 
-	if(!wear_suit || (wear_suit && !(wear_suit.flags_inv & HIDEJUMPSUIT)))
-		if(!w_uniform || (w_uniform && !(w_uniform.body_parts_covered && UPPER_TORSO)))
+	if(!wear_suit || !(wear_suit.flags_inv & HIDEJUMPSUIT))
+		if(!w_uniform || !(w_uniform.body_parts_covered && UPPER_TORSO))
 			if(C && BP_IS_ROBOTIC(C) && !BP_IS_LIFELIKE(C))
 				return TRUE
+
+	return FALSE

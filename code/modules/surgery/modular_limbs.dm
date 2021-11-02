@@ -39,15 +39,13 @@
 	. =  damage >= min_broken_damage || (status & ORGAN_BROKEN) || is_stump()
 
 /mob/living/carbon/human/proc/get_modular_limbs(return_first_found = FALSE, validate_proc)
-	for(var/bp in organs)
-		var/obj/item/organ/external/E = bp
+	for(var/obj/item/organ/external/E in organs)
 		if(!validate_proc || call(E, validate_proc)(src) > MODULAR_BODYPART_INVALID)
 			LAZYADD(., E)
 			if(return_first_found)
 				return
 
-	for(var/bp in .)
-		var/obj/item/organ/external/E = bp
+	for(var/obj/item/organ/external/E  in .)
 		if(length(E.children))
 			. -= E.children
 
@@ -63,7 +61,7 @@
 
 /mob/living/carbon/human/proc/check_can_attach_modular_limb(obj/item/organ/external/E)
 	THROTTLE(last_special, 8)
-	if(!last_special || get_active_hand() != E)
+	if(!last_special)
 		return FALSE
 	if(incapacitated() || restrained())
 		to_chat(src, SPAN_WARNING("You can't do that in your current state!"))
@@ -78,7 +76,7 @@
 		to_chat(src, SPAN_WARNING("\The [E] cannot be attached by your own hand."))
 		return FALSE
 	var/install_to_zone = E.organ_tag
-	if(!!(get_organ(install_to_zone)))
+	if(get_organ(install_to_zone))
 		to_chat(src, SPAN_WARNING("There is already a limb attached at that part of your body."))
 		return FALSE
 	if(E.check_modular_limb_damage(src))
@@ -126,7 +124,6 @@
 	if(!check_can_attach_modular_limb(E))
 		return FALSE
 
-	last_special = world.time
 	drop_from_inventory(E)
 	E.replaced(src)
 
@@ -158,7 +155,6 @@
 	if(!check_can_detach_modular_limb(E))
 		return FALSE
 
-	last_special = world.time
 	E.removed(src)
 	E.clean_blood()
 	E.dropInto(loc)
