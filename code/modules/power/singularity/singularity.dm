@@ -13,7 +13,6 @@
 
 	var/current_size = 1
 	var/allowed_size = 1
-	var/contained = 1 // Are we going to move around?
 	var/energy = 100 // How strong are we?
 	var/dissipate = 1 // Do we lose energy over time?
 	var/dissipate_delay = 10
@@ -32,6 +31,11 @@
 	var/create_childs = TRUE // if true - creates a dummy-singularity for each connected Z-level
 	var/list/obj/singularity/child/childs = list()
 
+	var/follows_ghosts = FALSE
+	var/picking_coldown = 0
+	var/mob/observer/ghost/the_chosen = null
+	var/mob/observer/ghost/prev_ghost = null
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -49,9 +53,7 @@
 			break
 
 	if(create_childs)
-		for(level in (GetConnectedZlevels(z) - z))
-			var/obj/singularity/child/SC = new (locate(x, y, level), src, level)
-			childs += SC
+		create_childs()
 
 /obj/singularity/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -60,6 +62,16 @@
 		if(!QDELETED(SC))
 			qdel(SC)
 	return ..()
+
+/obj/singularity/proc/create_childs()
+	for(var/obj/singularity/child/SC in childs)
+		childs -= SC
+		SC.parent = null
+		qdel(SC)
+
+	for(level in (GetConnectedZlevels(z) - z))
+		var/obj/singularity/child/SC = new (locate(x, y, level), src, level)
+		childs += SC
 
 /obj/singularity/attack_hand(mob/user)
 	consume(user)
@@ -89,6 +101,12 @@
 /obj/singularity/Bumped(atom/A)
 	consume(A)
 
+/obj/singularity/touch_map_edge()
+	var/old_z = z
+	..()
+	if(old_z != z && create_childs)
+		create_childs()
+
 /obj/singularity/Process()
 	eat()
 	dissipate()
@@ -100,6 +118,32 @@
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
+
+	if(follows_ghosts && picking_coldown <= world.time)
+		if(the_chosen)
+			stop_following()
+
+		else if(!target)
+			pick_ghost()
+
+/obj/singularity/proc/pick_ghost()
+	picking_coldown = world.time + 20 SECONDS
+
+	var/zlevels = GetConnectedZlevels(z)
+	for(var/mob/observer/ghost/G in shuffle(GLOB.ghost_mob_list))
+		if(!G.client)
+			continue
+		if(G == prev_ghost)
+			continue
+		if(G.z in zlevels)
+			the_chosen = G
+			break
+
+/obj/singularity/proc/stop_following()
+	picking_coldown = world.time + 40 SECONDS
+
+	prev_ghost = the_chosen
+	the_chosen = null
 
 /obj/singularity/attack_ai() //To prevent ais from gibbing themselves when they click on one.
 	return
@@ -148,6 +192,8 @@
 			dissipate_track = 0
 			dissipate_strength = 1
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s1"
 			visible_message(SPAN("notice", "The singularity has shrunk to a rather pitiful size."))
@@ -166,6 +212,8 @@
 			dissipate_track = 0
 			dissipate_strength = 5
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s3"
 			if(growing)
@@ -188,6 +236,8 @@
 				dissipate_track = 0
 				dissipate_strength = 20
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s5"
 				if(growing)
@@ -210,6 +260,8 @@
 				dissipate_track = 0
 				dissipate_strength = 10
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s7"
 				if(growing)
@@ -229,6 +281,8 @@
 			consume_range = 4
 			dissipate = 0 // It cant go smaller due to e loss.
 			overlays = 0
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			if(growing)
@@ -248,6 +302,8 @@
 			consume_range = 5
 			dissipate = 0 // It cant go smaller due to e loss
 			event_chance = 25 // Events will fire off more often.
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			visible_message(SPAN("sinister", "<font size='3'>You witness the creation of a destructive force that cannot possibly be stopped by human hands.</font>"))
@@ -323,8 +379,8 @@
 	if(force_move_direction)
 		movement_dir = force_move_direction
 
-	if(target && prob(60))
-		movement_dir = get_dir(src, target) // moves to a singulo beacon, if there is one
+	else if((target || the_chosen) && prob(60))
+		movement_dir = get_dir(src, target || the_chosen) // moves to a singulo beacon, if there is one
 
 	if(current_size >= STAGE_FIVE) // The superlarge one does not care about things in its way
 		step(src, movement_dir)

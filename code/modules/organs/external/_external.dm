@@ -1051,7 +1051,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			owner.Weaken(2)
 			owner.Stun(1)
 
-	broken_description = pick("broken", SFX_BREAK_BONE, "hairline fracture")
+	broken_description = pick("broken", "fracture", "hairline fracture")
 
 	// Fractures have a chance of getting you out of restraints
 	if (prob(25))

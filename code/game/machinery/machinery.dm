@@ -204,6 +204,14 @@ Class Procs:
 		else
 	return
 
+/obj/machinery/blob_act()
+	if(stat & BROKEN)
+		qdel(src)
+		return
+
+	if(prob(10))
+		set_broken(TRUE)
+
 /obj/machinery/proc/set_broken(new_state)
 	if(new_state && !(stat & BROKEN))
 		stat |= BROKEN

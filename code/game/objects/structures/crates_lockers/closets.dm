@@ -342,6 +342,12 @@
 			if(!(--Proj.penetrating))
 				break
 
+/obj/structure/closet/blob_act()
+	if(opened)
+		qdel(src)
+	else
+		break_open()
+
 /obj/structure/closet/attackby(obj/item/weapon/W, mob/user)
 	if(src.opened)
 		if(istype(W, /obj/item/grab))
