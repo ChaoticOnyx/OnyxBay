@@ -221,7 +221,7 @@
 // Latejoin landmarks.
 /obj/effect/landmark/joinlate
 	name = "JoinLate"
-	icon_state = "landmark_assistant"
+	icon_state = "landmark_late"
 	delete_after = TRUE
 
 /obj/effect/landmark/joinlate/New()
@@ -245,6 +245,7 @@
 
 /obj/effect/landmark/joinlate/cryo
 	name = "JoinLateCryo"
+	icon_state = "landmark_cryo"
 
 /obj/effect/landmark/joinlate/cyborg
 	name = "JoinLateCyborg"
@@ -255,6 +256,3 @@
 	icon_state = "landmark_observer"
 	delete_after = FALSE
 	should_be_added = TRUE
-
-
-

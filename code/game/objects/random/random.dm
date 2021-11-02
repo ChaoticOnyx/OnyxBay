@@ -1,8 +1,8 @@
 /obj/random
 	name = "random object"
 	desc = "This item type is used to spawn random objects at round-start."
-	icon = 'icons/misc/mark.dmi'
-	icon_state = "rup"
+	icon = 'icons/misc/landmarks.dmi'
+	icon_state = "landmark_unique_gray"
 	var/spawn_nothing_percentage = 0 // this variable determines the likelyhood that this random object will not spawn anything
 
 	var/spawn_method = /obj/random/proc/spawn_item
@@ -35,7 +35,7 @@
 /obj/random/single
 	name = "randomly spawned object"
 	desc = "This item type is used to randomly spawn a given object at round-start."
-	icon_state = "x3"
+	icon_state = "landmark_unique_gray"
 	var/spawn_object = null
 
 /obj/random/single/spawn_choices()
@@ -44,8 +44,7 @@
 /obj/random/tool
 	name = "random tool"
 	desc = "This is a random tool."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "welder"
+	icon_state = "landmark_tool"
 
 /obj/random/tool/spawn_choices()
 	return list(/obj/item/weapon/screwdriver,
@@ -59,8 +58,7 @@
 /obj/random/technology_scanner
 	name = "random scanner"
 	desc = "This is a random technology scanner."
-	icon = 'icons/obj/device.dmi'
-	icon_state = "atmos"
+	icon_state = "landmark_scanner"
 
 /obj/random/technology_scanner/spawn_choices()
 	return list(/obj/item/device/t_scanner = 10,
@@ -75,8 +73,7 @@
 /obj/random/powercell
 	name = "random powercell"
 	desc = "This is a random powercell."
-	icon = 'icons/obj/power.dmi'
-	icon_state = "hcell"
+	icon_state = "landmark_cell"
 
 /obj/random/powercell/spawn_choices()
 	return list(/obj/item/weapon/cell/crap = 2,
@@ -91,8 +88,7 @@
 /obj/random/bomb_supply
 	name = "bomb supply"
 	desc = "This is a random bomb supply."
-	icon = 'icons/obj/assemblies/new_assemblies.dmi'
-	icon_state = "signaller"
+	icon_state = "landmark_bomb"
 
 /obj/random/bomb_supply/spawn_choices()
 	return list(/obj/item/device/assembly/igniter,
@@ -104,8 +100,7 @@
 /obj/random/toolbox
 	name = "random toolbox"
 	desc = "This is a random toolbox."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "red"
+	icon_state = "landmark_box"
 	spawn_nothing_percentage = 40
 
 /obj/random/toolbox/spawn_choices()
@@ -117,8 +112,7 @@
 /obj/random/tech_supply
 	name = "random tech supply"
 	desc = "This is a random piece of technology supplies."
-	icon = 'icons/obj/power.dmi'
-	icon_state = "cell"
+	icon_state = "landmark_tech"
 	spawn_nothing_percentage = 50
 
 /obj/random/tech_supply/spawn_choices()
@@ -137,10 +131,9 @@
 				/obj/item/weapon/tape_roll = 2)
 
 /obj/random/medical
-	name = "Random Medical equipment"
+	name = "random medical equipment"
 	desc = "This is a random medical item."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "traumakit"
+	icon_state = "landmark_supply"
 	spawn_nothing_percentage = 25
 
 /obj/random/medical/spawn_choices()
@@ -161,10 +154,9 @@
 				/obj/item/stack/nanopaste = 1)
 
 /obj/random/medical/lite
-	name = "Random Medicine"
+	name = "random medicine"
 	desc = "This is a random simple medical item."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "brutepack"
+	icon_state = "landmark_supply"
 	spawn_nothing_percentage = 25
 
 /obj/random/medical/lite/spawn_choices()
@@ -180,10 +172,9 @@
 				/obj/item/weapon/storage/pill_bottle/dylovene = 2)
 
 /obj/random/firstaid
-	name = "Random First Aid Kit"
+	name = "random first aid kit"
 	desc = "This is a random first aid kit."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "firstaid"
+	icon_state = "landmark_supply"
 	spawn_nothing_percentage = 50
 
 /obj/random/firstaid/spawn_choices()
@@ -196,10 +187,9 @@
 				/obj/item/weapon/storage/firstaid/fire = 6)
 
 /obj/random/contraband
-	name = "Random Illegal Item"
+	name = "random illegal item"
 	desc = "Hot Stuff."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "purplecomb"
+	icon_state = "landmark_unique_red"
 	spawn_nothing_percentage = 66
 
 /obj/random/contraband/spawn_choices()
@@ -229,8 +219,7 @@
 /obj/random/drinkbottle
 	name = "random drink"
 	desc = "This is a random drink."
-	icon = 'icons/obj/drinks.dmi'
-	icon_state = "whiskeybottle"
+	icon_state = "landmark_drink"
 	spawn_nothing_percentage = 25
 
 /obj/random/drinkbottle/spawn_choices()
@@ -247,10 +236,9 @@
 
 
 /obj/random/energy
-	name = "Random Energy Weapon"
+	name = "random energy weapon"
 	desc = "This is a random energy weapon."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "energykill100"
+	icon_state = "landmark_laser"
 
 /obj/random/energy/spawn_choices()
 	return list(/obj/item/weapon/gun/energy/laser = 4,
@@ -267,10 +255,9 @@
 				/obj/item/weapon/gun/energy/stunrevolver = 4)
 
 /obj/random/projectile
-	name = "Random Projectile Weapon"
+	name = "random projectile weapon"
 	desc = "This is a random projectile weapon."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "revolver"
+	icon_state = "landmark_projectile"
 
 /obj/random/projectile/spawn_choices()
 	return list(/obj/item/weapon/gun/projectile/shotgun/pump = 3,
@@ -292,10 +279,9 @@
 				/obj/item/weapon/gun/projectile/shotgun/pump/combat = 2)
 
 /obj/random/handgun
-	name = "Random Handgun"
+	name = "random handgun"
 	desc = "This is a random sidearm."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "secgundark"
+	icon_state = "landmark_projectile"
 
 /obj/random/handgun/spawn_choices()
 	return list(/obj/item/weapon/gun/projectile/pistol/vp78 = 3,
@@ -306,10 +292,9 @@
 				/obj/item/weapon/gun/projectile/pistol/secgun/wood = 1)
 
 /obj/random/ammo
-	name = "Random Ammunition"
+	name = "random ammunition"
 	desc = "This is random ammunition."
-	icon = 'icons/obj/ammo.dmi'
-	icon_state = "45-10"
+	icon_state = "landmark_ammo"
 
 /obj/random/ammo/spawn_choices()
 	return list(/obj/item/weapon/storage/box/shotgun/beanbags = 6,
@@ -325,8 +310,7 @@
 /obj/random/action_figure
 	name = "random action figure"
 	desc = "This is a random action figure."
-	icon = 'icons/obj/toy.dmi'
-	icon_state = "assistant"
+	icon_state = "landmark_figure"
 
 /obj/random/action_figure/spawn_choices()
 	return list(/obj/item/toy/figure/cmo,
@@ -369,12 +353,10 @@
 				/obj/item/toy/figure/ert,
 				/obj/item/toy/figure/moose)
 
-
 /obj/random/plushie
 	name = "random plushie"
 	desc = "This is a random plushie."
-	icon = 'icons/obj/toy.dmi'
-	icon_state = "nymphplushie"
+	icon_state = "landmark_toy"
 	spawn_nothing_percentage = 35
 
 /obj/random/plushie/spawn_choices()
@@ -391,8 +373,7 @@
 /obj/random/plushie/large
 	name = "random large plushie"
 	desc = "This is a random large plushie."
-	icon = 'icons/obj/toy.dmi'
-	icon_state = "droneplushie"
+	icon_state = "landmark_plushie_l"
 	spawn_nothing_percentage = 35
 
 /obj/random/plushie/large/spawn_choices()
@@ -401,21 +382,11 @@
 				/obj/structure/plushie/carp,
 				/obj/structure/plushie/beepsky)
 
-/obj/random/junk //Broken items, or stuff that could be picked up
-	name = "random junk"
-	desc = "This is some random junk."
-	icon = 'icons/obj/trash.dmi'
-	icon_state = "trashbag3"
-	spawn_nothing_percentage = 35
-
-/obj/random/junk/spawn_choices()
-	return list(get_random_junk_type())
-
-/obj/random/trash //Mostly remains and cleanable decals. Stuff a janitor could clean up
+// Mostly remains and cleanable decals. Stuff a janitor could clean up.
+/obj/random/trash
 	name = "random trash"
 	desc = "This is some random trash."
-	icon = 'icons/effects/effects.dmi'
-	icon_state = "greenglow"
+	icon_state = "landmark_garbage"
 	spawn_nothing_percentage = 35
 
 /obj/random/trash/spawn_choices()
@@ -434,12 +405,11 @@
 				/obj/item/remains/robot = 3,
 				/obj/item/remains/xeno = 1)
 
-
-/obj/random/closet //A couple of random closets to spice up maint
+// A couple of random closets to spice up maint.
+/obj/random/closet
 	name = "random closet"
 	desc = "This is a random closet."
-	icon = 'icons/obj/closet.dmi'
-	icon_state = "syndicate1"
+	icon_state = "landmark_storage"
 	spawn_nothing_percentage = 25
 
 /obj/random/closet/spawn_choices()
@@ -478,8 +448,7 @@
 /obj/random/coin
 	name = "random coin"
 	desc = "This is a random coin."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "coin"
+	icon_state = "landmark_unique_orange"
 	spawn_nothing_percentage = 50
 
 /obj/random/coin/spawn_choices()
@@ -494,8 +463,7 @@
 /obj/random/toy
 	name = "random toy"
 	desc = "This is a random toy."
-	icon = 'icons/obj/toy.dmi'
-	icon_state = "ship"
+	icon_state = "landmark_toy"
 	spawn_nothing_percentage = 15
 
 /obj/random/toy/spawn_choices()
@@ -530,8 +498,7 @@
 /obj/random/tank
 	name = "random tank"
 	desc = "This is a tank."
-	icon = 'icons/obj/tank.dmi'
-	icon_state = "canister"
+	icon_state = "landmark_tank"
 
 /obj/random/tank/spawn_choices()
 	return list(/obj/item/weapon/tank/oxygen = 5,
@@ -546,11 +513,11 @@
 				/obj/item/weapon/tank/nitrogen = 1,
 				/obj/item/device/suit_cooling_unit = 1)
 
-/obj/random/material //Random materials for building stuff
+// random materials for building stuff.
+/obj/random/material
 	name = "random material"
 	desc = "This is a random material."
-	icon = 'icons/obj/materials.dmi'
-	icon_state = "metal"
+	icon_state = "landmark_unique_purple"
 	spawn_nothing_percentage = 25
 
 /obj/random/material/spawn_choices()
@@ -572,10 +539,9 @@
 				/obj/item/stack/material/plasteel/fifty = 3)
 
 /obj/random/soap
-	name = "Random Cleaning Supplies"
+	name = "random сleaning supplies"
 	desc = "This is a random bar of soap. Soap! SOAP?! SOAP!!!"
-	icon = 'icons/obj/items.dmi'
-	icon_state = "soap"
+	icon_state = "landmark_soap"
 
 /obj/random/soap/spawn_choices()
 	return list(/obj/item/weapon/soap = 4,
@@ -587,11 +553,11 @@
 				/obj/item/weapon/reagent_containers/spray/cleaner = 2,
 				/obj/item/weapon/grenade/chem_grenade/cleaner = 1)
 
-/obj/random/obstruction //Large objects to block things off in maintenance
+// Large objects to block things off in maintenance.
+/obj/random/obstruction
 	name = "random obstruction"
 	desc = "This is a random obstruction."
-	icon = 'icons/obj/cult.dmi'
-	icon_state = "cultgirder"
+	icon_state = "landmark_barrier"
 	spawn_nothing_percentage = 25
 
 /obj/random/obstruction/spawn_choices()
@@ -608,7 +574,6 @@
 /obj/random/pottedplant
 	name = "random potted plant"
 	desc = "This is a random potted plant."
-	icon = 'icons/obj/plants.dmi'
 	icon_state = "random_plant_spawner"
 
 /obj/random/pottedplant/spawn_choices()
@@ -649,8 +614,7 @@
 /obj/random/assembly
 	name = "random assembly"
 	desc = "This is a random circuit assembly."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "gift1"
+	icon_state = "landmark_circuit"
 
 /obj/random/assembly/spawn_choices()
 	return list(/obj/item/device/electronic_assembly,
@@ -660,9 +624,7 @@
 
 /obj/random/advdevice
 	name = "random advanced device"
-	desc = "This is a random advanced device."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "game_kit"
+	icon_state = "landmark_tech"
 	spawn_nothing_percentage = 30
 
 /obj/random/advdevice/spawn_choices()
@@ -690,8 +652,7 @@
 /obj/random/smokes
 	name = "random smokeable"
 	desc = "This is a random smokeable item."
-	icon = 'icons/obj/cigarettes.dmi'
-	icon_state = "Bpacket"
+	icon_state = "landmark_smoke"
 	spawn_nothing_percentage = 35
 
 /obj/random/smokes/spawn_choices()
@@ -711,28 +672,10 @@
 				/obj/item/clothing/mask/smokable/cigarette/cigar/havana = 1,
 				/obj/item/clothing/mask/smokable/cigarette/spliff = 1)
 
-/obj/random/masks
-	name = "random mask"
-	desc = "This is a random face mask."
-	icon = 'icons/obj/clothing/masks.dmi'
-	icon_state = "gas_mask"
-
-/obj/random/masks/spawn_choices()
-	return list(/obj/item/clothing/mask/gas = 4,
-				/obj/item/clothing/mask/gas/old = 5,
-				/obj/item/clothing/mask/gas/swat = 1,
-				/obj/item/clothing/mask/gas/syndicate = 1,
-				/obj/item/clothing/mask/breath = 6,
-				/obj/item/clothing/mask/breath/medical = 4,
-				/obj/item/clothing/mask/balaclava = 3,
-				/obj/item/clothing/mask/balaclava/tactical = 2,
-				/obj/item/clothing/mask/surgical = 4)
-
 /obj/random/snack
 	name = "random snack"
 	desc = "This is a random snack item."
-	icon = 'icons/obj/food.dmi'
-	icon_state = "sosjerky"
+	icon_state = "landmark_food"
 	spawn_nothing_percentage = 50
 
 /obj/random/snack/spawn_choices()
@@ -767,8 +710,7 @@
 /obj/random/storage
 	name = "random storage item"
 	desc = "This is a storage item."
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "idOld"
+	icon_state = "landmark_storage"
 	spawn_nothing_percentage = 35
 
 /obj/random/storage/spawn_choices()
@@ -804,146 +746,10 @@
 				/obj/item/weapon/storage/belt/medical = 2,
 				/obj/item/weapon/storage/belt/security = 1)
 
-/obj/random/shoes
-	name = "random footwear"
-	desc = "This is a random pair of shoes."
-	icon = 'icons/obj/clothing/shoes.dmi'
-	icon_state = "boots"
-	spawn_nothing_percentage = 15
-
-/obj/random/shoes/spawn_choices()
-	return list(/obj/item/clothing/shoes/workboots = 4,
-				/obj/item/clothing/shoes/jackboots = 4,
-				/obj/item/clothing/shoes/swat = 1,
-				/obj/item/clothing/shoes/combat = 1,
-				/obj/item/clothing/shoes/galoshes = 2,
-				/obj/item/clothing/shoes/magboots = 1,
-				/obj/item/clothing/shoes/laceup = 4,
-				/obj/item/clothing/shoes/black = 8,
-				/obj/item/clothing/shoes/dress = 4,
-				/obj/item/clothing/shoes/sandal = 4,
-				/obj/item/clothing/shoes/brown = 6,
-				/obj/item/clothing/shoes/red = 6,
-				/obj/item/clothing/shoes/blue = 6,
-				/obj/item/clothing/shoes/leather = 5)
-
-/obj/random/gloves
-	name = "random gloves"
-	desc = "This is a random pair of gloves."
-	icon = 'icons/obj/clothing/gloves.dmi'
-	icon_state = "rainbow"
-	spawn_nothing_percentage = 15
-
-/obj/random/gloves/spawn_choices()
-	return list(/obj/item/clothing/gloves/insulated = 1,
-				/obj/item/clothing/gloves/thick = 6,
-				/obj/item/clothing/gloves/thick/botany = 3,
-				/obj/item/clothing/gloves/latex = 4,
-				/obj/item/clothing/gloves/latex/nitrile = 2,
-				/obj/item/clothing/gloves/white = 5,
-				/obj/item/clothing/gloves/rainbow = 1,
-				/obj/item/clothing/gloves/duty = 5,
-				/obj/item/clothing/gloves/guards = 1,
-				/obj/item/clothing/gloves/tactical = 1,
-				/obj/item/clothing/gloves/insulated/cheap = 5,
-				/obj/item/clothing/gloves/vox = 1,
-				/obj/item/clothing/gloves/boxing = 1)
-
-/obj/random/glasses
-	name = "random eyewear"
-	desc = "This is a random pair of glasses."
-	icon = 'icons/obj/clothing/glasses.dmi'
-	icon_state = "leforge"
-	spawn_nothing_percentage = 25
-
-/obj/random/glasses/spawn_choices()
-	return list(/obj/item/clothing/glasses/sunglasses = 10,
-				/obj/item/clothing/glasses/sunglasses/big = 4,
-				/obj/item/clothing/glasses/sunglasses/prescription = 3,
-				/obj/item/clothing/glasses/sunglasses/redglasses = 2,
-				/obj/item/clothing/glasses/eyepatch = 7,
-				/obj/item/clothing/glasses/monocle = 2,
-				/obj/item/clothing/glasses/regular = 20,
-				/obj/item/clothing/glasses/regular/hipster = 7,
-				/obj/item/clothing/glasses/regular/scanners = 1,
-				/obj/item/clothing/glasses/threedglasses = 2,
-				/obj/item/clothing/glasses/hud/standard/meson = 8,
-				/obj/item/clothing/glasses/hud/standard/science = 6,
-				/obj/item/clothing/glasses/hud/standard/material = 5,
-				/obj/item/clothing/glasses/welding = 8,
-				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
-				/obj/item/clothing/glasses/tacgoggles = 1)
-
-/obj/random/hat
-	name = "random headgear"
-	desc = "This is a random hat of some kind."
-	icon = 'icons/obj/clothing/hats.dmi'
-	icon_state = "tophat"
-
-/obj/random/hat/spawn_choices()
-	return list(/obj/item/clothing/head/helmet = 1,
-				/obj/item/clothing/head/helmet/space/emergency = 2,
-				/obj/item/clothing/head/bio_hood/general = 1,
-				/obj/item/clothing/head/hardhat = 3,
-				/obj/item/clothing/head/hardhat/orange = 3,
-				/obj/item/clothing/head/hardhat/red = 3,
-				/obj/item/clothing/head/hardhat/dblue = 2,
-				/obj/item/clothing/head/ushanka = 2,
-				/obj/item/clothing/head/welding = 2,
-				/obj/item/clothing/head/cardborg = 1,
-				/obj/item/clothing/head/cowboy_hat = 1,
-				/obj/item/clothing/head/nursehat = 1,
-				/obj/item/clothing/head/syndicatefake = 1,
-				/obj/item/clothing/head/wizard/fake = 1,
-				/obj/item/clothing/head/bowler = 1,
-				/obj/item/clothing/head/fez = 1,
-				/obj/item/clothing/head/beaverhat = 1,
-				/obj/item/clothing/head/that = 1,
-				/obj/item/clothing/head/flatcap = 1,
-				/obj/item/clothing/head/soft/grey = 2,
-				/obj/item/clothing/head/soft/black = 2,
-				/obj/item/clothing/head/soft/blue = 2,
-				/obj/item/clothing/head/soft/orange = 2,
-				/obj/item/clothing/head/soft/rainbow = 1)
-
-/obj/random/suit
-	name = "random suit"
-	desc = "This is a random piece of outerwear."
-	icon = 'icons/obj/clothing/suits.dmi'
-	icon_state = "fire"
-	spawn_nothing_percentage = 25
-
-/obj/random/suit/spawn_choices()
-	return list(/obj/item/clothing/suit/storage/hazardvest = 4,
-				/obj/item/clothing/suit/storage/toggle/labcoat = 4,
-				/obj/item/clothing/suit/space/emergency = 1,
-				/obj/item/clothing/suit/armor/vest = 2,
-				/obj/item/clothing/suit/storage/toggle/bomber = 3,
-				/obj/item/clothing/suit/chef/classic = 3,
-				/obj/item/clothing/suit/surgicalapron = 2,
-				/obj/item/clothing/suit/apron/overalls = 3,
-				/obj/item/clothing/suit/bio_suit/general = 1,
-				/obj/item/clothing/suit/storage/toggle/hoodie/black = 3,
-				/obj/item/clothing/suit/storage/toggle/brown_jacket = 3,
-				/obj/item/clothing/suit/apron = 4,
-				/obj/item/clothing/suit/cardborg = 2,
-				/obj/item/clothing/suit/ianshirt = 1,
-				/obj/item/clothing/suit/pirate = 1,
-				/obj/item/clothing/suit/wizrobe/fake = 1,
-				/obj/item/clothing/suit/syndicatefake = 1,
-				/obj/item/clothing/suit/poncho/colored = 1,
-				/obj/item/clothing/suit/poncho/colored/red = 1,
-				/obj/item/clothing/suit/storage/toggle/labcoat = 4,
-				/obj/item/clothing/suit/storage/toggle/varsity = 1,
-				/obj/item/clothing/suit/storage/toggle/varsity/blue = 1,
-				/obj/item/clothing/suit/storage/toggle/varsity/brown = 1,
-				/obj/item/clothing/suit/storage/toggle/varsity/red = 1)
-
 /obj/random/clothing
 	name = "random clothes"
 	desc = "This is a random piece of clothing."
-	icon = 'icons/obj/clothing/uniforms.dmi'
-	icon_state = "grey"
+	icon_state = "landmark_outfit"
 	spawn_nothing_percentage = 35
 
 /obj/random/clothing/spawn_choices()
@@ -975,14 +781,159 @@
 				/obj/item/clothing/under/waiter = 2,
 				/obj/item/clothing/under/soviet = 1)
 
-/obj/random/accessory
+/obj/random/clothing/masks
+	name = "random mask"
+	desc = "This is a random face mask."
+	icon_state = "landmark_mask"
+
+/obj/random/clothing/masks/spawn_choices()
+	return list(/obj/item/clothing/mask/gas = 4,
+				/obj/item/clothing/mask/gas/old = 5,
+				/obj/item/clothing/mask/gas/swat = 1,
+				/obj/item/clothing/mask/gas/syndicate = 1,
+				/obj/item/clothing/mask/breath = 6,
+				/obj/item/clothing/mask/breath/medical = 4,
+				/obj/item/clothing/mask/balaclava = 3,
+				/obj/item/clothing/mask/balaclava/tactical = 2,
+				/obj/item/clothing/mask/surgical = 4)
+
+/obj/random/clothing/shoes
+	name = "random footwear"
+	desc = "This is a random pair of shoes."
+	icon_state = "landmark_shoes"
+	spawn_nothing_percentage = 15
+
+
+/obj/random/clothing/shoes/spawn_choices()
+	return list(/obj/item/clothing/shoes/workboots = 4,
+				/obj/item/clothing/shoes/jackboots = 4,
+				/obj/item/clothing/shoes/swat = 1,
+				/obj/item/clothing/shoes/combat = 1,
+				/obj/item/clothing/shoes/galoshes = 2,
+				/obj/item/clothing/shoes/magboots = 1,
+				/obj/item/clothing/shoes/laceup = 4,
+				/obj/item/clothing/shoes/black = 8,
+				/obj/item/clothing/shoes/dress = 4,
+				/obj/item/clothing/shoes/sandal = 4,
+				/obj/item/clothing/shoes/brown = 6,
+				/obj/item/clothing/shoes/red = 6,
+				/obj/item/clothing/shoes/blue = 6,
+				/obj/item/clothing/shoes/leather = 5)
+
+/obj/random/clothing/gloves
+	name = "random gloves"
+	desc = "This is a random pair of gloves."
+	icon_state = "landmark_gloves"
+	spawn_nothing_percentage = 15
+
+/obj/random/clothing/gloves/spawn_choices()
+	return list(/obj/item/clothing/gloves/insulated = 1,
+				/obj/item/clothing/gloves/thick = 6,
+				/obj/item/clothing/gloves/thick/botany = 3,
+				/obj/item/clothing/gloves/latex = 4,
+				/obj/item/clothing/gloves/latex/nitrile = 2,
+				/obj/item/clothing/gloves/white = 5,
+				/obj/item/clothing/gloves/rainbow = 1,
+				/obj/item/clothing/gloves/duty = 5,
+				/obj/item/clothing/gloves/guards = 1,
+				/obj/item/clothing/gloves/tactical = 1,
+				/obj/item/clothing/gloves/insulated/cheap = 5,
+				/obj/item/clothing/gloves/vox = 1,
+				/obj/item/clothing/gloves/boxing = 1)
+
+/obj/random/clothing/glasses
+	name = "random eyewear"
+	desc = "This is a random pair of glasses."
+	icon_state = "landmark_glasses"
+	spawn_nothing_percentage = 25
+
+/obj/random/clothing/glasses/spawn_choices()
+	return list(/obj/item/clothing/glasses/sunglasses = 10,
+				/obj/item/clothing/glasses/sunglasses/big = 4,
+				/obj/item/clothing/glasses/sunglasses/prescription = 3,
+				/obj/item/clothing/glasses/sunglasses/redglasses = 2,
+				/obj/item/clothing/glasses/eyepatch = 7,
+				/obj/item/clothing/glasses/monocle = 2,
+				/obj/item/clothing/glasses/regular = 20,
+				/obj/item/clothing/glasses/regular/hipster = 7,
+				/obj/item/clothing/glasses/regular/scanners = 1,
+				/obj/item/clothing/glasses/threedglasses = 2,
+				/obj/item/clothing/glasses/hud/standard/meson = 8,
+				/obj/item/clothing/glasses/hud/standard/science = 6,
+				/obj/item/clothing/glasses/hud/standard/material = 5,
+				/obj/item/clothing/glasses/welding = 8,
+				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
+				/obj/item/clothing/glasses/tacgoggles = 1)
+
+/obj/random/clothing/hat
+	name = "random headgear"
+	desc = "This is a random hat of some kind."
+	icon_state = "landmark_hat"
+
+/obj/random/clothing/hat/spawn_choices()
+	return list(/obj/item/clothing/head/helmet = 1,
+				/obj/item/clothing/head/helmet/space/emergency = 2,
+				/obj/item/clothing/head/bio_hood/general = 1,
+				/obj/item/clothing/head/hardhat = 3,
+				/obj/item/clothing/head/hardhat/orange = 3,
+				/obj/item/clothing/head/hardhat/red = 3,
+				/obj/item/clothing/head/hardhat/dblue = 2,
+				/obj/item/clothing/head/ushanka = 2,
+				/obj/item/clothing/head/welding = 2,
+				/obj/item/clothing/head/cardborg = 1,
+				/obj/item/clothing/head/cowboy_hat = 1,
+				/obj/item/clothing/head/nursehat = 1,
+				/obj/item/clothing/head/syndicatefake = 1,
+				/obj/item/clothing/head/wizard/fake = 1,
+				/obj/item/clothing/head/bowler = 1,
+				/obj/item/clothing/head/fez = 1,
+				/obj/item/clothing/head/beaverhat = 1,
+				/obj/item/clothing/head/that = 1,
+				/obj/item/clothing/head/flatcap = 1,
+				/obj/item/clothing/head/soft/grey = 2,
+				/obj/item/clothing/head/soft/black = 2,
+				/obj/item/clothing/head/soft/blue = 2,
+				/obj/item/clothing/head/soft/orange = 2,
+				/obj/item/clothing/head/soft/rainbow = 1)
+
+/obj/random/clothing/suit
+	name = "random suit"
+	desc = "This is a random piece of outerwear."
+	spawn_nothing_percentage = 25
+
+/obj/random/clothing/suit/spawn_choices()
+	return list(/obj/item/clothing/suit/storage/hazardvest = 4,
+				/obj/item/clothing/suit/storage/toggle/labcoat = 4,
+				/obj/item/clothing/suit/space/emergency = 1,
+				/obj/item/clothing/suit/armor/vest = 2,
+				/obj/item/clothing/suit/storage/toggle/bomber = 3,
+				/obj/item/clothing/suit/chef/classic = 3,
+				/obj/item/clothing/suit/surgicalapron = 2,
+				/obj/item/clothing/suit/apron/overalls = 3,
+				/obj/item/clothing/suit/bio_suit/general = 1,
+				/obj/item/clothing/suit/storage/toggle/hoodie/black = 3,
+				/obj/item/clothing/suit/storage/toggle/brown_jacket = 3,
+				/obj/item/clothing/suit/apron = 4,
+				/obj/item/clothing/suit/cardborg = 2,
+				/obj/item/clothing/suit/ianshirt = 1,
+				/obj/item/clothing/suit/pirate = 1,
+				/obj/item/clothing/suit/wizrobe/fake = 1,
+				/obj/item/clothing/suit/syndicatefake = 1,
+				/obj/item/clothing/suit/poncho/colored = 1,
+				/obj/item/clothing/suit/poncho/colored/red = 1,
+				/obj/item/clothing/suit/storage/toggle/labcoat = 4,
+				/obj/item/clothing/suit/storage/toggle/varsity = 1,
+				/obj/item/clothing/suit/storage/toggle/varsity/blue = 1,
+				/obj/item/clothing/suit/storage/toggle/varsity/brown = 1,
+				/obj/item/clothing/suit/storage/toggle/varsity/red = 1)
+
+/obj/random/clothing/accessory
 	name = "random accessory"
 	desc = "This is a random utility accessory."
-	icon = 'icons/obj/clothing/ties.dmi'
-	icon_state = "horribletie"
+	icon_state = "landmark_accessory"
 	spawn_nothing_percentage = 45
 
-/obj/random/accessory/spawn_choices()
+/obj/random/clothing/accessory/spawn_choices()
 	return list(/obj/item/clothing/accessory/storage/webbing = 3,
 				/obj/item/clothing/accessory/storage/webbing_large = 3,
 				/obj/item/clothing/accessory/storage/black_vest = 2,
@@ -999,8 +950,7 @@
 /obj/random/cash
 	name = "random currency"
 	desc = "LOADSAMONEY!"
-	icon = 'icons/obj/items.dmi'
-	icon_state = "spacecash1"
+	icon_state = "landmark_unique_orange"
 	spawn_nothing_percentage = 50
 
 /obj/random/cash/spawn_choices()
@@ -1010,11 +960,10 @@
 				/obj/item/weapon/spacecash/bundle/c50 = 2,
 				/obj/item/weapon/spacecash/bundle/c100 = 1)
 
-/obj/random/maintenance //Clutter and loot for maintenance and away missions
+// Clutter and loot for maintenance and away missions
+/obj/random/maintenance
 	name = "random maintenance item"
 	desc = "This is a random maintenance item."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "gift1"
 	spawn_nothing_percentage = 40
 
 /obj/random/maintenance/spawn_choices()
@@ -1022,14 +971,15 @@
 				/obj/random/trash = 4,
 				/obj/random/maintenance/clean = 5)
 
-/obj/random/maintenance/clean
-/*Maintenance loot lists without the trash, for use inside things.
+/*
+Maintenance loot lists without the trash, for use inside things.
 Individual items to add to the maintenance list should go here, if you add
-something, make sure it's not in one of the other lists.*/
+something, make sure it's not in one of the other lists.
+*/
+/obj/random/maintenance/clean
 	name = "random clean maintenance item"
 	desc = "This is a random clean maintenance item."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "gift2"
+	icon_state = "landmark_unique_blue"
 	spawn_nothing_percentage = 15
 
 /obj/random/maintenance/clean/spawn_choices()
@@ -1052,23 +1002,24 @@ something, make sure it's not in one of the other lists.*/
 				/obj/random/loot = 1,
 				/obj/random/advdevice = 50,
 				/obj/random/smokes = 30,
-				/obj/random/masks = 10,
 				/obj/random/snack = 60,
 				/obj/random/storage = 30,
-				/obj/random/shoes = 20,
-				/obj/random/gloves = 10,
-				/obj/random/glasses = 20,
-				/obj/random/hat = 10,
-				/obj/random/suit = 20,
 				/obj/random/clothing = 30,
-				/obj/random/accessory = 20,
+				/obj/random/clothing/masks = 10,
+				/obj/random/clothing/glasses = 20,
+				/obj/random/clothing/hat = 10,
+				/obj/random/clothing/shoes = 20,
+				/obj/random/clothing/gloves = 10,
+				/obj/random/clothing/suit = 20,
+				/obj/random/clothing/accessory = 20,
+
 				/obj/random/cash = 10)
 
-/obj/random/loot /*Better loot for away missions and salvage */
+// Better loot for away missions and salvage.
+/obj/random/loot
 	name = "random loot"
 	desc = "This is some random loot."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "gift3"
+	icon_state = "landmark_unique_purple"
 
 /obj/random/loot/spawn_choices()
 	return list(/obj/random/energy = 10,
@@ -1119,10 +1070,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/device/radio/headset/syndicate = 6)
 
 /obj/random/voidhelmet
-	name = "Random Voidsuit Helmet"
+	name = "random voidsuit helmet"
 	desc = "This is a random voidsuit helmet."
-	icon = 'icons/obj/clothing/hats.dmi'
-	icon_state = "void"
+	icon_state = "landmark_helmet"
 
 /obj/random/voidhelmet/spawn_choices()
 	return list(/obj/item/clothing/head/helmet/space/void,
@@ -1140,10 +1090,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/head/helmet/space/void/medical/alt)
 
 /obj/random/voidsuit
-	name = "Random Voidsuit"
+	name = "random voidsuit"
 	desc = "This is a random voidsuit."
-	icon = 'icons/obj/clothing/suits.dmi'
-	icon_state = "void"
+	icon_state = "landmark_void"
 
 /obj/random/voidsuit/spawn_choices()
 	return list(/obj/item/clothing/suit/space/void,
@@ -1161,10 +1110,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/suit/space/void/medical/alt)
 
 /obj/random/hardsuit
-	name = "Random Hardsuit"
+	name = "random hardsuit"
 	desc = "This is a random hardsuit control module."
-	icon = 'icons/obj/rig_modules.dmi'
-	icon_state = "generic"
+	icon_state = "landmark_rig"
 
 /obj/random/hardsuit/spawn_choices()
 	return list(/obj/item/weapon/rig/industrial,
@@ -1176,10 +1124,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/weapon/rig/unathi/fancy)
 
 /obj/random/hostile
-	name = "Random Hostile Mob"
+	name = "random hostile mob"
 	desc = "This is a random hostile mob."
-	icon = 'icons/mob/amorph.dmi'
-	icon_state = "standing"
+	icon_state = "landmark_carp"
 	spawn_nothing_percentage = 80
 
 /obj/random/hostile/spawn_choices()
@@ -1188,11 +1135,11 @@ something, make sure it's not in one of the other lists.*/
 				/mob/living/simple_animal/hostile/carp/pike,
 				/mob/living/simple_animal/hostile/vagrant/swarm)
 
+// Holiday stuff.
 /obj/random/jackolantern
-	name = "Random Jack o'lantern"
+	name = "random jack o'lantern"
 	desc = "This is a random jack o'lantern."
-	icon = 'icons/obj/halloween/jackolantern.dmi'
-	icon_state = "spawner-jackolantern"
+	icon_state = "landmark_lantern"
 
 /obj/random/jackolantern/spawn_choices()
 	return list(/obj/item/jackolantern/best,
@@ -1201,10 +1148,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/jackolantern/old)
 
 /obj/random/sock
-	name = "Random Christmas sock"
+	name = "random Christmas sock"
 	desc = "This is a random Christams sock. HOU-HOU-HOU!"
-	icon = 'icons/obj/christmas.dmi'
-	icon_state = "sock_random"
+	icon_state = "landmark_sock"
 
 /obj/random/sock/spawn_choices()
 	return list(/obj/structure/sign/christmas/sock = 5,
@@ -1215,19 +1161,18 @@ something, make sure it's not in one of the other lists.*/
 				/obj/structure/sign/christmas/sockwizard = 1,
 				/obj/structure/sign/christmas/socksindy = 2)
 
-/*
-	Selects one spawn point out of a group of points with the same ID and asks it to generate its items
-*/
+
+// Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns
 
 /obj/random_multi
 	name = "random object spawn point"
 	desc = "This item type is used to spawn random objects at round-start. Only one spawn point for a given group id is selected."
-	icon = 'icons/misc/mark.dmi'
-	icon_state = "x3"
+	icon = 'icons/misc/landmarks.dmi'
+	icon_state = "landmark_unique_blue"
 	invisibility = INVISIBILITY_MAXIMUM
-	var/id     // Group id
-	var/weight // Probability weight for this spawn point
+	var/id     // Group id.
+	var/weight // Probability weight for this spawn point.
 
 /obj/random_multi/Initialize()
 	. = ..()
@@ -1252,7 +1197,7 @@ var/list/multi_point_spawns
 	return
 
 /obj/random_multi/single_item
-	var/item_path  // Item type to spawn
+	var/item_path  // Item type to spawn.
 
 /obj/random_multi/single_item/generate_items()
 	new item_path(loc)
@@ -1267,9 +1212,20 @@ var/list/multi_point_spawns
 	return 1
 
 /obj/random_multi/single_item/captains_spare_id
-	name = "Multi Point - Captain's Spare"
+	name = "multi point - Captain's spare"
+	icon_state = "landmark_card"
 	id = "Captain's spare id"
 	item_path = /obj/item/weapon/card/id/captains_spare
+
+// Broken items, or stuff that could be picked up.
+/obj/random/junk
+	name = "random junk"
+	desc = "This is some random junk."
+	icon_state = "landmark_garbage"
+	spawn_nothing_percentage = 35
+
+/obj/random/junk/spawn_choices()
+	return list(get_random_junk_type())
 
 var/list/random_junk_
 var/list/random_useful_
@@ -1288,11 +1244,11 @@ var/list/random_useful_
 	return pick(random_useful_)
 
 /proc/get_random_junk_type()
-	if(prob(20)) // Misc. clutter
+	if(prob(20)) // Misc. clutter.
 		return /obj/effect/decal/cleanable/generic
 
-	// 80% chance that we reach here
-	if(prob(95)) // Misc. junk
+	// 80% chance that we reach here.
+	if(prob(95)) // Misc. junk.
 		if(!random_junk_)
 			random_junk_ = subtypesof(/obj/item/trash)
 			random_junk_ += typesof(/obj/item/weapon/cigbutt)
@@ -1311,11 +1267,11 @@ var/list/random_useful_
 			random_junk_ -= /obj/item/trash/dish/tray
 		return pick(random_junk_)
 
-	// Misc. actually useful stuff or perhaps even food
-	// 4% chance that we reach here
+	// Misc. actually useful stuff or perhaps even food.
+	// 4% chance that we reach here.
 	if(prob(75))
 		return get_random_useful_type()
 
-	// 1% chance that we reach here
+	// 1% chance that we reach here.
 	var/lunches = lunchables_lunches()
 	return lunches[pick(lunches)]
