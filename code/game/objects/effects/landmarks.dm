@@ -28,5 +28,5 @@
 
 /obj/effect/landmark/Destroy()
 	if(should_be_added)
-		GLOB.landmarks_list -= src
+		LAZYREMOVE(GLOB.landmarks_list, src)
 	return ..()
