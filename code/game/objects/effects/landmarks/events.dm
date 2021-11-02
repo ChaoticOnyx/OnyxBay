@@ -41,10 +41,10 @@
 	icon_state = "landmark_nuke"
 
 /obj/effect/landmark/event/nuke/bomb
-	name = "Nuke"
+	name = "Nuclear Bomb"
 
 /obj/effect/landmark/event/nuke/code
-	name = "Nuke Code"
+	name = "Nuclear Code"
 
 // Bluespace rift
 /obj/effect/landmark/event/rift
