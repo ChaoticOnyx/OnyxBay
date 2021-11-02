@@ -20,7 +20,10 @@
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
 	. = ..()
 
-/mob/living/carbon/brain/incapacitated()
+/mob/living/carbon/brain/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
+	// brain can't be knocked out.
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (container && istype(container, /obj/item/device/mmi)))
+		return FALSE
 	return TRUE
 
 /mob/living/carbon/brain/say_understands(other)//Goddamn is this hackish, but this say code is so odd
