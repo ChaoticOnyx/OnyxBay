@@ -6,7 +6,7 @@ var/floor_light_color_cache = list()
 	icon = 'icons/obj/machines/floor_light.dmi'
 	icon_state = "base"
 	desc = "A backlit floor panel."
-	layer = ABOVE_TILE_LAYER
+	layer = TURF_LAYER
 	anchored = FALSE
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
@@ -20,9 +20,9 @@ var/floor_light_color_cache = list()
 	var/shield	// Hits to broke
 	var/damaged = FALSE
 	var/cracks = 0
-	var/crack_layer
+	var/crack_layer = DECAL_LAYER
 
-	var/light_layer
+	var/light_layer = DECAL_LAYER
 	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
@@ -74,7 +74,7 @@ var/floor_light_color_cache = list()
 		update_brightness()
 
 /obj/machinery/floor_light/proc/levelupdate()
-	layer = anchored ? TURF_LAYER : ABOVE_TILE_LAYER
+	layer = anchored ? TURF_LAYER : TURF_DETAIL_LAYER
 	return
 
 /obj/machinery/floor_light/Destroy()
@@ -87,7 +87,7 @@ var/floor_light_color_cache = list()
 	for(var/i = 1, i <= 8, i++)
 		overlays -= floor_light_cache["floorlight[ID]-damaged[i]"]
 
-	playsound(src, "electric_explosion", 70, 1)
+	playsound(src, SFX_EXPLOSION_ELECTRIC, 70, 1)
 	. = ..()
 
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
@@ -202,7 +202,6 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	ID = "\ref[src]"
-	layers_update()
 	if(must_work)
 		if(broken())
 			set_light(default_light_max_bright / 2, default_light_inner_range / 2, default_light_outer_range / 2, 2, broken_light_colour)
@@ -274,7 +273,3 @@ var/floor_light_color_cache = list()
 			return floor_light_color_cache["floorlight[ID]-flickering"]
 		return default_light_colour
 	return light_colour
-
-/obj/machinery/floor_light/proc/layers_update()
-	light_layer = layer + 0.001
-	crack_layer = layer + 0.002
