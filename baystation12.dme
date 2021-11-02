@@ -1715,6 +1715,7 @@
 #include "code\modules\lobby_music\crocketts_theme.dm"
 #include "code\modules\lobby_music\dilbert.dm"
 #include "code\modules\lobby_music\endless_space.dm"
+#include "code\modules\lobby_music\fly_theme_12.dm"
 #include "code\modules\lobby_music\issomebodysinging.dm"
 #include "code\modules\lobby_music\misc.dm"
 #include "code\modules\lobby_music\space_oddity.dm"
