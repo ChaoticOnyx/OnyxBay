@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(latejoin_cyborg)
 GLOBAL_LIST_EMPTY(endgame_exits)
 GLOBAL_LIST_EMPTY(endgame_safespawns)
 
-// Admin prision.
+// Admin prison.
 GLOBAL_LIST_EMPTY(prisonwarp) // Prisoners go to there.
 GLOBAL_LIST_EMPTY(prisonwarped) // List of players already warped.
 GLOBAL_LIST_EMPTY(prisonsecuritywarp) // Prison security goes to these.

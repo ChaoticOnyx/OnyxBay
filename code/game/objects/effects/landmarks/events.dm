@@ -65,7 +65,7 @@
 	GLOB.endgame_exits += loc
 	return ..()
 
-// Admin prision
+// Admin prison
 /obj/effect/landmark/event/prison
 	delete_after = TRUE
 	should_be_added = FALSE
@@ -84,7 +84,7 @@
 	GLOB.prisonsecuritywarp += loc
 	return ..()
 
-// TDome
+// Thunderdome
 /obj/effect/landmark/event/tdome
 	should_be_added = FALSE
 
