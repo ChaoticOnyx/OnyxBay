@@ -45,7 +45,7 @@
 			if(return_first_found)
 				return
 
-	for(var/obj/item/organ/external/E  in .)
+	for(var/obj/item/organ/external/E in .)
 		if(length(E.children))
 			. -= E.children
 
@@ -66,7 +66,7 @@
 	if(incapacitated() || restrained())
 		to_chat(src, SPAN_WARNING("You can't do that in your current state!"))
 		return FALSE
-	if(QDELETED(E) || !istype(E))
+	if(!istype(E))
 		to_chat(src, SPAN_WARNING("You are not holding a compatible limb to attach."))
 		return FALSE
 	if(!E.can_be_attached_modular_limb(src))
@@ -98,7 +98,7 @@
 	if(incapacitated() || restrained())
 		to_chat(src, SPAN_WARNING("You can't do that in your current state!"))
 		return FALSE
-	if(!istype(E) || QDELETED(src) || QDELETED(E) || E.owner != src || E.loc != src)
+	if(!istype(E) || E.owner != src || E.loc != src)
 		return FALSE
 	if(E.check_modular_limb_damage(src))
 		to_chat(src, SPAN_WARNING("That limb is too damaged to be removed!"))
