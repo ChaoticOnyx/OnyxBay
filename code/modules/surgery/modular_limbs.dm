@@ -1,8 +1,8 @@
 /obj/item/organ/external/proc/get_modular_limb_category()
 	. = MODULAR_BODYPART_INVALID
-	if(status == ORGAN_ROBOTIC && model)
+	if(status & ORGAN_ROBOTIC && model)
 		var/datum/robolimb/manufacturer = all_robolimbs[model]
-		if(!!manufacturer?.modular_bodyparts)
+		if(manufacturer?.modular_bodyparts)
 			. = manufacturer.modular_bodyparts
 
 /obj/item/organ/external/proc/can_remove_modular_limb(mob/living/carbon/human/user)
@@ -41,12 +41,13 @@
 /mob/living/carbon/human/proc/get_modular_limbs(return_first_found = FALSE, validate_proc)
 	for(var/obj/item/organ/external/E in organs)
 		if(!validate_proc || call(E, validate_proc)(src) > MODULAR_BODYPART_INVALID)
-			LAZYADD(., E)
-			if(return_first_found)
-				return
+			if(!(E.organ_tag in list(BP_HEAD, BP_CHEST, BP_GROIN)))
+				LAZYADD(., E)
+				if(return_first_found)
+					return
 
 	for(var/obj/item/organ/external/E in .)
-		if(length(E.children))
+		if(E.get_modular_limb_category() < MODULAR_BODYPART_CYBERNETIC && length(E.children))
 			. -= E.children
 
 /mob/living/carbon/human/proc/refresh_modular_limb_verbs()
@@ -112,7 +113,7 @@
 	return (E in get_modular_limbs(return_first_found = FALSE, validate_proc = /obj/item/organ/external/proc/can_remove_modular_limb))
 
 /mob/living/carbon/human/proc/attach_limb_verb()
-	set name = "Attach Limb"
+	set name = "Attach limb"
 	set category = "Object"
 	set desc = "Attach a replacement limb."
 
@@ -139,7 +140,7 @@
 	return TRUE
 
 /mob/living/carbon/human/proc/detach_limb_verb()
-	set name = "Remove Limb"
+	set name = "Remove limb"
 	set category = "Object"
 	set desc = "Detach one of your limbs."
 
@@ -147,7 +148,7 @@
 	if(!length(detachable_limbs))
 		to_chat(src, SPAN_WARNING("You have no detachable limbs."))
 		return FALSE
-	var/obj/item/organ/external/E = input(usr, "Which limb do you wish to detach?", "Limb Removal") as null|anything in detachable_limbs
+	var/obj/item/organ/external/E = input(usr, "Which limb do you wish to detach?", "Limb removal") as null|anything in detachable_limbs
 	if(!check_can_detach_modular_limb(E))
 		return FALSE
 	if(!do_after(src, 2 SECONDS, src))
