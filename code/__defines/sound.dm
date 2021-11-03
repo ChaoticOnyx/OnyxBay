@@ -101,7 +101,6 @@
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
 #define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
 #define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
-#define SFX_AMBIENT_MUSIC_PEACEFUL     "ambient_music_peaceful"
 #define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
 
 // ITEMS USING

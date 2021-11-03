@@ -586,8 +586,6 @@
 	last_time_ambient_music_played = world.time
 	DIRECT_OUTPUT(src, S)
 
-	to_world("Playing [file_path]")
-
 /client/proc/is_ambience_music_playing()
 	var/list/sounds = SoundQuery()
 

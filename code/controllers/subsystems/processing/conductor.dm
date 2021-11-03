@@ -21,6 +21,11 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 		if(C.is_ambience_music_playing())
 			continue
 
+		THROTTLE_SHARED(cooldown, AMBIENT_MUSIC_COOLDOWN, C.last_time_ambient_music_played)
+
+		if(!cooldown)
+			continue
+
 		var/area/A = get_area(player)
 		if(!A)
 			C.play_ambience_music(GET_SFX(SFX_AMBIENT_MUSIC_NORMAL))
