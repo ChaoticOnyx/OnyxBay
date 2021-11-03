@@ -530,6 +530,13 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient_music/space_travel_1.ogg',
 		'sound/ambient_music/space_travel_2.ogg',
 		'sound/ambient_music/space_travel_3.ogg',
+		'sound/ambient_music/space_travel_4.ogg',
+		'sound/ambient_music/space_travel_5.ogg',
+		'sound/music/space.ogg',
+		'sound/music/traitor.ogg',
+	),
+	SFX_AMBIENT_MUSIC_CENTCOMM = list(
+		'sound/ambient_music/centcomm_1.ogg',
 	),
 	// ITEMS USING
 	SFX_USE_HANDCUFFS = list(

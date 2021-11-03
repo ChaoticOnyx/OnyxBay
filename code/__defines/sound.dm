@@ -53,6 +53,7 @@
 #define META_MYSTIC          1
 #define META_SPACE           2
 #define META_SPACE_TRAVELING 3
+#define META_CENTCOMM        4
 
 // SFX List
 // FIREARMS SOUND
@@ -102,6 +103,7 @@
 #define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
 #define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
 #define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
+#define SFX_AMBIENT_MUSIC_CENTCOMM     "ambient_music_centcomm"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"
