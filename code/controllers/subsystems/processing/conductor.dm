@@ -42,7 +42,7 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 
 /datum/controller/subsystem/processing/conductor/proc/get_sound_by_tag(meta_tag)
 	switch(meta_tag)
-		if(META_MISTYC)
+		if(META_MYSTIC)
 			return GET_SFX(SFX_AMBIENT_MUSIC_MYSTIC)
 		if(META_SPACE)
 			if(prob(20))

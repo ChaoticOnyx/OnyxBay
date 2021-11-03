@@ -50,7 +50,7 @@
 
 // Ambient meta tags
 #define META_NORMAL          0
-#define META_MISTYC          1
+#define META_MYSTIC          1
 #define META_SPACE           2
 #define META_SPACE_TRAVELING 3
 

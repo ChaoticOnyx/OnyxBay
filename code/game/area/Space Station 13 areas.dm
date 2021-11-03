@@ -150,6 +150,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	turf_initializer = /decl/turf_initializer/maintenance
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_meta_tags = list(META_MYSTIC)
 
 /area/rnd
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_OFF_SPACE)
