@@ -215,6 +215,7 @@
 #include "code\controllers\subsystems\processing\airflow.dm"
 #include "code\controllers\subsystems\processing\chat.dm"
 #include "code\controllers\subsystems\processing\circuit.dm"
+#include "code\controllers\subsystems\processing\conductor.dm"
 #include "code\controllers\subsystems\processing\fast_process.dm"
 #include "code\controllers\subsystems\processing\icon_updates.dm"
 #include "code\controllers\subsystems\processing\mobs.dm"

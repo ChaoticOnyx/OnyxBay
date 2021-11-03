@@ -13,6 +13,7 @@
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
+	var/list/ambient_music_meta_tags = list(META_NORMAL)
 
 /area/New()
 	icon_state = ""
@@ -272,27 +273,24 @@ var/list/mob/living/forced_ambiance_list = new
 	if(hum)
 		if(L.client && !L.client.ambience_playing)
 			L.client.ambience_playing = 1
-			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
+			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = SOUND_CHANNEL_HUM))
 	else
 		if(L.client && L.client.ambience_playing)
 			L.client.ambience_playing = 0
-			sound_to(L, sound(null, channel = 2))
+			sound_to(L, sound(null, channel = SOUND_CHANNEL_HUM))
 
 	if(forced_ambience)
 		if(forced_ambience.len)
 			var/S = GET_SFX(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(prob(35) && (world.time >= L.client.played + custom_period))
 		var/is_powered = (power_environ + power_equip + power_light) > 0
 		var/S = GET_SFX(pick(is_powered ? ambience_powered : ambience_off))
 
-		if(!S)
-			return
-
-		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
+		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		L.client.played = world.time
 
 /area/proc/gravitychange(new_state = 0)

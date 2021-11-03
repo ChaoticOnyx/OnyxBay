@@ -76,6 +76,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
+	ambient_music_meta_tags = list(META_SPACE)
 	ambience_off = list(SFX_AMBIENT_OFF_SPACE)
 	ambience_powered = list(SFX_AMBIENT_OFF_SPACE)
 
@@ -138,9 +139,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/security/brig
 	name = "\improper Security - Brig"
 	icon_state = "brig"
-
-
-
 
 /area/security/prison
 	name = "\improper Security - Prison Wing"

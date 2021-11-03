@@ -29,6 +29,7 @@
 	// * Sound stuff *
 	var/ambience_playing = null
 	var/played = 0
+	var/last_time_ambient_music_played = 0
 
 	// * Security things *
 	var/received_irc_pm = -99999
