@@ -16,7 +16,7 @@
 	if(istype(limb))
 		max_damage = limb.max_damage
 		if(BP_IS_ROBOTIC(limb) && (!parent || BP_IS_ROBOTIC(parent)))
-			robotize() //if both limb and the parent are robotic, the stump is robotic too
+			robotize() // If both limb and the parent are robotic, the stump is robotic too.
 
 /obj/item/organ/external/stump/is_stump()
 	return 1
