@@ -435,10 +435,16 @@ list(\
 				to_chat(src, "You cannot do that from within a host body.")
 				return FALSE
 		if("controlling")
+			if(!host)
+				to_chat(src, "You are not inside a host body.")
+				return FALSE
 			if(!controlling)
 				to_chat(src, "You need control a host body to do it.")
 				return FALSE
 		if("not_controlling")
+			if(!host)
+				to_chat(src, "You are not inside a host body.")
+				return FALSE
 			if(controlling)
 				to_chat(src, "You already have controlled the host body.")
 				return FALSE
