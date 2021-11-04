@@ -35,7 +35,7 @@
 	var/mob/living/carbon/human/host        // Human host for the brain worm.
 	var/truename                            // Name used for brainworm-speak.
 	var/mob/living/captive_brain/host_brain // Used for swapping control of the body back and forth.
-	var/controlling                         // Used in human death check.
+	var/controlling = FALSE                 // Is borer controlling host?
 	var/docile = FALSE                      // Sugar can stop borers from acting.
 	var/has_reproduced
 	var/initial = FALSE
