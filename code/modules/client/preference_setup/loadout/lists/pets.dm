@@ -2,8 +2,6 @@
 	sort_category = "Pets"
 	path = /mob/living/simple_animal/corgi/pet
 	var/list/paths
-	// patron_tier = PATREON_WIZARD
-	// cost = 200
 
 /datum/gear/pet/New()
 	..()
@@ -23,15 +21,6 @@
 		for(var/gear in gears)
 			if(gear in pets)
 				return FALSE
-
-/datum/gear/pet/spawn_item(location, metadata)
-	var/datum/gear_data/gd = new(path, location)
-	for(var/datum/gear_tweak/gt in gear_tweaks)
-		gt.tweak_gear_data(metadata["[gt]"], gd)
-	var/item = new gd.path(gd.location)
-	for(var/datum/gear_tweak/gt in gear_tweaks)
-		gt.tweak_item(item, metadata["[gt]"])
-	return item
 
 /datum/gear/pet/spawn_on_mob(mob/living/carbon/human/H, metadata)
 	return FALSE
@@ -53,11 +42,6 @@
 		to_chat(H, SPAN_NOTICE("\The [animal] waiting for your commands."))
 
 	return !!animal
-
-/datum/gear/pet/capital
-	cost = 200
-	display_name = "Capitalist's pets"
-	paths = list(/mob/living/simple_animal/lizard/pet)
 
 /datum/gear/pet/wizard
 	patron_tier = PATREON_WIZARD
