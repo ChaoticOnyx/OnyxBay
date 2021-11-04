@@ -172,7 +172,7 @@ var/datum/robolimb/basic_robolimb
 //WOODEN
 /datum/robolimb/wooden
 	company = "Morgan Trading Co"
-	desc = "A simplistic, metal-banded, wood-panelled prosthetic."
+	desc = "A simplistic, metal-banded, wood-panelled prosthesis."
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
