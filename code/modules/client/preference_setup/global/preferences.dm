@@ -89,72 +89,25 @@ var/global/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
-/datum/client_preference/play_admin_midis
-	description ="Play admin midis"
-	key = "SOUND_MIDI"
-
-/datum/client_preference/play_lobby_music
-	description ="Play lobby music"
-	key = "SOUND_LOBBY"
-
-/datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
-	if(new_value == GLOB.PREF_YES)
-		if(isnewplayer(preference_mob) && preference_mob.client)
-			GLOB.lobby_music.play_to(preference_mob.client)
-	else
-		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
-
-/datum/client_preference/play_ambiance
-	description ="Play ambience"
-	key = "SOUND_AMBIENCE"
-
-/datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
-	if(new_value == GLOB.PREF_NO)
-		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
-		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 2))
-
-/datum/client_preference/play_jukeboxes
-	description ="Play jukeboxes"
-	key = "SOUND_JUKEBOXES"
-
-/datum/client_preference/give_wayfinding
-	description = "Spawn with a wayfinder tracker"
-	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_BASIC)
-	default_value = GLOB.PREF_BASIC
-	key = "WAYFINDING_POINTER"
-
-/datum/client_preference/play_instruments
-	description ="Play instruments"
-	key = "SOUND_INSTRUMENTS"
-
-/datum/client_preference/play_hitmarker
-	description ="Hitmarker Sound"
-	key = "SOUND_HITMARKER"
-
-/datum/client_preference/ghost_ears
-	description ="Ghost ears"
-	key = "CHAT_GHOSTEARS"
-	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
-
-/datum/client_preference/ghost_sight
-	description ="Ghost sight"
-	key = "CHAT_GHOSTSIGHT"
-	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
-
-/datum/client_preference/ghost_radio
-	description ="Ghost radio"
-	key = "CHAT_GHOSTRADIO"
-	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
-
+// Chat preferences
 /datum/client_preference/language_display
 	description = "Display Language Names"
 	key = "LANGUAGE_DISPLAY"
 	options = list(GLOB.PREF_FULL, GLOB.PREF_SHORTHAND, GLOB.PREF_OFF)
 
-/datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
-	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
-	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
+/datum/client_preference/ooc_name_color
+	description = "OOC Name Color"
+	key = "OOC_NAME_COLOR"
+
+/datum/client_preference/ooc_name_color/may_set(client/given_client)
+	return TRUE
+
+/datum/client_preference/ooc_name_color/get_options(client/given_client)
+	return PATREON_ALL_TIERS
+
+/datum/client_preference/ooc_name_color/get_default_value(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info.patron_type
 
 /datum/client_preference/show_typing_indicator
 	description ="Typing indicator"
@@ -165,26 +118,15 @@ var/global/list/_client_preferences_by_type
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
-/datum/client_preference/show_progress_bar
-	description ="Progress Bar"
-	key = "SHOW_PROGRESS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+// GUI preferences
+/datum/client_preference/chat_position
+	description = "Alternative Chat Position"
+	key = "CHAT_ALT"
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
-/datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
-	key = "HARDSUIT_ACTIVATION"
-	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
-
-/datum/client_preference/pointing
-	description = "Point to Activation Key"
-	key = "POINTING_ACTIVATION"
-	default_value = GLOB.PREF_SHIFT_MIDDLE_CLICK
-	options = list(GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_MIDDLE_CLICK)
-
-/datum/client_preference/special_ability_key
-	description = "Special Ability Activation Key"
-	key = "SPECIAL_ABILITY"
-	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
+	if(preference_mob.client)
+		preference_mob.client.update_chat_position()
 
 /datum/client_preference/tgui_style
 	description = "TGUI Style"
@@ -216,14 +158,20 @@ var/global/list/_client_preferences_by_type
 		winset(preference_mob, "output", "on-show=&is-disabled=0&is-visible=1")
 		winset(preference_mob, "browseroutput", "is-disabled=1;is-visible=0")
 
+/datum/client_preference/show_progress_bar
+	description ="Progress Bar"
+	key = "SHOW_PROGRESS"
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"
 	default_value = GLOB.PREF_FANCY
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
+// Graphic preferences
 /datum/client_preference/ambient_occlusion
-	description = "Toggle Ambient Occlusion"
+	description = "Ambient Occlusion"
 	key = "AMBIENT_OCCLUSION"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
@@ -241,39 +189,97 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
-/datum/client_preference/chat_position
-	description = "Use Alternative Chat Position"
-	key = "CHAT_ALT"
-	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
-
-/datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if(preference_mob.client)
-		preference_mob.client.update_chat_position()
-
-/datum/client_preference/cinema_credits
-	description = "Show Cinema-like Credits At Round-end"
-	key = "SHOW_CREDITS"
-	default_value = GLOB.PREF_NO
-
-/datum/client_preference/ooc_name_color
-	description = "OOC Name Color"
-	key = "OOC_NAME_COLOR"
-
-/datum/client_preference/ooc_name_color/may_set(client/given_client)
-	return TRUE
-
-/datum/client_preference/ooc_name_color/get_options(client/given_client)
-	return PATREON_ALL_TIERS
-
-/datum/client_preference/ooc_name_color/get_default_value(client/given_client)
-	ASSERT(given_client)
-	return given_client.donator_info.patron_type
-
+// Control preferences
 /datum/client_preference/default_hotkey_mode
 	description = "Default Hotkey Mode"
 	key = "DEFAULT_HOTKEY_MODE"
 	default_value = GLOB.PREF_NO
 
+/datum/client_preference/hardsuit_activation
+	description = "Hardsuit Module Activation Key"
+	key = "HARDSUIT_ACTIVATION"
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
+/datum/client_preference/pointing
+	description = "Point to Activation Key"
+	key = "POINTING_ACTIVATION"
+	default_value = GLOB.PREF_SHIFT_MIDDLE_CLICK
+	options = list(GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_MIDDLE_CLICK)
+
+/datum/client_preference/special_ability_key
+	description = "Special Ability Activation Key"
+	key = "SPECIAL_ABILITY"
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
+// Music preferences
+/datum/client_preference/play_admin_midis
+	description ="Play admin midis"
+	key = "SOUND_MIDI"
+
+/datum/client_preference/play_ambiance
+	description ="Play ambience"
+	key = "SOUND_AMBIENCE"
+
+/datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
+	if(new_value == GLOB.PREF_NO)
+		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
+		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 2))
+
+/datum/client_preference/play_hitmarker
+	description ="Play hitmarker Sound"
+	key = "SOUND_HITMARKER"
+
+/datum/client_preference/play_instruments
+	description ="Play instruments"
+	key = "SOUND_INSTRUMENTS"
+
+/datum/client_preference/play_jukeboxes
+	description ="Play jukeboxes"
+	key = "SOUND_JUKEBOXES"
+
+/datum/client_preference/play_lobby_music
+	description ="Play lobby music"
+	key = "SOUND_LOBBY"
+
+/datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
+	if(new_value == GLOB.PREF_YES)
+		if(isnewplayer(preference_mob) && preference_mob.client)
+			GLOB.lobby_music.play_to(preference_mob.client)
+	else
+		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
+
+// Ghost preferences
+/datum/client_preference/ghost_ears
+	description ="Ghost ears"
+	key = "CHAT_GHOSTEARS"
+	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_follow_link_length
+	description ="Ghost Follow Links"
+	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
+	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
+
+/datum/client_preference/ghost_radio
+	description ="Ghost radio"
+	key = "CHAT_GHOSTRADIO"
+	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_sight
+	description ="Ghost sight"
+	key = "CHAT_GHOSTSIGHT"
+	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
+
+// Other preferences
+/datum/client_preference/give_wayfinding
+	description = "Spawn with a wayfinder tracker"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_BASIC)
+	default_value = GLOB.PREF_BASIC
+	key = "WAYFINDING_POINTER"
+
+/datum/client_preference/cinema_credits
+	description = "Show Cinema-like Credits At Round-end"
+	key = "SHOW_CREDITS"
+	default_value = GLOB.PREF_NO
 
 /********************
 * General Staff Preferences *
