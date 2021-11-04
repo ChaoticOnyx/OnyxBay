@@ -89,14 +89,17 @@ var/global/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
-// Chat preferences
+/datum/client_preference/category_chat
+	description = "Chat preferences"
+	options = list()
+
 /datum/client_preference/language_display
-	description = "Display Language Names"
+	description = "    Display Language Names"
 	key = "LANGUAGE_DISPLAY"
 	options = list(GLOB.PREF_FULL, GLOB.PREF_SHORTHAND, GLOB.PREF_OFF)
 
 /datum/client_preference/ooc_name_color
-	description = "OOC Name Color"
+	description = "    OOC Name Color"
 	key = "OOC_NAME_COLOR"
 
 /datum/client_preference/ooc_name_color/may_set(client/given_client)
@@ -110,7 +113,7 @@ var/global/list/_client_preferences_by_type
 	return given_client.donator_info.patron_type
 
 /datum/client_preference/show_typing_indicator
-	description ="Typing indicator"
+	description ="    Typing indicator"
 	key = "SHOW_TYPING"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
@@ -118,9 +121,12 @@ var/global/list/_client_preferences_by_type
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
-// GUI preferences
+/datum/client_preference/category_gui
+	description = "GUI preferences"
+	options = list()
+
 /datum/client_preference/chat_position
-	description = "Alternative Chat Position"
+	description = "    Alternative Chat Position"
 	key = "CHAT_ALT"
 	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
@@ -129,22 +135,22 @@ var/global/list/_client_preferences_by_type
 		preference_mob.client.update_chat_position()
 
 /datum/client_preference/tgui_style
-	description = "TGUI Style"
+	description = "    TGUI Style"
 	key = "TGUI_FANCY"
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
 /datum/client_preference/tgui_monitor
-	description = "TGUI Monitor"
+	description = "    TGUI Monitor"
 	key = "TGUI_MONITOR"
 	options = list(GLOB.PREF_PRIMARY, GLOB.PREF_ALL)
 
 /datum/client_preference/tgui_theme
-	description = "TGUI Theme"
+	description = "    TGUI Theme"
 	key = "TGUI_THEME"
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
 
 /datum/client_preference/tgui_chat
-	description = "TGUI Chat"
+	description = "    TGUI Chat"
 	key = "TGUI_CHAT"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
@@ -159,19 +165,22 @@ var/global/list/_client_preferences_by_type
 		winset(preference_mob, "browseroutput", "is-disabled=1;is-visible=0")
 
 /datum/client_preference/show_progress_bar
-	description ="Progress Bar"
+	description ="    Progress Bar"
 	key = "SHOW_PROGRESS"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/browser_style
-	description = "Fake NanoUI Browser Style"
+	description = "    Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"
 	default_value = GLOB.PREF_FANCY
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
-// Graphic preferences
+/datum/client_preference/category_graphic
+	description = "Graphic preferences"
+	options = list()
+
 /datum/client_preference/ambient_occlusion
-	description = "Ambient Occlusion"
+	description = "    Ambient Occlusion"
 	key = "AMBIENT_OCCLUSION"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 
@@ -180,7 +189,7 @@ var/global/list/_client_preferences_by_type
 		preference_mob.UpdatePlanes()
 
 /datum/client_preference/fullscreen_mode
-	description = "Fullscreen Mode"
+	description = "    Fullscreen Mode"
 	key = "FULLSCREEN"
 	options = list(GLOB.PREF_BASIC, GLOB.PREF_FULL, GLOB.PREF_NO)
 	default_value = GLOB.PREF_NO
@@ -189,35 +198,41 @@ var/global/list/_client_preferences_by_type
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
-// Control preferences
+/datum/client_preference/category_control
+	description = "Control preferences"
+	options = list()
+
 /datum/client_preference/default_hotkey_mode
-	description = "Default Hotkey Mode"
+	description = "    Default Hotkey Mode"
 	key = "DEFAULT_HOTKEY_MODE"
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
+	description = "    Hardsuit Module Activation Key"
 	key = "HARDSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/pointing
-	description = "Point to Activation Key"
+	description = "    Point to Activation Key"
 	key = "POINTING_ACTIVATION"
 	default_value = GLOB.PREF_SHIFT_MIDDLE_CLICK
 	options = list(GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_MIDDLE_CLICK)
 
 /datum/client_preference/special_ability_key
-	description = "Special Ability Activation Key"
+	description = "    Special Ability Activation Key"
 	key = "SPECIAL_ABILITY"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
-// Music preferences
+/datum/client_preference/category_music
+	description = "Music preferences"
+	options = list()
+
 /datum/client_preference/play_admin_midis
-	description ="Play admin midis"
+	description ="    Play admin midis"
 	key = "SOUND_MIDI"
 
 /datum/client_preference/play_ambiance
-	description ="Play ambience"
+	description ="    Play ambience"
 	key = "SOUND_AMBIENCE"
 
 /datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
@@ -226,19 +241,19 @@ var/global/list/_client_preferences_by_type
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 2))
 
 /datum/client_preference/play_hitmarker
-	description ="Play hitmarker Sound"
+	description ="    Play hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
 /datum/client_preference/play_instruments
-	description ="Play instruments"
+	description ="    Play instruments"
 	key = "SOUND_INSTRUMENTS"
 
 /datum/client_preference/play_jukeboxes
-	description ="Play jukeboxes"
+	description ="    Play jukeboxes"
 	key = "SOUND_JUKEBOXES"
 
 /datum/client_preference/play_lobby_music
-	description ="Play lobby music"
+	description ="    Play lobby music"
 	key = "SOUND_LOBBY"
 
 /datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
@@ -248,26 +263,29 @@ var/global/list/_client_preferences_by_type
 	else
 		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
 
-// Ghost preferences
+/datum/client_preference/category_ghost
+	description = "Ghost preferences"
+	options = list()
+
 /datum/client_preference/ghost_ears
-	description ="Ghost ears"
+	description ="    Hearing"
 	key = "CHAT_GHOSTEARS"
 	options = list(GLOB.PREF_ALL_SPEECH, GLOB.PREF_NEARBY)
 
-/datum/client_preference/ghost_follow_link_length
-	description ="Ghost Follow Links"
-	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
-	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
-
 /datum/client_preference/ghost_radio
-	description ="Ghost radio"
+	description ="    Radio"
 	key = "CHAT_GHOSTRADIO"
 	options = list(GLOB.PREF_ALL_CHATTER, GLOB.PREF_NEARBY)
 
 /datum/client_preference/ghost_sight
-	description ="Ghost sight"
+	description ="    Sight"
 	key = "CHAT_GHOSTSIGHT"
 	options = list(GLOB.PREF_ALL_EMOTES, GLOB.PREF_NEARBY)
+
+/datum/client_preference/ghost_follow_link_length
+	description ="    Ghost Follow Links"
+	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
+	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
 
 // Other preferences
 /datum/client_preference/give_wayfinding
