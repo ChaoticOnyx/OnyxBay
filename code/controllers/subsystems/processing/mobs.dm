@@ -36,7 +36,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if (thing.client || (thing.z in player_levels))
+		if (thing.client || (thing.z in player_levels) || thing.teleop)
 			if (call(thing, process_proc)(wait, times_fired, src) == PROCESS_KILL)
 				thing?.is_processing = null
 				processing -= thing
