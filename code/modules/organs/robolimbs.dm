@@ -84,7 +84,7 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/nanotrasen_alt1
 	company = "NanoTrasen - Premium"
-	desc = "A simple but efficient robotic limb with synthetic skin on it's face, created by NanoTrasen."
+	desc = "A simple yet efficient robotic limb with synthetic skin on its face, manufactured by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
 	skintone = 1
 	unavailable_to_build = TRUE
