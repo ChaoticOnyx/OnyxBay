@@ -77,7 +77,7 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/nanotrasen_unathi
 	company = "NanoTrasen - Unathi"
-	desc = "A simple but efficient robotic limb, created by NanoTrasen."
+	desc = "A simple yet efficient robotic limb, manufactured by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_unathi.dmi'
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
