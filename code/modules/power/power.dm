@@ -327,3 +327,9 @@
 	else if (istype(power_source, /obj/item/weapon/cell))
 		cell.use(drained_energy)
 	return drained_energy
+
+/obj/machinery/power/blob_act(damage)
+	if(stat & BROKEN)
+		return
+
+	set_broken(TRUE)

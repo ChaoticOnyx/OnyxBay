@@ -119,6 +119,7 @@ var/list/gamemode_cache = list()
 	var/secondtopiclimit
 
 	var/forbid_singulo_possession = 0
+	var/forbid_singulo_following = 0
 
 	//game_options.txt configs
 
@@ -695,6 +696,9 @@ var/list/gamemode_cache = list()
 
 				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
+				
+				if("forbid_singulo_following")
+					forbid_singulo_following = 1
 
 				if("popup_admin_pm")
 					config.popup_admin_pm = 1
@@ -709,9 +713,6 @@ var/list/gamemode_cache = list()
 					var/ticklag = text2num(value)
 					if(ticklag > 0)
 						fps = 10 / ticklag
-
-				if("fps")
-					fps = text2num(value)
 
 				if("clientfps")
 					clientfps = text2num(value)
