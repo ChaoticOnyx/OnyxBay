@@ -100,7 +100,7 @@
 
 	if(borer)
 		borer.detatch() //Should remove borer if the brain is removed - RR
-
+		borer.leave_host()
 	if(vital)
 		transfer_identity(owner)
 
