@@ -65,7 +65,7 @@ var/datum/robolimb/basic_robolimb
 //NANOTRASEN
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"
-	desc = "A simple but efficient robotic limb, created by NanoTrasen."
+	desc = "A simple yet efficient robotic limb, manufactured by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
 
 /datum/robolimb/nanotrasen_tajaran
