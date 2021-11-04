@@ -44,7 +44,7 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/unbranded_tajaran
 	company = "Unbranded - Tajaran"
-	desc = "A simple robotic limb with feline design. Seems rather stiff."
+	desc = "A simple robotic limb with feline design. It looks rather stiff."
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_tajaran.dmi'
 	restricted_to = list(SPECIES_TAJARA)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
