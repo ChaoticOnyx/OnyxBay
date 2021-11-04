@@ -51,7 +51,7 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/unbranded_unathi
 	company = "Unbranded - Unathi"
-	desc = "A simple robotic limb with reptilian design. Seems rather stiff."
+	desc = "A simple robotic limb with reptilian design. It looks rather stiff."
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
