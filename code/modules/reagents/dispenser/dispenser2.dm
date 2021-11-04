@@ -3,7 +3,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "dispenser"
 	layer = BELOW_OBJ_LAYER
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 
 	var/list/spawn_cartridges = null // Set to a list of types to spawn one of each on New()

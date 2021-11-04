@@ -6,6 +6,8 @@ var/list/gamemode_cache = list()
 	var/server_suffix = 0					// generate numeric suffix based on server port
 	var/subserver_name = null               // subserver name in window title, ignored if null
 
+	var/clientfps = 65				     	// Default fps for clients with "0" in prefs. -1 for synced with server.
+
 	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -112,12 +114,12 @@ var/list/gamemode_cache = list()
 	var/discordurl
 	var/githuburl
 	var/patreonurl
-	var/changelogurl
 
 	var/minutetopiclimit
 	var/secondtopiclimit
 
 	var/forbid_singulo_possession = 0
+	var/forbid_singulo_following = 0
 
 	//game_options.txt configs
 
@@ -580,9 +582,6 @@ var/list/gamemode_cache = list()
 				if ("patreonurl")
 					config.patreonurl = value
 
-				if ("changelogurl")
-					config.changelogurl = value
-
 				if ("ghosts_can_possess_animals")
 					config.ghosts_can_possess_animals = value
 
@@ -697,6 +696,9 @@ var/list/gamemode_cache = list()
 
 				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
+				
+				if("forbid_singulo_following")
+					forbid_singulo_following = 1
 
 				if("popup_admin_pm")
 					config.popup_admin_pm = 1
@@ -712,8 +714,8 @@ var/list/gamemode_cache = list()
 					if(ticklag > 0)
 						fps = 10 / ticklag
 
-				if("fps")
-					fps = text2num(value)
+				if("clientfps")
+					clientfps = text2num(value)
 
 				if("tick_limit_mc_init")
 					tick_limit_mc_init = text2num(value)

@@ -105,6 +105,12 @@
 /obj/structure/flora/tree/green/tree10
 	icon_state = "tree10"
 
+/obj/structure/flora/tree/green/spook1
+	icon_state = "spook1"
+
+/obj/structure/flora/tree/green/spook2
+	icon_state = "spook2"
+
 /obj/structure/flora/tree/green/small
 	pixel_x = -32
 	pixel_y = 0

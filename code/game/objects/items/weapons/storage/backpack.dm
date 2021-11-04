@@ -16,7 +16,7 @@
 	slot_flags = SLOT_BACK
 	max_w_class = ITEM_SIZE_LARGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
-	use_sound = "searching_clothes"
+	use_sound = SFX_SEARCH_CLOTHES
 
 /obj/item/weapon/storage/backpack/equipped()
 	if(!has_extension(src, /datum/extension/appearance))

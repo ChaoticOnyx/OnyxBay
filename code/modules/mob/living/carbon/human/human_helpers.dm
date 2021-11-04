@@ -72,7 +72,7 @@
 			client.pixel_x = 0
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
-	if (machine_visual)
+	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
 		return
 	if(!G)
 		return

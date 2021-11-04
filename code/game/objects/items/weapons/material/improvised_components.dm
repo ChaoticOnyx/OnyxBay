@@ -5,7 +5,7 @@
 	icon_state = "butterflystep1"
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 
 /obj/item/weapon/material/butterflyconstruction/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
@@ -29,7 +29,7 @@
 	icon_state = "butterfly1"
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 
 /obj/item/weapon/material/butterflyhandle/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/weapon/material/butterflyblade))
@@ -56,7 +56,7 @@
 	mod_reach = 1.25
 	mod_handy = 1.0
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	force_divisor = 0
 	thrown_force_divisor = 0
 	applies_material_colour = 0

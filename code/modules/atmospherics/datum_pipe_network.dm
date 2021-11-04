@@ -42,7 +42,7 @@
 	update_network_gases()
 
 	if((normal_members.len>0)||(line_members.len>0))
-		STOP_PROCESSING(SSmachines, src)
+		START_PROCESSING(SSmachines, src)
 		return 1
 	qdel(src)
 

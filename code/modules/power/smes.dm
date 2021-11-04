@@ -10,7 +10,7 @@
 	icon_state = "smes"
 	density = 1
 	anchored = 1
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 	var/capacity = 5e6 // maximum charge
 	var/charge = 1e6 // actual charge
@@ -408,7 +408,7 @@
 	if(..())
 		return 1
 
-	playsound(loc, "switch_large", 75)
+	playsound(loc, SFX_USE_LARGE_SWITCH, 75)
 
 	if( href_list["cmode"] )
 		inputting(!input_attempt)

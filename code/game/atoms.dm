@@ -294,6 +294,10 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
+/atom/proc/blob_act(damage)
+	CAN_BE_REDEFINED(TRUE)
+	return
+
 /atom/proc/ex_act()
 	CAN_BE_REDEFINED(TRUE)
 	return

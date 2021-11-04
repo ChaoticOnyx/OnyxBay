@@ -702,6 +702,10 @@
 		check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL))
 	return
 
+/obj/mecha/blob_act(damage)
+	take_damage(damage, "brute")
+	check_for_internal_damage(list(MECHA_INT_FIRE, MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST, MECHA_INT_SHORT_CIRCUIT))
+
 //////////////////////
 ////// AttackBy //////
 //////////////////////
@@ -1105,8 +1109,10 @@
 /obj/mecha/proc/go_out()
 	if(!src.occupant) return
 	var/atom/movable/mob_container
+	var/list/onmob_items //prevents duplication of objects with which the human interacted in the mech
 	if(ishuman(occupant))
 		mob_container = src.occupant
+		onmob_items = occupant.get_equipped_items(TRUE)
 	else if(istype(occupant, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain = occupant
 		mob_container = brain.container
@@ -1114,6 +1120,8 @@
 		return
 	for(var/item in dropped_items)
 		var/atom/movable/I = item
+		if(ishuman(occupant) && is_type_in_list(I, onmob_items))
+			continue
 		I.forceMove(loc)
 	dropped_items.Cut()
 	if(mob_container.forceMove(src.loc))//ejecting mob container

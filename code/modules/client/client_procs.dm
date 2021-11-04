@@ -2,8 +2,7 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	513		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
-									//I would just like the code ready should it ever need to be used.
+#define MIN_CLIENT_VERSION	513
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -226,7 +225,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -448,7 +447,7 @@
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
-		vars["fps"] = prefs.clientfps
+		fps = client_fps
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
@@ -569,6 +568,7 @@
 		prefs = new /datum/preferences(src)
 		prefs.last_ip = address				// these are gonna be used for banning
 		prefs.last_id = computer_id			// these are gonna be used for banning
+		apply_fps(prefs.clientfps ? prefs.clientfps : config.clientfps)
 
 	if(initialization || SScharacter_setup.initialized)
 		prefs.setup()

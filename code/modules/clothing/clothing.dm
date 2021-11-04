@@ -104,7 +104,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	return 1
 
 /obj/item/clothing/equipped(mob/user)
-	playsound(src, "outfit", 75, 1)
+	playsound(src, SFX_USE_OUTFIT, 75, 1)
 
 	if(needs_vision_update())
 		update_vision()

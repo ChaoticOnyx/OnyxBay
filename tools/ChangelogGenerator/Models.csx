@@ -240,15 +240,21 @@ public static class Github
         {
             if (String.IsNullOrEmpty(Body))
             {
-                throw new Exceptions.ChangelogNotFound("  🚫 Чейнджлог не обнаружен.");
+                throw new Exceptions.ChangelogNotFound("  🚫 Тело пулл реквеста пустое.");
             }
 
             var changesBody = s_clBody.Match(Body);
+
+            if (!changesBody.Success)
+            {
+                throw new Exceptions.ChangelogNotFound("  🚫 Чейнджлог не обнаружен.");
+            }
+
             var matches = s_clSplit.Matches(changesBody.Value);
 
             if (matches.Count == 0)
             {
-                throw new Exceptions.ChangelogNotFound("  🚫 Чейнджлог не обнаружен.");
+                throw new Exceptions.ChangelogIsEmpty("  🚫 Чейнджлог пустой или имеет неверный формат.");
             }
 
             var author = changesBody.Groups[2].Value.Trim();
@@ -351,5 +357,12 @@ public static class Exceptions
         public ChangelogNotFound() : base() {}
         public ChangelogNotFound(string message) : base(message) {}
         public ChangelogNotFound(string message, Exception inner) : base(message, inner) {}
+    }
+
+    public class ChangelogIsEmpty : Exception
+    {
+        public ChangelogIsEmpty() : base() { }
+        public ChangelogIsEmpty(string message) : base(message) { }
+        public ChangelogIsEmpty(string message, Exception inner) : base(message, inner) { }
     }
 }

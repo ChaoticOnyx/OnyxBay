@@ -97,12 +97,11 @@ var/server_name = "OnyxBay"
 
 	return match
 
-#define RECOMMENDED_VERSION 511
+#define RECOMMENDED_VERSION 514
 /world/New()
 	SetupLogs()
 
-	// Used for telling if the changelog has changed recently
-	changelog_hash = md5('html/changelogs/.all_changelog.json')
+	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
 		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")

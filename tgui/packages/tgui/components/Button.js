@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
@@ -9,7 +8,7 @@ import { KEY_ENTER, KEY_ESCAPE, KEY_SPACE } from 'common/keycodes'
 import { classes, pureComponentHooks } from 'common/react'
 import { Component, createRef } from 'inferno'
 import { createLogger } from '../logging'
-import { Box } from './Box'
+import { Box, computeBoxClassName, computeBoxProps } from './Box'
 import { Icon } from './Icon'
 import { Tooltip } from './Tooltip'
 
@@ -51,7 +50,7 @@ export const Button = props => {
   // IE8: Use a lowercase "onclick" because synthetic events are fucked.
   // IE8: Use an "unselectable" prop because "user-select" doesn't work.
   let buttonContent = (
-    <Box
+    <div
       className={classes([
         'Button',
         fluid && 'Button--fluid',
@@ -65,7 +64,8 @@ export const Button = props => {
         color && typeof color === 'string'
           ? 'Button--color--' + color
           : 'Button--color--default',
-        className
+        className,
+        computeBoxClassName(rest)
       ])}
       tabIndex={!disabled && '0'}
       unselectable={Byond.IS_LTE_IE8}
@@ -89,7 +89,7 @@ export const Button = props => {
           e.preventDefault()
         }
       }}
-      {...rest}>
+      {...computeBoxProps(rest)}>
       {icon && iconPosition !== 'right' && (
         <Icon
           name={icon}
@@ -108,7 +108,7 @@ export const Button = props => {
           spin={iconSpin}
         />
       )}
-    </Box>
+    </div>
   )
 
   if (tooltip) {

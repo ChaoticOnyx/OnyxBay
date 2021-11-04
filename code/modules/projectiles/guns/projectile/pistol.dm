@@ -121,7 +121,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	caliber = ".45"
 	silenced = 1
-	fire_sound = "fire_silent"
+	fire_sound = SFX_SILENT_FIRE
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -245,7 +245,7 @@
 		w_class = ITEM_SIZE_NORMAL
 		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
-		fire_sound = "fire_silent"
+		fire_sound = SFX_SILENT_FIRE
 		return
 	..()
 

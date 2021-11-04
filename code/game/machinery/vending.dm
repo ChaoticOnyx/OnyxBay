@@ -11,7 +11,7 @@
 	anchored = 1
 	density = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 40
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
@@ -682,7 +682,7 @@
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, loc)
 		spark_system.start()
-		playsound(loc, "spark", 50, 1)
+		playsound(loc, SFX_SPARK, 50, 1)
 
 /*
  * Vending machine types
@@ -815,11 +815,13 @@
 	rand_amount = TRUE
 	products = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 25,
 					/obj/item/weapon/reagent_containers/food/drinks/tea = 25,
-					/obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 25)
+					/obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 25,
+					/obj/item/weapon/storage/pill_bottle/sugar_cubes = 5)
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/ice = 10)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 3,
 			   	  /obj/item/weapon/reagent_containers/food/drinks/tea = 3,
-			   	  /obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 3)
+			   	  /obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 3,
+			   	  /obj/item/weapon/storage/pill_bottle/sugar_cubes = 10)
 
 /obj/machinery/vending/snack
 	name = "Getmore Chocolate Corp"
