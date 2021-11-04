@@ -151,3 +151,32 @@
 /mob/living/simple_animal/borer/proc/request_player()
 	var/datum/ghosttrap/G = get_ghost_trap("cortical borer")
 	G.request_player(src, "A cortical borer needs a player.")
+
+/mob/living/simple_animal/borer/attack_ghost(mob/observer/ghost/user)
+	if(client)
+		return ..()
+
+	if(jobban_isbanned(user, MODE_BORER))
+		to_chat(user, SPAN("danger", "You are banned from playing a borer."))
+		return
+
+	var/confirm = alert(user, "Are you sure you want to join as a borer?", "Become Borer", "No", "Yes")
+
+	if(!src || confirm != "Yes")
+		return
+
+	if(!user || !user.ckey)
+		return
+
+	if(client) //Already occupied.
+		to_chat(user, "Too slow...")
+		return
+
+	ckey = user.ckey
+
+	if(mind && !GLOB.borers.is_antagonist(mind))
+		GLOB.borers.add_antagonist(mind, 1, 0, 0)
+
+	spawn(-1)
+		if(user)
+			qdel(user) // Remove the keyless ghost if it exists.
