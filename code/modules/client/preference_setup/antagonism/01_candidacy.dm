@@ -39,9 +39,7 @@
 		var/datum/antagonist/antag = all_antag_types[antag_type]
 		. += "<tr><td>[antag.role_text]: </td><td>"
 		var/bannedReason = jobban_isbanned(preference_mob(), antag.id)
-		if(bannedReason == "Whitelisted Job")
-			. += "<span class='danger'>\[WHITELIST\]</span><br>"
-		else if(bannedReason || (antag.id == MODE_MALFUNCTION && jobban_isbanned(preference_mob(), "AI")))
+		if(bannedReason || (antag.id == MODE_MALFUNCTION && jobban_isbanned(preference_mob(), "AI")))
 			. += "<span class='danger'>\[BANNED\]</span><br>"
 		else if(antag.id in pref.be_special_role)
 			. += "<span class='linkOn'>High</span> <a href='?src=\ref[src];add_maybe=[antag.id]'>Low</a> <a href='?src=\ref[src];del_special=[antag.id]'>Never</a></br>"
@@ -63,9 +61,7 @@
 
 		. += "<tr><td>[(ghost_trap.ghost_trap_role)]: </td><td>"
 		var/bannedReason = banned_from_ghost_role(preference_mob(), ghost_trap)
-		if(bannedReason == "Whitelisted Job")
-			. += "<span class='danger'>\[WHITELIST\]</span><br>"
-		else if(bannedReason)
+		if(bannedReason)
 			. += "<span class='danger'>\[BANNED\]</span><br>"
 		else if((ghost_trap.pref_check in pref.be_special_role) || (ghost_trap.pref_check in pref.may_be_special_role))
 			. += "<span class='linkOn'>Always</span> <a href='?src=\ref[src];del_special=[ghost_trap.pref_check]'>Never</a></br>"

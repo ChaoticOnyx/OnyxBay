@@ -72,7 +72,6 @@ var/list/gamemode_cache = list()
 	var/panic_bunker = 0
 	var/eams = 0
 	var/eams_blocks_ooc = 0
-	var/usewhitelist = 0
 	var/kick_inactive = 0				//force disconnect for inactive players after this many minutes, if non-0
 	var/mods_can_tempban = 0
 	var/mods_can_job_tempban = 0
@@ -95,9 +94,6 @@ var/list/gamemode_cache = list()
 	var/disable_player_mice = 0
 	var/uneducated_mice = 0 //Set to 1 to prevent newly-spawned mice from understanding human speech
 
-	var/usealienwhitelist = 0
-	var/useingamealienwhitelist = 0
-	var/usealienwhitelistSQL = 0
 	var/limitalienplayers = 0
 	var/alien_to_human_ratio = 0.5
 	var/allow_extra_antags = 0
@@ -615,9 +611,6 @@ var/list/gamemode_cache = list()
 				if ("disable_respawn")
 					config.abandon_allowed = 0
 
-				if ("usewhitelist")
-					config.usewhitelist = 1
-
 				if ("feature_object_spell_system")
 					config.feature_object_spell_system = 1
 
@@ -729,15 +722,6 @@ var/list/gamemode_cache = list()
 				if("humans_need_surnames")
 					humans_need_surnames = 1
 
-				// if("usealienwhitelist")
-					// usealienwhitelist = TRUE
-
-				if("useingamealienwhitelist")
-					usealienwhitelist = 1
-					useingamealienwhitelist = 1
-				//if("usealienwhitelist_sql") // above need to be enabled as well
-				//	usealienwhitelist = 1
-				//	usealienwhitelistSQL = 1;
 				if("alien_player_ratio")
 					limitalienplayers = 1
 					alien_to_human_ratio = text2num(value)

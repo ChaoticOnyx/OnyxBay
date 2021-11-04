@@ -289,7 +289,7 @@
 	for(var/mob/living/carbon/alien/diona/D in src)
 		nymphs++
 		D.forceMove(T)
-		transfer_languages(src, D, WHITELISTED|RESTRICTED)
+		transfer_languages(src, D, RESTRICTED)
 		D.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 		L.set_next_nymph(D)
 		D.set_last_nymph(L)
@@ -298,7 +298,7 @@
 	if(nymphs < number_of_resulting_nymphs)
 		for(var/i in nymphs to (number_of_resulting_nymphs - 1))
 			var/mob/living/carbon/alien/diona/M = new(T)
-			transfer_languages(src, M, WHITELISTED|RESTRICTED)
+			transfer_languages(src, M, RESTRICTED)
 			M.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 			L.set_next_nymph(M)
 			M.set_last_nymph(L)

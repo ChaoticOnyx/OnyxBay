@@ -104,7 +104,6 @@ var/global/floorIsLava = 0
 			body += "<A style=\"pointer-events: none; cursor: default;\">Watchlist Disabled (Needs SQL)</A>"
 
 		body += SSeams.GetPlayerPanelButton(src, M.client)
-		body += SpeciesIngameWhitelist_GetPlayerPannelButton(src, M.client)
 
 	body += {"<br><br>
 		<A href='?src=\ref[src];jumpto=\ref[M]'><b>Jump to</b></A> |

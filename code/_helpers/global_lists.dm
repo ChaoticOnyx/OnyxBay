@@ -24,12 +24,11 @@ GLOBAL_LIST_EMPTY(computer_list)
 GLOBAL_LIST_EMPTY(all_doors)
 GLOBAL_LIST_EMPTY(atmos_machinery)
 
-//Languages/species/whitelist.
+//Languages/species.
 var/global/list/all_species[0]
 var/global/list/all_languages[0]
 var/global/list/language_keys[0]					// Table of say codes for all languages
-var/global/list/whitelisted_species = list(SPECIES_HUMAN) // Species that require a whitelist check.
-var/global/list/playable_species = list(SPECIES_HUMAN)    // A list of ALL playable species, whitelisted, latejoin or otherwise.
+var/global/list/playable_species = list(SPECIES_HUMAN)    // A list of ALL playable species, latejoin or otherwise.
 
 var/list/mannequins_
 
@@ -199,8 +198,6 @@ var/global/list/string_slot_flags = list(
 
 		if(!(S.spawn_flags & SPECIES_IS_RESTRICTED))
 			playable_species += S.name
-		if(S.spawn_flags & SPECIES_IS_WHITELISTED)
-			whitelisted_species += S.name
 
 	//Posters
 	paths = typesof(/datum/poster) - /datum/poster

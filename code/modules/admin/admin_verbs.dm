@@ -760,7 +760,7 @@ var/list/admin_verbs_mentor = list(
 	if(!H) return
 
 	log_and_message_admins("is altering the appearance of [H].")
-	H.change_appearance(APPEARANCE_ALL, usr, usr, check_species_whitelist = 0, state = GLOB.admin_state)
+	H.change_appearance(APPEARANCE_ALL, usr, usr, state = GLOB.admin_state)
 	feedback_add_details("admin_verb","CHAA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/change_human_appearance_self()
@@ -777,13 +777,8 @@ var/list/admin_verbs_mentor = list(
 		to_chat(usr, "Only mobs with clients can alter their own appearance.")
 		return
 
-	switch(alert("Do you wish for [H] to be allowed to select non-whitelisted races?","Alter Mob Appearance","Yes","No","Cancel"))
-		if("Yes")
-			log_and_message_admins("has allowed [H] to change \his appearance, including races that requires whitelisting")
-			H.change_appearance(APPEARANCE_ALL, H.loc, check_species_whitelist = 0)
-		if("No")
-			log_and_message_admins("has allowed [H] to change \his appearance, excluding races that requires whitelisting.")
-			H.change_appearance(APPEARANCE_ALL, H.loc, check_species_whitelist = 1)
+	log_and_message_admins("has allowed [H] to change \his appearance")
+	H.change_appearance(APPEARANCE_ALL, H.loc)
 	feedback_add_details("admin_verb","CMAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/change_security_level()

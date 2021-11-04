@@ -63,18 +63,8 @@ var/list/gear_datums = list()
 
 /datum/category_item/player_setup_item/loadout/proc/valid_gear_choices(max_cost)
 	. = list()
-	var/mob/preference_mob = preference_mob()
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		var/okay = 1
-		if(G.whitelisted && preference_mob)
-			okay = 0
-			for(var/species in G.whitelisted)
-				if(is_species_whitelisted(preference_mob, species))
-					okay = 1
-					break
-		if(!okay)
-			continue
 		if(max_cost && G.cost > max_cost)
 			continue
 		. += gear_name

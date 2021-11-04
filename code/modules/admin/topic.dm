@@ -2158,7 +2158,6 @@
 
 	watchlist.AdminTopicProcess(src, href_list)
 	IAAJ_AdminTopicProcess(src, href_list)
-	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
 
 /mob/living/proc/can_centcom_reply()

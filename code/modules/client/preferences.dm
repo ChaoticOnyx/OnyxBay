@@ -157,12 +157,6 @@
 	if(!user)	return
 	if(isliving(user)) return
 
-	if(href_list["preference"] == "open_whitelist_forum")
-		if(config.forumurl)
-			send_link(user, config.forumurl)
-		else
-			to_chat(user, "<span class='danger'>The forum URL is not set in the server configuration.</span>")
-			return
 	ShowChoices(usr)
 	return 1
 

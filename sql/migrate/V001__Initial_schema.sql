@@ -231,16 +231,6 @@ CREATE TABLE IF NOT EXISTS `ranks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `whitelist`
---
-
-CREATE TABLE IF NOT EXISTS `whitelist` (
-  `id` int(11) NOT NULL,
-  `ckey` text NOT NULL,
-  `race` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
 -- Indexes for dumped tables
 --
 
@@ -330,12 +320,6 @@ ALTER TABLE `ranks`
   ADD PRIMARY KEY (`Rank`);
 
 --
--- Indexes for table `whitelist`
---
-ALTER TABLE `whitelist`
-  ADD PRIMARY KEY (`id`);
-
---
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -403,9 +387,4 @@ ALTER TABLE `library`
 -- AUTO_INCREMENT for table `population`
 --
 ALTER TABLE `population`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
---
--- AUTO_INCREMENT for table `whitelist`
---
-ALTER TABLE `whitelist`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;

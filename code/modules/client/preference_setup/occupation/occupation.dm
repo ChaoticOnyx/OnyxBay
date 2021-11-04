@@ -107,10 +107,7 @@
 			. += "<del>[rank]</del></td><td><b> \[UNAVAILABLE]</b></td></tr>"
 			continue
 		var/bannedReason = jobban_isbanned(user, rank)
-		if(bannedReason == "Whitelisted Job")
-			. += "<del>[rank]</del></td><td><b> \[WHITELIST]</b></td></tr>"
-			continue
-		else if (bannedReason == IAA_ban_reason)
+		if (bannedReason == IAA_ban_reason)
 			. += "<del>[rank]</del></td><td><b> \[FIRED BY NT]</b></td></tr>"
 			continue
 		else if(bannedReason)

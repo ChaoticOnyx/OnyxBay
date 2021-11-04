@@ -306,7 +306,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			return TOPIC_REFRESH
 
 	else if(href_list["show_species"])
-		// Actual whitelist checks are handled elsewhere, this is just for accessing the preview window.
+		// This is just for accessing the preview window.
 		var/choice = input("Which species would you like to look at?") as null|anything in playable_species
 		if(!choice) return
 		pref.species_preview = choice
@@ -675,8 +675,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "<small>"
 	if(current_species.spawn_flags & SPECIES_CAN_JOIN)
 		dat += "</br><b>Often present among humans.</b>"
-	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED)
-		dat += "</br><b>Whitelist restricted.</b>"
 	if(!current_species.has_organ[BP_HEART])
 		dat += "</br><b>Does not have blood.</b>"
 	if(!current_species.has_organ[BP_LUNGS])
@@ -702,20 +700,15 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</table><center><hr/>"
 
 	var/restricted = 0
-	if(config.usealienwhitelist) //If we're using the whitelist, make sure to check it!
-		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
-			restricted = 2
-		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))
-			restricted = 1
-		else if (jobban_isbanned(user, "SPECIES"))
-			restricted = 3
+	if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
+		restricted = "not_available"
+	else if (jobban_isbanned(user, "SPECIES"))
+		restricted = "was_banned"
 
 	if (restricted)
-		if (restricted == 1)
-			dat += "<font color='red'><b>You cannot play as this species.</br><small>If you wish to be whitelisted, contact admins by AHelp.</small></b></font></br>"
-		else if (restricted == 2)
+		if (restricted == "not_available")
 			dat += "<font color='red'><b>You cannot play as this species.</br><small>This species is not available as a player race.</small></b></font></br>"
-		else if (restricted == 3)
+		else if (restricted == "was_banned")
 			dat += "<font color='red'><b>You cannot play as this species.</br><small>You was banned to play species!</small></b></font></br>"
 	if (!restricted)
 		dat += "\[<a href='?src=\ref[src];set_species=[pref.species_preview]'>select</a>\]"
