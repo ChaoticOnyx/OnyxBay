@@ -10,9 +10,6 @@
 
 	var/damage = BLOB_DAMAGE
 
-	var/fire_resist = BLOB_FIRE_RESIST
-	var/brute_resist = BLOB_BRUTE_RESIST
-
 	var/static/upgrade_tree = BLOB_UPGRADE_TREE
 	/// Contains the "core" blob.
 	/// When that core is dead (deleted) - our blob can't expand anymore.
@@ -166,17 +163,17 @@
 		var/obj/item/weapon/weldingtool/W = I
 
 		if (W.welding)
-			damage += (BLOB_WELDING_BASE_DAMAGE / fire_resist)
+			damage += BLOB_WELDING_BASE_DAMAGE
 			playsound(I, 'sound/items/welder.ogg', 60, TRUE)
 
 	if (I.sharp)
-		damage += (BLOB_SHAPR_BASE_DAMAGE / brute_resist)
+		damage += BLOB_SHAPR_BASE_DAMAGE
 
 	if (I.edge)
-		damage += (BLOB_EDGE_BASE_DAMAGE / brute_resist)
+		damage += BLOB_EDGE_BASE_DAMAGE
 
 	if (!I.sharp && !I.edge)
-		damage += (BLOB_BLUNT_BASE_DAMAGE / brute_resist)
+		damage += BLOB_BLUNT_BASE_DAMAGE
 
 	health -= damage
 
@@ -185,14 +182,14 @@
 
 /obj/structure/blob/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
-	var/damage = min(0.01 * exposed_temperature / fire_resist, 0)
+	var/damage = min(0.01 * exposed_temperature, 0)
 
 	if (damage)
 		health -= damage
 		update_icon()
 
 /obj/structure/blob/ex_act(severity)
-	health -= ((BLOB_EXPLOSION_BASE_DAMAGE / brute_resist) - (severity * 5))
+	health -= BLOB_EXPLOSION_BASE_DAMAGE - (severity * 5)
 	update_icon()
 
 /obj/structure/blob/bullet_act(obj/item/projectile/P)
@@ -200,9 +197,9 @@
 
 	switch(P.damage_type)
 		if (BRUTE)
-			health -= (P.damage / brute_resist)
+			health -= P.damage
 		if (BURN)
-			health -= (P.damage / fire_resist)
+			health -= P.damage
 
 	update_icon()
 
