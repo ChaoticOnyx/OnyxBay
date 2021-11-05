@@ -89,6 +89,6 @@
 	id = "chameleon"
 	req_tech = list(TECH_ILLEGAL = 2)
 	materials = list(MATERIAL_STEEL = 500)
-	build_path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
+	build_path = /obj/item/weapon/storage/backpack/dufflebag/syndie/syndie_kit/chameleon
 	sort_string = "VASBA"
 	category_items = list("Misc")

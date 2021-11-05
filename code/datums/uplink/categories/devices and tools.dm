@@ -58,7 +58,7 @@
 	name = "Cleaning Kit"
 	desc = "A satchel full of stuff you'll need to scrub the crimescene clear."
 	item_cost = 2
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+	path = /obj/item/weapon/storage/backpack/dufflebag/syndie/syndie_kit/cleaning_kit
 
 /datum/uplink_item/item/tools/plastique
 	name = "C-4 Explosive"

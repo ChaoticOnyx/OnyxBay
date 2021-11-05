@@ -62,7 +62,7 @@
 		)
 
 // Chameleon uplink kit
-/obj/item/weapon/storage/backpack/chameleon/sydie_kit
+/obj/item/weapon/storage/backpack/dufflebag/syndie/syndie_kit/chameleon
 	startswith = list(
 		/obj/item/clothing/under/chameleon,
 		/obj/item/clothing/suit/chameleon,
@@ -183,7 +183,7 @@
 
 	startswith = list(/obj/item/weapon/spacecash/bundle/c500 = 10)
 
-/obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+/obj/item/weapon/storage/backpack/dufflebag/syndie/syndie_kit/cleaning_kit
 	name = "cleaning kit"
 	desc = "Used to clean your dirty deeds up."
 	startswith = list(

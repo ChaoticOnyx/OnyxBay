@@ -40,7 +40,7 @@
 	name = "Chameleon Kit"
 	desc = "Filled with a full set of chameleon clothes."
 	item_cost = 3
-	path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
+	path = /obj/item/weapon/storage/backpack/dufflebag/syndie/syndie_kit/chameleon
 
 /datum/uplink_item/item/stealth_items/voice
 	name = "Chameleon Mask/Voice Changer"
