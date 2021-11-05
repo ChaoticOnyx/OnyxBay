@@ -131,6 +131,36 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
 
+/datum/body_build/fat
+	name                 = "Fat"
+
+	index                = "_fat"
+	roboindex            = "_fat"
+	genders              = list(MALE, FEMALE)
+	clothing_icons       = list(
+		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_fat.dmi',
+		"slot_gloves"    = 'icons/inv_slots/gloves/mob_fat.dmi',
+		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
+		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',
+		"slot_r_ear"     = 'icons/inv_slots/ears/mob.dmi',
+		"slot_wear_mask" = 'icons/inv_slots/masks/mob.dmi',
+		"slot_head"      = 'icons/inv_slots/hats/mob.dmi',
+		"slot_shoes"     = 'icons/inv_slots/shoes/mob.dmi',
+		"slot_belt"      = 'icons/inv_slots/belts/mob_fat.dmi',
+		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob.dmi',
+		"slot_back"      = 'icons/inv_slots/back/mob_fat.dmi',
+		"slot_tie"       = 'icons/inv_slots/acessories/mob_fat.dmi',
+		"slot_hidden"    = 'icons/inv_slots/hidden/mob_fat.dmi',
+		"slot_wear_id"   = 'icons/mob/onmob/id.dmi',
+		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand.dmi',
+		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
+		)
+	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
+	blood_icon           = 'icons/mob/human_races/masks/blood_human.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human.dmi'
+
+
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
 	name                 = "Slim Tajaran"
 

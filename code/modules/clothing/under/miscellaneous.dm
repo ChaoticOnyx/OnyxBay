@@ -622,30 +622,11 @@
 	species_restricted = null
 	body_parts_covered = 0
 
-// /obj/item/clothing/under/pcrc
-// 	name = "\improper PCRC uniform"
-// 	desc = "A uniform belonging to Proxima Centauri Risk Control, a private security firm."
-// 	icon_state = "pcrc"
-// 	item_state = "jensensuit"
-// 	worn_state = "pcrc"
-
 /obj/item/clothing/under/grayson
 	name = "\improper Grayson overalls"
 	desc = "A set of overalls belonging to Grayson Manufactories, a manufacturing and mining company."
 	icon_state = "grayson"
 	worn_state = "grayson"
-
-// /obj/item/clothing/under/wardt
-// 	name = "\improper Ward-Takahashi jumpsuit"
-// 	desc = "A jumpsuit belonging to Ward-Takahashi, a megacorp in the consumer goods and research market."
-// 	icon_state = "wardt"
-// 	worn_state = "wardt"
-
-// /obj/item/clothing/under/mbill
-// 	name = "\improper Major Bill's uniform"
-// 	desc = "A uniform belonging to Major Bill's Transportation, a major shipping company."
-// 	icon_state = "mbill"
-// 	worn_state = "mbill"
 
 // //
 /obj/item/clothing/under/confederacy
@@ -697,12 +678,6 @@
 	icon_state = "fig_leaf"
 	body_parts_covered = LOWER_TORSO
 	has_sensor = 0
-
-// /obj/item/clothing/under/wetsuit
-// 	name = "tactical wetsuit"
-// 	desc = "For when you want to scuba dive your way into an enemy base but still want to show off a little skin."
-// 	icon_state = "wetsuit"
-// 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/contortionist
 	name = "contortionist's jumpsuit"
