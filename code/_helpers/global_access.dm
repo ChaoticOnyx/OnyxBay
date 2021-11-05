@@ -347,10 +347,6 @@
 			return global.economic_species_modifier;
 		if("empty_playable_ai_cores")
 			return global.empty_playable_ai_cores;
-		if("endgame_exits")
-			return global.endgame_exits;
-		if("endgame_safespawns")
-			return global.endgame_safespawns;
 		if("ert_base_chance")
 			return global.ert_base_chance;
 		if("escape_pods")
@@ -477,8 +473,6 @@
 			return global.join_motd;
 		if("join_regular_announcement")
 			return global.join_regular_announcement;
-		if("landmarks_list")
-			return global.landmarks_list;
 		if("language_keys")
 			return global.language_keys;
 		if("last_chew")
@@ -589,8 +583,6 @@
 			return global.next_duration_update;
 		if("next_station_date_change")
 			return global.next_station_date_change;
-		if("ninjastart")
-			return global.ninjastart;
 		if("ntnet_card_uid")
 			return global.ntnet_card_uid;
 		if("ntnet_global")
@@ -1256,10 +1248,6 @@
 			global.economic_species_modifier=newval;
 		if("empty_playable_ai_cores")
 			global.empty_playable_ai_cores=newval;
-		if("endgame_exits")
-			global.endgame_exits=newval;
-		if("endgame_safespawns")
-			global.endgame_safespawns=newval;
 		if("ert_base_chance")
 			global.ert_base_chance=newval;
 		if("escape_pods")
@@ -1386,8 +1374,6 @@
 			global.join_motd=newval;
 		if("join_regular_announcement")
 			global.join_regular_announcement=newval;
-		if("landmarks_list")
-			global.landmarks_list=newval;
 		if("language_keys")
 			global.language_keys=newval;
 		if("last_chew")
@@ -1498,8 +1484,6 @@
 			global.next_duration_update=newval;
 		if("next_station_date_change")
 			global.next_station_date_change=newval;
-		if("ninjastart")
-			global.ninjastart=newval;
 		if("ntnet_card_uid")
 			global.ntnet_card_uid=newval;
 		if("ntnet_global")
@@ -2000,8 +1984,6 @@
 	"dummy_lighting_corner",
 	"economic_species_modifier",
 	"empty_playable_ai_cores",
-	"endgame_exits",
-	"endgame_safespawns",
 	"ert_base_chance",
 	"escape_pods",
 	"escape_pods_by_name",
@@ -2066,7 +2048,6 @@
 	"joblist",
 	"join_motd",
 	"join_regular_announcement",
-	"landmarks_list",
 	"language_keys",
 	"last_chew",
 	"last_message_id",
@@ -2127,7 +2108,6 @@
 	"next_account_number",
 	"next_duration_update",
 	"next_station_date_change",
-	"ninjastart",
 	"not_incapacitated_turf_state",
 	"ntnet_card_uid",
 	"ntnet_global",
