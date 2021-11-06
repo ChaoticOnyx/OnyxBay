@@ -6,6 +6,7 @@
 #define BLOB_SHAPR_BASE_DAMAGE 20
 #define BLOB_EDGE_BASE_DAMAGE 40
 #define BLOB_BLUNT_BASE_DAMAGE 10
+#define BLOB_DAMAGE_CAP 100
 
 // Health regeneration.
 /// In percents of max health.

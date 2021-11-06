@@ -175,7 +175,7 @@
 	if (!I.sharp && !I.edge)
 		damage += BLOB_BLUNT_BASE_DAMAGE
 
-	health -= damage
+	health -= min(damage, BLOB_DAMAGE_CAP)
 
 /obj/structure/blob/blob_act()
 	return
@@ -195,12 +195,7 @@
 /obj/structure/blob/bullet_act(obj/item/projectile/P)
 	..()
 
-	switch(P.damage_type)
-		if (BRUTE)
-			health -= P.damage
-		if (BURN)
-			health -= P.damage
-
+	health -= min(P.damage, BLOB_DAMAGE_CAP)
 	update_icon()
 
 /obj/structure/blob/Crossed(O)
