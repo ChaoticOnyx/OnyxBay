@@ -135,7 +135,6 @@ var/global/datum/body_build/default_body_build = new
 	name                 = "Fat"
 
 	index                = "_fat"
-	roboindex            = "_fat"
 	genders              = list(MALE, FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
