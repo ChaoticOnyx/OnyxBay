@@ -163,15 +163,28 @@
 			if(!finalized)
 				finalize(user)
 
-/obj/item/canvas/proc/finalize(mob/user)
+/obj/item/canvas/proc/finalize(author, is_copy = FALSE)
 	finalized = TRUE
-	author_ckey = user.ckey
+	if(ismob(author))
+		var/mob/user = author
+		author_ckey = user.ckey
+		try_rename(user)
+	else if(istext(author))
+		author_ckey = author
 	paint_image()
-	try_rename(user)
 	var/turf/epicenter = get_turf(src)
 	if(!epicenter)
 		return
-	message_admins("The new art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+	message_admins("The [is_copy ? "copy of " : "new "] art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+
+/obj/item/canvas/proc/copy()
+	if(!finalized)
+		return
+	var/obj/item/canvas/C = new type()
+	C.grid = grid
+	C.finalize(author_ckey, TRUE)
+	C.no_save = TRUE // only original can be copied.
+	return C
 
 /obj/item/canvas/afterattack(atom/a, mob/user, proximity)
 	if(proximity && istype(a ,/turf) && a.density && taped)
