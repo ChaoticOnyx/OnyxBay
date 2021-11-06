@@ -189,7 +189,7 @@
 		update_icon()
 
 /obj/structure/blob/ex_act(severity)
-	health -= BLOB_EXPLOSION_BASE_DAMAGE - (severity * 5)
+	health -= min(BLOB_EXPLOSION_BASE_DAMAGE - (severity * 5), BLOB_DAMAGE_CAP)
 	update_icon()
 
 /obj/structure/blob/bullet_act(obj/item/projectile/P)
