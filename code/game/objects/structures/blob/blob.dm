@@ -188,6 +188,10 @@
 		health -= damage
 		update_icon()
 
+/obj/structure/blob/flamer_fire_act(burnlevel)
+	health -= min(burnlevel * 2.5, BLOB_DAMAGE_CAP)
+	update_icon()
+
 /obj/structure/blob/ex_act(severity)
 	health -= min(BLOB_EXPLOSION_BASE_DAMAGE - (severity * 5), BLOB_DAMAGE_CAP)
 	update_icon()
