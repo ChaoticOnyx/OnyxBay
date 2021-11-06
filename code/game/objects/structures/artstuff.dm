@@ -138,7 +138,7 @@
 	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions)
 	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
 	var/is_rev_user = antag.is_antagonist(user.mind)
-	var/message = SPAN_DANGER("You hate \the [src]. You want to burn \the [src] down!")
+	var/message = SPAN_DANGER("You hate \the [src]. You want to burn it down!")
 	if((is_rev && is_loyalist_user) || (is_rev_user && is_corp))
 		. += "\n" + message
 
