@@ -29,7 +29,7 @@
 #define BLOB_DAMAGE 3
 
 // Reinforced blob.
-#define BLOB_REINFORCED_HEALTH 80
+#define BLOB_REINFORCED_HEALTH 60
 #define BLOB_REINFORCED_DAMAGE 7
 
 // Node blob.
