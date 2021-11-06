@@ -4,6 +4,7 @@ var/global/datum/body_build/default_body_build = new
 /datum/body_build
 	var/name         = "Default"
 
+	var/slowdown     = 0 // Passive movement speed malus (or boost, if negative)
 	var/genders      = list(MALE, FEMALE)
 	var/index        = ""
 	var/roboindex    = ""										// for slim and slim_alt BBs prothesis
@@ -158,6 +159,7 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human.dmi'
+	slowdown = 0.5
 
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.

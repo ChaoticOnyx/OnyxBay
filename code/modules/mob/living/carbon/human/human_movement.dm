@@ -27,6 +27,8 @@
 	if(species.slowdown)
 		. += species.slowdown
 
+	. += body_build?.slowdown
+
 	if(aiming)
 		. += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
 
