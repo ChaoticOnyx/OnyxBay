@@ -30,12 +30,12 @@
 
 	reagent_tag = IS_NABBER
 
-	icon_template = 'icons/mob/human_races/r_template_tall.dmi'
+	icon_template = 'icons/mob/human_races/templates/r_template_tall.dmi'
 	icobase = 'icons/mob/human_races/r_nabber.dmi'
 	deform = 'icons/mob/human_races/r_nabber.dmi'
 
-	eye_icon = "eyes_nabber"
-	eye_icon_location = 'icons/mob/nabber_face.dmi'
+	has_eye_icon = TRUE
+	has_hair_icon = FALSE
 
 	limb_blend = ICON_MULTIPLY
 

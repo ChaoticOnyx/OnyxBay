@@ -46,7 +46,10 @@
 	poison_type = null
 
 	vision_flags = SEE_SELF|SEE_MOBS
-	eye_icon = "blank_eyes"
+
+	has_eye_icon = FALSE
+	has_hair_icon = FALSE
+
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 

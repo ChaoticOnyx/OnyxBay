@@ -1,5 +1,4 @@
 /*
-
 	Hello and welcome to sprite_accessories: For sprite accessories, such as hair,
 	facial hair, and possibly tattoos and stuff somewhere along the line. This file is
 	intended to be friendly for people with little to no actual coding experience.
@@ -46,8 +45,7 @@
 */
 
 /datum/sprite_accessory/hair
-
-	icon = 'icons/mob/human_face.dmi'	  // default icon for all hairs
+	icon = 'icons/mob/human_races/human_face.dmi'	  // Default icon for all hairs.
 	var/flags
 
 /datum/sprite_accessory/hair/bald
@@ -1012,7 +1010,7 @@ May God have mercy.
 
 /datum/sprite_accessory/facial_hair
 
-	icon = 'icons/mob/human_face.dmi'
+	icon = 'icons/mob/human_races/human_face.dmi'
 	gender = MALE // barf (unless you're a dorf, dorfs dig chix /w beards :P)
 
 /datum/sprite_accessory/facial_hair/shaved
@@ -1311,40 +1309,6 @@ May God have mercy.
 	name = "Tajara Smallsatche"
 	icon_state = "facial_smallstache"
 	species_allowed = list(SPECIES_TAJARA)
-
-//skin styles - WIP
-//going to have to re-integrate this with surgery
-//let the icon_state hold an icon preview for now
-/datum/sprite_accessory/skin
-	icon = 'icons/mob/human_races/r_human.dmi'
-
-/datum/sprite_accessory/skin/human
-	name = "Default human skin"
-	icon_state = "default"
-	species_allowed = list(SPECIES_HUMAN)
-
-/datum/sprite_accessory/skin/human_tatt01
-	name = "Tatt01 human skin"
-	icon_state = "tatt1"
-	species_allowed = list(SPECIES_HUMAN)
-
-/datum/sprite_accessory/skin/tajaran
-	name = "Default tajaran skin"
-	icon_state = "default"
-	icon = 'icons/mob/human_races/r_tajaran.dmi'
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/skin/unathi
-	name = "Default Unathi skin"
-	icon_state = "default"
-	icon = 'icons/mob/human_races/r_lizard.dmi'
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/skin/skrell
-	name = "Default skrell skin"
-	icon_state = "default"
-	icon = 'icons/mob/human_races/r_skrell.dmi'
-	species_allowed = list(SPECIES_SKRELL)
 
 /*
 ////////////////////////////

@@ -116,14 +116,14 @@
 		qdel(src)
 
 // Copypaste due to eye code, RIP.
-/obj/item/organ/external/head/no_eyes/diona
+/obj/item/organ/external/head/diona
 	can_intake_reagents = 0
 	max_damage = 50
 	min_broken_damage = 25
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 	skull_path = null
 
-/obj/item/organ/external/head/no_eyes/diona/removed()
+/obj/item/organ/external/head/diona/removed()
 	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner

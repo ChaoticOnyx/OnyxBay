@@ -37,8 +37,8 @@
 	var/list/hair_styles
 	var/list/facial_hair_styles
 
-	var/eye_icon = "eyes_s"
-	var/eye_icon_location = 'icons/mob/human_face.dmi'
+	var/has_eye_icon = TRUE
+	var/has_hair_icon = TRUE
 
 	var/organs_icon		//species specific internal organs icons
 
@@ -46,7 +46,7 @@
 	var/default_f_style = "Shaved"
 
 	var/race_key = 0                          // Used for mob icon cache string.
-	var/icon/icon_template = 'icons/mob/human_races/r_template.dmi' // Used for mob icon generation for non-32x32 species.
+	var/icon/icon_template = 'icons/mob/human_races/templates/r_template.dmi' // Used for mob icon generation for non-32x32 species.
 	var/pixel_offset_x = 0                    // Used for offsetting large icons.
 	var/pixel_offset_y = 0                    // Used for offsetting large icons.
 
