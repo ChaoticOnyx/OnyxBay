@@ -40,8 +40,8 @@ GLOBAL_DATUM_INIT(loyalists, /datum/antagonist/loyalists, new)
 /datum/antagonist/loyalists/proc/count_score()
 	var/loyal_score = 0
 	for(var/area/A in GLOB.station_areas)
-		if(A.corp_posters_count > A.rev_posters_count)
-			loyal_score += A.area_cost
+		if(A.is_controlled_by_corporation())
+			loyal_score += A.importance
 	return loyal_score
 
 /datum/antagonist/loyalists/create_global_objectives()

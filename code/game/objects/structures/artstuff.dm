@@ -58,10 +58,9 @@
 	var/framed_offset_y = 10
 
 	// for gamemodes
-	var/is_poster = FALSE
-	var/is_marked = FALSE
-	var/is_corp = FALSE
-	var/is_rev = FALSE
+	var/is_mount = FALSE
+	var/is_propaganda = FALSE
+	var/is_revolutionary = FALSE
 
 /obj/item/canvas/Initialize()
 	. = ..()
@@ -69,27 +68,27 @@
 
 /obj/item/canvas/pickup()
 	. = ..()
-	if(is_poster)
-		is_poster = FALSE
+	if(is_mount)
+		is_mount = FALSE
 		area_manipulation()
 
 /obj/item/canvas/proc/area_manipulation()
-	if(!is_marked)
+	if(!is_propaganda)
 		return
 	var/turf/T = get_turf(src)
 	var/area/A = T?.loc
 	if(!A)
 		return
-	if(is_poster)
-		if(is_corp)
-			A.add_corp_poster(src)
-		if(is_rev)
-			A.add_rev_poster(src)
+	if(is_mount)
+		if(is_revolutionary)
+			A.loyalty -= 1
+		else
+			A.loyalty += 1
 	else
-		if(is_corp)
-			A.remove_corp_poster(src)
-		if(is_rev)
-			A.remove_rev_poster(src)
+		if(is_revolutionary)
+			A.loyalty += 1
+		else
+			A.loyalty -= 1
 
 /obj/item/canvas/proc/reset_grid()
 	grid = new /list(width,height)
@@ -132,14 +131,14 @@
 /obj/item/canvas/examine(mob/user)
 	. = ..()
 	tgui_interact(user)
-	if(!user.mind || !is_marked)
+	if(!user.mind || !is_propaganda)
 		return
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
 	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions)
 	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
-	var/is_rev_user = antag.is_antagonist(user.mind)
+	var/is_revolutionary_user = antag.is_antagonist(user.mind)
 	var/message = SPAN_DANGER("You hate \the [src]. You want to burn it down!")
-	if((is_rev && is_loyalist_user) || (is_rev_user && is_corp))
+	if((is_revolutionary && is_loyalist_user) || (is_revolutionary_user && !is_revolutionary))
 		. += "\n" + message
 
 /obj/item/canvas/tgui_act(action, params)
@@ -196,7 +195,7 @@
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
-	is_poster = TRUE
+	is_mount = TRUE
 	area_manipulation()
 	if(user.unEquip(src,T))
 		switch(ndir)
@@ -270,27 +269,25 @@
 /obj/item/canvas/verb/make_rev_poster()
 	set name = "Make Revolutionary Poster"
 	set desc = "Die corporation die!"
-	set category = "Poster"
+	set category = "Object"
 	var/mob/living/H = usr
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
-	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind) || is_marked)
+	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind) || is_propaganda)
 		return
-	is_marked = TRUE
-	is_corp = FALSE
-	is_rev = TRUE
+	is_propaganda = TRUE
+	is_revolutionary = TRUE
 	to_chat(usr, "You've marked canvas as revolutionary.")
 
 /obj/item/canvas/verb/make_corp_poster()
 	set name = "Make Corporate Poster"
-	set desc = "Make the corporation great again!"
-	set category = "Poster"
+	set desc = "Make corporation great again!"
+	set category = "Object"
 	var/mob/living/H = usr
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
-	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)) || is_marked)
+	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)) || is_propaganda)
 		return
-	is_marked = TRUE
-	is_corp = TRUE
-	is_rev = FALSE
+	is_propaganda = TRUE
+	is_revolutionary = FALSE
 	to_chat(usr, "You've marked canvas as corporate.")
 
 /obj/item/canvas/nineteen_nineteen

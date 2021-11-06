@@ -40,8 +40,8 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 /datum/antagonist/revolutionary/proc/count_score()
 	var/rev_score = 0
 	for(var/area/A in GLOB.station_areas)
-		if(A.rev_posters_count > A.corp_posters_count)
-			rev_score += A.area_cost
+		if(!A.is_controlled_by_corporation())
+			rev_score += A.importance
 	return rev_score
 
 /datum/antagonist/revolutionary/create_global_objectives()

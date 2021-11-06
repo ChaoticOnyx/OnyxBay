@@ -15,9 +15,9 @@
 	var/static_environ
 	var/list/ambient_music_meta_tags = list(META_NORMAL)
 
-	var/area_cost = 1
-	var/corp_posters_count = 0
-	var/rev_posters_count = 0
+	var/is_station         = FALSE
+	var/importance         = 1
+	var/loyalty            = 0
 
 /area/New()
 	icon_state = ""
@@ -50,6 +50,15 @@
 			has_gravity = 0
 		if(AREA_GRAVITY_ALWAYS)
 			has_gravity = 1
+
+	is_station = !!all_predicates_true(list(src), list(/proc/is_not_space_area, /proc/is_station_area))
+	if(is_station)
+		GLOB.station_areas.Add(src)
+
+/area/Destroy()
+	if(is_station)
+		GLOB.station_areas.Remove(src)
+	. = ..()
 
 /area/proc/get_contents()
 	return contents
@@ -234,17 +243,8 @@
 		L.set_mode(lighting_mode)
 		L.update_power_channel(power_channel)
 
-/area/proc/add_rev_poster(obj/item/canvas/C)
-	rev_posters_count += 1
-
-/area/proc/remove_rev_poster(obj/item/canvas/C)
-	rev_posters_count -= 1
-
-/area/proc/add_corp_poster(obj/item/canvas/C)
-	corp_posters_count += 1
-
-/area/proc/remove_corp_poster(obj/item/canvas/C)
-	corp_posters_count -= 1
+/area/proc/is_controlled_by_corporation()
+	return loyalty >= 0
 
 var/list/mob/living/forced_ambiance_list = new
 
