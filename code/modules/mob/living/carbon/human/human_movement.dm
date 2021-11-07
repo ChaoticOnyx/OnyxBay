@@ -58,6 +58,8 @@
 	else
 		. += equipment_slowdown - body_build.equipment_modifier
 
+	. += body_build.slowdown
+
 	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
 	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair
 		organ_list = list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
