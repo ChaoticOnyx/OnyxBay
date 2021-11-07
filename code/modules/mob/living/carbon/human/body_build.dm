@@ -32,6 +32,11 @@ var/global/datum/body_build/default_body_build = new
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
 	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
+	var/slowdown           = 0
+	var/equipment_modifier = 0
+	var/poise_pool         = HUMAN_DEFAULT_POISE
+	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
+
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
 	if(!(slot in default_onmob_slots))
@@ -75,6 +80,9 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_slim.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
+
+	stomach_capacity   = STOMACH_CAPACITY_LOW
+	poise_pool         = HUMAN_LOW_POISE
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
@@ -142,7 +150,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob_fat.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',
-		"slot_r_ear"     = 'icons/inv_slots/ears/mob.dmi',
+		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r.dmi',
 		"slot_wear_mask" = 'icons/inv_slots/masks/mob.dmi',
 		"slot_head"      = 'icons/inv_slots/hats/mob.dmi',
 		"slot_shoes"     = 'icons/inv_slots/shoes/mob.dmi',
@@ -158,6 +166,11 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human.dmi'
+
+	stomach_capacity   = STOMACH_CAPACITY_HIGH
+	slowdown           = 0.5
+	equipment_modifier = -0.5
+	poise_pool         = HUMAN_HIGH_POISE
 
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
@@ -187,6 +200,8 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
+	equipment_modifier = 0.5
+
 /datum/body_build/tajaran
 	name                 = "Tajaran"
 
@@ -211,6 +226,37 @@ var/global/datum/body_build/default_body_build = new
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran.dmi'
 
+	equipment_modifier = 0.5
+
+/datum/body_build/tajaran/fat
+	name                 = "Fat Tajaran"
+
+	index                = "_fat"
+	clothing_icons       = list(
+		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob_fat.dmi',
+		"slot_gloves"    = 'icons/inv_slots/gloves/mob_fat.dmi',
+		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
+		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',
+		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r.dmi',
+		"slot_wear_mask" = 'icons/inv_slots/masks/mob_tajaran.dmi',
+		"slot_head"      = 'icons/inv_slots/hats/mob_tajaran.dmi',
+		"slot_shoes"     = 'icons/inv_slots/shoes/mob_tajaran.dmi',
+		"slot_belt"      = 'icons/inv_slots/belts/mob.dmi',
+		"slot_s_store"   = 'icons/inv_slots/belts/mirror/mob.dmi',
+		"slot_back"      = 'icons/inv_slots/back/mob_fat.dmi',
+		"slot_tie"       = 'icons/inv_slots/acessories/mob_fat.dmi',
+		"slot_hidden"    = 'icons/inv_slots/hidden/mob_fat.dmi',
+		"slot_wear_id"   = 'icons/mob/onmob/id.dmi',
+		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand.dmi',
+		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
+		)
+	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
+
+	slowdown           = 0.5
+	equipment_modifier = 0 // +0.5 because tajaran, -0.5 because fat
+	poise_pool         = HUMAN_HIGH_POISE
+
 /datum/body_build/unathi
 	name                 = SPECIES_UNATHI
 
@@ -234,6 +280,8 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
+
+	poise_pool         = HUMAN_HIGH_POISE
 
 /datum/body_build/vox
 	name                 = "Vox"
@@ -283,8 +331,14 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_monkey.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
 
+	stomach_capacity   = STOMACH_CAPACITY_LOW
+
+	equipment_modifier = 0.5
+
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
 	genders              = list(MALE, FEMALE, NEUTER)
 	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_xenos.dmi'
+
+	poise_pool         = HUMAN_MAX_POISE
