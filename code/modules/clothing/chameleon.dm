@@ -225,6 +225,7 @@
 	desc = "A backpack outfitted with cloaking tech. It seems to have a small dial inside, kept away from the storage."
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
+	max_storage_space = DEFAULT_BACKPACK_STORAGE + 4
 
 /obj/item/weapon/storage/backpack/chameleon/New()
 	..()
