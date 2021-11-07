@@ -45,7 +45,7 @@
 
 	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
 		var/normalized_nutrition = nutrition / body_build.stomach_capacity
-		var/nut_level = nutrition / 100
+		var/nut_level = normalized_nutrition / 100
 		switch(normalized_nutrition)
 			if(0 to STOMACH_FULLNESS_LOW)
 				. += 1.25 - nut_level
