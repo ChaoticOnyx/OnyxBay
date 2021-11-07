@@ -145,7 +145,7 @@
 			else
 				if(headbutt(G))
 					if(drop_headbutt)
-						let_go()
+						let_go(G)
 					return 1
 		//else if(G.target_zone ==
 	return 0
@@ -178,7 +178,7 @@
 	if(target.lying)
 		return
 
-	var/damage = 20
+	var/damage = 15
 	var/obj/item/clothing/hat = attacker.head
 	var/damage_flags = 0
 	if(istype(hat))
