@@ -52,11 +52,16 @@
 			if(STOMACH_FULLNESS_HIGH to INFINITY)
 				. += nut_level - 4.25
 
-	if(body_build.equipment_modifier < 0) // Is our equipment_modifier a good thing?
-		if(equipment_slowdown > body_build.equipment_modifier)       // Lowering equipment cooldown if it's higher
-			. += equipment_slowdown + body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
+	if(body_build.equipment_modifier > 0) // Is our equipment_modifier a good thing?
+		if(equipment_slowdown + 1 > body_build.equipment_modifier)  // Lowering equipment cooldown if it's higher
+			. += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
+		else
+			. -= 1 // Since default equipment_slowdown is -1 for some reason
 	else
-		. += equipment_slowdown - body_build.equipment_modifier
+		if(equipment_slowdown > -1)
+			. += equipment_slowdown + body_build.equipment_modifier
+		else
+			. += equipment_slowdown
 
 	. += body_build.slowdown
 

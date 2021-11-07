@@ -32,8 +32,8 @@ var/global/datum/body_build/default_body_build = new
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
 	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
-	var/slowdown           = 0
-	var/equipment_modifier = 0
+	var/slowdown           = 0 // Movement slowdown
+	var/equipment_modifier = 0 // Positive values allow to partially ignore equipment_slowdown, negative values apply additional slowdown if any slowing-down equipment is being worn
 	var/poise_pool         = HUMAN_DEFAULT_POISE
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
 
@@ -169,7 +169,7 @@ var/global/datum/body_build/default_body_build = new
 
 	stomach_capacity   = STOMACH_CAPACITY_HIGH
 	slowdown           = 0.5
-	equipment_modifier = -0.5
+	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
 
 
@@ -200,7 +200,7 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
-	equipment_modifier = 0.5
+	equipment_modifier = -0.5
 
 /datum/body_build/tajaran
 	name                 = "Tajaran"
@@ -226,7 +226,7 @@ var/global/datum/body_build/default_body_build = new
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran.dmi'
 
-	equipment_modifier = 0.5
+	equipment_modifier = -0.5
 
 /datum/body_build/tajaran/fat
 	name                 = "Fat Tajaran"
@@ -254,7 +254,7 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 
 	slowdown           = 0.5
-	equipment_modifier = 0 // +0.5 because tajaran, -0.5 because fat
+	equipment_modifier = 0 // -0.5 because tajaran, +0.5 because fat
 	poise_pool         = HUMAN_HIGH_POISE
 
 /datum/body_build/unathi
@@ -333,7 +333,7 @@ var/global/datum/body_build/default_body_build = new
 
 	stomach_capacity   = STOMACH_CAPACITY_LOW
 
-	equipment_modifier = 0.5
+	equipment_modifier = -0.5
 
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
