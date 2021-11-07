@@ -226,8 +226,6 @@ var/global/datum/body_build/default_body_build = new
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran.dmi'
 
-	equipment_modifier = -0.5
-
 /datum/body_build/tajaran/fat
 	name                 = "Fat Tajaran"
 
@@ -254,7 +252,7 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 
 	slowdown           = 0.5
-	equipment_modifier = 0 // -0.5 because tajaran, +0.5 because fat
+	equipment_modifier = 0.5
 	poise_pool         = HUMAN_HIGH_POISE
 
 /datum/body_build/unathi

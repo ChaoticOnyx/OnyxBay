@@ -59,7 +59,7 @@
 			. -= 1 // Since default equipment_slowdown is -1 for some reason
 	else
 		if(equipment_slowdown > -1)
-			. += equipment_slowdown + body_build.equipment_modifier
+			. += equipment_slowdown - body_build.equipment_modifier
 		else
 			. += equipment_slowdown
 
