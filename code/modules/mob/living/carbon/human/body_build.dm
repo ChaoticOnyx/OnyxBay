@@ -31,7 +31,7 @@ var/global/datum/body_build/default_body_build = new
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
 	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 	var/taken_poise_dmg_coefficient = 1
-	var/dealt_poise_dmg_coefficient = 1
+	var/dealt_melee_dmg_coefficient  = 1
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
@@ -77,7 +77,7 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
 	taken_poise_dmg_coefficient = 1.1 // 1.1, coefficient to multiply damage poise, kinda cool
-	dealt_poise_dmg_coefficient = 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
+	dealt_melee_dmg_coefficient  = 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
