@@ -674,7 +674,7 @@
 
 		// malnutrition \ obesity
 		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src))
-			var/normalized_nutrition = nutrition * body_build.stomach_capacity
+			var/normalized_nutrition = nutrition / body_build.stomach_capacity
 			switch(normalized_nutrition)
 				if(0 to STOMACH_FULLNESS_SUPER_LOW)
 					to_chat(src, SPAN("warning", "[pick("You feel really hungry", "You want to gobble anything", "You starve", "It becomes hard to stand on your legs")]!"))
@@ -798,7 +798,7 @@
 				healths.overlays += health_images
 
 		if(nutrition_icon)
-			var/normalized_nutrition = nutrition * body_build.stomach_capacity
+			var/normalized_nutrition = nutrition / body_build.stomach_capacity
 			switch(normalized_nutrition)
 				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
 					nutrition_icon.icon_state = "nutrition0"

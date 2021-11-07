@@ -44,11 +44,11 @@
 		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
 
 	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
-		var/normalized_nutrition = nutrition * body_build.stomach_capacity
+		var/normalized_nutrition = nutrition / body_build.stomach_capacity
 		var/nut_level = nutrition / 100
 		switch(normalized_nutrition)
 			if(0 to STOMACH_FULLNESS_LOW)
-				. += 1.5 - nut_level
+				. += 1.25 - nut_level
 			if(STOMACH_FULLNESS_HIGH to INFINITY)
 				. += nut_level - 4.25
 
