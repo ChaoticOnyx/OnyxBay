@@ -234,7 +234,7 @@
 	if(volume >= 5)
 		var/obj/machinery/door/airlock/D = locate() in T
 		if(istype(D))
-			D.thermite = TRUE
+			D.thermite += volume
 			D.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
 			remove_self(5)
 			return

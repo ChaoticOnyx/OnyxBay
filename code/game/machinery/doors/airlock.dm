@@ -635,7 +635,7 @@ About the new airlock wires panel:
 	if(thermite)
 		if(isWelder(C))
 			var/obj/item/weapon/weldingtool/WT = C
-			if( WT.remove_fuel(0,user) )
+			if(WT.remove_fuel(0,user))
 				thermitemelt(user)
 				return
 
@@ -740,8 +740,6 @@ About the new airlock wires panel:
 		..()
 
 /obj/machinery/door/airlock/proc/thermitemelt(mob/user as mob)
-	//if(!can_melt())
-		//return
 	var/obj/effect/overlay/O = new /obj/effect/overlay( src )
 	O.SetName("Thermite")
 	O.desc = "Looks hot."
@@ -751,19 +749,15 @@ About the new airlock wires panel:
 	O.set_density(1)
 	O.plane = LIGHTING_PLANE
 	O.layer = FIRE_LAYER
-
-	//src.ChangeTurf(/turf/simulated/floor/plating)
-
-	//var/turf/simulated/floor/F = src
-	//F.burn_tile()
-	//F.icon_state = "wall_thermite"
 	to_chat(user, "<span class='warning'>The thermite starts melting through the door.</span>")
 
 	set_broken(TRUE)
-	spawn(100)
+	playsound(loc, 'sound/effects/thermite_fire.ogg', 100, 1)
+	spawn(30)	// SoundFX duration (broken)
 		if(O)
 			qdel(O)
-			deconstruct()
+			take_damage(thermite * 5.5)
+			thermite = FALSE
 	return
 
 /obj/machinery/door/airlock/deconstruct(mob/user, moved = FALSE)
@@ -1024,6 +1018,8 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/take_damage(amount)
 	if(brace)
 		brace.take_damage(amount)
+	else if(thermite && amount > health)
+		deconstruct()
 	else
 		..(amount)
 
