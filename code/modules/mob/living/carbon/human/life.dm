@@ -999,7 +999,7 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	poise_pool = body_build
+	poise_pool = body_build.poise_pool
 	if(poise >= poise_pool)
 		return
 	var/pregen = 5
@@ -1013,11 +1013,11 @@
 	poise += pregen
 	poise = between(0, poise+pregen, poise_pool)
 
-	poise_icon?.icon_state = "[round(poise)]"
+	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
 	poise -= dmg
-	poise_icon?.icon_state = "[round(poise)]"
+	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
