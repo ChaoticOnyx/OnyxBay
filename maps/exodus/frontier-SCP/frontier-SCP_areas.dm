@@ -91,3 +91,14 @@
 /area/rnd/SCP/ketcelltwo
 	name = "\improper Keter Cell Two"
 	icon_state = "research"
+
+
+// Misc
+
+/area/engineering/preengine
+	name = "\improper Pre-Engine Room"
+	icon_state = "engine"
+
+/area/engineering/hallway
+	name = "\improper Engineering Hallway"
+	icon_state = "engine"
