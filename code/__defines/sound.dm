@@ -68,14 +68,16 @@
 #define SFX_MALE_FALL_DEAD          "male_fall_dead"
 
 // AMBIENT
-#define SFX_AMBIENT_GLOBAL          "ambient_global"
-#define SFX_AMBIENT_SCIENCE         "ambient_science"
-#define SFX_AMBIENT_AI              "ambient_ai"
-#define SFX_AMBIENT_COMMS           "ambient_comms"
-#define SFX_AMBIENT_MAINTENANCE     "ambient_maintenance"
-#define SFX_AMBIENT_ENGINEERING     "ambient_engineering"
-#define SFX_AMBIENT_SPACE           "ambient_space"
-#define SFX_AMBIENT_OUTPOST         "ambient_outpost"
+#define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
+#define SFX_AMBIENT_OFF_GLOBAL          "ambient_off_global"
+#define SFX_AMBIENT_POWERED_SCIENCE     "ambient_powered_science"
+#define SFX_AMBIENT_POWERED_AI          "ambient_powered_ai"
+#define SFX_AMBIENT_POWERED_COMMS       "ambient_powered_comms"
+#define SFX_AMBIENT_POWERED_MAINTENANCE "ambient_powered_maintenance"
+#define SFX_AMBIENT_OFF_MAINTENANCE     "ambient_off_maintenance"
+#define SFX_AMBIENT_POWERED_ENGINEERING "ambient_powered_engineering"
+#define SFX_AMBIENT_OFF_SPACE           "ambient_off_space"
+#define SFX_AMBIENT_POWERED_OUTPOST     "ambient_powered_outpost"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"

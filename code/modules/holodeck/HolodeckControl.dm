@@ -292,7 +292,7 @@
 		holo_obj.alpha *= 0.8 //give holodeck objs a slight transparency
 
 	if(HP.ambience)
-		linkedholodeck.ambience = HP.ambience
+		linkedholodeck.ambience_powered = HP.ambience
 
 	for(var/mob/living/M in mobs_in_area(linkedholodeck))
 		if(M.mind)
