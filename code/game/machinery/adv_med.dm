@@ -29,7 +29,7 @@
 	..()
 
 /obj/machinery/bodyscanner/Initialize()
-	..()
+	. = ..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
 		if(!console || console?.connected)
