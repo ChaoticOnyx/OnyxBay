@@ -772,7 +772,7 @@
 /obj/item/device/radio/CouldUseTopic(mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))
-		playsound(src, "button", 10)
+		playsound(src, SFX_USE_BUTTON, 10)
 
 /obj/item/device/radio/intercept
 	name = "bulky radio"

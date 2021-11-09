@@ -1,4 +1,4 @@
-/spell/mark_recall
+/datum/spell/mark_recall
 	name = "Mark and Recall"
 	desc = "This spell was created so wizards could get home from the bar without driving. Does not require wizard garb."
 	feedback = "MK"
@@ -6,43 +6,46 @@
 	charge_max = 600 //1 minutes for how OP this shit is (apparently not as op as I thought)
 	spell_flags = Z2NOCAST
 	invocation = "Re-Alki R'natha."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	cooldown_min = 300
-	need_target = 0
+	need_target = FALSE
 
 	smoke_amt = 1
 	smoke_spread = 5
 
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 1)
 
 	cast_sound = 'sound/effects/teleport.ogg'
-	hud_state = "wiz_mark"
+	icon_state = "wiz_mark"
 	var/mark = null
 
-/spell/mark_recall/choose_targets()
+/datum/spell/mark_recall/choose_targets()
 	if(!mark)
 		return list("magical fairy dust") //because why not
 	else
 		return list(mark)
 
-/spell/mark_recall/cast(list/targets,mob/user)
+/datum/spell/mark_recall/cast(list/targets, mob/user)
+	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+		cell.go_out()
 	if(!targets.len)
-		return 0
+		return FALSE
 	var/target = targets[1]
 	if(istext(target))
 		mark = new /obj/effect/decal/cleanable/wizard_mark(get_turf(user),src)
-		return 1
+		return TRUE
 	if(!istype(target,/obj)) //something went wrong
-		return 0
+		return FALSE
 	var/turf/T = get_turf(target)
 	if(!T)
-		return 0
+		return FALSE
 	user.forceMove(T)
 	..()
 
-/spell/mark_recall/empower_spell()
+/datum/spell/mark_recall/empower_spell()
 	if(!..())
-		return 0
+		return FALSE
 
 	spell_flags = STATALLOWED
 
@@ -54,11 +57,11 @@
 	icon = 'icons/obj/rune.dmi'
 	icon_state = "wizard_mark"
 
-	anchored = 1
-	unacidable = 1
+	anchored = TRUE
+	unacidable = TRUE
 	layer = TURF_LAYER
 
-	var/spell/mark_recall/spell
+	var/datum/spell/mark_recall/spell
 
 /obj/effect/decal/cleanable/wizard_mark/New(newloc,mrspell)
 	..()

@@ -100,7 +100,7 @@
 	G.force_drop()
 
 /datum/grab/proc/process(obj/item/grab/G)
-	if(!G.affecting) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
+	if(!G.is_eligible()) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
 		let_go(G)
 		return
 	var/diff_zone = G.target_change()
@@ -304,9 +304,12 @@
 
 	//assailant.visible_message("Debug: [assailant] lost [p_lost] poise | now: [assailant.poise]/[assailant.poise_pool]") //Debug message
 
-	var/p_diff = 20.0 // If difference is less than equal 5.0 then the break chance is at minimum (10/6,6 for normal and agressive grabs respectively).
+	var/p_diff = 25.0 // If difference is less than 5.0 then the break chance is capped (12.5%/8.33% for normal and agressive grabs respectively).
 	if((affecting.poise - assailant.poise) > 5.0)
-		p_diff = (affecting.poise - assailant.poise) * 4
+		p_diff = (affecting.poise - assailant.poise) * 5
+	else if(assailant.poise - affecting.poise > 20.0) // HUGE difference, tiny chance to escape
+		p_diff = 10.0
+
 	p_diff /= breakability // 2 for a normal grab, 3 for agressive and kill grabs
 
 	//assailant.visible_message("Debug: p_diff = [p_diff] | breakability = [breakability]") //Debug message

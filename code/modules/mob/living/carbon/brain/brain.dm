@@ -6,7 +6,7 @@
 	var/emp_damage = 0//Handles a type of MMI damage
 	var/alert = null
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	icon_state = "brain1"
 
 /mob/living/carbon/brain/New()
@@ -19,6 +19,9 @@
 			death(1)	//Brains can die again. AND THEY SHOULD AHA HA HA HA HA HA
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
 	. = ..()
+
+/mob/living/carbon/brain/incapacitated()
+	return TRUE
 
 /mob/living/carbon/brain/say_understands(other)//Goddamn is this hackish, but this say code is so odd
 	if (istype(other, /mob/living/silicon/ai))

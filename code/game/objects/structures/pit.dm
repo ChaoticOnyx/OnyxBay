@@ -37,11 +37,6 @@
 
 /obj/structure/pit/update_icon()
 	icon_state = "pit[open]"
-	if(istype(loc,/turf/simulated/floor/exoplanet))
-		var/turf/simulated/floor/exoplanet/E = loc
-		if(E.mudpit)
-			icon_state="pit[open]mud"
-			blend_mode = BLEND_OVERLAY
 
 /obj/structure/pit/proc/open()
 	name = "pit"

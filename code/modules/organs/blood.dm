@@ -38,7 +38,7 @@
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/human/proc/drip(amt, tar = src, ddir)
 	if(remove_blood(amt))
-		if(bloodstr.total_volume)
+		if(bloodstr.total_volume && vessel.total_volume)
 			var/blood_loss_modifier_multiplier = 1.0
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.bleeding_rate_percent))

@@ -39,7 +39,7 @@
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
 			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-			playsound(src.loc, "spark", 50, 1)
+			playsound(src.loc, SFX_SPARK, 50, 1)
 			return
 
 		if(isScrewdriver(W))
@@ -306,7 +306,7 @@
 				dat += text("<p>\n Comes with three .44 SPEC five round speedloaders, two .44 CHEM five round speedloaders, and two replaceable power cells.")
 				dat += text("<p>\n Brief instructions: <p>\n - M2019 Detective Special can be loaded with any type .44 rounds, yet works best with .44 CHEM and .44 SPEC.")
 				dat += text("<p>\n - With a powercell installed, M2019 can be used in two modes: non-lethal and lethal.")
-				dat += text("<p>\n - .44 SPEC no cell - works like a rubber bullet. <p>\n - .44 SPEC non-lethal - stuns the target. <p>\n - .44 CHEM lethal - accelerates the bullet, deals great damage and pierces medium armor.")
+				dat += text("<p>\n - .44 SPEC no cell - works like a rubber bullet. <p>\n - .44 SPEC non-lethal - stuns the target. <p>\n - .44 SPEC lethal - accelerates the bullet, deals great damage and pierces medium armor.")
 				dat += text("<p>\n - .44 CHEM no cell - works like a flash bullet. <p>\n - .44 CHEM non-lethal - emmits a weak electromagnetic impulse. <p>\n - .44 CHEM lethal - not supposed to be used like this. The cartride reaches extremely high temperature and melts.")
 		else if(guntype == "T9 Patrol")
 			dat += text("<p>\n A relatively cheap and reliable knock-off of a Beretta M9. Uses 9mm rounds. Used to be a standart-issue gun in almost every security company.")

@@ -105,6 +105,12 @@
 /obj/structure/flora/tree/green/tree10
 	icon_state = "tree10"
 
+/obj/structure/flora/tree/green/spook1
+	icon_state = "spook1"
+
+/obj/structure/flora/tree/green/spook2
+	icon_state = "spook2"
+
 /obj/structure/flora/tree/green/small
 	pixel_x = -32
 	pixel_y = 0
@@ -180,7 +186,8 @@
 	var/obj/item/stored_item
 
 /obj/structure/flora/pottedplant/Destroy()
-	stored_item.forceMove(loc)
+	if(stored_item)
+		stored_item.dropInto(loc)
 	return ..()
 
 /obj/structure/flora/pottedplant/proc/death()

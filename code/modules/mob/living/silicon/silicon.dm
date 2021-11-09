@@ -306,12 +306,12 @@
 
 	updatehealth()
 
-/mob/living/silicon/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if (is_dead())
+/mob/living/silicon/blob_act(damage)
+	if(is_dead())
 		return
 
 	var/protection = blocked_mult(getarmor(null, "bomb"))
-	var/brute = 25
+	var/brute = damage
 
 	brute *= protection
 	adjustBruteLoss(brute)

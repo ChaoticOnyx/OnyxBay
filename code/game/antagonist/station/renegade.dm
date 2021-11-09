@@ -43,6 +43,11 @@ GLOBAL_DATUM_INIT(renegades, /datum/antagonist/renegade, new)
 		list(/obj/item/weapon/gun/projectile/revolver/detective, /obj/item/weapon/gun/projectile/revolver/deckard)
 		)
 
+/datum/antagonist/renegade/Initialize()
+	. = ..()
+	if(config.renegade_min_age)
+		min_player_age = config.renegade_min_age
+
 /datum/antagonist/renegade/create_objectives(datum/mind/player)
 
 	if(!..())

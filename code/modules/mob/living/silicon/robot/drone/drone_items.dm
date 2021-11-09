@@ -160,11 +160,15 @@
 		/obj/item/mecha_parts,
 		/obj/item/weapon/computer_hardware,
 		/obj/item/device/transfer_valve,
-		/obj/item/device/assembly/signaler,
-		/obj/item/device/assembly/timer,
-		/obj/item/device/assembly/igniter,
-		/obj/item/device/assembly/infra,
+		/obj/item/device/assembly,
+		/obj/item/device/healthanalyzer,
+		/obj/item/device/analyzer/plant_analyzer,
+		/obj/item/weapon/material/minihoe,
+		/obj/item/weapon/storage/firstaid,
+		/obj/item/weapon/storage/toolbox,
 		/obj/item/weapon/tank,
+		/obj/item/weapon/smes_coil,
+		/obj/item/weapon/disk,
 		/obj/item/weapon/paper
 		)
 
@@ -289,7 +293,7 @@
 	if(wrapped)
 		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
 			var/obj/item/device/electronic_assembly/AS = target
-			wrapped.forceMove(user, params)
+			wrapped.forceMove(get_turf(AS), params)
 			AS.try_add_component(wrapped, user, AS)
 			wrapped = null
 			return
@@ -362,7 +366,7 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath))
+			if(istype(I,typepath) && !I.anchored)
 				grab = 1
 				break
 
@@ -405,10 +409,6 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-
-	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
-		var/obj/machinery/portable_atmospherics/canister/A = target
-		A.ui_interact(user)
 
 	else if(istype(target, /obj/machinery/mining/drill))
 		var/obj/machinery/mining/drill/hdrill = target
@@ -529,7 +529,7 @@
 		//Different classes of items give different commodities.
 		if(istype(W,/obj/item/weapon/cigbutt))
 			if(plastic)
-				plastic.add_charge(500)
+				plastic.add_charge(250)
 		else if(istype(W,/obj/effect/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
@@ -570,6 +570,9 @@
 		else if(istype(W,/obj/item/weapon/material/shard))
 			if(glass)
 				glass.add_charge(1000)
+		else if(istype(W,/obj/item/weapon/flame/match))
+			if(wood)
+				wood.add_charge(250)
 		else if(istype(W,/obj/item/weapon/reagent_containers/food/snacks/grown))
 			if(wood)
 				wood.add_charge(4000)

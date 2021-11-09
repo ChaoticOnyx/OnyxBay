@@ -9,13 +9,13 @@
 			return FALSE
 		if(HUMAN_POWER_SPIT)
 			var/mob/living/M = A
-			Spit(M)
+			process_spit(M)
 		if(HUMAN_POWER_LEAP)
 			var/mob/living/M = A
-			leap(M)
+			process_leap(M)
 		if(HUMAN_POWER_TACKLE)
 			var/mob/living/M = A
-			tackle(M)
+			process_tackle(M)
 	return TRUE
 
 /mob/living/carbon/human/MiddleClickOn(atom/A)
@@ -62,7 +62,7 @@
 	active_ability = HUMAN_POWER_TACKLE
 	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
-/mob/living/carbon/human/proc/tackle(mob/living/T = null)
+/mob/living/carbon/human/proc/tackle()
 	set category = "Abilities"
 	set name = "Tackle"
 	set desc = "Tackle someone down."
@@ -75,26 +75,35 @@
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	if(!T)
-		var/list/choices = list()
-		for(var/mob/living/M in view(1, src))
-			if(!istype(M, /mob/living/silicon) && Adjacent(M))
-				choices += M
-		choices -= src
-		T = input(src, "Who do you wish to tackle?") as null|anything in choices
+	var/mob/living/target
+	var/list/mob/living/targets = list()
+	for(var/mob/living/M in oview(1, src))
+		if(!istype(M, /mob/living/silicon) && Adjacent(M))
+			targets += M
+	targets -= src
+	target = input(src, "Who do you wish to tackle?") as null|anything in targets
 
+	process_tackle(target)
+
+/mob/living/carbon/human/proc/process_tackle(mob/living/T)
 	if(!T || !src || src.stat)
 		return
 
-	if(!Adjacent(T))
-		return
-
-	//check again because we waited for user input
 	if(last_special > world.time)
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+		return
+
+	if(T == src)
+		to_chat(src, SPAN("warning", "You cannot tackle yourself!"))
+		return
+
+	if(!Adjacent(T))
+		return
+
+	if(istype(T, /mob/living/silicon))
 		return
 
 	last_special = world.time + (5 SECONDS)
@@ -115,7 +124,7 @@
 	active_ability = HUMAN_POWER_LEAP
 	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
-/mob/living/carbon/human/proc/leap(mob/living/T = null)
+/mob/living/carbon/human/proc/leap()
 	set category = "Abilities"
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."
@@ -128,26 +137,40 @@
 		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return
 
-	if(!T)
-		var/list/choices = list()
-		for(var/mob/living/M in oview(6, src))
-			if(!istype(M,/mob/living/silicon))
-				choices += M
-		choices -= src
-		T = input(src, "Who do you wish to leap at?") as null|anything in choices
+	var/mob/living/target
+	var/list/mob/living/targets = list()
+	for(var/mob/living/M in oview(4, src))
+		if(!istype(M,/mob/living/silicon))
+			targets += M
 
-	if(!T || !isturf(T.loc) || !src || !isturf(loc))
+	if(!length(targets))
 		return
 
-	if(get_dist(get_turf(T), get_turf(src)) > 4)
-		return
+	target = input(src, "Who do you wish to leap at?") as null|anything in targets
 
-	//check again because we waited for user input
+	process_leap(target)
+
+/mob/living/carbon/human/proc/process_leap(mob/living/T)
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+		return
+
+	if(T == src)
+		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
 		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+		return
+
+	if(!T || !isturf(T.loc) || !src || !isturf(loc))
+		return
+
+	if(istype(T,/mob/living/silicon))
+		return
+
+	if(get_dist(get_turf(T), get_turf(src)) > 4)
+		to_chat(src, SPAN("warning", "You must be closer to the target for leaping!"))
 		return
 
 	playsound(src.loc, 'sound/voice/shriek1.ogg', 50, 1)
@@ -229,7 +252,7 @@
 
 	var/msg = sanitize(input("Message:", "Psychic Whisper") as text|null)
 	if(msg)
-		log_say("PsychicWhisper: [key_name(src)]->[M.key] : [msg]")
+		log_say("PsychicWhisper: [key_name(src)]->[M.key]: [msg]")
 		to_chat(M, "<span class='alium'>You hear a strange, alien voice in your head... <i>[msg]</i></span>")
 		to_chat(src, "<span class='alium'>You channel a message: \"[msg]\" to [M]</span>")
 	return

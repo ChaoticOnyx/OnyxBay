@@ -360,7 +360,6 @@ Sells devices, odds and ends, and medical stuff
 	possible_trading_items = list(/obj/item/weapon/storage/pill_bottle									= TRADER_SUBTYPES_ONLY,
 								/obj/item/weapon/storage/pill_bottle/dice_nerd							= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/firstaid										= TRADER_ALL,
-								/obj/item/weapon/storage/firstaid/empty									= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/firstaid/surgery/syndie						= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/box/bloodpacks									= TRADER_THIS_TYPE,
 								/obj/item/weapon/reagent_containers/ivbag								= TRADER_SUBTYPES_ONLY,

@@ -692,9 +692,9 @@ var/global/floorIsLava = 0
 
 	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
 	if(result)
-		feedback_set_details("end_error","admin reboot - by [usr.key]")
+		feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
 		feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		var/init_by = "<span class='notice'>Initiated by [usr.key].</span>"
+		var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
 		switch(result)
 			if("Regular Restart")
 				to_world("<span class='danger'>Restarting world!</span> [init_by]")
@@ -744,8 +744,8 @@ var/global/floorIsLava = 0
 	message = sanitize(message, 500, extra = 0)
 	if(message)
 		message = replacetext(message, "\n", "<br>") // required since we're putting it in a <p> tag
-		to_world("<span class=notice><b>[usr.key] Announces:</b><p style='text-indent: 50px'>[message]</p></span>")
-		log_admin("Announce: [key_name(usr)] : [message]")
+		to_world("<span class=notice><b>[key_name(usr)] Announces:</b><p style='text-indent: 50px'>[message]</p></span>")
+		log_admin("Announce: [key_name(usr)]: [message]")
 	feedback_add_details("admin_verb","A") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleooc()
@@ -756,11 +756,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.ooc_allowed = !(config.ooc_allowed)
-	if (config.ooc_allowed)
-		to_world("<B>The OOC channel has been globally enabled!</B>")
-	else
-		to_world("<B>The OOC channel has been globally disabled!</B>")
+	toggle_ooc()
 	log_and_message_admins("toggled OOC.")
 	feedback_add_details("admin_verb","TOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -788,11 +784,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.looc_allowed = !(config.looc_allowed)
-	if (config.looc_allowed)
-		to_world("<B>The LOOC channel has been globally enabled!</B>")
-	else
-		to_world("<B>The LOOC channel has been globally disabled!</B>")
+	toggle_looc()
 	log_and_message_admins("toggled LOOC.")
 	feedback_add_details("admin_verb","TLOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -858,8 +850,8 @@ var/global/floorIsLava = 0
 		alert("Unable to start the game as it is not set up.")
 		return 0
 	if(SSticker.start_now())
-		log_admin("[usr.key] has started the game.")
-		message_admins("<span class='info'>[usr.key] has started the game.</span>")
+		log_admin("[key_name(usr)] has started the game.")
+		message_admins("<span class='info'>[key_name(usr)] has started the game.</span>")
 		feedback_add_details("admin_verb","SN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		return 1
 	else

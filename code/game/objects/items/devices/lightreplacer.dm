@@ -233,7 +233,7 @@
 
 /obj/item/device/lightreplacer/emag_act(remaining_charges, mob/user)
 	emagged = !emagged
-	playsound(src.loc, "spark", 100, 1)
+	playsound(src.loc, SFX_SPARK, 100, 1)
 	update_icon()
 	return 1
 

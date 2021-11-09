@@ -1,4 +1,4 @@
-import { useBackend, useLocalState } from '../backend';
+import { useBackend, useLocalState } from '../backend'
 import {
   AnimatedNumber,
   Button,
@@ -10,9 +10,36 @@ import {
   Table,
   Input,
   ProgressBar,
-  Box,
-} from '../components';
-import { Window } from '../layouts';
+  Box
+} from '../components'
+import { GameIcon } from '../components/GameIcon'
+import { Window } from '../layouts'
+
+interface Buildable {
+  name: string;
+  id: number;
+  category: string;
+  resourses: string;
+  time: string;
+  icon: string;
+}
+
+interface Manufacturer {
+  id: string;
+  company: string;
+}
+
+interface Material {
+  mat: string;
+  amt: number;
+  icon: string;
+}
+
+interface Queue {
+  name: string;
+  progress: number | string;
+  index: number;
+}
 
 interface InputData {
   current?: string;
@@ -28,38 +55,14 @@ interface InputData {
   builtperc: number;
 }
 
-interface Buildable {
-  name: string;
-  id: number;
-  category: string;
-  resourses: string;
-  time: string;
-}
-
-interface Manufacturer {
-  id: string;
-  company: string;
-}
-
-interface Material {
-  mat: string;
-  amt: number;
-}
-
-interface Queue {
-  name: string;
-  progress: number | string;
-  index: number;
-}
-
-const ejectMultipliers = [1, 5, 10];
+const ejectMultipliers = [1, 5, 10]
 
 const queueElement = (
   props: Queue,
   context: any,
-  addDivider: boolean = false,
+  addDivider: boolean = false
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>(context)
 
   return (
     <Stack vertical className='MechaFabricator__slideAnimation'>
@@ -81,26 +84,26 @@ const queueElement = (
         </Stack>
       </Stack.Item>
     </Stack>
-  );
-};
+  )
+}
 
 const fabricatorStorage = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { act, data } = useBackend<InputData>(context)
 
   return (
-    <Section minHeight='100%' title='Storage'>
+    <Section className='Storage' minHeight='100%' title='Storage'>
       <Stack vertical>
         {data.materials.map((material, k) => {
           return (
             <Stack.Item key={k}>
+              <GameIcon html={material.icon} />
               {material.mat}:{' '}
               <AnimatedNumber
                 format={(val: number) => Math.round(val).toLocaleString()}
                 value={material.amt}
               />
               /{data.maxres.toLocaleString()}
-              <Divider hidden />
-              <Box class='Multipliers'>
+              <Box mt='0.5rem' class='Multipliers'>
                 {ejectMultipliers.map((multiplier, i) => {
                   return (
                     <Button.Segmented
@@ -109,12 +112,12 @@ const fabricatorStorage = (props: any, context: any) => {
                       onClick={() =>
                         act('eject', {
                           eject: material.mat,
-                          amount: multiplier,
+                          amount: multiplier
                         })
                       }
                       content={`x${multiplier}`}
                     />
-                  );
+                  )
                 })}
                 <Button.Segmented
                   disabled={material.amt === 0}
@@ -133,32 +136,32 @@ const fabricatorStorage = (props: any, context: any) => {
               </Box>
               {k < data.materials.length - 1 && <Divider />}
             </Stack.Item>
-          );
+          )
         })}
       </Stack>
     </Section>
-  );
-};
+  )
+}
 
 const fabricatorProduction = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  let [searchQuery, setSearchQuery] = useLocalState(
+  const { act, data } = useBackend<InputData>(context)
+  const [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null,
-  );
+    null
+  )
 
-  let buildableToShow: Buildable[] = data.buildable;
+  let buildableToShow: Buildable[] = data.buildable
 
   buildableToShow = buildableToShow
     .filter((value) => {
-      return value.category === data.category;
+      return value.category === data.category
     })
     .filter((value) => {
-      return searchQuery === null ?
-        true :
-        value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
-    });
+      return searchQuery === null
+        ? true
+        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0
+    })
 
   return (
     <Section
@@ -194,7 +197,7 @@ const fabricatorProduction = (props: any, context: any) => {
                 {manufacturer.company}
               </Button.Label>
             </Flex.Item>
-          );
+          )
         })}
       </Flex>
       <Divider />
@@ -209,15 +212,16 @@ const fabricatorProduction = (props: any, context: any) => {
                 {category}
               </Button.Label>
             </Flex.Item>
-          );
+          )
         })}
       </Flex>
       <Divider />
-      <Table>
+      <Table className='Buildable'>
         {buildableToShow.map((buildable, i) => {
           return (
             <Table.Row className='candystripe' key={i}>
-              <Table.Cell width='25ch'>
+              <Table.Cell width='40ch'>
+                <GameIcon html={buildable.icon} />
                 <Button.Link
                   onClick={() => act('build', { build: buildable.id })}>
                   {buildable.name}
@@ -226,55 +230,57 @@ const fabricatorProduction = (props: any, context: any) => {
               <Table.Cell width='40ch'>{buildable.resourses}</Table.Cell>
               <Table.Cell textAlign='center'>{buildable.time}</Table.Cell>
             </Table.Row>
-          );
+          )
         })}
       </Table>
     </Section>
-  );
-};
+  )
+}
 
 const fabricatorQueue = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
 
   return (
     <Section width='22rem' minHeight='100%' title='Queue'>
-      {data.current ? (
+      {data.current
+        ? (
         <>
           {queueElement(
             {
               index: 1,
               name: data.current,
-              progress: data.builtperc,
+              progress: data.builtperc
             },
-            context,
+            context
           )}
           {data.queue.map((queue, i) => {
             return queueElement(
               {
                 index: i + 2,
                 name: queue,
-                progress: 'Queued',
+                progress: 'Queued'
               },
               context,
-              true,
-            );
+              true
+            )
           })}
         </>
-      ) : (
-        'Nothing'
-      )}
+          )
+        : (
+            'Nothing'
+          )}
     </Section>
-  );
-};
+  )
+}
 
 export const MechaFabricator = (props: any, context: any) => {
-  const { getTheme } = useBackend<InputData>(context);
+  const { getTheme } = useBackend<InputData>(context)
 
   return (
     <Window
       theme={getTheme('primer')}
       width={1000}
-      height={600}
+      height={760}
       title='Exosuit Fabricator UI'>
       <Window.Content>
         <Stack fill justify='stretch'>
@@ -286,5 +292,5 @@ export const MechaFabricator = (props: any, context: any) => {
         </Stack>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

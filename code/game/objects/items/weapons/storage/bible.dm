@@ -37,7 +37,7 @@
 				human_target.visible_message(SPAN("warning", "[user] heals [human_target] with the power of [src.deity_name]!"), \
 											 SPAN("warning", "May the power of [src.deity_name] compel you to be healed!"))
 				human_target.heal_overall_damage(20,20)
-			playsound(src.loc, "punch", 25, 1, -1)
+			playsound(src.loc, SFX_FIGHTING_PUNCH, 25, 1, -1)
 		else
 			if(target.reagents && target.reagents.has_reagent(/datum/reagent/water)) //blesses all the water in the holder
 				to_chat(user, SPAN("notice", "You bless \the [target]."))

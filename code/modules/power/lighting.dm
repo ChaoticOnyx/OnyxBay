@@ -142,7 +142,7 @@
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off
 	var/flickering = 0
@@ -212,7 +212,7 @@
 	light_type = /obj/item/weapon/light/bulb/red
 
 /obj/machinery/light/small/hl
-	name = "hanging lantern"
+	name = "old light fixture"
 	icon_state = "hanginglantern1"
 	base_state = "hanginglantern"
 	desc = "Combination of old technologies and electricity."
@@ -572,7 +572,7 @@
 
 	if(!skip_sound_and_sparks)
 		if(lightbulb && !(lightbulb.status == LIGHT_BROKEN))
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		if(on)
 			s.set_up(3, 1, src)
 			s.start()
@@ -850,7 +850,7 @@
 		status = LIGHT_BROKEN
 		force = 5
 		sharp = 1
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		update_icon()
 
 /obj/item/weapon/light/proc/switch_on()

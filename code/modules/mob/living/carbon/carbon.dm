@@ -14,6 +14,12 @@
 	QDEL_NULL_LIST(internal_organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+	if(loc)
+		for(var/mob/M in contents)
+			M.dropInto(loc)
+	else
+		for(var/mob/M in contents)
+			qdel(M)
 	return ..()
 
 /mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
@@ -43,27 +49,29 @@
 
 /mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
-		if(user.last_special <= world.time)
-			user.last_special = world.time + 50
-			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
-			var/obj/item/I = user.get_active_hand()
-			var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
-			if(istype(src, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = src
-				var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
-				if (istype(organ))
-					organ.take_external_damage(dmg, 0)
-				H.updatehealth()
-			else
-				take_organ_damage(dmg)
-			user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
-			playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+		THROTTLE_SHARED(cooldown, 50, user.last_special)
+		if(!cooldown)
+			return
 
-			if(prob(getBruteLoss() - 50))
-				for(var/atom/movable/A in stomach_contents)
-					A.loc = loc
-					stomach_contents.Remove(A)
-				gib()
+		src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
+		var/obj/item/I = user.get_active_hand()
+		var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
+		if(istype(src, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
+			if (istype(organ))
+				organ.take_external_damage(dmg, 0)
+			H.updatehealth()
+		else
+			take_organ_damage(dmg)
+		user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
+		playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+
+		if(prob(getBruteLoss() - 50))
+			for(var/atom/movable/A in stomach_contents)
+				A.loc = loc
+				stomach_contents.Remove(A)
+			gib()
 
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
@@ -99,7 +107,7 @@
 
 	stun_effect_act(agony_amount=shock_damage, def_zone=def_zone)
 
-	playsound(loc, "spark", 50, 1, -1)
+	playsound(loc, SFX_SPARK, 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
 			"<span class='warning'>[src] was electrocuted[source ? " by the [source]" : ""]!</span>", \
@@ -239,7 +247,7 @@
 /mob/living/carbon/proc/get_ear_protection()
 	return 0
 
-/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(eyecheck() < intensity || override_blindness_check)
 		return ..()
 
@@ -275,6 +283,8 @@
 
 /mob/living/carbon/throw_item(atom/target)
 	throw_mode_off()
+	if(!isturf(loc))
+		return
 	if(stat || !target)
 		return
 	if(target.type == /obj/screen)
@@ -320,7 +330,7 @@
 	//actually throw it!
 	visible_message(SPAN("warning", "[src] has thrown [item]."), range = min(itemsize * 2, world.view))
 	var/sfx_loudness = min(100, 5 + (itemsize * 5))
-	playsound(src, "throwing", sfx_loudness, 1)
+	playsound(src, SFX_THROWING, sfx_loudness, 1)
 
 	if(!lastarea)
 		lastarea = get_area(loc)

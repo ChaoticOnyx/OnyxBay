@@ -5,7 +5,7 @@
 	var/datum/admins/admindatum = null
 
 	var/interactions = null
-	var/isCrayon = 0
+	var/isCrayon = FALSE
 	var/origin = null
 	var/mob/sender = null
 	var/obj/machinery/photocopier/faxmachine/destination
@@ -22,7 +22,6 @@
 /obj/item/weapon/paper/admin/New()
 	..()
 	generateInteractions()
-
 
 /obj/item/weapon/paper/admin/proc/generateInteractions()
 	//clear first
@@ -78,7 +77,7 @@
 	if(href_list["write"])
 		var/id = href_list["write"]
 		if(free_space <= 0)
-			to_chat(usr, "<span class='info'>There isn't enough space left on \the [src] to write anything.</span>")
+			to_chat(usr, SPAN("info", "There isn't enough space left on \the [src] to write anything."))
 			return
 
 		var/t =  sanitize(input("Enter what you want to write:", "Write", null, null) as message, free_space, extra = 0)

@@ -2,7 +2,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 /datum/antagonist/deathsquad/syndicate
 	id = MODE_COMMANDO
-	landmark_id = "Syndicate-Commando"
+	landmark_id = "Syndicate Commando"
 	role_text = "Syndicate Commando"
 	role_text_plural = "Commandos"
 	welcome_text = "You are in the employ of a criminal syndicate hostile to corporate interests."
@@ -18,6 +18,11 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 	initial_spawn_target = 6
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/deathsquad/syndicate/Initialize()
+	. = ..()
+	if(config.commando_min_age)
+		min_player_age = config.commando_min_age
 
 /datum/antagonist/deathsquad/syndicate/equip(mob/living/carbon/human/player)
 

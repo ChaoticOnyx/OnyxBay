@@ -1,0 +1,253 @@
+.theme-spellbook {
+  $border-thick: 0.15rem;
+  $icon-size: 3.5rem;
+
+  @mixin item-border {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border.png');
+    border-image-slice: 6 6 6 6;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin item-border-selected {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border_selected.png');
+    border-image-slice: 6 6 6 6;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin item-border-ignored {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border_ignored.png');
+    border-image-slice: 6 6 6 6;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin button-border {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/button_border.png');
+    border-image-slice: 10 10 10 10;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin button-border-selected {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/button_border_selected.png');
+    border-image-slice: 8 8 8 8;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin button-border-disabled {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/button_border_disabled.png');
+    border-image-slice: 8 8 8 8;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  .TitleBar {
+    font-family: Reaver, serif;
+    border: none;
+    box-shadow: none;
+    user-select: none;
+    -ms-user-select: none;
+
+    background-color: #5c2226;
+
+    &__title {
+      color: white;
+    }
+
+    &__close {
+      background-color: #5c2226;
+      color: white;
+
+      &:hover {
+        background-color: red;
+        color: white;
+      }
+    }
+  }
+
+  .Layout,
+.Layout * {
+    scrollbar-base-color: #5C2226;
+    scrollbar-face-color: #5C2226;
+    scrollbar-3dlight-color: #5C2226;
+    scrollbar-highlight-color: #5C2226;
+    scrollbar-track-color: #24201D;
+    scrollbar-arrow-color: #42372D;
+    scrollbar-shadow-color: #24201D;
+}
+
+  .Layout__content {
+    font-family: 'Reaver', serif;
+    background: none;
+    background-color: #42372d;
+    font-size: 0.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.2em;
+  }
+
+  .Card {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    padding-top: 0;
+    background-color: #24201d;
+    border-radius: 0.25rem;
+    border: #4A423B solid $border-thick;
+
+    .Icon--spell,
+    .Icon--artifact,
+    .game-icon {
+      vertical-align: -1.5rem;
+    }
+
+    &__buttons {
+        float: right;
+        font-size: 0.6em;
+    }
+  }
+
+  .Button {
+    cursor: pointer;
+    margin-top: 0.2rem;
+    color: #fce940;
+    background: linear-gradient(90deg, rgba(92,34,38,1) 0%, rgba(113,43,47,1) 50%, rgba(92,34,38,1) 100%);
+    font-weight: bold;
+    @include button-border;
+
+    &:hover,
+    &:focus {
+      background: none;
+      background-color: #8b343a;
+    }
+
+    &--selected {
+      background: none;
+      color: #8b343a !important;
+      background-color: #fce940 !important;
+      @include button-border-selected;
+
+      .Icon--spell {
+        background-color: #314483;
+        @include item-border-selected;
+      }
+
+      .Icon--artifact {
+        background-color: #593080;
+        @include item-border-selected;
+      }
+    }
+
+    &--disabled {
+      background: none;
+      cursor: default;
+      background-color: #4b3133 !important;
+      color: #a59e64;
+      @include button-border-disabled;
+    }
+  }
+
+  .Button--invisible {
+    background: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: $icon-size;
+  }
+
+  img {
+    width: $icon-size;
+  }
+
+  .Icon--spell {
+    box-shadow: inset 0 0 1rem 0.1rem #131c3b;
+    @include item-border;
+
+    &:hover,
+    &:focus {
+      @include item-border-selected;
+    }
+  }
+
+  .Icon--artifact {
+    box-shadow: inset 0 0 1rem 0.1rem #2b122a;
+    @include item-border;
+
+    &:hover,
+    &:focus {
+      @include item-border-selected;
+    }
+  }
+
+  .Icon--sacrifice {
+    box-shadow: inset 0 0 1rem 0.1rem #2e0d0d;
+    @include item-border;
+
+    &:hover,
+    &:focus {
+      @include item-border-selected;
+    }
+  }
+
+  .Icon--ignored {
+    background-color: #521f1f;
+    @include item-border-ignored;
+  }
+
+  .Input {
+    background-color: #0F0C0A;
+    border-radius: 0.5rem;
+    @include item-border;
+
+    &__input {
+      font-family: 'Reaver';
+    }
+  }
+
+  .Flag {
+    font-weight: bold;
+
+    &--needsClothes {
+      color: rgb(243, 98, 123);
+    }
+
+    &--needsHuman {
+      color: rgb(91, 143, 255);
+    }
+
+    &--noButton {
+      color: rgb(91, 255, 118);
+    }
+
+    &--investable {
+      color: gold;
+    }
+
+    &--contracts {
+      color: rgb(0, 217, 255);
+    }
+  }
+
+  .Divider {
+    border-top: rgba(255, 255, 255, 0.1) solid 2px;
+  }
+}

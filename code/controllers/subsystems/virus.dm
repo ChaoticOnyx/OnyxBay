@@ -1,16 +1,16 @@
-SUBSYSTEM_DEF(virus2suka)
-	name = "Virus Shit System"
-	priority = SS_PRIORITY_CIRCUIT_COMP
+SUBSYSTEM_DEF(virus)
+	name = "Virus Processing System"
+	priority = SS_PRIORITY_VIRUSES
 	flags = SS_NO_INIT
 	wait = 1
 
 	var/list/viruses_life = list()              // Queue of viruses to life
 	var/position = 1                            // Helper index to order newly activated viruses properly
 
-/datum/controller/subsystem/virus2suka/stat_entry()
+/datum/controller/subsystem/virus/stat_entry()
 	..("C:[viruses_life.len]")
 
-/datum/controller/subsystem/virus2suka/fire(resumed = FALSE)
+/datum/controller/subsystem/virus/fire(resumed = FALSE)
 	if(paused_ticks >= 10) // The likeliest fail mode, due to the fast tick rate, is that it can never clear the full queue, running resumed every tick and accumulating a backlog.
 		log_and_message_admins(SPAN_DANGER("Alert. [name] report <b>LEVEL ONE DEFCON</b>, automatically attempt to avoid server lags by disabling viruses."))
 		disable()          // As this SS deals with optional and potentially abusable content, it will autodisable if overtaxing the server.
@@ -33,24 +33,24 @@ SUBSYSTEM_DEF(virus2suka)
 				break
 			continue
 
-		circuit.process(arglist(entry))
+		circuit.process()
 		if(MC_TICK_CHECK)
 			break
 	position = null
 
-/datum/controller/subsystem/virus2suka/disable()
+/datum/controller/subsystem/virus/disable()
 	..()
 	viruses_life.Cut()
 	log_and_message_admins("[name] has been disabled.")
 
-/datum/controller/subsystem/virus2suka/enable()
+/datum/controller/subsystem/virus/enable()
 	..()
 	log_and_message_admins("[name] processing has been enabled.")
 
 // Store the entries like this so that components can be queued multiple times at once.
 // With immediate set, will generally imitate the order of the call stack if execution happened directly.
 // With immediate off, you go to the bottom of the pile.
-/datum/controller/subsystem/virus2suka/proc/queue_virus(datum/disease2/disease/circuit, immediate = TRUE)
+/datum/controller/subsystem/virus/proc/queue_virus(datum/disease2/disease/circuit, immediate = TRUE)
 	if(!can_fire)
 		return
 	var/list/entry = list(circuit) + args.Copy(3)
@@ -61,7 +61,7 @@ SUBSYSTEM_DEF(virus2suka)
 	else
 		viruses_life.Insert(position, list(entry))
 
-/datum/controller/subsystem/virus2suka/proc/dequeue_virus(datum/disease2/disease/circuit)
+/datum/controller/subsystem/virus/proc/dequeue_virus(datum/disease2/disease/circuit)
 	var/i = 1
 	while(i <= length(viruses_life)) // Either i increases or length decreases on every iteration.
 		var/list/entry = viruses_life[i]

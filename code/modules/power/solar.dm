@@ -224,38 +224,6 @@ var/list/solars_list = list()
 
 
 /obj/item/solar_assembly/attackby(obj/item/weapon/W, mob/user)
-
-	if(!anchored && isturf(loc))
-		if(isWrench(W))
-			anchored = 1
-			pixel_x = 0
-			pixel_y = 0
-			pixel_z = 0
-			user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-	else
-		if(isWrench(W))
-			anchored = 0
-			user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-
-		if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
-			var/obj/item/stack/material/S = W
-			if(S.use(2))
-				glass_type = W.type
-				playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-				user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
-				if(tracker)
-					new /obj/machinery/power/tracker(get_turf(src), src)
-				else
-					new /obj/machinery/power/solar(get_turf(src), src)
-			else
-				to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
-				return
-			return 1
-
 	if(!tracker)
 		if(istype(W, /obj/item/weapon/tracker_electronics))
 			tracker = 1
@@ -265,10 +233,43 @@ var/list/solars_list = list()
 			return 1
 	else
 		if(isCrowbar(W))
-			new /obj/item/weapon/tracker_electronics(src.loc)
+			new /obj/item/weapon/tracker_electronics(get_turf(src))
 			tracker = 0
 			user.visible_message("<span class='notice'>[user] takes out the electronics from the solar assembly.</span>")
 			return 1
+
+	if(isturf(loc))
+		if(!anchored)
+			if(isWrench(W))
+				anchored = 1
+				pixel_x = 0
+				pixel_y = 0
+				pixel_z = 0
+				user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+		else
+			if(isWrench(W))
+				anchored = 0
+				user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+
+			if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
+				var/obj/item/stack/material/S = W
+				if(S.use(2))
+					glass_type = W.type
+					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
+					if(tracker)
+						new /obj/machinery/power/tracker(get_turf(src), src)
+					else
+						new /obj/machinery/power/solar(get_turf(src), src)
+				else
+					to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
+					return
+				return 1
+
 	..()
 
 //

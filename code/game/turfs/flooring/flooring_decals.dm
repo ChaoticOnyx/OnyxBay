@@ -39,6 +39,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/reset
 	name = "reset marker"
+	icon_state = "clear"
 
 /obj/effect/floor_decal/reset/Initialize()
 	var/turf/T = get_turf(src)
@@ -138,6 +139,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/black/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/black/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/blue
 	name = "blue corner"
 	color = COLOR_BLUE_GRAY
@@ -147,6 +151,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/blue/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/blue/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/paleblue
 	name = "pale blue corner"
@@ -158,6 +165,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/paleblue/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/paleblue/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/green
 	name = "green corner"
 	color = COLOR_GREEN_GRAY
@@ -168,6 +178,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/green/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/green/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/lime
 	name = "lime corner"
 	color = COLOR_PALE_GREEN_GRAY
@@ -177,6 +190,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/lime/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/lime/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/yellow
 	name = "yellow corner"
@@ -191,6 +207,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/yellow/full
 	icon_state = "corner_white_full"
 
+/obj/effect/floor_decal/corner/yellow/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/beige
 	name = "beige corner"
 	color = COLOR_BEIGE
@@ -200,6 +219,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/beige/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/beige/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/red
 	name = "red corner"
@@ -214,6 +236,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/red/full
 	icon_state = "corner_white_full"
 
+/obj/effect/floor_decal/corner/red/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/pink
 	name = "pink corner"
 	color = COLOR_PALE_RED_GRAY
@@ -223,6 +248,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/pink/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/pink/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/purple
 	name = "purple corner"
@@ -234,6 +262,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/purple/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/purple/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/mauve
 	name = "mauve corner"
 	color = COLOR_PALE_PURPLE_GRAY
@@ -243,6 +274,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/mauve/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/mauve/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/orange
 	name = "orange corner"
@@ -254,6 +288,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/orange/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/orange/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/brown
 	name = "brown corner"
 	color = COLOR_DARK_BROWN
@@ -263,6 +300,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/brown/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/brown/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/white
 	name = "white corner"
@@ -274,6 +314,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/white/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/white/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/grey
 	name = "grey corner"
 	color = "#8d8c8c"
@@ -283,6 +326,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/grey/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/grey/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner_steel_grid
 	name = "corner steel_grid"
@@ -418,6 +464,13 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcorner_dust"
 
+/obj/effect/floor_decal/industrial/warning/dust/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_dust"
+
+/obj/effect/floor_decal/industrial/warning/dust/full
+	name = "hazard stripes"
+	icon_state = "warningfull_dust"
 /obj/effect/floor_decal/industrial/warning/red
 	name = "hazard stripes"
 	icon_state = "warning_red"
@@ -542,7 +595,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/outline/blue
 	name = "blue outline"
-	color = "#00b8b2"
+	color = COLOR_BLUE_GRAY
 
 /obj/effect/floor_decal/industrial/outline/yellow
 	name = "yellow outline"
@@ -687,6 +740,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/sign/cell3
 	icon_state = "cell_3"
+
+/obj/effect/floor_decal/sign/cell4
+	icon_state = "cell_4"
 
 /obj/effect/floor_decal/sign/armory
 	icon_state = "rigdecal"

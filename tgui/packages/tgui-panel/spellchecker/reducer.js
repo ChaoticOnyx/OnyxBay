@@ -1,44 +1,44 @@
-import { loadSpellCheckerSettings, resetSpellCheckerBlacklist, toggleSpellChecker, updateSpellCheckerSettings } from "./actions";
+import { loadSpellCheckerSettings, toggleSpellChecker, updateSpellCheckerSettings } from './actions'
 
 const initialState = {
   enabled: false,
   visible: false,
-  blacklist: 'бипски, дорм, еган, емаг, ионк, научк, синг, скрабер, термалы, хонк, центком, голодек, тазер, ксен, мусорк',
-};
+  blacklist: 'бипски, дорм, еган, емаг, ионк, научк, синг, скрабер, термалы, хонк, центком, голодек, тазер, ксен, мусорк'
+}
 
-export const defaultBlacklist = initialState.blacklist;
+export const defaultBlacklist = initialState.blacklist
 
 export const spellCheckerReducer = (state = initialState, action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
 
   if (type === loadSpellCheckerSettings.type) {
     if (!payload) {
       return {
-        ...initialState,
-      };
+        ...initialState
+      }
     }
 
-    payload.visible = false;
+    payload.visible = false
 
     return {
       ...state,
-      ...payload,
-    };
+      ...payload
+    }
   }
 
   if (type === updateSpellCheckerSettings.type) {
     return {
       ...state,
-      ...payload,
-    };
+      ...payload
+    }
   }
 
   if (type === toggleSpellChecker.type) {
     return {
       ...state,
-      visible: !state.visible,
-    };
+      visible: !state.visible
+    }
   }
 
-  return state;
-};
+  return state
+}

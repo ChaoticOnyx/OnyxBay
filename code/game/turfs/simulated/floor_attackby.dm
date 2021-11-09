@@ -96,25 +96,32 @@
 				src.update_icon()
 				playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 				return
+
 		// Repairs and Deconstruction.
 		else if(isCrowbar(C))
 			if(broken || burnt)
-				playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
-				visible_message("<span class='notice'>[user] has begun prying off the damaged plating.</span>")
 				var/turf/T = GetBelow(src)
 				if(T)
-					T.visible_message("<span class='warning'>The ceiling above looks as if it's being pried off.</span>")
+					if(T.density)
+						to_chat(user, SPAN("notice", "It looks like there's a solid wall underneath the plating!"))
+						return
+					T.visible_message(SPAN("warning", "The ceiling above looks as if it's being pried off."))
+				playsound(src, 'sound/items/Crowbar.ogg', 80, 1)
+				visible_message(SPAN("notice", "[user] has begun prying off the damaged plating."))
 				if(do_after(user, 10 SECONDS))
-					visible_message("<span class='warning'>[user] has pried off the damaged plating.</span>")
+					if(!istype(src, /turf/simulated/floor))
+						return
+					if(!broken && !burnt || !is_plating())
+						return
+					visible_message(SPAN("warning", "[user] has pried off the damaged plating."))
 					new /obj/item/stack/tile/floor(src)
-					src.color = null
-					src.ReplaceWithLattice()
+					color = null
+					ReplaceWithLattice()
 					playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 					if(T)
-						T.visible_message("<span class='danger'>The ceiling above has been pried off!</span>")
-			else
-				return
+						T.visible_message(SPAN("danger", "The ceiling above has been pried off!"))
 			return
+
 		else if(isWelder(C))
 			var/obj/item/weapon/weldingtool/welder = C
 			if(welder.isOn() && (is_plating()))

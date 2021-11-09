@@ -98,7 +98,7 @@
 /material/plasteel/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
-	recipes += new /datum/stack_recipe("Metal crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
+	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
 
 /material/stone/generate_recipes()
 	..()
@@ -154,3 +154,8 @@
 		new /datum/stack_recipe("white folder", /obj/item/weapon/folder/white), \
 		new /datum/stack_recipe("yellow folder", /obj/item/weapon/folder/yellow), \
 		))
+
+/material/goat_hide/generate_recipes()
+	recipes = list()
+	recipes += new /datum/stack_recipe("goat skin cape", /obj/item/clothing/suit/storage/hooded/goathidecape)
+	recipes += new /datum/stack_recipe("hairless hide", /obj/item/stack/material/hairlesshide)

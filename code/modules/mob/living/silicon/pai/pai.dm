@@ -236,10 +236,9 @@
 	if(src.loc != card)
 		return
 
-	if(world.time <= last_special)
+	THROTTLE_SHARED(cooldown, 100, last_special)
+	if(!cooldown)
 		return
-
-	last_special = world.time + 100
 
 	//I'm not sure how much of this is necessary, but I would rather avoid issues.
 	if(istype(card.loc, /obj/item/rig_module) || istype(card.loc, /obj/item/integrated_circuit/input/pAI_connector))

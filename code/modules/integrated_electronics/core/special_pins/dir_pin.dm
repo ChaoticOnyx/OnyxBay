@@ -25,7 +25,7 @@
 /datum/integrated_io/dir/display_pin_type()
 	return IC_FORMAT_DIR
 
-/datum/integrated_io/dir/display_data(var/input)
+/datum/integrated_io/dir/display_data(input)
 	if(!isnull(data))
 		return "([dir2text(data)])"
 	return ..()

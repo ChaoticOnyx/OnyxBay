@@ -5,7 +5,7 @@
 	name = "airlock"
 	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door_closed"
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 
 	explosion_resistance = 10
 	var/aiControlDisabled = 0 //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
@@ -70,17 +70,7 @@
 	return get_material_by_name(mineral ? mineral : MATERIAL_STEEL)
 
 /obj/machinery/door/airlock/Process()
-	if(main_power_lost_until > 0 && world.time >= main_power_lost_until)
-		regainMainPower()
-
-	if(backup_power_lost_until > 0 && world.time >= backup_power_lost_until)
-		regainBackupPower()
-
-	else if(electrified_until > 0 && world.time >= electrified_until)
-		electrify(0)
-
-	if(arePowerSystemsOn())
-		execute_current_command()
+	return PROCESS_KILL
 /*
 About the new airlock wires panel:
 *	An airlock wire dialog can be accessed by the normal way or by using wirecutters or a multitool on the door while the wire-panel is open. This would show the following wires, which you can either wirecut/mend or send a multitool pulse through. There are 9 wires.
@@ -155,12 +145,15 @@ About the new airlock wires panel:
 	return src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER1) || src.isWireCut(AIRLOCK_WIRE_BACKUP_POWER2)
 
 /obj/machinery/door/airlock/proc/loseMainPower()
-	main_power_lost_until = mainPowerCablesCut() ? -1 : world.time + SecondsToTicks(60)
+	main_power_lost_until = mainPowerCablesCut() ? -1 : SecondsToTicks(60)
+	if(main_power_lost_until > 0)
+		addtimer(CALLBACK(src, .proc/regainMainPower), main_power_lost_until)
+
 
 	// If backup power is permanently disabled then activate in 10 seconds if possible, otherwise it's already enabled or a timer is already running
 	if(backup_power_lost_until == -1 && !backupPowerCablesCut())
-		backup_power_lost_until = world.time + SecondsToTicks(10)
-
+		backup_power_lost_until = SecondsToTicks(10)
+		addtimer(CALLBACK(src, .proc/regainBackupPower), backup_power_lost_until)
 	// Disable electricity if required
 	if(electrified_until && isAllPowerLoss())
 		electrify(0)
@@ -168,8 +161,9 @@ About the new airlock wires panel:
 	update_icon()
 
 /obj/machinery/door/airlock/proc/loseBackupPower()
-	backup_power_lost_until = backupPowerCablesCut() ? -1 : world.time + SecondsToTicks(60)
-
+	backup_power_lost_until = backupPowerCablesCut() ? -1 : SecondsToTicks(60)
+	if(backup_power_lost_until > 0)
+		addtimer(CALLBACK(src, .proc/regainBackupPower), backup_power_lost_until)
 	// Disable electricity if required
 	if(electrified_until && isAllPowerLoss())
 		electrify(0)
@@ -211,13 +205,15 @@ About the new airlock wires panel:
 		else
 			shockedby += text("\[[time_stamp()]\] - EMP)")
 		message = "The door is now electrified [duration == -1 ? "permanently" : "for [duration] second\s"]."
-		electrified_until = duration == -1 ? -1 : world.time + SecondsToTicks(duration)
+		electrified_until = duration == -1 ? -1 : SecondsToTicks(duration)
+		if(electrified_until > 0)
+			addtimer(CALLBACK(src, .proc/electrify), electrified_until)
 		. = 1
 
 	if(feedback && message)
 		to_chat(usr, message)
 	if(.)
-		playsound(src, get_sfx("spark"), 30, 0, -6)
+		playsound(src, GET_SFX(SFX_SPARK), 30, 0, -6)
 
 /obj/machinery/door/airlock/proc/set_idscan(activate, feedback = 0)
 	var/message = ""
@@ -800,18 +796,21 @@ About the new airlock wires panel:
 	return ..()
 
 /obj/machinery/door/airlock/close(forced = 0)
+	var/wait = normalspeed ? 150 : 5
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return 0
 
 	if(safe)
 		for(var/turf/T in locs)
 			for(var/atom/movable/AM in T)
 				if(AM.blocks_airlock())
+					if(autoclose && tryingToLock)
+						addtimer(CALLBACK(src, .proc/close), 30 SECONDS)
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+					addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 					return
 
 	for(var/turf/T in locs)
@@ -821,6 +820,7 @@ About the new airlock wires panel:
 				use_power_oneoff(door_crush_damage * 100)		// Uses bunch extra power for crushing the target.
 
 	use_power_oneoff(360)	//360 W seems much more appropriate for an actuator moving an industrial door capable of crushing people
+	tryingToLock = FALSE
 	if(arePowerSystemsOn())
 		playsound(src.loc, close_sound_powered, 100, 1)
 	else

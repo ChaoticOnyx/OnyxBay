@@ -61,7 +61,8 @@
 		data["storage"] += list(list(
 			"name" = material,
 			"count" = stored_material[material],
-			"capacity" = storage_capacity[material]
+			"capacity" = storage_capacity[material],
+			"icon" = icon2base64html(get_icon_for_material(material))
 			))
 
 	var/index = 0
@@ -78,6 +79,7 @@
 			"category" = R.category,
 			"hidden" = R.hidden == null ? FALSE : TRUE,
 			"required" = list(),
+			"icon" = icon2base64html(R.path),
 			"multipliers" = list()
 		)
 
@@ -249,6 +251,7 @@
 			if(!choice || !(choice in autolathe_categories + "All"))
 				return TRUE
 			show_category = choice
+			tgui_update()
 			return TRUE
 		if("make")
 			if(!machine_recipes)
@@ -275,6 +278,7 @@
 					if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
 						busy = FALSE
 						update_use_power(POWER_USE_IDLE)
+						tgui_update()
 						return TRUE
 
 			// Consume materials.
@@ -293,6 +297,7 @@
 
 			// Sanity check.
 			if(!making || QDELETED(src))
+				tgui_update()
 				return TRUE
 
 			// Create the desired item.
@@ -301,6 +306,8 @@
 				var/obj/item/stack/S = I
 				S.amount = multiplier
 				S.update_icon()
+			
+			tgui_update()
 
 
 /obj/machinery/autolathe/update_icon()

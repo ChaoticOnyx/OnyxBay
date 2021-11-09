@@ -219,7 +219,7 @@
 	penetrating = 1
 
 /obj/item/projectile/bullet/rifle/a556
-	damage = 25
+	damage = 27.5
 
 /obj/item/projectile/bullet/rifle/a762
 	damage = 35
@@ -261,7 +261,7 @@
 /obj/item/projectile/bullet/gyro/Initialize()
 	. = ..()
 
-	fire_sound = get_sfx("explosion")
+	fire_sound = GET_SFX(SFX_EXPLOSION)
 
 /obj/item/projectile/bullet/gyro/on_hit(atom/target, blocked = 0)
 	if(isturf(target))

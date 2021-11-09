@@ -155,10 +155,11 @@
 	item_state = "flashdark"
 	w_class = ITEM_SIZE_NORMAL
 
-	flashlight_max_bright = -1
+	flashlight_max_bright = -3
 	flashlight_outer_range = 4
 	flashlight_inner_range = 1
-	flashlight_falloff_curve = 2.5
+	flashlight_falloff_curve = 3.0
+	brightness_color = "#ffffff"
 
 /obj/item/device/flashlight/pen
 	name = "penlight"
@@ -181,7 +182,7 @@
 	force = 10
 	attack_verb = list ("smacked", "thwacked", "thunked")
 	matter = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 50)
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 
 	brightness_color = "#ffffff"
 

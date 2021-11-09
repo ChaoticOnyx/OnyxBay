@@ -9,6 +9,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 
 	layer = ABOVE_HUMAN_LAYER
+	appearance_flags = LONG_GLIDE
 	density = 1
 	anchored = 1
 	animate_movement=1
@@ -17,6 +18,12 @@
 	can_buckle = 1
 	buckle_movable = 1
 	buckle_lying = 0
+
+	movement_handlers = list(
+		/datum/movement_handler/deny_stairs,
+		/datum/movement_handler/deny_multiz,
+		/datum/movement_handler/move_relay_self
+	)
 
 	var/attack_log = null
 	var/on = 0
@@ -48,21 +55,22 @@
 
 /obj/vehicle/Move()
 	if(world.time > l_move_time + move_delay)
-		var/old_loc = get_turf(src)
-		if(on && powered && cell.charge < (charge_use * CELLRATE))
-			turn_off()
-
-		var/init_anc = anchored
-		anchored = 0
-		if(!..())
-			anchored = init_anc
+		if(!on)
 			return 0
+
+		if(!cell.use(charge_use * CELLRATE))
+			turn_off()
+			return 0
+
+		var/old_loc = get_turf(src)
+		var/init_anc = anchored
+		// Hack to let the vehicle fall() in open spaces.
+		anchored = 0
+
+		. = ..()
 
 		set_dir(get_dir(old_loc, loc))
 		anchored = init_anc
-
-		if(on && powered)
-			cell.use(charge_use * CELLRATE)
 
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example

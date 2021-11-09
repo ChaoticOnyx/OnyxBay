@@ -1,23 +1,27 @@
-/spell/hand/charges/blood_shard
+/datum/spell/hand/charges/blood_shard
 	name = "Blood Shards"
 	desc = "Invoke a corrupted projectile forward that causes an enemy's blood to fly out in painful shards. Be sure to upgrade it, as it is free."
 
 	spell_flags = 0
 	charge_max = 600
 	invocation = "opens their hand, which bursts into vicious red light."
-	invocation_type = SpI_EMOTE
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
+	invocation_type = SPI_EMOTE
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 	range = 7
 	max_casts = 2
 	compatible_targets = list(/atom)
-	hud_state = "wiz_bshard"
+	icon_state = "wiz_bshard"
 
-/spell/hand/charges/blood_shard/cast_hand(atom/A,mob/user)
+/datum/spell/hand/charges/blood_shard/cast_hand(atom/A, mob/user)
+	. = ..()
+	
+	if(!.)
+		return
+
 	var/obj/item/projectile/blood_shard/B = new(get_turf(user))
 	B.firer = user
 	B.launch(A, BP_CHEST)
 	user.visible_message("<span class='danger'>\The [user] shoots out a deep red shard from their hand!</span>")
-	return ..()
 
 /obj/item/projectile/blood_shard
 	name = "bloodshard"

@@ -1,5 +1,5 @@
 /datum/design/item/powercell/device
-	category_items = "Device"
+	category_items = list("Device")
 
 /datum/design/item/powercell/device/standard
 	name = "basic device cell"
@@ -21,7 +21,7 @@
 // Modular computer components
 // Hard drives
 /datum/design/item/modularcomponent
-	category_items = "Device"
+	category_items = list("Device")
 
 /datum/design/item/modularcomponent/disk/normal
 	name = "basic hard drive"

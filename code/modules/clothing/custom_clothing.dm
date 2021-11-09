@@ -125,3 +125,41 @@
 	if(user.gender == FEMALE)
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
+
+// AmiClerick
+
+/obj/item/clothing/suit/storage/toggle/labcoat/amired
+	name = "fancy labcoat"
+	desc = "A suit that protects against minor chemical spills. This one looks especially special. Perhaps, its owner survived a fireaxey medbay massacre? Or just put it into a washing machine with some red cloth."
+	icon_state = "amicoat"
+
+/obj/item/clothing/suit/storage/toggle/labcoat/amired/toggle()
+	set name = "Toggle Coat Buttons"
+	set category = "Object"
+	set src in usr
+
+	if(usr.incapacitated())
+		return 0
+
+	to_chat(usr, "The buttonholes appear to be purely decorative. Oh.")
+
+// Gremy4uu
+/obj/item/clothing/suit/storage/vest/police_dark
+	name = " police armored vest"
+	desc = "A synthetic armor vest with a large webbing and additional ballistic plates. Instead of a label, there's a small picture of a bearded man beating someone down in a maintenance area."
+	icon_state = "policevest_dark"
+	item_state = "policevest_dark"
+	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
+	allowed = list(
+		/obj/item/weapon/gun/energy,
+		/obj/item/device/radio,
+		/obj/item/device/flashlight,
+		/obj/item/weapon/reagent_containers/spray/pepper,
+		/obj/item/weapon/gun/projectile,
+		/obj/item/ammo_magazine,
+		/obj/item/ammo_casing,
+		/obj/item/weapon/melee/baton,
+		/obj/item/weapon/handcuffs,
+		/obj/item/weapon/gun/magnetic,
+		/obj/item/weapon/grenade,
+		)

@@ -154,7 +154,7 @@
 						forceMove(AM)
 					else
 						Weaken(2)
-						playsound(loc, "punch", rand(80, 100), 1, -1)
+						playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
@@ -531,7 +531,7 @@
 	var/turf/old_loc = get_turf(src)
 
 	if(lying)
-		pull_sound = "pull_body"
+		pull_sound = SFX_PULL_BODY
 	else
 		pull_sound = null
 
@@ -580,7 +580,7 @@
 		return
 
 	if(!isliving(pulling))
-		step(pulling, get_dir(pulling.loc, old_loc))
+		step_glide(pulling, get_dir(pulling.loc, old_loc), glide_size)
 	else
 		var/mob/living/M = pulling
 		if(M.grabbed_by.len)
@@ -594,7 +594,7 @@
 
 			var/atom/movable/t = M.pulling
 			M.stop_pulling()
-			step(M, get_dir(pulling.loc, old_loc))
+			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
 			if(t)
 				M.start_pulling(t)
 
@@ -727,10 +727,10 @@
 		to_chat(src, SPAN("notice", "You are now [resting ? "resting" : "getting up"]."))
 
 //called when the mob receives a bright flash
-/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(override_blindness_check || !(disabilities & BLIND))
 		overlay_fullscreen("flash", type)
-		spawn(25)
+		spawn(effect_duration)
 			if(src)
 				clear_fullscreen("flash", 25)
 		return 1
@@ -836,6 +836,9 @@
 	if(auras)
 		for(var/a in auras)
 			remove_aura(a)
+	if(mind)
+		mind.current = null
+	QDEL_NULL(aiming)
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)

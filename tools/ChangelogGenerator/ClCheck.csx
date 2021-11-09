@@ -35,10 +35,17 @@ if (pullRequest is null)
     return 1;
 }
 
-if (pullRequest.Labels.Any(l => l.Name == Settings.ChangelogNotRequiredLabel))
+public async Task RemoveAllClLabelsExcept(string except)
 {
-    WriteLine("✅ Чейнджлог не требуется.");
-    return 0;
+    string[] clLabels = { Settings.ChangelogCheckedLabel, Settings.ChangelogNotRequiredLabel, Settings.ChangelogRequiredLabel };
+
+    foreach (var label in pullRequest.Labels)
+    {
+        if (clLabels.Contains(label.Name) && label.Name != except)
+        {
+            await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(label.Name)}");
+        }
+    }
 }
 
 Changelog? changelog = null;
@@ -47,11 +54,20 @@ try
 {
     changelog = pullRequest.ParseChangelog();
 }
+catch (Exceptions.ChangelogNotFound e)
+{
+    WriteLine(e.Message);
+    await RemoveAllClLabelsExcept(Settings.ChangelogNotRequiredLabel);
+    // Добавление плашки о ненужности чейнджлога.
+    var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogNotRequiredLabel}\"] }}"));
+    putResponse.EnsureSuccessStatusCode();
+
+    return 0;
+}
 catch (Exception e)
 {
     WriteLine($"🚫 Ошибка при парсинге чейнджлога:\n\t{e.Message}");
-    // Удаление плашки проверенного чейнджлога.
-    await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogCheckedLabel)}");
+    await RemoveAllClLabelsExcept(Settings.ChangelogRequiredLabel);
     // Добавление плашки о требовании чейнджлога.
     var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogRequiredLabel}\"] }}"));
     putResponse.EnsureSuccessStatusCode();
@@ -61,8 +77,7 @@ catch (Exception e)
 
 WriteLine($"✅ Чейнджлог корректный ({changelog.Changes.Count} изм.).");
 
-// Удаление плашки о требовании чейнджлога.
-await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogRequiredLabel)}");
+await RemoveAllClLabelsExcept(Settings.ChangelogCheckedLabel);
 // Добавление плашки о наличии чейнджлога.
 var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogCheckedLabel}\"] }}"));
 putResponse.EnsureSuccessStatusCode();

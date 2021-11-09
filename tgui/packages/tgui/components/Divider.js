@@ -4,21 +4,21 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
+import { classes } from 'common/react'
 
 export const Divider = props => {
   const {
     vertical,
-    hidden,
-  } = props;
+    hidden
+  } = props
   return (
     <div
       className={classes([
         'Divider',
         hidden && 'Divider--hidden',
-        vertical ?
-          'Divider--vertical' :
-          'Divider--horizontal',
+        vertical
+          ? 'Divider--vertical'
+          : 'Divider--horizontal'
       ])} />
-  );
-};
+  )
+}

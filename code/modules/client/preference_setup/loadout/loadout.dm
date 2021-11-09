@@ -270,7 +270,11 @@ var/list/gear_datums = list()
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
 		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)
 		if(gear_virtual_item.color)
-			I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
+			if(islist(gear_virtual_item.color))
+				I.MapColors(arglist(gear_virtual_item.color))
+			else
+				I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
+
 		I.Scale(I.Width() * 2, I.Height() * 2)
 
 		. += "<td style='width: 80%;' class='block'>"

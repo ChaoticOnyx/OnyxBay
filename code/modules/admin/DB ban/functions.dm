@@ -1,11 +1,10 @@
-/datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null, ban_everywhere = FALSE)
+/datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null)
 	if(!src || !src.owner)
 		return
-	_DB_ban_record(src.owner.ckey, src.owner.computer_id, src.owner.address, bantype, banned_mob, duration, reason, job, rounds, banckey, banip, bancid, ban_everywhere)
+	_DB_ban_record(src.owner.ckey, src.owner.computer_id, src.owner.address, bantype, banned_mob, duration, reason, job, rounds, banckey, banip, bancid)
 
-//Either pass the mob you wish to ban in the 'banned_mob' attribute, or the banckey, banip and bancid variables. If both are passed, the mob takes priority! If a mob is not passed, banckey is the minimum that needs to be passed! banip and bancid are optional.
-/proc/_DB_ban_record(var/a_ckey, var/a_computerid, a_ip, bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null, ban_everywhere = FALSE)
-
+// Either pass the mob you wish to ban in the 'banned_mob' attribute, or the banckey, banip and bancid variables. If both are passed, the mob takes priority! If a mob is not passed, banckey is the minimum that needs to be passed! banip and bancid are optional.
+/proc/_DB_ban_record(a_ckey, a_computerid, a_ip, bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null)
 	if(usr)
 		if(!check_rights(R_MOD,0) && !check_rights(R_BAN))	return
 
@@ -62,161 +61,67 @@
 		else
 			adminwho += ", [C]"
 
-	if(isnull(config.server_id))
-		sql_query({"
-			INSERT INTO
-				erro_ban
-			VALUES
-				(null,
-				Now(),
-				$serverip,
-				$bantype_str,
-				$reason,
-				$job,
-				$duration,
-				$rounds,
-				Now() + INTERVAL $duration MINUTE,
-				$ckey,
-				$computerid,
-				$ip,
-				$a_ckey,
-				$a_computerid,
-				$a_ip,
-				$who,
-				$adminwho,
-				'', null, null, null, null, null, null, null)
-			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
-				duration = duration ? duration : 0,
-				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
-				computerid = computerid ? computerid : "",
-				ip = ip ? ip : "", a_ckey = a_ckey,
-				a_computerid = a_computerid ? a_computerid : "",
-				a_ip = a_ip ? a_ip : "",
-				who = who, adminwho = adminwho))
-	else
-		if(ban_everywhere)
-			sql_query({"
-				INSERT INTO
-					erro_ban
-				VALUES
-					(null,
-					Now(),
-					$serverip,
-					$bantype_str,
-					$reason,
-					$job,
-					$duration,
-					$rounds,
-					Now() + INTERVAL $duration MINUTE,
-					$ckey,
-					$computerid,
-					$ip,
-					$a_ckey,
-					$a_computerid,
-					$a_ip,
-					$who,
-					$adminwho,
-					'', null, null, null, null, null, null, 'main'),
+	ASSERT(config.server_id)
 
-					(null,
-					Now(),
-					$serverip,
-					$bantype_str,
-					$reason,
-					$job,
-					$duration,
-					$rounds,
-					Now() + INTERVAL $duration MINUTE,
-					$ckey,
-					$computerid,
-					$ip,
-					$a_ckey,
-					$a_computerid,
-					$a_ip,
-					$who,
-					$adminwho,
-					'', null, null, null, null, null, null, 'beginners'),
-
-					(null,
-					Now(),
-					$serverip,
-					$bantype_str,
-					$reason,
-					$job,
-					$duration,
-					$rounds,
-					Now() + INTERVAL $duration MINUTE,
-					$ckey,
-					$computerid,
-					$ip,
-					$a_ckey,
-					$a_computerid,
-					$a_ip,
-					$who,
-					$adminwho,
-					'', null, null, null, null, null, null, 'main'),
-
-					(null,
-					Now(),
-					$serverip,
-					$bantype_str,
-					$reason,
-					$job,
-					$duration,
-					$rounds,
-					Now() + INTERVAL $duration MINUTE,
-					$ckey,
-					$computerid,
-					$ip,
-					$a_ckey,
-					$a_computerid,
-					$a_ip,
-					$who,
-					$adminwho,
-					'', null, null, null, null, null, null, 'light')
-				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
-					duration = duration ? duration : 0,
-					rounds = rounds ? "[rounds]" : "0", ckey = ckey,
-					computerid = computerid ? computerid : "", ip = ip, a_ckey = a_ckey,
-					a_computerid = a_computerid ? a_computerid : "",
-					a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho))
-
-		else
-			sql_query({"
-				INSERT INTO
-					erro_ban
-				VALUES
-					(null,
-					Now(),
-					$serverip,
-					$bantype_str,
-					$reason,
-					$job,
-					$duration,
-					$rounds,
-					Now() + INTERVAL $duration MINUTE,
-					$ckey,
-					$computerid,
-					$ip,
-					$a_ckey,
-					$a_computer_id,
-					$a_ip,
-					$who,
-					$adminwho,
-					'', null, null, null, null, null, null, $server_id)
-				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
-				duration = duration ? duration : 0,
-				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
-				computerid = computerid ? computerid : "",
-				ip = ip ? ip : "", a_ckey = a_ckey,
-				a_computer_id = a_computerid ? a_computerid : "",
-				a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
+	sql_query({"
+		INSERT INTO
+			erro_ban(
+				bantime,
+				serverip,
+				bantype,
+				reason,
+				job,
+				duration,
+				rounds,
+				expiration_time,
+				ckey,
+				computerid,
+				ip,
+				a_ckey,
+				a_computerid,
+				a_ip,
+				who,
+				adminwho,
+				edits,
+				server_id
+			)
+		VALUES (
+			Now(),
+			$serverip,
+			$bantype_str,
+			$reason,
+			$job,
+			$duration,
+			$rounds,
+			Now() + INTERVAL $duration MINUTE,
+			$ckey,
+			$computerid,
+			$ip,
+			$a_ckey,
+			$a_computer_id,
+			$a_ip,
+			$who,
+			$adminwho,
+			'',
+			$server_id
+		)"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+		duration = duration ? duration : 0,
+		rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+		computerid = computerid ? computerid : "",
+		ip = ip ? ip : "", a_ckey = a_ckey,
+		a_computer_id = a_computerid ? a_computerid : "",
+		a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
 
 	var/setter = a_ckey
 	if(usr)
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
-	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
+	message_admins("[setter] has added a [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
+	if(ismob(banned_mob) && banned_mob.client)
+		var/rendered_text = uppertext("You have been [(duration > 0) ? "temporarily ([duration] minutes)" : "permanently"] banned with the reason: ")
+		rendered_text = rendered_text + "\n\"[reason]\"."
+		rendered_text = "<font size='12' color='red'><b>[rendered_text]</b></font>"
+		to_chat(banned_mob, rendered_text, MESSAGE_TYPE_SYSTEM)
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
@@ -334,17 +239,17 @@
 					to_chat(usr, "Cancelled")
 					return
 
+			var/edits_log = "- [eckey] changed ban reason from <cite><b>\"[reason]\"</b></cite> to <cite><b>\"[value]\"</b></cite><BR>"
+
 			sql_query({"
 				UPDATE
 					erro_ban
 				SET
 					reason = $value,
-					edits = CONCAT
-						(edits,
-						'- $eckey changed ban reason from <cite><b>\"$reason\"</b></cite> to <cite><b>\"$value\"</b></cite><BR>')
+					edits = CONCAT(edits, $edits_log)
 				WHERE
 					id = $banid
-				"}, dbcon, list(value = value, eckey = eckey, reason = reason, banid = banid))
+				"}, dbcon, list(value = value, edits_log = edits_log, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Reason set from [reason] to [value]",1)
 			else
@@ -356,20 +261,18 @@
 					to_chat(usr, "Cancelled")
 					return
 
+			var/edits_log = "- [eckey] changed ban duration from [duration] to [value]<br>"
+
 			sql_query({"
 				UPDATE
 					erro_ban
 				SET
 					duration = $value,
-					edits = CONCAT
-						(edits,
-						'- $eckey changed ban duration from $duration to $value<br>'),
-					expiration_time = DATE_ADD
-						(bantime,
-						INTERVAL $value MINUTE)
+					edits = CONCAT(edits, $edits_log),
+					expiration_time = DATE_ADD(bantime, INTERVAL $value MINUTE)
 				WHERE
 					id = $banid
-				"}, dbcon, list(value = value, eckey = eckey, duration = duration, banid = banid))
+				"}, dbcon, list(value = value, edits_log = edits_log, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
 			else
@@ -481,7 +384,7 @@
 		bantypes |= antag.id
 	for(var/j in bantypes)
 		output += "<option value='[j]'>[j]</option>"
-	output += "</select></div></td></tr></table><div class=\"form-group\"><label for=\"dbbanreason\">Reason</label><textarea name='dbbanreason' cols='50' class=\"form-control\" id=\"dbbanreason\" rows=\"3\"></textarea><br><div class=\"row\"><div class=\"col-lg-3\" style=\"padding-top: 0.45rem;\"><div class=\"custom-control custom-switch\"><input type=\"checkbox\" class=\"custom-control-input\" value='0' name=\"dbbaneverywhere\" id=\"dbbaneverywhere\"><label class=\"custom-control-label\" for=\"dbbaneverywhere\">Ban everywhere</label></div></div><div class=\"col-lg-3\"><input type='submit' class=\"btn btn-danger\" value='Add ban'></div></div></div></form>"
+	output += "</select></div></td></tr></table><div class=\"form-group\"><label for=\"dbbanreason\">Reason</label><textarea name='dbbanreason' cols='50' class=\"form-control\" id=\"dbbanreason\" rows=\"3\"></textarea><br><div class=\"row\"><div class=\"col-lg-3\"><input type='submit' class=\"btn btn-danger\" value='Add ban'></div></div></div></form>"
 	output += "<form method='GET' action='?src=\ref[src]'>"
 	output += "<table width='90%'><tr><td colspan='2' align='left'><h3>Search<small class=\"text-muted\"> this search shows only last 100 bans</small>"
 	output += "<input type='hidden' name='src' value='\ref[src]'>"

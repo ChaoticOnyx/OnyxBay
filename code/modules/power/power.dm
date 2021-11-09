@@ -328,8 +328,8 @@
 		cell.use(drained_energy)
 	return drained_energy
 
-/obj/machinery/power/blob_act(destroy, obj/effect/blob/source)
-	if (stat & BROKEN)
+/obj/machinery/power/blob_act(damage)
+	if(stat & BROKEN)
 		return
 
 	set_broken(TRUE)

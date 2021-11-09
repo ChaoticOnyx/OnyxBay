@@ -5,38 +5,38 @@
  */
 
 export class EventEmitter {
-  constructor() {
-    this.listeners = {};
+  constructor () {
+    this.listeners = {}
   }
 
-  on(name, listener) {
-    this.listeners[name] = this.listeners[name] || [];
-    this.listeners[name].push(listener);
+  on (name, listener) {
+    this.listeners[name] = this.listeners[name] || []
+    this.listeners[name].push(listener)
   }
 
-  off(name, listener) {
-    const listeners = this.listeners[name];
+  off (name, listener) {
+    const listeners = this.listeners[name]
     if (!listeners) {
-      throw new Error(`There is no listeners for "${name}"`);
+      throw new Error(`There is no listeners for "${name}"`)
     }
     this.listeners[name] = listeners
       .filter(existingListener => {
-        return existingListener !== listener;
-      });
+        return existingListener !== listener
+      })
   }
 
-  emit(name, ...params) {
-    const listeners = this.listeners[name];
+  emit (name, ...params) {
+    const listeners = this.listeners[name]
     if (!listeners) {
-      return;
+      return
     }
     for (let i = 0, len = listeners.length; i < len; i += 1) {
-      const listener = listeners[i];
-      listener(...params);
+      const listener = listeners[i]
+      listener(...params)
     }
   }
 
-  clear() {
-    this.listeners = {};
+  clear () {
+    this.listeners = {}
   }
 }

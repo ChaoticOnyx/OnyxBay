@@ -19,13 +19,13 @@
 	name = "Slippery Surface"
 	desc = "Allows a follower to slicken a small patch of floor. Anyone without sure-footing will find it hard to stay upright."
 	item_cost = 10
-	path = /spell/hand/slippery_surface
+	path = /datum/spell/hand/slippery_surface
 
 /datum/uplink_item/deity/boon/single_charge/transmutation/smoke
 	name = "Smoke"
 	desc = "Allows a follower to distill the nearby air into smoke."
 	item_cost = 10
-	path = /spell/aoe_turf/smoke
+	path = /datum/spell/aoe_turf/smoke
 
 /datum/uplink_item/deity/feat/phenomena/transmutation/animation
 	name = "Phenomena: Animation"
@@ -38,14 +38,14 @@
 	name = "Knock"
 	desc = "Allows a follower to open nearby doors without the keys."
 	item_cost = 25
-	path = /spell/aoe_turf/knock
+	path = /datum/spell/aoe_turf/knock
 	required_feats = list(DEITY_LEVELED_TRANSMUTATION = 2)
 
 /datum/uplink_item/deity/boon/single_charge/transmutation/burning_grip
 	name = "Burning Grip"
 	desc = "Allows a follower cause an object to heat up intensly in someone's hand, making them drop it and whatever skin is attached."
 	item_cost = 15
-	path = /spell/hand/burning_grip
+	path = /datum/spell/hand/burning_grip
 	required_feats = list(DEITY_LEVELED_TRANSMUTATION = 2)
 
 /datum/uplink_item/deity/feat/phenomena/transmutation/warp_body
@@ -60,7 +60,7 @@
 	name = "Ethereal Jaunt"
 	desc = "Allows a follower to liquify for a short duration, letting them pass through all dense objects."
 	item_cost = 25
-	path = /spell/targeted/ethereal_jaunt
+	path = /datum/spell/targeted/ethereal_jaunt
 	required_feats = list(DEITY_LEVELED_TRANSMUTATION = 3)
 
 /datum/uplink_item/deity/feat/healing_spells
@@ -76,19 +76,19 @@
 	item_cost = 15
 	required_feats = list(DEITY_UNLOCK_HEAL)
 	category = /datum/uplink_category/deity_wizard_transmutation
-	path = /spell/targeted/heal_target
+	path = /datum/spell/targeted/heal_target
 
 /datum/uplink_item/deity/boon/single_charge/heal/major
 	name = "Major Heal"
 	desc = "Allows your follower to heal others for a great amount."
 	item_cost = 25
-	path = /spell/targeted/heal_target/major
+	path = /datum/spell/targeted/heal_target/major
 
 /datum/uplink_item/deity/boon/single_charge/heal/area
 	name = "Area Heal"
 	desc = "Allows your follower to heal everyone in an area for minor damage."
 	item_cost = 20
-	path = /spell/targeted/heal_target/area
+	path = /datum/spell/targeted/heal_target/area
 
 /datum/uplink_item/deity/feat/phenomena/transmutation/rock_form
 	name = "Phenomena: Rock Form"

@@ -16,6 +16,8 @@
 	create_objectives(target)
 	update_icons_added(target)
 	greet(target)
+	if(isrobot(target.current))
+		add_overrides(target.current)
 	if(!gag_announcement)
 		announce_antagonist_spawn()
 
@@ -57,7 +59,7 @@
 /datum/antagonist/proc/create_nuke(atom/paper_spawn_loc, datum/mind/code_owner)
 
 	// Decide on a code.
-	var/obj/effect/landmark/nuke_spawn = locate(nuke_spawn_loc ? nuke_spawn_loc : "landmark*Nuclear-Bomb")
+	var/obj/effect/landmark/nuke_spawn = locate(nuke_spawn_loc ? nuke_spawn_loc : "landmark*Nuclear Bomb")
 
 	var/code
 	if(nuke_spawn)
@@ -70,7 +72,7 @@
 			if(leader && leader.current)
 				paper_spawn_loc = get_turf(leader.current)
 			else
-				paper_spawn_loc = get_turf(locate("landmark*Nuclear-Code"))
+				paper_spawn_loc = get_turf(locate("landmark*Nuclear Code"))
 
 		if(paper_spawn_loc)
 			// Create and pass on the bomb code paper.
@@ -122,3 +124,7 @@
 	if(player.mind) player.mind.name = player.name
 	// Update any ID cards.
 	update_access(player)
+
+/datum/antagonist/proc/add_overrides(mob/living/silicon/robot/R)
+	R.add_robot_verbs()
+	to_chat(R, SPAN_WARNING("ATTENTION! Your safety protocols are still active, override is avaliable."))

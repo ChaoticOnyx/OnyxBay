@@ -191,12 +191,12 @@
 			loss_val = 0.05
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
-/mob/living/carbon/human/blob_act(destroy = 0, obj/effect/blob/source = null)
+/mob/living/carbon/human/blob_act(damage)
 	if(is_dead())
 		return
 
 	var/blocked = run_armor_check(BP_CHEST, "melee")
-	apply_damage(25, BRUTE, BP_CHEST, blocked)
+	apply_damage(damage, BRUTE, BP_CHEST, blocked)
 
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
 	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
@@ -271,6 +271,8 @@
 	// Other incidentals.
 	if(istype(suit))
 		dat += "<BR><b>Pockets:</b> <A href='?src=\ref[src];item=pockets'>Empty or Place Item</A>"
+		if(suit.rolled_down != -1)
+			dat += "<BR><A href='?src=\ref[src];item=rolldown'>Roll Down Jumpsuit</A>"
 		if(suit.has_sensor == 1)
 			dat += "<BR><A href='?src=\ref[src];item=sensors'>Set sensors</A>"
 	if(handcuffed)
@@ -680,7 +682,7 @@
 		return FLASH_PROTECTION_MAJOR
 	return total_protection
 
-/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(internal_organs_by_name[BP_EYES]) // Eyes are fucked, not a 'weak point'.
 		var/obj/item/organ/internal/eyes/I = internal_organs_by_name[BP_EYES]
 		I.additional_flash_effects(intensity)
@@ -767,8 +769,8 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition < 40)
-					custom_emote(1,"dry heaves.")
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a
@@ -966,7 +968,7 @@
 
 	for(var/ID in virus2)
 		var/datum/disease2/disease/V = virus2[ID]
-		V.cure(src)
+		V.cure()
 
 	losebreath = 0
 
@@ -1193,13 +1195,13 @@
 	if(client)
 		Login()
 
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack)
+	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
 		create_stack()
 	full_prosthetic = null
 
 	//recheck species-restricted clothing
 	for(var/slot in slot_first to slot_last)
-		var/obj/item/clothing/C = get_equipped_item(slot)
+		var/obj/item/C = get_equipped_item(slot)
 		if(istype(C) && !C.mob_can_equip(src, slot, 1))
 			unEquip(C)
 

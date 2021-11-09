@@ -12,7 +12,7 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 		Think through your actions and make the roleplay immersive! <b>Please remember all \
 		rules aside from those without explicit exceptions apply to the ERT.</b>"
 	leader_welcome_text = "You shouldn't see this"
-	landmark_id = "Response Team"
+	landmark_id = "Emergency Responder"
 	id_type = /obj/item/weapon/card/id/centcom/ERT
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
@@ -36,6 +36,8 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/Initialize()
 	..()
 	leader_welcome_text = "As leader of the Emergency Response Team, you answer only to [GLOB.using_map.boss_name], and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however."
+	if(config.ert_min_age)
+		min_player_age = config.ert_min_age
 
 /datum/antagonist/ert/create_global_objectives()
 	if(!..())

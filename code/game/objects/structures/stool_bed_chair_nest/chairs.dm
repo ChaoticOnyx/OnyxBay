@@ -9,6 +9,7 @@
 	buckle_pixel_shift = "x=0;y=0"
 	anchored = FALSE
 	pull_slowdown = PULL_SLOWDOWN_EXTREME
+	appearance_flags = LONG_GLIDE
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 
@@ -76,7 +77,9 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/AltClick()
+/obj/structure/bed/chair/AltClick(mob/living/L)
+	if(L.is_ventcrawling)
+		return
 	rotate()
 
 /obj/structure/bed/chair/verb/rotate()
@@ -159,6 +162,8 @@
 
 /obj/structure/bed/chair/proc/fold(mob/user)
 	if(!foldable)
+		return
+	if(!user.Adjacent(src))
 		return
 
 	var/list/collapse_message = list(SPAN_WARNING("\The [src.name] has collapsed!"), null)
@@ -278,7 +283,7 @@
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)
 		occupant.apply_damage(10, BRUTE, def_zone, blocked)
-		playsound(src.loc, "punch", rand(80, 100), 1, -1)
+		playsound(src.loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 		if(istype(A, /mob/living))
 			var/mob/living/victim = A
 			def_zone = ran_zone()
@@ -342,6 +347,13 @@
 	icon_state = "shuttle_chaired_preview"
 
 /obj/structure/bed/chair/shuttle/red/New(newloc, newmaterial)
+	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
+
+/obj/structure/bed/chair/shuttle/black
+	base_icon = "shuttle_chairbl"
+	icon_state = "shuttle_chairbl_preview"
+
+/obj/structure/bed/chair/shuttle/black/New(newloc, newmaterial)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
 
 // Colorful chairs

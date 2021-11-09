@@ -12,6 +12,7 @@
 
 /datum/storyteller_character/support/process_new_cycle_start()
 	..()
+
 	USE_METRIC(/storyteller_metric/station_characters_count, station_characters_count)
 	USE_METRIC(/storyteller_metric/security_manpower, security_manpower)
 	USE_METRIC(/storyteller_metric/is_storyteller_random, is_storyteller_random)
@@ -32,17 +33,26 @@
 
 	_log_debug("Security Advantage: [security_advantage]")
 	var/balancing_is_needed = security_advantage > 5
-	if (balancing_is_needed)
-		_log_debug("Balancing is needed due high security advantage")
 
-	while (balancing_is_needed) // balancing
+	var/minutes_to_next_cycle = 15 + rand(0, 10)
+
+	if(balancing_is_needed)
+		_log_debug("Balancing is needed due to high security advantage")
+		minutes_to_next_cycle = 1
+
 		var/list/triggers = new
-		triggers[/storyteller_trigger/spawn_antagonist/traitor] = 8
+		triggers[/storyteller_trigger/spawn_antagonist/traitor] = 65
+		triggers[/storyteller_trigger/spawn_antagonist/vampire] = 10
+		triggers[/storyteller_trigger/spawn_antagonist/borer] = 5
 
-		if (security_advantage > 10)
-			triggers[/storyteller_trigger/spawn_antagonist/changeling] = 4
+		if(security_advantage > 10)
+			triggers[/storyteller_trigger/spawn_antagonist/changeling] = 40
 		else
-			triggers[/storyteller_trigger/spawn_antagonist/changeling] = 1
+			triggers[/storyteller_trigger/spawn_antagonist/changeling] = 10
+
+		if(security_advantage > 20)
+			triggers[/storyteller_trigger/spawn_antagonist/ninja] = 80
+			triggers[/storyteller_trigger/spawn_antagonist/wizard] = 80
 
 		var/choosen_trigger
 		var/result
@@ -50,24 +60,11 @@
 			choosen_trigger = pickweight(triggers)
 			result = _run_trigger(choosen_trigger)
 			triggers.Remove(choosen_trigger)
-		while (!result && triggers.len)
+		while(!result && length(triggers))
 
 		if(!result)
 			_log_debug("Triggers don't work! We can't fix the balance :(")
-			break
-
-		if (choosen_trigger == /storyteller_trigger/spawn_antagonist/traitor)
-			security_advantage -= 4
-		else
-			security_advantage -= 8
-
-		if (security_advantage <= 5)
-			balancing_is_needed = FALSE
-
-	if (balancing_is_needed)
-		_log_debug("Security Advantage after balancing: [security_advantage]")
-
-	var/minutes_to_next_cycle = 15 + rand(0, 10)
+	
 	_log_debug("Time to next cycle: [minutes_to_next_cycle] minutes" )
 
 	return minutes_to_next_cycle MINUTES

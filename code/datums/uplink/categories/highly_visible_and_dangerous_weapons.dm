@@ -39,7 +39,7 @@
 	name = "Sawnoff Shotgun"
 	desc = "A sawed-off double-barreled shotgun."
 	item_cost = 6
-	antag_costs = list(MODE_NUKE = 3)
+	antag_costs = list(MODE_NUKE = 4)
 	path = /obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn
 
 /datum/uplink_item/item/visible_weapons/g9mm
@@ -86,17 +86,24 @@
 
 /datum/uplink_item/item/visible_weapons/assaultrifle
 	name = "Assault Rifle"
-	desc = "5.56mm assault rifle. Trusty, but not as powerful as you would probably expect."
-	item_cost = 6
+	desc = "5.56mm assault rifle. Trusty, quite powerful, but requires excessive amount of praying while spraying."
+	item_cost = 7
 	antag_roles = list(MODE_NUKE)
-	path = /obj/item/weapon/gun/projectile/automatic/sts35
+	path = /obj/item/weapon/gun/projectile/automatic/as75
 
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle"
 	desc = "A 14.5mm heavy sniper rifle and ammunition."
-	item_cost = 10
+	item_cost = 13
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/storage/secure/briefcase/heavysniper
+
+/datum/uplink_item/item/visible_weapons/machinegun
+	name = "Light Machine Gun"
+	desc = "L6 SAW, a 5.56mm light machine gun, loaded with a 60-round box. Can also be loaded with standard 5.56 magazines."
+	item_cost = 12
+	antag_roles = list(MODE_NUKE)
+	path = /obj/item/weapon/gun/projectile/automatic/l6_saw
 
 /datum/uplink_item/item/visible_weapons/combat_shotgun
 	name = "Combat Shotgun"
@@ -108,7 +115,7 @@
 /datum/uplink_item/item/visible_weapons/pulsecarbine
 	name = "Pulse Carbine"
 	desc = "A lightweight, rapid-firing pulse carbine."
-	item_cost = 9
+	item_cost = 10
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/energy/pulse_rifle/carbine
 
@@ -128,6 +135,6 @@
 
 /datum/uplink_item/item/visible_weapons/flechetterifle
 	name = "Flechette Rifle"
-	item_cost = 9
+	item_cost = 10
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/magnetic/railgun/flechette

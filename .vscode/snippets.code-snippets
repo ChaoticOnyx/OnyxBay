@@ -1,0 +1,35 @@
+{
+  "DM TGUI Template": {
+    "prefix": "!tgui",
+    "description": "Базовый шаблон для TGUI",
+    "body": [
+      "/${1:type}/tgui_interact(mob/user, datum/tgui/ui)",
+      "\tui = SStgui.try_update_ui(user, src, ui)",
+      "",
+      "\tif(!ui)",
+      "\t\tui = new(user, src, \"${2:ui_name}\", name)",
+      "\t\tui.open()",
+      "\t\t// ui.set_autoupdate(TRUE) <- если требуется автообновление",
+      "",
+      "/${1:type}/tgui_data(mob/user)",
+      "\tvar/list/data = list()",
+      "\t// Передавайте данные в TGUI:",
+      "\t// data[\"price\"] = 15",
+      "",
+      "\treturn data",
+      "",
+      "/${1:type}/tgui_act(action, params)",
+      "\t. = ..()",
+      "",
+      "\tif(.)",
+      "\t\treturn",
+      "",
+      "\t// Добавляйте свои обработчики:",
+      "\t// switch(action)",
+      "\t//\tcase(\"some_action\")",
+      "\t//\t\ttgui_update() <- для обновления интерфейса",
+      "\t//\t\treturn TRUE"
+    ],
+    "scope": "dm"
+  }
+}

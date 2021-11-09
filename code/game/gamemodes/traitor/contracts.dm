@@ -57,7 +57,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return src
 
 /datum/antag_contract/proc/ban_non_crew_antag()
-	for(var/antag_type in list(MODE_MEME, MODE_BLOB, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
+	for(var/antag_type in list(MODE_MEME, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
 		reason_list[antag_type] = list("NA", "NA", 0)
 
 /datum/antag_contract/proc/generate_antag_reasons() // call this first!
@@ -534,7 +534,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(R?.build_path)
 				targets.Add(R)
 				targets_name.Add(R.name)
-	create_explain_text("send a <b>fabricator data disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
+	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3

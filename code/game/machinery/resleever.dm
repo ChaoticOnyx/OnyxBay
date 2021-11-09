@@ -28,6 +28,7 @@
 /obj/machinery/resleever/New()
 	..()
 	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/resleever(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
 	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src, 3)
@@ -108,10 +109,11 @@
 
 /obj/machinery/resleever/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	
+
 	if(!ui)
 		ui = new(user, src, "ReSleever", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/resleever/tgui_data()
 	var/list/data = list(
@@ -218,6 +220,32 @@
 			if(M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
+
+/obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
+	if(occupant)
+		to_chat(user, SPAN_WARNING("\The [src] is in use."))
+		return
+
+	if(!ismob(target))
+		return
+
+	if(!check_occupant_allowed(target))
+		return
+
+	visible_message("[user] starts putting [target] into \the [src].", 3)
+
+	if(do_after(user, 20, src))
+		if(!target || !(target in range(2, src)))
+			return
+
+		target.forceMove(src)
+		occupant = target
+		occupant_name = occupant.name
+		update_icon()
+		if(target.client)
+			target.client.perspective = EYE_PERSPECTIVE
+			target.client.eye = src
+
 
 /obj/machinery/resleever/proc/eject_occupant()
 	if(!(occupant))

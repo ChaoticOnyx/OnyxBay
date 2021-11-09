@@ -19,7 +19,8 @@
 		new /datum/body_build,
 		new /datum/body_build/slim,
 		new /datum/body_build/slim/alt,
-		new /datum/body_build/slim/male
+		new /datum/body_build/slim/male,
+		new /datum/body_build/fat
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -97,6 +98,8 @@
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
 
+	passive_temp_gain = 1 // Allow Tajar stabilize at 38-40C at 20C environment, and 47-49 in a spacesuit.
+
 	min_age = 18
 	max_age = 140
 
@@ -109,7 +112,8 @@
 
 	body_builds = list(
 		new /datum/body_build/tajaran,
-		new /datum/body_build/slim/alt/tajaran
+		new /datum/body_build/slim/alt/tajaran,
+		new /datum/body_build/tajaran/fat
 	)
 
 	cold_level_1 = 200 //Default 260
