@@ -76,6 +76,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
+	ambient_music_meta_tags = list(META_SPACE)
 	ambience_off = list(SFX_AMBIENT_OFF_SPACE)
 	ambience_powered = list(SFX_AMBIENT_OFF_SPACE)
 
@@ -105,6 +106,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
+	ambient_music_meta_tags = list(META_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
@@ -139,9 +141,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	name = "\improper Security - Brig"
 	icon_state = "brig"
 
-
-
-
 /area/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
@@ -152,6 +151,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	turf_initializer = /decl/turf_initializer/maintenance
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_meta_tags = list(META_MYSTIC)
 
 /area/rnd
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_OFF_SPACE)

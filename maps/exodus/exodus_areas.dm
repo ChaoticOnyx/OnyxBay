@@ -384,6 +384,7 @@
 	name = "\improper Skipjack"
 	icon_state = "yellow"
 	requires_power = 0
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 
 /area/skipjack_station/southwest_solars
 	name = "aft port solars"
@@ -1452,6 +1453,9 @@
 
 // Solars
 
+/area/solar
+	ambient_music_meta_tags = list(META_SPACE)
+
 /area/solar/starboard
 	name = "\improper Starboard Auxiliary Solar Array"
 	icon_state = "panelsS"
@@ -1488,10 +1492,12 @@
 /area/teleporter
 	name = "\improper Teleporter"
 	icon_state = "teleporter"
+	ambient_music_meta_tags = list(META_SPACE)
 
 /area/gateway
 	name = "\improper Gateway"
 	icon_state = "teleporter"
+	ambient_music_meta_tags = list(META_SPACE)
 
 // MedBay
 
@@ -1793,6 +1799,7 @@
 /area/server
 	name = "\improper Research Server Room"
 	icon_state = "server"
+	ambient_music_meta_tags = list(META_SPACE)
 
 /area/rnd/research_under
 	name = "\improper Underground Research Wing"
@@ -1890,10 +1897,12 @@
 	name = "\improper Alien base"
 	icon_state = "yellow"
 	requires_power = 0
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 
 // Telecommunications Satellite
 
 /area/tcommsat
+	ambient_music_meta_tags = list(META_SPACE)
 	ambience_powered = list(SFX_AMBIENT_POWERED_AI, SFX_AMBIENT_POWERED_COMMS)
 
 /area/tcommsat/entrance
@@ -1925,6 +1934,9 @@
 *******/
 
 // Mining main outpost
+
+/area/outpost
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 
 /area/outpost/mining_main
 	icon_state = "outpost_mine_main"
@@ -2219,6 +2231,7 @@
 	sound_env = 5 // stoneroom
 	ambience_off = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
 	ambience_powered = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 /area/mine/explored
 	name = "Mine"
 	icon_state = "explored"
@@ -2312,6 +2325,7 @@
 	icon_state = "teleporter"
 	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
 	has_gravity = FALSE
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 
 /area/constructionsite/atmospherics
 	name = "\improper Construction Site Atmospherics"

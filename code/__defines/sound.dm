@@ -36,6 +36,25 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+#define VOLUME_AMBIENT_MUSIC 50
+
+// Timing
+#define AMBIENT_MUSIC_COOLDOWN 2 MINUTES
+// TODO: Also add cooldown for ambients.
+
+// Sound channels
+// TODO: Replace hardcoded values with these defines.
+#define SOUND_CHANNEL_AMBIENT       1
+#define SOUND_CHANNEL_AMBIENT_MUSIC 2
+#define SOUND_CHANNEL_HUM           3
+
+// Ambient meta tags
+#define META_NORMAL          0
+#define META_MYSTIC          1
+#define META_SPACE           2
+#define META_SPACE_TRAVELING 3
+#define META_CENTCOMM        4
+
 // SFX List
 // FIREARMS SOUND
 #define SFX_FAR_FIRE                "far_fire"
@@ -78,6 +97,13 @@
 #define SFX_AMBIENT_POWERED_ENGINEERING "ambient_powered_engineering"
 #define SFX_AMBIENT_OFF_SPACE           "ambient_off_space"
 #define SFX_AMBIENT_POWERED_OUTPOST     "ambient_powered_outpost"
+
+// AMBIENT MUSIC
+#define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
+#define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
+#define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
+#define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
+#define SFX_AMBIENT_MUSIC_CENTCOMM     "ambient_music_centcomm"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"

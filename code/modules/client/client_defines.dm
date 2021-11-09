@@ -29,6 +29,8 @@
 	// * Sound stuff *
 	var/ambience_playing = null
 	var/played = 0
+	// Start playing right from the start.
+	var/last_time_ambient_music_played = -AMBIENT_MUSIC_COOLDOWN
 
 	// * Security things *
 	var/received_irc_pm = -99999
