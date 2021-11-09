@@ -211,6 +211,7 @@
 	item_state = "edagger0"
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	check_armour = "laser"
 	var/active_max_bright = 0.17
 	var/active_outer_range = 1.65
 	var/brightness_color = "#ff5959"
