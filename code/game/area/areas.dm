@@ -288,7 +288,12 @@ var/list/mob/living/forced_ambiance_list = new
 			sound_to(L, sound(null, channel = 1))
 	else if(prob(35) && (world.time >= L.client.played + custom_period))
 		var/is_powered = (power_environ + power_equip + power_light) > 0
-		var/S = GET_SFX(pick(is_powered ? ambience_powered : ambience_off))
+		var/list/to_play = is_powered ? ambience_powered : ambience_off
+
+		if(!length(to_play))
+			return
+
+		var/S = GET_SFX(pick(to_play))
 
 		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		L.client.played = world.time
@@ -353,4 +358,3 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
-
