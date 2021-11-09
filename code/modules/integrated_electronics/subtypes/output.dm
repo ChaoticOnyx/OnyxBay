@@ -73,6 +73,7 @@
 	inputs = list()
 	outputs = list()
 	activators = list("toggle light" = IC_PINTYPE_PULSE_IN)
+	power_draw_per_use = 1
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/light_toggled = FALSE
 	var/light_brightness = 6
@@ -82,6 +83,10 @@
 /obj/item/integrated_circuit/output/light/do_work()
 	light_toggled = !light_toggled
 	update_lighting()
+
+/obj/item/integrated_circuit/output/light/removed_from_assembly()
+	power_fail()
+	..()
 
 /obj/item/integrated_circuit/output/light/proc/update_lighting()
 	if(light_toggled)
