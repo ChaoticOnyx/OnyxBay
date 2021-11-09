@@ -234,16 +234,21 @@
 	if(volume >= 5)
 		var/obj/machinery/door/airlock/D = locate() in T
 		if(istype(D))
-			D.thermite += volume
-			D.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
-			remove_self(5)
+			if(will_we_splash(D.splash_validator))	// touch_turf() call twice because of splash() shitcode
+				D.thermite += volume
+				D.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
+				remove_self(5)
+			D.splash_validator++
 			return
+
 		if(istype(T, /turf/simulated/wall))
 			var/turf/simulated/wall/W = T
 			W.thermite = TRUE
 			W.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
 			remove_self(5)
-			return
+
+datum/reagent/thermite/proc/will_we_splash(var/validator)
+	return validator % 2 ? TRUE : FALSE
 
 /datum/reagent/thermite/touch_mob(mob/living/L, amount)
 	if(istype(L))

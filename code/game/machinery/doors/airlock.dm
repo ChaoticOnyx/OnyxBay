@@ -53,6 +53,7 @@
 	var/obj/item/weapon/airlock_brace/brace = null
 
 	var/thermite = FALSE
+	var/splash_validator = 1
 
 /obj/machinery/door/airlock/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
