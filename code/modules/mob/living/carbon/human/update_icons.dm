@@ -179,8 +179,6 @@ Please contact me on #coderbus IRC. ~Carn x
 				for(var/image/overlay in entry)
 					overlay.transform = M
 					overlays_to_apply += overlay
-		if(species.has_floating_eyes)
-			overlays_to_apply |= species.get_eyes(src)
 
 	if(auras)
 		overlays_to_apply |= auras

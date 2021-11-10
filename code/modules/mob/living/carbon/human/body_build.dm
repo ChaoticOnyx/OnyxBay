@@ -32,6 +32,7 @@ var/global/datum/body_build/default_body_build = new
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
 	var/h_icon       = 'icons/mob/human_races/r_human_head.dmi'
 	var/f_icon       = 'icons/mob/human_races/r_human_face.dmi'
+	var/m_icon       = 'icons/mob/human_races/r_human_markings.dmi'
 	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)

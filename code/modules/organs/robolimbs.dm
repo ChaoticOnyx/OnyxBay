@@ -17,7 +17,6 @@ var/datum/robolimb/basic_robolimb
 	var/unavailable_at_chargen                           // If set, not available at chargen.
 	var/unavailable_at_fab                               // If set, cannot be fabricated.
 	var/can_eat
-	var/use_eye_icon = "eyes_s"
 	var/can_feel_pain
 	var/skintone
 	var/list/species_cannot_use = list()
@@ -118,7 +117,6 @@ var/datum/robolimb/basic_robolimb
 // 	desc = "This limb is simple and functional; no effort has been made to make it look human."
 // 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_main.dmi'
 // 	restricted_to = list(SPECIES_IPC)
-// 	use_eye_icon = "blank_eyes"
 // 	unavailable_at_fab = 1
 
 // /datum/robolimb/morpheus/alt

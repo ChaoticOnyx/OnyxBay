@@ -19,8 +19,6 @@
 	internal_organs_size = 3
 
 	var/can_intake_reagents = TRUE
-	var/eye_icon = "eyes"
-	var/eye_icon_location = 'icons/mob/human_races/r_human.dmi'
 
 	var/has_lips = TRUE
 
@@ -74,11 +72,6 @@
 			if(owner)
 				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
-/obj/item/organ/external/head/set_dna(datum/dna/new_dna)
-	..()
-//	eye_icon = species.eye_icon
-//	eye_icon_location = species.eye_icon_location
-
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
@@ -87,7 +80,6 @@
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
-			eye_icon = R.use_eye_icon
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = FALSE
 
@@ -128,38 +120,40 @@
 	return mob_icon
 
 /obj/item/organ/external/head/proc/get_hair_icon()
-	var/image/res = image(species.icon_template,"")
-	if(owner.f_style)
-		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]")
-			if(facial_hair_style.do_coloration)
-				facial.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
-			res.overlays |= facial
+	var/image/res = image(species.icon_template, "")
+	if(owner)
+		var/datum/body_build/BB = owner.body_build
+		if(owner.f_style)
+			var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
+			if(facial_hair_style && (species.name in facial_hair_style.species_allowed))
+				var/icon/facial = new /icon(BB.f_icon, "[facial_hair_style.icon_state]")
+				if(facial_hair_style.do_coloration)
+					facial.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
+				res.overlays |= facial
 
-	if(owner.h_style)
-		var/icon/HI
-		var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
-		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
-			H = GLOB.hair_styles_list["Short Hair"]
-		if(H)
-			if(!length(H.species_allowed) || (species.name in H.species_allowed))
-				HI = icon(H.icon, "[H.icon_state]")
-				if(H.do_coloration && length(h_col) >= 3)
-					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
-		if(HI)
-			var/list/sorted_hair_markings = list()
-			for(var/E in markings)
-				var/datum/sprite_accessory/marking/M = E
-				if(M.draw_target == MARKING_TARGET_HAIR)
-					var/color = markings[E]
-					var/icon/I = icon(M.icon, M.icon_state)
-					I.Blend(HI, ICON_AND)
-					I.Blend(color, ICON_MULTIPLY)
-					ADD_SORTED(sorted_hair_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
-			for(var/entry in sorted_hair_markings)
-				HI.Blend(entry[2], ICON_OVERLAY)
-			res.overlays |= HI
+		if(owner.h_style)
+			var/icon/HI
+			var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
+			if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
+				H = GLOB.hair_styles_list["Short Hair"]
+			if(H)
+				if(!length(H.species_allowed) || (species.name in H.species_allowed))
+					HI = icon(BB.h_icon, "[H.icon_state]")
+					if(H.do_coloration && length(h_col) >= 3)
+						HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
+			if(HI)
+				var/list/sorted_hair_markings = list()
+				for(var/E in markings)
+					var/datum/sprite_accessory/marking/M = E
+					if(M.draw_target == MARKING_TARGET_HAIR)
+						var/color = markings[E]
+						var/icon/I = icon(M.icon, M.icon_state)
+						I.Blend(HI, ICON_AND)
+						I.Blend(color, ICON_MULTIPLY)
+						ADD_SORTED(sorted_hair_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
+				for(var/entry in sorted_hair_markings)
+					HI.Blend(entry[2], ICON_OVERLAY)
+				res.overlays |= HI
 
 	var/list/sorted_head_markings = list()
 	for(var/E in markings)

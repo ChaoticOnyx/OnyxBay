@@ -1,5 +1,4 @@
 /obj/item/organ/external/head/vox
-	eye_icon = "vox_eyes_s"
 
 // Vox got different organs within. This will also help with regular surgeons knowing the organs within an alien as alien as vox.
 /obj/item/organ/internal/heart/vox

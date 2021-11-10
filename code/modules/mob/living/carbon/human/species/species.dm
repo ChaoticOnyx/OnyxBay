@@ -22,7 +22,6 @@
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
-	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
 
 	var/blood_color = COLOR_BLOOD_HUMAN               // Red.
 	var/flesh_color = "#ffc896"               // Pink.
@@ -230,9 +229,6 @@ When the mob faces east the back item icon is shifted 2 pixels down and 12 pixel
 The slots that you can use are found in items_clothing.dm and are the inventory slot string ones, so make sure
 	you use the _str version of the slot.
 */
-
-/datum/species/proc/get_eyes(mob/living/carbon/human/H)
-	return
 
 /datum/species/New()
 	if(hud_type)
