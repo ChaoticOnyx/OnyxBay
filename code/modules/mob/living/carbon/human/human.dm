@@ -769,8 +769,8 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition < 40)
-					custom_emote(1,"dry heaves.")
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a
