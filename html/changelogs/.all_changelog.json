@@ -1,5 +1,27 @@
 [
   {
+    "author": "igorsaux",
+    "date": "2021-11-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Обновлена консоль у стола операции.",
+        "pr": 6926
+      }
+    ]
+  },
+  {
+    "author": "No-Tips",
+    "date": "2021-11-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Значительные изменения RnCC Demeter в предверии соответствующего ивента.",
+        "pr": 6918
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2021-11-10T00:00:00+03:00",
     "changes": [
