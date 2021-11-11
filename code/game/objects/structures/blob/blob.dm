@@ -16,11 +16,21 @@
 	/// FIXME: These links prevents the core blob from garbage collecting (somehow even weakrefs doesn't help).
 	var/obj/structure/blob/core = null
 
+	var/_attack_cooldown
+	var/_expand_cooldown
+	var/_upgrade_cooldown
+	var/_health_cooldown
+
 /obj/structure/blob/New(loc, obj/structure/blob/core)
 	. = ..()
 
 	src.core = core
 	health = max_health
+
+	_attack_cooldown  = world.time
+	_expand_cooldown  = world.time
+	_upgrade_cooldown = world.time
+	_health_cooldown  = world.time
 
 /obj/structure/blob/Initialize()
 	. = ..()
@@ -126,10 +136,10 @@
 	if(!life())
 		return TRUE
 
-	THROTTLE(attack_cooldown, BLOB_ATTACK_COOLDOWN)
-	THROTTLE(expand_cooldown, BLOB_EXPAND_COOLODNW)
-	THROTTLE(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN)
-	THROTTLE(health_cooldown, BLOB_HEAL_COOLDOWN)
+	THROTTLE_SHARED(attack_cooldown, BLOB_ATTACK_COOLDOWN, _attack_cooldown)
+	THROTTLE_SHARED(expand_cooldown, BLOB_EXPAND_COOLODNW, _expand_cooldown)
+	THROTTLE_SHARED(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN, _upgrade_cooldown)
+	THROTTLE_SHARED(health_cooldown, BLOB_HEAL_COOLDOWN, _health_cooldown)
 
 	if(health_cooldown)
 		heal()
