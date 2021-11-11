@@ -32,6 +32,9 @@
 	_upgrade_cooldown = world.time
 	_health_cooldown  = world.time
 
+	if(locate(/obj/structure/blob) in loc)
+		CRASH("Spawning more that 1 blob on the turf.")
+
 /obj/structure/blob/Initialize()
 	. = ..()
 
@@ -100,23 +103,14 @@
 	var/turf/current_loc = loc
 	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))
 		var/possible_loc = get_step(src, dir)
-
-		if(dir == UP)
-			if(istype(possible_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			// Skip not suitable for z-level checks
-			continue
-
-		if(dir == DOWN)
-			if(istype(current_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			continue
-
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
 								|| istype(possible_loc, /turf/simulated/wall)\
 								|| (locate(/obj/structure/blob) in possible_loc)
+
+		if(dir == UP)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(possible_loc, /turf/simulated/open)
+		else if(dir == DOWN)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(current_loc, /turf/simulated/open)
 
 		if(loc_is_not_suitable)
 			continue
