@@ -333,7 +333,7 @@
 "agA" = (/obj/machinery/meter,/obj/machinery/atmospherics/pipe/manifold/visible{dir = 1},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
 "agB" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 9},/obj/machinery/access_button{command = "cycle_interior"; frequency = 1331; master_tag = "emerc_shuttle"; name = "interior access button"; pixel_x = 25; pixel_y = 25; req_access = list(150)},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
 "agC" = (/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
-"agD" = (/obj/effect/floor_decal/industrial/outline/grey,/obj/effect/landmark/event/nuke/bomb,/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
+"agD" = (/obj/effect/floor_decal/industrial/outline/grey,/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
 "agE" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 9},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
 "agF" = (/obj/structure/bed/chair{dir = 4},/obj/effect/floor_decal/corner/red{dir = 9},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)
 "agG" = (/obj/structure/bed/chair{dir = 8},/obj/effect/floor_decal/corner/red{dir = 6},/turf/simulated/floor/tiled/dark,/area/shuttle/syndicate_elite/mothership)

@@ -103,7 +103,6 @@
 /obj/effect/landmark/start/crew/roboticist
 	name = "Roboticist"
 	icon_state = "landmark_roboticist"
-	delete_after = TRUE
 
 // Security department
 /obj/effect/landmark/start/crew/hos
