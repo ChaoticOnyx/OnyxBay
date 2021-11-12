@@ -595,7 +595,7 @@
 		return
 	switch(ord)
 		if(1)
-			var/new_name = sanitizeName(get_pin_data(IC_INPUT, 1), max_length = IC_MAX_NAME_LEN)
+			var/new_name = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_name)
 				var/atom/A = get_object()
 				A.investigate_log("was renamed with [src] into [new_name].", INVESTIGATE_CIRCUIT)
