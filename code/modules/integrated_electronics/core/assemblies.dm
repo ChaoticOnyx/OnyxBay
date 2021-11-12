@@ -850,6 +850,11 @@
 		var/atom/movable/AM = I
 		AM.emp_act(severity)
 
+/obj/item/device/electronic_assembly/proc/return_power()
+	if(battery)
+		return battery.charge * CELLRATE
+	return
+
 // Returns true if power was successfully drawn.
 /obj/item/device/electronic_assembly/proc/draw_power(amount)
 	if(battery && battery.use(amount * CELLRATE))

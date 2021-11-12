@@ -85,7 +85,7 @@
 			. -= 60
 
 	if(delicate)
-		if(user.slurring)
+		if(ishuman(user) && user?.slurring)
 			. -= 10
 		if(!target.lying)
 			. -= 30
