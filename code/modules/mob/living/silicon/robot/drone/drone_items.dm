@@ -120,6 +120,13 @@
 		/obj/item/integrated_circuit,
 	)
 
+/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity, click_parameters)
+	if(istype(wrapped, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/EA = wrapped
+		EA.afterattack(target, user, proximity)
+	else
+		..()
+
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
 	desc = "A simple grasping tool for archeological work."
