@@ -119,7 +119,7 @@ var/list/gamemode_cache = list()
 	var/secondtopiclimit
 
 	var/forbid_singulo_possession = 0
-	var/forbid_singulo_following = 0
+	var/forbid_singulo_following = 1
 
 	//game_options.txt configs
 
@@ -701,7 +701,7 @@ var/list/gamemode_cache = list()
 					forbid_singulo_possession = 1
 
 				if("forbid_singulo_following")
-					forbid_singulo_following = 1
+					forbid_singulo_following = text2num(value)
 
 				if("popup_admin_pm")
 					config.popup_admin_pm = 1

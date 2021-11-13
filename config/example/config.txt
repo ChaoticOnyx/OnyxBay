@@ -568,8 +568,8 @@ ALLOW_HOLIDAYS
 ## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
 FUN_HYDROPONICS 1
 
-## Uncomment to prevent singularities from following ghosts.
-## FORBID_SINGULO_FOLLOWING
+## Set to 0 to allow singularities to follow ghosts.
+FORBID_SINGULO_FOLLOWING 1
 
 # # # # # # # # # # # # # # # # # # # # # #
 #               VOTE ACTIONS              #
