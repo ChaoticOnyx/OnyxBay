@@ -26,6 +26,7 @@
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
 	var/planter_ckey			   // ckey of player that plant seed.
+	var/is_fun = FALSE             // Set to TRUE if it isn't considered roleplayable enough
 
 /datum/seed/New()
 

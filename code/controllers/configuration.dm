@@ -290,6 +290,9 @@ var/list/gamemode_cache = list()
 	var/disable_ooc_roundstart = FALSE
 	var/disable_looc_roundstart = FALSE
 
+	// Non-that-serious features that can be disabled for higher RP levels
+	var/fun_hydroponics = TRUE
+
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -696,7 +699,7 @@ var/list/gamemode_cache = list()
 
 				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
-				
+
 				if("forbid_singulo_following")
 					forbid_singulo_following = 1
 
@@ -971,6 +974,8 @@ var/list/gamemode_cache = list()
 					config.maximum_mushrooms = text2num(value)
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
+				if("fun_hydroponics")
+					config.fun_hydroponics = text2num(value)
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

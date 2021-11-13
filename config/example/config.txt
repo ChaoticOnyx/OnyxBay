@@ -710,3 +710,7 @@ ERROR_SILENCE_TIME 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 ERROR_MSG_DELAY 50
+
+## FUN features that may be considered inappropriate for high RP servers
+FUN_HYDROPONICS 1
+

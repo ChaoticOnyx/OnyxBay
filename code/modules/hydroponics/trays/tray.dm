@@ -400,7 +400,10 @@
 	var/previous_plant = seed.display_name
 	var/newseed = seed.get_mutant_variant()
 	if(newseed in SSplants.seeds)
-		seed = SSplants.seeds[newseed]
+		var/datum/seed/mut_seed = SSplants.seeds[newseed]
+		if(mut_seed.is_fun && !config.fun_hydroponics)
+			return
+		seed = mut_seed
 	else
 		return
 

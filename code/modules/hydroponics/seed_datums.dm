@@ -41,6 +41,7 @@
 	mutants = null
 	chems = list(/datum/reagent/fuel = list(5,10))
 	kitchen_tag = "flamechili"
+	is_fun = TRUE
 
 /datum/seed/chili/flame/New()
 	..()
@@ -226,6 +227,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nanites = list(1,10))
 	splat_type = /obj/effect/decal/cleanable/blood/oil
+	is_fun = TRUE
 
 /datum/seed/tomato/automato/New()
 	..()
@@ -308,6 +310,7 @@
 	display_name = "egg plants"
 	mutants = null
 	has_custom_product = /obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor
+	is_fun = TRUE
 
 /datum/seed/eggplant/realeggplant/New()
 	..()
@@ -868,6 +871,7 @@
 	display_name = "BANana tree"
 	mutants = null
 	has_custom_product = /obj/item/toy/banbanana
+	is_fun = TRUE
 
 /datum/seed/banana/banbanana/New()
 	..()
@@ -921,6 +925,7 @@
 	display_name = "electric potatoes"
 	mutants = null
 	has_custom_product = /obj/item/weapon/cell/potato
+	is_fun = TRUE
 
 /datum/seed/potato/cell/New()
 	..()
@@ -1253,6 +1258,7 @@
 	has_mob_product = /mob/living/simple_animal/cow/cowcownut
 	chems = null
 	mutants = null
+	is_fun = TRUE
 
 /datum/seed/coconut/cowcownut/New()
 	..()
