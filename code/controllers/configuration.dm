@@ -291,7 +291,7 @@ var/list/gamemode_cache = list()
 	var/disable_looc_roundstart = FALSE
 
 	// Non-that-serious features that can be disabled for higher RP levels
-	var/fun_hydroponics = TRUE
+	var/fun_hydroponics = 2
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode

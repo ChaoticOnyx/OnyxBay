@@ -401,7 +401,7 @@
 	var/newseed = seed.get_mutant_variant()
 	if(newseed in SSplants.seeds)
 		var/datum/seed/mut_seed = SSplants.seeds[newseed]
-		if(mut_seed.is_fun && !config.fun_hydroponics)
+		if(mut_seed.fun_level > config.fun_hydroponics) // Too fun to be true
 			return
 		seed = mut_seed
 	else
