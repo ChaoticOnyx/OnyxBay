@@ -564,6 +564,13 @@ ALLOW_HOLIDAYS
 ## Uncomment to allow catching projectiles and throwing them.
 # PROJECTILE_BASKETBALL
 
+## FUN features that may be considered inappropriate for high RP servers
+## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
+FUN_HYDROPONICS 1
+
+## Uncomment to prevent singularities from following ghosts.
+## FORBID_SINGULO_FOLLOWING
+
 # # # # # # # # # # # # # # # # # # # # # #
 #               VOTE ACTIONS              #
 # # # # # # # # # # # # # # # # # # # # # #
@@ -710,7 +717,3 @@ ERROR_SILENCE_TIME 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 ERROR_MSG_DELAY 50
-
-## FUN features that may be considered inappropriate for high RP servers
-## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
-FUN_HYDROPONICS 1
