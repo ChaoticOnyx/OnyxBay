@@ -355,8 +355,10 @@
 #define HUMAN_POWER_LEAP    "Leap"
 #define HUMAN_POWER_TACKLE  "Tackle"
 
-#define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
-#define HUMAN_HIGH_POISE    55
-#define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
-#define HUMAN_LOW_POISE     45
-#define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
+#define HUMAN_MAX_POISE       75 // 100% healthy, non-druged human being with magboots and heavy armor.
+#define HUMAN_VERY_HIGH_POISE 60
+#define HUMAN_HIGH_POISE      55
+#define HUMAN_DEFAULT_POISE   50 // 100% healthy, non-drugged human being.
+#define HUMAN_LOW_POISE       45
+#define HUMAN_VERY_LOW_POISE  40
+#define HUMAN_MIN_POISE       25 // Some balancing stuff here. Even drunk pirates should be able to fight.

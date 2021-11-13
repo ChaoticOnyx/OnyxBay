@@ -277,7 +277,7 @@ var/global/datum/body_build/default_body_build = new
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
 
-	poise_pool         = HUMAN_HIGH_POISE
+	poise_pool         = HUMAN_VERY_HIGH_POISE
 
 /datum/body_build/vox
 	name                 = "Vox"
