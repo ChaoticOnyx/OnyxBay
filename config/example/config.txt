@@ -712,4 +712,5 @@ ERROR_SILENCE_TIME 6000
 ERROR_MSG_DELAY 50
 
 ## FUN features that may be considered inappropriate for high RP servers
+## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
 FUN_HYDROPONICS 2
