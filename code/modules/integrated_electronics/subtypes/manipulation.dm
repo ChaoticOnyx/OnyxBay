@@ -249,7 +249,7 @@
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/detach_grenade()
 	if(attached_grenade)
-		attached_grenade.forceMove(get_turf(assembly))
+		attached_grenade?.forceMove(get_turf(assembly))
 	set_pin_data(IC_OUTPUT, 1, weakref(null))
 	attached_grenade = null
 	desc = initial(desc)
