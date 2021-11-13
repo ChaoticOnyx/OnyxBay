@@ -229,7 +229,7 @@
 		else
 			dt = 15
 		addtimer(CALLBACK(attached_grenade, /obj/item/weapon/grenade.proc/activate), dt)
-		addtimer(CALLBACK(src, .proc/before_activation_action), dt-1)
+		addtimer(CALLBACK(src, .proc/before_activation_action), dt - 1)
 		grenade_activated = TRUE
 		var/atom/holder = loc
 		var/atom/A = get_object()
