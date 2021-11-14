@@ -26,7 +26,6 @@
 	return turn(input, direction*dir2angle(dir))
 
 /mob/forceMove()
-	if(buckled)
 	buckled?.unbuckle_mob()
 	. = ..()
 
