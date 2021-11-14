@@ -23,6 +23,7 @@
 	melee_damage_lower = 20
 	melee_damage_upper = 30
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	//Space bears aren't affected by atmos.
 	min_gas = null

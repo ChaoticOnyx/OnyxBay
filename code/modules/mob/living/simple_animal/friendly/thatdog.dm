@@ -26,3 +26,4 @@
 	can_escape = 1
 	pixel_x = -128
 	pixel_y = -64
+	bodyparts = /decl/simple_animal_bodyparts/quadruped

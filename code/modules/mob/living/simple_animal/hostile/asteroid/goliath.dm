@@ -26,6 +26,7 @@
 	melee_damage_upper = 25
 	attacktext = "pulverizes"
 	throw_message = "does nothing to the rocky hide of the"
+	bodyparts = /decl/simple_animal_bodyparts/goliath
 	aggro_vision_range = 9
 	idle_vision_range = 4
 	var/pre_attack = 0
@@ -188,3 +189,6 @@
 	. = ..()
 	if(.)
 		new /obj/item/clothing/head/helmet/space/goliath(loc)
+
+/decl/simple_animal_bodyparts/goliath
+	hit_zones = list("head", "body", "carapace", "mouthparts", "maw", "tendrils", "right leg", "left leg")

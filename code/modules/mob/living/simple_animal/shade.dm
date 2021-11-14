@@ -27,6 +27,7 @@
 	faction = "cult"
 	supernatural = 1
 	status_flags = CANPUSH
+	bodyparts = /decl/simple_animal_bodyparts/shade
 
 /mob/living/simple_animal/shade/cultify()
 	return
@@ -44,3 +45,6 @@
 				ghostize()
 		qdel(src)
 		return
+
+/decl/simple_animal_bodyparts/shade
+	hit_zones = list("spectral robe", "featureless visage", "haunting glow")

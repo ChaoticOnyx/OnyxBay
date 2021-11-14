@@ -27,6 +27,7 @@
 	min_gas = null
 	max_gas = null
 	minbodytemp = 0
+	bodyparts = /decl/simple_animal_bodyparts/metroid // Kinda close I guess
 	var/datum/disease2/disease/carried
 	var/cloaked = 0
 	var/mob/living/carbon/human/gripping = null
