@@ -27,7 +27,7 @@
 
 /mob/forceMove()
 	if(buckled)
-		buckled?.unbuckle_mob()
+	buckled?.unbuckle_mob()
 	. = ..()
 
 /client/Northeast()
