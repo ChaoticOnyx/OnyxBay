@@ -246,12 +246,12 @@
 	//hit messages
 	if(silenced)
 		if(impacted_organ)
-			to_chat(target_mob, SPAN("danger", "You've been hit in the [parse_zone(def_zone)] by \the [src]!"))
+			to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
 		else
 			to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
 	else
 		if(impacted_organ)
-			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [parse_zone(def_zone)]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
 		else
 			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
 
