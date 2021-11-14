@@ -75,7 +75,7 @@
 	if(finalized)
 		return GLOB.physical_obscured_state
 	else
-		return GLOB.default_state
+		return GLOB.tgui_physical_state
 
 /obj/item/canvas/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
