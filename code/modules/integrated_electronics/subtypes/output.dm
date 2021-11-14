@@ -142,6 +142,7 @@
 	outputs = list()
 	activators = list("play sound" = IC_PINTYPE_PULSE_IN)
 	power_draw_per_use = 10
+	var/volume
 	var/list/sounds = list()
 
 /obj/item/integrated_circuit/output/sound/Initialize()
@@ -155,7 +156,7 @@
 
 /obj/item/integrated_circuit/output/sound/do_work()
 	var/ID = get_pin_data(IC_INPUT, 1)
-	var/vol = get_pin_data(IC_INPUT, 2)
+	var/vol = volume
 	var/freq = get_pin_data(IC_INPUT, 3)
 	if(!isnull(ID) && !isnull(vol))
 		var/selected_sound = sounds[ID]
@@ -167,9 +168,8 @@
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
-	var/volume = get_pin_data(IC_INPUT, 2)
+	volume = get_pin_data(IC_INPUT, 2)
 	volume = Clamp(volume, 0, 100)
-	set_pin_data(IC_INPUT, 2, volume)
 	power_draw_per_use =  volume * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
@@ -262,7 +262,8 @@
 	text = get_pin_data(IC_INPUT, 1)
 	if(!isnull(text))
 		var/atom/movable/A = get_object()
-		var/sanitized_text = sanitize(html_decode(text))
+		var/sanitized_text = sanitize(text)
+		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
 		A.audible_message("\The [A] states, \"[sanitized_text]\"")
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
