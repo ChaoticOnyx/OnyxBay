@@ -238,6 +238,9 @@
 		var/obj/item/grab/given_grab_type = all_grabobjects[grab_tag]
 		G = new given_grab_type(attacker, victim)
 
+	if(!G)
+		return 0
+
 	if(!G.pre_check())
 		qdel(G)
 		return 0
