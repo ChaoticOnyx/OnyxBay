@@ -112,7 +112,6 @@
 	for(var/k in 1 to length(inputs))
 		var/I = sanitize(get_pin_data(IC_INPUT, k), trim = FALSE, extra = FALSE)
 		if(I)
-		if(!isnull(I))
 			if((result ? length_char(result) : 0) + length_char(I) > max_string_length)
 				spamprotection = (result ? length_char(result) : 0) + length_char(I)
 				break
