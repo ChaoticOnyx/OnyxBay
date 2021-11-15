@@ -27,7 +27,7 @@
 
 /mob/forceMove()
 	buckled?.unbuckle_mob()
-	. = ..()
+	..()
 
 /client/Northeast()
 	diagonal_action(NORTHEAST)
