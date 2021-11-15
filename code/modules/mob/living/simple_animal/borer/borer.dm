@@ -70,8 +70,8 @@
 			leave_host()
 			loc = stored_loc
 			return
+		health = min(health + 1, maxHealth)
 		if(!stat && host.stat != DEAD)
-			health = min(health + 1, maxHealth)
 			if(host.reagents.has_reagent(/datum/reagent/sugar))
 				if(!docile)
 					to_chat(controlling ? host : src, SPAN("notice", "You feel the soporific flow of sugar in your host's blood, lulling you into docility."))
@@ -111,41 +111,11 @@
 		stat("Chemicals", chemicals)
 
 /mob/living/simple_animal/borer/handle_environment(datum/gas_mixture/environment)
-	var/external_temperature = host ? host.bodytemperature : environment.temperature
-	if( abs(external_temperature - bodytemperature) > 40 )
-		bodytemperature += (external_temperature - bodytemperature) / 5
-	//Atmos effect
-	if(bodytemperature < minbodytemp)
-		fire_alert = 2
-		adjustBruteLoss(cold_damage_per_tick)
-	else if(bodytemperature > maxbodytemp)
-		fire_alert = 1
-		adjustBruteLoss(heat_damage_per_tick)
-	else
-		fire_alert = 0
-
 	if(host)
 		oxygen_alert = 0
 		toxins_alert = 0
 		return
-	var/atmos_suitable = 1
-	if(min_gas)
-		for(var/gas in min_gas)
-			if(environment.gas[gas] < min_gas[gas])
-				atmos_suitable = 0
-				oxygen_alert = 1
-			else
-				oxygen_alert = 0
-	if(max_gas)
-		for(var/gas in max_gas)
-			if(environment.gas[gas] > max_gas[gas])
-				atmos_suitable = 0
-				toxins_alert = 1
-			else
-				toxins_alert = 0
-
-	if(!atmos_suitable)
-		adjustBruteLoss(unsuitable_atoms_damage)
+	..()
 
 //Procs for grabbing players.
 /mob/living/simple_animal/borer/proc/request_player()
