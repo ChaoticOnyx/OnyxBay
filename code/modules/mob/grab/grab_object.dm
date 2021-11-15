@@ -30,10 +30,6 @@
 	affecting = victim
 	target_zone = attacker.zone_sel.selecting
 	var/obj/item/O = get_targeted_organ()
-	if(!O)
-		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you tried to grab!"))
-		qdel(src)
-		return
 
 	SetName("[name] ([O.name])")
 
