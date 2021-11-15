@@ -421,7 +421,7 @@ list(\
 	fixblood()
 	update_canmove()
 
-/mob/living/simple_animal/borer/proc/can_use_abilities(var/needed_location)
+/mob/living/simple_animal/borer/proc/can_use_abilities(needed_location)
 	if(!src)
 		return FALSE
 
