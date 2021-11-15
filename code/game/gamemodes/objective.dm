@@ -8,7 +8,7 @@ var/global/list/all_objectives = list()
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 
-	New(var/text)
+	New(text)
 		all_objectives |= src
 		if(text)
 			explanation_text = text
