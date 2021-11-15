@@ -170,6 +170,9 @@ var/list/ventcrawl_machinery = list(
 				return
 			if(!can_ventcrawl())
 				return
+			if(!vent_found.can_crawl_through())
+				to_chat(src, "This vent is no longer accessible!")
+				return
 
 			visible_message("<B>[src] scrambles into the ventilation ducts!</B>", "You climb into the ventilation system.")
 
