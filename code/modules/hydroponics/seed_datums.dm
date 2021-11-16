@@ -41,6 +41,7 @@
 	mutants = null
 	chems = list(/datum/reagent/fuel = list(5,10))
 	kitchen_tag = "flamechili"
+	fun_level = 1
 
 /datum/seed/chili/flame/New()
 	..()
@@ -226,6 +227,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nanites = list(1,10))
 	splat_type = /obj/effect/decal/cleanable/blood/oil
+	fun_level = 1
 
 /datum/seed/tomato/automato/New()
 	..()
@@ -241,6 +243,7 @@
 	mutants = null
 	can_self_harvest = 1
 	has_mob_product = /mob/living/simple_animal/hostile/tomato
+	fun_level = 1
 
 /datum/seed/tomato/killer/New()
 	..()
@@ -272,6 +275,7 @@
 	display_name = "bluespace tomato plant"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/ethanol/singulo = list(10,5))
+	fun_level = 1
 
 /datum/seed/tomato/blue/teleport/New()
 	..()
@@ -308,6 +312,7 @@
 	display_name = "egg plants"
 	mutants = null
 	has_custom_product = /obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor
+	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()
 	..()
@@ -365,6 +370,7 @@
 	display_name = "radioactive apple tree"
 	mutants = null
 	chems = list(/datum/reagent/radium = list(1,15))
+	fun_level = 1
 
 /datum/seed/apple/rapple/New()
 	..()
@@ -377,6 +383,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/gold = list(1,5))
 	kitchen_tag = "goldapple"
+	fun_level = 1
 
 /datum/seed/apple/gold/New()
 	..()
@@ -486,6 +493,7 @@
 	mutants = null
 	can_self_harvest = 1
 	has_mob_product = /mob/living/simple_animal/mushroom
+	fun_level = 1
 
 /datum/seed/mushroom/plump/walking/New()
 	..()
@@ -843,6 +851,7 @@
 	display_name = "bunana tree"
 	chems = list(/datum/reagent/drink/juice/banana = list(20,20))
 	mutants = null
+	fun_level = 1
 
 /datum/seed/banana/bunana/New()
 	..()
@@ -855,6 +864,7 @@
 	display_name = "lubanana tree"
 	chems = list(/datum/reagent/lube = list(10,10))
 	mutants = list("banbanana")
+	fun_level = 1
 
 /datum/seed/banana/lubanana/New()
 	..()
@@ -868,6 +878,7 @@
 	display_name = "BANana tree"
 	mutants = null
 	has_custom_product = /obj/item/toy/banbanana
+	fun_level = 2
 
 /datum/seed/banana/banbanana/New()
 	..()
@@ -921,6 +932,7 @@
 	display_name = "electric potatoes"
 	mutants = null
 	has_custom_product = /obj/item/weapon/cell/potato
+	fun_level = 1
 
 /datum/seed/potato/cell/New()
 	..()
@@ -1253,6 +1265,7 @@
 	has_mob_product = /mob/living/simple_animal/cow/cowcownut
 	chems = null
 	mutants = null
+	fun_level = 1
 
 /datum/seed/coconut/cowcownut/New()
 	..()
@@ -1328,6 +1341,7 @@
 	has_mob_product = /mob/living/simple_animal/hostile/maneater
 	mutants = null
 	customsprite = 1
+	fun_level = 1
 
 /datum/seed/diona/maneater/New()
 	..()
