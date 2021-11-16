@@ -73,7 +73,7 @@
 		area_manipulation()
 
 /obj/item/canvas/proc/area_manipulation()
-	if(!is_propaganda)
+	if(!is_propaganda || !icon_generated)
 		return
 	var/turf/T = get_turf(src)
 	var/area/A = T?.loc
@@ -134,7 +134,7 @@
 	if(!user.mind || !is_propaganda)
 		return
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
-	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions)
+	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions) || (user.mind.assigned_role in GLOB.security_positions)
 	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
 	var/is_revolutionary_user = antag.is_antagonist(user.mind)
 	var/message = SPAN_DANGER("You hate \the [src]. You want to burn it down!")
@@ -232,6 +232,10 @@
 		overlays = canvas_overlay
 		if(blood_overlay)
 			overlays += blood_overlay
+	if(is_propaganda)
+		var/image/detail_overlay = image(icon, src, "[icon_state]frame_[is_revolutionary]")
+		overlays.Add(detail_overlay)
+	if(icon_generated)
 		return
 	if(!wip_detail_added && used)
 		var/mutable_appearance/detail = new(image(icon, "[icon_state]wip"))
@@ -290,6 +294,7 @@
 	is_propaganda = TRUE
 	is_revolutionary = TRUE
 	to_chat(usr, "You've marked canvas as revolutionary.")
+	update_icon()
 
 /obj/item/canvas/verb/make_corp_poster()
 	set name = "Make Corporate Poster"
@@ -302,6 +307,7 @@
 	is_propaganda = TRUE
 	is_revolutionary = FALSE
 	to_chat(usr, "You've marked canvas as corporate.")
+	update_icon()
 
 /obj/item/canvas/nineteen_nineteen
 	icon_state = "19x19"
