@@ -77,8 +77,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
 	ambient_music_meta_tags = list(META_SPACE)
-	ambience_off = list(SFX_AMBIENT_OFF_SPACE)
-	ambience_powered = list(SFX_AMBIENT_OFF_SPACE)
+	ambience_off = list(SFX_AMBIENT_SPACE)
+	ambience_powered = list(SFX_AMBIENT_SPACE)
 
 /area/space/update_icon()
 	return
@@ -127,7 +127,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	GLOB.hallway += src
 
 /area/medical
-	ambience_powered = list(SFX_AMBIENT_POWERED_SCIENCE)
+	ambience_powered = list(SFX_AMBIENT_SCIENCE)
 
 /area/medical/virology
 	name = "\improper Virology"
@@ -154,7 +154,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	ambient_music_meta_tags = list(META_MYSTIC)
 
 /area/rnd
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_OFF_SPACE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_SCIENCE)
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"

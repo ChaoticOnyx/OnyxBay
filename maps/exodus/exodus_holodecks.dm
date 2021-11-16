@@ -28,7 +28,7 @@
 												 			)
 		 												),
 		"space"            = new /datum/holodeck_program(/area/holodeck/source_space,
-														list(SFX_AMBIENT_OFF_SPACE)
+														list(SFX_AMBIENT_SPACE)
 														),
 		"picnicarea"       = new /datum/holodeck_program(/area/holodeck/source_picnicarea, list('sound/music/title2.ogg')),
 		"theatre"          = new /datum/holodeck_program(/area/holodeck/source_theatre),
