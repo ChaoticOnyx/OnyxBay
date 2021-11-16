@@ -287,8 +287,9 @@
 	set name = "Make Revolutionary Poster"
 	set desc = "Die corporation die!"
 	set category = "Object"
-	set src = null // TODO: delete me when points are used in something
-	return // TODO: delete me when points are used in something
+	set hidden = TRUE // TODO: delete me when points are used in something
+	if(!Debug2) // TODO: delete me when points are used in something
+		return // TODO: delete me when points are used in something
 	var/mob/living/H = usr
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
 	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind) || is_propaganda)
@@ -302,8 +303,9 @@
 	set name = "Make Corporate Poster"
 	set desc = "Make corporation great again!"
 	set category = "Object"
-	set src = null // TODO: delete me when points are used in something
-	return // TODO: delete me when points are used in something
+	set hidden = TRUE // TODO: delete me when points are used in something
+	if(!Debug2) // TODO: delete me when points are used in something
+		return // TODO: delete me when points are used in something
 	var/mob/living/H = usr
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
 	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)) || is_propaganda)
