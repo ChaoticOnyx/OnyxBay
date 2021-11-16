@@ -139,60 +139,56 @@
 // Parses the config file into the custom_items list.
 /hook/startup/proc/load_custom_items()
 
-	var/datum/custom_item/current_data
-	for(var/line in splittext(file2text("config/custom_items.txt"), "\n"))
-
-		line = trim(line)
-		if(line == "" || !line || findtext(line, "#", 1, 2))
+	if(!fexists("config/custom_items.json"))
+		return
+	var/list/config_json = json_decode(file2text("config/custom_items.json"))
+	for(var/ckey in config_json)
+		if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
+			break
+		var/datum/custom_item/current_data = new()
+		var/item_path = config_json[ckey][1][1] // it's just work, I don't know why, but if you delete [1][1] you will get pain in your ass.
+		var/list/item_data = config_json[ckey][1][item_path]
+		current_data.item_path_as_string = item_path
+		item_path = text2path(item_path)
+		if(!item_path || !ispath(item_path))
 			continue
+		if(length(item_data) == 9)
+			for(var/field in item_data)
+				var/field_data = item_data[field]
+				switch(field)
+					if("item_name")
+						current_data.name = field_data
+					if("item_icon")
+						current_data.item_icon = field_data
+					if("inherit_inhands")
+						current_data.inherit_inhands = text2num(field_data)
+					if("item_desc")
+						current_data.item_desc = field_data
+					if("req_access")
+						current_data.req_access = text2num(field_data)
+					if("req_titles")
+						current_data.req_titles = splittext(field_data,", ")
+					if("kit_name")
+						current_data.kit_name = field_data
+					if("kit_desc")
+						current_data.kit_desc = field_data
+					if("kit_icon")
+						current_data.kit_icon = field_data
+					if("additional_data")
+						current_data.additional_data = field_data
+		current_data.assoc_key = ckey
+		current_data.item_path = item_path
+		var/datum/gear/custom_item/G = new(ckey, item_path, current_data)
 
-		if(findtext(line, "{", 1, 2) || findtext(line, "}", 1, 2)) // New block!
-			if(current_data && current_data.assoc_key)
-				if(!custom_items[current_data.assoc_key])
-					custom_items[current_data.assoc_key] = list()
-				var/list/L = custom_items[current_data.assoc_key]
-				L |= current_data
-			current_data = null
+		var/use_name = G.display_name
+		var/use_category = G.sort_category
 
-		var/split = findtext(line,":")
-		if(!split)
-			continue
-		var/field = trim(copytext(line,1,split))
-		var/field_data = trim(copytext(line,(split+1)))
-		if(!field || !field_data)
-			continue
+		if(!loadout_categories[use_category])
+			loadout_categories[use_category] = new /datum/loadout_category(use_category)
+		var/datum/loadout_category/LC = loadout_categories[use_category]
+		gear_datums[use_name] = G
+		LC.gear[use_name] = gear_datums[use_name]
 
-		if(!current_data)
-			current_data = new()
-
-		switch(field)
-			if("ckey")
-				current_data.assoc_key = lowertext(field_data)
-			if("character_name")
-				current_data.character_name = lowertext(field_data)
-			if("item_path")
-				current_data.item_path = text2path(field_data)
-				current_data.item_path_as_string = field_data
-			if("item_name")
-				current_data.name = field_data
-			if("item_icon")
-				current_data.item_icon = field_data
-			if("inherit_inhands")
-				current_data.inherit_inhands = text2num(field_data)
-			if("item_desc")
-				current_data.item_desc = field_data
-			if("req_access")
-				current_data.req_access = text2num(field_data)
-			if("req_titles")
-				current_data.req_titles = splittext(field_data,", ")
-			if("kit_name")
-				current_data.kit_name = field_data
-			if("kit_desc")
-				current_data.kit_desc = field_data
-			if("kit_icon")
-				current_data.kit_icon = field_data
-			if("additional_data")
-				current_data.additional_data = field_data
 	return 1
 
 //gets the relevant list for the key from the listlist if it exists, check to make sure they are meant to have it and then calls the giving function

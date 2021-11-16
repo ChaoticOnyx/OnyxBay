@@ -1,4 +1,7 @@
 ##
+#
+# DEPRECATED!!!!! SEE custom_items.json!!!
+#
 # Custom items go here. They are modifications of existing paths; look at the example for details.
 # Item will spawn if the target has one of the req_titles and if their on-spawn ID has the required access level.
 # req_access is going to be a shit to maintain since the config file can't grab constants and has to use integers, use it minimally.
@@ -10,7 +13,7 @@
 # character_name: Jane Doe
 # item_path: /obj/item/toy/plushie
 # item_name: ugly plush toy
-# item_icon: flagmask     
+# item_icon: flagmask
 # item_desc: It's truly hideous.
 # req_titles: Assistant, Security Officer
 # req_access: 1

@@ -20,6 +20,22 @@
 	return description
 
 /*
+* Custom adjactment
+*/
+
+/datum/gear_tweak/custom
+	var/datum/custom_item/current_data
+
+/datum/gear_tweak/custom/New(datum/custom_item/data)
+	current_data = data
+
+/datum/gear_tweak/custom/tweak_item(obj/item/I, metadata)
+	current_data.apply_to_item(I)
+
+/datum/gear_tweak/custom/tweak_description(description, metadata)
+	return current_data.item_desc ? current_data.item_desc : description
+
+/*
 * Color adjustment
 */
 
