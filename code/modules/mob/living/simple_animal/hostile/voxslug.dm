@@ -26,6 +26,7 @@ Small, little HP, poisonous.
 	melee_damage_upper = 10
 	holder_type = /obj/item/weapon/holder/voxslug
 	faction = SPECIES_VOX
+	bodyparts = /decl/simple_animal_bodyparts/voxslug
 
 /mob/living/simple_animal/hostile/voxslug/ListTargets(dist = 7)
 	var/list/L = list()
@@ -87,3 +88,6 @@ Small, little HP, poisonous.
 		qdel(src)
 		return
 	..()
+
+/decl/simple_animal_bodyparts/voxslug
+	hit_zones = list("mouth", "tail")

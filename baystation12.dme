@@ -1985,6 +1985,7 @@
 #include "code\modules\mob\living\silicon\robot\drone\drone_remote_control.dm"
 #include "code\modules\mob\living\silicon\robot\drone\drone_say.dm"
 #include "code\modules\mob\living\simple_animal\bees.dm"
+#include "code\modules\mob\living\simple_animal\bodyparts.dm"
 #include "code\modules\mob\living\simple_animal\kobold.dm"
 #include "code\modules\mob\living\simple_animal\mob_ai.dm"
 #include "code\modules\mob\living\simple_animal\parrot.dm"
