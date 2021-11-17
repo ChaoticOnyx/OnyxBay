@@ -25,6 +25,10 @@
 /client/proc/client_dir(input, direction=-1)
 	return turn(input, direction*dir2angle(dir))
 
+/mob/forceMove()
+	buckled?.unbuckle_mob()
+	..()
+
 /client/Northeast()
 	diagonal_action(NORTHEAST)
 /client/Northwest()
