@@ -174,9 +174,9 @@
 	max_age = 90
 
 	body_builds = list(
-		new /datum/body_build,
-		new /datum/body_build/slim,
-		new /datum/body_build/slim/alt
+		new /datum/body_build/skrell,
+		new /datum/body_build/slim/skrell,
+		new /datum/body_build/slim/alt/skrell
 	)
 
 	burn_mod = 0.9

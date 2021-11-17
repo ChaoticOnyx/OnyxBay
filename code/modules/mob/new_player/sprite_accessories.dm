@@ -45,7 +45,7 @@
 */
 
 /datum/sprite_accessory/hair
-	icon = 'icons/mob/human_races/human_face.dmi'	  // Default icon for all hairs.
+	icon = 'icons/mob/human_races/r_human_head.dmi'	  // Default icon for all hairs.
 	var/flags
 
 /datum/sprite_accessory/hair/bald
@@ -1010,7 +1010,7 @@ May God have mercy.
 
 /datum/sprite_accessory/facial_hair
 
-	icon = 'icons/mob/human_races/human_face.dmi'
+	icon = 'icons/mob/human_races/r_human_face.dmi'
 	gender = MALE // barf (unless you're a dorf, dorfs dig chix /w beards :P)
 
 /datum/sprite_accessory/facial_hair/shaved
@@ -1144,69 +1144,44 @@ May God have mercy.
 	name = "Lumberjack"
 	icon_state = "facial_lumberjack"
 
-/*
-///////////////////////////////////
-/  =---------------------------=  /
-/  == Alien Style Definitions ==  /
-/  =---------------------------=  /
-///////////////////////////////////
-*/
-
-/datum/sprite_accessory/hair/una_spines_long
-	name = "Long Unathi Spines"
-	icon_state = "soghun_longspines"
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/hair/una_spines_short
-	name = "Short Unathi Spines"
-	icon_state = "soghun_shortspines"
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/hair/una_frills_long
-	name = "Long Unathi Frills"
-	icon_state = "soghun_longfrills"
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/hair/una_frills_short
-	name = "Short Unathi Frills"
-	icon_state = "soghun_shortfrills"
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/hair/una_horns
-	name = "Unathi Horns"
-	icon_state = "soghun_horns"
-	species_allowed = list(SPECIES_UNATHI)
-
-/datum/sprite_accessory/hair/una
+// Alien hair, tentacles & horns.
+/datum/sprite_accessory/hair/unathi
 	name = "Demon Horns"
-	icon = 'icons/mob/lizard_face.dmi'
+	icon = 'icons/mob/human_races/r_lizard_head.dmi'
 	icon_state = "demon_horn"
 	blend = ICON_MULTIPLY
 	species_allowed = list(SPECIES_UNATHI)
 
-/datum/sprite_accessory/hair/una/swept_horn
+/datum/sprite_accessory/hair/unathi/horns
+	name = "Unathi Horns"
+	icon_state = "soghun_horns"
+
+/datum/sprite_accessory/hair/unathi/swept_horn
 	name = "Swept Horns"
 	icon_state = "swept_horn"
 
-/datum/sprite_accessory/hair/una/ram_horn
+/datum/sprite_accessory/hair/unathi/ram_horn
 	name = "Ram Horns"
 	icon_state = "ram_horn"
 
-/datum/sprite_accessory/hair/una/fin_hawk
+/datum/sprite_accessory/hair/unathi/fin_hawk
 	name = "Fin Hawk"
 	icon_state = "fin_hawk"
+/datum/sprite_accessory/hair/unathi/spines_long
+	name = "Long Unathi Spines"
+	icon_state = "soghun_longspines"
 
-/datum/sprite_accessory/hair/skr_tentacle_m
-	name = "Skrell Male Tentacles"
-	icon_state = "skrell_hair_m"
-	species_allowed = list(SPECIES_SKRELL)
-	gender = MALE
+/datum/sprite_accessory/hair/unathi/spines_short
+	name = "Short Unathi Spines"
+	icon_state = "soghun_shortspines"
 
-/datum/sprite_accessory/hair/skr_tentacle_f
-	name = "Skrell Female Tentacles"
-	icon_state = "skrell_hair_f"
-	species_allowed = list(SPECIES_SKRELL)
-	gender = FEMALE
+/datum/sprite_accessory/hair/unathi/frills_long
+	name = "Long Unathi Frills"
+	icon_state = "soghun_longfrills"
+
+/datum/sprite_accessory/hair/unathi/frills_short
+	name = "Short Unathi Frills"
+	icon_state = "soghun_shortfrills"
 
 /datum/sprite_accessory/hair/taj_ears
 	name = "Tajaran Ears"
@@ -1310,6 +1285,19 @@ May God have mercy.
 	icon_state = "facial_smallstache"
 	species_allowed = list(SPECIES_TAJARA)
 
+// Skrell
+/datum/sprite_accessory/hair/skr_tentacle_m
+	name = "Skrell Male Tentacles"
+	icon_state = "skrell_hair_m"
+	species_allowed = list(SPECIES_SKRELL)
+	gender = MALE
+
+/datum/sprite_accessory/hair/skr_tentacle_f
+	name = "Skrell Female Tentacles"
+	icon_state = "skrell_hair_f"
+	species_allowed = list(SPECIES_SKRELL)
+	gender = FEMALE
+
 /*
 ////////////////////////////
 /  =--------------------=  /
@@ -1318,14 +1306,10 @@ May God have mercy.
 ////////////////////////////
 */
 /datum/sprite_accessory/marking
-	icon = 'icons/mob/human_races/markings.dmi'
+	icon = 'icons/mob/human_races/r_human_markings.dmi'
 	do_coloration = 1 //Almost all of them have it, COLOR_ADD
 
 	var/layer_blend = ICON_OVERLAY
-
-	//Empty list is unrestricted. Should only restrict the ones that make NO SENSE on other species,
-	//like Tajara inner-ear coloring overlay stuff.
-	species_allowed = list()
 
 	var/body_parts = list() //A list of bodyparts this covers, in organ_tag defines
 	//Reminder: BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN,BP_HEAD
@@ -1335,41 +1319,53 @@ May God have mercy.
 
 	var/list/disallows = list() //A list of other marking types to ban from adding when this marking is already added
 
-/datum/sprite_accessory/marking/tat_heart
-	name = "Tattoo (Heart, Torso)"
-	icon_state = "tat_heart"
+/datum/sprite_accessory/marking/tat_backstripe
+	name = "Back Stripe"
+	icon_state = "backstripe"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/marking/tat_hive
 	name = "Tattoo (Hive, Back)"
 	icon_state = "tat_hive"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
+
+/datum/sprite_accessory/marking/tat_heart
+	name = "Tattoo (Heart, Torso)"
+	icon_state = "tat_heart"
+	body_parts = list(BP_CHEST)
 
 /datum/sprite_accessory/marking/tat_nightling
 	name = "Tattoo (Nightling, Back)"
 	icon_state = "tat_nightling"
 	body_parts = list(BP_CHEST)
-	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/marking/tat_campbell
 	name = "Tattoo (Campbell, R.Arm)"
 	icon_state = "tat_campbell"
 	body_parts = list(BP_R_ARM)
-	species_allowed = list(SPECIES_HUMAN)
 
 /datum/sprite_accessory/marking/tat_campbell/left
 	name = "Tattoo (Campbell, L.Arm)"
 	body_parts = list(BP_L_ARM)
-	species_allowed = list(SPECIES_HUMAN)
 
-/datum/sprite_accessory/marking/tat_tiger
+/datum/sprite_accessory/marking/tiger
 	name = "Tattoo (Tiger Stripes, Body)"
 	icon_state = "tat_tiger"
 	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
 	species_allowed = list(SPECIES_HUMAN)
 
+/datum/sprite_accessory/marking/bands
+	name = "Color Bands"
+	icon_state = "bands"
+	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
+
+/datum/sprite_accessory/marking/bandsface
+	name = "Color Bands (Face)"
+	icon_state = "bandsface"
+	body_parts = list(BP_HEAD)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATHI)
+
+//Taj specific stuff
 /datum/sprite_accessory/marking/taj_paw_socks
 	name = "Socks Coloration (Taj)"
 	icon_state = "taj_pawsocks"
@@ -1412,41 +1408,6 @@ May God have mercy.
 	body_parts = list(BP_HEAD)
 	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/marking/bands
-	name = "Color Bands"
-	icon_state = "bands"
-	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
-
-/datum/sprite_accessory/marking/bandsface
-	name = "Color Bands (Face)"
-	icon_state = "bandsface"
-	body_parts = list(BP_HEAD)
-	species_allowed = list(SPECIES_TAJARA, SPECIES_UNATHI, SPECIES_SKRELL) //It makes humans look like if their noses were foot-long :(
-
-/datum/sprite_accessory/marking/tiger_stripes
-	name = "Tiger Stripes"
-	icon_state = "tiger"
-	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_CHEST,BP_GROIN)
-	species_allowed = list(SPECIES_TAJARA) //There's a tattoo for non-cats
-
-/datum/sprite_accessory/marking/tigerhead
-	name = "Tiger Stripes (Head, Minor)"
-	icon_state = "tigerhead"
-	body_parts = list(BP_HEAD)
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/marking/tigerface
-	name = "Tiger Stripes (Head, Major)"
-	icon_state = "tigerface"
-	body_parts = list(BP_HEAD)
-	species_allowed = list(SPECIES_TAJARA) //There's a tattoo for non-cats
-
-/datum/sprite_accessory/marking/backstripe
-	name = "Back Stripe"
-	icon_state = "backstripe"
-	body_parts = list(BP_CHEST)
-
-//Taj specific stuff
 /datum/sprite_accessory/marking/taj_belly
 	name = "Belly Fur (Taj)"
 	icon_state = "taj_belly"
