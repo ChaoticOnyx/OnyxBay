@@ -5,7 +5,13 @@
 	var/datum/custom_item/current_data
 
 /datum/gear/custom_item/New(key, item_path, datum/custom_item/data)
-	var/atom/A = item_path
+	var/obj/item/A = item_path
+	var/slot_flags = initial(A.slot_flags)
+	for(var/slot_name in slot_flags_enumeration)
+		var/slot_mask = slot_flags_enumeration[slot_name]
+		if(slot_mask & slot_flags)
+			slot = text2num(slot_name)
+			break
 	display_name = data.name ? data.name : initial(A.name)
 	if(data.item_desc)
 		description = data.item_desc
