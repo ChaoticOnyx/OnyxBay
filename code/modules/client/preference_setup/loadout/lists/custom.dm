@@ -37,8 +37,3 @@
 		if(required_access && required_access > 0)
 			if(!(istype(current_id) && (required_access in current_id.access)))
 				return FALSE
-
-/datum/gear/custom_item/spawn_item(location, metadata)
-	var/obj/item/item = ..()
-	current_data.apply_to_item(item)
-	return item
