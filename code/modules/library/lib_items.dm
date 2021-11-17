@@ -179,7 +179,7 @@
 
 /obj/structure/bookcase/prefitted/religious
 	name = "bookcase (Religious)"
-	prefit_category = "Religious"
+	prefit_category = "Religion"
 
 /obj/structure/bookcase/prefitted/reference
 	name = "bookcase (Reference)"
