@@ -46,7 +46,21 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/blob/proc/can_expand()
-	return (core && !QDELETED(core))
+	if(QDELETED(core))
+		return FALSE
+
+	if(TICK_CHECK)
+		return FALSE
+
+	var/dist = get_dist(src, core)
+	if(dist > BLOB_MAX_DISTANCE_FROM_CORE)
+		var/chance_to_spawn = max(BLOB_MIN_CHANCE_TO_SPAWN, 100 - (dist - BLOB_MAX_DISTANCE_FROM_CORE) * 10)
+		if(prob(chance_to_spawn))
+			return TRUE
+
+		return FALSE
+
+	return TRUE
 
 /// When a blob is far than `BLOB_EFFICIENT_REGENERATION_DISTANCE` then a distance penalty applies to `BLOB_REGENERATION_MULTIPLIER`.
 /obj/structure/blob/proc/heal()
