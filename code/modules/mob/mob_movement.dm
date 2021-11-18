@@ -26,8 +26,9 @@
 	return turn(input, direction*dir2angle(dir))
 
 /mob/forceMove()
-	buckled?.unbuckle_mob()
-	..()
+	. = ..()
+	if(.)
+		buckled?.unbuckle_mob()
 
 /client/Northeast()
 	diagonal_action(NORTHEAST)
