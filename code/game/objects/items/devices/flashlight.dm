@@ -212,7 +212,8 @@
 
 /obj/item/device/flashlight/lantern/active
 	flashlight_outer_range = 4
-
+	on = TRUE
+	
 /obj/item/device/flashlight/lantern/active/Initialize()
 	. = ..()
 	switch_light(TRUE)
