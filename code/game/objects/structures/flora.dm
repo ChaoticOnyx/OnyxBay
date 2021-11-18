@@ -511,7 +511,7 @@
 /obj/structure/flora/jungleplants
 	name = "plant"
 	icon = 'icons/obj/flora/jungleplants.dmi'
-	icon_state = ""
+	icon_state = "junglebush1"
 	anchored = 1
 	layer = ABOVE_HUMAN_LAYER
 	var/light_overlay = FALSE
