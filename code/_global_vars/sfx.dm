@@ -468,6 +468,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_AMBIENT_MORGUE = list(
 		'sound/ambient/morgue/ambimo1.ogg'
 	),
+	SFX_AMBIENT_JUNGLE = list(
+        'sound/ambient/jungle/jungle ambience1.ogg',
+        'sound/ambient/jungle/jungle ambience2.ogg',
+        'sound/ambient/jungle/junglethunder2.ogg',
+        'sound/ambient/jungle/junglethunder1.ogg',
+    ),
 	// AMBIENT MUSIC
 	SFX_AMBIENT_MUSIC_NORMAL = list(
 		'sound/ambient_music/normal_1.ogg',
