@@ -215,7 +215,7 @@
 
 /obj/item/device/flashlight/lantern/active/Initialize()
 	. = ..()
-	switch_light(!on)
+	switch_light(TRUE)
 	on = 1
 	update_icon()
 
