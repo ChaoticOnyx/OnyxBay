@@ -101,6 +101,7 @@
 #define SFX_AMBIENT_CHAPEL              "ambient_chapel"
 #define SFX_AMBIENT_ATMOSPHERICS        "ambient_atmospherics"
 #define SFX_AMBIENT_MORGUE              "ambient_morgue"
+#define SFX_AMBIENT_JUNGLE              "ambient_jungle"
 
 // AMBIENT MUSIC
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
