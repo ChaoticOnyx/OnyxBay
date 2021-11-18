@@ -146,36 +146,35 @@
 		if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
 			break
 		var/datum/custom_item/current_data = new()
-		var/item_path = config_json[ckey][1][1] // it's just work, I don't know why, but if you delete [1][1] you will get pain in your ass.
-		var/list/item_data = config_json[ckey][1][item_path]
+		var/item_path = config_json[ckey][1]
+		var/list/item_data = config_json[ckey][item_path][1]
 		current_data.item_path_as_string = item_path
 		item_path = text2path(item_path)
 		if(!item_path || !ispath(item_path))
 			continue
-		if(length(item_data) == 9)
-			for(var/field in item_data)
-				var/field_data = item_data[field]
-				switch(field)
-					if("item_name")
-						current_data.name = field_data
-					if("item_icon")
-						current_data.item_icon = field_data
-					if("inherit_inhands")
-						current_data.inherit_inhands = text2num(field_data)
-					if("item_desc")
-						current_data.item_desc = field_data
-					if("req_access")
-						current_data.req_access = text2num(field_data)
-					if("req_titles")
-						current_data.req_titles = splittext(field_data,", ")
-					if("kit_name")
-						current_data.kit_name = field_data
-					if("kit_desc")
-						current_data.kit_desc = field_data
-					if("kit_icon")
-						current_data.kit_icon = field_data
-					if("additional_data")
-						current_data.additional_data = field_data
+		for(var/field in item_data)
+			var/field_data = item_data[field]
+			switch(field)
+				if("item_name")
+					current_data.name = field_data
+				if("item_icon")
+					current_data.item_icon = field_data
+				if("inherit_inhands")
+					current_data.inherit_inhands = text2num(field_data)
+				if("item_desc")
+					current_data.item_desc = field_data
+				if("req_access")
+					current_data.req_access = text2num(field_data)
+				if("req_titles")
+					current_data.req_titles = splittext(field_data,", ")
+				if("kit_name")
+					current_data.kit_name = field_data
+				if("kit_desc")
+					current_data.kit_desc = field_data
+				if("kit_icon")
+					current_data.kit_icon = field_data
+				if("additional_data")
+					current_data.additional_data = field_data
 		current_data.assoc_key = ckey
 		current_data.item_path = item_path
 		var/datum/gear/custom_item/G = new(ckey, item_path, current_data)

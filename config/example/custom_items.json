@@ -1,21 +1,19 @@
 {
     "ckey":
-    [
-        {
-            "item_path": [
-                {
-                    "item_name": "string",
-                    "item_icon": "string",
-                    "item_desc": "string",
-                    "req_titles": "string, string",
-                    "req_access": "number",
-                    "inherit_inhands": "boolen",
-                    "kit_name": "string",
-                    "kit_desc": "string",
-                    "kit_icon": "string",
-                    "additional_data": "string"
-                }
-            ]
-        }
-    ]
+    {
+        "item_path": [
+            {
+                "item_name": "string",
+                "item_icon": "string",
+                "item_desc": "string",
+                "req_titles": "string, string (job datums)",
+                "req_access": "number",
+                "inherit_inhands": "boolen",
+                "kit_name": "string",
+                "kit_desc": "string",
+                "kit_icon": "string",
+                "additional_data": "string"
+            }
+        ]
+    }
 }

@@ -2,7 +2,7 @@
 	sort_category = "Custom Items"
 	var/ckey // assigned ckey of custom item owner
 	var/required_access
-	var/datum/custom_item/current_data
+	var/datum/custom_item/item_data
 
 /datum/gear/custom_item/New(key, item_path, datum/custom_item/data)
 	var/obj/item/A = item_path
@@ -18,13 +18,13 @@
 	ckey = key
 	path = item_path
 	var/list/job_types = list()
-	for(var/tittle in data.req_titles)
-		job_types.Add(job_master.occupations_by_title[tittle])
+	for(var/job_datum in data.req_titles)
+		job_types.Add(text2path(job_datum))
 	allowed_roles = job_types
 	required_access = data.req_access
-	current_data = data
+	item_data = data
 	..()
-	gear_tweaks += new /datum/gear_tweak/custom(current_data)
+	gear_tweaks += new /datum/gear_tweak/custom(item_data)
 
 /datum/gear/custom_item/is_allowed_to_display(mob/user)
 	return user.ckey == ckey
