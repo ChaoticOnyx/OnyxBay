@@ -217,7 +217,6 @@
 /obj/item/device/flashlight/lantern/active/Initialize()
 	. = ..()
 	switch_light(TRUE)
-	on = 1
 	update_icon()
 
 // the desk lamps are a bit special

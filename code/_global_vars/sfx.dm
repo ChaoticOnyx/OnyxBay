@@ -471,7 +471,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_AMBIENT_JUNGLE = list(
         'sound/ambient/jungle/jungle ambience1.ogg',
         'sound/ambient/jungle/jungle ambience2.ogg',
-        'sound/ambient/jungle/junglethunder2.ogg'
+        'sound/ambient/jungle/junglethunder2.ogg',
         'sound/ambient/jungle/junglethunder1.ogg',
     ),
 	// AMBIENT MUSIC
