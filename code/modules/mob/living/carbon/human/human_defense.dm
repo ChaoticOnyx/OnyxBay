@@ -476,19 +476,21 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 
-	if(istype(user,/mob/living/carbon/human))
+	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
-			if(handle_parry(A,I))
+			if(handle_parry(A, I))
 				return
 		if(blocking)
-			if(handle_block_weapon(A,I))
+			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
+			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
+			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
@@ -820,7 +822,13 @@ meteor_act
 		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 		play_hitby_sound(AM)
 
-		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+		var/armor
+		if(istype(O, /obj/item))
+			var/obj/item/I = O
+			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+		else
+			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
 			if(prob(armor))

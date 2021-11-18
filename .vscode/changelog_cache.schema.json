@@ -1,6 +1,6 @@
 {
-    "type": "array",
-    "items": {
-        "$ref": "./changelog.schema.json"
-    }
+  "type": "array",
+  "items": {
+    "$ref": "./changelog.schema.json"
+  }
 }

@@ -30,6 +30,7 @@
 	affecting = victim
 	target_zone = attacker.zone_sel.selecting
 	var/obj/item/O = get_targeted_organ()
+
 	SetName("[name] ([O.name])")
 
 	if(start_grab_name)
@@ -110,6 +111,11 @@
 	if(assailant.buckled || affecting.buckled)
 		return FALSE
 
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you were grabbing!"))
+		return FALSE
+
 	return TRUE
 
 /obj/item/grab/proc/can_grab()
@@ -147,6 +153,11 @@
 	if(assailant.grabbed_by.len)
 		to_chat(assailant, "<span class='notice'>You can't grab someone if you're being grabbed.</span>")
 		return 0
+
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you tried to grab!"))
+		return 0 // This check is kinda extra, but you can never be sure
 
 	return 1
 
@@ -229,7 +240,7 @@
 		current_grab.adjust_position(src)
 
 /obj/item/grab/proc/reset_position()
-	current_grab.reset_position(src)
+	current_grab?.reset_position(src)
 
 /obj/item/grab/proc/has_hold_on_organ(obj/item/organ/external/O)
 	if(!O)

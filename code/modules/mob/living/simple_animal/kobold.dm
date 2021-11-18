@@ -24,6 +24,7 @@
 	universal_speak = 1
 	universal_understand = 1
 	possession_candidate = 1
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 /mob/living/simple_animal/kobold/Life()
 	..()

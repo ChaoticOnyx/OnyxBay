@@ -38,56 +38,59 @@
 		qdel(src)
 	return
 
-/obj/item/weapon/reagent_containers/food/snacks/attack_self(mob/user as mob)
+/obj/item/weapon/reagent_containers/food/snacks/attack_self(mob/user)
 	return
 
-/obj/item/weapon/reagent_containers/food/snacks/attack(mob/M as mob, mob/user as mob, def_zone)
+/obj/item/weapon/reagent_containers/food/snacks/attack(mob/M, mob/user, def_zone)
 	if(!reagents.total_volume)
-		to_chat(user, "<span class='danger'>None of [src] left!</span>")
+		to_chat(user, SPAN("danger", "None of [src] left!"))
 		user.drop_from_inventory(src)
 		qdel(src)
-		return 0
+		return FALSE
 
 	if(!is_open_container())
 		to_chat(user, SPAN("danger", "[src] must be opened first!"))
-		return 0
+		return FALSE
 
 	if(istype(M, /mob/living/carbon))
 		//TODO: replace with standard_feed_mob() call.
 		var/mob/living/carbon/C = M
 		var/fullness = C.get_fullness()
 		if(C == user)								//If you're eating it yourself
-			if(istype(C,/mob/living/carbon/human))
+			if(ishuman(C))
 				var/mob/living/carbon/human/H = M
 				if(!H.check_has_mouth())
 					to_chat(user, "Where do you intend to put \the [src]? You don't have a mouth!")
 					return
 				var/obj/item/blocked = H.check_mouth_coverage()
 				if(blocked)
-					to_chat(user, "<span class='warning'>\The [blocked] is in the way!</span>")
+					to_chat(user, SPAN("warning", "\The [blocked] is in the way!"))
 					return
+				fullness /= H.body_build.stomach_capacity // Here we take body build into consideration
 
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN) //puts a limit on how fast people can eat/drink things
-			if (fullness <= STOMACH_FULLNESS_SUPER_LOW)
-				to_chat(C, "<span class='danger'>You hungrily chew out a piece of [src] and gobble it!</span>")
-			if (fullness > STOMACH_FULLNESS_SUPER_LOW && fullness <= STOMACH_FULLNESS_LOW)
-				to_chat(C, "<span class='notice'>You hungrily begin to eat [src].</span>")
-			if (fullness > STOMACH_FULLNESS_LOW && fullness <= STOMACH_FULLNESS_MEDIUM)
-				to_chat(C, "<span class='notice'>You take a bite of [src].</span>")
-			if (fullness > STOMACH_FULLNESS_MEDIUM && fullness <= STOMACH_FULLNESS_HIGH)
-				to_chat(C, "<span class='notice'>You unwillingly chew a bit of [src].</span>")
-			if (fullness > STOMACH_FULLNESS_HIGH)
-				to_chat(C, "<span class='danger'>You cannot force any more of [src] to go down your throat.</span>")
-				return 0
+			if(fullness <= STOMACH_FULLNESS_SUPER_LOW)
+				to_chat(C, SPAN("danger", "You hungrily chew out a piece of [src] and gobble it!"))
+			if(fullness > STOMACH_FULLNESS_SUPER_LOW && fullness <= STOMACH_FULLNESS_LOW)
+				to_chat(C, SPAN("notice", "You hungrily begin to eat [src]."))
+			if(fullness > STOMACH_FULLNESS_LOW && fullness <= STOMACH_FULLNESS_MEDIUM)
+				to_chat(C, SPAN("notice", "You take a bite of [src]."))
+			if(fullness > STOMACH_FULLNESS_MEDIUM && fullness <= STOMACH_FULLNESS_HIGH)
+				to_chat(C, SPAN("notice", "You unwillingly chew a bit of [src]."))
+			if(fullness > STOMACH_FULLNESS_HIGH && fullness <= STOMACH_FULLNESS_SUPER_HIGH)
+				to_chat(C, SPAN("danger", "You force yourself to swallow some [src]."))
+			if(fullness > STOMACH_FULLNESS_SUPER_HIGH)
+				to_chat(C, SPAN("danger", "You cannot force any more of [src] to go down your throat."))
+				return FALSE
 		else
 			if(!M.can_force_feed(user, src))
 				return
 
-			if (fullness <= STOMACH_FULLNESS_HIGH)
-				user.visible_message("<span class='danger'>[user] attempts to feed [M] [src].</span>")
+			if(fullness <= STOMACH_FULLNESS_SUPER_HIGH)
+				user.visible_message(SPAN("danger", "[user] attempts to feed [M] [src]."))
 			else
-				user.visible_message("<span class='danger'>[user] cannot force anymore of [src] down [M]'s throat.</span>")
-				return 0
+				user.visible_message(SPAN("danger", "[user] cannot force anymore of [src] down [M]'s throat."))
+				return FALSE
 
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 			if(!do_mob(user, M))
@@ -98,7 +101,7 @@
 
 			var/contained = reagentlist()
 			admin_attack_log(user, M, "Fed the victim with [name] (Reagents: [contained])", "Was fed [src] (Reagents: [contained])", "used [src] (Reagents: [contained]) to feed")
-			user.visible_message("<span class='danger'>[user] feeds [M] [src].</span>")
+			user.visible_message(SPAN("danger", "[user] feeds [M] [src]."))
 
 		if(reagents)								//Handle ingestion of the reagent.
 			playsound(M.loc, SFX_EAT, rand(45, 60), FALSE)
@@ -110,9 +113,9 @@
 				bitecount++
 				update_icon()
 				On_Consume(M)
-			return 1
+			return TRUE
 
-	return 0
+	return FALSE
 
 /obj/item/weapon/reagent_containers/food/snacks/proc/get_bitecount()
 	if (bitecount==0)

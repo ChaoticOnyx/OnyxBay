@@ -102,6 +102,9 @@
 	qdel(src)
 	return
 
+/obj/structure/window/blob_act(damage)
+	take_damage(damage)
+
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
 	var/proj_damage = Proj.get_structure_damage()
