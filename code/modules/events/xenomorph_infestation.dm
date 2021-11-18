@@ -6,7 +6,7 @@
 /datum/event/xenomorph_infestation/start()
 	location = pick(GLOB.xenospawn_areas)
 	if(!location)
-		log_debug("Xenomorph infestation failed to find a viable spawn location. Probably, there are no \"xeno_spawn\" landmarks on the current map. Aborting.")
+		log_debug("Xenomorph infestation failed to find a viable spawn location. Probably, there are no \"Xenomorph\" landmarks on the current map. Aborting.")
 		kill()
 
 	var/list/xenospawn_turfs = get_area_turfs(location, list(/proc/not_turf_contains_dense_objects))

@@ -23,6 +23,7 @@
 	melee_damage_upper = 12
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/tree
 
 	//Space carp aren't affected by atmos.
 	min_gas = null
@@ -48,3 +49,6 @@
 	..(null,"is hacked into pieces!", show_dead_message)
 	new /obj/item/stack/material/wood(loc)
 	qdel(src)
+
+/decl/simple_animal_bodyparts/tree
+	hit_zones = list("trunk", "branches", "twigs")

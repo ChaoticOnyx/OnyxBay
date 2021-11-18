@@ -86,7 +86,7 @@ Class Procs:
 	name = "machinery"
 	icon = 'icons/obj/stationobjs.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
 	layer = BELOW_OBJ_LAYER
 
 	var/stat = 0
@@ -203,6 +203,14 @@ Class Procs:
 				return
 		else
 	return
+
+/obj/machinery/blob_act()
+	if(stat & BROKEN)
+		qdel(src)
+		return
+
+	if(prob(10))
+		set_broken(TRUE)
 
 /obj/machinery/proc/set_broken(new_state)
 	if(new_state && !(stat & BROKEN))

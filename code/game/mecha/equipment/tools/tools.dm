@@ -329,7 +329,7 @@
 					var/obj/machinery/door/airlock/T = new /obj/machinery/door/airlock(target)
 					T.autoclose = 1
 					playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
-					playsound(target, get_sfx("spark"), 50, 1)
+					playsound(target, GET_SFX(SFX_SPARK), 50, 1)
 					chassis.use_power(energy_drain*2)
 	return
 

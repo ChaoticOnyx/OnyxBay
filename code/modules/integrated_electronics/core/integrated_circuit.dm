@@ -94,9 +94,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
-		if(isrobot(user))
-			return TRUE
-		return CanUseTopic(user)
+		return CanUseTopic(user) && !user.incapacitated()
 
 /obj/item/integrated_circuit/Initialize()
 	. = ..()

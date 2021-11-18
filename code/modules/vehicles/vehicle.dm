@@ -9,6 +9,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 
 	layer = ABOVE_HUMAN_LAYER
+	appearance_flags = LONG_GLIDE
 	density = 1
 	anchored = 1
 	animate_movement=1

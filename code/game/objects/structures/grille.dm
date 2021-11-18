@@ -210,6 +210,10 @@
 			healthcheck()
 	..()
 
+/obj/structure/grille/blob_act(damage)
+	health -= damage
+	healthcheck()
+
 /obj/structure/grille/attack_generic(mob/user, damage, attack_verb)
 	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")
 	attack_animation(user)

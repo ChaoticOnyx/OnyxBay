@@ -53,7 +53,9 @@
 		NewsCast(message, message_title)
 
 	if(log)
-		log_game("[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]", notify_admin = TRUE)
+		var/log_msg = "[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]"
+		log_game(log_msg, notify_admin = TRUE)
+		log_story("GAME", log_msg)
 
 /proc/should_recieve_announce(mob/M, list/contact_levels)
 	if (istype(M,/mob/new_player) || isdeaf(M))

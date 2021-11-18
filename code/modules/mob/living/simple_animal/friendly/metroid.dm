@@ -12,6 +12,7 @@
 	response_disarm = "shoos"
 	response_harm   = "stomps on"
 	emote_see = list("jiggles", "bounces in place")
+	bodyparts = /decl/simple_animal_bodyparts/metroid
 	var/colour = "grey"
 
 /mob/living/simple_animal/metroid/can_force_feed(feeder, food, feedback)
@@ -32,6 +33,7 @@
 	response_disarm = "shoos"
 	response_harm   = "stomps on"
 	emote_see = list("jiggles", "bounces in place")
+	bodyparts = /decl/simple_animal_bodyparts/metroid
 	var/colour = "grey"
 
 /mob/living/simple_animal/adultmetroid/New()
@@ -51,3 +53,6 @@
 	S2.icon_dead = "[src.colour] baby metroid dead"
 	S2.colour = "[src.colour]"
 	qdel(src)
+
+/decl/simple_animal_bodyparts/metroid
+	hit_zones = list("cytoplasmic membrane", "core", "slimy body")

@@ -18,7 +18,7 @@
 	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
 	var/ambience_last_played								// Last time sound was played
-	var/beepsounds = "compbeep"
+	var/beepsounds = SFX_BEEP_COMP
 	var/runsound = 'sound/signals/on1.ogg'
 	var/offsound = 'sound/signals/off1.ogg'
 
@@ -55,3 +55,8 @@
 	var/obj/item/weapon/computer_hardware/hard_drive/portable/portable_drive		// Portable data storage
 	var/obj/item/weapon/computer_hardware/ai_slot/ai_slot							// AI slot, an intellicard housing that allows modifications of AIs.
 	var/obj/item/weapon/computer_hardware/tesla_link/tesla_link						// Tesla Link, Allows remote charging from nearest APC.
+
+/obj/item/modular_computer/blob_act()
+	if(prob(25))
+		playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
+		qdel(src)

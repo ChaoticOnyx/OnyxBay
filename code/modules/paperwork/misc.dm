@@ -7,7 +7,7 @@
 
 /obj/item/weapon/paper/crumpled
 	name = "paper scrap"
-	icon_state = "scrap"
+	crumpled = TRUE
 	dynamic_icon = TRUE
 
 /obj/item/weapon/paper/crumpled/bloody

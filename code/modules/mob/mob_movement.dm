@@ -25,6 +25,10 @@
 /client/proc/client_dir(input, direction=-1)
 	return turn(input, direction*dir2angle(dir))
 
+/mob/forceMove()
+	buckled?.unbuckle_mob()
+	..()
+
 /client/Northeast()
 	diagonal_action(NORTHEAST)
 /client/Northwest()
@@ -73,8 +77,9 @@
 /client/verb/swap_hand()
 	set hidden = 1
 	if(istype(mob, /mob/living/carbon))
-		mob:swap_hand()
-	if(istype(mob,/mob/living/silicon/robot))
+		var/mob/living/carbon/C = mob
+		C.swap_hand()
+	if(istype(mob, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = mob
 		R.cycle_modules()
 	return
@@ -103,6 +108,19 @@
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
 		return mob.drop_item()
 	return
+
+/atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
+	if (!glide_size_override || glide_size_override > max)
+		glide_size = 0
+	else
+		glide_size = max(min, glide_size_override)
+
+	for (var/atom/movable/AM in contents)
+		AM.set_glide_size(glide_size, min, max)
+	if(istype(src, /obj))
+		var/obj/O = src
+		if(O.buckled_mob)
+			O.buckled_mob.set_glide_size(glide_size, min, max)
 
 //This proc should never be overridden elsewhere at /atom/movable to keep directions sane.
 /atom/movable/Move(newloc, direct)
@@ -151,6 +169,10 @@
 		if ((A != src.loc && A && A.z == src.z))
 			src.last_move = get_dir(A, src.loc)
 	return
+
+/proc/step_glide(atom/movable/am, dir, glide_size_override)
+	am.set_glide_size(glide_size_override)
+	return step(am, dir)
 
 /client/Move(n, direction)
 	return mob.SelfMove(direction)

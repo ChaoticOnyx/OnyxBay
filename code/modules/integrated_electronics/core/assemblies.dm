@@ -89,8 +89,6 @@
 	interact(user)
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user, datum/topic = GLOB.physical_state)
-	if(isrobot(user))
-		return TRUE
 	if(!istype(user))
 		return
 	if(istype(user, /mob/living/silicon/pai))
@@ -99,7 +97,7 @@
 	else if(istype(user, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain_holder = user
 		return brain_holder.check_bot_self
-	return (Adjacent(user) && CanUseTopic(user, topic) && !isobserver(user))
+	return (!user.incapacitated() && Adjacent(user) && CanUseTopic(user, topic))
 
 /obj/item/device/electronic_assembly/Bump(atom/AM)
 	collw = AM

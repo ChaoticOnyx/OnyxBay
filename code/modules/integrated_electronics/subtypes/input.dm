@@ -789,6 +789,7 @@
 	var/new_freq = get_pin_data(IC_INPUT, 1)
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	if(isnum_safe(new_freq) && new_freq > 0)
+		new_freq = Clamp(new_freq, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
 		set_frequency(new_freq)
 	if(isnum_safe(new_code))
 		code = new_code
@@ -868,13 +869,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = html_encode(command)
+	signal.data["command"] = command
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT, 1, signal.data["command"])
 		push_data()
 		..()
 

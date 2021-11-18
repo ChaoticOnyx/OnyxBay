@@ -1,13 +1,13 @@
 /mob/living/carbon/human/gib()
 	if(status_flags & GODMODE)
 		return
-	playsound(src, "gib", 75, 1)
+	playsound(src, SFX_GIB, 75, 1)
 	for(var/obj/item/organ/I in internal_organs)
 		I.removed()
 		if(istype(loc, /turf))
 			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 30)
 
-	playsound(src, "crunch", 75, 1)
+	playsound(src, SFX_FIGHTING_CRUNCH, 75, 1)
 	for(var/obj/item/organ/external/E in src.organs)
 		E.droplimb(0,DROPLIMB_EDGE,1)
 

@@ -20,6 +20,7 @@
 	can_escape = 1
 	attacktext = "punched"
 	a_intent = I_HURT
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 	var/corpse = /obj/effect/landmark/corpse/syndicate
 	var/weapon1
 	var/weapon2

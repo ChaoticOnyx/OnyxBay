@@ -40,6 +40,7 @@
 	attacktext = "pinches"
 	resistance = 9
 	can_escape = 1 //snip snip
+	bodyparts = /decl/simple_animal_bodyparts/crab
 
 /*familiar version of the Pike w/o all the other hostile/carp stuff getting in the way (namely life)
 */
@@ -61,6 +62,7 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/fish
 
 	min_gas = null
 
@@ -85,6 +87,7 @@
 	melee_damage_lower = 5
 	melee_damage_upper = 8
 	attacktext = "touches"
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 	wizardy_spells = list(/datum/spell/targeted/torment)
 
@@ -147,6 +150,7 @@
 	melee_damage_upper = 1
 	can_escape = 1
 	attacktext = "nibbles"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	wizardy_spells = list(/datum/spell/aoe_turf/smoke)
 
@@ -174,6 +178,7 @@
 	melee_damage_lower = 3
 	melee_damage_upper = 4
 	attacktext = "claws"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	wizardy_spells = list(/datum/spell/targeted/subjugation)
 
@@ -192,5 +197,6 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 20
 	attacktext = "kicked"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	wizardy_spells = list(/datum/spell/targeted/projectile/magic_missile)

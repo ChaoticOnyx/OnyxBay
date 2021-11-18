@@ -69,12 +69,14 @@
 		else
 			results = get_scan_info(scanned_object)
 
+
+		var/out = "<b>[src] analysis report #[++report_num]</b><br>"
+		out += "<br>"
+		out += "\icon[scanned_object] [results]"
+
 		src.visible_message("<b>[name]</b> states, \"Scanning complete.\"")
-		var/obj/item/weapon/paper/P = new(src.loc)
-		P.SetName("[src] report #[++report_num]")
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<br>"
-		P.info += "\icon[scanned_object] [results]"
+
+		var/obj/item/weapon/paper/P = new(src.loc, out, "[src] report #[report_num]")
 		P.stamped = list(/obj/item/weapon/stamp)
 		P.overlays = list("paper_stamped")
 

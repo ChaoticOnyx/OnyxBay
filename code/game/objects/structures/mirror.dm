@@ -29,7 +29,7 @@
 	if(shattered)	return
 	shattered = 1
 	icon_state = "mirror_broke"
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
 
@@ -52,7 +52,7 @@
 		shatter()
 	else
 		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
-		playsound(src.loc, get_sfx("glass_hit"), 70, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 70, 1)
 	user.setClickCooldown(I.update_attack_cooldown())
 	user.do_attack_animation(src)
 

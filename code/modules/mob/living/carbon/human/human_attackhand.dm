@@ -41,7 +41,7 @@
 			if(MUTATION_HULK in H.mutations)
 				damage += 5
 
-			playsound(loc, "punch", rand(80, 100), 1, -1)
+			playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 
 			visible_message("<span class='danger'>[H] has punched \the [src]!</span>")
 
@@ -180,7 +180,7 @@
 							switch(hit_zone)
 								if(BP_MOUTH)
 									attack_message = "[H] lands a jab against [src]'s jaw!"
-									specmod = 2
+									specmod = 1.5
 								if(BP_CHEST)
 									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && should_have_organ(BP_HEART))
 										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))
