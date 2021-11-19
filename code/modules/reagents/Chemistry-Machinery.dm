@@ -34,6 +34,10 @@
 		/obj/item/weapon/stock_parts/console_screen,
 	)
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	var/matter_amount_per_sheet = SHEET_MATERIAL_AMOUNT
+	var/matter_type = MATERIAL_GLASS
+	var/matter_storage = SHEET_MATERIAL_AMOUNT * 25
+	var/matter_storage_max = SHEET_MATERIAL_AMOUNT * 50
 
 /obj/machinery/chem_master/New()
 	create_reagents(capacity)
@@ -46,6 +50,8 @@
 	if(beaker)
 		beaker.forceMove(get_turf(src))
 		beaker = null
+	if(matter_storage >= matter_amount_per_sheet)
+		new /obj/item/stack/material/glass(get_turf(src), Floor(matter_storage / matter_amount_per_sheet))
 	..()
 
 /obj/machinery/chem_master/ex_act(severity)
@@ -58,37 +64,49 @@
 				qdel(src)
 				return
 
-/obj/machinery/chem_master/attackby(obj/item/weapon/B as obj, mob/user as mob)
-	if(default_deconstruction_screwdriver(user, B))
+/obj/machinery/chem_master/attackby(obj/item/weapon/W, mob/user)
+	if(default_deconstruction_screwdriver(user, W))
 		return
-	if(default_deconstruction_crowbar(user, B))
+	if(default_deconstruction_crowbar(user, W))
 		return
-	if(default_part_replacement(user, B))
+	if(default_part_replacement(user, W))
 		return
 
-	if(istype(B, /obj/item/weapon/reagent_containers/glass))
-
-		if(src.beaker)
+	if(istype(W, /obj/item/weapon/reagent_containers/glass))
+		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
-		src.beaker = B
+		beaker = W
 		user.drop_item()
-		B.loc = src
-		to_chat(user, "You add the beaker to the machine!")
-		src.updateUsrDialog()
+		W.forceMove(src)
+		to_chat(user, "You add \the [W] to the machine!")
+		updateUsrDialog()
 		icon_state = "mixer1"
 
-	else if(istype(B, /obj/item/weapon/storage/pill_bottle))
-
-		if(src.loaded_pill_bottle)
+	else if(istype(W, /obj/item/weapon/storage/pill_bottle))
+		if(loaded_pill_bottle)
 			to_chat(user, "A pill bottle is already loaded into the machine.")
 			return
-
-		src.loaded_pill_bottle = B
+		loaded_pill_bottle = W
 		user.drop_item()
-		B.loc = src
-		to_chat(user, "You add the pill bottle into the dispenser slot!")
-		src.updateUsrDialog()
+		W.forceMove(src)
+		to_chat(user, "You add \the [W] into the dispenser slot!")
+		updateUsrDialog()
+
+	else if(istype(W, /obj/item/stack/material) && W.get_material_name() == matter_type)
+		if((matter_storage_max - matter_storage) < matter_amount_per_sheet)
+			to_chat(user, SPAN("warning", "\The [src] is too full."))
+			return
+		var/obj/item/stack/S = W
+		var/space_left = matter_storage_max - matter_storage
+		var/sheets_to_take = min(S.amount, Floor(space_left / matter_amount_per_sheet))
+		if(sheets_to_take <= 0)
+			to_chat(user, SPAN("warning", "\The [src] is too full."))
+			return
+		matter_storage = min(matter_storage_max, matter_storage + (sheets_to_take * matter_amount_per_sheet))
+		to_chat(user, SPAN("info", "\The [src] processes \the [W]. Levels of stored matter now: [matter_storage]/[matter_storage_max]"))
+		S.use(sheets_to_take)
+		return
 	return
 
 /obj/machinery/chem_master/Topic(href, href_list, state)
@@ -186,7 +204,7 @@
 				return
 
 			var/amount_per_pill = reagents.total_volume/count
-			if (amount_per_pill > 60) amount_per_pill = 60
+			if (amount_per_pill > 30) amount_per_pill = 30
 
 			var/name = sanitizeSafe(input(usr,"Name:","Name your pill!","[reagents.get_master_reagent_name()] ([amount_per_pill]u)"), MAX_NAME_LEN)
 
@@ -205,18 +223,28 @@
 						P.loc = loaded_pill_bottle
 						src.updateUsrDialog()
 
-		else if (href_list["createbottle"])
+		else if(href_list["createbottle"])
+			if(matter_storage < 2000)
+				return
 			if(!condi)
-				var/name = sanitizeSafe(input(usr,"Name:","Name your bottle!",reagents.get_master_reagent_name()), MAX_NAME_LEN)
-				var/obj/item/weapon/reagent_containers/glass/bottle/P = new /obj/item/weapon/reagent_containers/glass/bottle(src.loc)
-				if(!name) name = reagents.get_master_reagent_name()
-				P.SetName("[name] bottle")
-				P.icon_state = bottlesprite
-				reagents.trans_to_obj(P,60)
-				P.update_icon()
+				create_bottle(usr)
 			else
 				var/obj/item/weapon/reagent_containers/food/condiment/P = new /obj/item/weapon/reagent_containers/food/condiment(src.loc)
-				reagents.trans_to_obj(P,50)
+				reagents.trans_to_obj(P, 50)
+			matter_storage -= 2000
+
+		else if(href_list["createbottle_small"])
+			if(matter_storage < 1000)
+				return
+			create_bottle(usr, 30, "small")
+			matter_storage -= 1000
+
+		else if(href_list["createbottle_big"])
+			if(matter_storage < 3000)
+				return
+			create_bottle(usr, 30, "big")
+			matter_storage -= 3000
+
 		else if(href_list["change_pill"])
 			#define MAX_PILL_SPRITE 25 //max icon state of the pill sprites
 			var/dat = "<meta charset=\"utf-8\"><table>"
@@ -239,6 +267,25 @@
 
 	src.updateUsrDialog()
 	return
+
+/obj/machinery/chem_master/proc/create_bottle(mob/user = null, reagent_amount = 60, bottle_type = null)
+	var/bottle_name
+	if(user)
+		bottle_name = sanitizeSafe(input(user, "Name:", "Name your bottle!", reagents.get_master_reagent_name()), MAX_NAME_LEN)
+	if(!bottle_name)
+		bottle_name = reagents.get_master_reagent_name()
+	var/obj/item/weapon/reagent_containers/glass/bottle/B
+	switch(bottle_type)
+		if("small")
+			B = new /obj/item/weapon/reagent_containers/glass/bottle/small(loc)
+		if("big")
+			B = new /obj/item/weapon/reagent_containers/glass/bottle/big(loc)
+		else
+			B = new /obj/item/weapon/reagent_containers/glass/bottle(loc)
+	B.attach_label(null, null, bottle_name)
+	reagents.trans_to_obj(B, reagent_amount)
+	B.atom_flags = ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
+	B.update_icon()
 
 /obj/machinery/chem_master/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
@@ -294,12 +341,15 @@
 				dat += "<A href='?src=\ref[src];removecustom=\ref[N]'>(Custom)</A><BR>"
 		else
 			dat += "Empty<BR>"
+		dat += "<HR>Stored glass amount: [matter_storage]/[matter_storage_max]<BR>"
 		if(!condi)
-			dat += "<HR><BR><A href='?src=\ref[src];createpill=1'>Create pill (60 units max)</A><a href=\"?src=\ref[src]&change_pill=1\"><img src=\"pill[pillsprite].png\" /></a><BR>"
+			dat += "<HR><BR><A href='?src=\ref[src];createpill=1'>Create pill (30 units max)</A><a href=\"?src=\ref[src]&change_pill=1\"><img src=\"pill[pillsprite].png\" /></a><BR>"
 			dat += "<A href='?src=\ref[src];createpill_multiple=1'>Create multiple pills</A><BR>"
-			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (60 units max)<a href=\"?src=\ref[src]&change_bottle=1\"><img src=\"[bottlesprite].png\" /></A>"
+			dat +=  "<A href='?src=\ref[src];createbottle_small=1'>Create small bottle  | 30 units max | Glass: 1000</A><BR>"
+			dat +=        "<A href='?src=\ref[src];createbottle=1'>Create normal bottle | 60 units max | Glass: 2000</A><BR>"
+			dat +=    "<A href='?src=\ref[src];createbottle_big=1'>Create big bottle    | 90 units max | Glass: 3000</A>"
 		else
-			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (50 units max)</A>"
+			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle | 50 units max | Glass: 2000</A>"
 	if(!condi)
 		show_browser(user, "<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	else
