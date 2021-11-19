@@ -7,7 +7,7 @@
 	var/base_name = " "
 	desc = ""
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "null"
+	icon_state = ""
 	item_state = "null"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60"
