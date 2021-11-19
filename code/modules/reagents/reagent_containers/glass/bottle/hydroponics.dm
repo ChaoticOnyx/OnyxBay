@@ -5,7 +5,7 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/big/compost/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 60)
+	reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 90)
 	update_icon()
 
 
