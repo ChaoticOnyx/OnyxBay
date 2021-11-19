@@ -17,7 +17,7 @@
 	volume = 60
 	matter = list(MATERIAL_GLASS = 2000)
 	atom_flags = null
-	var/lid_state = "lid_bottle"
+	var/lid_state = "lid_bottle_medium"
 	var/use_filling_states = TRUE
 	var/true_name = "bottle"
 	var/true_desc = "A regular glass bottle."
@@ -27,12 +27,12 @@
 	name = "small bottle"
 	desc = "A small glass bottle."
 	icon_state = "bottle_small"
-	center_of_mass = "x=16;y=12"
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = "5;10;15;30"
 	w_class = ITEM_SIZE_TINY
 	volume = 30
 	matter = list(MATERIAL_GLASS = 1000)
+	lid_state = "lid_bottle_small"
 	true_name = "small bottle"
 	true_desc = "A small glass bottle."
 
@@ -40,11 +40,11 @@
 	name = "big bottle"
 	desc = "A big glass bottle."
 	icon_state = "bottle_big"
-	center_of_mass = "x=16;y=8"
 	amount_per_transfer_from_this = 15
 	possible_transfer_amounts = "5;10;15;25;30;60"
 	volume = 90
 	matter = list(MATERIAL_GLASS = 3000)
+	lid_state = "lid_bottle_big"
 	true_name = "big bottle"
 	true_desc = "A big glass bottle."
 
@@ -59,6 +59,7 @@
 		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 	if(!icon_state)
 		icon_state = "bottle-[rand(1,4)]"
+		lid_state = "lid_bottle"
 	update_icon()
 
 //obj/item/weapon/reagent_containers/glass/bottle/proc/setup_bottle(new_label = null
