@@ -64,6 +64,9 @@
 	possible_transfer_amounts = "5;10;15;25;30;60;120"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
+/obj/item/weapon/reagent_containers/glass/beaker/large/get_storage_cost()
+	return ..() * 1.5
+
 /obj/item/weapon/reagent_containers/glass/beaker/noreact
 	name = "cryostasis beaker"
 	desc = "A cryostasis beaker that allows for chemical storage without reactions."
@@ -89,7 +92,7 @@
 	name = "vial"
 	desc = "A small glass vial."
 	icon_state = "vial"
-	center_of_mass = "x=15;y=8"
+	center_of_mass = "x=16;y=10"
 	matter = list(MATERIAL_GLASS = 1250)
 	volume = 30
 	w_class = ITEM_SIZE_TINY //half the volume of a bottle, half the size
