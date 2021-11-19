@@ -242,7 +242,7 @@
 		else if(href_list["createbottle_big"])
 			if(matter_storage < 3000)
 				return
-			create_bottle(usr, 30, "big")
+			create_bottle(usr, 90, "big")
 			matter_storage -= 3000
 
 		else if(href_list["change_pill"])

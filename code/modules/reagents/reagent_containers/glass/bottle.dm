@@ -30,6 +30,7 @@
 	center_of_mass = "x=16;y=12"
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = "5;10;15;30"
+	w_class = ITEM_SIZE_TINY
 	volume = 30
 	matter = list(MATERIAL_GLASS = 1000)
 	true_name = "small bottle"
@@ -46,6 +47,9 @@
 	matter = list(MATERIAL_GLASS = 3000)
 	true_name = "big bottle"
 	true_desc = "A big glass bottle."
+
+/obj/item/weapon/reagent_containers/glass/bottle/big/get_storage_cost()
+	return ..() * 1.5
 
 
 /obj/item/weapon/reagent_containers/glass/bottle/Initialize()
