@@ -2,7 +2,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
 	name = "inaprovaline bottle"
 	desc = "A small bottle. Contains inaprovaline - used to stabilize patients."
-	starting_label = "inaprovaline"
+	starting_label = "Inaprovaline"
 
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline/Initialize()
 	. = ..()
@@ -25,7 +25,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/small/cyanide
 	name = "cyanide bottle"
 	desc = "A small bottle of cyanide. Bitter almonds?"
-	starting_label = "cyanide"
+	starting_label = "Cyanide"
 
 /obj/item/weapon/reagent_containers/glass/bottle/small/cyanide/Initialize()
 	. = ..()
@@ -36,7 +36,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/stoxin
 	name = "soporific bottle"
 	desc = "A small bottle of soporific. Just the fumes make you sleepy."
-	starting_label = "soporific"
+	starting_label = "Soporific"
 
 /obj/item/weapon/reagent_containers/glass/bottle/stoxin/Initialize()
 	. = ..()
@@ -47,7 +47,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/small/chloralhydrate
 	name = "Chloral Hydrate Bottle"
 	desc = "A small bottle of Choral Hydrate. Mickey's Favorite!"
-	starting_label = "chloral hydrate"
+	starting_label = "Chloral Hydrate"
 
 /obj/item/weapon/reagent_containers/glass/bottle/small/chloralhydrate/Initialize()
 	. = ..()
@@ -58,7 +58,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/antitoxin
 	name = "dylovene bottle"
 	desc = "A small bottle of dylovene. Counters poisons, and repairs damage. A wonder drug."
-	starting_label = "dylovene"
+	starting_label = "Dylovene"
 
 /obj/item/weapon/reagent_containers/glass/bottle/antitoxin/Initialize()
 	. = ..()
@@ -69,7 +69,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/mutagen
 	name = "unstable mutagen bottle"
 	desc = "A small bottle of unstable mutagen. Randomly changes the DNA structure of whoever comes in contact."
-	starting_label = "unstable mutagen"
+	starting_label = "Unstable Mutagen"
 
 /obj/item/weapon/reagent_containers/glass/bottle/mutagen/Initialize()
 	. = ..()
@@ -80,7 +80,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/nanites
 	name = "nanites bottle"
 	desc = "A small bottle of nanites. Causes inpredictable changes in living lifeforms."
-	starting_label = "nanites"
+	starting_label = "Nanites"
 
 /obj/item/weapon/reagent_containers/glass/bottle/nanites/Initialize()
 	. = ..()
@@ -91,7 +91,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/ammonia
 	name = "ammonia bottle"
 	desc = "Smells funny."
-	starting_label = "ammonia"
+	starting_label = "Ammonia"
 
 /obj/item/weapon/reagent_containers/glass/bottle/ammonia/Initialize()
 	. = ..()
@@ -101,7 +101,7 @@
 //////////
 /obj/item/weapon/reagent_containers/glass/bottle/diethylamine
 	name = "diethylamine bottle"
-	starting_label = "ammonia"
+	starting_label = "Diethylamine"
 
 /obj/item/weapon/reagent_containers/glass/bottle/diethylamine/Initialize()
 	. = ..()
@@ -112,7 +112,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/pacid
 	name = "Polytrinic Acid Bottle"
 	desc = "A glass bottle. Contains a small amount of Polytrinic Acid."
-	starting_label = "polytrinic acid"
+	starting_label = "Polytrinic Acid"
 
 /obj/item/weapon/reagent_containers/glass/bottle/pacid/Initialize()
 	. = ..()
@@ -135,7 +135,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/capsaicin
 	name = "Capsaicin Bottle"
 	desc = "A small bottle. Contains hot sauce."
-	starting_label = "capsaicin"
+	starting_label = "Capsaicin"
 
 /obj/item/weapon/reagent_containers/glass/bottle/capsaicin/Initialize()
 	. = ..()
@@ -146,7 +146,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/frostoil
 	name = "Frost Oil Bottle"
 	desc = "A small bottle. Contains cold sauce."
-	starting_label = "frost oil"
+	starting_label = "Frost Oil"
 
 /obj/item/weapon/reagent_containers/glass/bottle/frostoil/Initialize()
 	. = ..()
@@ -157,7 +157,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/spaceacillin
 	name = "spaceacillin bottle"
 	desc = "A small bottle of spaceacillin. It has antiviral and antibiotic effects."
-	starting_label = "spaceacillin"
+	starting_label = "Spaceacillin"
 
 /obj/item/weapon/reagent_containers/glass/bottle/spaceacillin/Initialize()
 	. = ..()
@@ -180,7 +180,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/opium
 	name = "opium bottle"
 	desc = "A small bottle of opium. An effective, but addictive painkiller."
-	starting_label = "opium"
+	starting_label = "Opium"
 
 /obj/item/weapon/reagent_containers/glass/bottle/opium/Initialize()
 	. = ..()
@@ -191,7 +191,7 @@
 /obj/item/weapon/reagent_containers/glass/bottle/tarine
 	name = "tarine bottle"
 	desc = "A small bottle of tarine. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
-	starting_label = "tarine"
+	starting_label = "Tarine"
 
 /obj/item/weapon/reagent_containers/glass/bottle/tarine/Initialize()
 	. = ..()
