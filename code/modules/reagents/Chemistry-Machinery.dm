@@ -224,7 +224,7 @@
 						src.updateUsrDialog()
 
 		else if(href_list["createbottle"])
-			if(!spend_material(2000))
+			if(!spend_material(2000, usr))
 				return
 			if(!condi)
 				create_bottle(usr)
@@ -233,12 +233,12 @@
 				reagents.trans_to_obj(P, 50)
 
 		else if(href_list["createbottle_small"])
-			if(!spend_material(1000))
+			if(!spend_material(1000, usr))
 				return
 			create_bottle(usr, 30, "small")
 
 		else if(href_list["createbottle_big"])
-			if(!spend_material(3000))
+			if(!spend_material(3000, usr))
 				return
 			create_bottle(usr, 90, "big")
 
