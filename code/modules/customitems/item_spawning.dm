@@ -139,56 +139,59 @@
 // Parses the config file into the custom_items list.
 /hook/startup/proc/load_custom_items()
 
-	if(!fexists("config/custom_items.json"))
+	if(!fexists("config/custom_items.json") || (GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist)))
 		return
 	var/list/config_json = json_decode(file2text("config/custom_items.json"))
-	for(var/ckey in config_json)
-		if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
-			break
-		var/datum/custom_item/current_data = new()
-		var/item_path = config_json[ckey][1]
-		var/list/item_data = config_json[ckey][item_path][1]
-		current_data.item_path_as_string = item_path
-		item_path = text2path(item_path)
-		if(!item_path || !ispath(item_path))
-			continue
-		for(var/field in item_data)
-			var/field_data = item_data[field]
-			switch(field)
-				if("item_name")
-					current_data.name = field_data
-				if("item_icon")
-					current_data.item_icon = field_data
-				if("inherit_inhands")
-					current_data.inherit_inhands = text2num(field_data)
-				if("item_desc")
-					current_data.item_desc = field_data
-				if("req_access")
-					current_data.req_access = text2num(field_data)
-				if("req_titles")
-					current_data.req_titles = splittext(field_data,", ")
-				if("kit_name")
-					current_data.kit_name = field_data
-				if("kit_desc")
-					current_data.kit_desc = field_data
-				if("kit_icon")
-					current_data.kit_icon = field_data
-				if("additional_data")
-					current_data.additional_data = field_data
-		current_data.assoc_key = ckey
-		current_data.item_path = item_path
-		var/datum/gear/custom_item/G = new(ckey, item_path, current_data)
+	for(var/list/ckey_group in config_json["ckeys"])
+		var/ckey = ckey_group["ckey"]
+		for(var/list/item_data in ckey_group["items"])
+			var/datum/custom_item/current_data = new()
+			var/item_path = item_data["item_path"]
+			current_data.item_path_as_string = item_path
+			item_path = text2path(item_path)
+			ASSERT(ispath(item_path))
+			for(var/field in item_data)
+				var/field_data = item_data[field]
+				switch(field)
+					if("item_name")
+						current_data.name = field_data
+					if("item_icon")
+						current_data.item_icon = field_data
+					if("inherit_inhands")
+						current_data.inherit_inhands = text2num(field_data)
+					if("item_desc")
+						current_data.item_desc = field_data
+					if("req_access")
+						current_data.req_access = text2num(field_data)
+					if("req_titles")
+						current_data.req_titles = splittext(field_data,", ")
+					if("kit_name")
+						current_data.kit_name = field_data
+					if("kit_desc")
+						current_data.kit_desc = field_data
+					if("kit_icon")
+						current_data.kit_icon = field_data
+					if("additional_data")
+						current_data.additional_data = field_data
+			current_data.assoc_key = ckey
+			current_data.item_path = item_path
+			var/datum/gear/custom_item/G = new(ckey, item_path, current_data)
 
-		var/use_name = G.display_name
-		var/use_category = G.sort_category
+			var/use_name = G.display_name
+			var/use_category = G.sort_category
 
-		if(!loadout_categories[use_category])
-			loadout_categories[use_category] = new /datum/loadout_category(use_category)
-		var/datum/loadout_category/LC = loadout_categories[use_category]
-		gear_datums[use_name] = G
-		LC.gear[use_name] = gear_datums[use_name]
+			if(!loadout_categories[use_category])
+				loadout_categories[use_category] = new /datum/loadout_category(use_category)
+			var/datum/loadout_category/LC = loadout_categories[use_category]
+			var/item_id = 0
+			var/fixed_use_name = use_name
+			while(gear_datums[fixed_use_name])
+				fixed_use_name = "[use_name] [++item_id]"
+			use_name = fixed_use_name
+			gear_datums[use_name] = G
+			LC.gear[use_name] = gear_datums[use_name]
 
-	return 1
+	return TRUE
 
 //gets the relevant list for the key from the listlist if it exists, check to make sure they are meant to have it and then calls the giving function
 /proc/equip_custom_items(mob/living/carbon/human/M)

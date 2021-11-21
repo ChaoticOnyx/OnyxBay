@@ -12,7 +12,7 @@
 		if(slot_mask & slot_flags)
 			slot = text2num(slot_name)
 			break
-	display_name = data.name ? data.name : initial(A.name)
+	display_name = "[data.name ? data.name : initial(A.name)] (Custom)"
 	if(data.item_desc)
 		description = data.item_desc
 	ckey = key
