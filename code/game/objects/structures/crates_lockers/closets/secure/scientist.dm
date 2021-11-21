@@ -79,6 +79,6 @@
 		/obj/item/weapon/gun/launcher/syringe/rapid,
 		/obj/item/weapon/storage/box/syringegun,
 		/obj/item/weapon/storage/box/syringes,
-		/obj/item/weapon/reagent_containers/glass/bottle/chloralhydrate,
+		/obj/item/weapon/reagent_containers/glass/bottle/small/chloralhydrate,
 		/obj/item/weapon/reagent_containers/glass/bottle/stoxin
 	)
