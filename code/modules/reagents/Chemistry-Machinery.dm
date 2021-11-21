@@ -224,7 +224,7 @@
 						src.updateUsrDialog()
 
 		else if(href_list["createbottle"])
-			if(!spend_material(2000, usr))
+			if(!spend_material(2000))
 				return
 			if(!condi)
 				create_bottle(usr)
@@ -233,12 +233,12 @@
 				reagents.trans_to_obj(P, 50)
 
 		else if(href_list["createbottle_small"])
-			if(!spend_material(1000, usr))
+			if(!spend_material(1000))
 				return
 			create_bottle(usr, 30, "small")
 
 		else if(href_list["createbottle_big"])
-			if(!spend_material(3000, usr))
+			if(!spend_material(3000))
 				return
 			create_bottle(usr, 90, "big")
 
@@ -284,7 +284,7 @@
 	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
 	B.update_icon()
 
-/obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user = null)
+/obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user)
 	if(matter_storage < amount)
 		if(user)
 			to_chat(user, "\icon[src]<b>\The [src]</b> pings sadly as it lacks material to complete the task.")
