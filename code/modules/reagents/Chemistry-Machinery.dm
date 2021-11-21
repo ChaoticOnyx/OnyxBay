@@ -224,26 +224,23 @@
 						src.updateUsrDialog()
 
 		else if(href_list["createbottle"])
-			if(matter_storage < 2000)
+			if(!spend_material(2000, usr))
 				return
 			if(!condi)
 				create_bottle(usr)
 			else
 				var/obj/item/weapon/reagent_containers/food/condiment/P = new /obj/item/weapon/reagent_containers/food/condiment(src.loc)
 				reagents.trans_to_obj(P, 50)
-			matter_storage -= 2000
 
 		else if(href_list["createbottle_small"])
-			if(matter_storage < 1000)
+			if(!spend_material(1000, usr))
 				return
 			create_bottle(usr, 30, "small")
-			matter_storage -= 1000
 
 		else if(href_list["createbottle_big"])
-			if(matter_storage < 3000)
+			if(!spend_material(3000, usr))
 				return
 			create_bottle(usr, 90, "big")
-			matter_storage -= 3000
 
 		else if(href_list["change_pill"])
 			#define MAX_PILL_SPRITE 25 //max icon state of the pill sprites
@@ -284,8 +281,16 @@
 			B = new /obj/item/weapon/reagent_containers/glass/bottle(loc)
 	B.attach_label(null, null, bottle_name)
 	reagents.trans_to_obj(B, reagent_amount)
-	B.atom_flags = ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
+	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
 	B.update_icon()
+
+/obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user = null)
+	if(matter_storage < amount)
+		if(user)
+			to_chat(user, "\icon[src]<b>\The [src]</b> pings sadly as it lacks material to complete the task.")
+		return FALSE
+	matter_storage -= amount
+	return TRUE
 
 /obj/machinery/chem_master/attack_ai(mob/user as mob)
 	return src.attack_hand(user)

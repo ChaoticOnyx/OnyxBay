@@ -19,8 +19,8 @@
 	atom_flags = null
 	var/lid_state = "lid_bottle_medium"
 	var/use_filling_states = TRUE
-	var/true_name = "bottle"
-	var/true_desc = "A regular glass bottle."
+	var/default_name = "bottle"
+	var/default_desc = "A regular glass bottle."
 	var/starting_label = null
 
 /obj/item/weapon/reagent_containers/glass/bottle/small
@@ -33,8 +33,8 @@
 	volume = 30
 	matter = list(MATERIAL_GLASS = 1000)
 	lid_state = "lid_bottle_small"
-	true_name = "small bottle"
-	true_desc = "A small glass bottle."
+	default_name = "small bottle"
+	default_desc = "A small glass bottle."
 
 /obj/item/weapon/reagent_containers/glass/bottle/big
 	name = "big bottle"
@@ -45,8 +45,8 @@
 	volume = 90
 	matter = list(MATERIAL_GLASS = 3000)
 	lid_state = "lid_bottle_big"
-	true_name = "big bottle"
-	true_desc = "A big glass bottle."
+	default_name = "big bottle"
+	default_desc = "A big glass bottle."
 
 /obj/item/weapon/reagent_containers/glass/bottle/big/get_storage_cost()
 	return ..() * 1.5
@@ -54,8 +54,12 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/Initialize()
 	. = ..()
+	if(!default_name)
+		default_name = name
+	if(!default_desc)
+		default_desc = desc
 	if(starting_label)
-		name = true_name
+		name = default_name
 		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 	if(!icon_state)
 		icon_state = "bottle-[rand(1,4)]"
@@ -85,7 +89,7 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/post_remove_label()
 	..()
-	desc = true_desc
+	desc = default_desc
 	update_icon()
 
 /obj/item/weapon/reagent_containers/glass/bottle/update_icon()

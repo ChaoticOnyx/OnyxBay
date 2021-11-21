@@ -14,7 +14,10 @@
 	desc = "A small bottle of EZ NUtrient. It's extra nutritious!"
 	icon_state = "fertilizer1"
 	lid_state = "lid_fertilizer1"
+	matter = list(MATERIAL_PLASTIC = 2000)
 	use_filling_states = FALSE
+	default_name = null
+	default_desc = null
 
 /obj/item/weapon/reagent_containers/glass/bottle/eznutrient/Initialize()
 	. = ..()
@@ -27,7 +30,10 @@
 	desc = "A small bottle of Left-4-Zed. It helps plants to mutate!"
 	icon_state = "fertilizer2"
 	lid_state = "lid_fertilizer2"
+	matter = list(MATERIAL_PLASTIC = 2000)
 	use_filling_states = FALSE
+	default_name = null
+	default_desc = null
 
 /obj/item/weapon/reagent_containers/glass/bottle/left4zed/Initialize()
 	. = ..()
@@ -40,7 +46,10 @@
 	desc = "A small bottle of Robust Harvest. Causes high yield!"
 	icon_state = "fertilizer3"
 	lid_state = "lid_fertilizer3"
+	matter = list(MATERIAL_PLASTIC = 2000)
 	use_filling_states = FALSE
+	default_name = null
+	default_desc = null
 
 /obj/item/weapon/reagent_containers/glass/bottle/robustharvest/Initialize()
 	. = ..()
@@ -53,7 +62,10 @@
 	desc = "A small bottle of Mut'o'Grow. Randomly changes the DNA structure of plants. Warning: ingestion may (and will) cause severe poisoning!"
 	icon_state = "mutagen"
 	lid_state = "lid_mutagen"
+	matter = list(MATERIAL_STEEL = 2000)
 	use_filling_states = FALSE
+	default_name = null
+	default_desc = null
 
 /obj/item/weapon/reagent_containers/glass/bottle/mutogrow/Initialize()
 	. = ..()
