@@ -1250,17 +1250,19 @@
 	update()
 
 // overload the lights in this APC area
-/obj/machinery/power/apc/proc/overload_lighting(chance = 100)
-	if(/* !get_connection() || */ !operating || shorted)
+/obj/machinery/power/apc/proc/overload_lighting()
+	if (!operating || shorted)
 		return
-	if( cell && cell.charge>=20)
+	if (cell && cell.charge>=20)
 		cell.use(20);
-		spawn(0)
-			for(var/obj/machinery/light/L in area)
-				if(prob(chance))
-					L.on = 1
-					L.broken()
-					stoplag()
+		INVOKE_ASYNC(src, .proc/break_lights)
+
+/obj/machinery/power/apc/proc/break_lights()
+	for(var/obj/machinery/light/L in area)
+		L.on = TRUE
+		L.broken()
+		L.on = FALSE
+		stoplag()
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)
