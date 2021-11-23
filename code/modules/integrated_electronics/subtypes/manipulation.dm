@@ -54,7 +54,6 @@
 	activators = list("prime grenade" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_COMBAT
-	var/grenade_activated = FALSE
 	var/obj/item/weapon/grenade/attached_grenade
 	var/pre_attached_grenade_type
 	var/grenade_activated = FALSE
@@ -93,7 +92,7 @@
 	grenade_activated = FALSE
 	var/obj/item/weapon/grenade/G = attached_grenade
 	detach_grenade()
-	G.activate
+	G.activate()
 
 /obj/item/integrated_circuit/manipulation/grenade/do_work()
 	if(attached_grenade && !attached_grenade.active && !grenade_activated)
