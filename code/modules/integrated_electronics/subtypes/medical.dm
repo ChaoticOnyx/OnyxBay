@@ -59,6 +59,7 @@
 	var/selected_zone
 	var/obj/item/instrument
 	var/operation_intent
+	var/bodyparts_hint = TRUE
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/on_item_insert(obj/item/I)
@@ -116,6 +117,8 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/Initialize()
 	. = ..()
+	if(!bodyparts_hint)
+		return
 	extended_desc += "\nThe avaliable list of bodyparts: "
 	extended_desc += jointext(BP_ALL_LIMBS, ", ")
 
@@ -332,6 +335,7 @@
 		/obj/item/weapon/cautery, // SURGERY_CAUTERY
 	)
 	spawn_flags = IC_SPAWN_RESEARCH
+	bodyparts_hint = FALSE
 
 /obj/item/integrated_circuit/medical/surgery_device/face/do_work(ord)
 	switch(ord)
@@ -625,7 +629,7 @@
 
 	if(istype(target, /obj/item/weapon/organfixer))
 		var/obj/item/weapon/organfixer/OF = target
-		if(istype(source, /obj/item/weapon/organfixer))
+		if(istype(source, /obj/item/stack/medical/advanced/bruise_pack))
 			var/obj/item/stack/medical/advanced/bruise_pack/OF2 = source
 			OF.attackby(OF2, src)
 		else if(istype(source, /obj/structure/geltank))
