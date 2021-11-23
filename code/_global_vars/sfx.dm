@@ -279,7 +279,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb14.ogg'
 	),
-	SFX_AMBIENT_POWERED_SCIENCE = list(
+	SFX_AMBIENT_SCIENCE = list(
 		'sound/ambient/science/amb1.ogg',
 		'sound/ambient/science/amb2.ogg',
 		'sound/ambient/science/amb3.ogg',
@@ -293,7 +293,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/science/amb11.ogg',
 		'sound/ambient/science/amb12.ogg'
 	),
-	SFX_AMBIENT_POWERED_AI = list(
+	SFX_AMBIENT_AI = list(
 		'sound/ambient/ai/amb1.ogg',
 		'sound/ambient/ai/amb2.ogg',
 		'sound/ambient/ai/amb3.ogg',
@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/ai/amb22.ogg',
 		'sound/ambient/ai/amb23.ogg'
 	),
-	SFX_AMBIENT_POWERED_COMMS = list(
+	SFX_AMBIENT_COMMS = list(
 		'sound/ambient/comms/amb1.ogg',
 		'sound/ambient/comms/amb2.ogg',
 		'sound/ambient/comms/amb3.ogg',
@@ -389,7 +389,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb50.ogg',
 		'sound/ambient/maintenance/amb51.ogg'
 	),
-	SFX_AMBIENT_POWERED_ENGINEERING = list(
+	SFX_AMBIENT_ENGINEERING = list(
 		'sound/ambient/engineering/amb1.ogg',
 		'sound/ambient/engineering/amb2.ogg',
 		'sound/ambient/engineering/amb3.ogg',
@@ -424,7 +424,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/engineering/amb33.ogg',
 		'sound/ambient/engineering/amb34.ogg'
 	),
-	SFX_AMBIENT_OFF_SPACE = list(
+	SFX_AMBIENT_SPACE = list(
 		'sound/ambient/space/exterior1.ogg',
 		'sound/ambient/space/exterior2.ogg',
 		'sound/ambient/space/exterior3.ogg',
@@ -447,11 +447,33 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/space/exterior20.ogg',
 		'sound/ambient/space/exterior21.ogg'
 	),
-	SFX_AMBIENT_POWERED_OUTPOST = list(
+	SFX_AMBIENT_OUTPOST = list(
 		'sound/ambient/outpost/amb1.ogg',
 		'sound/ambient/outpost/amb2.ogg',
 		'sound/ambient/outpost/amb3.ogg'
 	),
+	SFX_AMBIENT_MINE = list(
+		'sound/ambient/mine/ambimine.ogg',
+		'sound/ambient/song_game.ogg'
+	),
+	SFX_AMBIENT_CHAPEL = list(
+		'sound/ambient/chapel/ambicha1.ogg',
+		'sound/ambient/chapel/ambicha2.ogg',
+		'sound/ambient/chapel/ambicha3.ogg',
+		'sound/ambient/chapel/ambicha4.ogg'
+	),
+	SFX_AMBIENT_ATMOSPHERICS = list(
+		'sound/ambient/atmospherics/ambiatm1.ogg'
+	),
+	SFX_AMBIENT_MORGUE = list(
+		'sound/ambient/morgue/ambimo1.ogg'
+	),
+	SFX_AMBIENT_JUNGLE = list(
+        'sound/ambient/jungle/jungle ambience1.ogg',
+        'sound/ambient/jungle/jungle ambience2.ogg',
+        'sound/ambient/jungle/junglethunder2.ogg',
+        'sound/ambient/jungle/junglethunder1.ogg',
+    ),
 	// AMBIENT MUSIC
 	SFX_AMBIENT_MUSIC_NORMAL = list(
 		'sound/ambient_music/normal_1.ogg',

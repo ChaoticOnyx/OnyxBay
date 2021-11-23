@@ -54,6 +54,7 @@
 	activators = list("prime grenade" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_COMBAT
+	var/grenade_activated = FALSE
 	var/obj/item/weapon/grenade/attached_grenade
 	var/pre_attached_grenade_type
 	var/grenade_activated = FALSE
@@ -76,7 +77,7 @@
 		else if(user.canUnEquip(G))
 			user.drop_item(G)
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
-			attach_grenade(G, user)
+			attach_grenade(G)
 	else
 		return ..()
 
@@ -90,7 +91,9 @@
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/before_activation_action()
 	grenade_activated = FALSE
+	var/obj/item/weapon/grenade/G = attach_grenade
 	detach_grenade()
+	G.activate
 
 /obj/item/integrated_circuit/manipulation/grenade/do_work()
 	if(attached_grenade && !attached_grenade.active && !grenade_activated)
@@ -100,8 +103,7 @@
 			dt = Clamp(detonation_time.data, 1, 12)*10
 		else
 			dt = 15
-		addtimer(CALLBACK(attached_grenade, /obj/item/weapon/grenade.proc/activate), dt)
-		addtimer(CALLBACK(src, .proc/before_activation_action), dt-1)
+		addtimer(CALLBACK(src, .proc/before_activation_action), dt)
 		grenade_activated = TRUE
 		var/atom/holder = loc
 		var/atom/A = get_object()
@@ -121,7 +123,7 @@
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/detach_grenade()
 	if(attached_grenade)
-		attached_grenade.forceMove(get_turf(assembly))
+		attached_grenade?.forceMove(get_turf(assembly))
 	set_pin_data(IC_OUTPUT, 1, weakref(null))
 	attached_grenade = null
 	desc = initial(desc)
@@ -595,7 +597,7 @@
 		return
 	switch(ord)
 		if(1)
-			var/new_name = sanitize(get_pin_data(IC_INPUT, 1))
+			var/new_name = sanitizeName(get_pin_data(IC_INPUT, 1), max_length = IC_MAX_NAME_LEN)
 			if(new_name)
 				var/atom/A = get_object()
 				A.investigate_log("was renamed with [src] into [new_name].", INVESTIGATE_CIRCUIT)

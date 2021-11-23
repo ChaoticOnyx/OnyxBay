@@ -20,6 +20,7 @@
 	melee_damage_upper = 30
 	attacktext = "slashed"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 	unsuitable_atoms_damage = 15
 	var/corpse = /obj/effect/landmark/corpse/pirate

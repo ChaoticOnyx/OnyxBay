@@ -26,6 +26,7 @@
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
 	var/planter_ckey			   // ckey of player that plant seed.
+	var/fun_level = 1              // Disables this mutation if it's higher than config.fun_hydroponics. 0 - regular plants, 1 - joke plants, 2 - somewhat OOC-related stuff.
 
 /datum/seed/New()
 
