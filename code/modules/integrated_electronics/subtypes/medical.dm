@@ -528,6 +528,11 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
 
+/obj/item/integrated_circuit/medical/bodypart_info/Initialize()
+	. = ..()
+	extended_desc += "The avaliable list of bodyparts: "
+	extended_desc += jointext(BP_ALL_LIMBS, ", ")
+
 /obj/item/integrated_circuit/medical/bodypart_info/do_work(ord)
 	var/mob/living/carbon/human/H = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/human)
 	if(!istype(H)) //Invalid input
