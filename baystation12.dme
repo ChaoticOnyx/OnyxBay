@@ -1562,6 +1562,7 @@
 #include "code\modules\events\_event_container.dm"
 #include "code\modules\events\_event_dynamic.dm"
 #include "code\modules\events\apc_damage.dm"
+#include "code\modules\events\biohazard_outbreak.dm"
 #include "code\modules\events\brand_intelligence.dm"
 #include "code\modules\events\camera_damage.dm"
 #include "code\modules\events\carp_migration.dm"
