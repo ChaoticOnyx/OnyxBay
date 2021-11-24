@@ -157,7 +157,7 @@
 	..()
 
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 	else
 		countdown = 0
 
