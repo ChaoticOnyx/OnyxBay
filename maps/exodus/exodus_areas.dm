@@ -74,9 +74,12 @@
 /area/crew_quarters/heads/cmo
 	name = "\improper Command - CMO's Office"
 
+/area/bridge
+	name = "\improper Bridge"
+	icon_state = "bridge"
+
 /area/bridge/meeting_room
 	name = "\improper Heads of Staff Meeting Room"
-	icon_state = "bridge"
 	sound_env = MEDIUM_SOFTFLOOR
 
 // Shuttles
@@ -829,6 +832,16 @@
 	name = "\improper Medbay Maintenance"
 	icon_state = "maint_medbay"
 
+/area/maintenance/bridge
+	name = "\improper Bridge Maintenance"
+	icon_state = "maint_eva"
+
+/area/maintenance/bridge/west
+	name = "\improper Bridge Maintenance - West"
+
+/area/maintenance/bridge/east
+	name = "\improper Bridge Maintenance - East"
+
 /area/maintenance/research_port
 	name = "\improper Research Maintenance - Port"
 	icon_state = "maint_research_port"
@@ -1103,6 +1116,9 @@
 
 /area/crew_quarters/toilet/bar
 	name = "\improper Bar Toilet"
+
+/area/crew_quarters/toilet/west
+	name = "\improper West Hallway Bathroom"
 
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
@@ -1429,6 +1445,10 @@
 /area/medical/biostorage/underground
 	name = "\improper Undergound Medbay Storage"
 	icon_state = "medbay4"
+
+/area/medical/sleeper
+	name = "\improper Emergency Treatment Room"
+	icon_state = "exam_room"
 
 /area/medical/sleeper/underground
 	name = "\improper Underground Emergency Treatment Room"
