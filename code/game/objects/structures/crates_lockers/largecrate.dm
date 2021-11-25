@@ -36,30 +36,30 @@
 	desc = "It comes in a box for the fabricator's sake. Where does the wood come from? ... And why is it lighter?"
 	icon_state = "mulecrate"
 
-/obj/structure/largecrate/hoverpod/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(isCrowbar(W))
-		var/obj/mecha/working/hoverpod/H = locate() in src
-		if(!H)
-			H = new (loc)
+/obj/structure/largecrate/hoverpod/Initialize()
+	. = ..()
 
-		var/obj/item/mecha_parts/mecha_equipment/ME
-		ME = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
-		ME.attach(H)
-		ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
-		ME.attach(H)
-	..()
+	var/obj/item/mecha_parts/mecha_equipment/ME
+	var/obj/mecha/working/hoverpod/H = new (src)
+
+	ME = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
+	ME.attach(H)
+	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
+	ME.attach(H)
+
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"
 	var/held_count = 1
 	var/held_type
 
-/obj/structure/largecrate/animal/attackby(obj/item/weapon/W, mob/user)
-	if(isCrowbar(W))
-		if(held_type && !(locate(held_type) in src))
-			for(var/i = 1;i<=held_count;i++)
-				new held_type(src)
-	..()
+/obj/structure/largecrate/animal/Initialize()
+	. = ..()
+
+	if(held_type)
+		for(var/i = 1;i<=held_count;i++)
+			new held_type(src)
+
 
 /obj/structure/largecrate/animal/mulebot
 	name = "Mulebot crate"

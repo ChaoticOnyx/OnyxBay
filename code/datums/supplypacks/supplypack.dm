@@ -37,9 +37,9 @@ var/list/decl/hierarchy/supply_pack/cargo_supply_packs	// Non-category supply pa
 	switch(security_level)
 		if(SUPPLY_SECURITY_ELEVATED)
 			if(security_state.all_security_levels.len > 1)
-				security_level = security_state.all_security_levels[2] 
+				security_level = security_state.all_security_levels[2]
 			else
-				security_level = security_state.high_security_level 
+				security_level = security_state.high_security_level
 		if(SUPPLY_SECURITY_HIGH)
 			security_level = security_state.high_security_level
 	if(!istype(security_level))
@@ -73,6 +73,8 @@ var/list/supply_methods_
 		return
 	. = list()
 	for(var/entry in sp.contains)
+		if(locate(entry) in location)//for containers which self-spawn its content
+			continue
 		for(var/i = 1 to max(1, sp.contains[entry]))
 			dd_insertObjectList(.,new entry(location))
 
