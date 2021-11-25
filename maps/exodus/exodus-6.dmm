@@ -2043,7 +2043,7 @@
 "Sf" = (/obj/structure/closet/secure_closet/personal,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/trim/carpet,/area/outpost/main_outpost/dorms/proom2)
 "Sg" = (/obj/effect/floor_decal/corner/lime{dir = 5},/obj/machinery/lapvend,/turf/simulated/floor/tiled,/area/outpost/main_outpost/shallway)
 "Sh" = (/obj/effect/decal/cleanable/blood/oil,/obj/random/maintenance,/turf/simulated/floor/shuttle/yellow,/area/space)
-"Si" = (/obj/structure/largecrate/mule,/turf/simulated/floor/shuttle/yellow,/area/space)
+"Si" = (/obj/structure/largecrate/animal/mulebot,/turf/simulated/floor/shuttle/yellow,/area/space)
 "Sj" = (/obj/machinery/light/small{dir = 4},/obj/effect/floor_decal/industrial/warning/dust{dir = 5; icon_state = "warning_dust"},/turf/simulated/floor/plating/airless,/area/mine/explored)
 "Sk" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/obj/structure/closet/walllocker/emerglocker/south,/turf/simulated/floor/trim/wood,/area/outpost/main_outpost/dorms/proom3)
 "Sl" = (/obj/structure/table/standard,/obj/machinery/cell_charger,/obj/random/tech_supply,/obj/item/weapon/cell/high,/turf/simulated/floor/plating/airless,/area/mine/explored)
