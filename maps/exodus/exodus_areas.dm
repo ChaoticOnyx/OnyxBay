@@ -82,6 +82,9 @@
 	name = "\improper Heads of Staff Meeting Room"
 	sound_env = MEDIUM_SOFTFLOOR
 
+/area/bridge/meeting_room/cafe
+	name = "\improper Heads of Staff Cafeteria"
+
 // Shuttles
 
 /area/shuttle/constructionsite
