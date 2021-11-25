@@ -37,11 +37,6 @@
 
 	START_PROCESSING(SSobj, src)
 
-/obj/structure/blob/core/Destroy()
-	. = ..()
-
-	STOP_PROCESSING(SSobj, src)
-
 /obj/structure/blob/proc/can_expand()
 	if(QDELETED(core))
 		return FALSE
