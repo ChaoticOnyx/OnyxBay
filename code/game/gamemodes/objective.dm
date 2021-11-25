@@ -614,6 +614,8 @@ datum/objective/capture
 		return 1
 
 
+/datum/objective/absorb
+
 /datum/objective/absorb/proc/gen_amount_goal(lowbound = 4, highbound = 6)
 	target_amount = rand (lowbound,highbound)
 	var/n_p = 1 //autowin
