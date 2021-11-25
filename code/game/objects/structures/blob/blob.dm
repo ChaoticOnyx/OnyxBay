@@ -32,9 +32,6 @@
 	_upgrade_cooldown = world.time
 	_health_cooldown  = world.time
 
-	if(locate(/obj/structure/blob) in loc)
-		CRASH("Spawning more that 1 blob on the turf.")
-
 /obj/structure/blob/Initialize()
 	. = ..()
 
