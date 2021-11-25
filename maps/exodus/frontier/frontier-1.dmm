@@ -525,7 +525,7 @@
 "ake" = (/obj/structure/table/woodentable,/obj/machinery/requests_console{announcementConsole = 1; department = "Bridge"; departmentType = 5; name = "Bridge RC"; pixel_y = 30},/obj/machinery/light{dir = 8},/obj/item/weapon/storage/box/PDAs,/turf/simulated/floor/trim/wood,/area/bridge)
 "akf" = (/obj/machinery/atmospherics/unary/vent_scrubber/on,/turf/simulated/floor/tiled/dark,/area/outpost/research/anomaly_storage)
 "akg" = (/obj/effect/floor_decal/corner/green/three_quarters,/turf/simulated/floor/tiled,/area/hallway/primary/frontier/ring_north)
-"akh" = (/obj/machinery/vending/boozeomat,/turf/simulated/floor/trim/darkwood,/area/bridge/meeting_room/cafe)
+"akh" = (/obj/machinery/vending/boozeomat{req_access = list(19)},/turf/simulated/floor/trim/darkwood,/area/bridge/meeting_room/cafe)
 "aki" = (/obj/effect/floor_decal/corner/blue/three_quarters,/obj/effect/floor_decal/spline/fancy/wood{dir = 10},/turf/simulated/floor/tiled/dark,/area/bridge)
 "akj" = (/obj/structure/table/standard,/obj/structure/sign/poster{pixel_y = 32},/obj/item/weapon/material/ashtray/bronze,/obj/random/smokes,/obj/machinery/vending/wallmed1{name = "Emergency NanoMed"; pixel_x = 28},/turf/simulated/floor/trim/carpet/blue,/area/bridge)
 "akk" = (/obj/structure/table/woodentable,/obj/machinery/light{dir = 4},/obj/item/weapon/aicard,/obj/item/device/radio/intercom{pixel_y = 22},/turf/simulated/floor/trim/wood,/area/bridge)
