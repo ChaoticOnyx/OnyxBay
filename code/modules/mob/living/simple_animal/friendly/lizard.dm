@@ -31,6 +31,7 @@
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME

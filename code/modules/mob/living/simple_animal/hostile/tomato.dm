@@ -17,6 +17,7 @@
 	melee_damage_upper = 15
 	melee_damage_lower = 10
 	attacktext = "mauled"
+	bodyparts = /decl/simple_animal_bodyparts/tomato
 	possession_candidate = 1
 	controllable = TRUE
 	universal_speak = 0
@@ -30,3 +31,6 @@
 	if(name == initial(name))
 		name = "[name] ([sequential_id(/mob/living/simple_animal/hostile/tomato)])"
 	real_name = name
+
+/decl/simple_animal_bodyparts/tomato
+	hit_zones = list("flesh", "leaf", "mouth")

@@ -57,7 +57,7 @@ var/global/universe_has_ended = 0
 	PlayerSet()
 	SSskybox.reinstate_skyboxes("cascade", FALSE)
 
-	new /obj/singularity/narsie/exit(pick(endgame_exits))
+	new /obj/singularity/narsie/exit(pick(GLOB.endgame_exits))
 	spawn(rand(30,60) SECONDS)
 		var/txt = {"
 A galaxy-wide electromagnetic pulse has been detected. All systems across space are heavily damaged and many personnel have died or are dying. We are currently detecting increasing indications that the universe itself is beginning to unravel.

@@ -28,6 +28,7 @@
 	minbodytemp = 0
 	heat_damage_per_tick = 20
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 
 /mob/living/simple_animal/hostile/alien/drone

@@ -25,6 +25,11 @@
 /client/proc/client_dir(input, direction=-1)
 	return turn(input, direction*dir2angle(dir))
 
+/mob/forceMove(atom/destination, unbuckle_mob = TRUE)
+	. = ..()
+	if(. && unbuckle_mob)
+		buckled?.unbuckle_mob()
+
 /client/Northeast()
 	diagonal_action(NORTHEAST)
 /client/Northwest()
@@ -73,8 +78,9 @@
 /client/verb/swap_hand()
 	set hidden = 1
 	if(istype(mob, /mob/living/carbon))
-		mob:swap_hand()
-	if(istype(mob,/mob/living/silicon/robot))
+		var/mob/living/carbon/C = mob
+		C.swap_hand()
+	if(istype(mob, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = mob
 		R.cycle_modules()
 	return

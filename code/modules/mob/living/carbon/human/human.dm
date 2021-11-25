@@ -191,6 +191,13 @@
 			loss_val = 0.05
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
+/mob/living/carbon/human/blob_act(damage)
+	if(is_dead())
+		return
+
+	var/blocked = run_armor_check(BP_CHEST, "melee")
+	apply_damage(damage, BRUTE, BP_CHEST, blocked)
+
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
 	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
 
@@ -762,8 +769,8 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition < 40)
-					custom_emote(1,"dry heaves.")
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
 						var/atom/movable/A = a

@@ -25,6 +25,7 @@
 	holder_type = /obj/item/weapon/holder/cat
 	mob_size = MOB_SMALL
 	possession_candidate = 1
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/cat/Life()
 	if(!..() || incapacitated() || client)
