@@ -98,6 +98,9 @@
 /turf/simulated/floor/natural/jungle/water/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_WATER])
 
+/turf/simulated/floor/trim/darkwood/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_WOOD])
+
 /turf/simulated/floor/Entered(mob/living/carbon/human/H)
 	..()
 	if(istype(H))
