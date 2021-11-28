@@ -207,6 +207,7 @@
 		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"
 			item_state = "sawnshotgun"
+			wielded_item_state = null
 			w_class = ITEM_SIZE_NORMAL
 			force = 8.5
 			mod_weight = 0.7
@@ -217,6 +218,7 @@
 			slot_flags |= (SLOT_BELT|SLOT_HOLSTER) //but you can wear it on your belt (poorly concealed under a trenchcoat, ideally) - or in a holster, why not.
 			SetName("sawn-off shotgun")
 			desc = "Omar's coming!"
+			fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'
 			to_chat(user, "<span class='warning'>You shorten the barrel of \the [src]!</span>")
 	else
 		..()
