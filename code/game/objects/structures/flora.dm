@@ -1,11 +1,25 @@
+#define PLANT_NO_CUT 1
+#define PLANT_CUT 2
+
 //trees
 /obj/structure/flora/tree
 	name = "tree"
 	anchored = 1
 	density = 1
 	pixel_x = -16
-
 	layer = ABOVE_HUMAN_LAYER
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 20
+
+/obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/weapon/material/hatchet) || istype(W, /obj/item/weapon/material/twohanded/fireaxe)))
+		cut_hits--
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
+		playsound(src, 'sound/effects/fighting/chop3.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
 
 /obj/structure/flora/tree/pine
 	name = "pine tree"
@@ -113,6 +127,7 @@
 /obj/structure/flora/tree/green/pink
 	icon = 'icons/obj/flora/pinktree.dmi'
 	icon_state = "spacesakura"
+	cut_hits = 30
 	var/light_overlay = FALSE
 	var/l_max_bright = 1
 	var/l_inner_range = 2
@@ -149,6 +164,7 @@
 	pixel_y = 0
 	icon = 'icons/obj/flora/hdtreesmall.dmi'
 	icon_state = "tree"
+	cut_hits = 10
 
 /obj/structure/flora/tree/green/small/tree1
 	icon_state = "tree1"
@@ -293,6 +309,20 @@
 	icon_state = "firstbush_1"
 	anchored = 1
 	layer = BELOW_DOOR_LAYER
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 3
+
+/obj/structure/flora/ausbushes/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
+		cut_hits--
+	else
+		cut_hits = 0
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+	playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+	if(cut_hits <= 0)
+		qdel(src)
+	return
 
 /obj/structure/flora/ausbushes/New()
 	..()
@@ -403,6 +433,47 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/ausbushes/jungleflora
+	icon = 'icons/obj/flora/jungleflora.dmi'
+	icon_state = "busha"
+
+/obj/structure/flora/ausbushes/jungleflora/busha
+	icon_state = "busha"
+
+/obj/structure/flora/ausbushes/jungleflora/busha/New()
+	..()
+	icon_state = "busha[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/bushb
+	icon_state = "bushb"
+
+/obj/structure/flora/ausbushes/jungleflora/bushb/New()
+	..()
+	icon_state = "bushb[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/bushc
+	icon_state = "bushc"
+
+/obj/structure/flora/ausbushes/jungleflora/bushc/New()
+	..()
+	icon_state = "bushc[rand(1, 3)]"
+
+/obj/structure/flora/ausbushes/jungleflora/grassa
+	name = "grass"
+	icon_state = "grassa"
+
+/obj/structure/flora/ausbushes/jungleflora/grassa/New()
+	..()
+	icon_state = "grassa[rand(1, 5)]"
+
+/obj/structure/flora/ausbushes/jungleflora/grassb
+	name = "grass"
+	icon_state = "grassb"
+
+/obj/structure/flora/ausbushes/jungleflora/grassb/New()
+	..()
+	icon_state = "grassb[rand(1, 5)]"
+
 /obj/structure/flora/goonbushes
 	name = "shrub"
 	icon = 'icons/obj/flora/goonbushes.dmi'
@@ -438,9 +509,6 @@
 	name = "shrub"
 	icon_state = "sick"
 	layer = BELOW_DOOR_LAYER
-
-#define PLANT_NO_CUT 1
-#define PLANT_CUT 2
 
 /obj/structure/flora/junglevines
 	name = "vines"
@@ -520,6 +588,20 @@
 	var/l_outer_range = 2
 	var/l_falloff_curve = 1
 	var/l_color = COLOR_BLUE_LIGHT
+	var/cut_level = PLANT_CUT
+	var/cut_hits = 3
+
+/obj/structure/flora/jungleplants/attackby(obj/item/W, mob/living/user)
+	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
+		cut_hits--
+	else
+		cut_hits = 0
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+	playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+	if(cut_hits <= 0)
+		qdel(src)
+	return
 
 /obj/structure/flora/jungleplants/update_icon()
 	overlays.Cut()
@@ -546,6 +628,25 @@
 /obj/structure/flora/jungleplants/junglebush3
 	name = "bush"
 	icon_state = "junglebush3"
+
+/obj/structure/flora/jungleplants/junglebushlarge
+	name = "bush"
+	icon = 'icons/obj/flora/junglebushlarge.dmi'
+	icon_state = "bush1"
+	pixel_x = -16
+	pixel_y = -8
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush1
+	icon_state = "bush1"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush2
+	icon_state = "bush2"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush3
+	icon_state = "bush3"
+
+/obj/structure/flora/jungleplants/junglebushlarge/bush4
+	icon_state = "bush4"
 
 /obj/structure/flora/jungleplants/alienplant1
 	name = "alien plant"
