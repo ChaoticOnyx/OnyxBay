@@ -101,6 +101,7 @@
 // Biostructure processing
 /obj/item/organ/internal/biostructure/Process()
 	. = ..()
+	check_damage()
 	if(damage > max_damage / 2 && healing_threshold)
 		if(owner)
 			alert(owner, "We have taken massive core damage! We need regeneration.", "Core Damaged")
@@ -110,7 +111,6 @@
 	else if (damage <= max_damage / 2 && !healing_threshold)
 		healing_threshold = 1
 	if(owner)
-		check_damage()
 		if(damage <= max_damage / 2 && healing_threshold && world.time < last_regen_time + 40)
 			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
 			damage--
