@@ -19,7 +19,7 @@
 		to_chat(H, SPAN("changeling", "We activate our stemocyte pool and begin intensive fleshmending."))
 
 		spawn(0)
-			while(H && H.mind && H.mind.changeling.heal && !is_regenerating())
+			while(H && H.mind && && H.mind.changeling.damaged H.mind.changeling.heal && !is_regenerating())
 				H.mind.changeling.chem_charges = max(H.mind.changeling.chem_charges - 1, 0)
 				if(H.getBruteLoss())
 					H.adjustBruteLoss(-15 * config.organ_regeneration_multiplier) // Heal brute better than other ouchies.
