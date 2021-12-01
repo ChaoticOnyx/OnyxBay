@@ -99,7 +99,7 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"Self Justified Sacrifices"     = 'sound/music/self_justified_sacrifices.ogg',
 	"Mr. Sandman"                   = 'sound/music/sandman.ogg',
 	"Lone Digger"                   = 'sound/music/lonedigger.ogg',
-	"Reaper \'n Blues"                = 'sound/music/reapernblues.ogg',
+	"Reaper \'n Blues"              = 'sound/music/reapernblues.ogg',
 	"Undead Man Walkin`"            = 'sound/music/undeadwalking.ogg',
 	"Space Oddity"                  = 'sound/music/space_oddity.ogg',
 	"Crockett's Theme"              = 'sound/music/crokett_39_s_theme.ogg',
