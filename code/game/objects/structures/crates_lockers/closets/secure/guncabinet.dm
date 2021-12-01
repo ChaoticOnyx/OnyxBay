@@ -52,7 +52,7 @@
 			overlays += icon(src.icon, "welded")
 
 		if(broken)
-			overlays += icon(src.icon, "off")
+			overlays += icon(src.icon, "broken")
 			overlays += icon(src.icon, icon_broken)
 		else if(locked)
 			overlays += icon(src.icon, "locked")
