@@ -590,14 +590,12 @@
 /obj/structure/flora/jungleplants/attackby(obj/item/W, mob/living/user)
 	if(cut_level !=PLANT_NO_CUT && is_sharp(W))
 		cut_hits--
-	else
-		cut_hits = 0
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
-	playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
-	if(cut_hits <= 0)
-		qdel(src)
-	return
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		to_chat(user, SPAN_WARNING("You cut [cut_hits > 0 ? "some of" : "all of"] \the [src] away with \the [W]."))
+		playsound(src, 'sound/weapons/vegetation_hit.ogg', 25, 1)
+		if(cut_hits <= 0)
+			qdel(src)
+		return
 
 /obj/structure/flora/jungleplants/update_icon()
 	overlays.Cut()
