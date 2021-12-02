@@ -1,4 +1,4 @@
-/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
+/proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff as num, is_global, frequency, is_ambiance = 0)
 	soundin = GET_SFX(soundin) || soundin // same sound for everyone
 
 	if(isarea(source))
