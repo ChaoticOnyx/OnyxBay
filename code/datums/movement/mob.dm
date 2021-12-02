@@ -282,7 +282,8 @@
 	for(var/obj/item/grab/G in mob)
 		if(G.assailant_reverse_facing())
 			mob.set_dir(GLOB.reverse_dir[direction])
-		G.assailant_moved()
+		if(G.current_grab.downgrade_on_move)
+			G.downgrade()
 	for(var/obj/item/grab/G in mob.grabbed_by)
 		G.adjust_position()
 

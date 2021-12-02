@@ -107,8 +107,9 @@
 /client/verb/drop_item()
 	set hidden = 1
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
-		return mob.drop_item()
-	return
+		var/obj/item/I = mob.get_active_hand()
+		if(I?.can_be_dropped_by_client(mob))
+			mob.drop_item()
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
 	if (!glide_size_override || glide_size_override > max)

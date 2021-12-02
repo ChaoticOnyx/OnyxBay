@@ -91,14 +91,14 @@
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
 		return 0
-	else if(istype(I, /obj/item/weapon/holder) || istype(I, /obj/item/grab))
-		if(istype(I, /obj/item/weapon/holder))
-			for(var/mob/living/M in I.contents)
-				inserted_mob = M
-				break
-		else
-			var/obj/item/grab/G = I
-			inserted_mob = G.affecting
+	else if(istype(I, /obj/item/weapon/holder))
+		for(var/mob/living/M in I.contents)
+			inserted_mob = M
+			break
+	else if(istype(I, /obj/item/grab))
+		var/obj/item/grab/G = I
+		inserted_mob = G.affecting
+		G.delete_self()
 	else
 		to_chat(user, SPAN_WARNING("That's not edible."))
 		return 0
@@ -112,7 +112,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!user.drop_from_inventory(I))
+	if(!istype(I, /obj/item/grab) && !user.drop_from_inventory(I))
 		return
 
 	if(inserted_mob)
