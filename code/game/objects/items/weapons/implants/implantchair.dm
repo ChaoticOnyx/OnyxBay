@@ -22,7 +22,7 @@
 	proc
 		go_out()
 		put_mob(mob/living/carbon/M as mob)
-		implant(var/mob/M)
+		implant(mob/M)
 		add_implants()
 
 
@@ -74,7 +74,7 @@
 			return
 
 
-	attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
+	attackby(obj/item/weapon/G as obj, mob/user as mob)
 		if(istype(G, /obj/item/grab))
 			var/obj/item/grab/grab = G
 			if(!ismob(grab.affecting))
@@ -90,7 +90,7 @@
 		return
 
 
-	go_out(var/mob/M)
+	go_out(mob/M)
 		if(!( src.occupant ))
 			return
 		if(M == occupant) // so that the guy inside can't eject himself -Agouri
@@ -125,7 +125,7 @@
 		return 1
 
 
-	implant(var/mob/M)
+	implant(mob/M)
 		if (!istype(M, /mob/living/carbon))
 			return
 		if(!implant_list.len)	return
