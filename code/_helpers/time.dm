@@ -108,7 +108,7 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 ///Returns the number of ticks slept
 /proc/stoplag(initial_delay)
-	if (!Master || !(GAME_STATE & RUNLEVELS_DEFAULT))
+	if (!Master || !(Master.current_runlevel & RUNLEVELS_DEFAULT))
 		sleep(world.tick_lag)
 		return 1
 	if (!initial_delay)
@@ -139,12 +139,12 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	Example:
 	/datum/foo
 		var/last_action = 0
-	
+
 	/datum/foo/proc/do()
 		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
 		if(cooldown)
 			do_something()
-	
+
 	/datum/foo/proc/do2()
 		THROTTLE_SHARED(cooldown, 1 SECOND, last_action)
 		if(cooldown)

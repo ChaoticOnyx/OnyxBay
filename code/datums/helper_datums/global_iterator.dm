@@ -78,7 +78,7 @@
 		for(var/sleep_time = delay; sleep_time > 0; sleep_time--)
 			if(!control_switch)
 				return 0
-			sleep(1)
+			stoplag(1)
 	return 0
 
 /datum/global_iterator/proc/start(list/arguments = null)
@@ -103,10 +103,8 @@
 	return 1
 
 /datum/global_iterator/proc/state_check()
-	var/lag = 0
 	while(state)
-		sleep(1)
-		if(++lag > 10)
+		if(stoplag(1) > 10)
 			CRASH("The global_iterator loop \ref[src] failed to terminate in designated timeframe. This may be caused by server lagging.")
 	return 1
 

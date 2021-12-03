@@ -378,9 +378,9 @@
 				radio_connection.post_signal(src, signal, filter = RADIO_MAGNETS)
 
 			if(speed == 10)
-				sleep(1)
+				stoplag(1)
 			else
-				sleep(12-speed)
+				stoplag(12-speed)
 
 		looping = 0
 

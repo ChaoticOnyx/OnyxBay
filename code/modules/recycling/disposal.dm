@@ -570,7 +570,7 @@
 /obj/structure/disposalholder/proc/move()
 	var/obj/structure/disposalpipe/last
 	while(active)
-		sleep(1)		// was 1
+		stoplag(1)		// was 1
 		if(!loc) return // check if we got GC'd
 
 		if(hasmob && prob(3))

@@ -84,7 +84,7 @@
 		while(charge_counter < charge_max || silenced > 0)
 			charge_counter = min(charge_max,charge_counter+1)
 			silenced = max(0,silenced-1)
-			sleep(1)
+			stoplag(1)
 		if(connected_button)
 			var/obj/screen/ability/spell/S = connected_button
 			if(!istype(S))

@@ -38,7 +38,7 @@
 		else
 			picked.throw_at(target, 5, 10, src)
 			playsound(src,'sound/effects/teleport.ogg',60,1)
-		sleep(1)
+		stoplag(1)
 	qdel(src)
 
 /obj/effect/force_portal/onDropInto(atom/movable/AM)

@@ -35,7 +35,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
 			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
 
-		sleep(1)
+		stoplag(1)
 	//endwhile - reset the pixel offsets to zero
 	is_dizzy = 0
 	if(client)
@@ -68,7 +68,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 		pixel_x = default_pixel_x + rand(-amplitude, amplitude)
 		pixel_y = default_pixel_y + rand(-amplitude/3, amplitude/3)
 
-		sleep(1)
+		stoplag(1)
 	//endwhile - reset the pixel offsets to zero
 	is_jittery = 0
 	pixel_x = default_pixel_x
