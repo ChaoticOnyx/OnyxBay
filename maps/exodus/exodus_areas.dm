@@ -462,6 +462,9 @@
 
 // Maintenance
 
+/area/maintenance/disposal
+	name = "\improper Trash Disposal"
+
 /area/maintenance/ghetto_medbay
 	name = "\improper Ghetto Medbay"
 	icon_state = "ghettomedbay"
