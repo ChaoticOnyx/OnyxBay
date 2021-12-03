@@ -13,8 +13,7 @@
 			slot = text2num(slot_name)
 			break
 	display_name = "[data.name ? data.name : initial(A.name)] (Custom)"
-	if(data.item_desc)
-		description = data.item_desc
+	description = data.item_desc
 	ckey = key
 	path = item_path
 	var/list/job_types = list()

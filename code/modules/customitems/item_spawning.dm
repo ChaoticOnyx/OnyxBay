@@ -138,8 +138,8 @@
 
 // Parses the config file into the custom_items list.
 /hook/startup/proc/load_custom_items()
-
-	if(!fexists("config/custom_items.json") || (GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist)))
+	ASSERT(fexists("config/custom_items.json"))
+	if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
 		return
 	var/list/config_json = json_decode(file2text("config/custom_items.json"))
 	for(var/list/ckey_group in config_json["ckeys"])

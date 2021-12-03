@@ -20,7 +20,7 @@
 	return description
 
 /*
-* Custom adjactment
+* Custom adjustment
 */
 
 /datum/gear_tweak/custom
