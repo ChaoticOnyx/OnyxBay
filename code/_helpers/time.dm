@@ -108,7 +108,7 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 
 ///Returns the number of ticks slept
 /proc/stoplag(initial_delay)
-	if (!Master || !(Master.current_runlevel & RUNLEVELS_DEFAULT))
+	if (!Master || !(GAME_STATE & RUNLEVELS_DEFAULT))
 		sleep(world.tick_lag)
 		return 1
 	if (!initial_delay)
