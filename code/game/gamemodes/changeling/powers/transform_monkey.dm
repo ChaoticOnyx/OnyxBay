@@ -106,7 +106,7 @@
 
 	C.mind.transfer_to(O)
 	O.make_changeling()
-	O.changeling_update_languages(changeling.absorbed_languages)
+	changeling.update_languages()
 
 	feedback_add_details("changeling_powers","LFT")
 	qdel(C)

@@ -26,7 +26,7 @@
 		to_chat(src, SPAN("changeling", "This creature's DNA is ruined!"))
 		return
 
-	if(changeling.isabsorbing)
+	if(changeling.using_proboscis)
 		to_chat(src, SPAN("changeling", "Our proboscis is already in use!"))
 		return
 
@@ -39,7 +39,7 @@
 		to_chat(src, SPAN("changeling", "[T] is dead. We need a living creature to divide."))
 		return
 
-	changeling.isabsorbing = TRUE
+	changeling.using_proboscis = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
 			if(1)
@@ -56,7 +56,7 @@
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
 			to_chat(src, SPAN("changeling", "Transfusion of new core into [T] has been interrupted!"))
-			changeling.isabsorbing = FALSE
+			changeling.using_proboscis = FALSE
 			return
 
 	to_chat(src, SPAN("changeling", "We successfully transfused new core into [T]!"))
@@ -66,7 +66,7 @@
 	changeling.chem_charges -= 20
 	changeling.geneticpoints -= 2
 
-	changeling.isabsorbing = FALSE
+	changeling.using_proboscis = FALSE
 	var/datum/mind/M = T.mind
 	var/datum/antagonist/changeling/CH = GLOB.all_antag_types_[MODE_CHANGELING]
 	CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE)

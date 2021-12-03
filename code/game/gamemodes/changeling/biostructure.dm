@@ -36,8 +36,7 @@
 	brainchan.container = src
 
 	spawn(5)
-		if(brainchan?.client)
-			brainchan.client.screen.len = null //clear the hud
+		brainchan?.client?.screen.len = null //clear the hud
 	reagents.maximum_volume += 5
 	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 5)
 	chem_cauldron = new /datum/reagents(120, src)
@@ -46,6 +45,24 @@
 	QDEL_NULL(brainchan)
 	QDEL_NULL(chem_cauldron)
 	. = ..()
+
+// Biostructure processing
+/obj/item/organ/internal/biostructure/Process()
+	. = ..()
+	if((damage > (max_damage / 2)) && healing_threshold)
+		if(owner)
+			alert(owner, "We have taken massive core damage! We need regeneration.", "Core Damaged")
+		else
+			alert(brainchan, "We have taken massive core damage! We need host and regeneration.", "Core Damaged")
+		healing_threshold = FALSE
+	else if((damage <= (max_damage / 2)) && !healing_threshold)
+		healing_threshold = TRUE
+	if(owner)
+		check_damage()
+		if((damage <= (max_damage / 2)) && healing_threshold && (world.time < (last_regen_time + 40)))
+			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
+			damage--
+			last_regen_time = world.time
 
 // Does some magical shit checking /datum/changeling damage
 /obj/item/organ/internal/biostructure/proc/check_damage()
@@ -63,6 +80,7 @@
 	if(status & ORGAN_DEAD)
 		return
 	if(M?.mind && brainchan)
+		M.mind.changeling.update_my_mob(brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, SPAN("changeling", "We feel slightly disoriented."))
 
@@ -92,42 +110,25 @@
 
 	if(brainchan)
 		if(brainchan.mind)
+			brainchan.mind.changeling.update_my_mob(target)
 			brainchan.mind.transfer_to(target)
 		else
 			target.key = brainchan.key
 
 	return TRUE
 
-// Biostructure processing
-/obj/item/organ/internal/biostructure/Process()
-	. = ..()
-	if(damage > max_damage / 2 && healing_threshold)
-		if(owner)
-			alert(owner, "We have taken massive core damage! We need regeneration.", "Core Damaged")
-		else
-			alert(brainchan, "We have taken massive core damage! We need host and regeneration.", "Core Damaged")
-		healing_threshold = 0
-	else if (damage <= max_damage / 2 && !healing_threshold)
-		healing_threshold = 1
-	if(owner)
-		check_damage()
-		if(damage <= max_damage / 2 && healing_threshold && world.time < last_regen_time + 40)
-			owner.mind.changeling.chem_charges = max(owner.mind.changeling.chem_charges - 0.5, 0)
-			damage--
-			last_regen_time = world.time
-
 
 // Kills the biostructure
 /obj/item/organ/internal/biostructure/die()
 	if(brainchan)
 		if(brainchan.mind)
-			brainchan.mind.changeling.true_dead = TRUE
+			brainchan.mind.changeling.die()
 			brainchan.mind.current = null
 		brainchan.death()
 	else
 		var/mob/host = loc
 		if(istype(host))
-			host.mind.changeling.true_dead = TRUE
+			brainchan.mind.changeling.die()
 			host.death()
 	dead_icon = "strange-biostructure-dead"
 	QDEL_NULL(brainchan)
@@ -161,7 +162,7 @@
 	forceMove(destination)
 
 	//connecting organ
-	if(istype(destination, /mob/living/carbon/human))
+	if(ishuman(destination))
 		var/mob/living/carbon/human/H = destination
 		owner = H
 		H.internal_organs_by_name[BP_CHANG] = src
@@ -191,8 +192,7 @@
 	var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
 	var/obj/item/organ/internal/biostructure/BIO = internal_organs_by_name[BP_CHANG]
 
-	if(brain)
-		brain.vital = FALSE
+	brain?.vital = FALSE
 	if(!BIO)
 		BIO = new /obj/item/organ/internal/biostructure(src)
 		internal_organs_by_name[BP_CHANG] = BIO

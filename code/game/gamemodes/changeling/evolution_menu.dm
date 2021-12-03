@@ -7,9 +7,11 @@ var/list/datum/power/changeling/powerinstances = list()
 	var/name = "Power"
 	var/desc = "Placeholder"
 	var/helptext = ""
-	var/isVerb = 1 	// Is it an active power, or passive?
-	var/verbpath // Path to a verb that contains the effects.
 	var/enhancedtext = ""
+
+	var/is_active = TRUE // Is it an active power, or passive?
+	var/verbpath // Path to a verb that contains the effects.
+	var/power_path // Path to an actual power datum.
 
 /datum/power/changeling
 	var/allowduringlesserform = 0
@@ -154,7 +156,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/Epinephrine
 	name = "Epinephrine sacs"
 	desc = "We evolve additional sacs of adrenaline throughout our body."
-	helptext = "Gives the ability to instantly recover from stuns.  High chemical cost."
+	helptext = "Gives the ability to instantly recover from stuns. High chemical cost."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_unstun
 
@@ -163,7 +165,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We evolve new pathways for producing our necessary chemicals, permitting us to naturally create them faster."
 	helptext = "Doubles the rate at which we naturally recharge chemicals."
 	genomecost = 4
-	isVerb = 0
+	is_active = 0
 	verbpath = /mob/proc/changeling_fastchemical
 /*
 /datum/power/changeling/AdvChemicalSynth
@@ -179,7 +181,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "Our chemical glands swell, permitting us to store more chemicals inside of them."
 	helptext = "Allows us to store an extra 25 units of chemicals."
 	genomecost = 4
-	isVerb = 0
+	is_active = 0
 	verbpath = /mob/proc/changeling_engorgedglands
 
 /datum/power/changeling/DigitalCamoflague
@@ -596,41 +598,36 @@ var/list/datum/power/changeling/powerinstances = list()
 		call(/datum/changeling/proc/EvolutionMenu)()
 
 
-
 /datum/changeling/proc/purchasePower(datum/mind/M, Pname, remake_verbs = 1)
 	if(!M || !M.changeling)
 		return
 
-	var/datum/power/changeling/Thepower = Pname
+	var/datum/power/changeling/PC = Pname
 
 
 	for (var/datum/power/changeling/P in powerinstances)
 //		log_debug("[P] - [Pname] = [P.name == Pname ? "True" : "False"]")
-
 		if(P.name == Pname)
-			Thepower = P
+			PC = P
 			break
 
-
-	if(Thepower == null)
-		to_chat(M.current, "This is awkward.  Changeling power purchase failed, please report this bug to a coder!")
+	if(PC == null)
+		to_chat(my_mob, "This is awkward. Changeling power purchase failed, please report this bug to a coder!")
 		return
 
-	if(Thepower in purchasedpowers)
-		to_chat(M.current, "We have already evolved this ability!")
+	if(PC in purchasedpowers)
+		to_chat(my_mob, SPAN("changeling", "We have already evolved this ability!"))
 		return
 
 
-	if(geneticpoints < Thepower.genomecost)
-		to_chat(M.current, "We cannot evolve this... yet.  We must acquire more DNA.")
+	if(geneticpoints < PC.genomecost)
+		to_chat(my_mob, SPAN("changeling", "We cannot evolve this... yet. We must acquire more DNA."))
 		return
 
-	geneticpoints -= Thepower.genomecost
+	geneticpoints -= PC.genomecost
 
-	purchasedpowers += Thepower
+	purchasedpowers += PC
 
-	if(!Thepower.isVerb && Thepower.verbpath)
-		call(M.current, Thepower.verbpath)()
-	else if(remake_verbs)
+	if(remake_verbs)
 		M.current.make_changeling()
 

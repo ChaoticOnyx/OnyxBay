@@ -16,3 +16,41 @@
 	end_on_antag_death = 0
 	antag_scaling_coeff = 10
 	antag_tags = list(MODE_CHANGELING)
+
+
+// Makes us a changeling. Called when one becomes an antag.
+// !!ALSO CALLED DURING /datum/mind/transfer_to()!!
+/mob/proc/make_changeling()
+	if(!mind)
+		return FALSE
+	if(!mind.changeling)
+		mind.changeling = new /datum/changeling(src)
+
+	var/datum/changeling/changeling = mind.changeling
+
+	verbs += /datum/changeling/proc/EvolutionMenu
+	add_language("Changeling")
+
+	var/mob/living/carbon/C = src
+	var/obj/item/organ/internal/biostructure/BIO = locate() in C.contents
+	if(istype(C))
+		if(!BIO && !istype(C, /mob/living/carbon/brain))
+			C.insert_biostructure()
+		else
+			var/obj/item/organ/internal/brain/brain = C.internal_organs_by_name[BP_BRAIN]
+			brain?.vital = 0 // make our brain not vital ~~Fucking useful comment
+
+	changeling.update_changeling_powers()
+	changeling.update_my_mob(src)
+
+	// Changeling acquires our mob's known languages.
+	for(var/language in languages)
+		changeling.absorbed_languages |= language
+
+	// If called by a human, acquire their DNA.
+	var/mob/living/carbon/human/H = src
+	if(istype(H))
+		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages, H.modifiers, H.flavor_texts)
+		changeling.absorbDNA(newDNA)
+
+	return TRUE

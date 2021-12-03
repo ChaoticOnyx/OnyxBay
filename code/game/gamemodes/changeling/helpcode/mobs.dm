@@ -1,40 +1,4 @@
 
-/mob/living/carbon/human/proc/has_any_exposed_bodyparts()
-	var/p_head  = FALSE
-	var/p_face  = FALSE
-	var/p_eyes  = FALSE
-	var/p_chest = FALSE
-	var/p_groin = FALSE
-	var/p_arms  = FALSE
-	var/p_hands = FALSE
-	var/p_legs  = FALSE
-	var/p_feet  = FALSE
-
-	for(var/obj/item/clothing/C in list(head, wear_mask, wear_suit, w_uniform, gloves, shoes))
-		if(!C)
-			continue
-		if((C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_head = TRUE
-		if((C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_face = TRUE
-		if((C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_eyes = TRUE
-		if((C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_chest = TRUE
-		if((C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_groin = TRUE
-		if((C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_arms = TRUE
-		if((C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_hands = TRUE
-		if((C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_legs = TRUE
-		if((C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_feet = TRUE
-
-	return !(p_head && p_face && p_eyes && p_chest && p_groin && p_arms && p_hands && p_legs && p_feet)
-
-
 /mob/proc/transform_into_little_changeling()
 	set category = "Changeling"
 	set name = "Transform into little changeling"
@@ -101,6 +65,8 @@
 	maxbodytemp = 350
 	break_stuff_probability = 15
 	faction = "biomass"
+
+	var/absorbing = FALSE
 
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -211,7 +177,7 @@
 		to_chat(src, SPAN("changeling", "This creature's DNA is ruined beyond useability!"))
 		return
 
-	if(changeling.isabsorbing)
+	if(absorbing)
 		to_chat(src, SPAN("changeling", "We are already infesting!"))
 		return
 
@@ -227,7 +193,7 @@
 	visible_message(SPAN("danger", "[src] has latched onto \the [target]."), \
 					SPAN("changeling", "We have latched onto \the [target]."))
 
-	changeling.isabsorbing = TRUE
+	absorbing = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
 			if(2)
@@ -242,7 +208,7 @@
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, target, 150))
 			to_chat(src, SPAN("changeling", "Our infestation of [target] has been interrupted!"))
-			changeling.isabsorbing = FALSE
+			absorbing = FALSE
 			target.getBruteLoss(39)
 			return
 
@@ -251,7 +217,7 @@
 
 	to_chat(target, SPAN("danger", "<h3>Your neural network has been overtaken by \the [src]!</h3>"))
 	to_chat(target, SPAN("deadsay", "You have died."))
-	changeling.isabsorbing = FALSE
+	absorbing = FALSE
 
 	if(istype(src, /mob/living/simple_animal/hostile/little_changeling/arm_chan))
 		if(!target.has_limb(BP_L_ARM))
@@ -279,7 +245,7 @@
 	target.regenerate_icons()
 
 	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
-	absorbDNA(newDNA)
+	changeling.absorbDNA(newDNA)
 
 	target.ghostize()
 	if(changeling_transfer_mind(target))
@@ -387,7 +353,7 @@
 		to_chat(src, SPAN("changeling", "We can't use this ability. We are dead."))
 		return
 
-	if(mind.changeling.isabsorbing)
+	if(absorbing)
 		to_chat(src, SPAN("changeling", "We can't mimic environment while infesting."))
 		return
 
@@ -409,7 +375,7 @@
 	set name = "Runaway form"
 	set desc = "We take our weakest form."
 
-	if(is_regenerating())
+	if(mind.changeling.is_regenerating())
 		return
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))

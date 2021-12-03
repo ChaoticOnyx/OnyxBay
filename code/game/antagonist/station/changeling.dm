@@ -21,6 +21,11 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	if(config.changeling_min_age)
 		min_player_age = config.changeling_min_age
 
+	// Building purchasable powers list.
+	if(!powerinstances.len)
+		for(var/P in powers)
+			powerinstances += new P()
+
 /datum/antagonist/changeling/get_special_objective_text(datum/mind/player)
 	return "<br><b>Changeling ID:</b> [player.changeling.changelingID].<br><b>Genomes Absorbed:</b> [player.changeling.absorbedcount]"
 
