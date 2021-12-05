@@ -17,13 +17,13 @@
 /datum/event/gateway_distress/announce()
 	if(!station_gateway)
 		return
-	command_announcement.Announce("Security anomaly found in \the [station_gateway.name], location - [gateway_area_name ? gateway_area_name : "Unknown"]. Attempting to iso... \
-	Error. The IDS reports the IPS was shutted down. Intrusion alarm level: RED.\nThe IDS reports the transmission was accepted by device. The transmission source is \
+	command_announcement.Announce("Security anomaly found in \the [station_gateway.name][gateway_area_name ? lowertext(gateway_area_name) != lowertext(station_gateway.name) ? "" : ", location - [gateway_area_name]" : ", location - Unknown"]. Attempting to iso... \
+	Error. The IDS reports the IPS was shut down. Intrusion alarm level: RED.\nThe IDS reports the transmission was accepted by device. The transmission source is \
 	\"Unknown\", signature: \"NT high level distress signal\". Triangulation process detected.\n\
 	Estimated time to triangulation completion: [round(((station_gateway.wait - world.time) / 10) / 60)] minutes.", "Gateway Managment Station", zlevels = affecting_z)
 
 /datum/event/gateway_distress/proc/announce_open()
 	if(!station_gateway)
 		return
-	command_announcement.Announce("\The [station_gateway.name] in [gateway_area_name ? gateway_area_name : "Unknown location"] reports the portal has been opened.", "Gateway Operation Computer", zlevels = affecting_z)
+	command_announcement.Announce("\The [station_gateway.name][gateway_area_name ? lowertext(gateway_area_name) == lowertext(station_gateway.name) ? "" : " in [gateway_area_name]": " in Unknown location"] reports the portal has been opened.", "Gateway Managment Station", zlevels = affecting_z)
 	station_gateway.toggleon()
