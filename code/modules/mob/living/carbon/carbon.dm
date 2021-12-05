@@ -299,7 +299,7 @@
 		return
 
 	var/obj/item/I = item
-	if(!I.candrop)
+	if(!I.canremove)
 		return
 
 	var/throw_range = item.throw_range
