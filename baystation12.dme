@@ -510,7 +510,6 @@
 #include "code\game\gamemodes\changeling\powers\armclaw.dm"
 #include "code\game\gamemodes\changeling\powers\boost_range.dm"
 #include "code\game\gamemodes\changeling\powers\camouflage.dm"
-#include "code\game\gamemodes\changeling\powers\cauldron.dm"
 #include "code\game\gamemodes\changeling\powers\darksight.dm"
 #include "code\game\gamemodes\changeling\powers\detach_limb.dm"
 #include "code\game\gamemodes\changeling\powers\digital_camo.dm"

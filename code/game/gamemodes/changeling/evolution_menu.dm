@@ -10,7 +10,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	var/enhancedtext = ""
 
 	var/is_active = TRUE // Is it an active power, or passive?
-	var/verbpath // Path to a verb that contains the effects.
+	var/verbpath // Path to a verb that contains the effects. TODO: Get rid of it after rewriting vampires.
 	var/power_path // Path to an actual power datum.
 
 /datum/power/changeling
@@ -276,13 +276,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 4
 	verbpath = /mob/proc/changeling_division
 
-/datum/power/changeling/chem_disp_sting
+/*datum/power/changeling/chem_disp_sting
 	name = "Biochemical Cauldron"
 	desc = "We evolve our stinger glands to be able to synthesize a variety of chemicals."
 	helptext = "Every sting would contain 10 units of the pre-chosen solution from our glands and would require 5 units of our chemicals per injection."
 	enhancedtext = "20 units of the solution per sting and more reagents to synthesize from."
 	genomecost = 10
 	verbpath = /mob/proc/chem_disp_sting
+*/
 /*
 /datum/power/changeling/changeling_chemical_sting
 	name = "Chemical Sting"

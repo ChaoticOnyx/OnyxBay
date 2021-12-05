@@ -81,10 +81,41 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	STOP_PROCESSING(SSmobs, src)
 
 
-// Transfers us to another mob.
+// Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.
 /datum/changeling/proc/transfer_to(mob/living/L)
 	if(!L.mind)
 		return FALSE
+	if(my_mob)
+		my_mob.mind?.changeling = null
+		my_mob.verbs -= /datum/changeling/proc/EvolutionMenu
+
+		var/obj/item/organ/internal/biostructure/BIO
+		if(istype(my_mob, /mob/living/carbon/brain))
+			BIO = my_mob.loc
+		else
+			BIO = locate() in my_mob.contents
+		if(!BIO) // We lost our biostructure somewhere, everything's broken, let's just give up and fucking die.
+			to_chat(my_mob, SPAN("changeling", "Strangely enough, we feel like dying right now. The only thing we know, it's not our fault."))
+			die()
+			return FALSE
+		BIO.change_host(M) // Biostructure object gets moved here
+
+	if(ishuman(L))
+		var/mob/living/carbon/human/H = L
+		if(H.stat == DEAD) // Resurrects dead bodies, yet doesn't heal damage
+			H.setBrainLoss(0)
+			H.SetParalysis(0)
+			H.SetStunned(0)
+			H.SetWeakened(0)
+			H.shock_stage = 0
+			H.timeofdeath = 0
+			H.switch_from_dead_to_living_mob_list()
+			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
+			heart.pulse = 1
+			H.set_stat(CONSCIOUS)
+			H.failed_last_breath = 0 // So mobs that died of oxyloss don't revive and have perpetual out of breath.
+			H.reload_fullscreen()
+
 	L.mind.changeling = src
 	L.make_changeling()
 	return TRUE
@@ -146,6 +177,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	if(!GetDNA(newDNA.name)) // Don't duplicate - I wonder if it's possible for it to still be a different DNA? DNA code could use a rewrite
 		absorbed_dna += newDNA
+
+
+
 
 
 ///////////////////////////
@@ -215,6 +249,15 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	my_mob.ability_master.reskin_changeling()
 	my_mob.ability_master.update_abilities()
 
+
+// Returns a power with given name from available_powers. This proc bad, try to avoid using it unless it's really necessary.
+/datum/changeling/proc/get_changeling_power_by_name(_name)
+	if(!_name)
+		return null
+	for(var/datum/changeling_power/CP in available_powers)
+		if(CP.name == _name)
+			return CP
+	return null
 
 // Deactivates all current stings to make sure my_mob doesn't have queued sting click handlers.
 /datum/changeling/proc/deactivate_stings()

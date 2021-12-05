@@ -1,4 +1,8 @@
 
+/datum/changling_power/hive_download()
+	name = "Hive Absorb"
+	desc = "Allows us to absorb DNA that is being channeled in the airwaves."
+
 /mob/proc/changeling_hivedownload()
 	set category = "Changeling"
 	set name = "Hive Absorb (20)"

@@ -1,10 +1,10 @@
 
 //Absorbs the victim's DNA making them uncloneable. Requires a strong grip on the victim.
 //Doesn't cost anything as it's the most basic ability.
-
 /datum/changeling_power/absorb
 	name = "Absorb DNA"
-	icon_state = "ling_absorb"
+	desc = "We absorb our prey."
+	icon_state = "ling_division"
 	required_chems = 0
 
 /datum/changeling_power/absorb/activate()
@@ -38,7 +38,7 @@
 		to_chat(my_mob, SPAN("changeling", "Our proboscis is already in use!"))
 		return
 
-	var/obj/item/organ/external/affecting = T.get_organ(zone_sel.selecting)
+	var/obj/item/organ/external/affecting = T.get_organ(my_mob.zone_sel.selecting)
 	if(!affecting)
 		to_chat(my_mob, SPAN("changeling", "They are missing that body part!"))
 		return
@@ -71,6 +71,7 @@
 	my_mob.visible_message(SPAN("danger", "[my_mob] sucks the fluids from [T]!"), \
 		 				   SPAN("changeling", "<b>We have absorbed [T]!</b>"))
 	to_chat(T, SPAN("danger", "You have been absorbed by the changeling!"))
+
 	changeling.chem_charges += 10
 	changeling.geneticpoints += 2
 

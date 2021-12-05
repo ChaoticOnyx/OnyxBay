@@ -19,7 +19,7 @@
 
 
 // Makes us a changeling. Called when one becomes an antag.
-// !!ALSO CALLED DURING /datum/mind/transfer_to()!!
+// !!ALSO CALLED DURING /datum/mind/transfer_to() via /datum/changeling/transfer_to()!!
 /mob/proc/make_changeling()
 	if(!mind)
 		return FALSE
@@ -31,17 +31,18 @@
 	verbs += /datum/changeling/proc/EvolutionMenu
 	add_language("Changeling")
 
+	// Inserting a biostructure.
 	var/mob/living/carbon/C = src
 	var/obj/item/organ/internal/biostructure/BIO = locate() in C.contents
 	if(istype(C))
 		if(!BIO && !istype(C, /mob/living/carbon/brain))
-			C.insert_biostructure()
+			C.setup_changeling_biostructure()
 		else
 			var/obj/item/organ/internal/brain/brain = C.internal_organs_by_name[BP_BRAIN]
 			brain?.vital = 0 // make our brain not vital ~~Fucking useful comment
 
 	changeling.update_changeling_powers()
-	changeling.update_my_mob(src)
+	changeling.update_my_mob(src) // Just to be sure.
 
 	// Changeling acquires our mob's known languages.
 	for(var/language in languages)

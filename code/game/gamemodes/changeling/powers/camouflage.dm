@@ -1,6 +1,6 @@
 
 // Makes us almost transparent, using chemicals in process.
-/datum/changeling_power/toggle/visible_camouflage
+/datum/changeling_power/toggled/visible_camouflage
 	name = "Visible Camouflage"
 	desc = "Turns us almost invisible, as long as we move slowly."
 	icon_state = "ling_boost_range"
@@ -10,9 +10,10 @@
 
 	text_activate = "We vanish from sight, and will remain hidden, so long as we move carefully."
 	text_deactivate = "We revert our camouflage, revealing ourselves."
+	text_nochems = "Our camouflage suddenly reverts, revealing us."
 	var/must_walk = TRUE
 
-/datum/changeling_power/toggle/visible_camouflage/update_recursive_enhancement()
+/datum/changeling_power/toggled/visible_camouflage/update_recursive_enhancement()
 	if(..())
 		desc = "Turns us almost invisible."
 		text_activate = "We vanish from sight."
@@ -24,14 +25,14 @@
 		text_activate = initial(text_activate)
 		must_walk = TRUE
 
-/datum/changeling_power/toggle/visible_camouflage/activate()
+/datum/changeling_power/toggled/visible_camouflage/activate()
 	if(!..())
 		return
 	animate(my_mob, alpha = 255, alpha = 10, time = 10)
 	if(must_walk)
 		my_mob.set_m_intent(M_WALK)
 
-/datum/changeling_power/toggle/visible_camouflage/deactivate()
+/datum/changeling_power/toggled/visible_camouflage/deactivate()
 	if(!..())
 		return
 	my_mob.invisibility = initial(my_mob.invisibility)
@@ -40,7 +41,7 @@
 	my_mob.set_m_intent(M_RUN)
 	animate(my_mob, alpha = 10, alpha = 255, time = 10)
 
-/datum/changeling_power/toggle/visible_camouflage/Process()
+/datum/changeling_power/toggled/visible_camouflage/Process()
 	if(!..())
 		return
 	if(changeling.is_regenerating())

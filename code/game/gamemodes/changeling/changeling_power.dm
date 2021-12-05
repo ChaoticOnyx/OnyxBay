@@ -92,7 +92,9 @@
 	return TRUE
 
 /datum/changeling_power/proc/use_chems(amount)
-	changeling.chem_charges = max(0, changeling.chem_charges - amount)
+	if(!amount)
+		amount = chems_required
+	changeling.chem_charges -= amount // Intentionally allowing it to go beyond 0 in some edge cases with delayed abilities.
 
 /datum/changeling_power/proc/use()
 	activate()

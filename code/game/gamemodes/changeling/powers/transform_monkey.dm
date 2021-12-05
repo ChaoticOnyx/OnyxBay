@@ -25,7 +25,7 @@
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
 	if(istype(H))
-		H.insert_biostructure()
+		H.setup_changeling_biostructure()
 	feedback_add_details("changeling_powers","LF")
 	return 1
 

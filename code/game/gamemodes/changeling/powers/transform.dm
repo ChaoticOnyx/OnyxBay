@@ -67,6 +67,6 @@
 		H.set_species(newSpecies,1)
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
-		H.insert_biostructure()
+		H.setup_changeling_biostructure()
 	domutcheck(src, null)
 	src.UpdateAppearance()
