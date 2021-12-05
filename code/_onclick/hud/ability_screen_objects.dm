@@ -168,7 +168,7 @@
 	return null
 
 /obj/screen/movable/ability_master/proc/get_ability_by_changeling_power(datum/changeling_power/cp)
-	for(var/screen in spell_objects)
+	for(var/screen in changeling_power_objects)
 		var/obj/screen/ability/changeling_power/CP = screen
 		if(CP.power == cp)
 			return CP

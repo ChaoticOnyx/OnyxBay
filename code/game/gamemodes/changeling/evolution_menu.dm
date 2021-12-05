@@ -553,7 +553,7 @@ var/list/datum/power/changeling/powerinstances = list()
 			ownsthis = 1
 
 		var/color = "#e6e6e6"
-		if(i % 2 == 0)
+		if(i%2 == 0)
 			color = "#f2f2f2"
 
 		dat += {"
