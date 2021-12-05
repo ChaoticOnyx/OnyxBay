@@ -4,7 +4,7 @@
 	name = "No Pain"
 	desc = "We cannot feel pain while this ability is active."
 	icon_state = "ling_darksight"
-	power_processing = FALSE
+	power_processing = TRUE
 	max_stat = UNCONSCIOUS
 	required_chems = 10
 	chems_drain = 0.5
@@ -16,12 +16,12 @@
 /datum/changeling_power/toggled/no_pain/activate()
 	if(!..())
 		return
-	var/mob/living/carbon/human/H = src
+	var/mob/living/carbon/human/H = my_mob
 	H.no_pain = TRUE
 	use_chems()
 
 /datum/changeling_power/toggled/no_pain/deactivate(no_message = TRUE)
 	if(!..())
 		return
-	var/mob/living/carbon/human/H = src
+	var/mob/living/carbon/human/H = my_mob
 	H.no_pain = FALSE

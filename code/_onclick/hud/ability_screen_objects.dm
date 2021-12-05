@@ -94,15 +94,15 @@
 	for(var/obj/screen/ability/ability in ability_objects)
 		ability.update_icon(forced)
 		if(istype(ability, /obj/screen/ability/changeling_power))
-			var/obj/screen/ability/changeling_power/P = ability
+			/*var/obj/screen/ability/changeling_power/P = ability
 			if(!P.power.chems_drain)
 				if(P.power.required_chems)
 					P.maptext = "[P.power.required_chems]" // Slot number not needed, chem cost holds more importance.
 				else
 					P.maptext = ""
 			else
-				P.maptext = "[P.power.required_chems] ([P.power.chems_drain])"
-			break
+				P.maptext = "[P.power.required_chems] ([P.power.chems_drain])"*/
+			continue
 		ability.maptext = "[i]" // Slot number
 		i++
 
@@ -440,12 +440,23 @@
 
 	overlays.Cut()
 
-	icon_state = "[background_base_state]_spell_[power.is_usable() ? "ready" : "base"]"
+	icon_state = "[background_base_state]_spell_[power.is_usable(TRUE) ? "ready" : "base"]"
 	overlays.Add(power.icon_state)
 
 	if(istype(power, /datum/changeling_power/toggled))
 		if(power.active)
 			overlays.Add("changeling_spell_active")
+
+	var/image/T = image(icon, "blank")
+	if(!power.chems_drain)
+		if(power.required_chems)
+			T.maptext = "[power.required_chems]" // Slot number not needed, chem cost holds more importance.
+		else
+			T.maptext = ""
+	else
+		T.maptext = "[power.required_chems] ([power.chems_drain])"
+
+	overlays.Add(T)
 
 /obj/screen/ability/changeling_power/activate()
 	power.use(usr)

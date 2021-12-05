@@ -48,7 +48,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	else
 		changelingID = "[rand(1,99)]"
 	update_my_mob(_M)
-	START_PROCESSING(SSmobs, src)
+	START_PROCESSING(SSprocessing, src)
 
 
 // Chemicals and genetic damage regeneration.
@@ -74,7 +74,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(my_mob)
 		to_chat(my_mob, SPAN("changeling", "That's it. We hunt no more."))
 	true_dead = TRUE
-	STOP_PROCESSING(SSmobs, src)
+	STOP_PROCESSING(SSprocessing, src)
 
 
 // Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.
@@ -232,8 +232,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		for(var/datum/power/changeling/P in purchasedpowers)
 			for(var/datum/changeling_power/CP in available_powers)
 				if(CP.type == P.power_path)
+					CP.update()
 					if(mob_in_lesser_form && !P.allowduringlesserform)
-						remove_changeling_power(CP)
+						remove_changeling_power(CP, FALSE)
 					continue checking_purchased
 			if(mob_in_lesser_form && !P.allowduringlesserform)
 				continue
@@ -255,4 +256,4 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 // Deactivates all current stings to make sure my_mob doesn't have queued sting click handlers.
 /datum/changeling/proc/deactivate_stings()
 	for(var/datum/changeling_power/toggled/sting/S in available_powers)
-		S.deactivate(FALSE)
+		S.deactivate()

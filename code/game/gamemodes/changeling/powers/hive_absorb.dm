@@ -15,6 +15,10 @@
 	set name = "Hive Absorb (20)"
 	set desc = "Allows us to absorb DNA that is being channeled in the airwaves."
 
+	if(!usr?.mind?.changeling)
+		return
+	src = usr.mind.changeling
+
 	if(usr != my_mob)
 		return
 

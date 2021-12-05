@@ -26,10 +26,14 @@
 	set name = "Move Biostructure"
 	set desc = "We relocate our precious organ."
 
+	if(!usr?.mind?.changeling)
+		return
+	src = usr.mind.changeling
+
 	if(usr != my_mob)
 		return
 
-	var/datum/changeling_power/passive/move_biostructure/source_power = get_changeling_power_by_name("Move Biostructure")
+	var/datum/changeling_power/passive/move_biostructure/source_power = get_changeling_power_by_name("Relocate Biostructure")
 	if(!source_power)
 		my_mob.verbs -= /datum/changeling/proc/move_biostructure
 		return

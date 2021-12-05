@@ -28,9 +28,7 @@
 	my_mob = _M
 	changeling = _M.mind.changeling
 	changeling.available_powers.Add(src)
-	_M.ability_master.add_changeling_power(src)
-	update_required_chems()
-	update_recursive_enhancement()
+	update()
 
 /datum/changeling_power/Destroy()
 	deactivate()
@@ -41,9 +39,15 @@
 	changeling = null
 	return ..()
 
+/datum/changeling_power/proc/update()
+	if(!my_mob.ability_master.get_ability_by_changeling_power(src))
+		my_mob.ability_master.add_changeling_power(src)
+	update_required_chems()
+	update_recursive_enhancement()
+
 /datum/changeling_power/proc/update_screen_button()
-	var/obj/screen/movable/ability_master/AM = my_mob.ability_master.get_ability_by_changeling_power(src)
-	AM?.update_icon()
+	var/obj/screen/ability/changeling_power/button = my_mob.ability_master.get_ability_by_changeling_power(src)
+	button?.update_icon()
 
 /datum/changeling_power/proc/check_incapacitated(_max_stat, _allow_stasis)
 	if(!_max_stat)
@@ -127,11 +131,11 @@
 
 /datum/changeling_power/passive/activate()
 	if(power_processing)
-		START_PROCESSING(SSmobs, src) // We just start processing straight away.
+		START_PROCESSING(SSprocessing, src) // We just start processing straight away.
 
 /datum/changeling_power/passive/deactivate()
 	if(power_processing)
-		STOP_PROCESSING(SSmobs, src) // We just start processing straight away.
+		STOP_PROCESSING(SSprocessing, src) // We just start processing straight away.
 
 
 // Toggle-able powers
@@ -150,7 +154,7 @@
 		return
 	to_chat(my_mob, SPAN("changeling", text_activate))
 	if(power_processing)
-		START_PROCESSING(SSmobs, src)
+		START_PROCESSING(SSprocessing, src)
 	update_screen_button()
 
 /datum/changeling_power/toggled/deactivate(no_message = TRUE)
@@ -160,7 +164,7 @@
 	if(!no_message)
 		to_chat(my_mob, SPAN("changeling", text_deactivate))
 	if(power_processing)
-		START_PROCESSING(SSmobs, src)
+		START_PROCESSING(SSprocessing, src)
 	update_screen_button()
 
 /datum/changeling_power/toggled/Process()
@@ -237,7 +241,7 @@
 /datum/changeling_power/toggled/sting/deactivate(no_message = TRUE)
 	active = FALSE
 	var/datum/click_handler/changeling/sting/C = my_mob.GetClickHandler()
-	if(C.sting == src)
+	if(istype(C) && C.sting == src)
 		my_mob.PopClickHandler()
 	if(!no_message)
 		to_chat(my_mob, SPAN("changeling", text_deactivate))
@@ -258,9 +262,6 @@
 
 /datum/changeling_power/toggled/sting/proc/sting_target(mob/living/carbon/human/target, loud = FALSE)
 	if(!target)
-		return
-	if(!ishuman(target) || (target == my_mob))
-		target.Click()
 		return
 
 	if(!is_usable())

@@ -2,7 +2,7 @@
 /datum/changeling_power/toggled/sting/vomit
 	name = "Vomit Sting"
 	desc = "Urges target to vomit."
-	icon_state = "ling_sting_silence"
+	icon_state = "ling_sting_vomit"
 	required_chems = 15
 
 /datum/changeling_power/toggled/sting/vomit/sting_target(mob/living/carbon/human/target, loud = FALSE)

@@ -3,7 +3,7 @@
 /datum/changeling_power/toggled/bioelectrogenesis
 	name = "Bioelectrogenesis"
 	desc = "We create an electromagnetic pulse against synthetics."
-	icon_state = "ling_boost_range"
+	icon_state = "ling_emp"
 	required_chems = 20
 	power_processing = FALSE
 
@@ -27,13 +27,11 @@
 /datum/changeling_power/toggled/bioelectrogenesis/proc/affect(atom/target)
 	if(!target)
 		return
-	if(!ishuman(target) || (target == my_mob))
-		target.Click()
-		return
 	if(!is_usable())
 		return
 	if(target in orange(1, src))
 		empulse(target.loc, 1, 1)
+		deactivate()
 		use_chems()
 	else
 		to_chat(src, SPAN("changeling", "The target is too far away."))

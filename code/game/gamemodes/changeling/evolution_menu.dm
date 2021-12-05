@@ -320,6 +320,10 @@ var/list/datum/power/changeling/powerinstances = list()
 	set name = "Evolution Menu"
 	set desc = "Level up!"
 
+	if(!usr?.mind?.changeling)
+		return
+	src = usr.mind.changeling
+
 	if(usr != my_mob)
 		return
 
@@ -386,7 +390,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 				}
 
-				function expand(id,name,desc,helptext,enhancedtext,power,owns_this){
+				function expand(id,name,desc,helptext,enhancedtext,power,ownsthis){
 
 					clearAll();
 
@@ -405,7 +409,7 @@ var/list/datum/power/changeling/powerinstances = list()
 						body += "<font size='2'><font color = 'DeepSkyBlue'><b>"+enhancedtext+"</b></font></font><BR>"
 					}
 
-					if(!owns_this)
+					if(!ownsthis)
 					{
 						body += "<a href='?src=\ref[src];P="+power+"'>Evolve</a>"
 					}
@@ -543,10 +547,10 @@ var/list/datum/power/changeling/powerinstances = list()
 
 	var/i = 1
 	for(var/datum/power/changeling/P in powerinstances)
-		var/owns_this = 0
+		var/ownsthis = 0
 
 		if(P in purchasedpowers)
-			owns_this = 1
+			ownsthis = 1
 
 		var/color = "#e6e6e6"
 		if(i % 2 == 0)
@@ -558,9 +562,9 @@ var/list/datum/power/changeling/powerinstances = list()
 				<td align='center' bgcolor='[color]'>
 					<span id='notice_span[i]'></span>
 					<a id='link[i]'
-					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P.enhancedtext]","[P]",[owns_this])'
+					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P.enhancedtext]","[P]",[ownsthis])'
 					>
-					<span id='search[i]'><b>Evolve [P] - Cost: [owns_this ? "Purchased" : P.genomecost]</b></span>
+					<span id='search[i]'><b>Evolve [P] - Cost: [ownsthis ? "Purchased" : P.genomecost]</b></span>
 					</a>
 					<br><span id='item[i]'></span>
 				</td>

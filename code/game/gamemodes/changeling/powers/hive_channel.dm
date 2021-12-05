@@ -15,6 +15,10 @@
 	set name = "Hive Channel (10)"
 	set desc = "Allows us to channel DNA in the airwaves to allow other changelings to absorb it."
 
+	if(!usr?.mind?.changeling)
+		return
+	src = usr.mind.changeling
+
 	if(usr != my_mob)
 		return
 

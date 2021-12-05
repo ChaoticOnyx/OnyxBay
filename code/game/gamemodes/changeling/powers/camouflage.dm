@@ -3,7 +3,7 @@
 /datum/changeling_power/toggled/visible_camouflage
 	name = "Visible Camouflage"
 	desc = "Turns us almost invisible, as long as we move slowly."
-	icon_state = "ling_boost_range"
+	icon_state = "ling_camouflage"
 	required_chems = 10
 	chems_drain = 0.5
 	power_processing = TRUE
