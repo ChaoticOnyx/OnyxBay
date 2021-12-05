@@ -99,6 +99,7 @@ var/server_name = "OnyxBay"
 
 #define RECOMMENDED_VERSION 514
 /world/New()
+	dmjit_hook_main_init()
 	SetupLogs()
 
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently

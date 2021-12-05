@@ -35,6 +35,7 @@
 #include "code\__defines\contracts.dm"
 #include "code\__defines\damage_organs.dm"
 #include "code\__defines\deity.dm"
+#include "code\__defines\dmjit.dm"
 #include "code\__defines\dna.dm"
 #include "code\__defines\donations_defines.dm"
 #include "code\__defines\explosion.dm"

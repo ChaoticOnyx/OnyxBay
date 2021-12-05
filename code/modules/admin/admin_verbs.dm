@@ -225,7 +225,12 @@ var/list/admin_verbs_debug = list(
 	/client/proc/visualpower_remove,
 	/client/proc/hard_del,
 	/client/proc/enable_profiler,
-	/client/proc/bluespace_tech
+	/client/proc/bluespace_tech,
+	/client/proc/dmjit_debug_toggle_call_counts,
+	/client/proc/dmjit_debug_dump_call_count,
+	/client/proc/dmjit_debug_dump_opcode_count,
+	/client/proc/dmjit_debug_toggle_hooks,
+	/client/proc/dmjit_debug_dump_deopts
 	)
 
 var/list/admin_verbs_paranoid_debug = list(
@@ -320,7 +325,12 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
 	/client/proc/delbook,
-	/client/proc/debug_glob_variables
+	/client/proc/debug_glob_variables,
+	/client/proc/dmjit_debug_toggle_call_counts,
+	/client/proc/dmjit_debug_dump_call_count,
+	/client/proc/dmjit_debug_dump_opcode_count,
+	/client/proc/dmjit_debug_toggle_hooks,
+	/client/proc/dmjit_debug_dump_deopts
 	)
 
 var/list/admin_verbs_mod = list(
@@ -1006,3 +1016,56 @@ var/list/admin_verbs_mentor = list(
 	var/isbn = input("ISBN number?", "Delete Book") as null|num
 	if(isbn && alert(src, "Are you sure that you want to delete that book?", "Delete Book", "Yes", "No") == "Yes")
 		del_book_from_db(num2text(isbn), src)
+
+/client/proc/dmjit_debug_toggle_hooks()
+	set category = "Debug"
+	set name = "dmJIT toggle hooks"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	var/result = dmjit_toggle_hooks()
+
+	message_admins("[key_name_admin(usr)] dmJIT Hooks state is [result]")
+
+
+/client/proc/dmjit_debug_toggle_call_counts()
+	set category = "Debug"
+	set name = "dmJIT toggle call count"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	var/result = dmjit_toggle_call_counts()
+
+	message_admins("[key_name_admin(usr)] dmJIT call count state is [result]")
+
+/client/proc/dmjit_debug_dump_call_count()
+	set category = "Debug"
+	set name = "dmJIT dump call count"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	dmjit_dump_call_count()
+	message_admins("[key_name_admin(usr)] Performed dmJIT call count dump")
+
+/client/proc/dmjit_debug_dump_opcode_count()
+	set category = "Debug"
+	set name = "dmJIT dump opcode count"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	dmjit_dump_opcode_count()
+	message_admins("[key_name_admin(usr)] Performed dmJIT opcode count dump")
+
+/client/proc/dmjit_debug_dump_deopts()
+	set category = "Debug"
+	set name = "dmJIT dump deopts"
+
+	if(!check_rights(R_DEBUG))
+		return
+
+	dmjit_dump_deopts()
+	message_admins("[key_name_admin(usr)] Performed dmJIT deopt count dump")
