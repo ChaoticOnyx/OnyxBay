@@ -153,7 +153,6 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 		to_chat(user, "The gate is already calibrated, there is no work for you to do here.")
 		return
 
-// admin shiet TODO: change this comment
 /obj/machinery/gateway/centerstation/attack_hand(mob/user)
 	show_menu(user)
 	..()
