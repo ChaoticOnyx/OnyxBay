@@ -1,3 +1,4 @@
+GLOBAL_LIST_EMPTY(station_gateways)
 GLOBAL_LIST_EMPTY(world_gateways_by_tag)
 GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway
@@ -88,6 +89,11 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway/centerstation/Initialize()
 	update_icon()
 	wait = world.time + config.gateway_delay	//+ thirty minutes default
+	. = ..()
+	GLOB.station_gateways.Add(src)
+
+/obj/machinery/gateway/centerstation/Destroy()
+	GLOB.station_gateways.Remove(src)
 	. = ..()
 
 /obj/machinery/gateway/centerstation/Process()
