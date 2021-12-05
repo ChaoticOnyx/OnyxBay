@@ -4,7 +4,7 @@
 /datum/changeling_power/absorb
 	name = "Absorb DNA"
 	desc = "We absorb our prey."
-	icon_state = "ling_division"
+	icon_state = "ling_absorb"
 	required_chems = 0
 
 /datum/changeling_power/absorb/activate()
@@ -83,23 +83,23 @@
 	changeling.update_languages()
 
 	if(T.reagents)
-		T.reagents.trans_to(reagents, T.reagents.total_volume)
+		T.reagents.trans_to(my_mob.reagents, T.reagents.total_volume)
 	if(T.vessel)
 		T.vessel.remove_any(T.vessel.total_volume)
 
 	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers, T.flavor_texts)
 	changeling.absorbDNA(newDNA)
-	if(mind && T.mind)
-		mind.store_memory("[T.real_name]'s memories:")
-		mind.store_memory(T.mind.memory)
-		mind.store_memory("<hr>")
+	if(my_mob.mind && T.mind)
+		my_mob.mind.store_memory("[T.real_name]'s memories:")
+		my_mob.mind.store_memory(T.mind.memory)
+		my_mob.mind.store_memory("<hr>")
 
 	if(T.mind?.changeling)
 		if(T.mind.changeling.absorbed_dna)
 			for(var/datum/absorbed_dna/dna_data in T.mind.changeling.absorbed_dna)	// steal all their loot
 				if(changeling.GetDNA(dna_data.name))
 					continue
-				my_mob.absorbDNA(dna_data)
+				changeling.absorbDNA(dna_data)
 				changeling.absorbedcount++
 			T.mind.changeling.absorbed_dna.len = 1
 

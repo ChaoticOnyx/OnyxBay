@@ -14,13 +14,13 @@
 	if(!..())
 		return
 	changeling.boost_sting_range = TRUE
-	for(var/datum/changeling_power/toggled/sting/S in available_powers)
+	for(var/datum/changeling_power/toggled/sting/S in changeling.available_powers)
 		S.update_required_chems()
 	feedback_add_details("changeling_powers","RS")
 
-/datum/changeling_power/toggled/boost_range/deactivate()
+/datum/changeling_power/toggled/boost_range/deactivate(no_message = TRUE)
 	if(!..())
 		return
 	changeling.boost_sting_range = FALSE
-	for(var/datum/changeling_power/toggled/sting/S in available_powers)
+	for(var/datum/changeling_power/toggled/sting/S in changeling.available_powers)
 		S.update_required_chems()

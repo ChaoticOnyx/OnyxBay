@@ -28,31 +28,28 @@
 /datum/changeling_power/toggled/visible_camouflage/activate()
 	if(!..())
 		return
-	animate(my_mob, alpha = 255, alpha = 10, time = 10)
+	var/mob/living/carbon/human/H = my_mob
+	animate(H, alpha = 255, alpha = 10, time = 10)
 	if(must_walk)
-		my_mob.set_m_intent(M_WALK)
+		H.set_m_intent(M_WALK)
+	use_chems()
 
-/datum/changeling_power/toggled/visible_camouflage/deactivate()
-	if(!..())
+/datum/changeling_power/toggled/visible_camouflage/deactivate(no_message = TRUE)
+	if(!..(TRUE)) // Never use messages, since we use visible_message() here.
 		return
-	my_mob.invisibility = initial(my_mob.invisibility)
-	my_mob.visible_message(SPAN("warning", "[my_mob] suddenly fades in, seemingly from nowhere!"), \
-						   SPAN("changeling", text_deactivate))
-	my_mob.set_m_intent(M_RUN)
-	animate(my_mob, alpha = 10, alpha = 255, time = 10)
+	var/mob/living/carbon/human/H = my_mob
+	H.invisibility = initial(H.invisibility)
+	H.visible_message(SPAN("warning", "[H] suddenly fades in, seemingly from nowhere!"), \
+					  SPAN("changeling", text_deactivate))
+	H.set_m_intent(M_RUN)
+	animate(H, alpha = 10, alpha = 255, time = 10)
 
 /datum/changeling_power/toggled/visible_camouflage/Process()
 	if(!..())
 		return
-	if(changeling.is_regenerating())
-		deactivate()
-		return
 	if(my_mob.m_intent != M_WALK && must_walk) // Moving too fast uncloaks you.
 		deactivate()
 		return
-	if(my_mob.stat) // Dead or unconscious lings can't stay cloaked.
-		deactivate()
-		return
-	if(my_mob.incapacitated(INCAPACITATION_DISABLED)) // Stunned lings also can't stay cloaked.
+	if(my_mob.incapacitated(INCAPACITATION_DISABLED)) // Stunned lings can't stay cloaked.
 		deactivate()
 		return

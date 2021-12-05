@@ -1,4 +1,7 @@
 
+// !!! OUTDATED !!!
+// If you are really sure about bringing it back, you'll have to rewrite it kinda from scratch.
+
 //Transform into a monkey.
 /mob/proc/changeling_lesser_form()
 	set category = "Changeling"

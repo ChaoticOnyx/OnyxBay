@@ -16,12 +16,9 @@
 	active = TRUE
 	update_screen_button()
 
-	change_ctate(/datum/click_handler/changeling/changeling_bioelectrogenesis)
-
-/datum/changeling_power/toggled/bioelectrogenesis/deactivate()
+/datum/changeling_power/toggled/bioelectrogenesis/deactivate(no_message = TRUE)
 	active = FALSE
-	var/datum/click_handler/changeling/C = my_mob.GetClickHandler()
-	if(C.sting == src)
+	if(istype(my_mob.GetClickHandler(), /datum/click_handler/changeling/changeling_bioelectrogenesis))
 		my_mob.PopClickHandler()
 	if(!no_message)
 		to_chat(my_mob, SPAN("changeling", text_deactivate))
@@ -35,8 +32,8 @@
 		return
 	if(!is_usable())
 		return
-	if(T in orange(1, src))
-		empulse(T.loc, 1, 1)
+	if(target in orange(1, src))
+		empulse(target.loc, 1, 1)
 		use_chems()
 	else
 		to_chat(src, SPAN("changeling", "The target is too far away."))

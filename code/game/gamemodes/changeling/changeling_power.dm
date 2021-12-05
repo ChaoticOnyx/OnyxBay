@@ -93,8 +93,8 @@
 
 /datum/changeling_power/proc/use_chems(amount)
 	if(!amount)
-		amount = chems_required
-	changeling.chem_charges -= amount // Intentionally allowing it to go beyond 0 in some edge cases with delayed abilities.
+		amount = required_chems
+	changeling.chem_charges -= amount // Intentionally allowing it to drop beyond 0 in some edge cases with delayed abilities.
 
 /datum/changeling_power/proc/use()
 	activate()
@@ -119,7 +119,7 @@
 // Passive powers
 /datum/changeling_power/passive
 	name = "Passive Power"
-	power_processing = TRUE
+	power_processing = FALSE
 
 /datum/changeling_power/passive/New(mob/_M)
 	..()
@@ -164,13 +164,18 @@
 	update_screen_button()
 
 /datum/changeling_power/toggled/Process()
-	use_chems(chems_drain)
-	if(changeling.chem_charges <= 0)
-		if(my_mob)
-			to_chat(my_mob, SPAN("changeling", text_nochems))
-			deactivate()
-			update_screen_button()
-			return FALSE
+	if(check_incapacitated())
+		deactivate()
+		update_screen_button()
+		return FALSE
+	if(chems_drain)
+		use_chems(chems_drain)
+		if(changeling.chem_charges <= 0)
+			if(my_mob)
+				to_chat(my_mob, SPAN("changeling", text_nochems))
+				deactivate()
+				update_screen_button()
+				return FALSE
 	return TRUE
 
 
@@ -193,11 +198,11 @@
 		return FALSE
 
 	var/obj/item/I = new item_type(H)
-	put_in_hands(I)
+	H.put_in_hands(I)
 
 	use_chems(required_chems)
 	if(loud)
-		playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
+		playsound(H, 'sound/effects/blob/blobattack.ogg', 30, 1)
 
 	return TRUE
 
@@ -207,8 +212,13 @@
 	name = "Sting Power"
 	power_processing = FALSE
 
+/datum/changeling_power/toggled/sting/New()
+	..()
+	text_activate = "We prepare [name]."
+	text_deactivate = "We unprepare [name]."
+
 /datum/changeling_power/toggled/sting/update_required_chems()
-	if(changling.boost_sting_range)
+	if(changeling.boost_sting_range)
 		required_chems = initial(required_chems) + 10
 	else
 		required_chems = initial(required_chems)
@@ -216,7 +226,7 @@
 
 /datum/changeling_power/toggled/sting/activate()
 	changeling.deactivate_stings()
-	var/datum/click_handler/changeling/C = my_mob.PushClickHandler(/datum/click_handler/changeling)
+	var/datum/click_handler/changeling/sting/C = my_mob.PushClickHandler(/datum/click_handler/changeling/sting)
 	if(!istype(C))
 		return
 	C.sting = src
@@ -226,7 +236,7 @@
 
 /datum/changeling_power/toggled/sting/deactivate(no_message = TRUE)
 	active = FALSE
-	var/datum/click_handler/changeling/C = my_mob.GetClickHandler()
+	var/datum/click_handler/changeling/sting/C = my_mob.GetClickHandler()
 	if(C.sting == src)
 		my_mob.PopClickHandler()
 	if(!no_message)
@@ -285,15 +295,3 @@
 			to_chat(target, SPAN("danger", "Your [target_limb.name] hurts."))
 		return TRUE
 	return
-
-/datum/changeling_power/toggled/sting/proc/prepare_click_handler()
-	var/datum/click_handler/handler = GetClickHandler()
-	if(!ispath(path))
-		to_chat(src, SPAN("notice", "<b>This is awkward. 1-800-CALL-CODERS to fix this.</b>"))
-		return
-	if(handler.type == path)
-		to_chat(src, SPAN("notice", "You unprepare [handler.handler_name]."))
-		usr.PopClickHandler()
-	else
-		to_chat(src, SPAN("notice", "You prepare your ability."))
-		PushClickHandler(path)

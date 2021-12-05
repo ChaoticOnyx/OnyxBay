@@ -96,7 +96,10 @@
 		if(istype(ability, /obj/screen/ability/changeling_power))
 			var/obj/screen/ability/changeling_power/P = ability
 			if(!P.power.chems_drain)
-				P.maptext = "[P.power.required_chems]" // Slot number not needed, chem cost holds more importance.
+				if(P.power.required_chems)
+					P.maptext = "[P.power.required_chems]" // Slot number not needed, chem cost holds more importance.
+				else
+					P.maptext = ""
 			else
 				P.maptext = "[P.power.required_chems] ([P.power.chems_drain])"
 			break
@@ -440,7 +443,7 @@
 	icon_state = "[background_base_state]_spell_[power.is_usable() ? "ready" : "base"]"
 	overlays.Add(power.icon_state)
 
-	if(istype(power, /datum/changeling_power/toggled)
+	if(istype(power, /datum/changeling_power/toggled))
 		if(power.active)
 			overlays.Add("changeling_spell_active")
 

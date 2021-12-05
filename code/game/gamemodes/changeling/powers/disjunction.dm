@@ -1,16 +1,14 @@
 
-/datum/changeling_power/gib_self
+/datum/changeling_power/disjunction
 	name = "Body Disjunction"
 	desc = "We tear our body apart, transforming our limbs into aggressive critters."
 	icon_state = "ling_gibself"
 	required_chems = 40
-
-	text_activate = "We no longer need light to see."
-	text_deactivate = "We allow the shadows to return."
+	max_stat = DEAD
 
 	var/detaching_now = FALSE
 
-/datum/changeling_power/gib_self/activate()
+/datum/changeling_power/disjunction/activate()
 	if(!..())
 		return
 
@@ -82,7 +80,7 @@
 	if(mob_to_receive_mind)
 		H.mind.transfer_to(mob_to_receive_mind)
 
-	gibs(loc, dna)
+	gibs(H.loc, H.dna)
 	for(var/obj/item/I in H.contents)
 		if(isorgan(I))
 			continue

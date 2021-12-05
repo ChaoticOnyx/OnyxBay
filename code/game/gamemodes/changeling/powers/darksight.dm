@@ -5,6 +5,7 @@
 	desc = "Makes us able to see in the dark."
 	icon_state = "ling_darksight"
 	power_processing = FALSE
+	max_stat = UNCONSCIOUS
 
 	text_activate = "We no longer need light to see."
 	text_deactivate = "We allow the shadows to return."
@@ -14,11 +15,9 @@
 		return
 	var/mob/living/carbon/C = my_mob
 	C.seeDarkness = TRUE
-	to_chat(C, SPAN("changeling", text_activate))
 
-/datum/changeling_power/toggled/darksight/deactivate()
+/datum/changeling_power/toggled/darksight/deactivate(no_message = TRUE)
 	if(!..())
 		return
 	var/mob/living/carbon/C = my_mob
 	C.seeDarkness = FALSE
-	to_chat(C, SPAN("changeling", text_deactivate))

@@ -1,41 +1,4 @@
 
-// Checks if we have any bodypart not covered with thick clothing.
-/mob/living/carbon/human/proc/has_any_exposed_bodyparts()
-	var/p_head  = FALSE
-	var/p_face  = FALSE
-	var/p_eyes  = FALSE
-	var/p_chest = FALSE
-	var/p_groin = FALSE
-	var/p_arms  = FALSE
-	var/p_hands = FALSE
-	var/p_legs  = FALSE
-	var/p_feet  = FALSE
-
-	for(var/obj/item/clothing/C in list(head, wear_mask, wear_suit, w_uniform, gloves, shoes))
-		if(!C)
-			continue
-		if((C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_head = TRUE
-		if((C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_face = TRUE
-		if((C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_eyes = TRUE
-		if((C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_chest = TRUE
-		if((C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_groin = TRUE
-		if((C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_arms = TRUE
-		if((C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_hands = TRUE
-		if((C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_legs = TRUE
-		if((C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_feet = TRUE
-
-	return !(p_head && p_face && p_eyes && p_chest && p_groin && p_arms && p_hands && p_legs && p_feet)
-
-
 /mob/living/carbon/brain/proc/transform_into_little_changeling()
 	set category = "Changeling"
 	set name = "Transform into little changeling"
@@ -50,11 +13,11 @@
 
 	else if(istype(BIO.loc, /obj/item/organ/external/arm))
 		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
-		mind.transfer_to(leg_ling)
+		mind.transfer_to(arm_ling)
 
 	else if(istype(BIO.loc, /obj/item/organ/external/head))
 		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
-		mind.transfer_to(leg_ling)
+		mind.transfer_to(head_ling)
 
 	else
 		headcrab_runaway() // Because byond doesn't want to update verbs sometimes this engine is a fucking mess
@@ -147,6 +110,32 @@
 		return
 	..()
 
+/mob/living/simple_animal/hostile/little_changeling/proc/change_ctate(path)
+	var/datum/click_handler/handler = GetClickHandler()
+	if(!ispath(path))
+		to_chat(src, SPAN("notice", "<b>This is awkward. 1-800-CALL-CODERS to fix this.</b>"))
+		return
+
+	if(handler.type == path)
+		to_chat(src, SPAN("changeling", "We unprepare [handler.handler_name]."))
+		usr.PopClickHandler()
+	else
+		to_chat(src, SPAN("changeling", "We prepare out ability."))
+		PushClickHandler(path)
+
+/mob/proc/sting_can_reach(mob/M, sting_range = 1)
+	if(M.loc == loc)
+		return TRUE //target and source are in the same thing
+
+	if(!isturf(loc) || !isturf(M.loc))
+		to_chat(src, SPAN("changeling", "We cannot reach \the [M] with a sting!"))
+		return FALSE //One is inside, the other is outside something.
+
+	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
+	if(!AStar(loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes = 25, max_node_depth = sting_range)) //If we can't find a path, fail
+		to_chat(src, SPAN("changeling", "We cannot find a path to sting \the [M] by!"))
+		return FALSE
+	return TRUE
 
 /mob/living/simple_animal/hostile/little_changeling/verb/prepare_paralyse_sting()
 	set category = "Changeling"
@@ -302,7 +291,7 @@
 	changeling.absorbDNA(newDNA)
 
 	target.ghostize()
-	if(changeling_transfer_mind(target))
+	if(mind.transfer_to(target))
 		qdel(src) // So we wait for transfer to end before risking to fuck things up
 
 	return

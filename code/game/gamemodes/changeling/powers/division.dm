@@ -1,12 +1,12 @@
 
-/datum/changeling_power/absorb
+/datum/changeling_power/division
 	name = "Division"
-	desc = "We give them a gift they cannot refuse."
-	icon_state = "ling_absorb"
+	desc = "We infest a humanoid with a clone of our true body, making them the same as we are."
+	icon_state = "ling_division"
 	required_chems = 20
 	required_dna = 2
 
-/datum/changeling_power/absorb/activate()
+/datum/changeling_power/division/activate()
 	. = ..()
 	if(!.)
 		return

@@ -4,9 +4,7 @@
 	desc = "We tear off our limb, turning it into an aggressive biomass."
 	icon_state = "ling_detach_limb"
 	required_chems = 10
-
-	text_activate = "We no longer need light to see."
-	text_deactivate = "We allow the shadows to return."
+	max_stat = DEAD
 
 	var/detaching_now = FALSE
 
@@ -25,7 +23,7 @@
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())
 			detachable_limbs -= E
 
-	detaching_gnow = TRUE
+	detaching_now = TRUE
 	var/obj/item/organ/external/organ_to_remove = input(H, "Which limb do we want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
 		detaching_now = FALSE

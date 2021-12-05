@@ -30,13 +30,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/recursive_enhancement = FALSE // Used to power up other abilities from the ling power with the same name.
 	var/boost_sting_range = FALSE // Whether we have our Boost Range toggled on.
 
-	var/using_proboscis = FALSE
+	var/using_proboscis = FALSE // Whether we are using proboscis-based (absorb/division) powers right now.
 	var/true_dead = FALSE
 	var/damaged = FALSE
-	var/heal = 0
-	var/isdetachingnow = FALSE
-	var/FLP_last_time_used = 0
-	var/rapidregen_active = FALSE
 	var/is_revive_ready = FALSE
 	var/last_transformation_at = 0
 
@@ -98,7 +94,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			to_chat(my_mob, SPAN("changeling", "Strangely enough, we feel like dying right now. The only thing we know, it's not our fault."))
 			die()
 			return FALSE
-		BIO.change_host(M) // Biostructure object gets moved here
+		BIO.change_host(L) // Biostructure object gets moved here
 
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
@@ -179,13 +175,10 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		absorbed_dna += newDNA
 
 
-
-
-
 ///////////////////////////
 // POWERS-RELATED PROCS ///
 ///////////////////////////
-/datum/changeling/proc/add_changeling_power(datum/changeling_power/P)
+/datum/changeling/proc/add_changeling_power(datum/power/changeling/P)
 	if(P in purchasedpowers)
 		for(var/datum/changeling_power/CP in available_powers)
 			if(CP.type == P.power_path)
@@ -232,7 +225,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	for(var/datum/power/changeling/P in powerinstances)
 		if(!P.genomecost && !(P in purchasedpowers)) // Is it free? Do we not have it already?
-			changeling.purchasePower(my_mob.mind, P.name, 0) // Purchase it.
+			purchase_power(P.name) // Purchase it.
 
 	var/mob_in_lesser_form = !ishuman(my_mob)
 	checking_purchased:
@@ -262,4 +255,4 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 // Deactivates all current stings to make sure my_mob doesn't have queued sting click handlers.
 /datum/changeling/proc/deactivate_stings()
 	for(var/datum/changeling_power/toggled/sting/S in available_powers)
-		S.deactivate()
+		S.deactivate(FALSE)

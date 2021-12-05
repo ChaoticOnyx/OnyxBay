@@ -121,17 +121,21 @@
 	if(!user.mind.changeling)
 		return
 
-	var/datum/changeling/ling_datum = user.mind.changeling
+	var/datum/changeling/changeling = user.mind.changeling
+	var/datum/changeling_power/item/lockpick/source_power = changeling.get_changeling_power_by_name("Bioelectric Lockpick")
+	if(!source_power)
+		log_debug("Changeling Shenanigans: [user] ([user.key]) had no Bioelectric Lockpick power while trying to use a finger_lockpick.")
+		return
 
-	if(ling_datum.chem_charges < 10)
+	if(changeling.chem_charges < source_power.fingerpick_cost)
 		to_chat(user, SPAN("changeling", "We require more chemicals to do that."))
 		return
 
-	if(world.time < ling_datum.FLP_last_time_used + 10 SECONDS)
-		to_chat(user, SPAN("changeling", "The finger lockpick is still recharging, we have to wait!"))
+	if(world.time < source_power.last_time_used + source_power.fingerpick_cooldown)
+		to_chat(user, SPAN("changeling", "\The [src] is still recharging, we have to wait!"))
 		return
 	else
-		ling_datum.FLP_last_time_used = world.time
+		source_power.last_time_used = world.time
 
 	//Airlocks require an ugly block of code, but we don't want to just call emag_act(), since we don't want to break airlocks forever.
 	if(istype(target,/obj/machinery/door))
@@ -159,13 +163,13 @@
 
 		door.add_fingerprint(user)
 		log_and_message_admins("finger-lockpicked \an [door].")
-		ling_datum.chem_charges -= 10
+		source_power.use_chems(10)
 	else if(istype(target, /obj/)) //This should catch everything else we might miss, without a million typechecks.
 		var/obj/O = target
 		to_chat(user, SPAN("changeling", "We send an electrical pulse up our finger, and into \the [O]."))
 		O.add_fingerprint(user)
 		O.emag_act(1, user, src)
 		log_and_message_admins("finger-lockpicked \an [O].")
-		ling_datum.chem_charges -= 10
+		source_power.use_chems(10)
 
 	return
