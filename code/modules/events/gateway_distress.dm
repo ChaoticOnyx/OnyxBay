@@ -1,18 +1,18 @@
 /datum/event/gateway_distress
 	var/obj/machinery/gateway/centerstation/station_gateway
 	var/gateway_area_name
-	announceWhen = 30
 
 /datum/event/gateway_distress/start()
 	station_gateway = safepick(GLOB.station_gateways)
 	if(!istype(station_gateway) || !length(GLOB.world_awaygateways) || !station_gateway.ready)
 		return
+	var/time_to_open = rand(5, 10)
+	time_to_open = time_to_open MINUTES
 	station_gateway.awaygate = GLOB.world_awaygateways[pick(GLOB.world_awaygateways)]
 	station_gateway.forced = TRUE
-	station_gateway.wait = world.time + config.gateway_delay
-	announceWhen = round(config.gateway_delay / 30)
+	station_gateway.wait = world.time + time_to_open
 	gateway_area_name = get_area(station_gateway)?.name
-	addtimer(CALLBACK(src, .proc/announce_open), config.gateway_delay)
+	addtimer(CALLBACK(src, .proc/announce_open), time_to_open)
 
 /datum/event/gateway_distress/announce()
 	if(!station_gateway)
