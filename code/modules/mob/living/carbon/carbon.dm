@@ -299,12 +299,13 @@
 		return
 
 	var/obj/item/I = item
-	if(!I.canremove)
+	var/is_grab = istype(item, /obj/item/grab)
+	if(!I.canremove && !is_grab)
 		return
 
 	var/throw_range = item.throw_range
 	var/itemsize
-	if(istype(item, /obj/item/grab))
+	if(is_grab)
 		var/obj/item/grab/G = item
 		item = G.throw_held() // throw the person instead of the grab
 		if(ismob(item))
