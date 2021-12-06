@@ -111,6 +111,7 @@
 		var/possible_loc = get_step(src, dir)
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
 								|| istype(possible_loc, /turf/simulated/wall)\
+								|| istype(possible_loc, /turf/simulated/mineral)\
 								|| (locate(/obj/structure/blob) in possible_loc)
 
 		if(dir == UP)

@@ -488,9 +488,15 @@
 	update_icon()
 	..()
 
+
 /obj/machinery/power/smes/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		take_damage(Proj.damage)
+
+/obj/machinery/power/smes/blob_act(damage)
+	..()
+
+	take_damage(damage * 2)
 
 /obj/machinery/power/smes/ex_act(severity)
 	switch(severity)
