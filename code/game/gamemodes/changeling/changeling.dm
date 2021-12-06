@@ -29,7 +29,7 @@
 	var/datum/changeling/changeling = mind.changeling
 
 	verbs += /datum/changeling/proc/EvolutionMenu
-	add_language("Changeling")
+	add_language(LANGUAGE_LING)
 
 	// Inserting a biostructure.
 	var/mob/living/carbon/C = src

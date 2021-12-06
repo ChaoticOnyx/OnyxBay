@@ -137,7 +137,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		my_mob.languages += language
 
 	//This isn't strictly necessary but just to be safe...
-	my_mob.add_language("Changeling")
+	my_mob.add_language(LANGUAGE_LING)
 	return
 
 
