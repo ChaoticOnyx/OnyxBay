@@ -1,4 +1,7 @@
 
+// !!! OUTDATED !!!
+// If you are really sure about bringing it back, you'll have to rewrite it kinda from scratch.
+
 //Transform into a monkey.
 /mob/proc/changeling_lesser_form()
 	set category = "Changeling"
@@ -25,7 +28,7 @@
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
 	if(istype(H))
-		H.insert_biostructure()
+		H.setup_changeling_biostructure()
 	feedback_add_details("changeling_powers","LF")
 	return 1
 
@@ -56,7 +59,7 @@
 	var/mob/living/carbon/human/C = src
 
 	changeling.chem_charges--
-	C.remove_changeling_powers()
+	C.remove_all_changeling_powers()
 	C.visible_message("<span class='warning'>[C] transforms!</span>")
 	C.dna = chosen_dna.Clone()
 
@@ -106,7 +109,7 @@
 
 	C.mind.transfer_to(O)
 	O.make_changeling()
-	O.changeling_update_languages(changeling.absorbed_languages)
+	changeling.update_languages()
 
 	feedback_add_details("changeling_powers","LFT")
 	qdel(C)

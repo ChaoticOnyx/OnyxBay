@@ -1,18 +1,26 @@
 
-//Boosts the range of your next sting attack by 1
-/mob/proc/changeling_boost_range()
-	set category = "Changeling"
-	set name = "Ranged Sting (10)"
-	set desc = "Our next sting ability can be used against targets 2 squares away."
+//Boosts the range of our stings by 1, but also increases required chems by 10.
+/datum/changeling_power/toggled/boost_range
+	name = "Ranged Stinger"
+	desc = "Our sting abilities can be used against targets 2 squares away, but require additional 20 chemicals."
+	icon_state = "ling_boost_range"
+	required_chems = 0
+	power_processing = FALSE
 
-	var/datum/changeling/changeling = changeling_power(10)
-	if(!changeling)
+	text_activate = "Our stinger adjusts to launch stings further."
+	text_deactivate = "Our stinger returns to a normal state."
+
+/datum/changeling_power/toggled/boost_range/activate()
+	if(!..())
 		return
-
-	changeling.chem_charges -= 10
-	to_chat(src, SPAN("changeling", "Our throat adjusts to launch a sting."))
-	changeling.sting_range = 2
-	verbs -= /mob/proc/changeling_boost_range
-	spawn(5)
-		verbs += /mob/proc/changeling_boost_range
+	changeling.boost_sting_range = TRUE
+	for(var/datum/changeling_power/toggled/sting/S in changeling.available_powers)
+		S.update_required_chems()
 	feedback_add_details("changeling_powers","RS")
+
+/datum/changeling_power/toggled/boost_range/deactivate(no_message = TRUE)
+	if(!..())
+		return
+	changeling.boost_sting_range = FALSE
+	for(var/datum/changeling_power/toggled/sting/S in changeling.available_powers)
+		S.update_required_chems()

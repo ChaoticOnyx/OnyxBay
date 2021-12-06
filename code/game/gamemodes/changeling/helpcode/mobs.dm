@@ -1,67 +1,52 @@
 
-/mob/living/carbon/human/proc/has_any_exposed_bodyparts()
-	var/p_head  = FALSE
-	var/p_face  = FALSE
-	var/p_eyes  = FALSE
-	var/p_chest = FALSE
-	var/p_groin = FALSE
-	var/p_arms  = FALSE
-	var/p_hands = FALSE
-	var/p_legs  = FALSE
-	var/p_feet  = FALSE
-
-	for(var/obj/item/clothing/C in list(head, wear_mask, wear_suit, w_uniform, gloves, shoes))
-		if(!C)
-			continue
-		if((C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_head = TRUE
-		if((C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_face = TRUE
-		if((C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_eyes = TRUE
-		if((C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_chest = TRUE
-		if((C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_groin = TRUE
-		if((C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_arms = TRUE
-		if((C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_hands = TRUE
-		if((C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_legs = TRUE
-		if((C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			p_feet = TRUE
-
-	return !(p_head && p_face && p_eyes && p_chest && p_groin && p_arms && p_hands && p_legs && p_feet)
-
-
-/mob/proc/transform_into_little_changeling()
+/mob/living/carbon/brain/proc/transform_into_little_changeling()
 	set category = "Changeling"
 	set name = "Transform into little changeling"
 	set desc = "If we find ourselves inside a severed limb we will grow little limbs and jaws."
 
 	var/obj/item/organ/internal/biostructure/BIO = loc
+
+	// So, all that fake limb reattachment may get bugged out in a blink of an eye. We do this for sanity's sake.
+	// It's easier to just reset the biostructure's position back to the chest than spend days debugging its random trips to anywhereland and back.
+	BIO.parent_organ = BP_CHEST
+
 	var/limb_to_del = BIO.loc
 
 	if(istype(BIO.loc, /obj/item/organ/external/leg))
 		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(BIO.loc))
-		changeling_transfer_mind(leg_ling)
+		mind.transfer_to(leg_ling)
 
 	else if(istype(BIO.loc, /obj/item/organ/external/arm))
 		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
-		changeling_transfer_mind(arm_ling)
+		mind.transfer_to(arm_ling)
 
 	else if(istype(BIO.loc, /obj/item/organ/external/head))
 		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
-		changeling_transfer_mind(head_ling)
+		mind.transfer_to(head_ling)
 
 	else
 		headcrab_runaway() // Because byond doesn't want to update verbs sometimes this engine is a fucking mess
 		return
 
 	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \
-							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font>"))
+							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We must find a new host quickly!</b></font>"))
 	qdel(limb_to_del)
+
+/mob/living/carbon/brain/proc/headcrab_runaway() // Well fuck I can't decide whether it should belong here or somewhere in /changeling/powers
+	set category = "Changeling"
+	set name = "Runaway form"
+	set desc = "We take our weakest form."
+
+	if(mind.changeling.is_regenerating())
+		return
+
+	var/obj/item/organ/internal/biostructure/BIO = loc
+
+	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
+	mind.transfer_to(HC)
+
+	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
+					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE MUST SURVIVE!</b></font>"))
 
 
 /mob/living/simple_animal/hostile/little_changeling
@@ -100,7 +85,9 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	faction = "biomass"
+	faction = "changeling"
+
+	var/absorbing = FALSE
 
 
 /mob/living/simple_animal/hostile/little_changeling/New()
@@ -127,6 +114,32 @@
 		return
 	..()
 
+/mob/living/simple_animal/hostile/little_changeling/proc/change_ctate(path)
+	var/datum/click_handler/handler = GetClickHandler()
+	if(!ispath(path))
+		to_chat(src, SPAN("notice", "<b>This is awkward. 1-800-CALL-CODERS to fix this.</b>"))
+		return
+
+	if(handler.type == path)
+		to_chat(src, SPAN("changeling", "We unprepare [handler.handler_name]."))
+		usr.PopClickHandler()
+	else
+		to_chat(src, SPAN("changeling", "We prepare our ability."))
+		PushClickHandler(path)
+
+/mob/proc/sting_can_reach(mob/M, sting_range = 1)
+	if(M.loc == loc)
+		return TRUE //target and source are in the same thing
+
+	if(!isturf(loc) || !isturf(M.loc))
+		to_chat(src, SPAN("changeling", "We cannot reach \the [M] with a sting!"))
+		return FALSE //One is inside, the other is outside something.
+
+	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
+	if(!AStar(loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes = 25, max_node_depth = sting_range)) //If we can't find a path, fail
+		to_chat(src, SPAN("changeling", "We cannot find a path to sting \the [M] by!"))
+		return FALSE
+	return TRUE
 
 /mob/living/simple_animal/hostile/little_changeling/verb/prepare_paralyse_sting()
 	set category = "Changeling"
@@ -211,7 +224,7 @@
 		to_chat(src, SPAN("changeling", "This creature's DNA is ruined beyond useability!"))
 		return
 
-	if(changeling.isabsorbing)
+	if(absorbing)
 		to_chat(src, SPAN("changeling", "We are already infesting!"))
 		return
 
@@ -227,7 +240,7 @@
 	visible_message(SPAN("danger", "[src] has latched onto \the [target]."), \
 					SPAN("changeling", "We have latched onto \the [target]."))
 
-	changeling.isabsorbing = TRUE
+	absorbing = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
 			if(2)
@@ -242,7 +255,7 @@
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, target, 150))
 			to_chat(src, SPAN("changeling", "Our infestation of [target] has been interrupted!"))
-			changeling.isabsorbing = FALSE
+			absorbing = FALSE
 			target.getBruteLoss(39)
 			return
 
@@ -251,7 +264,7 @@
 
 	to_chat(target, SPAN("danger", "<h3>Your neural network has been overtaken by \the [src]!</h3>"))
 	to_chat(target, SPAN("deadsay", "You have died."))
-	changeling.isabsorbing = FALSE
+	absorbing = FALSE
 
 	if(istype(src, /mob/living/simple_animal/hostile/little_changeling/arm_chan))
 		if(!target.has_limb(BP_L_ARM))
@@ -279,10 +292,10 @@
 	target.regenerate_icons()
 
 	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
-	absorbDNA(newDNA)
+	changeling.absorbDNA(newDNA)
 
 	target.ghostize()
-	if(changeling_transfer_mind(target))
+	if(mind.transfer_to(target))
 		qdel(src) // So we wait for transfer to end before risking to fuck things up
 
 	return
@@ -387,7 +400,7 @@
 		to_chat(src, SPAN("changeling", "We can't use this ability. We are dead."))
 		return
 
-	if(mind.changeling.isabsorbing)
+	if(absorbing)
 		to_chat(src, SPAN("changeling", "We can't mimic environment while infesting."))
 		return
 
@@ -402,21 +415,3 @@
 		update_icon()
 		speed = 4
 		apply_effect(2, STUN, 0)
-
-
-/mob/proc/headcrab_runaway() // Well fuck I can't decide whether it should belong here or somewhere in /changeling/powers
-	set category = "Changeling"
-	set name = "Runaway form"
-	set desc = "We take our weakest form."
-
-	if(is_regenerating())
-		return
-
-	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
-	var/obj/item/organ/internal/biostructure/BIO = loc
-
-	BIO.parent_organ = BP_CHEST // So we don't end up inside nonexistent limbs
-	changeling_transfer_mind(HC)
-
-	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
-					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font>"))
