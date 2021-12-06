@@ -94,15 +94,7 @@
 	for(var/obj/screen/ability/ability in ability_objects)
 		ability.update_icon(forced)
 		if(istype(ability, /obj/screen/ability/changeling_power))
-			/*var/obj/screen/ability/changeling_power/P = ability
-			if(!P.power.chems_drain)
-				if(P.power.required_chems)
-					P.maptext = "[P.power.required_chems]" // Slot number not needed, chem cost holds more importance.
-				else
-					P.maptext = ""
-			else
-				P.maptext = "[P.power.required_chems] ([P.power.chems_drain])"*/
-			continue
+			continue // Lings' powers display chemcost and stuff.
 		ability.maptext = "[i]" // Slot number
 		i++
 
