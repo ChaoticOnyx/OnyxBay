@@ -124,7 +124,7 @@
 		to_chat(src, SPAN("changeling", "We unprepare [handler.handler_name]."))
 		usr.PopClickHandler()
 	else
-		to_chat(src, SPAN("changeling", "We prepare [handler.handler_name]."))
+		to_chat(src, SPAN("changeling", "We prepare our ability."))
 		PushClickHandler(path)
 
 /mob/proc/sting_can_reach(mob/M, sting_range = 1)
