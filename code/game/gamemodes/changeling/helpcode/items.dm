@@ -163,13 +163,13 @@
 
 		door.add_fingerprint(user)
 		log_and_message_admins("finger-lockpicked \an [door].")
-		source_power.use_chems(10)
+		source_power.use_chems(source_power.fingerpick_cost)
 	else if(istype(target, /obj/)) //This should catch everything else we might miss, without a million typechecks.
 		var/obj/O = target
 		to_chat(user, SPAN("changeling", "We send an electrical pulse up our finger, and into \the [O]."))
 		O.add_fingerprint(user)
 		O.emag_act(1, user, src)
 		log_and_message_admins("finger-lockpicked \an [O].")
-		source_power.use_chems(10)
+		source_power.use_chems(source_power.fingerpick_cost)
 
 	return

@@ -4,7 +4,7 @@
 	name = "Arm Blade"
 	desc = "We reform our hand into a deadly arm blade."
 	icon_state = "ling_armblade"
-	required_chems = 20
+	required_chems = 40
 	power_item_type = /obj/item/weapon/melee/changeling/arm_blade
 
 /datum/changeling_power/item/armblade/activate()

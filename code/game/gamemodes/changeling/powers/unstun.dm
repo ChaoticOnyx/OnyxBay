@@ -4,7 +4,7 @@
 	name = "Epinephrine Sacs"
 	desc = "Removes all stuns."
 	icon_state = "ling_unstun"
-	required_chems = 45
+	required_chems = 80
 
 /datum/changeling_power/unstun/activate()
 	if(!..())

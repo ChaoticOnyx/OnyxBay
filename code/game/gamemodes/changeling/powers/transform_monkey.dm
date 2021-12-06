@@ -59,7 +59,7 @@
 	var/mob/living/carbon/human/C = src
 
 	changeling.chem_charges--
-	C.remove_changeling_powers()
+	C.remove_all_changeling_powers()
 	C.visible_message("<span class='warning'>[C] transforms!</span>")
 	C.dna = chosen_dna.Clone()
 

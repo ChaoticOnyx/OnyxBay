@@ -4,7 +4,7 @@
 	name = "Bioelectrogenesis"
 	desc = "We create an electromagnetic pulse against synthetics."
 	icon_state = "ling_emp"
-	required_chems = 20
+	required_chems = 40
 	power_processing = FALSE
 
 	text_activate = "We prepare to launch an electromagnetic pulse."

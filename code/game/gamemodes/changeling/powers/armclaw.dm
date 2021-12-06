@@ -4,7 +4,7 @@
 	name = "Claw"
 	desc = "We reform our hand into a deadly claw."
 	icon_state = "ling_claw"
-	required_chems = 15
+	required_chems = 30
 	power_item_type = /obj/item/weapon/melee/changeling/claw
 
 /datum/changeling_power/item/claw/activate()

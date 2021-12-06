@@ -4,8 +4,9 @@
 	name = "Transform"
 	desc = "We take on the apperance and voice of one we have absorbed."
 	icon_state = "ling_transform"
-	required_chems = 5
+	required_chems = 10
 	required_dna = 1
+	max_genetic_damage = 0
 
 /datum/changeling_power/transform/activate()
 	if(!..())
@@ -36,7 +37,7 @@
 	else
 		my_mob.visible_message(SPAN("warning", "[my_mob]'s body begins to twist, changing rapidly!"))
 
-	if(!do_after(my_mob, change_time))
+	if(!do_after(my_mob, change_time, can_move = 1))
 		to_chat(my_mob, SPAN("changeling", "We fail to change shape."))
 		return
 
@@ -70,5 +71,5 @@
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
 		H.setup_changeling_biostructure()
-	domutcheck(src, null)
+	domutcheck(my_mob, null)
 	my_mob.UpdateAppearance()

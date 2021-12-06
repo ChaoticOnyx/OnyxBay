@@ -3,7 +3,7 @@
 	name = "Division"
 	desc = "We infest a humanoid with a clone of our true body, making them the same as we are."
 	icon_state = "ling_division"
-	required_chems = 20
+	required_chems = 40
 	required_dna = 2
 
 /datum/changeling_power/division/activate()

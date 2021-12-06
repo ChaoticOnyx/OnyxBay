@@ -16,6 +16,7 @@
 	var/max_genetic_damage = 100 // Can't use the ability if genetic damage is higher than this
 	var/max_stat = CONSCIOUS // In what state we can use the ability
 	var/allow_stasis = FALSE // Whether we can use the ability while in stasis
+	var/allow_lesser = FALSE // Can we use this ability while not in a human form?
 
 	var/mob/my_mob = null
 	var/datum/changeling/changeling
@@ -70,7 +71,7 @@
 		to_world_log("[my_mob] has the changeling verb ([src]), but it's missing a changeling reference.")
 		return
 
-	if(!ishuman(my_mob))
+	if(!allow_lesser && !ishuman(my_mob))
 		if(!no_message)
 			to_chat(my_mob, SPAN("changeling", "Our current body is incapable of doing this."))
 		return
@@ -125,7 +126,7 @@
 	name = "Passive Power"
 	power_processing = FALSE
 
-/datum/changeling_power/passive/New(mob/_M)
+/datum/changeling_power/passive/update()
 	..()
 	activate()
 
@@ -164,13 +165,12 @@
 	if(!no_message)
 		to_chat(my_mob, SPAN("changeling", text_deactivate))
 	if(power_processing)
-		START_PROCESSING(SSprocessing, src)
+		STOP_PROCESSING(SSprocessing, src)
 	update_screen_button()
 
 /datum/changeling_power/toggled/Process()
 	if(check_incapacitated())
 		deactivate()
-		update_screen_button()
 		return FALSE
 	if(chems_drain)
 		use_chems(chems_drain)
@@ -223,7 +223,7 @@
 
 /datum/changeling_power/toggled/sting/update_required_chems()
 	if(changeling.boost_sting_range)
-		required_chems = initial(required_chems) + 10
+		required_chems = initial(required_chems) + 20
 	else
 		required_chems = initial(required_chems)
 	update_screen_button()
@@ -270,9 +270,15 @@
 	if(!can_reach(target))
 		return
 
-	var/obj/item/organ/external/target_limb = target.get_organ(my_mob.zone_sel.selecting)
-	if(!target_limb)
-		to_chat(my_mob, SPAN("changeling", "[target] is missing the limb we are targeting."))
+	// Thing thing is a temporary work around. TODO: We should definitely implement zone selecting for simple animals.
+	var/obj/item/organ/external/target_limb
+	if(my_mob.zone_sel)
+		target_limb = target.get_organ(my_mob.zone_sel.selecting)
+		if(!target_limb)
+			to_chat(my_mob, SPAN("changeling", "[target] is missing the limb we are targeting."))
+			return
+	else if(!target.has_any_exposed_bodyparts())
+		to_chat(my_mob, SPAN("changeling", "[target] doesn't seem to have any exposed bodyparts for us to sting."))
 		return
 
 	deactivate()
@@ -283,15 +289,17 @@
 	else
 		to_chat(my_mob, SPAN("changeling", "We stealthily sting [target] with a [name]."))
 
-	for(var/obj/item/clothing/clothes in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
-			to_chat(my_mob, SPAN("changeling", "[target]'s armor has protected them."))
-			return //thick clothes will protect from the sting
+	if(target_limb)
+		for(var/obj/item/clothing/clothes in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
+			if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
+				to_chat(my_mob, SPAN("changeling", "[target]'s armor has protected them."))
+				return //thick clothes will protect from the sting
 
-	if(target.isSynthetic() || BP_IS_ROBOTIC(target_limb))
+	if(target.isSynthetic() || (target_limb && BP_IS_ROBOTIC(target_limb)))
 		return
+
 	if(!target.mind || !target.mind.changeling)	//T will be affected by the sting
-		if(target_limb.can_feel_pain())
+		if(target_limb?.can_feel_pain())
 			target.flash_pain(75)
 			to_chat(target, SPAN("danger", "Your [target_limb.name] hurts."))
 		return TRUE

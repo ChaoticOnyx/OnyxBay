@@ -5,7 +5,7 @@
 	desc = "The AI can no longer track us, but we will look different if examined. Has a constant cost while active."
 	icon_state = "ling_digital_camo"
 	required_chems = 0
-	chems_drain = 0.25
+	chems_drain = 0.5
 	power_processing = TRUE
 
 	text_activate = "We distort our form to prevent AI-tracking."

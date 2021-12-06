@@ -5,6 +5,11 @@
 	set desc = "If we find ourselves inside a severed limb we will grow little limbs and jaws."
 
 	var/obj/item/organ/internal/biostructure/BIO = loc
+
+	// So, all that fake limb reattachment may get bugged out in a blink of an eye. We do this for sanity's sake.
+	// It's easier to just reset the biostructure's position back to the chest than spend days debugging its random trips to anywhereland and back.
+	BIO.parent_organ = BP_CHEST
+
 	var/limb_to_del = BIO.loc
 
 	if(istype(BIO.loc, /obj/item/organ/external/leg))
@@ -36,7 +41,6 @@
 		return
 
 	var/obj/item/organ/internal/biostructure/BIO = loc
-	BIO.parent_organ = BP_CHEST // So we don't end up inside nonexistent limbs
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 	mind.transfer_to(HC)
@@ -81,7 +85,7 @@
 	minbodytemp = 0
 	maxbodytemp = 350
 	break_stuff_probability = 15
-	faction = "biomass"
+	faction = "changeling"
 
 	var/absorbing = FALSE
 
@@ -120,7 +124,7 @@
 		to_chat(src, SPAN("changeling", "We unprepare [handler.handler_name]."))
 		usr.PopClickHandler()
 	else
-		to_chat(src, SPAN("changeling", "We prepare out ability."))
+		to_chat(src, SPAN("changeling", "We prepare [handler.handler_name]."))
 		PushClickHandler(path)
 
 /mob/proc/sting_can_reach(mob/M, sting_range = 1)

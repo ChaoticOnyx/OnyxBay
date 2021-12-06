@@ -129,6 +129,8 @@
 	ability_objects.Remove(ability)
 	if(istype(ability,/obj/screen/ability/spell))
 		spell_objects.Remove(ability)
+	if(istype(ability, /obj/screen/ability/changeling_power))
+		changeling_power_objects.Remove(ability)
 	qdel(ability)
 
 
@@ -141,6 +143,10 @@
 /obj/screen/movable/ability_master/proc/remove_all_abilities()
 	for(var/obj/screen/ability/A in ability_objects)
 		remove_ability(A)
+
+/obj/screen/movable/ability_master/proc/remove_all_changeling_powers()
+	for(var/obj/screen/ability/changeling_power/CP in changeling_power_objects)
+		remove_ability(CP)
 
 /obj/screen/movable/ability_master/proc/get_ability_by_name(name_to_search)
 	for(var/obj/screen/ability/A in ability_objects)
@@ -393,6 +399,8 @@
 	icon_state = "changeling_spell_base"
 	open_state = "ling_open"
 	closed_state = "ling_closed"
+	overlays.len = 0
+	overlays.Add(open_state)
 
 /obj/screen/ability/changeling_power
 	background_base_state = "changeling"

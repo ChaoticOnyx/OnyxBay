@@ -3,7 +3,7 @@
 	name = "Body Disjunction"
 	desc = "We tear our body apart, transforming our limbs into aggressive critters."
 	icon_state = "ling_gibself"
-	required_chems = 40
+	required_chems = 80
 	max_stat = DEAD
 
 	var/detaching_now = FALSE

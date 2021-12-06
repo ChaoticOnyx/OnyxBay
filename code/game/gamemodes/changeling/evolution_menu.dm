@@ -54,7 +54,7 @@ var/list/datum/power/changeling/powerinstances = list()
 // Biostructure and limb management
 /datum/power/changeling/move_biostructure
 	name = "Relocate Biostructure"
-	desc = "We relocate our true self inside our host's body."
+	desc = "We relocate our true self inside our host."
 	helptext = "Takes time."
 	enhancedtext = "Would relocate faster."
 	genomecost = 0
@@ -147,7 +147,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/boost_range
 	name = "Boost Range"
 	desc = "We evolve the ability to shoot our stingers at humans, with some preperation."
-	helptext = "While active, our sting-based abilities can be used against targets 2 squares away, but require additional 10 chemicals."
+	helptext = "While active, our sting-based abilities can be used against targets 2 squares away, but require additional 20 chemicals."
 	genomecost = 3
 	allowduringlesserform = 1
 	power_path = /datum/changeling_power/toggled/boost_range
@@ -186,7 +186,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/engorged_glands
 	name = "Engorged Chemical Glands"
 	desc = "Our chemical glands swell, permitting us to store more chemicals inside of them."
-	helptext = "Allows us to store extra 25 units of chemicals."
+	helptext = "Allows us to store extra 50 units of chemicals."
 	genomecost = 4
 	is_active = 0
 	power_path = /datum/changeling_power/passive/engorged_glands
@@ -390,7 +390,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 				}
 
-				function expand(id,name,desc,helptext,enhancedtext,power,ownsthis){
+				function expand(id,name,desc,helptext,enhancedtext,power,owns_this){
 
 					clearAll();
 
@@ -409,7 +409,7 @@ var/list/datum/power/changeling/powerinstances = list()
 						body += "<font size='2'><font color = 'DeepSkyBlue'><b>"+enhancedtext+"</b></font></font><BR>"
 					}
 
-					if(!ownsthis)
+					if(!owns_this)
 					{
 						body += "<a href='?src=\ref[src];P="+power+"'>Evolve</a>"
 					}
@@ -547,13 +547,13 @@ var/list/datum/power/changeling/powerinstances = list()
 
 	var/i = 1
 	for(var/datum/power/changeling/P in powerinstances)
-		var/ownsthis = 0
+		var/owns_this = 0
 
 		if(P in purchasedpowers)
-			ownsthis = 1
+			owns_this = 1
 
 		var/color = "#e6e6e6"
-		if(i%2 == 0)
+		if(i % 2 == 0)
 			color = "#f2f2f2"
 
 		dat += {"
@@ -562,9 +562,9 @@ var/list/datum/power/changeling/powerinstances = list()
 				<td align='center' bgcolor='[color]'>
 					<span id='notice_span[i]'></span>
 					<a id='link[i]'
-					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P.enhancedtext]","[P]",[ownsthis])'
+					onmouseover='expand("item[i]","[P.name]","[P.desc]","[P.helptext]","[P.enhancedtext]","[P]",[owns_this])'
 					>
-					<span id='search[i]'><b>Evolve [P] - Cost: [ownsthis ? "Purchased" : P.genomecost]</b></span>
+					<span id='search[i]'><b>Evolve [P] - Cost: [owns_this ? "Purchased" : P.genomecost]</b></span>
 					</a>
 					<br><span id='item[i]'></span>
 				</td>
@@ -624,3 +624,8 @@ var/list/datum/power/changeling/powerinstances = list()
 	purchasedpowers += PC
 
 	add_changeling_power(PC)
+
+// For debugging. Or for events and badminship, who knows.
+/datum/changeling/proc/purchase_everything()
+	for(var/datum/power/changeling/P in powerinstances)
+		add_changeling_power(P)

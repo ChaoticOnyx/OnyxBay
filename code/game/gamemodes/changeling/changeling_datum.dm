@@ -15,9 +15,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/absorbedcount = 0
 
-	var/chem_charges = 20
+	var/chem_charges = 40
 	var/chem_recharge_rate = 0.5
-	var/chem_storage = 50
+	var/chem_storage = 100
 
 	var/geneticdamage = 0
 	var/geneticpoints = 10
@@ -47,12 +47,15 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		changelingID = "[changelingID]"
 	else
 		changelingID = "[rand(1,99)]"
-	update_my_mob(_M)
+	reset_my_mob(_M)
 	START_PROCESSING(SSprocessing, src)
 
 
 // Chemicals and genetic damage regeneration.
 /datum/changeling/Process()
+	if(QDELETED(my_mob)) // Should never happen, but if it does happen we should make sure we don't prevent it from getting GCd.
+		reset_my_mob(null)
+		return
 	if(!my_mob || my_mob.stat == DEAD || my_mob.InStasis())
 		return
 	chem_charges = min(max(0, chem_charges + chem_recharge_rate), chem_storage)
@@ -70,7 +73,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 // Here we finally die and live no more.
 /datum/changeling/proc/die()
-	remove_changeling_powers(FALSE) // Keeping purchases list, removing actual abilities.
+	remove_all_changeling_powers(FALSE) // Keeping purchases list, removing actual abilities.
 	if(my_mob)
 		to_chat(my_mob, SPAN("changeling", "That's it. We hunt no more."))
 	true_dead = TRUE
@@ -82,9 +85,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(!L.mind)
 		return FALSE
 	if(my_mob)
+		remove_all_changeling_powers()
 		my_mob.mind?.changeling = null
 		my_mob.verbs -= /datum/changeling/proc/EvolutionMenu
 
+		// Biostructural stuff
 		var/obj/item/organ/internal/biostructure/BIO
 		if(istype(my_mob, /mob/living/carbon/brain))
 			BIO = my_mob.loc
@@ -118,7 +123,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 // Sets new my_mob, updates changeling powers' my_mob as well.
-/datum/changeling/proc/update_my_mob(mob/new_mob)
+/datum/changeling/proc/reset_my_mob(mob/new_mob)
 	if(my_mob != new_mob)
 		my_mob = new_mob
 	for(var/datum/changeling_power/CP in available_powers)
@@ -183,9 +188,13 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		for(var/datum/changeling_power/CP in available_powers)
 			if(CP.type == P.power_path)
 				return
+	if(!ishuman(my_mob) && !P.allowduringlesserform)
+		return
+
 	var/datum/changeling_power/CP = new P.power_path(my_mob)
 	if(!CP.desc)
 		CP.desc = P.desc
+	CP.allow_lesser = P.allowduringlesserform
 
 
 // This one can accept both datum/power/changeling and /datum/changeling_power instances
@@ -196,12 +205,14 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 			for(var/datum/changeling_power/CP in available_powers)
 				if(CP.type == P.power_path)
 					target_power = CP
+					break
 			if(remove_purchased)
 				purchasedpowers.Remove(P)
 
 	if(istype(target_power, /datum/changeling_power))
 		var/datum/changeling_power/CP = target_power
 		if(CP in available_powers)
+			available_powers.Remove(CP)
 			qdel(CP)
 		return
 
@@ -209,12 +220,13 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 // Removes all changeling powers.
-/datum/changeling/proc/remove_changeling_powers(remove_purchased = TRUE)
+/datum/changeling/proc/remove_all_changeling_powers(remove_purchased = TRUE)
 	if(remove_purchased)
 		purchasedpowers.Cut()
 	for(var/CP in available_powers)
-		remove_changeling_power(CP)
+		remove_changeling_power(CP, remove_purchased)
 	available_powers.Cut()
+	my_mob?.ability_master.remove_all_changeling_powers()
 
 
 // Auto-purchases free powers, updates things and yadda yadda
@@ -232,12 +244,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		for(var/datum/power/changeling/P in purchasedpowers)
 			for(var/datum/changeling_power/CP in available_powers)
 				if(CP.type == P.power_path)
-					CP.update()
-					if(mob_in_lesser_form && !P.allowduringlesserform)
+					if(mob_in_lesser_form && !CP.allow_lesser)
 						remove_changeling_power(CP, FALSE)
+					else
+						CP.update()
 					continue checking_purchased
-			if(mob_in_lesser_form && !P.allowduringlesserform)
-				continue
 			add_changeling_power(P)
 
 	my_mob.ability_master.reskin_changeling()

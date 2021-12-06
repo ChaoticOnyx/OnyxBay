@@ -4,10 +4,13 @@
 	name = "Regenerative Stasis"
 	desc = "We become weakened to a death-like state, where we will rise again from death. Uses chemicals upon Revive, not when going into stasis."
 	icon_state = "ling_stasis"
-	required_chems = 20
+	required_chems = 40
 	power_processing = FALSE
 	max_stat = DEAD
 	allow_stasis = TRUE
+
+	text_activate = "We're starting to regenerate."
+	text_deactivate = "We have regenerated."
 
 	var/is_ready = FALSE
 
@@ -24,10 +27,10 @@
 		to_chat(my_mob, SPAN("changeling", "We can not do this. We are really dead."))
 		return
 
-	if(!..())
+	if(!active && !my_mob.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No") // Confirmation for living changelings if they want to fake their death
 		return
 
-	if(!my_mob.stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No") // Confirmation for living changelings if they want to fake their death
+	if(!..())
 		return
 
 	my_mob.status_flags |= FAKEDEATH
@@ -36,7 +39,6 @@
 	my_mob.emote("gasp")
 
 	my_mob.death(0) // So our body ~actually~ dies until revived
-	to_chat(my_mob, SPAN("changeling", "We're starting to regenerate."))
 
 	addtimer(CALLBACK(src, .proc/revive_ready), rand(80 SECONDS, 200 SECONDS))
 
@@ -61,14 +63,12 @@
 	name = initial(name)
 	desc = initial(desc)
 
+	is_ready = FALSE
 	update_screen_button()
 
 	L.revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
 	L.status_flags &= ~(FAKEDEATH)
 	L.update_canmove()
-
-	is_ready = FALSE
-	to_chat(L, SPAN("changeling", "We have regenerated."))
 
 /datum/changeling_power/toggled/stasis/proc/revive_ready()
 	if(QDELETED(src))

@@ -3,7 +3,7 @@
 /datum/changeling_power/passive/move_biostructure
 	name = "Relocate Biostructure"
 	desc = "We relocate our true body."
-	var/moving_bio = TRUE
+	var/moving_bio = FALSE
 	var/moving_delay_min = 80
 	var/moving_delay_max = 150
 
@@ -23,8 +23,8 @@
 
 /datum/changeling/proc/move_biostructure()
 	set category = "Changeling"
-	set name = "Move Biostructure"
-	set desc = "We relocate our precious organ."
+	set name = "Relocate Biostructure"
+	set desc = "We relocate our true body."
 
 	if(!usr?.mind?.changeling)
 		return
@@ -69,6 +69,8 @@
 		source_power.moving_bio = FALSE
 		to_chat(H, SPAN("changeling", "Our movement has been interrupted!"))
 		return
+
+	source_power.moving_bio = FALSE
 
 	var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
 	if(!E)

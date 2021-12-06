@@ -2,7 +2,7 @@
 /datum/changeling_power/passive/hive_upload
 	name = "Hive Channel"
 	desc = "Allows us to channel DNA in the airwaves to allow other changelings to absorb it."
-	required_chems = 10
+	required_chems = 20
 
 /datum/changeling_power/passive/hive_upload/activate()
 	my_mob.verbs += /datum/changeling/proc/hive_upload
@@ -12,7 +12,7 @@
 
 /datum/changeling/proc/hive_upload()
 	set category = "Changeling"
-	set name = "Hive Channel (10)"
+	set name = "Hive Channel (20)"
 	set desc = "Allows us to channel DNA in the airwaves to allow other changelings to absorb it."
 
 	if(!usr?.mind?.changeling)

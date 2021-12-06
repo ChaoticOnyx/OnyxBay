@@ -3,7 +3,7 @@
 	name = "Death Sting"
 	desc = "We stuff our prey with cyanide."
 	icon_state = "ling_sting_death"
-	required_chems = 40
+	required_chems = 80
 
 /datum/changeling_power/toggled/sting/death/sting_target(mob/living/carbon/human/target, loud = TRUE)
 	if(!..())

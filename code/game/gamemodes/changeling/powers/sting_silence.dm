@@ -3,7 +3,7 @@
 	name = "Silence Sting"
 	desc = "We make our prey less noisy."
 	icon_state = "ling_sting_silence"
-	required_chems = 10
+	required_chems = 20
 
 /datum/changeling_power/toggled/sting/silence/sting_target(mob/living/carbon/human/target, loud = FALSE)
 	if(!..())

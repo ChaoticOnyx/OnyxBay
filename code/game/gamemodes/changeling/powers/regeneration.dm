@@ -6,8 +6,8 @@
 	icon_state = "ling_regeneration"
 	power_processing = TRUE
 	max_stat = UNCONSCIOUS
-	required_chems = 10
-	chems_drain = 0.5
+	required_chems = 20
+	chems_drain = 1
 
 	text_activate = "We activate our stemocyte pool and begin intensive fleshmending."
 	text_deactivate = "We inactivate our stemocyte pool and stop intensive fleshmending."
@@ -26,13 +26,13 @@
 	var/mob/living/carbon/human/H = my_mob
 
 	if(H.getBruteLoss())
-		H.adjustBruteLoss(-7.5 * config.organ_regeneration_multiplier) // Heal brute better than other ouchies.
+		H.adjustBruteLoss(-5.0 * config.organ_regeneration_multiplier) // Heal brute better than other ouchies.
 		any_effect = TRUE
 	if(H.getFireLoss())
-		H.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
+		H.adjustFireLoss(-3.5 * config.organ_regeneration_multiplier)
 		any_effect = TRUE
 	if(H.getToxLoss())
-		H.adjustToxLoss(-7.5 * config.organ_regeneration_multiplier)
+		H.adjustToxLoss(-5.0 * config.organ_regeneration_multiplier)
 		any_effect = TRUE
 
 	if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())
@@ -46,6 +46,9 @@
 		if(BP_IS_ROBOTIC(regen_organ))
 			continue
 		if(istype(regen_organ))
+			if(prob(5) && !regen_organ.damage && (regen_organ.status & ORGAN_BROKEN))
+				regen_organ.status &= ~ORGAN_BROKEN
+				to_chat(H, SPAN("changeling", "Bones in our [regen_organ] snap in place."))
 			if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 5, 0)
 				if(prob(5))

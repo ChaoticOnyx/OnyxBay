@@ -23,8 +23,6 @@
 	var/damage_threshold_value
 	var/healing_threshold = 1
 	var/moving = FALSE
-	var/datum/reagents/chem_cauldron // Reagent holder used by the Biochemical Cauldron ability. It's safe to leave it be even if the ability is removed/disabled.
-
 
 // Called upon creation of a biostructure. TODO: Replace with Initialize(), requires replacing all /organ/New()'s with Initialize()s.
 /obj/item/organ/internal/biostructure/New(mob/living/holder)
@@ -42,13 +40,11 @@
 
 	reagents.maximum_volume += 5
 	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 5)
-	chem_cauldron = new /datum/reagents(120, src)
 
 
 /obj/item/organ/internal/biostructure/Destroy()
 	die()
 	QDEL_NULL(brainchan)
-	QDEL_NULL(chem_cauldron)
 	. = ..()
 
 
@@ -137,9 +133,9 @@
 	else
 		var/mob/host = loc
 		if(istype(host))
-			brainchan.mind.changeling.die()
+			host.mind.changeling.die()
 			host.death()
-	icon_state = "strange-biostructure-dead"
+	dead_icon = "strange-biostructure-dead"
 	QDEL_NULL(brainchan)
 	return ..()
 

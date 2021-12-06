@@ -2,7 +2,7 @@
 //Boosts the range of our stings by 1, but also increases required chems by 10.
 /datum/changeling_power/toggled/boost_range
 	name = "Ranged Stinger"
-	desc = "Our sting abilities can be used against targets 2 squares away, but require additional 10 chemicals."
+	desc = "Our sting abilities can be used against targets 2 squares away, but require additional 20 chemicals."
 	icon_state = "ling_boost_range"
 	required_chems = 0
 	power_processing = FALSE

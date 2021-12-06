@@ -2,7 +2,7 @@
 /datum/changeling_power/passive/hive_download
 	name = "Hive Absorb"
 	desc = "Allows us to absorb DNA that is being channeled in the airwaves."
-	required_chems = 20
+	required_chems = 40
 
 /datum/changeling_power/passive/hive_download/activate()
 	my_mob.verbs += /datum/changeling/proc/hive_download
@@ -12,7 +12,7 @@
 
 /datum/changeling/proc/hive_download()
 	set category = "Changeling"
-	set name = "Hive Absorb (20)"
+	set name = "Hive Absorb (40)"
 	set desc = "Allows us to absorb DNA that is being channeled in the airwaves."
 
 	if(!usr?.mind?.changeling)

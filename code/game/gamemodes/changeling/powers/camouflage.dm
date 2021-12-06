@@ -4,8 +4,8 @@
 	name = "Visible Camouflage"
 	desc = "Turns us almost invisible, as long as we move slowly."
 	icon_state = "ling_camouflage"
-	required_chems = 10
-	chems_drain = 0.5
+	required_chems = 20
+	chems_drain = 1
 	power_processing = TRUE
 
 	text_activate = "We vanish from sight, and will remain hidden, so long as we move carefully."

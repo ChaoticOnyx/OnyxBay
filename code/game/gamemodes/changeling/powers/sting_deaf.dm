@@ -3,7 +3,7 @@
 	name = "Deaf Sting"
 	desc = "We make our prey go deaf."
 	icon_state = "ling_sting_deaf"
-	required_chems = 5
+	required_chems = 10
 
 /datum/changeling_power/toggled/sting/deaf/sting_target(mob/living/carbon/human/target, loud = FALSE)
 	if(!..())

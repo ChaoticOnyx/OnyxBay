@@ -4,8 +4,8 @@
 	name = "Mimic Voice"
 	desc = "Shape our vocal glands to form a voice of someone we choose. We cannot regenerate chemicals when mimicing."
 	icon_state = "ling_mimic_voice"
-	required_chems = 10
-	chems_drain = 0.25
+	required_chems = 20
+	chems_drain = 0.5
 	power_processing = TRUE
 	max_stat = UNCONSCIOUS
 

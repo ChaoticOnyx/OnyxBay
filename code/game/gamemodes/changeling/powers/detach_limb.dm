@@ -3,7 +3,7 @@
 	name = "Detach Limb"
 	desc = "We tear off our limb, turning it into an aggressive biomass."
 	icon_state = "ling_detach_limb"
-	required_chems = 10
+	required_chems = 20
 	max_stat = DEAD
 
 	var/detaching_now = FALSE
@@ -55,6 +55,7 @@
 	var/obj/item/organ/internal/biostructure/BIO = H.internal_organs_by_name[BP_CHANG]
 	if(organ_to_remove.organ_tag == BIO.parent_organ)
 		H.mind.transfer_to(L)
+	BIO.parent_organ = BP_CHEST
 
 	organ_to_remove.droplimb(TRUE)
 	qdel(organ_to_remove)

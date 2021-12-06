@@ -24,7 +24,7 @@
 	..()
 	var/datum/changeling/changeling = M.mind.changeling
 	if(changeling)
-		M.mind.changeling.true_dead = 1
+		M.mind.changeling.die()
 		M.mind.changeling.geneticpoints = 0
 		M.mind.changeling.chem_storage = 0
 		M.mind.changeling.chem_recharge_rate = 0

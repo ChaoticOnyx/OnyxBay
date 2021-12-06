@@ -3,7 +3,7 @@
 	name = "Blind Sting"
 	desc = "Our target goes blind."
 	icon_state = "ling_sting_blind"
-	required_chems = 20
+	required_chems = 40
 
 /datum/changeling_power/toggled/sting/blind/sting_target(mob/living/carbon/human/target, loud = FALSE)
 	if(!..())

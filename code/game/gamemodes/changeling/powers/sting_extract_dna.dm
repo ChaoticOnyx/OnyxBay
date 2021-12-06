@@ -3,7 +3,7 @@
 	name = "Extract DNA Sting"
 	desc = "We stealthily sting a target to extract their DNA."
 	icon_state = "ling_sting_dna"
-	required_chems = 40
+	required_chems = 80
 
 /datum/changeling_power/toggled/sting/extract_dna/sting_target(mob/living/carbon/human/target, loud = FALSE)
 	if(!..())

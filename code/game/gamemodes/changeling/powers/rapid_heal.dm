@@ -4,7 +4,7 @@
 	name = "Rapid Heal"
 	desc = "We rapidly regenerate in a short amount of time. Does not affect stuns or chemicals."
 	icon_state = "ling_rapid_heal"
-	required_chems = 35
+	required_chems = 70
 	power_processing = TRUE
 	max_stat = UNCONSCIOUS
 
@@ -23,7 +23,7 @@
 	use_chems()
 	feedback_add_details("changeling_powers", "RR")
 
-/datum/changeling_power/toggled/rapid_heal/deactivate()
+/datum/changeling_power/toggled/rapid_heal/deactivate(no_message = TRUE)
 	if(!..())
 		return
 	ticks_left = 0
@@ -53,11 +53,14 @@
 		if(BP_IS_ROBOTIC(regen_organ))
 			continue
 		if(istype(regen_organ))
-			if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
+			if(!regen_organ.damage && (regen_organ.status & ORGAN_BROKEN))
+				regen_organ.status &= ~ORGAN_BROKEN
+				to_chat(H, SPAN("changeling", "Bones in our [regen_organ] snap in place."))
+			else if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 10, 0)
 				if(prob(5))
 					to_chat(H, SPAN("changeling", "We feel a soothing sensation as our [regen_organ] mends..."))
-			if(regen_organ.status & ORGAN_DEAD)
+			else if(regen_organ.status & ORGAN_DEAD)
 				regen_organ.status &= ~ORGAN_DEAD
 				to_chat(H, SPAN("changeling", "Our [regen_organ] is functioning again."))
 
