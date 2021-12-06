@@ -76,6 +76,7 @@
 	var/mob/living/simple_animal/hostile/little_changeling/chest_chan/chest_ling = new (get_turf(H))
 	if(BIO.parent_organ == BP_CHEST || BIO.parent_organ == BP_GROIN)
 		mob_to_receive_mind = chest_ling
+	BIO.parent_organ = BP_CHEST
 
 	if(mob_to_receive_mind)
 		H.mind.transfer_to(mob_to_receive_mind)

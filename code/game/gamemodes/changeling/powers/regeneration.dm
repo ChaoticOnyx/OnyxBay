@@ -46,9 +46,6 @@
 		if(BP_IS_ROBOTIC(regen_organ))
 			continue
 		if(istype(regen_organ))
-			if(prob(5) && !regen_organ.damage && (regen_organ.status & ORGAN_BROKEN))
-				regen_organ.status &= ~ORGAN_BROKEN
-				to_chat(H, SPAN("changeling", "Bones in our [regen_organ] snap in place."))
 			if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 5, 0)
 				if(prob(5))
@@ -58,12 +55,12 @@
 				regen_organ.status &= ~ORGAN_DEAD
 				any_effect = TRUE
 
-	if(prob(50))
-		for(var/limb_type in H.species.has_limbs)
+	if(prob(10))
+		for(var/limb_type in shuffle(H.species.has_limbs))
 			if(H.restore_limb(limb_type, 1))
 				any_effect = TRUE
 				break
-		for(var/organ_type in H.species.has_organ)
+		for(var/organ_type in shuffle(H.species.has_organ))
 			if(H.restore_organ(organ_type))
 				any_effect = TRUE
 				break

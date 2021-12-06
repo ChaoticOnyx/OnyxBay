@@ -65,9 +65,9 @@
 				to_chat(H, SPAN("changeling", "Our [regen_organ] is functioning again."))
 
 	if(prob(50))
-		for(var/limb_type in H.species.has_limbs)
+		for(var/limb_type in shuffle(H.species.has_limbs))
 			if(H.restore_limb(limb_type, 1))
 				break
-		for(var/organ_type in H.species.has_organ)
+		for(var/organ_type in shuffle(H.species.has_organ))
 			if(H.restore_organ(organ_type))
 				break
