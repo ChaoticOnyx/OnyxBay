@@ -45,6 +45,55 @@
     </table>
 
     <div class="commit">
+        <div class="date"><span>07 декабрь 2021</span></div>
+        <h3 class="author">Doster-d updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-crown"></i><p>Gateway теперь работает, и у администрации появилась возможность его открыть в новой локации.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7088">#7088</a></sup></li>
+        </ul>
+        <h3 class="author">igorsaux updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-bug"></i><p>Блоб теперь уничтожает смесы.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7087">#7087</a></sup></li>
+            <li class="green"><i class="fas fa-bug"></i><p>Блоб не спавнится на турфах астероида.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7087">#7087</a></sup></li>
+        </ul>
+        <h3 class="author">TobyThorne updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-wrench"></i><p>Regenerative Stasis генокрадов больше не имеет фиксированной стоимости и рандомного времени воскрешения. Теперь данная способность тратит все накопленные на момент активации химикаты. Чем больше было химикатов - тем быстрее можно будет воскреснуть. При наличии способности Recursive Enhancement треть потраченых химикатов вернётся после воскрешения.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7099">#7099</a></sup></li>
+            <li class="green"><i class="fas fa-plus"></i><p>Практически полностью переработан код генокрадов. Было исправлено огромное количество багов, но возможно возникновение новых. Канал &quot;баги-и-идеи&quot; в Discord всегда открыт.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Теперь большинство способностей генокрадов используется не через вкладку Changeling, а с помощью иконок в игровом окне (аналогично с магом). Прямо на иконках отображается стоимость способности в химикатах, в скобочках указывается расход в секунду в активном состоянии (если имеется). Переключаемые способности в активном состоянии имеют особую индикацию. Способностей, которые нельзя применить (например, не хватает химикатов) имеют затемнённый фон. Способности, оставшиеся во вкладке Changeling: Evolution Menu, Hive Absorb, Hive Channel, Relocate Biostructure и все способности генкомобов.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Количество химикатов, расход химикатов на способности, восстановление химикатов и т.д. увеличены вдвое. На геймплей это не влияет и сделано для исключения значений вроде 0.25.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способность Passive Regeneration теперь чуть быстрее лечит основные виды урона, но медленнее восстанавливает потеряные/сломаные/артериально-кровоточащие артерии. А ещё - не должна ломаться как раньше.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способность Rapid Regeneration заменена на Rapid Heal. Теперь эта способность соответствует описанию и лечит действительно эффективно. Раньше она лечила только основные виды урона, но теперь также может отращивать конечности, устранять переломы и некроз, восстанавливать органы. При этом немного увеличилась стоимость в химикатах.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способность Boost Range заменена на Ranged Stinger. Новая способность - переключаемая. Во включенном состоянии она увеличивает дальность применениия всех способностей, связанных с уколами, попутно увеличивая их стоимость на 20 химикатов (стоимость сразу же обновляется на соответствующих иконках).</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способности Detach Limb и Body Disjunction теперь можно использовать, находясь в мёртвом теле.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способности, связанные с уколами теперь могут нормально применяться не только генкой-гуманоидом, но и генкомобами.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Способность Epinephrine Sacs теперь также полностью восстанавливает запас устойчивости (poise).</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>В конце раунда теперь показываются способности (и их количество), которые приобрёл генка. При этом стандартный набор (бесплатные) не указывается.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Временно отключена способность Biochemical Cauldron. Она и так работала едва-едва, её нужно переписывать с нуля.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7084">#7084</a></sup></li>
+        </ul>
+        <h3 class="author">TatarTheBuilder updated:</h3>
+        <ul class="changes">
+            <li class="green"><i class="fas fa-palette"></i><p>Добавлены новые виды кустов и прочей растительности.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7060">#7060</a></sup></li>
+            <li class="green"><i class="fas fa-wrench"></i><p>Все декоративные растения, кусты и деревья теперь можно срубить ингейм без использования взрывчатки.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7060">#7060</a></sup></li>
+            <li class="green"><i class="far fa-compass"></i><p>Мелкие изменения сада на карте Фронтир.</p>
+<sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/7060">#7060</a></sup></li>
+        </ul>
         <div class="date"><span>01 декабрь 2021</span></div>
         <h3 class="author">TobyThorne updated:</h3>
         <ul class="changes">
