@@ -140,6 +140,9 @@
 		for(var/obj/item/organ/external/C in children)
 			qdel(C)
 
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src
+	BIO?.forceMove(loc) // Because we don't want biostructures to get wrecked so easily
+
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
@@ -901,7 +904,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			forceMove(victim.loc)
 			if(!clean) // Throw limb around.
 				spawn()
-					if(src && isturf(loc))
+					if(!QDELETED(src) && isturf(loc))
 						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
 					dir = 2
 		if(DROPLIMB_BURN)
