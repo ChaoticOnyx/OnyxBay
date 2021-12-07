@@ -109,7 +109,7 @@
 	if(current_energy <= 0)
 		energy_failure()
 
-/obj/machinery/power/vortex_suppressor/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/power/vortex_suppressor/attackby(obj/item/O, mob/user)
 	if(panel_open && isMultitool(O) || isWirecutter(O))
 		attack_hand(user)
 		return
@@ -137,7 +137,7 @@
 	else
 		current_energy = 0
 
-/obj/machinery/power/vortex_suppressor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/vortex_suppressor/ui_interact(user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/list/data = list()
 
 	data["running"] = running
@@ -159,13 +159,13 @@
 		ui.set_auto_update(1)
 
 
-/obj/machinery/power/vortex_suppressor/attack_hand(mob/user)
+/obj/machinery/power/vortex_suppressor/attack_hand(user)
 	ui_interact(user)
 	if(panel_open)
 		wires.Interact(user)
 
 
-/obj/machinery/power/vortex_suppressor/CanUseTopic(mob/user)
+/obj/machinery/power/vortex_suppressor/CanUseTopic(user)
 	if(issilicon(user) && !Adjacent(user) && ai_control_disabled)
 		return STATUS_UPDATE
 	return ..()
