@@ -140,6 +140,10 @@
 		for(var/obj/item/organ/external/C in children)
 			qdel(C)
 
+	var/obj/item/organ/internal/biostructure/BIO = locate() in src
+	if(BIO)
+		BIO.forceMove(loc) // Because we don't want biostructures to get wrecked so easily
+
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
