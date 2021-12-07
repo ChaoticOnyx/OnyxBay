@@ -38,9 +38,9 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/update()
 
 
-datum/objective/assassinate
+/datum/objective/assassinate
 
-datum/objective/assassinate/find_target()
+/datum/objective/assassinate/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Assassinate [target.current.real_name], the [target.assigned_role]."
@@ -48,7 +48,7 @@ datum/objective/assassinate/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/assassinate/find_target_by_role(role, role_type=0)
+/datum/objective/assassinate/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Assassinate [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role]."
@@ -56,7 +56,7 @@ datum/objective/assassinate/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/assassinate/check_completion()
+/datum/objective/assassinate/check_completion()
 	if(target && target.current)
 		if(target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current) || target.current.z > 6 || !target.current.ckey) //Borgs/brains/AIs count as dead for traitor objectives. --NeoFite
 			return 1
@@ -64,11 +64,11 @@ datum/objective/assassinate/check_completion()
 	return 1
 
 
-datum/objective/anti_revolution
+/datum/objective/anti_revolution
 
-datum/objective/anti_revolution/execute
+/datum/objective/anti_revolution/execute
 
-datum/objective/anti_revolution/execute/find_target()
+/datum/objective/anti_revolution/execute/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "[target.current.real_name], the [target.assigned_role] has extracted confidential information above their clearance. Execute \him[target.current]."
@@ -76,7 +76,7 @@ datum/objective/anti_revolution/execute/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/execute/find_target_by_role(role, role_type=0)
+/datum/objective/anti_revolution/execute/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "[target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] has extracted confidential information above their clearance. Execute \him[target.current]."
@@ -84,7 +84,7 @@ datum/objective/anti_revolution/execute/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/execute/check_completion()
+/datum/objective/anti_revolution/execute/check_completion()
 	if(target && target.current)
 		if(target.current.stat == DEAD || !ishuman(target.current))
 			return 1
@@ -92,10 +92,10 @@ datum/objective/anti_revolution/execute/check_completion()
 	return 1
 
 
-datum/objective/anti_revolution/brig
+/datum/objective/anti_revolution/brig
 	var/already_completed = 0
 
-datum/objective/anti_revolution/brig/find_target()
+/datum/objective/anti_revolution/brig/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Brig [target.current.real_name], the [target.assigned_role] for 20 minutes to set an example."
@@ -103,7 +103,7 @@ datum/objective/anti_revolution/brig/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/brig/find_target_by_role(role, role_type=0)
+/datum/objective/anti_revolution/brig/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Brig [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] for 20 minutes to set an example."
@@ -111,18 +111,18 @@ datum/objective/anti_revolution/brig/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/brig/check_completion()
+/datum/objective/anti_revolution/brig/check_completion()
 	return already_completed
 
-datum/objective/anti_revolution/brig/update()
+/datum/objective/anti_revolution/brig/update()
 	if(!already_completed && target && target.current && target.current.stat != DEAD)
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
 
-datum/objective/anti_revolution/demote
+/datum/objective/anti_revolution/demote
 
-datum/objective/anti_revolution/demote/find_target()
+/datum/objective/anti_revolution/demote/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "[target.current.real_name], the [target.assigned_role]  has been classified as harmful to [GLOB.using_map.company_name]'s goals. Demote \him[target.current] to assistant."
@@ -130,7 +130,7 @@ datum/objective/anti_revolution/demote/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/demote/find_target_by_role(role, role_type=0)
+/datum/objective/anti_revolution/demote/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "[target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] has been classified as harmful to [GLOB.using_map.company_name]'s goals. Demote \him[target.current] to assistant."
@@ -138,7 +138,7 @@ datum/objective/anti_revolution/demote/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/anti_revolution/demote/check_completion()
+/datum/objective/anti_revolution/demote/check_completion()
 	if(target && target.current && istype(target,/mob/living/carbon/human))
 		var/obj/item/weapon/card/id/I = target.current:wear_id
 		if(istype(I, /obj/item/device/pda))
@@ -154,9 +154,9 @@ datum/objective/anti_revolution/demote/check_completion()
 	return 1
 
 
-datum/objective/debrain//I want braaaainssss
+/datum/objective/debrain//I want braaaainssss
 
-datum/objective/debrain/find_target()
+/datum/objective/debrain/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Steal the brain of [target.current.real_name]."
@@ -164,7 +164,7 @@ datum/objective/debrain/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/debrain/find_target_by_role(role, role_type=0)
+/datum/objective/debrain/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Steal the brain of [target.current.real_name] the [!role_type ? target.assigned_role : target.special_role]."
@@ -172,7 +172,7 @@ datum/objective/debrain/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/debrain/check_completion()
+/datum/objective/debrain/check_completion()
 	if(!target)//If it's a free objective.
 		return 1
 	if( !owner.current || owner.current.stat==DEAD )//If you're otherwise dead.
@@ -187,9 +187,9 @@ datum/objective/debrain/check_completion()
 	return 0
 
 
-datum/objective/protect//The opposite of killing a dude.
+/datum/objective/protect//The opposite of killing a dude.
 
-datum/objective/protect/find_target()
+/datum/objective/protect/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Protect [target.current.real_name], the [target.assigned_role]."
@@ -197,7 +197,7 @@ datum/objective/protect/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/protect/find_target_by_role(role, role_type=0)
+/datum/objective/protect/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Protect [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role]."
@@ -205,7 +205,7 @@ datum/objective/protect/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/protect/check_completion()
+/datum/objective/protect/check_completion()
 	if(!target)			//If it's a free objective.
 		return 1
 	if(target.current)
@@ -215,10 +215,10 @@ datum/objective/protect/check_completion()
 	return 0
 
 
-datum/objective/hijack
+/datum/objective/hijack
 	explanation_text = "Hijack a shuttle or pod by escaping alone."
 
-datum/objective/hijack/check_completion()
+/datum/objective/hijack/check_completion()
 	if(!owner.current || owner.current.stat)
 		return 0
 	if(!evacuation_controller.has_evacuated())
@@ -240,10 +240,10 @@ datum/objective/hijack/check_completion()
 	return 1
 
 
-datum/objective/block
+/datum/objective/block
 	explanation_text = "Do not allow any organic lifeforms to escape on the shuttle alive."
 
-datum/objective/block/check_completion()
+/datum/objective/block/check_completion()
 	if(!istype(owner.current, /mob/living/silicon))
 		return 0
 	if(!evacuation_controller.has_evacuated())
@@ -261,10 +261,10 @@ datum/objective/block/check_completion()
 	return 1
 
 
-datum/objective/silence
+/datum/objective/silence
 	explanation_text = "Do not allow anyone to escape.  Only allow the shuttle to be called when everyone is dead and your story is the only one left."
 
-datum/objective/silence/check_completion()
+/datum/objective/silence/check_completion()
 	if(!evacuation_controller.has_evacuated())
 		return 0
 
@@ -279,10 +279,10 @@ datum/objective/silence/check_completion()
 	return 1
 
 
-datum/objective/escape
+/datum/objective/escape
 	explanation_text = "Escape on the shuttle or an escape pod alive and free."
 
-datum/objective/escape/check_completion()
+/datum/objective/escape/check_completion()
 	if(issilicon(owner.current))
 		return 0
 	if(isbrain(owner.current))
@@ -324,10 +324,10 @@ datum/objective/escape/check_completion()
 	return FALSE
 
 
-datum/objective/survive
+/datum/objective/survive
 	explanation_text = "Stay alive until the end."
 
-datum/objective/survive/check_completion()
+/datum/objective/survive/check_completion()
 	if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
 		return 0		//Brains no longer win survive objectives. --NEO
 	if(issilicon(owner.current) && owner.current != owner.original)
@@ -336,10 +336,10 @@ datum/objective/survive/check_completion()
 
 
 // Similar to the anti-rev objective, but for traitors
-datum/objective/brig
+/datum/objective/brig
 	var/already_completed = 0
 
-datum/objective/brig/find_target()
+/datum/objective/brig/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Have [target.current.real_name], the [target.assigned_role] brigged for 10 minutes."
@@ -347,7 +347,7 @@ datum/objective/brig/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/brig/find_target_by_role(role, role_type=0)
+/datum/objective/brig/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Have [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role] brigged for 10 minutes."
@@ -355,20 +355,20 @@ datum/objective/brig/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/brig/check_completion()
+/datum/objective/brig/check_completion()
 	return already_completed
 
-datum/objective/brig/update()
+/datum/objective/brig/update()
 	if(!already_completed && target && target.current && target.current.stat != DEAD)
 		if(target.is_brigged(10 MINUTES))
 			already_completed = 1
 
 
 // Harm a crew member, making an example of them
-datum/objective/harm
+/datum/objective/harm
 	var/already_completed = 0
 
-datum/objective/harm/find_target()
+/datum/objective/harm/find_target()
 	..()
 	if(target && target.current)
 		explanation_text = "Make an example of [target.current.real_name], the [target.assigned_role]. Break one of their bones, detach one of their limbs or disfigure their face. Make sure they're alive when you do it."
@@ -376,7 +376,7 @@ datum/objective/harm/find_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/harm/find_target_by_role(role, role_type=0)
+/datum/objective/harm/find_target_by_role(role, role_type=0)
 	..(role, role_type)
 	if(target && target.current)
 		explanation_text = "Make an example of [target.current.real_name], the [!role_type ? target.assigned_role : target.special_role]. Break one of their bones, detach one of their limbs or disfigure their face. Make sure they're alive when you do it."
@@ -384,7 +384,7 @@ datum/objective/harm/find_target_by_role(role, role_type=0)
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/harm/check_completion()
+/datum/objective/harm/check_completion()
 	if(already_completed)
 		return 1
 
@@ -560,14 +560,14 @@ datum/objective/harm/check_completion()
 	return 0
 
 
-datum/objective/download
+/datum/objective/download
 
-datum/objective/download/proc/gen_amount_goal()
+/datum/objective/download/proc/gen_amount_goal()
 	target_amount = rand(10,20)
 	explanation_text = "Download [target_amount] research levels."
 	return target_amount
 
-datum/objective/download/check_completion()
+/datum/objective/download/check_completion()
 	if(!ishuman(owner.current))
 		return 0
 	if(!owner.current || owner.current.stat == 2)
@@ -593,14 +593,14 @@ datum/objective/download/check_completion()
 	return (current_amount<target_amount) ? 0 : 1
 
 
-datum/objective/capture
+/datum/objective/capture
 
-datum/objective/capture/proc/gen_amount_goal()
+/datum/objective/capture/proc/gen_amount_goal()
 	target_amount = rand(5,10)
 	explanation_text = "Accumulate [target_amount] capture points."
 	return target_amount
 
-datum/objective/capture/check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
+/datum/objective/capture/check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
 	var/captured_amount = 0
 	var/area/centcom/holding/A = locate()
 
@@ -648,15 +648,15 @@ datum/objective/capture/check_completion()//Basically runs through all the mobs 
 
 
 // Heist objectives.
-datum/objective/heist
+/datum/objective/heist
 
-datum/objective/heist/proc/choose_target()
+/datum/objective/heist/proc/choose_target()
 	return
 
 
-datum/objective/heist/kidnap
+/datum/objective/heist/kidnap
 
-datum/objective/heist/kidnap/choose_target()
+/datum/objective/heist/kidnap/choose_target()
 	var/list/roles = list("Chief Engineer","Research Director","Roboticist","Chemist","Engineer")
 	var/list/possible_targets = list()
 	var/list/priority_targets = list()
@@ -680,7 +680,7 @@ datum/objective/heist/kidnap/choose_target()
 		explanation_text = "Free Objective"
 	return target
 
-datum/objective/heist/kidnap/check_completion()
+/datum/objective/heist/kidnap/check_completion()
 	if(target && target.current)
 		if (target.current.stat == 2)
 			return 0 // They're dead. Fail.
@@ -694,9 +694,9 @@ datum/objective/heist/kidnap/check_completion()
 		return 0
 
 
-datum/objective/heist/loot
+/datum/objective/heist/loot
 
-datum/objective/heist/loot/choose_target()
+/datum/objective/heist/loot/choose_target()
 	var/loot = "an object"
 	switch(rand(1,8))
 		if(1)
@@ -734,7 +734,7 @@ datum/objective/heist/loot/choose_target()
 
 	explanation_text = "It's a buyer's market out here. Steal [loot] for resale."
 
-datum/objective/heist/loot/check_completion()
+/datum/objective/heist/loot/check_completion()
 	var/total_amount = 0
 	var/list/objects_to_check = list()
 
@@ -768,9 +768,9 @@ datum/objective/heist/loot/check_completion()
 	return 0
 
 
-datum/objective/heist/salvage
+/datum/objective/heist/salvage
 
-datum/objective/heist/salvage/choose_target()
+/datum/objective/heist/salvage/choose_target()
 	switch(rand(1,8))
 		if(1)
 			target = MATERIAL_STEEL
@@ -799,7 +799,7 @@ datum/objective/heist/salvage/choose_target()
 
 	explanation_text = "Ransack the [station_name()] and escape with [target_amount] [target]."
 
-datum/objective/heist/salvage/check_completion()
+/datum/objective/heist/salvage/check_completion()
 	var/total_amount = 0
 	var/list/objects_to_check = list()
 
