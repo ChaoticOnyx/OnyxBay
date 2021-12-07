@@ -13,7 +13,7 @@
 	text_deactivate = "We have regenerated."
 
 	var/is_ready = FALSE
-	var/max_revive_time = 210
+	var/max_revive_time = 240
 	var/revive_speedup_by_chem = 1.2
 	var/chemical_buffer = -1 // Amount of chemicals we regain if we use recursive enhancement
 	var/chemical_buffer_mult = 0.33
