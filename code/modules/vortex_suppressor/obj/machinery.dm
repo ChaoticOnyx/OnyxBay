@@ -28,8 +28,8 @@
 		icon_state = "generator0"
 
 
-/obj/machinery/power/vortex_suppressor/New()
-	..()
+/obj/machinery/power/vortex_suppressor/Initialize()
+	. = ..()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/vortex_suppressor(src)
 	component_parts += new /obj/item/stack/cable_coil(src)
@@ -138,7 +138,7 @@
 		current_energy = 0
 
 /obj/machinery/power/vortex_suppressor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	var/data[0]
+	var/list/data = list()
 
 	data["running"] = running
 	data["modes"] = get_flag_descriptions()

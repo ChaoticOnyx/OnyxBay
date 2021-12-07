@@ -1,6 +1,6 @@
 // Teleport Suppressor
 /turf/proc/check_unallow_suppressor_flag(var/flag, var/warning_message)
-	for(var/obj/machinery/power/vortex_suppressor/VS in world)
+	for(var/obj/machinery/power/vortex_suppressor/VS in SSmachines.processing)
 		if(VS.check_flag(flag) && VS.running)
 			var/turf/VS_turf = get_turf(VS)
 			if(z == VS_turf.z)

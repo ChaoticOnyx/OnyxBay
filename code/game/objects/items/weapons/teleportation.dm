@@ -231,10 +231,8 @@ Frequency:
 		return 1
 	if(H.incapacitated() || loc != H)
 		return
-	if(!ishuman(H))
-		return 1
 
-	if((H == src.loc || (in_range(src, H) && istype(src.loc, /turf))))
+	if((loc == H || (in_range(src, H) && isturf(loc))))
 		H.set_machine(src)
 		if(!vcell)
 			return
