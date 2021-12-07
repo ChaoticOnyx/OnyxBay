@@ -16,17 +16,17 @@
 		return
 	. = ..()
 
-/obj/item/weapon/board/attack_hand(mob/living/carbon/human/M as mob)
+/obj/item/weapon/board/attack_hand(mob/living/carbon/human/M)
 	if(M.machine == src)
 		..()
 	else
 		src.examine(M)
 
-obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/weapon/board/attackby(obj/item/I, mob/user)
 	if(!addPiece(I,user))
 		..()
 
-/obj/item/weapon/board/proc/addPiece(obj/item/I as obj, mob/user as mob, tile = 0)
+/obj/item/weapon/board/proc/addPiece(obj/item/I, mob/user, tile = 0)
 	if(I.w_class != ITEM_SIZE_TINY) //only small stuff
 		user.show_message("<span class='warning'>\The [I] is too big to be used as a board piece.</span>")
 		return 0
@@ -61,9 +61,9 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 	return 1
 
 
-/obj/item/weapon/board/interact(mob/user as mob)
+/obj/item/weapon/board/interact(mob/user)
 	if(user.is_physically_disabled() || (!isAI(user) && !user.Adjacent(src))) //can't see if you arent conscious. If you are not an AI you can't see it unless you are next to it, either.
-		user << browse(null, "window=boardgame")
+		close_browser(user, "window=boardgame")
 		user.unset_machine()
 		return
 
@@ -87,7 +87,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 
 		if(board["[i]"])
 			var/obj/item/I = board["[i]"]
-			user << browse_rsc(board_icons["[I.icon] [I.icon_state]"],"[I.icon_state].png")
+			send_rsc(user, board_icons["[I.icon] [I.icon_state]"], "[I.icon_state].png")
 			dat += " style='background-image:url([I.icon_state].png)'>"
 		else
 			dat+= ">"
@@ -99,13 +99,13 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 
 	if(selected >= 0 && !isobserver(user))
 		dat += "<br><A href='?src=\ref[src];remove=0'>Remove Selected Piece</A>"
-	user << browse(jointext(dat, null),"window=boardgame;size=430x500") // 50px * 8 squares + 30 margin
+	show_browser(user, jointext(dat, null),"window=boardgame;size=430x500") // 50px * 8 squares + 30 margin
 	onclose(usr, "boardgame")
 
 /obj/item/weapon/board/Topic(href, href_list)
 	if(!usr.Adjacent(src))
 		usr.unset_machine()
-		usr << browse(null, "window=boardgame")
+		close_browser(usr, "window=boardgame")
 		return
 
 	if(!usr.incapacitated()) //you can't move pieces if you can't move
@@ -226,7 +226,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 
 /obj/item/weapon/reagent_containers/food/snacks/checker/king/red
 	piece_color ="red"
-	
+
 /*
 CONTAINS:
 THAT STUPID GAME KIT
@@ -240,7 +240,7 @@ THAT STUPID GAME KIT
 	var/board_stat = null
 	var/data = ""
 	item_state = "sheet-metal"
-	
+
 /datum/asset/simple/chess
 	assets = list(
 		"board_BI.png"			= 'icons/chess/board_BI.png',
@@ -254,15 +254,15 @@ THAT STUPID GAME KIT
 		"board_WN.png"			= 'icons/chess/board_WN.png',
 		"board_WP.png"			= 'icons/chess/board_WP.png',
 		"board_WQ.png"			= 'icons/chess/board_WQ.png',
-		"board_WR.png"			= 'icons/chess/board_WR.png',	
-		"board_none.png"		= 'icons/chess/board_none.png',			
-	)	
+		"board_WR.png"			= 'icons/chess/board_WR.png',
+		"board_none.png"		= 'icons/chess/board_none.png',
+	)
 
 /obj/item/weapon/game_kit/New()
 	src.board_stat = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 	src.selected = "CR"
 
-/obj/item/weapon/game_kit/MouseDrop_T(mob/user as mob)
+/obj/item/weapon/game_kit/MouseDrop_T(mob/user)
 	if (user == usr && !usr.incapacitated() && (usr.contents.Find(src) || in_range(src, usr)))
 		if (usr.hand)
 			if (!usr.l_hand)
@@ -304,11 +304,11 @@ THAT STUPID GAME KIT
 		dat += "<a href='?src=\ref[src];s_piece=[piece]'><img src='board_[piece].png' width=32 height=32 border=0></a>"
 	src.data = dat
 
-/obj/item/weapon/game_kit/attack_ai(mob/user as mob, unused, flag)
+/obj/item/weapon/game_kit/attack_ai(mob/user, unused, flag)
 	src.add_hiddenprint(user)
 	return src.attack_hand(user, unused, flag)
 
-/obj/item/weapon/game_kit/attack_hand(mob/user as mob, unused, flag)
+/obj/item/weapon/game_kit/attack_hand(mob/user, unused, flag)
 
 	if (flag)
 		return ..()
@@ -316,10 +316,9 @@ THAT STUPID GAME KIT
 		user.machine = src
 		if (!( src.data ))
 			update()
-		user << browse(src.data, "window=game_kit;size=600x748")
+		show_browser(user, src.data, "window=game_kit;size=600x748")
 		onclose(user, "game_kit")
 		return
-	return
 
 /obj/item/weapon/game_kit/Topic(href, href_list)
 	..()
@@ -389,4 +388,4 @@ THAT STUPID GAME KIT
 		update()
 		for(var/mob/M in viewers(1, src))
 			if ((M.client && M.machine == src))
-				src.attack_hand(M)	
+				src.attack_hand(M)

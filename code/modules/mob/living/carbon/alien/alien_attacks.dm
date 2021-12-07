@@ -22,7 +22,7 @@
 						step_away(src,M,15)
 						sleep(3)
 						step_away(src,M,15)
-				playsound(loc, "punch", rand(80, 100), 1, -1)
+				playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message("<span class='danger'>\The [M] has punched \the [src]!</span>", 1)
@@ -32,7 +32,6 @@
 						if ((O.client && !( O.blinded )))
 							O.show_message("<span class='danger'>\The [M] has weakened \the [src]!</span>", 1, "<span class='warning'>You hear someone fall.</span>", 2)
 				adjustBruteLoss(damage)
-				updatehealth()
 			else
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))

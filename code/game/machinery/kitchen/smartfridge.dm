@@ -61,12 +61,12 @@
 	return 0
 
 /obj/machinery/smartfridge/secure/extract
-	name = "\improper Slime Extract Storage"
-	desc = "A refrigerated storage unit for slime extracts."
+	name = "\improper Metroid Extract Storage"
+	desc = "A refrigerated storage unit for metroid extracts."
 	req_access = list(access_research)
 
 /obj/machinery/smartfridge/secure/extract/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/slime_extract))
+	if(istype(O,/obj/item/metroid_extract))
 		return 1
 	return 0
 
@@ -243,6 +243,7 @@
 
 /obj/machinery/smartfridge/secure/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		locked = -1
 		to_chat(user, "You short out the product lock on [src].")

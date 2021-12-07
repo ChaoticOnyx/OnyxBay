@@ -68,12 +68,22 @@
 	item_state = "fullgas"
 
 /obj/item/clothing/mask/gas/clear
-	name = "gas mask"
+	name = "clear gas mask"
 	desc = "A close-fitting, panoramic gas mask that can be connected to an air supply."
 	icon_state = "gasmask-clear"
 	item_state = "gasmask-clear"
+	flags_inv = HIDEEARS
 	istinted = 0
 	siemens_coefficient = 0.9
+	armor = list(melee = 5, bullet = 2.5, laser = 5, energy = 0, bomb = 0, bio = 75, rad = 25)
+
+/obj/item/clothing/mask/gas/captain
+	name = "captain's gas mask"
+	desc = "NanoTrasen cut corners and repainted a spare atmospheric gas mask, but don't tell anyone."
+	icon_state = "gas_cap"
+	item_state = "gas_cap"
+	istinted = 0
+	siemens_coefficient = 0.7
 
 /obj/item/clothing/mask/gas/police
 	name = "police gas mask"
@@ -175,3 +185,17 @@
 	body_parts_covered = 0
 	species_restricted = list(SPECIES_VOX)
 	filtered_gases = list("plasma", "sleeping_agent", "oxygen")
+
+/obj/item/clothing/mask/gas/plasticbag
+	name = "plastic bag"
+	desc = "Not an eco-friendly way to strangle someone."
+	icon_state = "plasticbag_taped"
+	item_state = "plasticbag_taped"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	item_flags = ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT & ITEM_FLAG_THICKMATERIAL
+	body_parts_covered = HEAD|FACE|EYES
+	tint = TINT_BLIND
+	voicechange = 1
+	filtered_gases = list("phoron", "sleeping_agent", "oxygen")
+	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+	say_verbs = list("mumbles")

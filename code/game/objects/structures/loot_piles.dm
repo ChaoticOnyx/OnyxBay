@@ -210,18 +210,19 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/trash/chips,
 		/obj/item/trash/liquidfood,
 		/obj/item/trash/pistachios,
-		/obj/item/trash/plate,
+		/obj/item/trash/dish/plate,
 		/obj/item/trash/popcorn,
 		/obj/item/trash/raisins,
 		/obj/item/trash/semki,
-		/obj/item/trash/snack_bowl,
+		/obj/item/trash/dish/bowl,
 		/obj/item/trash/sosjerky,
 		/obj/item/trash/syndi_cakes,
 		/obj/item/trash/tastybread,
-		/obj/item/trash/tray,
-		/obj/item/trash/waffles,
+		/obj/item/trash/dish/tray,
+		/obj/item/trash/dish/baking_sheet,
 		/obj/item/trash/pan,
 		/obj/item/trash/hematogen,
+		/obj/item/trash/hemptogen,
 		/obj/item/trash/skrellsnacks,
 		/obj/item/weapon/reagent_containers/food/snacks/mysterysoup,
 		/obj/item/stack/rods{amount = 5},
@@ -248,11 +249,12 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/trash/cans/tonic,
 		/obj/item/trash/cans/sodawater,
 		/obj/item/trash/cans/machpellabeer,
-		/obj/item/trash/cans/applecider
+		/obj/item/trash/cans/applecider,
+		/obj/item/trash/cans/red_mule
 	)
 
 	uncommon_loot = list(
-		/obj/item/weapon/reagent_containers/syringe/steroid,
+		/obj/item/weapon/reagent_containers/syringe/steroid/packaged,
 		/obj/item/weapon/storage/pill_bottle/zoom,
 		/obj/item/weapon/storage/pill_bottle/happy,
 		/obj/item/weapon/storage/pill_bottle/tramadol

@@ -7,7 +7,7 @@
 	density = 1
 	throwpass = 1
 	layer = ABOVE_WINDOW_LAYER
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	var/on = 0
 	var/id_tag = null
 

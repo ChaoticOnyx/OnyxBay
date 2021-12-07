@@ -27,7 +27,7 @@
 
 	return mobs
 
-proc/random_hair_style(gender, species = SPECIES_HUMAN)
+/proc/random_hair_style(gender, species = SPECIES_HUMAN)
 	var/h_style = "Bald"
 
 	var/datum/species/mob_species = all_species[species]
@@ -37,7 +37,7 @@ proc/random_hair_style(gender, species = SPECIES_HUMAN)
 
 	return h_style
 
-proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
+/proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 	var/f_style = "Shaved"
 
 	var/datum/species/mob_species = all_species[species]
@@ -47,14 +47,14 @@ proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 
 		return f_style
 
-proc/sanitize_name(name, species = SPECIES_HUMAN)
+/proc/sanitize_name(name, species = SPECIES_HUMAN)
 	var/datum/species/current_species
 	if(species)
 		current_species = all_species[species]
 
 	return current_species ? current_species.sanitize_name(name) : sanitizeName(name)
 
-proc/random_name(gender, species = SPECIES_HUMAN)
+/proc/random_name(gender, species = SPECIES_HUMAN)
 
 	var/datum/species/current_species
 	if(species)
@@ -68,7 +68,7 @@ proc/random_name(gender, species = SPECIES_HUMAN)
 	else
 		return current_species.get_random_name(gender)
 
-proc/random_skin_tone(datum/species/current_species)
+/proc/random_skin_tone(datum/species/current_species)
 	var/species_tone = current_species ? 35 - current_species.max_skin_tone() : -185
 	switch(pick(60;"caucasian", 15;"afroamerican", 10;"african", 10;"latino", 5;"albino"))
 		if("caucasian")		. = -10
@@ -80,7 +80,7 @@ proc/random_skin_tone(datum/species/current_species)
 
 	return min(max(. + rand(-25, 25), species_tone), 34)
 
-proc/skintone2racedescription(tone)
+/proc/skintone2racedescription(tone)
 	switch (tone)
 		if(30 to INFINITY)		return "albino"
 		if(20 to 30)			return "pale"
@@ -92,7 +92,7 @@ proc/skintone2racedescription(tone)
 		if(-INFINITY to -65)	return "black"
 		else					return "unknown"
 
-proc/age2agedescription(age)
+/proc/age2agedescription(age)
 	switch(age)
 		if(0 to 1)			return "infant"
 		if(1 to 3)			return "toddler"
@@ -137,7 +137,7 @@ proc/age2agedescription(age)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag()
+		stoplag(1)
 		if (progress)
 			progbar.update(world.time - starttime)
 		if(!user || !target)
@@ -189,7 +189,7 @@ proc/age2agedescription(age)
 	var/starttime = world.time
 	. = 1
 	while (world.time < endtime)
-		stoplag()
+		stoplag(1)
 		if (progress)
 			progbar.update(world.time - starttime)
 
@@ -241,6 +241,7 @@ proc/age2agedescription(age)
 
 // Returns true if the mob was in neither the dead or living list
 /mob/proc/add_to_dead_mob_list()
+	CAN_BE_REDEFINED(TRUE)
 	return FALSE
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))

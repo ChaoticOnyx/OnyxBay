@@ -17,19 +17,18 @@
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
-
 	user = nuser
 	window_id = nwindow_id
-	if (ntitle)
+	if(ntitle)
 		title = format_text(ntitle)
-	if (nwidth)
+	if(nwidth)
 		width = nwidth
-	if (nheight)
+	if(nheight)
 		height = nheight
-	if (nref)
+	if(nref)
 		ref = nref
 	// If a client exists, but they have disabled fancy windowing, disable it!
-	if(user && user.client && user.client.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
+	if(user?.client?.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
 		return
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
 
@@ -75,12 +74,12 @@
 	var/filename
 	for (key in stylesheets)
 		filename = "[ckey(key)].css"
-		user << browse_rsc(stylesheets[key], filename)
+		send_rsc(user, stylesheets[key], filename)
 		head_content += "<link rel='stylesheet' type='text/css' href='[filename]'>"
 
 	for (key in scripts)
 		filename = "[ckey(key)].js"
-		user << browse_rsc(scripts[key], filename)
+		send_rsc(user, scripts[key], filename)
 		head_content += "<script type='text/javascript' src='[filename]'></script>"
 
 	var/title_attributes = "class='uiTitle'"
@@ -116,12 +115,11 @@
 
 /datum/browser/proc/open(use_onclose = 1)
 	var/window_size = ""
-	if (width && height)
+	if(width && height)
 		window_size = "size=[width]x[height];"
-	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
-	spawn()
-		winset(user, "mapwindow.map", "focus=true")
-	if (use_onclose)
+	show_browser(user, get_content(), "window=[window_id];[window_size][window_options]")
+	winset(user, "mapwindow.map", "focus=true")
+	if(use_onclose)
 		onclose(user, window_id, ref)
 
 /datum/browser/proc/update(force_open = 0, use_onclose = 1)
@@ -131,9 +129,13 @@
 		send_output(user, get_content(), "[window_id].browser")
 
 /datum/browser/proc/close()
-	user << browse(null, "window=[window_id]")
-	spawn()
-		winset(user, "mapwindow.map", "focus=true")
+	close_browser(user, "window=[window_id]")
+
+/datum/browser/Destroy()
+	ref = null
+	user = null
+
+	. = ..()
 
 // This will allow you to show an icon in the browse window
 // This is added to mob so that it can be used without a reference to the browser object
@@ -148,7 +150,7 @@
 		dir = "default"
 
 	var/filename = "[ckey("[icon]_[icon_state]_[dir]")].png"
-	src << browse_rsc(I, filename)
+	send_rsc(src, I, filename)
 	return filename
 	*/
 
@@ -160,7 +162,7 @@
 // e.g. canisters, timers, etc.
 //
 // windowid should be the specified window name
-// e.g. code is	: user << browse(text, "window=fred")
+// e.g. code is	: show_browser(user, text, "window=fred")
 // then use 	: onclose(user, "fred")
 //
 // Optionally, specify the "ref" parameter as the controlled atom (usually src)
@@ -173,9 +175,11 @@
 	if(ref)
 		param = "\ref[ref]"
 
-	spawn(2)
-		if(!user.client) return
-		winset(user, windowid, "on-close=\".windowclose [param]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_onclose, windowid, param), 2)
+
+/mob/proc/post_onclose(windowid, param)
+	if(client)
+		winset(src, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 

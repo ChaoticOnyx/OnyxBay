@@ -64,6 +64,7 @@
 	icon_state = "matrix_thermal"
 	vision_flags = SEE_MOBS
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	flash_protection = FLASH_PROTECTION_REDUCED
 	matrix_type = "thermal"
 	matrix_icon = "thermal"
 
@@ -244,7 +245,7 @@
 	if(lenses)
 		qdel(lenses)
 		lenses = null
-	..()
+	return ..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)
 	if(sec_hud)
@@ -289,7 +290,7 @@
 			matrix = W
 			cumulative_flash_protection += matrix.flash_protection
 			to_chat(user, SPAN("notice", "You install \the [matrix] into \the [src]."))
-			sound_to(user, 'sound/items/goggles_switch.ogg')
+			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -307,7 +308,7 @@
 			var/obj/item/device/hudlenses/H = W
 			H.attach_lenses(src)
 			to_chat(user, SPAN("notice", "You install \the [H] into \the [src]."))
-			sound_to(user, 'sound/items/goggles_switch.ogg')
+			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -365,11 +366,11 @@
 	if(!active)
 		activate_matrix()
 		to_chat(user, "You activate the optical matrix on \the [src].")
-		sound_to(user, activation_sound)
+		sound_to(user, sound(activation_sound, volume = 50))
 	else
 		deactivate_matrix()
 		to_chat(user, "You deactivate the optical matrix on \the [src].")
-		sound_to(user, 'sound/items/goggles_switch.ogg')
+		sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 	update_clothing_icon()
 	user.update_action_buttons()
 

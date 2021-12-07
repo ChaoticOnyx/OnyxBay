@@ -1,4 +1,4 @@
-obj/structure/closet/crate
+/obj/structure/closet/crate
 	name = "crate"
 	desc = "A rectangular steel crate."
 	icon = 'icons/obj/storage.dmi'
@@ -6,8 +6,10 @@ obj/structure/closet/crate
 	icon_opened = "crateopen"
 	icon_closed = "crate"
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	pull_sound = "pull_box"
+	pull_sound = SFX_PULL_BOX
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 	setup = 0
+	open_delay = 3
 
 	dremovable = 0
 
@@ -22,7 +24,7 @@ obj/structure/closet/crate
 	. = ..()
 	if(.)
 		if(rigged)
-			visible_message("<span class='danger'>There are wires attached to the lid of [src]...</span>")
+			visible_message(SPAN_DANGER("There are wires attached to the lid of [src]..."))
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)
@@ -38,7 +40,7 @@ obj/structure/closet/crate
 			devices += A
 		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
 
-/obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/closet/crate/attackby(obj/item/weapon/W, mob/user)
 	if(opened)
 		return ..()
 	else if(istype(W, /obj/item/weapon/packageWrap))
@@ -46,23 +48,23 @@ obj/structure/closet/crate
 	else if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
-			to_chat(user, "<span class='notice'>[src] is already rigged!</span>")
+			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
 			return
 		if (C.use(1))
-			to_chat(user, "<span class='notice'>You rig [src].</span>")
-			rigged = 1
+			to_chat(user, SPAN_NOTICE("You rig [src]."))
+			rigged = TRUE
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
 		if(rigged)
-			to_chat(user, "<span class='notice'>You attach [W] to [src].</span>")
+			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
 			user.drop_item()
 			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)
-			to_chat(user, "<span class='notice'>You cut away the wiring.</span>")
+			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			rigged = 0
+			rigged = FALSE
 			return
 	else
 		return ..()
@@ -102,10 +104,11 @@ obj/structure/closet/crate
 	icon_opened = "plasticcrateopen"
 	icon_closed = "plasticcrate"
 	points_per_crate = 1
+	material = /obj/item/stack/material/plastic
 
 /obj/structure/closet/crate/handmade
 	name = "handmade crate"
-	desc = "Another handmade by a young assistant. How cute!"
+	desc = "Another handmade by a young assistant. Crude crate, now it`s more steel than plasteel."
 	icon_state = "handmadecrate"
 	icon_opened = "handmadecrateopen"
 	icon_closed = "handmadecrate"
@@ -130,6 +133,7 @@ obj/structure/closet/crate
 	icon_state = "trashcart"
 	icon_opened = "trashcartopen"
 	icon_closed = "trashcart"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/closet/crate/medical
 	name = "medical crate"
@@ -363,6 +367,7 @@ obj/structure/closet/crate
 	close_sound = 'sound/items/Deconstruct.ogg'
 	req_access = list(access_mailsorting, access_xenobiology ,access_virology)
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_MOBS
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/closet/crate/secure/biohazard/blanks/WillContain()
 	return list(/mob/living/carbon/human/blank, /obj/item/usedcryobag)

@@ -66,7 +66,7 @@
 
 /obj/structure/ladder/proc/instant_climb(mob/user)
 	var/target_ladder = getTargetLadder(user)
-		user.forceMove(get_turf(target_ladder))
+	user.forceMove(get_turf(target_ladder))
 
 /obj/structure/ladder/proc/climb(mob/user)
 	if(!user.may_climb_ladders(src))
@@ -192,6 +192,9 @@
 	if(get_dir(loc, target) == dir && upperStep(mover.loc))
 		return FALSE
 	return ..()
+
+/obj/structure/stairs/forceMove()
+	return 0
 
 /obj/structure/stairs/Bumped(atom/movable/A)
 	var/turf/above = GetAbove(A)

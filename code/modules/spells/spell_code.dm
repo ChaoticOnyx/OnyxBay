@@ -1,11 +1,12 @@
-var/list/spells = typesof(/spell) //needed for the badmin verb for now
-
-/spell
+/datum/spell
 	var/name = "Spell"
 	var/desc = "A spell"
 	var/feedback = "" //what gets sent if this spell gets chosen by the spellbook.
-	parent_type = /datum
 	var/panel = "Spells"//What panel the proc holder needs to go on.
+
+	var/icon = 'icons/mob/screen_spells.dmi'
+	// Name of the icon used in generating the spell hud object
+	var/icon_state = "fullblock"
 
 	var/school = "evocation" //not relevant at now, but may be important later if there are changes to how spells work. the ones I used for now will probably be changed... maybe spell presets? lacking flexibility but with some other benefit?
 	/*Spell schools as follows:
@@ -14,29 +15,30 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	Transmutation - Modifying an object or transforming it.
 	Illusion - Altering perception or thought.
 	*/
-	var/charge_type = Sp_RECHARGE //can be recharge or charges, see charge_max and charge_counter descriptions; can also be based on the holder's vars now, use "holder_var" for that
+	var/charge_type = SP_RECHARGE //can be recharge or charges, see charge_max and charge_counter descriptions; can also be based on the holder's vars now, use "holder_var" for that
 
-	var/charge_max = 100 //recharge time in deciseconds if charge_type = Sp_RECHARGE or starting charges if charge_type = Sp_CHARGES
-	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = Sp_RECHARGE or -- each cast if charge_type = Sp_CHARGES
-	var/still_recharging_msg = "<span class='notice'>The spell is still recharging.</span>"
+	var/charge_max = 100 //recharge time in deciseconds if charge_type = SP_RECHARGE or starting charges if charge_type = SP_CHARGES
+	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = SP_RECHARGE or -- each cast if charge_type = SP_CHARGES
+	var/still_recharging_msg = SPAN_NOTICE("The spell is still recharging.")
 
 	var/silenced = 0 //not a binary - the length of time we can't cast this for
-	var/processing = 0 //are we processing already? Mainly used so that silencing a spell doesn't call process() again. (and inadvertedly making it run twice as fast)
+	var/processing = FALSE //are we processing already? Mainly used so that silencing a spell doesn't call process() again. (and inadvertedly making it run twice as fast)
 
 	var/holder_var_type = "bruteloss" //only used if charge_type equals to "holder_var"
 	var/holder_var_amount = 20 //same. The amount adjusted with the mob's var when the spell is used
 
 	var/spell_flags = NEEDSCLOTHES
 	var/invocation = "HURP DURP"	//what is uttered when the wizard casts the spell
-	var/invocation_type = SpI_NONE	//can be none, whisper, shout, and emote
+	var/invocation_type = SPI_NONE	//can be none, whisper, shout, and emote
 	var/range = 7					//the range of the spell; outer radius for aoe spells
 	var/message = ""				//whatever it says to the guy affected by it
 	var/selection_type = "view"		//can be "range" or "view"
 	var/atom/movable/holder			//where the spell is. Normally the user, can be an item
 	var/duration = 0 //how long the spell lasts
+	var/need_target = TRUE
 
-	var/list/spell_levels = list(Sp_SPEED = 0, Sp_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
-	var/list/level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 0) //maximum possible levels in each category. Total does cover both.
+	var/list/spell_levels = list(SP_SPEED = 0, SP_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
+	var/list/level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 0) //maximum possible levels in each category. Total does cover both.
 	var/cooldown_reduc = 0		//If set, defines how much charge_max drops by every speed upgrade
 	var/delay_reduc = 0
 	var/cooldown_min = 0 //minimum possible cooldown for a charging spell
@@ -58,7 +60,6 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	var/cast_delay = 1
 	var/cast_sound = ""
 
-	var/hud_state = "" //name of the icon used in generating the spell hud object
 	var/override_base = ""
 
 
@@ -69,16 +70,16 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 ///SETUP AND PROCESS///
 ///////////////////////
 
-/spell/New()
+/datum/spell/New()
 	..()
 
 	//still_recharging_msg = "<span class='notice'>[name] is still recharging.</span>"
 	charge_counter = charge_max
 
-/spell/proc/process()
+/datum/spell/proc/process()
 	if(processing)
 		return
-	processing = 1
+	processing = TRUE
 	spawn(0)
 		while(charge_counter < charge_max || silenced > 0)
 			charge_counter = min(charge_max,charge_counter+1)
@@ -89,17 +90,17 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			if(!istype(S))
 				return
 			S.update_charge(1)
-		processing = 0
+		processing = FALSE
 	return
 
 /////////////////
 /////CASTING/////
 /////////////////
 
-/spell/proc/choose_targets(mob/user = usr) //depends on subtype - see targeted.dm, aoe_turf.dm, dumbfire.dm, or code in general folder
+/datum/spell/proc/choose_targets(mob/user = usr) //depends on subtype - see targeted.dm, aoe_turf.dm, dumbfire.dm, or code in general folder
 	return
 
-/spell/proc/perform(mob/user = usr, skipcharge = 0) //if recharge is started is important for the trigger spells
+/datum/spell/proc/perform(mob/user = usr, skipcharge = 0) //if recharge is started is important for the trigger spells
 	if(!holder)
 		holder = user //just in case
 	if(!cast_check(skipcharge, user))
@@ -133,16 +134,16 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 
 
-/spell/proc/cast(list/targets, mob/user, channel_duration) //the actual meat of the spell
+/datum/spell/proc/cast(list/targets, mob/user, channel_duration) //the actual meat of the spell
 	return
 
-/spell/proc/critfail(list/targets, mob/user) //the wizman has fucked up somehow
+/datum/spell/proc/critfail(list/targets, mob/user) //the wizman has fucked up somehow
 	return
 
-/spell/proc/after_spell(list/targets, mob/user, channel_duration) //After everything else is done.
+/datum/spell/proc/after_spell(list/targets, mob/user, channel_duration) //After everything else is done.
 	return
 
-/spell/proc/adjust_var(mob/living/target = usr, type, amount) //handles the adjustment of the var when the spell is used. has some hardcoded types
+/datum/spell/proc/adjust_var(mob/living/target = usr, type, amount) //handles the adjustment of the var when the spell is used. has some hardcoded types
 	switch(type)
 		if("bruteloss")
 			target.adjustBruteLoss(amount)
@@ -168,7 +169,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 /////CASTING WRAPPERS//////
 ///////////////////////////
 
-/spell/proc/before_cast(list/targets)
+/datum/spell/proc/before_cast(list/targets)
 	for(var/atom/target in targets)
 		if(overlay)
 			var/location
@@ -184,9 +185,9 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			spawn(overlay_lifespan)
 				qdel(spell)
 
-/spell/proc/after_cast(list/targets)
+/datum/spell/proc/after_cast(list/targets)
 	if(cast_sound)
-		playsound(get_turf(holder),cast_sound,50,1)
+		playsound(holder, cast_sound, 50, 1)
 	for(var/atom/target in targets)
 		var/location = get_turf(target)
 		if(istype(target,/mob/living) && message)
@@ -210,155 +211,157 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 /////////////////////
 /*Checkers, cost takers, message makers, etc*/
 
-/spell/proc/cast_check(skipcharge = 0,mob/user = usr, list/targets) //checks if the spell can be cast based on its settings; skipcharge is used when an additional cast_check is called inside the spell
+/datum/spell/proc/cast_check(skipcharge = 0,mob/user = usr, list/targets) //checks if the spell can be cast based on its settings; skipcharge is used when an additional cast_check is called inside the spell
 	if(silenced > 0)
-		return 0
+		return FALSE
 
 	if(!(src in user.mind.learned_spells) && holder == user && !(isanimal(user)))
 		error("[user] utilized the spell '[src]' without having it.")
-		to_chat(user, "<span class='warning'>You shouldn't have this spell! Something's wrong.</span>")
-		return 0
+		to_chat(user, SPAN_WARNING("You shouldn't have this spell! Something's wrong."))
+		return FALSE
 
 	var/turf/user_turf = get_turf(user)
 	if(!user_turf)
-		to_chat(user, "<span class='warning'>You cannot cast spells in null space!</span>")
+		to_chat(user, SPAN_WARNING("You cannot cast spells in null space!"))
 
 	if((spell_flags & Z2NOCAST) && (user_turf.z in GLOB.using_map.admin_levels)) //Certain spells are not allowed on the centcomm zlevel
-		return 0
+		return FALSE
 
 	if(spell_flags & CONSTRUCT_CHECK)
 		for(var/turf/T in range(holder, 1))
 			if(findNullRod(T))
-				return 0
+				return FALSE
 
 	if(istype(user, /mob/living/simple_animal) && holder == user)
 		var/mob/living/simple_animal/SA = user
 		if(SA.purge)
-			to_chat(SA, "<span class='warning'>The nullrod's power interferes with your own!</span>")
-			return 0
+			to_chat(SA, SPAN_WARNING("The nullrod's power interferes with your own!"))
+			return FALSE
 
 	if(!src.check_charge(skipcharge, user)) //sees if we can cast based on charges alone
-		return 0
+		return FALSE
 
 	if(!(spell_flags & GHOSTCAST) && holder == user)
 		if(user.stat && !(spell_flags & STATALLOWED))
 			to_chat(usr, "Not when you're incapacitated.")
-			return 0
+			return FALSE
 
-		if(ishuman(user) && !(invocation_type in list(SpI_EMOTE, SpI_NONE)))
+		if(ishuman(user) && !(invocation_type in list(SPI_EMOTE, SPI_NONE)))
 			if(user.is_muzzled())
 				to_chat(user, "Mmmf mrrfff!")
-				return 0
+				return FALSE
 
-	var/spell/noclothes/spell = locate() in user.mind.learned_spells
+	var/datum/spell/noclothes/spell = locate() in user.mind.learned_spells
 	if((spell_flags & NEEDSCLOTHES) && !(spell && istype(spell)) && holder == user)//clothes check
 		if(!user.wearing_wiz_garb())
-			return 0
+			return FALSE
 
-	return 1
+	return TRUE
 
-/spell/proc/check_charge(skipcharge, mob/user)
+/datum/spell/proc/check_charge(skipcharge, mob/user)
 	if(!skipcharge)
 		switch(charge_type)
-			if(Sp_RECHARGE)
+			if(SP_RECHARGE)
 				if(charge_counter < charge_max)
 					to_chat(user, still_recharging_msg)
-					return 0
-			if(Sp_CHARGES)
+					return FALSE
+			if(SP_CHARGES)
 				if(!charge_counter)
-					to_chat(user, "<span class='notice'>[name] has no charges left.</span>")
-					return 0
-	return 1
+					to_chat(user, SPAN_NOTICE("[name] has no charges left."))
+					return FALSE
+	return TRUE
 
-/spell/proc/take_charge(mob/user = user, skipcharge)
+/datum/spell/proc/take_charge(mob/user = user, skipcharge)
 	if(!skipcharge)
 		switch(charge_type)
-			if(Sp_RECHARGE)
+			if(SP_RECHARGE)
 				charge_counter = 0 //doesn't start recharging until the targets selecting ends
 				src.process()
-				return 1
-			if(Sp_CHARGES)
+				return TRUE
+			if(SP_CHARGES)
 				charge_counter-- //returns the charge if the targets selecting fails
-				return 1
-			if(Sp_HOLDVAR)
+				return TRUE
+			if(SP_HOLDVAR)
 				adjust_var(user, holder_var_type, holder_var_amount)
-				return 1
-		return 0
-	return 1
+				return TRUE
+		return FALSE
+	return TRUE
 
-/spell/proc/check_valid_targets(list/targets)
+/datum/spell/proc/check_valid_targets(list/targets)
+	if(!need_target)
+		return TRUE
 	if(!targets)
-		return 0
+		return FALSE
 	if(!islist(targets))
 		targets = list(targets)
 	else if(!targets.len)
-		return 0
+		return FALSE
 
 	var/list/valid_targets = view_or_range(range, holder, selection_type)
 	for(var/target in targets)
-		if(!target in valid_targets)
-			return 0
-	return 1
+		if(!(target in valid_targets))
+			return FALSE
+	return TRUE
 
-/spell/proc/invocation(mob/user = usr, list/targets) //spelling the spell out and setting it on recharge/reducing charges amount
+/datum/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
-		if(SpI_SHOUT)
+		if(SPI_SHOUT)
 			if(prob(50))//Auto-mute? Fuck that noise
 				user.say(invocation)
 			else
 				user.say(replacetext(invocation," ","`"))
-		if(SpI_WHISPER)
+		if(SPI_WHISPER)
 			if(prob(50))
 				user.whisper(invocation)
 			else
 				user.whisper(replacetext(invocation," ","`"))
-		if(SpI_EMOTE)
+		if(SPI_EMOTE)
 			user.custom_emote(VISIBLE_MESSAGE, invocation)
 
 /////////////////////
 ///UPGRADING PROCS///
 /////////////////////
 
-/spell/proc/can_improve(upgrade_type)
-	if(level_max[Sp_TOTAL] <= ( spell_levels[Sp_SPEED] + spell_levels[Sp_POWER] )) //too many levels, can't do it
-		return 0
+/datum/spell/proc/can_improve(upgrade_type)
+	if(level_max[SP_TOTAL] <= ( spell_levels[SP_SPEED] + spell_levels[SP_POWER] )) //too many levels, can't do it
+		return FALSE
 
 	if(upgrade_type && spell_levels[upgrade_type] >= level_max[upgrade_type])
-		return 0
+		return FALSE
 
-	return 1
+	return TRUE
 
-/spell/proc/empower_spell()
-	if(!can_improve(Sp_POWER))
-		return 0
+/datum/spell/proc/empower_spell()
+	if(!can_improve(SP_POWER))
+		return FALSE
 
-	spell_levels[Sp_POWER]++
+	spell_levels[SP_POWER]++
 
-	return 1
+	return TRUE
 
-/spell/proc/quicken_spell()
-	if(!can_improve(Sp_SPEED))
-		return 0
+/datum/spell/proc/quicken_spell()
+	if(!can_improve(SP_SPEED))
+		return FALSE
 
-	spell_levels[Sp_SPEED]++
+	spell_levels[SP_SPEED]++
 
 	if(delay_reduc && cast_delay)
 		cast_delay = max(0, cast_delay - delay_reduc)
 	else if(cast_delay)
-		cast_delay = round( max(0, initial(cast_delay) * ((level_max[Sp_SPEED] - spell_levels[Sp_SPEED]) / level_max[Sp_SPEED] ) ) )
+		cast_delay = round( max(0, initial(cast_delay) * ((level_max[SP_SPEED] - spell_levels[SP_SPEED]) / level_max[SP_SPEED] ) ) )
 
-	if(charge_type == Sp_RECHARGE)
+	if(charge_type == SP_RECHARGE)
 		if(cooldown_reduc)
 			charge_max = max(cooldown_min, charge_max - cooldown_reduc)
 		else
-			charge_max = round( max(cooldown_min, initial(charge_max) * ((level_max[Sp_SPEED] - spell_levels[Sp_SPEED]) / level_max[Sp_SPEED] ) ) ) //the fraction of the way you are to max speed levels is the fraction you lose
+			charge_max = round( max(cooldown_min, initial(charge_max) * ((level_max[SP_SPEED] - spell_levels[SP_SPEED]) / level_max[SP_SPEED] ) ) ) //the fraction of the way you are to max speed levels is the fraction you lose
 	if(charge_max < charge_counter)
 		charge_counter = charge_max
 
 	var/temp = ""
 	name = initial(name)
-	switch(level_max[Sp_SPEED] - spell_levels[Sp_SPEED])
+	switch(level_max[SP_SPEED] - spell_levels[SP_SPEED])
 		if(3)
 			temp = "You have improved [name] into Efficient [name]."
 			name = "Efficient [name]"
@@ -374,9 +377,9 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	return temp
 
-/spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
+/datum/spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
 	if(!user || isnull(user))
-		return 0
+		return FALSE
 
 	var/incap_flags = INCAPACITATION_STUNNED
 	if(!(spell_flags & (STATALLOWED|GHOSTCAST)))
@@ -384,6 +387,31 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	return do_after(user,delay, incapacitation_flags = incap_flags)
 
-/spell/proc/set_connected_god(mob/living/deity/god)
+/datum/spell/proc/set_connected_god(mob/living/deity/god)
 	connected_god = god
 	return
+
+/datum/spell/proc/to_list()
+	var/list/data = list(
+		"name"        = name,
+		"description" = desc,
+		"school"      = school,
+		"charge_type" = charge_type,
+		"charge_max"  = charge_max,
+		"flags"       = list(
+			"needs_clothes" = spell_flags & NEEDSCLOTHES,
+			"needs_human"   = spell_flags & NEEDSHUMAN,
+			"include_user"  = spell_flags & INCLUDEUSER,
+			"selectable"    = spell_flags & SELECTABLE,
+			"no_button"     = spell_flags & NO_BUTTON
+		),
+		"range"      = range,
+		"duration"   = duration,
+		"max_levels" = list(
+			"total" = level_max["total"],
+			"power" = level_max["power"],
+			"speed" = level_max["speed"]
+		)
+	)
+
+	return data

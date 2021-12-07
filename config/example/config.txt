@@ -31,11 +31,12 @@ PLAYER_LIMIT 0
 ## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
 HARD_PLAYER_LIMIT 0
 
-## Defines the ticklag for the world. 0.9 is the normal one, 0.5 is smoother.
+##Defines the ticklag for the world. Ticklag is the amount of time between game ticks (aka byond ticks) (in 1/10ths of a second).
+##	This also controls the client network update rate, as well as the default client fps (10 / TICKLAG). 0.9 is the normal one, 0.5 is smoother.
 TICKLAG 0.625
 
-## Defines world FPS. Defaults to 20. Should be 10 / TICKLAG = FPS
-FPS 16
+##Defines the fps for the players with 0 in preferences. -1 for synced with server fps. 65 recommended
+CLIENTFPS 65
 
 ## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list)
 # OVERRIDE_SPLASH icons/splashes/onyx_new.png
@@ -120,6 +121,8 @@ LOG_GAME
 
 ## log world.log messages
 # LOG_WORLD_OUTPUT
+
+# LOG_STORY
 
 # # # # # # # # # # # # # # # # # # # # # #
 #        MULTIACCOUNT COUNTERACTION       #
@@ -303,6 +306,38 @@ JOBS_HAVE_MINIMAL_ACCESS
 ## Non-automatic antagonist recruitment, such as being converted to cultism is not affected. Has the same database requirements and notes as USE_AGE_RESTRICTION_FOR_JOBS.
 # USE_AGE_RESTRICTION_FOR_ANTAGS
 
+## Base minimal age in days for a player to play on antags. Depends on USE_AGE_RESTRICTION_FOR_ANTAGS.
+## If not defined with a variable won't be used at all.
+# TRAITOR_MIN_AGE        14
+# CHANGELING_MIN_AGE     14
+# NINJA_MIN_AGE          14
+# RAIDER_MIN_AGE         14
+# NUKE_MIN_AGE           14
+# WIZARD_MIN_AGE         14
+# XENO_MIN_AGE           14
+# MALF_MIN_AGE           14
+# CULTIST_MIN_AGE        14
+# BLOB_MIN_AGE           14
+# ACTOR_MIN_AGE          14
+# ERT_MIN_AGE            14
+# REVOLUTIONARY_MIN_AGE  14
+# VAMPIRE_MIN_AGE        14
+# THRALL_MIN_AGE         14
+## Deprecated
+# RENEGADE_MIN_AGE       14
+# BORER_MIN_AGE          14
+# LOYALIST_MIN_AGE       14
+# MEME_MIN_AGE           14
+# DEATHSQUAD_MIN_AGE     14
+# COMMANDO_MIN_AGE       14
+# DEITY_MIN_AGE          14
+# GODCULTIST_MIN_AGE     14
+# LOYALISTS_MIN_AGE      14
+
+# SETTINGS TO DISABLE OOC THINGS AFTER ROUND START.
+# DISABLE_OOC_AT_ROUNDSTART
+# DISABLE_LOOC_AT_ROUNDSTART
+
 ## Unhash this to use recursive explosions, keep it hashed to use circle explosions.
 ## Recursive explosions react to walls, airlocks and blast doors, making them look a lot cooler than the boring old circular explosions.
 ## They require more CPU and are (as of january 2013) experimental.
@@ -369,7 +404,7 @@ RADIATION_MATERIAL_RESISTANCE_DIVISOR 2
 RADIATION_LOWER_LIMIT 0.35
 
 # # HEALTH
-# # # # # # # 
+# # # # # # #
 
 ## level of health at which a mob becomes dead
 HEALTH_THRESHOLD_DEAD -100
@@ -426,7 +461,7 @@ HUMAN_DELAY  0
 ROBOT_DELAY  0
 MONKEY_DELAY 0 ## doesn't work because build is shit TODO: FIX
 ALIEN_DELAY  0 ## doesn't work because build is shit TODO: FIX
-SLIME_DELAY  0
+METROID_DELAY  0
 ANIMAL_DELAY 0
 
 ## Remove the # in front of this config option to have loyalty implants spawn by default on your server.
@@ -529,6 +564,13 @@ ALLOW_HOLIDAYS
 
 ## Uncomment to allow catching projectiles and throwing them.
 # PROJECTILE_BASKETBALL
+
+## FUN features that may be considered inappropriate for high RP servers
+## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
+FUN_HYDROPONICS 1
+
+## Set to 0 to allow singularities to follow ghosts.
+FORBID_SINGULO_FOLLOWING 1
 
 # # # # # # # # # # # # # # # # # # # # # #
 #               VOTE ACTIONS              #

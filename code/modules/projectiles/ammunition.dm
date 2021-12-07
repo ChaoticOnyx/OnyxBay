@@ -65,7 +65,8 @@
 		else
 			to_chat(user, "<span class='notice'>You inscribe \"[label_text]\" into \the [initial(BB.name)].</span>")
 			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
-	else ..()
+	else
+		..()
 
 /obj/item/ammo_casing/update_icon()
 	if(spent_icon && !BB)
@@ -79,6 +80,7 @@
 //Gun loading types
 #define SINGLE_CASING 	1	//The gun only accepts ammo_casings. ammo_magazines should never have this as their mag_type.
 #define SPEEDLOADER 	2	//Transfers casings from the mag to the gun when used.
+#define SINGLE_LOAD		3	//Loads one at a time.
 #define MAGAZINE 		4	//The magazine item itself goes inside the gun
 
 //An item that holds casings and can be used to put them inside guns

@@ -31,13 +31,18 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar/Destroy()
 	unset_control() //remove from control computer
-	..()
+
+	return ..()
 
 //set the control of the panel to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/solar/proc/set_control(obj/machinery/power/solar_control/SC)
 	if(SC && (get_dist(src, SC) > SOLAR_MAX_DIST))
 		return 0
 	control = SC
+
+	if (!is_processing)
+		START_PROCESSING(SSmachines, src)
+
 	return 1
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
@@ -111,11 +116,11 @@ var/list/solars_list = list()
 	sunfrac = cos(p_angle) ** 2
 	//isn't the power recieved from the incoming light proportionnal to cos(p_angle) (Lambert's cosine law) rather than cos(p_angle)^2 ?
 
-/obj/machinery/power/solar/Process()//TODO: remove/add this from machines to save on processing as needed ~Carn PRIORITY
+/obj/machinery/power/solar/Process()
 	if(stat & BROKEN)
-		return
+		return PROCESS_KILL
 	if(!GLOB.sun || !control) //if there's no sun or the panel is not linked to a solar control computer, no need to proceed
-		return
+		return PROCESS_KILL
 
 	if(powernet)
 		if(powernet == control.powernet)//check if the panel is still connected to the computer
@@ -219,38 +224,6 @@ var/list/solars_list = list()
 
 
 /obj/item/solar_assembly/attackby(obj/item/weapon/W, mob/user)
-
-	if(!anchored && isturf(loc))
-		if(isWrench(W))
-			anchored = 1
-			pixel_x = 0
-			pixel_y = 0
-			pixel_z = 0
-			user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-	else
-		if(isWrench(W))
-			anchored = 0
-			user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-
-		if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
-			var/obj/item/stack/material/S = W
-			if(S.use(2))
-				glass_type = W.type
-				playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-				user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
-				if(tracker)
-					new /obj/machinery/power/tracker(get_turf(src), src)
-				else
-					new /obj/machinery/power/solar(get_turf(src), src)
-			else
-				to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
-				return
-			return 1
-
 	if(!tracker)
 		if(istype(W, /obj/item/weapon/tracker_electronics))
 			tracker = 1
@@ -260,10 +233,43 @@ var/list/solars_list = list()
 			return 1
 	else
 		if(isCrowbar(W))
-			new /obj/item/weapon/tracker_electronics(src.loc)
+			new /obj/item/weapon/tracker_electronics(get_turf(src))
 			tracker = 0
 			user.visible_message("<span class='notice'>[user] takes out the electronics from the solar assembly.</span>")
 			return 1
+
+	if(isturf(loc))
+		if(!anchored)
+			if(isWrench(W))
+				anchored = 1
+				pixel_x = 0
+				pixel_y = 0
+				pixel_z = 0
+				user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+		else
+			if(isWrench(W))
+				anchored = 0
+				user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+
+			if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
+				var/obj/item/stack/material/S = W
+				if(S.use(2))
+					glass_type = W.type
+					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
+					if(tracker)
+						new /obj/machinery/power/tracker(get_turf(src), src)
+					else
+						new /obj/machinery/power/solar(get_turf(src), src)
+				else
+					to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
+					return
+				return 1
+
 	..()
 
 //
@@ -298,7 +304,8 @@ var/list/solars_list = list()
 		M.unset_control()
 	if(connected_tracker)
 		connected_tracker.unset_control()
-	..()
+
+	return ..()
 
 /obj/machinery/power/solar_control/disconnect_from_network()
 	..()
@@ -448,11 +455,11 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/Topic(href, href_list)
 	if(..())
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 	if(href_list["close"] )
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 

@@ -260,6 +260,7 @@
 		explode() //if they're foolish enough to emag while it's running
 
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		return 1
 
@@ -358,7 +359,7 @@
 	if (get_dist(src, user) > 1 )
 		if (!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			user << browse(null, "window=port_gen")
+			close_browser(user, "window=port_gen")
 			return
 
 	user.set_machine(src)
@@ -377,7 +378,7 @@
 	var/tempstr = "Temperature: [temperature]&deg;C<br>"
 	dat += (overheating)? "<span class='danger'>[tempstr]</span>" : tempstr
 	dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-	user << browse("[dat]", "window=port_gen")
+	show_browser(user, "[dat]", "window=port_gen")
 	onclose(user, "port_gen")
 */
 
@@ -431,7 +432,7 @@
 		I.blend_mode = BLEND_ADD
 		I.alpha = round(255*power_output/max_power_output)
 		overlays += I
-		set_light(rad_power + power_output - max_safe_output,1,"#3b97ca")
+		set_light(0.7, 0.1, rad_power + power_output - max_safe_output, 2, "#3b97ca")
 	else
 		set_light(0)
 
@@ -491,10 +492,10 @@
 		if(R.standard_pour_into(src,user))
 			if(reagents.has_reagent("vodka"))
 				audible_message("<span class='notice'>[src] blips happily</span>")
-				playsound(get_turf(src),'sound/machines/synth_yes.ogg', 50, 0)
+				playsound(src,'sound/machines/synth_yes.ogg', 50, 0)
 			else
 				audible_message("<span class='warning'>[src] blips in disappointment</span>")
-				playsound(get_turf(src), 'sound/machines/synth_no.ogg', 50, 0)
+				playsound(src, 'sound/machines/synth_no.ogg', 50, 0)
 		return
 	..()
 

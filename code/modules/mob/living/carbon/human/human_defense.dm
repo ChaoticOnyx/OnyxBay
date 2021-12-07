@@ -37,28 +37,31 @@ meteor_act
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
 	//Tase effect
-	var/siemens_coeff = get_siemens_coefficient_organ(organ)
 	if(P.tasing)
-		handle_tase(P.agony*siemens_coeff)
+		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
 
 	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
 
 	//Internal damage
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(blocked, 100)
-	var/internal_damage_prob = 45 + max(penetrating_damage, -20) // The minimal chance to deal internal damage is 25%
+	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
+	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
 
-	if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
-		internal_damage_prob *= 0.75
+	var/overkill_value = 1
+	if(organ.damage >= organ.max_damage * 1.5) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
+		overkill_value *= 3
 
-	if(organ.internal_organs.len && internal_damage_prob)
-		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 2) //So we don't factor in armor_penetration as additional damage
+	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
+		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
 		if(blocked >= P.damage) // Armor has absorbed the penetrational power
 			damage_amt = sqrt(damage_amt)
+		if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
+			overkill_value *= 0.75
+		damage_amt *= overkill_value
 		if(damage_amt > 0)
 			var/list/victims = list()
 			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
 			for(var/obj/item/organ/internal/I in possible_victims)
-				if(I.damage < I.max_damage && (prob((I.relative_size) * (1 / max(1, victims.len)))))
+				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
@@ -80,7 +83,7 @@ meteor_act
 
 	return blocked
 
-/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone)
+/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon = null)
 	var/obj/item/organ/external/affected = get_organ(check_zone(def_zone))
 	if(!affected)
 		return
@@ -289,13 +292,13 @@ meteor_act
 	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
+		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
 		//visible_message("Debug \[HIT\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
 	poise_damage = round((2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
-	src.poise -= poise_damage
+	damage_poise(poise_damage)
 	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	////////// Here goes the REAL armor processing.
@@ -380,13 +383,13 @@ meteor_act
 	visible_message(SPAN("danger", "[user] bashes [src]'s [affecting.name] with their [I.name]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
+		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
 		//visible_message("Debug \[BASH\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
 	poise_damage = round((3.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
-	src.poise -= poise_damage
+	damage_poise(poise_damage)
 	//visible_message("Debug \[BASH\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	//////////
@@ -473,19 +476,21 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 
-	if(istype(user,/mob/living/carbon/human))
+	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
-			if(handle_parry(A,I))
+			if(handle_parry(A, I))
 				return
 		if(blocking)
-			if(handle_block_weapon(A,I))
+			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
+			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
+			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
@@ -535,10 +540,10 @@ meteor_act
 				defender.parrying = 0
 				return 0
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.poise -= 2.5+(weapon_atk.mod_weight*1.5)
+			defender.damage_poise(2.5+(weapon_atk.mod_weight*1.5))
 			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
-			attacker.poise -= 17.5+(weapon_atk.mod_weight*7.5)
+			attacker.damage_poise(17.5+(weapon_atk.mod_weight*7.5))
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
 
@@ -579,9 +584,9 @@ meteor_act
 			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
 				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
 
-			defender.poise -= (4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield
+			defender.damage_poise((4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield)
 			//visible_message("Debug \[block\]: [defender] lost [(4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.poise -= 2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
+			attacker.damage_poise(2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2))
 			//visible_message("Debug \[block\]: [attacker] lost [2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their [weapon_def.name]!"))
 			defender.last_block = world.time
@@ -593,8 +598,8 @@ meteor_act
 
 			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 		else
-			defender.poise -= 2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5
-			attacker.poise -= weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2
+			defender.damage_poise(2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5)
+			attacker.damage_poise(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
 			if((weapon_atk.sharp || weapon_atk.edge) && weapon_atk.force >= 10)
 				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands! Ouch."))
 				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_R_HAND, 0, 0, used_weapon=weapon_atk)
@@ -626,10 +631,10 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
 				return 0 //For the case of candles and dices lmao
 
-			defender.poise -= atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2)
+			defender.damage_poise(atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2))
 			if(istype(attacker,/mob/living/carbon/human))
 				var/mob/living/carbon/human/human_attacker = attacker
-				human_attacker.poise -= 5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3
+				human_attacker.damage_poise(5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3)
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [weapon_def.name]!"))
 			defender.last_block = world.time
@@ -643,10 +648,10 @@ meteor_act
 		else
 			if(istype(attacker,/mob/living/carbon/human))
 				var/mob/living/carbon/human/human_attacker = attacker
-				defender.poise -= 7.5
-				human_attacker.poise -= 5.0
+				defender.damage_poise(7.5)
+				human_attacker.damage_poise(5.0)
 			else
-				defender.poise -= atk_dmg
+				defender.damage_poise(atk_dmg)
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack!"))
 			defender.last_block = world.time
@@ -745,10 +750,9 @@ meteor_act
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/carbon/human/hitby(atom/movable/AM as mob|obj,speed = THROWFORCE_SPEED_DIVISOR)
-	if(istype(AM,/obj/))
+/mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
+	if(isobj(AM))
 		var/obj/O = AM
-
 		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
@@ -758,42 +762,44 @@ meteor_act
 					return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
 
-		if(src.blocking)
+		if(blocking)
 			var/obj/item/weapon_def
-			if(src.blocking_hand && src.get_inactive_hand())
-				weapon_def = src.get_inactive_hand()
-			else if(src.get_active_hand())
-				weapon_def = src.get_active_hand()
+			if(blocking_hand && get_inactive_hand())
+				weapon_def = get_inactive_hand()
+			else if(get_active_hand())
+				weapon_def = get_active_hand()
+
 			if(weapon_def)
 				if(weapon_def.force && weapon_def.w_class >= O.w_class)
 					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src,dir),1)
+					O.throw_at(get_edge_target_turf(src, dir), 1)
 
 					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
+					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 
-					poise -= throw_damage/weapon_def.mod_shield
-					if(poise < throw_damage/weapon_def.mod_shield)
+					damage_poise(throw_damage / weapon_def.mod_shield)
+					if(poise < throw_damage / weapon_def.mod_shield)
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
-						src.useblock_off()
+						useblock_off()
 					return
 
 
 		var/zone = BP_CHEST
-		if (istype(O.thrower, /mob/living))
+		if(isliving(O.thrower))
 			var/mob/living/L = O.thrower
 			if(L.zone_sel)
 				zone = check_zone(L.zone_sel.selecting)
 		else
-			zone = ran_zone(BP_CHEST,75)	//Hits a random part of the body, geared towards the chest
+			zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
 
 		//check if we hit
 		var/miss_chance = 15
-		if (O.throw_source)
+		if(O.throw_source)
 			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15*(distance-2), 0)
+			miss_chance = max(15 * (distance - 2), 0)
 		zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
 
 		if(zone && O.thrower != src)
@@ -813,8 +819,16 @@ meteor_act
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 
-		src.visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
-		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
+		play_hitby_sound(AM)
+
+		var/armor
+		if(istype(O, /obj/item))
+			var/obj/item/I = O
+			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+		else
+			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
 			if(prob(armor))
@@ -828,46 +842,47 @@ meteor_act
 				admin_attack_log(M, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
 
 		//thrown weapon embedded object code.
-		if(dtype == BRUTE && istype(O,/obj/item))
+		if(dtype == BRUTE && istype(O, /obj/item))
 			var/obj/item/I = O
-			if (!is_robot_module(I))
+			if(!is_robot_module(I))
 				var/sharp = is_sharp(I)
 				var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
-				if (armor)
+				if(armor)
 					damage *= blocked_mult(armor)
 
 				//blunt objects should really not be embedding in things unless a huge amount of force is involved
-				var/embed_chance = sharp? damage/I.w_class : damage/(I.w_class*3)
-				var/embed_threshold = sharp? 5*I.w_class : 15*I.w_class
+				var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
+				var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
 
 				//Sharp objects will always embed if they do enough damage.
 				//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
-				if((sharp && prob(damage/(10*I.w_class)*100)) || (damage > embed_threshold && prob(embed_chance)))
+				if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
 					affecting.embed(I, supplied_wound = created_wound)
 
 		// Begin BS12 momentum-transfer code.
 		var/mass = 1.5
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
-			mass = I.w_class/THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed*mass
+			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
+		var/momentum = speed * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"),SPAN("warning", "You stagger under the impact!"))
-			src.throw_at(get_edge_target_turf(src,dir),1,momentum)
+			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
+			throw_at(get_edge_target_turf(src, dir), 1, momentum)
 
-			if(!O || !src) return
+			if(!O || !src)
+				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				var/turf/T = near_wall(dir,2)
+				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					src.loc = T
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"),SPAN("warning", "You are pinned to the wall by [O]!"))
-					src.anchored = 1
-					src.pinned += O
+					loc = T
+					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
+					anchored = 1
+					pinned += O
 
 /mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	if(!def_zone) ..()

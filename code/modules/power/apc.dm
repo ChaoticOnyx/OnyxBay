@@ -74,7 +74,7 @@
 	anchored = 1
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
-	clicksound = "switch_small"
+	clicksound = SFX_USE_SMALL_SWITCH
 	var/needs_powerdown_sound
 	var/area/area
 	var/areastring = null
@@ -164,6 +164,7 @@
 
 	wires = new(src)
 
+	GLOB.apc_list += src
 	// offset 24 pixels in direction of dir
 	// this allows the APC to be embedded in a wall, yet still inside an area
 	if (building)
@@ -203,6 +204,7 @@
 		cell.forceMove(loc)
 		cell = null
 
+	GLOB.apc_list -= src
 	// Malf AI, removes the APC from AI's hacked APCs list.
 	if((hacker) && (hacker.hacked_apcs) && (src in hacker.hacked_apcs))
 		hacker.hacked_apcs -= src
@@ -356,17 +358,17 @@
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
 			set_light(0)
 		else if(update_state & UPDATE_BLUESCREEN)
-			set_light(l_range = 2, l_power = 0.5, l_color = "#0000ff")
+			set_light(0.25, 0.5, 1, 2, "0000ff")
 		else if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			var/color
 			switch(charging)
 				if(0)
-					color = "#f86060"
+					color = "#b73737"
 				if(1)
-					color = "#a8b0f8"
+					color = "#4958dd"
 				if(2)
-					color = "#82ff4c"
-			set_light(l_range = 2, l_power = 0.5, l_color = color)
+					color = "#008000"
+			set_light(0.35, 0.5, 1, 2, color)
 		else
 			set_light(0)
 
@@ -516,13 +518,16 @@
 		else if(stat & (BROKEN|MAINT))
 			to_chat(user, "Nothing happens.")
 		else if(hacker && !hacker.hacked_apcs_hidden)
+			playsound(src.loc, 'sound/signals/error7.ogg', 25)
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		else
 			if(src.allowed(usr) && !isWireCut(APC_WIRE_IDSCAN))
+				playsound(src.loc, 'sound/signals/warning9.ogg', 25)
 				locked = !locked
 				to_chat(user, "You [ locked ? "lock" : "unlock"] the APC interface.")
 				update_icon()
 			else
+				playsound(src.loc, 'sound/signals/error7.ogg', 25)
 				to_chat(user, "<span class='warning'>Access denied.</span>")
 	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
@@ -670,7 +675,7 @@
 						to_chat(user, "<span class='warning'>There's a nasty sound and \the [src] goes cold...</span>")
 						set_broken(TRUE)
 				queue_icon_update()
-		playsound(get_turf(src), 'sound/effects/fighting/smash.ogg', 75, 1)
+		playsound(src, 'sound/effects/fighting/smash.ogg', 75, 1)
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -686,6 +691,7 @@
 			flick("apc-spark", src)
 			if (do_after(user,6,src))
 				if(prob(50))
+					playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 					emagged = 1
 					locked = 0
 					to_chat(user, "<span class='notice'>You emag the APC interface.</span>")
@@ -832,7 +838,7 @@
 		var/new_power_light = (lighting >= POWERCHAN_ON)
 		if(area.power_light != new_power_light)
 			area.power_light = new_power_light
-			area.set_emergency_lighting(lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
+			area.set_lighting_mode(LIGHTMODE_EMERGENCY, lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
 
 		area.power_equip = (equipment >= POWERCHAN_ON)
 		area.power_environ = (environ >= POWERCHAN_ON)
@@ -995,11 +1001,10 @@
 		return 0
 
 /obj/machinery/power/apc/Process()
-
 	if(stat & (BROKEN|MAINT))
 		return
 	if(!area.requires_power)
-		return
+		return PROCESS_KILL
 	if(failure_timer)
 		if (!--failure_timer)
 			update()
@@ -1007,9 +1012,9 @@
 			force_update = 1
 		return
 
-	lastused_light = area.usage(LIGHT)
-	lastused_equip = area.usage(EQUIP)
-	lastused_environ = area.usage(ENVIRON)
+	lastused_light = area.usage(STATIC_LIGHT)
+	lastused_equip = area.usage(STATIC_EQUIP)
+	lastused_environ = area.usage(STATIC_ENVIRON)
 	area.clear_usage()
 
 	lastused_total = lastused_light + lastused_equip + lastused_environ
@@ -1034,8 +1039,7 @@
 
 	if(cell && !shorted)
 		// draw power from cell as before to power the area
-		var/cellused = min(cell.charge, CELLRATE * lastused_total)	// clamp deduction to a max, amount left in cell
-		cell.use(cellused)
+		var/cellused = cell.use(CELLRATE * lastused_total)
 
 		if(excess > lastused_total)		// if power excess recharge the cell
 										// by the same amount just used
@@ -1054,7 +1058,6 @@
 				lighting = autoset(lighting, 0)
 				environ = autoset(environ, 0)
 				autoflag = 0
-
 
 		// Set channels depending on how much charge we have left
 		update_channels()
@@ -1087,7 +1090,6 @@
 					chargecount = 0
 
 				if(chargecount >= 10)
-
 					chargecount = 0
 					charging = 1
 
@@ -1151,7 +1153,7 @@
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 // defines a state machine, returns the new state
-obj/machinery/power/apc/proc/autoset(cur_state, on)
+/obj/machinery/power/apc/proc/autoset(cur_state, on)
 	//autoset will never turn on a channel set to off
 	switch(cur_state)
 		if(POWERCHAN_OFF_TEMP)
@@ -1248,17 +1250,19 @@ obj/machinery/power/apc/proc/autoset(cur_state, on)
 	update()
 
 // overload the lights in this APC area
-/obj/machinery/power/apc/proc/overload_lighting(chance = 100)
-	if(/* !get_connection() || */ !operating || shorted)
+/obj/machinery/power/apc/proc/overload_lighting()
+	if (!operating || shorted)
 		return
-	if( cell && cell.charge>=20)
+	if (cell && cell.charge>=20)
 		cell.use(20);
-		spawn(0)
-			for(var/obj/machinery/light/L in area)
-				if(prob(chance))
-					L.on = 1
-					L.broken()
-					stoplag()
+		INVOKE_ASYNC(src, .proc/break_lights)
+
+/obj/machinery/power/apc/proc/break_lights()
+	for(var/obj/machinery/light/L in area)
+		L.on = TRUE
+		L.broken()
+		L.on = FALSE
+		stoplag()
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)

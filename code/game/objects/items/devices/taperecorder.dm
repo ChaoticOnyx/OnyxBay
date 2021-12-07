@@ -1,7 +1,7 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
 	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
-	icon_state = "taperecorder"
+	icon_state = "taperecorder_idle"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -21,7 +21,7 @@
 
 /obj/item/device/taperecorder/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
+	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, "taperecorder")
 	if(ispath(mytape))
 		mytape = new mytape(src)
 	GLOB.listening_objects += src
@@ -157,6 +157,7 @@
 		to_chat(usr, "<span class='notice'>You can't record when playing!</span>")
 		return
 	if(mytape.used_capacity < mytape.max_capacity)
+		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
 		to_chat(usr, "<span class='notice'>Recording started.</span>")
 		recording = 1
 		update_icon()
@@ -197,9 +198,11 @@
 	if(usr.incapacitated())
 		return
 	if(recording)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		stop_recording()
 		return
 	else if(playing)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		playing = 0
 		update_icon()
 		to_chat(usr, "<span class='notice'>Playback stopped.</span>")
@@ -221,6 +224,8 @@
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
 		return
 	else
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
+		playsound(src.loc, 'sound/effects/recorder/wipe1.ogg', 15)
 		if(mytape.storedinfo)	mytape.storedinfo.Cut()
 		if(mytape.timestamp)	mytape.timestamp.Cut()
 		mytape.used_capacity = 0
@@ -246,6 +251,8 @@
 	if(playing)
 		to_chat(usr, "<span class='notice'>You're already playing!</span>")
 		return
+	playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
+	playsound(src.loc, 'sound/effects/recorder/playback1.ogg', 15)
 	playing = 1
 	update_icon()
 	to_chat(usr, "<span class='notice'>Audio playback started.</span>")

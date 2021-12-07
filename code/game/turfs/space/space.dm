@@ -7,26 +7,12 @@
 	dynamic_lighting = 0
 	temperature = T20C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	var/static/list/dust_cache
 	var/dirt = 0
-
-/turf/space/proc/build_dust_cache()
-	LAZYINITLIST(dust_cache)
-	for (var/i in 0 to 25)
-		var/image/im = image('icons/turf/space_dust.dmi',"[i]")
-		im.plane = DUST_PLANE
-		im.alpha = 80
-		im.blend_mode = BLEND_ADD
-		dust_cache["[i]"] = im
-
 
 /turf/space/Initialize()
 	. = ..()
 	icon_state = "white"
 	update_starlight()
-	if (!dust_cache)
-		build_dust_cache()
-	overlays += dust_cache["[((x + y) ^ ~(x * y) + z) % 25]"]
 
 	if(!HasBelow(z))
 		return
@@ -60,7 +46,7 @@
 	if(!config.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(config.starlight)
+		set_light(min(0.1*config.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
@@ -214,8 +200,8 @@
 					A.loc.Entered(A)
 	return
 
-/turf/space/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
-	return ..(N, tell_universe, 1)
+/turf/space/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
+	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
 /turf/space/bluespace

@@ -45,7 +45,7 @@
 	icon_state = "darkmatter"
 	density = 1
 	anchored = 0
-	light_range = 4
+	light_outer_range = 4
 
 	layer = ABOVE_OBJ_LAYER
 
@@ -218,7 +218,7 @@
 					C.hallucination(round(dist * 1.5), dist)
 
 	// Effect 2: Z-level wide electrical pulse
-	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
+	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(!(A.z in affected_z))
 			continue
 
@@ -232,7 +232,7 @@
 		else
 			A.energy_fail(round(DETONATION_SHUTDOWN_APC * random_change))
 
-	for(var/obj/machinery/power/smes/buildable/S in SSmachines.machinery)
+	for(var/obj/machinery/power/smes/buildable/S in GLOB.smes_list)
 		if(!(S.z in affected_z))
 			continue
 		// Causes SMESes to shut down for a bit
@@ -242,7 +242,7 @@
 			S.grounding = 0
 	// Effect 3: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
+	for(var/obj/machinery/power/solar/S in GLOB.machines)
 		if(!(S.z in affected_z))
 			continue
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))
@@ -257,8 +257,8 @@
 
 //Changes color and luminosity of the light to these values if they were not already set
 /obj/machinery/power/supermatter/proc/shift_light(lum, clr)
-	if(lum != light_range || clr != light_color)
-		set_light(lum, l_color = clr)
+	if(lum != light_outer_range || clr != light_color)
+		set_light(1, 0.1, lum, l_color = clr)
 
 /obj/machinery/power/supermatter/proc/get_integrity()
 	var/integrity = damage / explosion_point
@@ -285,19 +285,19 @@
 	else
 		alert_msg = null
 	if(alert_msg)
-		GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor", "Engineering")
+		GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"), "Engineering")
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Supermatter Monitor")
+			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", get_announcement_computer("Supermatter Monitor"))
 			if(power >= 1400)
-				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", "Supermatter Monitor")
+				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", get_announcement_computer("Supermatter Monitor"))
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
 				if(T && (T.z in GLOB.using_map.station_levels) && !istype(M,/mob/new_player) && !isdeaf(M))
-					sound_to(M, 'sound/signals/alarm1.ogg')
+					sound_to(M, sound('sound/signals/alarm1.ogg'))
 		else if(safe_warned && public_alert)
-			GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor")
+			GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"))
 			public_alert = 0
 
 
@@ -571,3 +571,4 @@
 #undef DETONATION_SHUTDOWN_RNG_FACTOR
 #undef DETONATION_SOLAR_BREAK_CHANCE
 #undef WARNING_DELAY
+

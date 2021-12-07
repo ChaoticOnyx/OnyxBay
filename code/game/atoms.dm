@@ -7,9 +7,14 @@
 	var/last_bumped = 0
 	var/pass_flags = 0
 	var/throwpass = 0
+	var/hitby_sound = null
+	var/hitby_loudness_multiplier = 1.0
 	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
+
+	///Value used to increment ex_act() if reactionary_explosions is on
+	var/explosion_block = 0
 
 	///Proximity monitor associated with this atom
 	var/datum/proximity_monitor/proximity_monitor
@@ -24,6 +29,7 @@
 	var/list/climbers = list()
 
 /atom/New(loc, ...)
+	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
@@ -50,11 +56,14 @@
 //Must return an Initialize hint. Defined in __DEFINES/subsystems.dm
 
 /atom/proc/Initialize(mapload, ...)
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	if(light_power && light_range)
+	if(light_max_bright && light_outer_range)
 		update_light()
 
 	if(opacity)
@@ -282,27 +291,49 @@ its easier to just keep the beam vertical.
 		icon_state = new_icon_state
 
 /atom/proc/update_icon()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
+/atom/proc/blob_act(damage)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/ex_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/emag_act(remaining_charges, mob/user, emag_source)
+	CAN_BE_REDEFINED(TRUE)
 	return NO_EMAG_ACT
 
 /atom/proc/fire_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/melt()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/hitby(atom/movable/AM as mob|obj)
-	if (density)
+/atom/proc/hitby(atom/movable/AM, speed = 0, nomsg = FALSE)
+	if(density)
 		AM.throwing = 0
+		play_hitby_sound(AM)
+		if(!nomsg)
+			visible_message(SPAN("warning", "[src] was hit by \the [AM]."))
 	return
+
+/atom/proc/play_hitby_sound(atom/movable/AM)
+	if(!hitby_sound)
+		return
+	var/sound_loudness = rand(65, 85)
+
+	if(istype(AM, /obj/item/projectile))
+		sound_loudness = 100
+	if(isobj(AM))
+		var/obj/O = AM
+		sound_loudness = min(100, O.w_class * (O.throwforce ? 10 : 5) * hitby_loudness_multiplier)
+
+	playsound(src, hitby_sound, sound_loudness, 1)
 
 
 //returns 1 if made bloody, returns 0 otherwise
@@ -362,15 +393,6 @@ its easier to just keep the beam vertical.
 
 /atom/proc/isinspace()
 	return istype(get_turf(src), /turf/space)
-
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/atom/Stat()
-	. = ..()
-	sleep(1)
-	stoplag()
 
 // Show a message to all mobs and objects in sight of this atom
 // Use for objects performing visible actions
@@ -551,3 +573,7 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+// Called after we wrench/unwrench this object
+/obj/proc/wrenched_change()
+	return

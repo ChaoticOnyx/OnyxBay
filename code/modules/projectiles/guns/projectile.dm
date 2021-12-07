@@ -30,8 +30,10 @@
 	var/allowed_magazines		//magazine types that may be loaded. Can be a list or single path
 	var/auto_eject = 0			//if the magazine should automatically eject itself when empty.
 	var/auto_eject_sound = null
+	var/mag_insert_sound = SFX_MAGAZINE_INSERT
+	var/mag_eject_sound = 'sound/weapons/empty.ogg'
 
-	far_fire_sound = "far_fire"
+	far_fire_sound = SFX_FAR_FIRE
 
 	var/is_jammed = 0           //Whether this gun is jammed
 	var/jam_chance = 0          //Chance it jams on fire
@@ -73,7 +75,6 @@
 /obj/item/weapon/gun/projectile/handle_post_fire()
 	..()
 	if(chambered)
-		playsound(chambered, "casing_drop", rand(45, 60), TRUE)
 		chambered.expend()
 		process_chambered()
 
@@ -86,7 +87,7 @@
 
 	switch(handle_casings)
 		if(EJECT_CASINGS) //eject casing onto ground.
-			chambered.loc = get_turf(src)
+			ejectCasing()
 		if(CYCLE_CASINGS) //cycle the casing back to the end.
 			if(ammo_magazine)
 				ammo_magazine.stored_ammo += chambered
@@ -118,7 +119,7 @@
 				AM.loc = src
 				ammo_magazine = AM
 				user.visible_message("[user] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
-				playsound(src.loc, "magazine_insert", rand(45, 60), FALSE)
+				playsound(src.loc, mag_insert_sound, rand(45, 60), FALSE)
 			if(SPEEDLOADER)
 				if(loaded.len >= max_shells)
 					to_chat(user, "<span class='warning'>[src] is full!</span>")
@@ -134,7 +135,7 @@
 						count++
 				if(count)
 					user.visible_message("[user] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
-					playsound(src, 'sound/effects/weapons/gun/spin_cylinder1.ogg', rand(45, 60), FALSE)
+					playsound(src, mag_insert_sound, rand(50, 75), FALSE)
 		AM.update_icon()
 	else if(istype(A, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = A
@@ -150,10 +151,9 @@
 		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
 
 		if (istype(C, /obj/item/ammo_casing/shotgun))
-			playsound(user, "shell_insert", rand(45, 60), FALSE)
+			playsound(user, SFX_SHELL_INSERT, rand(45, 60), FALSE)
 		else
-			playsound(user, "bullet_insert", rand(45, 60), FALSE)
-
+			playsound(user, SFX_BULLET_INSERT, rand(45, 60), FALSE)
 	update_icon()
 
 //attempts to unload src. If allow_dump is set to 0, the speedloader unloading method will be disabled
@@ -163,7 +163,7 @@
 		if(!do_after(user, 4, src))
 			return
 		is_jammed = 0
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(src.loc, 'sound/weapons/flipblade.ogg', rand(50, 75), FALSE)
 	if(ammo_magazine)
 		if(allow_dump)
 			user.drop_from_inventory(ammo_magazine)
@@ -171,9 +171,9 @@
 			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
 		else
 			user.put_in_hands(ammo_magazine)
-			user.visible_message("[user] removes [ammo_magazine] from [src].", 
+			user.visible_message("[user] removes [ammo_magazine] from [src].",
 			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
-		playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
+		playsound(src.loc, mag_eject_sound, 75)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
 	else if(loaded.len)
@@ -184,6 +184,11 @@
 			if(T)
 				for(var/obj/item/ammo_casing/C in loaded)
 					C.loc = T
+					C.SpinAnimation(4, 1)
+					if(istype(C, /obj/item/ammo_casing/shotgun))
+						playsound(C, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
+					else
+						playsound(C, SFX_CASING_DROP, rand(45, 60), TRUE)
 					count++
 				loaded.Cut()
 			if(count)
@@ -193,6 +198,7 @@
 			loaded.len--
 			user.put_in_hands(C)
 			user.visible_message("[user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
+			playsound(src.loc, "bullet_insert", 50, 1)
 	else
 		to_chat(user, "<span class='warning'>[src] is empty.</span>")
 	update_icon()
@@ -244,6 +250,17 @@
 	if(chambered)
 		bullets += 1
 	return bullets
+
+/obj/item/weapon/gun/projectile/proc/ejectCasing()
+	if(istype(chambered, /obj/item/ammo_casing/shotgun))
+		chambered.loc = get_turf(src)
+		chambered.SpinAnimation(4,1)
+		playsound(chambered, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
+	else
+		chambered.loc = get_turf(src)
+		chambered.SpinAnimation(4,1)
+		chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
+		playsound(chambered, SFX_CASING_DROP, rand(45, 60), TRUE)
 
 /* Unneeded -- so far.
 //in case the weapon has firemodes and can't unload using attack_hand()

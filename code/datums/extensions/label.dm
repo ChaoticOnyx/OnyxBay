@@ -18,8 +18,8 @@
 		atom_holder.verbs += /atom/proc/RemoveLabel
 	LAZYADD(labels, label)
 
-	user.visible_message("<span class='notice'>\The [user] attaches a label to \the [atom_holder].</span>", \
-						 "<span class='notice'>You attach a label, '[label]', to \the [atom_holder].</span>")
+	user?.visible_message("<span class='notice'>\The [user] attaches a label to \the [atom_holder].</span>", \
+						 	 "<span class='notice'>You attach a label, '[label]', to \the [atom_holder].</span>")
 
 	var/old_name = atom_holder.name
 	atom_holder.name = "[atom_holder.name] ([label])"
@@ -90,3 +90,7 @@
 		if(has_extension(src, /datum/extension/labels))
 			var/datum/extension/labels/L = get_extension(src, /datum/extension/labels)
 			L.RemoveLabel(usr, label)
+			post_remove_label()
+
+/atom/proc/post_remove_label()
+	return

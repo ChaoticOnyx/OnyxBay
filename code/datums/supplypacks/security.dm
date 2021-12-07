@@ -22,8 +22,9 @@
 /decl/hierarchy/supply_pack/security/armor
 	name = "Armor - Unmarked"
 	contains = list(/obj/item/clothing/suit/armor/pcarrier/medium = 2,
-					/obj/item/clothing/head/helmet =2)
-	cost = 20
+					/obj/item/clothing/head/helmet = 2,
+					/obj/item/device/radio/headset/tactical = 2)
+	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Armor crate"
 	access = access_security
@@ -181,7 +182,7 @@
 
 /decl/hierarchy/supply_pack/security/pistol
 	name = "Weapons - Ballistic sidearms"
-	contains = list(/obj/item/weapon/gun/projectile/sec = 4)
+	contains = list(/obj/item/weapon/gun/projectile/pistol/vp78 = 4)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic sidearms crate"

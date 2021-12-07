@@ -25,8 +25,9 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
-/mob/new_player/verb/new_player_panel()
-	set src = usr
+/mob/new_player/proc/new_player_panel(forced = FALSE)
+	if(!SScharacter_setup.initialized && !forced)
+		return // Not ready yet.
 	new_player_panel_proc()
 
 /mob/new_player/proc/new_player_panel_proc()
@@ -133,7 +134,7 @@
 
 			observer.started_as_observer = 1
 			close_spawn_windows()
-			var/obj/O = locate("landmark*Observer-Start")
+			var/obj/O = locate("landmark*Observer")
 			if(istype(O))
 				to_chat(src, "<span class='notice'>Now teleporting.</span>")
 				observer.forceMove(O.loc)
@@ -144,10 +145,11 @@
 			if(isnull(client.holder))
 				announce_ghost_joinleave(src)
 
-			var/mob/living/carbon/human/dummy/mannequin = new()
-			client.prefs.dress_preview_mob(mannequin)
-			observer.set_appearance(mannequin)
-			qdel(mannequin)
+			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
+			if(mannequin)
+				client.prefs.dress_preview_mob(mannequin)
+				observer.set_appearance(mannequin)
+				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)
@@ -223,14 +225,12 @@
 		return
 
 	if(href_list["privacy_poll"])
-		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!establish_db_connection())
 			return
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
-		query.Execute()
+		var/DBQuery/query = sql_query("SELECT * FROM erro_privacy WHERE ckey = $ckey", dbcon, list(ckey = ckey))
 		while(query.NextRow())
 			voted = 1
 			break
@@ -245,7 +245,7 @@
 			if("nostats")
 				option = "NOSTATS"
 			if("later")
-				usr << browse(null,"window=privacypoll")
+				close_browser(usr, "window=privacypoll")
 				return
 			if("abstain")
 				option = "ABSTAIN"
@@ -254,11 +254,9 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
-			var/DBQuery/query_insert = dbcon.NewQuery(sql)
-			query_insert.Execute()
+			sql_query("INSERT INTO erro_privacy VALUES (null, Now(), $ckey, $option)", dbcon, list(ckey = ckey, option = option))
 			to_chat(usr, "<b>Thank you for your vote!</b>")
-			usr << browse(null,"window=privacypoll")
+			close_browser(usr, "window=privacypoll")
 
 	if(!ready && href_list["preference"])
 		if(client)
@@ -414,7 +412,7 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			
+
 		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
@@ -459,14 +457,20 @@
 			for(var/mob/M in GLOB.player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
 				active++
 
+			var/active_vacancies = 0
+			if(job.open_vacancies && job.open_vacancies - job.filled_vacancies > 0)
+				active_vacancies = job.open_vacancies - job.filled_vacancies
+
 			if(job.is_restricted(client.prefs))
 				if(show_invalid_jobs)
-					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 			else
-				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 
 	dat += "</table></center>"
-	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
+	var/datum/browser/popup = new(src, "latechoices", "Late Join", 450, 640, src)
+	popup.set_content(jointext(dat, null))
+	popup.open()
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
@@ -487,9 +491,10 @@
 			spawning = 0 //abort
 			return null
 		new_character = new(spawn_turf, chosen_species.name)
-		if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
+		/*if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
 			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
-			if(B)	B.shackle(client.prefs.get_lawset())
+			if(B)
+				B.shackle(client.prefs.get_lawset())*/ // Removed until we get those cyberdummies working
 
 	if(!new_character)
 		new_character = new(spawn_turf)
@@ -561,7 +566,7 @@
 /mob/new_player/proc/ViewManifest()
 	var/dat = "<div align='center'>"
 	dat += html_crew_manifest(OOC = 1)
-	//src << browse(dat, "window=manifest;size=370x420;can_close=1")
+	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
@@ -570,7 +575,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	src << browse(null, "window=latechoices") //closes late choices window
+	show_browser(src, null, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()
@@ -617,7 +622,7 @@
 /mob/new_player/show_message(msg, type, alt, alt_type)
 	return
 
-mob/new_player/MayRespawn()
+/mob/new_player/MayRespawn()
 	return 1
 
 /mob/new_player/touch_map_edge()

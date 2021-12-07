@@ -6,6 +6,8 @@
 	icon_state = "tube"
 	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3)
 	amount = 10
+	max_amount = 10
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/stack/nanopaste/proc/fix_robot(mob/living/silicon/robot/R, mob/user)
 	if(R.getBruteLoss() || R.getFireLoss())
@@ -49,3 +51,6 @@
 				use(1)
 				user.visible_message("<span class='notice'>\The [user] applies some nanite paste on [user != M ? "[M]'s [S.name]" : "[S]"] with [src].</span>",\
 				"<span class='notice'>You apply some nanite paste on [user == M ? "your" : "[M]'s"] [S.name].</span>")
+
+/obj/item/stack/nanopaste/get_storage_cost()
+	return base_storage_cost(w_class)

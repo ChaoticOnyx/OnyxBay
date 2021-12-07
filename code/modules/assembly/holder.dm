@@ -15,15 +15,19 @@
 	var/obj/special_assembly = null
 
 /obj/item/device/assembly_holder/proc/attach(obj/item/device/D, obj/item/device/D2, mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/obj/item/device/assembly_holder/proc/attach_special(obj/O, var/mob/user)
+/obj/item/device/assembly_holder/proc/attach_special(obj/O, mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/process_activation(obj/item/device/D)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/detached()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 
@@ -182,7 +186,7 @@
 	return
 
 
-/obj/item/device/assembly_holder/process_activation(var/obj/D, var/normal = 1, var/special = 1)
+/obj/item/device/assembly_holder/process_activation(obj/D, normal = 1, special = 1)
 	if(!D)	return 0
 	if(!secured)
 		visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")

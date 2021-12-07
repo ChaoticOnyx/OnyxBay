@@ -34,6 +34,7 @@
 	icon_off = "ccigoff"
 	icon_empty = "ccigoff"
 	icon_on = "ccigon"
+	item_state = "ccigoff"
 
 /obj/item/clothing/mask/smokable/ecig/simple/examine(mob/user)
 	. = ..()
@@ -49,13 +50,14 @@
 	icon_off = "ecigoff1"
 	icon_empty = "ecigoff1"
 	icon_on = "ecigon"
+	item_state = "ecigoff1"
 	cell_type = /obj/item/weapon/cell/device/high //enough for four cartridges
 
 /obj/item/clothing/mask/smokable/ecig/util/New()
 	..()
 	color = pick(ecig_colors)
 
-obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
+/obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
 		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"
@@ -70,9 +72,10 @@ obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 	icon_off = "pcigoff1"
 	icon_empty = "pcigoff2"
 	icon_on = "pcigon"
+	item_state = "pcigoff1"
 	cell_type = /obj/item/weapon/cell/device/high //enough for four catridges
 
-obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
+/obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
 		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"
@@ -117,7 +120,7 @@ obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 	if (active)
 		item_state = icon_on
 		icon_state = icon_on
-		set_light(brightness_on)
+		set_light(0.6, 0.5, brightness_on)
 	else if (ec_cartridge)
 		set_light(0)
 		item_state = icon_off

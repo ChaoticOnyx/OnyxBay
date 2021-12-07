@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "byond",
+      "request": "launch",
+      "name": "DS Debug",
+      "dmb": "${workspaceFolder}/${command:CurrentDMB}"
+    },
+    {
+      "type": "byond",
+      "request": "launch",
+      "name": "Build & DS Debug",
+      "preLaunchTask": "dm: build - ${command:CurrentDME}",
+      "dmb": "${workspaceFolder}/${command:CurrentDMB}"
+    },
+    {
+      "name": "Nano Watch",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/nano/Watch.ps1",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "command": "npm run dev",
+      "name": "TGUI Dev",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/tgui"
+    },
+    {
+      "command": "npm run build",
+      "name": "TGUI Build",
+      "request": "launch",
+      "type": "node-terminal",
+      "cwd": "${workspaceFolder}/tgui"
+    },
+    {
+      "name": "IE Debugger",
+      "type": "PowerShell",
+      "request": "launch",
+      "script": "${workspaceFolder}/scripts/IEChooser.ps1",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

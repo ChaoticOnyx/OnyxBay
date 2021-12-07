@@ -26,6 +26,7 @@
 	attacktext = "bites into"
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	ranged_cooldown_cap = 4
 	aggro_vision_range = 7
 	idle_vision_range = 2
@@ -33,7 +34,7 @@
 /obj/item/projectile/energy/neurotoxin/shockzard
 	name = "energy blast"
 	icon_state = "ice_2"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 5
 	damage_type = BURN
 	nodamage = 0
@@ -86,6 +87,7 @@
 	melee_damage_lower = 22
 	melee_damage_upper = 22
 	attacktext = "gnaws and mauls"
+	bodyparts = /decl/simple_animal_bodyparts/beholder
 	aggro_vision_range = 9
 	idle_vision_range = 5
 	var/list/projectiletypes = list(/obj/item/projectile/beam/mindflayer,
@@ -126,6 +128,9 @@
 			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
 			D.layer = 4.1
 		new /obj/item/asteroid/beholder_eye(src.loc)
+
+/decl/simple_animal_bodyparts/beholder
+	hit_zones = list("giant eye", "maw", "far left eyestalk", "left eyestalk", "central eyestalk", "right eyestalk", "far right eyestalk", "chin", "cheek", "forehead")
 
 
 ////////////////Item: Beholder eye////////////////

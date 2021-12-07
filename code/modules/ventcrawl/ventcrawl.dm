@@ -10,7 +10,8 @@ var/list/ventcrawl_machinery = list(
 	/obj/item/weapon/holder,
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer,
-	/obj/item/organ/internal/biostructure
+	/obj/item/organ/internal/biostructure,
+	/obj/effect/abstract/proximity_checker //spiderbot staff
 	)
 
 /mob/living/var/list/icon/pipes_shown = list()
@@ -36,7 +37,7 @@ var/list/ventcrawl_machinery = list(
 		remove_ventcrawl()
 		add_ventcrawl(loc)
 
-/mob/living/carbon/slime/can_ventcrawl()
+/mob/living/carbon/metroid/can_ventcrawl()
 	if(Victim)
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
 		return FALSE
@@ -50,6 +51,8 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl in your current state!</span>")
 		return FALSE
 	if(isMonkey(src))
+		return TRUE
+	if(istype(species, /datum/species/xenos))
 		return TRUE
 	return ventcrawl_carry()
 
@@ -167,6 +170,9 @@ var/list/ventcrawl_machinery = list(
 				return
 			if(!can_ventcrawl())
 				return
+			if(!vent_found.can_crawl_through())
+				to_chat(src, "This vent is no longer accessible!")
+				return
 
 			visible_message("<B>[src] scrambles into the ventilation ducts!</B>", "You climb into the ventilation system.")
 
@@ -180,7 +186,6 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/add_ventcrawl(obj/machinery/atmospherics/starting_machine)
 	is_ventcrawling = 1
-	//candrop = 0
 	var/datum/pipe_network/network = starting_machine.return_network(starting_machine)
 	if(!network)
 		return
@@ -195,7 +200,6 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/remove_ventcrawl()
 	is_ventcrawling = 0
-	//candrop = 1
 	if(client)
 		for(var/image/current_image in pipes_shown)
 			client.images -= current_image

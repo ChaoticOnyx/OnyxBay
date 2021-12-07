@@ -7,7 +7,7 @@
 
 	var/turf_flags
 
-	var/holy = 0
+	var/holy = FALSE
 
 	// Initial air contents (in moles)
 	var/list/initial_gas
@@ -19,6 +19,8 @@
 	//Properties for both
 	var/temperature = T20C      // Initial turf temperature.
 	var/blocks_air = 0          // Does this turf contain air/let air through?
+
+	var/list/explosion_throw_details
 
 	// General properties.
 	var/icon_old = null
@@ -70,6 +72,16 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+	if(!user.pulling)
+		// QOL feature, clicking on turf can toogle doors
+		var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
+		if(AL)
+			AL.attack_hand(user)
+			return TRUE
+		var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
+		if(FD)
+			FD.attack_hand(user)
+			return TRUE
 
 	if(user.restrained())
 		return 0
@@ -86,6 +98,9 @@
 		M.start_pulling(t)
 	else
 		step(user.pulling, get_dir(user.pulling.loc, src))
+		if(isobj(user.pulling))
+			var/obj/O = user.pulling
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
 	return 1
 
 /turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -248,7 +263,7 @@ var/const/enterloopsanity = 100
 		decals = null
 
 // Called when turf is hit by a thrown object
-/turf/hitby(atom/movable/AM as mob|obj, speed)
+/turf/hitby(atom/movable/AM, speed, nomsg)
 	if(src.density)
 		spawn(2)
 			step(AM, turn(AM.last_move, 180))

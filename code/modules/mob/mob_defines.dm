@@ -1,7 +1,7 @@
 /mob
 	density = 1
 
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
@@ -50,6 +50,7 @@
 	var/obj/screen/nutrition_icon = null
 	var/obj/screen/pressure = null
 	var/obj/screen/pain = null
+	var/obj/screen/poise_icon = null
 	var/obj/screen/gun/item/item_use_icon = null
 	var/obj/screen/gun/radio/radio_use_icon = null
 	var/obj/screen/gun/move/gun_move_icon = null
@@ -149,7 +150,7 @@
 	var/blocking = 0
 	var/parrying = 0
 
-//The last mob/living/carbon to push/drag/grab this mob (mostly used by slimes friend recognition)
+//The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
 	var/mob/living/carbon/LAssailant = null
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
@@ -189,3 +190,5 @@
 	var/datum/browser/show_inventory
 
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
+	
+	var/last_time_pointed_at = 0

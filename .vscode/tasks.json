@@ -1,15 +1,15 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "Run test server",
-			"group": "test",
-			"command": "DreamDaemon",
-			"args": [
-				"${workspaceRoot}/baystation12.dmb",
-				"-invisible",
-				"-verbose"
-			]
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "dreammaker",
+      "dme": "baystation12.dme",
+      "problemMatcher": ["$dreammaker"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "label": "dm: build - baystation12.dme"
+    }
+  ]
 }

@@ -10,7 +10,7 @@
 	icon_state = "smes"
 	density = 1
 	anchored = 1
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 	var/capacity = 5e6 // maximum charge
 	var/charge = 1e6 // actual charge
@@ -51,6 +51,15 @@
 	var/list/terminals = list()
 	var/should_be_mapped = 0 // If this is set to 0 it will send out warning on New()
 
+	beepsounds = list(
+		'sound/effects/machinery/engineer/beep1.ogg',
+		'sound/effects/machinery/engineer/beep2.ogg',
+		'sound/effects/machinery/engineer/beep3.ogg',
+		'sound/effects/machinery/engineer/beep4.ogg',
+		'sound/effects/machinery/engineer/beep5.ogg',
+		'sound/effects/machinery/engineer/beep6.ogg'
+	)
+
 /obj/machinery/power/smes/drain_power(drain_check, surge, amount = 0)
 
 	if(drain_check)
@@ -63,6 +72,7 @@
 
 /obj/machinery/power/smes/New()
 	..()
+	GLOB.smes_list += src
 	if(!should_be_mapped)
 		warning("Non-buildable or Non-magical SMES at [src.x]X [src.y]Y [src.z]Z")
 
@@ -79,6 +89,10 @@
 		set_broken(TRUE)
 		return
 	update_icon()
+
+/obj/machinery/power/smes/Destroy()
+	GLOB.smes_list -= src
+	..()
 
 /obj/machinery/power/smes/add_avail(amount)
 	if(..(amount))
@@ -145,6 +159,8 @@
 	if(failure_timer)	// Disabled by gridcheck.
 		failure_timer--
 		return
+
+	play_beep()
 
 	// only update icon if state changed
 	if(last_disp != chargedisplay() || last_chrg != inputting || last_onln != outputting)
@@ -328,7 +344,7 @@
 				to_chat(user, "<span class='warning'>You must remove the floor plating first.</span>")
 			else
 				to_chat(user, "<span class='notice'>You begin to cut the cables...</span>")
-				playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
+				playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 				if(do_after(user, 50, src))
 					if (prob(50) && electrocute_mob(usr, term.powernet, term))
 						var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -392,7 +408,7 @@
 	if(..())
 		return 1
 
-	playsound(loc, "switch_large", 75)
+	playsound(loc, SFX_USE_LARGE_SWITCH, 75)
 
 	if( href_list["cmode"] )
 		inputting(!input_attempt)
@@ -472,9 +488,15 @@
 	update_icon()
 	..()
 
+
 /obj/machinery/power/smes/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		take_damage(Proj.damage)
+
+/obj/machinery/power/smes/blob_act(damage)
+	..()
+
+	take_damage(damage * 2)
 
 /obj/machinery/power/smes/ex_act(severity)
 	switch(severity)

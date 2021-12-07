@@ -15,6 +15,7 @@
 	mod_weight = 0.75
 	mod_reach = 0.5
 	mod_handy = 0.5
+	icon = 'icons/obj/materials.dmi'
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -26,19 +27,20 @@
 	var/list/datum/matter_synth/synths = null
 	var/craft_tool //determines what kind of tools should be used for crafting
 	var/splittable = 1 //can we split/combine the stacks?
+	var/storage_cost_mult = 1.0
 
 /obj/item/stack/New(loc, amount=null)
 	..()
-	if (!stacktype)
+	if(!stacktype)
 		stacktype = type
-	if (amount)
+	if(amount)
 		src.amount = amount
 
 /obj/item/stack/Destroy()
 	if(uses_charge)
 		return 1
-	if (src && usr && usr.machine == src)
-		usr << browse(null, "window=stack")
+	if(src && usr && usr.machine == src)
+		close_browser(usr, "window=stack")
 	return ..()
 
 /obj/item/stack/examine(mob/user)
@@ -61,13 +63,13 @@
 	return
 
 /obj/item/stack/proc/list_recipes(mob/user as mob, recipes_sublist)
-	if (!recipes)
+	if(!recipes)
 		return
-	if (!src || get_amount() <= 0)
-		user << browse(null, "window=stack")
+	if(!src || get_amount() <= 0)
+		close_browser(user, "window=stack")
 	user.set_machine(src) //for correct work of onclose
 	var/list/recipe_list = recipes
-	if (recipes_sublist && recipe_list[recipes_sublist] && istype(recipe_list[recipes_sublist], /datum/stack_recipe_list))
+	if(recipes_sublist && recipe_list[recipes_sublist] && istype(recipe_list[recipes_sublist], /datum/stack_recipe_list))
 		var/datum/stack_recipe_list/srl = recipe_list[recipes_sublist]
 		recipe_list = srl.recipes
 	var/t1 = text("<HTML><meta charset=\"utf-8\"><HEAD><title>Constructions from []</title></HEAD><body><TT>Amount Left: []<br>", src, src.get_amount())
@@ -111,7 +113,7 @@
 					t1 += " <A href='?src=\ref[src];make=[i];multiplier=[max_multiplier]'>[max_multiplier*R.res_amount]x</A>"
 
 	t1 += "</TT></body></HTML>"
-	user << browse(t1, "window=stack")
+	show_browser(user, t1, "window=stack")
 	onclose(user, "stack")
 	return
 
@@ -238,7 +240,6 @@
 			var/datum/matter_synth/S = synths[i]
 			S.use_charge(charge_costs[i] * used) // Doesn't need to be deleted
 		return 1
-	return 0
 
 /obj/item/stack/proc/add(extra)
 	if(!uses_charge)
@@ -357,8 +358,7 @@
 
 /obj/item/stack/get_storage_cost()	//Scales storage cost to stack size
 	. = ..()
-	if (amount < max_amount)
-		. = ceil(. * amount / max_amount)
+	return ceil(. * amount * storage_cost_mult / max_amount)
 
 /obj/item/stack/attack_hand(mob/user as mob)
 	if((user.get_inactive_hand() == src) && splittable)

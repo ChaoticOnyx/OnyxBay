@@ -273,13 +273,13 @@
 		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-			drop_from_inventory(l_hand, force = 1)
+			drop_from_inventory(l_hand)
 
 	if(r_hand)
 		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-			drop_from_inventory(r_hand, force = 1)
+			drop_from_inventory(r_hand)
 
 	// Check again...
 	if(!l_hand && !r_hand)
@@ -358,7 +358,7 @@
 	return FALSE
 
 /mob/living/carbon/human/is_asystole()
-	if(isSynthetic())
+	if(full_prosthetic)
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
 		if(istype(C) && !C.is_usable())
 			return TRUE

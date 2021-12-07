@@ -5,7 +5,7 @@
 /mob/living/carbon/alien/diona/proc/set_next_nymph(mob/living/carbon/alien/diona/D)
 	next_nymph = D
 
-/mob/living/carbon/alien/diona/proc/set_last_nymph(var/mob/living/carbon/alien/diona/D)
+/mob/living/carbon/alien/diona/proc/set_last_nymph(mob/living/carbon/alien/diona/D)
 	last_nymph = D
 // When there are only two nymphs left in a list and one is to be removed,
 // call this to null it out.
@@ -57,4 +57,5 @@
 /mob/living/carbon/alien/diona/Destroy()
 	if (last_nymph || next_nymph)
 		remove_from_list()
-	..()
+
+	return ..()

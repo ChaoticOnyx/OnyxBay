@@ -29,7 +29,7 @@
 		update_icon()
 		update_air()
 		sleep(15)
-		set_light(1)
+		set_light(0.4, 0.1, 1)
 		src.blocks_air = 1
 		set_opacity(1)
 		for(var/turf/simulated/turf in loc)
@@ -75,8 +75,6 @@
 			to_chat(user, "<span class='danger'>\The [material.display_name] crumbles under your touch!</span>")
 			dismantle_wall()
 			return 1
-
-	if(..()) return 1
 
 	if(!can_open)
 		if(user.a_intent == I_HURT)
@@ -176,7 +174,7 @@
 
 			EB.spark_system.start()
 			to_chat(user, "<span class='notice'>You slash \the [src] with \the [EB]; the thermite ignites!</span>")
-			playsound(src, "spark", 50, 1)
+			playsound(src, SFX_SPARK, 50, 1)
 			playsound(src, 'sound/weapons/blade1.ogg', 50, 1)
 
 			thermitemelt(user)

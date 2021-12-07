@@ -37,7 +37,7 @@
 	dat += "</table><hr>"
 	dat += text("<br>Stacking: [machine.stack_amt] <A href='?src=\ref[src];change_stack=1'>\[change\]</a><br><br>")
 
-	user << browse("[dat]", "window=console_stacking_machine")
+	show_browser(user, "[dat]", "window=console_stacking_machine")
 	onclose(user, "console_stacking_machine")
 
 

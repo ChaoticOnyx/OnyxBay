@@ -35,7 +35,7 @@
 		dat += "<A href='?src=\ref[src];refresh=1'>(Refresh)</A><BR>"
 		dat += "</body></html>"
 
-		user << browse(dat, "window=computer;size=400x500")
+		show_browser(user, dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 
@@ -85,7 +85,7 @@
 							<b>Active equipment:</b> [M.selected||"None"]"}
 		if(istype(M, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/RM = M
-			answer += "<b>Used cargo space:</b> [RM.cargo.len/RM.cargo_capacity*100]%<br>"
+			answer += "<br><b>Used cargo space:</b> [length(RM.cargo)/RM.cargo_capacity*100]%<br>"
 
 		return answer
 

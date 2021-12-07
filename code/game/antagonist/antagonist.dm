@@ -46,7 +46,6 @@
 	var/landmark_id                         // Spawn point identifier.
 	var/mob_path = /mob/living/carbon/human // Mobtype this antag will use if none is provided.
 	var/feedback_tag = "traitor_objective"  // End of round
-	var/minimum_player_age = 7            	// Players need to be at least minimum_player_age days old before they are eligable for auto-spawning
 	var/suspicion_chance = 50               // Prob of being on the initial Command report
 	var/flags = 0                           // Various runtime options.
 	var/show_objectives_on_creation = 1     // Whether or not objectives are shown when a player is added to this antag datum
@@ -54,13 +53,12 @@
 
 	// Used for setting appearance.
 	var/list/valid_species = list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)
-	var/min_player_age = 14
+	var/min_player_age
 
 	// Runtime vars.
 	var/datum/mind/leader                   // Current leader, if any.
 	var/cur_max = 0                         // Autotraitor current effective maximum.
 	var/spawned_nuke                        // Has a bomb been spawned?
-	var/nuke_spawn_loc                      // If so, where should it be placed?
 	var/list/current_antagonists = list()   // All marked antagonists for this type.
 	var/list/pending_antagonists = list()   // Candidates that are awaiting finalized antag status.
 	var/list/starting_locations =  list()   // Spawn points.
@@ -111,8 +109,8 @@
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
@@ -140,8 +138,8 @@
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
@@ -234,8 +232,16 @@
 		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they have not joined the game.")
 		return 0
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
-		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they are a ghost not in the antag pool.")
-		return 0
+		var/answer = alert_timeout(
+			recipient = player.current,
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			title = "Do you want to play [role_text]?",
+			timeout = 100,
+			button1 = "Yes",
+			button2 = "No")
+		if(answer != "Yes")
+			log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they denied it.")
+			return 0
 
 	pending_antagonists |= player
 	log_debug_verbose("[player.key] has been selected for [role_text] by lottery.")
@@ -289,7 +295,7 @@
 		return TRUE
 	if (istype(player.current, /mob/living/silicon/ai))
 		return TRUE
-	if (isghostmind(player))
+	if (isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
 		return TRUE
 	if (istype(player.current, /mob/new_player))
 		return TRUE

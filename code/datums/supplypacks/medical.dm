@@ -45,7 +45,7 @@
 
 /decl/hierarchy/supply_pack/medical/pills
 	num_contained = 5
-	contains = list(/obj/item/weapon/storage/pill_bottle/antitox,
+	contains = list(/obj/item/weapon/storage/pill_bottle/dylovene,
 					/obj/item/weapon/storage/pill_bottle/bicaridine,
 					/obj/item/weapon/storage/pill_bottle/dexalin_plus,
 					/obj/item/weapon/storage/pill_bottle/dexalin,
@@ -336,3 +336,15 @@
 	containername = "\improper Medical RIG crate"
 	containertype = /obj/structure/closet/crate/secure
 	access = access_medical_equip
+
+/decl/hierarchy/supply_pack/medical/vatgrownbodymale
+	name = "Blank vat-grown male body"
+	cost = 300
+	containername = "\improper Vat-grown body crate"
+	containertype = /obj/structure/largecrate/animal/vatgrownbody/male
+
+/decl/hierarchy/supply_pack/medical/vatgrownbodyfemale
+	name = "Blank vat-grown female body"
+	cost = 300
+	containername = "\improper Vat-grown body crate"
+	containertype = /obj/structure/largecrate/animal/vatgrownbody/female

@@ -104,7 +104,7 @@
 	icon = DRINK_ICON_FILE
 	icon_state = base_icon
 
-	if (reagents.reagent_list.len > 0)
+	if(length(reagents?.reagent_list))
 		var/datum/reagent/R = reagents.get_master_reagent()
 
 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
@@ -181,7 +181,7 @@
 	if(istype(W, /obj/item/weapon/material/kitchen/utensil/spoon))
 		if(user.a_intent == I_HURT)
 			user.visible_message("<span class='warning'>[user] bashes \the [src] with a spoon, shattering it to pieces! What a rube.</span>")
-			playsound(src, "window_breaking", 30, 1)
+			playsound(src, SFX_BREAK_WINDOW, 30, 1)
 			if(reagents)
 				user.visible_message("<span class='notice'>The contents of \the [src] splash all over [user]!</span>")
 				reagents.splash(user, reagents.total_volume)

@@ -1,6 +1,6 @@
 /*** EXIT PORTAL ***/
 
-/obj/singularity/narsie/large/exit
+/obj/singularity/narsie/exit
 	name = "Bluespace Rift"
 	desc = "NO TIME TO EXPLAIN, JUMP IN!"
 	icon = 'icons/obj/rift.dmi'
@@ -14,23 +14,23 @@
 
 	consume_range = 6
 
-/obj/singularity/narsie/large/exit/Initialize()
+/obj/singularity/narsie/exit/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/singularity/narsie/large/exit/update_icon()
+/obj/singularity/narsie/exit/update_icon()
 	overlays = 0
 
-/obj/singularity/narsie/large/exit/Process()
+/obj/singularity/narsie/exit/Process()
 	for(var/mob/M in GLOB.player_list)
 		if(M.client)
 			M.see_rift(src)
 	eat()
 
-/obj/singularity/narsie/large/exit/acquire(mob/food)
+/obj/singularity/narsie/exit/acquire(mob/food)
 	return
 
-/obj/singularity/narsie/large/exit/consume(const/atom/A)
+/obj/singularity/narsie/exit/consume(const/atom/A)
 	if(!(A.singuloCanEat()))
 		return 0
 
@@ -38,13 +38,13 @@
 		var/mob/living/L = A
 		if(L.buckled && istype(L.buckled,/obj/structure/bed/))
 			var/turf/O = L.buckled
-			do_teleport(O, pick(endgame_safespawns))
-			L.forceMove(O.loc)
+			do_teleport(O, pick(GLOB.endgame_safespawns))
+			L.forceMove(O.loc, unbuckle_mob = FALSE)
 		else
-			do_teleport(L, pick(endgame_safespawns)) //dead-on precision
+			do_teleport(L, pick(GLOB.endgame_safespawns)) //dead-on precision
 
 	else if (istype(A, /obj/mecha/))
-		do_teleport(A, pick(endgame_safespawns)) //dead-on precision
+		do_teleport(A, pick(GLOB.endgame_safespawns)) //dead-on precision
 
 	else if (isturf(A))
 		var/turf/T = A
@@ -75,7 +75,7 @@
 	//thou shall always be able to see the rift
 	var/image/riftimage = null
 
-/mob/proc/see_rift(obj/singularity/narsie/large/exit/R)
+/mob/proc/see_rift(obj/singularity/narsie/exit/R)
 	var/turf/T_mob = get_turf(src)
 	if((R.z == T_mob.z) && (get_dist(R,T_mob) <= (R.consume_range+10)) && !(R in view(T_mob)))
 		if(!riftimage)
@@ -88,7 +88,7 @@
 		riftimage.pixel_y = new_y
 		riftimage.loc = T_mob
 
-		src << riftimage
+		image_to(src, riftimage)
 
 	else
 		QDEL_NULL(riftimage)

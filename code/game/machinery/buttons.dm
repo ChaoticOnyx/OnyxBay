@@ -21,7 +21,7 @@
 /obj/machinery/button/Destroy()
 	qdel(wifi_sender)
 	wifi_sender = null
-	return..()
+	return ..()
 
 /obj/machinery/button/attack_ai(mob/user as mob)
 	return attack_hand(user)
@@ -32,7 +32,7 @@
 /obj/machinery/button/attack_hand(mob/living/user)
 	if(..()) return 1
 	if(istype(user, /mob/living/carbon))
-		playsound(src, "switch_large", 60)
+		playsound(src, SFX_USE_LARGE_SWITCH, 60)
 	activate(user)
 
 /obj/machinery/button/proc/activate(mob/living/user)

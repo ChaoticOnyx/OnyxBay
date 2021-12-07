@@ -12,9 +12,9 @@
 	var/obj/machinery/artifact_scanpad/owned_scanner = null
 	var/last_process = 0
 
-/obj/machinery/artifact_harvester/New()
-	..()
-	//connect to a nearby scanner pad
+/obj/machinery/artifact_harvester/Initialize()
+	. = ..()
+	// Connect to a nearby scanner pad
 	owned_scanner = locate(/obj/machinery/artifact_scanpad) in get_step(src, dir)
 	if(!owned_scanner)
 		owned_scanner = locate(/obj/machinery/artifact_scanpad) in orange(1, src)
@@ -65,7 +65,7 @@
 	//
 	dat += "<HR>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Refresh</A> <A href='?src=\ref[src];close=1'>Close<BR>"
-	user << browse(dat, "window=artharvester;size=450x500")
+	show_browser(user, dat, "window=artharvester;size=450x500")
 	onclose(user, "artharvester")
 
 /obj/machinery/artifact_harvester/Process()
@@ -154,6 +154,7 @@
 						//delete it when the ids match to account for duplicate ids having different effects
 						if(inserted_battery.battery_effect && inserted_battery.stored_charge <= 0)
 							qdel(inserted_battery.battery_effect)
+							return
 
 						//
 						var/datum/artifact_effect/source_effect

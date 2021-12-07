@@ -278,10 +278,10 @@
 			return
 		holder.Topic(href, list("makerobot"=href_list["makerobot"]))
 
-	else if(href_list["makeslime"])
+	else if(href_list["makemetroid"])
 		if(!check_rights(R_SPAWN))	return
 
-		var/mob/living/carbon/human/H = locate(href_list["makeslime"])
+		var/mob/living/carbon/human/H = locate(href_list["makemetroid"])
 		if(!istype(H))
 			to_chat(usr, "This can only be done to instances of type /mob/living/carbon/human")
 			return
@@ -290,7 +290,7 @@
 		if(!H)
 			to_chat(usr, "Mob doesn't exist anymore")
 			return
-		holder.Topic(href, list("makeslime"=href_list["makeslime"]))
+		holder.Topic(href, list("makemetroid"=href_list["makemetroid"]))
 
 	else if(href_list["makeai"])
 		if(!check_rights(R_SPAWN))	return

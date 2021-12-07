@@ -21,8 +21,11 @@
 	var/shardtype = /obj/item/weapon/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
+	var/real_explosion_block // ignore this, just use explosion_block
 
-	pull_sound = "pull_stone"
+	hitby_sound = SFX_GLASS_HIT
+	hitby_loudness_multiplier = 2.0
+	pull_sound = SFX_PULL_STONE
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -47,6 +50,9 @@
 		else
 			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
 
+/obj/structure/window/GetExplosionBlock()
+	return reinf && (state == 5) ? real_explosion_block : 0
+
 /obj/structure/window/proc/take_damage(damage = 0,  sound_effect = 1)
 	var/initialhealth = health
 
@@ -59,7 +65,7 @@
 		shatter()
 	else
 		if(sound_effect)
-			playsound(loc, get_sfx("glass_hit"), 100, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 		if(health < maxhealth / 4 && initialhealth >= maxhealth / 4)
 			visible_message("[src] looks like it's about to shatter!" )
 		else if(health < maxhealth / 2 && initialhealth >= maxhealth / 2)
@@ -87,7 +93,7 @@
 	overlays += img
 
 /obj/structure/window/proc/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
 
@@ -96,11 +102,8 @@
 	qdel(src)
 	return
 
-/obj/structure/window/blob_act(destroy)
-	if (destroy)
-		shatter()
-	else
-		take_damage(25)
+/obj/structure/window/blob_act(damage)
+	take_damage(damage)
 
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
@@ -145,18 +148,39 @@
 		return !anchored // If it's anchored, it'll block air.
 	return TRUE // Don't stop airflow from the other sides.
 
+// Basically CanPass(), but also checks for diagonal movement
+// Currently only used by facehuggers
+// TODO: Expand somehow so it can be used by other projectiles as well
+//       It cannot be used in its current state because it will cause weird
+//       corner-shooting sutiations (it probably should check for connected windows)
+/obj/structure/window/proc/CanDiagonalPass(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(is_full_window())
+		return FALSE
+	var/mover_dir = get_dir(loc, target)
+	if((mover_dir & dir) || (mover_dir & turn(dir, -45)) || (mover_dir & turn(dir, 45)))
+		return !density
+	return TRUE
 
-/obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
+/obj/structure/window/CheckExit(atom/movable/O, turf/target)
 	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0
 	return 1
 
+/obj/structure/window/proc/CheckDiagonalExit(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return 1
+	var/mover_dir = get_dir(mover.loc, target)
+	if((mover_dir & dir) || (turn(mover_dir, -45) & dir) || (turn(mover_dir, 45) & dir))
+		return 0
+	return 1
 
-/obj/structure/window/hitby(AM as mob|obj)
+
+/obj/structure/window/hitby(atom/movable/AM, speed, nomsg)
 	..()
-	visible_message("<span class='danger'>[src] was hit by [AM].</span>")
 	var/tforce = 0
 	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm
 		var/mob/I = AM
@@ -168,11 +192,11 @@
 	if(health - tforce <= 7 && !reinf)
 		set_anchored(FALSE)
 		step(src, get_dir(AM, src))
-	take_damage(tforce)
+	take_damage(tforce, FALSE)
 
 /obj/structure/window/attack_tk(mob/user as mob)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
-	playsound(loc, get_sfx("glass_knock"), 50, 1)
+	playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -190,13 +214,13 @@
 				attack_generic(H,25)
 				return
 
-		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
 		user.do_attack_animation(src)
 		user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
-		playsound(src.loc, get_sfx("glass_knock"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
 		user.visible_message("[user.name] knocks on the [src.name].",
 							"You knock on the [src.name].",
 							"You hear a knocking sound.")
@@ -253,7 +277,7 @@
 	else if(isCoil(W) && reinf && !polarized)
 		var/obj/item/stack/cable_coil/C = W
 		if (C.use(1))
-			playsound(src.loc, get_sfx("spark"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_SPARK), 75, 1)
 			var/obj/structure/window/reinforced/polarized/P = new(loc)
 			P.set_dir(dir)
 			P.health = health
@@ -271,7 +295,7 @@
 				update_verbs()
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
 /obj/structure/window/proc/hit(damage, sound_effect = 1)
@@ -286,6 +310,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -305,6 +332,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -427,6 +457,7 @@
 	name = "plass window"
 	desc = "A plasmasilicate alloy window. It seems to be quite strong."
 	basestate = "plasmawindow"
+	explosion_block = 1
 	icon_state = "plasmawindow"
 	shardtype = /obj/item/weapon/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
@@ -442,6 +473,7 @@
 	shardtype = /obj/item/weapon/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
+	explosion_block = 2
 	maximal_heat = T0C + 4000
 	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that plass windows have something like ablative layer that protects them for a while.
 	maxhealth = 80.0
@@ -458,6 +490,7 @@
 	maxhealth = 40.0
 	reinf = 1
 	maximal_heat = T0C + 750
+	explosion_block = 1
 	damage_per_fire_tick = 2.0
 	glasstype = /obj/item/stack/material/glass/reinforced
 
@@ -472,6 +505,9 @@
 /obj/structure/window/Initialize()
 	. = ..()
 	layer = is_full_window() ? FULL_WINDOW_LAYER : SIDE_WINDOW_LAYER
+	// windows only block while reinforced and fulltile, so we'll use the proc
+	real_explosion_block = explosion_block
+	explosion_block = EXPLOSION_BLOCK_PROC
 
 /obj/structure/window/reinforced/full
 	dir = 5
@@ -497,6 +533,7 @@
 	icon = 'icons/obj/podwindows.dmi'
 	icon_state = "window"
 	basestate = "window"
+	explosion_block = 3
 	maxhealth = 40
 	reinf = 1
 	basestate = "w"
@@ -510,6 +547,7 @@
 	basestate = "window-mine"
 	reinf = 1
 	maxhealth = 40
+	explosion_block = 3
 	dir = 5
 
 /obj/structure/window/research
@@ -520,6 +558,7 @@
 	basestate = "window-res"
 	reinf = 1
 	maxhealth = 40
+	explosion_block = 3
 	dir = 5
 
 /obj/structure/window/reinforced/polarized

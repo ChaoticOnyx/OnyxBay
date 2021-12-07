@@ -1,4 +1,4 @@
-/spell/hand
+/datum/spell/hand
 	var/min_range = 0
 	var/list/compatible_targets = list(/atom)
 	var/spell_delay = 5
@@ -7,10 +7,10 @@
 	var/hand_state = "spell"
 	var/show_message
 	var/spell_cast_delay
-/spell/hand/choose_targets(mob/user = usr)
+/datum/spell/hand/choose_targets(mob/user = usr)
 	return list(user)
 
-/spell/hand/cast_check(skipcharge = 0,mob/user = usr, list/targets)
+/datum/spell/hand/cast_check(skipcharge = 0,mob/user = usr, list/targets)
 	if(!..())
 		return 0
 	if(targets)
@@ -21,7 +21,7 @@
 				return 0
 	return 1
 
-/spell/hand/cast(list/targets, mob/user)
+/datum/spell/hand/cast(list/targets, mob/user)
 	for(var/mob/M in targets)
 		if(M.get_active_hand())
 			to_chat(user, "<span class='warning'>You need an empty hand to cast this spell.</span>")
@@ -32,7 +32,7 @@
 			return
 	return 1
 
-/spell/hand/proc/valid_target(atom/a,mob/user) //we use separate procs for our target checking for the hand spells.
+/datum/spell/hand/proc/valid_target(atom/a,mob/user) //we use separate procs for our target checking for the hand spells.
 	var/distance = get_dist(a,user)
 	if((min_range && distance < min_range) || (range && distance > range))
 		return 0
@@ -40,20 +40,22 @@
 		return 0
 	return 1
 
-/spell/hand/proc/cast_hand(atom/a,mob/user) //same for casting.
+/datum/spell/hand/proc/cast_hand(atom/a,mob/user) //same for casting.
 	return 1
 
-/spell/hand/charges
+/datum/spell/hand/charges
 	var/casts = 1
 	var/max_casts = 1
 
-/spell/hand/charges/cast(list/targets, mob/user)
+/datum/spell/hand/charges/cast(list/targets, mob/user)
 	. = ..()
 	if(.)
 		casts = max_casts
 		to_chat(user, "You ready the [name] spell ([casts]/[casts] charges).")
 
-/spell/hand/charges/cast_hand()
-	if(casts-- && ..())
+/datum/spell/hand/charges/cast_hand()
+	casts--
+	. = casts > 0
+
+	if(. && ..())
 		to_chat(holder, "<span class='notice'>The [name] spell has [casts] out of [max_casts] charges left</span>")
-	return !!casts

@@ -1,0 +1,21 @@
+{
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "Pattern": {
+        "description": "Регулярное выражение",
+        "type": "string"
+      },
+      "Message": {
+        "description": "Сообщение об ошибке",
+        "type": "string"
+      },
+      "Level": {
+        "description": "Уровень ошибки",
+        "type": "string",
+        "enum": ["error", "warning"]
+      }
+    }
+  }
+}

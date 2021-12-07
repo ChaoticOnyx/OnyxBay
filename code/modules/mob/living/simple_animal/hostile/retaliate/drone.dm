@@ -15,13 +15,14 @@
 	response_harm = "hits"
 	speak = list("ALERT.","Hostile-ile-ile entities dee-twhoooo-wected.","Threat parameterszzzz- szzet.","Bring sub-sub-sub-systems uuuup to combat alert alpha-a-a.")
 	emote_see = list("beeps menacingly","whirrs threateningly","scans its immediate vicinity")
+	bodyparts = /decl/simple_animal_bodyparts/malf_drone
 	a_intent = I_HURT
 	stop_automated_movement_when_pulled = 0
 	health = 300
 	maxHealth = 300
 	speed = 8
 	projectiletype = /obj/item/projectile/beam/drone
-	projectilesound = 'sound/weapons/laser3.ogg'
+	projectilesound = 'sound/effects/weapons/energy/Laser3.ogg'
 	destroy_surroundings = 0
 	var/datum/effect/effect/system/trail/ion_trail
 
@@ -48,7 +49,7 @@
 	. = ..()
 	if(prob(5))
 		projectiletype = /obj/item/projectile/beam/pulse/drone
-		projectilesound = 'sound/weapons/pulse2.ogg'
+		projectilesound = 'sound/effects/weapons/energy/pulse2.ogg'
 	ion_trail = new /datum/effect/effect/system/trail/ion()
 	ion_trail.set_up(src)
 	ion_trail.start()
@@ -268,10 +269,13 @@
 			C.SetName("Corrupted drone morality core")
 			C.origin_tech = list(TECH_ILLEGAL = rand(3,6))
 
-	..()
+	return ..()
 
 /obj/item/projectile/beam/drone
 	damage = 15
 
 /obj/item/projectile/beam/pulse/drone
 	damage = 10
+
+/decl/simple_animal_bodyparts/malf_drone
+	hit_zones = list("chassis", "comms array", "sensor suite", "left weapons module", "right weapons module", "maneuvering thruster")

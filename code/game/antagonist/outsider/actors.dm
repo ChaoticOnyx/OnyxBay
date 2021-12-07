@@ -5,7 +5,7 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	role_text = "NanoTrasen Actor"
 	role_text_plural = "NanoTrasen Actors"
 	welcome_text = "You've been hired to entertain people through the power of television!"
-	landmark_id = "ActorSpawn"
+	landmark_id = "Actor"
 	id_type = /obj/item/weapon/card/id/syndicate
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
@@ -17,6 +17,11 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	show_objectives_on_creation = 0 //actors are not antagonists and do not need the antagonist greet text
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/actor/Initialize()
+	. = ..()
+	if(config.actor_min_age)
+		min_player_age = config.actor_min_age
 
 /datum/antagonist/actor/greet(datum/mind/player)
 	if(!..())

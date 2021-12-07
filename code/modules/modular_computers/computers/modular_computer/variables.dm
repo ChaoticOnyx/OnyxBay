@@ -18,6 +18,9 @@
 	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
 	var/ambience_last_played								// Last time sound was played
+	var/beepsounds = SFX_BEEP_COMP
+	var/runsound = 'sound/signals/on1.ogg'
+	var/offsound = 'sound/signals/off1.ogg'
 
 	// Modular computers can run on various devices. Each DEVICE (Laptop, Console, Tablet,..)
 	// must have it's own DMI file. Icon states must be called exactly the same in all files, but may look differently
@@ -53,10 +56,7 @@
 	var/obj/item/weapon/computer_hardware/ai_slot/ai_slot							// AI slot, an intellicard housing that allows modifications of AIs.
 	var/obj/item/weapon/computer_hardware/tesla_link/tesla_link						// Tesla Link, Allows remote charging from nearest APC.
 
-/obj/item/modular_computer/blob_act(destroy, obj/effect/blob/source)
-	if (destroy)
-		playsound(src, "console_breaking", 75, FALSE)
-		qdel(src)
-	else if (prob(25))
-		playsound(src, "console_breaking", 75, FALSE)
+/obj/item/modular_computer/blob_act()
+	if(prob(25))
+		playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
 		qdel(src)

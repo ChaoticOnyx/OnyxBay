@@ -114,9 +114,9 @@
 	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/smash.ogg')
 
 /datum/hallucination/sound/danger/start()
-	sounds.Add(get_sfx("explosion"))
-	sounds.Add(get_sfx("electric_explosion"))
-	sounds.Add(get_sfx("punch"))
+	sounds.Add(GET_SFX(SFX_EXPLOSION))
+	sounds.Add(GET_SFX(SFX_EXPLOSION_ELECTRIC))
+	sounds.Add(GET_SFX(SFX_FIGHTING_PUNCH))
 	..()
 
 /datum/hallucination/sound/spooky
@@ -135,7 +135,7 @@
 	min_power = 30
 
 /datum/hallucination/gunfire/start()
-	gunshot = pick('sound/weapons/gunshot/gunshot_strong.ogg', 'sound/weapons/gunshot/gunshot2.ogg', 'sound/weapons/gunshot/shotgun.ogg', 'sound/weapons/gunshot/gunshot.ogg','sound/weapons/Taser.ogg')
+	gunshot = pick('sound/effects/weapons/gun/fire_strong.ogg', 'sound/effects/weapons/gun/gunshot2.ogg', 'sound/effects/weapons/gun/fire_shotgun.ogg', 'sound/effects/weapons/gun/gunshot.ogg','sound/effects/weapons/energy/Taser.ogg')
 	origin = locate(holder.x + rand(4,8), holder.y + rand(4,8), holder.z)
 	holder.playsound_local(origin,gunshot,50)
 
@@ -342,7 +342,7 @@
 /datum/hallucination/fakeattack/start()
 	for(var/mob/living/M in oview(holder,1))
 		to_chat(holder, "<span class='danger'>[M] has punched [holder]!</span>")
-		holder.playsound_local(get_turf(holder),"punch",rand(80, 100))
+		holder.playsound_local(get_turf(holder),SFX_FIGHTING_PUNCH,rand(80, 100))
 
 //Fake injection
 /datum/hallucination/fakeattack/hypo
@@ -388,7 +388,7 @@
 		GLOB.human_mob_list.len   * 45;  "human",
 		GLOB.silicon_mob_list.len * 350; "cyborg",
 		GLOB.living_mob_list_.len * 6;   "animal",
-		GLOB.living_mob_list_.len * 5;   "xeno",
+		GLOB.living_mob_list_.len * 5;   "xenomorph",
 		GLOB.living_mob_list_.len * 2;   "bot",
 		GLOB.living_mob_list_.len    ;   "mouse",
 		GLOB.ghost_mob_list.len   * 3;   "ghost"
@@ -407,8 +407,8 @@
 			fake_candidates = GLOB.silicon_mob_list
 		if("animal")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
-		if("xeno")
-			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/slime, /mob/living/deity))
+		if("xenomorph")
+			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/metroid, /mob/living/deity))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))
 		if("mouse")
@@ -436,7 +436,7 @@
 	holder.client.images |= fake_look
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
-/datum/hallucination/fake_appearance/proc/get_living_sublist(var/list/subtypes, var/list/exclude)
+/datum/hallucination/fake_appearance/proc/get_living_sublist(list/subtypes, list/exclude)
 	var/list/same_z_candidates = new()
 	var/list/other_z_candidates = new()
 	for(var/mob/living/F in GLOB.living_mob_list_)

@@ -61,6 +61,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	item_state = "cigoff"
 	name = "burnt match"
 	desc = "A match. This one has seen better days."
+	set_light(0)
 	STOP_PROCESSING(SSobj, src)
 
 /////////
@@ -80,6 +81,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	var/max_fuel = 5
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
+	var/requires_hold = TRUE
 
 /obj/item/weapon/flame/lighter/Initialize()
 	. = ..()
@@ -92,7 +94,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	lit = 1
 	update_icon()
 	light_effects(user)
-	set_light(2)
+	set_light(0.2, 0.5, 2, 3.5, "#e38f46")
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/flame/lighter/proc/light_effects(mob/living/carbon/user)
@@ -105,15 +107,16 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		else
 			user.apply_damage(2, BURN,BP_R_HAND)
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
-	playsound(src.loc, "light_bic", 100, 1, -4)
+	playsound(src.loc, SFX_USE_LIGHTER, 100, 1, -4)
 
-/obj/item/weapon/flame/lighter/proc/shutoff(mob/user)
+/obj/item/weapon/flame/lighter/proc/shutoff(mob/user, silent = FALSE)
 	lit = 0
 	update_icon()
-	if(user)
-		shutoff_effects(user)
-	else
-		visible_message(SPAN("notice", "[src] goes out."))
+	if(!silent)
+		if(user)
+			shutoff_effects(user)
+		else
+			visible_message(SPAN("notice", "[src] goes out."))
 	set_light(0)
 	STOP_PROCESSING(SSobj, src)
 
@@ -178,7 +181,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 			to_chat(loc, SPAN("warning", "[src]'s flame flickers."))
 			set_light(0)
 			spawn(4)
-				set_light(2)
+				set_light(0.3, 0.5, 2, 2, "#e38f46")
 		reagents.remove_reagent(/datum/reagent/fuel, 0.05)
 	else
 		shutoff()
@@ -187,6 +190,10 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	var/turf/location = get_turf(src)
 	if(location)
 		location.hotspot_expose(700, 5)
+
+/obj/item/weapon/flame/lighter/dropped()
+	if(requires_hold)
+		shutoff(silent = TRUE)
 
 
 /obj/item/weapon/flame/lighter/random/Initialize()
@@ -208,6 +215,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	item_state = "zippo"
 	max_fuel = 10
 	flame_overlay = "zippooverlay"
+	requires_hold = FALSE
 
 /obj/item/weapon/flame/lighter/zippo/light_effects(mob/user)
 	user.visible_message(SPAN("rose", "Without even breaking stride, [user] flips open and lights [src] in one smooth movement."))
@@ -320,7 +328,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 /obj/item/weapon/flame/lighter/zippo/eng
 	name = "\improper Engineering lighter"
-	desc = "Its owner must be trusted. Should be trusted. May be trusted. Probably. In fact, shouldn't."
+	desc = "Its owner must be trusted. Should be trusted. May be trusted. Probably. In fact, shouldn't be."
 	icon_state = "zippo-eng"
 
 /obj/item/weapon/flame/lighter/zippo/med
@@ -386,4 +394,4 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		else
 			user.apply_damage(7.5, BURN, BP_R_HAND)
 		user.visible_message(SPAN("notice", "You hear a nasty snap, as [user] shuts off [src], badly pinching their hand in the process."))
-	playsound(src.loc, 'sound/items/zippo_open.ogg', 100, 1, -4)
+	playsound(src.loc, 'sound/items/zippo_close.ogg', 100, 1, -4)

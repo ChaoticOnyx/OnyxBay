@@ -22,9 +22,9 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 			reagents.trans_to_obj(I, reagents.total_volume)
 	for(var/f in materials)
 		if(materials[f] >= SHEET_MATERIAL_AMOUNT)
-			var/path = get_material_by_name(f)
-			if(path)
-				var/obj/item/stack/S = new path(loc)
+			var/material/M = get_material_by_name(f)
+			if(M?.stack_type)
+				var/obj/item/stack/S = M.place_sheet(loc)
 				S.amount = round(materials[f] / SHEET_MATERIAL_AMOUNT)
 	..()
 

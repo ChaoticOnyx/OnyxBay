@@ -83,6 +83,24 @@
 /turf/simulated/floor/misc/fixed/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_PLATING])
 
+/turf/simulated/floor/natural/jungle/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_GRASS])
+
+/turf/simulated/floor/natural/jungle/dirt/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/jungle/sand/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/sand/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/jungle/water/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_WATER])
+
+/turf/simulated/floor/trim/darkwood/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_WOOD])
+
 /turf/simulated/floor/Entered(mob/living/carbon/human/H)
 	..()
 	if(istype(H))
@@ -132,3 +150,42 @@
 			range -= 0.333
 
 		playsound(T, S, volume, 1, range)
+
+	// Playing far movement sound with small chance when someone make step in maintenance area
+	// These sounds another players can hear only in the same maintenance area
+	if(m_intent == M_WALK)
+		return
+
+	var/chance = 25
+
+	if(MUTATION_FAT in mutations)
+		chance += 5
+
+	if(MUTATION_CLUMSY in mutations)
+		chance += 10
+
+	if(MUTATION_HULK in mutations)
+		chance += 15
+
+	if(!prob(chance))
+		return
+
+	var/area/maintenance/A = get_area(src)
+
+	if(!istype(A))
+		return
+
+	for(var/mob/M in GLOB.player_list)
+		if(M == src)
+			continue
+
+		if(istype(M, /mob/new_player))
+			continue
+
+		if(M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
+			continue
+
+		var/dist = get_dist(get_turf(M), T)
+
+		if(dist >= world.view && dist <= world.view * 3)
+			M.playsound_local(src.loc, SFX_DISTANT_MOVEMENT, 100)

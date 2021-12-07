@@ -13,7 +13,7 @@
 	desc = "A very sharp axe blade upon a short fibremetal handle. It has a long history of chopping things, but now it is used for chopping wood."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "hatchet"
-	force_const = 6.5
+	force_const = 7.5
 	thrown_force_const = 5
 	force_divisor = 0.125 // 7.5 with hardness 60 (steel)
 	thrown_force_divisor = 0.5 // 10 with weight 20 (steel)
@@ -26,7 +26,7 @@
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 1)
 	attack_verb = list("chopped", "torn", "cut")
 	applies_material_colour = 0
-	hitsound = "chop"
+	hitsound = SFX_CHOP
 
 /obj/item/weapon/material/hatchet/tacknife
 	name = "tactical knife"
@@ -40,11 +40,13 @@
 	mod_reach = 0.5
 	mod_handy = 1.25
 	attack_verb = list("stabbed", "chopped", "cut")
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	applies_material_colour = 1
 
 /obj/item/weapon/material/hatchet/machete
 	name = "machete"
 	desc = "A long, sturdy blade with a rugged handle. Leading the way to cursed treasures since before space travel."
+	icon_state = "machete"
 	item_state = "machete"
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
@@ -70,7 +72,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "hoe"
 	item_state = "hoe"
-	force_const = 5.0
+	force_const = 5.5
 	force_divisor = 0.125 // 2.5 with weight 20 (steel)
 	thrown_force_divisor = 0.25 // as above
 	w_class = ITEM_SIZE_SMALL

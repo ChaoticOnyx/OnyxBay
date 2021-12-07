@@ -26,7 +26,7 @@
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
 	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
-	use_sound = "searching_clothes"
+	use_sound = SFX_SEARCH_CLOTHES
 
 /obj/item/weapon/storage/box/large
 	name = "large box"
@@ -404,6 +404,7 @@
 			W.lit = 1
 			W.damtype = "burn"
 			W.icon_state = "match_lit"
+			W.set_light(0.2, 0.5, 2, 3.5, "#e38f46")
 			START_PROCESSING(SSobj, W)
 			playsound(src.loc, 'sound/items/match.ogg', 60, 1, -4)
 			user.visible_message("<span class='notice'>[user] strikes the match on the matchbox.</span>")
@@ -452,6 +453,64 @@
 					/obj/item/weapon/light/bulb = 5)
 
 /obj/item/weapon/storage/box/lights/mixed/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/bulbs/he
+	name = "box of replacement high efficiency bulbs"
+	icon_state = "hlight"
+	startswith = list(/obj/item/weapon/light/bulb/he = 21)
+
+/obj/item/weapon/storage/box/lights/bulbs/he/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/tubes/he
+	name = "box of replacement high efficiency tubes"
+	icon_state = "hlighttube"
+	startswith = list(/obj/item/weapon/light/tube/he = 21)
+
+/obj/item/weapon/storage/box/lights/tubes/he/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/mixed/he
+	name = "box of replacement high efficiency lights"
+	icon_state = "hlightmixed"
+	startswith = list(/obj/item/weapon/light/tube/he = 16,
+					/obj/item/weapon/light/bulb/he = 5)
+
+/obj/item/weapon/storage/box/lights/mixed/he/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/bulbs/quartz
+	name = "box of replacement quartz bulbs"
+	icon_state = "qlight"
+	startswith = list(/obj/item/weapon/light/bulb/quartz = 21)
+
+/obj/item/weapon/storage/box/lights/bulbs/quartz/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/tubes/quartz
+	name = "box of replacement quartz tubes"
+	icon_state = "qlighttube"
+	startswith = list(/obj/item/weapon/light/tube/quartz = 21)
+
+/obj/item/weapon/storage/box/lights/tubes/quartz/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/mixed/quartz
+	name = "box of replacement quartz lights"
+	icon_state = "qlightmixed"
+	startswith = list(/obj/item/weapon/light/tube/quartz = 16,
+					/obj/item/weapon/light/bulb/quartz = 5)
+
+/obj/item/weapon/storage/box/lights/mixed/quartz/empty
+	startswith = null
+
+/obj/item/weapon/storage/box/lights/bulbs/old
+	name = "box of replacement brand new bulbs"
+	icon_state = "oldlight"
+	startswith = list(/obj/item/weapon/light/bulb/old = 21)
+
+/obj/item/weapon/storage/box/lights/bulbs/old/empty
 	startswith = null
 
 /obj/item/weapon/storage/box/glowsticks

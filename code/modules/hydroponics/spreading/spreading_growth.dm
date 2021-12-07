@@ -152,12 +152,13 @@
 			START_PROCESSING(SSvines, neighbor)
 
 /obj/effect/vine/proc/targets_in_range()
-	var/mob/list/targets = list()
+	var/list/mob/targets = list()
 	for(var/turf/simulated/check_turf in (get_cardinal_neighbors() | get_zlevel_neighbors() | list(loc)))
 		if(!istype(check_turf))
 			continue
 		for(var/mob/living/M in check_turf.contents)
-			targets |= M
+			if(is_valid_target(M))
+				targets |= M
 	if(targets.len)
 		return targets
 

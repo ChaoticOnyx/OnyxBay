@@ -38,7 +38,7 @@
 //Makes a blood drop, leaking amt units of blood from the mob
 /mob/living/carbon/human/proc/drip(amt, tar = src, ddir)
 	if(remove_blood(amt))
-		if(bloodstr.total_volume)
+		if(bloodstr.total_volume && vessel.total_volume)
 			var/blood_loss_modifier_multiplier = 1.0
 			for(var/datum/modifier/M in modifiers)
 				if(!isnull(M.bleeding_rate_percent))
@@ -210,11 +210,14 @@
 			vessel.update_total()
 	return amount
 
-proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
+/proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 
 	var/obj/effect/decal/cleanable/blood/B
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
 	var/turf/T = get_turf(target)
+
+	if(spray_dir)
+		decal_type = /obj/effect/decal/cleanable/blood/squirt
 
 	if(istype(source,/mob/living/carbon/human))
 		var/mob/living/carbon/human/M = source
@@ -248,7 +251,6 @@ proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 		B.basecolor = source.data["blood_colour"]
 		B.update_icon()
 	if(spray_dir)
-		B.icon_state = "squirt"
 		B.dir = spray_dir
 
 	// Update blood information.

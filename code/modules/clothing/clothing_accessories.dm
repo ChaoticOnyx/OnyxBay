@@ -28,8 +28,6 @@
 		A.attackby(I, user)
 	return
 
-	..()
-
 /obj/item/clothing/attack_hand(mob/user)
 	//only forward to the attached accessory if the clothing is equipped (not in a storage)
 	if(accessories.len && src.loc == user)
@@ -83,7 +81,7 @@
 	update_clothing_icon()
 
 /obj/item/clothing/proc/remove_accessory(mob/user, obj/item/clothing/accessory/A)
-	if(!(A in accessories))
+	if(!A || !(A in accessories))
 		return
 
 	A.on_removed(user)

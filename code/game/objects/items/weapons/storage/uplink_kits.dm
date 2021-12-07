@@ -31,6 +31,10 @@
 	name = "box (C)"
 	startswith = list(/obj/item/weapon/implanter/compressed)
 
+/obj/item/weapon/storage/box/syndie_kit/spy_implant
+	name = "box (S)"
+	startswith = list(/obj/item/weapon/implanter/spy)
+
 /obj/item/weapon/storage/box/syndie_kit/imp_explosive
 	name = "box (E)"
 	startswith = list(
@@ -51,8 +55,8 @@
 	//name = "\improper EVA gear pack"
 
 	startswith = list(
-		/obj/item/clothing/suit/space/void/syndi,
-		/obj/item/clothing/head/helmet/space/void/syndi,
+		/obj/item/clothing/suit/space/syndicate,
+		/obj/item/clothing/head/helmet/space/syndicate,
 		/obj/item/clothing/mask/gas/syndicate,
 		/obj/item/weapon/tank/emergency/oxygen/double,
 		)
@@ -101,7 +105,7 @@
 	name = "\improper Smooth operator"
 	desc = "9mm with silencer kit and ammunition."
 	startswith = list(
-		/obj/item/weapon/gun/projectile/pistol,
+		/obj/item/weapon/gun/projectile/pistol/holdout,
 		/obj/item/weapon/silencer,
 		/obj/item/ammo_magazine/mc9mm
 	)
@@ -143,30 +147,12 @@
 
 /obj/item/weapon/storage/box/syndie_kit/cigarette/New()
 	..()
-	var/obj/item/weapon/storage/fancy/cigarettes/pack
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
-	pack.desc += " 'F' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
-	pack.desc += " 'F' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
-	pack.desc += " 'S' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
-	pack.desc += " 'S' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/dylovene = 1, /datum/reagent/silicon = 1, /datum/reagent/hydrazine = 1))
-	pack.desc += " 'MB' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/tricordrazine = 4))
-	pack.desc += " 'T' has been scribbled on it."
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/flash(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/flash(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/smoke(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/smoke(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/mind_breaker(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/tricordrazine(src)
 
 	new /obj/item/weapon/flame/lighter/zippo(src)
 
@@ -195,11 +181,11 @@
 
 /obj/item/weapon/storage/secure/briefcase/money
 
-	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 10)
+	startswith = list(/obj/item/weapon/spacecash/bundle/c500 = 10)
 
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
-	name="cleaning kit"
-	desc="Used to clean your dirty deeds up."
+	name = "cleaning kit"
+	desc = "Used to clean your dirty deeds up."
 	startswith = list(
 		/obj/item/weapon/reagent_containers/spray/cleaner,
 		/obj/item/weapon/reagent_containers/spray/sterilizine,

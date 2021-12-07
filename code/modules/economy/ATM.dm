@@ -55,6 +55,7 @@
 
 /obj/machinery/atm/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		//short out the machine, shoot sparks, spew money!
 		emagged = 1
 		spark_system.start()
@@ -97,6 +98,7 @@
 
 			to_chat(user, "<span class='info'>You insert [I] into [src].</span>")
 			src.attack_hand(user)
+			dolla.worth = 0
 			qdel(I)
 	else
 		..()

@@ -1,8 +1,9 @@
 /obj/item/organ/internal/cell
 	name = "microbattery"
 	desc = "A small, powerful cell for use in fully prosthetic bodies."
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cell"
-	dead_icon = "cell_bork"
+	dead_icon = "cell-br"
 	organ_tag = BP_CELL
 	parent_organ = BP_CHEST
 	vital = 1
@@ -94,9 +95,10 @@
 /obj/item/organ/internal/cell/replaced()
 	..()
 	// This is very ghetto way of rebooting an IPC. TODO better way.
-	if(owner && owner.stat == DEAD)
+	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
+	if(owner && owner.stat == DEAD && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
-		owner.visible_message("<span class='danger'>\The [owner] twitches visibly!</span>")
+		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
 
 /obj/item/organ/internal/cell/listen()
 	if(get_charge())
@@ -105,6 +107,7 @@
 // Used for an MMI or posibrain being installed into a human.
 /obj/item/organ/internal/mmi_holder
 	name = "brain interface"
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
 	organ_tag = BP_BRAIN
 	parent_organ = BP_HEAD

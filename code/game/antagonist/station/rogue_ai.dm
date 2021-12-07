@@ -15,7 +15,11 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	initial_spawn_req = 1
 	initial_spawn_target = 1
 	antaghud_indicator = "hudmalai"
-	min_player_age = 18
+
+/datum/antagonist/rogue_ai/Initialize()
+	. = ..()
+	if(config.malf_min_age)
+		min_player_age = config.malf_min_age
 
 /datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role)
 	. = ..(player, ignore_role)
@@ -53,7 +57,7 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 			error("Non-AI mob designated malf AI! Report this.")
 			to_world("##ERROR: Non-AI mob designated malf AI! Report this.")
 
-			return 0
+			return
 
 		A.setup_for_malf()
 		A.laws = new /datum/ai_laws/nanotrasen/malfunction

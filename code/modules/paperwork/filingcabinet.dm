@@ -49,7 +49,7 @@
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
 	if(is_type_in_list(P, can_hold))
-		playsound(loc, "searching_cabinet", 75, 1)
+		playsound(loc, SFX_SEARCH_CABINET, 75, 1)
 		add_fingerprint(user)
 		to_chat(user, "<span class='notice'>You put [P] in [src].</span>")
 		user.drop_item()
@@ -66,7 +66,7 @@
 
 
 /obj/structure/filingcabinet/attack_hand(mob/user as mob)
-	playsound(loc, "searching_cabinet", 75, 1)
+	playsound(loc, SFX_SEARCH_CABINET, 75, 1)
 
 	if(contents.len <= 0)
 		to_chat(user, "<span class='notice'>\The [src] is empty.</span>")
@@ -77,7 +77,7 @@
 	for(var/obj/item/P in src)
 		dat += "<tr><td><a href='?src=\ref[src];retrieve=\ref[P]'>[P.name]</a></td></tr>"
 	dat += "</table></center>"
-	user << browse("<html><meta charset=\"utf-8\"><head><title>[name]</title></head><body>[dat]</body></html>", "window=filingcabinet;size=350x300")
+	show_browser(user, "<html><meta charset=\"utf-8\"><head><title>[name]</title></head><body>[dat]</body></html>", "window=filingcabinet;size=350x300")
 
 	return
 
@@ -100,7 +100,7 @@
 
 /obj/structure/filingcabinet/Topic(href, href_list)
 	if(href_list["retrieve"])
-		usr << browse("", "window=filingcabinet") // Close the menu
+		close_browser(usr, "window=filingcabinet") // Close the menu
 
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]

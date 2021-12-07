@@ -43,10 +43,13 @@
 
 	blood_color = "#2299fc"
 	flesh_color = "#808d11"
+	organs_icon = 'icons/mob/human_races/organs/vox.dmi'
 
 	reagent_tag = IS_VOX
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_leap,
 		/mob/living/carbon/human/proc/leap
 		)
 

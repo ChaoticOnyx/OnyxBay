@@ -289,6 +289,21 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/weapon/reagent_containers/glass/beaker/vial
 	category = "Medical"
 
+/datum/autolathe/recipe/bottle_small
+	name = "small glass bottle"
+	path = /obj/item/weapon/reagent_containers/glass/bottle/small
+	category = "Medical"
+
+/datum/autolathe/recipe/bottle
+	name = "glass bottle"
+	path = /obj/item/weapon/reagent_containers/glass/bottle
+	category = "Medical"
+
+/datum/autolathe/recipe/bottle_big
+	name = "big glass bottle"
+	path = /obj/item/weapon/reagent_containers/glass/bottle/big
+	category = "Medical"
+
 /datum/autolathe/recipe/syringe
 	name = "syringe"
 	path = /obj/item/weapon/reagent_containers/syringe
@@ -412,6 +427,26 @@ var/const/EXTRA_COST_FACTOR = 1.25
 /datum/autolathe/recipe/bulb
 	name = "light bulb"
 	path = /obj/item/weapon/light/bulb
+	category = "General"
+
+/datum/autolathe/recipe/tube
+	name = "high efficiency light tube"
+	path = /obj/item/weapon/light/tube/he
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "high efficiency light bulb"
+	path = /obj/item/weapon/light/bulb/he
+	category = "General"
+
+/datum/autolathe/recipe/tube
+	name = "quartz light tube"
+	path = /obj/item/weapon/light/tube/quartz
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "quartz light bulb"
+	path = /obj/item/weapon/light/bulb/quartz
 	category = "General"
 
 /datum/autolathe/recipe/ashtray_glass

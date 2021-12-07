@@ -1,7 +1,8 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
-	pull_sound = "pull_wood"
+	pull_sound = SFX_PULL_WOOD
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 	var/breakable
 	var/parts
@@ -38,8 +39,8 @@
 		if(3.0)
 			return
 
-/obj/structure/blob_act(destroy = 0)
-	if(destroy || (prob(50)))
+/obj/structure/blob_act()
+	if(prob(50))
 		qdel(src)
 
 /obj/structure/attack_generic(mob/user, damage, attack_verb, wallbreaker)

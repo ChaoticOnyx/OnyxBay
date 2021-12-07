@@ -39,9 +39,9 @@
 	if(occupant)
 		occupant_message("The sleeper is already occupied")
 		return
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			occupant_message("[target] will not fit into the sleeper because they have a slime latched onto their head.")
+			occupant_message("[target] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return
 	occupant_message("You start putting [target] into [src].")
 	chassis.visible_message("[chassis] starts putting [target] into the [src].")
@@ -100,11 +100,11 @@
 	if(F.get("eject"))
 		go_out()
 	if(F.get("view_stats"))
-		chassis.occupant << browse(get_occupant_stats(),"window=msleeper")
+		show_browser(chassis.occupant, get_occupant_stats(), "window=msleeper")
 		onclose(chassis.occupant, "msleeper")
 		return
 	if(F.get("inject"))
-		inject_reagent(F.getType("inject",/datum/reagent),F.getObj("source"))
+		inject_reagent(F.getType("inject", /datum/reagent), F.getObj("source"))
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper/proc/get_occupant_stats()
@@ -348,7 +348,7 @@
 			log_message("Reagent processing started.")
 		return
 	if(F.get("show_reagents"))
-		chassis.occupant << browse(get_reagents_page(),"window=msyringegun")
+		show_browser(chassis.occupant, get_reagents_page(), "window=msyringegun")
 	if(F.get("purge_reagent"))
 		var/datum/reagent/R = locate(F.get("purge_reagent")) in reagents.reagent_list
 		if(R)

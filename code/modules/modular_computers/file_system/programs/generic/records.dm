@@ -23,8 +23,8 @@
 
 	data["message"] = message
 	if(active_record)
-		user << browse_rsc(active_record.photo_front, "front_[active_record.uid].png")
-		user << browse_rsc(active_record.photo_side, "side_[active_record.uid].png")
+		send_rsc(user, active_record.photo_front, "front_[active_record.uid].png")
+		send_rsc(user, active_record.photo_side, "side_[active_record.uid].png")
 		data["pic_edit"] = check_access(user, access_heads) || check_access(user, access_security)
 		data["uid"] = active_record.uid
 		var/list/fields = list()
@@ -77,6 +77,34 @@
 
 	return user_access
 
+/proc/edit_department(datum/computer_file/crew_record/R, current_department_flags_name_list, default_message)
+	var/current_department_flags = "[default_message] [english_list(current_department_flags_name_list)]"
+	var/list/options = list()
+	options["Add ([current_department_flags])"] = 1
+	options["Remove ([current_department_flags])"] = 2
+	var/option = input("Select option (Cancel if Done)", "Edit Options") as null|anything in options
+	switch(options[option])
+		if(1)
+			var/list/remain_flags = R.assigned_deparment_flags ^ GLOB.department_flags
+			var/list/remain_flags_text = list()
+			for(var/flag in remain_flags)
+				remain_flags_text[GLOB.department_flags_to_text[num2text(flag)]] = flag
+			var/selected_flag = input("Select flag", "Department Flag") as null|anything in remain_flags_text
+			if(remain_flags_text[selected_flag])
+				var/flag = remain_flags_text[selected_flag]
+				R.assigned_deparment_flags += flag
+				current_department_flags_name_list[selected_flag] = flag
+			. = edit_department(R, current_department_flags_name_list, default_message)
+		if(2)
+			var/selected_flag = input("Select flag name", "Department Flag") as null|anything in current_department_flags_name_list
+			if(selected_flag)
+				var/flag = current_department_flags_name_list[selected_flag]
+				R.assigned_deparment_flags -= flag
+				current_department_flags_name_list -= selected_flag
+			. = edit_department(R, current_department_flags_name_list, default_message)
+		else
+			. = current_department_flags_name_list
+
 /datum/nano_module/records/proc/edit_field(mob/user, field)
 	var/datum/computer_file/crew_record/R = active_record
 	if(!R)
@@ -90,16 +118,24 @@
 		return FALSE
 
 	var/newValue
-	switch(F.valtype)
-		if(EDIT_SHORTTEXT)
-			newValue = sanitize(input(user, "Enter [F.name]:", "Record edit", html_decode(F.get_value())))
-		if(EDIT_LONGTEXT)
-			newValue = sanitize(replacetext(input(user, "Enter [F.name]. You may use HTML paper formatting tags:", "Record edit", replacetext(html_decode(F.get_value()), "\[br\]", "\n")), "\n", "\[br\]"))
-		if(EDIT_NUMERIC)
-			newValue = input(user, "Enter [F.name]:", "Record edit", F.get_value()) as null|num
-		if(EDIT_LIST)
-			var/options = F.get_options()
-			newValue = input(user,"Pick [F.name]:", "Record edit", F.get_value()) as null|anything in options
+	if(F.name == "Department")
+		var/default_message = "The current list of department flags:"
+		var/list/current_department_flags_name_list = list()
+		for(var/flag in R.assigned_deparment_flags)
+			current_department_flags_name_list[GLOB.department_flags_to_text[num2text(flag)]] = flag
+
+		newValue = english_list(edit_department(R, current_department_flags_name_list, default_message))
+	else
+		switch(F.valtype)
+			if(EDIT_SHORTTEXT)
+				newValue = sanitize(input(user, "Enter [F.name]:", "Record edit", html_decode(F.get_value())))
+			if(EDIT_LONGTEXT)
+				newValue = sanitize(replacetext(input(user, "Enter [F.name]. You may use HTML paper formatting tags:", "Record edit", replacetext(html_decode(F.get_value()), "\[br\]", "\n")), "\n", "\[br\]"))
+			if(EDIT_NUMERIC)
+				newValue = input(user, "Enter [F.name]:", "Record edit", F.get_value()) as null|num
+			if(EDIT_LIST)
+				var/options = F.get_options()
+				newValue = input(user,"Pick [F.name]:", "Record edit", F.get_value()) as null|anything in options
 
 	if(active_record != R)
 		return FALSE

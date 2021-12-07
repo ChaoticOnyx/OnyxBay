@@ -12,7 +12,7 @@
 	var/active = 0
 	var/heating_power = 40 KILOWATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 
 /obj/machinery/space_heater/New()
@@ -78,7 +78,7 @@
 		user.visible_message("<span class='notice'>[user] [panel_open ? "opens" : "closes"] the hatch on the [src].</span>", "<span class='notice'>You [panel_open ? "open" : "close"] the hatch on the [src].</span>")
 		update_icon(1)
 		if(!panel_open && user.machine == src)
-			show_browser(user, null, "window=spaceheater")
+			close_browser(user, "window=spaceheater")
 			user.unset_machine()
 	else
 		..()
@@ -123,7 +123,7 @@
 
 /obj/machinery/space_heater/Topic(href, href_list, state = GLOB.physical_state)
 	if (..())
-		show_browser(usr, null, "window=spaceheater")
+		close_browser(usr, "window=spaceheater")
 		usr.unset_machine()
 		return 1
 
@@ -156,6 +156,7 @@
 					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")
 
 	updateDialog()
+	return TOPIC_REFRESH
 
 /obj/machinery/space_heater/Process()
 	if(on)

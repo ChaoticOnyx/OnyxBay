@@ -69,6 +69,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	var/spamfilter_limit = MESSAGE_SERVER_DEFAULT_SPAM_LIMIT	//Maximal amount of tokens
 
 /obj/machinery/message_server/New()
+	name = "[name] ([get_area(src)])"
 	message_servers += src
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
@@ -92,6 +93,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			update_icon()
 
 /obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "")
+	playsound(src.loc, SFX_TRR, 50)
 	var/result
 	for (var/token in spamfilter)
 		if (findtextEx(message,token))
@@ -101,6 +103,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return result
 
 /obj/machinery/message_server/proc/send_rc_message(recipient = "",sender = "",message = "",stamp = "", id_auth = "", priority = 1)
+	playsound(src.loc, SFX_TRR, 50)
 	rc_msgs += new /datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 	var/authmsg = "[message]<br>"
 	if (id_auth)
@@ -124,7 +127,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 					playsound(Console.loc, 'sound/signals/ping8.ogg', 75, 0)
 					Console.audible_message("\icon[Console]<span class='notice'>\The [Console] announces: 'Message received from [sender].'</span>", hearing_distance = 5)
 				Console.message_log += "<B>Message from <A href='?src=\ref[Console];write=[sender]'>[sender]</A></B><BR>[authmsg]"
-		Console.set_light(2)
+		Console.set_light(0.3, 0.1, 2)
 
 
 /obj/machinery/message_server/attack_hand(user as mob)
@@ -279,7 +282,8 @@ var/obj/machinery/blackbox_recorder/blackbox
 		BR.messages_admin = messages_admin
 		if(blackbox != BR)
 			blackbox = BR
-	..()
+
+	return ..()
 
 /obj/machinery/blackbox_recorder/proc/find_feedback_datum(variable)
 	for(var/datum/feedback_variable/FV in feedback)
@@ -297,7 +301,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/pda_msg_amt = 0
 	var/rc_msg_amt = 0
 
-	for(var/obj/machinery/message_server/MS in SSmachines.machinery)
+	for(var/obj/machinery/message_server/MS in GLOB.machines)
 		if(MS.pda_msgs.len > pda_msg_amt)
 			pda_msg_amt = MS.pda_msgs.len
 		if(MS.rc_msgs.len > rc_msg_amt)
@@ -328,12 +332,11 @@ var/obj/machinery/blackbox_recorder/blackbox
 	if(!feedback) return
 
 	round_end_data_gathering() //round_end time logging and some other data processing
-	establish_db_connection()
-	if(!dbcon.IsConnected()) return
+	if(!establish_db_connection()) return
 	var/round_id
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT MAX(round_id) AS round_id FROM erro_feedback")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT MAX(round_id) AS round_id FROM erro_feedback")
+
 	while(query.NextRow())
 		round_id = query.item[1]
 
@@ -342,21 +345,24 @@ var/obj/machinery/blackbox_recorder/blackbox
 	round_id++
 
 	for(var/datum/feedback_variable/FV in feedback)
-		var/sql = "INSERT INTO erro_feedback VALUES (null, Now(), [round_id], \"[encode_for_db(FV.get_variable())]\", [encode_for_db(FV.get_value())], \"[encode_for_db(FV.get_details())]\")"
-		var/DBQuery/query_insert = dbcon.NewQuery(sql)
-		query_insert.Execute()
+		sql_query({"
+			INSERT INTO
+				erro_feedback
+			VALUES
+				(null,
+				Now(),
+				$round_id,
+				$var,
+				$value,
+				$details)
+			"}, dbcon, list(round_id = round_id,
+				var = FV.get_variable(),
+				value = FV.get_value(),
+				details = FV.get_details()
+				))
 
-// Sanitize inputs to avoid SQL injection attacks
-proc/sql_sanitize_text(text)
-	text = replacetext(text, "'", "''")
-	text = replacetext(text, ";", "")
-	text = replacetext(text, "&", "")
-	return text
-
-proc/feedback_set(variable,value)
+/proc/feedback_set(variable,value)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -364,10 +370,8 @@ proc/feedback_set(variable,value)
 
 	FV.set_value(value)
 
-proc/feedback_inc(variable,value)
+/proc/feedback_inc(variable,value)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -375,10 +379,8 @@ proc/feedback_inc(variable,value)
 
 	FV.inc(value)
 
-proc/feedback_dec(variable,value)
+/proc/feedback_dec(variable,value)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -386,11 +388,8 @@ proc/feedback_dec(variable,value)
 
 	FV.dec(value)
 
-proc/feedback_set_details(variable,details)
+/proc/feedback_set_details(variable,details)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
-	details = sql_sanitize_text(details)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -398,11 +397,8 @@ proc/feedback_set_details(variable,details)
 
 	FV.set_details(details)
 
-proc/feedback_add_details(variable,details)
+/proc/feedback_add_details(variable,details)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
-	details = sql_sanitize_text(details)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 

@@ -39,9 +39,9 @@
 	anchored = 1
 	idle_power_usage = 80
 	active_power_usage = 1000 //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	req_one_access = list(access_atmospherics, access_engine_equip)
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 30
 
 	layer = ABOVE_WINDOW_LAYER
@@ -101,6 +101,7 @@
 	target_temperature = T0C+10
 
 /obj/machinery/alarm/Destroy()
+	GLOB.alarm_list -= src
 	unregister_radio(src, frequency)
 	qdel(wires)
 	wires = null
@@ -110,6 +111,7 @@
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
+	GLOB.alarm_list += src
 	..(loc)
 
 	if(dir)
@@ -154,7 +156,7 @@
 		return
 
 	var/turf/simulated/location = loc
-	if(!istype(location))	return//returns if loc is not simulated
+	if(!istype(location))	return PROCESS_KILL//returns if loc is not simulated
 
 	var/datum/gas_mixture/environment = location.return_air()
 
@@ -326,7 +328,7 @@
 			icon_state = "alarm1"
 			new_color = COLOR_RED_LIGHT
 
-	set_light(l_range = 2, l_power = 0.6, l_color = new_color)
+	set_light(0.25, 0.1, 1, 2, new_color)
 
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
@@ -416,6 +418,7 @@
 				send_signal(device_id, list("power"= 1, "checks"= "default", "set_external_pressure"= "default") )
 
 		if(AALARM_MODE_PANIC, AALARM_MODE_CYCLE)
+			playsound(src.loc, 'sound/signals/alarm14.ogg', 25)
 			for(var/device_id in alarm_area.air_scrub_names)
 				send_signal(device_id, list("power"= 1, "panic_siphon"= 1) )
 			for(var/device_id in alarm_area.air_vent_names)
@@ -788,9 +791,11 @@
 					return
 				else
 					if(allowed(usr) && !wires.IsIndexCut(AALARM_WIRE_IDSCAN))
+						playsound(src.loc, 'sound/signals/warning10.ogg', 25)
 						locked = !locked
 						to_chat(user, "<span class='notice'>You [ locked ? "lock" : "unlock"] the Air Alarm interface.</span>")
 					else
+						playsound(src.loc, 'sound/signals/error21.ogg', 25)
 						to_chat(user, "<span class='warning'>Access denied.</span>")
 			return
 

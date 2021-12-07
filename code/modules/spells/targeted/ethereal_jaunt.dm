@@ -1,4 +1,4 @@
-/spell/targeted/ethereal_jaunt
+/datum/spell/targeted/ethereal_jaunt
 	name = "Ethereal Jaunt"
 	desc = "This spell creates your ethereal form, temporarily making you invisible and able to pass through walls."
 	feedback = "EJ"
@@ -6,21 +6,24 @@
 	charge_max = 300
 	spell_flags = Z2NOCAST | NEEDSCLOTHES | INCLUDEUSER
 	invocation = "none"
-	invocation_type = SpI_NONE
-	range = -1
+	invocation_type = SPI_NONE
+	range = 0
 	max_targets = 1
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 3, SP_POWER = 3)
 	cooldown_min = 100 //50 deciseconds reduction per rank
 	duration = 50 //in deciseconds
+	need_target = FALSE
+	icon_state = "wiz_jaunt"
 
-	hud_state = "wiz_jaunt"
-
-/spell/targeted/ethereal_jaunt/cast(list/targets) //magnets, so mostly hardcoded
+/datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
 	for(var/mob/living/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target.buckled)
 			target.buckled.unbuckle_mob()
+		if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+			var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+			cell.go_out()
 		spawn(0)
 			var/mobloc = get_turf(target.loc)
 			var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt(mobloc)
@@ -55,21 +58,21 @@
 			qdel(animation)
 			qdel(holder)
 
-/spell/targeted/ethereal_jaunt/empower_spell()
+/datum/spell/targeted/ethereal_jaunt/empower_spell()
 	if(!..())
 		return 0
 	duration += 20
 
 	return "[src] now lasts longer."
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
 	animation.icon_state = "liquify"
 	flick("liquify", animation)
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
+/datum/spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
 	flick("reappear", animation)
 
-/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
+/datum/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
 	var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
 	steam.set_up(10, 0, mobloc)
 	steam.start()
@@ -103,7 +106,7 @@
 		if(!T.contains_dense_objects())
 			last_valid_turf = T
 	else
-		to_chat(user, SPAN("warning", "Some strange aura is blocking the way!"))
+		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 	canmove = 0
 	addtimer(CALLBACK(src, .proc/allow_move), 2)
 

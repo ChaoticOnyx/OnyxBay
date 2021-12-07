@@ -103,8 +103,9 @@ var/list/holder_mob_icon_cache = list()
 	desc = M.desc
 	overlays |= M.overlays
 	var/mob/living/carbon/human/H = loc
-	last_holder = H
-	register_all_movement(H, M)
+	if(hasorgans(H))
+		last_holder = H
+		register_all_movement(H, M)
 
 	update_held_icon()
 
@@ -236,8 +237,3 @@ var/list/holder_mob_icon_cache = list()
 
 	// Handle the rest of sync().
 	..(M)
-
-/obj/item/weapon/holder/parrot/dropped(mob/user as mob)
-	. = ..()
-	for(var/mob/living/simple_animal/parrot/M in src.contents)
-		M.icon_state = "parrot_fly"

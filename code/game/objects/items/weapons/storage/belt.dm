@@ -9,7 +9,7 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT
 	attack_verb = list("whipped", "lashed", "disciplined")
-	use_sound = "searching_clothes"
+	use_sound = SFX_SEARCH_CLOTHES
 
 /obj/item/weapon/storage/belt/verb/toggle_layer()
 	set name = "Switch Belt Layer"
@@ -59,7 +59,10 @@
 		/obj/item/taperoll,
 		/obj/item/weapon/extinguisher/mini,
 		/obj/item/weapon/marshalling_wand,
-		/obj/item/weapon/combotool/advtool
+		/obj/item/weapon/combotool/advtool,
+		/obj/item/device/geiger,
+		/obj/item/device/lightreplacer,
+		/obj/item/device/robotanalyzer
 		)
 
 
@@ -82,6 +85,15 @@
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
 
+/obj/item/weapon/storage/belt/utility/chief/New()
+	..()
+	new /obj/item/weapon/screwdriver/old(src)
+	new /obj/item/weapon/wrench/old(src)
+	new /obj/item/weapon/weldingtool/old(src)
+	new /obj/item/weapon/crowbar/brace_jack(src)
+	new /obj/item/weapon/wirecutters/old(src)
+	new /obj/item/device/t_scanner(src)
+	new /obj/item/stack/cable_coil(src, 30, "red")
 
 
 /obj/item/weapon/storage/belt/medical
@@ -144,7 +156,7 @@
 		/obj/item/device/hailer,
 		/obj/item/device/megaphone,
 		/obj/item/weapon/melee,
-		/obj/item/weapon/gun/projectile/sec,
+		/obj/item/weapon/gun/projectile/pistol/vp78,
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/magnetic_ammo,
@@ -250,7 +262,7 @@
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/ore,
 		/obj/item/weapon/reagent_containers/food/drinks,
-		/obj/item/weapon/storage/plants,
+		/obj/item/weapon/storage/plants
 		)
 
 /obj/item/weapon/storage/belt/military

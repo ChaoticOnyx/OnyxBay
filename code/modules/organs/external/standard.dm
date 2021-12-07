@@ -24,7 +24,7 @@
 	var/butchering_capacity = 1
 	internal_organs_size = 7
 
-/obj/item/organ/external/chest/robotize()
+/obj/item/organ/external/chest/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(..())
 		// Give them a new cell.
 		var/obj/item/organ/internal/cell/C = owner.internal_organs_by_name[BP_CELL]

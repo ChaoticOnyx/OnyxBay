@@ -39,7 +39,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/Process(wait)
 	if(timing)
-		timeleft = max(timeleft - (wait / 10), 0)
+		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
 			addtimer(CALLBACK(src, .proc/explode), 0)
 		SSnano.update_uis(src)
@@ -380,13 +380,10 @@ var/bomb_set
 	item_state = "card-id"
 	w_class = ITEM_SIZE_TINY
 
-/obj/item/weapon/disk/nuclear/New()
-	..()
-	nuke_disks |= src
-
 /obj/item/weapon/disk/nuclear/Initialize()
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
+	nuke_disks += src
 	GLOB.moved_event.register(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
 
 /obj/item/weapon/disk/nuclear/proc/check_z_level()
@@ -398,7 +395,7 @@ var/bomb_set
 	GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
 	nuke_disks -= src
 	if(!nuke_disks.len)
-		var/turf/T = pick_area_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+		var/turf/T = pick_area_turf(pick_area_by_type(/area/maintenance, list(/proc/is_station_area)), list(/proc/not_turf_contains_dense_objects))
 		if(T)
 			var/obj/D = new /obj/item/weapon/disk/nuclear(T)
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Spawning [D] at ([D.x], [D.y], [D.z]).", location = T)

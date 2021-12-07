@@ -105,6 +105,12 @@ SUBSYSTEM_DEF(ticker)
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
 
+	if(config.disable_ooc_roundstart)
+		disable_ooc()
+
+	if(config.disable_looc_roundstart)
+		disable_looc()
+
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
 	var/mode_finished = mode_finished()
@@ -154,10 +160,9 @@ SUBSYSTEM_DEF(ticker)
 				if(!delay_end)
 					to_world("<span class='notice'><b>Restarting in [restart_timeout/10] seconds</b></span>")
 
-			if(blackbox)
-				blackbox.save_all_data_to_sql()
 			handle_tickets()
 			SSstoryteller.collect_statistics()
+
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
 			if(restart_timeout <= 0)
@@ -363,7 +368,7 @@ Helpers
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
-		return evacuation_controller.round_over() || mode.station_was_nuked || mode.blob_domination
+		return evacuation_controller.round_over() || mode.station_was_nuked
 	else
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 

@@ -10,7 +10,8 @@
 	explosion_resistance = 1
 	var/health = 10
 	var/destroyed = 0
-
+	hitby_sound = 'sound/effects/grillehit.ogg'
+	hitby_loudness_multiplier = 1.5
 
 /obj/structure/grille/ex_act(severity)
 	qdel(src)
@@ -155,9 +156,10 @@
 				health -= W.force
 			if("brute")
 				health -= W.force * 0.1
-	healthcheck()
-	..()
-	return
+		healthcheck()
+		return
+
+	return ..()
 
 
 /obj/structure/grille/proc/healthcheck()
@@ -208,9 +210,9 @@
 			healthcheck()
 	..()
 
-/obj/structure/grille/blob_act(destroy, obj/effect/blob/source = null)
-	health -= health
-	spawn (0) healthcheck()
+/obj/structure/grille/blob_act(damage)
+	health -= damage
+	healthcheck()
 
 /obj/structure/grille/attack_generic(mob/user, damage, attack_verb)
 	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")

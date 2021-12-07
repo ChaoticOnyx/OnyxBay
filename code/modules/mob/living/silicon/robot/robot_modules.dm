@@ -40,7 +40,16 @@ var/global/list/robot_modules = list(
 	var/list/datum/matter_synth/synths = list()
 	var/obj/item/emag = null
 	var/list/subsystems = list()
-	var/list/obj/item/borg/upgrade/supported_upgrades = list(/obj/item/borg/upgrade/paperwork,/obj/item/borg/upgrade/visor/nvg,/obj/item/borg/upgrade/jetpack,/obj/item/borg/upgrade/visor/x_ray,/obj/item/borg/upgrade/storage,/obj/item/borg/upgrade/visor/flash_screen,/obj/item/borg/upgrade/death_alarm)
+	var/list/obj/item/borg/upgrade/supported_upgrades = list(
+		/obj/item/borg/upgrade/art,
+		/obj/item/borg/upgrade/paperwork,
+		/obj/item/borg/upgrade/visor/nvg,
+		/obj/item/borg/upgrade/jetpack,
+		/obj/item/borg/upgrade/visor/x_ray,
+		/obj/item/borg/upgrade/storage,
+		/obj/item/borg/upgrade/visor/flash_screen,
+		/obj/item/borg/upgrade/death_alarm
+	)
 
 	// Bookkeeping
 	var/list/original_languages = list()
@@ -200,7 +209,17 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/lightreplacer(src)
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
 	src.modules += new /obj/item/weapon/matter_decompiler(src)
-	src.emag = new /obj/item/weapon/melee/energy/sword/one_hand(src)
+	src.emag = new /obj/item/weapon/melee/energy/sword/robot(src)
+
+	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(5000)
+	synths += medicine
+
+	var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(src)
+	B.uses_charge = 1
+	B.charge_costs = list(1000)
+	B.synths = list(medicine)
+	modules += B
+
 	..()
 
 /obj/item/weapon/robot_module/standard/respawn_consumable(mob/living/silicon/robot/R, amount)
@@ -283,7 +302,7 @@ var/global/list/robot_modules = list(
 /obj/item/weapon/robot_module/medical/crisis/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
 	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
-	if(S.mode == 2)
+	if(S.mode == SYRINGE_BROKEN)
 		S.reagents.clear_reagents()
 		S.mode = initial(S.mode)
 		S.desc = initial(S.desc)
@@ -313,7 +332,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
 	src.modules += new /obj/item/device/healthanalyzer_advanced(src)
-	src.modules += new /obj/item/device/slime_scanner(src)
+	src.modules += new /obj/item/device/metroid_scanner(src)
 	src.modules += new /obj/item/device/reagent_scanner/adv(src)
 	src.modules += new /obj/item/device/mass_spectrometer/adv(src)
 	src.modules += new /obj/item/weapon/reagent_containers/borghypo/crisis_adv(src)
@@ -365,7 +384,7 @@ var/global/list/robot_modules = list(
 /obj/item/weapon/robot_module/medical/crisis_adv/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
 	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
-	if(S.mode == 2)
+	if(S.mode == SYRINGE_BROKEN)
 		S.reagents.clear_reagents()
 		S.mode = initial(S.mode)
 		S.desc = initial(S.desc)
@@ -866,7 +885,7 @@ var/global/list/robot_modules = list(
 /obj/item/weapon/robot_module/research/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
 	var/obj/item/weapon/reagent_containers/syringe/S = locate() in src.modules
-	if(S.mode == 2)
+	if(S.mode == SYRINGE_BROKEN)
 		S.reagents.clear_reagents()
 		S.mode = initial(S.mode)
 		S.desc = initial(S.desc)
@@ -893,7 +912,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
-	src.modules += new /obj/item/weapon/melee/energy/sword/one_hand(src)
+	src.modules += new /obj/item/weapon/melee/energy/sword/robot(src)
 	src.modules += new /obj/item/weapon/gun/energy/pulse_rifle/destroyer(src)
 	src.modules += new /obj/item/weapon/card/emag(src)
 	var/jetpack = new /obj/item/weapon/tank/jetpack/carbondioxide(src)
@@ -944,6 +963,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
 	src.modules += new /obj/item/device/pipe_painter(src)
 	src.modules += new /obj/item/device/floor_painter(src)
+	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src)
 	src.modules += new /obj/item/robot_rack/general(src)
 	src.modules += new /obj/item/weapon/robot_item_dispenser/engineer(src)
 	src.modules += new /obj/item/weapon/robot_item_dispenser/pipe(src)

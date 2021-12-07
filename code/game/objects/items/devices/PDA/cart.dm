@@ -256,7 +256,7 @@
 		var/list/sensors = list()
 		var/obj/machinery/power/sensor/MS = null
 
-		for(var/obj/machinery/power/sensor/S in SSmachines.machinery)
+		for(var/obj/machinery/power/sensor/S in GLOB.machines)
 			sensors.Add(list(list("name_tag" = S.name_tag)))
 			if(S.name_tag == selected_sensor)
 				MS = S
@@ -440,7 +440,7 @@
 /obj/item/weapon/cartridge/Topic(href, href_list)
 	if((. = ..()))
 		usr.unset_machine()
-		usr << browse(null, "window=pda")
+		close_browser(usr, "window=pda")
 		return
 
 	switch(href_list["choice"])

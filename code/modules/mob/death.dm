@@ -15,7 +15,7 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	playsound(src, "gib", 75, 1)
+	playsound(src, SFX_GIB, 75, 1)
 
 	flick(anim, animation)
 	if(do_gibs)
@@ -73,8 +73,6 @@
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 	set_see_in_dark(8)
 	set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-
-	verbs += /mob/living/proc/ghost
 
 	drop_r_hand()
 	drop_l_hand()

@@ -1,6 +1,25 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
+/obj/item/proc/check_job(obj/item/weapon/card/id/W, mob/user, element)
+	var/datum/job/job = job_master.GetJob(W.rank)
+	var/decl/hierarchy/outfit/outfit = job.get_outfit(user, job)
+	switch (element)
+		if(slot_w_uniform_str)
+			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [W.assignment]")
+		if(slot_wear_suit_str)
+			outfit.suit ? disguise(outfit.suit, user) : to_chat(user, "No standard suit for [W.assignment]")
+		if(slot_gloves_str)
+			outfit.gloves ? disguise(outfit.gloves, user) : to_chat(user, "No standard gloves for [W.assignment]")
+		if(slot_shoes_str)
+			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [W.assignment]")
+		if(slot_wear_mask_str)
+			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [W.assignment]")
+		if(slot_head_str)
+			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standard hat for [W.assignment]")
+		if(slot_glasses_str)
+			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standard glasses for [W.assignment]")
+	user.regenerate_icons()
 
 /obj/item/proc/disguise(newtype, mob/user)
 	if(!user || user.incapacitated())
@@ -36,6 +55,11 @@
 				name += " \[[i++]\]"
 			.[name] = typepath
 
+/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_w_uniform_str)
+
 /obj/item/clothing/under/chameleon
 //starts off as black
 	name = "black jumpsuit"
@@ -64,7 +88,6 @@
 	set name = "Change Jumpsuit Appearance"
 	set category = "Chameleon Items"
 	set src in usr
-
 	if(!ispath(clothing_choices[picked]))
 		return
 
@@ -74,6 +97,10 @@
 //*****************
 //**Chameleon Hat**
 //*****************
+/obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_head_str)
 
 /obj/item/clothing/head/chameleon
 	name = "grey cap"
@@ -110,6 +137,10 @@
 //******************
 //**Chameleon Suit**
 //******************
+/obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_wear_suit_str)
 
 /obj/item/clothing/suit/chameleon
 	name = "armor"
@@ -146,6 +177,11 @@
 //*******************
 //**Chameleon Shoes**
 //*******************
+/obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_shoes_str)
+
 /obj/item/clothing/shoes/chameleon
 	name = "black shoes"
 	icon_state = "black"
@@ -224,6 +260,13 @@
 //********************
 //**Chameleon Gloves**
 //********************
+/obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel) || isCoil(W))
+		to_chat(user, SPAN("notice", "That won't work.")) // Making it obvious
+		return
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_gloves_str)
 
 /obj/item/clothing/gloves/chameleon
 	name = "black gloves"
@@ -257,9 +300,22 @@
 	disguise(clothing_choices[picked], usr)
 	update_clothing_icon()	//so our overlays update.
 
+/obj/item/clothing/gloves/chameleon/robust
+	desc = "It looks like a pair of extra robust gloves. It seems to have a small dial inside."
+	unarmed_damage_override = 10
+	origin_tech = list(TECH_ILLEGAL = 5)
+
+/obj/item/clothing/gloves/chameleon/robust/examine(mob/user)
+	. = ..()
+	. += "\nThese look extra robust."
+
 //******************
 //**Chameleon Mask**
 //******************
+/obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_wear_mask_str)
 
 /obj/item/clothing/mask/chameleon
 	name = "gas mask"
@@ -296,6 +352,10 @@
 //*********************
 //**Chameleon Glasses**
 //*********************
+/obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, slot_glasses_str)
 
 /obj/item/clothing/glasses/chameleon
 	name = "Optical Meson Scanner"
@@ -340,7 +400,7 @@
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 	matter = list()
 
-	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_generic_pistol.ogg'
 	projectile_type = /obj/item/projectile/chameleon
 	charge_meter = 0
 	charge_cost = 20 //uses next to no power, since it's just holograms

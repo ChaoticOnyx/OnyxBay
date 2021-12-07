@@ -203,16 +203,16 @@
 	return get_response("compliment_accept", "Thank you!")
 
 /datum/trader/proc/trade(list/offers, num, turf/location)
-	if(offers && offers.len)
-		for(var/offer in offers)
-			if(istype(offer,/mob))
-				var/text = mob_transfer_message
-				to_chat(offer, replacetext(text, "ORIGIN", origin))
-			if(istype(offer, /obj/mecha))
-				var/obj/mecha/M = offer
-				M.wreckage = null //So they don't ruin the illusion
-			qdel(offer)
+	for(var/offer in offers)
+		if(istype(offer, /mob))
+			var/text = mob_transfer_message
+			to_chat(offer, replacetext(text, "ORIGIN", origin))
+		if(istype(offer, /obj/mecha))
+			var/obj/mecha/M = offer
+			M.wreckage = null //So they don't ruin the illusion
+		qdel(offer)
 
+	num = Clamp(num, 1, trading_items.len)
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
@@ -223,6 +223,7 @@
 	return M
 
 /datum/trader/proc/how_much_do_you_want(num)
+	num = Clamp(num, 1, trading_items.len)
 	var/atom/movable/M = trading_items[num]
 	. = get_response("how_much", "Hmm.... how about VALUE credits?")
 	. = replacetext(.,"VALUE",get_item_value(num))
@@ -256,7 +257,7 @@
 			return TRADER_FOUND_UNWANTED
 		. += get_value(offer) * mult
 
-	playsound(get_turf(offers[1]), 'sound/effects/teleport.ogg', 50, 1)
+	playsound(offers[1], 'sound/effects/teleport.ogg', 50, 1)
 	for(var/offer in offers)
 		qdel(offer)
 

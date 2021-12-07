@@ -11,10 +11,10 @@
 	mod_handy = 0.7
 	mod_weight = 1.5
 	mod_reach = 1.0
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_LARGE
 	throw_speed = 2
 	throw_range = 10
-	matter = list(MATERIAL_STEEL = 90)
+	matter = list(MATERIAL_STEEL = 900)
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
 
 	var/spray_particles = 3
@@ -24,6 +24,7 @@
 	var/safety = 1
 	var/sprite_name = "fire_extinguisher"
 	var/ff_reagent = /datum/reagent/water/firefoam
+	var/external_source = FALSE
 
 /obj/item/weapon/extinguisher/mini
 	name = "fire extinguisher"
@@ -31,7 +32,7 @@
 	icon_state = "miniFE0"
 	item_state = "miniFE"
 	hitsound = null	//it is much lighter, after all.
-	force = 6.5
+	force = 7.5
 	throwforce = 2
 	mod_handy = 0.7
 	mod_weight = 0.65
@@ -40,6 +41,7 @@
 	spray_amount = 80
 	max_volume = 1000
 	sprite_name = "miniFE"
+	matter = list(MATERIAL_STEEL = 500)
 
 /obj/item/weapon/extinguisher/New()
 	create_reagents(max_volume)
@@ -48,11 +50,13 @@
 
 /obj/item/weapon/extinguisher/examine(mob/user)
 	. = ..()
-	if(get_dist(src, user) <= 0)
+	if((get_dist(src, user) <= 0) && !external_source)
 		. += "\n[text("\icon[] [] contains [] units of reagents left!", src, src.name, src.reagents.total_volume)]"
 	return
 
-/obj/item/weapon/extinguisher/attack_self(mob/user as mob)
+/obj/item/weapon/extinguisher/attack_self(mob/user)
+	if(external_source)
+		return
 	safety = !safety
 	src.icon_state = "[sprite_name][!safety]"
 	src.desc = "The safety is [safety ? "on" : "off"]."
@@ -60,28 +64,37 @@
 	return
 
 /obj/item/weapon/extinguisher/attack(mob/living/M, mob/user)
-	if(user.a_intent == I_HELP)
-		if(src.safety || (world.time < src.last_use + 20)) // We still catch help intent to not randomly attack people
+	if((user.a_intent == I_HELP) && !external_source)
+		if(safety || (world.time < last_use + 20)) // We still catch help intent to not randomly attack people
 			return
-		if(src.reagents.total_volume < 1)
+		if(reagents.total_volume < 1)
 			to_chat(user, SPAN("notice", "\The [src] is empty."))
 			return
 
-		src.last_use = world.time
+		last_use = world.time
 		reagents.splash(M, min(reagents.total_volume, spray_amount))
 
 		user.visible_message(SPAN("notice", "\The [user] sprays \the [M] with \the [src]."))
-		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
+		playsound(loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
 
 		return 1 // No afterattack
 	return ..()
 
 /obj/item/weapon/extinguisher/proc/propel_object(obj/O, mob/user, movementdirection)
-	if(O.anchored) return
+	if(O.anchored)
+		return
 
 	var/obj/structure/bed/chair/C
 	if(istype(O, /obj/structure/bed/chair))
 		C = O
+
+	var/area/A = get_area(src)
+	if(A.has_gravity) // No gravity? Your chair is a space ship then.
+		if(C?.foldable)
+			C.fold(null)
+			return
+		if(O.pull_slowdown > PULL_SLOWDOWN_MEDIUM)
+			return // Too much friction, not enough wheels
 
 	var/list/move_speed = list(1, 1, 1, 2, 2, 3)
 	for(var/i in 1 to 6)
@@ -96,8 +109,9 @@
 
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user, flag)
 	//TODO; Add support for reagents in water.
-
-	if(istype(target, /obj/structure/reagent_dispensers/watertank) && flag)
+	if(external_source)
+		return ..()
+	if((istype(target, /obj/structure/reagent_dispensers/watertank) || istype(target, /obj/item/weapon/backwear/reagent/extinguisher)) && flag)
 		var/obj/O = target
 		var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
 		if(!O.reagents.total_volume)
@@ -152,4 +166,3 @@
 			step(user, user.inertia_dir)
 	else
 		return ..()
-	return

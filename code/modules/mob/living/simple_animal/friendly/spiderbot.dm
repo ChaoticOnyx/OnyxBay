@@ -186,7 +186,8 @@
 
 /mob/living/simple_animal/spiderbot/Destroy()
 	eject_brain()
-	..()
+
+	return ..()
 
 /mob/living/simple_animal/spiderbot/New()
 
@@ -241,8 +242,6 @@
 	held_item.loc = src.loc
 	held_item = null
 	return 1
-
-	return
 
 /mob/living/simple_animal/spiderbot/verb/get_item()
 	set name = "Pick up item"

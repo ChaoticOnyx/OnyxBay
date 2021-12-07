@@ -9,7 +9,7 @@
 
 /obj/structure/closet/secure_closet/captains/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel_cap)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/captain, /obj/item/weapon/storage/backpack/satchel/cap)),
 		new /datum/atom_creator/simple(/obj/item/weapon/storage/backpack/dufflebag/captain, 50),
 		/obj/item/clothing/head/caphat/cap,
 		/obj/item/clothing/head/caphat/formal,
@@ -87,7 +87,7 @@
 
 /obj/structure/closet/secure_closet/hos/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel_sec)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel/sec)),
 		/obj/item/clothing/head/beret/sec/corporate/hos,
 		/obj/item/clothing/head/helmet,
 		/obj/item/clothing/head/HoS,
@@ -112,7 +112,8 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/cartridge/hos,
-		/obj/item/device/radio/headset/heads/hos
+		/obj/item/device/radio/headset/heads/hos,
+		/obj/item/device/radio/headset/tactical/hos
 	)
 
 /obj/structure/closet/secure_closet/warden
@@ -126,7 +127,7 @@
 
 /obj/structure/closet/secure_closet/warden/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel_sec)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel/sec)),
 		new /datum/atom_creator/simple(/obj/item/weapon/storage/backpack/dufflebag/sec, 50),
 		/obj/item/clothing/head/warden,
 		/obj/item/clothing/head/warden/drill,
@@ -149,7 +150,8 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/cartridge/security,
-		/obj/item/device/radio/headset/headset_sec
+		/obj/item/device/radio/headset/headset_sec,
+		/obj/item/device/radio/headset/tactical/sec
 	)
 
 /obj/structure/closet/secure_closet/security
@@ -163,7 +165,7 @@
 
 /obj/structure/closet/secure_closet/security/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel_sec)),
+		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/security, /obj/item/weapon/storage/backpack/satchel/sec)),
 		new /datum/atom_creator/simple(/obj/item/weapon/storage/backpack/dufflebag/sec, 50),
 		/obj/item/clothing/head/helmet,
 		/obj/item/clothing/head/soft/sec/corp,

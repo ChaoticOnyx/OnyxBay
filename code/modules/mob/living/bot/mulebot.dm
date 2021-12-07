@@ -147,7 +147,7 @@
 	locked = !locked
 	to_chat(user, "<span class='notice'>You [locked ? "lock" : "unlock"] the mulebot's controls.</span>")
 	flick("mulebot-emagged", src)
-	playsound(loc, get_sfx("spark"), 100, 0)
+	playsound(loc, GET_SFX(SFX_SPARK), 100, 0)
 	return 1
 
 /mob/living/bot/mulebot/update_icons()
@@ -220,7 +220,6 @@
 		H.apply_damage(0.5 * damage, BRUTE, BP_R_ARM)
 
 		blood_splatter(src, H, 1)
-	..()
 
 /mob/living/bot/mulebot/relaymove(mob/user, direction)
 	if(load == user)

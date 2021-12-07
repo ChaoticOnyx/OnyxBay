@@ -7,7 +7,7 @@
 
 /obj/item/weapon/paper/crumpled
 	name = "paper scrap"
-	icon_state = "scrap"
+	crumpled = TRUE
 	dynamic_icon = TRUE
 
 /obj/item/weapon/paper/crumpled/bloody
@@ -15,13 +15,13 @@
 
 /obj/item/weapon/paper/eng_wires
 	name = "Airlock Wires"
+	readonly = TRUE
 
 /obj/item/weapon/paper/eng_wires/Initialize()
-	. = ..()
 	var/list/airlock_wires = same_wires[/obj/machinery/door/airlock].Copy()
 
-	var/message = ""
-	message += "\[center]\[large]There is some information about standart airlock wires:\[/large]"
+	info = ""
+	info += "\[center]\[large]There is some information about standart airlock wires:\[/large]\[/center]"
 
 	var/list/wire_to_wire_purpose_list = list(
 		num2text(AIRLOCK_WIRE_DOOR_BOLTS) = "Door bolts wire",
@@ -40,20 +40,24 @@
 
 	for(var/wire_color in airlock_wires)
 		var/airlock_num = airlock_wires[wire_color]
-		message += "\[br]\[i][wire_color]\[/i] - [wire_to_wire_purpose_list[num2text(airlock_num)]]"
-	message += "\[/center]"
-	set_content(message)
-	make_readonly()
+		info += "\[br]\[i][wire_color]\[/i] - [wire_to_wire_purpose_list[num2text(airlock_num)]]"
+	. = ..()
 
 /obj/item/weapon/paper/exodus_armory
 	name = "armory inventory"
 	readonly = TRUE
-	info = "\[center]\[logo]\[br]\[b]\[large]NSS Exodus\[/large]\[/b]\[br]\[i]\[date]\[/i]\[br]\[i]Armoury Inventory - Revision \[field]\[/i]\[/center]\[hr]\[center]Armoury\[/center]\[list]\[*]\[b]Deployable barriers\[/b]: 4\[*]\[b]Biohazard suit(s)\[/b]: 1\[*]\[b]Biohazard hood(s)\[/b]: 1\[*]\[b]Face Mask(s)\[/b]: 1\[*]\[b]Extended-capacity emergency oxygen tank(s)\[/b]: 1\[*]\[b]Bomb suit(s)\[/b]: 1\[*]\[b]Bomb hood(s)\[/b]: 1\[*]\[b]Security officer's jumpsuit(s)\[/b]: 1\[*]\[b]Brown shoes\[/b]: 1\[*]\[b]Handcuff(s)\[/b]: 14\[*]\[b]R.O.B.U.S.T. cartridges\[/b]: 7\[*]\[b]Flash(s)\[/b]: 4\[*]\[b]Can(s) of pepperspray\[/b]: 4\[*]\[b]Gas mask(s)\[/b]: 6\[field]\[/list]\[hr]\[center]Secure Armoury\[/center]\[list]\[*]\[b]LAEP90 Perun energy guns\[/b]: 4\[*]\[b]Stun Revolver(s)\[/b]: 1\[*]\[b]Taser Gun(s)\[/b]: 4\[*]\[b]Stun baton(s)\[/b]: 4\[*]\[b]Airlock Brace\[/b]: 3\[*]\[b]Maintenance Jack\[/b]: 1\[*]\[b]Stab Vest(s)\[/b]: 3\[*]\[b]Riot helmet(s)\[/b]: 3\[*]\[b]Riot shield(s)\[/b]: 3\[*]\[b]Corporate security heavy armoured vest(s)\[/b]: 4\[*]\[b]NanoTrasen helmet(s)\[/b]: 4\[*]\[b]Portable flasher(s)\[/b]: 3\[*]\[b]Tracking implant(s)\[/b]: 4\[*]\[b]Chemical implant(s)\[/b]: 5\[*]\[b]Implanter(s)\[/b]: 2\[*]\[b]Implant pad(s)\[/b]: 2\[*]\[b]Locator(s)\[/b]: 1\[field]\[/list]\[hr]\[center]Tactical Equipment\[/center]\[list]\[*]\[b]Implanter\[/b]: 1\[*]\[b]Death Alarm implant(s)\[/b]: 7\[*]\[b]Security radio headset(s)\[/b]: 4\[*]\[b]Ablative vest(s)\[/b]: 2\[*]\[b]Ablative helmet(s)\[/b]: 2\[*]\[b]Ballistic vest(s)\[/b]: 2\[*]\[b]Ballistic helmet(s)\[/b]: 2\[*]\[b]Tear Gas Grenade(s)\[/b]: 7\[*]\[b]Flashbang(s)\[/b]: 7\[*]\[b]Beanbag Shell(s)\[/b]: 7\[*]\[b]Stun Shell(s)\[/b]: 7\[*]\[b]Illumination Shell(s)\[/b]: 7\[*]\[b]W-T Remmington 29x shotgun(s)\[/b]: 2\[*]\[b]NT Mk60 EW Halicon ion rifle(s)\[/b]: 2\[*]\[b]Hephaestus Industries G40E laser carbine(s)\[/b]: 4\[*]\[b]Flare(s)\[/b]: 4\[field]\[/list]\[hr]\[b]Warden (print)\[/b]:\[field]\[b]Signature\[/b]:\[br]"
+
+/obj/item/weapon/paper/exodus_armory/Initialize()
+	info = "\[center]\[logo]\[br]\[b]\[large][station_name()]\[/large]\[/b]\[br]\[i]\[date]\[/i]\[br]\[i]Armoury Inventory - Revision \[field]\[/i]\[/center]\[hr]\[center]Armoury\[/center]\[list]\[*]\[b]Deployable barriers\[/b]: 4\[*]\[b]Biohazard suit(s)\[/b]: 1\[*]\[b]Biohazard hood(s)\[/b]: 1\[*]\[b]Face Mask(s)\[/b]: 1\[*]\[b]Extended-capacity emergency oxygen tank(s)\[/b]: 1\[*]\[b]Bomb suit(s)\[/b]: 1\[*]\[b]Bomb hood(s)\[/b]: 1\[*]\[b]Security officer's jumpsuit(s)\[/b]: 1\[*]\[b]Brown shoes\[/b]: 1\[*]\[b]Handcuff(s)\[/b]: 14\[*]\[b]R.O.B.U.S.T. cartridges\[/b]: 7\[*]\[b]Flash(s)\[/b]: 4\[*]\[b]Can(s) of pepperspray\[/b]: 4\[*]\[b]Gas mask(s)\[/b]: 6\[field]\[/list]\[hr]\[center]Secure Armoury\[/center]\[list]\[*]\[b]LAEP90 Perun energy guns\[/b]: 4\[*]\[b]Stun Revolver(s)\[/b]: 1\[*]\[b]Taser Gun(s)\[/b]: 4\[*]\[b]Stun baton(s)\[/b]: 4\[*]\[b]Airlock Brace\[/b]: 3\[*]\[b]Maintenance Jack\[/b]: 1\[*]\[b]Stab Vest(s)\[/b]: 3\[*]\[b]Riot helmet(s)\[/b]: 3\[*]\[b]Riot shield(s)\[/b]: 3\[*]\[b]Corporate security heavy armoured vest(s)\[/b]: 4\[*]\[b]NanoTrasen helmet(s)\[/b]: 4\[*]\[b]Portable flasher(s)\[/b]: 3\[*]\[b]Tracking implant(s)\[/b]: 4\[*]\[b]Chemical implant(s)\[/b]: 5\[*]\[b]Implanter(s)\[/b]: 2\[*]\[b]Implant pad(s)\[/b]: 2\[*]\[b]Locator(s)\[/b]: 1\[field]\[/list]\[hr]\[center]Tactical Equipment\[/center]\[list]\[*]\[b]Implanter\[/b]: 1\[*]\[b]Death Alarm implant(s)\[/b]: 7\[*]\[b]Security radio headset(s)\[/b]: 4\[*]\[b]Ablative vest(s)\[/b]: 2\[*]\[b]Ablative helmet(s)\[/b]: 2\[*]\[b]Ballistic vest(s)\[/b]: 2\[*]\[b]Ballistic helmet(s)\[/b]: 2\[*]\[b]Tear Gas Grenade(s)\[/b]: 7\[*]\[b]Flashbang(s)\[/b]: 7\[*]\[b]Beanbag Shell(s)\[/b]: 7\[*]\[b]Stun Shell(s)\[/b]: 7\[*]\[b]Illumination Shell(s)\[/b]: 7\[*]\[b]W-T Remmington 29x shotgun(s)\[/b]: 2\[*]\[b]NT Mk60 EW Halicon ion rifle(s)\[/b]: 2\[*]\[b]Hephaestus Industries G40E laser carbine(s)\[/b]: 4\[*]\[b]Flare(s)\[/b]: 4\[field]\[/list]\[hr]\[b]Warden (print)\[/b]:\[field]\[b]Signature\[/b]:\[br]"
+	. = ..()
 
 /obj/item/weapon/paper/exodus_cmo
 	name = "outgoing CMO's notes"
-	info = "\[i]\[center]To the incoming CMO of Exodus:\[/i]\[/center]\[br]\[br]i wish you and your crew well. Do take note:\[br]\[br]\[br]The Medical Emergency Red Phone system has proven itself well. Take care to keep the phones in their designated places as they have been optimised for broadcast. The two handheld green radios (i have left one in this office, and one near the Emergency Entrance) are free to be used. The system has proven effective at alerting Medbay of important details, especially during power outages.\[br]\[br]I think I may have left the toilet cubicle doors shut. It might be a good idea to open them so the staff and patients know they are not engaged.\[br]\[br]The new syringe gun has been stored in secondary storage. I tend to prefer it stored in my office, but 'guidelines' are 'guidelines'.\[br]\[br]Also in secondary storage is the grenade equipment crate. I've just realised I've left it open - you may wish to shut it.\[br]\[br]There were a few problems with their installation, but the Medbay Quarantine shutters should now be working again  - they lock down the Emergency and Main entrances to prevent travel in and out. Pray you shan't have to use them.\[br]\[br]The new version of the Medical Diagnostics Manual arrived. I distributed them to the shelf in the staff break room, and one on the table in the corner of this room.\[br]\[br]The exam/triage room has the walking canes in it. I'm not sure why we'd need them - but there you have it.\[br]\[br]Emergency Cryo bags are beside the emergency entrance, along with a kit.\[br]\[br]Spare paper cups for the reception are on the left side of the reception desk.\[br]\[br]I've fed Runtime. She should be fine.\[br]\[br]\[br]\[center]That should be all. Good luck!\[/center]"
 	readonly = TRUE
+
+/obj/item/weapon/paper/exodus_cmo/Initialize()
+	info = "\[i]\[center]To the incoming CMO of [station_name()]:\[/i]\[/center]\[br]\[br]i wish you and your crew well. Do take note:\[br]\[br]\[br]The Medical Emergency Red Phone system has proven itself well. Take care to keep the phones in their designated places as they have been optimised for broadcast. The two handheld green radios (i have left one in this office, and one near the Emergency Entrance) are free to be used. The system has proven effective at alerting Medbay of important details, especially during power outages.\[br]\[br]I think I may have left the toilet cubicle doors shut. It might be a good idea to open them so the staff and patients know they are not engaged.\[br]\[br]The new syringe gun has been stored in secondary storage. I tend to prefer it stored in my office, but 'guidelines' are 'guidelines'.\[br]\[br]Also in secondary storage is the grenade equipment crate. I've just realised I've left it open - you may wish to shut it.\[br]\[br]There were a few problems with their installation, but the Medbay Quarantine shutters should now be working again  - they lock down the Emergency and Main entrances to prevent travel in and out. Pray you shan't have to use them.\[br]\[br]The new version of the Medical Diagnostics Manual arrived. I distributed them to the shelf in the staff break room, and one on the table in the corner of this room.\[br]\[br]The exam/triage room has the walking canes in it. I'm not sure why we'd need them - but there you have it.\[br]\[br]Emergency Cryo bags are beside the emergency entrance, along with a kit.\[br]\[br]Spare paper cups for the reception are on the left side of the reception desk.\[br]\[br]I've fed Runtime. She should be fine.\[br]\[br]\[br]\[center]That should be all. Good luck!\[/center]"
+	. = ..()
 
 /obj/item/weapon/paper/exodus_bartender
 	name = "shotgun permit"
@@ -64,6 +68,11 @@
 	name = "holodeck disclaimer"
 	readonly = TRUE
 	info = "Bruises sustained in the holodeck can be healed simply by sleeping."
+
+/obj/item/weapon/paper/jungle_colt_note
+	name = "note"
+	readonly = TRUE
+	info = "Director, this morning they tried to break through lockdown gate. We managed to push them back, but they'll return. One of the officers noticed someone lurking near the cave entrance, I'm afraid we'll have to blow up the tunnels. These are no ordinary mercenaries, sir, I think they are trying to get the speciments. \[br]\ I ran out of ammo on my way here, so I had to borrow your Colt Python. Find me at the research site when this all ends. Wish us luck. \[br]\ \[i]Security Chief Denster\[/i]  "
 
 /obj/item/weapon/paper/workvisa
 	name = "Sol Work Visa"
@@ -89,7 +98,8 @@
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
 	dynamic_icon = TRUE
-	var/dest_station = "NSS Exodus"
+	readonly = TRUE
+	var/dest_station = ""
 	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
 	var/true_departaments = list("NanoTrasen Supply Department", \
 	 "NanoTrasen Trading Department",\
@@ -142,7 +152,7 @@
 
 
 /obj/item/weapon/paper/trade_lic/Initialize()
-	. = ..()
+	dest_station = "[station_name()]"
 	var/department = pick(true_departaments)
 	var/org_name = pick(org_names)
 	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2562,2564), "dur" = rand(3,5))
@@ -162,38 +172,36 @@
 			if("department")
 				department = pick(fake_departaments)
 
-	var/message = ""
-	message += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
-	message += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
-	message += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
-	message += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
-	message += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
-	message += "\[hr]"
-	message += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
+	info = ""
+	info += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
+	info += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
+	info += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
+	info += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
+	info += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
+	info += "\[hr]"
+	info += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
 	 компании \[i][org_name]\[/i] обслуживать станцию \[i][dest_station]\[/i] корпорации НаноТрейзен, осуществляя услуги по \
 	 сбыту и приобретению перечисленных категорий товара:"
-	message += "\[list]"
+	info += "\[list]"
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
-			message += "\[item]\[b][tr_cat]\[/b]\[/item]"
-	message += "\[/list]"
-	message += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
-	message += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
-	message += "\[/small]"
-	set_content(message)
-	make_readonly()
+			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
+	info += "\[/list]"
+	info += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
+	info += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
+	info += "\[/small]"
+	. = ..()
 
 /obj/item/weapon/paper/trade_lic/trade_guide
 	name = "Trade License Template"
 	dynamic_icon = FALSE
 
 /obj/item/weapon/paper/trade_lic/trade_guide/Initialize()
-	. = ..()
-	var/message = ""
-	message += "Departments:\[small]\[list]"
+	info = ""
+	info += "Departments:\[small]\[list]"
 	for(var/tr_deps in true_departaments)
-		message += "\[item]\[b][tr_deps]\[/b]\[/item]"
-	message += "\[/small]\[/list]"
-	message += "NT departments codes: XXX-XXX-XXX\[br]"
-	message += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
-	set_content(message)
+		info += "\[item]\[b][tr_deps]\[/b]\[/item]"
+	info += "\[/small]\[/list]"
+	info += "NT departments codes: XXX-XXX-XXX\[br]"
+	info += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
+	. = ..()

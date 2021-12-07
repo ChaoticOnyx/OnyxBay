@@ -190,7 +190,7 @@
 			<B>Flow rate: </B>[round(last_flow_rate, 0.1)]L/s
 			"}
 
-	user << browse("<HEAD><meta charset=\"utf-8\"><TITLE>[src.name] control</TITLE></HEAD><TT>[dat]</TT>", "window=atmo_filter")
+	show_browser(user, "<HEAD><meta charset=\"utf-8\"><TITLE>[src.name] control</TITLE></HEAD><TT>[dat]</TT>", "window=atmo_filter")
 	onclose(user, "atmo_filter")
 	return
 
@@ -239,7 +239,7 @@
 	dir = SOUTH
 	initialize_directions = SOUTH|NORTH|EAST
 
-obj/machinery/atmospherics/trinary/filter/m_filter/New()
+/obj/machinery/atmospherics/trinary/filter/m_filter/New()
 	..()
 	switch(dir)
 		if(NORTH)

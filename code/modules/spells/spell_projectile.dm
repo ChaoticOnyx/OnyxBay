@@ -4,7 +4,7 @@
 
 	nodamage = 1 //Most of the time, anyways
 
-	var/spell/targeted/projectile/carried
+	var/datum/spell/targeted/projectile/carried
 
 	penetrating = 0
 	kill_count = 10 //set by the duration of the spell
@@ -41,7 +41,7 @@
 		qdel(src)
 	return
 
-/obj/item/projectile/spell_projectile/Bump(atom/A)
+/obj/item/projectile/spell_projectile/Bump(atom/A, forced = FALSE)
 	if(loc && carried)
 		prox_cast(carried.choose_prox_targets(user = carried.holder, spell_holder = src))
 	return 1

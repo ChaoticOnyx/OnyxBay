@@ -71,6 +71,7 @@
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()
 		brainmob.timeofhostdeath = H.timeofdeath
+		brainmob.languages = H.languages
 		// Copy modifiers.
 		for(var/datum/modifier/M in H.modifiers)
 			if(M.flags & MODIFIER_GENETIC)
@@ -121,11 +122,11 @@
 
 	return 1
 
-/obj/item/organ/internal/brain/slime
-	name = "slime core"
+/obj/item/organ/internal/brain/metroid
+	name = "metroid core"
 	desc = "A complex, organic knot of jelly and crystalline particles."
-	icon = 'icons/mob/slimes.dmi'
-	icon_state = "green slime extract"
+	icon = 'icons/mob/metroids.dmi'
+	icon_state = "green metroid extract"
 
 /obj/item/organ/internal/brain/golem
 	name = "chem"

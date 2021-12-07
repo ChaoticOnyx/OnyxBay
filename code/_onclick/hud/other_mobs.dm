@@ -1,7 +1,7 @@
-/mob/living/carbon/slime
-	hud_type = /datum/hud/slime
+/mob/living/carbon/metroid
+	hud_type = /datum/hud/metroid
 
-/datum/hud/slime/FinalizeInstantiation(ui_style = 'icons/mob/screen1_midnight.dmi')
+/datum/hud/metroid/FinalizeInstantiation(ui_style = 'icons/mob/screen1_midnight.dmi')
 	src.adding = list()
 
 	var/obj/screen/using
@@ -60,10 +60,10 @@
 
 	mymob.client.screen = list()
 	mymob.client.screen += list(mymob.fire, mymob.healths, mymob.pullin, mymob.zone_sel, mymob.purged)
-	
+
 /mob/living/simple_animal/corgi
 	hud_type = /datum/hud/corgi
-	
+
 /datum/hud/corgi/FinalizeInstantiation()
 	mymob.fire = new /obj/screen()
 	mymob.fire.icon = 'icons/mob/screen1_corgi.dmi'
@@ -96,4 +96,4 @@
 	mymob.toxin.screen_loc = ui_toxin
 
 	mymob.client.screen = list()
-	mymob.client.screen += list(mymob.fire, mymob.healths, mymob.pullin, mymob.oxygen, mymob.toxin)	
+	mymob.client.screen += list(mymob.fire, mymob.healths, mymob.pullin, mymob.oxygen, mymob.toxin)

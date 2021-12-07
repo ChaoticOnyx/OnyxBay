@@ -29,7 +29,7 @@
 
 		var/mob/living/new_mob
 
-		var/options = list("robot", "slime")
+		var/options = list("robot", "metroid")
 		for(var/t in all_species)
 			options += t
 		options -= "Xenomorph Queen"
@@ -41,8 +41,8 @@
 				options -= H.species.name
 		else if(isrobot(M))
 			options -= "robot"
-		else if(isslime(M))
-			options -= "slime"
+		else if(ismetroid(M))
+			options -= "metroid"
 
 		var/randomize = pick(options)
 		switch(randomize)
@@ -54,8 +54,8 @@
 				var/mob/living/silicon/robot/Robot = new_mob
 				Robot.mmi = new /obj/item/device/mmi(new_mob)
 				Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
-			if("slime")
-				new_mob = new /mob/living/carbon/slime(M.loc)
+			if("metroid")
+				new_mob = new /mob/living/carbon/metroid(M.loc)
 				new_mob.universal_speak = 1
 			else
 				var/mob/living/carbon/human/H
@@ -84,7 +84,7 @@
 				A.randomize_appearance_and_body_for(H)
 
 		if(new_mob)
-			for (var/spell/S in M.mind.learned_spells)
+			for (var/datum/spell/S in M.mind.learned_spells)
 				new_mob.add_spell(new S.type)
 
 			new_mob.a_intent = "hurt"

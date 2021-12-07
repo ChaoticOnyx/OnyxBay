@@ -80,46 +80,32 @@
 	icon_state = "numberpad"
 	complexity = 40
 	cooldown_per_use = 5 SECONDS
-	inputs = list("X target" = IC_PINTYPE_NUMBER,"Y target" = IC_PINTYPE_NUMBER,"obstacle" = IC_PINTYPE_REF,"access" = IC_PINTYPE_STRING)
+	inputs = list("X target" = IC_PINTYPE_NUMBER,"Y target" = IC_PINTYPE_NUMBER,"obstacle" = IC_PINTYPE_REF)
 	outputs = list("X" = IC_PINTYPE_LIST,"Y" = IC_PINTYPE_LIST)
 	activators = list("calculate path" = IC_PINTYPE_PULSE_IN, "on calculated" = IC_PINTYPE_PULSE_OUT,"not calculated" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
-	var/obj/item/weapon/card/id/idc
 
 /obj/item/integrated_circuit/smart/advanced_pathfinder/Initialize()
 	.=..()
-	idc = new(src)
 
 /obj/item/integrated_circuit/smart/advanced_pathfinder/do_work()
 	if(!assembly)
 		activate_pin(3)
 		return
-	var/Ps = hippie_xor_decrypt()
-
-	var/list/signature_and_data = splittext(Ps, ":")
-
-	if(signature_and_data.len < 2)
-		return
-
-	var/signature = signature_and_data[1]
-	var/result = signature_and_data[2]
-
-	if(!check_data_signature(signature, result))
-		activate_pin(3)
-		return
 
 	var/turf/a_loc = get_turf(assembly)
-	var/list/P = AStar(a_loc, locate(get_pin_data(IC_INPUT, 1), get_pin_data(IC_INPUT, 2), a_loc.z), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 200, id=idc, exclude=get_turf(get_pin_data_as_type(IC_INPUT, 3, /atom)))
+	var/turf/b_loc = locate(Clamp(get_pin_data(IC_INPUT, 1), 0, world.maxx), Clamp(get_pin_data(IC_INPUT, 2), 0, world.maxy), a_loc.z)
+	var/list/P = AStar(a_loc, b_loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 200, id = assembly.access_card, exclude=get_turf(get_pin_data_as_type(IC_INPUT, 3, /atom)))
 
-	if(!P)
+	if(!islist(P))
 		activate_pin(3)
 		return
 	else
-		var/list/Xn =  new /list(P.len)
-		var/list/Yn =  new /list(P.len)
+		var/list/Xn[length(P)]
+		var/list/Yn[length(P)]
 		var/turf/T
-		for(var/i =1 to P.len)
+		for(var/i = 1 to length(P))
 			T=P[i]
 			Xn[i] = T.x
 			Yn[i] = T.y
@@ -127,15 +113,6 @@
 		set_pin_data(IC_OUTPUT, 2, Yn)
 		push_data()
 		activate_pin(2)
-
-/obj/item/integrated_circuit/smart/advanced_pathfinder/proc/hippie_xor_decrypt()
-	var/Ps = get_pin_data(IC_INPUT, 4)
-	if(!Ps)
-		return
-	var/list/Pl = json_decode(XorEncrypt(hextostr(Ps, TRUE), SScircuit.cipherkey))
-	if(Pl&&islist(Pl))
-		idc.access = Pl
-	return Ps
 
 // - MMI Tank - //
 /obj/item/integrated_circuit/input/mmi_tank
@@ -159,6 +136,7 @@
 		"altclick" = IC_PINTYPE_PULSE_OUT,
 		"ctrlclick" = IC_PINTYPE_PULSE_OUT
 		)
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
@@ -193,7 +171,8 @@
 
 /obj/item/integrated_circuit/input/mmi_tank/Destroy()
 	RemoveBrain()
-	..()
+
+	return ..()
 
 /obj/item/integrated_circuit/input/mmi_tank/relaymove(mob/user, direction)
 	set_pin_data(IC_OUTPUT, 2, direction)
@@ -276,6 +255,7 @@
 		"ctrlclick" = IC_PINTYPE_PULSE_OUT,
 		"shiftctrlclick" = IC_PINTYPE_PULSE_OUT
 		)
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
@@ -308,10 +288,10 @@
 	else
 		to_chat(user, SPAN("notice", "The connection port is empty."))
 
-/obj/item/integrated_circuit/input/pAI_connector/relaymove(mob/user, dir)
-	set_pin_data(IC_OUTPUT, 2, dir)
+/obj/item/integrated_circuit/input/pAI_connector/relaymove(mob/user, direction)
+	set_pin_data(IC_OUTPUT, 2, direction)
 	do_work(1)
-	switch(dir)
+	switch(direction)
 		if(8)	activate_pin(2)
 		if(4)	activate_pin(3)
 		if(1)	activate_pin(4)
@@ -324,7 +304,8 @@
 
 /obj/item/integrated_circuit/input/pAI_connector/Destroy()
 	RemovepAI()
-	..()
+
+	return ..()
 
 /obj/item/integrated_circuit/input/pAI_connector/proc/RemovepAI()
 	if(installed_pai)
@@ -343,6 +324,9 @@
 		var/obj/item/device/paicard/H = loc
 		if(istype(H.loc, /obj/item/integrated_circuit/input/pAI_connector))
 			paiholder = H.loc
+
+	if(!istype(paiholder))
+		return
 
 	paiholder.set_pin_data(IC_OUTPUT, 3, A)
 	var/list/modifiers = params2list(params)

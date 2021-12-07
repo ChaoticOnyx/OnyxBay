@@ -49,7 +49,7 @@
 	if(cover)
 		qdel(cover)
 		cover = null
-	..()
+	return ..()
 
 /obj/item/clothing/head/welding/attack_self()
 	toggle()

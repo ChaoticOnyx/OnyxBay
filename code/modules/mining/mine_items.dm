@@ -1,7 +1,7 @@
 /**********************Miner Lockers**************************/
 
 /obj/structure/closet/secure_closet/miner
-	name = "miner's equipment"
+	name = "shaft miner locker"
 	icon_state = "miningsec1"
 	icon_closed = "miningsec"
 	icon_locked = "miningsec1"
@@ -16,7 +16,7 @@
 	if(prob(50))
 		new /obj/item/weapon/storage/backpack/industrial(src)
 	else
-		new /obj/item/weapon/storage/backpack/satchel_eng(src)
+		new /obj/item/weapon/storage/backpack/satchel/eng(src)
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/thick(src)
@@ -27,15 +27,6 @@
 	new /obj/item/weapon/shovel(src)
 	new /obj/item/weapon/pickaxe(src)
 	new /obj/item/clothing/glasses/hud/standard/meson(src)
-
-/******************************Lantern*******************************/
-
-/obj/item/device/flashlight/lantern
-	name = "lantern"
-	icon_state = "lantern"
-	item_state = "lantern"
-	desc = "A mining lantern."
-	brightness_on = 6			// luminosity when on
 
 /*****************************Pickaxe********************************/
 
@@ -62,11 +53,6 @@
 	sharp = 1
 
 	var/excavation_amount = 200
-
-/obj/item/weapon/pickaxe/hammer
-	name = "sledgehammer"
-	//icon_state = "sledgehammer" Waiting on sprite
-	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
 
 /obj/item/weapon/pickaxe/silver
 	name = "silver pickaxe"
@@ -135,6 +121,45 @@
 	digspeed = 10
 	desc = ""
 	drill_verb = "drilling"
+
+/obj/item/weapon/pickaxe/sledgehammer
+	name = "sledgehammer"
+	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer0"
+	slot_flags = null
+	force = 15.0
+	throwforce = 15.0
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck")
+	sharp = FALSE
+	mod_weight = 1.5
+	mod_reach = 1.0
+	mod_handy = 0.4
+	drill_verb = "hammering"
+	digspeed = 20
+	var/wielded = 0
+
+/obj/item/weapon/pickaxe/sledgehammer/update_twohanding()
+	var/mob/living/M = loc
+	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
+		wielded = TRUE
+		force = 40.0 // Higher than fireaxe's (30), but this thing is not sharp so it's probably fine
+		mod_handy = 1.2
+		mod_weight = 2.0
+		mod_reach = 1.5
+	else
+		wielded = FALSE
+		force = 17.5
+		mod_weight = 1.5
+		mod_reach = 1.0
+		mod_handy = 0.4
+	update_icon()
+	..()
+
+/obj/item/weapon/pickaxe/sledgehammer/update_icon()
+	var/new_state = "[icon_state][wielded]"
+	item_state_slots[slot_l_hand_str] = new_state
+	item_state_slots[slot_r_hand_str] = new_state
 
 /*****************************Shovel********************************/
 
@@ -229,12 +254,12 @@
 	var/turf/T = get_turf(src)
 
 	if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
-		to_chat(user, "<span class='warning'>There's no solid surface to plant the flag on.</span>")
+		to_chat(user, SPAN_WARNING("There's no solid surface to plant the flag on."))
 		return
 
 	for(var/obj/item/stack/flag/F in T)
 		if(F.upright)
-			to_chat(user, "<span class='warning'>\The [F] is already planted here.</span>")
+			to_chat(user, SPAN_WARNING("\The [F] is already planted here."))
 			return
 
 	if(use(1)) // Don't skip use() checks even if you only need one! Stacks with the amount of 0 are possible, e.g. on synthetics!
@@ -252,7 +277,7 @@
 	anchored = 1
 	icon_state = "[initial(icon_state)]_open"
 	if(fringe)
-		set_light(2, 0.1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
+		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
 		addon.plane = EFFECTS_ABOVE_LIGHTING_PLANE
@@ -277,6 +302,7 @@
 	density = 1
 	icon_opened = "miningcaropen"
 	icon_closed = "miningcar"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /**********************Pinpointer**********************/
 
@@ -299,12 +325,12 @@
 /obj/item/weapon/ore_radar/attack_self(mob/user)
 	if(!active)
 		active = 1
-		to_chat(usr, "<span class='notice'>You activate the pinpointer</span>")
+		to_chat(usr, SPAN_NOTICE("You activate the pinpointer."))
 		START_PROCESSING(SSprocessing, src)
 	else
 		active = 0
 		icon_state = "pinoff"
-		to_chat(usr, "<span>You deactivate the pinpointer</span>")
+		to_chat(usr, SPAN_NOTICE("You deactivate the pinpointer."))
 		STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/weapon/ore_radar/Process()
@@ -357,7 +383,8 @@
 	throw_speed = 3
 	throw_range = 5
 	var/loaded = 1
-	var/malfunctioning = 0
+	var/malfunctioning = FALSE
+	var/emagged = FALSE
 	origin_tech = list(TECH_BIO = 7, TECH_MATERIAL = 4)
 
 /obj/item/weapon/lazarus_injector/afterattack(atom/target, mob/user, proximity_flag)
@@ -367,15 +394,19 @@
 		if(isanimal(target))
 			var/mob/living/simple_animal/M = target
 			if(M.stat == DEAD)
-				if(!malfunctioning)
-					M.faction = "neutral"
+				M.faction = "neutral"
+				if(emagged)	//if emagged, will set anything revived to the syndicate. Convert station pets to the traitor side!
+					M.faction = "syndicate"
+				if(malfunctioning) //when EMP'd, will set the mob faction to its initial faction, so any taming will be reverted.
+					M.faction = initial(M.faction)
 				M.revive()
 				M.icon_state = M.icon_living
+				M.desc = initial(M.desc)
 				loaded = 0
 				icon_state = "animal_tagger0"
-				user.visible_message("<span class='notice'>[user] injects [M] with [src], reviving it.</span>")
+				user.visible_message(SPAN_NOTICE("\The [user] revives \the [M] by injecting it with \the [src]."))
 				feedback_add_details("lazarus_injector", "[M.type]")
-				playsound(src,'sound/effects/refill.ogg',50,1)
+				playsound(src, 'sound/effects/refill.ogg', 50, 1)
 				return
 			else
 				to_chat(user, "<span class='info'>[src] is only effective on the dead.</span>")
@@ -384,15 +415,27 @@
 			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
+/obj/item/weapon/lazarus_injector/attackby(obj/item/I, mob/living/user)
+	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+		var/obj/item/weapon/card/emag/emag_card = I
+		if(!emag_card.uses)
+			return
+		emagged = TRUE
+		emag_card.uses -= 1
+		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+		return
+
+	return ..()
+
 /obj/item/weapon/lazarus_injector/emp_act()
 	if(!malfunctioning)
-		malfunctioning = 1
+		malfunctioning = TRUE
 
 /obj/item/weapon/lazarus_injector/examine(mob/user)
 	. = ..()
 	if(!loaded)
 		. += "\n<span class='info'>[src] is empty.</span>"
-	if(malfunctioning)
+	if(malfunctioning || emagged)
 		. += "\n<span class='info'>The display on [src] seems to be flickering.</span>"
 
 /**********************Point Transfer Card**********************/
@@ -456,7 +499,7 @@
 		R.burst(T)
 		return
 	if(fields.len < fieldlimit)
-		playsound(src,'sound/weapons/resonator_fire.ogg',50,1)
+		playsound(src,'sound/effects/weapons/energy/resonator_fire.ogg',50,1)
 		var/obj/effect/resonance/RE = new /obj/effect/resonance(T, creator, burst_time, src)
 		fields += RE
 
@@ -645,11 +688,11 @@
 			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
 				"<span class='notice'>You continue sculpting.</span>")
 
-			playsound(user, get_sfx("chisel"), 30, 1)
+			playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 			spawn(3)
-				playsound(user, get_sfx("chisel"), 30, 1)
+				playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 				spawn(3)
-					playsound(user, get_sfx("chisel"), 30, 1)
+					playsound(user, GET_SFX(SFX_USE_CHISEL), 30, 1)
 
 			last_struck = 1
 			if(do_after(user,(20)))
@@ -664,6 +707,7 @@
 					user.visible_message("<span class='notice'>[user] finishes sculpting their magnum opus!</span>",
 						"<span class='notice'>You finish sculpting a masterpiece.</span>")
 					src.appearance = T
+					appearance_flags = KEEP_TOGETHER
 					src.color = list(
 					    0.35, 0.3, 0.25,
 					    0.35, 0.3, 0.25,

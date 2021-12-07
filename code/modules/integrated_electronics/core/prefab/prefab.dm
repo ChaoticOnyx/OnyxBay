@@ -1,7 +1,6 @@
 /decl/prefab/proc/create(atom/location)
 	if(!location)
 		CRASH("Invalid location supplied: [log_info_line(location)]")
-		return FALSE
 	return TRUE
 
 /decl/prefab/ic_assembly
@@ -37,9 +36,8 @@
 
 /obj/prefab
 	name = "prefab spawn"
-	icon = 'icons/misc/mark.dmi'
-	icon_state = "X"
-	color = COLOR_PURPLE
+	icon = 'icons/misc/landmarks.dmi'
+	icon_state = "landmark_circuit"
 	var/prefab_type
 
 /obj/prefab/Initialize()

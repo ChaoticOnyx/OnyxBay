@@ -33,6 +33,8 @@
 	var/static/next_assembly_id = 0
 	var/sealed = FALSE
 	var/weakref/idlock = null
+	var/use_ui_window = TRUE
+	var/force_sealed = FALSE // it's like sealed, but from component and can't be unsealed.
 
 	var/max_integrity = 50
 	pass_flags = 0
@@ -84,10 +86,9 @@
 
 	for(var/obj/item/integrated_circuit/I in assembly_components)
 		I.external_examine(user)
-	if(opened)
-		interact(user)
+	interact(user)
 
-/obj/item/device/electronic_assembly/proc/check_interactivity(mob/user)
+/obj/item/device/electronic_assembly/proc/check_interactivity(mob/user, datum/topic = GLOB.physical_state)
 	if(!istype(user))
 		return
 	if(istype(user, /mob/living/silicon/pai))
@@ -96,7 +97,7 @@
 	else if(istype(user, /mob/living/carbon/brain))
 		var/mob/living/carbon/brain/brain_holder = user
 		return brain_holder.check_bot_self
-	return (Adjacent(user) && CanUseTopic(user))
+	return (!user.incapacitated() && Adjacent(user) && CanUseTopic(user, topic))
 
 /obj/item/device/electronic_assembly/Bump(atom/AM)
 	collw = AM
@@ -127,7 +128,40 @@
 				I.power_fail()
 
 /obj/item/device/electronic_assembly/interact(mob/user, circuit)
-	ui_interact(user, circuit)
+	if(opened)
+		ui_interact(user, circuit)
+	if(use_ui_window)
+		closed_ui_interact(user)
+
+/obj/item/device/electronic_assembly/proc/closed_ui_interact(mob/user)
+	if(!check_interactivity(user))
+		return
+	var/datum/browser/popup = new(user, "scannerpanel", name, 600, 330) // Set up the popup browser window
+	popup.add_stylesheet("scannerpanel", 'html/browser/assembly_ui.css')
+	var/HTML = "<html><body><a href=?src=\ref[src];refresh=1>Refresh</a><br><br>"
+
+	var/listed_components = FALSE
+	for(var/obj/item/integrated_circuit/circuit in contents)
+		var/list/topic_data = circuit.get_topic_data(user)
+		if(topic_data)
+			listed_components = TRUE
+			HTML += "<b>[circuit.displayed_name]: </b>"
+			if(topic_data.len != 1)
+				HTML += "<br>"
+			for(var/entry in topic_data)
+				var/href = topic_data[entry]
+				if(href)
+					HTML += "<a href=?src=\ref[circuit];ic_window=1;[href]>[entry]</a>"
+				else
+					HTML += entry
+				HTML += "<br>"
+			HTML += "<br>"
+	HTML += "</body></html>"
+	if(listed_components)
+		popup.set_content(HTML)
+		popup.open()
+	else
+		qdel(popup)
 
 /obj/item/device/electronic_assembly/ui_interact(mob/user, obj/item/integrated_circuit/circuit_pins)
 	. = ..()
@@ -137,53 +171,49 @@
 	var/total_part_size = return_total_size()
 	var/total_complexity = return_total_complexity()
 	var/datum/browser/popup = new(user, "scannernew", name, 800, 630) // Set up the popup browser window
-	popup.add_stylesheet("scannernew", 'html/browser/assembly_ui.css')
-
-	var/HTML = "<html><head><title>[name]</title></head>\
-		<body><table><thead><tr> \
-		<a href='?src=\ref[src]'>Refresh</a>  |  <a href='?src=\ref[src];rename=1'>Rename</a><br> \
-		[total_part_size]/[max_components] ([round((total_part_size / max_components) * 100, 0.1)]%) space taken up in the assembly.<br> \
-		[total_complexity]/[max_complexity] ([round((total_complexity / max_complexity) * 100, 0.1)]%) maximum complexity.<br>"
-	if(battery)
-		HTML += "[round(battery.charge, 0.1)]/[battery.maxcharge] ([round(battery.percent(), 0.1)]%) cell charge. <a href='?src=\ref[src];remove_cell=1'>Remove</a>"
-	else
-		HTML += SPAN("danger", "No power cell detected!")
-	HTML += "</tr></thead>"
-
+	popup.add_stylesheet("assembly_ui", 'html/browser/assembly_ui.css')
+	popup.add_stylesheet("codicon", 'html/codicon/codicon.css')
 
 	//Getting the newest viewed circuit to compare with new circuit list
 	if(!circuit_pins || !istype(circuit_pins,/obj/item/integrated_circuit) || !(circuit_pins in assembly_components))
 		if(assembly_components.len > 0)
 			circuit_pins = assembly_components[1]
 
+	// HEADER BUTTONS
+	var/HEADER_BUTTONS = "<a class='icon' title='Refresh' href='?src=\ref[src]'><div class='codicon codicon-refresh'></div></a>"
+	HEADER_BUTTONS += "<a class='icon' title='Rename' href='?src=\ref[src];rename=1'><div class='codicon codicon-edit'></div></a>"
 
-	HTML += "<tr><td width=200px><div class=scrollleft>Components:<br><nobr>"
+	popup.set_title_buttons(HEADER_BUTTONS)
 
-	var/builtin_components = ""
-	var/removables = ""
+	// START
+	var/HTML = "<table><tr><td>\n"
+
+	// START LEFT PANEL
+	HTML += "<div class=scrollleft>Components:\n"
+
+	var/components = ""
 	var/remove_num = 1
 
 	for(var/obj/item/integrated_circuit/circuit in assembly_components)
 		if(!circuit.removable)
-			builtin_components += "<a href='?src=\ref[src]'>[circuit.displayed_name]</a><br>"
+			components += "<a class='grey' href='?src=\ref[src]'>[circuit.displayed_name]</a><br>\n"
 
 		// Non-inbuilt circuits come after inbuilt circuits
 		else
-			removables += "<a href='?src=\ref[src];component=\ref[circuit];change_pos=1' style='text-decoration:none;'>[remove_num].</a> | "
-			if(circuit == circuit_pins)
-				removables += "[circuit.displayed_name]<br>"
+			components += "<div class='segmented-control'><a href='?src=\ref[src];component=\ref[circuit];change_pos=1' style='text-decoration:none;'>[remove_num]</a>"
+			if (circuit == circuit_pins)
+				components += "<a class='active' href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a></div>\n"
 			else
-				removables += "<a href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a><br>"
+				components += "<a href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a></div>\n"
+
 			remove_num++
 
-	// Put removable circuits (if any) in separate categories from non-removable
-	if(builtin_components)
-		HTML += "<hr> Built in:<br> [builtin_components] <hr> Removable: <br>"
+	HTML += components
+	// END LEFT PANEL
+	HTML += "</div></td>\n"
 
-	HTML += removables
-
-	HTML += "</nobr></div></td><td valign='top'><div class=scrollright>"
-
+	// START RIGHT PANEL
+	HTML += "<td valign='top'><div class=scrollright>\n"
 
 	//Getting the newest circuit's pin
 	if(!circuit_pins || !istype(circuit_pins,/obj/item/integrated_circuit))
@@ -191,103 +221,182 @@
 			circuit_pins = assembly_components[1]
 
 	if(circuit_pins)
-		HTML += "<div valign='middle'>[circuit_pins.displayed_name]<br>"
+		// START COMPONENT BAR
+		HTML += "<div id='component_bar'>\n"
 
-		HTML += "<a href='?src=\ref[src];component=\ref[circuit_pins]'>Refresh</a> | \
-		<a href='?src=\ref[src];component=\ref[circuit_pins];rename_component=1'>Rename</a> | \
-		<a href='?src=\ref[src];component=\ref[circuit_pins];scan=1'>Copy Ref</a> | \
-		<a href='?src=\ref[src];component=\ref[circuit_pins];interact=1'>Interact</a>"
+		// COMPONENT NAME
+		HTML += "<a class='icon align-to-text'><i class='codicon codicon-symbol-property'></i></a>[circuit_pins.displayed_name]\n"
+
+		// START COMPONENT_ACTIONS
+		HTML += "<div id='component_actions'>\n"
+
+		// REFRESH BUTTON
+		HTML += "<a class='icon align-to-text' href='?src=\ref[src];component=\ref[circuit_pins]'><i class='codicon codicon-refresh'></i></a>"
+		// RENAME BUTTON
+		HTML += "<a class='icon align-to-text' title='Rename' href='?src=\ref[src];component=\ref[circuit_pins];rename_component=1'><i class='codicon codicon-pencil'></i></a>"
+		// COPY REF BUTTON
+		HTML += "<a class='icon align-to-text' title='Copy Ref' href='?src=\ref[src];component=\ref[circuit_pins];scan=1'><i class='codicon codicon-copy'></i></a>"
+		// INTERACT BUTTON
+		HTML += "<a class='icon align-to-text' title='Interact' href='?src=\ref[src];component=\ref[circuit_pins];interact=1'><i class='codicon codicon-play'></i></a>"
 		if(circuit_pins.removable)
-			HTML += " | <a href='?src=\ref[src];component=\ref[circuit_pins];remove=1'>Remove</a>"
-		HTML += "</div><br>"
+			// REMOVE BUTTON
+			HTML += "<a class='icon align-to-text' title='Remove' href='?src=\ref[src];component=\ref[circuit_pins];remove=1'><i class='codicon codicon-close-all'></i></a>"
 
-		var/table_edge_width = "30%"
-		var/table_middle_width = "40%"
+		// END COMPONENT_ACTIONS
+		HTML += "</div>\n"
 
-		HTML += "<table border='1' style='undefined;table-layout: fixed; position: absolute; left: 210; right: 2;'><colgroup>\
-			<col style='width: [table_edge_width]'>\
-			<col style='width: [table_middle_width]'>\
-			<col style='width: [table_edge_width]'>\
-			</colgroup>"
+		// END COMPONENT BAR
+		HTML += "</div>\n"
 
-		var/column_width = 3
-		var/row_height = max(circuit_pins.inputs.len, circuit_pins.outputs.len, 1)
+		// START COMPONENT_DESCRIPTION_TABLE
+		HTML += "<table id='component_description_table' style='table-layout: fixed;'>\
+			<colgroup>\
+			<col style='width: 10%;'>\
+			<col style='width: 10%;'>\
+			</colgroup>\n"
 
-		for(var/i in 1 to row_height)
-			HTML += "<tr>"
-			for(var/j in 1 to column_width)
-				var/datum/integrated_io/io = null
-				var/words = ""
-				var/height = 1
-				switch(j)
-					if(1)
-						io = circuit_pins.get_pin_ref(IC_INPUT, i)
-						if(io)
-							words += "<b><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'>[io.display_pin_type()] [io.name]</a> \
-							<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
-							if(io.linked.len)
-								words += "<ul>"
-								for(var/k in io.linked)
-									var/datum/integrated_io/linked = k
-									words += "<li><a href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
-									@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
-								words += "</ul>"
+		// COLGROUPS
+		HTML += "<colgroup><col style='width: 10%;'><col style='width: 10%;'></colgroup>\n"
 
-							if(circuit_pins.outputs.len > circuit_pins.inputs.len)
-								height = 1
-					if(2)
-						if(i == 1)
-							words += "[circuit_pins.displayed_name]<br>[circuit_pins.name != circuit_pins.displayed_name ? "([circuit_pins.name])":""]<hr>[circuit_pins.desc]"
-							height = row_height
-						else
-							continue
-					if(3)
-						io = circuit_pins.get_pin_ref(IC_OUTPUT, i)
-						if(io)
-							words += "<b><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'>[io.display_pin_type()] [io.name]</a> \
-							<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
-							if(io.linked.len)
-								words += "<ul>"
-								for(var/k in io.linked)
-									var/datum/integrated_io/linked = k
-									words += "<li><a href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
-									@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
-								words += "</ul>"
+		// TABLE HEADERS
+		HTML += "<tr class='text-bold'><td rowspan='1'>Description</td><td rowspan='1'>Info</td></tr>\n"
 
-							if(circuit_pins.inputs.len > circuit_pins.outputs.len)
-								height = 1
-				HTML += "<td align='center' rowspan='[height]'>[words]</td>"
-			HTML += "</tr>"
+		// TABLE CONTENT
+		HTML += "<tr><td rowspan='1'>[circuit_pins.desc]</td>"
 
+		HTML += "<td rowspan='1'>Complexity: [circuit_pins.complexity]<br>\n"
+		HTML += "Cooldown per use: [circuit_pins.cooldown_per_use/10] sec<br>\n"
+		if(circuit_pins.ext_cooldown)
+			HTML += "External manipulation cooldown: [circuit_pins.ext_cooldown/10] sec<br>\n"
+		if(circuit_pins.power_draw_idle)
+			HTML += "Power Draw: [circuit_pins.power_draw_idle] W (Idle)<br>\n"
+		if(circuit_pins.power_draw_per_use)
+			// Borgcode says that powercells' checked_use() takes joules as input.
+			HTML += "Power Draw: [circuit_pins.power_draw_per_use] W (Active)<br>\n"
+
+		HTML += "[circuit_pins.extended_desc]\n"
+
+		// END SECOND ROW
+		HTML += "</tr>\n"
+
+		// END COMPONENT_DESCRIPTION_TABLE
+		HTML += "</table>\n"
+
+		// START COMPONENT_CONFIG_TABLE
+		HTML += "<table id='component_config_table' style='table-layout: fixed;'>\
+			<colgroup>\
+			<col style='width: 10%;'>\
+			<col style='width: 10%;'>\
+			</colgroup>\n"
+
+		// TABLE HEADERS
+		HTML += "<tr class='text-bold'><td rowspan='1'>Inputs</td><td rowspan='1'>Outputs</td></tr>"
+
+		var/datum/integrated_io/io = null
+		var/INPUTS = ""
+
+		for(var/i in 1 to circuit_pins.inputs.len)
+			io = circuit_pins.get_pin_ref(IC_INPUT, i)
+
+			if(!io)
+				continue
+
+			INPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><i class='codicon codicon-symbol-parameter fit-in-button'></i>[io.display_data(io.data)]</a><br>\n"
+
+			if (!io.linked.len)
+				continue
+
+			INPUTS += "<ul>"
+			for(var/k in io.linked)
+				var/datum/integrated_io/linked = k
+				INPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
+
+			INPUTS += "</ul>"
+
+		var/OUTPUTS = ""
+		for(var/i in 1 to circuit_pins.outputs.len)
+			io = circuit_pins.get_pin_ref(IC_OUTPUT, i)
+
+			if(!io)
+				continue
+
+			OUTPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><i class='codicon codicon-symbol-parameter fit-in-button'></i>[io.display_data(io.data)]</a><br>\n"
+
+			if (!io.linked.len)
+				continue
+
+			OUTPUTS += "<ul>"
+			for(var/k in io.linked)
+				var/datum/integrated_io/linked = k
+				OUTPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
+
+			OUTPUTS += "</ul>"
+
+		HTML += "<tr>\n"
+		HTML += "<td rowspan='1'>[INPUTS]</td>\n"
+		HTML += "<td rowspan='1'>[OUTPUTS]</td>\n"
+		HTML += "</tr>\n"
+
+		// END COMPONENT_CONFIG_TABLE
+		HTML += "</table>"
+
+		// START ACTIVATORS TABLE
+		HTML += "<table id='component_events_table' style='table-layout: fixed;'>\
+			<colgroup>\
+			<col style='width: 10%;'>\
+			<col style='width: 10%;'>\
+			</colgroup>\n"
+
+		// TABLE HEADERS
+		HTML += "<tr class='text-bold'><td rowspan='1'>Activators</td></tr>"
+
+		// TABLE CONTENT
 		for(var/activator in circuit_pins.activators)
-			var/datum/integrated_io/io = activator
-			var/words = ""
+			HTML += "<tr><td colspan='1'>"
+			io = activator
+			var/ACTIVATORS = "<div class='segmented-control'><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-event fit-in-button'></i>[io]</a>"
+			ACTIVATORS += "<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></div>\n"
 
-			words += "<b><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'>[io]</a> \
-				<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></b><br>"
 			if(io.linked.len)
-				words += "<ul>"
+				ACTIVATORS += "<ul>"
+
 				for(var/k in io.linked)
 					var/datum/integrated_io/linked = k
-					words += "<li><a href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
-					@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
-				words += "</ul>"
+					ACTIVATORS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-event fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
 
-			HTML += "<tr><td colspan='3' align='center'>[words]</td></tr>"
+				ACTIVATORS += "</ul>"
 
-		HTML += "<tr>\
-			<br><font color='FFFFFF' class=lowtext>Complexity: [circuit_pins.complexity]\
-			<br>Cooldown per use: [circuit_pins.cooldown_per_use/10] sec"
-		if(circuit_pins.ext_cooldown)
-			HTML += "<br>External manipulation cooldown: [circuit_pins.ext_cooldown/10] sec"
-		if(circuit_pins.power_draw_idle)
-			HTML += "<br>Power Draw: [circuit_pins.power_draw_idle] W (Idle)"
-		if(circuit_pins.power_draw_per_use)
-			HTML += "<br>Power Draw: [circuit_pins.power_draw_per_use] W (Active)" // Borgcode says that powercells' checked_use() takes joules as input.
-		HTML += "<br>[circuit_pins.extended_desc]</font></tr></table></div>"
+			HTML += "[ACTIVATORS]</td></tr>\n"
 
+		// END ACTIVATORS TABLE
+		HTML += "</table>"
 
-	HTML += "</div></td></tr></table></body></html>"
+	// END RIGHT PANEL
+	HTML += "</div></td>\n"
+
+	// START STATUS BAR
+	HTML += "<div id='status_bar'>\n"
+
+	// USED SPACE
+	HTML += "<a class='icon' title='Space'><i class='codicon codicon-database fit-in-button'></i>Space used: [total_part_size]/[max_components]</a><div class='divider'></div>\n"
+
+	// COMPLEXITY
+	HTML += "<a class='icon' title='Complexity'><i class='codicon codicon-gear fit-in-button'></i>Complexity: [total_complexity]/[max_complexity]</a><div class='divider'></div>"
+
+	// BATTERY
+	if(battery)
+		HTML += "<a class='icon' title='Eject Battery' href='?src=\ref[src];remove_cell=1'><i class='codicon codicon-symbol-event fit-in-button'></i>[battery] ([round(battery.charge, 0.1)]/[battery.maxcharge])</a>"
+	else
+		HTML += "<a class='icon' title='Battery'><i class='codicon codicon-symbol-event fit-in-button'></i>No power cell detected!</a>"
+
+	// CHANGE UI INTERACTION STYLE
+	HTML += "<a class='icon' href='?src=\ref[src];change_ui_style=1'><i class='codicon codicon-multiple-windows fit-in-button'></i>Change UI interaction style</a>"
+
+	// END STATUS BAR
+	HTML += "</div>\n"
+
+	// END
+	HTML += "</td></tr></table>"
 
 	popup.set_content(HTML)
 	popup.open()
@@ -300,13 +409,19 @@
 		if((isobserver(usr) && ckeys_allowed_to_scan[usr.ckey]) || is_admin(usr))
 			if(assembly_components.len)
 				var/saved = "On circuit printers with cloning enabled, you may use the code below to clone the circuit:<br><br><code>[SScircuit.save_electronic_assembly(src)]</code>"
-				usr << browse(saved, "window=circuit_scan;size=500x600;border=1;can_resize=1;can_close=1;can_minimize=1")
+				show_browser(usr, saved, "window=circuit_scan;size=500x600;border=1;can_resize=1;can_close=1;can_minimize=1")
 			else
 				to_chat(usr, SPAN_WARNING("The circuit is empty!"))
 		return
 
 	if(!check_interactivity(usr))
 		return
+
+	if(href_list["change_ui_style"])
+		use_ui_window = !use_ui_window
+
+	if(href_list["refresh"])
+		interact(usr)
 
 	if(href_list["rename"])
 		rename(usr)
@@ -516,11 +631,13 @@
 
 
 /obj/item/device/electronic_assembly/proc/screwdriver_act(mob/living/user, obj/item/I)
-	if(sealed)
+	if(sealed || force_sealed)
 		to_chat(user,SPAN_NOTICE("The assembly is sealed. Any attempt to force it open would break it."))
 		return FALSE
-	if(..())
-		return TRUE
+	// some prefabs have invalid sprite after unscrewing
+	if(icon != 'icons/obj/assemblies/electronic_setups.dmi')
+		icon = 'icons/obj/assemblies/electronic_setups.dmi'
+
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 	opened = !opened
 	to_chat(user, SPAN_NOTICE("You [opened ? "open" : "close"] the maintenance hatch of [src]."))
@@ -574,7 +691,7 @@
 	if(isWrench(I) && istype(loc, /turf) && can_anchor)
 		if(do_after(user, time))
 			user.visible_message("\The [user] wrenches \the [src]'s anchoring bolts [anchored ? "back" : "into position"].")
-			playsound(get_turf(user), 'sound/items/Ratchet.ogg',50)
+			playsound(user, 'sound/items/Ratchet.ogg',50)
 			anchored = !anchored
 
 /obj/item/device/electronic_assembly/attackby(obj/item/I, mob/living/user)
@@ -642,7 +759,7 @@
 		user.drop_item(I)
 		I.forceMove(src)
 		battery = I
-		playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))
 		return TRUE
 
@@ -689,40 +806,41 @@
 /obj/item/device/electronic_assembly/attack_self(mob/user)
 	if(!check_interactivity(user))
 		return
-	if(opened)
-		interact(user)
+	interact(user)
 
-	var/list/input_selection = list()
-	//Check all the components asking for an input
-	for(var/obj/item/integrated_circuit/input/input in assembly_components)
-		if(input.can_be_asked_input)
-			var/i = 0
-			//Check if there is another component with the same name and append a number for identification
-			for(var/s in input_selection)
-				var/obj/item/integrated_circuit/s_circuit = input_selection[s] //The for-loop iterates the keys of an associative list.
-				if(s_circuit.name == input.name && s_circuit.displayed_name == input.displayed_name && s_circuit != input)
-					i++
-			var/disp_name= "[input.displayed_name] \[[input]\]"
-			if(i)
-				disp_name += " ([i+1])"
-			//Associative lists prevent me from needing another list and using a Find proc
-			input_selection[disp_name] = input
+	if(!use_ui_window)
+		var/list/input_selection = list()
+		var/list/obj/item/integrated_circuit/input/inputs_list = list()
+		//Check all the components asking for an input
+		for(var/obj/item/integrated_circuit/input/input in assembly_components)
+			if(input.can_be_asked_input && input.radial_menu_icon)
+				var/image/img = image(icon = 'icons/obj/assemblies/electronic_buttons.dmi', icon_state = input.radial_menu_icon)
+				var/i = 0
+				//Check if there is another component with the same name and append a number for identification
+				for(var/s in input_selection)
+					var/obj/item/integrated_circuit/s_circuit = input_selection[s] //The for-loop iterates the keys of an associative list.
+					if(s_circuit.name == input.name && s_circuit.displayed_name == input.displayed_name && s_circuit != input)
+						i++
+				var/disp_name= "[input.displayed_name] \[[input]\]"
+				if(i)
+					disp_name += " ([i+1])"
+				inputs_list[disp_name] = input
+				input_selection[disp_name] = img
 
-	var/obj/item/integrated_circuit/input/choice
+		var/obj/item/integrated_circuit/input/choice
 
+		if(input_selection)
+			if(input_selection.len == 1)
+				choice = inputs_list[input_selection[1]]
+			else
+				if(!check_interactivity(user))
+					return
+				var/selected = show_radial_menu(user, src, input_selection, radius = 24, require_near = TRUE, in_screen = TRUE, use_hudfix_method = FALSE)
+				if(selected && inputs_list[selected])
+					choice = inputs_list[selected]
 
-	if(input_selection)
-		if(input_selection.len ==1)
-			choice = input_selection[input_selection[1]]
-		else
-			var/selection = input(user, "What do you want to interact with?", "Interaction") as null|anything in input_selection
-			if(!check_interactivity(user))
-				return
-			if(selection)
-				choice = input_selection[selection]
-
-	if(choice)
-		choice.ask_for_input(user)
+		if(choice)
+			choice.ask_for_input(user)
 
 /obj/item/device/electronic_assembly/emp_act(severity)
 	. = ..()
@@ -976,6 +1094,15 @@
 	max_components = IC_MAX_SIZE_BASE / 2
 	max_complexity = IC_COMPLEXITY_BASE / 2
 
+/obj/item/device/electronic_assembly/wallmount/afterattack(atom/a, mob/user, proximity)
+	if(proximity && istype(a ,/turf) && a.density)
+		var/turf/T = a
+		mount_assembly(T,user)
+
+/obj/item/device/electronic_assembly/pickup()
+	transform = matrix() //Reset the matrix.
+	..()
+
 /obj/item/device/electronic_assembly/wallmount/proc/mount_assembly(turf/on_wall, mob/user) //Yeah, this is admittedly just an abridged and kitbashed version of the wallframe attach procs.
 	if(get_dist(on_wall,user)>1)
 		return
@@ -983,7 +1110,7 @@
 	if(!(ndir in GLOB.cardinal))
 		return
 	var/turf/T = get_turf(user)
-	if(!isfloor(T))
+	if(!isfloor(T) && on_wall.density)
 		to_chat(user, SPAN_WARNING("You cannot place [src] on this spot!"))
 		return
 	if(gotwallitem(T, ndir))
@@ -993,13 +1120,22 @@
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
-	user.drop_item(src)
-	switch(ndir)
-		if(NORTH)
-			pixel_y = -31
-		if(SOUTH)
-			pixel_y = 31
-		if(EAST)
-			pixel_x = -31
-		if(WEST)
-			pixel_x = 31
+	if(user.unEquip(src,T))
+		var/matrix/M = matrix()
+		switch(ndir)
+			if(NORTH)
+				pixel_y = -32
+				pixel_x = 0
+				M.Turn(180)
+			if(SOUTH)
+				pixel_y = 21
+				pixel_x = 0
+			if(EAST)
+				pixel_x = -27
+				pixel_y = 0
+				M.Turn(270)
+			if(WEST)
+				pixel_x = 27
+				pixel_y = 0
+				M.Turn(90)
+		transform = M

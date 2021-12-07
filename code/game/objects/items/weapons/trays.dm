@@ -14,7 +14,12 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 3000)
 	var/list/carrying = list() // List of things on the tray. - Doohl
-	var/max_carry = 2*base_storage_cost(ITEM_SIZE_NORMAL)
+	var/max_carry = 0
+
+/obj/item/weapon/tray/Initialize()
+	. = ..()
+	if(!max_carry)
+		max_carry = 2 * base_storage_cost(ITEM_SIZE_NORMAL)
 
 /obj/item/weapon/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -135,14 +140,12 @@
 				return
 			return
 
-/obj/item/weapon/tray/var/cooldown = 0	//shield bash cooldown. based on world.time
-
 /obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/material/kitchen/rollingpin))
-		if(cooldown < world.time - 25)
+		THROTTLE(cooldown, 25)
+		if(cooldown)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
-			cooldown = world.time
 	else
 		..()
 

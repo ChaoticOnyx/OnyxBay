@@ -34,7 +34,7 @@ var/list/mob_hat_cache = list()
 	lawupdate = 0
 	density = 1
 	req_access = list(access_engine, access_robotics)
-	integrated_light_power = 3
+	integrated_light_max_bright = 0.5
 	local_transmit = 1
 	possession_candidate = 1
 	speed = -1
@@ -181,7 +181,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/choose_icon()
 	return
 
-/mob/living/silicon/robot/drone/pick_module()
+/mob/living/silicon/robot/drone/choose_module()
 	return
 
 /mob/living/silicon/robot/drone/proc/wear_hat(obj/item/new_hat)
@@ -222,7 +222,7 @@ var/list/mob_hat_cache = list()
 				to_chat(user, "<span class='danger'>Access denied.</span>")
 				return
 
-			user.visible_message("<span class='danger'>\The [user] swipes \his ID card through \the [src], attempting to reboot it.</span>", "<span class='danger'>>You swipe your ID card through \the [src], attempting to reboot it.</span>")
+			user.visible_message("<span class='danger'>\The [user] swipes \his ID card through \the [src], attempting to reboot it.</span>", "<span class='danger'>You swipe your ID card through \the [src], attempting to reboot it.</span>")
 			request_player()
 			return
 

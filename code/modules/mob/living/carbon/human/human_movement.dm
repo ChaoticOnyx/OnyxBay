@@ -43,15 +43,27 @@
 	if(shock >= 10)
 		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
 
-	if(!isSynthetic(src))	// are you hungry? I think yes
-		var/nut_level = nutrition / 100
-		switch(nutrition)
-			if(0 to 150)
-				. += 1.5 - nut_level
-			if(450 to INFINITY)
-				. += nut_level - 4.5
+	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
+		var/normalized_nutrition = nutrition / body_build.stomach_capacity
+		var/nut_level = normalized_nutrition / 100
+		switch(normalized_nutrition)
+			if(0 to STOMACH_FULLNESS_LOW)
+				. += 1.25 - nut_level
+			if(STOMACH_FULLNESS_HIGH to INFINITY)
+				. += nut_level - 4.25
 
-	. += equipment_slowdown
+	if(body_build.equipment_modifier > 0) // Is our equipment_modifier a good thing?
+		if(equipment_slowdown + 1 > body_build.equipment_modifier)  // Lowering equipment cooldown if it's higher
+			. += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
+		else
+			. -= 1 // Since default equipment_slowdown is -1 for some reason
+	else
+		if(equipment_slowdown > -1)
+			. += equipment_slowdown - body_build.equipment_modifier
+		else
+			. += equipment_slowdown
+
+	. += body_build.slowdown
 
 	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
 	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair

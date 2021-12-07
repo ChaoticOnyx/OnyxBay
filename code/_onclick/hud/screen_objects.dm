@@ -48,7 +48,7 @@
 	var/obj/item/owner
 
 /obj/screen/item_action/Destroy()
-	..()
+	. = ..()
 	owner = null
 
 /obj/screen/item_action/Click()
@@ -158,7 +158,6 @@
 /obj/screen/zone_sel/update_icon()
 	overlays.Cut()
 	overlays += image('icons/mob/zone_sel.dmi', "[selecting]")
-
 /obj/screen/intent
 	name = "intent"
 	icon = 'icons/mob/screen1_white.dmi'
@@ -171,6 +170,8 @@
 	var/icon_x = text2num(P["icon-x"])
 	var/icon_y = text2num(P["icon-y"])
 	intent = I_DISARM
+
+
 	if(icon_x <= world.icon_size/2)
 		if(icon_y <= world.icon_size/2)
 			intent = I_HURT
@@ -357,7 +358,7 @@
 //				if(R.module)
 //					R.hud_used.toggle_show_robot_modules()
 //					return 1
-				R.pick_module()
+				R.choose_module()
 
 		if("inventory")
 			if(isrobot(usr))

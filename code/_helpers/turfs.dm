@@ -83,6 +83,7 @@
 	return !!T.return_air()
 
 /proc/IsTurfAtmosUnsafe(turf/T)
+	ASSERT(T)
 	if(istype(T, /turf/space)) // Space tiles
 		return "Spawn location is open to space."
 	var/datum/gas_mixture/air = T.return_air()
@@ -152,6 +153,6 @@
 
 	for(var/mob/M in source)
 		if(isEye(M)) continue // If we need to check for more mobs, I'll add a variable
-		M.forceMove(target)
+		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target

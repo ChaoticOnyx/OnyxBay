@@ -1,0 +1,99 @@
+{
+  "type": "object",
+  "defaultSnippets": [
+    {
+      "label": "Создать ченйджлог на сегодня",
+      "body": {
+        "author": "$1",
+        "date": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
+        "changes": [
+          {
+            "prefix": "$2",
+            "message": "$3"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Создать ченйджлог",
+      "body": {
+        "author": "$1",
+        "date": "$2-$3-$4",
+        "changes": [
+          {
+            "prefix": "$5",
+            "message": "$6"
+          }
+        ]
+      }
+    }
+  ],
+  "properties": {
+    "author": {
+      "description": "Имя автора",
+      "type": "string"
+    },
+    "date": {
+      "description": "Дата изменения в формате `YYYY-MM-DD` (не обязательна)",
+      "type": "string",
+      "defaultSnippets": [
+        {
+          "label": "Сегодня",
+          "description": "Установить сегодняшнюю дату",
+          "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE"
+        },
+        {
+          "label": "Своя",
+          "description": "Установить другую дату",
+          "body": "$1-$2-$3"
+        }
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "description": "Описание изменении",
+
+      "items": {
+        "type": "object",
+        "defaultSnippets": [
+          {
+            "label": "Добавить изменение",
+            "body": {
+              "prefix": "$1",
+              "message": "$2"
+            }
+          }
+        ],
+        "properties": {
+          "prefix": {
+            "type": "string",
+            "description": "Префикс изменения.",
+            "enum": [
+              "BugFix",
+              "Balance",
+              "Tweak",
+              "SoundAdd",
+              "SoundDel",
+              "RscAdd",
+              "RscDel",
+              "ImageAdd",
+              "ImageDel",
+              "MapTweak",
+              "SpellCheck",
+              "Experiment",
+              "Admin"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "description": "Описание изменения."
+          },
+          "pr": {
+            "type": "integer",
+            "description": "Номер PR с которым связано изменение."
+          }
+        }
+      }
+    }
+  }
+}

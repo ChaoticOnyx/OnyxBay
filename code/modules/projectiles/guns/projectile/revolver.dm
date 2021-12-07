@@ -14,6 +14,7 @@
 	ammo_type = /obj/item/ammo_casing/a357
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
+	mag_insert_sound = 'sound/effects/weapons/gun/spin_cylinder1.ogg'
 
 /obj/item/weapon/gun/projectile/revolver/coltpython
 	name = "Colt Python"
@@ -42,7 +43,7 @@
 	chamber_offset = 0
 	visible_message("<span class='warning'>\The [usr] spins the cylinder of \the [src]!</span>", \
 	"<span class='notice'>You hear something metallic spin and click.</span>")
-	playsound(src.loc, 'sound/effects/weapons/gun/spin_cylinder1.ogg', 75, FALSE)
+	playsound(src.loc, 'sound/effects/weapons/gun/revolver_spin.ogg', 100, FALSE)
 	loaded = shuffle(loaded)
 	if(rand(1,max_shells) > loaded.len)
 		chamber_offset = rand(0,max_shells - loaded.len)
@@ -68,7 +69,7 @@
 	name = "Legacy .38"
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
 	icon_state = "detective"
-	fire_sound = 'sound/weapons/gun_revolversmall.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver1.ogg'
 	max_shells = 6
 	caliber = "38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
@@ -78,8 +79,6 @@
 	name = "S&W 620"
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 620. Uses .38-Special rounds."
 	icon_state = "saw620"
-	fire_sound = 'sound/weapons/gun_revolversmall.ogg'
-
 
 /obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()
 	set name = "Name Gun"
@@ -232,7 +231,7 @@
 	insert_cell(C, user)
 	return 1
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell)
+	if(bcell && chambered?.BB)
 		if(bcell.checked_use(UC))
 			return 1
 		else

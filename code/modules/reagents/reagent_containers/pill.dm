@@ -11,7 +11,7 @@
 	possible_transfer_amounts = null
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
-	volume = 60
+	volume = 30
 
 /obj/item/weapon/reagent_containers/pill/Initialize()
 	. = ..()
@@ -40,6 +40,10 @@
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		if(!do_mob(user, M))
 			return
+
+		if(user.get_active_hand() != src)
+			return
+
 		user.drop_from_inventory(src) //icon update
 		user.visible_message("<span class='warning'>[user] forces [M] to swallow \the [src].</span>")
 		var/contained = reagentlist()
@@ -72,23 +76,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 //We lied - it's pills all the way down
-/obj/item/weapon/reagent_containers/pill/antitox
-	name = "Dylovene (25u)"
-	desc = "Neutralizes many common toxins."
-	icon_state = "pill1"
-/obj/item/weapon/reagent_containers/pill/antitox/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/dylovene, 25)
-	color = reagents.get_color()
-
-
 /obj/item/weapon/reagent_containers/pill/tox
 	name = "toxins pill"
 	desc = "Highly toxic."
 	icon_state = "pill4"
 /obj/item/weapon/reagent_containers/pill/tox/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin, 50)
+	reagents.add_reagent(/datum/reagent/toxin, 30)
 	color = reagents.get_color()
 
 
@@ -98,7 +92,7 @@
 	icon_state = "pill9"
 /obj/item/weapon/reagent_containers/pill/cyanide/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/cyanide, 50)
+	reagents.add_reagent(/datum/reagent/toxin/cyanide, 30)
 
 
 /obj/item/weapon/reagent_containers/pill/adminordrazine
@@ -107,7 +101,7 @@
 	icon_state = "pillA"
 /obj/item/weapon/reagent_containers/pill/adminordrazine/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/adminordrazine, 50)
+	reagents.add_reagent(/datum/reagent/adminordrazine, 30)
 
 
 /obj/item/weapon/reagent_containers/pill/stox
@@ -257,7 +251,7 @@
 	name = "Noexcutite (15u)"
 	desc = "Feeling jittery? This should calm you down."
 	icon_state = "pill4"
-obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
+/obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/noexcutite, 15)
 	color = reagents.get_color()
@@ -322,8 +316,8 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/glucose, 20)
 	color = reagents.get_color()
-	
-	
+
+
 //Mining pills.
 /obj/item/weapon/reagent_containers/pill/leporazine
 	name = "Thermostabilizine"
@@ -332,4 +326,15 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 /obj/item/weapon/reagent_containers/pill/leporazine/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/leporazine, 15)
+	color = reagents.get_color()
+
+//Not actually a pill, but pills type provide everything needed for this
+/obj/item/weapon/reagent_containers/pill/sugar_cube
+	name = "sugar cube"
+	desc = "Sugar pressed together in block shape that is used to sweeten drinks."
+	icon_state = "sugar_cubes"
+
+/obj/item/weapon/reagent_containers/pill/sugar_cube/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/sugar, 5)
 	color = reagents.get_color()

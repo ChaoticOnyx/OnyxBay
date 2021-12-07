@@ -181,10 +181,10 @@
 	if(ishuman(M)) // Any location
 		if(iscultist(M))
 			if(prob(10))
-				GLOB.cult.offer_uncult(M)
+				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
 				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
-				M.visible_message("<span class='warning'>\The [M] coughs up \the [S]!</span>")
+				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
 		if(M.mind && M.mind.vampire)
 			M.adjustFireLoss(6)
@@ -195,8 +195,11 @@
 					V.show_message(SPAN_WARNING("[M]'s skin sizzles and burns."), 1)
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
-		T.holy = 1
-	return
+		T.holy = TRUE
+
+		var/area/A = get_area(T)
+		if(A && !isspace(A))
+			A.holy = TRUE
 
 /datum/reagent/diethylamine
 	name = "Diethylamine"
@@ -264,7 +267,7 @@
 		T.clean_blood()
 
 
-		for(var/mob/living/carbon/slime/M in T)
+		for(var/mob/living/carbon/metroid/M in T)
 			M.adjustToxLoss(rand(5, 10))
 
 /datum/reagent/space_cleaner/affect_touch(mob/living/carbon/M, alien, removed)
@@ -297,7 +300,7 @@
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#009ca8"
 

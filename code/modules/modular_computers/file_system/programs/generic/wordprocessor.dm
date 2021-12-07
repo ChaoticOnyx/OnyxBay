@@ -143,8 +143,21 @@
 		var/oldtext = html_decode(loaded_data)
 		oldtext = replacetext(oldtext, "\[br\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext), "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext) as message|null, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
 		if(!newtext)
+			return
+		//Count the fields
+		var/laststart = 1
+		var/fields
+		while(1)
+			var/i = findtext_char(newtext, "\[field\]", laststart)
+			if(i==0)
+				break
+			laststart = i+1
+			fields++
+
+		if(fields > 50)
+			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
 		loaded_data = newtext
 		is_edited = 1
@@ -155,7 +168,7 @@
 		if(!computer.nano_printer)
 			error = "Missing Hardware: Your computer does not have the required hardware to complete this operation."
 			return 1
-		if(!computer.nano_printer.print_text(pencode2html(loaded_data)))
+		if(!computer.nano_printer.print_text(loaded_data))
 			error = "Hardware error: Printer was unable to print the file. It may be out of paper."
 			return 1
 

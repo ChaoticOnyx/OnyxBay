@@ -93,6 +93,10 @@
 		if(!(current_network in C.network))
 			return
 
+		THROTTLE(last_sound, 2 SECONDS)
+		if(last_sound)
+			playsound(usr, 'sound/effects/cctv_switch.ogg', 25)
+
 		switch_to_camera(usr, C)
 		apply_visual(usr)
 		return 1

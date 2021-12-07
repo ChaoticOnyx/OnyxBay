@@ -55,7 +55,7 @@
 		icon_state = "[initial(name)]"
 
 	if(icon_state == "[initial(name)]_active")
-		set_light(1.5, 2, "#ff6a00")
+		set_light(0.4, 0.1, 1, 2, "#ff6a00")
 	else
 		set_light(0)
 
@@ -98,7 +98,7 @@
 	add_fingerprint(user)
 
 /obj/item/weapon/melee/baton/proc/set_status(newstatus, mob/user)
-	if(bcell && bcell.charge > hitcost)
+	if(bcell && bcell.charge >= hitcost)
 		if(status != newstatus)
 			change_status(newstatus)
 			to_chat(user, "<span class='notice'>[src] is now [status ? "on" : "off"].</span>")
@@ -251,7 +251,7 @@
 /obj/item/weapon/melee/baton/robot/electrified_arm/update_icon()
 	if(status)
 		icon_state = "electrified_arm_active"
-		set_light(1.5, 2, "#006aff")
+		set_light(0.4, 0.1, 1, 2, "#006aff")
 	else
 		icon_state = "electrified_arm"
 		set_light(0)

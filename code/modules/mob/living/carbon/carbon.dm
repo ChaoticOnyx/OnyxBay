@@ -14,9 +14,15 @@
 	QDEL_NULL_LIST(internal_organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+	if(loc)
+		for(var/mob/M in contents)
+			M.dropInto(loc)
+	else
+		for(var/mob/M in contents)
+			qdel(M)
 	return ..()
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	bloodstr.clear_reagents()
 	touching.clear_reagents()
 	var/datum/reagents/R = get_ingested_reagents()
@@ -43,27 +49,29 @@
 
 /mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
-		if(user.last_special <= world.time)
-			user.last_special = world.time + 50
-			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
-			var/obj/item/I = user.get_active_hand()
-			var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
-			if(istype(src, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = src
-				var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
-				if (istype(organ))
-					organ.take_external_damage(dmg, 0)
-				H.updatehealth()
-			else
-				take_organ_damage(dmg)
-			user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
-			playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+		THROTTLE_SHARED(cooldown, 50, user.last_special)
+		if(!cooldown)
+			return
 
-			if(prob(getBruteLoss() - 50))
-				for(var/atom/movable/A in stomach_contents)
-					A.loc = loc
-					stomach_contents.Remove(A)
-				gib()
+		src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
+		var/obj/item/I = user.get_active_hand()
+		var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
+		if(istype(src, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
+			if (istype(organ))
+				organ.take_external_damage(dmg, 0)
+			H.updatehealth()
+		else
+			take_organ_damage(dmg)
+		user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
+		playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+
+		if(prob(getBruteLoss() - 50))
+			for(var/atom/movable/A in stomach_contents)
+				A.loc = loc
+				stomach_contents.Remove(A)
+			gib()
 
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
@@ -99,7 +107,7 @@
 
 	stun_effect_act(agony_amount=shock_damage, def_zone=def_zone)
 
-	playsound(loc, "spark", 50, 1, -1)
+	playsound(loc, SFX_SPARK, 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
 			"<span class='warning'>[src] was electrocuted[source ? " by the [source]" : ""]!</span>", \
@@ -130,16 +138,12 @@
 	return shock_damage
 
 /mob/living/carbon/proc/apply_shock(shock_damage, def_zone, siemens_coeff = 1.0)
-	var/neuromods_modifier = max(1, (neuromods.len)**2 * 2)
 	shock_damage *= siemens_coeff
 	if(shock_damage < 0.5)
 		return 0
 	if(shock_damage < 1)
 		shock_damage = 1
 	apply_damage(shock_damage, BURN, def_zone, used_weapon="Electrocution")
-
-	if (neuromods_modifier > 1)
-		adjustBrainLoss(neuromods_modifier)
 
 	return(shock_damage)
 
@@ -240,7 +244,10 @@
 /mob/living/carbon/proc/eyecheck()
 	return 0
 
-/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/carbon/proc/get_ear_protection()
+	return 0
+
+/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(eyecheck() < intensity || override_blindness_check)
 		return ..()
 
@@ -275,65 +282,62 @@
 	return
 
 /mob/living/carbon/throw_item(atom/target)
-	src.throw_mode_off()
-	if(src.stat || !target)
+	throw_mode_off()
+	if(!isturf(loc))
 		return
-	if(target.type == /obj/screen) return
+	if(stat || !target)
+		return
+	if(target.type == /obj/screen)
+		return
 
-	var/atom/movable/item = src.get_active_hand()
+	var/atom/movable/item = get_active_hand()
 
-	if(!item) return
+	if(!item)
+		return
 
 	if(!istype(item, /obj/item))
 		return
-	else
-		var/obj/item/I = item
-		if(!I.candrop)
-			return
+
+	var/obj/item/I = item
+	var/is_grab = istype(item, /obj/item/grab)
+	if(!I.canremove && !is_grab)
+		return
 
 	var/throw_range = item.throw_range
 	var/itemsize
-	if (istype(item, /obj/item/grab))
+	if(is_grab)
 		var/obj/item/grab/G = item
-		item = G.throw_held() //throw the person instead of the grab
+		item = G.throw_held() // throw the person instead of the grab
 		if(ismob(item))
 			var/mob/M = item
 
 			//limit throw range by relative mob size
-			src.next_move = world.time + 15
-			throw_range = round(M.throw_range * min(src.mob_size/M.mob_size, 1))
-			itemsize = round(M.mob_size/4)
+			next_move = world.time + 15
+			throw_range = round(M.throw_range * min(mob_size / M.mob_size, 1))
+			itemsize = round(M.mob_size / 4)
 			var/turf/start_T = get_turf(loc) //Get the start and target tile for the descriptors
 			var/turf/end_T = get_turf(target)
 			if(start_T && end_T && usr == src)
 				var/start_T_descriptor = "<font color='#6b5d00'>[start_T] \[[start_T.x],[start_T.y],[start_T.z]\] ([start_T.loc])</font>"
 				var/end_T_descriptor = "<font color='#6b4400'>[start_T] \[[end_T.x],[end_T.y],[end_T.z]\] ([end_T.loc])</font>"
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
-
-	else if (istype(item, /obj/item/))
-		var/obj/item/I = item
+	else
 		itemsize = I.w_class
 
-	src.drop_from_inventory(item)
+	drop_from_inventory(item)
 	if(!item || !isturf(item.loc))
 		return
 
 	//actually throw it!
-	src.visible_message(SPAN("warning", "[src] has thrown [item]."), range = min(itemsize*2,world.view))
+	visible_message(SPAN("warning", "[src] has thrown [item]."), range = min(itemsize * 2, world.view))
+	var/sfx_loudness = min(100, 5 + (itemsize * 5))
+	playsound(src, SFX_THROWING, sfx_loudness, 1)
 
-	if(!src.lastarea)
-		src.lastarea = get_area(src.loc)
-	if((istype(src.loc, /turf/space)) || (src.lastarea.has_gravity == 0))
-		src.inertia_dir = get_dir(target, src)
-		step(src, inertia_dir)
-
-
-/*
-	if(istype(src.loc, /turf/space) || (src.flags & NOGRAV)) //they're in space, move em one space in the opposite direction
-		src.inertia_dir = get_dir(target, src)
-		step(src, inertia_dir)
-*/
-
+	if(!lastarea)
+		lastarea = get_area(loc)
+	if((istype(loc, /turf/space)) || (lastarea.has_gravity == FALSE))
+		inertia_dir = get_dir(target, src)
+		step(src, inertia_dir) // they're in space, move em in the opposite direction
 
 	item.throw_at(target, throw_range, item.throw_speed, src)
 
@@ -395,7 +399,8 @@
 	stop_pulling()
 	to_chat(src, SPAN("warning", "You slipped on [slipped_on]!"))
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	Weaken(Floor(stun_duration/3))
+	Stun(Ceiling(stun_duration/3)) // At least 1 second of actual stun
+	Weaken(stun_duration)
 	return 1
 
 /mob/living/carbon/slip_on_obj(obj/slipped_on, stun_duration = 8, slip_dist = 0)
@@ -430,7 +435,7 @@
 		return null
 	return species.default_language ? all_languages[species.default_language] : null
 
-/mob/living/carbon/show_inv(mob/user as mob)
+/mob/living/carbon/show_inv(mob/user)
 	user.set_machine(src)
 	var/dat = {"
 	<meta charset=\"utf-8\">
@@ -445,7 +450,7 @@
 	<BR><A href='?src=\ref[user];refresh=1'>Refresh</A>
 	<BR><A href='?src=\ref[user];mach_close=mob[name]'>Close</A>
 	<BR>"}
-	user << browse(dat, text("window=mob[];size=325x500", name))
+	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[name]")
 	return
 
@@ -509,7 +514,7 @@
 		return
 	stasis_sources[source] = factor
 
-/mob/living/carbon/proc/InStasis()
+/mob/living/carbon/InStasis()
 	if(!stasis_value)
 		return FALSE
 	return life_tick % stasis_value
@@ -532,9 +537,12 @@
 /mob/living/carbon/proc/get_ingested_reagents()
 	return reagents
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	. = ..()
 
 	// And restore all organs...
-	for (var/obj/item/organ/O in organs)
-		O.rejuvenate()
+	for(var/obj/item/organ/O in organs)
+		O.rejuvenate(ignore_prosthetic_prefs)
+
+/mob/living/carbon/proc/set_species()
+	return FALSE

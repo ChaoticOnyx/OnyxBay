@@ -19,6 +19,7 @@
 	hard_drive.store_file(new /datum/computer_file/program/rcon_console())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/shields_monitor())
+	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 
 // Medical
 /obj/item/modular_computer/console/preset/medical/install_default_hardware()
@@ -30,6 +31,7 @@
 	hard_drive.store_file(new /datum/computer_file/program/suit_sensors())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/records())
+	hard_drive.store_file(new /datum/computer_file/program/records/medical())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 	set_autorun("sensormonitor")
 
@@ -77,6 +79,7 @@
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/card_mod())
+	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
 	hard_drive.store_file(new /datum/computer_file/program/comm())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
@@ -95,6 +98,7 @@
 	hard_drive.store_file(new /datum/computer_file/program/digitalwarrant())
 	hard_drive.store_file(new /datum/computer_file/program/forceauthorization())
 	hard_drive.store_file(new /datum/computer_file/program/records())
+	hard_drive.store_file(new /datum/computer_file/program/records/security())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 
 // Civilian
@@ -106,7 +110,6 @@
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/newsbrowser())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
 	hard_drive.store_file(new /datum/computer_file/program/supply())
@@ -192,7 +195,6 @@
 /obj/item/modular_computer/console/preset/library/install_default_programs()
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
-	hard_drive.store_file(new /datum/computer_file/program/newsbrowser())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 	hard_drive.store_file(new /datum/computer_file/program/library())

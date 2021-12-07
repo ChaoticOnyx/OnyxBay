@@ -17,7 +17,7 @@
 		return
 
 	if(user.incapacitated()  || !user.Adjacent(src))
-		show_browser(user, null, "window=mob[src.name]")
+		close_browser(user, "window=mob[src.name]")
 		return
 
 	if(user.strippingActions > 1 && !isAggresiveStrip(user))
@@ -52,6 +52,14 @@
 			visible_message("<span class='danger'>\The [user] is trying to set \the [src]'s sensors!</span>")
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				toggle_sensors(user)
+			return
+		if("rolldown")
+			visible_message(SPAN_DANGER("\The [user] is trying to roll down \the [src]'s uniform!"))
+			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+				var/obj/item/clothing/under/U = w_uniform
+				if(U)
+					U.rollsuit()
+					visible_message(SPAN_DANGER("\The [user] rolled down \the [src]'s uniform!"))
 			return
 		if("internals")
 			visible_message("<span class='danger'>\The [usr] is trying to set \the [src]'s internals!</span>")

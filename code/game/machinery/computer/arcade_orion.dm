@@ -95,7 +95,7 @@
 		if(ORION_VIEW_MAIN)
 			if(event == ORION_TRAIL_START) //new game? New game.
 				dat += "<center><h1>Orion Trail[emagged ? ": Realism Edition" : ""]</h1><br>Learn how our ancestors got to Orion, and have fun in the process!</center><br><P ALIGN=Right><a href='?src=\ref[src];continue=1'>Start New Game</a></P>"
-				user << browse(dat, "window=arcade")
+				show_browser(user, dat, "window=arcade")
 				return
 			else
 				event_title = event
@@ -173,7 +173,7 @@
 	dat += "[view==ORION_VIEW_MAIN ? "" : "<a href='?src=\ref[src];continue=1'>"]Main[view==ORION_VIEW_MAIN ? "" : "</a>"]<BR>"
 	dat += "[view==ORION_VIEW_SUPPLIES ? "" : "<a href='?src=\ref[src];supplies=1'>"]Supplies[view==ORION_VIEW_SUPPLIES ? "" : "</a>"]<BR>"
 	dat += "[view==ORION_VIEW_CREW ? "" : "<a href='?src=\ref[src];crew=1'>"]Crew[view==ORION_VIEW_CREW ? "" : "</a>"]</P>"
-	user << browse(dat, "window=arcade")
+	show_browser(user, dat, "window=arcade")
 
 /obj/machinery/computer/arcade/orion_trail/OnTopic(user, href_list)
 	if(href_list["continue"])
@@ -184,13 +184,14 @@
 			if(event == ORION_TRAIL_GAMEOVER)
 				event = null
 				attack_hand(user)
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
+				//This used to be "return TOPIC_REFRESH". It wouldn't leave time for operations with the dot variable.
 			if(!settlers.len)
 				event_desc = "You and your crew were killed on the way to Orion, your ship left abandoned for scavengers to find."
 				next_event = ORION_TRAIL_GAMEOVER
 			if(port == 9)
 				win()
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
 			var/travel = min(rand(1000,10000),distance)
 			if(href_list["fix"])
 				var/item = href_list["fix"]
@@ -231,34 +232,34 @@
 				generate_event(next_event)
 		else
 			view = ORION_VIEW_MAIN
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["supplies"])
 		view = ORION_VIEW_SUPPLIES
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["crew"])
 		view = ORION_VIEW_CREW
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["buy"])
 		var/item = href_list["buy"]
 		if(supply_cost["[item]"] <= supplies["6"])
 			supplies["[item]"] += (text2num(item) > 3 ? 10 : 1)
 			supplies["6"] -= supply_cost["[item]"]
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["sell"])
 		var/item = href_list["sell"]
 		if(supplies["[item]"] >= (text2num(item) > 3 ? 10 : 1))
 			supplies["6"] += supply_cost["[item]"]
 			supplies["[item]"] -= (text2num(item) > 3 ? 10 : 1)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["kill"])
 		var/item = text2num(href_list["kill"])
 		remove_settler(item)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["attack"])
 		supply_cost = list()
@@ -276,7 +277,7 @@
 				if(prob(10))
 					remove_settler(null, "died while you were escaping!")
 		event = ORION_TRAIL_SPACEPORT_RAIDED
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
@@ -451,7 +452,7 @@
 			to_chat(usr, "<span class='danger'><font size=3>You're never going to make it to Orion...</font></span>")
 			var/mob/living/M = usr
 			M.visible_message("\The [M] starts rapidly deteriorating.")
-			M << browse (null,"window=arcade")
+			show_browser(M, null,"window=arcade")
 			for(var/i=0;i<10;i++)
 				sleep(10)
 				M.Stun(5)
@@ -463,6 +464,7 @@
 
 /obj/machinery/computer/arcade/orion_trail/emag_act(mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		newgame(1)
 		src.updateUsrDialog()
 

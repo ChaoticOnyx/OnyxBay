@@ -1,0 +1,108 @@
+{{if !data.hiring_menu}}
+	{{:helper.link("Open hiring menu", null, {'open_hiring_menu' : 1})}}
+{{else}}
+	{{:helper.link("Close hiring menu", null, {'close_hiring_menu' : 1})}}
+	<br><hr>	
+	{{if !data.hiring_job}}
+		<center><h2>Available jobs</h2>
+		{{:data.limit}}</center>
+
+		<table>
+			<tr>
+				<th>Security</th><td>
+				{{for data.security_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Medical</th>
+				<td>
+				{{for data.medical_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Engineering</th>
+				<td>
+				{{for data.engineering_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Science</th>
+				<td>
+				{{for data.science_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Support</th>
+				<td>
+				{{for data.support_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Supply</th>
+				<td>
+				{{for data.supply_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Service</th>
+				<td>
+				{{for data.service_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+
+			<tr>
+				<th>Civilian</th>
+				<td>
+				{{for data.civilian_jobs}}
+					{{:helper.link(value, null, {'vacancy_confirmation' : value}, null)}}
+				{{/for}}
+			</tr>
+		</table>
+
+	{{else data.message}}
+		<h3 align="center">{{:data.message}}</h3>
+		<div style="float: none" align="center"><table><tr><td>{{:helper.link("Okay", null, {'close_message' : 1}, null)}}</table></div>
+
+	{{else data.hiring_job}}
+		<h3 align="center">Confirm your choice: '{{:data.hiring_job}}'</h3>
+	<div style="float: none" align="center">
+		<table>
+			<tr>
+				<td>{{:helper.link("Confirm", null, {'open_vacancy' : data.hiring_job}, null)}}
+				<td>{{:helper.link("Cancel", null, {'close_message' : 1}, null)}}
+		</table>
+	</div>
+	{{/if}}
+
+{{/if}}
+
+{{if data.current_vacancies}}
+	<br><hr>
+	<h2 align="center">Current vacancies</h2>
+
+	<table style="width:100%">
+		<tr><th style="width:35%">Job<th style="width:15%">Status<th style="width:15%">Opened at<th style="width:30">Filled by<th width="5%">
+			{{for data.current_vacancies}}
+				<tr class = "candystripe" align="center">
+				<td>{{:value.title}}</td>
+				<td>{{:value.status}}</td>
+				<td>{{:value.time}}</td>
+				<td>{{:value.filledby}}</td>
+				<td>{{:helper.link(value.filledby == "None" ? "X" : "", null, {'delete_vacancy' : value.id}, null, 'bad')}}</td>
+				</tr>
+			{{/for}}
+	</table>
+{{/if}}

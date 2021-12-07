@@ -6,7 +6,7 @@
 	anchored = 1
 	idle_power_usage = 5
 	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	var/obj/item/weapon/cell/charging = null
 	var/chargelevel = -1
 
@@ -129,5 +129,7 @@
 /obj/machinery/cell_charger/Process()
 	if(!charging)
 		return PROCESS_KILL
+	if(stat & NOPOWER)
+		return
 	charging.give(active_power_usage*CELLRATE)
 	update_icon()

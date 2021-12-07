@@ -48,9 +48,16 @@ SUBSYSTEM_DEF(storyteller)
 	_log_debug("ROUND STATISTICS END")
 
 /datum/controller/subsystem/storyteller/fire(resumed = FALSE)
-	if (__storyteller_tick == -1) // first tick is called with default 'wait', we need our tick with our value of 'wait'
+	if(__storyteller_tick == -1) // first tick is called with default 'wait', we need our tick with our value of 'wait'
 		__storyteller_tick = 0
 		return
+	
+	ASSERT(evacuation_controller)
+	if(evacuation_controller.is_evacuating())
+		_log_debug("Skip cycle due to evacuation. The next try is scheduled for 1 minute")
+		wait = 1 MINUTE
+		return
+
 	__storyteller_tick++
 	_log_debug("Process new cycle start")
 	var/time_to_next_cycle = __character.process_new_cycle_start()
@@ -91,7 +98,8 @@ SUBSYSTEM_DEF(storyteller)
 	if (drop_data)
 		__ckey_to_ui_data[user.ckey] = list()
 	var/data = __ckey_to_ui_data[user.ckey]
-	data["storyteller"] = __get_params_for_ui(data["current_tab"])
+	if("current_tab" in data)
+		data["storyteller"] = __get_params_for_ui(data["current_tab"])
 	data["pregame"] = (GAME_STATE < RUNLEVEL_GAME)
 
 	var/ui_key = "storyteller_control_panel"
@@ -164,3 +172,6 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/__create_all_triggers()
 	for (var/type in subtypesof(/storyteller_trigger))
 		__triggers[type] = new type
+
+/datum/controller/subsystem/storyteller/proc/get_character()
+    return __character

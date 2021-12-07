@@ -77,21 +77,21 @@
 
 	if(move)
 		var/obj/loc_landmark
-		for(var/obj/effect/landmark/start/sloc in landmarks_list)
+		for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 			if (sloc.name != "AI")
 				continue
 			if ((locate(/mob/living) in sloc.loc) || (locate(/obj/structure/AIcore) in sloc.loc))
 				continue
 			loc_landmark = sloc
 		if (!loc_landmark)
-			for(var/obj/effect/landmark/tripai in landmarks_list)
-				if (tripai.name == "tripai")
+			for(var/obj/effect/landmark/tripai in GLOB.landmarks_list)
+				if (tripai.name == "Triple AI")
 					if((locate(/mob/living) in tripai.loc) || (locate(/obj/structure/AIcore) in tripai.loc))
 						continue
 					loc_landmark = tripai
 		if (!loc_landmark)
 			to_chat(O, "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone.")
-			for(var/obj/effect/landmark/start/sloc in landmarks_list)
+			for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 				if (sloc.name == "AI")
 					loc_landmark = sloc
 		O.forceMove(loc_landmark.loc)
@@ -151,7 +151,7 @@
 		qdel(src)
 	return O
 
-/mob/living/carbon/human/proc/slimeize(adult as num, reproduce as num)
+/mob/living/carbon/human/proc/metroidize(adult as num, reproduce as num)
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/obj/item/W in src)
@@ -163,24 +163,24 @@
 	for(var/t in organs)
 		qdel(t)
 
-	var/mob/living/carbon/slime/new_slime
+	var/mob/living/carbon/metroid/new_metroid
 	if(reproduce)
 		var/number = pick(14;2,3,4)	//reproduce (has a small chance of producing 3 or 4 offspring)
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++)
-			var/mob/living/carbon/slime/M = new /mob/living/carbon/slime(loc)
+			var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc)
 			M.nutrition = round(nutrition/number)
 			step_away(M,src)
 			babies += M
-		new_slime = pick(babies)
+		new_metroid = pick(babies)
 	else
-		new_slime = new /mob/living/carbon/slime(loc)
+		new_metroid = new /mob/living/carbon/metroid(loc)
 		if(adult)
-			new_slime.is_adult = 1
+			new_metroid.is_adult = 1
 		else
-	new_slime.key = key
+	new_metroid.key = key
 
-	to_chat(new_slime, "<B>You are now a slime. Skreee!</B>")
+	to_chat(new_metroid, "<B>You are now a metroid. Skreee!</B>")
 	qdel(src)
 	return
 
@@ -329,4 +329,4 @@
 	src.does_not_breathe = TRUE
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume
-	playsound(get_turf(src), 'sound/hallucinations/wail.ogg', 20, 1)
+	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

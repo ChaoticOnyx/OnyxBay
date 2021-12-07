@@ -201,7 +201,6 @@
 			return
 		else
 			return
-	return
 
 
 /obj/machinery/suit_storage_unit/attack_hand(mob/user as mob)
@@ -257,7 +256,7 @@
 			dat+= "<font color='maroon'><B>Unit chamber is too contaminated to continue usage. Please call for a qualified individual to perform maintenance.</font></B><BR><BR>"
 			dat+= text("<HR><A href='?src=\ref[];mach_close=suit_storage_unit'>Close control panel</A>", user)
 
-	user << browse(dat, "window=suit_storage_unit;size=400x500")
+	show_browser(user, dat, "window=suit_storage_unit;size=400x500")
 	onclose(user, "suit_storage_unit")
 	return
 
@@ -373,8 +372,8 @@
 	if(occupant)
 		eject_occupant(user)
 		return  // eject_occupant opens the door, so we need to return
+	playsound(src.loc, isopen ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)
 	isopen = !isopen
-	playsound(src, 'sound/machines/suitstorage_cycledoor.ogg', 50, 0)
 	return
 
 
@@ -875,6 +874,7 @@
 		return
 
 	//Clear the access reqs, disable the safeties, and open up all paintjobs.
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	to_chat(user, "<span class='danger'>You run the sequencer across the interface, corrupting the operating protocols.</span>")
 	departments = list("Engineering","Mining","Medical","Security","Atmos","^%###^%$")
 	emagged = 1
@@ -927,7 +927,7 @@
 	if(panel_open)
 		wires.Interact(user)
 
-	user << browse(dat, "window=suit_cycler")
+	show_browser(user, dat, "window=suit_cycler")
 	onclose(user, "suit_cycler")
 	return
 
@@ -975,6 +975,7 @@
 		if(allowed(usr))
 			locked = !locked
 			to_chat(usr, "You [locked ? "lock" : "unlock"] [src].")
+			playsound(src.loc, locked ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)
 		else
 			to_chat(usr, FEEDBACK_ACCESS_DENIED)
 

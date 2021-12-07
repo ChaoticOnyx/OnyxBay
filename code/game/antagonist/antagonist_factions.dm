@@ -2,7 +2,7 @@
 	set name = "Convert Bourgeoise"
 	set category = "Abilities"
 
-	if(!M in able_mobs_in_oview(src))
+	if(!(M in able_mobs_in_oview(src)))
 		return
 	if(!M.mind || !M.client)
 		return
@@ -48,7 +48,7 @@
 	set name = "Convert Recidivist"
 	set category = "Abilities"
 
-	if(!M in able_mobs_in_oview(src))
+	if(!(M in able_mobs_in_oview(src)))
 		return
 	if(!M.mind || !M.client)
 		return

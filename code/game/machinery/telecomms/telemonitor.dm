@@ -58,7 +58,7 @@
 
 
 
-		user << browse(dat, "window=comm_monitor;size=575x400")
+		show_browser(user, dat, "window=comm_monitor;size=575x400")
 		onclose(user, "server_control")
 
 		temp = ""
@@ -153,7 +153,7 @@
 
 /obj/machinery/computer/telecomms/monitor/emag_act(remaining_charges, mob/user)
 	if(!emagged)
-		playsound(src.loc, get_sfx("spark"), 75, 1)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		to_chat(user, "<span class='notice'>You you disable the security protocols</span>")
 		src.updateUsrDialog()

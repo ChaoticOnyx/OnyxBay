@@ -274,7 +274,7 @@
 			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
 			return 0
 	return 1
-/obj/structure/railing/can_climb(mob/living/user)
+/obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
 	var/turf/UT = get_turf(usr)
@@ -319,3 +319,30 @@
 		user.visible_message("<span class='warning'>\The [user] climbs over \the [src]!</span>")
 
 	climbers -= user
+
+/obj/structure/railing/steel
+	icon_state = "newrailing0"
+
+/obj/structure/railing/steel/update_icon(UpdateNeighgors = 1)
+	NeighborsCheck(UpdateNeighgors)
+	overlays.Cut()
+	if (!check || !anchored)
+		icon_state = "newrailing0"
+	else
+		icon_state = "newrailing1"
+		if (check & 32)
+			overlays += image ('icons/obj/railing.dmi', src, "newcorneroverlay")
+		if ((check & 16) || !(check & 32) || (check & 64))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_l")
+		if (!(check & 2) || (check & 1) || (check & 4))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_r")
+			if(check & 4)
+				switch (src.dir)
+					if (NORTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = 32)
+					if (SOUTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = -32)
+					if (EAST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = -32)
+					if (WEST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = 32)

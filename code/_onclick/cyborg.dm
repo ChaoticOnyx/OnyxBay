@@ -16,7 +16,10 @@
 		CtrlShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(modifiers["shift"])
+			ShiftMiddleClickOn(A)
+		else
+			MiddleClickOn(A)
 		return
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -57,10 +60,6 @@
 	if(!W)
 		A.add_hiddenprint(src)
 		A.attack_robot(src)
-		return
-
-	// buckled cannot prevent machine interlinking but stops arm movement
-	if( buckled )
 		return
 
 	if(W == A)
@@ -165,3 +164,14 @@
 /atom/proc/attack_robot(mob/user as mob)
 	attack_ai(user)
 	return
+
+// QOL feature, clicking on turf can toogle doors
+/turf/BorgCtrlClick(mob/living/silicon/robot/user)
+	AICtrlClick(user)
+
+/turf/BorgAltClick(mob/living/silicon/robot/user)
+	AIAltClick(user)
+
+/turf/BorgShiftClick(mob/living/silicon/robot/user)
+	AIShiftClick(user)
+	..()

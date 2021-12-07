@@ -54,6 +54,7 @@
 	plushes["lizard plush"] = /obj/item/toy/plushie/lizard
 	plushes["spider plush"] = /obj/item/toy/plushie/spider
 	plushes["farwa plush"] = /obj/item/toy/plushie/farwa
+	plushes["snail plush"] = /obj/item/toy/plushie/snail
 	gear_tweaks += new /datum/gear_tweak/path(plushes)
 
 /datum/gear/mirror
@@ -77,19 +78,6 @@
 /datum/gear/cornpipe
 	display_name = "pipe, corn"
 	path = /obj/item/clothing/mask/smokable/pipe/cobpipe
-
-/datum/gear/matchbook
-	display_name = "matchbook"
-	path = /obj/item/weapon/storage/box/matches
-
-/datum/gear/lighter
-	display_name = "cheap lighter"
-	path = /obj/item/weapon/flame/lighter
-
-/datum/gear/zippo
-	display_name = "zippo"
-	path = /obj/item/weapon/flame/lighter/zippo
-	cost = 2
 
 /datum/gear/ashtray
 	display_name = "ashtray, plastic"

@@ -12,8 +12,8 @@
 	var/filling_states   // List of percentages full that have icons
 	var/base_name = null // Name to put in front of drinks, i.e. "[base_name] of [contents]"
 	var/base_icon = null // Base icon name for fill states
-	pickup_sound = "drink_pickup"
-	pull_sound = "pull_glass"
+	pickup_sound = SFX_PICKUP_BOTTLE
+	pull_sound = SFX_PULL_GLASS
 	can_be_splashed = TRUE
 
 /obj/item/weapon/reagent_containers/food/drinks/Initialize()
@@ -196,9 +196,10 @@
 	icon_state = "soymilk"
 	item_state = "carton"
 	center_of_mass = "x=16;y=9"
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/drink/milk/soymilk, 50)
+
+/obj/item/weapon/reagent_containers/food/drinks/soymilk/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/drink/milk/soymilk, 50)
 
 /obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton
 	name = "small milk carton"

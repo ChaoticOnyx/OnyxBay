@@ -94,22 +94,21 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
 
 /obj/item/weapon/gun/energy/update_icon()
-	. = ..()
 	if(charge_meter)
 		var/ratio
-
 		if(power_supply)
 			if(power_supply.charge < charge_cost)
 				ratio = 0
 			else
 				ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
-		else 
+		else
 			ratio = 0
 
 		if(modifystate)
 			icon_state = "[modifystate][ratio]"
 		else
 			icon_state = "[initial(icon_state)][ratio]"
+	..()
 
 /obj/item/weapon/gun/energy/secure
 	desc = "A basic energy-based gun with a secure authorization chip."

@@ -25,7 +25,7 @@
 	item_state = "wrench"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 8.0
+	force = 8.5
 	throwforce = 7.0
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.8
@@ -35,10 +35,37 @@
 	matter = list(MATERIAL_STEEL = 150)
 	center_of_mass = "x=17;y=16"
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
+	var/randicon = TRUE
 
 /obj/item/weapon/wrench/Initialize()
-	icon_state = "wrench[pick("","_red","_black")]"
+	if(randicon)
+		icon_state = "wrench[pick("","_red","_black")]"
 	. = ..()
+
+/obj/item/weapon/wrench/plain
+	icon_state = "wrench"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/red
+	icon_state = "wrench_red"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/black
+	icon_state = "wrench_black"
+	randicon = FALSE
+
+/obj/item/weapon/wrench/old
+	name = "old wrench"
+	desc = "It wrenches. It unwrenches. But more importantly, it's old as hell."
+	icon_state = "legacywrench"
+	center_of_mass = "x=16;y=16"
+	matter = list(MATERIAL_PLASTEEL = 150)
+	force = 9.5
+	throwforce = 7.5
+	mod_weight = 0.85
+	mod_reach = 0.75
+	mod_handy = 1.1
+	randicon = FALSE
 
 /*
  * Screwdriver
@@ -63,37 +90,40 @@
 	throw_speed = 3
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 75)
-	center_of_mass = "x=16;y=7"
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	var/randicon = TRUE
 
 /obj/item/weapon/screwdriver/Initialize()
-	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
-		if ("red")
-			icon_state = "screwdriver2"
-			item_state = "screwdriver"
-		if ("blue")
-			icon_state = "screwdriver"
-			item_state = "screwdriver_blue"
-		if ("purple")
-			icon_state = "screwdriver3"
-			item_state = "screwdriver_purple"
-		if ("brown")
-			icon_state = "screwdriver4"
-			item_state = "screwdriver_brown"
-		if ("green")
-			icon_state = "screwdriver5"
-			item_state = "screwdriver_green"
-		if ("cyan")
-			icon_state = "screwdriver6"
-			item_state = "screwdriver_cyan"
-		if ("yellow")
-			icon_state = "screwdriver7"
-			item_state = "screwdriver_yellow"
+	if(randicon)
+		switch(pick("red", "blue", "purple", "brown", "green", "cyan", "yellow"))
+			if("red")
+				icon_state = "screwdriver2"
+				item_state = "screwdriver"
+			if("blue")
+				icon_state = "screwdriver"
+				item_state = "screwdriver_blue"
+			if("purple")
+				icon_state = "screwdriver3"
+				item_state = "screwdriver_purple"
+			if("brown")
+				icon_state = "screwdriver4"
+				item_state = "screwdriver_brown"
+			if("green")
+				icon_state = "screwdriver5"
+				item_state = "screwdriver_green"
+			if("cyan")
+				icon_state = "screwdriver6"
+				item_state = "screwdriver_cyan"
+			if("yellow")
+				icon_state = "screwdriver7"
+				item_state = "screwdriver_yellow"
 
-	if (prob(75))
-		src.pixel_y = rand(0, 16)
+	if(prob(75))
+		pixel_y = rand(0, 16)
 	. = ..()
+	update_icon()
 
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
@@ -105,6 +135,40 @@
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		M = user
 	return eyestab(M,user)
+
+/obj/item/weapon/screwdriver/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/on_enter_storage(obj/item/weapon/storage/S)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/update_icon()
+	icon_rotation = istype(loc, /obj/item/weapon/storage) ? -90 : 0
+	update_transform()
+
+/obj/item/weapon/screwdriver/old
+	name = "old screwdriver"
+	desc = "Old-school flathead screwdriver made of plasteel, with a sturdy and heavy duraplastic handle."
+	icon_state = "legacyscrewdriver"
+	item_state = "screwdriver"
+	force = 8.5
+	mod_weight = 0.4
+	mod_reach = 0.3
+	mod_handy = 1.1
+	throwforce = 6.0
+	matter = list(MATERIAL_PLASTEEL = 75)
+	attack_verb = list("stabbed", "screwed", "unscrewed")
+	randicon = FALSE
 
 /*
  * Wirecutters
@@ -129,13 +193,15 @@
 	mod_handy = 0.75
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 80)
-	center_of_mass = "x=18;y=10"
+	center_of_mass = "x=18;y=16"
 	attack_verb = list("pinched", "nipped")
 	sharp = 1
 	edge = 1
+	hitsound = 'sound/weapons/bladeslice.ogg'
+	var/randicon = TRUE
 
 /obj/item/weapon/wirecutters/Initialize()
-	if(prob(50))
+	if(randicon && prob(50))
 		icon_state = "cutters-y"
 		item_state = "cutters_yellow"
 	. = ..()
@@ -152,6 +218,20 @@
 		return
 	else
 		..()
+
+/obj/item/weapon/wirecutters/old
+	name = "old wirecutters"
+	desc = "A very special pair of pliers with cutting edges. No excessive brackets and manipulators are needed to allow it to repair severed wiring."
+	icon_state = "legacycutters"
+	item_state = "cutters"
+	force = 6.5
+	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.5
+	mod_reach = 0.3
+	mod_handy = 0.8
+	matter = list(MATERIAL_PLASTEEL = 80)
+	center_of_mass = "x=20;y=16"
+	randicon = FALSE
 
 /*
  * Welding Tool
@@ -216,22 +296,20 @@
 		else
 			. += "\nThere is no tank attached."
 
-/obj/item/weapon/weldingtool/MouseDrop(atom/over)
-	if(!CanMouseDrop(over, usr))
-		return
+/obj/item/weapon/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/external/S = H.organs_by_name[target_zone]
 
-	if(istype(over, /obj/item/weapon/weldpack))
-		var/obj/item/weapon/weldpack/wp = over
-		if(wp.welder)
-			to_chat(usr, "\The [wp] already has \a [wp.welder] attached.")
-		else
-			usr.drop_from_inventory(src, wp)
-			wp.welder = src
-			usr.visible_message("[usr] attaches \the [src] to \the [wp].", "You attach \the [src] to \the [wp].")
-			wp.update_icon()
-		return
-
-	..()
+		if(!S || !BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
+			return ..()
+		if(!welding)
+			to_chat(user, "<span class='warning'>You'll need to turn [src] on to patch the damage on [M]'s [S.name]!</span>")
+			return 1
+		if(S.robo_repair(15, BRUTE, "some dents", src, user))
+			remove_fuel(1, user)
+	else
+		return ..()
 
 /obj/item/weapon/weldingtool/attackby(obj/item/W as obj, mob/user as mob)
 	if(welding)
@@ -280,7 +358,6 @@
 
 	..()
 
-
 /obj/item/weapon/weldingtool/attack_hand(mob/user as mob)
 	if(tank && user.get_inactive_hand() == src)
 		if(!welding)
@@ -297,35 +374,48 @@
 	else
 		..()
 
-
 /obj/item/weapon/weldingtool/Process()
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
 
-/obj/item/weapon/weldingtool/afterattack(obj/O as obj, mob/user as mob, proximity)
-	if(!proximity) return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && !src.welding)
-		if(!tank)
-			to_chat(user, "\The [src] has no tank attached!")
-			return
-		O.reagents.trans_to_obj(tank, tank.max_fuel)
-		to_chat(user, "<span class='notice'>You refuel \the [tank].</span>")
-		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+/obj/item/weapon/weldingtool/afterattack(obj/O, mob/user, proximity)
+	if(!proximity)
 		return
-	if (src.welding)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear/reagent/welding)) && get_dist(src, O) <= 1 && !welding)
+		refuel_from_obj(O, user)
+		return
+	if(welding)
 		remove_fuel(1)
 		var/turf/location = get_turf(user)
 		if(isliving(O))
 			var/mob/living/L = O
 			L.IgniteMob()
-		if (istype(location, /turf))
+		if(istype(location, /turf))
 			location.hotspot_expose(700, 50, 1)
 	return
 
 
 /obj/item/weapon/weldingtool/attack_self(mob/user as mob)
 	setWelding(!welding, usr)
+	return
+
+/obj/item/weapon/weldingtool/proc/refuel_from_obj(obj/O, mob/user)
+	if(!O.reagents)
+		return
+	if(!tank)
+		to_chat(user, "\The [src] has no tank attached!")
+		return
+	var/amount = min((tank.max_fuel - tank.reagents.total_volume), O.reagents.total_volume)
+	if(!O.reagents.total_volume)
+		to_chat(user, SPAN("warning", "\The [O] is empty."))
+		return
+	if(!amount)
+		to_chat(user, SPAN("notice", "\The [src] is full."))
+		return
+	O.reagents.trans_to_obj(tank, amount)
+	to_chat(user, SPAN("notice", "You refill \the [src] with [amount] units of fuel from \the [O]."))
+	playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 	return
 
 //Returns the amount of fuel in the welder
@@ -406,14 +496,16 @@
 	var/turf/T = get_turf(src)
 	//If we're turning it on
 	if(set_welding && !welding)
-		if (get_fuel() > 0)
+		if(get_fuel() > 0)
 			if(M)
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
 				T.visible_message("<span class='danger'>\The [src] turns on.</span>")
-			src.force = 15
-			src.damtype = "fire"
+			force = 15
+			damtype = "fire"
+			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
 			welding = 1
+			set_light(0.3, 0.5, 2, 2, "#e38f46")
 			update_icon()
 			START_PROCESSING(SSobj, src)
 		else
@@ -427,9 +519,11 @@
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
 			T.visible_message("<span class='warning'>\The [src] turns off.</span>")
-		src.force = 3
-		src.damtype = "brute"
-		src.welding = 0
+		force = 3
+		damtype = "brute"
+		hitsound = initial(hitsound)
+		welding = 0
+		set_light(0)
 		update_icon()
 
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
@@ -439,7 +533,7 @@
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
-		if(!E || E.isRobotize == 1)
+		if(!E || BP_IS_ROBOTIC(E))
 			return
 		var/safety = H.eyecheck()
 		switch(safety)
@@ -483,6 +577,7 @@
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "fuel_m"
 	w_class = ITEM_SIZE_SMALL
+	center_of_mass = "x=13;y=9"
 	var/max_fuel = 20
 	var/can_remove = 1
 
@@ -493,7 +588,7 @@
 
 /obj/item/weapon/welder_tank/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear/reagent/welding)) && get_dist(src,O) <= 1)
 		O.reagents.trans_to_obj(src, max_fuel)
 		to_chat(user, "<span class='notice'>You refuel \the [src].</span>")
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
@@ -581,6 +676,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Destroy()
+	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Process()
@@ -590,24 +686,16 @@
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
 
-/obj/item/weapon/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
-
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/S = H.organs_by_name[target_zone]
-
-		if(!S || !BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
-			return ..()
-
-		if(!welding)
-			to_chat(user, "<span class='warning'>You'll need to turn [src] on to patch the damage on [M]'s [S.name]!</span>")
-			return 1
-
-		if(S.robo_repair(15, BRUTE, "some dents", src, user))
-			remove_fuel(1, user)
-
-	else
-		return ..()
+/obj/item/weapon/weldingtool/old
+	name = "old welding tool"
+	icon_state = "legacywelder"
+	item_state = "welder"
+	desc = "It would go through plasteel just like energy swords go through limbs. But modern welding fuel is but a clown's piss."
+	matter = list(MATERIAL_PLASTEEL = 70, MATERIAL_GLASS = 60)
+	mod_weight = 1.35
+	mod_reach = 0.75
+	mod_handy = 0.9
+	tank = /obj/item/weapon/welder_tank/large
 
 /*
  * Crowbar
@@ -623,7 +711,7 @@
 	icon_state = "crowbar"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 9.5
+	force = 10.0
 	throwforce = 7.0
 	throw_range = 3
 	item_state = "crowbar"
@@ -633,7 +721,6 @@
 	mod_handy = 1.0
 	origin_tech = list(TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 140)
-	center_of_mass = "x=16;y=20"
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 
 /obj/item/weapon/crowbar/red
@@ -645,7 +732,7 @@
 	desc = "A steel bar with a wedge. It comes in a variety of configurations - collect them all."
 	icon_state = "prybar"
 	item_state = "crowbar"
-	force = 6.5
+	force = 7.5
 	throwforce = 6.0
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL

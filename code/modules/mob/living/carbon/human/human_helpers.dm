@@ -72,7 +72,7 @@
 			client.pixel_x = 0
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
-	if (machine_visual)
+	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
 		return
 	if(!G)
 		return
@@ -193,7 +193,7 @@
 		ping_image.layer = BEAM_PROJECTILE_LAYER
 		ping_image.pixel_x = (T.x - src.x) * WORLD_ICON_SIZE
 		ping_image.pixel_y = (T.y - src.y) * WORLD_ICON_SIZE
-		show_image(src, ping_image)
+		image_to(src, ping_image)
 		spawn(8)
 			qdel(ping_image)
 		var/feedback = list("<span class='notice'>There are noises of movement ")
@@ -231,6 +231,10 @@
 
 /mob/living/carbon/human/proc/make_grab(mob/living/carbon/human/attacker, mob/living/carbon/human/victim, grab_tag)
 	var/obj/item/grab/G
+
+	if(!victim.get_organ(attacker.zone_sel.selecting))
+		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
+		return 0
 
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
@@ -314,3 +318,9 @@
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
+
+/mob/living/carbon/human/get_ear_protection()
+	for(var/obj/item/C in list(l_ear, r_ear, head))
+		if(istype(C))
+			. += C.ear_protection
+	return .

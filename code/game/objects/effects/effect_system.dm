@@ -102,7 +102,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/sparks/New()
 	..()
-	playsound(src.loc, "spark", 100, 1)
+	playsound(src.loc, SFX_SPARK, 100, 1)
 	var/turf/T = src.loc
 	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
@@ -209,7 +209,6 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/illumination/New(newloc, lifetime=10, range=null, power=null, color=null)
 	time_to_live=lifetime
 	..()
-	set_light(range, power, color)
 
 /////////////////////////////////////////////
 // Bad smoke

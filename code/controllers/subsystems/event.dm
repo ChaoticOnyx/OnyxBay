@@ -34,8 +34,7 @@ SUBSYSTEM_DEF(event)
 				EVENT_LEVEL_MODERATE	= new /datum/event_container/moderate,
 				EVENT_LEVEL_MAJOR 		= new /datum/event_container/major
 			)
-	if(GLOB.using_map.use_overmap)
-		overmap_event_handler.create_events(GLOB.using_map.overmap_z, GLOB.using_map.overmap_size, GLOB.using_map.overmap_event_areas)
+
 	. = ..()
 
 /datum/controller/subsystem/event/Recover()
@@ -59,7 +58,7 @@ SUBSYSTEM_DEF(event)
 			return
 
 	while (pos <= EVENT_LEVEL_MAJOR)
-		var/list/datum/event_container/EC = event_containers[pos]
+		var/datum/event_container/EC = event_containers[pos]
 		EC.process()
 		pos++
 		
@@ -87,7 +86,7 @@ SUBSYSTEM_DEF(event)
 	log_debug("Event '[EM.name]' has completed at [worldtime2stationtime(world.time)].")
 
 /datum/controller/subsystem/event/proc/delay_events(severity, delay)
-	var/list/datum/event_container/EC = event_containers[severity]
+	var/datum/event_container/EC = event_containers[severity]
 	EC.next_event_time += delay
 
 /datum/controller/subsystem/event/proc/Interact(mob/living/user)

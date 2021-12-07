@@ -27,7 +27,7 @@
 			if(confirm == "Yes") //This is pretty copypasta-y
 				to_chat(user, "You activate the analyzer's microlaser, analyzing \the [loaded_item] and breaking it down.")
 				flick("portable_analyzer_scan", src)
-				playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+				playsound(src.loc, 'sound/signals/processing22.ogg', 50)
 				for(var/T in loaded_item.origin_tech)
 					files.UpdateTech(T, loaded_item.origin_tech[T])
 					to_chat(user, "\The [loaded_item] had level [loaded_item.origin_tech[T]] in [CallTechName(T)].")
@@ -54,7 +54,7 @@
 			to_chat(user, "The [src] is empty.  Put something inside it first.")
 	if(response == "Sync")
 		var/success = 0
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
 			for(var/datum/tech/T in files.known_tech) //Uploading
 				S.files.AddTech2Known(T)
 			for(var/datum/tech/T in S.files.known_tech) //Downloading
@@ -63,10 +63,10 @@
 			files.RefreshResearch()
 		if(success)
 			to_chat(user, "You connect to the research server, push your data upstream to it, then pull the resulting merged data from the master branch.")
-			playsound(src.loc, 'sound/signals/ping6.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/processing13.ogg', 50)
 		else
 			to_chat(user, "Reserch server ping response timed out.  Unable to connect.  Please contact the system administrator.")
-			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/error30.ogg', 50, 0)
 	if(response == "Eject")
 		if(loaded_item)
 			loaded_item.loc = get_turf(src)
@@ -530,11 +530,11 @@
 	if (length(held))
 		if (prob(40))
 			var/obj/item/R = held[length(held)]
-			R.forceMove(get_turf(src))
-			visible_message("<span class='danger'[held[length(held)]] drops on the [get_turf(src)]!</span>")
 			held -= R
+			R.forceMove(get_turf(src))
+			R.visible_message("<span class='danger'>[R] drops on the [get_turf(src)]!</span>")
 			if(R && istype(R.loc,/turf))
-				held.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
+				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
 
 /obj/item/robot_rack/examine(mob/user)
 	. = ..()
@@ -878,6 +878,22 @@
 		else
 			inuse = 0
 			to_chat(user, "<span class='danger'>You failed to dispense the product</span>")
+
+/obj/item/weapon/robot_item_dispenser/canvas
+	name = "canvas assembler"
+	desc = "A device used to rapidly construct new canvas"
+	icon_state = "printer"
+	icon = 'icons/obj/robot_device.dmi'
+	icon_state = "printer"
+	recycling_time = 50
+
+/obj/item/weapon/robot_item_dispenser/canvas/New()
+	item_types += new /datum/dispense_type("canvas 11x11", /obj/item/canvas, 25, 100)
+	item_types += new /datum/dispense_type("canvas 19x19", /obj/item/canvas/nineteen_nineteen, 45, 100)
+	item_types += new /datum/dispense_type("canvas 23x19", /obj/item/canvas/twentythree_nineteen, 65, 100)
+	item_types += new /datum/dispense_type("canvas 23x23", /obj/item/canvas/twentythree_twentythree, 85, 100)
+	item_types += new /datum/dispense_type("canvas 24x24", /obj/item/canvas/twentyfour_twentyfour, 90, 100)
+	..()
 
 /obj/item/weapon/robot_item_dispenser/crates
 	name = "crates assembler"

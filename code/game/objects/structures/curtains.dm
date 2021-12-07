@@ -20,7 +20,7 @@
 		..(P, def_zone)
 
 /obj/structure/curtain/attack_hand(mob/user)
-	playsound(get_turf(loc), "searching_clothes", 15, 1, -5)
+	playsound(loc, SFX_SEARCH_CLOTHES, 15, 1, -5)
 	toggle()
 	..()
 
@@ -36,6 +36,10 @@
 /obj/structure/curtain/black
 	name = "black curtain"
 	color = "#222222"
+
+/obj/structure/curtain/green
+	name = "green curtain"
+	color = "#465735"
 
 /obj/structure/curtain/medical
 	name = "plastic curtain"

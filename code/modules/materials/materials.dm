@@ -187,7 +187,7 @@ var/list/name_to_material
 	if(islist(composite_material))
 		for(var/material_string in composite_material)
 			temp_matter[material_string] = composite_material[material_string]
-	else if(SHEET_MATERIAL_AMOUNT)
+	else
 		temp_matter[name] = SHEET_MATERIAL_AMOUNT
 	return temp_matter
 
@@ -402,7 +402,7 @@ var/list/name_to_material
 /material/diona/place_dismantled_product()
 	return
 
-/material/diona/place_dismantled_girder(var/turf/target)
+/material/diona/place_dismantled_girder(turf/target)
 	spawn_diona_nymph(target)
 
 /material/steel/holographic
@@ -830,13 +830,14 @@ var/list/name_to_material
 
 /material/resin
 	name = "resin"
-	icon_colour = "#26031f"
+	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
 	melting_point = T0C+300
 	sheet_singular_name = "blob"
 	sheet_plural_name = "blobs"
 	conductive = 0
+	integrity = 20
 
 /material/resin/can_open_material_door(mob/living/user)
 	var/mob/living/carbon/M = user
@@ -971,3 +972,27 @@ var/list/name_to_material
 	ignition_point = T0C+232
 	melting_point = T0C+300
 	conductive = 0
+
+/material/goat_hide
+	name = "goat hide"
+	use_name = "goat hide"
+	stack_type = /obj/item/stack/material/animalhide/goat
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	icon_colour = "#e8e7c8"
+	flags = MATERIAL_PADDING
+	ignition_point = T0C+300
+	melting_point = T0C+300
+	conductive = 0
+	craft_tool = 1
+
+/material/hairless_hide
+	name = "hairless hide"
+	use_name = "hairless hide"
+	stack_type = /obj/item/stack/material/hairlesshide
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	icon_colour = "#e8e7c8"
+	flags = MATERIAL_PADDING
+	ignition_point = T0C+300
+	melting_point = T0C+300
+	conductive = 0
+	craft_tool = 1

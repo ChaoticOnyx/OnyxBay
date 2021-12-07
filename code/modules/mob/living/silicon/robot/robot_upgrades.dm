@@ -600,6 +600,23 @@
 		installed = 1
 		return 1
 
+/obj/item/borg/upgrade/art
+	name = "art module"
+	desc = "Contains instruments to create an art, but can robots create art?"
+	icon_state = "cyborg_upgrade3"
+	require_module = 1
+
+/obj/item/borg/upgrade/art/action(mob/living/silicon/robot/R)
+	if(..()) return 0
+
+	if(!can_install(src, R))
+		return 0
+	else
+		R.module.modules += new /obj/item/weapon/robot_item_dispenser/canvas(R.module)
+		R.module.modules += new /obj/item/weapon/pen/crayon/rainbow(R.module)
+		installed = 1
+		return 1
+
 /obj/item/borg/upgrade/pipe_printer
 	name = "pipe printer module"
 	desc = "Special printer module designed to rapidly manufacture pipes."
@@ -666,14 +683,14 @@
 		var/area/default = world.area
 		location = initial(default.name)
 
-	var/death_message = "[host] has been destroyed in [location]!"
+	var/death_message = "Message from [name] acquired successful. [host] has been destroyed in [location]!"
 	if(!cause)
-		death_message = "[host] has been destroyed-zzzzt in-in-in..."
+		death_message = "Message from [name] acquired successful. [host] has been destroyed-zzzzt in-in-in..."
 	var/obj/item/weapon/robot_module/CH = host.module
 	for(var/channel in CH.channels)
 		if (channel != "Science")
-			GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", channel)
-	GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", "Science")
+			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
+	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
 /obj/item/borg/upgrade/death_alarm/Process()
 	if (!installed) return

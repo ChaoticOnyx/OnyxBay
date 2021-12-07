@@ -5,9 +5,6 @@
 
 /obj/mecha/working/Initialize()
 	. = ..()
-	var/turf/T = get_turf(src)
-	if(isPlayerLevel(T.z))
-		new /obj/item/mecha_parts/mecha_tracking(src)
 
 /obj/mecha/working/Destroy()
 	for(var/mob/M in src)
@@ -22,14 +19,13 @@
 		if(T)
 			T.Entered(A)
 		step_rand(A)
-	..()
-	return
+	return ..()
 
 /obj/mecha/working/Topic(href, href_list)
 	..()
 	if(href_list["drop_from_cargo"])
 		var/obj/O = locate(href_list["drop_from_cargo"])
-		if(O && O in src.cargo)
+		if(O && (O in src.cargo))
 			src.occupant_message("<span class='notice'>You unload [O].</span>")
 			O.loc = get_turf(src)
 			src.cargo -= O

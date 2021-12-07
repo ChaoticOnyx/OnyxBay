@@ -5,29 +5,34 @@
 	req_one_access = list(access_medical, access_robotics)
 	botcard_access = list(access_medical, access_morgue, access_surgery, access_chemistry, access_virology)
 
-	var/skin = null //Set to "tox", "ointment" or "o2" for the other two firstaid kits.
+	var/skin = null // Set to "tox", "fire", "o2", "adv" or "bezerk" for different firstaid styles.
 
 	//AI vars
-	var/last_newpatient_speak = 0
 	var/vocal = 1
 
 	//Healing vars
-	var/obj/item/weapon/reagent_containers/glass/reagent_glass = null //Can be set to draw from this for reagents.
-	var/injection_amount = 15 //How much reagent do we inject at a time?
-	var/heal_threshold = 10 //Start healing when they have this much damage in a category
-	var/use_beaker = 0 //Use reagents in beaker instead of default treatment agents.
+	var/obj/item/weapon/reagent_containers/glass/reagent_glass = null // Can be set to draw from this for reagents.
+	var/injection_amount = 15 // How much reagent do we inject at a time?
+	var/heal_threshold = 10 // Start healing when they have this much damage in a category
+	var/use_beaker = 0 // Use reagents in beaker instead of default treatment agents.
 	var/treatment_brute = /datum/reagent/tricordrazine
-	var/treatment_oxy = /datum/reagent/tricordrazine
+	var/treatment_oxy = /datum/reagent/dexalin
 	var/treatment_fire = /datum/reagent/tricordrazine
-	var/treatment_tox = /datum/reagent/tricordrazine
+	var/treatment_tox = /datum/reagent/dylovene
 	var/treatment_virus = /datum/reagent/spaceacillin
 	var/treatment_emag = /datum/reagent/toxin
-	var/declare_treatment = 0 //When attempting to treat a patient, should it notify everyone wearing medhuds?
+	var/declare_treatment = 0 // When attempting to treat a patient, should it notify everyone wearing medhuds?
+	var/should_treat_brute = TRUE
+	var/should_treat_oxy = TRUE
+	var/should_treat_fire = TRUE
+	var/should_treat_tox = TRUE
 
 /mob/living/bot/medbot/handleIdle()
 	if(vocal && prob(1))
-		var/message = pick("Radar, put a mask on!", "There's always a catch, and it's the best there is.", "I knew it, I should've been a plastic surgeon.", "What kind of infirmary is this? Everyone's dropping like dead flies.", "Delicious!")
+		var/list/messagevoice = list("Radar, put a mask on!" = 'sound/voice/medbot/radar.ogg', "There's always a catch, and it's the best there is." = 'sound/voice/medbot/catch.ogg', "I knew it, I should've been a plastic surgeon." = 'sound/voice/medbot/surgeon.ogg', "What kind of infirmary is this? Everyone's dropping like dead flies." = 'sound/voice/medbot/flies.ogg', "Delicious!" = 'sound/voice/medbot/delicious.ogg')
+		var/message = pick(messagevoice)
 		say(message)
+		playsound(src, messagevoice[message], 75, FALSE)
 
 /mob/living/bot/medbot/handleAdjacentTarget()
 	UnarmedAttack(target)
@@ -36,11 +41,13 @@
 	for(var/mob/living/carbon/human/H in view(7, src)) // Time to find a patient!
 		if(confirmTarget(H))
 			target = H
-			if(last_newpatient_speak + 300 < world.time)
-				var/message = pick("Hey, [H.name]! Hold on, I'm coming.", "Wait [H.name]! I want to help!", "[H.name], you appear to be injured!")
+			THROTTLE(last_speak, 30 SECONDS)
+			if(last_speak)
+				var/list/messagevoice = list("Hey, [H.name]! Hold on, I'm coming." = 'sound/voice/medbot/coming.ogg', "Wait [H.name]! I want to help!" = 'sound/voice/medbot/help.ogg', "[H.name], you appear to be injured!" = 'sound/voice/medbot/injured.ogg')
+				var/message = pick(messagevoice)
 				say(message)
+				playsound(src, messagevoice[message], 75, FALSE)
 				custom_emote(1, "points at [H.name].")
-				last_newpatient_speak = world.time
 			break
 
 /mob/living/bot/medbot/UnarmedAttack(mob/living/carbon/human/H, proximity)
@@ -56,16 +63,17 @@
 	if(busy)
 		return
 
+	// TODO: Fix bot ai so this check can actually be done somewhen
 	if(H.stat == DEAD)
-		var/death_message = pick("No! NO!", "Live, damnit! LIVE!", "I... I've never lost a patient before. Not today, I mean.")
+		var/list/death_messagevoice = list("No! NO!" = 'sound/voice/medbot/no.ogg', "Live, damnit! LIVE!" = 'sound/voice/medbot/live.ogg', "I... I've never lost a patient before. Not today, I mean." = 'sound/voice/medbot/lost.ogg')
+		var/death_message = pick(death_messagevoice)
 		say(death_message)
+		playsound(src, death_messagevoice[death_message], 75, FALSE)
 		target = null
 		return
 
 	var/t = confirmTarget(H)
 	if(!t)
-		var/message = pick("All patched up!", "An apple a day keeps me away.", "Feel better soon!")
-		say(message)
 		target = null
 		return
 
@@ -84,6 +92,11 @@
 		visible_message("<span class='warning'>[src] injects [H] with the syringe!</span>")
 	busy = 0
 	update_icons()
+
+	var/list/messagevoice = list("All patched up!" = 'sound/voice/medbot/patchedup.ogg', "An apple a day keeps me away." = 'sound/voice/medbot/apple.ogg', "Feel better soon!" = 'sound/voice/medbot/feelbetter.ogg')
+	var/message = pick(messagevoice)
+	say(message)
+	playsound(src, messagevoice[message], 75, FALSE)
 
 /mob/living/bot/medbot/update_icons()
 	overlays.Cut()
@@ -134,9 +147,15 @@
 	. += "<br>Injection level: "
 	. += "<a href='?src=\ref[src];command=adj_inject;amount=-5'>-</a> "
 	. += "[injection_amount] "
-	. += "<a href='?src=\ref[src];command=adj_inject;amount=5'>+</a> "
+	. += "<a href='?src=\ref[src];command=adj_inject;amount=5'>+</a>"
 
-	. += "<br>Reagent source: <a href='?src=\ref[src];command=use_beaker'>[use_beaker ? "Loaded Beaker (When available)" : "Internal Synthesizer"]</a>"
+	. += "<br><br>Treatment types: "
+	. += "<br>Physical traumas: <a href='?src=\ref[src];command=toggle_brute'>[should_treat_brute ? "On" : "Off"]</a>"
+	. += "<br>Burns: <a href='?src=\ref[src];command=toggle_fire'>[should_treat_fire ? "On" : "Off"]</a>"
+	. += "<br>Oxygen deprivation: <a href='?src=\ref[src];command=toggle_oxy'>[should_treat_oxy ? "On" : "Off"]</a>"
+	. += "<br>Intoxication: <a href='?src=\ref[src];command=toggle_tox'>[should_treat_tox ? "On" : "Off"]</a>"
+
+	. += "<br><br>Reagent source: <a href='?src=\ref[src];command=use_beaker'>[use_beaker ? "Loaded Beaker (When available)" : "Internal Synthesizer"]</a>"
 	. += "<br>Treatment report is [declare_treatment ? "on" : "off"]. <a href='?src=\ref[src];command=declaretreatment'>Toggle</a>"
 	. += "<br>The speaker switch is [vocal ? "on" : "off"]. <a href='?src=\ref[src];command=togglevoice'>Toggle</a>"
 
@@ -178,6 +197,18 @@
 			if("declaretreatment")
 				if(!locked || issilicon(user))
 					declare_treatment = !declare_treatment
+			if("toggle_brute")
+				if(!locked || issilicon(user))
+					should_treat_brute = !should_treat_brute
+			if("toggle_oxy")
+				if(!locked || issilicon(user))
+					should_treat_oxy = !should_treat_oxy
+			if("toggle_fire")
+				if(!locked || issilicon(user))
+					should_treat_fire = !should_treat_fire
+			if("toggle_tox")
+				if(!locked || issilicon(user))
+					should_treat_tox = !should_treat_tox
 
 	if(CanAccessMaintenance(user))
 		switch(command)
@@ -232,22 +263,22 @@
 		return treatment_emag
 
 	// If they're injured, we're using a beaker, and they don't have on of the chems in the beaker
-	if(reagent_glass && use_beaker && ((H.getBruteLoss() >= heal_threshold) || (H.getToxLoss() >= heal_threshold) || (H.getToxLoss() >= heal_threshold) || (H.getOxyLoss() >= (heal_threshold + 15))))
+	if(reagent_glass && use_beaker && ((should_treat_brute && (H.getBruteLoss() >= heal_threshold)) || (should_treat_fire && (H.getFireLoss() >= heal_threshold)) || (should_treat_tox && (H.getToxLoss() >= heal_threshold)) || (should_treat_oxy && (H.getOxyLoss() >= (heal_threshold + 15)))))
 		for(var/datum/reagent/R in reagent_glass.reagents.reagent_list)
 			if(!H.reagents.has_reagent(R))
 				return 1
 			continue
 
-	if((H.getBruteLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_brute)))
+	if(should_treat_brute && (H.getBruteLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_brute)))
 		return treatment_brute //If they're already medicated don't bother!
 
-	if((H.getOxyLoss() >= (15 + heal_threshold)) && (!H.reagents.has_reagent(treatment_oxy)))
+	if(should_treat_oxy && (H.getOxyLoss() >= (15 + heal_threshold)) && (!H.reagents.has_reagent(treatment_oxy)))
 		return treatment_oxy
 
-	if((H.getFireLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_fire)))
+	if(should_treat_fire && (H.getFireLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_fire)))
 		return treatment_fire
 
-	if((H.getToxLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_tox)))
+	if(should_treat_tox && (H.getToxLoss() >= heal_threshold) && (!H.reagents.has_reagent(treatment_tox)))
 		return treatment_tox
 
 /* Construction */
@@ -263,11 +294,15 @@
 
 	var/obj/item/weapon/firstaid_arm_assembly/A = new /obj/item/weapon/firstaid_arm_assembly
 	if(istype(src, /obj/item/weapon/storage/firstaid/fire))
-		A.skin = "ointment"
+		A.skin = "fire"
 	else if(istype(src, /obj/item/weapon/storage/firstaid/toxin))
 		A.skin = "tox"
 	else if(istype(src, /obj/item/weapon/storage/firstaid/o2))
 		A.skin = "o2"
+	else if(istype(src, /obj/item/weapon/storage/firstaid/adv))
+		A.skin = "adv"
+	else if(istype(src, /obj/item/weapon/storage/firstaid/combat))
+		A.skin = "bezerk"
 
 	qdel(S)
 	user.put_in_hands(A)

@@ -70,7 +70,7 @@
 	if(!help)
 		help = "Error loading help (file /ingame_manuals/malf_ai.html is probably missing). Please report this to server administration staff."
 
-	user << browse(help, "window=malf_ai_help;size=600x500")
+	show_browser(user, help, "window=malf_ai_help;size=600x500")
 
 
 // Verb: ai_select_research()
@@ -172,7 +172,7 @@
 	var/list/station_apcs = list()
 	var/list/offstation_apcs = list()
 
-	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
+	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(A.hacker && A.hacker == user)
 			continue
 		if(A.z in GLOB.using_map.station_levels)
@@ -223,7 +223,7 @@
 		message = text("used malf ability/function: [ability_name].")
 	admin_attack_log(A, null, message, null, message)
 
-proc/check_for_interception()
+/proc/check_for_interception()
 	for(var/mob/living/silicon/ai/A in SSmobs.mob_list)
 		if(A.intercepts_communication)
 			return A

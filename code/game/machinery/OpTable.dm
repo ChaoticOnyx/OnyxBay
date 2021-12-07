@@ -10,16 +10,35 @@
 	var/mob/living/carbon/human/victim = null
 	var/strapped = 0.0
 	var/busy = FALSE
+	var/time_to_strip = 5 SECONDS
 
 	var/obj/machinery/computer/operating/computer = null
+
+	component_types = list(
+		/obj/item/weapon/circuitboard/optable,
+		/obj/item/weapon/stock_parts/manipulator = 4
+	)
+
+	beepsounds = SFX_BEEP_MEDICAL
+
+/obj/machinery/optable/RefreshParts()
+    var/default_strip = 6 SECONDS
+    var/efficiency = 0
+    for(var/obj/item/weapon/stock_parts/P in component_parts)
+        if(ismanipulator(P))
+            efficiency += 0.25 * P.rating
+    time_to_strip = clamp(default_strip - efficiency, 1 SECONDS, 5 SECONDS)
 
 /obj/machinery/optable/Initialize()
 	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if (computer)
-			computer.table = src
-			break
+		if(!computer || computer?.table)
+			continue
+		computer.table = src
+		break
+	RefreshParts()
+	update_icon()
 
 /obj/machinery/optable/ex_act(severity)
 
@@ -92,7 +111,7 @@
 	busy = TRUE
 	usr.visible_message(SPAN_DANGER("[usr] begins to undress [victim] on the table with the built-in tool."),
 						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
-	if(do_after(usr, 5 SECONDS, victim))
+	if(do_after(usr, time_to_strip, victim))
 		if(!victim)
 			return
 		for(var/obj/item/clothing/C in victim.contents)
@@ -106,6 +125,7 @@
 
 /obj/machinery/optable/proc/check_victim()
 	if(locate(/mob/living/carbon/human, src.loc))
+		play_beep()
 		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
 		if(M.lying)
 			src.victim = M
@@ -129,6 +149,8 @@
 	C.resting = 1
 	C.dropInto(loc)
 	for(var/obj/O in src)
+		if(O in component_parts)
+			continue
 		O.dropInto(loc)
 	src.add_fingerprint(user)
 	if(ishuman(C))
@@ -155,7 +177,13 @@
 	take_victim(usr,usr)
 
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/grab))
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
+	if(default_part_replacement(user, W))
+		return
+	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
 			take_victim(G.affecting,usr)

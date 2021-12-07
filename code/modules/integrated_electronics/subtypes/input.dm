@@ -14,12 +14,22 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list()
-	activators = list("on pressed" = IC_PINTYPE_PULSE_IN)
+	activators = list("on pressed" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	radial_menu_icon = "button"
 
 /obj/item/integrated_circuit/input/button/ask_for_input(mob/user) //Bit misleading name for this specific use.
 	to_chat(user, SPAN("notice", "You press the button labeled '[displayed_name]'."))
 	activate_pin(1)
+
+/obj/item/integrated_circuit/input/button/get_topic_data(mob/user)
+	return list("Press" = "press=1")
+
+/obj/item/integrated_circuit/input/button/OnICTopic(href_list, user)
+	if(href_list["press"])
+		to_chat(user, SPAN("notice", "You press the button labeled '[src.displayed_name]'."))
+		activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 /obj/item/integrated_circuit/input/toggle_button
 	name = "toggle button"
@@ -29,14 +39,28 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("on" = IC_PINTYPE_BOOLEAN)
-	activators = list("on toggle" = IC_PINTYPE_PULSE_IN)
+	activators = list("on toggle" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	radial_menu_icon = "toggle_button_on"
 
 /obj/item/integrated_circuit/input/toggle_button/ask_for_input(mob/user) // Ditto.
-	set_pin_data(IC_OUTPUT, 1, !get_pin_data(IC_OUTPUT, 1))
+	var/state = !get_pin_data(IC_OUTPUT, 1)
+	radial_menu_icon = "toggle_button_[state ? "on" : "off"]"
+	set_pin_data(IC_OUTPUT, 1, state)
 	push_data()
 	activate_pin(1)
 	to_chat(user, SPAN("notice", "You toggle the button labeled \"[displayed_name]\" [get_pin_data(IC_OUTPUT, 1) ? "on" : "off"]."))
+
+/obj/item/integrated_circuit/input/toggle_button/get_topic_data(mob/user)
+	return list("Toggle [get_pin_data(IC_OUTPUT, 1) ? "Off" : "On"]" = "toggle=1")
+
+/obj/item/integrated_circuit/input/toggle_button/OnICTopic(href_list, user)
+	if(href_list["toggle"])
+		set_pin_data(IC_OUTPUT, 1, !get_pin_data(IC_OUTPUT, 1))
+		push_data()
+		activate_pin(1)
+		to_chat(user, SPAN("notice", "You toggle the button labeled \"[displayed_name]\" [get_pin_data(IC_OUTPUT, 1) ? "on" : "off"]."))
+		return IC_TOPIC_REFRESH
 
 /obj/item/integrated_circuit/input/numberpad
 	name = "number pad"
@@ -46,9 +70,10 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("number entered" = IC_PINTYPE_NUMBER)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "numberpad"
 
 /obj/item/integrated_circuit/input/numberpad/ask_for_input(mob/user)
 	var/new_input = input(user, "Enter a number, please.",displayed_name) as null|num
@@ -56,6 +81,18 @@
 		set_pin_data(IC_OUTPUT, 1, new_input)
 		push_data()
 		activate_pin(1)
+
+/obj/item/integrated_circuit/input/numberpad/get_topic_data(mob/user)
+	return list("Enter Number" = "enter_number=1")
+
+/obj/item/integrated_circuit/input/numberpad/OnICTopic(href_list, mob/user)
+	if(href_list["enter_number"])
+		var/new_input = input(user, "Enter a number, please.", displayed_name) as num|null
+		if(isnum_safe(new_input) && user.IsAdvancedToolUser())
+			set_pin_data(IC_OUTPUT, 1, new_input)
+			push_data()
+			activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 /obj/item/integrated_circuit/input/textpad
 	name = "text pad"
@@ -65,17 +102,30 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("string entered" = IC_PINTYPE_STRING)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/textpad/ask_for_input(mob/user)
-	var/new_input = input(user, "Enter some words, please.", displayed_name)
-	new_input = sanitize(new_input)
+	var/new_input = sanitize(input(user, "Enter some words, please.", displayed_name) as text|null)
 	if(istext(new_input) && user.IsAdvancedToolUser())
 		set_pin_data(IC_OUTPUT, 1, new_input)
 		push_data()
 		activate_pin(1)
+
+/obj/item/integrated_circuit/input/textpad/get_topic_data(mob/user)
+	return list("Enter Words" = "enter_words=1")
+
+/obj/item/integrated_circuit/input/textpad/OnICTopic(href_list, mob/user)
+	if(href_list["enter_words"])
+		var/new_input = input(user, "Enter some words, please.", displayed_name)
+		new_input = sanitize(new_input)
+		if(istext(new_input) && user.IsAdvancedToolUser())
+			set_pin_data(IC_OUTPUT, 1, new_input)
+			push_data()
+			activate_pin(1)
+			return IC_TOPIC_REFRESH
 
 /obj/item/integrated_circuit/input/colorpad
 	name = "color pad"
@@ -85,9 +135,10 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("color entered" = IC_PINTYPE_STRING)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "colorpad"
 
 /obj/item/integrated_circuit/input/colorpad/ask_for_input(mob/user)
 	var/new_color = input(user, "Enter a color, please.", "Color", "#ffffff") as color|null
@@ -95,6 +146,18 @@
 		set_pin_data(IC_OUTPUT, 1, new_color)
 		push_data()
 		activate_pin(1)
+
+/obj/item/integrated_circuit/input/colorpad/get_topic_data(mob/user)
+	return list("Enter Color" = "enter_color=1")
+
+/obj/item/integrated_circuit/input/colorpad/OnICTopic(href_list, mob/user)
+	if(href_list["enter_color"])
+		var/new_color = input(user, "Enter a color, please.", "Color", "#ffffff") as color|null
+		if(new_color && user.IsAdvancedToolUser())
+			set_pin_data(IC_OUTPUT, 1, new_color)
+			push_data()
+			activate_pin(1)
+			return IC_TOPIC_REFRESH
 
 /obj/item/integrated_circuit/input/med_scanner
 	name = "integrated medical analyser"
@@ -182,9 +245,9 @@
 	push_data()
 	activate_pin(2)
 
-/obj/item/integrated_circuit/input/slime_scanner
-	name = "slime scanner"
-	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of slime. Output mutation list is non-associative."
+/obj/item/integrated_circuit/input/metroid_scanner
+	name = "metroid scanner"
+	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of a metroid. Output mutation list is non-associative."
 	icon_state = "medscan_adv"
 	complexity = 12
 	inputs = list("target" = IC_PINTYPE_REF)
@@ -196,16 +259,16 @@
 		"health"				= IC_PINTYPE_NUMBER,
 		"possible mutation"		= IC_PINTYPE_LIST,
 		"genetic destability"	= IC_PINTYPE_NUMBER,
-		"slime core amount"		= IC_PINTYPE_NUMBER,
+		"metroid core amount"		= IC_PINTYPE_NUMBER,
 		"Growth progress"		= IC_PINTYPE_NUMBER,
 	)
 	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
 
-/obj/item/integrated_circuit/input/slime_scanner/do_work()
-	var/mob/living/carbon/slime/T = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/slime)
-	if(!isslime(T)) //Invalid input
+/obj/item/integrated_circuit/input/metroid_scanner/do_work()
+	var/mob/living/carbon/metroid/T = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/metroid)
+	if(!ismetroid(T)) //Invalid input
 		return
 	if(T in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
 
@@ -217,13 +280,11 @@
 		set_pin_data(IC_OUTPUT, 6, T.GetMutations())
 		set_pin_data(IC_OUTPUT, 7, T.mutation_chance)
 		set_pin_data(IC_OUTPUT, 8, T.cores)
-		set_pin_data(IC_OUTPUT, 9, T.amount_grown/SLIME_EVOLUTION_THRESHOLD)
+		set_pin_data(IC_OUTPUT, 9, T.amount_grown/METROID_EVOLUTION_THRESHOLD)
 
 
 	push_data()
 	activate_pin(2)
-
-
 
 /obj/item/integrated_circuit/input/plant_scanner
 	name = "integrated plant analyzer"
@@ -280,6 +341,31 @@
 		set_pin_data(IC_OUTPUT, 16, H.health)
 	push_data()
 	activate_pin(2)
+
+/obj/item/integrated_circuit/input/view_filter
+	name = "view filter"
+	desc = "This circuit will filter every object in assembly view."
+	extended_desc = "The first pin is ref to filter, to see avaliable filters go to Filter category. The output will contents everything with filtering type"
+	inputs = list(
+		"filter" = IC_PINTYPE_REF
+	)
+	outputs = list(
+		"objects" = IC_PINTYPE_LIST
+	)
+	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
+	spawn_flags = IC_SPAWN_RESEARCH
+	power_draw_per_use = 30
+
+/obj/item/integrated_circuit/input/view_filter/do_work(ord)
+	var/list/objects = list()
+	var/obj/item/integrated_circuit/filter/ref/filter = get_pin_data(IC_INPUT, 1)
+	if(istype(filter) && assembly && (filter in assembly.assembly_components))
+		for(var/atom/A in view(get_turf(assembly)))
+			if(istype(A, filter.filter_type))
+				objects.Add(weakref(A))
+		set_pin_data(IC_OUTPUT, 1, objects)
+		push_data()
+		activate_pin(2)
 
 /obj/item/integrated_circuit/input/gene_scanner
 	name = "gene scanner"
@@ -347,7 +433,7 @@
 	var/atom/H = get_pin_data_as_type(IC_INPUT, 1, /atom)
 	var/turf/T = get_turf(src)
 
-	if(!istype(H) || !(H in view(T)))
+	if(!istype(H) || (!(H in view(T) || (H in assembly.loc)))) // if assembly located in same loc with object, we can scan it.
 		activate_pin(3)
 	else
 		set_pin_data(IC_OUTPUT, 1, H.name)
@@ -438,7 +524,7 @@
 		var/list/turf_contents = new()
 		for(var/obj/U in scanned_turf)
 			turf_contents += weakref(U)
-		for(var/mob/U in scanned_turf)
+		for(var/mob/living/U in scanned_turf)
 			turf_contents += weakref(U)
 		set_pin_data(IC_OUTPUT, 1, turf_contents)
 		set_pin_data(IC_OUTPUT, 3, area_name)
@@ -703,6 +789,7 @@
 	var/new_freq = get_pin_data(IC_INPUT, 1)
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	if(isnum_safe(new_freq) && new_freq > 0)
+		new_freq = Clamp(new_freq, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
 		set_frequency(new_freq)
 	if(isnum_safe(new_code))
 		code = new_code
@@ -750,7 +837,6 @@
 		return FALSE
 
 	activate_pin(3)
-	audible_message("[icon2html(src, hearers(src))] *beep* *beep* *beep*", null, hearing_range)
 	for(var/CHM in hearers(hearing_range, src))
 		if(ismob(CHM))
 			var/mob/LM = CHM
@@ -771,7 +857,8 @@
 
 /obj/item/integrated_circuit/input/signaler/advanced/on_data_written()
 	..()
-	command = get_pin_data(IC_INPUT,3)
+	code = get_pin_data(IC_INPUT, 2)
+	command = get_pin_data(IC_INPUT, 3)
 
 /obj/item/integrated_circuit/input/signaler/advanced/signal_good(datum/signal/signal)
 	if(!..() || signal.data["tag"] != code)
@@ -782,14 +869,15 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = html_encode(html_decode(command))
+	signal.data["command"] = command
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
-	set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
-	push_data()
-	..()
+	if(signal_good(signal))
+		set_pin_data(IC_OUTPUT, 1, signal.data["command"])
+		push_data()
+		..()
 
 /obj/item/integrated_circuit/input/teleporter_locator
 	name = "teleporter locator"
@@ -802,13 +890,18 @@
 	activators = list("on selected" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_LONG_RANGE
+	radial_menu_icon = "teleporter_locator"
+
+/obj/item/integrated_circuit/input/teleporter_locator/Initialize()
+	. = ..()
+	set_pin_data(IC_OUTPUT, 1, weakref(null))
 
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
-	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
 		var/obj/machinery/computer/teleporter/com = R.com
-		if (istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			teleporters_id.Add(com.id)
 			teleporters[com.id] = com
 
@@ -828,11 +921,32 @@
 
 	var/output = "Current selection: [(current_console && current_console.id) || "None"]"
 	output += "\nList of avaliable teleporters:"
-	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
 		var/obj/machinery/computer/teleporter/com = R.com
-		if (istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			output += "\n[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"
 	to_chat(user, output)
+
+/obj/item/integrated_circuit/input/teleporter_locator/get_topic_data(mob/user)
+	var/datum/integrated_io/O = outputs[1]
+	var/obj/machinery/computer/teleporter/current_console = O.data_as_type(/obj/machinery/computer/teleporter)
+
+	. = list()
+	. += "Current selection: [(current_console && current_console.id) || "None"]"
+	. += "Please select a teleporter to lock in on:"
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
+		var/obj/machinery/computer/teleporter/com = R.com
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+			.["[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"] = "tport=[any2ref(com)]"
+	.["None (Dangerous)"] = "tport=random"
+
+/obj/item/integrated_circuit/input/teleporter_locator/OnICTopic(href_list, mob/user)
+	if(href_list["tport"] && user.IsAdvancedToolUser())
+		var/output = href_list["tport"] == "random" ? null : locate(href_list["tport"])
+		set_pin_data(IC_OUTPUT, 1, output && weakref(output))
+		push_data()
+		activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 // TODO: refactor ntnet circuit to OnyxBay code and add items using this stuff (ex. modular_computer, airlock)
 
@@ -947,7 +1061,7 @@
 /obj/item/integrated_circuit/input/sensor/ranged/sense(atom/A, mob/user)
 	if(!user || !A || (ismob(A) && !isliving(A)))
 		return FALSE
-	if(user.client)
+	if(user.client && A != user)
 		if(!(A in view(user.client)))
 			return FALSE
 	else
@@ -1052,7 +1166,8 @@
 	set_pin_data(IC_OUTPUT, 2, null)
 	set_pin_data(IC_OUTPUT, 3, null)
 	if(AM)
-		var/obj/item/weapon/cell/C = get_power_cell(AM)
+		var/list/power_cell_list = get_power_cell(AM)
+		var/obj/item/weapon/cell/C = power_cell_list[1]
 		if(istype(C))
 			var/turf/A = get_turf(src)
 			if(get_turf(AM) in view(A))
@@ -1238,6 +1353,9 @@
 	outputs = list(
 		"selected" = IC_PINTYPE_STRING
 	)
+	var/input_selected = FALSE
+	var/selected_value = "None"
+	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/selection/ask_for_input(mob/user)
 	var/list/selection = list()
@@ -1247,11 +1365,31 @@
 			selection.Add(I)
 	var/selected = input(user,"Choose input.","Selection") in selection
 	if(!selected)
+		input_selected = FALSE
 		return
+	input_selected = selected
 	set_pin_data(IC_OUTPUT, 1, selected)
 	push_data()
 	activate_pin(1)
 
+/obj/item/integrated_circuit/input/selection/get_topic_data(mob/user)
+	. = list()
+	. += "Last Selected: [selected_value]"
+	. += "Please select string:"
+	for(var/k in 1 to inputs.len)
+		var/I = get_pin_data(IC_INPUT, k)
+		if(istext(I))
+			.["[I]"] = "select=[I]"
+
+/obj/item/integrated_circuit/input/selection/OnICTopic(href_list, mob/user)
+	if(href_list["select"] && user.IsAdvancedToolUser())
+		var/selected = sanitize(href_list["select"])
+		if(selected)
+			selected_value = selected
+			set_pin_data(IC_OUTPUT, 1, selected)
+			push_data()
+			activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 // -storage examiner- // **works**
 /obj/item/integrated_circuit/input/storage_examiner

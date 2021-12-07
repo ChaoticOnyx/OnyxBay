@@ -34,10 +34,6 @@ AI MODULES
 			to_chat(usr, "You haven't selected an AI to transmit laws to!")
 			return
 
-		if(SSticker.mode && SSticker.mode.name == "blob")
-			to_chat(usr, "Law uploads have been disabled by [GLOB.using_map.company_name]!")
-			return
-
 		if (comp.current.stat == 2 || comp.current.control_disabled == 1)
 			to_chat(usr, "Upload failed. No signal is being detected from the AI.")
 		else if (comp.current.see_in_dark == 0)
@@ -300,7 +296,7 @@ AI MODULES
 
 /******************** SCG Aggressive ********************/
 
-obj/item/weapon/aiModule/solgov_aggressive
+/obj/item/weapon/aiModule/solgov_aggressive
 	name = "\improper 'Military' Core AI Module"
 	desc = "A 'Military' Core AI Module: 'Reconfigures the AI's core laws.'."
 	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 4)

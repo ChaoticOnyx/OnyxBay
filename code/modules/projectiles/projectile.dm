@@ -10,6 +10,9 @@
 	anchored = 1 //There's a reason this is here, Mport. God fucking damn it -Agouri. Find&Fix by Pete. The reason this is here is to stop the curving of emitter shots.
 	pass_flags = PASS_FLAG_TABLE
 	mouse_opacity = 0
+
+	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
+
 	var/bumped = 0		//Prevents it from hitting more than one guy at once
 	var/def_zone = ""	//Aiming at
 	var/mob/firer = null//Who shot it
@@ -19,6 +22,7 @@
 	var/current = null
 	var/shot_from = "" // name of the object which shot us
 	var/atom/original = null // the target clicked (not necessarily where the projectile is headed). Should probably be renamed to 'target' or something.
+	var/turf/previous = null // the projectile's previous turf updated on each move
 	var/turf/starting = null // the projectile's starting turf
 	var/list/permutated = list() // we've passed through these atoms, don't try to hit them again
 	var/list/segments = list() //For hitscan projectiles with tracers.
@@ -33,7 +37,6 @@
 	var/damage = 10
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE, PAIN are the only things that should be in here
 	var/nodamage = 0 //Determines if the projectile will skip any damage inflictions
-	var/check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
 	var/projectile_type = /obj/item/projectile
 	var/penetrating = 0 //If greater than zero, the projectile will pass through dense objects as specified by on_penetrate()
 	var/kill_count = 50 //This will de-increment every process(). When 0, it will delete the projectile.
@@ -102,8 +105,9 @@
 	return 1
 
 //called when the projectile stops flying because it collided with something
-/obj/item/projectile/proc/on_impact(atom/A)
-	impact_effect(effect_transform)		// generate impact effect
+/obj/item/projectile/proc/on_impact(atom/A, use_impact = TRUE)
+	if(use_impact)
+		impact_effect(effect_transform)		// generate impact effect, if projectile is in the same loc as shoot start loc, that will cause bugs.
 	if(damage && damage_type == BURN)
 		var/turf/T = get_turf(A)
 		if(T)
@@ -151,12 +155,13 @@
 
 	if(targloc == curloc) //Shooting something in the same turf
 		target.bullet_act(src, target_zone)
-		on_impact(target)
+		on_impact(target, FALSE) //location is null in that case, todo: fix it.
 		qdel(src)
 		return 0
 
 	original = target
 	def_zone = target_zone
+	previous = get_turf(loc)
 
 	addtimer(CALLBACK(src, .proc/finalize_launch, curloc, targloc, x_offset, y_offset, angle_offset),0)
 	return 0
@@ -228,16 +233,33 @@
 				admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src] (blocked)")
 		return 1
 
+	var/impacted_organ = parse_zone(def_zone)
+	if(istype(target_mob, /mob/living/simple_animal))
+		var/mob/living/simple_animal/SM = target_mob
+		var/decl/simple_animal_bodyparts/body_plan = SM.bodyparts
+		if(body_plan != decls_repository.get_decl(/decl/simple_animal_bodyparts/humanoid)) // No need to override
+			if(length(body_plan.hit_zones))
+				impacted_organ = pick(body_plan.hit_zones)
+			else
+				impacted_organ = null
+
 	//hit messages
 	if(silenced)
-		to_chat(target_mob, "<span class='danger'>You've been hit in the [parse_zone(def_zone)] by \the [src]!</span>")
+		if(impacted_organ)
+			to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
+		else
+			to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
 	else
-		target_mob.visible_message("<span class='danger'>\The [target_mob] is hit by \the [src] in the [parse_zone(def_zone)]!</span>")//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		if(impacted_organ)
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		else
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
+
 		new /obj/effect/effect/hitmarker(target_mob.loc)
 		for(var/mob/O in hearers(7, get_turf(target_mob)))
 			if(O.client)
 				if(O.get_preference_value(/datum/client_preference/play_hitmarker) == GLOB.PREF_YES)
-					O.playsound_local(target_mob, 'sound/weapons/hitmarker.ogg', 50, 1)
+					O.playsound_local(target_mob, 'sound/effects/weapons/misc/hitmarker.ogg', 50, 1)
 
 	//admin logs
 	if(!no_attack_log)
@@ -253,7 +275,7 @@
 
 	return 1
 
-/obj/item/projectile/Bump(atom/A as mob|obj|turf|area, forced=0)
+/obj/item/projectile/Bump(atom/A, forced = FALSE)
 	if(A == src)
 		return 0 //no
 
@@ -352,6 +374,7 @@
 			return
 
 		before_move()
+		previous = loc
 		Move(location.return_turf())
 
 		if(!bumped && !isturf(original))
@@ -441,7 +464,7 @@
 	xo = null
 	var/result = 0 //To pass the message back to the gun.
 
-/obj/item/projectile/test/Bump(atom/A as mob|obj|turf|area)
+/obj/item/projectile/test/Bump(atom/A, forced = FALSE)
 	if(A == firer)
 		loc = A.loc
 		return //cannot shoot yourself

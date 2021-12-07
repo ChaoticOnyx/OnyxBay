@@ -29,6 +29,8 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+	beepsounds = SFX_BEEP_MEDICAL
+
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -67,6 +69,8 @@
 
 	if (!(occupant in src))
 		go_out()
+
+	play_beep()
 
 	if(filtering > 0)
 		if(beaker)
@@ -204,7 +208,7 @@
 				return TOPIC_REFRESH
 	if(href_list["stasis"])
 		var/nstasis = text2num(href_list["stasis"])
-		if(stasis != nstasis && nstasis in stasis_settings)
+		if(stasis != nstasis && (nstasis in stasis_settings))
 			stasis = text2num(href_list["stasis"])
 			return TOPIC_REFRESH
 
@@ -274,9 +278,9 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
 		return FALSE
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return FALSE
 	return TRUE
 
@@ -318,17 +322,18 @@
 	spark_system.set_up(5, 0, src.loc)
 
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 	if(locked)
 		to_chat(user, "<span class='danger'>You short out locking system.</span>")
 		toggle_lock()
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 
 /obj/machinery/sleeper/proc/toggle_filter()

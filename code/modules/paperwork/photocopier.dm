@@ -7,7 +7,7 @@
 	density = 1
 	idle_power_usage = 30
 	active_power_usage = 200
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/obj/item/copyitem = null	//what's in the copier!
@@ -17,10 +17,10 @@
 	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
 	var/busy = FALSE
 
-/obj/machinery/photocopier/attack_ai(mob/user as mob)
+/obj/machinery/photocopier/attack_ai(mob/user)
 	return attack_hand(user)
 
-/obj/machinery/photocopier/attack_hand(mob/user as mob)
+/obj/machinery/photocopier/attack_hand(mob/user)
 	user.set_machine(src)
 
 	var/dat = "<meta charset=\"utf-8\">Photocopier<BR><BR>"
@@ -38,7 +38,7 @@
 	dat += "Current toner level: [toner]"
 	if(!toner)
 		dat +="<BR>Please insert a new toner cartridge!"
-	user << browse(dat, "window=copier")
+	show_browser(user, dat, "window=copier")
 	onclose(user, "copier")
 	return
 
@@ -65,15 +65,19 @@
 				break
 			use_power_oneoff(active_power_usage)
 			if (istype(copyitem, /obj/item/weapon/paper))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				copy(copyitem)
 				sleep(15)
 			else if (istype(copyitem, /obj/item/weapon/photo))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				photocopy(copyitem)
 				sleep(15)
 			else if (istype(copyitem, /obj/item/weapon/paper_bundle))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				var/obj/item/weapon/paper_bundle/B = bundlecopy(copyitem)
 				sleep(15*B.pages.len)
 			else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				var/obj/item/weapon/complaint_folder/CF = complaintcopy(copyitem)
 				sleep(15 * CF.contents.len)
 			else
@@ -225,7 +229,7 @@
 	p.icon_state = "paper_words"
 	p.SetName(bundle.name)
 	return p
-	
+
 /obj/item/device/toner
 	name = "toner cartridge"
 	icon_state = "tonercartridge"

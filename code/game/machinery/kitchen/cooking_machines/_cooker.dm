@@ -76,11 +76,12 @@
 		return 0
 
 	var/mob/living/inserted_mob
+	var/obj/item/weapon/reagent_containers/food/snacks/check
 	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
 		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
 		return 0
-	else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/check = I
+	else if(istype(I.return_item(), /obj/item/weapon/reagent_containers/food/snacks))
+		check = I.return_item()
 		if(cook_type in check.cooked_types)
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
 			return 0
@@ -90,14 +91,14 @@
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
 		return 0
-	else if(istype(I, /obj/item/weapon/holder) || istype(I, /obj/item/grab))
-		if(istype(I, /obj/item/weapon/holder))
-			for(var/mob/living/M in I.contents)
-				inserted_mob = M
-				break
-		else
-			var/obj/item/grab/G = I
-			inserted_mob = G.affecting
+	else if(istype(I, /obj/item/weapon/holder))
+		for(var/mob/living/M in I.contents)
+			inserted_mob = M
+			break
+	else if(istype(I, /obj/item/grab))
+		var/obj/item/grab/G = I
+		inserted_mob = G.affecting
+		G.delete_self()
 	else
 		to_chat(user, SPAN_WARNING("That's not edible."))
 		return 0
@@ -111,7 +112,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!user.unEquip(I))
+	if(!istype(I, /obj/item/grab) && !user.drop_from_inventory(I))
 		return
 
 	if(inserted_mob)
@@ -134,6 +135,19 @@
 	START_PROCESSING(SSmachines, src)
 	return 1
 
+/obj/machinery/cooker/proc/return_item_data()
+	var/list/data = list() // contents: reagents, total_volume, the value from return_item if item, or src if something else.
+	if(istype(thing_inside, /obj/item))
+		var/obj/item/I = thing_inside
+		data["item"] = I.return_item()
+	else
+		data["item"] = src
+
+	data["reagents"] = data["item"]?.reagents
+	data["total_volume"] = data["reagents"]?.total_volume
+
+	return data
+
 /obj/machinery/cooker/Process()
 	if(!is_cooking || !cook_type || (stat & (NOPOWER|BROKEN)))
 		stop()
@@ -144,6 +158,7 @@
 		if(COOKING)
 			ASSERT(cooking_done_time)
 			if(world.time > cooking_done_time)
+				var/list/product_data = return_item_data()
 				if(isliving(thing_inside))
 					var/mob/living/L = thing_inside
 					L.death()
@@ -152,13 +167,13 @@
 					var/cook_path = output_options[selected_option]
 					var/obj/item/weapon/reagent_containers/food/snacks/result = new cook_path(src)
 
-					result = change_product_strings(result, thing_inside)
-					result = change_product_appearance(result, thing_inside)
+					result = change_product_strings(result, product_data["item"])
+					result = change_product_appearance(result, product_data["item"])
 
-					if(thing_inside.reagents && thing_inside.reagents.total_volume)
-						thing_inside.reagents.trans_to(result, thing_inside.reagents.total_volume)
-					if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
-						var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
+					if(product_data["reagents"] && product_data["total_volume"])
+						product_data["reagents"].trans_to(result, product_data["total_volume"])
+					if(istype(product_data["item"], /obj/item/weapon/reagent_containers/food/snacks))
+						var/obj/item/weapon/reagent_containers/food/snacks/I = product_data["item"]
 						result.cooked_types = I.cooked_types.Copy()
 
 					qdel(thing_inside)
@@ -167,14 +182,14 @@
 					thing_inside = change_product_strings(thing_inside)
 					thing_inside = change_product_appearance(thing_inside)
 
-				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
-					var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
+				if(istype(product_data["item"], /obj/item/weapon/reagent_containers/food/snacks))
+					var/obj/item/weapon/reagent_containers/food/snacks/I = product_data["item"]
 					I.cooked_types |= cook_type
 				cooking_is_done = TRUE
 
 				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
-					playsound(get_turf(src), cooked_sound, 50, 1)
+					playsound(src, cooked_sound, 50, 1)
 		if(COOKED)
 			if(!can_burn_food)
 				eject()

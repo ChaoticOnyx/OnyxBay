@@ -113,13 +113,13 @@
 	var/result = step(src, direction)
 	if(result)
 		if(!squeak)
-			playsound(src, "clownstep", 70, 1)
+			playsound(src, SFX_CLOWN, 70, 1)
 			squeak = 1
 		else
 			squeak = 0
 	return result
 
-obj/mecha/combat/honker/Topic(href, href_list)
+/obj/mecha/combat/honker/Topic(href, href_list)
 	..()
 	if(href_list["play_sound"])
 		switch(href_list["play_sound"])
@@ -127,7 +127,7 @@ obj/mecha/combat/honker/Topic(href, href_list)
 				playsound(src, 'sound/misc/sadtrombone.ogg', 100)
 	return
 
-proc/rand_hex_color()
+/proc/rand_hex_color()
 	var/list/colors = list("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f")
 	var/color=""
 	for(var/i in 0 to 5)

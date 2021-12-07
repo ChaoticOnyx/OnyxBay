@@ -32,7 +32,7 @@
 			M.update_inv_l_hand(0)
 			M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE)
+/obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	if(ismob(loc))
@@ -80,15 +80,9 @@
 	user.update_inv_r_hand(1)
 
 /obj/item/clothing/mask/smokable/pipe/can_be_lit_with(obj/W)
-	for(var/ignitor_type in list(/obj/item/weapon/flame/lighter, /obj/item/weapon/flame/lighter/zippo, /obj/item/weapon/weldingtool, /obj/item/device/assembly/igniter, /obj/item/weapon/flame/candle, /obj/item/clothing/mask/smokable/cigarette, /obj/item/weapon/reagent_containers/glass/rag))
-		if(istype(W, ignitor_type))
-			return ..()
-
-	if(istype(W, /obj/machinery/light))
-		var/obj/machinery/light/mounted = W
-		var/obj/item/weapon/light/bulb = mounted.lightbulb
-		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && !(mounted.stat & BROKEN)
-	return FALSE
+	if(istype(W, /obj/item/weapon/gun)) // This would blow all the shits out of the pipe
+		return FALSE
+	return ..()
 
 /obj/item/clothing/mask/smokable/pipe/generate_lighting_message(obj/tool, mob/holder)
 	if(!holder || !tool)

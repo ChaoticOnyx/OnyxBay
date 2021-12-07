@@ -16,8 +16,29 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 
 	faction = "changeling"
 
+/datum/antagonist/changeling/Initialize()
+	. = ..()
+	if(config.changeling_min_age)
+		min_player_age = config.changeling_min_age
+
+	// Building purchasable powers list.
+	if(!powerinstances.len)
+		for(var/P in powers)
+			powerinstances += new P()
+
 /datum/antagonist/changeling/get_special_objective_text(datum/mind/player)
-	return "<br><b>Changeling ID:</b> [player.changeling.changelingID].<br><b>Genomes Absorbed:</b> [player.changeling.absorbedcount]"
+	var/powers_purchased = ""
+	var/powers_num = 0
+	for(var/datum/power/changeling/PC in player.changeling.purchasedpowers)
+		if(!PC.genomecost)
+			continue
+		powers_num += 1
+		powers_purchased += "[PC.name], "
+	if(!powers_num)
+		powers_purchased = "[powers_num]"
+	else
+		powers_purchased = "[powers_num] ([copytext(powers_purchased, 1, length(powers_purchased) - 1)])"
+	return "<br><b>Changeling ID:</b> [player.changeling.changelingID].<br><b>Genomes Absorbed:</b> [player.changeling.absorbedcount]<br><b>Purchased Powers:</b> [powers_purchased]"
 
 /datum/antagonist/changeling/update_antag_mob(datum/mind/player)
 	..()
@@ -34,13 +55,8 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 
 	var/datum/objective/absorb/absorb_objective = new
 	absorb_objective.owner = changeling
-	absorb_objective.gen_amount_goal(5, 7)
+	absorb_objective.gen_amount_goal(2, 3)
 	changeling.objectives += absorb_objective
-
-	var/datum/objective/assassinate/kill_objective = new
-	kill_objective.owner = changeling
-	kill_objective.find_target()
-	changeling.objectives += kill_objective
 
 	var/datum/objective/steal/steal_objective = new
 	steal_objective.owner = changeling
@@ -50,8 +66,9 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	switch(rand(1,100))
 		if(1 to 80)
 			if (!(locate(/datum/objective/escape) in changeling.objectives))
-				var/datum/objective/escape/escape_objective = new
+				var/datum/objective/escape/changeling/escape_objective = new
 				escape_objective.owner = changeling
+				escape_objective.find_target()
 				changeling.objectives += escape_objective
 		else
 			if (!(locate(/datum/objective/survive) in changeling.objectives))

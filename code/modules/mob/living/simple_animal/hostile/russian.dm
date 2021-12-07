@@ -20,6 +20,7 @@
 	can_escape = 1
 	attacktext = "punched"
 	a_intent = I_HURT
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 	var/corpse = /obj/effect/landmark/corpse/russian
 	var/weapon1 = /obj/item/weapon/material/knife
 	unsuitable_atoms_damage = 15
@@ -34,7 +35,7 @@
 	weapon1 = /obj/item/weapon/gun/projectile/revolver/mateba
 	ranged = 1
 	projectiletype = /obj/item/projectile/bullet
-	projectilesound = 'sound/weapons/gunshot/gunshot2.ogg'
+	projectilesound = 'sound/effects/weapons/gun/gunshot2.ogg'
 	casingtype = /obj/item/ammo_casing/a50
 
 

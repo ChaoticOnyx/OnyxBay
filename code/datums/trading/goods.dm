@@ -135,7 +135,7 @@
 								/obj/item/clothing/under/swimsuit			= TRADER_BLACKLIST,
 								/obj/item/clothing/under/vox				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/under/wedding			= TRADER_BLACKLIST,
-								/obj/item/clothing/under/punpun				= TRADER_BLACKLIST,
+								/obj/item/clothing/under/monkey				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit						= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/suit/armor				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/bio_suit			= TRADER_BLACKLIST_ALL,
@@ -224,7 +224,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/device/analyzer						= TRADER_ALL,
 								/obj/item/device/mass_spectrometer				= TRADER_ALL,
 								/obj/item/device/reagent_scanner				= TRADER_ALL,
-								/obj/item/device/slime_scanner					= TRADER_THIS_TYPE,
+								/obj/item/device/metroid_scanner					= TRADER_THIS_TYPE,
 								/obj/item/device/suit_cooling_unit				= TRADER_THIS_TYPE,
 								/obj/item/device/t_scanner						= TRADER_THIS_TYPE,
 								/obj/item/device/taperecorder					= TRADER_THIS_TYPE,
@@ -324,7 +324,7 @@ Sells devices, odds and ends, and medical stuff
 //	possible_trading_items = list(/mob/living/simple_animal/hostile/carp= TRADER_THIS_TYPE,
 //								/obj/item/device/dociler              = TRADER_THIS_TYPE,
 //								/obj/item/weapon/beartrap			  = TRADER_THIS_TYPE,
-//								/obj/item/device/slime_scanner = TRADER_THIS_TYPE)
+//								/obj/item/device/metroid_scanner = TRADER_THIS_TYPE)
 
 /datum/trader/ship/medical
 	name = "Medical Supplier"
@@ -360,7 +360,6 @@ Sells devices, odds and ends, and medical stuff
 	possible_trading_items = list(/obj/item/weapon/storage/pill_bottle									= TRADER_SUBTYPES_ONLY,
 								/obj/item/weapon/storage/pill_bottle/dice_nerd							= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/firstaid										= TRADER_ALL,
-								/obj/item/weapon/storage/firstaid/empty									= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/firstaid/surgery/syndie						= TRADER_BLACKLIST,
 								/obj/item/weapon/storage/box/bloodpacks									= TRADER_THIS_TYPE,
 								/obj/item/weapon/reagent_containers/ivbag								= TRADER_SUBTYPES_ONLY,

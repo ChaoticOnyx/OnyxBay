@@ -57,6 +57,11 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 
 	faction = "cult"
 
+/datum/antagonist/cultist/Initialize()
+	. = ..()
+	if(config.cultist_min_age)
+		min_player_age = config.cultist_min_age
+
 /datum/antagonist/cultist/create_global_objectives()
 
 	if(!..())
@@ -155,16 +160,6 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	if((CULT_GHOSTS_1 in to_update) || (CULT_GHOSTS_2 in to_update) || (CULT_GHOSTS_3 in to_update))
 		for(var/mob/observer/ghost/D in SSmobs.mob_list)
 			add_ghost_magic(D)
-
-/datum/antagonist/cultist/proc/offer_uncult(mob/M)
-	if(!iscultist(M) || !M.mind)
-		return
-
-	to_chat(M, "<span class='cult'>Do you want to abandon the cult of Nar'Sie? <a href='?src=\ref[src];confirmleave=1'>ACCEPT</a></span>")
-
-/datum/antagonist/cultist/Topic(href, href_list)
-	if(href_list["confirmleave"])
-		GLOB.cult.remove_antagonist(usr.mind, 1)
 
 /datum/antagonist/cultist/proc/remove_cultiness(amount)
 	cult_rating = max(0, cult_rating - amount)

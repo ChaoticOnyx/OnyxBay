@@ -44,9 +44,6 @@
 		var/banjob = href_list["dbbanaddjob"]
 		var/banreason = href_list["dbbanreason"]
 
-		var/baneverywhere
-		if("dbbaneverywhere" in href_list)
-			baneverywhere = TRUE
 
 		banckey = ckey(banckey)
 
@@ -90,7 +87,7 @@
 			message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
 		notes_add(banckey,banreason,usr)
 
-		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid, baneverywhere)
+		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid)
 
 	else if(href_list["editrights"])
 		if(!check_rights(R_PERMISSIONS))
@@ -196,10 +193,6 @@
 		if(!SSticker.mode || !evacuation_controller)
 			return
 
-		if(SSticker.mode.name == "blob")
-			alert("You can't call the shuttle during blob!")
-			return
-
 		switch(href_list["call_shuttle"])
 			if("1")
 				if (evacuation_controller.call_evacuation(usr, TRUE))
@@ -238,7 +231,7 @@
 			if("larva")				M.change_mob_type( /mob/living/carbon/alien/larva , null, null, delmob )
 			if("nymph")				M.change_mob_type( /mob/living/carbon/alien/diona , null, null, delmob )
 			if("human")				M.change_mob_type( /mob/living/carbon/human , null, null, delmob, href_list["species"])
-			if("slime")				M.change_mob_type( /mob/living/carbon/slime , null, null, delmob )
+			if("metroid")				M.change_mob_type( /mob/living/carbon/metroid , null, null, delmob )
 			if("monkey")			M.change_mob_type( /mob/living/carbon/human/monkey , null, null, delmob )
 			if("robot")				M.change_mob_type( /mob/living/silicon/robot , null, null, delmob )
 			if("cat")				M.change_mob_type( /mob/living/simple_animal/cat , null, null, delmob )
@@ -312,10 +305,10 @@
 		ban_unban_log_save("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		log_and_message_admins("edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		Banlist.cd = "/base/[banfolder]"
-		Banlist["reason"] << reason
-		Banlist["temp"] << temp
-		Banlist["minutes"] << minutes
-		Banlist["bannedby"] << usr.ckey
+		to_file(Banlist["reason"],   reason)
+		to_file(Banlist["temp"],     temp)
+		to_file(Banlist["minutes"],  minutes)
+		to_file(Banlist["bannedby"], usr.ckey)
 		Banlist.cd = "/base"
 		feedback_inc("ban_edit",1)
 		unbanpanel()
@@ -654,7 +647,7 @@
 		jobs += "</tr></table>"
 		body = "<body>[jobs]</body>"
 		dat = "<tt>[header][body]</tt>"
-		usr << browse(dat, "window=jobban2;size=800x490")
+		show_browser(usr, dat, "window=jobban2;size=800x490")
 		return
 
 	//JOBBAN'S INNARDS
@@ -787,19 +780,15 @@
 					if(!reason)
 						return
 
-					var/ban_everywhere = FALSE
-					if(!isnull(config.server_id))
-						switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-							if("Cancel")	return
-							if("Everywhere")
-								ban_everywhere = TRUE
+					switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+						if("Cancel")	return
 
 					var/msg
 					for(var/job in notbannedlist)
 						ban_unban_log_save("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes. reason: [reason]")
 						log_admin("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes")
 						feedback_inc("ban_job_tmp",1)
-						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job, ban_everywhere = ban_everywhere)
+						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job)
 						feedback_add_details("ban_job_tmp","- [job]")
 						jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]") //Legacy banning does not support temporary jobbans.
 						if(!msg)
@@ -817,18 +806,16 @@
 					if(!check_rights(R_BAN))  return
 					var/reason = sanitize(input(usr,"Reason?","Please State Reason","") as text|null)
 					if(reason)
-						var/ban_everywhere = FALSE
-						if(!isnull(config.server_id))
-							switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-								if("Cancel")	return
-								if("Everywhere")
-									ban_everywhere = TRUE
+
+						switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+							if("Cancel")	return
+
 						var/msg
 						for(var/job in notbannedlist)
 							ban_unban_log_save("[key_name(usr)] perma-jobbanned [key_name(M)] from [job]. reason: [reason]")
 							log_admin("[key_name(usr)] perma-banned [key_name(M)] from [job]")
 							feedback_inc("ban_job",1)
-							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job, ban_everywhere = ban_everywhere)
+							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job)
 							feedback_add_details("ban_job","- [job]")
 							jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
 							if(!msg)	msg = job
@@ -927,19 +914,17 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
-				var/ban_everywhere = FALSE
-				if(!isnull(config.server_id))
-					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
-						if("Everywhere")
-							ban_everywhere = TRUE
+
+				switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+					if("Cancel")	return
+
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
 				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
 				to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
 				feedback_inc("ban_tmp",1)
-				DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
+				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
 				feedback_inc("ban_tmp_mins",mins)
 				if(config.banappeals)
 					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
@@ -954,12 +939,10 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
-				var/ban_everywhere = FALSE
-				if(!isnull(config.server_id))
-					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
-						if("Everywhere")
-							ban_everywhere = TRUE
+
+				switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+					if("Cancel")	return
+
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
 					if("Cancel")	return
 					if("Yes")
@@ -976,7 +959,7 @@
 				notes_add(M.ckey,"[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
 				log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
 				feedback_inc("ban_perma",1)
-				DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
+				DB_ban_record(BANTYPE_PERMA, M, -1, reason)
 
 				qdel(M.client)
 				//qdel(M)
@@ -1007,7 +990,7 @@
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=random'>Random</A><br>"}
 		dat += {"Now: [SSticker.master_mode]"}
-		usr << browse(dat, "window=c_mode")
+		show_browser(usr, dat, "window=c_mode")
 
 	else if(href_list["f_secret"])
 		if(!check_rights(R_ADMIN))	return
@@ -1021,7 +1004,7 @@
 			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];f_secret2=secret'>Random (default)</A><br>"}
 		dat += {"Now: [secret_force_mode]"}
-		usr << browse(dat, "window=f_secret")
+		show_browser(usr, dat, "window=f_secret")
 
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
@@ -1122,6 +1105,17 @@
 
 		to_chat(M, "<span class='warning'>You have been sent to the prison station!</span>")
 		log_and_message_admins("sent [key_name_admin(M)] to the prison station.")
+
+	else if(href_list["blind"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/mob/M = locate(href_list["blind"])
+		if(!ismob(M) || !M.client)
+			return
+
+		M.client.view = M.client.view == world.view ? -1 : world.view
+		log_and_message_admins("[M.client.view == world.view ? "opened" : "closed"] the game window for [key_name_admin(M)]")
 
 	else if(href_list["tdome1"])
 		if(!check_rights(R_FUN))	return
@@ -1234,7 +1228,7 @@
 
 		if(config.allow_admin_rev)
 			L.revive()
-			log_and_message_admins("healed / Rrvived [key_name(L)]")
+			log_and_message_admins("healed / revived [key_name(L)]")
 		else
 			to_chat(usr, "Admin Rejuvinates have been disabled")
 
@@ -1249,15 +1243,15 @@
 		log_and_message_admins("AIized [key_name_admin(H)]!")
 		H.AIize()
 
-	else if(href_list["makeslime"])
+	else if(href_list["makemetroid"])
 		if(!check_rights(R_SPAWN))	return
 
-		var/mob/living/carbon/human/H = locate(href_list["makeslime"])
+		var/mob/living/carbon/human/H = locate(href_list["makemetroid"])
 		if(!istype(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
-		usr.client.cmd_admin_slimeize(H)
+		usr.client.cmd_admin_metroidize(H)
 
 	else if(href_list["makerobot"])
 		if(!check_rights(R_SPAWN))	return
@@ -1538,7 +1532,7 @@
 				var/obj/pageobj = B.pages[page]
 				data += "<A href='?src=\ref[src];AdminFaxViewPage=[page];paper_bundle=\ref[B]'>Page [page] - [pageobj.name]</A><BR>"
 
-			usr << browse(data, "window=[B.name]")
+			show_browser(usr, data, "window=[B.name]")
 		else if (istype(fax, /obj/item/weapon/complaint_folder))
 			var/data = "<meta charset=\"utf-8\">"
 			var/obj/item/weapon/complaint_folder/CF = fax
@@ -1551,7 +1545,7 @@
 				data += "<HR><BR>"
 				data += "<A href='?src=\ref[src];AdminFaxComplaintCkey=\ref[CF]'>Set target ckey manually</A><BR>"
 
-			usr << browse(data, "window=[CF.name]")
+			show_browser(usr, data, "window=[CF.name]")
 		else
 			to_chat(usr, "<span class='warning'>The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]</span>")
 	else if (href_list["AdminFaxViewPage"])
@@ -1635,10 +1629,10 @@
 
 		var/mob/M = locate(href_list["individuallog"]) in SSmobs.mob_list
 		if(!ismob(M))
-			usr << "This can only be used on instances of type /mob."
+			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 
-		show_individual_logging_panel(M, href_list["log_type"])
+		show_individual_logging_panel(usr, M, href_list["log_type"])
 
 	else if(href_list["traitor"])
 		if(!check_rights(R_ADMIN|R_MOD))	return
@@ -1652,17 +1646,6 @@
 			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 		show_traitor_panel(M)
-
-	else if(href_list["skillpanel"])
-		if(!check_rights(R_INVESTIGATE))
-			return
-
-		if(GAME_STATE < RUNLEVEL_GAME)
-			alert("The game hasn't started yet!")
-			return
-
-		var/mob/M = locate(href_list["skillpanel"])
-		show_skills(M)
 
 	else if(href_list["create_object"])
 		if(!check_rights(R_SPAWN))	return
@@ -2103,7 +2086,7 @@
 				if("resolve emergency")
 					var/datum/objective/ert_station_save/basic = new()
 					GLOB.ert.add_global_objective(basic)
-				else if("custom")
+				if("custom")
 					var/text = input("Write down the ERT mission", "ERT mission", null)
 					if(text)
 						var/datum/objective/ert_custom/custom = new
@@ -2129,18 +2112,62 @@
 		edit_mission()
 		return
 
+	if(href_list["contract_action"])
+		if(href_list["obj_add"])
+			var/datum/antag_contract/contract
+			var/datum/contract_organization/selected_org
+			var/selected_org_name = input("Select syndicate organization:", "Syndicate organization", null) as null|anything in GLOB.traitors.fixer.organizations_by_name
+			if(!selected_org_name) return
+			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
+			if(!selected_org) return
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump")
+			var/selected_reason = input("Enter reason (don't select any, if you want to select reason by code)", "Contract reason") as null|text
+			if(!selected_reason) selected_reason = null
+			switch(new_cnt_type)
+				if("Assassinate")
+					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+					contract = new /datum/antag_contract/item/assassinate(selected_org, selected_reason, selected_target)
+				if("Implant")
+					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+					contract = new /datum/antag_contract/implant(selected_org, selected_reason, selected_target)
+				if("Steal")
+					var/selected_item = input("Enter path to item to steal", "Steal item")
+					contract = new /datum/antag_contract/item/steal(selected_org, selected_reason, text2path(selected_item))
+				if("Steal active AI")
+					var/mob/living/silicon/ai/selected_AI = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in ai_list
+					contract = new /datum/antag_contract/item/steal_ai(selected_org, selected_reason, selected_AI)
+				if("Steal blood samples")
+					var/count_samples = input("Enter amount of blood samples to steal", "Amount of blood") as null|num
+					contract = new /datum/antag_contract/item/blood(selected_org, selected_reason, count_samples)
+				if("Dump")
+					var/money = input("Enter amount of MANIY to steal", "Amount of money") as null|num
+					contract = new /datum/antag_contract/item/dump(selected_org, selected_reason, money)
+			if(!contract.can_place())
+				to_chat(usr, "Internal error detected, please try again, if you use custom target and reason, please report this.")
+				qdel(contract)
+			else
+				selected_org.add_contract(contract)
+		if(href_list["obj_remove"])
+			var/datum/antag_contract/contract = locate(href_list["obj_remove"])
+			ASSERT(istype(contract))
+			var/datum/contract_organization/org = contract.organization
+			ASSERT(istype(org))
+			org.remove_conract(contract)
+		edit_contracts()
+		return
+
 	watchlist.AdminTopicProcess(src, href_list)
 	IAAJ_AdminTopicProcess(src, href_list)
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
 
-mob/living/proc/can_centcom_reply()
+/mob/living/proc/can_centcom_reply()
 	return 0
 
-mob/living/carbon/human/can_centcom_reply()
+/mob/living/carbon/human/can_centcom_reply()
 	return istype(l_ear, /obj/item/device/radio/headset) || istype(r_ear, /obj/item/device/radio/headset)
 
-mob/living/silicon/ai/can_centcom_reply()
+/mob/living/silicon/ai/can_centcom_reply()
 	return silicon_radio != null && !check_unable(2)
 
 /datum/proc/extra_admin_link(prefix, sufix, short_links)

@@ -1,7 +1,3 @@
-#define SURGERY_DURATION_DELTA rand(9,11) / 10 // delta multiplier for all surgeries, from 0.9 to 1.1
-#define SURGERY_FAILURE -1
-#define SURGERY_BLOCKED -2
-
 /obj/item/integrated_circuit/manipulation
 	category_text = "Manipulation"
 
@@ -9,18 +5,17 @@
 	name = "weapon firing mechanism"
 	desc = "This somewhat complicated system allows one to slot in a gun, direct it towards a position, and remotely fire it."
 	extended_desc = "The firing mechanism can slot in any energy weapon. \
-	The first and second inputs need to be numbers which correspond to coordinates for the gun to fire at relative to the machine itself. \
-	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the coordinates, if possible. Mode will switch between \
+	The first input pin need to be ref which correspond to target for the gun to fire. \
+	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the ref, if possible. Mode will switch between \
 	lethal (TRUE) or stun (FALSE) modes. It uses the internal battery of the weapon itself, not the assembly. If you wish to fire the gun while the circuit is in \
 	hand, you will need to use an assembly that is a gun."
 	complexity = 20
 	w_class = ITEM_SIZE_SMALL
 	size = 15
 	inputs = list(
-		"target X rel" = IC_PINTYPE_NUMBER,
-		"target Y rel" = IC_PINTYPE_NUMBER,
+		"target"       = IC_PINTYPE_REF,
 		"bodypart"	   = IC_PINTYPE_STRING
-		)
+	)
 	outputs = list(
 		"reference to gun"	= IC_PINTYPE_REF,
 		"Weapon mode"		= IC_PINTYPE_STRING
@@ -40,7 +35,7 @@
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Initialize()
 	. = ..()
-	extended_desc += "\nThe fourth input used for selection of target body part, the list of body parts: "
+	extended_desc += "\nThe second input pin used for selection of target body part, the list of body parts: "
 	extended_desc += jointext(BP_ALL_LIMBS, ", ")
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Destroy()
@@ -91,35 +86,29 @@
 		return
 	set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
 	push_data()
-	var/x = get_pin_data(IC_INPUT, 1)
-	var/y = get_pin_data(IC_INPUT, 2)
 	if(assembly)
 		switch(ord)
 			if(1)
-				if(isnum_safe(x))
-					x = round(x, 1)
-				if(isnum_safe(x))
-					y = round(x, 1)
-
-				var/bodypart = sanitize(get_pin_data(IC_INPUT, 3))
+				var/atom/target = get_pin_data(IC_INPUT, 1)
+				if(!istype(target))
+					return
+				var/bodypart = sanitize(get_pin_data(IC_INPUT, 2))
 				if(!(bodypart in BP_ALL_LIMBS))
 					bodypart = pick(BP_ALL_LIMBS)
-				var/turf/T = get_turf(assembly)
-				var/target_x = Clamp(T.x + x, 0, world.maxx)
-				var/target_y = Clamp(T.y + y, 0, world.maxy)
 
 				assembly.visible_message(SPAN("danger", "[assembly] fires [installed_gun]!"))
-				if(shootAt(locate(target_x, target_y, T.z), bodypart))
+				var/obj/item/projectile/P = shootAt(target, bodypart)
+				if(P)
+					installed_gun.play_fire_sound(assembly, P)
 					activate_pin(3)
-			else if(2)
+			if(2)
 				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
 				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
 				push_data()
 
-/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(turf/target, bodypart)
+/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(atom/target, bodypart)
 	var/turf/T = get_turf(assembly)
-	var/turf/U = target
-	if(!istype(T) || !istype(U))
+	if(!istype(T) || !istype(target))
 		return
 	if(!installed_gun.power_supply)
 		return
@@ -135,7 +124,9 @@
 	A.shot_from = assembly.name
 	A.firer = assembly
 	A.launch(target, bodypart)
-	log_attack("[assembly] [ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
+	var/atom/AM = get_object()
+	AM.investigate_log("fired [installed_gun] to [A] with [src].", INVESTIGATE_CIRCUIT)
+	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
 	return A
 
 /obj/item/integrated_circuit/manipulation/locomotion
@@ -148,7 +139,7 @@
 	w_class = ITEM_SIZE_SMALL
 	complexity = 10
 	max_allowed = 4
-	cooldown_per_use = 1 SECONDS
+	cooldown_per_use = 3
 	ext_cooldown = 3 // 0.3 second
 	inputs = list("direction" = IC_PINTYPE_DIR)
 	outputs = list("obstacle" = IC_PINTYPE_REF)
@@ -191,6 +182,7 @@
 	activators = list("prime grenade" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_COMBAT
+	var/grenade_activated = FALSE
 	var/obj/item/weapon/grenade/attached_grenade
 	var/pre_attached_grenade_type
 	demands_object_input = TRUE	// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
@@ -202,8 +194,6 @@
 		attach_grenade(grenade)
 
 /obj/item/integrated_circuit/manipulation/grenade/Destroy()
-	if(attached_grenade && !attached_grenade.active)
-		attached_grenade.forceMove(loc)
 	detach_grenade()
 	return ..()
 
@@ -215,21 +205,23 @@
 			user.drop_item(G)
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 			attach_grenade(G)
-			// attach_grenade do this, but just to be sure...
-			G.forceMove(src)
 	else
 		return ..()
 
 /obj/item/integrated_circuit/manipulation/grenade/attack_self(mob/user)
-	if(attached_grenade)
+	if(attached_grenade && !grenade_activated)
 		user.visible_message(SPAN("warning", "\The [user] removes \an [attached_grenade] from \the [src]!"), SPAN("notice", "You remove \the [attached_grenade] from \the [src]."))
 		user.put_in_hands(attached_grenade)
 		detach_grenade()
 	else
 		return ..()
 
+/obj/item/integrated_circuit/manipulation/grenade/proc/before_activation_action()
+	grenade_activated = FALSE
+	detach_grenade()
+
 /obj/item/integrated_circuit/manipulation/grenade/do_work()
-	if(attached_grenade && !attached_grenade.active)
+	if(attached_grenade && !attached_grenade.active && !grenade_activated)
 		var/datum/integrated_io/detonation_time = inputs[1]
 		var/dt
 		if(isnum_safe(detonation_time.data) && detonation_time.data > 0)
@@ -237,21 +229,27 @@
 		else
 			dt = 15
 		addtimer(CALLBACK(attached_grenade, /obj/item/weapon/grenade.proc/activate), dt)
+		addtimer(CALLBACK(src, .proc/before_activation_action), dt - 1)
+		grenade_activated = TRUE
 		var/atom/holder = loc
+		var/atom/A = get_object()
+		A.investigate_log("activated grenade with [src].", INVESTIGATE_CIRCUIT)
 		log_and_message_admins("activated a grenade assembly. Last touches: Assembly: [holder.fingerprintslast] Circuit: [fingerprintslast] Grenade: [attached_grenade.fingerprintslast]")
 
 // These procs do not relocate the grenade, that's the callers responsibility
-/obj/item/integrated_circuit/manipulation/grenade/proc/attach_grenade(obj/item/weapon/grenade/G)
-	if(istype(G))
+/obj/item/integrated_circuit/manipulation/grenade/proc/attach_grenade(obj/item/weapon/grenade/G, mob/user)
+	if(istype(G) && !grenade_activated)
+		if(user)
+			user.drop_item(G)
+			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 		attached_grenade = G
 		G.forceMove(src)
 		desc += " \An [attached_grenade] is attached to it!"
 		set_pin_data(IC_OUTPUT, 1, weakref(G))
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/detach_grenade()
-	if(!attached_grenade)
-		return
-	attached_grenade.forceMove(get_turf(assembly))
+	if(attached_grenade)
+		attached_grenade?.forceMove(get_turf(assembly))
 	set_pin_data(IC_OUTPUT, 1, weakref(null))
 	attached_grenade = null
 	desc = initial(desc)
@@ -293,9 +291,13 @@
 		switch(get_pin_data(IC_INPUT, 2))
 			if(0)
 				TR.harvest()
+				var/atom/A = get_object()
+				A.investigate_log("harvested [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(1)
 				TR.weedlevel = 0
 				TR.update_icon()
+				var/atom/A = get_object()
+				A.investigate_log("uproot weeds [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(2)
 				if(TR.seed) //Could be that they're just using it as a de-weeder
 					TR.age = 0
@@ -308,6 +310,8 @@
 				TR.weedlevel = 0 //Has a side effect of cleaning up those nasty weeds
 				TR.dead = 0
 				TR.update_icon()
+				var/atom/A = get_object()
+				A.investigate_log("uproot plant [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(3)
 				if(!check_target(O))
 					activate_pin(2)
@@ -326,6 +330,8 @@
 						TR.lastcycle = world.time
 						O.forceMove(TR)
 						TR.update_icon()
+						var/atom/A = get_object()
+						A.investigate_log("plant [O] in [TR] with [src].", INVESTIGATE_CIRCUIT)
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/seed_extractor
@@ -354,6 +360,8 @@
 		seeds.seed_type = SSplants.seeds[O.seed.name]
 		seeds.update_seed()
 		seed_output += weakref(seeds)
+	var/atom/A = get_object()
+	A.investigate_log("extracted seeds from [O] with [src].", INVESTIGATE_CIRCUIT)
 	qdel(O)
 
 	if(seed_output.len)
@@ -391,8 +399,15 @@
 			if(contents.len)
 				drop(contents[1])
 
+	var/obj/item/I = get_object()
 	var/obj/item/AM = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
-	if(!QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed) || !isturf(assembly.loc))
+	if(AM && !QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && \
+	!istype(AM, /obj/item/integrated_circuit) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed) \
+	&& isturf(assembly.loc))
+		if(istype(AM, /obj/item/weapon/storage))
+			var/obj/item/weapon/storage/S = AM
+			for(var/obj/item/device/electronic_assembly/EA in S.return_inv())
+				S.remove_from_storage(EA, get_turf(I))
 		switch(mode)
 			if(1)
 				grab(AM)
@@ -404,7 +419,7 @@
 /obj/item/integrated_circuit/manipulation/grabber/proc/grab(obj/item/AM)
 	var/max_w_class = assembly.w_class
 	if(check_target(AM))
-		if(contents.len < max_items && AM.w_class <= max_w_class)
+		if(contents.len < max_items && AM.w_class < max_w_class)
 			var/atom/A = get_object()
 			A.investigate_log("picked up ([AM]) with [src].", INVESTIGATE_CIRCUIT)
 			AM.forceMove(src)
@@ -474,6 +489,8 @@
 					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
 					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
 					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
+					var/atom/A = get_object()
+					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
 		if(3)
 			if(pulling)
@@ -494,7 +511,7 @@
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/claw/proc/can_pull(obj/I)
-	return assembly && I && I.w_class <= assembly.w_class && !I.anchored
+	return assembly && I && I.w_class <= assembly.w_class && !I.anchored && I != assembly
 
 /obj/item/integrated_circuit/manipulation/claw/proc/pull()
 	var/obj/acting_object = get_object()
@@ -514,6 +531,8 @@
 		GLOB.moved_event.unregister(AM, src)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
 		GLOB.destroyed_event.unregister(pulling, src)
+		var/atom/A = get_object()
+		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null
 		set_pin_data(IC_OUTPUT, 1, FALSE)
 		activate_pin(3)
@@ -556,7 +575,7 @@
 	if(!A || A.anchored || A.throwing || A == assembly || istype(A, /obj/item/weapon/material/twohanded) || istype(A, /obj/item/device/transfer_valve))
 		return
 
-	if (istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
+	if(istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
 		return
 
 	if(A.w_class > assembly.w_class)
@@ -595,6 +614,8 @@
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
 	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
+	var/atom/AM = get_object()
+	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/manipulation/bluespace_rift
 	name = "bluespace rift generator"
@@ -624,7 +645,7 @@
 	var/turf/rift_location = get_turf(src)
 
 	if(!rift_location || !isPlayerLevel(rift_location.z))
-		playsound(src, get_sfx("spark"), 50, 1)
+		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 
 	if(isnum_safe(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
@@ -637,7 +658,9 @@
 		if(destination)
 			new /obj/effect/portal(rift_location, destination, 30 SECONDS, 33)
 		else
-			playsound(src, get_sfx("spark"), 50, 1)
+			playsound(src, GET_SFX(SFX_SPARK), 50, 1)
+	var/atom/A = get_object()
+	A.investigate_log("was opened rift with [src].", INVESTIGATE_CIRCUIT)
 
 // - inserter circuit - //
 /obj/item/integrated_circuit/manipulation/inserter
@@ -679,7 +702,7 @@
 
 				container.handle_item_insertion(target_obj)
 
-			else if(2)
+			if(2)
 				if(target_obj in container.contents)
 					container.remove_from_storage(target_obj, get_turf(src))
 
@@ -700,9 +723,11 @@
 		return
 	switch(ord)
 		if(1)
-			var/new_name = sanitize(get_pin_data(IC_INPUT, 1))
+			var/new_name = sanitizeName(get_pin_data(IC_INPUT, 1), max_length = IC_MAX_NAME_LEN)
 			if(new_name)
-				get_object().SetName(new_name)
+				var/atom/A = get_object()
+				A.investigate_log("was renamed with [src] into [new_name].", INVESTIGATE_CIRCUIT)
+				A.SetName(new_name)
 
 		else
 			set_pin_data(IC_OUTPUT, 1, assembly.name)
@@ -733,6 +758,8 @@
 		if(1)
 			var/new_desc = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_desc)
+				var/atom/A = get_object()
+				A.investigate_log("was redescribed with [src] into [new_desc].", INVESTIGATE_CIRCUIT)
 				assembly.desc = new_desc
 
 		else
@@ -759,6 +786,8 @@
 
 	switch(ord)
 		if(1)
+			var/atom/A = get_object()
+			A.investigate_log("was repained with [src].", INVESTIGATE_CIRCUIT)
 			assembly.detail_color = get_pin_data(IC_INPUT, 1)
 			assembly.update_icon()
 
@@ -767,154 +796,42 @@
 			push_data()
 
 	activate_pin(3)
+/obj/item/integrated_circuit/manipulation/hatchlock
+	name = "maintenance hatch lock"
+	desc = "An electronically controlled lock for the assembly's maintenance hatch."
+	extended_desc = "WARNING: If you lock the hatch with no circuitry to reopen it, there is no way to open the hatch again!"
+	icon_state = "hatch_lock"
 
-/obj/item/integrated_circuit/manipulation/surgery_device
-	name = "surgery device" // help, I don't know, how to name this circuit :(
-	desc = "This circuit contains instructions to use medical instruments. Perhaps it does operation like a surgery instrument inserted in it."
-	extended_desc = "Takes a targer ref to do operation on and bodypart of target to do operation on."
-	ext_cooldown = 1
-	complexity = 20
-	size = 10
-	inputs = list(
-		"target" = IC_PINTYPE_REF,
-		"bodypart" = IC_PINTYPE_STRING
-		)
 	outputs = list(
-		"instrument" = IC_PINTYPE_REF
+		"enabled" = IC_PINTYPE_BOOLEAN
 	)
 	activators = list(
-		"use" = IC_PINTYPE_PULSE_IN,
-		"on success" = IC_PINTYPE_PULSE_OUT,
-		"on failure" = IC_PINTYPE_PULSE_OUT
+		"toggle" = IC_PINTYPE_PULSE_IN,
+		"on toggle" = IC_PINTYPE_PULSE_OUT
+	)
+
+	complexity = 4
+	cooldown_per_use = 2 SECOND
+	power_draw_per_use = 50
+	spawn_flags = IC_SPAWN_DEFAULT
+	origin_tech = list(TECH_ENGINEERING = 2)
+
+	var/lock_enabled = FALSE
+
+/obj/item/integrated_circuit/manipulation/hatchlock/do_work(ord)
+	if(ord == 1 && assembly)
+		lock_enabled = !lock_enabled
+		assembly.force_sealed = lock_enabled
+		visible_message(
+			lock_enabled ? \
+			SPAN("notice", "\The [get_object()] whirrs. The screws are now covered.") \
+			: \
+			SPAN("notice","\The [get_object()] whirrs. The screws are now exposed!")
 		)
-	spawn_flags = IC_SPAWN_RESEARCH
-	power_draw_per_use = 20
-	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
-	var/selected_zone
-	var/obj/item/instrument
 
-/obj/item/integrated_circuit/manipulation/surgery_device/Initialize()
-	. = ..()
-	extended_desc += "\nThe avaliable list of bodyparts: "
-	extended_desc += jointext(BP_ALL_LIMBS, ", ")
+		var/atom/A = get_object()
+		A.investigate_log("The [A] was [lock_enabled ? "locked" : "unlocked"] with [src].", INVESTIGATE_CIRCUIT)
 
-/obj/item/integrated_circuit/manipulation/surgery_device/attackby(obj/item/O, mob/user)
-	if(instrument)
-		to_chat(user, SPAN("warning", "There's already a instrument installed."))
-		return
-	if(istype(O, /obj/item/weapon/bonegel) || istype(O, /obj/item/weapon/bonesetter) || istype(O, /obj/item/weapon/circular_saw) || istype(O, /obj/item/weapon/scalpel) \
-	|| istype(O, /obj/item/weapon/retractor) || istype(O, /obj/item/weapon/hemostat) || istype(O, /obj/item/weapon/cautery) || istype(O, /obj/item/weapon/surgicaldrill) \
-	|| istype(O, /obj/item/weapon/FixOVein) || istype(O, /obj/item/weapon/organfixer))
-		instrument = O
-		user.drop_item(O)
-		instrument.forceMove(src)
-		set_pin_data(IC_OUTPUT, 1, weakref(instrument))
+		set_pin_data(IC_OUTPUT, 1, lock_enabled)
 		push_data()
-	else
-		..() // instrument not located
-
-/obj/item/integrated_circuit/manipulation/surgery_device/attack_self(mob/user)
-	if(instrument)
-		instrument.forceMove(get_turf(user))
-		to_chat(user, SPAN("notice", "You slide \the [instrument] out of the firing mechanism."))
-		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-		instrument = null
-		set_pin_data(IC_OUTPUT, 1, weakref(null))
-		push_data()
-	else
-		to_chat(user, SPAN("notice", "There's no instrument to remove from the mechanism."))
-
-/obj/item/integrated_circuit/manipulation/surgery_device/do_work()
-	if(assembly)
-		var/mob/living/carbon/target = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon)
-		if(!istype(target))
-			return
-		selected_zone = sanitize(get_pin_data(IC_INPUT, 2))
-		if(!(selected_zone in BP_ALL_LIMBS))
-			return
-		var/status = do_int_surgery(target)
-		if(status)
-			activate_pin(2)
-		else
-			activate_pin(3)
-
-/obj/item/integrated_circuit/manipulation/surgery_device/proc/wait_check_mob(mob/target, time = 30, target_zone = 0, uninterruptible = FALSE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT)
-	var/obj/item/device/electronic_assembly/ASS = assembly
-	if(!ASS || !target)
-		return 0
-	var/user_loc = ASS.loc
-	var/target_loc = target.loc
-
-	var/endtime = world.time+time
-	. = TRUE
-	while (world.time < endtime)
-		stoplag()
-
-		if(!ASS || !target)
-			. = FALSE
-			break
-
-		if(uninterruptible)
-			continue
-
-		if(!ASS || ASS.loc != user_loc)
-			. = FALSE
-			break
-
-		if(target.loc != target_loc)
-			. = FALSE
-			break
-
-		if(get_dist(ASS, target) > 1)
-			. = FALSE
-			break
-
-		if(target_zone && selected_zone != target_zone)
-			. = FALSE
-			break
-
-/obj/item/integrated_circuit/manipulation/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
-	var/atom/movable/user
-	if(isliving(assembly.loc))
-		user = assembly.loc
-	else
-		user = assembly
-	if(!istype(user))
-		return FALSE
-	var/zone = selected_zone
-	if(!zone || !(selected_zone in BP_ALL_LIMBS))
-		return FALSE
-	if(zone in M.op_stage.in_progress) //Can't operate on someone repeatedly.
-		return FALSE
-	for(var/datum/surgery_step/S in surgery_steps)
-		//check if tool is right or close enough and if this step is possible
-		if(S.tool_quality(instrument))
-			var/status = TRUE
-			var/step_is_valid = S.can_use(user, M, zone, instrument)
-			if(step_is_valid && S.is_valid_target(M))
-				if(S.clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
-					return FALSE
-				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
-					return FALSE
-				M.op_stage.in_progress += zone
-				S.begin_step(user, M, zone, instrument)		//start on it
-				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
-				if(prob(S.success_chance(user, M, instrument, zone)) &&  wait_check_mob(M, S.duration * SURGERY_DURATION_DELTA * surgery_speed, zone))
-					S.end_step(user, M, zone, instrument)		//finish successfully
-				else if (user.Adjacent(M))			//or
-					S.fail_step(user, M, zone, instrument)		//malpractice~
-				else // This failing silently was a pain.
-					status = FALSE
-				if (M)
-					M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
-				if (ishuman(M))
-					var/mob/living/carbon/human/H = M
-					H.update_surgery()
-					if(H.op_stage.current_organ)
-						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
-				return status 												//don't want to do weapony things after surgery
-	return FALSE
-
-#undef SURGERY_FAILURE
-#undef SURGERY_BLOCKED
-#undef SURGERY_DURATION_DELTA
+		activate_pin(2)

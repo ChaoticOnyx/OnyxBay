@@ -2,7 +2,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 /datum/antagonist/deathsquad/syndicate
 	id = MODE_COMMANDO
-	landmark_id = "Syndicate-Commando"
+	landmark_id = "Syndicate Commando"
 	role_text = "Syndicate Commando"
 	role_text_plural = "Commandos"
 	welcome_text = "You are in the employ of a criminal syndicate hostile to corporate interests."
@@ -19,10 +19,15 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 	station_crew_involved = FALSE
 
+/datum/antagonist/deathsquad/syndicate/Initialize()
+	. = ..()
+	if(config.commando_min_age)
+		min_player_age = config.commando_min_age
+
 /datum/antagonist/deathsquad/syndicate/equip(mob/living/carbon/human/player)
 
 	player.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(player), slot_w_uniform)
-	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/silenced(player), slot_belt)
+	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/pistol/silenced(player), slot_belt)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(player), slot_shoes)
 	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/standard/thermal(player), slot_glasses)
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/syndicate(player), slot_wear_mask)

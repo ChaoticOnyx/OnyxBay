@@ -65,14 +65,16 @@
 		<A href='byond://?src=\ref[src];code=5'>+</A><BR>
 		[t1]
 		</TT>"}
-	user << browse(dat, "window=radio")
+	show_browser(user, dat, "window=radio")
 	onclose(user, "radio")
 	return
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
+	if(usr.stat || !(src in usr.contents))
+		return
 	if((. = ..()))
-		usr << browse(null, "window=radio")
+		close_browser(usr, "window=radio")
 		onclose(usr, "radio")
 		return
 
@@ -101,6 +103,7 @@
 /obj/item/device/assembly/signaler/proc/signal()
 	if(!radio_connection) return
 
+	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
 	var/datum/signal/signal = new
 	signal.source = src
 	signal.encryption = code

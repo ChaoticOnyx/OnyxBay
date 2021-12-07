@@ -188,7 +188,7 @@
 			to_chat(user, "<span class='warning'>Insufficient resources.</span>")
 			return FALSE
 
-		playsound(get_turf(user), 'sound/machines/click.ogg', 50, 1)
+		playsound(user, 'sound/machines/click.ogg', 50, 1)
 		rcdm.work_message(target, user, rcd)
 
 		if(rcdm.delay)
@@ -197,7 +197,7 @@
 				return FALSE
 
 		rcdm.do_handle_work(target)
-		playsound(get_turf(user), 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(user, 'sound/items/Deconstruct.ogg', 50, 1)
 		return TRUE
 
 	return FALSE
@@ -251,10 +251,10 @@
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf
 	cost = 1
 	delay = 2 SECONDS
-	work_type = /turf/simulated/floor/plating/airless
+	work_type = /turf/simulated/floor/tiled
 
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf/can_handle_work(rcd, turf/target)
-	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)))
+	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)) || isopenspace(target))
 
 /decl/hierarchy/rcd_mode/floor_and_walls/floor_turf
 	cost = 3

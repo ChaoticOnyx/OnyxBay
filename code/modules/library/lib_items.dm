@@ -39,9 +39,9 @@
 			SetName("bookcase ([newname])")
 	else if(isScrewdriver(O))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-		to_chat(user, "<span class='notice'>You begin dismantling \the [src].</span>")
+		to_chat(user, SPAN("notice", "You begin dismantling \the [src]."))
 		if(do_after(user,25,src))
-			to_chat(user, "<span class='notice'>You dismantle \the [src].</span>")
+			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
 			new /obj/item/stack/material/wood(get_turf(src), 5)
 			for(var/obj/item/weapon/book/b in contents)
 				b.loc = (get_turf(src))
@@ -136,6 +136,54 @@
 		new /obj/item/weapon/book/wiki/research_and_development(src)
 		update_icon()
 
+/obj/structure/bookcase/prefitted
+	var/prefit_category
+
+/obj/structure/bookcase/prefitted/Initialize()
+	. = ..()
+	if(!prefit_category)
+		return
+	if(!establish_old_db_connection())
+		return
+	var/list/potential_books = list()
+	var/DBQuery/query = sql_query("SELECT * FROM library WHERE category = $category", dbcon_old, list(category = prefit_category))
+	while(query.NextRow())
+		potential_books.Add(list(list(
+			"id" = query.item[1],
+			"author" = query.item[2],
+			"title" = query.item[3],
+			"content" = query.item[4]
+		)))
+	var/list/picked_books = list()
+	for(var/i in 1 to rand(3,5))
+		if(potential_books.len)
+			var/r = rand(1, potential_books.len)
+			var/pick = potential_books[r]
+			picked_books += list(pick)
+			potential_books -= list(pick)
+	for(var/i in picked_books)
+		var/obj/item/weapon/book/book = new(src)
+		book.dat += "<font face=\"Verdana\"><i>Author: [i["author"]]<br>USBN: [i["id"]]</i><br><h3>[i["title"]]</h3></font><br>[i["content"]]"
+		book.title = i["title"]
+		book.author = i["author"]
+		book.icon_state = "book[rand(1,7)]"
+	update_icon()
+
+/obj/structure/bookcase/prefitted/fiction
+	name = "bookcase (Fiction)"
+	prefit_category = "Fiction"
+
+/obj/structure/bookcase/prefitted/nonfiction
+	name = "bookcase (Non-Fiction)"
+	prefit_category = "Non-Fiction"
+
+/obj/structure/bookcase/prefitted/religious
+	name = "bookcase (Religious)"
+	prefit_category = "Religion"
+
+/obj/structure/bookcase/prefitted/reference
+	name = "bookcase (Reference)"
+	prefit_category = "Reference"
 
 /*
  * Book
@@ -160,15 +208,15 @@
 /obj/item/weapon/book/attack_self(mob/user as mob)
 	if(carved)
 		if(store)
-			to_chat(user, "<span class='notice'>[store] falls out of [title]!</span>")
+			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
 			store.loc = get_turf(src.loc)
 			store = null
 			return
 		else
-			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
+			to_chat(user, SPAN("notice", "The pages of [title] have been cut out!"))
 			return
 	if(src.dat)
-		user << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
+		show_browser(user, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -181,13 +229,13 @@
 				user.drop_item()
 				W.loc = src
 				store = W
-				to_chat(user, "<span class='notice'>You put [W] in [title].</span>")
+				to_chat(user, SPAN("notice", "You put [W] in [title]."))
 				return
 			else
-				to_chat(user, "<span class='notice'>[W] won't fit in [title].</span>")
+				to_chat(user, SPAN("notice", "[W] won't fit in [title]."))
 				return
 		else
-			to_chat(user, "<span class='notice'>There's already something in [title]!</span>")
+			to_chat(user, SPAN("notice", "There's already something in [title]!"))
 			return
 	if(istype(W, /obj/item/weapon/pen))
 		if(unique)
@@ -221,9 +269,9 @@
 				return
 	else if(istype(W, /obj/item/weapon/material/knife) || isWirecutter(W))
 		if(carved)	return
-		to_chat(user, "<span class='notice'>You begin to carve out [title].</span>")
+		to_chat(user, SPAN("notice", "You begin to carve out [title]."))
 		if(do_after(user, 30, src))
-			to_chat(user, "<span class='notice'>You carve out the pages from [title]! You didn't want to read it anyway.</span>")
+			to_chat(user, SPAN("notice", "You carve out the pages from [title]! You didn't want to read it anyway."))
 			carved = 1
 			return
 	else
@@ -231,9 +279,11 @@
 
 /obj/item/weapon/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(user.zone_sel.selecting == BP_EYES)
-		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
-			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
-		M << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
+		user.visible_message(
+			SPAN("notice", "[user] opens up a book and shows it to [M]."),
+			SPAN("notice", "You open up the book and show it to [M].")
+		)
+		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
 /obj/item/weapon/book/wiki
@@ -282,12 +332,12 @@
 		if(WIKI_TEXT)
 			script = file2text('code/js/wiki_text.js');
 			if(source)
-				usr << browse(icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
+				show_browser(usr, icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
 			else
-				usr << browse(icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
-			usr << browse(icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
-			usr << browse(icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
-			usr << browse(icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
+				show_browser(usr, icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
+			show_browser(usr, icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
+			show_browser(usr, icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
+			show_browser(usr, icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
 			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b><br>
 						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='bookbinder.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='book1.png' style='width: 32px; height: 32px;'/>
 						</div><br>"}

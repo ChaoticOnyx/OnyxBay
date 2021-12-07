@@ -36,7 +36,7 @@
 
 	var/hatch_open = 0
 
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	idle_power_usage = 5
 
 	var/list/tile_info[4]
@@ -75,7 +75,7 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	if(get_dist(src, user) > 1 || !density)
+	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
@@ -131,6 +131,16 @@
 	if(blocked)
 		to_chat(user, "<span class='warning'>\The [src] is welded solid!</span>")
 		return
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			if(do_after(user, 30, src))
+				if(density)
+					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+					open(TRUE)
+					shake_animation(2, 2)
+			return
 
 	var/alarmed = lockdown
 	for(var/area/A in areas_added)		//Checks if there are fire alarms in any areas associated with that firedoor
@@ -286,51 +296,6 @@
 
 	return FA
 
-// CHECK PRESSURE
-/obj/machinery/door/firedoor/Process()
-	..()
-
-	if(density && next_process_time <= world.time)
-		next_process_time = world.time + 100		// 10 second delays between process updates
-		var/changed = 0
-		lockdown=0
-		// Pressure alerts
-		pdiff = getOPressureDifferential(src.loc)
-		if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
-			lockdown = 1
-			if(!pdiff_alert)
-				pdiff_alert = 1
-				changed = 1 // update_icon()
-		else
-			if(pdiff_alert)
-				pdiff_alert = 0
-				changed = 1 // update_icon()
-
-		tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
-		var/old_alerts = dir_alerts
-		for(var/index = 1; index <= 4; index++)
-			var/list/tileinfo=tile_info[index]
-			if(tileinfo==null)
-				continue // Bad data.
-			var/celsius = convert_k2c(tileinfo[1])
-
-			var/alerts=0
-
-			// Temperatures
-			if(celsius >= FIREDOOR_MAX_TEMP)
-				alerts |= FIREDOOR_ALERT_HOT
-				lockdown = 1
-			else if(celsius <= FIREDOOR_MIN_TEMP)
-				alerts |= FIREDOOR_ALERT_COLD
-				lockdown = 1
-
-			dir_alerts[index]=alerts
-
-		if(dir_alerts != old_alerts)
-			changed = 1
-		if(changed)
-			update_icon()
-
 /obj/machinery/door/firedoor/proc/latetoggle()
 	if(operating || !nextstate)
 		return
@@ -342,13 +307,19 @@
 		if(FIREDOOR_CLOSED)
 			nextstate = null
 			close()
+
 	return
 
 /obj/machinery/door/firedoor/close()
+	if (!is_processing)
+		START_PROCESSING(SSmachines, src)
+
 	latetoggle()
 	return ..()
 
 /obj/machinery/door/firedoor/open(forced = 0)
+	lockdown = 0
+
 	if(hatch_open)
 		hatch_open = 0
 		visible_message("The maintenance hatch of \the [src] closes.")
@@ -409,11 +380,11 @@
 			overlays += "palert"
 			do_set_light = TRUE
 		if(dir_alerts)
-			for(var/d=1;d<=4;d++)
+			for(var/d = 1; d <= 4; d++)
 				var/cdir = GLOB.cardinal[d]
-				for(var/i=1;i<=ALERT_STATES.len;i++)
-					if(dir_alerts[d] & (1<<(i-1)))
-						overlays += new /icon(icon,"alert_[ALERT_STATES[i]]", dir=cdir)
+				for(var/i = 1; i <= ALERT_STATES.len; i++)
+					if(dir_alerts[d] & (1 << (i-1)))
+						overlays += new /icon(icon,"alert_[ALERT_STATES[i]]", dir = cdir)
 						do_set_light = TRUE
 	else
 		icon_state = "door_open"
@@ -421,7 +392,55 @@
 			overlays += "welded_open"
 
 	if(do_set_light)
-		set_light(1.5, 0.5, COLOR_SUN)
+		set_light(0.25, 0.1, 1, 2, COLOR_SUN)
+
+// CHECK PRESSURE
+/obj/machinery/door/firedoor/Process()
+	if (!density)
+		return PROCESS_KILL
+
+	if(next_process_time > world.time)
+		return
+
+	next_process_time = world.time + 100		// 10 second delays between process updates
+	var/changed = 0
+	lockdown=0
+	// Pressure alerts
+	pdiff = getOPressureDifferential(src.loc)
+	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
+		lockdown = 1
+		if(!pdiff_alert)
+			pdiff_alert = 1
+			changed = 1 // update_icon()
+	else
+		if(pdiff_alert)
+			pdiff_alert = 0
+			changed = 1 // update_icon()
+
+	tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
+	var/old_alerts = dir_alerts
+	for(var/index = 1; index <= 4; index++)
+		var/list/tileinfo=tile_info[index]
+		if(tileinfo==null)
+			continue // Bad data.
+		var/celsius = convert_k2c(tileinfo[1])
+
+		var/alerts=0
+
+		// Temperatures
+		if(celsius >= FIREDOOR_MAX_TEMP)
+			alerts |= FIREDOOR_ALERT_HOT
+			lockdown = 1
+		else if(celsius <= FIREDOOR_MIN_TEMP)
+			alerts |= FIREDOOR_ALERT_COLD
+			lockdown = 1
+
+		dir_alerts[index]=alerts
+
+	if(dir_alerts != old_alerts)
+		changed = 1
+	if(changed)
+		update_icon()
 
 //These are playing merry hell on ZAS.  Sorry fellas :(
 

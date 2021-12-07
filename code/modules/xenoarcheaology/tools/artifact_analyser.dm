@@ -50,7 +50,7 @@
 	dat += "<br>"
 	dat += "<hr>"
 	dat += "<a href='?src=\ref[src]'>Refresh</a> <a href='?src=\ref[src];close=1'>Close</a>"
-	user << browse(dat, "window=artanalyser;size=450x500")
+	show_browser(user, dat, "window=artanalyser;size=450x500")
 	user.set_machine(src)
 	onclose(user, "artanalyser")
 
@@ -69,12 +69,14 @@
 		else
 			results = get_scan_info(scanned_object)
 
+
+		var/out = "<b>[src] analysis report #[++report_num]</b><br>"
+		out += "<br>"
+		out += "\icon[scanned_object] [results]"
+
 		src.visible_message("<b>[name]</b> states, \"Scanning complete.\"")
-		var/obj/item/weapon/paper/P = new(src.loc)
-		P.SetName("[src] report #[++report_num]")
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<br>"
-		P.info += "\icon[scanned_object] [results]"
+
+		var/obj/item/weapon/paper/P = new(src.loc, out, "[src] report #[report_num]")
 		P.stamped = list(/obj/item/weapon/stamp)
 		P.overlays = list("paper_stamped")
 
@@ -89,6 +91,7 @@
 		if(!owned_scanner)
 			reconnect_scanner()
 		if(owned_scanner)
+			playsound(src.loc, 'sound/signals/processing7.ogg', 50)
 			var/artifact_in_use = 0
 			for(var/obj/O in owned_scanner.loc)
 				if(O == owned_scanner)

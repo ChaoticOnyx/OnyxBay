@@ -59,7 +59,7 @@
 		dat += "<a href='?src=\ref[src];item=1'>Recover object</a>.<br>"
 		dat += "<a href='?src=\ref[src];allitems=1'>Recover all objects</a>.<br>"
 
-	user << browse(dat, "window=cryopod_console")
+	show_browser(user, dat, "window=cryopod_console")
 	onclose(user, "cryopod_console")
 
 /obj/machinery/computer/cryopod/OnTopic(user, href_list, state)
@@ -230,11 +230,6 @@
 			break
 
 	var/list/possible_locations = list()
-	if(GLOB.using_map.use_overmap)
-		var/obj/effect/overmap/O = map_sectors["[z]"]
-		for(var/obj/effect/overmap/OO in range(O,2))
-			if(OO.in_space || istype(OO,/obj/effect/overmap/sector/exoplanet))
-				possible_locations |= text2num(level)
 
 	var/newz = GLOB.using_map.get_empty_zlevel()
 	if(possible_locations.len && prob(10))
@@ -271,6 +266,7 @@
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
 		emagged = 1
 		return 1
@@ -341,6 +337,10 @@
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/proc/despawn_occupant()
+	if(!occupant)
+		log_and_message_admins("A mob was deleted while in a cryopod. This may cause errors!")
+		return
+
 	//Drop all items into the pod.
 	for(var/obj/item/W in occupant)
 		occupant.drop_from_inventory(W)
@@ -383,6 +383,8 @@
 				W.forceMove(src.loc)
 
 	//Update any existing objectives involving this mob.
+	for(var/datum/antag_contract/AC in GLOB.all_contracts)
+		AC.on_mob_despawned(occupant.mind)
 	for(var/datum/objective/O in all_objectives)
 		// We don't want revs to get objectives that aren't for heads of staff. Letting
 		// them win or lose based on cryo is silly so we remove the objective.
@@ -421,7 +423,7 @@
 		control_computer._admin_logs += "[key_name(occupant)] ([role_alt_title]) at [stationtime2text()]"
 	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
 
-	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", "[on_store_name]")
+	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", get_announcement_computer("[on_store_name]"))
 	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>", 3)
 
 	//This should guarantee that ghosts don't spawn.
@@ -492,7 +494,6 @@
 		occupant.client.eye = src.occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 
-	occupant.verbs -= /mob/living/proc/ghost
 	occupant.forceMove(get_turf(src))
 	set_occupant(null)
 
@@ -541,7 +542,6 @@
 		to_chat(occupant, "<span class='notice'><b>If you ghost, log out or close your client now, your character will shortly be permanently removed from the round.</b></span>")
 		occupant.client.perspective = EYE_PERSPECTIVE
 		occupant.client.eye = src
-	occupant.verbs += /mob/living/proc/ghost								//It must be updated before the mob is inside. Or the verbs don't get updated.
 	occupant.forceMove(src)
 	time_entered = world.time
 
@@ -572,9 +572,9 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle [target == user ? "yourself" : target] first.</span>")
 		return
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the [src] because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the [src] because they have a metroid latched onto their head.")
 			return
 	return TRUE
 

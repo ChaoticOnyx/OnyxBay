@@ -560,7 +560,7 @@
 /datum/reagent/mutagen
 	value = 3.1
 
-/datum/reagent/slimejelly
+/datum/reagent/metroidjelly
 	value = 1.2
 
 /datum/reagent/soporific
@@ -590,10 +590,10 @@
 /datum/reagent/psilocybin
 	value = 0.7
 
-/datum/reagent/slimetoxin
+/datum/reagent/metroidtoxin
 	value = 2
 
-/datum/reagent/aslimetoxin
+/datum/reagent/ametroidtoxin
 	value = 3
 
 /datum/reagent/nanites

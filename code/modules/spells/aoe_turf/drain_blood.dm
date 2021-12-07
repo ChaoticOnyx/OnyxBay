@@ -1,21 +1,21 @@
-/spell/aoe_turf/drain_blood
+/datum/spell/aoe_turf/drain_blood
 	name = "Drain Blood"
 	desc = "this spell allows the caster to borrow blood from those around them. Sharing is caring!"
 	feedback = "DB"
 	school = "transmutation"
 	charge_max = 600
 	invocation = "whispers something darkly"
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	range = 3
 	inner_radius = 0
-	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
 
 	time_between_channels = 100
 	number_of_channels = 3
 	cast_sound = 'sound/effects/squelch2.ogg'
-	hud_state = "const_rune"
+	icon_state = "const_rune"
 
-/spell/aoe_turf/drain_blood/cast(list/targets, mob/user)
+/datum/spell/aoe_turf/drain_blood/cast(list/targets, mob/user)
 	for(var/t in targets)
 		for(var/mob/living/L in t)
 			if(L.stat == DEAD || L == user)
@@ -55,7 +55,7 @@
 	tracer_type = /obj/effect/projectile/blood
 	impact_type = /obj/effect/projectile/blood
 
-/obj/item/projectile/beam/blood_effect/Bump(atom/a)
+/obj/item/projectile/beam/blood_effect/Bump(atom/a, forced = FALSE)
 	if(a == original)
 		on_impact(a)
 		qdel(src)

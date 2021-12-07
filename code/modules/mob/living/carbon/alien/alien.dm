@@ -10,7 +10,7 @@
 	mob_size = 4
 	species_language = "Xenomorph"
 
-	var/adult_form
+	var/adult_form = null
 	var/dead_icon
 	var/amount_grown = 0
 	var/max_grown = 200
@@ -45,10 +45,9 @@
 
 /mob/living/carbon/alien/Stat()
 	. = ..()
-	stat(null, "Progress: [amount_grown]/[max_grown]")
 
 /mob/living/carbon/alien/restrained()
 	return 0
 
-/mob/living/carbon/alien/show_inv(mob/user as mob)
+/mob/living/carbon/alien/show_inv(mob/user)
 	return //Consider adding cuffs and hats to this, for the sake of fun.

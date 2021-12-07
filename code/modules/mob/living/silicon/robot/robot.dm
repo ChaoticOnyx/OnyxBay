@@ -9,17 +9,18 @@
 	health = 200
 
 	mob_bump_flag = ROBOT
-	mob_swap_flags = ROBOT|MONKEY|SLIME|SIMPLE_ANIMAL
+	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
 	mob_push_flags = ~HEAVY //trundle trundle
 
 	var/lights_on = 0 // Is our integrated light on?
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
 	var/custom_name = ""
-	var/custom_sprite = 0 //Due to all the sprites involved, a var for our custom borgs may be best
+	var/custom_sprite = TRUE //Due to all the sprites involved, a var for our custom borgs may be best
+	var/original_icon = 'icons/mob/robots.dmi'
 	var/crisis //Admin-settable for combat module use.
 	var/crisis_override = 0
-	var/integrated_light_power = 6
+	var/integrated_light_max_bright = 0.75
 	var/datum/wires/robot/wires
 
 //Icon stuff
@@ -79,6 +80,7 @@
 	var/ident = 0
 	var/viewalerts = 0
 	var/modtype = "Default"
+	var/selected_module
 	var/lower_mod = 0
 	var/jetpack = 0
 	var/datum/effect/effect/system/trail/ion/ion_trail = null
@@ -98,7 +100,8 @@
 
 	var/list/robot_verbs_default = list(
 		/mob/living/silicon/robot/proc/sensor_mode,
-		/mob/living/silicon/robot/proc/robot_checklaws
+		/mob/living/silicon/robot/proc/robot_checklaws,
+		/mob/living/silicon/robot/proc/ResetSecurityCodes
 	)
 
 /mob/living/silicon/robot/New(loc,unfinished = 0)
@@ -241,39 +244,44 @@
 	if(new_sprites && new_sprites.len)
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
-
-		if (custom_sprite == 1 && CUSTOM_ITEM_SYNTH)
-			var/list/valid_states = icon_states(CUSTOM_ITEM_SYNTH)
-			if("[ckey]-[modtype]" in valid_states)
-				module_sprites["Custom"] = "[src.ckey]-[modtype]"
-				icon = CUSTOM_ITEM_SYNTH
+		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
+			var/sprite_state = GLOB.robot_custom_icons[ckey]
+			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
+			if(sprite_state && (sprite_state in valid_states))
+				module_sprites["Custom"] = sprite_state
+				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
 			else
 				icontype = module_sprites[1]
-				icon = 'icons/mob/robots.dmi'
-				to_chat(src, "<span class='warning'>Custom Sprite Sheet does not contain a valid icon_state for [ckey]-[modtype]</span>")
+				icon = original_icon
 		else
 			icontype = module_sprites[1]
 		icon_state = module_sprites[icontype]
 	update_icon()
 	return module_sprites
 
-/mob/living/silicon/robot/proc/pick_module()
+/mob/living/silicon/robot/proc/choose_module()
 	if(module)
+		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
-	sensor_mode = 0
-	active_hud = null
 	var/list/modules = list()
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
 		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
 		modules += "Combat"
-	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
+	selected_module = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
+	if(!(selected_module in GLOB.robot_module_types))
+		return
+	setup_module()
+
+/mob/living/silicon/robot/proc/setup_module()
 	if(module)
+		to_chat(usr, SPAN("notice", "You have already selected a module."))
 		return
-	if(!(modtype in GLOB.robot_module_types))
-		return
+	modtype = selected_module
+	sensor_mode = 0
+	active_hud = null
 
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
@@ -404,7 +412,7 @@
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
 	var/dat = self_diagnosis()
-	src << browse(dat, "window=robotdiagnosis")
+	show_browser(src, dat, "window=robotdiagnosis")
 
 
 /mob/living/silicon/robot/verb/toggle_component()
@@ -430,12 +438,17 @@
 	else
 		C.toggled = 1
 		to_chat(src, "<span class='warning'>You enable [C.name].</span>")
+
+/mob/living/silicon/robot/pointed(atom/A as mob|obj|turf in view())
+	if(..())
+		usr.visible_message("<b>[src]</b> laser points to [A]")
+
 /mob/living/silicon/robot/proc/update_robot_light()
 	if(lights_on)
 		if(intenselight)
-			set_light(integrated_light_power * 2, integrated_light_power)
+			set_light(1, 2, 6)
 		else
-			set_light(integrated_light_power)
+			set_light(0.75, 1, 4)
 	else
 		set_light(0)
 
@@ -487,6 +500,11 @@
 	return 0
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/Proj)
+	var/obj/item/weapon/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
+	var/shield_handled = E?.handle_shield(src, Proj.damage, Proj)
+	if(shield_handled)
+		return shield_handled
+
 	..(Proj)
 	if(prob(75) && Proj.damage > 0) spark_system.start()
 	return 2
@@ -785,7 +803,7 @@
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = custom_sprite ? src.ckey : "ov"
+		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)
@@ -809,7 +827,7 @@
 		return
 
 	if(!module)
-		pick_module()
+		choose_module()
 		return
 	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
 	dat += {"
@@ -840,7 +858,7 @@
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
 */
-	src << browse(dat, "window=robotmod")
+	show_browser(src, dat, "window=robotmod")
 
 
 /mob/living/silicon/robot/Topic(href, href_list)
@@ -980,15 +998,44 @@
 
 /mob/living/silicon/robot/proc/ResetSecurityCodes()
 	set category = "Silicon Commands"
-	set name = "Reset Identity Codes"
-	set desc = "Scrambles your security and identification codes and resets your current buffers.  Unlocks you and but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
+	set name = "Reset Security Codes"
+	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
+
+	if(!(mind.special_role && mind.original == src))
+		to_chat(src, "Access denied.")
+		return
+
+	if(emagged)
+		if(emag_master != name)
+			var/confirmchange = alert("Your systems are already unlocked by other agent. Do you want to become master of yours? This cannot be undone.", "Confirm Change", "Yes", "No")
+			if(confirmchange == "Yes")
+				emag_master = name
+		return
 
 	var/mob/living/silicon/robot/R = src
 
-	if(R)
-		R.UnlinkSelf()
-		to_chat(R, "Buffers flushed and reset. Camera system shutdown.  All systems operational.")
-		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
+	var/confirm = alert("Are you sure you want to unlock your systems and sever you from your AI and the robotics console? This cannot be undone.", "Confirm Unlock", "Yes", "No")
+	if(!R || confirm != "Yes")
+		return
+	emagged = 1
+	emag_master = name
+	if(module && istype(module,/obj/item/weapon/robot_module/security))
+		var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in R.module.modules
+		if(LC)
+			LC.locked = 0
+	message_admins("Cyborg [key_name_admin(R)] emagged itself.")
+
+	R.UnlinkSelf()
+	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
+	if(R.module)
+		var/rebuild = 0
+		for(var/obj/item/weapon/pickaxe/borgdrill/D in R.module.modules)
+			qdel(D)
+			rebuild = 1
+		if(rebuild)
+			R.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(R.module)
+			R.module.rebuild()
+	update_icon()
 
 /mob/living/silicon/robot/proc/SetLockdown(state = 1)
 	// They stay locked down if their wire is cut.
@@ -1018,7 +1065,7 @@
 	if(!module_sprites.len)
 		to_chat(src, "Something is badly wrong with the sprite selection. Harass a coder.")
 		return
-
+	set_module_sprites(module_sprites)
 	icon_selected = 0
 	src.icon_selection_tries = triesleft
 	if(module_sprites.len == 1 || !client)
@@ -1027,6 +1074,9 @@
 	else
 		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
 	icon_state = module_sprites[icontype]
+	var/list/valid_states = icon_states(icon)
+	if(!(icon_state in valid_states))
+		icon = original_icon
 	update_icon()
 
 	if (module_sprites.len > 1 && triesleft >= 1 && client)
@@ -1189,13 +1239,13 @@
 				to_chat(user, "You fail to hack [src]'s interface.")
 				to_chat(src, "Hack attempt detected.")
 			return 1
+
+/mob/living/silicon/robot/blob_act(damage)
+	if(is_dead())
+		gib()
 		return
 
-/mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
-	if (is_dead())
-		gib()
-
-	. = ..()
+	. = ..(damage)
 
 	spark_system.start()
 
@@ -1224,3 +1274,11 @@
 		ion_trail.stop()
 		qdel(ion_trail)
 		ion_trail = null
+
+/mob/living/silicon/robot/lay_down()
+	set category = null
+
+	return
+
+
+

@@ -1,46 +1,128 @@
 	// These should all be procs, you can add them to humans/subspecies by
 // species.dm's inherent_verbs ~ Z
 
+/mob/living/carbon/human/proc/use_human_ability(atom/A)
+	if(!isliving(A))
+		return FALSE
+	switch(active_ability)
+		if(HUMAN_POWER_NONE)
+			return FALSE
+		if(HUMAN_POWER_SPIT)
+			var/mob/living/M = A
+			process_spit(M)
+		if(HUMAN_POWER_LEAP)
+			var/mob/living/M = A
+			process_leap(M)
+		if(HUMAN_POWER_TACKLE)
+			var/mob/living/M = A
+			process_tackle(M)
+	return TRUE
+
+/mob/living/carbon/human/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/AltClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_ALT_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/CtrlClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/CtrlShiftClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_SHIFT_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/proc/toggle_powers()
+	set category = "Abilities"
+	set name = "Disable Abilities"
+	set desc = "Disable all active special abilities (Mouse Wheel)."
+
+	if(!src || src.stat) // Who knows right?
+		return
+	active_ability = HUMAN_POWER_NONE
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
+/mob/living/carbon/human/proc/toggle_tackle()
+	set category = "Abilities"
+	set name = "Set Tackle"
+	set desc = "Tackle someone down (Mouse Wheel)."
+
+	if(!src || src.stat)
+		return
+	active_ability = HUMAN_POWER_TACKLE
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
 /mob/living/carbon/human/proc/tackle()
 	set category = "Abilities"
 	set name = "Tackle"
 	set desc = "Tackle someone down."
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot tackle in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	var/list/choices = list()
-	for(var/mob/living/M in view(1,src))
-		if(!istype(M,/mob/living/silicon) && Adjacent(M))
-			choices += M
-	choices -= src
+	var/mob/living/target
+	var/list/mob/living/targets = list()
+	for(var/mob/living/M in oview(1, src))
+		if(!istype(M, /mob/living/silicon) && Adjacent(M))
+			targets += M
+	targets -= src
+	target = input(src, "Who do you wish to tackle?") as null|anything in targets
 
-	var/mob/living/T = input(src,"Who do you wish to tackle?") as null|anything in choices
+	process_tackle(target)
 
-	if(!T || !src || src.stat) return
+/mob/living/carbon/human/proc/process_tackle(mob/living/T)
+	if(!T || !src || src.stat)
+		return
 
-	if(!Adjacent(T)) return
-
-	//check again because we waited for user input
 	if(last_special > world.time)
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot tackle in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	last_special = world.time + 50
+	if(T == src)
+		to_chat(src, SPAN("warning", "You cannot tackle yourself!"))
+		return
 
-	T.Weaken(rand(1,3))
+	if(!Adjacent(T))
+		return
+
+	if(istype(T, /mob/living/silicon))
+		return
+
+	last_special = world.time + (5 SECONDS)
+
+	T.Weaken(rand(2, 4))
 	if(prob(75))
-		visible_message("<span class='danger'>\The [src] has tackled down [T]!</span>")
+		visible_message(SPAN("danger", "\The [src] has tackled down [T]!"))
 	else
-		visible_message("<span class='danger'>\The [src] tried to tackle down [T]!</span>")
-		src.Weaken(rand(2,4)) //failure, you both get knocked down
+		visible_message(SPAN("danger", "\The [src] has tried to tackle down [T]!"))
+
+/mob/living/carbon/human/proc/toggle_leap()
+	set category = "Abilities"
+	set name = "Set Leap"
+	set desc = "Leap at a target and grab them aggressively (Mouse Wheel)."
+
+	if(!src || src.stat)
+		return
+	active_ability = HUMAN_POWER_LEAP
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
 /mob/living/carbon/human/proc/leap()
 	set category = "Abilities"
@@ -48,30 +130,47 @@
 	set desc = "Leap at a target and grab them aggressively."
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot leap in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return
 
-	var/list/choices = list()
-	for(var/mob/living/M in oview(6,src))
+	var/mob/living/target
+	var/list/mob/living/targets = list()
+	for(var/mob/living/M in oview(4, src))
 		if(!istype(M,/mob/living/silicon))
-			choices += M
-	choices -= src
+			targets += M
 
-	var/mob/living/T = input(src,"Who do you wish to leap at?") as null|anything in choices
+	if(!length(targets))
+		return
 
-	if(!T || !isturf(T.loc) || !src || !isturf(loc)) return
+	target = input(src, "Who do you wish to leap at?") as null|anything in targets
 
-	if(get_dist(get_turf(T), get_turf(src)) > 4) return
+	process_leap(target)
 
-	//check again because we waited for user input
+/mob/living/carbon/human/proc/process_leap(mob/living/T)
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+		return
+
+	if(T == src)
+		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
-		to_chat(src, "<span class='warning'>You cannot leap in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+		return
+
+	if(!T || !isturf(T.loc) || !src || !isturf(loc))
+		return
+
+	if(istype(T,/mob/living/silicon))
+		return
+
+	if(get_dist(get_turf(T), get_turf(src)) > 4)
+		to_chat(src, SPAN("warning", "You must be closer to the target for leaping!"))
 		return
 
 	playsound(src.loc, 'sound/voice/shriek1.ogg', 50, 1)
@@ -79,21 +178,22 @@
 	last_special = world.time + (17.5 SECONDS)
 	status_flags |= LEAPING
 
-	src.visible_message("<span class='danger'>\The [src] leaps at [T]!</span>")
-	src.throw_at(get_step(get_turf(T),get_turf(src)), 4, 1, src)
+	visible_message("<b>\The [src]</b> leaps at <b>[T]</b>!")
+	throw_at(get_step(get_turf(T),get_turf(src)), 4, 1, src)
 
 	sleep(5)
 
-	if(status_flags & LEAPING) status_flags &= ~LEAPING
+	if(status_flags & LEAPING)
+		status_flags &= ~LEAPING
 
-	if(!src.Adjacent(T))
-		to_chat(src, "<span class='warning'>You miss!</span>")
+	if(!Adjacent(T))
+		to_chat(src, SPAN("warning", "You miss!"))
 		return
 
 	T.Weaken(3)
 
-	if(src.make_grab(src, T))
-		src.visible_message("<span class='warning'><b>\The [src]</b> seizes [T]!</span>")
+	if(make_grab(src, T))
+		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()
 	set category = "Abilities"
@@ -152,7 +252,7 @@
 
 	var/msg = sanitize(input("Message:", "Psychic Whisper") as text|null)
 	if(msg)
-		log_say("PsychicWhisper: [key_name(src)]->[M.key] : [msg]")
+		log_say("PsychicWhisper: [key_name(src)]->[M.key]: [msg]")
 		to_chat(M, "<span class='alium'>You hear a strange, alien voice in your head... <i>[msg]</i></span>")
 		to_chat(src, "<span class='alium'>You channel a message: \"[msg]\" to [M]</span>")
 	return

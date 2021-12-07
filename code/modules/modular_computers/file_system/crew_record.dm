@@ -7,6 +7,46 @@ GLOBAL_VAR_INIT(default_mental_status, "Stable")
 GLOBAL_LIST_INIT(security_statuses, list("None", "Released", "Parolled", "Incarcerated", "Arrest"))
 GLOBAL_VAR_INIT(default_security_status, "None")
 GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
+GLOBAL_LIST_INIT(department_flags, list(
+	COM,
+	SPT,
+	SCI,
+	SEC,
+	MED,
+	ENG,
+	SUP,
+	EXP,
+	SRV,
+	CIV,
+	MSC
+))
+GLOBAL_LIST_INIT(text_to_department_flags, list(
+	"Heads of Staff" = COM,
+	"Command Support" = SPT,
+	"Research" = SCI,
+	"Security" = SEC,
+	"Medical" = MED,
+	"Engineering" = ENG,
+	"Supply" = SUP,
+	"Exploration" = EXP,
+	"Service" = SRV,
+	"Civilian" = CIV,
+	"Miscellaneous" = MSC
+))
+GLOBAL_LIST_INIT(department_flags_to_text, list(
+	num2text(COM) = "Heads of Staff",
+	num2text(SPT) = "Command Support",
+	num2text(SCI) = "Research",
+	num2text(SEC) = "Security",
+	num2text(MED) = "Medical",
+	num2text(ENG) = "Engineering",
+	num2text(SUP) = "Supply",
+	num2text(EXP) = "Exploration",
+	num2text(SRV) = "Service",
+	num2text(CIV) = "Civilian",
+	num2text(MSC) = "Miscellaneous",
+))
+
 
 // Kept as a computer file for possible future expansion into servers.
 /datum/computer_file/crew_record
@@ -18,6 +58,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	var/icon/photo_front = null
 	var/icon/photo_side = null
 	var/list/fields = list()	// Fields of this record
+	var/list/assigned_deparment_flags = list()
 
 /datum/computer_file/crew_record/New()
 	..()
@@ -44,6 +85,19 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_job(H ? GetAssignment(H) : "Unset")
 	set_sex(H ? gender2text(H.gender) : "Unset")
 	set_age(H ? H.age : 30)
+	var/list/job_flag = list()
+	var/list/job_flag_name = list()
+	if(H)
+		var/datum/job/job = job_master.occupations_by_title[H.job]
+		if(job)
+			for(var/flag in GLOB.department_flags)
+				if(flag & job.department_flag)
+					job_flag += flag
+					job_flag_name += GLOB.department_flags_to_text[num2text(flag)]
+	if(!length(job_flag))
+		job_flag = list(MSC)
+	assigned_deparment_flags = job_flag
+	set_department(english_list(job_flag_name))
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
 	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
 	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
@@ -97,6 +151,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		return F.set_value(value)
 
 // Global methods
+
 // Used by character creation to create a record for new arrivals.
 /proc/CreateModularRecord(mob/living/carbon/human/H)
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
@@ -256,6 +311,7 @@ FIELD_LIST("Sex", sex, FALSE, record_genders())
 FIELD_NUM("Age", age, FALSE)
 
 
+FIELD_SHORT_SECURE("Department", department, FALSE, access_hop)
 FIELD_SHORT("Species",species, FALSE)
 FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
@@ -288,7 +344,7 @@ FIELD_CONTEXT_BOTH(medical_details, CONTEXT(medical))
 FIELD_LONG_SECURE("Important Notes", medical_notes, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_notes, CONTEXT(medical))
 
-FIELD_LONG_SECURE("Recent Records", medical_records, FALSE, access_medical);
+FIELD_LONG_SECURE("Medical Recent Records", medical_records, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_records, CONTEXT(medical))
 
 
@@ -311,7 +367,7 @@ FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 		if ("Parolled")
 			ret = "green"
 		if ("Released")
-			ret = "blue"
+			ret = "darkcyan"
 	return ret
 
 /record_field/criminalStatus/announce(automatic)
@@ -319,12 +375,12 @@ FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
-			var/status = "<font color='black'><b>None</b></font>"
+			var/status = "<b>None</b>"
 			var/clr = criminal_status_color(value)
 			if (clr)
 				status = "<font color='[clr]'><b>[value]</b></font>"
 
-			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
+			GLOB.global_announcer.autosay("<b>[R.get_name()]</b> security status is changed to [status]!", "<b>Security Records Announcer</b>", "Security")
 
 
 FIELD_LONG_SECURE("Major Crimes", major_crimes, FALSE, access_security);
@@ -339,7 +395,7 @@ FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
 FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
 
-FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security);
+FIELD_LONG_SECURE("Security Recent Records", crime_recent, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
 
 
@@ -350,7 +406,7 @@ FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
 		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
-			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
+			GLOB.global_announcer.autosay("<b>[R.get_name()]</b> security record was changed!", "<b>Security Records Announcer</b>", "Security")
 
 
 FIELD_SHORT_SECURE("DNA", dna, FALSE, access_medical);
