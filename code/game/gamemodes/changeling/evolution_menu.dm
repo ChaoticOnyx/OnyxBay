@@ -32,7 +32,8 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/stasis
 	name = "Regenerative Stasis"
 	desc = "We become weakened to a death-like state, where we will rise again from death."
-	helptext = "Can be used before or after death. Duration varies greatly."
+	helptext = "Can be used before or after death. Spends all the chemicals we have. Duration depends on how many chemicals were spent."
+	enhancedtext = "We regain some of our chemicals upon reviving."
 	genomecost = 0
 	power_path = /datum/changeling_power/toggled/stasis
 
