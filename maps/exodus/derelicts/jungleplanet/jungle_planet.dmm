@@ -362,7 +362,7 @@
 "gX" = (/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 1},/obj/structure/table/standard,/obj/machinery/light/he{icon_state = "hetube1"; dir = 1},/obj/item/weapon/paper_bin{pixel_y = 6},/obj/item/weapon/pen{pixel_y = 6},/obj/item/device/camera,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "gY" = (/obj/machinery/gateway{dir = 10},/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "gZ" = (/obj/machinery/gateway{dir = 8},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"ha" = (/obj/machinery/gateway/centerstation,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
+"ha" = (/obj/machinery/gateway/centeraway{gateway_tag = "Jungle"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "hb" = (/obj/machinery/gateway{dir = 4},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "hc" = (/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 5},/obj/structure/table/rack,/obj/item/device/camera_film,/obj/item/device/camera_film,/obj/item/device/camera_film,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "hd" = (/obj/machinery/gateway,/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
