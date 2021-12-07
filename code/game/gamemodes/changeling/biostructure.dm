@@ -152,16 +152,18 @@
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
 	if(istype(source, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = source
-		var/obj/item/organ/external/E = H.get_organ(parent_organ)
-		if(E)
-			E.internal_organs -= src
-		H.internal_organs_by_name.Remove(BP_CHANG)
-		H.internal_organs_by_name -= BP_CHANG // Yes this is intended, even after the previous line. Everything will get broken if you remove this.
-		H.internal_organs.Remove(src)
+		if(H == owner)
+			var/obj/item/organ/external/E = H.get_organ(parent_organ)
+			if(E)
+				E.internal_organs -= src
+			H.internal_organs_by_name.Remove(BP_CHANG)
+			H.internal_organs_by_name -= BP_CHANG // Yes this is intended, even after the previous line. Everything will get broken if you remove this.
+			H.internal_organs.Remove(src)
+		else
+			H.drop_from_inventory(src)
 	else if(istype(source, /obj/item/organ/external))
 		var/obj/item/organ/external/E = source
-		if(E)
-			E.internal_organs -= src
+		E.internal_organs.Remove(src)
 
 	forceMove(destination)
 
