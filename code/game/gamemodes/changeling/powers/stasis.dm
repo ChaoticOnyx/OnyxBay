@@ -16,7 +16,7 @@
 	var/max_revive_time = 240
 	var/revive_speedup_by_chem = 1.2
 	var/chemical_buffer = -1 // Amount of chemicals we regain if we use recursive enhancement
-	var/chemical_buffer_mult = 0.33
+	var/chemical_buffer_divisor = 3
 
 /datum/changeling_power/toggled/stasis/update_screen_button()
 	if(is_ready)
@@ -46,10 +46,10 @@
 		return
 
 	var/revive_time = max_revive_time - (changeling.chem_charges * revive_speedup_by_chem)
-	revive_time = max(1, revive_time) // 0s timers bad
+	revive_time = max(1, revive_time) SECONDS // 0s timers bad
 
 	if(chemical_buffer != -1)
-		chemical_buffer = round(changeling.chem_charges * chemical_buffer_mult)
+		chemical_buffer = round(changeling.chem_charges / chemical_buffer_divisor)
 	changeling.chem_charges = 0
 
 	my_mob.status_flags |= FAKEDEATH
