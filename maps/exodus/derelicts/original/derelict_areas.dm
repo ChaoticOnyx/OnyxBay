@@ -2,6 +2,7 @@
 	name = "\improper Derelict Station"
 	icon_state = "storage"
 	has_gravity = FALSE
+	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 
 /area/derelict/hallway/primary
 	name = "\improper Derelict Primary Hallway"

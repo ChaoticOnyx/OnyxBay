@@ -180,7 +180,7 @@
 							switch(hit_zone)
 								if(BP_MOUTH)
 									attack_message = "[H] lands a jab against [src]'s jaw!"
-									specmod = 2
+									specmod = 1.5
 								if(BP_CHEST)
 									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && should_have_organ(BP_HEART))
 										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))

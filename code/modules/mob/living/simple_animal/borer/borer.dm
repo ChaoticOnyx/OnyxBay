@@ -23,6 +23,7 @@
 	holder_type = /obj/item/weapon/holder/borer
 	mob_size = MOB_SMALL
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/borer
 
 	var/generation = 1
 	var/static/list/borer_names = list(
@@ -150,3 +151,6 @@
 	spawn(-1)
 		if(user)
 			qdel(user) // Remove the keyless ghost if it exists.
+
+/decl/simple_animal_bodyparts/borer
+	hit_zones = list("head", "central segment", "tail segment")

@@ -20,6 +20,7 @@
 	can_escape = 1
 	attacktext = "punched"
 	a_intent = I_HURT
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 	var/corpse = /obj/effect/landmark/corpse/russian
 	var/weapon1 = /obj/item/weapon/material/knife
 	unsuitable_atoms_damage = 15

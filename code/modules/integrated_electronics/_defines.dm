@@ -7,3 +7,4 @@
 
 //Sets the max string size that can be put in for circuit cloning
 #define MAX_SIZE_CIRCUIT		15000
+#define IC_MAX_NAME_LEN 35

@@ -5,7 +5,7 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	role_text = "NanoTrasen Actor"
 	role_text_plural = "NanoTrasen Actors"
 	welcome_text = "You've been hired to entertain people through the power of television!"
-	landmark_id = "ActorSpawn"
+	landmark_id = "Actor"
 	id_type = /obj/item/weapon/card/id/syndicate
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED

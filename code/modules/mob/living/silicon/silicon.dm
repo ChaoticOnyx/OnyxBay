@@ -306,6 +306,18 @@
 
 	updatehealth()
 
+/mob/living/silicon/blob_act(damage)
+	if(is_dead())
+		return
+
+	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/brute = damage
+
+	brute *= protection
+	adjustBruteLoss(brute)
+
+	updatehealth()
+
 /mob/living/silicon/proc/receive_alarm(datum/alarm_handler/alarm_handler, datum/alarm/alarm, was_raised)
 	if(!next_alarm_notice)
 		next_alarm_notice = world.time + SecondsToTicks(10)

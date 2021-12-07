@@ -15,6 +15,7 @@
 	response_harm = "hits"
 	speak = list("ALERT.","Hostile-ile-ile entities dee-twhoooo-wected.","Threat parameterszzzz- szzet.","Bring sub-sub-sub-systems uuuup to combat alert alpha-a-a.")
 	emote_see = list("beeps menacingly","whirrs threateningly","scans its immediate vicinity")
+	bodyparts = /decl/simple_animal_bodyparts/malf_drone
 	a_intent = I_HURT
 	stop_automated_movement_when_pulled = 0
 	health = 300
@@ -275,3 +276,6 @@
 
 /obj/item/projectile/beam/pulse/drone
 	damage = 10
+
+/decl/simple_animal_bodyparts/malf_drone
+	hit_zones = list("chassis", "comms array", "sensor suite", "left weapons module", "right weapons module", "maneuvering thruster")

@@ -87,6 +87,7 @@
 	can_pull_mobs = MOB_PULL_SAME
 
 	holder_type = /obj/item/weapon/holder/parrot
+	bodyparts = /decl/simple_animal_bodyparts/bird
 
 
 /mob/living/simple_animal/parrot/New()

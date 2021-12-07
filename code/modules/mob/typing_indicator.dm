@@ -21,7 +21,7 @@ I IS TYPIN'!'
 	master.typing_indicator = src
 	src.master = master
 	name = master.name
-
+	glide_size = master.glide_size
 	GLOB.moved_event.register(master, src, /atom/movable/proc/move_to_turf_or_null)
 
 	GLOB.stat_set_event.register(master, src, /datum/proc/qdel_self) // Making the assumption master is conscious at creation
