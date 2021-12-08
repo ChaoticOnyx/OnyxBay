@@ -92,6 +92,9 @@
 /proc/is_not_shuttle_area(area/A)
 	. = !istype(A, /area/shuttle)
 
+/proc/is_not_sealed_area(area/A)
+	. = !(A.z in GLOB.using_map.sealed_levels)
+
 /proc/is_area_with_turf(area/A)
 	return A && isnum(A.x)
 
@@ -102,13 +105,14 @@ GLOBAL_LIST_INIT(is_station_but_not_space_or_shuttle_area, list(/proc/is_station
 
 GLOBAL_LIST_INIT(is_contact_but_not_space_or_shuttle_area, list(/proc/is_contact_area, /proc/is_not_space_area, /proc/is_not_shuttle_area))
 
-GLOBAL_LIST_INIT(is_player_but_not_space_or_shuttle_area, list(/proc/is_player_area, /proc/is_not_space_area, /proc/is_not_shuttle_area))
+GLOBAL_LIST_INIT(is_player_but_not_space_or_shuttle_area, list(/proc/is_player_area, /proc/is_not_space_area, /proc/is_not_shuttle_area, /proc/is_not_sealed_area))
+
+GLOBAL_LIST_INIT(is_player_but_not_space_or_shuttle_area_or_sealed, list(/proc/is_player_area, /proc/is_not_space_area, /proc/is_not_shuttle_area, /proc/is_not_sealed_area))
 
 GLOBAL_LIST_INIT(is_player_but_not_space_area, list(/proc/is_player_area, /proc/is_not_space_area))
 
 /*
 	Misc Helpers
 */
-#define teleportlocs area_repository.get_areas_by_name_and_coords(GLOB.is_player_but_not_space_or_shuttle_area)
-#define stationlocs area_repository.get_areas_by_name(GLOB.is_player_but_not_space_or_shuttle_area)
-
+#define teleportlocs area_repository.get_areas_by_name_and_coords(GLOB.is_player_but_not_space_or_shuttle_area_or_sealed)
+#define artlocs area_repository.get_areas_by_name_and_coords(GLOB.is_player_but_not_space_or_shuttle_area)
