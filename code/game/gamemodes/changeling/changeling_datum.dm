@@ -73,7 +73,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 // Here we finally die and live no more.
 /datum/changeling/proc/die()
-	remove_all_changeling_powers(FALSE) // Keeping purchases list, removing actual abilities.
+	remove_all_changeling_powers() // Keeping purchases list, removing actual abilities.
 	if(my_mob)
 		to_chat(my_mob, SPAN("changeling", "That's it. We hunt no more."))
 	true_dead = TRUE
@@ -220,7 +220,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 
 // Removes all changeling powers.
-/datum/changeling/proc/remove_all_changeling_powers(remove_purchased = TRUE)
+/datum/changeling/proc/remove_all_changeling_powers(remove_purchased = FALSE)
 	if(remove_purchased)
 		purchasedpowers.Cut()
 	for(var/CP in available_powers)
