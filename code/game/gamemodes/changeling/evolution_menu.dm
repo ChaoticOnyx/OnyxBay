@@ -146,7 +146,7 @@ var/list/datum/power/changeling/powerinstances = list()
 */
 
 /datum/power/changeling/boost_range
-	name = "Boost Range"
+	name = "Ranged Stinger"
 	desc = "We evolve the ability to shoot our stingers at humans, with some preperation."
 	helptext = "While active, our sting-based abilities can be used against targets 2 squares away, but require additional 20 chemicals."
 	genomecost = 3
@@ -629,4 +629,5 @@ var/list/datum/power/changeling/powerinstances = list()
 // For debugging. Or for events and badminship, who knows.
 /datum/changeling/proc/purchase_everything()
 	for(var/datum/power/changeling/P in powerinstances)
+		purchasedpowers += P
 		add_changeling_power(P)

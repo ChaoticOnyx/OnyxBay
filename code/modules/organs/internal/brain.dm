@@ -90,7 +90,7 @@
 	else
 		. += "\nThis one seems particularly lifeless. Perhaps it will regain some of its luster later.."
 
-/obj/item/organ/internal/brain/removed(mob/living/user)
+/obj/item/organ/internal/brain/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 

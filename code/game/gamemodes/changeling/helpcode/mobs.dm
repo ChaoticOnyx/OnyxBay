@@ -101,7 +101,6 @@
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(BIO)
 		BIO.removed()
-		BIO.forceMove(get_turf(src))
 		return
 	..()
 
@@ -110,7 +109,6 @@
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(BIO)
 		BIO.removed()
-		BIO.forceMove(get_turf(src))
 		return
 	..()
 
@@ -293,6 +291,13 @@
 
 	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
 	changeling.absorbDNA(newDNA)
+	if(mind && target.mind)
+		mind.store_memory("[target.real_name]'s memories:")
+		mind.store_memory(target.mind.memory)
+		mind.store_memory("<hr>")
+
+	if(target.mind?.changeling)
+		changeling.consume_changeling(target.mind.changeling)
 
 	target.ghostize()
 	if(mind.transfer_to(target))

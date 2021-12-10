@@ -95,27 +95,7 @@
 		my_mob.mind.store_memory("<hr>")
 
 	if(T.mind?.changeling)
-		if(T.mind.changeling.absorbed_dna)
-			for(var/datum/absorbed_dna/dna_data in T.mind.changeling.absorbed_dna)	// steal all their loot
-				if(changeling.GetDNA(dna_data.name))
-					continue
-				changeling.absorbDNA(dna_data)
-				changeling.absorbedcount++
-			T.mind.changeling.absorbed_dna.len = 1
-
-		if(T.mind.changeling.purchasedpowers)
-			for(var/datum/power/changeling/T_power in T.mind.changeling.purchasedpowers)
-				if(T_power in changeling.purchasedpowers)
-					continue
-				else
-					changeling.purchasedpowers += T_power
-					my_mob.make_changeling()
-
-		changeling.chem_charges += T.mind.changeling.chem_charges
-		changeling.geneticpoints += T.mind.changeling.geneticpoints
-		T.mind.changeling.chem_charges = 0
-		T.mind.changeling.geneticpoints = 0
-		T.mind.changeling.absorbedcount = 0
+		changeling.consume_changeling(T.mind.changeling)
 
 	changeling.absorbedcount++
 	changeling.using_proboscis = FALSE
