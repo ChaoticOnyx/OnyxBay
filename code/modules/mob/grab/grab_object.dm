@@ -143,6 +143,9 @@
 	if(!assailant || !affecting)
 		return 0
 
+	if(assailant.lying)
+		return 0
+
 	if(assailant == affecting)
 		to_chat(assailant, "<span class='notice'>You can't grab yourself.</span>")
 		return 0
