@@ -6,6 +6,7 @@
 	parent_organ = BP_CHEST
 	vital = TRUE
 	icon_state = "strange-biostructure"
+	dead_icon = "strange-biostructure-dead"
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
@@ -84,16 +85,29 @@
 	if(status & ORGAN_DEAD)
 		return
 	if(M?.mind && brainchan)
+		to_chat(M, SPAN("changeling", "We feel slightly disoriented."))
 		M.mind.transfer_to(brainchan)
-		to_chat(brainchan, SPAN("changeling", "We feel slightly disoriented."))
 
 
 // Called when biostructure is taken out of a mob
-/obj/item/organ/internal/biostructure/removed(mob/living/user)
+/obj/item/organ/internal/biostructure/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
+	//var/already_removed = FALSE
+	//var/drop_loc = null
+	//if(drop_organ && owner)
+	//	drop_loc = owner.loc
+	//	log_debug("Called removed() and found drop_loc: [drop_loc]")
+
 	if(vital)
 		if(owner)
+				// A lil bit of explaination here. The owner var may get nullified during take_mind_from(), preventing parential /removed() from being executed properly.
+				// On the other hand, parential /removed() also nullifies the owner, breaking take_mind_from(). Thus, we save our old owner, call parential /removed() and then take mind from our old saved owner. God bless spaghetti.
+				//var/mob/living/carbon/human/H = owner
+				//..()
+			log_debug("Called removed() with owner provided (owner: [owner])")
 			take_mind_from(owner)
-		else if(istype(loc, /mob/living))
+				//already_removed = TRUE
+		else if(isliving(loc))
+			log_debug("Called removed() without owner provided (loc: [loc])")
 			take_mind_from(loc)
 
 		spawn()
@@ -102,6 +116,10 @@
 					brainchan.verbs += /mob/living/carbon/brain/proc/transform_into_little_changeling
 				else
 					brainchan.verbs += /mob/living/carbon/brain/proc/headcrab_runaway
+
+	//if(drop_loc)
+	//	dropInto(drop_loc)
+	//if(!already_removed)
 	..()
 
 
@@ -131,36 +149,41 @@
 			brainchan.mind.current = null
 		brainchan.death()
 	else
-		var/mob/host = loc
-		if(istype(host))
-			host.mind.changeling.die()
-			host.death()
-	dead_icon = "strange-biostructure-dead"
+		if(owner)
+			owner.mind?.changeling.die()
+			owner.death()
 	QDEL_NULL(brainchan)
 	return ..()
 
 
-// After-creation thingy. Called by /human/revive(). Fuck if I know why since the biostructure, marked as 'foreign', doesn't get deleted during revive(). TODO: Find out what the fuck this piece of rotten spaghetti is.
-/obj/item/organ/internal/biostructure/after_organ_creation()
-	. = ..()
+// Makes us reconnect to our owner when we get revived, implanted or something.
+/obj/item/organ/internal/biostructure/handle_foreign()
+	..()
 	change_host(owner)
 
 
 // Transfers a biostructure from src.loc to atom/destination (physically)
 /obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
+	if(QDELETED(destination))
+		log_debug("Changeling Shenanigans: [src] ([loc]) tried to call change_host() with destination ([destination]) being GCd.")
+		return // Something wrong, no need to throw ourselves into a garbage crusher.
+
 	var/atom/source = loc
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
-	if(istype(source, /mob/living/carbon/human))
+	if(ishuman(source))
 		var/mob/living/carbon/human/H = source
 		if(H == owner)
-			var/obj/item/organ/external/E = H.get_organ(parent_organ)
-			if(E)
-				E.internal_organs -= src
 			H.internal_organs_by_name.Remove(BP_CHANG)
 			H.internal_organs_by_name -= BP_CHANG // Yes this is intended, even after the previous line. Everything will get broken if you remove this.
-			H.internal_organs.Remove(src)
+			H.internal_organs -= src
+
+			var/obj/item/organ/external/affected = H.get_organ(parent_organ)
+			if(affected)
+				affected.internal_organs -= src
+				status |= ORGAN_CUT_AWAY
 		else
 			H.drop_from_inventory(src)
+
 	else if(istype(source, /obj/item/organ/external))
 		var/obj/item/organ/external/E = source
 		E.internal_organs.Remove(src)
@@ -172,12 +195,13 @@
 		var/mob/living/carbon/human/H = destination
 		owner = H
 		H.internal_organs_by_name[BP_CHANG] = src
+		H.internal_organs |= src
 
-		var/obj/item/organ/external/E = H.get_organ(parent_organ)
-		if(E)	//wont happen but just in case
-			E.internal_organs |= src
-			if(E.status & ORGAN_CUT_AWAY)
-				E.status &= ~ORGAN_CUT_AWAY
+		var/obj/item/organ/external/affected = H.get_organ(parent_organ)
+		if(affected)	//wont happen but just in case
+			affected.internal_organs |= src
+			if(status & ORGAN_CUT_AWAY)
+				status &= ~ORGAN_CUT_AWAY
 
 		var/obj/item/organ/internal/brain/B = H.internal_organs_by_name[BP_BRAIN]
 		B?.vital = FALSE
@@ -186,21 +210,16 @@
 
 
 // Makes a new biostructure OR connects an existing one inside a mob
-/mob/living/proc/setup_changeling_biostructure()
+/mob/proc/setup_changeling_biostructure()
+	return
+
+/mob/living/setup_changeling_biostructure()
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(!BIO)
 		BIO = new /obj/item/organ/internal/biostructure(src)
-	faction = "biomass"
-	log_debug("The changeling biostructure appears in [real_name] ([key]).")
+		log_debug("New changeling biostructure spawned in [name] / [real_name] ([key]).")
+	BIO.change_host(src)
+	faction = "changeling"
 
-/mob/living/carbon/setup_changeling_biostructure()
-	var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
-	var/obj/item/organ/internal/biostructure/BIO = internal_organs_by_name[BP_CHANG]
-
-	brain?.vital = FALSE
-	if(!BIO)
-		BIO = new /obj/item/organ/internal/biostructure(src)
-		internal_organs_by_name[BP_CHANG] = BIO
-	else
-		internal_organs |= BIO
-	..()
+/mob/living/carbon/brain/setup_changeling_biostructure()
+	return // Nothing is needed here. Deriving brain from carbons and naming it BRAIN was the shittiest move ever.

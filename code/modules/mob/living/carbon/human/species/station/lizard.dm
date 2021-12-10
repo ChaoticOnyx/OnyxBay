@@ -152,7 +152,7 @@
 					FE.internal_organs |= organ
 					H.internal_organs |= organ
 					H.internal_organs_by_name[organ.organ_tag] = organ
-					organ.after_organ_creation()
+					organ.handle_foreign()
 				return
 			else
 				for(var/datum/wound/W in E.wounds)

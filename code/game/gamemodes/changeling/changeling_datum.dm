@@ -180,6 +180,34 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		absorbed_dna += newDNA
 
 
+// Absorbing another changeling, stealing their DNA and powers, but not killing them.
+/datum/changeling/proc/consume_changeling(datum/changeling/victim)
+	if(!victim)
+		return
+
+	if(victim.absorbed_dna)
+		for(var/datum/absorbed_dna/victim_dna_data in victim.absorbed_dna) // steal all their loot
+			if(GetDNA(victim_dna_data.name))
+				continue
+			absorbDNA(victim_dna_data)
+			absorbedcount++
+		victim.absorbed_dna.len = 1
+
+	if(victim.purchasedpowers)
+		for(var/datum/power/changeling/victim_power in victim.purchasedpowers)
+			if(victim_power in purchasedpowers)
+				continue
+			purchasedpowers += victim_power
+			add_changeling_power(victim_power)
+
+	chem_charges += victim.chem_charges
+	geneticpoints += victim.geneticpoints
+
+	victim.chem_charges = 0
+	victim.geneticpoints = 0
+	victim.absorbedcount = 0
+
+
 ///////////////////////////
 // POWERS-RELATED PROCS ///
 ///////////////////////////
@@ -226,7 +254,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	for(var/CP in available_powers)
 		remove_changeling_power(CP, remove_purchased)
 	available_powers.Cut()
-	my_mob?.ability_master.remove_all_changeling_powers()
+	my_mob?.ability_master?.remove_all_changeling_powers()
 
 
 // Auto-purchases free powers, updates things and yadda yadda

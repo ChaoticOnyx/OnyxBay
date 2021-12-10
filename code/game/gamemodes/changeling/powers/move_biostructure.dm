@@ -72,18 +72,22 @@
 
 	source_power.moving_bio = FALSE
 
-	var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
-	if(!E)
+	if(QDELETED(new_parent) || new_parent.loc != H) // Target limb was lost
 		to_chat(H, SPAN("changeling", "We are missing that limb."))
 		return
 
-	if(istype(E))
-		E.internal_organs -= BIO
+	var/obj/item/organ/external/BIO_parent = null
+	BIO_parent = H.get_organ(BIO.parent_organ)
+	if(!BIO_parent)
+		to_chat(H, SPAN("changeling", "We are missing that limb."))
+		return
+
+	BIO_parent.internal_organs.Remove(BIO)
 
 	BIO.parent_organ = new_parent.organ_tag
-	E = H.get_organ(BIO.parent_organ)
-	if(!E)
+	BIO_parent = H.get_organ(BIO.parent_organ)
+	if(!BIO_parent)
 		CRASH("[BIO] spawned in [H] without a parent organ: [BIO.parent_organ].")
-	E.internal_organs |= BIO
+	BIO_parent.internal_organs |= BIO
 	to_chat(H, SPAN("changeling", "Our [BIO] is now in \the [new_parent]."))
 	log_debug("([H]) The changeling biostructure moved into [new_parent].")

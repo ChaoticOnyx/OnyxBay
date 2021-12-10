@@ -629,4 +629,5 @@ var/list/datum/power/changeling/powerinstances = list()
 // For debugging. Or for events and badminship, who knows.
 /datum/changeling/proc/purchase_everything()
 	for(var/datum/power/changeling/P in powerinstances)
+		purchasedpowers += P
 		add_changeling_power(P)

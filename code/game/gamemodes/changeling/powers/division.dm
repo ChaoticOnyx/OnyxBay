@@ -42,6 +42,10 @@
 		to_chat(my_mob, SPAN("changeling", "[T] is dead. We need a living creature to divide."))
 		return
 
+	if(T.mind?.changeling)
+		to_chat(my_mob, SPAN("changeling", "[T] is of our kind, we cannot transfuse another core into them."))
+		return
+
 	changeling.using_proboscis = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)

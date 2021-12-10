@@ -85,8 +85,6 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	src.after_organ_creation()
-
 	update_icon()
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
@@ -273,8 +271,7 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
-
+/obj/item/organ/proc/removed(mob/living/user, drop_organ = TRUE)
 	if(!istype(owner))
 		return
 
@@ -363,10 +360,6 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
-
-// special organ instruction for correct functional
-/obj/item/organ/proc/after_organ_creation()
-	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

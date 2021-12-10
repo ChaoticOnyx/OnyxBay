@@ -27,6 +27,8 @@
 			E.internal_organs |= src
 			E.cavity_max_w_class = max(E.cavity_max_w_class, w_class)
 
+		handle_foreign()
+
 /obj/item/organ/internal/Destroy()
 	if(owner)
 		owner.internal_organs.Remove(src)
@@ -51,7 +53,7 @@
 		removed(user, 0)
 		parent.implants += src
 
-/obj/item/organ/internal/removed(mob/living/user, drop_organ=1, detach=1)
+/obj/item/organ/internal/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(owner)
 		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
@@ -159,3 +161,7 @@
 			take_internal_damage(3)
 		if (3)
 			take_internal_damage(1)
+
+// Things we should do if we are a foreign organ. Used only by lings' biostructures for now.
+/obj/item/organ/internal/proc/handle_foreign()
+	return
