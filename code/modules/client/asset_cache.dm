@@ -260,6 +260,23 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"Reaver-SemiBold.woff" = 'html/reaver/Reaver-SemiBold.woff',
 	)
 
+/datum/asset/simple/exocet
+	isTrivial = FALSE
+	verify = FALSE
+	assets = list(
+		"exocet.css" = 'html/exocet/exocet.css',
+		"exocet_bold.woff" = 'html/exocet/exocet_bold.woff',
+		"exocet_regular.woff" = 'html/exocet/exocet_regular.woff'
+	)
+
+/datum/asset/simple/pelagiad
+	isTrivial = FALSE
+	verify = FALSE
+	assets = list(
+		"pelagiad.css" = 'html/pelagiad/pelagiad.css',
+		"Pelagiad.woff" = 'html/pelagiad/Pelagiad.woff'
+	)
+
 /datum/asset/simple/tgui_common
 	isTrivial = TRUE
 	verify = FALSE
