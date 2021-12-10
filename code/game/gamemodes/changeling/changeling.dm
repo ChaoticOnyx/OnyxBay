@@ -31,11 +31,19 @@
 	verbs += /datum/changeling/proc/EvolutionMenu
 	add_language(LANGUAGE_LING)
 
-	setup_changeling_biostructure()
+	// Adding a biostructure if we still don't have one.
+	if(isliving(src) && !istype(src, /mob/living/carbon/brain))
+		var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+		if(!BIO)
+			BIO = new /obj/item/organ/internal/biostructure(src)
+			BIO.change_host(src)
+			log_debug("New changeling biostructure spawned in [name] / [real_name] ([key]).")
 
 	changeling.reset_my_mob(src) // Just to be sure.
 	changeling.update_changeling_powers()
 	ability_master?.toggle_open(2)
+
+	faction = "changeling"
 
 	// Changeling acquires our mob's known languages.
 	for(var/language in languages)

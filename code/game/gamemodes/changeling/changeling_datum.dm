@@ -32,7 +32,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/using_proboscis = FALSE // Whether we are using proboscis-based (absorb/division) powers right now.
 	var/true_dead = FALSE
-	var/damaged = FALSE
 	var/is_revive_ready = FALSE
 	var/last_transformation_at = 0
 

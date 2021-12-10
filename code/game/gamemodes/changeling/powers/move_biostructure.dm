@@ -56,11 +56,11 @@
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump() || BP_IS_ROBOTIC(E))
 			available_limbs -= E
 
-	var/obj/item/organ/external/new_parent = input(H, "Where do we want to move our [BIO]?") as null|anything in available_limbs
+	var/obj/item/organ/external/new_parent = input(H, "Where do we want to move our biostructure?") as null|anything in available_limbs
 	if(!new_parent)
 		return
 
-	to_chat(H, SPAN("changeling", "We begin moving our [BIO] to \the [new_parent]..."))
+	to_chat(H, SPAN("changeling", "We begin moving our biostructure to \the [new_parent]..."))
 	source_power.moving_bio = TRUE
 
 	var/moving_delay = rand(source_power.moving_delay_min, source_power.moving_delay_max)
@@ -89,5 +89,4 @@
 	if(!BIO_parent)
 		CRASH("[BIO] spawned in [H] without a parent organ: [BIO.parent_organ].")
 	BIO_parent.internal_organs |= BIO
-	to_chat(H, SPAN("changeling", "Our [BIO] is now in \the [new_parent]."))
-	log_debug("([H]) The changeling biostructure moved into [new_parent].")
+	to_chat(H, SPAN("changeling", "Our biostructure is now in \the [new_parent]."))
