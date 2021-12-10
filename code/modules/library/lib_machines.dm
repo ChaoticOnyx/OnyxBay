@@ -27,7 +27,7 @@
 		current_item = O
 		O.forceMove(src)
 
-/obj/machinery/libraryscanner/attack_hand(mob/user as mob)
+/obj/machinery/libraryscanner/attack_hand(mob/user)
 	usr.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Scanner Control Interface</TITLE></HEAD><BODY>\n" // <META HTTP-EQUIV='Refresh' CONTENT='10'>
 	if(cache || art_cache)
