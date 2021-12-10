@@ -7,8 +7,8 @@
 	vital = TRUE
 	icon = 'icons/mob/human_races/organs/foreign.dmi'
 	override_species_icon = TRUE
-	icon_state = "strange-biostructure"
-	dead_icon = "strange-biostructure-dead"
+	icon_state = "changeling"
+	dead_icon = "changeling-dead"
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
