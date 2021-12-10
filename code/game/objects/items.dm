@@ -547,6 +547,8 @@ var/list/global/slot_flags_enumeration = list(
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
 			proj_poise_drain(user, P, TRUE)
+			spawn()
+				shake_camera(user, 1)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 
