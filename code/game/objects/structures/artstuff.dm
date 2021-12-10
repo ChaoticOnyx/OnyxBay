@@ -238,7 +238,6 @@
 
 /obj/item/canvas/proc/try_rename(mob/user)
 	if(user)
-		return
 		var/new_name = sanitize(input(user,"What do you want to name the painting?"))
 		if(new_name != painting_name && new_name && CanUseTopic(user, GLOB.physical_state))
 			painting_name = new_name
