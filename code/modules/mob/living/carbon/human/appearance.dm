@@ -174,16 +174,11 @@
 
 	return valid_species
 
-/mob/living/carbon/human/proc/generate_valid_hairstyles(check_gender = 1)
+/mob/living/carbon/human/proc/generate_valid_hairstyles()
 	. = list()
-	var/list/hair_styles = species.get_hair_styles()
+	var/list/hair_styles = species.get_hair_styles(gender)
 	for(var/hair_style in hair_styles)
 		var/datum/sprite_accessory/S = hair_styles[hair_style]
-		if(check_gender)
-			if(gender == MALE && S.gender == FEMALE)
-				continue
-			if(gender == FEMALE && S.gender == MALE)
-				continue
 		.[hair_style] = S
 
 /mob/living/carbon/human/proc/generate_valid_facial_hairstyles()

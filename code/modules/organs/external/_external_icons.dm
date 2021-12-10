@@ -61,33 +61,30 @@ var/list/limb_icon_cache = list()
 	victim.update_hair()
 
 	var/list/sorted = list()
-	for(var/E in markings)
-		var/datum/sprite_accessory/marking/M = E
-		if (M.draw_target == MARKING_TARGET_SKIN)
-			var/color = markings[E]
-			var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
+	var/datum/body_build/BB = victim.body_build
+	for(var/datum/sprite_accessory/marking/M in markings)
+		if(M.draw_target == MARKING_TARGET_SKIN && !BP_IS_ROBOTIC(src))
+			var/color = markings[M]
+			var/icon/I = icon(BB.m_icon, "[M.icon_state]-[organ_tag]")
 			I.Blend(color, M.blend)
-			icon_cache_key += "[M.name][color]"
 			ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
-	for (var/entry in sorted)
+	for(var/entry in sorted)
 		overlays |= entry[2]
 		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
-/obj/item/organ/external/var/icon_cache_key
-
 /obj/item/organ/external/update_icon(regenerate = 0)
-	if (!icon_name)
+	if(!icon_name)
 		icon = null
 	else
 		var/gender = "_m"
 		if(!(limb_flags & ORGAN_FLAG_GENDERED_ICON))
 			gender = null
-		else if (dna && dna.GetUIState(DNA_UI_GENDER))
+		else if(dna && dna.GetUIState(DNA_UI_GENDER))
 			gender = "_f"
 		else if(owner && owner.gender == FEMALE)
 			gender = "_f"
 
-		if (owner)
+		if(owner)
 			if (!BP_IS_ROBOTIC(src))
 				body_build = owner.body_build.index
 			else
@@ -99,10 +96,9 @@ var/list/limb_icon_cache = list()
 
 		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
-		if (species)
+		if(species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
 				icon_state += species.base_skin_colours[s_base]
-			icon_cache_key = "[icon_state]_[species ? species.name : SPECIES_HUMAN]"
 
 		if(force_icon)
 			icon = force_icon
@@ -120,13 +116,12 @@ var/list/limb_icon_cache = list()
 		mob_icon = apply_colouration(new /icon(icon, icon_state))
 
 		var/list/sorted = list()
-		for(var/E in markings)
-			var/datum/sprite_accessory/marking/M = E
-			if(M.draw_target == MARKING_TARGET_SKIN)
-				var/color = markings[E]
-				var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
+		var/datum/body_build/BB = owner.body_build
+		for(var/datum/sprite_accessory/marking/M in markings)
+			if(M.draw_target == MARKING_TARGET_SKIN && !BP_IS_ROBOTIC(src))
+				var/color = markings[M]
+				var/icon/I = icon(BB.m_icon, "[M.icon_state]-[organ_tag]")
 				I.Blend(color, M.blend)
-				icon_cache_key += "[M.name][color]"
 				ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
 		for(var/entry in sorted)
 			overlays |= entry[2]
@@ -139,9 +134,6 @@ var/list/limb_icon_cache = list()
 				I.Blend(rgb(h_col[1],h_col[2],h_col[3]), ICON_ADD)
 				limb_icon_cache[cache_key] = I
 			mob_icon.Blend(limb_icon_cache[cache_key], ICON_OVERLAY)
-
-		if(model)
-			icon_cache_key += "_model_[model]"
 
 		if(force_icon && (status & ORGAN_CUT_AWAY))
 			dir = SOUTH // Facing towards the screen
@@ -201,7 +193,6 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 		applying += rgb(,,,180) // Makes the icon translucent, SO INTUITIVE TY BYOND
 
 	else if(status & ORGAN_DEAD)
-		icon_cache_key += "_dead"
 		applying.ColorTone(rgb(10,50,0))
 		applying.SetIntensity(0.7)
 
@@ -210,11 +201,8 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(s_tone, s_tone, s_tone), ICON_ADD)
 		else
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
-		icon_cache_key += "_tone_[s_tone]"
 	if(species && species.appearance_flags & HAS_SKIN_COLOR)
 		if(s_col && s_col.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
-			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
 	return applying
-

@@ -829,7 +829,7 @@
 	s_tone =  -s_tone + 35
 
 	// hair
-	var/list/all_hairs = typesof(/datum/sprite_accessory/hair) - /datum/sprite_accessory/hair
+	var/list/all_hairs = typesof(/datum/sprite_accessory/hair)
 	var/list/hairs = list()
 
 	// loop through potential hairs
@@ -838,10 +838,10 @@
 		hairs.Add(H.name) // add hair name to hairs
 		qdel(H) // delete the hair after it's all done
 
-	var/new_style = input("Please select hair style", "Character Generation",h_style)  as null|anything in hairs
+	var/new_style = input("Please select hair style", "Character Generation", h_style)  as null|anything in hairs
 
 	// if new style selected (not cancel)
-	if (new_style)
+	if(new_style)
 		h_style = new_style
 
 	// facial hair

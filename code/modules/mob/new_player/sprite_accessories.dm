@@ -35,15 +35,7 @@
 
 	var/blend = ICON_ADD
 
-
-/*
-////////////////////////////
-/  =--------------------=  /
-/  == Hair Definitions ==  /
-/  =--------------------=  /
-////////////////////////////
-*/
-
+// Hair
 /datum/sprite_accessory/hair
 	icon = 'icons/mob/human_races/r_human_head.dmi'	  // Default icon for all hairs.
 	var/flags
@@ -52,12 +44,24 @@
 	name = "Bald"
 	icon_state = "bald"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_VOX)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_VOX)
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/short
 	name = "Short Hair"	  // try to capatilize the names please~
-	icon_state = "hair_a" // you do not need to define _s or _l sub-states, game automatically does this for you
+	icon_state = "hair_assistant" // you do not need to define _s or _l sub-states, game automatically does this for you
+	flags = VERY_SHORT
+
+/datum/sprite_accessory/hair/thinningfront
+	name = "Short Hair, Thinning Front"
+	icon_state = "hair_assistant_thinningfront"
+	gender = MALE
+	flags = VERY_SHORT
+
+/datum/sprite_accessory/hair/thinningback
+	name = "Short Hair, Thinning Back"
+	icon_state = "hair_assistant_thinningrear"
+	gender = MALE
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/twintail
@@ -183,19 +187,16 @@
 	name = "Bobcurl"
 	icon_state = "hair_bobcurl"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bob
 	name = "Bob"
 	icon_state = "hair_bobcut"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bobcutalt
 	name = "Chin Length Bob"
 	icon_state = "hair_bobcutalt"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bowl
 	name = "Bowl"
@@ -206,7 +207,6 @@
 	name = "Buzzcut"
 	icon_state = "hair_buzzcut"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/crew
@@ -308,7 +308,6 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "hair_d"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/jensen
 	name = "Adam Jensen Hair"
@@ -343,7 +342,6 @@
 /datum/sprite_accessory/hair/spiky
 	name = "Spiky"
 	icon_state = "hair_spikey"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/kusangi
 	name = "Kusanagi Hair"
@@ -625,18 +623,6 @@
 /datum/sprite_accessory/hair/thinning
 	name = "Thinning"
 	icon_state = "hair_thinning"
-	gender = MALE
-	flags = VERY_SHORT
-
-/datum/sprite_accessory/hair/thinningfront
-	name = "Thinning Front"
-	icon_state = "hair_thinningfront"
-	gender = MALE
-	flags = VERY_SHORT
-
-/datum/sprite_accessory/hair/thinningback
-	name = "Thinning Back"
-	icon_state = "hair_thinningrear"
 	gender = MALE
 	flags = VERY_SHORT
 
@@ -1000,14 +986,7 @@ May God have mercy.
     name = "From Mars"
     icon_state = "hair_bowie"
 
-/*
-///////////////////////////////////
-/  =---------------------------=  /
-/  == Facial Hair Definitions ==  /
-/  =---------------------------=  /
-///////////////////////////////////
-*/
-
+// Facial hair
 /datum/sprite_accessory/facial_hair
 
 	icon = 'icons/mob/human_races/r_human_face.dmi'
@@ -1015,9 +994,9 @@ May God have mercy.
 
 /datum/sprite_accessory/facial_hair/shaved
 	name = "Shaved"
-	icon_state = "bald"
+	icon_state = "shaved"
 	gender = NEUTER
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_VOX,SPECIES_IPC)
+	species_allowed = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_VOX, SPECIES_IPC)
 
 /datum/sprite_accessory/facial_hair/watson
 	name = "Watson Mustache"
@@ -1058,7 +1037,6 @@ May God have mercy.
 /datum/sprite_accessory/facial_hair/elvis
 	name = "Elvis Sideburns"
 	icon_state = "facial_elvis"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
 
 /datum/sprite_accessory/facial_hair/abe
 	name = "Abraham Lincoln Beard"
@@ -1144,13 +1122,34 @@ May God have mercy.
 	name = "Lumberjack"
 	icon_state = "facial_lumberjack"
 
-// Alien hair, tentacles & horns.
+// Head - Unathi
 /datum/sprite_accessory/hair/unathi
-	name = "Demon Horns"
+	name = "Short Horns"
 	icon = 'icons/mob/human_races/r_lizard_head.dmi'
-	icon_state = "demon_horn"
+	icon_state = "soghun_horns_short"
 	blend = ICON_MULTIPLY
 	species_allowed = list(SPECIES_UNATHI)
+
+/datum/sprite_accessory/hair/unathi/frills_short
+	name = "Short Unathi Frills"
+	icon_state = "soghun_shortfrills"
+
+/datum/sprite_accessory/hair/unathi/frills_long
+	name = "Long Unathi Frills"
+	icon_state = "soghun_longfrills"
+
+/datum/sprite_accessory/hair/unathi/spines_short
+	name = "Short Unathi Spines"
+	icon_state = "soghun_shortspines"
+
+/datum/sprite_accessory/hair/unathi/spines_long
+	name = "Long Unathi Spines"
+	icon_state = "soghun_longspines"
+
+// Head, horns - Unathi
+/datum/sprite_accessory/hair/unathi/fin_hawk
+	name = "Fin Hawk"
+	icon_state = "soghun_hawk"
 
 /datum/sprite_accessory/hair/unathi/horns
 	name = "Unathi Horns"
@@ -1158,153 +1157,134 @@ May God have mercy.
 
 /datum/sprite_accessory/hair/unathi/swept_horn
 	name = "Swept Horns"
-	icon_state = "swept_horn"
+	icon_state = "soghun_swept_horn"
 
 /datum/sprite_accessory/hair/unathi/ram_horn
 	name = "Ram Horns"
-	icon_state = "ram_horn"
+	icon_state = "soghun_ram_horn"
 
-/datum/sprite_accessory/hair/unathi/fin_hawk
-	name = "Fin Hawk"
-	icon_state = "fin_hawk"
-/datum/sprite_accessory/hair/unathi/spines_long
-	name = "Long Unathi Spines"
-	icon_state = "soghun_longspines"
-
-/datum/sprite_accessory/hair/unathi/spines_short
-	name = "Short Unathi Spines"
-	icon_state = "soghun_shortspines"
-
-/datum/sprite_accessory/hair/unathi/frills_long
-	name = "Long Unathi Frills"
-	icon_state = "soghun_longfrills"
-
-/datum/sprite_accessory/hair/unathi/frills_short
-	name = "Short Unathi Frills"
-	icon_state = "soghun_shortfrills"
-
-/datum/sprite_accessory/hair/taj_ears
+// Head - Tajaran
+/datum/sprite_accessory/hair/taj
 	name = "Tajaran Ears"
+	icon = 'icons/mob/human_races/r_tajaran_head.dmi'
 	icon_state = "ears_plain"
 	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/hair/taj_ears_clean
-	name = "Tajara Clean"
-	icon_state = "hair_clean"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_bangs
-	name = "Tajara Bangs"
-	icon_state = "hair_bangs"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_braid
-	name = "Tajara Braid"
-	icon_state = "hair_tbraid"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_shaggy
-	name = "Tajara Shaggy"
-	icon_state = "hair_shaggy"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_mohawk
-	name = "Tajaran Mohawk"
-	icon_state = "hair_mohawk"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_plait
-	name = "Tajara Plait"
-	icon_state = "hair_plait"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_straight
-	name = "Tajara Straight"
-	icon_state = "hair_straight"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_long
-	name = "Tajara Long"
-	icon_state = "hair_long"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/hair/taj_ears_rattail
+/datum/sprite_accessory/hair/taj/ears_rattail
 	name = "Tajara Rat Tail"
 	icon_state = "hair_rattail"
-	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/hair/taj_ears_spiky
-	name = "Tajara Spiky"
-	icon_state = "hair_tajspiky"
-	species_allowed = list(SPECIES_TAJARA)
+/datum/sprite_accessory/hair/taj/ears_mohawk
+	name = "Tajaran Mohawk"
+	icon_state = "hair_mohawk"
 
-/datum/sprite_accessory/hair/taj_ears_messy
+/datum/sprite_accessory/hair/taj/ears_plait
+	name = "Tajara Plait"
+	icon_state = "hair_plait"
+
+/datum/sprite_accessory/hair/taj/ears_messy
 	name = "Tajara Messy"
 	icon_state = "hair_messy"
-	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/hair/taj_ears_bob
+/datum/sprite_accessory/hair/taj/ears_clean
+	name = "Tajara Clean"
+	icon_state = "hair_clean"
+
+/datum/sprite_accessory/hair/taj/ears_long
+	name = "Tajara Long"
+	icon_state = "hair_long"
+
+/datum/sprite_accessory/hair/taj/ears_spiky
+	name = "Tajara Spiky"
+	icon_state = "hair_tajspiky"
+
+/datum/sprite_accessory/hair/taj/ears_shaggy
+	name = "Tajara Shaggy"
+	icon_state = "hair_shaggy"
+
+/datum/sprite_accessory/hair/taj/ears_straight
+	name = "Tajara Straight"
+	icon_state = "hair_straight"
+
+/datum/sprite_accessory/hair/taj/female
+	name = "Tajara Bangs"
+	icon_state = "hair_bangs"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/taj/female/ears_wife
+	name = "Tajara Wife"
+	icon_state = "hair_wife"
+
+/datum/sprite_accessory/hair/taj/female/ears_bob
 	name = "Tajara Bob"
 	icon_state = "hair_tbob"
-	species_allowed = list(SPECIES_TAJARA)
 
-/datum/sprite_accessory/hair/vox_quills_long
+/datum/sprite_accessory/hair/taj/female/ears_fingerwave
+	name = "Tajara Fingerwave"
+	icon_state = "hair_fingerwave"
+
+/datum/sprite_accessory/hair/taj/female/ears_victory
+	name = "Tajara Victory"
+	icon_state = "hair_victory"
+
+/datum/sprite_accessory/hair/taj/female/ears_braid
+	name = "Tajara Braid"
+	icon_state = "hair_tbraid"
+
+/datum/sprite_accessory/hair/taj/female/ears_curly
+	name = "Tajara Curly"
+	icon_state = "hair_curly"
+
+// Head - Vox
+/datum/sprite_accessory/hair/vox
 	name = "Long Vox Quills"
-	icon_state = "vox_longquills"
+	icon = 'icons/mob/human_races/r_vox_head.dmi'
+	icon_state = "hair_longquills"
 	species_allowed = list(SPECIES_VOX)
 
-//facial hair
-
-/datum/sprite_accessory/facial_hair/taj_sideburns
-	name = "Tajara Sideburns"
-	icon_state = "facial_sideburns"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/facial_hair/taj_mutton
-	name = "Tajara Mutton"
-	icon_state = "facial_mutton"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/facial_hair/taj_pencilstache
-	name = "Tajara Pencilstache"
-	icon_state = "facial_pencilstache"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/facial_hair/taj_moustache
-	name = "Tajara Moustache"
-	icon_state = "facial_moustache"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/facial_hair/taj_goatee
-	name = "Tajara Goatee"
-	icon_state = "facial_goatee"
-	species_allowed = list(SPECIES_TAJARA)
-
-/datum/sprite_accessory/facial_hair/taj_smallstache
-	name = "Tajara Smallsatche"
-	icon_state = "facial_smallstache"
-	species_allowed = list(SPECIES_TAJARA)
-
-// Skrell
+// Head - Skrell
 /datum/sprite_accessory/hair/skr_tentacle_m
 	name = "Skrell Male Tentacles"
-	icon_state = "skrell_hair_m"
+	icon = 'icons/mob/human_races/r_skrell_head.dmi'
+	icon_state = "hair_male"
 	species_allowed = list(SPECIES_SKRELL)
 	gender = MALE
 
 /datum/sprite_accessory/hair/skr_tentacle_f
 	name = "Skrell Female Tentacles"
-	icon_state = "skrell_hair_f"
+	icon = 'icons/mob/human_races/r_skrell_head.dmi'
+	icon_state = "hair_female"
 	species_allowed = list(SPECIES_SKRELL)
 	gender = FEMALE
 
-/*
-////////////////////////////
-/  =--------------------=  /
-/  ==  Body Markings   ==  /
-/  =--------------------=  /
-////////////////////////////
-*/
+// Facial hair - Tajaran
+/datum/sprite_accessory/facial_hair/taj
+	name = "Tajara Smallsatche"
+	icon = 'icons/mob/human_races/r_tajaran_face.dmi'
+	icon_state = "facial_smallstache"
+	species_allowed = list(SPECIES_TAJARA)
+
+/datum/sprite_accessory/facial_hair/taj/goatee
+	name = "Tajara Goatee"
+	icon_state = "facial_goatee"
+
+/datum/sprite_accessory/facial_hair/taj/pencilstache
+	name = "Tajara Pencilstache"
+	icon_state = "facial_pencilstache"
+
+/datum/sprite_accessory/facial_hair/taj/moustache
+	name = "Tajara Moustache"
+	icon_state = "facial_moustache"
+
+/datum/sprite_accessory/facial_hair/taj/sideburns
+	name = "Tajara Sideburns"
+	icon_state = "facial_sideburns"
+
+/datum/sprite_accessory/facial_hair/taj/mutton
+	name = "Tajara Mutton"
+	icon_state = "facial_mutton"
+
+// Body markings
 /datum/sprite_accessory/marking
 	icon = 'icons/mob/human_races/r_human_markings.dmi'
 	do_coloration = 1 //Almost all of them have it, COLOR_ADD
@@ -1349,8 +1329,14 @@ May God have mercy.
 	body_parts = list(BP_L_ARM)
 
 /datum/sprite_accessory/marking/tiger
-	name = "Tattoo (Tiger Stripes, Body)"
-	icon_state = "tat_tiger"
+	name = "Tiger Stripes"
+	icon_state = "tiger"
+	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
+	species_allowed = list(SPECIES_HUMAN)
+
+/datum/sprite_accessory/marking/tigerface
+	name = "Tiger Stripes (Face)"
+	icon_state = "tigerhead"
 	body_parts = list(BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN)
 	species_allowed = list(SPECIES_HUMAN)
 
@@ -1361,7 +1347,7 @@ May God have mercy.
 
 /datum/sprite_accessory/marking/bandsface
 	name = "Color Bands (Face)"
-	icon_state = "bandsface"
+	icon_state = "bandshead"
 	body_parts = list(BP_HEAD)
 	species_allowed = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_UNATHI)
 

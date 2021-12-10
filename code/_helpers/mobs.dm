@@ -31,7 +31,7 @@
 	var/h_style = "Bald"
 
 	var/datum/species/mob_species = all_species[species]
-	var/list/valid_hairstyles = mob_species.get_hair_styles()
+	var/list/valid_hairstyles = mob_species.get_hair_styles(gender)
 	if(valid_hairstyles.len)
 		h_style = pick(valid_hairstyles)
 

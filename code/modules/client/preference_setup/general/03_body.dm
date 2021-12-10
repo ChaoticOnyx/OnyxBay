@@ -365,20 +365,20 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["hair_style"])
-		var/list/valid_hairstyles = mob_species.get_hair_styles()
+		var/list/valid_hairstyles = mob_species.get_hair_styles(pref.gender)
 		var/new_h_style = input(user, "Choose your character's hair style:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.h_style)  as null|anything in valid_hairstyles
 
 		mob_species = all_species[pref.species]
-		if(new_h_style && CanUseTopic(user) && (new_h_style in mob_species.get_hair_styles()))
+		if(new_h_style && CanUseTopic(user) && (new_h_style in mob_species.get_hair_styles(pref.gender)))
 			pref.h_style = new_h_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["cycle_hair_style"])
-		var/list/hairstyles = mob_species.get_hair_styles()
+		var/list/hairstyles = mob_species.get_hair_styles(pref.gender)
 		var/index_step = text2num(href_list["cycle_hair_style"])
 		var/current_h_style = CycleArray(hairstyles, index_step, pref.h_style)
 
-		if (current_h_style && CanUseTopic(user))
+		if (current_h_style && CanUseTopic(user) && mob_species.get_hair_styles(pref.gender))
 			pref.h_style = current_h_style
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 

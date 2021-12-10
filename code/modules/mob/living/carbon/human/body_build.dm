@@ -84,7 +84,7 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	h_icon               = 'icons/mob/human_races/r_human_head_slim.dmi'
 	f_icon               = 'icons/mob/human_races/r_human_face_slim.dmi'
-	m_icon               = 'icons/mob/human_races/r_human_markings_slim.dmi'
+	m_icon               = 'icons/mob/human_races/r_human_markings_slim_f.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
 
 	stomach_capacity   = STOMACH_CAPACITY_LOW
@@ -115,6 +115,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim_alt.dmi'
+	m_icon               = 'icons/mob/human_races/r_human_markings_slim_alt_f.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim_alt.dmi'
 
 /datum/body_build/slim/male
@@ -143,6 +144,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
+	m_icon               = 'icons/mob/human_races/r_human_markings_slim_m.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
 
 /datum/body_build/fat
@@ -171,6 +173,7 @@ var/global/datum/body_build/default_body_build = new
 		)
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human.dmi'
+	m_icon               = 'icons/mob/human_races/r_human_markings_fat.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
 	stomach_capacity   = STOMACH_CAPACITY_HIGH
@@ -191,7 +194,7 @@ var/global/datum/body_build/default_body_build = new
 	h_icon               = 'icons/mob/human_races/r_skrell_head.dmi'
 
 /datum/body_build/slim/alt/skrell
-	name                 = "Skrell Slim"
+	name                 = "Skrell Slim Alt"
 
 	h_icon               = 'icons/mob/human_races/r_skrell_head.dmi'
 
@@ -251,7 +254,7 @@ var/global/datum/body_build/default_body_build = new
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	h_icon               = 'icons/mob/human_races/r_tajaran_head.dmi'
 	f_icon               = 'icons/mob/human_races/r_tajaran_face.dmi'
-	m_icon               = 'icons/mob/human_races/r_tajaran_markings.dmi'
+	m_icon               = 'icons/mob/human_races/r_tajaran_markings_slim_alt_f.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
 	equipment_modifier = -0.5
@@ -280,6 +283,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	rig_back             = 'icons/inv_slots/rig/mob_fat.dmi'
+	m_icon               = 'icons/mob/human_races/r_tajaran_markings_fat.dmi'
 
 	slowdown           = 0.5
 	equipment_modifier = 0.5
