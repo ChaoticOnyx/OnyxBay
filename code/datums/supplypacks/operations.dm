@@ -17,7 +17,7 @@
 
 /decl/hierarchy/supply_pack/operations/mule
 	name = "MULEbot Crate"
-	contains = list()
+	contains = list(/mob/living/bot/mulebot)
 	cost = 20
 	containertype = /obj/structure/largecrate/animal/mulebot
 	containername = "Mulebot Crate"
@@ -70,7 +70,7 @@
 
 /decl/hierarchy/supply_pack/operations/hoverpod
 	name = "Hoverpod Shipment"
-	contains = list()
+	contains = list(/obj/mecha/working/hoverpod)
 	cost = 80
 	containertype = /obj/structure/largecrate/hoverpod
 	containername = "\improper Hoverpod Crate"
