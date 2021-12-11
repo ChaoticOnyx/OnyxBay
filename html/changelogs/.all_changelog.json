@@ -1,5 +1,52 @@
 [
   {
+    "author": "TatarTheBuilder",
+    "date": "2021-12-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "MapTweak",
+        "message": "Фиксы и изменения карты Фронтир.",
+        "pr": 7121
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2021-12-11T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена ошибка, из-за которой некоторые юбки/платья покрывали ноги (скрывая флавор, например).",
+        "pr": 7134
+      },
+      {
+        "prefix": "ImageAdd",
+        "message": "Добавлены новые иконки для следующих модулей для экзоскелетов: mounted syringe gun, mounted sleeper, KILL CLAMP, passenger compartment.",
+        "pr": 7133
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлен спрайт большой химической бутылки.",
+        "pr": 7137
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена ошибка, из-за которой невозможно было измельчать органы (включая биоструктуру).",
+        "pr": 7139
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Уменьшен размер образцов вирусов с normal до small.",
+        "pr": 7135
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлено взаимодействие обёрточной бумаги и коробок.",
+        "pr": 7136
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2021-12-10T00:00:00+03:00",
     "changes": [
