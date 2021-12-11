@@ -22,6 +22,7 @@
 	var/crisis_override = 0
 	var/integrated_light_max_bright = 0.75
 	var/datum/wires/robot/wires
+	var/list/used_machinery = list()
 
 //Icon stuff
 
@@ -933,6 +934,10 @@
 
 	. = ..()
 
+	if(used_machinery.len)
+		for(var/obj/machinery/M in used_machinery)
+			M.OnRobotMove(src)
+
 	if(module)
 		if(module.type == /obj/item/weapon/robot_module/janitor/general)
 			var/turf/tile = loc
@@ -1279,6 +1284,3 @@
 	set category = null
 
 	return
-
-
-

@@ -455,3 +455,7 @@ Class Procs:
 // Unwrenching = unpluging from a power source
 /obj/machinery/wrenched_change()
 	update_power_use()
+
+// For edge case scenarios when we need to do something with linked & moving robot.
+/obj/machinery/proc/OnRobotMove(mob/living/silicon/robot/R)
+	return

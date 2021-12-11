@@ -14,6 +14,7 @@
 	var/datum/disease2/disease/virus2 = null
 	var/datum/computer_file/data/virus_record/entry = null
 	var/obj/item/weapon/reagent_containers/syringe/sample = null
+	var/mob/living/silicon/robot/linked_borg
 
 /obj/machinery/disease2/isolator/update_icon()
 	if (stat & (BROKEN|NOPOWER))
@@ -28,22 +29,51 @@
 		icon_state = "isolator"
 
 /obj/machinery/disease2/isolator/attackby(obj/O as obj, mob/user)
-	if(!istype(O,/obj/item/weapon/reagent_containers/syringe)) return
-	var/obj/item/weapon/reagent_containers/syringe/S = O
+	if(istype(O,/obj/item/weapon/reagent_containers/syringe/borg))
+		var/obj/item/weapon/reagent_containers/syringe/S = O
 
-	if(sample)
-		to_chat(user, "\The [src] is already loaded.")
+		if(!istype(user, /mob/living/silicon/robot)) return
+		var/mob/living/silicon/robot/R = user
+
+		if(sample)
+			to_chat(R, "\The [src] is already loaded.")
+			return
+
+		R.used_machinery += src
+		linked_borg = R
+
+		sample = S
+
+		S.loc = src
+
+		R.visible_message("[R] extends \a [O] into \the [src]!", "You extend \a [O] into \the [src]!")
+		SSnano.update_uis(src)
+		update_icon()
+
+		src.attack_hand(R)
 		return
 
-	sample = S
-	user.drop_item()
-	S.loc = src
+	if(istype(O,/obj/item/weapon/reagent_containers/syringe))
+		var/obj/item/weapon/reagent_containers/syringe/S = O
 
-	user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
-	SSnano.update_uis(src)
-	update_icon()
+		if(sample)
+			to_chat(user, "\The [src] is already loaded.")
+			return
 
-	src.attack_hand(user)
+		sample = S
+		user.drop_item()
+		S.loc = src
+
+		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
+		SSnano.update_uis(src)
+		update_icon()
+
+		src.attack_hand(user)
+		return
+
+/obj/machinery/disease2/isolator/OnRobotMove(mob/living/silicon/robot/R)
+	if(R == linked_borg && !R.Adjacent(src))
+		eject()
 
 /obj/machinery/disease2/isolator/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN)) return
@@ -155,10 +185,26 @@
 		return TOPIC_REFRESH
 
 	if (href_list["eject"])
-		sample.dropInto(loc)
-		sample = null
-		update_icon()
+		eject()
 		return TOPIC_REFRESH
+
+/obj/machinery/disease2/isolator/proc/eject()
+	if(isolating)
+		virus2 = null
+		isolating = 0
+		ping("\The [src] pings, \"Syringe has been removed, process aborted!\"")
+
+	if(istype(sample, /obj/item/weapon/reagent_containers/syringe/borg))
+		linked_borg.visible_message("[linked_borg] retracts \a [sample] from \the [src]!", "You retract \a [sample] from \the [src]!")
+		linked_borg.used_machinery -= src
+		sample.forceMove(linked_borg)
+		linked_borg = null
+	else
+		sample.dropInto(loc)
+
+	sample = null
+	SSnano.update_uis(src)
+	update_icon()
 
 /obj/machinery/disease2/isolator/proc/print(mob/user)
 	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
@@ -225,3 +271,12 @@
 "}
 
 	state("The nearby computer prints out a report.")
+
+/obj/machinery/disease2/isolator/Destroy()
+	if(istype(sample, /obj/item/weapon/reagent_containers/syringe/borg))
+		sample.forceMove(linked_borg)
+	else
+		sample.dropInto(loc)
+	sample = null
+
+	..()
