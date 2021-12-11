@@ -467,7 +467,12 @@
 
 		src.updateUsrDialog()
 		return 0
-	if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/weapon/reagent_containers/dropper))
+	if(istype(O, /obj/item/organ))
+		var/obj/item/organ/I = O
+		if(BP_IS_ROBOTIC(I))
+			to_chat(user, "\The [O] is not suitable for blending.")
+			return 1
+	else if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/weapon/reagent_containers/dropper))
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
@@ -602,12 +607,30 @@
 					beaker.reagents.add_reagent(sheet_reagents[stack.type], (amount_to_take*REAGENTS_PER_SHEET))
 					continue
 
+		var/obj/item/weapon/reagent_containers/food/snacks/internal_snack = null
+		if(istype(O, /obj/item/organ/internal))
+			var/obj/item/weapon/reagent_containers/food/snacks/organ/organ_snack = locate() in O.contents
+			if(istype(organ_snack))
+				internal_snack = organ_snack
+		else if(istype(O, /obj/item/organ/external))
+			var/obj/item/weapon/reagent_containers/food/snacks/meat/meat_snack = locate() in O.contents
+			if(istype(meat_snack))
+				internal_snack = meat_snack
+
+		var/remaining_o_volume = 0
 		if(O.reagents)
 			O.reagents.trans_to(beaker, min(O.reagents.total_volume, remaining_volume))
-			if(O.reagents.total_volume == 0)
-				holdingitems -= O
-				qdel(O)
-			if (beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
-				break
+			remaining_o_volume += O.reagents.total_volume
+
+		if(internal_snack?.reagents)
+			internal_snack.reagents.trans_to(beaker, min(internal_snack.reagents.total_volume, remaining_volume))
+			remaining_o_volume += internal_snack.reagents.total_volume
+
+		if(remaining_o_volume <= 0)
+			holdingitems -= O
+			qdel(O)
+
+		if(beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
+			break
 
 #undef REAGENTS_PER_SHEET
