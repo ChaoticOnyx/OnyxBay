@@ -64,3 +64,6 @@
 
 	// For tracking shift key (world.time)
 	var/shift_released_at = 0
+
+	/// Messages currently seen by this client
+	var/list/seen_messages

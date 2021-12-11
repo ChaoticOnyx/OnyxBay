@@ -192,6 +192,9 @@
 	process_xeno_hud(H)
 	return TRUE
 
+/datum/species/xenos/get_species_runechat_color(mob/living/carbon/human/H)
+	return blood_color
+
 
 // Caste species
 /datum/species/xenos/drone

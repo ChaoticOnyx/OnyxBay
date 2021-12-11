@@ -29,14 +29,19 @@
 	if ((src.loc == user && usr.stat == 0))
 		if(emagged)
 			if(insults)
+				var/final_insult = pick(insultmsg)
 				for(var/mob/O in (viewers(user)))
-					O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[pick(insultmsg)]\"")]", AUDIBLE_MESSAGE)
+					O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[final_insult]\"")]", AUDIBLE_MESSAGE)
+					if(O.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !O.is_deaf())
+						O.create_chat_message(user, final_insult, FALSE, "big")
 				insults--
 			else
 				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
 			for(var/mob/O in (viewers(user)))
 				O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[message]\"")]", AUDIBLE_MESSAGE)
+				if(O.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !O.is_deaf())
+					O.create_chat_message(user, message, FALSE, "big")
 
 		spamcheck = 1
 		spawn(20)

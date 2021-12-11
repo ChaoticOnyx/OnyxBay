@@ -106,6 +106,8 @@
 
 		else
 			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
+		if(get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
+			create_chat_message(speaker, message, italics)
 		if(speech_sound && (dist_speech <= world.view && src.z == speaker.z))
 			var/turf/source = speaker? get_turf(speaker) : T
 			src.playsound_local(source, speech_sound, sound_vol, 1)

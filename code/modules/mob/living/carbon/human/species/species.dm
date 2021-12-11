@@ -710,3 +710,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			facial_hair_style_by_gender[facialhairstyle] = S
 
 	return facial_hair_style_by_gender
+
+/datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
+	if(appearance_flags & HAS_SKIN_COLOR)
+		return H.s_base
+	else
+		return list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
