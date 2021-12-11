@@ -939,7 +939,7 @@
 //This is pretty much just for the death-ripley so that it is harmless
 /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp
 	name = "\improper KILL CLAMP"
-	icon_state = "mecha_clamp"
+	icon_state = "mecha_kill_clamp"
 	equip_cooldown = 15
 	energy_drain = 0
 	var/dam_force = 0
@@ -1004,7 +1004,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger
 	name = "passenger compartment"
 	desc = "A mountable passenger compartment for exo-suits. Rather cramped."
-	icon_state = "mecha_abooster_ccw"
+	icon_state = "mecha_passenger"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 1)
 	energy_drain = 1 KILOWATTS
 	range = MELEE
