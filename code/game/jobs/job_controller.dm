@@ -431,6 +431,7 @@ var/global/datum/controller/occupations/job_master
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
 									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
 							permitted = FALSE
