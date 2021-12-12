@@ -2,6 +2,7 @@
 	var/prost_type = "prosthetic"
 	var/obj/item/organ/external/parent_hand
 	canremove = FALSE
+	candrop = FALSE
 
 /obj/item/weapon/melee/prosthetic/New(atom/location, obj/item/organ/external/limb)
 	attach_prosthetic(src,limb)
@@ -31,6 +32,7 @@
 	if(istype(prosthetic,/obj/item/weapon/melee/prosthetic))
 		var/obj/item/weapon/melee/prosthetic/P = prosthetic
 		P.parent_hand = null
+		P.candrop = TRUE
 		P.canremove = TRUE
 
 /proc/isProsthetic(A)
