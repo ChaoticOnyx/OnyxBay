@@ -61,7 +61,7 @@
 				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
-		if(!do_mob(src, T, 150))
+		if(!do_mob(my_mob, T, 150))
 			to_chat(my_mob, SPAN("changeling", "Transfusion of new core into [T] has been interrupted!"))
 			changeling.using_proboscis = FALSE
 			return
