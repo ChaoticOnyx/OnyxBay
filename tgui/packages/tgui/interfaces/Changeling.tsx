@@ -1,7 +1,7 @@
 import { GameIcon } from '../components/GameIcon'
 import { useBackend, useLocalState } from '../backend'
 import { Window } from '../layouts'
-import { Flex, Input } from '../components'
+import { Button, Dropdown, Flex, Input } from '../components'
 import { escapeRegExp } from '../sanitize'
 
 type Power = {
@@ -99,6 +99,9 @@ const PowerCard = (props: Power, context: any) => {
   )
 }
 
+type SortBy = 'Name' | 'Cost'
+type SortMode = 'Des' | 'Asc'
+
 export const Changeling = (props: any, context: any) => {
   const { data } = useBackend<InputData>(context)
 
@@ -106,6 +109,13 @@ export const Changeling = (props: any, context: any) => {
     context,
     'spellsNameFilter',
     null
+  )
+
+  const [sortBy, setSortBy] = useLocalState<SortBy>(context, 'sortBy', 'Name')
+  const [sortOrder, setSortOrder] = useLocalState<SortMode>(
+    context,
+    'sortOrder',
+    'Des'
   )
 
   let powers = data.powers.sort((a, b) => (a.name > b.name ? 1 : -1))
@@ -119,6 +129,29 @@ export const Changeling = (props: any, context: any) => {
     )
   }
 
+  switch (sortBy) {
+    case 'Cost':
+      powers.sort((a, b) => {
+        if (a.cost > b.cost) {
+          return sortOrder === 'Asc' ? 1 : -1
+        } else if (a.cost === b.cost) {
+          return 0
+        } else {
+          return sortOrder === 'Asc' ? -1 : 1
+        }
+      })
+      break
+    case 'Name':
+      powers.sort((a, b) => {
+        if (a.name > b.name) {
+          return sortOrder === 'Asc' ? -1 : 1
+        } else {
+          return sortOrder === 'Asc' ? 1 : -1
+        }
+      })
+      break
+  }
+
   return (
     <Window theme='changeling' width={412} height={500}>
       <link rel='stylesheet' type='text/css' href='exocet.css' />
@@ -126,11 +159,29 @@ export const Changeling = (props: any, context: any) => {
       <Window.Content scrollable>
         <Flex direction='column' align='center'>
           <p className='EvolutionPoints'>Evolution Points: {data.points}</p>
-          <Input
-            id='Search'
-            placeholder='Search'
-            onInput={(e: any) => setNameFilter(e.target.value)}
-          />
+          <Flex>
+            <Input
+              id='Search'
+              placeholder='Search'
+              onInput={(e: any) => setNameFilter(e.target.value)}
+            />
+            <Dropdown
+              id='SortBy'
+              noscroll
+              displayText='Sort By'
+              options={['Cost', 'Name']}
+              onSelected={value => setSortBy(value)}
+            />
+            <Button
+              id='SortMode'
+              icon={
+                sortOrder === 'Asc' ? 'sort-alpha-down-alt' : 'sort-alpha-up'
+              }
+              onClick={_ => {
+                setSortOrder(sortOrder === 'Asc' ? 'Des' : 'Asc')
+              }}
+            />
+          </Flex>
           <Flex
             width='100%'
             id='PowersList'
