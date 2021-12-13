@@ -1122,6 +1122,8 @@
 		var/atom/movable/I = item
 		if(ishuman(occupant) && is_type_in_list(I, onmob_items))
 			continue
+		if(QDELETED(I)) // The pilot may use Eject before dropped_items go through QDELETED() check via onDropInto().
+			continue
 		I.forceMove(loc)
 	dropped_items.Cut()
 	if(mob_container.forceMove(src.loc))//ejecting mob container
@@ -1732,6 +1734,9 @@
 
 /obj/mecha/onDropInto(atom/movable/AM)
 	dropped_items |= AM
+	spawn(5) // Wait a bit as the dropped atom may be trying to get deleted.
+		if(QDELETED(AM))
+			dropped_items -= AM
 
 //////////////////////////////////////////
 ////////  Mecha global iterators  ////////
