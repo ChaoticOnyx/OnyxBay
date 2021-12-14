@@ -299,3 +299,59 @@
 		/obj/item/rig_module/grenade_launcher/flashbang,
 		/obj/item/rig_module/cooling_unit
 		)
+
+/obj/item/weapon/rig/mining
+	name = "mining powersuit control module"
+	suit_type = "mining powersuit"
+	desc = "An heavy, durable powersuit used for excavation in extremely hazardous environments."
+	icon_state = "mining_rig"
+	armor = list(melee = 80, bullet = 45, laser = 50, energy = 25, bomb = 80, bio = 100, rad = 100)
+	online_slowdown = 2
+	offline_slowdown = 10
+	offline_vision_restriction = TINT_HEAVY
+
+	chest_type = /obj/item/clothing/suit/space/rig/mining
+	helm_type = /obj/item/clothing/head/helmet/space/rig/mining
+	boot_type = /obj/item/clothing/shoes/magboots/rig/mining
+	glove_type = /obj/item/clothing/gloves/rig/mining
+
+	allowed = list(/obj/item/device/flashlight,
+				   /obj/item/weapon/tank,
+				   /obj/item/device/suit_cooling_unit,
+				   /obj/item/stack/flag,
+				   /obj/item/weapon/storage/ore,
+				   /obj/item/device/t_scanner,
+				   /obj/item/weapon/pickaxe,
+				   /obj/item/weapon/rcd,
+				   /obj/item/weapon/gun/energy/kinetic_accelerator,
+				   /obj/item/weapon/shovel,
+				   /obj/item/weapon/ore_radar,
+				   /obj/item/weapon/resonator)
+
+	req_access = list()
+	req_one_access = list()
+
+/obj/item/clothing/head/helmet/space/rig/mining
+	brightness_on = 6
+	camera = /obj/machinery/camera/network/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/suit/space/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/shoes/magboots/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/gloves/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+	siemens_coefficient = 0
+
+/obj/item/weapon/rig/mining/equipped
+
+	initial_modules = list(
+		/obj/item/rig_module/device/drill,
+		/obj/item/rig_module/device/orescanner,
+		/obj/item/rig_module/device/rcd,
+		/obj/item/rig_module/vision/meson,
+		/obj/item/rig_module/cooling_unit
+		)
