@@ -1,0 +1,36 @@
+on:
+  workflow_dispatch
+
+name: Create Changelog
+
+jobs:
+  Main:
+    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@afe4af09a72596f47d806ee5f8b2674ec07fdc73
+        with:
+          fetch-depth: 25
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: .NET SDK setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Install depends
+        run: dotnet tool install -g dotnet-script
+      - name: Fetch, compile and commit changelogs
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: pwsh
+        run: ./scripts/CreateChangelog.ps1
+      - name: Create Pull Request
+        if: success()
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: changelog
+          branch-suffix: timestamp
+          delete-branch: true
+          title: Update Changelog
+          body: Automatic changelog generation.

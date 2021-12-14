@@ -10,7 +10,7 @@
 	icon_state = "smes"
 	density = 1
 	anchored = 1
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 	var/capacity = 5e6 // maximum charge
 	var/charge = 1e6 // actual charge
@@ -72,6 +72,7 @@
 
 /obj/machinery/power/smes/New()
 	..()
+	GLOB.smes_list += src
 	if(!should_be_mapped)
 		warning("Non-buildable or Non-magical SMES at [src.x]X [src.y]Y [src.z]Z")
 
@@ -88,6 +89,10 @@
 		set_broken(TRUE)
 		return
 	update_icon()
+
+/obj/machinery/power/smes/Destroy()
+	GLOB.smes_list -= src
+	..()
 
 /obj/machinery/power/smes/add_avail(amount)
 	if(..(amount))
@@ -403,7 +408,7 @@
 	if(..())
 		return 1
 
-	playsound(loc, "switch_large", 75)
+	playsound(loc, SFX_USE_LARGE_SWITCH, 75)
 
 	if( href_list["cmode"] )
 		inputting(!input_attempt)
@@ -483,9 +488,15 @@
 	update_icon()
 	..()
 
+
 /obj/machinery/power/smes/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		take_damage(Proj.damage)
+
+/obj/machinery/power/smes/blob_act(damage)
+	..()
+
+	take_damage(damage * 2)
 
 /obj/machinery/power/smes/ex_act(severity)
 	switch(severity)

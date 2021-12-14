@@ -32,14 +32,14 @@
 		pump(user)
 
 /obj/item/weapon/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
-	playsound(M, "shotgun_pump_in", rand(45, 60), FALSE)
+	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
 		ejectCasing()
 		chambered = null
 
 	sleep(5)
-	playsound(M, "shotgun_pump_out", rand(45, 60), FALSE)
+	playsound(M, SFX_SHOTGUN_PUMP_OUT, rand(45, 60), FALSE)
 
 	if(loaded.len)
 		var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
@@ -207,6 +207,7 @@
 		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"
 			item_state = "sawnshotgun"
+			wielded_item_state = null
 			w_class = ITEM_SIZE_NORMAL
 			force = 8.5
 			mod_weight = 0.7
@@ -217,6 +218,7 @@
 			slot_flags |= (SLOT_BELT|SLOT_HOLSTER) //but you can wear it on your belt (poorly concealed under a trenchcoat, ideally) - or in a holster, why not.
 			SetName("sawn-off shotgun")
 			desc = "Omar's coming!"
+			fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'
 			to_chat(user, "<span class='warning'>You shorten the barrel of \the [src]!</span>")
 	else
 		..()

@@ -107,7 +107,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		else
 			user.apply_damage(2, BURN,BP_R_HAND)
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
-	playsound(src.loc, "light_bic", 100, 1, -4)
+	playsound(src.loc, SFX_USE_LIGHTER, 100, 1, -4)
 
 /obj/item/weapon/flame/lighter/proc/shutoff(mob/user, silent = FALSE)
 	lit = 0

@@ -10,6 +10,6 @@
 	mod_speed = 1.35
 	mod_handy = 1.30
 	attack_verb = list("hit", "punched")
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	default_material = MATERIAL_STEEL
 	w_class = ITEM_SIZE_SMALL

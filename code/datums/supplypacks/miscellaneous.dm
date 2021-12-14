@@ -118,8 +118,7 @@
 					/obj/item/clothing/under/redcoat,
 					/obj/item/clothing/under/kilt)
 					///obj/item/clothing/under/savage_hunter,
-					///obj/item/clothing/under/savage_hunter/female,
-					///obj/item/clothing/under/wetsuit)
+					///obj/item/clothing/under/savage_hunter/female)
 	name = "Costumes crate"
 	cost = 10
 	containername = "\improper Actor Costumes"

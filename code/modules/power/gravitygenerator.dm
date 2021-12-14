@@ -22,7 +22,8 @@
 	icon = 'icons/obj/machines/gravity_generator.dmi'
 	anchored = 1
 	density = 1
-	use_power = 0
+	power_channel = STATIC_ENVIRON
+	use_power = IDLE_POWER_USE
 	unacidable = 1
 
 	light_color = "#7de1e1"
@@ -43,6 +44,9 @@
 	return
 
 /obj/machinery/gravity_generator/bullet_act(obj/item/projectile/P, def_zone)
+	return
+
+/obj/machinery/gravity_generator/blob_act()
 	return
 
 /obj/machinery/gravity_generator/proc/take_damage(amount)
@@ -74,7 +78,7 @@ GLOBAL_VAR(station_gravity_generator)
 	icon_state = "0_8"
 	idle_power_usage = 0
 	active_power_usage = 100000
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	sprite_number = 8
 	use_power = POWER_USE_ACTIVE
 
@@ -154,6 +158,9 @@ GLOBAL_VAR(station_gravity_generator)
 			take_damage(P.damage)
 		if(BURN)
 			take_damage(P.damage)
+
+/obj/machinery/gravity_generator/main/blob_act(damage)
+	take_damage(damage)
 
 /obj/machinery/gravity_generator/main/take_damage(amount)
 	var/new_health = max(0, health - amount)
@@ -549,6 +556,9 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/part/examine(mob/user)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
+
+/obj/machinery/gravity_generator/part/blob_act(damage)
+	return main_part.blob_act(damage)
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)

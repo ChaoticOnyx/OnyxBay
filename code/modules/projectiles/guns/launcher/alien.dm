@@ -48,6 +48,8 @@
 	w_class = ITEM_SIZE_LARGE
 	ammo_name = "spike"
 	ammo_type = /obj/item/weapon/spike
+	max_ammo = 3
+	ammo = 3
 	release_force = 30
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "spikethrower3"

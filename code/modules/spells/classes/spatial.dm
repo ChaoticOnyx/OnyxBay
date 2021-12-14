@@ -2,14 +2,12 @@
 	name = "Spatial"
 	feedback_tag = "SP"
 	description = "Movement and teleportation. Run from your problems!"
-	points = 11
+	points = 9
 	can_make_contracts = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/ethereal_jaunt,              1),
-		SPELL_DATA(/datum/spell/aoe_turf/blink,                       1),
 		SPELL_DATA(/datum/spell/area_teleport,                        1),
-		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/passage, 1),
 		SPELL_DATA(/datum/spell/mark_recall,                          1),
 		SPELL_DATA(/datum/spell/targeted/swap,                        1),
 		SPELL_DATA(/datum/spell/targeted/shapeshift/avian,            1),

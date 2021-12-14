@@ -19,7 +19,7 @@
 		/obj/item/weapon/stock_parts/manipulator = 4
 	)
 
-	beepsounds = "medical_beep"
+	beepsounds = SFX_BEEP_MEDICAL
 
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS
@@ -82,7 +82,7 @@
 
 /obj/machinery/optable/verb/remove_clothes()
 	set name = "Remove Clothes"
-	set category = "IC"
+	set category = "Object"
 	set src in oview(1)
 
 	if(!ishuman(usr) && !issilicon(usr))
@@ -113,6 +113,7 @@
 						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
 	if(do_after(usr, time_to_strip, victim))
 		if(!victim)
+			busy = FALSE
 			return
 		for(var/obj/item/clothing/C in victim.contents)
 			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))

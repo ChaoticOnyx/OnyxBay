@@ -66,6 +66,7 @@
 
 	var/damtype = BRUTE
 	var/defense = "melee"
+	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -84,6 +85,9 @@
 	else
 		mob_ai = new()
 	mob_ai.holder = src
+
+	if(bodyparts)
+		bodyparts = decls_repository.get_decl(bodyparts)
 
 /mob/living/simple_animal/Destroy()
 	QDEL_NULL(mob_ai)

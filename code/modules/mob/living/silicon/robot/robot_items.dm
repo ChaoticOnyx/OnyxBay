@@ -54,7 +54,7 @@
 			to_chat(user, "The [src] is empty.  Put something inside it first.")
 	if(response == "Sync")
 		var/success = 0
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
 			for(var/datum/tech/T in files.known_tech) //Uploading
 				S.files.AddTech2Known(T)
 			for(var/datum/tech/T in S.files.known_tech) //Downloading
@@ -878,6 +878,22 @@
 		else
 			inuse = 0
 			to_chat(user, "<span class='danger'>You failed to dispense the product</span>")
+
+/obj/item/weapon/robot_item_dispenser/canvas
+	name = "canvas assembler"
+	desc = "A device used to rapidly construct new canvas"
+	icon_state = "printer"
+	icon = 'icons/obj/robot_device.dmi'
+	icon_state = "printer"
+	recycling_time = 50
+
+/obj/item/weapon/robot_item_dispenser/canvas/New()
+	item_types += new /datum/dispense_type("canvas 11x11", /obj/item/canvas, 25, 100)
+	item_types += new /datum/dispense_type("canvas 19x19", /obj/item/canvas/nineteen_nineteen, 45, 100)
+	item_types += new /datum/dispense_type("canvas 23x19", /obj/item/canvas/twentythree_nineteen, 65, 100)
+	item_types += new /datum/dispense_type("canvas 23x23", /obj/item/canvas/twentythree_twentythree, 85, 100)
+	item_types += new /datum/dispense_type("canvas 24x24", /obj/item/canvas/twentyfour_twentyfour, 90, 100)
+	..()
 
 /obj/item/weapon/robot_item_dispenser/crates
 	name = "crates assembler"

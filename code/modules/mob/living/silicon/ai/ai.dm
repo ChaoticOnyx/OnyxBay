@@ -120,6 +120,7 @@ var/list/ai_verbs_default = list(
 	announcement.title = "A.I. Announcement"
 	announcement.announcement_type = "A.I. Announcement"
 	announcement.newscast = 1
+	announcement.log = TRUE
 
 	var/list/possibleNames = GLOB.ai_names
 

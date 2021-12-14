@@ -120,7 +120,7 @@
 			var/obj/item/organ/internal/xenos/plasmavessel/P = H.internal_organs_by_name[BP_PLASMA]
 			P.stored_plasma += weeds_plasma_rate
 			P.stored_plasma = min(max(P.stored_plasma, 0), P.max_plasma)
-			H.nutrition = min(H.nutrition+5, 400) // TODO: Come up with something better like eating humans or who tf knows what; for now it's still better than a horde of slowed-down hungry aliens
+			H.nutrition = min(H.nutrition+5, STOMACH_FULLNESS_HIGH) // TODO: Come up with something better like eating humans or who tf knows what; for now it's still better than a horde of slowed-down hungry aliens
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
@@ -242,7 +242,7 @@
 		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_acidspit,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
@@ -326,7 +326,7 @@
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/tackle,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid
@@ -380,7 +380,7 @@
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/tackle,
-		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/spit,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
 		/mob/living/carbon/human/proc/regurgitate,

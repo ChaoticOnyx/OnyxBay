@@ -48,3 +48,22 @@
 	if(direction & (UP|DOWN))
 		return MOVEMENT_HANDLED
 	return MOVEMENT_PROCEED
+
+/datum/movement_handler/deny_stairs/DoMove(direction, mob/mover, is_external)
+	if (direction & (UP | DOWN))
+		return MOVEMENT_PROCEED
+
+	var/turf/destination = get_step(mover, direction)
+
+	if (istype(destination, /turf/simulated/open))
+		var/turf/below = get_step(destination, DOWN)
+
+		if (locate(/obj/structure/stairs) in below)
+			return MOVEMENT_HANDLED
+
+		return MOVEMENT_PROCEED
+
+	if (locate(/obj/structure/stairs) in destination)
+		return MOVEMENT_HANDLED
+
+	return MOVEMENT_PROCEED

@@ -38,7 +38,7 @@
 	icon = 'icons/obj/backwear.dmi'
 	icon_state = "firehose"
 	item_state = "firehose"
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 	force = 6.5
 	mod_handy = 0.7
 	mod_weight = 0.65

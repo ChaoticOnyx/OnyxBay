@@ -404,7 +404,6 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	var/species
 	var/mouse_icon
 	var/handler_name
-	var/list/parameters
 
 /datum/click_handler/New(mob/user)
 	..()
@@ -468,7 +467,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 		return
 	RemoveClickHandler(click_handlers.Top())
 
-/mob/proc/PushClickHandler(datum/click_handler/new_click_handler_type, list/parameters = null)
+/mob/proc/PushClickHandler(datum/click_handler/new_click_handler_type)
 	if((initial(new_click_handler_type.flags) & CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT) && !client)
 		return FALSE
 	if(!click_handlers)
@@ -476,10 +475,12 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	var/datum/click_handler/click_handler = click_handlers.Top()
 	if(click_handler)
 		click_handler.Exit()
+
 	click_handler = new new_click_handler_type(src)
-	click_handler.parameters = parameters
 	click_handler.Enter()
 	click_handlers.Push(click_handler)
+
+	return click_handler
 
 /datum/click_handler/proc/mob_check(mob/living/carbon/human/user) //Check can mob use a ability
 	return
@@ -496,74 +497,24 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 /////////////////
 //Changeling CH//
 /////////////////
-
 /datum/click_handler/changeling/mob_check(mob/living/carbon/human/user)
 	if(ishuman(user) && user.mind && user.mind.changeling)
 		return TRUE
 	return FALSE
 
-/datum/click_handler/changeling/OnClick(atom/target) //Check can mob use a ability
+/datum/click_handler/changeling/sting
+	var/datum/changeling_power/toggled/sting/sting = null
+
+/datum/click_handler/changeling/sting/OnClick(atom/target)
+	if(!sting)
+		return
+	if(!user?.mind?.changeling)
+		return
+	if(!ishuman(target) || (target == user))
+		target.Click()
+		return
+	sting.sting_target(target)
 	return
-
-/datum/click_handler/changeling/changeling_lsdsting
-	handler_name = "Hallucination Sting"
-
-/datum/click_handler/changeling/changeling_lsdsting/OnClick(atom/target)
-	user.changeling_lsdsting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_silence_sting
-	handler_name = "Silence Sting"
-
-/datum/click_handler/changeling/changeling_silence_sting/OnClick(atom/target)
-	user.changeling_silence_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_chemical_sting
-	handler_name = "Chem Sting"
-
-/datum/click_handler/changeling/changeling_chemical_sting/OnClick(atom/target)
-	user.changeling_chemical_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_blind_sting
-	handler_name = "Blind Sting"
-
-/datum/click_handler/changeling/changeling_blind_sting/OnClick(atom/target)
-	user.changeling_blind_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_deaf_sting
-	handler_name = "Deaf Sting"
-
-/datum/click_handler/changeling/changeling_deaf_sting/OnClick(atom/target)
-	user.changeling_deaf_sting(target)
-	user.PopClickHandler()
-	return
-
-/*
-/datum/click_handler/changeling/changeling_paralysis_sting
-	handler_name = "Paralysis Sting"
-
-/datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
-	return user.changeling_paralysis_sting(target)
-
-/datum/click_handler/changeling/changeling_paralysis_sting
-	handler_name = "Transformation Sting"
-
-/datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
-	return user.changeling_paralysis_sting(target)
-
-/datum/click_handler/changeling/changeling_unfat_sting
-	handler_name = "Unfat Sting"
-
-/datum/click_handler/changeling/changeling_unfat_sting/OnClick(atom/target)
-	return user.changeling_unfat_sting(target)
-*/
 
 /datum/click_handler/changeling/infest
 	handler_name = "Infest"
@@ -574,43 +525,17 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	L.infest(target)
 	return
 
-/datum/click_handler/changeling/changeling_death_sting
-	handler_name = "Death Sting"
-
-/datum/click_handler/changeling/changeling_death_sting/OnClick(atom/target)
-	user.changeling_death_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_extract_dna_sting
-	handler_name = "Extract DNA Sting"
-
-/datum/click_handler/changeling/changeling_extract_dna_sting/OnClick(atom/target)
-	user.changeling_extract_dna_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_fake_arm_blade_sting
-	handler_name = "Fake arm Blade"
-
-/datum/click_handler/changeling/changeling_fake_arm_blade_sting/OnClick(atom/target)
-	user.changeling_fake_arm_blade_sting(target)
-	user.PopClickHandler()
-	return
-
 /datum/click_handler/changeling/changeling_bioelectrogenesis
 	handler_name = "Bioelectrogenesis"
 
 /datum/click_handler/changeling/changeling_bioelectrogenesis/OnClick(atom/target)
-	user.changeling_bioelectrogenesis(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_vomit_sting
-	handler_name = "Vomit Sting"
-
-/datum/click_handler/changeling/changeling_vomit_sting/OnClick(atom/target)
-	user.changeling_vomit_sting(target)
+	if(!user.mind?.changeling)
+		user.PopClickHandler()
+		return
+	var/datum/changeling_power/toggled/bioelectrogenesis/CP = user.mind.changeling.get_changeling_power_by_name("Bioelectrogenesis") // Yes it's hacky. Don't write code like this.
+	if(!CP)
+		return
+	CP.affect(target)
 	user.PopClickHandler()
 	return
 
@@ -643,11 +568,3 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 			return spell_storage.perform(user,0,target)
 	to_chat(user, "We cannot find it's power... call admins")
 	return 0
-
-/datum/click_handler/emotes/target_emote
-	handler_name = "Target emote"
-
-/datum/click_handler/emotes/target_emote/OnClick(atom/target)
-	user.prepare_target_emote(target, parameters)
-	user.PopClickHandler()
-	return

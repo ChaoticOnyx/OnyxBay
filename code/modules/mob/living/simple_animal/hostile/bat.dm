@@ -21,6 +21,7 @@
 	melee_damage_upper = 10
 	attacktext = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/bird
 
 	min_gas = null
 	max_gas = null
@@ -30,6 +31,8 @@
 
 	faction = "scarybat"
 	var/mob/living/owner
+
+	stance = HOSTILE_STANCE_ALERT
 
 /mob/living/simple_animal/hostile/scarybat/New(loc, mob/living/L as mob)
 	..()

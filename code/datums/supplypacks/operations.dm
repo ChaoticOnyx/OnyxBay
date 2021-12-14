@@ -1,9 +1,23 @@
 /decl/hierarchy/supply_pack/operations
 	name = "Operations"
 
+/decl/hierarchy/supply_pack/operations/arts
+	name = "Arts Supplies"
+	cost = 10
+	contains = list(
+		/obj/structure/easel,
+		/obj/item/canvas/twentythree_twentythree,
+		/obj/item/canvas/twentythree_nineteen,
+		/obj/item/canvas/nineteen_nineteen,
+		/obj/item/canvas/twentyfour_twentyfour,
+		/obj/item/canvas = 2,
+		/obj/item/weapon/pen/crayon/rainbow = 2
+	)
+	containername = "Arts Crate"
+
 /decl/hierarchy/supply_pack/operations/mule
 	name = "MULEbot Crate"
-	contains = list()
+	contains = list(/mob/living/bot/mulebot)
 	cost = 20
 	containertype = /obj/structure/largecrate/animal/mulebot
 	containername = "Mulebot Crate"
@@ -56,7 +70,7 @@
 
 /decl/hierarchy/supply_pack/operations/hoverpod
 	name = "Hoverpod Shipment"
-	contains = list()
+	contains = list(/obj/mecha/working/hoverpod)
 	cost = 80
 	containertype = /obj/structure/largecrate/hoverpod
 	containername = "\improper Hoverpod Crate"

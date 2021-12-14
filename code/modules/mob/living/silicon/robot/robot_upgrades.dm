@@ -600,6 +600,23 @@
 		installed = 1
 		return 1
 
+/obj/item/borg/upgrade/art
+	name = "art module"
+	desc = "Contains instruments to create an art, but can robots create art?"
+	icon_state = "cyborg_upgrade3"
+	require_module = 1
+
+/obj/item/borg/upgrade/art/action(mob/living/silicon/robot/R)
+	if(..()) return 0
+
+	if(!can_install(src, R))
+		return 0
+	else
+		R.module.modules += new /obj/item/weapon/robot_item_dispenser/canvas(R.module)
+		R.module.modules += new /obj/item/weapon/pen/crayon/rainbow(R.module)
+		installed = 1
+		return 1
+
 /obj/item/borg/upgrade/pipe_printer
 	name = "pipe printer module"
 	desc = "Special printer module designed to rapidly manufacture pipes."
@@ -661,7 +678,7 @@
 	var/area/t = get_area(host)
 	var/location = t.name
 	if (cause == "emp" && prob(50))
-		location =  pick(teleportlocs)
+		location =  pick(playerlocs)
 	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
 		var/area/default = world.area
 		location = initial(default.name)

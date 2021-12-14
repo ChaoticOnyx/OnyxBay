@@ -86,7 +86,7 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"Prey" = 'sound/music/prey.ogg',
 	"Clouds of Fire" = 'sound/music/clouds.s3m',
 	"D`Bert" = 'sound/music/title2.ogg',
-	"D`Fort" = 'sound/ambience/song_game.ogg',
+	"D`Fort" = 'sound/ambient/song_game.ogg',
 	"Floating" = 'sound/music/main.ogg',
 	"Endless Space" = 'sound/music/space.ogg',
 	"Part A" = 'sound/misc/TestLoop1.ogg',

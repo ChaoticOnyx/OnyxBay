@@ -9,6 +9,7 @@
 	icon = 'icons/obj/vehicles.dmi'
 
 	layer = ABOVE_HUMAN_LAYER
+	appearance_flags = LONG_GLIDE
 	density = 1
 	anchored = 1
 	animate_movement=1
@@ -18,7 +19,11 @@
 	buckle_movable = 1
 	buckle_lying = 0
 
-	movement_handlers = list(/datum/movement_handler/deny_multiz, /datum/movement_handler/move_relay_self)
+	movement_handlers = list(
+		/datum/movement_handler/deny_stairs,
+		/datum/movement_handler/deny_multiz,
+		/datum/movement_handler/move_relay_self
+	)
 
 	var/attack_log = null
 	var/on = 0
@@ -70,7 +75,11 @@
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
-			load.forceMove(loc)
+			if(ismob(load))
+				var/mob/M = load
+				M.forceMove(loc, unbuckle_mob=FALSE)
+			else
+				load.forceMove(loc)
 			load.set_dir(dir)
 
 		return 1

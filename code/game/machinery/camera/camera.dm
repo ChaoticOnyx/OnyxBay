@@ -318,7 +318,7 @@
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, loc)
 	spark_system.start()
-	playsound(loc, "spark", 50, 1)
+	playsound(loc, SFX_SPARK, 50, 1)
 
 /obj/machinery/camera/proc/set_status(newstatus)
 	if (status != newstatus)

@@ -102,7 +102,7 @@
 		var/obj/item/weapon/storage/bag/trash/T = I
 		to_chat(user, "<span class='notice'>You empty the bag.</span>")
 		for(var/obj/item/O in T.contents)
-			playsound(src, "disposal", 75, 0)
+			playsound(src, SFX_DISPOSAL, 75, 0)
 			T.remove_from_storage(O,src)
 		T.update_icon()
 		update_icon()
@@ -115,7 +115,7 @@
 			for (var/mob/V in viewers(usr))
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
 			if(do_after(usr, 20, src))
-				playsound(src, "disposal", 75, 0)
+				playsound(src, SFX_DISPOSAL, 75, 0)
 				if(GM.client)
 					GM.client.perspective = EYE_PERSPECTIVE
 					GM.client.eye = src
@@ -136,7 +136,7 @@
 	if(I.loc != src)
 		return
 
-	playsound(src, "disposal", 75, 0)
+	playsound(src, SFX_DISPOSAL, 75, 0)
 	to_chat(user, "You place \the [I] into the [src].")
 	for(var/mob/M in viewers(src))
 		if(M == user)
@@ -640,10 +640,12 @@
 
 	var/mob/living/U = user
 
-	if (U.stat || U.last_special <= world.time)
+	if (U.stat)
 		return
 
-	U.last_special = world.time+100
+	THROTTLE_SHARED(cooldown, 100, U.last_special)
+	if(!cooldown)
+		return
 
 	if (src.loc)
 		for (var/mob/M in hearers(src.loc.loc))

@@ -193,6 +193,9 @@
 		return FALSE
 	return ..()
 
+/obj/structure/stairs/forceMove()
+	return 0
+
 /obj/structure/stairs/Bumped(atom/movable/A)
 	var/turf/above = GetAbove(A)
 	if(above)

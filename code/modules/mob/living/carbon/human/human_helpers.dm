@@ -72,7 +72,7 @@
 			client.pixel_x = 0
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
-	if (machine_visual)
+	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
 		return
 	if(!G)
 		return
@@ -231,6 +231,10 @@
 
 /mob/living/carbon/human/proc/make_grab(mob/living/carbon/human/attacker, mob/living/carbon/human/victim, grab_tag)
 	var/obj/item/grab/G
+
+	if(!victim.get_organ(attacker.zone_sel.selecting))
+		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
+		return 0
 
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)

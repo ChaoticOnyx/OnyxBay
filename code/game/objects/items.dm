@@ -29,6 +29,7 @@
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
 	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
 	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.3 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
+	var/check_armour = "melee" // Defines what armor to use when it hits things.  Must be set to bullet/laser/energy/bomb/bio/rad
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -54,7 +55,6 @@
 	var/slowdown_per_slot[slot_last] // How much clothing is slowing you down. This is an associative list: item slot - slowdown
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
-	var/candrop = 1 //Mostly for the fake armblade code. Prevents drop_from_inventory(), making the wielder unable to drop it at all unless forced.
 	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	var/list/allowed = null //suit storage stuff.
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
@@ -250,20 +250,23 @@
 			to_chat(user, SPAN("notice", "You try to use your hand, but realize it is no longer attached!"))
 			return
 
-	var/old_loc = src.loc
+	var/old_loc = loc
 
-	src.pickup(user)
-	if (istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = src.loc
+	pickup(user)
+	if (istype(loc, /obj/item/weapon/storage))
+		var/obj/item/weapon/storage/S = loc
 		S.remove_from_storage(src)
 
-	src.throwing = 0
-	if (src.loc == user)
+	throwing = 0
+	if (loc == user)
 		if(!user.unEquip(src))
 			return
 	else
-		if(isliving(src.loc))
+		if(isliving(loc))
 			return
+
+	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+		return
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -483,6 +486,9 @@ var/list/global/slot_flags_enumeration = list(
 		return 0
 	return 1
 
+/obj/item/proc/can_be_dropped_by_client(mob/M)
+	return M.canUnEquip(src)
+
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
 	set category = "Object"
@@ -541,6 +547,8 @@ var/list/global/slot_flags_enumeration = list(
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
 			proj_poise_drain(user, P, TRUE)
+			spawn()
+				shake_camera(user, 1)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 

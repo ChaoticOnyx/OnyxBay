@@ -5,7 +5,7 @@
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 	var/capacity_max = 300
 	var/capacity = 300

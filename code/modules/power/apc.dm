@@ -74,7 +74,7 @@
 	anchored = 1
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
-	clicksound = "switch_small"
+	clicksound = SFX_USE_SMALL_SWITCH
 	var/needs_powerdown_sound
 	var/area/area
 	var/areastring = null
@@ -164,6 +164,7 @@
 
 	wires = new(src)
 
+	GLOB.apc_list += src
 	// offset 24 pixels in direction of dir
 	// this allows the APC to be embedded in a wall, yet still inside an area
 	if (building)
@@ -203,6 +204,7 @@
 		cell.forceMove(loc)
 		cell = null
 
+	GLOB.apc_list -= src
 	// Malf AI, removes the APC from AI's hacked APCs list.
 	if((hacker) && (hacker.hacked_apcs) && (src in hacker.hacked_apcs))
 		hacker.hacked_apcs -= src
@@ -1010,9 +1012,9 @@
 			force_update = 1
 		return
 
-	lastused_light = area.usage(LIGHT)
-	lastused_equip = area.usage(EQUIP)
-	lastused_environ = area.usage(ENVIRON)
+	lastused_light = area.usage(STATIC_LIGHT)
+	lastused_equip = area.usage(STATIC_EQUIP)
+	lastused_environ = area.usage(STATIC_ENVIRON)
 	area.clear_usage()
 
 	lastused_total = lastused_light + lastused_equip + lastused_environ
@@ -1248,17 +1250,19 @@
 	update()
 
 // overload the lights in this APC area
-/obj/machinery/power/apc/proc/overload_lighting(chance = 100)
-	if(/* !get_connection() || */ !operating || shorted)
+/obj/machinery/power/apc/proc/overload_lighting()
+	if (!operating || shorted)
 		return
-	if( cell && cell.charge>=20)
+	if (cell && cell.charge>=20)
 		cell.use(20);
-		spawn(0)
-			for(var/obj/machinery/light/L in area)
-				if(prob(chance))
-					L.on = 1
-					L.broken()
-					stoplag()
+		INVOKE_ASYNC(src, .proc/break_lights)
+
+/obj/machinery/power/apc/proc/break_lights()
+	for(var/obj/machinery/light/L in area)
+		L.on = TRUE
+		L.broken()
+		L.on = FALSE
+		stoplag()
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)

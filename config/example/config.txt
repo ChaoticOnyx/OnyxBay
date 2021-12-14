@@ -31,11 +31,12 @@ PLAYER_LIMIT 0
 ## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
 HARD_PLAYER_LIMIT 0
 
-## Defines the ticklag for the world. 0.9 is the normal one, 0.5 is smoother.
+##Defines the ticklag for the world. Ticklag is the amount of time between game ticks (aka byond ticks) (in 1/10ths of a second).
+##	This also controls the client network update rate, as well as the default client fps (10 / TICKLAG). 0.9 is the normal one, 0.5 is smoother.
 TICKLAG 0.625
 
-## Defines world FPS. Defaults to 20. Should be 10 / TICKLAG = FPS
-FPS 16
+##Defines the fps for the players with 0 in preferences. -1 for synced with server fps. 65 recommended
+CLIENTFPS 65
 
 ## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list)
 # OVERRIDE_SPLASH icons/splashes/onyx_new.png
@@ -564,6 +565,13 @@ ALLOW_HOLIDAYS
 ## Uncomment to allow catching projectiles and throwing them.
 # PROJECTILE_BASKETBALL
 
+## FUN features that may be considered inappropriate for high RP servers
+## 0 - allows ONLY regular plants, 1 - allows not-so-realistic plants (i.e. bluespace tomatoes, walking mushrooms), 2 - allows somewhat OOC-related stuff (i.e. BANanas)
+FUN_HYDROPONICS 1
+
+## Set to 0 to allow singularities to follow ghosts.
+FORBID_SINGULO_FOLLOWING 1
+
 # # # # # # # # # # # # # # # # # # # # # #
 #               VOTE ACTIONS              #
 # # # # # # # # # # # # # # # # # # # # # #
@@ -625,9 +633,6 @@ DEFAULT_NO_VOTE
 
 ## Patreon URL
 # PATREONURL http://example.com
-
-## Changelog URL
-# CHANGELOGURL http://example.com
 
 # # # # # # # # # # # # # # # # # # # # # #
 #     EXTERNAL CONNECTIONS / DATABASE     #

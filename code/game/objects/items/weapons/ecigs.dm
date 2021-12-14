@@ -34,6 +34,7 @@
 	icon_off = "ccigoff"
 	icon_empty = "ccigoff"
 	icon_on = "ccigon"
+	item_state = "ccigoff"
 
 /obj/item/clothing/mask/smokable/ecig/simple/examine(mob/user)
 	. = ..()
@@ -49,6 +50,7 @@
 	icon_off = "ecigoff1"
 	icon_empty = "ecigoff1"
 	icon_on = "ecigon"
+	item_state = "ecigoff1"
 	cell_type = /obj/item/weapon/cell/device/high //enough for four cartridges
 
 /obj/item/clothing/mask/smokable/ecig/util/New()
@@ -70,6 +72,7 @@
 	icon_off = "pcigoff1"
 	icon_empty = "pcigoff2"
 	icon_on = "pcigon"
+	item_state = "pcigoff1"
 	cell_type = /obj/item/weapon/cell/device/high //enough for four catridges
 
 /obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)

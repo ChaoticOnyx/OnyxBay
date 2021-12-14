@@ -93,7 +93,7 @@ SUBSYSTEM_DEF(explosions)
  * - shaped: if true make explosions look like circle
  * - sfx_to_play: sound to play, when expolosion near player
  */
-/datum/controller/subsystem/explosions/proc/explode(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = "explosion")
+/datum/controller/subsystem/explosions/proc/explode(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
 	epicenter = get_turf(epicenter)
 	ASSERT(isturf(epicenter))
 	if(isnull(flash_range))
@@ -314,7 +314,7 @@ SUBSYSTEM_DEF(explosions)
  * - [creaking_sound][/sound]: The sound that plays when the station creaks during the explosion.
  * - [hull_creaking_sound][/sound]: The sound that plays when the station creaks after the explosion.
  */
-/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, near_sound = "explosion", far_sound = "far_explosion")
+/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, near_sound = SFX_EXPLOSION, far_sound = "far_explosion")
 	var/frequency = get_rand_frequency()
 	var/blast_z = epicenter.z
 	if(isnull(creaking)) // Autoset creaking.
@@ -432,7 +432,7 @@ SUBSYSTEM_DEF(explosions)
 	if(currentpart == SSEXPLOSIONS_TURFS)
 		currentpart = SSEXPLOSIONS_MOVABLES
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(lowturf))
 			if(MC_TICK_CHECK)
 				break
@@ -441,7 +441,7 @@ SUBSYSTEM_DEF(explosions)
 			if(!isturf(turf_thing))
 				continue
 			turf_thing.ex_act(EXPLODE_LIGHT)
-		cost_lowturf = MC_AVERAGE(cost_lowturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_lowturf = MC_AVERAGE(cost_lowturf, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			if(lowturf.len || medturf.len || highturf.len)
@@ -449,7 +449,7 @@ SUBSYSTEM_DEF(explosions)
 			currentpart = SSEXPLOSIONS_TURFS
 			return
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(medturf))
 			if(MC_TICK_CHECK)
 				break
@@ -458,7 +458,7 @@ SUBSYSTEM_DEF(explosions)
 			if(!isturf(turf_thing))
 				continue
 			turf_thing.ex_act(EXPLODE_HEAVY)
-		cost_medturf = MC_AVERAGE(cost_medturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_medturf = MC_AVERAGE(cost_medturf, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			if(lowturf.len || medturf.len || highturf.len)
@@ -466,7 +466,7 @@ SUBSYSTEM_DEF(explosions)
 			currentpart = SSEXPLOSIONS_TURFS
 			return
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(highturf))
 			if(MC_TICK_CHECK)
 				break
@@ -475,7 +475,7 @@ SUBSYSTEM_DEF(explosions)
 			if(!isturf(turf_thing))
 				continue
 			turf_thing.ex_act(EXPLODE_DEVASTATE)
-		cost_highturf = MC_AVERAGE(cost_highturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_highturf = MC_AVERAGE(cost_highturf, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			if(lowturf.len || medturf.len || highturf.len)
@@ -483,12 +483,12 @@ SUBSYSTEM_DEF(explosions)
 			currentpart = SSEXPLOSIONS_TURFS
 			return
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 
 	if(currentpart == SSEXPLOSIONS_MOVABLES)
 		currentpart = SSEXPLOSIONS_THROWS
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(high_mov_atom))
 			if(MC_TICK_CHECK)
 				break
@@ -497,13 +497,13 @@ SUBSYSTEM_DEF(explosions)
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_DEVASTATE)
-		cost_high_mov_atom = MC_AVERAGE(cost_high_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_high_mov_atom = MC_AVERAGE(cost_high_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			currentpart = SSEXPLOSIONS_MOVABLES
 			return
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(med_mov_atom))
 			if(MC_TICK_CHECK)
 				break
@@ -512,13 +512,13 @@ SUBSYSTEM_DEF(explosions)
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_HEAVY)
-		cost_med_mov_atom = MC_AVERAGE(cost_med_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_med_mov_atom = MC_AVERAGE(cost_med_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			currentpart = SSEXPLOSIONS_MOVABLES
 			return
 
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(low_mov_atom))
 			if(MC_TICK_CHECK)
 				break
@@ -527,14 +527,14 @@ SUBSYSTEM_DEF(explosions)
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_LIGHT)
-		cost_low_mov_atom = MC_AVERAGE(cost_low_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_low_mov_atom = MC_AVERAGE(cost_low_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 		if(MC_TICK_CHECK)
 			return
 
 	if (currentpart == SSEXPLOSIONS_THROWS) // throw is fine enougth, some lags are fine.
 		currentpart = SSEXPLOSIONS_TURFS
-		timer = TICK_USAGE_REAL
+		timer = TICK_USAGE
 		while(length(throwturf))
 			if(MC_TICK_CHECK)
 				break
@@ -560,6 +560,6 @@ SUBSYSTEM_DEF(explosions)
 		if(MC_TICK_CHECK)
 			currentpart = SSEXPLOSIONS_THROWS
 			return
-		cost_throwturf = MC_AVERAGE(cost_throwturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
+		cost_throwturf = MC_AVERAGE(cost_throwturf, TICK_DELTA_TO_MS(TICK_USAGE - timer))
 
 	currentpart = SSEXPLOSIONS_TURFS
