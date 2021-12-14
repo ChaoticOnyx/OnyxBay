@@ -50,7 +50,7 @@
 								/obj/item/clothing/suit/space/void/syndi/prepared						= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/mining/alt/prepared					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/mining/prepared						= TRADER_THIS_TYPE,
-								///obj/item/clothing/suit/space/void/mining/reinforced/prepared			= TRADER_THIS_TYPE,   uncomment as soon as it is added
+								/obj/item/clothing/suit/space/void/mining/reinforced/prepared			= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/pilot/prepared						= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/security/alt/prepared				= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/security/prepared					= TRADER_THIS_TYPE,

@@ -259,13 +259,13 @@
 	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
 	icon_state = "rig0-miningref"
 	item_state = "miningref_helm"
-	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+	armor = list(melee = 70, bullet = 25, laser = 40, energy = 15, bomb = 65, bio = 100, rad = 80)
 
 /obj/item/clothing/suit/space/void/mining/reinforced
 	icon_state = "rig-miningref"
 	name = "reinforced mining voidsuit"
 	desc = "A heavy-duty prospecting voidsuit. What it lacks in comfort it makes up for in armor plating and street cred."
-	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+	armor = list(melee = 70, bullet = 25, laser = 40, energy = 15, bomb = 65, bio = 100, rad = 80)
 
 /obj/item/clothing/suit/space/void/mining/reinforced/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/mining/reinforced
