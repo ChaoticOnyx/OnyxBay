@@ -7,6 +7,7 @@ var/list/gamemode_cache = list()
 	var/subserver_name = null               // subserver name in window title, ignored if null
 
 	var/clientfps = 65				     	// Default fps for clients with "0" in prefs. -1 for synced with server.
+	var/redeye_auth = FALSE					// Tell the subsystem to allow identification
 
 	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
@@ -339,7 +340,9 @@ var/list/gamemode_cache = list()
 
 		if(type == "config")
 			switch (name)
-				if ("override_splash")
+				if("enable_redeye_auth")
+					redeye_auth = TRUE
+				if("override_splash")
 					var/lobbyscreen_file = file(value)
 
 					if (lobbyscreen_file && isfile(lobbyscreen_file))

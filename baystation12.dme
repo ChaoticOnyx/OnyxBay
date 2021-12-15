@@ -198,6 +198,7 @@
 #include "code\controllers\subsystems\open_space.dm"
 #include "code\controllers\subsystems\plants.dm"
 #include "code\controllers\subsystems\radiation.dm"
+#include "code\controllers\subsystems\redeye.dm"
 #include "code\controllers\subsystems\shuttle.dm"
 #include "code\controllers\subsystems\skybox.dm"
 #include "code\controllers\subsystems\sun.dm"

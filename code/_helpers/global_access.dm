@@ -87,6 +87,8 @@
 			return global.SSprocessing;
 		if("SSradiation")
 			return global.SSradiation;
+		if("SSredeye")
+			return global.SSredeye;
 		if("SSshuttle")
 			return global.SSshuttle;
 		if("SSskybox")
@@ -984,6 +986,8 @@
 			global.SSprocessing=newval;
 		if("SSradiation")
 			global.SSradiation=newval;
+		if("SSredeye")
+			global.SSredeye=newval;
 		if("SSshuttle")
 			global.SSshuttle=newval;
 		if("SSskybox")
@@ -1841,6 +1845,7 @@
 	"SSplants",
 	"SSprocessing",
 	"SSradiation",
+	"SSredeye",
 	"SSshuttle",
 	"SSskybox",
 	"SSsun",

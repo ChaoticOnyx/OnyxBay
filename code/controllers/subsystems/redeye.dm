@@ -1,0 +1,89 @@
+SUBSYSTEM_DEF(redeye)
+	// Red Eye Identification System
+	// Yeah, this is "rice" translated from German
+	name = "REIS"
+	priority = SS_PRIORITY_REDEYE
+	wait = 1
+
+	// assoc list key - ckey, value - list of identifiers list("ip"=ip, "computer_id"=id)
+	var/list/ckey_identifiers = list()
+	// there we will contain ckey of players that allowed to use REIS
+	var/list/listener_ckeys = list()
+
+	var/legal_codes = list(200, 301, 302)
+	var/fired_by_byond = FALSE
+
+/datum/controller/subsystem/redeye/Initialize()
+	. = ..()
+	// TODO [v]: read json file (data folder) that contains saved listener_ckeys
+	if(fexists("data/redeye_ckeys.json"))
+		listener_ckeys = json_decode(file2text("data/redeye_ckeys.json"))
+	update_identifiers()
+	check_byond()
+	if(fired_by_byond || config.redeye_auth)
+		remove_guests()
+
+/datum/controller/subsystem/redeye/proc/remove_guests()
+	for(var/client/C in GLOB.clients)
+		if(IsGuestKey(C.key))
+			var/url = winget(C, null, "url")
+			//special javascript to make them reconnect under a new window.
+			C << browse({"<a id='link' href="byond://[url]">byond://[url]</a><script type="text/javascript">document.getElementById("link").click();window.location="byond://winset?command=.quit"</script>"}, "border=0;titlebar=0;size=1x1;window=redirect")
+			to_chat(C, {"<a href="byond://[url]">You will be automatically taken to the game, if not, click here to be taken manually</a>"})
+			spawn(5 SECONDS)
+				if(!C)
+					qdel(C)
+
+/datum/controller/subsystem/redeye/Shutdown()
+	text2file(json_encode(listener_ckeys), "data/redeye_ckeys.json")
+
+/datum/controller/subsystem/redeye/proc/identify_client(list/client_data)
+	var/client/C = client_data["client"]
+	var/computer_id = C ? C.computer_id : client_data["comp_id"]
+	var/ip_address = C ? C.address : client_data["ip_addr"]
+	if(!computer_id && !ip_address)
+		return FALSE
+	for(var/ckey in ckey_identifiers)
+		for(var/list/identifiers in ckey_identifiers[ckey])
+			if(identifiers["id"] == computer_id && identifiers["ip_addr"] == ip_address)
+				if(C)
+					var/mob/M = get_mob_by_key(C.key)
+					C.key = ckey
+					M?.ckey = ckey
+				return ckey
+	return FALSE
+
+/datum/controller/subsystem/redeye/proc/check_byond()
+	var/byond_request = world.Export("http://www.byond.com")
+
+	if((!byond_request || !(byond_request["STATUS"] in legal_codes)))
+		if(!fired_by_byond)
+			log_and_message_admins(SPAN_DANGER("Alert. \The [name] report BYOND website response code is not in legal code list, received status - [byond_request ? byond_request["STATUS"] : "NO CODE RECEIVED"]. \The [name] is now active."))
+			remove_guests()
+			fired_by_byond = TRUE
+	else
+		if(fired_by_byond && !config.redeye_auth)
+			log_and_message_admins(SPAN_NOTICE("It's appears connection to BYOND is now up, \the [name] is inactive."))
+			fired_by_byond = FALSE
+
+/datum/controller/subsystem/redeye/fire(resumed)
+	check_byond()
+	return TRUE
+
+/datum/controller/subsystem/redeye/proc/update_identifiers(new_ckey)
+	if(new_ckey && !(new_ckey in listener_ckeys))
+		listener_ckeys.Add(new_ckey)
+	var/DBQuery/query = sql_query("SELECT ckey, ip, computerid FROM erro_player[new_ckey ? " WHERE ckey = $ckey" : ""]", dbcon, list(ckey = new_ckey))
+	while(query.NextRow())
+		var/ckey = query.item[1]
+		var/ip_addr = query.item[2]
+		var/computer_id = query.item[3]
+		if(!(ckey && ip_addr && computer_id) || !(ckey in listener_ckeys))
+			continue
+		if(!length(ckey_identifiers[ckey]))
+			ckey_identifiers[ckey] = list()
+		// BYOND add all contents of list if it's just list, we don't want that, so we need double list.
+		ckey_identifiers[ckey] += list(list("id" = computer_id, "ip_addr" = ip_addr))
+
+/datum/controller/subsystem/redeye/proc/succes_message(key)
+	return SPAN("notice", "The [name] process completed. You are now known as [key].")

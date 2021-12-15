@@ -169,6 +169,8 @@
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
+	if(IsGuestKey(key) && SSredeye?.identify_client(list("client" = src)))
+		addtimer(CALLBACK(GLOBAL_PROC, /.proc/to_chat, SSredeye.succes_message(key)), 0.5 SECONDS)
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src, "This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.", "Guest", "OK")
 		qdel(src)

@@ -15,6 +15,9 @@
 		return ..()
 
 	//Guest Checking
+	if(IsGuestKey(key))
+		var/redeye_key = SSredeye?.identify_client(list("ip_addr" = address, "comp_id" = computer_id))
+		key = redeye_key ? redeye_key : key
 	if(!config.guests_allowed && IsGuestKey(key))
 		log_access("Failed Login: [key] - Guests not allowed")
 		message_admins("<span class='notice'>Failed Login: [key] - Guests not allowed</span>")

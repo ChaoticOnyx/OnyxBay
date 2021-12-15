@@ -128,6 +128,9 @@ LOG_GAME
 #        MULTIACCOUNT COUNTERACTION       #
 # # # # # # # # # # # # # # # # # # # # # #
 
+# Uncomment to enable identification guests with REIS
+# ENABLE_REDEYE_AUTH
+
 ## If set 1, redirects all players whose age less than 1 day
 ## to a specific server. Also redirects if server full. Set 0 to disable
 # PANIC_BUNKER 0
