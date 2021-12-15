@@ -717,6 +717,8 @@
 	if(piece == "helmet" && helmet)
 		helmet.update_light(wearer)
 
+	wearer.update_equipment_slowdown()
+
 /obj/item/weapon/rig/proc/deploy(mob/M,sealed)
 
 	var/mob/living/carbon/human/H = M
