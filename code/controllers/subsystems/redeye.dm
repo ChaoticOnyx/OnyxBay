@@ -12,6 +12,7 @@ SUBSYSTEM_DEF(redeye)
 
 	var/legal_codes = list(200, 301, 302)
 	var/fired_by_byond = FALSE
+	var/datum/browser/redeye_menu
 
 /datum/controller/subsystem/redeye/Initialize()
 	. = ..()
@@ -54,12 +55,12 @@ SUBSYSTEM_DEF(redeye)
 	return FALSE
 
 /datum/controller/subsystem/redeye/proc/check_byond()
-	var/byond_request = world.Export("http://www.byond.com")
+	var/list/byond_request = world.Export("http://www.byond.com")
 
 	if((!byond_request || !(byond_request["STATUS"] in legal_codes)))
 		if(!fired_by_byond)
 			log_and_message_admins(SPAN_DANGER("Alert. \The [name] report BYOND website response code is not in legal code list, received status - [byond_request ? byond_request["STATUS"] : "NO CODE RECEIVED"]. \The [name] is now active."))
-			remove_guests()
+			update_identifiers()
 			fired_by_byond = TRUE
 	else
 		if(fired_by_byond && !config.redeye_auth)
@@ -87,3 +88,38 @@ SUBSYSTEM_DEF(redeye)
 
 /datum/controller/subsystem/redeye/proc/succes_message(key)
 	return SPAN("notice", "The [name] process completed. You are now known as [key].")
+
+// ADMIN INTERACTIONS
+/datum/controller/subsystem/redeye/Topic(href, href_list)
+	var/mob/user = usr
+	if(!ismob(user) && !is_admin(user))
+		return
+	if(href_list["ckey_add"])
+		var/ckey = ckey(sanitizeName(input(user, "Enter a ckey for new participant.", "New participant") as null|text))
+		if(ckey)
+			update_identifiers(ckey)
+	if(href_list["ckey_remove"])
+		var/ckey = input(user, "Select ckey from participant list", "Remove participant") as null|anything in listener_ckeys
+		ckey = ckey(sanitizeName(ckey))
+		if(ckey)
+			ckey_identifiers.Remove(ckey)
+			listener_ckeys.Remove(ckey)
+	show_control_panel(user)
+
+/datum/controller/subsystem/redeye/proc/show_control_panel(mob/user)
+	if(!is_admin(user))
+		return
+	var/dat = "<a href='?src=\ref[src];ckey_add=1'>Add participant.</a><BR><a href='?src=\ref[src];ckey_remove=1'>Remove participant.</a>"
+	dat += "<BR>Ckeys of participants in \the [name]:"
+	for(var/key in listener_ckeys)
+		var/mob/M = get_mob_by_key(key)
+		dat += "<BR>[key]. Status: [M ? "online. Occupied by: [M]" : "offline"]."
+
+	if(!redeye_menu || redeye_menu.user != user)
+		redeye_menu = new /datum/browser(user, "[name]", "<B>[name] Admin Actions</B>", 400, 610)
+		redeye_menu.set_content(dat)
+	else
+		redeye_menu.set_content(dat)
+		redeye_menu.update()
+	redeye_menu.open()
+	return

@@ -2,6 +2,7 @@
 var/list/admin_verbs_default = list(
 	/datum/admins/proc/show_player_panel,	//shows an interface for individual players, with various links (links require additional flags,
 	/client/proc/player_panel,
+	/client/proc/reis_control_panel,
 	/client/proc/secrets,
 	/client/proc/deadmin_self,			//destroys our own admin datum so we can play as a regular player,
 	/client/proc/hide_verbs,			//hides all our adminverbs,
@@ -474,6 +475,14 @@ var/list/admin_verbs_mentor = list(
 			to_chat(mob, SPAN_NOTICE("Invisimin on. You are now as invisible as a ghost."))
 			mob.alpha = max(mob.alpha - 100, 0)
 		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invisimin mode.")
+
+/client/proc/reis_control_panel()
+	set name = "REIS Control Panel"
+	set category = "Admin"
+	if(holder)
+		SSredeye.show_control_panel(mob)
+	feedback_add_details("admin_verb","REISCP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	return
 
 /client/proc/player_panel()
 	set name = "Player Panel"
