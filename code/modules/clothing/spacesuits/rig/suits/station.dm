@@ -213,12 +213,11 @@
 		)
 
 /obj/item/weapon/rig/medical
-
-	name = "rescue suit control module"
+	name = "medical powersuit control module"
 	suit_type = "rescue hardsuit"
-	desc = "A durable suit designed for medical rescue in high risk areas."
+	desc = "A durable suit designed for medical rescue in high-risk areas. Although its armor plating is not that tough, it provides exceptional protection against radiation."
 	icon_state = "medical_rig"
-	armor = list(melee = 30, bullet = 15, laser = 25, energy = 60, bomb = 30, bio = 100, rad = 100)
+	armor = list(melee = 40, bullet = 30, laser = 40, energy = 40, bomb = 45, bio = 100, rad = 100)
 	online_slowdown = 1
 	offline_vision_restriction = TINT_HEAVY
 
