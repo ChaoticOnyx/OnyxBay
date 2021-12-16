@@ -20,7 +20,7 @@
 
 /obj/machinery/libraryscanner/attackby(obj/O, mob/user)
 	if(current_item)
-		to_chat(user, SPAN_NOTICE("\The [src] already have item installed in!"))
+		to_chat(user, SPAN_NOTICE("\The [src] already has something inside!"))
 		return
 	if(istype(O, /obj/item/weapon/book) || istype(O, /obj/item/canvas))
 		user.drop_item()
