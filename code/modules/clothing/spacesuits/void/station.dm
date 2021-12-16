@@ -2,7 +2,7 @@
 
 //Engineering
 /obj/item/clothing/head/helmet/space/void/engineering
-	name = "engineering voidsuit helmet"
+	name = "engineering voidhelmet"
 	desc = "A sturdy looking voidsuit helmet rated to protect against radiation."
 	icon_state = "rig0-engineering"
 	item_state = "eng_helm"
@@ -33,7 +33,7 @@
 
 //Mining
 /obj/item/clothing/head/helmet/space/void/mining
-	name = "mining voidsuit helmet"
+	name = "mining voidhelmet"
 	desc = "A scuffed voidsuit helmet with a boosted communication system and reinforced armor plating."
 	icon_state = "rig0-mining"
 	item_state = "mining_helm"
@@ -60,7 +60,7 @@
 
 //Medical
 /obj/item/clothing/head/helmet/space/void/medical
-	name = "medical voidsuit helmet"
+	name = "medical voidhelmet"
 	desc = "A bulbous voidsuit helmet with minor radiation shielding and a massive visor."
 	icon_state = "rig0-medical"
 	item_state = "medical_helm"
@@ -87,7 +87,7 @@
 
 //Security
 /obj/item/clothing/head/helmet/space/void/security
-	name = "security voidsuit helmet"
+	name = "security voidhelmet"
 	desc = "A somewhat tacky voidsuit helmet, a fact mitigated by heavy armor plating."
 	icon_state = "rig0-sec"
 	item_state = "sec_helm"
@@ -117,7 +117,7 @@
 
 // Alt
 /obj/item/clothing/head/helmet/space/void/security/alt
-	name = "riot security voidsuit helmet"
+	name = "riot security voidhelmet"
 	desc = "A comfortable voidsuit helmet with cranial armor and eight-channel surround sound."
 	icon_state = "rig0-secalt"
 	item_state = "secalt_helm"
@@ -136,7 +136,7 @@
 
 // HoS
 /obj/item/clothing/head/helmet/space/void/security/hos
-	name = "security commander voidsuit helmet"
+	name = "security commander voidhelmet"
 	desc = "A heavily armored voidsuit helmet. Gold trimming radiates its owner's eliteness."
 	icon_state = "rig0-sechos"
 	item_state = "sechos_helm"
@@ -184,8 +184,8 @@
 
 //Atmospherics
 /obj/item/clothing/head/helmet/space/void/atmos
+	name = "atmospherics voidhelmet"
 	desc = "A flame-retardant voidsuit helmet with a self-repairing visor and light anti-radiation shielding."
-	name = "atmospherics voidsuit helmet"
 	icon_state = "rig0-atmos"
 	item_state = "atmos_helm"
 	item_state_slots = list(
@@ -197,9 +197,9 @@
 	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/atmos
+	name = "atmos voidsuit"
 	desc = "A durable voidsuit with advanced temperature-regulation systems as well as minor radiation protection. Well worth the price."
 	icon_state = "rig-atmos"
-	name = "atmos voidsuit"
 	item_state_slots = list(
 		slot_l_hand_str = "atmos_voidsuit",
 		slot_r_hand_str = "atmos_voidsuit",
@@ -216,7 +216,7 @@
 
 //Engineering
 /obj/item/clothing/head/helmet/space/void/engineering/alt
-	name = "reinforced engineering voidsuit helmet"
+	name = "engineering hardsuit helmet"
 	desc = "A heavy, radiation-shielded voidsuit helmet with a surprisingly comfortable interior."
 	icon_state = "rig0-engineeringalt"
 	item_state = "engalt_helm"
@@ -224,7 +224,7 @@
 	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/engineering/alt
-	name = "reinforced engineering voidsuit"
+	name = "engineering hardsuit"
 	desc = "A bulky industrial voidsuit. It's a few generations old, but a reliable design and radiation shielding make up for the lack of climate control."
 	icon_state = "rig-engineeringalt"
 	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 45, bio = 100, rad = 100)
@@ -239,7 +239,7 @@
 
 //Mining
 /obj/item/clothing/head/helmet/space/void/mining/alt
-	name = "frontier mining voidsuit helmet"
+	name = "frontier mining voidhelmet"
 	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
 	icon_state = "rig0-miningalt"
 	item_state = "miningalt_helm"
@@ -255,24 +255,24 @@
 	helmet = /obj/item/clothing/head/helmet/space/void/mining/alt
 
 /obj/item/clothing/head/helmet/space/void/mining/reinforced
-	name = "reinforced mining voidsuit helmet"
-	desc = "An armored voidsuit helmet. Someone must have through they were pretty cool when they painted a mohawk on it."
+	name = "mining hardsuit helmet"
+	desc = "An armored hardsuit helmet. Provides exceptionally good protection against aggressive asteroid dwellers."
 	icon_state = "rig0-miningref"
 	item_state = "miningref_helm"
-	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+	armor = list(melee = 65, bullet = 25, laser = 40, energy = 15, bomb = 65, bio = 100, rad = 80)
 
 /obj/item/clothing/suit/space/void/mining/reinforced
 	icon_state = "rig-miningref"
-	name = "reinforced mining voidsuit"
-	desc = "A heavy-duty prospecting voidsuit. What it lacks in comfort it makes up for in armor plating and street cred."
-	armor = list(melee = 70, bullet = 5, laser = 30,energy = 5, bomb = 55, bio = 100, rad = 80)
+	name = "mining hardsuit"
+	desc = "A heavy-duty prospecting hardsuit. What it lacks in comfort it makes up for in armor plating and street cred."
+	armor = list(melee = 65, bullet = 25, laser = 40, energy = 15, bomb = 65, bio = 100, rad = 80)
 
 /obj/item/clothing/suit/space/void/mining/reinforced/prepared
 	helmet = /obj/item/clothing/head/helmet/space/void/mining/reinforced
 
 //Medical
 /obj/item/clothing/head/helmet/space/void/medical/alt
-	name = "streamlined medical voidsuit helmet"
+	name = "streamlined medical voidhelmet"
 	desc = "A trendy, lightly radiation-shielded voidsuit helmet trimmed in a fetching blue."
 	icon_state = "rig0-medicalalt"
 	item_state = "medicalalt_helm"
@@ -296,8 +296,8 @@
 
 //Atmospherics
 /obj/item/clothing/head/helmet/space/void/atmos/alt
+	name = "atmos hardsuit helmet"
 	desc = "A voidsuit helmet plated with an expensive heat and radiation resistant ceramic."
-	name = "heavy duty atmospherics voidsuit helmet"
 	icon_state = "rig0-atmosalt"
 	item_state = "atmosalt_helm"
 	armor = list(melee = 20, bullet = 5, laser = 20,energy = 15, bomb = 45, bio = 100, rad = 50)
@@ -307,7 +307,7 @@
 /obj/item/clothing/suit/space/void/atmos/alt
 	desc = "An expensive NanoTrasen voidsuit, rated to withstand extreme heat and even minor radiation without exceeding room temperature within."
 	icon_state = "rig-atmosalt"
-	name = "heavy duty atmos voidsuit"
+	name = "atmos hardsuit"
 	armor = list(melee = 20, bullet = 5, laser = 20,energy = 15, bomb = 45, bio = 100, rad = 50)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 
@@ -317,7 +317,7 @@
 
 //Exploration
 /obj/item/clothing/head/helmet/space/void/exploration
-	name = "exploration voidsuit helmet"
+	name = "exploration voidhelmet"
 	desc = "A radiation-resistant helmet made especially for exploring unknown planetary environments."
 	icon_state = "helm_explorer"
 	item_state = "helm_explorer"
@@ -337,7 +337,7 @@
 
 //Misc
 /obj/item/clothing/head/helmet/space/void/engineering/salvage
-	name = "salvage voidsuit helmet"
+	name = "salvage voidhelmet"
 	desc = "A heavily modified salvage voidsuit helmet. It has been fitted with radiation-resistant plating."
 	icon_state = "rig0-salvage"
 	item_state = "salvage_helm"
@@ -364,8 +364,8 @@
 
 //Pilot
 /obj/item/clothing/head/helmet/space/void/pilot
+	name = "pilot voidhelmet"
 	desc = "An atmos resistant helmet for space and planet exploration."
-	name = "pilot voidsuit helmet"
 	icon_state = "rig0_pilot"
 	item_state = "pilot_helm"
 	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100, rad = 50)
@@ -373,10 +373,10 @@
 	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/pilot
+	name = "pilot voidsuit"
 	desc = "An atmos resistant voidsuit for space and planet exploration."
 	icon_state = "rig-pilot"
 	item_state = "rig-pilot"
-	name = "pilot voidsuit"
 	armor = list(melee = 40, bullet = 5, laser = 15,energy = 5, bomb = 5, bio = 100, rad = 50)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/storage/toolbox,/obj/item/weapon/storage/briefcase/inflatable,/obj/item/device/t_scanner,/obj/item/weapon/rcd)
@@ -387,7 +387,7 @@
 
 //Non-standard
 /obj/item/clothing/head/helmet/space/void/knight
-	name = "strange voidsuit helmet"
+	name = "strange voidhelmet"
 	desc = "A bulky helmet with some heavy armor plating."
 	icon_state = "hardsuit-helm-knight"
 	item_state = "hardsuit-helm-knight"
@@ -405,7 +405,7 @@
 	siemens_coefficient = 0.7
 
 /obj/item/clothing/head/helmet/space/void/optical
-	name = "experimental helmet"
+	name = "experimental voidhelmet"
 	icon_state = "hardsuit-optical"
 	desc = "Strange looking, smoothly contoured helmet. It looks a bit blurry."
 	siemens_coefficient = 0

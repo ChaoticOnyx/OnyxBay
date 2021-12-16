@@ -1,6 +1,6 @@
 /obj/item/weapon/rig/ert
-	name = "ERT commander hardsuit control module"
-	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
+	name = "ERT commander powersuit control module"
+	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
 	suit_type = "ERT commander"
 	icon_state = "ert_commander_rig"
 
@@ -40,8 +40,8 @@
 
 
 /obj/item/weapon/rig/ert/engineer
-	name = "ERT engineering hardsuit control module"
-	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
+	name = "ERT engineering powersuit control module"
+	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
 	suit_type = "ERT engineer"
 	icon_state = "ert_engineer_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 100)
@@ -59,8 +59,8 @@
 	siemens_coefficient = 0
 
 /obj/item/weapon/rig/ert/janitor
-	name = "ERT sanitation hardsuit control module"
-	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
+	name = "ERT sanitation powersuit control module"
+	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
 	suit_type = "ERT sanitation"
 	icon_state = "ert_janitor_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100, rad = 100)
@@ -75,8 +75,8 @@
 		)
 
 /obj/item/weapon/rig/ert/medical
-	name = "ERT medical hardsuit control module"
-	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
+	name = "ERT medical powersuit control module"
+	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
 	suit_type = "ERT medic"
 	icon_state = "ert_medical_rig"
 
@@ -89,8 +89,8 @@
 		)
 
 /obj/item/weapon/rig/ert/security
-	name = "ERT security hardsuit control module"
-	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
+	name = "ERT security powersuit control module"
+	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
 	suit_type = "ERT security"
 	icon_state = "ert_security_rig"
 
