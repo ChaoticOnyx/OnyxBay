@@ -127,7 +127,7 @@
 
 /obj/item/canvas/proc/finalize(mob/user)
 	finalized = TRUE
-	author_ckey = author_ckey ? author_ckey : user.ckey || "THIS IS BUG! ALARM!"
+	author_ckey = author_ckey || user?.ckey || crash_with("THIS IS BUG! ALARM!")
 	paint_image()
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
