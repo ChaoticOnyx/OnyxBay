@@ -86,9 +86,6 @@ SUBSYSTEM_DEF(redeye)
 		// BYOND add all contents of list if it's just list, we don't want that, so we need double list.
 		ckey_identifiers[ckey] += list(list("id" = computer_id, "ip_addr" = ip_addr))
 
-/datum/controller/subsystem/redeye/proc/succes_message(key)
-	return SPAN("notice", "The [name] process completed. You are now known as [key].")
-
 // ADMIN INTERACTIONS
 /datum/controller/subsystem/redeye/Topic(href, href_list)
 	var/mob/user = usr

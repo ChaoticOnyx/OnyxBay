@@ -170,7 +170,7 @@
 		return null
 
 	if(IsGuestKey(key) && SSredeye?.identify_client(list("client" = src)))
-		addtimer(CALLBACK(GLOBAL_PROC, /.proc/to_chat, SSredeye.succes_message(key)), 0.5 SECONDS)
+		addtimer(CALLBACK(GLOBAL_PROC, /.proc/to_chat, SPAN("notice", "The [SSredeye.name] process completed. You are now known as [key].")), 0.5 SECONDS)
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src, "This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.", "Guest", "OK")
 		qdel(src)
