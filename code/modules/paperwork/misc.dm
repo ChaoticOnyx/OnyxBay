@@ -205,3 +205,8 @@
 	info += "NT departments codes: XXX-XXX-XXX\[br]"
 	info += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
 	. = ..()
+
+/obj/item/weapon/paper/cargo_note
+	name = "important cargo acceptance policy"
+	readonly = TRUE
+	info = @"[center]for all you hardworkers[br][b] basic rules of NT's jewish cargo acceptance policy[/b][/center][br]- these fuckers [i]only[/i] accept stuff that are [b]inside closed[/b] crates, everything else will be stolen forever and will not be repayed, excluding crates themselves of course. yes, i know how it sucks but we don't have any other choice[br]- they do [b]not[/b] accept closets. they [i]just[/i] don't wanna do this for some reason. crates only.[br]- platinum and plasma sheets are the [b]only[/b] resources which make some money for ya.[br]- don't forget to stamp incoming manifests and send them back, they have some value[br]- you can put cash in crates and it's value will be transfered to department balance[br]- there also some other ways how to make fast profits, but i don't really remember 'em[br][br]try not to waste all your money on hats and i guarantee you'll be doing good[br][br]best wishes,[br]your working Joe"

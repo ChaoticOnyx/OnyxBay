@@ -1,22 +1,19 @@
 SUBSYSTEM_DEF(supply)
 	name = "Supply"
-	wait = 20 SECONDS
+	wait = 300 SECONDS
 	priority = SS_PRIORITY_SUPPLY
 	//Initializes at default time
 	flags = SS_NO_TICK_CHECK
 
 	var/illegal_alert_chance = 0
-	//supply points
-	var/points = 50
-	var/points_per_process = 1
-	var/points_per_slip = 2
+	//supply points // doloy pointy, just credits
+	var/credits_per_process = 1500
+	var/credits_per_slip = 200
 	var/material_buy_prices = list(
-		/material/platinum = 5,
-		/material/plasma = 5
+		/material/platinum = 500,
+		/material/plasma = 500
 	) //Should only contain material datums, with values the profit per sheet sold.
 	var/point_sources = list()
-	var/pointstotalsum = 0
-	var/pointstotal = 0
 	//control
 	var/ordernum
 	var/list/shoppinglist = list()
@@ -28,14 +25,15 @@ SUBSYSTEM_DEF(supply)
 	var/datum/shuttle/autodock/ferry/supply/shuttle
 	//Material descriptions are added automatically; add to material_buy_prices instead.
 	var/list/point_source_descriptions = list(
-		"time" = "Base station supply",
+		"time"     = "Base station supply",
 		"manifest" = "From exported manifests",
-		"crate" = "From exported crates",
+		"crate"    = "From exported crates",
 		"virology" = "From uploaded antibody data",
-		"gep" = "From uploaded good explorer points",
-		"total" = "Total",
-		"science" = "From exported researched items" // If you're adding additional point sources, add it here in a new line. Don't forget to put a comma after the old last line.
+		"gep"      = "From uploaded good explorer points",
+		"cash"     = "From exported money",
+		// If you're adding additional point sources, add it here in a new line. Don't forget to put a comma after the old last line.
 	)
+	var/datum/money_account/department_account = null
 
 /datum/controller/subsystem/supply/Initialize()
 	. = ..()
@@ -52,17 +50,41 @@ SUBSYSTEM_DEF(supply)
 		var/material_name = initial(material.name)
 		point_source_descriptions[material_name] = "From exported [material_name]"
 
-// Just add points over time.
+	point_source_descriptions["total"] = "Total" // doing it here so it will be in the end
+
+// Just add credits over time.
 /datum/controller/subsystem/supply/fire()
-	add_points_from_source(points_per_process, "time")
+	if(GAME_STATE < RUNLEVEL_GAME) // don't fire it yet as setup_economy() hasn't been called
+		return
+	add_credits_from_source(credits_per_process, "time")
 
 /datum/controller/subsystem/supply/stat_entry()
-	..("Points: [points]")
+	..(department_account ? "Credits: [department_account.money]" : "NO ACCOUNT")
 
 //Supply-related helper procs.
 
-/datum/controller/subsystem/supply/proc/add_points_from_source(amount, source)
-	points += amount
+/datum/controller/subsystem/supply/proc/add_credits_from_source(amount, source)
+	//it would make a sense to stop supplying cargo account when it suspended but daaaaaaaamn anyway nobody can't withdraw anything from it in this case
+	//and also i'm lazy to make cache and hooks for it
+	var/reason
+	switch(source)
+		if("time")
+			reason = "Base station supply"
+		if("crate")
+			reason = "Payment for exported crates"
+		if("manifest")
+			reason = "Payment for exported manifests"
+		if("gep")
+			reason = "Payment for exported survey disks" //lol it exists?
+		if("virology")
+			reason = "Payment for uploaded antibody data"
+		if("cash")
+			reason = "Payment for exported money"
+		else //assume payment for selling valuable resources from material_buy_prices
+			reason = "Payment for exported [source]"
+
+	var/datum/transaction/T = new(SSsupply.department_account.owner_name, reason, amount, "NTGalaxyNet Terminal #[rand(111,1111)]")
+	SSsupply.department_account.do_transaction(T)
 	point_sources[source] += amount
 	point_sources["total"] += amount
 
@@ -92,7 +114,7 @@ SUBSYSTEM_DEF(supply)
 			if(istype(AM, /obj/structure/closet/crate/))
 				var/obj/structure/closet/crate/CR = AM
 				callHook("sell_crate", list(CR, subarea))
-				add_points_from_source(CR.points_per_crate, "crate")
+				add_credits_from_source(CR.credits_per_crate, "crate")
 				var/find_slip = 1
 
 				for(var/atom in CR)
@@ -101,7 +123,7 @@ SUBSYSTEM_DEF(supply)
 					if(find_slip && istype(A,/obj/item/weapon/paper/manifest))
 						var/obj/item/weapon/paper/manifest/slip = A
 						if(!slip.is_copy && slip.stamped && slip.stamped.len) //Any stamp works.
-							add_points_from_source(points_per_slip, "manifest")
+							add_credits_from_source(credits_per_slip, "manifest")
 							find_slip = 0
 						continue
 
@@ -116,14 +138,20 @@ SUBSYSTEM_DEF(supply)
 					// Must sell ore detector disks in crates
 					if(istype(A, /obj/item/weapon/disk/survey))
 						var/obj/item/weapon/disk/survey/D = A
-						add_points_from_source(round(D.Value() * 0.005), "gep")
+						add_credits_from_source(round(D.Value() * 0.5), "gep")
+
+					// sell cash
+					if(istype(A, /obj/item/weapon/spacecash))
+						var/obj/item/weapon/spacecash/cash = A
+						add_credits_from_source(cash.worth, "cash")
 			qdel(AM)
 
 	if(material_count.len)
 		for(var/material_type in material_count)
 			var/profit = material_count[material_type] * material_buy_prices[material_type]
 			var/material/material = material_type //False typing.
-			add_points_from_source(profit, initial(material.name))
+			add_credits_from_source(profit, initial(material.name))
+
 // Alert crew to illegal items
 /datum/controller/subsystem/supply/proc/alert_crew(chance, force = FALSE)
 	var/announce = FALSE

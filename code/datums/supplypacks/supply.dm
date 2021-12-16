@@ -10,14 +10,14 @@
 					/obj/item/weapon/reagent_containers/food/snacks/tofu = 4,
 					/obj/item/weapon/reagent_containers/food/snacks/meat = 4
 					)
-	cost = 25
+	cost = 2500
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Food crate"
 
 /decl/hierarchy/supply_pack/supply/toner
 	name = "Toner cartridges"
 	contains = list(/obj/item/device/toner = 6)
-	cost = 10
+	cost = 1000
 	containername = "\improper Toner cartridges"
 
 /decl/hierarchy/supply_pack/supply/janitor
@@ -31,14 +31,14 @@
 					/obj/item/weapon/reagent_containers/glass/rag,
 					/obj/item/weapon/grenade/chem_grenade/cleaner = 3,
 					/obj/structure/mopbucket)
-	cost = 10
+	cost = 1000
 	containertype = /obj/structure/closet/crate/large
 	containername = "\improper Janitorial supplies"
 
 /decl/hierarchy/supply_pack/supply/boxes
 	name = "Empty boxes"
 	contains = list(/obj/item/weapon/storage/box = 10)
-	cost = 10
+	cost = 1000
 	containername = "\improper Empty box crate"
 
 /decl/hierarchy/supply_pack/supply/bureaucracy
@@ -55,14 +55,14 @@
 					 /obj/structure/filingcabinet/chestdrawer{anchored = 0},
 					 /obj/item/weapon/paper_bin)
 	name = "Office supplies"
-	cost = 15
+	cost = 1500
 	containertype = /obj/structure/closet/crate/large
 	containername = "\improper Office supplies crate"
 
 /decl/hierarchy/supply_pack/supply/spare_pda
 	name = "Spare PDAs"
 	contains = list(/obj/item/device/pda = 5)
-	cost = 10
+	cost = 1000
 	containername = "\improper Spare PDA crate"
 
 /decl/hierarchy/supply_pack/supply/minergear
@@ -81,7 +81,7 @@
 					/obj/item/weapon/mining_scanner,
 					/obj/item/clothing/glasses/hud/standard/material,
 					/obj/item/clothing/glasses/hud/standard/meson)
-	cost = 15
+	cost = 1500
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Shaft miner equipment"
 	access = access_mining

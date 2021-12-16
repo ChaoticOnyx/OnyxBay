@@ -15,7 +15,7 @@
 
 	storage_types = CLOSET_STORAGE_ITEMS
 
-	var/points_per_crate = 5
+	var/credits_per_crate = 500
 	var/rigged = 0
 
 /obj/structure/closet/crate/open()
@@ -103,7 +103,7 @@
 	icon_state = "plasticcrate"
 	icon_opened = "plasticcrateopen"
 	icon_closed = "plasticcrate"
-	points_per_crate = 1
+	credits_per_crate = 100
 	material = /obj/item/stack/material/plastic
 
 /obj/structure/closet/crate/handmade

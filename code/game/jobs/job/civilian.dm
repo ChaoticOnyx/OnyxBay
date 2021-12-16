@@ -40,6 +40,7 @@
 //Cargo
 /datum/job/qm
 	title = "Quartermaster"
+	head_position = TRUE
 	department = "Supply"
 	department_flag = SUP
 	total_positions = 1

@@ -7,85 +7,85 @@
 					/obj/item/clothing/suit/wizrobe,
 					/obj/item/clothing/shoes/sandal,
 					/obj/item/clothing/head/wizard)
-	cost = 20
+	cost = 2000
 	containername = "\improper Wizard costume crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetbrown
 	name = "Brown carpet"
 	contains = list(/obj/item/stack/tile/carpet/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Brown carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetblue
 	name = "Blue and gold carpet"
 	contains = list(/obj/item/stack/tile/carpetblue/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Blue and gold carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetblue2
 	name = "Blue and silver carpet"
 	contains = list(/obj/item/stack/tile/carpetblue2/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Blue and silver carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetpurple
 	name = "Purple carpet"
 	contains = list(/obj/item/stack/tile/carpetpurple/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Purple carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetorange
 	name = "Orange carpet"
 	contains = list(/obj/item/stack/tile/carpetorange/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Orange carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetgreen
 	name = "Green carpet"
 	contains = list(/obj/item/stack/tile/carpetgreen/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Green carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/carpetred
 	name = "Red carpet"
 	contains = list(/obj/item/stack/tile/carpetred/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Red carpet crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/linoleum
 	name = "Linoleum"
 	contains = list(/obj/item/stack/tile/linoleum/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Linoleum crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/white_tiles
 	name = "White floor tiles"
 	contains = list(/obj/item/stack/tile/floor_white/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper White floor tile crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/brown_tiles
 	name = "Brown floor tiles"
 	contains = list(/obj/item/stack/tile/floor_brown/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Brown floor tile crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/dark_tiles
 	name = "Dark floor tiles"
 	contains = list(/obj/item/stack/tile/floor_dark/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Dark floor tile crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/freezer_tiles
 	name = "Freezer floor tiles"
 	contains = list(/obj/item/stack/tile/floor_freezer/fifty)
-	cost = 15
+	cost = 1500
 	containername = "\improper Freezer floor tile crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/darkwood_tiles
 	name = "Darkwood floor tiles"
 	contains = list(/obj/item/stack/tile/darkwood/fifty)
-	cost = 25
+	cost = 2500
 	containername = "\improper Darkwood floor tile crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/costume
@@ -120,7 +120,7 @@
 					///obj/item/clothing/under/savage_hunter,
 					///obj/item/clothing/under/savage_hunter/female)
 	name = "Costumes crate"
-	cost = 10
+	cost = 1000
 	containername = "\improper Actor Costumes"
 	supply_method = /decl/supply_method/randomized
 
@@ -140,7 +140,7 @@
 					/obj/item/clothing/shoes/leather,
 					/obj/item/clothing/accessory/wcoat)
 	name = "Formalwear closet"
-	cost = 30
+	cost = 3000
 	containertype = /obj/structure/closet
 	containername = "\improper Formalwear for the best occasions."
 
@@ -150,14 +150,14 @@
 					/obj/item/weapon/pack/spaceball,
 					/obj/item/weapon/deck/holder)
 	name = "\improper Trading Card Crate"
-	cost = 20
+	cost = 2000
 	containername = "\improper cards crate"
 	supply_method = /decl/supply_method/randomized
 
 /decl/hierarchy/supply_pack/miscellaneous/eftpos
 	contains = list(/obj/item/device/eftpos)
 	name = "EFTPOS scanner"
-	cost = 10
+	cost = 1000
 	containername = "\improper EFTPOS crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/hats
@@ -183,14 +183,14 @@
 					/obj/item/clothing/head/collectable/xenom,
 					/obj/item/clothing/head/collectable/petehat)
 	name = "Collectable hat crate!"
-	cost = 50
+	cost = 5000
 	containername = "\improper Collectable hats crate! Brought to you by Bass.inc!"
 	supply_method = /decl/supply_method/randomized
 
 /decl/hierarchy/supply_pack/miscellaneous/cardboard_sheets
 	name = "50 cardboard sheets"
 	contains = list(/obj/item/stack/material/cardboard/fifty)
-	cost = 10
+	cost = 1000
 	containername = "\improper Cardboard sheets crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/witch
@@ -199,7 +199,7 @@
 					/obj/item/clothing/shoes/sandal,
 					/obj/item/clothing/head/wizard/marisa/fake,
 					/obj/item/weapon/staff/broom)
-	cost = 20
+	cost = 2000
 	containername = "\improper Witch costume"
 	containertype = /obj/structure/closet
 
@@ -212,7 +212,7 @@
 					/obj/item/clothing/suit/storage/black_jacket_NT,
 					/obj/item/clothing/shoes/workboots,
 					)
-	cost = 50
+	cost = 5000
 	containername = "\improper Soviet crate"
 	containertype = /obj/structure/closet
 
@@ -233,7 +233,7 @@
 					/obj/item/clothing/head/helmet/gladiator,
 					/obj/item/clothing/head/ushanka,
 					/obj/item/clothing/mask/spirit)
-	cost = 10
+	cost = 1000
 	containername = "\improper Actor hats crate"
 	containertype = /obj/structure/closet
 	num_contained = 2
@@ -252,7 +252,7 @@
 					/obj/item/clothing/under/dress/dress_orange,
 					/obj/item/clothing/under/dress/dress_yellow,
 					/obj/item/clothing/under/dress/dress_saloon)
-	cost = 15
+	cost = 1500
 	containername = "\improper Pretty dress locker"
 	containertype = /obj/structure/closet
 	num_contained = 1
@@ -267,7 +267,7 @@
 		/obj/item/device/kit/paint/ripley/flames_red,
 		/obj/item/device/kit/paint/ripley/flames_blue
 		)
-	cost = 200
+	cost = 20000
 	containername = "heavy crate"
 	supply_method = /decl/supply_method/randomized
 
@@ -279,7 +279,7 @@
 		/obj/item/device/kit/paint/durand/seraph,
 		/obj/item/device/kit/paint/durand/phazon
 		)
-	cost = 200
+	cost = 20000
 	containername = "heavy crate"
 	supply_method = /decl/supply_method/randomized
 
@@ -291,7 +291,7 @@
 		/obj/item/device/kit/paint/gygax/darkgygax,
 		/obj/item/device/kit/paint/gygax/recitence
 		)
-	cost = 200
+	cost = 20000
 	containername = "heavy crate"
 	supply_method = /decl/supply_method/randomized
 
@@ -307,13 +307,13 @@
 					/obj/item/clothing/under/wedding/bride_white,
 					/obj/item/weapon/storage/backpack/cultpack,
 					/obj/item/weapon/storage/fancy/candle_box = 3)
-	cost = 10
+	cost = 1000
 	containername = "\improper Chaplain equipment crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/pigs
 	name = "Box of rubber pigs"
 	contains = list(/obj/item/toy/pig = 3)
-	cost = 100
+	cost = 10000
 	containername = "\improper Rubber Pigs Crate"
 	containertype = /obj/structure/closet/crate/pig
 
@@ -321,20 +321,20 @@
 	num_contained = 3
 	contains = list(/obj/item/weapon/storage/box/mousetraps)
 	name = "\improper Pest Control Crate"
-	cost = 10
+	cost = 1000
 	containername = "\improper Pest Control Crate"
 
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
 	name = "Box of bouquets"
 	contains = list(/obj/item/weapon/storage/bouquet/shotgun = 3)
-	cost = 100
+	cost = 10000
 	containername = "\improper crate"
 	hidden = 1
 
 /decl/hierarchy/supply_pack/miscellaneous/tc3
 	name = "Telecrystals - 3"
 	contains = list(/obj/item/stack/telecrystal{amount = 3})
-	cost = 150
+	cost = 15000
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
@@ -342,7 +342,7 @@
 /decl/hierarchy/supply_pack/miscellaneous/tc6
 	name = "Telecrystals - 6"
 	contains = list(/obj/item/stack/telecrystal{amount = 6})
-	cost = 300
+	cost = 30000
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
@@ -350,7 +350,7 @@
 /decl/hierarchy/supply_pack/miscellaneous/tc9
 	name = "Telecrystals - 9"
 	contains = list(/obj/item/stack/telecrystal{amount = 9})
-	cost = 450
+	cost = 45000
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
@@ -358,7 +358,7 @@
 /decl/hierarchy/supply_pack/miscellaneous/tc12
 	name = "Telecrystals - 12"
 	contains = list(/obj/item/stack/telecrystal{amount = 12})
-	cost = 600
+	cost = 60000
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1

@@ -5,6 +5,11 @@
 		You are unauthenticated. Some functions may me unavailable.
 	{{/if}}
 </div>
+{{if data.account_suspended}}
+	<div class='notice'>
+		Supply department account suspended. Approving orders impossible until suspension is lifted. Contact your local financial administrator.
+	</div>
+{{/if}}
 <div class="item">
 	{{:helper.link('Browse Goods', 'cart', {'set_screen' : 1}, data.screen == 1 ? 'selected' : null)}}
 	{{:helper.link('View Statistics', 'calculator', {'set_screen' : 2}, data.screen == 2 ? 'selected' : null)}}
@@ -36,7 +41,7 @@
 				{{:value.desc}}:
 			</div>
 			<div class="itemContent">
-				{{:value.points}} {{:data.currency_short}}
+				{{:value.credits}} {{:data.currency_short}}
 			</div>
 		</div>
 	{{/for}}
@@ -86,7 +91,7 @@
 					<td>{{:value.orderer}}
 					<td>{{:value.reason}}
 					<td>{{:value.cost}} Cr.
-					<td>{{:helper.link('Approve', 'check', {'approve_order' : value.id}, value.cost > data.credits ? 'disabled' : null )}}{{:helper.link('Deny', 'cancel', {'deny_order' : value.id})}}
+					<td>{{:helper.link('Approve', 'check', {'approve_order' : value.id}, (value.cost > data.credits || data.account_suspended) ? 'disabled' : null )}}{{:helper.link('Deny', 'cancel', {'deny_order' : value.id})}}
 				{{/for}}
 			</table>
 		</div>

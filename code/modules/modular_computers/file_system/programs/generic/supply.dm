@@ -37,9 +37,10 @@
 
 	data["is_admin"] = is_admin
 	data["screen"] = screen
-	data["credits"] = "[SSsupply.points]"
+	data["credits"] = "[SSsupply.department_account.money]"
 	data["currency"] = "Credits"
 	data["currency_short"] = "Cr."
+	data["account_suspended"] = SSsupply.department_account.suspended
 	switch(screen)
 		if(1)// Main ordering menu
 			data["categories"] = category_names
@@ -52,7 +53,7 @@
 			for(var/tag in SSsupply.point_source_descriptions)
 				var/entry = list()
 				entry["desc"] = SSsupply.point_source_descriptions[tag]
-				entry["points"] = SSsupply.point_sources[tag] || 0
+				entry["credits"] = SSsupply.point_sources[tag] || 0
 				point_breakdown += list(entry) //Make a list of lists, don't flatten
 			data["point_breakdown"] = point_breakdown
 			data["can_print"] = can_print()
@@ -175,12 +176,20 @@
 		for(var/datum/supply_order/SO in SSsupply.requestlist)
 			if(SO.ordernum != id)
 				continue
-			if(SO.object.cost > SSsupply.points)
-				to_chat(usr, "<span class='warning'>Not enough points to purchase \the [SO.object.name]!</span>")
+			if(!SSsupply.department_account)
+				to_chat(usr, "<span class='warning'>Error: Unable to access department account. Please contact technical support if problem persists.</span>")
+				return 1
+			if(SSsupply.department_account.suspended)
+				to_chat(usr, "<span class='warning'>Error: Department account has been suspended, unable to process transaction!</span>")
+				return 1
+			if(SO.object.cost > SSsupply.department_account.money)
+				to_chat(usr, "<span class='warning'>Error: Not enough credits to purchase \the [SO.object.name]!</span>")
 				return 1
 			SSsupply.requestlist -= SO
 			SSsupply.shoppinglist += SO
-			SSsupply.points -= SO.object.cost
+			var/obj/item/modular_computer/_host = nano_host()
+			var/datum/transaction/T = new("NTGalaxyNet Terminal #[rand(111,1111)]", "Payment for order #[id]", -SO.object.cost, _host.network_card.get_network_tag())
+			SSsupply.department_account.do_transaction(T)
 			break
 		return 1
 
@@ -196,8 +205,16 @@
 		var/id = text2num(href_list["cancel_order"])
 		for(var/datum/supply_order/SO in SSsupply.shoppinglist)
 			if(SO.ordernum == id)
+				if(!SSsupply.department_account)
+					to_chat(usr, "<span class='warning'>Error: Unable to access department account. Please contact technical support if problem persists.</span>")
+					return 1
+				if(SSsupply.department_account.suspended)
+					to_chat(usr, "<span class='warning'>Error: Department account has been suspended, unable to process transaction!</span>")
+					return 1
 				SSsupply.shoppinglist -= SO
-				SSsupply.points += SO.object.cost
+				var/obj/item/modular_computer/_host = nano_host()
+				var/datum/transaction/T = new("NTGalaxyNet Terminal #[rand(111,1111)]", "Refund for order #[id]", SO.object.cost, _host.network_card.get_network_tag())
+				SSsupply.department_account.do_transaction(T)
 				break
 		return 1
 
@@ -275,4 +292,4 @@
 	t += "<center><BR><b><large>[GLOB.using_map.station_name]</large></b><BR><i>[station_date]</i><BR><i>Export overview<field></i></center><hr>"
 	for(var/source in SSsupply.point_source_descriptions)
 		t += "[SSsupply.point_source_descriptions[source]]: [SSsupply.point_sources[source] || 0]<br>"
-	print_text(t, user)
+	print_text(t, user, rawhtml = TRUE)

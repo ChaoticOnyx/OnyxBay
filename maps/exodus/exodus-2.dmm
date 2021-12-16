@@ -5116,7 +5116,7 @@
 "bVf" = (/obj/machinery/power/apc{name = "south bump"; pixel_y = -24},/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/turf/simulated/floor/tiled,/area/quartermaster/office)
 "bVg" = (/obj/machinery/light,/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/computer/guestpass{pixel_y = -28},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/brown,/turf/simulated/floor/tiled,/area/quartermaster/office)
 "bVh" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/corner/brown{dir = 10},/turf/simulated/floor/tiled,/area/quartermaster/office)
-"bVi" = (/obj/structure/noticeboard{pixel_y = -27},/obj/effect/floor_decal/corner/brown{dir = 8},/turf/simulated/floor/tiled,/area/quartermaster/office)
+"bVi" = (/obj/structure/noticeboard{pixel_y = -27},/obj/effect/floor_decal/corner/brown{dir = 8},/obj/item/weapon/paper/cargo_note,/turf/simulated/floor/tiled,/area/quartermaster/office)
 "bVj" = (/obj/machinery/status_display/supply_display,/turf/simulated/wall,/area/quartermaster/qm)
 "bVk" = (/obj/effect/wingrille_spawn/reinforced/polarized,/turf/simulated/floor/plating,/area/quartermaster/qm)
 "bVl" = (/turf/simulated/wall,/area/quartermaster/qm)

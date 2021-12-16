@@ -220,6 +220,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/department in station_departments)
 		department_accounts[department] = create_account("[department] Account", department_money)
 
+	SSsupply.department_account = department_accounts["Supply"]
+
 	department_accounts["Vendor"] = create_account("Vendor Account", 0)
 	vendor_account = department_accounts["Vendor"]
 
