@@ -39,7 +39,7 @@
 
 /obj/item/weapon/rig/industrial
 	name = "industrial suit control module"
-	suit_type = "industrial hardsuit"
+	suit_type = "industrial powersuit"
 	desc = "A heavy, powerful rig used by construction crews and mining corporations."
 	icon_state = "engineering_rig"
 	armor = list(melee = 75, bullet = 35, laser = 35,energy = 15, bomb = 50, bio = 100, rad = 100)
@@ -84,7 +84,7 @@
 
 /obj/item/weapon/rig/eva
 	name = "EVA hardsuit control module"
-	suit_type = "EVA hardsuit"
+	suit_type = "EVA powersuit"
 	desc = "A light rig for repairs and maintenance to the outside of habitats and vessels."
 	icon_state = "eva_rig"
 	armor = list(melee = 30, bullet = 10, laser = 20,energy = 25, bomb = 20, bio = 100, rad = 100)
@@ -131,7 +131,7 @@
 /obj/item/weapon/rig/ce
 
 	name = "advanced engineering hardsuit control module"
-	suit_type = "engineering hardsuit"
+	suit_type = "engineering powersuit"
 	desc = "An advanced hardsuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
 	icon_state = "ce_rig"
 	armor = list(melee = 40, bullet = 25, laser = 30, energy = 25, bomb = 40, bio = 100, rad = 100)
@@ -170,7 +170,7 @@
 /obj/item/weapon/rig/hazmat
 
 	name = "AMI control module"
-	suit_type = "hazmat hardsuit"
+	suit_type = "hazmat powersuit"
 	desc = "An Anomalous Material Interaction hardsuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
 	icon_state = "science_rig"
 	armor = list(melee = 45, bullet = 5, laser = 45, energy = 80, bomb = 60, bio = 100, rad = 100)
@@ -254,8 +254,8 @@
 		)
 
 /obj/item/weapon/rig/security
-	name = "security hardsuit control module"
-	suit_type = "security hardsuit"
+	name = "security powersuit control module"
+	suit_type = "security powersuit"
 	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
