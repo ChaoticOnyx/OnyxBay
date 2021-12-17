@@ -152,7 +152,7 @@ var/list/slot_equipment_priority = list( \
 // Removes an item from inventory and places it in the target atom.
 // If canremove or other conditions need to be checked then use unEquip instead.
 /mob/proc/drop_from_inventory(obj/item/W, atom/target = null)
-	if(QDELETED(W))
+	if(!W)
 		return FALSE
 	remove_from_mob(W, target)
 	if(!W?.loc)
