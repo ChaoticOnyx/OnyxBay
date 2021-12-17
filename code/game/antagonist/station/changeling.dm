@@ -48,10 +48,10 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	if(!..())
 		return
 
-	//OBJECTIVES - Always absorb 5 genomes, plus random traitor objectives.
-	//If they have two objectives as well as absorb, they must survive rather than escape
-	//No escape alone because changelings aren't suited for it and it'd probably just lead to rampant robusting
-	//If it seems like they'd be able to do it in play, add a 10% chance to have to escape alone
+	// OBJECTIVES - Always absorb 2 or 3 genomes, plus a random steal objective.
+	// 20% chance they must simply survive rather than escape
+	// No escape alone because changelings aren't suited for it and it'd probably just lead to rampant robusting
+	// If it seems like they'd be able to do it in play, add a 10% chance to have to escape alone
 
 	var/datum/objective/absorb/absorb_objective = new
 	absorb_objective.owner = changeling
@@ -63,36 +63,41 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	steal_objective.find_target()
 	changeling.objectives += steal_objective
 
-	switch(rand(1,100))
+	switch(rand(1, 100))
 		if(1 to 80)
-			if (!(locate(/datum/objective/escape) in changeling.objectives))
+			if(!(locate(/datum/objective/escape) in changeling.objectives))
 				var/datum/objective/escape/changeling/escape_objective = new
 				escape_objective.owner = changeling
 				escape_objective.find_target()
 				changeling.objectives += escape_objective
 		else
-			if (!(locate(/datum/objective/survive) in changeling.objectives))
-				var/datum/objective/survive/survive_objective = new
+			if(!(locate(/datum/objective/survive) in changeling.objectives))
+				var/datum/objective/survive/changeling/survive_objective = new
 				survive_objective.owner = changeling
 				changeling.objectives += survive_objective
 	return
 
 /datum/antagonist/changeling/can_become_antag(datum/mind/player, ignore_role)
-	if(..())
-		if(player.current)
-			if(ishuman(player.current))
-				var/mob/living/carbon/human/H = player.current
-				if(H.isSynthetic())
-					return 0
-				if(H.species.species_flags & SPECIES_FLAG_NO_SCAN)
-					return 0
-				return 1
-			else if(isnewplayer(player.current))
-				if(player.current.client && player.current.client.prefs)
-					var/datum/species/S = all_species[player.current.client.prefs.species]
-					if(S && (S.species_flags & SPECIES_FLAG_NO_SCAN))
-						return 0
-					if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg") // Full synthetic.
-						return 0
-					return 1
- 	return 0
+	if(!..())
+		return FALSE
+
+	if(!player.current)
+		return FALSE
+
+	if(ishuman(player.current))
+		var/mob/living/carbon/human/H = player.current
+		if(H.isSynthetic())
+			return FALSE
+		if(H.species.species_flags & SPECIES_FLAG_NO_SCAN)
+			return FALSE
+		return TRUE
+
+	if(isnewplayer(player.current) && player.current.client?.prefs)
+		var/datum/species/S = all_species[player.current.client.prefs.species]
+		if(S?.species_flags & SPECIES_FLAG_NO_SCAN)
+			return FALSE
+		if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg") // Full synthetic.
+			return FALSE
+		return TRUE
+
+ 	return FALSE
