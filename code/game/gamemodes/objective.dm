@@ -330,6 +330,8 @@ datum/objective/escape
 /datum/objective/survive/changeling/check_completion()
 	if(owner.changeling?.true_dead)
 		return FALSE
+	if(issilicon(owner.current))
+		return FALSE
 	return TRUE
 
 // Similar to the anti-rev objective, but for traitors
