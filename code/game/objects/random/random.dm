@@ -3,6 +3,7 @@
 	desc = "This item type is used to spawn random objects at round-start."
 	icon = 'icons/misc/landmarks.dmi'
 	icon_state = "landmark_unique_gray"
+	alpha = 128
 	var/spawn_nothing_percentage = 0 // this variable determines the likelyhood that this random object will not spawn anything
 
 	var/spawn_method = /obj/random/proc/spawn_item
@@ -1171,6 +1172,7 @@ var/list/multi_point_spawns
 	desc = "This item type is used to spawn random objects at round-start. Only one spawn point for a given group id is selected."
 	icon = 'icons/misc/landmarks.dmi'
 	icon_state = "landmark_unique_blue"
+	alpha = 128
 	invisibility = INVISIBILITY_MAXIMUM
 	var/id     // Group id.
 	var/weight // Probability weight for this spawn point.
