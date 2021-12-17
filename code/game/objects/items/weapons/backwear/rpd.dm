@@ -35,8 +35,7 @@
 	mod_weight = 1.0
 	mod_reach = 0.75
 	mod_handy = 1.0
-	canremove = FALSE
-	force_drop = TRUE
+	canremove = 0
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	origin_tech = null
 	matter = null

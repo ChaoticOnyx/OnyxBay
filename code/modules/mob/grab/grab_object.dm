@@ -2,7 +2,6 @@
 /obj/item/grab
 	name = "grab"
 	canremove = FALSE
-	force_drop = TRUE
 
 	var/mob/living/carbon/human/affecting = null
 	var/mob/living/carbon/human/assailant = null

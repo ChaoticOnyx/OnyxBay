@@ -60,11 +60,10 @@
 		return
 	if(ismob(gear.loc))
 		var/mob/M = gear.loc
-		M.drop_from_inventory(gear, src)
+		if(M.drop_from_inventory(gear, src))
+			to_chat(user, SPAN("notice", "\The [gear] snap back into \the [src]."))
 	else
 		gear.forceMove(src)
-	if(user)
-		to_chat(user, SPAN("notice", "\The [gear] snaps back into \the [src]."))
 	update_icon()
 
 /obj/item/weapon/backwear/proc/detach_gear(mob/user)
