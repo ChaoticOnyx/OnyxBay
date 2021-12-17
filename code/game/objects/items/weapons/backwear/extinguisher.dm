@@ -50,7 +50,8 @@
 	external_source = TRUE
 	slot_flags = null
 	attack_verb = list("whacked", "smacked", "attacked")
-	canremove = 0
+	canremove = FALSE
+	force_drop = TRUE
 	matter = null
 	var/obj/item/weapon/backwear/reagent/base_unit
 

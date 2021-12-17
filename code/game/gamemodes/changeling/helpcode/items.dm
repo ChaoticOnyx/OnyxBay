@@ -14,6 +14,8 @@
 	throwforce = 0 //Just to be on the safe side
 	throw_range = 0
 	throw_speed = 0
+	canremove = FALSE
+	force_drop = TRUE
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
 	var/weapType = "weapon"
 	var/weapLocation = "arm"
@@ -34,10 +36,9 @@
 	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
 						 SPAN("changeling", "We assimilate the weapon back into our body."), \
 						 SPAN("italics", "You hear organic matter ripping and tearing!"))
-	playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
+	playsound(user, 'sound/effects/blob/blobattack.ogg', 30, 1)
 	spawn(1)
-		if(src)
-			qdel(src)
+		qdel(src)
 
 /obj/item/weapon/melee/changeling/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -57,8 +58,7 @@
 			host.embedded -= src
 			host.drop_from_inventory(src)
 		spawn(1)
-			if(src)
-				qdel(src)
+			qdel(src)
 
 /obj/item/weapon/melee/changeling/arm_blade
 	name = "arm blade"
@@ -68,8 +68,6 @@
 	armor_penetration = 15
 	sharp = 1
 	edge = 1
-	anchored = 1
-	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/weapon/melee/changeling/arm_blade/greater
@@ -86,7 +84,6 @@
 	force = 15
 	sharp = 1
 	edge = 1
-	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
 /obj/item/weapon/melee/changeling/claw/greater
@@ -94,7 +91,6 @@
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 20
 	armor_penetration = 50
-	anchored = 1
 
 ///// Changeling emag /////
 /obj/item/weapon/finger_lockpick
@@ -102,6 +98,8 @@
 	desc = "This finger appears to be an organic datajack."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "electric_hand"
+	canremove = FALSE
+	force_drop = TRUE
 
 /obj/item/weapon/finger_lockpick/New()
 	if(ismob(loc))
@@ -110,8 +108,7 @@
 /obj/item/weapon/finger_lockpick/dropped(mob/user)
 	to_chat(user, SPAN("changeling", "We discreetly shape our finger back to a less suspicious form."))
 	spawn(1)
-		if(src)
-			qdel(src)
+		qdel(src)
 
 /obj/item/weapon/finger_lockpick/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
