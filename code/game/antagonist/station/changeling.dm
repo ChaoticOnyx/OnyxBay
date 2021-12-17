@@ -100,4 +100,4 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 			return FALSE
 		return TRUE
 
- 	return FALSE
+	return FALSE
