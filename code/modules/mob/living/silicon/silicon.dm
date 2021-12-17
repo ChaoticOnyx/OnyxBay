@@ -311,7 +311,7 @@
 		return
 
 	var/protection = blocked_mult(getarmor(null, "bomb"))
-	var/brute = damage
+	var/brute = damage * 2
 
 	brute *= protection
 	adjustBruteLoss(brute)
@@ -363,7 +363,7 @@
 
 		if(alarm_raised)
 			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
-		
+
 		if(text)
 			to_chat(src, text)
 

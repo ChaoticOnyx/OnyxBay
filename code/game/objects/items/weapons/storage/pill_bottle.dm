@@ -18,6 +18,7 @@
 	var/label_color = null
 	var/spam_flag = FALSE
 	var/starting_label = null
+	var/true_desc = "It's an airtight container for storing medication."
 
 /obj/item/weapon/storage/pill_bottle/Initialize()
 	. = ..()
@@ -25,6 +26,12 @@
 	if(starting_label)
 		name = "pill bottle"
 		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+
+/obj/item/weapon/storage/pill_bottle/post_remove_label()
+	..()
+	desc = true_desc
+	label_color = null
+	update_icon()
 
 /obj/item/weapon/storage/pill_bottle/update_icon()
 	overlays.Cut()

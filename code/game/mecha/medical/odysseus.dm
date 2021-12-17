@@ -64,7 +64,7 @@
 	name = "Integrated Medical Hud"
 
 
-	process_hud(var/mob/M)
+	process_hud(mob/M)
 /*
 		log_debug("view(M)")
 

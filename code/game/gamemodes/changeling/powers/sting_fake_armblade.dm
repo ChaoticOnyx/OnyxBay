@@ -1,27 +1,22 @@
 
-/mob/proc/prepare_changeling_fake_arm_blade_sting()
-	set category = "Changeling"
-	set name = "Fake arm Blade (30)"
-	set desc = "We reform victims arm into a fake armblade."
+/datum/changeling_power/toggled/sting/fake_armblade
+	name = "Fake Arm Blade Sting"
+	desc = "We sting our victim, causing one of their arms to reform into a fake armblade."
+	icon_state = "ling_sting_fake_armblade"
+	required_chems = 15
 
-	if(changeling_is_incapacitated())
-		return
-
-	change_ctate(/datum/click_handler/changeling/changeling_fake_arm_blade_sting)
-
-/mob/proc/changeling_fake_arm_blade_sting(mob/living/carbon/human/T)
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_fake_arm_blade_sting, T, 30)
-	if(!target)
+/datum/changeling_power/toggled/sting/fake_armblade/sting_target(mob/living/carbon/human/target, loud = FALSE)
+	if(!..())
 		return FALSE
 
 	spawn(10 SECONDS)
 		to_chat(target, SPAN("danger", "You feel strange spasms in your hand."))
-		visible_message("<b>[target.name]</b>'s arm twitches.")
+		target.visible_message("<b>[target]</b>'s arm twitches.")
 
 	spawn(15 SECONDS)
 		playsound(target.loc, 'sound/effects/blob/blobattack.ogg', 30, 1)
 		var/hand = pick(list(BP_R_HAND, BP_L_HAND))
-		var/failed
+		var/failed = FALSE
 		switch(hand)
 			if(BP_R_HAND)
 				if(!isProsthetic(target.r_hand))

@@ -66,7 +66,7 @@ obj/machinery/atmospherics/mains_pipe
 		aux.volume = volume
 		aux.nodes.len = nodes.len
 
-	hide(var/i)
+	hide(i)
 		if(level == 1 && istype(loc, /turf/simulated))
 			set_invisibility(i ? 101 : 0)
 		update_icon()

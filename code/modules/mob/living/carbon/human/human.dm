@@ -6,7 +6,6 @@
 	icon_state = "body_m_s"
 
 	throw_range = 4
-	var/candrop = 1
 
 	var/equipment_slowdown = -1
 	var/list/hud_list[11]

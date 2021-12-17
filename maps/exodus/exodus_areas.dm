@@ -74,10 +74,16 @@
 /area/crew_quarters/heads/cmo
 	name = "\improper Command - CMO's Office"
 
+/area/bridge
+	name = "\improper Bridge"
+	icon_state = "bridge"
+
 /area/bridge/meeting_room
 	name = "\improper Heads of Staff Meeting Room"
-	icon_state = "bridge"
 	sound_env = MEDIUM_SOFTFLOOR
+
+/area/bridge/meeting_room/cafe
+	name = "\improper Heads of Staff Cafeteria"
 
 // Shuttles
 
@@ -456,6 +462,9 @@
 
 // Maintenance
 
+/area/maintenance/disposal
+	name = "\improper Trash Disposal"
+
 /area/maintenance/ghetto_medbay
 	name = "\improper Ghetto Medbay"
 	icon_state = "ghettomedbay"
@@ -829,6 +838,16 @@
 	name = "\improper Medbay Maintenance"
 	icon_state = "maint_medbay"
 
+/area/maintenance/bridge
+	name = "\improper Bridge Maintenance"
+	icon_state = "maint_eva"
+
+/area/maintenance/bridge/west
+	name = "\improper Bridge Maintenance - West"
+
+/area/maintenance/bridge/east
+	name = "\improper Bridge Maintenance - East"
+
 /area/maintenance/research_port
 	name = "\improper Research Maintenance - Port"
 	icon_state = "maint_research_port"
@@ -1104,6 +1123,9 @@
 /area/crew_quarters/toilet/bar
 	name = "\improper Bar Toilet"
 
+/area/crew_quarters/toilet/west
+	name = "\improper West Hallway Bathroom"
+
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
@@ -1285,7 +1307,7 @@
 	name = "\improper Chapel"
 	icon_state = "chapel"
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL)
-	ambience_powered = list('sound/ambient/chapel/ambicha1.ogg','sound/ambient/chapel/ambicha2.ogg','sound/ambient/chapel/ambicha3.ogg','sound/ambient/chapel/ambicha4.ogg')
+	ambience_powered = list(SFX_AMBIENT_CHAPEL)
 	sound_env = LARGE_ENCLOSED
 
 /area/chapel/office
@@ -1305,7 +1327,7 @@
 /area/engineering/
 	name = "\improper Engineering"
 	icon_state = "engineering"
-	ambience_powered = list(SFX_AMBIENT_POWERED_ENGINEERING)
+	ambience_powered = list(SFX_AMBIENT_ENGINEERING)
 
 /area/engineering/grav_generator
 	name = "\improper Gravitational Generator Room"
@@ -1363,7 +1385,7 @@
 /area/engineering/atmos
 	name = "\improper Atmospherics"
 	icon_state = "atmos"
-	ambience_powered = list('sound/ambient/atmospherics/ambiatm1.ogg')
+	ambience_powered = list(SFX_AMBIENT_ENGINEERING, SFX_AMBIENT_ATMOSPHERICS)
 
 /area/engineering/atmos/storage
 	name = "\improper Atmospherics Storage"
@@ -1430,6 +1452,10 @@
 	name = "\improper Undergound Medbay Storage"
 	icon_state = "medbay4"
 
+/area/medical/sleeper
+	name = "\improper Emergency Treatment Room"
+	icon_state = "exam_room"
+
 /area/medical/sleeper/underground
 	name = "\improper Underground Emergency Treatment Room"
 	icon_state = "exam_room"
@@ -1445,7 +1471,7 @@
 /area/medical/morgue
 	name = "\improper Morgue"
 	icon_state = "morgue"
-	ambience_powered = list('sound/ambient/morgue/ambimo1.ogg')
+	ambience_powered = list(SFX_AMBIENT_MORGUE, SFX_AMBIENT_SCIENCE)
 
 /area/medical/surgery
 	name = "\improper Operating Theatre"
@@ -1533,12 +1559,10 @@
 /area/medical/psych
 	name = "\improper Psych Room"
 	icon_state = "medbay3"
-	ambience_powered = list('sound/ambient/signal.ogg')
 
 /area/crew_quarters/medbreak
 	name = "\improper Break Room"
 	icon_state = "medbay3"
-	ambience_powered = list('sound/ambient/signal.ogg')
 
 /area/medical/ward
 	name = "\improper Recovery Ward"
@@ -1602,12 +1626,10 @@
 /area/medical/storage1
 	name = "\improper Primary Storage"
 	icon_state = "medbay4"
-	ambience_powered = list('sound/ambient/signal.ogg')
 
 /area/medical/storage2
 	name = "\improper Medbay Storage"
 	icon_state = "medbay3"
-	ambience_powered = list('sound/ambient/signal.ogg')
 
 /area/medical/resleever
 	name = "\improper Neural Lace Resleever"
@@ -1852,12 +1874,12 @@
 // AI
 
 /area/turret_protected
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI, SFX_AMBIENT_POWERED_SCIENCE)
+	ambience_powered = list(SFX_AMBIENT_AI, SFX_AMBIENT_SCIENCE)
 
 /area/turret_protected/ai
 	name = "\improper AI Chamber"
 	icon_state = "ai_chamber"
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
+	ambience_powered = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_server_room
 	name = "Messaging Server Room"
@@ -1868,17 +1890,17 @@
 	name = "\improper Cyborg Station"
 	icon_state = "ai_cyborg"
 	sound_env = SMALL_ENCLOSED
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
+	ambience_powered = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_upload
 	name = "\improper AI Upload Chamber"
 	icon_state = "ai_upload"
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
+	ambience_powered = list(SFX_AMBIENT_AI)
 
 /area/turret_protected/ai_upload_foyer
 	name = "\improper  AI Upload Access"
 	icon_state = "ai_foyer"
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
+	ambience_powered = list(SFX_AMBIENT_AI)
 	sound_env = SMALL_ENCLOSED
 
 /area/turret_protected/tcomsat/port
@@ -1903,7 +1925,7 @@
 
 /area/tcommsat
 	ambient_music_meta_tags = list(META_SPACE)
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI, SFX_AMBIENT_POWERED_COMMS)
+	ambience_powered = list(SFX_AMBIENT_AI, SFX_AMBIENT_COMMS)
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"
@@ -1970,7 +1992,7 @@
 /area/outpost/main_outpost
 	icon_state = "green"
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_POWERED_OUTPOST)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/main_outpost/shallway
 	name = "Outpost Southern Hallway"
@@ -1987,7 +2009,7 @@
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_SCIENCE, SFX_AMBIENT_POWERED_OUTPOST)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_SCIENCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/main_outpost/canteen
 	name = "Outpost Canteen"
@@ -2020,12 +2042,12 @@
 /area/outpost/mining_north
 	name = "North Mining Outpost"
 	icon_state = "outpost_mine_north"
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_POWERED_OUTPOST)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/mining_west
 	name = "West Mining Outpost"
 	icon_state = "outpost_mine_west"
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_POWERED_OUTPOST)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_OUTPOST)
 
 /area/outpost/abandoned
 	name = "Abandoned Outpost"
@@ -2043,7 +2065,7 @@
 
 /area/outpost/engineering
 	icon_state = "outpost_engine"
-	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_POWERED_ENGINEERING)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_ENGINEERING)
 
 /area/outpost/engineering/atmospherics
 	name = "Engineering Outpost Atmospherics"
@@ -2229,8 +2251,8 @@
 /area/mine
 	icon_state = "mining"
 	sound_env = 5 // stoneroom
-	ambience_off = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
-	ambience_powered = list('sound/ambient/mine/ambimine.ogg', 'sound/ambient/song_game.ogg')
+	ambience_off = list(SFX_AMBIENT_MINE)
+	ambience_powered = list(SFX_AMBIENT_MINE)
 	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 /area/mine/explored
 	name = "Mine"
@@ -2323,7 +2345,7 @@
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
-	ambience_powered = list(SFX_AMBIENT_POWERED_AI)
+	ambience_powered = list(SFX_AMBIENT_AI)
 	has_gravity = FALSE
 	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
 

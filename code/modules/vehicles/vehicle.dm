@@ -75,7 +75,11 @@
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
-			load.forceMove(loc)
+			if(ismob(load))
+				var/mob/M = load
+				M.forceMove(loc, unbuckle_mob=FALSE)
+			else
+				load.forceMove(loc)
 			load.set_dir(dir)
 
 		return 1
