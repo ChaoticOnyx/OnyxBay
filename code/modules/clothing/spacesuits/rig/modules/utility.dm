@@ -36,19 +36,19 @@
 
 /obj/item/rig_module/device/engage(atom/target)
 	if(!..() || !device)
-		return 0
+		return FALSE
 
 	if(!target)
 		device.attack_self(holder.wearer)
-		return 1
+		return TRUE
 
 	if(!target.Adjacent(holder.wearer))
-		return 0
+		return FALSE
 
-	var/resolved = target.attackby(device,holder.wearer)
+	var/resolved = target.attackby(device, holder.wearer)
 	if(!resolved && device && target)
-		device.afterattack(target,holder.wearer,1)
-	return 1
+		device.afterattack(target, holder.wearer, 1)
+	return TRUE
 
 
 /obj/item/rig_module/device/healthscanner
