@@ -25,6 +25,32 @@
 	var/device_type
 	var/obj/item/device
 
+/obj/item/rig_module/device/Initialize()
+	. = ..()
+	if(device_type)
+		device = new device_type(src)
+
+/obj/item/rig_module/device/Destroy()
+	QDEL_NULL(device)
+	. = ..()
+
+/obj/item/rig_module/device/engage(atom/target)
+	if(!..() || !device)
+		return 0
+
+	if(!target)
+		device.attack_self(holder.wearer)
+		return 1
+
+	if(!target.Adjacent(holder.wearer))
+		return 0
+
+	var/resolved = target.attackby(device,holder.wearer)
+	if(!resolved && device && target)
+		device.afterattack(target,holder.wearer,1)
+	return 1
+
+
 /obj/item/rig_module/device/healthscanner
 	name = "health scanner module"
 	desc = "A hardsuit-mounted health scanner."
@@ -84,26 +110,6 @@
 	use_power_cost = 300
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 5, TECH_ENGINEERING = 7)
 	device_type = /obj/item/weapon/rcd/mounted
-
-/obj/item/rig_module/device/Initialize()
-	. = ..()
-	if(device_type) device = new device_type(src)
-
-/obj/item/rig_module/device/engage(atom/target)
-	if(!..() || !device)
-		return 0
-
-	if(!target)
-		device.attack_self(holder.wearer)
-		return 1
-
-	if(!target.Adjacent(holder.wearer))
-		return 0
-
-	var/resolved = target.attackby(device,holder.wearer)
-	if(!resolved && device && target)
-		device.afterattack(target,holder.wearer,1)
-	return 1
 
 
 /obj/item/rig_module/chem_dispenser
@@ -283,6 +289,10 @@
 	voice_holder = new(src)
 	voice_holder.active = 0
 
+/obj/item/rig_module/voice/Destroy()
+	QDEL_NULL(voice_holder)
+	. = ..()
+
 /obj/item/rig_module/voice/installed()
 	..()
 	holder.speech = src
@@ -372,6 +382,10 @@
 	. = ..()
 	jets = new(src)
 
+/obj/item/rig_module/maneuvering_jets/Destroy()
+	QDEL_NULL(jets)
+	. = ..()
+
 /obj/item/rig_module/maneuvering_jets/installed()
 	..()
 	jets.holder = holder
@@ -429,6 +443,11 @@
 	iastamp = new /obj/item/weapon/stamp/internalaffairs(src)
 	deniedstamp = new /obj/item/weapon/stamp/denied(src)
 	device = iastamp
+
+/obj/item/rig_module/device/stamp/Destroy()
+	QDEL_NULL(iastamp)
+	QDEL_NULL(deniedstamp)
+	. = ..()
 
 /obj/item/rig_module/device/stamp/engage(atom/target)
 	if(!..() || !device)

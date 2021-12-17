@@ -50,6 +50,13 @@
 /mob
 	var/get_rig_stats = 0
 
+/mob/living/Stat()
+	. = ..()
+	if(. && get_rig_stats)
+		var/obj/item/weapon/rig/rig = get_rig()
+		if(rig)
+			SetupStat(rig)
+
 /obj/item/rig_module/ai_container/Process()
 	if(integrated_ai)
 		var/obj/item/weapon/rig/rig = get_rig()
@@ -58,12 +65,9 @@
 		else
 			integrated_ai.get_rig_stats = 0
 
-/mob/living/Stat()
+/obj/item/rig_module/ai_container/Destroy()
+	eject_ai()
 	. = ..()
-	if(. && get_rig_stats)
-		var/obj/item/weapon/rig/rig = get_rig()
-		if(rig)
-			SetupStat(rig)
 
 /obj/item/rig_module/ai_container/proc/update_verb_holder()
 	if(!verb_holder)
@@ -179,8 +183,10 @@
 				ai_card = null
 		else if(user)
 			user.put_in_hands(ai_card)
-		else
+		else if(loc) // No trying to get_turf out of nullspace plz
 			ai_card.forceMove(get_turf(src))
+		else
+			qdel(ai_card)
 	ai_card = null
 	integrated_ai = null
 	update_verb_holder()
@@ -246,6 +252,10 @@
 /obj/item/rig_module/datajack/Initialize()
 	. =..()
 	stored_research = list()
+
+/obj/item/rig_module/datajack/Destroy()
+	QDEL_LIST(stored_research)
+	. = ..()
 
 /obj/item/rig_module/datajack/engage(atom/target)
 
@@ -376,6 +386,10 @@
 	interfaced_with = null
 	total_power_drained = 0
 	return ..()
+
+/obj/item/rig_module/datajack/Destroy()
+	deactivate()
+	. = ..()
 
 /obj/item/rig_module/power_sink/activate()
 	interfaced_with = null
