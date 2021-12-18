@@ -141,6 +141,8 @@
 
 
 /obj/structure/door_assembly/attackby(obj/item/W as obj, mob/user as mob)
+	var/cooldown_time = 40
+
 	if(istype(W, /obj/item/weapon/pen))
 		var/t = sanitizeSafe(input(user, "Enter the name for the door.", src.name, src.created_name), MAX_NAME_LEN)
 		if(!t)	return
@@ -148,15 +150,12 @@
 		created_name = t
 		return
 
-	var/cooldown_time = 40
 	if(isWelder(W) && ( (istext(glass)) || (glass == 1) || (!anchored) ))
 		var/obj/item/weapon/weldingtool/WT = W
 		if (WT.remove_fuel(0, user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
-			user.setClickCooldown(cooldown_time)
 			if(istext(glass))
 				user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
-				user.setClickCooldown(cooldown_time)
 				if(do_after(user, cooldown_time, src))
 					if(!src || !WT.isOn()) return
 					to_chat(user, "<span class='notice'>You welded the [glass] plating off!</span>")
@@ -165,7 +164,6 @@
 					glass = 0
 			else if(glass == 1)
 				user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
-				user.setClickCooldown(cooldown_time)
 				if(do_after(user, cooldown_time, src))
 					if(!src || !WT.isOn()) return
 					to_chat(user, "<span class='notice'>You welded the glass panel out!</span>")
@@ -173,7 +171,6 @@
 					glass = 0
 			else if(!anchored)
 				user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
-				user.setClickCooldown(cooldown_time)
 				if(do_after(user, cooldown_time, src))
 					if(!src || !WT.isOn()) return
 					to_chat(user, "<span class='notice'>You dissasembled the airlock assembly!</span>")
@@ -190,7 +187,6 @@
 		else
 			user.visible_message("[user] begins securing the airlock assembly to the floor.", "You starts securing the airlock assembly to the floor.")
 
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
 			to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured the airlock assembly!</span>")
@@ -202,7 +198,6 @@
 			to_chat(user, "<span class='warning'>You need one length of coil to wire the airlock assembly.</span>")
 			return
 		user.visible_message("[user] wires the airlock assembly.", "You start to wire the airlock assembly.")
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src) && state == 0 && anchored)
 			if (C.use(1))
 				src.state = 1
@@ -212,18 +207,20 @@
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		user.visible_message("[user] cuts the wires from the airlock assembly.", "You start to cut the wires from airlock assembly.")
 
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
-			to_chat(user, "<span class='notice'>You cut the airlock wires.!</span>")
-			new /obj/item/stack/cable_coil(src.loc, 1)
-			src.state = 0
+			if(src.state == 1)
+				to_chat(user, "<span class='notice'>You cut the airlock wires.!</span>")
+				new /obj/item/stack/cable_coil(src.loc, 1)
+				src.state = 0
+			else
+				to_chat(user, "<span class='notice'>You tried to cut wires that are no longer there.</span>")
+
 
 	else if(istype(W, /obj/item/weapon/airlock_electronics) && state == 1)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
 			user.drop_item()
@@ -243,7 +240,6 @@
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 		user.visible_message("\The [user] starts removing the electronics from the airlock assembly.", "You start removing the electronics from the airlock assembly.")
 
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
 			to_chat(user, "<span class='notice'>You removed the airlock electronics!</span>")
@@ -260,7 +256,6 @@
 				if(material_name == MATERIAL_REINFORCED_GLASS)
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 					user.visible_message("[user] adds [S.name] to the airlock assembly.", "You start to install [S.name] into the airlock assembly.")
-					user.setClickCooldown(cooldown_time)
 					if(do_after(user, cooldown_time, src) && !glass)
 						if (S.use(1))
 							to_chat(user, "<span class='notice'>You installed reinforced glass windows into the airlock assembly.</span>")
@@ -273,7 +268,6 @@
 					if(S.get_amount() >= 2)
 						playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 						user.visible_message("[user] adds [S.name] to the airlock assembly.", "You start to install [S.name] into the airlock assembly.")
-						user.setClickCooldown(cooldown_time)
 						if(do_after(user, cooldown_time, src) && !glass)
 							if (S.use(2))
 								to_chat(user, "<span class='notice'>You installed [material_display_name(material_name)] plating into the airlock assembly.</span>")
@@ -283,7 +277,6 @@
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		to_chat(user, "<span class='notice'>Now finishing the airlock.</span>")
 
-		user.setClickCooldown(cooldown_time)
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
 			to_chat(user, "<span class='notice'>You finish the airlock!</span>")
