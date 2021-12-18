@@ -22,9 +22,16 @@
 /obj/machinery/camera/network/thunder
 	network = list(NETWORK_THUNDER)
 
+/obj/machinery/camera/network/engineering/singularity
+	network = list(NETWORK_ENGINE, NETWORK_MASTER)
+
 // EMP
 
 /obj/machinery/camera/emp_proof/Initialize()
+	. = ..()
+	upgradeEmpProof()
+
+/obj/machinery/camera/network/engineering/singularity/Initialize()
 	. = ..()
 	upgradeEmpProof()
 

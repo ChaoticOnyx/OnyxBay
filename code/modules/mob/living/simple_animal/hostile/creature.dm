@@ -15,6 +15,7 @@
 	faction = "creature"
 	speed = 4
 	supernatural = 1
+	bodyparts = /decl/simple_animal_bodyparts/otherthing
 
 /mob/living/simple_animal/hostile/creature/cult
 	faction = "cult"
@@ -24,3 +25,6 @@
 
 /mob/living/simple_animal/hostile/creature/cult/cultify()
 	return
+
+/decl/simple_animal_bodyparts/otherthing
+	hit_zones = list("fleshy mass", "maw", "eye(?)", "orifice(?)")

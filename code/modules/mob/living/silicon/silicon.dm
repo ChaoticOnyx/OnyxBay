@@ -306,6 +306,18 @@
 
 	updatehealth()
 
+/mob/living/silicon/blob_act(damage)
+	if(is_dead())
+		return
+
+	var/protection = blocked_mult(getarmor(null, "bomb"))
+	var/brute = damage * 2
+
+	brute *= protection
+	adjustBruteLoss(brute)
+
+	updatehealth()
+
 /mob/living/silicon/proc/receive_alarm(datum/alarm_handler/alarm_handler, datum/alarm/alarm, was_raised)
 	if(!next_alarm_notice)
 		next_alarm_notice = world.time + SecondsToTicks(10)
@@ -351,7 +363,7 @@
 
 		if(alarm_raised)
 			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
-		
+
 		if(text)
 			to_chat(src, text)
 

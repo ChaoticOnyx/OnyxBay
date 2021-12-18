@@ -69,6 +69,11 @@
 	readonly = TRUE
 	info = "Bruises sustained in the holodeck can be healed simply by sleeping."
 
+/obj/item/weapon/paper/jungle_colt_note
+	name = "note"
+	readonly = TRUE
+	info = "Director, this morning they tried to break through lockdown gate. We managed to push them back, but they'll return. One of the officers noticed someone lurking near the cave entrance, I'm afraid we'll have to blow up the tunnels. These are no ordinary mercenaries, sir, I think they are trying to get the speciments. \[br]\ I ran out of ammo on my way here, so I had to borrow your Colt Python. Find me at the research site when this all ends. Wish us luck. \[br]\ \[i]Security Chief Denster\[/i]  "
+
 /obj/item/weapon/paper/workvisa
 	name = "Sol Work Visa"
 	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."

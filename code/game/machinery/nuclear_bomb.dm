@@ -39,7 +39,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/Process(wait)
 	if(timing)
-		timeleft = max(timeleft - (wait / 10), 0)
+		timeleft = max(timeleft - wait, 0)
 		if(timeleft <= 0)
 			addtimer(CALLBACK(src, .proc/explode), 0)
 		SSnano.update_uis(src)

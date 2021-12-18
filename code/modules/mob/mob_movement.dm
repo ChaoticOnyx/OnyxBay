@@ -25,6 +25,11 @@
 /client/proc/client_dir(input, direction=-1)
 	return turn(input, direction*dir2angle(dir))
 
+/mob/forceMove(atom/destination, unbuckle_mob = TRUE)
+	. = ..()
+	if(. && unbuckle_mob)
+		buckled?.unbuckle_mob()
+
 /client/Northeast()
 	diagonal_action(NORTHEAST)
 /client/Northwest()
@@ -56,8 +61,13 @@
 	to_chat(usr, "<span class='warning'>This mob type cannot drop items.</span>")
 
 /mob/living/carbon/hotkey_drop()
-	if(!get_active_hand())
-		to_chat(usr, "<span class='warning'>You have nothing to drop in your hand.</span>")
+	var/obj/item/I = get_active_hand()
+	if(!I)
+		to_chat(usr, SPAN("warning", "You have nothing to drop in your hand."))
+		return
+	if(!(I.force_drop || canUnEquip(I)))
+		to_chat(usr, SPAN("warning", "\The [I] cannot be dropped."))
+		return
 	else
 		drop_item()
 
@@ -73,8 +83,9 @@
 /client/verb/swap_hand()
 	set hidden = 1
 	if(istype(mob, /mob/living/carbon))
-		mob:swap_hand()
-	if(istype(mob,/mob/living/silicon/robot))
+		var/mob/living/carbon/C = mob
+		C.swap_hand()
+	if(istype(mob, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = mob
 		R.cycle_modules()
 	return
@@ -101,8 +112,9 @@
 /client/verb/drop_item()
 	set hidden = 1
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
-		return mob.drop_item()
-	return
+		var/obj/item/I = mob.get_active_hand()
+		if(I?.can_be_dropped_by_client(mob))
+			mob.drop_item()
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
 	if (!glide_size_override || glide_size_override > max)

@@ -1,6 +1,5 @@
 /datum/artifact_effect/plantkiller
 	name = "plantkiller"
-	effect = list(EFFECT_TOUCH, EFFECT_AURA, EFFECT_PULSE)
 	effect_type = EFFECT_ORGANIC
 
 /datum/artifact_effect/plantkiller/DoEffectTouch()

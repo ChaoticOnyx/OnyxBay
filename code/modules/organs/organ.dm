@@ -85,8 +85,6 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	src.after_organ_creation()
-
 	update_icon()
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
@@ -113,29 +111,28 @@ var/list/organ_cache = list()
 	//dead already, no need for more processing
 	if(status & ORGAN_DEAD)
 		return
-	// Don't process if we're in a freezer, an MMI or a stasis bag.or a freezer or something I dunno
-	if(is_preserved())
-		return
+
 	//Process infections
-	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
 		return
 
-	if(!owner && reagents)
-		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
-		if(B && prob(40))
-			reagents.remove_reagent(/datum/reagent/blood,0.1)
-			blood_splatter(src,B,1)
-		if(config.organs_decay)
-			take_general_damage(rand(1,3))
-		germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			die()
+	if(!owner)
+		if(reagents && !is_preserved())
+			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
+			if(B && prob(40))
+				reagents.remove_reagent(/datum/reagent/blood, 0.1)
+				blood_splatter(src, B, 1)
+			if(config.organs_decay)
+				take_general_damage(rand(1, 3))
+			germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_TWO)
+				germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_THREE)
+				die()
 
-	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
-		//** Handle antibiotics and curing infections
+	else if(owner.bodytemperature >= 170) // Cryo stops germs from moving and doing their bad stuffs
+		// Handle antibiotics and curing infections
 		handle_antibiotics()
 		handle_rejection()
 		handle_germ_effects()
@@ -273,8 +270,7 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
-
+/obj/item/organ/proc/removed(mob/living/user, drop_organ = TRUE)
 	if(!istype(owner))
 		return
 
@@ -363,10 +359,6 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
-
-// special organ instruction for correct functional
-/obj/item/organ/proc/after_organ_creation()
-	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

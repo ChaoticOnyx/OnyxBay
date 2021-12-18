@@ -39,7 +39,7 @@
 
 /obj/item/weapon/rig/industrial
 	name = "industrial suit control module"
-	suit_type = "industrial hardsuit"
+	suit_type = "industrial powersuit"
 	desc = "A heavy, powerful rig used by construction crews and mining corporations."
 	icon_state = "engineering_rig"
 	armor = list(melee = 75, bullet = 35, laser = 35,energy = 15, bomb = 50, bio = 100, rad = 100)
@@ -84,7 +84,7 @@
 
 /obj/item/weapon/rig/eva
 	name = "EVA hardsuit control module"
-	suit_type = "EVA hardsuit"
+	suit_type = "EVA powersuit"
 	desc = "A light rig for repairs and maintenance to the outside of habitats and vessels."
 	icon_state = "eva_rig"
 	armor = list(melee = 30, bullet = 10, laser = 20,energy = 25, bomb = 20, bio = 100, rad = 100)
@@ -131,7 +131,7 @@
 /obj/item/weapon/rig/ce
 
 	name = "advanced engineering hardsuit control module"
-	suit_type = "engineering hardsuit"
+	suit_type = "engineering powersuit"
 	desc = "An advanced hardsuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
 	icon_state = "ce_rig"
 	armor = list(melee = 40, bullet = 25, laser = 30, energy = 25, bomb = 40, bio = 100, rad = 100)
@@ -170,7 +170,7 @@
 /obj/item/weapon/rig/hazmat
 
 	name = "AMI control module"
-	suit_type = "hazmat hardsuit"
+	suit_type = "hazmat powersuit"
 	desc = "An Anomalous Material Interaction hardsuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
 	icon_state = "science_rig"
 	armor = list(melee = 45, bullet = 5, laser = 45, energy = 80, bomb = 60, bio = 100, rad = 100)
@@ -213,12 +213,11 @@
 		)
 
 /obj/item/weapon/rig/medical
-
-	name = "rescue suit control module"
-	suit_type = "rescue hardsuit"
-	desc = "A durable suit designed for medical rescue in high risk areas."
+	name = "medical powersuit control module"
+	suit_type = "medical powersuit"
+	desc = "A durable suit designed for medical rescue in high-risk areas. Although its armor plating is not that tough, it provides exceptional protection against radiation."
 	icon_state = "medical_rig"
-	armor = list(melee = 30, bullet = 15, laser = 25, energy = 60, bomb = 30, bio = 100, rad = 100)
+	armor = list(melee = 40, bullet = 30, laser = 40, energy = 40, bomb = 45, bio = 100, rad = 100)
 	online_slowdown = 1
 	offline_vision_restriction = TINT_HEAVY
 
@@ -255,8 +254,8 @@
 		)
 
 /obj/item/weapon/rig/security
-	name = "security hardsuit control module"
-	suit_type = "security hardsuit"
+	name = "security powersuit control module"
+	suit_type = "security powersuit"
 	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
@@ -297,5 +296,61 @@
 		/obj/item/rig_module/mounted/taser,
 		/obj/item/rig_module/chem_dispenser/combat/security,
 		/obj/item/rig_module/grenade_launcher/flashbang,
+		/obj/item/rig_module/cooling_unit
+		)
+
+/obj/item/weapon/rig/mining
+	name = "mining powersuit control module"
+	suit_type = "mining powersuit"
+	desc = "An heavy, durable powersuit used for excavation in extremely hazardous environments."
+	icon_state = "mining_rig"
+	armor = list(melee = 80, bullet = 45, laser = 50, energy = 25, bomb = 80, bio = 100, rad = 100)
+	online_slowdown = 2
+	offline_slowdown = 10
+	offline_vision_restriction = TINT_HEAVY
+
+	chest_type = /obj/item/clothing/suit/space/rig/mining
+	helm_type = /obj/item/clothing/head/helmet/space/rig/mining
+	boot_type = /obj/item/clothing/shoes/magboots/rig/mining
+	glove_type = /obj/item/clothing/gloves/rig/mining
+
+	allowed = list(/obj/item/device/flashlight,
+				   /obj/item/weapon/tank,
+				   /obj/item/device/suit_cooling_unit,
+				   /obj/item/stack/flag,
+				   /obj/item/weapon/storage/ore,
+				   /obj/item/device/t_scanner,
+				   /obj/item/weapon/pickaxe,
+				   /obj/item/weapon/rcd,
+				   /obj/item/weapon/gun/energy/kinetic_accelerator,
+				   /obj/item/weapon/shovel,
+				   /obj/item/weapon/ore_radar,
+				   /obj/item/weapon/resonator)
+
+	req_access = list()
+	req_one_access = list()
+
+/obj/item/clothing/head/helmet/space/rig/mining
+	brightness_on = 6
+	camera = /obj/machinery/camera/network/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/suit/space/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/shoes/magboots/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+
+/obj/item/clothing/gloves/rig/mining
+	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
+	siemens_coefficient = 0
+
+/obj/item/weapon/rig/mining/equipped
+
+	initial_modules = list(
+		/obj/item/rig_module/device/drill,
+		/obj/item/rig_module/device/orescanner,
+		/obj/item/rig_module/device/rcd,
+		/obj/item/rig_module/vision/meson,
 		/obj/item/rig_module/cooling_unit
 		)

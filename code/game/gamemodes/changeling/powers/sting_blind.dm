@@ -1,24 +1,20 @@
 
-/mob/proc/prepare_changeling_blind_sting()
-	set category = "Changeling"
-	set name = "Blind sting (20)"
-	set desc = "Our target goes blind."
+/datum/changeling_power/toggled/sting/blind
+	name = "Blind Sting"
+	desc = "Our target goes blind."
+	icon_state = "ling_sting_blind"
+	required_chems = 40
 
-	if(changeling_is_incapacitated())
-		return
+/datum/changeling_power/toggled/sting/blind/sting_target(mob/living/carbon/human/target, loud = FALSE)
+	if(!..())
+		return FALSE
 
-	change_ctate(/datum/click_handler/changeling/changeling_blind_sting)
+	to_chat(target, SPAN("danger", "Your eyes burn horrifically!"))
 
-/mob/proc/changeling_blind_sting(mob/living/carbon/human/T)
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_blind_sting, T, 20)
-	if(!target)
-		return
-	to_chat(target, SPAN("danger", "Your eyes burn horrificly!"))
+	target.sdisabilities |= NEARSIGHTED
+	addtimer(CALLBACK(target, /mob/living/carbon/human/proc/remove_nearsighted), 30 SECONDS)
 
-	target.disabilities |= NEARSIGHTED
-	spawn(300)
-		target.disabilities &= ~NEARSIGHTED
-	target.eye_blind = 10
-	target.eye_blurry = 20
+	target.eye_blind += 10
+	target.eye_blurry += 20
 
 	feedback_add_details("changeling_powers", "BS")

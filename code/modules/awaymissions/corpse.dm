@@ -17,11 +17,15 @@
 #define CORPSE_SPAWNER_RANDOM_EYE_COLOR    0x0100
 #define CORPSE_SPAWNER_RANDOM_GENDER       0x0200
 
-#define CORPSE_SPAWNER_NO_RANDOMIZATION ~(CORPSE_SPAWNER_RANDOM_NAME|CORPSE_SPAWNER_RANDOM_SKIN_TONE|CORPSE_SPAWNER_RANDOM_SKIN_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_STYLE|CORPSE_SPAWNER_RANDOM_FACIAL_STYLE|CORPSE_SPAWNER_RANDOM_EYE_COLOR)
+#define CORPSE_SPAWNER_NO_RANDOMIZATION ~ (CORPSE_SPAWNER_RANDOM_NAME|CORPSE_SPAWNER_RANDOM_SKIN_TONE|CORPSE_SPAWNER_RANDOM_SKIN_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_COLOR|CORPSE_SPAWNER_RANDOM_HAIR_STYLE|CORPSE_SPAWNER_RANDOM_FACIAL_STYLE|CORPSE_SPAWNER_RANDOM_EYE_COLOR)
 
 
 /obj/effect/landmark/corpse
 	name = "Unknown"
+	icon_state = "landmark_corpse"
+
+	delete_after = TRUE
+
 	var/species = list(SPECIES_HUMAN)                 // List of species to pick from.
 	var/corpse_outfits = list(/decl/hierarchy/outfit) // List of outfits to pick from. Uses pickweight()
 	var/spawn_flags = (~0)
@@ -35,22 +39,27 @@
 	var/genders_per_species       = list() // For gender biases per species -type-
 
 /obj/effect/landmark/corpse/Initialize()
-	..()
-
 	var/mob/living/carbon/human/M = new /mob/living/carbon/human(loc)
 
 	randomize_appearance(M)
 	equip_outfit(M)
 
-	M.adjustOxyLoss(M.maxHealth)//cease life functions
+	M.adjustOxyLoss(M.maxHealth) // Cease life functions.
 	M.setBrainLoss(M.maxHealth)
+
 	var/obj/item/organ/internal/heart/corpse_heart = M.internal_organs_by_name[BP_HEART]
-	if (corpse_heart)
-		corpse_heart.pulse = PULSE_NONE//actually stops heart to make worried explorers not care too much
+	if(corpse_heart)
+		corpse_heart.pulse = PULSE_NONE // Actually stops heart to make worried explorers not care too much.
+
 	M.update_dna()
 	M.update_icon()
 
-	return INITIALIZE_HINT_QDEL
+	var/turf/T = get_turf(src)
+	var/obj/structure/bed/C = locate() in T
+	if(C)
+		C.buckle_mob(M)
+
+	. = ..()
 
 #define HEX_COLOR_TO_RGB_ARGS(X) arglist(GetHexColors(X))
 /obj/effect/landmark/corpse/proc/randomize_appearance(mob/living/carbon/human/M)
@@ -143,7 +152,6 @@
 /obj/effect/landmark/corpse/miner/rig
 	corpse_outfits = list(/decl/hierarchy/outfit/job/cargo/mining/void)
 
-
 /obj/effect/landmark/corpse/bridgeofficer
 	name = "Bridge Officer"
 	corpse_outfits = list(/decl/hierarchy/outfit/nanotrasen/officer)
@@ -151,7 +159,6 @@
 /obj/effect/landmark/corpse/commander
 	name = "Commander"
 	corpse_outfits = list(/decl/hierarchy/outfit/nanotrasen/commander)
-
 
 /obj/effect/landmark/corpse/pirate
 	name = "Pirate"
@@ -174,7 +181,11 @@
 	name = "Syndicate Operative"
 	corpse_outfits = list(/decl/hierarchy/outfit/syndicate/armored)
 	spawn_flags = CORPSE_SPAWNER_NO_RANDOMIZATION
-
 /obj/effect/landmark/corpse/syndicate/commando
 	name = "Syndicate Commando"
 	corpse_outfits = list(/decl/hierarchy/outfit/syndicate/armored/commando)
+
+/obj/effect/landmark/corpse/deadcap
+	name = "Dead Captain"
+	corpse_outfits = list(/decl/hierarchy/outfit/deadcap)
+	spawn_flags = CORPSE_SPAWNER_NO_RANDOMIZATION

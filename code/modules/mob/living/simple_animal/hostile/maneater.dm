@@ -21,6 +21,7 @@
 	melee_damage_upper = 30
 	attacktext = "chomped"
 	attack_sound = 'sound/weapons/bite.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/maneater
 
 	break_stuff_probability = 35
 
@@ -66,3 +67,6 @@
 		if(prob(25))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+
+/decl/simple_animal_bodyparts/maneater
+	hit_zones = list("flesh", "tendrils", "tentacles", "giant maw", "horrifying mouth", "mouth", "maw")

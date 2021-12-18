@@ -86,6 +86,9 @@
 
 	return absorb
 
+/mob/living/blob_act(damage)
+	apply_damage(damage, BRUTE, BP_CHEST, 0, 0)
+
 /mob/living/proc/aura_check(type)
 	if(!auras)
 		return TRUE

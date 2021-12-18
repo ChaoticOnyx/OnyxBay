@@ -140,6 +140,9 @@
 		for(var/obj/item/organ/external/C in children)
 			qdel(C)
 
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
+
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
@@ -279,12 +282,11 @@
 						H.skull_path = null // So no skulls dupe in case of lags
 						qdel(src)
 					else
-						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
-							if(src && !QDELETED(src))
-								food_organ.appearance = food_organ_type
-								food_organ.forceMove(get_turf(loc))
-								food_organ = null
-								qdel(src)
+						if(src && !QDELETED(src))
+							food_organ.appearance = food_organ_type
+							food_organ.forceMove(get_turf(loc))
+							food_organ = null
+							qdel(src)
 						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
@@ -842,7 +844,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(disintegrate == DROPLIMB_EDGE && species.limbs_are_nonsolid)
 		disintegrate = DROPLIMB_BLUNT //splut
 
-	if (!silent)
+	if(!silent)
 		var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
 		if(LAZYLEN(organ_msgs) >= 3)
 			owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
@@ -854,10 +856,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	var/use_flesh_colour = species.get_flesh_colour(owner)
 	var/use_blood_colour = species.get_blood_colour(owner)
+	adjust_pain(60)
 
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
+	if(QDELETED(src))
+		return
 
-	adjust_pain(60)
 	if(!clean)
 		victim.shock_stage += min_broken_damage
 
@@ -882,7 +886,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.sever_artery()
 			stump.update_damages()
 	spawn(1)
-		if(victim) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
+		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
 			victim.UpdateDamageIcon()
 			victim.regenerate_icons()
@@ -902,7 +906,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			forceMove(victim.loc)
 			if(!clean) // Throw limb around.
 				spawn()
-					if(src && isturf(loc))
+					if(!QDELETED(src) && isturf(loc))
 						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
 					dir = 2
 		if(DROPLIMB_BURN)
@@ -1052,7 +1056,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			owner.Weaken(2)
 			owner.Stun(1)
 
-	broken_description = pick("broken", SFX_BREAK_BONE, "hairline fracture")
+	broken_description = pick("broken", "fracture", "hairline fracture")
 
 	// Fractures have a chance of getting you out of restraints
 	if (prob(25))
@@ -1206,8 +1210,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
 			owner.drop_from_inventory(owner.shoes)
-		if(HAND_LEFT, HAND_RIGHT)
+		if(HAND_LEFT)
 			owner.drop_from_inventory(owner.gloves)
+			owner.drop_l_hand()
+		if(HAND_RIGHT)
+			owner.drop_from_inventory(owner.gloves)
+			owner.drop_r_hand()
 		if(HEAD)
 			owner.drop_from_inventory(owner.glasses)
 			owner.drop_from_inventory(owner.head)
@@ -1240,7 +1248,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(!ignore_children)
 		for(var/obj/item/organ/external/O in children)
 			O.removed()
-			if(O && !detach_children_and_internals)
+			if(!QDELETED(O) && !detach_children_and_internals)
 				O.forceMove(src)
 
 				// if we didn't lose the organ we still want it as a child
@@ -1250,7 +1258,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	// Grab all the internal giblets too.
 	for(var/obj/item/organ/organ in internal_organs)
 		organ.removed(user, 0, detach_children_and_internals)  // Organ stays inside and connected
-		organ.forceMove(src)
+		if(!QDELETED(organ))
+			organ.forceMove(src)
 
 	// Remove parent references
 	if(parent)
@@ -1260,6 +1269,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	release_restraints(victim)
 	victim.organs -= src
 	victim.organs_by_name.Remove(organ_tag) // Remove from owner's vars.
+	victim.organs_by_name -= organ_tag
 
 	//Robotic limbs explode if sabotaged.
 	if(BP_IS_ROBOTIC(src) && (status & ORGAN_SABOTAGED))

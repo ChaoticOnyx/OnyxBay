@@ -339,8 +339,9 @@
 				usr.toggle_throw_mode()
 
 		if("drop")
-			if(usr.client)
-				usr.client.drop_item()
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.hotkey_drop()
 
 		if("block")
 			if(istype(usr,/mob/living/carbon/human))

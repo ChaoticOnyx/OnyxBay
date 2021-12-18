@@ -83,6 +83,24 @@
 /turf/simulated/floor/misc/fixed/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_PLATING])
 
+/turf/simulated/floor/natural/jungle/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_GRASS])
+
+/turf/simulated/floor/natural/jungle/dirt/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/jungle/sand/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/sand/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_ASTEROID])
+
+/turf/simulated/floor/natural/jungle/water/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_WATER])
+
+/turf/simulated/floor/trim/darkwood/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_WOOD])
+
 /turf/simulated/floor/Entered(mob/living/carbon/human/H)
 	..()
 	if(istype(H))
@@ -171,4 +189,3 @@
 
 		if(dist >= world.view && dist <= world.view * 3)
 			M.playsound_local(src.loc, SFX_DISTANT_MOVEMENT, 100)
-

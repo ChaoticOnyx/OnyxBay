@@ -151,13 +151,14 @@ var/list/slot_equipment_priority = list( \
 
 // Removes an item from inventory and places it in the target atom.
 // If canremove or other conditions need to be checked then use unEquip instead.
-/mob/proc/drop_from_inventory(obj/item/W, atom/target = null,force = null)
-	if(W && (W.candrop || force))
-		remove_from_mob(W, target)
-		if(!(W && W.loc)) return 1 // self destroying objects (tk, grabs)
-		update_icons()
-		return 1
-	return 0
+/mob/proc/drop_from_inventory(obj/item/W, atom/target = null)
+	if(!W)
+		return FALSE
+	remove_from_mob(W, target)
+	if(!W?.loc)
+		return TRUE // self destroying objects (tk, grabs)
+	update_icons()
+	return TRUE
 
 //Drops the item in our left hand
 /mob/proc/drop_l_hand(atom/Target, force)
@@ -226,11 +227,12 @@ var/list/slot_equipment_priority = list( \
 	return slot
 
 //This differs from remove_from_mob() in that it checks if the item can be unequipped first.
-/mob/proc/unEquip(obj/item/I, force = 0, atom/target = null) //Force overrides NODROP for things like wizarditis and admin undress.
-	if(!(force || canUnEquip(I)))
+/mob/proc/unEquip(obj/item/I, force = FALSE, atom/target = null) // Force overrides NODROP for things like wizarditis and admin undress.
+	if(QDELETED(I))
 		return
-	drop_from_inventory(I, target)
-	return 1
+	if(force || canUnEquip(I))
+		return drop_from_inventory(I, target)
+	return FALSE
 
 //Attemps to remove an object on a mob.
 /mob/proc/remove_from_mob(obj/O, atom/target)
