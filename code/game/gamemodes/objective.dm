@@ -8,7 +8,7 @@ var/global/list/all_objectives = list()
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 
-	New(var/text)
+	New(text)
 		all_objectives |= src
 		if(text)
 			explanation_text = text
@@ -317,15 +317,22 @@ datum/objective/escape
 		return TRUE
 	return FALSE
 
-datum/objective/survive
+/datum/objective/survive
 	explanation_text = "Stay alive until the end."
 
-	check_completion()
-		if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
-			return 0		//Brains no longer win survive objectives. --NEO
-		if(issilicon(owner.current) && owner.current != owner.original)
-			return 0
-		return 1
+/datum/objective/survive/check_completion()
+	if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
+		return FALSE //Brains no longer win survive objectives. --NEO
+	if(issilicon(owner.current) && owner.current != owner.original)
+		return FALSE
+	return TRUE
+
+/datum/objective/survive/changeling/check_completion()
+	if(owner.changeling?.true_dead)
+		return FALSE
+	if(issilicon(owner.current))
+		return FALSE
+	return TRUE
 
 // Similar to the anti-rev objective, but for traitors
 datum/objective/brig
@@ -615,7 +622,7 @@ datum/objective/capture
 
 
 /datum/objective/absorb
-	proc/gen_amount_goal(var/lowbound = 4, var/highbound = 6)
+	proc/gen_amount_goal(lowbound = 4, highbound = 6)
 		target_amount = rand (lowbound,highbound)
 		var/n_p = 1 //autowin
 		if (GAME_STATE == RUNLEVEL_SETUP)

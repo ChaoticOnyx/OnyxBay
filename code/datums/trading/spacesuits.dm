@@ -50,7 +50,7 @@
 								/obj/item/clothing/suit/space/void/syndi/prepared						= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/mining/alt/prepared					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/mining/prepared						= TRADER_THIS_TYPE,
-								///obj/item/clothing/suit/space/void/mining/reinforced/prepared			= TRADER_THIS_TYPE,   uncomment as soon as it is added
+								/obj/item/clothing/suit/space/void/mining/reinforced/prepared			= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/pilot/prepared						= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/security/alt/prepared				= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/space/void/security/prepared					= TRADER_THIS_TYPE,
@@ -61,7 +61,8 @@
 								/obj/item/weapon/rig/light/stealth										= TRADER_THIS_TYPE,
 								/obj/item/weapon/rig/medical											= TRADER_THIS_TYPE,
 								/obj/item/weapon/rig/industrial											= TRADER_THIS_TYPE,
-								/obj/item/weapon/rig/syndi/empty											= TRADER_THIS_TYPE,
+								/obj/item/weapon/rig/mining												= TRADER_THIS_TYPE,
+								/obj/item/weapon/rig/syndi/empty										= TRADER_THIS_TYPE,
 								/obj/item/weapon/rig/unathi												= TRADER_ALL,
 								/obj/item/rig_module													= TRADER_ALL,
 								/obj/item/rig_module/chem_dispenser/ninja								= TRADER_BLACKLIST,

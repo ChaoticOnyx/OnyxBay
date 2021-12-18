@@ -397,16 +397,19 @@
 /client/proc/send_resources()
 
 	getFiles(
+		'html/images/ntlogo.png',
+		'html/images/ntlogo_hand.png',
+		'html/images/bluentlogo.png',
+		'html/images/bluentlogo_hand.png',
 		'html/search.js',
 		'html/panels.css',
 		'html/spacemag.css',
 		'html/images/loading.gif',
-		'html/images/ntlogo.png',
-		'html/images/bluentlogo.png',
-		'html/images/sollogo.png',
-		'html/images/terralogo.png',
-		'html/images/talisman.png'
-		)
+		'html/images/talisman.png',
+		'html/images/line_hand.png',
+		'html/images/borders_hand.png',
+		'html/good_vibes/good_vibes.woff'
+	)
 
 	spawn (10) // removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected

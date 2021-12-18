@@ -27,8 +27,10 @@
 	var/mob/living/carbon/human/affecting = G.affecting
 
 	if(G.target_zone in list(BP_L_HAND, BP_R_HAND))
-		affecting.drop_l_hand()
-		affecting.drop_r_hand()
+		if(affecting.canUnEquip(affecting.l_hand))
+			affecting.drop_l_hand()
+		if(affecting.canUnEquip(affecting.r_hand))
+			affecting.drop_r_hand()
 
 	// Keeps those who are on the ground down
 	if(affecting.lying)
