@@ -47,10 +47,18 @@
 		return 1
 
 	switch(radiation_count)
-		if(null) icon_state = "geiger_on_1"
-		if(-INFINITY to RAD_LEVEL_LOW) icon_state = "geiger_on_1"
-		if(RAD_LEVEL_LOW + 0.01 to RAD_LEVEL_MODERATE) icon_state = "geiger_on_2"
-		if(RAD_LEVEL_MODERATE + 0.1 to RAD_LEVEL_HIGH) icon_state = "geiger_on_3"
-		if(RAD_LEVEL_HIGH + 1 to RAD_LEVEL_VERY_HIGH) icon_state = "geiger_on_4"
-		if(RAD_LEVEL_VERY_HIGH + 1 to INFINITY) icon_state = "geiger_on_5"
+		if(null)
+			icon_state = "geiger_on_0"
+		if(-INFINITY to 0)
+			icon_state = "geiger_on_0"
+		if(0 to RAD_LEVEL_LOW)
+			icon_state = "geiger_on_1"
+		if(RAD_LEVEL_LOW to RAD_LEVEL_MODERATE)
+			icon_state = "geiger_on_2"
+		if(RAD_LEVEL_MODERATE to RAD_LEVEL_HIGH)
+			icon_state = "geiger_on_3"
+		if(RAD_LEVEL_HIGH to RAD_LEVEL_VERY_HIGH)
+			icon_state = "geiger_on_4"
+		if(RAD_LEVEL_VERY_HIGH to INFINITY)
+			icon_state = "geiger_on_5"
 
