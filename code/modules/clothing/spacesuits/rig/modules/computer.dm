@@ -387,7 +387,7 @@
 	total_power_drained = 0
 	return ..()
 
-/obj/item/rig_module/datajack/Destroy()
+/obj/item/rig_module/power_sink/Destroy()
 	deactivate()
 	. = ..()
 
