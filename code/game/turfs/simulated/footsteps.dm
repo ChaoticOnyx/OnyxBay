@@ -3,6 +3,7 @@
 #define FOOTSTEP_PLATING 	"plating"
 #define FOOTSTEP_WOOD 		"wood"
 #define FOOTSTEP_ASTEROID 	"asteroid"
+#define FOOTSTEP_SNOW   	"snow"
 #define FOOTSTEP_GRASS 		"grass"
 #define FOOTSTEP_WATER		"water"
 #define FOOTSTEP_BLANK		"blank"
@@ -38,6 +39,13 @@
 		'sound/effects/footstep/asteroid3.ogg',
 		'sound/effects/footstep/asteroid4.ogg',
 		'sound/effects/footstep/asteroid5.ogg'),
+	FOOTSTEP_SNOW = list(
+		'sound/effects/footstep/snow1.ogg',
+		'sound/effects/footstep/snow2.ogg',
+		'sound/effects/footstep/snow3.ogg',
+		'sound/effects/footstep/snow4.ogg',
+		'sound/effects/footstep/snow5.ogg',
+		'sound/effects/footstep/snow6.ogg'),
 	FOOTSTEP_GRASS = list(
 		'sound/effects/footstep/grass1.ogg',
 		'sound/effects/footstep/grass2.ogg',
@@ -82,6 +90,9 @@
 
 /turf/simulated/floor/misc/fixed/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_PLATING])
+
+/turf/simulated/floor/natural/snow/get_footstep_sound()
+	return safepick(footstep_sounds[FOOTSTEP_SNOW])
 
 /turf/simulated/floor/natural/jungle/get_footstep_sound()
 	return safepick(footstep_sounds[FOOTSTEP_GRASS])
