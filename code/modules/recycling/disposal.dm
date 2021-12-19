@@ -472,9 +472,7 @@
 			AM.forceMove(get_turf(src))
 			AM.pipe_eject(0)
 			if(!istype(AM,/mob/living/silicon/robot/drone)) //Poor drones kept smashing windows and taking system damage being fired out of disposals. ~Z
-				spawn(1)
-					if(AM)
-						AM.throw_at(target, 5, 1)
+				addtimer(CALLBACK(AM, /atom/movable/proc/throw_at, target, 5, 1), 1)
 
 		H.vent_gas(loc)
 		qdel(H)
@@ -561,8 +559,7 @@
 	forceMove(D.trunk)
 	active = 1
 	set_dir(DOWN)
-	spawn(1)
-		move()		// spawn off the movement process
+	addtimer(CALLBACK(src, .proc/move), 1)
 
 	return
 
@@ -856,8 +853,7 @@
 		if(H)
 			expel(H, T, 0)
 
-	spawn(2)	// delete pipe after 2 ticks to ensure expel proc finished
-		qdel(src)
+	QDEL_IN(src, 2)
 
 
 // pipe affected by explosion
@@ -1458,8 +1454,7 @@
 /obj/structure/disposalpipe/trunk/New()
 	..()
 	dpdir = dir
-	spawn(1)
-		getlinked()
+	addtimer(CALLBACK(src, .proc/getlinked), 1)
 
 	update()
 	return
@@ -1626,8 +1621,7 @@
 				AM.forceMove(src.loc)
 				AM.pipe_eject(dir)
 				if(!istype(AM,/mob/living/silicon/robot/drone)) //Drones keep smashing windows from being fired out of chutes. Bad for the station. ~Z
-					spawn(5)
-						AM.throw_at(target, 3, 1)
+					addtimer(CALLBACK(AM, /atom/movable/proc/throw_at, target, 3, 1), 2)
 			H.vent_gas(src.loc)
 			qdel(H)
 
