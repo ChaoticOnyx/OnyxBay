@@ -332,6 +332,7 @@
 
 /obj/item/clothing/head/helmet/space/rig/mining
 	brightness_on = 6
+	light_overlay = "helmet_light_dual_low"
 	camera = /obj/machinery/camera/network/mining
 	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_UNATHI)
 

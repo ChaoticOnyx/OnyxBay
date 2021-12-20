@@ -42,7 +42,7 @@
 		slot_r_hand_str = "mining_helm",
 		)
 	armor = list(melee = 50, bullet = 5, laser = 20,energy = 5, bomb = 55, bio = 100, rad = 20)
-	light_overlay = "helmet_light_dual"
+	light_overlay = "helmet_light_dual_low"
 
 /obj/item/clothing/suit/space/void/mining
 	icon_state = "rig-mining"
