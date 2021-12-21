@@ -6096,7 +6096,7 @@
 "cnQ" = (/obj/machinery/door/airlock/glass{name = "Central Access"},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/tiled,/area/hallway/primary/aft)
 "cnR" = (/obj/machinery/door/airlock/glass{name = "Central Access"},/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/corner/yellow,/obj/machinery/door/firedoor/border_only,/obj/structure/sign/engineering{pixel_x = 32},/turf/simulated/floor/tiled,/area/hallway/primary/aft)
 "cnS" = (/obj/machinery/vending/cigarette,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
-"cnV" = (/obj/structure/table/woodentable,/obj/item/weapon/book/wiki/engineering_construction,/obj/item/weapon/book/wiki/hardsuits{pixel_x = -2; pixel_y = 7},/turf/simulated/floor/trim/wood,/area/engineering/break_room)
+"cnV" = (/obj/structure/table/woodentable,/obj/item/weapon/book/wiki/engineering_construction,/obj/item/weapon/book/wiki/powersuits{pixel_x = -2; pixel_y = 7},/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "cnX" = (/obj/structure/bookcase/manuals/engineering,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "cnY" = (/turf/simulated/wall,/area/crew_quarters/sleep/engi_wash)
 "cnZ" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/maintenance/engineering)

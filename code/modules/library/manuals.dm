@@ -51,7 +51,7 @@
 	icon_state = "evabook"
 	author = "Maria Crash, Senior Atmospherics Technician"
 	title = "Best EVA Gear: Not Spending All Day Inside"
-	topic = "Hardsuit"
+	topic = "Powersuit"
 
 /obj/item/weapon/book/wiki/chef_recipes
 	icon_state = "cooked_book"

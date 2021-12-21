@@ -345,6 +345,8 @@
 	if(airtight)
 		update_component_sealed()
 	update_icon(1)
+	update_offline()
+	set_slowdown_and_vision(!offline)
 	wearer.update_equipment_slowdown()
 
 /obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
