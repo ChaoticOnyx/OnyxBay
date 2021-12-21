@@ -36,3 +36,24 @@
 	id_type = /obj/item/weapon/card/id/silver
 	pda_type = /obj/item/device/pda/heads/hop
 	backpack_contents = list(/obj/item/weapon/storage/box/ids = 1)
+
+/decl/hierarchy/outfit/deadcap
+	name = "Derelict captain"
+	uniform = /obj/item/clothing/under/casual_pants/classicjeans
+	suit = /obj/item/clothing/suit/storage/hooded/wintercoat
+	shoes = /obj/item/clothing/shoes/black
+	r_pocket = /obj/item/device/radio
+
+/decl/hierarchy/outfit/deadcap/post_equip(mob/living/carbon/human/H)
+	..()
+
+	var/obj/item/clothing/uniform = H.w_uniform
+	if(uniform)
+		var/obj/item/clothing/accessory/toggleable/hawaii/random/eyegore = new()
+		if(uniform.can_attach_accessory(eyegore))
+			uniform.attach_accessory(null, eyegore)
+		else
+			qdel(eyegore)
+
+	var/obj/item/weapon/cell/super/C = new()
+	H.put_in_any_hand_if_possible(C)

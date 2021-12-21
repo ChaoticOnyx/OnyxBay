@@ -24,5 +24,7 @@
     }
   ],
   "editor.bracketPairColorization.enabled": true,
-  "gitlens.blame.ignoreWhitespace": true
+  "gitlens.blame.ignoreWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true
 }

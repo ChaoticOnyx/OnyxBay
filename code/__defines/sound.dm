@@ -36,6 +36,25 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+#define VOLUME_AMBIENT_MUSIC 50
+
+// Timing
+#define AMBIENT_MUSIC_COOLDOWN 2 MINUTES
+// TODO: Also add cooldown for ambients.
+
+// Sound channels
+// TODO: Replace hardcoded values with these defines.
+#define SOUND_CHANNEL_AMBIENT       1
+#define SOUND_CHANNEL_AMBIENT_MUSIC 2
+#define SOUND_CHANNEL_HUM           3
+
+// Ambient meta tags
+#define META_NORMAL          0
+#define META_MYSTIC          1
+#define META_SPACE           2
+#define META_SPACE_TRAVELING 3
+#define META_CENTCOMM        4
+
 // SFX List
 // FIREARMS SOUND
 #define SFX_FAR_FIRE                "far_fire"
@@ -68,14 +87,23 @@
 #define SFX_MALE_FALL_DEAD          "male_fall_dead"
 
 // AMBIENT
-#define SFX_AMBIENT_GLOBAL          "ambient_global"
-#define SFX_AMBIENT_SCIENCE         "ambient_science"
-#define SFX_AMBIENT_AI              "ambient_ai"
-#define SFX_AMBIENT_COMMS           "ambient_comms"
-#define SFX_AMBIENT_MAINTENANCE     "ambient_maintenance"
-#define SFX_AMBIENT_ENGINEERING     "ambient_engineering"
-#define SFX_AMBIENT_SPACE           "ambient_space"
-#define SFX_AMBIENT_OUTPOST         "ambient_outpost"
+#define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
+#define SFX_AMBIENT_OFF_GLOBAL          "ambient_off_global"
+#define SFX_AMBIENT_POWERED_SCIENCE     "ambient_powered_science"
+#define SFX_AMBIENT_POWERED_AI          "ambient_powered_ai"
+#define SFX_AMBIENT_POWERED_COMMS       "ambient_powered_comms"
+#define SFX_AMBIENT_POWERED_MAINTENANCE "ambient_powered_maintenance"
+#define SFX_AMBIENT_OFF_MAINTENANCE     "ambient_off_maintenance"
+#define SFX_AMBIENT_POWERED_ENGINEERING "ambient_powered_engineering"
+#define SFX_AMBIENT_OFF_SPACE           "ambient_off_space"
+#define SFX_AMBIENT_POWERED_OUTPOST     "ambient_powered_outpost"
+
+// AMBIENT MUSIC
+#define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
+#define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
+#define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
+#define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
+#define SFX_AMBIENT_MUSIC_CENTCOMM     "ambient_music_centcomm"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"
