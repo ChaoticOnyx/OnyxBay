@@ -145,7 +145,7 @@
 		. += "\nThe receptacle is empty."
 
 	if(emagged)
-		. += "\n[SPAN("notice", "Its motors are severely overloaded.")]
+		. += "\n[SPAN("notice", "Its motors are severely overloaded.")]"
 
 /obj/item/weapon/gun/launcher/money/handle_suicide(mob/living/user)
 	if(!ishuman(user))
