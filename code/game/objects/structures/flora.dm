@@ -34,10 +34,29 @@
 	name = "xmas tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
 	icon_state = "pine_c"
-
+	var/light_overlay = TRUE
+	var/l_max_bright = 0.5
+	var/l_inner_range = 2
+	var/l_outer_range = 2
+	var/l_falloff_curve = 2
+	var/l_color = "#ec8b2f"
 /obj/structure/flora/tree/pine/xmas/New()
 	..()
 	icon_state = "pine_c"
+
+/obj/structure/flora/tree/pine/xmas/update_icon()
+	overlays.Cut()
+	if(light_overlay)
+		var/image/LO = overlay_image(icon, "[initial(icon_state)]-overlay")
+		LO.layer = ABOVE_LIGHTING_LAYER
+		LO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		overlays.Add(LO)
+		set_light(l_max_bright, l_inner_range, l_outer_range, l_falloff_curve, l_color)
+	..()
+
+/obj/structure/flora/tree/pine/xmas/Initialize()
+ 	update_icon()
+ 	. = ..()
 
 /obj/structure/flora/tree/dead/deadtree_0
 	icon = 'icons/obj/flora/deadtrees.dmi'
@@ -80,6 +99,8 @@
 	desc = "Masha, get rid of this fucking yolka!"
 	icon = 'icons/obj/flora/old_pinetrees.dmi'
 	icon_state = "old_pinetree"
+	pixel_x = 0
+	pixel_y = 0
 
 /obj/structure/flora/tree/pine/old_pinteree/New()
 	..()
