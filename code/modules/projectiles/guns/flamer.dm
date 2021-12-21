@@ -251,6 +251,11 @@
 		return
 	. = ..()
 
+/obj/item/weapon/gun/launcher/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+	if(!is_flamer_can_fire(user))
+		return
+	. = ..()
+
 /obj/item/weapon/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
 	QDEL_NULL(pressure_tank)
