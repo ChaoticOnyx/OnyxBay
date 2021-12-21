@@ -6129,7 +6129,7 @@
 "cnS" = (/obj/machinery/vending/cigarette,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "cnT" = (/obj/machinery/door/firedoor/border_only,/obj/effect/wingrille_spawn/reinforced,/obj/structure/sign/christmas/garland,/turf/simulated/floor/plating,/area/engineering/engine_monitoring)
 "cnU" = (/obj/machinery/light{dir = 4},/obj/machinery/newscaster{pixel_x = 28},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/obj/structure/flora/tree/pine/old_pinteree{anchored = 0; pixel_x = 0},/obj/item/weapon/a_gift,/obj/item/weapon/a_gift,/obj/item/weapon/a_gift,/turf/simulated/floor/tiled,/area/engineering/engine_monitoring)
-"cnV" = (/obj/structure/table/woodentable,/obj/item/weapon/book/wiki/engineering_construction,/obj/item/weapon/book/wiki/hardsuits{pixel_x = -2; pixel_y = 7},/turf/simulated/floor/trim/wood,/area/engineering/break_room)
+"cnV" = (/obj/structure/table/woodentable,/obj/item/weapon/book/wiki/engineering_construction,/obj/item/weapon/book/wiki/powersuits{pixel_x = -2; pixel_y = 7},/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "cnW" = (/obj/machinery/door/blast/regular{density = 0; dir = 4; icon_state = "pdoor0"; id = "EngineBlast"; name = "Engine Monitoring Room Blast Doors"; opacity = 0},/obj/effect/wingrille_spawn/reinforced,/obj/structure/sign/christmas/garland,/turf/simulated/floor/plating,/area/engineering/engine_room)
 "cnX" = (/obj/structure/bookcase/manuals/engineering,/turf/simulated/floor/trim/wood,/area/engineering/break_room)
 "cnY" = (/turf/simulated/wall,/area/crew_quarters/sleep/engi_wash)
