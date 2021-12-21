@@ -53,3 +53,39 @@
 /obj/item/weapon/gun/launcher/rocket/handle_post_fire(mob/user, atom/target)
 	log_and_message_admins("fired a rocket from a rocket launcher ([src.name]) at [target].")
 	..()
+
+/obj/item/weapon/gun/launcher/rocket/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+	var/obj/item/grab/G = user.get_inactive_hand()
+	if(G?.affecting != target || !G?.current_grab?.can_absorb)
+		to_chat(user, SPAN_NOTICE("You need a better grab for this."))
+		return
+
+	var/obj/item/organ/external/head/head = target.organs_by_name[BP_HEAD]
+	if(!istype(head))
+		to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because you can't find their head."))
+		return
+
+	var/obj/item/clothing/head/helmet = target.get_equipped_item(slot_head)
+	var/obj/item/clothing/mask/mask = target.get_equipped_item(slot_wear_mask)
+	if((istype(helmet) && (helmet.body_parts_covered & HEAD)) || (istype(mask) && (mask.body_parts_covered & FACE)))
+		to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because their face is covered."))
+		return
+
+	weapon_in_mouth = TRUE
+	target.visible_message(SPAN_DANGER("[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
+	if(!do_after(user, 2 SECONDS, progress=0))
+		target.visible_message(SPAN_NOTICE("[user] decided [target]'s life was worth living."))
+		weapon_in_mouth = FALSE
+		return
+	var/obj/item/missile/in_chamber = consume_next_projectile()
+	if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
+		playsound(user, fire_sound, 50, 1)
+		in_chamber.throw_impact(target)
+		log_and_message_admins("[key_name(user)] killed [target] using \a [src]. KABOOM!")
+		target.gib() // KABOOM!
+		qdel(in_chamber)
+		weapon_in_mouth = FALSE
+	else
+		handle_click_empty(user)
+		weapon_in_mouth = FALSE
+		return
