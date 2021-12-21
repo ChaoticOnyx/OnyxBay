@@ -189,7 +189,7 @@
 			return
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
 			return
 
 		if(burn_damage <= 0)
@@ -205,7 +205,7 @@
 	else if(isWelder(W))
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
 			return
 
 		if (brute_damage <= 0)

@@ -266,7 +266,7 @@
 								var/obj/item/weapon/rig/rig = C.back
 								if(rig.air_supply)
 									from = "in"
-									nicename |= "hardsuit"
+									nicename |= "powersuit"
 									tankcheck |= rig.air_supply
 
 							for(var/i=1, i<tankcheck.len+1, ++i)

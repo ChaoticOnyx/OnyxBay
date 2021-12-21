@@ -83,7 +83,7 @@
 		)
 
 /obj/item/weapon/rig/eva
-	name = "EVA hardsuit control module"
+	name = "EVA powersuit control module"
 	suit_type = "EVA powersuit"
 	desc = "A light rig for repairs and maintenance to the outside of habitats and vessels."
 	icon_state = "eva_rig"
@@ -130,9 +130,9 @@
 
 /obj/item/weapon/rig/ce
 
-	name = "advanced engineering hardsuit control module"
+	name = "advanced engineering powersuit control module"
 	suit_type = "engineering powersuit"
-	desc = "An advanced hardsuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
+	desc = "An advanced powersuit that protects against hazardous, low pressure environments. Shines with a high polish. Appears compatible with the physiology of most species."
 	icon_state = "ce_rig"
 	armor = list(melee = 40, bullet = 25, laser = 30, energy = 25, bomb = 40, bio = 100, rad = 100)
 	online_slowdown = 0
@@ -171,7 +171,7 @@
 
 	name = "AMI control module"
 	suit_type = "hazmat powersuit"
-	desc = "An Anomalous Material Interaction hardsuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
+	desc = "An Anomalous Material Interaction powersuit, a prototype NanoTrasen design, protects the wearer against the strangest energies the universe can throw at it."
 	icon_state = "science_rig"
 	armor = list(melee = 45, bullet = 5, laser = 45, energy = 80, bomb = 60, bio = 100, rad = 100)
 	online_slowdown = 1
@@ -256,7 +256,7 @@
 /obj/item/weapon/rig/security
 	name = "security powersuit control module"
 	suit_type = "security powersuit"
-	desc = "A NanoTrasen security hardsuit designed for prolonged EVA in dangerous environments."
+	desc = "A NanoTrasen security powersuit designed for prolonged EVA in dangerous environments."
 	// TODO[V] Make icon_state resembling new naming
 	icon_state = "hazard_rig"
 	armor = list(melee = 60, bullet = 50, laser = 45, energy = 15, bomb = 70, bio = 100, rad = 60)

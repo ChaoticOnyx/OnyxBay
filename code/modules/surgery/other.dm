@@ -92,9 +92,9 @@
 
 
 //////////////////////////////////////////////////////////////////
-//	 Hardsuit removal surgery step
+//	 Powersuit removal surgery step
 //////////////////////////////////////////////////////////////////
-/datum/surgery_step/hardsuit
+/datum/surgery_step/powersuit
 	allowed_tools = list(
 		/obj/item/weapon/weldingtool = 80,
 		/obj/item/weapon/circular_saw = 60,
@@ -108,7 +108,7 @@
 	duration = SAW_DURATION * 2.0
 	clothes_penalty = FALSE
 
-/datum/surgery_step/hardsuit/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/powersuit/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!istype(target))
 		return 0
 	if(isWelder(tool))
@@ -117,12 +117,12 @@
 			return 0
 	return (target_zone == BP_CHEST) && istype(target.back, /obj/item/weapon/rig) && !(target.back.canremove)
 
-/datum/surgery_step/hardsuit/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/powersuit/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts cutting through the support systems of [target]'s [target.back] with \the [tool]." , \
 	"You start cutting through the support systems of [target]'s [target.back] with \the [tool].")
 	..()
 
-/datum/surgery_step/hardsuit/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/powersuit/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
 	var/obj/item/weapon/rig/rig = target.back
 	if(!istype(rig))
@@ -131,7 +131,7 @@
 	user.visible_message("<span class='notice'>[user] has cut through the support systems of [target]'s [rig] with \the [tool].</span>", \
 		"<span class='notice'>You have cut through the support systems of [target]'s [rig] with \the [tool].</span>")
 
-/datum/surgery_step/hardsuit/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+/datum/surgery_step/powersuit/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("<span class='danger'>[user]'s [tool] can't quite seem to get through the metal...</span>", \
 	"<span class='danger'>Your [tool] can't quite seem to get through the metal. It's weakening, though - try again.</span>")
 

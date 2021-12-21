@@ -2,7 +2,7 @@
 	name = "combat powersuit control module"
 	desc = "A sleek and dangerous powersuit for active combat."
 	icon_state = "security_rig"
-	suit_type = "combat hardsuit"
+	suit_type = "combat powersuit"
 	armor = list(melee = 80, bullet = 65, laser = 55, energy = 15, bomb = 80, bio = 100, rad = 60)
 	online_slowdown = 1
 	offline_slowdown = 3

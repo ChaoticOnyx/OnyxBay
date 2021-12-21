@@ -178,9 +178,9 @@ var/global/list/_client_preferences_by_type
 	key = "SHOW_PROGRESS"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
-/datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
-	key = "HARDSUIT_ACTIVATION"
+/datum/client_preference/powersuit_activation
+	description = "Powersuit Module Activation Key"
+	key = "POWERSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/pointing
