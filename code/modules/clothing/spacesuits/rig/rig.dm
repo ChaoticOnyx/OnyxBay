@@ -167,7 +167,6 @@
 		if(istype(M))
 			M.drop_from_inventory(piece)
 
-	STOP_PROCESSING(SSobj, src)
 
 	QDEL_NULL(wires)
 	QDEL_NULL(spark_system)
