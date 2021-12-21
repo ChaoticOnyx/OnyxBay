@@ -160,7 +160,7 @@
 
 	make_it_rain(user)
 
-/obj/item/weapon/gun/launcher/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+/obj/item/weapon/gun/launcher/money/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(!ishuman(user))
 		return
 

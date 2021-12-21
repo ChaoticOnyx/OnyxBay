@@ -251,7 +251,7 @@
 		return
 	. = ..()
 
-/obj/item/weapon/gun/launcher/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+/obj/item/weapon/gun/flamer/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	if(!is_flamer_can_fire(user))
 		return
 	. = ..()
