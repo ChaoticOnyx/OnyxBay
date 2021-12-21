@@ -141,7 +141,7 @@
 
 
 /obj/structure/door_assembly/attackby(obj/item/W as obj, mob/user as mob)
-	var/cooldown_time = 40
+	var/const/static/cooldown_time = 40
 
 	if(istype(W, /obj/item/weapon/pen))
 		var/t = sanitizeSafe(input(user, "Enter the name for the door.", src.name, src.created_name), MAX_NAME_LEN)
