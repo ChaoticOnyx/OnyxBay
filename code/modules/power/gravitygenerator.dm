@@ -112,8 +112,10 @@ GLOBAL_VAR(station_gravity_generator)
 			qdel(P)
 	middle = null
 	lights = null
+	if(enabled)
+		enabled = FALSE
+		update_connectected_areas_gravity()
 	connected_areas = null
-	update_connectected_areas_gravity()
 	return ..()
 
 /obj/machinery/gravity_generator/main/examine(mob/user)
