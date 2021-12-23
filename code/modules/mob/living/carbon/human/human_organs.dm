@@ -319,7 +319,8 @@
 	if(!thing)
 		return
 
-	drop_from_inventory(thing)
+	if(!unEquip(thing))
+		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")

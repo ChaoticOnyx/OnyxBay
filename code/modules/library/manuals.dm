@@ -88,7 +88,7 @@
 
 /obj/item/weapon/book/wiki/nt_regs
 	desc = "A set of corporate guidelines for employees of NanoTrasen."
-	icon_state = "booknanoregs"
+	icon_state = "bookRedSpaceLaw"
 	author = "NanoTrasen"
 	title = "NanoTrasen Regulations"
 	topic = "Space Law/Onyx"
