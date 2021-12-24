@@ -127,7 +127,7 @@
 
 /obj/item/canvas/proc/finalize(mob/user)
 	finalized = TRUE
-	author_ckey = user.ckey
+	author_ckey = author_ckey || user?.ckey || crash_with("THIS IS BUG! ALARM!")
 	paint_image()
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
@@ -219,12 +219,30 @@
 	else if(istype(I, /obj/item/weapon/soap) || istype(I, /obj/item/weapon/reagent_containers/glass/rag))
 		return canvas_color
 
+/obj/item/canvas/proc/save_canvas()
+	if(!icon_generated || no_save)
+		return
+	var/list/data = list()
+	data["name"] = painting_name
+	data["ckey"] = author_ckey
+	data["grid"] = grid
+	return json_encode(data)
+
+/obj/item/canvas/proc/apply_canvas_data(encoded_data)
+	if(icon_generated || !istext(encoded_data))
+		return
+	var/list/data = json_decode(encoded_data)
+	painting_name = data["name"]
+	author_ckey = data["ckey"]
+	grid = data["grid"]
+
 /obj/item/canvas/proc/try_rename(mob/user)
-	var/new_name = sanitize(input(user,"What do you want to name the painting?"))
-	if(new_name != painting_name && new_name && CanUseTopic(user, GLOB.physical_state))
-		painting_name = new_name
-		SStgui.update_uis(src)
-		desc = "[desc]\nIt has name of [painting_name]"
+	if(user)
+		var/new_name = sanitize(input(user,"What do you want to name the painting?"))
+		if(new_name != painting_name && new_name && CanUseTopic(user, GLOB.physical_state))
+			painting_name = new_name
+			SStgui.update_uis(src)
+	desc = "[desc]\nIt has name of [painting_name]"
 
 /obj/item/canvas/nineteen_nineteen
 	icon_state = "19x19"
