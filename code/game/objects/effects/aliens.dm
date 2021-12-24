@@ -25,6 +25,7 @@
 	..(loc)
 	target = supplied_target
 	melt_time = melt_time / acid_strength
+	desc += "\n<b>It's melting \the [target]!</b>"
 	START_PROCESSING(SSprocessing, src)
 
 /obj/effect/acid/Destroy()
