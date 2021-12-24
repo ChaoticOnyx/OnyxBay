@@ -5,6 +5,8 @@
 //global datum that will preload variables on atoms instanciation
 GLOBAL_VAR_INIT(use_preloader, FALSE)
 GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
+// TODO: Поменять на prob(0.5)
+GLOBAL_VAR_INIT(mirror_map_horizontally, TRUE)
 
 /datum/map_load_metadata
 	var/bounds
@@ -133,7 +135,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 				gridLines.Cut(gridLines.len) // Remove only one blank line at the end.
 
 			bounds[MAP_MINY] = min(bounds[MAP_MINY], Clamp(ycrd, y_lower, y_upper))
-			ycrd += gridLines.len - 1 // Start at the top and work down
+			if(!GLOB.mirror_map_horizontally)
+				ycrd += gridLines.len - 1 // Start at the top and work down
 
 			if(!cropMap && ycrd > world.maxy)
 				if(!measureOnly)
@@ -149,7 +152,10 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 			else
 				for(var/line in gridLines)
 					if((ycrd - y_offset + 1) < y_lower || (ycrd - y_offset + 1) > y_upper)				//Reverse operation and check if it is out of bounds of cropping.
-						--ycrd
+						if(GLOB.mirror_map_horizontally)
+							++ycrd
+						else
+							--ycrd
 						continue
 					if(ycrd <= world.maxy && ycrd >= 1)
 						xcrd = xcrdStart
@@ -180,7 +186,10 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 								CHECK_TICK
 							maxx = max(maxx, xcrd)
 							++xcrd
-					--ycrd
+					if(GLOB.mirror_map_horizontally)
+						++ycrd
+					else
+						--ycrd
 				if (zexpansion)
 					create_lighting_overlays_zlevel(zcrd)
 
@@ -405,6 +414,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 	if(GLOB.use_preloader && .)//second preloader pass, for those atoms that don't ..() in New()
 		GLOB._preloader.load(.)
+		if(GLOB.mirror_map_horizontally)
+			mirror_atom_horizontally(.)
 
 	//custom CHECK_TICK here because we don't want things created while we're sleeping to not initialize
 	if(TICK_CHECK)
@@ -414,7 +425,9 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 
 /dmm_suite/proc/create_atom(path, crds)
 	set waitfor = FALSE
-	. = new path (crds)
+	var/atom/A = new path (crds)
+
+	return A
 
 //text trimming (both directions) helper proc
 //optionally removes quotes before and after the text (for variable name)
@@ -534,6 +547,7 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 					break
 			if (!found)
 				throw ex
+
 	GLOB.use_preloader = FALSE
 
 /area/template_noop
@@ -543,3 +557,100 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 /turf/template_noop
 	name = "Turf Passthrough"
 	icon_state = "noop"
+
+/proc/mirror_atom_horizontally(atom/A)
+	if(istype(A, /atom/movable/lighting_overlay))
+		return
+
+	if(istype(A, /obj/structure/stairs/))
+		if(A.dir == NORTH)
+			A.dir = SOUTH
+		else if(A.dir == SOUTH)
+			A.dir = NORTH
+		
+		A.pixel_y = 0
+
+		return
+
+	if(A.pixel_y != 0)
+		A.pixel_y = -A.pixel_y
+
+	if(istype(A, /obj/structure/sign/double/barsign))
+		return
+	
+	if(istype(A, /obj/structure/sign/double/map))
+		A.transform = matrix(1, 0, 0, 0, -1, 1)
+		return
+
+	if(istype(A, /obj/structure/disposalpipe/))
+		if(A.icon_state == "pipe-c")
+			if(A.dir == NORTH)
+				A.dir = EAST
+			else if(A.dir == EAST)
+				A.dir = NORTH
+			else if(A.dir == WEST)
+				A.dir = SOUTH
+			else if(A.dir == SOUTH)
+				A.dir = WEST
+		else if(A.icon_state == "pipe-j2s")
+			if(A.dir == NORTH)
+				A.dir = SOUTH
+			else if(A.dir == EAST)
+				A.dir = WEST
+		else if(A.icon_state == "conpipe-c")
+			if(A.dir == SOUTH)
+				A.dir = NORTHWEST
+		else if(A.icon_state == "pipe-j1")
+			if(A.dir == WEST)
+				A.dir = NORTHEAST
+			
+
+		return
+
+	if(istype(A, /obj/structure/cable))
+		var/obj/structure/cable/C = A
+
+		if(C.d1 == NORTH)
+			C.d1 = SOUTH
+		else if(C.d1 == SOUTH)
+			C.d1 = NORTH
+
+		if(C.d2 == NORTH)
+			C.d2 = SOUTH
+		else if(C.d2 == SOUTH)
+			C.d2 = NORTH
+
+		// From code\modules\power\cable.dm:22
+		// "By design, d1 is the smallest direction and d2 is the highest"
+		if(C.d1 > C.d2)
+			var/old = C.d1
+			C.d1 = C.d2
+			C.d2 = old
+
+		C.icon_state = "[C.d1]-[C.d2]"
+
+		return
+	if(istype(A, /obj/machinery/atmospherics/pipe))
+		var/obj/machinery/atmospherics/pipe/P = A
+
+		if(istype(P, /obj/machinery/atmospherics/pipe/manifold))
+			if(P.dir == NORTH)
+				P.dir = SOUTH
+			else if(P.dir == SOUTH)
+				P.dir = NORTH
+
+		if(P.dir == SOUTHWEST)
+			P.dir = NORTHWEST
+		else if(P.dir == NORTHWEST)
+			P.dir = SOUTHWEST
+		else if(P.dir == NORTHEAST)
+			P.dir = SOUTHEAST
+		else if(P.dir == SOUTHEAST)
+			P.dir = NORTHEAST
+
+		return
+	
+	if(A.dir == NORTH)
+		A.dir = SOUTH
+	else if(A.dir == SOUTH)
+		A.dir = NORTH

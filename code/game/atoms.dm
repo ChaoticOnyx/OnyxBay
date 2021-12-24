@@ -34,6 +34,9 @@
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
 
+	if(GLOB.mirror_map_horizontally)
+		mirror_atom_horizontally(src)
+
 	var/do_initialize = SSatoms.init_state
 	if(do_initialize != INITIALIZATION_INSSATOMS)
 		args[1] = do_initialize == INITIALIZATION_INNEW_MAPLOAD
