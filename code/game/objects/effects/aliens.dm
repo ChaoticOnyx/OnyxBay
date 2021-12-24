@@ -118,6 +118,8 @@
 		icon_state = "egg"
 
 /obj/structure/alien/egg/proc/hatch()
+	set waitfor = 0
+
 	progress = -1
 	STOP_PROCESSING(SSobj, src)
 	update_icon()
@@ -129,8 +131,6 @@
 /*
  * Weeds
  */
-#define NODERANGE 3
-
 /obj/effect/alien/weeds
 	name = "weeds"
 	desc = "Weird purple weeds."
@@ -148,8 +148,7 @@
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
-	light_outer_range = NODERANGE
-	var/node_range = NODERANGE
+	var/node_range = 3
 
 /obj/effect/alien/weeds/node/New()
 	..(src.loc, src)
@@ -238,5 +237,3 @@
 /obj/effect/alien/weeds/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300 + T0C && prob(80))
 		qdel(src)
-
-#undef NODERANGE

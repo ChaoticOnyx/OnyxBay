@@ -117,7 +117,7 @@
 	if(stripping)
 		if(unEquip(target_slot))
 			admin_attack_log(user, src, "Stripped \a [target_slot]", "Was stripped of \a [target_slot].", "stripped \a [target_slot] from")
-			if(!isAggresiveStrip(user))
+			if(!isAggresiveStrip(user) && user.IsAdvancedToolUser())
 				user.put_in_active_hand(target_slot)
 		else
 			admin_attack_log(user, src, "Attempted to strip \a [target_slot]", "Target of a failed strip of \a [target_slot].", "attempted to strip \a [target_slot] from")
