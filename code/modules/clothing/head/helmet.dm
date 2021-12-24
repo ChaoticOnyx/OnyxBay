@@ -86,7 +86,7 @@
 	siemens_coefficient = 0.5
 	has_visor = 0
 
-//Non-hardsuit ERT helmets.
+//Non-powersuit ERT helmets.
 //Commander
 /obj/item/clothing/head/helmet/ert
 	name = "ERT commander helmet"

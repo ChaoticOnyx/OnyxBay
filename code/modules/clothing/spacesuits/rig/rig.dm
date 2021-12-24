@@ -3,14 +3,14 @@
 #define SEAL_DELAY 30
 
 /*
- * Defines the behavior of hardsuits/rigs/power armour.
+ * Defines the behavior of powersuits/rigs/power armour.
  */
 
 /obj/item/weapon/rig
 
-	name = "hardsuit control module"
+	name = "powersuit control module"
 	icon = 'icons/obj/rig_modules.dmi'
-	desc = "A back-mounted hardsuit deployment and control mechanism."
+	desc = "A back-mounted powersuit deployment and control mechanism."
 	slot_flags = SLOT_BACK
 	req_one_access = list()
 	req_access = list()
@@ -29,12 +29,12 @@
 
 	var/interface_path = "hardsuit.tmpl"
 	var/ai_interface_path = "hardsuit.tmpl"
-	var/interface_title = "Hardsuit Controller"
+	var/interface_title = "Powersuit Controller"
 	var/wearer_move_delay //Used for AI moving.
 	var/ai_controlled_move_delay = 10
 
 	// Keeps track of what this rig should spawn with.
-	var/suit_type = "hardsuit"
+	var/suit_type = "powersuit"
 	var/list/initial_modules
 	var/chest_type = /obj/item/clothing/suit/space/rig
 	var/helm_type =  /obj/item/clothing/head/helmet/space/rig
@@ -97,7 +97,7 @@
 	if(src.loc == usr)
 		. += "\nThe access panel is [locked? "locked" : "unlocked"]."
 		. += "\nThe maintenance panel is [open ? "open" : "closed"]."
-		. += "\nHardsuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
+		. += "\nPowersuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"]."
 
 		if(open)
 			. += "\nIt's equipped with [english_list(installed_modules)]."
@@ -345,6 +345,9 @@
 	if(airtight)
 		update_component_sealed()
 	update_icon(1)
+	update_offline()
+	set_slowdown_and_vision(!offline)
+	wearer.update_equipment_slowdown()
 
 /obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
 	wearer?.client?.screen -= booting_R
@@ -438,7 +441,7 @@
 		if(istype(H) && H.back != src)
 			fail_msg = "<span class='warning'>You must be wearing \the [src] to do this.</span>"
 	if(sealing)
-		fail_msg = "<span class='warning'>The hardsuit is in the process of adjusting seals and cannot be activated.</span>"
+		fail_msg = "<span class='warning'>The powersuit is in the process of adjusting seals and cannot be activated.</span>"
 	else if(!fail_msg && ((use_unconcious && user.stat > 1) || (!use_unconcious && user.stat)))
 		fail_msg = "<span class='warning'>You are in no fit state to do that.</span>"
 	else if(!cell)
@@ -801,7 +804,7 @@
 		chance = 2*max(0, damage - damage_resistance)
 	else
 		//Want this to be roughly independant of the number of modules, meaning that X emp hits will disable Y% of the suit's modules on average.
-		//that way people designing hardsuits don't have to worry (as much) about how adding that extra module will affect emp resiliance by 'soaking' hits for other modules
+		//that way people designing powersuits don't have to worry (as much) about how adding that extra module will affect emp resiliance by 'soaking' hits for other modules
 		chance = 2*max(0, damage - emp_protection)*min(installed_modules.len/15, 1)
 
 	if(!prob(chance))

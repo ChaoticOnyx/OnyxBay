@@ -172,7 +172,7 @@
 	for(var/obj/item/organ/external/o in organs)
 		if (o && o.splinted)
 			var/obj/item/S = o.splinted
-			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with hardsuit splints)
+			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with powersuit splints)
 				to_chat(user, "<span class='warning'>You cannot remove any splints on [src]'s [o.name] - [o.splinted] is supporting some of the breaks.</span>")
 			else
 				S.add_fingerprint(user)

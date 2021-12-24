@@ -9,18 +9,18 @@
 /obj/item/ai_verbs
 	name = "AI verb holder"
 
-/obj/item/ai_verbs/verb/hardsuit_interface()
-	set category = "Hardsuit"
-	set name = "Open Hardsuit Interface"
+/obj/item/ai_verbs/verb/powersuit_interface()
+	set category = "Powersuit"
+	set name = "Open Powersuit Interface"
 	set src in usr
 
 	if(!usr.loc || !usr.loc.loc || !istype(usr.loc.loc, /obj/item/rig_module))
-		to_chat(usr, "You are not loaded into a hardsuit.")
+		to_chat(usr, "You are not loaded into a powersuit.")
 		return
 
 	var/obj/item/rig_module/module = usr.loc.loc
 	if(!module.holder)
-		to_chat(usr, "Your module is not installed in a hardsuit.")
+		to_chat(usr, "Your module is not installed in a powersuit.")
 		return
 
 	module.holder.ui_interact(usr, nano_state = GLOB.contained_state)
@@ -28,7 +28,7 @@
 /obj/item/rig_module/ai_container
 
 	name = "IIS module"
-	desc = "An integrated intelligence system module suitable for most hardsuits."
+	desc = "An integrated intelligence system module suitable for most powersuits."
 	icon_state = "IIS"
 	toggleable = 1
 	usable = 1
@@ -348,7 +348,7 @@
 
 /obj/item/rig_module/power_sink
 
-	name = "hardsuit power sink"
+	name = "powersuit power sink"
 	desc = "An heavy-duty power sink."
 	icon_state = "powersink"
 	toggleable = 1
