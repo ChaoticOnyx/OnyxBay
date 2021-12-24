@@ -137,6 +137,9 @@
 
 /obj/item/rig_module/Destroy()
 	deactivate()
+	holder = null
+	QDEL_LIST(stat_modules)
+	QDEL_LIST(charges)
 	. = ..()
 
 // Called when the module is installed into a suit.

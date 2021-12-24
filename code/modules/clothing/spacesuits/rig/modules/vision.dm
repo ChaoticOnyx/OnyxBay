@@ -17,6 +17,9 @@
 	if(ispath(glasses))
 		glasses = new glasses
 
+/datum/rig_vision/Destroy()
+	QDEL_NULL(glasses)
+
 /datum/rig_vision/nvg
 	mode = "night vision"
 	glasses = /obj/item/clothing/glasses/hud/standard/night/active
@@ -191,3 +194,7 @@
 		processed_vision += vision_datum
 
 	vision_modes = processed_vision
+
+/obj/item/rig_module/vision/Destroy()
+	QDEL_LIST(vision_modes)
+	. = ..()

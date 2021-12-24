@@ -162,16 +162,33 @@
 	update_icon(1)
 
 /obj/item/weapon/rig/Destroy()
-	for(var/obj/item/piece in list(gloves,boots,helmet,chest))
+	for(var/obj/item/piece in list(gloves, boots, helmet, chest))
 		var/mob/living/M = piece.loc
 		if(istype(M))
 			M.drop_from_inventory(piece)
-		qdel(piece)
-	STOP_PROCESSING(SSobj, src)
-	qdel(wires)
-	wires = null
-	qdel(spark_system)
-	spark_system = null
+
+
+	QDEL_NULL(wires)
+	QDEL_NULL(spark_system)
+
+	QDEL_NULL(air_supply)
+	QDEL_NULL(boots)
+	QDEL_NULL(chest)
+	QDEL_NULL(helmet)
+	QDEL_NULL(gloves)
+	QDEL_NULL(cell)
+
+	selected_module = null
+	visor = null
+	speech = null
+	wearer = null
+	mob_icon = null
+
+	for(var/obj/item/rig_module/module in installed_modules)
+		module.deactivate()
+		qdel(module)
+	installed_modules.Cut()
+
 	return ..()
 
 /obj/item/weapon/rig/get_mob_overlay(mob/user_mob, slot)
