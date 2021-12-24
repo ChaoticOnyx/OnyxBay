@@ -46,27 +46,30 @@
 		if(!establish_old_db_connection())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
-			var/DBQuery/query = sql_query({"
-				SELECT
-					id,
-					ckey,
-					title,
-					data,
-					type
-				FROM
-					art_library
-				ORDER BY
-					$sort_by
-				"}, dbcon_old, list(sort_by = sort_by))
+			try
+				var/DBQuery/query = sql_query({"
+					SELECT
+						id,
+						ckey,
+						title,
+						data,
+						type
+					FROM
+						art_library
+					ORDER BY
+						$sort_by
+					"}, dbcon_old, list(sort_by = sort_by))
 
-			while(query.NextRow())
-				all_entries.Add(list(list(
-				"id" = query.item[1],
-				"ckey" = query.item[2],
-				"title" = query.item[3],
-				"data" = query.item[4],
-				"type" = query.item[5]
-			)))
+				while(query.NextRow())
+					all_entries.Add(list(list(
+					"id" = query.item[1],
+					"ckey" = query.item[2],
+					"title" = query.item[3],
+					"data" = query.item[4],
+					"type" = query.item[5]
+				)))
+			catch
+				error_message = "Unable to receive arts form External Archive. Please contact your system administrator for assistance."
 		data["art_list"] = all_entries
 		data["scanner"] = istype(scanner)
 
