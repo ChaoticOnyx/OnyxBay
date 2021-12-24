@@ -226,7 +226,6 @@
 			break
 	catch
 		error_message = "Network Error: Connection to the Archive has been severed."
-		return TRUE
 	return TRUE
 
 /proc/del_art_from_db(id, user)
