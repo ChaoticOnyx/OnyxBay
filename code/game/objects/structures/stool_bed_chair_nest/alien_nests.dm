@@ -16,7 +16,7 @@
 /obj/structure/bed/nest/Initialize()
 	. = ..()
 	over = image(icon, "nest_over")
-	over.layer = BASE_HUMAN_LAYER + 0.1
+	over.layer = LYING_HUMAN_LAYER + 0.1
 
 /obj/structure/bed/nest/Destroy()
 	QDEL_NULL(over)
