@@ -26,6 +26,8 @@
 	target = supplied_target
 	melt_time = melt_time / acid_strength
 	desc += "\n<b>It's melting \the [target]!</b>"
+	pixel_x = target.pixel_x
+	pixel_y = target.pixel_y
 	START_PROCESSING(SSprocessing, src)
 
 /obj/effect/acid/Destroy()
