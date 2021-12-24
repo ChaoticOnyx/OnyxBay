@@ -236,7 +236,7 @@
 /mob/living/carbon/human/show_inv(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src))
 		return
-	if(!user.IsAdvancedToolUser())
+	if(!user.IsAdvancedToolUser(TRUE))
 		show_inv_reduced(user)
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
