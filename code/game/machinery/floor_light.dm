@@ -1,5 +1,5 @@
-var/floor_light_cache = list()
-var/floor_light_color_cache = list()
+var/list/floor_light_cache = list()
+var/list/floor_light_color_cache = list()
 
 /obj/machinery/floor_light
 	name = "floor light"
