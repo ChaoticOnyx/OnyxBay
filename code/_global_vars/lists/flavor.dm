@@ -110,7 +110,8 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"Jingle Bells"                  = 'sound/music/newyear/christmasamb4.ogg',
 	"Happy New Year"                = 'sound/music/newyear/happynewyear.ogg',
 	"Steklovata"                    = 'sound/music/newyear/steklovata_newyear.ogg',
-	"Zima-Holoda"                   = 'sound/music/newyear/zima_holoda.ogg'
+	"Zima-Holoda"                   = 'sound/music/newyear/zima_holoda.ogg',
+	"Zima"                          = 'sound/music/newyear/zima.ogg'
 ))
 
 /proc/setup_music_tracks(list/tracks)
