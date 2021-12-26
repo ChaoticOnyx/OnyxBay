@@ -11,7 +11,6 @@
 		)
 	armor = list(melee = 60, bullet = 40, laser = 40, energy = 5, bomb = 45, bio = 100, rad = 10)
 	siemens_coefficient = 0.7
-	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/security
 	icon_state = "rig-sec"
@@ -55,6 +54,7 @@
 	icon_state = "rig0-sechos"
 	item_state = "sechos_helm"
 	armor = list(melee = 70, bullet = 55, laser = 55, energy = 25, bomb = 45, bio = 100, rad = 40)
+	light_overlay = "helmet_light_dual"
 
 /obj/item/clothing/suit/space/void/security/hos
 	icon_state = "rig-sechos"
