@@ -101,7 +101,7 @@
 	health = 250
 	speak_emote = list("rumbles")
 	response_harm   = "harmlessly punches"
-	harm_intent_damage = 0
+	harm_intent_damage = 2.5
 	melee_damage_lower = 30
 	melee_damage_upper = 30
 	attacktext = "smashed their armoured gauntlet into"
