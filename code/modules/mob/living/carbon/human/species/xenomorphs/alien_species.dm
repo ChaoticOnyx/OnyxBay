@@ -197,7 +197,7 @@
 	name = SPECIES_XENO_DRONE
 	caste_name = "drone"
 	weeds_plasma_rate = 15
-	slowdown = 0.5
+	slowdown = 0
 	total_health = 150
 	tail = "xenos_drone_tail"
 	rarity_value = 5
