@@ -76,23 +76,28 @@
 	anchored = 1
 	density = 1
 	var/obj/item/print_object
+	var/hatch_locked = FALSE
+
+/obj/machinery/bookbinder/attack_hand(mob/user)
+	if(!hatch_locked && print_object)
+		src.visible_message("[src] whirs as it spitting out \the [print_object].")
+		print_object.forceMove(get_turf(src))
+		print_object = FALSE
 
 /obj/machinery/bookbinder/attackby(obj/O, mob/user)
 	if(operable())
+		if(print_object)
+			..()
+			to_chat(user, "\The [src] already has item inside.")
+			return
 		if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
 			user.drop_item()
-			O.loc = src
+			print_object = O
+			O.forceMove(src)
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 			src.visible_message("[src] begins to hum as it warms up its printing drums.")
-			sleep(rand(200,400))
-			src.visible_message("[src] whirs as it prints and binds a new book.")
-			if(istype(O, /obj/item/weapon/paper))
-				var/obj/item/weapon/paper/paper = O
-				print(paper.info, "Print Job #" + "[rand(100, 999)]")
-			if(istype(O, /obj/item/weapon/book/wiki/template))
-				var/obj/item/weapon/book/wiki/template/template = O
-				print_wiki(template.topic, template.censored)
-			qdel(O)
+			addtimer(CALLBACK(src, .proc/handle_paper), rand(200,400))
+			hatch_locked = TRUE
 		else if(istype(O, /obj/item/canvas))
 			print_object = O
 			user.drop_item()
@@ -103,6 +108,19 @@
 	else
 		..()
 		to_chat(user, "[src] doesn't work!")
+
+/obj/machinery/bookbinder/proc/handle_paper()
+	if(!print_object)
+		return
+	hatch_locked = FALSE
+	src.visible_message("[src] whirs as it prints and binds a new book.")
+	if(istype(print_object, /obj/item/weapon/paper))
+		var/obj/item/weapon/paper/paper = print_object
+		print(paper.info, "Print Job #" + "[rand(100, 999)]")
+	if(istype(print_object, /obj/item/weapon/book/wiki/template))
+		var/obj/item/weapon/book/wiki/template/template = print_object
+		print_wiki(template.topic, template.censored)
+	QDEL_NULL(print_object)
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
 	var/obj/item/weapon/book/book = new(src.loc)
