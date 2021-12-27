@@ -288,6 +288,9 @@
 		return 0
 	if(istype(W, /obj/item/weapon/holder))
 		return 0 //no hiding mobs in there
+	if(!W.canremove)
+		shake_animation(stime = 4)
+		return ..()
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
