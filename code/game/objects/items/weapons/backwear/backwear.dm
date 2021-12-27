@@ -58,6 +58,9 @@
 /obj/item/weapon/backwear/proc/reattach_gear(mob/user)
 	if(!gear)
 		return
+	if(gear.loc == src)
+		return
+
 	if(ismob(gear.loc))
 		var/mob/M = gear.loc
 		M.drop_from_inventory(gear, src)
