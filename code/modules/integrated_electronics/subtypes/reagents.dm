@@ -630,6 +630,7 @@
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
 	can_input_object_when_closed = TRUE
+	radial_menu_icon = "beaker_connector"
 
 	var/obj/item/weapon/reagent_containers/glass/beaker/current_beaker
 
