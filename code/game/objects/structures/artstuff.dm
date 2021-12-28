@@ -163,21 +163,23 @@
 			if(!finalized)
 				finalize(user)
 
-/obj/item/canvas/proc/finalize(author, is_copy = FALSE)
+/obj/item/canvas/proc/finalize(mob/user, is_copy = FALSE)
 	finalized = TRUE
 	author_ckey = author_ckey || user.ckey
 	paint_image()
+	try_rename(user)
 	var/turf/epicenter = get_turf(src)
-	if(!epicenter)
+	if(!epicenter && !author_ckey)
 		return
-	message_admins("The [is_copy ? "copy of " : "new "] art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+	message_admins("The [is_copy ? "copy of" : "new"] art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
 
 /obj/item/canvas/proc/copy()
 	if(!finalized)
 		return
 	var/obj/item/canvas/C = new type()
 	C.grid = grid
-	C.finalize(author_ckey, TRUE)
+	C.author_ckey = author_ckey
+	C.finalize(is_copy = TRUE)
 	C.no_save = TRUE // only original can be copied.
 	return C
 
