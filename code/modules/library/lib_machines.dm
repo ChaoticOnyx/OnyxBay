@@ -15,22 +15,30 @@
 	anchored = 1
 	density = 1
 	var/obj/item/weapon/book/cache		// Last scanned book
+	var/obj/item/canvas/art_cache // Last scanned art
+	var/obj/item/current_item
 
-/obj/machinery/libraryscanner/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/book))
+/obj/machinery/libraryscanner/attackby(obj/O, mob/user)
+	if(current_item)
+		to_chat(user, SPAN_NOTICE("\The [src] already has something inside!"))
+		return
+	if(istype(O, /obj/item/weapon/book) || istype(O, /obj/item/canvas))
 		user.drop_item()
-		O.loc = src
+		current_item = O
+		O.forceMove(src)
 
-/obj/machinery/libraryscanner/attack_hand(mob/user as mob)
+/obj/machinery/libraryscanner/attack_hand(mob/user)
 	usr.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Scanner Control Interface</TITLE></HEAD><BODY>\n" // <META HTTP-EQUIV='Refresh' CONTENT='10'>
-	if(cache)
+	if(cache || art_cache)
 		dat += "<FONT color=#005500>Data stored in memory.</FONT><BR>"
 	else
 		dat += "No data stored in memory.<BR>"
 	dat += "<A href='?src=\ref[src];scan=1'>\[Scan\]</A>"
-	if(cache)
-		dat += "       <A href='?src=\ref[src];clear=1'>\[Clear Memory\]</A><BR><BR><A href='?src=\ref[src];eject=1'>\[Remove Book\]</A>"
+	if(cache || art_cache)
+		dat += "       <A href='?src=\ref[src];clear=1'>\[Clear Memory\]</A><BR><BR>"
+		if(current_item)
+			dat += "<A href='?src=\ref[src];eject=1'>\[Remove Item\]</A>"
 	else
 		dat += "<BR>"
 	show_browser(user, dat, "window=scanner")
@@ -43,14 +51,16 @@
 		return
 
 	if(href_list["scan"])
-		for(var/obj/item/weapon/book/B in contents)
-			cache = B
-			break
+		if(istype(current_item, /obj/item/weapon/book))
+			cache = current_item
+		if(istype(current_item, /obj/item/canvas))
+			art_cache = current_item
 	if(href_list["clear"])
 		cache = null
+		art_cache = null
 	if(href_list["eject"])
-		for(var/obj/item/weapon/book/B in contents)
-			B.loc = src.loc
+		current_item.forceMove(get_turf(src))
+		current_item = null
 	src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	return
@@ -65,8 +75,9 @@
 	icon_state = "binder"
 	anchored = 1
 	density = 1
+	var/obj/item/print_object
 
-/obj/machinery/bookbinder/attackby(obj/O as obj, mob/user as mob)
+/obj/machinery/bookbinder/attackby(obj/O, mob/user)
 	if(operable())
 		if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
 			user.drop_item()
@@ -82,6 +93,11 @@
 				var/obj/item/weapon/book/wiki/template/template = O
 				print_wiki(template.topic, template.censored)
 			qdel(O)
+		else if(istype(O, /obj/item/canvas))
+			print_object = O
+			user.drop_item()
+			O.forceMove(src)
+			user.visible_message("[user] loads \the [O] into [src].", "You load \the [O] into [src].")
 		else
 			..()
 	else

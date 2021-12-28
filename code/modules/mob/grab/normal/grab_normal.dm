@@ -145,7 +145,7 @@
 			else
 				if(headbutt(G))
 					if(drop_headbutt)
-						let_go(G)
+						G.delete_self()
 					return 1
 		//else if(G.target_zone ==
 	return 0

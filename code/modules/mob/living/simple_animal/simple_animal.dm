@@ -66,6 +66,7 @@
 
 	var/damtype = BRUTE
 	var/defense = "melee"
+	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -84,6 +85,9 @@
 	else
 		mob_ai = new()
 	mob_ai.holder = src
+
+	if(bodyparts)
+		bodyparts = decls_repository.get_decl(bodyparts)
 
 /mob/living/simple_animal/Destroy()
 	QDEL_NULL(mob_ai)
@@ -209,7 +213,7 @@
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
-			adjustBruteLoss(harm_intent_damage)
+			adjustBruteLoss(harm_intent_damage * M.species.generic_attack_mod)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
 

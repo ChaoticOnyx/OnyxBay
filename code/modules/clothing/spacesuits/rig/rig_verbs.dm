@@ -1,9 +1,9 @@
 // Interface for humans.
-/obj/item/weapon/rig/verb/hardsuit_interface()
+/obj/item/weapon/rig/verb/powersuit_interface()
 
-	set name = "Open Hardsuit Interface"
-	set desc = "Open the hardsuit system interface."
-	set category = "Hardsuit"
+	set name = "Open Powersuit Interface"
+	set desc = "Open the powersuit system interface."
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(wearer && wearer.back == src)
@@ -13,11 +13,11 @@
 
 	set name = "Toggle Visor"
 	set desc = "Turns your rig visor off or on."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_power_cost(usr))
@@ -31,7 +31,7 @@
 		return
 
 	if(!visor)
-		to_chat(usr, "<span class='warning'>The hardsuit does not have a configurable visor.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit does not have a configurable visor.</span>")
 		return
 
 	if(!visor.active)
@@ -43,11 +43,11 @@
 
 	set name = "Toggle Helmet"
 	set desc = "Deploys or retracts your helmet."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_suit_access(usr))
@@ -59,7 +59,7 @@
 
 	set name = "Toggle Chestpiece"
 	set desc = "Deploys or retracts your chestpiece."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!check_suit_access(usr))
@@ -71,11 +71,11 @@
 
 	set name = "Toggle Gauntlets"
 	set desc = "Deploys or retracts your gauntlets."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_suit_access(usr))
@@ -87,11 +87,11 @@
 
 	set name = "Toggle Boots"
 	set desc = "Deploys or retracts your boots."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_suit_access(usr))
@@ -101,13 +101,13 @@
 
 /obj/item/weapon/rig/verb/deploy_suit()
 
-	set name = "Deploy Hardsuit"
+	set name = "Deploy Powersuit"
 	set desc = "Deploys helmet, gloves and boots."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_suit_access(usr))
@@ -120,13 +120,13 @@
 
 /obj/item/weapon/rig/verb/toggle_seals_verb()
 
-	set name = "Toggle Hardsuit"
+	set name = "Toggle Powersuit"
 	set desc = "Activates or deactivates your rig."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_suit_access(usr))
@@ -138,7 +138,7 @@
 
 	set name = "Switch Vision Mode"
 	set desc = "Switches between available vision modes."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(malfunction_check(usr))
@@ -152,7 +152,7 @@
 		return
 
 	if(!visor)
-		to_chat(usr, "<span class='warning'>The hardsuit does not have a configurable visor.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit does not have a configurable visor.</span>")
 		return
 
 	if(!visor.active)
@@ -168,7 +168,7 @@
 
 	set name = "Configure Voice Synthesiser"
 	set desc = "Toggles or configures your voice synthesizer."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(malfunction_check(usr))
@@ -179,11 +179,11 @@
 		return
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!speech)
-		to_chat(usr, "<span class='warning'>The hardsuit does not have a speech synthesiser.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit does not have a speech synthesiser.</span>")
 		return
 
 	speech.engage()
@@ -192,7 +192,7 @@
 
 	set name = "Select Module"
 	set desc = "Selects a module as your primary system."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(malfunction_check(usr))
@@ -206,7 +206,7 @@
 		return
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	var/list/selectable = list()
@@ -228,7 +228,7 @@
 
 	set name = "Toggle Module"
 	set desc = "Toggle a system module."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(malfunction_check(usr))
@@ -242,7 +242,7 @@
 		return
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	var/list/selectable = list()
@@ -266,7 +266,7 @@
 
 	set name = "Engage Module"
 	set desc = "Engages a system module."
-	set category = "Hardsuit"
+	set category = "Powersuit"
 	set src = usr.contents
 
 	if(malfunction_check(usr))
@@ -277,7 +277,7 @@
 		return
 
 	if(!istype(wearer) || !wearer.back == src)
-		to_chat(usr, "<span class='warning'>The hardsuit is not being worn.</span>")
+		to_chat(usr, "<span class='warning'>The powersuit is not being worn.</span>")
 		return
 
 	if(!check_power_cost(usr, 0, 0, 0, 0))

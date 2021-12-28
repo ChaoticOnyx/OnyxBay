@@ -162,13 +162,13 @@
 /obj/structure/bed/Move()
 	. = ..()
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 
 /obj/structure/bed/forceMove()
 	. = ..()
 	if(buckled_mob)
-		if(isturf(src.loc))
-			buckled_mob.forceMove(src.loc)
+		if(isturf(loc))
+			buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 		else
 			unbuckle_mob()
 

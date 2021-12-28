@@ -470,6 +470,7 @@
 	item_state = "hoodie"
 	icon_open = "hoodie_open"
 	icon_closed = "hoodie"
+	body_parts_covered = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	initial_closed = TRUE

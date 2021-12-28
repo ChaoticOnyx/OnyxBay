@@ -24,8 +24,12 @@
 	can_escape = 1
 	attacktext = "attacked"
 	attack_sound = 'sound/items/bikehorn.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/clown
 	minbodytemp = 270
 	maxbodytemp = 370
 	heat_damage_per_tick = 15	//amount of damage applied if animal's body temperature is higher than maxbodytemp
 	cold_damage_per_tick = 10	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	unsuitable_atoms_damage = 10
+
+/decl/simple_animal_bodyparts/clown
+	hit_zones = list("head", "torso", "pie-hole", "honker", "left funny bone", "right funny bone", "left foot", "right foot", "unmentionables", "HONK", "honk", "honker")

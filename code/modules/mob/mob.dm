@@ -97,7 +97,7 @@
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
-			
+
 		if(isghost(M))
 			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
@@ -1128,3 +1128,6 @@
 
 /mob/proc/get_sex()
 	return gender
+
+/mob/proc/InStasis()
+	return FALSE

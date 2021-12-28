@@ -71,6 +71,7 @@
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()
 		brainmob.timeofhostdeath = H.timeofdeath
+		brainmob.languages = H.languages
 		// Copy modifiers.
 		for(var/datum/modifier/M in H.modifiers)
 			if(M.flags & MODIFIER_GENETIC)
@@ -89,7 +90,7 @@
 	else
 		. += "\nThis one seems particularly lifeless. Perhaps it will regain some of its luster later.."
 
-/obj/item/organ/internal/brain/removed(mob/living/user)
+/obj/item/organ/internal/brain/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 

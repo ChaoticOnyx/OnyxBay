@@ -35,6 +35,7 @@
 	move_to_delay = 6
 	speed = 3
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/spider
 
 //nursemaids - these create webs and eggs
 /mob/living/simple_animal/hostile/giant_spider/nurse
@@ -224,3 +225,6 @@
 #undef LAYING_EGGS
 #undef MOVING_TO_TARGET
 #undef SPINNING_COCOON
+
+/decl/simple_animal_bodyparts/spider
+	hit_zones = list("cephalothorax", "abdomen", "left forelegs", "right forelegs", "left hind legs", "right hind legs", "pedipalp", "mouthparts")

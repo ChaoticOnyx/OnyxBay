@@ -9,18 +9,18 @@
 /obj/item/ai_verbs
 	name = "AI verb holder"
 
-/obj/item/ai_verbs/verb/hardsuit_interface()
-	set category = "Hardsuit"
-	set name = "Open Hardsuit Interface"
+/obj/item/ai_verbs/verb/powersuit_interface()
+	set category = "Powersuit"
+	set name = "Open Powersuit Interface"
 	set src in usr
 
 	if(!usr.loc || !usr.loc.loc || !istype(usr.loc.loc, /obj/item/rig_module))
-		to_chat(usr, "You are not loaded into a hardsuit.")
+		to_chat(usr, "You are not loaded into a powersuit.")
 		return
 
 	var/obj/item/rig_module/module = usr.loc.loc
 	if(!module.holder)
-		to_chat(usr, "Your module is not installed in a hardsuit.")
+		to_chat(usr, "Your module is not installed in a powersuit.")
 		return
 
 	module.holder.ui_interact(usr, nano_state = GLOB.contained_state)
@@ -28,7 +28,7 @@
 /obj/item/rig_module/ai_container
 
 	name = "IIS module"
-	desc = "An integrated intelligence system module suitable for most hardsuits."
+	desc = "An integrated intelligence system module suitable for most powersuits."
 	icon_state = "IIS"
 	toggleable = 1
 	usable = 1
@@ -50,6 +50,13 @@
 /mob
 	var/get_rig_stats = 0
 
+/mob/living/Stat()
+	. = ..()
+	if(. && get_rig_stats)
+		var/obj/item/weapon/rig/rig = get_rig()
+		if(rig)
+			SetupStat(rig)
+
 /obj/item/rig_module/ai_container/Process()
 	if(integrated_ai)
 		var/obj/item/weapon/rig/rig = get_rig()
@@ -58,12 +65,9 @@
 		else
 			integrated_ai.get_rig_stats = 0
 
-/mob/living/Stat()
+/obj/item/rig_module/ai_container/Destroy()
+	eject_ai()
 	. = ..()
-	if(. && get_rig_stats)
-		var/obj/item/weapon/rig/rig = get_rig()
-		if(rig)
-			SetupStat(rig)
 
 /obj/item/rig_module/ai_container/proc/update_verb_holder()
 	if(!verb_holder)
@@ -179,8 +183,10 @@
 				ai_card = null
 		else if(user)
 			user.put_in_hands(ai_card)
-		else
+		else if(loc) // No trying to get_turf out of nullspace plz
 			ai_card.forceMove(get_turf(src))
+		else
+			qdel(ai_card)
 	ai_card = null
 	integrated_ai = null
 	update_verb_holder()
@@ -246,6 +252,10 @@
 /obj/item/rig_module/datajack/Initialize()
 	. =..()
 	stored_research = list()
+
+/obj/item/rig_module/datajack/Destroy()
+	QDEL_LIST(stored_research)
+	. = ..()
 
 /obj/item/rig_module/datajack/engage(atom/target)
 
@@ -348,7 +358,7 @@
 
 /obj/item/rig_module/power_sink
 
-	name = "hardsuit power sink"
+	name = "powersuit power sink"
 	desc = "An heavy-duty power sink."
 	icon_state = "powersink"
 	toggleable = 1
@@ -376,6 +386,10 @@
 	interfaced_with = null
 	total_power_drained = 0
 	return ..()
+
+/obj/item/rig_module/power_sink/Destroy()
+	deactivate()
+	. = ..()
 
 /obj/item/rig_module/power_sink/activate()
 	interfaced_with = null

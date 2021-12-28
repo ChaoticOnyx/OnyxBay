@@ -342,7 +342,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/obj/machinery/power/apc/theAPC = get_apc()
 	if(theAPC && theAPC.operating)
 		for(var/obj/machinery/power/apc/temp_apc in src)
-			temp_apc.overload_lighting(70)
+			temp_apc.overload_lighting()
 		for(var/obj/machinery/door/airlock/temp_airlock in src)
 			temp_airlock.prison_open()
 		for(var/obj/machinery/door/window/temp_windoor in src)

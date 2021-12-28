@@ -27,6 +27,7 @@
 	var/obj/item/hat
 	var/old_dir
 	var/obj/movement_target
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian

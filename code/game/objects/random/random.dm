@@ -3,6 +3,7 @@
 	desc = "This item type is used to spawn random objects at round-start."
 	icon = 'icons/misc/landmarks.dmi'
 	icon_state = "landmark_unique_gray"
+	alpha = 128
 	var/spawn_nothing_percentage = 0 // this variable determines the likelyhood that this random object will not spawn anything
 
 	var/spawn_method = /obj/random/proc/spawn_item
@@ -1027,7 +1028,7 @@ something, make sure it's not in one of the other lists.
 				/obj/random/projectile = 10,
 				/obj/random/voidhelmet = 10,
 				/obj/random/voidsuit = 10,
-				/obj/random/hardsuit = 10,
+				/obj/random/powersuit = 10,
 				/obj/item/clothing/mask/muzzle = 7,
 				/obj/item/clothing/mask/gas/vox = 8,
 				/obj/item/clothing/mask/gas/syndicate = 10,
@@ -1110,12 +1111,12 @@ something, make sure it's not in one of the other lists.
 				/obj/item/clothing/suit/space/void/medical,
 				/obj/item/clothing/suit/space/void/medical/alt)
 
-/obj/random/hardsuit
-	name = "random hardsuit"
-	desc = "This is a random hardsuit control module."
+/obj/random/powersuit
+	name = "random powersuit"
+	desc = "This is a random powersuit control module."
 	icon_state = "landmark_rig"
 
-/obj/random/hardsuit/spawn_choices()
+/obj/random/powersuit/spawn_choices()
 	return list(/obj/item/weapon/rig/industrial,
 				/obj/item/weapon/rig/eva,
 				/obj/item/weapon/rig/light/hacker,
@@ -1171,6 +1172,7 @@ var/list/multi_point_spawns
 	desc = "This item type is used to spawn random objects at round-start. Only one spawn point for a given group id is selected."
 	icon = 'icons/misc/landmarks.dmi'
 	icon_state = "landmark_unique_blue"
+	alpha = 128
 	invisibility = INVISIBILITY_MAXIMUM
 	var/id     // Group id.
 	var/weight // Probability weight for this spawn point.

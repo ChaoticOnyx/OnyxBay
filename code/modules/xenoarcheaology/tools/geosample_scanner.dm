@@ -263,12 +263,6 @@
 	src.visible_message("<span class='notice'>\icon[src] makes an insistent chime.</span>", 2)
 
 	if(scanned_item)
-		//create report
-		var/obj/item/weapon/paper/P = new(src)
-		P.SetName("[src] report #[++report_num]: [scanned_item.name]")
-		P.stamped = list(/obj/item/weapon/stamp)
-		P.overlays = list("paper_stamped")
-
 		//work out data
 		var/data = " - Mundane object: [scanned_item.desc ? scanned_item.desc : "No information on record."]<br>"
 		var/datum/geosample/G
@@ -314,11 +308,18 @@
 		if(!anom_found)
 			data += " - No anomalous data<br>"
 
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<b>Scanned item:</b> [scanned_item.name]<br><br>" + data
-		last_scan_data = P.info
-		P.loc = src.loc
+		//create report
+		var/title = "[src] report #[++report_num]: [scanned_item.name]"
+		var/text = "<b>[src] analysis report #[report_num]</b><br>"
+		text += "<b>Scanned item:</b> [scanned_item.name]<br><br>"
+		text += data
+		var/obj/item/weapon/paper/P = new(src, text, title)
+		P.stamped = list(/obj/item/weapon/stamp)
+		P.overlays = list("paper_stamped")
 
+		last_scan_data = text
+
+		P.loc = src.loc
 		scanned_item.loc = src.loc
 		scanned_item = null
 

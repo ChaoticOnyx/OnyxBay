@@ -64,7 +64,8 @@
 	mod_weight = 0.55
 	mod_reach = 0.6
 	mod_handy = 0.75
-	canremove = 0
+	canremove = FALSE
+	force_drop = TRUE
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	slot_flags = null
 	tank = null
