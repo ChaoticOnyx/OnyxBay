@@ -270,46 +270,6 @@
 		else
 			log_say("[name] ([type]): [sanitized_text]")
 
-/obj/item/integrated_circuit/output/text_to_speech/direct_message
-	name = "personal message circuit"
-	desc = "Takes any string as an input and will connect to brain/borg brain via antennas in body to sends message to person, if they are near"
-	extended_desc = "This unit is more advanced than the plain speaker circuit, able to transpose any valid text to person's mind, but person need to be cyborg or synthetic."
-	complexity = 14
-	inputs = list(
-		"to speech" = IC_PINTYPE_STRING,
-		"target" = IC_PINTYPE_REF
-	)
-	activators = list(
-		"to speech" = IC_PINTYPE_PULSE_IN,
-		"on success" = IC_PINTYPE_PULSE_OUT,
-		"on fail" = IC_PINTYPE_PULSE_OUT
-	)
-	power_draw_per_use = 90
-
-/obj/item/integrated_circuit/output/text_to_speech/direct_message/do_work()
-	var/text_to_speech = get_pin_data(IC_INPUT, 1)
-	var/mob/living/L = get_pin_data(IC_INPUT, 2)
-	var/message_before_tts = "" // for cool text
-	if(!istype(L) && !istext(text_to_speech))
-		activate_pin(3)
-		return
-	var/dist = get_dist(get_object(), L)
-	if(dist == -1 || dist > 3)
-		activate_pin(3)
-		return
-	if(isrobot(L))
-		message_before_tts = "Your antenna reciving signal: "
-	if(ishuman(L))
-		var/mob/living/carbon/human/H = L
-		if(H.isSynthetic())
-			message_before_tts = "Your internal antenna reciving signal: "
-	if(istext(message_before_tts))
-		text_to_speech = sanitize(text_to_speech)
-		to_chat(L, SPAN_NOTICE("[message_before_tts][text_to_speech]"))
-		activate_pin(2)
-	else
-		activate_pin(3)
-
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"
 	desc = "Takes a string as a name and a boolean to determine whether it is on, and uses this to be a camera linked to a list of networks you choose."
