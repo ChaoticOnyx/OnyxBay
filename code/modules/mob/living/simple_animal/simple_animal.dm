@@ -213,7 +213,7 @@
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
-			adjustBruteLoss(harm_intent_damage)
+			adjustBruteLoss(harm_intent_damage * M.species.generic_attack_mod)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
 

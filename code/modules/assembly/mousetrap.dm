@@ -20,7 +20,7 @@
 		if(holder)
 			holder.update_icon()
 
-	proc/triggered(mob/target as mob, var/type = "feet")
+	proc/triggered(mob/target as mob, type = "feet")
 		if(!armed)
 			return
 		var/obj/item/organ/external/affecting = null

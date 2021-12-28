@@ -89,6 +89,7 @@
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
 	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
 	var/meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
@@ -322,19 +323,19 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
 
+	for(var/name in H.organs_by_name)
+		H.organs |= H.organs_by_name[name]
+
+	for(var/name in H.internal_organs_by_name)
+		H.internal_organs |= H.internal_organs_by_name[name]
+
 	for(var/obj/item/organ/internal/organ in foreign_organs)
 		organ.owner = H // Let's just make sure, it doesn't hurt
 		organ.rejuvenate()
 		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
 		E.internal_organs |= organ
 		H.internal_organs_by_name[organ.organ_tag] = organ
-		organ.after_organ_creation()
-
-	for(var/name in H.organs_by_name)
-		H.organs |= H.organs_by_name[name]
-
-	for(var/name in H.internal_organs_by_name)
-		H.internal_organs |= H.internal_organs_by_name[name]
+		organ.handle_foreign()
 
 	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
 		O.owner = H
@@ -654,8 +655,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 		//Actually disarm them
 		for(var/obj/item/I in holding)
-			if(I && I.canremove)
-				target.drop_from_inventory(I)
+			if(target.unEquip(I))
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
 				playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				return

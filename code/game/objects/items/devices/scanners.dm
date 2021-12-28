@@ -12,7 +12,7 @@ REAGENT SCANNER
 	name = "health analyzer"
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject."
 	icon_state = "health"
-	item_state = "analyzer"
+	item_state = "healthanalyzer"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 3

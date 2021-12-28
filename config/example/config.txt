@@ -31,7 +31,8 @@ PLAYER_LIMIT 0
 ## Write 0 to toggle limit off. Must be more than PLAYER_LIMIT in order to work correctly.
 HARD_PLAYER_LIMIT 0
 
-## Defines the ticklag for the world. 0.9 is the normal one, 0.5 is smoother. If you wonder, world.fps makes from 10 / TICKLAG.
+##Defines the ticklag for the world. Ticklag is the amount of time between game ticks (aka byond ticks) (in 1/10ths of a second).
+##	This also controls the client network update rate, as well as the default client fps (10 / TICKLAG). 0.9 is the normal one, 0.5 is smoother.
 TICKLAG 0.625
 
 ##Defines the fps for the players with 0 in preferences. -1 for synced with server fps. 65 recommended

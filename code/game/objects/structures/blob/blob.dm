@@ -32,18 +32,10 @@
 	_upgrade_cooldown = world.time
 	_health_cooldown  = world.time
 
-	if(locate(/obj/structure/blob) in loc)
-		CRASH("Spawning more that 1 blob on the turf.")
-
 /obj/structure/blob/Initialize()
 	. = ..()
 
 	START_PROCESSING(SSobj, src)
-
-/obj/structure/blob/core/Destroy()
-	. = ..()
-
-	STOP_PROCESSING(SSobj, src)
 
 /obj/structure/blob/proc/can_expand()
 	if(QDELETED(core))
@@ -119,6 +111,7 @@
 		var/possible_loc = get_step(src, dir)
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
 								|| istype(possible_loc, /turf/simulated/wall)\
+								|| istype(possible_loc, /turf/simulated/mineral)\
 								|| (locate(/obj/structure/blob) in possible_loc)
 
 		if(dir == UP)

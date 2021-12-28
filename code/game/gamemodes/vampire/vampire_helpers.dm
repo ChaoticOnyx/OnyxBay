@@ -20,7 +20,7 @@
 		if(!(P in mind.vampire.purchased_powers))
 			if(!P.blood_cost)
 				mind.vampire.add_power(mind, P, 0)
-		else if(P.isVerb && P.verbpath)
+		else if(P.is_active && P.verbpath)
 			verbs += P.verbpath
 
 	return TRUE
@@ -217,7 +217,7 @@
 		return
 
 	for (var/datum/power/vampire/P in mind.vampire.purchased_powers)
-		if (P.isVerb)
+		if (P.is_active)
 			verbs -= P.verbpath
 
 	if (mind.vampire.status & VAMP_FRENZIED)

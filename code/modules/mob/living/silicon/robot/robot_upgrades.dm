@@ -678,7 +678,7 @@
 	var/area/t = get_area(host)
 	var/location = t.name
 	if (cause == "emp" && prob(50))
-		location =  pick(teleportlocs)
+		location =  pick(playerlocs)
 	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
 		var/area/default = world.area
 		location = initial(default.name)

@@ -74,10 +74,16 @@
 /area/crew_quarters/heads/cmo
 	name = "\improper Command - CMO's Office"
 
+/area/bridge
+	name = "\improper Bridge"
+	icon_state = "bridge"
+
 /area/bridge/meeting_room
 	name = "\improper Heads of Staff Meeting Room"
-	icon_state = "bridge"
 	sound_env = MEDIUM_SOFTFLOOR
+
+/area/bridge/meeting_room/cafe
+	name = "\improper Heads of Staff Cafeteria"
 
 // Shuttles
 
@@ -418,6 +424,11 @@
 
 // SUBSTATIONS (Subtype of maint, that should let them serve as shielded area during radstorm)
 
+/area/maintenance/substation
+	name = "Substation"
+	icon_state = "substation"
+	sound_env = SMALL_ENCLOSED
+
 /area/maintenance/substation/command // AI and central cluster. This one will be between HoP office and meeting room (probably).
 	name = "Command Substation"
 
@@ -455,6 +466,10 @@
 	name = "Emergency Substation"
 
 // Maintenance
+
+/area/maintenance/disposal
+	name = "\improper Trash Disposal"
+	icon_state = "disposal"
 
 /area/maintenance/ghetto_medbay
 	name = "\improper Ghetto Medbay"
@@ -829,6 +844,16 @@
 	name = "\improper Medbay Maintenance"
 	icon_state = "maint_medbay"
 
+/area/maintenance/bridge
+	name = "\improper Bridge Maintenance"
+	icon_state = "maint_eva"
+
+/area/maintenance/bridge/west
+	name = "\improper Bridge Maintenance - West"
+
+/area/maintenance/bridge/east
+	name = "\improper Bridge Maintenance - East"
+
 /area/maintenance/research_port
 	name = "\improper Research Maintenance - Port"
 	icon_state = "maint_research_port"
@@ -850,7 +875,11 @@
 	icon_state = "maint_security_starboard"
 
 /area/maintenance/exterior
-	name = "\improper Exterior"
+	name = "\improper Exterior Reinforcements"
+	icon_state = "maint_security_starboard"
+	area_flags = AREA_FLAG_EXTERNAL
+	has_gravity = FALSE
+	turf_initializer = /decl/turf_initializer/maintenance/space
 
 /area/maintenance/research_atmos
 	name = "\improper Research Atmospherics Maintenance"
@@ -1103,6 +1132,9 @@
 
 /area/crew_quarters/toilet/bar
 	name = "\improper Bar Toilet"
+
+/area/crew_quarters/toilet/west
+	name = "\improper West Hallway Bathroom"
 
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
@@ -1430,6 +1462,10 @@
 	name = "\improper Undergound Medbay Storage"
 	icon_state = "medbay4"
 
+/area/medical/sleeper
+	name = "\improper Emergency Treatment Room"
+	icon_state = "exam_room"
+
 /area/medical/sleeper/underground
 	name = "\improper Underground Emergency Treatment Room"
 	icon_state = "exam_room"
@@ -1746,6 +1782,10 @@
 /area/quartermaster/office
 	name = "\improper Supply Office"
 	icon_state = "quartoffice"
+
+/area/hydroponics
+	name = "\improper Hydroponics"
+	icon_state = "hydro"
 
 /area/hydroponics/garden
 	name = "\improper Garden"
@@ -2152,6 +2192,12 @@
 /area/tdome/tdomeobserve
 	name = "\improper Thunderdome (Observer.)"
 	icon_state = "purple"
+
+/area/holodeck
+	name = "\improper Holodeck"
+	icon_state = "Holodeck"
+	dynamic_lighting = 0
+	sound_env = LARGE_ENCLOSED
 
 /area/holodeck/source_boxingcourt
 	name = "\improper Holodeck - Boxing Court"

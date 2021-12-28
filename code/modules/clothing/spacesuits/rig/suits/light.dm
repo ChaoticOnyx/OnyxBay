@@ -78,7 +78,7 @@
 	suit_type = "ominous"
 	icon_state = "ninja_rig"
 	armor = list(melee = 50, bullet = 15, laser = 30, energy = 10, bomb = 25, bio = 100, rad = 30)
-	siemens_coefficient = 0.2 //heavy hardsuit level shock protection
+	siemens_coefficient = 0.2 //heavy powersuit level shock protection
 	emp_protection = 40 //change this to 30 if too high.
 	online_slowdown = 0
 	aimove_power_usage = 50
@@ -140,7 +140,7 @@
 	siemens_coefficient = 0
 
 /obj/item/clothing/suit/space/rig/light/ninja
-	breach_threshold = 38 //comparable to regular hardsuits
+	breach_threshold = 38 //comparable to regular powersuits
 
 /obj/item/weapon/rig/light/stealth
 	name = "stealth suit control module"

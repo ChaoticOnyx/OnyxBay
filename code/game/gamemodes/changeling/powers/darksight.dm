@@ -1,17 +1,23 @@
 
-/mob/proc/changeling_toggle_darksight()
-	set category = "Changeling"
-	set name = "Toggle Darkvision"
-	set desc = "We are able to see in the dark."
+// Makes us able to see in the dark.
+/datum/changeling_power/toggled/darksight
+	name = "Darkvision"
+	desc = "Makes us able to see in the dark."
+	icon_state = "ling_darksight"
+	power_processing = FALSE
+	max_stat = UNCONSCIOUS
 
-	var/datum/changeling/changeling = changeling_power()
-	if(!changeling)
-		return FALSE
+	text_activate = "We no longer need light to see."
+	text_deactivate = "We allow the shadows to return."
 
-	var/mob/living/carbon/C = src
-	C.seeDarkness = !C.seeDarkness
-	if(C.seeDarkness)
-		to_chat(C, SPAN("changeling", "We no longer need light to see."))
-	else
-		to_chat(C, SPAN("changeling", "We allow the shadows to return."))
-	return TRUE
+/datum/changeling_power/toggled/darksight/activate()
+	if(!..())
+		return
+	var/mob/living/carbon/C = my_mob
+	C.seeDarkness = TRUE
+
+/datum/changeling_power/toggled/darksight/deactivate(no_message = TRUE)
+	if(!..())
+		return
+	var/mob/living/carbon/C = my_mob
+	C.seeDarkness = FALSE

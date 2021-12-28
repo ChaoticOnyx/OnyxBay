@@ -325,7 +325,8 @@
 	mod_handy = 1.75
 	mod_shield = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
-	canremove = 0
+	canremove = FALSE
+	force_drop = TRUE
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/mob/living/creator
