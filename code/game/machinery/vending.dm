@@ -22,6 +22,7 @@
 	var/diona_spawn_chance = 0.1
 	var/use_alt_icons = FALSE
 	var/alt_icons = list()
+	var/broken_start_prob = 1 // Probability for the machine to spawn in a broken state. Only affects mapped-in vendors, not the ones created during gameplay.
 
 	// Power
 	idle_power_usage = 10
@@ -93,6 +94,9 @@
 	build_inventory()
 	power_change()
 	setup_icon_states()
+
+	if(GAME_STATE < RUNLEVEL_GAME && prob(broken_start_prob))
+		take_damage(max_health)
 
 /obj/machinery/vending/examine(mob/user)
 	. = ..()
@@ -1353,6 +1357,7 @@
 	vend_reply = "Have an enchanted evening!"
 	product_ads = "FJKLFJSD;AJKFLBJAKL;1234 LOONIES LOL!;>MFW;Kill them fuckers!;GET DAT FUKKEN DISK;HONK!;EI NATH;Down with Central!;Admin conspiracies since forever!;Space-time bending hardware!"
 	products = list(/obj/item/clothing/head/wizard = 1, /obj/item/clothing/suit/wizrobe = 1, /obj/item/clothing/head/wizard/red = 1, /obj/item/clothing/suit/wizrobe/red = 1, /obj/item/clothing/shoes/sandal = 1, /obj/item/weapon/staff = 2)
+	broken_start_prob = 0 // Nei
 
 /obj/machinery/vending/dinnerware
 	name = "Dinnerware"
