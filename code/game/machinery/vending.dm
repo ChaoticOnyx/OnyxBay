@@ -1425,8 +1425,9 @@
 		var/obj/drop_item = null
 		for(var/datum/stored_items/vending_products/R in shuffle(product_records))
 			drop_item = R.get_product(loc)
-		if(drop_item)
-			visible_message(SPAN("notice", "\The [src] clunks as \the [drop_item] suddenly drops out of it!"))
+			if(drop_item)
+				visible_message(SPAN("notice", "\The [src] clunks as \the [drop_item] suddenly drops out of it!"))
+				return
 
 /obj/machinery/vending/tool
 	name = "YouTool"
