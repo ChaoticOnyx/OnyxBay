@@ -257,14 +257,24 @@
 	activators = list("to speech" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 60
+	// TODO: replace this cringe with say for objects
+	var/mob/living/silicon/speaker
+
+/obj/item/integrated_circuit/output/text_to_speech/Initialize()
+	. = ..()
+	speaker = new(src)
+
+/obj/item/integrated_circuit/output/text_to_speech/Destroy()
+	QDEL_NULL(speaker)
+	. = ..()
 
 /obj/item/integrated_circuit/output/text_to_speech/do_work()
 	text = get_pin_data(IC_INPUT, 1)
-	if(!isnull(text))
-		var/atom/movable/A = get_object()
+	if(!isnull(text) && !QDELETED(speaker))
+		speaker.name = get_object().name
 		var/sanitized_text = sanitize(text)
 		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
-		A.audible_message("\The [A] states, \"[sanitized_text]\"")
+		speaker.say(sanitized_text, all_languages[LANGUAGE_GALCOM])
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
