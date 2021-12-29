@@ -245,6 +245,10 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 
+/mob/living/silicon/integrated_circuit
+	name = "Integrated Circuit"
+	playable_mob = FALSE
+
 /obj/item/integrated_circuit/output/text_to_speech
 	name = "text-to-speech circuit"
 	desc = "Takes any string as an input and will make the device say the string when pulsed."
@@ -258,7 +262,7 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 60
 	// TODO: replace this cringe with say for objects
-	var/mob/living/silicon/speaker
+	var/mob/living/silicon/integrated_circuit/speaker
 
 /obj/item/integrated_circuit/output/text_to_speech/Initialize()
 	. = ..()
@@ -274,7 +278,7 @@
 		speaker.name = get_object().name
 		var/sanitized_text = sanitize(text)
 		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
-		speaker.say(sanitized_text, all_languages[LANGUAGE_GALCOM])
+		speaker.say(sanitized_text, all_languages[LANGUAGE_GALCOM], FALSE)
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
