@@ -251,7 +251,7 @@
 	//Used in say.dm.
 	speak_statement = "enounces"
 	speak_exclamation = "enounces"
-	speak_query = "enounce"
+	speak_query = "enounces"
 
 /obj/item/integrated_circuit/output/text_to_speech
 	name = "text-to-speech circuit"
