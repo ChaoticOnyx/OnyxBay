@@ -249,7 +249,7 @@
 	name = "Integrated Circuit"
 	playable_mob = FALSE
 	//Used in say.dm.
-	speak_statement = "enounce"
+	speak_statement = "enounces"
 	speak_exclamation = "enounce"
 	speak_query = "enounce"
 
