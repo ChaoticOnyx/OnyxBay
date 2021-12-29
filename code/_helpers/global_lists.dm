@@ -46,7 +46,7 @@ var/list/obj/item/device/uplink/world_uplinks = list()
 //Preferences stuff
 //Hairstyles
 GLOBAL_LIST_EMPTY(hair_styles_list)        //stores /datum/sprite_accessory/hair indexed by name
-GLOBAL_LIST_EMPTY(hair_styles_icons)   
+GLOBAL_LIST_EMPTY(hair_styles_icons)   // Stores all icon states from icons/mob/human_face.dmi
 GLOBAL_LIST_EMPTY(facial_hair_styles_list) //stores /datum/sprite_accessory/facial_hair indexed by name
 
 var/global/list/skin_styles_female_list = list()		//unused
