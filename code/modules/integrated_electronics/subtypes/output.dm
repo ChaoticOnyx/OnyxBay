@@ -250,7 +250,7 @@
 	playable_mob = FALSE
 	//Used in say.dm.
 	speak_statement = "enounces"
-	speak_exclamation = "enounce"
+	speak_exclamation = "enounces"
 	speak_query = "enounce"
 
 /obj/item/integrated_circuit/output/text_to_speech
