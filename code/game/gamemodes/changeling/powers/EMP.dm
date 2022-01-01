@@ -26,12 +26,14 @@
 
 /datum/changeling_power/toggled/bioelectrogenesis/proc/affect(atom/target)
 	if(!target)
-		return
+		return FALSE
 	if(!is_usable())
-		return
-	if(target in orange(1, src))
+		return FALSE
+	if(target in orange(1, my_mob))
 		empulse(target.loc, 1, 1)
 		deactivate()
 		use_chems()
+		return TRUE
 	else
 		to_chat(src, SPAN("changeling", "The target is too far away."))
+		return FALSE

@@ -532,12 +532,18 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	if(!user.mind?.changeling)
 		user.PopClickHandler()
 		return
+
 	var/datum/changeling_power/toggled/bioelectrogenesis/CP = user.mind.changeling.get_changeling_power_by_name("Bioelectrogenesis") // Yes it's hacky. Don't write code like this.
 	if(!CP)
+		user.PopClickHandler()
 		return
-	CP.affect(target)
-	user.PopClickHandler()
-	return
+
+	if(isturf(target) || (target == user))
+		target.Click()
+		return
+
+	if(CP.affect(target))
+		user?.PopClickHandler()
 
 /datum/click_handler/changeling/little_paralyse
 	handler_name = "Paralyse"
