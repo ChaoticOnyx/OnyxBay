@@ -13,9 +13,11 @@
 	if(!..())
 		return
 
-	empulse(my_mob, heavy_range, light_range, TRUE)
 	use_chems()
 	to_chat(my_mob, SPAN("changeling", text_activate))
+
+	spawn()
+		empulse(my_mob, heavy_range, light_range, TRUE)
 
 /datum/changeling_power/bioelectrogenesis/update_recursive_enhancement()
 	if(..())
