@@ -87,7 +87,6 @@ var/list/floor_light_color_cache = list()
 	for(var/i = 1, i <= 8, i++)
 		overlays -= floor_light_cache["floorlight[ID]-damaged[i]"]
 
-	playsound(src, SFX_EXPLOSION_ELECTRIC, 70, 1)
 	. = ..()
 
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
@@ -168,7 +167,6 @@ var/list/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
 	if((health - damage) <= 0)
-		Destroy()
 		return
 	user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
 	playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
