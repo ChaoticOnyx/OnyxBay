@@ -1,5 +1,5 @@
-var/list/floor_light_cache = list()
-var/list/floor_light_color_cache = list()
+var/static/list/floor_light_cache = list()
+var/static/list/floor_light_color_cache = list()
 
 /obj/machinery/floor_light
 	name = "floor light"
@@ -15,23 +15,23 @@ var/list/floor_light_color_cache = list()
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/ID
-	var/max_health = 50
+	var/const/max_health = 60
 	var/health	// Hits to destroy
-	var/shield	// Hits to broke
+	var/const/shield = max_health * 0.6	// Hits to broke
 	var/damaged = FALSE
 	var/cracks = 0
-	var/crack_layer = DECAL_LAYER
+	var/const/crack_layer = DECAL_LAYER
 
-	var/light_layer = DECAL_LAYER
+	var/const/light_layer = DECAL_LAYER
 	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
 	var/inverted = FALSE
-	var/default_light_max_bright = 0.75
-	var/default_light_inner_range = 1
-	var/default_light_outer_range = 3
-	var/default_light_colour = "#69baff"
-	var/broken_light_colour = "#FFFFFF"
+	var/const/default_light_max_bright = 0.75
+	var/const/default_light_inner_range = 1
+	var/const/default_light_outer_range = 3
+	var/const/default_light_colour = "#69baff"
+	var/const/broken_light_colour = "#FFFFFF"
 	var/light_colour = "#69baff"
 
 	var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
@@ -49,7 +49,6 @@ var/list/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/New()
 	health = max_health
-	shield = max_health * 0.5
 	. = ..()
 
 /obj/machinery/floor_light/prebuilt
@@ -141,8 +140,8 @@ var/list/floor_light_color_cache = list()
 
 	if(isWelder(W) && (damaged || (stat & BROKEN)))
 		var/obj/item/weapon/weldingtool/WT = W
-		if(!WT.remove_fuel(0, user))
-			to_chat(user, SPAN("warning", "\The [src] must be on to complete this task."))
+		if(!WT.remove_fuel(cracks, user))
+			to_chat(user, SPAN("warning", "\The [WT.name] must be on and have at least [cracks] units of fuel to complete this task."))
 			return
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 		if(!do_after(user, 20, src))
@@ -168,14 +167,12 @@ var/list/floor_light_color_cache = list()
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
 	user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
 	playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
-	if(health <= shield / 2)
-		visible_message("[src] looks like it's about to shatter!")
-	else if(broken())
+	if(broken())
 		visible_message("[src] looks seriously damaged!")
 
+	damaged++
 	if((health - damage) <= 0)
 		return
-	damaged++
 	health -= damage
 	update_brightness()
 
@@ -262,7 +259,7 @@ var/list/floor_light_color_cache = list()
 	while(prob(50))
 
 /obj/machinery/floor_light/proc/broken()
-	return health <= shield
+	return health < shield
 
 /obj/machinery/floor_light/proc/light_color_check(ID)
 	if(isnull(light_colour))
