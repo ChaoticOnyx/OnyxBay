@@ -1240,6 +1240,15 @@
 				to_chat(src, "Hack attempt detected.")
 			return 1
 
+/mob/living/silicon/robot/blob_act(damage)
+	if(is_dead())
+		gib()
+		return
+
+	. = ..(damage)
+
+	spark_system.start()
+
 /mob/living/silicon/robot/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge || !is_component_functioning("actuator")))
 		return 1

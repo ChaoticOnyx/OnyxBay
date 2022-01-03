@@ -5,6 +5,7 @@
 
 /datum/artifact_effect/forcefield/New()
 	..()
+	effect = EFFECT_TOUCH
 	trigger = TRIGGER_TOUCH
 
 /datum/artifact_effect/forcefield/Destroy()

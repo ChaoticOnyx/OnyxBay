@@ -23,6 +23,7 @@
 	holder_type = /obj/item/weapon/holder/borer
 	mob_size = MOB_SMALL
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/borer
 
 	var/generation = 1
 	var/static/list/borer_names = list(
@@ -185,3 +186,6 @@
 /mob/living/simple_animal/borer/proc/request_player()
 	var/datum/ghosttrap/G = get_ghost_trap("cortical borer")
 	G.request_player(src, "A cortical borer needs a player.")
+
+/decl/simple_animal_bodyparts/borer
+	hit_zones = list("head", "central segment", "tail segment")

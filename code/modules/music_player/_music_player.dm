@@ -313,6 +313,20 @@ GLOBAL_LIST_EMPTY(music_players)
 /obj/item/music_player/attack_ai(mob/user)
 	return
 
+/obj/item/music_player/proc/eject(mob/user)
+	if(mode)
+		StopPlaying()
+
+	playsound(src, 'sound/items/Screwdriver3.ogg', 20, 1)
+	if(user)
+		visible_message(
+			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
+			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
+		user.put_in_hands(tape)
+	else
+		tape.dropInto(loc)
+	tape = null
+
 /obj/item/music_player/MouseDrop(obj/over_object)
 	if(!over_object)
 		return
@@ -331,30 +345,16 @@ GLOBAL_LIST_EMPTY(music_players)
 			eject(usr)
 	update_icon()
 
-/obj/item/music_player/verb/eject(mob/user)
+/obj/item/music_player/verb/eject_verb()
 	set name = "Eject Tape"
 	set category = "Object"
-
-	if(usr)
-		user = usr
+	var/mob/user = usr
 
 	if(!tape)
 		to_chat(user, SPAN_NOTICE("There's no tape in \the [src]."))
 		return
 
-	if(mode)
-		StopPlaying()
-
-	playsound(src, 'sound/items/Screwdriver3.ogg', 20, 1)
-	if(user)
-		visible_message(
-			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
-			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-	if(user)
-		user.put_in_hands(tape)
-	else
-		tape.dropInto(loc)
-	tape = null
+	eject(user)
 
 /obj/item/music_player/verb/volume()
 	set name = "Change Volume"

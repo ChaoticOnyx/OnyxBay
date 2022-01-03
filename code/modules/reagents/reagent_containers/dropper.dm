@@ -12,7 +12,7 @@
 	slot_flags = SLOT_EARS
 	volume = 5
 
-	afterattack(var/obj/target, var/mob/user, var/proximity)
+	afterattack(obj/target, mob/user, proximity)
 		if(!target.reagents || !proximity) return
 
 		if(reagents.total_volume)

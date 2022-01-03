@@ -51,7 +51,8 @@
 	step_delay = 1
 	atom_flags = null
 	slot_flags = null
-	canremove = 0
+	canremove = FALSE
+	force_drop = TRUE
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	matter = null
 	var/obj/item/weapon/backwear/reagent/base_unit

@@ -47,11 +47,11 @@
 	title = "Pipes and You: Getting To Know Your Scary Tools"
 	topic = "Guide to Atmospherics"
 
-/obj/item/weapon/book/wiki/hardsuits
+/obj/item/weapon/book/wiki/powersuits
 	icon_state = "evabook"
 	author = "Maria Crash, Senior Atmospherics Technician"
 	title = "Best EVA Gear: Not Spending All Day Inside"
-	topic = "Hardsuit"
+	topic = "Powersuit"
 
 /obj/item/weapon/book/wiki/chef_recipes
 	icon_state = "cooked_book"
@@ -88,7 +88,7 @@
 
 /obj/item/weapon/book/wiki/nt_regs
 	desc = "A set of corporate guidelines for employees of NanoTrasen."
-	icon_state = "booknanoregs"
+	icon_state = "bookRedSpaceLaw"
 	author = "NanoTrasen"
 	title = "NanoTrasen Regulations"
 	topic = "Space Law/Onyx"

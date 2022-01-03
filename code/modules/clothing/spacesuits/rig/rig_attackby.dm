@@ -62,20 +62,20 @@
 			to_chat(user, "You slot [W] into [src] and tighten the connecting valve.")
 			return
 
-		// Check if this is a hardsuit upgrade or a modification.
+		// Check if this is a powersuit upgrade or a modification.
 		else if(istype(W,/obj/item/rig_module))
 
 			if(istype(src.loc,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "<span class='danger'>You can't install a hardsuit module while the suit is being worn.</span>")
+					to_chat(user, "<span class='danger'>You can't install a powersuit module while the suit is being worn.</span>")
 					return 1
 
 			if(!installed_modules) installed_modules = list()
 			if(installed_modules.len)
 				for(var/obj/item/rig_module/installed_mod in installed_modules)
 					if(!installed_mod.redundant && istype(installed_mod,W))
-						to_chat(user, "The hardsuit already has a module of that class installed.")
+						to_chat(user, "The powersuit already has a module of that class installed.")
 						return 1
 
 			var/obj/item/rig_module/mod = W
@@ -124,7 +124,7 @@
 			if(istype(src.loc,/mob/living/carbon/human) && to_remove != "cell")
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "You can't remove an installed device while the hardsuit is being worn.")
+					to_chat(user, "You can't remove an installed device while the powersuit is being worn.")
 					return
 
 			switch(to_remove)

@@ -42,7 +42,7 @@
 			magnetic_process()
 
 	// update the invisibility and icon
-	hide(var/intact)
+	hide(intact)
 		set_invisibility(intact ? 101 : 0)
 		update_icon()
 
@@ -70,8 +70,7 @@
 
 
 
-	proc/Cmd(var/command, var/modifier)
-
+	proc/Cmd(command, modifier)
 		if(command)
 			switch(command)
 				if("set-electriclevel")

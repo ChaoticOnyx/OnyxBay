@@ -102,6 +102,9 @@
 	qdel(src)
 	return
 
+/obj/structure/window/blob_act(damage)
+	take_damage(damage)
+
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
 	var/proj_damage = Proj.get_structure_damage()
@@ -309,6 +312,9 @@
 	if(usr.incapacitated())
 		return 0
 
+	if(is_full_window()) // No point in rotating a window if it is full
+		return 0
+
 	if(anchored)
 		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
@@ -326,6 +332,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)

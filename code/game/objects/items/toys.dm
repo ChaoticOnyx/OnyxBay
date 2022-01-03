@@ -889,6 +889,12 @@
 	density = 1
 	var/dodgecount = 0
 	var/spam_flag = 0
+	var/very_dangerous = TRUE
+
+/obj/item/toy/chubbyskeleton/notsans
+	name = "Unknown"
+	icon_state = "notsans"
+	very_dangerous = FALSE
 
 /obj/item/toy/chubbyskeleton/New()
 	..()
@@ -958,7 +964,8 @@
 		speak(pick("geeettttttt dunked on!!!","told ya."))
 		if(istype(user, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = user
-			H.ChangeToSkeleton()
+			if(very_dangerous)
+				H.ChangeToSkeleton()
 			for(var/obj/item/W in H)
 				H.drop_from_inventory(W)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)

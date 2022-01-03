@@ -342,6 +342,12 @@
 			if(!(--Proj.penetrating))
 				break
 
+/obj/structure/closet/blob_act()
+	if(opened)
+		qdel(src)
+	else
+		break_open()
+
 /obj/structure/closet/attackby(obj/item/weapon/W, mob/user)
 	if(src.opened)
 		if(istype(W, /obj/item/grab))
@@ -426,7 +432,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200)|| locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && !cdoor))
+			if(!do_after(user, 200) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked

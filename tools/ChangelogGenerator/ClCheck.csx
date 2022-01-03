@@ -35,12 +35,6 @@ if (pullRequest is null)
     return 1;
 }
 
-if (pullRequest.Labels.Any(l => l.Name == Settings.ChangelogNotRequiredLabel))
-{
-    WriteLine("✅ Чейнджлог не требуется.");
-    return 0;
-}
-
 public async Task RemoveAllClLabelsExcept(string except)
 {
     string[] clLabels = { Settings.ChangelogCheckedLabel, Settings.ChangelogNotRequiredLabel, Settings.ChangelogRequiredLabel };
@@ -60,9 +54,9 @@ try
 {
     changelog = pullRequest.ParseChangelog();
 }
-catch (Exceptions.ChangelogNotFound)
+catch (Exceptions.ChangelogNotFound e)
 {
-    WriteLine("Чейнджлог не найден.");
+    WriteLine(e.Message);
     await RemoveAllClLabelsExcept(Settings.ChangelogNotRequiredLabel);
     // Добавление плашки о ненужности чейнджлога.
     var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogNotRequiredLabel}\"] }}"));

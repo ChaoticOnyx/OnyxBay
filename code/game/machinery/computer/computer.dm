@@ -57,6 +57,13 @@
 					verbs -= x
 				set_broken(TRUE)
 
+/obj/machinery/computer/blob_act(damage)
+	if(stat & BROKEN)
+		return
+	
+	playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
+	set_broken(TRUE)
+
 /obj/machinery/computer/bullet_act(obj/item/projectile/Proj)
 	if(prob(Proj.get_structure_damage()))
 		set_broken(TRUE)

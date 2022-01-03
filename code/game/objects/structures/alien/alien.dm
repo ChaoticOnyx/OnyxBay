@@ -3,6 +3,7 @@
 	desc = "There's something alien about this."
 	icon = 'icons/mob/alien.dmi'
 	layer = ABOVE_OBJ_LAYER
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	var/health = 50
 
 	hitby_sound = 'sound/effects/attackblob.ogg'
@@ -55,8 +56,7 @@
 	healthcheck()
 	return
 
-/obj/structure/alien/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 0
+/obj/structure/alien/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return !opacity
 	return !density

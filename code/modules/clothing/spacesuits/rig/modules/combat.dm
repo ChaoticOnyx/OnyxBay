@@ -158,6 +158,10 @@
 	if(gun)
 		gun = new gun(src)
 
+/obj/item/rig_module/mounted/Destroy()
+	QDEL_NULL(gun)
+	. = ..()
+
 /obj/item/rig_module/mounted/engage(atom/target)
 
 	if(!..())
@@ -260,7 +264,7 @@
 /obj/item/rig_module/fabricator
 
 	name = "matter fabricator"
-	desc = "A self-contained microfactory system for hardsuit integration."
+	desc = "A self-contained microfactory system for powersuit integration."
 	selectable = 1
 	usable = 1
 	use_power_cost = 5 KILOWATTS

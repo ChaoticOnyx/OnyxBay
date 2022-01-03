@@ -39,6 +39,7 @@
 	name = "virus dish"
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "virus_sample"
+	w_class = ITEM_SIZE_SMALL
 	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
 	var/basic_info = null
@@ -81,6 +82,7 @@
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "virus_dish_r"
 	desc = "The bacteria in the dish are completely dead."
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/weapon/ruinedvirusdish/attackby(obj/item/weapon/W as obj,mob/living/carbon/user as mob)
 	if(istype(W,/obj/item/weapon/hand_labeler) || istype(W,/obj/item/weapon/reagent_containers/syringe))

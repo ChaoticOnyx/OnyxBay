@@ -11,9 +11,10 @@
 	icon_state = "acid"
 	icon = 'icons/mob/alien.dmi'
 
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
+	layer = ABOVE_WINDOW_LAYER
 
 	var/atom/target
 	var/acid_strength = ACID_WEAK
@@ -24,6 +25,9 @@
 	..(loc)
 	target = supplied_target
 	melt_time = melt_time / acid_strength
+	desc += "\n<b>It's melting \the [target]!</b>"
+	pixel_x = target.pixel_x
+	pixel_y = target.pixel_y
 	START_PROCESSING(SSprocessing, src)
 
 /obj/effect/acid/Destroy()
@@ -118,6 +122,8 @@
 		icon_state = "egg"
 
 /obj/structure/alien/egg/proc/hatch()
+	set waitfor = 0
+
 	progress = -1
 	STOP_PROCESSING(SSobj, src)
 	update_icon()
@@ -129,8 +135,6 @@
 /*
  * Weeds
  */
-#define NODERANGE 3
-
 /obj/effect/alien/weeds
 	name = "weeds"
 	desc = "Weird purple weeds."
@@ -148,8 +152,7 @@
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
-	light_outer_range = NODERANGE
-	var/node_range = NODERANGE
+	var/node_range = 3
 
 /obj/effect/alien/weeds/node/New()
 	..(src.loc, src)
@@ -238,5 +241,3 @@
 /obj/effect/alien/weeds/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300 + T0C && prob(80))
 		qdel(src)
-
-#undef NODERANGE

@@ -59,7 +59,6 @@
 	var/datum/mind/leader                   // Current leader, if any.
 	var/cur_max = 0                         // Autotraitor current effective maximum.
 	var/spawned_nuke                        // Has a bomb been spawned?
-	var/nuke_spawn_loc                      // If so, where should it be placed?
 	var/list/current_antagonists = list()   // All marked antagonists for this type.
 	var/list/pending_antagonists = list()   // Candidates that are awaiting finalized antag status.
 	var/list/starting_locations =  list()   // Spawn points.

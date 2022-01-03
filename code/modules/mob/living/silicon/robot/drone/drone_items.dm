@@ -120,6 +120,13 @@
 		/obj/item/integrated_circuit,
 	)
 
+/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity, click_parameters)
+	if(istype(wrapped, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/EA = wrapped
+		EA.afterattack(target, user, proximity)
+	else
+		..()
+
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
 	desc = "A simple grasping tool for archeological work."
@@ -409,10 +416,6 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-
-	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
-		var/obj/machinery/portable_atmospherics/canister/A = target
-		A.ui_interact(user)
 
 	else if(istype(target, /obj/machinery/mining/drill))
 		var/obj/machinery/mining/drill/hdrill = target

@@ -16,7 +16,7 @@
 
 /obj/item/rig_module/device
 	name = "mounted device"
-	desc = "Some kind of hardsuit mount."
+	desc = "Some kind of powersuit mount."
 	usable = 0
 	selectable = 1
 	toggleable = 0
@@ -25,9 +25,35 @@
 	var/device_type
 	var/obj/item/device
 
+/obj/item/rig_module/device/Initialize()
+	. = ..()
+	if(device_type)
+		device = new device_type(src)
+
+/obj/item/rig_module/device/Destroy()
+	QDEL_NULL(device)
+	. = ..()
+
+/obj/item/rig_module/device/engage(atom/target)
+	if(!..() || !device)
+		return FALSE
+
+	if(!target)
+		device.attack_self(holder.wearer)
+		return TRUE
+
+	if(!target.Adjacent(holder.wearer))
+		return FALSE
+
+	var/resolved = target.attackby(device, holder.wearer)
+	if(!resolved && device && target)
+		device.afterattack(target, holder.wearer, 1)
+	return TRUE
+
+
 /obj/item/rig_module/device/healthscanner
 	name = "health scanner module"
-	desc = "A hardsuit-mounted health scanner."
+	desc = "A powersuit-mounted health scanner."
 	icon_state = "scanner"
 	interface_name = "health scanner"
 	interface_desc = "Shows an informative health readout when used on a subject."
@@ -36,7 +62,7 @@
 	device_type = /obj/item/device/healthanalyzer
 
 /obj/item/rig_module/device/drill
-	name = "hardsuit drill mount"
+	name = "powersuit drill mount"
 	desc = "A very heavy diamond-tipped drill."
 	icon_state = "drill"
 	interface_name = "mounted drill"
@@ -48,7 +74,7 @@
 	device_type = /obj/item/weapon/pickaxe/diamonddrill
 
 /obj/item/rig_module/device/anomaly_scanner
-	name = "hardsuit anomaly scanner"
+	name = "powersuit anomaly scanner"
 	desc = "You think it's called an Elder Sarsparilla or something."
 	icon_state = "eldersasparilla"
 	interface_name = "Alden-Saraspova counter"
@@ -75,7 +101,7 @@
 
 /obj/item/rig_module/device/rcd
 	name = "RCD mount"
-	desc = "A cell-powered rapid construction device for a hardsuit."
+	desc = "A cell-powered rapid construction device for a powersuit."
 	icon_state = "rcd"
 	interface_name = "mounted RCD"
 	interface_desc = "A device for building or removing walls. Cell-powered."
@@ -85,30 +111,10 @@
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 5, TECH_ENGINEERING = 7)
 	device_type = /obj/item/weapon/rcd/mounted
 
-/obj/item/rig_module/device/Initialize()
-	. = ..()
-	if(device_type) device = new device_type(src)
-
-/obj/item/rig_module/device/engage(atom/target)
-	if(!..() || !device)
-		return 0
-
-	if(!target)
-		device.attack_self(holder.wearer)
-		return 1
-
-	if(!target.Adjacent(holder.wearer))
-		return 0
-
-	var/resolved = target.attackby(device,holder.wearer)
-	if(!resolved && device && target)
-		device.afterattack(target,holder.wearer,1)
-	return 1
-
 
 /obj/item/rig_module/chem_dispenser
 	name = "mounted chemical dispenser"
-	desc = "A complex web of tubing and needles suitable for hardsuit use."
+	desc = "A complex web of tubing and needles suitable for powersuit use."
 	icon_state = "injector"
 	usable = 1
 	selectable = 0
@@ -227,7 +233,7 @@
 /obj/item/rig_module/chem_dispenser/combat
 
 	name = "combat chemical injector"
-	desc = "A complex web of tubing and needles suitable for hardsuit use."
+	desc = "A complex web of tubing and needles suitable for powersuit use."
 
 	charges = list(
 		list("synaptizine", "synaptizine", /datum/reagent/synaptizine,       30),
@@ -252,7 +258,7 @@
 /obj/item/rig_module/chem_dispenser/injector
 
 	name = "mounted chemical injector"
-	desc = "A complex web of tubing and a large needle suitable for hardsuit use."
+	desc = "A complex web of tubing and a large needle suitable for powersuit use."
 	usable = 0
 	selectable = 1
 	disruptive = 1
@@ -262,7 +268,7 @@
 
 /obj/item/rig_module/voice
 
-	name = "hardsuit voice synthesiser"
+	name = "powersuit voice synthesiser"
 	desc = "A speaker box and sound processor."
 	icon_state = "voicechanger"
 	usable = 1
@@ -282,6 +288,10 @@
 	. = ..()
 	voice_holder = new(src)
 	voice_holder.active = 0
+
+/obj/item/rig_module/voice/Destroy()
+	QDEL_NULL(voice_holder)
+	. = ..()
 
 /obj/item/rig_module/voice/installed()
 	..()
@@ -316,8 +326,8 @@
 
 /obj/item/rig_module/maneuvering_jets
 
-	name = "hardsuit maneuvering jets"
-	desc = "A compact gas thruster system for a hardsuit."
+	name = "powersuit maneuvering jets"
+	desc = "A compact gas thruster system for a powersuit."
 	icon_state = "thrusters"
 	usable = 1
 	toggleable = 1
@@ -372,6 +382,10 @@
 	. = ..()
 	jets = new(src)
 
+/obj/item/rig_module/maneuvering_jets/Destroy()
+	QDEL_NULL(jets)
+	. = ..()
+
 /obj/item/rig_module/maneuvering_jets/installed()
 	..()
 	jets.holder = holder
@@ -383,7 +397,7 @@
 	jets.ion_trail.set_up(jets)
 
 /obj/item/rig_module/device/paperdispenser
-	name = "hardsuit paper dispenser"
+	name = "powersuit paper dispenser"
 	desc = "Crisp sheets."
 	icon_state = "paper"
 	interface_name = "paper dispenser"
@@ -430,6 +444,11 @@
 	deniedstamp = new /obj/item/weapon/stamp/denied(src)
 	device = iastamp
 
+/obj/item/rig_module/device/stamp/Destroy()
+	QDEL_NULL(iastamp)
+	QDEL_NULL(deniedstamp)
+	. = ..()
+
 /obj/item/rig_module/device/stamp/engage(atom/target)
 	if(!..() || !device)
 		return 0
@@ -445,7 +464,7 @@
 
 /obj/item/rig_module/device/decompiler
 	name = "mounted matter decompiler"
-	desc = "A drone matter decompiler reconfigured for hardsuit use."
+	desc = "A drone matter decompiler reconfigured for powersuit use."
 	icon_state = "ewar"
 	interface_name = "mounted matter decompiler"
 	interface_desc = "Eats trash like no one's business."

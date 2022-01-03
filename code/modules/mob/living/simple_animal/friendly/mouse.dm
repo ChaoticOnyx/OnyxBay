@@ -34,6 +34,7 @@
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	var/obj/item/holding_item = null
 	var/datum/disease2/disease/virus = null
 

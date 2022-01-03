@@ -248,6 +248,8 @@
 				I.pixel_y = 3
 			if("deliverycrate5")
 				I.pixel_y = -3
+			if("deliverybox")
+				I.pixel_y = 1
 		overlays += I
 
 /obj/item/smallDelivery/examine(mob/user)
@@ -298,7 +300,6 @@
 				if(user.client)
 					user.client.screen -= O
 			P.wrapped = O
-			O.forceMove(P)
 			P.w_class = O.w_class
 			var/i = round(O.w_class)
 			if(i in list(1,2,3,4,5))
@@ -321,6 +322,12 @@
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
 			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
 			"You hear someone taping paper around a small object.")
+			if(istype(O, /obj/item/weapon/storage/box))
+				var/obj/item/weapon/storage/box/B = O
+				B.close(user)
+				P.SetName("box-shaped parcel")
+				P.icon_state = "deliverybox"
+			O.forceMove(P)
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
 		if (src.amount > 3 && !O.opened)

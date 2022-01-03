@@ -109,6 +109,7 @@
 	icon_state = "scalpel_laser1_on"
 	damtype = "fire"
 	surgery_speed = 0.8
+	check_armour = "laser"
 
 /obj/item/weapon/scalpel/laser2
 	name = "improved laser scalpel"
@@ -117,6 +118,7 @@
 	damtype = "fire"
 	force = 12.0
 	surgery_speed = 0.6
+	check_armour = "laser"
 
 /obj/item/weapon/scalpel/laser3
 	name = "advanced laser scalpel"
@@ -125,6 +127,7 @@
 	damtype = "fire"
 	force = 15.0
 	surgery_speed = 0.4
+	check_armour = "laser"
 
 /obj/item/weapon/scalpel/manager
 	name = "incision management system"

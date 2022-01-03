@@ -125,7 +125,7 @@
 		new /obj/item/weapon/book/wiki/engineering_guide(src)
 		new /obj/item/weapon/book/wiki/atmospipes(src)
 		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/wiki/hardsuits(src)
+		new /obj/item/weapon/book/wiki/powersuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -136,6 +136,54 @@
 		new /obj/item/weapon/book/wiki/research_and_development(src)
 		update_icon()
 
+/obj/structure/bookcase/prefitted
+	var/prefit_category
+
+/obj/structure/bookcase/prefitted/Initialize()
+	. = ..()
+	if(!prefit_category)
+		return
+	if(!establish_old_db_connection())
+		return
+	var/list/potential_books = list()
+	var/DBQuery/query = sql_query("SELECT * FROM library WHERE category = $category", dbcon_old, list(category = prefit_category))
+	while(query.NextRow())
+		potential_books.Add(list(list(
+			"id" = query.item[1],
+			"author" = query.item[2],
+			"title" = query.item[3],
+			"content" = query.item[4]
+		)))
+	var/list/picked_books = list()
+	for(var/i in 1 to rand(3,5))
+		if(potential_books.len)
+			var/r = rand(1, potential_books.len)
+			var/pick = potential_books[r]
+			picked_books += list(pick)
+			potential_books -= list(pick)
+	for(var/i in picked_books)
+		var/obj/item/weapon/book/book = new(src)
+		book.dat += "<font face=\"Verdana\"><i>Author: [i["author"]]<br>USBN: [i["id"]]</i><br><h3>[i["title"]]</h3></font><br>[i["content"]]"
+		book.title = i["title"]
+		book.author = i["author"]
+		book.icon_state = "book[rand(1,7)]"
+	update_icon()
+
+/obj/structure/bookcase/prefitted/fiction
+	name = "bookcase (Fiction)"
+	prefit_category = "Fiction"
+
+/obj/structure/bookcase/prefitted/nonfiction
+	name = "bookcase (Non-Fiction)"
+	prefit_category = "Non-Fiction"
+
+/obj/structure/bookcase/prefitted/religious
+	name = "bookcase (Religious)"
+	prefit_category = "Religion"
+
+/obj/structure/bookcase/prefitted/reference
+	name = "bookcase (Reference)"
+	prefit_category = "Reference"
 
 /*
  * Book

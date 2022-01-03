@@ -117,7 +117,7 @@
 	if(stripping)
 		if(unEquip(target_slot))
 			admin_attack_log(user, src, "Stripped \a [target_slot]", "Was stripped of \a [target_slot].", "stripped \a [target_slot] from")
-			if(!isAggresiveStrip(user))
+			if(!isAggresiveStrip(user) && user.IsAdvancedToolUser(TRUE))
 				user.put_in_active_hand(target_slot)
 		else
 			admin_attack_log(user, src, "Attempted to strip \a [target_slot]", "Target of a failed strip of \a [target_slot].", "attempted to strip \a [target_slot] from")
@@ -172,7 +172,7 @@
 	for(var/obj/item/organ/external/o in organs)
 		if (o && o.splinted)
 			var/obj/item/S = o.splinted
-			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with hardsuit splints)
+			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with powersuit splints)
 				to_chat(user, "<span class='warning'>You cannot remove any splints on [src]'s [o.name] - [o.splinted] is supporting some of the breaks.</span>")
 			else
 				S.add_fingerprint(user)
