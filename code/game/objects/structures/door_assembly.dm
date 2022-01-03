@@ -209,10 +209,10 @@
 
 		if(do_after(user, cooldown_time, src))
 			if(!src) return
-			if(src.state == 1)
+			if(state == 1)
 				to_chat(user, "<span class='notice'>You cut the airlock wires.!</span>")
 				new /obj/item/stack/cable_coil(src.loc, 1)
-				src.state = 0
+				state = 0
 			else
 				to_chat(user, "<span class='notice'>You tried to cut wires that are no longer there.</span>")
 
