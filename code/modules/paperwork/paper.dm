@@ -40,8 +40,51 @@
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
 	var/const/crayonfont = "Comic Sans MS"
-	var/const/fancyfont = "Segoe Script"
+	var/const/handfont = "Segoe Script"
+	var/const/fancyfont = "Good Vibes Pro"
 	var/text_color = COLOR_BLACK
+
+	var/static/styles = {"
+	@font-face {
+		font-family: "Good Vibes Pro";
+		src: url("./good_vibes.woff") format("woff");
+		font-weight: 400;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	table {
+		border: 1px solid black;
+	}
+
+	.SmallFont {
+		font-size: 0.7em;
+	}
+
+	.MediumFont {
+		font-size: 1.2em;
+	}
+
+	.LargeFont {
+		font-size: 1.3em;
+	}
+
+	hr.Handwritten {
+		border: none;
+		height: 5px;
+		background-image: url('line_hand.png');
+		background-repeat: repeat-x;
+		background-size: contain;
+	}
+
+	table.Handwritten,
+	th.Handwritten,
+	td.Handwritten {
+		border: 5px solid black;
+		border-image: url('borders_hand.png') 27 fill;
+		border-image-size: 10px;
+	}
+"}
 
 	//static because these can't be const
 	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
@@ -169,7 +212,20 @@
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
-	show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
+	var/content = {"
+<html>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>
+		[can_read ? info : stars(info)][stamps]
+	</body>
+</html>
+"}
+	show_browser(user, content, "window=[name]")
 	onclose(user, "[name]")
 
 /obj/item/weapon/paper/verb/rename()
@@ -330,14 +386,27 @@
 		if (istype(RP) && RP.mode == 2)
 			RP.RenamePaper(user,src)
 		else
-			show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]")
+			var/content = {"
+<html>
+	<meta charset='utf-8'>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+			show_browser(user, content, "window=[name]")
 		return
 
 	else if(istype(P, /obj/item/weapon/stamp) || istype(P, /obj/item/clothing/ring/seal))
 		if((!in_range(src, user) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
 			return
 
-		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
+		stamps += (stamps=="" ? "<hr>" : "<br>") + "<i>This paper has been stamped with the [P.name].</i>"
 
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		var/x
@@ -461,12 +530,21 @@
 		counter = 0
 	return " <I><span class='sign_field_[counter++]'>sign here</span></I> "
 
-/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
+/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, ishandwritten, is_init = FALSE)
 	if(length(t) == 0)
 		return ""
 
+	var/using_font = deffont
+
+	if(isfancy)
+		using_font = fancyfont
+	else if(iscrayon)
+		using_font = crayonfont
+	else if(ishandwritten)
+		using_font = handfont
+
 	if(findtext(t, "\[sign\]"))
-		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
+		t = replacetext(t, "\[sign\]", "<font face=\"[using_font]\"><i>[get_signature(P, user)]</i></font>")
 
 	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
 	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
@@ -491,14 +569,9 @@
 		t = replacetext(t, "\[cell\]", "")
 		t = replacetext(t, "\[logo\]", "")
 
-	if(iscrayon)
-		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : COLOR_BLACK]><b>[t]</b></font>"
-	else if(isfancy)
-		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : COLOR_BLACK]><i>[t]</i></font>"
-	else
-		t = "<font face=\"[deffont]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
+	t = "<font face=\"[using_font]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
 
-	t = pencode2html(t)
+	t = pencode2html(t, isfancy || iscrayon || ishandwritten)
 
 	return t
 
@@ -574,7 +647,20 @@
 		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		info_links = replacetext(info_links, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		update_space()
-		show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		var/content = {"
+<html>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta charset='utf-8'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+		show_browser(usr, content, "window=[name]") // Update the window
 		return
 	if(href_list["write"])
 		if (readonly)
@@ -595,14 +681,19 @@
 		var/obj/item/i = get_pen()
 		if (!i)
 			return
-		var/iscrayon = 0
-		var/isfancy = 0
+		
+		var/ishandwritten = FALSE
+		var/iscrayon = FALSE
+		var/isfancy = FALSE
 
-		if(istype(i, /obj/item/weapon/pen/crayon))
-			iscrayon = 1
+		if(istype(i, /obj/item/weapon/pen))
+			ishandwritten = TRUE
 
-		if(istype(i, /obj/item/weapon/pen/fancy))
-			isfancy = 1
+			if(istype(i, /obj/item/weapon/pen/crayon))
+				iscrayon = TRUE
+
+			if(istype(i, /obj/item/weapon/pen/fancy))
+				isfancy = TRUE
 
 		if (!check_proximity())
 			return
@@ -611,7 +702,7 @@
 			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
 
-		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html
+		t = parsepencode(t, i, usr, iscrayon, isfancy, ishandwritten) // Encode everything from pencode to html
 
 		var/terminated = FALSE
 		if (findtext(t, @"[end]"))
@@ -624,7 +715,20 @@
 
 		update_space()
 
-		show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		var/content = {"
+<html>
+	<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+	<meta charset='utf-8'>
+	<head>
+		<title>[name]</title>
+		<style>[styles]</style>
+	</head>
+	<body bgcolor='[color]'>
+		[info_links][stamps]
+	</body>
+</html>
+"}
+		show_browser(usr, content, "window=[name]") // Update the window
 
 		update_icon()
 

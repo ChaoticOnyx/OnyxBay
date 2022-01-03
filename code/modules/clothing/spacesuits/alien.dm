@@ -111,7 +111,7 @@
 	if(!proximity)
 		return
 	if(charge == 0)
-		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		playsound(src, 'sound/effects/flare.ogg', 30, 1)
@@ -143,7 +143,7 @@
 				charge--
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	if(charge == 0)
-		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		spawn(1)
@@ -152,7 +152,7 @@
 		return
 
 /obj/item/weapon/vox_rcd/dropped(mob/user)
-	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+	user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)

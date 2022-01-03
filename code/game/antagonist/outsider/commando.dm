@@ -2,7 +2,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 /datum/antagonist/deathsquad/syndicate
 	id = MODE_COMMANDO
-	landmark_id = "Syndicate-Commando"
+	landmark_id = "Syndicate Commando"
 	role_text = "Syndicate Commando"
 	role_text_plural = "Commandos"
 	welcome_text = "You are in the employ of a criminal syndicate hostile to corporate interests."

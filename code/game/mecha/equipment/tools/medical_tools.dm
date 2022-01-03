@@ -1,8 +1,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper
 	name = "mounted sleeper"
 	desc = "A sleeper. Mountable to an exosuit. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/cryogenic2.dmi'
-	icon_state = "sleeper_0"
+	icon_state = "mecha_sleeper"
 	origin_tech = list(TECH_DATA = 2, TECH_BIO = 3)
 	energy_drain = 20
 	range = MELEE
@@ -219,10 +218,9 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun
-	name = "syringe gun"
+	name = "mounted syringe gun"
 	desc = "Exosuit-mounted chem synthesizer with syringe gun. Reagents inside are held in stasis, so no reactions will occur. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "syringegun"
+	icon_state = "mecha_syringe_gun"
 	var/list/syringes
 	var/list/known_reagents
 	var/list/processed_reagents

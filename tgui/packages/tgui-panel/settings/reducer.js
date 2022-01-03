@@ -4,7 +4,13 @@
  * @license MIT
  */
 
-import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings } from './actions'
+import {
+  changeSettingsTab,
+  loadSettings,
+  openChatSettings,
+  toggleSettings,
+  updateSettings
+} from './actions'
 import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants'
 
 const initialState = {
@@ -26,7 +32,8 @@ const initialState = {
     opaque: 0,
     repeat: REPEAT_MODE.no,
     size: SIZE_MODE.contain
-  }
+  },
+  customCss: ''
 }
 
 export const settingsReducer = (state = initialState, action) => {

@@ -8,7 +8,7 @@
 	var/list/authorized = list(  )
 
 
-	attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob)
+	attackby(obj/item/weapon/card/W as obj, mob/user as mob)
 		if(stat & (BROKEN|NOPOWER))	return
 
 		var/datum/evacuation_controller/shuttle/evac_control = evacuation_controller

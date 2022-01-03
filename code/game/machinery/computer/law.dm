@@ -36,7 +36,7 @@
 			..()
 
 
-	attack_hand(var/mob/user as mob)
+	attack_hand(mob/user as mob)
 		if(src.stat & NOPOWER)
 			to_chat(usr, "The upload computer has no power!")
 			return
@@ -72,7 +72,7 @@
 			return ..()
 
 
-	attack_hand(var/mob/user as mob)
+	attack_hand(mob/user as mob)
 		if(src.stat & NOPOWER)
 			to_chat(usr, "The upload computer has no power!")
 			return

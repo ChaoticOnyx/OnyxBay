@@ -20,6 +20,7 @@
 	var/last_check = 0
 	faction = "cute ghost dogs"
 	supernatural = 1
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/faithful_hound/death()
 	new /obj/item/weapon/ectoplasm (get_turf(src))

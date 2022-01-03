@@ -28,6 +28,7 @@
 	can_escape = TRUE //snip snip
 	controllable = TRUE
 	shy_animal = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/crab
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
@@ -52,3 +53,6 @@
 	response_harm = "stomps"
 	possession_candidate = FALSE
 	controllable = FALSE
+
+/decl/simple_animal_bodyparts/crab
+	hit_zones = list("cephalothorax", "abdomen", "left walking legs", "right walking legs", "left swimming legs", "right swimming legs", "left pincer", "right pincer")

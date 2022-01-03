@@ -125,7 +125,7 @@
 		new /obj/item/weapon/book/wiki/engineering_guide(src)
 		new /obj/item/weapon/book/wiki/atmospipes(src)
 		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/wiki/hardsuits(src)
+		new /obj/item/weapon/book/wiki/powersuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -179,7 +179,7 @@
 
 /obj/structure/bookcase/prefitted/religious
 	name = "bookcase (Religious)"
-	prefit_category = "Religious"
+	prefit_category = "Religion"
 
 /obj/structure/bookcase/prefitted/reference
 	name = "bookcase (Reference)"

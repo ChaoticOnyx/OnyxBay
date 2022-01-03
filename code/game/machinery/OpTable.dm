@@ -82,7 +82,7 @@
 
 /obj/machinery/optable/verb/remove_clothes()
 	set name = "Remove Clothes"
-	set category = "IC"
+	set category = "Object"
 	set src in oview(1)
 
 	if(!ishuman(usr) && !issilicon(usr))
@@ -113,11 +113,12 @@
 						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
 	if(do_after(usr, time_to_strip, victim))
 		if(!victim)
+			busy = FALSE
 			return
 		for(var/obj/item/clothing/C in victim.contents)
 			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
 				continue
-			victim.drop_from_inventory(C)
+			victim.unEquip(C)
 			use_power_oneoff(100)
 		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
 							SPAN_NOTICE("You successfully remove all clothing from [victim]."))

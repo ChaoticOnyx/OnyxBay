@@ -9,8 +9,8 @@
 	anchored = 1
 	req_access = list(access_kitchen,access_morgue)
 
-	var/operating = 0        //Is it on?
-	var/dirty = 0            // Does it need cleaning?
+	var/operating = FALSE        // Is it on?
+	var/dirty = FALSE            // Does it need cleaning?
 	var/mob/living/occupant  // Mob who has been put inside
 	var/gib_time = 40        // Time from starting until meat appears
 	var/gib_throw_dir = WEST // Direction to spit meat and gibs in.
@@ -85,8 +85,8 @@
 		if(!G.force_danger())
 			to_chat(user, SPAN("danger","You need a better grip to do that!"))
 			return
-		move_into_gibber(user,G.affecting)
-		user.drop_from_inventory(G)
+		move_into_gibber(user, G.affecting)
+		G.delete_self()
 	else if(istype(W, /obj/item/organ))
 		user.drop_from_inventory(W)
 		qdel(W)
@@ -243,5 +243,3 @@
 			thing.dropInto(loc) // Attempts to drop it onto the turf for throwing.
 			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),100) // Being pelted with bits of meat and bone would hurt.
 		update_icon()
-
-

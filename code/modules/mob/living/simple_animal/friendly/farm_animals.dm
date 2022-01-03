@@ -22,6 +22,8 @@
 	health = 40
 	melee_damage_lower = 1
 	melee_damage_upper = 5
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
+
 	var/datum/reagents/udder = null
 	var/isragemode = FALSE
 
@@ -134,6 +136,8 @@
 	response_harm   = "kicks"
 	attacktext = "kicked"
 	health = 50
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
+
 	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 

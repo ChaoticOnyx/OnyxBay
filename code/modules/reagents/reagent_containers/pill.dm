@@ -11,7 +11,7 @@
 	possible_transfer_amounts = null
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
-	volume = 60
+	volume = 30
 
 /obj/item/weapon/reagent_containers/pill/Initialize()
 	. = ..()
@@ -82,7 +82,7 @@
 	icon_state = "pill4"
 /obj/item/weapon/reagent_containers/pill/tox/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin, 50)
+	reagents.add_reagent(/datum/reagent/toxin, 30)
 	color = reagents.get_color()
 
 
@@ -92,7 +92,7 @@
 	icon_state = "pill9"
 /obj/item/weapon/reagent_containers/pill/cyanide/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/cyanide, 50)
+	reagents.add_reagent(/datum/reagent/toxin/cyanide, 30)
 
 
 /obj/item/weapon/reagent_containers/pill/adminordrazine
@@ -101,7 +101,7 @@
 	icon_state = "pillA"
 /obj/item/weapon/reagent_containers/pill/adminordrazine/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/adminordrazine, 50)
+	reagents.add_reagent(/datum/reagent/adminordrazine, 30)
 
 
 /obj/item/weapon/reagent_containers/pill/stox

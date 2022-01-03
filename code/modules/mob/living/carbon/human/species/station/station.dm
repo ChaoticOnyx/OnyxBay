@@ -19,7 +19,8 @@
 		new /datum/body_build,
 		new /datum/body_build/slim,
 		new /datum/body_build/slim/alt,
-		new /datum/body_build/slim/male
+		new /datum/body_build/slim/male,
+		new /datum/body_build/fat
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -85,6 +86,7 @@
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Tajaran Ears"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
+	generic_attack_mod = 2.0
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 	slowdown = -0.5
@@ -111,7 +113,8 @@
 
 	body_builds = list(
 		new /datum/body_build/tajaran,
-		new /datum/body_build/slim/alt/tajaran
+		new /datum/body_build/slim/alt/tajaran,
+		new /datum/body_build/tajaran/fat
 	)
 
 	cold_level_1 = 200 //Default 260

@@ -9,10 +9,10 @@
 	var/charges = 0
 
 /obj/item/rig_module
-	name = "hardsuit upgrade"
+	name = "powersuit upgrade"
 	desc = "It looks pretty sciency."
 	icon = 'icons/obj/rig_modules.dmi'
-	icon_state = "module"
+	icon_state = ""
 	matter = list(MATERIAL_STEEL = 20000, MATERIAL_PLASTIC = 30000, MATERIAL_GLASS = 5000)
 
 	var/damage = 0
@@ -47,8 +47,8 @@
 	var/suit_overlay_used               // As above, when engaged.
 
 	//Display fluff
-	var/interface_name = "hardsuit upgrade"
-	var/interface_desc = "A generic hardsuit upgrade."
+	var/interface_name = "powersuit upgrade"
+	var/interface_desc = "A generic powersuit upgrade."
 	var/engage_string = "Engage"
 	var/activate_string = "Activate"
 	var/deactivate_string = "Deactivate"
@@ -137,6 +137,9 @@
 
 /obj/item/rig_module/Destroy()
 	deactivate()
+	holder = null
+	QDEL_LIST(stat_modules)
+	QDEL_LIST(charges)
 	. = ..()
 
 // Called when the module is installed into a suit.
@@ -219,7 +222,7 @@
 	holder = null
 	return
 
-// Called by the hardsuit each rig process tick.
+// Called by the powersuit each rig process tick.
 /obj/item/rig_module/Process()
 	if(active)
 		return active_power_cost
@@ -239,7 +242,7 @@
 		SetupStat(R)
 
 /mob/proc/SetupStat(obj/item/weapon/rig/R)
-	if(R && !R.canremove && R.installed_modules.len && statpanel("Hardsuit Modules"))
+	if(R && !R.canremove && R.installed_modules.len && statpanel("Powersuit Modules"))
 		var/cell_status = R.cell ? "[R.cell.charge]/[R.cell.maxcharge]" : "ERROR"
 		stat("Suit charge", cell_status)
 		for(var/obj/item/rig_module/module in R.installed_modules)
