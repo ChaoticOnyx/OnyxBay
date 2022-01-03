@@ -76,18 +76,6 @@ var/static/list/floor_light_color_cache = list()
 	layer = anchored ? TURF_LAYER : TURF_DETAIL_LAYER
 	return
 
-/obj/machinery/floor_light/Destroy()
-	var/area/A = get_area(src)
-	if(A)
-		must_work = FALSE
-
-	overlays -= floor_light_cache["floorlight[ID]-glowing"]
-	overlays -= floor_light_cache["floorlight[ID]-flickering"]
-	for(var/i = 1, i <= 8, i++)
-		overlays -= floor_light_cache["floorlight[ID]-damaged[i]"]
-
-	. = ..()
-
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
 	var/turf/T = src.loc
 	if(user.a_intent == I_HURT)
