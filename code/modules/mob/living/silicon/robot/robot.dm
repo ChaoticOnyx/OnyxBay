@@ -1055,9 +1055,8 @@
 	set category = "IC"
 	set src = usr
 
-	var/obj/item/W = get_active_hand()
-	if (W)
-		W.attack_self(src)
+	var/obj/item/I = get_active_hand()
+	I?.attack_self(src)
 
 	return
 

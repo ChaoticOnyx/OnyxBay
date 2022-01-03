@@ -21,11 +21,11 @@
 			if(Robot.mmi)
 				qdel(Robot.mmi)
 		else
-			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/implant))	//TODO: Carn. give implants a dropped() or something
-					qdel(W)
+			for(var/obj/item/I in M)
+				if(istype(I, /obj/item/implant))	//TODO: Carn. give implants a dropped() or something
+					qdel(I)
 					continue
-				M.drop_from_inventory(W)
+				M.drop_from_inventory(I)
 
 		var/mob/living/new_mob
 

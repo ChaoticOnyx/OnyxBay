@@ -79,8 +79,8 @@
 	sleep(48)
 	qdel(animation)
 
-	for(var/obj/item/W in src)
-		C.drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		C.drop_from_inventory(I)
 
 	var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
 	if (C.dna.GetUIState(DNA_UI_GENDER))

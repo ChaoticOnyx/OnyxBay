@@ -165,7 +165,7 @@
 	if (src.operating == 1)
 		return
 
-	if(density && !istype(I, /obj/item/card))
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		var/aforce = I.force
 		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")

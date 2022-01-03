@@ -328,14 +328,14 @@
 	if(istype(loc,/obj/mecha)) return
 
 	if(hand)
-		var/obj/item/W = l_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = l_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_l_hand()
 	else
-		var/obj/item/W = r_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = r_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_r_hand()
 	return
 

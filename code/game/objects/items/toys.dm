@@ -966,8 +966,8 @@
 			var/mob/living/carbon/human/H = user
 			if(very_dangerous)
 				H.ChangeToSkeleton()
-			for(var/obj/item/W in H)
-				H.drop_from_inventory(W)
+			for(var/obj/item/I in H)
+				H.drop_from_inventory(I)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
 
 /obj/item/toy/banbanana

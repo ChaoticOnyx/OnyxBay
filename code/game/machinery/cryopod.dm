@@ -342,13 +342,13 @@
 		return
 
 	//Drop all items into the pod.
-	for(var/obj/item/W in occupant)
-		occupant.drop_from_inventory(W)
-		W.forceMove(src)
+	for(var/obj/item/I in occupant)
+		occupant.drop_from_inventory(I)
+		I.forceMove(src)
 
-		if(W.contents.len) //Make sure we catch anything not handled by qdel() on the items.
-			for(var/obj/item/O in W.contents)
-				if(istype(O,/obj/item/storage/internal)) //Stop eating pockets, you fuck!
+		if(I.contents.len) //Make sure we catch anything not handled by qdel() on the items.
+			for(var/obj/item/O in I.contents)
+				if(istype(O, /obj/item/storage/internal)) //Stop eating pockets, you fuck!
 					continue
 				O.forceMove(src)
 
@@ -357,30 +357,30 @@
 	items -= occupant // Don't delete the occupant
 	items -= announce // or the autosay radio.
 
-	for(var/obj/item/W in items)
+	for(var/obj/item/I in items)
 
 		var/preserve = null
 		// Snowflaaaake.
-		if(istype(W, /obj/item/device/mmi))
-			var/obj/item/device/mmi/brain = W
+		if(istype(I, /obj/item/device/mmi))
+			var/obj/item/device/mmi/brain = I
 			if(brain.brainmob && brain.brainmob.client && brain.brainmob.key)
 				preserve = 1
 			else
 				continue
 		else
 			for(var/T in preserve_items)
-				if(istype(W,T))
+				if(istype(I, T))
 					preserve = 1
 					break
 
 		if(!preserve)
-			qdel(W)
+			qdel(I)
 		else
 			if(control_computer && control_computer.allow_items)
-				control_computer.frozen_items += W
-				W.loc = null
+				control_computer.frozen_items += I
+				I.loc = null
 			else
-				W.forceMove(src.loc)
+				I.forceMove(src.loc)
 
 	//Update any existing objectives involving this mob.
 	for(var/datum/antag_contract/AC in GLOB.all_contracts)
@@ -478,8 +478,8 @@
 	if(occupant) items -= occupant
 	if(announce) items -= announce
 
-	for(var/obj/item/W in items)
-		W.forceMove(get_turf(src))
+	for(var/obj/item/I in items)
+		I.forceMove(get_turf(src))
 
 	go_out()
 	add_fingerprint(usr)

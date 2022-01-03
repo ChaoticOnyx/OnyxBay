@@ -75,8 +75,8 @@
 	if(M.stat != DEAD && !M.is_asystole())
 		to_chat(user, "<span class='notice'>Kill or maim the victim first.</span>")
 		return
-	for(var/obj/item/W in M)
-		M.drop_from_inventory(W)
+	for(var/obj/item/I in M)
+		M.drop_from_inventory(I)
 	M.dust()
 	set_full(SOULSTONE_ESSENCE)
 

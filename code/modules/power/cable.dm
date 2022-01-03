@@ -477,8 +477,8 @@ var/list/possible_cable_coil_colours
 	color = COLOR_RED
 	force = 3.5
 	mod_reach = 1.5
-	mod_handy = 0.75
-	mod_weight = 0.35
+	mod_handy = 0.6
+	mod_weight = 0.3
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL
 	throw_speed = 2

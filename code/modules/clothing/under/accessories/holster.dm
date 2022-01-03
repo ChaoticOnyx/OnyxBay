@@ -108,11 +108,11 @@
 		to_chat(usr, "<span class='warning'>Something is very wrong.</span>")
 
 	if(!H.holstered)
-		var/obj/item/W = usr.get_active_hand()
-		if(!istype(W, /obj/item))
+		var/obj/item/I = usr.get_active_hand()
+		if(!istype(I, /obj/item))
 			to_chat(usr, "<span class='warning'>You're not holding anything to holster.</span>")
 			return
-		H.holster(W, usr)
+		H.holster(I, usr)
 	else
 		H.unholster(usr)
 

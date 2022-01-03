@@ -19,10 +19,10 @@
 		W.loc = null
 
 	if(!connected)
-		for(var/obj/item/W in (H.contents-implants))
-			if (W==H.w_uniform) // will be teared
+		for(var/obj/item/I in (H.contents-implants))
+			if(I == H.w_uniform) // will be teared
 				continue
-			H.drop_from_inventory(W)
+			H.drop_from_inventory(I)
 		M.transforming = 1
 		M.canmove = 0
 		M.icon = null
@@ -96,8 +96,8 @@
 		implants += W
 		W.loc = null
 	if(!connected)
-		for(var/obj/item/W in (Mo.contents-implants))
-			Mo.drop_from_inventory(W)
+		for(var/obj/item/I in (Mo.contents-implants))
+			Mo.drop_from_inventory(I)
 		M.transforming = 1
 		M.canmove = 0
 		M.icon = null

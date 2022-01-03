@@ -5,6 +5,10 @@
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	storage_slots = 7
+	force = 3.5
+	mod_reach = 1.2
+	mod_handy = 0.6
+	mod_weight = 0.45
 	item_flags = ITEM_FLAG_IS_BELT
 	max_w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT

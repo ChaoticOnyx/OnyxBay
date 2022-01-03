@@ -248,16 +248,16 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(density && user.a_intent == I_HURT && !istype(I, /obj/item/card))
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
 			user.setClickCooldown(I.update_attack_cooldown())
 			if(I.force <= 0)
 				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
-				playsound(loc, hitsound, 5, 1)
+				playsound(loc, hitsound, 10, 1)
 			else if(I.force < min_force)
 				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
-				playsound(loc, hitsound, 10, 1)
+				playsound(loc, hitsound, 25, 1)
 			else
 				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
 				playsound(loc, hitsound, 100, 1)

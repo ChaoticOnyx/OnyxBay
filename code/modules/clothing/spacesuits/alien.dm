@@ -80,8 +80,8 @@
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
 
-	var/obj/item/W = new /obj/item/vox_rcd(H)
-	H.put_in_hands(W)
+	var/obj/item/I = new /obj/item/vox_rcd(H)
+	H.put_in_hands(I)
 ////////////RCD
 
 
