@@ -75,6 +75,7 @@
 	icon_state = "binder"
 	anchored = 1
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/obj/item/print_object
 
 /obj/machinery/bookbinder/attack_hand(mob/user)
@@ -89,10 +90,6 @@
 		return FALSE
 
 /obj/machinery/bookbinder/attackby(obj/O, mob/user)
-	if(isWrench(O) && do_after(user, 2 SECONDS, src))
-		anchored = !anchored
-		to_chat(user, "You [anchored ? "attach" : "detach"] \the [src] [anchored ? "to" : "from"] the ground")
-		return
 	if(operable())
 		if(print_object)
 			..()
