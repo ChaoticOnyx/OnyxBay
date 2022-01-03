@@ -162,8 +162,12 @@
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			if(I.force < min_force)
+			if(I.force <= 0)
+				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
+				playsound(loc, hitsound, 5, 1)
+			else if(I.force < min_force)
 				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
+				playsound(loc, hitsound, 10, 1)
 			else
 				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
 				playsound(loc, hitsound, 100, 1)

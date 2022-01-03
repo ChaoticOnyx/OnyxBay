@@ -468,15 +468,19 @@ var/list/possible_cable_coil_colours
 
 /obj/item/stack/cable_coil
 	name = "multipurpose cable coil"
+	desc = "A coil of wiring, for delicate electronics use aswell as the more basic cable laying."
 	icon = 'icons/obj/power.dmi'
 	icon_state = "coil"
 	randpixel = 2
 	amount = MAXCOIL
 	max_amount = MAXCOIL
 	color = COLOR_RED
-	desc = "A coil of wiring, for delicate electronics use aswell as the more basic cable laying."
+	force = 3.5
+	mod_reach = 1.5
+	mod_handy = 0.75
+	mod_weight = 0.35
 	throwforce = 0
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_SMALL
 	throw_speed = 2
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 20)
