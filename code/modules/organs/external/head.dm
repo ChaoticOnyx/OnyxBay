@@ -145,7 +145,8 @@
 			H = GLOB.hair_styles_list["Short Hair"]
 		if(H)
 			if(!length(H.species_allowed) || (species.name in H.species_allowed))
-				HI = icon(H.icon, "[H.icon_state]_s")
+				var/slim_icon = ("[H.icon_state]_slim" in GLOB.hair_styles_icons)?"[H.icon_state]_slim":"[H.icon_state]_s"
+				HI = icon(H.icon, istype(owner.body_build,/datum/body_build/slim)?"[slim_icon]":"[H.icon_state]_s")
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
 		if(HI)
