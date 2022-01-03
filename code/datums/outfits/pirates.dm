@@ -1,4 +1,4 @@
-g/decl/hierarchy/outfit/pirate
+/decl/hierarchy/outfit/pirate
 	hierarchy_type = /decl/hierarchy/outfit/pirate
 	name = "Pirate"
 	uniform = /obj/item/clothing/under/pirate

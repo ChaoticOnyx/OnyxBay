@@ -802,7 +802,6 @@
 #include "code\game\objects\objs.dm"
 #include "code\game\objects\structures.dm"
 #include "code\game\objects\topic.dm"
-#include "code\game\objects\weapons.dm"
 #include "code\game\objects\auras\aura.dm"
 #include "code\game\objects\auras\radiant_aura.dm"
 #include "code\game\objects\auras\personal_shields\personal_shield.dm"
