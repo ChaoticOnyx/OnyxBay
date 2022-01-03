@@ -1,5 +1,5 @@
 
-/obj/item/weapon/backwear/reagent/welding
+/obj/item/backwear/reagent/welding
 	name = "welding kit"
 	desc = "An unwieldy, heavy backpack with two massive fuel tanks and a connected welding tool. Includes a connector for most models of portable welding tools."
 	description_info = "This pack acts as a portable source of welding fuel. Use a welder on it to refill its tank - but make sure it's not lit! You can use this kit on a fuel tank or appropriate reagent dispenser to replenish its reserves."
@@ -10,14 +10,14 @@
 	item_state = "backwear_welding"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	gear_detachable = FALSE
-	gear = /obj/item/weapon/weldingtool/linked
+	gear = /obj/item/weldingtool/linked
 	atom_flags = null
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	origin_tech = list(TECH_ENGINEERING = 3)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)
 
-/obj/item/weapon/backwear/reagent/welding/afterattack(obj/O, mob/user, proximity)
+/obj/item/backwear/reagent/welding/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(O, /obj/structure/reagent_dispensers/fueltank))
@@ -32,13 +32,13 @@
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
 
-/obj/item/weapon/backwear/reagent/welding/reattach_gear(mob/user)
+/obj/item/backwear/reagent/welding/reattach_gear(mob/user)
 	..()
-	if(istype(gear, /obj/item/weapon/weldingtool/linked))
-		var/obj/item/weapon/weldingtool/W = gear
+	if(istype(gear, /obj/item/weldingtool/linked))
+		var/obj/item/weldingtool/W = gear
 		W.setWelding(0)
 
-/obj/item/weapon/backwear/reagent/welding/attackby(obj/item/weapon/W, mob/user)
+/obj/item/backwear/reagent/welding/attackby(obj/item/W, mob/user)
 	if(W.get_temperature_as_from_ignitor())
 		if(!reagents.total_volume)
 			to_chat(user, SPAN("danger", "You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done. Luckily, \the [src] is empty."))
@@ -53,7 +53,7 @@
 	return ..()
 
 
-/obj/item/weapon/weldingtool/linked
+/obj/item/weldingtool/linked
 	name = "welding tool"
 	desc = "A lightweight welding tool connected to a welding kit."
 	icon = 'icons/obj/backwear.dmi'
@@ -70,13 +70,13 @@
 	slot_flags = null
 	tank = null
 	matter = null
-	var/obj/item/weapon/backwear/reagent/base_unit
+	var/obj/item/backwear/reagent/base_unit
 
-/obj/item/weapon/weldingtool/linked/New(newloc, obj/item/weapon/backwear/base)
+/obj/item/weldingtool/linked/New(newloc, obj/item/backwear/base)
 	base_unit = base
 	..(newloc)
 
-/obj/item/weapon/weldingtool/linked/Destroy() //it shouldn't happen unless the base unit is destroyed but still
+/obj/item/weldingtool/linked/Destroy() //it shouldn't happen unless the base unit is destroyed but still
 	if(base_unit)
 		if(base_unit.gear == src)
 			base_unit.gear = null
@@ -84,15 +84,15 @@
 		base_unit = null
 	return ..()
 
-/obj/item/weapon/weldingtool/linked/dropped(mob/user)
+/obj/item/weldingtool/linked/dropped(mob/user)
 	..()
 	if(base_unit)
 		base_unit.reattach_gear(user)
 
-/obj/item/weapon/weldingtool/linked/get_fuel()
+/obj/item/weldingtool/linked/get_fuel()
 	return base_unit ? base_unit.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
-/obj/item/weapon/weldingtool/linked/remove_fuel(amount = 1, mob/M = null)
+/obj/item/weldingtool/linked/remove_fuel(amount = 1, mob/M = null)
 	if(!welding)
 		return 0
 	if(get_fuel() >= amount)
@@ -106,7 +106,7 @@
 			to_chat(M, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 		return 0
 
-/obj/item/weapon/weldingtool/linked/burn_fuel(amount)
+/obj/item/weldingtool/linked/burn_fuel(amount)
 	if(!base_unit)
 		return
 
@@ -128,23 +128,23 @@
 		if(location)
 			location.hotspot_expose(700, 5)
 
-/obj/item/weapon/weldingtool/linked/afterattack(obj/O, mob/user, proximity)
+/obj/item/weldingtool/linked/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
-	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear)) && !welding)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/backwear)) && !welding)
 		return
 	..()
 
-/obj/item/weapon/weldingtool/linked/attackby(obj/item/W, mob/user)
+/obj/item/weldingtool/linked/attackby(obj/item/W, mob/user)
 	if(welding)
 		return
 	if(isScrewdriver(W))
 		return
 	if(istype(W,/obj/item/pipe))
 		return
-	if(istype(W, /obj/item/weapon/welder_tank))
+	if(istype(W, /obj/item/welder_tank))
 		return
 	..()
 
-/obj/item/weapon/weldingtool/linked/refuel_from_obj(obj/O, mob/user)
+/obj/item/weldingtool/linked/refuel_from_obj(obj/O, mob/user)
 	return

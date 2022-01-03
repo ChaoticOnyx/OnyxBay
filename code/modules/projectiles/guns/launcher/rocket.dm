@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/launcher/rocket
+/obj/item/gun/launcher/rocket
 	name = "rocket launcher"
 	desc = "M12 rocket launcher, an old, but reliable tool for dealing with enemy infantry and light exosuits."
 	icon_state = "rpg"
@@ -23,13 +23,13 @@
 	var/max_rockets = 1
 	var/list/rockets = new /list()
 
-/obj/item/weapon/gun/launcher/rocket/examine(mob/user)
+/obj/item/gun/launcher/rocket/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
 	. += "\n<span class='notice'>[rockets.len] / [max_rockets] rockets.</span>"
 
-/obj/item/weapon/gun/launcher/rocket/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/gun/launcher/rocket/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/ammo_casing/rocket))
 		if(rockets.len < max_rockets)
 			user.drop_item()
@@ -41,7 +41,7 @@
 		else
 			to_chat(usr, "<span class='warning'>\The [src] cannot hold more rockets.</span>")
 
-/obj/item/weapon/gun/launcher/rocket/consume_next_projectile()
+/obj/item/gun/launcher/rocket/consume_next_projectile()
 	if(rockets.len)
 		var/obj/item/ammo_casing/rocket/I = rockets[1]
 		var/obj/item/missile/M = new (src)
@@ -50,11 +50,11 @@
 		return M
 	return null
 
-/obj/item/weapon/gun/launcher/rocket/handle_post_fire(mob/user, atom/target)
+/obj/item/gun/launcher/rocket/handle_post_fire(mob/user, atom/target)
 	log_and_message_admins("fired a rocket from a rocket launcher ([src.name]) at [target].")
 	..()
 
-/obj/item/weapon/gun/launcher/rocket/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+/obj/item/gun/launcher/rocket/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	var/obj/item/grab/G = user.get_inactive_hand()
 	if(G?.affecting != target || !G?.current_grab?.can_absorb)
 		to_chat(user, SPAN_NOTICE("You need a better grab for this."))

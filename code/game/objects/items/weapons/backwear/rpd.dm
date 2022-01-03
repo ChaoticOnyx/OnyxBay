@@ -1,5 +1,5 @@
 
-/obj/item/weapon/backwear/powered/rpd
+/obj/item/backwear/powered/rpd
 	name = "rapid piping pack"
 	desc = "A heavy and bulky backpack-shaped device. It can be used to quickly set up or dismantle pipelines using nothing but electrical power."
 	icon_state = "pipe1"
@@ -7,20 +7,20 @@
 	item_state = "backwear_rpd"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	gear_detachable = FALSE
-	gear = /obj/item/weapon/rpd
+	gear = /obj/item/rpd
 	bcell = null
 	atom_flags = null
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)
 
-/obj/item/weapon/backwear/powered/rpd/loaded
-	bcell = /obj/item/weapon/cell/high
+/obj/item/backwear/powered/rpd/loaded
+	bcell = /obj/item/cell/high
 
 #define RPD_DISPENSE "dispense"
 #define RPD_WRENCH   "wrench"
 #define RPD_RECYCLE  "recycle"
 
-/obj/item/weapon/rpd
+/obj/item/rpd
 	name = "rapid piping device"
 	desc = "A device used to rapidly pipe things."
 	icon = 'icons/obj/backwear.dmi'
@@ -41,7 +41,7 @@
 	origin_tech = null
 	matter = null
 
-	var/obj/item/weapon/backwear/powered/base_unit
+	var/obj/item/backwear/powered/base_unit
 	var/interaction_mode = RPD_DISPENSE
 	var/mode = 1
 	var/inuse = 0
@@ -50,19 +50,19 @@
 	var/activate_sound = 'sound/items/polaroid3.ogg'
 	var/recycling_time = 30
 
-/obj/item/weapon/rpd/examine(mob/user)
+/obj/item/rpd/examine(mob/user)
 	. = ..()
 	. += "\n[selected.name] is chosen to be produced."
 
-/obj/item/weapon/rpd/New(newloc, obj/item/weapon/backwear/base)
+/obj/item/rpd/New(newloc, obj/item/backwear/base)
 	selected = item_types[1]
 	base_unit = base
 	..(newloc)
 
-/obj/item/weapon/rpd/update_icon()
+/obj/item/rpd/update_icon()
 	icon_state = "rpd_[interaction_mode]"
 
-/obj/item/weapon/rpd/Destroy() //it shouldn't happen unless the base unit is destroyed but still
+/obj/item/rpd/Destroy() //it shouldn't happen unless the base unit is destroyed but still
 	if(base_unit)
 		if(base_unit.gear == src)
 			base_unit.gear = null
@@ -70,12 +70,12 @@
 		base_unit = null
 	return ..()
 
-/obj/item/weapon/rpd/dropped(mob/user)
+/obj/item/rpd/dropped(mob/user)
 	..()
 	if(base_unit)
 		base_unit.reattach_gear(user)
 
-/obj/item/weapon/rpd/attack_self(mob/user)
+/obj/item/rpd/attack_self(mob/user)
 	var/t = ""
 	for(var/i = 1 to item_types.len)
 		if(t)
@@ -87,7 +87,7 @@
 	t = "Available products: [t]."
 	to_chat(user, t)
 
-/obj/item/weapon/rpd/OnTopic(href, list/href_list)
+/obj/item/rpd/OnTopic(href, list/href_list)
 	if(href_list["rpd_mode"])
 		interaction_mode = href_list["rpd_mode"]
 		to_chat(usr, "Changed RPD interaction mode to [interaction_mode].")
@@ -102,7 +102,7 @@
 			to_chat(usr, "Changed dispensing mode to [selected.name].")
 		return TOPIC_REFRESH
 
-/obj/item/weapon/rpd/afterattack(atom/A, mob/user, proximity)
+/obj/item/rpd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -113,7 +113,7 @@
 		to_chat(user, SPAN("warning", "\The [base_unit] has no power source installed!"))
 		return
 
-	var/obj/item/weapon/cell/BC = base_unit.bcell
+	var/obj/item/cell/BC = base_unit.bcell
 
 	if(interaction_mode == RPD_RECYCLE)
 		for(var/datum/dispense_type/T in item_types)
@@ -170,7 +170,7 @@
 		else
 			inuse = 0
 
-/obj/item/weapon/rpd/New()	//Fuck the guy who coded pipes
+/obj/item/rpd/New()	//Fuck the guy who coded pipes
 	item_types += new /datum/dispense_type/pipe("pipe", /obj/item/pipe, 0, 25, 50)
 	item_types += new /datum/dispense_type/pipe("bent pipe", /obj/item/pipe, 1, 25, 50)
 	item_types += new /datum/dispense_type/pipe("manifold", /obj/item/pipe, 5, 35, 75)
@@ -207,7 +207,7 @@
 	item_types += new /datum/dispense_type/pipe("chute", /obj/structure/disposalconstruct, 8, 60, 300)
 	..()
 
-/obj/item/weapon/rpd/attack_self(mob/user)
+/obj/item/rpd/attack_self(mob/user)
 	var/t = "RPD Mode: "
 	t += "<a href='?src=\ref[src];rpd_mode=[RPD_DISPENSE]'>[RPD_DISPENSE]</a>, "
 	t += "<a href='?src=\ref[src];rpd_mode=[RPD_WRENCH]'>[RPD_WRENCH]</a>, "

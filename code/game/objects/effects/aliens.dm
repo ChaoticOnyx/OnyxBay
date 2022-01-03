@@ -214,14 +214,14 @@
 				qdel(src)
 	return
 
-/obj/effect/alien/weeds/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/alien/weeds/attackby(obj/item/W, mob/user)
 	if(W.attack_verb.len)
 		visible_message("<span class='danger'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
 	else
 		visible_message("<span class='danger'>\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]</span>")
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			qdel(src)
 			playsound(loc, 'sound/items/Welder.ogg', 100, 1)

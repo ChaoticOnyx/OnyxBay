@@ -7,7 +7,7 @@
 /*
  * First Aid Kits
  */
-/obj/item/weapon/storage/firstaid
+/obj/item/storage/firstaid
 	name = "first-aid kit"
 	desc = "It's an emergency medical kit for those serious boo-boos."
 	icon_state = "firstaid"
@@ -21,19 +21,19 @@
 	max_storage_space = DEFAULT_BOX_STORAGE
 	attack_verb = list("doctored", "medicined", "unhealed", "fist-aided")
 
-/obj/item/weapon/storage/firstaid/regular
+/obj/item/storage/firstaid/regular
 	icon_state = "firstaid"
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/stack/medical/bruise_pack = 2,
 		/obj/item/stack/medical/ointment = 1,
-		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/weapon/storage/pill_bottle/antidexafen,
-		/obj/item/weapon/storage/pill_bottle/paracetamol
+		/obj/item/reagent_containers/hypospray/autoinjector,
+		/obj/item/storage/pill_bottle/antidexafen,
+		/obj/item/storage/pill_bottle/paracetamol
 		)
 
-/obj/item/weapon/storage/firstaid/fire
+/obj/item/storage/firstaid/fire
 	name = "fire first-aid kit"
 	desc = "It's an emergency medical kit for when the toxins lab <i>-spontaneously-</i> burns down."
 	icon_state = "firstaid-fire"
@@ -41,18 +41,18 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
+		/obj/item/reagent_containers/hypospray/autoinjector,
 		/obj/item/stack/medical/bruise_pack,
 		/obj/item/stack/medical/ointment = 2,
-		/obj/item/weapon/storage/pill_bottle/kelotane,
-		/obj/item/weapon/storage/pill_bottle/paracetamol
+		/obj/item/storage/pill_bottle/kelotane,
+		/obj/item/storage/pill_bottle/paracetamol
 		)
 
-/obj/item/weapon/storage/firstaid/fire/Initialize()
+/obj/item/storage/firstaid/fire/Initialize()
 	icon_state = pick("firstaid-fire", "firstaid-fire2")
 	. = ..()
 
-/obj/item/weapon/storage/firstaid/toxin
+/obj/item/storage/firstaid/toxin
 	name = "toxin first-aid kit"
 	desc = "Used to treat when you have a high amount of toxins in your body."
 	icon_state = "firstaid-tox"
@@ -60,16 +60,16 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/storage/pill_bottle/dylovene,
-		/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 3,
-		/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle
+		/obj/item/storage/pill_bottle/dylovene,
+		/obj/item/reagent_containers/syringe/antitoxin/packaged = 3,
+		/obj/item/reagent_containers/food/drinks/cans/waterbottle
 		)
 
-/obj/item/weapon/storage/firstaid/toxin/Initialize()
+/obj/item/storage/firstaid/toxin/Initialize()
 	icon_state = pick("firstaid-tox", "firstaid-tox2", "firstaid-tox3", "firstaid-tox4")
 	. = ..()
 
-/obj/item/weapon/storage/firstaid/o2
+/obj/item/storage/firstaid/o2
 	name = "oxygen deprivation first-aid kit"
 	desc = "A box full of oxygen goodies."
 	icon_state = "firstaid-o2"
@@ -77,14 +77,14 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/storage/pill_bottle/dexalin,
-		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged,
+		/obj/item/storage/pill_bottle/dexalin,
+		/obj/item/reagent_containers/hypospray/autoinjector,
+		/obj/item/reagent_containers/syringe/inaprovaline/packaged,
 		/obj/item/tank/emergency/oxygen,
 		/obj/item/clothing/mask/breath
 		)
 
-/obj/item/weapon/storage/firstaid/adv
+/obj/item/storage/firstaid/adv
 	name = "advanced first-aid kit"
 	desc = "Contains advanced medical treatments."
 	icon_state = "firstaid-adv"
@@ -92,13 +92,13 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
+		/obj/item/reagent_containers/hypospray/autoinjector,
 		/obj/item/stack/medical/advanced/bruise_pack = 2,
 		/obj/item/stack/medical/advanced/ointment = 2,
 		/obj/item/stack/medical/splint
 		)
 
-/obj/item/weapon/storage/firstaid/combat
+/obj/item/storage/firstaid/combat
 	name = "combat medical kit"
 	desc = "Contains advanced medical treatments."
 	icon_state = "firstaid-bezerk"
@@ -108,16 +108,16 @@
 	startswith = list(
 		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/medical/advanced/ointment,
-		/obj/item/weapon/storage/pill_bottle/bicaridine,
-		/obj/item/weapon/storage/pill_bottle/dermaline,
-		/obj/item/weapon/storage/pill_bottle/dexalin_plus,
-		/obj/item/weapon/storage/pill_bottle/dylovene,
-		/obj/item/weapon/storage/pill_bottle/tramadol,
-		/obj/item/weapon/storage/pill_bottle/spaceacillin,
+		/obj/item/storage/pill_bottle/bicaridine,
+		/obj/item/storage/pill_bottle/dermaline,
+		/obj/item/storage/pill_bottle/dexalin_plus,
+		/obj/item/storage/pill_bottle/dylovene,
+		/obj/item/storage/pill_bottle/tramadol,
+		/obj/item/storage/pill_bottle/spaceacillin,
 		/obj/item/stack/medical/splint
 		)
 
-/obj/item/weapon/storage/firstaid/surgery
+/obj/item/storage/firstaid/surgery
 	name = "surgery kit"
 	desc = "Contains tools for surgery. Has precise foam fitting for safe transport and automatically sterilizes the content between uses."
 	icon_state = "surgerykit"
@@ -128,30 +128,30 @@
 	max_storage_space = null
 
 	can_hold = list(
-		/obj/item/weapon/bonesetter,
-		/obj/item/weapon/cautery,
-		/obj/item/weapon/circular_saw,
-		/obj/item/weapon/hemostat,
-		/obj/item/weapon/retractor,
-		/obj/item/weapon/scalpel,
-		/obj/item/weapon/surgicaldrill,
-		/obj/item/weapon/bonegel,
-		/obj/item/weapon/FixOVein,
-		/obj/item/weapon/organfixer,
+		/obj/item/bonesetter,
+		/obj/item/cautery,
+		/obj/item/circular_saw,
+		/obj/item/hemostat,
+		/obj/item/retractor,
+		/obj/item/scalpel,
+		/obj/item/surgicaldrill,
+		/obj/item/bonegel,
+		/obj/item/FixOVein,
+		/obj/item/organfixer,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/nanopaste
 		)
 
 	startswith = list(
-		/obj/item/weapon/bonesetter,
-		/obj/item/weapon/cautery,
-		/obj/item/weapon/circular_saw,
-		/obj/item/weapon/hemostat,
-		/obj/item/weapon/retractor,
-		/obj/item/weapon/scalpel,
-		/obj/item/weapon/surgicaldrill,
-		/obj/item/weapon/bonegel,
-		/obj/item/weapon/FixOVein,
-		/obj/item/weapon/organfixer/standard,
+		/obj/item/bonesetter,
+		/obj/item/cautery,
+		/obj/item/circular_saw,
+		/obj/item/hemostat,
+		/obj/item/retractor,
+		/obj/item/scalpel,
+		/obj/item/surgicaldrill,
+		/obj/item/bonegel,
+		/obj/item/FixOVein,
+		/obj/item/organfixer/standard,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		)

@@ -1,4 +1,4 @@
-/obj/item/weapon/material/sword
+/obj/item/material/sword
 	name = "claymore"
 	desc = "What are you standing around staring at this for? Get to killing!"
 	icon_state = "claymore"
@@ -17,7 +17,7 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
-/obj/item/weapon/material/sword/replica
+/obj/item/material/sword/replica
 	desc = "What are you standing around staring at this for? Get to looking cringy!"
 	edge = 0
 	sharp = 0
@@ -26,7 +26,7 @@
 	thrown_force_divisor = 0.2
 	hitsound = SFX_FIGHTING_SWING // It's dull
 
-/obj/item/weapon/material/sword/katana
+/obj/item/material/sword/katana
 	name = "katana"
 	desc = "Woefully underpowered in D20. This one looks pretty sharp."
 	icon_state = "katana"
@@ -37,7 +37,7 @@
 	mod_handy = 1.5
 	slot_flags = SLOT_BELT | SLOT_BACK
 
-/obj/item/weapon/material/sword/katana/replica
+/obj/item/material/sword/katana/replica
 	desc = "The best friend of a samurai wannabe. This one looks not so sharp."
 	edge = 0
 	sharp = 0

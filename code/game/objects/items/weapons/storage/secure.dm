@@ -1,5 +1,5 @@
 /*
- *	Absorbs /obj/item/weapon/secstorage.
+ *	Absorbs /obj/item/secstorage.
  *	Reimplements it only slightly to use existing storage functionality.
  *
  *	Contains:
@@ -10,7 +10,7 @@
 // -----------------------------
 //         Generic Item
 // -----------------------------
-/obj/item/weapon/storage/secure
+/obj/item/storage/secure
 	name = "secstorage"
 	var/icon_locking = "secureb"
 	var/icon_sparking = "securespark"
@@ -28,13 +28,13 @@
 	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = DEFAULT_BOX_STORAGE
 
-/obj/item/weapon/storage/secure/examine(mob/user)
+/obj/item/storage/secure/examine(mob/user)
 	if(..(user, 1))
 		to_chat(user, text("The service panel is [src.open ? "open" : "closed"]."))
 
-/obj/item/weapon/storage/secure/attackby(obj/item/weapon/W, mob/user)
+/obj/item/storage/secure/attackby(obj/item/W, mob/user)
 	if(locked)
-		if(istype(W, /obj/item/weapon/melee/energy/blade) && emag_act(INFINITY, user, "You slice through the lock of \the [src]"))
+		if(istype(W, /obj/item/melee/energy/blade) && emag_act(INFINITY, user, "You slice through the lock of \the [src]"))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
@@ -71,19 +71,19 @@
 	..()
 
 
-/obj/item/weapon/storage/secure/MouseDrop(over_object, src_location, over_location)
+/obj/item/storage/secure/MouseDrop(over_object, src_location, over_location)
 	if(locked)
 		add_fingerprint(usr)
 		return
 	..()
 
-/obj/item/weapon/storage/secure/AltClick(mob/usr)
+/obj/item/storage/secure/AltClick(mob/usr)
 	if(locked)
 		add_fingerprint(usr)
 		return
 	..()
 
-/obj/item/weapon/storage/secure/proc/show_lock_menu(mob/user)
+/obj/item/storage/secure/proc/show_lock_menu(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src))
 		return
 	var/dat = text("<TT>\n\nLock Status: []", (locked ? "<font color=red>LOCKED</font>" : "<font color=green>UNLOCKED</font>"))
@@ -108,11 +108,11 @@
 		lock_menu.update()
 	return
 
-/obj/item/weapon/storage/secure/attack_self(mob/user)
+/obj/item/storage/secure/attack_self(mob/user)
 	show_lock_menu(user)
 	lock_menu.open()
 
-/obj/item/weapon/storage/secure/Topic(href, href_list)
+/obj/item/storage/secure/Topic(href, href_list)
 	..()
 	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
 		return
@@ -144,7 +144,7 @@
 			return
 	return
 
-/obj/item/weapon/storage/secure/emag_act(remaining_charges, mob/user, feedback)
+/obj/item/storage/secure/emag_act(remaining_charges, mob/user, feedback)
 	if(!emagged)
 		emagged = 1
 		src.overlays += image('icons/obj/storage.dmi', icon_sparking)
@@ -158,7 +158,7 @@
 // -----------------------------
 //        Secure Briefcase
 // -----------------------------
-/obj/item/weapon/storage/secure/briefcase
+/obj/item/storage/secure/briefcase
 	name = "secure briefcase"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "secure"
@@ -174,7 +174,7 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 
-/obj/item/weapon/storage/secure/briefcase/attack_hand(mob/user)
+/obj/item/storage/secure/briefcase/attack_hand(mob/user)
 	if((src.loc == user) && (src.locked == 1))
 		to_chat(usr, "<span class='warning'>[src] is locked and cannot be opened!</span>")
 	else if((src.loc == user) && (!src.locked))
@@ -191,7 +191,7 @@
 //        Secure Safe
 // -----------------------------
 
-/obj/item/weapon/storage/secure/safe
+/obj/item/storage/secure/safe
 	name = "secure safe"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "safe"
@@ -204,31 +204,31 @@
 	max_storage_space = 56
 	anchored = 1.0
 	density = 0
-	cant_hold = list(/obj/item/weapon/storage/secure/briefcase)
+	cant_hold = list(/obj/item/storage/secure/briefcase)
 
-/obj/item/weapon/storage/secure/safe/New()
+/obj/item/storage/secure/safe/New()
 	..()
-	new /obj/item/weapon/paper(src)
-	new /obj/item/weapon/pen(src)
+	new /obj/item/paper(src)
+	new /obj/item/pen(src)
 
-/obj/item/weapon/storage/secure/safe/attack_hand(mob/user)
+/obj/item/storage/secure/safe/attack_hand(mob/user)
 	return attack_self(user)
 
-/obj/item/weapon/storage/secure/safe/HoS/New()
+/obj/item/storage/secure/safe/HoS/New()
 	..()
-	//new /obj/item/weapon/storage/lockbox/clusterbang(src) This item is currently broken... and probably shouldnt exist to begin with (even though it's cool)
+	//new /obj/item/storage/lockbox/clusterbang(src) This item is currently broken... and probably shouldnt exist to begin with (even though it's cool)
 
 // -----------------------------
 //     Detective's Guncase
 // -----------------------------
 
-/obj/item/weapon/storage/secure/guncase/
+/obj/item/storage/secure/guncase/
 	name = "guncase"
 	desc = "A heavy-duty container with a digital locking system. Has a thick layer of foam inside. "
 	icon_state = "guncase"
 	item_state = "guncase"
 
-/obj/item/weapon/storage/secure/guncase/detective
+/obj/item/storage/secure/guncase/detective
 	name = "detective's gun case"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "guncasedet"
@@ -244,10 +244,10 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	var/guntype = "M1911"
-	var/obj/item/weapon/gun/gun
+	var/obj/item/gun/gun
 	var/gunspawned = 0
 
-/obj/item/weapon/storage/secure/guncase/detective/attack_hand(mob/user)
+/obj/item/storage/secure/guncase/detective/attack_hand(mob/user)
 	if((src.loc == user) && (src.locked == 1))
 		to_chat(usr, "<span class='warning'>[src] is locked and cannot be opened!</span>")
 	else if((src.loc == user) && (!src.locked))
@@ -260,7 +260,7 @@
 	src.add_fingerprint(user)
 	return
 
-/obj/item/weapon/storage/secure/guncase/detective/show_lock_menu(mob/user)
+/obj/item/storage/secure/guncase/detective/show_lock_menu(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src))
 		return
 	user.set_machine(src)
@@ -321,11 +321,11 @@
 		lock_menu.update()
 	return
 
-/obj/item/weapon/storage/secure/guncase/detective/attack_self(mob/user)
+/obj/item/storage/secure/guncase/detective/attack_self(mob/user)
 	show_lock_menu(user)
 	lock_menu.open()
 
-/obj/item/weapon/storage/secure/guncase/detective/Topic(href, href_list)
+/obj/item/storage/secure/guncase/detective/Topic(href, href_list)
 	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
 		return
 	if(href_list["type"])
@@ -351,7 +351,7 @@
 				if(src.gunspawned == 0)
 					src.gunspawned = 1
 					if (src.guntype == "M1911")
-						src.gun = new /obj/item/weapon/gun/projectile/pistol/colt/detective(src)
+						src.gun = new /obj/item/gun/projectile/pistol/colt/detective(src)
 						new /obj/item/ammo_magazine/c45m/rubber(src)
 						new /obj/item/ammo_magazine/c45m/rubber(src)
 						new /obj/item/ammo_magazine/c45m/stun(src)
@@ -359,27 +359,27 @@
 						new /obj/item/ammo_magazine/c45m(src)
 						new /obj/item/ammo_magazine/c45m(src)
 					else if(src.guntype == "S&W Legacy")
-						src.gun = new /obj/item/weapon/gun/projectile/revolver/detective(src)
+						src.gun = new /obj/item/gun/projectile/revolver/detective(src)
 						new /obj/item/ammo_magazine/c38/rubber(src)
 						new /obj/item/ammo_magazine/c38/rubber(src)
 						new /obj/item/ammo_magazine/c38(src)
 						new /obj/item/ammo_magazine/c38(src)
 					else if(src.guntype == "S&W 620")
-						src.gun = new /obj/item/weapon/gun/projectile/revolver/detective/saw620(src)
+						src.gun = new /obj/item/gun/projectile/revolver/detective/saw620(src)
 						new /obj/item/ammo_magazine/c38/rubber(src)
 						new /obj/item/ammo_magazine/c38/rubber(src)
 						new /obj/item/ammo_magazine/c38(src)
 						new /obj/item/ammo_magazine/c38(src)
 					else if(src.guntype == "M2019")
-						src.gun = new /obj/item/weapon/gun/projectile/revolver/m2019/detective(src)
+						src.gun = new /obj/item/gun/projectile/revolver/m2019/detective(src)
 						new /obj/item/ammo_magazine/c44/spec(src)
 						new /obj/item/ammo_magazine/c44/spec(src)
 						new /obj/item/ammo_magazine/c44/spec(src)
 						new /obj/item/ammo_magazine/c44/chem(src)
 						new /obj/item/ammo_magazine/c44/chem(src)
-						new /obj/item/weapon/cell/device/high(src)
+						new /obj/item/cell/device/high(src)
 					else if(src.guntype == "T9 Patrol")
-						src.gun = new /obj/item/weapon/gun/projectile/pistol/det_m9(src)
+						src.gun = new /obj/item/gun/projectile/pistol/det_m9(src)
 						new /obj/item/ammo_magazine/mc9mm(src)
 						new /obj/item/ammo_magazine/mc9mm(src)
 						new /obj/item/ammo_magazine/mc9mm(src)

@@ -75,5 +75,5 @@
 	finished = new /list(1)
 
 	parts[1] =	1
-	original[1] = /obj/item/weapon/gun/energy/gun
-	finished[1] = /obj/item/weapon/gun/energy/gun/nuclear
+	original[1] = /obj/item/gun/energy/gun
+	finished[1] = /obj/item/gun/energy/gun/nuclear

@@ -14,7 +14,7 @@
 	icon_state = "bigscanner"
 	anchored = 1
 	density = 1
-	var/obj/item/weapon/book/cache		// Last scanned book
+	var/obj/item/book/cache		// Last scanned book
 	var/obj/item/canvas/art_cache // Last scanned art
 	var/obj/item/current_item
 
@@ -22,7 +22,7 @@
 	if(current_item)
 		to_chat(user, SPAN_NOTICE("\The [src] already has something inside!"))
 		return
-	if(istype(O, /obj/item/weapon/book) || istype(O, /obj/item/canvas))
+	if(istype(O, /obj/item/book) || istype(O, /obj/item/canvas))
 		user.drop_item()
 		current_item = O
 		O.forceMove(src)
@@ -51,7 +51,7 @@
 		return
 
 	if(href_list["scan"])
-		if(istype(current_item, /obj/item/weapon/book))
+		if(istype(current_item, /obj/item/book))
 			cache = current_item
 		if(istype(current_item, /obj/item/canvas))
 			art_cache = current_item
@@ -90,7 +90,7 @@
 			..()
 			to_chat(user, "\The [src] already has item inside.")
 			return
-		if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
+		if(istype(O, /obj/item/paper) || istype(O, /obj/item/book/wiki/template))
 			user.drop_item()
 			print_object = O
 			O.forceMove(src)
@@ -114,16 +114,16 @@
 		return
 	hatch_locked = FALSE
 	src.visible_message("[src] whirs as it prints and binds a new book.")
-	if(istype(print_object, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/paper = print_object
+	if(istype(print_object, /obj/item/paper))
+		var/obj/item/paper/paper = print_object
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
-	if(istype(print_object, /obj/item/weapon/book/wiki/template))
-		var/obj/item/weapon/book/wiki/template/template = print_object
+	if(istype(print_object, /obj/item/book/wiki/template))
+		var/obj/item/book/wiki/template/template = print_object
 		print_wiki(template.topic, template.censored)
 	QDEL_NULL(print_object)
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
-	var/obj/item/weapon/book/book = new(src.loc)
+	var/obj/item/book/book = new(src.loc)
 	if(text)
 		book.dat += text
 	if(title)
@@ -135,11 +135,11 @@
 	return book
 
 /obj/machinery/bookbinder/proc/print_wiki(topic, censorship)
-	var/obj/item/weapon/book/wiki/book
+	var/obj/item/book/wiki/book
 	if(topic in GLOB.premade_manuals)
 		var/manual_type = GLOB.premade_manuals[topic]
 		book = new manual_type(src.loc, topic, censorship)
 	else
-		book = new /obj/item/weapon/book/wiki(src.loc, topic, censorship, WIKI_MINI)
+		book = new /obj/item/book/wiki(src.loc, topic, censorship, WIKI_MINI)
 		book.icon_state = "book[rand(1,7)]"
 	return book

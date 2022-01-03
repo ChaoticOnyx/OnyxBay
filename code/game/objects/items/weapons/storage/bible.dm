@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/bible
+/obj/item/storage/bible
 	name = "bible"
 	desc = "Apply to head repeatedly."
 	icon_state = "bible"
@@ -10,18 +10,18 @@
 	var/mob/affecting = null
 	var/deity_name = "Christ"
 
-/obj/item/weapon/storage/bible/booze
+/obj/item/storage/bible/booze
 	name = "bible"
 	desc = "To be applied to the head repeatedly."
 	icon_state = "bible"
 
 	startswith = list(
-		/obj/item/weapon/reagent_containers/food/drinks/bottle/small/beer,
-		/obj/item/weapon/spacecash/bundle/c50,
-		/obj/item/weapon/spacecash/bundle/c50,
+		/obj/item/reagent_containers/food/drinks/bottle/small/beer,
+		/obj/item/spacecash/bundle/c50,
+		/obj/item/spacecash/bundle/c50,
 		)
 
-/obj/item/weapon/storage/bible/afterattack(atom/target, mob/user, proximity)
+/obj/item/storage/bible/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)
 		return
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -45,7 +45,7 @@
 				target.reagents.del_reagent(/datum/reagent/water)
 				target.reagents.add_reagent(/datum/reagent/water/holywater,water2holy)
 
-/obj/item/weapon/storage/bible/attackby(obj/item/weapon/W, mob/user)
+/obj/item/storage/bible/attackby(obj/item/W, mob/user)
 	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	return ..()

@@ -15,8 +15,8 @@
 	var/obj/machinery/computer/operating/computer = null
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/optable,
-		/obj/item/weapon/stock_parts/manipulator = 4
+		/obj/item/circuitboard/optable,
+		/obj/item/stock_parts/manipulator = 4
 	)
 
 	beepsounds = SFX_BEEP_MEDICAL
@@ -24,7 +24,7 @@
 /obj/machinery/optable/RefreshParts()
     var/default_strip = 6 SECONDS
     var/efficiency = 0
-    for(var/obj/item/weapon/stock_parts/P in component_parts)
+    for(var/obj/item/stock_parts/P in component_parts)
         if(ismanipulator(P))
             efficiency += 0.25 * P.rating
     time_to_strip = clamp(default_strip - efficiency, 1 SECONDS, 5 SECONDS)
@@ -94,7 +94,7 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
-	if(istype(victim.back, /obj/item/weapon/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
+	if(istype(victim.back, /obj/item/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
 		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)
@@ -176,7 +176,7 @@
 
 	take_victim(usr,usr)
 
-/obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
+/obj/machinery/optable/attackby(obj/item/W as obj, mob/living/carbon/user as mob)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	if(default_deconstruction_crowbar(user, W))

@@ -6,7 +6,7 @@
 	name = "Sacrificial Dagger"
 	desc = "A small dagger embued with your powers. Lets your followers give you power through sacrifices on an altar."
 	item_cost = 10
-	path = /obj/item/weapon/material/knife/ritual/sacrifice
+	path = /obj/item/material/knife/ritual/sacrifice
 
 /datum/uplink_item/deity/boon/narsie_sacrificing/sac_spell
 	name = "Sacrifice Spell"
@@ -18,7 +18,7 @@
 	name = "Greedy Axe"
 	desc = "This axe can store the very souls of those it kills to be later transfered to you through an altar."
 	item_cost = 50
-	path = /obj/item/weapon/material/twohanded/fireaxe/cult
+	path = /obj/item/material/twohanded/fireaxe/cult
 
 /datum/uplink_item/deity/feat/blood_stone
 	name = "Bloodied Stone"

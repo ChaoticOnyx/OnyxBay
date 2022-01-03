@@ -1,4 +1,4 @@
-/obj/item/weapon/rig/ert
+/obj/item/rig/ert
 	name = "ERT commander powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
 	suit_type = "ERT commander"
@@ -12,10 +12,10 @@
 	req_access = list(access_cent_specops)
 
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 100)
-	allowed = list(/obj/item/device/flashlight, /obj/item/weapon/tank,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/handcuffs, /obj/item/device/t_scanner, /obj/item/weapon/rcd, /obj/item/weapon/crowbar, \
-	/obj/item/weapon/screwdriver, /obj/item/weapon/weldingtool, /obj/item/weapon/wirecutters, /obj/item/weapon/wrench, /obj/item/device/multitool, \
-	/obj/item/device/radio, /obj/item/device/analyzer,/obj/item/weapon/storage/briefcase/inflatable, /obj/item/weapon/melee/baton, /obj/item/weapon/gun, \
-	/obj/item/weapon/storage/firstaid, /obj/item/weapon/reagent_containers/hypospray, /obj/item/roller)
+	allowed = list(/obj/item/device/flashlight, /obj/item/tank,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/handcuffs, /obj/item/device/t_scanner, /obj/item/rcd, /obj/item/crowbar, \
+	/obj/item/screwdriver, /obj/item/weldingtool, /obj/item/wirecutters, /obj/item/wrench, /obj/item/device/multitool, \
+	/obj/item/device/radio, /obj/item/device/analyzer,/obj/item/storage/briefcase/inflatable, /obj/item/melee/baton, /obj/item/gun, \
+	/obj/item/storage/firstaid, /obj/item/reagent_containers/hypospray, /obj/item/roller)
 
 	initial_modules = list(
 		/obj/item/rig_module/ai_container,
@@ -39,7 +39,7 @@
 	species_restricted = list(SPECIES_HUMAN,SPECIES_SKRELL,SPECIES_UNATHI)
 
 
-/obj/item/weapon/rig/ert/engineer
+/obj/item/rig/ert/engineer
 	name = "ERT engineering powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
 	suit_type = "ERT engineer"
@@ -58,7 +58,7 @@
 /obj/item/clothing/gloves/rig/ert/engineer
 	siemens_coefficient = 0
 
-/obj/item/weapon/rig/ert/janitor
+/obj/item/rig/ert/janitor
 	name = "ERT sanitation powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
 	suit_type = "ERT sanitation"
@@ -74,7 +74,7 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
-/obj/item/weapon/rig/ert/medical
+/obj/item/rig/ert/medical
 	name = "ERT medical powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
 	suit_type = "ERT medic"
@@ -88,7 +88,7 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
-/obj/item/weapon/rig/ert/security
+/obj/item/rig/ert/security
 	name = "ERT security powersuit control module"
 	desc = "A powersuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
 	suit_type = "ERT security"
@@ -102,7 +102,7 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
-/obj/item/weapon/rig/ert/assetprotection
+/obj/item/rig/ert/assetprotection
 	name = "Death Squad suit control module"
 	desc = "That's not red paint. That's real blood."
 	suit_type = "Death Squad"

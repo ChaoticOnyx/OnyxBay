@@ -1,10 +1,10 @@
-/obj/item/weapon/material/kitchen
+/obj/item/material/kitchen
 	icon = 'icons/obj/kitchen.dmi'
 
 /*
  * Utensils
  */
-/obj/item/weapon/material/kitchen/utensil
+/obj/item/material/kitchen/utensil
 	w_class = ITEM_SIZE_TINY
 	mod_weight = 0.25
 	mod_reach = 0.3
@@ -21,14 +21,14 @@
 	var/loaded      //Descriptive string for currently loaded food object.
 	var/scoop_food = 1
 
-/obj/item/weapon/material/kitchen/utensil/New()
+/obj/item/material/kitchen/utensil/New()
 	..()
 	if (prob(60))
 		src.pixel_y = rand(0, 4)
 	create_reagents(5)
 	return
 
-/obj/item/weapon/material/kitchen/utensil/attack(mob/living/carbon/M, mob/living/carbon/user)
+/obj/item/material/kitchen/utensil/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M))
 		return ..()
 
@@ -60,16 +60,16 @@
 		to_chat(user, "<span class='warning'>You don't have anything on \the [src].</span>")//if we have help intent and no food scooped up DON'T STAB OURSELVES WITH THE FORK
 		return
 
-/obj/item/weapon/material/kitchen/utensil/fork
+/obj/item/material/kitchen/utensil/fork
 	name = "fork"
 	desc = "It's a fork. Sure is pointy."
 	icon_state = "fork"
 	sharp = 1
 
-/obj/item/weapon/material/kitchen/utensil/fork/plastic
+/obj/item/material/kitchen/utensil/fork/plastic
 	default_material = MATERIAL_PLASTIC
 
-/obj/item/weapon/material/kitchen/utensil/spoon
+/obj/item/material/kitchen/utensil/spoon
 	name = "spoon"
 	desc = "It's a spoon. You can see your own upside-down face in it. Looks like an extremely inefficient weapon"
 	icon_state = "spoon"
@@ -79,13 +79,13 @@
 	force_divisor = 0.1 //2 when wielded with weight 20 (steel)
 	mod_weight = 0.3
 
-/obj/item/weapon/material/kitchen/utensil/spoon/plastic
+/obj/item/material/kitchen/utensil/spoon/plastic
 	default_material = MATERIAL_PLASTIC
 
 /*
  * Knives
  */
-/obj/item/weapon/material/kitchen/utensil/knife
+/obj/item/material/kitchen/utensil/knife
 	name = "table knife"
 	desc = "A knife for eating with. Can cut through any food."
 	icon_state = "tableknife"
@@ -96,20 +96,20 @@
 	sharp = 1
 	edge = 1
 
-/obj/item/weapon/material/kitchen/utensil/knife/attack(mob/living/M, mob/living/user)
+/obj/item/material/kitchen/utensil/knife/attack(mob/living/M, mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, SPAN("warning", "You accidentally cut yourself with \the [src]."))
 		user.take_organ_damage(20)
 		return
 	return ..()
 
-/obj/item/weapon/material/kitchen/utensil/knife/plastic
+/obj/item/material/kitchen/utensil/knife/plastic
 	default_material = MATERIAL_PLASTIC
 
 // Identical to the tactical knife but nowhere near as stabby.
 // Kind of like the toy esword compared to the real thing.
 //Making the sprite clear that this is a small knife
-/obj/item/weapon/material/kitchen/utensil/knife/boot
+/obj/item/material/kitchen/utensil/knife/boot
 	name = "small knife"
 	desc = "A small, easily concealed knife."
 	icon = 'icons/obj/weapons.dmi'
@@ -122,7 +122,7 @@
 	mod_reach = 0.33
 	mod_handy = 0.75
 
-/obj/item/weapon/material/kitchen/utensil/knife/unathiknife
+/obj/item/material/kitchen/utensil/knife/unathiknife
 	name = "dueling knife"
 	desc = "A length of leather-bound wood studded with razor-sharp teeth. How crude."
 	icon = 'icons/obj/weapons.dmi'
@@ -140,7 +140,7 @@
  * Rolling Pins
  */
 
-/obj/item/weapon/material/kitchen/rollingpin
+/obj/item/material/kitchen/rollingpin
 	name = "rolling pin"
 	desc = "Used to knock out the Bartender."
 	icon_state = "rolling_pin"
@@ -153,7 +153,7 @@
 	mod_reach = 0.85
 	mod_handy = 0.9
 
-/obj/item/weapon/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
+/obj/item/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((MUTATION_CLUMSY in user.mutations) && prob(50) && user.unEquip(src))
 		to_chat(user, "<span class='warning'>\The [src] slips out of your hand and hits your head.</span>")
 		user.drop_from_inventory(src)

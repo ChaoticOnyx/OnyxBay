@@ -6,7 +6,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 100)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/network_card
+	build_path = /obj/item/computer_hardware/network_card
 	sort_string = "VBABA"
 
 /datum/design/item/modularcomponent/netcard/advanced
@@ -16,7 +16,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/network_card/advanced
+	build_path = /obj/item/computer_hardware/network_card/advanced
 	sort_string = "VBABB"
 
 /datum/design/item/modularcomponent/netcard/wired
@@ -26,7 +26,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 400)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/network_card/wired
+	build_path = /obj/item/computer_hardware/network_card/wired
 	sort_string = "VBABC"
 
 // inteliCard Slot
@@ -37,7 +37,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 2000)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/ai_slot
+	build_path = /obj/item/computer_hardware/ai_slot
 	sort_string = "VBADB"
 
 // Processor unit
@@ -48,7 +48,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 1600)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit
+	build_path = /obj/item/computer_hardware/processor_unit
 	sort_string = "VBAFA"
 
 /datum/design/item/modularcomponent/cpu/small
@@ -58,7 +58,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 800)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/small
+	build_path = /obj/item/computer_hardware/processor_unit/small
 	sort_string = "VBAFB"
 
 /datum/design/item/modularcomponent/cpu/photonic
@@ -68,7 +68,7 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 6400, glass = 2000)
 	chemicals = list(/datum/reagent/acid = 40)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/photonic
+	build_path = /obj/item/computer_hardware/processor_unit/photonic
 	sort_string = "VBAFC"
 
 /datum/design/item/modularcomponent/cpu/photonic/small
@@ -78,5 +78,5 @@
 	build_type = IMPRINTER
 	materials = list(MATERIAL_STEEL = 3200, glass = 1000)
 	chemicals = list(/datum/reagent/acid = 20)
-	build_path = /obj/item/weapon/computer_hardware/processor_unit/photonic/small
+	build_path = /obj/item/computer_hardware/processor_unit/photonic/small
 	sort_string = "VBAFD"

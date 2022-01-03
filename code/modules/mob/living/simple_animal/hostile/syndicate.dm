@@ -47,8 +47,8 @@
 	melee_damage_upper = 25
 	icon_state = "syndicatemelee"
 	icon_living = "syndicatemelee"
-	weapon1 = /obj/item/weapon/melee/energy/sword/one_hand/red
-	weapon2 = /obj/item/weapon/shield/energy
+	weapon1 = /obj/item/melee/energy/sword/one_hand/red
+	weapon2 = /obj/item/shield/energy
 	attacktext = "slashed"
 	status_flags = 0
 
@@ -99,7 +99,7 @@
 	projectilesound = 'sound/effects/weapons/gun/fire_generic_smg.ogg'
 	projectiletype = /obj/item/projectile/bullet/pistol/medium
 
-	weapon1 = /obj/item/weapon/gun/projectile/automatic/c20r
+	weapon1 = /obj/item/gun/projectile/automatic/c20r
 
 /mob/living/simple_animal/hostile/syndicate/ranged/weaponless
 	weapon1 = null

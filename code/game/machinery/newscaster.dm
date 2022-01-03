@@ -76,7 +76,7 @@
 	newChannel.channel_id = length(network_channels) + 1
 	network_channels += newChannel
 
-/datum/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/weapon/photo/photo, adminMessage = 0, message_type = "")
+/datum/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/photo/photo, adminMessage = 0, message_type = "")
 	var/datum/feed_message/newMsg = new /datum/feed_message
 	newMsg.author = author
 	newMsg.body = msg
@@ -750,9 +750,9 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /datum/news_photo
 	var/is_synth = 0
-	var/obj/item/weapon/photo/photo = null
+	var/obj/item/photo/photo = null
 
-/datum/news_photo/New(obj/item/weapon/photo/p, synth)
+/datum/news_photo/New(obj/item/photo/p, synth)
 	is_synth = synth
 	photo = p
 
@@ -766,14 +766,14 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		photo_data = null
 		return
 
-	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
+	if(istype(user.get_active_hand(), /obj/item/photo))
 		var/obj/item/photo = user.get_active_hand()
 		user.drop_item()
 		photo.loc = src
 		photo_data = new(photo, 0)
 	else if(istype(user,/mob/living/silicon))
 		var/mob/living/silicon/tempAI = user
-		var/obj/item/weapon/photo/selection = tempAI.GetPicture()
+		var/obj/item/photo/selection = tempAI.GetPicture()
 		if (!selection)
 			return
 
@@ -784,7 +784,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 //###################################### NEWSPAPER! ######################################################################
 //########################################################################################################################
 
-/obj/item/weapon/newspaper
+/obj/item/newspaper
 	name = "newspaper"
 	desc = "An issue of The Griffon, the space newspaper."
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -799,7 +799,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	var/scribble=""
 	var/scribble_page = null
 
-/obj/item/weapon/newspaper/attack_self(mob/user)
+/obj/item/newspaper/attack_self(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
 		var/dat = "<meta charset=\"utf-8\">"
@@ -881,7 +881,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		to_chat(user, "The paper is full of intelligible symbols!")
 
 
-/obj/item/weapon/newspaper/Topic(href, href_list)
+/obj/item/newspaper/Topic(href, href_list)
 	var/mob/living/U = usr
 	..()
 	if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
@@ -913,8 +913,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.attack_self(src.loc)
 
 
-/obj/item/weapon/newspaper/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/pen))
+/obj/item/newspaper/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/pen))
 		if(src.scribble_page == src.curr_page)
 			to_chat(user, "<span class='info'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")
 		else
@@ -943,8 +943,8 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 					src.scanned_user = GetNameAndAssignmentFromId(P.id)
 				else
 					src.scanned_user = "Unknown"
-			else if(istype(human_user.wear_id, /obj/item/weapon/card/id) )
-				var/obj/item/weapon/card/id/ID = human_user.wear_id
+			else if(istype(human_user.wear_id, /obj/item/card/id) )
+				var/obj/item/card/id/ID = human_user.wear_id
 				src.scanned_user = GetNameAndAssignmentFromId(ID)
 			else
 				src.scanned_user ="Unknown"
@@ -957,7 +957,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /obj/machinery/newscaster/proc/print_paper()
 	feedback_inc("newscaster_newspapers_printed",1)
-	var/obj/item/weapon/newspaper/NEWSPAPER = new /obj/item/weapon/newspaper
+	var/obj/item/newspaper/NEWSPAPER = new /obj/item/newspaper
 	for(var/datum/feed_channel/FC in news_network.network_channels)
 		NEWSPAPER.news_content += FC
 	if(news_network.wanted_issue)

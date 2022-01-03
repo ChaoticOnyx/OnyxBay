@@ -1,4 +1,4 @@
-/obj/item/weapon/implant/imprinting
+/obj/item/implant/imprinting
 	name = "imprinting implant"
 	desc = "Latest word in training your peons."
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_DATA = 3)
@@ -6,7 +6,7 @@
 	var/brainwashing = 0
 	var/last_reminder
 
-/obj/item/weapon/implant/imprinting/get_data()
+/obj/item/implant/imprinting/get_data()
 	. = {"
 	<b>Implant Specifications:</b><BR>
 	<b>Name:</b> NanoTrasen BB-56 "Educator" Employee Assistance Implant<BR>
@@ -22,7 +22,7 @@
 		. += "- [instructions[i]] <A href='byond://?src=\ref[src];edit=[i]'>Edit</A> <A href='byond://?src=\ref[src];del=[i]'>Remove</A><br>"
 	. += "<A href='byond://?src=\ref[src];add=1'>Add</A>"
 
-/obj/item/weapon/implant/imprinting/Topic(href, href_list)
+/obj/item/implant/imprinting/Topic(href, href_list)
 	..()
 	if (href_list["add"])
 		var/mod = sanitize(input("Add an instruction", "Instructions") as text|null)
@@ -39,7 +39,7 @@
 		instructions -= instructions[text2num(href_list["del"])]
 		interact(usr)
 
-/obj/item/weapon/implant/imprinting/implanted(mob/M)
+/obj/item/implant/imprinting/implanted(mob/M)
 	var/mob/living/carbon/human/H = M
 	if(!istype(H))
 		return FALSE
@@ -59,7 +59,7 @@
 	START_PROCESSING(SSobj, src)
 	return TRUE
 
-/obj/item/weapon/implant/imprinting/Process()
+/obj/item/implant/imprinting/Process()
 	if(world.time < last_reminder + 5 MINUTES)
 		return
 	last_reminder = world.time
@@ -70,20 +70,20 @@
 		instruction = "<span class='notice'>You remember suddenly: \"[instruction]\"</span>"
 	to_chat(imp_in, instruction)
 
-/obj/item/weapon/implant/imprinting/removed()
+/obj/item/implant/imprinting/removed()
 	if(brainwashing)
 		to_chat(imp_in,"<span class='notice'>You are no longer so sure of those beliefs you've had...</span>")
 	..()
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/weapon/implant/imprinting/Destroy()
+/obj/item/implant/imprinting/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/weapon/implanter/imprinting
+/obj/item/implanter/imprinting
 	name = "imprinting implanter"
-	imp = /obj/item/weapon/implant/imprinting
+	imp = /obj/item/implant/imprinting
 
-/obj/item/weapon/implantcase/imprinting
+/obj/item/implantcase/imprinting
 	name = "glass case - 'imprinting'"
-	imp = /obj/item/weapon/implant/imprinting
+	imp = /obj/item/implant/imprinting

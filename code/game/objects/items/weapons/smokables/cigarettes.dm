@@ -8,7 +8,7 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS | SLOT_MASK
 	attack_verb = list("burnt", "singed")
-	type_butt = /obj/item/weapon/cigbutt
+	type_butt = /obj/item/cigbutt
 	chem_volume = 5
 	smoketime = 120
 	brand = "\improper Trans-Stellar Duty-free"
@@ -48,16 +48,16 @@
 	return 0
 
 /obj/item/clothing/mask/smokable/cigarette/can_be_lit_with(obj/W)
-	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/flamer) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter))
-		var/obj/item/weapon/gun/gun = W
+	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/flamer) && !istype(W, /obj/item/gun/energy/plasmacutter))
+		var/obj/item/gun/gun = W
 		return gun.combustion && gun.loc == src.loc
 	if(istype(W, /obj/machinery/cooker/grill))
 		var/obj/machinery/cooker/grill/grill = W
 		return !(grill.stat & (NOPOWER|BROKEN))
 	if(istype(W, /obj/machinery/light))
 		var/obj/machinery/light/mounted = W
-		var/obj/item/weapon/light/bulb = mounted.lightbulb
-		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && !(mounted.stat & BROKEN)
+		var/obj/item/light/bulb = mounted.lightbulb
+		return bulb && istype(bulb, /obj/item/light/bulb) && bulb.status == 2 && !(mounted.stat & BROKEN)
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/generate_lighting_message(atom/tool, mob/holder)
@@ -66,26 +66,26 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weapon/flame/lighter/zippo))
+	if(istype(tool, /obj/item/flame/lighter/zippo))
 		return SPAN("rose", "With a flick of the wrist, [holder] lights \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weapon/flame/lighter))
+	if(istype(tool, /obj/item/flame/lighter))
 		return SPAN("notice", "[holder] manages to light \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weapon/flame/candle))
+	if(istype(tool, /obj/item/flame/candle))
 		return SPAN("notice", "[holder] carefully lights \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weapon/weldingtool))
+	if(istype(tool, /obj/item/weldingtool))
 		return SPAN("notice", "[holder] casually lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name].")
-	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/glass/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/jackolantern))
 		return SPAN("notice", "[holder] shoves \his [name] into \a [tool] to light it up.")
-	if(istype(tool, /obj/item/weapon/melee/energy))
+	if(istype(tool, /obj/item/melee/energy))
 		return SPAN("warning", "[holder] swings \his [tool.name], and light \a [name] in the process.")
-	if(istype(tool, /obj/item/weapon/gun))
-		if(istype(tool, /obj/item/weapon/gun/flamer))
+	if(istype(tool, /obj/item/gun))
+		if(istype(tool, /obj/item/gun/flamer))
 			return SPAN("warning", "[holder] fearlessly lights \his [name] with the twinkling flare of \the lit [tool].")
-		else if(istype(tool, /obj/item/weapon/gun/energy/plasmacutter))
+		else if(istype(tool, /obj/item/gun/energy/plasmacutter))
 			return SPAN("notice", "[holder] touches \his [tool.name] with \a [name] to light it up.")
 		else
 			return SPAN("danger", "[holder] fired \his [tool.name] into the air, lighting \a [name] in the process!")
@@ -99,7 +99,7 @@
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/wirecutters))
 		user.visible_message(SPAN("notice", "[user] cut the tip of \his [name] with [W]."), "You cut the tip of your [name]")
 		smoketime -= 10
 		if(smoketime <= 0)
@@ -108,9 +108,9 @@
 			die(nodestroy = TRUE)
 		return
 
-	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter) && !istype(W, /obj/item/weapon/gun/flamer))
+	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/energy/plasmacutter) && !istype(W, /obj/item/gun/flamer))
 		if(!lit && can_be_lit_with(W))
-			var/obj/item/weapon/gun/gun = W
+			var/obj/item/gun/gun = W
 			if(gun.special_check(user))
 				var/obj/P = gun.consume_next_projectile()
 				if(P)
@@ -132,7 +132,7 @@
 						if(gun.process_projectile(P, user, user, BP_HEAD))
 							user.visible_message(SPAN("danger", "[user] shot \himself in the face with \the [gun].")) // Oops
 						return
-					else if(roll < oops_chance && istype(gun, /obj/item/weapon/gun/projectile) && isliving(user))
+					else if(roll < oops_chance && istype(gun, /obj/item/gun/projectile) && isliving(user))
 						var/mob/living/L = user
 						to_chat(user, SPAN("warning", "You burned your face a little."))
 						L.apply_damage(5, BURN, BP_HEAD, used_weapon = gun)
@@ -166,13 +166,13 @@
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user as mob, proximity)
-	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter) && !istype(W, /obj/item/weapon/gun/flamer))
+	if(istype(W, /obj/item/gun) && !istype(W, /obj/item/gun/energy/plasmacutter) && !istype(W, /obj/item/gun/flamer))
 		return
 
 	..()
 
-	if(istype(W, /obj/item/weapon/reagent_containers/glass) && !istype(W, /obj/item/weapon/reagent_containers/glass/rag)) //you can dip cigarettes into beakers
-		var/obj/item/weapon/reagent_containers/glass/glass = W
+	if(istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/glass/rag)) //you can dip cigarettes into beakers
+		var/obj/item/reagent_containers/glass/glass = W
 		if(!glass.is_open_container())
 			to_chat(user, SPAN("notice", "You need to take the lid off first."))
 			return
@@ -215,7 +215,7 @@
 	return res
 
 
-/obj/item/weapon/cigbutt
+/obj/item/cigbutt
 	name = "cigarette butt"
 	desc = "A manky old cigarette butt."
 	icon = 'icons/obj/clothing/masks.dmi'
@@ -225,7 +225,7 @@
 	slot_flags = SLOT_EARS
 	throwforce = 0
 
-/obj/item/weapon/cigbutt/New()
+/obj/item/cigbutt/New()
 	..()
 	transform = turn(transform,rand(0,360))
 
@@ -238,10 +238,10 @@
 	icon_state = "cigmentol"
 	brand = "\improper Temperamento Menthol"
 	color = "#ddffe8"
-	type_butt = /obj/item/weapon/cigbutt/menthol
+	type_butt = /obj/item/cigbutt/menthol
 	filling = list(/datum/reagent/tobacco = 1, /datum/reagent/menthol = 1)
 
-/obj/item/weapon/cigbutt/menthol
+/obj/item/cigbutt/menthol
 	icon_state = "cigbuttmentol"
 
 /obj/item/clothing/mask/smokable/cigarette/luckystars
@@ -253,10 +253,10 @@
 	icon_state = "cigjer"
 	color = "#dcdcdc"
 	filter_trans = 0.6
-	type_butt = /obj/item/weapon/cigbutt/jerichos
+	type_butt = /obj/item/cigbutt/jerichos
 	filling = list(/datum/reagent/tobacco/bad = 3.5)
 
-/obj/item/weapon/cigbutt/jerichos
+/obj/item/cigbutt/jerichos
 	icon_state = "cigbuttjer"
 
 /obj/item/clothing/mask/smokable/cigarette/carcinomas
@@ -268,10 +268,10 @@
 	name = "thin cigarette"
 	brand = "\improper Professional"
 	icon_state = "cigpro"
-	type_butt = /obj/item/weapon/cigbutt/professionals
+	type_butt = /obj/item/cigbutt/professionals
 	filling = list(/datum/reagent/tobacco/bad = 3)
 
-/obj/item/weapon/cigbutt/professionals
+/obj/item/cigbutt/professionals
 	icon_state = "cigbuttpro"
 
 /obj/item/clothing/mask/smokable/cigarette/killthroat
@@ -293,10 +293,10 @@
 	smoketime = 480
 	chem_volume = 10
 	filter_trans = 0.25
-	type_butt = /obj/item/weapon/cigbutt/woodbutt
+	type_butt = /obj/item/cigbutt/woodbutt
 	filling = list(/datum/reagent/tobacco/fine = 6)
 
-/obj/item/weapon/cigbutt/woodbutt
+/obj/item/cigbutt/woodbutt
 	name = "wooden tip"
 	desc = "A wooden mouthpiece from a cigar. Smells rather bad."
 	icon_state = "woodbutt"
@@ -355,7 +355,7 @@
 	icon_state = "cigar2off"
 	icon_on = "cigar2on"
 	ember_state = ""
-	type_butt = /obj/item/weapon/cigbutt/cigarbutt
+	type_butt = /obj/item/cigbutt/cigarbutt
 	throw_speed = 0.5
 	item_state = "cigaroff"
 	smoketime = 900
@@ -369,15 +369,15 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weapon/flame/lighter) && !istype(tool, /obj/item/weapon/flame/lighter/zippo))
+	if(istype(tool, /obj/item/flame/lighter) && !istype(tool, /obj/item/flame/lighter/zippo))
 		return SPAN("notice", "[holder] manages to offend \his [name] by lighting it with \a [tool].")
-	if(istype(tool, /obj/item/weapon/flame/candle))
+	if(istype(tool, /obj/item/flame/candle))
 		return SPAN("notice", "[holder] carefully lights \his [name] with \a classic [tool].")
-	if(istype(tool, /obj/item/weapon/weldingtool))
+	if(istype(tool, /obj/item/weldingtool))
 		return SPAN("notice", "[holder] insults \his [name] by lighting it with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name] with the power of science.")
-	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/glass/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool]. What a clown!")
 	return ..()
 
@@ -396,12 +396,12 @@
 	chem_volume = 30
 	filling = list(/datum/reagent/tobacco/fine = 20)
 
-/obj/item/weapon/cigbutt/cigarbutt
+/obj/item/cigbutt/cigarbutt
 	name = "cigar butt"
 	desc = "A manky old cigar butt."
 	icon_state = "cigarbutt"
 
-/obj/item/clothing/mask/smokable/cigarette/cigar/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/clothing/mask/smokable/cigarette/cigar/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	user.update_inv_wear_mask(0)
 	user.update_inv_l_hand(0)

@@ -1,4 +1,4 @@
-/obj/item/weapon/material/brass_knuckle
+/obj/item/material/brass_knuckle
 	name = "brass knuckles"
 	desc = "Handmade brass knuckles for beating faces."
 	icon = 'icons/obj/weapons.dmi'

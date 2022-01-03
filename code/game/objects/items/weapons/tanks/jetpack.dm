@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/obj/item/weapon/tank/jetpack
+/obj/item/tank/jetpack
 	name = "jetpack (empty)"
 	desc = "A tank of compressed gas for use as propulsion in zero-gravity areas. Use with caution."
 	icon_state = "jetpack"
@@ -18,28 +18,28 @@
 	var/volume_rate = 500              //Needed for borg jetpack transfer
 	action_button_name = "Toggle Jetpack"
 
-/obj/item/weapon/tank/jetpack/Initialize()
+/obj/item/tank/jetpack/Initialize()
 	. = ..()
 	ion_trail = new /datum/effect/effect/system/trail/ion()
 	ion_trail.set_up(src)
 
-/obj/item/weapon/tank/jetpack/Destroy()
+/obj/item/tank/jetpack/Destroy()
 	qdel(ion_trail)
 
 	return ..()
 
-/obj/item/weapon/tank/jetpack/examine(mob/living/user)
+/obj/item/tank/jetpack/examine(mob/living/user)
 	. = ..()
 	if(air_contents.total_moles < 5)
 		. += "\n<span class='danger'>The meter on \the [src] indicates you are almost out of gas!</span>"
 
-/obj/item/weapon/tank/jetpack/verb/toggle_rockets()
+/obj/item/tank/jetpack/verb/toggle_rockets()
 	set name = "Toggle Jetpack Stabilization"
 	set category = "Object"
 	src.stabilization_on = !( src.stabilization_on )
 	to_chat(usr, "You toggle the stabilization [stabilization_on? "on":"off"].")
 
-/obj/item/weapon/tank/jetpack/verb/toggle()
+/obj/item/tank/jetpack/verb/toggle()
 	set name = "Toggle Jetpack"
 	set category = "Object"
 
@@ -58,7 +58,7 @@
 
 	to_chat(usr, "You toggle the thrusters [on? "on":"off"].")
 
-/obj/item/weapon/tank/jetpack/proc/allow_thrust(num, mob/living/user as mob)
+/obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user as mob)
 	if(!(src.on))
 		return 0
 	if((num < 0.005 || src.air_contents.total_moles < num))
@@ -74,25 +74,25 @@
 	qdel(G)
 	return
 
-/obj/item/weapon/tank/jetpack/ui_action_click()
+/obj/item/tank/jetpack/ui_action_click()
 	toggle()
 
 
-/obj/item/weapon/tank/jetpack/void
+/obj/item/tank/jetpack/void
 	name = "void jetpack (oxygen)"
 	desc = "It works well in a void."
 	icon_state = "jetpack-void"
 	item_state =  "jetpack-void"
 	starting_pressure = list("oxygen" = 6*ONE_ATMOSPHERE)
 
-/obj/item/weapon/tank/jetpack/oxygen
+/obj/item/tank/jetpack/oxygen
 	name = "jetpack (oxygen)"
 	desc = "A tank of compressed oxygen for use as propulsion in zero-gravity areas. Use with caution."
 	icon_state = "jetpack"
 	item_state = "jetpack"
 	starting_pressure = list("oxygen" = 6*ONE_ATMOSPHERE)
 
-/obj/item/weapon/tank/jetpack/carbondioxide
+/obj/item/tank/jetpack/carbondioxide
 	name = "jetpack (carbon dioxide)"
 	desc = "A tank of compressed carbon dioxide for use as propulsion in zero-gravity areas. Painted black to indicate that it should not be used as a source for internals."
 	distribute_pressure = 0
@@ -100,16 +100,16 @@
 	item_state =  "jetpack-black"
 	starting_pressure = list("carbon_dioxide" = 6*ONE_ATMOSPHERE)
 
-/obj/item/weapon/tank/jetpack/rig
+/obj/item/tank/jetpack/rig
 	name = "jetpack"
-	var/obj/item/weapon/rig/holder
+	var/obj/item/rig/holder
 
-/obj/item/weapon/tank/jetpack/rig/examine(mob/user)
+/obj/item/tank/jetpack/rig/examine(mob/user)
 	. = ..()
 	. += "\nIt's a jetpack. If you can see this, report it on the bug tracker."
 	return 0
 
-/obj/item/weapon/tank/jetpack/rig/allow_thrust(num, mob/living/user as mob)
+/obj/item/tank/jetpack/rig/allow_thrust(num, mob/living/user as mob)
 
 	if(!(src.on))
 		return 0
@@ -117,7 +117,7 @@
 	if(!istype(holder) || !holder.air_supply)
 		return 0
 
-	var/obj/item/weapon/tank/pressure_vessel = holder.air_supply
+	var/obj/item/tank/pressure_vessel = holder.air_supply
 
 	if((num < 0.005 || pressure_vessel.air_contents.total_moles < num))
 		src.ion_trail.stop()

@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/lockbox
+/obj/item/storage/lockbox
 	name = "lockbox"
 	desc = "A locked box."
 	icon_state = "lockbox+l"
@@ -13,11 +13,11 @@
 	var/icon_closed = "lockbox"
 	var/icon_broken = "lockbox+b"
 
-/obj/item/weapon/storage/lockbox/Initialize()
+/obj/item/storage/lockbox/Initialize()
 	update_icon()
 	. = ..()
 
-/obj/item/weapon/storage/lockbox/update_icon()
+/obj/item/storage/lockbox/update_icon()
 	if(locked)
 		icon_state = icon_locked
 		return
@@ -26,8 +26,8 @@
 		return
 	icon_state = icon_closed
 
-/obj/item/weapon/storage/lockbox/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/card/id))
+/obj/item/storage/lockbox/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/card/id))
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] broken!"))
 			. = ..()
@@ -44,7 +44,7 @@
 		to_chat(user, SPAN_WARNING("Wrong access!"))
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if(istype(W, /obj/item/melee/energy/blade))
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] already broken!"))
 			. = ..()
@@ -61,7 +61,7 @@
 
 	. = ..()
 
-/obj/item/weapon/storage/lockbox/attack_hand(mob/user)
+/obj/item/storage/lockbox/attack_hand(mob/user)
 	add_fingerprint(user)
 
 	if(locked && (loc == user)) // lockbox onmob?
@@ -75,20 +75,20 @@
 				close(M)
 	. = ..()
 
-/obj/item/weapon/storage/lockbox/show_to(mob/user)
+/obj/item/storage/lockbox/show_to(mob/user)
 	if(locked)
 		to_chat(user, SPAN_WARNING("It's locked!"))
 		return
 	. = ..()
 
-/obj/item/weapon/storage/lockbox/MouseDrop(over_object, src_location, over_location)
+/obj/item/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	add_fingerprint(usr)
 	if (locked)
 		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
 		return
 	. = ..()
 
-/obj/item/weapon/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
+/obj/item/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
 	if(!broken)
 		if(visual_feedback)
 			visual_feedback = SPAN_WARNING("[visual_feedback]")
@@ -106,23 +106,23 @@
 		visible_message(visual_feedback, audible_feedback)
 		return 1
 
-/obj/item/weapon/storage/lockbox/loyalty
+/obj/item/storage/lockbox/loyalty
 	name = "lockbox of loyalty implants"
 	req_access = list(access_security)
 
-/obj/item/weapon/storage/lockbox/loyalty/Initialize()
+/obj/item/storage/lockbox/loyalty/Initialize()
 	. = ..()
-	new /obj/item/weapon/implantcase/loyalty(src)
-	new /obj/item/weapon/implantcase/loyalty(src)
-	new /obj/item/weapon/implantcase/loyalty(src)
-	new /obj/item/weapon/implanter/loyalty(src)
+	new /obj/item/implantcase/loyalty(src)
+	new /obj/item/implantcase/loyalty(src)
+	new /obj/item/implantcase/loyalty(src)
+	new /obj/item/implanter/loyalty(src)
 
 
-/obj/item/weapon/storage/lockbox/clusterbang
+/obj/item/storage/lockbox/clusterbang
 	name = "lockbox of clusterbangs"
 	desc = "You have a bad feeling about opening this."
 	req_access = list(access_security)
 
-/obj/item/weapon/storage/lockbox/clusterbang/Initialize()
+/obj/item/storage/lockbox/clusterbang/Initialize()
 	. = ..()
-	new /obj/item/weapon/grenade/flashbang/clusterbang(src)
+	new /obj/item/grenade/flashbang/clusterbang(src)

@@ -1,4 +1,4 @@
-/obj/item/weapon/material/ashtray
+/obj/item/material/ashtray
 	name = "ashtray"
 	desc = "A thing to keep your butts in."
 	icon = 'icons/obj/objects.dmi'
@@ -13,7 +13,7 @@
 	hitsound = SFX_FIGHTING_SWING
 	var/max_butts = 10
 
-/obj/item/weapon/material/ashtray/examine(mob/user)
+/obj/item/material/ashtray/examine(mob/user)
 	. = ..()
 	if(material)
 		. += "\nIt's made of [material.display_name]."
@@ -22,17 +22,17 @@
 	else if(contents.len)
 		. += "\nIt has [contents.len] cig butts in it."
 
-/obj/item/weapon/material/ashtray/update_icon()
+/obj/item/material/ashtray/update_icon()
 	overlays.Cut()
 	if (contents.len == max_butts)
 		overlays |= image('icons/obj/objects.dmi', "ashtray_full")
 	else if (contents.len >= max_butts/2)
 		overlays |= image('icons/obj/objects.dmi', "ashtray_half")
 
-/obj/item/weapon/material/ashtray/attackby(obj/item/weapon/W, mob/user)
+/obj/item/material/ashtray/attackby(obj/item/W, mob/user)
 	if(health <= 0)
 		return
-	if(istype(W,/obj/item/weapon/cigbutt) || istype(W,/obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/weapon/flame/match))
+	if(istype(W,/obj/item/cigbutt) || istype(W,/obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/flame/match))
 		if(contents.len >= max_butts)
 			to_chat(user, "\The [src] is full.")
 			return
@@ -61,7 +61,7 @@
 		if (health < 1)
 			shatter()
 
-/obj/item/weapon/material/ashtray/throw_impact(atom/hit_atom)
+/obj/item/material/ashtray/throw_impact(atom/hit_atom)
 	if (health > 0)
 		health = max(0,health - 3)
 		if (contents.len)
@@ -74,11 +74,11 @@
 		update_icon()
 	return ..()
 
-/obj/item/weapon/material/ashtray/plastic/New(newloc)
+/obj/item/material/ashtray/plastic/New(newloc)
 	..(newloc, MATERIAL_PLASTIC)
 
-/obj/item/weapon/material/ashtray/bronze/New(newloc)
+/obj/item/material/ashtray/bronze/New(newloc)
 	..(newloc, MATERIAL_BRONZE)
 
-/obj/item/weapon/material/ashtray/glass/New(newloc)
+/obj/item/material/ashtray/glass/New(newloc)
 	..(newloc, MATERIAL_GLASS)

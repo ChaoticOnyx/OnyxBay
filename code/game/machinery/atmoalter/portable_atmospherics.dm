@@ -101,7 +101,7 @@
 	if (network)
 		network.update = 1
 
-/obj/machinery/portable_atmospherics/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/portable_atmospherics/attackby(obj/item/W as obj, mob/user as mob)
 	if ((istype(W, /obj/item/tank) && !( src.destroyed )))
 		if (src.holding)
 			return
@@ -144,7 +144,7 @@
 	var/power_rating
 	var/power_losses
 	var/last_power_draw = 0
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 
 /obj/machinery/portable_atmospherics/powered/powered()
 	if(use_power) //using area power
@@ -154,12 +154,12 @@
 	return 0
 
 /obj/machinery/portable_atmospherics/powered/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(cell)
 			to_chat(user, "There is already a power cell installed.")
 			return
 
-		var/obj/item/weapon/cell/C = I
+		var/obj/item/cell/C = I
 
 		user.drop_item()
 		C.add_fingerprint(user)

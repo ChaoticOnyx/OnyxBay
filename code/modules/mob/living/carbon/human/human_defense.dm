@@ -73,7 +73,7 @@ meteor_act
 			if(prob(50))
 				organ.sever_artery()
 			else
-				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 				SP.loc = organ
@@ -515,13 +515,13 @@ meteor_act
 	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
 
 //Src (defender) gets attacked by attacking_mob (attacker) and tries to perform parry
-/mob/living/carbon/human/proc/handle_parry(mob/living/attacking_mob, obj/item/weapon_atk)
+/mob/living/carbon/human/proc/handle_parry(mob/living/attacking_mob, obj/item_atk)
 	var/mob/living/carbon/human/defender = src
 	var/failing = 0
 	if(istype(attacking_mob,/mob/living/carbon/human))
 		var/mob/living/carbon/human/attacker = attacking_mob
 		if(defender.get_active_hand())
-			var/obj/item/weapon_def = defender.get_active_hand()
+			var/obj/item_def = defender.get_active_hand()
 			if(!weapon_def.force)
 				defender.parrying = 0
 				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [weapon_atk.name] with their [weapon_def]."))
@@ -560,12 +560,12 @@ meteor_act
 	return 1
 
 //Src (defender) blocks attacking_mob's (attacker) weapon_atk with their weapon_def
-/mob/living/carbon/human/proc/handle_block_weapon(mob/living/attacking_mob, obj/item/weapon_atk)
+/mob/living/carbon/human/proc/handle_block_weapon(mob/living/attacking_mob, obj/item_atk)
 	var/mob/living/carbon/human/defender = src
 	var/d_mult = 1
 	if(istype(attacking_mob,/mob/living/carbon/human))
 		var/mob/living/carbon/human/attacker = attacking_mob
-		var/obj/item/weapon_def
+		var/obj/item_def
 		if(defender.blocking_hand && defender.get_inactive_hand())
 			weapon_def = defender.get_inactive_hand()
 		else if(defender.get_active_hand())
@@ -616,7 +616,7 @@ meteor_act
 	var/mob/living/carbon/human/defender = src
 	if(istype(attacking_mob,/mob/living/carbon/human) || istype(attacking_mob,/mob/living/simple_animal))
 		var/mob/living/attacker = attacking_mob
-		var/obj/item/weapon_def
+		var/obj/item_def
 
 		if(defender.blocking_hand && defender.get_inactive_hand())
 			weapon_def = defender.get_inactive_hand()
@@ -763,7 +763,7 @@ meteor_act
 		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
 
 		if(blocking)
-			var/obj/item/weapon_def
+			var/obj/item_def
 			if(blocking_hand && get_inactive_hand())
 				weapon_def = get_inactive_hand()
 			else if(get_active_hand())
@@ -915,8 +915,8 @@ meteor_act
 	if(damtype != BURN && damtype != BRUTE) return
 
 	// The rig might soak this hit, if we're wearing one.
-	if(back && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		rig.take_hit(damage)
 
 	// We may also be taking a suit breach.

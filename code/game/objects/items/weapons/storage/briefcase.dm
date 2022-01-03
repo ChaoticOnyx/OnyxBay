@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/briefcase
+/obj/item/storage/briefcase
 	name = "briefcase"
 	desc = "It's made of AUTHENTIC faux-leather and has a price-tag still attached. Its owner must be a real professional."
 	icon_state = "briefcase"
@@ -14,38 +14,38 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 
-/obj/item/weapon/storage/briefcase/iaa
-	startswith = list(/obj/item/weapon/paper/trade_lic/trade_guide,\
-	/obj/item/weapon/folder/nt,\
-	/obj/item/weapon/pen,\
+/obj/item/storage/briefcase/iaa
+	startswith = list(/obj/item/paper/trade_lic/trade_guide,\
+	/obj/item/folder/nt,\
+	/obj/item/pen,\
 	/obj/item/device/camera)
 
 // Syndicate Teleportation Device
 
-/obj/item/weapon/storage/briefcase/std
+/obj/item/storage/briefcase/std
 	desc = "It's an old-looking briefcase with some high-tech markings. It has a label on it, which reads: \"ONLY WORKS NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
 
-/obj/item/weapon/storage/briefcase/std/attackby(obj/item/I, mob/user)
+/obj/item/storage/briefcase/std/attackby(obj/item/I, mob/user)
 	if(I.hidden_uplink)
 		visible_message("\The [src] blinks green!")
 		uplink = I.hidden_uplink
 		authentication_complete = TRUE
 	..()
 
-/obj/item/weapon/storage/briefcase/std/proc/can_launch()
+/obj/item/storage/briefcase/std/proc/can_launch()
 	return authentication_complete && (locate(/turf/space) in view(get_turf(src)))
 
-/obj/item/weapon/storage/briefcase/std/attack_self(mob/user)
+/obj/item/storage/briefcase/std/attack_self(mob/user)
 	ui_interact(user)
 
-/obj/item/weapon/storage/briefcase/std/interact(mob/user)
+/obj/item/storage/briefcase/std/interact(mob/user)
 	ui_interact(user)
 
-/obj/item/weapon/storage/briefcase/std/proc/ui_data(mob/user)
+/obj/item/storage/briefcase/std/proc/ui_data(mob/user)
 	var/list/list/data = list()
 
 	data["can_launch"] = can_launch()
@@ -65,7 +65,7 @@
 
 	return data
 
-/obj/item/weapon/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!authentication_complete)
 		audible_message("\The [src] blinks red.")
 		return
@@ -77,7 +77,7 @@
 		ui.set_initial_data(data)
 		ui.open()
 
-/obj/item/weapon/storage/briefcase/std/Topic(href, href_list)
+/obj/item/storage/briefcase/std/Topic(href, href_list)
 	if(usr.incapacitated() || !Adjacent(usr) || isobserver(usr))
 		return
 

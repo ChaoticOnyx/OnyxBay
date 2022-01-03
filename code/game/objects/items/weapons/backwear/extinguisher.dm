@@ -1,5 +1,5 @@
 
-/obj/item/weapon/backwear/reagent/extinguisher
+/obj/item/backwear/reagent/extinguisher
 	name = "firefighting kit"
 	desc = "An unwieldy, heavy backpack with two massive foam tanks and a retractable fire hose. Includes a connector for most models of fire extinguishers."
 	icon_state = "foam0"
@@ -7,14 +7,14 @@
 	item_state = "backwear_extinguisher"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	gear_detachable = FALSE
-	gear = /obj/item/weapon/extinguisher/linked
+	gear = /obj/item/extinguisher/linked
 	atom_flags = null
 	initial_capacity = 5000
 	initial_reagent_types = list(/datum/reagent/water/firefoam = 1)
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)
 
-/obj/item/weapon/backwear/reagent/extinguisher/afterattack(obj/O, mob/user, proximity)
+/obj/item/backwear/reagent/extinguisher/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(O, /obj/structure/reagent_dispensers/watertank))
@@ -32,7 +32,7 @@
 		return
 
 
-/obj/item/weapon/extinguisher/linked
+/obj/item/extinguisher/linked
 	name = "fire hose"
 	desc = "Fire extinguisher's elder brother. Connected to a firefighting kit, it turns a mere spaceman into an entire fire brigade."
 	icon = 'icons/obj/backwear.dmi'
@@ -53,13 +53,13 @@
 	canremove = FALSE
 	force_drop = TRUE
 	matter = null
-	var/obj/item/weapon/backwear/reagent/base_unit
+	var/obj/item/backwear/reagent/base_unit
 
-/obj/item/weapon/extinguisher/linked/New(newloc, obj/item/weapon/backwear/base)
+/obj/item/extinguisher/linked/New(newloc, obj/item/backwear/base)
 	base_unit = base
 	..(newloc)
 
-/obj/item/weapon/extinguisher/linked/Destroy() //it shouldn't happen unless the base unit is destroyed but still
+/obj/item/extinguisher/linked/Destroy() //it shouldn't happen unless the base unit is destroyed but still
 	if(base_unit)
 		if(base_unit.gear == src)
 			base_unit.gear = null
@@ -67,12 +67,12 @@
 		base_unit = null
 	return ..()
 
-/obj/item/weapon/extinguisher/linked/dropped(mob/user)
+/obj/item/extinguisher/linked/dropped(mob/user)
 	..()
 	if(base_unit)
 		base_unit.reattach_gear(user)
 
-/obj/item/weapon/extinguisher/linked/attack(mob/living/M, mob/user)
+/obj/item/extinguisher/linked/attack(mob/living/M, mob/user)
 	if(user.a_intent == I_HELP)
 		if(!base_unit)
 			return
@@ -88,7 +88,7 @@
 		return 1
 	return ..()
 
-/obj/item/weapon/extinguisher/linked/afterattack(atom/target, mob/user, flag)
+/obj/item/extinguisher/linked/afterattack(atom/target, mob/user, flag)
 	if(!base_unit)
 		return
 	if(target == base_unit)

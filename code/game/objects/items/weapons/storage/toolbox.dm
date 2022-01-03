@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/toolbox
+/obj/item/storage/toolbox
 	name = "toolbox"
 	desc = "Bright red toolboxes like these are one of the most common sights in maintenance corridors on virtually every ship in the galaxy."
 	description_info = "The toolbox is a general-purpose storage item with lots of space. With an item in your hand, click on it to store it inside."
@@ -21,46 +21,46 @@
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("robusted")
 
-/obj/item/weapon/storage/toolbox/emergency
+/obj/item/storage/toolbox/emergency
 	name = "emergency toolbox"
 	icon_state = "red"
 	item_state = "toolbox_red"
 
-/obj/item/weapon/storage/toolbox/emergency/New()
+/obj/item/storage/toolbox/emergency/New()
 	..()
-	new /obj/item/weapon/crowbar/red(src)
-	new /obj/item/weapon/extinguisher/mini(src)
+	new /obj/item/crowbar/red(src)
+	new /obj/item/extinguisher/mini(src)
 	var/item = pick(list(/obj/item/device/flashlight, /obj/item/device/flashlight/flare,  /obj/item/device/flashlight/glowstick/red))
 	new item(src)
 	new /obj/item/device/radio(src)
 
-/obj/item/weapon/storage/toolbox/mechanical
+/obj/item/storage/toolbox/mechanical
 	name = "mechanical toolbox"
 	desc = "Bright blue toolboxes like these are one of the most common sights in maintenance corridors on virtually every ship in the galaxy."
 	icon_state = "blue"
 	item_state = "toolbox_blue"
 
-/obj/item/weapon/storage/toolbox/mechanical/New()
+/obj/item/storage/toolbox/mechanical/New()
 	..()
-	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/wrench(src)
-	new /obj/item/weapon/weldingtool(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/screwdriver(src)
+	new /obj/item/wrench(src)
+	new /obj/item/weldingtool(src)
+	new /obj/item/crowbar(src)
 	new /obj/item/device/analyzer(src)
-	new /obj/item/weapon/wirecutters(src)
+	new /obj/item/wirecutters(src)
 
-/obj/item/weapon/storage/toolbox/electrical
+/obj/item/storage/toolbox/electrical
 	name = "electrical toolbox"
 	desc = "Bright yellow toolboxes like these are one of the most common sights in maintenance corridors on virtually every ship in the galaxy."
 	icon_state = "yellow"
 	item_state = "toolbox_yellow"
 
-/obj/item/weapon/storage/toolbox/electrical/New()
+/obj/item/storage/toolbox/electrical/New()
 	..()
-	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/wirecutters(src)
+	new /obj/item/screwdriver(src)
+	new /obj/item/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/crowbar(src)
 	new /obj/item/stack/cable_coil/random(src,30)
 	new /obj/item/stack/cable_coil/random(src,30)
 	if(prob(5))
@@ -68,7 +68,7 @@
 	else
 		new /obj/item/stack/cable_coil/random(src,30)
 
-/obj/item/weapon/storage/toolbox/syndicate
+/obj/item/storage/toolbox/syndicate
 	name = "black and red toolbox"
 	desc = "A toolbox in black, with stylish red trim. This one feels particularly heavy."
 	icon_state = "syndicate"
@@ -80,13 +80,13 @@
 	mod_handy = 1.0
 	max_storage_space = 23
 
-/obj/item/weapon/storage/toolbox/syndicate/New()
+/obj/item/storage/toolbox/syndicate/New()
 	..()
 	new /obj/item/clothing/gloves/insulated(src)
-	new /obj/item/weapon/screwdriver(src)
-	new /obj/item/weapon/wrench(src)
-	new /obj/item/weapon/weldingtool(src)
-	new /obj/item/weapon/crowbar(src)
-	new /obj/item/weapon/wirecutters(src)
+	new /obj/item/screwdriver(src)
+	new /obj/item/wrench(src)
+	new /obj/item/weldingtool(src)
+	new /obj/item/crowbar(src)
+	new /obj/item/wirecutters(src)
 	new /obj/item/device/multitool(src)
 	new /obj/item/clothing/glasses/welding(src)

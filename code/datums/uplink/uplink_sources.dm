@@ -67,7 +67,7 @@ GLOBAL_LIST_INIT(default_uplink_source_priority, list(
 	if(!head)
 		return SETUP_FAILED
 
-	var/obj/item/weapon/implant/uplink/U = new(H, IMPLANT_TELECRYSTAL_AMOUNT(amount))
+	var/obj/item/implant/uplink/U = new(H, IMPLANT_TELECRYSTAL_AMOUNT(amount))
 	U.imp_in = H
 	U.implanted = TRUE
 	U.part = head

@@ -21,7 +21,7 @@
 
 /obj/machinery/portable_atmospherics/powered/scrubber/New()
 	..()
-	cell = new /obj/item/weapon/cell/apc(src)
+	cell = new /obj/item/cell/apc(src)
 
 /obj/machinery/portable_atmospherics/powered/scrubber/Initialize()
 	. = ..()
@@ -225,7 +225,7 @@
 		return
 
 	//doesn't use power cells
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		return
 	if(isScrewdriver(I))
 		return

@@ -2,7 +2,7 @@
 /*
  * Pill Bottles
  */
-/obj/item/weapon/storage/pill_bottle
+/obj/item/storage/pill_bottle
 	name = "pill bottle"
 	desc = "It's an airtight container for storing medication."
 	icon_state = "pill_canister"
@@ -11,7 +11,7 @@
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
 	max_storage_space = 14
-	can_hold = list(/obj/item/weapon/reagent_containers/pill, /obj/item/weapon/dice, /obj/item/weapon/paper)
+	can_hold = list(/obj/item/reagent_containers/pill, /obj/item/dice, /obj/item/paper)
 	allow_quick_gather = 1
 	use_to_pickup = 1
 	use_sound = 'sound/effects/using/bottles/use1.ogg'
@@ -20,27 +20,27 @@
 	var/starting_label = null
 	var/true_desc = "It's an airtight container for storing medication."
 
-/obj/item/weapon/storage/pill_bottle/Initialize()
+/obj/item/storage/pill_bottle/Initialize()
 	. = ..()
 	update_icon()
 	if(starting_label)
 		name = "pill bottle"
 		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 
-/obj/item/weapon/storage/pill_bottle/post_remove_label()
+/obj/item/storage/pill_bottle/post_remove_label()
 	..()
 	desc = true_desc
 	label_color = null
 	update_icon()
 
-/obj/item/weapon/storage/pill_bottle/update_icon()
+/obj/item/storage/pill_bottle/update_icon()
 	overlays.Cut()
 	if(label_color)
 		var/image/label_over = overlay_image(icon, "[icon_state]-overlay")
 		label_over.color = label_color
 		overlays += label_over
 
-/obj/item/weapon/storage/pill_bottle/attack_self(mob/user)
+/obj/item/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_inactive_hand())
 		to_chat(user, SPAN_NOTICE("You need an empty hand to take something out."))
 		return
@@ -57,10 +57,10 @@
 	else
 		to_chat(user, SPAN_WARNING("\The [src] is empty."))
 
-/obj/item/weapon/storage/pill_bottle/attack(mob/M, mob/user, def_zone)
+/obj/item/storage/pill_bottle/attack(mob/M, mob/user, def_zone)
 	if(spam_flag)
 		return FALSE
-	var/obj/item/weapon/reagent_containers/pill/pill = locate(/obj/item/weapon/reagent_containers/pill) in shuffle(contents.Copy())
+	var/obj/item/reagent_containers/pill/pill = locate(/obj/item/reagent_containers/pill) in shuffle(contents.Copy())
 	if(!pill)
 		to_chat(user, SPAN("notice", "\The [src] contains no pills!"))
 		return FALSE
@@ -109,138 +109,138 @@
 	spam_flag = FALSE
 	return FALSE
 
-/obj/item/weapon/storage/pill_bottle/bicaridine
+/obj/item/storage/pill_bottle/bicaridine
 	name = "pill bottle (bicaridine)" // Keeping these for mapping
 	desc = "Contains pills used to stabilize the severely injured."
 	label_color = "#bf0000"
 	starting_label = "bicaridine"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/bicaridine = 14)
+	startswith = list(/obj/item/reagent_containers/pill/bicaridine = 14)
 
-/obj/item/weapon/storage/pill_bottle/dexalin
+/obj/item/storage/pill_bottle/dexalin
 	name = "pill bottle (dexalin)"
 	desc = "Contains pills used to treat oxygen deprivation."
 	label_color = "#0080ff"
 	starting_label = "dexalin"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/dexalin = 14)
+	startswith = list(/obj/item/reagent_containers/pill/dexalin = 14)
 
-/obj/item/weapon/storage/pill_bottle/dexalin_plus
+/obj/item/storage/pill_bottle/dexalin_plus
 	name = "pill bottle (dexalin plus)"
 	desc = "Contains pills used to treat extreme cases of oxygen deprivation."
 	label_color = "#0040ff"
 	starting_label = "dexalin plus"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/dexalin_plus = 14)
+	startswith = list(/obj/item/reagent_containers/pill/dexalin_plus = 14)
 
-/obj/item/weapon/storage/pill_bottle/dermaline
+/obj/item/storage/pill_bottle/dermaline
 	name = "pill bottle (dermaline)"
 	desc = "Contains pills used to treat burn wounds."
 	label_color = "#ff8000"
 	starting_label = "dermaline"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/dermaline = 14)
+	startswith = list(/obj/item/reagent_containers/pill/dermaline = 14)
 
-/obj/item/weapon/storage/pill_bottle/dylovene
+/obj/item/storage/pill_bottle/dylovene
 	name = "pill bottle (dylovene)"
 	desc = "Contains pills used to treat toxic substances in the blood."
 	label_color = "#00a000"
 	starting_label = "dylovene"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/dylovene = 14)
+	startswith = list(/obj/item/reagent_containers/pill/dylovene = 14)
 
-/obj/item/weapon/storage/pill_bottle/inaprovaline
+/obj/item/storage/pill_bottle/inaprovaline
 	name = "pill bottle (inaprovaline)"
 	desc = "Contains pills used to stabilize patients."
 	label_color = "#00bfff"
 	starting_label = "inaprovaline"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/inaprovaline = 14)
+	startswith = list(/obj/item/reagent_containers/pill/inaprovaline = 14)
 
-/obj/item/weapon/storage/pill_bottle/kelotane
+/obj/item/storage/pill_bottle/kelotane
 	name = "pill bottle (kelotane)"
 	desc = "Contains pills used to treat burns."
 	label_color = "#ffa800"
 	starting_label = "kelotane"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/kelotane = 14)
+	startswith = list(/obj/item/reagent_containers/pill/kelotane = 14)
 
-/obj/item/weapon/storage/pill_bottle/spaceacillin
+/obj/item/storage/pill_bottle/spaceacillin
 	name = "pill bottle (spaceacillin)"
 	desc = "A theta-lactam antibiotic. Effective against many diseases likely to be encountered in space."
 	label_color = "#c1c1c1"
 	starting_label = "spaceacillin"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/spaceacillin = 14)
+	startswith = list(/obj/item/reagent_containers/pill/spaceacillin = 14)
 
-/obj/item/weapon/storage/pill_bottle/tramadol
+/obj/item/storage/pill_bottle/tramadol
 	name = "pill bottle (tramadol)"
 	desc = "Contains pills used to relieve pain."
 	label_color = "#cb68fc"
 	starting_label = "tramadol"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/tramadol = 14)
+	startswith = list(/obj/item/reagent_containers/pill/tramadol = 14)
 
 //Baycode specific Psychiatry pills.
-/obj/item/weapon/storage/pill_bottle/citalopram
+/obj/item/storage/pill_bottle/citalopram
 	name = "pill bottle (citalopram)"
 	desc = "Mild antidepressant. For use in individuals suffering from depression or anxiety. 15u dose per pill."
 	label_color = "#ff80ff"
 	starting_label = "citalopram"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/citalopram = 14)
+	startswith = list(/obj/item/reagent_containers/pill/citalopram = 14)
 
-/obj/item/weapon/storage/pill_bottle/methylphenidate
+/obj/item/storage/pill_bottle/methylphenidate
 	name = "pill bottle (methylphenidate)"
 	desc = "Mental stimulant. For use in individuals suffering from ADHD, or general concentration issues. 15u dose per pill."
 	label_color = "#bf80bf"
 	starting_label = "methylphenidate"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/methylphenidate = 14)
+	startswith = list(/obj/item/reagent_containers/pill/methylphenidate = 14)
 
-/obj/item/weapon/storage/pill_bottle/paroxetine
+/obj/item/storage/pill_bottle/paroxetine
 	name = "pill bottle (paroxetine)"
 	desc = "High-strength antidepressant. Only for use in severe depression. 10u dose per pill. <span class='warning'>WARNING: side-effects may include hallucinations.</span>"
 	label_color = "#ff80bf"
 	starting_label = "paroxetine"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/paroxetine = 14)
+	startswith = list(/obj/item/reagent_containers/pill/paroxetine = 14)
 
-/obj/item/weapon/storage/pill_bottle/antidexafen
+/obj/item/storage/pill_bottle/antidexafen
 	name = "pill bottle (cold medicine)"
 	desc = "All-in-one cold medicine. 15u dose per pill. Safe for babies like you!"
 	label_color = "#c8a5dc"
 	starting_label = "cold medicine"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/antidexafen = 14)
+	startswith = list(/obj/item/reagent_containers/pill/antidexafen = 14)
 
-/obj/item/weapon/storage/pill_bottle/paracetamol
+/obj/item/storage/pill_bottle/paracetamol
 	name = "pill bottle (paracetamol)"
 	desc = "Mild painkiller, also known as Tylenol. Won't fix the cause of your headache (unlike cyanide), but might make it bearable."
 	label_color = "#c8a5dc"
 	starting_label = "paracetamol"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/paracetamol = 14)
+	startswith = list(/obj/item/reagent_containers/pill/paracetamol = 14)
 
-/obj/item/weapon/storage/pill_bottle/hyronalin
+/obj/item/storage/pill_bottle/hyronalin
 	name = "pill bottle (hyronalin)"
 	desc = "Effective anti radiation drug, best to use with Dylovene. 10u dose per pill"
 	label_color = "#408000"
 	starting_label = "hyronalin"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/hyronalin = 14)
+	startswith = list(/obj/item/reagent_containers/pill/hyronalin = 14)
 
-/obj/item/weapon/storage/pill_bottle/glucose
+/obj/item/storage/pill_bottle/glucose
 	name = "pill bottle (glucose)"
 	desc = "These pills contain lots of nutriments, much needed for natural blood regeneration. 20u doseper pill"
 	label_color = "#ffffff"
 	starting_label = "glucose"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 14)
+	startswith = list(/obj/item/reagent_containers/pill/glucose = 14)
 
-/obj/item/weapon/storage/pill_bottle/sugar_cubes
+/obj/item/storage/pill_bottle/sugar_cubes
 	name = "sugar box"
 	desc = "A small box containing some precious cubes of sweetness."
 	icon_state = "sugar_bottle"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/sugar_cube = 14)
+	startswith = list(/obj/item/reagent_containers/pill/sugar_cube = 14)

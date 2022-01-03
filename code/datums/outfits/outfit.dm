@@ -106,7 +106,7 @@ var/list/outfits_decls_by_type_
 
 	rank = id_pda_assignment || rank
 	assignment = id_pda_assignment || assignment || rank
-	var/obj/item/weapon/card/id/W = equip_id(H, rank, assignment, equip_adjustments)
+	var/obj/item/card/id/W = equip_id(H, rank, assignment, equip_adjustments)
 	if(W)
 		rank = W.rank
 		assignment = W.assignment
@@ -199,7 +199,7 @@ var/list/outfits_decls_by_type_
 		return
 	if(OUTFIT_ADJUSTMENT_SKIP_ID_PDA & equip_adjustments)
 		return
-	var/obj/item/weapon/card/id/W = new id_type(H)
+	var/obj/item/card/id/W = new id_type(H)
 	if(id_desc)
 		W.desc = id_desc
 	if(rank)

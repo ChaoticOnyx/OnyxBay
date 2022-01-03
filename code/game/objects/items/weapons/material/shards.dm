@@ -1,6 +1,6 @@
 // Glass shards
 
-/obj/item/weapon/material/shard
+/obj/item/material/shard
 	name = "shard"
 	icon = 'icons/obj/shards.dmi'
 	desc = "Made of nothing. How does this even exist?" // set based on material, if this desc is visible it's a bug (shards default to being made of glass)
@@ -24,7 +24,7 @@
 	var/handcutter = FALSE
 	var/noisystepper = FALSE
 
-/obj/item/weapon/material/shard/set_material(new_material)
+/obj/item/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
 		return
@@ -52,7 +52,7 @@
 	else
 		qdel(src)
 
-/obj/item/weapon/material/shard/update_icon()
+/obj/item/material/shard/update_icon()
 	if(material)
 		color = material.icon_colour
 		// 1-(1-x)^2, so that glass shards with 0.3 opacity end up somewhat visible at 0.51 opacity
@@ -61,17 +61,17 @@
 		color = "#ffffff"
 		alpha = 255
 
-/obj/item/weapon/material/shard/attackby(obj/item/weapon/W, mob/user)
+/obj/item/material/shard/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && material.shard_can_repair)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			material.place_sheet(loc)
 			qdel(src)
 			return
 	return ..()
 
-/obj/item/weapon/material/shard/Crossed(mob/M)
-	if((locate(/obj/item/weapon/material/shard) in loc) != src)
+/obj/item/material/shard/Crossed(mob/M)
+	if((locate(/obj/item/material/shard) in loc) != src)
 		return
 
 	if(isliving(M))
@@ -95,7 +95,7 @@
 			to_chat(M, SPAN("danger", "You step on \the [src]!"))
 
 			var/amount = 0
-			for(var/obj/item/weapon/material/shard/S in loc)
+			for(var/obj/item/material/shard/S in loc)
 				amount++
 
 			var/list/check = list(BP_L_FOOT, BP_R_FOOT)
@@ -113,7 +113,7 @@
 				check -= picked
 			return
 
-/obj/item/weapon/material/shard/afterattack(atom/target, mob/user, proximity)
+/obj/item/material/shard/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)
 		return
 	..()
@@ -123,14 +123,14 @@
 		return
 	cut_hand(user)
 
-/obj/item/weapon/material/shard/attack(mob/M, mob/user)
+/obj/item/material/shard/attack(mob/M, mob/user)
 	. = ..()
 	if(user.a_intent == I_HELP || user.a_intent == I_GRAB)
 		return // no damage upon jokingly poking somebody or trying to parry them
 	else
 		cut_hand(user)
 
-/obj/item/weapon/material/shard/proc/cut_hand(mob/user)
+/obj/item/material/shard/proc/cut_hand(mob/user)
 	if(!handcutter)
 		return
 	if(istype(user,/mob/living/carbon/human))
@@ -148,16 +148,16 @@
 			to_chat(user, SPAN("danger", "You cut your hand with \the [src]!"))
 
 // Preset types - left here for the code that uses them
-/obj/item/weapon/material/shrapnel
+/obj/item/material/shrapnel
 	name = "shrapnel"
 	default_material = MATERIAL_STEEL
 	w_class = ITEM_SIZE_TINY	//it's real small
 
-/obj/item/weapon/material/shard/shrapnel/New(loc)
+/obj/item/material/shard/shrapnel/New(loc)
 	..(loc, MATERIAL_STEEL)
 	name = "shrapnel"
 	icon_state = "shrapnel[pick("large", "medium", "small")]"
 	update_icon()
 
-/obj/item/weapon/material/shard/plasma/New(loc)
+/obj/item/material/shard/plasma/New(loc)
 	..(loc, MATERIAL_PLASS)

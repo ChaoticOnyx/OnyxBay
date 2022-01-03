@@ -95,7 +95,7 @@
 			to_chat(src, SPAN_WARNING("\The [T]'s mind is too strong to be affected by our powers!"))
 		return FALSE
 	if (account_loyalty_implant)
-		for (var/obj/item/weapon/implant/loyalty/I in T)
+		for (var/obj/item/implant/loyalty/I in T)
 			if (I.implanted)
 				if (notify)
 					to_chat(src, SPAN_WARNING("You feel that [T]'s mind is protected from our powers."))

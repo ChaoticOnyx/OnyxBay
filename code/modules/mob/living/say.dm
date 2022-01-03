@@ -75,7 +75,7 @@ var/list/channel_to_radio_key = new
 	return default_language
 
 /mob/proc/is_muzzled()
-	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/grenade)))
 
 // Takes a list of the form list(message, verb, whispering) and modifies it as needed
 // Returns 1 if a speech problem was applied, 0 otherwise

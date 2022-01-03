@@ -1,5 +1,5 @@
 
-/obj/item/weapon/backwear
+/obj/item/backwear
 	name = "backwear"
 	desc = "An unwieldy, heavy backpack."
 	slot_flags = SLOT_BACK
@@ -12,9 +12,9 @@
 	mod_handy = 0.5
 	var/base_icon = null
 	var/gear_detachable = FALSE
-	var/obj/item/weapon/gear = null
+	var/obj/item/gear = null
 
-/obj/item/weapon/backwear/Initialize()
+/obj/item/backwear/Initialize()
 	. = ..()
 	if(ispath(gear))
 		if(!gear_detachable)
@@ -23,7 +23,7 @@
 			gear = new gear(src)
 	update_icon()
 
-/obj/item/weapon/backwear/Destroy()
+/obj/item/backwear/Destroy()
 	. = ..()
 	if(gear)
 		if(gear_detachable)
@@ -33,7 +33,7 @@
 		else
 			QDEL_NULL(gear)
 
-/obj/item/weapon/backwear/reagent/update_icon()
+/obj/item/backwear/reagent/update_icon()
 	..()
 	if(!gear_detachable)
 		if(gear && gear.loc == src)
@@ -43,19 +43,19 @@
 		return
 	icon_state = base_icon
 
-/obj/item/weapon/backwear/attackby(obj/item/W, mob/user)
+/obj/item/backwear/attackby(obj/item/W, mob/user)
 	if(W == gear)
 		reattach_gear(user)
 		return
 	..()
 
-/obj/item/weapon/backwear/proc/slot_check()
+/obj/item/backwear/proc/slot_check()
 	var/mob/M = loc
 	if(!istype(M))
 		return 0
 	return 1
 
-/obj/item/weapon/backwear/proc/reattach_gear(mob/user)
+/obj/item/backwear/proc/reattach_gear(mob/user)
 	if(!gear)
 		return
 	if(gear.loc == src)
@@ -70,7 +70,7 @@
 		to_chat(user, SPAN("notice", "\The [gear] snaps back into \the [src]."))
 	update_icon()
 
-/obj/item/weapon/backwear/proc/detach_gear(mob/user)
+/obj/item/backwear/proc/detach_gear(mob/user)
 	if(!gear_detachable)
 		return
 	if(!gear)
@@ -83,14 +83,14 @@
 	gear.update_icon()
 	gear = null
 
-/obj/item/weapon/backwear/verb/grab_gear()
+/obj/item/backwear/verb/grab_gear()
 	set name = "Grab Gear"
 	set category = "Object"
 
 	if(istype(usr, /mob/living/carbon/human))
 		resolve_grab_gear(usr)
 
-/obj/item/weapon/backwear/proc/resolve_grab_gear(mob/living/carbon/human/user)
+/obj/item/backwear/proc/resolve_grab_gear(mob/living/carbon/human/user)
 	if(!gear)
 		to_chat(user, SPAN("warning", "\The [src] has no additional gear."))
 		return 0
@@ -106,17 +106,17 @@
 		update_icon()
 	return 1
 
-/obj/item/weapon/backwear/dropped(mob/user)
+/obj/item/backwear/dropped(mob/user)
 	..()
 	reattach_gear(user)
 
-/obj/item/weapon/backwear/attack_hand(mob/user)
+/obj/item/backwear/attack_hand(mob/user)
 	if(loc == user)
 		grab_gear()
 	else
 		..()
 
-/obj/item/weapon/backwear/MouseDrop()
+/obj/item/backwear/MouseDrop()
 	if(ismob(src.loc))
 		if(!CanMouseDrop(src))
 			return
@@ -128,26 +128,26 @@
 
 
 ///// These use power cells to function
-/obj/item/weapon/backwear/powered
-	var/obj/item/weapon/cell/bcell = null
+/obj/item/backwear/powered
+	var/obj/item/cell/bcell = null
 
-/obj/item/weapon/backwear/powered/update_icon()
+/obj/item/backwear/powered/update_icon()
 	..()
 	overlays.Cut()
 	if(!bcell)
 		overlays += image(icon = 'icons/obj/backwear.dmi', icon_state = "[base_icon]_nocell")
 
-/obj/item/weapon/backwear/powered/Initialize()
+/obj/item/backwear/powered/Initialize()
 	. = ..()
 	if(ispath(bcell))
 		bcell = new bcell(src)
 	update_icon()
 
-/obj/item/weapon/backwear/powered/Destroy()
+/obj/item/backwear/powered/Destroy()
 	. = ..()
 	QDEL_NULL(bcell)
 
-/obj/item/weapon/backwear/powered/examine(mob/user)
+/obj/item/backwear/powered/examine(mob/user)
 	. = ..()
 	if(bcell)
 		. += "\nIt has \the [bcell] installed."
@@ -155,8 +155,8 @@
 	else
 		. += "\nIt has no power cell installed!"
 
-/obj/item/weapon/backwear/powered/attackby(obj/item/weapon/W, mob/user, params)
-	if(istype(W, /obj/item/weapon/cell))
+/obj/item/backwear/powered/attackby(obj/item/W, mob/user, params)
+	if(istype(W, /obj/item/cell))
 		if(bcell)
 			to_chat(user, SPAN("notice", "\The [src] already has a cell."))
 		else
@@ -179,14 +179,14 @@
 
 
 ///// These contain reagents
-/obj/item/weapon/backwear/reagent
+/obj/item/backwear/reagent
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	var/initial_capacity = 500
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "5;10;25;50;100"
 
-/obj/item/weapon/backwear/reagent/Initialize()
+/obj/item/backwear/reagent/Initialize()
 	. = ..()
 	create_reagents(initial_capacity)
 
@@ -195,9 +195,9 @@
 		reagents.add_reagent(reagent_type, reagent_ratio * initial_capacity)
 
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/item/weapon/backwear/reagent/verb/set_APTFT
+		src.verbs -= /obj/item/backwear/reagent/verb/set_APTFT
 
-/obj/item/weapon/backwear/reagent/examine(mob/user)
+/obj/item/backwear/reagent/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -208,7 +208,7 @@
 	else
 		. += "\n<span class='notice'>Nothing.</span>"
 
-/obj/item/weapon/backwear/reagent/verb/set_APTFT() //set amount_per_transfer_from_this
+/obj/item/backwear/reagent/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
 	set category = "Object"
 	set src in view(1)
@@ -216,14 +216,14 @@
 	if(N)
 		amount_per_transfer_from_this = N
 
-/obj/item/weapon/backwear/reagent/AltClick(mob/user)
+/obj/item/backwear/reagent/AltClick(mob/user)
 	if(possible_transfer_amounts)
 		if(CanPhysicallyInteract(user))
 			set_APTFT()
 	else
 		return ..()
 
-/obj/item/weapon/backwear/reagent/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
+/obj/item/backwear/reagent/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
 	if(!istype(target))
 		return 0
 

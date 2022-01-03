@@ -212,7 +212,7 @@
 			to_chat(user, "There is no structural damage on \the [src] to repair.")
 			return
 
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(5))
 			to_chat(user, "<span class='warning'>You need more welding fuel to repair this suit.</span>")
 			return
@@ -220,7 +220,7 @@
 		repair_breaches(BRUTE, 3, user)
 		return
 
-	else if(istype(W, /obj/item/weapon/tape_roll))
+	else if(istype(W, /obj/item/tape_roll))
 		var/datum/breach/target_breach		//Target the largest unpatched breach.
 		for(var/datum/breach/B in breaches)
 			if(B.patched)

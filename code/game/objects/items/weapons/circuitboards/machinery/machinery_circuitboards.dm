@@ -2,36 +2,36 @@
 #error T_BOARD macro is not defined but we need it!
 #endif
 
-/obj/item/weapon/circuitboard/cell_charger
+/obj/item/circuitboard/cell_charger
 	name = T_BOARD("cell charger")
 	build_path = /obj/machinery/cell_charger
 	board_type = "machine"
 	origin_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
-	req_components = list(/obj/item/weapon/stock_parts/capacitor = 1)
+	req_components = list(/obj/item/stock_parts/capacitor = 1)
 
-/obj/item/weapon/circuitboard/recharger
+/obj/item/circuitboard/recharger
 	name = T_BOARD("recharger")
 	build_path = /obj/machinery/recharger
 	board_type = "machine"
 	origin_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
-	req_components = list(/obj/item/weapon/stock_parts/capacitor = 1)
+	req_components = list(/obj/item/stock_parts/capacitor = 1)
 
-/obj/item/weapon/circuitboard/honey_extractor
+/obj/item/circuitboard/honey_extractor
 	name = T_BOARD("honey extractor")
 	build_path = /obj/machinery/honey_extractor
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 1)
-	req_components = list(/obj/item/weapon/stock_parts/manipulator = 3)
+	req_components = list(/obj/item/stock_parts/manipulator = 3)
 
-/obj/item/weapon/circuitboard/sleeper
+/obj/item/circuitboard/sleeper
 	name = T_BOARD("sleeper")
 	desc = "The circuitboard for a sleeper."
 	origin_tech = list(TECH_MAGNET = 2, TECH_BIO = 2, TECH_ENGINEERING = 2)
 	build_path = /obj/machinery/sleeper
 	board_type = "machine"
 	req_components = list(
-							/obj/item/weapon/stock_parts/manipulator = 1,
-							/obj/item/weapon/stock_parts/capacitor = 1,
-							/obj/item/weapon/stock_parts/scanning_module = 1,
-							/obj/item/weapon/stock_parts/console_screen = 1,
-							/obj/item/weapon/reagent_containers/glass/beaker/large = 1)
+							/obj/item/stock_parts/manipulator = 1,
+							/obj/item/stock_parts/capacitor = 1,
+							/obj/item/stock_parts/scanning_module = 1,
+							/obj/item/stock_parts/console_screen = 1,
+							/obj/item/reagent_containers/glass/beaker/large = 1)

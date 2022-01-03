@@ -228,7 +228,7 @@
 			to_chat(user, "<span class='warning'>\The [src] must be closed before you can repair it.</span>")
 			return
 
-		var/obj/item/weapon/weldingtool/welder = I
+		var/obj/item/weldingtool/welder = I
 		if(welder.remove_fuel(0,user))
 			to_chat(user, "<span class='notice'>You start to fix dents and weld \the [repairing] into place.</span>")
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
@@ -248,7 +248,7 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(density && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
+	if(density && user.a_intent == I_HURT && !istype(I, /obj/item/card))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
 			user.setClickCooldown(I.update_attack_cooldown())

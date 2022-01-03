@@ -1,4 +1,4 @@
-/obj/item/weapon/storage/bouquet
+/obj/item/storage/bouquet
 	name = "bouquet"
 	desc = "A great gift for your girlfriend. Shotgun to a bouquet should be bought separately."
 	icon_state = "mixedbouquet"
@@ -12,16 +12,16 @@
 	use_sound = 'sound/effects/using/plantrustle.ogg'
 
 
-/obj/item/weapon/storage/bouquet/shotgun
+/obj/item/storage/bouquet/shotgun
 	name = "bouquet"
 	desc = "A great gift for your girlfriend. Now with a shotgun!"
 	icon_state = "mixedbouquet"
 
 	startswith = list(
-		/obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn
+		/obj/item/gun/projectile/shotgun/doublebarrel/sawn
 		)
 
-/obj/item/weapon/storage/bouquet/Initialize()
+/obj/item/storage/bouquet/Initialize()
 	. = ..()
 	icon_state = pick("mixedbouquet", "sunbouquet", "poppybouquet")
 	item_state = icon_state

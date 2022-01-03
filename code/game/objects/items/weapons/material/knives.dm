@@ -1,4 +1,4 @@
-/obj/item/weapon/material/butterfly
+/obj/item/material/butterfly
 	name = "butterfly knife"
 	desc = "A basic metal blade concealed in a lightweight plasteel grip. Small enough when folded to fit in a pocket."
 	icon_state = "butterflyknife"
@@ -15,7 +15,7 @@
 	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
 
-/obj/item/weapon/material/butterfly/update_force()
+/obj/item/material/butterfly/update_force()
 	if(active)
 		edge = 1
 		sharp = 1
@@ -34,7 +34,7 @@
 		w_class = initial(w_class)
 		attack_verb = initial(attack_verb)
 
-/obj/item/weapon/material/butterfly/attack_self(mob/user)
+/obj/item/material/butterfly/attack_self(mob/user)
 	active = !active
 	if(active)
 		to_chat(user, "<span class='notice'>You flip out \the [src].</span>")
@@ -44,7 +44,7 @@
 	update_force()
 	add_fingerprint(user)
 
-/obj/item/weapon/material/butterfly/switchblade
+/obj/item/material/butterfly/switchblade
 	name = "switchblade"
 	desc = "A classic switchblade with gold engraving. Just holding it makes you feel like a gangster."
 	icon_state = "switchblade"
@@ -53,7 +53,7 @@
 /*
  * Kitchen knives
  */
-/obj/item/weapon/material/knife
+/obj/item/material/knife
 	name = "knife"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "knife"
@@ -73,13 +73,13 @@
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	unbreakable = 1
 
-/obj/item/weapon/material/knife/hook
+/obj/item/material/knife/hook
 	name = "meat hook"
 	desc = "A sharp, metal hook what sticks into things."
 	icon_state = "hook_knife"
 	item_state = "hook_knife"
 
-/obj/item/weapon/material/knife/ritual
+/obj/item/material/knife/ritual
 	name = "ritual knife"
 	desc = "The unearthly energies that once powered this blade are now dormant."
 	icon = 'icons/obj/wizard.dmi'
@@ -90,7 +90,7 @@
 	mod_handy = 1.1
 	applies_material_colour = 0
 
-/obj/item/weapon/material/knife/kitchen
+/obj/item/material/knife/kitchen
 	name = "kitchen knife"
 	icon_state = "kitchenknife"
 	item_state = "knife"
@@ -101,7 +101,7 @@
 	applies_material_colour = 0
 	unbreakable = 1 // "Guaranteed to stay sharp for years to come"
 
-/obj/item/weapon/material/knife/butch
+/obj/item/material/knife/butch
 	name = "butcher's cleaver"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "butch"
@@ -113,13 +113,13 @@
 	force_divisor = 0.125 // 7.5 when wielded with hardness 60 (steel)
 	attack_verb = list("cleaved", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/material/knife/butch/kitchen
+/obj/item/material/knife/butch/kitchen
 	desc = "A huge thing used for chopping and chopping up meat. This includes clowns and clown-by-products. Made by SpaceCook Incorporated. Guaranteed to be shinier than your average steel cleaver."
 	applies_material_colour = 0
 	unbreakable = 1
 
 ///
-/obj/item/weapon/material/knife/shiv
+/obj/item/material/knife/shiv
 	name = "shiv blade"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "shiv"
@@ -144,9 +144,9 @@
 	m_overlay = 1
 	var/hasgrip = 0
 
-/obj/item/weapon/material/knife/shiv/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/material/knife/shiv/attackby(obj/item/W as obj, mob/user as mob)
 	if(!hasgrip)
-		if(istype(W,/obj/item/weapon/material/shivgrip))
+		if(istype(W,/obj/item/material/shivgrip))
 			hasgrip = 1
 			name = "[src:material.display_name] knife"
 			desc = "A small blade. This one has a comfortable [src:material.display_name] grip."
@@ -169,7 +169,7 @@
 				to_chat(user, "<span class='notice'>You wind up [src]'s grip with the cable.</span>")
 				overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "shiv_wire")
 			return
-		if(istype(W,/obj/item/weapon/tape_roll))
+		if(istype(W,/obj/item/tape_roll))
 			hasgrip = 1
 			name = "[src:material.display_name] shiv"
 			desc = "A small blade. This one has a makeshift duct tape grip."
@@ -180,7 +180,7 @@
 			return
 	..()
 
-/obj/item/weapon/material/shivgrip
+/obj/item/material/shivgrip
 	name = "small knife grip"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "shiv_plastic"
@@ -197,13 +197,13 @@
 	applies_material_colour = 0
 	hitsound = SFX_FIGHTING_SWING
 
-/obj/item/weapon/material/shivgrip/wood/New(newloc)
+/obj/item/material/shivgrip/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)
 	name = "wooden small knife grip"
 	icon_state = "shiv_wood"
 	color = null
 
-/obj/item/weapon/material/shivgrip/plastic/New(newloc)
+/obj/item/material/shivgrip/plastic/New(newloc)
 	..(newloc, MATERIAL_PLASTIC)
 	name = "plastic small knife grip"
 	icon_state = "shiv_plastic"

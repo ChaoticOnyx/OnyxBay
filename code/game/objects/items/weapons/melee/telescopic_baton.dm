@@ -1,5 +1,5 @@
 /** Telescopic Baton */
-/obj/item/weapon/melee/telebaton
+/obj/item/melee/telebaton
 	name = "telescopic baton"
 	desc = "A compact yet rebalanced personal defense weapon. Can be concealed when folded."
 	icon = 'icons/obj/weapons.dmi'
@@ -13,7 +13,7 @@
 	mod_handy = 1.0
 	var/on = FALSE
 
-/obj/item/weapon/melee/telebaton/attack_self(mob/user as mob)
+/obj/item/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
 	if(on)
 		user.visible_message("<span class='warning'>With a flick of their wrist, [user] extends their telescopic baton.</span>",
@@ -41,7 +41,7 @@
 	update_icon()
 	update_held_icon()
 
-/obj/item/weapon/melee/telebaton/update_icon()
+/obj/item/melee/telebaton/update_icon()
 	if(on)
 		icon_state = "telebaton_1"
 		item_state = "telebaton_1"
@@ -53,7 +53,7 @@
 		overlays.Cut()
 		overlays += blood_overlay
 
-/obj/item/weapon/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
+/obj/item/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
 	if(on)
 		if ((MUTATION_CLUMSY in user.mutations) && prob(50))
 			to_chat(user, "<span class='warning'>You club yourself over the head.</span>")

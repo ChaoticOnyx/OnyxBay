@@ -54,17 +54,17 @@
 		reagents.clear_reagents()
 		SetName("empty [initial(name)]")
 
-/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/G = W
-		if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/grown))
+	if(istype(W, /obj/item/reagent_containers/food/snacks))
+		var/obj/item/reagent_containers/food/snacks/G = W
+		if(istype(W, /obj/item/reagent_containers/food/snacks/grown))
 			G = W
 			if(!G.dry)
 				to_chat(user, SPAN("notice", "[G] must be dried before you stuff it into [src]."))
 				return
-		else if(!istype(W, /obj/item/weapon/reagent_containers/food/snacks/tobacco))
+		else if(!istype(W, /obj/item/reagent_containers/food/snacks/tobacco))
 			return
 		if(smoketime)
 			to_chat(user, SPAN("notice", "[src] is already packed."))
@@ -80,7 +80,7 @@
 	user.update_inv_r_hand(1)
 
 /obj/item/clothing/mask/smokable/pipe/can_be_lit_with(obj/W)
-	if(istype(W, /obj/item/weapon/gun)) // This would blow all the shits out of the pipe
+	if(istype(W, /obj/item/gun)) // This would blow all the shits out of the pipe
 		return FALSE
 	return ..()
 
@@ -90,13 +90,13 @@
 	if(src.loc != holder)
 		return ..()
 
-	if(istype(tool, /obj/item/weapon/flame/lighter/zippo))
+	if(istype(tool, /obj/item/flame/lighter/zippo))
 		return SPAN("rose", "With much care, [holder] lights \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weapon/flame/candle))
+	if(istype(tool, /obj/item/flame/candle))
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
-	if(istype(tool, /obj/item/weapon/weldingtool))
+	if(istype(tool, /obj/item/weldingtool))
 		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/glass/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
 	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))
 		return SPAN_NOTICE("[holder] dips \his [tool.name] into \a [name] to light it up.")

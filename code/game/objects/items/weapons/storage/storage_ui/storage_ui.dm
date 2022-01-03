@@ -1,5 +1,5 @@
 /datum/storage_ui
-	var/obj/item/weapon/storage/storage
+	var/obj/item/storage/storage
 
 /datum/storage_ui/New(storage)
 	src.storage = storage

@@ -365,7 +365,7 @@
 
 		switch(href_list["implant"])
 			if("remove")
-				for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+				for(var/obj/item/implant/loyalty/I in H.contents)
 					for(var/obj/item/organ/external/organs in H.organs)
 						if(I in organs.implants)
 							qdel(I)
@@ -469,7 +469,7 @@
 	var/is_currently_brigged = FALSE
 	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
 		is_currently_brigged = TRUE
-		for(var/obj/item/weapon/card/id/card in current)
+		for(var/obj/item/card/id/card in current)
 			is_currently_brigged = FALSE
 			break
 		for(var/obj/item/device/pda/P in current)

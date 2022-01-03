@@ -50,7 +50,7 @@
 
 /obj/item/device/soulstone/attackby(obj/item/I, mob/user)
 	..()
-	if(is_evil && istype(I, /obj/item/weapon/nullrod))
+	if(is_evil && istype(I, /obj/item/nullrod))
 		to_chat(user, "<span class='notice'>You cleanse \the [src] of taint, purging its shackles to its creator..</span>")
 		is_evil = 0
 		return

@@ -17,7 +17,7 @@
 /*
  * Twohanded
  */
-/obj/item/weapon/material/twohanded
+/obj/item/material/twohanded
 	w_class = ITEM_SIZE_HUGE
 	var/wielded = 0
 	var/force_wielded = 0
@@ -34,7 +34,7 @@
 	var/mod_weight_u
 	var/mod_reach_u
 
-/obj/item/weapon/material/twohanded/update_twohanding()
+/obj/item/material/twohanded/update_twohanding()
 	var/mob/living/M = loc
 	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
 		wielded = 1
@@ -51,7 +51,7 @@
 	update_icon()
 	..()
 
-/obj/item/weapon/material/twohanded/update_force()
+/obj/item/material/twohanded/update_force()
 	base_name = name
 	if(sharp || edge)
 		force_wielded = material.get_edge_damage()
@@ -64,11 +64,11 @@
 //	log_debug("[src] has unwielded force [force_unwielded], wielded force [force_wielded] and throwforce [throwforce] when made from default material [material.name]")
 
 
-/obj/item/weapon/material/twohanded/New()
+/obj/item/material/twohanded/New()
 	..()
 	update_icon()
 
-/obj/item/weapon/material/twohanded/update_icon()
+/obj/item/material/twohanded/update_icon()
 	var/new_item_state = "[base_icon][wielded]"
 	item_state_slots[slot_l_hand_str] = new_item_state
 	item_state_slots[slot_r_hand_str] = new_item_state
@@ -76,7 +76,7 @@
 /*
  * Fireaxe
  */
-/obj/item/weapon/material/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
+/obj/item/material/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
 	icon_state = "fireaxe0"
 	base_icon = "fireaxe"
 	name = "fire axe"
@@ -100,7 +100,7 @@
 	applies_material_colour = 0
 	unbreakable = 1 // Because why should it break at all
 
-/obj/item/weapon/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
+/obj/item/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
 	..()
 	if(A && wielded)
@@ -114,7 +114,7 @@
 			P.die_off()
 
 //spears, bay edition
-/obj/item/weapon/material/twohanded/spear
+/obj/item/material/twohanded/spear
 	icon_state = "spearglass0"
 	base_icon = "spearglass"
 	name = "spear"
@@ -141,12 +141,12 @@
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = MATERIAL_GLASS
 
-/obj/item/weapon/material/twohanded/spear/shatter(consumed)
+/obj/item/material/twohanded/spear/shatter(consumed)
 	if(!consumed)
-		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
+		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 	..()
 
-/obj/item/weapon/material/twohanded/baseballbat
+/obj/item/material/twohanded/baseballbat
 	name = "bat"
 	desc = "HOME RUN!"
 	icon_state = "metalbat0"
@@ -172,17 +172,17 @@
 	slot_flags = SLOT_BACK
 
 //Predefined materials go here.
-/obj/item/weapon/material/twohanded/baseballbat/metal/New(newloc)
+/obj/item/material/twohanded/baseballbat/metal/New(newloc)
 	..(newloc, MATERIAL_STEEL)
 
-/obj/item/weapon/material/twohanded/baseballbat/uranium/New(newloc)
+/obj/item/material/twohanded/baseballbat/uranium/New(newloc)
 	..(newloc, MATERIAL_URANIUM)
 
-/obj/item/weapon/material/twohanded/baseballbat/gold/New(newloc)
+/obj/item/material/twohanded/baseballbat/gold/New(newloc)
 	..(newloc, MATERIAL_GOLD)
 
-/obj/item/weapon/material/twohanded/baseballbat/platinum/New(newloc)
+/obj/item/material/twohanded/baseballbat/platinum/New(newloc)
 	..(newloc, MATERIAL_PLATINUM)
 
-/obj/item/weapon/material/twohanded/baseballbat/diamond/New(newloc)
+/obj/item/material/twohanded/baseballbat/diamond/New(newloc)
 	..(newloc, MATERIAL_DIAMOND)

@@ -111,7 +111,7 @@
 	if(admin_powered)
 		return 0
 
-	if(istype(loc, /obj/item/weapon/aicard))
+	if(istype(loc, /obj/item/aicard))
 		return 0
 
 	if(self_shutdown)
