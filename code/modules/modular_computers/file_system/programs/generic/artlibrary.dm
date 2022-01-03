@@ -155,7 +155,7 @@
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(lib_host, d))
 			if(bndr && bndr.operable())
 				if(!istype(bndr.print_object, /obj/item/canvas) || bndr.print_object?.icon_state != current_art["type"])
-					error_message = "Software Error: Unable to print; the wrong canvas type in library binder, or the canvas is missing."
+					error_message = "Software Error: Unable to print; the wrong canvas type of canvas in library binder, or the canvas is missing."
 					return TRUE
 				var/obj/item/canvas/new_art = bndr.print_object
 				if(!new_art.finalized)
