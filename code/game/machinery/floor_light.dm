@@ -166,14 +166,15 @@ var/list/floor_light_color_cache = list()
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
-	if((health - damage) <= 0)
-		return
 	user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
 	playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 	if(health <= shield / 2)
 		visible_message("[src] looks like it's about to shatter!")
 	else if(broken())
 		visible_message("[src] looks seriously damaged!")
+
+	if((health - damage) <= 0)
+		return
 	damaged++
 	health -= damage
 	update_brightness()
