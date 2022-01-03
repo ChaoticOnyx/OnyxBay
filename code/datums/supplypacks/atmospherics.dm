@@ -5,7 +5,7 @@
 /decl/hierarchy/supply_pack/atmospherics/internals
 	name = "Internals crate"
 	contains = list(/obj/item/clothing/mask/gas = 5,
-					/obj/item/weapon/tank/air = 5)
+					/obj/item/tank/air = 5)
 	cost = 10
 	containername = "\improper Internals crate"
 
@@ -13,7 +13,7 @@
 	name = "Emergency equipment"
 	contains = list(/obj/item/weapon/storage/toolbox/emergency = 2,
 					/obj/item/clothing/suit/storage/hazardvest = 2,
-					/obj/item/weapon/tank/emergency/oxygen/engi = 4,
+					/obj/item/tank/emergency/oxygen/engi = 4,
 			 		/obj/item/clothing/suit/space/emergency = 4,
 					/obj/item/clothing/head/helmet/space/emergency = 4,
 					/obj/item/clothing/mask/gas = 4,
@@ -91,13 +91,13 @@
 
 /decl/hierarchy/supply_pack/atmospherics/fuel
 	name = "Fuel tank crate"
-	contains = list(/obj/item/weapon/tank/hydrogen = 4)
+	contains = list(/obj/item/tank/hydrogen = 4)
 	cost = 15
 	containername = "\improper Fuel tank crate"
 
 /decl/hierarchy/supply_pack/atmospherics/plasma
 	name = "Plasma tank crate"
-	contains = list(/obj/item/weapon/tank/plasma = 3)
+	contains = list(/obj/item/tank/plasma = 3)
 	cost = 30
 	containername = "\improper Plasma tank crate"
 

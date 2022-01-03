@@ -80,7 +80,7 @@
 		/obj/item/weapon/storage/pill_bottle/dexalin,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
 		/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged,
-		/obj/item/weapon/tank/emergency/oxygen,
+		/obj/item/tank/emergency/oxygen,
 		/obj/item/clothing/mask/breath
 		)
 

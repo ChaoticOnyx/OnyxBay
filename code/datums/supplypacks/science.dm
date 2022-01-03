@@ -37,7 +37,7 @@
 
 /decl/hierarchy/supply_pack/science/plasma
 	name = "Plasma assembly crate"
-	contains = list(/obj/item/weapon/tank/plasma = 3,
+	contains = list(/obj/item/tank/plasma = 3,
 					/obj/item/device/assembly/igniter = 3,
 					/obj/item/device/assembly/prox_sensor = 3,
 					/obj/item/device/assembly/timer = 3,

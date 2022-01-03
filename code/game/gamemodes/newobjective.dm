@@ -588,7 +588,7 @@ datum
 
 
 			plasmatank
-				steal_target = /obj/item/weapon/tank/plasma
+				steal_target = /obj/item/tank/plasma
 				explanation_text = "Steal a small plasma tank."
 				weight = 20
 
@@ -699,7 +699,7 @@ datum
 
 
 			jetpack
-				steal_target = /obj/item/weapon/tank/jetpack/oxygen
+				steal_target = /obj/item/tank/jetpack/oxygen
 				explanation_text = "Steal a blue oxygen jetpack."
 				weight = 20
 

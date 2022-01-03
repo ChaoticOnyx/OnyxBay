@@ -71,9 +71,8 @@
 	return FALSE
 
 
-/obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
-
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+/obj/machinery/optable/MouseDrop_T(obj/O, mob/user)
+	if((!istype(O, /obj/item) || user.get_active_hand() != O))
 		return
 	user.drop_item()
 	if (O.loc != src.loc)

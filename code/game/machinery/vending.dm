@@ -1512,7 +1512,7 @@
 					/obj/item/device/robotanalyzer = 2,
 					/obj/item/weapon/scalpel = 1,
 					/obj/item/weapon/circular_saw = 1,
-					/obj/item/weapon/tank/anesthetic = 2,
+					/obj/item/tank/anesthetic = 2,
 					/obj/item/clothing/mask/breath/medical = 5,
 					/obj/item/weapon/screwdriver = 2,
 					/obj/item/weapon/crowbar = 2)

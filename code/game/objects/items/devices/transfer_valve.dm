@@ -5,8 +5,8 @@
 	description_antag = "With a tank of hot plasma and cold oxygen, this benign little atmospheric device becomes an incredibly deadly bomb. You don't want to be anywhere near it when it goes off."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "valve_1"
-	var/obj/item/weapon/tank/tank_one
-	var/obj/item/weapon/tank/tank_two
+	var/obj/item/tank/tank_one
+	var/obj/item/tank/tank_two
 	var/obj/item/device/attached_device
 	var/mob/attacher = null
 	var/valve_open = 0
@@ -24,7 +24,7 @@
 		return
 
 	var/turf/location = get_turf(src) // For admin logs
-	if(istype(item, /obj/item/weapon/tank))
+	if(istype(item, /obj/item/tank))
 
 		var/T1_weight = 0
 		var/T2_weight = 0
@@ -152,7 +152,7 @@
 	if(attached_device)
 		overlays += "device"
 
-/obj/item/device/transfer_valve/proc/remove_tank(obj/item/weapon/tank/T)
+/obj/item/device/transfer_valve/proc/remove_tank(obj/item/tank/T)
 	if(tank_one == T)
 		split_gases()
 		tank_one = null

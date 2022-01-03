@@ -83,7 +83,7 @@ datum/hSB
 						P.back.forceMove(P.loc)
 						P.back.reset_plane_and_layer()
 						P.back = null
-					P.back = new /obj/item/weapon/tank/jetpack(P)
+					P.back = new /obj/item/tank/jetpack(P)
 					P.back.hud_layerise()
 					P.internal = P.back
 				if("hsbmetal")

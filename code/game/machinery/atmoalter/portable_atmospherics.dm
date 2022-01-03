@@ -4,7 +4,7 @@
 	var/datum/gas_mixture/air_contents = new
 
 	var/obj/machinery/atmospherics/portables_connector/connected_port
-	var/obj/item/weapon/tank/holding
+	var/obj/item/tank/holding
 
 	var/volume = 0
 	var/destroyed = 0
@@ -102,10 +102,10 @@
 		network.update = 1
 
 /obj/machinery/portable_atmospherics/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if ((istype(W, /obj/item/weapon/tank) && !( src.destroyed )))
+	if ((istype(W, /obj/item/tank) && !( src.destroyed )))
 		if (src.holding)
 			return
-		var/obj/item/weapon/tank/T = W
+		var/obj/item/tank/T = W
 		user.drop_item()
 		T.forceMove(src)
 		src.holding = T

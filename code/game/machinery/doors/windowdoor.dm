@@ -250,7 +250,7 @@
 			return
 
 	//If it's a weapon, smash windoor. Unless it's an id card, agent card, ect.. then ignore it (Cards really shouldnt damage a door anyway)
-	if(density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
+	if(density && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
 		playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>[src] was hit by [I].</span>")

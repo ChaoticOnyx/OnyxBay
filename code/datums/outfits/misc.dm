@@ -4,7 +4,7 @@
 	head = /obj/item/clothing/head/helmet/space
 	suit = /obj/item/clothing/suit/space
 	uniform = /obj/item/clothing/under/color/grey
-	back = /obj/item/weapon/tank/jetpack/oxygen
+	back = /obj/item/tank/jetpack/oxygen
 	mask = /obj/item/clothing/mask/breath
 	flags = OUTFIT_HAS_JETPACK|OUTFIT_RESET_EQUIPMENT
 

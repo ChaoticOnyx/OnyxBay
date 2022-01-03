@@ -19,7 +19,7 @@
 /decl/hierarchy/outfit/spec_op_officer/space
 	name = "Spec Ops - Officer in space"
 	suit = /obj/item/clothing/suit/space/void/swat
-	back = /obj/item/weapon/tank/jetpack/oxygen
+	back = /obj/item/tank/jetpack/oxygen
 	mask = /obj/item/clothing/mask/gas/swat
 
 	flags = OUTFIT_HAS_JETPACK|OUTFIT_RESET_EQUIPMENT
@@ -79,5 +79,5 @@
 	suit = /obj/item/clothing/suit/space/void/syndi
 	mask = /obj/item/clothing/mask/gas/syndicate
 	head = /obj/item/clothing/head/helmet/space/void/syndi
-	back = /obj/item/weapon/tank/jetpack/oxygen
-	l_pocket = /obj/item/weapon/tank/emergency/oxygen
+	back = /obj/item/tank/jetpack/oxygen
+	l_pocket = /obj/item/tank/emergency/oxygen

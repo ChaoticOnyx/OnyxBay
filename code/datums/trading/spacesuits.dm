@@ -23,9 +23,9 @@
 
 
 	possible_trading_items = list(
-								/obj/item/weapon/tank/oxygen											= TRADER_THIS_TYPE,
-								/obj/item/weapon/tank/emergency											= TRADER_SUBTYPES_ONLY,
-								/obj/item/weapon/tank/jetpack/oxygen									= TRADER_THIS_TYPE,
+								/obj/item/tank/oxygen											= TRADER_THIS_TYPE,
+								/obj/item/tank/emergency											= TRADER_SUBTYPES_ONLY,
+								/obj/item/tank/jetpack/oxygen									= TRADER_THIS_TYPE,
 								/obj/machinery/portable_atmospherics/canister/oxygen					= TRADER_THIS_TYPE,
 								/obj/item/device/suit_cooling_unit										= TRADER_THIS_TYPE,
 								/obj/item/clothing/mask/breath											= TRADER_THIS_TYPE,

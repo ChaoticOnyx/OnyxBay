@@ -158,17 +158,16 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(src.density && istype(I, /obj/item/weapon) && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
-		var/obj/item/weapon/W = I
+	if(density && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
+		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			if(W.force < min_force)
-				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [W] with no visible effect.</span>")
+			if(I.force < min_force)
+				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
 			else
-				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [W]!</span>")
-				playsound(src.loc, hitsound, 100, 1)
-				take_damage(W.force)
+				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
+				playsound(loc, hitsound, 100, 1)
+				take_damage(I.force)
 		return
 
 	if(src.operating) return
@@ -250,17 +249,16 @@
 
 /obj/machinery/door/unpowered/simple/resin/attackby(obj/item/I, mob/user) // It's much more simple that the other doors, no lock support etc.
 	add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weapon) && user.a_intent == I_HURT)
-		var/obj/item/weapon/W = I
+	if(user.a_intent == I_HURT)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
+		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			if(W.force < min_force)
-				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [W] with no visible effect."))
+			if(I.force < min_force)
+				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I] with no visible effect."))
 			else
-				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [W]!"))
+				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [I]!"))
 				playsound(loc, hitsound, 100, 1)
-				take_damage(W.force)
+				take_damage(I.force)
 			return
 
 	if(operating)

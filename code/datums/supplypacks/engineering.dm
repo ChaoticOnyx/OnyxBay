@@ -248,7 +248,7 @@
 	name = "Firefighting equipment"
 	contains = list(/obj/item/clothing/suit/fire/firefighter,
 			/obj/item/clothing/mask/gas,
-			/obj/item/weapon/tank/oxygen/red,
+			/obj/item/tank/oxygen/red,
 			/obj/item/weapon/extinguisher,
 			/obj/item/clothing/head/hardhat/red)
 	cost = 20

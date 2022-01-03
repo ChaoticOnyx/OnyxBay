@@ -716,34 +716,33 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 
 
-/obj/machinery/newscaster/attackby(obj/item/I as obj, mob/user as mob)
-	if (stat & BROKEN)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
-		for (var/mob/O in hearers(5, src.loc))
-			O.show_message("<EM>[user.name]</EM> further abuses the shattered [src.name].")
+/obj/machinery/newscaster/attackby(obj/item/I, mob/user)
+	if(user.a_intent != I_HURT)
+		return
+
+	if(stat & BROKEN)
+		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
+		for(var/mob/O in hearers(5, loc))
+			O.show_message("<EM>[user.name]</EM> further abuses the shattered [name].")
 	else
-		if(istype(I, /obj/item/weapon) )
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			var/obj/item/weapon/W = I
-			if(W.force <15)
-				for (var/mob/O in hearers(5, src.loc))
-					O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [W.name] with no visible effect.</span>" )
-					playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-			else
-				src.hitstaken++
-				if(hitstaken==3)
-					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
-					set_broken(TRUE)
-					playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
-				else
-					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
-					playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-			user.setClickCooldown(I.update_attack_cooldown())
-			user.do_attack_animation(src)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		if(I.force <15)
+			for (var/mob/O in hearers(5, src.loc))
+				O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [I.name] with no visible effect.</span>" )
+				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		else
-			to_chat(user, "<span class='notice'>This does nothing.</span>")
+			src.hitstaken++
+			if(hitstaken==3)
+				for (var/mob/O in hearers(5, src.loc))
+					O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
+				set_broken(TRUE)
+				playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
+			else
+				for (var/mob/O in hearers(5, src.loc))
+					O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
+				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
+		user.setClickCooldown(I.update_attack_cooldown())
+		user.do_attack_animation(src)
 	queue_icon_update()
 
 /obj/machinery/newscaster/attack_ai(mob/user as mob)

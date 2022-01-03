@@ -165,7 +165,7 @@
 	if (src.operating == 1)
 		return
 
-	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
+	if(density && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
 		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")

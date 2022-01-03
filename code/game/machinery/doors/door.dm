@@ -248,18 +248,17 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(src.density && istype(I, /obj/item/weapon) && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
-		var/obj/item/weapon/W = I
-		if(W.damtype == BRUTE || W.damtype == BURN)
+	if(density && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
+		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			user.setClickCooldown(W.update_attack_cooldown())
-			if(W.force < min_force)
-				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [W] with no visible effect.</span>")
+			user.setClickCooldown(I.update_attack_cooldown())
+			if(I.force < min_force)
+				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
 			else
-				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [W]!</span>")
-				playsound(src.loc, hitsound, 100, 1)
-				take_damage(W.force)
-				shake_animation(3,3)
+				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
+				playsound(loc, hitsound, 100, 1)
+				take_damage(I.force)
+				shake_animation(3, 3)
 		return
 
 	if(src.operating > 0 || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.

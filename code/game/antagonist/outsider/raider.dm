@@ -298,11 +298,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/magboots/vox(player), slot_shoes) // REPLACE THESE WITH CODED VOX ALTERNATIVES.
 	player.equip_to_slot_or_del(new /obj/item/clothing/gloves/vox(player), slot_gloves) // AS ABOVE.
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat/vox(player), slot_wear_mask)
-	player.equip_to_slot_or_del(new /obj/item/weapon/tank/nitrogen(player), slot_back)
+	player.equip_to_slot_or_del(new /obj/item/tank/nitrogen(player), slot_back)
 	player.equip_to_slot_or_del(new /obj/item/device/flashlight(player), slot_r_store)
 
-	player.internal = locate(/obj/item/weapon/tank) in player.contents
-	if(istype(player.internal,/obj/item/weapon/tank) && player.internals)
+	player.internal = locate(/obj/item/tank) in player.contents
+	if(istype(player.internal,/obj/item/tank) && player.internals)
 		player.internals.icon_state = "internal1"
 
 	return 1

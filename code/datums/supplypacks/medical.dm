@@ -284,7 +284,7 @@
 					/obj/item/clothing/head/bio_hood/virology = 2,
 					/obj/item/clothing/suit/bio_suit/cmo = 2,
 					/obj/item/clothing/mask/gas = 5,
-					/obj/item/weapon/tank/oxygen = 5,
+					/obj/item/tank/oxygen = 5,
 					/obj/item/weapon/storage/box/masks,
 					/obj/item/weapon/storage/box/gloves)
 	cost = 50

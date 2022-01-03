@@ -76,7 +76,7 @@
 	icon_state = "survival"
 	foldable = /obj/item/weapon/crowbar/emergency
 	startswith = list(/obj/item/clothing/mask/breath = 1,
-					/obj/item/weapon/tank/emergency/oxygen = 1,
+					/obj/item/tank/emergency/oxygen = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
@@ -88,7 +88,7 @@
 	icon_state = "survivalvox"
 	foldable = /obj/item/weapon/crowbar/emergency/vox
 	startswith = list(/obj/item/clothing/mask/breath = 1,
-					/obj/item/weapon/tank/emergency/nitrogen = 1,
+					/obj/item/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
@@ -99,7 +99,7 @@
 	icon_state = "survivaleng"
 	foldable = /obj/item/weapon/crowbar/emergency/eng
 	startswith = list(/obj/item/clothing/mask/breath = 1,
-					/obj/item/weapon/tank/emergency/oxygen/engi = 1,
+					/obj/item/tank/emergency/oxygen/engi = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/detox = 1,
 					/obj/item/stack/medical/patches = 1,
@@ -112,7 +112,7 @@
 	icon_state = "survivalsec"
 	foldable = /obj/item/weapon/crowbar/emergency/sec
 	startswith = list(/obj/item/clothing/mask/breath = 1,
-					/obj/item/weapon/tank/emergency/oxygen = 1,
+					/obj/item/tank/emergency/oxygen = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
 					/obj/item/stack/medical/patches = 1,

@@ -10,7 +10,7 @@
 	var/health = null
 	var/burn_point = null
 	var/burning = null
-	var/hitsound = null
+	var/hitsound = SFX_FIGHTING_SWING
 	var/slot_flags = 0		//This is used to determine on which slots an item can fit.
 	var/no_attack_log = 0			//If it's an item we don't want to log attack_logs with, set this to 1
 	pass_flags = PASS_FLAG_TABLE
@@ -62,6 +62,7 @@
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
 	var/surgery_speed = 1 //When this item is used as a surgery tool, multiply the delay of the surgery step by this much.
+	var/clumsy_unaffected = FALSE
 
 	var/icon_override = null  //Used to override hardcoded clothing dmis in human clothing proc.
 
@@ -681,7 +682,7 @@ var/list/global/slot_flags_enumeration = list(
 	if (!..())
 		return 0
 
-	if(istype(src, /obj/item/weapon/melee/energy))
+	if(istype(src, /obj/item/melee/energy))
 		return
 
 	//if we haven't made our blood_overlay already
@@ -903,4 +904,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return
 
 /obj/item/proc/on_restraint_apply(mob/living/carbon/C)
+	return
+
+/obj/item/weapon/Bump(mob/M)
+	spawn()
+		..()
 	return
