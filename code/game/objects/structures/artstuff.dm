@@ -219,7 +219,7 @@
 	else if(istype(I, /obj/item/weapon/soap) || istype(I, /obj/item/weapon/reagent_containers/glass/rag))
 		return canvas_color
 
-/obj/item/canvas/proc/save_canvas()
+/obj/item/canvas/proc/save_art ()
 	if(!icon_generated || no_save)
 		return
 	var/list/data = list()
