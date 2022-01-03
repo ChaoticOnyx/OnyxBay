@@ -148,11 +148,15 @@
 			return TRUE
 
 		//PRINT TO BINDER
-		if(!nano_host())
+		var/atom/lib_host = nano_host()
+		if(!lib_host)
 			return TRUE
-		for(var/d in GLOB.cardinal)
-			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
-			if(bndr && bndr.anchored && bndr.operable() && istype(bndr.print_object, /obj/item/canvas) && bndr.print_object.icon_state == current_art["type"])
+		for(var/d in GLOB.alldirs)
+			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(lib_host, d))
+			if(bndr && bndr.operable())
+				if(!istype(bndr.print_object, /obj/item/canvas) || bndr.print_object?.icon_state != current_art["type"])
+					error_message = "Software Error: Unable to print; the wrong canvas type in library binder, or the canvas is missing."
+					return TRUE
 				var/obj/item/canvas/new_art = bndr.print_object
 				if(!new_art.finalized)
 					new_art.apply_canvas_data(current_art["data"])
@@ -160,6 +164,7 @@
 					new_art.forceMove(get_turf(bndr))
 					bndr.visible_message("\The [bndr] whirs as it prints a new art.")
 				return TRUE
+		error_message = "Software Error: Unable to print; library binder not found."
 		return TRUE
 	if(href_list["sortby"])
 		sort_by = href_list["sortby"]

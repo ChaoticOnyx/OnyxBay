@@ -2,7 +2,7 @@
  *
  * Contains:
  *		Library Scanner
- *		Book Binder
+ *		Library Binder
  */
 
 /*
@@ -67,24 +67,32 @@
 
 
 /*
- * Book binder
+ * Library binder
  */
 /obj/machinery/bookbinder
-	name = "Book Binder"
+	name = "Library Binder"
 	icon = 'icons/obj/library.dmi'
 	icon_state = "binder"
 	anchored = 1
 	density = 1
 	var/obj/item/print_object
-	var/hatch_locked = FALSE
 
 /obj/machinery/bookbinder/attack_hand(mob/user)
-	if(!hatch_locked && print_object)
+	if(print_object)
 		src.visible_message("[src] whirs as it spitting out \the [print_object].")
 		print_object.forceMove(get_turf(src))
 		print_object = FALSE
 
+/obj/machinery/bookbinder/operable()
+	. = ..()
+	if(!anchored)
+		return FALSE
+
 /obj/machinery/bookbinder/attackby(obj/O, mob/user)
+	if(isWrench(O) && do_after(user, 2 SECONDS, src))
+		anchored = !anchored
+		to_chat(user, "You [anchored ? "attach" : "detach"] \the [src] [anchored ? "to" : "from"] the ground")
+		return
 	if(operable())
 		if(print_object)
 			..()
@@ -92,12 +100,10 @@
 			return
 		if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
 			user.drop_item()
-			print_object = O
 			O.forceMove(src)
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 			src.visible_message("[src] begins to hum as it warms up its printing drums.")
-			addtimer(CALLBACK(src, .proc/handle_paper), rand(200,400))
-			hatch_locked = TRUE
+			addtimer(CALLBACK(src, .proc/handle_paper, O), rand(200,400))
 		else if(istype(O, /obj/item/canvas))
 			print_object = O
 			user.drop_item()
@@ -109,18 +115,19 @@
 		..()
 		to_chat(user, "[src] doesn't work!")
 
-/obj/machinery/bookbinder/proc/handle_paper()
-	if(!print_object)
+/obj/machinery/bookbinder/proc/handle_paper(obj/item/weapon/print_book)
+	if(!operable())
+		visible_message("\The [src] ejects [print_book].")
+		print_book.forceMove(get_turf(src))
 		return
-	hatch_locked = FALSE
-	src.visible_message("[src] whirs as it prints and binds a new book.")
-	if(istype(print_object, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/paper = print_object
+	visible_message("\The [src] whirs as it prints and binds a new book.")
+	if(istype(print_book, /obj/item/weapon/paper))
+		var/obj/item/weapon/paper/paper = print_book
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
-	if(istype(print_object, /obj/item/weapon/book/wiki/template))
-		var/obj/item/weapon/book/wiki/template/template = print_object
+	if(istype(print_book, /obj/item/weapon/book/wiki/template))
+		var/obj/item/weapon/book/wiki/template/template = print_book
 		print_wiki(template.topic, template.censored)
-	QDEL_NULL(print_object)
+	qdel(print_book)
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
 	var/obj/item/weapon/book/book = new(src.loc)
