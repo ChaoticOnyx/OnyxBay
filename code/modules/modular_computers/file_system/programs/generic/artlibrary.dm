@@ -112,7 +112,7 @@
 			return TRUE
 
 		var/obj/item/canvas/art_cache = scanner.art_cache
-		var/encoded_data = art_cache.save_art ()
+		var/encoded_data = art_cache.save_art_to_json()
 		var/choice = input(usr, "Upload [art_cache.painting_name] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
 			if(!establish_old_db_connection())
