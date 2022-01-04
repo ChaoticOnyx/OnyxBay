@@ -55,7 +55,7 @@
 	glasses = /obj/item/clothing/glasses/sunglasses/big
 	l_hand = /obj/item/storage/briefcase/iaa
 	id_type = /obj/item/card/id/civilian/internal_affairs_agent
-	pda_type = /obj/item/device/pda/lawyer
+	pda_type = /obj/item/device/pda/iaa
 
 /decl/hierarchy/outfit/job/lawyer
 	name = OUTFIT_JOB_NAME("Lawyer")
@@ -63,7 +63,7 @@
 	suit = /obj/item/clothing/suit/storage/toggle/suit/blue
 	shoes = /obj/item/clothing/shoes/brown
 	l_hand = /obj/item/storage/briefcase
-	id_type = /obj/item/card/id/civilian/internal_affairs_agent
+	id_type = /obj/item/card/id/civilian/lawyer
 	pda_type = /obj/item/device/pda/lawyer
 
 /decl/hierarchy/outfit/job/chaplain
