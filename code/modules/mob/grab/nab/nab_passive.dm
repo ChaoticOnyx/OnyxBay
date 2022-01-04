@@ -5,7 +5,7 @@
 
 	shift = -10
 
-	reverse_facing = FALSE
+	reverse_moving = FALSE
 	can_absorb = 0
 
 	grab_slowdown = 0
