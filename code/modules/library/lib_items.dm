@@ -281,14 +281,16 @@
 	else
 		..()
 
-/obj/item/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(user.zone_sel.selecting == BP_EYES)
+/obj/item/book/attack(mob/living/carbon/M, mob/living/carbon/user)
+	if(user.zone_sel.selecting == BP_EYES && user.a_intent == I_HELP)
 		user.visible_message(
 			SPAN("notice", "[user] opens up a book and shows it to [M]."),
 			SPAN("notice", "You open up the book and show it to [M].")
 		)
 		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
+	else
+		..()
 
 /obj/item/book/wiki
 	title = ""
