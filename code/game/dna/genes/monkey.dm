@@ -14,15 +14,15 @@
 	var/mob/living/carbon/human/H = M
 	H.transforming = 1
 	var/list/implants = list() //Try to preserve implants.
-	for(var/obj/item/weapon/implant/W in H)
+	for(var/obj/item/implant/W in H)
 		implants += W
 		W.loc = null
 
 	if(!connected)
-		for(var/obj/item/W in (H.contents-implants))
-			if (W==H.w_uniform) // will be teared
+		for(var/obj/item/I in (H.contents-implants))
+			if(I == H.w_uniform) // will be teared
 				continue
-			H.drop_from_inventory(W)
+			H.drop_from_inventory(I)
 		M.transforming = 1
 		M.canmove = 0
 		M.icon = null
@@ -78,7 +78,7 @@
 	O.adjustOxyLoss(M.getOxyLoss())
 	O.set_stat(M.stat)
 	O.a_intent = I_HURT
-	for (var/obj/item/weapon/implant/I in implants)
+	for (var/obj/item/implant/I in implants)
 		I.forceMove(O)
 		I.implanted = O
 //		O.update_icon = 1	//queue a full icon update at next life() call
@@ -92,12 +92,12 @@
 	var/mob/living/carbon/monkey/Mo = M
 	Mo.transforming = 1
 	var/list/implants = list() //Still preserving implants
-	for(var/obj/item/weapon/implant/W in Mo)
+	for(var/obj/item/implant/W in Mo)
 		implants += W
 		W.loc = null
 	if(!connected)
-		for(var/obj/item/W in (Mo.contents-implants))
-			Mo.drop_from_inventory(W)
+		for(var/obj/item/I in (Mo.contents-implants))
+			Mo.drop_from_inventory(I)
 		M.transforming = 1
 		M.canmove = 0
 		M.icon = null
@@ -167,7 +167,7 @@
 	O.adjustToxLoss(M.getToxLoss())
 	O.adjustOxyLoss(M.getOxyLoss())
 	O.set_stat(M.stat)
-	for (var/obj/item/weapon/implant/I in implants)
+	for (var/obj/item/implant/I in implants)
 		I.forceMove(O)
 		I.implanted = O
 //		O.update_icon = 1	//queue a full icon update at next life() call

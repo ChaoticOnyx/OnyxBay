@@ -167,7 +167,7 @@
 	var/slab_name = occupant.name
 	var/slab_count = 3
 	var/robotic_slab_count = 0
-	var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	var/slab_type = /obj/item/reagent_containers/food/snacks/meat
 	var/const/robotic_slab_type = /obj/item/stack/material/steel
 	var/slab_nutrition = 20
 	if(iscarbon(occupant))
@@ -214,7 +214,7 @@
 			reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
 
 		for(var/i=1 to slab_count)
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
+			var/obj/item/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
 			if(istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
 				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)

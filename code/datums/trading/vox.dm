@@ -41,13 +41,13 @@
 				"insult_bad1"        = "If you say all this at home, you be dead!",
 				)
 
-	possible_wanted_items = list(/obj/item/weapon/                  = TRADER_SUBTYPES_ONLY,
+	possible_wanted_items = list(/obj/item/                  = TRADER_SUBTYPES_ONLY,
 								/obj/item/stack/material            = TRADER_SUBTYPES_ONLY,
 								/obj/item/stack/material/cyborg     = TRADER_BLACKLIST_ALL,
 								/obj/item/organ                     = TRADER_SUBTYPES_ONLY,
 								)
 
-	possible_trading_items = list(/obj/item/weapon/gun/projectile/dartgun/vox           = TRADER_SUBTYPES_ONLY,
+	possible_trading_items = list(/obj/item/gun/projectile/dartgun/vox           = TRADER_SUBTYPES_ONLY,
 								/obj/item/mecha_parts/mecha_equipment/tool/             = TRADER_SUBTYPES_ONLY,
 								/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/ = TRADER_SUBTYPES_ONLY,
 								/obj/item/trash                                         = TRADER_SUBTYPES_ONLY,

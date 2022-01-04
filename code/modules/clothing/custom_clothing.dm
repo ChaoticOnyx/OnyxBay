@@ -47,17 +47,17 @@
 	item_state = "policevest"
 	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
 	allowed = list(
-		/obj/item/weapon/gun/energy,
+		/obj/item/gun/energy,
 		/obj/item/device/radio,
 		/obj/item/device/flashlight,
-		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/gun/projectile,
+		/obj/item/reagent_containers/spray/pepper,
+		/obj/item/gun/projectile,
 		/obj/item/ammo_magazine,
 		/obj/item/ammo_casing,
-		/obj/item/weapon/melee/baton,
-		/obj/item/weapon/handcuffs,
-		/obj/item/weapon/gun/magnetic,
-		/obj/item/weapon/grenade,
+		/obj/item/melee/baton,
+		/obj/item/handcuffs,
+		/obj/item/gun/magnetic,
+		/obj/item/grenade,
 		)
 
 //Terror
@@ -151,15 +151,15 @@
 	item_state = "policevest_dark"
 	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
 	allowed = list(
-		/obj/item/weapon/gun/energy,
+		/obj/item/gun/energy,
 		/obj/item/device/radio,
 		/obj/item/device/flashlight,
-		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/gun/projectile,
+		/obj/item/reagent_containers/spray/pepper,
+		/obj/item/gun/projectile,
 		/obj/item/ammo_magazine,
 		/obj/item/ammo_casing,
-		/obj/item/weapon/melee/baton,
-		/obj/item/weapon/handcuffs,
-		/obj/item/weapon/gun/magnetic,
-		/obj/item/weapon/grenade,
+		/obj/item/melee/baton,
+		/obj/item/handcuffs,
+		/obj/item/gun/magnetic,
+		/obj/item/grenade,
 		)

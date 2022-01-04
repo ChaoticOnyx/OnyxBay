@@ -226,9 +226,9 @@ var/global/list/string_slot_flags = list(
 		G.refresh_updown()
 
 	//Manuals
-	paths = typesof(/obj/item/weapon/book/wiki) - /obj/item/weapon/book/wiki - /obj/item/weapon/book/wiki/template
+	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
-		var/obj/item/weapon/book/wiki/manual = new booktype
+		var/obj/item/book/wiki/manual = new booktype
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
 		qdel(manual)

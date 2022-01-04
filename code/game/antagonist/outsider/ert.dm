@@ -13,7 +13,7 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 		rules aside from those without explicit exceptions apply to the ERT.</b>"
 	leader_welcome_text = "You shouldn't see this"
 	landmark_id = "Emergency Responder"
-	id_type = /obj/item/weapon/card/id/centcom/ERT
+	id_type = /obj/item/card/id/centcom/ERT
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
 	antaghud_indicator = "hudloyalist"

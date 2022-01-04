@@ -1,6 +1,6 @@
 //this file is full of all the racial spells/artifacts/etc that each species has.
 
-/obj/item/weapon/magic_rock
+/obj/item/magic_rock
 	name = "magical rock"
 	desc = "Legends say that this rock will unlock the true potential of anyone who touches it."
 	icon = 'icons/obj/wizard.dmi'
@@ -10,15 +10,15 @@
 	throw_range = 3
 	force = 15
 	var/list/potentials = list(
-		SPECIES_HUMAN = /obj/item/weapon/storage/bag/cash/infinite,
+		SPECIES_HUMAN = /obj/item/storage/bag/cash/infinite,
 		SPECIES_VOX = /datum/spell/targeted/shapeshift/true_form,
 		SPECIES_TAJARA = /datum/spell/messa_shroud,
 		SPECIES_UNATHI = /datum/spell/moghes_blessing,
 		SPECIES_DIONA = /datum/spell/aoe_turf/conjure/grove/gestalt,
-		SPECIES_SKRELL = /obj/item/weapon/contract/apprentice/skrell,
+		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell,
 		SPECIES_IPC = /datum/spell/camera_connection)
 
-/obj/item/weapon/magic_rock/attack_self(mob/user)
+/obj/item/magic_rock/attack_self(mob/user)
 	if(!istype(user,/mob/living/carbon/human))
 		to_chat(user, "\The [src] can do nothing for such a simple being.")
 		return
@@ -40,15 +40,15 @@
 	to_chat(user, "\The [src] crumbles in your hands.")
 	qdel(src)
 
-/obj/item/weapon/storage/bag/cash/infinite
-	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 1)
+/obj/item/storage/bag/cash/infinite
+	startswith = list(/obj/item/spacecash/bundle/c1000 = 1)
 
 //HUMAN
-/obj/item/weapon/storage/bag/cash/infinite/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/storage/bag/cash/infinite/remove_from_storage(obj/item/W as obj, atom/new_location)
 	. = ..()
 	if(.)
-		if(istype(W,/obj/item/weapon/spacecash)) //only matters if its spacecash.
-			var/obj/item/I = new /obj/item/weapon/spacecash/bundle/c1000()
+		if(istype(W,/obj/item/spacecash)) //only matters if its spacecash.
+			var/obj/item/I = new /obj/item/spacecash/bundle/c1000()
 			src.handle_item_insertion(I,1)
 
 
@@ -174,39 +174,39 @@
 	icon_state = "wiz_diona"
 
 //SKRELL
-/obj/item/weapon/contract/apprentice/skrell
+/obj/item/contract/apprentice/skrell
 	name = "skrellian apprenticeship contract"
-	var/obj/item/weapon/spellbook/linked
+	var/obj/item/spellbook/linked
 	color = "#3366ff"
 	contract_spells = list(/datum/spell/contract/return_master) //somewhat of a necessity due to how many spells they would have after a while.
 
-/obj/item/weapon/contract/apprentice/skrell/New(newloc,spellbook, owner)
+/obj/item/contract/apprentice/skrell/New(newloc,spellbook, owner)
 	..()
-	if(istype(spellbook,/obj/item/weapon/spellbook))
+	if(istype(spellbook,/obj/item/spellbook))
 		linked = spellbook
 	if(istype(owner,/mob))
 		contract_master = owner
 
-/obj/item/weapon/contract/apprentice/skrell/attack_self(mob/user as mob)
+/obj/item/contract/apprentice/skrell/attack_self(mob/user as mob)
 	if(!linked)
 		to_chat(user, "<span class='warning'>This contract requires a link to a spellbook.</span>")
 		return
 	..()
 
-/obj/item/weapon/contract/apprentice/skrell/afterattack(atom/A, mob/user as mob, proximity)
-	if(!linked && istype(A,/obj/item/weapon/spellbook))
+/obj/item/contract/apprentice/skrell/afterattack(atom/A, mob/user as mob, proximity)
+	if(!linked && istype(A,/obj/item/spellbook))
 		linked = A
 		to_chat(user, "<span class='notice'>You've linked \the [A] to \the [src]</span>")
 		return
 	..()
 
-/obj/item/weapon/contract/apprentice/skrell/contract_effect(mob/user as mob)
+/obj/item/contract/apprentice/skrell/contract_effect(mob/user as mob)
 	. = ..()
 	if(.)
 		linked.uses += 0.5
-		var/obj/item/I = new /obj/item/weapon/contract/apprentice/skrell(get_turf(src),linked,contract_master)
+		var/obj/item/I = new /obj/item/contract/apprentice/skrell(get_turf(src),linked,contract_master)
 		user.put_in_hands(I)
-		new /obj/item/weapon/contract/apprentice/skrell(get_turf(src),linked,contract_master)
+		new /obj/item/contract/apprentice/skrell(get_turf(src),linked,contract_master)
 
 //IPC
 /datum/spell/camera_connection

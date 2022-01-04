@@ -6,7 +6,7 @@
 	desc = "Unlocks the blood smithing structure which allows followers to forge unholy tools from blood and flesh."
 	item_cost = 75
 	required_feats = list(DEITY_FORM_BLOOD_FORGE)
-	var/list/recipes = list(/obj/item/weapon/melee/cultblade = 50,
+	var/list/recipes = list(/obj/item/melee/cultblade = 50,
 							/obj/item/clothing/head/culthood/alt = 10,
 							/obj/item/clothing/suit/cultrobes/alt = 20
 							)
