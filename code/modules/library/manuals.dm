@@ -163,7 +163,7 @@
 /obj/item/book/wiki/eftpos
 	topic = "Payment Machines"
 	window_width = 700
-	attack_verb = list("bashed", "whacked", "educated", "capitalizde", "marketed")
+	attack_verb = list("bashed", "whacked", "educated", "capitalized", "marketed")
 
 /obj/item/book/wiki/medical_glossary
 	topic = "Medical Glossary"
