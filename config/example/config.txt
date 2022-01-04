@@ -165,21 +165,21 @@ PROBABILITY cult        2
 PROBABILITY nuke        1
 PROBABILITY meteor      1
 PROBABILITY calamity    2
-PROBABILITY god         1   ## Deity
-PROBABILITY conflux     2   ## Cult & wizard
-PROBABILITY intrigue    2   ## Ninja & traitor
-PROBABILITY lizard      2   ## Changelings & wizards
-PROBABILITY paranoia    2   ## Changeling, malf & renegade
-PROBABILITY traitorling 3   ## Changeling & traitor
-PROBABILITY unity       1   ## Revolution & wizard
-PROBABILITY uprising    2   ## Cult & revolution
-PROBABILITY visitors    1   ## Ninja & wizard
-PROBABILITY siege       2   ## Nuke & revolution
+PROBABILITY god         1   # Deity
+PROBABILITY conflux     2   # Cult & wizard
+PROBABILITY intrigue    2   # Ninja & traitor
+PROBABILITY lizard      2   # Changelings & wizards
+PROBABILITY paranoia    2   # Changeling, malf & renegade
+PROBABILITY traitorling 3   # Changeling & traitor
+PROBABILITY unity       1   # Revolution & wizard
+PROBABILITY uprising    2   # Cult & revolution
+PROBABILITY visitors    1   # Ninja & wizard
+PROBABILITY siege       2   # Nuke & revolution
 
 ##PROBABILITY heist             0
-##PROBABILITY bughunt           0 ## Deathsquad & xenophage
-##PROBABILITY crossfire         0 ## Nuke & heist
-##PROBABILITY infestation       0 ## Borer, changeling & xenophage
+##PROBABILITY bughunt           0 # Deathsquad & xenophage
+##PROBABILITY crossfire         0 # Nuke & heist
+##PROBABILITY infestation       0 # Borer, changeling & xenophage
 
 ## Uncomment to scale amount of traitors based on amount of players.
 TRAITOR_SCALING
@@ -288,6 +288,12 @@ JOBS_HAVE_MINIMAL_ACCESS
 ## Set to jobban everyone who's key is not listed in data/whitelist.txt from Captain, HoS, HoP, CE, RD, CMO, Warden, Security, Detective, and AI positions.
 ## Uncomment to jobban, leave commented out to allow these positions for everyone (but see GUEST_JOBBAN above and regular jobbans)
 # USEWHITELIST
+
+## Uncomment to disallow any guests from connecting to the server. 
+# GUEST_BAN
+
+## Uncomment to jobban all guests from taking Head jobs.
+# GUEST_JOBBAN
 
 ## Uncomment to restrict non-admins from using humanoid alien races.
 # USEINGAMEALIENWHITELIST
