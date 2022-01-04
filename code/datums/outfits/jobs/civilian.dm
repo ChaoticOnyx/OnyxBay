@@ -57,6 +57,15 @@
 	id_type = /obj/item/card/id/civilian/internal_affairs_agent
 	pda_type = /obj/item/device/pda/lawyer
 
+/decl/hierarchy/outfit/job/lawyer
+	name = OUTFIT_JOB_NAME("Lawyer")
+	uniform = /obj/item/clothing/under/lawyer/bluesuit
+	suit = /obj/item/clothing/suit/storage/toggle/suit/blue
+	shoes = /obj/item/clothing/shoes/brown
+	l_hand = /obj/item/storage/briefcase
+	id_type = /obj/item/card/id/civilian/internal_affairs_agent
+	pda_type = /obj/item/device/pda/lawyer
+
 /decl/hierarchy/outfit/job/chaplain
 	name = OUTFIT_JOB_NAME("Chaplain")
 	uniform = /obj/item/clothing/under/rank/chaplain

@@ -449,6 +449,9 @@ var/const/NO_EMAG_ACT = -50
 	job_access_type = /datum/job/librarian
 
 /obj/item/card/id/civilian/internal_affairs_agent
+	job_access_type = /datum/job/iaa
+
+/obj/item/card/id/civilian/lawyer
 	job_access_type = /datum/job/lawyer
 
 /obj/item/card/id/civilian/chaplain

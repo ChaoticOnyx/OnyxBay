@@ -263,7 +263,7 @@
 
 /obj/structure/closet/secure_closet/courtroom
 	name = "courtroom locker"
-	req_access = list(access_lawyer)
+	req_one_access = list(access_lawyer, access_iaa)
 
 /obj/structure/closet/secure_closet/courtroom/WillContain()
 	return list(
@@ -290,15 +290,33 @@
 	//too small to put a man in
 	large = 0
 
-/obj/structure/closet/secure_closet/lawyer
+/obj/structure/closet/secure_closet/iaa
 	name = "internal affairs secure closet"
-	req_access = list(access_lawyer)
+	req_access = list(access_iaa)
 
-/obj/structure/closet/secure_closet/lawyer/WillContain()
+/obj/structure/closet/secure_closet/iaa/WillContain()
 	return list(
 		/obj/item/device/flash = 2,
 		/obj/item/device/camera = 2,
 		/obj/item/device/camera_film = 2,
 		/obj/item/device/taperecorder = 2,
 		/obj/item/storage/secure/briefcase = 2,
+	)
+
+/obj/structure/closet/secure_closet/lawyer
+	name = "lawyer secure closet"
+	req_access = list(access_lawyer)
+
+/obj/structure/closet/secure_closet/lawyer/WillContain()
+	return list(
+		/obj/item/device/camera = 2,
+		/obj/item/device/camera_film = 2,
+		/obj/item/device/taperecorder = 2,
+		/obj/item/storage/secure/briefcase = 2,
+		/obj/item/clipboard,
+		/obj/item/folder/blue,
+		/obj/item/folder/red,
+		/obj/item/folder/white,
+		/obj/item/folder/yellow,
+		/obj/item/storage/box/evidence = 2
 	)
