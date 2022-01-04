@@ -67,6 +67,12 @@
 		num_list += text2num(x)
 	return num_list
 
+/proc/list2text(input_list, delimiter="\n")
+	var/string = ""
+	for(var/x in input_list)
+		string += "[x][delimiter]"
+	return string
+
 // Splits the text of a file at seperator and returns them in a list.
 /proc/file2list(filename, seperator="\n")
 	return splittext(return_file_text(filename),seperator)
