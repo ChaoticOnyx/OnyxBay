@@ -1192,6 +1192,10 @@
 	name = "\improper Actors' Break Room"
 	icon_state = "Theatre"
 
+/area/crew_quarters/underdorm/sauna
+	name = "\improper Sauna"
+	icon_state = "toilet"
+
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Bedroom One"
