@@ -1067,22 +1067,22 @@
 	return
 
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H)
-	if(H?.client && (H in range(1)))
-		H.reset_view(src)
-		H.stop_pulling()
-		H.forceMove(src)
-		occupant = H
-		add_fingerprint(H)
-		forceMove(src.loc)
-		log_append_to_last("[H] moved in as pilot.")
-		icon_state = src.reset_icon()
-		set_dir(dir_in)
-		playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
-		if(!hasInternalDamage())
-			sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
-		return TRUE
-	else
-		return FALSE
+	. = FALSE
+	ASSERT(H.client)
+
+	H.reset_view(src)
+	H.stop_pulling()
+	H.forceMove(src)
+	occupant = H
+	add_fingerprint(H)
+	forceMove(src.loc)
+	log_append_to_last("[H] moved in as pilot.")
+	icon_state = src.reset_icon()
+	set_dir(dir_in)
+	playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
+	if(!hasInternalDamage())
+		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
+	return TRUE
 
 /obj/mecha/proc/move_mmi_inside(obj/item/device/mmi/MMI, mob/user)
 	if(!MMI?.brainmob?.client)
@@ -1137,51 +1137,50 @@
 	return FALSE
 
 /obj/mecha/proc/brain_moved_inside(obj/item/I, mob/user)
-	if(I && user in range(1))
-		var/mob/brainmob
-		if(istype(I, /obj/item/device/mmi))
-			var/obj/item/device/mmi/MMI = I
-			if(!MMI?.brainmob?.client)
-				to_chat(user, "Consciousness matrix not detected.")
-				return FALSE
-			if(MMI.brainmob.stat)
-				to_chat(user, "Beta-rhythm below acceptable level.")
-				return FALSE
-			brainmob = MMI.brainmob
-		else if(istype(I, /obj/item/organ/internal/posibrain))
-			var/obj/item/organ/internal/posibrain/PB = I
-			if(!PB?.brainmob?.client)
-				to_chat(user, "Consciousness matrix not detected.")
-				return FALSE
-			if(PB.brainmob.stat)
-				to_chat(user, "The intelligence simulation protocols seem to be malfunctioning.")
-				return FALSE
-			brainmob = PB.brainmob
-		else
-			to_chat(user, "Whatever you tried to move inside \the [src], it's not an eligible pilot.")
-			return FALSE
-
-		if(!brainmob)
-			return FALSE
-
-		user.drop_from_inventory(I)
-		brainmob.reset_view(src)
-		occupant = brainmob
-		brainmob.loc = src // should allow relaymove
-		//brainmob.canmove = TRUE
-		I.loc = src
-		//mmi_as_oc.mecha = src
-		verbs -= /obj/mecha/verb/eject
-		Entered(I)
-		forceMove(loc)
-		icon_state = reset_icon()
-		set_dir(dir_in)
-		log_message("[I] moved in as pilot.")
-		if(!hasInternalDamage())
-			sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
-		return TRUE
-	else
+	if(!I || !user.Adjacent(src))
 		return FALSE
+	var/mob/brainmob
+	if(istype(I, /obj/item/device/mmi))
+		var/obj/item/device/mmi/MMI = I
+		if(!MMI?.brainmob?.client)
+			to_chat(user, "Consciousness matrix not detected.")
+			return FALSE
+		if(MMI.brainmob.stat)
+			to_chat(user, "Beta-rhythm below acceptable level.")
+			return FALSE
+		brainmob = MMI.brainmob
+	else if(istype(I, /obj/item/organ/internal/posibrain))
+		var/obj/item/organ/internal/posibrain/PB = I
+		if(!PB?.brainmob?.client)
+			to_chat(user, "Consciousness matrix not detected.")
+			return FALSE
+		if(PB.brainmob.stat)
+			to_chat(user, "The intelligence simulation protocols seem to be malfunctioning.")
+			return FALSE
+		brainmob = PB.brainmob
+	else
+		to_chat(user, "Whatever you tried to move inside \the [src], it's not an eligible pilot.")
+		return FALSE
+
+	if(!brainmob)
+		return FALSE
+
+	user.drop_from_inventory(I)
+	brainmob.reset_view(src)
+	occupant = brainmob
+	brainmob.loc = src // should allow relaymove
+	//brainmob.canmove = TRUE
+	I.loc = src
+	//mmi_as_oc.mecha = src
+	verbs -= /obj/mecha/verb/eject
+	Entered(I)
+	forceMove(loc)
+	icon_state = reset_icon()
+	set_dir(dir_in)
+	log_message("[I] moved in as pilot.")
+	if(!hasInternalDamage())
+		sound_to(occupant, sound('sound/mecha/nominal.ogg', volume = 50))
+	return TRUE
 
 
 /obj/mecha/verb/view_stats()
