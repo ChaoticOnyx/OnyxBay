@@ -195,6 +195,10 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
+	force = 2.5
+	mod_handy = 0.4
+	mod_reach = 0.5
+	mod_weight = 0.5
 	attack_verb = list("bashed", "whacked", "educated")
 	var/dat = "<meta charset=\"utf-8\">" // Actual page content
 	var/author		       // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
