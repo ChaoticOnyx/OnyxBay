@@ -327,10 +327,11 @@ var/list/gamemode_cache = list()
 		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
+		var/static/regex/trimComments = new /regex("(#.*)$")
 
 		if (pos)
 			name = lowertext(copytext(t, 1, pos))
-			value = copytext(t, pos + 1)
+			value = trim(trimComments.Replace(copytext(t, pos + 1), ""))
 		else
 			name = lowertext(t)
 
