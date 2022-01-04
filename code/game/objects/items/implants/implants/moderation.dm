@@ -104,7 +104,6 @@
 	if (malfunction == MALFUNCTION_PERMANENT)
 		return
 
-	playsound(loc, 'sound/items/countdown.ogg', 75, 1, -3)
 	if(ismob(imp_in))
 		var/mob/living/L = imp_in
 		to_chat(L, "<span class='danger'>You feel a sharp shock!</span>")
