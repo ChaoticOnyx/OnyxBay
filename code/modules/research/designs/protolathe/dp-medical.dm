@@ -133,3 +133,11 @@
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_ILLEGAL = 4)
 	build_path = /obj/item/implantcase/explosive
 	sort_string = "MFAAG"
+
+
+/datum/design/item/implant/speech_corrector
+	name = "speech corrector implant"
+	id = "implant_speech_corrector"
+	req_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2)
+	build_path = /obj/item/implantcase/speech_corrector
+	sort_string = "MFAAH"
