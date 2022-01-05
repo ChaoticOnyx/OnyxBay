@@ -4,11 +4,13 @@
 	name = "Speech corrector implant"
 	desc = "Micro bio-taser that tasering every time when some banned word sayed"
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2)
-	var/words_list = list()
+	var/list/words_list = list()
 	var/stun = 0
 	var/agony = 10
 	var/agony_limit = AGONY_LIMIT
 	var/stutter = 10
+	var/static/list/obscene_word_list = file2list("config/obscene_word_list.txt")
+	var/check_obscene_words = FALSE
 
 /obj/item/implantcase/speech_corrector
 	name = "glass case - 'speech corrector'"
@@ -35,7 +37,8 @@
 	<A href='byond://?src=\ref[src];words_list_set=remove'>remove word</A>|
 	<A href='byond://?src=\ref[src];words_list_set=clear'>clear</A><BR>
 	<HR>
-	<A href='byond://?src=\ref[src];agony_limit=1'>Pain level limit:[agony_limit ? agony_limit : "NONE SET"]</A>|
+	<A href='byond://?src=\ref[src];check_obscene_words=1'>Check obscene words:[check_obscene_words ? "YES" : "NO"]</A><BR>
+	<A href='byond://?src=\ref[src];agony_limit=1'>Pain level limit:[agony_limit ? agony_limit : "NONE SET"]</A>
 	<HR>
 	<b>Implant Details:</b><BR>
 	<b>Function:</b> Contains a compact, taser that activated by host pronouncing words from banned list.<BR>
@@ -82,8 +85,8 @@
 	if(!words_list)
 		return
 	var/list/msg_words_list=splittext(sanitize_phrase(lowertext(msg))," ")
-	for (var/phrase in words_list)
-		if(phrase in msg_words_list)
+	for (var/phrase in msg_words_list)
+		if((phrase in words_list) || ((phrase in obscene_word_list) && check_obscene_words))
 			activate()
 			return
 
@@ -97,16 +100,23 @@
 		if("add")
 			var/word = sanitize_phrase(input("Enter word:") as null|text)
 			words_list |= word
+			interact(usr)
 		if("remove")
 			var/word = input("Select which word you want to remove:") as anything in words_list|null
 			words_list -= word
+			interact(usr)
 		if("clear")
 			if(!isemptylist(words_list))
 				if(alert("Word list is not empty. Are you wanna to clear it?","Clear Word list","Yes","No")=="Yes")
 					clearlist(words_list)
+					interact(usr)
 	if(href_list["agony_limit"])
 		agony_limit = input("Enter number of pain level, below [AGONY_LIMIT]:") as num|null
 		agony_limit = agony_limit>AGONY_LIMIT?AGONY_LIMIT:agony_limit
+		interact(usr)
+	if(href_list["check_obscene_words"])
+		check_obscene_words = !check_obscene_words
+		interact(usr)
 
 /obj/item/implant/voice_triggered/speech_corrector/activate()
 	if (malfunction == MALFUNCTION_PERMANENT)
