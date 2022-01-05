@@ -48,8 +48,6 @@
 /obj/item/implant/voice_triggered/speech_corrector/implanted(mob/target)
 	if(isemptylist(words_list))
 		var/word = sanitize_phrase(input("Enter words separated with ', ':") as null|text)
-		if(isnull(word))
-			break
 		words_list |= splittext(word," ")
 	var/memo = "You will be tasered every time when saying something containing this ''[jointext(words_list,", ")]''."
 	target.mind.store_memory(memo, 0, 0)
