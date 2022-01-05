@@ -27,7 +27,7 @@
 	<b>Name:</b> NanoTrasen corp speech corrector implant<BR>
 	<b>Life:</b> Activates upon banned word list.<BR>
 	<B>Banned words:</B><BR>
-	[!isemptylist(words_list) ? list2text(words_list,", ") : "NONE SET"]<BR>
+	[!isemptylist(words_list) ? jointext(words_list,", ") : "NONE SET"]<BR>
 	<A href='byond://?src=\ref[src];words_list_set=add'>add word</A>|
 	<A href='byond://?src=\ref[src];words_list_set=remove'>remove word</A>|
 	<A href='byond://?src=\ref[src];words_list_set=clear'>clear</A><BR>
@@ -46,7 +46,7 @@
 			if(isnull(word))
 				break
 			words_list |= word
-	var/memo = "You will be tasered every time when saying something containing this ''[list2text(words_list,", ")]''."
+	var/memo = "You will be tasered every time when saying something containing this ''[jointext(words_list,", ")]''."
 	target.mind.store_memory(memo, 0, 0)
 	to_chat(target, memo)
 	return TRUE
