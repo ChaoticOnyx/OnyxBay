@@ -47,11 +47,10 @@
 
 /obj/item/implant/voice_triggered/speech_corrector/implanted(mob/target)
 	if(isemptylist(words_list))
-		while(1)
-			var/word = sanitize_phrase(input("Enter word or hit cancel to finish:") as null|text)
-			if(isnull(word))
-				break
-			words_list |= word
+		var/word = sanitize_phrase(input("Enter words separated with ', ':") as null|text)
+		if(isnull(word))
+			break
+		words_list |= splittext(word," ")
 	var/memo = "You will be tasered every time when saying something containing this ''[jointext(words_list,", ")]''."
 	target.mind.store_memory(memo, 0, 0)
 	to_chat(target, SPAN("notice",memo))
@@ -91,15 +90,15 @@
 			return
 
 /obj/item/implant/voice_triggered/speech_corrector/proc/sanitize_phrase(phrase)
-	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "","," = "",":" = "","!" = "","." = "","?" = "",";" = "")
+	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "",", " = " ","," = " ",":" = "","!" = "","." = "","?" = "",";" = "")
 	return replace_characters(phrase, replacechars)
 
 /obj/item/implant/voice_triggered/speech_corrector/Topic(href, href_list)
 	..()
 	switch(href_list["words_list_set"])
 		if("add")
-			var/word = sanitize_phrase(input("Enter word:") as null|text)
-			words_list |= word
+			var/word = sanitize_phrase(input("Enter words separated with ', ':") as null|text)
+			words_list |= splittext(word," ")
 			interact(usr)
 		if("remove")
 			var/word = input("Select which word you want to remove:") as anything in words_list|null
