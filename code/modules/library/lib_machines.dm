@@ -118,7 +118,7 @@
 		print_book.forceMove(get_turf(src))
 		return
 	visible_message("\The [src] whirs as it prints and binds a new book.")
-	if(istype(print_book, /obj/item/weapon/paper))
+	if(istype(print_book, /obj/item/paper))
 		var/obj/item/weapon/paper/paper = print_book
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
 	if(istype(print_book, /obj/item/weapon/book/wiki/template))
