@@ -14,24 +14,24 @@ var/static/list/floor_light_color_cache = list()
 	power_channel = STATIC_EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
+	#define MAX_HEALTH 60
+	#define SHIELD MAX_HEALTH * 0.6	// Hits to broke
+	#define CRACK_LAYER DECAL_LAYER
 	var/ID
-	var/const/max_health = 60
-	var/health	// Hits to destroy
-	var/const/shield = max_health * 0.6	// Hits to broke
+	var/health = MAX_HEALTH	// Hits to destroy
 	var/damaged = FALSE
 	var/cracks = 0
-	var/const/crack_layer = DECAL_LAYER
 
-	var/const/light_layer = DECAL_LAYER
+	#define DEFAULT_LIGHT_MAX_BRIGHT 0.75
+	#define DEFAULT_LIGHT_INNER_RANGE 1
+	#define DEFAULT_LIGHT_OUTER_RANGE 3
+	#define DEFAULT_LIGHT_COLOUR "#69baff"
+	#define BROKEN_LIGHT_COLOUR "#FFFFFF"
+	#define LIGHT_LAYER DECAL_LAYER
 	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
 	var/inverted = FALSE
-	var/const/default_light_max_bright = 0.75
-	var/const/default_light_inner_range = 1
-	var/const/default_light_outer_range = 3
-	var/const/default_light_colour = "#69baff"
-	var/const/broken_light_colour = "#FFFFFF"
 	var/light_colour = "#69baff"
 
 	var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
@@ -46,10 +46,6 @@ var/static/list/floor_light_color_cache = list()
 	var/static/list/ai_settings_options = list("Color" = radial_color_input, "Intensity" = radial_intensity, "Invert" = radial_invert)
 	var/static/list/intensity_options = list("slow" = radial_intensity_slow, "normal" = radial_intensity_normal, "fast" = radial_intensity_fast)
 	var/static/list/ai_intensity_options = list("slow" = radial_intensity_slow, "normal" = radial_intensity_normal, "fast" = radial_intensity_fast)
-
-/obj/machinery/floor_light/New()
-	health = max_health
-	. = ..()
 
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
@@ -126,7 +122,7 @@ var/static/list/floor_light_color_cache = list()
 		playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
 		update_brightness()
 
-	if(isWelder(W) && (damaged || (stat & BROKEN)))
+	if(isWelder(W) && (damaged | broken()))
 		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(cracks, user))
 			to_chat(user, SPAN("warning", "\The [WT.name] must be on and have at least [cracks] units of fuel to complete this task."))
@@ -139,7 +135,7 @@ var/static/list/floor_light_color_cache = list()
 		visible_message(SPAN("notice", "\The [user] has repaired \the [src]."))
 		set_broken(FALSE)
 		damaged = FALSE
-		health = max_health
+		health = MAX_HEALTH
 		update_brightness()
 		return
 
@@ -174,25 +170,22 @@ var/static/list/floor_light_color_cache = list()
 		playsound(src, GET_SFX(SFX_USE_SMALL_SWITCH), 75, 1)
 		to_chat(user, SPAN("notice", "You switch \the [src]  [on ? "on" : "off"]."))
 		if(on)
-			if(stat && BROKEN)
+			if(broken())
 				to_chat(user, SPAN("warning", "\The [src] is too damaged to glow."))
-				return
 			if(!anchored)
 				to_chat(user, SPAN("warning", "\The [src] must be screwed down to glow."))
-				return
-			if(stat && NOPOWER)
+			if(stat == 2)
 				to_chat(user, SPAN("warning", "\The [src] is unpowered."))
-				return
 
 /obj/machinery/floor_light/proc/update_brightness()
 	ID = "\ref[src]"
 	if(must_work)
 		if(broken())
-			set_light(default_light_max_bright / 2, default_light_inner_range / 2, default_light_outer_range / 2, 2, broken_light_colour)
+			set_light(DEFAULT_LIGHT_MAX_BRIGHT / 2, DEFAULT_LIGHT_INNER_RANGE / 2, DEFAULT_LIGHT_OUTER_RANGE / 2, 2, BROKEN_LIGHT_COLOUR)
 			update_use_power(POWER_USE_IDLE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_IDLE)
 		else
-			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_color_check(ID))
+			set_light(DEFAULT_LIGHT_MAX_BRIGHT, DEFAULT_LIGHT_INNER_RANGE, DEFAULT_LIGHT_OUTER_RANGE, 2, light_color_check(ID))
 			update_use_power(POWER_USE_ACTIVE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	else
@@ -210,7 +203,7 @@ var/static/list/floor_light_color_cache = list()
 			var/cache_key = "floorlight[ID]-damaged[crack]"
 			var/image/I = image("damaged[crack]")
 			playsound(loc, "sound/effects/glass_step.ogg", 100, 1)
-			update_light_cache(ID, cache_key, I, crack_layer)
+			update_light_cache(ID, cache_key, I, CRACK_LAYER)
 			cracks++
 	else overlays.Cut()
 	if(must_work)
@@ -226,10 +219,10 @@ var/static/list/floor_light_color_cache = list()
 					I = inverted ? image("glowing_slow_invert") : image("glowing_slow")
 				if(2)
 					I = inverted ? image("glowing_fast_invert") : image("glowing_fast")
-			update_light_cache(ID, cache_key, I, light_layer)
+			update_light_cache(ID, cache_key, I, LIGHT_LAYER)
 
 /obj/machinery/floor_light/proc/update_light_cache(ID, cache_key, image/I, _layer)
-	I.color = broken() ? broken_light_colour : light_color_check(ID)
+	I.color = broken() ? BROKEN_LIGHT_COLOUR : light_color_check(ID)
 	I.plane = plane
 	I.layer = _layer
 	floor_light_cache[cache_key] = I
@@ -247,7 +240,7 @@ var/static/list/floor_light_color_cache = list()
 	while(prob(50))
 
 /obj/machinery/floor_light/proc/broken()
-	return health < shield
+	return health < SHIELD
 
 /obj/machinery/floor_light/proc/light_color_check(ID)
 	if(isnull(light_colour))
@@ -255,5 +248,5 @@ var/static/list/floor_light_color_cache = list()
 			return floor_light_color_cache["floorlight[ID]-glowing"]
 		if(floor_light_cache["floorlight[ID]-flickering"])
 			return floor_light_color_cache["floorlight[ID]-flickering"]
-		return default_light_colour
+		return DEFAULT_LIGHT_COLOUR
 	return light_colour
