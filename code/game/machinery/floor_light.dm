@@ -122,7 +122,7 @@ var/static/list/floor_light_color_cache = list()
 		playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
 		update_brightness()
 
-	if(isWelder(W) && (damaged | broken()))
+	if(isWelder(W) && damaged)
 		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(cracks, user))
 			to_chat(user, SPAN("warning", "\The [WT.name] must be on and have at least [cracks] units of fuel to complete this task."))
