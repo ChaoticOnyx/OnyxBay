@@ -67,7 +67,7 @@
 
 
 /*
- * Library binder
+ * Book binder
  */
 /obj/machinery/bookbinder
 	name = "Library Binder"
