@@ -716,7 +716,7 @@
 /obj/mecha/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 	if(!occupant)
-		if(istype(W, /obj/item/weapon/aicard))
+		if(istype(W, /obj/item/aicard))
 			var/obj/item/weapon/aicard/card = W
 			if(card.carded_ai)
 				occupant = card.carded_ai
