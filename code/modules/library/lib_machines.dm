@@ -122,7 +122,7 @@
 		var/obj/item/paper/paper = print_book
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
 	if(istype(print_book, /obj/item/book/wiki/template))
-		var/obj/item/weapon/book/wiki/template/template = print_book
+		var/obj/item/book/wiki/template/template = print_book
 		print_wiki(template.topic, template.censored)
 	qdel(print_book)
 
