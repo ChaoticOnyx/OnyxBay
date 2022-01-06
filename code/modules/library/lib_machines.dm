@@ -112,7 +112,7 @@
 		..()
 		to_chat(user, "[src] doesn't work!")
 
-/obj/machinery/bookbinder/proc/handle_paper(obj/item/weapon/print_book)
+/obj/machinery/bookbinder/proc/handle_paper(obj/item/print_book)
 	if(!operable())
 		visible_message("\The [src] ejects \the [print_book].")
 		print_book.forceMove(get_turf(src))
