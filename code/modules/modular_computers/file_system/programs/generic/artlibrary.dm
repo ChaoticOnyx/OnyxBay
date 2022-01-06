@@ -164,7 +164,7 @@
 					new_art.forceMove(get_turf(bndr))
 					bndr.visible_message("\The [bndr] whirs as it prints a new art.")
 				return TRUE
-		error_message = "Software Error: Unable to print; library binder not found."
+		error_message = "Software Error: Unable to print; book binder not found."
 		return TRUE
 	if(href_list["sortby"])
 		sort_by = href_list["sortby"]
