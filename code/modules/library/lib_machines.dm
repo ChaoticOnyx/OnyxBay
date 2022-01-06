@@ -114,7 +114,7 @@
 
 /obj/machinery/bookbinder/proc/handle_paper(obj/item/weapon/print_book)
 	if(!operable())
-		visible_message("\The [src] ejects [print_book].")
+		visible_message("\The [src] ejects \the [print_book].")
 		print_book.forceMove(get_turf(src))
 		return
 	visible_message("\The [src] whirs as it prints and binds a new book.")
