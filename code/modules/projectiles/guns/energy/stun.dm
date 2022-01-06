@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/energy/taser
+/obj/item/gun/energy/taser
 	name = "Mk30 NL"
 	desc = "The NT Mk30 NL is a small, low capacity gun used for non-lethal takedowns. Produced by NT, it's actually a licensed version of a W-T design. It can switch between high and low intensity stun shots."
 	icon_state = "taser"
@@ -16,7 +16,7 @@
 		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
 		)
 
-/obj/item/weapon/gun/energy/taser/carbine
+/obj/item/gun/energy/taser/carbine
 	name = "stun carbine"
 	desc = "The NT Mk44 NL is a high capacity gun used for non-lethal takedowns. It can switch between high and low intensity stun beams, and concentrated stun spheres."
 	icon_state = "tasercarbine"
@@ -40,7 +40,7 @@
 		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock/heavy),
 		)
 
-/obj/item/weapon/gun/energy/taser/mounted
+/obj/item/gun/energy/taser/mounted
 	name = "mounted taser gun"
 	desc = "Modified NT Mk30 NL, designed to be mounted on cyborgs and other battle machinery. It can switch between high and low intensity stun beams, and concentrated stun spheres."
 	icon_state = "btaser"
@@ -54,14 +54,14 @@
 		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock),
 		)
 
-/obj/item/weapon/gun/energy/taser/mounted/cyborg
+/obj/item/gun/energy/taser/mounted/cyborg
 	name = "taser gun"
 	max_shots = 6
 	fire_delay = 15
 	recharge_time = 10 //Time it takes for shots to recharge (in ticks)
 
 
-/obj/item/weapon/gun/energy/stunrevolver
+/obj/item/gun/energy/stunrevolver
 	name = "stun revolver"
 	desc = "A LAEP20 Zeus. Designed by Lawson Arms and produced under the wing of the FTU, several TSCs have been trying to get a hold of the blueprints for half a decade."
 	icon_state = "stunrevolver"
@@ -71,7 +71,7 @@
 	max_shots = 6
 	combustion = 0
 
-/obj/item/weapon/gun/energy/stunrevolver/rifle
+/obj/item/gun/energy/stunrevolver/rifle
 	name = "stun rifle"
 	desc = "A LAEP38 Thor, a vastly oversized variant of the LAEP20 Zeus. Fires overcharged electrodes to take down hostile armored targets without harming them too much."
 	icon_state = "stunrifle"
@@ -86,7 +86,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunshot
 	wielded_item_state = "stunrifle-wielded"
 
-/obj/item/weapon/gun/energy/crossbow
+/obj/item/gun/energy/crossbow
 	name = "mini energy-crossbow"
 	desc = "A crossbow that doesn't seem to have space for bolts."
 	icon_state = "crossbow"
@@ -103,12 +103,12 @@
 	charge_meter = 0
 	combustion = 0
 
-/obj/item/weapon/gun/energy/crossbow/ninja
+/obj/item/gun/energy/crossbow/ninja
 	name = "energy dart thrower"
 	projectile_type = /obj/item/projectile/energy/dart
 	max_shots = 5
 
-/obj/item/weapon/gun/energy/crossbow/largecrossbow
+/obj/item/gun/energy/crossbow/largecrossbow
 	name = "energy crossbow"
 	desc = "A weapon favored by syndicate infiltration teams."
 	w_class = ITEM_SIZE_LARGE
@@ -117,7 +117,7 @@
 	matter = list(MATERIAL_STEEL = 200000)
 	projectile_type = /obj/item/projectile/energy/bolt/large
 
-/obj/item/weapon/gun/energy/plasmastun
+/obj/item/gun/energy/plasmastun
 	name = "plasma pulse projector"
 	desc = "The Mars Military Industries MA21 Selkie is a weapon that uses a laser pulse to ionise the local atmosphere, creating a disorienting pulse of plasma and deafening shockwave as the wave expands."
 	icon_state = "plasma_stun"
@@ -128,7 +128,7 @@
 	projectile_type = /obj/item/projectile/energy/plasmastun
 	combustion = 0
 
-/obj/item/weapon/gun/energy/classictaser
+/obj/item/gun/energy/classictaser
 	name = "taser gun"
 	desc = "A small, low capacity gun used for non-lethal takedowns."
 	icon_state = "taser"

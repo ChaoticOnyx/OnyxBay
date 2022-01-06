@@ -63,7 +63,7 @@
 	if(.)
 		var/counter
 		for(counter = 0, counter < 2, counter++)
-			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
 			D.layer = 4.1
 
 
@@ -125,7 +125,7 @@
 	if(.)
 		var/counter
 		for(counter = 0, counter < 2, counter++)
-			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
 			D.layer = 4.1
 		new /obj/item/asteroid/beholder_eye(src.loc)
 

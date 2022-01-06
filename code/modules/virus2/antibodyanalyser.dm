@@ -10,7 +10,7 @@
 	var/pause = 0
 	var/list/known_antibodies = list()
 
-	var/obj/item/weapon/reagent_containers/container = null
+	var/obj/item/reagent_containers/container = null
 
 /obj/machinery/disease2/antibodyanalyser/update_icon()
 	if(scanning)
@@ -19,7 +19,7 @@
 		icon_state = "analyser"
 
 /obj/machinery/disease2/antibodyanalyser/attackby(obj/I as obj, mob/user as mob)
-	if(istype(I,/obj/item/weapon/reagent_containers))
+	if(istype(I,/obj/item/reagent_containers))
 		if(!container && user.unEquip(I))
 			container = I
 			I.forceMove(src)

@@ -25,9 +25,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/open_encased/saw
 	allowed_tools = list(
-	/obj/item/weapon/circular_saw = 100,
-	/obj/item/weapon/material/knife = 50, \
-	/obj/item/weapon/material/hatchet = 75
+	/obj/item/circular_saw = 100,
+	/obj/item/material/knife = 50, \
+	/obj/item/material/hatchet = 75
 	)
 
 	duration = SAW_DURATION

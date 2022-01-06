@@ -1,6 +1,6 @@
 
 ///// Changeling weapons /////
-/obj/item/weapon/melee/changeling
+/obj/item/melee/changeling
 	name = "arm weapon"
 	desc = "A grotesque weapon made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon = 'icons/obj/weapons.dmi'
@@ -20,7 +20,7 @@
 	var/weapType = "weapon"
 	var/weapLocation = "arm"
 
-/obj/item/weapon/melee/changeling/New(location)
+/obj/item/melee/changeling/New(location)
 	..()
 	if(ismob(loc))
 		creator = loc
@@ -28,11 +28,11 @@
 								null, \
 								SPAN("italics", "You hear organic matter ripping and tearing!"))
 
-/obj/item/weapon/melee/changeling/Initialize()
+/obj/item/melee/changeling/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/weapon/melee/changeling/dropped(mob/user)
+/obj/item/melee/changeling/dropped(mob/user)
 	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
 						 SPAN("changeling", "We assimilate the weapon back into our body."), \
 						 SPAN("italics", "You hear organic matter ripping and tearing!"))
@@ -40,11 +40,11 @@
 	spawn(1)
 		qdel(src)
 
-/obj/item/weapon/melee/changeling/Destroy()
+/obj/item/melee/changeling/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/weapon/melee/changeling/Process()  //Stolen from ninja swords.
+/obj/item/melee/changeling/Process()  //Stolen from ninja swords.
 	if(!creator || loc != creator ||(creator.l_hand != src && creator.r_hand != src))
 		// Tidy up a bit.
 		if(istype(loc, /mob/living))
@@ -60,7 +60,7 @@
 		spawn(1)
 			qdel(src)
 
-/obj/item/weapon/melee/changeling/arm_blade
+/obj/item/melee/changeling/arm_blade
 	name = "arm blade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "arm_blade"
@@ -70,13 +70,13 @@
 	edge = 1
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/melee/changeling/arm_blade/greater
+/obj/item/melee/changeling/arm_blade/greater
 	name = "arm greatblade"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 35
 	armor_penetration = 20
 
-/obj/item/weapon/melee/changeling/claw
+/obj/item/melee/changeling/claw
 	name = "hand claw"
 	desc = "A grotesque claw made out of bone and flesh that cleaves through people as a hot knife through butter."
 	icon_state = "ling_claw"
@@ -86,14 +86,14 @@
 	edge = 1
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/melee/changeling/claw/greater
+/obj/item/melee/changeling/claw/greater
 	name = "hand greatclaw"
 	desc = "A grotesque blade made out of bone and flesh that cleaves through people and armor as a hot knife through butter."
 	force = 20
 	armor_penetration = 50
 
 ///// Changeling emag /////
-/obj/item/weapon/finger_lockpick
+/obj/item/finger_lockpick
 	name = "finger lockpick"
 	desc = "This finger appears to be an organic datajack."
 	icon = 'icons/obj/weapons.dmi'
@@ -101,16 +101,16 @@
 	canremove = FALSE
 	force_drop = TRUE
 
-/obj/item/weapon/finger_lockpick/New()
+/obj/item/finger_lockpick/New()
 	if(ismob(loc))
 		to_chat(loc, SPAN("changeling", "We shape our finger to fit inside electronics, and are ready to force them open."))
 
-/obj/item/weapon/finger_lockpick/dropped(mob/user)
+/obj/item/finger_lockpick/dropped(mob/user)
 	to_chat(user, SPAN("changeling", "We discreetly shape our finger back to a less suspicious form."))
 	spawn(1)
 		qdel(src)
 
-/obj/item/weapon/finger_lockpick/afterattack(atom/target, mob/living/user, proximity)
+/obj/item/finger_lockpick/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)

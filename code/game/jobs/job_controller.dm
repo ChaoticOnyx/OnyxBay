@@ -572,7 +572,7 @@ var/global/datum/controller/occupations/job_master
 		if(istext(player_age)) // database not initialized
 			player_age = 0
 		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
-			var/obj/item/weapon/pinpointer/wayfinding/W = new(H)
+			var/obj/item/pinpointer/wayfinding/W = new(H)
 			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
 			if(equipped)
 				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))

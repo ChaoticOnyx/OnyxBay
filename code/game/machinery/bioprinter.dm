@@ -57,10 +57,10 @@
 /obj/machinery/organ_printer/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
 	RefreshParts()
 
 /obj/machinery/organ_printer/examine(mob/user)
@@ -70,9 +70,9 @@
 /obj/machinery/organ_printer/RefreshParts()
 	print_delay = initial(print_delay)
 	max_stored_matter = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/bin in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/bin in component_parts)
 		max_stored_matter += bin.rating * 50
-	for(var/obj/item/weapon/stock_parts/manipulator/manip in component_parts)
+	for(var/obj/item/stock_parts/manipulator/manip in component_parts)
 		print_delay -= (manip.rating-1)*10
 	print_delay = max(0,print_delay)
 	. = ..()
@@ -172,7 +172,7 @@
 	. = ..()
 	products.Add(BP_CELL)
 	products[BP_CELL] = list("Microbattery", /obj/item/organ/internal/cell, 25)
-	component_parts += new /obj/item/weapon/circuitboard/roboprinter
+	component_parts += new /obj/item/circuitboard/roboprinter
 
 /obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
@@ -187,7 +187,7 @@
 	visible_message("<span class='info'>\The [src] churns for a moment, then spits out \a [O].</span>")
 	return O
 
-/obj/machinery/organ_printer/robot/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/organ_printer/robot/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == matter_type)
 		if((max_stored_matter-stored_matter) < matter_amount_per_sheet)
 			to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
@@ -211,8 +211,8 @@
 	desc = "It's a machine that prints replacement organs."
 	icon_state = "bioprinter"
 	var/list/amount_list = list(
-		/obj/item/weapon/reagent_containers/food/snacks/meat = 50,
-		/obj/item/weapon/reagent_containers/food/snacks/rawcutlet = 15
+		/obj/item/reagent_containers/food/snacks/meat = 50,
+		/obj/item/reagent_containers/food/snacks/rawcutlet = 15
 		)
 	var/loaded_dna //Blood sample for DNA hashing.
 
@@ -229,15 +229,15 @@
 /obj/machinery/organ_printer/flesh/dismantle()
 	var/turf/T = get_turf(src)
 	if(T)
-		while(stored_matter >= amount_list[/obj/item/weapon/reagent_containers/food/snacks/meat])
-			stored_matter -= amount_list[/obj/item/weapon/reagent_containers/food/snacks/meat]
-			new /obj/item/weapon/reagent_containers/food/snacks/meat(T)
+		while(stored_matter >= amount_list[/obj/item/reagent_containers/food/snacks/meat])
+			stored_matter -= amount_list[/obj/item/reagent_containers/food/snacks/meat]
+			new /obj/item/reagent_containers/food/snacks/meat(T)
 	return ..()
 
 /obj/machinery/organ_printer/flesh/New()
 	..()
 	component_parts += new /obj/item/device/healthanalyzer
-	component_parts += new /obj/item/weapon/circuitboard/bioprinter
+	component_parts += new /obj/item/circuitboard/bioprinter
 
 /obj/machinery/organ_printer/flesh/print_organ(choice)
 	var/obj/item/organ/O
@@ -258,7 +258,7 @@
 	visible_message("<span class='info'>\The [src] churns for a moment, injects its stored DNA into the biomass, then spits out \a [O].</span>")
 	return O
 
-/obj/machinery/organ_printer/flesh/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/organ_printer/flesh/attackby(obj/item/W, mob/user)
 	// Load with matter for printing.
 	for(var/path in amount_list)
 		if(istype(W, path))
@@ -272,8 +272,8 @@
 			return
 
 	// DNA sample from syringe or dna sampler.
-	if(istype(W,/obj/item/weapon/reagent_containers/syringe) || istype(W,/obj/item/weapon/reagent_containers/dna_sampler))
-		var/obj/item/weapon/reagent_containers/S = W
+	if(istype(W,/obj/item/reagent_containers/syringe) || istype(W,/obj/item/reagent_containers/dna_sampler))
+		var/obj/item/reagent_containers/S = W
 		var/datum/reagent/blood/injected = locate() in S.reagents.reagent_list //Grab some blood
 		if(injected && injected.data)
 			loaded_dna = injected.data

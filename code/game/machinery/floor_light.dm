@@ -127,7 +127,7 @@ var/static/list/floor_light_color_cache = list()
 		update_brightness()
 
 	if(isWelder(W) && (damaged || (stat & BROKEN)))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(cracks, user))
 			to_chat(user, SPAN("warning", "\The [WT.name] must be on and have at least [cracks] units of fuel to complete this task."))
 			return

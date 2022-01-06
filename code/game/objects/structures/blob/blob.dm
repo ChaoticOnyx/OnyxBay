@@ -170,8 +170,8 @@
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	var/damage = 0
 
-	if (istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if (istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 
 		if (W.welding)
 			damage += BLOB_WELDING_BASE_DAMAGE

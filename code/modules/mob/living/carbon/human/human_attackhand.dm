@@ -120,8 +120,8 @@
 			return H.make_grab(H, src)
 
 		if(I_HURT)
-			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/weapon/grenade))
-				var/obj/item/weapon/grenade/G = wear_mask
+			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/grenade))
+				var/obj/item/grenade/G = wear_mask
 				if(!G.active)
 					visible_message(SPAN("danger", "\The [M] pulls the pin from \the [src]'s [G.name]!"))
 					G.activate(M)
@@ -337,7 +337,7 @@
 		rgrab.delete_self()
 	return success
 
-/*	
+/*
 	We want to ensure that a mob may only apply pressure to one organ of one mob at any given time. Currently this is done mostly implicitly through
 	the behaviour of do_after() and the fact that applying pressure to someone else requires a grab:
 

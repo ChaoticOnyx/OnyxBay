@@ -258,7 +258,7 @@
 
 /obj/machinery/access_button/attackby(obj/item/I, mob/user)
 	//Swiping ID on the access button
-	if (istype(I, /obj/item/weapon/card/id) || istype(I, /obj/item/device/pda))
+	if (istype(I, /obj/item/card/id) || istype(I, /obj/item/device/pda))
 		attack_hand(user)
 		return
 	..()
