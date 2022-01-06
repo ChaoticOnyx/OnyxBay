@@ -41,7 +41,7 @@
 // Machinery:
 //  - library computer
 //  - visitor's computer
-//  - library binder
+//  - book binder
 //  - book scanner
 // Datum:
 //	- borrowbook
