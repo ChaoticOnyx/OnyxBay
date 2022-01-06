@@ -70,7 +70,7 @@
  * Book binder
  */
 /obj/machinery/bookbinder
-	name = "Library Binder"
+	name = "Book Binder"
 	icon = 'icons/obj/library.dmi'
 	icon_state = "binder"
 	anchored = 1
