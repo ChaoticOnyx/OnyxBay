@@ -42,7 +42,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	var/broken
 	var/panel = PANEL_CLOSED
 
-	var/obj/item/weapon/cell/device/cell = /obj/item/weapon/cell/device
+	var/obj/item/cell/device/cell = /obj/item/cell/device
 	var/power_usage = 250
 	var/obj/item/music_tape/tape = null
 
@@ -154,8 +154,8 @@ GLOBAL_LIST_EMPTY(music_players)
 		update_icon()
 		return
 
-	if(istype(I, /obj/item/weapon/cell/device))
-		var/obj/item/weapon/cell/device/C = I
+	if(istype(I, /obj/item/cell/device))
+		var/obj/item/cell/device/C = I
 		if(panel == PANEL_OPENED)
 			if(cell)
 				to_chat(user, SPAN_NOTICE("[src] already has \a [cell] installed."))

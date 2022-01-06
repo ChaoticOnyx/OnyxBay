@@ -162,7 +162,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
+		if(l_hand && istype(l_hand, /obj/item/cane))
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
@@ -191,7 +191,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l

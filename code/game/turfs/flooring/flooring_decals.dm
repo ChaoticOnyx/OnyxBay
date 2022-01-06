@@ -902,6 +902,15 @@ var/list/floor_decals = list()
 	icon = 'icons/turf/overlays.dmi'
 	icon_state = "snowfloor"
 
+/obj/effect/floor_decal/snowedge
+	icon_state = "snow_edge"
+
+/obj/effect/floor_decal/snowedge/corner
+	icon_state = "snow_edge_corner"
+
+/obj/effect/floor_decal/snowedge/cee
+	icon_state = "snow_edge_cee"
+
 /obj/effect/floor_decal/floordetail
 	layer = TURF_DETAIL_LAYER
 	color = COLOR_GUNMETAL

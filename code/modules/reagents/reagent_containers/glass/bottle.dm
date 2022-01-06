@@ -1,7 +1,7 @@
 
-//Not to be confused with /obj/item/weapon/reagent_containers/food/drinks/bottle
+//Not to be confused with /obj/item/reagent_containers/food/drinks/bottle
 
-/obj/item/weapon/reagent_containers/glass/bottle
+/obj/item/reagent_containers/glass/bottle
 	name = "bottle"
 	desc = "A regular glass bottle."
 	icon = 'icons/obj/chemical.dmi'
@@ -23,7 +23,7 @@
 	var/default_desc = "A regular glass bottle."
 	var/starting_label = null
 
-/obj/item/weapon/reagent_containers/glass/bottle/small
+/obj/item/reagent_containers/glass/bottle/small
 	name = "small bottle"
 	desc = "A small glass bottle."
 	icon_state = "bottle_small"
@@ -36,7 +36,7 @@
 	default_name = "small bottle"
 	default_desc = "A small glass bottle."
 
-/obj/item/weapon/reagent_containers/glass/bottle/big
+/obj/item/reagent_containers/glass/bottle/big
 	name = "big bottle"
 	desc = "A big glass bottle."
 	icon_state = "bottle_big"
@@ -48,11 +48,11 @@
 	default_name = "big bottle"
 	default_desc = "A big glass bottle."
 
-/obj/item/weapon/reagent_containers/glass/bottle/big/get_storage_cost()
+/obj/item/reagent_containers/glass/bottle/big/get_storage_cost()
 	return ..() * 1.5
 
 
-/obj/item/weapon/reagent_containers/glass/bottle/Initialize()
+/obj/item/reagent_containers/glass/bottle/Initialize()
 	. = ..()
 	if(!default_name)
 		default_name = name
@@ -66,33 +66,33 @@
 		lid_state = "lid_bottle"
 	update_icon()
 
-//obj/item/weapon/reagent_containers/glass/bottle/proc/setup_bottle(new_label = null
+//obj/item/reagent_containers/glass/bottle/proc/setup_bottle(new_label = null
 
-/obj/item/weapon/reagent_containers/glass/bottle/on_reagent_change()
+/obj/item/reagent_containers/glass/bottle/on_reagent_change()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/pickup(mob/user)
+/obj/item/reagent_containers/glass/bottle/pickup(mob/user)
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/dropped(mob/user)
+/obj/item/reagent_containers/glass/bottle/dropped(mob/user)
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/attack_hand()
+/obj/item/reagent_containers/glass/bottle/attack_hand()
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/attach_label(user)
+/obj/item/reagent_containers/glass/bottle/attach_label(user)
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/post_remove_label()
+/obj/item/reagent_containers/glass/bottle/post_remove_label()
 	..()
 	desc = default_desc
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/update_icon()
+/obj/item/reagent_containers/glass/bottle/update_icon()
 	overlays.Cut()
 
 	if(reagents.total_volume && use_filling_states)

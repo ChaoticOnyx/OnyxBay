@@ -21,17 +21,17 @@
 
 /obj/structure/bookcase/Initialize()
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/weapon/book))
+		if(istype(I, /obj/item/book))
 			I.forceMove(src)
 	update_icon()
 	. = ..()
 
 /obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/book))
+	if(istype(O, /obj/item/book))
 		user.drop_item()
 		O.loc = src
 		update_icon()
-	else if(istype(O, /obj/item/weapon/pen))
+	else if(istype(O, /obj/item/pen))
 		var/newname = sanitizeSafe(input("What would you like to title this bookshelf?"), MAX_NAME_LEN)
 		if(!newname)
 			return
@@ -43,7 +43,7 @@
 		if(do_after(user,25,src))
 			to_chat(user, SPAN("notice", "You dismantle \the [src]."))
 			new /obj/item/stack/material/wood(get_turf(src), 5)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				b.loc = (get_turf(src))
 			qdel(src)
 
@@ -56,8 +56,8 @@
 		var/list/titles = list()
 		for(var/obj/item in contents)
 			var/item_name = item.name
-			if(istype(item, /obj/item/weapon/book))
-				var/obj/item/weapon/book/B = item
+			if(istype(item, /obj/item/book))
+				var/obj/item/book/B = item
 				item_name = B.title
 			titles[item_name] = item
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
@@ -76,19 +76,19 @@
 /obj/structure/bookcase/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				qdel(b)
 			qdel(src)
 			return
 		if(2.0)
-			for(var/obj/item/weapon/book/b in contents)
+			for(var/obj/item/book/b in contents)
 				if (prob(50)) b.loc = (get_turf(src))
 				else qdel(b)
 			qdel(src)
 			return
 		if(3.0)
 			if (prob(50))
-				for(var/obj/item/weapon/book/b in contents)
+				for(var/obj/item/book/b in contents)
 					b.loc = (get_turf(src))
 				qdel(src)
 			return
@@ -108,10 +108,10 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/medical_chemistry(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_chemistry(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/book/wiki/medical_diagnostics_manual(src)
 		update_icon()
 
 
@@ -120,12 +120,12 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/engineering_construction(src)
-		new /obj/item/weapon/book/wiki/engineering_hacking(src)
-		new /obj/item/weapon/book/wiki/engineering_guide(src)
-		new /obj/item/weapon/book/wiki/atmospipes(src)
-		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/wiki/hardsuits(src)
+		new /obj/item/book/wiki/engineering_construction(src)
+		new /obj/item/book/wiki/engineering_hacking(src)
+		new /obj/item/book/wiki/engineering_guide(src)
+		new /obj/item/book/wiki/atmospipes(src)
+		new /obj/item/book/wiki/engineering_singularity_safety(src)
+		new /obj/item/book/wiki/powersuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -133,7 +133,7 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/wiki/research_and_development(src)
+		new /obj/item/book/wiki/research_and_development(src)
 		update_icon()
 
 /obj/structure/bookcase/prefitted
@@ -162,7 +162,7 @@
 			picked_books += list(pick)
 			potential_books -= list(pick)
 	for(var/i in picked_books)
-		var/obj/item/weapon/book/book = new(src)
+		var/obj/item/book/book = new(src)
 		book.dat += "<font face=\"Verdana\"><i>Author: [i["author"]]<br>USBN: [i["id"]]</i><br><h3>[i["title"]]</h3></font><br>[i["content"]]"
 		book.title = i["title"]
 		book.author = i["author"]
@@ -188,7 +188,7 @@
 /*
  * Book
  */
-/obj/item/weapon/book
+/obj/item/book
 	name = "book"
 	icon = 'icons/obj/library.dmi'
 	icon_state ="book"
@@ -205,7 +205,7 @@
 	var/window_width = 650
 	var/window_height = 650
 
-/obj/item/weapon/book/attack_self(mob/user as mob)
+/obj/item/book/attack_self(mob/user as mob)
 	if(carved)
 		if(store)
 			to_chat(user, SPAN("notice", "[store] falls out of [title]!"))
@@ -222,7 +222,7 @@
 	else
 		to_chat(user, "This book is completely blank!")
 
-/obj/item/weapon/book/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/book/attackby(obj/item/W as obj, mob/user as mob)
 	if(carved == 1)
 		if(!store)
 			if(W.w_class < ITEM_SIZE_NORMAL)
@@ -237,7 +237,7 @@
 		else
 			to_chat(user, SPAN("notice", "There's already something in [title]!"))
 			return
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		if(unique)
 			to_chat(user, "These pages don't seem to take the ink well. Looks like you can't modify it.")
 			return
@@ -267,7 +267,7 @@
 					src.author = newauthor
 			else
 				return
-	else if(istype(W, /obj/item/weapon/material/knife) || isWirecutter(W))
+	else if(istype(W, /obj/item/material/knife) || isWirecutter(W))
 		if(carved)	return
 		to_chat(user, SPAN("notice", "You begin to carve out [title]."))
 		if(do_after(user, 30, src))
@@ -277,7 +277,7 @@
 	else
 		..()
 
-/obj/item/weapon/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/book/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(user.zone_sel.selecting == BP_EYES)
 		user.visible_message(
 			SPAN("notice", "[user] opens up a book and shows it to [M]."),
@@ -286,14 +286,14 @@
 		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
-/obj/item/weapon/book/wiki
+/obj/item/book/wiki
 	title = ""
 	unique = 1
 	var/topic
 	var/style = WIKI_MINI
 	var/censored = 1
 
-/obj/item/weapon/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
 	if(ntopic)
 		topic = ntopic
 	if(!isnull(ncensored))
@@ -307,7 +307,7 @@
 	dat = wiki_request(topic, style, censored, src)
 	. = ..(mapload)
 
-/obj/item/weapon/book/wiki/Topic(href, href_list[])
+/obj/item/book/wiki/Topic(href, href_list[])
 	// No parent call here
 	if(href_list["title"] && initial(title) == "")
 		title = href_list["title"]
@@ -354,7 +354,7 @@
 		</script>
 		</html>"}
 
-/obj/item/weapon/book/wiki/template
+/obj/item/book/wiki/template
 	icon_state = "paper_stack"
 	desc = "Bunch of unbound paper pieces."
 	style = WIKI_TEXT

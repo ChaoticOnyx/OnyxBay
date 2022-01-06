@@ -27,11 +27,11 @@
 	var/forehead_graffiti
 	var/graffiti_style
 
-	var/skull_path = /obj/item/weapon/skull
+	var/skull_path = /obj/item/skull
 
 /obj/item/organ/external/head/organ_eaten(mob/user)
 	. = ..()
-	var/obj/item/weapon/skull/SK = new /obj/item/weapon/skull(get_turf(src))
+	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
 	user.put_in_active_hand(SK)
 
 /obj/item/organ/external/head/examine(mob/user)
@@ -145,7 +145,8 @@
 			H = GLOB.hair_styles_list["Short Hair"]
 		if(H)
 			if(!length(H.species_allowed) || (species.name in H.species_allowed))
-				HI = icon(H.icon, "[H.icon_state]_s")
+				var/slim_icon = ("[H.icon_state]_slim" in GLOB.hair_styles_icons)?"[H.icon_state]_slim":"[H.icon_state]_s"
+				HI = icon(H.icon, istype(owner.body_build,/datum/body_build/slim)?"[slim_icon]":"[H.icon_state]_s")
 				if(H.do_coloration && length(h_col) >= 3)
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
 		if(HI)
@@ -190,7 +191,7 @@
 	update_icon()
 	owner = null
 
-/obj/item/weapon/skull
+/obj/item/skull
 	name = "skull"
 	desc = "Supposed to be inside someone's head."
 	icon = 'icons/obj/items.dmi'
@@ -205,7 +206,7 @@
 	attack_verb = list("bludgeoned", "skulled", "buttheaded", "spooked")
 	var/iscut = 0
 
-/obj/item/weapon/skull/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/skull/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sharp && !iscut)
 		user.visible_message("<span class='warning'><b>[user]</b> cuts [src] open with [W]!</span>")
 		icon_state = "skull_human_cut"
@@ -213,7 +214,7 @@
 		name = "facial bones"
 		desc = "Used to be someone's face."
 		return
-	if((istype(W,/obj/item/weapon/handcuffs/cable)) && iscut)
+	if((istype(W,/obj/item/handcuffs/cable)) && iscut)
 		user.visible_message("<span class='notice'>[user] attaches [W] to [src].</span>")
 		new /obj/item/clothing/mask/skullmask(user.loc)
 		qdel(src)
@@ -223,13 +224,13 @@
 		var/obj/item/stack/M = W
 		if(M.get_material_name() == MATERIAL_STEEL)
 			if(do_after(usr, 10, src))
-				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
+				new /obj/item/reagent_containers/food/drinks/skullgoblet(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)
 		else if(M.get_material_name() == MATERIAL_GOLD)
 			if(do_after(usr, 10, src))
-				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
+				new /obj/item/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)

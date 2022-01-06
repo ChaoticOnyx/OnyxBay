@@ -2,7 +2,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// (Mixing)Glass.
 ////////////////////////////////////////////////////////////////////////////////
-/obj/item/weapon/reagent_containers/glass
+/obj/item/reagent_containers/glass
 	name = " "
 	var/base_name = " "
 	desc = ""
@@ -26,11 +26,11 @@
 		/obj/structure/table,
 		/obj/structure/closet,
 		/obj/structure/sink,
-		/obj/item/weapon/storage,
+		/obj/item/storage,
 		/obj/machinery/atmospherics/unary/cryo_cell,
-		/obj/item/weapon/grenade/chem_grenade,
+		/obj/item/grenade/chem_grenade,
 		/mob/living/bot/medbot,
-		/obj/item/weapon/storage/secure/safe,
+		/obj/item/storage/secure/safe,
 		/obj/structure/iv_drip,
 		/obj/machinery/disease2/incubator,
 		/obj/machinery/disposal,
@@ -44,11 +44,11 @@
 		/obj/machinery/radiocarbon_spectrometer
 	)
 
-/obj/item/weapon/reagent_containers/glass/Initialize()
+/obj/item/reagent_containers/glass/Initialize()
 	. = ..()
 	base_name = name
 
-/obj/item/weapon/reagent_containers/glass/examine(mob/user)
+/obj/item/reagent_containers/glass/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -59,7 +59,7 @@
 	if(!is_open_container())
 		. += "\n<span class='notice'>The airtight lid seals it completely.</span>"
 
-/obj/item/weapon/reagent_containers/glass/attack_self()
+/obj/item/reagent_containers/glass/attack_self()
 	..()
 	if(is_open_container())
 		to_chat(usr, "<span class = 'notice'>You put the lid on \the [src].</span>")
@@ -69,14 +69,14 @@
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/attack(mob/M as mob, mob/user as mob, def_zone)
+/obj/item/reagent_containers/glass/attack(mob/M as mob, mob/user as mob, def_zone)
 	if(force && !(item_flags & ITEM_FLAG_NO_BLUDGEON) && user.a_intent == I_HURT)
 		return	..()
 	if(standard_feed_mob(user, M))
 		return
 	return 0
 
-/obj/item/weapon/reagent_containers/glass/standard_feed_mob(mob/user, mob/target)
+/obj/item/reagent_containers/glass/standard_feed_mob(mob/user, mob/target)
 	if(!is_open_container())
 		to_chat(user, "<span class='notice'>You need to open \the [src] first.</span>")
 		return 1
@@ -84,10 +84,10 @@
 		return 1
 	return ..()
 
-/obj/item/weapon/reagent_containers/glass/self_feed_message(mob/user)
+/obj/item/reagent_containers/glass/self_feed_message(mob/user)
 	to_chat(user, "<span class='notice'>You swallow a gulp from \the [src].</span>")
 
-/obj/item/weapon/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
+/obj/item/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
 	if(!is_open_container() || !proximity) //Is the container open & are they next to whatever they're clicking?
 		return 1 //If not, do nothing.
 	for(var/type in can_be_placed_into) //Is it something it can be placed into?
@@ -100,7 +100,7 @@
 	return ..()
 
 
-/obj/item/weapon/reagent_containers/glass/bucket
+/obj/item/reagent_containers/glass/bucket
 	desc = "It's a bucket."
 	name = "bucket"
 	icon = 'icons/obj/janitor.dmi'
@@ -115,20 +115,20 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 0
 
-/obj/item/weapon/reagent_containers/glass/bucket/full/Initialize()
+/obj/item/reagent_containers/glass/bucket/full/Initialize()
   . = ..()
   reagents.add_reagent(/datum/reagent/water, 180)
 
-/obj/item/weapon/reagent_containers/glass/bucket/attackby(obj/D, mob/user as mob)
+/obj/item/reagent_containers/glass/bucket/attackby(obj/D, mob/user as mob)
 
 	if(isprox(D))
 		to_chat(user, "You add [D] to [src].")
 		qdel(D)
-		user.put_in_hands(new /obj/item/weapon/bucket_sensor)
+		user.put_in_hands(new /obj/item/bucket_sensor)
 		user.drop_from_inventory(src)
 		qdel(src)
 		return
-	else if(istype(D, /obj/item/weapon/mop))
+	else if(istype(D, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='warning'>\The [src] is empty!</span>")
 		else
@@ -139,14 +139,14 @@
 	else
 		return ..()
 
-/obj/item/weapon/reagent_containers/glass/bucket/update_icon()
+/obj/item/reagent_containers/glass/bucket/update_icon()
 	overlays.Cut()
 	if (!is_open_container())
 		var/image/lid = image(icon, src, "lid_[initial(icon_state)]")
 		overlays += lid
 
 /*
-/obj/item/weapon/reagent_containers/glass/blender_jug
+/obj/item/reagent_containers/glass/blender_jug
 	name = "Blender Jug"
 	desc = "A blender jug, part of a blender."
 	icon = 'icons/obj/kitchen.dmi'
@@ -162,7 +162,7 @@
 			if(76 to 100)
 				icon_state = "blender_jug_f"
 
-/obj/item/weapon/reagent_containers/glass/canister		//not used apparantly
+/obj/item/reagent_containers/glass/canister		//not used apparantly
 	desc = "It's a canister. Mainly used for transporting fuel."
 	name = "canister"
 	icon = 'icons/obj/tank.dmi'

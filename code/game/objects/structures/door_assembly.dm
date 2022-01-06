@@ -8,7 +8,7 @@
 	var/state = 0
 	var/base_icon_state = ""
 	var/base_name = "Airlock"
-	var/obj/item/weapon/airlock_electronics/electronics = null
+	var/obj/item/airlock_electronics/electronics = null
 	var/airlock_type = "" //the type path of the airlock once completed
 	var/glass_type = "/glass"
 	var/glass = 0 // 0 = glass can be installed. -1 = glass can't be installed. 1 = glass is already installed. Text = mineral plating is installed instead.
@@ -143,7 +143,7 @@
 /obj/structure/door_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	var/const/static/cooldown_time = 40
 
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter the name for the door.", src.name, src.created_name), MAX_NAME_LEN)
 		if(!t)	return
 		if(!in_range(src, usr) && src.loc != usr)	return
@@ -151,7 +151,7 @@
 		return
 
 	if(isWelder(W) && ( (istext(glass)) || (glass == 1) || (!anchored) ))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if (WT.remove_fuel(0, user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 			if(istext(glass))
@@ -217,7 +217,7 @@
 				to_chat(user, "<span class='notice'>You tried to cut wires that are no longer there.</span>")
 
 
-	else if(istype(W, /obj/item/weapon/airlock_electronics) && state == 1)
+	else if(istype(W, /obj/item/airlock_electronics) && state == 1)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 

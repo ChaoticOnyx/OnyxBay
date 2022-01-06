@@ -39,7 +39,7 @@
 
 	//the values in this list show how much damage will pass through, not how much will be absorbed.
 	var/list/damage_absorption = list("brute"=0.8,"fire"=1.2,"bullet"=0.9,"laser"=1,"energy"=1,"bomb"=1)
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/state = 0
 	var/list/log = new
 	var/last_message = 0
@@ -171,7 +171,7 @@
 	return internal_tank
 
 /obj/mecha/proc/add_cell()
-	cell = new /obj/item/weapon/cell/mecha(src)
+	cell = new /obj/item/cell/mecha(src)
 
 /obj/mecha/proc/add_cabin()
 	cabin_air = new
@@ -710,7 +710,7 @@
 ////// AttackBy //////
 //////////////////////
 
-/obj/mecha/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/mecha/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(istype(W, /obj/item/mecha_parts/mecha_equipment))
 		var/obj/item/mecha_parts/mecha_equipment/E = W
@@ -723,7 +723,7 @@
 				to_chat(user, "You were unable to attach [W] to [src]")
 		return
 
-	var/obj/item/weapon/card/id/id_card = W.GetIdCard()
+	var/obj/item/card/id/id_card = W.GetIdCard()
 	if(id_card)
 		if(add_req_access || maint_access)
 			if(internals_access_allowed(usr))
@@ -785,7 +785,7 @@
 				src.log_message("Eject attempt made using maintenance controls - rejected.")
 		return
 
-	else if(istype(W, /obj/item/weapon/cell))
+	else if(istype(W, /obj/item/cell))
 		if(state==4)
 			if(!src.cell)
 				to_chat(user, "You install the powercell")
@@ -798,7 +798,7 @@
 		return
 
 	else if(isWelder(W) && user.a_intent != I_HURT)
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if (WT.remove_fuel(0,user))
 			if (hasInternalDamage(MECHA_INT_TANK_BREACH))
 				clearInternalDamage(MECHA_INT_TANK_BREACH)
@@ -1185,7 +1185,7 @@
 	return 0
 
 
-/obj/mecha/check_access(obj/item/weapon/card/id/I, list/access_list)
+/obj/mecha/check_access(obj/item/card/id/I, list/access_list)
 	if(!istype(access_list))
 		return 1
 	if(!access_list.len) //no requirements
@@ -1366,7 +1366,7 @@
 	return output
 
 
-/obj/mecha/proc/output_access_dialog(obj/item/weapon/card/id/id_card, mob/user)
+/obj/mecha/proc/output_access_dialog(obj/item/card/id/id_card, mob/user)
 	if(!id_card || !user) return
 	var/output = {"<html>
 						<meta charset=\"utf-8\">
@@ -1392,7 +1392,7 @@
 	onclose(user, "exosuit_add_access")
 	return
 
-/obj/mecha/proc/output_maintenance_dialog(obj/item/weapon/card/id/id_card,mob/user)
+/obj/mecha/proc/output_maintenance_dialog(obj/item/card/id/id_card,mob/user)
 	if(!id_card || !user) return
 
 	var/maint_options = "<a href='?src=\ref[src];set_internal_tank_valve=1;user=\ref[user]'>Set Cabin Air Pressure</a>"

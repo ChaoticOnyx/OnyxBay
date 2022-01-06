@@ -46,6 +46,7 @@ var/list/obj/item/device/uplink/world_uplinks = list()
 //Preferences stuff
 //Hairstyles
 GLOBAL_LIST_EMPTY(hair_styles_list)        //stores /datum/sprite_accessory/hair indexed by name
+GLOBAL_LIST_EMPTY(hair_styles_icons)   // Stores all icon states from icons/mob/human_face.dmi
 GLOBAL_LIST_EMPTY(facial_hair_styles_list) //stores /datum/sprite_accessory/facial_hair indexed by name
 
 var/global/list/skin_styles_female_list = list()		//unused
@@ -145,7 +146,7 @@ var/global/list/string_slot_flags = list(
 	for(var/path in paths)
 		var/datum/sprite_accessory/hair/H = new path()
 		GLOB.hair_styles_list[H.name] = H
-
+	GLOB.hair_styles_icons = icon_states('icons/mob/human_face.dmi')
 	//Facial Hair - Initialise all /datum/sprite_accessory/facial_hair into an list indexed by facialhair-style name
 	paths = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
 	for(var/path in paths)
@@ -225,9 +226,9 @@ var/global/list/string_slot_flags = list(
 		G.refresh_updown()
 
 	//Manuals
-	paths = typesof(/obj/item/weapon/book/wiki) - /obj/item/weapon/book/wiki - /obj/item/weapon/book/wiki/template
+	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
-		var/obj/item/weapon/book/wiki/manual = new booktype
+		var/obj/item/book/wiki/manual = new booktype
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
 		qdel(manual)

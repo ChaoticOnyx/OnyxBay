@@ -1,7 +1,7 @@
 var/list/holder_mob_icon_cache = list()
 
 //Helper object for picking dionaea (and other creatures) up.
-/obj/item/weapon/holder
+/obj/item/holder
 	name = "holder"
 	desc = "You shouldn't ever see this."
 	icon = 'icons/obj/objects.dmi'
@@ -16,31 +16,31 @@ var/list/holder_mob_icon_cache = list()
 
 	var/last_holder
 
-/obj/item/weapon/holder/New()
+/obj/item/holder/New()
 	..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/weapon/holder/proc/destroy_all()
+/obj/item/holder/proc/destroy_all()
 	for(var/atom/movable/AM in src)
 		qdel(AM)
 	qdel(src)
 
-/obj/item/weapon/holder/Destroy()
+/obj/item/holder/Destroy()
 	for(var/atom/movable/AM in src)
 		AM.forceMove(get_turf(src))
 	last_holder = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/weapon/holder/Process()
+/obj/item/holder/Process()
 	update_state()
 
-/obj/item/weapon/holder/dropped()
+/obj/item/holder/dropped()
 	..()
 	spawn(1)
 		update_state()
 
-/obj/item/weapon/holder/proc/update_state()
+/obj/item/holder/proc/update_state()
 	if(last_holder != loc)
 		for(var/mob/M in contents)
 			unregister_all_movement(last_holder, M)
@@ -57,27 +57,27 @@ var/list/holder_mob_icon_cache = list()
 
 	last_holder = loc
 
-/obj/item/weapon/holder/onDropInto(atom/movable/AM)
+/obj/item/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
 		return loc.loc
 	return ..()
 
-/obj/item/weapon/holder/GetIdCard()
+/obj/item/holder/GetIdCard()
 	for(var/mob/M in contents)
 		var/obj/item/I = M.GetIdCard()
 		if(I)
 			return I
 	return null
 
-/obj/item/weapon/holder/GetAccess()
+/obj/item/holder/GetAccess()
 	var/obj/item/I = GetIdCard()
 	return I ? I.GetAccess() : ..()
 
-/obj/item/weapon/holder/attack_self()
+/obj/item/holder/attack_self()
 	for(var/mob/M in contents)
 		M.show_inv(usr)
 
-/obj/item/weapon/holder/attack(mob/target, mob/user)
+/obj/item/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
@@ -92,7 +92,7 @@ var/list/holder_mob_icon_cache = list()
 
 	..()
 
-/obj/item/weapon/holder/proc/sync(mob/living/M)
+/obj/item/holder/proc/sync(mob/living/M)
 	dir = 2
 	overlays.Cut()
 	icon = M.icon
@@ -110,38 +110,38 @@ var/list/holder_mob_icon_cache = list()
 	update_held_icon()
 
 //Mob specific holders.
-/obj/item/weapon/holder/diona
+/obj/item/holder/diona
 	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 5)
 	slot_flags = SLOT_HEAD | SLOT_OCLOTHING | SLOT_HOLSTER
 
-/obj/item/weapon/holder/drone
+/obj/item/holder/drone
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 5)
 
-/obj/item/weapon/holder/mouse
+/obj/item/holder/mouse
 	w_class = ITEM_SIZE_TINY
 
-/obj/item/weapon/holder/borer
+/obj/item/holder/borer
 	origin_tech = list(TECH_BIO = 6)
 
 //need own subtype to work with recipies
-/obj/item/weapon/holder/corgi
+/obj/item/holder/corgi
 	origin_tech = list(TECH_BIO = 4)
 
-/obj/item/weapon/holder/lizard
+/obj/item/holder/lizard
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
 
-/obj/item/weapon/holder/parrot
+/obj/item/holder/parrot
 	origin_tech = list(TECH_BIO = 4)
 
-/obj/item/weapon/holder/crab
+/obj/item/holder/crab
 	origin_tech = list(TECH_BIO = 3)
 
-/obj/item/weapon/holder/chicken
+/obj/item/holder/chicken
 	origin_tech = list(TECH_BIO = 2)
 	slot_flags = SLOT_HOLSTER
 
-/obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/holder/attackby(obj/item/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)
 		M.attackby(W,user)
 
@@ -158,7 +158,7 @@ var/list/holder_mob_icon_cache = list()
 	else
 		if(grabber.incapacitated()) return
 
-	var/obj/item/weapon/holder/H = new holder_type(get_turf(src))
+	var/obj/item/holder/H = new holder_type(get_turf(src))
 
 	if(self_grab)
 		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail=0, disable_warning=1))
@@ -199,13 +199,13 @@ var/list/holder_mob_icon_cache = list()
 /mob/living/carbon/human/scoop_check(mob/living/scooper)
 	return (scooper.mob_size > src.mob_size && a_intent == I_HELP)
 
-/obj/item/weapon/holder/human
+/obj/item/holder/human
 	icon = 'icons/mob/holder_complex.dmi'
 	var/list/generate_for_slots = list(slot_l_hand_str, slot_r_hand_str, slot_back_str)
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/weapon/holder/human/sync(mob/living/M)
+/obj/item/holder/human/sync(mob/living/M)
 	// Generate appropriate on-mob icons.
 	var/mob/living/carbon/human/owner = M
 	if(istype(owner) && owner.species)

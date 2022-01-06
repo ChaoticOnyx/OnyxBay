@@ -122,10 +122,10 @@
 	if(secondary_effect?.effect & EFFECT_TOUCH && secondary_effect?.activated)
 		secondary_effect.DoEffectTouch(user)
 
-/obj/machinery/artifact/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
+/obj/machinery/artifact/attackby(obj/item/W as obj, mob/living/user as mob)
 	var/action_triggers = 0
 
-	if(istype(W, /obj/item/weapon/reagent_containers/))
+	if(istype(W, /obj/item/reagent_containers/))
 		if(W.reagents.has_reagent(/datum/reagent/hydrazine, 1) || W.reagents.has_reagent(/datum/reagent/water, 1))
 			action_triggers |= TRIGGER_WATER
 		if(W.reagents.has_reagent(/datum/reagent/acid, 1) || W.reagents.has_reagent(/datum/reagent/acid/polyacid, 1) || W.reagents.has_reagent(/datum/reagent/diethylamine, 1))
@@ -134,22 +134,22 @@
 			action_triggers |= TRIGGER_VOLATILE
 		if(W.reagents.has_reagent(/datum/reagent/toxin, 1) || W.reagents.has_reagent(/datum/reagent/toxin/cyanide, 1) || W.reagents.has_reagent(/datum/reagent/toxin/amatoxin, 1) || W.reagents.has_reagent(/datum/reagent/ethanol/neurotoxin, 1))
 			action_triggers |= TRIGGER_TOXIN
-	else if(istype(W,/obj/item/weapon/melee/baton))
-		var/obj/item/weapon/melee/baton/B = W
+	else if(istype(W,/obj/item/melee/baton))
+		var/obj/item/melee/baton/B = W
 		if(B.status)
 			action_triggers |= TRIGGER_ENERGY
-	else if(istype(W,/obj/item/weapon/melee/energy) ||\
-		    istype(W,/obj/item/weapon/melee/cultblade) ||\
-		    istype(W,/obj/item/weapon/card/emag) ||\
+	else if(istype(W,/obj/item/melee/energy) ||\
+		    istype(W,/obj/item/melee/cultblade) ||\
+		    istype(W,/obj/item/card/emag) ||\
 		    istype(W,/obj/item/device/multitool)
 		   )
 		action_triggers |= TRIGGER_ENERGY
-	else if(istype(W,/obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = W
+	else if(istype(W,/obj/item/flame))
+		var/obj/item/flame/F = W
 		if(F.lit)
 			action_triggers |= TRIGGER_HEAT
 	else if(isWelder(W))
-		var/obj/item/weapon/weldingtool/Welder = W
+		var/obj/item/weldingtool/Welder = W
 		if(Welder.welding)
 			action_triggers |= TRIGGER_HEAT
 	else

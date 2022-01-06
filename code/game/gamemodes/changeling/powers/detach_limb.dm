@@ -18,6 +18,9 @@
 
 	var/mob/living/carbon/human/H = my_mob
 
+	if(H.is_ventcrawling)
+		return
+
 	var/list/detachable_limbs = H.organs.Copy()
 	for(var/obj/item/organ/external/E in detachable_limbs)
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.is_stump())

@@ -86,6 +86,7 @@
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Tajaran Ears"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
+	generic_attack_mod = 2.0
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 	slowdown = -0.5
@@ -359,7 +360,7 @@
 	return 0
 
 /datum/species/diona/equip_survival_gear(mob/living/carbon/human/H)
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H.back), slot_in_backpack)
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H), slot_r_hand)

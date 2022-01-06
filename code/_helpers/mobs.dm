@@ -318,7 +318,7 @@
 				. += target.wear_suit
 			if(target.w_uniform)
 				. += target.w_uniform
-			if(istype(target.belt, /obj/item/weapon/storage))
+			if(istype(target.belt, /obj/item/storage))
 				. += target.belt
 
 		if(BP_L_FOOT, BP_R_FOOT)
