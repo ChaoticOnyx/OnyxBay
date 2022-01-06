@@ -2,7 +2,7 @@
  *
  * Contains:
  *		Library Scanner
- *		Book Binder
+ *		Space Binder
  */
 
 /*
