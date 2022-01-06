@@ -46,6 +46,9 @@
 /obj/machinery/gravity_generator/bullet_act(obj/item/projectile/P, def_zone)
 	return
 
+/obj/machinery/gravity_generator/blob_act()
+	return
+
 /obj/machinery/gravity_generator/proc/take_damage(amount)
 	return
 
@@ -113,8 +116,10 @@ GLOBAL_VAR(station_gravity_generator)
 			qdel(P)
 	middle = null
 	lights = null
+	if(enabled)
+		enabled = FALSE
+		update_connectected_areas_gravity()
 	connected_areas = null
-	update_connectected_areas_gravity()
 	return ..()
 
 /obj/machinery/gravity_generator/main/examine(mob/user)
@@ -155,6 +160,9 @@ GLOBAL_VAR(station_gravity_generator)
 			take_damage(P.damage)
 		if(BURN)
 			take_damage(P.damage)
+
+/obj/machinery/gravity_generator/main/blob_act(damage)
+	take_damage(damage)
 
 /obj/machinery/gravity_generator/main/take_damage(amount)
 	var/new_health = max(0, health - amount)
@@ -238,7 +246,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to weld the damaged parts."))
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-				var/obj/item/weapon/weldingtool/WT = I
+				var/obj/item/weldingtool/WT = I
 				if(!do_after(user, 15 SECONDS, middle) || !WT.remove_fuel(1, user) || broken_state != GRAV_NEEDS_WELDING)
 					return
 				health += 250
@@ -550,6 +558,9 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/part/examine(mob/user)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
+
+/obj/machinery/gravity_generator/part/blob_act(damage)
+	return main_part.blob_act(damage)
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)

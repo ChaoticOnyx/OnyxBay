@@ -45,7 +45,7 @@
 		/obj/item/clothing/under/sundress,
 		/obj/item/clothing/under/waiter = 2,
 		/obj/item/device/radio/headset/headset_service = 2,
-		/obj/item/weapon/storage/box/mousetraps = 2,
+		/obj/item/storage/box/mousetraps = 2,
 		/obj/item/clothing/under/rank/chef,
 		/obj/item/clothing/head/chefhat
 	)
@@ -63,17 +63,17 @@
 	return list(
 		/obj/item/clothing/under/rank/janitor,
 		/obj/item/device/radio/headset/headset_service,
-		/obj/item/weapon/cartridge/janitor,
+		/obj/item/cartridge/janitor,
 		/obj/item/clothing/gloves/thick,
 		/obj/item/clothing/head/soft/purple,
 		/obj/item/clothing/head/beret/purple,
 		/obj/item/device/flashlight,
-		/obj/item/weapon/caution = 4,
+		/obj/item/caution = 4,
 		/obj/item/device/lightreplacer,
-		/obj/item/weapon/storage/bag/trash,
+		/obj/item/storage/bag/trash,
 		/obj/item/clothing/shoes/galoshes,
-		/obj/item/weapon/soap/nanotrasen,
-		/obj/item/weapon/storage/belt/janitor
+		/obj/item/soap/nanotrasen,
+		/obj/item/storage/belt/janitor
 		)
 /*
  * Lawyer

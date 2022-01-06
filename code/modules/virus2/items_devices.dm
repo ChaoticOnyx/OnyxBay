@@ -35,27 +35,28 @@
 
 ///////////////VIRUS DISH///////////////
 
-/obj/item/weapon/virusdish
+/obj/item/virusdish
 	name = "virus dish"
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "virus_sample"
+	w_class = ITEM_SIZE_SMALL
 	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
 	var/basic_info = null
 	var/info = 0
 	var/analysed = 0
 
-/obj/item/weapon/virusdish/random
+/obj/item/virusdish/random
 	name = "virus sample"
 
-/obj/item/weapon/virusdish/random/New()
+/obj/item/virusdish/random/New()
 	..()
 	src.virus2 = new /datum/disease2/disease
 	src.virus2.makerandom()
 	growth = rand(5, 50)
 
-/obj/item/weapon/virusdish/attackby(obj/item/weapon/W as obj,mob/living/carbon/user as mob)
-	if(istype(W,/obj/item/weapon/hand_labeler) || istype(W,/obj/item/weapon/reagent_containers/syringe))
+/obj/item/virusdish/attackby(obj/item/W as obj,mob/living/carbon/user as mob)
+	if(istype(W,/obj/item/hand_labeler) || istype(W,/obj/item/reagent_containers/syringe))
 		return
 	..()
 	if(prob(50))
@@ -66,24 +67,25 @@
 					infect_virus2(target, src.virus2)
 		qdel(src)
 
-/obj/item/weapon/virusdish/examine(mob/user)
+/obj/item/virusdish/examine(mob/user)
 	. = ..()
 	if(basic_info)
 		. += "\n[basic_info] : <a href='?src=\ref[src];info=1'>More Information</a>"
 
-/obj/item/weapon/virusdish/OnTopic(user, href_list)
+/obj/item/virusdish/OnTopic(user, href_list)
 	if(href_list["info"])
 		show_browser(user, info, "window=info_\ref[src]")
 		return TOPIC_HANDLED
 
-/obj/item/weapon/ruinedvirusdish
+/obj/item/ruinedvirusdish
 	name = "ruined virus sample"
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "virus_dish_r"
 	desc = "The bacteria in the dish are completely dead."
+	w_class = ITEM_SIZE_SMALL
 
-/obj/item/weapon/ruinedvirusdish/attackby(obj/item/weapon/W as obj,mob/living/carbon/user as mob)
-	if(istype(W,/obj/item/weapon/hand_labeler) || istype(W,/obj/item/weapon/reagent_containers/syringe))
+/obj/item/ruinedvirusdish/attackby(obj/item/W as obj,mob/living/carbon/user as mob)
+	if(istype(W,/obj/item/hand_labeler) || istype(W,/obj/item/reagent_containers/syringe))
 		return ..()
 
 	if(prob(50))
@@ -92,7 +94,7 @@
 
 ///////////////GNA DISK///////////////
 
-/obj/item/weapon/diseasedisk
+/obj/item/diseasedisk
 	name = "blank GNA disk"
 	icon = 'icons/obj/cloning.dmi'
 	icon_state = "datadisk0"
@@ -102,7 +104,7 @@
 	var/stage = 1
 	var/analysed = 1
 
-/obj/item/weapon/diseasedisk/premade/New()
+/obj/item/diseasedisk/premade/New()
 	name = "blank GNA disk (stage: [stage])"
 	effect = new /datum/disease2/effect/invisible
 	effect.stage = stage

@@ -288,7 +288,7 @@
 	ui_interact(user)
 
 
-/obj/machinery/power/smes/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/power/smes/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(default_deconstruction_screwdriver(user, W))
 		return
@@ -316,7 +316,7 @@
 		return 0
 
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			to_chat(user, "Turn on \the [WT] first!")
 			return 0
@@ -488,9 +488,15 @@
 	update_icon()
 	..()
 
+
 /obj/machinery/power/smes/bullet_act(obj/item/projectile/Proj)
 	if(Proj.damage_type == BRUTE || Proj.damage_type == BURN)
 		take_damage(Proj.damage)
+
+/obj/machinery/power/smes/blob_act(damage)
+	..()
+
+	take_damage(damage * 2)
 
 /obj/machinery/power/smes/ex_act(severity)
 	switch(severity)

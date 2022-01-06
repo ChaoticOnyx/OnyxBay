@@ -162,7 +162,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
+		if(l_hand && istype(l_hand, /obj/item/cane))
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
@@ -191,7 +191,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l
@@ -273,13 +273,13 @@
 		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-			drop_from_inventory(l_hand, force = 1)
+			drop_from_inventory(l_hand)
 
 	if(r_hand)
 		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-			drop_from_inventory(r_hand, force = 1)
+			drop_from_inventory(r_hand)
 
 	// Check again...
 	if(!l_hand && !r_hand)
@@ -319,7 +319,8 @@
 	if(!thing)
 		return
 
-	drop_from_inventory(thing)
+	if(!unEquip(thing))
+		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")

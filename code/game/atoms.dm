@@ -294,6 +294,10 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
+/atom/proc/blob_act(damage)
+	CAN_BE_REDEFINED(TRUE)
+	return
+
 /atom/proc/ex_act()
 	CAN_BE_REDEFINED(TRUE)
 	return
@@ -389,15 +393,6 @@ its easier to just keep the beam vertical.
 
 /atom/proc/isinspace()
 	return istype(get_turf(src), /turf/space)
-
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/atom/Stat()
-	. = ..()
-	sleep(1)
-	stoplag()
 
 // Show a message to all mobs and objects in sight of this atom
 // Use for objects performing visible actions

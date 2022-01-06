@@ -97,7 +97,7 @@
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
-			
+
 		if(isghost(M))
 			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
@@ -328,14 +328,14 @@
 	if(istype(loc,/obj/mecha)) return
 
 	if(hand)
-		var/obj/item/W = l_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = l_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_l_hand()
 	else
-		var/obj/item/W = r_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = r_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_r_hand()
 	return
 
@@ -446,7 +446,7 @@
 	for(var/obj/O in world)				//EWWWWWWWWWWWWWWWWWWWWWWWW ~needs to be optimised
 		if(!O.loc)
 			continue
-		if(istype(O, /obj/item/weapon/disk/nuclear))
+		if(istype(O, /obj/item/disk/nuclear))
 			var/name = "Nuclear Disk"
 			if (names.Find(name))
 				namecounts[name]++
@@ -903,7 +903,7 @@
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
 		return
 
-	var/obj/item/weapon/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
 
 	if(self)
 		to_chat(src, "<span class='warning'>You attempt to get a good grip on [selection] in your body.</span>")
@@ -955,7 +955,7 @@
 	if(!(U.l_hand && U.r_hand))
 		U.put_in_hands(selection)
 
-	for(var/obj/item/weapon/O in pinned)
+	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
 		if(!pinned.len)
@@ -1128,3 +1128,6 @@
 
 /mob/proc/get_sex()
 	return gender
+
+/mob/proc/InStasis()
+	return FALSE

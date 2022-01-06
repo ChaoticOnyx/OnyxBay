@@ -90,7 +90,7 @@
 	src.health -= damage*0.2
 	spawn(0) healthcheck() //spawn to make sure we return properly if the grille is deleted
 
-/obj/structure/grille/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/grille/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWirecutter(W))
 		if(!shock(user, 100))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -209,6 +209,10 @@
 			health -= 1
 			healthcheck()
 	..()
+
+/obj/structure/grille/blob_act(damage)
+	health -= damage
+	healthcheck()
 
 /obj/structure/grille/attack_generic(mob/user, damage, attack_verb)
 	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")

@@ -250,8 +250,8 @@ update_flag
 		healthcheck()
 	..()
 
-/obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(!isWrench(W) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
+/obj/machinery/portable_atmospherics/canister/attackby(obj/item/W as obj, mob/user as mob)
+	if(!isWrench(W) && !istype(W, /obj/item/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
 		src.health -= W.force
 		healthcheck()
@@ -260,7 +260,7 @@ update_flag
 		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
 		shake_animation(stime = 4)
 
-	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/weapon/tank/jetpack))
+	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/tank/jetpack))
 		var/datum/gas_mixture/thejetpack = W:air_contents
 		var/env_pressure = thejetpack.return_pressure()
 		var/pressure_delta = min(10*ONE_ATMOSPHERE - env_pressure, (air_contents.return_pressure() - env_pressure)/2)
@@ -277,8 +277,9 @@ update_flag
 
 	SSnano.update_uis(src) // Update all NanoUIs attached to src
 
-/obj/machinery/portable_atmospherics/canister/attack_ai(mob/user as mob)
-	return
+/obj/machinery/portable_atmospherics/canister/attack_ai(mob/user)
+	if(isrobot(user))
+		ui_interact(user)
 
 /obj/machinery/portable_atmospherics/canister/attack_hand(mob/user as mob)
 	ui_interact(user)
@@ -328,7 +329,7 @@ update_flag
 		if (valve_open)
 			valve_open = 0
 			release_log += "Valve was <b>closed</b> by [user] ([user.ckey]), stopping the transfer into the [holding]<br>"
-		if(istype(holding, /obj/item/weapon/tank))
+		if(istype(holding, /obj/item/tank))
 			holding.manipulated_by = user.real_name
 		holding.dropInto(loc)
 		holding = null
@@ -364,9 +365,11 @@ update_flag
 		update_icon()
 		. = TOPIC_REFRESH
 
-/obj/machinery/portable_atmospherics/canister/CanUseTopic()
+/obj/machinery/portable_atmospherics/canister/CanUseTopic(mob/user)
 	if(destroyed)
 		return STATUS_CLOSE
+	if(isrobot(user) && !Adjacent(user))
+		return STATUS_DISABLED
 	return ..()
 
 /obj/machinery/portable_atmospherics/canister/plasma/New()

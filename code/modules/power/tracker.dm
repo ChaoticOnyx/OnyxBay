@@ -57,7 +57,7 @@
 	if(powernet && (powernet == control.powernet)) //update if we're still in the same powernet
 		control.cdir = angle
 
-/obj/machinery/power/tracker/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/power/tracker/attackby(obj/item/W, mob/user)
 
 	if(isCrowbar(W))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
@@ -75,7 +75,7 @@
 
 // Tracker Electronic
 
-/obj/item/weapon/tracker_electronics
+/obj/item/tracker_electronics
 
 	name = "tracker electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'

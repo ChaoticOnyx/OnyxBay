@@ -15,6 +15,7 @@
 	response_harm = "hits"
 	speak = list("ALERT.","Hostile-ile-ile entities dee-twhoooo-wected.","Threat parameterszzzz- szzet.","Bring sub-sub-sub-systems uuuup to combat alert alpha-a-a.")
 	emote_see = list("beeps menacingly","whirrs threateningly","scans its immediate vicinity")
+	bodyparts = /decl/simple_animal_bodyparts/malf_drone
 	a_intent = I_HURT
 	stop_automated_movement_when_pulled = 0
 	health = 300
@@ -168,16 +169,16 @@
 		var/obj/O
 
 		//shards
-		O = new /obj/item/weapon/material/shard(src.loc)
+		O = new /obj/item/material/shard(src.loc)
 		step_to(O, get_turf(pick(view(7, src))))
 		if(prob(75))
-			O = new /obj/item/weapon/material/shard(src.loc)
+			O = new /obj/item/material/shard(src.loc)
 			step_to(O, get_turf(pick(view(7, src))))
 		if(prob(50))
-			O = new /obj/item/weapon/material/shard(src.loc)
+			O = new /obj/item/material/shard(src.loc)
 			step_to(O, get_turf(pick(view(7, src))))
 		if(prob(25))
-			O = new /obj/item/weapon/material/shard(src.loc)
+			O = new /obj/item/material/shard(src.loc)
 			step_to(O, get_turf(pick(view(7, src))))
 
 		//rods
@@ -207,7 +208,7 @@
 			step_to(O, get_turf(pick(view(7, src))))
 
 		//also drop dummy circuit boards deconstructable for research (loot)
-		var/obj/item/weapon/circuitboard/C
+		var/obj/item/circuitboard/C
 
 		//spawn 1-4 boards of a random type
 		var/spawnees = 0
@@ -275,3 +276,6 @@
 
 /obj/item/projectile/beam/pulse/drone
 	damage = 10
+
+/decl/simple_animal_bodyparts/malf_drone
+	hit_zones = list("chassis", "comms array", "sensor suite", "left weapons module", "right weapons module", "maneuvering thruster")

@@ -124,7 +124,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		obj_attack_sound(W)
 
 /atom/proc/obj_attack_sound(obj/item/W)
-	if(W.hitsound == 'sound/effects/fighting/smash.ogg')
+	if(W?.hitsound == 'sound/effects/fighting/smash.ogg')
 		playsound(loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
 		return
 	playsound(loc, 'sound/effects/metalhit2.ogg', rand(45,65), 1, -1)

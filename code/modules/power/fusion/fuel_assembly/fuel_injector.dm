@@ -13,7 +13,7 @@ var/list/fuel_injectors = list()
 	var/fuel_usage = 0.0001
 	var/id_tag
 	var/injecting = 0
-	var/obj/item/weapon/fuel_assembly/cur_assembly
+	var/obj/item/fuel_assembly/cur_assembly
 
 /obj/machinery/fusion_fuel_injector/New()
 	..()
@@ -45,7 +45,7 @@ var/list/fuel_injectors = list()
 			id_tag = new_ident
 		return
 
-	if(istype(W, /obj/item/weapon/fuel_assembly))
+	if(istype(W, /obj/item/fuel_assembly))
 
 		if(injecting)
 			to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")

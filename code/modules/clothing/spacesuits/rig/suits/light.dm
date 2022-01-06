@@ -1,10 +1,10 @@
 // Light rigs are not space-capable, but don't suffer excessive slowdown or sight issues when depowered.
-/obj/item/weapon/rig/light
+/obj/item/rig/light
 	name = "light suit control module"
 	desc = "A lighter, less armoured rig suit."
 	icon_state = "ninja_rig"
 	suit_type = "light suit"
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit,/obj/item/weapon/cell)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank,/obj/item/device/suit_cooling_unit,/obj/item/cell)
 	armor = list(melee = 50, bullet = 15, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0.4
 	emp_protection = 10
@@ -31,7 +31,7 @@
 /obj/item/clothing/head/helmet/space/rig/light
 	name = "hood"
 
-/obj/item/weapon/rig/light/hacker
+/obj/item/rig/light/hacker
 	name = "cybersuit control module"
 	suit_type = "cyber"
 	desc = "An advanced powered armour suit with many cyberwarfare enhancements. Comes with built-in insulated gloves for safely tampering with electronics."
@@ -72,19 +72,19 @@
 /obj/item/clothing/gloves/lightrig/hacker
 	siemens_coefficient = 0
 
-/obj/item/weapon/rig/light/ninja
+/obj/item/rig/light/ninja
 	name = "ominous suit control module"
 	desc = "A unique, vaccum-proof suit of nano-enhanced armor designed specifically for assassins."
 	suit_type = "ominous"
 	icon_state = "ninja_rig"
 	armor = list(melee = 50, bullet = 15, laser = 30, energy = 10, bomb = 25, bio = 100, rad = 30)
-	siemens_coefficient = 0.2 //heavy hardsuit level shock protection
+	siemens_coefficient = 0.2 //heavy powersuit level shock protection
 	emp_protection = 40 //change this to 30 if too high.
 	online_slowdown = 0
 	aimove_power_usage = 50
 	chest_type = /obj/item/clothing/suit/space/rig/light/ninja
 	glove_type = /obj/item/clothing/gloves/rig/light/ninja
-	cell_type =  /obj/item/weapon/cell/hyper
+	cell_type =  /obj/item/cell/hyper
 
 	req_access = list(access_syndicate)
 
@@ -104,7 +104,7 @@
 		/obj/item/rig_module/cooling_unit
 		)
 
-/obj/item/weapon/rig/light/ninja/verb/rename_suit()
+/obj/item/rig/light/ninja/verb/rename_suit()
 	set name = "Name Ninja Suit"
 	set desc = "Rename your black voidsuit."
 	set category = "Object"
@@ -117,11 +117,11 @@
 			input = "\improper [input]"
 		SetName(input)
 		to_chat(M, "Suit naming succesful!")
-		verbs -= /obj/item/weapon/rig/light/ninja/verb/rename_suit
+		verbs -= /obj/item/rig/light/ninja/verb/rename_suit
 		return 1
 
 
-/obj/item/weapon/rig/light/ninja/verb/rewrite_suit_desc()
+/obj/item/rig/light/ninja/verb/rewrite_suit_desc()
 	set name = "Describe Ninja suit"
 	set desc = "Give your voidsuit a custom description."
 	set category = "Object"
@@ -132,7 +132,7 @@
 	if(src && input && !M.incapacitated() && in_range(M,src))
 		desc = input
 		to_chat(M, "Suit description succesful!")
-		verbs -= /obj/item/weapon/rig/light/ninja/verb/rename_suit
+		verbs -= /obj/item/rig/light/ninja/verb/rename_suit
 		return 1
 
 /obj/item/clothing/gloves/rig/light/ninja
@@ -140,9 +140,9 @@
 	siemens_coefficient = 0
 
 /obj/item/clothing/suit/space/rig/light/ninja
-	breach_threshold = 38 //comparable to regular hardsuits
+	breach_threshold = 38 //comparable to regular powersuits
 
-/obj/item/weapon/rig/light/stealth
+/obj/item/rig/light/stealth
 	name = "stealth suit control module"
 	suit_type = "stealth"
 	desc = "A highly advanced and expensive suit designed for covert operations."
@@ -150,7 +150,7 @@
 
 	req_access = list(access_syndicate)
 
-/obj/item/weapon/rig/light/stealth/equipped
+/obj/item/rig/light/stealth/equipped
 	initial_modules = list(
 		/obj/item/rig_module/stealth_field,
 		/obj/item/rig_module/vision

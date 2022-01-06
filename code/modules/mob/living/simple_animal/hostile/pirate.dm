@@ -20,10 +20,11 @@
 	melee_damage_upper = 30
 	attacktext = "slashed"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 	unsuitable_atoms_damage = 15
 	var/corpse = /obj/effect/landmark/corpse/pirate
-	var/weapon1 = /obj/item/weapon/melee/energy/sword/pirate
+	var/weapon1 = /obj/item/melee/energy/sword/pirate
 
 	faction = "pirate"
 
@@ -37,7 +38,7 @@
 	rapid = 1
 	projectiletype = /obj/item/projectile/beam
 	corpse = /obj/effect/landmark/corpse/pirate/ranged
-	weapon1 = /obj/item/weapon/gun/energy/laser
+	weapon1 = /obj/item/gun/energy/laser
 
 
 /mob/living/simple_animal/hostile/pirate/death(gibbed, deathmessage, show_dead_message)

@@ -260,8 +260,8 @@ BLIND     // can't see anything
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
 	return FALSE // return TRUE to cancel attack_hand()
 
-/obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
-	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel))
+/obj/item/clothing/gloves/attackby(obj/item/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/scalpel))
 		if(wired)
 			wired = FALSE
 			update_icon(TRUE)
@@ -293,7 +293,7 @@ BLIND     // can't see anything
 			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
-	if(istype(W, /obj/item/weapon/tape_roll) && wired)
+	if(istype(W, /obj/item/tape_roll) && wired)
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
 		user.drop_from_inventory(src)
 		new /obj/item/clothing/gloves/stun(loc, src)
@@ -588,7 +588,7 @@ BLIND     // can't see anything
 	..()
 
 /obj/item/clothing/shoes/attackby(obj/item/I, mob/user)
-	if(can_hold_knife && is_type_in_list(I, list(/obj/item/weapon/material/shard, /obj/item/weapon/material/butterfly, /obj/item/weapon/material/kitchen/utensil, /obj/item/weapon/material/hatchet/tacknife, /obj/item/weapon/material/knife/shiv)))
+	if(can_hold_knife && is_type_in_list(I, list(/obj/item/material/shard, /obj/item/material/butterfly, /obj/item/material/kitchen/utensil, /obj/item/material/hatchet/tacknife, /obj/item/material/knife/shiv)))
 		if(holding)
 			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
 			return
@@ -622,7 +622,7 @@ BLIND     // can't see anything
 	name = "suit"
 	var/fire_resist = T0C+100
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-	allowed = list(/obj/item/weapon/tank/emergency)
+	allowed = list(/obj/item/tank/emergency)
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
 	blood_overlay_type = "suitblood"

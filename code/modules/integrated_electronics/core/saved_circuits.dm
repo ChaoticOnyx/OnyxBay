@@ -59,7 +59,7 @@
 	var/init_name = initial(name)
 	// Validate name
 	if(component_params["name"])
-		sanitizeName(component_params["name"],allow_numbers=TRUE)
+		sanitizeName(component_params["name"], allow_numbers = TRUE, max_length = IC_MAX_NAME_LEN)
 	// Validate input values
 	if(component_params["inputs"])
 		var/list/loaded_inputs = component_params["inputs"]
@@ -140,7 +140,7 @@
 /obj/item/device/electronic_assembly/proc/verify_save(list/assembly_params)
 	// Validate name and desc
 	if(assembly_params["name"])
-		if(sanitizeName(assembly_params["name"], allow_numbers = TRUE) != assembly_params["name"])
+		if(sanitizeName(assembly_params["name"], allow_numbers = TRUE, max_length = IC_MAX_NAME_LEN) != assembly_params["name"])
 			return "Bad assembly name."
 	if(assembly_params["desc"])
 		if(sanitize(assembly_params["desc"]) != assembly_params["desc"])

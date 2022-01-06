@@ -38,11 +38,11 @@
 /obj/machinery/power/shield_generator/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/shield_generator(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)			// Capacitor. Improves shield mitigation when better part is used.
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/smes_coil(src)						// SMES coil. Improves maximal shield energy capacity.
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/circuitboard/shield_generator(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)			// Capacitor. Improves shield mitigation when better part is used.
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/smes_coil(src)						// SMES coil. Improves maximal shield energy capacity.
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 	connect_to_network()
 	wires = new(src)
@@ -64,12 +64,12 @@
 
 /obj/machinery/power/shield_generator/RefreshParts()
 	max_energy = 0
-	for(var/obj/item/weapon/smes_coil/S in component_parts)
+	for(var/obj/item/smes_coil/S in component_parts)
 		max_energy += (S.ChargeCapacity / CELLRATE)
 	current_energy = between(0, current_energy, max_energy)
 
 	mitigation_max = MAX_MITIGATION_BASE
-	for(var/obj/item/weapon/stock_parts/capacitor/C in component_parts)
+	for(var/obj/item/stock_parts/capacitor/C in component_parts)
 		mitigation_max += MAX_MITIGATION_RESEARCH * C.rating
 	mitigation_em = between(0, mitigation_em, mitigation_max)
 	mitigation_physical = between(0, mitigation_physical, mitigation_max)
@@ -274,7 +274,7 @@
 		var/old_energy = current_energy
 		shutdown_field()
 		log_and_message_admins("has triggered \the [src]'s emergency shutdown!", user)
-		spawn()	
+		spawn()
 			empulse(src, old_energy / 60000000, old_energy / 32000000, 1) // If shields are charged at 450 MJ, the EMP will be 7.5, 14.0625. 90 MJ, 1.5, 2.8125
 		old_energy = 0
 

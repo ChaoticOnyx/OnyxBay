@@ -13,14 +13,14 @@
 	alt_titles = list("Counselor")
 	outfit_type = /decl/hierarchy/outfit/job/chaplain
 
-	equip(var/mob/living/carbon/human/H, var/alt_title, var/ask_questions = TRUE)
+	equip(mob/living/carbon/human/H, alt_title, ask_questions = TRUE)
 		. = ..()
 		if(!.)
 			return
 		if(!ask_questions)
 			return
 
-		var/obj/item/weapon/storage/bible/B = locate(/obj/item/weapon/storage/bible) in H
+		var/obj/item/storage/bible/B = locate(/obj/item/storage/bible) in H
 		if(!B)
 			return
 

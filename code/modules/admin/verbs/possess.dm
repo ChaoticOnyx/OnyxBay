@@ -2,10 +2,14 @@
 	set name = "Possess Obj"
 	set category = "Object"
 
-	if(istype(O,/obj/singularity))
+	if(istype(O, /obj/singularity))
 		if(config.forbid_singulo_possession)
 			to_chat(usr, "It is forbidden to possess singularities.")
 			return
+		
+		if(istype(O, /obj/singularity/child))
+			var/obj/singularity/child/S = O
+			O = S.parent
 
 	log_admin("[key_name(usr)] has possessed [O] ([O.type])", location = O, notify_admin = TRUE)
 
