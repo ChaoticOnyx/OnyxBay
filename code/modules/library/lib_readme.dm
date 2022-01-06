@@ -57,5 +57,5 @@
 //	- When the game sets up and the round begins, have it automatically pick random books from the DB to populate the library with. Even if the Librarian is a useless fuck there are at least a few books around.
 //  - Allow books to be "hollowed out" like the Chaplain's Bible, allowing you to store one pocket-sized item inside.
 //  - Make books/book cases burn when exposed to flame.
-//  - Make library binder hackable.
+//  - Make book binder hackable.
 //  - Books shouldn't print straight from the library computer. Make it synch with a machine like the library binder to print instead. This should consume some sort of resource.
