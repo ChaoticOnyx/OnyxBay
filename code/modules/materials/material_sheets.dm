@@ -15,11 +15,18 @@
 	var/perunit = SHEET_MATERIAL_AMOUNT
 	var/apply_colour //temp pending icon rewrite
 
+/obj/item/stack/material/New(loc, amount, _material)
+	if(_material)
+		default_type = _material
+	if(!default_type)
+		default_type = MATERIAL_STEEL
+	..()
+
 /obj/item/stack/material/Initialize()
 	. = ..()
 	if(!default_type)
 		default_type = MATERIAL_STEEL
-	material = get_material_by_name("[default_type]")
+	material = SSmaterials.get_material_by_name("[default_type]")
 	if(!material)
 		return INITIALIZE_HINT_QDEL
 
@@ -36,9 +43,12 @@
 	else
 		obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
 
-	matter = material.get_matter()
+ 	update_strings()
 	craft_tool = material.craft_tool
 	update_strings()
+
+/obj/item/stack/material/proc/set_amount(_amount)
+	amount = max(1, min(_amount, max_amount))
 
 /obj/item/stack/material/get_material()
 	return material
@@ -46,6 +56,10 @@
 /obj/item/stack/material/proc/update_strings()
 	// Update from material datum.
 	singular_name = material.sheet_singular_name
+
+	matter = material.get_matter()
+	for(var/mat in matter)
+		matter[mat] *= amount
 
 	if(amount>1)
 		SetName("[material.use_name] [material.sheet_plural_name]")
@@ -328,3 +342,19 @@
 
 /obj/item/stack/material/glass/rplass/fifty
 	amount = 50
+
+/obj/item/stack/material/aliumium
+	name = "aliumium chunks"
+	icon_state = "sheet-torn"
+	default_type = "aliumium"
+	apply_colour = TRUE
+
+/obj/item/stack/material/aliumium/ten
+	amount = 10
+
+/obj/item/stack/material/generic
+	icon_state = "sheet-silver"
+
+/obj/item/stack/material/generic/Initialize()
+	. = ..()
+	if(material) color = material.icon_colour
