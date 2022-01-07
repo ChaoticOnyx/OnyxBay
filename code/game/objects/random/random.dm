@@ -453,13 +453,13 @@
 	spawn_nothing_percentage = 50
 
 /obj/random/coin/spawn_choices()
-	return list(/obj/item/coin/gold = 5,
-				/obj/item/coin/silver = 10,
-				/obj/item/coin/diamond = 1,
-				/obj/item/coin/iron = 10,
-				/obj/item/coin/uranium = 1,
-				/obj/item/coin/platinum = 3,
-				/obj/item/coin/plasma = 1)
+	return list(/obj/item/material/coin/gold = 5,
+				/obj/item/material/coin/silver = 10,
+				/obj/item/material/coin/diamond = 1,
+				/obj/item/material/coin/iron = 10,
+				/obj/item/material/coin/uranium = 1,
+				/obj/item/material/coin/platinum = 3,
+				/obj/item/material/coin/plasma = 1)
 
 /obj/random/toy
 	name = "random toy"

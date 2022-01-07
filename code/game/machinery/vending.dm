@@ -72,7 +72,7 @@
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/scan_id = 1
-	var/obj/item/coin/coin
+	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
 
 /obj/machinery/vending/Initialize()
@@ -232,7 +232,7 @@
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/coin) && premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
@@ -536,7 +536,7 @@
 		if(!coin)
 			to_chat(user, SPAN("notice", "You need to insert a coin to get this item."))
 			return
-		if(coin.string_attached)
+		if(!isnull(coin.string_colour))
 			if(prob(50))
 				to_chat(user, SPAN("notice", "You successfully pull the coin out before \the [src] could swallow it."))
 			else
