@@ -127,7 +127,7 @@
 /obj/item/foldchair/New()
 	..()
 	if(!material)
-		material = get_material_by_name(MATERIAL_STEEL)
+		material = SSmaterials.get_material_by_name(MATERIAL_STEEL)
 
 /obj/item/foldchair/attack_self(mob/user)
 	var/obj/structure/bed/chair/O = new /obj/structure/bed/chair(user.loc)

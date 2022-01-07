@@ -70,7 +70,7 @@ for reference:
 	..(newloc)
 	if(!material_name)
 		material_name = MATERIAL_WOOD
-	material = get_material_by_name("[material_name]")
+	material = SSmaterials.get_material_by_name("[material_name]")
 	if(!material)
 		qdel(src)
 		return

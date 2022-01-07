@@ -28,12 +28,12 @@
 	color = null
 	if(!new_material)
 		new_material = MATERIAL_STEEL
-	material = get_material_by_name(new_material)
+	material = SSmaterials.get_material_by_name(new_material)
 	if(!istype(material))
 		qdel(src)
 		return
 	if(new_padding_material)
-		padding_material = get_material_by_name(new_padding_material)
+		padding_material = SSmaterials.get_material_by_name(new_padding_material)
 	update_icon()
 
 /obj/structure/bed/get_material()
@@ -179,7 +179,7 @@
 	update_icon()
 
 /obj/structure/bed/proc/add_padding(padding_type)
-	padding_material = get_material_by_name(padding_type)
+	padding_material = SSmaterials.get_material_by_name(padding_type)
 	update_icon()
 
 /obj/structure/bed/proc/dismantle()

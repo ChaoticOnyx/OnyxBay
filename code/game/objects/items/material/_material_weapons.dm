@@ -56,7 +56,7 @@
 
 
 /obj/item/material/proc/set_material(new_material)
-	material = get_material_by_name(new_material)
+	material = SSmaterials.get_material_by_name(new_material)
 	if(!material)
 		qdel(src)
 	else

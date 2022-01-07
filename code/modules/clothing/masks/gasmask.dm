@@ -196,6 +196,6 @@
 	body_parts_covered = HEAD|FACE|EYES
 	tint = TINT_BLIND
 	voicechange = 1
-	filtered_gases = list("phoron", "sleeping_agent", "oxygen")
+	filtered_gases = list("plasma", "sleeping_agent", "oxygen")
 	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
 	say_verbs = list("mumbles")

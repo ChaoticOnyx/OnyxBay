@@ -67,7 +67,7 @@
 	..()
 
 /obj/machinery/door/airlock/get_material()
-	return get_material_by_name(mineral ? mineral : MATERIAL_STEEL)
+	return SSmaterials.get_material_by_name(mineral ? mineral : MATERIAL_STEEL)
 
 /obj/machinery/door/airlock/Process()
 	return PROCESS_KILL

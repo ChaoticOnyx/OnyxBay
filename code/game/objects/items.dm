@@ -222,7 +222,7 @@
 		if(LAZYLEN(matter))
 			desc_comp += SPAN("notice", "Extractable materials:<BR>")
 			for(var/mat in matter)
-				desc_comp += "[get_material_by_name(mat)]<BR>"
+				desc_comp += "[SSmaterials.get_material_by_name(mat)]<BR>"
 		else
 			desc_comp += SPAN("danger", "No extractable materials detected.<BR>")
 		desc_comp += "*--------*"

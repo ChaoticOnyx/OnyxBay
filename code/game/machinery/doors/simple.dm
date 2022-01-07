@@ -20,7 +20,7 @@
 	..()
 	if(!material_name)
 		material_name = MATERIAL_STEEL
-	material = get_material_by_name(material_name)
+	material = SSmaterials.get_material_by_name(material_name)
 	if(!material)
 		qdel(src)
 		return
