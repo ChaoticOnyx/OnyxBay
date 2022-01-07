@@ -22,7 +22,7 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 			reagents.trans_to_obj(I, reagents.total_volume)
 	for(var/f in materials)
 		if(materials[f] >= SHEET_MATERIAL_AMOUNT)
-			var/material/M = get_material_by_name(f)
+			var/material/M = SSmaterials.get_material_by_name(f)
 			if(M?.stack_type)
 				var/obj/item/stack/S = M.place_sheet(loc)
 				S.amount = round(materials[f] / SHEET_MATERIAL_AMOUNT)
@@ -32,15 +32,11 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 /obj/machinery/r_n_d/proc/eject(material, amount)
 	if(!(material in materials))
 		return
-	var/material/mat = get_material_by_name(material)
-	var/obj/item/stack/material/sheetType = mat.stack_type
-	var/perUnit = initial(sheetType.perunit)
-	var/eject = round(materials[material] / perUnit)
-	eject = amount == -1 ? eject : min(eject, amount)
-	if(eject < 1)
-		return
-	new sheetType(loc, eject)
-	materials[material] -= eject * perUnit
+	var/material/mat = SSmaterials.get_material_by_name(material)
+	var/eject = Clamp(round(materials[material] / mat.units_per_sheet), 0, amount)
+	if(eject > 0)
+		mat.place_sheet(loc, eject)
+		materials[material] -= eject * mat.units_per_sheet
 
 /obj/machinery/r_n_d/proc/TotalMaterials()
 	for(var/f in materials)

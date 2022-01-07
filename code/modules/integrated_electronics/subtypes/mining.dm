@@ -21,7 +21,7 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
-	var/ore/mineral
+	var/material/mineral
 
 /obj/item/integrated_circuit/mining/ore_analyzer/do_work()
 	var/turf/simulated/mineral/rock = get_pin_data(IC_INPUT, 1)
@@ -38,7 +38,7 @@
 
 	if(mineral)
 		set_pin_data(IC_OUTPUT, 1, mineral.display_name)
-		set_pin_data(IC_OUTPUT, 2, mineral.result_amount)
+		set_pin_data(IC_OUTPUT, 2, mineral.ore_result_amount)
 		push_data()
 
 		activate_pin(2)

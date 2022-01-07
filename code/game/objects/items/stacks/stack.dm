@@ -30,11 +30,11 @@
 	var/storage_cost_mult = 1.0
 
 /obj/item/stack/New(loc, amount=null)
-	..()
 	if(!stacktype)
 		stacktype = type
 	if(amount)
 		src.amount = amount
+	..()
 
 /obj/item/stack/Destroy()
 	if(uses_charge)
