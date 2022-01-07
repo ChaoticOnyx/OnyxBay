@@ -32,7 +32,7 @@ SUBSYSTEM_DEF(redeye)
 			C << browse({"<a id='link' href="byond://[url]">byond://[url]</a><script type="text/javascript">document.getElementById("link").click();window.location="byond://winset?command=.quit"</script>"}, "border=0;titlebar=0;size=1x1;window=redirect")
 			to_chat(C, {"<a href="byond://[url]">You will be automatically taken to the game, if not, click here to be taken manually</a>"})
 			spawn(5 SECONDS)
-				if(!C)
+				if(C)
 					qdel(C)
 
 /datum/controller/subsystem/redeye/Shutdown()
