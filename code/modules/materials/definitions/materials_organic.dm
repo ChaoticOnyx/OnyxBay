@@ -122,7 +122,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_yellow
+/material/cloth/yellow
 	name = "yellow"
 	display_name ="yellow"
 	icon_colour = "#ffbf00"
@@ -132,7 +132,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_teal
+/material/cloth/teal
 	name = "teal"
 	display_name ="teal"
 	use_name = "teal cloth"
@@ -143,7 +143,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_black
+/material/cloth/black
 	name = "black"
 	display_name = "black"
 	use_name = "black cloth"
@@ -154,7 +154,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_green
+/material/cloth/green
 	name = "green"
 	display_name = "green"
 	use_name = "green cloth"
@@ -165,7 +165,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_puple
+/material/cloth/puple
 	name = "purple"
 	display_name = "purple"
 	use_name = "purple cloth"
@@ -176,7 +176,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_blue
+/material/cloth/blue
 	name = "blue"
 	display_name = "blue"
 	use_name = "blue cloth"
@@ -187,7 +187,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_beige
+/material/cloth/beige
 	name = "beige"
 	display_name = "beige"
 	use_name = "beige cloth"
@@ -198,7 +198,7 @@
 	conductive = 0
 	stack_type = null
 
-/material/cloth_lime
+/material/cloth/lime
 	name = "lime"
 	display_name = "lime"
 	use_name = "lime cloth"

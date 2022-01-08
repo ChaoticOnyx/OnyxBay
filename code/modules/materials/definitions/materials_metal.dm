@@ -6,7 +6,6 @@
 	door_icon_base = "stone"
 	table_icon_base = "stone"
 	icon_reinf = "reinf_stone"
-	icon_colour = "#007a00"
 	weight = 22
 	stack_origin_tech = list(TECH_MATERIAL = 5)
 	chem_products = list(
@@ -18,7 +17,6 @@
 /material/gold
 	name = "gold"
 	stack_type = /obj/item/stack/material/gold
-	icon_colour = "#ffcc33"
 	weight = 25
 	hardness = 25
 	integrity = 100
@@ -40,7 +38,7 @@
 		"billion" = 4,
 		"billion_lower" = 3
 		)
-	ore_icon_overlay = "nugget"
+	ore_icon_overlay = "gold"
 	sale_price = 3
 
 /material/gold/bronze //placeholder for ashtrays
@@ -75,7 +73,6 @@
 /material/silver
 	name = "silver"
 	stack_type = /obj/item/stack/material/silver
-	icon_colour = "#d1e6e3"
 	weight = 22
 	hardness = 50
 	stack_origin_tech = list(TECH_MATERIAL = 3)
@@ -90,11 +87,11 @@
 	ore_spread_chance = 10
 	ore_name = "native silver"
 	ore_scan_icon = "mineral_uncommon"
-	ore_icon_overlay = "shiny"
+	ore_icon_overlay = "silver"
 	sale_price = 2
 
 /material/steel
-	name = DEFAULT_WALL_MATERIAL
+	name = "steel"
 	stack_type = /obj/item/stack/material/steel
 	integrity = 150
 	brute_armor = 5
@@ -227,7 +224,6 @@
 /material/platinum
 	name = "platinum"
 	stack_type = /obj/item/stack/material/platinum
-	icon_colour = "#9999ff"
 	weight = 27
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	sheet_singular_name = "ingot"
@@ -239,7 +235,7 @@
 	ore_spread_chance = 10
 	ore_name = "raw platinum"
 	ore_scan_icon = "mineral_rare"
-	ore_icon_overlay = "shiny"
+	ore_icon_overlay = "platinum"
 	sale_price = 5
 
 /material/iron
@@ -306,11 +302,10 @@
 /material/hematite
 	name = "hematite"
 	stack_type = null
-	icon_colour = "#aa6666"
 	ore_smelts_to = "iron"
 	ore_result_amount = 5
 	ore_spread_chance = 25
 	ore_scan_icon = "mineral_common"
 	ore_name = "hematite"
-	ore_icon_overlay = "lump"
 	sale_price = 1
+	ore_icon_overlay = "iron"

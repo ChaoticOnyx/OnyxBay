@@ -3,7 +3,6 @@
 	stack_type = /obj/item/stack/material/diamond
 	flags = MATERIAL_UNMELTABLE
 	cut_delay = 60
-	icon_colour = "#00ffe1"
 	opacity = 0.4
 	shard_type = SHARD_SHARD
 	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
@@ -19,7 +18,7 @@
 	ore_spread_chance = 10
 	ore_scan_icon = "mineral_rare"
 	xarch_source_mineral = "nitrogen"
-	ore_icon_overlay = "gems"
+	ore_icon_overlay = "diamond"
 	sale_price = 5
 
 /material/diamond/crystal
