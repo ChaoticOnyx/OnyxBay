@@ -38,9 +38,9 @@
 			active = W
 	update_icon()
 
-/obj/item/device/holowarrant/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/holowarrant/attackby(obj/item/W, mob/user)
 	if(active)
-		var/obj/item/weapon/card/id/I = W.GetIdCard()
+		var/obj/item/card/id/I = W.GetIdCard()
 		if(I && (access_security in I.access))
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")

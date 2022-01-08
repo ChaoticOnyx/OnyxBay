@@ -37,5 +37,4 @@
 					failed = TRUE
 		if(!failed)
 			target.visible_message(SPAN("danger", "The flesh is torn around the [target.name]\'s arm!"))
-			var/obj/item/weapon/W = new /obj/item/weapon/melee/prosthetic/bio/fake_arm_blade
-			target.put_in_hands(W)
+			new /obj/item/melee/prosthetic/bio/fake_arm_blade(target, target.organs_by_name[hand])

@@ -13,7 +13,7 @@
 	desc = "Use to research a neural data and produce working neuromods."
 	id = "neuromod_rnd"
 	req_tech = list(TECH_DATA = 4, TECH_BIO = 6, TECH_MAGNET = 5)
-	build_path = /obj/item/weapon/circuitboard/neuromod_rnd
+	build_path = /obj/item/circuitboard/neuromod_rnd
 	sort_string = "HACAC"
 
 /datum/design/item/implant/neuromod
@@ -22,14 +22,14 @@
 	id = "neuromod_shell"
 	materials = list(MATERIAL_STEEL = 8000, MATERIAL_GOLD = 4000)
 	req_tech = list(TECH_DATA = 4, TECH_BIO = 5, TECH_MAGNET = 4)
-	build_path = /obj/item/weapon/reagent_containers/neuromod_shell
+	build_path = /obj/item/reagent_containers/neuromod_shell
 
 /datum/design/item/disk/neuromod
 	name = "neuromod data disk"
 	desc = "A disk for storing neuromod data."
 	id = "neuromod_disk"
 	req_tech = list(TECH_DATA = 3)
-	build_path = /obj/item/weapon/disk/neuromod_disk
+	build_path = /obj/item/disk/neuromod_disk
 	sort_string = "AAAAB"
 
 /datum/design/item/disk/lifeform
@@ -37,5 +37,5 @@
 	desc = "A disk for storing lifeform data."
 	id = "lifeform_disk"
 	req_tech = list(TECH_DATA = 3)
-	build_path = /obj/item/weapon/disk/lifeform_disk
+	build_path = /obj/item/disk/lifeform_disk
 	sort_string = "AAAAB"

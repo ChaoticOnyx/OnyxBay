@@ -45,7 +45,7 @@
 	update_icon()
 
 /mob/living/simple_animal/construct/death(gibbed, deathmessage, show_dead_message)
-	new /obj/item/weapon/ectoplasm (src.loc)
+	new /obj/item/ectoplasm (src.loc)
 	..(null,"collapses in a shattered heap.","The bonds tying you to this mortal plane have been severed.")
 	ghostize()
 	qdel(src)
@@ -79,7 +79,7 @@
 
 	. += "\n[msg]"
 
-/obj/item/weapon/ectoplasm
+/obj/item/ectoplasm
 	name = "ectoplasm"
 	desc = "Spooky."
 	gender = PLURAL
@@ -101,7 +101,7 @@
 	health = 250
 	speak_emote = list("rumbles")
 	response_harm   = "harmlessly punches"
-	harm_intent_damage = 0
+	harm_intent_damage = 2.5
 	melee_damage_lower = 30
 	melee_damage_upper = 30
 	attacktext = "smashed their armoured gauntlet into"

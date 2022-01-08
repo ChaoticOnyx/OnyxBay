@@ -4,7 +4,7 @@ GLOBAL_LIST_EMPTY(self_cleaning_list)
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 
 /turf/unsimulated/floor/self_cleaning
-	var/list/uncleanable_items = list(/mob/living, /obj/item/VR_reward, /mob/observer/ghost, /obj/effect/landmark, /obj/item/weapon, /obj/structure) //We dont want this items to be deleted
+	var/list/uncleanable_items = list(/mob/living, /obj/item/VR_reward, /mob/observer/ghost, /obj/effect/landmark, /obj/item, /obj/structure) //We dont want this items to be deleted
 
 var/global/list/self_cleaning_list = list()
 

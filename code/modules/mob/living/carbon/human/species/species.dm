@@ -89,9 +89,10 @@
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
 	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
-	var/meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+	var/meat_type = /obj/item/reagent_containers/food/snacks/meat/human
 	var/remains_type = /obj/item/remains/xeno
 	var/gibbed_anim = "gibbed-h"
 	var/dusted_anim = "dust-h"
@@ -261,22 +262,22 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	return sanitizeName(name)
 
 /datum/species/proc/equip_survival_gear(mob/living/carbon/human/H, boxtype = 0)
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
 		switch(boxtype)
 			if(2)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H.back), slot_in_backpack)
 			if(1)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H.back), slot_in_backpack)
 			else
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H.back), slot_in_backpack)
 	else
 		switch(boxtype)
 			if(2)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H), slot_r_hand)
 			if(1)
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H), slot_r_hand)
 			else
-				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H), slot_r_hand)
 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
@@ -617,7 +618,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	var/list/holding = list(target.get_active_hand() = 40, target.get_inactive_hand() = 20)
 
 	//See if they have any guns that might go off
-	for(var/obj/item/weapon/gun/W in holding)
+	for(var/obj/item/gun/W in holding)
 		if(W && prob(holding[W]))
 			var/list/turfs = list()
 			for(var/turf/T in view())

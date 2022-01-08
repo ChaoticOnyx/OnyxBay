@@ -612,7 +612,7 @@
 
 			// remove embedded objects and drop them on the floor
 			for(var/obj/implanted_object in current_organ.implants)
-				if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+				if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 					implanted_object.loc = get_turf(src)
 					current_organ.implants -= implanted_object
 

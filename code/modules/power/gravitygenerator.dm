@@ -116,8 +116,10 @@ GLOBAL_VAR(station_gravity_generator)
 			qdel(P)
 	middle = null
 	lights = null
+	if(enabled)
+		enabled = FALSE
+		update_connectected_areas_gravity()
 	connected_areas = null
-	update_connectected_areas_gravity()
 	return ..()
 
 /obj/machinery/gravity_generator/main/examine(mob/user)
@@ -244,7 +246,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to weld the damaged parts."))
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-				var/obj/item/weapon/weldingtool/WT = I
+				var/obj/item/weldingtool/WT = I
 				if(!do_after(user, 15 SECONDS, middle) || !WT.remove_fuel(1, user) || broken_state != GRAV_NEEDS_WELDING)
 					return
 				health += 250

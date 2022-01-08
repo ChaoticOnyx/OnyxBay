@@ -17,6 +17,9 @@
 
 	var/mob/living/carbon/human/H = my_mob
 
+	if(H.is_ventcrawling)
+		return
+
 	H.visible_message(SPAN("danger", "You hear a loud cracking sound coming from \the [H]."), \
 					  SPAN("changeling", "We begin disjunction of our body."))
 

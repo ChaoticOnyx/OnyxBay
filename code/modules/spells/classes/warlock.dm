@@ -22,3 +22,11 @@
 		SPELL_DATA(/datum/spell/aoe_turf/drain_blood,                  1),
 		SPELL_DATA(/datum/spell/noclothes,                             3)
 	)
+
+	artifacts = list(
+		ARTIFACT_DATA(/obj/item/contract/apprentice,    1),
+		ARTIFACT_DATA(/obj/item/gun/energy/staff/focus, 1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/souls,      1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/scrying,    1),
+		ARTIFACT_DATA(/obj/item/monster_manual,         1)
+	)

@@ -82,11 +82,11 @@
 		return 1
 
 /obj/item/clothing/accessory/badge/holo/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/card/id) || istype(O, /obj/item/device/pda))
+	if(istype(O, /obj/item/card/id) || istype(O, /obj/item/device/pda))
 
-		var/obj/item/weapon/card/id/id_card = null
+		var/obj/item/card/id/id_card = null
 
-		if(istype(O, /obj/item/weapon/card/id))
+		if(istype(O, /obj/item/card/id))
 			id_card = O
 		else
 			var/obj/item/device/pda/pda = O
@@ -103,13 +103,13 @@
 		return
 	..()
 
-/obj/item/weapon/storage/box/holobadge
+/obj/item/storage/box/holobadge
 	name = "holobadge box"
 	desc = "A box containing security holobadges."
 	startswith = list(/obj/item/clothing/accessory/badge/holo = 4,
 					  /obj/item/clothing/accessory/badge/holo/cord = 2)
 
-/obj/item/weapon/storage/box/holobadgeNT
+/obj/item/storage/box/holobadgeNT
 	name = "\improper NT holobadge box"
 	desc = "A box containing NanoTrasen security holobadges."
 	startswith = list(/obj/item/clothing/accessory/badge/holo/NT = 4,

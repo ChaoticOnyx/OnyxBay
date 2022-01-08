@@ -26,7 +26,7 @@ var/list/nuke_disks = list()
 
 //checks if L has a nuke disk on their person
 /datum/game_mode/nuclear/proc/check_mob(mob/living/L)
-	for(var/obj/item/weapon/disk/nuclear/N in nuke_disks)
+	for(var/obj/item/disk/nuclear/N in nuke_disks)
 		if(N.storage_depth(L) >= 0)
 			return 1
 	return 0
@@ -36,7 +36,7 @@ var/list/nuke_disks = list()
 	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || (syndi && !syndi.global_objectives.len))
 		return ..()
 	var/disk_rescued = 1
-	for(var/obj/item/weapon/disk/nuclear/D in nuke_disks)
+	for(var/obj/item/disk/nuclear/D in nuke_disks)
 		var/disk_area = get_area(D)
 		if(!is_type_in_list(disk_area, GLOB.using_map.post_round_safe_areas))
 			disk_rescued = 0

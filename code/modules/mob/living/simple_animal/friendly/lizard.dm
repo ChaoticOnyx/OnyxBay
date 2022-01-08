@@ -13,7 +13,7 @@
 	see_in_dark = 6
 	maxHealth = 5
 	health = 5
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/snacks/meat
 	attacktext = "bitten"
 	melee_damage_lower = 1
 	melee_damage_upper = 2
@@ -25,7 +25,7 @@
 	maxbodytemp = 323	//Above 50 Degrees Celcius
 	universal_speak = 0
 	universal_understand = 1
-	holder_type = /obj/item/weapon/holder/lizard
+	holder_type = /obj/item/holder/lizard
 	mob_size = MOB_MINISCULE
 	possession_candidate = 1
 	can_escape = 1
