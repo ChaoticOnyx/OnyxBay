@@ -717,7 +717,7 @@
 
 	if(!occupant)
 		if(istype(W, /obj/item/aicard))
-			var/obj/item/weapon/aicard/card = W
+			var/obj/item/aicard/card = W
 			if(card.carded_ai)
 				occupant = card.carded_ai
 				user.drop_item()
