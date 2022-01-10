@@ -90,7 +90,7 @@
 	icon_state = "hole"
 	density = 1
 	unacidable = 1
-	anchored = 1.0
+	anchored = 1
 	var/spawnable = null
 
 /obj/effect/gateway/active

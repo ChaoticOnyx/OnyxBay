@@ -13,7 +13,7 @@
 
 	//computer stuff
 	density = 1
-	anchored = 1.0
+	anchored = 1
 	circuit = /obj/item/circuitboard/powermonitor
 	var/alerting = 0
 	idle_power_usage = 300

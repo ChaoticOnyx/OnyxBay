@@ -114,7 +114,7 @@
 	desc = "Apply butt."
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "stool_padded_preview"
-	anchored = 1.0
+	anchored = 1
 
 /obj/item/clothing/gloves/boxing/hologlove
 	name = "boxing gloves"
@@ -332,7 +332,7 @@
 	var/area/currentarea = null
 	var/eventstarted = 0
 
-	anchored = 1.0
+	anchored = 1
 	power_channel = STATIC_ENVIRON
 
 /obj/machinery/readybutton/attack_ai(mob/user)

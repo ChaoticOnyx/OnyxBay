@@ -14,7 +14,7 @@
 	var/c_tag_order = 999
 	var/number = 0 //camera number in area
 	var/status = 1
-	anchored = 1.0
+	anchored = 1
 	var/invuln = null
 	var/bugged = 0
 	var/obj/item/camera_assembly/assembly = null

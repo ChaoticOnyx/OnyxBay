@@ -18,7 +18,7 @@
 	dir = EAST
 	density = 1
 	var/obj/structure/m_tray/connected = null
-	anchored = 1.0
+	anchored = 1
 
 /obj/structure/morgue/Destroy()
 	if(connected)

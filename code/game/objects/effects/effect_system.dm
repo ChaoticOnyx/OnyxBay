@@ -98,7 +98,7 @@ steam.start() -- spawns the effect
 	icon_state = "sparks"
 	icon = 'icons/effects/effects.dmi'
 	var/amount = 6.0
-	anchored = 1.0
+	anchored = 1
 	mouse_opacity = 0
 
 /obj/effect/sparks/New()
@@ -165,7 +165,7 @@ steam.start() -- spawns the effect
 	name = "smoke"
 	icon_state = "smoke"
 	opacity = 1
-	anchored = 0.0
+	anchored = 0
 	mouse_opacity = 0
 	var/amount = 6.0
 	var/time_to_live = 100
@@ -408,7 +408,7 @@ steam.start() -- spawns the effect
 /obj/effect/effect/ion_trails
 	name = "ion trails"
 	icon_state = "ion_trails"
-	anchored = 1.0
+	anchored = 1
 
 /datum/effect/effect/system/trail/ion
 	trail_type = /obj/effect/effect/ion_trails

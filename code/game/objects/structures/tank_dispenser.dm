@@ -4,7 +4,7 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "dispenser"
 	density = 1
-	anchored = 1.0
+	anchored = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/oxygentanks = 10
 	var/plasmatanks = 10

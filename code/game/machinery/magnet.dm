@@ -198,7 +198,7 @@
 	icon = 'icons/obj/airlock_machines.dmi' // uses an airlock machine icon, THINK GREEN HELP THE ENVIRONMENT - RECYCLING!
 	icon_state = "airlock_control_standby"
 	density = 1
-	anchored = 1.0
+	anchored = 1
 	idle_power_usage = 45
 	var/frequency = 1449
 	var/code = 0
