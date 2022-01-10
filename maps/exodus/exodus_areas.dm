@@ -519,6 +519,10 @@
 	name = "\improper Underground Main - South"
 	icon_state = "ghettomainsouth"
 
+/area/maintenance/ghetto_main_west
+	name = "\improper Underground Main - West"
+	icon_state = "ghettomainsouth"
+
 /area/maintenance/ghetto_eva
 	name = "\improper Ghetto EVA"
 	icon_state = "ghettoeva"
@@ -1188,6 +1192,10 @@
 	name = "\improper Actors' Break Room"
 	icon_state = "Theatre"
 
+/area/crew_quarters/underdorm/sauna
+	name = "\improper Sauna"
+	icon_state = "toilet"
+
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Bedroom One"
@@ -1328,9 +1336,14 @@
 	name = "\improper Crematorium"
 	icon_state = "chapelcrematorium"
 
-/area/lawoffice
+/area/iaoffice
 	name = "\improper Internal Affairs"
 	icon_state = "law"
+
+/area/lawoffice
+	name = "\improper Law Office"
+	icon_state = "law"
+
 
 // Engineering
 
