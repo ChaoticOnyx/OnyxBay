@@ -5,6 +5,7 @@
 	desc = "Removes all stuns."
 	icon_state = "ling_unstun"
 	required_chems = 80
+	max_stat = UNCONSCIOUS
 
 /datum/changeling_power/unstun/activate()
 	if(!..())
