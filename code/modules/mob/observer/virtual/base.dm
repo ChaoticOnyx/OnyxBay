@@ -56,7 +56,7 @@ var/list/all_virtual_listeners = list()
 /atom/movable
 	var/mob/observer/virtual/virtual_mob
 
-/atom/movable/Initialize()
+/atom/movable/Initialize(mapload, ...)
 	. = ..()
 	if(shall_have_virtual_mob())
 		virtual_mob = new virtual_mob(get_turf(src), src)

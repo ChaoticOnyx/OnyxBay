@@ -76,7 +76,7 @@
 	var/obj/item/weapon/coin/coin
 	var/datum/wires/vending/wires = null
 
-/obj/machinery/vending/Initialize()
+/obj/machinery/vending/Initialize(mapload, ...)
 	. = ..()
 	wires = new(src)
 
@@ -95,7 +95,7 @@
 	power_change()
 	setup_icon_states()
 
-	if(GAME_STATE < RUNLEVEL_GAME && prob(broken_start_prob))
+	if(mapload && prob(broken_start_prob))
 		take_damage(max_health)
 
 /obj/machinery/vending/examine(mob/user)

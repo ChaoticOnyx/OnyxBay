@@ -62,7 +62,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 	A.use_power_oneoff(amount, chan)
 
 // Do not do power stuff in New/Initialize until after ..()
-/obj/machinery/Initialize()
+/obj/machinery/Initialize(mapload, ...)
 	REPORT_POWER_CONSUMPTION_CHANGE(0, get_power_usage())
 	power_init_complete = TRUE
 	. = ..()
