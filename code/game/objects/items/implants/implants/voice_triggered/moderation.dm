@@ -74,7 +74,7 @@
 		agony_limit = AGONY_LIMIT
 		agony = agony_limit
 
-/obj/item/implant/voice_triggered/speech_corrector/hear_talk(mob/M as mob, msg)
+/obj/item/implant/voice_triggered/speech_corrector/hear_talk(mob/M, msg)
 	if(M==imp_in)
 		hear(msg)
 
@@ -109,7 +109,7 @@
 					interact(usr)
 	if(href_list["agony_limit"])
 		agony_limit = input("Enter number of pain level, below [AGONY_LIMIT]:") as num|null
-		agony_limit = agony_limit>AGONY_LIMIT?AGONY_LIMIT:agony_limit
+		agony_limit = agony_limit > AGONY_LIMIT ? AGONY_LIMIT : agony_limit
 		interact(usr)
 	if(href_list["check_obscene_words"])
 		check_obscene_words = !check_obscene_words
@@ -124,4 +124,4 @@
 		to_chat(L, FONT_LARGE(SPAN("danger","You feel a sharp shock!")))
 		L.apply_effects(stutter=src.stutter)
 		L.stun_effect_act(stun, agony, part.organ_tag, src)
-		agony += agony<agony_limit?AGONY_STEP:0
+		agony += agony < agony_limit ? AGONY_STEP : 0

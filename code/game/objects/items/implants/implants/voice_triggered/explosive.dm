@@ -90,7 +90,7 @@
 	frequency = new_frequency
 	radio_connection = radio_controller.add_object(src, frequency, RADIO_CHAT)
 
-/obj/item/implant/voice_triggered/explosive/hear_talk(mob/M as mob, msg)
+/obj/item/implant/voice_triggered/explosive/hear_talk(mob/M, msg)
 	hear(msg)
 
 /obj/item/implant/voice_triggered/explosive/hear(msg)
