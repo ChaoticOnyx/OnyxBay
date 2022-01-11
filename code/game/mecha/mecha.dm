@@ -1024,18 +1024,18 @@
 		return
 
 	if(usr.buckled)
-		to_chat(usr, "<span class='warning'>You can't climb into the exosuit while buckled!</span>")
+		to_chat(usr, SPAN("warning", "You can't climb into the exosuit while buckled!"))
 		return
 
 	log_message("[usr] tries to move in.")
 
 	var/mob/living/carbon/human/H = usr
 	if(H.handcuffed)
-		to_chat(usr, "<span class='danger'>Kinda hard to climb in while handcuffed don't you think?</span>")
+		to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
 		return
 
 	if(occupant)
-		to_chat(usr, "<span class='danger'>The [src] is already occupied!</span>")
+		to_chat(usr, SPAN("danger", "The [src] is already occupied!"))
 		src.log_append_to_last("Permission denied.")
 		return
 
@@ -1109,7 +1109,7 @@
 		else
 			to_chat(user, "Occupant detected.")
 	else
-		to_chat(user, "You stop inserting the MMI.")
+		to_chat(user, "You stop inserting \the [src].")
 	return FALSE
 
 /obj/mecha/proc/move_posibrain_inside(obj/item/organ/internal/posibrain/PB, mob/user)
@@ -1133,7 +1133,7 @@
 		else
 			to_chat(user, "Occupant detected.")
 	else
-		to_chat(user, "You stop inserting the MMI.")
+		to_chat(user, "You stop inserting \the [src].")
 	return FALSE
 
 /obj/mecha/proc/brain_moved_inside(obj/item/I, mob/user)
