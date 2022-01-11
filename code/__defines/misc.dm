@@ -269,3 +269,6 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+//Lawgiver gun
+#define LAWGIVER_MAX_AMMO 5

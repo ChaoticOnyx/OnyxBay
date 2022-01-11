@@ -151,6 +151,11 @@
 	damage = 50 //Revolvers get snowflake bullets, to keep them relevant
 	armor_penetration = 20
 
+/obj/item/projectile/bullet/pistol/lawgiver //for rapid-fire mode
+	damage = 18.5
+	armor_penetration = 10
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
+
 /obj/item/projectile/bullet/pistol/rubber //"rubber" bullets
 	name = "rubber bullet"
 	check_armour = "melee"

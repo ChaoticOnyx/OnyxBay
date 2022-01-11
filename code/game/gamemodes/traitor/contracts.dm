@@ -25,7 +25,8 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"an ballistic helmet" =                             list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ballistic),
 	"an ballistic armor vest" =                         list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/bulletproof),
 	"an ablative helmet" =                              list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ablative),
-	"an ablative armor vest" =                          list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof)
+	"an ablative armor vest" =                          list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof),
+	"the head of security's lawgiver gun" =             list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/lawgiver)
 ))
 GLOBAL_LIST_INIT(syndicate_factions, list(
 	"\The Trauma Team Interspace",

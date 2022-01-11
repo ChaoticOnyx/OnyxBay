@@ -238,7 +238,8 @@
 		. += "\n<span class='warning'>It looks jammed.</span>"
 	if(ammo_magazine)
 		. += "\nIt has \a [ammo_magazine] loaded."
-	. += "\nHas [getAmmo()] round\s remaining."
+	if(getAmmo() > 0)
+		. += "\nHas [getAmmo()] round\s remaining."
 	return
 
 /obj/item/gun/projectile/proc/getAmmo()

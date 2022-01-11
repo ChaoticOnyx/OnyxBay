@@ -185,7 +185,8 @@
 
 /obj/item/ammo_magazine/examine(mob/user)
 	. = ..()
-	. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
+	if(max_ammo > 0)
+		. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
 
 //magazine icon state caching
 /var/global/list/magazine_icondata_keys = list()

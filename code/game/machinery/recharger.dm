@@ -9,7 +9,7 @@
 	idle_power_usage = 4
 	active_power_usage = 30 KILOWATTS
 	var/obj/item/charging = null
-	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig)
+	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/ammo_magazine/lawgiver)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
@@ -132,6 +132,22 @@
 			if(!C.fully_charged())
 				icon_state = icon_state_charging
 				C.give(active_power_usage*CELLRATE)
+				update_use_power(POWER_USE_ACTIVE)
+			else
+				icon_state = icon_state_charged
+				update_use_power(POWER_USE_IDLE)
+
+		var/lawgiver_magazine = charging
+		if(istype(lawgiver_magazine, /obj/item/ammo_magazine/lawgiver))
+			var/obj/item/ammo_magazine/lawgiver/L = lawgiver_magazine
+			if(!L.isFull())
+				icon_state = icon_state_charging
+				var/charged_amount = 0
+				for(var/mode in L.ammo_counters)
+					if(L.ammo_counters[mode] == LAWGIVER_MAX_AMMO)
+						continue
+					charged_amount += 1
+					L.ammo_counters[mode] = min(L.ammo_counters[mode] + charged_amount, LAWGIVER_MAX_AMMO)
 				update_use_power(POWER_USE_ACTIVE)
 			else
 				icon_state = icon_state_charged
