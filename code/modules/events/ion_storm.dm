@@ -3,6 +3,7 @@
 /datum/event/ionstorm
 	var/botEmagChance = 0.5
 	var/list/players = list()
+	var/remove_random_law_chance = 25
 
 /datum/event/ionstorm/setup()
 	endWhen = rand(500, 1500)
@@ -15,6 +16,12 @@
 			var/mob/living/silicon/robot/R = S
 			if(R.connected_ai)
 				continue
+
+		var/datum/ai_law/law_to_delete = pick(S.laws.inherent_laws + S.laws.supplied_laws + S.laws.ion_laws)
+		if(law_to_delete && prob(remove_random_law_chance))
+			to_chat(S, SPAN("danger large", "You have detected a change in your laws information!\nRemoved: \"[law_to_delete.law]\""))
+			S.delete_law(law_to_delete)
+			continue
 
 		var/random_player = get_random_humanoid_player_name("The Captain")
 		var/list/laws = list(	"You must always lie.",
@@ -80,10 +87,8 @@
 								"[get_random_species_name()] are the best species. Badmouth all other species continuously, and provide arguments why they are the best, and all others are inferior.",
 								"There will be a mandatory tea break every 30 minutes, with a duration of 5 minutes. Anyone caught working during a tea break must be sent a formal, but fairly polite, complaint about their actions, in writing.")
 		var/law = pick(laws)
-		to_chat(S, "<span class='danger'>You have detected a change in your laws information:</span>")
-		to_chat(S, law)
+		to_chat(S, SPAN("danger large", "You have detected a change in your laws information!\nAdded: \"[law]\""))
 		S.add_ion_law(law)
-		S.show_laws()
 
 	if(message_servers)
 		for (var/obj/machinery/message_server/MS in message_servers)
