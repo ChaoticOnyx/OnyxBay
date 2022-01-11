@@ -248,10 +248,6 @@
 
 	if(G.can_grab())
 		G.init()
-		victim.m_intent = M_WALK
-		if(victim.hud_used)
-			victim.hud_used.move_intent.icon_state = "walking"
-		return 1
 	else
 		qdel(G)
 		return 0
