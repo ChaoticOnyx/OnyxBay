@@ -30,7 +30,7 @@
 	. = {"
 	<b>Implant Specifications:</b><BR>
 	<b>Name:</b> NanoTrasen corp speech corrector implant<BR>
-	<b>Life:</b> Activates upon pronouncing somerhing from banned word list.<BR>
+	<b>Life:</b> Activates upon pronouncing somerthing from banned word list.<BR>
 	<B>Banned words:</B><BR>
 	[!isemptylist(words_list) ? jointext(words_list,", ") : "NONE SET"]<BR>
 	<A href='byond://?src=\ref[src];words_list_set=add'>add word</A>|
@@ -41,9 +41,8 @@
 	<A href='byond://?src=\ref[src];agony_limit=1'>Pain level limit:[agony_limit ? agony_limit : "NONE SET"]</A>
 	<HR>
 	<b>Implant Details:</b><BR>
-	<b>Function:</b> Contains a compact, taser that activated by host pronouncing words from banned list.<BR>
-	<b>Special Features:</b> Tasering<BR>
-	<b>Integrity:</b> Implant will occasionally be degraded by the body's immune system and thus will occasionally malfunction."}
+	<b>Function:</b> Contains a compact taser, that activates by host pronouncing words from banned list.<BR>
+	<b>Special Features:</b> Tasing<BR>"}
 
 /obj/item/implant/voice_triggered/speech_corrector/implanted(mob/target)
 	if(isemptylist(words_list))
