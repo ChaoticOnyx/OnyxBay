@@ -713,14 +713,14 @@
 /obj/mecha/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/device/mmi))
 		if(move_mmi_inside(W,user))
-			to_chat(user, "[src]-MMI interface initialized successfuly.")
+			to_chat(user, "[src]-MMI interface initialized successfully.")
 		else
 			to_chat(user, "[src]-MMI interface initialization failed.")
 		return
 
 	if(istype(W, /obj/item/organ/internal/posibrain))
 		if(move_posibrain_inside(W, user))
-			to_chat(user, "[src]-posibrain interface initialized successfuly.")
+			to_chat(user, "[src]-posibrain interface initialized successfully.")
 		else
 			to_chat(user, "[src]-posibrain interface initialization failed.")
 		return
