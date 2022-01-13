@@ -142,37 +142,29 @@
 	if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
 		return
 	var/list/config_json = json_decode(file2text("config/custom_items.json"))
-	for(var/list/ckey_group in config_json["ckeys"])
+	for(var/list/ckey_group in config_json["customs"])
 		var/ckey = ckey_group["ckey"]
 		for(var/list/item_data in ckey_group["items"])
 			var/datum/custom_item/current_data = new()
-			var/item_path = item_data["item_path"]
+
+			var/item_path = item_data["item"]?["path"]
 			current_data.item_path_as_string = item_path
 			item_path = text2path(item_path)
 			ASSERT(ispath(item_path))
-			for(var/field in item_data)
-				var/field_data = item_data[field]
-				switch(field)
-					if("item_name")
-						current_data.name = field_data
-					if("item_icon")
-						current_data.item_icon = field_data
-					if("inherit_inhands")
-						current_data.inherit_inhands = text2num(field_data)
-					if("item_desc")
-						current_data.item_desc = field_data
-					if("req_access")
-						current_data.req_access = text2num(field_data)
-					if("req_titles")
-						current_data.req_titles = splittext(field_data,", ")
-					if("kit_name")
-						current_data.kit_name = field_data
-					if("kit_desc")
-						current_data.kit_desc = field_data
-					if("kit_icon")
-						current_data.kit_icon = field_data
-					if("additional_data")
-						current_data.additional_data = field_data
+			
+			current_data.name = item_data["item"]?["name"]
+			current_data.item_icon = item_data["item"]?["icon"]
+			current_data.item_desc = item_data["item"]?["desc"]
+
+			current_data.kit_name = item_data["kit"]?["name"]
+			current_data.kit_icon = item_data["kit"]?["icon"]
+			current_data.kit_desc = item_data["kit"]?["desc"]
+
+			current_data.inherit_inhands = item_data["inherit_inhands"]
+			current_data.req_access = item_data["req_access"]
+			current_data.req_titles = item_data["req_titles"]
+			current_data.additional_data = item_data["additional_data"]
+
 			current_data.assoc_key = ckey
 			current_data.item_path = item_path
 			var/datum/gear/custom_item/G = new(ckey, item_path, current_data)

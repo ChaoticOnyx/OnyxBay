@@ -1,22 +1,4 @@
 {
-    "ckeys": [
-        {
-            "ckey": "ckey",
-            "items": [
-            {
-                "item_path": "path",
-                "item_name": "string",
-                "item_icon": "string",
-                "item_desc": "string",
-                "req_titles": "string, string (job datums)",
-                "req_access": "number (see \"access levels.txt\")",
-                "inherit_inhands": "boolean",
-                "kit_name": "string",
-                "kit_desc": "string",
-                "kit_icon": "string",
-                "additional_data": "string"
-            }
-            ]
-        }
-    ]
+  "$schema": "https://raw.githubusercontent.com/ChaoticOnyx/OnyxBay/dev/config/schema/custom_items.schema.json",
+  "customs": []
 }
