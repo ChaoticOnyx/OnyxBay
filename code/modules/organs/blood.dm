@@ -110,7 +110,7 @@
 ****************************************************/
 
 //Gets blood from mob to the container, preserving all data in it.
-/mob/living/carbon/proc/take_blood(obj/item/weapon/reagent_containers/container, amount)
+/mob/living/carbon/proc/take_blood(obj/item/reagent_containers/container, amount)
 	var/datum/reagent/blood/B = get_blood(container.reagents)
 	if(!B)
 		B = new /datum/reagent/blood
@@ -122,7 +122,7 @@
 	return 1
 
 //For humans, blood does not appear from blue, it comes from vessels.
-/mob/living/carbon/human/take_blood(obj/item/weapon/reagent_containers/container, amount)
+/mob/living/carbon/human/take_blood(obj/item/reagent_containers/container, amount)
 
 	if(!should_have_organ(BP_HEART))
 		reagents.trans_to_obj(container, amount)

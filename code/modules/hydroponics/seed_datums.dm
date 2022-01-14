@@ -311,7 +311,7 @@
 	seed_name = "egg plant"
 	display_name = "egg plants"
 	mutants = null
-	has_custom_product = /obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor
+	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
 	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()
@@ -827,7 +827,7 @@
 	seed_name = "banana"
 	display_name = "banana tree"
 	chems = list(/datum/reagent/drink/juice/banana = list(10,10))
-	trash_type = /obj/item/weapon/bananapeel
+	trash_type = /obj/item/bananapeel
 	kitchen_tag = "banana"
 	mutants = list("lubanana","bunana")
 
@@ -890,7 +890,7 @@
 	display_name = "ears of corn"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nutriment/cornoil = list(1,10))
 	kitchen_tag = "corn"
-	trash_type = /obj/item/weapon/corncob
+	trash_type = /obj/item/corncob
 
 /datum/seed/corn/New()
 	..()
@@ -931,7 +931,7 @@
 	seed_name = "electric potato"
 	display_name = "electric potatoes"
 	mutants = null
-	has_custom_product = /obj/item/weapon/cell/potato
+	has_custom_product = /obj/item/cell/potato
 	fun_level = 1
 
 /datum/seed/potato/cell/New()

@@ -5,15 +5,15 @@
 	icon_state = "suspension2"
 	density = 1
 	req_access = list(access_research)
-	var/obj/item/weapon/cell/cell
-	var/obj/item/weapon/card/id/auth_card
+	var/obj/item/cell/cell
+	var/obj/item/card/id/auth_card
 	var/locked = 1
 	var/power_use = 5 KILOWATTS
 	var/obj/effect/suspension_field/suspension_field
 
 /obj/machinery/suspension_gen/New()
 	..()
-	src.cell = new /obj/item/weapon/cell/high(src)
+	src.cell = new /obj/item/cell/high(src)
 
 /obj/machinery/suspension_gen/Process()
 	set background = 1
@@ -86,7 +86,7 @@
 		. = TOPIC_REFRESH
 	else if(href_list["insertcard"])
 		var/obj/item/I = user.get_active_hand()
-		if(istype(I, /obj/item/weapon/card))
+		if(istype(I, /obj/item/card))
 			if(issilicon(user))
 				attackby(I, user)
 				interact(user)
@@ -132,7 +132,7 @@
 		cell = null
 		to_chat(user, SPAN("info", "You remove the power cell."))
 
-/obj/machinery/suspension_gen/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/suspension_gen/attackby(obj/item/W as obj, mob/user as mob)
 	if(!locked && !suspension_field && default_deconstruction_screwdriver(user, W))
 		return
 	else if(isWrench(W))
@@ -148,7 +148,7 @@
 				desc = "It has stubby legs bolted up against it's body for stabilising."
 		else
 			to_chat(user, SPAN("warning", "You are unable to secure [src] while it is active!"))
-	else if (istype(W, /obj/item/weapon/cell))
+	else if (istype(W, /obj/item/cell))
 		if(panel_open)
 			if(cell)
 				to_chat(user, SPAN("warning", "There is a power cell already installed."))
@@ -158,8 +158,8 @@
 				cell = W
 				to_chat(user, SPAN("info", "You insert the power cell."))
 				icon_state = "suspension1"
-	else if(istype(W, /obj/item/weapon/card))
-		var/obj/item/weapon/card/I = W
+	else if(istype(W, /obj/item/card))
+		var/obj/item/card/I = W
 		if(!auth_card)
 			if(attempt_unlock(I, user))
 				to_chat(user, SPAN("info", "You swipe [I], the console flashes \'<i>Access granted.</i>\'"))
@@ -168,11 +168,11 @@
 		else
 			to_chat(user, SPAN("warning", "Remove [auth_card] first."))
 
-/obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/weapon/card/C, mob/user)
+/obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/card/C, mob/user)
 	if(!panel_open)
-		if(istype(C, /obj/item/weapon/card/emag))
+		if(istype(C, /obj/item/card/emag))
 			C.resolve_attackby(src, user)
-		else if(istype(C, /obj/item/weapon/card/id) && check_access(C) || istype(C, /obj/item/weapon/card/robot))
+		else if(istype(C, /obj/item/card/id) && check_access(C) || istype(C, /obj/item/card/robot))
 			locked = 0
 		if(!locked)
 			return 1

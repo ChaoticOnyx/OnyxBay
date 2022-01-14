@@ -29,7 +29,7 @@
 		return
 	..()
 
-/obj/item/device/radio/electropack/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/radio/electropack/attackby(obj/item/W, mob/user)
 	..()
 	if(istype(W, /obj/item/clothing/head/helmet))
 		if(!b_stat)

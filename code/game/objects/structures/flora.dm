@@ -12,7 +12,7 @@
 	var/cut_hits = 20
 
 /obj/structure/flora/tree/attackby(obj/item/W, mob/living/user)
-	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/weapon/material/hatchet) || istype(W, /obj/item/weapon/material/twohanded/fireaxe)))
+	if(cut_level !=PLANT_NO_CUT && (istype(W, /obj/item/material/hatchet) || istype(W, /obj/item/material/twohanded/fireaxe)))
 		cut_hits--
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		to_chat(user, SPAN_WARNING("You chop \the [src] with \the [W]."))
@@ -286,7 +286,7 @@
 		return ..()
 	if(!ishuman(user))
 		return 0
-	if(istype(W, /obj/item/weapon/holder))
+	if(istype(W, /obj/item/holder))
 		return 0 //no hiding mobs in there
 	if(!W.canremove)
 		shake_animation(stime = 4)

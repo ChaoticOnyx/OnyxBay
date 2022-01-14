@@ -13,7 +13,7 @@
 /obj/structure/lamarr/ex_act(severity)
 	switch(severity)
 		if(1)
-			new /obj/item/weapon/material/shard(get_turf(src))
+			new /obj/item/material/shard(get_turf(src))
 			if(prob(50) && occupied)
 				new /mob/living/simple_animal/hostile/facehugger/lamarr(get_turf(src))
 				occupied = 0
@@ -37,7 +37,7 @@
 		if(!destroyed)
 			set_density(0)
 			destroyed = 1
-			new /obj/item/weapon/material/shard(get_turf(src))
+			new /obj/item/material/shard(get_turf(src))
 			if(occupied)
 				new /mob/living/simple_animal/hostile/facehugger/lamarr(get_turf(src))
 				occupied = 0
@@ -54,7 +54,7 @@
 		icon_state = "labcage[occupied]"
 	return
 
-/obj/structure/lamarr/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/lamarr/attackby(obj/item/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	health -= W.force
 	healthcheck()

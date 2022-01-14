@@ -26,7 +26,7 @@
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
 	inherent_verbs = list(/mob/living/proc/ventcrawl)
 	hud_type = /datum/hud_data/monkey
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/monkey
 
 	rarity_value = 0.1
 	total_health = 150
@@ -40,7 +40,7 @@
 	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
 
 	pass_flags = PASS_FLAG_TABLE
-	holder_type = /obj/item/weapon/holder
+	holder_type = /obj/item/holder
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin),
@@ -56,8 +56,8 @@
 		)
 
 	var/list/no_touchie = list(
-		/obj/item/weapon/mirror,
-		/obj/item/weapon/paper,
+		/obj/item/mirror,
+		/obj/item/paper,
 		/obj/item/device/taperecorder,
 		/obj/item/modular_computer,
 	)
@@ -76,11 +76,11 @@
 	if(prob(5) && held)
 		var/turf/T = get_random_turf_in_range(H, 7, 2)
 		if(T && !is_type_in_list(T, no_touchie))
-			if(istype(held, /obj/item/weapon/gun) && prob(80))
-				var/obj/item/weapon/gun/G = held
+			if(istype(held, /obj/item/gun) && prob(80))
+				var/obj/item/gun/G = held
 				G.Fire(T, H)
-			if(istype(held, /obj/item/weapon/reagent_containers) && prob(80))
-				var/obj/item/weapon/reagent_containers/C = held
+			if(istype(held, /obj/item/reagent_containers) && prob(80))
+				var/obj/item/reagent_containers/C = held
 				C.attack(H, H)
 			if(istype(held, /obj/item/) && prob(50))
 				var/obj/item/O = held

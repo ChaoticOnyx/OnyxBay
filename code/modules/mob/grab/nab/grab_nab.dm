@@ -27,7 +27,7 @@
 
 	stop_move = 1
 	force_stand = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 1
 	point_blank_mult = 1

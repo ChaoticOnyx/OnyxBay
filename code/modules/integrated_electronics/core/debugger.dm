@@ -71,7 +71,7 @@
 
 	else if(copy_id && proximity)
 		var/error_message = SPAN_NOTICE("You turn the id card scanner is off.")
-		if(istype(target,/obj/item/weapon/card/id))
+		if(istype(target,/obj/item/card/id))
 			src.idlock = weakref(target)
 			to_chat(user, SPAN_NOTICE("You set \the [src]'s card memory to [target.name].  The id card scanner is \
 			now off."))
