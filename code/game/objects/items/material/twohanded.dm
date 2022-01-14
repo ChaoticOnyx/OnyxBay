@@ -169,8 +169,8 @@
 	hitsound = SFX_FIGHTING_SWING
 	default_material = MATERIAL_WOOD
 
-	force_const = 6.0
-	force_divisor = 0.7           // 14 when wielded with weight 20 (steel)
+	force_const = 8.0
+	force_divisor = 0.6           // 14 when wielded with weight 20 (steel)
 	unwielded_force_const = 5.0
 	unwielded_force_divisor = 0.5 // 15 when unwielded based on above.
 	slot_flags = SLOT_BACK
