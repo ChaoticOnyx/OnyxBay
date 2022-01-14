@@ -37,7 +37,7 @@
                       "type": "string"
                     }
                   },
-                  "required": ["path", "name", "icon", "desc"],
+                  "required": ["path"],
                   "additionalProperties": false
                 },
                 "kit": {
@@ -72,13 +72,7 @@
                   "type": "string"
                 }
               },
-              "required": [
-                "item",
-                "req_titles",
-                "req_access",
-                "inherit_inhands",
-                "additional_data"
-              ],
+              "required": ["item"],
               "additionalProperties": false
             }
           }
