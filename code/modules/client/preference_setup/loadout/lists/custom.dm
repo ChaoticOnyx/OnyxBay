@@ -32,7 +32,7 @@
 	. = ..()
 	if(. && ishuman(user))
 		var/mob/living/carbon/human/M = user
-		var/obj/item/weapon/card/id/current_id = M.wear_id
+		var/obj/item/card/id/current_id = M.wear_id
 		if(required_access && required_access > 0)
 			if(!(istype(current_id) && (required_access in current_id.access)))
 				return FALSE
