@@ -58,7 +58,7 @@
 	//residual illumination
 	new /obj/effect/effect/smoke/illumination(src.loc, rand(190,240) SECONDS, range=8, power=3, color=light_colour) //same lighting power as flare
 
-/obj/item/projectile/energy/flash/c44
+/obj/item/projectile/energy/flash/c38
 	damage_type = BURN
 	damage = 5
 	agony = 25
@@ -102,7 +102,7 @@
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
 
-/obj/item/projectile/energy/electrode/c44
+/obj/item/projectile/energy/electrode/c38
 	name = "shock bullet"
 	icon_state = "shockbullet"
 	nodamage = 0
@@ -112,7 +112,7 @@
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
-/obj/item/projectile/energy/c44
+/obj/item/projectile/energy/c38
 	name = "overheated bullet"
 	icon_state = "heatbullet"
 	damage = 40
