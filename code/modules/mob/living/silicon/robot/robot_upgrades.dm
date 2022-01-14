@@ -190,6 +190,7 @@
 	R.switch_from_dead_to_living_mob_list()
 	R.dead = 0
 	R.notify_ai(ROBOT_NOTIFICATION_NEW_UNIT)
+	R.add_robot_verbs()
 	installed = 1
 	return 1
 

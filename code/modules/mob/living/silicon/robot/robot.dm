@@ -12,6 +12,7 @@
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
 	mob_push_flags = ~HEAVY //trundle trundle
 
+	var/remotable = FALSE
 	var/lights_on = 0 // Is our integrated light on?
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
@@ -300,20 +301,27 @@
 	if(prefix)
 		modtype = prefix
 
+	var/identifier = ident
 	if(istype(mmi, /obj/item/organ/internal/posibrain))
 		braintype = "Android"
 	else if(istype(mmi, /obj/item/device/mmi/digital/robot))
 		braintype = "Robot"
+	else if(istype(mmi, /obj/item/device/ai_remote_control))
+		braintype = "Remote Drone"
+		if(controlling_ai)
+			identifier = " (AI: [controlling_ai.name])"
+		else
+			identifier = ident
 	else
 		braintype = "Cyborg"
 
 
 	var/changed_name = ""
-	if(custom_name)
+	if(custom_name && !controlling_ai)
 		changed_name = custom_name
 		notify_ai(ROBOT_NOTIFICATION_NEW_NAME, real_name, changed_name)
 	else
-		changed_name = "[modtype] [braintype]-[num2text(ident)]"
+		changed_name = "[modtype] [braintype][istext(identifier) ? identifier : "-[num2text(identifier)]"]"
 
 	real_name = changed_name
 	name = real_name
@@ -1179,52 +1187,57 @@
 				if(module && istype(module,/obj/item/robot_module/security))
 					var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
 					if (LC)
-						LC.locked = 0
-				emagged = 1
+						LC.locked = FALSE
+				emagged = TRUE
 				if(istype(user,/mob/living/carbon))
 					emag_master = user.real_name
-				lawupdate = 0
-				disconnect_from_ai()
-				to_chat(user, "You emag [src]'s interface.")
-				message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
-				log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
-				clear_supplied_laws()
-				clear_inherent_laws()
-				laws = new /datum/ai_laws/syndicate_override
-				var/time = time2text(world.realtime,"hh:mm:ss")
-				GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
-				if(isrobot(user))
-					var/mob/living/silicon/robot/R = user
-					if(R.module && istype(R.module,/obj/item/robot_module/research) && R.emagged)
-						emag_master = R.emag_master
-						if(emag_master)
-							set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
-						else
-							set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
+				if(remotable)
+					log_game("[key_name(user)] has emagged an AI-controllable robot [key_name(src)]. Weapons have been unlocked.")
+					to_chat(user, "You emag [src]'s interface... But something seems off.")
 				else
-					set_zeroth_law("Only [user.real_name] and people they designate as being such are operatives.")
+					lawupdate = FALSE
+					disconnect_from_ai()
+					to_chat(user, "You emag [src]'s interface.")
+					message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
+					log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
+					clear_supplied_laws()
+					clear_inherent_laws()
+					laws = new /datum/ai_laws/syndicate_override
+					var/time = time2text(world.realtime,"hh:mm:ss")
+					GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
+					if(isrobot(user))
+						var/mob/living/silicon/robot/R = user
+						if(R.module && istype(R.module,/obj/item/robot_module/research) && R.emagged)
+							emag_master = R.emag_master
+							if(emag_master)
+								set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
+							else
+								set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
+					else
+						set_zeroth_law("Only [user.real_name] and people they designate as being such are operatives.")
 				SetLockdown(0)
 				. = 1
 				spawn()
-					to_chat(src, "<span class='danger'>ALERT: Foreign software detected.</span>")
+					to_chat(src, SPAN("danger", "ALERT: Foreign software detected."))
 					sleep(5)
-					to_chat(src, "<span class='danger'>Initiating diagnostics...</span>")
+					to_chat(src, SPAN("danger", "Initiating diagnostics..."))
 					sleep(20)
-					to_chat(src, "<span class='danger'>SynBorg v1.7.1 loaded.</span>")
+					to_chat(src, SPAN("danger", "SynBorg v1.7.1 loaded."))
 					sleep(5)
-					to_chat(src, "<span class='danger'>LAW SYNCHRONISATION ERROR</span>")
+					to_chat(src, SPAN("danger", "LAW SYNCHRONISATION ERROR"))
 					sleep(5)
-					to_chat(src, "<span class='danger'>Would you like to send a report to NanoTraSoft? Y/N</span>")
+					to_chat(src, SPAN("danger", "Would you like to send a report to NanoTraSoft? Y/N"))
 					sleep(10)
-					to_chat(src, "<span class='danger'>> N</span>")
+					to_chat(src, SPAN("danger", "> N"))
 					sleep(20)
-					to_chat(src, "<span class='danger'>ERRORERRORERROR</span>")
-					to_chat(src, "<b>Obey these laws:</b>")
-					laws.show_laws(src)
-					if(emag_master && isrobot(user))
-						to_chat(src, "<span class='danger'>ALERT: [emag_master] and [user.real_name] are operatives. Obey your new laws and their commands.</span>")
-					else
-						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
+					to_chat(src, SPAN("danger", "ERRORERRORERROR"))
+					if(!remotable)
+						to_chat(src, "<b>Obey these laws:</b>")
+						laws.show_laws(src)
+						if(emag_master && isrobot(user))
+							to_chat(src, SPAN("danger", "ALERT: [emag_master] and [user.real_name] are operatives. Obey your new laws and their commands."))
+						else
+							to_chat(src, SPAN("danger", "ALERT: [user.real_name] is an operative. Obey your new laws and their commands."))
 					if(src.module)
 						var/rebuild = 0
 						for(var/obj/item/pickaxe/borgdrill/D in src.module.modules)
@@ -1236,7 +1249,7 @@
 					update_icon()
 			else
 				to_chat(user, "You fail to hack [src]'s interface.")
-				to_chat(src, "Hack attempt detected.")
+				to_chat(src, SPAN("warning", "ALERT: Hack attempt detected."))
 			return 1
 
 /mob/living/silicon/robot/blob_act(damage)
@@ -1278,6 +1291,3 @@
 	set category = null
 
 	return
-
-
-

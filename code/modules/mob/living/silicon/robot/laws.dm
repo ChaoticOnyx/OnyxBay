@@ -29,6 +29,8 @@
 
 	to_chat(who, "<b>Obey these laws:</b>")
 	laws.show_laws(who)
+	if(remotable)
+		return
 	// TODO: Update to new antagonist system.
 	if (mind && (mind.special_role == "Traitor" && mind.original == src) && connected_ai)
 		to_chat(who, "<b>Remember, [connected_ai.name] is technically your master, but your objective comes first.</b>")

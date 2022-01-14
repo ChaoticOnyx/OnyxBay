@@ -1997,6 +1997,7 @@
 #include "code\modules\mob\living\silicon\robot\login.dm"
 #include "code\modules\mob\living\silicon\robot\photos.dm"
 #include "code\modules\mob\living\silicon\robot\preset.dm"
+#include "code\modules\mob\living\silicon\robot\remote_control.dm"
 #include "code\modules\mob\living\silicon\robot\robot.dm"
 #include "code\modules\mob\living\silicon\robot\robot_damage.dm"
 #include "code\modules\mob\living\silicon\robot\robot_items.dm"

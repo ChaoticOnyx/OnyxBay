@@ -5,7 +5,7 @@
 	var/msg = ""
 	msg += "\n"
 	msg += examine_all_modules()
-	
+
 	msg += "<span class='warning'>"
 	if (src.getBruteLoss())
 		if (src.getBruteLoss() < 75)
@@ -32,7 +32,10 @@
 			if(!src.client)	msg += "It appears to be in stand-by mode.\n" //afk
 		if(UNCONSCIOUS)		msg += "<span class='warning'>It doesn't seem to be responding.</span>\n"
 		if(DEAD)
-			msg += "<span class='deadsay'>It's broken, but looks repairable.</span>\n"
+			if(remotable)
+				msg += SPAN("notice", "It appears to be in stand-by mode.\n")
+			else
+				msg += SPAN("deadsay", "It's broken, but looks repairable.\n")
 			//msg += "<span class='deadsay'>It looks completely unsalvageable.</span>\n"
 	msg += "*---------*"
 

@@ -157,6 +157,47 @@
 			src.parts[part.bp_tag] = part
 			src.update_icon()
 
+	if(istype(W, /obj/item/device/ai_remote_control))
+		if(check_completion())
+			if(!isturf(loc))
+				to_chat(user, SPAN("warning", "You can't put \the [W] in, the frame has to be standing on the ground to be perfectly precise."))
+				return
+
+			var/mob/living/silicon/robot/remote/O = new /mob/living/silicon/robot/remote(get_turf(loc))
+			if(!O)
+				return
+
+			user.drop_item()
+
+			if(O.mmi)
+				QDEL_NULL(O.mmi)
+			O.mmi = W
+			O.set_invisibility(0)
+			O.custom_name = created_name
+			O.updatename("AI")
+
+			O.job = "Cyborg"
+
+			O.remotable = TRUE
+
+			var/obj/item/robot_parts/chest/chest = parts[BP_CHEST]
+			O.cell = chest.cell
+			forceMove(chest.cell, O)
+			forceMove(W, O) //Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
+
+			// Since we "magically" installed a cell, we also have to update the correct component.
+			if(O.cell)
+				var/datum/robot_component/cell_component = O.components["power cell"]
+				cell_component.wrapped = O.cell
+				cell_component.installed = 1
+
+			O.death(FALSE, TRUE)
+			user.drop_item()
+			qdel(W)
+			qdel(src)
+		else
+			to_chat(user, SPAN("warning", "The AI remote control must go in after everything else!"))
+
 	if(istype(W, /obj/item/device/mmi) || istype(W, /obj/item/organ/internal/posibrain))
 		var/mob/living/carbon/brain/B
 		if(istype(W, /obj/item/device/mmi))

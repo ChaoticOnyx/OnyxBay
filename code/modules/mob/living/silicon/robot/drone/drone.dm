@@ -336,14 +336,6 @@ var/list/mob_hat_cache = list()
 			to_chat(src, "<span class='danger'>You feel a system kill order percolate through your tiny brain, and you obediently destroy yourself.</span>")
 			death()
 
-/mob/living/silicon/robot/drone/proc/full_law_reset()
-	clear_supplied_laws(1)
-	clear_inherent_laws(1)
-	clear_ion_laws(1)
-	QDEL_NULL(laws)
-	var/law_type = initial(laws) || GLOB.using_map.default_law_type
-	laws = new law_type
-
 //Reboot procs.
 
 /mob/living/silicon/robot/drone/proc/request_player()

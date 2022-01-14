@@ -154,6 +154,7 @@
 		/obj/item/cell,
 		/obj/item/stock_parts,
 		/obj/item/device/mmi,
+		/obj/item/device/ai_remote_control,
 		/obj/item/robot_parts,
 		/obj/item/borg/upgrade,
 		/obj/item/device/flash,
