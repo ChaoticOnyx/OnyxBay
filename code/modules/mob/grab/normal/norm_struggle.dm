@@ -8,7 +8,6 @@
 	shift = 8
 
 	stop_move = 1
-	reverse_facing = 0
 	can_absorb = 0
 	point_blank_mult = 1
 	same_tile = 0
@@ -21,8 +20,6 @@
 
 	icon_state = "reinforce"
 
-	var/done_struggle = FALSE
-
 	break_chance_table = list(5, 20, 30, 80, 100)
 
 
@@ -32,7 +29,7 @@
 
 	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
 		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
-		done_struggle = TRUE
+		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 
 /datum/grab/normal/struggle/enter_as_up(obj/item/grab/G)
@@ -41,20 +38,24 @@
 
 	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
 		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
-		done_struggle = TRUE
+		G.done_struggle = TRUE
 		G.upgrade(TRUE)
 	else
 		affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant]!</span>")
-		spawn(10)
-			handle_resist(G)
-		if(do_after(assailant, upgrade_cooldown, G, can_move = 1))
-			done_struggle = TRUE
-			G.upgrade(TRUE)
-		else
-			G.downgrade()
+		G.done_struggle = FALSE
+		addtimer(CALLBACK(G, .proc/handle_resist), 1 SECOND)
+		resolve_struggle(G)
+
+/datum/grab/normal/struggle/proc/resolve_struggle(obj/item/grab/G)
+	set waitfor = FALSE
+	if(do_after(G.assailant, upgrade_cooldown, G, can_move = 1))
+		G.done_struggle = TRUE
+		G.upgrade(TRUE)
+	else
+		G.downgrade()
 
 /datum/grab/normal/struggle/can_upgrade(obj/item/grab/G)
-	return done_struggle
+	return G.done_struggle
 
 /datum/grab/normal/struggle/on_hit_disarm(obj/item/grab/normal/G)
 	to_chat(G.assailant, "<span class='warning'>Your grip isn't strong enough to pin.</span>")

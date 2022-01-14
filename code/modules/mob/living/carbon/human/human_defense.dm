@@ -73,7 +73,7 @@ meteor_act
 			if(prob(50))
 				organ.sever_artery()
 			else
-				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 				SP.loc = organ
@@ -346,8 +346,7 @@ meteor_act
 						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 						for(var/obj/item/D in holding)
-							if(D)
-								src.drop_from_inventory(D)
+							unEquip(D)
 						playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 		//Apply blood
@@ -433,8 +432,7 @@ meteor_act
 					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 					var/list/holding = list(get_active_hand() = 40, get_inactive_hand() = 20)
 					for(var/obj/item/D in holding)
-						if(D)
-							drop_from_inventory(D)
+						unEquip(D)
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
 				if(!stat && (poise <= effective_force/3*I.mod_weight))
@@ -917,8 +915,8 @@ meteor_act
 	if(damtype != BURN && damtype != BRUTE) return
 
 	// The rig might soak this hit, if we're wearing one.
-	if(back && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		rig.take_hit(damage)
 
 	// We may also be taking a suit breach.

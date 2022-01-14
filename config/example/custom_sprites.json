@@ -1,23 +1,6 @@
 {
-    "robot":
-    [
-        {
-            "ckey": "ckey",
-            "sprite": "sprite"
-        }
-    ],
-    "aiholo":
-    [
-        {
-            "ckey": "ckey",
-            "sprite": "sprite"
-        }
-    ],
-    "aicore":
-    [
-        {
-            "ckey": "ckey",
-            "sprite": "sprite name without -ai and -ai-crash"
-        }
-    ]
+  "$schema": "https://raw.githubusercontent.com/ChaoticOnyx/OnyxBay/dev/config/schema/custom_sprites.schema.json",
+  "robot": [],
+  "ai_holo": [],
+  "ai_core": []
 }

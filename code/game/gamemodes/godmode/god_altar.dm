@@ -23,7 +23,7 @@
 			G.affecting.forceMove(get_turf(src))
 			G.affecting.Weaken(1)
 			user.visible_message("<span class='warning'>\The [user] throws \the [G.affecting] onto \the [src]!</span>")
-			user.drop_from_inventory(G)
+			G.delete_self()
 	else ..()
 
 /obj/structure/deity/altar/Process()

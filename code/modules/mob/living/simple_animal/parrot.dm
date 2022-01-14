@@ -43,7 +43,7 @@
 
 	speak_chance = 5//5% (5 in 100) chance every tick; So about once per 30 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/cracker/
+	meat_type = /obj/item/reagent_containers/food/snacks/cracker/
 
 	response_help  = "pets"
 	response_disarm = "gently moves aside"
@@ -86,7 +86,8 @@
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SAME
 
-	holder_type = /obj/item/weapon/holder/parrot
+	holder_type = /obj/item/holder/parrot
+	bodyparts = /decl/simple_animal_bodyparts/bird
 
 
 /mob/living/simple_animal/parrot/New()
@@ -680,8 +681,8 @@
 		return 0
 
 	if(!drop_gently)
-		if(istype(held_item, /obj/item/weapon/grenade))
-			var/obj/item/weapon/grenade/G = held_item
+		if(istype(held_item, /obj/item/grenade))
+			var/obj/item/grenade/G = held_item
 			G.loc = src.loc
 			G.detonate()
 			to_chat(src, "You let go of the [held_item]!")

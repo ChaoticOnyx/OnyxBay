@@ -173,7 +173,7 @@
 		QDEL_NULL_LIST(segments)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0)
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
 		qdel(src)
@@ -233,11 +233,28 @@
 				admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src] (blocked)")
 		return 1
 
+	var/impacted_organ = parse_zone(def_zone)
+	if(istype(target_mob, /mob/living/simple_animal))
+		var/mob/living/simple_animal/SM = target_mob
+		var/decl/simple_animal_bodyparts/body_plan = SM.bodyparts
+		if(body_plan != decls_repository.get_decl(/decl/simple_animal_bodyparts/humanoid)) // No need to override
+			if(length(body_plan.hit_zones))
+				impacted_organ = pick(body_plan.hit_zones)
+			else
+				impacted_organ = null
+
 	//hit messages
 	if(silenced)
-		to_chat(target_mob, "<span class='danger'>You've been hit in the [parse_zone(def_zone)] by \the [src]!</span>")
+		if(impacted_organ)
+			to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
+		else
+			to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
 	else
-		target_mob.visible_message("<span class='danger'>\The [target_mob] is hit by \the [src] in the [parse_zone(def_zone)]!</span>")//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		if(impacted_organ)
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		else
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
+
 		new /obj/effect/effect/hitmarker(target_mob.loc)
 		for(var/mob/O in hearers(7, get_turf(target_mob)))
 			if(O.client)

@@ -37,13 +37,22 @@
 
 	START_PROCESSING(SSobj, src)
 
-/obj/structure/blob/core/Destroy()
-	. = ..()
-
-	STOP_PROCESSING(SSobj, src)
-
 /obj/structure/blob/proc/can_expand()
-	return (core && !QDELETED(core))
+	if(QDELETED(core))
+		return FALSE
+
+	if(TICK_CHECK)
+		return FALSE
+
+	var/dist = get_dist(src, core)
+	if(dist > BLOB_MAX_DISTANCE_FROM_CORE)
+		var/chance_to_spawn = max(BLOB_MIN_CHANCE_TO_SPAWN, 100 - (dist - BLOB_MAX_DISTANCE_FROM_CORE) * 10)
+		if(prob(chance_to_spawn))
+			return TRUE
+
+		return FALSE
+
+	return TRUE
 
 /// When a blob is far than `BLOB_EFFICIENT_REGENERATION_DISTANCE` then a distance penalty applies to `BLOB_REGENERATION_MULTIPLIER`.
 /obj/structure/blob/proc/heal()
@@ -100,23 +109,15 @@
 	var/turf/current_loc = loc
 	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))
 		var/possible_loc = get_step(src, dir)
-
-		if(dir == UP)
-			if(istype(possible_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			// Skip not suitable for z-level checks
-			continue
-
-		if(dir == DOWN)
-			if(istype(current_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			continue
-
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
 								|| istype(possible_loc, /turf/simulated/wall)\
+								|| istype(possible_loc, /turf/simulated/mineral)\
 								|| (locate(/obj/structure/blob) in possible_loc)
+
+		if(dir == UP)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(possible_loc, /turf/simulated/open)
+		else if(dir == DOWN)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(current_loc, /turf/simulated/open)
 
 		if(loc_is_not_suitable)
 			continue
@@ -169,8 +170,8 @@
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	var/damage = 0
 
-	if (istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if (istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 
 		if (W.welding)
 			damage += BLOB_WELDING_BASE_DAMAGE

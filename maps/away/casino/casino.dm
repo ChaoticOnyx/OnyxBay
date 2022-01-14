@@ -91,3 +91,21 @@
 	expend()
 	pixel_x = rand(-10, 10)
 	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/a10mm/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/c9mm/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/shotgun/pellet/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)

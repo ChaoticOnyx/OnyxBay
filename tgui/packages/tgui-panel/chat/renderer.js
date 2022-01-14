@@ -142,10 +142,12 @@ class ChatRenderer {
       // Initialize the root node
       this.rootNode = node
     }
-    // Find scrollable parent
-    this.scrollNode = findNearestScrollableParent(this.rootNode)
-    this.scrollNode.addEventListener('scroll', this.handleScroll)
+
     setImmediate(() => {
+      // Find scrollable parent
+      this.scrollNode = findNearestScrollableParent(this.rootNode)
+      this.scrollNode.addEventListener('scroll', this.handleScroll)
+
       this.scrollToBottom()
     })
     // Flush the queue
@@ -194,6 +196,9 @@ class ChatRenderer {
   }
 
   scrollToBottom () {
+    if (!this.scrollNode) {
+      return
+    }
     // scrollHeight is always bigger than scrollTop and is
     // automatically clamped to the valid range.
     this.scrollNode.scrollTop = this.scrollNode.scrollHeight

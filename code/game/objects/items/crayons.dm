@@ -1,46 +1,46 @@
-/obj/item/weapon/pen/crayon/red
+/obj/item/pen/crayon/red
 	icon_state = "crayonred"
 	colour = "#da0000"
 	shadeColour = "#810c0c"
 	colourName = "red"
 	color_description = "red crayon"
 
-/obj/item/weapon/pen/crayon/orange
+/obj/item/pen/crayon/orange
 	icon_state = "crayonorange"
 	colour = "#ff9300"
 	shadeColour = "#a55403"
 	colourName = "orange"
 	color_description = "orange crayon"
 
-/obj/item/weapon/pen/crayon/yellow
+/obj/item/pen/crayon/yellow
 	icon_state = "crayonyellow"
 	colour = "#fff200"
 	shadeColour = "#886422"
 	colourName = "yellow"
 	color_description = "yellow crayon"
 
-/obj/item/weapon/pen/crayon/green
+/obj/item/pen/crayon/green
 	icon_state = "crayongreen"
 	colour = "#a8e61d"
 	shadeColour = "#61840f"
 	colourName = "green"
 	color_description = "green crayon"
 
-/obj/item/weapon/pen/crayon/blue
+/obj/item/pen/crayon/blue
 	icon_state = "crayonblue"
 	colour = "#00b7ef"
 	shadeColour = "#0082a8"
 	colourName = "blue"
 	color_description = "blue crayon"
 
-/obj/item/weapon/pen/crayon/purple
+/obj/item/pen/crayon/purple
 	icon_state = "crayonpurple"
 	colour = "#da00ff"
 	shadeColour = "#810cff"
 	colourName = "purple"
 	color_description = "purple crayon"
 
-/obj/item/weapon/pen/crayon/chalk
+/obj/item/pen/crayon/chalk
 	icon_state = "chalk"
 	colour = "#ffffff"
 	shadeColour = "#f2f2f2"
@@ -52,13 +52,13 @@
 		name = "white chalk"
 		desc = "A piece of regular white chalk. What else did you expect to see?"
 
-/obj/item/weapon/pen/crayon/random/Initialize()
+/obj/item/pen/crayon/random/Initialize()
 	..()
-	var/crayon_type = pick(subtypesof(/obj/item/weapon/pen/crayon) - /obj/item/weapon/pen/crayon/random)
+	var/crayon_type = pick(subtypesof(/obj/item/pen/crayon) - /obj/item/pen/crayon/random)
 	new crayon_type(loc)
 	return INITIALIZE_HINT_QDEL
 
-/obj/item/weapon/pen/crayon/mime
+/obj/item/pen/crayon/mime
 	icon_state = "crayonmime"
 	desc = "A very sad-looking crayon."
 	colour = "#ffffff"
@@ -67,7 +67,7 @@
 	color_description = "white crayon"
 	uses = 0
 
-/obj/item/weapon/pen/crayon/mime/attack_self(mob/living/user as mob) //inversion
+/obj/item/pen/crayon/mime/attack_self(mob/living/user as mob) //inversion
 	if(colour != "#ffffff" && shadeColour != "#000000")
 		colour = "#ffffff"
 		shadeColour = "#000000"
@@ -78,7 +78,7 @@
 		to_chat(user, "You will now draw in black and white with this crayon.")
 	return
 
-/obj/item/weapon/pen/crayon/rainbow
+/obj/item/pen/crayon/rainbow
 	icon_state = "crayonrainbow"
 	colour = "#fff000"
 	shadeColour = "#000fff"
@@ -86,17 +86,17 @@
 	color_description = "rainbow crayon"
 	uses = 0
 
-/obj/item/weapon/pen/crayon/rainbow/attack_self(mob/living/user as mob)
+/obj/item/pen/crayon/rainbow/attack_self(mob/living/user as mob)
 	colour = input(user, "Please select the main colour.", "Crayon colour") as color
 	shadeColour = input(user, "Please select the shade colour.", "Crayon colour") as color
 	update_popup(user)
 	return
 
-/obj/item/weapon/pen/crayon
+/obj/item/pen/crayon
 	var/datum/browser/popup
 	var/turf/last_target
 
-/obj/item/weapon/pen/crayon/proc/update_popup(mob/user)
+/obj/item/pen/crayon/proc/update_popup(mob/user)
 	if(!user)
 		user = usr
 	var/dat = "Write russian: "
@@ -130,7 +130,7 @@
 		popup.set_content(dat)
 		popup.update()
 
-/obj/item/weapon/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
+/obj/item/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
 		last_target = target
@@ -138,7 +138,7 @@
 		popup.open()
 	return
 
-/obj/item/weapon/pen/crayon/Topic(href, href_list, state = GLOB.physical_state)
+/obj/item/pen/crayon/Topic(href, href_list, state = GLOB.physical_state)
 	. = ..()
 	if(!last_target.Adjacent(usr))
 		to_chat(usr, SPAN_WARNING("You moved too far away!"))
@@ -165,7 +165,7 @@
 		last_target.add_fingerprint(usr)
 		reduce_uses()
 
-/obj/item/weapon/pen/crayon/attack(mob/living/carbon/M as mob, mob/user as mob)
+/obj/item/pen/crayon/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(istype(M) && M == user)
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
@@ -184,12 +184,12 @@
 	else
 		..()
 
-/obj/item/weapon/pen/crayon/dropped()
+/obj/item/pen/crayon/dropped()
 	. = ..()
 	if(popup)
 		popup.close()
 
-/obj/item/weapon/pen/crayon/proc/reduce_uses(amount = 1, action_text = "used up")
+/obj/item/pen/crayon/proc/reduce_uses(amount = 1, action_text = "used up")
 	if(uses)
 		uses -= amount
 		if(uses <= 0)

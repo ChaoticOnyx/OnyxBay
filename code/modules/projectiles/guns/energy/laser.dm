@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/energy/laser
+/obj/item/gun/energy/laser
 	name = "laser rifle"
 	desc = "A Hephaestus Industries G40E rifle, designed to kill with concentrated energy blasts."
 	icon_state = "laser"
@@ -23,32 +23,32 @@
 		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid)
 	)
 
-/obj/item/weapon/gun/energy/laser/mounted
+/obj/item/gun/energy/laser/mounted
 	desc = "A modification Hephaestus Industries G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
 	self_recharge = 1
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
 	icon_state = "blaser"
 
-/obj/item/weapon/gun/energy/laser/mounted/cyborg
+/obj/item/gun/energy/laser/mounted/cyborg
 	max_shots = 6
 	recharge_time = 10 //Time it takes for shots to recharge (in ticks)
 	var/locked = 1
 
 
-/obj/item/weapon/gun/energy/laser/mounted/cyborg/afterattack(atom/A, mob/living/user)
+/obj/item/gun/energy/laser/mounted/cyborg/afterattack(atom/A, mob/living/user)
 	if (locked)
 		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
 		return
 	..()
 
-/obj/item/weapon/gun/energy/laser/mounted/cyborg/attack(atom/A, mob/living/user)
+/obj/item/gun/energy/laser/mounted/cyborg/attack(atom/A, mob/living/user)
 	if (locked)
 		to_chat(user, "<span class='warning'>Current security protocols are not allowing you to use [src].</span>")
 		return
 	..()
 
-/obj/item/weapon/gun/energy/laser/practice
+/obj/item/gun/energy/laser/practice
 	name = "practice laser rifle"
 	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."
 	icon_state = "laserp"
@@ -58,10 +58,10 @@
 
 	firemodes = list()
 
-/obj/item/weapon/gun/energy/laser/practice/proc/hacked()
+/obj/item/gun/energy/laser/practice/proc/hacked()
 	return projectile_type != /obj/item/projectile/beam/practice
 
-/obj/item/weapon/gun/energy/laser/practice/emag_act(remaining_charges, mob/user, emag_source)
+/obj/item/gun/energy/laser/practice/emag_act(remaining_charges, mob/user, emag_source)
 	if(hacked())
 		return NO_EMAG_ACT
 	to_chat(user, "<span class='warning'>You disable the safeties on [src] and crank the output to the lethal levels.</span>")
@@ -71,7 +71,7 @@
 	max_shots = rand(3,6) //will melt down after those
 	return 1
 
-/obj/item/weapon/gun/energy/laser/practice/handle_post_fire(mob/user, atom/target, pointblank=0, reflex=0)
+/obj/item/gun/energy/laser/practice/handle_post_fire(mob/user, atom/target, pointblank=0, reflex=0)
 	..()
 	if(hacked())
 		max_shots--
@@ -80,7 +80,7 @@
 			desc += " The optical pathway is melted and useless."
 			projectile_type = null
 
-/obj/item/weapon/gun/energy/retro
+/obj/item/gun/energy/retro
 	name = "retro laser"
 	icon_state = "retro"
 	item_state = "retro"
@@ -94,7 +94,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 
-/obj/item/weapon/gun/energy/captain
+/obj/item/gun/energy/captain
 	name = "antique laser gun"
 	icon_state = "caplaser"
 	item_state = "caplaser"
@@ -111,7 +111,7 @@
 	one_hand_penalty = 1 //a little bulky
 	self_recharge = 1
 
-/obj/item/weapon/gun/energy/lasercannon
+/obj/item/gun/energy/lasercannon
 	name = "laser cannon"
 	desc = "With the laser cannon, the lasing medium is enclosed in a tube lined with uranium-235 and subjected to high neutron flux in a nuclear reactor core. This incredible technology may help YOU achieve high excitation rates with small laser volumes!"
 	icon_state = "lasercannon"
@@ -136,7 +136,7 @@
 		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy)
 	)
 
-/obj/item/weapon/gun/energy/lasercannon/mounted
+/obj/item/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"
 	self_recharge = 1
 	use_external_power = 1
@@ -144,7 +144,7 @@
 	accuracy = 0 //mounted laser cannons don't need any help, thanks
 	one_hand_penalty = 0
 
-/obj/item/weapon/gun/energy/xray
+/obj/item/gun/energy/xray
 	name = "x-ray laser carbine"
 	desc = "A high-power laser gun capable of emitting concentrated x-ray blasts, that are able to penetrate laser-resistant armor much more readily than standard photonic beams."
 	icon_state = "xray"
@@ -163,7 +163,7 @@
 	mod_reach = 0.8
 	mod_handy = 1.0
 
-/obj/item/weapon/gun/energy/xray/pistol
+/obj/item/gun/energy/xray/pistol
 	name = "x-ray laser gun"
 	icon_state = "oldxray"
 	item_state = "oldxray"
@@ -179,7 +179,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 
-/obj/item/weapon/gun/energy/sniperrifle
+/obj/item/gun/energy/sniperrifle
 	name = "marksman energy rifle"
 	desc = "The HI DMR 9E is an older design of Hephaestus Industries. A designated marksman rifle capable of shooting powerful ionized beams, this is a weapon to kill from a distance."
 	icon_state = "sniper"
@@ -200,11 +200,11 @@
 	scoped_accuracy = 0
 	wielded_item_state = "gun_wielded"
 
-/obj/item/weapon/gun/energy/sniperrifle/update_icon()
+/obj/item/gun/energy/sniperrifle/update_icon()
 	..()
 	item_state_slots[slot_back_str] = icon_state //so that the on-back overlay uses the different charged states
 
-/obj/item/weapon/gun/energy/sniperrifle/verb/scope()
+/obj/item/gun/energy/sniperrifle/verb/scope()
 	set category = "Object"
 	set name = "Use Scope"
 	set popup_menu = 1
@@ -213,7 +213,7 @@
 
 ////////Laser Tag////////////////////
 
-/obj/item/weapon/gun/energy/lasertag
+/obj/item/gun/energy/lasertag
 	name = "laser tag gun"
 	item_state = "laser"
 	desc = "Standard issue weapon of the Imperial Guard."
@@ -228,20 +228,20 @@
 	var/required_vest
 	combustion = FALSE
 
-/obj/item/weapon/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
+/obj/item/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))
 		if(!istype(M.wear_suit, required_vest))
 			to_chat(M, "<span class='warning'>You need to be wearing your laser tag vest!</span>")
 			return 0
 	return ..()
 
-/obj/item/weapon/gun/energy/lasertag/blue
+/obj/item/gun/energy/lasertag/blue
 	icon_state = "bluetag"
 	item_state = "bluetag"
 	projectile_type = /obj/item/projectile/beam/lastertag/blue
 	required_vest = /obj/item/clothing/suit/bluetag
 
-/obj/item/weapon/gun/energy/lasertag/red
+/obj/item/gun/energy/lasertag/red
 	icon_state = "redtag"
 	item_state = "redtag"
 	projectile_type = /obj/item/projectile/beam/lastertag/red

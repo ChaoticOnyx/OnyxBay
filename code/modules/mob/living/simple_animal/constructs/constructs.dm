@@ -45,7 +45,7 @@
 	update_icon()
 
 /mob/living/simple_animal/construct/death(gibbed, deathmessage, show_dead_message)
-	new /obj/item/weapon/ectoplasm (src.loc)
+	new /obj/item/ectoplasm (src.loc)
 	..(null,"collapses in a shattered heap.","The bonds tying you to this mortal plane have been severed.")
 	ghostize()
 	qdel(src)
@@ -79,7 +79,7 @@
 
 	. += "\n[msg]"
 
-/obj/item/weapon/ectoplasm
+/obj/item/ectoplasm
 	name = "ectoplasm"
 	desc = "Spooky."
 	gender = PLURAL
@@ -101,7 +101,7 @@
 	health = 250
 	speak_emote = list("rumbles")
 	response_harm   = "harmlessly punches"
-	harm_intent_damage = 0
+	harm_intent_damage = 2.5
 	melee_damage_lower = 30
 	melee_damage_upper = 30
 	attacktext = "smashed their armoured gauntlet into"
@@ -113,6 +113,7 @@
 	resistance = 10
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 /mob/living/simple_animal/construct/armoured/Life()
 	weakened = 0
@@ -139,6 +140,8 @@
 
 	return (..(P))
 
+/decl/simple_animal_bodyparts/juggernaut
+	hit_zones = list("body", "left pauldron", "right pauldron", "left arm", "right arm", "eye", "head", "crystaline spike")
 
 
 ////////////////////////Wraith/////////////////////////////////////////////
@@ -163,6 +166,10 @@
 	see_in_dark = 7
 	attack_sound = 'sound/weapons/rapidslice.ogg'
 	construct_spells = list(/datum/spell/targeted/ethereal_jaunt/shift)
+	bodyparts = /decl/simple_animal_bodyparts/wraith
+
+/decl/simple_animal_bodyparts/wraith
+	hit_zones = list("body", "eye", "crystaline spike", "left claw", "right claw")
 
 
 /////////////////////////////Artificer/////////////////////////
@@ -186,6 +193,7 @@
 	speed = 0
 	environment_smash = 1
 	attack_sound = 'sound/weapons/rapidslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/artificer
 	construct_spells = list(/datum/spell/aoe_turf/conjure/construct/lesser,
 							/datum/spell/aoe_turf/conjure/wall,
 							/datum/spell/aoe_turf/conjure/floor,
@@ -193,6 +201,8 @@
 							/datum/spell/aoe_turf/conjure/pylon
 							)
 
+/decl/simple_animal_bodyparts/artificer
+	hit_zones = list("body", "carapace", "right manipulator", "left manipulator", "upper left appendage", "upper right appendage", "eye")
 
 /////////////////////////////Behemoth/////////////////////////
 
@@ -220,6 +230,7 @@
 	var/max_energy = 1000
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 ////////////////////////Harvester////////////////////////////////
 
@@ -242,10 +253,14 @@
 	environment_smash = 1
 	see_in_dark = 7
 	attack_sound = 'sound/weapons/pierce.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/harvester
 
 	construct_spells = list(
 			/datum/spell/targeted/harvest
 		)
+
+/decl/simple_animal_bodyparts/harvester
+	hit_zones = list("cephalothorax", "eye", "carapace", "energy crystal", "mandible")
 
 ////////////////Glow//////////////////
 /mob/living/simple_animal/construct/proc/add_glow()

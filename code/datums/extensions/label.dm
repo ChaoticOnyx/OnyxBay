@@ -90,3 +90,7 @@
 		if(has_extension(src, /datum/extension/labels))
 			var/datum/extension/labels/L = get_extension(src, /datum/extension/labels)
 			L.RemoveLabel(usr, label)
+			post_remove_label()
+
+/atom/proc/post_remove_label()
+	return

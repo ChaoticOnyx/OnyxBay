@@ -44,7 +44,7 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 /obj/item/proc/can_contaminate()
 	//Clothing and backpacks can be contaminated.
 	if(obj_flags & ITEM_FLAG_PLASMAGUARD) return 0
-	else if(istype(src,/obj/item/weapon/storage/backpack)) return 0 //Cannot be washed :(
+	else if(istype(src,/obj/item/storage/backpack)) return 0 //Cannot be washed :(
 	else if(istype(src,/obj/item/clothing)) return 1
 
 /obj/item/proc/contaminate()
@@ -69,7 +69,7 @@ var/image/contamination_overlay = image('icons/effects/contamination.dmi')
 		if(prob(1)) suit_contamination() //Plasma can sometimes get through such an open suit.
 
 //Cannot wash backpacks currently.
-//	if(istype(back,/obj/item/weapon/storage/backpack))
+//	if(istype(back,/obj/item/storage/backpack))
 //		back.contaminate()
 
 /mob/proc/pl_effects()

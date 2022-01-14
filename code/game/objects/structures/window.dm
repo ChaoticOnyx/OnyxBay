@@ -18,7 +18,7 @@
 	var/reinf = 0
 	var/polarized = 0
 	var/basestate
-	var/shardtype = /obj/item/weapon/material/shard
+	var/shardtype = /obj/item/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
@@ -312,6 +312,9 @@
 	if(usr.incapacitated())
 		return 0
 
+	if(is_full_window()) // No point in rotating a window if it is full
+		return 0
+
 	if(anchored)
 		to_chat(usr, "It is fastened to the floor therefore you can't rotate it!")
 		return 0
@@ -329,6 +332,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -453,7 +459,7 @@
 	basestate = "plasmawindow"
 	explosion_block = 1
 	icon_state = "plasmawindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
 	maximal_heat = T0C + 2000
 	damage_per_fire_tick = 1.0
@@ -464,7 +470,7 @@
 	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
 	basestate = "plasmarwindow"
 	icon_state = "plasmarwindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	explosion_block = 2

@@ -1,25 +1,25 @@
 GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
+	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
-	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
-	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
+	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/rcd),
+	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
 	"a captain's jumpsuit" =                            list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
 	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
  	"the station's blueprints" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
 	"a sample of metroid extract" =                     list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
-	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/snacks/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
 	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/weapon/reagent_containers/hypospray),
-	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/pinpointer),
-	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/ionrifle/small),
-	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/projectile/automatic/wt550),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray),
+	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
+	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
+	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/automatic/wt550),
 	"an riot helmet" =                                  list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
 	"an riot armor vest" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
 	"an ballistic helmet" =                             list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ballistic),
@@ -136,11 +136,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 // A contract to steal a specific item - allows you to check all contents (recursively) for the target item
 /datum/antag_contract/item
 
-/datum/antag_contract/item/proc/on_container(obj/item/weapon/storage/briefcase/std/container)
+/datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
 		complete(container.uplink)
 
-/datum/antag_contract/item/proc/check(obj/item/weapon/storage/container)
+/datum/antag_contract/item/proc/check(obj/item/storage/container)
 	return check_contents(container.GetAllContents())
 
 /datum/antag_contract/item/proc/check_contents(list/contents)
@@ -210,7 +210,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/implant/can_place()
 	return ..() && target_mind
 
-/datum/antag_contract/implant/proc/check(obj/item/weapon/implant/spy/implant)
+/datum/antag_contract/implant/proc/check(obj/item/implant/spy/implant)
 	if(completed)
 		return
 	if(implant.imp_in && implant.imp_in.mind == target_mind)
@@ -317,7 +317,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return ..() && istype(AI)
 
 /datum/antag_contract/item/steal_ai/check_contents(list/contents)
-	var/obj/item/weapon/aicard/card = locate() in contents
+	var/obj/item/aicard/card = locate() in contents
 	return card?.carded_ai == AI
 
 /datum/antag_contract/item/blood
@@ -345,7 +345,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
-	for(var/obj/item/weapon/reagent_containers/C in contents)
+	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
 		if(!data || (data["blood_DNA"] in samples))
 			continue
@@ -487,7 +487,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
-	for(var/obj/item/weapon/spacecash/cash in contents)
+	for(var/obj/item/spacecash/cash in contents)
 		received += cash.worth
 	return received == sum
 
@@ -544,7 +544,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	++counter
 
 /datum/antag_contract/item/research/check_contents(list/contents)
-	for(var/obj/item/weapon/disk/design_disk/D in contents)
+	for(var/obj/item/disk/design_disk/D in contents)
 		if(D.blueprint.type in targets)
 			return TRUE
 	return FALSE

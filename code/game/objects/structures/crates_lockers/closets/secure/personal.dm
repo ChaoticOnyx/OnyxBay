@@ -6,7 +6,7 @@
 
 /obj/structure/closet/secure_closet/personal/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack, /obj/item/weapon/storage/backpack/satchel/grey)),
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack, /obj/item/storage/backpack/satchel/grey)),
 		/obj/item/device/radio/headset
 	)
 
@@ -27,13 +27,13 @@
 	icon_off = "cabinetdetective_broken"
 
 /obj/structure/closet/secure_closet/personal/cabinet/WillContain()
-	return list(/obj/item/weapon/storage/backpack/satchel/grey/withwallet, /obj/item/device/radio/headset)
+	return list(/obj/item/storage/backpack/satchel/grey/withwallet, /obj/item/device/radio/headset)
 
-/obj/structure/closet/secure_closet/personal/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/closet/secure_closet/personal/attackby(obj/item/W, mob/user)
 	if (src.opened)
 		..()
 	else if(W.GetIdCard())
-		var/obj/item/weapon/card/id/I = W.GetIdCard()
+		var/obj/item/card/id/I = W.GetIdCard()
 
 		if(!I || !I.registered_name)
 			return
@@ -47,7 +47,7 @@
 	else
 		..()
 
-/obj/structure/closet/secure_closet/personal/CanToggleLock(mob/user, obj/item/weapon/card/id/id_card)
+/obj/structure/closet/secure_closet/personal/CanToggleLock(mob/user, obj/item/card/id/id_card)
 	return ..() || (istype(id_card) && id_card.registered_name && (!registered_name || (registered_name == id_card.registered_name)))
 
 /obj/structure/closet/secure_closet/personal/verb/reset()
