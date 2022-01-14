@@ -90,9 +90,7 @@
 
 /obj/item/integrated_circuit/manipulation/grenade/proc/before_activation_action()
 	grenade_activated = FALSE
-	var/obj/item/weapon/grenade/G = attached_grenade
 	detach_grenade()
-	G.activate()
 
 /obj/item/integrated_circuit/manipulation/grenade/do_work()
 	if(attached_grenade && !attached_grenade.active && !grenade_activated)
