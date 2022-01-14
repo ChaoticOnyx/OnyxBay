@@ -11,7 +11,7 @@
 		/obj/item/canvas/nineteen_nineteen,
 		/obj/item/canvas/twentyfour_twentyfour,
 		/obj/item/canvas = 2,
-		/obj/item/weapon/pen/crayon/rainbow = 2
+		/obj/item/pen/crayon/rainbow = 2
 	)
 	containername = "Arts Crate"
 
@@ -38,29 +38,29 @@
 
 /decl/hierarchy/supply_pack/operations/artscrafts
 	name = "Arts and Crafts supplies"
-	contains = list(/obj/item/weapon/storage/fancy/crayons,
+	contains = list(/obj/item/storage/fancy/crayons,
 	/obj/item/device/camera,
 	/obj/item/device/camera_film = 2,
-	/obj/item/weapon/storage/photo_album,
-	/obj/item/weapon/packageWrap,
-	/obj/item/weapon/reagent_containers/glass/paint/red,
-	/obj/item/weapon/reagent_containers/glass/paint/green,
-	/obj/item/weapon/reagent_containers/glass/paint/blue,
-	/obj/item/weapon/reagent_containers/glass/paint/yellow,
-	/obj/item/weapon/reagent_containers/glass/paint/purple,
-	/obj/item/weapon/reagent_containers/glass/paint/black,
-	/obj/item/weapon/reagent_containers/glass/paint/white,
-	/obj/item/weapon/contraband/poster,
-	/obj/item/weapon/wrapping_paper = 3)
+	/obj/item/storage/photo_album,
+	/obj/item/packageWrap,
+	/obj/item/reagent_containers/glass/paint/red,
+	/obj/item/reagent_containers/glass/paint/green,
+	/obj/item/reagent_containers/glass/paint/blue,
+	/obj/item/reagent_containers/glass/paint/yellow,
+	/obj/item/reagent_containers/glass/paint/purple,
+	/obj/item/reagent_containers/glass/paint/black,
+	/obj/item/reagent_containers/glass/paint/white,
+	/obj/item/contraband/poster,
+	/obj/item/wrapping_paper = 3)
 	cost = 10
 	containername = "\improper Arts and Crafts crate"
 
 /decl/hierarchy/supply_pack/operations/contraband
 	num_contained = 5
 	contains = list(/obj/item/seeds/bloodtomatoseed,
-					/obj/item/weapon/storage/pill_bottle/zoom,
-					/obj/item/weapon/storage/pill_bottle/happy,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/pwine)
+					/obj/item/storage/pill_bottle/zoom,
+					/obj/item/storage/pill_bottle/happy,
+					/obj/item/reagent_containers/food/drinks/bottle/pwine)
 
 	name = "Contraband crate"
 	cost = 30

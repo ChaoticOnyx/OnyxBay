@@ -13,7 +13,7 @@
 	my_hat = null
 	update_icon()
 
-/obj/structure/christmas/snowman/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/christmas/snowman/attackby(obj/item/W as obj, mob/user as mob)
 	var/can_hang = 0
 	for (var/T in allowed)
 		if(istype(W,T))

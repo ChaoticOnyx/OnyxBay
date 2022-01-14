@@ -15,7 +15,7 @@
 		/obj/item/clothing/suit/bio_suit/general,
 		/obj/item/clothing/head/bio_hood/general,
 		/obj/item/clothing/mask/gas/old,
-		/obj/item/weapon/tank/emergency/oxygen/engi,
+		/obj/item/tank/emergency/oxygen/engi,
 	)
 
 /obj/structure/closet/l3closet/general/multi/WillContain()
@@ -23,7 +23,7 @@
 		/obj/item/clothing/head/bio_hood/general = 5,
 		/obj/item/clothing/mask/gas/old = 5,
 		/obj/item/clothing/suit/bio_suit/general = 5,
-		/obj/item/weapon/tank/emergency/oxygen/engi = 5
+		/obj/item/tank/emergency/oxygen/engi = 5
 	))
 
 
@@ -37,7 +37,7 @@
 		/obj/item/clothing/suit/bio_suit/virology,
 		/obj/item/clothing/head/bio_hood/virology,
 		/obj/item/clothing/mask/gas/clear,
-		/obj/item/weapon/tank/oxygen
+		/obj/item/tank/oxygen
 	)
 
 
@@ -51,7 +51,7 @@
 		/obj/item/clothing/suit/bio_suit/security,
 		/obj/item/clothing/head/bio_hood/security,
 		/obj/item/clothing/mask/gas/clear,
-		/obj/item/weapon/tank/emergency/oxygen/engi
+		/obj/item/tank/emergency/oxygen/engi
 	)
 
 /obj/structure/closet/l3closet/janitor
@@ -64,7 +64,7 @@
 		/obj/item/clothing/suit/bio_suit/janitor,
 		/obj/item/clothing/head/bio_hood/janitor,
 		/obj/item/clothing/mask/gas/clear,
-		/obj/item/weapon/tank/emergency/oxygen/engi
+		/obj/item/tank/emergency/oxygen/engi
 	)
 
 /obj/structure/closet/l3closet/scientist
@@ -77,7 +77,7 @@
 		/obj/item/clothing/suit/bio_suit/scientist,
 		/obj/item/clothing/head/bio_hood/scientist,
 		/obj/item/clothing/mask/gas,
-		/obj/item/weapon/tank/emergency/oxygen/double,
+		/obj/item/tank/emergency/oxygen/double,
 	)
 
 /obj/structure/closet/l3closet/scientist/multi/WillContain()
@@ -85,7 +85,7 @@
 		/obj/item/clothing/head/bio_hood/scientist = 5,
 		/obj/item/clothing/suit/bio_suit/scientist = 5,
 		/obj/item/clothing/mask/gas = 5,
-		/obj/item/weapon/tank/emergency/oxygen/double = 5,
+		/obj/item/tank/emergency/oxygen/double = 5,
 	))
 
 /obj/structure/closet/l3closet/command
@@ -98,5 +98,5 @@
 		/obj/item/clothing/suit/bio_suit/cmo,
 		/obj/item/clothing/head/bio_hood/cmo,
 		/obj/item/clothing/mask/gas/old,
-		/obj/item/weapon/tank/emergency/oxygen/engi
+		/obj/item/tank/emergency/oxygen/engi
 	)

@@ -14,36 +14,36 @@
 	var/list/queued_dishes = list()
 	var/make_time = 0
 	var/start_making = 0
-	var/list/menu = list("nutrition slab" = /obj/item/weapon/reagent_containers/food/snacks/tofu,
-					 "turkey substitute" = /obj/item/weapon/reagent_containers/food/snacks/tofurkey,
-					 "waffle substitute" = /obj/item/weapon/reagent_containers/food/snacks/soylenviridians,
-					 "nutrition fries" = /obj/item/weapon/reagent_containers/food/snacks/fries,
-					 "liquid nutrition" = /obj/item/weapon/reagent_containers/food/snacks/soydope,
-					 "pudding substitute" = /obj/item/weapon/reagent_containers/food/snacks/ricepudding)
+	var/list/menu = list("nutrition slab" = /obj/item/reagent_containers/food/snacks/tofu,
+					 "turkey substitute" = /obj/item/reagent_containers/food/snacks/tofurkey,
+					 "waffle substitute" = /obj/item/reagent_containers/food/snacks/soylenviridians,
+					 "nutrition fries" = /obj/item/reagent_containers/food/snacks/fries,
+					 "liquid nutrition" = /obj/item/reagent_containers/food/snacks/soydope,
+					 "pudding substitute" = /obj/item/reagent_containers/food/snacks/ricepudding)
 
 /obj/machinery/food_replicator/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/replicator(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src) //used to hold the biomass
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src) //used to cook the food
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src) //used to deconstruct the stuff
+	component_parts += new /obj/item/circuitboard/replicator(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src) //used to hold the biomass
+	component_parts += new /obj/item/stock_parts/manipulator(src) //used to cook the food
+	component_parts += new /obj/item/stock_parts/micro_laser(src) //used to deconstruct the stuff
 
 	RefreshParts()
 
 /obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/S = O
+	if(istype(O, /obj/item/reagent_containers/food/snacks))
+		var/obj/item/reagent_containers/food/snacks/S = O
 		user.drop_item(O)
 		for(var/datum/reagent/nutriment/N in S.reagents.reagent_list)
 			biomass = Clamp(biomass + round(N.volume*deconstruct_eff),1,biomass_max)
 		qdel(O)
-	else if(istype(O, /obj/item/weapon/storage/plants))
+	else if(istype(O, /obj/item/storage/plants))
 		if(!O.contents || !O.contents.len)
 			return
 		to_chat(user, "You empty \the [O] into \the [src]")
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
-			var/obj/item/weapon/storage/S = O
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in O.contents)
+			var/obj/item/storage/S = O
 			S.remove_from_storage(G, null)
 			for(var/datum/reagent/nutriment/N in G.reagents.reagent_list)
 				biomass = Clamp(biomass + round(N.volume*deconstruct_eff),1,biomass_max)
@@ -120,12 +120,12 @@
 	deconstruct_eff = 0
 	biomass_max = 0
 	biomass_per = 20
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/weapon/stock_parts/matter_bin))
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(istype(P, /obj/item/stock_parts/matter_bin))
 			biomass_max += 100 * P.rating
-		if(istype(P, /obj/item/weapon/stock_parts/manipulator))
+		if(istype(P, /obj/item/stock_parts/manipulator))
 			biomass_per = max(1, biomass_per - 5 * P.rating)
-		if(istype(P, /obj/item/weapon/stock_parts/micro_laser))
+		if(istype(P, /obj/item/stock_parts/micro_laser))
 			deconstruct_eff += 0.5 * P.rating
 	biomass = min(biomass,biomass_max)
 

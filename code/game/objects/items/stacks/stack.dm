@@ -132,7 +132,7 @@
 					to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
 					return
 
-	var/obj/item/weapon/weldingtool/WT
+	var/obj/item/weldingtool/WT
 	if(!uses_charge && craft_tool == 2)
 		WT = user.get_active_hand()
 

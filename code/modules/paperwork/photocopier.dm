@@ -64,7 +64,7 @@
 			if(stat & (BROKEN|NOPOWER))
 				break
 			use_power_oneoff(active_power_usage)
-			if (istype(copyitem, /obj/item/weapon/paper))
+			if (istype(copyitem, /obj/item/paper))
 				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				copy(copyitem)
 				sleep(15)
@@ -72,17 +72,17 @@
 				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				canvascopy(copyitem)
 				sleep(15)
-			else if (istype(copyitem, /obj/item/weapon/photo))
+			else if (istype(copyitem, /obj/item/photo))
 				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				photocopy(copyitem)
 				sleep(15)
-			else if (istype(copyitem, /obj/item/weapon/paper_bundle))
+			else if (istype(copyitem, /obj/item/paper_bundle))
 				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				var/obj/item/weapon/paper_bundle/B = bundlecopy(copyitem)
+				var/obj/item/paper_bundle/B = bundlecopy(copyitem)
 				sleep(15*B.pages.len)
-			else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+			else if (istype(copyitem, /obj/item/complaint_folder))
 				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
-				var/obj/item/weapon/complaint_folder/CF = complaintcopy(copyitem)
+				var/obj/item/complaint_folder/CF = complaintcopy(copyitem)
 				sleep(15 * CF.contents.len)
 			else
 				to_chat(usr, SPAN("warning", "\The [copyitem] can't be copied by \the [src]."))
@@ -115,11 +115,11 @@
 
 			if(!camera)
 				return
-			var/obj/item/weapon/photo/selection = camera.selectpicture()
+			var/obj/item/photo/selection = camera.selectpicture()
 			if (!selection)
 				return
 
-			var/obj/item/weapon/photo/p = photocopy(selection)
+			var/obj/item/photo/p = photocopy(selection)
 			if (p.desc == "")
 				p.desc += "Copied by [tempAI.name]"
 			else
@@ -129,7 +129,7 @@
 		updateUsrDialog()
 
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo) || istype(O, /obj/item/weapon/paper_bundle) || istype(O, /obj/item/weapon/complaint_folder) || istype(O, /obj/item/canvas))
+	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo) || istype(O, /obj/item/paper_bundle) || istype(O, /obj/item/complaint_folder) || istype(O, /obj/item/canvas))
 		if(!copyitem)
 			user.drop_item()
 			copyitem = O
@@ -173,8 +173,8 @@
 					toner = 0
 	return
 
-/obj/machinery/photocopier/proc/copy(obj/item/weapon/paper/copy, need_toner=1)
-	var/obj/item/weapon/paper/c = copy.copy(loc, generate_stamps = FALSE)
+/obj/machinery/photocopier/proc/copy(obj/item/paper/copy, need_toner=1)
+	var/obj/item/paper/c = copy.copy(loc, generate_stamps = FALSE)
 	c.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale)
 	if(need_toner)
 		toner--
@@ -183,8 +183,8 @@
 	c.update_icon()
 	return c
 
-/obj/machinery/photocopier/proc/complaintcopy(obj/item/weapon/complaint_folder/copy, need_toner=1)
-	var/obj/item/weapon/complaint_folder/CF = copy.copy(loc, generate_stamps = !need_toner)
+/obj/machinery/photocopier/proc/complaintcopy(obj/item/complaint_folder/copy, need_toner=1)
+	var/obj/item/complaint_folder/CF = copy.copy(loc, generate_stamps = !need_toner)
 	if (need_toner)
 		var/toner_left = toner
 		toner_left = CF.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale, amount = toner_left)
@@ -208,8 +208,8 @@
 		toner = 0
 		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
 
-/obj/machinery/photocopier/proc/photocopy(obj/item/weapon/photo/photocopy, need_toner=1)
-	var/obj/item/weapon/photo/p = photocopy.copy()
+/obj/machinery/photocopier/proc/photocopy(obj/item/photo/photocopy, need_toner=1)
+	var/obj/item/photo/p = photocopy.copy()
 	p.forceMove(get_turf(src))
 
 	if(toner > 10)	//plenty of toner, go straight greyscale
@@ -227,20 +227,20 @@
 	return p
 
 //If need_toner is 0, the copies will still be lightened when low on toner, however it will not be prevented from printing. TODO: Implement print queues for fax machines and get rid of need_toner
-/obj/machinery/photocopier/proc/bundlecopy(obj/item/weapon/paper_bundle/bundle, need_toner=1)
-	var/obj/item/weapon/paper_bundle/p = new /obj/item/weapon/paper_bundle (src)
-	for(var/obj/item/weapon/W in bundle.pages)
+/obj/machinery/photocopier/proc/bundlecopy(obj/item/paper_bundle/bundle, need_toner=1)
+	var/obj/item/paper_bundle/p = new /obj/item/paper_bundle (src)
+	for(var/obj/item/I in bundle.pages)
 		if(toner <= 0 && need_toner)
 			toner = 0
 			visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
 			break
 
-		if(istype(W, /obj/item/weapon/paper))
-			W = copy(W)
-		else if(istype(W, /obj/item/weapon/photo))
-			W = photocopy(W)
-		W.loc = p
-		p.pages += W
+		if(istype(I, /obj/item/paper))
+			I = copy(I)
+		else if(istype(I, /obj/item/photo))
+			I = photocopy(I)
+		I.loc = p
+		p.pages += I
 
 	p.loc = src.loc
 	p.update_icon()

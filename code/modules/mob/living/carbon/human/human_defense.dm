@@ -73,7 +73,7 @@ meteor_act
 			if(prob(50))
 				organ.sever_artery()
 			else
-				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 				SP.loc = organ
@@ -915,8 +915,8 @@ meteor_act
 	if(damtype != BURN && damtype != BRUTE) return
 
 	// The rig might soak this hit, if we're wearing one.
-	if(back && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		rig.take_hit(damage)
 
 	// We may also be taking a suit breach.

@@ -114,7 +114,7 @@
 		ui.open()
 
 /obj/item/canvas/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon/tape_roll))
+	if(istype(I, /obj/item/tape_roll))
 		to_chat(user, SPAN_NOTICE("You add some tape to back of canvas."))
 		taped = TRUE
 	if(user.a_intent == I_HELP)
@@ -257,11 +257,11 @@
 /obj/item/canvas/proc/get_paint_tool_color(obj/item/I)
 	if(!I)
 		return
-	if(istype(I, /obj/item/weapon/pen/crayon))
-		var/obj/item/weapon/pen/crayon/crayon = I
+	if(istype(I, /obj/item/pen/crayon))
+		var/obj/item/pen/crayon/crayon = I
 		return crayon.colour
-	else if(istype(I, /obj/item/weapon/pen))
-		var/obj/item/weapon/pen/P = I
+	else if(istype(I, /obj/item/pen))
+		var/obj/item/pen/P = I
 		switch(P.colour)
 			if("black")
 				return COLOR_BLACK
@@ -270,7 +270,7 @@
 			if("red")
 				return COLOR_RED
 		return P.colour
-	else if(istype(I, /obj/item/weapon/soap) || istype(I, /obj/item/weapon/reagent_containers/glass/rag))
+	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/glass/rag))
 		return canvas_color
 
 /obj/item/canvas/proc/save_canvas()

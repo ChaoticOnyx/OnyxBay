@@ -46,27 +46,30 @@
 		if(!establish_old_db_connection())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
-			var/DBQuery/query = sql_query({"
-				SELECT
-					id,
-					ckey,
-					title,
-					data,
-					type
-				FROM
-					art_library
-				ORDER BY
-					$sort_by
-				"}, dbcon_old, list(sort_by = sort_by))
+			try
+				var/DBQuery/query = sql_query({"
+					SELECT
+						id,
+						ckey,
+						title,
+						data,
+						type
+					FROM
+						art_library
+					ORDER BY
+						$sort_by
+					"}, dbcon_old, list(sort_by = sort_by))
 
-			while(query.NextRow())
-				all_entries.Add(list(list(
-				"id" = query.item[1],
-				"ckey" = query.item[2],
-				"title" = query.item[3],
-				"data" = query.item[4],
-				"type" = query.item[5]
-			)))
+				while(query.NextRow())
+					all_entries.Add(list(list(
+					"id" = query.item[1],
+					"ckey" = query.item[2],
+					"title" = query.item[3],
+					"data" = query.item[4],
+					"type" = query.item[5]
+				)))
+			catch
+				error_message = "Unable to receive arts form External Archive. Please contact your system administrator for assistance."
 		data["art_list"] = all_entries
 		data["scanner"] = istype(scanner)
 
@@ -186,40 +189,43 @@
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return TRUE
 
-	var/DBQuery/query = sql_query("SELECT * FROM art_library WHERE id = $id", dbcon_old, list(id = id))
+	try
+		var/DBQuery/query = sql_query("SELECT * FROM art_library WHERE id = $id", dbcon_old, list(id = id))
 
-	while(query.NextRow())
-		var/art_type = query.item[6]
-		var/canvas_type = canvas_state_to_type[art_type]
-		var/obj/item/canvas/preview_canvas = new canvas_type()
-		var/art_icon
-		preview_canvas.icon_generated = FALSE
-		preview_canvas.apply_canvas_data(query.item[4])
-		preview_canvas.paint_image()
-		var/icon/pre_icon = getFlatIcon(preview_canvas)
-		switch(art_type)
-			if("11x11")
-				pre_icon.Crop(11, 21, 21, 11)
-			if("19x19")
-				pre_icon.Crop(8, 27, 26, 9)
-			if("23x19")
-				pre_icon.Crop(6, 26, 28, 8)
-			if("23x23")
-				pre_icon.Crop(6, 27, 27, 5)
-			if("24x24")
-				pre_icon.Crop(5, 27, 27, 4)
-		art_icon = icon2base64(pre_icon)
-		icon_cache[query.item[3]] = art_icon
-		current_art = list(
-			"id" = query.item[1],
-			"ckey" = query.item[2],
-			"title" = query.item[3],
-			"data" = query.item[4],
-			"icon" = art_icon,
-			"type" = art_type
-			)
-		QDEL_NULL(preview_canvas)
-		break
+		while(query.NextRow())
+			var/art_type = query.item[6]
+			var/canvas_type = canvas_state_to_type[art_type]
+			var/obj/item/canvas/preview_canvas = new canvas_type()
+			var/art_icon
+			preview_canvas.icon_generated = FALSE
+			preview_canvas.apply_canvas_data(query.item[4])
+			preview_canvas.paint_image()
+			var/icon/pre_icon = getFlatIcon(preview_canvas)
+			switch(art_type)
+				if("11x11")
+					pre_icon.Crop(11, 21, 21, 11)
+				if("19x19")
+					pre_icon.Crop(8, 27, 26, 9)
+				if("23x19")
+					pre_icon.Crop(6, 26, 28, 8)
+				if("23x23")
+					pre_icon.Crop(6, 27, 27, 5)
+				if("24x24")
+					pre_icon.Crop(5, 27, 27, 4)
+			art_icon = icon2base64(pre_icon)
+			icon_cache[query.item[3]] = art_icon
+			current_art = list(
+				"id" = query.item[1],
+				"ckey" = query.item[2],
+				"title" = query.item[3],
+				"data" = query.item[4],
+				"icon" = art_icon,
+				"type" = art_type
+				)
+			QDEL_NULL(preview_canvas)
+			break
+	catch
+		error_message = "Network Error: Connection to the Archive has been severed."
 	return TRUE
 
 /proc/del_art_from_db(id, user)
