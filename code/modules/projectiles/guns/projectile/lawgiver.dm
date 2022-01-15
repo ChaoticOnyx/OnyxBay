@@ -1,9 +1,9 @@
 GLOBAL_LIST_INIT(lawgiver_modes, list(
-		list(mode_name = "stun",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/energy/electrode/stunsphere, burst = 1, screen_shake = 0, voice_activator = list("stun", "taser", "стан", "тазер", "оглушающий")),
-		list(mode_name = "laser",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/beam/smalllaser,				burst = 1, screen_shake = 0, voice_activator = list("laser", "lethal", "beam", "лазер", "летал", "луч") ),
-		list(mode_name = "rapid",			fire_delay = 6,		ammo_per_shot = 1/3,	projectile_type = /obj/item/projectile/bullet/pistol/lawgiver,		burst = 3, screen_shake = 1, voice_activator = list("rapid", "auto", "рапид", "авто", "автоматический") ),
-		list(mode_name = "flash",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/energy/flash,				burst = 1, screen_shake = 1, voice_activator = list("flash", "signal", "флеш", "сигнальный") ),
-		list(mode_name = "armor piercing",	fire_delay = 15,	ammo_per_shot = 1,		projectile_type = /obj/item/projectile/bullet/magnetic/lawgiver,	burst = 1, screen_shake = 1, voice_activator = list("armor piercing", "ap", "бронебойный", "бб")),
+		list(mode_name = "stun",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/energy/electrode/stunsphere, burst = 1, screen_shake = 0, voice_activator = list()),
+		list(mode_name = "laser",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/beam/smalllaser,				burst = 1, screen_shake = 0, voice_activator = list() ),
+		list(mode_name = "rapid",			fire_delay = 6,		ammo_per_shot = 1/3,	projectile_type = /obj/item/projectile/bullet/pistol/lawgiver,		burst = 3, screen_shake = 1, voice_activator = list() ),
+		list(mode_name = "flash",			fire_delay = 6,		ammo_per_shot = 1,		projectile_type = /obj/item/projectile/energy/flash,				burst = 1, screen_shake = 1, voice_activator = list() ),
+		list(mode_name = "armor piercing",	fire_delay = 15,	ammo_per_shot = 1,		projectile_type = /obj/item/projectile/bullet/magnetic/lawgiver,	burst = 1, screen_shake = 1, voice_activator = list()),
 		))
 
 /obj/item/gun/projectile/lawgiver
@@ -25,7 +25,23 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	var/list/voice_activator
 	var/ammo_per_shot = 1
 
+	var/static/voice_activators_init_complete = FALSE
+
+/obj/item/gun/projectile/lawgiver/proc/init_voice_activators()
+	if(voice_activators_init_complete)
+		return
+	if(!fexists("config/names/lawgiver.txt"))
+		CRASH("Lawgiver voice activators file not found")
+	voice_activators_init_complete = TRUE
+	var/list/voice_activators = world.file2list("config/names/lawgiver.txt")
+	GLOB.lawgiver_modes[1]["voice_activator"] = splittext(voice_activators[1], ";")
+	GLOB.lawgiver_modes[2]["voice_activator"] = splittext(voice_activators[2], ";")
+	GLOB.lawgiver_modes[3]["voice_activator"] = splittext(voice_activators[3], ";")
+	GLOB.lawgiver_modes[4]["voice_activator"] = splittext(voice_activators[4], ";")
+	GLOB.lawgiver_modes[5]["voice_activator"] = splittext(voice_activators[5], ";")
+
 /obj/item/gun/projectile/lawgiver/New()
+	init_voice_activators()
 	firemodes = GLOB.lawgiver_modes.Copy()
 	..()
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
