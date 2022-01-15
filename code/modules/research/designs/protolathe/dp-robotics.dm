@@ -59,7 +59,7 @@
 	id = "ai_remote_control"
 	req_tech = list(TECH_MAGNET = 5, TECH_ENGINEERING = 5, TECH_MATERIAL = 4)
 	build_type = PROTOLATHE | MECHFAB
-	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000, MATERIAL_GOLD = 2000)
 	build_path = /obj/item/device/ai_remote_control
 	category = "Robotics"
 	sort_string = "VACCC"
