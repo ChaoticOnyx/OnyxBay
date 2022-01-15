@@ -23,6 +23,7 @@
 	armor_penetration = 100
 	fire_sound = 'sound/weapons/rapidslice.ogg'
 
-/obj/item/projectile/bullet/magnetic/lawgiver //for armor piercing mode
+// for armor piercing mode (lawgiver)
+/obj/item/projectile/bullet/magnetic/lawgiver
 	stun = 0
 	weaken = 0

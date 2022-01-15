@@ -102,6 +102,7 @@
 	var/mag_type = SPEEDLOADER //ammo_magazines can only be used with compatible guns. This is not a bitflag, the load_method var on guns is.
 	var/caliber = "357"
 	var/max_ammo = 7
+	var/display_default_ammo_left = TRUE
 
 	var/ammo_type = /obj/item/ammo_casing //ammo type that is initially loaded
 	var/initial_ammo = null
@@ -128,7 +129,7 @@
 	update_icon()
 
 /obj/item/ammo_magazine/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/ammo_casing))
+	if(istype(W, /obj/item/ammo_casing) && max_ammo)
 		var/obj/item/ammo_casing/C = W
 		if(C.caliber != caliber)
 			to_chat(user, "<span class='warning'>[C] does not fit into [src].</span>")
@@ -185,8 +186,8 @@
 
 /obj/item/ammo_magazine/examine(mob/user)
 	. = ..()
-	if(max_ammo > 0)
-		. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
+	if(display_default_ammo_left)
+		. += "\nThere [length(stored_ammo) == 1 ? "is" : "are"] [stored_ammo.len] round\s left!"
 
 //magazine icon state caching
 /var/global/list/magazine_icondata_keys = list()
@@ -212,4 +213,3 @@
 
 	magazine_icondata_keys["[M.type]"] = icon_keys
 	magazine_icondata_states["[M.type]"] = ammo_states
-

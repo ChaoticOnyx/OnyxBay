@@ -30,13 +30,14 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	..()
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 	update_icon()
-	GLOB.listening_objects += src //for firemode voice-triggers
+	// for firemode voice-triggers
+	GLOB.listening_objects += src
 
-/obj/item/gun/projectile/lawgiver/equipped(M as mob, hand)
+/obj/item/gun/projectile/lawgiver/equipped(mob/M, hand)
 	update_icon()
 
 /obj/item/gun/projectile/lawgiver/update_icon()
-	overlays.len = 0
+	overlays.Cut()
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
 	var/datum/firemode/F = firemodes[sel_mode]
 	if(M)
@@ -58,8 +59,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 					DNA_overlay = image('icons/obj/gun.dmi', src, "[initial(icon_state)]DNAbad")
 				overlays += DNA_overlay
 
-/obj/item/gun/projectile/lawgiver/attack_self()
-	return
+/obj/item/gun/projectile/lawgiver/attack_self(mob/user )
+	unload_ammo(user)
 
 /obj/item/gun/projectile/lawgiver/consume_next_projectile()
 	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
@@ -79,7 +80,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 	if(!dna_profile)
 		dna_profile = H.dna.unique_enzymes
-		to_chat(usr, "<span class='notice'>You submit a DNA sample to \the [src].</span>")
+		to_chat(usr, SPAN("notice", "You submit a DNA sample to \the [src]."))
 		verbs += /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 		verbs -= /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
 		update_icon()
@@ -100,21 +101,23 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	if(dna_profile)
 		if(dna_profile == H.dna.unique_enzymes)
 			dna_profile = null
-			to_chat(usr, "<span class='notice'>You erase the DNA profile from \the [src].</span>")
+			to_chat(usr, SPAN("notice", "You erase the DNA profile from \the [src]."))
 			verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
 			verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 			update_icon()
 		else
-			self_destruct(H)
+			bad_dna_action(H)
 
-/obj/item/gun/projectile/lawgiver/proc/self_destruct(mob/user)
+/obj/item/gun/projectile/lawgiver/proc/bad_dna_action(mob/user)
 	if(access_security in user.GetAccess())
 		audible_message("<b>\The [src]</b> reports, \"ERROR: DNA PROFILE DOES NOT MATCH.\"")
 		return
 	else
 		audible_message("<b>\The [src]</b> reports, \"UNAUTHORIZED ACCESS DETECTED.\"")
-		explosion(user, -1, 0, 2)
-		qdel(src)
+		if(electrocute_mob(user, get_area(src), src, 0.7))
+			var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread()
+			spark.set_up(3, 1, src)
+			spark.start()
 
 /obj/item/gun/projectile/lawgiver/special_check(mob/user)
 	if(!dna_check(user))
@@ -131,7 +134,7 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		return
 	if(dna_profile)
 		if(dna_profile != user.dna.unique_enzymes)
-			self_destruct(user)
+			bad_dna_action(user)
 			return 0
 	else
 		handle_click_empty(user)
@@ -141,7 +144,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 /obj/item/gun/projectile/lawgiver/hear_talk(mob/M, msg)
 	var/mob/living/carbon/human/H = loc
-	if(!istype(H) && H != M) //only gunholder can change firemodes
+	// Only gunholder can change firemodes
+	if(!istype(H) && H != M)
 		return
 	if(!dna_profile)
 		return
@@ -160,8 +164,8 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 /obj/item/gun/projectile/lawgiver/proc/sanitize_phrase(phrase)
 	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "","," = "",":" = "","!" = "","." = "","?" = "",";" = "")
+	//added every char from speechcheker just for sure
 	return replace_characters(phrase, replacechars)
-//added every char from speechcheker just for sure
 
 /obj/item/gun/projectile/lawgiver/examine(mob/user)
 	. =..()

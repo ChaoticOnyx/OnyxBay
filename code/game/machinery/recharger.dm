@@ -137,17 +137,18 @@
 				icon_state = icon_state_charged
 				update_use_power(POWER_USE_IDLE)
 
-		var/lawgiver_magazine = charging
-		if(istype(lawgiver_magazine, /obj/item/ammo_magazine/lawgiver))
-			var/obj/item/ammo_magazine/lawgiver/L = lawgiver_magazine
+		if(istype(charging, /obj/item/ammo_magazine/lawgiver))
+			var/obj/item/ammo_magazine/lawgiver/L = charging
+			var/power_used = round(active_power_usage*CELLRATE)
 			if(!L.isFull())
 				icon_state = icon_state_charging
-				var/charged_amount = 0
 				for(var/mode in L.ammo_counters)
 					if(L.ammo_counters[mode] == LAWGIVER_MAX_AMMO)
 						continue
-					charged_amount += 1
-					L.ammo_counters[mode] = min(L.ammo_counters[mode] + charged_amount, LAWGIVER_MAX_AMMO)
+					if(--power_used)
+						L.ammo_counters[mode] = min(L.ammo_counters[mode] + 1, LAWGIVER_MAX_AMMO)
+					else
+						break
 				update_use_power(POWER_USE_ACTIVE)
 			else
 				icon_state = icon_state_charged

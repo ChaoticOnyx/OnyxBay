@@ -295,6 +295,7 @@
 	ammo_type = null
 	caliber = "lawgiver"
 	max_ammo = 0
+	display_default_ammo_left = FALSE
 	var/list/ammo_counters
 
 /obj/item/ammo_magazine/lawgiver/New()
