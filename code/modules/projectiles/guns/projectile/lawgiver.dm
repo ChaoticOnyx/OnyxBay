@@ -34,11 +34,9 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		CRASH("Lawgiver voice activators file not found")
 	voice_activators_init_complete = TRUE
 	var/list/voice_activators = world.file2list("config/names/lawgiver.txt")
-	GLOB.lawgiver_modes[1]["voice_activator"] = splittext(voice_activators[1], ";")
-	GLOB.lawgiver_modes[2]["voice_activator"] = splittext(voice_activators[2], ";")
-	GLOB.lawgiver_modes[3]["voice_activator"] = splittext(voice_activators[3], ";")
-	GLOB.lawgiver_modes[4]["voice_activator"] = splittext(voice_activators[4], ";")
-	GLOB.lawgiver_modes[5]["voice_activator"] = splittext(voice_activators[5], ";")
+	var/ind
+	for(ind = 1, ind <= length(GLOB.lawgiver_modes), ind++)
+		GLOB.lawgiver_modes[ind]["voice_activator"] = splittext(voice_activators[ind], ";")
 
 /obj/item/gun/projectile/lawgiver/New()
 	init_voice_activators()
@@ -116,13 +114,43 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 	if(dna_profile)
 		if(dna_profile == H.dna.unique_enzymes)
-			dna_profile = null
 			to_chat(usr, SPAN("notice", "You erase the DNA profile from \the [src]."))
-			verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
-			verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
-			update_icon()
+			remove_dna()
 		else
 			bad_dna_action(H)
+
+/obj/item/gun/projectile/lawgiver/proc/remove_dna()
+	dna_profile = null
+	audible_message("<b>\The [src]</b> reports, \"No DNA profile found.\"")
+	verbs += /obj/item/gun/projectile/lawgiver/verb/submit_DNA_sample
+	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
+	update_icon()
+
+/obj/item/gun/projectile/lawgiver/proc/discharge_magazine()
+	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
+	var/ind
+	for(ind = 1, ind <= length(firemodes), ind++)
+		if(prob(15))
+			var/datum/firemode/F = firemodes[ind]
+			M.ammo_counters[F.name] = max(1, M.ammo_counters[F.name] - rand(1, LAWGIVER_MAX_AMMO % 3))
+
+/obj/item/gun/projectile/lawgiver/ex_act(severity)
+	if(!severity)
+		return
+	if(severity <= 3 && ismob(loc) && prob(15))
+		bad_dna_action(loc)
+	if(severity <= 2 && prob(25))
+		set_firemode(rand(1, length(firemodes)))
+	if(severity == 1 && ammo_magazine)
+		discharge_magazine()
+
+/obj/item/gun/projectile/lawgiver/emag_act(remaining_charges, mob/user, emag_source)
+	if(--remaining_charges)
+		to_chat(user, SPAN("notice", "You short out the DNA profile from \the [src]."))
+		remove_dna()
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(5, 0, src.loc)
+		spark_system.start()
 
 /obj/item/gun/projectile/lawgiver/proc/bad_dna_action(mob/user)
 	if(access_security in user.GetAccess())
@@ -158,25 +186,29 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 		return 0
 	return 1
 
-/obj/item/gun/projectile/lawgiver/hear_talk(mob/M, msg)
-	var/mob/living/carbon/human/H = loc
+/obj/item/gun/projectile/lawgiver/hear_talk(mob/living/M, msg)
+	var/mob/living/carbon/human/owner = loc
 	// Only gunholder can change firemodes
-	if(!istype(H) && H != M)
+	if(!istype(owner) || !istype(M) || owner.GetVoice() != M.GetVoice())
 		return
 	if(!dna_profile)
 		return
-	if(dna_profile != H.dna.unique_enzymes)
+	if(dna_profile != owner.dna.unique_enzymes)
 		return
 	var/ind
 	msg = sanitize_phrase(lowertext(msg))
 	for(var/datum/firemode/F in firemodes)
 		ind++
 		if(msg in F.settings["voice_activator"])
-			sel_mode = ind
-			F.apply_to(src)
-			update_icon()
-			playsound(playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE))
-			audible_message("<b>\The [src]</b> reports, \"[uppertext("[F.name].\"")]")
+			set_firemode(ind)
+
+/obj/item/gun/projectile/lawgiver/proc/set_firemode(ind)
+	sel_mode = ind
+	var/datum/firemode/F = firemodes[sel_mode]
+	F.apply_to(src)
+	update_icon()
+	playsound(playsound(src, 'sound/effects/weapons/energy/toggle_mode1.ogg', rand(50, 75), FALSE))
+	audible_message("<b>\The [src]</b> reports, \"[uppertext("[F.name].\"")]")
 
 /obj/item/gun/projectile/lawgiver/proc/sanitize_phrase(phrase)
 	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "","," = "",":" = "","!" = "","." = "","?" = "",";" = "")
