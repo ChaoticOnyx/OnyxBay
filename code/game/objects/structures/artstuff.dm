@@ -298,36 +298,42 @@
 			SStgui.update_uis(src)
 	desc = "[desc]\nIt has name of [painting_name]"
 
-/obj/item/canvas/verb/make_rev_poster()
+/obj/item/canvas/verb/make_rev_poster_verb()
 	set name = "Make Revolutionary Poster"
 	set desc = "Die corporation die!"
 	set category = "Object"
 	set hidden = TRUE // TODO: delete me when points are used in something
 	if(!Debug2) // TODO: delete me when points are used in something
 		return // TODO: delete me when points are used in something
-	var/mob/living/H = usr
+	if(isliving(usr))
+		make_rev_poster(usr)
+
+/obj/item/canvas/proc/make_rev_poster(mob/living/H)
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
 	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind) || is_propaganda)
 		return
 	is_propaganda = TRUE
 	is_revolutionary = TRUE
-	to_chat(usr, "You've marked canvas as revolutionary.")
+	to_chat(H, "You've marked canvas as revolutionary.")
 	update_icon()
 
-/obj/item/canvas/verb/make_corp_poster()
+/obj/item/canvas/verb/make_corp_poster_verb()
 	set name = "Make Corporate Poster"
 	set desc = "Make corporation great again!"
 	set category = "Object"
 	set hidden = TRUE // TODO: delete me when points are used in something
 	if(!Debug2) // TODO: delete me when points are used in something
 		return // TODO: delete me when points are used in something
-	var/mob/living/H = usr
+	if(isliving(usr))
+		make_corp_poster(usr)
+
+/obj/item/canvas/proc/make_corp_poster(mob/living/H)
 	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
 	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)) || is_propaganda)
 		return
 	is_propaganda = TRUE
 	is_revolutionary = FALSE
-	to_chat(usr, "You've marked canvas as corporate.")
+	to_chat(H, "You've marked canvas as corporate.")
 	update_icon()
 
 /obj/item/canvas/nineteen_nineteen
