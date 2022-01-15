@@ -41,18 +41,18 @@
 		)
 	power_draw_per_use = 60
 	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
-	var/list/obj/item/weapon/surgery_items_type_list = list(
-		/obj/item/weapon/bonegel, // SURGERY_BONEGEL
-		/obj/item/weapon/bonesetter, // SURGERY_BONESET
-		/obj/item/weapon/bonesetter/bone_mender, // SURGERY_BONESET_ULTRA
-		/obj/item/weapon/circular_saw, // SURGERY_SAW
-		/obj/item/weapon/scalpel, // SURGERY_ORGAN_DISCONNECT
-		/obj/item/weapon/retractor, // SURGERY_RETRACTOR
-		/obj/item/weapon/hemostat, // SURGERY_ORGAN_REMOVE
-		/obj/item/weapon/cautery, // SURGERY_CAUTERY
-		/obj/item/weapon/surgicaldrill, // SURGERY_DRILL
-		/obj/item/weapon/FixOVein, // SURGERY_ORGAN_CONNECT
-		/obj/item/weapon/organfixer/advanced, // SURGERY_ORGAN_HEAL
+	var/list/obj/item/surgery_items_type_list = list(
+		/obj/item/bonegel, // SURGERY_BONEGEL
+		/obj/item/bonesetter, // SURGERY_BONESET
+		/obj/item/bonesetter/bone_mender, // SURGERY_BONESET_ULTRA
+		/obj/item/circular_saw, // SURGERY_SAW
+		/obj/item/scalpel, // SURGERY_ORGAN_DISCONNECT
+		/obj/item/retractor, // SURGERY_RETRACTOR
+		/obj/item/hemostat, // SURGERY_ORGAN_REMOVE
+		/obj/item/cautery, // SURGERY_CAUTERY
+		/obj/item/surgicaldrill, // SURGERY_DRILL
+		/obj/item/FixOVein, // SURGERY_ORGAN_CONNECT
+		/obj/item/organfixer/advanced, // SURGERY_ORGAN_HEAL
 		/obj/item/organ // SURGERY_ORGAN_INSERT
 	)
 	var/datum/surgery_step/internal/st
@@ -244,10 +244,10 @@
 		"bodypart" = IC_PINTYPE_STRING
 		)
 	surgery_items_type_list = list(
-		/obj/item/weapon/scalpel,
-		/obj/item/weapon/hemostat,
-		/obj/item/weapon/FixOVein,
-		/obj/item/weapon/organfixer,
+		/obj/item/scalpel,
+		/obj/item/hemostat,
+		/obj/item/FixOVein,
+		/obj/item/organfixer,
 		/obj/item/organ/internal
 	)
 	spawn_flags = IC_SPAWN_RESEARCH
@@ -255,16 +255,16 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/internal/on_item_insert(obj/item/I)
 	..()
-	if(istype(I, /obj/item/weapon/scalpel))
+	if(istype(I, /obj/item/scalpel))
 		operation_intent = SURGERY_ORGAN_DISCONNECT
 		st = new /datum/surgery_step/internal/detatch_organ()
-	else if(istype(I, /obj/item/weapon/hemostat))
+	else if(istype(I, /obj/item/hemostat))
 		operation_intent = SURGERY_ORGAN_REMOVE
 		st = new /datum/surgery_step/internal/remove_organ()
-	else if(istype(I, /obj/item/weapon/FixOVein))
+	else if(istype(I, /obj/item/FixOVein))
 		operation_intent = SURGERY_ORGAN_CONNECT
 		st = new /datum/surgery_step/internal/attach_organ()
-	else if(istype(I, /obj/item/weapon/organfixer))
+	else if(istype(I, /obj/item/organfixer))
 		operation_intent = SURGERY_ORGAN_HEAL
 		st = new /datum/surgery_step/internal/fix_organ()
 	else
@@ -329,10 +329,10 @@
 	extended_desc = "Takes a target ref to do operation, pulse activation pin, have a happy operation!"
 	inputs = list("target"   = IC_PINTYPE_REF)
 	surgery_items_type_list = list(
-		/obj/item/weapon/scalpel, // SURGERY_ORGAN_DISCONNECT
-		/obj/item/weapon/retractor, // SURGERY_RETRACTOR
-		/obj/item/weapon/hemostat, // SURGERY_ORGAN_REMOVE
-		/obj/item/weapon/cautery, // SURGERY_CAUTERY
+		/obj/item/scalpel, // SURGERY_ORGAN_DISCONNECT
+		/obj/item/retractor, // SURGERY_RETRACTOR
+		/obj/item/hemostat, // SURGERY_ORGAN_REMOVE
+		/obj/item/cautery, // SURGERY_CAUTERY
 	)
 	spawn_flags = IC_SPAWN_RESEARCH
 	bodyparts_hint = FALSE
@@ -627,8 +627,8 @@
 	if(!check_target(source) || !check_target(target))
 		return
 
-	if(istype(target, /obj/item/weapon/organfixer))
-		var/obj/item/weapon/organfixer/OF = target
+	if(istype(target, /obj/item/organfixer))
+		var/obj/item/organfixer/OF = target
 		if(istype(source, /obj/item/stack/medical/advanced/bruise_pack))
 			var/obj/item/stack/medical/advanced/bruise_pack/OF2 = source
 			OF.attackby(OF2, src)

@@ -54,7 +54,7 @@
 	activators = list("prime grenade" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_COMBAT
-	var/obj/item/weapon/grenade/attached_grenade
+	var/obj/item/grenade/attached_grenade
 	var/pre_attached_grenade_type
 	var/grenade_activated = FALSE
 	demands_object_input = TRUE	// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()

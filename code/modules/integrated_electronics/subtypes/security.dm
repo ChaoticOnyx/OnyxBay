@@ -25,7 +25,7 @@
 		"Switch mode"	= IC_PINTYPE_PULSE_IN,
 		"On fired"		= IC_PINTYPE_PULSE_OUT
 	)
-	var/obj/item/weapon/gun/energy/installed_gun = null
+	var/obj/item/gun/energy/installed_gun = null
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_COMBAT
 	power_draw_per_use = 0
@@ -43,8 +43,8 @@
 	return ..()
 
 /obj/item/integrated_circuit/security/weapon_firing/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/gun/energy))
-		var/obj/item/weapon/gun/energy/gun = O
+	if(istype(O, /obj/item/gun/energy))
+		var/obj/item/gun/energy/gun = O
 		if(installed_gun)
 			to_chat(user, SPAN("warning", "There's already a weapon installed."))
 			return
@@ -143,15 +143,15 @@
 	ext_cooldown = 1
 
 /obj/item/integrated_circuit/security/microscope/do_work(ord)
-	var/obj/item/weapon/sample = get_pin_data(IC_INPUT, 1)
+	var/obj/item/sample = get_pin_data(IC_INPUT, 1)
 	if(!istype(sample))
 		return
 	if(get_dist(sample, src) > 1)
 		return
 	var/output = ""
 
-	if(istype(sample, /obj/item/weapon/forensics/swab))
-		var/obj/item/weapon/forensics/swab/swab = sample
+	if(istype(sample, /obj/item/forensics/swab))
+		var/obj/item/forensics/swab/swab = sample
 
 		output = "GSR report. Scanned item:<br>[swab.name]<br><br>"
 
@@ -160,8 +160,8 @@
 		else
 			output += "No gunpowder residue found."
 
-	else if(istype(sample, /obj/item/weapon/sample/fibers))
-		var/obj/item/weapon/sample/fibers/fibers = sample
+	else if(istype(sample, /obj/item/sample/fibers))
+		var/obj/item/sample/fibers/fibers = sample
 		output = "Scanned item:<br>[fibers.name]<br><br>"
 		if(fibers.evidence)
 			output = "Molecular analysis on provided sample has determined the presence of unique fiber strings.<br><br>"
@@ -169,9 +169,9 @@
 				output += "Most likely match for fibers: [fiber]</span><br><br>"
 		else
 			output += "No fibers found."
-	else if(istype(sample, /obj/item/weapon/sample/print))
+	else if(istype(sample, /obj/item/sample/print))
 		output = "Fingerprint analysis report: [sample.name]<br>"
-		var/obj/item/weapon/sample/print/card = sample
+		var/obj/item/sample/print/card = sample
 		if(card.evidence && card.evidence.len)
 			output += "Surface analysis has determined unique fingerprint strings:<br><br>"
 			for(var/prints in card.evidence)
@@ -202,7 +202,7 @@
 	ext_cooldown = 1
 
 /obj/item/integrated_circuit/security/dnascanner/do_work(ord)
-	var/obj/item/weapon/forensics/swab/bloodsamp = get_pin_data(IC_INPUT, 1)
+	var/obj/item/forensics/swab/bloodsamp = get_pin_data(IC_INPUT, 1)
 	if(!istype(bloodsamp))
 		return
 	if(get_dist(bloodsamp, src) > 1)
