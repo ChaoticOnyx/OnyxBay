@@ -49,6 +49,11 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 
 /obj/item/gun/projectile/lawgiver/equipped(mob/M, hand)
 	update_icon()
+	return ..()
+
+/obj/item/gun/projectile/lawgiver/dropped(mob/living/user)
+	update_icon()
+	return ..()
 
 /obj/item/gun/projectile/lawgiver/update_icon()
 	overlays.Cut()
