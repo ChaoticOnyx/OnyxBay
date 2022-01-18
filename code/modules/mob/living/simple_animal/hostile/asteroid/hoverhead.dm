@@ -114,7 +114,7 @@
 	inert = 0
 	preserved = 1
 	icon_state = "psychecore"
-	desc = "All that remains of a hivelord. It is preserved, allowing you to use it to heal completely without danger of decay."
+	desc = "Strange biostructure that looks as if it possesed some energy but then was drained out. It has two flaps and a husked core. It is preserved, allowing you to use it to heal completely without danger of decay."
 
 /obj/item/asteroid/anomalous_core/attack(mob/living/M, mob/living/user)
 	if(ishuman(M))
