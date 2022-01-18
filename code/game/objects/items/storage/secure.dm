@@ -498,7 +498,7 @@
 
 						if(!contract_found)
 							contract = new(pick(GLOB.traitors.fixer.organizations), target = target_mind)
-						contract.reward = 8
+						contract.reward = 4
 						contract.create_contract(contract.reason, target_mind)
 						if(!contract_found)
 							contract.organization.add_contract()
