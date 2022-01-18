@@ -94,15 +94,27 @@
 	icon = 'icons/mob/asteroid/psychekinetic.dmi'
 	icon_state = "psychecore"
 	var/inert = 0
+	var/preserved = 0
+	w_class = 2
 
 /obj/item/asteroid/anomalous_core/New()
 	. = ..()
-	addtimer(CALLBACK(src, .proc/make_inert), 1200)
+	addtimer(CALLBACK(src, .proc/inert_check), 1200)
+
+/obj/item/asteroid/anomalous_core/proc/inert_check()
+	if(preserved != 1)
+		make_inert()
 
 /obj/item/asteroid/anomalous_core/proc/make_inert()
 	inert = 1
 	icon_state = "psychecore_used"
 	desc = "Strange biostructure that looks as if it possesed some energy but then was drained out. It has two flaps and a husked core."
+
+/obj/item/asteroid/anomalous_core/proc/preserved()
+	inert = 0
+	preserved = 1
+	icon_state = "psychecore"
+	desc = "All that remains of a hivelord. It is preserved, allowing you to use it to heal completely without danger of decay."
 
 /obj/item/asteroid/anomalous_core/attack(mob/living/M, mob/living/user)
 	if(ishuman(M))
@@ -122,3 +134,23 @@
 			make_inert(src)
 			qdel(src)
 	..()
+
+/obj/item/hoverheadstabilizer
+	name = "stabilizing serum"
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle19"
+	desc = "Inject hoverhead's cores with this stabilizer to preserve their healing powers indefinitely."
+	w_class = 2
+
+/obj/item/hoverheadstabilizer/afterattack(obj/item/M, mob/user, proximity)
+	. = ..()
+	if(!proximity)
+		return
+	var/obj/item/asteroid/anomalous_core/C = M
+	if(!istype(C, /obj/item/asteroid/anomalous_core))
+		to_chat(user, "<span class='warning'>The stabilizer only works on certain types of artifacts, generally regenerative in nature.</span>")
+		return
+
+	C.preserved()
+	to_chat(user, "<span class='notice'>You inject the [M] with the stabilizer. It will no longer go inert.</span>")
+	qdel(src)

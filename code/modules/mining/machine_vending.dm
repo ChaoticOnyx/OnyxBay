@@ -8,6 +8,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	new /datum/data/mining_equipment("Food Ration",                  /obj/item/reagent_containers/food/snacks/liquidfood,   10,     5),
 	new /datum/data/mining_equipment("Poster",                       /obj/item/contraband/poster,                           10,    20),
 	new /datum/data/mining_equipment("Thermostabilizine Pill",       /obj/item/reagent_containers/pill/leporazine,          15,    35),
+	new /datum/data/mining_equipment("Anomalous Core Stabilizer",    /obj/item/hoverheadstabilizer,                         20,    400),
 	new /datum/data/mining_equipment("Ore Scanner Pad",              /obj/item/ore_radar,                                   10,    50),
 	new /datum/data/mining_equipment("5 Red Flags",                  /obj/item/stack/flag/red,                                     10,    50),
 	new /datum/data/mining_equipment("5 Green Flags",                /obj/item/stack/flag/green,                                   10,    50),

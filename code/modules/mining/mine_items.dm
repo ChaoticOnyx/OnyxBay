@@ -525,7 +525,7 @@
 	layer = 5
 	anchored = TRUE
 	mouse_opacity = 0
-	var/resonance_damage = 10
+	var/resonance_damage = 15
 	var/creator
 	var/obj/item/resonator/res
 
@@ -540,7 +540,7 @@
 	var/pressure = environment.return_pressure()
 	if(pressure < 50)
 		name = "strong resonance field"
-		resonance_damage = 30
+		resonance_damage = 60
 
 	addtimer(CALLBACK(src, .proc/burst, loc), timetoburst)
 

@@ -74,7 +74,7 @@
 /obj/item/projectile/kinetic
 	name = "kinetic force"
 	icon_state = null
-	damage = 15
+	damage = 40
 	damage_type = BRUTE
 	check_armour = "bomb"
 	kill_count = 2

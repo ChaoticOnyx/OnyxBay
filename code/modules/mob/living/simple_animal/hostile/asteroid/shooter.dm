@@ -18,8 +18,8 @@
 	throw_message = "does nothing against the hard shell of"
 	vision_range = 2
 	speed = 3
-	maxHealth = 75
-	health = 75
+	maxHealth = 150
+	health = 150
 	harm_intent_damage = 5
 	melee_damage_lower = 12
 	melee_damage_upper = 12
@@ -79,8 +79,8 @@
 	icon_dead = "Spectator_dead"
 	vision_range = 5
 	speed = 4
-	maxHealth = 250
-	health = 250
+	maxHealth = 450
+	health = 450
 	ranged_message = "stares cruelly"
 	ranged_cooldown_cap = 3
 	harm_intent_damage = 15

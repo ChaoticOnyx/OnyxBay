@@ -16,8 +16,8 @@
 	aggro_vision_range = 6
 	idle_vision_range = 2
 	speed = 3
-	maxHealth = 50
-	health = 50
+	maxHealth = 100
+	health = 100
 	harm_intent_damage = 15
 	melee_damage_lower = 20
 	melee_damage_upper = 20
