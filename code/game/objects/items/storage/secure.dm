@@ -222,18 +222,11 @@
 //     Detective's Guncase
 // -----------------------------
 
-/obj/item/storage/secure/guncase/
+/obj/item/storage/secure/guncase
 	name = "guncase"
 	desc = "A heavy-duty container with a digital locking system. Has a thick layer of foam inside. "
 	icon_state = "guncase"
 	item_state = "guncase"
-
-/obj/item/storage/secure/guncase/detective
-	name = "detective's gun case"
-	icon = 'icons/obj/storage.dmi'
-	icon_state = "guncasedet"
-	item_state = "guncasedet"
-	desc = "A heavy-duty container with a digital locking system. This one has a wooden coating and its locks are the color of brass."
 	force = 8.0
 	throw_speed = 1
 	throw_range = 4
@@ -247,18 +240,25 @@
 	var/obj/item/gun/gun
 	var/gunspawned = 0
 
-/obj/item/storage/secure/guncase/detective/attack_hand(mob/user)
-	if((src.loc == user) && (src.locked == 1))
-		to_chat(usr, "<span class='warning'>[src] is locked and cannot be opened!</span>")
-	else if((src.loc == user) && (!src.locked))
-		src.open(usr)
+/obj/item/storage/secure/guncase/attack_hand(mob/user)
+	if((loc == user) && (locked == 1))
+		to_chat(usr, SPAN("warning", "[src] is locked and cannot be opened!"))
+	else if((loc == user) && (!locked))
+		open(usr)
 	else
 		..()
 		for(var/mob/M in range(1))
 			if(M.s_active == src)
-				src.close(M)
-	src.add_fingerprint(user)
+				close(M)
+	add_fingerprint(user)
 	return
+
+/obj/item/storage/secure/guncase/detective
+	name = "detective's gun case"
+	icon = 'icons/obj/storage.dmi'
+	icon_state = "guncasedet"
+	item_state = "guncasedet"
+	desc = "A heavy-duty container with a digital locking system. This one has a wooden coating and its locks are the color of brass."
 
 /obj/item/storage/secure/guncase/detective/show_lock_menu(mob/user)
 	if(user.incapacitated() || !user.Adjacent(src))
@@ -320,10 +320,6 @@
 		lock_menu.set_content(dat)
 		lock_menu.update()
 	return
-
-/obj/item/storage/secure/guncase/detective/attack_self(mob/user)
-	show_lock_menu(user)
-	lock_menu.open()
 
 /obj/item/storage/secure/guncase/detective/Topic(href, href_list)
 	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
@@ -398,6 +394,127 @@
 				if(length(src.code) > 5)
 					src.code = "ERROR"
 		for(var/mob/M in viewers(1, src.loc))
+			if((M.client && M.machine == src))
+				show_lock_menu(M)
+			return
+	return
+
+/obj/item/storage/secure/guncase/hos
+	name = "HoS's gun case"
+	max_w_class = ITEM_SIZE_LARGE
+	guntype = "lawgiver"
+
+/obj/item/storage/secure/guncase/hos/show_lock_menu(mob/user)
+	if(user.incapacitated() || !user.Adjacent(src))
+		return
+	user.set_machine(src)
+	var/dat = text("<TT>\n\nLock Status: []", (locked ? "<font color=red>LOCKED</font>" : "<font color=green>UNLOCKED</font>"))
+	var/message = "Code"
+
+	if((l_set == 0) && (!emagged) && (!l_setshort))
+		dat += text("<p>\n<b>5-DIGIT PASSCODE NOT SET.<br>ENTER NEW PASSCODE.</b>")
+	if(emagged)
+		dat += text("<p>\n<font color=red><b>LOCKING SYSTEM ERROR - 1701</b></font>")
+	if(l_setshort)
+		dat += text("<p>\n<font color=red><b>ALERT: MEMORY SYSTEM ERROR - 6040 201</b></font>")
+	message = text("[]", src.code)
+	if(!locked)
+		message = "*****"
+	dat += text("<HR>\n>[]<BR>\n<A href='?src=\ref[];type=1'>1</A>-<A href='?src=\ref[];type=2'>2</A>-<A href='?src=\ref[];type=3'>3</A><BR>\n<A href='?src=\ref[];type=4'>4</A>-<A href='?src=\ref[];type=5'>5</A>-<A href='?src=\ref[];type=6'>6</A><BR>\n<A href='?src=\ref[];type=7'>7</A>-<A href='?src=\ref[];type=8'>8</A>-<A href='?src=\ref[];type=9'>9</A><BR>\n<A href='?src=\ref[];type=R'>R</A>-<A href='?src=\ref[];type=0'>0</A>-<A href='?src=\ref[];type=E'>E</A><BR>\n</TT>", message, src, src, src, src, src, src, src, src, src, src, src, src)
+
+	dat += text("<p><HR>\nChosen Gun: []", guntype)
+	if (gunspawned == 0)
+		dat += text("<p>\n Be careful! Once you chose your weapon and unlock the gun case, you won't be able to change it.")
+		dat += text("<HR><p>\n<A href='?src=\ref[];type=energy_rifle'>Energy rifle</A>", src)
+		dat += text("<p>\n<A href='?src=\ref[];type=lawgiver'>Lawgiver</A>", src)
+	dat += text("<HR>")
+	if(guntype)
+		// not cool type
+		if(guntype == "energy rifle")
+			dat += text("<p>\n Hephaestus Industries G50SE \"Razor\", a cheaper version of G50XS \"Raijin\".")
+			if(gunspawned == 0)
+				dat += text("<p>\n It has lethal and stun settings.")
+				dat += text("<p>\n If you cho <font color=[COLOR_RED]><b>@^#*@^$@^$*: MEMORY SYSTEM ERROR - @&#@&($@$) $&$</b></font>")
+		// cool type
+		else if(guntype == "lawgiver")
+			dat += text("<p>\n The Lawgiver II. A twenty-five round sidearm with mission-variable voice-programmed ammunition.")
+			if(gunspawned == 0)
+				dat += text("<p>\n You must use the words STUN, LASER, RAPID, FLASH and AP to change modes.")
+
+	if(!lock_menu || lock_menu.user != user)
+		lock_menu = new /datum/browser(user, "mob[name]", "<B>[src]</B>", 300, 280)
+		lock_menu.set_content(dat)
+	else
+		lock_menu.set_content(dat)
+		lock_menu.update()
+	return
+
+/obj/item/storage/secure/guncase/hos/Topic(href, href_list)
+	if((usr.stat || usr.restrained()) || (get_dist(src, usr) > 1))
+		return
+	if(href_list["type"])
+		if (href_list["type"] == "energy_rifle")
+			guntype = "energy rifle"
+		else if(href_list["type"] == "lawgiver")
+			guntype = "lawgiver"
+		else if(href_list["type"] == "E")
+			if((l_set == 0) && (length(code) == 5) && (!l_setshort) && (code != "ERROR"))
+				l_code = code
+				l_set = TRUE
+			else if((code == l_code) && (emagged == 0) && (l_set == 1))
+				locked = FALSE
+				overlays = null
+				overlays += image('icons/obj/storage.dmi', icon_opened)
+				code = null
+				if(gunspawned == FALSE)
+					gunspawned = TRUE
+					if (guntype == "lawgiver")
+						gun = new /obj/item/gun/projectile/lawgiver(src)
+						new /obj/item/ammo_magazine/lawgiver(src)
+					else if(guntype == "energy rifle")
+						audible_message("\The [src] blinks red.")
+						gun = new /obj/item/gun/energy/rifle/cheap(src)
+						// Delete lawgiver steal contract, we can't get lawgiver legally.
+						GLOB.contracts_steal_items.Remove("the head of security's lawgiver gun")
+						for(var/datum/antag_contract/item/steal/C in GLOB.all_contracts)
+							if(C.target_type == /obj/item/gun/projectile/lawgiver)
+								C.remove()
+						// YOU PICK THE WRONG GUN, HARD N!
+						// but I'm respect your choice
+						var/mob/user = usr
+						if(!istype(user))
+							return
+						var/datum/mind/target_mind = user?.mind
+						if(!target_mind)
+							return
+						var/contract_found = FALSE
+						var/datum/antag_contract/item/assassinate/contract
+						for(var/datum/antag_contract/item/assassinate/ass in GLOB.all_contracts)
+							if(ass.completed || ass.target_mind != target_mind)
+								continue
+							contract_found = TRUE
+							contract = ass
+							break
+
+						if(!contract_found)
+							contract = new(pick(GLOB.traitors.fixer.organizations), target = target_mind)
+						contract.reward = 8
+						contract.create_contract(contract.reason, target_mind)
+						if(!contract_found)
+							contract.organization.add_contract()
+			else
+				code = "ERROR"
+		else
+			if((href_list["type"] == "R") && (emagged == 0) && (!l_setshort))
+				locked = 1
+				overlays = null
+				code = null
+				close(usr)
+			else
+				code += text("[]", href_list["type"])
+				if(length(code) > 5)
+					code = "ERROR"
+		for(var/mob/M in viewers(1, loc))
 			if((M.client && M.machine == src))
 				show_lock_menu(M)
 			return
