@@ -77,7 +77,7 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 				changeling.objectives += survive_objective
 	return
 
-/datum/antagonist/changeling/can_become_antag(datum/mind/player, ignore_role, max_stat, max_stat = CONSCIOUS)
+/datum/antagonist/changeling/can_become_antag(datum/mind/player, ignore_role, max_stat)
 	if(!..())
 		return FALSE
 
