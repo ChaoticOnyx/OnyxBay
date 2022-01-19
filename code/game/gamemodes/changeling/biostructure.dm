@@ -155,6 +155,7 @@
 			if(affected)
 				affected.internal_organs.Remove(src)
 				status |= ORGAN_CUT_AWAY
+				affected.implants.Remove(src)
 		else
 			H.drop_from_inventory(src)
 
@@ -162,7 +163,8 @@
 		var/obj/item/organ/external/E = source
 		E.internal_organs.Remove(src)
 
-	forceMove(destination)
+	if(!istype(destination, /mob/living/carbon/brain))
+		forceMove(destination)
 
 	// Connecting biostructure as an organ.
 	if(ishuman(destination))
