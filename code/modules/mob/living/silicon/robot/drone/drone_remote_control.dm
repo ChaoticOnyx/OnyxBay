@@ -15,7 +15,8 @@
 
 /obj/machinery/drone_fabricator/attack_ai(mob/living/silicon/ai/user)
 	// Request received, turning it off for now
-	return
+	if(!Debug2)
+		return
 
 	if(!istype(user) || user.controlling_robot || !config.allow_drone_spawn)
 		return
