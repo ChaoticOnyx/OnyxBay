@@ -19,7 +19,7 @@
 	heavy_effect_range = 0
 	light_effect_range = 1
 
-/obj/item/projectile/ion/c44
+/obj/item/projectile/ion/c38
 	name = "ion bullet"
 	icon_state = "ionbullet"
 	nodamage = 0
