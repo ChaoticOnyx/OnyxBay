@@ -33,8 +33,8 @@
 	if(!istype(user) || controlling_ai)
 		return
 
-	if(client || key || !istype(mmi, /obj/item/device/ai_remote_control))
-		to_chat(user, SPAN("warning", "You cannot take control of an autonomous, active drone."))
+	if(client || key)
+		to_chat(user, SPAN("warning", "You cannot take control of an autonomous, active robot."))
 		return
 
 	if(health < -35)
@@ -84,7 +84,7 @@
 
 /mob/living/silicon/robot/proc/release_ai_control_verb()
 	set name = "Release Control"
-	set desc = "Release control of a remote drone."
+	set desc = "Release control of a remote robot."
 	set category = "Silicon Commands"
 
 	release_ai_control("Remote session terminated.")
