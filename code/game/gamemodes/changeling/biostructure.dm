@@ -155,7 +155,6 @@
 			if(affected)
 				affected.internal_organs.Remove(src)
 				status |= ORGAN_CUT_AWAY
-				affected.implants.Remove(src)
 		else
 			H.drop_from_inventory(src)
 
