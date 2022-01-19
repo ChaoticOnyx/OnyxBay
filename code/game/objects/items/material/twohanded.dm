@@ -121,6 +121,7 @@
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
 	force = 10
+	unwielded_force_const = 5.5
 	force_const = 6.5
 	sharp = 1
 	edge = 1
