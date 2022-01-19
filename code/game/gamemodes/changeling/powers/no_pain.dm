@@ -9,8 +9,8 @@
 	required_chems = 20
 	chems_drain = 1
 
-	text_activate = "We are able to feel pain now."
-	text_deactivate = "We are unable to feel pain anymore."
+	text_activate = "We are unable to feel pain anymore."
+	text_deactivate = "We are able to feel pain now."
 	text_nochems = "We feel pain once again as we have no chemicals left."
 
 /datum/changeling_power/toggled/no_pain/activate()
