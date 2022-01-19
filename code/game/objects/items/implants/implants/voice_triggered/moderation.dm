@@ -30,7 +30,7 @@
 	. = {"
 	<b>Implant Specifications:</b><BR>
 	<b>Name:</b> NanoTrasen corp speech corrector implant<BR>
-	<b>Life:</b> Activates upon pronouncing somerthing from banned word list.<BR>
+	<b>Life:</b> Activates when the user pronounces forbidden words.<BR>
 	<B>Banned words:</B><BR>
 	[!isemptylist(words_list) ? jointext(words_list,", ") : "NONE SET"]<BR>
 	<A href='byond://?src=\ref[src];words_list_set=add'>add word</A>|
