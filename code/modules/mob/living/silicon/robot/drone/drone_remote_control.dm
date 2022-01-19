@@ -39,3 +39,10 @@
 
 	var/mob/living/silicon/robot/drone/new_drone = create_drone()
 	new_drone.assume_control(user)
+
+/mob/living/silicon/robot/drone/release_ai_control_verb()
+	set name = "Release Control"
+	set desc = "Release control of a remote drone."
+	set category = "Silicon Commands"
+
+	release_ai_control("Remote session terminated.")
