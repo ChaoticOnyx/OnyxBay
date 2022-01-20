@@ -84,7 +84,6 @@
 	for (var/phrase in msg_words_list)
 		if((phrase in words_list) || ((phrase in obscene_word_list) && check_obscene_words))
 			activate()
-			return
 
 /obj/item/implant/voice_triggered/speech_corrector/proc/sanitize_phrase(phrase)
 	var/list/replacechars = list("'" = "","\"" = "",">" = "","<" = "","(" = "",")" = "","-" = "",", " = " ","," = " ",":" = "","!" = "","." = "","?" = "",";" = "")

@@ -960,7 +960,7 @@
 #include "code\game\objects\items\implants\implants\tracking.dm"
 #include "code\game\objects\items\implants\implants\uplink.dm"
 #include "code\game\objects\items\implants\implants\voice_triggered\explosive.dm"
-#include "code\game\objects\items\implants\implants\voice_triggered\moderation.dm"
+#include "code\game\objects\items\implants\implants\voice_triggered\speech_corrector.dm"
 #include "code\game\objects\items\material\_material_weapons.dm"
 #include "code\game\objects\items\material\ashtray.dm"
 #include "code\game\objects\items\material\brass_knuckle.dm"
