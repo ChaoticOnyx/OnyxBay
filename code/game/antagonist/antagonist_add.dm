@@ -1,7 +1,7 @@
-/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
+/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat)
 
-	if(!add_antagonist_mind(player, ignore_role))
-		return
+	if(!add_antagonist_mind(player, ignore_role, max_stat = max_stat))
+		return FALSE
 
 	//do this again, just in case
 	if(flags & ANTAG_OVERRIDE_JOB)
@@ -16,17 +16,17 @@
 			equip(player.current)
 
 	player.current.faction = faction
-	return 1
+	return TRUE
 
-/datum/antagonist/proc/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg)
+/datum/antagonist/proc/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, max_stat)
 	if(!istype(player))
-		return 0
+		return FALSE
 	if(!player.current)
-		return 0
+		return FALSE
 	if(player in current_antagonists)
-		return 0
-	if(!can_become_antag(player, ignore_role))
-		return 0
+		return FALSE
+	if(!can_become_antag(player, ignore_role, max_stat = max_stat))
+		return FALSE
 	current_antagonists |= player
 
 	if(faction_verb)
@@ -56,7 +56,7 @@
 		if(nonstandard_role_msg)
 			to_chat(player.current, "<span class='notice'>[nonstandard_role_msg]</span>")
 		update_icons_added(player)
-	return 1
+	return TRUE
 
 /datum/antagonist/proc/remove_antagonist(datum/mind/player, show_message, implanted)
 	if(!istype(player))

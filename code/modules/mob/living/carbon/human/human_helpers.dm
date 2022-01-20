@@ -234,7 +234,7 @@
 
 	if(!victim.get_organ(attacker.zone_sel.selecting))
 		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
-		return 0
+		return FALSE
 
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
@@ -244,13 +244,14 @@
 
 	if(!G.pre_check())
 		qdel(G)
-		return 0
+		return FALSE
 
 	if(G.can_grab())
 		G.init()
+		return TRUE
 	else
 		qdel(G)
-		return 0
+		return FALSE
 
 /mob/living/carbon/human
 	var/list/cloaking_sources

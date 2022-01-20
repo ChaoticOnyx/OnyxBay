@@ -41,7 +41,7 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	return "<br><b>Changeling ID:</b> [player.changeling.changelingID].<br><b>Genomes Absorbed:</b> [player.changeling.absorbedcount]<br><b>Purchased Powers:</b> [powers_purchased]"
 
 /datum/antagonist/changeling/update_antag_mob(datum/mind/player)
-	..()
+	. = ..()
 	player.current.make_changeling()
 
 /datum/antagonist/changeling/create_objectives(datum/mind/changeling)
@@ -77,7 +77,7 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 				changeling.objectives += survive_objective
 	return
 
-/datum/antagonist/changeling/can_become_antag(datum/mind/player, ignore_role)
+/datum/antagonist/changeling/can_become_antag(datum/mind/player, ignore_role, max_stat)
 	if(!..())
 		return FALSE
 
