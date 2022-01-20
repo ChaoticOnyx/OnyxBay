@@ -131,23 +131,17 @@ GLOBAL_LIST_INIT(lawgiver_modes, list(
 	verbs -= /obj/item/gun/projectile/lawgiver/verb/erase_DNA_sample
 	update_icon()
 
-/obj/item/gun/projectile/lawgiver/proc/discharge_magazine()
-	var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
-	var/ind
-	for(ind = 1, ind <= length(firemodes), ind++)
-		if(prob(15))
-			var/datum/firemode/F = firemodes[ind]
-			M.ammo_counters[F.name] = max(1, M.ammo_counters[F.name] - rand(1, LAWGIVER_MAX_AMMO % 3))
-
-/obj/item/gun/projectile/lawgiver/ex_act(severity)
-	if(!severity)
-		return
-	if(severity <= 3 && ismob(loc) && prob(15))
+/obj/item/gun/projectile/lawgiver/emp_act(severity)
+	if(ismob(loc) && prob(25))
 		bad_dna_action(loc)
-	if(severity <= 2 && prob(25))
+		return
+	if(prob(35))
 		set_firemode(rand(1, length(firemodes)))
-	if(severity == 1 && ammo_magazine)
-		discharge_magazine()
+		return
+	if(prob(80) && ammo_magazine)
+		var/obj/item/ammo_magazine/lawgiver/M = ammo_magazine
+		M.discharge_magazine()
+		update_icon()
 
 /obj/item/gun/projectile/lawgiver/emag_act(remaining_charges, mob/user, emag_source)
 	if(--remaining_charges)

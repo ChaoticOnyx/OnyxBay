@@ -307,7 +307,6 @@
 
 /obj/item/projectile/bullet/rock //spess dust
 	name = "micrometeor"
-	icon_state = "rock"
 	damage = 40
 	armor_penetration = 25
 	kill_count = 255

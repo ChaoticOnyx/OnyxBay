@@ -309,6 +309,15 @@
 /obj/item/ammo_magazine/lawgiver/attack_self()
 	return
 
+/obj/item/ammo_magazine/lawgiver/emp_act(severity)
+	if(prob(25))
+		discharge_magazine()
+
+/obj/item/ammo_magazine/lawgiver/proc/discharge_magazine()
+	for(var/mode_name in ammo_counters)
+		if(prob(15))
+			ammo_counters[mode_name] = max(1, ammo_counters[mode_name] - rand(1, LAWGIVER_MAX_AMMO % 3))
+
 /obj/item/ammo_magazine/lawgiver/proc/generate_description()
     var/dat = "\n"
     for(var/list/mode in GLOB.lawgiver_modes)
