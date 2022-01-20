@@ -306,12 +306,6 @@
 		braintype = "Android"
 	else if(istype(mmi, /obj/item/device/mmi/digital/robot))
 		braintype = "Robot"
-	else if(istype(mmi, /obj/item/device/ai_remote_control))
-		braintype = "Remote Drone"
-		if(controlling_ai)
-			identifier = " (AI: [controlling_ai.name])"
-		else
-			identifier = ident
 	else
 		braintype = "Cyborg"
 
