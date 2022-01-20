@@ -2,7 +2,7 @@
 #define AGONY_STEP 5
 /obj/item/implant/voice_triggered/speech_corrector
 	name = "Speech corrector implant"
-	desc = "Micro bio-taser that tasering every time when some banned word sayed"
+	desc = "A micro bio-taser that delivers an electric shock every time a blacklisted word is spoken."
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2)
 	var/list/words_list = list()
 	var/stun = 0
