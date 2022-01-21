@@ -42,7 +42,6 @@
 /datum/category_item/player_setup_item/general/hair/proc/show_hair_choices(mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
 	var/list/valid_hairstyles = mob_species.get_hair_styles()
-	to_chat(user,valid_hairstyles)
 	var/dat = "<a href='?src=\ref[src];cycle_hair_pages=-1'>&#8592;</a> Page: <a href='?src=\ref[src];enter_hair_page=1'>[page+1]</a> <a href='?src=\ref[src];cycle_hair_pages=1'>&#8594;</a><br>"
 	var/old_h_style = pref.h_style
 	var/datum/browser/popup = new(user, "Hair choose","Hair choose", 550, 650, src)
@@ -57,7 +56,7 @@
 		pref.update_preview_icon()
 		send_rsc(user, pref.preview_icon, "previewicon-[name_sanitize(name)].png")
 
-		dat+="<td><div class='statusDisplay'><center><a href='?src=\ref[src];h_style_change=[name_sanitize(name)]'><b>[name]</b></a><br><img src='previewicon-[name_sanitize(name)].png' width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div></td>"
+		dat+="<td><div class='statusDisplay'><center> [old_h_style==name?"<span class='linkOn'><b>[name]</b></span>":"<a href='?src=\ref[src];h_style_change=[name_sanitize(name)]'><b>[name]</b></a>"]<br><img src='previewicon-[name_sanitize(name)].png' width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div></td>"
 
 		if(in_row_counter<3)
 			in_row_counter++
@@ -88,7 +87,7 @@
 		pref.update_preview_icon()
 		send_rsc(user, pref.preview_icon, "previewicon-[name_sanitize(name)].png")
 
-		dat+="<td><div class='statusDisplay'><center><a href='?src=\ref[src];f_style_change=[name_sanitize(name)]'><b>[name]</b></a><br><img src='previewicon-[name_sanitize(name)].png' width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div></td>"
+		dat+="<td><div class='statusDisplay'><center>[old_f_style==name?"<span class='linkOn'><b>[name]</b></span>":"<a href='?src=\ref[src];f_style_change=[name_sanitize(name)]'><b>[name]</b></a>"]<br><img src='previewicon-[name_sanitize(name)].png' width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></center></div></td>"
 
 		if(in_row_counter<3)
 			in_row_counter++
@@ -115,6 +114,7 @@
 		mob_species = all_species[pref.species]
 		if(new_h_style && (new_h_style in valid_hairstyles))
 			pref.h_style = new_h_style
+			show_hair_choices(user)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 		return TOPIC_NOACTION
 
@@ -190,6 +190,7 @@
 		mob_species = all_species[pref.species]
 		if(new_f_style && CanUseTopic(user) && valid_facialhairstyles)
 			pref.f_style = new_f_style
+			show_facial_hair_choices(user)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["cycle_fhair_style"])
