@@ -4,7 +4,7 @@
 
 /datum/category_item/player_setup_item/general/flavor
 	name = "Flavor"
-	sort_order = 6
+	sort_order = 7
 
 /datum/category_item/player_setup_item/general/flavor/load_character(datum/pref_record_reader/R)
 	pref.flavor_texts["general"] = R.read("flavor_texts_general")
