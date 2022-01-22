@@ -194,6 +194,7 @@
 
 	if(called_by_storyteller)
 		player.was_antag_given_by_storyteller = TRUE
+		player.antag_was_given_at = roundduration2text()
 
 	reset_antag_selection()
 
