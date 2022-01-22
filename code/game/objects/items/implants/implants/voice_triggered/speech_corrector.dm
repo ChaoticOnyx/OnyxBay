@@ -26,6 +26,12 @@
 /obj/item/implant/voice_triggered/speech_corrector/Initialize()
 	. = ..()
 	GLOB.listening_objects += src
+
+/obj/item/implant/voice_triggered/speech_corrector/Destroy()
+	removed()
+	GLOB.listening_objects -= src
+	return ..()
+
 /obj/item/implant/voice_triggered/speech_corrector/get_data()
 	. = {"
 	<b>Implant Specifications:</b><BR>
