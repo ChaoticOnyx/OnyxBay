@@ -253,7 +253,7 @@
 /decl/hierarchy/supply_pack/security/pistolammorubber
 	name = "Ammunition - .45 rubber"
 	contains = list(/obj/item/ammo_magazine/c45m/rubber = 4)
-	cost = 15
+	cost = 10
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .45 rubber ammunition crate"
 	access = access_security
@@ -269,7 +269,7 @@
 /decl/hierarchy/supply_pack/security/pistolammopractice
 	name = "Ammunition - .45 practice"
 	contains = list(/obj/item/ammo_magazine/c45m/practice = 8)
-	cost = 15
+	cost = 5
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .45 practice ammunition crate"
 	access = access_security
@@ -278,7 +278,7 @@
 	name = "Ammunition - Lethal shells"
 	contains = list(/obj/item/storage/box/shotgun/slugs = 2,
 					/obj/item/storage/box/shotgun/shells = 2)
-	cost = 60
+	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Lethal shotgun shells crate"
 	access = access_security
@@ -287,7 +287,7 @@
 /decl/hierarchy/supply_pack/security/shotgunbeanbag
 	name = "Ammunition - Beanbag shells"
 	contains = list(/obj/item/storage/box/shotgun/beanbags = 3)
-	cost = 30
+	cost = 15
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Beanbag shotgun shells crate"
 	access = access_security
@@ -295,7 +295,7 @@
 /decl/hierarchy/supply_pack/security/pdwammo
 	name = "Ammunition - 9mm top mounted"
 	contains = list(/obj/item/ammo_magazine/mc9mmt = 4)
-	cost = 40
+	cost = 25
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 9mm ammunition crate"
 	access = access_security
@@ -304,7 +304,7 @@
 /decl/hierarchy/supply_pack/security/pdwammorubber
 	name = "Ammunition - 9mm top mounted rubber"
 	contains = list(/obj/item/ammo_magazine/mc9mmt/rubber = 4)
-	cost = 30
+	cost = 15
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 9mm rubber ammunition crate"
 	access = access_security
@@ -312,7 +312,7 @@
 /decl/hierarchy/supply_pack/security/pdwammopractice
 	name = "Ammunition - 9mm top mounted practice"
 	contains = list(/obj/item/ammo_magazine/mc9mmt/practice = 8)
-	cost = 30
+	cost = 5
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 9mm practice ammunition crate"
 	access = access_security
@@ -320,7 +320,7 @@
 /decl/hierarchy/supply_pack/security/bullpupammo
 	name = "Ammunition - 7.62"
 	contains = list(/obj/item/ammo_magazine/a762 = 4)
-	cost = 60
+	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 7.62 ammunition crate"
 	access = access_security
@@ -329,7 +329,7 @@
 /decl/hierarchy/supply_pack/security/bullpupammopractice
 	name = "Ammunition - 7.62 practice"
 	contains = list(/obj/item/ammo_magazine/a762/practice = 8)
-	cost = 30
+	cost = 10
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper 7.62 practice ammunition crate"
 	access = access_security
@@ -337,7 +337,7 @@
 /decl/hierarchy/supply_pack/security/c38spec
 	name = "Ammunition - .38 SPEC 3in1"
 	contains = list(/obj/item/ammo_magazine/c38/spec = 3)
-	cost = 30
+	cost = 25
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .38 SPEC ammunition crate"
 	access = access_forensics_lockers
@@ -345,7 +345,7 @@
 /decl/hierarchy/supply_pack/security/c38chem
 	name = "Ammunition - .38 CHEM 3in1"
 	contains = list(/obj/item/ammo_magazine/c38/chem = 3)
-	cost = 45
+	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .38 CHEM ammunition crate"
 	access = access_forensics_lockers
