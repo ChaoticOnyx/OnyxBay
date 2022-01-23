@@ -41,9 +41,9 @@
 		minutes_to_next_cycle = 1
 
 		var/list/triggers = new
-		triggers[/storyteller_trigger/spawn_antagonist/traitor] = 65
-		triggers[/storyteller_trigger/spawn_antagonist/vampire] = 10
-		triggers[/storyteller_trigger/spawn_antagonist/borer] = 5
+		triggers[/storyteller_trigger/spawn_antagonist/traitor] = 30
+		triggers[/storyteller_trigger/spawn_antagonist/vampire] = 20
+		triggers[/storyteller_trigger/spawn_antagonist/borer] = 15
 
 		if(security_advantage > 10)
 			triggers[/storyteller_trigger/spawn_antagonist/changeling] = 40
@@ -64,7 +64,7 @@
 
 		if(!result)
 			_log_debug("Triggers don't work! We can't fix the balance :(")
-	
+
 	_log_debug("Time to next cycle: [minutes_to_next_cycle] minutes" )
 
 	return minutes_to_next_cycle MINUTES
