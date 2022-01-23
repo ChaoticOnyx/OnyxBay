@@ -7,7 +7,7 @@
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "box_0"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	use_power = POWER_USE_OFF
 	var/obj/item/circuitboard/circuit
 	var/list/components = list()

@@ -7,7 +7,7 @@ var/list/default_material_composition = list(MATERIAL_STEEL = 0, MATERIAL_GLASS 
 	name = "R&D Device"
 	icon = 'icons/obj/machines/research.dmi'
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	var/busy = 0
 	var/obj/machinery/computer/rdconsole/linked_console
 

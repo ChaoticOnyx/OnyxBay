@@ -30,7 +30,7 @@
 			var/atom/movable/overlay/animation = new /atom/movable/overlay(mobloc)
 			animation.SetName("water")
 			animation.set_density(0)
-			animation.anchored = 1
+			animation.anchored = TRUE
 			animation.icon = 'icons/mob/mob.dmi'
 			animation.layer = 5
 			animation.master = holder
@@ -84,7 +84,7 @@
 	var/canmove = 1
 	var/reappearing = 0
 	density = 0
-	anchored = 1
+	anchored = TRUE
 	var/turf/last_valid_turf
 
 /obj/effect/dummy/spell_jaunt/New(location)

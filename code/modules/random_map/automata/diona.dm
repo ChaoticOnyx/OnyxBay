@@ -15,7 +15,7 @@
 
 /obj/structure/diona
 	icon = 'icons/obj/diona.dmi'
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	opacity = 0
 	plane = ABOVE_TURF_PLANE

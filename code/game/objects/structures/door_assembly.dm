@@ -2,7 +2,7 @@
 	name = "airlock assembly"
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_as_0"
-	anchored = 0
+	anchored = FALSE
 	density = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/state = 0

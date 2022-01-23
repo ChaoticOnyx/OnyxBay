@@ -4,7 +4,7 @@
 	icon_state = "fab-idle"
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	var/metal_amount = 0
 	var/operating = 0
 	var/obj/item/robot_parts/being_built = null

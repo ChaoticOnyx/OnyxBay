@@ -2,7 +2,7 @@
 	name = "shield impact"
 	icon = 'icons/obj/machines/shielding.dmi'
 	icon_state = "shield_impact"
-	anchored = 1
+	anchored = TRUE
 
 	layer = ABOVE_HUMAN_LAYER
 	density = 0
@@ -18,7 +18,7 @@
 	desc = "An impenetrable field of energy, capable of blocking anything as long as it's active."
 	icon = 'icons/obj/machines/shielding.dmi'
 	icon_state = "shield_normal"
-	anchored = 1
+	anchored = TRUE
 
 	layer = ABOVE_HUMAN_LAYER
 	density = 1

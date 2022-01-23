@@ -7,7 +7,7 @@
 	desc = "A huge pipe segment used for constructing disposal systems."
 	icon = 'icons/obj/pipes/disposal.dmi'
 	icon_state = "conpipe-s"
-	anchored = 0
+	anchored = FALSE
 	density = 0
 	matter = list(MATERIAL_STEEL = 1850)
 	level = 2
@@ -244,7 +244,7 @@
 
 	if(isWrench(I))
 		if(anchored)
-			anchored = 0
+			anchored = FALSE
 			if(ispipe)
 				level = 2
 				set_density(0)
@@ -270,7 +270,7 @@
 						to_chat(user, "There is already a [nicetype] at that location.")
 						return
 
-			anchored = 1
+			anchored = TRUE
 			if(ispipe)
 				level = 1 // We don't want disposal bins to disappear under the floors
 				set_density(0)

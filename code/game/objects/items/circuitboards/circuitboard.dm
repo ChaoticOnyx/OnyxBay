@@ -11,7 +11,7 @@
 	item_state = "electronic"
 	origin_tech = list(TECH_DATA = 2)
 	density = 0
-	anchored = 0
+	anchored = FALSE
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.5
 	mod_reach = 0.5

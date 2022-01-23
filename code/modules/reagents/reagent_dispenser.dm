@@ -5,7 +5,7 @@
 	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
-	anchored = 0
+	anchored = FALSE
 	pull_sound = SFX_PULL_MACHINE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
@@ -225,7 +225,7 @@
 	name = "Pepper Spray Refiller"
 	desc = "Refills pepper spray canisters."
 	icon_state = "peppertank"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	amount_per_transfer_from_this = 45
 	initial_reagent_types = list(/datum/reagent/capsaicin/condensed = 1)
@@ -237,7 +237,7 @@
 	amount_per_transfer_from_this = 5
 	icon_state = "water_cooler"
 	possible_transfer_amounts = null
-	anchored = 1
+	anchored = TRUE
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/water = 1)
 
@@ -271,7 +271,7 @@
 	desc = "A dispenser of virus food."
 	icon_state = "virusfoodtank"
 	amount_per_transfer_from_this = 10
-	anchored = 1
+	anchored = TRUE
 	initial_reagent_types = list(/datum/reagent/nutriment/virus_food = 1)
 
 /obj/structure/reagent_dispensers/acid
@@ -279,5 +279,5 @@
 	desc = "A dispenser of acid for industrial processes."
 	icon_state = "acidtank"
 	amount_per_transfer_from_this = 10
-	anchored = 1
+	anchored = TRUE
 	initial_reagent_types = list(/datum/reagent/acid = 1)

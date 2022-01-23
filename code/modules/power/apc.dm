@@ -71,7 +71,7 @@
 	desc = "A control terminal for the area electrical systems."
 
 	icon_state = "apc0"
-	anchored = 1
+	anchored = TRUE
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
 	clicksound = SFX_USE_SMALL_SWITCH

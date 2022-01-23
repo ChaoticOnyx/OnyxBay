@@ -8,7 +8,7 @@
 	var/working = 1
 	var/time = 10
 	var/timing = 0
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 2
 	active_power_usage = 6
 	power_channel = STATIC_ENVIRON

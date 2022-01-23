@@ -9,7 +9,7 @@
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit."
 	icon_state = "smes"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	clicksound = SFX_USE_LARGE_SWITCH
 
 	var/capacity = 5e6 // maximum charge

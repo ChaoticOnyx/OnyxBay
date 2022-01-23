@@ -44,7 +44,7 @@
 	icon = 'icons/obj/engine.dmi'
 	icon_state = "darkmatter"
 	density = 1
-	anchored = 0
+	anchored = FALSE
 	light_outer_range = 4
 
 	layer = ABOVE_OBJ_LAYER
@@ -184,7 +184,7 @@
 		return
 
 	log_and_message_admins("Supermatter delaminating at [x] [y] [z]")
-	anchored = 1
+	anchored = TRUE
 	grav_pulling = 1
 	exploded = 1
 	sleep(pull_time)
@@ -571,4 +571,3 @@
 #undef DETONATION_SHUTDOWN_RNG_FACTOR
 #undef DETONATION_SOLAR_BREAK_CHANCE
 #undef WARNING_DELAY
-

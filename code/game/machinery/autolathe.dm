@@ -4,7 +4,7 @@
 	icon_state = "autolathe"
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 10
 	active_power_usage = 2000
 	clicksound = 'sound/effects/using/console/press2.ogg'

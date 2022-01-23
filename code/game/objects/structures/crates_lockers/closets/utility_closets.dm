@@ -203,7 +203,7 @@
 	icon_state = "hydrant"
 	icon_closed = "hydrant"
 	icon_opened = "hydrant_open"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
@@ -231,7 +231,7 @@
 	icon_state = "medical_wall_first_aid"
 	icon_closed = "medical_wall_first_aid"
 	icon_opened = "medical_wall_first_aid_open"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS
@@ -257,7 +257,7 @@
 	icon_state = "shipping_wall"
 	icon_closed = "shipping_wall"
 	icon_opened = "shipping_wall_open"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS

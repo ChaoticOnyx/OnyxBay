@@ -2,7 +2,7 @@
 	name = "statue of Onyx"
 	icon_state = "onyx2018"
 	icon = 'icons/obj/onyxaward2018.dmi'
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	opacity = 0
 	var/info

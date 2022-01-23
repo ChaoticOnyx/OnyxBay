@@ -4,7 +4,7 @@
 	icon = 'icons/obj/railing.dmi'
 	icon_state = "railing0"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
 	layer = 5.2 // Just above doors
 	throwpass = 1
@@ -14,7 +14,7 @@
 	var/maxhealth = 40
 	var/check = 0
 /obj/structure/railing/constructed // a cheap trick to spawn unanchored railings for construction
-	anchored = 0
+	anchored = FALSE
 
 /obj/structure/railing/Initialize()
 	. = ..()

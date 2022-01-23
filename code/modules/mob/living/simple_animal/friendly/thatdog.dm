@@ -12,7 +12,7 @@
 	emote_see = list("barks")
 	speak_chance = 1
 	turns_per_move = 0
-	anchored = 1
+	anchored = TRUE
 	meat_type = /obj/item/reagent_containers/food/snacks/meat
 	response_help  = "pets"
 	response_disarm = "pokes"

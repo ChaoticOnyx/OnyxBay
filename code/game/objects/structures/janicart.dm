@@ -3,7 +3,7 @@
 	desc = "The ultimate in janitorial carts! Has space for water, mops, signs, trash bags, and more!"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "cart"
-	anchored = 0
+	anchored = FALSE
 	density = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_CLIMBABLE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
@@ -169,7 +169,7 @@
 	name = "janicart"
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "pussywagon"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	foldable = FALSE
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER

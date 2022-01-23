@@ -92,7 +92,7 @@
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "rift"
 	unacidable = 1
-	anchored = 1
+	anchored = TRUE
 	density = 0
 
 /obj/effect/rift/Destroy()

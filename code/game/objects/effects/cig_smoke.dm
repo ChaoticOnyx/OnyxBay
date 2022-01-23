@@ -3,7 +3,7 @@
 	icon_state = "smallsmoke"
 	icon = 'icons/effects/effects.dmi'
 	opacity = 0
-	anchored = 1
+	anchored = TRUE
 	mouse_opacity = 0
 	layer = ABOVE_HUMAN_LAYER
 	var/time_to_live = 100

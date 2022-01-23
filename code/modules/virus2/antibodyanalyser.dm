@@ -3,7 +3,7 @@
 	desc = "An advanced machine that analyses pure antibody samples and stores the structure of them on the ExoNet in exchange for cargo points."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "analyser"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 
 	var/scanning = 0

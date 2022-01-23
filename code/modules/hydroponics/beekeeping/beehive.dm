@@ -3,7 +3,7 @@
 	icon = 'icons/obj/beekeeping.dmi'
 	icon_state = "beehive"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 
 	var/closed = 0
 	var/bee_count = 0 // Percent

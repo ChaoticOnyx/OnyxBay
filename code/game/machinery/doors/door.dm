@@ -6,7 +6,7 @@
 	desc = "It opens and closes."
 	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door1"
-	anchored = 1
+	anchored = TRUE
 	opacity = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC

@@ -8,7 +8,7 @@ var/list/solars_list = list()
 	desc = "A solar electrical generator."
 	icon = 'icons/obj/power.dmi'
 	icon_state = "sp_base"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	idle_power_usage = 0
 	active_power_usage = 0
@@ -55,7 +55,7 @@ var/list/solars_list = list()
 	if(!S)
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/material/glass
-		S.anchored = 1
+		S.anchored = TRUE
 	S.loc = src
 	if(S.glass_type == /obj/item/stack/material/glass/reinforced) //if the panel is in reinforced glass
 		health *= 2 								 //this need to be placed here, because panels already on the map don't have an assembly linked to
@@ -207,7 +207,7 @@ var/list/solars_list = list()
 	icon_state = "sp_base"
 	item_state = "electropack"
 	w_class = ITEM_SIZE_HUGE // Pretty big!
-	anchored = 0
+	anchored = FALSE
 	var/tracker = 0
 	var/glass_type = null
 
@@ -241,7 +241,7 @@ var/list/solars_list = list()
 	if(isturf(loc))
 		if(!anchored)
 			if(isWrench(W))
-				anchored = 1
+				anchored = TRUE
 				pixel_x = 0
 				pixel_y = 0
 				pixel_z = 0
@@ -250,7 +250,7 @@ var/list/solars_list = list()
 				return 1
 		else
 			if(isWrench(W))
-				anchored = 0
+				anchored = FALSE
 				user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				return 1
@@ -281,7 +281,7 @@ var/list/solars_list = list()
 	desc = "A controller for solar panel arrays."
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "solar"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 250
@@ -418,7 +418,7 @@ var/list/solars_list = list()
 				A.circuit = M
 				A.state = 3
 				A.icon_state = "3"
-				A.anchored = 1
+				A.anchored = TRUE
 				qdel(src)
 			else
 				to_chat(user, "<span class='notice'>You disconnect the monitor.</span>")
@@ -429,7 +429,7 @@ var/list/solars_list = list()
 				A.circuit = M
 				A.state = 4
 				A.icon_state = "4"
-				A.anchored = 1
+				A.anchored = TRUE
 				qdel(src)
 	else
 		src.attack_hand(user)

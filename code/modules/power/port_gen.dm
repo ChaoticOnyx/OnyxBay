@@ -5,7 +5,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "portgen0"
 	density = 1
-	anchored = 0
+	anchored = FALSE
 
 	var/active = 0
 	var/power_gen = 5000
@@ -458,7 +458,7 @@
 	rad_power = 6
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	board_path = /obj/item/circuitboard/pacman/super/potato
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/power/port_gen/pacman/super/potato/New()
 	create_reagents(120)

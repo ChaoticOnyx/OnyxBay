@@ -4,7 +4,7 @@
 	icon_state = "disposalbio"
 	var/list/accepts = list(/obj/item/clothing,/obj/item/virusdish/,/obj/item/cureimplanter,/obj/item/diseasedisk,/obj/item/reagent_containers)
 	density = 1
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/disease2/biodestroyer/attackby(obj/I as obj, mob/user as mob)
 	for(var/path in accepts)

@@ -5,7 +5,7 @@
 	desc = "A machine used for construction of robotcs and mechas."
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 20
 	active_power_usage = 5000
 	req_access = list(access_robotics)

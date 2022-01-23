@@ -5,7 +5,7 @@
 
 	density = 1
 	opacity = 1
-	anchored = 1
+	anchored = TRUE
 	health = 230
 
 /obj/structure/alien/resin/wall

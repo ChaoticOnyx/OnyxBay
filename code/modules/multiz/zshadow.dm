@@ -6,7 +6,7 @@
 	name = "shadow"
 	desc = "Z-level shadow"
 	status_flags = GODMODE
-	anchored = 1
+	anchored = TRUE
 	unacidable = 1
 	density = 0
 	opacity = 0					// Don't trigger lighting recalcs gah! TODO - consider multi-z lighting.

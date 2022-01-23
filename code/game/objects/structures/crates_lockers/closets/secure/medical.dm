@@ -164,7 +164,7 @@
 	icon_opened = "medical_wall_open"
 	icon_broken = "medical_wall_sparks"
 	icon_off = "medical_wall_off"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	wall_mounted = 1
 	storage_types = CLOSET_STORAGE_ITEMS

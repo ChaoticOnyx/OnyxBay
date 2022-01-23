@@ -105,7 +105,7 @@
 	density = 1
 	opacity = 0
 	mouse_opacity = 1
-	anchored = 1
+	anchored = TRUE
 	can_buckle = 0 //no manual buckling or unbuckling
 
 	var/health = 25
@@ -119,7 +119,7 @@
 	name = "animal net"
 	desc = "An energized net meant to subdue animals."
 
-	anchored = 0
+	anchored = FALSE
 	health = 5
 	temporary = 0
 	min_free_time = 5

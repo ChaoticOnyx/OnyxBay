@@ -4,7 +4,7 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "borgcharger0"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 50
 	var/mob/living/occupant = null
 	var/obj/item/cell/cell = null
