@@ -2,6 +2,8 @@
 #define FRAME_NORMAL 1
 #define FRAME_REINFORCED 2
 #define FRAME_GRILLE 3
+#define FRAME_ELECTRIC 4
+#define FRAME_RELECTRIC 5
 
 // Making things simple was never an option
 /datum/windowpane
@@ -17,6 +19,7 @@
 	var/health = 17.5
 	var/is_inner = FALSE
 	var/state = 3
+	var/tinted = FALSE
 	var/reinforced = FALSE
 
 	var/explosion_block = 0
@@ -113,6 +116,10 @@
 
 	qdel(src)
 
+// Sets tint to new_state if it's TRUE or FALSE, otherwise just switches it.
+/datum/windowpane/proc/set_tint(new_state = -1)
+	tinted = (new_state == -1) ? !tinted : new_state
+	my_frame.update_icon()
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -124,21 +131,29 @@
 	var/icon_border = "winborder"
 	density = FALSE
 	anchored = FALSE
+	opacity = TRUE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = WINDOW_FRAME_LAYER
 	explosion_resistance = 1
 	var/max_health = 8
 	var/health = 8
+	var/pane_melee_mult = 1.0 // Stronger frames protect their windowpanes from some damage.
 	hitby_sound = 'sound/effects/grillehit.ogg'
 	hitby_loudness_multiplier = 0.5
 
 	var/frame_state = FRAME_NORMAL
-	var/datum/windowpane/outer_pane = null
-	var/datum/windowpane/inner_pane = null
+	var/datum/windowpane/outer_pane = null // Normal windowpane for most frames.
+	var/datum/windowpane/inner_pane = null // Inner windowpane, used by reinforced frames.
 
 	var/preset_outer_pane
 	var/preset_inner_pane
+
+	var/electrochromic = TRUE // Disallows toggling tint when false. Should always be true by default unless manually toggled.
+	var/obj/item/device/assembly/signaler/signaler = null
+
+	var/obj/structure/window_frame/recursive_tint_origin = null // Used by the recursive_tint() proc.
+	var/last_recursion = 0
 
 	var/list/mobs_can_pass = list(
 		/mob/living/bot,
@@ -167,6 +182,8 @@
 /obj/structure/window_frame/Destroy()
 	QDEL_NULL(outer_pane)
 	QDEL_NULL(inner_pane)
+	recursive_tint_origin = null
+	QDEL_NULL(signaler)
 	. = ..()
 
 /obj/structure/window_frame/ex_act(severity)
@@ -186,6 +203,7 @@
 			else if(inner_pane)
 				inner_pane.shatter(FALSE)
 			else
+				signaler?.forceMove(get_turf(src))
 				qdel(src) // Poor frame gets murdered here if not protected by windowpanes.
 		if(1)
 			if(prob(50))
@@ -198,15 +216,6 @@
 	if(new_state)
 		frame_state = new_state
 	switch(frame_state)
-		if(FRAME_GRILLE)
-			name = "[outer_pane ? "windowed " : ""]grille"
-			desc = "A flimsy lattice of metal rods, with screws to secure it to the floor."
-			icon_state = "grille"
-			icon_base = "grille"
-			icon_border = "winborder"
-			hitby_loudness_multiplier = 1.5
-			density = TRUE
-			max_health = 12
 		if(FRAME_REINFORCED)
 			if(outer_pane)
 				name = "[outer_pane ? "" : "unfinished "]reinforced window"
@@ -221,6 +230,7 @@
 			hitby_loudness_multiplier = 1.0
 			density = TRUE
 			max_health = 10
+			pane_melee_mult = 0.9
 		if(FRAME_NORMAL)
 			name = outer_pane ? "window" : "window frame"
 			desc = "A simple window frame made of steel rods."
@@ -230,6 +240,17 @@
 			hitby_loudness_multiplier = 0.5
 			density = outer_pane ? TRUE : FALSE
 			max_health = 8
+			pane_melee_mult = 1.0
+		if(FRAME_GRILLE)
+			name = "[outer_pane ? "windowed " : ""]grille"
+			desc = "A flimsy lattice of metal rods, with screws to secure it to the floor."
+			icon_state = "grille"
+			icon_base = "grille"
+			icon_border = "winborder"
+			hitby_loudness_multiplier = 1.5
+			density = TRUE
+			max_health = 12
+			pane_melee_mult = 0.8
 		if(FRAME_DESTROYED)
 			name = "broken grille"
 			desc = "Not much left of a grille, but at least a single steel rod still can be salvaged from it."
@@ -239,6 +260,26 @@
 			hitby_loudness_multiplier = 0.5
 			density = FALSE
 			max_health = 6
+		if(FRAME_ELECTRIC)
+			name = outer_pane ? "electrochromic window" : "wired window frame"
+			desc = "A window frame with some wiring attached to it, used to create electrochromic windows."
+			icon_state = "winframe_e"
+			icon_base = "winframe_e"
+			icon_border = "winborder"
+			hitby_loudness_multiplier = 0.5
+			density = FALSE
+			max_health = 8
+			pane_melee_mult = 1.0
+		if(FRAME_RELECTRIC)
+			name = outer_pane ? "reinforced electrochromic window" : "wired reinforced window frame"
+			desc = "A reinforced window frame with some wiring attached to it."
+			icon_state = "winframe_re"
+			icon_base = "winframe_re"
+			icon_border = "winborder_r"
+			hitby_loudness_multiplier = 1.0
+			density = TRUE
+			max_health = 10
+			pane_melee_mult = 0.9
 
 	health = max_health // Simple reset is easier than inventing things.
 
@@ -246,6 +287,7 @@
 /obj/structure/window_frame/update_icon()
 	overlays.Cut()
 	icon_state = icon_base
+	var/new_opacity = FALSE
 
 	if(frame_state == FRAME_DESTROYED)
 		return
@@ -253,6 +295,9 @@
 	layer = WINDOW_FRAME_LAYER
 
 	if(inner_pane)
+		if(inner_pane.tinted)
+			new_opacity = TRUE
+
 		var/list/dirs = list()
 		if(inner_pane.state == 3)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -265,12 +310,17 @@
 			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
+			if(inner_pane.tinted)
+				I.color="#222222"
 			overlays += I
 
 		if(inner_pane.damage_icon)
 			overlays += image(icon, inner_pane.damage_icon)
 
 	if(outer_pane)
+		if(outer_pane.tinted)
+			new_opacity = TRUE
+
 		var/list/dirs = list()
 		if(outer_pane.state == 3)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -283,6 +333,8 @@
 			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
+			if(outer_pane.tinted)
+				I.color="#222222"
 			overlays += I
 
 		if(outer_pane.damage_icon)
@@ -302,6 +354,9 @@
 			I.layer = WINDOW_BORDER_LAYER
 			overlays += I
 
+	if(opacity != new_opacity)
+		set_opacity(new_opacity)
+
 //This proc is used to update the icons of nearby windows. It should not be confused with update_nearby_tiles(), which is an atmos proc!
 /obj/structure/window_frame/proc/update_nearby_icons()
 	update_icon()
@@ -309,32 +364,9 @@
 		W.update_icon()
 
 /obj/structure/window_frame/Bumped(atom/user)
-	if(frame_state == FRAME_GRILLE && ismob(user))
+	if(ismob(user))
 		shock(user, 70)
 	..()
-
-/obj/structure/window_frame/attack_hand(mob/user)
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-	user.do_attack_animation(src)
-
-	var/damage_dealt = 1
-	var/attack_message = "kicks"
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = user
-		if(H.species.can_shred(H))
-			attack_message = "mangles"
-			damage_dealt = 5
-
-	if(frame_state == FRAME_GRILLE && shock(user, 70))
-		return
-
-	if(MUTATION_HULK in user.mutations)
-		damage_dealt += 5
-	else
-		damage_dealt += 1
-
-	attack_generic(user, damage_dealt, attack_message)
 
 /obj/structure/window_frame/CanPass(atom/movable/mover, turf/target)
 	if(!(outer_pane || inner_pane) || (mover.pass_flags & PASS_FLAG_GLASS)) // Just a frame without windows OR we don't care about windows anyways.
@@ -368,6 +400,345 @@
 
 /obj/structure/window_frame/CanZASPass(turf/T, is_zone)
 	return !(outer_pane || inner_pane)
+
+/obj/structure/window_frame/attack_hand(mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+
+	var/datum/windowpane/affected = null
+	if(outer_pane)
+		affected = outer_pane // Let's try the outer windowpane first
+	else if(inner_pane)
+		affected = inner_pane // ... and try the inner one if the outer is missing
+
+	if(affected)
+		if(MUTATION_HULK in user.mutations)
+			user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!"))
+			user.visible_message(SPAN("danger", "[user] smashes through \the [src]!"))
+			user.do_attack_animation(src)
+			affected.shatter()
+
+		else if(user.a_intent == I_HURT)
+			if(ishuman(user))
+				var/mob/living/carbon/human/H = user
+				if(H.species.can_shred(H))
+					attack_generic(H, 25, "shreds")
+					return
+
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
+			user.do_attack_animation(src)
+			user.visible_message(SPAN("danger", "\The [user] bangs against \the [src]!"),\
+								 SPAN("danger", "You bang against \the [src]!"),\
+								 SPAN("danger", "You hear a banging sound."))
+		else
+			playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
+			user.visible_message("<b>[user.name]</b> knocks on the [src].",
+								"You knock on the [src].",
+								"You hear a knocking sound.")
+		return
+
+	playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+	user.do_attack_animation(src)
+
+	var/damage_dealt = 1
+	var/attack_message = "kicks"
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		if(H.species.can_shred(H))
+			attack_message = "mangles"
+			damage_dealt = 5
+
+	if(frame_state == FRAME_GRILLE && shock(user, 70))
+		return
+
+	if(MUTATION_HULK in user.mutations)
+		damage_dealt += 5
+	else
+		damage_dealt += 1
+
+	attack_generic(user, damage_dealt, attack_message)
+
+/obj/structure/window_frame/attack_generic(mob/user, damage, attack_verb = "attacks")
+	visible_message(SPAN("danger", "[user] [attack_verb] \the [src]!"))
+	attack_animation(user)
+	if(outer_pane)
+		outer_pane.take_damage(damage * pane_melee_mult)
+	else if(inner_pane)
+		inner_pane.take_damage(damage * pane_melee_mult)
+	else
+		health -= damage
+		spawn()
+			healthcheck()
+		return TRUE
+
+/obj/structure/window_frame/attackby(obj/item/W, mob/user)
+	// We'll use this for all the kinds of stuff below.
+	var/datum/windowpane/affected = null
+	if(outer_pane)
+		affected = outer_pane
+	else if(inner_pane)
+		affected = inner_pane
+
+	if(user.a_intent == I_HURT)
+		if(W.item_flags & ITEM_FLAG_NO_BLUDGEON)
+			return
+
+		if(affected)
+			user.setClickCooldown(W.update_attack_cooldown())
+			user.do_attack_animation(src)
+			if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
+				visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
+				affected.take_damage(W.force * (affected.reinforced ? 0.5 : 1) * pane_melee_mult)
+			else
+				visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
+				playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
+
+		else
+			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+			user.do_attack_animation(src)
+			if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
+				to_chat(user, SPAN("danger", "You try to hit \the [src], but get electrocuted!"))
+				return
+			playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
+			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
+			switch(W.damtype)
+				if("fire")
+					health -= W.force
+				if("brute")
+					health -= W.force * 0.1
+			healthcheck()
+			return
+
+	if(istype(W, /obj/item/stack/material))
+		var/obj/item/stack/material/ST = W
+		if(ST.material.created_window)
+			if(frame_state == FRAME_DESTROYED)
+				to_chat(user, SPAN("notice", "You don't feel like \the [src] can hold a windowpane by any means."))
+				return
+			if(outer_pane)
+				to_chat(user, SPAN("notice", "You can't seem to find a way to place another windowpane in \the [src]."))
+				if(frame_state == FRAME_REINFORCED && !inner_pane)
+					to_chat(user, SPAN("notice", "Strangely enough, \the [src] is missing the inner windowpane. Replacing it requires unstalling the outer pane first."))
+				return
+			if(!anchored)
+				to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))
+			var/is_inner = FALSE
+			if(frame_state == FRAME_REINFORCED && !inner_pane)
+				is_inner = TRUE
+
+			for(var/obj/structure/window/WINDOW in loc) // No layering frames with regular sided windows. Nah. Nope. No way.
+				to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
+				return
+			to_chat(user, SPAN("notice", "You start placing the [is_inner ? "inner " : ""]windowpane into \the [src]."))
+			if(do_after(user, 20, src))
+				for(var/obj/structure/window/WINDOW in loc) // checking this for a 2nd time to check if a window was made while we were waiting.
+					to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
+					return
+				if(outer_pane || (is_inner && inner_pane))
+					to_chat(user, SPAN("warning", "\The [src] already has a windowpane. Someone's beat you to it."))
+					return
+				if(!anchored)
+					to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))
+				if(frame_state == FRAME_DESTROYED)
+					to_chat(user, SPAN("notice", "Something tells you that \the [src] cannot hold a windowpane anymore."))
+					return
+
+				if(ST.use(1))
+					if(is_inner)
+						to_chat(user, SPAN("notice", "You place the inner windowpane into \the [src]."))
+						inner_pane = new /datum/windowpane(src, ST.material, TRUE)
+						inner_pane.state = 0
+					else
+						to_chat(user, SPAN("notice", "You place the windowpane into \the [src]."))
+						outer_pane = new /datum/windowpane(src, ST.material)
+						outer_pane.state = 0
+					add_fingerprint(user)
+					set_state()
+					update_nearby_icons()
+			return
+
+	if(affected)
+		if(isScrewdriver(W))
+			if(affected.state >= 2)
+				affected.state = 5 - affected.state
+				update_nearby_icons()
+				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
+				to_chat(user, (affected.state == 3 ? SPAN("notice", "You have fastened \the [affected.name]'s outer bolts.") : SPAN("notice", "You have unfastened \the [affected.name]'s outer bolts.")))
+			else if(affected.state <= 1)
+				affected.state = 1 - affected.state
+				update_nearby_icons()
+				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
+				to_chat(user, (affected.state == 1 ? SPAN("notice", "You have fastened \the [affected.name] to the frame.") : SPAN("notice", "You have unfastened \the [affected.name] from the frame.")))
+			return
+
+		if(isCrowbar(W) && (affected.state == 1 || affected.state == 2))
+			affected.state = 3 - affected.state
+			update_nearby_icons()
+			playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
+			to_chat(user, (affected.state == 2 ? SPAN("notice", "You have pried \the [affected.name] into the frame.") : SPAN("notice", "You have pried \the [affected.name] out of the frame.")))
+			return
+
+		if(isWrench(W) && affected.state == 0)
+			var/pane_name = affected.name // Windowpane gets deleted during dismantle() so we want to keep its name for the message.
+			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+			affected.dismantle()
+			visible_message(SPAN("notice", "[user] dismantles \the [pane_name] from \the [src].")) // Showing the message AFTER dismantle() so it's "...from the window frame" and not "...from the window".
+			return
+
+		return
+
+	if(isWirecutter(W))
+		if(shock(user, 100))
+			to_chat(user, SPAN("danger", "You try to cut \the [src], but it electrocutes you instead!"))
+			return
+		switch(frame_state)
+			if(FRAME_DESTROYED)
+				visible_message(SPAN("notice", "[user] salvages \the [src]."))
+				new /obj/item/stack/rods(get_turf(src))
+				qdel(src)
+			if(FRAME_NORMAL)
+				visible_message(SPAN("notice", "[user] disassembles \the [src]."))
+				new /obj/item/stack/rods(get_turf(src), 2)
+				qdel(src)
+			if(FRAME_REINFORCED)
+				set_state(FRAME_NORMAL)
+				visible_message(SPAN("notice", "[user] removes the reinforced lattice from \the [src]."))
+				new /obj/item/stack/rods(get_turf(src))
+			if(FRAME_GRILLE)
+				set_state(FRAME_NORMAL) // Straight back to normal, skipping the reinforced state.
+				visible_message(SPAN("notice", "[user] removes the grille from \the [src]."))
+				new /obj/item/stack/rods(get_turf(src), 2)
+			if(FRAME_ELECTRIC, FRAME_RELECTRIC)
+				set_state((frame_state == FRAME_ELECTRIC) ? FRAME_NORMAL : FRAME_REINFORCED)
+				visible_message(SPAN("notice", "[user] removes the wiring from \the [src]."))
+				if(signaler)
+					signaler.forceMove(get_turf(src))
+					signaler = null
+				new /obj/item/stack/cable_coil/single(get_turf(src))
+				outer_pane?.set_tint(FALSE)
+		update_nearby_icons()
+		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
+		return
+
+	if(istype(W, /obj/item/stack/rods))
+		var/obj/item/stack/rods/R = W
+		switch(frame_state)
+			if(FRAME_NORMAL)
+				to_chat(user, SPAN("notice", "You begin reinforcing the frame."))
+				add_fingerprint(user)
+				if(!do_after(user, 10, src))
+					return
+				if(frame_state != FRAME_NORMAL)
+					return
+				if(R.use(1))
+					to_chat(user, SPAN("notice", "You've reinforced the frame."))
+					set_state(FRAME_REINFORCED)
+					update_nearby_icons()
+				return
+			if(FRAME_REINFORCED)
+				to_chat(user, SPAN("notice", "You begin constructing a grille."))
+				add_fingerprint(user)
+				if(!do_after(user, 10, src))
+					return
+				if(frame_state != FRAME_REINFORCED)
+					return
+				if(R.use(1))
+					to_chat(user, SPAN("notice", "You've constructed a grille."))
+					set_state(FRAME_REINFORCED)
+					update_nearby_icons()
+				return
+
+	if(istype(W, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/CC = W
+		if(frame_state == FRAME_NORMAL || frame_state == FRAME_REINFORCED)
+			var/old_state = frame_state
+			to_chat(user, SPAN("notice", "You begin wiring \the [src]."))
+			add_fingerprint(user)
+			if(!do_after(user, 20, src))
+				return
+			if(frame_state != old_state)
+				return
+			if(CC.use(1))
+				to_chat(user, SPAN("notice", "You've mounted some wiring onto the frame."))
+				set_state((frame_state == FRAME_NORMAL) ? FRAME_ELECTRIC : FRAME_RELECTRIC)
+				electrochromic = TRUE
+				update_nearby_icons()
+			return
+
+	if(istype(W, /obj/item/device/multitool))
+		if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
+			electrochromic = !electrochromic
+			to_chat(user, SPAN("notice", "\The [src] will[electrochromic ? " " : " no longer "]toggle its tint when signalled now."))
+			return
+
+	if(istype(W, /obj/item/device/assembly/signaler))
+		to_chat(user, SPAN("notice", "You've connected \the [W] to \the [src]."))
+		user.unEquip(W, target = src)
+		signaler = W
+		return
+
+	if((isScrewdriver(W)) && (istype(loc, /turf/simulated) || anchored))
+		if(shock(user, 90))
+			to_chat(user, SPAN("danger", "You try to [anchored ? "unfasten" : "fasten"] \the [src] and get electrocuted!"))
+			return
+		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
+		anchored = !anchored
+		update_nearby_icons()
+		user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \
+							 SPAN("notice", "You have [anchored ? "fastened \the [src] to" : "unfastened \the [src] from"] the floor."))
+		return
+
+	if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
+		to_chat(user, SPAN("danger", "You touch \the [src] with \the [W] and get electrocuted!"))
+		return
+
+	return ..()
+
+
+/obj/structure/window_frame/proc/healthcheck()
+	if(health <= 0)
+		switch(frame_state)
+			if(FRAME_GRILLE)
+				new /obj/item/stack/rods(get_turf(src), rand(1, 3))
+				set_state(FRAME_DESTROYED)
+			if(FRAME_ELECTRIC, FRAME_RELECTRIC)
+				new /obj/item/stack/rods(get_turf(src), rand(1, frame_state + 1))
+				if(signaler)
+					signaler.forceMove(get_turf(src))
+					signaler = null
+				new /obj/item/stack/cable_coil/single(get_turf(src))
+			else
+				new /obj/item/stack/rods(get_turf(src), rand(1, frame_state + 1)) // Losing some rods when destroyed instead of disassembling.
+				qdel(src)
+	return
+
+// shock user with probability prb (if all connections & power are working)
+// returns 1 if shocked, 0 otherwise
+/obj/structure/window_frame/proc/shock(mob/user, prb)
+	if(frame_state != FRAME_GRILLE && frame_state != FRAME_ELECTRIC && frame_state != FRAME_RELECTRIC) // Well maybe reinforced frames should have a chance to shook whomever crawls through them but for now nah.
+		return FALSE
+	if(outer_pane)
+		return FALSE
+	if(!anchored) // unanchored grilles are never connected
+		return FALSE
+	if(!prob(prb))
+		return FALSE
+	if(!in_range(src, user)) // To prevent TK and mech users from getting shocked
+		return FALSE
+	var/turf/T = get_turf(src)
+	var/obj/structure/cable/C = T.get_cable_node()
+	if(!C)
+		return FALSE
+
+	if(electrocute_mob(user, C, src))
+		if(C.powernet)
+			C.powernet.trigger_warning()
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(3, 1, src)
+		s.start()
+		if(user.stunned)
+			return TRUE
+
+	return FALSE
 
 /obj/structure/window_frame/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)
@@ -419,187 +790,6 @@
 	spawn()
 		healthcheck() //spawn to make sure we return properly if the grille is deleted
 
-/obj/structure/window_frame/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/stack/material))
-		var/obj/item/stack/material/ST = W
-		if(ST.material.created_window)
-			if(frame_state == FRAME_DESTROYED)
-				to_chat(user, SPAN("notice", "You don't feel like \the [src] can hold a windowpane by any means."))
-				return
-			if(outer_pane)
-				to_chat(user, SPAN("notice", "You can't seem to find a way to place another windowpane in \the [src]."))
-				if(frame_state == FRAME_REINFORCED && !inner_pane)
-					to_chat(user, SPAN("notice", "Strangely enough, \the [src] is missing the inner windowpane. Replacing it requires unstalling the outer pane first."))
-				return
-			if(!anchored)
-				to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))
-			var/is_inner = FALSE
-			if(frame_state == FRAME_REINFORCED && !inner_pane)
-				is_inner = TRUE
-
-			for(var/obj/structure/window/WINDOW in loc) // No layering frames with regular sided windows. Nah. Nope. No way.
-				to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
-				return
-			to_chat(user, SPAN("notice", "You start placing the [is_inner ? "inner " : ""]windowpane into \the [src]."))
-			if(do_after(user, 20, src))
-				for(var/obj/structure/window/WINDOW in loc) // checking this for a 2nd time to check if a window was made while we were waiting.
-					to_chat(user, SPAN("warning", "\The [WINDOW] interferes with your attempts to place a windowpane."))
-					return
-				if(outer_pane || (is_inner && inner_pane))
-					to_chat(user, SPAN("warning", "\The [src] already has a windowpane. Someone's beat you to it."))
-					return
-				if(!anchored)
-					to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))
-				if(frame_state == FRAME_DESTROYED)
-					to_chat(user, SPAN("notice", "Something tells you that \the [src] cannot hold a windowpane anymore."))
-					return
-
-				if(ST.use(1))
-					if(is_inner)
-						to_chat(user, SPAN("notice", "You place the inner windowpane into \the [src]."))
-						inner_pane = new /datum/windowpane(src, ST.material, TRUE)
-						inner_pane.state = 0
-					else
-						to_chat(user, SPAN("notice", "You place the windowpane into \the [src]."))
-						outer_pane = new /datum/windowpane(src, ST.material)
-						outer_pane.state = 0
-					set_state()
-					update_nearby_icons()
-			return
-
-	var/datum/windowpane/affected = null
-	if(outer_pane)
-		affected = outer_pane // Let's try the outer windowpane first
-	else if(inner_pane)
-		affected = inner_pane // ... and try the inner one if the outer is missing
-
-	if(affected)
-		if(W.item_flags & ITEM_FLAG_NO_BLUDGEON)
-			return
-
-		if(isScrewdriver(W))
-			if(affected.state >= 2)
-				affected.state = 5 - affected.state
-				update_nearby_icons()
-				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-				to_chat(user, (affected.state == 3 ? SPAN("notice", "You have fastened \the [affected.name]'s outer bolts.") : SPAN("notice", "You have unfastened \the [affected.name]'s outer bolts.")))
-			else if(affected.state <= 1)
-				affected.state = 1 - affected.state
-				update_nearby_icons()
-				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-				to_chat(user, (affected.state == 1 ? SPAN("notice", "You have fastened \the [affected.name] to the frame.") : SPAN("notice", "You have unfastened \the [affected.name] from the frame.")))
-			return
-
-		if(isCrowbar(W) && (affected.state == 1 || affected.state == 2))
-			affected.state = 3 - affected.state
-			update_nearby_icons()
-			playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
-			to_chat(user, (affected.state == 2 ? SPAN("notice", "You have pried \the [affected.name] into the frame.") : SPAN("notice", "You have pried \the [affected.name] out of the frame.")))
-			return
-
-		if(isWrench(W) && affected.state == 0)
-			var/pane_name = affected.name // Windowpane gets deleted during dismantle() so we want to keep its name for the message.
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			affected.dismantle()
-			visible_message(SPAN("notice", "[user] dismantles \the [pane_name] from \the [src].")) // Showing the message AFTER dismantle() so it's "...from the window frame" and not "...from the window".
-			return
-
-		user.setClickCooldown(W.update_attack_cooldown())
-		user.do_attack_animation(src)
-		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
-			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
-			affected.take_damage(W.force * (affected.reinforced ? 0.5 : 1))
-		else
-			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-		return
-
-	if(isWirecutter(W))
-		if(!shock(user, 100))
-			switch(frame_state)
-				if(FRAME_DESTROYED)
-					visible_message(SPAN("notice", "[user] salvages \the [src]."))
-					new /obj/item/stack/rods(get_turf(src))
-					qdel(src)
-				if(FRAME_NORMAL)
-					visible_message(SPAN("notice", "[user] disassembles \the [src]."))
-					new /obj/item/stack/rods(get_turf(src), 2)
-					qdel(src)
-				if(FRAME_REINFORCED)
-					set_state(FRAME_NORMAL)
-					visible_message(SPAN("notice", "[user] removes the reinforced lattice from \the [src]."))
-					new /obj/item/stack/rods(get_turf(src))
-				if(FRAME_GRILLE)
-					set_state(FRAME_NORMAL) // Straight back to normal, skipping the reinforced state.
-					visible_message(SPAN("notice", "[user] removes the grille from \the [src]."))
-					new /obj/item/stack/rods(get_turf(src), 2)
-			update_nearby_icons()
-			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-		return
-
-	if((isScrewdriver(W)) && (istype(loc, /turf/simulated) || anchored))
-		if(!shock(user, 90))
-			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-			anchored = !anchored
-			update_nearby_icons()
-			user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \
-								 SPAN("notice", "You have [anchored ? "fastened \the [src] to" : "unfastened \the [src] from"] the floor."))
-		return
-
-	if(!(W.obj_flags & OBJ_FLAG_CONDUCTIBLE) || !shock(user, 70))
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		user.do_attack_animation(src)
-		playsound(loc, 'sound/effects/grillehit.ogg', 80, 1)
-		switch(W.damtype)
-			if("fire")
-				health -= W.force
-			if("brute")
-				health -= W.force * 0.1
-		healthcheck()
-		return
-
-	return ..()
-
-
-/obj/structure/window_frame/proc/healthcheck()
-	if(health <= 0)
-		if(frame_state == FRAME_GRILLE)
-			new /obj/item/stack/rods(get_turf(src), rand(1, 3))
-			set_state(FRAME_DESTROYED)
-		else
-			new /obj/item/stack/rods(get_turf(src), rand(1, frame_state + 1)) // Losing some rods when destroyed instead of disassembling.
-			qdel(src)
-	return
-
-// shock user with probability prb (if all connections & power are working)
-// returns 1 if shocked, 0 otherwise
-/obj/structure/window_frame/proc/shock(mob/user, prb)
-	if(frame_state != FRAME_GRILLE) // Well maybe reinforced frames should have a chance to shook whomever crawls through them but for now nah.
-		return FALSE
-	if(outer_pane)
-		return FALSE
-	if(!anchored) // unanchored grilles are never connected
-		return FALSE
-	if(!prob(prb))
-		return FALSE
-	if(!in_range(src, user)) // To prevent TK and mech users from getting shocked
-		return FALSE
-	var/turf/T = get_turf(src)
-	var/obj/structure/cable/C = T.get_cable_node()
-	if(!C)
-		return FALSE
-
-	if(electrocute_mob(user, C, src))
-		if(C.powernet)
-			C.powernet.trigger_warning()
-		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-		s.set_up(3, 1, src)
-		s.start()
-		if(user.stunned)
-			return TRUE
-
-	return FALSE
-
 /obj/structure/window_frame/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(outer_pane)
 		if(exposed_temperature > outer_pane.max_heat)
@@ -614,25 +804,60 @@
 
 /obj/structure/window_frame/blob_act(damage)
 	if(outer_pane)
-		outer_pane.take_damage(damage)
+		outer_pane.take_damage(damage * pane_melee_mult)
 	else if(inner_pane)
-		inner_pane.take_damage(damage)
+		inner_pane.take_damage(damage * pane_melee_mult)
 	else
 		health -= damage
 		healthcheck()
 
-/obj/structure/window_frame/attack_generic(mob/user, damage, attack_verb)
-	visible_message(SPAN("danger", "[user] [attack_verb] \the [src]!"))
-	attack_animation(user)
-	if(outer_pane)
-		outer_pane.take_damage(damage)
-	else if(inner_pane)
-		inner_pane.take_damage(damage)
-	else
-		health -= damage
+/obj/structure/window_frame/proc/toggle_tint()
+	if(electrochromic && outer_pane)
+		outer_pane.set_tint(!outer_pane.tinted)
+
+/obj/structure/window_frame/proc/signaler_pulse()
+	if(frame_state == FRAME_RELECTRIC)
 		spawn()
-			healthcheck()
+			recursive_tint(src)
+
+// Recursively toggles nearby window frames' tint.
+// Infinite loop protection is kinda shaky, if the server lags too
+// much, we should just pray for the infinite recursion catcher
+/obj/structure/window_frame/proc/recursive_tint(obj/structure/window_frame/origin)
+	if(world.time - last_recursion < 5) // First we check for the cooldown.
+		return
+	last_recursion = world.time
+	if(origin)
+		recursive_tint_origin = origin // And then we'll be checking for the frame that started the recursion. For extra safety. Because byond.
+	else
+		recursive_tint_origin = src
+	toggle_tint()
+	for(var/obj/structure/window_frame/W in orange(src, 1))
+		if((W.frame_state == FRAME_ELECTRIC || W.frame_state == FRAME_RELECTRIC) && W.recursive_tint_origin != origin)
+			W.recursive_tint(recursive_tint_origin)
+	spawn(5)
+		recursive_tint_origin = null
+
+// Who even needs this casual button when we can use chad signalers?
+/obj/machinery/button/window_frame_tint
+	name = "window tint control"
+	icon = 'icons/obj/power.dmi'
+	icon_state = "light0"
+	desc = "A remote control switch for electrochromic windows."
+	var/range = 7
+
+/obj/machinery/button/window_frame_tint/attack_hand(mob/user)
+	if(..())
 		return TRUE
+	toggle_tint()
+
+/obj/machinery/button/window_frame_tint/proc/toggle_tint()
+	use_power_oneoff(5)
+	var/area/my_area = get_area(src)
+	for(var/obj/structure/window_frame/WF in range(src, range))
+		if(get_area(WF) == my_area)
+			spawn()
+				WF.toggle_tint()
 
 
 // Mapping presetties
@@ -644,8 +869,8 @@
 	icon_base = "winframe_r"
 	icon_border = "winborder_r"
 	hitby_loudness_multiplier = 1.0
-	density = TRUE
 	max_health = 10
+	pane_melee_mult = 0.9
 
 // Pretty much the same as the old grille, but smarter.
 /obj/structure/window_frame/grille
@@ -656,8 +881,8 @@
 	icon_base = "grille"
 	icon_border = "winborder"
 	hitby_loudness_multiplier = 1.5
-	density = TRUE
 	max_health = 12
+	pane_melee_mult = 0.8
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
@@ -674,6 +899,25 @@
 	. = ..()
 	health = rand(1, max_health) // In the destroyed but not utterly threshold.
 	healthcheck() // Send this to healthcheck just in case we want to do something else with it.
+
+/obj/structure/window_frame/electric
+	frame_state = FRAME_ELECTRIC
+	name = "wired window frame"
+	desc = "A window frame with some wiring attached to it, used to create electrochromic windows."
+	icon_state = "winframe_e"
+	icon_base = "winframe_e"
+	icon_border = "winborder"
+
+/obj/structure/window_frame/relectric
+	frame_state = FRAME_RELECTRIC
+	name = "wired reinforced window frame"
+	desc = "A reinforced window frame with some wiring attached to it."
+	icon_state = "winframe_re"
+	icon_base = "winframe_re"
+	icon_border = "winborder_r"
+	hitby_loudness_multiplier = 1.0
+	max_health = 10
+	pane_melee_mult = 0.9
 
 // The simpliest window to exist. To be used in totally-no-safety-required areas.
 /obj/structure/window_frame/glass
@@ -703,6 +947,12 @@
 	preset_outer_pane = /datum/windowpane/rplass
 	preset_inner_pane = /datum/windowpane/rplass
 
+/obj/structure/window_frame/reinforced/unfinished
+	name = "unfinished reinforced window"
+	icon_state = "winframe_ru-rglass"
+	preset_outer_pane = null
+	preset_inner_pane = /datum/windowpane/rglass
+
 /obj/structure/window_frame/grille/glass
 	name = "windowed grille"
 	icon_state = "grille-glass"
@@ -714,7 +964,29 @@
 	icon_state = "grille-rglass"
 	preset_outer_pane = /datum/windowpane/rglass
 
+/obj/structure/window_frame/electric/glass
+	name = "electrochromic window"
+	icon_state = "winframe_e-glass"
+	preset_outer_pane = /datum/windowpane/glass
+
+/obj/structure/window_frame/electric/rglass
+	name = "electrochromic window"
+	icon_state = "winframe_e-rglass"
+	preset_outer_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/relectric/glass
+	name = "reinforced electrochromic window"
+	icon_state = "winframe_re-glass"
+	preset_outer_pane = /datum/windowpane/glass
+
+/obj/structure/window_frame/relectric/rglass
+	name = "reinforced electrochromic window"
+	icon_state = "winframe_re-rglass"
+	preset_outer_pane = /datum/windowpane/rglass
+
 #undef FRAME_DESTROYED
 #undef FRAME_NORMAL
 #undef FRAME_REINFORCED
 #undef FRAME_GRILLE
+#undef FRAME_ELECTRIC
+#undef FRAME_RELECTRIC
