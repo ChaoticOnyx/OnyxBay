@@ -177,7 +177,7 @@
 "du" = (/obj/structure/flora/goonbushes/leafy,/turf/simulated/floor/exoplanet/grass,/area/space)
 "dv" = (/obj/item/ore/strangerock,/turf/simulated/floor/exoplanet/grass,/area/space)
 "dw" = (/obj/item/material/shard,/turf/simulated/floor/exoplanet,/area/space)
-"dx" = (/obj/structure/grille/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/exoplanet,/area/space)
+"dx" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/exoplanet,/area/space)
 "dy" = (/obj/item/stack/rods,/turf/space,/area/space)
 "dz" = (/obj/item/material/twohanded/baseballbat/gold{desc = "HONKY BONKY!"; name = "bonky bat"},/obj/effect/decal/cleanable/blood/splatter,/turf/simulated/floor/exoplanet,/area/space)
 "dA" = (/turf/space,/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/sw,/area/space)
