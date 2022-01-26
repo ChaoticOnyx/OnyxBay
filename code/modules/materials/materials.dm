@@ -88,6 +88,7 @@ var/list/name_to_material
 	var/icon_reinf = "reinf_metal"                       // Overlay used
 	var/table_icon_base = "metal"
 	var/table_reinf = "reinf_metal"
+	var/window_icon_base = "window"
 	var/list/stack_origin_tech = list(TECH_MATERIAL = 1) // Research level for stacks.
 
 	// Attributes
@@ -463,7 +464,7 @@ var/list/name_to_material
 
 
 /material/glass
-	name = "glass"
+	name = MATERIAL_GLASS
 	stack_type = /obj/item/stack/material/glass
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#b5edff"
@@ -480,6 +481,7 @@ var/list/name_to_material
 	reflectance = 30
 	door_icon_base = "stone"
 	table_icon_base = "solid"
+	window_icon_base = "window"
 	destruction_desc = "shatters"
 	window_options = list("One Direction" = 1, "Full Window" = 4)
 	created_window = /obj/structure/window/basic
@@ -562,11 +564,12 @@ var/list/name_to_material
 	return ..() && !is_reinforced()
 
 /material/glass/reinforced
-	name = "rglass"
+	name = MATERIAL_REINFORCED_GLASS
 	display_name = "reinforced glass"
 	stack_type = /obj/item/stack/material/glass/reinforced
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#97d3e5"
+	window_icon_base = "rwindow"
 	opacity = 0.3
 	integrity = 100
 	melting_point = T0C + 750
@@ -585,7 +588,7 @@ var/list/name_to_material
 	rod_product = null
 
 /material/glass/plass
-	name = "plass"
+	name = MATERIAL_PLASS
 	display_name = "plass"
 	stack_type = /obj/item/stack/material/glass/plass
 	flags = MATERIAL_BRITTLE
@@ -594,6 +597,7 @@ var/list/name_to_material
 	burn_armor = 5
 	melting_point = T0C + 2000
 	icon_colour = "#d67ac8"
+	window_icon_base = "plasmawindow"
 	resilience = 0
 	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
@@ -602,11 +606,12 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/rplass
 
 /material/glass/plass/reinforced
-	name = "rplass"
+	name = MATERIAL_REINFORCED_PLASS
 	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
 	melting_point = T0C + 4000
+	window_icon_base = "plasmarwindow"
 	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
 	reflectance = 35
@@ -621,7 +626,7 @@ var/list/name_to_material
 
 
 /material/plastic
-	name = "plastic"
+	name = MATERIAL_PLASTIC
 	stack_type = /obj/item/stack/material/plastic
 	flags = MATERIAL_BRITTLE
 	icon_base = "solid"
