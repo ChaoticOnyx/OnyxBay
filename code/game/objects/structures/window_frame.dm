@@ -109,7 +109,13 @@
 		my_frame.visible_message("[my_frame][is_inner ? "\'s inner windowpane" : ""] shatters!")
 
 	var/obj/item/material/shard/S = window_material.place_shard(get_turf(my_frame))
-	S.set_material(window_material.name)
+	var/shard_material = window_material.name
+	switch(window_material.name)
+		if(MATERIAL_REINFORCED_GLASS)
+			shard_material = MATERIAL_GLASS
+		if(MATERIAL_REINFORCED_PLASS)
+			shard_material = MATERIAL_PLASS
+	S.set_material(shard_material)
 
 	if(reinforced)
 		new /obj/item/stack/rods(get_turf(my_frame))
@@ -315,7 +321,10 @@
 			overlays += I
 
 		if(inner_pane.damage_icon)
-			overlays += image(icon, inner_pane.damage_icon)
+			var/image/I = image(icon, inner_pane.damage_icon)
+			I.plane = DEFAULT_PLANE
+			I.layer = WINDOW_INNER_LAYER
+			overlays += I
 
 	if(outer_pane)
 		if(outer_pane.tinted)
@@ -379,7 +388,7 @@
 					return prob(30)
 				if(mover.pass_flags & PASS_FLAG_GLASS)
 					return prob(60)
-			if(FRAME_REINFORCED)
+			if(FRAME_REINFORCED, FRAME_RELECTRIC)
 				if(istype(mover, /obj/item/projectile))
 					return TRUE
 				if(mover.pass_flags & PASS_FLAG_GLASS)
@@ -447,7 +456,7 @@
 			attack_message = "mangles"
 			damage_dealt = 5
 
-	if(frame_state == FRAME_GRILLE && shock(user, 70))
+	if(shock(user, 70))
 		return
 
 	if(MUTATION_HULK in user.mutations)
@@ -478,23 +487,21 @@
 	else if(inner_pane)
 		affected = inner_pane
 
-	if(user.a_intent == I_HURT)
+	if(user.a_intent != I_HELP)
 		if(W.item_flags & ITEM_FLAG_NO_BLUDGEON)
 			return
 
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
 		if(affected)
-			user.setClickCooldown(W.update_attack_cooldown())
-			user.do_attack_animation(src)
 			if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
 				visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 				affected.take_damage(W.force * (affected.reinforced ? 0.5 : 1) * pane_melee_mult)
 			else
 				visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
 				playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-
+			return
 		else
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			user.do_attack_animation(src)
 			if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
 				to_chat(user, SPAN("danger", "You try to hit \the [src], but get electrocuted!"))
 				return
@@ -643,7 +650,7 @@
 					return
 				if(R.use(1))
 					to_chat(user, SPAN("notice", "You've constructed a grille."))
-					set_state(FRAME_REINFORCED)
+					set_state(FRAME_GRILLE)
 					update_nearby_icons()
 				return
 
@@ -735,7 +742,7 @@
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()
-		if(user.stunned)
+		if(user.stunned || user.weakened)
 			return TRUE
 
 	return FALSE
@@ -849,6 +856,7 @@
 /obj/machinery/button/window_frame_tint/attack_hand(mob/user)
 	if(..())
 		return TRUE
+	user.setClickCooldown(5)
 	toggle_tint()
 
 /obj/machinery/button/window_frame_tint/proc/toggle_tint()
@@ -858,6 +866,9 @@
 		if(get_area(WF) == my_area)
 			spawn()
 				WF.toggle_tint()
+
+/obj/machinery/button/windowtint/update_icon()
+	icon_state = "light0"
 
 
 // Mapping presetties
@@ -869,6 +880,7 @@
 	icon_base = "winframe_r"
 	icon_border = "winborder_r"
 	hitby_loudness_multiplier = 1.0
+	density = TRUE
 	max_health = 10
 	pane_melee_mult = 0.9
 
@@ -881,6 +893,7 @@
 	icon_base = "grille"
 	icon_border = "winborder"
 	hitby_loudness_multiplier = 1.5
+	density = TRUE
 	max_health = 12
 	pane_melee_mult = 0.8
 
@@ -892,7 +905,6 @@
 	icon_base = "grille-b"
 	icon_border = "blank"
 	hitby_loudness_multiplier = 0.5
-	density = FALSE
 	max_health = 6
 
 /obj/structure/window_frame/broken/Initialize()
@@ -916,21 +928,22 @@
 	icon_base = "winframe_re"
 	icon_border = "winborder_r"
 	hitby_loudness_multiplier = 1.0
+	density = TRUE
 	max_health = 10
 	pane_melee_mult = 0.9
 
 // The simpliest window to exist. To be used in totally-no-safety-required areas.
 /obj/structure/window_frame/glass
 	name = "window"
-	density = TRUE
 	icon_state = "winframe-glass"
+	density = TRUE
 	preset_outer_pane = /datum/windowpane/glass
 
 // Regular window with reinforced glass. Default window for most occasions.
 /obj/structure/window_frame/rglass
 	name = "window"
-	density = TRUE
 	icon_state = "winframe-rglass"
+	density = TRUE
 	preset_outer_pane = /datum/windowpane/rglass
 
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
@@ -967,11 +980,13 @@
 /obj/structure/window_frame/electric/glass
 	name = "electrochromic window"
 	icon_state = "winframe_e-glass"
+	density = TRUE
 	preset_outer_pane = /datum/windowpane/glass
 
 /obj/structure/window_frame/electric/rglass
 	name = "electrochromic window"
 	icon_state = "winframe_e-rglass"
+	density = TRUE
 	preset_outer_pane = /datum/windowpane/rglass
 
 /obj/structure/window_frame/relectric/glass
