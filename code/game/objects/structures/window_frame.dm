@@ -1,9 +1,9 @@
-#define FRAME_DESTROYED 0
-#define FRAME_NORMAL 1
-#define FRAME_REINFORCED 2
-#define FRAME_GRILLE 3
-#define FRAME_ELECTRIC 4
-#define FRAME_RELECTRIC 5
+#define FRAME_DESTROYED 1
+#define FRAME_NORMAL 2
+#define FRAME_REINFORCED 3
+#define FRAME_GRILLE 4
+#define FRAME_ELECTRIC 5
+#define FRAME_RELECTRIC 6
 
 // Making things simple was never an option
 /datum/windowpane
@@ -18,7 +18,7 @@
 	var/max_health = 17.5 // 35% of the material's integrity
 	var/health = 17.5
 	var/is_inner = FALSE
-	var/state = 3
+	var/state = 2
 	var/tinted = FALSE
 	var/reinforced = FALSE
 
@@ -43,14 +43,15 @@
 	is_inner = inner
 
 /datum/windowpane/Destroy()
-	if(!QDELETED(my_frame))
+	if(my_frame)
 		if(my_frame.outer_pane == src)
 			my_frame.outer_pane = null
 		else if(my_frame.inner_pane == src)
 			my_frame.inner_pane = null
-	my_frame.set_state()
-	my_frame.update_nearby_icons()
-	my_frame = null
+		my_frame.set_state()
+		my_frame.update_nearby_icons()
+		my_frame.update_nearby_tiles()
+		my_frame = null
 	. = ..()
 
 /datum/windowpane/proc/dismantle()
@@ -136,7 +137,7 @@
 	var/icon_base = "winframe"
 	var/icon_border = "winborder"
 	density = FALSE
-	anchored = FALSE
+	anchored = TRUE
 	opacity = TRUE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -145,7 +146,6 @@
 	var/max_health = 8
 	var/health = 8
 	var/pane_melee_mult = 1.0 // Stronger frames protect their windowpanes from some damage.
-	hitby_sound = 'sound/effects/grillehit.ogg'
 	hitby_loudness_multiplier = 0.5
 
 	var/frame_state = FRAME_NORMAL
@@ -190,6 +190,8 @@
 	QDEL_NULL(inner_pane)
 	recursive_tint_origin = null
 	QDEL_NULL(signaler)
+	update_nearby_icons()
+	update_nearby_tiles()
 	. = ..()
 
 /obj/structure/window_frame/ex_act(severity)
@@ -300,14 +302,14 @@
 
 	layer = WINDOW_FRAME_LAYER
 
-	if(inner_pane)
-		if(inner_pane.tinted)
-			new_opacity = TRUE
+	if(signaler)
+		overlays += image(icon, "winframe_signaler")
 
+	if(inner_pane)
 		var/list/dirs = list()
-		if(inner_pane.state == 3)
+		if(inner_pane.state >= 2)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
-				if(W.inner_pane?.state == 3)
+				if(W.inner_pane?.state >= 2)
 					dirs += get_dir(src, W)
 
 		var/list/connections = dirs_to_corner_states(dirs)
@@ -316,8 +318,13 @@
 			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
-			if(inner_pane.tinted)
-				I.color="#222222"
+			overlays += I
+
+		if(inner_pane.tinted)
+			new_opacity = TRUE
+			var/image/I = image(icon, "winframe_tint")
+			I.plane = DEFAULT_PLANE
+			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 		if(inner_pane.damage_icon)
@@ -327,13 +334,10 @@
 			overlays += I
 
 	if(outer_pane)
-		if(outer_pane.tinted)
-			new_opacity = TRUE
-
 		var/list/dirs = list()
-		if(outer_pane.state == 3)
+		if(outer_pane.state >= 2)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
-				if(W.outer_pane?.state == 3)
+				if(W.outer_pane?.state >= 2)
 					dirs += get_dir(src, W)
 
 		var/list/connections = dirs_to_corner_states(dirs)
@@ -342,16 +346,24 @@
 			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
-			if(outer_pane.tinted)
-				I.color="#222222"
+			overlays += I
+
+		if(outer_pane.tinted)
+			new_opacity = TRUE
+			var/image/I = image(icon, "winframe_tint")
+			I.plane = DEFAULT_PLANE
+			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
 		if(outer_pane.damage_icon)
-			overlays += image(icon, outer_pane.damage_icon)
+			var/image/I = image(icon, outer_pane.damage_icon)
+			I.plane = DEFAULT_PLANE
+			I.layer = WINDOW_INNER_LAYER
+			overlays += I
 
 	if(outer_pane?.state >= 1)
 		var/list/dirs = list()
-		for(var/obj/structure/window_frame/W in orange(src,1))
+		for(var/obj/structure/window_frame/W in orange(src, 1))
 			if(W.outer_pane?.state >= 1)
 				dirs += get_dir(src, W)
 
@@ -366,7 +378,7 @@
 	if(opacity != new_opacity)
 		set_opacity(new_opacity)
 
-//This proc is used to update the icons of nearby windows. It should not be confused with update_nearby_tiles(), which is an atmos proc!
+//This proc is used to update the icons of nearby window frames. It should not be confused with update_nearby_tiles(), which is an atmos proc!
 /obj/structure/window_frame/proc/update_nearby_icons()
 	update_icon()
 	for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -380,7 +392,7 @@
 /obj/structure/window_frame/CanPass(atom/movable/mover, turf/target)
 	if(!(outer_pane || inner_pane) || (mover.pass_flags & PASS_FLAG_GLASS)) // Just a frame without windows OR we don't care about windows anyways.
 		if(mover.pass_flags & PASS_FLAG_GRILLE)
-			return TRUE // We pass the frame giving no fuck about its level.
+			return TRUE // We pass the frame giving no fuck about its state.
 
 		switch(frame_state)
 			if(FRAME_GRILLE)
@@ -528,6 +540,7 @@
 				return
 			if(!anchored)
 				to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))
+				return
 			var/is_inner = FALSE
 			if(frame_state == FRAME_REINFORCED && !inner_pane)
 				is_inner = TRUE
@@ -561,34 +574,44 @@
 					add_fingerprint(user)
 					set_state()
 					update_nearby_icons()
+					update_nearby_tiles()
 			return
 
 	if(affected)
-		if(isScrewdriver(W))
-			if(affected.state >= 2)
-				affected.state = 5 - affected.state
-				update_nearby_icons()
-				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-				to_chat(user, (affected.state == 3 ? SPAN("notice", "You have fastened \the [affected.name]'s outer bolts.") : SPAN("notice", "You have unfastened \the [affected.name]'s outer bolts.")))
-			else if(affected.state <= 1)
-				affected.state = 1 - affected.state
-				update_nearby_icons()
-				playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-				to_chat(user, (affected.state == 1 ? SPAN("notice", "You have fastened \the [affected.name] to the frame.") : SPAN("notice", "You have unfastened \the [affected.name] from the frame.")))
-			return
-
-		if(isCrowbar(W) && (affected.state == 1 || affected.state == 2))
+		var/old_state = affected.state
+		if(isScrewdriver(W) && affected.state >= 1)
+			to_chat(user, (affected.state == 1 ? SPAN("notice", "You begin fastening \the [affected.name] to the frame.") : SPAN("notice", "You begin unfastening \the [affected.name] from the frame.")))
+			if(!do_after(user, 15, src))
+				return
+			if(QDELETED(affected) || affected.state != old_state)
+				return
 			affected.state = 3 - affected.state
 			update_nearby_icons()
+			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
+			to_chat(user, (affected.state == 2 ? SPAN("notice", "You have fastened \the [affected.name] to the frame.") : SPAN("notice", "You have unfastened \the [affected.name] from the frame.")))
+			return
+
+		if(isCrowbar(W) && affected.state <= 1)
+			to_chat(user, (affected.state == 0 ? SPAN("notice", "You begin prying \the [affected.name] into the frame.") : SPAN("notice", "You begin prying \the [affected.name] out of the frame.")))
+			if(!do_after(user, 15, src))
+				return
+			if(QDELETED(affected) || affected.state != old_state)
+				return
+			affected.state = 1 - affected.state
+			update_nearby_icons()
 			playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
-			to_chat(user, (affected.state == 2 ? SPAN("notice", "You have pried \the [affected.name] into the frame.") : SPAN("notice", "You have pried \the [affected.name] out of the frame.")))
+			to_chat(user, (affected.state == 1 ? SPAN("notice", "You have pried \the [affected.name] into the frame.") : SPAN("notice", "You have pried \the [affected.name] out of the frame.")))
 			return
 
 		if(isWrench(W) && affected.state == 0)
-			var/pane_name = affected.name // Windowpane gets deleted during dismantle() so we want to keep its name for the message.
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+			to_chat(user, SPAN("notice", "You begin dismantling \the [affected.name] from \the [src]."))
+			if(!do_after(user, 20, src))
+				return
+			if(QDELETED(affected) || affected.state != old_state)
+				return
+			playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
+			visible_message(SPAN("notice", "[user] dismantles \the [affected.name] from \the [src].")) // Showing the message before dismantle() so it's "...from the window" and not "...from the window frame".
 			affected.dismantle()
-			visible_message(SPAN("notice", "[user] dismantles \the [pane_name] from \the [src].")) // Showing the message AFTER dismantle() so it's "...from the window frame" and not "...from the window".
 			return
 
 		return
@@ -678,9 +701,13 @@
 			return
 
 	if(istype(W, /obj/item/device/assembly/signaler))
-		to_chat(user, SPAN("notice", "You've connected \the [W] to \the [src]."))
+		if(signaler)
+			to_chat(user, SPAN("notice", "\The [src] already has another [signaler] attached."))
+			return
+		to_chat(user, SPAN("notice", "You've attached \the [W] to \the [src]."))
 		user.unEquip(W, target = src)
 		signaler = W
+		update_icon()
 		return
 
 	if((isScrewdriver(W)) && (istype(loc, /turf/simulated) || anchored))
@@ -698,21 +725,20 @@
 		to_chat(user, SPAN("danger", "You touch \the [src] with \the [W] and get electrocuted!"))
 		return
 
-	return ..()
-
-
 /obj/structure/window_frame/proc/healthcheck()
 	if(health <= 0)
 		switch(frame_state)
 			if(FRAME_GRILLE)
 				new /obj/item/stack/rods(get_turf(src), rand(1, 3))
 				set_state(FRAME_DESTROYED)
+				update_nearby_icons()
 			if(FRAME_ELECTRIC, FRAME_RELECTRIC)
 				new /obj/item/stack/rods(get_turf(src), rand(1, frame_state + 1))
 				if(signaler)
 					signaler.forceMove(get_turf(src))
 					signaler = null
 				new /obj/item/stack/cable_coil/single(get_turf(src))
+				qdel(src)
 			else
 				new /obj/item/stack/rods(get_turf(src), rand(1, frame_state + 1)) // Losing some rods when destroyed instead of disassembling.
 				qdel(src)
@@ -746,6 +772,35 @@
 			return TRUE
 
 	return FALSE
+
+/obj/structure/window_frame/hitby(atom/movable/AM, speed, nomsg)
+	..(AM, speed, TRUE)
+	var/tforce = 0
+	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm
+		var/mob/I = AM
+		tforce = I.mob_size * 2 * I.throw_multiplier
+	else if(isobj(AM))
+		var/obj/item/I = AM
+		tforce = I.throwforce
+
+	if(tforce < 3 && prob(95)) // A tiny chance to get out of a locked-down room by throwing your boxers at windows before the round ends.
+		visible_message(SPAN("warning", "[AM] bounces off \the [src]."))
+		return
+	visible_message(SPAN("warning", "[src] was hit by \the [AM]."))
+
+	if(outer_pane)
+		outer_pane.take_damage(tforce * (outer_pane.reinforced ? 0.5 : 1) * pane_melee_mult)
+	else if(inner_pane)
+		inner_pane.take_damage(tforce * (inner_pane.reinforced ? 0.5 : 1) * pane_melee_mult)
+	else
+		health -= tforce * 0.1
+		healthcheck()
+
+/obj/structure/window_frame/play_hitby_sound(atom/movable/AM)
+	hitby_sound = 'sound/effects/grillehit.ogg'
+	if(outer_pane || inner_pane)
+		hitby_sound = SFX_GLASS_HIT
+	..()
 
 /obj/structure/window_frame/bullet_act(obj/item/projectile/Proj)
 	if(!Proj)
@@ -819,6 +874,8 @@
 		healthcheck()
 
 /obj/structure/window_frame/proc/toggle_tint()
+	if(frame_state != FRAME_ELECTRIC && frame_state != FRAME_RELECTRIC)
+		return
 	if(electrochromic && outer_pane)
 		outer_pane.set_tint(!outer_pane.tinted)
 
@@ -867,7 +924,7 @@
 			spawn()
 				WF.toggle_tint()
 
-/obj/machinery/button/windowtint/update_icon()
+/obj/machinery/button/window_frame_tint/update_icon()
 	icon_state = "light0"
 
 
