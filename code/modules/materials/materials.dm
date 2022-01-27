@@ -505,9 +505,7 @@ var/list/name_to_material
 
 	var/choice = ""
 	if(window_options.len == 1)
-		for(var/anything in window_options)
-			choice = anything
-			break
+		choice = window_options[1]
 	else
 		var/title = "Sheet-[used_stack.name] ([used_stack.get_amount()] sheet\s left)"
 		choice = input(title, "What would you like to construct?") as null|anything in window_options

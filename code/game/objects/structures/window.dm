@@ -484,7 +484,7 @@
 	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
-	name = "reinforced panel"
+	name = "reinforced glass panel"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
 	basestate = "rwindow"
