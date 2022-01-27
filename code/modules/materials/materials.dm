@@ -519,7 +519,7 @@ var/list/name_to_material
 	var/list/possible_directions = GLOB.cardinal.Copy()
 	var/window_count = 0
 	for(var/obj/structure/window_frame/WF in user.loc)
-		if(WF.outer_frame || WF.inner_frame)
+		if(WF.outer_pane || WF.inner_pane)
 			to_chat(user, SPAN("warning", "There is no room in this location."))
 			return
 
