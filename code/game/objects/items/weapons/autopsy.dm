@@ -14,7 +14,6 @@
 	var/list/chemtraces = list()
 	var/target_name = null
 	var/timeofdeath = null
-	var/last_print_time = 0
 
 /datum/autopsy_data_scanner
 	var/weapon = null // this is the DEFINITE weapon type that was used
@@ -79,10 +78,10 @@
 	var/mob/living/L = usr
 	if(L.stat || L.restrained() || L.lying)
 		return
-	if(world.time - last_print_time < 3 SECONDS)
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
 		to_chat(L, SPAN("notice", "\The [src]'s internal printer is still recharging."))
 		return
-	last_print_time = world.time
 
 	var/scan_data = ""
 
