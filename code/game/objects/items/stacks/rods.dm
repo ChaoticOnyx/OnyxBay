@@ -91,12 +91,18 @@
 		if(get_amount() < 2)
 			to_chat(user, SPAN("warning", "You need at least two rods to do this."))
 			return
+		if(locate(/obj/structure/window_frame) in user.loc)
+			to_chat(user, SPAN("warning", "There is another frame in this location."))
+			return
 		to_chat(usr, SPAN("notice", "Assembling a window frame..."))
 		in_use = TRUE
 		if(!do_after(usr, 10))
 			in_use = FALSE
 			return
 		in_use = FALSE
+		if(locate(/obj/structure/window_frame) in user.loc)
+			to_chat(user, SPAN("warning", "There is another frame in this location."))
+			return
 		if(!use(2))
 			return
 		var/obj/structure/window_frame/WF = new /obj/structure/window_frame(get_turf(user))

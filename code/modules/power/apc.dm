@@ -75,6 +75,7 @@
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
 	clicksound = SFX_USE_SMALL_SWITCH
+	layer = ABOVE_WINDOW_LAYER
 	var/needs_powerdown_sound
 	var/area/area
 	var/areastring = null

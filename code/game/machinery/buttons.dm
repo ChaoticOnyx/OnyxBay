@@ -3,6 +3,7 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 	desc = "A remote control switch for something."
+	layer = ABOVE_WINDOW_LAYER
 	var/id = null
 	var/active = 0
 	var/operating = 0
