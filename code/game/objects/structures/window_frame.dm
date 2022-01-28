@@ -105,7 +105,7 @@
 		qdel(src) // Should never happen, but we can't be sure as long as bombs and singulos exist.
 		return
 
-	playsound(my_frame, SFX_BREAK_WINDOW, 70, 1)
+	playsound(my_frame, GET_SFX(SFX_BREAK_WINDOW), 70, 1)
 	if(display_message)
 		my_frame.visible_message("[my_frame][is_inner ? "\'s inner windowpane" : ""] shatters!")
 
