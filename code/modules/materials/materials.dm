@@ -88,6 +88,7 @@ var/list/name_to_material
 	var/icon_reinf = "reinf_metal"                       // Overlay used
 	var/table_icon_base = "metal"
 	var/table_reinf = "reinf_metal"
+	var/window_icon_base = "window"
 	var/list/stack_origin_tech = list(TECH_MATERIAL = 1) // Research level for stacks.
 
 	// Attributes
@@ -463,7 +464,7 @@ var/list/name_to_material
 
 
 /material/glass
-	name = "glass"
+	name = MATERIAL_GLASS
 	stack_type = /obj/item/stack/material/glass
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#b5edff"
@@ -480,8 +481,9 @@ var/list/name_to_material
 	reflectance = 30
 	door_icon_base = "stone"
 	table_icon_base = "solid"
+	window_icon_base = "window"
 	destruction_desc = "shatters"
-	window_options = list("One Direction" = 1, "Full Window" = 4)
+	window_options = list("Panel" = 1)
 	created_window = /obj/structure/window/basic
 	rod_product = /obj/item/stack/material/glass/reinforced
 	hitsound = 'sound/effects/breaking/window/break1.ogg'
@@ -501,8 +503,12 @@ var/list/name_to_material
 		to_chat(user, "<span class='warning'>You must be standing on open flooring to build a window.</span>")
 		return 1
 
-	var/title = "Sheet-[used_stack.name] ([used_stack.get_amount()] sheet\s left)"
-	var/choice = input(title, "What would you like to construct?") as null|anything in window_options
+	var/choice = ""
+	if(window_options.len == 1)
+		choice = window_options[1]
+	else
+		var/title = "Sheet-[used_stack.name] ([used_stack.get_amount()] sheet\s left)"
+		choice = input(title, "What would you like to construct?") as null|anything in window_options
 
 	if(!choice || !used_stack || !user || used_stack.loc != user || user.stat || user.loc != T)
 		return 1
@@ -510,6 +516,11 @@ var/list/name_to_material
 	// Get data for building windows here.
 	var/list/possible_directions = GLOB.cardinal.Copy()
 	var/window_count = 0
+	for(var/obj/structure/window_frame/WF in user.loc)
+		if(WF.outer_pane || WF.inner_pane)
+			to_chat(user, SPAN("warning", "There is no room in this location."))
+			return
+
 	for (var/obj/structure/window/check_window in user.loc)
 		window_count++
 		possible_directions  -= check_window.dir
@@ -521,7 +532,7 @@ var/list/name_to_material
 	if(window_count >= 4)
 		failed_to_build = 1
 	else
-		if(choice in list("One Direction","Windoor"))
+		if(choice in list("Panel","Windoor"))
 			if(possible_directions.len)
 				for(var/direction in list(user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 					if(direction in possible_directions)
@@ -551,9 +562,10 @@ var/list/name_to_material
 		return 1
 
 	// Build the structure and update sheet count etc.
-	used_stack.use(sheets_needed)
-	new build_path(T, build_dir, 1)
-	return 1
+	if(do_after(user, 5, used_stack) && used_stack.use(sheets_needed))
+		new build_path(T, build_dir, 1)
+		return 1
+	return 0
 
 /material/glass/proc/is_reinforced()
 	return (integrity > 75) //todo
@@ -562,11 +574,12 @@ var/list/name_to_material
 	return ..() && !is_reinforced()
 
 /material/glass/reinforced
-	name = "rglass"
+	name = MATERIAL_REINFORCED_GLASS
 	display_name = "reinforced glass"
 	stack_type = /obj/item/stack/material/glass/reinforced
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#97d3e5"
+	window_icon_base = "rwindow"
 	opacity = 0.3
 	integrity = 100
 	melting_point = T0C + 750
@@ -579,13 +592,13 @@ var/list/name_to_material
 	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	composite_material = list(MATERIAL_STEEL = 1875, MATERIAL_GLASS = 3750)
-	window_options = list("One Direction" = 1, "Full Window" = 4, "Windoor" = 5)
+	window_options = list("Panel" = 1, "Windoor" = 5)
 	created_window = /obj/structure/window/reinforced
 	wire_product = null
 	rod_product = null
 
 /material/glass/plass
-	name = "plass"
+	name = MATERIAL_PLASS
 	display_name = "plass"
 	stack_type = /obj/item/stack/material/glass/plass
 	flags = MATERIAL_BRITTLE
@@ -594,6 +607,7 @@ var/list/name_to_material
 	burn_armor = 5
 	melting_point = T0C + 2000
 	icon_colour = "#d67ac8"
+	window_icon_base = "plasmawindow"
 	resilience = 0
 	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
@@ -602,11 +616,12 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/rplass
 
 /material/glass/plass/reinforced
-	name = "rplass"
+	name = MATERIAL_REINFORCED_PLASS
 	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
 	melting_point = T0C + 4000
+	window_icon_base = "plasmarwindow"
 	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
 	reflectance = 35
@@ -621,7 +636,7 @@ var/list/name_to_material
 
 
 /material/plastic
-	name = "plastic"
+	name = MATERIAL_PLASTIC
 	stack_type = /obj/item/stack/material/plastic
 	flags = MATERIAL_BRITTLE
 	icon_base = "solid"

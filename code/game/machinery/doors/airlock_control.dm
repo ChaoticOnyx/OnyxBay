@@ -158,6 +158,7 @@
 
 	anchored = 1
 	power_channel = STATIC_ENVIRON
+	layer = ABOVE_WINDOW_LAYER
 
 	var/id_tag
 	var/master_tag

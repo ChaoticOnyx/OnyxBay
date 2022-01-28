@@ -1129,6 +1129,7 @@
 #include "code\game\objects\structures\watercloset.dm"
 #include "code\game\objects\structures\windoor_assembly.dm"
 #include "code\game\objects\structures\window.dm"
+#include "code\game\objects\structures\window_frame.dm"
 #include "code\game\objects\structures\window_spawner.dm"
 #include "code\game\objects\structures\alien\alien.dm"
 #include "code\game\objects\structures\alien\resin.dm"
