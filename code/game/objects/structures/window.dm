@@ -221,8 +221,8 @@
 							"You hear a banging sound.")
 	else
 		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-		user.visible_message("[user.name] knocks on the [src.name].",
-							"You knock on the [src.name].",
+		user.visible_message("[user.name] knocks on \the [src.name].",
+							"You knock on \the [src.name].",
 							"You hear a knocking sound.")
 	return
 
