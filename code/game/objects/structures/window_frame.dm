@@ -725,7 +725,7 @@
 			for(var/obj/structure/window_frame/WF in loc)
 				if(WF == src)
 					continue
-				to_chat(user, SPAN("notice", "There are too many frames in this location."))
+				to_chat(user, SPAN("warning", "There are too many frames in this location."))
 				return
 
 		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
