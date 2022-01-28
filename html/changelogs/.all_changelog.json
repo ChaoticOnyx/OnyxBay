@@ -1,5 +1,21 @@
 [
   {
+    "author": "TobyThorne",
+    "date": "2022-01-29T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Патч первого дня для окон.",
+        "pr": 7473
+      },
+      {
+        "prefix": "BugFix",
+        "message": "Исправлена невозможность перезарядки детективского M2019.",
+        "pr": 7473
+      }
+    ]
+  },
+  {
     "author": "TatarTheBuilder",
     "date": "2022-01-28T00:00:00+03:00",
     "changes": [
