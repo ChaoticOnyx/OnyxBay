@@ -71,7 +71,7 @@
 	icon_state = "detective"
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver1.ogg'
 	max_shells = 6
-	caliber = "38"
+	caliber = ".38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	ammo_type = /obj/item/ammo_casing/c38
 

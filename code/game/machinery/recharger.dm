@@ -176,3 +176,4 @@
 	icon_state_charging = "wrecharger1"
 	icon_state_idle = "wrecharger0"
 	portable = 0
+	layer = ABOVE_WINDOW_LAYER

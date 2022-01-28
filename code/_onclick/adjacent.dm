@@ -119,22 +119,31 @@ Quick adjacency (to turf):
 	This is defined as any dense ATOM_FLAG_CHECKS_BORDER object, or any dense object without throwpass.
 	The border_only flag allows you to not objects (for source and destination squares)
 */
-/turf/proc/ClickCross(target_dir, border_only, target_atom = null)
+/turf/proc/ClickCross(target_dir, border_only, atom/target_atom = null)
 	for(var/obj/O in src)
 		if( !O.density || O == target_atom || O.throwpass) continue // throwpass is used for anything you can click through
 
 		if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER) // windows have throwpass but are on border, check them first
 			if( O.dir & target_dir || O.dir&(O.dir-1) ) // full tile windows are just diagonals mechanically
 				var/obj/structure/window/W = target_atom
-				if(istype(W))
-					if(!W.is_fulltile())	//exception for breaking full tile windows on top of single pane windows
-						return 0
+				if(istype(W) && !W.is_fulltile()) //exception for breaking full tile windows on top of single pane windows
+					return FALSE
+				if(target_atom && (target_atom.atom_flags & ATOM_FLAG_ADJACENT_EXCEPTION)) // exception for atoms that should always be reachable
+					return TRUE
 				else
-					return 0
+					return FALSE
 
-		else if( !border_only ) // dense, not on border, cannot pass over
-			return 0
-	return 1
+		if(O.atom_flags & ATOM_FLAG_FULLTILE_OBJECT)
+			if(target_atom && (target_atom.atom_flags & ATOM_FLAG_ADJACENT_EXCEPTION)) // exception for atoms that should always be reachable
+				return TRUE
+			else if(istype(target_atom, /obj/item) || ismob(target_atom)) // Some day we'll deal with things sitting inside walls and fulltile windows.
+				return TRUE
+			else
+				return FALSE
+
+		else if(!border_only) // dense, not on border, cannot pass over
+			return FALSE
+	return TRUE
 /*
 	Aside: throwpass does not do what I thought it did originally, and is only used for checking whether or not
 	a thrown object should stop after already successfully entering a square.  Currently the throw code involved
