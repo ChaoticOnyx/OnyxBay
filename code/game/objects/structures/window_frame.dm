@@ -13,7 +13,7 @@
 
 	var/name = "windowpane"
 	var/icon_base = "window"
-	var/damage_icon = null
+	var/damage_state = 0
 
 	var/max_health = 20 // 40% of the material's integrity
 	var/health = 20
@@ -86,17 +86,17 @@
 	if(sound_effect)
 		playsound(my_frame.loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 
-	var/prev_damage_icon = damage_icon
+	var/prev_damage_state = damage_state
 	if(health < max_health * 0.25 && initialhealth >= max_health * 0.25)
 		my_frame.visible_message("\The [my_frame]'s [name] looks like it's about to shatter!")
-		damage_icon = "damage3"
+		damage_state = 3
 	else if(health < max_health * 0.5 && initialhealth >= max_health * 0.5)
 		my_frame.visible_message("\The [my_frame]'s [name] looks seriously damaged!")
-		damage_icon = "damage2"
+		damage_state = 2
 	else if(health < max_health * 0.75 && initialhealth >= max_health * 0.75)
 		my_frame.visible_message("Cracks begin to appear in \the [my_frame]'s [name]!")
-		damage_icon = "damage1"
-	if(prev_damage_icon != damage_icon)
+		damage_state = 1
+	if(prev_damage_state != damage_state)
 		my_frame.update_icon()
 	return
 
@@ -127,6 +127,16 @@
 /datum/windowpane/proc/set_tint(new_state = -1)
 	tinted = (new_state == -1) ? !tinted : new_state
 	my_frame.update_icon()
+
+/datum/windowpane/proc/get_damage_desc()
+	switch(damage_state)
+		if(1)
+			return "It has a few cracks."
+		if(2)
+			return "It looks seriously damaged."
+		if(3)
+			return "It looks like it's about to shatter!"
+	return "It looks [pick("intact", "normal", "fine", "alright")]."
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -334,8 +344,8 @@
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
-		if(inner_pane.damage_icon)
-			var/image/I = image(icon, inner_pane.damage_icon)
+		if(inner_pane.damage_state)
+			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
@@ -362,8 +372,8 @@
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
-		if(outer_pane.damage_icon)
-			var/image/I = image(icon, outer_pane.damage_icon)
+		if(outer_pane.damage_state)
+			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
@@ -390,6 +400,19 @@
 	update_icon()
 	for(var/obj/structure/window_frame/W in orange(src, 1))
 		W.update_icon()
+
+/obj/structure/window_frame/examine(mob/user)
+	. = ..()
+	if(outer_pane)
+		if(frame_state == FRAME_REINFORCED)
+			. += "\nIt has an outer [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
+		else
+			. += "\nIt has a [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
+	if(inner_pane)
+		. += "\nIt has an inner [inner_pane.name] installed. [inner_pane.get_damage_desc()]"
+
+	if(signaler)
+		. += "\n There is a signaler attached to the wiring."
 
 /obj/structure/window_frame/Bumped(atom/user)
 	if(ismob(user))
