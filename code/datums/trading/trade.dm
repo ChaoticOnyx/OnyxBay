@@ -217,6 +217,9 @@
 
 	var/atom/movable/M = new type(location)
 	playsound(location, 'sound/effects/teleport.ogg', 50, 1)
+	var/obj/mecha/MC = M
+	if(istype(MC))
+		MC.operation_req_access = list() // trader disable locks on mech on their site.
 
 	disposition += rand(compliment_increase,compliment_increase*3) //Traders like it when you trade with them
 
