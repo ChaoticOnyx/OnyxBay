@@ -451,9 +451,6 @@ its easier to just keep the beam vertical.
 
 //all things climbable
 
-/atom/movable/proc/on_purchase()
-	return
-
 /atom/attack_hand(mob/user)
 	..()
 	if(climbers.len && !(user in climbers))
