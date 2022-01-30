@@ -19,8 +19,7 @@
 		new /datum/body_build,
 		new /datum/body_build/slim,
 		new /datum/body_build/slim/alt,
-		new /datum/body_build/slim/male,
-		new /datum/body_build/fat
+		new /datum/body_build/slim/male
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -113,8 +112,7 @@
 
 	body_builds = list(
 		new /datum/body_build/tajaran,
-		new /datum/body_build/slim/alt/tajaran,
-		new /datum/body_build/tajaran/fat
+		new /datum/body_build/slim/alt/tajaran
 	)
 
 	cold_level_1 = 200 //Default 260
