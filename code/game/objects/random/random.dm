@@ -564,8 +564,8 @@
 /obj/random/obstruction/spawn_choices()
 	return list(/obj/structure/barricade,
 				/obj/structure/girder,
-				/obj/structure/grille,
-				/obj/structure/grille/broken,
+				/obj/structure/window_frame/grille,
+				/obj/structure/window_frame/broken,
 				/obj/structure/foamedmetal,
 				/obj/item/caution,
 				/obj/item/caution/cone,
