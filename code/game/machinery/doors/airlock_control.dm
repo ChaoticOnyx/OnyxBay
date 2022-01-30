@@ -241,7 +241,6 @@
 
 	anchored = 1
 	power_channel = STATIC_ENVIRON
-	layer = ABOVE_WINDOW_LAYER
 
 	var/master_tag
 	var/frequency = 1449

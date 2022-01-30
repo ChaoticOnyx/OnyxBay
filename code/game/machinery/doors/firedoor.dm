@@ -19,7 +19,6 @@
 	layer = BELOW_DOOR_LAYER
 	open_layer = BELOW_DOOR_LAYER
 	closed_layer = ABOVE_DOOR_LAYER
-	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION
 
 	//These are frequenly used with windows, so make sure zones can pass.
 	//Generally if a firedoor is at a place where there should be a zone boundery then there will be a regular door underneath it.

@@ -8,7 +8,6 @@
 	icon_state = "emerg"
 
 	anchored = TRUE
-	layer = ABOVE_WINDOW_LAYER
 
 	var/obj/item/tank/tank
 	var/mob/living/carbon/breather

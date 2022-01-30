@@ -13,10 +13,10 @@
 
 	var/name = "windowpane"
 	var/icon_base = "window"
-	var/damage_state = 0
+	var/damage_icon = null
 
-	var/max_health = 20 // 40% of the material's integrity
-	var/health = 20
+	var/max_health = 17.5 // 35% of the material's integrity
+	var/health = 17.5
 	var/is_inner = FALSE
 	var/state = 2
 	var/tinted = FALSE
@@ -64,7 +64,7 @@
 	window_material = M
 	name = "[M.display_name] windowpane"
 	icon_base = M.window_icon_base
-	max_health = M.integrity * 0.4
+	max_health = M.integrity * 0.35
 	health = max_health
 	max_heat = M.melting_point
 
@@ -86,17 +86,17 @@
 	if(sound_effect)
 		playsound(my_frame.loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 
-	var/prev_damage_state = damage_state
+	var/prev_damage_icon = damage_icon
 	if(health < max_health * 0.25 && initialhealth >= max_health * 0.25)
 		my_frame.visible_message("\The [my_frame]'s [name] looks like it's about to shatter!")
-		damage_state = 3
+		damage_icon = "damage3"
 	else if(health < max_health * 0.5 && initialhealth >= max_health * 0.5)
 		my_frame.visible_message("\The [my_frame]'s [name] looks seriously damaged!")
-		damage_state = 2
+		damage_icon = "damage2"
 	else if(health < max_health * 0.75 && initialhealth >= max_health * 0.75)
 		my_frame.visible_message("Cracks begin to appear in \the [my_frame]'s [name]!")
-		damage_state = 1
-	if(prev_damage_state != damage_state)
+		damage_icon = "damage1"
+	if(prev_damage_icon != damage_icon)
 		my_frame.update_icon()
 	return
 
@@ -127,16 +127,6 @@
 /datum/windowpane/proc/set_tint(new_state = -1)
 	tinted = (new_state == -1) ? !tinted : new_state
 	my_frame.update_icon()
-
-/datum/windowpane/proc/get_damage_desc()
-	switch(damage_state)
-		if(1)
-			return "It has a few cracks."
-		if(2)
-			return "It looks seriously damaged."
-		if(3)
-			return "It looks like it's about to shatter!"
-	return "It looks [pick("intact", "normal", "fine", "alright")]."
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -268,7 +258,7 @@
 			hitby_loudness_multiplier = 1.5
 			density = TRUE
 			max_health = 12
-			pane_melee_mult = 0.7
+			pane_melee_mult = 0.8
 		if(FRAME_DESTROYED)
 			name = "broken grille"
 			desc = "Not much left of a grille, but at least a single steel rod still can be salvaged from it."
@@ -300,13 +290,6 @@
 			pane_melee_mult = 0.9
 
 	health = max_health // Simple reset is easier than inventing things.
-
-	// The unobvious thing below makes it impossible to interact with things which are located
-	// on the same tile as an assembled window or a grille. With exceptions like firedoors.
-	if(outer_pane || inner_pane || frame_state == FRAME_GRILLE)
-		atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
-	else
-		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
 /obj/structure/window_frame/update_icon()
@@ -344,8 +327,8 @@
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
-		if(inner_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
+		if(inner_pane.damage_icon)
+			var/image/I = image(icon, inner_pane.damage_icon)
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
@@ -372,10 +355,10 @@
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
-		if(outer_pane.damage_state)
-			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
+		if(outer_pane.damage_icon)
+			var/image/I = image(icon, outer_pane.damage_icon)
 			I.plane = DEFAULT_PLANE
-			I.layer = WINDOW_OUTER_LAYER
+			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 	if(outer_pane?.state >= 1)
@@ -400,19 +383,6 @@
 	update_icon()
 	for(var/obj/structure/window_frame/W in orange(src, 1))
 		W.update_icon()
-
-/obj/structure/window_frame/examine(mob/user)
-	. = ..()
-	if(outer_pane)
-		if(frame_state == FRAME_REINFORCED)
-			. += "\nIt has an outer [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
-		else
-			. += "\nIt has a [outer_pane.name] installed. [outer_pane.get_damage_desc()]"
-	if(inner_pane)
-		. += "\nIt has an inner [inner_pane.name] installed. [inner_pane.get_damage_desc()]"
-
-	if(signaler)
-		. += "\n There is a signaler attached to the wiring."
 
 /obj/structure/window_frame/Bumped(atom/user)
 	if(ismob(user))
@@ -744,13 +714,6 @@
 		if(shock(user, 90))
 			to_chat(user, SPAN("danger", "You try to [anchored ? "unfasten" : "fasten"] \the [src] and get electrocuted!"))
 			return
-		if(!anchored)
-			for(var/obj/structure/window_frame/WF in loc)
-				if(WF == src)
-					continue
-				to_chat(user, SPAN("warning", "There are too many frames in this location."))
-				return
-
 		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		anchored = !anchored
 		update_nearby_icons()
@@ -815,7 +778,7 @@
 	var/tforce = 0
 	if(ismob(AM)) // All mobs have a multiplier and a size according to mob_defines.dm
 		var/mob/I = AM
-		tforce = I.mob_size * I.throw_multiplier
+		tforce = I.mob_size * 2 * I.throw_multiplier
 	else if(isobj(AM))
 		var/obj/item/I = AM
 		tforce = I.throwforce
@@ -989,8 +952,7 @@
 	hitby_loudness_multiplier = 1.5
 	density = TRUE
 	max_health = 12
-	pane_melee_mult = 0.7
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	pane_melee_mult = 0.8
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
@@ -1000,7 +962,6 @@
 	icon_base = "grille-b"
 	icon_border = "blank"
 	hitby_loudness_multiplier = 0.5
-	density = FALSE
 	max_health = 6
 
 /obj/structure/window_frame/broken/Initialize()
@@ -1015,7 +976,6 @@
 	icon_state = "winframe_e"
 	icon_base = "winframe_e"
 	icon_border = "winborder"
-	density = FALSE
 
 /obj/structure/window_frame/relectric
 	frame_state = FRAME_RELECTRIC
@@ -1034,7 +994,6 @@
 	name = "window"
 	icon_state = "winframe-glass"
 	density = TRUE
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
 // Regular window with reinforced glass. Default window for most occasions.
@@ -1042,14 +1001,12 @@
 	name = "window"
 	icon_state = "winframe-rglass"
 	density = TRUE
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
 /obj/structure/window_frame/reinforced/hull
 	name = "reinforced window"
 	icon_state = "winframe_r-rglass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 	preset_inner_pane = /datum/windowpane/rglass
 
@@ -1057,54 +1014,46 @@
 /obj/structure/window_frame/reinforced/thermal
 	name = "reinforced window"
 	icon_state = "winframe_r-rplass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rplass
 	preset_inner_pane = /datum/windowpane/rplass
 
 /obj/structure/window_frame/reinforced/unfinished
 	name = "unfinished reinforced window"
 	icon_state = "winframe_ru-rglass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = null
 	preset_inner_pane = /datum/windowpane/rglass
 
 /obj/structure/window_frame/grille/glass
 	name = "windowed grille"
 	icon_state = "grille-glass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
 // Can't hold the second windowpane, but can be used to shock people.
 /obj/structure/window_frame/grille/rglass
 	name = "windowed grille"
 	icon_state = "grille-rglass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
 /obj/structure/window_frame/electric/glass
 	name = "electrochromic window"
 	icon_state = "winframe_e-glass"
 	density = TRUE
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
 /obj/structure/window_frame/electric/rglass
 	name = "electrochromic window"
 	icon_state = "winframe_e-rglass"
 	density = TRUE
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
 /obj/structure/window_frame/relectric/glass
 	name = "reinforced electrochromic window"
 	icon_state = "winframe_re-glass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/glass
 
 /obj/structure/window_frame/relectric/rglass
 	name = "reinforced electrochromic window"
 	icon_state = "winframe_re-rglass"
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
 #undef FRAME_DESTROYED
