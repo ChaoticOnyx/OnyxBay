@@ -239,7 +239,13 @@
 		/obj/item/reagent_containers/food/drinks/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
-		/obj/item/storage/secure/guncase/detective
+		/obj/item/gun/projectile/pistol/colt/detective,
+		/obj/item/ammo_magazine/c45m/rubber,
+		/obj/item/ammo_magazine/c45m/rubber,
+		/obj/item/ammo_magazine/c45m/stun,
+		/obj/item/ammo_magazine/c45m/stun,
+		/obj/item/ammo_magazine/c45m,
+		/obj/item/ammo_magazine/c45m
 	)
 
 /obj/structure/closet/secure_closet/injection

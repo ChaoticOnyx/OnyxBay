@@ -58,15 +58,6 @@
 	//residual illumination
 	new /obj/effect/effect/smoke/illumination(src.loc, rand(190,240) SECONDS, range=8, power=3, color=light_colour) //same lighting power as flare
 
-/obj/item/projectile/energy/flash/c38
-	damage_type = BURN
-	damage = 5
-	agony = 25
-	icon_state = "bullet"
-	fire_sound = 'sound/effects/weapons/gun/fire_shotgun.ogg'
-	flash_range = 1
-	brightness = 10
-
 //////////////////////////////////////////////////////
 
 /obj/item/projectile/energy/electrode
@@ -101,26 +92,6 @@
 	damage = 3 //A little ouchie.
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
-
-/obj/item/projectile/energy/electrode/c38
-	name = "shock bullet"
-	icon_state = "shockbullet"
-	nodamage = 0
-	agony = 60
-	damage_type = BRUTE
-	damage = 5 //It's still a bullet
-	armor_penetration = 10
-	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
-
-/obj/item/projectile/energy/c38
-	name = "overheated bullet"
-	icon_state = "heatbullet"
-	damage = 40
-	agony = 20
-	eyeblur = 4
-	damage_type = BURN
-	armor_penetration = 15
-	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"

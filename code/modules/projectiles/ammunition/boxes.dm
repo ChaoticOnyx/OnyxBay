@@ -36,22 +36,6 @@
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c38/rubber
 
-/obj/item/ammo_magazine/c38/spec
-	name = "speed loader (.38 SPEC)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "38spec"
-	ammo_type = /obj/item/ammo_casing/c38/spec
-	matter = list(MATERIAL_STEEL = 1000)
-	max_ammo = 5
-
-/obj/item/ammo_magazine/c38/chem
-	name = "speed loader (.38 CHEM)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "38chem"
-	ammo_type = /obj/item/ammo_casing/c38/chem
-	matter = list(MATERIAL_STEEL = 1500)
-	max_ammo = 5
-
 /obj/item/ammo_magazine/c44
 	name = "speed loader (.44 magnum)"
 	desc = "A speed loader for revolvers."

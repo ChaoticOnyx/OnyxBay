@@ -170,13 +170,6 @@
 	sharp = 0
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
-/obj/item/projectile/bullet/pistol/accelerated/c38
-	name = "accelerated bullet"
-	damage = 35.0 // .38 + gauss
-	armor_penetration = 35
-	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
-
-
 /* shotgun projectiles */
 
 /obj/item/projectile/bullet/shotgun
