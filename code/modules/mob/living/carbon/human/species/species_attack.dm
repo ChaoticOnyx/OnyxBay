@@ -63,26 +63,10 @@
 	damage = 5
 	shredding = 1
 
-/datum/unarmed_attack/claws/strong/xeno
-	attack_verb = list("slashed", "gouged", "stabbed")
-	damage = 12.5
-
-/datum/unarmed_attack/claws/strong/xeno/feral
-	attack_verb = list("slashed", "gouged", "stabbed")
-	damage = 17.5
-
-/datum/unarmed_attack/claws/strong/xeno/queen
-	attack_verb = list("slashed", "gouged", "stabbed", "gored")
-	damage = 20
-
 /datum/unarmed_attack/bite/strong
 	attack_verb = list("mauled")
 	damage = 8
 	shredding = 1
-
-/datum/unarmed_attack/bite/strong/xeno
-	damage = 12.5
-	sharp = 1
 
 /datum/unarmed_attack/metroid_glomp
 	attack_verb = list("glomped")

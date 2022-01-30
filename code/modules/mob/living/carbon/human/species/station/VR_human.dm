@@ -33,5 +33,3 @@
 		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/unbreakable),
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable)
 		)
-
-	xenomorph_type = null

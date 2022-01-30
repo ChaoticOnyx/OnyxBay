@@ -839,12 +839,6 @@ var/list/name_to_material
 	conductive = 0
 	integrity = 20
 
-/material/resin/can_open_material_door(mob/living/user)
-	var/mob/living/carbon/M = user
-	if(istype(M) && locate(/obj/item/organ/internal/xenos/hivenode) in M.internal_organs)
-		return 1
-	return 0
-
 /material/aliumium
 	name = "alien alloy"
 	stack_type = null

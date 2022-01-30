@@ -208,15 +208,6 @@
 	icon_state = "landmark_ninja"
 
 // Creatures
-/obj/effect/landmark/start/antags/xeno
-	name = "Xenomorph"
-	icon_state = "landmark_xeno"
-	delete_after = TRUE
-
-/obj/effect/landmark/start/antags/xeno/Initialize()
-	GLOB.xenospawn_areas += loc.loc
-	return ..()
-
 /obj/effect/landmark/start/antags/borer
 	name = "Borer"
 	icon_state = "landmark_borer"

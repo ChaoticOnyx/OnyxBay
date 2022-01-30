@@ -540,10 +540,6 @@
 	..()
 	mind.assigned_role = "metroid"
 
-/mob/living/carbon/alien/larva/mind_initialize()
-	..()
-	mind.special_role = "Xenomorph"
-
 //AI
 /mob/living/silicon/ai/mind_initialize()
 	..()

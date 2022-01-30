@@ -44,18 +44,6 @@ the HUD updates properly! */
 			P.Client.images += perp.hud_list[IMPLOYAL_HUD]
 			P.Client.images += perp.hud_list[IMPCHEM_HUD]
 
-/proc/process_xeno_hud(mob/M, mob/Alt)
-	if(!can_process_hud(M))
-		return
-
-	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.xeno_hud_users)
-	for(var/mob/living/carbon/human/victim in P.Mob.in_view(P.Turf))
-
-		if(victim.is_invisible_to(P.Mob))
-			continue
-
-		P.Client.images += victim.hud_list[XENO_HUD]
-
 /datum/arranged_hud_process
 	var/client/Client
 	var/mob/Mob
@@ -86,7 +74,6 @@ the HUD updates properly! */
 
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src
-	GLOB.xeno_hud_users -= src
 
 /mob/proc/in_view(turf/T)
 	return view(T)

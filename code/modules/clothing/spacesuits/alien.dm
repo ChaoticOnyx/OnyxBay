@@ -139,7 +139,7 @@
 			if(istype(A, /turf/simulated/floor))
 				if(istype(A.loc, /turf/simulated/wall) || istype(A.loc, /obj/machinery/door))
 					return
-				new /obj/machinery/door/unpowered/simple/resin(get_turf(A), A)
+				new /obj/machinery/door/unpowered/simple/sandstone(get_turf(A), A)
 				charge--
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	if(charge == 0)

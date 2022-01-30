@@ -223,8 +223,6 @@
 #define BP_PLASMA   "plasma vessel"
 #define BP_CHANG    "biostructure"
 #define BP_CANCER   "cancer"
-#define BP_EMBRYO   "alien embryo"
-#define BP_GANGLION "spinal ganglion"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -302,16 +300,6 @@
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 
-// Ayyy IDs.
-#define SPECIES_XENO                 "Xenomorph"
-#define SPECIES_XENO_DRONE           "Xenomorph Drone"
-#define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
-#define SPECIES_XENO_SENTINEL        "Xenomorph Sentinel"
-#define SPECIES_XENO_QUEEN           "Xenomorph Queen"
-#define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
-#define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
-#define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
-
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
 #define SURGERY_RETRACTED 2
@@ -349,11 +337,6 @@
 #define STOMACH_CAPACITY_LOW    0.75 // Slim people
 #define STOMACH_CAPACITY_NORMAL 1.0  // Normal human beings
 #define STOMACH_CAPACITY_HIGH   1.45 // Spherical boiz
-
-#define HUMAN_POWER_NONE    "None"
-#define HUMAN_POWER_SPIT    "Spit"
-#define HUMAN_POWER_LEAP    "Leap"
-#define HUMAN_POWER_TACKLE  "Tackle"
 
 #define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
 #define HUMAN_HIGH_POISE    60

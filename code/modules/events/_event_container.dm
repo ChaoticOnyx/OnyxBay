@@ -167,7 +167,6 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Virology Breach",                    /datum/event/prison_break/virology,      0,      list(ASSIGNMENT_MEDICAL = 20)),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Xenobiology Breach",                 /datum/event/prison_break/xenobiology,   0,      list(ASSIGNMENT_SCIENCE = 20)),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Viral Infection",                    /datum/event/virus_minor,                0,      list(ASSIGNMENT_MEDICAL = 20)),
-		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Stray Facehugger",                   /datum/event/stray_facehugger,           30,     list(ASSIGNMENT_SECURITY = 10), is_one_shot = 1),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Wormholes",                          /datum/event/wormholes,                  10,     list(ASSIGNMENT_ANY = 1))
 	)
 
@@ -181,7 +180,6 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Space Vines",           /datum/event/spacevine,             0,     list(ASSIGNMENT_ENGINEER = 25)),
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Electrical Storm",      /datum/event/electrical_storm,      0,     list(ASSIGNMENT_ENGINEER = 10, ASSIGNMENT_JANITOR = 5)),
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Plague Infection",      /datum/event/virus_major,           0,     list(ASSIGNMENT_MEDICAL = 20), is_one_shot = 1),
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Xenomorph Infestation", /datum/event/xenomorph_infestation, 0,     list(ASSIGNMENT_SECURITY = 2), is_one_shot = 1),
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Biohazard Outbreak",    /datum/event/biohazard_outbreak,    0,     list(ASSIGNMENT_ANY = 2),      is_one_shot = 1)
 	)
 

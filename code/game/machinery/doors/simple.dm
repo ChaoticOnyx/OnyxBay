@@ -239,40 +239,5 @@
 	glass = 1
 	set_opacity(0)
 
-/obj/machinery/door/unpowered/simple/resin/New(newloc,material_name,complexity)
-	..(newloc, MATERIAL_RESIN, complexity)
-
-/obj/machinery/door/unpowered/simple/resin/allowed(mob/M)
-	if(istype(M, /mob/living/carbon/alien/larva))
-		return TRUE
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		if(H.internal_organs_by_name[BP_HIVE])
-			return TRUE
-	return FALSE
-
-/obj/machinery/door/unpowered/simple/resin/attackby(obj/item/I, mob/user) // It's much more simple that the other doors, no lock support etc.
-	add_fingerprint(user, 0, I)
-	if(user.a_intent == I_HURT)
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(I.damtype == BRUTE || I.damtype == BURN)
-			user.do_attack_animation(src)
-			if(I.force < min_force)
-				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I] with no visible effect."))
-			else
-				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [I]!"))
-				playsound(loc, hitsound, 100, 1)
-				take_damage(I.force)
-			return
-
-	if(operating)
-		return
-
-	if(allowed(user))
-		if(density)
-			open()
-		else
-			close()
-
 /obj/machinery/door/unpowered/simple/cult/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_CULT, complexity)

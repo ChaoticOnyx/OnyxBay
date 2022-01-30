@@ -63,74 +63,13 @@
  * Egg
  */
 
+// Just a decoration with no actual use.
 /obj/structure/alien/egg
-	desc = "It looks like a weird egg."
+	desc = "It looks like a weird egg. You feel like it might be dangerous in a galaxy far away, at the times long gone."
 	name = "egg"
 	icon_state = "egg_growing"
 	density = 0
 	anchored = 1
-	var/progress = 0
-	var/progress_max = 75 // Point at which we can harvest it manually; hatches autimatically at progress_max*2
-
-/obj/structure/alien/egg/Initialize()
-	. = ..()
-	START_PROCESSING(SSobj, src)
-
-/obj/structure/alien/egg/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/structure/alien/egg/Process()
-	progress++
-	if(progress >= progress_max*2)
-		hatch()
-
-/obj/structure/alien/egg/attack_hand(mob/user)
-	if(progress == -1)
-		return ..()
-	if(!isliving(user))
-		return ..()
-	var/mob/living/M = user
-	if(progress < progress_max)
-		if(M.faction != "xenomorph")
-			to_chat(M, "You touch \the [src].")
-		else
-			to_chat(M, "<span class='alium'>\The [src] is not ready to hatch yet.</alium>")
-		return
-	if(M.faction != "xenomorph")
-		to_chat(M, "You touch \the [src]... And it starts moving.")
-	else
-		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
-	hatch()
-
-/obj/structure/alien/egg/examine(mob/user)
-	. = ..()
-	if(isliving(user))
-		var/mob/living/M = user
-		if(M.faction == "xenomorph")
-			if(progress < progress_max)
-				. += "\nIt's not ready to hatch yet..."
-			else
-				. += "\nIt's ready to hatch!"
-
-/obj/structure/alien/egg/update_icon()
-	if(progress == -1)
-		icon_state = "egg_opened"
-	else if(progress < progress_max)
-		icon_state = "egg_growing"
-	else
-		icon_state = "egg"
-
-/obj/structure/alien/egg/proc/hatch()
-	set waitfor = 0
-
-	progress = -1
-	STOP_PROCESSING(SSobj, src)
-	update_icon()
-	flick("egg_opening", src)
-	sleep(5)
-	if(get_turf(src))
-		new /mob/living/simple_animal/hostile/facehugger(get_turf(src))
 
 /*
  * Weeds

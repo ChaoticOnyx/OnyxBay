@@ -189,11 +189,6 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_SHIFT_MIDDLE_CLICK
 	options = list(GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_MIDDLE_CLICK)
 
-/datum/client_preference/special_ability_key
-	description = "Special Ability Activation Key"
-	key = "SPECIAL_ABILITY"
-	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
-
 /datum/client_preference/tgui_style
 	description = "TGUI Style"
 	key = "TGUI_FANCY"
