@@ -125,9 +125,6 @@
 		connected.Pulse(src)
 	else if(holder)
 		holder.process_activation(src, 1, 0)
-	else if(istype(loc, /obj/structure/window_frame))
-		var/obj/structure/window_frame/WF = loc
-		WF.signaler_pulse()
 	else
 		..(radio)
 	return 1

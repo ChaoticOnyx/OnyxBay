@@ -2,7 +2,7 @@
 	name = "grille"
 	desc = "A flimsy lattice of metal rods, with screws to secure it to the floor."
 	icon = 'icons/obj/structures.dmi'
-	icon_state = "old-grille"
+	icon_state = "grille"
 	density = 1
 	anchored = 1
 	obj_flags = OBJ_FLAG_CONDUCTIBLE

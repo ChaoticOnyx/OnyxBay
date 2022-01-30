@@ -1,6 +1,6 @@
 /obj/structure/window
-	name = "panel"
-	desc = "A glassy panel."
+	name = "window"
+	desc = "A window."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -445,7 +445,6 @@
 
 
 /obj/structure/window/basic
-	name = "glass panel"
 	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
 	basestate = "window"
@@ -455,8 +454,8 @@
 	maxhealth = 12.0
 
 /obj/structure/window/plasmabasic
-	name = "plass panel"
-	desc = "A plasmasilicate alloy panel. It seems to be quite strong."
+	name = "plass window"
+	desc = "A plasmasilicate alloy window. It seems to be quite strong."
 	basestate = "plasmawindow"
 	explosion_block = 1
 	icon_state = "plasmawindow"
@@ -467,8 +466,8 @@
 	maxhealth = 40.0
 
 /obj/structure/window/plasmareinforced
-	name = "reinforced plass panel"
-	desc = "A plasmasilicate alloy panel, with rods supporting it. It seems to be very strong."
+	name = "reinforced plass window"
+	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
 	basestate = "plasmarwindow"
 	icon_state = "plasmarwindow"
 	shardtype = /obj/item/material/shard/plasma
@@ -484,7 +483,7 @@
 	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
-	name = "reinforced glass panel"
+	name = "reinforced window"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
 	basestate = "rwindow"
