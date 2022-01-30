@@ -129,14 +129,16 @@
 	my_frame.update_icon()
 
 /datum/windowpane/proc/get_damage_desc()
+	if(health == max_health)
+		return SPAN("notice", "It looks [pick("intact", "normal", "fine", "alright")].")
 	switch(damage_state)
 		if(1)
-			return "It has a few cracks."
+			return SPAN("warning", "It has a few cracks.")
 		if(2)
-			return "It looks seriously damaged."
+			return SPAN("warning", "It looks seriously damaged.")
 		if(3)
-			return "It looks like it's about to shatter!"
-	return "It looks [pick("intact", "normal", "fine", "alright")]."
+			return SPAN("danger", "It looks like it's about to shatter!")
+	return SPAN("notice", "It looks a bit [pick("shabby", "battered", "frayed", "chipped")].")
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -605,6 +607,7 @@
 					set_state()
 					update_nearby_icons()
 					update_nearby_tiles()
+					shove_everything(shove_items = FALSE)
 			return
 
 	if(affected)
@@ -705,6 +708,7 @@
 					to_chat(user, SPAN("notice", "You've constructed a grille."))
 					set_state(FRAME_GRILLE)
 					update_nearby_icons()
+					shove_everything(shove_items = FALSE)
 				return
 
 	if(istype(W, /obj/item/stack/cable_coil))
@@ -756,6 +760,8 @@
 		update_nearby_icons()
 		user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \
 							 SPAN("notice", "You have [anchored ? "fastened \the [src] to" : "unfastened \the [src] from"] the floor."))
+		if(anchored)
+			shove_everything(shove_items = FALSE)
 		return
 
 	if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
