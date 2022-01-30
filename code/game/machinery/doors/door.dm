@@ -250,7 +250,7 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
+	if(isobj(I) && density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
 			user.setClickCooldown(I.update_attack_cooldown())

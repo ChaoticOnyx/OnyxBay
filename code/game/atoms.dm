@@ -603,7 +603,7 @@ its easier to just keep the beam vertical.
 	while(valid_turfs.len)
 		T = pick(valid_turfs)
 		valid_turfs -= T // Try to move us to the turf. If all turfs fail for some reason we will stay on this tile.
-		if(A.Move(T))
+		if(A.forceMove(T))
 			return TRUE
 
 	return FALSE
@@ -644,13 +644,13 @@ its easier to just keep the beam vertical.
 			if(L.buckled)
 				continue
 			if("[L.dir]" in valid_turfs)
-				if(L.Move(valid_turfs["[L.dir]"])) // We prefer shoving mobs according to their facing direction.
+				if(L.forceMove(valid_turfs["[L.dir]"])) // We prefer shoving mobs according to their facing direction.
 					continue
 		else if(isobj(A) && !shove_objects)
 			continue
 
 		for(var/i in shuffle(valid_turfs))
-			if(A.Move(valid_turfs[i]))
+			if(A.forceMove(valid_turfs[i]))
 				break
 
 	return TRUE

@@ -28,7 +28,7 @@
 	var/id = 1.0
 	dir = 1
 	explosion_resistance = 25
-	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION | ATOM_FLAG_FULLTILE_OBJECT
 	var/keep_items_on_close = FALSE
 
 	//Most blast doors are infrequently toggled and sometimes used with regular doors anyways,
@@ -50,7 +50,7 @@
 		set_density(0)
 		set_opacity(0)
 		layer = open_layer
-		atom_flags &= ~ATOM_FLAG_ADJACENT_EXCEPTION
+		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 	implicit_material = get_material_by_name(MATERIAL_PLASTEEL)
 
@@ -93,7 +93,7 @@
 	sleep(15)
 	layer = open_layer
 	operating = FALSE
-	atom_flags &= ~ATOM_FLAG_ADJACENT_EXCEPTION
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_close()
 // Parameters: None
@@ -110,7 +110,7 @@
 	sleep(15)
 	shove_everything(shove_items = !keep_items_on_close)
 	operating = FALSE
-	atom_flags |= ATOM_FLAG_ADJACENT_EXCEPTION
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_toggle()
 // Parameters: None
