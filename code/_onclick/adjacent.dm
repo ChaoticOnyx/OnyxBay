@@ -128,6 +128,8 @@ Quick adjacency (to turf):
 				var/obj/structure/window/W = target_atom
 				if(istype(W) && !W.is_fulltile()) //exception for breaking full tile windows on top of single pane windows
 					return FALSE
+				if(istype(target_atom, /obj/structure/window_frame)) // the same as full tile windows exception, but for the new ones
+					return TRUE
 				if(target_atom && (target_atom.atom_flags & ATOM_FLAG_ADJACENT_EXCEPTION)) // exception for atoms that should always be reachable
 					return TRUE
 				else
