@@ -354,7 +354,8 @@
 			overlays += I
 
 	if(outer_pane)
-		underlays += image(icon, "winframe_shadow")
+		if(outer_pane.reinforced)
+			underlays += image(icon, "winframe_shadow")
 
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
