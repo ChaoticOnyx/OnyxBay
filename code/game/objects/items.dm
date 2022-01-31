@@ -836,7 +836,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()
-	return DEFAULT_WEAPON_COOLDOWN
+	return DEFAULT_ATTACK_COOLDOWN
 
 /obj/item/proc/on_restraint_removal(mob/living/carbon/C) //Needed for syndicuffs
 	return
