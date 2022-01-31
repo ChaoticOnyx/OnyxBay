@@ -67,7 +67,7 @@
 	name = "\improper CH-PS \"Immolator\" laser"
 	icon_state = "mecha_laser"
 	energy_drain = 3 KILOWATTS
-	projectile = /obj/item/projectile/energy/laser/mid
+	projectile = /obj/item/projectile/beam/midlaser
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/riggedlaser
@@ -76,7 +76,7 @@
 	desc = "While not regulation, this inefficient weapon can be attached to working exo-suits in desperate, or malicious, times."
 	icon_state = "mecha_laser_rigged"
 	energy_drain = 10 KILOWATTS // Inefficient
-	projectile = /obj/item/projectile/energy/laser/small
+	projectile = /obj/item/projectile/beam
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 	required_type = list(/obj/mecha/combat, /obj/mecha/working)
 
@@ -85,7 +85,7 @@
 	name = "\improper CH-LC \"Solaris\" laser cannon"
 	icon_state = "mecha_laser_cannon"
 	energy_drain = 6 KILOWATTS
-	projectile = /obj/item/projectile/energy/laser/heavy
+	projectile = /obj/item/projectile/beam/heavylaser
 	fire_sound = 'sound/effects/weapons/energy/lasercannonfire.ogg'
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/ion
@@ -217,17 +217,6 @@
 	deviation = 0.3
 	projectile_energy_cost = 40 KILOWATTS
 	fire_cooldown = 2
-
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/cannon
-	name = "\improper G3-S Heavy Cannon"
-	icon_state = "mecha_g3s"
-	equip_cooldown = 25
-	projectile = /obj/item/projectile/bullet/rifle/a145
-	fire_sound = 'sound/effects/weapons/gun/fire_sniper.ogg'
-	projectiles = 15
-	projectiles_per_shot = 1
-	deviation = 0
-	projectile_energy_cost = 150 KILOWATTS
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack
 	var/missile_speed = 2

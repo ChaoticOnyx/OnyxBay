@@ -22,7 +22,6 @@
 	H.SetWeakened(0)
 
 	H.lying = FALSE
-	H.poise = H.poise_pool
 	H.update_canmove()
 
 	feedback_add_details("changeling_powers","UNS")

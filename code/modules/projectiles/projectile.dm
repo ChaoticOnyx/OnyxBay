@@ -218,21 +218,6 @@
 			target_mob.visible_message("<span class='notice'>\The [src] misses [target_mob] narrowly!</span>")
 		return 0
 
-	//sometimes bullet_act() will want the projectile to continue flying
-	if(result == PROJECTILE_CONTINUE)
-		return 0
-
-	if(result == PROJECTILE_FORCE_BLOCK)
-		if(!no_attack_log)
-			if(istype(firer, /mob))
-				var/attacker_message = "shot with \a [src.type] (blocked)"
-				var/victim_message = "shot with \a [src.type] (blocked)"
-				var/admin_message = "shot (\a [src.type], blocked)"
-				admin_attack_log(firer, target_mob, attacker_message, victim_message, admin_message)
-			else
-				admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src] (blocked)")
-		return 1
-
 	var/impacted_organ = parse_zone(def_zone)
 	if(istype(target_mob, /mob/living/simple_animal))
 		var/mob/living/simple_animal/SM = target_mob
@@ -255,12 +240,6 @@
 		else
 			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
 
-		new /obj/effect/effect/hitmarker(target_mob.loc)
-		for(var/mob/O in hearers(7, get_turf(target_mob)))
-			if(O.client)
-				if(O.get_preference_value(/datum/client_preference/play_hitmarker) == GLOB.PREF_YES)
-					O.playsound_local(target_mob, 'sound/effects/weapons/misc/hitmarker.ogg', 50, 1)
-
 	//admin logs
 	if(!no_attack_log)
 		if(istype(firer, /mob))
@@ -272,6 +251,10 @@
 			admin_attack_log(firer, target_mob, attacker_message, victim_message, admin_message)
 		else
 			admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src]")
+
+	//sometimes bullet_act() will want the projectile to continue flying
+	if(result == PROJECTILE_CONTINUE)
+		return 0
 
 	return 1
 

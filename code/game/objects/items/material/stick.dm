@@ -3,13 +3,9 @@
 	desc = "You feel the urge to poke someone with this."
 	icon_state = "stick"
 	item_state = "stickmat"
-	force_const = 5.0
-	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
+	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.1
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.0
-	mod_reach = 1.0
-	mod_handy = 1.0
 	default_material = MATERIAL_WOOD
 	attack_verb = list("poked", "jabbed")
 	hitsound = SFX_FIGHTING_SWING

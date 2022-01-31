@@ -57,8 +57,6 @@
 			affecting.Weaken(2)
 			affecting.Stun(2)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
-			affecting.damage_poise(affecting.poise)
-
 			return 1
 		else
 			affecting.visible_message("<span class='notice'>[assailant] fails to pin [affecting] to the ground.</span>")

@@ -247,57 +247,32 @@
 	return 0
 
 /datum/grab/proc/handle_resist(obj/item/grab/G)
-	if(!G.affecting && !G.assailant)
-		return
 	var/mob/living/carbon/human/affecting = G.affecting
 	var/mob/living/carbon/human/assailant = G.assailant
 
 	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED))
 		to_chat(G.assailant, "<span class='warning'>You can't resist in your current state!</span>")
 
-	//var/break_strength = breakability + size_difference(affecting, assailant)
-
-	var/p_mult = 1.5
-	for(var/obj/item/grab/AF in affecting.grabbed_by)
-		p_mult -= 0.5
+	var/break_strength = breakability + size_difference(affecting, assailant)
 
 	if(affecting.incapacitated(INCAPACITATION_ALL))
-		p_mult -= 0.1
+		break_strength--
 	if(affecting.confused)
-		p_mult -= 0.1
-	if(!affecting.lying)
-		p_mult += 0.1
+		break_strength--
 
-	//if(break_strength < 1)
-	//	to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
-	//	return
+	if(break_strength < 1)
+		to_chat(G.assailant, "<span class='warning'>You try to break free but feel that unless something changes, you'll never escape!</span>")
+		return
 
-	var/p_lost = (5.5 + affecting.poise/10 - assailant.poise/20) * p_mult
-	assailant.damage_poise(p_lost)
-	affecting.damage_poise(2.0)
-
-	//assailant.visible_message("Debug: [assailant] lost [p_lost] poise | now: [assailant.poise]/[assailant.poise_pool]") //Debug message
-
-	var/p_diff = 25.0 // If difference is less than 5.0 then the break chance is capped (12.5%/8.33% for normal and agressive grabs respectively).
-	if((affecting.poise - assailant.poise) > 5.0)
-		p_diff = (affecting.poise - assailant.poise) * 5
-	else if(assailant.poise - affecting.poise > 20.0) // HUGE difference, tiny chance to escape
-		p_diff = 10.0
-
-	p_diff /= breakability // 2 for a normal grab, 3 for agressive and kill grabs
-
-	//assailant.visible_message("Debug: p_diff = [p_diff] | breakability = [breakability]") //Debug message
-
-	if(p_diff > assailant.poise || prob(p_diff))
-		if(can_downgrade_on_resist && !prob(p_diff))
+	var/break_chance = break_chance_table[Clamp(break_strength, 1, break_chance_table.len)]
+	if(prob(break_chance))
+		if(can_downgrade_on_resist && !prob((break_chance+100)/2))
 			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
 			G.downgrade()
-			assailant.setClickCooldown(10)
 			return
 		else
 			affecting.visible_message("<span class='warning'>[affecting] has broken free of [assailant]'s grip!</span>")
 			G.delete_self()
-			assailant.setClickCooldown(15)
 
 /datum/grab/proc/size_difference(mob/A, mob/B)
 	return mob_size_difference(A.mob_size, B.mob_size)

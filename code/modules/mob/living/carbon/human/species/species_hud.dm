@@ -12,11 +12,8 @@
 	var/has_drop = TRUE        // Set to draw drop button.
 	var/has_throw = TRUE       // Set to draw throw button.
 	var/has_resist = TRUE      // Set to draw resist button.
-	var/has_block = TRUE       // Set to draw block button.
-	var/has_blockswitch = TRUE // Set to draw blocking hand button.
 	var/has_internals = TRUE   // Set to draw the internals toggle button.
 	var/has_rest = TRUE        // Set to draw the rest button.
-	var/has_poise = TRUE       // Set to draw the poise meter.
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots

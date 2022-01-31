@@ -8,10 +8,7 @@
 	var/original_pta = ""
 	volume = 100
 	item_state = "broken_beer" //Generic held-item sprite until unique ones are made.
-	force = 7.5
-	mod_weight = 0.75
-	mod_reach = 0.5
-	mod_handy = 0.75
+	force = 5
 	var/smash_duration = 5 //Directly relates to the 'weaken' duration. Lowered by armor (i.e. helmets)
 	var/isGlass = 1 //Whether the 'bottle' is made of glass or not so that milk cartons dont shatter when someone gets hit by it
 
@@ -174,8 +171,7 @@
 		var/obj/item/organ/affecting = H.get_organ(hit_zone) //headcheck should ensure that affecting is not null
 		user.visible_message("<span class='danger'>[user] smashes [src] into [H]'s [affecting.name]!</span>")
 		if(weaken_duration)
-			if(prob(100-H.poise)) //50% if poise is full, 100% is poise is empty
-				target.apply_effect(min(weaken_duration, 5), WEAKEN, blocked) // Never weaken more than a flash!
+			target.apply_effect(min(weaken_duration, 5), WEAKEN, blocked) // Never weaken more than a flash!
 	else
 		user.visible_message("<span class='danger'>\The [user] smashes [src] into [target]!</span>")
 
@@ -196,10 +192,7 @@
 	desc = "A bottle with a sharp broken bottom."
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "broken_bottle"
-	force = 8.5
-	mod_weight = 0.5
-	mod_reach = 0.4
-	mod_handy = 0.75
+	force = 9
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 5

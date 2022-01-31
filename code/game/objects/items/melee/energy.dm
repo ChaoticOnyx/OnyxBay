@@ -2,10 +2,6 @@
 	var/active = FALSE
 	var/active_force
 	var/active_throwforce
-	var/mod_handy_a
-	var/mod_weight_a
-	var/mod_reach_a
-	var/mod_shield_a = 1.0
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -26,10 +22,6 @@
 	sharp = 0
 	edge = 1
 	slot_flags |= SLOT_DENYPOCKET
-	mod_handy = mod_handy_a
-	mod_weight = mod_weight_a
-	mod_reach = mod_reach_a
-	mod_shield = mod_shield_a
 	check_armour = "laser"
 	playsound(user, activate_sound, 50, 1)
 
@@ -43,10 +35,6 @@
 	sharp = initial(sharp)
 	edge = initial(edge)
 	slot_flags = initial(slot_flags)
-	mod_handy = initial(mod_handy)
-	mod_weight = initial(mod_weight)
-	mod_reach = initial(mod_reach)
-	mod_shield = initial(mod_shield)
 	check_armour = "melee"
 
 /obj/item/melee/energy/attack_self(mob/living/user)
@@ -82,41 +70,14 @@
 		return 3500
 	return 0
 
-/obj/item/melee/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	if(!active)
-		return 0
-	if(!user.blocking && needs_blocking)
-		return 0
-	if(user.incapacitated(INCAPACITATION_DISABLED))
-		return 0
-	if(mod_shield < 1.3)
-		return 0 // So energy axes and daggers wielders don't go jedi
-	if(istype(damage_source, /obj/item/projectile))
-		var/obj/item/projectile/P = damage_source
-		if(!P.blockable)
-			return 0
-		// some effects here
+/obj/item/melee/energy/sword/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+	if(active && default_parry_check(user, attacker, damage_source) && prob(50))
+		user.visible_message("<span class='danger'>\The [user] parries [attack_text] with \the [src]!</span>")
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(3, 0, user.loc)
+		spark_system.set_up(5, 0, user.loc)
 		spark_system.start()
-		if(istype(P, /obj/item/projectile/beam))
-			visible_message(SPAN("warning", "\The [user] dissolves [P] with their [name]!"))
-			proj_poise_drain(user, P)
-			playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1) // Since it's dissolved, not reflected
-			return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
-		else if(P.starting)
-			visible_message(SPAN("warning", "\The [user] reflects [P] with their [name]!"))
-
-			// Find a turf near or on the original location to bounce to
-			var/new_x = P.starting.x + rand(-2, 2)
-			var/new_y = P.starting.y + rand(-2, 2)
-			var/turf/curloc = get_turf(user)
-
-			// redirect the projectile
-			P.redirect(new_x, new_y, curloc, user)
-			proj_poise_drain(user, P)
-			playsound(user.loc, 'sound/effects/fighting/energyblock.ogg', 50, 1)
-			return PROJECTILE_CONTINUE // complete projectile permutation
+		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+		return 1
 	return 0
 
 /*
@@ -128,7 +89,7 @@
 	icon_state = "axe0"
 	//active_force = 150 //holy...
 	active_force = 60
-	active_throwforce = 45
+	active_throwforce = 35
 	//force = 40
 	//throwforce = 25
 	force = 20
@@ -136,13 +97,6 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.5
-	mod_reach = 1.25
-	mod_handy = 1.5
-	mod_weight_a = 1.5
-	mod_reach_a = 1.25
-	mod_handy_a = 1.5
-	mod_shield_a = 1.25 // Still not enough to block projectiles
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 4)
@@ -172,14 +126,6 @@
 	throw_speed = 1
 	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.5
-	mod_reach = 0.3
-	mod_handy = 1.0
-	mod_shield = 1.0
-	mod_weight_a = 1.25
-	mod_reach_a = 1.5
-	mod_handy_a = 1.5
-	mod_shield_a = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	sharp = 0
@@ -243,10 +189,6 @@
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
-	mod_weight_a = 1.25
-	mod_reach_a = 1.35
-	mod_handy_a = 1.35
-	mod_shield_a = 2.0
 	brightness_color = "#ff5959"
 
 /obj/item/melee/energy/sword/pirate/activate(mob/living/user)
@@ -266,11 +208,6 @@
 	throwforce = 10
 	throw_speed = 1
 	throw_range = 10
-	mod_reach = 0.4
-	mod_weight_a = 1.5
-	mod_reach_a = 1.55
-	mod_handy_a = 2.0
-	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
 	active_max_bright = 0.5
@@ -320,10 +257,6 @@
 	throw_speed = 1
 	throw_range = 1
 	w_class = ITEM_SIZE_TINY //technically it's just energy or something, I dunno
-	mod_weight = 1.0
-	mod_reach = 1.5
-	mod_handy = 1.75
-	mod_shield = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = FALSE
 	force_drop = TRUE

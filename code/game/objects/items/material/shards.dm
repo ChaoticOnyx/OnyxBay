@@ -9,12 +9,7 @@
 	sharp = 1
 	edge = 0
 	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.35
-	mod_reach = 0.3
-	mod_handy = 0.5
-	force_const = 2.0
-	thrown_force_const = 1.5
-	force_divisor = 0.1 // 5 with hardness 50 (glass)
+	force_divisor = 0.12 // 6 with hardness 50 (glass)
 	thrown_force_divisor = 0.4 // 4 with weight 15 (glass)
 	item_state = "shard-glass"
 	attack_verb = list("stabbed", "slashed", "sliced", "cut")
@@ -39,7 +34,6 @@
 			if(SHARD_SHARD)
 				desc += " Could probably be used as ... a throwing weapon?"
 				edge = 1
-				thrown_force_const = 4.0
 				update_force()
 				handcutter = TRUE
 				noisystepper = TRUE

@@ -6,9 +6,6 @@
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
 	randpixel = 5
-	mod_weight = 0.3
-	mod_reach = 0.3
-	mod_handy = 0.5
 	w_class = ITEM_SIZE_SMALL
 	hitsound = SFX_FIGHTING_SWING
 	var/max_butts = 10

@@ -82,7 +82,6 @@
 	if(statpanel("Status"))
 		stat("Intent:", "[a_intent]")
 		stat("Move Mode:", "[m_intent]")
-		stat("Poise:", "[round(100/poise_pool*poise)]%")
 
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
@@ -1352,7 +1351,6 @@
 /mob/living/carbon/human/slip(slipped_on, stun_duration = 8)
 	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
 		return 0
-	damage_poise(stun_duration*5)
 	return !!(..(slipped_on, stun_duration))
 
 /mob/living/carbon/human/proc/undislocate()
@@ -1666,49 +1664,6 @@
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()
 	return getBrainLoss() >= maxHealth * 0.4 // > than 80 brain dmg - ur rekt
-
-/mob/living/carbon/human/verb/useblock()
-	set name = "Block"
-	set desc = "Get into a defensive stance, effectively blocking the next attack."
-	set category = "IC"
-
-	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
-		setClickCooldown(3)
-		if(!weakened && !stunned)
-			if(!blocking)
-				src.useblock_on()
-				to_chat(src, "<span class='notice'>You prepare for blocking!</span>")
-			else
-				src.useblock_off()
-				to_chat(src, "<span class='notice'>You lower your defence.</span>")
-
-/mob/living/carbon/human/proc/useblock_off()
-	src.setClickCooldown(3)
-	src.blocking = 0
-	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block0"
-
-/mob/living/carbon/human/proc/useblock_on()
-	src.blocking = 1
-	if(src.block_icon) //in case we don't have the HUD and we use the hotkey
-		src.block_icon.icon_state = "act_block1"
-
-
-/mob/living/carbon/human/verb/blockswitch()
-	set name = "Block Hand Toggle"
-	set desc = "Choose whether to use your main hand or your off hand to block incoming attacks."
-	set category = "IC"
-
-	if(!blocking_hand)
-		blocking_hand = 1
-		to_chat(src, "<span class='notice'>You will use your off hand to block.</span>")
-		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch1"
-	else
-		blocking_hand = 0
-		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
-		if(src.blockswitch_icon)
-			src.blockswitch_icon.icon_state = "act_blockswitch0"
 
 /mob/living/carbon/human/verb/succumb()
 	set hidden = 1

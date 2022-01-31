@@ -14,9 +14,7 @@
 	attack_verb = list("attacked", "stabbed", "poked")
 	sharp = 0
 	edge = 0
-	force_const = 3
-	thrown_force_const = 3
-	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
+	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
 	var/loaded      //Descriptive string for currently loaded food object.
 	var/scoop_food = 1
@@ -64,14 +62,13 @@
 	name = "fork"
 	desc = "It's a fork. Sure is pointy."
 	icon_state = "fork"
-	sharp = 1
 
 /obj/item/material/kitchen/utensil/fork/plastic
 	default_material = MATERIAL_PLASTIC
 
 /obj/item/material/kitchen/utensil/spoon
 	name = "spoon"
-	desc = "It's a spoon. You can see your own upside-down face in it. Looks like an extremely inefficient weapon"
+	desc = "It's a spoon. You can see your own upside-down face in it."
 	icon_state = "spoon"
 	attack_verb = list("attacked", "poked")
 	hitsound = SFX_FIGHTING_SWING
@@ -90,8 +87,7 @@
 	desc = "A knife for eating with. Can cut through any food."
 	icon_state = "tableknife"
 	item_state = "knife"
-	force_const = 3.0
-	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
+	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
 	scoop_food = 0
 	sharp = 1
 	edge = 1
@@ -117,10 +113,6 @@
 	item_state = "knife"
 	applies_material_colour = 0
 	unbreakable = 1
-	force_const = 4.5
-	mod_weight = 0.3
-	mod_reach = 0.33
-	mod_handy = 0.75
 
 /obj/item/material/kitchen/utensil/knife/unathiknife
 	name = "dueling knife"
@@ -131,10 +123,6 @@
 	attack_verb = list("ripped", "torn", "cut")
 	applies_material_colour = 0
 	unbreakable = 1
-	force_const = 6.0
-	mod_weight = 0.4
-	mod_reach = 0.5
-	mod_handy = 1.0
 
 /*
  * Rolling Pins
@@ -149,9 +137,6 @@
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 0.8 // 12 dmg (wood)
 	hitsound = SFX_FIGHTING_SWING
-	mod_weight = 1.2
-	mod_reach = 0.85
-	mod_handy = 0.9
 
 /obj/item/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((MUTATION_CLUMSY in user.mutations) && prob(50) && user.unEquip(src))

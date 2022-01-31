@@ -34,7 +34,6 @@ var/global/datum/body_build/default_body_build = new
 
 	var/slowdown           = 0 // Movement slowdown
 	var/equipment_modifier = 0 // Positive values allow to partially ignore equipment_slowdown, negative values apply additional slowdown if any slowing-down equipment is being worn
-	var/poise_pool         = HUMAN_DEFAULT_POISE
 	var/stomach_capacity   = STOMACH_CAPACITY_NORMAL
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
@@ -82,7 +81,6 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
 
 	stomach_capacity   = STOMACH_CAPACITY_LOW
-	poise_pool         = HUMAN_LOW_POISE
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
@@ -215,8 +213,6 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
-
-	poise_pool         = HUMAN_HIGH_POISE
 
 /datum/body_build/vox
 	name                 = "Vox"

@@ -19,8 +19,7 @@
 	wielded_item_state = "laserrifle-wielded"
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/midlaser),
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid)
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/midlaser)
 	)
 
 /obj/item/gun/energy/laser/mounted
@@ -132,8 +131,7 @@
 	mod_handy = 1.0
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/heavylaser),
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy)
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/heavylaser)
 	)
 
 /obj/item/gun/energy/lasercannon/mounted

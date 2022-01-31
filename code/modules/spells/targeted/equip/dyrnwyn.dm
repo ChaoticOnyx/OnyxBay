@@ -33,10 +33,6 @@
 	throwforce = 25
 	throw_speed = 1
 	throw_range = 10
-	mod_weight_a = 1.25
-	mod_reach_a = 1.35
-	mod_handy_a = 1.35
-	mod_shield_a = 2.0
 	brightness_color = "#ff5959"
 	activate_sound = 'sound/effects/explosions/fuel_explosion3.ogg'
 	deactivate_sound = 'sound/effects/explosions/fuel_explosion3.ogg'

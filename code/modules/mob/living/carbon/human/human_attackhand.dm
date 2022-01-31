@@ -134,13 +134,12 @@
 				attack_generic(H, rand(1, 3), "punched")
 				return
 
-			var/attack_damage = 5
+			var/attack_damage = rand(1, 5)
 
+			var/block = 0
 			var/accurate = 0
 			var/specmod = 1
 			var/hit_zone = H.zone_sel.selecting
-			var/miss_type = 0
-			var/attack_message
 			var/obj/item/organ/external/affecting = get_organ(hit_zone)
 
 			// See what attack they use
@@ -168,42 +167,14 @@
 
 			if(M.grabbed_by.len)
 				// Someone got a good grip on them, they won't be able to do much damage
-				attack_damage = max(2, attack_damage - 2)
+				attack_damage = max(1, attack_damage - 2)
 
 			if(grabbed_by.len || !MayMove() || src == H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
 				accurate = 1 // certain circumstances make it impossible for us to evade punches
 
-				if(grabbed_by.len)
-					for(var/obj/item/grab/G in grabbed_by)
-						if(G.assailant == H)
-							var/obj/item/organ/external/O = G.get_targeted_organ()
-							switch(hit_zone)
-								if(BP_MOUTH)
-									attack_message = "[H] lands a jab against [src]'s jaw!"
-									specmod = 1.5
-								if(BP_CHEST)
-									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && should_have_organ(BP_HEART))
-										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))
-										custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
-										H.next_move = world.time + 40 //also should prevent user from triggering this repeatedly
-										if(!do_after(H, 40))
-											return 0
-										if(!(G && G.affecting == src)) //check that we still have a grab
-											return 0
-
-										for(var/obj/item/organ/internal/heart/I in internal_organs)
-											if(I && istype(I))
-												I.cut_away(src)
-												O.implants -= I
-												H.put_in_active_hand(I)
-												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
-												playsound(src.loc, 'sound/effects/squelch1.ogg', 50, 1)
-												admin_attack_log(H, src, "Ripped their victim's heart out", "Got their heart ripped out", "ripped out")
-												return 0
-										H.visible_message(SPAN("danger", "[H] did not find anything useful in [src]'s chest!"))
-										return 0
-
 			// Process evasion and blocking
+			var/miss_type = 0
+			var/attack_message
 			if(!accurate)
 				/* ~Hubblenaut
 					This place is kind of convoluted and will need some explaining.
@@ -239,26 +210,15 @@
 						set_dir(pick(GLOB.cardinal))
 					miss_type = 1
 
-			if(!miss_type && parrying)
-				if(handle_parry(H, null))
-					//attack_message = "[H] went for [src]'s [affecting.name] but was parried!"
-					miss_type = 2
-			if(!miss_type && blocking)
-				if(handle_block_normal(H))
-					//attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
-					miss_type = 2
-
-			//if(!miss_type && block)
-			//	attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
-			//	miss_type = 2
+			if(!miss_type && block)
+				attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
+				miss_type = 2
 
 			H.do_attack_animation(src)
-
-			if(miss_type < 2)
-				if(!attack_message)
-					attack.show_attack(H, src, hit_zone, FINALIZE_UNARMED(attack_damage, accurate))
-				else
-					H.visible_message(SPAN("danger", "[attack_message]"))
+			if(!attack_message)
+				attack.show_attack(H, src, hit_zone, attack_damage)
+			else
+				H.visible_message("<span class='danger'>[attack_message]</span>")
 
 			playsound(loc, ((miss_type) ? (miss_type == 1 ? attack.miss_sound : 'sound/weapons/thudswoosh.ogg') : attack.attack_sound), 25, 1, -1)
 			admin_attack_log(H, src, "[miss_type ? (miss_type == 1 ? "Has missed" : "Was blocked by") : "Has [pick(attack.attack_verb)]"] their victim.", "[miss_type ? (miss_type == 1 ? "Missed" : "Blocked") : "[pick(attack.attack_verb)]"] their attacker", "[miss_type ? (miss_type == 1 ? "has missed" : "was blocked by") : "has [pick(attack.attack_verb)]"]")
@@ -298,10 +258,6 @@
 	if(!damage || !istype(user))
 		return
 	user.do_attack_animation(src)
-
-	if(blocking && blockable)
-		if(handle_block_normal(user, damage))
-			return 0
 
 	var/dam_zone = pick(organs_by_name)
 	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))

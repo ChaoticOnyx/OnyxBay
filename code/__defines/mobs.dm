@@ -337,9 +337,3 @@
 #define STOMACH_CAPACITY_LOW    0.75 // Slim people
 #define STOMACH_CAPACITY_NORMAL 1.0  // Normal human beings
 #define STOMACH_CAPACITY_HIGH   1.45 // Spherical boiz
-
-#define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
-#define HUMAN_HIGH_POISE    60
-#define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
-#define HUMAN_LOW_POISE     45
-#define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.

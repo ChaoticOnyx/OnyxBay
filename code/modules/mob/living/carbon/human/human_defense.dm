@@ -5,79 +5,54 @@ ex_act
 meteor_act
 */
 
+
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
-	if(status_flags & GODMODE)
-		return 0
+
 	def_zone = check_zone(def_zone)
 	if(!has_organ(def_zone))
 		return PROJECTILE_FORCE_MISS //if they don't have the organ in question then the projectile just passes by.
 
-	//Marauder Shields
+	//Shields
 	var/shield_check = check_shields(P.damage, P, null, def_zone, "the [P.name]")
 	if(shield_check)
-		return shield_check
+		if(shield_check < 0)
+			return shield_check
+		else
+			P.on_hit(src, 100, def_zone)
+			return 100
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
+	var/armor = getarmor_organ(organ, P.check_armour)
+	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - armor
 
-	var/disarm_slot // Shooting peoples' hands may get them disarmed
-	switch(def_zone)
-		if(BP_L_HAND)
-			disarm_slot = slot_l_hand
-		if(BP_R_HAND)
-			disarm_slot = slot_r_hand
-	if(disarm_slot)
-		var/obj/item/D = get_equipped_item(disarm_slot)
-		if(D && (P.damage || P.agony))
-			var/disarm_chance = sqrt(P.damage+P.agony)*10        // Agony goes into consideration because rubber bullets/stunspheres/etc. are supposed to be disabling ammunition
-			disarm_chance = disarm_chance * (D.w_class/5 + 0.4)  // The bigger an item is, the higher probability of it getting shot
-			if(prob(disarm_chance))
-				playsound(src.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
-				D.shot_out(src, P)
-				if(D.w_class > 2)
-					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
-
-	//Tase effect
-	if(P.tasing)
-		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
-
-	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
-
-	//Internal damage
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
-	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
-
-	var/overkill_value = 1
-	if(organ.damage >= organ.max_damage * 1.5) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
-		overkill_value *= 3
-
-	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
-		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
-		if(blocked >= P.damage) // Armor has absorbed the penetrational power
-			damage_amt = sqrt(damage_amt)
-		if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
-			overkill_value *= 0.75
-		damage_amt *= overkill_value
+	//Organ damage
+	if(organ.internal_organs.len && prob(35 + max(penetrating_damage, -12.5)))
+		var/damage_amt = min((P.damage * P.penetration_modifier), penetrating_damage) //So we don't factor in armor_penetration as additional damage
 		if(damage_amt > 0)
+		// Damage an internal organ
 			var/list/victims = list()
 			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
 			for(var/obj/item/organ/internal/I in possible_victims)
-				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
+				if(I.damage < I.max_damage && (prob((I.relative_size) * (1 / max(1, victims.len)))))
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
+					damage_amt /= 2
 					victim.take_internal_damage(damage_amt)
 
 	//Embed or sever artery
-	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
-		if(prob(22.5 + max(penetrating_damage, -20)))
-			if(prob(50))
-				organ.sever_artery()
-			else
-				var/obj/item/material/shard/shrapnel/SP = new()
-				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
-				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
-				SP.loc = organ
-				organ.embed(SP)
+	if(P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(22.5 + max(penetrating_damage, -10)) && !(prob(50) && (organ.sever_artery())))
+		var/obj/item/material/shard/shrapnel/SP = new()
+		SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
+		SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
+		SP.loc = organ
+		organ.embed(SP)
+
+	//Tase effect
+	if(P.tasing)
+		handle_tase(P.agony)
+
+	var/blocked = ..(P, def_zone)
 
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
@@ -185,18 +160,12 @@ meteor_act
 			return gear
 	return null
 
-/mob/living/carbon/human/proc/check_shields(damage = 0, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	var/obj/item/shield = null
-	var/shield_mod_shield = 0
-	for(var/obj/item/I in list(l_hand, r_hand, wear_suit))
-		if(!I) continue
-		if(I.mod_shield > shield_mod_shield)
-			shield = I
-			shield_mod_shield = I.mod_shield
-	if(isnull(shield))
-		return 0
-	. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
-	return
+/mob/living/carbon/human/proc/check_shields(var/damage = 0, var/atom/damage_source = null, var/mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
+	for(var/obj/item/shield in list(l_hand, r_hand, wear_suit))
+		if(!shield) continue
+		. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
+		if(.) return
+	return 0
 
 ///////////////////////
 ///		ATTACKS		///
@@ -249,7 +218,7 @@ meteor_act
 		return pick(base_miss_chance)
 	return zone
 
-/mob/living/carbon/human/resolve_item_attack(obj/item/I, mob/living/user, target_zone)
+/mob/living/carbon/human/resolve_item_attack(obj/item/I, mob/living/user, var/target_zone)
 
 	for (var/obj/item/grab/G in grabbed_by)
 		if(G.resolve_item_attack(user, I, target_zone))
@@ -258,406 +227,69 @@ meteor_act
 	if(user == src) // Attacking yourself can't miss
 		return target_zone
 
-	if(user.a_intent == I_GRAB)
-		return target_zone
-
-	var/handymod = round(sqrt(2-I.mod_handy), 0.01)
-
-	//visible_message("Debug: handymod [handymod]") // Debug Message
-
-	var/hit_zone = bodypart_miss_chance(target_zone, src, handymod, reach=I.mod_reach)
+	var/hit_zone = get_zone_with_miss_chance(target_zone, src)
 
 	if(!hit_zone)
-		visible_message(SPAN("warning", "\The [user] misses [src] with \the [I]!"))
+		visible_message("<span class='danger'>\The [user] misses [src] with \the [I]!</span>")
+		return null
+
+	if(check_shields(I.force, I, user, target_zone, "the [I.name]"))
 		return null
 
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if (!affecting || affecting.is_stump())
-		to_chat(user, SPAN("danger", "They are missing that limb!"))
+		to_chat(user, "<span class='danger'>They are missing that limb!</span>")
 		return null
 
 	return hit_zone
 
-//aka Regular Attack
-//Jesus Christ what a mess I've made ~Toby
-/mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
-	if(status_flags & GODMODE)
-		return 0
-	var/obj/item/organ/external/affecting = get_organ(hit_zone)
-	if(!affecting)
-		return 0
-
-	var/poise_damage
-
-	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
-		//visible_message("Debug \[HIT\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
-
-	poise_damage = round((2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
-	if(headcheck(hit_zone))
-		poise_damage *= 1.15
-	damage_poise(poise_damage)
-	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
-
-	////////// Here goes the REAL armor processing.
-	effective_force -= blocked*0.05 // Flat armor (i.e. reduces damage by 2.5 if armor=50)
-
-	if(MUTATION_HULK in user.mutations)
-		effective_force *= 2
-
-	if(src.lying)
-		effective_force *= 1.5 // Well it's easier to beat a lying dude to death right?
-
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		if((A.body_build.name == "Slim" || A.body_build.name == "Slim Alt") && !I.sharp)
-			effective_force *= 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
-
-	effective_force *= round((100-blocked)/100, 0.01)
-
-	//Apply weapon damage
-	var/damage_flags = I.damage_flags()
-	if(prob(blocked)) //armour provides a chance to turn sharp/edge weapon attacks into blunt ones
-		damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-
-	//Oh you've run outta poise? I see... You're wrecked, my boy.
-	if(I.damtype == BRUTE || I.damtype == PAIN)
-		if(poise <= poise_pool*0.7)
-			switch(hit_zone)
-				if(BP_HEAD, BP_EYES, BP_MOUTH) //Knocking your enemy out or making them dizzy
-					if(poise <= effective_force/3*I.mod_weight)
-						if(!stat || (stat && !paralysis))
-							visible_message(SPAN("danger", "[src] [species.knockout_message]"))
-							custom_pain("Your head's definitely gonna hurt tomorrow.", 30, affecting = affecting)
-						apply_effect((I.mod_weight*15), PARALYZE, (blocked/2))
-					else
-						if(prob(effective_force))
-							src.visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
-							src.apply_effect(2, EYE_BLUR, blocked)
-				if(BP_CHEST, BP_GROIN, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT) //Knock down
-					if(poise <= effective_force/3*I.mod_weight)
-						if(!stat || (stat && !paralysis))
-							visible_message(SPAN("danger", "[src] has been knocked down!"))
-							apply_effect(min((I.mod_weight*3),2), WEAKEN, (blocked/2))
-				if(BP_L_HAND, BP_R_HAND) //Knocking someone down by smashing their hands? Hell no.
-					if(poise <= effective_force/3*I.mod_weight)
-						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
-						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
-						for(var/obj/item/D in holding)
-							unEquip(D)
-						playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-
-		//Apply blood
-		attack_bloody(I, user, effective_force, hit_zone)
-	//visible_message("Debug \[HIT\]: effective_force = [effective_force] | armor = [blocked] | flat_defence = [blocked*0.05]") // Debug Message
-	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
-		return 0
-
-	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
-
-	//////////
-
-	if(effective_force > 10 || effective_force >= 5 && prob(33))
-		forcesay(GLOB.hit_appends)	//forcesay checks stat already
-
-	return 1
-
-// Well it has to look like this for the future reworks. I'm really sorry. ~Toby
-// Literally 'pull punches' for weapons.
-/mob/living/carbon/human/proc/alt_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
-	if(status_flags & GODMODE)
-		return 0
-	var/obj/item/organ/external/affecting = get_organ(hit_zone)
-
-	if(!affecting)
-		return 0
-
-	var/poise_damage
-	var/damage_flags = I.damage_flags()
-	damage_flags &= ~(DAM_SHARP|DAM_EDGE)
-
-	visible_message(SPAN("danger", "[user] bashes [src]'s [affecting.name] with their [I.name]!"))
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
-		//visible_message("Debug \[BASH\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
-
-	poise_damage = round((3.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
-	if(headcheck(hit_zone))
-		poise_damage *= 1.15
-	damage_poise(poise_damage)
-	//visible_message("Debug \[BASH\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
-
-	//////////
-	effective_force = round(sqrt(effective_force), 0.1)*2 + I.mod_weight*4
-
-	if(MUTATION_HULK in user.mutations)
-		effective_force *= 2
-	if(src.lying)
-		effective_force *= 1.5 // Well it's easier to beat all the shit outta lying dudes right?
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
-			effective_force *= 0.8
-
-	effective_force *= round((100-blocked)/60, 0.01)
-
-	if(poise <= poise_pool*0.7)
-		switch(hit_zone) // strong punches can have effects depending on where they hit
-			if(BP_HEAD, BP_EYES, BP_MOUTH)
-				if(poise <= effective_force/3*I.mod_weight)
-					if(!stat || (stat && !paralysis))
-						visible_message(SPAN("danger", "[src] [species.knockout_message]"))
-						custom_pain("Your head's <B>definitely</B> gonna hurt tomorrow.", 30, affecting = affecting)
-						apply_effect((I.mod_weight*20), PARALYZE, (blocked/2))
-				else
-					if(prob(effective_force))
-						visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
-						apply_effect(2, EYE_BLUR, blocked)
-			if(BP_L_ARM)
-				if(l_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
-					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-					drop_l_hand()
-			if(BP_R_ARM)
-				if(r_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
-					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-					drop_r_hand()
-			if(BP_L_HAND, BP_R_HAND)
-				if(poise <= effective_force*I.mod_reach)
-					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
-					var/list/holding = list(get_active_hand() = 40, get_inactive_hand() = 20)
-					for(var/obj/item/D in holding)
-						unEquip(D)
-					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
-				if(!stat && (poise <= effective_force/3*I.mod_weight))
-					visible_message(SPAN("danger", "[src] has been knocked down!"))
-					apply_effect((I.mod_weight*3), WEAKEN, (blocked/2))
-				else
-					if(!stat && prob(effective_force))
-						var/turf/T = get_step(get_turf(src), get_dir(get_turf(user), get_turf(src)))
-						if(prob(50))
-							set_dir(GLOB.reverse_dir[src.dir])
-						if(!T.density)
-							step(src, get_dir(get_turf(user), get_turf(src)))
-							visible_message(SPAN("danger", "[pick("[src] was sent flying backward!", "[src] staggers back from the impact!")]"))
-						else
-							visible_message(SPAN("danger", "[src] bumps into \the [T]!"))
-							apply_effect(effective_force * 0.4, WEAKEN, (blocked/2))
-			if(BP_L_FOOT, BP_R_FOOT)
-				if(poise <= effective_force*I.mod_reach)
-					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
-					apply_effect((I.mod_reach*5), WEAKEN, blocked)
-	//visible_message("Debug \[BASH\]: effective_force = [effective_force] | armor = [blocked] | poise_damage = [poise_damage]") // Debug Message
-	if(effective_force <= 0)
-		show_message(SPAN("warning", "Your armor absorbs the blow!"))
-		return 0
-
-	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I)
-	apply_damage(effective_force*0.2, BRUTE, hit_zone, blocked, damage_flags, used_weapon=I)
-
-	//////////
-
-	if(effective_force > 10 || effective_force >= 5 && prob(33))
-		forcesay(GLOB.hit_appends)	//forcesay checks stat already
-
-	return 1
-
-//User uses I to attack src.
-/mob/living/carbon/human/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
+/mob/living/carbon/human/hit_with_weapon(obj/item/I, mob/living/user, var/effective_force, var/hit_zone)
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!</span>")
 
-	if(istype(user, /mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		if(parrying)
-			if(handle_parry(A, I))
-				return
-		if(blocking)
-			if(handle_block_weapon(A, I))
-				return
-		if(!atype)
-			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
-		else
-			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
-			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
-			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
-		return blocked
-
+	var/blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 
 	return blocked
 
-//User (A) uses their I to parry src's attack.
-/mob/living/carbon/human/parry_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		A.setClickCooldown(I.update_attack_cooldown()*2)
-		A.parrying = 1
-		A.visible_message(SPAN("warning", "[A] attempts to parry [src]'s attack with their [I]!"))
-		//visible_message("[A] tries to parry [src]'s attack with their [I]! Parry window: [I.mod_handy*8]") //Debug message
-		spawn(I.mod_handy*12)
-			//visible_message("[A]'s parry window has ended.") //Debug message
-			A.parrying = 0
-	else
-		hit_with_weapon(I, user, effective_force, blocked, hit_zone)
+/mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, var/effective_force, var/blocked, var/hit_zone)
+	var/obj/item/organ/external/affecting = get_organ(hit_zone)
+	if(!affecting)
+		return 0
 
-//User uses their I to touch src. I can't figure out how you can help anyone while holding a weapon :/
-/mob/living/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
-
-//Src (defender) gets attacked by attacking_mob (attacker) and tries to perform parry
-/mob/living/carbon/human/proc/handle_parry(mob/living/attacking_mob, obj/item/weapon_atk)
-	var/mob/living/carbon/human/defender = src
-	var/failing = 0
-	if(istype(attacking_mob,/mob/living/carbon/human))
-		var/mob/living/carbon/human/attacker = attacking_mob
-		if(defender.get_active_hand())
-			var/obj/item/weapon_def = defender.get_active_hand()
-			if(!weapon_def.force)
-				defender.parrying = 0
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [weapon_atk.name] with their [weapon_def]."))
-				return 0  //For the case of candles and dices lmao
-
-			if(weapon_def.mod_reach > 1.25)
-				if((weapon_def.mod_reach - weapon_atk.mod_reach) > 1.0)
-					failing = 1
-			else if(weapon_def.mod_reach < 0.75)
-				if((weapon_atk.mod_reach - weapon_def.mod_reach) > 1.0)
-					failing = 1
-			if(failing)
-				visible_message(SPAN("warning", "[defender] fails to parry [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
-				defender.parrying = 0
-				return 0
-			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.damage_poise(2.5+(weapon_atk.mod_weight*1.5))
-			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
-			attacker.damage_poise(17.5+(weapon_atk.mod_weight*7.5))
-			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
-
-			if(attacker.poise <= 5)
-				weapon_atk.knocked_out(attacker, TRUE, 3)
-			else if(attacker.poise <= 20)
-				weapon_atk.knocked_out(attacker)
-
-			playsound(loc, 'sound/weapons/parry.ogg', 50, 1, -1) // You know what's gonna happen next, eh?
-			defender.parrying = 0
-			return 1
-		else
-			//visible_message("[defender] tries to parry [attacker]'s [weapon_atk] with their bare hands.") //Debug Message
-			defender.parrying = 0
+	// Handle striking to cripple.
+	if(user.a_intent == I_DISARM)
+		effective_force *= 0.66 //reduced effective force...
+		if(!..(I, user, effective_force, blocked, hit_zone))
 			return 0
-	return 1
 
-//Src (defender) blocks attacking_mob's (attacker) weapon_atk with their weapon_def
-/mob/living/carbon/human/proc/handle_block_weapon(mob/living/attacking_mob, obj/item/weapon_atk)
-	var/mob/living/carbon/human/defender = src
-	var/d_mult = 1
-	if(istype(attacking_mob,/mob/living/carbon/human))
-		var/mob/living/carbon/human/attacker = attacking_mob
-		var/obj/item/weapon_def
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
-		if(weapon_def)
-			if(!weapon_def.force)
-				defender.useblock_off()
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s [weapon_atk.name] with [weapon_def]."))
-				return 0 //For the case of candles and dices lmao
+		//set the dislocate mult less than the effective force mult so that
+		//dislocating limbs on disarm is a bit easier than breaking limbs on harm
+		attack_joint(affecting, I, effective_force, 0.5, blocked) //...but can dislocate joints
+	else if(!..())
+		return 0
 
-			if(weapon_def.mod_reach < weapon_atk.mod_reach)
-				if(((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach) > 0)
-					d_mult = ((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach)/0.25
-			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
-				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
-
-			defender.damage_poise((4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield)
-			//visible_message("Debug \[block\]: [defender] lost [(4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.damage_poise(2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2))
-			//visible_message("Debug \[block\]: [attacker] lost [2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
-			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their [weapon_def.name]!"))
-			defender.last_block = world.time
-
-			if(defender.poise <= 5.0)
-				weapon_def.knocked_out(defender, TRUE, 3)
-			else if(defender.poise <= 12.5)
-				weapon_def.knocked_out(defender)
-
-			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-		else
-			defender.damage_poise(2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5)
-			attacker.damage_poise(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
-			if((weapon_atk.sharp || weapon_atk.edge) && weapon_atk.force >= 10)
-				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands! Ouch."))
-				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_R_HAND, 0, 0, used_weapon=weapon_atk)
-				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_L_HAND, 0, 0, used_weapon=weapon_atk)
+	if(effective_force > 10 || effective_force >= 5 && prob(33))
+		forcesay(GLOB.hit_appends)	//forcesay checks stat already
+	if((I.damtype == BRUTE || I.damtype == PAIN) && prob(25 + (effective_force * 2)))
+		if(!stat)
+			if(headcheck(hit_zone))
+				//Harder to score a stun but if you do it lasts a bit longer
+				if(prob(effective_force))
+					visible_message("<span class='danger'>[src] [species.knockout_message]</span>")
+					apply_effect(20, PARALYZE, blocked)
 			else
-				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands!"))
-			defender.last_block = world.time
-			if(defender.poise <= 10.0)
-				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
-				defender.apply_effect(3, WEAKEN, 0)
-				defender.useblock_off()
-	return 1
+				//Easier to score a stun but lasts less time
+				if(prob(effective_force + 10))
+					visible_message("<span class='danger'>[src] has been knocked down!</span>")
+					apply_effect(6, WEAKEN, blocked)
 
-//Src (defender) blocks attacking_mob's (attacker) punch/generic attack with their weapon_def
-/mob/living/carbon/human/proc/handle_block_normal(mob/living/attacking_mob, atk_dmg = 5.0)
-	var/mob/living/carbon/human/defender = src
-	if(istype(attacking_mob,/mob/living/carbon/human) || istype(attacking_mob,/mob/living/simple_animal))
-		var/mob/living/attacker = attacking_mob
-		var/obj/item/weapon_def
+		//Apply blood
+		attack_bloody(I, user, effective_force, hit_zone)
 
-		if(defender.blocking_hand && defender.get_inactive_hand())
-			weapon_def = defender.get_inactive_hand()
-		else if(defender.get_active_hand())
-			weapon_def = defender.get_active_hand()
-
-		if(weapon_def)
-			if(!weapon_def.force)
-				defender.useblock_off()
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
-				return 0 //For the case of candles and dices lmao
-
-			defender.damage_poise(atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2))
-			if(istype(attacker,/mob/living/carbon/human))
-				var/mob/living/carbon/human/human_attacker = attacker
-				human_attacker.damage_poise(5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3)
-
-			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [weapon_def.name]!"))
-			defender.last_block = world.time
-
-			if(defender.poise < 0)
-				weapon_def.knocked_out(defender, TRUE, 3)
-			else if(defender.poise < 10.0)
-				weapon_def.knocked_out(defender)
-			//visible_message("Debug \[block\]: [attacker] lost [5.0+weapon_def.mod_weight*2+weapon_def.mod_handy*3] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
-			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-		else
-			if(istype(attacker,/mob/living/carbon/human))
-				var/mob/living/carbon/human/human_attacker = attacker
-				defender.damage_poise(7.5)
-				human_attacker.damage_poise(5.0)
-			else
-				defender.damage_poise(atk_dmg)
-
-			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack!"))
-			defender.last_block = world.time
-
-			if(defender.poise <= atk_dmg)
-				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
-				defender.apply_effect(3, WEAKEN, 0)
-				defender.useblock_off()
 	return 1
 
 
@@ -762,34 +394,10 @@ meteor_act
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
 
-		if(blocking)
-			var/obj/item/weapon_def
-			if(blocking_hand && get_inactive_hand())
-				weapon_def = get_inactive_hand()
-			else if(get_active_hand())
-				weapon_def = get_active_hand()
-
-			if(weapon_def)
-				if(weapon_def.force && weapon_def.w_class >= O.w_class)
-					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src, dir), 1)
-
-					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
-					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
-
-					damage_poise(throw_damage / weapon_def.mod_shield)
-					if(poise < throw_damage / weapon_def.mod_shield)
-						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
-						apply_effect(2, WEAKEN, 0)
-						useblock_off()
-					return
-
-
 		var/zone = BP_CHEST
 		if(isliving(O.thrower))
 			var/mob/living/L = O.thrower
-			if(L.zone_sel)
-				zone = check_zone(L.zone_sel.selecting)
+			zone = check_zone(L.zone_sel.selecting)
 		else
 			zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
 
@@ -890,8 +498,7 @@ meteor_act
 		affecting.embed(O, supplied_wound = supplied_wound)
 
 /mob/living/carbon/human/proc/bloody_hands(mob/living/source, amount = 2)
-	var/obj/item/clothing/gloves/gloves = get_equipped_item(slot_gloves)
-	if (istype(gloves))
+	if(gloves)
 		gloves.add_blood(source)
 		gloves:transfer_blood = amount
 		gloves:bloody_hands_mob = source

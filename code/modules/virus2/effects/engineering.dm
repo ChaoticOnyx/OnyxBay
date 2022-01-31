@@ -125,11 +125,6 @@
 					B.take_internal_damage(100)
 				return
 
-		for(var/mob/living/carbon/human/king in view(mob))
-			if(king == data)
-				mob.poise += round(multiplier/2)
-				return
-
 		var/mob/living/carbon/human/king = data
 		var/message = pick("[king.real_name] is your Master. Come to [king.gender == MALE ? "him" : king.gender == FEMALE ? "her" : "them"] and protect [king.gender == MALE ? "him" : king.gender == FEMALE ? "her" : "them"] by your own life!",
 						   "You have to find [king.real_name], your Master, immediately.",

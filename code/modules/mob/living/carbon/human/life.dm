@@ -38,10 +38,6 @@
 	var/pressure_alert = 0
 	var/temperature_alert = 0
 	var/heartbeat = 0
-	var/poise_pool = HUMAN_DEFAULT_POISE
-	var/poise = HUMAN_DEFAULT_POISE
-	var/blocking_hand = 0 //0 for main hand, 1 for offhand
-	var/last_block = 0
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
@@ -79,7 +75,6 @@
 		handle_shock()
 		handle_pain()
 		handle_medical_side_effects()
-		handle_poise()
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 
 		if(!client && !mind)
@@ -990,28 +985,6 @@
 	if(shock_stage >= 150)
 		Weaken(20)
 
-// Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
-/mob/living/carbon/human/proc/handle_poise()
-	poise_pool = body_build.poise_pool
-	if(poise >= poise_pool)
-		return
-	var/pregen = 5
-
-	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
-		pregen -= 1.25
-
-	if(blocking)
-		pregen -= 2.5
-
-	poise += pregen
-	poise = between(0, poise+pregen, poise_pool)
-
-	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
-
-/mob/living/carbon/human/proc/damage_poise(dmg = 1)
-	poise -= dmg
-	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
-
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
 	we only set those statuses and icons upon changes.  Then those HUD items will simply add those pre-made images.
@@ -1192,7 +1165,6 @@
 	restore_blood()
 	full_prosthetic = null
 	shock_stage = 0
-	poise = poise_pool
 	bad_external_organs.Cut()
 	..()
 

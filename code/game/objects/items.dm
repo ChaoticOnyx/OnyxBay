@@ -184,30 +184,6 @@
 	var/desc_comp = "" //For "description composite"
 	desc_comp += "It is a [size] item."
 
-	if(force)
-		var/desc_weight
-		var/desc_reach
-		var/desc_handy
-
-		if(src.mod_weight < 0.4) desc_weight = "a really light"
-		else if(src.mod_weight < 0.8) desc_weight = "quite light"
-		else if(src.mod_weight < 1.25) desc_weight = "a normal-weight"
-		else if(src.mod_weight < 1.65) desc_weight = "quite heavy"
-		else desc_weight = "a really heavy"
-
-		if(src.mod_reach < 0.4) desc_reach = "extremely short"
-		else if(src.mod_reach < 0.8) desc_reach = "quite short"
-		else if(src.mod_reach < 1.25) desc_reach = "average sized"
-		else if(src.mod_reach < 1.65) desc_reach = "long"
-		else desc_reach = "extremely long"
-
-		if(src.mod_handy < 0.4) desc_handy = "unhandy"
-		else if(src.mod_handy < 0.8) desc_handy = "not so handy"
-		else if(src.mod_handy < 1.25) desc_handy = "handy"
-		else if(src.mod_handy < 1.65) desc_handy = "really handy"
-		else desc_handy = "outstandingly handy"
-		desc_comp += "<BR>It makes [desc_weight], [desc_reach], and [desc_handy] weapon."
-
 	if(hasHUD(user, HUD_SCIENCE)) //Mob has a research scanner active.
 		desc_comp += "<BR>*--------* <BR>"
 
@@ -535,40 +511,9 @@ var/list/global/slot_flags_enumeration = list(
 //For non-projectile attacks this usually means the attack is blocked.
 //Otherwise should return 0 to indicate that the attack is not affected in any way.
 /obj/item/proc/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	if(!user.blocking)
-		return 0 // We weren't ready bruh
-	if(user.incapacitated(INCAPACITATION_DISABLED))
-		return 0
-	if(istype(damage_source, /obj/item/projectile))
-		var/obj/item/projectile/P = damage_source
-		if(!P.blockable)
-			return 0
-		if(mod_shield >= 1.3)
-			if(P.armor_penetration > (25 * mod_shield) - 5)
-				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
-				return 0
-			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
-			proj_poise_drain(user, P, TRUE)
-			spawn()
-				shake_camera(user, 1)
-			return PROJECTILE_FORCE_BLOCK
 	return 0
 
-/obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P, weak_shield = FALSE)
-	if(istype(user, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = user
-		var/poise_dmg = P.damage / (mod_shield * 2.5)
-		if(weak_shield && P.damage_type == BRUTE)
-			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
-		if(src != H.get_active_hand())
-			poise_dmg *= 2
-		H.damage_poise(poise_dmg)
-		if(H.poise < poise_dmg)
-			shot_out(H, P)
-
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
-	H.useblock_off()
-	H.damage_poise(10)
 	if(!canremove)
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return
@@ -578,7 +523,6 @@ var/list/global/slot_flags_enumeration = list(
 		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
-	H.useblock_off()
 	if(canremove)
 		H.drop_from_inventory(src)
 		if(src && istype(loc,/turf))
@@ -892,13 +836,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()
-	var/res_cd
-	res_cd = (attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed // i.e. Default attack speed for the-most-generic-item is 1 hit/s
-	attack_cooldown_real = res_cd //Debug
-	return res_cd
-
-/obj/item/proc/update_weapon_desc()
-	return
+	return DEFAULT_WEAPON_COOLDOWN
 
 /obj/item/proc/on_restraint_removal(mob/living/carbon/C) //Needed for syndicuffs
 	return

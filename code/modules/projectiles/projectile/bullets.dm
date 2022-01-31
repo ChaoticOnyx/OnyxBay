@@ -126,21 +126,20 @@
 /* short-casing projectiles, like the kind used in pistols or SMGs */
 
 /obj/item/projectile/bullet/pistol
-	damage = 27.5 //9mm, .38, etc
+	damage = 25 //9mm, .38, etc
 	armor_penetration = 13.5
 
 /obj/item/projectile/bullet/pistol/medium
-	damage = 30 //.45
+	damage = 26.5 //.45
 	armor_penetration = 14.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
-	damage = 32.5 //10mm
-	armor_penetration = 19.5
+	damage = 28 //10mm
+	armor_penetration = 18
 
 /obj/item/projectile/bullet/pistol/medium/revolver
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
-	damage = 37.5 //.44 magnum or something
-	armor_penetration = 20
+	damage = 30 //.44 magnum or something
 
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/effects/weapons/gun/fire_mateba.ogg'
@@ -159,7 +158,6 @@
 	embed = 0
 	sharp = 0
 	armor_penetration = 2.5
-	penetration_modifier = 0.2
 
 /obj/item/projectile/bullet/pistol/rubber/c44
 	name = "rubber bullet"
@@ -184,17 +182,15 @@
 	agony = 60
 	embed = 0
 	sharp = 0
-	penetration_modifier = 0.2
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
 /obj/item/projectile/bullet/pellet/shotgun
 	name = "shrapnel"
-	damage = 20
+	damage = 15
 	pellets = 6
 	range_step = 1
 	spread_step = 10
-	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
 
 /obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
 	name = "shrapnel"
@@ -212,7 +208,7 @@
 	penetrating = 1
 
 /obj/item/projectile/bullet/rifle/a556
-	damage = 27.5
+	damage = 30
 
 /obj/item/projectile/bullet/rifle/a762
 	damage = 35

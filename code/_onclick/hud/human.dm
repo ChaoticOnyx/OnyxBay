@@ -181,28 +181,6 @@
 		src.hotkeybuttons += mymob.pullin
 		hud_elements |= mymob.pullin
 
-	if(hud_data.has_block)
-		mymob.block_icon = new /obj/screen()
-		mymob.block_icon.icon = ui_style
-		mymob.block_icon.icon_state = "act_block0"
-		mymob.block_icon.SetName("block")
-		mymob.block_icon.screen_loc = ui_block
-		mymob.block_icon.color = ui_color
-		mymob.block_icon.alpha = ui_alpha
-		src.hotkeybuttons += mymob.block_icon
-		hud_elements |= mymob.block_icon
-
-	if(hud_data.has_blockswitch)
-		mymob.blockswitch_icon = new /obj/screen()
-		mymob.blockswitch_icon.icon = ui_style
-		mymob.blockswitch_icon.icon_state = "act_blockswitch0"
-		mymob.blockswitch_icon.SetName("blockswitch")
-		mymob.blockswitch_icon.screen_loc = ui_blockswitch
-		mymob.blockswitch_icon.color = ui_color
-		mymob.blockswitch_icon.alpha = ui_alpha
-		src.hotkeybuttons += mymob.blockswitch_icon
-		hud_elements |= mymob.blockswitch_icon
-
 	if(hud_data.has_internals)
 		mymob.internals = new /obj/screen()
 		mymob.internals.icon = ui_style
@@ -280,14 +258,6 @@
 		mymob.nutrition_icon.SetName("nutrition")
 		mymob.nutrition_icon.screen_loc = ui_nutrition
 		hud_elements |= mymob.nutrition_icon
-
-	if(hud_data.has_poise)
-		mymob.poise_icon = new /obj/screen()
-		mymob.poise_icon.icon = 'icons/mob/screen1_poise.dmi'
-		mymob.poise_icon.icon_state = "50"
-		mymob.poise_icon.SetName("poise")
-		mymob.poise_icon.screen_loc = ui_health
-		hud_elements |= mymob.poise_icon
 
 
 	mymob.pain = new /obj/screen/fullscreen/pain( null )

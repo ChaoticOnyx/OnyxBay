@@ -33,8 +33,6 @@
 	if(bodytemperature < 283.222)
 		. += (283.222 - bodytemperature) / 10 * 1.75
 
-	. += blocking * 1.5
-
 	var/health_deficiency = (maxHealth - health)
 	if(health_deficiency >= 40)
 		. += (health_deficiency / 25)

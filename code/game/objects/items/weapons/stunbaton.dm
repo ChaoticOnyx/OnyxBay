@@ -11,9 +11,6 @@
 	edge = 0
 	throwforce = 7
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.25
-	mod_reach = 1.25
-	mod_handy = 1.45
 	origin_tech = list(TECH_COMBAT = 2)
 	attack_verb = list("beaten")
 	var/stunforce = 0
@@ -139,16 +136,6 @@
 		var/mob/living/carbon/human/H = target
 		affecting = H.get_organ(hit_zone)
 
-	if(ishuman(target) && ishuman(user))
-		var/mob/living/carbon/human/H = target
-		var/mob/living/carbon/human/U = user
-		if(H.parrying)
-			if(H.handle_parry(U, src))
-				return 0
-		if(H.blocking)
-			if(H.handle_block_weapon(U, src))
-				return 0
-
 	if(user.a_intent != I_HELP)
 		. = ..()
 		if (!.)	//item/attack() does it's own messaging and logs
@@ -177,7 +164,7 @@
 	//stun effects
 	if(status)
 		if(prob(50))
-			stun = rand(2,5)
+			stun = rand(1, 3)
 		target.stun_effect_act(stun, agony, hit_zone, src)
 		msg_admin_attack("[key_name(user)] stunned [key_name(target)] with the [src].")
 
@@ -264,9 +251,6 @@
 	icon_state = "stunprod_nocell"
 	item_state = "prod"
 	force = 3
-	mod_weight = 1.25
-	mod_reach = 1.25
-	mod_handy = 1.0
 	throwforce = 5
 	stunforce = 0
 	agonyforce = 60	//same force as a stunbaton, but uses way more charge.

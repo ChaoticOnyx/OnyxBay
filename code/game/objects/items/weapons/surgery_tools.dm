@@ -67,11 +67,7 @@
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 10000)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
-	sharp = 1
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.0
-	mod_reach = 0.6
-	mod_handy = 0.9
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("drilled")
 
@@ -84,13 +80,10 @@
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "scalpel"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 7.5
+	force = 10.0
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_TINY
-	mod_weight = 0.5
-	mod_reach = 0.5
-	mod_handy = 1.0
 	slot_flags = SLOT_EARS
 	throwforce = 5.0
 	throw_speed = 3
@@ -148,9 +141,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.2
-	mod_reach = 0.65
-	mod_handy = 0.9
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5
@@ -256,9 +246,6 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.75
-	mod_reach = 0.5
-	mod_handy = 0.75
 	attack_verb = list("attacked", "hit", "bludgeoned")
 
 /obj/item/bonesetter/bone_mender

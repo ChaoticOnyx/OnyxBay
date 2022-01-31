@@ -9,22 +9,16 @@
 	throw_speed = 3
 	throw_range = 7
 	w_class = ITEM_SIZE_NORMAL
-	mod_weight = 1.0
-	mod_reach = 1.0
-	mod_handy = 1.0
 	sharp = 0
 	edge = 0
 
 	var/applies_material_colour = 1
 	var/unbreakable
-	var/force_const = 0 //Flat damage
-	var/thrown_force_const = 0 //Throw flat damage
-	var/force_divisor = 0.5 //Depends on hardness
-	var/thrown_force_divisor = 0.5 //Depends on weight
+	var/force_divisor = 0.5
+	var/thrown_force_divisor = 0.5
 	var/default_material = MATERIAL_STEEL
 	var/material/material
 	var/drops_debris = 1
-	var/m_overlay = 0
 
 /obj/item/material/New(newloc, material_key)
 	..(newloc)
@@ -49,8 +43,8 @@
 		force = material.get_edge_damage()
 	else
 		force = material.get_blunt_damage()
-	force = force_const + round(force*force_divisor, 0.1)
-	throwforce = thrown_force_const + round(material.get_blunt_damage()*thrown_force_divisor, 0.1)
+	force = round(force*force_divisor)
+	throwforce = round(material.get_blunt_damage()*thrown_force_divisor)
 	//spawn(1)
 //		log_debug("[src] has force [force] and throwforce [throwforce] when made from default material [material.name]")
 
@@ -63,13 +57,7 @@
 		SetName("[material.display_name] [initial(name)]")
 		health = round(material.integrity/10)
 		if(applies_material_colour)
-			if(m_overlay)
-				var/icon/mat_overlay = new /icon("icon" = 'icons/obj/weapons.dmi', "icon_state" = "[src.icon_state]_overlay")
-				mat_overlay.Blend(material.icon_colour, ICON_ADD)
-				overlays += mat_overlay
-				//mob_icon.Blend(mat_overlay, ICON_OVERLAY)
-			else
-				color = material.icon_colour
+			color = material.icon_colour
 		if(material.products_need_process())
 			START_PROCESSING(SSobj, src)
 		if(material.conductive)

@@ -3,7 +3,7 @@
 	icon_state = "laser"
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 32.5
+	damage = 40
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
@@ -28,19 +28,18 @@
 
 /obj/item/projectile/beam/smalllaser
 	damage = 25
-	armor_penetration = 5
 
 /obj/item/projectile/beam/midlaser
 	icon_state = "laser"
-	damage = 37.5
-	armor_penetration = 15
+	damage = 50
+	armor_penetration = 10
 
 /obj/item/projectile/beam/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
-	damage = 50
-	armor_penetration = 35
+	damage = 60
+	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
@@ -67,7 +66,7 @@
 	fire_sound = 'sound/effects/weapons/energy/fire16.ogg'
 	damage = 30
 	armor_penetration = 30
-	penetration_modifier = 0.85
+	penetration_modifier = 0.8
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -100,7 +99,6 @@
 	name = "destroyer pulse"
 	damage = 100 //badmins be badmins I don't give a fuck
 	armor_penetration = 100
-	penetration_modifier = 100
 
 /obj/item/projectile/beam/pulse/destroy/on_hit(atom/target, blocked = 0)
 	if(isturf(target))

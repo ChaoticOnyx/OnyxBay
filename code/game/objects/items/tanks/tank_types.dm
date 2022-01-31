@@ -81,10 +81,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_SMALL
-	force = 7.0
-	mod_weight = 0.85
-	mod_reach = 0.7
-	mod_handy = 0.85
+	force = 4.0
 	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
 	volume = 2 //Tiny. Real life equivalents only have 21 breaths of oxygen in them. They're EMERGENCY tanks anyway -errorage (dangercon 2011)
 
@@ -99,16 +96,12 @@
 	name = "extended-capacity emergency oxygen tank"
 	icon_state = "emergency_engi"
 	volume = 6
-	force = 7.5
-	mod_weight = 0.9
 
 /obj/item/tank/emergency/oxygen/double
 	name = "double emergency oxygen tank"
 	icon_state = "emergency_double"
 	gauge_icon = "indicator_emergency_double"
 	volume = 10
-	force = 8.5
-	mod_weight = 1.0
 
 /obj/item/tank/emergency/nitrogen
 	name = "emergency nitrogen tank"

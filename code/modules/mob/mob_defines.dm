@@ -45,12 +45,9 @@
 	var/obj/screen/healths = null
 	var/obj/screen/pains = null
 	var/obj/screen/throw_icon = null
-	var/obj/screen/block_icon = null
-	var/obj/screen/blockswitch_icon = null
 	var/obj/screen/nutrition_icon = null
 	var/obj/screen/pressure = null
 	var/obj/screen/pain = null
-	var/obj/screen/poise_icon = null
 	var/obj/screen/gun/item/item_use_icon = null
 	var/obj/screen/gun/radio/radio_use_icon = null
 	var/obj/screen/gun/move/gun_move_icon = null
@@ -146,9 +143,6 @@
 	var/faction = "neutral" //Used for checking whether hostile simple animals will attack you, possibly more stuff later
 	var/blinded = null
 	var/ear_deaf = null		//Carbon
-
-	var/blocking = 0
-	var/parrying = 0
 
 //The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
 	var/mob/living/carbon/LAssailant = null

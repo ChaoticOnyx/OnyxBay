@@ -325,11 +325,6 @@
 			acc_mod += -ceil(one_hand_penalty/2)
 			disp_mod += one_hand_penalty*0.5 //dispersion per point of two-handedness
 
-	// Shooting precisely while trying to turtle yourself up with a shield is hard
-	if(user?.blocking)
-		acc_mod -= 1
-		disp_mod += 1
-
 	//Accuracy modifiers
 	P.accuracy = accuracy + acc_mod
 	P.dispersion = disp_mod

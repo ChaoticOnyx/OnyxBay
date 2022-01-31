@@ -6,11 +6,8 @@
 	item_state = "fire_extinguisher"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 15.0
+	force = 10.0
 	throwforce = 10
-	mod_handy = 0.7
-	mod_weight = 1.5
-	mod_reach = 1.0
 	w_class = ITEM_SIZE_LARGE
 	throw_speed = 2
 	throw_range = 10
@@ -32,11 +29,8 @@
 	icon_state = "miniFE0"
 	item_state = "miniFE"
 	hitsound = null	//it is much lighter, after all.
-	force = 7.5
+	force = 3.0
 	throwforce = 2
-	mod_handy = 0.7
-	mod_weight = 0.65
-	mod_reach = 0.6
 	w_class = ITEM_SIZE_SMALL
 	spray_amount = 80
 	max_volume = 1000

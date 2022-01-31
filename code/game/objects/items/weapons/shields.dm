@@ -2,7 +2,7 @@
 //These are shared by various items that have shield-like behaviour
 
 //bad_arc is the ABSOLUTE arc of directions from which we cannot block. If you want to fix it to e.g. the user's facing you will need to rotate the dirs yourself.
-/proc/check_shield_arc(mob/user, bad_arc, atom/damage_source = null, mob/attacker = null)
+/proc/check_shield_arc(mob/user, var/bad_arc, atom/damage_source = null, mob/attacker = null)
 	//check attack direction
 	var/attack_dir = 0 //direction from the user to the source of the attack
 	if(istype(damage_source, /obj/item/projectile))
@@ -31,17 +31,22 @@
 
 /obj/item/shield
 	name = "shield"
+	var/base_block_chance = 50
 
-/* This shit ain't working, guys. Fix it, please. ~Toby
-/obj/item/shield/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/handle_shield(mob/user, var/damage, atom/damage_source = null, mob/attacker = null, var/def_zone = null, var/attack_text = "the attack")
 	if(user.incapacitated())
 		return 0
 
 	//block as long as they are not directly behind us
 	var/bad_arc = reverse_direction(user.dir) //arc of directions from which we cannot block
 	if(check_shield_arc(user, bad_arc, damage_source, attacker))
-		..()
-	return 0*/
+		if(prob(get_block_chance(user, damage, damage_source, attacker)))
+			user.visible_message("<span class='danger'>\The [user] blocks [attack_text] with \the [src]!</span>")
+			return 1
+	return 0
+
+/obj/item/shield/proc/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	return base_block_chance
 
 /obj/item/shield/riot
 	name = "riot shield"
@@ -50,29 +55,31 @@
 	icon_state = "riot"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BACK
-	force = 15.0
+	force = 5.0
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
-	mod_weight = 2.0
-	mod_reach = 1.5
-	mod_handy = 1.5
-	mod_shield = 2.0
 	origin_tech = list(TECH_MATERIAL = 2)
-	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
+	matter = list("glass" = 7500, DEFAULT_WALL_MATERIAL = 1000)
 	attack_verb = list("shoved", "bashed")
+	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/shield/riot/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/riot/handle_shield(mob/user)
 	. = ..()
-	if(.)
-		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
+/obj/item/shield/riot/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	if(istype(damage_source, /obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		//plastic shields do not stop bullets or lasers, even in space. Will block beanbags, rubber bullets, and stunshots just fine though.
+		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
+			return 0
+	return base_block_chance
 
-/obj/item/shield/riot/attackby(obj/item/W, mob/user)
+/obj/item/shield/riot/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/melee/baton))
-		THROTTLE(cooldown, 25)
-		if(cooldown)
+		if(cooldown < world.time - 25)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
 			cooldown = world.time
@@ -87,17 +94,22 @@
 	slot_flags = SLOT_BACK
 	force = 8
 	throwforce = 8
+	base_block_chance = 60
 	throw_speed = 10
 	throw_range = 20
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1)
-	matter = list(MATERIAL_STEEL = 1000, MATERIAL_WOOD = 1000)
+	matter = list(DEFAULT_WALL_MATERIAL = 1000, "Wood" = 1000)
 	attack_verb = list("shoved", "bashed")
 
-/obj/item/shield/buckler/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/buckler/handle_shield(mob/user)
 	. = ..()
-	if(.)
-		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+
+/obj/item/shield/buckler/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
+	if(istype(damage_source, /obj/item/projectile))
+		return 0 //No blocking bullets, I'm afraid.
+	return base_block_chance
 
 /*
  * Energy Shield
@@ -109,64 +121,49 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "eshield0" // eshield1 for expanded
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 5.0
+	force = 3.0
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.35
-	mod_reach = 0.3
-	mod_handy = 1.0
-	mod_shield = 3.0
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/energy/handle_shield(mob/user)
 	if(!active)
 		return 0 //turn it on first!
-	if(!user.blocking)
-		return 0
-	if(user.incapacitated(INCAPACITATION_DISABLED))
-		return 0
+	. = ..()
+
+	if(.)
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(5, 0, user.loc)
+		spark_system.start()
+		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+
+/obj/item/shield/energy/get_block_chance(mob/user, var/damage, atom/damage_source = null, mob/attacker = null)
 	if(istype(damage_source, /obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
-		if(!P.blockable)
-			return 0
-		// some effects here
-		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(3, 0, user.loc)
-		spark_system.start()
+		if((is_sharp(P) && damage > 10) || istype(P, /obj/item/projectile/beam))
+			return (base_block_chance - round(damage / 3)) //block bullets and beams using the old block chance
+	return base_block_chance
 
-		visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
-		proj_poise_drain(user, P)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		return PROJECTILE_FORCE_BLOCK
-	return 0
-
-/obj/item/shield/energy/attack_self(mob/living/user)
-	if((MUTATION_CLUMSY in user.mutations) && prob(50))
+/obj/item/shield/energy/attack_self(mob/living/user as mob)
+	if ((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_organ_damage(5)
 	active = !active
-	if(active)
-		force = 15
+	if (active)
+		force = 10
 		update_icon()
 		w_class = ITEM_SIZE_HUGE
-		mod_weight = 1.5
-		mod_reach = 1.0
-		mod_handy = 1.5
-		mod_shield = 3.0
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] is now active.</span>")
+
 	else
-		force = 5
+		force = 3
 		update_icon()
 		w_class = ITEM_SIZE_TINY
-		mod_weight = initial(mod_weight)
-		mod_reach = initial(mod_reach)
-		mod_handy = initial(mod_handy)
-		mod_shield = initial(mod_shield)
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
 
@@ -181,7 +178,6 @@
 /obj/item/shield/energy/update_icon()
 	icon_state = "eshield[active]"
 	if(active)
-		set_light(0.4, 0.1, 1, 2, "#006aff")
+		set_light(1.5, 1.5, "#006AFF")
 	else
 		set_light(0)
-

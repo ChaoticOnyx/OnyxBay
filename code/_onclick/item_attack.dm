@@ -43,13 +43,6 @@ avoid code duplication. This includes items that may sometimes act as a standard
 /obj/item/proc/attack(mob/living/M, mob/living/user, target_zone)
 	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))
 		return 0
-	if(M == user && user.a_intent != I_HURT)
-		return 0
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.blocking && (world.time - H.last_block) > 15)
-			to_chat(user, SPAN("warning", "You can't attack while blocking!"))
-			return 0
 
 	//////////Logging////////
 	if(!no_attack_log)
@@ -72,6 +65,8 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 //Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
 /obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
+	if(hitsound)
+		playsound(loc, hitsound, 50, 1, -1)
 
 	var/power = force
 	for(var/datum/modifier/M in user.modifiers)
@@ -80,32 +75,9 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	// if(MUTATION_HULK in user.mutations)
 		// power *= 2
 		// TODO [V] Check if hulk mutation adding modifier somewhere else
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/A = user
-		A.useblock_off()
-		switch(A.a_intent)
-			if(I_HELP)
-				return target.touch_with_weapon(src, user, power, hit_zone)
-			if(I_GRAB)
-				return target.parry_with_weapon(src, user, power, hit_zone)
-			if(I_DISARM)
-				playsound(loc, 'sound/effects/woodhit.ogg', 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone, 1)
-			if(I_HURT)
-				if(hitsound) playsound(loc, hitsound, 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone)
-	if(istype(user, /mob/living/silicon/robot))
-		var/mob/living/silicon/robot/A = user
-		switch(A.a_intent)
-			if(I_HELP)
-				return target.touch_with_weapon(src, user, power, hit_zone)
-			if(I_HURT)
-				if(hitsound)
-					playsound(loc, hitsound, 50, 1, -1)
-				return target.hit_with_weapon(src, user, power, hit_zone)
-	else
-		if(hitsound) playsound(loc, hitsound, 50, 1, -1)
-		return target.hit_with_weapon(src, user, power, hit_zone)
+	if(MUTATION_HULK in user.mutations)
+		power *= 2
+	return target.hit_with_weapon(src, user, power, hit_zone)
 
 ////////////////////
 //Atom procs below//
