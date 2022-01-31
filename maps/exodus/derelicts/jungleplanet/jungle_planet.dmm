@@ -547,7 +547,7 @@
 "kA" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/bottle/small/ale{pixel_x = -5; pixel_y = -2},/obj/item/reagent_containers/food/drinks/bottle/small/ale{pixel_x = 5; pixel_y = 2},/obj/item/reagent_containers/food/drinks/bottle/small/ale,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "kB" = (/obj/structure/table/woodentable,/obj/item/tape_roll,/obj/item/pen/multi,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "kC" = (/obj/structure/table/woodentable,/obj/item/toy/sword{name = "overpowered sword"},/obj/item/toy/therapy_orange,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
-"kD" = (/obj/structure/table/woodentable,/obj/item/toy/pig,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
+"kD" = (/obj/structure/table/woodentable,/obj/item/bikehorn/rubberducky,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "kE" = (/obj/structure/table/woodentable,/obj/item/borg/upgrade/remodel/advanced/miner,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "kF" = (/obj/structure/table/woodentable,/obj/random/toy,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "kG" = (/obj/structure/bed/couch/brown/right{dir = 4},/obj/structure/sign/poster{pixel_y = 32},/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
