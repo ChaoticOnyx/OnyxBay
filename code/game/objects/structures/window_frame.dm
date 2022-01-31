@@ -305,7 +305,7 @@
 
 	// The unobvious thing below makes it impossible to interact with things which are located
 	// on the same tile as an assembled window or a grille. With exceptions like firedoors.
-	if(outer_pane || inner_pane || frame_state == FRAME_GRILLE)
+	if(outer_pane || inner_pane)
 		atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	else
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
@@ -313,6 +313,7 @@
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
 /obj/structure/window_frame/update_icon()
 	overlays.Cut()
+	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE
 
@@ -353,6 +354,8 @@
 			overlays += I
 
 	if(outer_pane)
+		underlays += image(icon, "winframe_shadow")
+
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -614,7 +617,7 @@
 		var/old_state = affected.state
 		if(isScrewdriver(W) && affected.state >= 1)
 			to_chat(user, (affected.state == 1 ? SPAN("notice", "You begin fastening \the [affected.name] to the frame.") : SPAN("notice", "You begin unfastening \the [affected.name] from the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -626,7 +629,7 @@
 
 		if(isCrowbar(W) && affected.state <= 1)
 			to_chat(user, (affected.state == 0 ? SPAN("notice", "You begin prying \the [affected.name] into the frame.") : SPAN("notice", "You begin prying \the [affected.name] out of the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -638,7 +641,7 @@
 
 		if(isWrench(W) && affected.state == 0)
 			to_chat(user, SPAN("notice", "You begin dismantling \the [affected.name] from \the [src]."))
-			if(!do_after(user, 20, src))
+			if(!do_after(user, 15, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -996,7 +999,6 @@
 	density = TRUE
 	max_health = 12
 	pane_melee_mult = 0.7
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
