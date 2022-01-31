@@ -232,13 +232,15 @@ var/const/enterloopsanity = 100
 				L.Add(t)
 	return L
 
-/turf/proc/contains_dense_objects()
+/turf/proc/contains_dense_objects(check_mobs = TRUE)
 	if(density)
-		return 1
+		return TRUE
 	for(var/atom/A in src)
+		if(!check_mobs && ismob(A))
+			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //expects an atom containing the reagents used to clean the turf
 /turf/proc/clean(atom/source, mob/user = null)

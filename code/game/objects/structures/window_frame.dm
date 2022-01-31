@@ -129,14 +129,16 @@
 	my_frame.update_icon()
 
 /datum/windowpane/proc/get_damage_desc()
+	if(health == max_health)
+		return SPAN("notice", "It looks [pick("intact", "normal", "fine", "alright")].")
 	switch(damage_state)
 		if(1)
-			return "It has a few cracks."
+			return SPAN("warning", "It has a few cracks.")
 		if(2)
-			return "It looks seriously damaged."
+			return SPAN("warning", "It looks seriously damaged.")
 		if(3)
-			return "It looks like it's about to shatter!"
-	return "It looks [pick("intact", "normal", "fine", "alright")]."
+			return SPAN("danger", "It looks like it's about to shatter!")
+	return SPAN("notice", "It looks a bit [pick("shabby", "battered", "frayed", "chipped")].")
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -303,7 +305,7 @@
 
 	// The unobvious thing below makes it impossible to interact with things which are located
 	// on the same tile as an assembled window or a grille. With exceptions like firedoors.
-	if(outer_pane || inner_pane || frame_state == FRAME_GRILLE)
+	if(outer_pane || inner_pane)
 		atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	else
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
@@ -311,6 +313,7 @@
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
 /obj/structure/window_frame/update_icon()
 	overlays.Cut()
+	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE
 
@@ -351,6 +354,9 @@
 			overlays += I
 
 	if(outer_pane)
+		if(outer_pane.reinforced)
+			underlays += image(icon, "winframe_shadow")
+
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -605,13 +611,14 @@
 					set_state()
 					update_nearby_icons()
 					update_nearby_tiles()
+					shove_everything(shove_items = FALSE)
 			return
 
 	if(affected)
 		var/old_state = affected.state
 		if(isScrewdriver(W) && affected.state >= 1)
 			to_chat(user, (affected.state == 1 ? SPAN("notice", "You begin fastening \the [affected.name] to the frame.") : SPAN("notice", "You begin unfastening \the [affected.name] from the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -623,7 +630,7 @@
 
 		if(isCrowbar(W) && affected.state <= 1)
 			to_chat(user, (affected.state == 0 ? SPAN("notice", "You begin prying \the [affected.name] into the frame.") : SPAN("notice", "You begin prying \the [affected.name] out of the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -635,7 +642,7 @@
 
 		if(isWrench(W) && affected.state == 0)
 			to_chat(user, SPAN("notice", "You begin dismantling \the [affected.name] from \the [src]."))
-			if(!do_after(user, 20, src))
+			if(!do_after(user, 15, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -705,6 +712,7 @@
 					to_chat(user, SPAN("notice", "You've constructed a grille."))
 					set_state(FRAME_GRILLE)
 					update_nearby_icons()
+					shove_everything(shove_items = FALSE)
 				return
 
 	if(istype(W, /obj/item/stack/cable_coil))
@@ -756,6 +764,8 @@
 		update_nearby_icons()
 		user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \
 							 SPAN("notice", "You have [anchored ? "fastened \the [src] to" : "unfastened \the [src] from"] the floor."))
+		if(anchored)
+			shove_everything(shove_items = FALSE)
 		return
 
 	if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
@@ -990,7 +1000,6 @@
 	density = TRUE
 	max_health = 12
 	pane_melee_mult = 0.7
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
