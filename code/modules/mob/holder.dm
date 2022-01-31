@@ -82,6 +82,8 @@ var/list/holder_mob_icon_cache = list()
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
+		if(M.isSynthetic())
+			return
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
