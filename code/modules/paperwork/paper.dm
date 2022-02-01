@@ -209,6 +209,10 @@
 
 /obj/item/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
+	if(can_read && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.IsAdvancedToolUser(TRUE))
+			can_read = FALSE
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
