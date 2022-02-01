@@ -126,7 +126,7 @@
 		var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon))
 		if(can_read && ishuman(user))
 			var/mob/living/carbon/human/H = user
-			if(H.IsAdvancedToolUser(TRUE))
+			if(!H.IsAdvancedToolUser(TRUE))
 				can_read = FALSE
 		if(!can_read)
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"
