@@ -203,6 +203,7 @@
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
 	foreign = TRUE
+	override_species_icon = TRUE
 	max_damage = 66
 	var/growth = 0
 	var/growth_max = 240
