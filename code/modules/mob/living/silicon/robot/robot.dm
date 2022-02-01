@@ -1,5 +1,19 @@
 #define CYBORG_POWER_USAGE_MULTIPLIER 2.5 // Multiplier for amount of power cyborgs use.
 
+var/global/list/robot_footstep_sounds = list(
+	FOOTSTEP_ROBOT_LEGS = list(
+		'sound/effects/robot_footstep/legs01.ogg',
+		'sound/effects/robot_footstep/legs02.ogg',
+		'sound/effects/robot_footstep/legs03.ogg',
+		'sound/effects/robot_footstep/legs04.ogg'
+	),
+	FOOTSTEP_ROBOT_SPIDER = list(
+		'sound/effects/robot_footstep/spider01.ogg',
+		'sound/effects/robot_footstep/spider02.ogg',
+		'sound/effects/robot_footstep/spider03.ogg'
+	)
+)
+
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -1284,3 +1298,24 @@
 	if(antag_id == MODE_TRAITOR)
 		return TRUE
 	return FALSE
+/mob/living/silicon/robot/proc/play_footstep_sound()
+	var/range = -(world.view - 2)
+	var/volume = 10
+	var/S
+
+	switch(icon_state)
+		if("robot_old", "engineerrobot", "JanBot2", "securityrobot", "Medbot",
+		"Engineering", "janitorrobot", "Service", "Brobot", "maximillion", "Service2",
+		"Miner_old", "Security", "secborg", "maidbot", "droid-medical", "droid-miner", "droid-science")
+			S = safepick(robot_footstep_sounds[FOOTSTEP_ROBOT_LEGS])
+		if("robot", "droid", "robot-medical", "robot-engineer",
+		"landmate", "robot-security", "bloodhound", "robot-janitor", "robot-service",
+		"robot-mining", "robot-science")
+			S = safepick(robot_footstep_sounds[FOOTSTEP_ROBOT_SPIDER])
+		if("engiborg+tread", "secborg+tread", "Miner")
+			// TODO: Add truck sound
+			return
+		else
+			return
+
+	playsound(get_turf(src), S, volume, FALSE, range)
