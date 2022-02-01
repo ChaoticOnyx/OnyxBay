@@ -7,6 +7,7 @@
 	organ_tag = BP_CELL
 	parent_organ = BP_CHEST
 	vital = 1
+	override_species_icon = TRUE
 	var/open
 	var/obj/item/cell/cell = /obj/item/cell/high
 	//at 0.8 completely depleted after 60ish minutes of constant walking or 130 minutes of standing still
@@ -112,6 +113,7 @@
 	organ_tag = BP_BRAIN
 	parent_organ = BP_HEAD
 	vital = 1
+	override_species_icon = TRUE
 	var/obj/item/device/mmi/stored_mmi
 	var/datum/mind/persistantMind //Mind that the organ will hold on to after being removed, used for transfer_and_delete
 	var/ownerckey // used in the event the owner is out of body
@@ -176,4 +178,5 @@
 			var/response = input(find_dead_player(ownerckey, 1), "Your [initial(stored_mmi.name)] has been removed from your body. Do you wish to return to life?", "Robotic Rebirth") as anything in list("Yes", "No")
 			if(response == "Yes")
 				persistantMind.transfer_to(stored_mmi.brainmob)
+		stored_mmi.update_icon()
 	qdel(src)

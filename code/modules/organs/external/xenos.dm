@@ -3,6 +3,7 @@
 	name = "xeno organ"
 	icon = 'icons/effects/blood.dmi'
 	desc = "It smells like an accident in a chemical factory."
+	override_species_icon = TRUE
 	var/associated_power = /mob/living/carbon/human/proc/resin
 
 /obj/item/organ/internal/xenos/replaced(mob/living/carbon/human/target,obj/item/organ/external/affected)
@@ -203,6 +204,7 @@
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
 	foreign = TRUE
+	override_species_icon = TRUE
 	max_damage = 66
 	var/growth = 0
 	var/growth_max = 240
