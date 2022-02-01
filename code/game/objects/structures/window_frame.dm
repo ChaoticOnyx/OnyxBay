@@ -488,8 +488,8 @@
 								 SPAN("danger", "You hear a banging sound."))
 		else
 			playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-			user.visible_message("<b>[user.name]</b> knocks on the [src].",
-								"You knock on the [src].",
+			user.visible_message("<b>[user.name]</b> knocks on \the [src].",
+								"You knock on \the [src].",
 								"You hear a knocking sound.")
 		return
 
