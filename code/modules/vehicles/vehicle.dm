@@ -55,12 +55,8 @@
 
 /obj/vehicle/Move()
 	if(world.time > l_move_time + move_delay)
-		if(!on)
-			return 0
-
-		if(!cell.use(charge_use * CELLRATE))
+		if(on && powered && cell.charge < (charge_use * CELLRATE))
 			turn_off()
-			return 0
 
 		var/old_loc = get_turf(src)
 		var/init_anc = anchored
