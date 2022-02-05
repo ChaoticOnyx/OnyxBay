@@ -270,3 +270,31 @@
 	set_invisibility(101)
 	qdel(src)
 	return TRUE
+
+/obj/item/projectile/portalgun
+	name = "portal sphere"
+	icon_state = "portal"
+	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
+	damage = 0
+	damage_type = CLONE
+	nodamage = TRUE
+	kill_count = 500 // enough to cross a ZLevel...twice!
+	check_armour = "energy"
+	blockable = FALSE
+	impact_on_original = TRUE
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
+	var/obj/item/gun/portalgun/parent
+	var/setting = 0
+
+/obj/item/projectile/portalgun/New(loc)
+	parent = loc
+	return ..()
+
+/obj/item/projectile/portalgun/on_impact(atom/A)
+	if(!istype(parent, /obj/item/gun/portalgun))
+		return
+
+	var/obj/item/gun/portalgun/P = parent
+
+	if(!(locate(/obj/effect/portal) in loc))
+		P.open_portal(setting,loc,A,firer)

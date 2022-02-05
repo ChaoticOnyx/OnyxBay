@@ -133,7 +133,8 @@
 	for(var/turf/T in range(radius, centerturf))
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
-		if(dx * dx + dy * dy <= rsq)
+		// don't teleport people into walls
+		if(dx * dx + dy * dy <= rsq && !T.density)
 			turfs += T
 	return turfs
 

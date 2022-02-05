@@ -1,15 +1,16 @@
 /obj/effect/portal
 	name = "portal"
 	desc = "Looks unstable. Best to test it with the clown."
-	icon = 'icons/obj/stationobjs.dmi'
+	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal"
-	density = 1
-	unacidable = 1//Can't destroy energy portals.
-	var/obj/item/target = null
+	density = TRUE
+	unacidable = TRUE // Can't destroy energy portals.
+	var/atom/target = null
 	var/creator = null
 	anchored = 1.0
 	var/dangerous = 0
 	var/failchance = 0
+	var/teleport_type = /decl/teleport/sparks
 
 /obj/effect/portal/Bumped(mob/M)
 	teleport(M)
@@ -62,12 +63,12 @@
 	playsound(src, 'sound/effects/phasein.ogg', 25, 1)
 	QDEL_IN(src, delete_after)
 
-/obj/effect/portal/proc/teleport(atom/movable/M)
-	if(iseffect(M))
+/obj/effect/portal/proc/teleport(atom/movable/M, ignore_checks = FALSE)
+	if(iseffect(M) && !ignore_checks)
 		return
-	if(M.anchored && !ismech(M))
+	if(M.anchored && !ismech(M) && !ignore_checks)
 		return
-	if(!ismovable(M))
+	if(!ismovable(M) && !ignore_checks)
 		return
 	if (!target)
 		qdel(src)
@@ -77,4 +78,147 @@
 		var/destination_z = GLOB.using_map.get_transit_zlevel(src.z)
 		do_teleport(M, locate(rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy -TRANSITIONEDGE), destination_z), 0)
 	else
-		do_teleport(M, target, 1)
+		do_teleport(M, target, type = teleport_type)
+	return TRUE
+
+/obj/effect/portal/proc/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
+	P.on_impact(src, use_impact)
+	return FALSE
+
+/obj/effect/portal/linked
+	var/mask = "portal_mask"
+	var/connection/atmos_connection
+	var/obj/item/gun/portalgun/portal_creator
+	var/mob/owner
+	var/setting = 0
+	var/atmos_connected
+	var/list/static/portal_cache = list()
+	teleport_type = /decl/teleport/sparks/precision
+
+/obj/effect/portal/linked/Initialize(mapload, end, delete_after, failure_rate)
+	. = ..()
+	if(istype(loc, /obj/item/gun/portalgun))
+		portal_creator = loc
+	// stable enough
+	dangerous = FALSE
+	failchance = FALSE
+
+/obj/effect/portal/linked/Destroy()
+	disconnect_atmospheres()
+	if(portal_creator)
+		if(src == portal_creator.blue_portal)
+			portal_creator.blue_portal = null
+			portal_creator.sync_portals()
+		else if(src == portal_creator.red_portal)
+			portal_creator.red_portal = null
+			portal_creator.sync_portals()
+	portal_creator = null
+	target = null
+	owner = null
+	return ..()
+
+/obj/effect/portal/linked/proc/connect_atmospheres()
+	if(!atmos_connected && istype(target, /obj/effect/portal/linked))
+		var/obj/effect/portal/linked/P = target
+		if(get_turf(src) && get_turf(P))
+			var/has_valid_connection = FALSE
+			var/turf/src_turf = get_turf(src)
+			var/turf/target_turf = get_turf(P)
+			if(TURF_HAS_VALID_ZONE(src_turf))
+				atmos_connection = new (get_turf(src), get_turf(P))
+				has_valid_connection = TRUE
+			if(TURF_HAS_VALID_ZONE(target_turf))
+				P.atmos_connection = new (get_turf(P), get_turf(src))
+				has_valid_connection = TRUE
+			if(has_valid_connection)
+				P.atmos_connected = TRUE
+				atmos_connected = TRUE
+
+/obj/effect/portal/linked/proc/disconnect_atmospheres()
+	atmos_connected = FALSE
+	if(atmos_connection)
+		atmos_connection.erase()
+		atmos_connection = null
+
+/obj/effect/portal/linked/proc/blend_icon(obj/effect/portal/P)
+	var/turf/T = P.loc
+
+	if(!("icon[initial(T.icon)]_iconstate[T.icon_state]_[type]" in portal_cache)) // If the icon has not been added yet
+		var/icon/I1 = icon(icon,mask)//Generate it.
+		var/icon/I2 = icon(initial(T.icon),T.icon_state)
+		I1.Blend(I2,ICON_MULTIPLY)
+		portal_cache["icon[initial(T.icon)]_iconstate[T.icon_state]_[type]"] = I1 // And cache it!
+
+	overlays += portal_cache["icon[initial(T.icon)]_iconstate[T.icon_state]_[type]"]
+
+// In layman's terms, speedy thing goes in, speedy thing comes out.
+// projectile redirect is not cool, I made my own cool method!
+/obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
+	if(P.kill_count < 1 || !P.dir || !target)
+		return FALSE
+	// get x, y between correct loc and target
+	var/turf/loc_turf = get_turf(src)
+	var/turf/target_turf = get_turf(P.original)
+	var/x_diff = target_turf.x - loc_turf.x
+	var/y_diff = target_turf.y - loc_turf.y
+	// if(P.dir & SOUTH)
+	// 	x_diff = -x_diff
+	// if(P.dir & WEST)
+	// 	y_diff = -y_diff
+	// get x, y offset from P.setup_trajectory
+	var/x_offset = round(P.xo - P.original.x + P.starting.x, 1)
+	var/y_offset = round(P.yo - P.original.y + P.starting.y, 1)
+	// move projectile to linked portal
+	//P.forceMove(get_turf(target))
+	if(!teleport(P, TRUE))
+		return
+	// get turf of linked portal; get x, y of this turf
+	var/turf/linked_turf = get_turf(target)
+	var/x = linked_turf.x
+	var/y = linked_turf.y
+	// get new target turf
+	target_turf = locate(max(min(x + x_diff, world.maxx), 1), max(min(y + y_diff, world.maxy), 1), target.z)
+	// set new target turf as projectile target
+	P.original = target_turf
+	// rebuild trajectory by calling P.setup_projectory and our work there is done
+	P.setup_trajectory(linked_turf, target_turf, x_offset, y_offset)
+	return TRUE
+
+/obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
+	var/previous_dir = hit_atom.dir
+	hit_atom.dir = get_dir(hit_atom, src)
+	if(hit_atom.throwed_to == get_turf(src))
+		return
+	var/turf/loc_turf = get_turf(src)
+	var/turf/target_turf = get_turf(hit_atom.throwed_to)
+	var/x_diff = target_turf.x - loc_turf.x
+	var/y_diff = target_turf.y - loc_turf.y
+	if(hit_atom.dir & SOUTH)
+		x_diff = -x_diff
+	if(hit_atom.dir & EAST)
+		y_diff = -y_diff
+	var/atom/thrower = hit_atom.thrower
+	var/speed = hit_atom.throw_speed
+	var/result = teleport(hit_atom, TRUE)
+	if(!result)
+		return
+	hit_atom.dir = previous_dir
+	var/turf/linked_turf = get_turf(target)
+	var/x = linked_turf.x
+	var/y = linked_turf.y
+	target_turf = locate(max(min(x + x_diff, world.maxx), 1), max(min(y + y_diff, world.maxy), 1), target.z)
+	hit_atom.throw_at(target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
+
+/obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
+	if(!target)
+		return
+	if(M.throwed_to && !ignore_checks)
+		return on_throw_impact(M)
+	return ..()
+
+/obj/effect/portal/linked/move_all_objects()
+	if(!target || QDELETED(src))
+		return
+	var/turf/T = get_turf(src)
+	for(var/atom/movable/M in T)
+		teleport(M)
