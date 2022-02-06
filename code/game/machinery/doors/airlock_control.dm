@@ -242,6 +242,7 @@
 	anchored = 1
 	power_channel = STATIC_ENVIRON
 	layer = ABOVE_WINDOW_LAYER
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION
 
 	var/master_tag
 	var/frequency = 1449
