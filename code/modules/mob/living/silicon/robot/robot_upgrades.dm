@@ -143,7 +143,7 @@
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	spawn(1)
-		if (heldname == "Default cyborg")
+		if (heldname == initial(held_name))
 			heldname = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
 		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, heldname)
 		R.SetName(heldname)
