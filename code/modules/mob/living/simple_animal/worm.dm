@@ -2,8 +2,8 @@
 	name = "space worm segment"
 	desc = "A part of a space worm."
 	icon = 'icons/mob/animal.dmi'
-	icon_state = "spaceworm"
-	icon_living = "spaceworm"
+	icon_state = "spaceworm3"
+	icon_living = "spaceworm3"
 	icon_dead = "spacewormdead"
 	status_flags = 0
 
@@ -47,8 +47,8 @@
 
 /mob/living/simple_animal/space_worm/head
 	name = "space worm head"
-	icon_state = "spacewormhead"
-	icon_living = "spacewormhead"
+	icon_state = "spacewormhead1"
+	icon_living = "spacewormhead1"
 	icon_dead = "spacewormdead"
 
 	maxHealth = 20
