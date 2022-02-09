@@ -130,7 +130,7 @@
 
 /obj/item/organ/internal/brain/golem
 	name = "adamantite brain"
-	desc = "What else could be inside the adamantite creature's head?."
+	desc = "What else could be inside the adamantite creature's head?"
 	icon = 'icons/obj/materials.dmi'
 	icon_state = "adamantine"
 
