@@ -17,7 +17,13 @@
 	var/global/list/acceptable_items // List of the items you can put in
 	var/global/list/acceptable_reagents // List of the reagents you can put in
 	var/global/max_n_of_items = 0
+	var/cook_speed = 1
 
+	component_types = list(
+		/obj/item/circuitboard/microwave,
+		/obj/item/stock_parts/micro_laser = 3,
+		/obj/item/stock_parts/manipulator
+	)
 
 // see code/modules/food/recipes_microwave.dm for recipes
 
@@ -25,8 +31,8 @@
 *   Initialising
 ********************/
 
-/obj/machinery/microwave/New()
-	..()
+/obj/machinery/microwave/Initialize()
+	. = ..()
 	create_reagents(100)
 	if (!available_recipes)
 		available_recipes = new
@@ -82,7 +88,7 @@
 		else
 			to_chat(user, SPAN("warning", "It's broken!"))
 			return 1
-	else if(src.dirty==100) // The microwave is all dirty so can't be used!
+	else if(src.dirty == 100) // The microwave is all dirty so can't be used!
 		if(istype(O, /obj/item/reagent_containers/spray/cleaner) || istype(O, /obj/item/reagent_containers/glass/rag)) // If they're trying to clean it then let them
 			user.visible_message( \
 				SPAN("notice", "\The [user] starts to clean the microwave."), \
@@ -100,6 +106,33 @@
 		else //Otherwise bad luck!!
 			to_chat(user, SPAN("warning", "It's dirty!"))
 			return 1
+
+	else if(default_deconstruction_screwdriver(user, O))
+		return
+	else if(default_deconstruction_crowbar(user, O))
+		return
+	else if(default_part_replacement(user, O))
+		return
+
+	else if(isWrench(O))
+		user.visible_message( \
+			SPAN("notice", "\The [user] begins [src.anchored ? "unsecuring" : "securing"] the microwave."), \
+			SPAN("notice", "You attempt to [src.anchored ? "unsecure" : "secure"] the microwave.")
+			)
+		if(do_after(user,20, src))
+			src.anchored = !src.anchored
+			user.visible_message( \
+			SPAN("notice", "\The [user] [src.anchored ? "secures" : "unsecures"] the microwave."), \
+			SPAN("notice", "You [src.anchored ? "secure" : "unsecure"] the microwave.")
+			)
+		else
+			to_chat(user, SPAN("notice", "You decide not to do that."))
+		return 1
+
+	else if(panel_open) // Don't cook with open panel
+		src.updateUsrDialog()
+		return
+
 	else if(is_type_in_list(O,acceptable_items))
 		if (contents.len >= max_n_of_items)
 			to_chat(user, SPAN("warning", "This [src] is full of ingredients, you cannot put more."))
@@ -138,20 +171,6 @@
 		var/obj/item/grab/G = O
 		to_chat(user, SPAN("warning", "This is ridiculous. You can not fit \the [G.affecting] in this [src]."))
 		return 1
-	else if(isCrowbar(O))
-		user.visible_message( \
-			SPAN("notice", "\The [user] begins [src.anchored ? "unsecuring" : "securing"] the microwave."), \
-			SPAN("notice", "You attempt to [src.anchored ? "unsecure" : "secure"] the microwave.")
-			)
-		if(do_after(user,20, src))
-			src.anchored = !src.anchored
-			user.visible_message( \
-			SPAN("notice", "\The [user] [src.anchored ? "secures" : "unsecures"] the microwave."), \
-			SPAN("notice", "You [src.anchored ? "secure" : "unsecure"] the microwave.")
-			)
-		else
-			to_chat(user, SPAN("notice", "You decide not to do that."))
-		return 1
 	else
 		to_chat(user, SPAN("warning", "You have no idea what you can cook with this [O]."))
 	..()
@@ -171,6 +190,8 @@
 
 /obj/machinery/microwave/interact(mob/user as mob) // The microwave Menu
 	var/dat = list()
+	if(src.panel_open)
+		dat += "<TT>Panel is open!</TT>"
 	if(src.broken > 0)
 		dat += "<TT>Bzzzzttttt</TT>"
 	else if(src.operating)
@@ -237,7 +258,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
-	if (reagents.total_volume==0 && !contents.len) //dry run
+	if (reagents.total_volume == 0 && !contents.len) //dry run
 		if (!wzhzhzh(10))
 			abort()
 			return
@@ -248,7 +269,7 @@
 	var/obj/cooked
 	if (!recipe)
 		dirty += 1
-		if (prob(max(10,dirty*5)))
+		if (prob(max(10, dirty * 5)))
 			if (!wzhzhzh(4))
 				abort()
 				return
@@ -275,7 +296,7 @@
 			cooked.dropInto(loc)
 			return
 	else
-		var/halftime = round(recipe.time/10/2)
+		var/halftime = round(recipe.time / 5)
 		if (!wzhzhzh(halftime))
 			abort()
 			return
@@ -291,7 +312,8 @@
 		return
 
 /obj/machinery/microwave/proc/wzhzhzh(seconds as num) // Whoever named this proc is fucking literally Satan. ~ Z
-	for (var/i=1 to seconds)
+	seconds = min(round(seconds / cook_speed), 1)
+	for (var/i = 1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0
 		use_power_oneoff(500)
@@ -392,3 +414,16 @@
 
 		if ("dispose")
 			dispose()
+
+/obj/machinery/microwave/RefreshParts()
+	..()
+	var/ml_rating = 0
+	var/man_rating = 0
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(ismicrolaser(P))
+			ml_rating += P.rating
+		else if(ismanipulator(P))
+			man_rating += P.rating
+
+	active_power_usage = 100 - ml_rating * 6 // Normally, 72 power usage with 10 max power usage with max micro lasers
+	cook_speed = man_rating // More -> better
