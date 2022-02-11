@@ -185,29 +185,31 @@
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
+	var/throwed_dir = hit_atom.throw_dir
 	var/previous_dir = hit_atom.dir
-	hit_atom.dir = get_dir(hit_atom, src)
 	if(hit_atom.throwed_to == get_turf(src))
 		return
 	var/turf/loc_turf = get_turf(src)
 	var/turf/target_turf = get_turf(hit_atom.throwed_to)
-	var/x_diff = target_turf.x - loc_turf.x
-	var/y_diff = target_turf.y - loc_turf.y
-	if(hit_atom.dir & SOUTH)
-		x_diff = -x_diff
-	if(hit_atom.dir & EAST)
+	var/x_diff = abs(target_turf.x - loc_turf.x)
+	var/y_diff = abs(target_turf.y - loc_turf.y)
+	if(throwed_dir & SOUTH)
 		y_diff = -y_diff
+	if(throwed_dir & WEST)
+		x_diff = -x_diff
 	var/atom/thrower = hit_atom.thrower
 	var/speed = hit_atom.throw_speed
+	hit_atom.dir = throwed_dir
 	var/result = teleport(hit_atom, TRUE)
+	hit_atom.dir = previous_dir
 	if(!result)
 		return
-	hit_atom.dir = previous_dir
 	var/turf/linked_turf = get_turf(target)
-	var/x = linked_turf.x
-	var/y = linked_turf.y
-	target_turf = locate(max(min(x + x_diff, world.maxx), 1), max(min(y + y_diff, world.maxy), 1), target.z)
-	hit_atom.throw_at(target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
+	var/x = linked_turf.x + x_diff
+	var/y = linked_turf.y + y_diff
+	target_turf = locate(max(min(x, world.maxx), 1), max(min(y, world.maxy), 1), target.z)
+	spawn()
+		hit_atom.throw_at(target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
 
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)

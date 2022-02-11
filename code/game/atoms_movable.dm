@@ -10,6 +10,7 @@
 	var/m_flag = 1
 	var/throwing = 0
 	var/thrower
+	var/throw_dir
 	var/turf/throw_source = null
 	var/atom/throwed_to
 	var/throw_speed = 2
@@ -132,6 +133,7 @@
 	src.throw_source = get_turf(src)	//store the origin turf
 	src.pixel_z = 0
 	throwed_to = target
+	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
 			src.throwing = 2 // really strong throw!
@@ -224,6 +226,7 @@
 	if(isobj(src))
 		throw_impact(get_turf(src), speed)
 	throwed_to = null
+	throw_dir = null
 	src.throwing = 0
 	src.thrower = null
 	src.throw_source = null

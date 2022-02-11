@@ -25,11 +25,9 @@
 
 /obj/item/gun/portalgun/Destroy()
 	if(blue_portal)
-		qdel(blue_portal)
-		blue_portal = null
+		QDEL_NULL(blue_portal)
 	if(red_portal)
-		qdel(red_portal)
-		red_portal = null
+		QDEL_NULL(red_portal)
 	..()
 
 /obj/item/gun/portalgun/consume_next_projectile()
