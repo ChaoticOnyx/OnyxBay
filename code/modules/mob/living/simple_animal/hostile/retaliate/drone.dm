@@ -24,6 +24,7 @@
 	projectiletype = /obj/item/projectile/beam/drone
 	projectilesound = 'sound/effects/weapons/energy/Laser3.ogg'
 	destroy_surroundings = 0
+	ignore_pull_slowdown = TRUE
 	var/datum/effect/effect/system/trail/ion_trail
 
 	//the drone randomly switches between these states if it's malfunctioning

@@ -28,6 +28,7 @@
 	bodyparts = /decl/simple_animal_bodyparts/goliath
 	aggro_vision_range = 9
 	idle_vision_range = 4
+	ignore_pull_slowdown = TRUE
 	var/pre_attack = 0
 	var/dead = FALSE
 	var/hides_drop = 1

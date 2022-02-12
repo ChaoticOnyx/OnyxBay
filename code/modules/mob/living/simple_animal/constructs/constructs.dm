@@ -113,6 +113,7 @@
 	resistance = 10
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	ignore_pull_slowdown = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 /mob/living/simple_animal/construct/armoured/Life()
@@ -230,6 +231,7 @@
 	var/max_energy = 1000
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	ignore_pull_slowdown = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 ////////////////////////Harvester////////////////////////////////
