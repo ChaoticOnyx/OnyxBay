@@ -15,11 +15,11 @@
 	fire_delay = 6
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/beam/midlaser
+	projectile_type = /obj/item/projectile/beam/laser/mid
 	wielded_item_state = "laserrifle-wielded"
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/midlaser),
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/mid),
 		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid)
 	)
 
@@ -120,7 +120,7 @@
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 6 //large and heavy
 	w_class = ITEM_SIZE_HUGE
-	projectile_type = /obj/item/projectile/beam/heavylaser
+	projectile_type = /obj/item/projectile/beam/laser/heavy
 	charge_cost = 40
 	max_shots = 8
 	accuracy = 2
@@ -132,7 +132,7 @@
 	mod_handy = 1.0
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/heavylaser),
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/heavy),
 		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy)
 	)
 
