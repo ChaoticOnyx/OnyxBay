@@ -177,6 +177,7 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
+	tasing = FALSE // Nah, that's too much
 	penetration_modifier = 0.35
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
