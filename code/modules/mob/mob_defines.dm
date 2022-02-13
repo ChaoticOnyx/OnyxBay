@@ -94,6 +94,7 @@
 	var/lying_prev = 0
 	var/hanging = FALSE
 	var/hanging_prev = FALSE
+	var/ignore_pull_slowdown = FALSE
 
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)

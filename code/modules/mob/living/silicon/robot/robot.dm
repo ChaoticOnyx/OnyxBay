@@ -7,6 +7,7 @@
 	icon_state = "robot"
 	maxHealth = 200
 	health = 200
+	ignore_pull_slowdown = TRUE // Steel be strong
 
 	mob_bump_flag = ROBOT
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
