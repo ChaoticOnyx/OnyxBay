@@ -186,33 +186,33 @@
 	name = "small laser bolt"
 	icon_state = "laser_small"
 	damage = 35
-	armor_penetration = 5
+	armor_penetration = 10
 
 /obj/item/projectile/energy/laser/lesser // Carbine level
 	icon_state = "laser_lesser"
 	damage = 45
 	agony = 5
-	armor_penetration = 10
+	armor_penetration = 12.5
 
 /obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
 	damage = 55
 	agony = 10
-	armor_penetration = 15
+	armor_penetration = 15.0
 
 /obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
 	name = "large laser bolt"
 	icon_state = "laser_greater"
 	damage = 65
 	agony = 15
-	armor_penetration = 20
+	armor_penetration = 17.5
 
 /obj/item/projectile/energy/laser/heavy // Cannon level
 	name = "heavy laser bolt"
 	icon_state = "laser_heavy"
 	damage = 75
 	agony = 20
-	armor_penetration = 30
+	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 
 /obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.

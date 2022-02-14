@@ -42,24 +42,24 @@
 
 /obj/item/projectile/beam/laser/lesser
 	damage = 32.5
-	armor_penetration = 25
+	armor_penetration = 22.5
 
 /obj/item/projectile/beam/laser/mid
 	icon_state = "laser"
 	damage = 37.5
-	armor_penetration = 30
+	armor_penetration = 25
 
 /obj/item/projectile/beam/laser/greater
 	name = "large laser beam"
 	damage = 42.5
-	armor_penetration = 35
+	armor_penetration = 27.5
 
 /obj/item/projectile/beam/laser/heavy
 	name = "heavy laser beam"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 	damage = 55.0
-	armor_penetration = 45
+	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
