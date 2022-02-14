@@ -34,22 +34,25 @@
 /obj/item/projectile/beam/laser/small
 	name = "small laser beam"
 	damage = 27.5
-	armor_penetration = 15
+	armor_penetration = 20
+
+	muzzle_type = /obj/effect/projectile/laser/small/muzzle
+	tracer_type = /obj/effect/projectile/laser/small/tracer
+	impact_type = /obj/effect/projectile/laser/small/impact
 
 /obj/item/projectile/beam/laser/lesser
 	damage = 32.5
-	armor_penetration = 20
+	armor_penetration = 25
 
 /obj/item/projectile/beam/laser/mid
 	icon_state = "laser"
 	damage = 37.5
-	armor_penetration = 25
-
+	armor_penetration = 30
 
 /obj/item/projectile/beam/laser/greater
 	name = "large laser beam"
 	damage = 42.5
-	armor_penetration = 30
+	armor_penetration = 35
 
 /obj/item/projectile/beam/laser/heavy
 	name = "heavy laser beam"
@@ -62,11 +65,6 @@
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
 	impact_type = /obj/effect/projectile/laser/heavy/impact
 
-/obj/item/projectile/beam/smalllaser
-
-/obj/item/projectile/beam/midlaser
-
-/obj/item/projectile/beam/heavylaser
 
 /obj/item/projectile/beam/sniper
 	name = "sniper beam"

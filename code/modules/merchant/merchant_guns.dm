@@ -17,6 +17,7 @@
 	fire_sound = 'sound/effects/weapons/gun/fire_colt.ogg'
 
 /obj/item/gun/energy/laser/dogan
+	icon_state = "laser_cheap"
 	desc = "This carbine works just as well as a normal carbine. Most of the time." //removed reference to Dogan, since only the merchant is likely to know who that is.
 
 /obj/item/gun/energy/laser/dogan/consume_next_projectile()
