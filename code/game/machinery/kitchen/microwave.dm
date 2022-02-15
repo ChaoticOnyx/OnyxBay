@@ -190,9 +190,11 @@
 
 /obj/machinery/microwave/interact(mob/user as mob) // The microwave Menu
 	var/dat = list()
-	if(src.panel_open)
+	if(!anchored)
+		dat += "<TT>Secure the microwave first!</TT>"
+	else if(src.panel_open)
 		dat += "<TT>Panel is open!</TT>"
-	if(src.broken > 0)
+	else if(src.broken > 0)
 		dat += "<TT>Bzzzzttttt</TT>"
 	else if(src.operating)
 		dat += "<TT>Microwaving in progress!<BR>Please wait...!</TT>"
