@@ -65,7 +65,7 @@ meteor_act
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(damage_amt)
+					victim.take_internal_damage(damage_amt / victims.len)
 
 	//Embed or sever artery
 	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
