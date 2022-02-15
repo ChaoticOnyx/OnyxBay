@@ -84,7 +84,7 @@
 	if(next && !(next in view(src, 1)))
 		Detach()
 
-	if(stat == DEAD) //dead chunks fall off and die immediately
+	if(stat == DEAD) // Dead chunks fall off and die immediately
 		if(previous)
 			previous.Detach()
 		if(next)
@@ -93,7 +93,8 @@
 	if(prob(stomachProcessProbability))
 		ProcessStomach()
 
-/mob/living/simple_animal/space_worm/update_icon()
+	update_icon()
+
 	return
 
 /mob/living/simple_animal/space_worm/Destroy() //if a chunk a destroyed, make a new worm out of the split halves
