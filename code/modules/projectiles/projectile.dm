@@ -75,7 +75,7 @@
 	var/projectile_light = FALSE        // whether the projectile should emit light at all
 	var/projectile_max_bright    = 1.0 // brightness of light, must be no greater than 1.
 	var/projectile_inner_range   = 0.3 // inner range of light, can be negative
-	var/projectile_outer_range   = 1.5 // outer range of light, be negative
+	var/projectile_outer_range   = 1.5 // outer range of light, can be negative
 	var/projectile_falloff_curve = 6.0
 	var/projectile_brightness_color = "#fff3b2"
 
