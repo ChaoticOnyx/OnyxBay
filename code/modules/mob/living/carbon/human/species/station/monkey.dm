@@ -38,6 +38,7 @@
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
 	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
+	species_flags = SPECIES_FLAG_NO_ANTAG_TARGET
 
 	pass_flags = PASS_FLAG_TABLE
 	holder_type = /obj/item/holder
