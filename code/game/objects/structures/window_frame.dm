@@ -19,8 +19,9 @@
 	var/health = 20
 	var/is_inner = FALSE
 	var/state = 2
-	var/tinted = FALSE
+	var/tinted = FALSE // Electrochromic tint, not to be confused with the "opacity" variable
 	var/reinforced = FALSE
+	var/opacity = FALSE
 
 	var/explosion_block = 0
 	var/max_heat = T0C + 100
@@ -32,6 +33,8 @@
 /datum/windowpane/rglass/preset_material = MATERIAL_REINFORCED_GLASS
 /datum/windowpane/plass/preset_material = MATERIAL_PLASS
 /datum/windowpane/rplass/preset_material = MATERIAL_REINFORCED_PLASS
+/datum/windowpane/black/preset_material = MATERIAL_BLACK_GLASS
+/datum/windowpane/rblack/preset_material = MATERIAL_REINFORCED_BLACK_GLASS
 
 /datum/windowpane/New(obj/structure/window_frame/WF, material/M, inner = FALSE)
 	..()
@@ -67,6 +70,7 @@
 	max_health = M.integrity * 0.4
 	health = max_health
 	max_heat = M.melting_point
+	opacity = (M.opacity < 1.0) ? FALSE : TRUE
 
 	if(window_material.is_reinforced())
 		explosion_block += 1
@@ -116,6 +120,8 @@
 			shard_material = MATERIAL_GLASS
 		if(MATERIAL_REINFORCED_PLASS)
 			shard_material = MATERIAL_PLASS
+		if(MATERIAL_REINFORCED_BLACK_GLASS)
+			shard_material = MATERIAL_BLACK_GLASS
 	S.set_material(shard_material)
 
 	if(reinforced)
@@ -150,7 +156,7 @@
 	var/icon_border = "winborder"
 	density = FALSE
 	anchored = TRUE
-	opacity = TRUE
+	opacity = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = WINDOW_FRAME_LAYER
@@ -167,6 +173,7 @@
 	var/preset_outer_pane
 	var/preset_inner_pane
 
+	var/cable_color = COLOR_RED
 	var/electrochromic = TRUE // Disallows toggling tint when false. Should always be true by default unless manually toggled.
 	var/obj/item/device/assembly/signaler/signaler = null
 
@@ -322,6 +329,11 @@
 
 	layer = WINDOW_FRAME_LAYER
 
+	if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
+		var/image/I = image(icon, "[icon_base]_cable")
+		I.color = cable_color
+		overlays += I
+
 	if(signaler)
 		overlays += image(icon, "winframe_signaler")
 
@@ -353,6 +365,9 @@
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
+		if(inner_pane.opacity)
+			new_opacity = TRUE
+
 	if(outer_pane)
 		if(outer_pane.reinforced)
 			underlays += image(icon, "winframe_shadow")
@@ -383,6 +398,9 @@
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
+
+		if(outer_pane.opacity)
+			new_opacity = TRUE
 
 	if(outer_pane?.state >= 1)
 		var/list/dirs = list()
@@ -680,7 +698,7 @@
 				if(signaler)
 					signaler.forceMove(get_turf(src))
 					signaler = null
-				new /obj/item/stack/cable_coil/single(get_turf(src))
+				new /obj/item/stack/cable_coil(get_turf(src), 1, cable_color)
 				outer_pane?.set_tint(FALSE)
 		update_nearby_icons()
 		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -725,8 +743,10 @@
 				return
 			if(frame_state != old_state)
 				return
+			var/CC_color = CC.color
 			if(CC.use(1))
 				to_chat(user, SPAN("notice", "You've mounted some wiring onto the frame."))
+				cable_color = CC_color
 				set_state((frame_state == FRAME_NORMAL) ? FRAME_ELECTRIC : FRAME_RELECTRIC)
 				electrochromic = TRUE
 				update_nearby_icons()
@@ -1054,6 +1074,22 @@
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
 
+/obj/structure/window_frame/black
+	name = "window"
+	icon_state = "winframe-black"
+	opacity = TRUE
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/black
+
+/obj/structure/window_frame/rblack
+	name = "window"
+	icon_state = "winframe-rblack"
+	opacity = TRUE
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/rblack
+
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
 /obj/structure/window_frame/reinforced/hull
 	name = "reinforced window"
@@ -1115,6 +1151,47 @@
 	icon_state = "winframe_re-rglass"
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
+
+
+/obj/structure/window_frame/indestructible
+	name = "window"
+	icon_state = "winframe-rglass"
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/indestructible/hull
+	name = "reinforced window"
+	desc = "A reinforced window frame made of steel rods, capable of holding two windowpanes at once."
+	frame_state = FRAME_REINFORCED
+	icon_state = "winframe_r-rglass"
+	icon_base = "winframe_r"
+	icon_border = "winborder_r"
+	preset_inner_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/indestructible/grille
+	name = "windowed grille"
+	desc = "A flimsy lattice of metal rods, with screws to secure it to the floor."
+	frame_state = FRAME_GRILLE
+	icon_state = "grille-rglass"
+	icon_base = "grille"
+	icon_border = "winborder"
+
+/obj/structure/window_frame/indestructible/attack_hand()
+	return
+
+/obj/structure/window_frame/indestructible/attack_generic()
+	return
+
+/obj/structure/window_frame/indestructible/attackby()
+	return
+
+/obj/structure/window_frame/indestructible/ex_act()
+	return
+
+/obj/structure/window_frame/indestructible/hitby()
+	return
+
 
 #undef FRAME_DESTROYED
 #undef FRAME_NORMAL

@@ -224,7 +224,7 @@
 // Used in mapping to avoid
 /obj/structure/grille/broken
 	destroyed = 1
-	icon_state = "grille-b"
+	icon_state = "old-grille-b"
 	density = 0
 	New()
 		..()
