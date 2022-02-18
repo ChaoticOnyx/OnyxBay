@@ -87,6 +87,8 @@ var/list/worths = list(
 					/obj/item/stack/material/glass/reinforced = -12,
 					/obj/item/stack/material/glass/plass = -35,
 					/obj/item/stack/material/glass/rplass = -65,
+					/obj/item/stack/material/glass/black = -8,
+					/obj/item/stack/material/glass/rblack = -16,
 					/obj/item/stack/material = -5,
 //STACKS,
 					/obj/item/stack/medical/advanced/bruise_pack = -30,
