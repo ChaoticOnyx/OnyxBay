@@ -35,3 +35,6 @@
 		)
 
 	xenomorph_type = null
+
+/datum/species/vr_human/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

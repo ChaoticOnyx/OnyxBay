@@ -123,6 +123,12 @@
 	..()
 	H.item_state = lowertext(name)
 
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_CHANGELING) // For memes sake
+		return TRUE
+	return FALSE
+
+
 /datum/species/monkey/tajaran
 	name = "Farwa"
 	name_plural = "Farwa"

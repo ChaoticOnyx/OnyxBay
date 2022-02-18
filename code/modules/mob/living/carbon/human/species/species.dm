@@ -710,3 +710,6 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			facial_hair_style_by_gender[facialhairstyle] = S
 
 	return facial_hair_style_by_gender
+
+/datum/species/proc/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

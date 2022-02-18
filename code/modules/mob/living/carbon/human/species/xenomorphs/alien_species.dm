@@ -191,6 +191,9 @@
 	process_xeno_hud(H)
 	return TRUE
 
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	return FALSE
+
 
 // Caste species
 /datum/species/xenos/drone

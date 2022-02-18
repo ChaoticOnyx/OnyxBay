@@ -407,3 +407,6 @@ var/list/mob_hat_cache = list()
 	if(!controlling_ai)
 		return ..()
 	controlling_ai.open_subsystem(/datum/nano_module/law_manager)
+
+/mob/living/silicon/robot/drone/is_eligible_for_antag_spawn(antag_id)
+	return FALSE // Let's fucking nooooooot

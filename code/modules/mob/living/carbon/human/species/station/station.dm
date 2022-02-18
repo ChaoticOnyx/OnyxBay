@@ -430,3 +430,6 @@
 					for(var/datum/wound/W in E.wounds)
 						if(W.wound_damage() == 0 && prob(50))
 							E.wounds -= W
+
+/datum/species/diona/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

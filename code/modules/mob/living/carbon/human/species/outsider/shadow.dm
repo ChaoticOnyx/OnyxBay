@@ -37,3 +37,6 @@
 		H.take_overall_damage(1,1)
 	else //heal in the dark
 		H.heal_overall_damage(1,1)
+
+/datum/species/shadow/is_eligible_for_antag_spawn(antag_id)
+	return FALSE // No need to be more antagous than we already are

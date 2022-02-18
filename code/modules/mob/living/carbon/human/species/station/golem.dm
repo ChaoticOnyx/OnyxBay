@@ -32,3 +32,6 @@
 	H.real_name = "adamantine golem ([rand(1, 1000)])"
 	H.SetName(H.real_name)
 	..()
+
+/datum/species/golem/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

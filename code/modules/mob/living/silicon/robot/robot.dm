@@ -1280,5 +1280,7 @@
 
 	return
 
-
-
+/mob/living/silicon/robot/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_TRAITOR)
+		return TRUE
+	return FALSE
