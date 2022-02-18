@@ -1426,6 +1426,7 @@
 #include "code\modules\client\preference_setup\loadout\lists\_defines.dm"
 #include "code\modules\client\preference_setup\loadout\lists\accessories.dm"
 #include "code\modules\client\preference_setup\loadout\lists\clothing.dm"
+#include "code\modules\client\preference_setup\loadout\lists\custom.dm"
 #include "code\modules\client\preference_setup\loadout\lists\earwear.dm"
 #include "code\modules\client\preference_setup\loadout\lists\eyegear.dm"
 #include "code\modules\client\preference_setup\loadout\lists\food_drinks.dm"
