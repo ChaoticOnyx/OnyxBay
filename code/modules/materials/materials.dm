@@ -639,7 +639,7 @@ var/list/name_to_material
 	display_name = "tinted glass"
 	stack_type = /obj/item/stack/material/glass/black
 	icon_colour = "#111919"
-	window_icon_base = "bwindow"
+	window_icon_base = "blackwindow"
 	reflectance = 30
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	rod_product = /obj/item/stack/material/glass/rblack
@@ -652,7 +652,7 @@ var/list/name_to_material
 	display_name = "reinforced tinted glass"
 	stack_type = /obj/item/stack/material/glass/rblack
 	icon_colour = "#060a0a"
-	window_icon_base = "rbwindow"
+	window_icon_base = "rblackwindow"
 	integrity = 100
 	melting_point = T0C + 850
 	shard_type = SHARD_SHARD
