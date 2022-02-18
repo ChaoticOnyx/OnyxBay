@@ -843,9 +843,7 @@
 			choice.ask_for_input(user)
 
 /obj/item/device/electronic_assembly/proc/return_power()
-	if(battery)
-		return battery.charge * CELLRATE
-	return 0
+	return battery ? battery.charge * CELLRATE : 0
 
 /obj/item/device/electronic_assembly/emp_act(severity)
 	. = ..()
