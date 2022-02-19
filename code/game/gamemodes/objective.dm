@@ -8,35 +8,41 @@ var/global/list/all_objectives = list()
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 
-	New(text)
-		all_objectives |= src
-		if(text)
-			explanation_text = text
-		..()
+/datum/objective/New(text)
+	all_objectives |= src
+	if(text)
+		explanation_text = text
+	..()
 
-	Destroy()
-		all_objectives -= src
-		..()
+/datum/objective/Destroy()
+	all_objectives -= src
+	..()
 
-	proc/check_completion()
-		return completed
+/datum/objective/proc/check_completion()
+	return completed
 
-	proc/find_target()
-		var/list/possible_targets = list()
-		for(var/datum/mind/possible_target in SSticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+/datum/objective/proc/find_target()
+	var/list/possible_targets = list()
+	for(var/datum/mind/possible_target in SSticker.minds)
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+			var/mob/living/carbon/human/H = possible_target.current
+			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				possible_targets += possible_target
-		if(possible_targets.len > 0)
-			target = pick(possible_targets)
+	if(possible_targets.len > 0)
+		target = pick(possible_targets)
 
 
-	proc/find_target_by_role(role, role_type=0)//Option sets either to check assigned role or special role. Default to assigned.
-		for(var/datum/mind/possible_target in SSticker.minds)
-			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+/datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
+	for(var/datum/mind/possible_target in SSticker.minds)
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+			var/mob/living/carbon/human/H = possible_target.current
+			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
-				break
+			break
 
-	proc/update()
+/datum/objective/proc/update()
+	return
+
 
 datum/objective/assassinate
 	find_target()

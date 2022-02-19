@@ -630,3 +630,6 @@
 
 /mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)
+
+/mob/new_player/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

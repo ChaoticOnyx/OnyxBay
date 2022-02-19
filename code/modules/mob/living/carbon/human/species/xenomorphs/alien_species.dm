@@ -26,7 +26,7 @@
 	cold_level_2 = -1
 	cold_level_3 = -1
 
-	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_FLAG_NO_ANTAG_TARGET
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	reagent_tag = IS_XENOS
@@ -190,6 +190,9 @@
 	. = ..()
 	process_xeno_hud(H)
 	return TRUE
+
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	return FALSE
 
 
 // Caste species
