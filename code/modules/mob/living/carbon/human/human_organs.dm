@@ -28,7 +28,7 @@
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
 		for(var/datum/wound/W in E.wounds)
 			if(W.wound_damage() == 0 && prob(50))

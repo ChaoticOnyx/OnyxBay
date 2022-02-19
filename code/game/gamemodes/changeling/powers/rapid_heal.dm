@@ -54,7 +54,7 @@
 			continue
 		if(istype(regen_organ))
 			if(!regen_organ.damage && (regen_organ.status & ORGAN_BROKEN))
-				regen_organ.status &= ~ORGAN_BROKEN
+				regen_organ.mend_fracture()
 				to_chat(H, SPAN("changeling", "Bones in our [regen_organ] snap in place."))
 			else if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 10, 0)

@@ -626,7 +626,7 @@
 				E.status &= ~ORGAN_TENDON_CUT
 				blood_used += 12
 			if(E.status & ORGAN_BROKEN)
-				E.status &= ~ORGAN_BROKEN
+				E.mend_fracture()
 				E.stage = 0
 				blood_used += 12
 				healed = TRUE
