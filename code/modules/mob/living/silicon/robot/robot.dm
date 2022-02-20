@@ -1316,6 +1316,7 @@ var/global/list/robot_footstep_sounds = list(
 	if(antag_id == MODE_TRAITOR)
 		return TRUE
 	return FALSE
+
 /mob/living/silicon/robot/proc/play_footstep_sound()
 	if(!robot_footstep_sounds)
 		return
