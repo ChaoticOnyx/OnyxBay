@@ -353,7 +353,7 @@
 
 /obj/item/integrated_circuit/medical/med_scanner
 	name = "integrated medical analyser"
-	desc = "A very small version of the common medical analyser. This allows the machine to track some vital signs."
+	desc = "A miniaturized version of a common medical analyzer. This allows the machine to track some vital statistics."
 	icon_state = "medscan"
 	complexity = 4
 	inputs = list("target" = IC_PINTYPE_REF)
@@ -381,7 +381,7 @@
 
 /obj/item/integrated_circuit/medical/adv_med_scanner
 	name = "integrated adv. medical analyser"
-	desc = "A very small version of the medbot's medical analyser. This allows the machine to know how healthy someone is. \
+	desc = "A miniaturized version of an advanced medical analyzer. This allows the machine to know how healthy someone is. \
 	This type is much more precise, allowing the machine to know much more about the target than a normal analyzer."
 	icon_state = "medscan_adv"
 	complexity = 12
@@ -441,7 +441,7 @@
 
 /obj/item/integrated_circuit/medical/damaged_organs
 	name = "X-Ray scanner"
-	desc = "A very small version of the stationary x-ray scanner, with neural networks to detect damaged organs. This allows the machine to know how healthy someone is."
+	desc = "A miniaturized version of a stationary x-ray scanner, utilizing neural networks to precisely identify damaged internal organs."
 	icon_state = "medscan_adv"
 	complexity = 8
 	inputs = list("target" = IC_PINTYPE_REF)
