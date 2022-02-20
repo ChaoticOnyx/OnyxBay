@@ -24,9 +24,12 @@
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
+	var/masks_icon = 'icons/turf/wall_masks.dmi'
 
 /turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
 	..(newloc)
+	if(GLOB.using_map.legacy_mode)
+		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"
 	if(!materialtype)
 		materialtype = DEFAULT_WALL_MATERIAL

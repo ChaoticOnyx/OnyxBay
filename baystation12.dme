@@ -2813,6 +2813,7 @@
 #include "maps\exodus\frontier\frontier_areas.dm"
 #include "maps\exodus\frontier\frontier_define.dm"
 #include "maps\exodus\frontier-SCP\frontier-SCP_define.dm"
+#include "maps\exodus\genesis\genesis_define.dm"
 #include "maps\exodus\helltier2021\helltier_areas.dm"
 #include "maps\exodus\helltier2021\helltier_define.dm"
 #include "maps\~mapsystem\map_preferences.dm"
