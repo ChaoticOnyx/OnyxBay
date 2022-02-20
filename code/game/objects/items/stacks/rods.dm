@@ -77,6 +77,12 @@
 	if(!isturf(user.loc))
 		return
 
+	if(GLOB.using_map.legacy_mode)
+		place_grille(user)
+	else
+		place_window_frame(user)
+
+/obj/item/stack/rods/proc/place_window_frame(mob/user)
 	if(locate(/obj/structure/grille, user.loc))
 		for(var/obj/structure/grille/G in user.loc)
 			if(G.destroyed)
@@ -96,7 +102,7 @@
 			return
 		to_chat(usr, SPAN("notice", "Assembling a window frame..."))
 		in_use = TRUE
-		if(!do_after(usr, 10))
+		if(!do_after(usr, 1 SECOND))
 			in_use = FALSE
 			return
 		in_use = FALSE
@@ -109,6 +115,33 @@
 		WF.add_fingerprint(usr)
 		WF.anchored = FALSE
 		to_chat(user, SPAN("notice", "You assemble a window frame."))
+	return
+
+/obj/item/stack/rods/proc/place_grille(mob/user)
+	if(locate(/obj/structure/grille, user.loc))
+		for(var/obj/structure/grille/G in user.loc)
+			if(G.destroyed)
+				G.health = 10
+				G.set_density(1)
+				G.destroyed = 0
+				G.icon_state = "old-grille"
+				use(1)
+			return
+
+	else if(!in_use)
+		if(get_amount() < 2)
+			to_chat(user, SPAN("notice", "You need at least two rods to do this."))
+			return
+		to_chat(usr, SPAN("notice", "Assembling grille..."))
+		in_use = 1
+		if(!do_after(usr, 1 SECOND))
+			in_use = 0
+			return
+		var/obj/structure/grille/F = new /obj/structure/grille(user.loc)
+		to_chat(usr, SPAN("notice", "You assemble a grille"))
+		in_use = 0
+		F.add_fingerprint(user)
+		use(2)
 	return
 
 /obj/item/stack/rods/update_icon()
