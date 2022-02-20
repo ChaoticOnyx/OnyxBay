@@ -170,7 +170,7 @@ I said no!
 /datum/recipe/donkpocket
 	items = list(
 		/obj/item/reagent_containers/food/snacks/dough,
-		/obj/item/reagent_containers/food/snacks/meatball
+		/obj/item/reagent_containers/food/snacks/faggot
 	)
 	result = /obj/item/reagent_containers/food/snacks/donkpocket //SPECIAL
 	proc/warm_up(obj/item/reagent_containers/food/snacks/donkpocket/being_cooked)
@@ -501,11 +501,11 @@ I said no!
 		being_cooked.reagents.del_reagent(/datum/reagent/toxin/amatoxin)
 		return being_cooked
 
-/datum/recipe/meatballsoup
+/datum/recipe/faggotsoup
 	fruit = list("carrot" = 1, "potato" = 1)
 	reagents = list(/datum/reagent/water = 10)
-	items = list(/obj/item/reagent_containers/food/snacks/meatball)
-	result = /obj/item/reagent_containers/food/snacks/meatballsoup
+	items = list(/obj/item/reagent_containers/food/snacks/faggot)
+	result = /obj/item/reagent_containers/food/snacks/faggotsoup
 
 /datum/recipe/fathersoup
 	fruit = list("garlic" = 1, "flamechili" = 1, "tomato" = 1)
@@ -729,23 +729,23 @@ I said no!
 	items = list(/obj/item/reagent_containers/food/snacks/dough)
 	result = /obj/item/reagent_containers/food/snacks/poppypretzel
 
-/datum/recipe/meatballspagetti
+/datum/recipe/faggotspagetti
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/spagetti,
-		/obj/item/reagent_containers/food/snacks/meatball,
-		/obj/item/reagent_containers/food/snacks/meatball,
+		/obj/item/reagent_containers/food/snacks/faggot,
+		/obj/item/reagent_containers/food/snacks/faggot,
 	)
-	result = /obj/item/reagent_containers/food/snacks/meatballspagetti
+	result = /obj/item/reagent_containers/food/snacks/faggotspagetti
 
 /datum/recipe/spesslaw
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
 		/obj/item/reagent_containers/food/snacks/spagetti,
-		/obj/item/reagent_containers/food/snacks/meatball,
-		/obj/item/reagent_containers/food/snacks/meatball,
-		/obj/item/reagent_containers/food/snacks/meatball,
-		/obj/item/reagent_containers/food/snacks/meatball,
+		/obj/item/reagent_containers/food/snacks/faggot,
+		/obj/item/reagent_containers/food/snacks/faggot,
+		/obj/item/reagent_containers/food/snacks/faggot,
+		/obj/item/reagent_containers/food/snacks/faggot,
 	)
 	result = /obj/item/reagent_containers/food/snacks/spesslaw
 
@@ -841,7 +841,7 @@ I said no!
 
 /datum/recipe/sausage
 	items = list(
-		/obj/item/reagent_containers/food/snacks/meatball,
+		/obj/item/reagent_containers/food/snacks/faggot,
 		/obj/item/reagent_containers/food/snacks/cutlet,
 	)
 	result = /obj/item/reagent_containers/food/snacks/sausage
@@ -911,7 +911,7 @@ I said no!
 
 /datum/recipe/validsalad
 	fruit = list("potato" = 1, "ambrosia" = 3)
-	items = list(/obj/item/reagent_containers/food/snacks/meatball)
+	items = list(/obj/item/reagent_containers/food/snacks/faggot)
 	result = /obj/item/reagent_containers/food/snacks/validsalad
 	make_food(obj/container as obj)
 		var/obj/item/reagent_containers/food/snacks/validsalad/being_cooked = ..(container)
@@ -971,11 +971,11 @@ I said no!
 	)
 	result = /obj/item/reagent_containers/food/snacks/flatbread
 
-/datum/recipe/meatball
+/datum/recipe/faggot
 	items = list(
-		/obj/item/reagent_containers/food/snacks/rawmeatball
+		/obj/item/reagent_containers/food/snacks/rawfaggot
 	)
-	result = /obj/item/reagent_containers/food/snacks/meatball
+	result = /obj/item/reagent_containers/food/snacks/faggot
 
 /datum/recipe/cutlet
 	items = list(
@@ -1074,7 +1074,7 @@ I said no!
 	result = /obj/item/reagent_containers/food/snacks/eggbowl
 
 /datum/recipe/meatbun
-	items = list(/obj/item/reagent_containers/food/snacks/bun, /obj/item/reagent_containers/food/snacks/meatball)
+	items = list(/obj/item/reagent_containers/food/snacks/bun, /obj/item/reagent_containers/food/snacks/faggot)
 	reagents = list(/datum/reagent/nutriment/soysauce = 5)
 	fruit = list("cabbage" = 1)
 	result = /obj/item/reagent_containers/food/snacks/meatbun
