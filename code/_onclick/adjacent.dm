@@ -91,7 +91,7 @@ Quick adjacency (to turf):
 	for(var/turf/T in locs)
 		if(isnull(T))
 			continue
-		if(T.Adjacent(neighbor, target))
+		if(T.Adjacent(neighbor, target = neighbor))
 			return TRUE
 	return FALSE
 
@@ -118,8 +118,8 @@ Quick adjacency (to turf):
 		if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER) // windows have throwpass but are on border, check them first
 			if(O.dir & target_dir || O.dir & (O.dir-1)) // full tile windows are just diagonals mechanically
 				var/obj/structure/window/W = target
-				if(istype(W) && !W.is_fulltile()) //exception for breaking full tile windows on top of single pane windows
-					return FALSE
+				if(istype(W) && (W.is_fulltile() || W.dir == O.dir)) //exception for breaking full tile windows on top of single pane windows
+					return TRUE
 				if(istype(target, /obj/structure/window_frame)) // the same as full tile windows exception, but for the new ones
 					return TRUE
 				if(target && (target.atom_flags & ATOM_FLAG_ADJACENT_EXCEPTION)) // exception for atoms that should always be reachable
