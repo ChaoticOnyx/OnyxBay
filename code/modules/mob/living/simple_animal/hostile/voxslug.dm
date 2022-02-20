@@ -24,8 +24,9 @@ Small, little HP, poisonous.
 	pass_flags = PASS_FLAG_TABLE
 	melee_damage_lower = 5
 	melee_damage_upper = 10
-	holder_type = /obj/item/weapon/holder/voxslug
+	holder_type = /obj/item/holder/voxslug
 	faction = SPECIES_VOX
+	bodyparts = /decl/simple_animal_bodyparts/voxslug
 
 /mob/living/simple_animal/hostile/voxslug/ListTargets(dist = 7)
 	var/list/L = list()
@@ -54,7 +55,7 @@ Small, little HP, poisonous.
 
 /mob/living/simple_animal/hostile/voxslug/proc/attach(mob/living/carbon/human/H)
 	var/obj/item/organ/external/chest = H.organs_by_name["chest"]
-	var/obj/item/weapon/holder/voxslug/holder = new(get_turf(src))
+	var/obj/item/holder/voxslug/holder = new(get_turf(src))
 	src.forceMove(holder)
 	chest.embed(holder,0,"\The [src] latches itself onto \the [H]!")
 	holder.sync(src)
@@ -68,7 +69,7 @@ Small, little HP, poisonous.
 
 /mob/living/simple_animal/hostile/voxslug/Life()
 	. = ..()
-	if(. && istype(src.loc, /obj/item/weapon/holder) && isliving(src.loc.loc)) //We in somebody
+	if(. && istype(src.loc, /obj/item/holder) && isliving(src.loc.loc)) //We in somebody
 		var/mob/living/L = src.loc.loc
 		if(src.loc in L.get_visible_implants(0))
 			if(prob(1))
@@ -76,7 +77,7 @@ Small, little HP, poisonous.
 			var/datum/reagents/R = L.reagents
 			R.add_reagent(/datum/reagent/cryptobiolin, 0.5)
 
-/obj/item/weapon/holder/voxslug/attack(mob/target, mob/user)
+/obj/item/holder/voxslug/attack(mob/target, mob/user)
 	var/mob/living/simple_animal/hostile/voxslug/V = contents[1]
 	if(!V.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
@@ -87,3 +88,6 @@ Small, little HP, poisonous.
 		qdel(src)
 		return
 	..()
+
+/decl/simple_animal_bodyparts/voxslug
+	hit_zones = list("mouth", "tail")

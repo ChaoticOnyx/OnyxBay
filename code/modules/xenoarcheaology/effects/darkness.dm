@@ -1,11 +1,11 @@
 /datum/artifact_effect/darkness
 	name = "darkness"
 	effect_type = EFFECT_ENERGY
-	effect = list(EFFECT_AURA, EFFECT_PULSE)
 	var/dark_level
 
 /datum/artifact_effect/darkness/New()
 	..()
+	effect = EFFECT_AURA
 	effectrange = rand(2,12)
 	dark_level = rand(2,7)
 

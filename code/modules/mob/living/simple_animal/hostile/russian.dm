@@ -20,8 +20,9 @@
 	can_escape = 1
 	attacktext = "punched"
 	a_intent = I_HURT
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 	var/corpse = /obj/effect/landmark/corpse/russian
-	var/weapon1 = /obj/item/weapon/material/knife
+	var/weapon1 = /obj/item/material/knife
 	unsuitable_atoms_damage = 15
 	faction = "russian"
 	status_flags = CANPUSH
@@ -31,7 +32,7 @@
 	icon_state = "russianranged"
 	icon_living = "russianranged"
 	corpse = /obj/effect/landmark/corpse/russian/ranged
-	weapon1 = /obj/item/weapon/gun/projectile/revolver/mateba
+	weapon1 = /obj/item/gun/projectile/revolver/mateba
 	ranged = 1
 	projectiletype = /obj/item/projectile/bullet
 	projectilesound = 'sound/effects/weapons/gun/gunshot2.ogg'

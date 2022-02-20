@@ -407,7 +407,7 @@
 
 /obj/item/integrated_circuit/lists/jointext
 	name = "join text circuit"
-	desc = "This circuit will combine two lists into one, and output it as a string."
+	desc = "This circuit will output list as a string with delimiter."
 	extended_desc = "Default settings will encode the entire list into a string."
 	icon_state = "join"
 	inputs = list(

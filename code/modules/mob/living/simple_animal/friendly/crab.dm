@@ -13,7 +13,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	speak_chance = 1
 	turns_per_move = 3
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/snacks/meat
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm = "stomps"
@@ -23,11 +23,12 @@
 	density = 0
 	universal_speak = FALSE
 	universal_understand = TRUE
-	holder_type = /obj/item/weapon/holder/crab
+	holder_type = /obj/item/holder/crab
 	possession_candidate = TRUE
 	can_escape = TRUE //snip snip
 	controllable = TRUE
 	shy_animal = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/crab
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
@@ -52,3 +53,6 @@
 	response_harm = "stomps"
 	possession_candidate = FALSE
 	controllable = FALSE
+
+/decl/simple_animal_bodyparts/crab
+	hit_zones = list("cephalothorax", "abdomen", "left walking legs", "right walking legs", "left swimming legs", "right swimming legs", "left pincer", "right pincer")

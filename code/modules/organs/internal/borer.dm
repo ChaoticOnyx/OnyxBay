@@ -7,6 +7,7 @@
 	desc = "A disgusting space slug."
 	parent_organ = BP_HEAD
 	vital = 1
+	override_species_icon = TRUE
 
 /obj/item/organ/internal/borer/Process()
 

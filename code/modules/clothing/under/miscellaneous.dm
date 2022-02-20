@@ -29,23 +29,6 @@
 		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
 		return 0
 
-/obj/item/clothing/under/dress/maid
-	name = "maid uniform"
-	desc = "Traditional French maid uniform."
-	icon_state = "maid"
-
-/obj/item/clothing/under/dress/gothic_d
-	name = "Gothic dress"
-	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
-	icon_state = "gothic_d"
-	item_state = "gothic_d"
-	worn_state = "gothic_d"
-
-/obj/item/clothing/under/dress/bar_f
-	name = "black bartender dress"
-	desc = "A black bartender dress with a white blouse."
-	icon_state = "bar_f"
-
 /obj/item/clothing/under/rank/rosa
 	desc = "A dress commonly worn by the nursing staff in the medical departament"
 	name = "rosa dress"
@@ -427,6 +410,25 @@
 	desc = "The most fashionable prosecutor's dress."
 	icon_state = "franziska_dress"
 
+/obj/item/clothing/under/dress/maid
+	name = "maid uniform"
+	desc = "Traditional French maid uniform."
+	icon_state = "maid"
+
+/obj/item/clothing/under/dress/gothic_d
+	name = "Gothic dress"
+	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
+	icon_state = "gothic_d"
+	item_state = "gothic_d"
+	worn_state = "gothic_d"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/obj/item/clothing/under/dress/bar_f
+	name = "black bartender dress"
+	desc = "A black bartender dress with a white blouse."
+	icon_state = "bar_f"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
 //wedding stuff
 /obj/item/clothing/under/wedding
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
@@ -483,6 +485,7 @@
 	item_state_slots = list(
 		slot_hand_str = "black"
 		)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/shortjumpskirt
 	name = "short jumpskirt"
@@ -491,6 +494,7 @@
 	item_state_slots = list(
 		slot_hand_str = "white"
 		)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captainformal
 	name = "captain's formal uniform"

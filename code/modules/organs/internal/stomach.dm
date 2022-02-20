@@ -22,7 +22,7 @@
 	name = "prosthetic stomach"
 	icon_state = "stomach-prosthetic"
 
-/obj/item/organ/internal/stomach/removed()
+/obj/item/organ/internal/stomach/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	. = ..()
 	ingested.my_atom = src
 	ingested.parent = null

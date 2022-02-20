@@ -7,6 +7,7 @@
 	icon_state = "robot"
 	maxHealth = 200
 	health = 200
+	ignore_pull_slowdown = TRUE // Steel be strong
 
 	mob_bump_flag = ROBOT
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
@@ -41,7 +42,7 @@
 	var/obj/screen/robot_modules_background
 
 //3 Modules can be activated at any one time.
-	var/obj/item/weapon/robot_module/module = null
+	var/obj/item/robot_module/module = null
 	var/module_active = null
 	var/module_state_1 = null
 	var/module_state_2 = null
@@ -51,7 +52,7 @@
 	silicon_radio = /obj/item/device/radio/borg
 
 	var/mob/living/silicon/ai/connected_ai = null
-	var/obj/item/weapon/cell/cell = /obj/item/weapon/cell/high
+	var/obj/item/cell/cell = /obj/item/cell/high
 	var/obj/machinery/camera/camera = null
 
 	var/cell_emp_mult = 2
@@ -63,7 +64,7 @@
 
 	var/obj/item/device/pda/ai/rbPDA = null
 
-	var/obj/item/weapon/stock_parts/matter_bin/storage = null
+	var/obj/item/stock_parts/matter_bin/storage = null
 
 	var/opened = 0
 	var/emagged = 0
@@ -455,7 +456,7 @@
 // this function displays jetpack pressure in the stat panel
 /mob/living/silicon/robot/proc/show_jetpack_pressure()
 	// if you have a jetpack, show the internal tank pressure
-	var/obj/item/weapon/tank/jetpack/current_jetpack = installed_jetpack()
+	var/obj/item/tank/jetpack/current_jetpack = installed_jetpack()
 	if (current_jetpack)
 		stat("Internal Atmosphere Info", current_jetpack.name)
 		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
@@ -464,7 +465,7 @@
 // this function returns the robots jetpack, if one is installed
 /mob/living/silicon/robot/proc/installed_jetpack()
 	if(module)
-		return (locate(/obj/item/weapon/tank/jetpack) in module.modules)
+		return (locate(/obj/item/tank/jetpack) in module.modules)
 	return 0
 
 
@@ -500,7 +501,7 @@
 	return 0
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/Proj)
-	var/obj/item/weapon/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
+	var/obj/item/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
 	var/shield_handled = E?.handle_shield(src, Proj.damage, Proj)
 	if(shield_handled)
 		return shield_handled
@@ -509,8 +510,8 @@
 	if(prob(75) && Proj.damage > 0) spark_system.start()
 	return 2
 
-/mob/living/silicon/robot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
+/mob/living/silicon/robot/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
 	if(opened) // Are they trying to insert something?
@@ -535,7 +536,7 @@
 		if (!getBruteLoss())
 			to_chat(user, "Nothing to fix here!")
 			return
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if (src == user && !do_after(user, 30, src))
 			to_chat(user, "<span class='warning'>You must stand still to repair yourself!</span>")
 			return
@@ -625,7 +626,7 @@
 					opened = 1
 					update_icon()
 
-	else if (istype(W, /obj/item/weapon/stock_parts/matter_bin) && opened) // Installing/swapping a matter bin
+	else if (istype(W, /obj/item/stock_parts/matter_bin) && opened) // Installing/swapping a matter bin
 		if(storage)
 			to_chat(user, "You replace \the [storage] with \the [W]")
 			storage.forceMove(get_turf(src))
@@ -638,7 +639,7 @@
 		handle_selfinsert(W, user)
 		recalculate_synth_capacities()
 
-	else if (istype(W, /obj/item/weapon/cell) && opened)	// trying to put a cell inside
+	else if (istype(W, /obj/item/cell) && opened)	// trying to put a cell inside
 		var/datum/robot_component/C = components["power cell"]
 		if(wiresexposed)
 			to_chat(user, "Close the panel first.")
@@ -669,7 +670,7 @@
 		to_chat(user, "The wires have been [wiresexposed ? "exposed" : "unexposed"].")
 		update_icon()
 
-	else if(istype(W, /obj/item/weapon/screwdriver) && opened && cell)	// radio
+	else if(istype(W, /obj/item/screwdriver) && opened && cell)	// radio
 		if(silicon_radio)
 			silicon_radio.attackby(W,user)//Push it to the radio to let it handle everything
 		else
@@ -681,7 +682,7 @@
 			silicon_radio.attackby(W,user)//GTFO, you have your own procs
 		else
 			to_chat(user, "Unable to locate a radio.")
-	else if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda) || istype(W, /obj/item/weapon/card/robot))			// trying to unlock the interface with an ID card
+	else if (istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda) || istype(W, /obj/item/card/robot))			// trying to unlock the interface with an ID card
 		if(emagged)//still allow them to open the cover
 			to_chat(user, "The interface seems slightly damaged")
 		if(opened)
@@ -719,8 +720,8 @@
 
 
 /mob/living/silicon/robot/proc/handle_selfinsert(obj/item/W, mob/user)
-	if ((user == src) && istype(get_active_hand(),/obj/item/weapon/gripper))
-		var/obj/item/weapon/gripper/H = get_active_hand()
+	if ((user == src) && istype(get_active_hand(),/obj/item/gripper))
+		var/obj/item/gripper/H = get_active_hand()
 		if (W.loc == H) //if this triggers something has gone very wrong, and it's safest to abort
 			return
 		else if (H.wrapped == W)
@@ -769,18 +770,18 @@
 			return 1
 	else if(istype(M, /mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = M
-		if(check_access(R.get_active_hand()) || istype(R.get_active_hand(), /obj/item/weapon/card/robot))
+		if(check_access(R.get_active_hand()) || istype(R.get_active_hand(), /obj/item/card/robot))
 			return 1
 	return 0
 
-/mob/living/silicon/robot/proc/check_access(obj/item/weapon/card/id/I)
+/mob/living/silicon/robot/proc/check_access(obj/item/card/id/I)
 	if(!istype(req_access, /list)) //something's very wrong
 		return 1
 
 	var/list/L = req_access
 	if(!L.len) //no requirements
 		return 1
-	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
+	if(!I || !istype(I, /obj/item/card/id) || !I.access) //not ID or no access
 		return 0
 	for(var/req in req_access)
 		if(req in I.access) //have one of the required accesses
@@ -934,7 +935,7 @@
 	. = ..()
 
 	if(module)
-		if(module.type == /obj/item/weapon/robot_module/janitor/general)
+		if(module.type == /obj/item/robot_module/janitor/general)
 			var/turf/tile = loc
 			if(isturf(tile))
 				tile.clean_blood()
@@ -965,8 +966,8 @@
 								cleaned_human.update_inv_shoes(0)
 							cleaned_human.clean_blood(1)
 							to_chat(cleaned_human, "<span class='warning'>[src] cleans your face!</span>")
-/*		if(module.type == /obj/item/weapon/robot_module/engineering)
-			var/obj/item/weapon/robot_module/engineering/general/mod = src.module
+/*		if(module.type == /obj/item/robot_module/engineering)
+			var/obj/item/robot_module/engineering/general/mod = src.module
 			var/turf/tile = loc
 			world<< mod.synths
 			locate() in
@@ -1019,8 +1020,8 @@
 		return
 	emagged = 1
 	emag_master = name
-	if(module && istype(module,/obj/item/weapon/robot_module/security))
-		var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in R.module.modules
+	if(module && istype(module,/obj/item/robot_module/security))
+		var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate() in R.module.modules
 		if(LC)
 			LC.locked = 0
 	message_admins("Cyborg [key_name_admin(R)] emagged itself.")
@@ -1029,11 +1030,11 @@
 	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
 	if(R.module)
 		var/rebuild = 0
-		for(var/obj/item/weapon/pickaxe/borgdrill/D in R.module.modules)
+		for(var/obj/item/pickaxe/borgdrill/D in R.module.modules)
 			qdel(D)
 			rebuild = 1
 		if(rebuild)
-			R.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(R.module)
+			R.module.modules += new /obj/item/pickaxe/diamonddrill(R.module)
 			R.module.rebuild()
 	update_icon()
 
@@ -1055,9 +1056,8 @@
 	set category = "IC"
 	set src = usr
 
-	var/obj/item/W = get_active_hand()
-	if (W)
-		W.attack_self(src)
+	var/obj/item/I = get_active_hand()
+	I?.attack_self(src)
 
 	return
 
@@ -1177,8 +1177,8 @@
 		else
 			sleep(6)
 			if(prob(50))
-				if(module && istype(module,/obj/item/weapon/robot_module/security))
-					var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
+				if(module && istype(module,/obj/item/robot_module/security))
+					var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
 					if (LC)
 						LC.locked = 0
 				emagged = 1
@@ -1196,7 +1196,7 @@
 				GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
 				if(isrobot(user))
 					var/mob/living/silicon/robot/R = user
-					if(R.module && istype(R.module,/obj/item/weapon/robot_module/research) && R.emagged)
+					if(R.module && istype(R.module,/obj/item/robot_module/research) && R.emagged)
 						emag_master = R.emag_master
 						if(emag_master)
 							set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
@@ -1228,11 +1228,11 @@
 						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
 					if(src.module)
 						var/rebuild = 0
-						for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
+						for(var/obj/item/pickaxe/borgdrill/D in src.module.modules)
 							qdel(D)
 							rebuild = 1
 						if(rebuild)
-							src.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(src.module)
+							src.module.modules += new /obj/item/pickaxe/diamonddrill(src.module)
 							src.module.rebuild()
 					update_icon()
 			else
@@ -1280,5 +1280,7 @@
 
 	return
 
-
-
+/mob/living/silicon/robot/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_TRAITOR)
+		return TRUE
+	return FALSE

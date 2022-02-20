@@ -28,7 +28,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/list/admin_levels = list()   // Z-levels for admin functionality (Centcom, shuttle transit, etc)
 	var/list/contact_levels = list() // Z-levels that can be contacted from the station, for eg announcements
 	var/list/player_levels = list()  // Z-levels a character can typically reach
-	var/list/sealed_levels = list()  // Z-levels that don't allow random transit at edge
+	var/list/sealed_levels = list()  // Z-levels that don't allow random transit at edge and vortex teleport
 	var/list/empty_levels = null     // Empty Z-levels that may be used for various things (currently used by bluespace jump)
 
 	var/list/map_levels              // Z-levels available to various consoles, such as the crew monitor. Defaults to station_levels if unset.

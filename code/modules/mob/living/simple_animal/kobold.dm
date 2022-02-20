@@ -15,7 +15,7 @@
 	see_in_dark = 6
 	maxHealth = 75
 	health = 75
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/monkey
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
@@ -24,6 +24,7 @@
 	universal_speak = 1
 	universal_understand = 1
 	possession_candidate = 1
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
 /mob/living/simple_animal/kobold/Life()
 	..()

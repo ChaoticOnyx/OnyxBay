@@ -19,6 +19,8 @@
 #define MATERIAL_REINFORCED_GLASS        "rglass"
 #define MATERIAL_PLASS                   "plass"
 #define MATERIAL_REINFORCED_PLASS        "rplass"
+#define MATERIAL_BLACK_GLASS             "bglass"
+#define MATERIAL_REINFORCED_BLACK_GLASS  "rbglass"
 #define MATERIAL_MARBLE                  "marble"
 #define MATERIAL_RESIN                   "resin"
 #define MATERIAL_CULT                    "cult"

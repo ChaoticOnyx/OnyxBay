@@ -217,7 +217,7 @@
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
 	var/does_announce_visit = 1
-	var/obj/item/weapon/card/id/id_card = null
+	var/obj/item/card/id/id_card = null
 
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
 	id_card = I.GetIdCard()

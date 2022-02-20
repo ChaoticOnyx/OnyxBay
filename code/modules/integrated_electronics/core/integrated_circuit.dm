@@ -94,9 +94,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
-		if(isrobot(user))
-			return TRUE
-		return CanUseTopic(user)
+		return CanUseTopic(user) && !user.incapacitated()
 
 /obj/item/integrated_circuit/Initialize()
 	. = ..()
@@ -109,14 +107,14 @@ a creative player the means to solve many problems.  Circuits are held inside an
 
 /obj/item/integrated_circuit/proc/get_power_cell(atom/movable/AM)
 	var/efficient = 1
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	// add below cell getting code from device to get correct cell
 	if(isrobot(AM))
 		var/mob/living/silicon/robot/R = AM
 		efficient = 0.9
 		cell = R.cell
 
-	else if(istype(AM, /obj/item/weapon/cell))
+	else if(istype(AM, /obj/item/cell))
 		cell = AM
 
 	else if(istype(AM, /obj/machinery/power/apc))
@@ -127,8 +125,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		var/obj/machinery/mining/drill/hdrill = AM
 		cell = hdrill.cell
 
-	else if(istype(AM, /obj/item/weapon/gun/energy) && !istype(AM, /obj/item/weapon/gun/energy/plasmacutter))
-		var/obj/item/weapon/gun/energy/WEP = AM
+	else if(istype(AM, /obj/item/gun/energy) && !istype(AM, /obj/item/gun/energy/plasmacutter))
+		var/obj/item/gun/energy/WEP = AM
 		cell = WEP.power_supply
 		efficient = 0.6
 

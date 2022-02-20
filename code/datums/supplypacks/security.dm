@@ -3,9 +3,9 @@
 
 /decl/hierarchy/supply_pack/security/specialops
 	name = "Special Ops supplies"
-	contains = list(/obj/item/weapon/storage/box/emps,
-					/obj/item/weapon/grenade/smokebomb = 3,
-					/obj/item/weapon/grenade/chem_grenade/incendiary)
+	contains = list(/obj/item/storage/box/emps,
+					/obj/item/grenade/smokebomb = 3,
+					/obj/item/grenade/chem_grenade/incendiary)
 	cost = 20
 	containername = "\improper Special Ops crate"
 	hidden = 1
@@ -76,11 +76,11 @@
 
 /decl/hierarchy/supply_pack/security/riotarmor
 	name = "Armor - Riot gear"
-	contains = list(/obj/item/weapon/shield/riot = 4,
+	contains = list(/obj/item/shield/riot = 4,
 					/obj/item/clothing/head/helmet/riot = 4,
 					/obj/item/clothing/suit/armor/riot = 4,
-					/obj/item/weapon/storage/box/flashbangs,
-					/obj/item/weapon/storage/box/teargas)
+					/obj/item/storage/box/flashbangs,
+					/obj/item/storage/box/teargas)
 	cost = 80
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Riot armor crate"
@@ -116,7 +116,7 @@
 
 /decl/hierarchy/supply_pack/security/rig
 	name = "Armor - Security RIG"
-	contains = list(/obj/item/weapon/rig/security)
+	contains = list(/obj/item/rig/security)
 	cost = 480
 	containername = "\improper Security RIG crate"
 	containertype = /obj/structure/closet/crate/secure
@@ -125,9 +125,9 @@
 /decl/hierarchy/supply_pack/security/weapons
 	name = "Weapons - Security basic"
 	contains = list(/obj/item/device/flash = 4,
-					/obj/item/weapon/reagent_containers/spray/pepper = 4,
-					/obj/item/weapon/melee/baton/loaded = 4,
-					/obj/item/weapon/gun/energy/taser = 4)
+					/obj/item/reagent_containers/spray/pepper = 4,
+					/obj/item/melee/baton/loaded = 4,
+					/obj/item/gun/energy/taser = 4)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Weapons crate"
@@ -135,8 +135,8 @@
 
 /decl/hierarchy/supply_pack/security/nonlethal
 	name = "Weapons - Non-lethal energy weapons"
-	contains = list(/obj/item/weapon/gun/energy/taser/carbine = 2,
-					/obj/item/weapon/gun/energy/stunrevolver/rifle = 2)
+	contains = list(/obj/item/gun/energy/taser/carbine = 2,
+					/obj/item/gun/energy/stunrevolver/rifle = 2)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Non-lethal energy weapons crate"
@@ -144,7 +144,7 @@
 
 /decl/hierarchy/supply_pack/security/egun
 	name = "Weapons - Energy sidearms"
-	contains = list(/obj/item/weapon/gun/energy/gun = 4)
+	contains = list(/obj/item/gun/energy/gun = 4)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Energy sidearms crate"
@@ -153,7 +153,7 @@
 
 /decl/hierarchy/supply_pack/security/laser
 	name = "Weapons - Laser carbines"
-	contains = list(/obj/item/weapon/gun/energy/laser = 2)
+	contains = list(/obj/item/gun/energy/laser = 2)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Laser carbines crate"
@@ -162,7 +162,7 @@
 
 /decl/hierarchy/supply_pack/security/marksman
 	name = "Weapons - Energy marksman rifles"
-	contains = list(/obj/item/weapon/gun/energy/sniperrifle = 2)
+	contains = list(/obj/item/gun/energy/sniperrifle = 2)
 	cost = 80
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Energy marksman rifles crate"
@@ -171,9 +171,9 @@
 
 /decl/hierarchy/supply_pack/security/ion
 	name = "Weapons - Electromagnetic"
-	contains = list(/obj/item/weapon/gun/energy/ionrifle,
-					/obj/item/weapon/gun/energy/ionrifle/small,
-					/obj/item/weapon/storage/box/emps)
+	contains = list(/obj/item/gun/energy/ionrifle,
+					/obj/item/gun/energy/ionrifle/small,
+					/obj/item/storage/box/emps)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Electromagnetic weapons crate"
@@ -182,7 +182,7 @@
 
 /decl/hierarchy/supply_pack/security/pistol
 	name = "Weapons - Ballistic sidearms"
-	contains = list(/obj/item/weapon/gun/projectile/pistol/vp78 = 4)
+	contains = list(/obj/item/gun/projectile/pistol/vp78 = 4)
 	cost = 40
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic sidearms crate"
@@ -191,7 +191,7 @@
 
 /decl/hierarchy/supply_pack/security/shotgun
 	name = "Weapons - Shotgun"
-	contains = list(/obj/item/weapon/gun/projectile/shotgun/pump/combat = 2)
+	contains = list(/obj/item/gun/projectile/shotgun/pump/combat = 2)
 	cost = 60
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Shotgun crate"
@@ -200,7 +200,7 @@
 
 /decl/hierarchy/supply_pack/security/smg
 	name = "Weapons - Ballistic PDW"
-	contains = list(/obj/item/weapon/gun/projectile/automatic/wt550 = 2)
+	contains = list(/obj/item/gun/projectile/automatic/wt550 = 2)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic PDW crate"
@@ -209,7 +209,7 @@
 
 /decl/hierarchy/supply_pack/security/rifle
 	name = "Weapons - Ballistic rifles"
-	contains = list(/obj/item/weapon/gun/projectile/automatic/z8 = 2)
+	contains = list(/obj/item/gun/projectile/automatic/z8 = 2)
 	cost = 80
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Ballistic rifles crate"
@@ -218,7 +218,7 @@
 
 /decl/hierarchy/supply_pack/security/flashbang
 	name = "Weapons - Flashbangs"
-	contains = list(/obj/item/weapon/storage/box/flashbangs = 2)
+	contains = list(/obj/item/storage/box/flashbangs = 2)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Flashbang crate"
@@ -226,7 +226,7 @@
 
 /decl/hierarchy/supply_pack/security/teargas
 	name = "Weapons - Tear gas grenades"
-	contains = list(/obj/item/weapon/storage/box/teargas = 2)
+	contains = list(/obj/item/storage/box/teargas = 2)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Tear gas grenades crate"
@@ -234,7 +234,7 @@
 
 /decl/hierarchy/supply_pack/security/frag
 	name = "Weapons - Frag grenades"
-	contains = list(/obj/item/weapon/storage/box/frags = 2)
+	contains = list(/obj/item/storage/box/frags = 2)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Frag grenades crate"
@@ -276,8 +276,8 @@
 
 /decl/hierarchy/supply_pack/security/shotgunammo
 	name = "Ammunition - Lethal shells"
-	contains = list(/obj/item/weapon/storage/box/shotgun/slugs = 2,
-					/obj/item/weapon/storage/box/shotgun/shells = 2)
+	contains = list(/obj/item/storage/box/shotgun/slugs = 2,
+					/obj/item/storage/box/shotgun/shells = 2)
 	cost = 60
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Lethal shotgun shells crate"
@@ -286,7 +286,7 @@
 
 /decl/hierarchy/supply_pack/security/shotgunbeanbag
 	name = "Ammunition - Beanbag shells"
-	contains = list(/obj/item/weapon/storage/box/shotgun/beanbags = 3)
+	contains = list(/obj/item/storage/box/shotgun/beanbags = 3)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper Beanbag shotgun shells crate"
@@ -334,48 +334,48 @@
 	containername = "\improper 7.62 practice ammunition crate"
 	access = access_security
 
-/decl/hierarchy/supply_pack/security/c44spec
-	name = "Ammunition - .44 SPEC 3in1"
-	contains = list(/obj/item/ammo_magazine/c44/spec = 3)
+/decl/hierarchy/supply_pack/security/c38spec
+	name = "Ammunition - .38 SPEC 3in1"
+	contains = list(/obj/item/ammo_magazine/c38/spec = 3)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper .44 SPEC ammunition crate"
+	containername = "\improper .38 SPEC ammunition crate"
 	access = access_forensics_lockers
 
-/decl/hierarchy/supply_pack/security/c44chem
-	name = "Ammunition - .44 CHEM 3in1"
-	contains = list(/obj/item/ammo_magazine/c44/chem = 3)
+/decl/hierarchy/supply_pack/security/c38chem
+	name = "Ammunition - .38 CHEM 3in1"
+	contains = list(/obj/item/ammo_magazine/c38/chem = 3)
 	cost = 45
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper .44 CHEM ammunition crate"
+	containername = "\improper .38 CHEM ammunition crate"
 	access = access_forensics_lockers
 
 /decl/hierarchy/supply_pack/security/forensics //Not access-restricted so PIs can use it.
 	name = "Forensics - Auxiliary tools"
-	contains = list(/obj/item/weapon/forensics/sample_kit,
-					/obj/item/weapon/forensics/sample_kit/powder,
-					/obj/item/weapon/storage/box/swabs = 3,
-					/obj/item/weapon/reagent_containers/spray/luminol)
+	contains = list(/obj/item/forensics/sample_kit,
+					/obj/item/forensics/sample_kit/powder,
+					/obj/item/storage/box/swabs = 3,
+					/obj/item/reagent_containers/spray/luminol)
 	cost = 30
 	containername = "\improper Auxiliary forensic tools crate"
 
 /decl/hierarchy/supply_pack/security/detectivegear
 	name = "Forensics - investigation equipment"
-	contains = list(/obj/item/weapon/storage/box/evidence = 2,
-					/obj/item/weapon/cartridge/detective,
+	contains = list(/obj/item/storage/box/evidence = 2,
+					/obj/item/cartridge/detective,
 					/obj/item/device/radio/headset/headset_sec,
 					/obj/item/taperoll/police,
 					/obj/item/clothing/glasses/sunglasses,
 					/obj/item/device/camera,
-					/obj/item/weapon/folder/red,
-					/obj/item/weapon/folder/blue,
+					/obj/item/folder/red,
+					/obj/item/folder/blue,
 					/obj/item/clothing/gloves/forensic,
 					/obj/item/device/taperecorder,
 					/obj/item/device/mass_spectrometer,
 					/obj/item/device/camera_film = 2,
-					/obj/item/weapon/storage/photo_album,
+					/obj/item/storage/photo_album,
 					/obj/item/device/reagent_scanner,
-					/obj/item/weapon/storage/briefcase/crimekit = 2)
+					/obj/item/storage/briefcase/crimekit = 2)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Forensic equipment crate"
@@ -402,7 +402,7 @@
 	contains = list(/obj/item/clothing/head/bio_hood/security,
 					/obj/item/clothing/suit/bio_suit/security,
 					/obj/item/clothing/mask/gas,
-					/obj/item/weapon/tank/oxygen,
+					/obj/item/tank/oxygen,
 					/obj/item/clothing/gloves/latex)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure

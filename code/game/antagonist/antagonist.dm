@@ -59,7 +59,6 @@
 	var/datum/mind/leader                   // Current leader, if any.
 	var/cur_max = 0                         // Autotraitor current effective maximum.
 	var/spawned_nuke                        // Has a bomb been spawned?
-	var/nuke_spawn_loc                      // If so, where should it be placed?
 	var/list/current_antagonists = list()   // All marked antagonists for this type.
 	var/list/pending_antagonists = list()   // Candidates that are awaiting finalized antag status.
 	var/list/starting_locations =  list()   // Spawn points.
@@ -69,7 +68,7 @@
 
 	// ID card stuff.
 	var/default_access = list()
-	var/id_type = /obj/item/weapon/card/id
+	var/id_type = /obj/item/card/id
 
 	var/antag_text = "You are an antagonist! Within the rules, \
 		try to act as an opposing force to the crew. Further RP and try to make sure \
@@ -124,7 +123,11 @@
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(!is_mob_type_allowed(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
+			if(ishuman(player.current))
+				var/mob/living/carbon/human/H = player.current
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Either '[H.type]' is not an allowed type of mob or '[H.species]' is not an allowed species!")
+			else
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
 		else
 			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
 			candidates |= player
@@ -195,6 +198,7 @@
 
 	if(called_by_storyteller)
 		player.was_antag_given_by_storyteller = TRUE
+		player.antag_was_given_at = roundduration2text()
 
 	reset_antag_selection()
 
@@ -235,7 +239,7 @@
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
 		var/answer = alert_timeout(
 			recipient = player.current,
-			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?",
 			title = "Do you want to play [role_text]?",
 			timeout = 100,
 			button1 = "Yes",
@@ -290,14 +294,6 @@
 /datum/antagonist/proc/is_mob_type_allowed(datum/mind/player)
 	ASSERT(player)
 	ASSERT(player.current)
-	if (istype(player.current, /mob/living/carbon/human))
+	if(isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
 		return TRUE
-	if (istype(player.current, /mob/living/silicon/robot))
-		return TRUE
-	if (istype(player.current, /mob/living/silicon/ai))
-		return TRUE
-	if (isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
-		return TRUE
-	if (istype(player.current, /mob/new_player))
-		return TRUE
-	return FALSE
+	return player.current.is_eligible_for_antag_spawn(id)

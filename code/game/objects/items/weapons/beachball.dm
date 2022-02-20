@@ -1,4 +1,4 @@
-/obj/item/weapon/beach_ball
+/obj/item/beach_ball
 	icon = 'icons/misc/beach.dmi'
 	icon_state = "ball"
 	name = "beach ball"

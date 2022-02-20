@@ -1,6 +1,8 @@
 
 /obj/item/grab
 	name = "grab"
+	canremove = FALSE
+	force_drop = TRUE
 
 	var/mob/living/carbon/human/affecting = null
 	var/mob/living/carbon/human/assailant = null
@@ -17,6 +19,7 @@
 
 	var/attacking = 0
 	var/target_zone
+	var/done_struggle = FALSE // Used by struggle grab datum to keep track of state.
 
 	w_class = ITEM_SIZE_NO_CONTAINER
 	throw_range = 3
@@ -30,6 +33,7 @@
 	affecting = victim
 	target_zone = attacker.zone_sel.selecting
 	var/obj/item/O = get_targeted_organ()
+
 	SetName("[name] ([O.name])")
 
 	if(start_grab_name)
@@ -44,7 +48,7 @@
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)
-	if(!assailant)
+	if(!assailant || !affecting)
 		return
 	switch(assailant.a_intent)
 		if(I_HELP)
@@ -57,9 +61,14 @@
 
 /obj/item/grab/dropped()
 	..()
-	loc = null
-	if(!QDELETED(src))
+	delete_self()
+
+/obj/item/grab/proc/delete_self()
+	if(!QDELING(src))
 		qdel(src)
+
+/obj/item/grab/can_be_dropped_by_client(mob/M)
+	return M == assailant
 
 /obj/item/grab/Destroy()
 	if(affecting)
@@ -68,7 +77,10 @@
 		affecting.reset_plane_and_layer()
 		affecting = null
 	if(assailant)
+		assailant.u_equip(src)
+		assailant.client?.screen -= src
 		assailant = null
+		loc = null
 	return ..()
 
 /*
@@ -87,15 +99,6 @@
 	else
 		return 0
 
-
-/obj/item/grab/proc/force_drop()
-	if(assailant)
-		assailant.drop_from_inventory(src)
-	else
-		loc = null
-		if(!QDELETED(src))
-			qdel(src)
-
 /obj/item/grab/proc/is_eligible()
 	// can't grab non-carbon/human/'s
 	if(!istype(affecting))
@@ -108,6 +111,11 @@
 		return FALSE
 
 	if(assailant.buckled || affecting.buckled)
+		return FALSE
+
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you were grabbing!"))
 		return FALSE
 
 	return TRUE
@@ -136,6 +144,9 @@
 	if(!assailant || !affecting)
 		return 0
 
+	if(assailant.lying)
+		return 0
+
 	if(assailant == affecting)
 		to_chat(assailant, "<span class='notice'>You can't grab yourself.</span>")
 		return 0
@@ -147,6 +158,11 @@
 	if(assailant.grabbed_by.len)
 		to_chat(assailant, "<span class='notice'>You can't grab someone if you're being grabbed.</span>")
 		return 0
+
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you tried to grab!"))
+		return 0 // This check is kinda extra, but you can never be sure
 
 	return 1
 
@@ -190,7 +206,7 @@
 		current_grab.enter_as_up(src)
 
 /obj/item/grab/proc/downgrade()
-	var/datum/grab/downgrab = current_grab.downgrade(src)
+	var/datum/grab/downgrab = current_grab.downgrade()
 	if(downgrab)
 		current_grab = downgrab
 		update_icons()
@@ -218,18 +234,18 @@
 /obj/item/grab/proc/handle_resist()
 	current_grab.handle_resist(src)
 
-/obj/item/grab/proc/adjust_position(force = 0)
+/obj/item/grab/proc/adjust_position(force = FALSE)
 	if(force)
 		affecting.forceMove(assailant.loc)
 
 	if(!assailant || !affecting || !assailant.Adjacent(affecting))
-		qdel(src)
-		return 0
+		delete_self()
+		return FALSE
 	else
 		current_grab.adjust_position(src)
 
 /obj/item/grab/proc/reset_position()
-	current_grab.reset_position(src)
+	current_grab?.reset_position(src)
 
 /obj/item/grab/proc/has_hold_on_organ(obj/item/organ/external/O)
 	if(!O)
@@ -256,8 +272,8 @@
 /obj/item/grab/proc/can_absorb()
 	return current_grab.can_absorb
 
-/obj/item/grab/proc/assailant_reverse_facing()
-	return current_grab.reverse_facing
+/obj/item/grab/proc/reverse_moving()
+	return current_grab.reverse_moving
 
 /obj/item/grab/proc/shield_assailant()
 	return current_grab.shield_assailant
@@ -274,12 +290,8 @@
 /obj/item/grab/proc/ladder_carry()
 	return current_grab.ladder_carry
 
-/obj/item/grab/proc/assailant_moved()
-	current_grab.assailant_moved(src)
-
 /obj/item/grab/proc/restrains()
 	return current_grab.restrains
 
 /obj/item/grab/proc/resolve_openhand_attack()
 		return current_grab.resolve_openhand_attack(src)
-

@@ -18,7 +18,12 @@
 
 /decl/communication_channel/pray/receive_communication(mob/communicator, mob/receiver, message)
 	..()
-	if(receiver.client.holder && !receiver.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO)
+
+	var/client/C = receiver.client
+
+	if(C.holder\
+		&& C.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_YES\
+		&& C.get_preference_value(/datum/client_preference/staff/pray_sound) == GLOB.PREF_YES)
 		sound_to(receiver, sound('sound/effects/ding.ogg'))
 
 /decl/communication_channel/pray/get_message_type()

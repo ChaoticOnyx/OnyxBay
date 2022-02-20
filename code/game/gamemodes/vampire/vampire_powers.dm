@@ -612,7 +612,7 @@
 
 			// remove embedded objects and drop them on the floor
 			for(var/obj/implanted_object in current_organ.implants)
-				if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+				if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 					implanted_object.loc = get_turf(src)
 					current_organ.implants -= implanted_object
 
@@ -626,7 +626,7 @@
 				E.status &= ~ORGAN_TENDON_CUT
 				blood_used += 12
 			if(E.status & ORGAN_BROKEN)
-				E.status &= ~ORGAN_BROKEN
+				E.mend_fracture()
 				E.stage = 0
 				blood_used += 12
 				healed = TRUE

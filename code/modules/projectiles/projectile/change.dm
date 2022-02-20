@@ -5,6 +5,8 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIGHT_CYAN
 
 /obj/item/projectile/change/on_hit(atom/change)
 	wabbajack(change)
@@ -21,11 +23,11 @@
 			if(Robot.mmi)
 				qdel(Robot.mmi)
 		else
-			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
-					qdel(W)
+			for(var/obj/item/I in M)
+				if(istype(I, /obj/item/implant))	//TODO: Carn. give implants a dropped() or something
+					qdel(I)
 					continue
-				M.drop_from_inventory(W)
+				M.drop_from_inventory(I)
 
 		var/mob/living/new_mob
 

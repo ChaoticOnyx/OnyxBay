@@ -10,14 +10,16 @@
 
 	var/damage = BLOB_DAMAGE
 
-	var/fire_resist = BLOB_FIRE_RESIST
-	var/brute_resist = BLOB_BRUTE_RESIST
-
 	var/static/upgrade_tree = BLOB_UPGRADE_TREE
 	/// Contains the "core" blob.
 	/// When that core is dead (deleted) - our blob can't expand anymore.
 	/// FIXME: These links prevents the core blob from garbage collecting (somehow even weakrefs doesn't help).
 	var/obj/structure/blob/core = null
+
+	var/_attack_cooldown
+	var/_expand_cooldown
+	var/_upgrade_cooldown
+	var/_health_cooldown
 
 /obj/structure/blob/New(loc, obj/structure/blob/core)
 	. = ..()
@@ -25,18 +27,32 @@
 	src.core = core
 	health = max_health
 
+	_attack_cooldown  = world.time
+	_expand_cooldown  = world.time
+	_upgrade_cooldown = world.time
+	_health_cooldown  = world.time
+
 /obj/structure/blob/Initialize()
 	. = ..()
 
 	START_PROCESSING(SSobj, src)
 
-/obj/structure/blob/core/Destroy()
-	. = ..()
-
-	STOP_PROCESSING(SSobj, src)
-
 /obj/structure/blob/proc/can_expand()
-	return (core && !QDELETED(core))
+	if(QDELETED(core))
+		return FALSE
+
+	if(TICK_CHECK)
+		return FALSE
+
+	var/dist = get_dist(src, core)
+	if(dist > BLOB_MAX_DISTANCE_FROM_CORE)
+		var/chance_to_spawn = max(BLOB_MIN_CHANCE_TO_SPAWN, 100 - (dist - BLOB_MAX_DISTANCE_FROM_CORE) * 10)
+		if(prob(chance_to_spawn))
+			return TRUE
+
+		return FALSE
+
+	return TRUE
 
 /// When a blob is far than `BLOB_EFFICIENT_REGENERATION_DISTANCE` then a distance penalty applies to `BLOB_REGENERATION_MULTIPLIER`.
 /obj/structure/blob/proc/heal()
@@ -93,23 +109,15 @@
 	var/turf/current_loc = loc
 	for(var/dir in list(NORTH, EAST, SOUTH, WEST, UP, DOWN))
 		var/possible_loc = get_step(src, dir)
-
-		if(dir == UP)
-			if(istype(possible_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			// Skip not suitable for z-level checks
-			continue
-
-		if(dir == DOWN)
-			if(istype(current_loc, /turf/simulated/open))
-				possible_locs += possible_loc
-
-			continue
-
 		var/loc_is_not_suitable = istype(possible_loc, /turf/space)\
 								|| istype(possible_loc, /turf/simulated/wall)\
+								|| istype(possible_loc, /turf/simulated/mineral)\
 								|| (locate(/obj/structure/blob) in possible_loc)
+
+		if(dir == UP)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(possible_loc, /turf/simulated/open)
+		else if(dir == DOWN)
+			loc_is_not_suitable = loc_is_not_suitable || !istype(current_loc, /turf/simulated/open)
 
 		if(loc_is_not_suitable)
 			continue
@@ -129,10 +137,10 @@
 	if(!life())
 		return TRUE
 
-	THROTTLE(attack_cooldown, BLOB_ATTACK_COOLDOWN)
-	THROTTLE(expand_cooldown, BLOB_EXPAND_COOLODNW)
-	THROTTLE(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN)
-	THROTTLE(health_cooldown, BLOB_HEAL_COOLDOWN)
+	THROTTLE_SHARED(attack_cooldown, BLOB_ATTACK_COOLDOWN, _attack_cooldown)
+	THROTTLE_SHARED(expand_cooldown, BLOB_EXPAND_COOLODNW, _expand_cooldown)
+	THROTTLE_SHARED(upgrade_cooldown, BLOB_UPGRADE_COOLDOWN, _upgrade_cooldown)
+	THROTTLE_SHARED(health_cooldown, BLOB_HEAL_COOLDOWN, _health_cooldown)
 
 	if(health_cooldown)
 		heal()
@@ -162,48 +170,47 @@
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	var/damage = 0
 
-	if (istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if (istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 
 		if (W.welding)
-			damage += (BLOB_WELDING_BASE_DAMAGE / fire_resist)
+			damage += BLOB_WELDING_BASE_DAMAGE
 			playsound(I, 'sound/items/welder.ogg', 60, TRUE)
 
 	if (I.sharp)
-		damage += (BLOB_SHAPR_BASE_DAMAGE / brute_resist)
+		damage += BLOB_SHAPR_BASE_DAMAGE
 
 	if (I.edge)
-		damage += (BLOB_EDGE_BASE_DAMAGE / brute_resist)
+		damage += BLOB_EDGE_BASE_DAMAGE
 
 	if (!I.sharp && !I.edge)
-		damage += (BLOB_BLUNT_BASE_DAMAGE / brute_resist)
+		damage += BLOB_BLUNT_BASE_DAMAGE
 
-	health -= damage
+	health -= min(damage, BLOB_DAMAGE_CAP)
 
 /obj/structure/blob/blob_act()
 	return
 
 /obj/structure/blob/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
-	var/damage = min(0.01 * exposed_temperature / fire_resist, 0)
+	var/damage = min(0.01 * exposed_temperature, 0)
 
 	if (damage)
 		health -= damage
 		update_icon()
 
+/obj/structure/blob/flamer_fire_act(burnlevel)
+	health -= min(burnlevel * 2.5, BLOB_DAMAGE_CAP)
+	update_icon()
+
 /obj/structure/blob/ex_act(severity)
-	health -= ((BLOB_EXPLOSION_BASE_DAMAGE / brute_resist) - (severity * 5))
+	health -= min(BLOB_EXPLOSION_BASE_DAMAGE - (severity * 5), BLOB_DAMAGE_CAP)
 	update_icon()
 
 /obj/structure/blob/bullet_act(obj/item/projectile/P)
 	..()
 
-	switch(P.damage_type)
-		if (BRUTE)
-			health -= (P.damage / brute_resist)
-		if (BURN)
-			health -= (P.damage / fire_resist)
-
+	health -= min(P.damage, BLOB_DAMAGE_CAP)
 	update_icon()
 
 /obj/structure/blob/Crossed(O)

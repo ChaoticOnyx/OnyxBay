@@ -8,12 +8,13 @@
 	icon_state = "emerg"
 
 	anchored = TRUE
+	layer = ABOVE_WINDOW_LAYER
 
-	var/obj/item/weapon/tank/tank
+	var/obj/item/tank/tank
 	var/mob/living/carbon/breather
 	var/obj/item/clothing/mask/breath/contained
 
-	var/spawn_type = /obj/item/weapon/tank/emergency/oxygen/engi
+	var/spawn_type = /obj/item/tank/emergency/oxygen/engi
 	var/mask_type = /obj/item/clothing/mask/breath/emergency
 	var/icon_state_open = "emerg_open"
 	var/icon_state_closed = "emerg"
@@ -130,7 +131,7 @@
 		return
 	return 1
 
-/obj/machinery/oxygen_pump/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/oxygen_pump/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		stat ^= MAINT
 		user.visible_message("<span class='notice'>\The [user] [stat & MAINT ? "opens" : "closes"] \the [src].</span>", "<span class='notice'>You [stat & MAINT ? "open" : "close"] \the [src].</span>")
@@ -139,7 +140,7 @@
 		if(!stat)
 			icon_state = icon_state_closed
 		//TO-DO: Open icon
-	if(istype(W, /obj/item/weapon/tank) && (stat & MAINT))
+	if(istype(W, /obj/item/tank) && (stat & MAINT))
 		if(tank)
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else
@@ -148,7 +149,7 @@
 			tank = W
 			user.visible_message("<span class='notice'>\The [user] installs \the [tank] into \the [src].</span>", "<span class='notice'>You install \the [tank] into \the [src].</span>")
 			src.add_fingerprint(user)
-	if(istype(W, /obj/item/weapon/tank) && !stat)
+	if(istype(W, /obj/item/tank) && !stat)
 		to_chat(user, "<span class='warning'>Please open the maintenance hatch first.</span>")
 
 /obj/machinery/oxygen_pump/examine(mob/user)
@@ -241,7 +242,7 @@
 
 /obj/machinery/oxygen_pump/anesthetic
 	name = "anesthetic pump"
-	spawn_type = /obj/item/weapon/tank/anesthetic
+	spawn_type = /obj/item/tank/anesthetic
 	icon_state = "anesthetic_tank"
 	icon_state_closed = "anesthetic_tank"
 	icon_state_open = "anesthetic_tank_open"

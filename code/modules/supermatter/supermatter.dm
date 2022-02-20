@@ -391,7 +391,7 @@
 			var/obj/item/clothing/glasses/hud/G = H.glasses
 			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
 				continue
-			var/obj/item/weapon/rig/R = H.back
+			var/obj/item/rig/R = H.back
 			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
 				continue
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
@@ -463,8 +463,8 @@
 		ui.set_auto_update(1)
 
 
-/obj/machinery/power/supermatter/attackby(obj/item/weapon/W, mob/living/user)
-	if(istype(W, /obj/item/weapon/tape_roll))
+/obj/machinery/power/supermatter/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/tape_roll))
 		to_chat(user, "You repair some of the damage to \the [src] with \the [W].")
 		damage = max(damage -10, 0)
 
