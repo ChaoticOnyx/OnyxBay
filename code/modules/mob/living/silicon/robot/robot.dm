@@ -851,8 +851,6 @@ var/global/list/robot_footstep_sounds = list(
 		if("engiborg+tread", "secborg+tread", "Miner")
 			// TODO: Add truck sound
 			footstep_sound = null
-		else
-			CRASH("Invalid robot icon '[icon_state]'")
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
