@@ -21,7 +21,7 @@
 
 /obj/item/integrated_circuit/medical/surgery_device
 	name = "basic surgery device" // help, I don't know, how to name this circuit :(
-	desc = "This circuit contains instructions to use medical instruments for body manipulation. Perhaps it does operation like a surgery instrument inserted in it."
+	desc = "This device is a manipulator compatible with most surgical instruments. While holding such an instrument, it can perform various surgical operations."
 	extended_desc = "Takes a target ref to do operation on and bodypart of target to do operation on, pulse activation pin, have a happy operation!"
 	ext_cooldown = 10
 	complexity = 20
@@ -322,7 +322,7 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/face
 	name = "plastic surgery device"
-	desc = "This circuit contains instructions to use medical instruments for face manipulation. Perhaps it does operation like a surgery instrument inserted in it."
+	desc = "This device is a manipulator compatible with surgical instruments used for plastic surgery. While holding such an instrument, it can perform the facial reconstructing operation."
 	extended_desc = "Takes a target ref to do operation, pulse activation pin, have a happy operation!"
 	inputs = list("target"   = IC_PINTYPE_REF)
 	surgery_items_type_list = list(
@@ -465,7 +465,7 @@
 
 /obj/item/integrated_circuit/medical/organ_info
 	name = "X-ray organ analyzer"
-	desc = "A very small version of the stationary x-ray scanner, with neural networks to get info about organ. This allows the machine to know status of organ inside someone."
+	desc = "A miniaturized version of a stationary x-ray scanner, utilizing neural networks to receive information about internal organs inside a living (or not much living) body."
 	icon_state = "medscan_adv"
 	complexity = 8
 	inputs = list("organ" = IC_PINTYPE_REF)
@@ -509,7 +509,7 @@
 
 /obj/item/integrated_circuit/medical/bodypart_info
 	name = "body part analyzer"
-	desc = "A very small version of the medbot's medical analyser. This allows the machine to know how healthy someone is. \
+	desc = "A miniaturized version of a specific medical analyzer. It is capable of receiving detailed information about one's bodyparts. \
 	This type is much more precise, allowing the machine to know much more about the target's bodypart than a normal analyzer."
 	icon_state = "medscan_adv"
 	complexity = 8
@@ -561,7 +561,7 @@
 
 /obj/item/integrated_circuit/medical/get_organs
 	name = "Organ locator"
-	desc = "A very small version of the medbot's medical analyser. This allows the machine to know what organs inside target. \
+	desc = "A miniaturized version of a specific medical analyzer. It is capable of identifying internal organs contained in the target's body. \
 	This type is much more precise, allowing the machine to know much more about the target's organs than a normal analyzer."
 	icon_state = "medscan_adv"
 	complexity = 12
@@ -603,7 +603,7 @@
 
 /obj/item/integrated_circuit/medical/refiller
 	name = "Medical refiller"
-	desc = "A device used to refill gel tubes and organ fixers, that inside or near circuit."
+	desc = "A device used to refill medical gel tubes and organ fixers' storage located inside or in direct reach of the circuit."
 	complexity = 8
 	inputs = list(
 		"target" = IC_PINTYPE_REF,
