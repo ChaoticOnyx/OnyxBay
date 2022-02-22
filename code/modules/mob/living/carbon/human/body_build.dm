@@ -44,7 +44,7 @@ var/global/datum/body_build/default_body_build = new
 		return I // Nonexistent slot, just give 'em an empty icon
 	for(var/datum/body_build/BB in list(src, default_body_build))
 		switch(slot)
-			if(slot_handcuffed_str || slot == slot_legcuffed_str)
+			if(slot_handcuffed_str, slot_legcuffed_str)
 				I = BB.misk_icon
 			else
 				I = BB.clothing_icons[slot]
