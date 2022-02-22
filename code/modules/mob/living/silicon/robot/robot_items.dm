@@ -86,7 +86,6 @@
 		return
 	if(istype(target, /obj/item) || istype(target, /obj/item/modular_computer))
 		return
-			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
