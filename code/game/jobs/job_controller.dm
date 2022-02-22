@@ -425,19 +425,22 @@ var/global/datum/controller/occupations/job_master
 				for(var/thing in H.client.prefs.Gear())
 					var/datum/gear/G = gear_datums[thing]
 					if(G)
-						var/permitted
-						if(G.allowed_roles)
+						var/permitted = TRUE
+						if(length(G.allowed_roles))
+							permitted = FALSE
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
-									permitted = 1
-						else
-							permitted = 1
+									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
-							permitted = 0
+							permitted = FALSE
+
+						if(!G.is_allowed_to_equip(H))
+							permitted = FALSE
 
 						if(!permitted)
-							to_chat(H, "<span class='warning'>Your current species, job or whitelist status does not permit you to spawn with [thing]!</span>")
+							to_chat(H, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
 							continue
 
 						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
@@ -572,7 +575,7 @@ var/global/datum/controller/occupations/job_master
 		if(istext(player_age)) // database not initialized
 			player_age = 0
 		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
-			var/obj/item/weapon/pinpointer/wayfinding/W = new(H)
+			var/obj/item/pinpointer/wayfinding/W = new(H)
 			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
 			if(equipped)
 				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))

@@ -10,6 +10,7 @@
 	opacity = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	layer = CLOSED_DOOR_LAYER
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	var/open_layer = OPEN_DOOR_LAYER
@@ -54,6 +55,7 @@
 	else
 		layer = open_layer
 		explosion_resistance = 0
+		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 
 	if(width > 1)
@@ -228,7 +230,7 @@
 			to_chat(user, "<span class='warning'>\The [src] must be closed before you can repair it.</span>")
 			return
 
-		var/obj/item/weapon/weldingtool/welder = I
+		var/obj/item/weldingtool/welder = I
 		if(welder.remove_fuel(0,user))
 			to_chat(user, "<span class='notice'>You start to fix dents and weld \the [repairing] into place.</span>")
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
@@ -248,18 +250,21 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(src.density && istype(I, /obj/item/weapon) && user.a_intent == I_HURT && !istype(I, /obj/item/weapon/card))
-		var/obj/item/weapon/W = I
-		if(W.damtype == BRUTE || W.damtype == BURN)
+	if(isobj(I) && density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
+		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
-			user.setClickCooldown(W.update_attack_cooldown())
-			if(W.force < min_force)
-				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [W] with no visible effect.</span>")
+			user.setClickCooldown(I.update_attack_cooldown())
+			if(I.force <= 0)
+				user.visible_message(SPAN("notice", "\The [user] smacks \the [src] with \the [I] with no visible effect."))
+				playsound(loc, hitsound, 10, 1)
+			else if(I.force < min_force)
+				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I] with no visible effect.</span>")
+				playsound(loc, hitsound, 25, 1)
 			else
-				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [W]!</span>")
-				playsound(src.loc, hitsound, 100, 1)
-				take_damage(W.force)
-				shake_animation(3,3)
+				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [I]!</span>")
+				playsound(loc, hitsound, 100, 1)
+				take_damage(I.force)
+				shake_animation(3, 3)
 		return
 
 	if(src.operating > 0 || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
@@ -365,50 +370,54 @@
 	return
 
 
-/obj/machinery/door/proc/open(forced = 0)
+/obj/machinery/door/proc/open(forced = FALSE)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_open(forced))
 		return
-	operating = 1
+	operating = TRUE
 
 	do_animate("opening")
 	icon_state = "door0"
-	set_opacity(0)
+	set_opacity(FALSE)
 	sleep(3)
-	src.set_density(0)
+	set_density(FALSE)
 	update_nearby_tiles()
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 	sleep(7)
-	src.layer = open_layer
+	layer = open_layer
 	explosion_resistance = 0
 	update_icon()
-	set_opacity(0)
-	operating = 0
+	set_opacity(FALSE)
+	operating = FALSE
 
 	if(autoclose)
 		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
-	return 1
+	return TRUE
 
-/obj/machinery/door/proc/close(forced = 0)
+/obj/machinery/door/proc/close(forced = FALSE, push_mobs = TRUE)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
 			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return
-	operating = 1
+	operating = TRUE
 
 	do_animate("closing")
 	sleep(3)
-	src.set_density(1)
+	set_density(TRUE)
 	explosion_resistance = initial(explosion_resistance)
-	src.layer = closed_layer
+	layer = closed_layer
 	update_nearby_tiles()
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	sleep(7)
 	update_icon()
 	if(visible && !glass)
-		set_opacity(1)	//caaaaarn!
-	operating = 0
+		set_opacity(TRUE) //caaaaarn!
+	operating = FALSE
+
+	shove_everything(shove_mobs = push_mobs, min_w_class = ITEM_SIZE_NORMAL) // Door shields cheesy meta must be gone.
 
 	//I shall not add a check every x ticks if a door has closed over some fire.
 	var/obj/fire/fire = locate() in loc

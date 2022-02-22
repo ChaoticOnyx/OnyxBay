@@ -2,7 +2,7 @@
 				INTERNAL ORGANS DEFINES
 ****************************************************/
 /obj/item/organ/internal
-	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/organ
+	food_organ_type = /obj/item/reagent_containers/food/snacks/organ
 	throwforce = 0.1 // Enough to upset you, not enough to crack your ribcage open
 	var/dead_icon // Icon to use when the organ has died.
 	var/surface_accessible = FALSE
@@ -112,6 +112,7 @@
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
+	override_species_icon = TRUE
 	icon = 'icons/mob/human_races/organs/cyber.dmi'
 
 /obj/item/organ/internal/proc/getToxLoss()

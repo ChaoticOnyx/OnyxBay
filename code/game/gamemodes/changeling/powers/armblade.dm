@@ -5,7 +5,7 @@
 	desc = "We reform our hand into a deadly arm blade."
 	icon_state = "ling_armblade"
 	required_chems = 40
-	power_item_type = /obj/item/weapon/melee/changeling/arm_blade
+	power_item_type = /obj/item/melee/changeling/arm_blade
 
 /datum/changeling_power/item/armblade/activate()
 	if(check_incapacitated())
@@ -24,6 +24,6 @@
 
 /datum/changeling_power/item/armblade/update_recursive_enhancement()
 	if(..())
-		power_item_type = /obj/item/weapon/melee/changeling/arm_blade/greater
+		power_item_type = /obj/item/melee/changeling/arm_blade/greater
 	else
-		power_item_type = /obj/item/weapon/melee/changeling/arm_blade
+		power_item_type = /obj/item/melee/changeling/arm_blade

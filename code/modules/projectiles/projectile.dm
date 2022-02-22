@@ -72,6 +72,13 @@
 	var/matrix/effect_transform			// matrix to rotate and scale projectile effects - putting it here so it doesn't
 										//  have to be recreated multiple times
 
+	var/projectile_light = FALSE        // whether the projectile should emit light at all
+	var/projectile_max_bright    = 1.0 // brightness of light, must be no greater than 1.
+	var/projectile_inner_range   = 0.3 // inner range of light, can be negative
+	var/projectile_outer_range   = 1.5 // outer range of light, can be negative
+	var/projectile_falloff_curve = 6.0
+	var/projectile_brightness_color = "#fff3b2"
+
 /obj/item/projectile/Initialize()
 	damtype = damage_type //TODO unify these vars properly
 	if(!hitscan)
@@ -79,7 +86,13 @@
 	if(config.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
-	else animate_movement = NO_STEPS
+	else
+		animate_movement = NO_STEPS
+
+	if(projectile_light)
+		layer = ABOVE_LIGHTING_LAYER
+		plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		set_light(projectile_max_bright, projectile_inner_range, projectile_outer_range, projectile_falloff_curve, projectile_brightness_color)
 	. = ..()
 
 /obj/item/projectile/Destroy()
@@ -173,7 +186,7 @@
 		QDEL_NULL_LIST(segments)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0)
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
 		qdel(src)

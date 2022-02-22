@@ -220,11 +220,16 @@ var/list/gear_datums = list()
 			continue
 		if(hide_donate_gear && (G.price || G.patron_tier))
 			continue
+		if(!G.is_allowed_to_display(user))
+			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
 		var/allowed_to_see = gear_allowed_to_see(G)
 		var/display_class
 		var/discountText
+		if(ticked && !gear_allowed_to_equip(G, user))
+			toggle_gear(G)
+			ticked = FALSE
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
@@ -288,7 +293,7 @@ var/list/gear_datums = list()
 			. += "<b>Slot:</b> [slot_to_description(selected_gear.slot)]<br>"
 		. += "<b>Loadout Points:</b> [selected_gear.cost]<br>"
 
-		if(selected_gear.allowed_roles)
+		if(length(selected_gear.allowed_roles))
 			. += "<b>Has jobs restrictions!</b>"
 			. += "<br>"
 			. += "<i>"
@@ -351,8 +356,10 @@ var/list/gear_datums = list()
 		if(selected_gear.gear_tweaks.len)
 			. += "<br><b>Options:</b><br>"
 			for(var/datum/gear_tweak/tweak in selected_gear.gear_tweaks)
-				. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak.get_contents(selected_tweaks["[tweak]"])]</a>"
-				. += "<br>"
+				var/tweak_contents = tweak.get_contents(selected_tweaks["[tweak]"])
+				if(tweak_contents)
+					. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak_contents]</a>"
+					. += "<br>"
 
 		. += "<br>"
 
@@ -409,19 +416,8 @@ var/list/gear_datums = list()
 	if(href_list["toggle_gear"])
 		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
 
-		// check if someone trying to tricking us. However, it's may be just a bug
-		ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
-		ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
+		toggle_gear(TG, user)
 
-		if(TG.display_name in pref.gear_list[pref.gear_slot])
-			pref.gear_list[pref.gear_slot] -= TG.display_name
-		else
-			var/total_cost = 0
-			for(var/gear_name in pref.gear_list[pref.gear_slot])
-				var/datum/gear/G = gear_datums[gear_name]
-				if(istype(G)) total_cost += G.cost
-			if((total_cost+TG.cost) <= config.max_gear_cost)
-				pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["tweak"])
 		var/datum/gear_tweak/tweak = locate(href_list["tweak"])
@@ -538,7 +534,7 @@ var/list/gear_datums = list()
 	if(!G.path)
 		return FALSE
 
-	if(G.allowed_roles)
+	if(length(G.allowed_roles))
 		ASSERT(job_master)
 		var/list/jobs = new
 		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
@@ -561,13 +557,22 @@ var/list/gear_datums = list()
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
 	ASSERT(G)
-	ASSERT(user && user.client)
-	ASSERT(user.client.donator_info)
-	if(G.price && !user.client.donator_info.has_item(G.type))
-		return FALSE
-	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
-		return FALSE
-	return TRUE
+	return G.is_allowed_to_equip(user)
+
+/datum/category_item/player_setup_item/loadout/proc/toggle_gear(datum/gear/TG, mob/user)
+	// check if someone trying to tricking us. However, it's may be just a bug
+	ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
+	ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
+
+	if(TG.display_name in pref.gear_list[pref.gear_slot])
+		pref.gear_list[pref.gear_slot] -= TG.display_name
+	else
+		var/total_cost = 0
+		for(var/gear_name in pref.gear_list[pref.gear_slot])
+			var/datum/gear/G = gear_datums[gear_name]
+			if(istype(G)) total_cost += G.cost
+		if((total_cost+TG.cost) <= config.max_gear_cost)
+			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
@@ -597,10 +602,25 @@ var/list/gear_datums = list()
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
 		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
 
+/datum/gear/proc/is_allowed_to_equip(mob/user)
+	ASSERT(user && user.client)
+	ASSERT(user.client.donator_info)
+	if(price && !user.client.donator_info.has_item(type))
+		return FALSE
+	if(patron_tier && !user.client.donator_info.patreon_tier_available(patron_tier))
+		return FALSE
+	if(!is_allowed_to_display(user))
+		return FALSE
+	return TRUE
+
 /datum/gear/proc/get_description(metadata)
 	. = description
 	for(var/datum/gear_tweak/gt in gear_tweaks)
 		. = gt.tweak_description(., metadata["[gt]"])
+
+// used when we forbid seeing gear in menu without any messages.
+/datum/gear/proc/is_allowed_to_display(mob/user)
+	return TRUE
 
 /datum/gear_data
 	var/path

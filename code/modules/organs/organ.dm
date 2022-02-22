@@ -29,7 +29,7 @@ var/list/organ_cache = list()
 	var/death_time
 
 	var/food_organ_type				  // path of food made from organ, ex.
-	var/obj/item/weapon/reagent_containers/food/snacks/food_organ
+	var/obj/item/reagent_containers/food/snacks/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
 /obj/item/organ/return_item()
@@ -152,7 +152,7 @@ var/list/organ_cache = list()
 		var/obj/item/organ/O = loc
 		return O.is_preserved()
 	else
-		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
+		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
 /obj/item/organ/examine(mob/user)
 	. = ..()

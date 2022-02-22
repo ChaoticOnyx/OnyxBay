@@ -10,7 +10,7 @@
 	icon_screen = "dna"
 	active_power_usage = 800
 	clicksound = 'sound/machines/console_click.ogg'
-	circuit = /obj/item/weapon/circuitboard/neuromod_rnd
+	circuit = /obj/item/circuitboard/neuromod_rnd
 
 	// RESEARCHING AND DEVELOPMENT
 	var/research_progress = 0
@@ -31,7 +31,7 @@
 	idle_power_usage = 40
 
 	// Disks which this console accepts
-	var/list/accepts_disks = list(/obj/item/weapon/disk/neuromod_disk, /obj/item/weapon/disk/lifeform_disk)
+	var/list/accepts_disks = list(/obj/item/disk/neuromod_disk, /obj/item/disk/lifeform_disk)
 
 /* UI */
 
@@ -110,7 +110,7 @@
 				TakeReagents()
 				is_develop = TRUE
 
-				var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = GetNeuromodShell()
+				var/obj/item/reagent_containers/neuromod_shell/neuromod_shell = GetNeuromodShell()
 				var/datum/lifeform/L = GLOB.lifeforms.Get(selected_lifeform)
 				neuromod_shell.created_for = L.mob_type
 
@@ -154,12 +154,12 @@
 	data["development_ready"] = DevelopmentReady(user)
 	data["development_progress"] = development_progress
 
-	var/obj/item/weapon/disk/disk = GetDisk()
+	var/obj/item/disk/disk = GetDisk()
 
 	if (disk)
-		if (istype(disk, /obj/item/weapon/disk/neuromod_disk))
+		if (istype(disk, /obj/item/disk/neuromod_disk))
 			data["disk"] = "neuromod"
-		else if (istype(disk, /obj/item/weapon/disk/lifeform_disk))
+		else if (istype(disk, /obj/item/disk/lifeform_disk))
 			data["disk"] = "lifeform"
 
 	return data
@@ -280,7 +280,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/LoadNeuromodFromDisk()
-	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = GetDisk()
+	var/obj/item/disk/neuromod_disk/neuromod_disk = GetDisk()
 
 	if (!neuromod_disk || !neuromod_disk.neuromod)
 		return
@@ -297,7 +297,7 @@
 	if (!neuromod_type)
 		crash_with("neuromod_type is null")
 
-	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = GetNeuromodDisk()
+	var/obj/item/disk/neuromod_disk/neuromod_disk = GetNeuromodDisk()
 
 	if (!neuromod_disk)
 		return
@@ -427,7 +427,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/LoadLifeformFromDisk()
-	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = GetDisk()
+	var/obj/item/disk/lifeform_disk/lifeform_disk = GetDisk()
 
 	if (!lifeform_disk || !lifeform_disk.lifeform_data)
 		return
@@ -447,7 +447,7 @@
 		crash_with("lifeform_type is null")
 		return
 
-	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = GetLifeformDisk()
+	var/obj/item/disk/lifeform_disk/lifeform_disk = GetLifeformDisk()
 
 	if (!lifeform_disk)
 		return
@@ -464,13 +464,13 @@
 	Returns an inserted disk
 
 	Returns:
-	/obj/item/weapon/disk/
+	/obj/item/disk/
 	OR
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetDisk()
 	for (var/disk_type in accepts_disks)
-		var/obj/item/weapon/disk/disk = null
+		var/obj/item/disk/disk = null
 		disk = (locate(disk_type) in contents)
 
 		if (disk) return disk
@@ -481,13 +481,13 @@
 	Get an inserted lifeform data disk
 
 	Returns:
-	/obj/item/weapon/disk/lifeform_disk/
+	/obj/item/disk/lifeform_disk/
 	OR
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetLifeformDisk()
-	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = null
-	lifeform_disk = (locate(/obj/item/weapon/disk) in contents)
+	var/obj/item/disk/lifeform_disk/lifeform_disk = null
+	lifeform_disk = (locate(/obj/item/disk) in contents)
 
 	return lifeform_disk
 
@@ -495,13 +495,13 @@
 	Get an inserted neuromod data disk
 
 	Returns:
-	/obj/item/weapon/disk/neuromod_disk/
+	/obj/item/disk/neuromod_disk/
 	OR
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetNeuromodDisk()
-	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = null
-	neuromod_disk = (locate(/obj/item/weapon/disk) in contents)
+	var/obj/item/disk/neuromod_disk/neuromod_disk = null
+	neuromod_disk = (locate(/obj/item/disk) in contents)
 
 	return neuromod_disk
 
@@ -512,7 +512,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/EjectDisk()
-	var/obj/item/weapon/disk/disk = GetDisk()
+	var/obj/item/disk/disk = GetDisk()
 
 	if (!disk) return
 
@@ -530,7 +530,7 @@
 		to_chat(usr, "Console's disk slot is already occupied.")
 		return
 
-	var/obj/item/weapon/disk/disk = usr.get_active_hand()
+	var/obj/item/disk/disk = usr.get_active_hand()
 
 	if (!disk) return
 
@@ -546,7 +546,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/ClearNeuromodShell()
-	var/obj/item/weapon/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
+	var/obj/item/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
 
 	if (!shell || !shell.neuromod) return
 
@@ -565,7 +565,7 @@
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/NeuromodShellToList()
-	var/obj/item/weapon/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
+	var/obj/item/reagent_containers/neuromod_shell/shell = GetNeuromodShell()
 
 	if (!shell) return null
 
@@ -586,12 +586,12 @@
 	Returns an inserted neuromod shell
 
 	Returns:
-	/obj/item/weapon/reagent_conainers/neuromod_shell/
+	/obj/item/reagent_conainers/neuromod_shell/
 	OR
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetNeuromodShell()
-	return (locate(/obj/item/weapon/reagent_containers/neuromod_shell/) in contents)
+	return (locate(/obj/item/reagent_containers/neuromod_shell/) in contents)
 
 /*
 	Ejects an inserted neuromod shell
@@ -600,7 +600,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/EjectNeuromodShell()
-	var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = GetNeuromodShell()
+	var/obj/item/reagent_containers/neuromod_shell/neuromod_shell = GetNeuromodShell()
 
 	if (neuromod_shell)
 		contents -= neuromod_shell
@@ -613,7 +613,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/InsertNeuromodShell()
-	var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = usr.get_active_hand()
+	var/obj/item/reagent_containers/neuromod_shell/neuromod_shell = usr.get_active_hand()
 
 	if (!neuromod_shell || !istype(neuromod_shell)) return
 
@@ -633,7 +633,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/TakeReagents()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
 
 	if (!beaker)
 		crash_with("beaker is null")
@@ -653,7 +653,7 @@
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/BeakerToList()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -674,7 +674,7 @@
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetMutagen()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -696,7 +696,7 @@
 	TRUE OR FALSE
 */
 /obj/machinery/computer/neuromod_rnd/proc/CheckBeakerContent()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -716,13 +716,13 @@
 	Returns an inserted beaker
 
 	Returns:
-	/obj/item/weapon/reagent_containers/glass/beaker/
+	/obj/item/reagent_containers/glass/beaker/
 	OR
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetBeaker()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = null
-	beaker = (locate(/obj/item/weapon/reagent_containers/glass/beaker) in contents)
+	var/obj/item/reagent_containers/glass/beaker/beaker = null
+	beaker = (locate(/obj/item/reagent_containers/glass/beaker) in contents)
 
 	return beaker
 
@@ -733,7 +733,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/EjectBeaker()
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
 
 	if (beaker)
 		contents -= beaker
@@ -750,7 +750,7 @@
 		to_chat(usr, "Console's beaker slot is already occupied.")
 		return
 
-	var/obj/item/weapon/reagent_containers/glass/beaker/beaker = usr.get_active_hand()
+	var/obj/item/reagent_containers/glass/beaker/beaker = usr.get_active_hand()
 
 	if (beaker)
 		usr.drop_item(beaker)
@@ -800,7 +800,7 @@
 			development_progress = 0
 			is_develop = FALSE
 
-			var/obj/item/weapon/reagent_containers/neuromod_shell/N = GetNeuromodShell()
+			var/obj/item/reagent_containers/neuromod_shell/N = GetNeuromodShell()
 
 			if (!N)
 				crash_with("Development over with no neuromod shell in the console!")
@@ -813,10 +813,10 @@
 /obj/machinery/computer/neuromod_rnd/attackby(atom/I, user)
 
 	// Handling inserting of items
-	if (istype(I, /obj/item/weapon/reagent_containers/neuromod_shell))
+	if (istype(I, /obj/item/reagent_containers/neuromod_shell))
 		InsertNeuromodShell()
 		return
-	else if (istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
+	else if (istype(I, /obj/item/reagent_containers/glass/beaker))
 		InsertBeaker()
 		return
 	else

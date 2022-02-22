@@ -58,7 +58,7 @@
 	//residual illumination
 	new /obj/effect/effect/smoke/illumination(src.loc, rand(190,240) SECONDS, range=8, power=3, color=light_colour) //same lighting power as flare
 
-/obj/item/projectile/energy/flash/c44
+/obj/item/projectile/energy/flash/c38
 	damage_type = BURN
 	damage = 5
 	agony = 25
@@ -77,6 +77,8 @@
 	agony = 50
 	damage_type = PAIN
 	//Damage will be handled on the MOB side, to prevent window shattering.
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_YELLOW
 
 /obj/item/projectile/energy/electrode/stunshot
 	nodamage = 0
@@ -101,8 +103,9 @@
 	damage = 3 //A little ouchie.
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/electrode/c44
+/obj/item/projectile/energy/electrode/c38
 	name = "shock bullet"
 	icon_state = "shockbullet"
 	nodamage = 0
@@ -111,8 +114,9 @@
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/c44
+/obj/item/projectile/energy/c38
 	name = "overheated bullet"
 	icon_state = "heatbullet"
 	damage = 40
@@ -121,6 +125,10 @@
 	damage_type = BURN
 	armor_penetration = 15
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	projectile_light = TRUE
+	projectile_brightness_color = "#ff8c3f"
+	projectile_inner_range = 0.2
+	projectile_outer_range = 1.25
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
@@ -129,6 +137,8 @@
 	damage = 30
 	damage_type = CLONE
 	irradiate = 40
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIME
 
 
 /obj/item/projectile/energy/dart

@@ -38,7 +38,7 @@
 	var/powered = 0		//set if vehicle is powered and should use fuel when moving
 	var/move_delay = 1	//set this to limit the speed of the vehicle
 
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/charge_use = 200 //W
 
 	var/atom/movable/load		//all vehicles can take a load, since they should all be a least drivable
@@ -55,12 +55,8 @@
 
 /obj/vehicle/Move()
 	if(world.time > l_move_time + move_delay)
-		if(!on)
-			return 0
-
-		if(!cell.use(charge_use * CELLRATE))
+		if(on && powered && cell.charge < (charge_use * CELLRATE))
 			turn_off()
-			return 0
 
 		var/old_loc = get_turf(src)
 		var/init_anc = anchored
@@ -86,8 +82,8 @@
 	else
 		return 0
 
-/obj/vehicle/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/hand_labeler))
+/obj/vehicle/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/hand_labeler))
 		return
 	if(isScrewdriver(W))
 		if(!locked)
@@ -97,10 +93,10 @@
 	else if(isCrowbar(W) && cell && open)
 		remove_cell(user)
 
-	else if(istype(W, /obj/item/weapon/cell) && !cell && open)
+	else if(istype(W, /obj/item/cell) && !cell && open)
 		insert_cell(W, user)
 	else if(isWelder(W))
-		var/obj/item/weapon/weldingtool/T = W
+		var/obj/item/weldingtool/T = W
 		if(T.welding)
 			if(health < maxhealth)
 				if(open)
@@ -250,7 +246,7 @@
 		turn_on()
 		return
 
-/obj/vehicle/proc/insert_cell(obj/item/weapon/cell/C, mob/living/carbon/human/H)
+/obj/vehicle/proc/insert_cell(obj/item/cell/C, mob/living/carbon/human/H)
 	if(cell)
 		return
 	if(!istype(C))

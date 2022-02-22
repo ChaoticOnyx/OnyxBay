@@ -1,18 +1,18 @@
 
 /obj/item/clothing/suit/armor
 	allowed = list(
-		/obj/item/weapon/gun/energy,
+		/obj/item/gun/energy,
 		/obj/item/device/radio,
 		/obj/item/device/flashlight,
-		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/gun/projectile,
+		/obj/item/reagent_containers/spray/pepper,
+		/obj/item/gun/projectile,
 		/obj/item/ammo_magazine,
 		/obj/item/ammo_casing,
-		/obj/item/weapon/melee/baton,
-		/obj/item/weapon/handcuffs,
-		/obj/item/weapon/gun/magnetic,
-		/obj/item/weapon/grenade,
-		/obj/item/weapon/gun/launcher/grenade
+		/obj/item/melee/baton,
+		/obj/item/handcuffs,
+		/obj/item/gun/magnetic,
+		/obj/item/grenade,
+		/obj/item/gun/launcher/grenade
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	item_flags = ITEM_FLAG_THICKMATERIAL
@@ -90,18 +90,18 @@
 	//item_state = "capcarapace"
 	armor = list(melee = 85, bullet = 70, laser = 70, energy = 35, bomb = 55, bio = 20, rad = 10)
 	allowed = list(
-		/obj/item/weapon/gun,
+		/obj/item/gun,
 		/obj/item/device/flashlight,
 		/obj/item/device/radio,
-		/obj/item/weapon/tank,
+		/obj/item/tank,
 		/obj/item/ammo_magazine,
 		/obj/item/ammo_casing,
-		/obj/item/weapon/reagent_containers/spray/pepper,
-		/obj/item/weapon/melee/whip/chainofcommand,
-		/obj/item/weapon/melee/baton,
-		/obj/item/weapon/handcuffs,
-		/obj/item/weapon/disk/nuclear,
-		/obj/item/weapon/grenade,
+		/obj/item/reagent_containers/spray/pepper,
+		/obj/item/melee/whip/chainofcommand,
+		/obj/item/melee/baton,
+		/obj/item/handcuffs,
+		/obj/item/disk/nuclear,
+		/obj/item/grenade,
 		)
 	siemens_coefficient = 0.5
 

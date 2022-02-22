@@ -330,3 +330,8 @@ var/global/list/_client_preferences_by_type
 	key = "ADVANCED_WHO"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	flags = R_INVESTIGATE
+
+/datum/client_preference/staff/pray_sound
+	description = "Play Pray Sound"
+	key = "SOUND_PRAY"
+	flags = R_PERMISSIONS

@@ -17,7 +17,7 @@
 /datum/uplink_item/item/powersuit_modules/ewar_voice
 	name = "\improper Electrowarfare Suite and Voice Synthesiser"
 	item_cost = 3
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/ewar_voice
+	path = /obj/item/storage/backpack/satchel/syndie_kit/ewar_voice
 
 /datum/uplink_item/item/powersuit_modules/maneuvering_jets
 	name = "\improper Maneuvering Jets"

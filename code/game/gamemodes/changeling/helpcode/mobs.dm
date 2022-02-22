@@ -43,6 +43,17 @@
 	var/obj/item/organ/internal/biostructure/BIO = loc
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
+
+	// Edge case handling. It's intended to be here instead of datum/changeling/transfer_to() for reasons.
+	var/obj/item/organ/external/E
+	if(ishuman(BIO.loc))
+		var/mob/living/carbon/human/H = BIO.loc
+		E = H.get_organ(BIO.parent_organ)
+	else if(istype(BIO.loc, /obj/item/organ/external))
+		E = BIO.loc
+	E?.implants -= BIO
+
+	BIO.parent_organ = BP_CHEST // So we DEFINITELY won't end up inside a prosthetic limb.
 	mind.transfer_to(HC)
 
 	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
@@ -64,7 +75,7 @@
 	speed = 0
 	maxHealth = 50
 	health = 50
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/human
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 20
 	melee_damage_lower = 7.5

@@ -68,7 +68,7 @@
 
 	// ID card stuff.
 	var/default_access = list()
-	var/id_type = /obj/item/weapon/card/id
+	var/id_type = /obj/item/card/id
 
 	var/antag_text = "You are an antagonist! Within the rules, \
 		try to act as an opposing force to the crew. Further RP and try to make sure \
@@ -194,6 +194,7 @@
 
 	if(called_by_storyteller)
 		player.was_antag_given_by_storyteller = TRUE
+		player.antag_was_given_at = roundduration2text()
 
 	reset_antag_selection()
 
@@ -234,7 +235,7 @@
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
 		var/answer = alert_timeout(
 			recipient = player.current,
-			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?",
 			title = "Do you want to play [role_text]?",
 			timeout = 100,
 			button1 = "Yes",

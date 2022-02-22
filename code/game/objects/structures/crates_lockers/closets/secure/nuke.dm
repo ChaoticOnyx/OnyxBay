@@ -16,7 +16,7 @@
 
 /obj/structure/closet/secure_closet/nuke_wall/WillContain()
 	return list(
-		/obj/item/weapon/nuclear_cylinder,
-		/obj/item/weapon/nuclear_cylinder,
-		/obj/item/weapon/nuclear_cylinder
+		/obj/item/nuclear_cylinder,
+		/obj/item/nuclear_cylinder,
+		/obj/item/nuclear_cylinder
 	)

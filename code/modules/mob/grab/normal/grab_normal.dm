@@ -376,7 +376,7 @@
 	if(user.a_intent != I_HURT)
 		return 0 // Not trying to hurt them.
 
-	if(!istype(W,/obj/item/weapon/material/kitchen/utensil/spoon))
+	if(!istype(W,/obj/item/material/kitchen/utensil/spoon))
 		if(!W.sharp || !W.force || W.damtype != BRUTE || W.w_class > ITEM_SIZE_NORMAL)
 			return 0 //unsuitable weapon
 
