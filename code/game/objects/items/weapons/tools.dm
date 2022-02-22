@@ -529,7 +529,7 @@
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
 /obj/item/weldingtool/proc/eyecheck(mob/user as mob)
-	if(!iscarbon(user) || (status_flags & GODMODE))
+	if(!iscarbon(user) || (user.status_flags & GODMODE))
 		return 1
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
