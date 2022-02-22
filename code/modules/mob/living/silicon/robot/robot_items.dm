@@ -84,7 +84,7 @@
 		return
 	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 		return
-	if(istype(target, /obj/item))
+	if(istype(target, /obj/item) || istype(target, /obj/item/modular_computer))
 		if(istype(target, /obj/item/modular_computer))
 			return
 		if(loaded_item)
