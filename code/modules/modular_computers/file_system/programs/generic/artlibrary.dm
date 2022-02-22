@@ -97,7 +97,7 @@
 	if(href_list["connectscanner"])
 		if(!nano_host())
 			return TRUE
-		for(var/d in GLOB.cardinal)
+		for(var/d in GLOB.alldirs)
 			var/obj/machinery/libraryscanner/scn = locate(/obj/machinery/libraryscanner, get_step(nano_host(), d))
 			if(scn && scn.anchored)
 				scanner = scn
