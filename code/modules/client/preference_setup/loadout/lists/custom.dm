@@ -12,7 +12,13 @@
 		if(slot_mask & slot_flags)
 			slot = text2num(slot_name)
 			break
-	display_name = "[data.name ? data.name : initial(A.name)] (Custom)"
+	display_name = data.name ? data.name : sanitize(initial(A.name))
+	var/item_id = 0
+	var/fixed_use_name = display_name
+	while(gear_datums["[fixed_use_name] (Custom)"])
+		fixed_use_name = "[display_name] [++item_id]"
+	display_name = fixed_use_name
+	display_name = "[display_name] (Custom)"
 	description = data.item_desc
 	ckey = key
 	path = item_path
