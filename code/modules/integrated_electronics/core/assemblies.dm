@@ -842,6 +842,9 @@
 		if(choice)
 			choice.ask_for_input(user)
 
+/obj/item/device/electronic_assembly/proc/return_power()
+	return battery ? battery.charge * CELLRATE : 0
+
 /obj/item/device/electronic_assembly/emp_act(severity)
 	. = ..()
 	for(var/I in src)

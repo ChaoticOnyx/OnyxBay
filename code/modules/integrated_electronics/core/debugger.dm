@@ -70,13 +70,23 @@
 		accepting_refs = FALSE
 
 	else if(copy_id && proximity)
+		var/error_message = SPAN_NOTICE("You turn the id card scanner is off.")
 		if(istype(target,/obj/item/card/id))
 			src.idlock = weakref(target)
 			to_chat(user, SPAN_NOTICE("You set \the [src]'s card memory to [target.name].  The id card scanner is \
 			now off."))
 
+		else if(isrobot(user) && target == user)
+			var/mob/living/silicon/robot/robot = target
+			var/obj/item/card/id/card = robot.GetIdCard()
+			if(card)
+				src.idlock = weakref(card)
+				to_chat(user, SPAN_NOTICE("You set \the [src]'s card memory to [card?.name].  The id card scanner is \
+				now off."))
+			else
+				to_chat(user, error_message)
 		else
-			to_chat(user, SPAN_NOTICE("You turn the id card scanner is off."))
+			to_chat(user, error_message)
 
 		copy_id = FALSE
 		return
