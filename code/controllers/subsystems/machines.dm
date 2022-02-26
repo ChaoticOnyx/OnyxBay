@@ -36,9 +36,9 @@ SUBSYSTEM_DEF(machines)
 
 	flags = SS_KEEP_TIMING
 
-	var/static/tmp/list/processing = list()
-	var/static/tmp/list/currentrun = list()
-	var/static/tmp/list/powernets  = list()
+	var/static/list/processing = list()
+	var/static/list/currentrun = list()
+	var/static/list/powernets  = list()
 
 /datum/controller/subsystem/machines/Initialize()
 	makepowernets()
