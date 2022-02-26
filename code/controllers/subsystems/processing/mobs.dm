@@ -6,8 +6,8 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 	wait = 2 SECONDS
 
 	// List of Z levels where player are
-	var/static/tmp/list/player_levels = list()
-	var/static/tmp/list/mob_list = list()
+	var/static/list/player_levels = list()
+	var/static/list/mob_list = list()
 
 /datum/controller/subsystem/processing/mobs/PreInit()
 	mob_list = processing // Simply setups a more recognizable var name than "processing"
