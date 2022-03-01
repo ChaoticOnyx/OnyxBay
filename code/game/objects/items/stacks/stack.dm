@@ -47,7 +47,10 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
-			. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack."
+			if(istype(src, /obj/item/stack/gassembly))
+				. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.amount == 1 ? "[src.singular_name]" : "assemblies"] in the stack."
+			else
+				. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack."
 		else
 			. += "\nThere is enough charge for [get_amount()]."
 	if(color)
