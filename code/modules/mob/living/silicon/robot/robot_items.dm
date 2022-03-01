@@ -82,10 +82,12 @@
 		return
 	if(!proximity)
 		return
-	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
+	if(!isturf(target.loc) || target.anchored) // Don't load up stuff if it's inside a container or mob! Or it's anchored.
 		return
-	if(istype(target, /obj/item) || istype(target, /obj/item/modular_computer))
-		return
+	if(istype(target, /obj/item))
+		if(!O.origin_tech)
+			to_chat(user, "<span class='notice'>This doesn't seem to have a tech origin.</span>")
+			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
