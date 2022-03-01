@@ -27,7 +27,6 @@
 	faction = "faithless"
 	supernatural = 1
 	bodyparts = /decl/simple_animal_bodyparts/faithless
-	meat_type = null
 
 /mob/living/simple_animal/hostile/faithless/Allow_Spacemove(check_drift = 0)
 	return 1
