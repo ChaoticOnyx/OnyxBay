@@ -1,5 +1,6 @@
 var/list/loadout_categories = list()
 var/list/gear_datums = list()
+var/list/hash_to_gear = list()
 
 /datum/preferences
 	var/list/gear_list //Custom/fluff item loadouts.
@@ -34,7 +35,9 @@ var/list/gear_datums = list()
 		if(!loadout_categories[use_category])
 			loadout_categories[use_category] = new /datum/loadout_category(use_category)
 		var/datum/loadout_category/LC = loadout_categories[use_category]
-		gear_datums[use_name] = new geartype
+		G = new geartype()
+		gear_datums[use_name] = G
+		hash_to_gear[G.gear_hash] = G
 		LC.gear[use_name] = gear_datums[use_name]
 
 	loadout_categories = sortAssoc(loadout_categories)
@@ -244,7 +247,7 @@ var/list/gear_datums = list()
 			display_class = "linkOn"
 
 		entry += "<tr>"
-		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name] [discountText]</a></td>"
+		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.gear_hash)]'>[G.display_name] [discountText]</a></td>"
 		entry += "</td></tr>"
 
 		if(!hide_unavailable_gear || allowed_to_see || ticked)
@@ -368,7 +371,7 @@ var/list/gear_datums = list()
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
 		if(gear_allowed_to_equip(selected_gear, user))
-			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
+			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.gear_hash)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
 			if (selected_gear.price)
 				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
@@ -404,7 +407,7 @@ var/list/gear_datums = list()
 /datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, mob/user)
 	ASSERT(istype(user))
 	if(href_list["select_gear"])
-		selected_gear = gear_datums[href_list["select_gear"]]
+		selected_gear = hash_to_gear[href_list["select_gear"]]
 		selected_tweaks = pref.gear_list[pref.gear_slot][selected_gear.display_name]
 		if(!selected_tweaks)
 			selected_tweaks = new
@@ -414,7 +417,7 @@ var/list/gear_datums = list()
 		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_gear"])
-		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
+		var/datum/gear/TG = hash_to_gear[href_list["toggle_gear"]]
 
 		toggle_gear(TG, user)
 
@@ -576,6 +579,7 @@ var/list/gear_datums = list()
 
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
+	var/gear_hash          //MD5 hash of display_name. Used to get item in Topic calls. See href problem with ' symbol
 	var/description        //Description of this gear. If left blank will default to the description of the pathed item.
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
@@ -590,6 +594,7 @@ var/list/gear_datums = list()
 	var/list/gear_tweaks = list() //List of datums which will alter the item after it has been spawned.
 
 /datum/gear/New()
+	gear_hash = md5(display_name)
 	if(FLAGS_EQUALS(flags, GEAR_HAS_TYPE_SELECTION|GEAR_HAS_SUBTYPE_SELECTION))
 		CRASH("May not have both type and subtype selection tweaks")
 	if(!description)

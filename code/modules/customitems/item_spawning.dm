@@ -151,7 +151,7 @@
 			current_data.item_path_as_string = item_path
 			item_path = text2path(item_path)
 			ASSERT(ispath(item_path))
-			
+
 			current_data.name = item_data["item"]?["name"]
 			current_data.item_icon = item_data["item"]?["icon"]
 			current_data.item_desc = item_data["item"]?["desc"]
@@ -175,12 +175,8 @@
 			if(!loadout_categories[use_category])
 				loadout_categories[use_category] = new /datum/loadout_category(use_category)
 			var/datum/loadout_category/LC = loadout_categories[use_category]
-			var/item_id = 0
-			var/fixed_use_name = use_name
-			while(gear_datums[fixed_use_name])
-				fixed_use_name = "[use_name] [++item_id]"
-			use_name = fixed_use_name
 			gear_datums[use_name] = G
+			hash_to_gear[G.gear_hash] = G
 			LC.gear[use_name] = gear_datums[use_name]
 
 	return TRUE

@@ -415,6 +415,8 @@
 			return global.gas_data;
 		if("gear_datums")
 			return global.gear_datums;
+		if("hash_to_gear")
+			return global.hash_to_gear;
 		if("gear_tweak_free_color_choice_")
 			return global.gear_tweak_free_color_choice_;
 		if("gender_datums")
@@ -1316,6 +1318,8 @@
 			global.gas_data=newval;
 		if("gear_datums")
 			global.gear_datums=newval;
+		if("hash_to_gear")
+			global.hash_to_gear=newval;
 		if("gear_tweak_free_color_choice_")
 			global.gear_tweak_free_color_choice_=newval;
 		if("gender_datums")
@@ -2018,6 +2022,7 @@
 	"gamemode_cache",
 	"gas_data",
 	"gear_datums",
+	"hash_to_gear",
 	"gear_tweak_free_color_choice_",
 	"gender_datums",
 	"ghost_darkness_images",
