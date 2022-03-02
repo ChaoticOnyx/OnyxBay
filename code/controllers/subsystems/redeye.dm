@@ -59,7 +59,7 @@ SUBSYSTEM_DEF(redeye)
 
 	if((!byond_request || !(byond_request["STATUS"] in legal_codes)))
 		if(!fired_by_byond)
-			log_and_message_admins(SPAN_DANGER("Alert. \The [name] report BYOND website response code is not in legal code list, received status - [byond_request ? byond_request["STATUS"] : "NO CODE RECEIVED"]. \The [name] is now active."))
+			log_and_message_admins(SPAN_DANGER("Alert. \The [name] report BYOND website response code is not in legal code list, received status - [byond_request ? byond_request["STATUS"] : "undefined code"]. \The [name] is now active."))
 			update_identifiers()
 			fired_by_byond = TRUE
 	else
