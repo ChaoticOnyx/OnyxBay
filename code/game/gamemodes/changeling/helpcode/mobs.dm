@@ -43,6 +43,17 @@
 	var/obj/item/organ/internal/biostructure/BIO = loc
 
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
+
+	// Edge case handling. It's intended to be here instead of datum/changeling/transfer_to() for reasons.
+	var/obj/item/organ/external/E
+	if(ishuman(BIO.loc))
+		var/mob/living/carbon/human/H = BIO.loc
+		E = H.get_organ(BIO.parent_organ)
+	else if(istype(BIO.loc, /obj/item/organ/external))
+		E = BIO.loc
+	E?.implants -= BIO
+
+	BIO.parent_organ = BP_CHEST // So we DEFINITELY won't end up inside a prosthetic limb.
 	mind.transfer_to(HC)
 
 	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
@@ -64,7 +75,7 @@
 	speed = 0
 	maxHealth = 50
 	health = 50
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/human
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 20
 	melee_damage_lower = 7.5
@@ -101,7 +112,6 @@
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(BIO)
 		BIO.removed()
-		BIO.forceMove(get_turf(src))
 		return
 	..()
 
@@ -110,7 +120,6 @@
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(BIO)
 		BIO.removed()
-		BIO.forceMove(get_turf(src))
 		return
 	..()
 
@@ -293,6 +302,13 @@
 
 	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
 	changeling.absorbDNA(newDNA)
+	if(mind && target.mind)
+		mind.store_memory("[target.real_name]'s memories:")
+		mind.store_memory(target.mind.memory)
+		mind.store_memory("<hr>")
+
+	if(target.mind?.changeling)
+		changeling.consume_changeling(target.mind.changeling)
 
 	target.ghostize()
 	if(mind.transfer_to(target))

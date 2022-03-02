@@ -70,6 +70,6 @@
 		H.set_species(newSpecies, 1)
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
-		H.setup_changeling_biostructure()
+		H.make_changeling()
 	domutcheck(my_mob, null)
 	my_mob.UpdateAppearance()

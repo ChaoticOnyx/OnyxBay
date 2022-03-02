@@ -1,4 +1,4 @@
-GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
+GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
 
 /proc/is_standing_on_object(x)
 	if(!x) return FALSE

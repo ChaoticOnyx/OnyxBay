@@ -2,6 +2,7 @@
 /obj/item/grab
 	name = "grab"
 	canremove = FALSE
+	force_drop = TRUE
 
 	var/mob/living/carbon/human/affecting = null
 	var/mob/living/carbon/human/assailant = null
@@ -143,6 +144,9 @@
 	if(!assailant || !affecting)
 		return 0
 
+	if(assailant.lying)
+		return 0
+
 	if(assailant == affecting)
 		to_chat(assailant, "<span class='notice'>You can't grab yourself.</span>")
 		return 0
@@ -268,8 +272,8 @@
 /obj/item/grab/proc/can_absorb()
 	return current_grab.can_absorb
 
-/obj/item/grab/proc/assailant_reverse_facing()
-	return current_grab.reverse_facing
+/obj/item/grab/proc/reverse_moving()
+	return current_grab.reverse_moving
 
 /obj/item/grab/proc/shield_assailant()
 	return current_grab.shield_assailant

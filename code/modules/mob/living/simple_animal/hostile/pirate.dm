@@ -24,7 +24,7 @@
 
 	unsuitable_atoms_damage = 15
 	var/corpse = /obj/effect/landmark/corpse/pirate
-	var/weapon1 = /obj/item/weapon/melee/energy/sword/pirate
+	var/weapon1 = /obj/item/melee/energy/sword/pirate
 
 	faction = "pirate"
 
@@ -36,9 +36,9 @@
 	projectilesound = 'sound/effects/weapons/energy/Laser.ogg'
 	ranged = 1
 	rapid = 1
-	projectiletype = /obj/item/projectile/beam
+	projectiletype = /obj/item/projectile/beam/laser/lesser
 	corpse = /obj/effect/landmark/corpse/pirate/ranged
-	weapon1 = /obj/item/weapon/gun/energy/laser
+	weapon1 = /obj/item/gun/energy/laser
 
 
 /mob/living/simple_animal/hostile/pirate/death(gibbed, deathmessage, show_dead_message)

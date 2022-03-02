@@ -138,62 +138,48 @@
 
 // Parses the config file into the custom_items list.
 /hook/startup/proc/load_custom_items()
+	ASSERT(fexists("config/custom_items.json"))
+	if(GLOB.using_map.loadout_blacklist && (/datum/gear/custom_item in GLOB.using_map.loadout_blacklist))
+		return
+	var/list/config_json = json_decode(file2text("config/custom_items.json"))
+	for(var/list/ckey_group in config_json["customs"])
+		var/ckey = ckey_group["ckey"]
+		for(var/list/item_data in ckey_group["items"])
+			var/datum/custom_item/current_data = new()
 
-	var/datum/custom_item/current_data
-	for(var/line in splittext(file2text("config/custom_items.txt"), "\n"))
+			var/item_path = item_data["item"]?["path"]
+			current_data.item_path_as_string = item_path
+			item_path = text2path(item_path)
+			ASSERT(ispath(item_path))
 
-		line = trim(line)
-		if(line == "" || !line || findtext(line, "#", 1, 2))
-			continue
+			current_data.name = item_data["item"]?["name"]
+			current_data.item_icon = item_data["item"]?["icon"]
+			current_data.item_desc = item_data["item"]?["desc"]
 
-		if(findtext(line, "{", 1, 2) || findtext(line, "}", 1, 2)) // New block!
-			if(current_data && current_data.assoc_key)
-				if(!custom_items[current_data.assoc_key])
-					custom_items[current_data.assoc_key] = list()
-				var/list/L = custom_items[current_data.assoc_key]
-				L |= current_data
-			current_data = null
+			current_data.kit_name = item_data["kit"]?["name"]
+			current_data.kit_icon = item_data["kit"]?["icon"]
+			current_data.kit_desc = item_data["kit"]?["desc"]
 
-		var/split = findtext(line,":")
-		if(!split)
-			continue
-		var/field = trim(copytext(line,1,split))
-		var/field_data = trim(copytext(line,(split+1)))
-		if(!field || !field_data)
-			continue
+			current_data.inherit_inhands = item_data["inherit_inhands"]
+			current_data.req_access = item_data["req_access"]
+			current_data.req_titles = item_data["req_titles"]
+			current_data.additional_data = item_data["additional_data"]
 
-		if(!current_data)
-			current_data = new()
+			current_data.assoc_key = ckey
+			current_data.item_path = item_path
+			var/datum/gear/custom_item/G = new(ckey, item_path, current_data)
 
-		switch(field)
-			if("ckey")
-				current_data.assoc_key = lowertext(field_data)
-			if("character_name")
-				current_data.character_name = lowertext(field_data)
-			if("item_path")
-				current_data.item_path = text2path(field_data)
-				current_data.item_path_as_string = field_data
-			if("item_name")
-				current_data.name = field_data
-			if("item_icon")
-				current_data.item_icon = field_data
-			if("inherit_inhands")
-				current_data.inherit_inhands = text2num(field_data)
-			if("item_desc")
-				current_data.item_desc = field_data
-			if("req_access")
-				current_data.req_access = text2num(field_data)
-			if("req_titles")
-				current_data.req_titles = splittext(field_data,", ")
-			if("kit_name")
-				current_data.kit_name = field_data
-			if("kit_desc")
-				current_data.kit_desc = field_data
-			if("kit_icon")
-				current_data.kit_icon = field_data
-			if("additional_data")
-				current_data.additional_data = field_data
-	return 1
+			var/use_name = G.display_name
+			var/use_category = G.sort_category
+
+			if(!loadout_categories[use_category])
+				loadout_categories[use_category] = new /datum/loadout_category(use_category)
+			var/datum/loadout_category/LC = loadout_categories[use_category]
+			gear_datums[use_name] = G
+			hash_to_gear[G.gear_hash] = G
+			LC.gear[use_name] = gear_datums[use_name]
+
+	return TRUE
 
 //gets the relevant list for the key from the listlist if it exists, check to make sure they are meant to have it and then calls the giving function
 /proc/equip_custom_items(mob/living/carbon/human/M)
@@ -212,7 +198,7 @@
 			return
 
 		// Check for required access.
-		var/obj/item/weapon/card/id/current_id = M.wear_id
+		var/obj/item/card/id/current_id = M.wear_id
 		if(citem.req_access && citem.req_access > 0)
 			if(!(istype(current_id) && (citem.req_access in current_id.access)))
 				continue
@@ -230,7 +216,7 @@
 
 		// ID cards and PDAs are applied directly to the existing object rather than spawned fresh.
 		var/obj/item/existing_item
-		if(citem.item_path == /obj/item/weapon/card/id && istype(current_id)) //Set earlier.
+		if(citem.item_path == /obj/item/card/id && istype(current_id)) //Set earlier.
 			existing_item = M.wear_id
 		else if(citem.item_path == /obj/item/device/pda)
 			existing_item = locate(/obj/item/device/pda) in M.contents

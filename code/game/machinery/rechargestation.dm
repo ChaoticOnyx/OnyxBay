@@ -7,7 +7,7 @@
 	anchored = 1
 	idle_power_usage = 50
 	var/mob/living/occupant = null
-	var/obj/item/weapon/cell/cell = null
+	var/obj/item/cell/cell = null
 	var/icon_update_tick = 0	// Used to rebuild the overlay only once every 10 ticks
 	var/charging = 0
 
@@ -21,10 +21,10 @@
 	var/wire_power_use = 500	// power used per point of burn damage repaired.
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/recharge_station,
-		/obj/item/weapon/stock_parts/manipulator = 2,
-		/obj/item/weapon/stock_parts/capacitor = 2,
-		/obj/item/weapon/cell/high,
+		/obj/item/circuitboard/recharge_station,
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stock_parts/capacitor = 2,
+		/obj/item/cell/high,
 		/obj/item/stack/cable_coil{amount = 5}
 	)
 
@@ -82,7 +82,7 @@
 	if(wire_rate && occupant.getFireLoss() && cell.checked_use(wire_power_use * wire_rate * CELLRATE))
 		occupant.adjustFireLoss(-wire_rate)
 
-	var/obj/item/weapon/cell/target
+	var/obj/item/cell/target
 	if(isrobot(occupant))
 		var/mob/living/silicon/robot/R = occupant
 		target = R.cell
@@ -100,11 +100,11 @@
 		var/obj/item/organ/internal/cell/potato = H.internal_organs_by_name[BP_CELL]
 		if(potato)
 			target = potato.cell
-			
-		if((!target || target.percent() > 95) && istype(H.back,/obj/item/weapon/rig))
-			var/obj/item/weapon/rig/R = H.back
+
+		if((!target || target.percent() > 95) && istype(H.back,/obj/item/rig))
+			var/obj/item/rig/R = H.back
 			if(R.cell && !R.cell.fully_charged())
-				target = R.cell			
+				target = R.cell
 
 	if(target && !target.fully_charged())
 		var/diff = min(target.maxcharge - target.charge, charging_power * CELLRATE) // Capped by charging_power / tick
@@ -151,12 +151,12 @@
 	var/man_rating = 0
 	var/cap_rating = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(iscapacitor(P))
 			cap_rating += P.rating
 		else if(ismanipulator(P))
 			man_rating += P.rating
-	cell = locate(/obj/item/weapon/cell) in component_parts
+	cell = locate(/obj/item/cell) in component_parts
 
 	charging_power = 40000 + 40000 * cap_rating
 	restore_power_active = 10000 + 15000 * cap_rating
@@ -231,9 +231,9 @@
 		var/mob/living/carbon/human/H = M
 		if(H.isSynthetic()) // FBPs and IPCs
 			return 1
-		if(istype(H.back,/obj/item/weapon/rig))
-			var/obj/item/weapon/rig/R = H.back
-			return R.cell			
+		if(istype(H.back,/obj/item/rig))
+			var/obj/item/rig/R = H.back
+			return R.cell
 		return H.internal_organs_by_name["cell"]
 	return 0
 

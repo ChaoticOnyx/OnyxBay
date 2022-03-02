@@ -8,12 +8,24 @@
 
 	var/detaching_now = FALSE
 
-/datum/changeling_power/detach_limb/activate()
+/datum/changeling_power/detach_limb/is_usable(no_message = FALSE)
 	if(!..())
-		return
+		return FALSE
 
 	if(detaching_now)
-		to_chat(my_mob, SPAN("changeling", "We must focus on detaching one limb at a time."))
+		if(!no_message)
+			to_chat(my_mob, SPAN("changeling", "We must focus on detaching one limb at a time."))
+		return FALSE
+
+	var/mob/living/carbon/human/H = my_mob
+
+	if(H.is_ventcrawling)
+		return FALSE
+
+	return TRUE
+
+/datum/changeling_power/detach_limb/activate()
+	if(!..())
 		return
 
 	var/mob/living/carbon/human/H = my_mob
@@ -28,7 +40,7 @@
 	if(!organ_to_remove)
 		detaching_now = FALSE
 		return
-	if(!H.organs.Find(organ_to_remove))
+	if(!(organ_to_remove in H.organs))
 		detaching_now = FALSE
 		to_chat(H, SPAN("changeling", "We don't have this limb!"))
 		return
@@ -54,8 +66,9 @@
 
 	var/obj/item/organ/internal/biostructure/BIO = H.internal_organs_by_name[BP_CHANG]
 	if(organ_to_remove.organ_tag == BIO.parent_organ)
+		organ_to_remove.internal_organs.Remove(BIO) // Preventing biostructure from going through an unnecessary removed() and risking to get bugged
 		H.mind.transfer_to(L)
-	BIO.parent_organ = BP_CHEST
+		BIO.parent_organ = BP_CHEST
 
 	organ_to_remove.droplimb(TRUE)
 	qdel(organ_to_remove)

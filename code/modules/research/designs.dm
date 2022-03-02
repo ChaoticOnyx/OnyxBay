@@ -126,7 +126,7 @@ CIRCUITS BELOW
 /datum/design/circuit/AssembleDesignName()
 	..()
 	if(build_path)
-		var/obj/item/weapon/circuitboard/C = build_path
+		var/obj/item/circuitboard/C = build_path
 		if(initial(C.board_type) == "machine")
 			name = "Machine circuit design ([item_name])"
 			category_items = list("Machine Boards")

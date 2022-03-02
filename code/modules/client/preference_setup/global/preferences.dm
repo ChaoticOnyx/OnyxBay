@@ -178,9 +178,9 @@ var/global/list/_client_preferences_by_type
 	key = "SHOW_PROGRESS"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
-/datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
-	key = "HARDSUIT_ACTIVATION"
+/datum/client_preference/powersuit_activation
+	description = "Powersuit Module Activation Key"
+	key = "POWERSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/pointing
@@ -330,3 +330,8 @@ var/global/list/_client_preferences_by_type
 	key = "ADVANCED_WHO"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	flags = R_INVESTIGATE
+
+/datum/client_preference/staff/pray_sound
+	description = "Play Pray Sound"
+	key = "SOUND_PRAY"
+	flags = R_PERMISSIONS

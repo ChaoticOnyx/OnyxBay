@@ -1,6 +1,6 @@
 /obj/structure/window
-	name = "window"
-	desc = "A window."
+	name = "panel"
+	desc = "A glassy panel."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -18,7 +18,7 @@
 	var/reinf = 0
 	var/polarized = 0
 	var/basestate
-	var/shardtype = /obj/item/weapon/material/shard
+	var/shardtype = /obj/item/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
@@ -221,8 +221,8 @@
 							"You hear a banging sound.")
 	else
 		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-		user.visible_message("[user.name] knocks on the [src.name].",
-							"You knock on the [src.name].",
+		user.visible_message("[user.name] knocks on \the [src.name].",
+							"You knock on \the [src.name].",
 							"You hear a knocking sound.")
 	return
 
@@ -445,6 +445,7 @@
 
 
 /obj/structure/window/basic
+	name = "glass panel"
 	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
 	basestate = "window"
@@ -454,23 +455,23 @@
 	maxhealth = 12.0
 
 /obj/structure/window/plasmabasic
-	name = "plass window"
-	desc = "A plasmasilicate alloy window. It seems to be quite strong."
+	name = "plass panel"
+	desc = "A plasmasilicate alloy panel. It seems to be quite strong."
 	basestate = "plasmawindow"
 	explosion_block = 1
 	icon_state = "plasmawindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
 	maximal_heat = T0C + 2000
 	damage_per_fire_tick = 1.0
 	maxhealth = 40.0
 
 /obj/structure/window/plasmareinforced
-	name = "reinforced plass window"
-	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
+	name = "reinforced plass panel"
+	desc = "A plasmasilicate alloy panel, with rods supporting it. It seems to be very strong."
 	basestate = "plasmarwindow"
 	icon_state = "plasmarwindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	explosion_block = 2
@@ -483,7 +484,7 @@
 	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
-	name = "reinforced window"
+	name = "reinforced glass panel"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
 	basestate = "rwindow"

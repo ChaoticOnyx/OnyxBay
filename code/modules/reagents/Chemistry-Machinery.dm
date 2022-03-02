@@ -15,8 +15,8 @@
 	idle_power_usage = 20
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
-	var/obj/item/weapon/reagent_containers/glass/beaker
-	var/obj/item/weapon/storage/pill_bottle/loaded_pill_bottle
+	var/obj/item/reagent_containers/glass/beaker
+	var/obj/item/storage/pill_bottle/loaded_pill_bottle
 	var/mode = 0
 	var/condi = 0
 	var/useramount = 30 // Last used amount
@@ -27,11 +27,11 @@
 	var/max_pill_count = 20
 	var/capacity = 120
 	component_types = list(
-		/obj/item/weapon/circuitboard/chemmaster,
+		/obj/item/circuitboard/chemmaster,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module = 2,
-		/obj/item/weapon/stock_parts/manipulator = 4,
-		/obj/item/weapon/stock_parts/console_screen,
+		/obj/item/stock_parts/scanning_module = 2,
+		/obj/item/stock_parts/manipulator = 4,
+		/obj/item/stock_parts/console_screen,
 	)
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	var/matter_amount_per_sheet = SHEET_MATERIAL_AMOUNT
@@ -64,7 +64,7 @@
 				qdel(src)
 				return
 
-/obj/machinery/chem_master/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/chem_master/attackby(obj/item/W, mob/user)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	if(default_deconstruction_crowbar(user, W))
@@ -72,7 +72,7 @@
 	if(default_part_replacement(user, W))
 		return
 
-	if(istype(W, /obj/item/weapon/reagent_containers/glass))
+	if(istype(W, /obj/item/reagent_containers/glass))
 		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
@@ -83,7 +83,7 @@
 		updateUsrDialog()
 		icon_state = "mixer1"
 
-	else if(istype(W, /obj/item/weapon/storage/pill_bottle))
+	else if(istype(W, /obj/item/storage/pill_bottle))
 		if(loaded_pill_bottle)
 			to_chat(user, "A pill bottle is already loaded into the machine.")
 			return
@@ -211,7 +211,7 @@
 			if(reagents.total_volume/count < 1) //Sanity checking.
 				return
 			while (count-- && count >= 0)
-				var/obj/item/weapon/reagent_containers/pill/P = new /obj/item/weapon/reagent_containers/pill(src.loc)
+				var/obj/item/reagent_containers/pill/P = new /obj/item/reagent_containers/pill(src.loc)
 				if(!name) name = reagents.get_master_reagent_name()
 				P.SetName("[name] pill")
 				P.icon_state = "pill"+pillsprite
@@ -229,7 +229,7 @@
 			if(!condi)
 				create_bottle(usr)
 			else
-				var/obj/item/weapon/reagent_containers/food/condiment/P = new /obj/item/weapon/reagent_containers/food/condiment(src.loc)
+				var/obj/item/reagent_containers/food/condiment/P = new /obj/item/reagent_containers/food/condiment(src.loc)
 				reagents.trans_to_obj(P, 50)
 
 		else if(href_list["createbottle_small"])
@@ -271,14 +271,14 @@
 		bottle_name = sanitizeSafe(input(user, "Name:", "Name your bottle!", reagents.get_master_reagent_name()), MAX_NAME_LEN)
 	if(!bottle_name)
 		bottle_name = reagents.get_master_reagent_name()
-	var/obj/item/weapon/reagent_containers/glass/bottle/B
+	var/obj/item/reagent_containers/glass/bottle/B
 	switch(bottle_type)
 		if("small")
-			B = new /obj/item/weapon/reagent_containers/glass/bottle/small(loc)
+			B = new /obj/item/reagent_containers/glass/bottle/small(loc)
 		if("big")
-			B = new /obj/item/weapon/reagent_containers/glass/bottle/big(loc)
+			B = new /obj/item/reagent_containers/glass/bottle/big(loc)
 		else
-			B = new /obj/item/weapon/reagent_containers/glass/bottle(loc)
+			B = new /obj/item/reagent_containers/glass/bottle(loc)
 	B.attach_label(null, null, bottle_name)
 	reagents.trans_to_obj(B, reagent_amount)
 	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
@@ -379,13 +379,13 @@
 	idle_power_usage = 5
 	active_power_usage = 100
 	component_types = list(
-		/obj/item/weapon/circuitboard/grinder,
-		/obj/item/weapon/stock_parts/scanning_module,
-		/obj/item/weapon/stock_parts/manipulator = 2,
-		/obj/item/weapon/stock_parts/console_screen,
+		/obj/item/circuitboard/grinder,
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/stock_parts/console_screen,
 	)
 	var/inuse = 0
-	var/obj/item/weapon/reagent_containers/beaker
+	var/obj/item/reagent_containers/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
 	var/list/sheet_reagents = list(
@@ -402,7 +402,7 @@
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
 	if(mapload)
-		beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
+		beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
 	update_icon()
 
 /obj/machinery/reagentgrinder/update_icon()
@@ -423,9 +423,9 @@
 	if(default_part_replacement(user, O))
 		return
 
-	if(istype(O,/obj/item/weapon/reagent_containers/glass) || \
-		istype(O,/obj/item/weapon/reagent_containers/food/drinks/glass2) || \
-		istype(O,/obj/item/weapon/reagent_containers/food/drinks/shaker))
+	if(istype(O,/obj/item/reagent_containers/glass) || \
+		istype(O,/obj/item/reagent_containers/food/drinks/glass2) || \
+		istype(O,/obj/item/reagent_containers/food/drinks/shaker))
 
 		if(beaker)
 			return TRUE
@@ -444,8 +444,8 @@
 	if(!istype(O))
 		return
 
-	if(istype(O,/obj/item/weapon/storage/plants))
-		var/obj/item/weapon/storage/plants/bag = O
+	if(istype(O,/obj/item/storage/plants))
+		var/obj/item/storage/plants/bag = O
 		var/failed = 1
 		for(var/obj/item/G in O.contents)
 			if(!G.reagents || !G.reagents.total_volume)
@@ -467,7 +467,12 @@
 
 		src.updateUsrDialog()
 		return 0
-	if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/weapon/reagent_containers/dropper))
+	if(istype(O, /obj/item/organ))
+		var/obj/item/organ/I = O
+		if(BP_IS_ROBOTIC(I))
+			to_chat(user, "\The [O] is not suitable for blending.")
+			return 1
+	else if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/reagent_containers/dropper))
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
@@ -602,12 +607,30 @@
 					beaker.reagents.add_reagent(sheet_reagents[stack.type], (amount_to_take*REAGENTS_PER_SHEET))
 					continue
 
+		var/obj/item/reagent_containers/food/snacks/internal_snack = null
+		if(istype(O, /obj/item/organ/internal))
+			var/obj/item/reagent_containers/food/snacks/organ/organ_snack = locate() in O.contents
+			if(istype(organ_snack))
+				internal_snack = organ_snack
+		else if(istype(O, /obj/item/organ/external))
+			var/obj/item/reagent_containers/food/snacks/meat/meat_snack = locate() in O.contents
+			if(istype(meat_snack))
+				internal_snack = meat_snack
+
+		var/remaining_o_volume = 0
 		if(O.reagents)
 			O.reagents.trans_to(beaker, min(O.reagents.total_volume, remaining_volume))
-			if(O.reagents.total_volume == 0)
-				holdingitems -= O
-				qdel(O)
-			if (beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
-				break
+			remaining_o_volume += O.reagents.total_volume
+
+		if(internal_snack?.reagents)
+			internal_snack.reagents.trans_to(beaker, min(internal_snack.reagents.total_volume, remaining_volume))
+			remaining_o_volume += internal_snack.reagents.total_volume
+
+		if(remaining_o_volume <= 0)
+			holdingitems -= O
+			qdel(O)
+
+		if(beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
+			break
 
 #undef REAGENTS_PER_SHEET

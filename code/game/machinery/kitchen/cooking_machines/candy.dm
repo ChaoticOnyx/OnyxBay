@@ -7,10 +7,10 @@
 	cook_type = "candied"
 
 	output_options = list(
-		"Jawbreaker" = /obj/item/weapon/reagent_containers/food/snacks/variable/jawbreaker,
-		"Candy Bar" = /obj/item/weapon/reagent_containers/food/snacks/candy/variable,
-		"Sucker" = /obj/item/weapon/reagent_containers/food/snacks/variable/sucker,
-		"Jelly" = /obj/item/weapon/reagent_containers/food/snacks/variable/jelly
+		"Jawbreaker" = /obj/item/reagent_containers/food/snacks/variable/jawbreaker,
+		"Candy Bar" = /obj/item/reagent_containers/food/snacks/candy/variable,
+		"Sucker" = /obj/item/reagent_containers/food/snacks/variable/sucker,
+		"Jelly" = /obj/item/reagent_containers/food/snacks/variable/jelly
 		)
 
 /obj/machinery/cooker/candy/change_product_appearance()

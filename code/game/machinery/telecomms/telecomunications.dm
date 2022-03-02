@@ -117,6 +117,19 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/New()
 	telecomms_list += src
 	..()
+	component_parts = list()
+	// Let's just do it an easy way instead of manually adding all of that shite spawn in each of the nonsensical telecom machines' New()s
+	if(circuitboard)
+		component_parts += new circuitboard(src)
+		for(var/comp in component_parts[1].req_components)
+			if(comp == /obj/item/stack/cable_coil)
+				var/obj/item/stack/cable_coil/CC = new comp(src)
+				component_parts += CC
+				CC.amount = component_parts[1].req_components[comp]
+				continue
+			for(var/i = 1 to max(1, component_parts[1].req_components[comp]))
+				component_parts += new comp(src)
+	RefreshParts()
 
 /obj/machinery/telecomms/Initialize()
 	//Set the listening_levels if there's none.
@@ -261,7 +274,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 600
 	machinetype = 1
 	produces_heat = 0
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/receiver
+	circuitboard = /obj/item/circuitboard/telecomms/receiver
 	outage_probability = 10
 
 /obj/machinery/telecomms/receiver/receive_signal(datum/signal/signal)
@@ -317,7 +330,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 1600
 	machinetype = 7
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/hub
+	circuitboard = /obj/item/circuitboard/telecomms/hub
 	long_range_link = 1
 	netspeed = 40
 	outage_probability = 10
@@ -350,7 +363,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	machinetype = 8
 	produces_heat = 0
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/relay
+	circuitboard = /obj/item/circuitboard/telecomms/relay
 	netspeed = 5
 	long_range_link = 1
 	var/broadcasting = 1
@@ -413,7 +426,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 1000
 	machinetype = 2
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/bus
+	circuitboard = /obj/item/circuitboard/telecomms/bus
 	netspeed = 40
 	var/change_frequency = 0
 
@@ -465,7 +478,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 600
 	machinetype = 3
 	delay = 5
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/processor
+	circuitboard = /obj/item/circuitboard/telecomms/processor
 	var/process_mode = 1 // 1 = Uncompress Signals, 0 = Compress Signals
 
 /obj/machinery/telecomms/processor/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
@@ -501,7 +514,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 300
 	machinetype = 4
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/server
+	circuitboard = /obj/item/circuitboard/telecomms/server
 	var/list/log_entries = list()
 	var/list/stored_names = list()
 	var/list/TrafficActions = list()

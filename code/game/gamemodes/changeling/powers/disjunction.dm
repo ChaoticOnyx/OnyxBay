@@ -8,11 +8,22 @@
 
 	var/detaching_now = FALSE
 
-/datum/changeling_power/disjunction/activate()
+/datum/changeling_power/disjunction/is_usable(no_message = FALSE)
 	if(!..())
-		return
+		return FALSE
 
 	if(detaching_now)
+		return FALSE
+
+	var/mob/living/carbon/human/H = my_mob
+
+	if(H.is_ventcrawling)
+		return FALSE
+
+	return TRUE
+
+/datum/changeling_power/disjunction/activate()
+	if(!..())
 		return
 
 	var/mob/living/carbon/human/H = my_mob
@@ -76,10 +87,10 @@
 	var/mob/living/simple_animal/hostile/little_changeling/chest_chan/chest_ling = new (get_turf(H))
 	if(BIO.parent_organ == BP_CHEST || BIO.parent_organ == BP_GROIN)
 		mob_to_receive_mind = chest_ling
-	BIO.parent_organ = BP_CHEST
 
 	if(mob_to_receive_mind)
 		H.mind.transfer_to(mob_to_receive_mind)
+		BIO.parent_organ = BP_CHEST
 
 	gibs(H.loc, H.dna)
 	for(var/obj/item/I in H.contents)

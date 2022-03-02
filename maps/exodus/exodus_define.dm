@@ -7,14 +7,13 @@
 	lobby_icon = 'maps/exodus/exodus_lobby.dmi'
 
 	load_legacy_saves = TRUE
-
 	station_levels = list(1, 2)
 	admin_levels = list(3)
 	contact_levels = list(1,2,4,6)
 	player_levels = list(1,2,4,5,6,7,8,9,10,11,12)
-	//sealed_levels = list(6)
+	sealed_levels = list(12)
 	empty_levels = list(6)
-	accessible_z_levels = list("1" = 5, "2" = 5, "4" = 10, "5" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5, "12" = 5)
+	accessible_z_levels = list("1" = 5, "2" = 5, "4" = 10, "5" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5)
 	dynamic_z_levels = list("1" = 'exodus-1.dmm', "2" = 'exodus-2.dmm', "3" = 'exodus-3.dmm', "6" = 'exodus-6.dmm')
 
 	station_name  = "NSS Exodus"

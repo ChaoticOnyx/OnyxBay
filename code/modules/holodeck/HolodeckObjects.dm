@@ -6,7 +6,7 @@
 /turf/simulated/floor/holofloor
 	thermal_conductivity = 0
 
-/turf/simulated/floor/holofloor/attackby(obj/item/weapon/W, mob/user)
+/turf/simulated/floor/holofloor/attackby(obj/item/W, mob/user)
 	return
 	// HOLOFLOOR DOES NOT GIVE A FUCK
 
@@ -129,11 +129,11 @@
 
 	if(!istype(W) || W.item_flags & ITEM_FLAG_NO_BLUDGEON) return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't unfasten it!</span>"))
-	else if(istype(W, /obj/item/weapon/crowbar) && reinf && state <= 1)
+	else if(istype(W, /obj/item/crowbar) && reinf && state <= 1)
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't pry it!</span>"))
-	else if(istype(W, /obj/item/weapon/wrench) && !anchored && (!state || !reinf))
+	else if(istype(W, /obj/item/wrench) && !anchored && (!state || !reinf))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't dismantle it!</span>"))
 	else
 		if(W.damtype == BRUTE || W.damtype == BURN)
@@ -160,12 +160,12 @@
 /obj/machinery/door/window/holowindoor/Destroy()
 	return ..()
 
-/obj/machinery/door/window/holowindoor/attackby(obj/item/weapon/I, mob/user)
+/obj/machinery/door/window/holowindoor/attackby(obj/item/I, mob/user)
 
 	if (src.operating == 1)
 		return
 
-	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		var/aforce = I.force
 		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")
@@ -198,7 +198,7 @@
 /obj/structure/bed/chair/holochair/Destroy()
 	return ..()
 
-/obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/bed/chair/holochair/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		to_chat(user, SPAN("notice", "It's a holochair, you can't dismantle it!"))
 	return
@@ -225,16 +225,16 @@
 		collapse_message = list("[user] collapses \the [name].", "You collapse \the [name].")
 
 	visible_message(collapse_message[1], collapse_message[2])
-	var/obj/item/weapon/foldchair/holochair/O = new /obj/item/weapon/foldchair/holochair(get_turf(src))
+	var/obj/item/foldchair/holochair/O = new /obj/item/foldchair/holochair(get_turf(src))
 	if(user)
 		O.add_fingerprint(user)
 	QDEL_IN(src, 0)
 
-/obj/item/weapon/foldchair/holochair/attackby(obj/item/weapon/W, mob/user)
+/obj/item/foldchair/holochair/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		to_chat(user,SPAN("notice", "It's a holochair, you can't dismantle it!"))
 
-/obj/item/weapon/foldchair/holochair/attack_self(mob/user)
+/obj/item/foldchair/holochair/attack_self(mob/user)
 	var/obj/structure/bed/chair/holochair/O = new /obj/structure/bed/chair/holochair(user.loc)
 	O.add_fingerprint(user)
 	O.dir = user.dir
@@ -242,13 +242,14 @@
 	visible_message("[user] unfolds \the [O.name].")
 	qdel(src)
 
-/obj/item/weapon/holo
+/obj/item/holo
 	damtype = PAIN
 	no_attack_log = 1
 
-/obj/item/weapon/holo/esword
+/obj/item/holo/esword
 	name = "holosword"
 	desc = "May the force be within you. Sorta."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	force = 3.0
 	throw_speed = 1
@@ -259,18 +260,18 @@
 	var/active = 0
 	var/item_color
 
-/obj/item/weapon/holo/esword/green
+/obj/item/holo/esword/green
 	New()
 		item_color = "green"
 
-/obj/item/weapon/holo/esword/red
+/obj/item/holo/esword/red
 	New()
 		item_color = "red"
 
-/obj/item/weapon/holo/esword/New()
+/obj/item/holo/esword/New()
 	item_color = pick("red","blue","green","purple")
 
-/obj/item/weapon/holo/esword/attack_self(mob/living/user)
+/obj/item/holo/esword/attack_self(mob/living/user)
 	active = !active
 	if (active)
 		force = 30
@@ -292,7 +293,7 @@
 
 //BASKETBALL OBJECTS
 
-/obj/item/weapon/beach_ball/holoball
+/obj/item/beach_ball/holoball
 	icon = 'icons/obj/basketball.dmi'
 	icon_state = "basketball"
 	name = "basketball"
@@ -328,6 +329,7 @@
 	desc = "This device is used to declare ready. If all devices in an area are ready, the event will begin!"
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "auth_off"
+	layer = ABOVE_WINDOW_LAYER
 	var/ready = 0
 	var/area/currentarea = null
 	var/eventstarted = 0
@@ -343,7 +345,7 @@
 	..()
 
 
-/obj/machinery/readybutton/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/readybutton/attackby(obj/item/W, mob/user)
 	to_chat(user, "The device is a holographic button, there's nothing you can do with it!")
 
 /obj/machinery/readybutton/attack_hand(mob/user)

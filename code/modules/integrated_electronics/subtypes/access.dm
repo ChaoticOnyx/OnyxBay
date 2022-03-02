@@ -17,7 +17,7 @@
 	)
 
 /obj/item/integrated_circuit/input/card_reader/attackby_react(obj/item/I, mob/living/user, intent)
-	var/obj/item/weapon/card/id/card = I.GetIdCard()
+	var/obj/item/card/id/card = I.GetIdCard()
 	var/list/access = I.GetAccess()
 	var/passkey = strtohex(XorEncrypt(json_encode(access), SScircuit.cipherkey))
 

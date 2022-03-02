@@ -21,7 +21,6 @@
 	speed = 3
 	maxHealth = 300
 	health = 300
-	harm_intent_damage = 0
 	melee_damage_lower = 25
 	melee_damage_upper = 25
 	attacktext = "pulverizes"
@@ -29,6 +28,7 @@
 	bodyparts = /decl/simple_animal_bodyparts/goliath
 	aggro_vision_range = 9
 	idle_vision_range = 4
+	ignore_pull_slowdown = TRUE
 	var/pre_attack = 0
 	var/dead = FALSE
 	var/hides_drop = 1

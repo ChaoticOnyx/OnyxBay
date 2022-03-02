@@ -424,6 +424,11 @@
 
 // SUBSTATIONS (Subtype of maint, that should let them serve as shielded area during radstorm)
 
+/area/maintenance/substation
+	name = "Substation"
+	icon_state = "substation"
+	sound_env = SMALL_ENCLOSED
+
 /area/maintenance/substation/command // AI and central cluster. This one will be between HoP office and meeting room (probably).
 	name = "Command Substation"
 
@@ -464,6 +469,7 @@
 
 /area/maintenance/disposal
 	name = "\improper Trash Disposal"
+	icon_state = "disposal"
 
 /area/maintenance/ghetto_medbay
 	name = "\improper Ghetto Medbay"
@@ -511,6 +517,10 @@
 
 /area/maintenance/ghetto_main_south
 	name = "\improper Underground Main - South"
+	icon_state = "ghettomainsouth"
+
+/area/maintenance/ghetto_main_west
+	name = "\improper Underground Main - West"
 	icon_state = "ghettomainsouth"
 
 /area/maintenance/ghetto_eva
@@ -869,7 +879,11 @@
 	icon_state = "maint_security_starboard"
 
 /area/maintenance/exterior
-	name = "\improper Exterior"
+	name = "\improper Exterior Reinforcements"
+	icon_state = "maint_security_starboard"
+	area_flags = AREA_FLAG_EXTERNAL
+	has_gravity = FALSE
+	turf_initializer = /decl/turf_initializer/maintenance/space
 
 /area/maintenance/research_atmos
 	name = "\improper Research Atmospherics Maintenance"
@@ -1178,6 +1192,10 @@
 	name = "\improper Actors' Break Room"
 	icon_state = "Theatre"
 
+/area/crew_quarters/underdorm/sauna
+	name = "\improper Sauna"
+	icon_state = "toilet"
+
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Bedroom One"
@@ -1318,9 +1336,14 @@
 	name = "\improper Crematorium"
 	icon_state = "chapelcrematorium"
 
-/area/lawoffice
+/area/iaoffice
 	name = "\improper Internal Affairs"
 	icon_state = "law"
+
+/area/lawoffice
+	name = "\improper Law Office"
+	icon_state = "law"
+
 
 // Engineering
 
@@ -1773,6 +1796,10 @@
 	name = "\improper Supply Office"
 	icon_state = "quartoffice"
 
+/area/hydroponics
+	name = "\improper Hydroponics"
+	icon_state = "hydro"
+
 /area/hydroponics/garden
 	name = "\improper Garden"
 	icon_state = "garden"
@@ -2178,6 +2205,12 @@
 /area/tdome/tdomeobserve
 	name = "\improper Thunderdome (Observer.)"
 	icon_state = "purple"
+
+/area/holodeck
+	name = "\improper Holodeck"
+	icon_state = "Holodeck"
+	dynamic_lighting = 0
+	sound_env = LARGE_ENCLOSED
 
 /area/holodeck/source_boxingcourt
 	name = "\improper Holodeck - Boxing Court"

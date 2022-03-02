@@ -65,7 +65,7 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
-	var/obj/item/weapon/storage/ore/box
+	var/obj/item/storage/ore/box
 
 /obj/item/integrated_circuit/mining/mining_satchel/Initialize()
 	. = ..()
@@ -84,7 +84,7 @@
 
 		if(isturf(AM))
 			var/turf/T = AM
-			for(var/obj/item/weapon/ore/O in T.contents)
+			for(var/obj/item/ore/O in T.contents)
 				if(!box.can_be_inserted(O))
 					return
 				box.handle_item_insertion(O)

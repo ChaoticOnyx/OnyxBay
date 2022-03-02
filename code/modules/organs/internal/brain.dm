@@ -90,7 +90,7 @@
 	else
 		. += "\nThis one seems particularly lifeless. Perhaps it will regain some of its luster later.."
 
-/obj/item/organ/internal/brain/removed(mob/living/user)
+/obj/item/organ/internal/brain/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 
@@ -129,10 +129,10 @@
 	icon_state = "green metroid extract"
 
 /obj/item/organ/internal/brain/golem
-	name = "chem"
-	desc = "A tightly furled roll of paper, covered with indecipherable runes."
-	icon = 'icons/obj/wizard.dmi'
-	icon_state = "scroll"
+	name = "adamantite brain"
+	desc = "What else could be inside the adamantite creature's head?"
+	icon = 'icons/obj/materials.dmi'
+	icon_state = "adamantine"
 
 
 /obj/item/organ/internal/brain/proc/get_current_damage_threshold()

@@ -60,7 +60,7 @@
 
 		animate_movement = SLIDE_STEPS
 
-		New(var/location, var/segments = 6)
+		New(location, segments = 6)
 			..()
 
 			var/mob/living/simple_animal/space_worm/current = src
@@ -134,7 +134,7 @@
 
 		return
 
-	proc/AttemptToEat(var/atom/target)
+	proc/AttemptToEat(atom/target)
 		if(istype(target,/turf/simulated/wall))
 			var/turf/simulated/wall/W = target
 			if((!W.reinf_material && eatingDuration >= 100) || eatingDuration >= 200) //need 20 ticks to eat an rwall, 10 for a regular one
@@ -148,7 +148,7 @@
 
 		return 0
 
-	proc/Attach(var/mob/living/simple_animal/space_worm/attachement)
+	proc/Attach(mob/living/simple_animal/space_worm/attachement)
 		if(!attachement)
 			return
 

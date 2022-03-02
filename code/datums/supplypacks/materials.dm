@@ -44,6 +44,12 @@
 	cost = 100
 	containername = "\improper Osmium carbide plasteel sheets crate"
 
+/decl/hierarchy/supply_pack/materials/black_glass50
+	name = "50 tinted glass sheets"
+	contains = list(/obj/item/stack/material/glass/black/fifty)
+	cost = 15
+	containername = "\improper Tinted glass sheets crate"
+
 // Material sheets (10 - Smaller amounts, less cost efficient)
 /decl/hierarchy/supply_pack/materials/marble10
 	name = "10 slabs of marble"

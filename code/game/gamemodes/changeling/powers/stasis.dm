@@ -2,9 +2,9 @@
 //Fake our own death and fully heal. You will appear to be dead but regenerate fully after a short delay.
 /datum/changeling_power/toggled/stasis
 	name = "Regenerative Stasis"
-	desc = "We become weakened to a death-like state, where we will rise again from death. Uses chemicals upon Revive, not when going into stasis."
+	desc = "We become weakened to a death-like state, where we will rise again from death. Uses our entire chemical storage."
 	icon_state = "ling_stasis"
-	required_chems = 40
+	required_chems = 0
 	power_processing = FALSE
 	max_stat = DEAD
 	allow_stasis = TRUE
@@ -13,6 +13,10 @@
 	text_deactivate = "We have regenerated."
 
 	var/is_ready = FALSE
+	var/max_revive_time = 240
+	var/revive_speedup_by_chem = 1.2
+	var/chemical_buffer = -1 // Amount of chemicals we regain if we use recursive enhancement
+	var/chemical_buffer_divisor = 3
 
 /datum/changeling_power/toggled/stasis/update_screen_button()
 	if(is_ready)
@@ -20,6 +24,14 @@
 	else
 		icon_state = "ling_stasis"
 	..()
+
+/datum/changeling_power/toggled/stasis/update_recursive_enhancement()
+	if(..())
+		desc = "We become weakened to a death-like state, where we will rise again from death. Uses our entire chemical storage, but we regain some chemicals upon rising."
+		chemical_buffer = 0
+	else
+		desc = initial(desc)
+		chemical_buffer = -1
 
 // Activating stasis
 /datum/changeling_power/toggled/stasis/activate()
@@ -33,6 +45,13 @@
 	if(!..())
 		return
 
+	var/revive_time = max_revive_time - (changeling.chem_charges * revive_speedup_by_chem)
+	revive_time = max(1, revive_time) SECONDS // 0s timers bad
+
+	if(chemical_buffer != -1)
+		chemical_buffer = round(changeling.chem_charges / chemical_buffer_divisor)
+	changeling.chem_charges = 0
+
 	my_mob.status_flags |= FAKEDEATH
 	my_mob.update_canmove()
 
@@ -40,7 +59,7 @@
 
 	my_mob.death(0) // So our body ~actually~ dies until revived
 
-	addtimer(CALLBACK(src, .proc/revive_ready), rand(80 SECONDS, 200 SECONDS))
+	addtimer(CALLBACK(src, .proc/revive_ready), revive_time)
 
 	update_screen_button()
 
@@ -58,13 +77,15 @@
 		return
 	var/mob/living/L = my_mob
 
-	use_chems()
-
 	name = initial(name)
 	desc = initial(desc)
 
 	is_ready = FALSE
 	update_screen_button()
+
+	if(chemical_buffer != -1)
+		changeling.chem_charges += chemical_buffer
+		chemical_buffer = 0
 
 	L.revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
 	L.status_flags &= ~(FAKEDEATH)

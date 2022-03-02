@@ -12,7 +12,7 @@ REAGENT SCANNER
 	name = "health analyzer"
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject."
 	icon_state = "health"
-	item_state = "analyzer"
+	item_state = "healthanalyzer"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 3
@@ -464,7 +464,7 @@ REAGENT SCANNER
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
+		var/obj/item/paper/P = new /obj/item/paper/(get_turf(src))
 		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 

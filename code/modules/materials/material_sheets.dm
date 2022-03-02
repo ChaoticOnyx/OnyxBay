@@ -328,3 +328,27 @@
 
 /obj/item/stack/material/glass/rplass/fifty
 	amount = 50
+
+/obj/item/stack/material/glass/black
+	name = "tinted glass"
+	singular_name = "tinted glass sheet"
+	icon_state = "bglass"
+	default_type = MATERIAL_BLACK_GLASS
+
+/obj/item/stack/material/glass/black/ten
+	amount = 10
+
+/obj/item/stack/material/glass/black/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/rblack
+	name = "reinforced tinted glass"
+	singular_name = "reinforced tinted glass sheet"
+	icon_state = "rbglass"
+	default_type = MATERIAL_REINFORCED_BLACK_GLASS
+
+/obj/item/stack/material/glass/rblack/ten
+	amount = 10
+
+/obj/item/stack/material/glass/rblack/fifty
+	amount = 50

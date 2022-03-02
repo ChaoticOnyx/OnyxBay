@@ -97,7 +97,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/trinary/mixer/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/trinary/mixer/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	var/datum/gas_mixture/int_air = return_air()

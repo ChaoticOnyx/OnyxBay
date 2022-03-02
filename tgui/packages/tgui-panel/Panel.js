@@ -97,7 +97,9 @@ export const Panel = (props, context) => {
             </Pane.Content>
             <Notifications>
               {game.roundRestartedAt && (
-                <Notifications.Item>
+                <Notifications.Item style={{
+                  'z-index': 100
+                }}>
                   The connection has been closed because the server is
                   restarting. Please wait while you automatically reconnect.
                 </Notifications.Item>

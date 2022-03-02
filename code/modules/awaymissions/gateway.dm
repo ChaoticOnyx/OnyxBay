@@ -26,6 +26,10 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway/Destroy()
 	if(gateway_tag)
 		GLOB.world_gateways_by_tag[gateway_tag] = null
+	toggleoff(forced_off = TRUE)
+	for(var/obj/machinery/gateway/G in linked)
+		G.toggleoff()
+		G.linked.Remove(src)
 	. = ..()
 
 /obj/machinery/gateway/update_icon()
@@ -34,7 +38,7 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	else
 		icon_state = active ? "on" : "off"
 
-/obj/machinery/gateway/proc/toggleoff(mob/user)
+/obj/machinery/gateway/proc/toggleoff(mob/user, forced_off = FALSE)
 	for(var/obj/machinery/gateway/G in linked)
 		G.active = FALSE
 		G.update_icon()
@@ -108,9 +112,10 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 /obj/machinery/gateway/centerstation/toggleon(mob/user, forced_on = FALSE)
 	if(!ready)
 		return
-	if(length(linked) != 8)
-		return
 	if(!powered())
+		return
+	detect()
+	if(length(linked) != 8)
 		return
 	if(!awaygate)
 		to_chat(user, SPAN("notice", "Error: No destination found."))
@@ -136,6 +141,9 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	if(awaygate)
 		awaygate.stationgate = null
 		awaygate.toggleoff()
+	for(var/obj/machinery/gateway/G in linked)
+		G.active = FALSE
+		G.update_icon()
 	..()
 
 //okay, here's the good teleporting stuff
@@ -242,8 +250,11 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	. = ..()
 
 /obj/machinery/gateway/centeraway/toggleon(mob/user)
-	if(!ready)			return
-	if(length(linked) != 8)	return
+	if(!ready)
+		return
+	detect()
+	if(length(linked) != 8)
+		return
 	if(!stationgate)
 		to_chat(user, SPAN("notice", "Error: No destination found."))
 		return
@@ -260,7 +271,7 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 	if(!ready)	return
 	if(!active)	return
 	if(istype(M, /mob/living/carbon))
-		for(var/obj/item/weapon/implant/exile/E in M)//Checking that there is an exile implant in the contents
+		for(var/obj/item/implant/exile/E in M)//Checking that there is an exile implant in the contents
 			if(E.imp_in == M)//Checking that it's actually implanted vs just in their pocket
 				to_chat(M, "The remote gate has detected your exile implant and is blocking your entry.")
 				return

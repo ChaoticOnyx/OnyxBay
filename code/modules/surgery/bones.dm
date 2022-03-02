@@ -12,8 +12,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/glue_bone
 	allowed_tools = list(
-		/obj/item/weapon/bonegel = 100,
-		/obj/item/weapon/tape_roll = 75
+		/obj/item/bonegel = 100,
+		/obj/item/tape_roll = 75
 	)
 	can_infect = 1
 	blood_level = 1
@@ -54,8 +54,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/set_bone
 	allowed_tools = list(
-	/obj/item/weapon/bonesetter = 100,	\
-	/obj/item/weapon/wrench = 75		\
+	/obj/item/bonesetter = 100,	\
+	/obj/item/wrench = 75		\
 	)
 
 	duration = BONE_MEND_DURATION
@@ -101,8 +101,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/mend_skull
 	allowed_tools = list(
-	/obj/item/weapon/bonesetter = 100,	\
-	/obj/item/weapon/wrench = 75		\
+	/obj/item/bonesetter = 100,	\
+	/obj/item/wrench = 75		\
 	)
 
 	duration = BONE_MEND_DURATION
@@ -139,8 +139,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/finish_bone
 	allowed_tools = list(
-	/obj/item/weapon/bonegel = 100,	\
-	/obj/item/weapon/tape_roll = 75
+	/obj/item/bonegel = 100,	\
+	/obj/item/tape_roll = 75
 	)
 	can_infect = 1
 	blood_level = 1
@@ -164,9 +164,10 @@
 /datum/surgery_step/finish_bone/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/bone = affected.encased ? "[target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
-	user.visible_message(SPAN_NOTICE("[user] has mended the damaged [bone] with \the [tool].")  , \
-		SPAN_NOTICE("You have mended the damaged [bone] with \the [tool].") )
-	affected.status &= ~ORGAN_BROKEN
+
+	user.visible_message(SPAN("notice", "[user] has mended the damaged [bone] with \the [tool]."), \
+						 SPAN("notice", "You have mended the damaged [bone] with \the [tool].") )
+	affected.mend_fracture()
 	affected.stage = 0
 
 /datum/surgery_step/finish_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -177,7 +178,7 @@
 //////BONE MENDER/////////
 /datum/surgery_step/bone_mender
 	allowed_tools = list(
-		/obj/item/weapon/bonesetter/bone_mender = 100,
+		/obj/item/bonesetter/bone_mender = 100,
 		)
 
 	can_infect = 1
@@ -204,7 +205,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message(SPAN_NOTICE("[user] has grasped the damaged bone edges in [target]'s [affected.name] with \the [tool].")  , \
 	SPAN_NOTICE("You have grasped the damaged bone edges in [target]'s [affected.name] with \the [tool].") )
-	affected.status &= ~ORGAN_BROKEN
+	affected.mend_fracture()
 	affected.stage = 0
 
 /datum/surgery_step/bone_mender/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
