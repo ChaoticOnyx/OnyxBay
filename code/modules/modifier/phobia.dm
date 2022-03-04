@@ -223,7 +223,7 @@
 				fear_amount += 1
 
 	var/turf/T = get_turf(holder)
-	if(T.get_lumcount() <= LIGHTING_SOFT_THRESHOLD) // Standing in complete darkness.
+	if(T.get_lumcount() <= LIGHTING_SOFT_THRESHOLD && T.simulated) // Standing in complete darkness.
 		fear_amount += 5
 
 	return fear_amount
