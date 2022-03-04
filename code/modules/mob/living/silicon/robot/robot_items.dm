@@ -85,13 +85,13 @@
 	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 		return
 	if(istype(target, /obj/item))
-		if(!target.origin_tech)
+		var/obj/item/I = target
+		if(!I.origin_tech)
 			to_chat(user, "<span class='notice'>This doesn't seem to have a tech origin.</span>")
 			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
-		var/obj/item/I = target
 		I.loc = src
 		loaded_item = I
 		for(var/mob/M in viewers())
