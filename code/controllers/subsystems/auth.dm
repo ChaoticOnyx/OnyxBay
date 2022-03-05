@@ -63,7 +63,7 @@ SUBSYSTEM_DEF(redeye)
 /datum/controller/subsystem/redeye/proc/check_byond()
 	var/list/byond_request = world.Export("http://www.byond.com")
 
-	if((!byond_request || !(byond_request["STATUS"] in legal_codes)))
+	if((!byond_request || !(byond_request["STATUS"] in legal_codes)) && !fired_by_byond)
 		if(!fired_by_byond)
 			log_and_message_admins(SPAN_DANGER("Alert. \The [name] report BYOND website response code is not in legal code list, received status - [byond_request ? byond_request["STATUS"] : "undefined code"]. \The [name] is now active."))
 			update_identifiers()
@@ -72,10 +72,7 @@ SUBSYSTEM_DEF(redeye)
 		if(fired_by_byond && !config.redeye_auth)
 			log_and_message_admins(SPAN_NOTICE("It's appears connection to BYOND is now up, \the [name] is inactive."))
 			fired_by_byond = FALSE
-
-/datum/controller/subsystem/redeye/fire(resumed)
-	check_byond()
-	return TRUE
+	addtimer(CALLBACK(src, check_byond), 10 SECONDS)
 
 /datum/controller/subsystem/redeye/proc/update_identifiers(new_ckey)
 	if(new_ckey && !(new_ckey in listener_ckeys))
