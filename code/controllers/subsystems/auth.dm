@@ -1,3 +1,5 @@
+#define WHITELIST_MODE 0
+#define ALLOW_ALL_MODE 1
 SUBSYSTEM_DEF(redeye)
 	// Red Eye Identification System
 	// Yeah, this is "rice" translated from German
@@ -9,6 +11,8 @@ SUBSYSTEM_DEF(redeye)
 	var/list/ckey_identifiers = list()
 	// there we will contain ckey of players that allowed to use REIS
 	var/list/listener_ckeys = list()
+
+	var/mode = WHITELIST_MODE
 
 	var/legal_codes = list(200, 301, 302)
 	var/fired_by_byond = FALSE
@@ -45,6 +49,8 @@ SUBSYSTEM_DEF(redeye)
 	if(!computer_id && !ip_address)
 		return FALSE
 	for(var/ckey in ckey_identifiers)
+		if(!(ckey in listener_ckeys) && mode == WHITELIST_MODE)
+			return
 		for(var/list/identifiers in ckey_identifiers[ckey])
 			if(identifiers["id"] == computer_id && identifiers["ip_addr"] == ip_address)
 				if(C)
@@ -79,7 +85,7 @@ SUBSYSTEM_DEF(redeye)
 		var/ckey = query.item[1]
 		var/ip_addr = query.item[2]
 		var/computer_id = query.item[3]
-		if(!(ckey && ip_addr && computer_id) || !(ckey in listener_ckeys))
+		if(!(ckey && ip_addr && computer_id))
 			continue
 		if(!length(ckey_identifiers[ckey]))
 			ckey_identifiers[ckey] = list()
@@ -101,12 +107,20 @@ SUBSYSTEM_DEF(redeye)
 		if(ckey)
 			ckey_identifiers.Remove(ckey)
 			listener_ckeys.Remove(ckey)
+	if(href_list["toggle_mode"])
+		if (mode == WHITELIST_MODE)
+			mode = ALLOW_ALL_MODE
+		else if (mode == ALLOW_ALL_MODE)
+			mode = WHITELIST_MODE
+
+		to_chat(user, "You change the REIS's identification rules to [mode ? "allow all players from db" :  "allow only players from whitelist"].")
+
 	show_control_panel(user)
 
 /datum/controller/subsystem/redeye/proc/show_control_panel(mob/user)
 	if(!is_admin(user))
 		return
-	var/dat = "<a href='?src=\ref[src];ckey_add=1'>Add participant.</a><BR><a href='?src=\ref[src];ckey_remove=1'>Remove participant.</a>"
+	var/dat = "<a href='?src=\ref[src];toggle_mode=1'>Change access mode.</a><BR><a href='?src=\ref[src];ckey_add=1'>Add participant.</a><BR><a href='?src=\ref[src];ckey_remove=1'>Remove participant.</a>"
 	dat += "<BR>Ckeys of participants in \the [name]:"
 	for(var/key in listener_ckeys)
 		var/mob/M = get_mob_by_key(key)
@@ -120,3 +134,6 @@ SUBSYSTEM_DEF(redeye)
 		redeye_menu.update()
 	redeye_menu.open()
 	return
+
+#undef WHITELIST_MODE
+#undef ALLOW_ALL_MODE
