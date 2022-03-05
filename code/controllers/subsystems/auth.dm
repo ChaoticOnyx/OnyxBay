@@ -72,11 +72,15 @@ SUBSYSTEM_DEF(redeye)
 		if(fired_by_byond && !config.redeye_auth)
 			log_and_message_admins(SPAN_NOTICE("It's appears connection to BYOND is now up, \the [name] is inactive."))
 			fired_by_byond = FALSE
-	addtimer(CALLBACK(src, check_byond), 10 SECONDS)
+	addtimer(CALLBACK(src, .proc/check_byond), 10 SECONDS)
 
 /datum/controller/subsystem/redeye/proc/update_identifiers(new_ckey)
-	if(new_ckey && !(new_ckey in listener_ckeys))
-		listener_ckeys.Add(new_ckey)
+	if(new_ckey)
+		if(!(new_ckey in listener_ckeys))
+			listener_ckeys.Add(new_ckey)
+	else
+		// clear ckey indentifiers to save time for identification ppl
+		ckey_identifiers = null
 	var/DBQuery/query = sql_query("SELECT ckey, ip, computerid FROM erro_player[new_ckey ? " WHERE ckey = $ckey" : ""]", dbcon, list(ckey = new_ckey))
 	while(query.NextRow())
 		var/ckey = query.item[1]
