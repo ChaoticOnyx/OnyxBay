@@ -726,14 +726,14 @@
 	reagents.add_reagent(/datum/reagent/hyperzine, 5)
 	src.bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/meatball
-	name = "meatball"
+/obj/item/reagent_containers/food/snacks/faggot
+	name = "faggot"
 	desc = "A great meal all round."
-	icon_state = "meatball"
+	icon_state = "faggot"
 	filling_color = "#db0000"
 	center_of_mass = "x=16;y=16"
 
-/obj/item/reagent_containers/food/snacks/meatball/Initialize()
+/obj/item/reagent_containers/food/snacks/faggot/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
 	bitesize = 2
@@ -1453,15 +1453,15 @@
 	bitesize = 2
 
 
-/obj/item/reagent_containers/food/snacks/meatballsoup
-	name = "Meatball soup"
+/obj/item/reagent_containers/food/snacks/faggotsoup
+	name = "Faggot soup"
 	desc = "You've got balls kid, BALLS!"
-	icon_state = "meatballsoup"
+	icon_state = "faggotsoup"
 	trash = /obj/item/trash/dish/bowl
 	filling_color = "#785210"
 	center_of_mass = "x=16;y=8"
 
-/obj/item/reagent_containers/food/snacks/meatballsoup/Initialize()
+/obj/item/reagent_containers/food/snacks/faggotsoup/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 8)
 	reagents.add_reagent(/datum/reagent/water, 5)
@@ -2079,17 +2079,17 @@
 	reagents.add_reagent(/datum/reagent/drink/juice/tomato, 10)
 	bitesize = 4
 
-/obj/item/reagent_containers/food/snacks/meatballspagetti
-	name = "Spaghetti & Meatballs"
-	desc = "Now thats a nic'e meatball!"
-	icon_state = "meatballspagetti"
+/obj/item/reagent_containers/food/snacks/faggotspagetti
+	name = "Spaghetti & Faggots"
+	desc = "Now thats a nic'e faggot!"
+	icon_state = "faggotspagetti"
 	trash = /obj/item/trash/dish/plate
 	filling_color = "#de4545"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("noodles" = 4)
 	nutriment_amt = 4
 
-/obj/item/reagent_containers/food/snacks/meatballspagetti/Initialize()
+/obj/item/reagent_containers/food/snacks/faggotspagetti/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
 	bitesize = 2
@@ -2323,7 +2323,7 @@
 
 /obj/item/reagent_containers/food/snacks/validsalad
 	name = "valid salad"
-	desc = "It's just a salad of questionable 'herbs' with meatballs and fried potato slices. Nothing suspicious about it."
+	desc = "It's just a salad of questionable 'herbs' with faggots and fried potato slices. Nothing suspicious about it."
 	icon_state = "validsalad"
 	trash = /obj/item/trash/dish/bowl
 	filling_color = "#76b87f"
@@ -3234,7 +3234,7 @@
 		new /obj/item/reagent_containers/food/snacks/sliceable/flatdough(src)
 		to_chat(user, "You flatten the dough.")
 		qdel(src)
-	else if (istype(W,/obj/item/reagent_containers/food/snacks/meatball))
+	else if (istype(W,/obj/item/reagent_containers/food/snacks/faggot))
 		new /obj/item/reagent_containers/food/snacks/pelmeni(src)
 		to_chat(user, "You make some pelmeni.")
 		qdel(src)
@@ -3280,8 +3280,8 @@
 
 
 /obj/item/reagent_containers/food/snacks/bun/attackby(obj/item/W as obj, mob/user as mob)
-	// Bun + meatball = burger
-	if(istype(W,/obj/item/reagent_containers/food/snacks/meatball))
+	// Bun + faggot = burger
+	if(istype(W,/obj/item/reagent_containers/food/snacks/faggot))
 		new /obj/item/reagent_containers/food/snacks/plainburger(src)
 		to_chat(user, "You make a burger.")
 		qdel(W)
@@ -3369,15 +3369,15 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
 
-/obj/item/reagent_containers/food/snacks/rawmeatball
-	name = "raw meatball"
-	desc = "A raw meatball."
+/obj/item/reagent_containers/food/snacks/rawfaggot
+	name = "raw faggot"
+	desc = "A raw faggot."
 	icon = 'icons/obj/food_ingredients.dmi'
-	icon_state = "rawmeatball"
+	icon_state = "rawfaggot"
 	bitesize = 2
 	center_of_mass = "x=16;y=15"
 
-/obj/item/reagent_containers/food/snacks/rawmeatball/Initialize()
+/obj/item/reagent_containers/food/snacks/rawfaggot/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
 
