@@ -42,7 +42,7 @@ var/global/list/robot_footstep_sounds = list(
 
 	var/static/list/eye_overlays
 	var/icontype 				//Persistent icontype tracking allows for cleaner icon updates
-	var/module_hulls[0] 		//Used to store the associations between sprite names and sprite index.
+	var/module_hulls[0] 		//Used to store the associations between sprite names and hull datum.
 	var/icon_selected = 1		//If icon selection has been completed yet
 	var/icon_selection_tries = 0//Remaining attempts to select icon before a selection is forced
 
@@ -808,7 +808,7 @@ var/global/list/robot_footstep_sounds = list(
 /mob/living/silicon/robot/update_icon()
 	overlays.Cut()
 	if(stat == CONSCIOUS)
-		var/eye_icon_state = "eyes-[module_hulls[icontype]]"
+		var/eye_icon_state = "eyes-[module_hulls[icontype].icon]"
 		if(eye_icon_state in icon_states(icon))
 			if(!eye_overlays)
 				eye_overlays = list()
@@ -830,13 +830,13 @@ var/global/list/robot_footstep_sounds = list(
 			overlays += "[panelprefix]-openpanel -c"
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
-		overlays += "[module_hulls[icontype]]-shield"
+		overlays += "[module_hulls[icontype].icon]-shield"
 
 	if(modtype == "Combat")
 		if(module_active && istype(module_active,/obj/item/borg/combat/mobility))
-			icon_state = "[module_hulls[icontype]]-roll"
+			icon_state = "[module_hulls[icontype].icon]-roll"
 		else
-			icon_state = module_hulls[icontype]
+			icon_state = module_hulls[icontype].icon
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
