@@ -70,6 +70,9 @@
 
 // Used to get a scaled lumcount.
 /turf/proc/get_lumcount(minlum = 0, maxlum = 1)
+	var/turf/T = loc
+	if(!T.simulated)
+		return maxlum
 	if(!lighting_overlay)
 		var/area/A = loc
 		if(A.dynamic_lighting)
