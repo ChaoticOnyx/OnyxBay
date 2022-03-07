@@ -415,8 +415,8 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/punk_jacket_RD
-	name = "navy punk jacket"
-	desc = "A navy leather jacket with Rusty Devils emblem on the back."
+	name = "raven punk jacket"
+	desc = "A raven leather jacket with Rusty Devils emblem on the back."
 	icon_state = "punk_jacket_RD"
 	body_parts_covered = UPPER_TORSO|ARMS
 
