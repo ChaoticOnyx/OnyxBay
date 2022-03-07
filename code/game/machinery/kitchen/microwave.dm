@@ -46,7 +46,7 @@
 			for (var/reagent in recipe.reagents)
 				acceptable_reagents |= reagent
 			if (recipe.items)
-				max_n_of_items = max(max_n_of_items,recipe.items.len)
+				max_n_of_items = max(max_n_of_items, length(recipe.items))
 		// This will do until I can think of a fun recipe to use dionaea in -
 		// will also allow anything using the holder item to be microwaved into
 		// impure carbon. ~Z
@@ -134,7 +134,7 @@
 		return
 
 	else if(is_type_in_list(O,acceptable_items))
-		if (InsertedContents().len >= max_n_of_items)
+		if (length(InsertedContents()) >= max_n_of_items)
 			to_chat(user, SPAN("warning", "This [src] is full of ingredients, you cannot put more."))
 			return 1
 		if(istype(O, /obj/item/stack)) // This is bad, but I can't think of how to change it
@@ -244,7 +244,7 @@
 				display_name = "Coldsauce"
 			dat += "<B>[display_name]:</B> [R.volume] unit\s"
 
-		if(items_counts.len == 0 && reagents.reagent_list.len == 0)
+		if(!length(items_counts)&& !length(reagents.reagent_list))
 			dat += "<B>The microwave is empty</B>"
 		dat += "<HR><BR><A href='?src=\ref[src];action=cook'>Turn on!<BR><A href='?src=\ref[src];action=dispose'>Eject ingredients!"
 
@@ -262,7 +262,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
-	if (reagents.total_volume == 0 && !InsertedContents().len) //dry run
+	if (reagents.total_volume == 0 && !length(InsertedContents())) //dry run
 		if (!wzhzhzh(10))
 			abort()
 			return
