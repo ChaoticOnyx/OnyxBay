@@ -46,7 +46,7 @@
 			for (var/reagent in recipe.reagents)
 				acceptable_reagents |= reagent
 			if (recipe.items)
-				max_n_of_items = max(max_n_of_items,recipe.items.len)
+				max_n_of_items = max(max_n_of_items, length(recipe.items))
 		// This will do until I can think of a fun recipe to use dionaea in -
 		// will also allow anything using the holder item to be microwaved into
 		// impure carbon. ~Z
@@ -134,7 +134,7 @@
 		return
 
 	else if(is_type_in_list(O,acceptable_items))
-		if (contents.len >= max_n_of_items)
+		if (length(InsertedContents()) >= max_n_of_items)
 			to_chat(user, SPAN("warning", "This [src] is full of ingredients, you cannot put more."))
 			return 1
 		if(istype(O, /obj/item/stack)) // This is bad, but I can't think of how to change it
@@ -205,44 +205,46 @@
 		var/list/items_measures = new
 		var/list/items_measures_p = new
 		dat += "<h3><b>Ingredients:</b></h3>"
-		for (var/obj/O in InsertedContents())
+		for(var/obj/O in InsertedContents())
+			if(O in component_types)
+				continue
 			var/display_name = O.name
-			if (istype(O,/obj/item/reagent_containers/food/snacks/egg))
+			if(istype(O,/obj/item/reagent_containers/food/snacks/egg))
 				items_measures[display_name] = "egg"
 				items_measures_p[display_name] = "eggs"
-			if (istype(O,/obj/item/reagent_containers/food/snacks/tofu))
+			if(istype(O,/obj/item/reagent_containers/food/snacks/tofu))
 				items_measures[display_name] = "tofu chunk"
 				items_measures_p[display_name] = "tofu chunks"
-			if (istype(O,/obj/item/reagent_containers/food/snacks/meat)) //any meat
+			if(istype(O,/obj/item/reagent_containers/food/snacks/meat)) //any meat
 				items_measures[display_name] = "slab of meat"
 				items_measures_p[display_name] = "slabs of meat"
-			if (istype(O,/obj/item/reagent_containers/food/snacks/donkpocket))
+			if(istype(O,/obj/item/reagent_containers/food/snacks/donkpocket))
 				display_name = "Turnovers"
 				items_measures[display_name] = "turnover"
 				items_measures_p[display_name] = "turnovers"
-			if (istype(O,/obj/item/reagent_containers/food/snacks/carpmeat))
+			if(istype(O,/obj/item/reagent_containers/food/snacks/carpmeat))
 				items_measures[display_name] = "fillet of meat"
 				items_measures_p[display_name] = "fillets of meat"
 			items_counts[display_name]++
-		for (var/O in items_counts)
+		for(var/O in items_counts)
 			var/N = items_counts[O]
-			if (!(O in items_measures))
+			if(!(O in items_measures))
 				dat += "<B>[capitalize(O)]:</B> [N] [lowertext(O)]\s"
 			else
-				if (N==1)
+				if(N == 1)
 					dat += "<B>[capitalize(O)]:</B> [N] [items_measures[O]]"
 				else
 					dat += "<B>[capitalize(O)]:</B> [N] [items_measures_p[O]]"
 
-		for (var/datum/reagent/R in reagents.reagent_list)
+		for(var/datum/reagent/R in reagents.reagent_list)
 			var/display_name = R.name
-			if (R.type == /datum/reagent/capsaicin)
+			if(R.type == /datum/reagent/capsaicin)
 				display_name = "Hotsauce"
-			if (R.type == /datum/reagent/frostoil)
+			if(R.type == /datum/reagent/frostoil)
 				display_name = "Coldsauce"
 			dat += "<B>[display_name]:</B> [R.volume] unit\s"
 
-		if (items_counts.len==0 && reagents.reagent_list.len==0)
+		if(!length(items_counts) && !length(reagents.reagent_list))
 			dat += "<B>The microwave is empty</B>"
 		dat += "<HR><BR><A href='?src=\ref[src];action=cook'>Turn on!<BR><A href='?src=\ref[src];action=dispose'>Eject ingredients!"
 
@@ -260,7 +262,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
-	if (reagents.total_volume == 0 && !contents.len) //dry run
+	if (reagents.total_volume == 0 && !length(InsertedContents())) //dry run
 		if (!wzhzhzh(10))
 			abort()
 			return
@@ -323,7 +325,7 @@
 	return 1
 
 /obj/machinery/microwave/proc/has_extra_item()
-	for (var/obj/O in src)
+	for (var/obj/O in InsertedContents())
 		if (!istype(O,/obj/item/reagent_containers/food) && !istype(O, /obj/item/grown))
 			return 1
 	return 0
@@ -346,7 +348,7 @@
 	src.update_icon()
 
 /obj/machinery/microwave/proc/dispose()
-	for (var/obj/O in src)
+	for (var/obj/O in InsertedContents())
 		O.dropInto(loc)
 	if (src.reagents.total_volume)
 		src.dirty++
@@ -388,7 +390,7 @@
 
 /obj/machinery/microwave/proc/fail()
 	var/amount = 0
-	for (var/obj/O in contents)
+	for (var/obj/O in InsertedContents())
 		amount++
 		if (O.reagents)
 			var/reagent_type = O.reagents.get_master_reagent_type()

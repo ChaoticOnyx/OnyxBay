@@ -56,7 +56,7 @@
 		var/list/checklist = list()
 		 // You should trust Copy().
 		checklist = fruit.Copy()
-		for(var/obj/item/reagent_containers/food/snacks/grown/G in container)
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in container.InsertedContents())
 			if(!G.seed || !G.seed.kitchen_tag || isnull(checklist[G.seed.kitchen_tag]))
 				continue
 			checklist[G.seed.kitchen_tag]--
