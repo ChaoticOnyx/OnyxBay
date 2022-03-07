@@ -28,6 +28,8 @@
 	var/id = 1.0
 	dir = 1
 	explosion_resistance = 25
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION | ATOM_FLAG_FULLTILE_OBJECT
+	var/keep_items_on_close = FALSE
 
 	//Most blast doors are infrequently toggled and sometimes used with regular doors anyways,
 	//turning this off prevents awkward zone geometry in places like medbay lobby, for example.
@@ -48,6 +50,7 @@
 		set_density(0)
 		set_opacity(0)
 		layer = open_layer
+		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 	implicit_material = get_material_by_name(MATERIAL_PLASTEEL)
 
@@ -80,40 +83,43 @@
 // Parameters: None
 // Description: Opens the door. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_open()
-	src.operating = 1
-	playsound(src.loc, open_sound, 100, 1)
+	operating = TRUE
+	playsound(loc, open_sound, 100, 1)
 	flick(icon_state_opening, src)
-	src.set_density(0)
+	set_density(FALSE)
 	update_nearby_tiles()
-	src.update_icon()
-	src.set_opacity(0)
+	update_icon()
+	set_opacity(FALSE)
 	sleep(15)
-	src.layer = open_layer
-	src.operating = 0
+	layer = open_layer
+	operating = FALSE
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_close()
 // Parameters: None
 // Description: Closes the door. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_close()
-	src.operating = 1
-	playsound(src.loc, close_sound, 100, 1)
+	operating = TRUE
+	playsound(loc, close_sound, 100, 1)
 	src.layer = closed_layer
 	flick(icon_state_closing, src)
-	src.set_density(1)
+	set_density(TRUE)
 	update_nearby_tiles()
-	src.update_icon()
-	src.set_opacity(1)
+	update_icon()
+	set_opacity(TRUE)
 	sleep(15)
-	src.operating = 0
+	shove_everything(shove_items = !keep_items_on_close)
+	operating = FALSE
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_toggle()
 // Parameters: None
 // Description: Opens or closes the door, depending on current state. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_toggle()
-	if(src.density)
-		src.force_open()
+	if(density)
+		force_open()
 	else
-		src.force_close()
+		force_close()
 
 /obj/machinery/door/blast/get_material()
 	return implicit_material
@@ -214,6 +220,7 @@
 	icon_state = "shutter1"
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
+	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE

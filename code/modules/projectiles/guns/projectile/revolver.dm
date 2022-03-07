@@ -71,7 +71,7 @@
 	icon_state = "detective"
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver1.ogg'
 	max_shells = 6
-	caliber = "38"
+	caliber = ".38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	ammo_type = /obj/item/ammo_casing/c38
 
@@ -153,14 +153,14 @@
 
 /obj/item/gun/projectile/revolver/m2019/detective
 	name = "M2019 Detective Special"
-	desc = "Though this one resembles a regular NT's M2019, it is definitely a masterpiece. It can use any .44 round, but works best with .44 SPEC and .44 CHEM."
+	desc = "Though this one resembles a regular NT's M2019, it is definitely a masterpiece. It can use any .38 round, but works best with .38 SPEC and .38 CHEM."
 	var/base_icon = "lapd2019"
 	icon_state = "lapd201900"
 	item_state = "lapd2019"
 	max_shells = 5
-	caliber = ".44"
+	caliber = ".38"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3)
-	ammo_type = /obj/item/ammo_casing/c44
+	ammo_type = /obj/item/ammo_casing/c38
 	starts_loaded = 0
 	var/chargemode = 1
 	var/shotcost = 20
@@ -199,17 +199,21 @@
 			loaded -= chambered
 			if(usecharge(shotcost))
 				if(chargemode == 1)
-					if(istype(chambered, /obj/item/ammo_casing/c44/spec))
-						chambered = new /obj/item/ammo_casing/c44/spec/nonlethal(src)
-					else if(istype(chambered, /obj/item/ammo_casing/c44/chem))
-						chambered = new /obj/item/ammo_casing/c44/chem/nonlethal(src)
+					if(istype(chambered, /obj/item/ammo_casing/c38/spec))
+						QDEL_NULL(chambered)
+						chambered = new /obj/item/ammo_casing/c38/spec/nonlethal(src)
+					else if(istype(chambered, /obj/item/ammo_casing/c38/chem))
+						QDEL_NULL(chambered)
+						chambered = new /obj/item/ammo_casing/c38/chem/nonlethal(src)
 				else if (chargemode == 2)
-					if(istype(chambered, /obj/item/ammo_casing/c44/spec))
-						chambered = new /obj/item/ammo_casing/c44/spec/lethal(src)
-					else if(istype(chambered, /obj/item/ammo_casing/c44/chem))
-						chambered = new /obj/item/ammo_casing/c44/chem/lethal(src)
+					if(istype(chambered, /obj/item/ammo_casing/c38/spec))
+						QDEL_NULL(chambered)
+						chambered = new /obj/item/ammo_casing/c38/spec/lethal(src)
+					else if(istype(chambered, /obj/item/ammo_casing/c38/chem))
+						QDEL_NULL(chambered)
+						chambered = new /obj/item/ammo_casing/c38/chem/lethal(src)
 
-	if (chambered)
+	if(chambered)
 		return chambered.BB
 	return null
 

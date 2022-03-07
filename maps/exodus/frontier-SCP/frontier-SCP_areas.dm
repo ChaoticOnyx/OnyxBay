@@ -102,3 +102,27 @@
 /area/engineering/hallway
 	name = "\improper Engineering Hallway"
 	icon_state = "engine"
+
+/area/hallway/secondary/exitA
+	name = "\improper Gate A Escape Hallway"
+	icon_state = "escape"
+
+/area/hallway/secondary/checkA
+	name = "\improper Gate A Escape Checkpoint"
+	icon_state = "escape"
+
+/area/hallway/secondary/exitB
+	name = "\improper Gate B Escape Hallway"
+	icon_state = "escape"
+
+/area/hallway/secondary/buffetB
+	name = "\improper Gate B Escape Buffet"
+	icon_state = "escape"
+
+/area/hallway/secondary/medicalB
+	name = "\improper Gate B Medical Escape"
+	icon_state = "escape"
+
+/area/hallway/secondary/checkB
+	name = "\improper Gate B Escape Checkpoint"
+	icon_state = "escape"

@@ -56,8 +56,12 @@
 	name = "Librarian"
 	icon_state = "landmark_librarian"
 
-/obj/effect/landmark/start/crew/lawyer
+/obj/effect/landmark/start/crew/iaa
 	name = "Internal Affairs Agent"
+	icon_state = "landmark_iaa"
+
+/obj/effect/landmark/start/crew/lawyer
+	name = "Lawyer"
 	icon_state = "landmark_lawyer"
 
 // Merchant

@@ -12,15 +12,15 @@
 	one_hand_penalty = 2
 	accuracy = 2
 	max_shots = 12
-	fire_delay = 6
+	fire_delay = 9
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/beam/midlaser
+	projectile_type = /obj/item/projectile/energy/laser/mid
 	wielded_item_state = "laserrifle-wielded"
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/midlaser),
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid)
+		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid),
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/mid)
 	)
 
 /obj/item/gun/energy/laser/mounted
@@ -48,6 +48,29 @@
 		return
 	..()
 
+/obj/item/gun/energy/laser/pistol
+	name = "laser pistol"
+	desc = "A Hephaestus Industries LP \"Arclight\", a combat laser pistol. Not as powerful as a laser rifle, it is much smaller and capable of shooting much more rapidly."
+	icon_state = "laser_pistol"
+	item_state = "laser"
+	w_class = ITEM_SIZE_NORMAL
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	one_hand_penalty = 0
+	accuracy = 1.0
+	max_shots = 12
+	fire_delay = 5.5
+	projectile_type = /obj/item/projectile/energy/laser/small
+	wielded_item_state = null
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
+
+	firemodes = list(
+		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/small),
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/small)
+	)
+
 /obj/item/gun/energy/laser/practice
 	name = "practice laser rifle"
 	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."
@@ -66,7 +89,7 @@
 		return NO_EMAG_ACT
 	to_chat(user, "<span class='warning'>You disable the safeties on [src] and crank the output to the lethal levels.</span>")
 	desc += " Its safeties are disabled and output is set to dangerous levels."
-	projectile_type = /obj/item/projectile/beam/midlaser
+	projectile_type = /obj/item/projectile/beam/laser/mid
 	charge_cost = 20
 	max_shots = rand(3,6) //will melt down after those
 	return 1
@@ -87,7 +110,7 @@
 	desc = "An older model of the basic lasergun. Nevertheless, it is still quite deadly and easy to maintain, making it a favorite amongst pirates and other outlaws."
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/beam
+	projectile_type = /obj/item/projectile/energy/laser/lesser // Old but gold
 	fire_delay = 15 //old technology, and a pistol
 	force = 9.0
 	mod_weight = 0.7
@@ -105,7 +128,8 @@
 	mod_handy = 1.1
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
-	projectile_type = /obj/item/projectile/beam
+	projectile_type = /obj/item/projectile/energy/laser/small
+	fire_delay = 6
 	origin_tech = null
 	max_shots = 5 //to compensate a bit for self-recharging
 	one_hand_penalty = 1 //a little bulky
@@ -120,7 +144,7 @@
 	slot_flags = SLOT_BACK
 	one_hand_penalty = 6 //large and heavy
 	w_class = ITEM_SIZE_HUGE
-	projectile_type = /obj/item/projectile/beam/heavylaser
+	projectile_type = /obj/item/projectile/energy/laser/heavy
 	charge_cost = 40
 	max_shots = 8
 	accuracy = 2
@@ -132,8 +156,8 @@
 	mod_handy = 1.0
 
 	firemodes = list(
-		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/heavylaser),
-		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy)
+		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy),
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/laser/heavy)
 	)
 
 /obj/item/gun/energy/lasercannon/mounted

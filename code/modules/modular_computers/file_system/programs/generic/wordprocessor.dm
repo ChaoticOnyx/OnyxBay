@@ -213,9 +213,11 @@
 	else if(PRG.open_file)
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = PRG.is_edited ? "[PRG.open_file]*" : PRG.open_file
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 	else
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = "UNNAMED"
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)

@@ -826,7 +826,7 @@ About the new airlock wires panel:
 	else
 		playsound(src.loc, close_sound_unpowered, 100, 1)
 
-	..()
+	..(forced, safe)
 
 /obj/machinery/door/airlock/proc/lock(forced = 0)
 	if(locked)

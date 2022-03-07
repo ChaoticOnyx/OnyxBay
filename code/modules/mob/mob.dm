@@ -168,7 +168,7 @@
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
 
-	if(pulling)
+	if(pulling && !ignore_pull_slowdown)
 		var/area/A = get_area(src)
 		if(A.has_gravity)
 			if(istype(pulling, /obj))

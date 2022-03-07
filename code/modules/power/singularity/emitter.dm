@@ -70,6 +70,10 @@
 
 /obj/machinery/power/emitter/attack_hand(mob/user)
 	add_fingerprint(user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.IsAdvancedToolUser())
+			return
 	activate(user)
 
 /obj/machinery/power/emitter/proc/activate(mob/user)

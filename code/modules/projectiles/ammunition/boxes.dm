@@ -25,7 +25,7 @@
 	name = "speed loader (.38)"
 	desc = "A speed loader for revolvers."
 	icon_state = "38"
-	caliber = "38"
+	caliber = ".38"
 	matter = list(MATERIAL_STEEL = 360)
 	ammo_type = /obj/item/ammo_casing/c38
 	max_ammo = 6
@@ -35,6 +35,22 @@
 	name = "speed loader (.38, rubber)"
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c38/rubber
+
+/obj/item/ammo_magazine/c38/spec
+	name = "speed loader (.38 SPEC)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "38spec"
+	ammo_type = /obj/item/ammo_casing/c38/spec
+	matter = list(MATERIAL_STEEL = 1000)
+	max_ammo = 5
+
+/obj/item/ammo_magazine/c38/chem
+	name = "speed loader (.38 CHEM)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "38chem"
+	ammo_type = /obj/item/ammo_casing/c38/chem
+	matter = list(MATERIAL_STEEL = 1500)
+	max_ammo = 5
 
 /obj/item/ammo_magazine/c44
 	name = "speed loader (.44 magnum)"
@@ -50,22 +66,6 @@
 	name = "speed loader (.44 magnum, rubber)"
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c44/rubber
-
-/obj/item/ammo_magazine/c44/spec
-	name = "speed loader (.44 SPEC)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "44spec"
-	ammo_type = /obj/item/ammo_casing/c44/spec
-	matter = list(MATERIAL_STEEL = 1000)
-	max_ammo = 5
-
-/obj/item/ammo_magazine/c44/chem
-	name = "speed loader (.44 CHEM)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "44chem"
-	ammo_type = /obj/item/ammo_casing/c44/chem
-	matter = list(MATERIAL_STEEL = 1500)
-	max_ammo = 5
 
 /obj/item/ammo_magazine/c45m
 	name = "magazine (.45)"

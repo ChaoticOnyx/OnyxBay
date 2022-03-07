@@ -69,6 +69,7 @@
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
 	var/was_antag_given_by_storyteller = FALSE
+	var/antag_was_given_at = ""
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()

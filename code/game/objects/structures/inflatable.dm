@@ -42,6 +42,7 @@
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
 	can_atmos_pass = ATMOS_PASS_DENSITY
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 	var/undeploy_path = null
 	var/health = 10
@@ -255,6 +256,7 @@
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/proc/Close()
 	isSwitchingStates = 1
@@ -265,6 +267,7 @@
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/update_icon()
 	if(state)

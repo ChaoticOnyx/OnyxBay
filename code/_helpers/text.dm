@@ -418,7 +418,7 @@
 	t = replacetext(t, "\[/item\]", "</li>")
 	t = replacetext(t, "\[ord\]", "<ol [class]>")
 	t = replacetext(t, "\[/ord\]", "</ol>")
-	t = replacetext(t, "\[table\]", "<table [class] cellspacing=0 cellpadding=3")
+	t = replacetext(t, "\[table\]", "<table [class] cellspacing=0 cellpadding=3>")
 	t = replacetext(t, "\[/table\]", "</td></tr></table>")
 	t = replacetext(t, "\[grid\]", "<table [class]>")
 	t = replacetext(t, "\[/grid\]", "</td></tr></table>")

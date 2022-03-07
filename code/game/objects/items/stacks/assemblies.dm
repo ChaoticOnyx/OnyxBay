@@ -1,6 +1,7 @@
 /obj/item/stack/gassembly
 	name = "girder assemblies"
 	singular_name = "girder assembly"
+	plural_name = "assemblies"
 	desc = "A wall girder's embryo."
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "gassembly"

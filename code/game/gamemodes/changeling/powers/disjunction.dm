@@ -8,17 +8,25 @@
 
 	var/detaching_now = FALSE
 
-/datum/changeling_power/disjunction/activate()
+/datum/changeling_power/disjunction/is_usable(no_message = FALSE)
 	if(!..())
-		return
+		return FALSE
 
 	if(detaching_now)
-		return
+		return FALSE
 
 	var/mob/living/carbon/human/H = my_mob
 
 	if(H.is_ventcrawling)
+		return FALSE
+
+	return TRUE
+
+/datum/changeling_power/disjunction/activate()
+	if(!..())
 		return
+
+	var/mob/living/carbon/human/H = my_mob
 
 	H.visible_message(SPAN("danger", "You hear a loud cracking sound coming from \the [H]."), \
 					  SPAN("changeling", "We begin disjunction of our body."))

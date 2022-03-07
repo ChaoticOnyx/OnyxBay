@@ -77,7 +77,7 @@
 	changeling.using_proboscis = FALSE
 	var/datum/mind/M = T.mind
 	var/datum/antagonist/changeling/CH = GLOB.all_antag_types_[MODE_CHANGELING]
-	CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE)
+	CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE, max_stat = UNCONSCIOUS)
 
 	M.changeling.geneticpoints = 7
 	M.changeling.chem_charges = 40

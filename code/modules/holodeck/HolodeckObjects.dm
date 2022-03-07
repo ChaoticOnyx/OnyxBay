@@ -249,6 +249,7 @@
 /obj/item/holo/esword
 	name = "holosword"
 	desc = "May the force be within you. Sorta."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	force = 3.0
 	throw_speed = 1
@@ -328,6 +329,7 @@
 	desc = "This device is used to declare ready. If all devices in an area are ready, the event will begin!"
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "auth_off"
+	layer = ABOVE_WINDOW_LAYER
 	var/ready = 0
 	var/area/currentarea = null
 	var/eventstarted = 0
