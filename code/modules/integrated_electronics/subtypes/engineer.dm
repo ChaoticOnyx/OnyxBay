@@ -3,7 +3,7 @@
 
 /obj/item/integrated_circuit/engineer/supermatter_scan
 	name = "Supermatter Crystal Scanner"
-	desc = "A very small version of the engineer's supermatter crystal analyser. This allows the machine to know status of supermatter."
+	desc = "A miniaturized version of the supermatter crystal analyzer. This allows the machine to know the status of a supermatter crystal."
 	icon_state = "medscan_adv"
 	complexity = 12
 	inputs = list("supermatter crystal" = IC_PINTYPE_REF)
