@@ -87,7 +87,7 @@
 	if(istype(target, /obj/item))
 		var/obj/item/I = target
 		if(!I.origin_tech)
-			to_chat(user, "<span class='notice'>This doesn't seem to have a tech origin.</span>")
+			to_chat(user, SPAN("notice", "This doesn't seem to have a tech origin."))
 			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
