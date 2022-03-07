@@ -244,7 +244,7 @@
 				display_name = "Coldsauce"
 			dat += "<B>[display_name]:</B> [R.volume] unit\s"
 
-		if(!length(items_counts)&& !length(reagents.reagent_list))
+		if(!length(items_counts) && !length(reagents.reagent_list))
 			dat += "<B>The microwave is empty</B>"
 		dat += "<HR><BR><A href='?src=\ref[src];action=cook'>Turn on!<BR><A href='?src=\ref[src];action=dispose'>Eject ingredients!"
 
