@@ -1,176 +1,176 @@
 /datum/robot_hull
-	var/icon = ""
+	var/icon_state = ""
 	var/footstep_sound = null
 
 /datum/robot_hull/spider
 	footstep_sound = FOOTSTEP_ROBOT_SPIDER
 
 /datum/robot_hull/spider/robot
-	icon = "robot"
+	icon_state = "robot"
 
 /datum/robot_hull/spider/droid
-	icon = "droid"
+	icon_state = "droid"
 
 /datum/robot_hull/spider/robot_service
-	icon = "robot-service"
+	icon_state = "robot-service"
 
 /datum/robot_hull/spider/robot_janitor
-	icon = "robot-janitor"
+	icon_state = "robot-janitor"
 
 /datum/robot_hull/spider/robot_security
-	icon = "robot-security"
+	icon_state = "robot-security"
 
 /datum/robot_hull/spider/bloodhound
-	icon = "bloodhound"
+	icon_state = "bloodhound"
 
 /datum/robot_hull/spider/robot_mining
-	icon = "robot-mining"
+	icon_state = "robot-mining"
 
 /datum/robot_hull/spider/robot_science
-	icon = "robot-science"
+	icon_state = "robot-science"
 
 /datum/robot_hull/spider/droid_combat
-	icon = "droid-combat"
+	icon_state = "droid-combat"
 
 /datum/robot_hull/spider/robot_medical
-	icon = "robot-medical"
+	icon_state = "robot-medical"
 
 /datum/robot_hull/spider/robot_engineer
-	icon = "robot-engineer"
+	icon_state = "robot-engineer"
 
 /datum/robot_hull/spider/landmate
-	icon = "landmate"
+	icon_state = "landmate"
 
 /datum/robot_hull/legs
 	footstep_sound = FOOTSTEP_ROBOT_LEGS
 
 
 /datum/robot_hull/legs/robot_old
-	icon = "robot_old"
+	icon_state = "robot_old"
 
 /datum/robot_hull/legs/service
-	icon = "Service"
+	icon_state = "Service"
 
 /datum/robot_hull/legs/service2
-	icon = "Service2"
+	icon_state = "Service2"
 
 /datum/robot_hull/legs/brobot
-	icon = "Brobot"
+	icon_state = "Brobot"
 
 /datum/robot_hull/legs/maximillion
-	icon = "maximillion"
+	icon_state = "maximillion"
 
 /datum/robot_hull/legs/maidbot
-	icon = "maidbot"
+	icon_state = "maidbot"
 
 /datum/robot_hull/legs/janbot2
-	icon = "JanBot2"
+	icon_state = "JanBot2"
 
 /datum/robot_hull/legs/janitorrobot
-	icon = "janitorrobot"
+	icon_state = "janitorrobot"
 
 /datum/robot_hull/legs/secborg
-	icon = "secborg"
+	icon_state = "secborg"
 
 /datum/robot_hull/legs/security
-	icon = "Security"
+	icon_state = "Security"
 
 /datum/robot_hull/legs/securityrobot
-	icon = "securityrobot"
+	icon_state = "securityrobot"
 
 /datum/robot_hull/legs/miner_old
-	icon = "Miner_old"
+	icon_state = "Miner_old"
 
 /datum/robot_hull/legs/droid_miner
-	icon = "droid-miner"
+	icon_state = "droid-miner"
 
 /datum/robot_hull/legs/droid_science
-	icon = "droid-science"
+	icon_state = "droid-science"
 
 /datum/robot_hull/legs/medbot
-	icon = "Medbot"
+	icon_state = "Medbot"
 
 /datum/robot_hull/legs/droid_medical
-	icon = "droid-medical"
+	icon_state = "droid-medical"
 
 /datum/robot_hull/legs/engineering
-	icon = "Engineering"
+	icon_state = "Engineering"
 
 /datum/robot_hull/legs/engineerrobot
-	icon = "engineerrobot"
+	icon_state = "engineerrobot"
 
 /datum/robot_hull/truck
 	// TODO: Add truck sound
 	footstep_sound = null
 
 /datum/robot_hull/truck/mopgearrex
-	icon = "mopgearrex"
+	icon_state = "mopgearrex"
 
 /datum/robot_hull/truck/secborg_tread
-	icon = "secborg+tread"
+	icon_state = "secborg+tread"
 
 /datum/robot_hull/truck/miner
-	icon = "Miner"
+	icon_state = "Miner"
 
 /datum/robot_hull/truck/engiborg_tread
-	icon = "engiborg+tread"
+	icon_state = "engiborg+tread"
 
 /datum/robot_hull/flying
 	footstep_sound = null
 
 /datum/robot_hull/flying/drone_standard
-	icon = "drone-standard"
+	icon_state = "drone-standard"
 
 /datum/robot_hull/flying/eyebot_standard
-	icon = "eyebot-standard"
+	icon_state = "eyebot-standard"
 
 /datum/robot_hull/flying/toiletbot
-	icon = "toiletbot"
+	icon_state = "toiletbot"
 
 /datum/robot_hull/flying/drone_service
-	icon = "drone-service"
+	icon_state = "drone-service"
 
 /datum/robot_hull/flying/drone_hydro
-	icon = "drone-hydro"
+	icon_state = "drone-hydro"
 
 /datum/robot_hull/flying/drone_janitor
-	icon = "drone-janitor"
+	icon_state = "drone-janitor"
 
 /datum/robot_hull/flying/eyebot_janitor
-	icon = "eyebot-janitor"
+	icon_state = "eyebot-janitor"
 
 /datum/robot_hull/flying/drone_sec
-	icon = "drone-sec"
+	icon_state = "drone-sec"
 
 /datum/robot_hull/flying/eyebot_security
-	icon = "eyebot-security"
+	icon_state = "eyebot-security"
 
 /datum/robot_hull/flying/orb_security
-	icon = "orb-security"
+	icon_state = "orb-security"
 
 /datum/robot_hull/flying/drone_miner
-	icon = "drone-miner"
+	icon_state = "drone-miner"
 
 /datum/robot_hull/flying/eyebot_miner
-	icon = "eyebot-miner"
+	icon_state = "eyebot-miner"
 
 /datum/robot_hull/flying/drone_science
-	icon = "drone-science"
+	icon_state = "drone-science"
 
 /datum/robot_hull/flying/eyebot_science
-	icon = "eyebot-science"
+	icon_state = "eyebot-science"
 
 /datum/robot_hull/flying/surgeon
-	icon = "surgeon"
+	icon_state = "surgeon"
 
 /datum/robot_hull/flying/drone_medical
-	icon = "drone-medical"
+	icon_state = "drone-medical"
 
 /datum/robot_hull/flying/eyebot_medical
-	icon = "eyebot-medical"
+	icon_state = "eyebot-medical"
 
 /datum/robot_hull/flying/drone_engineer
-	icon = "drone-engineer"
+	icon_state = "drone-engineer"
 
 /datum/robot_hull/flying/eyebot_engineering
-	icon = "eyebot-engineering"
+	icon_state = "eyebot-engineering"

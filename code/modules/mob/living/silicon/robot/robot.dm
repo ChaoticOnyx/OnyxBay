@@ -273,7 +273,7 @@ var/global/list/robot_footstep_sounds = list(
 				icon = original_icon
 		else
 			icontype = module_hulls[1]
-		icon_state = module_hulls[icontype].icon
+		icon_state = module_hulls[icontype].icon_state
 		footstep_sound = module_hulls[icontype].footstep_sound
 	update_icon()
 	return module_hulls
@@ -808,7 +808,7 @@ var/global/list/robot_footstep_sounds = list(
 /mob/living/silicon/robot/update_icon()
 	overlays.Cut()
 	if(stat == CONSCIOUS)
-		var/eye_icon_state = "eyes-[module_hulls[icontype].icon]"
+		var/eye_icon_state = "eyes-[module_hulls[icontype].icon_state]"
 		if(eye_icon_state in icon_states(icon))
 			if(!eye_overlays)
 				eye_overlays = list()
@@ -830,13 +830,13 @@ var/global/list/robot_footstep_sounds = list(
 			overlays += "[panelprefix]-openpanel -c"
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
-		overlays += "[module_hulls[icontype].icon]-shield"
+		overlays += "[module_hulls[icontype].icon_state]-shield"
 
 	if(modtype == "Combat")
 		if(module_active && istype(module_active,/obj/item/borg/combat/mobility))
-			icon_state = "[module_hulls[icontype].icon]-roll"
+			icon_state = "[module_hulls[icontype].icon_state]-roll"
 		else
-			icon_state = module_hulls[icontype].icon
+			icon_state = module_hulls[icontype].icon_state
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
@@ -1090,7 +1090,7 @@ var/global/list/robot_footstep_sounds = list(
 	else
 		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
 	footstep_sound = module_hulls[icontype].footstep_sound
-	icon_state = module_hulls[icontype].icon
+	icon_state = module_hulls[icontype].icon_state
 	var/list/valid_states = icon_states(icon)
 	if(!(icon_state in valid_states))
 		icon = original_icon
