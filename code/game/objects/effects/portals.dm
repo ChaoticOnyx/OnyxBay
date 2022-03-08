@@ -185,21 +185,21 @@
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
-	var/throwed_dir = hit_atom.throw_dir
+	var/thrown_dir = hit_atom.throw_dir
 	var/previous_dir = hit_atom.dir
-	if(hit_atom.throwed_to == get_turf(src))
+	if(hit_atom.thrown_to == get_turf(src))
 		return
 	var/turf/loc_turf = get_turf(src)
-	var/turf/target_turf = get_turf(hit_atom.throwed_to)
+	var/turf/target_turf = get_turf(hit_atom.thrown_to)
 	var/x_diff = abs(target_turf.x - loc_turf.x)
 	var/y_diff = abs(target_turf.y - loc_turf.y)
-	if(throwed_dir & SOUTH)
+	if(thrown_dir & SOUTH)
 		y_diff = -y_diff
-	if(throwed_dir & WEST)
+	if(thrown_dir & WEST)
 		x_diff = -x_diff
 	var/atom/thrower = hit_atom.thrower
 	var/speed = hit_atom.throw_speed
-	hit_atom.dir = throwed_dir
+	hit_atom.dir = thrown_dir
 	var/result = teleport(hit_atom, TRUE)
 	hit_atom.dir = previous_dir
 	if(!result)
@@ -214,7 +214,7 @@
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)
 		return
-	if(M.throwed_to && !ignore_checks)
+	if(M.thrown_to && !ignore_checks)
 		return on_throw_impact(M)
 	return ..()
 

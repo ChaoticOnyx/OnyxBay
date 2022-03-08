@@ -12,7 +12,7 @@
 	var/thrower
 	var/throw_dir
 	var/turf/throw_source = null
-	var/atom/throwed_to
+	var/atom/thrown_to
 	var/throw_speed = 2
 	var/throw_range = 7
 	var/moved_recently = 0
@@ -132,23 +132,23 @@
 	src.thrower = thrower
 	src.throw_source = get_turf(src)	//store the origin turf
 	src.pixel_z = 0
-	throwed_to = target
+	thrown_to = target
 	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
 			src.throwing = 2 // really strong throw!
 
-	var/dist_x = abs(throwed_to.x - src.x)
-	var/dist_y = abs(throwed_to.y - src.y)
+	var/dist_x = abs(thrown_to.x - src.x)
+	var/dist_y = abs(thrown_to.y - src.y)
 
 	var/dx
-	if (throwed_to.x > src.x)
+	if (thrown_to.x > src.x)
 		dx = EAST
 	else
 		dx = WEST
 
 	var/dy
-	if (throwed_to.y > src.y)
+	if (thrown_to.y > src.y)
 		dy = NORTH
 	else
 		dy = SOUTH
@@ -160,7 +160,7 @@
 
 
 
-		while(src && throwed_to &&((((src.x < throwed_to.x && dx == EAST) || (src.x > throwed_to.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(src && thrown_to &&((((src.x < thrown_to.x && dx == EAST) || (src.x > thrown_to.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dy)
@@ -189,7 +189,7 @@
 			a = get_area(src.loc)
 	else
 		var/error = dist_y/2 - dist_x
-		while(src && throwed_to &&((((src.y < throwed_to.y && dy == NORTH) || (src.y > throwed_to.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(src && thrown_to &&((((src.y < thrown_to.y && dy == NORTH) || (src.y > thrown_to.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dx)
@@ -225,7 +225,7 @@
 	//done throwing, either because it hit something or it finished moving
 	if(isobj(src))
 		throw_impact(get_turf(src), speed)
-	throwed_to = null
+	thrown_to = null
 	throw_dir = null
 	src.throwing = 0
 	src.thrower = null
