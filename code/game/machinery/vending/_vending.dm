@@ -516,6 +516,7 @@
 				return TRUE
 
 			if(R.price <= 0)
+				currently_vending = R
 				vend(R, usr)
 			else if(istype(usr, /mob/living/silicon)) // If the item is not free, provide feedback if a synth is trying to buy something.
 				to_chat(usr, SPAN("danger", "Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled."))
