@@ -199,7 +199,7 @@
 
 /obj/item/holder/facehugger/equipped(mob/user, slot)
 	if(slot != slot_wear_mask)
-		return
+		return ..()
 	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
 	if(user && !F.stat && istype(user, /mob/living/carbon/human))
 		if(F.impregnate(user))
