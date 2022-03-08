@@ -135,20 +135,20 @@
 	name = "robot reclassification board"
 	desc = "Used to rename a cyborg."
 	icon_state = "cyborg_upgrade1"
-	var/heldname = ""
+	var/held_name = "Default cyborg"
 
 /obj/item/borg/upgrade/rename/attack_self(mob/user as mob)
-	heldname = sanitizeSafe(input(user, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
+	held_name = sanitizeSafe(input(user, "Enter new robot name", "Robot Reclassification", held_name), MAX_NAME_LEN)
 
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	spawn(1)
-		if (heldname == "")
-			heldname = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
-		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, heldname)
-		R.SetName(heldname)
-		R.custom_name = heldname
-		R.real_name = heldname
+		if (held_name == initial(held_name))
+			held_name = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", held_name), MAX_NAME_LEN)
+		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, held_name)
+		R.SetName(held_name)
+		R.custom_name = held_name
+		R.real_name = held_name
 
 	return 1
 

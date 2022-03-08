@@ -695,5 +695,13 @@ var/list/ai_verbs_default = list(
 	if(rig)
 		rig.force_rest(src)
 
+/mob/living/silicon/ai/is_eligible_for_antag_spawn(antag_id)
+	switch(antag_id)
+		if(MODE_MALFUNCTION)
+			return TRUE
+		if(MODE_TRAITOR)
+			return TRUE
+	return FALSE
+
 #undef AI_CHECK_WIRELESS
 #undef AI_CHECK_RADIO

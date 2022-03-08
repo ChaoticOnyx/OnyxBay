@@ -321,3 +321,6 @@
 		if(istype(C))
 			. += C.ear_protection
 	return .
+
+/mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
+	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being

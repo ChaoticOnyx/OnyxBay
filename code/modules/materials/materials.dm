@@ -634,6 +634,38 @@ var/list/name_to_material
 	rod_product = null
 	integrity = 100
 
+/material/glass/black
+	name = MATERIAL_BLACK_GLASS
+	display_name = "tinted glass"
+	stack_type = /obj/item/stack/material/glass/black
+	icon_colour = "#111919"
+	window_icon_base = "blackwindow"
+	reflectance = 30
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	rod_product = /obj/item/stack/material/glass/rblack
+	window_options = list()
+	opacity = 1.0
+	melting_point = T0C + 150
+
+/material/glass/black/reinforced
+	name = MATERIAL_REINFORCED_BLACK_GLASS
+	display_name = "reinforced tinted glass"
+	stack_type = /obj/item/stack/material/glass/rblack
+	icon_colour = "#060a0a"
+	window_icon_base = "rblackwindow"
+	integrity = 100
+	melting_point = T0C + 850
+	shard_type = SHARD_SHARD
+	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
+	weight = 17
+	brute_armor = 2
+	burn_armor = 3
+	resilience = 9
+	reflectance = 25
+	stack_origin_tech = list(TECH_MATERIAL = 3)
+	wire_product = null
+	rod_product = null
+
 
 /material/plastic
 	name = MATERIAL_PLASTIC

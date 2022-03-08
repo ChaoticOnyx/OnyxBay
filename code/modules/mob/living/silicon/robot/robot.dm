@@ -1,5 +1,19 @@
 #define CYBORG_POWER_USAGE_MULTIPLIER 2.5 // Multiplier for amount of power cyborgs use.
 
+var/global/list/robot_footstep_sounds = list(
+	FOOTSTEP_ROBOT_LEGS = list(
+		'sound/effects/robot_footstep/legs01.ogg',
+		'sound/effects/robot_footstep/legs02.ogg',
+		'sound/effects/robot_footstep/legs03.ogg',
+		'sound/effects/robot_footstep/legs04.ogg'
+	),
+	FOOTSTEP_ROBOT_SPIDER = list(
+		'sound/effects/robot_footstep/spider01.ogg',
+		'sound/effects/robot_footstep/spider02.ogg',
+		'sound/effects/robot_footstep/spider03.ogg'
+	)
+)
+
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -7,6 +21,7 @@
 	icon_state = "robot"
 	maxHealth = 200
 	health = 200
+	ignore_pull_slowdown = TRUE // Steel be strong
 
 	mob_bump_flag = ROBOT
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
@@ -97,6 +112,7 @@
 	var/tracking_entities = 0 //The number of known entities currently accessing the internal camera
 	var/braintype = "Cyborg"
 	var/intenselight = 0	// Whether cyborg's integrated light was upgraded
+	var/footstep_sound = null
 
 	var/list/robot_verbs_default = list(
 		/mob/living/silicon/robot/proc/sensor_mode,
@@ -819,7 +835,22 @@
 			icon_state = "[module_sprites[icontype]]-roll"
 		else
 			icon_state = module_sprites[icontype]
-		return
+
+	update_footstep_sound()
+
+/mob/living/silicon/robot/proc/update_footstep_sound()
+	switch(icon_state)
+		if("robot_old", "engineerrobot", "JanBot2", "securityrobot", "Medbot",
+		"Engineering", "janitorrobot", "Service", "Brobot", "maximillion", "Service2",
+		"Miner_old", "Security", "secborg", "maidbot", "droid-medical", "droid-miner", "droid-science")
+			footstep_sound = FOOTSTEP_ROBOT_LEGS
+		if("robot", "droid", "robot-medical", "robot-engineer",
+		"landmate", "robot-security", "bloodhound", "robot-janitor", "robot-service",
+		"robot-mining", "robot-science")
+			footstep_sound = FOOTSTEP_ROBOT_SPIDER
+		if("engiborg+tread", "secborg+tread", "Miner")
+			// TODO: Add truck sound
+			footstep_sound = null
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
@@ -1279,5 +1310,17 @@
 
 	return
 
+/mob/living/silicon/robot/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_TRAITOR)
+		return TRUE
+	return FALSE
 
+/mob/living/silicon/robot/proc/play_footstep_sound()
+	if(!robot_footstep_sounds)
+		return
 
+	var/range = -(world.view - 2)
+	var/volume = 10
+	var/S = safepick(robot_footstep_sounds[footstep_sound])
+
+	playsound(get_turf(src), S, volume, FALSE, range)

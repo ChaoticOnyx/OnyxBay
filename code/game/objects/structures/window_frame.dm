@@ -19,8 +19,9 @@
 	var/health = 20
 	var/is_inner = FALSE
 	var/state = 2
-	var/tinted = FALSE
+	var/tinted = FALSE // Electrochromic tint, not to be confused with the "opacity" variable
 	var/reinforced = FALSE
+	var/opacity = FALSE
 
 	var/explosion_block = 0
 	var/max_heat = T0C + 100
@@ -32,6 +33,8 @@
 /datum/windowpane/rglass/preset_material = MATERIAL_REINFORCED_GLASS
 /datum/windowpane/plass/preset_material = MATERIAL_PLASS
 /datum/windowpane/rplass/preset_material = MATERIAL_REINFORCED_PLASS
+/datum/windowpane/black/preset_material = MATERIAL_BLACK_GLASS
+/datum/windowpane/rblack/preset_material = MATERIAL_REINFORCED_BLACK_GLASS
 
 /datum/windowpane/New(obj/structure/window_frame/WF, material/M, inner = FALSE)
 	..()
@@ -67,6 +70,7 @@
 	max_health = M.integrity * 0.4
 	health = max_health
 	max_heat = M.melting_point
+	opacity = (M.opacity < 1.0) ? FALSE : TRUE
 
 	if(window_material.is_reinforced())
 		explosion_block += 1
@@ -116,6 +120,8 @@
 			shard_material = MATERIAL_GLASS
 		if(MATERIAL_REINFORCED_PLASS)
 			shard_material = MATERIAL_PLASS
+		if(MATERIAL_REINFORCED_BLACK_GLASS)
+			shard_material = MATERIAL_BLACK_GLASS
 	S.set_material(shard_material)
 
 	if(reinforced)
@@ -129,14 +135,16 @@
 	my_frame.update_icon()
 
 /datum/windowpane/proc/get_damage_desc()
+	if(health == max_health)
+		return SPAN("notice", "It looks [pick("intact", "normal", "fine", "alright")].")
 	switch(damage_state)
 		if(1)
-			return "It has a few cracks."
+			return SPAN("warning", "It has a few cracks.")
 		if(2)
-			return "It looks seriously damaged."
+			return SPAN("warning", "It looks seriously damaged.")
 		if(3)
-			return "It looks like it's about to shatter!"
-	return "It looks [pick("intact", "normal", "fine", "alright")]."
+			return SPAN("danger", "It looks like it's about to shatter!")
+	return SPAN("notice", "It looks a bit [pick("shabby", "battered", "frayed", "chipped")].")
 
 // obj/structure/window_frame/grille may look weird but hey at least it's not obj/structure/stool/chair/bed
 /obj/structure/window_frame
@@ -148,7 +156,7 @@
 	var/icon_border = "winborder"
 	density = FALSE
 	anchored = TRUE
-	opacity = TRUE
+	opacity = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = WINDOW_FRAME_LAYER
@@ -165,6 +173,7 @@
 	var/preset_outer_pane
 	var/preset_inner_pane
 
+	var/cable_color = COLOR_RED
 	var/electrochromic = TRUE // Disallows toggling tint when false. Should always be true by default unless manually toggled.
 	var/obj/item/device/assembly/signaler/signaler = null
 
@@ -303,7 +312,7 @@
 
 	// The unobvious thing below makes it impossible to interact with things which are located
 	// on the same tile as an assembled window or a grille. With exceptions like firedoors.
-	if(outer_pane || inner_pane || frame_state == FRAME_GRILLE)
+	if(outer_pane || inner_pane)
 		atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	else
 		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
@@ -311,6 +320,7 @@
 // The scariest thing present. Let's just -=HoPe=- it's not -=ThAt=- performance-heavy.
 /obj/structure/window_frame/update_icon()
 	overlays.Cut()
+	underlays.Cut()
 	icon_state = icon_base
 	var/new_opacity = FALSE
 
@@ -318,6 +328,11 @@
 		return
 
 	layer = WINDOW_FRAME_LAYER
+
+	if(frame_state == FRAME_ELECTRIC || frame_state == FRAME_RELECTRIC)
+		var/image/I = image(icon, "[icon_base]_cable")
+		I.color = cable_color
+		overlays += I
 
 	if(signaler)
 		overlays += image(icon, "winframe_signaler")
@@ -350,7 +365,13 @@
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
+		if(inner_pane.opacity)
+			new_opacity = TRUE
+
 	if(outer_pane)
+		if(outer_pane.reinforced)
+			underlays += image(icon, "winframe_shadow")
+
 		var/list/dirs = list()
 		if(outer_pane.state >= 2)
 			for(var/obj/structure/window_frame/W in orange(src, 1))
@@ -377,6 +398,9 @@
 			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
+
+		if(outer_pane.opacity)
+			new_opacity = TRUE
 
 	if(outer_pane?.state >= 1)
 		var/list/dirs = list()
@@ -482,8 +506,8 @@
 								 SPAN("danger", "You hear a banging sound."))
 		else
 			playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-			user.visible_message("<b>[user.name]</b> knocks on the [src].",
-								"You knock on the [src].",
+			user.visible_message("<b>[user.name]</b> knocks on \the [src].",
+								"You knock on \the [src].",
 								"You hear a knocking sound.")
 		return
 
@@ -605,13 +629,14 @@
 					set_state()
 					update_nearby_icons()
 					update_nearby_tiles()
+					shove_everything(shove_items = FALSE)
 			return
 
 	if(affected)
 		var/old_state = affected.state
 		if(isScrewdriver(W) && affected.state >= 1)
 			to_chat(user, (affected.state == 1 ? SPAN("notice", "You begin fastening \the [affected.name] to the frame.") : SPAN("notice", "You begin unfastening \the [affected.name] from the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -623,7 +648,7 @@
 
 		if(isCrowbar(W) && affected.state <= 1)
 			to_chat(user, (affected.state == 0 ? SPAN("notice", "You begin prying \the [affected.name] into the frame.") : SPAN("notice", "You begin prying \the [affected.name] out of the frame.")))
-			if(!do_after(user, 15, src))
+			if(!do_after(user, 10, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -635,7 +660,7 @@
 
 		if(isWrench(W) && affected.state == 0)
 			to_chat(user, SPAN("notice", "You begin dismantling \the [affected.name] from \the [src]."))
-			if(!do_after(user, 20, src))
+			if(!do_after(user, 15, src))
 				return
 			if(QDELETED(affected) || affected.state != old_state)
 				return
@@ -673,7 +698,7 @@
 				if(signaler)
 					signaler.forceMove(get_turf(src))
 					signaler = null
-				new /obj/item/stack/cable_coil/single(get_turf(src))
+				new /obj/item/stack/cable_coil(get_turf(src), 1, cable_color)
 				outer_pane?.set_tint(FALSE)
 		update_nearby_icons()
 		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -705,6 +730,7 @@
 					to_chat(user, SPAN("notice", "You've constructed a grille."))
 					set_state(FRAME_GRILLE)
 					update_nearby_icons()
+					shove_everything(shove_items = FALSE)
 				return
 
 	if(istype(W, /obj/item/stack/cable_coil))
@@ -717,8 +743,10 @@
 				return
 			if(frame_state != old_state)
 				return
+			var/CC_color = CC.color
 			if(CC.use(1))
 				to_chat(user, SPAN("notice", "You've mounted some wiring onto the frame."))
+				cable_color = CC_color
 				set_state((frame_state == FRAME_NORMAL) ? FRAME_ELECTRIC : FRAME_RELECTRIC)
 				electrochromic = TRUE
 				update_nearby_icons()
@@ -756,6 +784,8 @@
 		update_nearby_icons()
 		user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] \the [src]."), \
 							 SPAN("notice", "You have [anchored ? "fastened \the [src] to" : "unfastened \the [src] from"] the floor."))
+		if(anchored)
+			shove_everything(shove_items = FALSE)
 		return
 
 	if((W.obj_flags & OBJ_FLAG_CONDUCTIBLE) && shock(user, 70))
@@ -990,7 +1020,6 @@
 	density = TRUE
 	max_health = 12
 	pane_melee_mult = 0.7
-	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/window_frame/broken
 	frame_state = FRAME_DESTROYED
@@ -1044,6 +1073,22 @@
 	density = TRUE
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/black
+	name = "window"
+	icon_state = "winframe-black"
+	opacity = TRUE
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/black
+
+/obj/structure/window_frame/rblack
+	name = "window"
+	icon_state = "winframe-rblack"
+	opacity = TRUE
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/rblack
 
 // Reinforced window with two reinforced glass panes. Mostly used for hulls.
 /obj/structure/window_frame/reinforced/hull
@@ -1106,6 +1151,47 @@
 	icon_state = "winframe_re-rglass"
 	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	preset_outer_pane = /datum/windowpane/rglass
+
+
+/obj/structure/window_frame/indestructible
+	name = "window"
+	icon_state = "winframe-rglass"
+	density = TRUE
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
+	preset_outer_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/indestructible/hull
+	name = "reinforced window"
+	desc = "A reinforced window frame made of steel rods, capable of holding two windowpanes at once."
+	frame_state = FRAME_REINFORCED
+	icon_state = "winframe_r-rglass"
+	icon_base = "winframe_r"
+	icon_border = "winborder_r"
+	preset_inner_pane = /datum/windowpane/rglass
+
+/obj/structure/window_frame/indestructible/grille
+	name = "windowed grille"
+	desc = "A flimsy lattice of metal rods, with screws to secure it to the floor."
+	frame_state = FRAME_GRILLE
+	icon_state = "grille-rglass"
+	icon_base = "grille"
+	icon_border = "winborder"
+
+/obj/structure/window_frame/indestructible/attack_hand()
+	return
+
+/obj/structure/window_frame/indestructible/attack_generic()
+	return
+
+/obj/structure/window_frame/indestructible/attackby()
+	return
+
+/obj/structure/window_frame/indestructible/ex_act()
+	return
+
+/obj/structure/window_frame/indestructible/hitby()
+	return
+
 
 #undef FRAME_DESTROYED
 #undef FRAME_NORMAL

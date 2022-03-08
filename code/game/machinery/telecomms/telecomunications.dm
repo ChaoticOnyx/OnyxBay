@@ -117,6 +117,19 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/New()
 	telecomms_list += src
 	..()
+	component_parts = list()
+	// Let's just do it an easy way instead of manually adding all of that shite spawn in each of the nonsensical telecom machines' New()s
+	if(circuitboard)
+		component_parts += new circuitboard(src)
+		for(var/comp in component_parts[1].req_components)
+			if(comp == /obj/item/stack/cable_coil)
+				var/obj/item/stack/cable_coil/CC = new comp(src)
+				component_parts += CC
+				CC.amount = component_parts[1].req_components[comp]
+				continue
+			for(var/i = 1 to max(1, component_parts[1].req_components[comp]))
+				component_parts += new comp(src)
+	RefreshParts()
 
 /obj/machinery/telecomms/Initialize()
 	//Set the listening_levels if there's none.

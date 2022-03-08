@@ -55,7 +55,7 @@
 		if(istype(regen_organ))
 			if(!regen_organ.damage && (regen_organ.status & ORGAN_BROKEN))
 				regen_organ.status &= ~ORGAN_BROKEN
-				to_chat(H, SPAN("changeling", "Bones in our [regen_organ] snap in place."))
+				to_chat(H, SPAN("changeling", "Our [regen_organ] regains its integrity."))
 			else if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 10, 0)
 				if(prob(5))

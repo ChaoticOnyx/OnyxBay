@@ -294,7 +294,7 @@ BLIND     // can't see anything
 			wired = TRUE
 			wire_color = C.color
 			update_icon(TRUE)
-			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
+			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
 	if(istype(W, /obj/item/tape_roll) && wired)

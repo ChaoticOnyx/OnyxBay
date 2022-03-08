@@ -1175,7 +1175,7 @@
 				suit.SetName("exploration voidsuit")
 				suit.icon_state = "void_explorer"
 
-		if("^%###^%$" || "Syndicate")
+		if("^%###^%$",  "Syndicate")
 			if(helmet)
 				helmet.SetName("blood-red voidsuit helmet")
 				helmet.icon_state = "rig0-syndie"
