@@ -17,13 +17,6 @@
 	build_path = /obj/item/clothing/glasses/hud/standard/meson
 	sort_string = "GBAAA"
 
-/datum/design/item/optical/material
-	name = "optical material scanner"
-	id = "mesons_material"
-	req_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
-	build_path = /obj/item/clothing/glasses/hud/standard/material
-	sort_string = "GBAAB"
-
 /datum/design/item/optical/tactical
 	name = "tactical goggles"
 	id = "tactical_goggles"
