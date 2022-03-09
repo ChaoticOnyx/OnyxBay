@@ -188,13 +188,16 @@
 
 			return
 
-	if (is_sliceable())
+	if(is_sliceable())
 		//these are used to allow hiding edge items in food that is not on a table/tray
 		var/can_slice_here = isturf(src.loc) && ((locate(/obj/structure/table) in src.loc) || (locate(/obj/machinery/optable) in src.loc) || (locate(/obj/item/tray) in src.loc))
 		var/hide_item = !has_edge(W) || !can_slice_here
 
-		if (hide_item)
-			if (W.w_class >= src.w_class || is_robot_module(W))
+		if(hide_item)
+			if(W.w_class >= src.w_class || is_robot_module(W))
+				return
+			if(length(contents) > 3)
+				to_chat(user, SPAN_WARNING("There's too much stuff inside!"))
 				return
 
 			to_chat(user, "<span class='warning'>You slip \the [W] inside \the [src].</span>")
@@ -211,13 +214,13 @@
 			var/slices_lost = 0
 			if (W.w_class > 3)
 				user.visible_message("<span class='notice'>\The [user] crudely slices \the [src] with [W]!</span>", "<span class='notice'>You crudely slice \the [src] with your [W]!</span>")
-				slices_lost = rand(1,min(1,round(slices_num/2)))
+				slices_lost = rand(1, min(1, round(slices_num / 2)))
 			else
 				user.visible_message("<span class='notice'>\The [user] slices \the [src]!</span>", "<span class='notice'>You slice \the [src]!</span>")
 
-			var/reagents_per_slice = reagents.total_volume/slices_num
-			for(var/i=1 to (slices_num-slices_lost))
-				var/obj/slice = new slice_path (src.loc)
+			var/reagents_per_slice = reagents.total_volume / slices_num
+			for(var/i = 1 to (slices_num - slices_lost))
+				var/obj/slice = new slice_path(src.loc)
 				reagents.trans_to_obj(slice, reagents_per_slice)
 			qdel(src)
 			return
