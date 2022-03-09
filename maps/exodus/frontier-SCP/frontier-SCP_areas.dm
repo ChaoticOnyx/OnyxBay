@@ -34,14 +34,6 @@
 	name = "\improper Euclide Containment"
 	icon_state = "research"
 
-/area/rnd/SCP/euccont
-	name = "\improper Euclide Containment"
-	icon_state = "research"
-
-/area/rnd/SCP/euccellone
-	name = "\improper Euclide Cell One"
-	icon_state = "research"
-
 /area/rnd/SCP/euccellone
 	name = "\improper Euclide Cell One"
 	icon_state = "research"
