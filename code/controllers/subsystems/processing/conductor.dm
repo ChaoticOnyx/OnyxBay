@@ -2,7 +2,7 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 	name = "Conductor"
 	priority = SS_PRIORITY_CONDUCTOR
 	flags = SS_NO_INIT | SS_BACKGROUND
-	runlevels = RUNLEVEL_GAME
+	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	wait = 10 SECONDS
 
 /datum/controller/subsystem/processing/conductor/fire(resumed)
