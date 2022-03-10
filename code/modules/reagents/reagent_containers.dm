@@ -9,6 +9,8 @@
 	var/volume = 30
 	var/label_text
 	var/can_be_splashed = FALSE
+	/// TRUE if a container does not pass radiation.
+	var/radioactive_safe = FALSE
 
 /obj/item/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"

@@ -1,6 +1,6 @@
 /obj/item/reagent_containers/chem_disp_cartridge
 	name = "chemical dispenser cartridge"
-	desc = "This goes in a chemical dispenser."
+	desc = "\A lead container which does not pass the radiation out. This goes in a chemical dispenser."
 	icon_state = "cartridge"
 
 	w_class = ITEM_SIZE_NORMAL
@@ -10,6 +10,8 @@
 	// Large, but inaccurate. Use a chem dispenser or beaker for accuracy.
 	possible_transfer_amounts = "50;100"
 	unacidable = 1
+	// Save the chemists from being bald.
+	radioactive_safe = TRUE
 
 	var/spawn_reagent = null
 	var/label = ""
