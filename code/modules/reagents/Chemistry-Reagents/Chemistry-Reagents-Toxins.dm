@@ -1,7 +1,7 @@
 /* Toxins, poisons, venoms */
 
 /datum/reagent/toxin
-	name = "toxin"
+	name = "Toxin"
 	description = "A toxic chemical."
 	taste_description = "bitterness"
 	taste_mult = 1.2
