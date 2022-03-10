@@ -165,9 +165,13 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
-			return
+				glow = new (T)
+				glow.create_reagents(volume)
+
+			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
+			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
 
 /datum/reagent/water/holywater
 	name = "Holy Water"
