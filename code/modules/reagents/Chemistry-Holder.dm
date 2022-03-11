@@ -261,36 +261,30 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 		if(is_processing)
 			STOP_PROCESSING(SSprocessing, src)
 
-#define ATOM_OR_LOC_IS_TYPE(atom, type) (istype(atom, type) || istype(atom.loc, type))
+#define CHECK_FLAG_R(target, flag, bool) \
+var/atom/__##target = target;\
+while(__##target != null)\
+{\
+	if(__##target.effect_flags & flag) {\
+		bool = TRUE;\
+		break;\
+	} else {\
+		__##target = __##target.loc;\
+	}\
+}
 
 // Update effects.
 /// Update radiation effect.
 /datum/reagents/proc/update_radiation_effect()
-	if(istype(my_atom, /obj/item/reagent_containers))
-		var/obj/item/reagent_containers/C = my_atom
+	var/has_flag = FALSE
+	CHECK_FLAG_R(my_atom, EFFECT_FLAG_RAD_SHIELDED, has_flag)
 
-		if(C.radioactive_safe)
-			return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/item/integrated_circuit/reagent))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/machinery/computer/centrifuge))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/item/rig_module/chem_dispenser))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/machinery/reagentgrinder))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/machinery/mecha_part_fabricator))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/item/mecha_parts/mecha_equipment/generator/nuclear))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/structure/closet/crate/uranium))
-		return
-	else if(ATOM_OR_LOC_IS_TYPE(my_atom, /obj/structure/ore_box))
+	if(has_flag)
 		return
 
 	SSradiation.radiate(my_atom, get_radiation())
 
-#undef ATOM_OR_LOC_IS_TYPE
+#undef CHECK_FLAG_R
 
 /* Holder-to-holder and similar procs */
 

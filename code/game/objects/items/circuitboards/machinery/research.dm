@@ -32,6 +32,7 @@
 							/obj/item/stock_parts/console_screen = 1)
 
 /obj/item/circuitboard/protolathe
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	name = T_BOARD("protolathe")
 	build_path = /obj/machinery/r_n_d/protolathe
 	board_type = "machine"

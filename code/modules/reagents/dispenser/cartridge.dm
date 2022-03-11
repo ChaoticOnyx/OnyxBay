@@ -11,7 +11,7 @@
 	possible_transfer_amounts = "50;100"
 	unacidable = 1
 	// Save the chemists from being bald.
-	radioactive_safe = TRUE
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/spawn_reagent = null
 	var/label = ""

@@ -1,6 +1,7 @@
 /atom
 	var/level = 2
 	var/atom_flags
+	var/effect_flags
 	var/list/blood_DNA
 	var/was_bloodied
 	var/blood_color
