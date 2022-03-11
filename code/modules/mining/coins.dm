@@ -47,7 +47,7 @@
 	name = "platinum coin"
 	icon_state = "coin_adamantine"
 
-/obj/item/coin/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/coin/attackby(obj/item/W, mob/user)
 	if(isCoil(W))
 		var/obj/item/stack/cable_coil/CC = W
 		if(string_attached)

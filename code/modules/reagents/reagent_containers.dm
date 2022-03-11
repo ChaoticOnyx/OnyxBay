@@ -44,7 +44,7 @@
 		return reagents.get_reagents()
 	return "No reagent holder"
 
-/obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_containers/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/pen) || istype(W, /obj/item/device/flashlight/pen))
 		var/tmp_label = sanitizeSafe(input(user, "Enter a label for [name]", "Label", label_text), MAX_NAME_LEN)
 		if(length(tmp_label) > 10)
