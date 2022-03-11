@@ -1,6 +1,6 @@
 /obj/item/reagent_containers/chem_disp_cartridge
 	name = "chemical dispenser cartridge"
-	desc = "\A lead container which does not pass the radiation out. This goes in a chemical dispenser."
+	desc = "This goes in a chemical dispenser."
 	icon_state = "cartridge"
 
 	w_class = ITEM_SIZE_NORMAL

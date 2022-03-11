@@ -10,7 +10,7 @@
 	var/obj/item/reagent_containers/glass/beaker/vial/sample = null
 	var/datum/disease2/disease/virus2 = null
 
-/obj/machinery/computer/centrifuge/attackby(obj/O as obj, mob/user as mob)
+/obj/machinery/computer/centrifuge/attackby(obj/O, mob/user)
 	if(isScrewdriver(O))
 		return ..(O,user)
 
@@ -33,7 +33,7 @@
 	if(! (stat & (BROKEN|NOPOWER)))
 		icon_state = (isolating || curing) ? "centrifuge_moving" : "centrifuge"
 
-/obj/machinery/computer/centrifuge/attack_hand(mob/user as mob)
+/obj/machinery/computer/centrifuge/attack_hand(mob/user)
 	if(..()) return
 	ui_interact(user)
 
