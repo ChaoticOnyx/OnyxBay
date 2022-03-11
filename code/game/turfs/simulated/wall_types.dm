@@ -38,7 +38,7 @@
 /turf/simulated/wall/uranium/New(newloc)
 	..(newloc, MATERIAL_URANIUM)
 
-/turf/simulated/wall/uranium/Initialize()
+/turf/simulated/wall/uranium/update_material()
 	. = ..()
 	
 	create_reagents()
