@@ -38,6 +38,12 @@
 /turf/simulated/wall/uranium/New(newloc)
 	..(newloc, MATERIAL_URANIUM)
 
+/turf/simulated/wall/uranium/Initialize()
+	. = ..()
+	
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, 10, null, FALSE)
+
 /turf/simulated/wall/diamond/New(newloc)
 	..(newloc, MATERIAL_DIAMOND)
 

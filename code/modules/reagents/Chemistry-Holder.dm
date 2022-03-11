@@ -271,6 +271,18 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 			return
 	else if(istype(my_atom, /obj/item/integrated_circuit/reagent))
 		return
+	else if(istype(my_atom, /obj/machinery/computer/centrifuge))
+		return
+	else if(istype(my_atom, /obj/item/rig_module/chem_dispenser))
+		return
+	else if(istype(my_atom, /obj/machinery/reagentgrinder))
+		return
+	else if(istype(my_atom, /obj/machinery/mecha_part_fabricator))
+		return
+	else if(istype(my_atom, /obj/item/mecha_parts/mecha_equipment/generator/nuclear))
+		return
+	else if(istype(my_atom, /obj/structure/closet/crate/uranium))
+		return
 
 	SSradiation.radiate(my_atom, get_radiation())
 

@@ -37,6 +37,12 @@
 	name = "uranium coin"
 	icon_state = "coin_uranium"
 
+/obj/item/coin/uranium/Initialize()
+	. = ..()
+	
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, 1, null, FALSE)
+
 /obj/item/coin/platinum
 	name = "platinum coin"
 	icon_state = "coin_adamantine"
