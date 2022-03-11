@@ -269,6 +269,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 
 		if(C.radioactive_safe)
 			return
+	else if(istype(my_atom, /obj/item/integrated_circuit/reagent))
+		return
 
 	SSradiation.radiate(my_atom, get_radiation())
 
