@@ -61,8 +61,6 @@
 	var/how_often = max(round(2 SECONDS/wait), 1)
 	if(times_fired % how_often)
 		return //We only work about every 2 seconds
-	if(!radiate())
-		return PROCESS_KILL
 
 /turf/simulated/wall/proc/get_material()
 	return material
@@ -443,14 +441,6 @@
 			qdel(O)
 //	F.sd_LumReset()		//TODO: ~Carn
 	return
-
-/turf/simulated/wall/proc/radiate()
-	var/total_radiation = material.radioactivity + (reinf_material ? reinf_material.radioactivity / 2 : 0)
-	if(!total_radiation)
-		return
-
-	SSradiation.radiate(src, total_radiation)
-	return total_radiation
 
 /turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
 	return round(damage/material.integrity*180)
