@@ -1,32 +1,33 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { Button, Section, Stack } from 'tgui/components';
-import { Pane } from 'tgui/layouts';
-import { NowPlayingWidget, useAudio } from './audio';
-import { ChatPanel, ChatTabs } from './chat';
-import { useGame } from './game';
-import { Notifications } from './Notifications';
-import { SettingsPanel, useSettings } from './settings';
-import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker';
+import { Button, Section, Stack } from 'tgui/components'
+import { Pane } from 'tgui/layouts'
+import { NowPlayingWidget, useAudio } from './audio'
+import { ChatPanel, ChatTabs } from './chat'
+import { useGame } from './game'
+import { Notifications } from './Notifications'
+import { SettingsPanel, useSettings } from './settings'
+import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker'
 
 export const Panel = (props, context) => {
   // IE8-10: Needs special treatment due to missing Flex support
   if (Byond.IS_LTE_IE10) {
-    return <HoboPanel />;
+    return <HoboPanel />
   }
-  const audio = useAudio(context);
-  const settings = useSettings(context);
-  const spellChecker = useSpellCheckerSettings(context);
-  const game = useGame(context);
+  const audio = useAudio(context)
+  const settings = useSettings(context)
+  const spellChecker = useSpellCheckerSettings(context)
+  const game = useGame(context)
   if (process.env.NODE_ENV !== 'production') {
-    const { useDebug, KitchenSink } = require('tgui/debug');
-    const debug = useDebug(context);
+    const { useDebug, KitchenSink } = require('tgui/debug')
+    const debug = useDebug(context)
     if (debug.kitchenSink) {
-      return <KitchenSink panel />;
+      return <KitchenSink panel />
     }
   }
   return (
@@ -96,7 +97,9 @@ export const Panel = (props, context) => {
             </Pane.Content>
             <Notifications>
               {game.roundRestartedAt && (
-                <Notifications.Item>
+                <Notifications.Item style={{
+                  'z-index': 100
+                }}>
                   The connection has been closed because the server is
                   restarting. Please wait while you automatically reconnect.
                 </Notifications.Item>
@@ -107,11 +110,11 @@ export const Panel = (props, context) => {
         </Stack.Item>
       </Stack>
     </Pane>
-  );
-};
+  )
+}
 
 const HoboPanel = (props, context) => {
-  const settings = useSettings(context);
+  const settings = useSettings(context)
   return (
     <Pane theme={settings.theme}>
       <Pane.Content scrollable>
@@ -120,7 +123,7 @@ const HoboPanel = (props, context) => {
             position: 'fixed',
             top: '1em',
             right: '2em',
-            'z-index': 1000,
+            'z-index': 1000
           }}
           selected={settings.visible}
           onClick={() => settings.toggle()}>
@@ -131,5 +134,5 @@ const HoboPanel = (props, context) => {
         )}
       </Pane.Content>
     </Pane>
-  );
-};
+  )
+}

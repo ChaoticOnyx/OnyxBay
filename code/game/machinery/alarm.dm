@@ -39,9 +39,9 @@
 	anchored = 1
 	idle_power_usage = 80
 	active_power_usage = 1000 //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	req_one_access = list(access_atmospherics, access_engine_equip)
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 30
 
 	layer = ABOVE_WINDOW_LAYER
@@ -101,6 +101,7 @@
 	target_temperature = T0C+10
 
 /obj/machinery/alarm/Destroy()
+	GLOB.alarm_list -= src
 	unregister_radio(src, frequency)
 	qdel(wires)
 	wires = null
@@ -110,6 +111,7 @@
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
+	GLOB.alarm_list += src
 	..(loc)
 
 	if(dir)
@@ -783,7 +785,7 @@
 				update_icon()
 				return
 
-			if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))// trying to unlock the interface with an ID card
+			if (istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))// trying to unlock the interface with an ID card
 				if(stat & (NOPOWER|BROKEN))
 					to_chat(user, "It does nothing")
 					return
@@ -814,13 +816,13 @@
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				if(do_after(user,20))
 					to_chat(user, "You pry out the circuit!")
-					var/obj/item/weapon/airalarm_electronics/circuit = new /obj/item/weapon/airalarm_electronics()
+					var/obj/item/airalarm_electronics/circuit = new /obj/item/airalarm_electronics()
 					circuit.dropInto(user.loc)
 					buildstage = 0
 					update_icon()
 				return
 		if(0)
-			if(istype(W, /obj/item/weapon/airalarm_electronics))
+			if(istype(W, /obj/item/airalarm_electronics))
 				to_chat(user, "You insert the circuit!")
 				qdel(W)
 				buildstage = 1
@@ -845,7 +847,7 @@
 AIR ALARM CIRCUIT
 Just a object used in constructing air alarms
 */
-/obj/item/weapon/airalarm_electronics
+/obj/item/airalarm_electronics
 	name = "air alarm electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_electronics"

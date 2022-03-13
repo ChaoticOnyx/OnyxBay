@@ -14,7 +14,7 @@
 	var/saved_dir
 	var/saved_density
 	var/saved_examine_result
-	var/static/list/blacklist = list(/obj/item/weapon/holder, /obj/item/grab)
+	var/static/list/blacklist = list(/obj/item/holder, /obj/item/grab)
 
 /obj/item/device/chameleonholo/dropped()
 	activate()

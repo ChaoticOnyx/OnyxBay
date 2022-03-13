@@ -218,7 +218,7 @@
 					C.hallucination(round(dist * 1.5), dist)
 
 	// Effect 2: Z-level wide electrical pulse
-	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
+	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(!(A.z in affected_z))
 			continue
 
@@ -232,7 +232,7 @@
 		else
 			A.energy_fail(round(DETONATION_SHUTDOWN_APC * random_change))
 
-	for(var/obj/machinery/power/smes/buildable/S in SSmachines.machinery)
+	for(var/obj/machinery/power/smes/buildable/S in GLOB.smes_list)
 		if(!(S.z in affected_z))
 			continue
 		// Causes SMESes to shut down for a bit
@@ -242,7 +242,7 @@
 			S.grounding = 0
 	// Effect 3: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
+	for(var/obj/machinery/power/solar/S in GLOB.machines)
 		if(!(S.z in affected_z))
 			continue
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))
@@ -391,7 +391,7 @@
 			var/obj/item/clothing/glasses/hud/G = H.glasses
 			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
 				continue
-			var/obj/item/weapon/rig/R = H.back
+			var/obj/item/rig/R = H.back
 			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
 				continue
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
@@ -463,8 +463,8 @@
 		ui.set_auto_update(1)
 
 
-/obj/machinery/power/supermatter/attackby(obj/item/weapon/W, mob/living/user)
-	if(istype(W, /obj/item/weapon/tape_roll))
+/obj/machinery/power/supermatter/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/tape_roll))
 		to_chat(user, "You repair some of the damage to \the [src] with \the [W].")
 		damage = max(damage -10, 0)
 

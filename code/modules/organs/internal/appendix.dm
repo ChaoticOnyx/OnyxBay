@@ -8,7 +8,7 @@
 /obj/item/organ/internal/appendix/update_icon()
 	..()
 	if(inflamed)
-		icon_state = "appendixinflamed"
+		icon_state = "appendix-inflamed"
 		SetName("inflamed appendix")
 
 /obj/item/organ/internal/appendix/Process()

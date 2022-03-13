@@ -1,21 +1,28 @@
 
-/mob/proc/prepare_changeling_bioelectrogenesis()
-	set category = "Changeling"
-	set name = "Bioelectrogenesis (20)"
-	set desc = "We create an electromagnetic pulse against synthetics."
+// Emits an EMP around our host body
+/datum/changeling_power/bioelectrogenesis
+	name = "Bioelectrogenesis"
+	desc = "We create an electromagnetic pulse against synthetics."
+	icon_state = "ling_emp"
+	required_chems = 50
+	text_activate = "We emit an electromagnetic pulse!"
+	var/heavy_range = 1
+	var/light_range = 2
 
-	if(changeling_is_incapacitated())
+/datum/changeling_power/bioelectrogenesis/activate()
+	if(!..())
 		return
 
-	change_ctate(/datum/click_handler/changeling/changeling_bioelectrogenesis)
+	use_chems()
+	to_chat(my_mob, SPAN("changeling", text_activate))
 
-/mob/proc/changeling_bioelectrogenesis(mob/living/T)
-	var/datum/changeling/changeling = changeling_power(20)
-	if(!changeling)
-		return
+	spawn()
+		empulse(my_mob, heavy_range, light_range, TRUE)
 
-	if(T in orange(1, src))
-		empulse(T.loc, 1, 1)
-		changeling.chem_charges -= 20
+/datum/changeling_power/bioelectrogenesis/update_recursive_enhancement()
+	if(..())
+		heavy_range = 2
+		text_activate = "We emit a powerful electromagnetic pulse!"
 	else
-		to_chat(src, SPAN("changeling", "The target is too far away."))
+		heavy_range = 1
+		text_activate = "We emit an electromagnetic pulse!"

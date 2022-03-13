@@ -24,9 +24,12 @@
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
+	var/masks_icon = 'icons/turf/wall_masks.dmi'
 
 /turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
 	..(newloc)
+	if(GLOB.using_map.legacy_mode)
+		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"
 	if(!materialtype)
 		materialtype = DEFAULT_WALL_MATERIAL
@@ -156,11 +159,8 @@
 				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
 		return
 
-/turf/simulated/wall/blob_act(destroy, obj/effect/blob/source)
-	if(destroy)
-		dismantle_wall(TRUE)
-	else
-		take_damage(25)
+/turf/simulated/wall/blob_act(damage)
+	take_damage(damage)
 
 /turf/simulated/wall/bullet_act(obj/item/projectile/Proj)
 	var/proj_damage = Proj.get_structure_damage()
@@ -393,7 +393,7 @@
 /turf/simulated/wall/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			src.ChangeTurf(get_base_turf(src.z))
+			src.ChangeTurf(get_base_turf_by_area(src))
 			return
 		if(2.0)
 			if(prob(75))

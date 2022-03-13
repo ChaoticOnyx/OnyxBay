@@ -64,7 +64,7 @@
 	if(!istext(incoming))
 		if(!isnum_safe(position) || position > length_char(incoming))
 			position = 1
-		result = text2ascii_char(incoming, position)
+		result = sanitize(text2ascii_char(incoming, position))
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
@@ -109,12 +109,13 @@
 /obj/item/integrated_circuit/text/concatenator/do_work()
 	var/result = ""
 	var/spamprotection
-	for(var/k in 1 to inputs.len)
-		var/I = sanitize(html_decode(get_pin_data(IC_INPUT, k)))
-		if(!isnull(I))
+	for(var/k in 1 to length(inputs))
+		var/I = sanitize(get_pin_data(IC_INPUT, k), trim = FALSE, extra = FALSE)
+		if(I)
 			if((result ? length_char(result) : 0) + length_char(I) > max_string_length)
 				spamprotection = (result ? length_char(result) : 0) + length_char(I)
 				break
+			I = replace_characters(I, list("&#34;" = "\""))
 			result = result + I
 
 	if(spamprotection >= max_string_length*1.75 && assembly)

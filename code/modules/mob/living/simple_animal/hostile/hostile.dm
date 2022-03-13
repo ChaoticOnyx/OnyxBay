@@ -19,7 +19,6 @@
 	armor_projectile = 25
 
 	mouse_opacity = 2 //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
-	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 
 	var/aggro_vision_range = 7 //If a mob is aggro, we search in this radius. Defaults to 7 to keep in line with original simple mob aggro radius
 	var/idle_vision_range = 7 //If a mob is just idling around, it's vision range is limited to this. Defaults to 7 to keep in line with original simple mob aggro radius

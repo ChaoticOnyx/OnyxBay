@@ -98,7 +98,7 @@
 	disable()
 	state = HAS_BEEN_ACTIVATED
 	update_icon()
-	playsound(loc, "spark", 50, 1)
+	playsound(loc, SFX_SPARK, 50, 1)
 	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
 /obj/item/device/uplink_service/update_icon()
@@ -217,7 +217,7 @@
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
 	var/does_announce_visit = 1
-	var/obj/item/weapon/card/id/id_card = null
+	var/obj/item/card/id/id_card = null
 
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
 	id_card = I.GetIdCard()

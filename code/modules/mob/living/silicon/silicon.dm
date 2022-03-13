@@ -3,6 +3,7 @@
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
+	var/playable_mob = TRUE
 	var/syndicate = 0
 	var/const/MAIN_CHANNEL = "Main Frequency"
 	var/lawchannel = MAIN_CHANNEL // Default channel on which to state laws
@@ -25,13 +26,14 @@
 	var/next_alarm_notice
 	var/list/datum/alarm/queued_alarms = new()
 	var/list/access_rights
-	var/obj/item/weapon/card/id/idcard = /obj/item/weapon/card/id/synthetic
+	var/obj/item/card/id/idcard = /obj/item/card/id/synthetic
 
 	var/list/avaliable_huds
 	var/active_hud
 
 /mob/living/silicon/New()
-	GLOB.silicon_mob_list += src
+	if(playable_mob)
+		GLOB.silicon_mob_list += src
 	..()
 
 	if(silicon_radio)
@@ -306,12 +308,12 @@
 
 	updatehealth()
 
-/mob/living/silicon/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if (is_dead())
+/mob/living/silicon/blob_act(damage)
+	if(is_dead())
 		return
 
 	var/protection = blocked_mult(getarmor(null, "bomb"))
-	var/brute = 25
+	var/brute = damage * 2
 
 	brute *= protection
 	adjustBruteLoss(brute)
@@ -363,7 +365,7 @@
 
 		if(alarm_raised)
 			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
-		
+
 		if(text)
 			to_chat(src, text)
 
@@ -426,13 +428,13 @@
 		switch (alert.name)
 			if ("code green")
 				if (R.module)
-					if (istype(R.module,/obj/item/weapon/robot_module/security/general) && !R.emagged)
-						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+					if (istype(R.module,/obj/item/robot_module/security/general) && !R.emagged)
+						var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/gun/energy/laser/mounted/cyborg) in R.module.modules
 						LC.locked = 1
 						to_chat(src, "<span class='notice'>Security protocols has been changed: Safety locks in place.</span>")
 			if ("code red")
 				if (R.module)
-					if (istype(R.module,/obj/item/weapon/robot_module/security/general))
-						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+					if (istype(R.module,/obj/item/robot_module/security/general))
+						var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/gun/energy/laser/mounted/cyborg) in R.module.modules
 						LC.locked = 0
 						to_chat(src, "<span class='warning'>Security protocols has been changed: Safety locks is now lifted.</span>")

@@ -1,7 +1,7 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
-/obj/item/proc/check_job(obj/item/weapon/card/id/W, mob/user, element)
+/obj/item/proc/check_job(obj/item/card/id/W, mob/user, element)
 	var/datum/job/job = job_master.GetJob(W.rank)
 	var/decl/hierarchy/outfit/outfit = job.get_outfit(user, job)
 	switch (element)
@@ -55,8 +55,8 @@
 				name += " \[[i++]\]"
 			.[name] = typepath
 
-/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/under/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_w_uniform_str)
 
@@ -97,8 +97,8 @@
 //*****************
 //**Chameleon Hat**
 //*****************
-/obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/head/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_head_str)
 
@@ -137,8 +137,8 @@
 //******************
 //**Chameleon Suit**
 //******************
-/obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/suit/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_wear_suit_str)
 
@@ -153,7 +153,7 @@
 /obj/item/clothing/suit/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/suit/cyborg_suit, /obj/item/clothing/suit/justice, /obj/item/clothing/suit/greatcoat)
+		var/blocked = list(src.type, /obj/item/clothing/suit/justice, /obj/item/clothing/suit/greatcoat)
 		clothing_choices = generate_chameleon_choices(/obj/item/clothing/suit, blocked)
 
 /obj/item/clothing/suit/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
@@ -177,8 +177,8 @@
 //*******************
 //**Chameleon Shoes**
 //*******************
-/obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/shoes/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_shoes_str)
 
@@ -218,7 +218,7 @@
 //**********************
 //**Chameleon Backpack**
 //**********************
-/obj/item/weapon/storage/backpack/chameleon
+/obj/item/storage/backpack/chameleon
 	name = "backpack"
 	icon_state = "backpack"
 	item_state = "backpack"
@@ -226,13 +226,13 @@
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/global/list/clothing_choices
 
-/obj/item/weapon/storage/backpack/chameleon/New()
+/obj/item/storage/backpack/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/weapon/storage/backpack/satchel/grey/withwallet)
-		clothing_choices = generate_chameleon_choices(/obj/item/weapon/storage/backpack, blocked)
+		var/blocked = list(src.type, /obj/item/storage/backpack/satchel/grey/withwallet)
+		clothing_choices = generate_chameleon_choices(/obj/item/storage/backpack, blocked)
 
-/obj/item/weapon/storage/backpack/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
+/obj/item/storage/backpack/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
 	SetName(initial(name))
 	desc = initial(desc)
 	icon_state = initial(icon_state)
@@ -242,7 +242,7 @@
 		var/mob/M = src.loc
 		M.update_inv_back()
 
-/obj/item/weapon/storage/backpack/chameleon/verb/change(picked in clothing_choices)
+/obj/item/storage/backpack/chameleon/verb/change(picked in clothing_choices)
 	set name = "Change Backpack Appearance"
 	set category = "Chameleon Items"
 	set src in usr
@@ -260,11 +260,11 @@
 //********************
 //**Chameleon Gloves**
 //********************
-/obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel) || isCoil(W))
+/obj/item/clothing/gloves/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/scalpel) || isCoil(W))
 		to_chat(user, SPAN("notice", "That won't work.")) // Making it obvious
 		return
-	if(!istype(W, /obj/item/weapon/card/id))
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_gloves_str)
 
@@ -312,8 +312,8 @@
 //******************
 //**Chameleon Mask**
 //******************
-/obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/mask/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_wear_mask_str)
 
@@ -352,8 +352,8 @@
 //*********************
 //**Chameleon Glasses**
 //*********************
-/obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
-	if(!istype(W, /obj/item/weapon/card/id))
+/obj/item/clothing/glasses/chameleon/attackby(obj/item/card/id/W, mob/user)
+	if(!istype(W, /obj/item/card/id))
 		return
 	check_job(W, user, slot_glasses_str)
 
@@ -392,7 +392,7 @@
 //*****************
 //**Chameleon Gun**
 //*****************
-/obj/item/weapon/gun/energy/chameleon
+/obj/item/gun/energy/chameleon
 	name = "revolver"
 	desc = "A hologram projector in the shape of a gun. There is a dial on the side to change the gun's disguise."
 	icon_state = "revolver"
@@ -409,17 +409,17 @@
 	var/obj/item/projectile/copy_projectile
 	var/global/list/gun_choices
 
-/obj/item/weapon/gun/energy/chameleon/New()
+/obj/item/gun/energy/chameleon/New()
 	..()
 
 	if(!gun_choices)
 		gun_choices = list()
-		for(var/gun_type in typesof(/obj/item/weapon/gun/) - src.type)
-			var/obj/item/weapon/gun/G = gun_type
+		for(var/gun_type in typesof(/obj/item/gun/) - src.type)
+			var/obj/item/gun/G = gun_type
 			src.gun_choices[initial(G.name)] = gun_type
 	return
 
-/obj/item/weapon/gun/energy/chameleon/consume_next_projectile()
+/obj/item/gun/energy/chameleon/consume_next_projectile()
 	var/obj/item/projectile/P = ..()
 	if(P && ispath(copy_projectile))
 		P.SetName(initial(copy_projectile.name))
@@ -433,7 +433,7 @@
 		P.impact_type = initial(copy_projectile.impact_type)
 	return P
 
-/obj/item/weapon/gun/energy/chameleon/emp_act(severity)
+/obj/item/gun/energy/chameleon/emp_act(severity)
 	SetName(initial(name))
 	desc = initial(desc)
 	icon_state = initial(icon_state)
@@ -443,8 +443,8 @@
 		M.update_inv_r_hand()
 		M.update_inv_l_hand()
 
-/obj/item/weapon/gun/energy/chameleon/disguise(newtype)
-	var/obj/item/weapon/gun/copy = ..()
+/obj/item/gun/energy/chameleon/disguise(newtype)
+	var/obj/item/gun/copy = ..()
 	if(!copy)
 		return
 
@@ -452,7 +452,7 @@
 	fire_sound = copy.fire_sound
 	fire_sound_text = copy.fire_sound_text
 
-	var/obj/item/weapon/gun/energy/E = copy
+	var/obj/item/gun/energy/E = copy
 	if(istype(E))
 		copy_projectile = E.projectile_type
 		//charge_meter = E.charge_meter //does not work very well with icon_state changes, ATM
@@ -460,7 +460,7 @@
 		copy_projectile = null
 		//charge_meter = 0
 
-/obj/item/weapon/gun/energy/chameleon/verb/change(picked in gun_choices)
+/obj/item/gun/energy/chameleon/verb/change(picked in gun_choices)
 	set name = "Change Gun Appearance"
 	set category = "Chameleon Items"
 	set src in usr

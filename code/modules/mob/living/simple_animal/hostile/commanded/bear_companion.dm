@@ -1,6 +1,8 @@
 /mob/living/simple_animal/hostile/commanded/bear
 	name = "bear"
 	desc = "A large brown bear."
+	stance = HOSTILE_STANCE_ALERT
+
 
 	icon_state = "brownbear"
 	icon_living = "brownbear"
@@ -22,6 +24,7 @@
 	response_help = "pets"
 	response_harm = "hits"
 	response_disarm = "pushes"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 	known_commands = list("stay", "stop", "attack", "follow", "dance", "boogie", "boogy")
 

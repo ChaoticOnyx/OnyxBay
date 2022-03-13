@@ -8,7 +8,7 @@
 	anchored = 1
 	density = 1
 
-	var/obj/item/weapon/forensics/swab/bloodsamp = null
+	var/obj/item/forensics/swab/bloodsamp = null
 	var/closed = 0
 	var/scanning = 0
 	var/scanner_progress = 0
@@ -26,7 +26,7 @@
 		to_chat(user, "<span class='warning'>Open the cover before inserting the sample.</span>")
 		return
 
-	var/obj/item/weapon/forensics/swab/swab = W
+	var/obj/item/forensics/swab/swab = W
 	if(istype(swab) && swab.is_used())
 		user.unEquip(W)
 		src.bloodsamp = swab
@@ -36,7 +36,7 @@
 		to_chat(user, "<span class='warning'>\The [src] only accepts used swabs.</span>")
 		return
 
-/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main",datum/nanoui/ui = null)
+/obj/machinery/dnaforensics/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = TRUE)
 	if(stat & (NOPOWER)) return
 	if(user.stat || user.restrained()) return
 	var/list/data = list()
@@ -46,7 +46,7 @@
 	data["bloodsamp_desc"] = (bloodsamp ? (bloodsamp.desc ? bloodsamp.desc : "No information on record.") : "")
 	data["lidstate"] = closed
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "dnaforensics.tmpl", "QuikScan DNA Analyzer", 540, 326)
 		ui.set_initial_data(data)
@@ -105,9 +105,9 @@
 	src.visible_message("<span class='notice'>\icon[src] makes an insistent chime.</span>", 2)
 	update_icon()
 	if(bloodsamp)
-		var/obj/item/weapon/paper/P = new(src)
+		var/obj/item/paper/P = new(src)
 		P.SetName("[src] report #[++report_num]: [bloodsamp.name]")
-		P.stamped = list(/obj/item/weapon/stamp)
+		P.stamped = list(/obj/item/stamp)
 		P.overlays = list("paper_stamped")
 		//dna data itself
 		var/data = "No scan information available."

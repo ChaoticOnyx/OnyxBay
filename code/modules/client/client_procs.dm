@@ -2,8 +2,7 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	513		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
-									//I would just like the code ready should it ever need to be used.
+#define MIN_CLIENT_VERSION	513
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -226,7 +225,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -392,22 +391,25 @@
 	statpanel("Status")
 
 	. = ..()
-	sleep(1)
+	stoplag(1)
 
 // send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
 	getFiles(
+		'html/images/ntlogo.png',
+		'html/images/ntlogo_hand.png',
+		'html/images/bluentlogo.png',
+		'html/images/bluentlogo_hand.png',
 		'html/search.js',
 		'html/panels.css',
 		'html/spacemag.css',
 		'html/images/loading.gif',
-		'html/images/ntlogo.png',
-		'html/images/bluentlogo.png',
-		'html/images/sollogo.png',
-		'html/images/terralogo.png',
-		'html/images/talisman.png'
-		)
+		'html/images/talisman.png',
+		'html/images/line_hand.png',
+		'html/images/borders_hand.png',
+		'html/good_vibes/good_vibes.woff'
+	)
 
 	spawn (10) // removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected
@@ -448,7 +450,7 @@
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
-		vars["fps"] = prefs.clientfps
+		fps = client_fps
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
@@ -569,8 +571,29 @@
 		prefs = new /datum/preferences(src)
 		prefs.last_ip = address				// these are gonna be used for banning
 		prefs.last_id = computer_id			// these are gonna be used for banning
+		apply_fps(prefs.clientfps ? prefs.clientfps : config.clientfps)
 
 	if(initialization || SScharacter_setup.initialized)
 		prefs.setup()
 	else
 		SScharacter_setup.queue_client(src)
+
+/client/proc/play_ambience_music(file_path)
+	if(get_preference_value(/datum/client_preference/play_ambience_music) == GLOB.PREF_NO)
+		return
+
+	var/sound/S = sound(file_path, FALSE, FALSE, SOUND_CHANNEL_AMBIENT_MUSIC, VOLUME_AMBIENT_MUSIC)
+	S.echo = 0
+	S.environment = -1
+
+	last_time_ambient_music_played = world.time
+	DIRECT_OUTPUT(src, S)
+
+/client/proc/is_ambience_music_playing()
+	var/list/sounds = SoundQuery()
+
+	for(var/sound/S in sounds)
+		if(S.channel == SOUND_CHANNEL_AMBIENT_MUSIC)
+			return TRUE
+
+	return FALSE

@@ -1,6 +1,7 @@
-/obj/item/weapon/nullrod
+/obj/item/nullrod
 	name = "null sceptre"
 	desc = "A sceptre of pure black obsidian capped at both ends with silver ferrules. Some religious groups claim it disrupts and dampens the powers of paranormal phenomenae."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "nullrod"
 	item_state = "nullrod"
 	slot_flags = SLOT_BELT
@@ -13,14 +14,13 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-/obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob) //Paste from old-code to decult with a null rod.
+/obj/item/nullrod/attack(mob/M, mob/living/user)
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(M)
-	//if(user != M)
 	if(M.mind && LAZYLEN(M.mind.learned_spells))
-		M.silence_spells(300) //30 seconds
+		M.silence_spells(30 SECONDS)
 		to_chat(M, SPAN_DANGER("You've been silenced!"))
 		return
 
@@ -41,22 +41,25 @@
 
 	..()
 
-/obj/item/weapon/nullrod/afterattack(atom/A, mob/user, proximity)
+/obj/item/nullrod/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 
 	if(istype(A, /turf/simulated/wall/cult))
 		var/turf/simulated/wall/cult/W = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
-		W.ChangeTurf(/turf/simulated/wall)
+		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
+		W.decultify_wall()
 
 	if(istype(A, /turf/simulated/floor/misc/cult))
 		var/turf/simulated/floor/misc/cult/F = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
-		F.ChangeTurf(/turf/simulated/floor)
+		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
+		F.decultify_floor()
+		playsound(F, 'sound/effects/fighting/Genhit.ogg', 25, 1)
 
 
-/obj/item/weapon/energy_net
+
+
+/obj/item/energy_net
 	name = "energy net"
 	desc = "It's a net made of green energy."
 	icon = 'icons/effects/effects.dmi'
@@ -65,17 +68,17 @@
 	force = 0
 	var/net_type = /obj/effect/energy_net
 
-/obj/item/weapon/energy_net/safari
+/obj/item/energy_net/safari
 	name = "animal net"
 	desc = "An energized net meant to subdue animals."
 	net_type = /obj/effect/energy_net/safari
 
-/obj/item/weapon/energy_net/dropped()
+/obj/item/energy_net/dropped()
 	..()
 	spawn(10)
 		if(src) qdel(src)
 
-/obj/item/weapon/energy_net/throw_impact(atom/hit_atom)
+/obj/item/energy_net/throw_impact(atom/hit_atom)
 	..()
 
 	var/mob/living/M = hit_atom
@@ -155,7 +158,7 @@
 	..()
 
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 	else
 		countdown = 0
 
@@ -218,7 +221,7 @@
 	healthcheck()
 	return
 
-/obj/effect/energy_net/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/effect/energy_net/attackby(obj/item/W as obj, mob/user as mob)
 	health -= W.force
 	healthcheck()
 	..()

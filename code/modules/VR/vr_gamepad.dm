@@ -13,12 +13,12 @@
 	var/datum/mind/occupant_mind
 
 /obj/machinery/gamepod/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/card/id))
+	if(istype(I, /obj/item/card/id))
 		if(is_payed)
 			to_chat(user, SPAN_NOTICE("It is already payed."))
 			return
 		scan_card(I)
-	else if(istype(I, /obj/item/weapon/card/emag))
+	else if(istype(I, /obj/item/card/emag))
 		if(emagged)
 			to_chat(user, SPAN_NOTICE("It is already broken."))
 			return
@@ -50,7 +50,7 @@
 		qdel(src)
 		return
 
-/obj/machinery/gamepod/proc/scan_card(obj/item/weapon/card/id/C, mob/user)
+/obj/machinery/gamepod/proc/scan_card(obj/item/card/id/C, mob/user)
 	visible_message("<span class='info'>[user] swipes a card through [src].</span>")
 	if(!station_account)
 		return
@@ -167,11 +167,6 @@
 
 
 /obj/machinery/gamepod/emp_act()
-	if(occupant)
-		move_outside()
-	..()
-
-/obj/machinery/gamepod/blob_act()
 	if(occupant)
 		move_outside()
 	..()

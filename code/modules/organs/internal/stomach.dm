@@ -17,7 +17,12 @@
 	ingested = new /datum/reagents/metabolism(240, owner, CHEM_INGEST)
 	if(!ingested.my_atom) ingested.my_atom = src
 
-/obj/item/organ/internal/stomach/removed()
+/obj/item/organ/internal/stomach/robotize()
+	..()
+	name = "prosthetic stomach"
+	icon_state = "stomach-prosthetic"
+
+/obj/item/organ/internal/stomach/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	. = ..()
 	ingested.my_atom = src
 	ingested.parent = null

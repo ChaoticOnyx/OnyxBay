@@ -118,11 +118,11 @@
 						to_chat(src, "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>")
 						now_pushing = 0
 						return
-				if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+				if(tmob.r_hand && istype(tmob.r_hand, /obj/item/shield/riot))
 					if(prob(99))
 						now_pushing = 0
 						return
-				if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+				if(tmob.l_hand && istype(tmob.l_hand, /obj/item/shield/riot))
 					if(prob(99))
 						now_pushing = 0
 						return
@@ -154,7 +154,7 @@
 						forceMove(AM)
 					else
 						Weaken(2)
-						playsound(loc, "punch", rand(80, 100), 1, -1)
+						playsound(loc, SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
@@ -343,41 +343,41 @@
 	return
 
 //Recursive function to find everything a mob is holding.
-/mob/living/get_contents(obj/item/weapon/storage/Storage = null)
+/mob/living/get_contents(obj/item/storage/Storage = null)
 	var/list/L = list()
 
 	if(Storage) //If it called itself
 		L += Storage.return_inv()
 
 		//Leave this commented out, it will cause storage items to exponentially add duplicate to the list
-		//for(var/obj/item/weapon/storage/S in Storage.return_inv()) //Check for storage items
+		//for(var/obj/item/storage/S in Storage.return_inv()) //Check for storage items
 		//	L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in Storage.return_inv()) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in Storage.return_inv()) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in Storage.return_inv()) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
 	else
 
 		L += src.contents
-		for(var/obj/item/weapon/storage/S in src.contents)	//Check for storage items
+		for(var/obj/item/storage/S in src.contents)	//Check for storage items
 			L += get_contents(S)
 
-		for(var/obj/item/weapon/gift/G in src.contents) //Check for gift-wrapped items
+		for(var/obj/item/gift/G in src.contents) //Check for gift-wrapped items
 			L += G.gift
-			if(istype(G.gift, /obj/item/weapon/storage))
+			if(istype(G.gift, /obj/item/storage))
 				L += get_contents(G.gift)
 
 		for(var/obj/item/smallDelivery/D in src.contents) //Check for package wrapped items
 			L += D.wrapped
-			if(istype(D.wrapped, /obj/item/weapon/storage)) //this should never happen
+			if(istype(D.wrapped, /obj/item/storage)) //this should never happen
 				L += get_contents(D.wrapped)
 		return L
 
@@ -531,7 +531,7 @@
 	var/turf/old_loc = get_turf(src)
 
 	if(lying)
-		pull_sound = "pull_body"
+		pull_sound = SFX_PULL_BODY
 	else
 		pull_sound = null
 
@@ -580,7 +580,7 @@
 		return
 
 	if(!isliving(pulling))
-		step(pulling, get_dir(pulling.loc, old_loc))
+		step_glide(pulling, get_dir(pulling.loc, old_loc), glide_size)
 	else
 		var/mob/living/M = pulling
 		if(M.grabbed_by.len)
@@ -594,7 +594,7 @@
 
 			var/atom/movable/t = M.pulling
 			M.stop_pulling()
-			step(M, get_dir(pulling.loc, old_loc))
+			step_glide(M, get_dir(pulling.loc, old_loc), glide_size)
 			if(t)
 				M.start_pulling(t)
 
@@ -657,7 +657,7 @@
 
 /mob/living/proc/process_resist()
 	//Getting out of someone's inventory.
-	if(istype(src.loc, /obj/item/weapon/holder))
+	if(istype(src.loc, /obj/item/holder))
 		escape_inventory(src.loc)
 		return
 
@@ -672,7 +672,7 @@
 		spawn() C.mob_breakout(src)
 		return TRUE
 
-/mob/living/proc/escape_inventory(obj/item/weapon/holder/H)
+/mob/living/proc/escape_inventory(obj/item/holder/H)
 	if(H != src.loc) return
 
 	var/mob/M = H.loc //Get our mob holder (if any).
@@ -684,7 +684,7 @@
 
 		// Update whether or not this mob needs to pass emotes to contents.
 		for(var/atom/A in M.contents)
-			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/weapon/holder))
+			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/holder))
 				return
 		M.status_flags &= ~PASSEMOTES
 	else if(istype(H.loc,/obj/item/clothing/accessory/holster))

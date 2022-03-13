@@ -26,13 +26,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ
 	allowed_tools = list(
-	/obj/item/weapon/organfixer/standard = 100
+	/obj/item/organfixer/standard = 100
 	)
 
 	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
 	if(!..())
@@ -85,12 +85,12 @@
 	user.visible_message("[user] starts repairing [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start repairing [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/fix_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(O.gel_amt != 0)
 		if(!O.emagged)
 			if(affected && affected.damage > 0 && !BP_IS_ROBOTIC(affected) && (affected.surface_accessible || target.get_organ(target_zone).open() >= (target.get_organ(target_zone).encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
@@ -104,7 +104,7 @@
 			user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 			SPAN("warning", "Something goes wrong and \the [O] shreds [target]'s [affected.name] before you have a chance to react!"))
 
-			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150,affecting = target.op_stage.current_organ)
+			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150)
 			target.adjustToxLoss(30)
 			target.get_organ(target_zone).take_external_damage(10, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 			affected.take_internal_damage((affected.max_damage - affected.damage), 0)
@@ -135,13 +135,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ_multiple
 	allowed_tools = list(
-	/obj/item/weapon/organfixer/advanced = 100
+	/obj/item/organfixer/advanced = 100
 	)
 
 	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/internal/fix_organ_multiple/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
 	if(!..())
@@ -165,7 +165,7 @@
 /datum/surgery_step/internal/fix_organ_multiple/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
 		return
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(!affected || affected.open() < 2)
 		return
@@ -174,13 +174,13 @@
 			user.visible_message("[user] starts treating damage to [target]'s [I.name] with \the [tool].", \
 			"You start treating damage to [target]'s [I.name] with \the [tool]." )
 
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_multiple/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
 		return
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(!affected || affected.open() < 2)
 		return
@@ -205,7 +205,7 @@
 		user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 		SPAN("warning", "Something goes wrong and \the [O] shreds everything inside [target]'s [affected.name] before you have a chance to react!"))
 
-		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150,affecting = affected)
+		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150)
 		target.adjustToxLoss(30)
 		affected.take_external_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 		for(var/obj/item/organ/internal/I in affected.internal_organs)
@@ -233,7 +233,7 @@
 	allowed_tools = list(
 	/obj/item/stack/medical/advanced/bruise_pack= 67,		\
 	/obj/item/stack/medical/bruise_pack = 34,	\
-	/obj/item/weapon/tape_roll = 20
+	/obj/item/tape_roll = 20
 	)
 
 	duration = ORGAN_FIX_DURATION * 1.75
@@ -295,7 +295,7 @@
 		return
 	user.visible_message("[user] starts treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name]." , \
 			       	         "You start treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_ghetto/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -348,10 +348,10 @@
 /datum/surgery_step/internal/detatch_organ
 
 	allowed_tools = list(
-	/obj/item/weapon/scalpel = 100,	\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/knife = 75,	\
-	/obj/item/weapon/material/shard = 50
+	/obj/item/scalpel = 100,	\
+	/obj/item/material/knife = 75,	\
+	/obj/item/material/kitchen/utensil/knife = 75,	\
+	/obj/item/material/shard = 50
 	)
 
 	duration = CUT_DURATION * 1.75
@@ -417,10 +417,10 @@
 /datum/surgery_step/internal/remove_organ
 	priority = 2
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,	\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/fork = 20
+	/obj/item/hemostat = 100,	\
+	/obj/item/wirecutters = 75,	\
+	/obj/item/material/knife = 75,	\
+	/obj/item/material/kitchen/utensil/fork = 20
 	)
 
 	duration = CLAMP_DURATION
@@ -462,7 +462,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts removing [target]'s [target.op_stage.current_organ] with \the [tool].", \
 	"You start removing [target]'s [target.op_stage.current_organ] with \the [tool].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/remove_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -545,7 +545,7 @@
 
 	var/used_volume = 0
 	for(var/obj/item/implant in affected.implants)
-		if(istype(implant, /obj/item/weapon/implant))
+		if(istype(implant, /obj/item/implant))
 			continue
 		used_volume += implant.get_storage_cost()
 	for(var/obj/item/organ in affected.internal_organs)
@@ -560,7 +560,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts transplanting \the [tool] into [target]'s [affected.name].", \
 	"You start transplanting \the [tool] into [target]'s [affected.name].")
-	target.custom_pain("Someone's rooting around in your [affected.name]!",100,affecting = affected)
+	target.custom_pain("Someone's rooting around in your [affected.name]!",100)
 	..()
 
 /datum/surgery_step/internal/replace_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -591,9 +591,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
-	/obj/item/weapon/FixOVein = 100,	\
+	/obj/item/FixOVein = 100,	\
 	/obj/item/stack/cable_coil = 75,	\
-	/obj/item/weapon/tape_roll = 50
+	/obj/item/tape_roll = 50
 	)
 
 	duration = CONNECT_DURATION
@@ -665,11 +665,11 @@
 /datum/surgery_step/internal/treat_necrosis
 	priority = 2
 	allowed_tools = list(
-		/obj/item/weapon/reagent_containers/dropper = 100, 	\
-		/obj/item/weapon/reagent_containers/glass/bottle = 75,	\
-		/obj/item/weapon/reagent_containers/glass/beaker = 75,	\
-		/obj/item/weapon/reagent_containers/spray = 50,	\
-		/obj/item/weapon/reagent_containers/glass/bucket = 50
+		/obj/item/reagent_containers/dropper = 100, 	\
+		/obj/item/reagent_containers/glass/bottle = 75,	\
+		/obj/item/reagent_containers/glass/beaker = 75,	\
+		/obj/item/reagent_containers/spray = 50,	\
+		/obj/item/reagent_containers/glass/bucket = 50
 	)
 
 	can_infect = 0
@@ -678,7 +678,7 @@
 	duration = ORGAN_FIX_DURATION * 0.75
 
 /datum/surgery_step/internal/treat_necrosis/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/peridaxon))
 		return 0
 	if (!..())
@@ -722,12 +722,12 @@
 	user.visible_message("[user] starts applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/treat_necrosis/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 
 	var/amount = container.amount_per_transfer_from_this
 	var/datum/reagents/temp_reagents = new(amount, GLOB.temp_reagents_holder)
@@ -754,10 +754,10 @@
 /datum/surgery_step/internal/treat_necrosis/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	if (!istype(tool, /obj/item/weapon/reagent_containers))
+	if (!istype(tool, /obj/item/reagent_containers))
 		return
 
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 
 	var/trans = container.reagents.trans_to_mob(target, container.amount_per_transfer_from_this, CHEM_BLOOD)
 

@@ -34,7 +34,14 @@
 	singular_name = "alien hide piece"
 	icon_state = "xeno"
 
-//don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
+/obj/item/stack/material/animalhide/goat
+	default_type = "goat hide"
+	name = "goat hide"
+	desc = "A goat hide."
+	singular_name = "goat hide piece"
+	icon_state = "goatskin"
+
+// don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
 /obj/item/stack/material/xenochitin
 	name = "alien chitin"
 	desc = "A piece of the hide of a terrible creature."
@@ -55,6 +62,7 @@
 	icon_state = "weed_extract"
 
 /obj/item/stack/material/hairlesshide
+	default_type = "hairless hide"
 	name = "hairless hide"
 	desc = "This hide was stripped of it's hair, but still needs tanning."
 	singular_name = "hairless hide piece"
@@ -69,11 +77,11 @@
 	var/drying_threshold_temperature = 500 //Kelvin to start drying
 
 //Step one - dehairing.
-/obj/item/stack/material/animalhide/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(	istype(W, /obj/item/weapon/material/knife) || \
-		istype(W, /obj/item/weapon/material/kitchen/utensil/knife) || \
-		istype(W, /obj/item/weapon/material/twohanded/fireaxe) || \
-		istype(W, /obj/item/weapon/material/hatchet) )
+/obj/item/stack/material/animalhide/attackby(obj/item/W as obj, mob/user as mob)
+	if(	istype(W, /obj/item/material/knife) || \
+		istype(W, /obj/item/material/kitchen/utensil/knife) || \
+		istype(W, /obj/item/material/twohanded/fireaxe) || \
+		istype(W, /obj/item/material/hatchet) )
 
 		//visible message on mobs is defined as visible_message(var/message, var/self_message, var/blind_message)
 		usr.visible_message("<span class='notice'>\The [usr] starts cutting hair off \the [src]</span>", "<span class='notice'>You start cutting the hair off \the [src]</span>", "You hear the sound of a knife rubbing against flesh")

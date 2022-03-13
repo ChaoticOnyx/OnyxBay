@@ -16,7 +16,7 @@
 	name = "Skrellian voidsuit"
 	desc = "Seems like a wetsuit with reinforced plating seamlessly attached to it. Very chic."
 	armor = list(melee = 20, bullet = 20, laser = 50,energy = 50, bomb = 50, bio = 100, rad = 100)
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/weapon/storage/ore,/obj/item/device/t_scanner,/obj/item/weapon/pickaxe, /obj/item/weapon/rcd)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/storage/ore,/obj/item/device/t_scanner,/obj/item/pickaxe, /obj/item/rcd)
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECTION_TEMPERATURE
 	species_restricted = list(SPECIES_SKRELL,SPECIES_HUMAN)
@@ -31,7 +31,7 @@
 // Can't be equipped by any other species due to bone structure and vox cybernetics.
 /obj/item/clothing/suit/space/vox
 	w_class = ITEM_SIZE_NORMAL
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword/pirate,/obj/item/weapon/handcuffs,/obj/item/weapon/tank)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/pirate,/obj/item/handcuffs,/obj/item/tank)
 	armor = list(melee = 60, bullet = 50, laser = 40,energy = 15, bomb = 30, bio = 100, rad = 30)
 	siemens_coefficient = 0.6
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
@@ -80,12 +80,12 @@
 		to_chat(H, "<span class='danger'>Your hands are full.</span>")
 		return
 
-	var/obj/item/weapon/W = new /obj/item/weapon/vox_rcd(H)
-	H.put_in_hands(W)
+	var/obj/item/I = new /obj/item/vox_rcd(H)
+	H.put_in_hands(I)
 ////////////RCD
 
 
-/obj/item/weapon/vox_rcd
+/obj/item/vox_rcd
 	name = "Deconstruction device"
 	var/charge = 3
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.
@@ -94,7 +94,7 @@
 	desc = "A small device filled with biorobots."
 	var/mode = 1 //We have 3 types of mode, 1 - deconstruct, 2 - construct, 3 - construct doors
 
-/obj/item/weapon/vox_rcd/attack_self(mob/user)
+/obj/item/vox_rcd/attack_self(mob/user)
 	playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
 	switch(mode)
 		if(1)
@@ -107,11 +107,11 @@
 			mode = 1
 			to_chat(user, "<span class='notice'>Changed mode to deconstruct</span>")
 
-/obj/item/weapon/vox_rcd/afterattack(atom/A, mob/user, proximity)
+/obj/item/vox_rcd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 	if(charge == 0)
-		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		playsound(src, 'sound/effects/flare.ogg', 30, 1)
@@ -143,7 +143,7 @@
 				charge--
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	if(charge == 0)
-		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+		user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		spawn(1)
@@ -151,8 +151,8 @@
 				qdel(src)
 		return
 
-/obj/item/weapon/vox_rcd/dropped(mob/user)
-	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
+/obj/item/vox_rcd/dropped(mob/user)
+	user.visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
@@ -161,7 +161,7 @@
 			qdel(src)
 //RCD/////////////////////
 
-/obj/item/weapon/alien_med_device
+/obj/item/alien_med_device
 	name = "Med-device"
 	var/charge = 3
 	icon = 'icons/obj/gun.dmi'
@@ -172,7 +172,7 @@
 	var/ammo = 3
 	var/last_regen = 0
 
-/obj/item/weapon/alien_med_device/afterattack(atom/A, mob/user, proximity)
+/obj/item/alien_med_device/afterattack(atom/A, mob/user, proximity)
 	if(!ishuman(A))
 		return
 	var/mob/living/carbon/human/V = A
@@ -191,16 +191,16 @@
 		playsound(src, 'sound/voice/alien_roar_larva2.ogg', 30, 1)
 		to_chat(user, "<span class='notice'>[src] is discharged.</span>")
 
-/obj/item/weapon/alien_med_device/Initialize()
+/obj/item/alien_med_device/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 	last_regen = world.time
 
-/obj/item/weapon/alien_med_device/Destroy()
+/obj/item/alien_med_device/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/weapon/alien_med_device/Process()
+/obj/item/alien_med_device/Process()
 	if((ammo < max_ammo) && (world.time > (last_regen + recharge_time)))
 		ammo++
 		last_regen = world.time
@@ -385,7 +385,7 @@
 			if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
 
-/obj/item/weapon/storage/belt/vox
+/obj/item/storage/belt/vox
 	name = "Vox belt"
 	desc = "High-tech belt with mounts for any objects."
 	icon_state = "voxbelt"

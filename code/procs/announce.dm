@@ -53,7 +53,9 @@
 		NewsCast(message, message_title)
 
 	if(log)
-		log_game("[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]", notify_admin = TRUE)
+		var/log_msg = "[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]"
+		log_game(log_msg, notify_admin = TRUE)
+		log_story("GAME", log_msg)
 
 /proc/should_recieve_announce(mob/M, list/contact_levels)
 	if (istype(M,/mob/new_player) || isdeaf(M))
@@ -107,7 +109,7 @@
 	news.can_be_redacted = 0
 	announce_newscaster_news(news)
 
-/proc/GetNameAndAssignmentFromId(obj/item/weapon/card/id/I)
+/proc/GetNameAndAssignmentFromId(obj/item/card/id/I)
 	// Format currently matches that of newscaster feeds: Registered Name (Assigned Rank)
 	return I.assignment ? "[I.registered_name] ([I.assignment])" : I.registered_name
 
@@ -117,7 +119,7 @@
 /proc/ion_storm_announcement()
 	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
 
-/proc/AnnounceArrival(name, datum/job/job, var/datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
+/proc/AnnounceArrival(name, datum/job/job, datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
 

@@ -31,7 +31,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "tech_key"
 	icon_screen = "turbinecomp"
-	circuit = /obj/item/weapon/circuitboard/turbine_control
+	circuit = /obj/item/circuitboard/turbine_control
 	anchored = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -204,11 +204,11 @@
 
 /obj/machinery/computer/turbine_computer/Initialize()
 	. = ..()
-	for(var/obj/machinery/compressor/C in SSmachines.machinery)
+	for(var/obj/machinery/compressor/C in GLOB.machines)
 		if(id == C.comp_id)
 			compressor = C
 	doors = new /list()
-	for(var/obj/machinery/door/blast/P in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/P in GLOB.machines)
 		if(P.id == id)
 			doors += P
 

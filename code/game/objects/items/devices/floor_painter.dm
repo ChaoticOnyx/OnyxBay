@@ -62,6 +62,7 @@
 	if(!ui)
 		ui = new(user, src, "FloorPainter", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/item/device/floor_painter/tgui_act(action, list/params)
 	. = ..()

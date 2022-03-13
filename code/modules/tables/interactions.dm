@@ -62,9 +62,8 @@
 	return 1
 
 
-/obj/structure/table/MouseDrop_T(obj/O as obj, mob/user as mob)
-
-	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+/obj/structure/table/MouseDrop_T(obj/O, mob/user)
+	if(!istype(O, /obj/item) || user.get_active_hand() != O)
 		return ..()
 	if(isrobot(user))
 		return
@@ -131,12 +130,12 @@
 	if(W.loc != user) // This should stop mounted modules ending up outside the module.
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy) && user.a_intent == I_HURT && W.force > 20)
+	if(istype(W, /obj/item/melee/energy) && user.a_intent == I_HURT && W.force > 20)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
 		playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		user.visible_message("<span class='danger'>\The [src] was sliced apart by [user]!</span>")
 		break_to_parts()
 		return

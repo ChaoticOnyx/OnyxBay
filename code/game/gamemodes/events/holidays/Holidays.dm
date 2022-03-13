@@ -140,7 +140,10 @@ var/global/Holiday = null
 /proc/Holiday_Game_Start()
 	if(Holiday)
 		to_world("<span class='info'>and...</span>")
-		to_world("<h4>Happy [Holiday] Everybody!</h4>")
+		if(Holiday == "Christmas Eve" || Holiday == "Christmas")
+			to_world("<h4>Merry [Holiday] Everybody!</h4>")
+		else
+			to_world("<h4>Happy [Holiday] Everybody!</h4>")
 		switch(Holiday)			//special holidays
 			if("Easter")
 				//do easter stuff
@@ -164,12 +167,12 @@ var/global/Holiday = null
 			var/turf/simulated/floor/F = Floorlist[rand(1,Floorlist.len)]
 			Floorlist = null
 			var/obj/structure/closet/C = locate(/obj/structure/closet) in F
-			var/obj/item/weapon/reagent_containers/food/snacks/chocolateegg/wrapped/Egg
+			var/obj/item/reagent_containers/food/snacks/chocolateegg/wrapped/Egg
 			if( C )			Egg = new(C)
 			else			Egg = new(F)
 */
 /*			var/list/obj/containers = list()
-			for(var/obj/item/weapon/storage/S in world)
+			for(var/obj/item/storage/S in world)
 				if(isNotStationLevel(S.z))	continue
 				containers += S
 

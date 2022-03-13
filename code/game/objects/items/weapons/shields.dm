@@ -29,11 +29,11 @@
 
 	return 1
 
-/obj/item/weapon/shield
+/obj/item/shield
 	name = "shield"
 
 /* This shit ain't working, guys. Fix it, please. ~Toby
-/obj/item/weapon/shield/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(user.incapacitated())
 		return 0
 
@@ -43,7 +43,7 @@
 		..()
 	return 0*/
 
-/obj/item/weapon/shield/riot
+/obj/item/shield/riot
 	name = "riot shield"
 	desc = "A shield adept at blocking blunt objects from connecting with the torso of the shield wielder."
 	icon = 'icons/obj/weapons.dmi'
@@ -62,24 +62,24 @@
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
-	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/weapon/shield/riot/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/riot/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	. = ..()
 	if(.)
 		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
 
-/obj/item/weapon/shield/riot/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/melee/baton))
-		if(cooldown < world.time - 25)
+/obj/item/shield/riot/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/melee/baton))
+		THROTTLE(cooldown, 25)
+		if(cooldown)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
 			cooldown = world.time
 	else
 		..()
 
-/obj/item/weapon/shield/buckler
+/obj/item/shield/buckler
 	name = "buckler"
 	desc = "A wooden buckler used to block sharp things from entering your body back in the day.."
 	icon = 'icons/obj/weapons.dmi'
@@ -94,7 +94,7 @@
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_WOOD = 1000)
 	attack_verb = list("shoved", "bashed")
 
-/obj/item/weapon/shield/buckler/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/buckler/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	. = ..()
 	if(.)
 		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
@@ -103,7 +103,7 @@
  * Energy Shield
  */
 
-/obj/item/weapon/shield/energy
+/obj/item/shield/energy
 	name = "energy combat shield"
 	desc = "A shield capable of stopping most projectile and melee attacks. It can be retracted, expanded, and stored anywhere."
 	icon = 'icons/obj/weapons.dmi'
@@ -122,7 +122,7 @@
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/weapon/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+/obj/item/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(!active)
 		return 0 //turn it on first!
 	if(!user.blocking)
@@ -144,7 +144,7 @@
 		return PROJECTILE_FORCE_BLOCK
 	return 0
 
-/obj/item/weapon/shield/energy/attack_self(mob/living/user)
+/obj/item/shield/energy/attack_self(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_organ_damage(5)
@@ -178,7 +178,7 @@
 	add_fingerprint(user)
 	return
 
-/obj/item/weapon/shield/energy/update_icon()
+/obj/item/shield/energy/update_icon()
 	icon_state = "eshield[active]"
 	if(active)
 		set_light(0.4, 0.1, 1, 2, "#006aff")

@@ -122,6 +122,18 @@
 	name = "\improper FIRST AID"
 	icon_state = "firstaid"
 
+/obj/structure/sign/colony
+	name = "\improper New Reno Colony sign"
+	icon = 'icons/obj/new-reno-sign.dmi'
+	icon_state = "new_reno_sign"
+	density = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/sign/junglecamo
+	name = "camo netting"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "camo"
+
 /obj/structure/sign/warning
 	name = "\improper WARNING"
 	icon_state = "securearea"

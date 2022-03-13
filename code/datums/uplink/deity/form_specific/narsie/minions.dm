@@ -12,13 +12,13 @@
 	name = "Blood Plague"
 	desc = "Give a vessel to a follower filled with infection so vile, it turns all sapient creatures into mindless husks."
 	item_cost = 200 //End game shit.
-	path = /obj/item/weapon/reagent_containers/food/drinks/zombiedrink
+	path = /obj/item/reagent_containers/food/drinks/zombiedrink
 
 /datum/uplink_item/deity/boon/soul_arts/tear_veil
 	name = "Tear Veil"
 	desc = "Grant your follower the ability to literally rip a hole in this reality, allowing things to pass through."
 	item_cost = 50
-	path = /spell/tear_veil
+	path = /datum/spell/tear_veil
 
 /datum/uplink_item/deity/feat/phenomena/hellscape
 	name = "Phenomena: Reveal Hellscape"

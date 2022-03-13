@@ -10,6 +10,26 @@
 	mod_weight = 0.25
 	mod_handy = 0.25
 
+/obj/item/trash/dish
+	var/list/stack = list()
+	var/max_stack = 5
+
+/obj/item/trash/dish/baking_sheet
+	name = "baking sheet"
+	icon_state = "baking_sheet"
+
+/obj/item/trash/dish/plate
+	name = "plate"
+	icon_state = "plate"
+
+/obj/item/trash/dish/bowl
+	name = "bowl"
+	icon_state	= "bowl"
+
+/obj/item/trash/dish/tray
+	name = "tray"
+	icon_state = "tray"
+
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"
 	icon_state = "4no_raisins"
@@ -63,18 +83,6 @@
 	name = "syndi cakes"
 	icon_state = "syndi_cakes"
 
-/obj/item/trash/waffles
-	name = "waffles"
-	icon_state = "waffles"
-
-/obj/item/trash/plate
-	name = "plate"
-	icon_state = "plate"
-
-/obj/item/trash/snack_bowl
-	name = "snack bowl"
-	icon_state	= "snack_bowl"
-
 /obj/item/trash/pistachios
 	name = "pistachios pack"
 	icon_state = "pistachios_pack"
@@ -82,10 +90,6 @@
 /obj/item/trash/semki
 	name = "semki pack"
 	icon_state = "semki_pack"
-
-/obj/item/trash/tray
-	name = "tray"
-	icon_state = "tray"
 
 /obj/item/trash/candle
 	name = "candle"
@@ -103,6 +107,10 @@
 /obj/item/trash/hematogen
 	name = "Hema2Gen"
 	icon_state = "hema2gen"
+
+/obj/item/trash/hemptogen
+	name = "Hemp2Gen"
+	icon_state = "hemp2gen"
 
 /obj/item/trash/pan
 	name = "holey pan"
@@ -192,3 +200,37 @@
 
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
+
+/obj/item/trash/dish/update_icon()
+	icon_state = "[initial(icon_state)][length(stack) || ""]"
+
+/obj/item/trash/dish/attackby(obj/item/I, mob/user)
+	var/obj/item/trash/dish/dish = I
+	if(I.type == type)
+		var/list/dishestoadd = list()
+		dishestoadd += dish
+
+		for(var/obj/item/trash/dish/i in dish.stack)
+			dishestoadd += i
+
+		if((length(stack) + length(dishestoadd)) < max_stack)
+			user.drop_item()
+			dish.forceMove(src)
+			dish.stack.Cut()
+			dish.update_icon()
+			stack += dishestoadd
+			update_icon()
+		else
+			to_chat(user, SPAN("warning", "The stack is too high!"))
+
+/obj/item/trash/dish/attack_hand(mob/user)
+	if(user.get_inactive_hand() != src)
+		..()
+		return
+
+	var/obj/item/trash/dish/dish = stack[length(stack)]
+	stack -= dish
+
+	user.put_in_hands(dish)
+
+	update_icon()

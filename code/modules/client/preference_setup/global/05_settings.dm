@@ -81,10 +81,21 @@
 
 	return ..()
 
+/// Returns a default value of the preference if it can't be loaded.
+/client/proc/try_get_preference_value(preference)
+	var/value = null
+	
+	try
+		value = get_preference_value(preference)
+	catch
+		value = get_client_preference(preference).default_value
+	
+	return value
+
 /client/proc/get_preference_value(preference)
 	if(!SScharacter_setup.initialized)
 		// Too early to use any preferences
-		CRASH("Trying to get [ckey]'s preferences before the subsystem's initialization.")
+		throw EXCEPTION("Trying to get [ckey]'s preferences before the subsystem's initialization.")
 
 	if(!prefs)
 		log_error("[ckey]'s preferences are broken. Creating new one.")

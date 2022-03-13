@@ -111,11 +111,25 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/play_ambiance/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_NO)
 		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 1))
-		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = 2))
+
+/datum/client_preference/play_ambience_music
+	description = "Play ambience music"
+	key = "SOUND_AMBIENCE_MUSIC"
+
+/datum/client_preference/play_ambience_music/changed(mob/preference_mob, new_value)
+	if(new_value == GLOB.PREF_NO)
+		preference_mob.client?.last_time_ambient_music_played = 0
+		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 0, channel = SOUND_CHANNEL_AMBIENT_MUSIC))
 
 /datum/client_preference/play_jukeboxes
 	description ="Play jukeboxes"
 	key = "SOUND_JUKEBOXES"
+
+/datum/client_preference/give_wayfinding
+	description = "Spawn with a wayfinder tracker"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_BASIC)
+	default_value = GLOB.PREF_BASIC
+	key = "WAYFINDING_POINTER"
 
 /datum/client_preference/play_instruments
 	description ="Play instruments"
@@ -164,9 +178,9 @@ var/global/list/_client_preferences_by_type
 	key = "SHOW_PROGRESS"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
-/datum/client_preference/hardsuit_activation
-	description = "Hardsuit Module Activation Key"
-	key = "HARDSUIT_ACTIVATION"
+/datum/client_preference/powersuit_activation
+	description = "Powersuit Module Activation Key"
+	key = "POWERSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/pointing
@@ -316,3 +330,8 @@ var/global/list/_client_preferences_by_type
 	key = "ADVANCED_WHO"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
 	flags = R_INVESTIGATE
+
+/datum/client_preference/staff/pray_sound
+	description = "Play Pray Sound"
+	key = "SOUND_PRAY"
+	flags = R_PERMISSIONS

@@ -10,15 +10,15 @@
 /obj/structure/noticeboard/Initialize()
 	for(var/obj/item/I in loc)
 		if(notices > 4) break
-		if(istype(I, /obj/item/weapon/paper))
+		if(istype(I, /obj/item/paper))
 			I.forceMove(src)
 			notices++
 	icon_state = "nboard0[notices]"
 	. = ..()
 
 //attaching papers!!
-/obj/structure/noticeboard/attackby(obj/item/weapon/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo))
+/obj/structure/noticeboard/attackby(obj/item/O as obj, mob/user as mob)
+	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo))
 		if(notices < 5)
 			O.add_fingerprint(user)
 			add_fingerprint(user)
@@ -37,10 +37,10 @@
 /obj/structure/noticeboard/examine(mob/user)
 	if(user && user.Adjacent(src))
 		var/dat = "<B>Noticeboard</B><BR>"
-		for(var/obj/item/weapon/paper/P in src)
+		for(var/obj/item/paper/P in src)
 			dat += "<A href='?src=\ref[src];read=\ref[P]'>[P.name]</A> <A href='?src=\ref[src];write=\ref[P]'>Write</A> <A href='?src=\ref[src];remove=\ref[P]'>Remove</A><BR>"
-		for(var/obj/item/weapon/photo/P in src)
-			dat += "<A href='?src=\ref[src];look=\ref[P]'>[P.name]</A> <A href='?src=\ref[src]; <A href='?src=\ref[src];remove=\ref[P]'>Remove</A><BR>"
+		for(var/obj/item/photo/P in src)
+			dat += "<A href='?src=\ref[src];look=\ref[P]'>[P.name]</A> <A href='?src=\ref[src];remove=\ref[P]'>Remove</A><BR>"
 		show_browser(user, "<HEAD><meta charset=\"utf-8\"><TITLE>Notices</TITLE></HEAD>[dat]","window=noticeboard")
 		onclose(user, "noticeboard")
 	else
@@ -64,21 +64,21 @@
 			return
 		var/obj/item/P = locate(href_list["write"])
 		if((P && P.loc == src)) //ifthe paper's on the board
-			if(istype(usr.r_hand, /obj/item/weapon/pen)) //and you're holding a pen
+			if(istype(usr.r_hand, /obj/item/pen)) //and you're holding a pen
 				add_fingerprint(usr)
 				P.attackby(usr.r_hand, usr) //then do ittttt
 			else
-				if(istype(usr.l_hand, /obj/item/weapon/pen)) //check other hand for pen
+				if(istype(usr.l_hand, /obj/item/pen)) //check other hand for pen
 					add_fingerprint(usr)
 					P.attackby(usr.l_hand, usr)
 				else
 					to_chat(usr, "<span class='notice'>You'll need something to write with!</span>")
 	if(href_list["read"])
-		var/obj/item/weapon/paper/P = locate(href_list["read"])
+		var/obj/item/paper/P = locate(href_list["read"])
 		if((P && P.loc == src))
 			P.show_content(usr)
 	if(href_list["look"])
-		var/obj/item/weapon/photo/P = locate(href_list["look"])
+		var/obj/item/photo/P = locate(href_list["look"])
 		if((P && P.loc == src))
 			P.show(usr)
 	return

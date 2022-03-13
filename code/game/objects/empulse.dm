@@ -27,7 +27,7 @@
 		light_range = heavy_range
 
 	for(var/mob/M in range(heavy_range, epicenter))
-		M.playsound_local(epicenter, "electric_explosion", rand(80, 100))
+		M.playsound_local(epicenter, SFX_EXPLOSION_ELECTRIC, rand(80, 100))
 
 	for(var/atom/T in range(light_range, epicenter))
 		#ifdef EMPDEBUG

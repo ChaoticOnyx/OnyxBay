@@ -61,7 +61,7 @@
 
 	for (var/mob/living/silicon/robot/robot in GLOB.player_list)
 		if (!robot.is_dead())
-			if (istype(robot.module, /obj/item/weapon/robot_module/security/general) || istype(robot.module, /obj/item/weapon/robot_module/security/combat))
+			if (istype(robot.module, /obj/item/robot_module/security/general) || istype(robot.module, /obj/item/robot_module/security/combat))
 				var/add_manpower = 3
 				security_manpower += add_manpower
 				_log_debug("+[add_manpower] for a Security Cyborg")
@@ -86,7 +86,6 @@
 		if(MODE_CHANGELING)    return 8
 		if(MODE_NINJA)         return 12
 		if(MODE_WIZARD)        return 16
-		if(MODE_BLOB)          return 24
 		if(MODE_MALFUNCTION)   return 24
 	return 0
 

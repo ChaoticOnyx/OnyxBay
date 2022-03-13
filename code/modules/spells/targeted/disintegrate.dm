@@ -1,13 +1,13 @@
-/spell/targeted/disintegrate
+/datum/spell/targeted/disintegrate
 	name = "Disintegrate"
 	desc = "This spell immediately and permanently destroys its victim."
 	feedback = "DI"
 	school = "conjuration"
 
 	invocation = "Ei'Nath!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES // Yep, you can EI NATH yourself ftw
 	range = 1
@@ -19,11 +19,11 @@
 
 	compatible_mobs = list(/mob/living)
 
-	hud_state = "wiz_disint"
+	icon_state = "wiz_disint"
 
 	cast_sound = 'sound/effects/squelch2.ogg'
 
-/spell/targeted/disintegrate/cast(list/targets, mob/user)
+/datum/spell/targeted/disintegrate/cast(list/targets, mob/user)
 	for(var/mob/T in targets)
 		if(!in_range(T, user))
 			to_chat(user, "<span class='warning'>That was not so bright of you.</span>")

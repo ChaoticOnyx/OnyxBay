@@ -40,14 +40,14 @@
 		ruin()
 
 /obj/item/music_tape/attackby(obj/item/I, mob/user, params)
-	if(ruined && (isScrewdriver(I) || istype(I, /obj/item/weapon/pen)))
+	if(ruined && (isScrewdriver(I) || istype(I, /obj/item/pen)))
 		to_chat(user, SPAN_NOTICE("You start winding \the [src] back in..."))
 		if(do_after(user, 120, target = src))
 			to_chat(user, SPAN_NOTICE("You wound \the [src] back in."))
 			fix()
 		return
 
-	if(istype(I, /obj/item/weapon/pen))
+	if(istype(I, /obj/item/pen))
 		if(loc == user && !user.incapacitated())
 			var/new_name = input(user, "What would you like to label \the [src]?", "\improper [src] labeling", name) as null|text
 			if(isnull(new_name) || new_name == name) return
