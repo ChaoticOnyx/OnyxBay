@@ -82,31 +82,29 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) (istype(A, /obj/item/weapon/wrench) || (istype(A, /obj/item/weapon/rpd) && A:interaction_mode == "wrench"))
+#define isWrench(A) (istype(A, /obj/item/wrench) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 
-#define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
+#define isWelder(A) istype(A, /obj/item/weldingtool)
 
 #define isCoil(A) istype(A, /obj/item/stack/cable_coil)
 
-#define isWirecutter(A) istype(A, /obj/item/weapon/wirecutters)
+#define isWirecutter(A) istype(A, /obj/item/wirecutters)
 
-#define isScrewdriver(A) istype(A, /obj/item/weapon/screwdriver)
+#define isScrewdriver(A) istype(A, /obj/item/screwdriver)
 
 #define isMultitool(A) istype(A, /obj/item/device/multitool)
 
-#define isCrowbar(A) istype(A, /obj/item/weapon/crowbar)
+#define isCrowbar(A) istype(A, /obj/item/crowbar)
 
-#define iscapacitor(A) istype(A, /obj/item/weapon/stock_parts/capacitor)
+#define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 
-#define ismicrolaser(A) istype(A, /obj/item/weapon/stock_parts/micro_laser)
+#define ismicrolaser(A) istype(A, /obj/item/stock_parts/micro_laser)
 
-#define ismatterbin(A) istype(A, /obj/item/weapon/stock_parts/matter_bin)
+#define ismatterbin(A) istype(A, /obj/item/stock_parts/matter_bin)
 
-#define isscanner(A) istype(A, /obj/item/weapon/stock_parts/scanning_module)
+#define isscanner(A) istype(A, /obj/item/stock_parts/scanning_module)
 
-#define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
-
-#define isovermind(A) istype(A, /mob/blob)
+#define ismanipulator(A) istype(A, /obj/item/stock_parts/manipulator)
 
 #define ismech(A) istype(A, /obj/mecha)
 

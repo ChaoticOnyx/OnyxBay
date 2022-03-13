@@ -4,9 +4,15 @@
 	icon_state = "wheelchair"
 	anchored = 0
 	buckle_movable = 1
-	movement_handlers = list(/datum/movement_handler/deny_multiz, /datum/movement_handler/delay = list(2), /datum/movement_handler/move_relay_self)
+	movement_handlers = list(
+		/datum/movement_handler/deny_stairs,
+		/datum/movement_handler/deny_multiz,
+		/datum/movement_handler/delay = list(2),
+		/datum/movement_handler/move_relay_self
+	)
 	foldable = FALSE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
+	appearance_flags = LONG_GLIDE
 
 	var/driving = 0
 	var/mob/living/pulling = null
@@ -24,7 +30,7 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/wheelchair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/chair/wheelchair/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()

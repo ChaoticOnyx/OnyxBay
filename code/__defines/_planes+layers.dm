@@ -116,6 +116,10 @@
 	#define TABLE_LAYER                 2.19
 	#define BELOW_OBJ_LAYER             2.20
 	#define STRUCTURE_LAYER             2.21
+	#define WINDOW_INNER_LAYER          2.22
+	#define WINDOW_FRAME_LAYER          2.23
+	#define WINDOW_OUTER_LAYER          2.24
+	#define WINDOW_BORDER_LAYER         2.25
 	// OBJ_LAYER                        3
 	#define ABOVE_OBJ_LAYER             3.01
 	#define CLOSED_DOOR_LAYER           3.02
@@ -143,14 +147,7 @@
 	#define ABOVE_HUMAN_LAYER           4.08
 	#define VEHICLE_LOAD_LAYER          4.09
 	#define CAMERA_LAYER                4.10
-	// BLOB
 	#define BLOB_BASE_LAYER				4.11
-	#define BLOB_SHIELD_LAYER			4.12
-	#define BLOB_RESOURCE_LAYER			4.13
-	#define BLOB_FACTORY_LAYER			4.14
-	#define BLOB_NODE_LAYER				4.15
-	#define BLOB_CORE_LAYER				5.16
-	#define BLOB_SPORE_LAYER			6.17
 	// EFFECTS BELOW LIGHTING
 	#define BELOW_PROJECTILE_LAYER      4.18
 	#define DEEP_FLUID_LAYER            4.19

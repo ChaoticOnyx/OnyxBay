@@ -1,6 +1,6 @@
 // The lighting system
 //
-// consists of light fixtures (/obj/machinery/light) and light tube/bulb items (/obj/item/weapon/light)
+// consists of light fixtures (/obj/machinery/light) and light tube/bulb items (/obj/item/light)
 
 
 // status values shared between lighting fixtures and items
@@ -54,7 +54,7 @@
 		if(2) . += "\nIt's wired."
 		if(3) . += "\nThe casing is closed."
 
-/obj/machinery/light_construct/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/light_construct/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
 	if(isWrench(W))
 		if (src.stage == 1)
@@ -142,17 +142,17 @@
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
+	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off
 	var/flickering = 0
-	var/light_type = /obj/item/weapon/light/tube		// the type of light item
+	var/light_type = /obj/item/light/tube		// the type of light item
 	var/construct_type = /obj/machinery/light_construct
 	var/pixel_shift = 0
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 
-	var/obj/item/weapon/light/lightbulb
+	var/obj/item/light/lightbulb
 
 	var/current_mode = null
 
@@ -161,33 +161,33 @@
 	icon_state = "voxlight"
 	base_state = "voxlight"
 	desc = "A strange lighting fixture."
-	light_type = /obj/item/weapon/light/tube
+	light_type = /obj/item/light/tube
 
 /obj/machinery/light/spot
 	name = "spotlight"
 	desc = "A more robust socket for light tubes that demands more power."
-	light_type = /obj/item/weapon/light/tube/large
+	light_type = /obj/item/light/tube/large
 
 /obj/machinery/light/he
 	name = "high efficiency light fixture"
 	icon_state = "hetube1"
 	base_state = "hetube"
 	desc = "An efficient lighting fixture used to reduce strain on the station's power grid."
-	light_type = /obj/item/weapon/light/tube/he
+	light_type = /obj/item/light/tube/he
 
 /obj/machinery/light/quartz
 	name = "quartz light fixture"
 	icon_state = "qtube1"
 	base_state = "qtube"
 	desc = "Light is almost the same as sunlight."
-	light_type = /obj/item/weapon/light/tube/quartz
+	light_type = /obj/item/light/tube/quartz
 
 // the smaller bulb light fixture
 /obj/machinery/light/small
 	icon_state = "bulb1"
 	base_state = "bulb"
 	desc = "A small lighting fixture."
-	light_type = /obj/item/weapon/light/bulb
+	light_type = /obj/item/light/bulb
 	construct_type = /obj/machinery/light_construct/small
 	pixel_shift = 3
 
@@ -196,27 +196,27 @@
 	icon_state = "hebulb1"
 	base_state = "hebulb"
 	desc = "An efficient small lighting fixture used to reduce strain on the station's power grid."
-	light_type = /obj/item/weapon/light/bulb/he
+	light_type = /obj/item/light/bulb/he
 
 /obj/machinery/light/small/quartz
 	name = "quartz light fixture"
 	icon_state = "qbulb1"
 	base_state = "qbulb"
 	desc = "Light is almost the same as sunlight."
-	light_type = /obj/item/weapon/light/bulb/quartz
+	light_type = /obj/item/light/bulb/quartz
 
 /obj/machinery/light/small/emergency
-	light_type = /obj/item/weapon/light/bulb/red
+	light_type = /obj/item/light/bulb/red
 
 /obj/machinery/light/small/red
-	light_type = /obj/item/weapon/light/bulb/red
+	light_type = /obj/item/light/bulb/red
 
 /obj/machinery/light/small/hl
 	name = "old light fixture"
 	icon_state = "hanginglantern1"
 	base_state = "hanginglantern"
 	desc = "Combination of old technologies and electricity."
-	light_type = /obj/item/weapon/light/bulb/old
+	light_type = /obj/item/light/bulb/old
 
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
@@ -359,12 +359,12 @@
 			. += "\n[desc] The [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
-	var/obj/item/weapon/light/L = light_type
+	var/obj/item/light/L = light_type
 	return initial(L.name)
 
 // attack with item - insert light (if right type), otherwise try to break the light
 
-/obj/machinery/light/proc/insert_bulb(obj/item/weapon/light/L)
+/obj/machinery/light/proc/insert_bulb(obj/item/light/L)
 	L.forceMove(src)
 	lightbulb = L
 
@@ -394,7 +394,7 @@
 			return
 
 	// attempt to insert light
-	if(istype(W, /obj/item/weapon/light))
+	if(istype(W, /obj/item/light))
 		if(lightbulb)
 			to_chat(user, "There is a [get_fitting_name()] already inserted.")
 			return
@@ -572,7 +572,7 @@
 
 	if(!skip_sound_and_sparks)
 		if(lightbulb && !(lightbulb.status == LIGHT_BROKEN))
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		if(on)
 			s.set_up(3, 1, src)
 			s.start()
@@ -616,7 +616,7 @@
 		broken()
 
 /obj/machinery/light/small/readylight
-	light_type = /obj/item/weapon/light/bulb/red/readylight
+	light_type = /obj/item/light/bulb/red/readylight
 	var/state = 0
 
 /obj/machinery/light/small/readylight/proc/set_state(new_state)
@@ -630,7 +630,7 @@
 // can be tube or bulb subtypes
 // will fit into empty /obj/machinery/light of the corresponding type
 
-/obj/item/weapon/light
+/obj/item/light
 	icon = 'icons/obj/lighting.dmi'
 	force = 2
 	throwforce = 5
@@ -659,13 +659,13 @@
 		"#fef6ea"
 	)
 
-/obj/item/weapon/light/Initialize()
+/obj/item/light/Initialize()
 	. = ..()
 	if(random_tone)
 		b_color = pick(random_tone_options)
 		update_icon()
 
-/obj/item/weapon/light/tube
+/obj/item/light/tube
 	name = "light tube"
 	desc = "A replacement light tube."
 	icon_state = "ltube"
@@ -686,12 +686,12 @@
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
 
-/obj/item/weapon/light/tube/large
+/obj/item/light/tube/large
 	w_class = ITEM_SIZE_SMALL
 	name = "large light tube"
 	b_outer_range = 8
 
-/obj/item/weapon/light/tube/he
+/obj/item/light/tube/he
 	name = "high efficiency light tube"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhetube"
@@ -702,7 +702,7 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
-/obj/item/weapon/light/tube/quartz
+/obj/item/light/tube/quartz
 	name = "quartz light tube"
 	desc = "Light is almost the same as sunlight."
 	base_state = "lqtube"
@@ -712,7 +712,7 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
-/obj/item/weapon/light/bulb
+/obj/item/light/bulb
 	name = "light bulb"
 	desc = "A replacement light bulb."
 	icon_state = "lbulb"
@@ -734,7 +734,7 @@
 		)
 	random_tone = TRUE
 
-/obj/item/weapon/light/bulb/he
+/obj/item/light/bulb/he
 	name = "high efficiency light bulb"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhebulb"
@@ -745,7 +745,7 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
-/obj/item/weapon/light/bulb/quartz
+/obj/item/light/bulb/quartz
 	name = "quartz light bulb"
 	desc = "Light is almost the same as sunlight."
 	base_state = "lqbulb"
@@ -755,7 +755,7 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
-/obj/item/weapon/light/bulb/old
+/obj/item/light/bulb/old
 	name = "old light bulb"
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
@@ -766,23 +766,23 @@
 	random_tone = FALSE
 	tone_overlay = FALSE
 
-/obj/item/weapon/light/bulb/red
+/obj/item/light/bulb/red
 	b_outer_range = 6
 	color = "#da0205"
 	b_color = "#da0205"
 	random_tone = FALSE
 	tone_overlay = TRUE
 
-/obj/item/weapon/light/bulb/red/readylight
+/obj/item/light/bulb/red/readylight
 	lighting_modes = list(
 		LIGHTMODE_READY = list(l_max_bright = 0.4, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#00ff00")
 		)
 
-/obj/item/weapon/light/throw_impact(atom/hit_atom)
+/obj/item/light/throw_impact(atom/hit_atom)
 	..()
 	shatter()
 
-/obj/item/weapon/light/bulb/fire
+/obj/item/light/bulb/fire
 	name = "fire bulb"
 	desc = "A replacement fire bulb."
 	icon_state = "fbulb"
@@ -793,7 +793,7 @@
 	tone_overlay = FALSE
 
 // update the icon state and description of the light
-/obj/item/weapon/light/update_icon()
+/obj/item/light/update_icon()
 	overlays.Cut()
 	switch(status)
 		if(LIGHT_OK)
@@ -812,10 +812,10 @@
 
 // attack bulb/tube with object
 // if a syringe, can inject plasma to make it explode
-/obj/item/weapon/light/attackby(obj/item/I, mob/user)
+/obj/item/light/attackby(obj/item/I, mob/user)
 	..()
-	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
-		var/obj/item/weapon/reagent_containers/syringe/S = I
+	if(istype(I, /obj/item/reagent_containers/syringe))
+		var/obj/item/reagent_containers/syringe/S = I
 
 		to_chat(user, "You inject the solution into the [src].")
 
@@ -835,7 +835,7 @@
 // shatter light, unless it was an attempt to put it in a light socket
 // now only shatter if the intent was harm
 
-/obj/item/weapon/light/afterattack(atom/target, mob/user, proximity)
+/obj/item/light/afterattack(atom/target, mob/user, proximity)
 	if(!proximity) return
 	if(istype(target, /obj/machinery/light))
 		return
@@ -844,16 +844,16 @@
 
 	shatter()
 
-/obj/item/weapon/light/proc/shatter()
+/obj/item/light/proc/shatter()
 	if(status == LIGHT_OK || status == LIGHT_BURNED)
 		src.visible_message("<span class='warning'>[name] shatters.</span>","<span class='warning'>You hear a small glass object shatter.</span>")
 		status = LIGHT_BROKEN
 		force = 5
 		sharp = 1
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		update_icon()
 
-/obj/item/weapon/light/proc/switch_on()
+/obj/item/light/proc/switch_on()
 	switchcount++
 	if(rigged)
 		log_admin("LOG: Rigged light explosion, last touched by [fingerprintslast]")

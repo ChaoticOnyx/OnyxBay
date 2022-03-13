@@ -1,10 +1,10 @@
 /mob/living/carbon/human/proc/monkeyize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		if (W==w_uniform) // will be torn
+	for(var/obj/item/I in src)
+		if(I == w_uniform) // will be torn
 			continue
-		drop_from_inventory(W)
+		drop_from_inventory(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	stunned = 1
@@ -29,8 +29,8 @@
 		gib()
 		return
 
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	set_species(species.primitive_form)
 	dna.SetSEState(GLOB.MONKEYBLOCK,1)
 	dna.SetSEValueRange(GLOB.MONKEYBLOCK,0xDAC, 0xFFF)
@@ -55,8 +55,8 @@
 /mob/living/carbon/AIize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
@@ -77,21 +77,21 @@
 
 	if(move)
 		var/obj/loc_landmark
-		for(var/obj/effect/landmark/start/sloc in landmarks_list)
+		for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 			if (sloc.name != "AI")
 				continue
 			if ((locate(/mob/living) in sloc.loc) || (locate(/obj/structure/AIcore) in sloc.loc))
 				continue
 			loc_landmark = sloc
 		if (!loc_landmark)
-			for(var/obj/effect/landmark/tripai in landmarks_list)
-				if (tripai.name == "tripai")
+			for(var/obj/effect/landmark/tripai in GLOB.landmarks_list)
+				if (tripai.name == "Triple AI")
 					if((locate(/mob/living) in tripai.loc) || (locate(/obj/structure/AIcore) in tripai.loc))
 						continue
 					loc_landmark = tripai
 		if (!loc_landmark)
 			to_chat(O, "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone.")
-			for(var/obj/effect/landmark/start/sloc in landmarks_list)
+			for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 				if (sloc.name == "AI")
 					loc_landmark = sloc
 		O.forceMove(loc_landmark.loc)
@@ -109,8 +109,8 @@
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	QDEL_NULL_LIST(worn_underwear)
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -154,8 +154,8 @@
 /mob/living/carbon/human/proc/metroidize(adult as num, reproduce as num)
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -187,8 +187,8 @@
 /mob/living/carbon/human/proc/corgize()
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
@@ -215,8 +215,8 @@
 
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 
 	regenerate_icons()
 	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)

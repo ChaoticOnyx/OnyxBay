@@ -8,35 +8,41 @@ var/global/list/all_objectives = list()
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
 
-	New(var/text)
-		all_objectives |= src
-		if(text)
-			explanation_text = text
-		..()
+/datum/objective/New(text)
+	all_objectives |= src
+	if(text)
+		explanation_text = text
+	..()
 
-	Destroy()
-		all_objectives -= src
-		..()
+/datum/objective/Destroy()
+	all_objectives -= src
+	..()
 
-	proc/check_completion()
-		return completed
+/datum/objective/proc/check_completion()
+	return completed
 
-	proc/find_target()
-		var/list/possible_targets = list()
-		for(var/datum/mind/possible_target in SSticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+/datum/objective/proc/find_target()
+	var/list/possible_targets = list()
+	for(var/datum/mind/possible_target in SSticker.minds)
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+			var/mob/living/carbon/human/H = possible_target.current
+			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				possible_targets += possible_target
-		if(possible_targets.len > 0)
-			target = pick(possible_targets)
+	if(possible_targets.len > 0)
+		target = pick(possible_targets)
 
 
-	proc/find_target_by_role(role, role_type=0)//Option sets either to check assigned role or special role. Default to assigned.
-		for(var/datum/mind/possible_target in SSticker.minds)
-			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+/datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
+	for(var/datum/mind/possible_target in SSticker.minds)
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+			var/mob/living/carbon/human/H = possible_target.current
+			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
-				break
+			break
 
-	proc/update()
+/datum/objective/proc/update()
+	return
+
 
 datum/objective/assassinate
 	find_target()
@@ -137,7 +143,7 @@ datum/objective/anti_revolution/demote
 
 	check_completion()
 		if(target && target.current && istype(target,/mob/living/carbon/human))
-			var/obj/item/weapon/card/id/I = target.current:wear_id
+			var/obj/item/card/id/I = target.current:wear_id
 			if(istype(I, /obj/item/device/pda))
 				var/obj/item/device/pda/P = I
 				I = P.id
@@ -299,17 +305,40 @@ datum/objective/escape
 		var/area/check_area = location.loc
 		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas)
 
+/datum/objective/escape/changeling/find_target()
+	. = ..()
 
+	if(target?.current)
+		explanation_text = "Escape on the shuttle or an escape pod alive and free with the identity of [target.current.real_name], the [target.assigned_role]."
+		target = target.current.real_name
 
-datum/objective/survive
+/datum/objective/escape/changeling/check_completion()
+	if(!..())
+		return FALSE
+	if(!target)
+		return TRUE
+
+	var/obj/item/card/id/id_card = owner.current.GetIdCard()
+	if(id_card?.registered_name == target && owner.current.real_name == target && owner.changeling?.last_transformation_at + 3 MINUTES <= world.time)
+		return TRUE
+	return FALSE
+
+/datum/objective/survive
 	explanation_text = "Stay alive until the end."
 
-	check_completion()
-		if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
-			return 0		//Brains no longer win survive objectives. --NEO
-		if(issilicon(owner.current) && owner.current != owner.original)
-			return 0
-		return 1
+/datum/objective/survive/check_completion()
+	if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
+		return FALSE //Brains no longer win survive objectives. --NEO
+	if(issilicon(owner.current) && owner.current != owner.original)
+		return FALSE
+	return TRUE
+
+/datum/objective/survive/changeling/check_completion()
+	if(owner.changeling?.true_dead)
+		return FALSE
+	if(issilicon(owner.current))
+		return FALSE
+	return TRUE
 
 // Similar to the anti-rev objective, but for traitors
 datum/objective/brig
@@ -405,9 +434,6 @@ datum/objective/harm
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()
-	if(SSticker.mode.blob_domination)
-		GLOB.ert.is_station_secure = FALSE
-
 	if(GLOB.revs.global_objectives.len > 0)
 		var/completed = 0
 		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
@@ -436,34 +462,34 @@ datum/objective/harm
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
+		"the captain's antique laser gun" = /obj/item/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
-		"an RCD" = /obj/item/weapon/rcd,
-		"a jetpack" = /obj/item/weapon/tank/jetpack,
+		"an RCD" = /obj/item/rcd,
+		"a jetpack" = /obj/item/tank/jetpack,
 		"a captain's jumpsuit" = /obj/item/clothing/under/rank/captain,
-		"a functional AI" = /obj/item/weapon/aicard,
+		"a functional AI" = /obj/item/aicard,
 		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
+		"28 moles of plasma (full tank)" = /obj/item/tank,
 		"a sample of metroid extract" = /obj/item/metroid_extract,
-		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
+		"a piece of corgi meat" = /obj/item/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
 		"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,
 		"a head of security's jumpsuit" = /obj/item/clothing/under/rank/head_of_security,
 		"a head of personnel's jumpsuit" = /obj/item/clothing/under/rank/head_of_personnel,
-		"the hypospray" = /obj/item/weapon/reagent_containers/hypospray,
-		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
+		"the hypospray" = /obj/item/reagent_containers/hypospray,
+		"the captain's pinpointer" = /obj/item/pinpointer,
 		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
 	)
 
 	var/global/possible_items_special[] = list(
-		/*"nuclear authentication disk" = /obj/item/weapon/disk/nuclear,*///Broken with the change to nuke disk making it respawn on z level change.
-		"nuclear gun" = /obj/item/weapon/gun/energy/gun/nuclear,
-		"diamond drill" = /obj/item/weapon/pickaxe/diamonddrill,
-		"bag of holding" = /obj/item/weapon/storage/backpack/holding,
-		"hyper-capacity cell" = /obj/item/weapon/cell/hyper,
+		/*"nuclear authentication disk" = /obj/item/disk/nuclear,*///Broken with the change to nuke disk making it respawn on z level change.
+		"nuclear gun" = /obj/item/gun/energy/gun/nuclear,
+		"diamond drill" = /obj/item/pickaxe/diamonddrill,
+		"bag of holding" = /obj/item/storage/backpack/holding,
+		"hyper-capacity cell" = /obj/item/cell/hyper,
 		"10 diamonds" = /obj/item/stack/material/diamond,
 		"50 gold bars" = /obj/item/stack/material/gold,
 		"25 refined uranium bars" = /obj/item/stack/material/uranium,
@@ -553,7 +579,7 @@ datum/objective/download
 			return 0
 
 		var/current_amount
-		var/obj/item/weapon/rig/S
+		var/obj/item/rig/S
 		if(istype(owner.current,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = owner.current
 			S = H.back
@@ -602,7 +628,7 @@ datum/objective/capture
 
 
 /datum/objective/absorb
-	proc/gen_amount_goal(var/lowbound = 4, var/highbound = 6)
+	proc/gen_amount_goal(lowbound = 4, highbound = 6)
 		target_amount = rand (lowbound,highbound)
 		var/n_p = 1 //autowin
 		if (GAME_STATE == RUNLEVEL_SETUP)
@@ -689,19 +715,19 @@ datum/objective/heist/loot
 				target_amount = 1
 				loot = "a nuclear bomb"
 			if(5)
-				target = /obj/item/weapon/gun
+				target = /obj/item/gun
 				target_amount = 6
 				loot = "six guns"
 			if(6)
-				target = /obj/item/weapon/gun/energy
+				target = /obj/item/gun/energy
 				target_amount = 4
 				loot = "four energy guns"
 			if(7)
-				target = /obj/item/weapon/gun/energy/laser
+				target = /obj/item/gun/energy/laser
 				target_amount = 2
 				loot = "two laser guns"
 			if(8)
-				target = /obj/item/weapon/gun/energy/ionrifle
+				target = /obj/item/gun/energy/ionrifle
 				target_amount = 1
 				loot = "an ion gun"
 

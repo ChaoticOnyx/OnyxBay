@@ -19,6 +19,7 @@
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
 
+	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 	var/turns_per_move = 1
 	var/turns_since_move = 0
 	universal_speak = 0		//No, just no.
@@ -65,6 +66,7 @@
 
 	var/damtype = BRUTE
 	var/defense = "melee"
+	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -72,6 +74,32 @@
 
 	// contained in a cage
 	var/in_stasis = 0
+
+	var/datum/mob_ai/mob_ai
+	var/is_pet = FALSE
+
+/mob/living/simple_animal/Initialize()
+	. = ..()
+	if(is_pet)
+		mob_ai = new /datum/mob_ai/pet()
+	else
+		mob_ai = new()
+	mob_ai.holder = src
+
+	if(bodyparts)
+		bodyparts = decls_repository.get_decl(bodyparts)
+
+/mob/living/simple_animal/Destroy()
+	QDEL_NULL(mob_ai)
+	. = ..()
+
+/mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+	..()
+	mob_ai.listen(speaker, message)
+
+/mob/living/simple_animal/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
+	..()
+	mob_ai.listen(speaker, message)
 
 /mob/living/simple_animal/Life()
 	if(stat == DEAD)
@@ -86,39 +114,13 @@
 	handle_paralysed()
 	handle_supernatural()
 
-	if(buckled && can_escape)
-		if(istype(buckled, /obj/effect/energy_net))
-			var/obj/effect/energy_net/Net = buckled
-			Net.escape_net(src)
-		else if(prob(50))
-			escape(src, buckled)
-		else if(prob(50))
-			visible_message("<span class='warning'>\The [src] struggles against \the [buckled]!</span>")
+	mob_ai.attempt_escape()
 
-	//Movement
-	if(!client && !stop_automated_movement && wander && !anchored)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Some animals don't move when pulled
-					SelfMove(pick(GLOB.cardinal))
+	mob_ai.process_moving()
 
-	//Speaking
-	if(!client && speak_chance)
-		if(rand(0,200) < speak_chance)
-			var/action = pick(
-				speak.len;      "speak",
-				emote_hear.len; "emote_hear",
-				emote_see.len;  "emote_see"
-				)
+	mob_ai.process_speaking()
 
-			switch(action)
-				if("speak")
-					say(pick(speak))
-				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
-				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+	mob_ai.process_special_actions()
 
 	if(in_stasis)
 		return 1
@@ -211,7 +213,7 @@
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
-			adjustBruteLoss(harm_intent_damage)
+			adjustBruteLoss(harm_intent_damage * M.species.generic_attack_mod)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
 
@@ -237,7 +239,7 @@
 			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
 		return
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/material/knife) || istype(O, /obj/item/weapon/material/knife/butch))
+		if(istype(O, /obj/item/material/knife) || istype(O, /obj/item/material/knife/butch))
 			harvest(user)
 	else
 		if(!O.force)
@@ -258,7 +260,7 @@
 		damage = 0
 	if(O.damtype == STUN)
 		damage = (O.force / 8)
-	if(supernatural && istype(O,/obj/item/weapon/nullrod))
+	if(supernatural && istype(O,/obj/item/nullrod))
 		damage *= 2
 		purge = 3
 	adjustBruteLoss(damage)

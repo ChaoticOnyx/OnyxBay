@@ -1,4 +1,4 @@
-/obj/item/weapon/forensics/swab
+/obj/item/forensics/swab
 	name = "swab kit"
 	desc = "A sterilized cotton swab and vial used to take forensic samples."
 	icon_state = "swab"
@@ -8,10 +8,10 @@
 	var/used
 	var/inuse = 0
 
-/obj/item/weapon/forensics/swab/proc/is_used()
+/obj/item/forensics/swab/proc/is_used()
 	return used
 
-/obj/item/weapon/forensics/swab/attack(mob/living/M, mob/user)
+/obj/item/forensics/swab/attack(mob/living/M, mob/user)
 
 	if(!ishuman(M))
 		return ..()
@@ -80,7 +80,7 @@
 				gsr = target_gsr
 				set_used(sample_type, H)
 			else
-				var/obj/item/weapon/forensics/swab/S = new(get_turf(user))
+				var/obj/item/forensics/swab/S = new(get_turf(user))
 				S.dna = target_dna
 				S.gsr = target_gsr
 				S.set_used(sample_type, H)
@@ -89,7 +89,7 @@
 		inuse = 0
 		return 1
 
-/obj/item/weapon/forensics/swab/afterattack(atom/A, mob/user, proximity)
+/obj/item/forensics/swab/afterattack(atom/A, mob/user, proximity)
 
 	if(!proximity || istype(A, /obj/machinery/dnaforensics))
 		return
@@ -151,19 +151,19 @@
 				gsr = target_gsr
 				set_used(sample_type, A)
 			else
-				var/obj/item/weapon/forensics/swab/S = new(get_turf(user))
+				var/obj/item/forensics/swab/S = new(get_turf(user))
 				S.dna = target_dna
 				S.gsr = target_gsr
 				S.set_used(sample_type, A)
 	inuse = 0
 
-/obj/item/weapon/forensics/swab/proc/set_used(sample_str, atom/source)
+/obj/item/forensics/swab/proc/set_used(sample_str, atom/source)
 	SetName("[initial(name)] ([sample_str] - [source])")
 	desc = "[initial(desc)] The label on the vial reads 'Sample of [sample_str] from [source].'."
 	icon_state = "swab_used"
 	used = 1
 
-/obj/item/weapon/forensics/swab/cyborg
+/obj/item/forensics/swab/cyborg
 	name = "swab kit"
 	desc = "A sterilized cotton swab and vial used to take forensic samples."
 	dispenser = 1

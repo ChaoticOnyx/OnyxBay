@@ -1,6 +1,6 @@
 /obj/structure/window
-	name = "window"
-	desc = "A window."
+	name = "panel"
+	desc = "A glassy panel."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
@@ -18,14 +18,14 @@
 	var/reinf = 0
 	var/polarized = 0
 	var/basestate
-	var/shardtype = /obj/item/weapon/material/shard
+	var/shardtype = /obj/item/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
 	var/real_explosion_block // ignore this, just use explosion_block
 
-	hitby_sound = "glass_hit"
+	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
-	pull_sound = "pull_stone"
+	pull_sound = SFX_PULL_STONE
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -65,7 +65,7 @@
 		shatter()
 	else
 		if(sound_effect)
-			playsound(loc, get_sfx("glass_hit"), 100, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 		if(health < maxhealth / 4 && initialhealth >= maxhealth / 4)
 			visible_message("[src] looks like it's about to shatter!" )
 		else if(health < maxhealth / 2 && initialhealth >= maxhealth / 2)
@@ -93,7 +93,7 @@
 	overlays += img
 
 /obj/structure/window/proc/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] shatters!")
 
@@ -102,11 +102,8 @@
 	qdel(src)
 	return
 
-/obj/structure/window/blob_act(destroy)
-	if (destroy)
-		shatter()
-	else
-		take_damage(25)
+/obj/structure/window/blob_act(damage)
+	take_damage(damage)
 
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
@@ -199,7 +196,7 @@
 
 /obj/structure/window/attack_tk(mob/user as mob)
 	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
-	playsound(loc, get_sfx("glass_knock"), 50, 1)
+	playsound(loc, GET_SFX(SFX_GLASS_KNOCK), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -217,15 +214,15 @@
 				attack_generic(H,25)
 				return
 
-		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 80, 1)
 		user.do_attack_animation(src)
 		user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
-		playsound(src.loc, get_sfx("glass_knock"), 80, 1)
-		user.visible_message("[user.name] knocks on the [src.name].",
-							"You knock on the [src.name].",
+		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
+		user.visible_message("[user.name] knocks on \the [src.name].",
+							"You knock on \the [src.name].",
 							"You hear a knocking sound.")
 	return
 
@@ -280,7 +277,7 @@
 	else if(isCoil(W) && reinf && !polarized)
 		var/obj/item/stack/cable_coil/C = W
 		if (C.use(1))
-			playsound(src.loc, get_sfx("spark"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_SPARK), 75, 1)
 			var/obj/structure/window/reinforced/polarized/P = new(loc)
 			P.set_dir(dir)
 			P.health = health
@@ -298,7 +295,7 @@
 				update_verbs()
 		else
 			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	return
 
 /obj/structure/window/proc/hit(damage, sound_effect = 1)
@@ -313,6 +310,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -332,6 +332,9 @@
 	set src in oview(1)
 
 	if(usr.incapacitated())
+		return 0
+
+	if(is_full_window()) // No point in rotating a window if it is full
 		return 0
 
 	if(anchored)
@@ -442,6 +445,7 @@
 
 
 /obj/structure/window/basic
+	name = "glass panel"
 	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
 	basestate = "window"
@@ -451,23 +455,23 @@
 	maxhealth = 12.0
 
 /obj/structure/window/plasmabasic
-	name = "plass window"
-	desc = "A plasmasilicate alloy window. It seems to be quite strong."
+	name = "plass panel"
+	desc = "A plasmasilicate alloy panel. It seems to be quite strong."
 	basestate = "plasmawindow"
 	explosion_block = 1
 	icon_state = "plasmawindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
 	maximal_heat = T0C + 2000
 	damage_per_fire_tick = 1.0
 	maxhealth = 40.0
 
 /obj/structure/window/plasmareinforced
-	name = "reinforced plass window"
-	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
+	name = "reinforced plass panel"
+	desc = "A plasmasilicate alloy panel, with rods supporting it. It seems to be very strong."
 	basestate = "plasmarwindow"
 	icon_state = "plasmarwindow"
-	shardtype = /obj/item/weapon/material/shard/plasma
+	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	explosion_block = 2
@@ -480,7 +484,7 @@
 	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
-	name = "reinforced window"
+	name = "reinforced glass panel"
 	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
 	basestate = "rwindow"

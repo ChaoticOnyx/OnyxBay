@@ -582,7 +582,11 @@ div.notice {
     color: #ff9225;
 }
 
-table.fixed { 
+table.nword, table.nword th, table.nword td{
+    border: 1px solid black;
+}
+
+table.fixed {
 	table-layout:fixed;
 }
 

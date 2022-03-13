@@ -19,13 +19,13 @@
 /obj/machinery/pager/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/pager/attackby(obj/item/weapon/W, mob/user as mob)
+/obj/machinery/pager/attackby(obj/item/W, mob/user as mob)
 	return attack_hand(user)
 
 /obj/machinery/pager/attack_hand(mob/living/user)
 	if(..()) return 1
 	if(istype(user, /mob/living/carbon))
-		playsound(src, "button", 60)
+		playsound(src, SFX_USE_BUTTON, 60)
 	flick("doorbellpressed",src)
 	activate(user)
 

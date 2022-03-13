@@ -7,11 +7,6 @@
 	path = /obj/item/clothing/under/color
 	flags = GEAR_HAS_COLOR_SELECTION
 
-// /datum/gear/uniform/shortjumpskirt
-// 	display_name = "short jumpskirt, colour select"
-// 	path = /obj/item/clothing/under/shortjumpskirt
-// 	flags = GEAR_HAS_COLOR_SELECTION
-
 /datum/gear/uniform/roboticist_skirt
 	display_name = "skirt, roboticist"
 	path = /obj/item/clothing/under/rank/roboticist/skirt
@@ -128,12 +123,9 @@
 /datum/gear/uniform/corporate/New()
 	..()
 	var/corps = list()
-	// corps += /obj/item/clothing/under/mbill
 	// corps += /obj/item/clothing/under/saare
 	// corps += /obj/item/clothing/under/aether
 	// corps += /obj/item/clothing/under/hephaestus
-	// corps += /obj/item/clothing/under/pcrc
-	// corps += /obj/item/clothing/under/wardt
 	// corps += /obj/item/clothing/under/grayson
 	// corps += /obj/item/clothing/under/focal
 	// corps += /obj/item/clothing/under/rank/ntwork

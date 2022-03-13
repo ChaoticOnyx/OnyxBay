@@ -1,13 +1,13 @@
 /obj/machinery/mech_sensor
 	icon = 'icons/obj/airlock_machines.dmi'
-	icon_state = "airlock_sensor_off"
+	icon_state = "mech_sensor_standby"
 	name = "mechatronic sensor"
 	desc = "Regulates mech movement."
 	anchored = 1
 	density = 1
 	throwpass = 1
 	layer = ABOVE_WINDOW_LAYER
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	var/on = 0
 	var/id_tag = null
 
@@ -58,9 +58,9 @@
 
 /obj/machinery/mech_sensor/update_icon(safety = 0)
 	if (enabled())
-		icon_state = "airlock_sensor_standby"
+		icon_state = "mech_sensor_standby"
 	else
-		icon_state = "airlock_sensor_off"
+		icon_state = "mech_sensor_off"
 
 /obj/machinery/mech_sensor/Initialize()
 	. = ..()

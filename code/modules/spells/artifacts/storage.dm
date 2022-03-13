@@ -21,11 +21,11 @@
 
 /obj/structure/closet/wizard/armor/New()
 	..()
-	new /obj/item/clothing/shoes/magboots/magic(src)
+	new /obj/item/clothing/shoes/magboots/wizard(src)
 	new /obj/item/clothing/gloves/wizard(src)//To complete the outfit
 	new /obj/item/clothing/suit/space/void/wizard(src)
 	new /obj/item/clothing/head/helmet/space/void/wizard(src)
-	new /obj/item/weapon/tank/oxygen(src)
+	new /obj/item/tank/oxygen(src)
 
 /obj/structure/closet/wizard/scrying
 	name = "Scrying Orb"
@@ -33,8 +33,8 @@
 
 /obj/structure/closet/wizard/scrying/New()
 	..()
-	new /obj/item/weapon/scrying(src)
-	new /obj/item/weapon/contract/wizard/xray(src)
+	new /obj/item/scrying(src)
+	new /obj/item/contract/wizard/xray(src)
 
 /obj/structure/closet/wizard/souls
 	name = "Soul Shard Belt"
@@ -42,5 +42,5 @@
 
 /obj/structure/closet/wizard/souls/New()
 	..()
-	new /obj/item/weapon/contract/boon/wizard/artificer(src)
-	new /obj/item/weapon/storage/belt/soulstone/full(src)
+	new /obj/item/contract/boon/wizard/artificer(src)
+	new /obj/item/storage/belt/soulstone/full(src)

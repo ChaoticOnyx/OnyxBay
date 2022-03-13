@@ -12,7 +12,7 @@ REAGENT SCANNER
 	name = "health analyzer"
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject."
 	icon_state = "health"
-	item_state = "analyzer"
+	item_state = "healthanalyzer"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 3
@@ -46,7 +46,7 @@ REAGENT SCANNER
 	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
-/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
+/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target, master_ui = null, datum/topic_state/state = GLOB.default_state)
 
 	var/data[0]
 
@@ -72,10 +72,16 @@ REAGENT SCANNER
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370)
+		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
 		ui.open()
+
+/obj/item/device/healthanalyzer/CanUseTopic(mob/user, datum/topic_state/state)
+	. = ..()
+	var/atom/src_object = nano_host()
+	if(src_object in get_rig()?.selected_module)
+		return STATUS_INTERACTIVE
 
 /proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	. = list()
@@ -458,7 +464,7 @@ REAGENT SCANNER
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
+		var/obj/item/paper/P = new /obj/item/paper/(get_turf(src))
 		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 

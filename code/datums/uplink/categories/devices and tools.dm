@@ -6,8 +6,8 @@
 
 /datum/uplink_item/item/tools/std/buy(obj/item/device/uplink/U)
 	. = ..()
-	if(. && istype(U.loc, /obj/item/weapon/implant/uplink))
-		var/obj/item/weapon/storage/briefcase/std/STD = .
+	if(. && istype(U.loc, /obj/item/implant/uplink))
+		var/obj/item/storage/briefcase/std/STD = .
 		if(istype(STD))
 			STD.uplink = U
 			STD.authentication_complete = TRUE
@@ -17,7 +17,7 @@
 	name = "Syndicate Teleportation Device (STD)"
 	desc = "It utilizes a local wormhole generator to teleport the stored items to our base. Upon successful teleportation, the device self-destructs for safety reasons. To use it, briefly put your uplink device inside for authorization, place the items you need to transport inside, and follow the instructions indicated on the STD."
 	item_cost = 1
-	path = /obj/item/weapon/storage/briefcase/std
+	path = /obj/item/storage/briefcase/std
 
 /datum/uplink_item/item/tools/encryptionkey_radio
 	name = "Encrypted Radio Channel Key"
@@ -28,19 +28,19 @@
 	name = "Fully Loaded Toolbox"
 	desc = "An extra robust toolbox filled with all the tools you need."
 	item_cost = 1
-	path = /obj/item/weapon/storage/toolbox/syndicate
+	path = /obj/item/storage/toolbox/syndicate
 
 /datum/uplink_item/item/tools/ductape
 	name = "Syn-Duct Tape"
 	desc = "A roll of an extra sticky duct tape. Quickly changes annoying \"HELP\" into sexy \"mmm\"."
 	item_cost = 1
-	path = /obj/item/weapon/tape_roll/syndie
+	path = /obj/item/tape_roll/syndie
 
 /datum/uplink_item/item/tools/clerical
 	name = "Morphic Clerical Kit"
 	desc = "Contains chameleon pen and stamp, as well as some other clerical items."
 	item_cost = 1
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/clerical
+	path = /obj/item/storage/backpack/satchel/syndie_kit/clerical
 
 /datum/uplink_item/item/tools/barrier
 	name = "Energy Barrier"
@@ -52,19 +52,19 @@
 	name = "Operations Funding"
 	desc = "A briefcase with 5,000 untraceable credits for funding your sneaky activities."
 	item_cost = 2
-	path = /obj/item/weapon/storage/secure/briefcase/money
+	path = /obj/item/storage/secure/briefcase/money
 
 /datum/uplink_item/item/tools/cleaning_kit
 	name = "Cleaning Kit"
 	desc = "A satchel full of stuff you'll need to scrub the crimescene clear."
 	item_cost = 2
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+	path = /obj/item/storage/backpack/satchel/syndie_kit/cleaning_kit
 
 /datum/uplink_item/item/tools/plastique
 	name = "C-4 Explosive"
 	desc = "This little thing can detonate and destroy anything it is set on, after any chosen amount of seconds."
 	item_cost = 2
-	path = /obj/item/weapon/plastique
+	path = /obj/item/plastique
 
 /datum/uplink_item/item/tools/suit_sensor_mobile
 	name = "Suit Sensor Jamming Device"
@@ -84,7 +84,7 @@
 			Useful if you need to hide in a vacuum. They can also hold a wide selection of items in suit storage. \
 			Comes packaged with internals. Be careful, Nanotrasen crewmembers are trained to report red space suit sightings."
 	item_cost = 3
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/space
+	path = /obj/item/storage/backpack/satchel/syndie_kit/space
 
 /datum/uplink_item/item/tools/encryptionkey_binary
 	name = "Binary Translator Key"
@@ -94,7 +94,7 @@
 /datum/uplink_item/item/tools/shield_diffuser
 	name = "Handheld Shield Diffuser"
 	item_cost = 3
-	path = /obj/item/weapon/shield_diffuser
+	path = /obj/item/shield_diffuser
 
 /datum/uplink_item/item/tools/interceptor
 	name = "Radio Interceptor"
@@ -106,12 +106,12 @@
 	name = "Explosive Handcuffs"
 	desc = "A pair of handcuffs that will explode a few seconds after being applied or removed. It's up to you to choose."
 	item_cost = 3
-	path = /obj/item/weapon/handcuffs/syndicate
+	path = /obj/item/handcuffs/syndicate
 
 /datum/uplink_item/item/tools/c4explosive
 	name = "Small Package Bomb"
 	item_cost = 3
-	path = /obj/item/weapon/syndie/c4explosive
+	path = /obj/item/syndie/c4explosive
 
 /datum/uplink_item/item/tools/hacking_tool
 	name = "Door Hacking Tool"
@@ -128,7 +128,7 @@
 			it also leaves a trail for people to follow (mostly doors). \
 			Emagging something is also fairly noticeable, so you should make sure nobody's watching."
 	item_cost = 4
-	path = /obj/item/weapon/card/emag
+	path = /obj/item/card/emag
 
 /datum/uplink_item/item/tools/powersink
 	name = "Powersink"
@@ -147,7 +147,7 @@
 /datum/uplink_item/item/tools/c4explosive/heavy
 	name = "Large Package Bomb"
 	item_cost = 6
-	path = /obj/item/weapon/syndie/c4explosive/heavy
+	path = /obj/item/syndie/c4explosive/heavy
 
 /datum/uplink_item/item/tools/supply_beacon
 	name = "Hacked Supply Beacon"
@@ -162,7 +162,7 @@
 /datum/uplink_item/item/tools/heavy_armor
 	name = "Heavy Armor Vest and Helmet"
 	item_cost = 6
-	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/armor
+	path = /obj/item/storage/backpack/satchel/syndie_kit/armor
 
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
@@ -173,10 +173,10 @@
 /datum/uplink_item/item/tools/ai_module
 	name = "Hacked AI Upload Module"
 	item_cost = 7
-	path = /obj/item/weapon/aiModule/syndicate
+	path = /obj/item/aiModule/syndicate
 
 /datum/uplink_item/item/tools/teleporter
 	name = "Teleporter Circuit Board"
 	item_cost = 8
-	path = /obj/item/weapon/circuitboard/teleporter
+	path = /obj/item/circuitboard/teleporter
 	antag_roles = list(MODE_NUKE)

@@ -119,6 +119,9 @@ for reference:
 				take_damage(W.force)
 				return
 			if("brute")
+				user.do_attack_animation(src)
+				visible_message(SPAN_DANGER("\The [user] attacks \the [src] with \the [W]!"))
+				playsound(src, 'sound/effects/metalhit2.ogg', rand(50, 75), 1, -1)
 				take_damage(W.force*0.75)
 				return
 		..()
@@ -177,8 +180,8 @@ for reference:
 
 		src.icon_state = "barrier[src.locked]"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id/) || istype(W, /obj/item/weapon/card/robot_sec/) )
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/card/id/) || istype(W, /obj/item/card/robot_sec/) )
 			if (src.allowed(user))
 				if	(src.emagged < 2.0)
 					src.locked = !src.locked

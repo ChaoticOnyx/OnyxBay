@@ -44,3 +44,11 @@
 		MATERIAL_SAND = 2
 		)
 	product = /obj/item/stack/material/glass/plass
+
+/datum/alloy/black_glass
+	metaltag = MATERIAL_BLACK_GLASS
+	requires = list(
+		MATERIAL_IRON = 1,
+		MATERIAL_SAND = 2
+		)
+	product = /obj/item/stack/material/glass/black

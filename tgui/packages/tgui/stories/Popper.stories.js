@@ -1,47 +1,47 @@
-import { Component, forwardRef } from "inferno";
-import { Box, Popper } from "../components";
+import { Box, Popper } from '../components'
 
 export const meta = {
-  title: "Popper",
-  render: () => <Story />,
-};
+  title: 'Popper',
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = () => {
   return (
     <>
       <Popper popperContent={
         <Box style={{
-          background: "white",
-          border: "2px solid blue",
+          background: 'white',
+          border: '2px solid blue'
         }}>
           Loogatme!
         </Box>
       } options={{
-        placement: "bottom",
+        placement: 'bottom'
       }}>
         <Box style={{
-          border: "5px solid white",
-          height: "300px",
-          width: "200px",
+          border: '5px solid white',
+          height: '300px',
+          width: '200px'
         }} />
       </Popper>
 
       <Popper popperContent={
         <Box style={{
-          background: "white",
-          border: "2px solid blue",
+          background: 'white',
+          border: '2px solid blue'
         }}>
           I am on the right!
         </Box>
       } options={{
-        placement: "right",
+        placement: 'right'
       }}>
         <Box style={{
-          border: "5px solid white",
-          height: "500px",
-          width: "100px",
+          border: '5px solid white',
+          height: '500px',
+          width: '100px'
         }} />
       </Popper>
     </>
-  );
-};
+  )
+}

@@ -1,24 +1,25 @@
-import { useBackend } from '../backend';
-import { Box, Button, Flex, Stack } from '../components';
-import { Window } from '../layouts';
+import { useBackend } from '../backend'
+import { Button, Flex } from '../components'
+import { Window } from '../layouts'
 
-export interface InputData {
-  title: string;
-  is_gameover: number;
-  enemy: Enemy;
-  player: Player;
-  message: string;
-}
-
-export interface Enemy {
+interface Enemy {
   name: string;
   hp: number;
   mp: number;
 }
 
-export interface Player {
+interface Player {
   hp: number;
   mp: number;
+}
+
+interface InputData {
+  title: string;
+  // eslint-disable-next-line camelcase
+  is_gameover: number;
+  enemy: Enemy;
+  player: Player;
+  message: string;
 }
 
 const enemy = (enemy: Enemy) => {
@@ -32,11 +33,11 @@ const enemy = (enemy: Enemy) => {
         </Flex>
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const player = (player: Player, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>(context)
 
   return (
     <Flex className='Player' direction='column'>
@@ -60,14 +61,13 @@ const player = (player: Player, context: any) => {
         </Flex>
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const game = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { act, data } = useBackend<InputData>(context)
 
-  if (data.is_gameover)
-  {
+  if (data.is_gameover) {
     return (
       <Flex className='GameOver' height='100%' direction='column' justify='space-between'>
         <Flex.Item>
@@ -80,7 +80,7 @@ const game = (props: any, context: any) => {
           <Button onClick={() => act('newgame')} content='New Game' />
         </Flex.Item>
       </Flex>
-    );
+    )
   }
 
   return (
@@ -93,11 +93,11 @@ const game = (props: any, context: any) => {
         {player(data.player, context)}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 export const Arcade = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
 
   return (
     <Window height={460} width={400} theme='arcade'>
@@ -110,5 +110,5 @@ export const Arcade = (props: any, context: any) => {
         </Flex>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

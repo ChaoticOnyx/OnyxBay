@@ -33,7 +33,7 @@
 	base_turf = /turf/simulated/floor
 
 /obj/machinery/power/apc/derelict
-	cell_type = /obj/item/weapon/cell/crap/empty
+	cell_type = /obj/item/cell/crap/empty
 	lighting = 0
 	equipment = 0
 	environ = 0
@@ -61,41 +61,3 @@
 
 /turf/simulated/floor/tiled/white/usedup
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
-
-/obj/effect/landmark/deadcap
-	name = "Dead Captain"
-	delete_me = 1
-
-/obj/effect/landmark/deadcap/Initialize()
-	var/turf/T = get_turf(src)
-	var/mob/living/carbon/human/corpse = new(T)
-	scramble(1,corpse,100)
-	corpse.real_name = "Captain"
-	corpse.name = "Captain"
-	var/decl/hierarchy/outfit/outfit = outfit_by_type(/decl/hierarchy/outfit/deadcap)
-	outfit.equip(corpse)
-	corpse.adjustOxyLoss(corpse.maxHealth)
-	corpse.setBrainLoss(corpse.maxHealth)
-	var/obj/structure/bed/chair/C = locate() in T
-	if(C)
-		C.buckle_mob(corpse)
-	. = ..()
-
-/decl/hierarchy/outfit/deadcap
-	name = "Derelict Captain"
-	uniform = /obj/item/clothing/under/casual_pants/classicjeans
-	suit = /obj/item/clothing/suit/storage/hooded/wintercoat
-	shoes = /obj/item/clothing/shoes/black
-	r_pocket = /obj/item/device/radio
-
-/decl/hierarchy/outfit/deadcap/post_equip(mob/living/carbon/human/H)
-	..()
-	var/obj/item/clothing/uniform = H.w_uniform
-	if(uniform)
-		var/obj/item/clothing/accessory/toggleable/hawaii/random/eyegore = new()
-		if(uniform.can_attach_accessory(eyegore))
-			uniform.attach_accessory(null, eyegore)
-		else
-			qdel(eyegore)
-	var/obj/item/weapon/cell/super/C = new()
-	H.put_in_any_hand_if_possible(C)

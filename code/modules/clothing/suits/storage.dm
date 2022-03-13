@@ -1,10 +1,10 @@
 /obj/item/clothing/suit/storage
-	var/obj/item/weapon/storage/internal/pockets/pockets
+	var/obj/item/storage/internal/pockets/pockets
 	var/initial_closed = FALSE
 
 /obj/item/clothing/suit/storage/New()
 	..()
-	pockets = new /obj/item/weapon/storage/internal/pockets(src, slots = 2, slot_size = 2) //two slots, fit only pocket sized items
+	pockets = new /obj/item/storage/internal/pockets(src, slots = 2, slot_size = 2) //two slots, fit only pocket sized items
 	if(initial_closed)
 		flags_inv += HIDEJUMPSUITACCESSORIES
 

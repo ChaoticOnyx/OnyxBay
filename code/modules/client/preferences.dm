@@ -217,6 +217,7 @@
 
 	character.gender = gender
 	character.body_build = S.get_body_build(gender, body)
+	character.fix_body_build()
 	character.age = age
 	character.b_type = b_type
 

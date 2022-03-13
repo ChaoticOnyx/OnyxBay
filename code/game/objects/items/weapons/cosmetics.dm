@@ -1,4 +1,4 @@
-/obj/item/weapon/lipstick
+/obj/item/lipstick
 	gender = PLURAL
 	name = "red lipstick"
 	desc = "A generic brand of lipstick."
@@ -10,28 +10,28 @@
 	var/open = 0
 
 
-/obj/item/weapon/lipstick/purple
+/obj/item/lipstick/purple
 	name = "purple lipstick"
 	colour = "purple"
 
-/obj/item/weapon/lipstick/jade
+/obj/item/lipstick/jade
 	name = "jade lipstick"
 	colour = "jade"
 
-/obj/item/weapon/lipstick/black
+/obj/item/lipstick/black
 	name = "black lipstick"
 	colour = "black"
 
 
-/obj/item/weapon/lipstick/random
+/obj/item/lipstick/random
 	name = "lipstick"
 
-/obj/item/weapon/lipstick/random/New()
+/obj/item/lipstick/random/New()
 	colour = pick("red","purple","jade","black")
 	name = "[colour] lipstick"
 
 
-/obj/item/weapon/lipstick/attack_self(mob/user as mob)
+/obj/item/lipstick/attack_self(mob/user as mob)
 	to_chat(user, "<span class='notice'>You twist \the [src] [open ? "closed" : "open"].</span>")
 	open = !open
 	if(open)
@@ -39,7 +39,7 @@
 	else
 		icon_state = initial(icon_state)
 
-/obj/item/weapon/lipstick/attack(atom/A, mob/user as mob, target_zone)
+/obj/item/lipstick/attack(atom/A, mob/user as mob, target_zone)
 	if(!open)	return
 
 	if(ishuman(A))
@@ -75,7 +75,7 @@
 //you can wipe off lipstick with paper! see code/modules/paperwork/paper.dm, paper/attack()
 
 
-/obj/item/weapon/haircomb //sparklysheep's comb
+/obj/item/haircomb //sparklysheep's comb
 	name = "plastic comb"
 	desc = "A pristine comb made from flexible plastic."
 	w_class = ITEM_SIZE_TINY
@@ -84,5 +84,5 @@
 	icon_state = "comb"
 	item_state = "comb"
 
-/obj/item/weapon/haircomb/attack_self(mob/user)
+/obj/item/haircomb/attack_self(mob/user)
 	user.visible_message("<span class='notice'>[user] uses [src] to comb their hair with incredible style and sophistication. What a [user.gender == FEMALE ? "lady" : "guy"].</span>")

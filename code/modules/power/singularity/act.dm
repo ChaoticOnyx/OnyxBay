@@ -29,9 +29,7 @@
 
 /obj/singularity_act()
 	if(simulated)
-		ex_act(1)
-		if(src)
-			qdel(src)
+		qdel(src)
 		return 2
 
 /obj/singularity_pull(S, current_size)
@@ -85,7 +83,7 @@
 	if(anchored)
 		return
 
-/obj/item/weapon/storage/backpack/holding/singularity_act(S, current_size)
+/obj/item/storage/backpack/holding/singularity_act(S, current_size)
 	var/dist = max((current_size - 2), 1)
 	explosion(src.loc,(dist),(dist*2),(dist*4))
 	return 1000

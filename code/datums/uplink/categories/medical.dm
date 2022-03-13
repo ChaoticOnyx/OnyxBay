@@ -8,7 +8,7 @@
 	name = "Box of Sin-Pockets"
 	desc = "The healthiest snack around, only for the best. Don't you forget to heat it up!"
 	item_cost = 2
-	path = /obj/item/weapon/storage/box/sinpockets
+	path = /obj/item/storage/box/sinpockets
 
 /datum/uplink_item/item/medical/stasis
 	name = "Modified Stasis Bag"
@@ -20,19 +20,19 @@
 	name = "Combat Defibrillator"
 	desc = "Capable of restarting people's hearts. Or stopping them, if you will."
 	item_cost = 3
-	path = /obj/item/weapon/defibrillator/compact/combat/loaded
+	path = /obj/item/defibrillator/compact/combat/loaded
 
 /datum/uplink_item/item/medical/combat
 	name = "Combat medical kit"
 	desc = "Filled with a range of helpful drugs."
 	item_cost = 3
-	path = /obj/item/weapon/storage/firstaid/combat
+	path = /obj/item/storage/firstaid/combat
 
 /datum/uplink_item/item/medical/surgery
 	name = "Surgery kit"
 	desc = "Filled with everything you need to reattach limbs and remove shrapnels."
 	item_cost = 3
-	path = /obj/item/weapon/storage/firstaid/surgery/syndie
+	path = /obj/item/storage/firstaid/surgery/syndie
 
 /datum/uplink_item/item/medical/serum
 	name = "Resurrection Serum"

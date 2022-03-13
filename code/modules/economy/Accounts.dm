@@ -93,7 +93,7 @@
 		t1 += "<i>Creation terminal ID:</i> [source_db.machine_id]<br>"
 		t1 += "<i>Authorised NT officer overseeing creation:</i> [source_db.held_card.registered_name]<br>"
 
-		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P)
+		var/obj/item/paper/R = new /obj/item/paper(P)
 		R.set_content( t1, "Account information: [M.owner_name]", TRUE)
 		P.wrapped = R
 
@@ -102,7 +102,7 @@
 		stampoverlay.icon_state = "paper_stamp-cent"
 		if(!R.stamped)
 			R.stamped = new
-		R.stamped += /obj/item/weapon/stamp
+		R.stamped += /obj/item/stamp
 		R.overlays += stampoverlay
 		R.stamps += "<HR><i>This paper has been stamped by the Accounts Database.</i>"
 

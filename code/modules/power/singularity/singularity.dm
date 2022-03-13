@@ -13,7 +13,6 @@
 
 	var/current_size = 1
 	var/allowed_size = 1
-	var/contained = 1 // Are we going to move around?
 	var/energy = 100 // How strong are we?
 	var/dissipate = 1 // Do we lose energy over time?
 	var/dissipate_delay = 10
@@ -29,6 +28,14 @@
 
 	var/chained = 0// Adminbus chain-grab
 
+	var/create_childs = TRUE // if true - creates a dummy-singularity for each connected Z-level
+	var/list/obj/singularity/child/childs = list()
+
+	var/follows_ghosts = FALSE
+	var/picking_coldown = 0
+	var/mob/observer/ghost/the_chosen = null
+	var/mob/observer/ghost/prev_ghost = null
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -40,14 +47,31 @@
 
 	..()
 	START_PROCESSING(SSobj, src)
-	for(var/obj/machinery/power/singularity_beacon/singubeacon in SSmachines.machinery)
+	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
 		if(singubeacon.active)
 			target = singubeacon
 			break
 
+	if(create_childs)
+		create_childs()
+
 /obj/singularity/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	. = ..()
+	for(var/obj/singularity/child/SC in childs)
+		childs -= SC
+		if(!QDELETED(SC))
+			qdel(SC)
+	return ..()
+
+/obj/singularity/proc/create_childs()
+	for(var/obj/singularity/child/SC in childs)
+		childs -= SC
+		SC.parent = null
+		qdel(SC)
+
+	for(level in (GetConnectedZlevels(z) - z))
+		var/obj/singularity/child/SC = new (locate(x, y, level), src, level)
+		childs += SC
 
 /obj/singularity/attack_hand(mob/user)
 	consume(user)
@@ -77,6 +101,12 @@
 /obj/singularity/Bumped(atom/A)
 	consume(A)
 
+/obj/singularity/touch_map_edge()
+	var/old_z = z
+	..()
+	if(old_z != z && create_childs)
+		create_childs()
+
 /obj/singularity/Process()
 	eat()
 	dissipate()
@@ -88,6 +118,32 @@
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
+
+	if(follows_ghosts && picking_coldown <= world.time)
+		if(the_chosen)
+			stop_following()
+
+		else if(!target)
+			pick_ghost()
+
+/obj/singularity/proc/pick_ghost()
+	picking_coldown = world.time + 20 SECONDS
+
+	var/zlevels = GetConnectedZlevels(z)
+	for(var/mob/observer/ghost/G in shuffle(GLOB.ghost_mob_list))
+		if(!G.client)
+			continue
+		if(G == prev_ghost)
+			continue
+		if(G.z in zlevels)
+			the_chosen = G
+			break
+
+/obj/singularity/proc/stop_following()
+	picking_coldown = world.time + 40 SECONDS
+
+	prev_ghost = the_chosen
+	the_chosen = null
 
 /obj/singularity/attack_ai() //To prevent ais from gibbing themselves when they click on one.
 	return
@@ -136,6 +192,8 @@
 			dissipate_track = 0
 			dissipate_strength = 1
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s1"
 			visible_message(SPAN("notice", "The singularity has shrunk to a rather pitiful size."))
@@ -154,6 +212,8 @@
 			dissipate_track = 0
 			dissipate_strength = 5
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s3"
 			if(growing)
@@ -162,7 +222,7 @@
 				visible_message(SPAN("notice", "The singularity has shrunk to a less powerful size."))
 
 		if(STAGE_THREE)
-			if((check_turfs_in(1, 2)) && (check_turfs_in(2, 2)) && (check_turfs_in(4, 2)) && (check_turfs_in(8, 2)))
+			if(can_expand(step_size = 2))
 				SetName("gravitational singularity")
 				desc = "A gravitational singularity."
 				current_size = STAGE_THREE
@@ -176,6 +236,8 @@
 				dissipate_track = 0
 				dissipate_strength = 20
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s5"
 				if(growing)
@@ -184,7 +246,7 @@
 					visible_message(SPAN("notice", "The singularity has returned to a safe size."))
 
 		if(STAGE_FOUR)
-			if((check_turfs_in(1, 3)) && (check_turfs_in(2, 3)) && (check_turfs_in(4, 3)) && (check_turfs_in(8, 3)))
+			if(can_expand(step_size = 3))
 				SetName("gravitational singularity")
 				desc = "A gravitational singularity."
 				current_size = STAGE_FOUR
@@ -198,6 +260,8 @@
 				dissipate_track = 0
 				dissipate_strength = 10
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s7"
 				if(growing)
@@ -217,6 +281,8 @@
 			consume_range = 4
 			dissipate = 0 // It cant go smaller due to e loss.
 			overlays = 0
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			if(growing)
@@ -236,9 +302,14 @@
 			consume_range = 5
 			dissipate = 0 // It cant go smaller due to e loss
 			event_chance = 25 // Events will fire off more often.
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			visible_message(SPAN("sinister", "<font size='3'>You witness the creation of a destructive force that cannot possibly be stopped by human hands.</font>"))
+
+	for(var/obj/singularity/child/SC in childs)
+		SC.expand(temp_allowed_size, growing)
 
 	if(current_size == allowed_size)
 		investigate_log("<font color='red'>grew to size [current_size].</font>", I_SINGULO)
@@ -247,6 +318,18 @@
 		expand(temp_allowed_size)
 	else
 		return 0
+
+/obj/singularity/proc/can_expand(step_size)
+	. = TRUE
+
+	for(var/direction in GLOB.cardinal)
+		if(!check_turfs_in(direction, step_size))
+			return FALSE
+
+	for(var/obj/singularity/child/SC in childs)
+		for(var/direction in GLOB.cardinal)
+			if(!SC.check_turfs_in(direction, step_size))
+				return FALSE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
@@ -275,18 +358,13 @@
 /obj/singularity/proc/eat()
 	for(var/atom/X in orange(grav_pull, src))
 		var/dist = get_dist(X, src)
-		var/obj/singularity/S = src
-		if(!istype(src))
-			return
 		if(dist > consume_range)
-			X.singularity_pull(S, current_size)
+			X.singularity_pull(src, current_size)
 		else if(dist <= consume_range)
 			consume(X)
 
-	//for (var/turf/T in trange(grav_pull, src)) // TODO: Create a similar trange for orange to prevent snowflake of self check.
-	//	consume(T)
-
-	return
+	for(var/obj/singularity/child/SC in childs)
+		SC.eat()
 
 /obj/singularity/proc/consume(const/atom/A)
 	energy += A.singularity_act(src, current_size)
@@ -301,35 +379,30 @@
 	if(force_move_direction)
 		movement_dir = force_move_direction
 
-	if(target && prob(60))
-		movement_dir = get_dir(src, target) // moves to a singulo beacon, if there is one
-	else
-		var/location
-		if(prob(16))
-			location = GetAbove(src)
-			if (location)
-				Move(location, UP)
-				return TRUE
-		else if(prob(16))
-			location = GetBelow(src)
-			if(location)
-				Move(location, DOWN)
-				return TRUE
+	else if((target || the_chosen) && prob(60))
+		movement_dir = get_dir(src, target || the_chosen) // moves to a singulo beacon, if there is one
 
 	if(current_size >= STAGE_FIVE) // The superlarge one does not care about things in its way
-		spawn(0)
-			step(src, movement_dir)
-		spawn(1)
-			step(src, movement_dir)
-		return TRUE
-	else if(check_turfs_in(movement_dir))
+		step(src, movement_dir)
+		for(var/obj/singularity/child/SC in childs)
+			SC.move()
+
+	else if(can_move_to(movement_dir))
 		last_failed_movement = 0 // Reset this because we moved
-		spawn(0)
-			step(src, movement_dir)
-		return TRUE
+		step(src, movement_dir)
+		for(var/obj/singularity/child/SC in childs)
+			SC.move()
+
 	else
 		last_failed_movement = movement_dir
-	return FALSE
+
+/obj/singularity/proc/can_move_to(direction)
+	if(check_turfs_in(direction))
+		return TRUE
+
+	for(var/obj/singularity/child/SC in childs)
+		if(SC.check_turfs_in(direction))
+			return TRUE
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
 	if(!direction)
@@ -363,10 +436,10 @@
 	var/dir2 = 0
 	var/dir3 = 0
 	switch(direction)
-		if(NORTH||SOUTH)
+		if(NORTH, SOUTH)
 			dir2 = 4
 			dir3 = 8
-		if(EAST||WEST)
+		if(EAST, WEST)
 			dir2 = 1
 			dir3 = 2
 
@@ -386,11 +459,11 @@
 	for(var/turf/T3 in turfs)
 		if(isnull(T3))
 			continue
-		if(!can_move(T3))
+		if(!movement_blocked(T3))
 			return 0
 	return 1
 
-/obj/singularity/proc/can_move(const/turf/T)
+/obj/singularity/proc/movement_blocked(const/turf/T)
 	if(!isturf(T))
 		return 0
 
@@ -437,7 +510,9 @@
 			continue
 		toxdamage = (toxdamage - (toxdamage * M.getarmor(null, "rad")))
 		M.apply_effect(toxdamage, TOX)
-	return
+
+	for(var/obj/singularity/child/SC in childs)
+		SC.toxmob()
 
 /obj/singularity/proc/mezzer()
 	for(var/mob/living/carbon/M in oviewers(8, src))
@@ -457,11 +532,17 @@
 		M.apply_effect(3, STUN)
 		visible_message(SPAN("danger", "[M] stares blankly at The [src]!"))
 
+	for(var/obj/singularity/child/SC in childs)
+		SC.mezzer()
+
 /obj/singularity/proc/emp_area()
 	if(current_size != STAGE_SUPER)
 		empulse(src, 8, 10)
 	else
 		empulse(src, 12, 16)
+
+	for(var/obj/singularity/child/SC in childs)
+		SC.emp_area()
 
 /obj/singularity/proc/smwave()
 	for(var/mob/living/M in view(10, loc))
@@ -473,7 +554,9 @@
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
 	SSradiation.radiate(src, rand(energy))
-	return
+
+	for(var/obj/singularity/child/SC in childs)
+		SC.smwave()
 
 /obj/singularity/proc/pulse()
 	for(var/obj/machinery/power/rad_collector/R in rad_collectors)
@@ -496,10 +579,16 @@
 		if(STAGE_FIVE)
 			overlays += image('icons/effects/288x288.dmi', "chain_s9")
 
+	for(var/obj/singularity/child/SC in childs)
+		SC.on_capture()
+
 /obj/singularity/proc/on_release()
 	chained = 0
 	overlays = 0
 	move_self = 1
+
+	for(var/obj/singularity/child/SC in childs)
+		SC.on_release()
 
 /obj/singularity/singularity_act(S, size)
 	if(current_size <= size)
@@ -509,3 +598,37 @@
 		spawn(0)
 			qdel(src)
 		return gain
+
+/obj/singularity/child
+	var/assigned_level
+	var/obj/singularity/parent = null
+
+/obj/singularity/child/New(newloc, parent, level)
+	if(!parent || !level)
+		qdel(src)
+		return
+
+	src.parent = parent
+	assigned_level = level
+
+/obj/singularity/child/Destroy()
+	if(!QDELETED(parent))
+		parent.childs -= src
+		qdel(parent)
+	parent = null
+	return ..()
+
+/obj/singularity/child/move()
+	forceMove(locate(parent.x, parent.y, assigned_level))
+
+/obj/singularity/child/consume(const/atom/A)
+	parent.consume(A)
+
+/obj/singularity/child/ex_act(severity)
+	parent.ex_act(severity)
+
+/obj/singularity/child/singularity_act(S, size)
+	return parent.singularity_act(S, size)
+
+/obj/singularity/no_childs
+	create_childs = FALSE

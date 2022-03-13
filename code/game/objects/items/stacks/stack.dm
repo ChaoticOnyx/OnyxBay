@@ -18,6 +18,7 @@
 	icon = 'icons/obj/materials.dmi'
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
+	var/plural_name
 	var/amount = 1
 	var/max_amount //also see stack recipes initialisation, param "max_res_amount" must be equal to this max_amount
 	var/stacktype //determines whether different stack types can merge
@@ -47,7 +48,10 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
-			. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack."
+			if(plural_name)
+				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [amount == 1 ? "[singular_name]" : "[plural_name]"] in the stack."
+			else
+				. += "\nThere [amount == 1 ? "is" : "are"] [amount] [singular_name]\s in the stack."
 		else
 			. += "\nThere is enough charge for [get_amount()]."
 	if(color)
@@ -132,7 +136,7 @@
 					to_chat(user, "<span class='warning'>You need a welding tool to construct \the [recipe.title]!</span>")
 					return
 
-	var/obj/item/weapon/weldingtool/WT
+	var/obj/item/weldingtool/WT
 	if(!uses_charge && craft_tool == 2)
 		WT = user.get_active_hand()
 

@@ -4,7 +4,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	id = MODE_WIZARD
 	role_text = "Space Wizard"
 	role_text_plural = "Space Wizards"
-	landmark_id = "wizard"
+	landmark_id = "Wizard"
 	welcome_text = "You will find a list of available spells in your spell book. Choose your magic arsenal carefully.<br>In your pockets you will find a teleport scroll. Use it as needed."
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_VOTABLE | ANTAG_SET_APPEARANCE
 	antaghud_indicator = "hudwizard"
@@ -72,6 +72,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.current.real_name = "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 	wizard.current.SetName(wizard.current.real_name)
 	wizard.current.mutations.Add(MUTATION_CLUMSY)
+	wizard.wizard = new()
 
 /datum/antagonist/wizard/equip(mob/living/carbon/human/wizard_mob)
 
@@ -105,7 +106,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 			text += "<br>None!"
 		else
 			for(var/s in player.learned_spells)
-				var/spell/spell = s
+				var/datum/spell/spell = s
 				text += "<br><b>[spell.name]</b> - "
 				text += "Speed: [spell.spell_levels["speed"]] Power: [spell.spell_levels["power"]]"
 		text += "<br>"
@@ -116,7 +117,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 /mob/proc/spellremove()
 	if(!mind || !mind.learned_spells)
 		return
-	for(var/spell/spell_to_remove in mind.learned_spells)
+	for(var/datum/spell/spell_to_remove in mind.learned_spells)
 		remove_spell(spell_to_remove)
 
 /obj/item/clothing

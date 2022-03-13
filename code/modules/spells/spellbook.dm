@@ -1,24 +1,22 @@
-#define NOREVERT			1
-#define LOCKED 				2
-#define CAN_MAKE_CONTRACTS	4
-#define INVESTABLE			8
-//spells/spellbooks have a variable for this but as artefacts are literal items they do not.
-//so we do this instead.
-var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
-								/obj/item/weapon/gun/energy/staff/focus = 	"MF",
-								/obj/item/weapon/monster_manual = 			"MA",
-								/obj/item/weapon/magic_rock = 				"RA",
-								/obj/item/weapon/contract/apprentice = 		"CP",
-								/obj/structure/closet/wizard/souls = 		"SS",
-								/obj/item/weapon/contract/wizard/tk = 		"TK",
-								/obj/structure/closet/wizard/scrying = 		"SO",
-								/obj/item/weapon/teleportation_scroll = 	"TS",
-								/obj/item/weapon/gun/energy/staff = 		"ST",
-								/obj/item/weapon/gun/energy/staff/animate =	"SA",
-								/obj/item/weapon/dice/d20/cursed = 			"DW")
+// Spells/spellbooks have a variable for this but as artefacts are literal items they do not,
+// so we do this instead.
+var/list/artefact_feedback = list(
+	/obj/structure/closet/wizard/armor        = "HS",
+	/obj/item/gun/energy/staff/focus   = "MF",
+	/obj/item/monster_manual           = "MA",
+	/obj/item/magic_rock               = "RA",
+	/obj/item/contract/apprentice      = "CP",
+	/obj/structure/closet/wizard/souls        = "SS",
+	/obj/item/contract/wizard/tk       = "TK",
+	/obj/structure/closet/wizard/scrying      = "SO",
+	/obj/item/teleportation_scroll     = "TS",
+	/obj/item/gun/energy/staff         = "ST",
+	/obj/item/gun/energy/staff/animate = "SA",
+	/obj/item/dice/d20/cursed          = "DW"
+)
 
-/obj/item/weapon/spellbook
-	name = "master spell book"
+/obj/item/spellbook
+	name = "spell book"
 	desc = "The legendary book of spells of the wizard."
 	icon = 'icons/obj/library.dmi'
 	icon_state = "spellbook"
@@ -26,302 +24,219 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/uses = 1
-	var/temp = null
-	var/datum/spellbook/spellbook
-	var/spellbook_type = /datum/spellbook/ //for spawning specific spellbooks.
-	var/investing_time = 0 //what time we target forr a return on our spell investment.
-	var/has_sacrificed = 0 //whether we have already got our sacrifice bonus for the current investment.
+	/// A page that will be opened in the UI.
+	var/page = 0
+	/// A path of spell/artifact or whatever we inspecting in the UI.
+	var/inspecting_path = null
 
-/obj/item/weapon/spellbook/New()
-	..()
-	set_spellbook(spellbook_type)
+/obj/item/spellbook/tgui_data(mob/user)
+	var/datum/wizard/W = user.mind.wizard
 
-/obj/item/weapon/spellbook/proc/set_spellbook(type)
-	if(spellbook)
-		qdel(spellbook)
-	spellbook = new type()
-	uses = spellbook.max_uses
-	name = spellbook.name
-	desc = spellbook.desc
+	var/list/data = list(
+		"page"            = page,
+		"inspecting_path" = inspecting_path,
+		"user" = list(
+			"class"           = W.class?.type,
+			"points"          = W.points,
+			"name"            = user.name,
+			"spells"          = list(),
+			"can_reset_class" = W.can_reset_class,
+		)
+	)
 
-/obj/item/weapon/spellbook/attack_self(mob/user as mob)
-	if(user.mind)
-		if(!GLOB.wizards.is_antagonist(user.mind))
-			to_chat(user, "You can't make heads or tails of this book.")
-			return
-		if(spellbook.book_flags & LOCKED)
-			if(user.mind.special_role == "apprentice")
-				to_chat(user, "<span class='warning'>Drat! This spellbook's apprentice proof lock is on!.</span>")
-				return
-			else
-				to_chat(user, "You notice the apprentice proof lock is on. Luckily you are beyond such things and can open it anyways.")
+	for(var/datum/spell/S in user.mind.learned_spells)
+		data["user"]["spells"] += list(list(
+			"path"        = S.type,
+			"levels" = list(
+				list(
+					"type" = SP_SPEED,
+					"level" = S.spell_levels[SP_SPEED],
+					"max" = S.level_max[SP_SPEED],
+					"can_upgrade" = S.can_improve(SP_SPEED)
+				),
+				list(
+					"type" = SP_POWER,
+					"level" = S.spell_levels[SP_POWER],
+					"max" = S.level_max[SP_POWER],
+					"can_upgrade" = S.can_improve(SP_POWER)
+				)
+			),
+			"total_upgrades" = S.level_max[SP_TOTAL]
+		))
 
-	interact(user)
+	return data
 
-/obj/item/weapon/spellbook/proc/make_sacrifice(obj/item/I as obj, mob/user as mob, reagent)
-	if(has_sacrificed)
+/obj/item/spellbook/tgui_static_data(mob/user)
+	var/list/data = list(
+		"classes" = list()
+	)
+
+	for(var/T in GLOB.wizard_classes)
+		var/datum/wizard_class/C = GLOB.wizard_classes[T]
+		data["classes"] += list(C.to_list())
+
+	return data
+
+/obj/item/spellbook/tgui_act(action, list/params)
+	. = ..()
+	if(.)
 		return
-	if(reagent)
-		var/datum/reagents/R = I.reagents
-		R.remove_reagent(reagent,5)
-	else
-		if(istype(I,/obj/item/stack))
-			var/obj/item/stack/S = I
-			if(S.amount < S.max_amount)
-				to_chat(usr, "<span class='warning'>You must sacrifice [S.max_amount] stacks of [S]!</span>")
-				return
-		user.remove_from_mob(I)
-		qdel(I)
-	to_chat(user, "<span class='notice'>Your sacrifice was accepted!</span>")
-	has_sacrificed = 1
-	investing_time = max(investing_time - 6000,1) //subtract 10 minutes. Make sure it doesn't act funky at the beginning of the game.
+
+	switch(action)
+		if("change_page")
+			page = params["page"]
+			return TRUE
+		if("set_inspecting")
+			inspecting_path = params["path"]
+			return TRUE
+		if("choose_class")
+			set_wizard_class(usr, text2path(params["path"]))
+			return TRUE
+		if("buy_artifact")
+			buy_artifact(usr, text2path(params["path"]))
+			return TRUE
+		if("buy_spell")
+			buy_spell(usr, text2path(params["path"]))
+			return TRUE
+		if("reset_class")
+			reset_class(usr)
+			return TRUE
+		if("upgrade_spell")
+			upgrade_spell(usr, text2path(params["path"]), params["type"])
+			return TRUE
+		if("contract")
+			make_contract(usr, text2path(params["path"]))
+			return TRUE
+
+/obj/item/spellbook/proc/make_contract(mob/user, spell_path)
+	var/datum/wizard/W = user.mind.wizard
+	var/spell_cost = W.class.get_spell_cost(spell_path)
+
+	ASSERT(W.class.can_make_contracts)
+	ASSERT(W.can_spend(spell_cost))
+
+	W.spend(spell_cost)
+	var/obj/O = new /obj/item/contract/boon(get_turf(user), spell_path)
+	to_chat(user, "You have purchased \the [O].")
+
+/obj/item/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
+	var/datum/wizard/W = user.mind.wizard
+	var/datum/spell/spell_to_upgrade = null
 
 
-/obj/item/weapon/spellbook/attackby(obj/item/I as obj, mob/user as mob)
-	if(investing_time && !has_sacrificed)
-		var/list/objects = spellbook.sacrifice_objects
-		if(objects && objects.len)
-			for(var/type in objects)
-				if(istype(I,type))
-					make_sacrifice(I,user)
-					return
-		if(I.reagents)
-			var/datum/reagents/R = I.reagents
-			var/list/reagent_list = spellbook.sacrifice_reagents
-			if(reagent_list && reagent_list.len)
-				for(var/id in reagent_list)
-					if(R.has_reagent(id,5))
-						make_sacrifice(I,user, id)
-						return 1
-	..()
+	ASSERT(path in subtypesof(/datum/spell))
 
-/obj/item/weapon/spellbook/interact(mob/user as mob)
-	var/dat = null
-	if(temp)
-		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
-	else
-		dat = "<center><h3>[spellbook.title]</h3><i>[spellbook.title_desc]</i><br>You have [uses] spell slot[uses > 1 ? "s" : ""] left.</center><br>"
-		dat += "<center><font color='#ff33cc'>Requires Wizard Garb</font><br><font color='#ff6600'>Selectable Target</font><br><font color='#33cc33'>Spell Charge Type: Recharge, Sacrifice, Charges</font></center><br>"
-		dat += "<center><b>To use a contract, first bind it to your soul, then give it to someone to sign. This will bind their soul to you.</b></center><br>"
-		for(var/i in 1 to spellbook.spells.len)
-			var/name = "" //name of target
-			var/desc = "" //description of target
-			var/info = "" //additional information
-			if(ispath(spellbook.spells[i],/datum/spellbook))
-				var/datum/spellbook/S = spellbook.spells[i]
-				name = initial(S.name)
-				desc = initial(S.book_desc)
-				info = "<font color='#ff33cc'>[initial(S.max_uses)] Spell Slots</font>"
-			else if(ispath(spellbook.spells[i],/obj))
-				var/obj/O = spellbook.spells[i]
-				name = "Artefact: [capitalize(initial(O.name))]" //because 99.99% of objects dont have capitals in them and it makes it look weird.
-				desc = initial(O.desc)
-			else if(ispath(spellbook.spells[i],/spell))
-				var/spell/S = spellbook.spells[i]
-				name = initial(S.name)
-				desc = initial(S.desc)
-				var/testing = initial(S.spell_flags)
-				if(testing & NEEDSCLOTHES)
-					info = "<font color='#ff33cc'>W</font>"
-				var/type = ""
-				switch(initial(S.charge_type))
-					if(Sp_RECHARGE)
-						type = "R"
-					if(Sp_HOLDVAR)
-						type = "S"
-					if(Sp_CHARGES)
-						type = "C"
-				info += "<font color='#33cc33'>[type]</font>"
-			dat += "<A href='byond://?src=\ref[src];path=\ref[spellbook.spells[i]]'>[name]</a>"
-			if(length(info))
-				dat += " ([info])"
-			dat += " ([spellbook.spells[spellbook.spells[i]]] spell slot[spellbook.spells[spellbook.spells[i]] > 1 ? "s" : "" ])"
-			if(spellbook.book_flags & CAN_MAKE_CONTRACTS)
-				dat += " <A href='byond://?src=\ref[src];path=\ref[spellbook.spells[i]];contract=1;'>Make Contract</a>"
-			dat += "<br><i>[desc]</i><br>"
-		dat += "<center><A href='byond://?src=\ref[src];reset=1'>Re-memorize your spellbook.</a></center>"
-		if(spellbook.book_flags & INVESTABLE)
-			if(investing_time)
-				dat += "<center><b>Currently investing in a slot...</b></center>"
-			else
-				dat += "<center><A href='byond://?src=\ref[src];invest=1'>Invest a Spell Slot</a><br><i>Investing a spellpoint will return two spellpoints back in 15 minutes, unless you get out of the station.<br>Some say a sacrifice could even shorten the time...</i></center>"
-		if(!(spellbook.book_flags & NOREVERT))
-			dat += "<center><A href='byond://?src=\ref[src];book=1'>Choose different spellbook.</a></center>"
-		dat += "<center><A href='byond://?src=\ref[src];lock=1'>[spellbook.book_flags & LOCKED ? "Unlock" : "Lock"] the spellbook.</a></center>"
-	show_browser(user, dat,"window=spellbook")
+	for(var/datum/spell/S in user.mind.learned_spells)
+		if(istype(S, path))
+			spell_to_upgrade = S
+			break
 
-/obj/item/weapon/spellbook/CanUseTopic(mob/living/carbon/human/H)
-	if(!istype(H))
-		return STATUS_CLOSE
+	if(!spell_to_upgrade)
+		CRASH("Trying to upgrade a not learned spell.")
 
-	if(H.mind && (spellbook.book_flags & LOCKED) && H.mind.special_role == "apprentice") //make sure no scrubs get behind the lock
-		return STATUS_CLOSE
+	if(!spell_to_upgrade.can_improve(upgrade_type))
+		to_chat(user, SPAN("warning", "You can't do that type of upgrade more."))
+		return
+
+	if(!W.can_spend(1))
+		to_chat(user, SPAN("warning", "You don't have enough points to upgrade the spell!"))
+		return
+
+	W.spend(1)
+	switch(upgrade_type)
+		if(SP_POWER)
+			ASSERT(spell_to_upgrade.empower_spell())
+			to_chat(user, "You empower [spell_to_upgrade]!")
+		if(SP_SPEED)
+			ASSERT(spell_to_upgrade.quicken_spell())
+			to_chat(user, "You quicken [spell_to_upgrade]!")
+		else
+			CRASH("Unknown upgrade type [upgrade_type]")
+
+/obj/item/spellbook/proc/reset_class(mob/user)
+	var/datum/wizard/W = user.mind.wizard
+	var/area/wizard_station/A = get_area(user)
+
+	if(!istype(A))
+		to_chat(user, SPAN("warning", "You must be in the wizard academy to re-memorize your spells."))
+		return
+
+	ASSERT(W.class)
+	ASSERT(W.can_reset_class)
+
+	user.spellremove()
+	W.reset()
+	to_chat(user, "All spells have been removed. You may now memorize a new set of spells.")
+	feedback_add_details("wizard_class_reset", "UM")
+
+/obj/item/spellbook/proc/buy_spell(mob/user, datum/spell/path)
+	var/datum/wizard/W = user.mind.wizard
+
+	ASSERT(path in subtypesof(/datum/spell))
+	ASSERT(W.class.has_spell(path))
+
+	for(var/datum/spell/S in user.mind.learned_spells)
+		if(S.type == path)
+			to_chat(user, SPAN("warning", "You already know the spell [S]."))
+			return
+
+	var/cost = W.class.get_spell_cost(path)
+
+	ASSERT(W.can_spend(cost))
+
+	W.spend(cost)
+	var/datum/spell/new_spell = new path
+	feedback_add_details("wizard_spell_purchased", new_spell.feedback)
+	user.add_spell(new_spell)
+	to_chat(user, "You learn the spell [new_spell].")
+
+/obj/item/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
+	ASSERT(path in subtypesof(/datum/wizard_class))
+
+	if(user.mind.wizard.class)
+		to_chat(user, SPAN("warning", "You can't have more than one class at the moment."))
+		return
+
+	user.mind.wizard.set_class(path)
+	feedback_add_details("wizard_class_choose", user.mind.wizard.class.feedback_tag)
+	to_chat(user, SPAN("notice", "You are now \a [user.mind.wizard.class.name]!"))
+
+/obj/item/spellbook/proc/buy_artifact(mob/user, obj/path)
+	var/datum/wizard/W = user.mind.wizard
+
+	ASSERT(W.class.has_artifact(path))
+
+	var/cost = W.class.get_artifact_cost(path)
+
+	ASSERT(W.can_spend(cost))
+	W.can_reset_class = FALSE
+
+	W.spend(cost)
+	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
+	var/obj/A = new path(get_turf(usr))
+	to_chat(user, "You have purchased \a [A].")
+
+/obj/item/spellbook/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "SpellBook", name)
+		ui.open()
+
+/obj/item/spellbook/tgui_state(mob/user)
+	if(!GLOB.wizards.is_antagonist(user.mind))
+		return UI_CLOSE
 
 	return ..()
 
-/obj/item/weapon/spellbook/OnTopic(mob/living/carbon/human/user, href_list)
-	if(href_list["lock"])
-		if(spellbook.book_flags & LOCKED)
-			spellbook.book_flags &= ~LOCKED
-		else
-			spellbook.book_flags |= LOCKED
-		. = TOPIC_REFRESH
+/obj/item/spellbook/tgui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/simple/reaver)
+	)
 
-	else if(href_list["temp"])
-		temp = null
-		. = TOPIC_REFRESH
+/obj/item/spellbook/attack_self(mob/user)
+	if(!GLOB.wizards.is_antagonist(user.mind))
+		to_chat(user, "You can't make heads or tails of this book.")
+		return
 
-	else if(href_list["book"])
-		if(initial(spellbook.max_uses) != spellbook.max_uses || uses != spellbook.max_uses)
-			temp = "You've already purchased things using this spellbook!"
-		else
-			src.set_spellbook(/datum/spellbook)
-			temp = "You have reverted back to the Book of Tomes."
-		. = TOPIC_REFRESH
-
-	else if(href_list["invest"])
-		temp = invest()
-		. = TOPIC_REFRESH
-
-	else if(href_list["path"])
-		var/path = locate(href_list["path"]) in spellbook.spells
-		if(!path)
-			return TOPIC_HANDLED
-		if(uses < spellbook.spells[path])
-			to_chat(user, "<span class='notice'>You do not have enough spell slots to purchase this.</span>")
-			return TOPIC_HANDLED
-		send_feedback(path) //feedback stuff
-		if(ispath(path,/datum/spellbook))
-			src.set_spellbook(path)
-			temp = "You have chosen a new spellbook."
-		else
-			if(href_list["contract"])
-				if(!(spellbook.book_flags & CAN_MAKE_CONTRACTS))
-					return //no
-				uses -= spellbook.spells[path]
-				spellbook.max_uses -= spellbook.spells[path] //no basksies
-				var/obj/O = new /obj/item/weapon/contract/boon(get_turf(user),path)
-				temp = "You have purchased \the [O]."
-			else
-				if(ispath(path,/spell))
-					temp = src.add_spell(user,path)
-					if(temp)
-						uses -= spellbook.spells[path]
-				else
-					var/obj/O = new path(get_turf(user))
-					temp = "You have purchased \a [O]."
-					uses -= spellbook.spells[path]
-					spellbook.max_uses -= spellbook.spells[path]
-					//finally give it a bit of an oomf
-					playsound(user,'sound/effects/phasein.ogg',50,1)
-		. = TOPIC_REFRESH
-
-	else if(href_list["reset"])
-		var/area/wizard_station/A = get_area(user)
-		if(istype(A))
-			uses = spellbook.max_uses
-			investing_time = 0
-			has_sacrificed = 0
-			user.spellremove()
-			temp = "All spells and investments have been removed. You may now memorize a new set of spells."
-			feedback_add_details("wizard_spell_learned","UM") //please do not change the abbreviation to keep data processing consistent. Add a unique id to any new spells
-		else
-			to_chat(user, "<span class='warning'>You must be in the wizard academy to re-memorize your spells.</span>")
-		. = TOPIC_REFRESH
-
-	src.interact(user)
-
-/obj/item/weapon/spellbook/Initialize()
-	. = ..()
-	GLOB.moved_event.register(src, src, /obj/item/weapon/spellbook/proc/check_z_level)
-
-/obj/item/weapon/spellbook/proc/check_z_level()
-	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
-		if(investing_time)
-			src.visible_message(SPAN_WARNING("<b>\The [src]</b> emits a cranky chime."))
-			if(uses < spellbook.max_uses)
-				uses++
-			investing_time = 0
-			STOP_PROCESSING(SSobj, src)
-
-/obj/item/weapon/spellbook/proc/invest()
-	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
-		return "Your invest powers don't work in your current location!\n You must be on the station level for the successful investment."
-	if(uses < 1)
-		return "You don't have enough slots to invest!"
-	if(investing_time)
-		return "You can only invest one spell slot at a time."
-	uses--
-	START_PROCESSING(SSobj, src)
-	investing_time = world.time + (15 MINUTES)
-	return "You invest a spellslot and will recieve two in return in 15 minutes."
-
-/obj/item/weapon/spellbook/Process()
-	if(investing_time && investing_time <= world.time)
-		src.visible_message("<b>\The [src]</b> emits a soft chime.")
-		uses += 2
-		if(uses > spellbook.max_uses)
-			spellbook.max_uses = uses
-		investing_time = 0
-		STOP_PROCESSING(SSobj, src)
-	return 1
-
-/obj/item/weapon/spellbook/Destroy()
-	GLOB.moved_event.unregister(src, src, /obj/item/weapon/spellbook/proc/check_z_level)
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/weapon/spellbook/proc/send_feedback(path)
-	if(ispath(path,/datum/spellbook))
-		var/datum/spellbook/S = path
-		feedback_add_details("wizard_spell_learned","[initial(S.feedback)]")
-	else if(ispath(path,/spell))
-		var/spell/S = path
-		feedback_add_details("wizard_spell_learned","[initial(S.feedback)]")
-	else if(ispath(path,/obj))
-		feedback_add_details("wizard_spell_learned","[artefact_feedback[path]]")
-
-
-/obj/item/weapon/spellbook/proc/add_spell(mob/user, spell_path)
-	for(var/spell/S in user.mind.learned_spells)
-		if(istype(S,spell_path))
-			if(!S.can_improve())
-				return
-			if(S.can_improve(Sp_SPEED) && S.can_improve(Sp_POWER))
-				switch(alert(user, "Do you want to upgrade this spell's speed or power?", "Spell upgrade", "Speed", "Power", "Cancel"))
-					if("Speed")
-						return S.quicken_spell()
-					if("Power")
-						return S.empower_spell()
-					else
-						return
-			else if(S.can_improve(Sp_POWER))
-				return S.empower_spell()
-			else if(S.can_improve(Sp_SPEED))
-				return S.quicken_spell()
-
-	var/spell/S = new spell_path()
-	user.add_spell(S)
-	return "You learn the spell [S]"
-
-/datum/spellbook
-	var/name = "\improper Book of Tomes"
-	var/desc = "The legendary book of spells of the wizard."
-	var/book_desc = "Holds information on the various tomes available to a wizard"
-	var/feedback = "" //doesn't need one.
-	var/book_flags = NOREVERT
-	var/max_uses = 1
-	var/title = "Book of Tomes"
-	var/title_desc = "This tome marks down all the available tomes for use. Choose wisely, there are no refunds."
-	var/list/spells = list(/datum/spellbook/standard = 1,
-				/datum/spellbook/cleric = 1,
-				/datum/spellbook/battlemage = 1,
-				/datum/spellbook/spatial = 1,
-				/datum/spellbook/druid = 1,
-				/datum/spellbook/warlock = 1
-				) //spell's path = cost of spell
-
-	var/list/sacrifice_reagents
-	var/list/sacrifice_objects
+	tgui_interact(user, null)

@@ -213,13 +213,28 @@
 		onclose(occupant, "sam", src)
 	return
 */
-/obj/mecha/combat/moved_inside(mob/living/carbon/human/H as mob)
+/obj/mecha/combat/moved_inside(mob/living/carbon/human/H)
 	if(..())
 		if(H.client)
 			H.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
-		return 1
+		return TRUE
 	else
-		return 0
+		return FALSE
+
+/obj/mecha/combat/brain_moved_inside(obj/item/I, mob/user)
+	if(..())
+		var/mob/brainmob
+		if(istype(I, /obj/item/device/mmi))
+			var/obj/item/device/mmi/MMI = I
+			brainmob = MMI.brainmob
+		else if(istype(I, /obj/item/organ/internal/posibrain))
+			var/obj/item/organ/internal/posibrain/PB = I
+			brainmob = PB.brainmob
+		if(brainmob.client)
+			brainmob.client.mouse_pointer_icon = file("icons/mecha/mecha_mouse.dmi")
+		return TRUE
+	else
+		return FALSE
 
 /obj/mecha/combat/go_out()
 	if(src.occupant && src.occupant.client)

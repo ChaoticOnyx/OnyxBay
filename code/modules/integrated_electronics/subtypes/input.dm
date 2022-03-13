@@ -789,6 +789,7 @@
 	var/new_freq = get_pin_data(IC_INPUT, 1)
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	if(isnum_safe(new_freq) && new_freq > 0)
+		new_freq = Clamp(new_freq, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
 		set_frequency(new_freq)
 	if(isnum_safe(new_code))
 		code = new_code
@@ -868,13 +869,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = html_encode(command)
+	signal.data["command"] = command
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT, 1, signal.data["command"])
 		push_data()
 		..()
 
@@ -898,7 +899,7 @@
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
-	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			teleporters_id.Add(com.id)
@@ -920,7 +921,7 @@
 
 	var/output = "Current selection: [(current_console && current_console.id) || "None"]"
 	output += "\nList of avaliable teleporters:"
-	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			output += "\n[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"
@@ -933,7 +934,7 @@
 	. = list()
 	. += "Current selection: [(current_console && current_console.id) || "None"]"
 	. += "Please select a teleporter to lock in on:"
-	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
+	for(var/obj/machinery/teleport/hub/R in GLOB.machines)
 		var/obj/machinery/computer/teleporter/com = R.com
 		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			.["[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"] = "tport=[any2ref(com)]"
@@ -1037,7 +1038,7 @@
 	if(!check_then_do_work())
 		return FALSE
 	var/ignore_bags = get_pin_data(IC_INPUT, 1)
-	if(ignore_bags && istype(A, /obj/item/weapon/storage/))
+	if(ignore_bags && istype(A, /obj/item/storage/))
 		return FALSE
 	set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
@@ -1069,7 +1070,7 @@
 	if(!check_then_do_work())
 		return FALSE
 	var/ignore_bags = get_pin_data(IC_INPUT, 1)
-	if(ignore_bags && istype(A, /obj/item/weapon/storage))
+	if(ignore_bags && istype(A, /obj/item/storage))
 		return FALSE
 	set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
@@ -1166,7 +1167,7 @@
 	set_pin_data(IC_OUTPUT, 3, null)
 	if(AM)
 		var/list/power_cell_list = get_power_cell(AM)
-		var/obj/item/weapon/cell/C = power_cell_list[1]
+		var/obj/item/cell/C = power_cell_list[1]
 		if(istype(C))
 			var/turf/A = get_turf(src)
 			if(get_turf(AM) in view(A))
@@ -1310,7 +1311,7 @@
 	)
 
 /obj/item/integrated_circuit/input/data_card_reader/attackby_react(obj/item/I, mob/living/user, intent)
-	var/obj/item/weapon/card/data/card = I
+	var/obj/item/card/data/card = I
 	var/write_mode = get_pin_data(IC_INPUT, 3)
 	if(istype(card))
 		if(write_mode == TRUE)
@@ -1413,8 +1414,8 @@
 	power_draw_per_use = 85
 
 /obj/item/integrated_circuit/input/storage_examiner/do_work()
-	var/obj/item/weapon/storage/storage = get_pin_data_as_type(IC_INPUT, 1, /obj/item/weapon/storage)
-	if(!istype(storage, /obj/item/weapon/storage))
+	var/obj/item/storage/storage = get_pin_data_as_type(IC_INPUT, 1, /obj/item/storage)
+	if(!istype(storage, /obj/item/storage))
 		return
 
 	var/list/inv = storage.return_inv()

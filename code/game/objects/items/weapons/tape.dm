@@ -1,4 +1,4 @@
-/obj/item/weapon/tape_roll
+/obj/item/tape_roll
 	name = "duct tape"
 	desc = "A roll of sticky tape. Possibly for taping ducks... or was that ducts?"
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -6,7 +6,7 @@
 	var/tape_speed = 30
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/weapon/tape_roll/attack(mob/living/carbon/human/H, mob/user)
+/obj/item/tape_roll/attack(mob/living/carbon/human/H, mob/user)
 	if(istype(H))
 		if(user.zone_sel.selecting == BP_EYES)
 
@@ -60,7 +60,7 @@
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(H), slot_wear_mask)
 
 		else if(user.zone_sel.selecting == BP_R_HAND || user.zone_sel.selecting == BP_L_HAND)
-			var/obj/item/weapon/handcuffs/cable/tape/T = new(user)
+			var/obj/item/handcuffs/cable/tape/T = new(user)
 			if(!T.place_handcuffs(H, user))
 				user.unEquip(T)
 				qdel(T)
@@ -76,89 +76,7 @@
 			return ..()
 		return 1
 
-/obj/item/weapon/tape_roll/proc/stick(obj/item/weapon/W, mob/user)
-	if(!istype(W, /obj/item/weapon/paper))
-		return
-	user.drop_from_inventory(W)
-	var/obj/item/weapon/ducttape/tape = new(get_turf(src))
-	tape.attach(W)
-	user.put_in_hands(tape)
-
-/obj/item/weapon/tape_roll/syndie
+/obj/item/tape_roll/syndie
 	desc = "A roll of sticky tape. This one is suspiciously sticky."
 	icon_state = "syndietape"
 	tape_speed = 5
-
-/obj/item/weapon/ducttape
-	name = "piece of tape"
-	desc = "A piece of sticky tape."
-	icon = 'icons/obj/bureaucracy.dmi'
-	icon_state = "tape"
-	w_class = ITEM_SIZE_TINY
-	layer = ABOVE_OBJ_LAYER
-
-	var/obj/item/weapon/stuck = null
-
-/obj/item/weapon/ducttape/attack_hand(mob/user)
-	anchored = FALSE // Unattach it from whereever it's on, if anything.
-	return ..()
-
-/obj/item/weapon/ducttape/Initialize()
-	. = ..()
-	item_flags |= ITEM_FLAG_NO_BLUDGEON
-
-/obj/item/weapon/ducttape/examine(mob/user)
-	return stuck ? stuck.examine(user) : ..()
-
-/obj/item/weapon/ducttape/proc/attach(obj/item/weapon/W)
-	stuck = W
-	anchored = TRUE
-	W.forceMove(src)
-	icon_state = W.icon_state + "_taped"
-	name = W.name + " (taped)"
-	overlays = W.overlays
-
-/obj/item/weapon/ducttape/attack_self(mob/user)
-	if(!stuck)
-		return
-
-	to_chat(user, "You remove \the [initial(name)] from [stuck].")
-	user.drop_from_inventory(src)
-	stuck.forceMove(get_turf(src))
-	user.put_in_hands(stuck)
-	stuck = null
-	overlays = null
-	qdel(src)
-
-/obj/item/weapon/ducttape/afterattack(A, mob/user, flag, params)
-
-	if(!in_range(user, A) || istype(A, /obj/machinery/door) || !stuck)
-		return
-
-	var/turf/target_turf = get_turf(A)
-	var/turf/source_turf = get_turf(user)
-
-	var/dir_offset = 0
-	if(target_turf != source_turf)
-		dir_offset = get_dir(source_turf, target_turf)
-		if(!(dir_offset in GLOB.cardinal))
-			to_chat(user, "You cannot reach that from here.")// can only place stuck papers in cardinal directions, to
-			return											// reduce papers around corners issue.
-
-	user.drop_from_inventory(src)
-	forceMove(source_turf)
-
-	if(params)
-		var/list/mouse_control = params2list(params)
-		if(mouse_control["icon-x"])
-			pixel_x = text2num(mouse_control["icon-x"]) - 16
-			if(dir_offset & EAST)
-				pixel_x += 32
-			else if(dir_offset & WEST)
-				pixel_x -= 32
-		if(mouse_control["icon-y"])
-			pixel_y = text2num(mouse_control["icon-y"]) - 16
-			if(dir_offset & NORTH)
-				pixel_y += 32
-			else if(dir_offset & SOUTH)
-				pixel_y -= 32

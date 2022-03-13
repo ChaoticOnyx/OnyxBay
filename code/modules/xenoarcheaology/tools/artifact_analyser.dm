@@ -69,13 +69,15 @@
 		else
 			results = get_scan_info(scanned_object)
 
+
+		var/out = "<b>[src] analysis report #[++report_num]</b><br>"
+		out += "<br>"
+		out += "\icon[scanned_object] [results]"
+
 		src.visible_message("<b>[name]</b> states, \"Scanning complete.\"")
-		var/obj/item/weapon/paper/P = new(src.loc)
-		P.SetName("[src] report #[++report_num]")
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<br>"
-		P.info += "\icon[scanned_object] [results]"
-		P.stamped = list(/obj/item/weapon/stamp)
+
+		var/obj/item/paper/P = new(src.loc, out, "[src] report #[report_num]")
+		P.stamped = list(/obj/item/stamp)
 		P.overlays = list("paper_stamped")
 
 		if(scanned_object && istype(scanned_object, /obj/machinery/artifact))
@@ -148,10 +150,10 @@
 			var/obj/machinery/artifact/A = scanned_obj
 			var/out = "Anomalous alien device - composed of an unknown alloy.<br><br>"
 
-			if(A.my_effect)
-				out += A.my_effect.getDescription()
+			if(A.main_effect)
+				out += A.main_effect.getDescription()
 
-			if(A.secondary_effect && A.secondary_effect.activated)
+			if(A.secondary_effect?.activated)
 				out += "<br><br>Internal scans indicate ongoing secondary activity operating independently from primary systems.<br><br>"
 				out += A.secondary_effect.getDescription()
 

@@ -32,9 +32,9 @@
 
 /datum/recipe
 	var/list/reagents // example: = list(/datum/reagent/drink/juice/berry = 5) // do not list same reagent twice
-	var/list/items    // example: = list(/obj/item/weapon/crowbar, /obj/item/weapon/welder) // place /foo/bar before /foo
+	var/list/items    // example: = list(/obj/item/crowbar, /obj/item/welder) // place /foo/bar before /foo
 	var/list/fruit    // example: = list("fruit" = 3)
-	var/result        // example: = /obj/item/weapon/reagent_containers/food/snacks/donut/normal
+	var/result        // example: = /obj/item/reagent_containers/food/snacks/donut/normal
 	var/time = 100    // 1/10 part of second
 
 /datum/recipe/proc/check_reagents(datum/reagents/avail_reagents)
@@ -56,7 +56,7 @@
 		var/list/checklist = list()
 		 // You should trust Copy().
 		checklist = fruit.Copy()
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in container)
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in container.InsertedContents())
 			if(!G.seed || !G.seed.kitchen_tag || isnull(checklist[G.seed.kitchen_tag]))
 				continue
 			checklist[G.seed.kitchen_tag]--
@@ -75,7 +75,7 @@
 		var/list/checklist = list()
 		checklist = items.Copy() // You should really trust Copy
 		for(var/obj/item/I in container.InsertedContents())
-			if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/grown))
+			if(istype(I,/obj/item/reagent_containers/food/snacks/grown))
 				continue // Fruit is handled in check_fruit().
 			var/found = 0
 			for(var/i in 1 to length(checklist))
@@ -112,8 +112,8 @@
 			O.reagents.del_reagent(/datum/reagent/nutriment)
 			O.reagents.update_total()
 			O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		if(istype(I, /obj/item/weapon/holder/))
-			var/obj/item/weapon/holder/H = I
+		if(istype(I, /obj/item/holder/))
+			var/obj/item/holder/H = I
 			H.destroy_all()
 		qdel(I)
 	container.reagents.clear_reagents()

@@ -1,12 +1,12 @@
 //basic transformation spell. Should work for most simple_animals
 
-/spell/targeted/shapeshift
+/datum/spell/targeted/shapeshift
 	name = "Shapeshift"
 	desc = "This spell transforms the target into something else for a short while."
 
 	school = "transmutation"
 
-	charge_type = Sp_RECHARGE
+	charge_type = SP_RECHARGE
 	charge_max = 600
 
 	duration = 0 //set to 0 for permanent.
@@ -20,7 +20,7 @@
 	var/drop_items = 1 //do we want to drop all our items when we transform?
 	var/list/transformed_dudes = list() //Who we transformed. Transformed = Transformation. Both mobs.
 
-/spell/targeted/shapeshift/cast(list/targets, mob/user)
+/datum/spell/targeted/shapeshift/cast(list/targets, mob/user)
 	for(var/mob/living/M in targets)
 		if(M.stat == DEAD)
 			to_chat(user, "[name] can only transform living targets.")
@@ -55,19 +55,19 @@
 		M.forceMove(trans) //move inside the new dude to hide him.
 		M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 		transformed_dudes[trans] = M
-		GLOB.death_event.register(trans,src,/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(trans,src,/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(M, src, /spell/targeted/shapeshift/proc/destroyed_transformer)
+		GLOB.death_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		GLOB.destroyed_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		GLOB.destroyed_event.register(M, src, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
 		if(duration)
 			spawn(duration)
 				stop_transformation(trans)
 
-/spell/targeted/shapeshift/proc/destroyed_transformer(mob/target) //Juuuuust in case
+/datum/spell/targeted/shapeshift/proc/destroyed_transformer(mob/target) //Juuuuust in case
 	var/mob/current = transformed_dudes[target]
 	to_chat(current, "<span class='danger'>You suddenly feel as if this transformation has become permanent...</span>")
 	remove_target(target)
 
-/spell/targeted/shapeshift/proc/stop_transformation(mob/living/target)
+/datum/spell/targeted/shapeshift/proc/stop_transformation(mob/living/target)
 	var/mob/living/transformer = transformed_dudes[target]
 	if(!transformer)
 		return
@@ -86,7 +86,7 @@
 	remove_target(target)
 	qdel(target)
 
-/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
+/datum/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
 	var/mob/current = transformed_dudes[target]
 	GLOB.destroyed_event.unregister(target,src)
 	GLOB.death_event.unregister(current,src)
@@ -94,7 +94,7 @@
 	transformed_dudes[target] = null
 	transformed_dudes -= target
 
-/spell/targeted/shapeshift/baleful_polymorph
+/datum/spell/targeted/shapeshift/baleful_polymorph
 	name = "Baleful Polymorth"
 	desc = "This spell transforms its target into a small, furry animal."
 	feedback = "BP"
@@ -115,19 +115,19 @@
 
 	share_damage = 0
 	invocation = "Yo'balada!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = NEEDSCLOTHES | SELECTABLE
 	range = 3
 	duration = 150 //15 seconds.
 	cooldown_min = 200 //20 seconds
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 
 	newVars = list("health" = 50, "maxHealth" = 50)
 
-	hud_state = "wiz_poly"
+	icon_state = "wiz_poly"
 
-/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
+/datum/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
 	possible_transformations = list(
 	/mob/living/simple_animal/hostile/giant_spider,
 	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
@@ -135,7 +135,7 @@
 	cast(targets, user)
 	possible_transformations = basic_transformations
 
-/spell/targeted/shapeshift/baleful_polymorph/empower_spell()
+/datum/spell/targeted/shapeshift/baleful_polymorph/empower_spell()
 	if(!..())
 		return 0
 
@@ -143,7 +143,7 @@
 
 	return "Your target will now stay in their polymorphed form for [duration/10] seconds."
 
-/spell/targeted/shapeshift/avian
+/datum/spell/targeted/shapeshift/avian
 	name = "Polymorph"
 	desc = "This spell transforms the wizard into the common parrot."
 	feedback = "AV"
@@ -152,23 +152,23 @@
 	drop_items = 0
 	share_damage = 0
 	invocation = "Poli'crakata!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = INCLUDEUSER
 	range = 0
 	duration = 150
 	charge_max = 600
 	cooldown_min = 300
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 0)
-	hud_state = "wiz_parrot"
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
+	icon_state = "wiz_parrot"
 
-/spell/targeted/shapeshift/corrupt_form
+/datum/spell/targeted/shapeshift/corrupt_form
 	name = "Corrupt Form"
 	desc = "This spell shapes the wizard into a terrible, terrible beast."
 	feedback = "CF"
 	possible_transformations = list(/mob/living/simple_animal/hostile/faithless)
 
 	invocation = "mutters something dark and twisted as their form begins to twist..."
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	spell_flags = INCLUDEUSER
 	range = 0
 	duration = 150
@@ -177,17 +177,17 @@
 
 	drop_items = 0
 	share_damage = 0
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 
 	newVars = list("name" = "corrupted soul")
 
-	hud_state = "wiz_corrupt"
+	icon_state = "wiz_corrupt"
 
-/spell/targeted/shapeshift/corrupt_form/empower_spell()
+/datum/spell/targeted/shapeshift/corrupt_form/empower_spell()
 	if(!..())
 		return 0
 
-	switch(spell_levels[Sp_POWER])
+	switch(spell_levels[SP_POWER])
 		if(1)
 			duration *= 2
 			return "You will now stay corrupted for [duration/10] seconds."
