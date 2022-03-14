@@ -337,7 +337,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		if(data == 3) // intercepted radio message
 			part_b_extra = " <i>(Intercepted)</i>"
 
-		var/radio_icon = istype(radio, /obj/item/device/radio/headset) ? "<IMG CLASS=icon SRC=\ref[radio.icon] ICONSTATE='headset_generic'>" : "\icon[radio]<b>"
+		var/radio_icon = istype(radio, /obj/item/device/radio/headset) ? "<IMG CLASS=icon SRC=\ref[radio.icon] ICONSTATE='headset_generic'>" : "\icon[radio]"
 		var/part_a = "<span class='[frequency_span_class(display_freq)]'>[radio_icon]<b>\[[freq_text]\][part_b_extra]</b> <span class='name'>" // goes in the actual output
 
 		// --- Some more pre-message formatting ---
