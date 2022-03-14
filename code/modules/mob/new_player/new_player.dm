@@ -73,8 +73,12 @@
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
 				var/highjob
-				if(player.client && player.client.prefs && player.client.prefs.job_high)
-					highjob = " as [player.client.prefs.job_high]"
+				if(player.client && player.client.prefs)
+					if(player.client.pref.job_low && "Assistant" in player.client.pref.job_low)
+						highjob = " as Assistant"
+					else
+						if(player.client.prefs.job_high)
+							highjob = " as [player.client.prefs.job_high]"
 				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
