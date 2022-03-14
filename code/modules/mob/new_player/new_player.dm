@@ -75,10 +75,11 @@
 				var/highjob
 				if(player.client && player.client.prefs)
 					if(player.client.prefs.job_low && ("Assistant" in player.client.prefs.job_low))
-						highjob = " as Assistant"
+						highjob = "Assistant"
 					else
 						if(player.client.prefs.job_high)
-							highjob = " as [player.client.prefs.job_high]"
+							highjob = "[player.client.prefs.job_high]"
+				highjob = highjob ? " as [player.client.prefs.GetPlayerAltTitle(job_master.GetJob(highjob))]" : ""
 				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
