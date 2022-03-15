@@ -751,9 +751,6 @@
 	if(!istype(T) || T.isSynthetic())
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
-	if(T.isSynthetic())
-		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
-		return
 	if (!vampire_can_affect_target(T, 1, 1))
 		return
 	if (!T.client || !T.mind)
