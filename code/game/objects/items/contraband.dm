@@ -65,7 +65,11 @@
 	unique = 1
 	attack_verb = list("bashed", "whacked", "let into", "enlightened", "propagandized", "promulgated")
 	var/list/readers = list()
-	var/list/subjects = list(
+	var/list/subjects
+
+/obj/item/book/rev/Initialize()
+	. = ..()
+	subjects = list(
 			"the assassinations of independent press journalists",
 			"trumped-up criminal cases",
 			"lethal repression of peaceful protests",
