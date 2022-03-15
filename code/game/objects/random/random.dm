@@ -1220,6 +1220,12 @@ var/list/multi_point_spawns
 	id = "Captain's spare id"
 	item_path = /obj/item/card/id/captains_spare
 
+/obj/random_multi/single_item/bookrev
+	name = "multi point - Veridical Chronicles of NanoTrasen"
+	icon_state = "landmark_bookrev"
+	id = "Veridical Chronicles of NanoTrasen"
+	item_path = /obj/item/book/rev
+
 // Broken items, or stuff that could be picked up.
 /obj/random/junk
 	name = "random junk"
