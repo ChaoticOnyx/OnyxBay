@@ -18,6 +18,7 @@
 	thrown_force_const = 3
 	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
+	material_amount = 1
 	var/loaded      //Descriptive string for currently loaded food object.
 	var/scoop_food = 1
 
@@ -152,6 +153,7 @@
 	mod_weight = 1.2
 	mod_reach = 0.85
 	mod_handy = 0.9
+	material_amount = 3
 
 /obj/item/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((MUTATION_CLUMSY in user.mutations) && prob(50) && user.unEquip(src))

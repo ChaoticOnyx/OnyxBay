@@ -13,6 +13,7 @@
 	default_material = MATERIAL_WOOD
 	attack_verb = list("poked", "jabbed")
 	hitsound = SFX_FIGHTING_SWING
+	material_amount = 1
 
 /obj/item/material/stick/attack_self(mob/user as mob)
 	user.visible_message("<span class='warning'>\The [user] snaps [src].</span>", "<span class='warning'>You snap [src].</span>")
