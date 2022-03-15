@@ -65,7 +65,7 @@
 	unique = 1
 	attack_verb = list("bashed", "whacked", "revoluted", "enlightened", "propagandized", "promulgated")
 	var/list/readers = list()
-	var/list/subjects
+	var/list/subjects = list()
 
 /obj/item/book/rev/attack_self(mob/user)
 	if(carved)
