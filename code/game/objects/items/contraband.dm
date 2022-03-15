@@ -67,25 +67,6 @@
 	var/list/readers = list()
 	var/list/subjects
 
-/obj/item/book/rev/Initialize()
-	. = ..()
-	subjects = list(
-			"the assassinations of independent press journalists",
-			"trumped-up criminal cases",
-			"lethal repression of peaceful protests",
-			"the genocide of [pick("xenoraces", "tajaran", "unathi")]" = 2,
-			"NanoTrasen killing own employees",
-			"NanoTrasen [pick("getting involved in", "taking part in", "organizing", "establishing", "lobbying")] [pick("human", "drug", "arms")] trafficking" = 4,
-			"a high-ranking NT employee revealed to be a [pick("rapist", "cannibal", "pervert", "murderer", "paedophile")]" = 3,
-			"the surreptitious executions",
-			"biological weapons [pick("usage", "trafficking", "development")]",
-			"NanoTrasen security officers murdering [pick("", "tiny ", "cute ")][pick("kittens", "puppies")]",
-			"[pick("illegal", "unethical")] experiments on [pick("humans", "employees")]" = 2,
-			"the Death Squad activity",
-			"a high-ranking NT employee stealing money from a charitable foundation",
-			"NT using [pick("troops without insignia", "mercenaries")] to take over a [pick("neutral", "ally", "peaceful")] [pick("planet", "company", "system")]" = 2
-		)
-
 /obj/item/book/rev/attack_self(mob/user)
 	if(carved)
 		if(!store)
@@ -104,6 +85,23 @@
 		if(!do_after(user, 6 SECOND, src))
 			to_chat(user, SPAN("warning", "Your reading has been interrupted."))
 			return
+		subjects.Cut()
+		subjects = list(
+			"the assassinations of independent press journalists",
+			"trumped-up criminal cases",
+			"lethal repression of peaceful protests",
+			"the genocide of [pick("xenoraces", "tajaran", "unathi")]" = 2,
+			"NanoTrasen killing own employees",
+			"NanoTrasen [pick("getting involved in", "taking part in", "organizing", "establishing", "lobbying")] [pick("human", "drug", "arms")] trafficking" = 4,
+			"a high-ranking NT employee revealed to be a [pick("rapist", "cannibal", "pervert", "murderer", "paedophile")]" = 3,
+			"the surreptitious executions",
+			"biological weapons [pick("usage", "trafficking", "development")]",
+			"NanoTrasen security officers murdering [pick("", "tiny ", "cute ")][pick("kittens", "puppies")]",
+			"[pick("illegal", "unethical")] experiments on [pick("humans", "employees")]" = 2,
+			"the Death Squad activity",
+			"a high-ranking NT employee stealing money from a charitable foundation",
+			"NT using [pick("troops without insignia", "mercenaries")] to take over a [pick("neutral", "ally", "peaceful")] [pick("planet", "company", "system")]" = 2
+		)
 		to_chat(user, "You read about [pickweight(subjects)] [pick("in", "in the year")] [rand(2125, 2564)].")
 
 	if((user.real_name in readers) || player_is_antag(user.mind))
