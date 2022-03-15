@@ -24,7 +24,7 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
-	if(istype(H.species, /datum/species/machine))
+	if(istype(species, /datum/species/machine))
 		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
