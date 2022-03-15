@@ -36,7 +36,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (!istype(T) || isSynthetic(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (!istype(T) || T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		//Added this to prevent vampires draining diona and IPCs
 		//Diona have 'blood' but its really green sap and shouldn't help vampires
 		//IPCs leak oil
@@ -751,7 +751,7 @@
 	if (!istype(T))
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
-	if(isSynthetic(T))
+	if(T.isSynthetic())
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
 	if (!vampire_can_affect_target(T, 1, 1))
@@ -864,7 +864,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (isSynthetic(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 
@@ -904,7 +904,7 @@
 	if (T.stat == 2)
 		to_chat(src, SPAN_WARNING("[T]'s body is broken and damaged beyond salvation. You have no use for them."))
 		return
-	if (isSynthetic(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 	if (vampire.status & VAMP_DRAINING)
