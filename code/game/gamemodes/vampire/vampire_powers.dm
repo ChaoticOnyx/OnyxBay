@@ -748,7 +748,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (!istype(T))
+	if(!istype(T) || T.isSynthetic())
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
 	if(T.isSynthetic())
