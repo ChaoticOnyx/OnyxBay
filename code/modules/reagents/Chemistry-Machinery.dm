@@ -460,7 +460,12 @@
 		if(BP_IS_ROBOTIC(I))
 			to_chat(user, "\The [O] is not suitable for blending.")
 			return 1
-	else if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/reagent_containers/dropper))
+	if(istype(O, /obj/item/stack/material))
+		var/obj/item/stack/material/stack = O
+		if(!stack.material.reagent_path)
+			to_chat(user, "\The [O] is not suitable for blending.")
+			return 1
+	else if(!O.reagents?.total_volume || istype(O, /obj/item/reagent_containers/dropper))
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
