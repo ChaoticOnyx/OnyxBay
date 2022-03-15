@@ -221,6 +221,8 @@
 	user.setMoveCooldown(move_delay)
 	next_fire_time = world.time + fire_delay
 
+	return TRUE
+
 //obtains the next projectile to fire
 /obj/item/gun/proc/consume_next_projectile()
 	return null

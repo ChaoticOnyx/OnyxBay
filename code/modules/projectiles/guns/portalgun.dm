@@ -7,7 +7,7 @@
 	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal_gun"
 	//item_state = "portalgun0"
-	item_state = "revolver" // TODO: make portal gun sprite in hand
+	item_state = "portalgun0" // TODO: make portal gun sprite in hand
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_MATERIAL = 7, TECH_BLUESPACE = 6, TECH_MAGNET = 5)
 	//inhand_states = list("left_hand" = 'icons/mob/in-hand/left/guns_experimental.dmi', "right_hand" = 'icons/mob/in-hand/right/guns_experimental.dmi') // need sprite
@@ -40,6 +40,19 @@
 	setting = !setting
 	fire_sound = setting ? 'sound/weapons/portalgun_red.ogg' : 'sound/weapons/portalgun_blue.ogg'
 	to_chat(user, "Now set to fire <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"] portals</span>.")
+	update_icon()
+
+/obj/item/gun/portalgun/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
+	. = ..()
+	if(.)
+		on_fire_item_icon_change()
+		addtimer(CALLBACK(src, .proc/on_fire_item_icon_change, TRUE), fire_delay)
+
+/obj/item/gun/portalgun/proc/on_fire_item_icon_change(reset = FALSE)
+	if(reset)
+		item_state = "portalgun0"
+	else
+		item_state = "portalgun1"
 	update_icon()
 
 /obj/item/gun/portalgun/update_icon()
