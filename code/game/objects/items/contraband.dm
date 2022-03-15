@@ -63,7 +63,7 @@
 	desc = "A rather shabby book with a crossed-out NT logo on its cover."
 	w_class = 2
 	unique = 1
-	attack_verb = list("bashed", "whacked", "let into", "enlightened", "propagandized", "promulgated")
+	attack_verb = list("bashed", "whacked", "revoluted", "enlightened", "propagandized", "promulgated")
 	var/list/readers = list()
 	var/list/subjects
 
