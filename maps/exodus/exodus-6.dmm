@@ -779,7 +779,7 @@
 "oY" = (/obj/effect/floor_decal/industrial/warning/dust{dir = 9},/obj/machinery/light/small/hl{icon_state = "hanginglantern1"; dir = 1},/turf/simulated/floor/plating/airless,/area/mine/explored)
 "oZ" = (/obj/structure/railing{dir = 1},/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/turf/simulated/floor/asteroid,/area/mine/explored)
 "pa" = (/obj/structure/table/steel,/obj/item/stack/material/glass{amount = 50},/obj/machinery/alarm{dir = 1; pixel_y = -24},/obj/machinery/light/small,/turf/simulated/floor,/area/outpost/main_outpost/dorms/substation)
-"pb" = (/obj/effect/floor_decal/corner/brown/diagonal{dir = 4},/obj/structure/table/steel,/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/obj/effect/floor_decal/oldflood,/obj/machinery/recharger,/turf/simulated/floor/tiled/dirty,/area/outpost/mining_main/refinery)
+"pb" = (/obj/effect/floor_decal/corner/brown/diagonal{dir = 4},/obj/structure/table/steel,/obj/effect/floor_decal/industrial/warning/dust{dir = 1},/obj/effect/floor_decal/oldflood,/obj/machinery/recharger,/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine,/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine,/turf/simulated/floor/tiled/dirty,/area/outpost/mining_main/refinery)
 "pc" = (/obj/effect/floor_decal/corner/red/three_quarters{dir = 1},/obj/effect/decal/cleanable/blood,/obj/effect/decal/remains,/turf/simulated/floor/tiled/dark,/area/maintenance/ghetto_syndie)
 "pd" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor,/area/outpost/mining_main/maintenance)
 "pe" = (/obj/machinery/vending/snack/medbay,/obj/effect/floor_decal/industrial/outline/orange,/turf/simulated/floor/tiled,/area/outpost/main_outpost/challway)

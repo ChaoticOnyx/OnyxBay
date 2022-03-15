@@ -178,9 +178,9 @@
 	volume = 5
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad
-	icon_state = "yellowgreen1"
+	icon_state = "orange1"
 	content_desc = "Hyronalin 10u. Use in case of radiation poisoning."
-	base_state = "yellowgreen"
+	base_state = "orange"
 	starts_with = list(/datum/reagent/hyronalin = 10)
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad/mine
