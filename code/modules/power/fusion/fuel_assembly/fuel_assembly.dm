@@ -26,10 +26,6 @@
 		desc = "A fuel rod for a fusion reactor. This one is made from [material.use_name]."
 		fuel_colour = material.icon_colour
 		fuel_type = material.use_name
-		if(material.radioactivity)
-			radioactivity = material.radioactivity
-			desc += " It is warm to the touch."
-			START_PROCESSING(SSobj, src)
 		if(material.luminescence)
 			set_light(material.luminescence, 0.1, material.luminescence, 2, material.icon_colour)
 	else

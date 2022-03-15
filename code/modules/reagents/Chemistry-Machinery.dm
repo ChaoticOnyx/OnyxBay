@@ -369,7 +369,6 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 /obj/machinery/reagentgrinder
-
 	name = "All-In-One Grinder"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "juicer1"
@@ -378,6 +377,7 @@
 	anchored = 0
 	idle_power_usage = 5
 	active_power_usage = 100
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	component_types = list(
 		/obj/item/circuitboard/grinder,
 		/obj/item/stock_parts/scanning_module,

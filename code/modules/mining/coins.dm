@@ -37,11 +37,17 @@
 	name = "uranium coin"
 	icon_state = "coin_uranium"
 
+/obj/item/coin/uranium/Initialize()
+	. = ..()
+	
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, 1, null, FALSE)
+
 /obj/item/coin/platinum
 	name = "platinum coin"
 	icon_state = "coin_adamantine"
 
-/obj/item/coin/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/coin/attackby(obj/item/W, mob/user)
 	if(isCoil(W))
 		var/obj/item/stack/cable_coil/CC = W
 		if(string_attached)

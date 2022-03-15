@@ -388,6 +388,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)

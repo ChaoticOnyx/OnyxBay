@@ -121,6 +121,18 @@
 	icon_state = "uranium"
 	default_type = MATERIAL_URANIUM
 
+/obj/item/stack/material/uranium/Initialize()
+	. = ..()
+	
+	create_reagents(get_max_amount())
+	reagents.add_reagent(/datum/reagent/uranium, amount, null, FALSE)
+
+/obj/item/stack/material/uranium/add(extra)
+	if(!..(extra))
+		return
+	
+	reagents.add_reagent(/datum/reagent/uranium, extra)
+
 /obj/item/stack/material/uranium/ten
 	amount = 10
 
