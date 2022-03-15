@@ -751,7 +751,7 @@
 	if (!istype(T))
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
-	if(is_mechanical(T) || isSynthetic(T))
+	if(isSynthetic(T))
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
 	if (!vampire_can_affect_target(T, 1, 1))
