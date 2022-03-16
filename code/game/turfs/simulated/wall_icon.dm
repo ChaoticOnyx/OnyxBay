@@ -1,4 +1,5 @@
 /turf/simulated/wall/proc/update_material()
+
 	if(!material)
 		return
 
@@ -25,10 +26,6 @@
 	SSradiation.resistance_cache.Remove(src)
 	update_connections(1)
 	update_icon()
-
-	if(istype(material, /material/uranium))
-		create_reagents()
-		reagents.add_reagent(/datum/reagent/uranium, 10, null, FALSE)
 
 
 /turf/simulated/wall/proc/set_material(material/newmaterial, material/newrmaterial)

@@ -76,9 +76,6 @@
 			obj_flags |= OBJ_FLAG_CONDUCTIBLE
 		else
 			obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
-		if(istype(material, /material/uranium))
-			create_reagents()
-			reagents.add_reagent(/datum/reagent/uranium, 10, null, FALSE)
 		update_force()
 
 /obj/item/material/Destroy()

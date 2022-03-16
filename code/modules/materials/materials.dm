@@ -93,6 +93,7 @@ var/list/name_to_material
 
 	// Attributes
 	var/cut_delay = 0            // Delay in ticks when cutting through this wall.
+	var/radioactivity            // Radiation var. Used in wall and object processing to irradiate surroundings.
 	var/ignition_point           // K, point at which the material catches on fire.
 	var/melting_point = 1800     // K, walls will take damage if they're next to a fire hotter than this
 	var/brute_armor = 2	 		 // Brute damage to a wall is divided by this value if the wall is reinforced by this material.
@@ -201,7 +202,7 @@ var/list/name_to_material
 
 // Currently used for weapons and objects made of uranium to irradiate things.
 /material/proc/products_need_process()
-	return FALSE
+	return (radioactivity>0) //todo
 
 // Used by walls when qdel()ing to avoid neighbor merging.
 /material/placeholder
@@ -241,6 +242,7 @@ var/list/name_to_material
 /material/uranium
 	name = MATERIAL_URANIUM
 	stack_type = /obj/item/stack/material/uranium
+	radioactivity = 12
 	icon_base = "stone"
 	door_icon_base = "stone"
 	table_icon_base = "stone"
@@ -321,9 +323,11 @@ var/list/name_to_material
 /material/plasma/supermatter
 	name = "supermatter"
 	icon_colour = "#ffff00"
+	radioactivity = 20
 	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PLASMA = 4)
 	stack_type = null
 	luminescence = 3
+
 
 //Controls plasma and plasma based objects reaction to being in a turf over 200c -- Plasma's flashpoint.
 /material/plasma/combustion_effect(turf/T, temperature, effect_multiplier)

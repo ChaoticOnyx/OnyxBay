@@ -153,7 +153,6 @@
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
-	radiation = 2
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)
@@ -165,13 +164,9 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
-
 			if(!glow)
-				glow = new (T)
-				glow.create_reagents(volume)
-
-			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
-			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
+				new /obj/effect/decal/cleanable/greenglow(T)
+			return
 
 /datum/reagent/water/holywater
 	name = "Holy Water"
