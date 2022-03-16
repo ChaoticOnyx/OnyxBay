@@ -1,5 +1,3 @@
-
-#define SURGERY_DURATION_DELTA rand(9,11) / 10 // delta multiplier for all surgeries, from 0.9 to 1.1
 #define SURGERY_FAILURE -1
 #define SURGERY_BLOCKED -2
 #define SURGERY_ORGAN_REMOVE 0
@@ -20,7 +18,7 @@
 	category_text = "Medical"
 
 /obj/item/integrated_circuit/medical/surgery_device
-	name = "basic surgery device" // help, I don't know, how to name this circuit :(
+	name = "surgical manipulator"
 	desc = "This device is a manipulator compatible with most surgical instruments. While holding such an instrument, it can perform various surgical operations."
 	extended_desc = "Takes a target ref to do operation on and bodypart of target to do operation on, pulse activation pin, have a happy operation!"
 	ext_cooldown = 10
@@ -64,56 +62,6 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/on_item_insert(obj/item/I)
 	QDEL_NULL(st)
-
-/obj/item/integrated_circuit/medical/surgery_device/proc/wait_check_mob(mob/target, time = 30, target_zone = 0, uninterruptible = FALSE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT)
-	var/obj/item/device/electronic_assembly/ASS = assembly
-	if(!ASS || !target)
-		return 0
-	var/user_loc = ASS.loc
-	var/target_loc = target.loc
-
-	var/endtime = world.time+time
-	. = TRUE
-	while (world.time < endtime)
-		stoplag()
-
-		if(!ASS || !target)
-			. = FALSE
-			break
-
-		if(uninterruptible)
-			continue
-
-		if(!ASS || ASS.loc != user_loc)
-			. = FALSE
-			break
-
-		if(target.loc != target_loc)
-			. = FALSE
-			break
-
-		if(get_dist(ASS, target) > 1)
-			. = FALSE
-			break
-
-		var/lying = FALSE
-		var/turf/T = get_turf(target)
-		if(locate(/obj/machinery/optable, T))
-			lying = TRUE
-		if(locate(/obj/structure/bed, T))
-			lying = TRUE
-		if(locate(/obj/structure/table, T))
-			lying = TRUE
-		if(locate(/obj/effect/rune, T))
-			lying = TRUE
-
-		if(!lying)
-			. = FALSE
-			break
-
-		if(target_zone && selected_zone != target_zone)
-			. = FALSE
-			break
 
 /obj/item/integrated_circuit/medical/surgery_device/Initialize()
 	. = ..()
@@ -203,34 +151,13 @@
 	//check if tool is right or close enough and if this step is possible
 	var/obj/item/user = get_object()
 	if(S.tool_quality(instrument))
-		var/status = TRUE
 		var/step_is_valid
 		if(use_integrated_circuit_can_use_check)
 			step_is_valid = can_use(M, organ, selected_zone)
 		else
 			step_is_valid = S.can_use(user, M, selected_zone, instrument)
 		if(step_is_valid && S.is_valid_target(M))
-			if(S.clothes_penalty && clothes_check(user, M, selected_zone) == SURGERY_BLOCKED)
-				return FALSE
-			if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
-				return FALSE
-			M.op_stage.in_progress += selected_zone
-			S.begin_step(user, M, selected_zone, instrument)		//start on it
-			//We had proper tools! (or RNG smiled.) and user did not move or change hands.
-			if(prob(S.success_chance(user, M, instrument, selected_zone)) &&  wait_check_mob(M, S.duration * SURGERY_DURATION_DELTA * surgery_speed, selected_zone))
-				S.end_step(user, M, selected_zone, instrument)		//finish successfully
-			else if(user.Adjacent(M))			//or
-				S.fail_step(user, M, selected_zone, instrument)		//malpractice~
-			else // This failing silently was a pain.
-				status = FALSE
-			if(M)
-				M.op_stage.in_progress -= selected_zone 									// Clear the in-progress flag.
-			if(ishuman(M))
-				var/mob/living/carbon/human/H = M
-				H.update_surgery()
-				if(H.op_stage.current_organ)
-					H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
-			return status 												//don't want to do weapony things after surgery
+			return S.do_surgery_process(M, user, selected_zone, instrument, step_is_valid)
 	return SURGERY_FAILED_STATE // for checks...
 /*
 	SUBTYPES.
@@ -652,7 +579,6 @@
 
 #undef SURGERY_FAILURE
 #undef SURGERY_BLOCKED
-#undef SURGERY_DURATION_DELTA
 #undef SURGERY_ORGAN_REMOVE
 #undef SURGERY_ORGAN_INSERT
 #undef SURGERY_ORGAN_HEAL
