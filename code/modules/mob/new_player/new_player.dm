@@ -73,7 +73,7 @@
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
 				var/highjob
-				if(player.client && player.client.prefs)
+				if(player.client?.prefs)
 					if(player.client.prefs.job_low && ("Assistant" in player.client.prefs.job_low))
 						highjob = " as Assistant"
 					else
