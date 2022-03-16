@@ -374,3 +374,10 @@
 	item_state = "sombrero"
 	desc = "You can practically taste the fiesta."
 	armor = list(melee = 10, bullet = 10, laser = 5,energy = 0, bomb = 30, bio = 0, rad = 0)
+
+/obj/item/clothing/head/foilhat
+	name = "foil hat"
+	desc = "I hate the antichrist! I hate the antichrist!"
+	icon_state = "foilhat"
+	body_parts_covered = 0
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 5, bomb = 0, bio = 0, rad = 0)
