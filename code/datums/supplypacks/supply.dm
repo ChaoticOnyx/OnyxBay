@@ -79,7 +79,6 @@
 					/obj/item/shovel,
 					/obj/item/pickaxe,
 					/obj/item/mining_scanner,
-					/obj/item/clothing/glasses/hud/standard/material,
 					/obj/item/clothing/glasses/hud/standard/meson)
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure

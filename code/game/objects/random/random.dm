@@ -862,7 +862,6 @@
 				/obj/item/clothing/glasses/threedglasses = 2,
 				/obj/item/clothing/glasses/hud/standard/meson = 8,
 				/obj/item/clothing/glasses/hud/standard/science = 6,
-				/obj/item/clothing/glasses/hud/standard/material = 5,
 				/obj/item/clothing/glasses/welding = 8,
 				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
 				/obj/item/clothing/glasses/tacgoggles = 1)
