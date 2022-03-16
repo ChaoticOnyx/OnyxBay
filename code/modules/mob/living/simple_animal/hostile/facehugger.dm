@@ -202,7 +202,7 @@
 		return ..()
 	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
 	user.drop_from_inventory(src)
-	F.facefuck(H, TRUE, TRUE)
+	F.facefuck(user, TRUE, TRUE)
 	..()
 
 
