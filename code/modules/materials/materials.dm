@@ -254,7 +254,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/uranium
 
 /material/diamond
-	name = "diamond"
+	name = MATERIAL_DIAMOND
 	stack_type = /obj/item/stack/material/diamond
 	flags = MATERIAL_UNMELTABLE
 	integrity = 250
@@ -273,7 +273,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/gold
-	name = "gold"
+	name = MATERIAL_GOLD
 	stack_type = /obj/item/stack/material/gold
 	icon_colour = "#edb52f"
 	weight = 40
@@ -287,14 +287,14 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/gold
 
 /material/gold/bronze //placeholder for ashtrays
-	name = "bronze"
+	name = MATERIAL_BRONZE
 	icon_colour = "#dd8639"
 	hardness = 55
 	weight = 30
 	reagent_path = null // Why in the world is this inherited from gold, sigh
 
 /material/silver
-	name = "silver"
+	name = MATERIAL_SILVER
 	stack_type = /obj/item/stack/material/silver
 	icon_colour = "#d1e6e3"
 	weight = 22
@@ -307,7 +307,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/silver
 
 /material/plasma
-	name = "plasma"
+	name = MATERIAL_PLASMA
 	stack_type = /obj/item/stack/material/plasma
 	ignition_point = PLASMA_MINIMUM_BURN_TEMPERATURE
 	icon_base = "stone"
@@ -325,7 +325,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/toxin/plasma
 
 /material/plasma/supermatter
-	name = "supermatter"
+	name = MATERIAL_SUPERMATTER
 	icon_colour = "#ffff00"
 	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PLASMA = 4)
 	stack_type = null
@@ -349,7 +349,7 @@ var/list/name_to_material
 
 
 /material/stone
-	name = "sandstone"
+	name = MATERIAL_SANDSTONE
 	stack_type = /obj/item/stack/material/sandstone
 	icon_base = "stone"
 	table_icon_base = "stone"
@@ -368,7 +368,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/silicon
 
 /material/stone/marble
-	name = "marble"
+	name = MATERIAL_MARBLE
 	icon_colour = "#aaaaaa"
 	weight = 26
 	hardness = 60
@@ -419,7 +419,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/plasteel
-	name = "plasteel"
+	name = MATERIAL_PLASTEEL
 	stack_type = /obj/item/stack/material/plasteel
 	integrity = 400
 	melting_point = 6000
@@ -438,7 +438,7 @@ var/list/name_to_material
 	composite_material = list(MATERIAL_STEEL = 3750, MATERIAL_PLATINUM = 3750) //todo
 
 /material/plasteel/titanium
-	name = "titanium"
+	name = MATERIAL_TITANIUM
 	brute_armor = 10
 	burn_armor = 8
 	integrity = 200
@@ -452,7 +452,7 @@ var/list/name_to_material
 	icon_reinf = "reinf_metal"
 
 /material/plasteel/ocp
-	name = "osmium-carbide plasteel"
+	name = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	stack_type = /obj/item/stack/material/ocp
 	integrity = 300
 	melting_point = 12000
@@ -696,7 +696,7 @@ var/list/name_to_material
 	reagent_path = null
 
 /material/osmium
-	name = "osmium"
+	name = MATERIAL_OSMIUM
 	stack_type = /obj/item/stack/material/osmium
 	icon_colour = "#9999ff"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -704,7 +704,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/tritium
-	name = "tritium"
+	name = MATERIAL_TRITIUM
 	stack_type = /obj/item/stack/material/tritium
 	icon_colour = "#777777"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -713,7 +713,7 @@ var/list/name_to_material
 	is_fusion_fuel = 1
 
 /material/deuterium
-	name = "deuterium"
+	name = MATERIAL_DEUTERIUM
 	stack_type = /obj/item/stack/material/deuterium
 	icon_colour = "#999999"
 	stack_origin_tech = list(TECH_MATERIAL = 3)
@@ -741,7 +741,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/iron
-	name = "iron"
+	name = MATERIAL_IRON
 	stack_type = /obj/item/stack/material/iron
 	icon_colour = "#5c5454"
 	weight = 22
@@ -755,7 +755,7 @@ var/list/name_to_material
 
 // Adminspawn only, do not let anyone get this.
 /material/voxalloy
-	name = "voxalloy"
+	name = MATERIAL_VOX
 	display_name = "durable alloy"
 	stack_type = null
 	icon_colour = "#6c7364"
@@ -770,12 +770,12 @@ var/list/name_to_material
 
 // Likewise.
 /material/voxalloy/elevatorium
-	name = "elevatorium"
+	name = MATERIAL_ELEVATORIUM
 	display_name = "elevator panelling"
 	icon_colour = "#666666"
 
 /material/darkwood
-	name = "darkwood"
+	name = MATERIAL_DARKWOOD
 	adjective_name = "darkwooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#892929"
@@ -804,7 +804,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/woodpulp
 
 /material/wood
-	name = "wood"
+	name = MATERIAL_WOOD
 	adjective_name = "wooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#936041"
@@ -838,7 +838,7 @@ var/list/name_to_material
 	reagent_path = null
 
 /material/cardboard
-	name = "cardboard"
+	name = MATERIAL_CARDBOARD
 	stack_type = /obj/item/stack/material/cardboard
 	flags = MATERIAL_BRITTLE
 	integrity = 10
@@ -858,7 +858,7 @@ var/list/name_to_material
 	reagent_path = /datum/reagent/woodpulp // Probably makes some sense
 
 /material/cloth //todo
-	name = "cloth"
+	name = MATERIAL_CLOTH
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	door_icon_base = "wood"
 	ignition_point = T0C+232
@@ -869,7 +869,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cult
-	name = "cult"
+	name = MATERIAL_CULT
 	display_name = "disturbing stone"
 	icon_base = "cult"
 	icon_colour = "#402821"
@@ -884,12 +884,12 @@ var/list/name_to_material
 	new /obj/structure/girder/cult(target)
 
 /material/cult/reinf
-	name = "cult2"
+	name = MATERIAL_REINFORCED_CULT
 	display_name = "runic inscriptions"
 	resilience = 25
 
 /material/resin
-	name = "resin"
+	name = MATERIAL_RESIN
 	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
@@ -931,7 +931,7 @@ var/list/name_to_material
 
 //TODO PLACEHOLDERS:
 /material/leather
-	name = "leather"
+	name = MATERIAL_LEATHER
 	icon_colour = "#5c4831"
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	flags = MATERIAL_PADDING
@@ -941,7 +941,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/carpet
-	name = "carpet"
+	name = MATERIAL_CARPET
 	display_name = "comfy"
 	use_name = "red upholstery"
 	icon_colour = "#da020a"
@@ -954,7 +954,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cotton
-	name = "cotton"
+	name = MATERIAL_COTTON
 	display_name ="cotton"
 	icon_colour = "#ffffff"
 	flags = MATERIAL_PADDING
