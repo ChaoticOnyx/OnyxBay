@@ -1706,6 +1706,7 @@
 #include "code\modules\integrated_electronics\subtypes\arithmetic.dm"
 #include "code\modules\integrated_electronics\subtypes\converters.dm"
 #include "code\modules\integrated_electronics\subtypes\data_transfer.dm"
+#include "code\modules\integrated_electronics\subtypes\engineer.dm"
 #include "code\modules\integrated_electronics\subtypes\filter.dm"
 #include "code\modules\integrated_electronics\subtypes\input.dm"
 #include "code\modules\integrated_electronics\subtypes\lists.dm"

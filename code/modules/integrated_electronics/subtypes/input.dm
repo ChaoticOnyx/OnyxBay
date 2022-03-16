@@ -1227,66 +1227,6 @@
 	else
 		activate_pin(3)
 
-/obj/item/integrated_circuit/input/atmospheric_analyzer
-	name = "atmospheric analyzer"
-	desc = "A miniaturized analyzer which can scan anything that contains gases. Leave target as NULL to scan the air around the assembly."
-	extended_desc = "The nth element of gas amounts is the number of moles of the \
-					nth gas in gas list. \
-					Pressure is in kPa, temperature is in Kelvin. \
-					Due to programming limitations, scanning an object that does \
-					not contain a gas will return the air around it instead."
-	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	inputs = list(
-			"target" = IC_PINTYPE_REF
-			)
-	outputs = list(
-			"gas list" = IC_PINTYPE_LIST,
-			"gas amounts" = IC_PINTYPE_LIST,
-			"total moles" = IC_PINTYPE_NUMBER,
-			"pressure" = IC_PINTYPE_NUMBER,
-			"temperature" = IC_PINTYPE_NUMBER,
-			"volume" = IC_PINTYPE_NUMBER
-			)
-	activators = list(
-			"scan" = IC_PINTYPE_PULSE_IN,
-			"on success" = IC_PINTYPE_PULSE_OUT,
-			"on failure" = IC_PINTYPE_PULSE_OUT
-			)
-	power_draw_per_use = 5
-
-/obj/item/integrated_circuit/input/atmospheric_analyzer/do_work()
-	for(var/i=1 to 6)
-		set_pin_data(IC_OUTPUT, i, null)
-	var/atom/target = get_pin_data_as_type(IC_INPUT, 1, /atom)
-	if(!target)
-		target = get_turf(src)
-	if( get_dist(get_turf(target),get_turf(src)) > 1 )
-		activate_pin(3)
-		return
-
-	var/datum/gas_mixture/air_contents = target.return_air()
-	if(!air_contents)
-		activate_pin(3)
-		return
-
-	var/list/gases = air_contents.gas
-	var/list/gas_names = list()
-	var/list/gas_amounts = list()
-	for(var/id in gases)
-		var/name = gas_data.name[id]
-		var/amt = round(gases[id], 0.001)
-		gas_names.Add(name)
-		gas_amounts.Add(amt)
-
-	set_pin_data(IC_OUTPUT, 1, gas_names)
-	set_pin_data(IC_OUTPUT, 2, gas_amounts)
-	set_pin_data(IC_OUTPUT, 3, round(air_contents.get_total_moles(), 0.001))
-	set_pin_data(IC_OUTPUT, 4, round(air_contents.return_pressure(), 0.001))
-	set_pin_data(IC_OUTPUT, 5, round(air_contents.temperature, 0.001))
-	set_pin_data(IC_OUTPUT, 6, round(air_contents.volume, 0.001))
-	push_data()
-	activate_pin(2)
-
 /obj/item/integrated_circuit/input/data_card_reader
 	name = "data card reader"
 	desc = "A circuit that can read from and write to data cards."
