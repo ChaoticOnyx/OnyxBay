@@ -516,7 +516,7 @@
 "jV" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/shaker,/obj/item/packageWrap,/obj/item/wrapping_paper,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "jW" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/bottle/winewhite,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "jX" = (/obj/structure/closet/secure_closet/personal,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
-"jY" = (/obj/structure/table/woodentable,/obj/item/coin,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
+"jY" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/ne,/area/jungleplanet/jungle/landing)
 "jZ" = (/obj/machinery/door/airlock/glass{name = "Bar"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "ka" = (/obj/item/device/synthesized_instrument/guitar/multi,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "kb" = (/obj/machinery/door/airlock{name = "Bar"; req_access = list(25)},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
@@ -591,7 +591,7 @@
 "ls" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "lt" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
 "lu" = (/obj/structure/table/woodentable,/obj/machinery/recharger,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
-"lv" = (/obj/structure/table/woodentable,/obj/item/coin,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
+"lv" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/nw,/area/jungleplanet/jungle/landing)
 "lw" = (/obj/structure/bed/couch/brown/right{dir = 8},/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
 "lx" = (/obj/structure/flora/pottedplant/largeleaves,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
 "ly" = (/obj/machinery/light/small,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/cabin3)
@@ -650,7 +650,7 @@
 "mz" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lab)
 "mA" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 9},/obj/structure/table/rack,/obj/item/clothing/suit/armor/vest,/obj/item/clothing/head/helmet,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "mB" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 1},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
-"mC" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Anomaly Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
+"mC" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Anomaly Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "mD" = (/obj/effect/floor_decal/industrial/boxcorners/red{dir = 1; icon_state = "box_corners"},/obj/effect/alien/weeds,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
 "mE" = (/obj/effect/alien/weeds,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
 "mF" = (/obj/effect/floor_decal/industrial/boxcorners/red{dir = 4; icon_state = "box_corners"},/obj/effect/alien/weeds,/obj/effect/decal/remains,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
@@ -673,8 +673,8 @@
 "mW" = (/obj/structure/sign/junglecamo{pixel_x = -32; pixel_y = -32},/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "mX" = (/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "mY" = (/obj/structure/flora/tree/green/small/tree3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/southwest)
-"mZ" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/ne,/area/jungleplanet/jungle/landing)
-"na" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/nw,/area/jungleplanet/jungle/landing)
+"mZ" = (/obj/structure/table/woodentable,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/item/material/coin/silver,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
+"na" = (/obj/structure/table/woodentable,/obj/item/material/coin/silver,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
 "nb" = (/obj/structure/window_frame/broken,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "nc" = (/obj/structure/sign/junglecamo{pixel_x = 32; pixel_y = -32},/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/glowingflower/blue,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "nd" = (/turf/simulated/floor/natural/jungle/grasscorner1{icon_state = "grassdirt_corner"; dir = 4},/area/jungleplanet/jungle/lab)
@@ -810,7 +810,7 @@
 "pD" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pE" = (/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pF" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
-"pG" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Cave Access Airlock"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
+"pG" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Cave Access Airlock"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pH" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pI" = (/obj/structure/boulder,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/cave/cavesystem)
 "pJ" = (/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
@@ -823,7 +823,7 @@
 "pQ" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "pR" = (/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "pS" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"pT" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Access"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
+"pT" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Access"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "pU" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pV" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pW" = (/obj/structure/flora/ausbushes/reedbush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
@@ -859,7 +859,7 @@
 "qA" = (/obj/structure/bed/nest,/obj/effect/alien/weeds,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/cave)
 "qB" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "qC" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"qD" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Access"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
+"qD" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Access"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "qE" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qF" = (/obj/machinery/light/he,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qG" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
@@ -880,7 +880,7 @@
 "qV" = (/obj/structure/closet/l3closet/virology,/obj/effect/floor_decal/corner/alt/purple,/obj/effect/floor_decal/industrial/warning/corner{icon_state = "warningcorner"; dir = 1},/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "qW" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/floor_decal/jungledirt/grass/edge,/obj/effect/floor_decal/industrial/warning/corner,/obj/machinery/light/he{icon_state = "hetube1"; dir = 4},/obj/structure/sign/warning/science{pixel_x = 32},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
 "qX" = (/obj/structure/closet/l3closet/virology,/obj/effect/floor_decal/corner/alt/purple,/obj/effect/floor_decal/industrial/warning/corner{icon_state = "warningcorner"; dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"qY" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Meeting Room"; req_access = newlist()},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
+"qY" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Meeting Room"; req_access = newlist()},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qZ" = (/obj/machinery/door/airlock/research{icon = 'icons/obj/doors/doorsci.dmi'; id_tag = "researchdoor"; name = "Speciment Research Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "ra" = (/obj/machinery/washing_machine,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "rb" = (/obj/machinery/light/he,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
@@ -2515,16 +2515,16 @@ amFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFBFCFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZgl
 amFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFwFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCFuFuFuFufWfWfWfWfWgcfQfRgdfEfGfGfHfHfHfHgkgkgkgkfHfHfHfHfHesesesesesFrCkkVkVepetetetetetdwdwchchwXdocfRecgeNaFaNLALBaOaOtVLCJQubJRaFlgwKdadadadadadadadadadadadadafJfOfVdadaemereudpeydsezereqdadaEheadRdRdRvvvvvvvvvvam
 amFAFAFAFAFAFAFAFAFEFEFEFEFAFAFAFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFGgAgAgAgKfWfWfWkLfEfEfEfEfEfEfEgkgkgkfEfEkMfGfHfHfHeseBeCeEesgngpgqgrgreteFeGeHetdwgvchchwXdocfcfclcncjtQtSLDaOJStWLEaQaFaFaFlgCNdadadadadadadadadadadadadakNeafVdadadaemdMeIeieIdMeqdadadaEheadRdRdRvvvvvvvvvvam
 amFAFAFAFAFAFAFAFHFEFEFEUGFFFFFFFIFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFyUHfEfEkPgAgKfWkLfEfEfEfEfEkMfEfEfEfEfEfEfEfGfGfHfHeseseJesesgnchgwgrgreteteKetetgvgvcheNwXdocfQCcfcfaOaOaOaORdLFLGtSaQaFaFaFRhwKdadadadadadadadadadadadadaEheafVdadadadadMeIeLeIdMdadadadaEhdRdRdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFAFHFHFEFEFEFEFEFFFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEkRfWgcfRfEfEfEfEfEfEfElafEUIfEfGfGgxdwdweseReSeTesgzcncncngJeteUeVeWetgvchchchwXdocfcfdrduububububububububRiaFJVaFaFwKdadadadadadadadadadadadadaEheavmdadadadaemmZfanaeqdadadadaEkdRdEdEvvvvvvvvvvvvam
+amFAFAFAFAFAFAFAFHFHFEFEFEFEFEFFFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEkRfWgcfRfEfEfEfEfEfEfElafEUIfEfGfGgxdwdweseReSeTesgzcncncngJeteUeVeWetgvchchchwXdocfcfdrduububububububububRiaFJVaFaFwKdadadadadadadadadadadadadaEheavmdadadadaemjYfalveqdadadadaEkdRdEdEvvvvvvvvvvvvam
 amFAFAFAFAFAFAFAFHFLFLLfFLLfFLFLFFFDFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkULkRfWfWkLfEvrfEfEvsvsfEfEfEfEfGfGgxgxgOdwesfcHRJTfgkTkZkZkZkZfhjOLvfjetgvchchchwXdocfcfcgchaFueaFlglgaFJYaFJWKHjQjQjQvUdadadadadadadadadadadadadaEheabddadadadadaemfkeqdadadadadaEkdEdEdEvvvvvvvvvvvvam
 amFAFAFAFAFAFAFAFHFLFNFOFPFQFRFLFwFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEvyfEgkkPgKfWkLfEfEfEvsvzvsvsvskMfGfGfGgxgOgOchwngBgCLgesldcJcfdrduetLhLiLjEbOUlklklkLrllkZkZlmlklktkRCRDoWoWgHoWtbgHgHaFaFKchQdadadadadadadadadadadahQEheabdhQdadadadadadadadadadadahQEkdRdRdEvvvvvvvvvvvvam
 amFAFAFAFAFAFAFAFELfFSFTFUFVRSLfFwFDFuFuFXfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEfEkRfWkLfEfEfEvsvsvAvsFMFMFMhShShSgOchcheshTidizwnltdocfcglHGMiHiIiJetwXchlIOxchdocfcfcgchgvlJgHiKlEiMiNiOHQiQgHaFaFaFRlvMvMvMvMvMvMvMvMvMvMvMvMeaeaeavMvMvYvYvYvYvYvMvMvMvMvMvYdRdRdRdEvvvvvvvvvvvvam
 amFAFAFAFAFAFAFEFEFLFYFUFUFZGaLfFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfFfEfEfEkRfWkLfEwcfEfEvsvsvzFMiRiSiTiUhSchlKlLesesKjwnwnlHdocfcgpzGMGMGMetetwXchOxHochdocfcfcglKchKGgHiWlDlCthkaJZLlgHoWoWoWeaeaeaeaeaeaeaeaImfOfOeaeaeaIteadRdRdRdEdEdRdRdReaeaeaeaeaeaeadRvvvvvvvvvvvvvvam
 amFAFAFAFAFAFAFEFEFLGbFVFTGcGdLfFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkFlFuFuFuFukQfEfEfEfEfEkRfWkLfEfEfEfEvsvsvsFMjwjGKDLnKylklklkpAlkqaqklHltdocfcglHpzlHchchqlwXqmqocncncicfcfclPKPMKutftjtAtlkltnkxQFgHjVjWoWeaeadRdReaDGeafOfOfOfOfOfOeadRdRdRdRdEdEdRdReaeaeaeaeaeafOfOeadRvvvvvvvvvvvvvvam
-amFAFAFAFAFAFAFEFwLfGeGfFVFUGgLfGhGiFCFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFGIFfEfEIGfEIHkRfWgcfRfEfEfEfEvsvshSjXjGLpjYhSsLcncncncncncncncncicfclcncncncisOUbKrPNcisTsVsWcfcfcfPOPPPQjZtitmwxiYKvOyvbkbOZkdgHdRdRdRdRdRkeketokekeketokekeketokekedEdRdReaeaeaeaeaeafOIIfOeadRvvvvvvvvvvvvvvam
+amFAFAFAFAFAFAFEFwLfGeGfFVFUGgLfGhGiFCFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFGIFfEfEIGfEIHkRfWgcfRfEfEfEfEvsvshSjXjGLpmZhSsLcncncncncncncncncicfclcncncncisOUbKrPNcisTsVsWcfcfcfPOPPPQjZtitmwxiYKvOyvbkbOZkdgHdRdRdRdRdRkeketokekeketokekeketokekedEdRdReaeaeaeaeaeafOIIfOeadRvvvvvvvvvvvvvvam
 amFAFAFAFAFAFAFEFwFLGkGlGmFUFUFLFFUMFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGnfEIJIGIGUNfEkRfWfWkLfEUIfEIKvsvshSkgkhLqkjkkcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfKwcfPwPtcfcfcfcfcfPRcfVNPTtiOriXiYkmknkogHRmkqgHdRdRsXsXsXkekrkskukekrkskukekrkskukeketotototoeaeafOsCeafOeaeaeavvvvvvvvvvvvvvam
 amFAFAFAFAFAFAFwFwFLFLGoFLFLGpFLFFGqFDFuFuwNwOfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGrGnFwIGIGUOIGIGfEkPgKfWkLfEfEfEvAvzhShSkvhShSkwhShSdudududududucJcfcfcfcfcfdrdudududuKxPUdududucJcfcfdrPVPWsYHCiKOrPYPZiXOwiLgHkykzgHsXsXsXsZsZkekAkskBkekCkskDkekEkskFkekGkHkIkJtotofOfOfOfOfOeaeaeaeavvvvvvvvvvvvam
-amFAFAFAFAFAFAFwFwFLGsFVGtFLGuGvFwFwFBFCFuFuwNGjGjGjwOfZfZfZfZFkGjGjFlFuFuFuFGGrGrGrGnFwFwFwfEfEfEIGfEfEfEkRfWkLfEfEfEvsvshSkKlblchSlhlihSchtachchchchdotMcftPcfcfcgchchchKSqachchchchPXcfcfcgchchgrgHljQaiLQbvbiLQGgHlogHgHufsZsZsZsZkekelpkekekelqkekekelpkekelrlulvlwlxtofOfOIIfOeaeaeaeaeavvvvvvvvvvvvam
+amFAFAFAFAFAFAFwFwFLGsFVGtFLGuGvFwFwFBFCFuFuwNGjGjGjwOfZfZfZfZFkGjGjFlFuFuFuFGGrGrGrGnFwFwFwfEfEfEIGfEfEfEkRfWkLfEfEfEvsvshSkKlblchSlhlihSchtachchchchdotMcftPcfcfcgchchchKSqachchchchPXcfcfcgchchgrgHljQaiLQbvbiLQGgHlogHgHufsZsZsZsZkekelpkekekelqkekekelpkekelrlunalwlxtofOfOIIfOeaeaeaeaeavvvvvvvvvvvvam
 amFAFAFAFAFAFAFwUPFLGwGlGxFLGuGvFwFwFwFDFuFuFuFuFuFuwNGjGjGjGjFlFuFuFuFGGrGrGnFwFwFwFwFwFwFwfEfEfEfEfEfEfEkRfWgcfRfEfEfEvshShSlylzhSlAlBFMgOchuYchchchdovJcfcfcfcfcgchchvKwXvNvOeNchchPXPocfcgchvSgrgHQcQaQdvbQeQfQggHvVRnvZwbsZsZwdwptolFlGlGowlGlGpyqnqulGlGsQsRlGlGlGsUtoeafOfOearMeaeaeaeavvvvvvvvvvvvam
 amFAFAFAFAFAFAFwFwFLLfFLLfFLGyGzFwGAUQFBFCFuFuFuFuFuFuFuFuFuFuFuFGGrGrGnFwFwFwFwGBFwFwFwFwFwgdURfEfEILfEfEkRfWfWkLfEgdfEfEfEhShShShSlhlihSgOgOgOgOFJchdoFKcfGZHaHbcgchchLoOAtctctcgrchdocfcfcgchHcgHgHgHKBtePetgQhgHgHgHHdHewbwpwpwpKTuEtpLttqtztYLtLtHlLtLtLtHmHnLtLtLutstoeaeafOeaeaeaDFeadRdRvvvvvvvvvvam
 amFAFAFAFAFAFAFwFwGCGDGEGDGCFwFwFwFwGAFwFBFCFuFuFuFGGrGrGrGrGrGrGnFwFwUSFwFwFwFwFwFwFwGFFwFwfEfFfEfEfEgkUTkPgKfWgcfRfEfEfEfEvsvsvzhShShShSgxgxgOgOgOHgHhcJcfHiduduHjchchLoKFtutvtcgrHkdocfcfcgchchgHtwtxtLPfKaPgtBtCtDgHOIKzLcHDLdLdKbkeketEkekeketFkekeketFkeketGlGlGLwtHkeeaeaeaeaeadRdRdRdRdRvvvvvvvvvvam
