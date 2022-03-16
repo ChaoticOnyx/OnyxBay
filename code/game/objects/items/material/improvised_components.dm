@@ -6,6 +6,7 @@
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
 	hitsound = SFX_FIGHTING_SWING
+	material_amount = 2
 
 /obj/item/material/butterflyconstruction/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
@@ -21,6 +22,7 @@
 	icon_state = "butterfly2"
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
+	material_amount = 1
 
 /obj/item/material/butterflyhandle
 	name = "concealed knife grip"
@@ -30,6 +32,7 @@
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
 	hitsound = SFX_FIGHTING_SWING
+	material_amount = 1
 
 /obj/item/material/butterflyhandle/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/butterflyblade))
@@ -60,6 +63,7 @@
 	force_divisor = 0
 	thrown_force_divisor = 0
 	applies_material_colour = 0
+	material_amount = 2
 
 /obj/item/material/wirerod/attackby(obj/item/I, mob/user)
 	..()

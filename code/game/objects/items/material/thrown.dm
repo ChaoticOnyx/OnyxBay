@@ -15,6 +15,7 @@
 	throw_range = 15
 	sharp = 1
 	edge =  1
+	material_amount = 2
 
 /obj/item/material/star/ninja
 	default_material = MATERIAL_URANIUM

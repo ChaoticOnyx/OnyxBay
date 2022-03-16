@@ -7,6 +7,7 @@
 	item_state = "harpoon"
 	force_divisor = 0.3 // 18 with hardness 60 (steel)
 	attack_verb = list("jabbed","stabbed","ripped")
+	material_amount = 3
 
 /obj/item/material/hatchet
 	name = "hatchet"
@@ -27,6 +28,7 @@
 	attack_verb = list("chopped", "torn", "cut")
 	applies_material_colour = 0
 	hitsound = SFX_CHOP
+	material_amount = 3
 
 /obj/item/material/hatchet/tacknife
 	name = "tactical knife"
@@ -52,6 +54,7 @@
 	slot_flags = SLOT_BELT
 	force_const = 10
 	thrown_force_const = 5
+	material_amount = 3
 
 /obj/item/material/hatchet/machete/Initialize()
 	icon_state = "machete[pick("","_red","_blue", "_black", "_olive")]"
@@ -80,6 +83,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	attack_verb = list("slashed", "sliced", "cut", "clawed")
+	material_amount = 2
 
 /obj/item/material/scythe
 	icon_state = "scythe0"
@@ -99,5 +103,6 @@
 	slot_flags = SLOT_BACK
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 2)
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
+	material_amount = 5
 
 

@@ -22,7 +22,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 /datum/reagents/Process()
 	if(!my_atom?.loc)
 		return PROCESS_KILL
-	
+
 	THROTTLE(rad_cooldown, 10 SECOND)
 
 	// Add another update_*_effect procs here.
@@ -248,7 +248,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 /// Starts processing if reagents has some persistent effects, stop otherwise.
 /datum/reagents/proc/update_processing()
 	var/has_effects = 0
-	
+
 	for(var/datum/reagent/R in reagent_list)
 		if(R.get_radiation())
 			has_effects = TRUE

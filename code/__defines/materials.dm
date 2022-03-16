@@ -11,6 +11,7 @@
 #define MATERIAL_COTTON                  "cotton"
 #define MATERIAL_CARBON                  "carbon"
 #define MATERIAL_WOOD                    "wood"
+#define MATERIAL_DARKWOOD                "darkwood"
 #define MATERIAL_SANDSTONE               "sandstone"
 #define MATERIAL_LEATHER                 "leather"
 #define MATERIAL_IRON                    "iron"

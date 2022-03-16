@@ -153,7 +153,7 @@
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
-	radiation = 2
+	radiation = 0.05
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)
@@ -367,6 +367,13 @@
 	taste_description = "wood"
 	reagent_state = LIQUID
 	color = "#b97a57"
+
+/datum/reagent/glass
+	name = "Glass"
+	description = "A regular silicate glass, in form of a fine powder."
+	taste_description = "tiny cuts"
+	reagent_state = SOLID
+	color = "#b5edff"
 
 /datum/reagent/luminol
 	name = "Luminol"
