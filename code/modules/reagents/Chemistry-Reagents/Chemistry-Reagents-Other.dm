@@ -368,6 +368,13 @@
 	reagent_state = LIQUID
 	color = "#b97a57"
 
+/datum/reagent/glass
+	name = "Glass"
+	description = "A regular silicate glass, in form of a fine powder."
+	taste_description = "tiny cuts"
+	reagent_state = SOLID
+	color = "#b5edff"
+
 /datum/reagent/luminol
 	name = "Luminol"
 	description = "A compound that interacts with blood on the molecular level."

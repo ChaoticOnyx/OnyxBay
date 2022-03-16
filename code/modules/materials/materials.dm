@@ -493,6 +493,7 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/reinforced
 	hitsound = 'sound/effects/breaking/window/break1.ogg'
 	conductive = 0
+	reagent_path = /datum/reagent/glass
 
 /material/glass/build_windows(mob/living/user, obj/item/stack/used_stack)
 
@@ -619,6 +620,7 @@ var/list/name_to_material
 	created_window = /obj/structure/window/plasmabasic
 	wire_product = null
 	rod_product = /obj/item/stack/material/glass/rplass
+	reagent_path = null
 
 /material/glass/plass/reinforced
 	name = MATERIAL_REINFORCED_PLASS
