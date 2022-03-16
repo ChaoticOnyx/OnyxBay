@@ -26,10 +26,9 @@
 	update_connections(1)
 	update_icon()
 
-	if(istype(material, /material/uranium))
-		create_reagents()
-		reagents.add_reagent(/datum/reagent/uranium, 10, null, FALSE)
-
+	if(material.reagent_path)
+		create_reagents(2 * REAGENTS_PER_MATERIAL_SHEET)
+		reagents.add_reagent(material.reagent_path, 2 * REAGENTS_PER_MATERIAL_SHEET)
 
 /turf/simulated/wall/proc/set_material(material/newmaterial, material/newrmaterial)
 	material = newmaterial
