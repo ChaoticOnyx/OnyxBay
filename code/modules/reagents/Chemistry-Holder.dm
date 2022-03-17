@@ -276,13 +276,19 @@ while(__##target != null)\
 // Update effects.
 /// Update radiation effect.
 /datum/reagents/proc/update_radiation_effect()
+	my_atom.filters = list()
+
 	var/has_flag = FALSE
 	CHECK_FLAG_R(my_atom, EFFECT_FLAG_RAD_SHIELDED, has_flag)
 
 	if(has_flag)
 		return
 
-	SSradiation.radiate(my_atom, get_radiation())
+	var/radiation = get_radiation()
+	SSradiation.radiate(my_atom, radiation)
+
+	if(radiation > RAD_LEVEL_HIGH)
+		my_atom.filters = filter(type = "drop_shadow", x = 0, y = 0, size = 8, color = "#09ff00aa")
 
 #undef CHECK_FLAG_R
 
