@@ -300,15 +300,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"tgui-panel.bundle.css" = 'tgui/public/tgui-panel.bundle.css',
 	)
 
-/datum/asset/simple/tgfont
-	isTrivial = TRUE
-	verify = FALSE
-	assets = list(
-		"tgfont.eot" = 'tgui/packages/tgfont/dist/tgfont.eot',
-		"tgfont.woff2" = 'tgui/packages/tgfont/dist/tgfont.woff2',
-		"tgfont.css" = 'tgui/packages/tgfont/dist/tgfont.css'
-	)
-
 /datum/asset/directories/nanoui
 	isTrivial = FALSE
 	dirs = list(
