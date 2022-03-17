@@ -9,7 +9,6 @@
   },
   "workspaces": [
     "packages/common",
-    "packages/tgfont",
     "packages/tgui",
     "packages/tgui-dev-server",
     "packages/tgui-panel",
