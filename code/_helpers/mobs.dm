@@ -135,12 +135,10 @@
 	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
-	var/holding
+	var/holding = affecter.get_active_item()
 	var/datum/progressbar/progbar
-	if(istype(user))
-		holding = user.get_active_hand()
-		if(progress)
-			progbar = new(user, time, target)
+	if(istype(user) && progress)
+		progbar = new(user, time, target)
 
 	var/endtime = world.time+time
 	var/starttime = world.time
@@ -149,7 +147,7 @@
 
 		stoplag(1)
 
-		if(progress)
+		if(progbar)
 			progbar.update(world.time - starttime)
 
 		if(!affecter || !target)

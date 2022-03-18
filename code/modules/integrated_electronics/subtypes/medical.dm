@@ -63,6 +63,12 @@
 /obj/item/integrated_circuit/medical/surgery_device/proc/on_item_insert(obj/item/I)
 	QDEL_NULL(st)
 
+/obj/item/integrated_circuit/medical/surgery_device/get_selected_zone()
+	return selected_zone
+
+/obj/item/integrated_circuit/medical/surgery_device/get_active_item()
+	return instrument
+
 /obj/item/integrated_circuit/medical/surgery_device/Initialize()
 	. = ..()
 	if(!bodyparts_hint)
