@@ -359,7 +359,7 @@
 /obj/item/rig_module/power_sink
 
 	name = "powersuit power sink"
-	desc = "An heavy-duty power sink."
+	desc = "A heavy-duty power sink."
 	icon_state = "powersink"
 	toggleable = 1
 	activates_on_touch = 1

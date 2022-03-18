@@ -15,16 +15,7 @@
 	throw_range = 15
 	sharp = 1
 	edge =  1
-
-/obj/item/material/star/New()
-	..()
-
-/obj/item/material/star/throw_impact(atom/hit_atom)
-	..()
-	if(material.radioactivity>0 && istype(hit_atom,/mob/living))
-		var/mob/living/M = hit_atom
-		var/urgh = material.radioactivity
-		M.adjustToxLoss(rand(urgh/2,urgh))
+	material_amount = 2
 
 /obj/item/material/star/ninja
 	default_material = MATERIAL_URANIUM

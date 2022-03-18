@@ -1,6 +1,7 @@
 /atom
 	var/level = 2
 	var/atom_flags
+	var/effect_flags
 	var/list/blood_DNA
 	var/was_bloodied
 	var/blood_color
@@ -131,7 +132,7 @@
 
 // If you want to use this, the atom must have the PROXMOVE flag, and the moving
 // atom must also have the PROXMOVE flag currently to help with lag. ~ ComicIronic
-/atom/proc/HasProximity(atom/movable/AM as mob|obj)
+/atom/proc/HasProximity(atom/movable/AM)
 	return
 
 /atom/proc/emp_act(severity)

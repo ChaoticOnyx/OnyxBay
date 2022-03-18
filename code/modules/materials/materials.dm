@@ -93,7 +93,6 @@ var/list/name_to_material
 
 	// Attributes
 	var/cut_delay = 0            // Delay in ticks when cutting through this wall.
-	var/radioactivity            // Radiation var. Used in wall and object processing to irradiate surroundings.
 	var/ignition_point           // K, point at which the material catches on fire.
 	var/melting_point = 1800     // K, walls will take damage if they're next to a fire hotter than this
 	var/brute_armor = 2	 		 // Brute damage to a wall is divided by this value if the wall is reinforced by this material.
@@ -104,6 +103,7 @@ var/list/name_to_material
 	var/conductive = 1           // Objects with this var add CONDUCTS to flags on spawn.
 	var/luminescence
 	var/list/composite_material  // If set, object matter var will be a list containing these values.
+	var/reagent_path = null      // If set, the material is linked with the given chemical reagent.
 
 	var/resilience = 1			 // The higher this value is, the higher is the chance that bullets will ricochet from wall's surface. Don't set negative values.
 	var/reflectance = -50		 // Defines whether material in walls raises (positive values) or decreases (negative values) reflection chance. -50 <= reflectance <= 50 - recommended values.
@@ -202,7 +202,7 @@ var/list/name_to_material
 
 // Currently used for weapons and objects made of uranium to irradiate things.
 /material/proc/products_need_process()
-	return (radioactivity>0) //todo
+	return FALSE
 
 // Used by walls when qdel()ing to avoid neighbor merging.
 /material/placeholder
@@ -242,7 +242,6 @@ var/list/name_to_material
 /material/uranium
 	name = MATERIAL_URANIUM
 	stack_type = /obj/item/stack/material/uranium
-	radioactivity = 12
 	icon_base = "stone"
 	door_icon_base = "stone"
 	table_icon_base = "stone"
@@ -252,9 +251,10 @@ var/list/name_to_material
 	resilience = 16
 	reflectance = 15
 	stack_origin_tech = list(TECH_MATERIAL = 5)
+	reagent_path = /datum/reagent/uranium
 
 /material/diamond
-	name = "diamond"
+	name = MATERIAL_DIAMOND
 	stack_type = /obj/item/stack/material/diamond
 	flags = MATERIAL_UNMELTABLE
 	integrity = 250
@@ -273,7 +273,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/gold
-	name = "gold"
+	name = MATERIAL_GOLD
 	stack_type = /obj/item/stack/material/gold
 	icon_colour = "#edb52f"
 	weight = 40
@@ -284,15 +284,17 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 4)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
+	reagent_path = /datum/reagent/gold
 
 /material/gold/bronze //placeholder for ashtrays
-	name = "bronze"
+	name = MATERIAL_BRONZE
 	icon_colour = "#dd8639"
 	hardness = 55
 	weight = 30
+	reagent_path = null // Why in the world is this inherited from gold, sigh
 
 /material/silver
-	name = "silver"
+	name = MATERIAL_SILVER
 	stack_type = /obj/item/stack/material/silver
 	icon_colour = "#d1e6e3"
 	weight = 22
@@ -302,9 +304,10 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
+	reagent_path = /datum/reagent/silver
 
 /material/plasma
-	name = "plasma"
+	name = MATERIAL_PLASMA
 	stack_type = /obj/item/stack/material/plasma
 	ignition_point = PLASMA_MINIMUM_BURN_TEMPERATURE
 	icon_base = "stone"
@@ -319,15 +322,15 @@ var/list/name_to_material
 	sheet_singular_name = "crystal"
 	sheet_plural_name = "crystals"
 	is_fusion_fuel = 1
+	reagent_path = /datum/reagent/toxin/plasma
 
 /material/plasma/supermatter
-	name = "supermatter"
+	name = MATERIAL_SUPERMATTER
 	icon_colour = "#ffff00"
-	radioactivity = 20
 	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PLASMA = 4)
 	stack_type = null
 	luminescence = 3
-
+	reagent_path = null
 
 //Controls plasma and plasma based objects reaction to being in a turf over 200c -- Plasma's flashpoint.
 /material/plasma/combustion_effect(turf/T, temperature, effect_multiplier)
@@ -346,7 +349,7 @@ var/list/name_to_material
 
 
 /material/stone
-	name = "sandstone"
+	name = MATERIAL_SANDSTONE
 	stack_type = /obj/item/stack/material/sandstone
 	icon_base = "stone"
 	table_icon_base = "stone"
@@ -362,9 +365,10 @@ var/list/name_to_material
 	conductive = 0
 	resilience = 9
 	craft_tool = 1
+	reagent_path = /datum/reagent/silicon
 
 /material/stone/marble
-	name = "marble"
+	name = MATERIAL_MARBLE
 	icon_colour = "#aaaaaa"
 	weight = 26
 	hardness = 60
@@ -374,6 +378,7 @@ var/list/name_to_material
 	reflectance = 5
 	stack_type = /obj/item/stack/material/marble
 	craft_tool = 1
+	reagent_path = /datum/reagent/carbon
 
 /material/steel
 	name = MATERIAL_STEEL
@@ -414,7 +419,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/plasteel
-	name = "plasteel"
+	name = MATERIAL_PLASTEEL
 	stack_type = /obj/item/stack/material/plasteel
 	integrity = 400
 	melting_point = 6000
@@ -433,7 +438,7 @@ var/list/name_to_material
 	composite_material = list(MATERIAL_STEEL = 3750, MATERIAL_PLATINUM = 3750) //todo
 
 /material/plasteel/titanium
-	name = "titanium"
+	name = MATERIAL_TITANIUM
 	brute_armor = 10
 	burn_armor = 8
 	integrity = 200
@@ -447,7 +452,7 @@ var/list/name_to_material
 	icon_reinf = "reinf_metal"
 
 /material/plasteel/ocp
-	name = "osmium-carbide plasteel"
+	name = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	stack_type = /obj/item/stack/material/ocp
 	integrity = 300
 	melting_point = 12000
@@ -488,6 +493,7 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/reinforced
 	hitsound = 'sound/effects/breaking/window/break1.ogg'
 	conductive = 0
+	reagent_path = /datum/reagent/glass
 
 /material/glass/build_windows(mob/living/user, obj/item/stack/used_stack)
 
@@ -614,6 +620,7 @@ var/list/name_to_material
 	created_window = /obj/structure/window/plasmabasic
 	wire_product = null
 	rod_product = /obj/item/stack/material/glass/rplass
+	reagent_path = null
 
 /material/glass/plass/reinforced
 	name = MATERIAL_REINFORCED_PLASS
@@ -681,15 +688,17 @@ var/list/name_to_material
 	reflectance = -20
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	conductive = 0
+	reagent_path = /datum/reagent/toxin/plasticide
 
 /material/plastic/holographic
 	name = "holoplastic"
 	display_name = "plastic"
 	stack_type = null
 	shard_type = SHARD_NONE
+	reagent_path = null
 
 /material/osmium
-	name = "osmium"
+	name = MATERIAL_OSMIUM
 	stack_type = /obj/item/stack/material/osmium
 	icon_colour = "#9999ff"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -697,7 +706,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/tritium
-	name = "tritium"
+	name = MATERIAL_TRITIUM
 	stack_type = /obj/item/stack/material/tritium
 	icon_colour = "#777777"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -706,7 +715,7 @@ var/list/name_to_material
 	is_fusion_fuel = 1
 
 /material/deuterium
-	name = "deuterium"
+	name = MATERIAL_DEUTERIUM
 	stack_type = /obj/item/stack/material/deuterium
 	icon_colour = "#999999"
 	stack_origin_tech = list(TECH_MATERIAL = 3)
@@ -720,6 +729,7 @@ var/list/name_to_material
 	icon_colour = "#e6c5de"
 	stack_origin_tech = list(TECH_MATERIAL = 6, TECH_POWER = 6, TECH_MAGNET = 5)
 	is_fusion_fuel = 1
+	reagent_path = /datum/reagent/hydrazine
 
 /material/platinum
 	name = MATERIAL_PLATINUM
@@ -733,7 +743,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/iron
-	name = "iron"
+	name = MATERIAL_IRON
 	stack_type = /obj/item/stack/material/iron
 	icon_colour = "#5c5454"
 	weight = 22
@@ -743,10 +753,11 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	shard_type = SHARD_SCRAP
+	reagent_path = /datum/reagent/iron
 
 // Adminspawn only, do not let anyone get this.
 /material/voxalloy
-	name = "voxalloy"
+	name = MATERIAL_VOX
 	display_name = "durable alloy"
 	stack_type = null
 	icon_colour = "#6c7364"
@@ -761,12 +772,12 @@ var/list/name_to_material
 
 // Likewise.
 /material/voxalloy/elevatorium
-	name = "elevatorium"
+	name = MATERIAL_ELEVATORIUM
 	display_name = "elevator panelling"
 	icon_colour = "#666666"
 
 /material/darkwood
-	name = "darkwood"
+	name = MATERIAL_DARKWOOD
 	adjective_name = "darkwooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#892929"
@@ -792,9 +803,10 @@ var/list/name_to_material
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp
 
 /material/wood
-	name = "wood"
+	name = MATERIAL_WOOD
 	adjective_name = "wooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#936041"
@@ -818,15 +830,17 @@ var/list/name_to_material
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp
 
 /material/wood/holographic
 	name = "holowood"
 	display_name = "wood"
 	stack_type = null
 	shard_type = SHARD_NONE
+	reagent_path = null
 
 /material/cardboard
-	name = "cardboard"
+	name = MATERIAL_CARDBOARD
 	stack_type = /obj/item/stack/material/cardboard
 	flags = MATERIAL_BRITTLE
 	integrity = 10
@@ -843,9 +857,10 @@ var/list/name_to_material
 	destruction_desc = "crumples"
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp // Probably makes some sense
 
 /material/cloth //todo
-	name = "cloth"
+	name = MATERIAL_CLOTH
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	door_icon_base = "wood"
 	ignition_point = T0C+232
@@ -856,7 +871,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cult
-	name = "cult"
+	name = MATERIAL_CULT
 	display_name = "disturbing stone"
 	icon_base = "cult"
 	icon_colour = "#402821"
@@ -871,12 +886,12 @@ var/list/name_to_material
 	new /obj/structure/girder/cult(target)
 
 /material/cult/reinf
-	name = "cult2"
+	name = MATERIAL_REINFORCED_CULT
 	display_name = "runic inscriptions"
 	resilience = 25
 
 /material/resin
-	name = "resin"
+	name = MATERIAL_RESIN
 	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
@@ -918,7 +933,7 @@ var/list/name_to_material
 
 //TODO PLACEHOLDERS:
 /material/leather
-	name = "leather"
+	name = MATERIAL_LEATHER
 	icon_colour = "#5c4831"
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	flags = MATERIAL_PADDING
@@ -928,7 +943,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/carpet
-	name = "carpet"
+	name = MATERIAL_CARPET
 	display_name = "comfy"
 	use_name = "red upholstery"
 	icon_colour = "#da020a"
@@ -941,7 +956,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cotton
-	name = "cotton"
+	name = MATERIAL_COTTON
 	display_name ="cotton"
 	icon_colour = "#ffffff"
 	flags = MATERIAL_PADDING

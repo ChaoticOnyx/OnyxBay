@@ -20,7 +20,8 @@
 /datum/design/item/optical/material
 	name = "optical material scanner"
 	id = "mesons_material"
-	req_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+	req_tech = list(TECH_DATA = 3, TECH_MAGNET = 5, TECH_ENGINEERING = 6, TECH_MATERIAL = 6)
+	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50, MATERIAL_PLASMA = 100)
 	build_path = /obj/item/clothing/glasses/hud/standard/material
 	sort_string = "GBAAB"
 

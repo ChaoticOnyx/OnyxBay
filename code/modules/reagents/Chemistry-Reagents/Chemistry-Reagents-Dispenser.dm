@@ -168,6 +168,7 @@
 	taste_description = "the color blue, and regret"
 	reagent_state = SOLID
 	color = "#c7c7c7"
+	radiation = 0.15
 
 /datum/reagent/radium/affect_blood(mob/living/carbon/M, alien, removed)
 	M.apply_effect(10 * removed, IRRADIATE, blocked = 0) // Radium may increase your chances to cure a disease
@@ -189,9 +190,13 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
-			return
+				glow = new (T)
+				glow.create_reagents(volume)
+
+			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
+			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
 
 /datum/reagent/acid
 	name = "Sulphuric acid"

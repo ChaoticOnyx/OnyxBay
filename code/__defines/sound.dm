@@ -172,6 +172,12 @@
 #define SFX_FIGHTING_PUNCH          "fighting_punch"
 #define SFX_FIGHTING_SWING          "fighting_swing"
 
+// DEVICES
+#define SFX_GEIGER_LOW              "geiger_low"
+#define SFX_GEIGER_MODERATE         "geiger_moderate"
+#define SFX_GEIGER_HIGH             "geiger_high"
+#define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
+
 // MISC
 #define SFX_VENT                    "vent"
 #define SFX_GLASS_HIT               "glass_hit"

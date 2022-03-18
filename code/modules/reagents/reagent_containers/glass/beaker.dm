@@ -67,6 +67,13 @@
 /obj/item/reagent_containers/glass/beaker/large/get_storage_cost()
 	return ..() * 1.5
 
+/obj/item/reagent_containers/glass/beaker/plass
+	name = "plass beaker"
+	desc = "A beaker made of plass, it doesn't allow radiation to pass through."
+	icon_state = "plass_beaker"
+	matter = list(MATERIAL_PLASS = 2500)
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 /obj/item/reagent_containers/glass/beaker/noreact
 	name = "cryostasis beaker"
 	desc = "A cryostasis beaker that allows for chemical storage without reactions."
@@ -76,6 +83,7 @@
 	volume = 60
 	amount_per_transfer_from_this = 10
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_NO_REACT
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/item/reagent_containers/glass/beaker/bluespace
 	name = "bluespace beaker"

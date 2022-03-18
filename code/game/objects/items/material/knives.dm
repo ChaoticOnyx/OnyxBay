@@ -14,6 +14,7 @@
 	thrown_force_const = 3
 	force_divisor = 0.1 // 6 when wielded with hardness 60 (steel)
 	thrown_force_divisor = 0.25 // 5 when thrown with weight 20 (steel)
+	material_amount = 2
 
 /obj/item/material/butterfly/update_force()
 	if(active)
@@ -72,6 +73,7 @@
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	unbreakable = 1
+	material_amount = 2
 
 /obj/item/material/knife/hook
 	name = "meat hook"
@@ -112,6 +114,7 @@
 	force_const = 7.5
 	force_divisor = 0.125 // 7.5 when wielded with hardness 60 (steel)
 	attack_verb = list("cleaved", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	material_amount = 3
 
 /obj/item/material/knife/butch/kitchen
 	desc = "A huge thing used for chopping and chopping up meat. This includes clowns and clown-by-products. Made by SpaceCook Incorporated. Guaranteed to be shinier than your average steel cleaver."
@@ -142,6 +145,7 @@
 	slot_flags = SLOT_BELT
 	randpixel = 0
 	m_overlay = 1
+	material_amount = 2
 	var/hasgrip = 0
 
 /obj/item/material/knife/shiv/attackby(obj/item/W as obj, mob/user as mob)

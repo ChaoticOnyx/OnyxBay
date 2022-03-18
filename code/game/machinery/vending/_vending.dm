@@ -72,7 +72,7 @@
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/scan_id = 1
-	var/obj/item/coin/coin
+	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
 	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
 
@@ -237,7 +237,7 @@
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/coin) && premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
@@ -407,7 +407,7 @@
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)
 		shake_animation(stime = 4)
 		user.do_attack_animation(src)
-		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"), 
+		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"),
 			SPAN("danger", "You knock \the [src]!"),
 			SPAN("danger", "You hear a knock sound."))
 

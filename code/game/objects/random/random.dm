@@ -453,13 +453,13 @@
 	spawn_nothing_percentage = 50
 
 /obj/random/coin/spawn_choices()
-	return list(/obj/item/coin/gold = 5,
-				/obj/item/coin/silver = 10,
-				/obj/item/coin/diamond = 1,
-				/obj/item/coin/iron = 10,
-				/obj/item/coin/uranium = 1,
-				/obj/item/coin/platinum = 3,
-				/obj/item/coin/plasma = 1)
+	return list(/obj/item/material/coin/iron = 10,
+				/obj/item/material/coin/silver = 10,
+				/obj/item/material/coin/gold = 5,
+				/obj/item/material/coin/platinum = 3,
+				/obj/item/material/coin/uranium = 1,
+				/obj/item/material/coin/plasma = 1,
+				/obj/item/material/coin/diamond = 1)
 
 /obj/random/toy
 	name = "random toy"
@@ -862,7 +862,6 @@
 				/obj/item/clothing/glasses/threedglasses = 2,
 				/obj/item/clothing/glasses/hud/standard/meson = 8,
 				/obj/item/clothing/glasses/hud/standard/science = 6,
-				/obj/item/clothing/glasses/hud/standard/material = 5,
 				/obj/item/clothing/glasses/welding = 8,
 				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
 				/obj/item/clothing/glasses/tacgoggles = 1)
@@ -1219,6 +1218,12 @@ var/list/multi_point_spawns
 	icon_state = "landmark_card"
 	id = "Captain's spare id"
 	item_path = /obj/item/card/id/captains_spare
+
+/obj/random_multi/single_item/bookrev
+	name = "multi point - Veridical Chronicles of NanoTrasen"
+	icon_state = "landmark_bookrev"
+	id = "Veridical Chronicles of NanoTrasen"
+	item_path = /obj/item/book/rev
 
 // Broken items, or stuff that could be picked up.
 /obj/random/junk
