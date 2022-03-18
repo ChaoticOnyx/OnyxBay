@@ -36,20 +36,20 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 				C.play_ambience_music(GET_SFX(SFX_AMBIENT_MUSIC_SPACE_TRAVEL))
 				continue
 
-		var/tag = pick(A.ambient_music_meta_tags)
+		var/tag = pick(A.ambient_music_tags)
 		var/file_to_play = get_sound_by_tag(tag)
 		C.play_ambience_music(file_to_play)
 
 /datum/controller/subsystem/processing/conductor/proc/get_sound_by_tag(meta_tag)
 	switch(meta_tag)
-		if(META_MYSTIC)
+		if(MUSIC_TAG_MYSTIC)
 			return GET_SFX(SFX_AMBIENT_MUSIC_MYSTIC)
-		if(META_SPACE)
+		if(MUSIC_TAG_SPACE)
 			if(prob(20))
 				return GET_SFX(SFX_AMBIENT_MUSIC_MYSTIC)
 
 			return GET_SFX(SFX_AMBIENT_MUSIC_SPACE)
-		if(META_CENTCOMM)
+		if(MUSIC_TAG_CENTCOMM)
 			return GET_SFX(SFX_AMBIENT_MUSIC_CENTCOMM)
 		else
 			return GET_SFX(SFX_AMBIENT_MUSIC_NORMAL)
