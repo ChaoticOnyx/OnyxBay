@@ -757,8 +757,8 @@
 	adj_temp = -5
 
 	glass_required = "square"
-	glass_icon_state = "icedcoffee"
-	glass_name = "cafe latte"
+	glass_icon_state = "coffeelatte"
+	glass_name = "iced coffee"
 	glass_desc = "A drink to perk you up and refresh you!"
 	glass_special = list(DRINK_ICE)
 
