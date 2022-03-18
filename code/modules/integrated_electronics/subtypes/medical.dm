@@ -186,6 +186,11 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	var/obj/item/organ/organ
 
+/obj/item/integrated_circuit/medical/surgery_device/internal/get_active_item()
+	if(operation_intent == SURGERY_ORGAN_INSERT)
+		return organ
+	return instrument
+
 /obj/item/integrated_circuit/medical/surgery_device/internal/on_item_insert(obj/item/I)
 	..()
 	if(istype(I, /obj/item/scalpel))
