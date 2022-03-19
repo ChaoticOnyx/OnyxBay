@@ -14,6 +14,9 @@
 	if(!team_number)
 		team_number = 1
 
+	var/obj/item/device/radio/headset/abductor/R = locate() in H
+	R.team_number = team_number
+
 	var/obj/machinery/abductor/console/console = get_abductor_console(team_number)
 	if(console)
 		var/obj/item/clothing/suit/armor/abductor/vest/V = locate() in H

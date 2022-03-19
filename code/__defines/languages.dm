@@ -17,6 +17,7 @@
 #define LANGUAGE_SPACER "Spacer"
 #define LANGUAGE_ROBOT "Robot Talk"
 #define LANGUAGE_LING "Changeling"
+#define LANGUAGE_ABDUCTOR "Mother Ship Mental Interface"
 
 // Language flags.
 #define WHITELISTED  1   // Language is available if the speaker is whitelisted.

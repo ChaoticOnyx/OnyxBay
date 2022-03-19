@@ -4,6 +4,9 @@
 	breath_type = null
 	has_fine_manipulation = 1
 	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_BLOOD
+	default_language = LANGUAGE_ABDUCTOR
+	num_alternate_languages = 1
+	language = LANGUAGE_GALCOM
 	icobase = 'icons/mob/human_races/r_abductor.dmi'
 	deform = 'icons/mob/human_races/r_abductor.dmi'
 
