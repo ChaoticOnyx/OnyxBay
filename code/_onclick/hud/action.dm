@@ -218,6 +218,12 @@
 /datum/action/item_action/hands_free
 	check_flags = AB_CHECK_ALIVE|AB_CHECK_INSIDE
 
+//Presets for innate actions
+/datum/action/innate
+	check_flags = 0
+	active = 0
+	action_type = AB_INNATE
+
 #undef AB_WEST_OFFSET
 #undef AB_NORTH_OFFSET
 #undef AB_MAX_COLUMNS
