@@ -225,6 +225,7 @@
 #define BP_CANCER   "cancer"
 #define BP_EMBRYO   "alien embryo"
 #define BP_GANGLION "spinal ganglion"
+#define BP_GLAND    "heart"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -302,6 +303,7 @@
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"
