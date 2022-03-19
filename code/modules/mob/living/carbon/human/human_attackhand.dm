@@ -132,6 +132,7 @@
 
 			if(!istype(H))
 				attack_generic(H, rand(1, 3), "punched")
+				check_hit_reaction()
 				return
 
 			var/attack_damage = 5
@@ -282,6 +283,7 @@
 
 			// Finally, apply damage to target
 			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags())
+			check_hit_reaction()
 
 		if(I_DISARM)
 			if(H.species)
