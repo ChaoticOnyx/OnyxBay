@@ -215,20 +215,12 @@
 
 			BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 
-			//Handle possessive brain borers.
-			if(istype(obj,/mob/living/simple_animal/borer))
-				var/mob/living/simple_animal/borer/worm = obj
-				if(worm.controlling)
-					target.release_control()
-				worm.detatch()
-				worm.leave_host()
-			else
-				obj.dropInto(target.loc)
-				obj.add_blood(target)
-				obj.update_icon()
-				if(istype(obj,/obj/item/implant))
-					var/obj/item/implant/imp = obj
-					imp.removed()
+			obj.dropInto(target.loc)
+			obj.add_blood(target)
+			obj.update_icon()
+			if(istype(obj,/obj/item/implant))
+				var/obj/item/implant/imp = obj
+				imp.removed()
 			playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
 		else
 			user.visible_message("<span class='notice'>[user] removes \the [tool] from [target]'s [affected.name].</span>", \
