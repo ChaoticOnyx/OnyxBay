@@ -41,6 +41,7 @@
 /obj/item/organ/internal/heart/gland/proc/Start()
 	active = TRUE
 	addtimer(CALLBACK(src, .proc/do_after_cooldown),rand(cooldown_low, cooldown_high))
+	BITSET(owner.hud_updateflag, GLAND_HUD)
 
 /obj/item/organ/internal/heart/gland/proc/update_gland_hud()
 	if(!owner)
