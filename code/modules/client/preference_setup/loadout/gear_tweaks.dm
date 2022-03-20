@@ -70,6 +70,7 @@
 */
 
 /datum/gear_tweak/path
+	var/check_type = /obj/item
 	var/list/valid_paths
 
 /datum/gear_tweak/path/New(list/valid_paths)
@@ -87,8 +88,8 @@
 		if(!istext(path_name))
 			CRASH("Expected a text key, was [log_info_line(path_name)]")
 		var/selection_type = valid_paths[path_name]
-		if(!ispath(selection_type, /obj/item))
-			CRASH("Expected an /obj/item path, was [log_info_line(selection_type)]")
+		if(!ispath(selection_type, check_type))
+			CRASH("Expected an [log_info_line(check_type)] path, was [log_info_line(selection_type)]")
 		var/path_name_san = replacetext(path_name, "\improper", "")
 		valid_paths_san[path_name_san] = selection_type
 	src.valid_paths = sortAssoc(valid_paths)
@@ -101,6 +102,9 @@
 
 /datum/gear_tweak/path/specified_types_list/New(type_paths)
 	..(atomtypes2nameassoclist(type_paths))
+
+/datum/gear_tweak/path/specified_types_list/atoms
+	check_type = /atom
 
 /datum/gear_tweak/path/specified_types_args/New()
 	..(atomtypes2nameassoclist(args))
