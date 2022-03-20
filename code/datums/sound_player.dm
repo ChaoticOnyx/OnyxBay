@@ -277,7 +277,7 @@ GLOBAL_DATUM_INIT(sound_player, /decl/sound_player, new)
 	return sound.environment
 
 /obj/sound_test
-	var/sound = 'sound/misc/TestLoop1.ogg'
+	var/sound = 'sound/music/classic/TestLoop1.ogg'
 
 /obj/sound_test/New()
 	..()
