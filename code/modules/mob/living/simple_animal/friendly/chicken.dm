@@ -24,7 +24,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	emote_see = list("pecks at the ground", "flaps its tiny wings")
 	speak_chance = 2
 	turns_per_move = 2
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/chicken
 	meat_amount = 1
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
@@ -35,6 +35,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/amount_grown = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
+	bodyparts = /decl/simple_animal_bodyparts/bird
 
 /mob/living/simple_animal/chick/Initialize()
 	. = ..()
@@ -65,7 +66,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	emote_see = list("pecks at the ground", "flaps its wings viciously")
 	speak_chance = 2
 	turns_per_move = 3
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/chicken
 	meat_amount = 2
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
@@ -78,7 +79,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/datum/chicken_species/species = null
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
-	holder_type = /obj/item/weapon/holder/chicken
+	holder_type = /obj/item/holder/chicken
 
 /mob/living/simple_animal/chicken/Initialize()
 	. = ..()
@@ -99,13 +100,13 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	GLOB.chicken_count--
 
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
+	if(istype(O, /obj/item/reagent_containers/food/snacks/grown)) //feedin' dem chickens
+		var/obj/item/reagent_containers/food/snacks/grown/G = O
 		feed_with(G, user)
 	else
 		..()
 
-/mob/living/simple_animal/chicken/proc/feed_with(obj/item/weapon/reagent_containers/food/snacks/grown/G, mob/user)
+/mob/living/simple_animal/chicken/proc/feed_with(obj/item/reagent_containers/food/snacks/grown/G, mob/user)
 	if(!G)
 		return // To prevent the case of somebody clickspamming during lags
 	if(stat)
@@ -150,7 +151,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			var/obj/egg = new egg_type(get_turf(src))
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
-			if(species.fertile && istype(egg, /obj/item/weapon/reagent_containers/food/snacks/egg) && GLOB.chicken_count < MAX_CHICKENS)
+			if(species.fertile && istype(egg, /obj/item/reagent_containers/food/snacks/egg) && GLOB.chicken_count < MAX_CHICKENS)
 				START_PROCESSING(SSobj, egg)
 	else
 		egg_chance = 0
@@ -244,8 +245,8 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/body_color = null
 
 	var/maxHealth = 10
-	var/meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
-	var/egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/egg)
+	var/meat_type = /obj/item/reagent_containers/food/snacks/meat/chicken
+	var/egg_type = list(/obj/item/reagent_containers/food/snacks/egg)
 	var/fertile = TRUE
 	var/mutable = TRUE
 	var/mob/living/simple_animal/chicken/owner = null
@@ -292,7 +293,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	update_message = "flaps its wings as some twisted metal grows through its body!"
 
 	maxHealth = 20
-	egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/egg/robot)
+	egg_type = list(/obj/item/reagent_containers/food/snacks/egg/robot)
 	fertile = FALSE
 	mutable = FALSE
 
@@ -302,7 +303,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	description = "Must be conductive."
 	update_message = "flaps its wings as its feathers suddenly turn golden!"
 
-	egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/egg/golden)
+	egg_type = list(/obj/item/reagent_containers/food/snacks/egg/golden)
 	fertile = FALSE
 	mutable = FALSE
 
@@ -312,7 +313,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	description = "Jack Trasen would be proud."
 	update_message = "flaps its wings as its body heats up!"
 
-	egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/egg/plasma)
+	egg_type = list(/obj/item/reagent_containers/food/snacks/egg/plasma)
 	fertile = FALSE
 	mutable = FALSE
 
@@ -323,13 +324,13 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	update_message = "flaps its wings as its feathers turn into bark!"
 
 	maxHealth = 20
-	egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/vegg = 17,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/potato = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/tomato = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/carrot = 1)
+	egg_type = list(/obj/item/reagent_containers/food/snacks/vegg = 17,
+					/obj/item/reagent_containers/food/snacks/grown/potato = 1,
+					/obj/item/reagent_containers/food/snacks/grown/tomato = 1,
+					/obj/item/reagent_containers/food/snacks/grown/carrot = 1)
 	fertile = FALSE
 	mutable = FALSE
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/tomatomeat
+	meat_type = /obj/item/reagent_containers/food/snacks/tomatomeat
 
 ///////////////////////////////////////////////////////
 /datum/chicken_species/rainbow
@@ -337,23 +338,23 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	description = "Full of pride, isn't it?"
 	update_message = "clucks cheerfully!"
 
-	egg_type = list(/obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor = 3,
-					/obj/item/weapon/reagent_containers/food/snacks/egg/rainbow = 2)
+	egg_type = list(/obj/item/reagent_containers/food/snacks/egg/randomcolor = 3,
+					/obj/item/reagent_containers/food/snacks/egg/rainbow = 2)
 	fertile = FALSE
 	mutable = FALSE
 
 ///////////////////////
 /// Some eggs stuff ///
 ///////////////////////
-/obj/item/weapon/reagent_containers/food/snacks/egg
+/obj/item/reagent_containers/food/snacks/egg
 	var/amount_grown = 0
 
-/obj/item/weapon/reagent_containers/food/snacks/egg/Destroy()
+/obj/item/reagent_containers/food/snacks/egg/Destroy()
 	if(amount_grown)
 		STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/weapon/reagent_containers/food/snacks/egg/Process()
+/obj/item/reagent_containers/food/snacks/egg/Process()
 	if(isturf(loc) || ismob(loc))
 		amount_grown++
 		if(amount_grown >= 300)

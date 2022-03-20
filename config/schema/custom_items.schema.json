@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "customs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ckey": {
+            "type": "string",
+            "description": "Player's ckey",
+            "pattern": "^[a-z]+$"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    },
+                    "desc": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["path"],
+                  "additionalProperties": false
+                },
+                "kit": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "desc": {
+                      "type": "string"
+                    },
+                    "icon": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["name", "desc", "icon"],
+                  "additionalProperties": false
+                },
+                "req_titles": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "req_access": {
+                  "type": "number"
+                },
+                "inherit_inhands": {
+                  "type": "boolean"
+                },
+                "additional_data": {
+                  "type": "string"
+                }
+              },
+              "required": ["item"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["ckey", "items"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["$schema", "customs"],
+  "additionalProperties": false
+}

@@ -6,7 +6,7 @@
 
 	PATHS THAT USE DATUMS
 		turf/simulated/wall
-		obj/item/weapon/material
+		obj/item/material
 		obj/structure/barricade
 		obj/item/stack/material
 		obj/structure/table
@@ -88,11 +88,11 @@ var/list/name_to_material
 	var/icon_reinf = "reinf_metal"                       // Overlay used
 	var/table_icon_base = "metal"
 	var/table_reinf = "reinf_metal"
+	var/window_icon_base = "window"
 	var/list/stack_origin_tech = list(TECH_MATERIAL = 1) // Research level for stacks.
 
 	// Attributes
 	var/cut_delay = 0            // Delay in ticks when cutting through this wall.
-	var/radioactivity            // Radiation var. Used in wall and object processing to irradiate surroundings.
 	var/ignition_point           // K, point at which the material catches on fire.
 	var/melting_point = 1800     // K, walls will take damage if they're next to a fire hotter than this
 	var/brute_armor = 2	 		 // Brute damage to a wall is divided by this value if the wall is reinforced by this material.
@@ -103,6 +103,7 @@ var/list/name_to_material
 	var/conductive = 1           // Objects with this var add CONDUCTS to flags on spawn.
 	var/luminescence
 	var/list/composite_material  // If set, object matter var will be a list containing these values.
+	var/reagent_path = null      // If set, the material is linked with the given chemical reagent.
 
 	var/resilience = 1			 // The higher this value is, the higher is the chance that bullets will ricochet from wall's surface. Don't set negative values.
 	var/reflectance = -50		 // Defines whether material in walls raises (positive values) or decreases (negative values) reflection chance. -50 <= reflectance <= 50 - recommended values.
@@ -201,7 +202,7 @@ var/list/name_to_material
 
 // Currently used for weapons and objects made of uranium to irradiate things.
 /material/proc/products_need_process()
-	return (radioactivity>0) //todo
+	return FALSE
 
 // Used by walls when qdel()ing to avoid neighbor merging.
 /material/placeholder
@@ -228,7 +229,7 @@ var/list/name_to_material
 // As above.
 /material/proc/place_shard(turf/target)
 	if(shard_type)
-		return new /obj/item/weapon/material/shard(target, src.name)
+		return new /obj/item/material/shard(target, src.name)
 
 // Used by walls and weapons to determine if they break or not.
 /material/proc/is_brittle()
@@ -241,7 +242,6 @@ var/list/name_to_material
 /material/uranium
 	name = MATERIAL_URANIUM
 	stack_type = /obj/item/stack/material/uranium
-	radioactivity = 12
 	icon_base = "stone"
 	door_icon_base = "stone"
 	table_icon_base = "stone"
@@ -251,9 +251,10 @@ var/list/name_to_material
 	resilience = 16
 	reflectance = 15
 	stack_origin_tech = list(TECH_MATERIAL = 5)
+	reagent_path = /datum/reagent/uranium
 
 /material/diamond
-	name = "diamond"
+	name = MATERIAL_DIAMOND
 	stack_type = /obj/item/stack/material/diamond
 	flags = MATERIAL_UNMELTABLE
 	integrity = 250
@@ -272,7 +273,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/gold
-	name = "gold"
+	name = MATERIAL_GOLD
 	stack_type = /obj/item/stack/material/gold
 	icon_colour = "#edb52f"
 	weight = 40
@@ -283,15 +284,17 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 4)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
+	reagent_path = /datum/reagent/gold
 
 /material/gold/bronze //placeholder for ashtrays
-	name = "bronze"
+	name = MATERIAL_BRONZE
 	icon_colour = "#dd8639"
 	hardness = 55
 	weight = 30
+	reagent_path = null // Why in the world is this inherited from gold, sigh
 
 /material/silver
-	name = "silver"
+	name = MATERIAL_SILVER
 	stack_type = /obj/item/stack/material/silver
 	icon_colour = "#d1e6e3"
 	weight = 22
@@ -301,9 +304,10 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
+	reagent_path = /datum/reagent/silver
 
 /material/plasma
-	name = "plasma"
+	name = MATERIAL_PLASMA
 	stack_type = /obj/item/stack/material/plasma
 	ignition_point = PLASMA_MINIMUM_BURN_TEMPERATURE
 	icon_base = "stone"
@@ -318,15 +322,15 @@ var/list/name_to_material
 	sheet_singular_name = "crystal"
 	sheet_plural_name = "crystals"
 	is_fusion_fuel = 1
+	reagent_path = /datum/reagent/toxin/plasma
 
 /material/plasma/supermatter
-	name = "supermatter"
+	name = MATERIAL_SUPERMATTER
 	icon_colour = "#ffff00"
-	radioactivity = 20
 	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PLASMA = 4)
 	stack_type = null
 	luminescence = 3
-
+	reagent_path = null
 
 //Controls plasma and plasma based objects reaction to being in a turf over 200c -- Plasma's flashpoint.
 /material/plasma/combustion_effect(turf/T, temperature, effect_multiplier)
@@ -345,7 +349,7 @@ var/list/name_to_material
 
 
 /material/stone
-	name = "sandstone"
+	name = MATERIAL_SANDSTONE
 	stack_type = /obj/item/stack/material/sandstone
 	icon_base = "stone"
 	table_icon_base = "stone"
@@ -361,9 +365,10 @@ var/list/name_to_material
 	conductive = 0
 	resilience = 9
 	craft_tool = 1
+	reagent_path = /datum/reagent/silicon
 
 /material/stone/marble
-	name = "marble"
+	name = MATERIAL_MARBLE
 	icon_colour = "#aaaaaa"
 	weight = 26
 	hardness = 60
@@ -373,6 +378,7 @@ var/list/name_to_material
 	reflectance = 5
 	stack_type = /obj/item/stack/material/marble
 	craft_tool = 1
+	reagent_path = /datum/reagent/carbon
 
 /material/steel
 	name = MATERIAL_STEEL
@@ -413,7 +419,7 @@ var/list/name_to_material
 	conductive = 0
 
 /material/plasteel
-	name = "plasteel"
+	name = MATERIAL_PLASTEEL
 	stack_type = /obj/item/stack/material/plasteel
 	integrity = 400
 	melting_point = 6000
@@ -432,7 +438,7 @@ var/list/name_to_material
 	composite_material = list(MATERIAL_STEEL = 3750, MATERIAL_PLATINUM = 3750) //todo
 
 /material/plasteel/titanium
-	name = "titanium"
+	name = MATERIAL_TITANIUM
 	brute_armor = 10
 	burn_armor = 8
 	integrity = 200
@@ -446,7 +452,7 @@ var/list/name_to_material
 	icon_reinf = "reinf_metal"
 
 /material/plasteel/ocp
-	name = "osmium-carbide plasteel"
+	name = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	stack_type = /obj/item/stack/material/ocp
 	integrity = 300
 	melting_point = 12000
@@ -463,7 +469,7 @@ var/list/name_to_material
 
 
 /material/glass
-	name = "glass"
+	name = MATERIAL_GLASS
 	stack_type = /obj/item/stack/material/glass
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#b5edff"
@@ -480,12 +486,14 @@ var/list/name_to_material
 	reflectance = 30
 	door_icon_base = "stone"
 	table_icon_base = "solid"
+	window_icon_base = "window"
 	destruction_desc = "shatters"
-	window_options = list("One Direction" = 1, "Full Window" = 4)
+	window_options = list("Panel" = 1)
 	created_window = /obj/structure/window/basic
 	rod_product = /obj/item/stack/material/glass/reinforced
 	hitsound = 'sound/effects/breaking/window/break1.ogg'
 	conductive = 0
+	reagent_path = /datum/reagent/glass
 
 /material/glass/build_windows(mob/living/user, obj/item/stack/used_stack)
 
@@ -501,8 +509,12 @@ var/list/name_to_material
 		to_chat(user, "<span class='warning'>You must be standing on open flooring to build a window.</span>")
 		return 1
 
-	var/title = "Sheet-[used_stack.name] ([used_stack.get_amount()] sheet\s left)"
-	var/choice = input(title, "What would you like to construct?") as null|anything in window_options
+	var/choice = ""
+	if(window_options.len == 1)
+		choice = window_options[1]
+	else
+		var/title = "Sheet-[used_stack.name] ([used_stack.get_amount()] sheet\s left)"
+		choice = input(title, "What would you like to construct?") as null|anything in window_options
 
 	if(!choice || !used_stack || !user || used_stack.loc != user || user.stat || user.loc != T)
 		return 1
@@ -510,6 +522,11 @@ var/list/name_to_material
 	// Get data for building windows here.
 	var/list/possible_directions = GLOB.cardinal.Copy()
 	var/window_count = 0
+	for(var/obj/structure/window_frame/WF in user.loc)
+		if(WF.outer_pane || WF.inner_pane)
+			to_chat(user, SPAN("warning", "There is no room in this location."))
+			return
+
 	for (var/obj/structure/window/check_window in user.loc)
 		window_count++
 		possible_directions  -= check_window.dir
@@ -521,7 +538,7 @@ var/list/name_to_material
 	if(window_count >= 4)
 		failed_to_build = 1
 	else
-		if(choice in list("One Direction","Windoor"))
+		if(choice in list("Panel","Windoor"))
 			if(possible_directions.len)
 				for(var/direction in list(user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 					if(direction in possible_directions)
@@ -551,9 +568,10 @@ var/list/name_to_material
 		return 1
 
 	// Build the structure and update sheet count etc.
-	used_stack.use(sheets_needed)
-	new build_path(T, build_dir, 1)
-	return 1
+	if(do_after(user, 5, used_stack) && used_stack.use(sheets_needed))
+		new build_path(T, build_dir, 1)
+		return 1
+	return 0
 
 /material/glass/proc/is_reinforced()
 	return (integrity > 75) //todo
@@ -562,11 +580,12 @@ var/list/name_to_material
 	return ..() && !is_reinforced()
 
 /material/glass/reinforced
-	name = "rglass"
+	name = MATERIAL_REINFORCED_GLASS
 	display_name = "reinforced glass"
 	stack_type = /obj/item/stack/material/glass/reinforced
 	flags = MATERIAL_BRITTLE
 	icon_colour = "#97d3e5"
+	window_icon_base = "rwindow"
 	opacity = 0.3
 	integrity = 100
 	melting_point = T0C + 750
@@ -579,13 +598,13 @@ var/list/name_to_material
 	reflectance = 25
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	composite_material = list(MATERIAL_STEEL = 1875, MATERIAL_GLASS = 3750)
-	window_options = list("One Direction" = 1, "Full Window" = 4, "Windoor" = 5)
+	window_options = list("Panel" = 1, "Windoor" = 5)
 	created_window = /obj/structure/window/reinforced
 	wire_product = null
 	rod_product = null
 
 /material/glass/plass
-	name = "plass"
+	name = MATERIAL_PLASS
 	display_name = "plass"
 	stack_type = /obj/item/stack/material/glass/plass
 	flags = MATERIAL_BRITTLE
@@ -594,19 +613,22 @@ var/list/name_to_material
 	burn_armor = 5
 	melting_point = T0C + 2000
 	icon_colour = "#d67ac8"
+	window_icon_base = "plasmawindow"
 	resilience = 0
 	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
 	created_window = /obj/structure/window/plasmabasic
 	wire_product = null
 	rod_product = /obj/item/stack/material/glass/rplass
+	reagent_path = null
 
 /material/glass/plass/reinforced
-	name = "rplass"
+	name = MATERIAL_REINFORCED_PLASS
 	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
 	melting_point = T0C + 4000
+	window_icon_base = "plasmarwindow"
 	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
 	reflectance = 35
@@ -619,9 +641,41 @@ var/list/name_to_material
 	rod_product = null
 	integrity = 100
 
+/material/glass/black
+	name = MATERIAL_BLACK_GLASS
+	display_name = "tinted glass"
+	stack_type = /obj/item/stack/material/glass/black
+	icon_colour = "#111919"
+	window_icon_base = "blackwindow"
+	reflectance = 30
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	rod_product = /obj/item/stack/material/glass/rblack
+	window_options = list()
+	opacity = 1.0
+	melting_point = T0C + 150
+
+/material/glass/black/reinforced
+	name = MATERIAL_REINFORCED_BLACK_GLASS
+	display_name = "reinforced tinted glass"
+	stack_type = /obj/item/stack/material/glass/rblack
+	icon_colour = "#060a0a"
+	window_icon_base = "rblackwindow"
+	integrity = 100
+	melting_point = T0C + 850
+	shard_type = SHARD_SHARD
+	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
+	weight = 17
+	brute_armor = 2
+	burn_armor = 3
+	resilience = 9
+	reflectance = 25
+	stack_origin_tech = list(TECH_MATERIAL = 3)
+	wire_product = null
+	rod_product = null
+
 
 /material/plastic
-	name = "plastic"
+	name = MATERIAL_PLASTIC
 	stack_type = /obj/item/stack/material/plastic
 	flags = MATERIAL_BRITTLE
 	icon_base = "solid"
@@ -634,15 +688,17 @@ var/list/name_to_material
 	reflectance = -20
 	stack_origin_tech = list(TECH_MATERIAL = 3)
 	conductive = 0
+	reagent_path = /datum/reagent/toxin/plasticide
 
 /material/plastic/holographic
 	name = "holoplastic"
 	display_name = "plastic"
 	stack_type = null
 	shard_type = SHARD_NONE
+	reagent_path = null
 
 /material/osmium
-	name = "osmium"
+	name = MATERIAL_OSMIUM
 	stack_type = /obj/item/stack/material/osmium
 	icon_colour = "#9999ff"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -650,7 +706,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/tritium
-	name = "tritium"
+	name = MATERIAL_TRITIUM
 	stack_type = /obj/item/stack/material/tritium
 	icon_colour = "#777777"
 	stack_origin_tech = list(TECH_MATERIAL = 5)
@@ -659,7 +715,7 @@ var/list/name_to_material
 	is_fusion_fuel = 1
 
 /material/deuterium
-	name = "deuterium"
+	name = MATERIAL_DEUTERIUM
 	stack_type = /obj/item/stack/material/deuterium
 	icon_colour = "#999999"
 	stack_origin_tech = list(TECH_MATERIAL = 3)
@@ -673,6 +729,7 @@ var/list/name_to_material
 	icon_colour = "#e6c5de"
 	stack_origin_tech = list(TECH_MATERIAL = 6, TECH_POWER = 6, TECH_MAGNET = 5)
 	is_fusion_fuel = 1
+	reagent_path = /datum/reagent/hydrazine
 
 /material/platinum
 	name = MATERIAL_PLATINUM
@@ -686,7 +743,7 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 
 /material/iron
-	name = "iron"
+	name = MATERIAL_IRON
 	stack_type = /obj/item/stack/material/iron
 	icon_colour = "#5c5454"
 	weight = 22
@@ -696,10 +753,11 @@ var/list/name_to_material
 	sheet_plural_name = "ingots"
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	shard_type = SHARD_SCRAP
+	reagent_path = /datum/reagent/iron
 
 // Adminspawn only, do not let anyone get this.
 /material/voxalloy
-	name = "voxalloy"
+	name = MATERIAL_VOX
 	display_name = "durable alloy"
 	stack_type = null
 	icon_colour = "#6c7364"
@@ -714,12 +772,12 @@ var/list/name_to_material
 
 // Likewise.
 /material/voxalloy/elevatorium
-	name = "elevatorium"
+	name = MATERIAL_ELEVATORIUM
 	display_name = "elevator panelling"
 	icon_colour = "#666666"
 
 /material/darkwood
-	name = "darkwood"
+	name = MATERIAL_DARKWOOD
 	adjective_name = "darkwooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#892929"
@@ -745,9 +803,10 @@ var/list/name_to_material
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp
 
 /material/wood
-	name = "wood"
+	name = MATERIAL_WOOD
 	adjective_name = "wooden"
 	stack_type = /obj/item/stack/material/wood
 	icon_colour = "#936041"
@@ -771,15 +830,17 @@ var/list/name_to_material
 	hitsound = 'sound/effects/woodhit.ogg'
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp
 
 /material/wood/holographic
 	name = "holowood"
 	display_name = "wood"
 	stack_type = null
 	shard_type = SHARD_NONE
+	reagent_path = null
 
 /material/cardboard
-	name = "cardboard"
+	name = MATERIAL_CARDBOARD
 	stack_type = /obj/item/stack/material/cardboard
 	flags = MATERIAL_BRITTLE
 	integrity = 10
@@ -796,9 +857,10 @@ var/list/name_to_material
 	destruction_desc = "crumples"
 	conductive = 0
 	craft_tool = 1
+	reagent_path = /datum/reagent/woodpulp // Probably makes some sense
 
 /material/cloth //todo
-	name = "cloth"
+	name = MATERIAL_CLOTH
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	door_icon_base = "wood"
 	ignition_point = T0C+232
@@ -809,7 +871,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cult
-	name = "cult"
+	name = MATERIAL_CULT
 	display_name = "disturbing stone"
 	icon_base = "cult"
 	icon_colour = "#402821"
@@ -824,12 +886,12 @@ var/list/name_to_material
 	new /obj/structure/girder/cult(target)
 
 /material/cult/reinf
-	name = "cult2"
+	name = MATERIAL_REINFORCED_CULT
 	display_name = "runic inscriptions"
 	resilience = 25
 
 /material/resin
-	name = "resin"
+	name = MATERIAL_RESIN
 	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
@@ -871,7 +933,7 @@ var/list/name_to_material
 
 //TODO PLACEHOLDERS:
 /material/leather
-	name = "leather"
+	name = MATERIAL_LEATHER
 	icon_colour = "#5c4831"
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	flags = MATERIAL_PADDING
@@ -881,7 +943,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/carpet
-	name = "carpet"
+	name = MATERIAL_CARPET
 	display_name = "comfy"
 	use_name = "red upholstery"
 	icon_colour = "#da020a"
@@ -894,7 +956,7 @@ var/list/name_to_material
 	craft_tool = 1
 
 /material/cotton
-	name = "cotton"
+	name = MATERIAL_COTTON
 	display_name ="cotton"
 	icon_colour = "#ffffff"
 	flags = MATERIAL_PADDING

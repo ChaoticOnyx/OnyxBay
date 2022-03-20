@@ -18,7 +18,7 @@
 	see_in_dark = 6
 	maxHealth = 1
 	health = 1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/snacks/meat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "stamps on"
@@ -28,12 +28,13 @@
 	maxbodytemp = 323	//Above 50 Degrees Celcius
 	universal_speak = 0
 	universal_understand = 1
-	holder_type = /obj/item/weapon/holder/mouse
+	holder_type = /obj/item/holder/mouse
 	mob_size = MOB_MINISCULE
 	possession_candidate = 1
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	var/obj/item/holding_item = null
 	var/datum/disease2/disease/virus = null
 
@@ -174,7 +175,7 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
-	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
+	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/tape_roll) && O.w_class == ITEM_SIZE_TINY)
 		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))

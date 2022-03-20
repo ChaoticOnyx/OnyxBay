@@ -20,9 +20,10 @@
 	wander = 0
 	pass_flags = PASS_FLAG_TABLE
 	universal_understand = 1
-	holder_type = /obj/item/weapon/holder/borer
+	holder_type = /obj/item/holder/borer
 	mob_size = MOB_SMALL
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/borer
 
 	var/generation = 1
 	var/static/list/borer_names = list(
@@ -35,13 +36,13 @@
 	var/mob/living/carbon/human/host        // Human host for the brain worm.
 	var/truename                            // Name used for brainworm-speak.
 	var/mob/living/captive_brain/host_brain // Used for swapping control of the body back and forth.
-	var/controlling                         // Used in human death check.
-	var/docile = 0                          // Sugar can stop borers from acting.
+	var/controlling = FALSE                 // Is borer controlling host?
+	var/docile = FALSE                      // Sugar can stop borers from acting.
 	var/has_reproduced
-	var/initial
+	var/initial = FALSE
 
 /mob/living/simple_animal/borer/initial
-	initial = 1
+	initial = TRUE
 
 /mob/living/simple_animal/borer/Login()
 	..()
@@ -52,8 +53,7 @@
 	..(newloc)
 
 	add_language("Cortical Link")
-	verbs += /mob/living/proc/ventcrawl
-	verbs += /mob/living/proc/hide
+	update_abilities()
 
 	generation = gen
 	truename = "[borer_names[min(generation, borer_names.len)]] [random_id("borer[generation]", 1000, 9999)]"
@@ -65,30 +65,29 @@
 	..()
 
 	if(host)
-
-		if(!stat && !host.stat)
-
+		if(loc != host) //gib or other forced moving from host
+			var/stored_loc = loc //leave_host() will try to get host's turf but it is bad
+			detatch()
+			leave_host()
+			loc = stored_loc
+			return
+		health = min(health + 1, maxHealth)
+		if(!stat && host.stat != DEAD)
 			if(host.reagents.has_reagent(/datum/reagent/sugar))
 				if(!docile)
-					if(controlling)
-						to_chat(host, "<span class='notice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>")
-					else
-						to_chat(src, "<span class='notice'>You feel the soporific flow of sugar in your host's blood, lulling you into docility.</span>")
-					docile = 1
+					to_chat(controlling ? host : src, SPAN("notice", "You feel the soporific flow of sugar in your host's blood, lulling you into docility."))
+					docile = TRUE
 			else
 				if(docile)
-					if(controlling)
-						to_chat(host, "<span class='notice'>You shake off your lethargy as the sugar leaves your host's blood.</span>")
-					else
-						to_chat(src, "<span class='notice'>You shake off your lethargy as the sugar leaves your host's blood.</span>")
-					docile = 0
+					to_chat(controlling ? host : src, SPAN("notice", "You shake off your lethargy as the sugar leaves your host's blood."))
+					docile = FALSE
 
 			if(chemicals < 250)
 				chemicals++
 			if(controlling)
 
 				if(docile)
-					to_chat(host, "<span class='notice'>You are feeling far too docile to continue controlling your host...</span>")
+					to_chat(host, SPAN("notice", "You are feeling far too docile to continue controlling your host..."))
 					host.release_control()
 					return
 
@@ -97,6 +96,8 @@
 
 				if(prob(host.getBrainLoss()/20))
 					host.say("*[pick(list("blink","blink_r","choke","aflap","drool","twitch","twitch_v","gasp"))]")
+		else if((stat == DEAD || host.stat == DEAD) && controlling)
+			detatch()
 
 /mob/living/simple_animal/borer/Stat()
 	. = ..()
@@ -110,78 +111,46 @@
 	if (client.statpanel == "Status")
 		stat("Chemicals", chemicals)
 
-/mob/living/simple_animal/borer/proc/detatch()
-
-	if(!host || !controlling) return
-
-	if(istype(host,/mob/living/carbon/human))
-		var/mob/living/carbon/human/H = host
-		var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-		head.implants -= src
-
-	controlling = 0
-
-	host.remove_language("Cortical Link")
-	host.verbs -= /mob/living/carbon/proc/release_control
-	host.verbs -= /mob/living/carbon/proc/punish_host
-	host.verbs -= /mob/living/carbon/proc/spawn_larvae
-
-	if(host_brain)
-
-		// these are here so bans and multikey warnings are not triggered on the wrong people when ckey is changed.
-		// computer_id and IP are not updated magically on their own in offline mobs -walter0o
-
-		// host -> self
-		var/h2s_id = host.computer_id
-		var/h2s_ip= host.lastKnownIP
-		host.computer_id = null
-		host.lastKnownIP = null
-
-		src.ckey = host.ckey
-
-		if(!src.computer_id)
-			src.computer_id = h2s_id
-
-		if(!host_brain.lastKnownIP)
-			src.lastKnownIP = h2s_ip
-
-		// brain -> host
-		var/b2h_id = host_brain.computer_id
-		var/b2h_ip= host_brain.lastKnownIP
-		host_brain.computer_id = null
-		host_brain.lastKnownIP = null
-
-		host.ckey = host_brain.ckey
-
-		if(!host.computer_id)
-			host.computer_id = b2h_id
-
-		if(!host.lastKnownIP)
-			host.lastKnownIP = b2h_ip
-
-	qdel(host_brain)
-
-/mob/living/simple_animal/borer/proc/leave_host()
-
-	if(!host) return
-
-	if(host.mind)
-		GLOB.borers.remove_antagonist(host.mind)
-
-	src.loc = get_turf(host)
-
-	reset_view(null)
-	machine = null
-
-	host.reset_view(null)
-	host.machine = null
-
-	var/mob/living/H = host
-	H.status_flags &= ~PASSEMOTES
-	host = null
-	return
+/mob/living/simple_animal/borer/handle_environment(datum/gas_mixture/environment)
+	if(host)
+		oxygen_alert = 0
+		toxins_alert = 0
+		return
+	..()
 
 //Procs for grabbing players.
 /mob/living/simple_animal/borer/proc/request_player()
 	var/datum/ghosttrap/G = get_ghost_trap("cortical borer")
 	G.request_player(src, "A cortical borer needs a player.")
+
+/mob/living/simple_animal/borer/attack_ghost(mob/observer/ghost/user)
+	if(client)
+		return ..()
+
+	if(jobban_isbanned(user, MODE_BORER))
+		to_chat(user, SPAN("danger", "You are banned from playing a borer."))
+		return
+
+	var/confirm = alert(user, "Are you sure you want to join as a borer?", "Become Borer", "No", "Yes")
+
+	if(!src || confirm != "Yes")
+		return
+
+	if(!user || !user.ckey)
+		return
+
+	if(client) //Already occupied.
+		to_chat(user, "Too slow...")
+		return
+
+	ckey = user.ckey
+
+	if(mind && !GLOB.borers.is_antagonist(mind))
+		GLOB.borers.add_antagonist(mind, 1, 0, 0)
+
+	spawn(-1)
+		if(user)
+			qdel(user) // Remove the keyless ghost if it exists.
+
+/decl/simple_animal_bodyparts/borer
+	hit_zones = list("head", "central segment", "tail segment")

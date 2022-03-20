@@ -8,6 +8,8 @@
 
 #define MINIMUM_CHEMICAL_VOLUME 0.01
 
+#define REAGENTS_PER_MATERIAL_SHEET 20
+
 #define SOLID 1
 #define LIQUID 2
 #define GAS 3

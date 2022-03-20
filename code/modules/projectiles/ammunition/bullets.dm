@@ -15,7 +15,7 @@
 
 /obj/item/ammo_casing/c38
 	desc = "A .38 bullet casing."
-	caliber = "38"
+	caliber = ".38"
 	projectile_type = /obj/item/projectile/bullet/pistol
 
 /obj/item/ammo_casing/c38/rubber
@@ -23,6 +23,30 @@
 	projectile_type = /obj/item/projectile/bullet/pistol/rubber
 	icon_state = "r-casing"
 	spent_icon = "r-casing-spent"
+
+/obj/item/ammo_casing/c38/spec
+	desc = "A .38 SPEC bullet casing. Made of a soft alloy and acts like a rubber bullet unless charged-up."
+	projectile_type = /obj/item/projectile/bullet/pistol/rubber
+	icon_state = "s-casing"
+	spent_icon = "s-casing-spent"
+
+/obj/item/ammo_casing/c38/spec/nonlethal
+	projectile_type = /obj/item/projectile/energy/electrode/c38
+
+/obj/item/ammo_casing/c38/spec/lethal
+	projectile_type = /obj/item/projectile/bullet/pistol/accelerated/c38
+
+/obj/item/ammo_casing/c38/chem
+	desc = "A .38 CHEM cartridge. Acts like a flash bullet unless charged-up."
+	projectile_type = /obj/item/projectile/energy/flash/c38
+	icon_state = "empcasing"
+	spent_icon = "s-casing-spent"
+
+/obj/item/ammo_casing/c38/chem/nonlethal
+	projectile_type = /obj/item/projectile/ion/c38
+
+/obj/item/ammo_casing/c38/chem/lethal
+	projectile_type = /obj/item/projectile/energy/c38
 
 /obj/item/ammo_casing/c9mm
 	desc = "A 9mm bullet casing."
@@ -53,30 +77,6 @@
 	projectile_type = /obj/item/projectile/bullet/pistol/rubber
 	icon_state = "r-casing"
 	spent_icon = "r-casing-spent"
-
-/obj/item/ammo_casing/c44/spec
-	desc = "A .44 SPEC bullet casing. Made of a soft alloy and acts like a rubber bullet unless charged-up."
-	projectile_type = /obj/item/projectile/bullet/pistol/rubber/c44
-	icon_state = "s-casing"
-	spent_icon = "s-casing-spent"
-
-/obj/item/ammo_casing/c44/spec/nonlethal
-	projectile_type = /obj/item/projectile/energy/electrode/c44
-
-/obj/item/ammo_casing/c44/spec/lethal
-	projectile_type = /obj/item/projectile/bullet/pistol/accelerated/c44
-
-/obj/item/ammo_casing/c44/chem
-	desc = "A .44 CHEM cartridge. Acts like a flash bullet unless charged-up."
-	projectile_type = /obj/item/projectile/energy/flash/c44
-	icon_state = "empcasing"
-	spent_icon = "s-casing-spent"
-
-/obj/item/ammo_casing/c44/chem/nonlethal
-	projectile_type = /obj/item/projectile/ion/c44
-
-/obj/item/ammo_casing/c44/chem/lethal
-	projectile_type = /obj/item/projectile/energy/c44
 
 
 /obj/item/ammo_casing/c45

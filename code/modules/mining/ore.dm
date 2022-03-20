@@ -1,4 +1,4 @@
-/obj/item/weapon/ore
+/obj/item/ore
 	name = "small rock"
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "ore2"
@@ -7,7 +7,7 @@
 	var/datum/geosample/geologic_data
 	var/ore/ore = null // set to a type to find the right instance on init
 
-/obj/item/weapon/ore/Initialize()
+/obj/item/ore/Initialize()
 	. = ..()
 	if(ispath(ore))
 		ensure_ore_data_initialised()
@@ -16,12 +16,12 @@
 			log_error("[src] ([src.type]) had ore type [ore.type] but that type does not have [src.type] set as its ore item!")
 		update_ore()
 
-/obj/item/weapon/ore/proc/update_ore()
+/obj/item/ore/proc/update_ore()
 	SetName(ore.display_name)
 	icon_state = "ore_[ore.icon_tag]"
 	origin_tech = ore.origin_tech.Copy()
 
-/obj/item/weapon/ore/Value(base)
+/obj/item/ore/Value(base)
 	. = ..()
 	if(!ore)
 		return
@@ -34,26 +34,32 @@
 		return
 	return 0.5*M.value*ore.result_amount
 
-/obj/item/weapon/ore/slag
+/obj/item/ore/slag
 	name = "slag"
 	desc = "Someone screwed up..."
 	icon_state = "slag"
 
-/obj/item/weapon/ore/uranium
+/obj/item/ore/uranium
 	ore = /ore/uranium
 
-/obj/item/weapon/ore/iron
+/obj/item/ore/uranium/Initialize()
+	. = ..()
+	
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount, null, FALSE)
+
+/obj/item/ore/iron
 	ore = /ore/hematite
 
-/obj/item/weapon/ore/coal
+/obj/item/ore/coal
 	ore = /ore/coal
 
-/obj/item/weapon/ore/glass
+/obj/item/ore/glass
 	ore = /ore/glass
 	slot_flags = SLOT_HOLSTER
 
 // POCKET SAND!
-/obj/item/weapon/ore/glass/throw_impact(atom/hit_atom)
+/obj/item/ore/glass/throw_impact(atom/hit_atom)
 	..()
 	var/mob/living/carbon/human/H = hit_atom
 	if(istype(H) && H.has_eyes() && prob(85))
@@ -64,25 +70,25 @@
 			if(istype(loc, /turf/)) qdel(src)
 
 
-/obj/item/weapon/ore/plasma
+/obj/item/ore/plasma
 	ore = /ore/plasma
 
-/obj/item/weapon/ore/silver
+/obj/item/ore/silver
 	ore = /ore/silver
 
-/obj/item/weapon/ore/gold
+/obj/item/ore/gold
 	ore = /ore/gold
 
-/obj/item/weapon/ore/diamond
+/obj/item/ore/diamond
 	ore = /ore/diamond
 
-/obj/item/weapon/ore/osmium
+/obj/item/ore/osmium
 	ore = /ore/platinum
 
-/obj/item/weapon/ore/hydrogen
+/obj/item/ore/hydrogen
 	ore = /ore/hydrogen
 
-/obj/item/weapon/ore/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ore/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/device/core_sampler))
 		var/obj/item/device/core_sampler/C = W
 		C.sample_item(src, user)

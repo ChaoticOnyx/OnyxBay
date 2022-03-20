@@ -1,7 +1,7 @@
 /* Toxins, poisons, venoms */
 
 /datum/reagent/toxin
-	name = "toxin"
+	name = "Toxin"
 	description = "A toxic chemical."
 	taste_description = "bitterness"
 	taste_mult = 1.2
@@ -593,7 +593,7 @@
 		E.s_tone = null
 		E.s_col = ReadRGB("#05ff9b")
 		E.s_col_blend = ICON_ADD
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status |= ORGAN_MUTATED
 		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 		E.dislocated = -1
@@ -620,11 +620,11 @@
 	M.icon = null
 	M.overlays.Cut()
 	M.set_invisibility(101)
-	for(var/obj/item/W in M)
-		if(istype(W, /obj/item/weapon/implant)) //TODO: Carn. give implants a dropped() or something
-			qdel(W)
+	for(var/obj/item/I in M)
+		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something
+			qdel(I)
 			continue
-		M.drop_from_inventory(W)
+		M.drop_from_inventory(I)
 	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1

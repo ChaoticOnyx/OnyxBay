@@ -36,6 +36,25 @@
 #define ASTEROID CAVE
 #define SPACE UNDERWATER
 
+#define VOLUME_AMBIENT_MUSIC 50
+
+// Timing
+#define AMBIENT_MUSIC_COOLDOWN 2 MINUTES
+// TODO: Also add cooldown for ambients.
+
+// Sound channels
+// TODO: Replace hardcoded values with these defines.
+#define SOUND_CHANNEL_AMBIENT       1
+#define SOUND_CHANNEL_AMBIENT_MUSIC 2
+#define SOUND_CHANNEL_HUM           3
+
+// Ambient music tags
+#define MUSIC_TAG_NORMAL          0
+#define MUSIC_TAG_MYSTIC          1
+#define MUSIC_TAG_SPACE           2
+#define MUSIC_TAG_SPACE_TRAVELING 3
+#define MUSIC_TAG_CENTCOMM        4
+
 // SFX List
 // FIREARMS SOUND
 #define SFX_FAR_FIRE                "far_fire"
@@ -68,14 +87,28 @@
 #define SFX_MALE_FALL_DEAD          "male_fall_dead"
 
 // AMBIENT
-#define SFX_AMBIENT_GLOBAL          "ambient_global"
-#define SFX_AMBIENT_SCIENCE         "ambient_science"
-#define SFX_AMBIENT_AI              "ambient_ai"
-#define SFX_AMBIENT_COMMS           "ambient_comms"
-#define SFX_AMBIENT_MAINTENANCE     "ambient_maintenance"
-#define SFX_AMBIENT_ENGINEERING     "ambient_engineering"
-#define SFX_AMBIENT_SPACE           "ambient_space"
-#define SFX_AMBIENT_OUTPOST         "ambient_outpost"
+#define SFX_AMBIENT_POWERED_GLOBAL      "ambient_powered_global"
+#define SFX_AMBIENT_OFF_GLOBAL          "ambient_off_global"
+#define SFX_AMBIENT_SCIENCE             "ambient_science"
+#define SFX_AMBIENT_AI                  "ambient_ai"
+#define SFX_AMBIENT_COMMS               "ambient_powered_comms"
+#define SFX_AMBIENT_POWERED_MAINTENANCE "ambient_powered_maintenance"
+#define SFX_AMBIENT_OFF_MAINTENANCE     "ambient_off_maintenance"
+#define SFX_AMBIENT_ENGINEERING         "ambient_engineering"
+#define SFX_AMBIENT_SPACE               "ambient_space"
+#define SFX_AMBIENT_OUTPOST             "ambient_outpost"
+#define SFX_AMBIENT_MINE                "ambient_mine"
+#define SFX_AMBIENT_CHAPEL              "ambient_chapel"
+#define SFX_AMBIENT_ATMOSPHERICS        "ambient_atmospherics"
+#define SFX_AMBIENT_MORGUE              "ambient_morgue"
+#define SFX_AMBIENT_JUNGLE              "ambient_jungle"
+
+// AMBIENT MUSIC
+#define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
+#define SFX_AMBIENT_MUSIC_MYSTIC       "ambient_music_mystic"
+#define SFX_AMBIENT_MUSIC_SPACE        "ambient_music_space"
+#define SFX_AMBIENT_MUSIC_SPACE_TRAVEL "ambient_music_space_travel"
+#define SFX_AMBIENT_MUSIC_CENTCOMM     "ambient_music_centcomm"
 
 // ITEMS USING
 #define SFX_USE_HANDCUFFS           "use_handcuffs"
@@ -138,6 +171,12 @@
 #define SFX_FIGHTING_CRUNCH         "fighting_crunch"
 #define SFX_FIGHTING_PUNCH          "fighting_punch"
 #define SFX_FIGHTING_SWING          "fighting_swing"
+
+// DEVICES
+#define SFX_GEIGER_LOW              "geiger_low"
+#define SFX_GEIGER_MODERATE         "geiger_moderate"
+#define SFX_GEIGER_HIGH             "geiger_high"
+#define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
 
 // MISC
 #define SFX_VENT                    "vent"

@@ -1,15 +1,20 @@
 /mob/living/carbon/human/gib()
 	if(status_flags & GODMODE)
 		return
+
+	visible_message(SPAN("danger", "[src]'s body gets [pick("torn apart", "torn into pieces", "gibbed")]!"), \
+					SPAN("moderate", "<b>Your body gets torn apart!</b>"), \
+					SPAN("danger", "You hear the sickening sound of somebody getting torn into pieces!"))
+
 	playsound(src, SFX_GIB, 75, 1)
 	for(var/obj/item/organ/I in internal_organs)
-		I.removed()
-		if(istype(loc, /turf))
+		I.removed(null, TRUE, TRUE)
+		if(!QDELETED(I) && isturf(loc))
 			I.throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), 30)
 
 	playsound(src, SFX_FIGHTING_CRUNCH, 75, 1)
-	for(var/obj/item/organ/external/E in src.organs)
-		E.droplimb(0,DROPLIMB_EDGE,1)
+	for(var/obj/item/organ/external/E in organs)
+		E.droplimb(TRUE, DROPLIMB_EDGE, TRUE, TRUE)
 
 	sleep(1)
 
@@ -46,26 +51,6 @@
 	species.handle_death(src)
 
 	animate_tail_stop()
-
-	//Handle brain slugs.
-	var/obj/item/organ/external/head = get_organ(BP_HEAD)
-	var/mob/living/simple_animal/borer/B
-
-	if(head)		//TODO: find out what will happen to slug with <-- this check
-		for(var/I in head.implants)
-			if(istype(I,/mob/living/simple_animal/borer))
-				B = I
-		if(B)
-			if(!B.ckey && ckey && B.controlling)
-				B.ckey = ckey
-				B.controlling = 0
-			if(B.host_brain.ckey)
-				ckey = B.host_brain.ckey
-				B.host_brain.ckey = null
-				B.host_brain.SetName("host brain")
-				B.host_brain.real_name = "host brain"
-
-			verbs -= /mob/living/carbon/proc/release_control
 
 	callHook("death", list(src, gibbed))
 

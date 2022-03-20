@@ -59,27 +59,37 @@
 	id = "hypospray"
 	req_tech = list(TECH_MATERIAL = 4, TECH_BIO = 5)
 	materials = list(MATERIAL_STEEL = 8000, MATERIAL_GLASS = 8000, MATERIAL_SILVER = 2000)
-	build_path = /obj/item/weapon/reagent_containers/hypospray/vial
+	build_path = /obj/item/reagent_containers/hypospray/vial
 	sort_string = "MAEAA"
 
 /datum/design/item/beaker
 	category_items = list("Medical")
 
+
+
+/datum/design/item/beaker/plass
+	desc = "A beaker made of plasma-based silicate, it doesn't allow radiation to pass through. Can hold up to 60 units."
+	id = "plassbeaker"
+	req_tech = list(TECH_MATERIAL = 2)
+	materials = list(MATERIAL_GLASS = 2500, MATERIAL_PLASMA = 1500)
+	build_path = /obj/item/reagent_containers/glass/beaker/plass
+	sort_string = "MCAAA"
+
 /datum/design/item/beaker/noreact
-	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
+	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 60 units."
 	id = "splitbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
 	materials = list(MATERIAL_STEEL = 3000)
-	build_path = /obj/item/weapon/reagent_containers/glass/beaker/noreact
-	sort_string = "MCAAA"
+	build_path = /obj/item/reagent_containers/glass/beaker/noreact
+	sort_string = "MCAAB"
 
 /datum/design/item/beaker/bluespace
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
 	id = "bluespacebeaker"
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
 	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000, MATERIAL_DIAMOND = 500)
-	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
-	sort_string = "MCAAB"
+	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
+	sort_string = "MCAAC"
 
 /datum/design/item/implant
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
@@ -89,47 +99,55 @@
 	name = "chemical implant"
 	id = "implant_chem"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3)
-	build_path = /obj/item/weapon/implantcase/chem
+	build_path = /obj/item/implantcase/chem
 	sort_string = "MFAAA"
 
 /datum/design/item/implant/death_alarm
 	name = "death alarm implant"
 	id = "implant_death"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_DATA = 2)
-	build_path = /obj/item/weapon/implantcase/death_alarm
+	build_path = /obj/item/implantcase/death_alarm
 	sort_string = "MFAAB"
 
 /datum/design/item/implant/tracking
 	name = "tracking implant"
 	id = "implant_tracking"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_BLUESPACE = 3)
-	build_path = /obj/item/weapon/implantcase/tracking
+	build_path = /obj/item/implantcase/tracking
 	sort_string = "MFAAC"
 
 /datum/design/item/implant/imprinting
 	name = "imprinting implant"
 	id = "implant_imprinting"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_DATA = 4)
-	build_path = /obj/item/weapon/implantcase/imprinting
+	build_path = /obj/item/implantcase/imprinting
 	sort_string = "MFAAD"
 
 /datum/design/item/implant/adrenaline
 	name = "adrenaline implant"
 	id = "implant_adrenaline"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_ILLEGAL = 3)
-	build_path = /obj/item/weapon/implantcase/adrenalin
+	build_path = /obj/item/implantcase/adrenalin
 	sort_string = "MFAAE"
 
 /datum/design/item/implant/freedom
 	name = "freedom implant"
 	id = "implant_free"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_ILLEGAL = 3)
-	build_path = /obj/item/weapon/implantcase/freedom
+	build_path = /obj/item/implantcase/freedom
 	sort_string = "MFAAF"
 
 /datum/design/item/implant/explosive
 	name = "explosive implant"
 	id = "implant_explosive"
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_ILLEGAL = 4)
-	build_path = /obj/item/weapon/implantcase/explosive
+	build_path = /obj/item/implantcase/explosive
 	sort_string = "MFAAG"
+
+
+/datum/design/item/implant/speech_corrector
+	name = "speech corrector implant"
+	id = "implant_speech_corrector"
+	req_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2)
+	build_path = /obj/item/implantcase/speech_corrector
+	sort_string = "MFAAH"

@@ -47,7 +47,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			else
 				priority = "Undetermined"
 
-/obj/machinery/message_server
+/obj/machinery/message_server // do NOT place more than one of these in world
 	icon = 'icons/obj/machines/research.dmi'
 	icon_state = "server"
 	name = "Messaging Server"
@@ -68,7 +68,20 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			//Messages having theese tokens will be rejected by server. Case sensitive
 	var/spamfilter_limit = MESSAGE_SERVER_DEFAULT_SPAM_LIMIT	//Maximal amount of tokens
 
+/obj/machinery/dead_message_server
+	icon = 'icons/obj/machines/research.dmi'
+	icon_state = "server-nopower"
+	name = "Dead Messaging Server"
+	desc = "Dead-as-hell messaging server. You don't think that it ever will work again."
+	density = 1
+	anchored = 1
+
 /obj/machinery/message_server/New()
+	if(message_servers.len >= 1)
+		new /obj/machinery/dead_message_server(src.loc)
+		qdel(src)
+		crash_with("Two or more PDA message servers are placed in the world. Please, replace leftovers with dead ones until one server remains.")
+	name = "[name] ([get_area(src)])"
 	message_servers += src
 	decryptkey = GenerateKey()
 	send_pda_message("System Administrator", "system", "This is an automated message. The messaging system is functioning correctly.")
@@ -137,9 +150,9 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 
 	return
 
-/obj/machinery/message_server/attackby(obj/item/weapon/O as obj, mob/living/user as mob)
+/obj/machinery/message_server/attackby(obj/item/O as obj, mob/living/user as mob)
 	if (active && !(stat & (BROKEN|NOPOWER)) && (spamfilter_limit < MESSAGE_SERVER_DEFAULT_SPAM_LIMIT*2) && \
-		istype(O,/obj/item/weapon/circuitboard/message_monitor))
+		istype(O,/obj/item/circuitboard/message_monitor))
 		spamfilter_limit += round(MESSAGE_SERVER_DEFAULT_SPAM_LIMIT / 2)
 		user.drop_item()
 		qdel(O)

@@ -33,7 +33,7 @@
 
 /datum/antagonist/proc/create_id(assignment, mob/living/carbon/human/player, equip = 1)
 
-	var/obj/item/weapon/card/id/W = new id_type(player)
+	var/obj/item/card/id/W = new id_type(player)
 	if(!W) return
 	W.access |= default_access
 	W.assignment = "[assignment]"
@@ -59,7 +59,7 @@
 /datum/antagonist/proc/create_nuke(atom/paper_spawn_loc, datum/mind/code_owner)
 
 	// Decide on a code.
-	var/obj/effect/landmark/nuke_spawn = locate(nuke_spawn_loc ? nuke_spawn_loc : "landmark*Nuclear-Bomb")
+	var/obj/effect/landmark/nuke_spawn = locate("landmark*Nuclear Bomb")
 
 	var/code
 	if(nuke_spawn)
@@ -72,11 +72,11 @@
 			if(leader && leader.current)
 				paper_spawn_loc = get_turf(leader.current)
 			else
-				paper_spawn_loc = get_turf(locate("landmark*Nuclear-Code"))
+				paper_spawn_loc = get_turf(locate(/obj/effect/landmark/event/nuke/code, "landmark*Nuclear Code"))
 
 		if(paper_spawn_loc)
 			// Create and pass on the bomb code paper.
-			var/obj/item/weapon/paper/P = new(paper_spawn_loc)
+			var/obj/item/paper/P = new(paper_spawn_loc)
 			P.info = "The nuclear authorization code is: <b>[code]</b>"
 			P.SetName("nuclear bomb code")
 			if(leader && leader.current)

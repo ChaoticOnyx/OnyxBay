@@ -32,7 +32,7 @@
 	name = "For lighting cigarettes in a badass manner"
 	desc = "An extremely fancy zippo lighter. Only Syndicate members are properly trained to deal with such a fashionable thing."
 	item_cost = DEFAULT_TELECRYSTAL_AMOUNT - 1
-	path = /obj/item/weapon/flame/lighter/zippo/syndie
+	path = /obj/item/flame/lighter/zippo/syndie
 
 /**************
 * Random Item *

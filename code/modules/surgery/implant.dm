@@ -33,8 +33,8 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/make_space
 	allowed_tools = list(
-	/obj/item/weapon/surgicaldrill = 100,	\
-	/obj/item/weapon/pen = 75,	\
+	/obj/item/surgicaldrill = 100,	\
+	/obj/item/pen = 75,	\
 	/obj/item/stack/rods = 50
 	)
 
@@ -64,10 +64,10 @@
 /datum/surgery_step/cavity/close_space
 	priority = 2
 	allowed_tools = list(
-	/obj/item/weapon/cautery = 100,			\
+	/obj/item/cautery = 100,			\
 	/obj/item/clothing/mask/smokable/cigarette = 75,	\
-	/obj/item/weapon/flame/lighter = 50,			\
-	/obj/item/weapon/weldingtool = 25
+	/obj/item/flame/lighter = 50,			\
+	/obj/item/weldingtool = 25
 	)
 
 	duration = CAUTERIZE_DURATION
@@ -116,7 +116,7 @@
 
 			var/total_volume = tool.get_storage_cost()
 			for(var/obj/item/I in affected.implants)
-				if(istype(I,/obj/item/weapon/implant))
+				if(istype(I,/obj/item/implant))
 					continue
 				total_volume += I.get_storage_cost()
 			if(total_volume > max_volume)
@@ -151,9 +151,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/cavity/implant_removal
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/fork = 20
+	/obj/item/hemostat = 100,	\
+	/obj/item/wirecutters = 75,	\
+	/obj/item/material/kitchen/utensil/fork = 20
 	)
 
 	duration = CLAMP_DURATION
@@ -195,8 +195,8 @@
 
 		var/obj/item/obj = pick(loot)
 
-		if(istype(obj,/obj/item/weapon/implant))
-			var/obj/item/weapon/implant/imp = obj
+		if(istype(obj,/obj/item/implant))
+			var/obj/item/implant/imp = obj
 			if (imp.islegal())
 				find_prob +=60
 			else
@@ -215,20 +215,12 @@
 
 			BITSET(target.hud_updateflag, IMPLOYAL_HUD)
 
-			//Handle possessive brain borers.
-			if(istype(obj,/mob/living/simple_animal/borer))
-				var/mob/living/simple_animal/borer/worm = obj
-				if(worm.controlling)
-					target.release_control()
-				worm.detatch()
-				worm.leave_host()
-			else
-				obj.dropInto(target.loc)
-				obj.add_blood(target)
-				obj.update_icon()
-				if(istype(obj,/obj/item/weapon/implant))
-					var/obj/item/weapon/implant/imp = obj
-					imp.removed()
+			obj.dropInto(target.loc)
+			obj.add_blood(target)
+			obj.update_icon()
+			if(istype(obj,/obj/item/implant))
+				var/obj/item/implant/imp = obj
+				imp.removed()
 			playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
 		else
 			user.visible_message("<span class='notice'>[user] removes \the [tool] from [target]'s [affected.name].</span>", \
@@ -240,7 +232,7 @@
 /datum/surgery_step/cavity/implant_removal/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	..()
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	for(var/obj/item/weapon/implant/imp in affected.implants)
+	for(var/obj/item/implant/imp in affected.implants)
 		var/fail_prob = 10
 		fail_prob += 100 - tool_quality(tool)
 		if (prob(fail_prob))

@@ -128,7 +128,7 @@
 				if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 					var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
 					if(ore_box)
-						for(var/obj/item/weapon/ore/ore in range(chassis, 1))
+						for(var/obj/item/ore/ore in range(chassis, 1))
 							if(get_dir(chassis, ore) & chassis.dir)
 								ore.Move(ore_box)
 			else if(target.loc == C)
@@ -918,6 +918,7 @@
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30
 	power_per_cycle = 5 KILOWATTS
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	var/rad_per_cycle = 0.3
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/init()
@@ -939,7 +940,7 @@
 //This is pretty much just for the death-ripley so that it is harmless
 /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp
 	name = "\improper KILL CLAMP"
-	icon_state = "mecha_clamp"
+	icon_state = "mecha_kill_clamp"
 	equip_cooldown = 15
 	energy_drain = 0
 	var/dam_force = 0
@@ -1004,7 +1005,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger
 	name = "passenger compartment"
 	desc = "A mountable passenger compartment for exo-suits. Rather cramped."
-	icon_state = "mecha_abooster_ccw"
+	icon_state = "mecha_passenger"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 1)
 	energy_drain = 1 KILOWATTS
 	range = MELEE

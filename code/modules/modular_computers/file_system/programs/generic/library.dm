@@ -98,7 +98,7 @@ The answer was five and a half years -ZeroBits
 			error_message = "Interface Error: Scanner cache does not contain any data. Please scan a book."
 			return 1
 
-		var/obj/item/weapon/book/B = scanner.cache
+		var/obj/item/book/B = scanner.cache
 
 		if(B.unique)
 			error_message = "Interface Error: Cached book is copy-protected."
@@ -159,7 +159,7 @@ The answer was five and a half years -ZeroBits
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
 			if(bndr && bndr.anchored && bndr.operable())
-				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
+				var/obj/item/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
 				if(new_book)
 					new_book.desc = current_book["author"] + ", " + current_book["title"] + ", " + "USBN " + current_book["id"]
 					bndr.visible_message("\The [bndr] whirs as it prints and binds a new book.")
@@ -299,7 +299,7 @@ The answer was five and a half years -ZeroBits
 			if(!computer.nano_printer)
 				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
 				return 1
-		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		new /obj/item/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
 		return 1
 
 #undef WIKI_COMMON_CATEGORY

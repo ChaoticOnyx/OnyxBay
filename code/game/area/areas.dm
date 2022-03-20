@@ -13,6 +13,7 @@
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
+	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
 
 /area/New()
 	icon_state = ""
@@ -22,6 +23,7 @@
 		power_light = 0
 		power_equip = 0
 		power_environ = 0
+		ambience_powered = list()
 
 	if(dynamic_lighting)
 		luminosity = 0
@@ -36,6 +38,7 @@
 		power_light = 0
 		power_equip = 0
 		power_environ = 0
+		ambience_powered = list()
 	power_change()		// all machines set to current power level, also updates lighting icon
 
 	switch(gravity_state)
@@ -270,22 +273,29 @@ var/list/mob/living/forced_ambiance_list = new
 	if(hum)
 		if(L.client && !L.client.ambience_playing)
 			L.client.ambience_playing = 1
-			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
+			L.playsound_local(T,sound('sound/ambient/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = SOUND_CHANNEL_HUM))
 	else
 		if(L.client && L.client.ambience_playing)
 			L.client.ambience_playing = 0
-			sound_to(L, sound(null, channel = 2))
+			sound_to(L, sound(null, channel = SOUND_CHANNEL_HUM))
 
 	if(forced_ambience)
 		if(forced_ambience.len)
 			var/S = GET_SFX(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		else
 			sound_to(L, sound(null, channel = 1))
-	else if(src.ambience.len && prob(35) && (world.time >= L.client.played + custom_period))
-		var/S = GET_SFX(pick(ambience))
-		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
+	else if(prob(35) && (world.time >= L.client.played + custom_period))
+		var/is_powered = (power_environ + power_equip + power_light) > 0
+		var/list/to_play = is_powered ? ambience_powered : ambience_off
+
+		if(!length(to_play))
+			return
+
+		var/S = GET_SFX(pick(to_play))
+
+		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = SOUND_CHANNEL_AMBIENT))
 		L.client.played = world.time
 
 /area/proc/gravitychange(new_state = 0)
@@ -316,7 +326,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/obj/machinery/power/apc/theAPC = get_apc()
 	if(theAPC && theAPC.operating)
 		for(var/obj/machinery/power/apc/temp_apc in src)
-			temp_apc.overload_lighting(70)
+			temp_apc.overload_lighting()
 		for(var/obj/machinery/door/airlock/temp_airlock in src)
 			temp_airlock.prison_open()
 		for(var/obj/machinery/door/window/temp_windoor in src)
@@ -348,4 +358,3 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
-

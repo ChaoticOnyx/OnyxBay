@@ -148,11 +148,12 @@
 	color = "#d0d0d0"
 
 /datum/reagent/uranium
-	name = MATERIAL_URANIUM
+	name = "Uranium"
 	description = "A silvery-white metallic chemical element in the actinide series, weakly radioactive."
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
+	radiation = 0.05
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)
@@ -164,9 +165,13 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
-			return
+				glow = new (T)
+				glow.create_reagents(volume)
+
+			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
+			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
 
 /datum/reagent/water/holywater
 	name = "Holy Water"
@@ -362,6 +367,13 @@
 	taste_description = "wood"
 	reagent_state = LIQUID
 	color = "#b97a57"
+
+/datum/reagent/glass
+	name = "Glass"
+	description = "A regular silicate glass, in form of a fine powder."
+	taste_description = "tiny cuts"
+	reagent_state = SOLID
+	color = "#b5edff"
 
 /datum/reagent/luminol
 	name = "Luminol"

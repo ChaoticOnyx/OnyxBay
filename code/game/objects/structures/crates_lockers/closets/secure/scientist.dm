@@ -9,14 +9,14 @@
 
 /obj/structure/closet/secure_closet/scientist/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/messenger/tox, /obj/item/weapon/storage/backpack/satchel/tox)),
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/messenger/tox, /obj/item/storage/backpack/satchel/tox)),
 		/obj/item/clothing/under/rank/scientist,
 		/obj/item/clothing/suit/storage/toggle/labcoat,
 		/obj/item/clothing/shoes/white,
 		/obj/item/device/radio/headset/headset_sci,
 		/obj/item/clothing/glasses/hud/standard/science,
 		/obj/item/clothing/mask/gas,
-		/obj/item/weapon/clipboard
+		/obj/item/clipboard
 	)
 
 /obj/structure/closet/secure_closet/xenobio
@@ -30,7 +30,7 @@
 
 /obj/structure/closet/secure_closet/xenobio/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/messenger/tox, /obj/item/weapon/storage/backpack/satchel/tox)),
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/messenger/tox, /obj/item/storage/backpack/satchel/tox)),
 		/obj/item/clothing/under/rank/scientist,
 		/obj/item/clothing/suit/storage/toggle/labcoat,
 		/obj/item/clothing/shoes/white,
@@ -38,7 +38,7 @@
 		/obj/item/clothing/glasses/hud/standard/science,
 		/obj/item/clothing/mask/gas,
 		/obj/item/clothing/gloves/latex,
-		/obj/item/weapon/clipboard
+		/obj/item/clipboard
 	)
 
 /obj/structure/closet/secure_closet/RD
@@ -58,13 +58,13 @@
 		/obj/item/clothing/under/rank/research_director/rdalt,
 		/obj/item/clothing/under/rank/research_director/dress_rd,
 		/obj/item/clothing/glasses/hud/standard/science,
-		/obj/item/weapon/cartridge/rd,
+		/obj/item/cartridge/rd,
 		/obj/item/clothing/shoes/leather,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/device/radio/headset/heads/rd,
 		/obj/item/clothing/mask/gas,
 		/obj/item/device/flash,
-		/obj/item/weapon/clipboard,
+		/obj/item/clipboard,
 		/obj/item/clothing/suit/storage/toggle/labcoat/rd
 	)
 
@@ -76,9 +76,9 @@
 	return list(
 		/obj/item/device/assembly/signaler,
 		/obj/item/device/radio/electropack = 3,
-		/obj/item/weapon/gun/launcher/syringe/rapid,
-		/obj/item/weapon/storage/box/syringegun,
-		/obj/item/weapon/storage/box/syringes,
-		/obj/item/weapon/reagent_containers/glass/bottle/chloralhydrate,
-		/obj/item/weapon/reagent_containers/glass/bottle/stoxin
+		/obj/item/gun/launcher/syringe/rapid,
+		/obj/item/storage/box/syringegun,
+		/obj/item/storage/box/syringes,
+		/obj/item/reagent_containers/glass/bottle/small/chloralhydrate,
+		/obj/item/reagent_containers/glass/bottle/stoxin
 	)

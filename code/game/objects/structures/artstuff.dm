@@ -75,7 +75,7 @@
 	if(finalized)
 		return GLOB.physical_obscured_state
 	else
-		return GLOB.default_state
+		return GLOB.tgui_physical_state
 
 /obj/item/canvas/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -85,7 +85,7 @@
 		ui.open()
 
 /obj/item/canvas/attackby(obj/item/I, mob/living/user, params)
-	if(istype(I, /obj/item/weapon/tape_roll))
+	if(istype(I, /obj/item/tape_roll))
 		to_chat(user, SPAN_NOTICE("You add some tape to back of canvas."))
 		taped = TRUE
 	if(user.a_intent == I_HELP)
@@ -127,7 +127,7 @@
 
 /obj/item/canvas/proc/finalize(mob/user)
 	finalized = TRUE
-	author_ckey = user.ckey
+	author_ckey = author_ckey || user?.ckey || crash_with("THIS IS BUG! ALARM!")
 	paint_image()
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
@@ -203,11 +203,11 @@
 /obj/item/canvas/proc/get_paint_tool_color(obj/item/I)
 	if(!I)
 		return
-	if(istype(I, /obj/item/weapon/pen/crayon))
-		var/obj/item/weapon/pen/crayon/crayon = I
+	if(istype(I, /obj/item/pen/crayon))
+		var/obj/item/pen/crayon/crayon = I
 		return crayon.colour
-	else if(istype(I, /obj/item/weapon/pen))
-		var/obj/item/weapon/pen/P = I
+	else if(istype(I, /obj/item/pen))
+		var/obj/item/pen/P = I
 		switch(P.colour)
 			if("black")
 				return COLOR_BLACK
@@ -216,15 +216,33 @@
 			if("red")
 				return COLOR_RED
 		return P.colour
-	else if(istype(I, /obj/item/weapon/soap) || istype(I, /obj/item/weapon/reagent_containers/glass/rag))
+	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/glass/rag))
 		return canvas_color
 
+/obj/item/canvas/proc/to_json()
+	if(!icon_generated || no_save)
+		return
+	var/list/data = list()
+	data["name"] = painting_name
+	data["ckey"] = author_ckey
+	data["grid"] = grid
+	return json_encode(data)
+
+/obj/item/canvas/proc/apply_canvas_data(encoded_data)
+	if(icon_generated || !istext(encoded_data))
+		return
+	var/list/data = json_decode(encoded_data)
+	painting_name = data["name"]
+	author_ckey = data["ckey"]
+	grid = data["grid"]
+
 /obj/item/canvas/proc/try_rename(mob/user)
-	var/new_name = sanitize(input(user,"What do you want to name the painting?"))
-	if(new_name != painting_name && new_name && CanUseTopic(user, GLOB.physical_state))
-		painting_name = new_name
-		SStgui.update_uis(src)
-		desc = "[desc]\nIt has name of [painting_name]"
+	if(user)
+		var/new_name = sanitize(input(user,"What do you want to name the painting?"))
+		if(new_name != painting_name && new_name && CanUseTopic(user, GLOB.physical_state))
+			painting_name = new_name
+			SStgui.update_uis(src)
+	desc = "[desc]\nIt has name of [painting_name]"
 
 /obj/item/canvas/nineteen_nineteen
 	icon_state = "19x19"

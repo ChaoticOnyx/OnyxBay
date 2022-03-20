@@ -323,15 +323,12 @@
 	desc = "And they said I was crazy."
 	icon = 'icons/obj/doors/dooruranium.dmi'
 	mineral = MATERIAL_URANIUM
-	var/last_event = 0
-	var/rad_power = 7.5
 
-/obj/machinery/door/airlock/uranium/Process()
-	if(world.time > last_event+20)
-		if(prob(50))
-			SSradiation.radiate(src, rad_power)
-		last_event = world.time
-	..()
+/obj/machinery/door/airlock/uranium/Initialize()
+	. = ..()
+
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, 2 * REAGENTS_PER_MATERIAL_SHEET, null, FALSE)
 
 //////////////////////////////////////////
 /obj/machinery/door/airlock/plasma

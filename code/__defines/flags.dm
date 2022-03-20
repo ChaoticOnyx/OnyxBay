@@ -17,6 +17,8 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_NO_REACT               0x0008 // Reagents don't react inside this container.
 #define ATOM_FLAG_OPEN_CONTAINER         0x0010 // Is an open container for chemistry purposes.
 #define ATOM_FLAG_INITIALIZED            0x0020 // Has this atom been initialized
+#define ATOM_FLAG_FULLTILE_OBJECT        0x0040 // Blocks interactions with most atoms on the same tile, except mobs, items and anything that has the flag below, i.e. fulltile windows
+#define ATOM_FLAG_ADJACENT_EXCEPTION     0x0080 // Skips adjacent checks for atoms that should always be reachable in window tiles
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
@@ -39,3 +41,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASS_FLAG_TABLE  0x1
 #define PASS_FLAG_GLASS  0x2
 #define PASS_FLAG_GRILLE 0x4
+
+// Flags for effect_flags
+/// Does not pass the radiation.
+#define EFFECT_FLAG_RAD_SHIELDED (1<<0)

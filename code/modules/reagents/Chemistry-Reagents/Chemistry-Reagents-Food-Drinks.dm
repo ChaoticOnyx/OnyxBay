@@ -606,7 +606,7 @@
 	name = "Apple Juice"
 	description = "Apples! Apples! Apples!"
 	taste_description = "apples"
-	color = "#E59C40"
+	color = "#e59C40"
 
 	glass_name = "apple juice"
 	glass_desc = "Two cups a day keep the doctor away!"
@@ -621,7 +621,7 @@
 	name = "Coconut Milk"
 	description = "It's white and smells like your granny's rice pudding."
 	taste_description = "coconut"
-	color = "FFFFFF"
+	color = "#ffffff"
 
 	glass_name = "coconut milk"
 	glass_desc = "How do they milk coconuts?"
@@ -757,8 +757,8 @@
 	adj_temp = -5
 
 	glass_required = "square"
-	glass_icon_state = "icedcoffee"
-	glass_name = "cafe latte"
+	glass_icon_state = "coffeelatte"
+	glass_name = "iced coffee"
 	glass_desc = "A drink to perk you up and refresh you!"
 	glass_special = list(DRINK_ICE)
 

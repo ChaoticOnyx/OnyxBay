@@ -25,33 +25,33 @@
 
 /datum/gear/storage/waistpack
 	display_name = "waist pack"
-	path = /obj/item/weapon/storage/belt/waistpack
+	path = /obj/item/storage/belt/waistpack
 	cost = 4
 	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/storage/waistpack/big
 	display_name = "large waist pack"
-	path = /obj/item/weapon/storage/belt/waistpack/big
+	path = /obj/item/storage/belt/waistpack/big
 	cost = 5
 
 /datum/gear/storage/santabag
 	display_name = "santabag"
 	slot = slot_back
-	path = /obj/item/weapon/storage/backpack/santabag/fake
+	path = /obj/item/storage/backpack/santabag/fake
 	cost = 2
 	price = 20
 
 /datum/gear/storage/carppack
 	display_name = "space carp backpack"
 	slot = slot_back
-	path = /obj/item/weapon/storage/backpack/carppack
+	path = /obj/item/storage/backpack/carppack
 	cost = 2
 	price = 50
 
 /datum/gear/storage/shoulder_bag
 	display_name = "shoulder bag"
 	slot = slot_back
-	path = /obj/item/weapon/storage/backpack/messenger/shoulder_bag
+	path = /obj/item/storage/backpack/messenger/shoulder_bag
 	cost = 2
 	price = 15
 

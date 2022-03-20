@@ -20,7 +20,7 @@
 		if(!(P in mind.vampire.purchased_powers))
 			if(!P.blood_cost)
 				mind.vampire.add_power(mind, P, 0)
-		else if(P.isVerb && P.verbpath)
+		else if(P.is_active && P.verbpath)
 			verbs += P.verbpath
 
 	return TRUE
@@ -86,7 +86,7 @@
 				to_chat(src, SPAN_WARNING("You lack the power required to affect another creature of the Veil."))
 			return FALSE
 
-	if (is_mechanical(T))
+	if (T.isSynthetic())
 		if (notify)
 			to_chat(src, SPAN_WARNING("You lack the power interact with mechanical constructs."))
 		return FALSE
@@ -95,7 +95,7 @@
 			to_chat(src, SPAN_WARNING("\The [T]'s mind is too strong to be affected by our powers!"))
 		return FALSE
 	if (account_loyalty_implant)
-		for (var/obj/item/weapon/implant/loyalty/I in T)
+		for (var/obj/item/implant/loyalty/I in T)
 			if (I.implanted)
 				if (notify)
 					to_chat(src, SPAN_WARNING("You feel that [T]'s mind is protected from our powers."))
@@ -217,7 +217,7 @@
 		return
 
 	for (var/datum/power/vampire/P in mind.vampire.purchased_powers)
-		if (P.isVerb)
+		if (P.is_active)
 			verbs -= P.verbpath
 
 	if (mind.vampire.status & VAMP_FRENZIED)
