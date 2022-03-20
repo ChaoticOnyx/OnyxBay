@@ -2,4 +2,4 @@
 	artist = "Zhay Tee"
 	title = "Absconditus"
 	album = "Minerva: Metastasis OST"
-	song = 'sound/music/traitor.ogg'
+	song = 'sound/music/classic/traitor.ogg'

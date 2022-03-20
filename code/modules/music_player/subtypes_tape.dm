@@ -1,12 +1,67 @@
 // Pre-made cassetes
 /obj/item/music_tape/title2
 	name = "tape - \"Title 2\""
-	track = new /datum/track("Title 2", 'sound/music/title2.ogg')
+	track = new /datum/track("Title 2", 'sound/music/classic/title2.ogg')
 
 /obj/item/music_tape/clouds
 	name = "tape - \"Clouds\""
-	track = new /datum/track("Clouds of Fire", 'sound/music/clouds.s3m')
+	track = new /datum/track("Clouds of Fire", 'sound/music/classic/clouds.s3m')
 
+/obj/item/music_tape/random/newyear
+	name = "Christmas Music Tape"
+	tracklist = list(
+		"Final Countdown"               = 'sound/music/newyear/christmasamb1.ogg',
+		"Last Christmas"                = 'sound/music/newyear/christmasamb2.ogg',
+		"We Wish You a Merry Christmas" = 'sound/music/newyear/christmasamb3.ogg',
+		"Jingle Bells"                  = 'sound/music/newyear/christmasamb4.ogg',
+		"Happy New Year"                = 'sound/music/newyear/happynewyear.ogg',
+		"Steklovata"                    = 'sound/music/newyear/steklovata_newyear.ogg',
+		"Zima-Holoda"                   = 'sound/music/newyear/zima_holoda.ogg',
+		"Zima"                          = 'sound/music/newyear/zima.ogg'
+	)
+/obj/item/music_tape/random/jazz
+	name = "Jazzy Jazz Tape"
+	tracklist = list(
+		"Booty Swing"              		= 'sound/music/jazz/booty_swing.ogg',
+		"Fly Me To The Moon"            = 'sound/music/jazz/fly_me_to_the_moon.ogg',
+		"Lone Digger" 					= 'sound/music/jazz/lonedigger.ogg',
+		"Rush"                			= 'sound/music/jazz/rush.ogg',
+		"Mr. Sandman"            	    = 'sound/music/jazz/sandman.ogg',
+		"What A Wonderful World"        = 'sound/music/jazz/wonderful_world.ogg',
+	)
+
+/obj/item/music_tape/random/frontier
+	name = "NSS Frontier Tape"
+	tracklist = list(
+		"It's The End Of The World"     = 'sound/music/frontier/end_of_the_world.ogg',
+		"Little Dark Age"               = 'sound/music/frontier/little_dark_age.ogg',
+		"Piano Bar I" 					= 'sound/music/frontier/piano_bar.ogg',
+		"Resonance"              	    = 'sound/music/frontier/resonance.ogg',
+		"The Man Who Sold The World"    = 'sound/music/frontier/the_man_who_sold_the_world.ogg',
+		"Split"                  	 	= 'sound/music/frontier/split.ogg',
+	)
+/obj/item/music_tape/random/classic
+	name = "Classic Music Tape"
+	tracklist = list(
+		"Prey"                          = 'sound/music/classic/prey.ogg',
+		"Clouds of Fire"                = 'sound/music/classic/clouds.s3m',
+		"D`Bert"                        = 'sound/music/classic/title2.ogg',
+		"D`Fort"                        = 'sound/ambient/song_game.ogg',
+		"Floating"                      = 'sound/music/classic/main.ogg',
+		"Endless Space"                 = 'sound/music/classic/space.ogg',
+		"Part A"                        = 'sound/music/classic/TestLoop1.ogg',
+		"Scratch"                       = 'sound/music/classic/title1.ogg',
+		"Trai`Tor"                      = 'sound/music/classic/traitor.ogg',
+		"All That I Can See"            = 'sound/music/classic/all_that_i_can_see.ogg',
+		"Delirium"                      = 'sound/music/classic/delirium.ogg',
+		"End"                           = 'sound/music/classic/end.ogg',
+		"Magicfly"                      = 'sound/music/classic/magicfly.ogg',
+		"Self Justified Sacrifices"     = 'sound/music/classic/self_justified_sacrifices.ogg',
+		"Reaper \'n Blues"              = 'sound/music/classic/reapernblues.ogg',
+		"Undead Man Walkin`"            = 'sound/music/classic/undeadwalking.ogg',
+		"Space Oddity"                  = 'sound/music/classic/space_oddity.ogg',
+		"Crockett's Theme"              = 'sound/music/classic/crokett_39_s_theme.ogg',
+	)
 /obj/item/music_tape/custom
 	name = "dusty tape"
 	desc = "A dusty tape, which can hold anything. Only what you need is blow the dust away and you will be able to play it again."
