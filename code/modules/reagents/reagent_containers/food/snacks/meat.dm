@@ -58,3 +58,8 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/acid/polyacid, 9)
 	src.bitesize = 6
+
+/obj/item/reagent_containers/food/snacks/meat/diona
+	name = "diona meat"
+	desc = "A slab of diona."
+	icon_state = "dionameat"

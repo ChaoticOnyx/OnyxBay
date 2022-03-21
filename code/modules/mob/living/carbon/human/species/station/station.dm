@@ -254,6 +254,7 @@
 	health_hud_intensity = 2
 	hunger_factor = 3
 	eye_icon = "blank_eyes"
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/diona
 
 	min_age = 1
 	max_age = 300
