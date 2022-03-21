@@ -20,6 +20,8 @@
 	var/can_namepick_as_adult = 0
 	var/adult_name
 	var/instance_num
+	var/meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	var/meat_amount = 2
 
 /mob/living/carbon/alien/New()
 
