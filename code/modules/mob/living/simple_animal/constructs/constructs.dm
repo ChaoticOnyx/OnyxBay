@@ -97,6 +97,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "behemoth"
 	icon_living = "behemoth"
+	icon_dead = "behemoth_dead"
 	maxHealth = 250
 	health = 250
 	speak_emote = list("rumbles")
@@ -184,6 +185,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "artificer"
 	icon_living = "artificer"
+	icon_dead = "artificer_dead"
 	maxHealth = 50
 	health = 50
 	response_harm = "viciously beaten"
@@ -215,6 +217,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "behemoth"
 	icon_living = "behemoth"
+	icon_dead = "behemoth_dead"
 	maxHealth = 750
 	health = 750
 	speak_emote = list("rumbles")
