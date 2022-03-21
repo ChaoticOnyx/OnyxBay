@@ -926,8 +926,7 @@
 				return
 
 			GLOB.thralls.remove_antagonist(T.mind, 0, 0)
-			qdel(draining_vamp)
-			draining_vamp = null
+			draining_vamp.status &= ~VAMP_ISTHRALL
 		else
 			to_chat(src, SPAN_WARNING("You feel corruption running in [T]'s blood. Much like yourself, \he[T] is already a spawn of the Veil, and cannot be Embraced."))
 			return

@@ -30,7 +30,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if(thing.client || (thing.z in player_levels))
+		if(thing.client || (thing.z in player_levels) || thing.teleop)
 			thing.Life()
 
 		if(MC_TICK_CHECK)
