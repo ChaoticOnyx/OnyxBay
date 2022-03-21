@@ -37,6 +37,11 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 				continue
 
 		var/tag = pick(A.ambient_music_tags)
+
+		// The conductor decided to not play music but keep silence.
+		if(!tag)
+			C.last_time_ambient_music_played = world.time
+
 		var/file_to_play = get_sound_by_tag(tag)
 		C.play_ambience_music(file_to_play)
 
@@ -52,4 +57,6 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 		if(MUSIC_TAG_CENTCOMM)
 			return GET_SFX(SFX_AMBIENT_MUSIC_CENTCOMM)
 		else
+			if(prob(50))
+				return
 			return GET_SFX(SFX_AMBIENT_MUSIC_NORMAL)
