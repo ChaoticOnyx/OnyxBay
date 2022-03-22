@@ -55,6 +55,8 @@ var/list/ventcrawl_machinery = list(
 		return TRUE
 	if(istype(species, /datum/species/xenos))
 		return TRUE
+	if(istype(internal_organs_by_name[BP_GLAND], /obj/item/organ/internal/heart/gland/ventcrawling))
+		return TRUE
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()
