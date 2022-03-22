@@ -379,11 +379,12 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/energy/declone
-	fire_delay = 6
+	fire_delay = 10
 	origin_tech = null
 	max_shots = 5 //to compensate a bit for self-recharging
 	one_hand_penalty = 1 //a little bulky
 	self_recharge = 1
+	recharge_time = 8
 
 
 /obj/item/gun/abductor/special_check(mob/user)
@@ -410,8 +411,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	item_state = "wonderprod"
 
 	force = 7
-	stunforce = 30
-	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy
+	stunforce = 10
+	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy()
 	var/mode = BATON_STUN
 	var/sleep_time = 2 MINUTES
 	var/time_to_cuff = 3 SECONDS
@@ -485,7 +486,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			to_chat(user, SPAN_WARNING("The specimen's tinfoil protection is interfering with the sleep inducement!"))
 			L.visible_message(SPAN_DANGER("[user] tried to induced sleep in [L] with [src], but tinfoil protection blocking it!"), \
 								SPAN_DANGER("You feel a strange wave of heavy drowsiness wash over you, but your tinfoil protection deflects most of it!"))
-			L.drowsyness += 2
+			L.drowsyness += 5
 			return
 		L.visible_message(SPAN_DANGER("[user] induces sleep in [L] with [src]!"), \
 							SPAN_DANGER("You suddenly feel very drowsy!"))
