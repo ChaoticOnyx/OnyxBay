@@ -35,6 +35,7 @@
 
 /obj/machinery/abductor/pad/proc/doMobToLoc(place, atom/movable/target)
 	flick("alien-pad", src)
+	src.console.camera.release(target)
 	target.forceMove(place)
 	playsound(get_turf(target), 'sound/effects/phasein.ogg', 50, 1)
 	anim(get_turf(target), target,'icons/mob/mob.dmi',,"phaseout",,target.dir)

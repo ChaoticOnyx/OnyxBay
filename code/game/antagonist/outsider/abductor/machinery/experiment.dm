@@ -100,12 +100,12 @@
 	data["open"] = state_open
 	data["feedback"] = flash
 	data["occupant"] = occupant ? TRUE : FALSE
-	data["occupant_name"] = null
-	data["occupant_status"] = null
+	data["OccupantName"] = null
+	data["OccupantStatus"] = null
 	if(occupant)
 		var/mob/living/mob_occupant = occupant
-		data["occupant_name"] = mob_occupant.name
-		data["occupant_status"] = mob_occupant.stat
+		data["OccupantName"] = mob_occupant.name
+		data["OccupantStatus"] = mob_occupant.stat
 	return data
 
 /obj/machinery/abductor/experiment/tgui_act(action, list/params)
@@ -172,8 +172,8 @@
 				to_chat(H, SPAN_WARNING("You feel intensely watched."))
 		sleep(5)
 		user_abductor.team.abductees += H.mind
-		var/datum/antagonist/abductee/A
-		A.add_antagonist(H.mind)
+		var/datum/antagonist/abductee/antag
+		antag.add_antagonist(H.mind)
 
 		for(var/obj/item/organ/internal/heart/gland/G in H.internal_organs)
 			G.Start()

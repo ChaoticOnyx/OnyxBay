@@ -4,7 +4,7 @@
 			return C
 
 //Common
-
+#define TELEPORT_COOLDOWN 10 SECONDS
 /obj/machinery/abductor
 	var/team_number = 0
 	anchored = 1
@@ -27,6 +27,7 @@
 	var/compact_mode = FALSE
 	/// Possible gear to be dispensed
 	var/list/possible_gear = list()
+	var/teleporter_cooldown
 
 /obj/machinery/abductor/console/Initialize(mapload)
 	. = ..()
@@ -184,12 +185,20 @@
 
 /obj/machinery/abductor/console/proc/TeleporterRetrieve()
 	var/mob/living/marked = gizmo.marked_target_weakref?.resolve()
-	if(pad && marked)
-		pad.Retrieve(marked)
+	if(world.time > teleporter_cooldown)
+		if(pad && marked)
+			pad.Retrieve(marked)
+			teleporter_cooldown = world.time+TELEPORT_COOLDOWN
+	else
+		state("Teleport pad is recalibrating please wait [(teleporter_cooldown-world.time)*0.1] seconds")
 
 /obj/machinery/abductor/console/proc/TeleporterSend()
-	if(pad)
-		pad.Send()
+	if(world.time > teleporter_cooldown)
+		if(pad)
+			pad.Send()
+			teleporter_cooldown = world.time+TELEPORT_COOLDOWN
+	else
+		state("Teleport pad is recalibrating please wait [(teleporter_cooldown-world.time)*0.1] seconds")
 
 /obj/machinery/abductor/console/proc/FlipVest()
 	if(vest)
@@ -284,3 +293,5 @@
 
 	else
 		state("Insufficent data!")
+
+#undef TELEPORT_COOLDOWN
