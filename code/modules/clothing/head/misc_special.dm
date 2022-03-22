@@ -267,4 +267,4 @@
 	desc = "Big brother is watching you!"
 	icon_state = "foilhat"
 	body_parts_covered = 0
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 5, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)
