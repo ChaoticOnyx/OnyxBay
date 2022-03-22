@@ -12,7 +12,7 @@
 	if(entangled_mob)
 		return
 	for(var/mob/M in oview(owner, 7))
-		if(!iscarbon(M))
+		if(!iscarbon(M) || isabductor(M))
 			continue
 		entangled_mob = M
 		addtimer(CALLBACK(src, .proc/quantum_swap), rand(600, 2400))

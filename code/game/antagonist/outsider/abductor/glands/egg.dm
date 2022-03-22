@@ -6,6 +6,14 @@
 	uses = -1
 	mind_control_uses = 2
 	mind_control_duration = 1800
+	var/list/possible_reagents = list()
+
+/obj/item/organ/internal/heart/gland/chem/Initialize(mapload)
+	. = ..()
+	for(var/R in subtypesof(/datum/reagent))
+		if(istype(R,/datum/reagent/adminordrazine)||istype(R,/datum/reagent/nanites))
+			continue
+		possible_reagents += R
 
 /obj/item/organ/internal/heart/gland/egg/activate()
 	owner.visible_message(SPAN_DANGER("[owner] [pick(EGG_LAYING_MESSAGES)]"))
@@ -17,7 +25,7 @@
 
 /obj/item/reagent_containers/food/snacks/egg/gland/Initialize()
 	. = ..()
-	reagents.add_reagent(pick(subtypesof(/datum/reagent - /datum/reagent/adminordrazine)))
+	reagents.add_reagent(pick(subtypesof(/datum/reagent)-/datum/reagent/adminordrazine),rand(1,4))
 
 /obj/item/reagent_containers/food/snacks/egg/gland/Process() //Why it's even needed to be proccessed?
 		return PROCESS_KILL

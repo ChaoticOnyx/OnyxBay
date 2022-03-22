@@ -15,15 +15,15 @@
 
 	var/turf/T = get_turf(owner)
 	for(var/mob/living/carbon/H in orange(4,T))
-		if(H == owner)
+		if(H == owner || isabductor(H))
 			continue
 		switch(pick(1,3))
 			if(1)
 				to_chat(H, SPAN_DANGER("You hear a loud buzz in your head, silencing your thoughts!"))
-				H.Stun(50)
+				H.Stun(5)
 			if(2)
 				to_chat(H, SPAN_WARNING("You hear an annoying buzz in your head."))
-				H.confused = max(H.confused, 20)
+				H.confused = max(H.confused, 10)
 				if(!H.should_have_organ(BP_BRAIN)) return //no brain
 
 				var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
@@ -31,7 +31,7 @@
 
 				H.setBrainLoss(rand(min_brain_damage,max_brain_damage))
 			if(3)
-				H.hallucination += 60
+				H.hallucination += 20
 
 /obj/item/organ/internal/heart/gland/mindshock/mind_control(command, mob/living/user)
 	if(!ownerCheck() || !mind_control_uses || active_mind_control)

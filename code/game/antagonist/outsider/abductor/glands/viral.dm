@@ -1,5 +1,5 @@
 /obj/item/organ/internal/heart/gland/viral
-	abductor_hint = "contamination incubator. The abductee becomes a carrier of a random advanced disease - of which they are unaffected by."
+	abductor_hint = "contamination incubator. The abductee becomes a carrier of a random advanced disease."
 	cooldown_low = 1800
 	cooldown_high = 2400
 	uses = 1

@@ -1,7 +1,7 @@
 /obj/item/organ/internal/heart/gland/plasma
 	abductor_hint = "effluvium sanguine-synonym emitter. The abductee randomly emits clouds of plasma."
 	cooldown_low = 1200
-	cooldown_high = 1800
+	cooldown_high = 2400
 	icon_state = "slime"
 	uses = -1
 	mind_control_uses = 1
@@ -18,5 +18,5 @@
 	owner.visible_message(SPAN_DANGER("[owner] vomits a cloud of plasma!"))
 	var/turf/simulated/T = get_turf(owner)
 	if(istype(T))
-		T.assume_gas("plasma", 100, T20C)
+		T.assume_gas("plasma", 200, T20C)
 	owner.vomit()

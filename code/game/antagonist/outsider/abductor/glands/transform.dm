@@ -10,6 +10,7 @@
 
 /obj/item/organ/internal/heart/gland/transform/activate()
 	to_chat(owner, SPAN_NOTICE("You feel unlike yourself."))
-	var/datum/preferences/A = new()
-	A.randomize_appearance_and_body_for(owner)
-
+	for(var/i=1 to owner.dna.UI.len)
+		owner.dna.SetUIValue(i,rand(1,4095))
+	domutcheck(owner, null)
+	owner.UpdateAppearance()

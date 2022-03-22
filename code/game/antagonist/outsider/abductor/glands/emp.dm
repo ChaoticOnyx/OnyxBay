@@ -1,5 +1,5 @@
 /obj/item/organ/internal/heart/gland/emp
-	abductor_hint = "electron accumulator/discharger. The abductee becomes fully immune to electric shocks. Additionally, they will randomly discharge electric bolts."
+	abductor_hint = "electron accumulator/discharger. The abductee will randomly discharge electro magnetic impulse."
 	cooldown_low = 800
 	cooldown_high = 1200
 	icon_state = "species"
