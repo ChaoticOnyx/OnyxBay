@@ -302,9 +302,6 @@
 			else if(S.can_be_inserted(src, user))
 				S.handle_item_insertion(src)
 
-/obj/item/proc/hit_reaction()
-	return
-
 /obj/item/proc/talk_into(mob/M, text)
 	return
 
