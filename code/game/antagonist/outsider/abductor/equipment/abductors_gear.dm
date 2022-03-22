@@ -97,7 +97,7 @@
 		M.overlays.Cut()
 		M.regenerate_icons()
 
-/obj/item/clothing/suit/armor/abductor/vest/hit_reaction()
+/obj/item/clothing/suit/armor/abductor/vest/handle_shield(mob/user, damage, atom/damage_source, mob/attacker, def_zone, attack_text)
 	DeactivateStealth()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/Adrenaline()

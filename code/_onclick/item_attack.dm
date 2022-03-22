@@ -150,21 +150,4 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		else if(devour(I))
 			return 1
 
-	if(src.a_intent != I_HELP)
-		check_hit_reaction()
-
 	return ..()
-
-/mob/living/carbon/human/proc/check_hit_reaction()
-	if(wear_suit)
-		wear_suit.hit_reaction()
-	if(w_uniform)
-		w_uniform.hit_reaction()
-	if(shoes)
-		shoes.hit_reaction()
-	if(belt)
-		belt.hit_reaction()
-	if(glasses)
-		glasses.hit_reaction()
-	if(head)
-		head.hit_reaction()
