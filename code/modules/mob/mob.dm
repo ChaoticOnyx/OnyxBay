@@ -5,6 +5,7 @@
 	GLOB.player_list -= src
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
@@ -17,7 +18,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
+	if(mind?.current == src)
 		spellremove(src)
 	ghostize()
 	return ..()
