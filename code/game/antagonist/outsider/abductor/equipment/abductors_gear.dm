@@ -260,14 +260,16 @@
 			continue
 		to_chat(user, SPAN_NOTICE("You silence [M]'s radio devices."))
 		radio_off_mob(M)
+//YEP THAT'S SUCK
+/obj/item/abductor/silencer/proc/radio_on_mob(obj/item/device/radio/radio)
+		radio.on = 1
 
 /obj/item/abductor/silencer/proc/radio_off_mob(mob/living/carbon/human/M)
 	var/list/all_items = M.get_contents()
 
 	for(var/obj/item/device/radio/radio in all_items)
-		radio.ToggleReception()
-		if(!istype(radio, /obj/item/device/radio/headset))
-			radio.ToggleBroadcast()
+		radio.on = 0
+		addtimer(CALLBACK(src, .proc/radio_on_mob, radio),300)
 
 /obj/item/abductor/mind_device
 	name = "mental interface device"
@@ -349,7 +351,7 @@
 /obj/item/paper/guides/antag/abductor
 	name = "Dissection Guide"
 	icon = 'icons/obj/abductor.dmi'
-	icon_state = "alienpaper_words"
+	icon_state = "paper_words"
 	readonly = TRUE
 	info = {"<b>Dissection for Dummies</b><br>
 
@@ -557,7 +559,6 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	user.visible_message(SPAN_DANGER("[user]'s [name] breaks in a discharge of energy!"), \
 							SPAN_DANGER("[user]'s [name] breaks in a discharge of energy!"))
 	var/datum/effect/effect/system/spark_spread/S = new
-	qdel(src)
 	var/turf/T = get_turf(user.loc)
 	S.set_up(4,0,user.loc)
 	S.attach(T)
@@ -758,7 +759,46 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		return
 
 //INDESTRUTIBLE TABLE YEAAAAH
-/obj/structure/table/abductor/attackby()
+/obj/structure/table/abductor/attackby(obj/item/W, mob/user, click_params)
+	if (!W) return
+
+	// Handle harm intent grabbing/tabling.
+	if(istype(W, /obj/item/grab) && get_dist(src,user)<2)
+		var/obj/item/grab/G = W
+		if (istype(G.affecting, /mob/living/carbon/human))
+			var/obj/occupied = turf_is_crowded()
+			if(occupied)
+				to_chat(user, "<span class='danger'>There's \a [occupied] in the way.</span>")
+				return
+
+			if(G.force_danger())
+				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
+				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
+				if(!do_after(G.assailant, 13))
+					return 0
+				if(!G) //check that we still have a grab
+					return 0
+				G.affecting.forceMove(src.loc)
+				G.affecting.Weaken(rand(1,4))
+				G.affecting.Stun(1)
+				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
+				G.affecting.break_all_grabs(G.assailant)
+				qdel(W)
+			else
+				to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")
+			return
+
+	// Handle dismantling or placing things on the table from here on.
+	if(isrobot(user))
+		return
+
+	if(W.loc != user) // This should stop mounted modules ending up outside the module.
+		return
+
+	// Placing stuff on tables
+	if(user.unEquip(W, target = loc))
+		auto_align(W, click_params)
+		return 1
 	return
 
 
