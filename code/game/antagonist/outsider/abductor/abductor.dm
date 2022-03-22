@@ -17,7 +17,8 @@ GLOBAL_DATUM_INIT(abductor_solo, /datum/antagonist/abductor/scientist/onemanteam
 	mob_path = /mob/living/carbon/human/abductor
 	hard_cap = 2
 	hard_cap_round = 8
-
+	initial_spawn_req = 1
+	initial_spawn_target = 2
 	faction = "syndicate"
 	station_crew_involved = FALSE
 	var/outfit
