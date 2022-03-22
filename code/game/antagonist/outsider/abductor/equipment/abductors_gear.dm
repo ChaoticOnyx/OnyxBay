@@ -638,8 +638,23 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/item/cautery/alien
 	name = "alien cautery"
-	desc = "Why would bloodless aliens have a tool to stop bleeding? \
+	desc = "Why would aliens have a tool to stop bleeding? \
 		Unless..."
+	icon = 'icons/obj/abductor.dmi'
+	surgery_speed = 0.25
+
+/obj/item/FixOVein/alien
+	name = "FoxOVein"
+	icon = 'icons/obj/abductor.dmi'
+	surgery_speed = 0.25
+
+/obj/item/bonegel/alien
+	name = "bonebiomass"
+	icon = 'icons/obj/abductor.dmi'
+	surgery_speed = 0.25
+
+/obj/item/bonesetter/alien
+	name = "bone setter"
 	icon = 'icons/obj/abductor.dmi'
 	surgery_speed = 0.25
 
