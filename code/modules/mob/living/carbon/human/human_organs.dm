@@ -47,7 +47,7 @@
 	if(!E)
 		var/organ_path = species.has_organ[organ_type]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		src.internal_organs_by_name[organ_type] = O
+		internal_organs_by_name[organ_type] = O
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)

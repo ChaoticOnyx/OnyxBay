@@ -16,11 +16,10 @@ GLOBAL_DATUM_INIT(abductee, /datum/antagonist/abductee, new)
 
 /datum/antagonist/abductee/greet(datum/mind/player)
 	to_chat(player.current, SPAN_WARNING("<b>Your mind snaps!</b>"))
-	to_chat(player.current, "<big>[SPAN_WARNING("<b>You can't remember how you got here...</b>")]</big>")
+	to_chat(player.current, SPAN_WARNING("<big><b>You can't remember how you got here...</b></big>"))
 	show_objectives(player)
 
 /datum/antagonist/abductee/create_objectives(datum/mind/player)
 	var/objtype = (prob(75) ? /datum/objective/abductee/random : pick(subtypesof(/datum/objective/abductee/) - /datum/objective/abductee/random))
 	var/datum/objective/abductee/O = new objtype()
 	player.objectives += O
-

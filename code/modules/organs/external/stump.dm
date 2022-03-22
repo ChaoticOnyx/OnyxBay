@@ -24,7 +24,7 @@
 /obj/item/organ/external/stump/rejuvenate(ignore_prosthetic_prefs)
 	. = ..()
 	var/mob/living/carbon/human/H = owner
-	src.removed(drop_organ = FALSE)
+	removed(drop_organ = FALSE)
 	H.restore_limb(organ_tag)
 	if(organ_tag == BP_L_ARM||organ_tag == BP_R_ARM)
 		H.restore_limb(organ_tag==BP_L_ARM?BP_L_HAND:BP_R_HAND)

@@ -512,7 +512,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			handcuffs.place_handcuffs(C, user)
 			return
 		else
-			to_chat(user, "<span class='warning'>\The [C] is already handcuffed!</span>")
+			to_chat(user, SPAN_WARNING("\The [C] is already handcuffed!"))
 
 /obj/item/melee/baton/abductor/proc/ProbeAttack(mob/living/L,mob/living/user)
 	L.visible_message(SPAN_DANGER("[user] probes [L] with [src]!"), SPAN_DANGER("[user] probes you!"))
@@ -523,7 +523,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	if(ishuman(L))
 		var/mob/living/carbon/human/H = L
 		species = SPAN_NOTICE("[H.dna.species]")
-		if(H.mind && !isnull(H.mind.changeling))
+		if(H.mind?.changeling)
 			species = SPAN_WARNING("Changeling lifeform")
 		var/obj/item/organ/internal/heart/gland/temp = locate() in H.internal_organs
 		if(temp)
