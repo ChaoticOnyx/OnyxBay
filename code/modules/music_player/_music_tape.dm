@@ -19,12 +19,6 @@
 	var/list/datum/track/tracks
 	var/uploader_ckey
 
-<<<<<<< HEAD
-	// Fuck those errors (code\game\machinery\jukebox.dm:209:error: tape.tracks: undefined var)
-	var/list/datum/track/tracks
-=======
->>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
-
 /obj/item/music_tape/Initialize()
 	. = ..()
 	if(random_color)
