@@ -375,7 +375,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 /obj/item/gun/energy/abductor/alien
 	name = "alien pistol"
 	desc = "A complicated gun that fires bursts of high-intensity radiation."
-	icon_state = "alienpistol100"
+	icon_state = "alienpistol"
 	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/energy/declone

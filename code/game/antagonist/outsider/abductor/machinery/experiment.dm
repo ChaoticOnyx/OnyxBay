@@ -172,7 +172,7 @@
 				to_chat(H, SPAN_WARNING("You feel intensely watched."))
 		sleep(5)
 		user_abductor.team.abductees += H.mind
-		var/datum/antagonist/abductee/antag
+		var/datum/antagonist/abductee/antag = new()
 		antag.add_antagonist(H.mind)
 
 		for(var/obj/item/organ/internal/heart/gland/G in H.internal_organs)

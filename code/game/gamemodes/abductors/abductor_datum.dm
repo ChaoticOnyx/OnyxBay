@@ -1,3 +1,4 @@
+GLOBAL_LIST_INIT(abductor_teams,list("Create New Team"))
 /datum/abductor
 	var/datum/team/abductor_team/team
 	var/agent = FALSE
@@ -16,11 +17,8 @@
 
 //Abductors teams
 /datum/team/abductor_team
-	var/list/datum/mind/members = list()
-	var/name = "team"
-	var/member_name = "abductor"
-	var/list/objectives = list() //common objectives, these won't be added or removed automatically, subtypes handle this, this is here for bookkeeping purposes.
-	var/show_roundend_report = TRUE
+	name = "team"
+	member_name = "abductor"
 	var/team_number
 	var/list/datum/mind/abductees = list()
 	var/static/team_count = 1
@@ -31,7 +29,8 @@
 	name = "Mothership [pick(GLOB.possible_abductor_names)]" //TODO Ensure unique and actual alieny names
 	add_objective(new/datum/objective/experiment)
 
-/datum/team/abductor_team/proc/is_solo()
+
+/datum/team/abductor_team/is_solo()
 	return FALSE
 
 /datum/team/abductor_team/proc/add_objective(datum/objective/O)

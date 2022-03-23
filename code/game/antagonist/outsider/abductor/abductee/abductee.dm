@@ -5,8 +5,6 @@
  * remembering the abduction, plus some random weird objectives for them to act crazy with.
  */
 
-GLOBAL_DATUM_INIT(abductee, /datum/antagonist/abductee, new)
-
 /datum/antagonist/abductee
 	id = "abductee"
 	role_text = "\improper Abductee"

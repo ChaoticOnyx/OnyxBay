@@ -450,6 +450,7 @@
 #include "code\game\shuttle_engines.dm"
 #include "code\game\world.dm"
 #include "code\game\antagonist\_antagonist_setup.dm"
+#include "code\game\antagonist\antag_teams.dm"
 #include "code\game\antagonist\antagonist.dm"
 #include "code\game\antagonist\antagonist_add.dm"
 #include "code\game\antagonist\antagonist_create.dm"
