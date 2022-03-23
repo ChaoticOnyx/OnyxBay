@@ -165,7 +165,7 @@
 		)
 
 // NoTips
-/obj/item/clothing/suit/fire/atmos
+/obj/item/clothing/suit/fire/firefighter/atmos
 	name = "atmospherics firesuit"
 	desc = "A suit that protects you against your mistakes in the engineering."
 	icon_state = "firesuit_atmos"
@@ -189,5 +189,5 @@
 	original[1] = /obj/item/clothing/head/hardhat/red
 	finished[1] = /obj/item/clothing/head/hardhat/atmos
 	parts[2] =	1
-	original[2] = /obj/item/clothing/suit/fire
-	finished[2] = /obj/item/clothing/suit/fire/atmos
+	original[2] = /obj/item/clothing/suit/fire/firefighter
+	finished[2] = /obj/item/clothing/suit/fire/firefighter/atmos
