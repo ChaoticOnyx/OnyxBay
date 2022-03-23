@@ -384,7 +384,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	max_shots = 5 //to compensate a bit for self-recharging
 	one_hand_penalty = 1 //a little bulky
 	self_recharge = 1
-	recharge_time = 8
+	recharge_time = 20
 
 
 /obj/item/gun/abductor/special_check(mob/user)
