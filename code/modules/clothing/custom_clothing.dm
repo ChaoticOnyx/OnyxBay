@@ -163,3 +163,31 @@
 		/obj/item/gun/magnetic,
 		/obj/item/grenade,
 		)
+
+// NoTips
+/obj/item/clothing/suit/fire/atmos
+	name = "atmospherics firesuit"
+	desc = "A suit that protects you against your mistakes in the engineering."
+	icon_state = "firesuit_atmos"
+
+/obj/item/clothing/head/hardhat/atmos
+	icon_state = "hardhat0_fireatmos"
+	name = "atmospherics firesuit helmet"
+
+/obj/item/device/modkit/fire_atmos
+	name = "atmospherics firesuit modkit"
+	desc = "A kit containing all the needed tools and parts to modify an firesuit into an atmospherics firesuit."
+	icon_state = "modkit"
+
+/obj/item/device/modkit/fire_atmos/New()
+	..()
+	parts = new /list(2)
+	original = new /list(2)
+	finished = new /list(2)
+
+	parts[1] =	1
+	original[1] = /obj/item/clothing/head/hardhat/red
+	finished[1] = /obj/item/clothing/head/hardhat/atmos
+	parts[2] =	1
+	original[2] = /obj/item/clothing/suit/fire
+	finished[2] = /obj/item/clothing/suit/fire/atmos
