@@ -988,7 +988,7 @@
 	name = "Long Braid"
 	icon_state = "hair_long_braid"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/long_curls
 	name = "Long Curls"
 	icon_state = "hair_long_curls"
@@ -1003,7 +1003,7 @@
 	name = "New Era"
 	icon_state = "hair_new_era"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/cotton_hair
 	name = "Cotton Hair"
 	icon_state = "hair_cotton_hair"
@@ -1013,17 +1013,17 @@
 	name = "Braided Hair"
 	icon_state = "hair_braided_hair"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/blunt_bangs_curls
 	name = "Blunt Bangs Curls"
 	icon_state = "hair_blunt_bangs_curls"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/blunt_bangs_alt2
 	name = "Blunt Bangs Alt"
 	icon_state = "hair_blunt_bangs_alt2"
 	gender = FEMALE
-	
+
 /datum/sprite_accessory/hair/blades_hair
 	name = "Blades Hair"
 	icon_state = "hair_blades"
@@ -1038,7 +1038,7 @@
 	name = "African Pigtails"
 	icon_state = "hair_african_pigtails"
 	gender = FEMALE
-	
+
 /*I'm sorry I made this hairstyle,
 May God have mercy.
 */
@@ -1225,6 +1225,10 @@ May God have mercy.
 /datum/sprite_accessory/facial_hair/lumberjack
 	name = "Lumberjack"
 	icon_state = "facial_lumberjack"
+
+/datum/sprite_accessory/facial_hair/great
+	name = "Great Beard"
+	icon_state = "facial_great"
 
 /*
 ///////////////////////////////////
