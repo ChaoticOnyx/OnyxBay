@@ -1162,6 +1162,16 @@ something, make sure it's not in one of the other lists.
 				/obj/structure/sign/christmas/sockwizard = 1,
 				/obj/structure/sign/christmas/socksindy = 2)
 
+/obj/random/music_tape
+	name = "random music tape"
+	desc = "This is a random music tape."
+	icon_state = "landmark_tape"
+
+/obj/random/powercell/spawn_choices()
+	return list(/obj/item/music_tape/random/newyear,
+				/obj/item/music_tape/random/jazz,
+				/obj/item/music_tape/random/frontier,
+				/obj/item/music_tape/random/classic)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns

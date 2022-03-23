@@ -15,10 +15,15 @@
 	var/ruined = 0
 
 	var/datum/track/track
+
+	var/list/datum/track/tracks
 	var/uploader_ckey
 
+<<<<<<< HEAD
 	// Fuck those errors (code\game\machinery\jukebox.dm:209:error: tape.tracks: undefined var)
 	var/list/datum/track/tracks
+=======
+>>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
 
 /obj/item/music_tape/Initialize()
 	. = ..()
@@ -90,6 +95,7 @@
 
 // Random music tapes for jukeboxes with multiple tracks
 /obj/item/music_tape/random
+<<<<<<< HEAD
 	name = "random tape"
 	desc = "Magnetic tape adapted to outdated but proven music formats such as ogg, midi and module files."
 	icon = 'icons/obj/device.dmi'
@@ -104,15 +110,25 @@
 	random_color = FALSE
 
 	//var/list/datum/track/tracks
+=======
+	name = "Random tape"
+	random_color = FALSE
+>>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
 	var/list/tracklist
 
 /obj/item/music_tape/random/Initialize()
 	. = ..()
 	tracks = setup_music_tracks(track, tracklist)
 
+<<<<<<< HEAD
 /obj/item/music_tape/random/proc/setup_music_tracks(list/tracks, list/globtracks, numtoadd)
 	. = list()
 	for(var/i=1 to numtoadd)
+=======
+/obj/item/music_tape/random/proc/setup_music_tracks(list/tracks, list/globtracks)
+	. = list()
+	for(var/i=1 to 5)
+>>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
 		var/track_name = pick(globtracks)
 		. += new /datum/track(track_name, globtracks[track_name])
 	. = uniquelist(.)
