@@ -165,14 +165,14 @@
 
 /obj/structure/closet/proc/dump_contents()
 	for(var/mob/M in src)
-		M.dropInto(loc)
+		M.forceMove(loc)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
 		if(!istype(AM,/obj/item/shield/closet))
-			AM.dropInto(loc)
+			AM.forceMove(loc)
 
 /obj/structure/closet/proc/store_contents()
 	var/stored_units = 0
