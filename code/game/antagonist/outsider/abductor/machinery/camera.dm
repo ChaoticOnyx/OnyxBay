@@ -29,6 +29,12 @@
 	var/datum/spawnpoint/arrivals/spawnpoint = new()
 	vision = new eye_type(pick(spawnpoint.turfs))
 
+/obj/machinery/computer/camera_advanced/abductor/attack_hand(obj/item/I, user)
+	if(isabductor(I))
+		..()
+	else
+		to_chat(user,SPAN_NOTICE("You can't figure out how it's working."))
+
 /mob/observer/eye/cameranet/abductor/possess(mob/user)
 	if(owner && owner != user)
 		return

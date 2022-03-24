@@ -25,11 +25,13 @@
 
 /obj/machinery/computer/camera_advanced/attack_hand(obj/item/I, user)
 	..()
-	var/mob/living/L = I
-	GrantActions(L)
-	vision.possess(L)
-	GLOB.destroyed_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
-	GLOB.logged_out_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
+	if(!isghost(user))
+		if(!vision.owner)
+			var/mob/living/L = I
+			GrantActions(L)
+			vision.possess(L)
+			GLOB.destroyed_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
+			GLOB.logged_out_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
 
 /obj/machinery/computer/camera_advanced/proc/release(mob/living/L)
 	vision.release(L)
