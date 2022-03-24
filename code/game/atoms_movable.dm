@@ -50,6 +50,12 @@
 	..()
 	return
 
+/atom/movable/proc/get_selected_zone()
+	return
+
+/atom/movable/proc/get_active_item()
+	return
+
 /atom/movable/proc/on_purchase()
 	return
 

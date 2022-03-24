@@ -20,6 +20,31 @@
 	var/delicate = 0  //if this step NEEDS stable optable or can be done on any valid surface with no penalty
 	var/clothes_penalty = TRUE // If the selected limb is wearing something - add a penalty.
 
+/datum/surgery_step/proc/do_surgery_process(mob/living/carbon/M, atom/movable/user, zone, obj/item/tool, step_is_valid)
+	var/status = TRUE
+	if(clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
+		return TRUE
+	if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
+		return TRUE
+	M.op_stage.in_progress += zone
+	begin_step(user, M, zone, tool)		//start on it
+	//We had proper tools! (or RNG smiled.) and user did not move or change hands.
+	if(prob(success_chance(user, M, tool, zone)) &&  do_mob(user, M, duration * SURGERY_DURATION_DELTA * tool.surgery_speed))
+		end_step(user, M, zone, tool)		//finish successfully
+	else if ((tool in user.contents) && user.Adjacent(M))			//or
+		fail_step(user, M, zone, tool)		//malpractice
+	else // This failing silently was a pain.
+		to_chat(user, SPAN("warning", "You must remain close to your patient to conduct surgery."))
+		status = FALSE
+	if (M)
+		M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
+	if (ishuman(M))
+		var/mob/living/carbon/human/H = M
+		H.update_surgery()
+		if(H.op_stage.current_organ)
+			H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
+	return status
+
 //returns how well tool is suited for this step
 /datum/surgery_step/proc/tool_quality(obj/item/tool)
 	for (var/T in allowed_tools)
@@ -85,7 +110,7 @@
 			. -= 60
 
 	if(delicate)
-		if(user.slurring)
+		if(ishuman(user) && user?.slurring)
 			. -= 10
 		if(!target.lying)
 			. -= 30
@@ -120,40 +145,21 @@
 
 /obj/item/proc/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(!istype(M))
-		return 0
+		return FALSE
 	if (user.a_intent == I_HURT)	//check for Hippocratic Oath
-		return 0
+		return FALSE
 	var/zone = user.zone_sel.selecting
 	if(zone in M.op_stage.in_progress) //Can't operate on someone repeatedly.
-		to_chat(user, "<span class='warning'>You can't operate on this area while surgery is already in progress.</span>")
-		return 1
+		to_chat(user, SPAN("warning", "You can't operate on this area while surgery is already in progress."))
+		return TRUE
 	for(var/datum/surgery_step/S in surgery_steps)
 		//check if tool is right or close enough and if this step is possible
 		if(S.tool_quality(src))
 			var/step_is_valid = S.can_use(user, M, zone, src)
 			if(step_is_valid && S.is_valid_target(M))
-				if(S.clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
-					return 1
-				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
-					return 1
-				M.op_stage.in_progress += zone
-				S.begin_step(user, M, zone, src)		//start on it
-				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
-				if(prob(S.success_chance(user, M, src, zone)) &&  do_mob(user, M, S.duration * SURGERY_DURATION_DELTA * surgery_speed))
-					S.end_step(user, M, zone, src)		//finish successfully
-				else if ((src in user.contents) && user.Adjacent(M))			//or
-					S.fail_step(user, M, zone, src)		//malpractice~
-				else // This failing silently was a pain.
-					to_chat(user, "<span class='warning'>You must remain close to your patient to conduct surgery.</span>")
-				if (M)
-					M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
-				if (ishuman(M))
-					var/mob/living/carbon/human/H = M
-					H.update_surgery()
-					if(H.op_stage.current_organ)
-						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
-				return	1	  												//don't want to do weapony things after surgery
-	return 0
+				S.do_surgery_process(M, user, zone, src, step_is_valid)
+				return TRUE // don't want to do weapony things after surgery
+	return FALSE
 
 /proc/sort_surgeries()
 	var/gap = surgery_steps.len
