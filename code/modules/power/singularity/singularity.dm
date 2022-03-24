@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
-
 /obj/singularity
 	name = "gravitational singularity"
 	desc = "A gravitational singularity."
@@ -320,7 +318,6 @@
 		return 0
 
 /obj/singularity/proc/can_expand(step_size)
-	. = TRUE
 
 	for(var/direction in GLOB.cardinal)
 		if(!check_turfs_in(direction, step_size))
@@ -330,6 +327,7 @@
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
 				return FALSE
+	. = TRUE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
