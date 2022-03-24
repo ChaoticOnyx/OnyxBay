@@ -15,15 +15,13 @@
 	. = ..()
 	gland_types = subtypesof(/obj/item/organ/internal/heart/gland)
 	gland_types = shuffle(gland_types)
-	gland_colors = new/list(gland_types.len)
-	amounts = new/list(gland_types.len)
+	gland_colors = new(gland_types.len)
+	amounts = new(gland_types.len)
 	for(var/i in 1 to gland_types.len)
 		gland_colors[i] = random_color()
 		amounts[i] = rand(1,5)
 
 /obj/machinery/abductor/gland_dispenser/ui_status(mob/user)
-	/*if(!isabductor(user) && !isobserver(user))
-		return UI_CLOSE*/
 	return ..()
 
 /obj/machinery/abductor/gland_dispenser/tgui_state(mob/user)

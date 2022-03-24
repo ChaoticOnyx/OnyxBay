@@ -25,9 +25,10 @@ GLOBAL_LIST_INIT(abductor_teams,list("Create New Team"))
 
 /datum/team/abductor_team/New()
 	..()
+	GLOB.abductor_teams+=src
 	team_number = team_count++
 	name = "Mothership [pick(GLOB.possible_abductor_names)]" //TODO Ensure unique and actual alieny names
-	add_objective(new/datum/objective/experiment)
+	add_objective(new /datum/objective/experiment)
 
 
 /datum/team/abductor_team/is_solo()
