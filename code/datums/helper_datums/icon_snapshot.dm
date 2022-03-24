@@ -1,4 +1,5 @@
 /datum/icon_snapshot
+	var/real_name
 	var/name
 	var/icon
 	var/icon_state

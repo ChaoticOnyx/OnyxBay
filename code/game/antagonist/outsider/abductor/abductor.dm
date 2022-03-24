@@ -64,31 +64,31 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 		return
 
 	if(href_list["make_scientist"])
-		var/mob/living/carbon/human/player = locate(href_list["make_scientist"])
-		if(!isabductor(player))
-			to_chat(usr, "\red [player] isn't abductor!!")
+		var/mob/living/carbon/human/player_scientist = locate(href_list["make_scientist"])
+		if(!isabductor(player_scientist))
+			to_chat(usr, "\red [player_scientist] isn't abductor!!")
 			return
 
-		player.mind.abductor.scientist = 1
+		player_scientist.mind.abductor.scientist = 1
 		outfit = /decl/hierarchy/outfit/abductor/scientist
 
 	if(href_list["make_agent"])
-		var/mob/living/carbon/human/player = locate(href_list["make_agent"])
-		if(!isabductor(player))
-			to_chat(usr, "\red [player] isn't abductor!!")
+		var/mob/living/carbon/human/player_agent = locate(href_list["make_agent"])
+		if(!isabductor(player_agent))
+			to_chat(usr, "\red [player_agent] isn't abductor!!")
 			return
 
-		player.mind.abductor.agent = 1
+		player_agent.mind.abductor.agent = 1
 		outfit = /decl/hierarchy/outfit/abductor/agent
 
 	if(href_list["make_solo"])
-		var/mob/living/carbon/human/player = locate(href_list["make_solo"])
-		if(!isabductor(player))
-			to_chat(usr, "\red [player] isn't abductor!!")
+		var/mob/living/carbon/human/player_solo = locate(href_list["make_solo"])
+		if(!isabductor(player_solo))
+			to_chat(usr, "\red [player_solo] isn't abductor!!")
 			return
 
-		player.mind.abductor.scientist = 1
-		player.mind.abductor.agent = 1
+		player_solo.mind.abductor.scientist = 1
+		player_solo.mind.abductor.agent = 1
 		outfit = /decl/hierarchy/outfit/abductor/scientist/onemanteam
 
 	if(href_list["select_team"])
@@ -100,7 +100,9 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 		var/new_team = input("Select new team for [player].", "New team", null) as null|anything in GLOB.abductor_teams
 		if(new_team=="Create New Team")
 			player.mind.abductor.team = new()
+			new_team=player.mind.abductor.team
 			log_and_message_admins("[key_name(usr)] changed team for [player]")
+			return
 
 		if(!isnull(new_team))
 			player.mind.abductor.team = new_team

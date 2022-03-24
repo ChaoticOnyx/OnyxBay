@@ -45,6 +45,8 @@
 	var/mob/observer/D = pick(GLOB.ghost_mob_list)
 	if(D)
 		explanation_text = "You know that [D] has perished. Hold a seance to call \him from the spirit realm."
+	else
+		explanation_text = "You know that somebudy has perished. Hold a seance to call spirit from the realm."
 
 /datum/objective/abductee/forbiddennumber
 

@@ -238,6 +238,7 @@
 		return
 
 	var/datum/icon_snapshot/entry = new
+	entry.real_name = target.real_name
 	entry.name = target.name
 	entry.icon = target.icon
 	entry.stand_icon = target.stand_icon

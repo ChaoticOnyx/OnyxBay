@@ -75,6 +75,7 @@
 		var/mob/living/carbon/human/M = loc
 		playsound(get_turf(M), 'sound/effects/phasein.ogg', 50, 1)
 		anim(get_turf(M), M,'icons/mob/mob.dmi',,"phasein",,M.dir)
+		M.real_name = disguise.real_name
 		M.name = disguise.name
 		M.icon = disguise.icon
 		M.stand_icon = disguise.stand_icon
@@ -93,6 +94,7 @@
 		var/mob/living/carbon/human/M = loc
 		playsound(get_turf(M), 'sound/effects/phasein.ogg', 50, 1)
 		anim(get_turf(M), M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
+		M.real_name = "[M.mind.abductor.team.name] [M.mind.special_role]"
 		M.name = M.real_name
 		M.overlays.Cut()
 		M.regenerate_icons()
@@ -416,10 +418,10 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	item_state = "wonderprod"
 
 	force = 7
-	stunforce = 10
+	agonyforce = 70
 	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy()
 	var/mode = BATON_STUN
-	var/sleep_time = 2 MINUTES
+	var/sleep_time = 60
 	var/time_to_cuff = 3 SECONDS
 
 /obj/item/melee/baton/abductor/proc/toggle(mob/living/user=usr)
@@ -561,7 +563,10 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "handcuffAlien" // Needs sprite
 	breakouttime = 45 SECONDS
 
-/obj/item/handcuffs/energy/used/dropped(mob/user)
+/obj/item/handcuffs/energy/can_place(mob/target, mob/user)
+	return 1
+
+/obj/item/handcuffs/energy/on_restraint_removal(mob/user)
 	user.visible_message(SPAN_DANGER("[user]'s [name] breaks in a discharge of energy!"), \
 							SPAN_DANGER("[user]'s [name] breaks in a discharge of energy!"))
 	var/datum/effect/effect/system/spark_spread/S = new
@@ -569,7 +574,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	S.set_up(4,0,user.loc)
 	S.attach(T)
 	S.start()
-	. = ..()
+	qdel(src)
 
 /obj/item/device/radio/headset/abductor/attackby(obj/item/W, mob/user, params)
 	if(isScrewdriver(W))
@@ -668,7 +673,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	desc = "Abduct with style - spiky style. Prevents digital tracking."
 	icon_state = "alienhelmet"
 	item_state = "alienhelmet"
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor
@@ -687,7 +692,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	/// Amount to inject per second
 	var/inject_am = 0.5
 
-	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline,/datum/reagent/dexalinp)
+	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/tramadol)
 
 /obj/machinery/optable/abductor/take_victim(mob/living/carbon/C, mob/living/carbon/user)
 	if (C == user)
@@ -727,6 +732,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		if(M.lying)
 			. = TRUE
 			src.victim = M
+			M.adjustBrainLoss(-25)
 			for(var/chemical in injected_reagents)
 				if(M.reagents.get_reagent_amount(chemical) < inject_am )
 					M.reagents.add_reagent(chemical, inject_am )
@@ -845,7 +851,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	new /obj/item/weldingtool/abductor(src)
 	new /obj/item/crowbar/abductor(src)
 	new /obj/item/wirecutters/abductor(src)
-	new /obj/item/multitool/abductor(src)
+	new /obj/item/device/multitool/abductor(src)
 	new /obj/item/stack/cable_coil(src)
 
 //TOOLS
@@ -884,7 +890,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	randicon = FALSE
 	icon_state = "cutters"
 
-/obj/item/multitool/abductor
+/obj/item/device/multitool/abductor
 	name = "alien multitool"
 	desc = "An omni-technological interface."
 	icon = 'icons/obj/abductor.dmi'
