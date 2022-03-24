@@ -4,7 +4,6 @@
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "gland"
 	status = ORGAN_ROBOTIC
-	organ_tag = BP_GLAND
 	/// Shows name of the gland as well as a description of what it does upon examination by abductor scientists and observers.
 	var/abductor_hint = "baseline placebo referencer"
 
@@ -29,7 +28,7 @@
 
 /obj/item/organ/internal/heart/gland/examine(mob/user)
 	. = ..()
-	if((user.mind.abductor.scientist) || isobserver(user))
+	if(isobserver(user))
 		. += SPAN_NOTICE("It is \a [abductor_hint]")
 
 /obj/item/organ/internal/heart/gland/proc/ownerCheck()
@@ -93,8 +92,8 @@
 	update_gland_hud()
 
 /obj/item/organ/internal/heart/gland/Process()
-	if(!pulse || pulse != PULSE_SLOW)
-		pulse = PULSE_SLOW
+	if(!pulse || pulse != PULSE_NORM)
+		pulse = PULSE_NORM
 	if(!active)
 		return
 	if(!owner)
@@ -107,6 +106,7 @@
 		addtimer(CALLBACK(src,.proc/do_after_cooldown), rand(cooldown_low, cooldown_high))
 	if(!uses)
 		active = FALSE
+	..()
 
 /obj/item/organ/internal/heart/gland/proc/do_after_cooldown()
 	on_cooldown = FALSE

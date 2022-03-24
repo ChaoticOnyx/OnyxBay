@@ -1163,7 +1163,7 @@
 
 	if(BITTEST(hud_updateflag, GLAND_HUD) && hud_list[GLAND_HUD])
 		var/image/holder = hud_list[GLAND_HUD]
-		var/obj/item/organ/internal/heart/gland/gland = internal_organs_by_name[BP_GLAND]
+		var/obj/item/organ/internal/heart/gland/gland = internal_organs_by_name[BP_HEART]
 		if(!gland)
 			holder.icon_state = "hudblank"
 		else

@@ -225,7 +225,6 @@
 #define BP_CANCER   "cancer"
 #define BP_EMBRYO   "alien embryo"
 #define BP_GANGLION "spinal ganglion"
-#define BP_GLAND    "gland"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
