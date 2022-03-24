@@ -2,7 +2,7 @@
 	set category = "OOC"
 	set name = "Settings β"
 
-	settings.tgui_interact(usr)
+	settings.tgui_interact(mob)
 
 /datum/player_settings
 	var/client/owner
