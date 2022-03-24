@@ -327,7 +327,7 @@
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
 				return FALSE
-	. = TRUE
+	return TRUE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
