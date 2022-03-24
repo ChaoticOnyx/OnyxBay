@@ -132,12 +132,13 @@
 	if(!affecter || !target)
 		return 0
 	var/mob/user = affecter
+	var/is_mob_type = istype(user)
 	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
 	var/holding = affecter.get_active_item()
 	var/datum/progressbar/progbar
-	if(istype(user) && progress)
+	if(is_mob_type && progress)
 		progbar = new(user, time, target)
 
 	var/endtime = world.time+time
@@ -157,7 +158,7 @@
 		if(uninterruptible)
 			continue
 
-		if(!affecter || (istype(user) && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
+		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
 			. = 0
 			break
 
@@ -169,7 +170,7 @@
 			. = 0
 			break
 
-		if(target_zone && affecter.get_selected_zone() == target_zone)
+		if(target_zone && affecter.get_selected_zone() != target_zone)
 			. = 0
 			break
 
