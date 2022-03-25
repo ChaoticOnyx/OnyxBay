@@ -1,0 +1,26 @@
+.SettingsWindow {
+  background-image: none !important;
+}
+
+.PreferencesCategory {
+  cursor: pointer;
+  background-color: #1c1c1c;
+
+  &:hover,
+  &:focus {
+    background-color: #3a3a3a;
+  }
+}
+
+.PreferenceOption {
+  background-color: #1c1c1c;
+
+  &:hover,
+  &:focus {
+    background-color: #3a3a3a;
+  }
+
+  &.Button--selected {
+    background-color: #1b9638;
+  }
+}

@@ -275,4 +275,3 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 			if("digital")
 				return PREF_FBP_SOFTWARE
 	return 0 //Something went wrong!
-
