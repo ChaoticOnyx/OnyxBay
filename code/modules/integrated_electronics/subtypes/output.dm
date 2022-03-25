@@ -279,7 +279,7 @@
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
 			log_say("[name] ([type]): [sanitized_text]")
-		qdel(speaker)
+		QDEL_IN(speaker, 1 SECOND)
 
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"
