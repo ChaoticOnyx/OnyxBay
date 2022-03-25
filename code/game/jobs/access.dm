@@ -209,7 +209,7 @@
 /mob/living/bot/GetIdCard()
 	return botcard
 
-#define HUMAN_ID_CARDS list(get_active_hand(), wear_id, get_inactive_hand())
+#define HUMAN_ID_CARDS list(get_active_hand(), wear_id, get_inactive_hand(), internal_organs_by_name[BP_HEART])
 /mob/living/carbon/human/GetIdCard()
 	for(var/item_slot in HUMAN_ID_CARDS)
 		var/obj/item/I = item_slot

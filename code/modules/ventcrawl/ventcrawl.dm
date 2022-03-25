@@ -11,7 +11,8 @@ var/list/ventcrawl_machinery = list(
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer,
 	/obj/item/organ/internal/biostructure,
-	/obj/effect/abstract/proximity_checker //spiderbot staff
+	/obj/effect/abstract/proximity_checker, //spiderbot staff
+	/obj/item/organ/internal/heart/gland/ventcrawling
 	)
 
 /mob/living/var/list/icon/pipes_shown = list()
@@ -53,6 +54,8 @@ var/list/ventcrawl_machinery = list(
 	if(isMonkey(src))
 		return TRUE
 	if(istype(species, /datum/species/xenos))
+		return TRUE
+	if(istype(internal_organs_by_name[BP_HEART], /obj/item/organ/internal/heart/gland/ventcrawling))
 		return TRUE
 	return ventcrawl_carry()
 
