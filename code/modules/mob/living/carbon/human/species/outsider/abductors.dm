@@ -7,6 +7,7 @@
 	default_language = LANGUAGE_ABDUCTOR
 	num_alternate_languages = 1
 	language = LANGUAGE_GALCOM
+	spawn_flags = SPECIES_IS_RESTRICTED
 	icobase = 'icons/mob/human_races/r_abductor.dmi'
 	deform = 'icons/mob/human_races/r_abductor.dmi'
 
