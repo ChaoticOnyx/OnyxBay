@@ -435,7 +435,7 @@
 		if(NORTH||SOUTH)
 			dir2 = 4
 			dir3 = 8
-		if(EAST||WEST)
+		if(EAST, WEST)
 			dir2 = 1
 			dir3 = 2
 	var/turf/other_turf = considered_turf
