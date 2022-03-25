@@ -13,6 +13,7 @@ import './styles/themes/arcade.scss'
 import './styles/themes/spellbook.scss'
 import './styles/themes/operating.scss'
 import './styles/themes/changeling.scss'
+import './styles/themes/neutral.scss'
 
 import { perf } from 'common/perf'
 import { setupHotReloading } from 'tgui-dev-server/link/client'
