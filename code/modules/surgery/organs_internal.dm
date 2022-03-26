@@ -63,7 +63,7 @@
 			img.pixel_x = 3
 			damaged_organs[I] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ && !(preselected_organ in damaged_organs))
 		preselected_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
@@ -266,7 +266,7 @@
 			img.pixel_x = 3
 			damaged_organs[I] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ && !(preselected_organ in damaged_organs))
 		preselected_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
@@ -383,7 +383,7 @@
 			img.pixel_x = 3
 			attached_organs[organ] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ && !(preselected_organ in attached_organs))
 		preselected_organ = show_radial_menu(user, target, attached_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
@@ -454,7 +454,7 @@
 			img.pixel_x = 3
 			removable_organs[I] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ  && !(preselected_organ in removable_organs))
 		preselected_organ = show_radial_menu(user, target, removable_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
@@ -630,7 +630,7 @@
 			img.pixel_x = 3
 			attachable_organs[I] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ && !(preselected_organ in attachable_organs))
 		preselected_organ = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
@@ -714,7 +714,7 @@
 			img.pixel_x = 3
 			dead_organs[I] = img
 
-	if(!preselected_organ)
+	if(!preselected_organ && !(preselected_organ in dead_organs))
 		preselected_organ = show_radial_menu(user, target, dead_organs, require_near = TRUE)
 
 	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
