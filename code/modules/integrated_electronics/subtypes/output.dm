@@ -265,20 +265,12 @@
 	activators = list("to speech" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 60
-	// TODO: replace this cringe with say for objects
-	var/mob/living/silicon/integrated_circuit/speaker
-
-/obj/item/integrated_circuit/output/text_to_speech/Initialize()
-	. = ..()
-	speaker = new(src)
-
-/obj/item/integrated_circuit/output/text_to_speech/Destroy()
-	QDEL_NULL(speaker)
-	. = ..()
 
 /obj/item/integrated_circuit/output/text_to_speech/do_work()
 	text = get_pin_data(IC_INPUT, 1)
-	if(!isnull(text) && !QDELETED(speaker))
+	if(!isnull(text))
+		// TODO: replace this cringe with say for objects
+		var/mob/living/silicon/integrated_circuit/speaker = new(src)
 		speaker.name = get_object().name
 		var/sanitized_text = sanitize(text)
 		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
@@ -287,6 +279,7 @@
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
 			log_say("[name] ([type]): [sanitized_text]")
+		QDEL_IN(speaker, 1 SECOND)
 
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"
