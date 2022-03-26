@@ -17,6 +17,7 @@
 				)
 	blood_overlay_type = "armor"
 	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, RAD = 15)
+	species_restricted = list(SPECIES_ABDUCTOR)
 	allowed = list(
 		/obj/item/abductor,
 		/obj/item/melee/baton,
@@ -673,7 +674,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	desc = "Abduct with style - spiky style. Prevents digital tracking."
 	icon_state = "alienhelmet"
 	item_state = "alienhelmet"
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
+	species_restricted = list(SPECIES_ABDUCTOR)
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor
