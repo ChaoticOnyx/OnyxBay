@@ -137,7 +137,7 @@
 
 /obj/item/abductor/proc/ScientistCheck(mob/user)
 	var/training = AbductorCheck(user)
-	var/sci_training = user.mind.abductor.scientist
+	var/sci_training = training ? user.mind.abductor.scientist : FALSE
 
 	if(training && !sci_training)
 		to_chat(user, SPAN_WARNING("You're not trained to use this!"))
@@ -575,7 +575,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	S.set_up(4,0,user.loc)
 	S.attach(T)
 	S.start()
-	qdel(src)
+	return
 
 /obj/item/device/radio/headset/abductor/attackby(obj/item/W, mob/user, params)
 	if(isScrewdriver(W))
