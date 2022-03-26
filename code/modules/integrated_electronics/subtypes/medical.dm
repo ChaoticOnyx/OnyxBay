@@ -5,6 +5,7 @@
 #define SURGERY_ORGAN_HEAL 2
 #define SURGERY_ORGAN_CONNECT 3
 #define SURGERY_ORGAN_DISCONNECT 4
+#define SURGERY_ORGAN_TREAT 5
 #define SURGERY_BONEGEL 1
 #define SURGERY_BONESET 2
 #define SURGERY_BONESET_ULTRA 3
@@ -51,7 +52,8 @@
 		/obj/item/surgicaldrill, // SURGERY_DRILL
 		/obj/item/FixOVein, // SURGERY_ORGAN_CONNECT
 		/obj/item/organfixer/advanced, // SURGERY_ORGAN_HEAL
-		/obj/item/organ // SURGERY_ORGAN_INSERT
+		/obj/item/organ, // SURGERY_ORGAN_INSERT
+		/obj/item/reagent_containers/dropper, // SURGERY_ORGAN_TREAT
 	)
 	var/datum/surgery_step/internal/st
 	var/selected_zone
@@ -205,6 +207,9 @@
 	else if(istype(I, /obj/item/organfixer))
 		operation_intent = SURGERY_ORGAN_HEAL
 		st = new /datum/surgery_step/internal/fix_organ()
+	else if(istype(I, /obj/item/reagent_containers/dropper))
+		operation_intent = SURGERY_ORGAN_TREAT
+		st = new /datum/surgery_step/internal/treat_necrosis()
 	else
 		operation_intent = SURGERY_ORGAN_INSERT
 		st = new /datum/surgery_step/internal/replace_organ()
