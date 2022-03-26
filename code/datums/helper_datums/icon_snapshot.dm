@@ -1,6 +1,7 @@
 /datum/icon_snapshot
 	var/real_name
 	var/name
+	var/examine
 	var/icon
 	var/icon_state
 	var/stand_icon
