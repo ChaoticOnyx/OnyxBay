@@ -77,6 +77,8 @@
 
 	target.op_stage.current_organ = preselected_organ
 
+	preselected_organ = null
+
 	return TRUE
 
 /datum/surgery_step/internal/fix_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -283,6 +285,8 @@
 
 	target.op_stage.current_organ = preselected_organ
 
+	preselected_organ = null
+
 	return FALSE
 
 /datum/surgery_step/internal/fix_organ_ghetto/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -394,7 +398,10 @@
 
 	target.op_stage.current_organ = preselected_organ
 
-	return ..() && preselected_organ
+	var/return_organ = preselected_organ
+	preselected_organ = null
+
+	return ..() && return_organ
 
 /datum/surgery_step/internal/detatch_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts to separate [target]'s [target.op_stage.current_organ] with \the [tool].", \
@@ -462,6 +469,8 @@
 		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = preselected_organ
+
+	preselected_organ = null
 	return ..()
 
 /datum/surgery_step/internal/remove_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -640,6 +649,8 @@
 		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = preselected_organ
+
+	preselected_organ = null
 	return ..()
 
 /datum/surgery_step/internal/attach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -723,6 +734,8 @@
 		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = preselected_organ
+
+	preselected_organ = null
 
 	return 1
 
