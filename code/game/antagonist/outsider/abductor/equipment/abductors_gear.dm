@@ -17,6 +17,7 @@
 				)
 	blood_overlay_type = "armor"
 	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, RAD = 15)
+	species_restricted = list(SPECIES_ABDUCTOR)
 	allowed = list(
 		/obj/item/abductor,
 		/obj/item/melee/baton,
@@ -136,7 +137,7 @@
 
 /obj/item/abductor/proc/ScientistCheck(mob/user)
 	var/training = AbductorCheck(user)
-	var/sci_training = user.mind.abductor.scientist
+	var/sci_training = training ? user.mind.abductor.scientist : FALSE
 
 	if(training && !sci_training)
 		to_chat(user, SPAN_WARNING("You're not trained to use this!"))
@@ -574,7 +575,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	S.set_up(4,0,user.loc)
 	S.attach(T)
 	S.start()
-	qdel(src)
+	return
 
 /obj/item/device/radio/headset/abductor/attackby(obj/item/W, mob/user, params)
 	if(isScrewdriver(W))
@@ -673,7 +674,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	desc = "Abduct with style - spiky style. Prevents digital tracking."
 	icon_state = "alienhelmet"
 	item_state = "alienhelmet"
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
+	species_restricted = list(SPECIES_ABDUCTOR)
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor
