@@ -201,7 +201,7 @@
  * * H The human mob to be sent back
  */
 /obj/machinery/abductor/experiment/proc/send_back(mob/living/carbon/human/H)
-	H.Sleeping(160)
+	H.Sleeping(10)
 	H.unEquip(H.handcuffed)
 	if(console && console.pad && console.pad.teleport_target)
 		H.forceMove(console.pad.teleport_target)
