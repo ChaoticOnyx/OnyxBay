@@ -150,6 +150,8 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
 	for(var/datum/surgery_step/S in surgery_steps)
+		if(istype(S, /datum/surgery_step/internal) && !istype(S, /datum/surgery_step/internal/fix_organ_multiple) && S.type != st?.type)
+			continue
 		var/status = do_real_surgery(M, S)
 		if(status != SURGERY_FAILED_STATE)
 			return status
