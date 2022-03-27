@@ -64,6 +64,9 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/on_item_insert(obj/item/I)
 	QDEL_NULL(st)
+	if(istype(I, /obj/item/organfixer/advanced))
+		operation_intent = SURGERY_ORGAN_HEAL
+		st = new /datum/surgery_step/internal/fix_organ_multiple()
 
 /obj/item/integrated_circuit/medical/surgery_device/get_selected_zone()
 	return selected_zone
@@ -150,7 +153,7 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
 	for(var/datum/surgery_step/S in surgery_steps)
-		if(istype(S, /datum/surgery_step/internal) && !istype(S, /datum/surgery_step/internal/fix_organ_multiple) && S.type != st?.type)
+		if(istype(S, /datum/surgery_step/internal) && S.type != st?.type)
 			continue
 		var/status = do_real_surgery(M, S)
 		if(status != SURGERY_FAILED_STATE)
@@ -197,6 +200,8 @@
 
 /obj/item/integrated_circuit/medical/surgery_device/internal/on_item_insert(obj/item/I)
 	..()
+	if(istype(st))
+		return
 	if(istype(I, /obj/item/scalpel))
 		operation_intent = SURGERY_ORGAN_DISCONNECT
 		st = new /datum/surgery_step/internal/detatch_organ()
