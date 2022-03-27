@@ -2,7 +2,7 @@
 	if(!leader && current_antagonists.len && (flags & ANTAG_HAS_LEADER))
 		leader = current_antagonists[1]
 
-/datum/antagonist/proc/update_antag_mob(datum/mind/player, preserve_appearance, team)
+/datum/antagonist/proc/update_antag_mob(datum/mind/player, preserve_appearance)
 
 	// Get the mob.
 	if((flags & ANTAG_OVERRIDE_MOB) && (!player.current || (mob_path && !istype(player.current, mob_path))))

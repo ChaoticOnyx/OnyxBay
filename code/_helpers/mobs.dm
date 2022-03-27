@@ -221,13 +221,6 @@
 	if (progbar)
 		qdel(progbar)
 
-/proc/is_species(A, species_datum)
-	. = FALSE
-	if(ishuman(A))
-		var/mob/living/carbon/human/H = A
-		if(istype(H.species, species_datum))
-			. = TRUE
-
 /proc/able_mobs_in_oview(origin)
 	var/list/mobs = list()
 	for(var/mob/living/M in oview(origin)) // Only living mobs are considered able.

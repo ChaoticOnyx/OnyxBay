@@ -79,6 +79,3 @@
 	..(new_loc, "Vat-Grown Human")
 	gender = "female"
 	regenerate_icons()
-
-/mob/living/carbon/human/abductor/New(new_loc)
-	..(new_loc, SPECIES_ABDUCTOR)

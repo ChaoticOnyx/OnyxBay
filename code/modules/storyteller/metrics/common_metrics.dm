@@ -84,7 +84,6 @@
 		if(MODE_NUKE)          return 4
 		if(MODE_DEATHSQUAD)    return 6
 		if(MODE_CHANGELING)    return 8
-		if(MODE_ABDUCTOR)      return 8
 		if(MODE_NINJA)         return 12
 		if(MODE_WIZARD)        return 16
 		if(MODE_MALFUNCTION)   return 24

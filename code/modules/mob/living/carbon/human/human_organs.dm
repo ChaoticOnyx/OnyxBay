@@ -40,14 +40,15 @@
 
 /mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
-	if(E && !E.vital && !E.is_usable() && E.organ_tag != BP_BRAIN) //Skips brains and vital bits...
-		E.removed()
+	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+		E.removed()//...because no one wants their head to explode to make way for a new one.
 		qdel(E)
 		E = null
 	if(!E)
-		var/organ_path = species.has_organ[organ_type]
+		var/list/organ_data = species.has_organ[organ_type]
+		var/organ_path = organ_data["path"]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		internal_organs_by_name[organ_type] = O
+		organ_data["descriptor"] = O.name
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)

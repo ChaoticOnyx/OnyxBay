@@ -1,4 +1,4 @@
-/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat, team)
+/datum/antagonist/proc/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat)
 
 	if(!add_antagonist_mind(player, ignore_role, max_stat = max_stat))
 		return FALSE
@@ -9,9 +9,9 @@
 	player.special_role = role_text
 
 	if(isghostmind(player) || isnewplayer(player.current))
-		create_default(player.current, team)
+		create_default(player.current)
 	else
-		create_antagonist(player, move_to_spawn, do_not_announce, preserve_appearance, team)
+		create_antagonist(player, move_to_spawn, do_not_announce, preserve_appearance)
 		if(!do_not_equip)
 			equip(player.current)
 

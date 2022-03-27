@@ -5,7 +5,7 @@
  *		Ushanka
  *		Pumpkin head
  *		Kitty ears
- *		Tinfoil hat
+ *
  */
 
 /*
@@ -259,12 +259,3 @@
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
-/*
- * Tinfoil hat
- */
-/obj/item/clothing/head/tinfoil
-	name = "Tinfoil hat"
-	desc = "Big brother is watching you!"
-	icon_state = "foilhat"
-	body_parts_covered = 0
-	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)

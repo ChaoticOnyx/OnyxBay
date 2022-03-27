@@ -34,8 +34,6 @@
 
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
-#define isabductor(A) (is_species(A, /datum/species/abductor))
-
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -222,3 +220,4 @@
 #define FONT_HUGE(X)     SPAN("huge", X)
 
 #define FONT_GIANT(X)    SPAN("giant", X)
+
