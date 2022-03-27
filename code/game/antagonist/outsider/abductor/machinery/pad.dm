@@ -48,6 +48,7 @@
 /obj/machinery/abductor/pad/proc/doPadToLoc(place)
 	flick("alien-pad", src)
 	for(var/mob/living/target in get_turf(src))
+		src.console.camera.release(target)
 		target.forceMove(place)
 		playsound(place, 'sound/effects/phasein.ogg', 50, 1)
 		new /obj/effect/temporary/teleport_abductor(place)

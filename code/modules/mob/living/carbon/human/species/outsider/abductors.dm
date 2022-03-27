@@ -4,7 +4,6 @@
 	breath_type = null
 	has_fine_manipulation = 1
 	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_BLOOD
-	spawn_flags = SPECIES_IS_RESTRICTED
 	default_language = LANGUAGE_ABDUCTOR
 	num_alternate_languages = 1
 	language = LANGUAGE_GALCOM

@@ -51,7 +51,7 @@ SUBSYSTEM_DEF(storyteller)
 	if(__storyteller_tick == -1) // first tick is called with default 'wait', we need our tick with our value of 'wait'
 		__storyteller_tick = 0
 		return
-
+	
 	ASSERT(evacuation_controller)
 	if(evacuation_controller.is_evacuating())
 		_log_debug("Skip cycle due to evacuation. The next try is scheduled for 1 minute")
@@ -66,7 +66,7 @@ SUBSYSTEM_DEF(storyteller)
 
 /datum/controller/subsystem/storyteller/proc/__get_params_for_ui(current_tab)
 	var/list/data = new
-
+	
 	switch (current_tab)
 		if ("StorytellerCPCharacterTab")
 			data["character"] = __character ? __character.get_params_for_ui() : null
@@ -85,9 +85,9 @@ SUBSYSTEM_DEF(storyteller)
 				if (trigger.can_be_invoked())
 					triggers_data[type] = trigger.get_params_for_ui()
 			data["triggers"] = triggers_data
-
+		
 		else crash_with("Bad tab key")
-
+	
 	return data
 
 /datum/controller/subsystem/storyteller/proc/open_control_panel(mob/user, drop_data = TRUE)
@@ -103,7 +103,7 @@ SUBSYSTEM_DEF(storyteller)
 	data["pregame"] = (GAME_STATE < RUNLEVEL_GAME)
 
 	var/ui_key = "storyteller_control_panel"
-	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=TRUE)
+	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
 	if(!ui)
 		ui = new (user, src, ui_key, "storyteller_control_panel.tmpl", "Storyteller Control Panel", 500, 600, state=GLOB.interactive_state)
 		ui.set_initial_data(data)
