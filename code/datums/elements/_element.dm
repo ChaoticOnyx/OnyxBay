@@ -36,7 +36,7 @@
 	if(!force)
 		return QDEL_HINT_LETMELIVE
 
-	SSces.elements_by_type -= type
+	SSelements.elements_by_type -= type
 	return ..()
 
 /// Finds the singleton for the element type given and attaches it to src.
@@ -44,7 +44,7 @@
 	if(QDELING(src))
 		CRASH("We just tried to add an element to a qdeleted datum, something is fucked")
 
-	var/datum/element/ele = SSces.GetElement(arguments)
+	var/datum/element/ele = SSelements.GetElement(arguments)
 	arguments[1] = src
 
 	if(ele.Attach(arglist(arguments)) == ELEMENT_INCOMPATIBLE)
@@ -55,7 +55,7 @@
  * You only need additional arguments beyond the type if you're using `ELEMENT_BESPOKE`.
  */
 /datum/proc/_RemoveElement(list/arguments)
-	var/datum/element/ele = SSces.GetElement(arguments)
+	var/datum/element/ele = SSelements.GetElement(arguments)
 
 	if(ele.element_flags & ELEMENT_COMPLEX_DETACH)
 		arguments[1] = src

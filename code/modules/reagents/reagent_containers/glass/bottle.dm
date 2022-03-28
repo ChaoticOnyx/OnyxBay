@@ -60,7 +60,7 @@
 		default_desc = desc
 	if(starting_label)
 		name = default_name
-		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+		AddComponent(/datum/component/label, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 	if(!icon_state)
 		icon_state = "bottle-[rand(1,4)]"
 		lid_state = "lid_bottle"
@@ -83,8 +83,7 @@
 	..()
 	update_icon()
 
-/obj/item/reagent_containers/glass/bottle/attach_label(user)
-	..()
+/obj/item/reagent_containers/glass/bottle/post_attach_label()
 	update_icon()
 
 /obj/item/reagent_containers/glass/bottle/post_remove_label()
@@ -113,7 +112,7 @@
 
 	overlays += image(icon, src, "over_[icon_state]")
 
-	if(length(get_attached_labels(src)))
+	if(length(GetComponents(/datum/component/label)))
 		overlays += image(icon, src, "label_[icon_state]")
 
 	if(!is_open_container())

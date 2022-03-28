@@ -4,11 +4,7 @@
 /// Arguments given here are packaged in a list and given to _SendSignal.
 #define SEND_SIGNAL(target, sigtype, arguments...) ( !target.comp_lookup?[sigtype] ? FALSE : target._SendSignal(sigtype, list(target, ##arguments)) )
 
-#define SEND_GLOBAL_SIGNAL(sigtype, arguments...) ( SEND_SIGNAL(SSces, sigtype, ##arguments) )
-
-/// Signifies that this proc is used to handle signals.
-/// Every proc you pass to RegisterSignal must have this.
-#define SIGNAL_HANDLER SHOULD_NOT_SLEEP(TRUE)
+#define SEND_GLOBAL_SIGNAL(sigtype, arguments...) ( SEND_SIGNAL(SSelements, sigtype, ##arguments) )
 
 /// A wrapper for _AddElement that allows us to pretend we're using normal named arguments.
 #define AddElement(arguments...) _AddElement(list(##arguments))
