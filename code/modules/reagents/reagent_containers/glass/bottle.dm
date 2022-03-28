@@ -112,7 +112,7 @@
 
 	overlays += image(icon, src, "over_[icon_state]")
 
-	if(length(GetComponents(/datum/component/label)))
+	if(length(get_components(/datum/component/label)))
 		overlays += image(icon, src, "label_[icon_state]")
 
 	if(!is_open_container())

@@ -34,7 +34,7 @@
 
 	var/list/labels = list()
 
-	for(var/datum/component/label/label in GetComponents(/datum/component/label))
+	for(var/datum/component/label/label in get_components(/datum/component/label))
 		labels += list(label.label_name = label)
 
 	var/target_label = input(usr, "Select a label to remove") in labels | null
@@ -45,5 +45,5 @@
 			SPAN("notice", "You remove a label, '[target_label]', from \the [src]."))
 		label.remove_label()
 
-		if(!length(GetComponents(/datum/component/label)))
+		if(!length(get_components(/datum/component/label)))
 			verbs -= /atom/proc/RemoveLabel

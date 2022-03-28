@@ -425,7 +425,7 @@ var/global/list/robot_footstep_sounds = list(
 		to_chat(src, "<span class='warning'>Your self-diagnosis component isn't functioning.</span>")
 		return
 
-	var/datum/robot_component/CO = get_component("diagnosis unit")
+	var/datum/robot_component/CO = get_robot_component("diagnosis unit")
 	if (!cell_use_power(CO.active_usage))
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
@@ -1133,7 +1133,7 @@ var/global/list/robot_footstep_sounds = list(
 
 /mob/living/silicon/robot/binarycheck()
 	if(is_component_functioning("comms"))
-		var/datum/robot_component/RC = get_component("comms")
+		var/datum/robot_component/RC = get_robot_component("comms")
 		use_power(RC.active_usage)
 		return 1
 	return 0

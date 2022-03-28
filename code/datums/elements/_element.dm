@@ -12,7 +12,7 @@
 	var/id_arg_index = INFINITY
 
 /// Activates the functionality defined by the element on the given target datum.
-/datum/element/proc/Attach(datum/target)
+/datum/element/proc/attach(datum/target)
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(type == /datum/element)
@@ -21,16 +21,16 @@
 	SEND_SIGNAL(target, SIGNAL_ELEMENT_ATTACH, src)
 
 	if(element_flags & ELEMENT_DETACH)
-		RegisterSignal(target, SIGNAL_PARENT_QDELETING, .proc/OnTargetDelete, override = TRUE)
+		register_signal(target, SIGNAL_PARENT_QDELETING, .proc/on_target_delete, override = TRUE)
 
-/datum/element/proc/OnTargetDelete(datum/source, force)
-	Detach(source)
+/datum/element/proc/on_target_delete(datum/source, force)
+	detach(source)
 
 /// Deactivates the functionality defines by the element on the given datum.
-/datum/element/proc/Detach(datum/source, ...)
+/datum/element/proc/detach(datum/source, ...)
 	SEND_SIGNAL(source, SIGNAL_ELEMENT_DETACH, src)
 	SHOULD_CALL_PARENT(TRUE)
-	UnregisterSignal(source, SIGNAL_PARENT_QDELETING)
+	unregister_signal(source, SIGNAL_PARENT_QDELETING)
 
 /datum/element/Destroy(force)
 	if(!force)
@@ -40,25 +40,25 @@
 	return ..()
 
 /// Finds the singleton for the element type given and attaches it to src.
-/datum/proc/_AddElement(list/arguments)
+/datum/proc/_add_element(list/arguments)
 	if(QDELING(src))
 		CRASH("We just tried to add an element to a qdeleted datum, something is fucked")
 
 	var/datum/element/ele = SSelements.GetElement(arguments)
 	arguments[1] = src
 
-	if(ele.Attach(arglist(arguments)) == ELEMENT_INCOMPATIBLE)
+	if(ele.attach(arglist(arguments)) == ELEMENT_INCOMPATIBLE)
 		CRASH("Incompatible [arguments[1]] assigned to a [type]! args: [json_encode(args)]")
 
 /**
  * Finds the singleton for the element type given and detaches it from src.
  * You only need additional arguments beyond the type if you're using `ELEMENT_BESPOKE`.
  */
-/datum/proc/_RemoveElement(list/arguments)
+/datum/proc/_remove_element(list/arguments)
 	var/datum/element/ele = SSelements.GetElement(arguments)
 
 	if(ele.element_flags & ELEMENT_COMPLEX_DETACH)
 		arguments[1] = src
-		ele.Detach(arglist(arguments))
+		ele.detach(arglist(arguments))
 	else
-		ele.Detach(src)
+		ele.detach(src)

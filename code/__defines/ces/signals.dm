@@ -2,7 +2,7 @@
 
 /// When a component is added to a datum: (/datum/component).
 #define SIGNAL_COMPONENT_ADDED "component_added"
-/// Before a component is removed from a datum because of ClearFromParent: (/datum/component).
+/// Before a component is removed from a datum because of clear_from_parent: (/datum/component).
 #define SIGNAL_COMPONENT_REMOVING "component_removing"
 /// Before a datum's Destroy() is called: (force), returning a nonzero value will cancel the qdel operation.
 #define SIGNAL_PARENT_PREQDELETED "parent_preqdeleted"
