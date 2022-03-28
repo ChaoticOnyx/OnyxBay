@@ -391,7 +391,7 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ && !(preselected_organ in attached_organs))
+	if(!preselected_organ || !(preselected_organ in attached_organs))
 		surgery_organ = show_radial_menu(user, target, attached_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -643,7 +643,7 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ && !(preselected_organ in attachable_organs))
+	if(!preselected_organ || !(preselected_organ in attachable_organs))
 		surgery_organ = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -730,7 +730,7 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ && !(preselected_organ in dead_organs))
+	if(!preselected_organ || !(preselected_organ in dead_organs))
 		surgery_organ = show_radial_menu(user, target, dead_organs, require_near = TRUE)
 
 	preselected_organ = null
