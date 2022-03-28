@@ -96,6 +96,8 @@
 	density = 0
 
 /obj/effect/rift/Destroy()
+	..()
+
 	for(var/o in contents)
 		var/atom/movable/M = o
 		M.forceMove(get_turf(src))

@@ -728,3 +728,7 @@ proc/dd_sortedObjectList(list/incoming)
 			.[i] = .(.[i])
 
 #define IS_VALID_INDEX(list, index) (list.len && index > 0 && index <= list.len)
+
+/// Sort any value in a list.
+/proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
+	return sortTim(list_to_sort.Copy(), cmp)

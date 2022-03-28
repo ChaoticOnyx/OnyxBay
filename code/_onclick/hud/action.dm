@@ -28,6 +28,8 @@
 	target = Target
 
 /datum/action/Destroy()
+	..()
+
 	if(owner)
 		Remove(owner)
 
