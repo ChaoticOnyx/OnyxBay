@@ -655,7 +655,7 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(preselected_organ && !(preselected_organ in attached_organs))
+	if(preselected_organ && !(preselected_organ in attachable_organs))
 		return SURGERY_FAILURE
 
 	if(!preselected_organ)
