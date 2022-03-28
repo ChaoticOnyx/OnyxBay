@@ -65,7 +65,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ || !(preselected_organ in damaged_organs))
+	if(preselected_organ && !(preselected_organ in damaged_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -271,7 +274,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ || !(preselected_organ in damaged_organs))
+	if(preselected_organ && !(preselected_organ in damaged_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -391,7 +397,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ || !(preselected_organ in attached_organs))
+	if(preselected_organ && !(preselected_organ in attached_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, attached_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -464,7 +473,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ  && !(preselected_organ in removable_organs))
+	if(preselected_organ && !(preselected_organ in removable_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, removable_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -643,7 +655,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ || !(preselected_organ in attachable_organs))
+	if(preselected_organ && !(preselected_organ in attached_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
 
 	preselected_organ = null
@@ -730,7 +745,10 @@
 
 	var/obj/item/organ/surgery_organ = preselected_organ
 
-	if(!preselected_organ || !(preselected_organ in dead_organs))
+	if(preselected_organ && !(preselected_organ in dead_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
 		surgery_organ = show_radial_menu(user, target, dead_organs, require_near = TRUE)
 
 	preselected_organ = null
