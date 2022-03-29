@@ -37,6 +37,13 @@ GLOBAL_DATUM_INIT(loyalists, /datum/antagonist/loyalists, new)
 	if(config.loyalists_min_age)
 		min_player_age = config.loyalists_min_age
 
+/datum/antagonist/loyalists/proc/count_score()
+	var/loyal_score = 0
+	for(var/area/A in GLOB.station_areas)
+		if(A.is_controlled_by_corporation())
+			loyal_score += A.importance
+	return loyal_score
+
 /datum/antagonist/loyalists/create_global_objectives()
 	if(!..())
 		return
