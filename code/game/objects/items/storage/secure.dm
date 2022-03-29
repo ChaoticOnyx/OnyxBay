@@ -145,20 +145,11 @@
 	return
 
 
-/obj/item/storage/secure/emag_act(remaining_charges, mob/user, feedback)
+/obj/item/storage/secure/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
 	var/obj/item/melee/energy/WS = emag_source
 	if(WS.active)
 		on_hack_behavior(WS, user)
 		return TRUE
-	if(!emagged)
-		emagged = 1
-		src.overlays += image('icons/obj/storage.dmi', icon_sparking)
-		sleep(6)
-		src.overlays = null
-		overlays += image('icons/obj/storage.dmi', icon_locking)
-		locked = 0
-		to_chat(user, (feedback ? feedback : "You short out the lock of \the [src]."))
-		return 1
 
 // -----------------------------
 //        Secure Briefcase
@@ -408,7 +399,7 @@
 			return
 	return
 
-/obj/item/weapon/storage/secure/proc/on_hack_behavior()
+/obj/item/storage/secure/proc/on_hack_behavior()
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
 	spark_system.start()
@@ -421,4 +412,3 @@
 		overlays = null
 		overlays += image('icons/obj/storage.dmi', icon_locking)
 		locked = FALSE
-
