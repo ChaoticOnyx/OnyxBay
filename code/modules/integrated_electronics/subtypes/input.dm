@@ -159,92 +159,6 @@
 			activate_pin(1)
 			return IC_TOPIC_REFRESH
 
-/obj/item/integrated_circuit/input/med_scanner
-	name = "integrated medical analyser"
-	desc = "A very small version of the common medical analyser. This allows the machine to track some vital signs."
-	icon_state = "medscan"
-	complexity = 4
-	inputs = list("target" = IC_PINTYPE_REF)
-	outputs = list(
-		"brain activity" = IC_PINTYPE_BOOLEAN,
-		"pulse" = IC_PINTYPE_NUMBER,
-		"is conscious" = IC_PINTYPE_BOOLEAN
-		)
-	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
-	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	power_draw_per_use = 40
-
-/obj/item/integrated_circuit/input/med_scanner/do_work()
-	var/mob/living/carbon/human/H = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/human)
-	if(!istype(H)) //Invalid input
-		return
-	if(H.Adjacent(get_turf(src))) // Like normal analysers, it can't be used at range.
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		set_pin_data(IC_OUTPUT, 1, (brain && H.stat != DEAD))
-		set_pin_data(IC_OUTPUT, 2, H.get_pulse_as_number())
-		set_pin_data(IC_OUTPUT, 3, (H.stat == 0))
-
-	push_data()
-	activate_pin(2)
-
-/obj/item/integrated_circuit/input/adv_med_scanner
-	name = "integrated adv. medical analyser"
-	desc = "A very small version of the medbot's medical analyser. This allows the machine to know how healthy someone is. \
-	This type is much more precise, allowing the machine to know much more about the target than a normal analyzer."
-	icon_state = "medscan_adv"
-	complexity = 12
-	inputs = list("target" = IC_PINTYPE_REF)
-	outputs = list(
-		"brain activity"		= IC_PINTYPE_BOOLEAN,
-		"is conscious"	        = IC_PINTYPE_BOOLEAN,
-		"brute damage"			= IC_PINTYPE_NUMBER,
-		"burn damage"			= IC_PINTYPE_NUMBER,
-		"tox damage"			= IC_PINTYPE_NUMBER,
-		"oxy damage"			= IC_PINTYPE_NUMBER,
-		"clone damage"			= IC_PINTYPE_NUMBER,
-		"pulse"                 = IC_PINTYPE_NUMBER,
-		"oxygenation level"     = IC_PINTYPE_NUMBER,
-		"pain level"            = IC_PINTYPE_NUMBER,
-		"radiation"             = IC_PINTYPE_NUMBER
-	)
-	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
-	spawn_flags = IC_SPAWN_RESEARCH
-	power_draw_per_use = 80
-
-/obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(value)
-	if(value < 1)
-		return 0
-	if(value < 25)
-		return 1
-	if(value < 50)
-		return 2
-	if(value < 75)
-		return 3
-	if(value < 100)
-		return 4
-	return 5
-
-/obj/item/integrated_circuit/input/adv_med_scanner/do_work()
-	var/mob/living/carbon/human/H = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/human)
-	if(!istype(H)) //Invalid input
-		return
-	if(H in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		set_pin_data(IC_OUTPUT, 1, (brain && H.stat != DEAD))
-		set_pin_data(IC_OUTPUT, 2, (H.stat == 0))
-		set_pin_data(IC_OUTPUT, 3, damage_to_severity(100 * H.getBruteLoss() / H.maxHealth))
-		set_pin_data(IC_OUTPUT, 4, damage_to_severity(100 * H.getFireLoss() / H.maxHealth))
-		set_pin_data(IC_OUTPUT, 5, damage_to_severity(100 * H.getToxLoss() / H.maxHealth))
-		set_pin_data(IC_OUTPUT, 6, damage_to_severity(100 * H.getOxyLoss() / H.maxHealth))
-		set_pin_data(IC_OUTPUT, 7, damage_to_severity(100 * H.getCloneLoss() / H.maxHealth))
-		set_pin_data(IC_OUTPUT, 8, H.get_pulse_as_number())
-		set_pin_data(IC_OUTPUT, 9, H.get_blood_oxygenation())
-		set_pin_data(IC_OUTPUT, 10, damage_to_severity(H.get_shock()))
-		set_pin_data(IC_OUTPUT, 11, H.radiation)
-
-	push_data()
-	activate_pin(2)
-
 /obj/item/integrated_circuit/input/metroid_scanner
 	name = "metroid scanner"
 	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of a metroid. Output mutation list is non-associative."
@@ -789,6 +703,7 @@
 	var/new_freq = get_pin_data(IC_INPUT, 1)
 	var/new_code = get_pin_data(IC_INPUT, 2)
 	if(isnum_safe(new_freq) && new_freq > 0)
+		new_freq = Clamp(new_freq, RADIO_LOW_FREQ, RADIO_HIGH_FREQ)
 		set_frequency(new_freq)
 	if(isnum_safe(new_code))
 		code = new_code
@@ -868,13 +783,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = html_encode(command)
+	signal.data["command"] = command
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT, 1, signal.data["command"])
 		push_data()
 		..()
 
@@ -1037,7 +952,7 @@
 	if(!check_then_do_work())
 		return FALSE
 	var/ignore_bags = get_pin_data(IC_INPUT, 1)
-	if(ignore_bags && istype(A, /obj/item/weapon/storage/))
+	if(ignore_bags && istype(A, /obj/item/storage/))
 		return FALSE
 	set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
@@ -1069,7 +984,7 @@
 	if(!check_then_do_work())
 		return FALSE
 	var/ignore_bags = get_pin_data(IC_INPUT, 1)
-	if(ignore_bags && istype(A, /obj/item/weapon/storage))
+	if(ignore_bags && istype(A, /obj/item/storage))
 		return FALSE
 	set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
@@ -1166,7 +1081,7 @@
 	set_pin_data(IC_OUTPUT, 3, null)
 	if(AM)
 		var/list/power_cell_list = get_power_cell(AM)
-		var/obj/item/weapon/cell/C = power_cell_list[1]
+		var/obj/item/cell/C = power_cell_list[1]
 		if(istype(C))
 			var/turf/A = get_turf(src)
 			if(get_turf(AM) in view(A))
@@ -1226,66 +1141,6 @@
 	else
 		activate_pin(3)
 
-/obj/item/integrated_circuit/input/atmospheric_analyzer
-	name = "atmospheric analyzer"
-	desc = "A miniaturized analyzer which can scan anything that contains gases. Leave target as NULL to scan the air around the assembly."
-	extended_desc = "The nth element of gas amounts is the number of moles of the \
-					nth gas in gas list. \
-					Pressure is in kPa, temperature is in Kelvin. \
-					Due to programming limitations, scanning an object that does \
-					not contain a gas will return the air around it instead."
-	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	inputs = list(
-			"target" = IC_PINTYPE_REF
-			)
-	outputs = list(
-			"gas list" = IC_PINTYPE_LIST,
-			"gas amounts" = IC_PINTYPE_LIST,
-			"total moles" = IC_PINTYPE_NUMBER,
-			"pressure" = IC_PINTYPE_NUMBER,
-			"temperature" = IC_PINTYPE_NUMBER,
-			"volume" = IC_PINTYPE_NUMBER
-			)
-	activators = list(
-			"scan" = IC_PINTYPE_PULSE_IN,
-			"on success" = IC_PINTYPE_PULSE_OUT,
-			"on failure" = IC_PINTYPE_PULSE_OUT
-			)
-	power_draw_per_use = 5
-
-/obj/item/integrated_circuit/input/atmospheric_analyzer/do_work()
-	for(var/i=1 to 6)
-		set_pin_data(IC_OUTPUT, i, null)
-	var/atom/target = get_pin_data_as_type(IC_INPUT, 1, /atom)
-	if(!target)
-		target = get_turf(src)
-	if( get_dist(get_turf(target),get_turf(src)) > 1 )
-		activate_pin(3)
-		return
-
-	var/datum/gas_mixture/air_contents = target.return_air()
-	if(!air_contents)
-		activate_pin(3)
-		return
-
-	var/list/gases = air_contents.gas
-	var/list/gas_names = list()
-	var/list/gas_amounts = list()
-	for(var/id in gases)
-		var/name = gas_data.name[id]
-		var/amt = round(gases[id], 0.001)
-		gas_names.Add(name)
-		gas_amounts.Add(amt)
-
-	set_pin_data(IC_OUTPUT, 1, gas_names)
-	set_pin_data(IC_OUTPUT, 2, gas_amounts)
-	set_pin_data(IC_OUTPUT, 3, round(air_contents.get_total_moles(), 0.001))
-	set_pin_data(IC_OUTPUT, 4, round(air_contents.return_pressure(), 0.001))
-	set_pin_data(IC_OUTPUT, 5, round(air_contents.temperature, 0.001))
-	set_pin_data(IC_OUTPUT, 6, round(air_contents.volume, 0.001))
-	push_data()
-	activate_pin(2)
-
 /obj/item/integrated_circuit/input/data_card_reader
 	name = "data card reader"
 	desc = "A circuit that can read from and write to data cards."
@@ -1310,7 +1165,7 @@
 	)
 
 /obj/item/integrated_circuit/input/data_card_reader/attackby_react(obj/item/I, mob/living/user, intent)
-	var/obj/item/weapon/card/data/card = I
+	var/obj/item/card/data/card = I
 	var/write_mode = get_pin_data(IC_INPUT, 3)
 	if(istype(card))
 		if(write_mode == TRUE)
@@ -1413,8 +1268,8 @@
 	power_draw_per_use = 85
 
 /obj/item/integrated_circuit/input/storage_examiner/do_work()
-	var/obj/item/weapon/storage/storage = get_pin_data_as_type(IC_INPUT, 1, /obj/item/weapon/storage)
-	if(!istype(storage, /obj/item/weapon/storage))
+	var/obj/item/storage/storage = get_pin_data_as_type(IC_INPUT, 1, /obj/item/storage)
+	if(!istype(storage, /obj/item/storage))
 		return
 
 	var/list/inv = storage.return_inv()

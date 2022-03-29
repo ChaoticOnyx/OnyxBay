@@ -13,7 +13,7 @@
 /obj/item/device/paicard/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
-	var/obj/item/weapon/rig/rig = get_rig()
+	var/obj/item/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
 	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))

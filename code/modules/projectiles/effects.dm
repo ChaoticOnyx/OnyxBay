@@ -89,6 +89,21 @@
 	icon_state = "impact_beam_heavy"
 
 //----------------------------
+// Small laser beam
+//----------------------------
+/obj/effect/projectile/laser/small
+	light_max_bright = 0.7
+
+/obj/effect/projectile/laser/small/tracer
+	icon_state = "beam_small"
+
+/obj/effect/projectile/laser/small/muzzle
+	icon_state = "muzzle_beam_small"
+
+/obj/effect/projectile/laser/small/impact
+	icon_state = "impact_beam_small"
+
+//----------------------------
 // Pulse laser beam
 //----------------------------
 /obj/effect/projectile/laser/pulse

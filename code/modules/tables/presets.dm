@@ -3,6 +3,21 @@
 	color = COLOR_OFF_WHITE
 	material = DEFAULT_TABLE_MATERIAL
 
+/obj/structure/table/standard/flipped
+
+/obj/structure/table/standard/flipped/Initialize()
+	. = ..()
+	flipped = 1
+	update_icon()
+
+/obj/structure/table/standard/flipped/north
+	dir = 1
+
+/obj/structure/table/standard/flipped/east
+	dir = 4
+/obj/structure/table/standard/flipped/west
+	dir = 8
+
 /obj/structure/table/steel
 	icon_state = "plain_preview"
 	color = COLOR_GRAY40
@@ -36,6 +51,20 @@
 	color = COLOR_BROWN_ORANGE
 	material = MATERIAL_WOOD
 
+/obj/structure/table/woodentable/flipped
+
+/obj/structure/table/woodentable/flipped/Initialize()
+	. = ..()
+	flipped = 1
+	update_icon()
+
+/obj/structure/table/woodentable/flipped/north
+	dir = 1
+
+/obj/structure/table/woodentable/flipped/east
+	dir = 4
+/obj/structure/table/woodentable/flipped/west
+	dir = 8
 /obj/structure/table/gamblingtable
 	icon_state = "gamble_preview"
 	carpeted = 1

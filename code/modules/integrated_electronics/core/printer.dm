@@ -198,7 +198,7 @@
 
 	HTML += "Identity-lock: "
 	if(idlock)
-		var/obj/item/weapon/card/id/id = idlock.resolve()
+		var/obj/item/card/id/id = idlock.resolve()
 		HTML+= "[id.name] | <A href='?src=\ref[src];id-lock=TRUE'>Reset</a><br>"
 	else
 		HTML += "None | Reset<br>"

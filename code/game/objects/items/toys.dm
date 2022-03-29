@@ -69,7 +69,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/glass))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")
@@ -812,7 +812,7 @@
 	w_class = ITEM_SIZE_HUGE
 	attack_verb = list("attacked", "slashed", "stabbed", "poked")
 
-/obj/item/weapon/inflatable_duck
+/obj/item/inflatable_duck
 	name = "inflatable duck"
 	desc = "No bother to sink or swim when you can just float!"
 	icon_state = "inflatable"
@@ -820,7 +820,7 @@
 	icon = 'icons/obj/clothing/belts.dmi'
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/marshalling_wand
+/obj/item/marshalling_wand
 	name = "marshalling wand"
 	desc = "An illuminated, hand-held baton used by hangar personnel to visually signal shuttle pilots. The signal changes depending on your intent."
 	icon_state = "marshallingwand"
@@ -835,11 +835,11 @@
 	force = 1
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
 
-/obj/item/weapon/marshalling_wand/Initialize()
+/obj/item/marshalling_wand/Initialize()
 	set_light(0.6, 0.5, 2, 2, "#ff0000")
 	return ..()
 
-/obj/item/weapon/marshalling_wand/attack_self(mob/living/user)
+/obj/item/marshalling_wand/attack_self(mob/living/user)
 	if (user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'>[user] beckons with \the [src], signalling forward motion.</span>",
 							"<span class='notice'>You beckon with \the [src], signalling forward motion.</span>")
@@ -889,6 +889,12 @@
 	density = 1
 	var/dodgecount = 0
 	var/spam_flag = 0
+	var/very_dangerous = TRUE
+
+/obj/item/toy/chubbyskeleton/notsans
+	name = "Unknown"
+	icon_state = "notsans"
+	very_dangerous = FALSE
 
 /obj/item/toy/chubbyskeleton/New()
 	..()
@@ -958,9 +964,10 @@
 		speak(pick("geeettttttt dunked on!!!","told ya."))
 		if(istype(user, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = user
-			H.ChangeToSkeleton()
-			for(var/obj/item/W in H)
-				H.drop_from_inventory(W)
+			if(very_dangerous)
+				H.ChangeToSkeleton()
+			for(var/obj/item/I in H)
+				H.drop_from_inventory(I)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
 
 /obj/item/toy/banbanana

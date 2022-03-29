@@ -12,10 +12,10 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/body_scanner,
+		/obj/item/circuitboard/body_scanner,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module = 3,
-		/obj/item/weapon/stock_parts/manipulator = 4,
+		/obj/item/stock_parts/scanning_module = 3,
+		/obj/item/stock_parts/manipulator = 4,
 	)
 
 	idle_power_usage = 60
@@ -29,7 +29,7 @@
 	..()
 
 /obj/machinery/bodyscanner/Initialize()
-	..()
+	. = ..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
 		if(!console || console?.connected)
@@ -252,7 +252,7 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/bodyscanner_console
+		/obj/item/circuitboard/bodyscanner_console
 	)
 
 /obj/machinery/body_scanconsole/Destroy()
@@ -308,7 +308,7 @@
 				to_chat(usr, SPAN("warning", "The body scanner cannot scan that lifeform."))
 				return TRUE
 
-			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
+			var/obj/item/paper/P = new /obj/item/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
 			return TRUE
 		if ("eject")

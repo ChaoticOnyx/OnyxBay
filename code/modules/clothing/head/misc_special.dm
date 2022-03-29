@@ -5,7 +5,7 @@
  *		Ushanka
  *		Pumpkin head
  *		Kitty ears
- *
+ *		Tinfoil hat
  */
 
 /*
@@ -54,7 +54,7 @@
 /obj/item/clothing/head/welding/attack_self()
 	toggle()
 
-/obj/item/clothing/head/welding/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/head/welding/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welding_cover))
 		if(!cover && user.unEquip(W))
 			attach_cover(user, W)
@@ -259,3 +259,12 @@
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+/*
+ * Tinfoil hat
+ */
+/obj/item/clothing/head/tinfoil
+	name = "Tinfoil hat"
+	desc = "Big brother is watching you!"
+	icon_state = "foilhat"
+	body_parts_covered = 0
+	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)

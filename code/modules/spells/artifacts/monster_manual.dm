@@ -1,4 +1,4 @@
-/obj/item/weapon/monster_manual
+/obj/item/monster_manual
 	name = "monster manual"
 	desc = "A book detailing various magical creatures."
 	icon = 'icons/obj/library.dmi'
@@ -25,11 +25,11 @@
 									"The old symbol of Satan. But this one almost can`t do anything special."
 									)
 
-/obj/item/weapon/monster_manual/attack_self(mob/user as mob)
+/obj/item/monster_manual/attack_self(mob/user as mob)
 	user.set_machine(src)
 	interact(user)
 
-/obj/item/weapon/monster_manual/interact(mob/user as mob)
+/obj/item/monster_manual/interact(mob/user as mob)
 	var/dat
 	if(temp)
 		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
@@ -42,7 +42,7 @@
 	show_browser(user, dat, "window=monstermanual")
 	onclose(user, "monstermanual")
 
-/obj/item/weapon/monster_manual/OnTopic(user, href_list, state)
+/obj/item/monster_manual/OnTopic(user, href_list, state)
 	if(href_list["temp"])
 		temp = null
 		. = TOPIC_REFRESH

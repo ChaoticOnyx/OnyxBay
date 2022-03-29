@@ -3,23 +3,23 @@ import { Button, Flex } from '../components'
 import { Window } from '../layouts'
 
 interface Enemy {
-  name: string;
-  hp: number;
-  mp: number;
+  name: string
+  hp: number
+  mp: number
 }
 
 interface Player {
-  hp: number;
-  mp: number;
+  hp: number
+  mp: number
 }
 
 interface InputData {
-  title: string;
+  title: string
   // eslint-disable-next-line camelcase
-  is_gameover: number;
-  enemy: Enemy;
-  player: Player;
-  message: string;
+  is_gameover: number
+  enemy: Enemy
+  player: Player
+  message: string
 }
 
 const enemy = (enemy: Enemy) => {
@@ -69,13 +69,13 @@ const game = (props: any, context: any) => {
 
   if (data.is_gameover) {
     return (
-      <Flex className='GameOver' height='100%' direction='column' justify='space-between'>
-        <Flex.Item>
-          GAME OVER
-        </Flex.Item>
-        <Flex.Item>
-          {data.message}
-        </Flex.Item>
+      <Flex
+        className='GameOver'
+        height='100%'
+        direction='column'
+        justify='space-between'>
+        <Flex.Item>GAME OVER</Flex.Item>
+        <Flex.Item>{data.message}</Flex.Item>
         <Flex.Item>
           <Button onClick={() => act('newgame')} content='New Game' />
         </Flex.Item>

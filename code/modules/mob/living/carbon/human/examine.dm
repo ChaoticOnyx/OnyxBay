@@ -1,4 +1,10 @@
 /mob/living/carbon/human/examine(mob/user)
+
+	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
+		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
+		if(abd_vest.stealth_active)
+			return abd_vest.disguise.examine
+
 	var/skipgloves = 0
 	var/skipsuitstorage = 0
 	var/skipjumpsuit = 0
@@ -104,7 +110,7 @@
 	// mask
 	if(wear_mask && !skipmask)
 		var/descriptor = "on [T.his] face"
-		if(istype(wear_mask, /obj/item/weapon/grenade))
+		if(istype(wear_mask, /obj/item/grenade))
 			descriptor = "in [T.his] mouth"
 
 		if(wear_mask.blood_DNA)
@@ -130,7 +136,7 @@
 
 	// handcuffed?
 	if(handcuffed)
-		if(istype(handcuffed, /obj/item/weapon/handcuffs/cable))
+		if(istype(handcuffed, /obj/item/handcuffs/cable))
 			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with cable!\n")
 		else
 			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] handcuffed!\n")
@@ -276,7 +282,7 @@
 		var/criminal = "None"
 
 		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.GetIdCard()
 			if(I)
 				perpname = I.registered_name
 			else
@@ -298,7 +304,7 @@
 		var/mental = "None"
 
 		if(wear_id)
-			if(istype(wear_id,/obj/item/weapon/card/id))
+			if(istype(wear_id,/obj/item/card/id))
 				perpname = wear_id:registered_name
 			else if(istype(wear_id,/obj/item/device/pda))
 				var/obj/item/device/pda/tempPda = wear_id

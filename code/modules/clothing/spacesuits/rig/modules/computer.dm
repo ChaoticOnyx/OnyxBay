@@ -9,18 +9,18 @@
 /obj/item/ai_verbs
 	name = "AI verb holder"
 
-/obj/item/ai_verbs/verb/hardsuit_interface()
-	set category = "Hardsuit"
-	set name = "Open Hardsuit Interface"
+/obj/item/ai_verbs/verb/powersuit_interface()
+	set category = "Powersuit"
+	set name = "Open Powersuit Interface"
 	set src in usr
 
 	if(!usr.loc || !usr.loc.loc || !istype(usr.loc.loc, /obj/item/rig_module))
-		to_chat(usr, "You are not loaded into a hardsuit.")
+		to_chat(usr, "You are not loaded into a powersuit.")
 		return
 
 	var/obj/item/rig_module/module = usr.loc.loc
 	if(!module.holder)
-		to_chat(usr, "Your module is not installed in a hardsuit.")
+		to_chat(usr, "Your module is not installed in a powersuit.")
 		return
 
 	module.holder.ui_interact(usr, nano_state = GLOB.contained_state)
@@ -28,7 +28,7 @@
 /obj/item/rig_module/ai_container
 
 	name = "IIS module"
-	desc = "An integrated intelligence system module suitable for most hardsuits."
+	desc = "An integrated intelligence system module suitable for most powersuits."
 	icon_state = "IIS"
 	toggleable = 1
 	usable = 1
@@ -50,20 +50,24 @@
 /mob
 	var/get_rig_stats = 0
 
+/mob/living/Stat()
+	. = ..()
+	if(. && get_rig_stats)
+		var/obj/item/rig/rig = get_rig()
+		if(rig)
+			SetupStat(rig)
+
 /obj/item/rig_module/ai_container/Process()
 	if(integrated_ai)
-		var/obj/item/weapon/rig/rig = get_rig()
+		var/obj/item/rig/rig = get_rig()
 		if(rig && rig.ai_override_enabled)
 			integrated_ai.get_rig_stats = 1
 		else
 			integrated_ai.get_rig_stats = 0
 
-/mob/living/Stat()
+/obj/item/rig_module/ai_container/Destroy()
+	eject_ai()
 	. = ..()
-	if(. && get_rig_stats)
-		var/obj/item/weapon/rig/rig = get_rig()
-		if(rig)
-			SetupStat(rig)
 
 /obj/item/rig_module/ai_container/proc/update_verb_holder()
 	if(!verb_holder)
@@ -82,14 +86,14 @@
 	else
 		target_ai = locate(/mob/living/silicon/ai) in input_device.contents
 
-	var/obj/item/weapon/aicard/card = ai_card
+	var/obj/item/aicard/card = ai_card
 
 	// Downloading from/loading to a terminal.
 	if(istype(input_device,/mob/living/silicon/ai) || istype(input_device,/obj/structure/AIcore/deactivated))
 
 		// If we're stealing an AI, make sure we have a card for it.
 		if(!card)
-			card = new /obj/item/weapon/aicard(src)
+			card = new /obj/item/aicard(src)
 
 		// Terminal interaction only works with an inteliCarded AI.
 		if(!istype(card))
@@ -107,7 +111,7 @@
 		update_verb_holder()
 		return 1
 
-	if(istype(input_device,/obj/item/weapon/aicard))
+	if(istype(input_device,/obj/item/aicard))
 		// We are carding the AI in our suit.
 		if(integrated_ai)
 			integrated_ai.attackby(input_device,user)
@@ -145,7 +149,7 @@
 
 	if(!target)
 		if(ai_card)
-			if(istype(ai_card,/obj/item/weapon/aicard))
+			if(istype(ai_card,/obj/item/aicard))
 				ai_card.ui_interact(H, state = GLOB.deep_inventory_state)
 			else
 				eject_ai(H)
@@ -164,7 +168,7 @@
 /obj/item/rig_module/ai_container/proc/eject_ai(mob/user)
 
 	if(ai_card)
-		if(istype(ai_card, /obj/item/weapon/aicard))
+		if(istype(ai_card, /obj/item/aicard))
 			if(integrated_ai && !integrated_ai.stat)
 				if(user)
 					to_chat(user, "<span class='danger'>You cannot eject your currently stored AI. Purge it manually.</span>")
@@ -179,8 +183,10 @@
 				ai_card = null
 		else if(user)
 			user.put_in_hands(ai_card)
-		else
+		else if(loc) // No trying to get_turf out of nullspace plz
 			ai_card.forceMove(get_turf(src))
+		else
+			qdel(ai_card)
 	ai_card = null
 	integrated_ai = null
 	update_verb_holder()
@@ -194,13 +200,13 @@
 
 		if(ai_mob.key && ai_mob.client)
 
-			if(istype(ai, /obj/item/weapon/aicard))
+			if(istype(ai, /obj/item/aicard))
 
 				if(!ai_card)
-					ai_card = new /obj/item/weapon/aicard(src)
+					ai_card = new /obj/item/aicard(src)
 
-				var/obj/item/weapon/aicard/source_card = ai
-				var/obj/item/weapon/aicard/target_card = ai_card
+				var/obj/item/aicard/source_card = ai
+				var/obj/item/aicard/target_card = ai_card
 				if(istype(source_card) && istype(target_card))
 					if(target_card.grab_ai(ai_mob, user))
 						source_card.clear()
@@ -247,6 +253,10 @@
 	. =..()
 	stored_research = list()
 
+/obj/item/rig_module/datajack/Destroy()
+	QDEL_LIST(stored_research)
+	. = ..()
+
 /obj/item/rig_module/datajack/engage(atom/target)
 
 	if(!..())
@@ -260,9 +270,9 @@
 
 /obj/item/rig_module/datajack/accepts_item(obj/item/input_device, mob/living/user)
 
-	if(istype(input_device,/obj/item/weapon/disk/tech_disk))
+	if(istype(input_device,/obj/item/disk/tech_disk))
 		to_chat(user, "You slot the disk into [src].")
-		var/obj/item/weapon/disk/tech_disk/disk = input_device
+		var/obj/item/disk/tech_disk/disk = input_device
 		if(disk.stored)
 			if(load_data(disk.stored))
 				to_chat(user, "<span class='info'>Download successful; disk erased.</span>")
@@ -348,8 +358,8 @@
 
 /obj/item/rig_module/power_sink
 
-	name = "hardsuit power sink"
-	desc = "An heavy-duty power sink."
+	name = "powersuit power sink"
+	desc = "A heavy-duty power sink."
 	icon_state = "powersink"
 	toggleable = 1
 	activates_on_touch = 1
@@ -376,6 +386,10 @@
 	interfaced_with = null
 	total_power_drained = 0
 	return ..()
+
+/obj/item/rig_module/power_sink/Destroy()
+	deactivate()
+	. = ..()
 
 /obj/item/rig_module/power_sink/activate()
 	interfaced_with = null

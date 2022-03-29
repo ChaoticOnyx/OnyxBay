@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
-
 /obj/singularity
 	name = "gravitational singularity"
 	desc = "A gravitational singularity."
@@ -13,7 +11,6 @@
 
 	var/current_size = 1
 	var/allowed_size = 1
-	var/contained = 1 // Are we going to move around?
 	var/energy = 100 // How strong are we?
 	var/dissipate = 1 // Do we lose energy over time?
 	var/dissipate_delay = 10
@@ -32,6 +29,11 @@
 	var/create_childs = TRUE // if true - creates a dummy-singularity for each connected Z-level
 	var/list/obj/singularity/child/childs = list()
 
+	var/follows_ghosts = FALSE
+	var/picking_coldown = 0
+	var/mob/observer/ghost/the_chosen = null
+	var/mob/observer/ghost/prev_ghost = null
+
 /obj/singularity/New(loc, starting_energy = 50, temp = 0)
 	//CARN: admin-alert for chuckle-fuckery.
 	admin_investigate_setup()
@@ -49,9 +51,7 @@
 			break
 
 	if(create_childs)
-		for(level in (GetConnectedZlevels(z) - z))
-			var/obj/singularity/child/SC = new (locate(x, y, level), src, level)
-			childs += SC
+		create_childs()
 
 /obj/singularity/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -60,6 +60,16 @@
 		if(!QDELETED(SC))
 			qdel(SC)
 	return ..()
+
+/obj/singularity/proc/create_childs()
+	for(var/obj/singularity/child/SC in childs)
+		childs -= SC
+		SC.parent = null
+		qdel(SC)
+
+	for(level in (GetConnectedZlevels(z) - z))
+		var/obj/singularity/child/SC = new (locate(x, y, level), src, level)
+		childs += SC
 
 /obj/singularity/attack_hand(mob/user)
 	consume(user)
@@ -89,6 +99,12 @@
 /obj/singularity/Bumped(atom/A)
 	consume(A)
 
+/obj/singularity/touch_map_edge()
+	var/old_z = z
+	..()
+	if(old_z != z && create_childs)
+		create_childs()
+
 /obj/singularity/Process()
 	eat()
 	dissipate()
@@ -100,6 +116,32 @@
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
+
+	if(follows_ghosts && picking_coldown <= world.time)
+		if(the_chosen)
+			stop_following()
+
+		else if(!target)
+			pick_ghost()
+
+/obj/singularity/proc/pick_ghost()
+	picking_coldown = world.time + 20 SECONDS
+
+	var/zlevels = GetConnectedZlevels(z)
+	for(var/mob/observer/ghost/G in shuffle(GLOB.ghost_mob_list))
+		if(!G.client)
+			continue
+		if(G == prev_ghost)
+			continue
+		if(G.z in zlevels)
+			the_chosen = G
+			break
+
+/obj/singularity/proc/stop_following()
+	picking_coldown = world.time + 40 SECONDS
+
+	prev_ghost = the_chosen
+	the_chosen = null
 
 /obj/singularity/attack_ai() //To prevent ais from gibbing themselves when they click on one.
 	return
@@ -148,6 +190,8 @@
 			dissipate_track = 0
 			dissipate_strength = 1
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s1"
 			visible_message(SPAN("notice", "The singularity has shrunk to a rather pitiful size."))
@@ -166,6 +210,8 @@
 			dissipate_track = 0
 			dissipate_strength = 5
 			overlays = 0
+			follows_ghosts = FALSE
+			the_chosen = null
 			if(chained)
 				overlays = "chain_s3"
 			if(growing)
@@ -188,6 +234,8 @@
 				dissipate_track = 0
 				dissipate_strength = 20
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s5"
 				if(growing)
@@ -210,6 +258,8 @@
 				dissipate_track = 0
 				dissipate_strength = 10
 				overlays = 0
+				follows_ghosts = FALSE
+				the_chosen = null
 				if(chained)
 					overlays = "chain_s7"
 				if(growing)
@@ -229,6 +279,8 @@
 			consume_range = 4
 			dissipate = 0 // It cant go smaller due to e loss.
 			overlays = 0
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			if(growing)
@@ -248,6 +300,8 @@
 			consume_range = 5
 			dissipate = 0 // It cant go smaller due to e loss
 			event_chance = 25 // Events will fire off more often.
+			if(!config.forbid_singulo_following)
+				follows_ghosts = TRUE
 			if(chained)
 				overlays = "chain_s9"
 			visible_message(SPAN("sinister", "<font size='3'>You witness the creation of a destructive force that cannot possibly be stopped by human hands.</font>"))
@@ -264,16 +318,18 @@
 		return 0
 
 /obj/singularity/proc/can_expand(step_size)
-	. = TRUE
 
 	for(var/direction in GLOB.cardinal)
-		if(!check_turfs_in(direction, step_size))
+		if(!check_turfs_in(direction))
 			return FALSE
-
+	for(var/corner in GLOB.cornerdirs)
+		if(!check_turfs_in(corner))
+			return FALSE
 	for(var/obj/singularity/child/SC in childs)
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
 				return FALSE
+	return TRUE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
@@ -323,8 +379,8 @@
 	if(force_move_direction)
 		movement_dir = force_move_direction
 
-	if(target && prob(60))
-		movement_dir = get_dir(src, target) // moves to a singulo beacon, if there is one
+	else if((target || the_chosen) && prob(60))
+		movement_dir = get_dir(src, target || the_chosen) // moves to a singulo beacon, if there is one
 
 	if(current_size >= STAGE_FIVE) // The superlarge one does not care about things in its way
 		step(src, movement_dir)
@@ -350,80 +406,70 @@
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
 	if(!direction)
-		return 0
+		return FALSE
 	var/steps = 0
 	if(!step)
 		switch(current_size)
 			if(STAGE_ONE)
 				steps = 1
 			if(STAGE_TWO)
-				steps = 3// Yes this is right
+				steps = 3//Yes this is right
 			if(STAGE_THREE)
 				steps = 3
 			if(STAGE_FOUR)
 				steps = 4
 			if(STAGE_FIVE)
 				steps = 5
-			if(STAGE_SUPER)
-				steps = 6
 	else
 		steps = step
-
 	var/list/turfs = list()
-	var/turf/T = loc
-	for(var/i = 1 to steps)
-		T = get_step(T, direction)
-	if(!isturf(T))
-		return 0
-	turfs.Add(T)
-
+	var/turf/considered_turf = loc
+	for(var/i in 1 to steps)
+		considered_turf = get_step(considered_turf,direction)
+	if(!isturf(considered_turf))
+		return FALSE
+	turfs.Add(considered_turf)
 	var/dir2 = 0
 	var/dir3 = 0
 	switch(direction)
-		if(NORTH||SOUTH)
+		if(NORTH, SOUTH)
 			dir2 = 4
 			dir3 = 8
-		if(EAST||WEST)
+		if(EAST, WEST)
 			dir2 = 1
 			dir3 = 2
-
-	var/turf/T2 = T
-	for(var/j = 1 to steps)
-		T2 = get_step(T2, dir2)
-		if(!isturf(T2))
-			return 0
-		turfs.Add(T2)
-
-	for(var/k = 1 to steps)
-		T = get_step(T, dir3)
-		if(!isturf(T))
-			return 0
-		turfs.Add(T)
-
-	for(var/turf/T3 in turfs)
-		if(isnull(T3))
+	var/turf/other_turf = considered_turf
+	for(var/j = 1 to steps-1)
+		other_turf = get_step(other_turf,dir2)
+		if(!isturf(other_turf))
+			return FALSE
+		turfs.Add(other_turf)
+	for(var/k = 1 to steps-1)
+		considered_turf = get_step(considered_turf,dir3)
+		if(!isturf(considered_turf))
+			return FALSE
+		turfs.Add(considered_turf)
+	for(var/turf/check_turf in turfs)
+		if(isnull(check_turf))
 			continue
-		if(!movement_blocked(T3))
-			return 0
-	return 1
+		if(!can_move(check_turf))
+			return FALSE
+	return TRUE
 
-/obj/singularity/proc/movement_blocked(const/turf/T)
-	if(!isturf(T))
-		return 0
-
-	if((locate(/obj/machinery/containment_field) in T) || (locate(/obj/machinery/shieldwall) in T))
-		return 0
-
-	else if(locate(/obj/machinery/field_generator) in T)
-		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in T
+/obj/singularity/proc/can_move(turf/considered_turf)
+	if(!considered_turf)
+		return FALSE
+	if((locate(/obj/machinery/containment_field) in considered_turf)||(locate(/obj/machinery/shieldwall) in considered_turf))
+		return FALSE
+	else if(locate(/obj/machinery/field_generator) in considered_turf)
+		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in considered_turf
 		if(G?.active)
-			return 0
-
-	else if(locate(/obj/machinery/shieldwallgen) in T)
-		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in T
+			return FALSE
+	else if(locate(/obj/machinery/shieldwallgen) in considered_turf)
+		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in considered_turf
 		if(S?.active)
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
 /obj/singularity/proc/event()
 	var/numb = pick(1, 2, 3, 4, 5, 6)

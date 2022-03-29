@@ -31,7 +31,7 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "tech_key"
 	icon_screen = "turbinecomp"
-	circuit = /obj/item/weapon/circuitboard/turbine_control
+	circuit = /obj/item/circuitboard/turbine_control
 	anchored = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC

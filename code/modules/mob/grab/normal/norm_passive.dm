@@ -7,7 +7,6 @@
 	shift = 8
 
 	stop_move = 0
-	reverse_facing = 0
 	can_absorb = 0
 	shield_assailant = 0
 	point_blank_mult = 1

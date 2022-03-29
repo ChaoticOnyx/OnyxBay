@@ -34,6 +34,7 @@
 	var/output = "<div align='center'>"
 	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
+	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings<sup><b>β</b></sup></a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
 		if(ready)
@@ -89,6 +90,10 @@
 	if(href_list["show_preferences"])
 		client.prefs.ShowChoices(src)
 		return 1
+	
+	if(href_list["show_settings"])
+		client.settings.tgui_interact(src)
+		return 1
 
 	if(href_list["ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started
@@ -134,7 +139,7 @@
 
 			observer.started_as_observer = 1
 			close_spawn_windows()
-			var/obj/O = locate("landmark*Observer-Start")
+			var/obj/O = locate("landmark*Observer")
 			if(istype(O))
 				to_chat(src, "<span class='notice'>Now teleporting.</span>")
 				observer.forceMove(O.loc)
@@ -630,3 +635,6 @@
 
 /mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)
+
+/mob/new_player/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

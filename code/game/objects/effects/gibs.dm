@@ -11,7 +11,7 @@
 	var/bloodcolor //Used for gibbed humans.
 	var/datum/dna/MobDNA
 
-	New(location, var/datum/dna/MobDNA, var/fleshcolor, var/bloodcolor)
+	New(location, datum/dna/MobDNA, fleshcolor, bloodcolor)
 		..()
 
 		if(fleshcolor) src.fleshcolor = fleshcolor

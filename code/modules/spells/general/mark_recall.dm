@@ -79,7 +79,7 @@
 	..()
 
 /obj/effect/decal/cleanable/wizard_mark/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/nullrod) || istype(I, /obj/item/weapon/spellbook))
+	if(istype(I, /obj/item/nullrod) || istype(I, /obj/item/spellbook))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		src.visible_message("\The [src] fades away!")
 		qdel(src)

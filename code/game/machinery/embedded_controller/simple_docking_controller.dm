@@ -1,6 +1,7 @@
 //a docking port that uses a single door
 /obj/machinery/embedded_controller/radio/simple_docking_controller
 	name = "docking hatch controller"
+	layer = ABOVE_WINDOW_LAYER
 	var/tag_door
 	var/datum/computer/file/embedded_program/docking/simple/docking_program
 	var/progtype = /datum/computer/file/embedded_program/docking/simple/

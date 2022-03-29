@@ -49,8 +49,8 @@
 		var/obj/item/stack/medical/advanced/bruise_pack/O = W
 		fill_gel(O, user)
 		return
-	if(istype(W, /obj/item/weapon/organfixer))
-		var/obj/item/weapon/organfixer/G = W
+	if(istype(W, /obj/item/organfixer))
+		var/obj/item/organfixer/G = W
 		if(capacity <= 0)
 			to_chat(user, SPAN("warning", "\The [src] is empty!"))
 			return

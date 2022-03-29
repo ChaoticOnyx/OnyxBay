@@ -5,7 +5,9 @@
 /obj/item/organ/internal/stack
 	name = "neural lace"
 	parent_organ = BP_HEAD
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cortical-stack"
+	override_species_icon = TRUE
 	organ_tag = BP_STACK
 	status = ORGAN_ROBOTIC
 	vital = 1
@@ -59,11 +61,11 @@
 
 	return 1
 
-/obj/item/organ/internal/stack/removed()
+/obj/item/organ/internal/stack/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	do_backup()
 	..()
 
-/obj/item/organ/internal/stack/vox/removed()
+/obj/item/organ/internal/stack/vox/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	var/obj/item/organ/external/head = owner.get_organ(parent_organ)
 	owner.visible_message("<span class='danger'>\The [src] rips gaping holes in \the [owner]'s [head.name] as it is torn loose!</span>")
 	head.take_external_damage(rand(15,20))

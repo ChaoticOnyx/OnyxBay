@@ -743,12 +743,12 @@
 
 /datum/sprite_accessory/hair/cossack
 	name = "Cossack"
-	icon_state = "hair_cossack_swtgr"
+	icon_state = "hair_cossack"
 	gender = MALE
 
 /datum/sprite_accessory/hair/cossack2
 	name = "Cossack2"
-	icon_state = "hair_cossack_swtgr2"
+	icon_state = "hair_cossack2"
 	gender = MALE
 
 /datum/sprite_accessory/hair/coffeehouse
@@ -821,7 +821,7 @@
 
 /datum/sprite_accessory/hair/ming_dynasty_swtgr
 	name = "Ming Dynasty"
-	icon_state = "hair_ming_dynasty_swtgr"
+	icon_state = "hair_ming_dynasty"
 
 /datum/sprite_accessory/hair/mbraid
 	name = "Medium Braid"
@@ -839,7 +839,7 @@
 
 /datum/sprite_accessory/hair/monk_tonsure_by_swtgr
 	name = "Monk Tonsure"
-	icon_state = "hair_monk_tonsure_by_swtgr"
+	icon_state = "hair_monk_tonsure"
 
 /datum/sprite_accessory/hair/nia
 	name = "Nia"
@@ -883,7 +883,7 @@
 
 /datum/sprite_accessory/hair/qing_dynasty_swtgr
 	name = "Qing Dynasty"
-	icon_state = "hair_qing_dynasty_swtgr"
+	icon_state = "hair_qing_dynasty"
 	gender = MALE
 
 /datum/sprite_accessory/hair/ramona
@@ -925,7 +925,7 @@
 
 /datum/sprite_accessory/hair/samurai_swtgr
 	name = "Samurai"
-	icon_state = "hair_samurai_swtgr"
+	icon_state = "hair_samurai"
 
 /datum/sprite_accessory/hair/unkept
 	name = "Unkept"
@@ -933,12 +933,12 @@
 
 /datum/sprite_accessory/hair/viking
 	name = "Viking"
-	icon_state = "hair_viking_swtgr"
+	icon_state = "hair_viking"
 	gender = MALE
 
 /datum/sprite_accessory/hair/viking2
 	name = "Viking 2"
-	icon_state = "hair_viking_swtgr2"
+	icon_state = "hair_viking2"
 	gender = MALE
 
 /datum/sprite_accessory/hair/veryshortovereye
@@ -959,6 +959,86 @@
 	gender = FEMALE
 
 
+/datum/sprite_accessory/hair/square
+	name = "Square"
+	icon_state = "hair_square"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/pigtails_b
+	name = "Pigtails 2"
+	icon_state = "hair_pigtails_b"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/mist
+	name = "Mist"
+	icon_state = "hair_mist"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/maid_b
+	name = "Maid tail"
+	icon_state = "hair_maid_b"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_sideparts
+	name = "Long Sideparts"
+	icon_state = "hair_long_sideparts"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_braid
+	name = "Long Braid"
+	icon_state = "hair_long_braid"
+	gender = FEMALE
+	
+/datum/sprite_accessory/hair/long_curls
+	name = "Long Curls"
+	icon_state = "hair_long_curls"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_bedhead_alt
+	name = "Long Bedhead Alt"
+	icon_state = "hair_long_bedhead_alt"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/new_era
+	name = "New Era"
+	icon_state = "hair_new_era"
+	gender = FEMALE
+	
+/datum/sprite_accessory/hair/cotton_hair
+	name = "Cotton Hair"
+	icon_state = "hair_cotton_hair"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/braided_hair
+	name = "Braided Hair"
+	icon_state = "hair_braided_hair"
+	gender = FEMALE
+	
+/datum/sprite_accessory/hair/blunt_bangs_curls
+	name = "Blunt Bangs Curls"
+	icon_state = "hair_blunt_bangs_curls"
+	gender = FEMALE
+	
+/datum/sprite_accessory/hair/blunt_bangs_alt2
+	name = "Blunt Bangs Alt"
+	icon_state = "hair_blunt_bangs_alt2"
+	gender = FEMALE
+	
+/datum/sprite_accessory/hair/blades_hair
+	name = "Blades Hair"
+	icon_state = "hair_blades"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/alien_h
+	name = "Alien"
+	icon_state = "hair_alien_h"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/african_pigtails
+	name = "African Pigtails"
+	icon_state = "hair_african_pigtails"
+	gender = FEMALE
+	
 /*I'm sorry I made this hairstyle,
 May God have mercy.
 */

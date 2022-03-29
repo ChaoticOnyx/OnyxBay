@@ -135,8 +135,8 @@ var/hadevent    = 0
 		to_world_log("ERROR: Could not initate grey-tide. Unable find prison or brig area.")
 
 /proc/carp_migration() // -- Darem
-	for(var/obj/effect/landmark/C in landmarks_list)
-		if(C.name == "carpspawn")
+	for(var/obj/effect/landmark/C in GLOB.landmarks_list)
+		if(C.name == "Carp Pack")
 			new /mob/living/simple_animal/hostile/carp(C.loc)
 	//sleep(100)
 	spawn(rand(300, 600)) //Delayed announcements to keep the crew on their toes.
@@ -151,7 +151,7 @@ var/hadevent    = 0
 
 		for(var/i=1,i<=lightsoutAmount,i++)
 			var/list/possibleEpicentres = list()
-			for(var/obj/effect/landmark/newEpicentre in landmarks_list)
+			for(var/obj/effect/landmark/newEpicentre in GLOB.landmarks_list)
 				if(newEpicentre.name == "lightsout" && !(newEpicentre in epicentreList))
 					possibleEpicentres += newEpicentre
 			if(possibleEpicentres.len)

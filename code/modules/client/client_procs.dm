@@ -260,6 +260,8 @@
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
+	settings = new(src)
+
 	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.panic_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
@@ -391,22 +393,25 @@
 	statpanel("Status")
 
 	. = ..()
-	sleep(1)
+	stoplag(1)
 
 // send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
 	getFiles(
+		'html/images/ntlogo.png',
+		'html/images/ntlogo_hand.png',
+		'html/images/bluentlogo.png',
+		'html/images/bluentlogo_hand.png',
 		'html/search.js',
 		'html/panels.css',
 		'html/spacemag.css',
 		'html/images/loading.gif',
-		'html/images/ntlogo.png',
-		'html/images/bluentlogo.png',
-		'html/images/sollogo.png',
-		'html/images/terralogo.png',
-		'html/images/talisman.png'
-		)
+		'html/images/talisman.png',
+		'html/images/line_hand.png',
+		'html/images/borders_hand.png',
+		'html/good_vibes/good_vibes.woff'
+	)
 
 	spawn (10) // removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected
@@ -574,3 +579,23 @@
 		prefs.setup()
 	else
 		SScharacter_setup.queue_client(src)
+
+/client/proc/play_ambience_music(file_path)
+	if(get_preference_value(/datum/client_preference/play_ambience_music) == GLOB.PREF_NO)
+		return
+
+	var/sound/S = sound(file_path, FALSE, FALSE, SOUND_CHANNEL_AMBIENT_MUSIC, VOLUME_AMBIENT_MUSIC)
+	S.echo = 0
+	S.environment = -1
+
+	last_time_ambient_music_played = world.time
+	DIRECT_OUTPUT(src, S)
+
+/client/proc/is_ambience_music_playing()
+	var/list/sounds = SoundQuery()
+
+	for(var/sound/S in sounds)
+		if(S.channel == SOUND_CHANNEL_AMBIENT_MUSIC)
+			return TRUE
+
+	return FALSE

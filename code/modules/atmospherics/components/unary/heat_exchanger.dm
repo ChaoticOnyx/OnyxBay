@@ -66,7 +66,7 @@
 
 		return 1
 
-	attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		if(!isWrench(W))
 			return ..()
 		var/turf/T = src.loc

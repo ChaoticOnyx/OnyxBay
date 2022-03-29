@@ -148,7 +148,7 @@
 		if(blacklisted_trade_items && blacklisted_trade_items.len && is_type_in_list(offer,blacklisted_trade_items))
 			return 0
 
-		if(istype(offer,/obj/item/weapon/spacecash))
+		if(istype(offer,/obj/item/spacecash))
 			if(!(trade_flags & TRADER_MONEY))
 				return TRADER_NO_MONEY
 		else
@@ -216,6 +216,7 @@
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
+	M.on_purchase()
 	playsound(location, 'sound/effects/teleport.ogg', 50, 1)
 
 	disposition += rand(compliment_increase,compliment_increase*3) //Traders like it when you trade with them

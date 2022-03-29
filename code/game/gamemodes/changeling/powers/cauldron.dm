@@ -1,4 +1,7 @@
 
+/*
+// TODO: Redo this in a proper way, with UI and stuff.
+
 /mob/proc/prepare_changeling_chemical_sting()
 	set category = "Changeling"
 	set name = "Chemical Sting (5)"
@@ -111,3 +114,4 @@
 	C.adjustToxLoss(10)
 	verbs -= /mob/proc/prepare_changeling_chemical_sting
 	verbs -= /mob/proc/empty_cauldron
+*/

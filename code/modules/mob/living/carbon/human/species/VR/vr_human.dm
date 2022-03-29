@@ -39,7 +39,7 @@
 /mob/living/carbon/human/vrhuman/proc/equip_mob()
 	equip_to_slot_or_del(new /obj/item/clothing/under/color/grey, slot_w_uniform)
 	equip_to_slot_or_del(new /obj/item/clothing/shoes/black, slot_shoes)
-	equip_to_slot_or_del(new /obj/item/weapon/extinguisher, slot_l_hand)
+	equip_to_slot_or_del(new /obj/item/extinguisher, slot_l_hand)
 	equip_to_slot_or_del(new /obj/item/stack/medical/bruise_pack, slot_r_store)
 
 /mob/living/carbon/human/vrhuman/proc/give_spawn_protection()

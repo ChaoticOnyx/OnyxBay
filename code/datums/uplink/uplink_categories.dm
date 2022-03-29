@@ -36,8 +36,8 @@
 /datum/uplink_category/medical
 	name = "Medical"
 
-/datum/uplink_category/hardsuit_modules
-	name = "Hardsuit Modules"
+/datum/uplink_category/powersuit_modules
+	name = "Powersuit Modules"
 
 /datum/uplink_category/services
 	name = "Services"

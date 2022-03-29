@@ -30,7 +30,7 @@
 	if(buckled_mob)
 		buckled_mob.set_dir(dir)
 
-/obj/structure/bed/chair/wheelchair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/chair/wheelchair/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) || istype(W,/obj/item/stack) || isWirecutter(W))
 		return
 	..()
@@ -190,6 +190,11 @@
 			newdir = 4
 		B.set_dir(newdir)
 	bloodiness--
+
+/obj/structure/bed/chair/wheelchair/bullet_act(obj/item/projectile/Proj, def_zone)
+	if(buckled_mob)
+		return buckled_mob.bullet_act(Proj, def_zone)
+	return ..()
 
 /obj/structure/bed/chair/wheelchair/buckle_mob(mob/M as mob, mob/user as mob)
 	if(M == pulling)

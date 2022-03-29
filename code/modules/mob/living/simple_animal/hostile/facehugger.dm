@@ -3,7 +3,7 @@
 	name = "alien"
 	desc = "A viscious little creature, it looks like a connected pair of hands and has a long, muscular tail."
 	icon = 'icons/mob/alien.dmi'
-	icon_state = "facehugger_inactive"
+	icon_state = "facehugger"
 	icon_living = "facehugger"
 	item_state = "facehugger"
 	icon_dead = "facehugger_dead"
@@ -37,7 +37,7 @@
 	ranged_cooldown_cap = 2
 	retreat_distance = 3 // Run away and try to leap again
 	minimum_distance = 4
-	holder_type = /obj/item/weapon/holder/facehugger
+	holder_type = /obj/item/holder/facehugger
 	faction = "xenomorph"
 
 	var/is_sterile = FALSE
@@ -56,8 +56,8 @@
 			if(HN)
 				continue // Don't facefuck our fellow xenohumans
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
-			if(istype(mask, /obj/item/weapon/holder/facehugger)) // No need to interrupt our allies
-				var/obj/item/weapon/holder/facehugger/F = mask
+			if(istype(mask, /obj/item/holder/facehugger)) // No need to interrupt our allies
+				var/obj/item/holder/facehugger/F = mask
 				if(!F.wasted) // ...unless they are dead
 					continue
 			L += a
@@ -97,7 +97,7 @@
 	var/obj/item/r_ear = H.get_equipped_item(slot_r_ear)
 	r_ear?.knocked_out(H, dist = 0)
 
-	var/obj/item/weapon/holder/facehugger/holder = new()
+	var/obj/item/holder/facehugger/holder = new()
 	forceMove(holder)
 	if(!silent)
 		H.visible_message(SPAN("warning", "\The [src] latches itself onto [H]'s face!"))
@@ -162,7 +162,7 @@
 /////////////////////////////////////
 // I'm a holder now, not a mask :P //
 /////////////////////////////////////
-/obj/item/weapon/holder/facehugger
+/obj/item/holder/facehugger
 	origin_tech = list(TECH_BIO = 4)
 	slot_flags = SLOT_MASK | SLOT_HOLSTER
 	throw_speed = 4
@@ -170,14 +170,14 @@
 	item_state = "facehugger"
 	var/wasted = FALSE
 
-/obj/item/weapon/holder/facehugger/proc/kill_holder()
+/obj/item/holder/facehugger/proc/kill_holder()
 	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
 	if(F)
 		F.death()
 		sync(F)
 		wasted = TRUE
 
-/obj/item/weapon/holder/facehugger/sync(mob/living/M)
+/obj/item/holder/facehugger/sync(mob/living/M)
 	..()
 	if(!istype(M, /mob/living/simple_animal/hostile/facehugger))
 		return
@@ -185,7 +185,7 @@
 	if(F.stat)
 		wasted = TRUE
 
-/obj/item/weapon/holder/facehugger/attack(mob/target, mob/user)
+/obj/item/holder/facehugger/attack(mob/target, mob/user)
 	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
 	if(user && !F.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target

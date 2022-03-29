@@ -30,7 +30,7 @@
 	var/justzap = 0
 	var/safe = 1
 	normalspeed = 1
-	var/obj/item/weapon/airlock_electronics/electronics = null
+	var/obj/item/airlock_electronics/electronics = null
 	var/hasShocked = 0 //Prevents multiple shocks from happening
 	var/secured_wires = 0
 	var/datum/wires/airlock/wires = null
@@ -50,7 +50,7 @@
 
 	var/_wifi_id
 	var/datum/wifi/receiver/button/door/wifi_receiver
-	var/obj/item/weapon/airlock_brace/brace = null
+	var/obj/item/airlock_brace/brace = null
 
 /obj/machinery/door/airlock/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
@@ -524,7 +524,7 @@ About the new airlock wires panel:
 	var/cut_sound
 
 	if(isWelder(item))
-		var/obj/item/weapon/weldingtool/WT = item
+		var/obj/item/weldingtool/WT = item
 		if(!WT.isOn())
 			return 0
 		if(!WT.remove_fuel(0,user))
@@ -533,26 +533,26 @@ About the new airlock wires panel:
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 
-	else if(istype(item,/obj/item/weapon/gun/energy/plasmacutter)) //They could probably just shoot them out, but who cares!
+	else if(istype(item,/obj/item/gun/energy/plasmacutter)) //They could probably just shoot them out, but who cares!
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 		cut_delay *= 0.66
 
-	else if(istype(item,/obj/item/weapon/melee/energy/blade) || istype(item,/obj/item/weapon/melee/energy/sword))
+	else if(istype(item,/obj/item/melee/energy/blade) || istype(item,/obj/item/melee/energy/sword))
 		cut_verb = "slicing"
 		cut_sound = "spark"
 		cut_delay *= 0.66
 
-	else if(istype(item,/obj/item/weapon/circular_saw))
+	else if(istype(item,/obj/item/circular_saw))
 		cut_verb = "sawing"
 		cut_sound = 'sound/effects/fighting/circsawhit.ogg'
 		cut_delay *= 1.5
 
-	else if(istype(item, /obj/item/weapon/material/twohanded/fireaxe))
+	else if(istype(item, /obj/item/material/twohanded/fireaxe))
 		//special case - zero delay, different message
 		if(lock_cut_state == BOLTS_EXPOSED)
 			return 0 //can't actually cut the bolts, go back to regular smashing
-		var/obj/item/weapon/material/twohanded/fireaxe/F = item
+		var/obj/item/material/twohanded/fireaxe/F = item
 		if(!F.wielded)
 			return 0
 		user.visible_message(
@@ -599,11 +599,11 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/attackby(obj/item/C, mob/user)
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
-	if(brace && (istype(C.GetIdCard(), /obj/item/weapon/card/id/) || istype(C, /obj/item/weapon/crowbar/brace_jack)))
+	if(brace && (istype(C.GetIdCard(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
 		return brace.attackby(C, user)
 
-	if(!brace && istype(C, /obj/item/weapon/airlock_brace))
-		var/obj/item/weapon/airlock_brace/A = C
+	if(!brace && istype(C, /obj/item/airlock_brace))
+		var/obj/item/airlock_brace/A = C
 		if(!density)
 			to_chat(user, "You must close \the [src] before installing \the [A]!")
 			return
@@ -634,7 +634,7 @@ About the new airlock wires panel:
 		return
 
 	if(!repairing && isWelder(C) && !(operating > 0) && density)
-		var/obj/item/weapon/weldingtool/W = C
+		var/obj/item/weldingtool/W = C
 		if(W.remove_fuel(0, user))
 			if(!welded)
 				welded = TRUE
@@ -665,8 +665,8 @@ About the new airlock wires panel:
 	else if(istype(C, /obj/item/device/assembly/signaler))
 		return attack_hand(user)
 
-	else if(istype(C, /obj/item/weapon/pai_cable))	// -- TLE
-		var/obj/item/weapon/pai_cable/cable = C
+	else if(istype(C, /obj/item/pai_cable))	// -- TLE
+		var/obj/item/pai_cable/cable = C
 		cable.plugin(src, user)
 
 	else if(!repairing && isCrowbar(C))
@@ -689,8 +689,8 @@ About the new airlock wires panel:
 				density ? open(1) : close(1)
 
 			//if door is unbroken, but at half health or less, hit with fire axe using harm intent
-	else if (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && !(stat & BROKEN) && (src.health <= src.maxhealth / 2) && user.a_intent == I_HURT)
-		var/obj/item/weapon/material/twohanded/fireaxe/F = C
+	else if (istype(C, /obj/item/material/twohanded/fireaxe) && !(stat & BROKEN) && (src.health <= src.maxhealth / 2) && user.a_intent == I_HURT)
+		var/obj/item/material/twohanded/fireaxe/F = C
 		if(F.wielded)
 			playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
 			user.visible_message("<span class='danger'>[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>", "<span class='danger'>You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>")
@@ -699,11 +699,11 @@ About the new airlock wires panel:
 		else
 			return ..()
 
-	else if(istype(C, /obj/item/weapon/material/twohanded/fireaxe) && !arePowerSystemsOn())
+	else if(istype(C, /obj/item/material/twohanded/fireaxe) && !arePowerSystemsOn())
 		if(locked)
 			to_chat(user, SPAN("notice", "The airlock's bolts prevent it from being forced."))
 		else if(!welded && !operating)
-			var/obj/item/weapon/material/twohanded/fireaxe/F = C
+			var/obj/item/material/twohanded/fireaxe/F = C
 			if(!F.wielded)
 				to_chat(user, SPAN("notice", "You need to be wielding \the [C] to do that."))
 				return
@@ -734,7 +734,7 @@ About the new airlock wires panel:
 	da.update_state()
 
 	if(operating == -1 || (stat & BROKEN))
-		new /obj/item/weapon/circuitboard/broken(src.loc)
+		new /obj/item/circuitboard/broken(src.loc)
 		operating = 0
 	else
 		if(!electronics)
@@ -826,7 +826,7 @@ About the new airlock wires panel:
 	else
 		playsound(src.loc, close_sound_unpowered, 100, 1)
 
-	..()
+	..(forced, safe)
 
 /obj/machinery/door/airlock/proc/lock(forced = 0)
 	if(locked)
@@ -907,7 +907,7 @@ About the new airlock wires panel:
 				break
 
 	var/turf/T = loc
-	var/obj/item/weapon/airlock_brace/A = locate(/obj/item/weapon/airlock_brace) in T
+	var/obj/item/airlock_brace/A = locate(/obj/item/airlock_brace) in T
 	if(!brace && A)
 		brace = A
 		brace.airlock = src
@@ -931,9 +931,9 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/create_electronics()
 	//create new electronics
 	if(secured_wires)
-		electronics = new /obj/item/weapon/airlock_electronics/secure( src.loc )
+		electronics = new /obj/item/airlock_electronics/secure( src.loc )
 	else
-		electronics = new /obj/item/weapon/airlock_electronics( src.loc )
+		electronics = new /obj/item/airlock_electronics( src.loc )
 
 	//update the electronics to match the door's access
 	if(!req_access)

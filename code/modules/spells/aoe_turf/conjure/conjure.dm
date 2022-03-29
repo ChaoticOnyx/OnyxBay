@@ -25,7 +25,6 @@ How they spawn stuff is decided by behaviour vars, which are explained below
 	cast_sound = 'sound/items/welder.ogg'
 
 /datum/spell/aoe_turf/conjure/cast(list/targets, mob/user)
-
 	for(var/i=1,i <= summon_amt,i++)
 		if(!targets.len)
 			break
@@ -43,6 +42,8 @@ How they spawn stuff is decided by behaviour vars, which are explained below
 
 		var/atom/summoned_object
 		if(ispath(summoned_object_type,/turf))
+			if(istype(spawn_place, /turf/simulated/open))
+				continue
 			if(istype(get_turf(user),/turf/simulated/shuttle) || istype(spawn_place, /turf/simulated/shuttle))
 				to_chat(user, "<span class='warning'>You can't build things on shuttles!</span>")
 				continue

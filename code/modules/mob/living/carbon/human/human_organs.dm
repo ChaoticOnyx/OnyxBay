@@ -28,7 +28,7 @@
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
 		for(var/datum/wound/W in E.wounds)
 			if(W.wound_damage() == 0 && prob(50))
@@ -40,15 +40,14 @@
 
 /mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
-	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-		E.removed()//...because no one wants their head to explode to make way for a new one.
+	if(E && !E.vital && !E.is_usable() && E.organ_tag != BP_BRAIN) //Skips brains and vital bits...
+		E.removed()
 		qdel(E)
 		E = null
 	if(!E)
-		var/list/organ_data = species.has_organ[organ_type]
-		var/organ_path = organ_data["path"]
+		var/organ_path = species.has_organ[organ_type]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		organ_data["descriptor"] = O.name
+		internal_organs_by_name[organ_type] = O
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)
@@ -162,7 +161,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
+		if(l_hand && istype(l_hand, /obj/item/cane))
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
@@ -191,7 +190,7 @@
 		if(E)
 			limb_pain = E.can_feel_pain()
 
-		if(r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l
@@ -273,13 +272,13 @@
 		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-			drop_from_inventory(l_hand, force = 1)
+			drop_from_inventory(l_hand)
 
 	if(r_hand)
 		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-			drop_from_inventory(r_hand, force = 1)
+			drop_from_inventory(r_hand)
 
 	// Check again...
 	if(!l_hand && !r_hand)
@@ -319,7 +318,8 @@
 	if(!thing)
 		return
 
-	drop_from_inventory(thing)
+	if(!unEquip(thing))
+		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")

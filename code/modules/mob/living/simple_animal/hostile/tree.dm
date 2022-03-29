@@ -8,7 +8,7 @@
 	icon_gib = "pine_1"
 	speak_chance = 0
 	turns_per_move = 5
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat
+	meat_type = /obj/item/reagent_containers/food/snacks/carpmeat
 	response_help = "brushes"
 	response_disarm = "pushes"
 	response_harm = "hits"
@@ -23,6 +23,7 @@
 	melee_damage_upper = 12
 	attacktext = "bitten"
 	attack_sound = 'sound/weapons/bite.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/tree
 
 	//Space carp aren't affected by atmos.
 	min_gas = null
@@ -48,3 +49,6 @@
 	..(null,"is hacked into pieces!", show_dead_message)
 	new /obj/item/stack/material/wood(loc)
 	qdel(src)
+
+/decl/simple_animal_bodyparts/tree
+	hit_zones = list("trunk", "branches", "twigs")

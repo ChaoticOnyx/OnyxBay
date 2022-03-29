@@ -95,7 +95,7 @@ SUBSYSTEM_DEF(air)
 	if (state != SS_IDLE)
 		report_progress("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing.")
 		while (state != SS_IDLE)
-			stoplag()
+			stoplag(1)
 
 	while (zones.len)
 		var/zone/zone = zones[zones.len]

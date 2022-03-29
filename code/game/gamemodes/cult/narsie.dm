@@ -10,7 +10,6 @@ var/global/list/narsie_list = list()
 	light_outer_range = 1
 	light_color = "#3e0000"
 	current_size = 9 //It moves/eats like a max-size singulo, aside from range. --NEO.
-	contained = 0 // Are we going to move around?
 	dissipate = 0 // Do we lose energy over time?
 	grav_pull = 10 //How many tiles out do we pull?
 	consume_range = 3 //How many tiles out do we eat

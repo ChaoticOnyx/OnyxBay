@@ -301,6 +301,8 @@
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
+#define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"
@@ -340,13 +342,23 @@
 #define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
 #define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
 
-#define STOMACH_FULLNESS_SUPER_LOW 50
-#define STOMACH_FULLNESS_LOW 150
-#define STOMACH_FULLNESS_MEDIUM 350
-#define STOMACH_FULLNESS_HIGH 550
-#define STOMACH_FULLNESS_SUPER_HIGH 850
+#define STOMACH_FULLNESS_SUPER_LOW  25
+#define STOMACH_FULLNESS_LOW        125
+#define STOMACH_FULLNESS_MEDIUM     250
+#define STOMACH_FULLNESS_HIGH       425
+#define STOMACH_FULLNESS_SUPER_HIGH 550
+
+#define STOMACH_CAPACITY_LOW    0.75 // Slim people
+#define STOMACH_CAPACITY_NORMAL 1.0  // Normal human beings
+#define STOMACH_CAPACITY_HIGH   1.45 // Spherical boiz
 
 #define HUMAN_POWER_NONE    "None"
 #define HUMAN_POWER_SPIT    "Spit"
 #define HUMAN_POWER_LEAP    "Leap"
 #define HUMAN_POWER_TACKLE  "Tackle"
+
+#define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
+#define HUMAN_HIGH_POISE    60
+#define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
+#define HUMAN_LOW_POISE     45
+#define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.

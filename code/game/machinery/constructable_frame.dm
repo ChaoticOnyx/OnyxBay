@@ -9,7 +9,7 @@
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_OFF
-	var/obj/item/weapon/circuitboard/circuit
+	var/obj/item/circuitboard/circuit
 	var/list/components = list()
 	var/list/req_components = list()
 	var/list/req_component_names = list()
@@ -49,8 +49,8 @@
 						new /obj/item/stack/material/steel(src.loc, 5)
 						qdel(src)
 			if(2)
-				if(istype(P, /obj/item/weapon/circuitboard))
-					var/obj/item/weapon/circuitboard/B = P
+				if(istype(P, /obj/item/circuitboard))
+					var/obj/item/circuitboard/B = P
 					if(B.board_type == "machine")
 						playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 						to_chat(user, "<span class='notice'>You add the circuit board to the frame.</span>")
@@ -90,8 +90,8 @@
 						to_chat(user, "<span class='notice'>You remove the circuit board.</span>")
 					else
 						to_chat(user, "<span class='notice'>You remove the circuit board and other components.</span>")
-						for(var/obj/item/weapon/W in components)
-							W.loc = src.loc
+						for(var/obj/item/I in components)
+							I.loc = src.loc
 					desc = initial(desc)
 					req_components = null
 					components = null
@@ -117,7 +117,7 @@
 									O.loc = new_machine
 								else
 									O.loc = null
-								new_machine.component_parts += O
+								new_machine.component_parts.Add(O)
 
 							if(circuit.contain_parts)
 								circuit.loc = new_machine

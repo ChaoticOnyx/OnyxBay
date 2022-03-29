@@ -27,16 +27,16 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS
 	allowed = list(/obj/item/device/flashlight,
-				/obj/item/weapon/tank,
+				/obj/item/tank,
 				/obj/item/device/suit_cooling_unit,
-				/obj/item/weapon/spellbook,
-				/obj/item/weapon/contract,
-				/obj/item/weapon/teleportation_scroll,
-				/obj/item/weapon/gun/energy/staff,
-				/obj/item/weapon/magic_rock,
-				/obj/item/weapon/scrying,
-				/obj/item/weapon/monster_manual,
-				/obj/item/weapon/dice/d20/cursed)
+				/obj/item/spellbook,
+				/obj/item/contract,
+				/obj/item/teleportation_scroll,
+				/obj/item/gun/energy/staff,
+				/obj/item/magic_rock,
+				/obj/item/scrying,
+				/obj/item/monster_manual,
+				/obj/item/dice/d20/cursed)
 
 /obj/item/clothing/suit/space/void/wizard/New()
 	..()

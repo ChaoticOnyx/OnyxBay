@@ -3,16 +3,16 @@ import { createPopper, OptionsGeneric } from '@popperjs/core'
 import { Component, findDOMfromVNode, InfernoNode, render } from 'inferno'
 
 type PopperProps = {
-  popperContent: InfernoNode;
-  options?: Partial<OptionsGeneric<unknown>>;
-  additionalStyles?: CSSProperties,
-};
+  popperContent: InfernoNode
+  options?: Partial<OptionsGeneric<unknown>>
+  additionalStyles?: CSSProperties
+}
 
 export class Popper extends Component<PopperProps> {
-  static id: number = 0;
+  static id: number = 0
 
-  renderedContent: HTMLDivElement;
-  popperInstance: ReturnType<typeof createPopper>;
+  renderedContent: HTMLDivElement
+  popperInstance: ReturnType<typeof createPopper>
 
   constructor () {
     super()
@@ -21,10 +21,7 @@ export class Popper extends Component<PopperProps> {
   }
 
   componentDidMount () {
-    const {
-      additionalStyles,
-      options
-    } = this.props
+    const { additionalStyles, options } = this.props
 
     this.renderedContent = document.createElement('div')
     if (additionalStyles) {

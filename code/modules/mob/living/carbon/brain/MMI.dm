@@ -53,7 +53,10 @@
 		return
 
 	icon_state = "mmi-inner"
-	overlays += "mmi-[lowertext(brainobj.species.name)]"
+	if(brainobj?.species)
+		overlays += "mmi-[lowertext(brainobj.species.name)]"
+	else
+		overlays += "mmi-human"
 	if(brainmob.stat == DEAD)
 		overlays += "mmi-outer-dead"
 	else
@@ -92,7 +95,7 @@
 
 		return
 
-	if((istype(O,/obj/item/weapon/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
+	if((istype(O,/obj/item/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
 		if(allowed(user))
 			locked = !locked
 			to_chat(user, SPAN("notice", "You [locked ? "lock" : "unlock"] the brain holder."))
@@ -147,7 +150,7 @@
 /obj/item/device/mmi/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
-	var/obj/item/weapon/rig/rig = src.get_rig()
+	var/obj/item/rig/rig = src.get_rig()
 	if(rig)
 		rig.forced_move(direction, user)
 	if(istype(loc, /obj/item/integrated_circuit/input/mmi_tank))

@@ -1,7 +1,10 @@
 /datum/artifact_effect/planthelper
 	name = "planthelper"
-	effect = list(EFFECT_AURA, EFFECT_PULSE)
 	effect_type = EFFECT_ORGANIC
+
+/datum/artifact_effect/planthelper/New(atom/location)
+	..()
+	effect = pick(EFFECT_AURA, EFFECT_PULSE)
 
 /datum/artifact_effect/planthelper/DoEffectAura()
 	if(holder)

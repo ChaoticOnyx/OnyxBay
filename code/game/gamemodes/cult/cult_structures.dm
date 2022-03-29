@@ -147,11 +147,11 @@
 			if(Robot.mmi)
 				qdel(Robot.mmi)
 		else
-			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))
-					qdel(W)
+			for(var/obj/item/I in M)
+				if(istype(I, /obj/item/implant))
+					qdel(I)
 					continue
-				M.drop_from_inventory(W)
+				M.drop_from_inventory(I)
 
 		var/mob/living/new_mob = new /mob/living/simple_animal/corgi(A.loc)
 		new_mob.a_intent = I_HURT

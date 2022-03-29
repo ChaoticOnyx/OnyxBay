@@ -25,6 +25,7 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	var/medHUD = 0
 	var/antagHUD = 0
 	var/atom/movable/following = null
+	var/glide_before_follow = 0
 	var/admin_ghosted = 0
 	var/anonsay = 0
 	var/ghostvision = 1 //is the ghost able to see things humans can't?
@@ -57,15 +58,17 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 				else
 					name = capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
 
-		mind = body.mind	//we don't transfer the mind but we keep a reference to it.
+		mind = body.mind //we don't transfer the mind but we keep a reference to it.
 	else
 		spawn(10) // wait for the observer mob to receive the client's key
 			mind = new /datum/mind(key)
 			mind.current = src
-	if(!T)	T = pick(GLOB.latejoin | GLOB.latejoin_cryo | GLOB.latejoin_gateway)			//Safety in case we cannot find the body's position
+	if(!T)
+		T = pick(GLOB.latejoin | GLOB.latejoin_cryo | GLOB.latejoin_gateway) //Safety in case we cannot find the body's position
 	forceMove(T)
+	set_glide_size(16)
 
-	if(!name)							//To prevent nameless ghosts
+	if(!name) //To prevent nameless ghosts
 		name = capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
 	real_name = name
 
@@ -146,8 +149,10 @@ Works together with spawning an observer, noted above.
 
 /mob/observer/ghost/Life()
 	..()
-	if(!loc) return
-	if(!client) return 0
+	if(!loc)
+		return
+	if(!client)
+		return 0
 
 	handle_hud_glasses()
 
@@ -244,8 +249,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/living/silicon/robot/drone/may_ghost()
 	return TRUE
 
-/mob/observer/ghost/can_use_hands()	return 0
-/mob/observer/ghost/is_active()		return 0
+/mob/observer/ghost/can_use_hands()
+	return 0
+
+/mob/observer/ghost/is_active()
+	return 0
 
 /mob/observer/ghost/Stat()
 	. = ..()
@@ -370,16 +378,20 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	GLOB.dir_set_event.register(following, src, /atom/proc/recursive_dir_set)
 	GLOB.destroyed_event.register(following, src, /mob/observer/ghost/proc/stop_following)
 
-	to_chat(src, "<span class='notice'>Now following \the [following].</span>")
+	to_chat(src, SPAN_NOTICE("Now following \the [following]."))
 	move_to_turf(following, loc, following.loc)
+	glide_before_follow = src.glide_size
+	src.glide_size = target.glide_size
 
 /mob/observer/ghost/proc/stop_following()
 	if(following)
-		to_chat(src, "<span class='notice'>No longer following \the [following]</span>")
+		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
 		GLOB.moved_event.unregister(following, src)
 		GLOB.dir_set_event.unregister(following, src)
 		GLOB.destroyed_event.unregister(following, src)
 		following = null
+		glide_size = glide_before_follow
+		glide_before_follow = 0
 
 /mob/observer/ghost/move_to_turf(atom/movable/am, old_loc, new_loc)
 	var/turf/T = get_turf(new_loc)

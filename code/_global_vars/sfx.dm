@@ -261,10 +261,8 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/damage/falling/m_fall_dead11.ogg'
 	),
 	// AMBIENT
-	SFX_AMBIENT_GLOBAL = list(
-		'sound/ambient/global/amb1.ogg',
+	SFX_AMBIENT_POWERED_GLOBAL = list(
 		'sound/ambient/global/amb2.ogg',
-		'sound/ambient/global/amb3.ogg',
 		'sound/ambient/global/amb4.ogg',
 		'sound/ambient/global/amb5.ogg',
 		'sound/ambient/global/amb6.ogg',
@@ -273,8 +271,12 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/global/amb9.ogg',
 		'sound/ambient/global/amb10.ogg',
 		'sound/ambient/global/amb11.ogg',
-		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb13.ogg',
+	),
+	SFX_AMBIENT_OFF_GLOBAL = list(
+		'sound/ambient/global/amb1.ogg',
+		'sound/ambient/global/amb3.ogg',
+		'sound/ambient/global/amb12.ogg',
 		'sound/ambient/global/amb14.ogg'
 	),
 	SFX_AMBIENT_SCIENCE = list(
@@ -334,7 +336,7 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/comms/amb17.ogg',
 		'sound/ambient/comms/amb18.ogg'
 	),
-	SFX_AMBIENT_MAINTENANCE = list(
+	SFX_AMBIENT_POWERED_MAINTENANCE = list(
 		'sound/ambient/maintenance/amb1.ogg',
 		'sound/ambient/maintenance/amb2.ogg',
 		'sound/ambient/maintenance/amb3.ogg',
@@ -342,7 +344,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb5.ogg',
 		'sound/ambient/maintenance/amb6.ogg',
 		'sound/ambient/maintenance/amb7.ogg',
-		'sound/ambient/maintenance/amb8.ogg',
 		'sound/ambient/maintenance/amb9.ogg',
 		'sound/ambient/maintenance/amb10.ogg',
 		'sound/ambient/maintenance/amb12.ogg',
@@ -362,24 +363,29 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/maintenance/amb28.ogg',
 		'sound/ambient/maintenance/amb29.ogg',
 		'sound/ambient/maintenance/amb30.ogg',
-		'sound/ambient/maintenance/amb31.ogg',
-		'sound/ambient/maintenance/amb32.ogg',
-		'sound/ambient/maintenance/amb33.ogg',
 		'sound/ambient/maintenance/amb34.ogg',
 		'sound/ambient/maintenance/amb35.ogg',
-		'sound/ambient/maintenance/amb36.ogg',
 		'sound/ambient/maintenance/amb37.ogg',
-		'sound/ambient/maintenance/amb38.ogg',
 		'sound/ambient/maintenance/amb39.ogg',
 		'sound/ambient/maintenance/amb40.ogg',
 		'sound/ambient/maintenance/amb42.ogg',
-		'sound/ambient/maintenance/amb43.ogg',
 		'sound/ambient/maintenance/amb44.ogg',
-		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb46.ogg',
 		'sound/ambient/maintenance/amb47.ogg',
 		'sound/ambient/maintenance/amb48.ogg',
 		'sound/ambient/maintenance/amb49.ogg',
+	),
+	SFX_AMBIENT_OFF_MAINTENANCE = list(
+		'sound/ambient/maintenance/amb8.ogg',
+		'sound/ambient/maintenance/amb11.ogg',
+		'sound/ambient/maintenance/amb31.ogg',
+		'sound/ambient/maintenance/amb32.ogg',
+		'sound/ambient/maintenance/amb33.ogg',
+		'sound/ambient/maintenance/amb36.ogg',
+		'sound/ambient/maintenance/amb38.ogg',
+		'sound/ambient/maintenance/amb41.ogg',
+		'sound/ambient/maintenance/amb43.ogg',
+		'sound/ambient/maintenance/amb45.ogg',
 		'sound/ambient/maintenance/amb50.ogg',
 		'sound/ambient/maintenance/amb51.ogg'
 	),
@@ -445,6 +451,114 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/ambient/outpost/amb1.ogg',
 		'sound/ambient/outpost/amb2.ogg',
 		'sound/ambient/outpost/amb3.ogg'
+	),
+	SFX_AMBIENT_MINE = list(
+		'sound/ambient/mine/ambimine.ogg',
+		'sound/ambient/song_game.ogg'
+	),
+	SFX_AMBIENT_CHAPEL = list(
+		'sound/ambient/chapel/ambicha1.ogg',
+		'sound/ambient/chapel/ambicha2.ogg',
+		'sound/ambient/chapel/ambicha3.ogg',
+		'sound/ambient/chapel/ambicha4.ogg'
+	),
+	SFX_AMBIENT_ATMOSPHERICS = list(
+		'sound/ambient/atmospherics/ambiatm1.ogg'
+	),
+	SFX_AMBIENT_MORGUE = list(
+		'sound/ambient/morgue/ambimo1.ogg'
+	),
+	SFX_AMBIENT_JUNGLE = list(
+        'sound/ambient/jungle/jungle ambience1.ogg',
+        'sound/ambient/jungle/jungle ambience2.ogg',
+        'sound/ambient/jungle/junglethunder2.ogg',
+        'sound/ambient/jungle/junglethunder1.ogg',
+    ),
+	// AMBIENT MUSIC
+	SFX_AMBIENT_MUSIC_NORMAL = list(
+		'sound/ambient_music/normal_1.ogg',
+		'sound/ambient_music/normal_2.ogg',
+		'sound/ambient_music/normal_3.ogg',
+		'sound/ambient_music/normal_4.ogg',
+		'sound/ambient_music/normal_5.ogg',
+		'sound/ambient_music/normal_6.ogg',
+		'sound/ambient_music/normal_7.ogg',
+		'sound/ambient_music/normal_8.ogg',
+		'sound/ambient_music/normal_9.ogg',
+		'sound/ambient_music/normal_10.ogg',
+		'sound/ambient_music/normal_11.ogg',
+		'sound/ambient_music/normal_12.ogg',
+		'sound/ambient_music/normal_13.ogg',
+		'sound/ambient_music/normal_14.ogg',
+		'sound/ambient_music/normal_15.ogg',
+		'sound/ambient_music/normal_16.ogg',
+		'sound/ambient_music/normal_17.ogg',
+		'sound/ambient_music/normal_18.ogg',
+		'sound/ambient_music/normal_19.ogg',
+		'sound/ambient_music/normal_20.ogg',
+		'sound/ambient_music/normal_21.ogg',
+		'sound/ambient_music/normal_22.ogg',
+		'sound/ambient_music/normal_23.ogg',
+		'sound/ambient_music/normal_24.ogg',
+		'sound/ambient_music/normal_25.ogg'
+	),
+	SFX_AMBIENT_MUSIC_MYSTIC = list(
+		'sound/ambient_music/mystic_1.ogg',
+		'sound/ambient_music/mystic_2.ogg',
+		'sound/ambient_music/mystic_3.ogg',
+		'sound/ambient_music/mystic_4.ogg',
+		'sound/ambient_music/mystic_5.ogg',
+		'sound/ambient_music/mystic_6.ogg',
+		'sound/ambient_music/mystic_7.ogg',
+		'sound/ambient_music/mystic_8.ogg',
+		'sound/ambient_music/mystic_9.ogg',
+		'sound/ambient_music/mystic_10.ogg',
+		'sound/ambient_music/mystic_11.ogg',
+		'sound/ambient_music/mystic_12.ogg',
+		'sound/ambient_music/mystic_13.ogg',
+		'sound/ambient_music/mystic_14.ogg',
+		'sound/ambient_music/mystic_15.ogg',
+		'sound/ambient_music/mystic_16.ogg',
+		'sound/ambient_music/mystic_17.ogg',
+		'sound/ambient_music/mystic_18.ogg',
+		'sound/ambient_music/mystic_19.ogg',
+		'sound/ambient_music/mystic_20.ogg',
+		'sound/ambient_music/mystic_21.ogg',
+		'sound/ambient_music/mystic_22.ogg',
+		'sound/ambient_music/mystic_23.ogg',
+		'sound/ambient_music/mystic_24.ogg',
+		'sound/ambient_music/mystic_25.ogg',
+		'sound/ambient_music/mystic_26.ogg',
+		'sound/ambient_music/mystic_27.ogg'
+	),
+	SFX_AMBIENT_MUSIC_SPACE = list(
+		'sound/ambient_music/space_1.ogg',
+		'sound/ambient_music/space_2.ogg',
+		'sound/ambient_music/space_3.ogg',
+		'sound/ambient_music/space_4.ogg',
+		'sound/ambient_music/space_5.ogg',
+		'sound/ambient_music/space_6.ogg',
+		'sound/ambient_music/space_7.ogg',
+		'sound/ambient_music/space_8.ogg',
+		'sound/ambient_music/space_9.ogg',
+		'sound/ambient_music/space_10.ogg',
+		'sound/ambient_music/space_11.ogg',
+		'sound/ambient_music/space_12.ogg',
+		'sound/ambient_music/space_13.ogg',
+		'sound/ambient_music/space_14.ogg',
+		'sound/ambient_music/space_15.ogg'
+	),
+	SFX_AMBIENT_MUSIC_SPACE_TRAVEL = list(
+		'sound/ambient_music/space_travel_1.ogg',
+		'sound/ambient_music/space_travel_2.ogg',
+		'sound/ambient_music/space_travel_3.ogg',
+		'sound/ambient_music/space_travel_4.ogg',
+		'sound/ambient_music/space_travel_5.ogg',
+		'sound/music/space.ogg',
+		'sound/music/traitor.ogg',
+	),
+	SFX_AMBIENT_MUSIC_CENTCOMM = list(
+		'sound/ambient_music/centcomm_1.ogg',
 	),
 	// ITEMS USING
 	SFX_USE_HANDCUFFS = list(
@@ -1098,5 +1212,22 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/using/disposal/drop2.ogg',
 		'sound/effects/using/disposal/drop3.ogg',
 		'sound/effects/using/disposal/drop4.ogg'
+	),
+	// DEVICES
+	SFX_GEIGER_LOW = list(
+		'sound/effects/geiger/geiger_low_1.ogg',
+		'sound/effects/geiger/geiger_low_2.ogg'
+	),
+	SFX_GEIGER_MODERATE = list(
+		'sound/effects/geiger/geiger_moderate_1.ogg',
+		'sound/effects/geiger/geiger_moderate_2.ogg'
+	),
+	SFX_GEIGER_HIGH = list(
+		'sound/effects/geiger/geiger_high_1.ogg',
+		'sound/effects/geiger/geiger_high_2.ogg'
+	),
+	SFX_GEIGER_VERY_HIGH = list(
+		'sound/effects/geiger/geiger_very_high_1.ogg',
+		'sound/effects/geiger/geiger_very_high_2.ogg'
 	)
 ))

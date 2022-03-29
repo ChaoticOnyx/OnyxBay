@@ -1,0 +1,209 @@
+.theme-changeling {
+  $icon-size: 42px;
+
+  font-family: 'Pelagiad';
+  font-size: 1.2em;
+
+  @mixin Exocet {
+    font-family: 'Exocet';
+    text-shadow: 0 1px 0 black, 0 2px 0 black, 1px 0 0 black, -1px 0 0 black;
+  }
+
+  #Search,
+  #SortBy,
+  #SortMode {
+    font-family: 'Exocet';
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+    background-color: #510f1a;
+    border: 1px solid #852d34;
+    margin-bottom: 12px;
+    height: 20.3px;
+  }
+
+  .Dropdown {
+    &__menuentry {
+      font-family: 'Exocet' !important;
+    }
+  }
+
+  #Search {
+    .Input__input {
+      font-family: 'Exocet';
+    }
+  }
+
+  .Button {
+    i {
+      vertical-align: 2px;
+    }
+  }
+
+  p {
+    margin: 0;
+    margin-top: 0.15rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .EvolutionPoints {
+    @include Exocet;
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .TitleBar {
+    font-family: 'Exocet';
+    font-weight: bolder;
+    border: none;
+    box-shadow: none;
+    user-select: none;
+    -ms-user-select: none;
+
+    background-color: #5b1011;
+
+    &__title {
+      color: white;
+    }
+
+    &__close {
+      background-color: #5b1011;
+      color: white;
+
+      &:hover {
+        background-color: red;
+        color: white;
+      }
+    }
+  }
+
+  .Layout,
+  .Layout * {
+    scrollbar-base-color: #5b1011;
+    scrollbar-face-color: #5b1011;
+    scrollbar-3dlight-color: #5b1011;
+    scrollbar-highlight-color: #5b1011;
+    scrollbar-track-color: #110405;
+    scrollbar-arrow-color: #5b1011;
+    scrollbar-shadow-color: #110405;
+  }
+
+  .Layout__content {
+    background: none;
+    background-color: #2d100f;
+    background-image: url('../../assets/changeling/background.png');
+    background-size: cover;
+    background-blend-mode: normal;
+  }
+
+  .PowerCard {
+    background-color: #240f0f;
+    background-image: url('../../assets/changeling/flesh_off.png');
+    background-size: 100% 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+
+    color: rgba(255, 255, 255, 0.5);
+
+    .HelpText {
+      border-left: 2px solid #4d0d18;
+      background-color: #3c0a13;
+      padding: 5px;
+      font-style: italic;
+      color: #811729;
+    }
+
+    .EnhancedText {
+      border-left: 2px solid #09373a;
+      background-color: #021d1f;
+      padding: 5px;
+      font-style: italic;
+      color: #0d5055;
+      cursor: help;
+    }
+
+    .EvolveButton {
+      @include Exocet;
+      color: white;
+      margin-top: 5px;
+      text-align: center;
+      font-size: 1.3em;
+      font-weight: bold;
+      animation: text-gradient 3s infinite;
+      cursor: pointer;
+
+      &--not-enough {
+        color: rgba(255, 255, 255, 0.5);
+        animation: none;
+        cursor: default;
+      }
+
+      @keyframes text-gradient {
+        0% {
+          color: #ce2642;
+        }
+
+        50% {
+          color: #5b1011;
+        }
+
+        100% {
+          color: #ce2642;
+        }
+      }
+    }
+
+    &--owned {
+      background-image: url('../../assets/changeling/flesh.png');
+      color: white;
+      background-color: #510f1a;
+
+      .HelpText {
+        border-left: 2px solid #ce2642;
+        background-color: #480d17;
+        padding: 5px;
+        font-style: italic;
+        color: #ce2642;
+      }
+
+      .EnhancedText {
+        border-left: 2px solid #26c3ce;
+        background-color: #04363a;
+        padding: 5px;
+        font-style: italic;
+        color: #26c3ce;
+      }
+    }
+
+    .PowerName {
+      @include Exocet;
+      margin: 0;
+      margin-left: 5px;
+      font-size: 1.25em;
+
+      text-align: left;
+    }
+
+    .Flex {
+      width: 100%;
+    }
+  }
+
+  .PowerIcon {
+    position: relative;
+
+    .PowerIcon {
+      width: $icon-size;
+      height: $icon-size;
+      position: relative;
+    }
+
+    .PowerBackroundImage {
+      width: $icon-size;
+      height: $icon-size;
+      position: absolute;
+    }
+  }
+}

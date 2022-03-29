@@ -158,6 +158,7 @@
 
 	anchored = 1
 	power_channel = STATIC_ENVIRON
+	layer = ABOVE_WINDOW_LAYER
 
 	var/id_tag
 	var/master_tag
@@ -240,6 +241,8 @@
 
 	anchored = 1
 	power_channel = STATIC_ENVIRON
+	layer = ABOVE_WINDOW_LAYER
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION
 
 	var/master_tag
 	var/frequency = 1449
@@ -258,7 +261,7 @@
 
 /obj/machinery/access_button/attackby(obj/item/I, mob/user)
 	//Swiping ID on the access button
-	if (istype(I, /obj/item/weapon/card/id) || istype(I, /obj/item/device/pda))
+	if (istype(I, /obj/item/card/id) || istype(I, /obj/item/device/pda))
 		attack_hand(user)
 		return
 	..()

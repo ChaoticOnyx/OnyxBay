@@ -1,17 +1,16 @@
-/obj/item/weapon/melee/prosthetic/
+/obj/item/melee/prosthetic/
 	var/prost_type = "prosthetic"
 	var/obj/item/organ/external/parent_hand
 	canremove = FALSE
-	candrop = FALSE
 
-/obj/item/weapon/melee/prosthetic/New(atom/location, obj/item/organ/external/limb)
+/obj/item/melee/prosthetic/New(atom/location, obj/item/organ/external/limb)
 	attach_prosthetic(src,limb)
 
 /obj/proc/attach_prosthetic(prosthetic , organ)
 	if(!prosthetic || !organ || !isProsthetic(prosthetic))
 		return FALSE
-	if(istype(prosthetic,/obj/item/weapon/melee/prosthetic))
-		var/obj/item/weapon/melee/prosthetic/P = prosthetic
+	if(istype(prosthetic,/obj/item/melee/prosthetic))
+		var/obj/item/melee/prosthetic/P = prosthetic
 		var/obj/item/organ/external/O = organ
 
 		switch(O.organ_tag)
@@ -29,44 +28,43 @@
 	return TRUE
 
 /obj/proc/remove_prosthetic(prosthetic = src)
-	if(istype(prosthetic,/obj/item/weapon/melee/prosthetic))
-		var/obj/item/weapon/melee/prosthetic/P = prosthetic
+	if(istype(prosthetic,/obj/item/melee/prosthetic))
+		var/obj/item/melee/prosthetic/P = prosthetic
 		P.parent_hand = null
-		P.candrop = TRUE
 		P.canremove = TRUE
 
 /proc/isProsthetic(A)
 	if(A)
-		if(istype(A,/obj/item/weapon/melee/prosthetic))
+		if(istype(A,/obj/item/melee/prosthetic))
 			return TRUE
 	return FALSE
 
-/obj/item/weapon/melee/prosthetic/attack_self(mob/user)
+/obj/item/melee/prosthetic/attack_self(mob/user)
 	if(parent_hand)
 		..()
 	else
 		to_chat(user, SPAN("notice", "[capitalize(prost_type)] needs to be surgicaly applied first."))
 
-/obj/item/weapon/melee/prosthetic/attackby(obj/item/I, mob/user)
+/obj/item/melee/prosthetic/attackby(obj/item/I, mob/user)
 	if(parent_hand)
 		..()
 	else
 		to_chat(user, SPAN("notice", "[capitalize(prost_type)] needs to be surgicaly applied first."))
 
-/obj/item/weapon/melee/prosthetic/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/melee/prosthetic/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(parent_hand)
 		..()
 	else
 		to_chat(user, SPAN("notice", "[capitalize(prost_type)] needs to be surgicaly applied first."))
 
-/obj/item/weapon/melee/prosthetic/bio/
+/obj/item/melee/prosthetic/bio/
 	prost_type = "bioprosthetic"
 
-/obj/item/weapon/melee/prosthetic/bio/attach_prosthetic(prosthetic, organ)
+/obj/item/melee/prosthetic/bio/attach_prosthetic(prosthetic, organ)
 	if(!prosthetic || !organ || !isProsthetic(prosthetic))
 		return FALSE
-	if(istype(prosthetic, /obj/item/weapon/melee/prosthetic))
-		var/obj/item/weapon/melee/prosthetic/P = prosthetic
+	if(istype(prosthetic, /obj/item/melee/prosthetic))
+		var/obj/item/melee/prosthetic/P = prosthetic
 		var/obj/item/organ/external/O = organ
 
 		switch(O.organ_tag)

@@ -84,7 +84,7 @@
 
 						// If the machine wasn't made during runtime, probably doesn't have components:
 						// manually find the components and drop them!
-						var/obj/item/weapon/circuitboard/C = new circuitboard
+						var/obj/item/circuitboard/C = new circuitboard
 						for(var/I in C.req_components)
 							for(var/i = 1, i <= C.req_components[I], i++)
 								var/obj/item/s = new I
@@ -200,8 +200,8 @@
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
-		else if(istype(user.get_active_hand(), /obj/item/weapon/combotool))
-			var/obj/item/weapon/combotool/tool = user.get_active_hand()
+		else if(istype(user.get_active_hand(), /obj/item/combotool))
+			var/obj/item/combotool/tool = user.get_active_hand()
 			P = tool.tool_u
 			if(!isMultitool(P))
 				P = null

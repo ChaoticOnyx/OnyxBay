@@ -16,6 +16,10 @@ export const SETTINGS_TABS = [
   {
     id: 'backgroundImage',
     name: 'Background Image'
+  },
+  {
+    id: 'css',
+    name: 'CSS Editor'
   }
 ]
 

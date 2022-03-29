@@ -9,7 +9,7 @@
 /obj/item/rig_module/stealth_field
 
 	name = "active camouflage module"
-	desc = "A robust hardsuit-integrated stealth module."
+	desc = "A robust powersuit-integrated stealth module."
 	icon_state = "cloak"
 
 	toggleable = 1
@@ -58,7 +58,7 @@
 /obj/item/rig_module/teleporter
 
 	name = "teleportation module"
-	desc = "A complex, sleek-looking, hardsuit-integrated teleportation module."
+	desc = "A complex, sleek-looking, powersuit-integrated teleportation module."
 	icon_state = "teleporter"
 	use_power_cost = 25 KILOWATTS
 	redundant = 1
@@ -133,7 +133,7 @@
 /obj/item/rig_module/fabricator/energy_net
 
 	name = "net projector"
-	desc = "Some kind of complex energy projector with a hardsuit mount."
+	desc = "Some kind of complex energy projector with a powersuit mount."
 	icon_state = "enet"
 	module_cooldown = 100
 
@@ -142,7 +142,7 @@
 
 	engage_string = "Fabricate Net"
 
-	fabrication_type = /obj/item/weapon/energy_net
+	fabrication_type = /obj/item/energy_net
 	use_power_cost = 20 KILOWATTS
 	origin_tech = list(TECH_MATERIAL = 5, TECH_POWER = 6, TECH_MAGNET = 5, TECH_ILLEGAL = 4, TECH_ENGINEERING = 6)
 

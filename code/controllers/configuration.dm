@@ -119,6 +119,7 @@ var/list/gamemode_cache = list()
 	var/secondtopiclimit
 
 	var/forbid_singulo_possession = 0
+	var/forbid_singulo_following = 1
 
 	//game_options.txt configs
 
@@ -288,6 +289,13 @@ var/list/gamemode_cache = list()
 	// round OOC disable
 	var/disable_ooc_roundstart = FALSE
 	var/disable_looc_roundstart = FALSE
+
+	// Timing settings
+	var/pregame_timeleft = 3 MINUTES
+	var/restart_timeout = 1 MINUTE
+
+	// Non-that-serious features that can be disabled for higher RP levels
+	var/fun_hydroponics = 2
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -696,6 +704,9 @@ var/list/gamemode_cache = list()
 				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
 
+				if("forbid_singulo_following")
+					forbid_singulo_following = text2num(value)
+
 				if("popup_admin_pm")
 					config.popup_admin_pm = 1
 
@@ -709,9 +720,6 @@ var/list/gamemode_cache = list()
 					var/ticklag = text2num(value)
 					if(ticklag > 0)
 						fps = 10 / ticklag
-
-				if("fps")
-					fps = text2num(value)
 
 				if("clientfps")
 					clientfps = text2num(value)
@@ -970,6 +978,12 @@ var/list/gamemode_cache = list()
 					config.maximum_mushrooms = text2num(value)
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
+				if("pregame_timeleft")
+					config.pregame_timeleft = text2num(value)
+				if("restart_timeout")
+					config.restart_timeout = text2num(value)
+				if("fun_hydroponics")
+					config.fun_hydroponics = text2num(value)
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

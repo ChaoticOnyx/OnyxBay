@@ -8,11 +8,11 @@
 	l_ear = /obj/item/device/radio/headset
 	glasses = /obj/item/clothing/glasses/hud/plain/thermal/monocle
 	suit = /obj/item/clothing/suit/chaplain_hoodie
-	r_pocket = /obj/item/weapon/bikehorn
-	r_hand = /obj/item/weapon/material/twohanded/fireaxe
+	r_pocket = /obj/item/bikehorn
+	r_hand = /obj/item/material/twohanded/fireaxe
 
 	id_slot = slot_wear_id
-	id_type = /obj/item/weapon/card/id/centcom/station
+	id_type = /obj/item/card/id/centcom/station
 	id_pda_assignment = "Tunnel Clown!"
 
 /decl/hierarchy/outfit/masked_killer
@@ -25,9 +25,9 @@
 	l_ear = /obj/item/device/radio/headset
 	glasses = /obj/item/clothing/glasses/hud/plain/thermal/monocle
 	suit = /obj/item/clothing/suit/apron
-	l_pocket = /obj/item/weapon/material/hatchet/tacknife
-	r_pocket = /obj/item/weapon/scalpel
-	r_hand = /obj/item/weapon/material/twohanded/fireaxe
+	l_pocket = /obj/item/material/hatchet/tacknife
+	r_pocket = /obj/item/scalpel
+	r_hand = /obj/item/material/twohanded/fireaxe
 
 /decl/hierarchy/outfit/masked_killer/post_equip(mob/living/carbon/human/H)
 	..()
@@ -42,22 +42,22 @@
 	gloves = /obj/item/clothing/gloves/thick
 	l_ear = /obj/item/device/radio/headset
 	glasses = /obj/item/clothing/glasses/sunglasses
-	l_pocket = /obj/item/weapon/melee/energy/sword/one_hand
+	l_pocket = /obj/item/melee/energy/sword/one_hand
 
 	id_slot = slot_wear_id
-	id_type = /obj/item/weapon/card/id/syndicate/station_access
+	id_type = /obj/item/card/id/syndicate/station_access
 	pda_slot = slot_belt
 	pda_type = /obj/item/device/pda/heads
 
 /decl/hierarchy/outfit/reaper/post_equip(mob/living/carbon/human/H)
 	..()
-	var/obj/item/weapon/storage/secure/briefcase/sec_briefcase = new(H)
+	var/obj/item/storage/secure/briefcase/sec_briefcase = new(H)
 	for(var/obj/item/briefcase_item in sec_briefcase)
 		qdel(briefcase_item)
 	for(var/i=3, i>0, i--)
-		sec_briefcase.contents += new /obj/item/weapon/spacecash/bundle/c1000
-	sec_briefcase.contents += new /obj/item/weapon/gun/energy/crossbow
-	sec_briefcase.contents += new /obj/item/weapon/gun/projectile/revolver/mateba
+		sec_briefcase.contents += new /obj/item/spacecash/bundle/c1000
+	sec_briefcase.contents += new /obj/item/gun/energy/crossbow
+	sec_briefcase.contents += new /obj/item/gun/projectile/revolver/mateba
 	sec_briefcase.contents += new /obj/item/ammo_magazine/c50
-	sec_briefcase.contents += new /obj/item/weapon/plastique
+	sec_briefcase.contents += new /obj/item/plastique
 	H.equip_to_slot_or_del(sec_briefcase, slot_l_hand)

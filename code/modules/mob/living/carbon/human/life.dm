@@ -30,10 +30,6 @@
 
 #define RADIATION_SPEED_COEFFICIENT 0.025
 
-#define HUMAN_MAX_POISE 75 //100% healthy, non-druged human being with magboots and heavy armor.
-#define HUMAN_DEFAULT_POISE 50 //100% healthy, non-drugged human being.
-#define HUMAN_MIN_POISE 25 //Some balancing stuff here. Even drunk pirates should be able to fight.
-
 /mob/living/carbon/human
 	var/oxygen_alert = 0
 	var/plasma_alert = 0
@@ -76,9 +72,6 @@
 
 	//No need to update all of these procs if the guy is dead.
 	if(stat != DEAD && !InStasis())
-		//Updates the number of stored chemicals for powers
-		handle_changeling()
-
 		//Organs and blood
 		handle_organs()
 		handle_organs_pain()
@@ -234,7 +227,7 @@
 			if(radiation < 2)
 				radiation = 0
 
-			nutrition = Clamp(nutrition, 0, 550)
+			nutrition = Clamp(nutrition, 0, STOMACH_FULLNESS_HIGH)
 
 			return
 
@@ -305,9 +298,9 @@
 /mob/living/carbon/human/get_breath_from_internal(volume_needed=BREATH_VOLUME)
 	if(internal)
 
-		var/obj/item/weapon/tank/rig_supply
-		if(istype(back,/obj/item/weapon/rig))
-			var/obj/item/weapon/rig/rig = back
+		var/obj/item/tank/rig_supply
+		if(istype(back,/obj/item/rig))
+			var/obj/item/rig/rig = back
 			if(!rig.offline && (rig.air_supply && internal == rig.air_supply))
 				rig_supply = rig.air_supply
 
@@ -462,7 +455,7 @@
 
 	if(bodytemperature < species.cold_level_1) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
 		if(nutrition >= 2) //If we are very, very cold we'll use up quite a bit of nutriment to heat us up.
-			nutrition -= 2
+			nutrition -= 2 // We don't take bodybuild's stomach_capacity so fat people can endure cold easier than slim ones
 		var/recovery_amt = max((body_temperature_difference / BODYTEMP_AUTORECOVERY_DIVISOR), BODYTEMP_AUTORECOVERY_MINIMUM)
 //		log_debug("Cold. Difference = [body_temperature_difference]. Recovering [recovery_amt]")
 		bodytemperature += recovery_amt
@@ -670,7 +663,7 @@
 
 		// nutrition decrease
 		if(nutrition > 0)
-			var/nutrition_reduction = species.hunger_factor
+			var/nutrition_reduction = species.hunger_factor * body_build.stomach_capacity
 			for(var/datum/modifier/mod in modifiers)
 				if(!isnull(mod.metabolism_percent))
 					nutrition_reduction *= mod.metabolism_percent
@@ -678,11 +671,16 @@
 
 		// malnutrition \ obesity
 		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src))
-			switch(nutrition)
-				if(0 to 150)
-					to_chat(src, "<span class='warning'>[pick("You feel hungry","You really want to eat something","It becomes hard to stand on your legs")]...<span>")
-				if(450 to INFINITY)
-					to_chat(src, "<span class='warning'>[pick("It seems you overeat", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]...<span>")
+			var/normalized_nutrition = nutrition / body_build.stomach_capacity
+			switch(normalized_nutrition)
+				if(0 to STOMACH_FULLNESS_SUPER_LOW)
+					to_chat(src, SPAN("warning", "[pick("You feel really hungry", "You want to gobble anything", "You starve", "It becomes hard to stand on your legs")]!"))
+				if(STOMACH_FULLNESS_SUPER_LOW to STOMACH_FULLNESS_LOW)
+					to_chat(src, SPAN("warning", "[pick("You feel hungry", "You really want to eat something", "You feel like you need a snack")]..."))
+				if(STOMACH_FULLNESS_HIGH to STOMACH_FULLNESS_SUPER_HIGH)
+					to_chat(src, SPAN("warning", "[pick("It seems you overeat a bit", "Your own weight pulls you to the floor", "It would be nice to lose some weight")]..."))
+				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
+					to_chat(src, SPAN("warning", "[pick("You definitely overeat", "Thinking about food makes you gag", "It would be nice to clear your stomach")]..."))
 
 		if(stasis_value > 1 && drowsyness < stasis_value * 4)
 			drowsyness += min(stasis_value, 3)
@@ -797,12 +795,20 @@
 				healths.overlays += health_images
 
 		if(nutrition_icon)
-			switch(nutrition)
-				if(450 to INFINITY)				nutrition_icon.icon_state = "nutrition0"
-				if(350 to 450)					nutrition_icon.icon_state = "nutrition1"
-				if(250 to 350)					nutrition_icon.icon_state = "nutrition2"
-				if(150 to 250)					nutrition_icon.icon_state = "nutrition3"
-				else							nutrition_icon.icon_state = "nutrition4"
+			var/normalized_nutrition = nutrition / body_build.stomach_capacity
+			switch(normalized_nutrition)
+				if(STOMACH_FULLNESS_SUPER_HIGH to INFINITY)
+					nutrition_icon.icon_state = "nutrition0"
+				if(STOMACH_FULLNESS_HIGH to STOMACH_FULLNESS_SUPER_HIGH)
+					nutrition_icon.icon_state = "nutrition1"
+				if(STOMACH_FULLNESS_MEDIUM to STOMACH_FULLNESS_HIGH)
+					nutrition_icon.icon_state = "nutrition2"
+				if(STOMACH_FULLNESS_LOW to STOMACH_FULLNESS_MEDIUM)
+					nutrition_icon.icon_state = "nutrition3"
+				if(STOMACH_FULLNESS_SUPER_LOW to STOMACH_FULLNESS_LOW)
+					nutrition_icon.icon_state = "nutrition4"
+				else
+					nutrition_icon.icon_state = "nutrition5"
 
 		if(full_prosthetic)
 			var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
@@ -926,10 +932,6 @@
 						M.adjustBruteLoss(5)
 					nutrition += 10
 
-/mob/living/carbon/human/proc/handle_changeling()
-	if(mind && mind.changeling)
-		mind.changeling.regenerate()
-
 /mob/living/carbon/human/proc/handle_shock()
 	if(!can_feel_pain())
 		shock_stage = 0
@@ -990,9 +992,10 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
+	poise_pool = body_build.poise_pool
 	if(poise >= poise_pool)
 		return
-	var/pregen = poise_pool/10
+	var/pregen = 5
 
 	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
 		pregen -= 1.25
@@ -1003,11 +1006,11 @@
 	poise += pregen
 	poise = between(0, poise+pregen, poise_pool)
 
-	poise_icon?.icon_state = "[round(poise)]"
+	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
 	poise -= dmg
-	poise_icon?.icon_state = "[round(poise)]"
+	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
@@ -1077,7 +1080,7 @@
 		var/image/holder = hud_list[ID_HUD]
 		holder.icon_state = "hudunknown"
 		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.GetIdCard()
 			if(I)
 				var/datum/job/J = job_master.GetJob(I.GetJobName())
 				if(J)
@@ -1090,7 +1093,7 @@
 		holder.icon_state = "hudblank"
 		var/perpname = name
 		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetIdCard()
+			var/obj/item/card/id/I = wear_id.GetIdCard()
 			if(I)
 				perpname = I.registered_name
 
@@ -1119,13 +1122,13 @@
 		holder2.icon_state = "hudblank"
 		holder3.icon_state = "hudblank"
 
-		for(var/obj/item/weapon/implant/I in src)
+		for(var/obj/item/implant/I in src)
 			if(I.implanted)
-				if(istype(I,/obj/item/weapon/implant/tracking))
+				if(istype(I,/obj/item/implant/tracking))
 					holder1.icon_state = "hud_imp_tracking"
-				if(istype(I,/obj/item/weapon/implant/loyalty))
+				if(istype(I,/obj/item/implant/loyalty))
 					holder2.icon_state = "hud_imp_loyal"
-				if(istype(I,/obj/item/weapon/implant/chem))
+				if(istype(I,/obj/item/implant/chem))
 					holder3.icon_state = "hud_imp_chem"
 
 		hud_list[IMPTRACK_HUD] = holder1
@@ -1157,6 +1160,15 @@
 			else
 				holder.icon_state = "hudxeno3"
 		hud_list[XENO_HUD] = holder
+
+	if(BITTEST(hud_updateflag, GLAND_HUD) && hud_list[GLAND_HUD])
+		var/image/holder = hud_list[GLAND_HUD]
+		var/obj/item/organ/internal/heart/gland/gland = internal_organs_by_name[BP_HEART]
+		if(!gland)
+			holder.icon_state = "hudblank"
+		else
+			gland.update_gland_hud()
+		hud_list[GLAND_HUD] = holder
 
 	hud_updateflag = 0
 

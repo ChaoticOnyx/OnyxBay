@@ -2,7 +2,7 @@
 	if(!leader && current_antagonists.len && (flags & ANTAG_HAS_LEADER))
 		leader = current_antagonists[1]
 
-/datum/antagonist/proc/update_antag_mob(datum/mind/player, preserve_appearance)
+/datum/antagonist/proc/update_antag_mob(datum/mind/player, preserve_appearance, team)
 
 	// Get the mob.
 	if((flags & ANTAG_OVERRIDE_MOB) && (!player.current || (mob_path && !istype(player.current, mob_path))))
@@ -17,7 +17,7 @@
 	return player.current
 
 /datum/antagonist/proc/update_access(mob/living/player)
-	for(var/obj/item/weapon/card/id/id in player.contents)
+	for(var/obj/item/card/id/id in player.contents)
 		player.set_id_info(id)
 
 /datum/antagonist/proc/clear_indicators(datum/mind/recipient)

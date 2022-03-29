@@ -1,6 +1,6 @@
 //CONTAINS: Evidence bags and fingerprint cards
 
-/obj/item/weapon/evidencebag
+/obj/item/evidencebag
 	name = "evidence bag"
 	desc = "An empty evidence bag."
 	icon = 'icons/obj/storage.dmi'
@@ -9,13 +9,13 @@
 	w_class = ITEM_SIZE_SMALL
 	var/obj/item/stored_item = null
 
-/obj/item/weapon/evidencebag/attackby(obj/item/I, mob/user)
+/obj/item/evidencebag/attackby(obj/item/I, mob/user)
 	if(!istype(I) || !istype(user))
 		return FALSE
 
 	put_item(I, user)
 
-/obj/item/weapon/evidencebag/MouseDrop_T(obj/item/I, mob/living/carbon/human/user)
+/obj/item/evidencebag/MouseDrop_T(obj/item/I, mob/living/carbon/human/user)
 	if(!istype(user))
 		return FALSE
 
@@ -27,12 +27,12 @@
 			return FALSE
 	else
 		//If it isn't on the floor. Do some checks to see if it's in our hands or a box. Otherwise give up.
-		if(istype(I.loc,/obj/item/weapon/storage))	//in a container.
+		if(istype(I.loc,/obj/item/storage))	//in a container.
 			var/sdepth = I.storage_depth(user)
 			if (sdepth == -1 || sdepth > 1)
 				return	//too deeply nested to access
 
-			var/obj/item/weapon/storage/U = I.loc
+			var/obj/item/storage/U = I.loc
 			user.client.screen -= I
 			U.contents.Remove(I)
 			I.forceMove(get_turf(U))
@@ -45,8 +45,8 @@
 	put_item(I, user)
 
 
-/obj/item/weapon/evidencebag/proc/put_item(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/evidencebag))
+/obj/item/evidencebag/proc/put_item(obj/item/I, mob/user)
+	if(istype(I, /obj/item/evidencebag))
 		to_chat(user, SPAN_NOTICE("You find putting an evidence bag in another evidence bag to be slightly absurd."))
 		return
 
@@ -81,7 +81,7 @@
 
 	return TRUE
 
-/obj/item/weapon/evidencebag/attack_self(mob/user)
+/obj/item/evidencebag/attack_self(mob/user)
 	if(stored_item)
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
@@ -99,17 +99,17 @@
 		icon_state = "evidenceobj"
 	return
 
-/obj/item/weapon/evidencebag/examine(mob/user)
+/obj/item/evidencebag/examine(mob/user)
 	. = ..()
 	if (!stored_item)
 		return
 	. += "\n[stored_item.examine(user)]"
 
-/obj/item/weapon/evidencebag/cyborg
+/obj/item/evidencebag/cyborg
 	name = "integrated evidence bag dispenser"
 	desc = "used for detective cyborg to collect evidences."
 
-/obj/item/weapon/evidencebag/cyborg/afterattack(atom/target, mob/living/user, proximity)
+/obj/item/evidencebag/cyborg/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -117,8 +117,8 @@
 	if(!isturf(target.loc))
 		return
 	if(istype(target, /obj/item))
-		var/obj/item/weapon/evidencebag/EB
-		if(istype(target, /obj/item/weapon/evidencebag))
+		var/obj/item/evidencebag/EB
+		if(istype(target, /obj/item/evidencebag))
 			EB = target
 			if(EB.stored_item)
 				EB.attack_self(user)
@@ -131,8 +131,8 @@
 		if(!EB.attackby(I, user))
 			qdel(EB)
 
-/obj/item/weapon/evidencebag/cyborg/attack_self(mob/user)
+/obj/item/evidencebag/cyborg/attack_self(mob/user)
 	return
 
-/obj/item/weapon/evidencebag/cyborg/MouseDrop_T(obj/item/I as obj)
+/obj/item/evidencebag/cyborg/MouseDrop_T(obj/item/I as obj)
 	return

@@ -5,7 +5,7 @@
 	shoes = /obj/item/clothing/shoes/jackboots
 	head = /obj/item/clothing/mask/bandana/red
 	glasses = /obj/item/clothing/glasses/eyepatch
-	l_hand = /obj/item/weapon/melee/energy/sword/pirate
+	l_hand = /obj/item/melee/energy/sword/pirate
 
 /decl/hierarchy/outfit/pirate/norm
 
@@ -13,5 +13,5 @@
 	name = "Pirate - Space"
 	head = /obj/item/clothing/suit/space/pirate
 	suit = /obj/item/clothing/suit/pirate
-	back = /obj/item/weapon/tank/jetpack/oxygen
+	back = /obj/item/tank/jetpack/oxygen
 	flags = OUTFIT_HAS_JETPACK|OUTFIT_RESET_EQUIPMENT

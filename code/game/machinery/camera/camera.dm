@@ -17,7 +17,7 @@
 	anchored = 1.0
 	var/invuln = null
 	var/bugged = 0
-	var/obj/item/weapon/camera_assembly/assembly = null
+	var/obj/item/camera_assembly/assembly = null
 
 	var/toughness = 5 //sorta fragile
 
@@ -241,14 +241,14 @@
 			return
 
 	// OTHER
-	else if (can_use() && (istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
+	else if (can_use() && (istype(W, /obj/item/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
 		var/mob/living/U = user
-		var/obj/item/weapon/paper/X = null
+		var/obj/item/paper/X = null
 		var/obj/item/device/pda/P = null
 
 		var/itemname = ""
 		var/info = ""
-		if(istype(W, /obj/item/weapon/paper))
+		if(istype(W, /obj/item/paper))
 			X = W
 			itemname = X.name
 			info = X.info
@@ -403,7 +403,7 @@
 
 	return null
 
-/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/user)
+/obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/user)
 
 	if(busy)
 		return 0

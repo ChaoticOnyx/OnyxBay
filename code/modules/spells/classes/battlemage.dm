@@ -22,11 +22,11 @@
 
 	artifacts = list(
 		ARTIFACT_DATA(/obj/structure/closet/wizard/armor,         1),
-		ARTIFACT_DATA(/obj/item/weapon/gun/energy/staff/focus,    1),
-		ARTIFACT_DATA(/obj/item/weapon/dice/d20/cursed,           1),
-		ARTIFACT_DATA(/obj/item/weapon/monster_manual,            2),
-		ARTIFACT_DATA(/obj/item/weapon/magic_rock,                1),
-		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/xray,      1),
-		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
-		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+		ARTIFACT_DATA(/obj/item/gun/energy/staff/focus,    1),
+		ARTIFACT_DATA(/obj/item/dice/d20/cursed,           1),
+		ARTIFACT_DATA(/obj/item/monster_manual,            2),
+		ARTIFACT_DATA(/obj/item/magic_rock,                1),
+		ARTIFACT_DATA(/obj/item/contract/wizard/xray,      1),
+		ARTIFACT_DATA(/obj/item/contract/wizard/telepathy, 1),
+		ARTIFACT_DATA(/obj/item/contract/apprentice,       1)
 	)

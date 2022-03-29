@@ -57,7 +57,7 @@
 
 /obj/structure/catwalk/attackby(obj/item/C as obj, mob/user as mob)
 	if(isWelder(C))
-		var/obj/item/weapon/weldingtool/WT = C
+		var/obj/item/weldingtool/WT = C
 		if(WT.remove_fuel(0, user))
 			playsound(src, 'sound/items/Welder.ogg', 100, 1)
 			to_chat(user, "<span class='notice'>Slicing catwalk joints ...</span>")

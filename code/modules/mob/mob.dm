@@ -5,6 +5,7 @@
 	GLOB.player_list -= src
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
@@ -17,7 +18,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
+	if(mind?.current == src)
 		spellremove(src)
 	ghostize()
 	return ..()
@@ -97,7 +98,7 @@
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
-			
+
 		if(isghost(M))
 			M.show_message(message + " (<a href='byond://?src=\ref[M];track=\ref[src]'>F</a>)", VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 			continue
@@ -168,7 +169,7 @@
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
 
-	if(pulling)
+	if(pulling && !ignore_pull_slowdown)
 		var/area/A = get_area(src)
 		if(A.has_gravity)
 			if(istype(pulling, /obj))
@@ -328,14 +329,14 @@
 	if(istype(loc,/obj/mecha)) return
 
 	if(hand)
-		var/obj/item/W = l_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = l_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_l_hand()
 	else
-		var/obj/item/W = r_hand
-		if (W)
-			W.attack_self(src)
+		var/obj/item/I = r_hand
+		if(I)
+			I.attack_self(src)
 			update_inv_r_hand()
 	return
 
@@ -446,7 +447,7 @@
 	for(var/obj/O in world)				//EWWWWWWWWWWWWWWWWWWWWWWWW ~needs to be optimised
 		if(!O.loc)
 			continue
-		if(istype(O, /obj/item/weapon/disk/nuclear))
+		if(istype(O, /obj/item/disk/nuclear))
 			var/name = "Nuclear Disk"
 			if (names.Find(name))
 				namecounts[name]++
@@ -627,11 +628,6 @@
 
 /mob/proc/is_dead()
 	return stat == DEAD
-
-/mob/proc/is_mechanical()
-	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
-		return 1
-	return istype(src, /mob/living/silicon) || get_species() == SPECIES_IPC
 
 /mob/proc/is_ready()
 	return client && !!mind
@@ -903,7 +899,7 @@
 			to_chat(U, "[src] has nothing stuck in their wounds that is large enough to remove.")
 		return
 
-	var/obj/item/weapon/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
+	var/obj/item/selection = input("What do you want to yank out?", "Embedded objects") in valid_objects
 
 	if(self)
 		to_chat(src, "<span class='warning'>You attempt to get a good grip on [selection] in your body.</span>")
@@ -955,7 +951,7 @@
 	if(!(U.l_hand && U.r_hand))
 		U.put_in_hands(selection)
 
-	for(var/obj/item/weapon/O in pinned)
+	for(var/obj/item/O in pinned)
 		if(O == selection)
 			pinned -= O
 		if(!pinned.len)
@@ -1128,3 +1124,6 @@
 
 /mob/proc/get_sex()
 	return gender
+
+/mob/proc/InStasis()
+	return FALSE

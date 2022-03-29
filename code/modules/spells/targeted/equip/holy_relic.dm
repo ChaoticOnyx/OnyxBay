@@ -18,7 +18,7 @@
 
 	icon_state = "purge1"
 
-	equipped_summons = list("active hand" = /obj/item/weapon/nullrod)
+	equipped_summons = list("active hand" = /obj/item/nullrod)
 
 /datum/spell/targeted/equip_item/holy_relic/cast(list/targets, mob/user = usr)
 	..()

@@ -3,12 +3,12 @@
   "name": "tgui-dev-server",
   "version": "4.3.0",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "0.24.x",
     "common": "4.3.0",
     "esm": "^3.2.25",
-    "glob": "^7.1.6",
+    "glob": "7.x.x",
     "source-map": "^0.7.3",
     "stacktrace-parser": "^0.1.10",
-    "ws": "^7.4.4"
+    "ws": "8.x.x"
   }
 }

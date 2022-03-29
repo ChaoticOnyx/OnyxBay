@@ -76,7 +76,7 @@
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
-			var/obj/item/weapon/weldingtool/W = I
+			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0, user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal unit.")
@@ -98,8 +98,8 @@
 				to_chat(user, "You need more welding fuel to complete this task.")
 				return
 
-	if(istype(I, /obj/item/weapon/storage/bag/trash))
-		var/obj/item/weapon/storage/bag/trash/T = I
+	if(istype(I, /obj/item/storage/bag/trash))
+		var/obj/item/storage/bag/trash/T = I
 		to_chat(user, "<span class='notice'>You empty the bag.</span>")
 		for(var/obj/item/O in T.contents)
 			playsound(src, SFX_DISPOSAL, 75, 0)
@@ -716,13 +716,13 @@
 
 	// returns the direction of the next pipe object, given the entrance dir
 	// by default, returns the bitmask of remaining directions
-	proc/nextdir(var/fromdir)
+	proc/nextdir(fromdir)
 		return dpdir & (~turn(fromdir, 180))
 
 	// transfer the holder through this pipe segment
 	// overriden for special behaviour
 	//
-	proc/transfer(var/obj/structure/disposalholder/H)
+	proc/transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.set_dir(nextdir)
 		var/turf/T = H.nextloc()
@@ -749,7 +749,7 @@
 
 	// hide called by levelupdate if turf intact status changes
 	// change visibility status and force update of icon
-	hide(var/intact)
+	hide(intact)
 		set_invisibility(intact ? 101: 0)	// hide if floor is intact
 		update_icon()
 
@@ -768,7 +768,7 @@
 
 	// expel the held objects into a turf
 	// called when there is a break in the pipe
-	proc/expel(var/obj/structure/disposalholder/H, var/turf/T, var/direction)
+	proc/expel(obj/structure/disposalholder/H, turf/T, direction)
 		if(!istype(H))
 			return
 
@@ -827,7 +827,7 @@
 	// will expel any holder inside at the time
 	// then delete the pipe
 	// remains : set to leave broken pipe pieces in place
-	proc/broken(var/remains = 0)
+	proc/broken(remains = 0)
 		if(remains)
 			for(var/D in GLOB.cardinal)
 				if(D & dpdir)
@@ -886,14 +886,14 @@
 	//attack by item
 	//weldingtool: unfasten and convert to obj/disposalconstruct
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 
 		var/turf/T = src.loc
 		if(!T.is_plating())
 			return		// prevent interaction with T-scanner revealed pipes
 		src.add_fingerprint(user, 0, I)
-		if(istype(I, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/W = I
+		if(istype(I, /obj/item/weldingtool))
+			var/obj/item/weldingtool/W = I
 
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
@@ -1008,7 +1008,7 @@
 		update()
 		return
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/nextdir
 		if(fromdir == 11)
 			nextdir = dir
@@ -1016,7 +1016,7 @@
 			nextdir = 12
 		return nextdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.set_dir(nextdir)
 
@@ -1058,7 +1058,7 @@
 		update()
 		return
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/nextdir
 		if(fromdir == 12)
 			nextdir = dir
@@ -1066,7 +1066,7 @@
 			nextdir = 11
 		return nextdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.dir = nextdir
 
@@ -1123,7 +1123,7 @@
 	// if coming in from secondary dirs, then next is primary dir
 	// if coming in from primary dir, then next is equal chance of other dirs
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/flipdir = turn(fromdir, 180)
 		if(flipdir != dir)	// came from secondary dir
 			return dir		// so exit through primary
@@ -1173,7 +1173,7 @@
 		updatedesc()
 		update()
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(..())
 			return
 
@@ -1187,7 +1187,7 @@
 				updatename()
 				updatedesc()
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		if(sort_tag)
 			if(partial)
 				H.setpartialtag(sort_tag)
@@ -1402,7 +1402,7 @@
 		updatedesc()
 		update()
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(..())
 			return
 
@@ -1416,7 +1416,7 @@
 				updatename()
 				updatedesc()
 
-	proc/divert_check(var/checkTag)
+	proc/divert_check(checkTag)
 		return sortType == checkTag
 
 	// next direction to move
@@ -1424,7 +1424,7 @@
 	// if coming in from posdir, then flip around and go back to posdir
 	// if coming in from sortdir, go to posdir
 
-	nextdir(var/fromdir, var/sortTag)
+	nextdir(fromdir, sortTag)
 		if(fromdir != sortdir)	// probably came from the negdir
 			if(divert_check(sortTag))
 				return sortdir
@@ -1434,7 +1434,7 @@
 							// so go with the flow to positive direction
 			return posdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir, H.destinationTag)
 		H.set_dir(nextdir)
 		var/turf/T = H.nextloc()
@@ -1458,7 +1458,7 @@
 	name = "wildcard sorting junction"
 	desc = "An underfloor disposal pipe which filters all wrapped and tagged items."
 	subtype = 1
-	divert_check(var/checkTag)
+	divert_check(checkTag)
 		return checkTag != ""
 
 //junction that filters all untagged items
@@ -1466,7 +1466,7 @@
 	name = "untagged sorting junction"
 	desc = "An underfloor disposal pipe which filters all untagged items."
 	subtype = 2
-	divert_check(var/checkTag)
+	divert_check(checkTag)
 		return checkTag == ""
 
 /obj/structure/disposalpipe/sortjunction/flipped //for easier and cleaner mapping
@@ -1546,8 +1546,8 @@
 	if(!T.is_plating())
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 
 		if(W.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
@@ -1642,7 +1642,7 @@
 
 	// expel the contents of the holder object, then delete it
 	// called when the holder exits the outlet
-	proc/expel(var/obj/structure/disposalholder/H)
+	proc/expel(obj/structure/disposalholder/H)
 
 		flick("outlet-open", src)
 		playsound(src, 'sound/machines/warning-buzzer.ogg', 50, 0, 0)
@@ -1661,7 +1661,7 @@
 
 		return
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(!I || !user)
 			return
 		src.add_fingerprint(user, 0, I)
@@ -1676,8 +1676,8 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(istype(I,/obj/item/weapon/weldingtool) && mode==1)
-			var/obj/item/weapon/weldingtool/W = I
+		else if(istype(I,/obj/item/weldingtool) && mode==1)
+			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal outlet.")

@@ -1,18 +1,13 @@
 
-/mob/proc/prepare_changeling_silence_sting()
-	set category = "Changeling"
-	set name = "Silence sting (10)"
-	set desc = "We make our prey less noisy."
+/datum/changeling_power/toggled/sting/silence
+	name = "Silence Sting"
+	desc = "We make our prey less noisy."
+	icon_state = "ling_sting_silence"
+	required_chems = 20
 
-	if(changeling_is_incapacitated())
-		return
-
-	change_ctate(/datum/click_handler/changeling/changeling_silence_sting)
-
-/mob/proc/changeling_silence_sting(mob/living/carbon/human/T)
-	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_silence_sting, T, 10)
-	if(!target)
-		return
+/datum/changeling_power/toggled/sting/silence/sting_target(mob/living/carbon/human/target, loud = FALSE)
+	if(!..())
+		return FALSE
 
 	target.silent += 30
 

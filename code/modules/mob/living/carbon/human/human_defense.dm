@@ -65,7 +65,7 @@ meteor_act
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
-					victim.take_internal_damage(damage_amt)
+					victim.take_internal_damage(damage_amt / victims.len)
 
 	//Embed or sever artery
 	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
@@ -73,7 +73,7 @@ meteor_act
 			if(prob(50))
 				organ.sever_artery()
 			else
-				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				var/obj/item/material/shard/shrapnel/SP = new()
 				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
 				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
 				SP.loc = organ
@@ -346,8 +346,7 @@ meteor_act
 						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 						for(var/obj/item/D in holding)
-							if(D)
-								src.drop_from_inventory(D)
+							unEquip(D)
 						playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 		//Apply blood
@@ -433,8 +432,7 @@ meteor_act
 					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 					var/list/holding = list(get_active_hand() = 40, get_inactive_hand() = 20)
 					for(var/obj/item/D in holding)
-						if(D)
-							drop_from_inventory(D)
+						unEquip(D)
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
 				if(!stat && (poise <= effective_force/3*I.mod_weight))
@@ -476,19 +474,21 @@ meteor_act
 	if(!affecting)
 		return //should be prevented by attacked_with_item() but for sanity.
 
-	var/blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
+	var/blocked = run_armor_check(hit_zone, I.check_armour, I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 
-	if(istype(user,/mob/living/carbon/human))
+	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		if(parrying)
-			if(handle_parry(A,I))
+			if(handle_parry(A, I))
 				return
 		if(blocking)
-			if(handle_block_weapon(A,I))
+			if(handle_block_weapon(A, I))
 				return
 		if(!atype)
 			standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		else
+			// We only check disarm attacks for melee armor since they are dealt w/ blunt parts/handles/etc.
+			blocked = run_armor_check(hit_zone, "melee", I.armor_penetration, "Your armor has protected your [affecting.name].", "Your armor has softened the blow to your [affecting.name].")
 			alt_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
 		return blocked
 
@@ -820,7 +820,13 @@ meteor_act
 		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 		play_hitby_sound(AM)
 
-		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+		var/armor
+		if(istype(O, /obj/item))
+			var/obj/item/I = O
+			armor = run_armor_check(affecting, I.check_armour, O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].")
+		else
+			armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
+
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
 			if(prob(armor))
@@ -868,6 +874,7 @@ meteor_act
 				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
+				embed(O)
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)
@@ -909,8 +916,8 @@ meteor_act
 	if(damtype != BURN && damtype != BRUTE) return
 
 	// The rig might soak this hit, if we're wearing one.
-	if(back && istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(back && istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		rig.take_hit(damage)
 
 	// We may also be taking a suit breach.

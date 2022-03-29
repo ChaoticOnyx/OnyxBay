@@ -94,7 +94,7 @@
 	var/teleport_y = 0
 	var/teleport_z = 0
 
-	Trigger(var/atom/movable/A)
+	Trigger(atom/movable/A)
 		if(teleport_x && teleport_y && teleport_z)
 
 			A.x = teleport_x

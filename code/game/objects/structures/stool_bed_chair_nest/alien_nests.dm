@@ -16,7 +16,7 @@
 /obj/structure/bed/nest/Initialize()
 	. = ..()
 	over = image(icon, "nest_over")
-	over.layer = BASE_HUMAN_LAYER + 0.1
+	over.layer = LYING_HUMAN_LAYER + 0.1
 
 /obj/structure/bed/nest/Destroy()
 	QDEL_NULL(over)
@@ -86,7 +86,7 @@
 	src.add_fingerprint(user)
 	return
 
-/obj/structure/bed/nest/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/bed/nest/attackby(obj/item/W, mob/user)
 	health = max(0, health - W.force)
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	user.visible_message(SPAN("warning", "[user] hits \the [src] with \the [W]!"))

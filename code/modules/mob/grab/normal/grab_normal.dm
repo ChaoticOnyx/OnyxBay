@@ -145,7 +145,7 @@
 			else
 				if(headbutt(G))
 					if(drop_headbutt)
-						let_go()
+						G.delete_self()
 					return 1
 		//else if(G.target_zone ==
 	return 0
@@ -178,7 +178,7 @@
 	if(target.lying)
 		return
 
-	var/damage = 20
+	var/damage = 15
 	var/obj/item/clothing/hat = attacker.head
 	var/damage_flags = 0
 	if(istype(hat))
@@ -376,7 +376,7 @@
 	if(user.a_intent != I_HURT)
 		return 0 // Not trying to hurt them.
 
-	if(!istype(W,/obj/item/weapon/material/kitchen/utensil/spoon))
+	if(!istype(W,/obj/item/material/kitchen/utensil/spoon))
 		if(!W.sharp || !W.force || W.damtype != BRUTE || W.w_class > ITEM_SIZE_NORMAL)
 			return 0 //unsuitable weapon
 

@@ -3,10 +3,10 @@
 
 	downgrab_name = NORM_NECK
 
-	shift = 0
+	shift = 8
 
 	stop_move = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 0
 	point_blank_mult = 1

@@ -34,12 +34,12 @@
 
 /datum/gear/accessory/wallet
 	display_name = "wallet"
-	path = /obj/item/weapon/storage/wallet
+	path = /obj/item/storage/wallet
 	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/accessory/wallet_poly
 	display_name = "wallet, polychromic"
-	path = /obj/item/weapon/storage/wallet/poly
+	path = /obj/item/storage/wallet/poly
 	cost = 2
 
 /datum/gear/accessory/holster
