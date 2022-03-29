@@ -185,7 +185,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			brute = W.heal_damage(brute)
 
 	if(internal)
-		status &= ~ORGAN_BROKEN
+		mend_fracture(TRUE)
 
 	//Sync the organ's damage with its wounds
 	src.update_damages()

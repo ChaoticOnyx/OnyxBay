@@ -1,6 +1,7 @@
 /atom
 	var/level = 2
 	var/atom_flags
+	var/effect_flags
 	var/list/blood_DNA
 	var/was_bloodied
 	var/blood_color
@@ -131,7 +132,7 @@
 
 // If you want to use this, the atom must have the PROXMOVE flag, and the moving
 // atom must also have the PROXMOVE flag currently to help with lag. ~ ComicIronic
-/atom/proc/HasProximity(atom/movable/AM as mob|obj)
+/atom/proc/HasProximity(atom/movable/AM)
 	return
 
 /atom/proc/emp_act(severity)
@@ -577,3 +578,80 @@ its easier to just keep the beam vertical.
 // Called after we wrench/unwrench this object
 /obj/proc/wrenched_change()
 	return
+
+// Pushes A away from the atom's location, unless they are anchored or buckled. Gives up if impossible.
+/atom/proc/shove_out(atom/movable/A)
+	set waitfor = 0
+
+	if(A.anchored)
+		return FALSE
+
+	if(isliving(A))
+		var/mob/living/L = A
+		if(L.buckled)
+			return FALSE
+
+	var/turf/T = loc
+	if(!istype(T))
+		return FALSE
+
+	var/list/valid_turfs = list()
+	for(var/dir_to_test in GLOB.cardinal)
+		var/turf/new_turf = get_step(T, dir_to_test)
+		if(!new_turf.contains_dense_objects(FALSE))
+			valid_turfs |= new_turf
+
+	while(valid_turfs.len)
+		T = pick(valid_turfs)
+		valid_turfs -= T // Try to move us to the turf. If all turfs fail for some reason we will stay on this tile.
+		if(A.forceMove(T))
+			return TRUE
+
+	return FALSE
+
+// Pushes all living mobs and items away from the atom's location. Unless they are buckled or anchored. Gives up if impossible.
+/atom/proc/shove_everything(shove_mobs = TRUE, shove_objects = TRUE, shove_items = TRUE, min_w_class = ITEM_SIZE_TINY, max_w_class = ITEM_SIZE_HUGE)
+	set waitfor = 0
+
+	var/turf/T = loc
+	if(!istype(T))
+		return FALSE
+
+	var/list/valid_turfs = list()
+	for(var/dir_to_test in GLOB.cardinal)
+		var/turf/new_turf = get_step(T, dir_to_test)
+		if(!new_turf.contains_dense_objects(FALSE))
+			valid_turfs.Add("[dir_to_test]")
+			valid_turfs["[dir_to_test]"] = new_turf
+
+	if(!length(valid_turfs))
+		return FALSE
+
+	for(var/atom/movable/A in T)
+		if(A == src)
+			continue
+		if(A.anchored)
+			continue
+		if(istype(A, /obj/item))
+			if(!shove_items)
+				continue
+			var/obj/item/I = A
+			if(I.w_class < min_w_class || I.w_class > max_w_class)
+				continue
+		else if(isliving(A))
+			if(!shove_mobs)
+				continue
+			var/mob/living/L = A
+			if(L.buckled)
+				continue
+			if("[L.dir]" in valid_turfs)
+				if(L.forceMove(valid_turfs["[L.dir]"])) // We prefer shoving mobs according to their facing direction.
+					continue
+		else if(isobj(A) && !shove_objects)
+			continue
+
+		for(var/i in shuffle(valid_turfs))
+			if(A.forceMove(valid_turfs[i]))
+				break
+
+	return TRUE

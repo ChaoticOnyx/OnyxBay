@@ -10,6 +10,7 @@
 	desc = "A heavy box used for storing ore."
 	density = 1
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	var/last_update = 0
 	var/list/stored_ore = list()
 

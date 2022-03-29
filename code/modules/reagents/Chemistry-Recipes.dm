@@ -458,7 +458,7 @@
 /datum/chemical_reaction/plasmasolidification
 	name = "Solid Plasma"
 	result = null
-	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/frostoil = 5, /datum/reagent/toxin/plasma = 20)
+	required_reagents = list(/datum/reagent/iron = 5, /datum/reagent/frostoil = 5, /datum/reagent/toxin/plasma = REAGENTS_PER_MATERIAL_SHEET)
 	result_amount = 1
 
 /datum/chemical_reaction/plasmasolidification/on_reaction(datum/reagents/holder, created_volume)
@@ -467,11 +467,20 @@
 /datum/chemical_reaction/plastication
 	name = "Plastic"
 	result = null
-	required_reagents = list(/datum/reagent/acid/polyacid = 1, /datum/reagent/toxin/plasticide = 2)
+	required_reagents = list(/datum/reagent/acid/polyacid = 1, /datum/reagent/toxin/plasticide = REAGENTS_PER_MATERIAL_SHEET)
 	result_amount = 1
 
 /datum/chemical_reaction/plastication/on_reaction(datum/reagents/holder, created_volume)
 	new /obj/item/stack/material/plastic(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/solidification_glass
+	name = "Glass"
+	result = null
+	required_reagents = list(/datum/reagent/silicate = 1, /datum/reagent/toxin/plasticide = REAGENTS_PER_MATERIAL_SHEET)
+	result_amount = 1
+
+/datum/chemical_reaction/solidification_glass/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/glass(get_turf(holder.my_atom), created_volume)
 
 /* Explosion reactions */
 
@@ -1436,16 +1445,16 @@
 	for(var/i = 1, i <= created_volume, i++)
 		new /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel(location)
 
-/datum/chemical_reaction/meatball
-	name = "Meatball"
+/datum/chemical_reaction/faggot
+	name = "Faggot"
 	result = null
 	required_reagents = list(/datum/reagent/nutriment/protein = 3, /datum/reagent/nutriment/flour = 5)
 	result_amount = 3
 
-/datum/chemical_reaction/meatball/on_reaction(datum/reagents/holder, created_volume)
+/datum/chemical_reaction/faggot/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
 	for(var/i = 1, i <= created_volume, i++)
-		new /obj/item/reagent_containers/food/snacks/meatball(location)
+		new /obj/item/reagent_containers/food/snacks/faggot(location)
 
 /datum/chemical_reaction/dough
 	name = "Dough"

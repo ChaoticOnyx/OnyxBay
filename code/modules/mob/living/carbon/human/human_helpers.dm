@@ -234,7 +234,7 @@
 
 	if(!victim.get_organ(attacker.zone_sel.selecting))
 		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
-		return 0
+		return FALSE
 
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
@@ -244,13 +244,14 @@
 
 	if(!G.pre_check())
 		qdel(G)
-		return 0
+		return FALSE
 
 	if(G.can_grab())
 		G.init()
+		return TRUE
 	else
 		qdel(G)
-		return 0
+		return FALSE
 
 /mob/living/carbon/human
 	var/list/cloaking_sources
@@ -320,3 +321,6 @@
 		if(istype(C))
 			. += C.ear_protection
 	return .
+
+/mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
+	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being

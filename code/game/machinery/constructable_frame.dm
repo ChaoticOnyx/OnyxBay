@@ -117,7 +117,7 @@
 									O.loc = new_machine
 								else
 									O.loc = null
-								new_machine.component_parts += O
+								new_machine.component_parts.Add(O)
 
 							if(circuit.contain_parts)
 								circuit.loc = new_machine

@@ -1,6 +1,4 @@
 #define BOTTLE_SPRITES list("bottle-1", "bottle-2", "bottle-3", "bottle-4") //list of available bottle sprites
-#define REAGENTS_PER_SHEET 20
-
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +367,6 @@
 ////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
 /obj/machinery/reagentgrinder
-
 	name = "All-In-One Grinder"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "juicer1"
@@ -378,6 +375,7 @@
 	anchored = 0
 	idle_power_usage = 5
 	active_power_usage = 100
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	component_types = list(
 		/obj/item/circuitboard/grinder,
 		/obj/item/stock_parts/scanning_module,
@@ -388,16 +386,6 @@
 	var/obj/item/reagent_containers/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
-	var/list/sheet_reagents = list(
-		/obj/item/stack/material/iron = /datum/reagent/iron,
-		/obj/item/stack/material/uranium = /datum/reagent/uranium,
-		/obj/item/stack/material/plasma = /datum/reagent/toxin/plasma,
-		/obj/item/stack/material/plasma/ten = /datum/reagent/toxin/plasma,
-		/obj/item/stack/material/plasma/fifty = /datum/reagent/toxin/plasma,
-		/obj/item/stack/material/gold = /datum/reagent/gold,
-		/obj/item/stack/material/silver = /datum/reagent/silver,
-		/obj/item/stack/material/mhydrogen = /datum/reagent/hydrazine
-		)
 
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
@@ -472,7 +460,12 @@
 		if(BP_IS_ROBOTIC(I))
 			to_chat(user, "\The [O] is not suitable for blending.")
 			return 1
-	else if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/reagent_containers/dropper))
+	if(istype(O, /obj/item/stack/material))
+		var/obj/item/stack/material/stack = O
+		if(!stack.material.reagent_path)
+			to_chat(user, "\The [O] is not suitable for blending.")
+			return 1
+	else if(!O.reagents?.total_volume || istype(O, /obj/item/reagent_containers/dropper))
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
@@ -590,22 +583,22 @@
 		interact(usr)
 
 	// Process.
-	for (var/obj/item/O in holdingitems)
+	for(var/obj/item/O in holdingitems)
 
 		var/remaining_volume = beaker.reagents.maximum_volume - beaker.reagents.total_volume
 		if(remaining_volume <= 0)
 			break
 
-		if(sheet_reagents[O.type])
-			var/obj/item/stack/stack = O
-			if(istype(stack))
-				var/amount_to_take = max(0,min(stack.amount,round(remaining_volume/REAGENTS_PER_SHEET)))
+		if(istype(O, /obj/item/stack/material))
+			var/obj/item/stack/material/stack = O
+			if(stack.material.reagent_path)
+				var/amount_to_take = max(0, min(stack.amount, round(remaining_volume / REAGENTS_PER_MATERIAL_SHEET)))
 				if(amount_to_take)
 					stack.use(amount_to_take)
 					if(QDELETED(stack))
 						holdingitems -= stack
-					beaker.reagents.add_reagent(sheet_reagents[stack.type], (amount_to_take*REAGENTS_PER_SHEET))
-					continue
+					beaker.reagents.add_reagent(stack.material.reagent_path, (amount_to_take * REAGENTS_PER_MATERIAL_SHEET))
+			continue
 
 		var/obj/item/reagent_containers/food/snacks/internal_snack = null
 		if(istype(O, /obj/item/organ/internal))
@@ -632,5 +625,3 @@
 
 		if(beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
 			break
-
-#undef REAGENTS_PER_SHEET

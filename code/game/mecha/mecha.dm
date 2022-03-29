@@ -160,6 +160,9 @@
 ////// Helpers /////////
 ////////////////////////
 
+/obj/mecha/on_purchase()
+	operation_req_access = list() // trader disable locks on mech on their site.
+
 /obj/mecha/proc/removeVerb(verb_path)
 	verbs -= verb_path
 

@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
-
 /obj/singularity
 	name = "gravitational singularity"
 	desc = "A gravitational singularity."
@@ -320,16 +318,18 @@
 		return 0
 
 /obj/singularity/proc/can_expand(step_size)
-	. = TRUE
 
 	for(var/direction in GLOB.cardinal)
-		if(!check_turfs_in(direction, step_size))
+		if(!check_turfs_in(direction))
 			return FALSE
-
+	for(var/corner in GLOB.cornerdirs)
+		if(!check_turfs_in(corner))
+			return FALSE
 	for(var/obj/singularity/child/SC in childs)
 		for(var/direction in GLOB.cardinal)
 			if(!SC.check_turfs_in(direction, step_size))
 				return FALSE
+	return TRUE
 
 /obj/singularity/proc/check_energy()
 	if(energy <= 0)
@@ -406,80 +406,70 @@
 
 /obj/singularity/proc/check_turfs_in(direction = 0, step = 0)
 	if(!direction)
-		return 0
+		return FALSE
 	var/steps = 0
 	if(!step)
 		switch(current_size)
 			if(STAGE_ONE)
 				steps = 1
 			if(STAGE_TWO)
-				steps = 3// Yes this is right
+				steps = 3//Yes this is right
 			if(STAGE_THREE)
 				steps = 3
 			if(STAGE_FOUR)
 				steps = 4
 			if(STAGE_FIVE)
 				steps = 5
-			if(STAGE_SUPER)
-				steps = 6
 	else
 		steps = step
-
 	var/list/turfs = list()
-	var/turf/T = loc
-	for(var/i = 1 to steps)
-		T = get_step(T, direction)
-	if(!isturf(T))
-		return 0
-	turfs.Add(T)
-
+	var/turf/considered_turf = loc
+	for(var/i in 1 to steps)
+		considered_turf = get_step(considered_turf,direction)
+	if(!isturf(considered_turf))
+		return FALSE
+	turfs.Add(considered_turf)
 	var/dir2 = 0
 	var/dir3 = 0
 	switch(direction)
-		if(NORTH||SOUTH)
+		if(NORTH, SOUTH)
 			dir2 = 4
 			dir3 = 8
-		if(EAST||WEST)
+		if(EAST, WEST)
 			dir2 = 1
 			dir3 = 2
-
-	var/turf/T2 = T
-	for(var/j = 1 to steps)
-		T2 = get_step(T2, dir2)
-		if(!isturf(T2))
-			return 0
-		turfs.Add(T2)
-
-	for(var/k = 1 to steps)
-		T = get_step(T, dir3)
-		if(!isturf(T))
-			return 0
-		turfs.Add(T)
-
-	for(var/turf/T3 in turfs)
-		if(isnull(T3))
+	var/turf/other_turf = considered_turf
+	for(var/j = 1 to steps-1)
+		other_turf = get_step(other_turf,dir2)
+		if(!isturf(other_turf))
+			return FALSE
+		turfs.Add(other_turf)
+	for(var/k = 1 to steps-1)
+		considered_turf = get_step(considered_turf,dir3)
+		if(!isturf(considered_turf))
+			return FALSE
+		turfs.Add(considered_turf)
+	for(var/turf/check_turf in turfs)
+		if(isnull(check_turf))
 			continue
-		if(!movement_blocked(T3))
-			return 0
-	return 1
+		if(!can_move(check_turf))
+			return FALSE
+	return TRUE
 
-/obj/singularity/proc/movement_blocked(const/turf/T)
-	if(!isturf(T))
-		return 0
-
-	if((locate(/obj/machinery/containment_field) in T) || (locate(/obj/machinery/shieldwall) in T))
-		return 0
-
-	else if(locate(/obj/machinery/field_generator) in T)
-		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in T
+/obj/singularity/proc/can_move(turf/considered_turf)
+	if(!considered_turf)
+		return FALSE
+	if((locate(/obj/machinery/containment_field) in considered_turf)||(locate(/obj/machinery/shieldwall) in considered_turf))
+		return FALSE
+	else if(locate(/obj/machinery/field_generator) in considered_turf)
+		var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in considered_turf
 		if(G?.active)
-			return 0
-
-	else if(locate(/obj/machinery/shieldwallgen) in T)
-		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in T
+			return FALSE
+	else if(locate(/obj/machinery/shieldwallgen) in considered_turf)
+		var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in considered_turf
 		if(S?.active)
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
 /obj/singularity/proc/event()
 	var/numb = pick(1, 2, 3, 4, 5, 6)

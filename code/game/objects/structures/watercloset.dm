@@ -80,9 +80,10 @@
 	desc = "The best in class HS-451 shower unit has three temperature settings, one more than the HS-450 which preceded it."
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "shower"
-	density = 0
-	anchored = 1
+	density = FALSE
+	anchored = TRUE
 	use_power = 0
+	layer = ABOVE_WINDOW_LAYER
 	var/on = 0
 	var/obj/effect/mist/mymist = null
 	var/ismist = 0				//needs a var so we can make it linger~

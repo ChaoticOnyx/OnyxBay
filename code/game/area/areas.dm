@@ -13,7 +13,7 @@
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
-	var/list/ambient_music_meta_tags = list(META_NORMAL)
+	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
 
 	var/is_station         = FALSE
 	var/importance         = 1

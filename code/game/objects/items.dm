@@ -239,7 +239,7 @@
 		return ..()
 	if(hasorgans(user))
 		var/mob/living/carbon/human/H = user
-		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]

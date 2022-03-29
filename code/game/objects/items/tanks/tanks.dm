@@ -126,9 +126,9 @@ var/list/global/tank_gauge_cache = list()
 
 	if(isCoil(W))
 		var/obj/item/stack/cable_coil/C = W
-		if(C.use(1))
-			wired = 1
-			to_chat(user, "<span class='notice'>You attach the wires to the tank.</span>")
+		if(!wired && C.use(1))
+			wired = TRUE
+			to_chat(user, SPAN("notice", "You attach the wires to the tank."))
 			update_icon(TRUE)
 
 	if(isWirecutter(W))

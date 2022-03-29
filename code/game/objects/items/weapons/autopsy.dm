@@ -73,6 +73,16 @@
 	set src in view(usr, 1)
 	set name = "Print Data"
 
+	if(!(ishuman(usr) || isrobot(usr)))
+		return
+	var/mob/living/L = usr
+	if(L.stat || L.restrained() || L.lying)
+		return
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
+		to_chat(L, SPAN("notice", "\The [src]'s internal printer is still recharging."))
+		return
+
 	var/scan_data = ""
 
 	if(timeofdeath)

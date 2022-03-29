@@ -50,6 +50,15 @@
 	..()
 	return
 
+/atom/movable/proc/get_selected_zone()
+	return
+
+/atom/movable/proc/get_active_item()
+	return
+
+/atom/movable/proc/on_purchase()
+	return
+
 /atom/movable/proc/forceMove(atom/destination)
 	if(loc == destination)
 		return 0

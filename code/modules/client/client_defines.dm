@@ -64,3 +64,6 @@
 
 	// For tracking shift key (world.time)
 	var/shift_released_at = 0
+
+	/// Settings window.
+	var/datum/player_settings/settings = null

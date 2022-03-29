@@ -164,9 +164,10 @@
 /datum/surgery_step/finish_bone/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/bone = affected.encased ? "[target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
-	user.visible_message(SPAN_NOTICE("[user] has mended the damaged [bone] with \the [tool].")  , \
-		SPAN_NOTICE("You have mended the damaged [bone] with \the [tool].") )
-	affected.status &= ~ORGAN_BROKEN
+
+	user.visible_message(SPAN("notice", "[user] has mended the damaged [bone] with \the [tool]."), \
+						 SPAN("notice", "You have mended the damaged [bone] with \the [tool].") )
+	affected.mend_fracture()
 	affected.stage = 0
 
 /datum/surgery_step/finish_bone/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -204,7 +205,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message(SPAN_NOTICE("[user] has grasped the damaged bone edges in [target]'s [affected.name] with \the [tool].")  , \
 	SPAN_NOTICE("You have grasped the damaged bone edges in [target]'s [affected.name] with \the [tool].") )
-	affected.status &= ~ORGAN_BROKEN
+	affected.mend_fracture()
 	affected.stage = 0
 
 /datum/surgery_step/bone_mender/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

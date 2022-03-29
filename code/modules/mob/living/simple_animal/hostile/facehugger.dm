@@ -3,7 +3,7 @@
 	name = "alien"
 	desc = "A viscious little creature, it looks like a connected pair of hands and has a long, muscular tail."
 	icon = 'icons/mob/alien.dmi'
-	icon_state = "facehugger_inactive"
+	icon_state = "facehugger"
 	icon_living = "facehugger"
 	item_state = "facehugger"
 	icon_dead = "facehugger_dead"

@@ -173,6 +173,7 @@
 	name = "stairs"
 	desc = "Stairs leading to another deck.  Not too useful if the gravity goes out."
 	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs"
 	density = 0
 	opacity = 0
 	anchored = 1
@@ -240,3 +241,19 @@
 /obj/structure/stairs/west
 	dir = WEST
 	bound_width = 64
+
+/obj/structure/stairs/short
+	icon = 'icons/obj/stairs.dmi'
+	icon_state = "stairs_short"
+
+/obj/structure/stairs/short/north
+	dir = NORTH
+
+/obj/structure/stairs/short/south
+	dir = SOUTH
+
+/obj/structure/stairs/short/east
+	dir = EAST
+
+/obj/structure/stairs/short/west
+	dir = WEST

@@ -165,21 +165,34 @@ PROBABILITY cult        2
 PROBABILITY nuke        1
 PROBABILITY meteor      1
 PROBABILITY calamity    2
-PROBABILITY god         1   ## Deity
-PROBABILITY conflux     2   ## Cult & wizard
-PROBABILITY intrigue    2   ## Ninja & traitor
-PROBABILITY lizard      2   ## Changelings & wizards
-PROBABILITY paranoia    2   ## Changeling, malf & renegade
-PROBABILITY traitorling 3   ## Changeling & traitor
-PROBABILITY unity       1   ## Revolution & wizard
-PROBABILITY uprising    2   ## Cult & revolution
-PROBABILITY visitors    1   ## Ninja & wizard
-PROBABILITY siege       2   ## Nuke & revolution
+## Deity
+PROBABILITY god         1
+## Cult & wizard
+PROBABILITY conflux     2
+## Ninja & traitor
+PROBABILITY intrigue    2
+## Changelings & wizards
+PROBABILITY lizard      2
+## Changeling, malf & renegade
+PROBABILITY paranoia    2
+## Changeling & traitor 
+PROBABILITY traitorling 3
+## Revolution & wizard
+PROBABILITY unity       1
+## Cult & revolution
+PROBABILITY uprising    2
+## Ninja & wizard
+PROBABILITY visitors    1
+## Nuke & revolution
+PROBABILITY siege       2
 
 ##PROBABILITY heist             0
-##PROBABILITY bughunt           0 ## Deathsquad & xenophage
-##PROBABILITY crossfire         0 ## Nuke & heist
-##PROBABILITY infestation       0 ## Borer, changeling & xenophage
+## Deathsquad & xenophage
+##PROBABILITY bughunt           0
+## Nuke & heist
+##PROBABILITY crossfire         0
+## Borer, changeling & xenophage
+##PROBABILITY infestation       0
 
 ## Uncomment to scale amount of traitors based on amount of players.
 TRAITOR_SCALING
@@ -459,8 +472,13 @@ WALK_SPEED 7
 ## The variables below affect the movement of specific mob types.
 HUMAN_DELAY  0
 ROBOT_DELAY  0
-MONKEY_DELAY 0 ## doesn't work because build is shit TODO: FIX
-ALIEN_DELAY  0 ## doesn't work because build is shit TODO: FIX
+
+## doesn't work because build is shit TODO: FIX
+MONKEY_DELAY 0
+
+## doesn't work because build is shit TODO: FIX
+ALIEN_DELAY  0
+
 METROID_DELAY  0
 ANIMAL_DELAY 0
 
@@ -718,3 +736,14 @@ ERROR_SILENCE_TIME 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 ERROR_MSG_DELAY 50
+
+# # # # # # # # # # # # # # # # # # # # # #
+#             TIME SETTINGS               #
+# # # # # # # # # # # # # # # # # # # # # #
+# Time before a round starts
+# DEFAULT: 1800 (3 MINUTES)
+PREGAME_TIMELEFT 1800
+
+# Time left after round end before reboot.
+# DEFAULT: 600 (1 MINUTE)
+RESTART_TIMEOUT 600

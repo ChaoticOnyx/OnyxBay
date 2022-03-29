@@ -191,6 +191,11 @@
 		B.set_dir(newdir)
 	bloodiness--
 
+/obj/structure/bed/chair/wheelchair/bullet_act(obj/item/projectile/Proj, def_zone)
+	if(buckled_mob)
+		return buckled_mob.bullet_act(Proj, def_zone)
+	return ..()
+
 /obj/structure/bed/chair/wheelchair/buckle_mob(mob/M as mob, mob/user as mob)
 	if(M == pulling)
 		pulling = null

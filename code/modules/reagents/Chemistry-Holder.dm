@@ -19,6 +19,16 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	QDEL_NULL_LIST(reagent_list)
 	my_atom = null
 
+/datum/reagents/Process()
+	if(!my_atom?.loc)
+		return PROCESS_KILL
+
+	THROTTLE(rad_cooldown, 10 SECOND)
+
+	// Add another update_*_effect procs here.
+	if(rad_cooldown)
+		update_radiation_effect()
+
 /* Internal procs */
 /datum/reagents/proc/get_free_space() // Returns free space.
 	return maximum_volume - total_volume
@@ -107,6 +117,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 
 	if(reaction_occured)
 		process_reactions() // Check again in case the new reagents can react again
+	else
+		update_processing()
 
 	return reaction_occured
 
@@ -223,6 +235,56 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	for(var/datum/reagent/current in reagent_list)
 		. += "[current.name] ([current.volume])"
 	return english_list(., "EMPTY", "", ", ", ", ")
+
+/// Calculate total radiation level.
+/datum/reagents/proc/get_radiation()
+	var/radiation = 0
+
+	for(var/datum/reagent/R in reagent_list)
+		radiation += R.get_radiation()
+
+	return radiation
+
+/// Starts processing if reagents has some persistent effects, stop otherwise.
+/datum/reagents/proc/update_processing()
+	var/has_effects = 0
+
+	for(var/datum/reagent/R in reagent_list)
+		if(R.get_radiation())
+			has_effects = TRUE
+			break
+
+	if(has_effects)
+		if(!is_processing)
+			START_PROCESSING(SSprocessing, src)
+	else
+		if(is_processing)
+			STOP_PROCESSING(SSprocessing, src)
+
+#define CHECK_FLAG_R(target, flag, bool) \
+var/atom/__##target = target;\
+while(__##target != null)\
+{\
+	if(__##target.effect_flags & flag) {\
+		bool = TRUE;\
+		break;\
+	} else {\
+		__##target = __##target.loc;\
+	}\
+}
+
+// Update effects.
+/// Update radiation effect.
+/datum/reagents/proc/update_radiation_effect()
+	var/has_flag = FALSE
+	CHECK_FLAG_R(my_atom, EFFECT_FLAG_RAD_SHIELDED, has_flag)
+
+	if(has_flag)
+		return
+
+	SSradiation.radiate(my_atom, get_radiation())
+
+#undef CHECK_FLAG_R
 
 /* Holder-to-holder and similar procs */
 

@@ -112,6 +112,7 @@
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
+	override_species_icon = TRUE
 	icon = 'icons/mob/human_races/organs/cyber.dmi'
 
 /obj/item/organ/internal/proc/getToxLoss()

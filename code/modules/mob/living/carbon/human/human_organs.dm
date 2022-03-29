@@ -28,7 +28,7 @@
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
 		for(var/datum/wound/W in E.wounds)
 			if(W.wound_damage() == 0 && prob(50))
@@ -40,15 +40,14 @@
 
 /mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
-	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-		E.removed()//...because no one wants their head to explode to make way for a new one.
+	if(E && !E.vital && !E.is_usable() && E.organ_tag != BP_BRAIN) //Skips brains and vital bits...
+		E.removed()
 		qdel(E)
 		E = null
 	if(!E)
-		var/list/organ_data = species.has_organ[organ_type]
-		var/organ_path = organ_data["path"]
+		var/organ_path = species.has_organ[organ_type]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		organ_data["descriptor"] = O.name
+		internal_organs_by_name[organ_type] = O
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)

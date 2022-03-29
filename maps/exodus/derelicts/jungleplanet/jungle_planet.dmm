@@ -138,7 +138,7 @@
 "cH" = (/obj/machinery/light/small/he{icon_state = "hebulb1"; dir = 1},/obj/structure/flora/pottedplant/minitree,/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin)
 "cI" = (/obj/item/modular_computer/console/preset/security,/obj/effect/floor_decal/corner/alt/red,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "cJ" = (/turf/simulated/floor/natural/jungle/grasscorner2{icon_state = "grassdirt_corner2"; dir = 8},/area/jungleplanet/jungle/central)
-"cK" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
+"cK" = (/obj/structure/window_frame/rglass,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "junglegateway"; name = "Gateway Shutters"; opacity = 0},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/gateway)
 "cL" = (/obj/machinery/computer/crew,/obj/effect/floor_decal/corner/alt/white,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "cM" = (/obj/item/modular_computer/console/preset/medical,/obj/effect/floor_decal/corner/alt/white,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "cN" = (/obj/effect/floor_decal/corner/alt/red/corner{icon_state = "redcorner"; dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
@@ -146,7 +146,7 @@
 "cP" = (/obj/effect/decal/cleanable/dirt,/obj/random/trash,/turf/simulated/floor/trim/carpet/blue2,/area/jungleplanet/junglestructure/admin/command)
 "cQ" = (/obj/effect/floor_decal/corner/alt/red/corner{icon_state = "redcorner"; dir = 1},/obj/random/trash,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "cR" = (/obj/machinery/door/airlock/glass_command{name = "Colony Admin"; req_access = newlist()},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/command)
-"cS" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/jungle/landing)
+"cS" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/jungle/landing)
 "cT" = (/obj/effect/decal/cleanable/dirt,/obj/random/trash,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/office)
 "cU" = (/turf/simulated/wall/r_wall,/area/jungleplanet/junglestructure/admin/gateway)
 "cV" = (/obj/effect/decal/cleanable/dirt,/obj/random/trash,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
@@ -269,7 +269,7 @@
 "fi" = (/obj/machinery/gateway{dir = 1},/obj/machinery/light/small/quartz{icon_state = "qbulb1"; dir = 1},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "fj" = (/obj/structure/table/woodentable,/obj/machinery/light/small{dir = 4; pixel_y = 0},/obj/random/action_figure,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
 "fk" = (/obj/structure/window/miningpod,/obj/structure/grille,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/landing)
-"fl" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin2)
+"fl" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/hop)
 "fm" = (/obj/structure/bed/chair/comfy/captain{dir = 8},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
 "fn" = (/obj/structure/extinguisher_cabinet{layer = 3.1; pixel_y = -32},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/toilet)
 "fo" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/steel_reinforced,/obj/item/modular_computer/laptop/preset/custom_loadout/advanced,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/syndie)
@@ -339,12 +339,12 @@
 "gA" = (/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 1},/area/jungleplanet/jungle/west)
 "gB" = (/obj/structure/bed/padded,/obj/item/bedsheet/orange,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin2)
 "gC" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin2)
-"gD" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
+"gD" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
 "gE" = (/obj/machinery/door/airlock/glass_command{name = "Colony Office"},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
 "gF" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 5},/obj/machinery/light/small/quartz{icon_state = "qbulb1"; dir = 1},/obj/item/bedsheet/yellow,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"gG" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin1)
+"gG" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
 "gH" = (/turf/simulated/wall,/area/jungleplanet/junglestructure/residential/bar)
-"gI" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"gI" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/powerstation)
 "gJ" = (/obj/machinery/light/small/hl{icon_state = "hanginglantern1"; dir = 4},/turf/simulated/floor/natural/jungle/grassedge,/area/jungleplanet/jungle/central)
 "gK" = (/turf/simulated/floor/natural/jungle/grasscorner2{icon_state = "grassdirt_corner2"; dir = 8},/area/jungleplanet/jungle/west)
 "gL" = (/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
@@ -370,7 +370,7 @@
 "hf" = (/obj/structure/table/standard,/obj/item/modular_computer/console/preset/civilian,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "hg" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "hh" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 4},/obj/structure/sign/poster{pixel_x = -32; poster_type = "/datum/poster/bay_9"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
-"hi" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
+"hi" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/security)
 "hj" = (/obj/structure/bed/chair/comfy/black{dir = 4},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/blue2,/area/jungleplanet/junglestructure/admin/command)
 "hk" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/office)
 "hl" = (/obj/structure/filingcabinet/chestdrawer,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/hop)
@@ -392,7 +392,7 @@
 "hB" = (/obj/machinery/vending/cigarette,/obj/machinery/light{dir = 8; icon_state = "tube1"; pixel_y = 0},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
 "hC" = (/obj/item/paper/crumpled{pixel_x = 5; pixel_y = 5},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
 "hD" = (/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/northeast)
-"hE" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/security)
+"hE" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
 "hF" = (/obj/effect/floor_decal/industrial/warning/red{dir = 4},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 8},/obj/machinery/conveyor_switch{id = "anolaser"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "hG" = (/obj/structure/table/standard,/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/machinery/light/small{dir = 1; icon_state = "bulb1"},/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "hH" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
@@ -405,7 +405,7 @@
 "hO" = (/obj/structure/table/steel,/obj/item/stack/material/steel{amount = 50; pixel_x = 6; pixel_y = 6},/obj/item/stack/material/glass{amount = 50; pixel_x = 2; pixel_y = 4},/obj/item/stack/cable_coil,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/mech)
 "hP" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 8},/obj/structure/bed/chair/beige{icon_state = "chair_preview"; dir = 4},/obj/effect/decal/cleanable/mucus,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "hQ" = (/obj/machinery/light/small/red,/turf/simulated/floor/misc/concrete,/area/jungleplanet/jungle/landing)
-"hR" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin3)
+"hR" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
 "hS" = (/turf/simulated/wall,/area/jungleplanet/junglestructure/residential/cabin3)
 "hT" = (/obj/structure/closet/cabinet,/obj/item/cane/concealed,/obj/random/clothing/shoes,/obj/random/clothing/glasses,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin2)
 "hU" = (/obj/effect/floor_decal/industrial/warning,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
@@ -431,7 +431,7 @@
 "io" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/bed/chair/office/light{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/office)
 "ip" = (/obj/structure/plasticflaps,/obj/machinery/conveyor{dir = 2; id = "anolaser"},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "iq" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "junglegateway"; name = "Gateway Shutters"; opacity = 0},/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"ir" = (/obj/effect/wingrille_spawn/reinforced,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "junglegateway"; name = "Gateway Shutters"; opacity = 0},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/gateway)
+"ir" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
 "is" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "junglegateway"; name = "Gateway Shutters"; opacity = 0},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "it" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 4},/obj/structure/flora/pottedplant/flowerbushblue,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
 "iu" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/filingcabinet/chestdrawer,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/office)
@@ -440,13 +440,13 @@
 "ix" = (/obj/effect/floor_decal/industrial/boxcorners/red{dir = 4; icon_state = "box_corners"},/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
 "iy" = (/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 8},/obj/effect/floor_decal/industrial/warning/red/corner{dir = 8},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "iz" = (/obj/structure/table/woodentable,/obj/random/cash,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin2)
-"iA" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/hop)
+"iA" = (/obj/structure/window_frame/rglass,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/security)
 "iB" = (/obj/structure/table/reinforced,/obj/effect/floor_decal/industrial/hatch/red,/obj/machinery/door/window/brigdoor/northright,/obj/machinery/door/window/southright,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/hop)
 "iC" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "iD" = (/obj/effect/floor_decal/spline/plain/grey,/obj/machinery/door/window/southleft,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "iE" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/window/reinforced,/obj/effect/floor_decal/spline/plain/grey,/obj/structure/filingcabinet/chestdrawer,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "iF" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/blast/shutters{density = 0; dir = 2; icon_state = "shutter0"; id = "junglegateway"; name = "Gateway Shutters"; opacity = 0},/obj/effect/decal/cleanable/mucus,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"iG" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin1)
+"iG" = (/obj/structure/window_frame/rglass,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
 "iH" = (/obj/structure/table/woodentable,/obj/item/modular_computer/laptop/preset/custom_loadout/cheap,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
 "iI" = (/obj/structure/bed/chair/comfy/beige{dir = 8},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
 "iJ" = (/obj/structure/closet/cabinet,/obj/item/cell/potato,/obj/random/clothing/shoes,/obj/random/clothing/gloves,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
@@ -461,7 +461,7 @@
 "iS" = (/obj/structure/bed/chair/comfy/beige{dir = 8},/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
 "iT" = (/obj/structure/closet/secure_closet/freezer/fridge,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/machinery/light/small{dir = 1; icon_state = "bulb1"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
 "iU" = (/obj/structure/table/woodentable,/obj/machinery/microwave{pixel_x = 0; pixel_y = 6},/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
-"iV" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin2)
+"iV" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
 "iW" = (/obj/structure/table/woodentable,/obj/item/material/ashtray/bronze,/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "iX" = (/obj/item/stool/bar_new/padded,/turf/simulated/floor/trim/carpet/green,/area/jungleplanet/junglestructure/residential/bar)
 "iY" = (/obj/structure/table/woodentable/flipped/west,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
@@ -484,7 +484,7 @@
 "jp" = (/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "jq" = (/obj/effect/floor_decal/industrial/outline/yellow,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin)
 "jr" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/effect/floor_decal/industrial/caution/yellow,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/gateway)
-"js" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
+"js" = (/obj/structure/window_frame/rglass,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/gateway)
 "jt" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/command)
 "ju" = (/obj/structure/table/woodentable,/obj/item/folder/red,/obj/item/pen/fancy,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
 "jv" = (/obj/effect/floor_decal/industrial/warning/corner{icon_state = "warningcorner"; dir = 1},/obj/effect/floor_decal/corner/alt/white{icon_state = "white"; dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
@@ -502,7 +502,7 @@
 "jH" = (/obj/effect/floor_decal/corner/alt/blue/corner{icon_state = "bluecorner"; dir = 1},/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "jI" = (/obj/structure/flora/tree/green/tree2,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/northeast)
 "jJ" = (/obj/machinery/door/airlock/command{id_tag = "captaindoor"; name = "Colony Director"; req_access = newlist()},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
-"jK" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/director)
+"jK" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
 "jL" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "jM" = (/obj/structure/bed/couch/brown/left{dir = 8},/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable/green,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin)
 "jN" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/mech)
@@ -516,14 +516,14 @@
 "jV" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/shaker,/obj/item/packageWrap,/obj/item/wrapping_paper,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "jW" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/bottle/winewhite,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "jX" = (/obj/structure/closet/secure_closet/personal,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
-"jY" = (/obj/structure/table/woodentable,/obj/item/coin,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
+"jY" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/ne,/area/jungleplanet/jungle/landing)
 "jZ" = (/obj/machinery/door/airlock/glass{name = "Bar"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "ka" = (/obj/item/device/synthesized_instrument/guitar/multi,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "kb" = (/obj/machinery/door/airlock{name = "Bar"; req_access = list(25)},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "kc" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/item/storage/box/ids,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "kd" = (/obj/structure/bed/chair/wood{dir = 1; icon_state = "wooden_chair_preview"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "ke" = (/turf/simulated/wall,/area/jungleplanet/junglestructure/residential/dorm)
-"kf" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/dorm)
+"kf" = (/obj/item/material/shard{icon_state = "medium"},/obj/effect/decal/cleanable/dirt,/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
 "kg" = (/obj/structure/sign/poster{pixel_x = -32; poster_type = "/datum/poster/bay_9"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
 "kh" = (/obj/effect/floor_decal/spline/fancy/wood/corner{dir = 1},/obj/machinery/light/small,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
 "ki" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/glowingflower/blue,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
@@ -533,7 +533,7 @@
 "km" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/drinks/bottle/vodka/fivelakes,/obj/item/reagent_containers/food/drinks/glass2/shot{pixel_x = -5; pixel_y = -3},/obj/item/reagent_containers/food/drinks/glass2/shot{pixel_x = 6},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "kn" = (/obj/structure/table/woodentable,/obj/item/material/ashtray/bronze,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "ko" = (/obj/machinery/door/window/southright,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
-"kp" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"kp" = (/obj/structure/window_frame/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
 "kq" = (/obj/structure/closet{icon_closed = "cabinet_closed"; icon_opened = "cabinet_open"; icon_state = "cabinet_closed"; name = "Clothing Storage"},/obj/item/clothing/head/fedora,/obj/item/clothing/suit/storage/leather_jacket,/obj/item/clothing/under/gentlesuit,/obj/item/clothing/under/waiter,/obj/item/clothing/shoes/black,/obj/item/clothing/shoes/laceup,/obj/item/clothing/under/suit_jacket/checkered,/obj/machinery/light/small{dir = 4; pixel_y = 0},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "kr" = (/obj/structure/bed,/obj/item/bedsheet/brown,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "ks" = (/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
@@ -591,7 +591,7 @@
 "ls" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/glowingflower/yellow,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "lt" = (/obj/structure/flora/jungleplants/glowingflower/yellow,/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
 "lu" = (/obj/structure/table/woodentable,/obj/machinery/recharger,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
-"lv" = (/obj/structure/table/woodentable,/obj/item/coin,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
+"lv" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/nw,/area/jungleplanet/jungle/landing)
 "lw" = (/obj/structure/bed/couch/brown/right{dir = 8},/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
 "lx" = (/obj/structure/flora/pottedplant/largeleaves,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
 "ly" = (/obj/machinery/light/small,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/cabin3)
@@ -650,7 +650,7 @@
 "mz" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lab)
 "mA" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 9},/obj/structure/table/rack,/obj/item/clothing/suit/armor/vest,/obj/item/clothing/head/helmet,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "mB" = (/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 1},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
-"mC" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Anomaly Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
+"mC" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Anomaly Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "mD" = (/obj/effect/floor_decal/industrial/boxcorners/red{dir = 1; icon_state = "box_corners"},/obj/effect/alien/weeds,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
 "mE" = (/obj/effect/alien/weeds,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
 "mF" = (/obj/effect/floor_decal/industrial/boxcorners/red{dir = 4; icon_state = "box_corners"},/obj/effect/alien/weeds,/obj/effect/decal/remains,/turf/simulated/floor/reinforced,/area/jungleplanet/junglestructure/lab)
@@ -673,9 +673,9 @@
 "mW" = (/obj/structure/sign/junglecamo{pixel_x = -32; pixel_y = -32},/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "mX" = (/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "mY" = (/obj/structure/flora/tree/green/small/tree3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/southwest)
-"mZ" = (/obj/structure/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
-"na" = (/obj/structure/grille,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
-"nb" = (/obj/structure/grille/broken,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"mZ" = (/obj/structure/table/woodentable,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/item/material/coin/silver,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
+"na" = (/obj/structure/table/woodentable,/obj/item/material/coin/silver,/turf/simulated/floor/trim/carpet/oldred,/area/jungleplanet/junglestructure/residential/dorm)
+"nb" = (/obj/structure/window_frame/broken,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "nc" = (/obj/structure/sign/junglecamo{pixel_x = 32; pixel_y = -32},/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/glowingflower/blue,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "nd" = (/turf/simulated/floor/natural/jungle/grasscorner1{icon_state = "grassdirt_corner"; dir = 4},/area/jungleplanet/jungle/lab)
 "ne" = (/obj/structure/flora/tree/green/small/tree4,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lab)
@@ -774,7 +774,7 @@
 "oT" = (/obj/machinery/shower,/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 1},/obj/effect/floor_decal/industrial/warning/corner,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "oU" = (/obj/structure/flora/jungleplants/alienplant12,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/southwest)
 "oV" = (/obj/structure/sign/junglecamo{pixel_x = -32},/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
-"oW" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
+"oW" = (/obj/structure/window_frame/rglass,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "oX" = (/obj/effect/floor_decal/industrial/warning/corner{dir = 8; icon_state = "warningcorner"},/obj/structure/sign/warning/secure_area{pixel_x = -32},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/jungledirt,/obj/machinery/light/he{icon_state = "hetube1"; dir = 8},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
 "oY" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass/corner2{icon_state = "grassdirt_corner2"; dir = 4},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
 "oZ" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass/edge,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
@@ -793,7 +793,7 @@
 "pm" = (/obj/machinery/shower,/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 1},/obj/effect/floor_decal/industrial/warning/corner{dir = 8; icon_state = "warningcorner"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "pn" = (/obj/structure/sink{dir = 1; pixel_y = 16},/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 1},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "po" = (/obj/machinery/shower,/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 1},/obj/effect/floor_decal/industrial/warning/corner,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"pp" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab)
+"pp" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab)
 "pq" = (/obj/effect/floor_decal/corner/alt/purple{icon_state = "purple"; dir = 8},/obj/effect/floor_decal/industrial/warning/corner{dir = 8; icon_state = "warningcorner"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pr" = (/obj/effect/floor_decal/corner/alt/red,/obj/structure/closet/wardrobe/red,/obj/structure/sign/recruitment{pixel_y = -32},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/checkpoint)
 "ps" = (/obj/machinery/vending/cola,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
@@ -801,7 +801,7 @@
 "pu" = (/obj/machinery/vending/coffee,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "pv" = (/obj/machinery/door/airlock/research{autoclose = 0; frequency = 1379; icon = 'icons/obj/doors/doorsci.dmi'; icon_state = "door_locked"; id_tag = "xeno_airlock_interior"; locked = 1; name = "Speciment Containment"; req_access = newlist()},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pw" = (/obj/structure/toilet,/obj/machinery/light/small/he{icon_state = "hebulb1"; dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"px" = (/obj/structure/grille,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
+"px" = (/obj/structure/window_frame/grille,/obj/structure/sign/warning/secure_area,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
 "py" = (/obj/structure/closet/wardrobe/pjs,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
 "pz" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/glowingflower/purple,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
 "pA" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass,/obj/machinery/light/small/hl{icon_state = "hanginglantern1"; dir = 1},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
@@ -810,7 +810,7 @@
 "pD" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pE" = (/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pF" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
-"pG" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Cave Access Airlock"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
+"pG" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Cave Access Airlock"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pH" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "pI" = (/obj/structure/boulder,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/cave/cavesystem)
 "pJ" = (/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
@@ -823,7 +823,7 @@
 "pQ" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "pR" = (/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "pS" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"pT" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Access"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
+"pT" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Access"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "pU" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pV" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "pW" = (/obj/structure/flora/ausbushes/reedbush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
@@ -859,7 +859,7 @@
 "qA" = (/obj/structure/bed/nest,/obj/effect/alien/weeds,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/cave)
 "qB" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "qC" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"qD" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Access"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
+"qD" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Access"},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "qE" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qF" = (/obj/machinery/light/he,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qG" = (/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
@@ -880,7 +880,7 @@
 "qV" = (/obj/structure/closet/l3closet/virology,/obj/effect/floor_decal/corner/alt/purple,/obj/effect/floor_decal/industrial/warning/corner{icon_state = "warningcorner"; dir = 1},/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "qW" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/floor_decal/jungledirt/grass/edge,/obj/effect/floor_decal/industrial/warning/corner,/obj/machinery/light/he{icon_state = "hetube1"; dir = 4},/obj/structure/sign/warning/science{pixel_x = 32},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
 "qX" = (/obj/structure/closet/l3closet/virology,/obj/effect/floor_decal/corner/alt/purple,/obj/effect/floor_decal/industrial/warning/corner{icon_state = "warningcorner"; dir = 4},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
-"qY" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/doorsciglass.dmi'; name = "Research Block Meeting Room"; req_access = newlist()},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
+"qY" = (/obj/machinery/door/airlock/glass_research{icon = 'icons/obj/doors/Doorsciglass.dmi'; name = "Research Block Meeting Room"; req_access = newlist()},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "qZ" = (/obj/machinery/door/airlock/research{icon = 'icons/obj/doors/doorsci.dmi'; id_tag = "researchdoor"; name = "Speciment Research Lab"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/lab)
 "ra" = (/obj/machinery/washing_machine,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
 "rb" = (/obj/machinery/light/he,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/lab)
@@ -987,11 +987,11 @@
 "sY" = (/obj/structure/closet/crate/bin,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/central)
 "sZ" = (/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/east)
 "ta" = (/obj/structure/flora/tree/green/small/tree4,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
-"tb" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
+"tb" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "tc" = (/turf/simulated/wall,/area/jungleplanet/junglestructure/medbay)
 "td" = (/obj/structure/bed/chair/beige{dir = 8},/obj/machinery/light/he{icon_state = "hetube1"; dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "te" = (/obj/structure/table/marble,/obj/item/storage/box/donkpockets,/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/floor_decal/spline/fancy{dir = 1; icon_state = "spline_fancy"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
-"tf" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"tf" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "tg" = (/obj/structure/table/marble,/obj/item/reagent_containers/food/condiment/small/saltshaker{pixel_x = -3; pixel_y = 0},/obj/item/reagent_containers/food/condiment/small/peppermill{pixel_x = 3},/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/floor_decal/spline/fancy{dir = 1; icon_state = "spline_fancy"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "th" = (/obj/structure/table/woodentable/flipped/west,/obj/item/stack/rods,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "ti" = (/obj/structure/barricade,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
@@ -1000,7 +1000,7 @@
 "tl" = (/obj/item/stool/bar_new/padded,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/trim/carpet/green,/area/jungleplanet/junglestructure/residential/bar)
 "tm" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/item/material/ashtray/bronze,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "tn" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
-"to" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/dorm)
+"to" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/dorm)
 "tp" = (/obj/structure/flora/pottedplant/minitree,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
 "tq" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/reagent_dispensers/water_cooler,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
 "tr" = (/obj/structure/cable/green{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/effect/floor_decal/jungledirt/grass,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/north)
@@ -1068,7 +1068,7 @@
 "uB" = (/obj/structure/table/woodentable,/obj/item/device/radio{pixel_x = 4; pixel_y = -2},/obj/machinery/light/small{dir = 8},/obj/random/smokes{pixel_x = -4; pixel_y = 2},/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "uC" = (/obj/effect/floor_decal/corner/alt/red/corner,/obj/structure/table/standard/flipped/north,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
 "uD" = (/obj/item/modular_computer/console/preset/security,/obj/effect/floor_decal/corner/alt/red,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
-"uE" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
+"uE" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/dorm)
 "uF" = (/obj/machinery/door/airlock/glass_command{name = "Manager's Office"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
 "uG" = (/obj/machinery/door/airlock{id_tag = "rbath"; name = "Bathroom"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/admin/office)
 "uH" = (/obj/machinery/mech_recharger,/obj/mecha/working/ripley,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/mech)
@@ -1082,7 +1082,7 @@
 "uP" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/mech)
 "uQ" = (/obj/structure/bed/chair/red{icon_state = "chair_preview"; dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/security)
 "uR" = (/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
-"uS" = (/obj/structure/grille/broken,/obj/item/material/shard{icon_state = "medium"},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
+"uS" = (/obj/structure/barricade,/obj/structure/window_frame/grille,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
 "uT" = (/obj/structure/toilet{dir = 1; pixel_y = -5},/obj/machinery/light/small{dir = 4; pixel_y = 0},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/admin/office)
 "uU" = (/obj/structure/table/woodentable,/obj/random/action_figure,/turf/simulated/floor/trim/darkwood,/area/jungleplanet/junglestructure/residential/dorm)
 "uV" = (/obj/machinery/door/airlock{name = "Dormitory"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/dorm)
@@ -1117,7 +1117,7 @@
 "vy" = (/obj/structure/flora/tree/green/tree7,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/west)
 "vz" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/glowingflower/purple,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/west)
 "vA" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/alienplant3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/west)
-"vB" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
+"vB" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
 "vC" = (/obj/structure/closet/secure_closet/personal,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/residential/dorm)
 "vD" = (/obj/effect/floor_decal/corner/alt/brown{icon_state = "brown"; dir = 8},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/dorm)
 "vE" = (/obj/effect/floor_decal/corner/alt/brown{icon_state = "brown"; dir = 4},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/dorm)
@@ -1155,7 +1155,7 @@
 "wk" = (/obj/structure/table/reinforced,/obj/effect/floor_decal/corner/alt/purple/corner{icon_state = "purplecorner"; dir = 8},/obj/item/storage/box/PDAs{pixel_x = 4; pixel_y = 4},/obj/machinery/light{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "wl" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/northeast)
 "wm" = (/obj/structure/table/standard,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 1; health = null},/obj/item/reagent_containers/spray/cleaner{pixel_x = -5},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
-"wn" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/ne,/area/jungleplanet/jungle/landing)
+"wn" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin2)
 "wo" = (/obj/machinery/washing_machine,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/dorm)
 "wp" = (/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/east)
 "wq" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/alienplant6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lab)
@@ -1449,9 +1449,9 @@
 "BS" = (/obj/structure/flora/jungleplants/junglebush1,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "BT" = (/obj/structure/flora/tree/green/small/tree4,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
 "BU" = (/obj/structure/closet/syndicate,/obj/effect/floor_decal/oldflood,/obj/machinery/light/small/red{dir = 8},/obj/item/clothing/under/syndicate/combat,/obj/item/clothing/shoes/jackboots,/obj/item/clothing/glasses/sunglasses/redglasses,/obj/item/device/radio,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/syndie)
-"BV" = (/obj/structure/grille,/obj/structure/sign/warning/secure_area,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
+"BV" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
 "BW" = (/obj/effect/floor_decal/oldflood,/obj/structure/table/steel,/obj/item/soap/syndie,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/syndie)
-"BX" = (/obj/structure/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
+"BX" = (/obj/structure/window_frame/grille,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
 "BY" = (/obj/structure/flora/tree/green/tree9,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "BZ" = (/obj/structure/flora/ausbushes/sparsegrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "Ca" = (/obj/structure/sign/junglecamo{pixel_x = 32},/turf/simulated/floor/natural/jungle/grassedge,/area/jungleplanet/jungle/syndiebase)
@@ -1519,7 +1519,7 @@
 "Dk" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/largecrate,/obj/machinery/light/he,/obj/random/maintenance,/obj/random/maintenance,/obj/random/maintenance,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "Dl" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/structure/closet/crate/secure/loot,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "Dm" = (/obj/structure/filingcabinet/chestdrawer,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/office)
-"Dn" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 2; health = 1e+007},/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/office)
+"Dn" = (/obj/structure/barricade,/obj/item/material/shard,/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
 "Do" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/admin/director)
 "Dp" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/bed/couch/brown/left,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin)
 "Dq" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/alienplant3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/northeast)
@@ -1559,7 +1559,7 @@
 "DY" = (/obj/structure/table/steel,/obj/effect/floor_decal/corner/alt/yellow,/obj/item/crowbar/brace_jack,/obj/item/wirecutters,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/powerstation)
 "DZ" = (/obj/structure/table/steel,/obj/effect/floor_decal/corner/alt/yellow,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/recharger,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/powerstation)
 "Ea" = (/obj/structure/flora/jungleplants/alienplant8,/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/northeast)
-"Eb" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/powerstation)
+"Eb" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin1)
 "Ec" = (/obj/structure/railing,/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 1},/area/jungleplanet/jungle/northeast)
 "Ed" = (/obj/structure/railing,/turf/simulated/floor/natural/jungle/grasscorner2{icon_state = "grassdirt_corner2"; dir = 8},/area/jungleplanet/jungle/northeast)
 "Ee" = (/obj/structure/railing,/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 8},/area/jungleplanet/jungle/northeast)
@@ -1576,7 +1576,7 @@
 "Ep" = (/obj/effect/floor_decal/corner/alt/brown/corner{icon_state = "browncorner"; dir = 1},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/dorm)
 "Eq" = (/obj/machinery/door/airlock{name = "Shower"},/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/dorm)
 "Er" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 1},/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
-"Es" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1},/obj/item/material/shard,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"Es" = (/obj/structure/window_frame/grille,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/cave/cavesystem)
 "Et" = (/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 5},/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/random/medical,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
 "Eu" = (/obj/structure/filingcabinet/chestdrawer{name = "Medical Forms"},/obj/effect/floor_decal/corner/alt/blue{icon_state = "blue"; dir = 10},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
 "Ev" = (/obj/effect/floor_decal/corner/alt/blue,/obj/structure/window/reinforced{dir = 4},/obj/item/modular_computer/console/preset/medical,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
@@ -1648,7 +1648,7 @@
 "FJ" = (/obj/structure/flora/tree/green/tree2,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
 "FK" = (/obj/structure/bed/chair/beige{icon_state = "chair_preview"; dir = 1},/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/central)
 "FL" = (/turf/simulated/wall/wood,/area/jungleplanet/jungle/lake/cabin)
-"FM" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/jungle/lake/cabin)
+"FM" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin3)
 "FN" = (/obj/structure/flora/pottedplant/tropicaltree,/obj/effect/decal/cleanable/cobweb,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
 "FO" = (/obj/structure/closet/secure_closet/freezer/fridge,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
 "FP" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/snacks/clownstears,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
@@ -1700,7 +1700,7 @@
 "GJ" = (/obj/structure/flora/ausbushes/lavendergrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
 "GK" = (/obj/structure/flora/tree/green/small/tree6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
 "GL" = (/obj/structure/flora/tree/green/small/tree1,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
-"GM" = (/turf/simulated/floor/tiled/dark,/obj/effect/floor_decal/rust,/turf/simulated/shuttle/wall/corner/merchant/nw,/area/jungleplanet/jungle/landing)
+"GM" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin1)
 "GN" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/glowingflower/purple,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
 "GO" = (/obj/structure/flora/tree/green/tree2,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
 "GP" = (/obj/structure/flora/tree/green/tree5,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/south)
@@ -1742,7 +1742,7 @@
 "Hz" = (/obj/structure/flora/ausbushes/sunnybush,/obj/machinery/light/small/hl{icon_state = "hanginglantern1"; dir = 4},/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/east)
 "HA" = (/turf/simulated/floor/natural/jungle/grasscorner1{icon_state = "grassdirt_corner"; dir = 1},/area/jungleplanet/jungle/central)
 "HB" = (/obj/structure/flora/jungleplants/alienplant6,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
-"HC" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced,/obj/item/material/shard{icon_state = "medium"},/obj/structure/window/reinforced{dir = 1},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"HC" = (/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced,/obj/item/material/shard{icon_state = "medium"},/obj/structure/window/reinforced{dir = 1},/obj/structure/barricade,/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "HD" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass,/obj/structure/flora/ausbushes/fernybush,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "HE" = (/obj/structure/flora/jungleplants/junglebush3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/east)
 "HF" = (/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 4},/area/jungleplanet/jungle/east)
@@ -1879,7 +1879,7 @@
 "Kg" = (/obj/structure/table/standard,/obj/item/storage/box/lights/mixed,/obj/item/reagent_containers/spray/cleaner,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/janitor)
 "Kh" = (/obj/structure/table/standard,/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/janitor)
 "Ki" = (/obj/item/stack/cable_coil/green,/obj/structure/cable/green{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/powerstation)
-"Kj" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/janitor)
+"Kj" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin2)
 "Kk" = (/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/janitor)
 "Kl" = (/obj/item/stool,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/janitor)
 "Km" = (/obj/effect/floor_decal/jungledirt/grass,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/northeast)
@@ -1894,11 +1894,11 @@
 "Kv" = (/obj/item/ammo_casing/c9mm/used,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "Kw" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
 "Kx" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt/grass/edge{icon_state = "grassdirt_edge"; dir = 1},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
-"Ky" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
+"Ky" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin3)
 "Kz" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "KA" = (/obj/effect/floor_decal/jungledirt/grass,/obj/machinery/light/small/hl{icon_state = "hanginglantern1"; dir = 1},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/northeast)
 "KB" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/corner/grey/diagonal,/obj/machinery/door/window/northleft,/obj/effect/floor_decal/spline/fancy{dir = 1; icon_state = "spline_fancy"},/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
-"KC" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/obj/item/storage/firstaid/regular,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/random/medical,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
+"KC" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced{dir = 1},/obj/item/material/shard,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
 "KD" = (/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
 "KE" = (/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "KF" = (/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
@@ -1927,7 +1927,7 @@
 "Lc" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass/edge{icon_state = "grassdirt_edge"; dir = 8},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "Ld" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "Le" = (/obj/machinery/door/airlock/maintenance{name = "Kitchen Cold Room Maintenance"; req_access = list(28)},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
-"Lf" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 1; health = null},/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
+"Lf" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/jungle/lake/cabin)
 "Lg" = (/obj/structure/bed/chair/comfy/beige,/obj/structure/cable/green,/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin2)
 "Lh" = (/obj/structure/bed/chair/comfy/beige,/obj/structure/cable/green,/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
 "Li" = (/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin1)
@@ -1936,7 +1936,7 @@
 "Ll" = (/obj/structure/table/woodentable,/obj/item/book/wiki/barman_recipes,/obj/item/clothing/head/that{pixel_x = 4; pixel_y = 6},/obj/structure/cable/green{d2 = 8; icon_state = "0-8"},/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "Lm" = (/obj/item/screwdriver{layer = 4; pixel_y = 4},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
 "Ln" = (/obj/structure/table/woodentable,/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/random/snack,/obj/random/snack,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
-"Lo" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/cabin3)
+"Lo" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
 "Lp" = (/obj/effect/floor_decal/corner/paleblue/diagonal,/obj/effect/floor_decal/corner/white/diagonal{icon_state = "corner_white_diagonal"; dir = 4},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/cabin3)
 "Lq" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/obj/structure/cable/green,/obj/machinery/power/apc{dir = 2; name = "south bump"; pixel_y = -24},/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/cabin3)
 "Lr" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass,/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
@@ -2022,13 +2022,13 @@
 "MT" = (/obj/structure/flora/tree/green/tree10,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "MU" = (/obj/structure/flora/ausbushes/leafybush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
 "MV" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/jungleplants/alienplant10,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
-"MW" = (/obj/structure/grille,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
-"MX" = (/obj/structure/grille,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
-"MY" = (/obj/structure/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
+"MW" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{health = 1e+007},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"MX" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"MY" = (/obj/structure/window_frame/grille,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "MZ" = (/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 4},/area/jungleplanet/jungle/checkpoint)
 "Na" = (/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/checkpoint)
 "Nb" = (/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 8},/area/jungleplanet/jungle/checkpoint)
-"Nc" = (/obj/structure/grille,/obj/structure/flora/junglevines/heavy,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
+"Nc" = (/obj/structure/window_frame/grille,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "Nd" = (/turf/unsimulated/mineral,/area/jungleplanet/jungle/checkpoint)
 "Ne" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "Nf" = (/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
@@ -2041,14 +2041,14 @@
 "Nm" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/ausbushes/reedbush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "Nn" = (/obj/structure/flora/tree/green/small/tree5,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "No" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/structure/flora/jungleplants/alienplant3,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
-"Np" = (/obj/structure/grille/broken,/obj/item/material/shard{icon_state = "medium"},/obj/item/material/shard,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"Np" = (/obj/structure/window_frame/broken,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
 "Nq" = (/obj/effect/floor_decal/junglepath/end{icon_state = "pathway_end"; dir = 4},/obj/structure/cable{icon_state = "2-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/checkpoint)
 "Nr" = (/obj/structure/flora/junglevines/heavy,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "Ns" = (/obj/structure/flora/tree/green/small/tree6,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "Nt" = (/obj/machinery/light{dir = 8},/obj/effect/floor_decal/jungledirt/grass,/obj/structure/cable,/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/checkpoint)
 "Nu" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt/grass/edge{icon_state = "grassdirt_edge"; dir = 4},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/checkpoint)
 "Nv" = (/turf/simulated/floor/natural/jungle/grasscorner1,/area/jungleplanet/jungle/checkpoint)
-"Nw" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"Nw" = (/obj/structure/window_frame/broken,/obj/item/material/shard{icon_state = "medium"},/obj/item/material/shard,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
 "Nx" = (/turf/simulated/floor/natural/jungle/grasscorner2{icon_state = "grassdirt_corner2"; dir = 4},/area/jungleplanet/jungle/checkpoint)
 "Ny" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/checkpoint)
 "Nz" = (/obj/machinery/light{dir = 8},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/checkpoint)
@@ -2090,7 +2090,7 @@
 "Oj" = (/obj/structure/table/standard,/obj/item/device/camera,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "Ok" = (/obj/item/paper_bin{pixel_y = 6},/obj/item/pen{pixel_y = 6},/obj/structure/table/standard,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
 "Ol" = (/obj/structure/filingcabinet/chestdrawer,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab)
-"Om" = (/obj/structure/grille/broken,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
+"Om" = (/obj/structure/window_frame/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
 "On" = (/obj/item/ammo_casing/a556/used,/obj/item/ammo_casing/a556/used,/obj/item/ammo_casing/a556/used,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/checkpoint)
 "Oo" = (/obj/item/ammo_casing/a556/used,/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 8},/area/jungleplanet/jungle/checkpoint)
 "Op" = (/obj/item/wirecutters,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/south)
@@ -2104,7 +2104,7 @@
 "Ox" = (/obj/item/ammo_casing/a10mm/used,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
 "Oy" = (/obj/item/stack/medical/splint/ghetto,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
 "Oz" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt/grass,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
-"OA" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/janitor)
+"OA" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
 "OB" = (/obj/effect/floor_decal/corner/alt/blue/corner{icon_state = "bluecorner"; dir = 8},/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/obj/structure/cable/green,/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
 "OC" = (/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/effect/floor_decal/jungledirt/grass/corner{icon_state = "grassdirt_corner"; dir = 4},/obj/item/material/shard,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
 "OD" = (/obj/structure/table/standard,/obj/item/grenade/chem_grenade/cleaner,/obj/item/grenade/chem_grenade/cleaner,/obj/item/grenade/chem_grenade/cleaner,/obj/effect/floor_decal/oldflood,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/residential/janitor)
@@ -2115,18 +2115,18 @@
 "OI" = (/obj/effect/floor_decal/jungledirt,/obj/structure/cable/green{d1 = 2; d2 = 4; icon_state = "2-4"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "OJ" = (/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/effect/floor_decal/jungledirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/east)
 "OK" = (/obj/effect/floor_decal/corner/alt/blue,/obj/machinery/vending/medical,/obj/structure/sign/poster{pixel_y = -32},/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
-"OL" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{health = 1e+007},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
-"OM" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
-"ON" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"OL" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced,/obj/item/material/shard,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"OM" = (/obj/structure/window_frame/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"ON" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/window/reinforced{health = 1e+007},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
 "OO" = (/obj/item/stack/rods,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
-"OP" = (/obj/structure/grille,/obj/structure/window/reinforced,/obj/item/material/shard,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"OP" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "OQ" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/effect/floor_decal/jungledirt,/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/lab)
 "OR" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/ausbushes/genericbush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "OS" = (/obj/structure/flora/ausbushes/fullgrass,/turf/simulated/floor/natural/jungle,/area/engineering/engine_smes)
 "OT" = (/obj/structure/flora/ausbushes/fullgrass,/obj/structure/flora/ausbushes/sunnybush,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "OU" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/jungledirt/grass,/obj/structure/flora/ausbushes/fullgrass,/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/dark,/area/jungleplanet/jungle/central)
 "OV" = (/obj/effect/decal/cleanable/generic,/obj/effect/decal/cleanable/ash,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/checkpoint)
-"OW" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/window/reinforced{health = 1e+007},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/checkpoint)
+"OW" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/heavy,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "OX" = (/obj/item/broken_bottle,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/checkpoint)
 "OY" = (/obj/structure/bed/chair/office/dark{dir = 8},/obj/item/clothing/accessory/badge/holo,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/lab/checkpoint)
 "OZ" = (/obj/random/trash,/turf/simulated/floor/trim/wood,/area/jungleplanet/junglestructure/residential/bar)
@@ -2137,18 +2137,18 @@
 "Pe" = (/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/floor_decal/spline/fancy{dir = 1; icon_state = "spline_fancy"},/obj/effect/decal/cleanable/generic,/obj/effect/decal/cleanable/ash,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Pf" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/decal/cleanable/blood,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Pg" = (/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/effect/floor_decal/corner/grey/diagonal,/obj/item/reagent_containers/food/drinks/bottle/cola,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
-"Ph" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 8},/obj/item/material/shard,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Ph" = (/obj/item/material/shard,/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
 "Pi" = (/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Pj" = (/obj/structure/cable/green{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Pk" = (/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/corner/grey/diagonal,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Pl" = (/obj/structure/flora/ausbushes/fullgrass,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/central)
-"Pm" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Pm" = (/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/obj/item/storage/firstaid/regular,/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/random/medical,/obj/effect/decal/cleanable/blood/drip,/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/medbay)
 "Pn" = (/obj/structure/table/marble,/obj/item/material/kitchen/rollingpin,/obj/effect/floor_decal/corner/grey/diagonal,/obj/item/material/shard,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/residential/bar)
 "Po" = (/obj/item/ammo_casing/a10mm/used,/obj/item/ammo_casing/a10mm/used,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/central)
-"Pp" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
-"Pq" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 1; health = 1e+006},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
-"Pr" = (/obj/structure/grille/broken,/obj/item/stack/rods,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
-"Ps" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{health = 1e+007},/obj/structure/window/reinforced{dir = 1; health = 1e+006},/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Pp" = (/obj/item/material/shard,/obj/structure/barricade,/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Pq" = (/obj/item/stack/rods,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Pr" = (/obj/item/stack/rods,/obj/item/material/shard,/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Ps" = (/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "Pt" = (/obj/item/ammo_casing/a10mm/used,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/central)
 "Pu" = (/obj/item/ammo_casing/a10mm/used,/obj/item/ammo_casing/a10mm/used,/obj/item/ammo_casing/a10mm/used,/obj/item/ammo_casing/a10mm/used,/turf/simulated/floor/natural/jungle/grassedge{icon_state = "grassdirt_edge"; dir = 8},/area/jungleplanet/jungle/central)
 "Pv" = (/obj/structure/flora/ausbushes/fullgrass,/obj/item/material/shard{icon_state = "small"; pixel_y = -7},/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/east)
@@ -2203,11 +2203,11 @@
 "Qs" = (/obj/structure/table/standard/flipped,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin)
 "Qt" = (/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/sign/poster{pixel_y = -32},/obj/structure/iv_drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
 "Qu" = (/obj/structure/table/standard/flipped,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"Qv" = (/obj/structure/barricade,/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 1; health = 1e+006},/obj/structure/grille,/obj/structure/window/reinforced{dir = 2; health = 1e+007},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
+"Qv" = (/obj/structure/barricade,/obj/structure/window_frame/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
 "Qw" = (/obj/effect/floor_decal/industrial/warning{dir = 8},/obj/effect/floor_decal/industrial/loading{icon_state = "loadingarea"; dir = 1},/obj/structure/bed/roller,/obj/effect/decal/cleanable/blood,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/gateway)
-"Qx" = (/obj/structure/barricade,/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced{dir = 1; health = 1e+006},/obj/structure/grille,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
-"Qy" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/security)
-"Qz" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/barricade,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/gateway)
+"Qx" = (/obj/item/stack/rods,/obj/item/material/shard{icon_state = "medium"},/obj/structure/window_frame/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
+"Qy" = (/obj/structure/window_frame/rglass,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/janitor)
+"Qz" = (/obj/structure/window_frame/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/janitor)
 "QA" = (/obj/structure/flora/ausbushes/lavendergrass,/obj/item/material/shard{icon_state = "medium"},/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/north)
 "QB" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/north)
 "QC" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/central)
@@ -2234,7 +2234,7 @@
 "QX" = (/obj/structure/bed/couch/brown/right{dir = 8},/obj/structure/sign/poster{pixel_y = -32},/obj/random/trash,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin)
 "QY" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/north)
 "QZ" = (/obj/structure/table/standard/flipped,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/gateway)
-"Ra" = (/obj/structure/barricade,/obj/item/material/shard,/obj/structure/grille/broken,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin)
+"Ra" = (/obj/structure/barricade,/obj/structure/window_frame/grille/glass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/residential/bar)
 "Rb" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/northeast)
 "Rc" = (/obj/effect/decal/cleanable/blood,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/northeast)
 "Rd" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle/dirt,/area/jungleplanet/jungle/cargo)
@@ -2269,7 +2269,9 @@
 "RG" = (/obj/effect/decal/cleanable/generic,/obj/structure/bed/chair/brown{icon_state = "chair_preview"; dir = 8},/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
 "RH" = (/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
 "RI" = (/obj/structure/table/reinforced,/obj/item/material/knife/butch/kitchen,/obj/item/material/knife/kitchen,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
+"RJ" = (/obj/structure/window_frame/grille/rglass,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/lab/cavecheckpoint)
 "RK" = (/obj/structure/table/reinforced,/obj/item/reagent_containers/food/snacks/meat/human{pixel_x = -2; pixel_y = 10},/obj/item/reagent_containers/food/snacks/meat/human{pixel_x = 3; pixel_y = 6},/obj/item/reagent_containers/food/snacks/meat/human,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
+"RL" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "RM" = (/obj/structure/table/woodentable,/obj/item/reagent_containers/food/snacks/meatpie,/obj/item/reagent_containers/food/snacks/meatkabob,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
 "RN" = (/obj/structure/flora/junglevines/heavy,/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/lake/north)
 "RO" = (/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle/sandgrassedge,/area/jungleplanet/jungle/lake/north)
@@ -2277,10 +2279,9 @@
 "RQ" = (/obj/effect/decal/cleanable/blood/drip,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/natural/jungle/sandgrassedge,/area/jungleplanet/jungle/lake/north)
 "RR" = (/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/syndiebase)
 "RS" = (/obj/structure/table/woodentable,/obj/effect/decal/cleanable/dirt,/obj/item/device/flashlight/lantern/active,/turf/simulated/floor/trim/wood,/area/jungleplanet/jungle/lake/cabin)
-"RT" = (/obj/structure/grille,/obj/structure/flora/junglevines/light,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
-"RU" = (/obj/structure/grille,/obj/structure/flora/junglevines/heavy,/obj/structure/sign/warning/secure_area,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/syndiebase)
 "RV" = (/obj/effect/decal/cleanable/blood/oil,/obj/effect/decal/cleanable/blood/gibs/robot,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/syndiebase)
 "RW" = (/obj/effect/decal/mecha_wreckage/phazon,/obj/effect/decal/cleanable/blood/oil,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/syndiebase)
+"RX" = (/obj/structure/window_frame/grille,/obj/structure/flora/junglevines/heavy,/turf/simulated/floor/natural/jungle,/area/jungleplanet/jungle/checkpoint)
 "RY" = (/obj/structure/flora/jungleplants/glowshroom,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/lake/north)
 "RZ" = (/obj/effect/decal/cleanable/ash,/turf/simulated/floor/natural/sand/cave,/area/jungleplanet/jungle/syndiebase)
 "Sa" = (/obj/effect/floor_decal/industrial/boxcorners/blue,/obj/effect/floor_decal/industrial/boxcorners/blue{icon_state = "box_corners"; dir = 4},/obj/effect/decal/cleanable/blood,/obj/structure/bed/roller,/turf/simulated/floor/tiled/white,/area/jungleplanet/junglestructure/medbay)
@@ -2463,7 +2464,6 @@
 "Vx" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled,/area/jungleplanet/junglestructure/admin/command)
 "Vy" = (/obj/structure/bed/chair,/obj/effect/floor_decal/corner/alt/yellow/corner{icon_state = "yellowcorner"; dir = 4},/obj/item/folder/blue,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "Vz" = (/obj/structure/table/reinforced,/obj/effect/floor_decal/corner/alt/red{icon_state = "red"; dir = 10},/obj/item/storage/secure/briefcase,/obj/machinery/light{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
-"VA" = (/obj/effect/wingrille_spawn/reinforced,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/plating,/area/jungleplanet/junglestructure/admin/command)
 "VB" = (/obj/structure/table/reinforced,/obj/effect/floor_decal/corner/alt/white{icon_state = "white"; dir = 6},/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen,/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled/dark,/area/jungleplanet/junglestructure/admin/command)
 "VC" = (/obj/structure/sink{dir = 1; pixel_y = 16},/obj/structure/mirror{pixel_x = 0; pixel_y = 28},/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/toilet)
 "VD" = (/obj/effect/decal/cleanable/dirt,/obj/effect/decal/cleanable/blood/drip,/turf/simulated/floor/tiled/freezer,/area/jungleplanet/junglestructure/residential/toilet)
@@ -2491,19 +2491,19 @@ amaAaAaAaAbmbmRsaAaAaARtRvRyRvRtbmRHRBaAaAaAaAaAaAaAaAaAaAaAaAevevevevevevkOaBew
 amaAaAaAaAbmaAaAaAaARvRYaAaAFWRvRARtRBaAaAaAaAaAaAaAaAaAaAaAevevsFaBevevUxevevaBaBaBaBaBaBeweMeMeMeMlPlPlPfPfPfPhyhyfPeMeMeMeMeMeMeMdzdzdzdzdzdzdzdzdzdzdzdzdzdzdzdzdzdzcUgWcQgZhahbehgFcUbDbFbGbJbLhlgVaxaxbPdCbWaxhmhmhmhmhmhmarbZbcbcctctcucvawawcwawawawawawawvvvvvvvvvvvvdEdEdEvvvvvvvvvvvvvvvvvvvvvvam
 amaAaAaAaAbmaARuREaARHaAaAaAaARIRFRKaAaAaAaAaAaAaAaAaAaBaBaBevevevUyaBaBevevevevevevevaBaBaBeMeMlPlPlPlPlPlPfPfPhyfPfPlPlPlPaaeMCleMeMeMeMdzdzdzdzdzdzdzdzdzhnhnhnhnhnhncUgUhpgYhdhshphecUczcGhxhxaThxbNcNbObObMcbaxdmdBhGhLhGhNardDbrbAbBdFdHdJawdNdSdSdWdOdPdQawdRdEdEdEdEdEdRdRdRdRdEdEvvvvvvvvvvvvvvvvam
 amaAaAaAaAbmbmbmbmaAbmRHaAaAaAaAaAaAaAaAaAaAevevevaBaBUzeveveDUxevevaBevevevevUAeveOevevkOaBeMrKlPlPlPlPlPlPfPhyhyfPfPfPlPlPlPlPeMeMeMlPlPlPlPdzdzdzdzdzdzdzhnhohqhrhthOcUhPhYhZhUhUiahWcUdXiciedYeefdgVfudTdVbRcCaxhfhgikijikijarhhhjbHbIhudHhvawhBdSdLhCdLdSdZawdRdRdRdRdEdRdReadRdRdRdEdEvvvvvvvvvvvvvvam
-amaAaAaAaARwRxbmRGaAaARtaAaAaAaAePePeveveQeXeXeXeXeXeXeXeXeXeXeXeXeXeXfbevUBevevevevevevevevlPlPlPlPlPlPlPfPfPhyfPfPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPdzdzdzhnhXilimimincUiririqisiFirircUgViAiAiBgVgVgVaxaxcahHhKaxhMaecBcFiEiDarbZcPbKbcbKibcxawecdLdLedifdSefaweadRdRdRdRdReaVeeaeadRdRdEvvvvvvvvvvvvvvam
-amaAaAaAaAaARMRzaAaAaARNffePePePfpeXROeXfqfrfrfrfrfrfrfrfrfrfrfrfrfrfrfseXfbevevftevevUxevevfylPlPUClPlPChlPfMfMfPlPCilPlPlPlPlPlPlPlPlPlPlPlPlPlPeMlPlPdzdzhnjbjdjejgjjcUjfjkjhjljrjvjBcUjnebjqjCegjscHjDejfegPhIgEigihhkiiioiuhzhJiCjcjtjxjyjHjJleundSeAfmdLhihieaeaeaeadRhDeaeaeaeadRdRdRvvvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAaAffffePRPeXRQfqfrfrfrfrfrfrfrfrfAfBfBfBfBfBfBfBfBfCfrfrfseXfbevevfKevevevlPlPlPlPlPlPlPeMeMfMeMlPlPlPlPlPlPlPeMeMlPCjlPlPCklPeMKXeMlPdzdzhnjAjNimsEsHcUttuguhuiujulumcUukjsjsjsurjsusuthEiPuwuCaxiZuojijEjTcTarbSkcsDbUbVbSbSawCRupDoDzuIDAjKeaeaeaeaeadReaeaeaeaeaeadRdRvvvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAaAePePfpfqfrfrfrfrfAfBfBfBfBfBfBfNfZfZfZfZfZfZfZfZglfBfCfrfrfsfbevevevevUDlPlPlPlPlPlPlPlPeMCleMeMlPlPlPlPCmeMeMKXeMeMlPlPlPeMeMeMlPlPdzdzhnuquJuOuPvQCKCLCMDMDMCPCQDcDSDeDpDBDIDJDTDKJXDduQQkitaxuEuFuSDnhmuGarwkdIbTbXCUCVbYawDfDgjmjojuhigDKsKsKsKsKsKsuujzeaeajIeadRdRvvvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAaAePfpfqfrfrfAfBfBfNfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfrfsfbevUxevevlPlPlPlPlPCnlPlPeMeMeMeMlPlPlPlPlPlPOROSeMlPlPlPlPOTeMlPlPdzdzdzhnuHQmQojeQpQrQwQDuKuLQEuLQIuNQJQKQLDLQiQjQMQMhEDhbajUaxDiuRuRDmhmuTarQlQUbTbXCUcccdawShsAjmhihihieaeasBeasCeaeajaKtjPeadRdRdRdRvvvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAaAePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfrhVevevevevlPCpjLkilPlPlPlPlPeMeMlPColPlPlPlPlPlPlPlPlPlPlPlPlPeMdzdzdzdzdzhnhnhnhnhnhncUQNQOQnQPhphpQQcUCOQRQSQTjMCSCTCTaxVfVgQqaxVmVnVoCWhmararQldIbTbXCUcVcdawawawawhieaeaeaeasBsIeasJsKsKsScmcmcmcmcmdRvvvvvvvvvvvvvvam
+amaAaAaAaARwRxbmRGaAaARtaAaAaAaAePePeveveQeXeXeXeXeXeXeXeXeXeXeXeXeXeXfbevUBevevevevevevevevlPlPlPlPlPlPlPfPfPhyfPfPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPlPdzdzdzhnhXilimimincUcKcKiqisiFcKcKcUgVflfliBgVgVgVaxaxcahHhKaxhMaecBcFiEiDarbZcPbKbcbKibcxawecdLdLedifdSefaweadRdRdRdRdReaVeeaeadRdRdEvvvvvvvvvvvvvvam
+amaAaAaAaAaARMRzaAaAaARNffePePePfpeXROeXfqfrfrfrfrfrfrfrfrfrfrfrfrfrfrfseXfbevevftevevUxevevfylPlPUClPlPChlPfMfMfPlPCilPlPlPlPlPlPlPlPlPlPlPlPlPlPeMlPlPdzdzhnjbjdjejgjjcUjfjkjhjljrjvjBcUjnebjqjCeggDcHjDejfegPhIgEigihhkiiioiuhzhJiCjcjtjxjyjHjJleundSeAfmdLgGgGeaeaeaeadRhDeaeaeaeadRdRdRvvvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAaAffffePRPeXRQfqfrfrfrfrfrfrfrfrfAfBfBfBfBfBfBfBfBfCfrfrfseXfbevevfKevevevlPlPlPlPlPlPlPeMeMfMeMlPlPlPlPlPlPlPeMeMlPCjlPlPCklPeMKXeMlPdzdzhnjAjNimsEsHcUttuguhuiujulumcUukgDgDgDurgDusuthiiPuwuCaxiZuojijEjTcTarbSkcsDbUbVbSbSawCRupDoDzuIDAhEeaeaeaeaeadReaeaeaeaeaeadRdRvvvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAaAePePfpfqfrfrfrfrfAfBfBfBfBfBfBfNfZfZfZfZfZfZfZfZglfBfCfrfrfsfbevevevevUDlPlPlPlPlPlPlPlPeMCleMeMlPlPlPlPCmeMeMKXeMeMlPlPlPeMeMeMlPlPdzdzhnuquJuOuPvQCKCLCMDMDMCPCQDcDSDeDpDBDIDJDTDKJXDduQQkitaxhRuFkfkphmuGarwkdIbTbXCUCVbYawDfDgjmjojugGirKsKsKsKsKsKsuujzeaeajIeadRdRvvvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAaAePfpfqfrfrfAfBfBfNfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfrfsfbevUxevevlPlPlPlPlPCnlPlPeMeMeMeMlPlPlPlPlPlPOROSeMlPlPlPlPOTeMlPlPdzdzdzhnuHQmQojeQpQrQwQDuKuLQEuLQIuNQJQKQLDLQiQjQMQMhiDhbajUaxDiuRuRDmhmuTarQlQUbTbXCUcccdawShsAjmgGgGgGeaeasBeasCeaeajaKtjPeadRdRdRdRvvvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAaAePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfrhVevevevevlPCpjLkilPlPlPlPlPeMeMlPColPlPlPlPlPlPlPlPlPlPlPlPlPeMdzdzdzdzdzhnhnhnhnhnhncUQNQOQnQPhphpQQcUCOQRQSQTjMCSCTCTaxVfVgQqaxVmVnVoCWhmararQldIbTbXCUcVcdawawawawgGeaeaeaeasBsIeasJsKsKsScmcmcmcmcmdRvvvvvvvvvvvvvvam
 amaAaAaAaAaAaAaAaAaAevgtfrfrfAfNfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrhVevevevevCpCpCICpCpCplPlPlPlPCqlPlPlPCrCsCtCtCtCtCtCtCtCuCvlPuxuxuxuxuxdzdzdzdzdzdzdzcUCXCYCZQVQWhptdcUDbQsQsQsQXCSQYCEaxuAuDuMaxVrVsVtVuhmarVvVwKEsDVxbVVqVycAarvvvveaeaeaeasIsBDqeaDrDsDstykXEicDcWcmdRdRvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAaAeQfqfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfsfbevevkUCDCpCpCpCpCplPlPlPlPlPlPCsCtCtCwlPlPDtDtDtDtDtCxlPtruxDuDvDwuxdzdzdzdzdzdzdzcUDjDkDlQtQuQZwvcUCSQvRaQxCSCSCEQYaxaxQyaxaxuEuEhmhmhmarVzuvcIVAbXcKcLcMVBarvveaeaeaeaeasBsBsBeaDrDsDxDycmcOcXfwcmdRdEvvvvvvvvvvvvam
-amaAaAaAaAaAaAaAaAevgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrhVeDevevlPCpCpCpCylPlPCzCsCtCtCtCwlPlPlPlPlPDtKKtRKMDtCACBuWuxHfDDDEuxdzkVkWdzdzdzdzcUcUcUcUcUQzQzcUcUCpCpCDQACplnCECEpMsBsIsBsGsBsIvvvvvvararvBcKarcRarcKcKararvveaeaeaDFDqsBsIeaDGDrDsDHeacSwWPSVHcmdEdEvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAaAeQfqfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfsfbevevkUCDCpCpCpCpCplPlPlPlPlPlPCsCtCtCwlPlPDtDtDtDtDtCxlPtruxDuDvDwuxdzdzdzdzdzdzdzcUDjDkDlQtQuQZwvcUCSuSDnQvCSCSCEQYaxaxiAaxaxhRhRhmhmhmarVzuvcIiGbXiVcLcMVBarvveaeaeaeaeasBsBsBeaDrDsDxDycmcOcXfwcmdRdEvvvvvvvvvvvvam
+amaAaAaAaAaAaAaAaAevgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrhVeDevevlPCpCpCpCylPlPCzCsCtCtCtCwlPlPlPlPlPDtKKtRKMDtCACBuWuxHfDDDEuxdzkVkWdzdzdzdzcUcUcUcUcUjsjscUcUCpCpCDQACplnCECEpMsBsIsBsGsBsIvvvvvvararjKiVarcRariViVararvveaeaeaDFDqsBsIeaDGDrDsDHeacSwWPSVHcmdEdEvvvvvvvvvvvvam
 amaAaAaAaAaAaAaAaAePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfsfbevevlPlPlPlPlPCsCtCtCwlPlPlPlPlPlPlPlPCDDtKPKQKiDtDawwCCKOKWDNDOuxkWkVkVsMkVkVdzdzdzdzdzdzlPlPsNCpCDCpCplPlPwsCECEDHwteasBsIsBsBDqDCKmKAKmjSsKwyDswzsKwAeawBeaeajzeaeaeasBsJsKsKDPDsDHeacScSwWVIcmdEdRvvvvvvvvvvvvam
 amaAaAaAaAaAaAaAaAePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCfrfrhVevevlPCjlPCsCtCwlPlPlPlPCFlPeMlPlPCGlPCpDtabDRDQKqLaCECHuxuxuxuxuxkVkVkVkVkVkWkVkVkVlPlPlPlPwCwDCBCBCBCBCBCBwEQYCEwzsKsKsKsKsKsKsKsSsKsKsKDPDsDsDsDsDswzsKsKsKsKsKsKsKsKsKDPDUDVDWDsDHeacYcScScmcmdRdRvvvvvvvvvvvvam
 amaAaAaAaAaAaAaAePePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfrwGwGCtCtCtCwlPlPlPlPlPrKlPeMeMeMlPlPCpCpDtDXDYDZDtwHCEwICBCBCBwJCBCBCBCBCBCBCBCBCBCBCBCBCBCBCBwECECECECECECECECECEDsDsDsDsDsDsDsDswlDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDHsBEasIsBeadRdRdRvvvvvvvvvvvvam
-amaAaAaAaAaAePffffePwLwMfrfrwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfrfbevlPlPlPlPlPlPlPlPlPlPeMeMlPlPlPlPCICpDtDtDtEbDtCECECECECECECECECECECECECECECECECECECEQYCECECEQBCECECEQYCECECECEDsDsDsRbDsDsDsDswlDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDHeasBeaeaeaeaeadRvvvvvvvvvvvvam
+amaAaAaAaAaAePffffePwLwMfrfrwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfrfbevlPlPlPlPlPlPlPlPlPlPeMeMlPlPlPlPCICpDtDtDtgIDtCECECECECECECECECECECECECECECECECECECEQYCECECEQBCECECEQYCECECECEDsDsDsRbDsDsDsDswlDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDsDHeasBeaeaeaeaeadRvvvvvvvvvvvvam
 amaAaAaAaAevePePffePePgtfrfrfrgSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfrhVevlPCJlPUElPlPChlPlPCJlPlPlPlPlPlPCpCpCDwPhywQwRwSwSwSwSwSwSwSwSwSwSwSwSwSwSwSwSwTwSwSwSwSwSwUCECEwVwSwSwSwSwSwSDyDyVJRcDxDyDyDywuEcEcEcEcEdDsDsDsEcEcEcEcEcDyDyDyEcEcEcEcEdDsDsDsEeEfEfEfEfeaeaEgdRvvvvvvvvvvvvam
 amaAaAaAwYwZevePffePePwLwMfrfrwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSfrfrfrhVUyeMlPlPlPlPlPfPfPfPfPfPlPlPlPlPlPlPCpdzdzdzxbxcxdxexflPxglPlPlPlPlPlPlPlPlPdzaUaUaUaUaUaUaUavcfcfcgchaFaFaIaKaLaKaIaNaOaQaRaFaSwFcZdadadbdcdadadadddddedacZEheabdcZdfdgdadadadadadadadadacZEheaeadRvvvvvvvvvvvvam
 amaAaAaAFhFievePffffePePFjwMfrfrwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkFlfrfrfrhVeveMlPlPlPfPfPfPfPhyhyfPfPCkfPfPlPlPdzdzdzdzdzfPlPFmFnFnFnFnFnxelPFolPlPdzdzdzaUbgaUVCblbhaUcicfcfcgckbkcecjcjcjcjcjgRRdjRlfaFlgwKdadadadadadadadadadhdadadaEheabddidjdkdldndpdqdsdtdvdadadaEheaeaeavvvvvvvvvvvvam
@@ -2515,36 +2515,36 @@ amFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFBFCFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZgl
 amFAFAFAFAFAFAFAFAFAFAFAFAFAFAFAFwFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZglfCFuFuFuFufWfWfWfWfWgcfQfRgdfEfGfGfHfHfHfHgkgkgkgkfHfHfHfHfHesesesesesFrCkkVkVepetetetetetdwdwchchwXdocfRecgeNaFaNLALBaOaOtVLCJQubJRaFlgwKdadadadadadadadadadadadadafJfOfVdadaemereudpeydsezereqdadaEheadRdRdRvvvvvvvvvvam
 amFAFAFAFAFAFAFAFAFEFEFEFEFAFAFAFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFGgAgAgAgKfWfWfWkLfEfEfEfEfEfEfEgkgkgkfEfEkMfGfHfHfHeseBeCeEesgngpgqgrgreteFeGeHetdwgvchchwXdocfcfclcncjtQtSLDaOJStWLEaQaFaFaFlgCNdadadadadadadadadadadadadakNeafVdadadaemdMeIeieIdMeqdadadaEheadRdRdRvvvvvvvvvvam
 amFAFAFAFAFAFAFAFHFEFEFEUGFFFFFFFIFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFyUHfEfEkPgAgKfWkLfEfEfEfEfEkMfEfEfEfEfEfEfEfGfGfHfHeseseJesesgnchgwgrgreteteKetetgvgvcheNwXdocfQCcfcfaOaOaOaORdLFLGtSaQaFaFaFRhwKdadadadadadadadadadadadadaEheafVdadadadadMeIeLeIdMdadadadaEhdRdRdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFAFHFHFEFEFEFEFEFFFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEkRfWgcfRfEfEfEfEfEfEfElafEUIfEfGfGgxdwdweseReSeTesgzcncncngJeteUeVeWetgvchchchwXdocfcfdrduububububububububRiaFJVaFaFwKdadadadadadadadadadadadadaEheavmdadadadaemwnfaGMeqdadadadaEkdRdEdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFAFHFLFLFMFLFMFLFLFFFDFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkULkRfWfWkLfEvrfEfEvsvsfEfEfEfEfGfGgxgxgOdwesfcHRJTfgkTkZkZkZkZfhjOLvfjetgvchchchwXdocfcfcgchaFueaFlglgaFJYaFJWKHjQjQjQvUdadadadadadadadadadadadadaEheabddadadadadaemfkeqdadadadadaEkdEdEdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFAFHFLFNFOFPFQFRFLFwFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEvyfEgkkPgKfWkLfEfEfEvsvzvsvsvskMfGfGfGgxgOgOchflgBgCLgesldcJcfdrduetLhLiLjgGOUlklklkLrllkZkZlmlklktkRCRDgIgIgHgIkpgHgHaFaFKchQdadadadadadadadadadadahQEheabdhQdadadadadadadadadadadahQEkdRdRdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFAFEFMFSFTFUFVRSFMFwFDFuFuFXfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEfEkRfWkLfEfEfEvsvsvAvshRhRhRhShShSgOchcheshTidizflltdocfcglHiGiHiIiJetwXchlIOxchdocfcfcgchgvlJgHiKlEiMiNiOHQiQgHaFaFaFRlvMvMvMvMvMvMvMvMvMvMvMvMeaeaeavMvMvYvYvYvYvYvMvMvMvMvMvYdRdRdRdEvvvvvvvvvvvvam
-amFAFAFAFAFAFAFEFEFLFYFUFUFZGaFMFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfFfEfEfEkRfWkLfEwcfEfEvsvsvzhRiRiSiTiUhSchlKlLesesiVflfllHdocfcgpziGiGiGetetwXchOxHochdocfcfcglKchKGgHiWlDlCthkaJZLlgHgIgIgIeaeaeaeaeaeaeaeaImfOfOeaeaeaIteadRdRdRdEdEdRdRdReaeaeaeaeaeaeadRvvvvvvvvvvvvvvam
-amFAFAFAFAFAFAFEFEFLGbFVFTGcGdFMFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkFlFuFuFuFukQfEfEfEfEfEkRfWkLfEfEfEfEvsvsvshRjwjGKDLnLolklklkpAlkqaqklHltdocfcglHpzlHchchqlwXqmqocncncicfcfclPKPMKutftjtAtlkltnkxQFgHjVjWgIeaeadRdReaDGeafOfOfOfOfOfOeadRdRdRdRdEdEdRdReaeaeaeaeaeafOfOeadRvvvvvvvvvvvvvvam
-amFAFAFAFAFAFAFEFwFMGeGfFVFUGgFMGhGiFCFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFGIFfEfEIGfEIHkRfWgcfRfEfEfEfEvsvshSjXjGLpjYhSsLcncncncncncncncncicfclcncncncisOUbKrPNcisTsVsWcfcfcfPOPPPQjZtitmwxiYKvOyvbkbOZkdgHdRdRdRdRdRkekekfkekekekfkekekekfkekedEdRdReaeaeaeaeaeafOIIfOeadRvvvvvvvvvvvvvvam
-amFAFAFAFAFAFAFEFwFLGkGlGmFUFUFLFFUMFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGnfEIJIGIGUNfEkRfWfWkLfEUIfEIKvsvshSkgkhLqkjkkcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfKwcfPwPtcfcfcfcfcfPRcfVNPTtiOriXiYkmknkogHRmkqgHdRdRsXsXsXkekrkskukekrkskukekrkskukekekfkfkfkfeaeafOsCeafOeaeaeavvvvvvvvvvvvvvam
-amFAFAFAFAFAFAFwFwFLFLGoFLFLGpFLFFGqFDFuFuwNwOfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGrGnFwIGIGUOIGIGfEkPgKfWkLfEfEfEvAvzhShSkvhShSkwhShSdudududududucJcfcfcfcfcfdrdudududuKxPUdududucJcfcfdrPVPWsYHCiKOrPYPZiXOwiLgHkykzgHsXsXsXsZsZkekAkskBkekCkskDkekEkskFkekGkHkIkJkfkffOfOfOfOfOeaeaeaeavvvvvvvvvvvvam
-amFAFAFAFAFAFAFwFwFLGsFVGtFLGuGvFwFwFBFCFuFuwNGjGjGjwOfZfZfZfZFkGjGjFlFuFuFuFGGrGrGrGnFwFwFwfEfEfEIGfEfEfEkRfWkLfEfEfEvsvshSkKlblchSlhlihSchtachchchchdotMcftPcfcfcgchchchKSqachchchchPXcfcfcgchchgrgHljQaiLQbvbiLQGgHlogHgHufsZsZsZsZkekelpkekekelqkekekelpkekelrlulvlwlxkffOfOIIfOeaeaeaeaeavvvvvvvvvvvvam
-amFAFAFAFAFAFAFwUPFLGwGlGxFLGuGvFwFwFwFDFuFuFuFuFuFuwNGjGjGjGjFlFuFuFuFGGrGrGnFwFwFwFwFwFwFwfEfEfEfEfEfEfEkRfWgcfRfEfEfEvshShSlylzhSlAlBhRgOchuYchchchdovJcfcfcfcfcgchchvKwXvNvOeNchchPXPocfcgchvSgrgHQcQaQdvbQeQfQggHvVRnvZwbsZsZwdwpkflFlGlGowlGlGpyqnqulGlGsQsRlGlGlGsUkfeafOfOearMeaeaeaeavvvvvvvvvvvvam
-amFAFAFAFAFAFAFwFwFLFMFLFMFLGyGzFwGAUQFBFCFuFuFuFuFuFuFuFuFuFuFuFGGrGrGnFwFwFwFwGBFwFwFwFwFwgdURfEfEILfEfEkRfWfWkLfEgdfEfEfEhShShShSlhlihSgOgOgOgOFJchdoFKcfGZHaHbcgchchtbKytctctcgrchdocfcfcgchHcgHgHgHKBtePetgQhgHgHgHHdHewbwpwpwpKTtotpLttqtztYLtLtHlLtLtLtHmHnLtLtLutskfeaeafOeaeaeaDFeadRdRvvvvvvvvvvam
-amFAFAFAFAFAFAFwFwGCGDGEGDGCFwFwFwFwGAFwFBFCFuFuFuFGGrGrGrGrGrGrGnFwFwUSFwFwFwFwFwFwFwGFFwFwfEfFfEfEfEgkUTkPgKfWgcfRfEfEfEfEvsvsvzhShShShSgxgxgOgOgOHgHhcJcfHiduduHjchchtbKFtutvtcgrHkdocfcfcgchchgHtwtxtLPfKaPgtBtCtDgHOIKzLcHDLdLdKbkeketEkekeketFkekeketFkeketGlGlGLwtHkeeaeaeaeaeadRdRdRdRdRvvvvvvvvvvam
-amFAFAFAFAFAFwGGFwFwFwFwFwFwFwFwFwFwUUGAFwFBGrGrGrGnFwFwFwUVGAFwFwFwFwGAGAFwFwFEFwFwFwFwFwGAfEfEfEfEgkgkgkgkkRfWfWgcfRfEfEfEfEvsvsvAvsHpHqgOgxgxgOgOgOchdocfcgchchgvHrgvtbKFtItJtcgrgrdocfcfcgHrgvPhtKtBtBVOPiPjPfPkQHLeOJHswbwpwpTPKJketZksuakeuyksuzkeuBksuUkekeuVuVkekekekekekedRdRdRdRdRdRIMINININININam
-amFAFAFAFAFLFLFLGHGIGAFwFwFwFwFwFwFwFwFwFwFwFwFwGJFwFwFwFwFwUWGAFwGKGAGAFwFwFwFEGLFwViUUGAGAIGfEfEfHfHfHUegkkPgKfWfWgcfRfEfEIOfEvsIPvzchchgOgOgOgOgOchchdocfcgHtHugvgvgvtbKNEjuXtcHvchdocfcfcggvPlPmuZPnvcvdvevfvhvivjgHvVHwHxwpwpwpwpkekukskukekukskukekukskukevkvlvtvukevxkevxkedRdRdEdEIMIMIMINININININam
-amFAFAFAFAFLVLGpGuGvUUGAFwUXFwFwFwFwGBFwFwFwFwGJGJGNFwFwFwFwFwGAFwUYGAFwFwFwFEFEFEFEFEFwGAUWfEfEfHfHfHfHfHgkfEkPgKfWfWgcfQfRfEfEfEfEfEtachchgOgOchchchchdocfcgtctctbtctctctcLktctcgrchdocfPocgHygvPpPqPrPsgHgHgHgHgHgHgHvVwbwpwpwpwpHzkekekfkekekekfkekekekfkekevCvDvEvFkevGkevHkeIMIMIMIQIMIMIQINININININam
-amFAFAFAFAFLFLFLGyGzFwFwFwGAGAGAGOFwGAUZFwFwFwGJGJGJFwGPFwFwGQFwFwFwUUFwFwGOFwFEFHFHFEFEFAFAfHfHfHfHfHfHfHfEIKfEkPgKfWfWfWgcfQfQfQfQfQHAchHBchchchlIchqocicfcgtcvIErEtKUKVENEVvWtbcncncicfPtPuchgvPvwpwpHWTQHWTRHWHWHEHFvVwbwpHGwpwpwpwpwpHHwpwpwpHIHJHKHIHJHKkevXvDvEwewfwgwhwikeIQIQIRIQIQIQISINININININam
-amFAFAFAFAFAFwFwFwFwFwFwFwVhGAFwFwGAGAGAGAFwGRFwGJGSFwGNGJFwFwFwFwFwFwFwFwFwFEFEFHFAFAFAFAFAfHfHfHfHfHfHfHfGfGfEfEVagAgKfWfWfWfWfWfWfWclcncncncncncncncicfRecgLfwjLmLxtcOBwmvTFdvRcfcfcfcfPwclcncnHLPxPyHLHLHLHLHLHLHLHMvVHNHLHLHLHLHLHLHLHLHLHLHLHLHLHLHLHLHOkevCvDvEvukewowgyDkeIQIQIQITITIUIVINININININam
-amFAFAFAFAFAFAFwGAFwFwFwGTGAGAFwGAUUFwFwFwFwGJGNGJGJGJGJFwFwFwVbFwFwFwFwGAUYGUFAFAFAFAFAFAFAfHfHfHfHfHfHfHfHfGfGgkVcgkkPgAgAgAgAgAgKfWcfcfcfcfcfcfcfcfcfcfdrOCKCSiKZTJtbElEmFdEntbduducJcfcfcfcfcfvVPzvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVEovlEpvEvukekeEqkekeTSITITITITTSIVINININININam
+amFAFAFAFAFAFAFAFHFHFEFEFEFEFEFFFFFDFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEkRfWgcfRfEfEfEfEfEfEfElafEUIfEfGfGgxdwdweseReSeTesgzcncncngJeteUeVeWetgvchchchwXdocfcfdrduububububububububRiaFJVaFaFwKdadadadadadadadadadadadadaEheavmdadadadaemjYfalveqdadadadaEkdRdEdEvvvvvvvvvvvvam
+amFAFAFAFAFAFAFAFHFLFLLfFLLfFLFLFFFDFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkULkRfWfWkLfEvrfEfEvsvsfEfEfEfEfGfGgxgxgOdwesfcHRJTfgkTkZkZkZkZfhjOLvfjetgvchchchwXdocfcfcgchaFueaFlglgaFJYaFJWKHjQjQjQvUdadadadadadadadadadadadadaEheabddadadadadaemfkeqdadadadadaEkdEdEdEvvvvvvvvvvvvam
+amFAFAFAFAFAFAFAFHFLFNFOFPFQFRFLFwFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEvyfEgkkPgKfWkLfEfEfEvsvzvsvsvskMfGfGfGgxgOgOchwngBgCLgesldcJcfdrduetLhLiLjEbOUlklklkLrllkZkZlmlklktkRCRDoWoWgHoWtbgHgHaFaFKchQdadadadadadadadadadadahQEheabdhQdadadadadadadadadadadahQEkdRdRdEvvvvvvvvvvvvam
+amFAFAFAFAFAFAFAFELfFSFTFUFVRSLfFwFDFuFuFXfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfEgkfEfEkRfWkLfEfEfEvsvsvAvsFMFMFMhShShSgOchcheshTidizwnltdocfcglHGMiHiIiJetwXchlIOxchdocfcfcgchgvlJgHiKlEiMiNiOHQiQgHaFaFaFRlvMvMvMvMvMvMvMvMvMvMvMvMeaeaeavMvMvYvYvYvYvYvMvMvMvMvMvYdRdRdRdEvvvvvvvvvvvvam
+amFAFAFAFAFAFAFEFEFLFYFUFUFZGaLfFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZkSFuFuFuFukQfEfFfEfEfEkRfWkLfEwcfEfEvsvsvzFMiRiSiTiUhSchlKlLesesKjwnwnlHdocfcgpzGMGMGMetetwXchOxHochdocfcfcglKchKGgHiWlDlCthkaJZLlgHoWoWoWeaeaeaeaeaeaeaeaImfOfOeaeaeaIteadRdRdRdEdEdRdRdReaeaeaeaeaeaeadRvvvvvvvvvvvvvvam
+amFAFAFAFAFAFAFEFEFLGbFVFTGcGdLfFFFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkFlFuFuFuFukQfEfEfEfEfEkRfWkLfEfEfEfEvsvsvsFMjwjGKDLnKylklklkpAlkqaqklHltdocfcglHpzlHchchqlwXqmqocncncicfcfclPKPMKutftjtAtlkltnkxQFgHjVjWoWeaeadRdReaDGeafOfOfOfOfOfOeadRdRdRdRdEdEdRdReaeaeaeaeaeafOfOeadRvvvvvvvvvvvvvvam
+amFAFAFAFAFAFAFEFwLfGeGfFVFUGgLfGhGiFCFuwNwOfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFGIFfEfEIGfEIHkRfWgcfRfEfEfEfEvsvshSjXjGLpmZhSsLcncncncncncncncncicfclcncncncisOUbKrPNcisTsVsWcfcfcfPOPPPQjZtitmwxiYKvOyvbkbOZkdgHdRdRdRdRdRkeketokekeketokekeketokekedEdRdReaeaeaeaeaeafOIIfOeadRvvvvvvvvvvvvvvam
+amFAFAFAFAFAFAFEFwFLGkGlGmFUFUFLFFUMFDFuFugSfZfZfZfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGnfEIJIGIGUNfEkRfWfWkLfEUIfEIKvsvshSkgkhLqkjkkcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfKwcfPwPtcfcfcfcfcfPRcfVNPTtiOriXiYkmknkogHRmkqgHdRdRsXsXsXkekrkskukekrkskukekrkskukeketotototoeaeafOsCeafOeaeaeavvvvvvvvvvvvvvam
+amFAFAFAFAFAFAFwFwFLFLGoFLFLGpFLFFGqFDFuFuwNwOfZfZfZfZfZfZfZfZfZfZfZFkGjFlFuFuFuFuFuFGGrGnFwIGIGUOIGIGfEkPgKfWkLfEfEfEvAvzhShSkvhShSkwhShSdudududududucJcfcfcfcfcfdrdudududuKxPUdududucJcfcfdrPVPWsYHCiKOrPYPZiXOwiLgHkykzgHsXsXsXsZsZkekAkskBkekCkskDkekEkskFkekGkHkIkJtotofOfOfOfOfOeaeaeaeavvvvvvvvvvvvam
+amFAFAFAFAFAFAFwFwFLGsFVGtFLGuGvFwFwFBFCFuFuwNGjGjGjwOfZfZfZfZFkGjGjFlFuFuFuFGGrGrGrGnFwFwFwfEfEfEIGfEfEfEkRfWkLfEfEfEvsvshSkKlblchSlhlihSchtachchchchdotMcftPcfcfcgchchchKSqachchchchPXcfcfcgchchgrgHljQaiLQbvbiLQGgHlogHgHufsZsZsZsZkekelpkekekelqkekekelpkekelrlunalwlxtofOfOIIfOeaeaeaeaeavvvvvvvvvvvvam
+amFAFAFAFAFAFAFwUPFLGwGlGxFLGuGvFwFwFwFDFuFuFuFuFuFuwNGjGjGjGjFlFuFuFuFGGrGrGnFwFwFwFwFwFwFwfEfEfEfEfEfEfEkRfWgcfRfEfEfEvshShSlylzhSlAlBFMgOchuYchchchdovJcfcfcfcfcgchchvKwXvNvOeNchchPXPocfcgchvSgrgHQcQaQdvbQeQfQggHvVRnvZwbsZsZwdwptolFlGlGowlGlGpyqnqulGlGsQsRlGlGlGsUtoeafOfOearMeaeaeaeavvvvvvvvvvvvam
+amFAFAFAFAFAFAFwFwFLLfFLLfFLGyGzFwGAUQFBFCFuFuFuFuFuFuFuFuFuFuFuFGGrGrGnFwFwFwFwGBFwFwFwFwFwgdURfEfEILfEfEkRfWfWkLfEgdfEfEfEhShShShSlhlihSgOgOgOgOFJchdoFKcfGZHaHbcgchchLoOAtctctcgrchdocfcfcgchHcgHgHgHKBtePetgQhgHgHgHHdHewbwpwpwpKTuEtpLttqtztYLtLtHlLtLtLtHmHnLtLtLutstoeaeafOeaeaeaDFeadRdRvvvvvvvvvvam
+amFAFAFAFAFAFAFwFwGCGDGEGDGCFwFwFwFwGAFwFBFCFuFuFuFGGrGrGrGrGrGrGnFwFwUSFwFwFwFwFwFwFwGFFwFwfEfFfEfEfEgkUTkPgKfWgcfRfEfEfEfEvsvsvzhShShShSgxgxgOgOgOHgHhcJcfHiduduHjchchLoKFtutvtcgrHkdocfcfcgchchgHtwtxtLPfKaPgtBtCtDgHOIKzLcHDLdLdKbkeketEkekeketFkekeketFkeketGlGlGLwtHkeeaeaeaeaeadRdRdRdRdRvvvvvvvvvvam
+amFAFAFAFAFAFwGGFwFwFwFwFwFwFwFwFwFwUUGAFwFBGrGrGrGnFwFwFwUVGAFwFwFwFwGAGAFwFwFEFwFwFwFwFwGAfEfEfEfEgkgkgkgkkRfWfWgcfRfEfEfEfEvsvsvAvsHpHqgOgxgxgOgOgOchdocfcgchchgvHrgvLoKFtItJtcgrgrdocfcfcgHrgvPptKtBtBVOPiPjPfPkQHLeOJHswbwpwpTPKJketZksuakeuyksuzkeuBksuUkekeuVuVkekekekekekedRdRdRdRdRdRIMINININININam
+amFAFAFAFAFLFLFLGHGIGAFwFwFwFwFwFwFwFwFwFwFwFwFwGJFwFwFwFwFwUWGAFwGKGAGAFwFwFwFEGLFwViUUGAGAIGfEfEfHfHfHUegkkPgKfWfWgcfRfEfEIOfEvsIPvzchchgOgOgOgOgOchchdocfcgHtHugvgvgvLoKNEjuXtcHvchdocfcfcggvPlPquZPnvcvdvevfvhvivjgHvVHwHxwpwpwpwpkekukskukekukskukekukskukevkvlvtvukevxkevxkedRdRdEdEIMIMIMINININININam
+amFAFAFAFAFLVLGpGuGvUUGAFwUXFwFwFwFwGBFwFwFwFwGJGJGNFwFwFwFwFwGAFwUYGAFwFwFwFEFEFEFEFEFwGAUWfEfEfHfHfHfHfHgkfEkPgKfWfWgcfQfRfEfEfEfEfEtachchgOgOchchchchdocfcgtctcLotctctctcLktctcgrchdocfPocgHygvPrPsQxRagHgHgHgHgHgHgHvVwbwpwpwpwpHzkeketokekeketokekeketokekevCvDvEvFkevGkevHkeIMIMIMIQIMIMIQINININININam
+amFAFAFAFAFLFLFLGyGzFwFwFwGAGAGAGOFwGAUZFwFwFwGJGJGJFwGPFwFwGQFwFwFwUUFwFwGOFwFEFHFHFEFEFAFAfHfHfHfHfHfHfHfEIKfEkPgKfWfWfWgcfQfQfQfQfQHAchHBchchchlIchqocicfcgtcvIErEtKUKVENEVvWLocncncicfPtPuchgvPvwpwpHWTQHWTRHWHWHEHFvVwbwpHGwpwpwpwpwpHHwpwpwpHIHJHKHIHJHKkevXvDvEwewfwgwhwikeIQIQIRIQIQIQISINININININam
+amFAFAFAFAFAFwFwFwFwFwFwFwVhGAFwFwGAGAGAGAFwGRFwGJGSFwGNGJFwFwFwFwFwFwFwFwFwFEFEFHFAFAFAFAFAfHfHfHfHfHfHfHfGfGfEfEVagAgKfWfWfWfWfWfWfWclcncncncncncncncicfRecgPhwjLmLxtcOBwmvTFdvRcfcfcfcfPwclcncnHLPxPyHLHLHLHLHLHLHLHMvVHNHLHLHLHLHLHLHLHLHLHLHLHLHLHLHLHLHOkevCvDvEvukewowgyDkeIQIQIQITITIUIVINININININam
+amFAFAFAFAFAFAFwGAFwFwFwGTGAGAFwGAUUFwFwFwFwGJGNGJGJGJGJFwFwFwVbFwFwFwFwGAUYGUFAFAFAFAFAFAFAfHfHfHfHfHfHfHfHfGfGgkVcgkkPgAgAgAgAgAgKfWcfcfcfcfcfcfcfcfcfcfdrOCPmSiKZTJLoElEmFdEnLoduducJcfcfcfcfcfvVPzvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVEovlEpvEvukekeEqkekeTSITITITITTSIVINININININam
 amFAFAFAFAFAFAGAGAFwFwFwUYGAGAGAGAFwFwGKFwVdFAFAFAFAGNFwFwGVFwFwFwFwFwGAGAGAFAFAFAFAFAFAFAFAfHfHfHfHfHfHfHfHfGfGfGgkgkfEfEfEfEIWfEkPgAducJcfdrduduHPduduOGTKLstcFfKRKYtcEuEvEwExtcchgpdocfcfdrduduHSHSPAHSHSHSHSHSHSHTvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVvVEoEyEzvEEAkeEBECEDkeITITsPITITITININININININam
 amFAFAFAFAFAFAGAGAGWFwGqGAGAFwGXFwFwFwGAFwFAFAFAFAFAFAFAFwFwFwFwFwGYFwFwUSGAFAFAbebebebebeFAfHfHfHfHfHfHIXIXIXfGgkUefEIYfEfEfEfEfEfEfEchdocfcgHUgNtNgvtOOztctctctctcvRtctctcvRtctcHVqocicfcfcgchchwpHWHXHYHYHWHWTTHZHMvVvVHwHSHSHSHSHSHSHSHTIaIbIcHwHSHSHSHSIdkeEEvDvEEFkeEBEGEDkeIZITITITITITININININININam
-amFAFAFAFAFAFAGAUUGAGAFwFwFwFEFwFwFwGAGAGAFAasasasasFAFAFEUPFwFwFwFwFwFwGAFAFAbebeRVRWRWbebebefHfHfHfHfHfHIXIXfGfGgkfEfEfEUIVkfEfEfEfEchdocfcgIeKdKeKdKdOAtcEHEIEJtcEKELEMSaFdEOtcchdoIfcfcfcgchIgTUHYHYHYHYHYHXHZHMvVvVHwHxwpwpwpwpwpwpTVIhHSHSHSHxwpwpwpwpIikeEPvDvEEQkekekekekeJaIZITITJbITININININININam
-amFAFAFAFAFAFAGAGAGAFwFwFEFEFEFEFwGAUUFAFAFAasasasasFAFAFEFEFEFEFwFwFwFAFAFAFAbeScRRTzRZRRRRbebebebefHfHfHfHfHfGfGfGfEfGfGfGfEfEJcfEgkIgdocfcgHUKdKfKgKhODtcERESETEUTNvTTIvTEWEXtbIzdoIjcfcfcgvNchsZHYHYHYsZHWwpHFvVvVHwHxwpIksZwpwpwpwpwpwpHWHWwpwpwpwpwpwpIlkeEYEyEZEQkeIZIZIZIZIZJdIZITITITITINININININam
-amFAFAFAFAFAFAFAFEFwFEFEFEFEFEFEFEFAFAasasasasasasasasasFAFEFEFEFEFEFAFAFAFAFAbeSjRRbebebeRRRRSbRRbefHfHfHfHfHfHfHfHfHfHfHfGfGfGfEgkJechdocfcgchKjKkKkKlOEtctcFaFbtcFcTLFeTOTMOKtcchdosYcfcfcgchgOsZHYHYsZsZwpHZHMvVHwHxwpsZsZsZwpwpwpwpwpHWHWInHWwpwpwpIlIlIokekekeEokekeIZJfITITTWIZITITITITIVINININININam
-amFAFAFAFAFAFAFAFEFEFEFEFEFHFHFHFAFAFAasasasasasasasasasasFHFHFHFEFEasasbebebebeSqSdRRRRRRTzbebeRRbefHfHfHfHfHfHfHfHfHfHfHfHfHfGgkgkgkgvdocfcgchKdKnKoKpOFOHtctctctctctctbtbtctctcHvHhcJcfcfcgchgqsZsZsZsZIpwpHFvVvVwbsZsZsZsZwpwpwpIqwpIrHWHWHWHWHWwpIlIlIlIsIMJgJhJiLyIZIZIZJkJlJmJmJmJnITITIVINININININam
-amFAFAFAFAFAFAFAFEFEFEFHFHbibibiasasasasasasasasasasasasbibibibibiasasasbebebebebeSeSeSfbebebebeTAbebebebebebebebebebebefHfHfHgkJogkUegvdocfcgIuKdKdKjKdKjKdKdHppzHpchqlchchgrgrgrgrchdocfcfclcncnHLHLHLHLHLHLHMvVHwHxsZsXsXsZsZsZsZsZwpHYHYHYHYHYHWIlIvIlIwIxINIZJhJiJpITJqITJlJrJsJiJsJtJnIVJuINININININam
+amFAFAFAFAFAFAGAUUGAGAFwFwFwFEFwFwFwGAGAGAFAasasasasFAFAFEUPFwFwFwFwFwFwGAFAFAbebeRVRWRWbebebefHfHfHfHfHfHIXIXfGfGgkfEfEfEUIVkfEfEfEfEchdocfcgIeKdKeKdKdQytcEHEIEJtcEKELEMSaFdEOtcchdoIfcfcfcgchIgTUHYHYHYHYHYHXHZHMvVvVHwHxwpwpwpwpwpwpTVIhHSHSHSHxwpwpwpwpIikeEPvDvEEQkekekekekeJaIZITITJbITININININININam
+amFAFAFAFAFAFAGAGAGAFwFwFEFEFEFEFwGAUUFAFAFAasasasasFAFAFEFEFEFEFwFwFwFAFAFAFAbeScRRTzRZRRRRbebebebefHfHfHfHfHfGfGfGfEfGfGfGfEfEJcfEgkIgdocfcgHUKdKfKgKhODtcERESETEUTNvTTIvTEWEXLoIzdoIjcfcfcgvNchsZHYHYHYsZHWwpHFvVvVHwHxwpIksZwpwpwpwpwpwpHWHWwpwpwpwpwpwpIlkeEYEyEZEQkeIZIZIZIZIZJdIZITITITITINININININam
+amFAFAFAFAFAFAFAFEFwFEFEFEFEFEFEFEFAFAasasasasasasasasasFAFEFEFEFEFEFAFAFAFAFAbeSjRRbebebeRRRRSbRRbefHfHfHfHfHfHfHfHfHfHfHfGfGfGfEgkJechdocfcgchQzKkKkKlOEtctcFaFbtcFcTLFeTOTMOKtcchdosYcfcfcgchgOsZHYHYsZsZwpHZHMvVHwHxwpsZsZsZwpwpwpwpwpHWHWInHWwpwpwpIlIlIokekekeEokekeIZJfITITTWIZITITITITIVINININININam
+amFAFAFAFAFAFAFAFEFEFEFEFEFHFHFHFAFAFAasasasasasasasasasasFHFHFHFEFEasasbebebebeSqSdRRRRRRTzbebeRRbefHfHfHfHfHfHfHfHfHfHfHfHfHfGgkgkgkgvdocfcgchKdKnKoKpOFOHtctctctctctcLoLotctctcHvHhcJcfcfcgchgqsZsZsZsZIpwpHFvVvVwbsZsZsZsZwpwpwpIqwpIrHWHWHWHWHWwpIlIlIlIsIMJgJhJiLyIZIZIZJkJlJmJmJmJnITITIVINININININam
+amFAFAFAFAFAFAFAFEFEFEFHFHbibibiasasasasasasasasasasasasbibibibibiasasasbebebebebeSeSeSfbebebebeTAbebebebebebebebebebebefHfHfHgkJogkUegvdocfcgIuKdKdQzKdQzKdKdHppzHpchqlchchgrgrgrgrchdocfcfclcncnHLHLHLHLHLHLHMvVHwHxsZsXsXsZsZsZsZsZwpHYHYHYHYHYHWIlIvIlIwIxINIZJhJiJpITJqITJlJrJsJiJsJtJnIVJuINININININam
 amFAFAFAFAFAFAFAFAFHFHbibibibibnasasasasasasasasasasasbnbnbnbibibiasasasbebebebebebebebebebebeRRRRbebebebebebebebebebebefHfHfHfHgkfEgkgvdocfcgchchchchchHpIypzHpHpcheNchchchchgrgrIzchdocfcfcfcfcfvVvVvVvVvVvVvVvVwbsZsZsZsXsXsXsXsZHYHYHYHYHYHYHYHYIlHYHYHYHYINTSJhJiJtJmJmJmJrJiJiJiJiJiJpIVITINININININam
 amasasasasasasasasbibibibibnbwbnbnasasasasasasasasasasbnbnbnbnbnbnbnbnasbebebebebebebebebebebeRRbebebebebebebebebebebebebebebebegOchgvchdocfclcncncncncncncncncncncncncncncncncncncncncicfcfdrduduHSHSHSHSHSHTvVHwHxsZTPsZsZsZIAHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYINITJhJiJiJiJiJiJiJiJiJiJiJiJpTSTXINININININam
-amasasasasasasasasasbnbnbnbnbnbxbnbnasasasasbyasasasasbnbnbnbnbnbnbnbnbnbebebebebegaRTRRRRbeRRRRbebebebefLfLfLfLfLbebebebebebebegOgOchIBdocfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcgchICHWHWwpwpwpHFvVwbwpwpwpHWHWIAHWHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYINITJhJiJvTYJwJwJxJyJiJyJiJyJpITITINININININam
-amasasasasasasasasasbnbnbnbnbnbxbxfSasasasbxbxbxbxasbxbxbxbnbnbxfYbnbnbnfLbebebegafLRUbeRRSbTAbebebebefLfLgagagagagagagabebebefLgOgOgOchHhdududududududududududududududududududududududududuHjgrgrHYHYHYTPwpHFvVwbwpHWHWIDHWUfHWHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYINTZJhJiJtJmvLJzJAJwJwJwJwJwJBITITINININININam
+amasasasasasasasasasbnbnbnbnbnbxbnbnasasasasbyasasasasbnbnbnbnbnbnbnbnbnbebebebebegaOPRRRRbeRRRRbebebebefLfLfLfLfLbebebebebebebegOgOchIBdocfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcfcgchICHWHWwpwpwpHFvVwbwpwpwpHWHWIAHWHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYINITJhJiJvTYJwJwJxJyJiJyJiJyJpITITINININININam
+amasasasasasasasasasbnbnbnbnbnbxbxfSasasasbxbxbxbxasbxbxbxbnbnbxfYbnbnbnfLbebebegafLOWbeRRSbTAbebebebefLfLgagagagagagagabebebefLgOgOgOchHhdududududududududududududududududududududududududuHjgrgrHYHYHYTPwpHFvVwbwpHWHWIDHWUfHWHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYINTZJhJiJtJmvLJzJAJwJwJwJwJwJBITITINININININam
 amasasasasasasasasasbnbnbnbxbxbxbxgbgeasfSbxbxbxbxbxbxbxbxbxbxgfbxbnbnbnfLbebebefLfLbebebebebebebebebegagagagabEbEbEbEbEbEgagafLfLgOgOgOchchIEchchchchchchchchchchckchchchchchchchchchchdwdwdwdwdwHYHYHYHYsZHFvVwbwpUfHWHWHWHWHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYHYININJrUcJiJiJpTSITIVIVIVIVIVITJCITINININININam
 amasasasasasasasasasbnbnggbxbxbxbxbxfSfSfSbxbxbxghbxbxbxbxbxbxbxbnbnbnbifLfLbegagafLbebebebebebebebegagabEbEbEbEgibEgjgjbEbEgagafLfLgOgOgOIzchchchgqchchchchchchgvchchchlKchchchdwdwdwdwdwdwdwdwdwgmgmgmgmgogsgugygLgMgMgMUggMgmgmgmgmgmgmgmgmgmgmgmgmgmgmgmgmININJDJEJFJiJpITIVIVIVJuIVITITITININININININam
 amasasasasasasasasasgQgQgQbxbxbxbxfSfSgbbxbxbxbxbxbxfSbxkYbxbxbxbnbibifLgagagagagabebebebebebebebEbEbEbEbEbEbEbEbEgjlNbEbEbEbEgagafLfLdwdwdwchchchqmchchchchlOgvHugvUhchchdwdwdwdwdwdwdwdwdwdwdwdwgmgmgmlZmagsgugygLgLgMgMUigMgmgmgmgmgmgmgmgmgmgmgmgmgmgmgmgmININJDJGJFJiJpITIVIVIVIVITJHJJTSININININININam
@@ -2563,13 +2563,13 @@ amasasasSkSHSNSQSkSKSLSkSRSmSmSmasasasasasasasasasbegagabEbEbEbEbEbElNgjbExVxWbE
 amasasasSkSMSISVSOSBSBSOTxSmSmTBasasasasasasasasasbegagjbEbEbEbEbEbExWbEmRmRxiagagagagagagagscrYrYrYrYrYrYrZbEygbEgagagagabEbEyhbEbEbEbEbEbEgagagagxgxgOdwgOdwdwdwdwdwgmgmmagLgLgLUsgMgLgLgLgLgLrPgLgLgLgLgsgugyyigLgLgLgLgLgLgLmamagLgLgLxIgLgLgLmamamamamagmgmgmgmgmININININININININININININININININININam
 amasasasSkSMSPSWSkTySSSkasSmSmasasasasasasasasasasbebegjgjbEykbEbEbEbEagagagagagxjxkxlxmxlagylszrYymynynyoypbEgagagagagabEbEbEbEbEbEbEbEbEbEbEbEgagagxdwdwdwdwdwdwdwdwgmgmgLgLgLyqgMgMgLgLgLgLyrgLgLgLgLgLgsgugygLgLgLysgLgLgLgLgLmagLgLgLgLgLmamamalZlZlZmalZgmgmgmgmmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmham
 amasasasSkSMSISTSkSkSkSkasasasasasasasasasasasasasbebelNgjbEbEbEbEbEqfagxnxoxpxqrHBLrHrHxsagytMcrYrZxWAZBaBDmTmTfLpdgagabEbEbEbEbEbEbEbEbEbEbEbEbEgagabegmgmgmgmgmgmgmgmgmmamagMBHgMgLBPgLgLgLgLgLgLycgLgLgsgugygLgLgLgLgLgLgLgLgMgMBQgLgLgLmamalZlZlZmalZlZlZgmgmgmgmmhmhmhmhmhmhmhmhmhmhmhmhmQmQmQmhmhmham
-amasasasSkSkSUSkSkTaTbSkSkSkSkSkasasasasasasasasasbebebegagagabEbEbEqfagxtxoxuagxvrHxlxwxlagBRscrYrZBSagagagagagagfLgagabEbEbEbEbEbExVbEbEbEgjbEbEbEgabegmgmgmgmgmgmgmgmgmgmmagLgMmamagLgLgLgLgLUigMgLgLgLgsgugygLgLgLgLsngLBTgMgMgMgMgLgLgLmamalZmaBVBXBXBXBXgmgmmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmQmQmQmhmham
-amasasasSkSXSYSZTgThTlSkTcTdTeSkSkSkSkasasasasasasbebebebebegagabEBYqfagxxxyxzagagxhagagagagBZscrYvPCaagxAxCxDxEagqhgabErIbEbEbEbEbEbEbEbEgjgjbEbEbEbebegmgmgmgmgmgmgmgmgmgmmagLgLmagLgLgLgLgLgLgMLHUigLgLgsgugygLgLgLgLgLgLgLgLLIgMgLgLgLgLgLmalZmaBXmaLJLKgmgmmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmSTCmQmQmhmham
-amasasasSkTfThTtSYSYTuSkSYThThTiTjTkSkasasasasasasbebebebebegagagabEbEagagagagagLLLMLNLOLPBZLQscrYrYrYxhrHBqBrBsagLRgabEbEbEgjLSbEbEbEbEbEbEgjgjbEbebebegmgmgmgmgmgmgmgmgmgmmamamamagLgLgLgLycgLgLgMgMgLgLgsgugygLgLgLgLgLLTgLgLgMUpgLgLgLgLmamalZlZBXxKLULVgmmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmQmQmQmQmhmham
-ammVmVmVSkTHTvThTwTmSYTnTqToTGSkTrTsSkmVmVmVmVmVmVbebebebebebefLgagaLWgjLXLYLZMaMbMFvPwawawawaxBrYymMdagBtBuBvBwagLRbEbEbEgjgjgjgjbEbEbEbEbEgjbebebebebegmgmgmgmgmgmgmgmgmgmlZlZMemamagLgLgLgLgLUigMgLgLgLgsgugyMPMfgLgLgLgLgLgLgMgLgLgLgLgLmamamalZBXgsMgMhMgmZmQmhmhmhmhmhmhmhmhmhmQmQmQmQmQmhmQmQmQmhmham
-ammVmVmVSkTDTETFSkSkSkSkSkSkSkSkSkSkSkmVmVmVmVmVmVbebebebebebefLgaBEBEBEgjrUbEscrYrYrYrYrYrYrYrYrYrZqfagBxBLByBzagLRbEbEgjgjlNgjbEbEbEbEbEbEbEbebebebebegmgmgmgmgmgmgmgmgmgmmamalZlZmagLgLgLgLgLgLUtgLgLgLgsgugyUoMPgLUkgLgLgLgLgLgLgLsmgLgLgLmalZlZBXMiMgMhMgnamQmQmQmhmhmhmhmhTCmQmQmQmQmhmhmhmQpemhmhmham
-ammVmVmVSkSkSkSkSkmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebefLfLBEUJBMMjMjMjMkrYymynynynynynszyavPxFagagBABBBCagMlbEbEgjMmgjbEbEbEbEbEbEbebebebebebebegmgmgmgmgmgmgmgmgmmamamamamamagLycgLgLgLgLgLgLgLMfgsgugyMPMPgLgLgLgLgLgLgLgLgLgLgLgLmamalZmaBXMiMngmMopxmQmQmQmQpIpImhmQmQmQmhmhmhmhmhmQmQmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebefLfLBEBEBEMpbEmRMqrYMrMsMtMsMubEMvrYrYMwBGagagagagagbEmLbEbEgjbEbEbEMxbEbebebebebebebebebegmgmgmgmgmgmgmgmgLgLmaUqgMmamamagLgLgLyfgLgLgLgLxKxLgugyMPgLgLgLgLgLgLgLgLgLgLgLgLgLmamalZmaBXMygmgmgmmhmhmhmQmQmQTCmQmQmQmQmhmhmhmhmhmQmhmhmhmhmham
+amasasasSkSkSUSkSkTaTbSkSkSkSkSkasasasasasasasasasbebebegagagabEbEbEqfagxtxoxuagxvrHxlxwxlagBRscrYrZBSagagagagagagfLgagabEbEbEbEbEbExVbEbEbEgjbEbEbEgabegmgmgmgmgmgmgmgmgmgmmagLgMmamagLgLgLgLgLUigMgLgLgLgsgugygLgLgLgLsngLBTgMgMgMgMgLgLgLmamalZmapxvBvBvBvBgmgmmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmQmQmQmhmham
+amasasasSkSXSYSZTgThTlSkTcTdTeSkSkSkSkasasasasasasbebebebebegagabEBYqfagxxxyxzagagxhagagagagBZscrYvPCaagxAxCxDxEagqhgabErIbEbEbEbEbEbEbEbEgjgjbEbEbEbebegmgmgmgmgmgmgmgmgmgmmagLgLmagLgLgLgLgLgLgMLHUigLgLgsgugygLgLgLgLgLgLgLgLLIgMgLgLgLgLgLmalZmavBmaLJLKgmgmmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmSTCmQmQmhmham
+amasasasSkTfThTtSYSYTuSkSYThThTiTjTkSkasasasasasasbebebebebegagagabEbEagagagagagLLLMLNLOLPBZLQscrYrYrYxhrHBqBrBsagLRgabEbEbEgjLSbEbEbEbEbEbEgjgjbEbebebegmgmgmgmgmgmgmgmgmgmmamamamagLgLgLgLycgLgLgMgMgLgLgsgugygLgLgLgLgLLTgLgLgMUpgLgLgLgLmamalZlZvBxKLULVgmmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmQmQmQmQmhmham
+ammVmVmVSkTHTvThTwTmSYTnTqToTGSkTrTsSkmVmVmVmVmVmVbebebebebebefLgagaLWgjLXLYLZMaMbMFvPwawawawaxBrYymMdagBtBuBvBwagLRbEbEbEgjgjgjgjbEbEbEbEbEgjbebebebebegmgmgmgmgmgmgmgmgmgmlZlZMemamagLgLgLgLgLUigMgLgLgLgsgugyMPMfgLgLgLgLgLgLgMgLgLgLgLgLmamamalZvBgsMgMhMgBVmQmhmhmhmhmhmhmhmhmhmQmQmQmQmQmhmQmQmQmhmham
+ammVmVmVSkTDTETFSkSkSkSkSkSkSkSkSkSkSkmVmVmVmVmVmVbebebebebebefLgaBEBEBEgjrUbEscrYrYrYrYrYrYrYrYrYrZqfagBxBLByBzagLRbEbEgjgjlNgjbEbEbEbEbEbEbEbebebebebegmgmgmgmgmgmgmgmgmgmmamalZlZmagLgLgLgLgLgLUtgLgLgLgsgugyUoMPgLUkgLgLgLgLgLgLgLsmgLgLgLmalZlZvBMiMgMhMgBXmQmQmQmhmhmhmhmhTCmQmQmQmQmhmhmhmQpemhmhmham
+ammVmVmVSkSkSkSkSkmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebefLfLBEUJBMMjMjMjMkrYymynynynynynszyavPxFagagBABBBCagMlbEbEgjMmgjbEbEbEbEbEbEbebebebebebebegmgmgmgmgmgmgmgmgmmamamamamamagLycgLgLgLgLgLgLgLMfgsgugyMPMPgLgLgLgLgLgLgLgLgLgLgLgLmamalZmavBMiMngmMoEsmQmQmQmQpIpImhmQmQmQmhmhmhmhmhmQmQmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebefLfLBEBEBEMpbEmRMqrYMrMsMtMsMubEMvrYrYMwBGagagagagagbEmLbEbEgjbEbEbEMxbEbebebebebebebebebegmgmgmgmgmgmgmgmgLgLmaUqgMmamamagLgLgLyfgLgLgLgLxKxLgugyMPgLgLgLgLgLgLgLgLgLgLgLgLgLmamalZmavBMygmgmgmmhmhmhmQmQmQTCmQmQmQmQmhmhmhmhmhmQmhmhmhmhmham
 ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebefLfLgagagagaagagagxhagagagagagagMzszrYrYMwwaMAMAMAxFMBbEbEbEbEbEbEbEbEbebebebebebebebegmgmgmgmgmgmgmgmgLgLgLgLmamaxSgMgLgLgLUngLgLgLMPgLgLgsgugugygLgLspgLgMgLnsgLgLgLgLBTgLmamamalZmagmgmmhmhmhmhmhmhmQmSmhmQmQmhmhmhmhpNmhmhmQmQmQmQmhmhmham
 ammVmVmVmVmVmVmVmVmVmVqqqqqqqqmVmVmVmVmVmVmVmVmVmVbebebebebebebefLgagagaqfagBIrHrHBJBKBNBOBNagMlMzszrYrYrYrYrYrYrZbEbEbEbEbEbEbEbEbEbEbebebebebebebegmgmgmgmgmgmgLgLgLgLgLgLgLgLgMUqgMgLgLLTgLMPUuMPgLgLgsguMCyegLgLUigMgMgMgLgLgLgLgLgLgLmamamagmgmmhmhmQmQmQmhmhTCmQmhmhmhmQmQmhmhmhmQmQmhmQmQmQmQmQmhmham
 ammVmVmVmVmVmVmVmVqqqqqqqrqAqqqqqqmVmVmVmVmVmVmVmVbebebebebebebebegagabEqfagBUrHrHrHrHrHBLskagMlgiscrYrYrYrYrYrYrZbEbEbEbEbEbEbEbEbEbEbegagagagmgmgmgmgmgmgmgmgMgMgLgLgLgLgLgLgLgLgLgLgLgLgLgLgLMPgLgLgLgsgugygLgLgLgMgMMDUigMgMgLmamagLgLmagmgmgmmhmhmQTCmQmQmQmhmQmQmhmhmhmhmQmQmhmhmhmQmQpImhmhTCmQmhmham
@@ -2585,20 +2585,20 @@ ammVmVmVmVqqryqqqqqqryryyCryqqqqqqqqryyKryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmV
 ammVmVmVmVqqyxqqyMyNryyGryryryqqqqqqqqryryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebefLfLfLfLfLbebebebegmgmgmgmgmgmgmgmgMgMgMgLgLgLgLgMgLgLgLgLgLgLMUgLgLgLyfgLgLycgLMPMPMPMPMPgLgLgLgsgugygLgLgLBTgLgLmamagmmhmhmhmhmhmhTCmhmhmhmhmQmQmQmhyOmhmhmQmhmhmhmhmQmQmhmhmhmQmhTCmQmhmhmhmhmham
 ammVmVmVmVqqryryryryryryryryryryryqqqqqqryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebefLfLbebebegmgmgmgmgmgmgmgmgmgLUqgLgLMfgLgLgLgLgLsogLgLgLgLgLgLgLgLgLgLgLMPUoMPMVMPMPgLgLgLgsgugygLgLgLgLgLmamagmgmmhmhmhmhmhmhmQmQmhmhmhmQmQmhmhmhmhmhmQmhmhmhmhmhmQmhmhmQmQmhmQmQmQmhmhmhmham
 ammVmVmVmVqqryryryyPryqqqqyQyRryryryqqryryryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVbebebebebebebebebegmgmgmgmgmgmgmgmgmgLgLgLgLgLgLgLgLgLgLgLgLgLgLgLgLgLmamagLgLMPMPMPMPMPMPMPMPMPgLgsgugygLgLgLmamamamagmmhmhmhmhmhmhmhmhmQmQmQmQmQmhmhmhmhmhmQmQmQmQpImQmQmQmQmQmQmhmhmSmQmQmhmhmhmham
-ammVmVmVmVqqryyCryryqqqqqqqqqqryryyCryryyPryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgLgLgLgLgLgLgLgLgLgLgLMWMXMXMXMYMYMYMYOmMWMXMXMXMXMYMYMXMXMWMZNaNbMWMXMYMYNcNcNcNdmhmQmhmhmhmhmhmhmQmQpImhmhmhmhmhmhmhmhmQmQmhmhmQTCmQmhmhmhmhmhmhySmhmhmhmhmham
-ammVmVmVmVqqqqyGryqqqqqqqqqqryryryryryryyGqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLyrgLgLgLgLMXNeNeNeNeNfNfNgNgNfNeNeNeNeNeNeNfNfNfMZNaNbNfNfNfNgNgNgNgNdmQmQmQmQmhmhpImQmQmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmhmQmQmhmhmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVqqryryryqqqqqqryryryryqqqqqqyTqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLsogLgLgLgLgLgLgLgLMXNeNeNfNfNfNfNfNfNfNfNfNeNeNfNfNfNfNfMZNaNbNfNfNfNfNfNgNdNdyUmhmhmQmhmhmQmQmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmhmhmhmQmhmhmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVqqryyBryryryryryyVryqqqqqqqqryryryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLgLgLgLgLgLMYNhNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfMZNaNbNfNfNfNiNfNgNdmhmhmhmhmQmQmQmQmhmhmhmhmQmQmhmhmhmhmhmhmhmhmQmQmhmhmhmQmQmhmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVqqqqryryyWryyCryryryqqqqmVqqqqryyCryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLgLgLgLUqgMgLgLgLgLgLMYNfNfNfNfNeNeNfNfNfNfNfNfNfNfNfNfNfNfMZOnOoNfNfNfNiNiNgNdmhmhmhmQmQmQTCmhmhmhmhmhTCmQmhmhmhmhmQmQmhmhmSmQmQmhmhmhmQmhmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVqqqqqqryryryryqqqqqqmVmVmVqqyxryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLNjgLgMgMMDVlgLMfgLOpMYNfNfNfNeNeNeNeNfNfPBPBNfPCNfNfNeNeNfOsOtNbNfNfNfNfNkNiNdmhmhmhmQmhmhmhmhmhmQmQmQmQmhmhmhmhmQyXmQmQmhmhmQmQmhmhmhmQmQmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVqqqqqqyGryqqqqqqmVmVmVqqryryqqmVmVmVmVmVmVmVmVqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLgLgLgMgMgMgLgLgLgLgLOmNfNfNfNeNlNeNeNfPCPDNfPCNfNfNeNmNeNfOvOtNbNfNfNnNoNiNdNdmhmhmhmQmQmhmhmQmQmQmSmhmhmhmhmhmhmQmQmQyXmhmhpImhmhmhmhmhmQmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVqqqqyTqqqqmVmVmVmVqqyTqqqqmVmVmVmVmVqqqqqqqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgMUqgLgLgLgLgLMWNfNfNfNfNeNfNfNfNfNfNfNfNfNfNfNeNeNfMZNaNbNfNfNkNiNdNdNdmhmhmhmhmQmQmQmQmhmhmhmhmhmhmhmhmhmhmQmQmQmhmQmQmhmhmhmhmQTCmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVqqryryqqqqmVmVqqqqryqqmVmVmVmVqqqqqqryryyxryqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLgLgLgLgLMXNfNfNfNfNfPCPBNfNfNfNfNfNfNfNeNeNfNfMZNaNbNfNiNiNdNdNdNdmhmhmhmhmhmhmhmQmQmhmhmhmhmhmhmhmhmQmQmQmQmQmQmQmhmhmhmQmQmhmhmQmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVqqqqryryqqqqqqqqryryqqmVmVmVqqqqqqryyGryyCryryryqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgmgLgLgLgLgLgLgLgLMYNfNfNfOqNfNfPBOqNfNfNfNfatNfNfNfNfNfMZPENbNfNiNkNdNdNdNdmhmhmhmhmhmhmhmhmQmQmQmhmhmhmhmhmhmQyXmQmQmhmhmhmhmhmhmQmQmQmQmQmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVmVqqqqyCyGryyTryryyBqqqqmVmVqqyYqqryqqqqryryryyZyBryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLrNgLgLmaMYNfNfNfNfNfNfOuNfaunbEsNpNwOLOMONNfNfMZPFPGNfNfNdNdNdNdNdmhmhmhmhmhmhmhmhmhmhpImhmhmhmhmhmhmQmQzamQmQmhmhmhmhmhmhpImQmQmQmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVmVmVqqyxqqqqqqqqqqryyCqqqqqqqqyHryryqqzbryryqqqqryryryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgLgLgLgLgLmaMYNgNfNfNfNfNfNfNfOOOPadOVafahaiOWNfNfMZPFNbNfNfNdNdNdNdNdmhmhmhmhmhmhmhmhmhmQmQmhmhmhmhmhmhmhzczdzemhmhmhmhmhmhmhmQmQmQmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVmVmVqqqqqqmVmVmVqqqqryryyTryryyxryqqqqqqqqzfqqzgryyWryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLmamaMYNgNfNfNfNfNfNfNfNeajakalOXanaoajMXMWPHNaNbMWNdNdNdNdNdNdmhmhmhmhmhmhmhmhmhmQmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhzhmQmhmhmhmhmhmhmhmhmhmham
-ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVqqyTqqqqryyCryqqqqmVmVqqqqqqziryyCryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgmmalZMYNgNgNgNfNfNfNfNeNeajaqOYalPaPbaymHPLNqNaNbNfNdNdNdNdNdNdaDaDaDaDaDaDaDaDaDaJaDaDaDaMaMaMaMaMaMaMaPaPaPaMaMaMaMaMaMaPaPaPaPaDaDaDaDaDaDam
+ammVmVmVmVqqryyCryryqqqqqqqqqqryryyCryryyPryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgLgLgLgLgLgLgLgLgLgLgLMYNcNcNcRLRLRLRLnbMYNcNcNcNcRLRLNcNcMYMZNaNbMYNcRLRLRXRXRXNdmhmQmhmhmhmhmhmhmQmQpImhmhmhmhmhmhmhmhmQmQmhmhmQTCmQmhmhmhmhmhmhySmhmhmhmhmham
+ammVmVmVmVqqqqyGryqqqqqqqqqqryryryryryryyGqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLyrgLgLgLgLNcNeNeNeNeNfNfNgNgNfNeNeNeNeNeNeNfNfNfMZNaNbNfNfNfNgNgNgNgNdmQmQmQmQmhmhpImQmQmhmhmhmhmhmhmhmhmhmhmhmhmhmQmQmhmQmQmhmhmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVqqryryryqqqqqqryryryryqqqqqqyTqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLsogLgLgLgLgLgLgLgLNcNeNeNfNfNfNfNfNfNfNfNfNeNeNfNfNfNfNfMZNaNbNfNfNfNfNfNgNdNdyUmhmhmQmhmhmQmQmhmhmhmhmhmhmhmhmhmhmhmhmhmhmQmhmhmhmQmhmhmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVqqryyBryryryryryyVryqqqqqqqqryryryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLgLgLgLgLgLRLNhNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfNfMZNaNbNfNfNfNiNfNgNdmhmhmhmhmQmQmQmQmhmhmhmhmQmQmhmhmhmhmhmhmhmhmQmQmhmhmhmQmQmhmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVqqqqryryyWryyCryryryqqqqmVqqqqryyCryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLgLgLgLUqgMgLgLgLgLgLRLNfNfNfNfNeNeNfNfNfNfNfNfNfNfNfNfNfNfMZOnOoNfNfNfNiNiNgNdmhmhmhmQmQmQTCmhmhmhmhmhTCmQmhmhmhmhmQmQmhmhmSmQmQmhmhmhmQmhmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVqqqqqqryryryryqqqqqqmVmVmVqqyxryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLNjgLgMgMMDVlgLMfgLOpRLNfNfNfNeNeNeNeNfNfPBPBNfPCNfNfNeNeNfOsOtNbNfNfNfNfNkNiNdmhmhmhmQmhmhmhmhmhmQmQmQmQmhmhmhmhmQyXmQmQmhmhmQmQmhmhmhmQmQmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVqqqqqqyGryqqqqqqmVmVmVqqryryqqmVmVmVmVmVmVmVmVqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgLgLgLgLgMgMgMgLgLgLgLgLnbNfNfNfNeNlNeNeNfPCPDNfPCNfNfNeNmNeNfOvOtNbNfNfNnNoNiNdNdmhmhmhmQmQmhmhmQmQmQmSmhmhmhmhmhmhmQmQmQyXmhmhpImhmhmhmhmhmQmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVqqqqyTqqqqmVmVmVmVqqyTqqqqmVmVmVmVmVqqqqqqqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgMUqgLgLgLgLgLMYNfNfNfNfNeNfNfNfNfNfNfNfNfNfNfNeNeNfMZNaNbNfNfNkNiNdNdNdmhmhmhmhmQmQmQmQmhmhmhmhmhmhmhmhmhmhmQmQmQmhmQmQmhmhmhmhmQTCmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVqqryryqqqqmVmVqqqqryqqmVmVmVmVqqqqqqryryyxryqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLgLgLgLgLgLgLgLNcNfNfNfNfNfPCPBNfNfNfNfNfNfNfNeNeNfNfMZNaNbNfNiNiNdNdNdNdmhmhmhmhmhmhmhmQmQmhmhmhmhmhmhmhmhmQmQmQmQmQmQmQmhmhmhmQmQmhmhmQmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVqqqqryryqqqqqqqqryryqqmVmVmVqqqqqqryyGryyCryryryqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgmgLgLgLgLgLgLgLgLRLNfNfNfOqNfNfPBOqNfNfNfNfatNfNfNfNfNfMZPENbNfNiNkNdNdNdNdmhmhmhmhmhmhmhmhmQmQmQmhmhmhmhmhmhmQyXmQmQmhmhmhmhmhmhmQmQmQmQmQmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVmVqqqqyCyGryyTryryyBqqqqmVmVqqyYqqryqqqqryryryyZyBryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLgLrNgLgLmaRLNfNfNfNfNfNfOuNfauNpKCNwOmMWOMMXNfNfMZPFPGNfNfNdNdNdNdNdmhmhmhmhmhmhmhmhmhmhpImhmhmhmhmhmhmQmQzamQmQmhmhmhmhmhmhpImQmQmQmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVmVmVqqyxqqqqqqqqqqryyCqqqqqqqqyHryryqqzbryryqqqqryryryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgLgLgLgLgLmaRLNgNfNfNfNfNfNfNfOOOLadOVafahaiONNfNfMZPFNbNfNfNdNdNdNdNdmhmhmhmhmhmhmhmhmhmQmQmhmhmhmhmhmhmhzczdzemhmhmhmhmhmhmhmQmQmQmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVmVmVqqqqqqmVmVmVqqqqryryyTryryyxryqqqqqqqqzfqqzgryyWryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgLgLmamaRLNgNfNfNfNfNfNfNfNeajakalOXanaoajNcMYPHNaNbMYNdNdNdNdNdNdmhmhmhmhmhmhmhmhmhmQmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhmhzhmQmhmhmhmhmhmhmhmhmhmham
+ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVqqyTqqqqryyCryqqqqmVmVqqqqqqziryyCryqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmgmgmmalZRLNgNgNgNfNfNfNfNeNeajaqOYalPaPbaymHPLNqNaNbNfNdNdNdNdNdNdaDaDaDaDaDaDaDaDaDaJaDaDaDaMaMaMaMaMaMaMaPaPaPaMaMaMaMaMaMaPaPaPaPaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVqqryqqqqqqryqqqqmVmVmVmVmVqqqqryryryzjqqmVmVmVmVmVmVmVmVmVmVmVqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVgmgmgmNdNrNgNgNgNsNfNeNeNeajbfbjprbobsajNtNfNuNaPINfNdNdNdNdaDaDaDaDaDaDaDaDaDbububububuaDaMbvbzTpcofIaMaMaMaMaMfUfXgXhcaMaMaMaMaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVqqqqqqryyxqqqqyTqqqqmVmVmVmVmVmVqqqqryqqqqqqmVmVmVmVmVmVmVmVmVmVqqqqryryryqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVNdNrNrNrNrNgNhNdNdNdajajajajajajajNdNvPcPJNxNdNdNdNdNdaDaDaDaDaDaDaJaJbuaJaJaJbuaJaJaMhwhAhAhFipaMiviwixaMiyjpjpjFaMiviwixaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVqqyPryyGryryqqryryqqqqqqmVmVmVmVmVqqryryryqqqqmVmVmVmVmVmVmVmVmVqqryryryqqqqqqqqqqqqmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVmVNdNdNdNdNdNdNdNdNdNdNdNdNdNdNdNdNdNdNdNyPdNaNdNdNdNdNdaDaDaDaDaJaJaJaJbubuaJaJbububuaMktlMlQlRlSaMlTlUiwlVlWjpjplXlViwlYmbaMaDaDaDaDaDaDam
@@ -2612,7 +2612,7 @@ ammVmVmVmVmVmVmVmVmVmVmVqqqqqqqqyGqqmVmVmVmVmVmVmVqqqqqqryzuryzFqqqqqqqqqqryryzl
 ammVmVmVmVmVmVmVmVmVmVmVqqryryryryqqmVmVmVmVmVmVmVmVqqryryyCzJzuqqqqqqryryyBryqqqqqqryryryqqqqqqqqryyCryqqryrymVmVmVmVmVmVmVmVzEzmzmzKzmzmzmzLzMzOzmzmzmzmzEmVmVmVmVmVnJnJnJnJnKnTnUnVnWnKnXnYmdmdnZmzmdnEntnumzmzmzmzmdoamdmdmdmdmdmdmdmzmzmzobaMocodoeofogaMnzohaMoinpmElVlWjpjplXlViwojmbaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVqqqqryyHryqqqqqqqqmVmVmVmVmVmVqqryryryzuryqqryryryryryyGryryqqryqqryqqqqqqqqryryzPzQrymVmVmVmVmVmVmVmVzHzmzmzmzmzmzmzmzRzRzSzTzmzmzmzmzUzVzWmVmVnJnJnJnJnKokolomonooopnumdmzmzmdnNnEntnumdmznfoqnXnXnXnXnXnXnYmdormznLmzmzaMosotouovouoxoyozaMnBnCnDaMmmjpjpmnaMmkiwmlaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVqqzkyCryqqqqqqzXqqqqmVmVmVmVmVqqryqqyTqqryyTryzxryryyCzuyHryyTryqqryryqqqqqqryzFryryqqmVmVmVmVmVmVmVzIzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmzmnJnKnKnKnKnKoAoBoCnKmGnunFobmdmdmdnEntnungmdmdoDoEoEoFoGoHoInumdmdmdmzaMaMaMaMaMoJoLoMaMnzoNaMaMaMaMaMoOmsmsoPaMaMaMaMaMaDaDaDaDaDaDam
-ammVmVmVmVmVmVmVmVmVmVqqzXryyxyTryryyPzXqqqqmVmVmVqqqqyTqqryqqqqqqqqqqqqryryyPqqqqqqqqqqyGyCryryyTryqqryqqqqqqmVmVmVmVmVmVmVzYzmzmzmzZzWAazmzmzmzmzmzmzmzmzmzmzmzmzmzmoQnKoRoSoTnKoWoWoWnKoXoYoZoZoZoZoZpapboYoZoZoZpcpfphpipjphpkoYoZoZoZqWaMpmpnpoaMppppppaMpqoNvgpsptpuaMaMpvpvaMaMpwaMpwaMaDaDaDaDaDaDam
+ammVmVmVmVmVmVmVmVmVmVqqzXryyxyTryryyPzXqqqqmVmVmVqqqqyTqqryqqqqqqqqqqqqryryyPqqqqqqqqqqyGyCryryyTryqqryqqqqqqmVmVmVmVmVmVmVzYzmzmzmzZzWAazmzmzmzmzmzmzmzmzmzmzmzmzmzmoQnKoRoSoTnKRJRJRJnKoXoYoZoZoZoZoZpapboYoZoZoZpcpfphpipjphpkoYoZoZoZqWaMpmpnpoaMppppppaMpqoNvgpsptpuaMaMpvpvaMaMpwaMpwaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVqqqqAcqqqqqqryryqqqqqqqqqqqqqqzXryryryqqqqmVmVmVqqqqyTqqqqmVmVmVqqryryryqqqqqqqqyGAezmqqmVmVmVmVmVmVmVAfzTzmzmzZzEAgzmzmzmzmzmzVAiAjzWzmzmzmzmzmpBpCpDpEpFpGpHpJpKpCpLntntntntntntntmGntntntntntntntmGntntntntntntntpOpPpQpRpSpTpUjppVpPqiqjqpqpqpqpqsRjqpqpRkaMqtaMqvaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVmVqqqqqqqqryAkyCryryryyTryryqqqqryqqqqqqmVmVmVmVmVqqryqqmVmVmVmVmVmVryqqqqmVmVqqqqqqzmzmmVmVmVmVmVmVmVAlzmzmzmADAKASzmzmzmzmzmzWAiAiATzmzmzmzmzmpBpCpDpEpFpGpHqwpKpCpLntntntntntntntmGntntntntntntntmGntntntntntntntqxqyqzqBqCqDqEqFqGqyqHqImsmsmsmsmsmsmsmsqJqKpRpRqLaMaDaDaDaDaDaDam
 ammVmVmVmVmVmVmVmVmVmVmVqqqqqqzXryryryyxqqqqqqqqryryyGyCryqqmVmVmVmVmVmVqqyGqqmVmVmVmVmVmVmVmVmVmVmVmVqqqqzmzmmVmVmVmVmVmVAUzmzmzmzmzmAVzmzmBkBlzmzmzmzmzmzmzmzmzmzmzmqMnKqNqOqPnKnKnKnKnKqQqRqRqRqRqRqRqSmGqTqRqRqRqRqRqSmGntqTqRqRqRqRqRqUaMqVRoqXaMaMaMaMaMaMaMqYqYaMaMaMaMqZqZaMaMrarbqLaMaDaDaDaDaDaDam

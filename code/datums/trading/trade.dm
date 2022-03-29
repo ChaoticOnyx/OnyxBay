@@ -216,6 +216,7 @@
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
+	M.on_purchase()
 	playsound(location, 'sound/effects/teleport.ogg', 50, 1)
 
 	disposition += rand(compliment_increase,compliment_increase*3) //Traders like it when you trade with them

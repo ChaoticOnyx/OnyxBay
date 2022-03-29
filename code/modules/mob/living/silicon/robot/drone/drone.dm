@@ -178,7 +178,7 @@ var/list/mob_hat_cache = list()
 	if(hat) // Let the drones wear hats.
 		overlays |= get_hat_icon(hat, hat_x_offset, hat_y_offset)
 
-/mob/living/silicon/robot/drone/choose_icon()
+/mob/living/silicon/robot/drone/choose_hull()
 	return
 
 /mob/living/silicon/robot/drone/choose_module()
@@ -407,3 +407,6 @@ var/list/mob_hat_cache = list()
 	if(!controlling_ai)
 		return ..()
 	controlling_ai.open_subsystem(/datum/nano_module/law_manager)
+
+/mob/living/silicon/robot/drone/is_eligible_for_antag_spawn(antag_id)
+	return FALSE // Let's fucking nooooooot

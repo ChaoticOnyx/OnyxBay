@@ -2,7 +2,7 @@
  *
  * Contains:
  *		Library Scanner
- *		Book Binder
+ *		Space Binder
  */
 
 /*
@@ -70,19 +70,24 @@
  * Book binder
  */
 /obj/machinery/bookbinder
-	name = "Book Binder"
+	name = "Space Binder"
 	icon = 'icons/obj/library.dmi'
 	icon_state = "binder"
 	anchored = 1
 	density = 1
+	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/obj/item/print_object
-	var/hatch_locked = FALSE
 
 /obj/machinery/bookbinder/attack_hand(mob/user)
-	if(!hatch_locked && print_object)
+	if(print_object)
 		src.visible_message("[src] whirs as it spitting out \the [print_object].")
 		print_object.forceMove(get_turf(src))
 		print_object = FALSE
+
+/obj/machinery/bookbinder/operable()
+	. = ..()
+	if(!anchored)
+		return FALSE
 
 /obj/machinery/bookbinder/attackby(obj/O, mob/user)
 	if(operable())
@@ -92,12 +97,10 @@
 			return
 		if(istype(O, /obj/item/paper) || istype(O, /obj/item/book/wiki/template))
 			user.drop_item()
-			print_object = O
 			O.forceMove(src)
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 			src.visible_message("[src] begins to hum as it warms up its printing drums.")
-			addtimer(CALLBACK(src, .proc/handle_paper), rand(200,400))
-			hatch_locked = TRUE
+			addtimer(CALLBACK(src, .proc/handle_paper, O), rand(200,400))
 		else if(istype(O, /obj/item/canvas))
 			print_object = O
 			user.drop_item()
@@ -109,18 +112,19 @@
 		..()
 		to_chat(user, "[src] doesn't work!")
 
-/obj/machinery/bookbinder/proc/handle_paper()
-	if(!print_object)
+/obj/machinery/bookbinder/proc/handle_paper(obj/item/print_book)
+	if(!operable())
+		visible_message("\The [src] ejects \the [print_book].")
+		print_book.forceMove(get_turf(src))
 		return
-	hatch_locked = FALSE
 	src.visible_message("[src] whirs as it prints and binds a new book.")
-	if(istype(print_object, /obj/item/paper))
-		var/obj/item/paper/paper = print_object
+	if(istype(print_book, /obj/item/paper))
+		var/obj/item/paper/paper = print_book
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
-	if(istype(print_object, /obj/item/book/wiki/template))
-		var/obj/item/book/wiki/template/template = print_object
+	if(istype(print_book, /obj/item/book/wiki/template))
+		var/obj/item/book/wiki/template/template = print_book
 		print_wiki(template.topic, template.censored)
-	QDEL_NULL(print_object)
+	qdel(print_book)
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
 	var/obj/item/book/book = new(src.loc)

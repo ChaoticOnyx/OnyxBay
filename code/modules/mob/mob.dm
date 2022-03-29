@@ -5,6 +5,7 @@
 	GLOB.player_list -= src
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
@@ -17,7 +18,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
+	if(mind?.current == src)
 		spellremove(src)
 	ghostize()
 	return ..()
@@ -168,7 +169,7 @@
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
 
-	if(pulling)
+	if(pulling && !ignore_pull_slowdown)
 		var/area/A = get_area(src)
 		if(A.has_gravity)
 			if(istype(pulling, /obj))
@@ -627,11 +628,6 @@
 
 /mob/proc/is_dead()
 	return stat == DEAD
-
-/mob/proc/is_mechanical()
-	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
-		return 1
-	return istype(src, /mob/living/silicon) || get_species() == SPECIES_IPC
 
 /mob/proc/is_ready()
 	return client && !!mind

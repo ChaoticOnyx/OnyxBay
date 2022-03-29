@@ -8,7 +8,7 @@
 	name = "Jungle"
 	ambience_powered = list(SFX_AMBIENT_JUNGLE)
 	ambience_off = list(SFX_AMBIENT_JUNGLE)
-	ambient_music_meta_tags = list(META_MYSTIC, META_NORMAL)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_NORMAL)
 	icon_state = "jungle"
 	luminosity = 1
 

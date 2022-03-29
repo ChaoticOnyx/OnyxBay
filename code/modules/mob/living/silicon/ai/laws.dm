@@ -17,8 +17,15 @@
 
 /mob/living/silicon/ai/add_ion_law(law)
 	..()
+	notify_connected_cyborgs()
+
+/mob/living/silicon/ai/delete_law(datum/ai_law/law)
+	..()
+	notify_connected_cyborgs()
+
+/mob/living/silicon/ai/proc/notify_connected_cyborgs()
 	for(var/mob/living/silicon/robot/R in GLOB.silicon_mob_list)
-		if(R.lawupdate && (R.connected_ai == src))
+		if(R.lawupdate && R.connected_ai == src)
 			R.show_laws()
 
 /mob/living/silicon/ai/proc/ai_checklaws()

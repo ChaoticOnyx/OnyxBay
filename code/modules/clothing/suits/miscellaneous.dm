@@ -48,16 +48,6 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 
 
-/obj/item/clothing/suit/cyborg_suit
-	name = "cyborg suit"
-	desc = "Suit for a cyborg costume."
-	icon_state = "death"
-	item_state = "death"
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	fire_resist = T0C+5200
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-
-
 /obj/item/clothing/suit/greatcoat
 	name = "great coat"
 	desc = "A heavy great coat."
@@ -415,8 +405,8 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/punk_jacket_RD
-	name = "navy punk jacket"
-	desc = "A navy leather jacket with Rusty Devils emblem on the back."
+	name = "raven punk jacket"
+	desc = "A raven leather jacket with Rusty Devils emblem on the back."
 	icon_state = "punk_jacket_RD"
 	body_parts_covered = UPPER_TORSO|ARMS
 
@@ -472,7 +462,7 @@
 	icon_closed = "hoodie"
 	body_parts_covered = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
-	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	cold_protection = UPPER_TORSO|ARMS
 	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie/cti

@@ -65,13 +65,23 @@
 /datum/design/item/beaker
 	category_items = list("Medical")
 
+
+
+/datum/design/item/beaker/plass
+	desc = "A beaker made of plasma-based silicate, it doesn't allow radiation to pass through. Can hold up to 60 units."
+	id = "plassbeaker"
+	req_tech = list(TECH_MATERIAL = 2)
+	materials = list(MATERIAL_GLASS = 2500, MATERIAL_PLASMA = 1500)
+	build_path = /obj/item/reagent_containers/glass/beaker/plass
+	sort_string = "MCAAA"
+
 /datum/design/item/beaker/noreact
-	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
+	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 60 units."
 	id = "splitbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
 	materials = list(MATERIAL_STEEL = 3000)
 	build_path = /obj/item/reagent_containers/glass/beaker/noreact
-	sort_string = "MCAAA"
+	sort_string = "MCAAB"
 
 /datum/design/item/beaker/bluespace
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
@@ -79,7 +89,7 @@
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
 	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000, MATERIAL_DIAMOND = 500)
 	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
-	sort_string = "MCAAB"
+	sort_string = "MCAAC"
 
 /datum/design/item/implant
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
@@ -133,3 +143,11 @@
 	req_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3, TECH_ILLEGAL = 4)
 	build_path = /obj/item/implantcase/explosive
 	sort_string = "MFAAG"
+
+
+/datum/design/item/implant/speech_corrector
+	name = "speech corrector implant"
+	id = "implant_speech_corrector"
+	req_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2)
+	build_path = /obj/item/implantcase/speech_corrector
+	sort_string = "MFAAH"

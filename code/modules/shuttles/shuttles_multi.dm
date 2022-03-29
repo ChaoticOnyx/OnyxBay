@@ -62,7 +62,7 @@
 
 /datum/shuttle/autodock/multi/antag/set_destination(destination_key, mob/user)
 	if(!return_warning && destination_key == home_waypoint.name)
-		to_chat(user, "<span class='danger'>Returning to your home base will end your mission. If you are sure, press the button again.</span>")
+		to_chat(user, SPAN("danger", "Are you sure you want to return to base? If you are sure, press the button again.</span>"))
 		return_warning = 1
 		return
 	..()

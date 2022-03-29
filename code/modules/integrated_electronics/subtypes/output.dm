@@ -245,6 +245,14 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 
+/mob/living/silicon/integrated_circuit
+	name = "Integrated Circuit"
+	playable_mob = FALSE
+	//Used in say.dm.
+	speak_statement = "enounces"
+	speak_exclamation = "enounces"
+	speak_query = "enounces"
+
 /obj/item/integrated_circuit/output/text_to_speech
 	name = "text-to-speech circuit"
 	desc = "Takes any string as an input and will make the device say the string when pulsed."
@@ -261,14 +269,17 @@
 /obj/item/integrated_circuit/output/text_to_speech/do_work()
 	text = get_pin_data(IC_INPUT, 1)
 	if(!isnull(text))
-		var/atom/movable/A = get_object()
+		// TODO: replace this cringe with say for objects
+		var/mob/living/silicon/integrated_circuit/speaker = new(src)
+		speaker.name = get_object().name
 		var/sanitized_text = sanitize(text)
 		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
-		A.audible_message("\The [A] states, \"[sanitized_text]\"")
+		speaker.say(sanitized_text, all_languages[LANGUAGE_GALCOM], FALSE)
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
 			log_say("[name] ([type]): [sanitized_text]")
+		QDEL_IN(speaker, 1 SECOND)
 
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"

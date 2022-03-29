@@ -101,7 +101,7 @@
 
 	if(borer)
 		borer.detatch() //Should remove borer if the brain is removed - RR
-
+		borer.leave_host()
 	if(vital)
 		transfer_identity(owner)
 
@@ -129,10 +129,10 @@
 	icon_state = "green metroid extract"
 
 /obj/item/organ/internal/brain/golem
-	name = "chem"
-	desc = "A tightly furled roll of paper, covered with indecipherable runes."
-	icon = 'icons/obj/wizard.dmi'
-	icon_state = "scroll"
+	name = "adamantite brain"
+	desc = "What else could be inside the adamantite creature's head?"
+	icon = 'icons/obj/materials.dmi'
+	icon_state = "adamantine"
 
 
 /obj/item/organ/internal/brain/proc/get_current_damage_threshold()

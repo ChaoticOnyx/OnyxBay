@@ -1,7 +1,8 @@
 /var/list/validartifactprojectiles = list(
-	/obj/item/projectile/beam,
 	/obj/item/projectile/beam/practice,
-	/obj/item/projectile/beam/heavylaser,
+	/obj/item/projectile/beam/laser/small,
+	/obj/item/projectile/beam/laser/mid,
+	/obj/item/projectile/beam/laser/heavy,
 	/obj/item/projectile/beam/xray,
 	/obj/item/projectile/beam/pulse,
 	/obj/item/projectile/beam/mindflayer,

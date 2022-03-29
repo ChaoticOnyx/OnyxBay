@@ -18,7 +18,7 @@
 	remains_type = /obj/effect/decal/cleanable/ash
 	death_message = "dissolves into ash..."
 
-	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_EMBED
+	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_EMBED | SPECIES_FLAG_NO_ANTAG_TARGET
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	genders = list(NEUTER)
@@ -37,3 +37,6 @@
 		H.take_overall_damage(1,1)
 	else //heal in the dark
 		H.heal_overall_damage(1,1)
+
+/datum/species/shadow/is_eligible_for_antag_spawn(antag_id)
+	return FALSE // No need to be more antagous than we already are
