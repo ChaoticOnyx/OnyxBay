@@ -401,8 +401,11 @@
 			W.pixel_z = 0
 			W.pixel_w = 0
 		return
-	else if(istype(W, /obj/item/melee/energy/blade))
-		if(emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying.")))
+
+	else if(istype(W, /obj/item/melee/energy))
+		var/obj/item/melee/energy/WS = W
+		if(WS.active)
+			emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying."))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
@@ -706,7 +709,7 @@
 				src.req_access += pick(get_all_station_access())
 	..()
 
-/obj/structure/closet/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
+/obj/structure/closet/emag_act(remaining_charges, mob/user, obj/item/emag_source, visual_feedback = "", audible_feedback = "")
 	if(make_broken())
 		update_icon()
 		if(visual_feedback)
@@ -715,7 +718,8 @@
 			visible_message(SPAN_WARNING("\The [src] has been broken by \the [user] with \an [emag_source]!"), "You hear a faint electrical spark.")
 		else
 			visible_message(SPAN_WARNING("\The [src] sparks and breaks open!"), "You hear a faint electrical spark.")
-		return 1
+		on_hack_behavior()
+		return TRUE
 	else
 		. = ..()
 
@@ -769,3 +773,11 @@
 
 /obj/structure/closet/hides_inside_walls() // Let's just don't
 	return FALSE
+
+/obj/structure/closet/proc/on_hack_behavior()
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+	spark_system.start()
+	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
+	playsound(src.loc, "spark", 50, 1)
+	open()
