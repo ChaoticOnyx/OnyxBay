@@ -418,8 +418,8 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "wonderprodStun"
 	item_state = "wonderprod"
 
-	force = 7
-	agonyforce = 70
+	force = 15
+	agonyforce = 90
 	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy()
 	var/mode = BATON_STUN
 	var/sleep_time = 60
