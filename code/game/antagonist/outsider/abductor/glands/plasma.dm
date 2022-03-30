@@ -22,7 +22,7 @@
 	if(istype(T))
 
 		if(istype(owner.body_build,/datum/body_build/fat))
-			T.assume_gas("plasma", 50, T20C)
+			T.assume_gas("plasma", 200, T20C)
 		else
 			T.assume_gas("plasma", 100, T20C)
 	owner.nutrition-=20

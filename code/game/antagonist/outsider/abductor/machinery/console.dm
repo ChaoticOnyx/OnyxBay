@@ -184,12 +184,12 @@
 
 /obj/machinery/abductor/console/proc/TeleporterRetrieve()
 	var/mob/living/marked = gizmo.marked_target_weakref?.resolve()
-		if(pad && marked)
-			pad.Retrieve(marked)
+	if(pad && marked)
+		pad.Retrieve(marked)
 
 /obj/machinery/abductor/console/proc/TeleporterSend()
-		if(pad)
-			pad.Send()
+	if(pad)
+		pad.Send()
 
 /obj/machinery/abductor/console/proc/FlipVest()
 	if(vest)
