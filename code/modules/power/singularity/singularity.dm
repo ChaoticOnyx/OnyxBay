@@ -413,13 +413,15 @@
 			if(STAGE_ONE)
 				steps = 1
 			if(STAGE_TWO)
-				steps = 3//Yes this is right
+				steps = 3 // Yes this is right
 			if(STAGE_THREE)
 				steps = 3
 			if(STAGE_FOUR)
 				steps = 4
 			if(STAGE_FIVE)
 				steps = 5
+			if(STAGE_SUPER)
+				steps = 6
 	else
 		steps = step
 	var/list/turfs = list()
