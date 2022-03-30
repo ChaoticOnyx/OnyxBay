@@ -27,7 +27,7 @@
 	. = ..()
 	if(mode != SYRINGE_PACKAGED && starting_label)
 		name = "syringe"
-		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+		AddComponent(/datum/component/label, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 
 /obj/item/reagent_containers/syringe/on_reagent_change()
 	update_icon()
@@ -58,7 +58,7 @@
 			if(starting_label)
 				name = "syringe"
 				desc = "A syringe."
-				attach_label(null, null, starting_label)
+				AddComponent(/datum/component/label, starting_label)
 	update_icon()
 
 /obj/item/reagent_containers/syringe/attack_hand()

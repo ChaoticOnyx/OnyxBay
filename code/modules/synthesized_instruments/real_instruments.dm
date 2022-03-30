@@ -193,6 +193,8 @@
 
 
 /datum/real_instrument/Destroy()
+	..()
+
 	QDEL_NULL(player)
 	owner = null
 

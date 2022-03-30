@@ -34,6 +34,8 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 
 
 /datum/controller/global_vars/Destroy()
+	..()
+
 	return QDEL_HINT_IWILLGC
 
 /datum/controller/global_vars/stat_entry()

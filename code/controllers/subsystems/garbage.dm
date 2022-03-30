@@ -306,6 +306,9 @@ SUBSYSTEM_DEF(garbage)
 
 
 	if(isnull(D.gc_destroyed))
+		// Give the components a chance to prevent their parent from being deleted.
+		if (SEND_SIGNAL(D, SIGNAL_PARENT_PREQDELETED, force))
+			return
 		D.gc_destroyed = GC_CURRENTLY_BEING_QDELETED
 		var/start_time = world.time
 		var/start_tick = world.tick_usage

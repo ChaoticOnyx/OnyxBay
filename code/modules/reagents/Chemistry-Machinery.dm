@@ -277,7 +277,7 @@
 			B = new /obj/item/reagent_containers/glass/bottle/big(loc)
 		else
 			B = new /obj/item/reagent_containers/glass/bottle(loc)
-	B.attach_label(null, null, bottle_name)
+	B.AddComponent(/datum/component/label, bottle_name)
 	reagents.trans_to_obj(B, reagent_amount)
 	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
 	B.update_icon()

@@ -15,7 +15,7 @@
 
 // Use power while moving.
 /datum/movement_handler/robot/use_power/DoMove()
-	var/datum/robot_component/actuator/A = robot.get_component("actuator")
+	var/datum/robot_component/actuator/A = robot.get_robot_component("actuator")
 	if(!robot.cell_use_power(A.active_usage))
 		return MOVEMENT_HANDLED
 

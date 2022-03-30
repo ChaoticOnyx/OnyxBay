@@ -655,3 +655,9 @@ its easier to just keep the beam vertical.
 				break
 
 	return TRUE
+
+/atom/proc/post_attach_label()
+	return
+
+/atom/proc/post_remove_label()
+	return
