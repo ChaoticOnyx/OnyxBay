@@ -562,6 +562,17 @@
 	explosion_block = 3
 	dir = 5
 
+/obj/structure/window/syndi
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-syndi"
+	basestate = "window-syndi"
+	reinf = 1
+	maxhealth = 40
+	explosion_block = 3
+	dir = 5
+
 /obj/structure/window/reinforced/polarized
 	name = "electrochromic window"
 	desc = "Adjusts its tint with voltage. Might take a few good hits to shatter it."
