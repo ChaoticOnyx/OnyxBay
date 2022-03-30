@@ -51,7 +51,7 @@ var/list/ghost_traps
 /datum/ghosttrap/proc/request_player(mob/target, request_string, request_timeout)
 	if(request_timeout)
 		request_timeouts[target] = world.time + request_timeout
-		GLOB.destroyed_event.register(target, src, /datum/ghosttrap/proc/unregister_target)
+		register_signal(target, SIGNAL_DESTROY, /datum/ghosttrap/proc/unregister_target)
 	else
 		unregister_target(target)
 
@@ -65,7 +65,7 @@ var/list/ghost_traps
 
 /datum/ghosttrap/proc/unregister_target(target)
 	request_timeouts -= target
-	GLOB.destroyed_event.unregister(target, src, /datum/ghosttrap/proc/unregister_target)
+	unregister_signal(target, SIGNAL_DESTROY)
 
 // Handles a response to request_player().
 /datum/ghosttrap/Topic(href, href_list)

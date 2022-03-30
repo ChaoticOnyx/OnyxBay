@@ -25,6 +25,9 @@
 /datum/proc/Destroy(force=FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
+	SEND_SIGNAL(src, SIGNAL_DESTROY, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_DESTROY, src)
+
 	tag = null
 	SSnano && SSnano.close_uis(src)
 	var/list/timers = active_timers
@@ -71,3 +74,7 @@
 /datum/proc/Process()
 	set waitfor = 0
 	return PROCESS_KILL
+
+// Sometimes you just want to end yourself
+/datum/proc/qdel_self()
+	qdel(src)

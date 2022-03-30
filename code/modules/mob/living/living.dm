@@ -896,3 +896,9 @@
 
 /mob/living/proc/on_ghost_possess()
 	return
+
+/mob/living/set_stat(new_stat)
+	var/old_stat = stat
+	. = ..()
+	if(stat != old_stat)
+		SEND_SIGNAL(src, SIGNAL_STAT_SET, src, old_stat, new_stat)

@@ -179,9 +179,9 @@
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
-		GLOB.moved_event.register(owner, src, /obj/aiming_overlay/proc/update_aiming)
-		GLOB.moved_event.register(aiming_at, src, /obj/aiming_overlay/proc/target_moved)
-		GLOB.destroyed_event.register(aiming_at, src, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
+		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
+		register_signal(aiming_at, SIGNAL_DESTROY, /obj/aiming_overlay/proc/cancel_aiming)
 	else
 		loc = null
 		STOP_PROCESSING(SSobj, src)
@@ -224,10 +224,10 @@
 	if(!no_message)
 		owner.visible_message("<span class='notice'>\The [owner] lowers \the [aiming_with].</span>")
 
-	GLOB.moved_event.unregister(owner, src)
+	unregister_signal(owner, SIGNAL_MOVED)
 	if(aiming_at)
-		GLOB.moved_event.unregister(aiming_at, src)
-		GLOB.destroyed_event.unregister(aiming_at, src)
+		unregister_signal(aiming_at, SIGNAL_MOVED)
+		unregister_signal(aiming_at, SIGNAL_DESTROY)
 		aiming_at.aimed -= src
 		aiming_at = null
 		movement_tally = 0

@@ -193,6 +193,10 @@
 			// Many other things have registered here.
 			lookup[sig_type][src] = TRUE
 
+/// The same as register_signal but global.
+/datum/proc/register_global_signal(sig_type_or_types, proctype, override = FALSE)
+	register_signal(SSelements, sig_type_or_types, proctype, override)
+
 /// Stop listening to a given signal from target.
 /// Breaks the relationship between target and source datum, removing the callback when the signal fires.
 ///
@@ -244,6 +248,10 @@
 
 	if(!signal_procs[target].len)
 		signal_procs -= target
+
+/// The same as unregister_signal but global.
+/datum/proc/unregister_global_signal(sig_type_or_types)
+	unregister_signal(SSelements, sig_type_or_types)
 
 /// Called on a component when a component of the same type was added to the same parent.
 ///

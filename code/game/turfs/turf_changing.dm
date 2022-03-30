@@ -26,6 +26,7 @@
 			N = below.density ? /turf/simulated/floor/plating/airless : /turf/simulated/open
 
 	var/obj/fire/old_fire = fire
+	var/old_density = density
 	var/old_opacity = opacity
 	var/old_dynamic_lighting = dynamic_lighting
 	var/old_affecting_lights = affecting_lights
@@ -93,6 +94,9 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
+
+	if(.)
+		SEND_SIGNAL(src, SIGNAL_TURF_CHANGED, src, old_density, density, old_opacity, opacity)
 
 /turf/proc/transport_properties_from(turf/other)
 	if(!istype(other, src.type))

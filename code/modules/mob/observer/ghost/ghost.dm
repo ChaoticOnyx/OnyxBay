@@ -374,9 +374,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	stop_following()
 	following = target
-	GLOB.moved_event.register(following, src, /atom/movable/proc/move_to_turf)
-	GLOB.dir_set_event.register(following, src, /atom/proc/recursive_dir_set)
-	GLOB.destroyed_event.register(following, src, /mob/observer/ghost/proc/stop_following)
+	register_signal(following, SIGNAL_MOVED, /atom/movable/proc/move_to_turf)
+	register_signal(following, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)
+	register_signal(following, SIGNAL_DESTROY, /mob/observer/ghost/proc/stop_following)
 
 	to_chat(src, SPAN_NOTICE("Now following \the [following]."))
 	move_to_turf(following, loc, following.loc)
@@ -386,9 +386,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/proc/stop_following()
 	if(following)
 		to_chat(src, SPAN_NOTICE("No longer following \the [following]."))
-		GLOB.moved_event.unregister(following, src)
-		GLOB.dir_set_event.unregister(following, src)
-		GLOB.destroyed_event.unregister(following, src)
+		unregister_signal(following, SIGNAL_MOVED)
+		unregister_signal(following, SIGNAL_DIR_SET)
+		unregister_signal(following, SIGNAL_DESTROY)
 		following = null
 		glide_size = glide_before_follow
 		glide_before_follow = 0

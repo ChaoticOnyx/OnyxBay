@@ -31,7 +31,7 @@
 	followed_objects_assoc[AM] = follow_holder
 	followed_objects.Add(follow_holder)
 
-	GLOB.destroyed_event.register(AM, src, /repository/follow/proc/remove_subject)
+	register_signal(AM, SIGNAL_DESTROY, /repository/follow/proc/remove_subject)
 
 /repository/follow/proc/remove_subject(atom/movable/AM)
 	cache = null
@@ -41,7 +41,7 @@
 	followed_objects_assoc -= AM
 	followed_objects.Remove(follow_holder)
 
-	GLOB.destroyed_event.unregister(AM, src, /repository/follow/proc/remove_subject)
+	unregister_signal(AM, SIGNAL_DESTROY)
 
 	qdel(follow_holder)
 

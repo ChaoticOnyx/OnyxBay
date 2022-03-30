@@ -12,10 +12,8 @@
 /// Applies a label to the name of the parent in the format of: "parent_name (label)".
 /datum/component/label/proc/apply_label()
 	var/atom/owner = parent
-	var/old_name = owner.name
 	owner.name += " ([label_name])"
 	owner.verbs += /atom/proc/RemoveLabel
-	GLOB.name_set_event.raise_event(owner, old_name, owner.name)
 	owner.post_attach_label()
 
 /// Removes the label from the parent's name.

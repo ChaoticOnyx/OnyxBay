@@ -47,9 +47,9 @@
 /turf/simulated/open/proc/update()
 	plane = OPENSPACE_PLANE + (src.z * PLANE_DIFFERENCE)
 	below = GetBelow(src)
-	GLOB.turf_changed_event.register(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.register(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.register(below, src, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
+	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
 	levelupdate()
 	for(var/atom/movable/A in src)
 		A.fall()
@@ -193,9 +193,9 @@
 
 /turf/simulated/open/proc/clean_up()
 	//Unregister
-	GLOB.turf_changed_event.unregister(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_TURF_CHANGED)
+	unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_ENTERED)
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
