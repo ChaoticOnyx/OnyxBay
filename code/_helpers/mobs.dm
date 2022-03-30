@@ -261,11 +261,19 @@
 // Returns true if the mob was in neither the dead or living list
 /mob/proc/add_to_dead_mob_list()
 	CAN_BE_REDEFINED(TRUE)
+
+	SEND_SIGNAL(src, SIGNAL_MOB_DEATH, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_MOB_DEATH, src)
+
 	return FALSE
+
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
+	
+	..()
 	GLOB.dead_mob_list_ += src
+
 	return TRUE
 
 // Returns true if the mob was removed form the dead list

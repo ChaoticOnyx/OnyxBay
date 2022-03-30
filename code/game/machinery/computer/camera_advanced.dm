@@ -30,15 +30,16 @@
 			var/mob/living/L = I
 			GrantActions(L)
 			vision.possess(L)
-			GLOB.destroyed_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
-			GLOB.logged_out_event.register(L, src, /obj/machinery/computer/camera_advanced/proc/release)
+			register_signal(L, SIGNAL_DESTROY, /obj/machinery/computer/camera_advanced/proc/release)
+			register_signal(L, SIGNAL_LOGGED_OUT, /obj/machinery/computer/camera_advanced/proc/release)
 
 /obj/machinery/computer/camera_advanced/proc/release(mob/living/L)
 	vision.release(L)
 	for(var/datum/action/A in actions)
 		A.Remove(L)
-	GLOB.destroyed_event.unregister(L, src)
-	GLOB.logged_out_event.unregister(L, src)
+	
+	unregister_signal(L, SIGNAL_DESTROY)
+	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
 
 /obj/machinery/computer/camera_advanced/proc/GrantActions(mob/living/L)

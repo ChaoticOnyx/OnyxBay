@@ -34,7 +34,7 @@
 	listeners = list()
 	listener_status = list()
 
-	GLOB.destroyed_event.register(source, src, /datum/proc/qdel_self)
+	register_signal(source, SIGNAL_DESTROY, /datum/proc/qdel_self)
 
 	player.subscribe(src)
 
