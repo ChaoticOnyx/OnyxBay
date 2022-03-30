@@ -54,7 +54,7 @@
 
 /datum/action/innate/teleport_in
 ///Is the amount of time required between uses
-	var/abductor_pad_cooldown = 8 SECONDS
+
 ///Is used to compare to world.time in order to determine if the action should early return
 	var/use_delay
 	name = "Send To"
@@ -64,13 +64,13 @@
 	if(!target || !iscarbon(owner))
 		return
 	if(world.time < use_delay)
-		to_chat(owner, SPAN_WARNING("You must wait [(use_delay - world.time)/10] to use the [target] again!"))
+		to_chat(owner, SPAN_WARNING("You must wait [(use_delay - world.time)/10] seconds to use the [target] again!"))
 		return
 	var/mob/living/carbon/human/C = owner
 	var/mob/observer/eye/remote_eye = C.eyeobj
 	var/obj/machinery/abductor/pad/P = target
 
-	use_delay = (world.time + abductor_pad_cooldown)
+	use_delay = world.time + 60 SECONDS
 
 	P.PadToLoc(remote_eye.loc)
 

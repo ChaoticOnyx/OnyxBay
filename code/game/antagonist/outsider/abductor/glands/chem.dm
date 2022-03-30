@@ -11,7 +11,7 @@
 /obj/item/organ/internal/heart/gland/chem/Initialize(mapload)
 	. = ..()
 	for(var/R in subtypesof(/datum/reagent))
-		if(istype(R,/datum/reagent/adminordrazine)||istype(R,/datum/reagent/nanites))
+		if(istype(R,/datum/reagent/adminordrazine)||istype(R,/datum/reagent/nanites)||istype(R,/datum/reagent/metroidtoxin))
 			continue
 		possible_reagents += R
 
