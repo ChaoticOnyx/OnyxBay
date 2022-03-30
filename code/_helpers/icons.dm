@@ -854,10 +854,10 @@
 	var/savefile/dummySave = new("tmp/dummySave.sav")
 	dummySave["dummy"] << icon
 	var/iconData = dummySave.ExportText("dummy")
-	var/list/partial = splittext(iconData, "{")
+	var/list/partial = splittext(splittext(iconData, "{")[2], "}")[1]
 
 	// If cleanup fails we want to still return the correct base64
-	. = replacetext(copytext_char(partial[2], 3, -5), "\n", "")
+	. = replacetext(copytext_char(partial, 3, -2), "\n", "")
 	dummySave.Unlock()
 	dummySave = null
 
