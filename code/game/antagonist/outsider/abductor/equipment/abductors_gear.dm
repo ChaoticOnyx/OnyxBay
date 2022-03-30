@@ -677,7 +677,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/item/clothing/head/helmet/abductor
 	name = "agent headgear"
-	desc = "Abduct with style - spiky style. Prevents digital tracking."
+	desc = "Abduct with style - spiky style."
 	icon_state = "alienhelmet"
 	item_state = "alienhelmet"
 	species_restricted = list(SPECIES_ABDUCTOR)
