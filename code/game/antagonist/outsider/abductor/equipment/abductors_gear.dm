@@ -37,7 +37,7 @@
 
 /obj/item/clothing/suit/armor/abductor/vest/equipped(mob/user)
 	DeactivateStealth()
-	. = ..()
+	return ..()
 
 /obj/item/clothing/suit/armor/abductor/vest/proc/toggle_nodrop()
 	canremove = !canremove
