@@ -152,9 +152,7 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 	. = ..()
 
 /proc/register_all_movement(event_source, datum/listener)
-	listener.register_signal(event_source, SIGNAL_MOVED, /atom/movable/proc/recursive_move)
 	listener.register_signal(event_source, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)
 
 /proc/unregister_all_movement(event_source, datum/listener)
-	listener.unregister_signal(event_source, SIGNAL_MOVED, /atom/movable/proc/recursive_move)
 	listener.unregister_signal(event_source, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)
