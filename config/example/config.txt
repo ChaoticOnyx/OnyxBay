@@ -145,6 +145,9 @@ LOG_GAME
 ## Uncomment to prohibit sending in OOC for players blocked by EAMS.
 # EAMS_BLOCKS_OOC
 
+## Uncomment to let player in even if API detected a proxy IP.
+# EAMS_IGNORE_PROXY
+
 # # # # # # # # # # # # # # # # # # # # # #
 #          GAMEMODE PROBABILITIES         #
 # # # # # # # # # # # # # # # # # # # # # #

@@ -72,6 +72,7 @@ var/list/gamemode_cache = list()
 	var/panic_bunker = 0
 	var/eams = 0
 	var/eams_blocks_ooc = 0
+	var/eams_ignore_proxy = 0
 	var/usewhitelist = 0
 	var/kick_inactive = 0				//force disconnect for inactive players after this many minutes, if non-0
 	var/mods_can_tempban = 0
@@ -882,6 +883,9 @@ var/list/gamemode_cache = list()
 
 				if("eams_blocks_ooc")
 					config.eams_blocks_ooc = TRUE
+
+				if("eams_ignore_proxy")
+					config.eams_ignore_proxy = TRUE
 
 				if("delist_when_no_admins")
 					config.delist_when_no_admins = TRUE

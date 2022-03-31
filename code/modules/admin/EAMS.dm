@@ -257,7 +257,7 @@ SUBSYSTEM_DEF(eams)
 		return TRUE
 
 	if (C.eams_info.loaded)
-		if ((C.eams_info.ip_countryCode in __allowed_countries) && !C.eams_info.ip_proxy)
+		if ((C.eams_info.ip_countryCode in __allowed_countries) && (!C.eams_info.ip_proxy || config.eams_ignore_proxy))
 			return TRUE
 
 		// Bad IP and player isn't whitelisted.. so create a warning
