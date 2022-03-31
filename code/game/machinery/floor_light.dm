@@ -14,20 +14,20 @@ var/static/list/floor_light_color_cache = list()
 	power_channel = STATIC_EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
-	#define MAX_HEALTH 60
-	#define SHIELD MAX_HEALTH * 0.6	// Hits to broke
-	#define CRACK_LAYER DECAL_LAYER
+	#define FLOOR_LIGHT_MAX_HEALTH 60
+	#define FLOOR_LIGHT_SHIELD FLOOR_LIGHT_MAX_HEALTH * 0.6	// Hits to broke
+	#define FLOOR_LIGHT_CRACK_LAYER DECAL_LAYER
 	var/ID
-	var/health = MAX_HEALTH	// Hits to destroy
+	var/health = FLOOR_LIGHT_MAX_HEALTH	// Hits to destroy
 	var/damaged = FALSE
 	var/cracks = 0
 
-	#define DEFAULT_LIGHT_MAX_BRIGHT 0.75
-	#define DEFAULT_LIGHT_INNER_RANGE 1
-	#define DEFAULT_LIGHT_OUTER_RANGE 3
-	#define DEFAULT_LIGHT_COLOUR "#69baff"
-	#define BROKEN_LIGHT_COLOUR "#FFFFFF"
-	#define LIGHT_LAYER DECAL_LAYER
+	#define FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT 0.75
+	#define FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE 1
+	#define FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE 3
+	#define FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR "#69baff"
+	#define FLOOR_LIGHT_BROKEN_LIGHT_COLOUR "#FFFFFF"
+	#define FLOOR_LIGHT_LIGHT_LAYER DECAL_LAYER
 	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
@@ -135,7 +135,7 @@ var/static/list/floor_light_color_cache = list()
 		visible_message(SPAN("notice", "\The [user] has repaired \the [src]."))
 		set_broken(FALSE)
 		damaged = FALSE
-		health = MAX_HEALTH
+		health = FLOOR_LIGHT_MAX_HEALTH
 		update_brightness()
 		return
 
@@ -181,11 +181,11 @@ var/static/list/floor_light_color_cache = list()
 	ID = "\ref[src]"
 	if(must_work)
 		if(broken())
-			set_light(DEFAULT_LIGHT_MAX_BRIGHT / 2, DEFAULT_LIGHT_INNER_RANGE / 2, DEFAULT_LIGHT_OUTER_RANGE / 2, 2, BROKEN_LIGHT_COLOUR)
+			set_light(FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT / 2, FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE / 2, FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE / 2, 2, FLOOR_LIGHT_BROKEN_LIGHT_COLOUR)
 			update_use_power(POWER_USE_IDLE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_IDLE)
 		else
-			set_light(DEFAULT_LIGHT_MAX_BRIGHT, DEFAULT_LIGHT_INNER_RANGE, DEFAULT_LIGHT_OUTER_RANGE, 2, light_color_check(ID))
+			set_light(FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT, FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE, FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE, 2, light_color_check(ID))
 			update_use_power(POWER_USE_ACTIVE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	else
@@ -203,7 +203,7 @@ var/static/list/floor_light_color_cache = list()
 			var/cache_key = "floorlight[ID]-damaged[crack]"
 			var/image/I = image("damaged[crack]")
 			playsound(loc, "sound/effects/glass_step.ogg", 100, 1)
-			update_light_cache(ID, cache_key, I, CRACK_LAYER)
+			update_light_cache(ID, cache_key, I, FLOOR_LIGHT_CRACK_LAYER)
 			cracks++
 	else overlays.Cut()
 	if(must_work)
@@ -219,10 +219,10 @@ var/static/list/floor_light_color_cache = list()
 					I = inverted ? image("glowing_slow_invert") : image("glowing_slow")
 				if(2)
 					I = inverted ? image("glowing_fast_invert") : image("glowing_fast")
-			update_light_cache(ID, cache_key, I, LIGHT_LAYER)
+			update_light_cache(ID, cache_key, I, FLOOR_LIGHT_LIGHT_LAYER)
 
 /obj/machinery/floor_light/proc/update_light_cache(ID, cache_key, image/I, _layer)
-	I.color = broken() ? BROKEN_LIGHT_COLOUR : light_color_check(ID)
+	I.color = broken() ? FLOOR_LIGHT_BROKEN_LIGHT_COLOUR : light_color_check(ID)
 	I.plane = plane
 	I.layer = _layer
 	floor_light_cache[cache_key] = I
@@ -240,7 +240,7 @@ var/static/list/floor_light_color_cache = list()
 	while(prob(50))
 
 /obj/machinery/floor_light/proc/broken()
-	return health < SHIELD
+	return health < FLOOR_LIGHT_SHIELD
 
 /obj/machinery/floor_light/proc/light_color_check(ID)
 	if(isnull(light_colour))
@@ -248,5 +248,5 @@ var/static/list/floor_light_color_cache = list()
 			return floor_light_color_cache["floorlight[ID]-glowing"]
 		if(floor_light_cache["floorlight[ID]-flickering"])
 			return floor_light_color_cache["floorlight[ID]-flickering"]
-		return DEFAULT_LIGHT_COLOUR
+		return FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR
 	return light_colour
