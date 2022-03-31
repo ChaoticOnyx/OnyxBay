@@ -35,6 +35,10 @@
 	var/stealth_armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, RAD = 15)
 	var/combat_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, RAD = 50)
 
+/obj/item/clothing/suit/armor/abductor/vest/equipped(mob/user)
+	DeactivateStealth()
+	return ..()
+
 /obj/item/clothing/suit/armor/abductor/vest/proc/toggle_nodrop()
 	canremove = !canremove
 	if(ismob(loc))
@@ -47,9 +51,11 @@
 			DeactivateStealth()
 			armor = combat_armor
 			icon_state = "vest_combat"
+			body_parts_covered = UPPER_TORSO|LOWER_TORSO
 		if(VEST_COMBAT)// TO STEALTH
 			mode = VEST_STEALTH
 			armor = stealth_armor
+			body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS
 			icon_state = "vest_stealth"
 	if(ishuman(loc))
 		var/mob/living/carbon/human/H = loc
@@ -395,7 +401,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	recharge_time = 20
 
 
-/obj/item/gun/abductor/special_check(mob/user)
+/obj/item/gun/energy/abductor/special_check(mob/user)
 	if(!isabductor(user))
 		return FALSE
 	return ..()
@@ -418,11 +424,11 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	icon_state = "wonderprodStun"
 	item_state = "wonderprod"
 
-	force = 7
-	agonyforce = 70
+	hitcost = 0 //YEP
 	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy()
 	var/mode = BATON_STUN
 	var/sleep_time = 60
+	bcell = /obj/item/cell/device/standard
 	var/time_to_cuff = 3 SECONDS
 
 /obj/item/melee/baton/abductor/proc/toggle(mob/living/user=usr)
@@ -671,11 +677,11 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 
 /obj/item/clothing/head/helmet/abductor
 	name = "agent headgear"
-	desc = "Abduct with style - spiky style. Prevents digital tracking."
+	desc = "Abduct with style - spiky style."
 	icon_state = "alienhelmet"
 	item_state = "alienhelmet"
 	species_restricted = list(SPECIES_ABDUCTOR)
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|BLOCKHAIR
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 
 // Operating Table / Beds / Lockers
 /obj/structure/bed/abductor
@@ -738,6 +744,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			for(var/chemical in injected_reagents)
 				if(M.reagents.get_reagent_amount(chemical) < inject_am )
 					M.reagents.add_reagent(chemical, inject_am )
+			return 1
 	src.victim = null
 	return 0
 

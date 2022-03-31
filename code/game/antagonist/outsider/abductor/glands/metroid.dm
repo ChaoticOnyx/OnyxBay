@@ -2,7 +2,7 @@
 	abductor_hint = "gastric animation galvanizer. The abductee occasionally vomits metroids. Metroids will no longer attack the abductee."
 	cooldown_low = 600
 	cooldown_high = 1200
-	uses = -1
+	uses = 3
 	icon_state = "slime"
 	mind_control_uses = 1
 	mind_control_duration = 2400

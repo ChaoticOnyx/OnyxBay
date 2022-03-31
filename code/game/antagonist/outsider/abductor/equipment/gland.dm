@@ -108,6 +108,9 @@
 		active = FALSE
 	..()
 
+/obj/item/organ/internal/heart/gland/emp_act(severity)
+	return 0
+
 /obj/item/organ/internal/heart/gland/proc/do_after_cooldown()
 	on_cooldown = FALSE
 

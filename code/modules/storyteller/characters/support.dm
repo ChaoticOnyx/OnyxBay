@@ -43,7 +43,7 @@
 		var/list/triggers = new
 		triggers[/storyteller_trigger/spawn_antagonist/traitor] = 65
 		triggers[/storyteller_trigger/spawn_antagonist/vampire] = 10
-		triggers[/storyteller_trigger/spawn_antagonist/abductor] = 20
+		triggers[/storyteller_trigger/spawn_antagonist/abductor] = 5
 		triggers[/storyteller_trigger/spawn_antagonist/borer] = 5
 
 		if(security_advantage > 10)
