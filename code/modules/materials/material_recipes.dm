@@ -25,8 +25,8 @@
 		recipes += new /datum/stack_recipe("[display_name] lock",/obj/item/material/lock_construct, 1, time = 20, one_per_turf = 0, on_floor = 1, supplied_material = "[name]")
 
 	if(hardness>50)
-		recipes += new /datum/stack_recipe("[display_name] fork", /obj/item/material/kitchen/utensil/fork/plastic, 1, on_floor = 1, supplied_material = "[name]")
-		recipes += new /datum/stack_recipe("[display_name] knife", /obj/item/material/kitchen/utensil/knife/plastic, 1, on_floor = 1, supplied_material = "[name]")
+		recipes += new /datum/stack_recipe("[display_name] fork", /obj/item/material/kitchen/utensil/fork, 1, on_floor = 1, supplied_material = "[name]")
+		recipes += new /datum/stack_recipe("[display_name] knife", /obj/item/material/kitchen/utensil/knife, 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] blade", /obj/item/material/knife/shiv, 5, time = 30, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] shuriken", /obj/item/material/star, 2, time = 20, on_floor = 1, supplied_material = "[name]")
 

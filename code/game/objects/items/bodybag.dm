@@ -5,6 +5,7 @@
 	desc = "A folded bag designed for the storage and transportation of cadavers."
 	icon = 'icons/obj/bodybag.dmi'
 	icon_state = "bodybag_folded"
+	item_state = "bodybag_folded_c"
 	w_class = ITEM_SIZE_SMALL
 	pull_sound = SFX_PULL_BODY
 

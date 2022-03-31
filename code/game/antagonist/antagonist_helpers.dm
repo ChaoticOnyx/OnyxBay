@@ -1,11 +1,13 @@
-/datum/antagonist/proc/can_become_antag(datum/mind/player, ignore_role)
+/datum/antagonist/proc/can_become_antag(datum/mind/player, ignore_role, max_stat = CONSCIOUS)
 	if(player.current && jobban_isbanned(player.current, id))
-		return 0
-	if(isliving(player.current) && player.current.stat)
-		return 0
+		return FALSE
+
+	if(isliving(player.current) && (player.current.stat > max_stat))
+		return FALSE
+
 	var/datum/job/J = job_master.GetJob(player.assigned_role)
-	if(is_type_in_list(J,blacklisted_jobs))
-		return 0
+	if(is_type_in_list(J, blacklisted_jobs))
+		return FALSE
 
 	if(!ignore_role)
 		if(player.current && player.current.client)

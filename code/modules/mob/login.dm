@@ -88,3 +88,6 @@
 		winset(src, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true input.focus=false")
 	else
 		winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+
+	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
+	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)

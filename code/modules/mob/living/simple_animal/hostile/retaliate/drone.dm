@@ -21,9 +21,10 @@
 	health = 300
 	maxHealth = 300
 	speed = 8
-	projectiletype = /obj/item/projectile/beam/drone
+	projectiletype = /obj/item/projectile/beam/laser/drone
 	projectilesound = 'sound/effects/weapons/energy/Laser3.ogg'
 	destroy_surroundings = 0
+	ignore_pull_slowdown = TRUE
 	var/datum/effect/effect/system/trail/ion_trail
 
 	//the drone randomly switches between these states if it's malfunctioning
@@ -271,7 +272,7 @@
 
 	return ..()
 
-/obj/item/projectile/beam/drone
+/obj/item/projectile/beam/laser/drone
 	damage = 15
 
 /obj/item/projectile/beam/pulse/drone

@@ -6,16 +6,19 @@
 	var/item_removal_proc
 
 /datum/extension/appearance/New(holder)
-	var/appearance_handler = appearance_manager.get_appearance_handler(appearance_handler_type)
+	var/decl/appearance_handler/appearance_handler = appearance_manager.get_appearance_handler(appearance_handler_type)
 	if(!appearance_handler)
 		CRASH("Unable to acquire the [appearance_handler_type] appearance handler.")
 
-	GLOB.item_equipped_event.register(holder, appearance_handler, item_equipment_proc)
-	GLOB.item_unequipped_event.register(holder, appearance_handler, item_removal_proc)
+	appearance_handler.register_signal(holder, SIGNAL_ITEM_EQUIPPED, item_equipment_proc)
+	appearance_handler.register_signal(holder, SIGNAL_ITEM_UNEQUIPPED, item_removal_proc)
+
 	..()
 
 /datum/extension/appearance/Destroy()
-	var/appearance_handler = appearance_manager.get_appearance_handler(appearance_handler_type)
-	GLOB.item_equipped_event.unregister(holder, appearance_handler, item_equipment_proc)
-	GLOB.item_unequipped_event.unregister(holder, appearance_handler, item_removal_proc)
+	var/decl/appearance_handler/appearance_handler = appearance_manager.get_appearance_handler(appearance_handler_type)
+
+	appearance_handler.unregister_signal(holder, SIGNAL_ITEM_EQUIPPED)
+	appearance_handler.unregister_signal(holder, SIGNAL_ITEM_UNEQUIPPED)
+
 	. = ..()

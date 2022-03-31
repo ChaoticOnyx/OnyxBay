@@ -55,9 +55,9 @@
 		M.forceMove(trans) //move inside the new dude to hide him.
 		M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 		transformed_dudes[trans] = M
-		GLOB.death_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(M, src, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
+		register_signal(trans, SIGNAL_MOB_DEATH, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		register_signal(trans, SIGNAL_DESTROY, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		register_signal(M, SIGNAL_DESTROY, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
 		if(duration)
 			spawn(duration)
 				stop_transformation(trans)
@@ -88,9 +88,9 @@
 
 /datum/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
 	var/mob/current = transformed_dudes[target]
-	GLOB.destroyed_event.unregister(target,src)
-	GLOB.death_event.unregister(current,src)
-	GLOB.destroyed_event.unregister(current,src)
+	unregister_signal(target, SIGNAL_DESTROY)
+	unregister_signal(current, SIGNAL_MOB_DEATH)
+	unregister_signal(current, SIGNAL_DESTROY)
 	transformed_dudes[target] = null
 	transformed_dudes -= target
 

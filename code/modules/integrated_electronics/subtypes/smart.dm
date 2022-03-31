@@ -141,8 +141,12 @@
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
+	radial_menu_icon = "mmi_holder"
 
 	var/obj/item/device/mmi/installed_brain
+
+/obj/item/integrated_circuit/input/mmi_tank/ask_for_input(mob/user)
+	attack_self(user)
 
 /obj/item/integrated_circuit/input/mmi_tank/attackby(obj/item/device/mmi/O, mob/user)
 	if(!istype(O,/obj/item/device/mmi))
@@ -154,7 +158,6 @@
 	user.drop_item(O)
 	O.forceMove(src)
 	installed_brain = O
-	can_be_asked_input = FALSE
 	to_chat(user, SPAN("notice", "You gently place \the man-machine interface inside the tank."))
 	to_chat(O, SPAN("notice", "You are slowly being placed inside the man-machine-interface tank."))
 	set_pin_data(IC_OUTPUT, 1, O)
@@ -189,7 +192,6 @@
 
 /obj/item/integrated_circuit/input/mmi_tank/proc/RemoveBrain()
 	if(installed_brain)
-		can_be_asked_input = TRUE
 		installed_brain.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 
@@ -260,8 +262,12 @@
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
+	radial_menu_icon = "pai_holder"
 
 	var/obj/item/device/paicard/installed_pai
+
+/obj/item/integrated_circuit/input/pAI_connector/ask_for_input(mob/user)
+	attack_self(user)
 
 /obj/item/integrated_circuit/input/pAI_connector/attackby(obj/item/device/paicard/O, mob/user)
 	if(!istype(O,/obj/item/device/paicard))
@@ -273,7 +279,6 @@
 	user.drop_item(O)
 	O.forceMove(src)
 	installed_pai = O
-	can_be_asked_input = FALSE
 	to_chat(user, SPAN("notice", "You slowly connect the circuit's pins to the [installed_pai]."))
 	to_chat(O, SPAN("notice", "You are slowly being connected to the pAI connector."))
 	set_pin_data(IC_OUTPUT, 1, O)
@@ -309,7 +314,6 @@
 
 /obj/item/integrated_circuit/input/pAI_connector/proc/RemovepAI()
 	if(installed_pai)
-		can_be_asked_input = TRUE
 		installed_pai.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 

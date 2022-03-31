@@ -5,6 +5,8 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIGHT_CYAN
 
 /obj/item/projectile/change/on_hit(atom/change)
 	wabbajack(change)

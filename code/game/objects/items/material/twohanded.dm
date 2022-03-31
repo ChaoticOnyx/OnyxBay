@@ -26,6 +26,7 @@
 	var/unwieldsound = null
 	var/base_icon
 	var/base_name
+	var/unwielded_force_const = 0
 	var/unwielded_force_divisor = 0.25
 	var/mod_handy_w
 	var/mod_weight_w
@@ -57,10 +58,10 @@
 		force_wielded = material.get_edge_damage()
 	else
 		force_wielded = material.get_blunt_damage()
-	force_wielded = force_const + round(force_wielded*force_divisor, 0.1)
-	force_unwielded = force_const + round(force_wielded*unwielded_force_divisor, 0.1)
+	force_wielded = force_const + round(force_wielded * force_divisor, 0.1)
+	force_unwielded = unwielded_force_const + round(force_wielded * unwielded_force_divisor, 0.1)
 	force = force_unwielded
-	throwforce = round(force*thrown_force_divisor)
+	throwforce = round(force * thrown_force_divisor)
 //	log_debug("[src] has unwielded force [force_unwielded], wielded force [force_wielded] and throwforce [throwforce] when made from default material [material.name]")
 
 
@@ -99,6 +100,7 @@
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	applies_material_colour = 0
 	unbreakable = 1 // Because why should it break at all
+	material_amount = 8
 
 /obj/item/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
@@ -120,7 +122,8 @@
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
 	force = 10
-	force_const = 5.5
+	unwielded_force_const = 5.5
+	force_const = 6.5
 	sharp = 1
 	edge = 1
 	w_class = ITEM_SIZE_HUGE
@@ -140,6 +143,7 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = MATERIAL_GLASS
+	material_amount = 3
 
 /obj/item/material/twohanded/spear/shatter(consumed)
 	if(!consumed)
@@ -159,7 +163,7 @@
 	mod_handy_w = 1.0
 	mod_weight_w = 1.5
 	mod_reach_w = 1.0
-	mod_handy_u = 0.8
+	mod_handy_u = 0.75
 	mod_weight_u = 1.35
 	mod_reach_u = 1.0
 
@@ -167,9 +171,13 @@
 	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
 	hitsound = SFX_FIGHTING_SWING
 	default_material = MATERIAL_WOOD
-	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
-	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.
+
+	force_const = 8.0
+	force_divisor = 0.6           // 14 when wielded with weight 20 (steel)
+	unwielded_force_const = 5.0
+	unwielded_force_divisor = 0.5 // 15 when unwielded based on above.
 	slot_flags = SLOT_BACK
+	material_amount = 5
 
 //Predefined materials go here.
 /obj/item/material/twohanded/baseballbat/metal/New(newloc)

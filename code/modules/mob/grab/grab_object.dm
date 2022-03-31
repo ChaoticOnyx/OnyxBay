@@ -272,8 +272,8 @@
 /obj/item/grab/proc/can_absorb()
 	return current_grab.can_absorb
 
-/obj/item/grab/proc/assailant_reverse_facing()
-	return current_grab.reverse_facing
+/obj/item/grab/proc/reverse_moving()
+	return current_grab.reverse_moving
 
 /obj/item/grab/proc/shield_assailant()
 	return current_grab.shield_assailant

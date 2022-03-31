@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(station_areas)
+
 /*
 	List generation helpers
 */

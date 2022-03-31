@@ -303,10 +303,11 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/bioelectrogenesis
 	name = "Bioelectrogenesis"
-	desc = "We prepare to emmit an electromagnetic pulse."
-	helptext = "We have to touch our target after activating this ability to use it."
+	desc = "We make adjustments to our mitochondria, allowing us to emmit rather powerful electromagnetic pulses at will."
+	helptext = "EMP can disable electronic devices and cause severe damage to synthetic lifeforms. This ability has a strong effect in a 1 tile radius around us, and a weaker effect in a 2 tile radius."
+	enhancedtext = "EMP has a strong effect in a 2 tile radius."
 	genomecost = 5
-	power_path = /datum/changeling_power/toggled/bioelectrogenesis
+	power_path = /datum/changeling_power/bioelectrogenesis
 
 /datum/power/changeling/darksight
 	name = "Dark Sight"

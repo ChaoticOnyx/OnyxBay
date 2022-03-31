@@ -162,7 +162,8 @@
 		var/obj/item/organ/external/E = source
 		E.internal_organs.Remove(src)
 
-	forceMove(destination)
+	if(!istype(destination, /mob/living/carbon/brain))
+		forceMove(destination)
 
 	// Connecting biostructure as an organ.
 	if(ishuman(destination))

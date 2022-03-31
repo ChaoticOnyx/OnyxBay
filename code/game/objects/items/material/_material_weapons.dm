@@ -23,6 +23,7 @@
 	var/thrown_force_divisor = 0.5 //Depends on weight
 	var/default_material = MATERIAL_STEEL
 	var/material/material
+	var/material_amount = 1 // Number of material sheets contained in the item. Doesn't have to exactly match the amount of material spent for crafting as some may be lost during welding/carving.
 	var/drops_debris = 1
 	var/m_overlay = 0
 
@@ -76,6 +77,9 @@
 			obj_flags |= OBJ_FLAG_CONDUCTIBLE
 		else
 			obj_flags &= (~OBJ_FLAG_CONDUCTIBLE)
+		if(material.reagent_path)
+			create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
+			reagents.add_reagent(material.reagent_path, material_amount * REAGENTS_PER_MATERIAL_SHEET)
 		update_force()
 
 /obj/item/material/Destroy()

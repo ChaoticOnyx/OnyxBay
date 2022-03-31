@@ -176,3 +176,17 @@
 	starts_with = list(/datum/reagent/mindbreaker = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5
+
+/obj/item/reagent_containers/hypospray/autoinjector/antirad
+	icon_state = "orange1"
+	content_desc = "Hyronalin 10u. Use in case of radiation poisoning."
+	base_state = "orange"
+	starts_with = list(/datum/reagent/hyronalin = 10)
+
+/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine
+	name = "Radfi-X"
+	desc = "A rapid way to administer a mix of radiation-purging drugs by untrained personnel. Severe radiation poisoning may require multiple doses."
+	content_desc = "#1 brand among uranium miners across the galaxy!"
+	icon_state = "mine1"
+	base_state = "mine"
+	starts_with = list(/datum/reagent/hyronalin = 5, /datum/reagent/dylovene = 5)

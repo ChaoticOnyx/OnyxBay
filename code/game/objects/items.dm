@@ -239,7 +239,7 @@
 		return ..()
 	if(hasorgans(user))
 		var/mob/living/carbon/human/H = user
-		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
@@ -320,6 +320,8 @@
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
 
+	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	return
@@ -354,6 +356,8 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+
+	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(
@@ -773,11 +777,11 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.register(src, src, /obj/item/proc/zoom_move)
-	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
-	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_DESTROY, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
+	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
 
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
@@ -792,17 +796,17 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	zoom = 0
 
-	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.unregister(src, src, /obj/item/proc/zoom_move)
-	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
+	unregister_signal(src, SIGNAL_DESTROY)
+	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	unregister_signal(src, SIGNAL_DIR_SET)
+	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
 		crash_with("[log_info_line(src)]: Zoom user lost]")
 		return
 
-	GLOB.stat_set_event.unregister(user, src, /obj/item/proc/unzoom)
+	unregister_signal(user, SIGNAL_STAT_SET)
 
 	if(!user.client)
 		return

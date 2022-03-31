@@ -1,5 +1,19 @@
 #define CYBORG_POWER_USAGE_MULTIPLIER 2.5 // Multiplier for amount of power cyborgs use.
 
+var/global/list/robot_footstep_sounds = list(
+	FOOTSTEP_ROBOT_LEGS = list(
+		'sound/effects/robot_footstep/legs01.ogg',
+		'sound/effects/robot_footstep/legs02.ogg',
+		'sound/effects/robot_footstep/legs03.ogg',
+		'sound/effects/robot_footstep/legs04.ogg'
+	),
+	FOOTSTEP_ROBOT_SPIDER = list(
+		'sound/effects/robot_footstep/spider01.ogg',
+		'sound/effects/robot_footstep/spider02.ogg',
+		'sound/effects/robot_footstep/spider03.ogg'
+	)
+)
+
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -7,6 +21,7 @@
 	icon_state = "robot"
 	maxHealth = 200
 	health = 200
+	ignore_pull_slowdown = TRUE // Steel be strong
 
 	mob_bump_flag = ROBOT
 	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
@@ -27,7 +42,7 @@
 
 	var/static/list/eye_overlays
 	var/icontype 				//Persistent icontype tracking allows for cleaner icon updates
-	var/module_sprites[0] 		//Used to store the associations between sprite names and sprite index.
+	var/module_hulls[0] 		//Used to store the associations between sprite names and hull datum.
 	var/icon_selected = 1		//If icon selection has been completed yet
 	var/icon_selection_tries = 0//Remaining attempts to select icon before a selection is forced
 
@@ -97,6 +112,7 @@
 	var/tracking_entities = 0 //The number of known entities currently accessing the internal camera
 	var/braintype = "Cyborg"
 	var/intenselight = 0	// Whether cyborg's integrated light was upgraded
+	var/footstep_sound = null
 
 	var/list/robot_verbs_default = list(
 		/mob/living/silicon/robot/proc/sensor_mode,
@@ -117,8 +133,9 @@
 	robot_modules_background = new()
 	robot_modules_background.icon_state = "block"
 	ident = random_id(/mob/living/silicon/robot, 1, 999)
-	module_sprites["Basic"] = "robot"
+	module_hulls["Basic"] = new /datum/robot_hull/spider/robot
 	icontype = "Basic"
+	footstep_sound = module_hulls[icontype].footstep_sound
 	updatename(modtype)
 	update_icon()
 
@@ -240,25 +257,26 @@
 	QDEL_NULL(wires)
 	return ..()
 
-/mob/living/silicon/robot/proc/set_module_sprites(list/new_sprites)
-	if(new_sprites && new_sprites.len)
-		module_sprites = new_sprites.Copy()
-		//Custom_sprite check and entry
+/mob/living/silicon/robot/proc/set_module_hulls(list/new_sprites)
+	if(length(new_sprites))
+		module_hulls = new_sprites.Copy()
+		// Custom_sprite check and entry
 		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
 			var/sprite_state = GLOB.robot_custom_icons[ckey]
 			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
 			if(sprite_state && (sprite_state in valid_states))
-				module_sprites["Custom"] = sprite_state
+				module_hulls["Custom"] = sprite_state
 				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
 			else
-				icontype = module_sprites[1]
+				icontype = module_hulls[1]
 				icon = original_icon
 		else
-			icontype = module_sprites[1]
-		icon_state = module_sprites[icontype]
+			icontype = module_hulls[1]
+		icon_state = module_hulls[icontype].icon_state
+		footstep_sound = module_hulls[icontype].footstep_sound
 	update_icon()
-	return module_sprites
+	return module_hulls
 
 /mob/living/silicon/robot/proc/choose_module()
 	if(module)
@@ -407,7 +425,7 @@
 		to_chat(src, "<span class='warning'>Your self-diagnosis component isn't functioning.</span>")
 		return
 
-	var/datum/robot_component/CO = get_component("diagnosis unit")
+	var/datum/robot_component/CO = get_robot_component("diagnosis unit")
 	if (!cell_use_power(CO.active_usage))
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
@@ -790,7 +808,7 @@
 /mob/living/silicon/robot/update_icon()
 	overlays.Cut()
 	if(stat == CONSCIOUS)
-		var/eye_icon_state = "eyes-[module_sprites[icontype]]"
+		var/eye_icon_state = "eyes-[module_hulls[icontype].icon_state]"
 		if(eye_icon_state in icon_states(icon))
 			if(!eye_overlays)
 				eye_overlays = list()
@@ -812,14 +830,13 @@
 			overlays += "[panelprefix]-openpanel -c"
 
 	if(module_active && istype(module_active,/obj/item/borg/combat/shield))
-		overlays += "[module_sprites[icontype]]-shield"
+		overlays += "[module_hulls[icontype].icon_state]-shield"
 
 	if(modtype == "Combat")
 		if(module_active && istype(module_active,/obj/item/borg/combat/mobility))
-			icon_state = "[module_sprites[icontype]]-roll"
+			icon_state = "[module_hulls[icontype].icon_state]-roll"
 		else
-			icon_state = module_sprites[icontype]
-		return
+			icon_state = module_hulls[icontype].icon_state
 
 /mob/living/silicon/robot/proc/installed_modules()
 	if(weapon_lock)
@@ -1060,29 +1077,30 @@
 
 	return
 
-/mob/living/silicon/robot/proc/choose_icon(triesleft, list/module_sprites)
-	if(!module_sprites.len)
+/mob/living/silicon/robot/proc/choose_hull(triesleft, list/module_hulls)
+	if(!module_hulls.len)
 		to_chat(src, "Something is badly wrong with the sprite selection. Harass a coder.")
 		return
-	set_module_sprites(module_sprites)
+	set_module_hulls(module_hulls)
 	icon_selected = 0
 	src.icon_selection_tries = triesleft
-	if(module_sprites.len == 1 || !client)
-		if(!(icontype in module_sprites))
-			icontype = module_sprites[1]
+	if(module_hulls.len == 1 || !client)
+		if(!(icontype in module_hulls))
+			icontype = module_hulls[1]
 	else
-		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
-	icon_state = module_sprites[icontype]
+		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
+	footstep_sound = module_hulls[icontype].footstep_sound
+	icon_state = module_hulls[icontype].icon_state
 	var/list/valid_states = icon_states(icon)
 	if(!(icon_state in valid_states))
 		icon = original_icon
 	update_icon()
 
-	if (module_sprites.len > 1 && triesleft >= 1 && client)
+	if (module_hulls.len > 1 && triesleft >= 1 && client)
 		icon_selection_tries--
 		var/choice = input(src,"Look at your icon - is this what you want?") in list("Yes","No")
 		if(choice=="No")
-			choose_icon(icon_selection_tries, module_sprites)
+			choose_hull(icon_selection_tries, module_hulls)
 			return
 
 	icon_selected = 1
@@ -1115,7 +1133,7 @@
 
 /mob/living/silicon/robot/binarycheck()
 	if(is_component_functioning("comms"))
-		var/datum/robot_component/RC = get_component("comms")
+		var/datum/robot_component/RC = get_robot_component("comms")
 		use_power(RC.active_usage)
 		return 1
 	return 0
@@ -1279,5 +1297,17 @@
 
 	return
 
+/mob/living/silicon/robot/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_TRAITOR)
+		return TRUE
+	return FALSE
 
+/mob/living/silicon/robot/proc/play_footstep_sound()
+	if(!robot_footstep_sounds)
+		return
 
+	var/range = -(world.view - 2)
+	var/volume = 10
+	var/S = safepick(robot_footstep_sounds[footstep_sound])
+
+	playsound(get_turf(src), S, volume, FALSE, range)

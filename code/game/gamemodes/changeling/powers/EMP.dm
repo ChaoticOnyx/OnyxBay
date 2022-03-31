@@ -1,37 +1,28 @@
 
-//Boosts the range of our stings by 1, but also increases required chems by 10.
-/datum/changeling_power/toggled/bioelectrogenesis
+// Emits an EMP around our host body
+/datum/changeling_power/bioelectrogenesis
 	name = "Bioelectrogenesis"
 	desc = "We create an electromagnetic pulse against synthetics."
 	icon_state = "ling_emp"
-	required_chems = 40
-	power_processing = FALSE
+	required_chems = 50
+	text_activate = "We emit an electromagnetic pulse!"
+	var/heavy_range = 1
+	var/light_range = 2
 
-	text_activate = "We prepare to launch an electromagnetic pulse."
-	text_deactivate = "We retract from using bioelectrogenesis."
-
-/datum/changeling_power/toggled/bioelectrogenesis/activate()
-	changeling.deactivate_stings()
-	my_mob.PushClickHandler(/datum/click_handler/changeling/changeling_bioelectrogenesis)
-	active = TRUE
-	update_screen_button()
-
-/datum/changeling_power/toggled/bioelectrogenesis/deactivate(no_message = TRUE)
-	active = FALSE
-	if(istype(my_mob.GetClickHandler(), /datum/click_handler/changeling/changeling_bioelectrogenesis))
-		my_mob.PopClickHandler()
-	if(!no_message)
-		to_chat(my_mob, SPAN("changeling", text_deactivate))
-	update_screen_button()
-
-/datum/changeling_power/toggled/bioelectrogenesis/proc/affect(atom/target)
-	if(!target)
+/datum/changeling_power/bioelectrogenesis/activate()
+	if(!..())
 		return
-	if(!is_usable())
-		return
-	if(target in orange(1, src))
-		empulse(target.loc, 1, 1)
-		deactivate()
-		use_chems()
+
+	use_chems()
+	to_chat(my_mob, SPAN("changeling", text_activate))
+
+	spawn()
+		empulse(my_mob, heavy_range, light_range, TRUE)
+
+/datum/changeling_power/bioelectrogenesis/update_recursive_enhancement()
+	if(..())
+		heavy_range = 2
+		text_activate = "We emit a powerful electromagnetic pulse!"
 	else
-		to_chat(src, SPAN("changeling", "The target is too far away."))
+		heavy_range = 1
+		text_activate = "We emit an electromagnetic pulse!"

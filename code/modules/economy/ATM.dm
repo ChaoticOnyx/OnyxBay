@@ -10,8 +10,9 @@
 	desc = "For all your monetary needs!"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 10
+	layer = ABOVE_WINDOW_LAYER
 	var/datum/money_account/authenticated_account
 	var/number_incorrect_tries = 0
 	var/previous_account_number = 0

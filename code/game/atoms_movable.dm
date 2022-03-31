@@ -50,6 +50,15 @@
 	..()
 	return
 
+/atom/movable/proc/get_selected_zone()
+	return
+
+/atom/movable/proc/get_active_item()
+	return
+
+/atom/movable/proc/on_purchase()
+	return
+
 /atom/movable/proc/forceMove(atom/destination)
 	if(loc == destination)
 		return 0
@@ -79,6 +88,10 @@
 					AM.Crossed(src)
 			if(is_new_area && is_destination_turf)
 				destination.loc.Entered(src, origin)
+
+	if(!loc)
+		SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, null)
+
 	return 1
 
 //called when src is thrown into hit_atom
@@ -282,3 +295,34 @@
 		var/turf/T = locate(new_x, new_y, new_z)
 		if(T)
 			forceMove(T)
+
+/atom/movable/Entered(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.register_signal(src, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set, TRUE)
+
+/atom/movable/Exited(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.unregister_signal(src, SIGNAL_DIR_SET)
+	am.unregister_signal(src, SIGNAL_MOVED)
+
+/atom/movable/Move()
+	var/old_loc = loc
+
+	. = ..()
+
+	if(. && !loc)
+		SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, null)
+
+/atom/movable/proc/move_to_turf(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+
+	if(T && T != loc)
+		forceMove(T)
+
+// Similar to above but we also follow into nullspace
+/atom/movable/proc/move_to_turf_or_null(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+	if(T != loc)
+		forceMove(T)

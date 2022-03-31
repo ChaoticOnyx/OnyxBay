@@ -8,18 +8,27 @@
 
 	var/detaching_now = FALSE
 
-/datum/changeling_power/detach_limb/activate()
+/datum/changeling_power/detach_limb/is_usable(no_message = FALSE)
 	if(!..())
-		return
+		return FALSE
 
 	if(detaching_now)
-		to_chat(my_mob, SPAN("changeling", "We must focus on detaching one limb at a time."))
-		return
+		if(!no_message)
+			to_chat(my_mob, SPAN("changeling", "We must focus on detaching one limb at a time."))
+		return FALSE
 
 	var/mob/living/carbon/human/H = my_mob
 
 	if(H.is_ventcrawling)
+		return FALSE
+
+	return TRUE
+
+/datum/changeling_power/detach_limb/activate()
+	if(!..())
 		return
+
+	var/mob/living/carbon/human/H = my_mob
 
 	var/list/detachable_limbs = H.organs.Copy()
 	for(var/obj/item/organ/external/E in detachable_limbs)

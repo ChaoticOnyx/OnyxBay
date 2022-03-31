@@ -3,6 +3,7 @@
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
+	var/playable_mob = TRUE
 	var/syndicate = 0
 	var/const/MAIN_CHANNEL = "Main Frequency"
 	var/lawchannel = MAIN_CHANNEL // Default channel on which to state laws
@@ -31,7 +32,8 @@
 	var/active_hud
 
 /mob/living/silicon/New()
-	GLOB.silicon_mob_list += src
+	if(playable_mob)
+		GLOB.silicon_mob_list += src
 	..()
 
 	if(silicon_radio)

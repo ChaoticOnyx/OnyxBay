@@ -222,7 +222,7 @@
 	price = 20
 
 /datum/gear/suit/punk_jacket_RD
-	display_name = "punk jacket navy"
+	display_name = "punk jacket raven"
 	path = /obj/item/clothing/suit/storage/punk_jacket_RD
 	price = 20
 

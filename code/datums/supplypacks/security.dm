@@ -334,20 +334,20 @@
 	containername = "\improper 7.62 practice ammunition crate"
 	access = access_security
 
-/decl/hierarchy/supply_pack/security/c44spec
-	name = "Ammunition - .44 SPEC 3in1"
-	contains = list(/obj/item/ammo_magazine/c44/spec = 3)
+/decl/hierarchy/supply_pack/security/c38spec
+	name = "Ammunition - .38 SPEC 3in1"
+	contains = list(/obj/item/ammo_magazine/c38/spec = 3)
 	cost = 30
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper .44 SPEC ammunition crate"
+	containername = "\improper .38 SPEC ammunition crate"
 	access = access_forensics_lockers
 
-/decl/hierarchy/supply_pack/security/c44chem
-	name = "Ammunition - .44 CHEM 3in1"
-	contains = list(/obj/item/ammo_magazine/c44/chem = 3)
+/decl/hierarchy/supply_pack/security/c38chem
+	name = "Ammunition - .38 CHEM 3in1"
+	contains = list(/obj/item/ammo_magazine/c38/chem = 3)
 	cost = 45
 	containertype = /obj/structure/closet/crate/secure/weapon
-	containername = "\improper .44 CHEM ammunition crate"
+	containername = "\improper .38 CHEM ammunition crate"
 	access = access_forensics_lockers
 
 /decl/hierarchy/supply_pack/security/forensics //Not access-restricted so PIs can use it.

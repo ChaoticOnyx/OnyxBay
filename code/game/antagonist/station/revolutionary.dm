@@ -29,13 +29,20 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 	faction = "revolutionary"
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg)
-	restricted_jobs = list(/datum/job/merchant, /datum/job/captain, /datum/job/hop, /datum/job/hos, /datum/job/chief_engineer, /datum/job/rd, /datum/job/cmo, /datum/job/lawyer)
+	restricted_jobs = list(/datum/job/merchant, /datum/job/captain, /datum/job/hop, /datum/job/hos, /datum/job/chief_engineer, /datum/job/rd, /datum/job/cmo, /datum/job/iaa)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 
 /datum/antagonist/revolutionary/Initialize()
 	. = ..()
 	if(config.revolutionary_min_age)
 		min_player_age = config.revolutionary_min_age
+
+/datum/antagonist/revolutionary/proc/count_score()
+	var/rev_score = 0
+	for(var/area/A in GLOB.station_areas)
+		if(!A.is_controlled_by_corporation())
+			rev_score += A.importance
+	return rev_score
 
 /datum/antagonist/revolutionary/create_global_objectives()
 	if(!..())

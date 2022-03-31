@@ -56,8 +56,12 @@
 	name = "Librarian"
 	icon_state = "landmark_librarian"
 
-/obj/effect/landmark/start/crew/lawyer
+/obj/effect/landmark/start/crew/iaa
 	name = "Internal Affairs Agent"
+	icon_state = "landmark_iaa"
+
+/obj/effect/landmark/start/crew/lawyer
+	name = "Lawyer"
 	icon_state = "landmark_lawyer"
 
 // Merchant
@@ -216,6 +220,19 @@
 /obj/effect/landmark/start/antags/borer
 	name = "Borer"
 	icon_state = "landmark_borer"
+
+// Abductors
+/obj/effect/landmark/abductor
+	var/team_number = 1
+	should_be_added = FALSE
+
+/obj/effect/landmark/abductor/agent
+	icon_state = "landmark_abductor_agent"
+	should_be_added = TRUE
+
+/obj/effect/landmark/abductor/scientist
+	icon_state = "landmark_abductor"
+	should_be_added = TRUE
 
 // Latejoin landmarks.
 /obj/effect/landmark/joinlate

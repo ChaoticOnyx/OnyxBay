@@ -9,7 +9,7 @@
 
 	var/stop_move = 0							// Whether or not the grabbed person can move out of the grab
 	var/force_stand = 0							// Whether or not the grabbed person is forced to be standing
-	var/reverse_facing = 0						// Whether the person being grabbed is facing forwards or backwards.
+	var/reverse_moving = FALSE					// Whether the persons involved will move backwards
 	var/can_absorb = 0							// Whether this grab state is strong enough to, as a changeling, absorb the person you're grabbing.
 	var/shield_assailant = 0					// Whether the person you're grabbing will shield you from bullets.,,
 	var/point_blank_mult = 1					// How much the grab increases point blank damage.

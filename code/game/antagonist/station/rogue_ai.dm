@@ -21,10 +21,10 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	if(config.malf_min_age)
 		min_player_age = config.malf_min_age
 
-/datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role)
-	. = ..(player, ignore_role)
+/datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role, max_stat)
+	. = ..()
 	if(jobban_isbanned(player.current, "AI"))
-		return 0
+		return FALSE
 	return .
 
 /datum/antagonist/rogue_ai/build_candidate_list()

@@ -641,3 +641,6 @@
 	lastcycle = world.time
 	qdel(S)
 	check_health()
+
+/obj/machinery/portable_atmospherics/hydroponics/post_attach_label()
+	update_icon()

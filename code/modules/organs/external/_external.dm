@@ -33,7 +33,7 @@
 	var/movement_tally    = 0          // Defines movement speed
 	var/damage_multiplier = 0.5        // Default damage multiplier
 	var/stumped_tally     = 8          // 4.0  tally if limb stmuped
-	var/splinted_tally    = 1          // 0.5 tally if limb splinted
+	var/splinted_tally    = 2          // 1.0 tally if limb splinted
 	var/broken_tally      = 3          // 1.5 tally if limb broken
 
 	// A bitfield for a collection of limb behavior flags.
@@ -881,7 +881,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.robotize()
 			stump.wounds |= W
 			victim.organs |= stump
-			movement_tally += stumped_tally * damage_multiplier
+			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
@@ -1029,6 +1029,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 		for(var/obj/item/implant/I in implants)
 			I.exposed()
 
+/obj/item/organ/external/proc/update_tally()
+	movement_tally = initial(movement_tally)
+	if(splinted)
+		movement_tally += splinted_tally * damage_multiplier
+	else if(status & ORGAN_BROKEN)
+		movement_tally += broken_tally * damage_multiplier
+
 /obj/item/organ/external/proc/fracture()
 	if(!config.bones_can_break)
 		return
@@ -1048,7 +1055,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	playsound(src.loc, SFX_BREAK_BONE, 100, 1, -2)
 	status |= ORGAN_BROKEN
-	movement_tally += broken_tally * damage_multiplier
+	update_tally()
 
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
@@ -1069,20 +1076,20 @@ Note that amputating the affected organ does in fact remove the infection from t
 		var/obj/item/clothing/suit/space/rig/suit = owner.wear_suit
 		suit.handle_fracture(owner, src)
 
-/obj/item/organ/external/proc/mend_fracture()
+/obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
-		return 0	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(brute_dam > min_broken_damage * config.organ_health_multiplier)
-		return 0	//will just immediately fracture again
+		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
+	if(use_damage_check && (brute_dam > min_broken_damage * config.organ_health_multiplier))
+		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
-	movement_tally -= broken_tally * damage_multiplier
-	return 1
+	update_tally()
+	return TRUE
 
 /obj/item/organ/external/proc/apply_splint(atom/movable/splint)
 	if(!splinted)
 		splinted = splint
-		movement_tally += splinted_tally * damage_multiplier
+		update_tally()
 		if(!applied_pressure)
 			applied_pressure = splint
 		return 1
@@ -1095,7 +1102,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(applied_pressure == splinted)
 			applied_pressure = null
 		splinted = null
-		movement_tally -= splinted_tally * damage_multiplier
+		update_tally()
 		return 1
 	return 0
 
@@ -1126,6 +1133,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	remove_splint()
 	update_icon(1)
 	unmutate()
+	update_tally()
 
 	for(var/obj/item/organ/external/T in children)
 		T.robotize(company, 1)

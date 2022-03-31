@@ -58,7 +58,7 @@
 	last_shot = world.time
 	var/projectile = /obj/item/projectile/beam/stun
 	if(emagged)
-		projectile = /obj/item/projectile/beam
+		projectile = /obj/item/projectile/beam/laser/mid
 
 	playsound(loc, emagged ? 'sound/effects/weapons/energy/Laser.ogg' : 'sound/effects/weapons/energy/Taser.ogg', 50, 1)
 	var/obj/item/projectile/P = new projectile(loc)

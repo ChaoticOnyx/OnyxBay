@@ -58,6 +58,7 @@
 	var/datum/changeling/changeling		// Changeling holder
 	var/datum/vampire/vampire 			// Vampire holder
 	var/datum/wizard/wizard				// Wizard holder
+	var/datum/abductor/abductor 		// Abductor holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -69,6 +70,7 @@
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
 	var/was_antag_given_by_storyteller = FALSE
+	var/antag_was_given_at = ""
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()

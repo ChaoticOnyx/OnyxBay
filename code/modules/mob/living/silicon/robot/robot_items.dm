@@ -84,11 +84,14 @@
 		return
 	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 		return
-	if(istype(target,/obj/item))
+	if(istype(target, /obj/item))
+		var/obj/item/I = target
+		if(!I.origin_tech)
+			to_chat(user, SPAN("notice", "This doesn't seem to have a tech origin."))
+			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
-		var/obj/item/I = target
 		I.loc = src
 		loaded_item = I
 		for(var/mob/M in viewers())
@@ -230,21 +233,19 @@
 /obj/item/tray/robotray/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if ( !target )
+	if(!target)
 		return
 	// pick up items, mostly copied from base tray pickup proc
 	// see code/game/objects/items/weapons/kitchen.dm line 241
-	if ( istype(target,/obj/item))
-		if ( !isturf(target.loc) ) // Don't load up stuff if it's inside a container or mob!
+	if(istype(target, /obj/item))
+		if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 			return
-		var turf/pickup = target.loc
+		var/turf/pickup = target.loc
 
-		var addedSomething = 0
+		var/addedSomething = 0
 
-		for(var/obj/item/reagent_containers/food/I in pickup)
-
-
-			if( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
+		for(var/obj/item/I in pickup)
+			if(I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile))
 				var/add = I.get_storage_cost()
 				if(calc_carry() + add >= max_carry)
 					break
@@ -253,8 +254,8 @@
 				carrying.Add(I)
 				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 				addedSomething = 1
-		if ( addedSomething )
-			user.visible_message("<span class='notice'>\The [user] load some items onto their service tray.</span>")
+		if (addedSomething)
+			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
 
 		return
 

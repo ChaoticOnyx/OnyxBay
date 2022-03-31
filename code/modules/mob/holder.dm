@@ -5,6 +5,7 @@ var/list/holder_mob_icon_cache = list()
 	name = "holder"
 	desc = "You shouldn't ever see this."
 	icon = 'icons/obj/objects.dmi'
+	icon_state = "blank"
 	slot_flags = SLOT_HEAD | SLOT_HOLSTER
 
 	origin_tech = null
@@ -26,9 +27,12 @@ var/list/holder_mob_icon_cache = list()
 	qdel(src)
 
 /obj/item/holder/Destroy()
+	if(last_holder)
+		var/mob/M = last_holder
+		M.drop_from_inventory(src, get_turf(M))
+		last_holder = null
 	for(var/atom/movable/AM in src)
 		AM.forceMove(get_turf(src))
-	last_holder = null
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -81,6 +85,8 @@ var/list/holder_mob_icon_cache = list()
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
+		if(M.isSynthetic())
+			return
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
@@ -154,28 +160,41 @@ var/list/holder_mob_icon_cache = list()
 		return
 
 	if(self_grab)
-		if(src.incapacitated()) return
+		if(incapacitated())
+			return
 	else
-		if(grabber.incapacitated()) return
+		if(grabber.incapacitated())
+			return
+
+	for(var/obj/item/grab/G in grabbed_by)
+		if(self_grab) // Somebody's grabbing us, no way to climb onto anyone.
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber] while being grabbed!"))
+			return
+		else if(G.assailant != grabber) // Grabber's trying to scoop us up, but somebody else's grabbing us.
+			to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of [G.assailant]'s grab!"))
+			return
 
 	var/obj/item/holder/H = new holder_type(get_turf(src))
 
 	if(self_grab)
-		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail=0, disable_warning=1))
-			to_chat(src, "<span class='warning'>You can't climb onto [grabber]!</span>")
+		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail = FALSE, disable_warning = TRUE))
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber]!"))
 			return
 
-		to_chat(grabber, "<span class='notice'>\The [src] clambers onto you!</span>")
-		to_chat(src, "<span class='notice'>You climb up onto \the [grabber]!</span>")
+		to_chat(grabber, SPAN("notice", "\The [src] clambers onto you!"))
+		to_chat(src, SPAN("notice", "You climb up onto \the [grabber]!"))
 	else
 		if(!grabber.put_in_hands(H))
-			to_chat(grabber, "<span class='warning'>Your hands are full!</span>")
+			to_chat(grabber, SPAN("warning", "Your hands are full!"))
 			return
 
-		to_chat(grabber, "<span class='notice'>You scoop up \the [src]!</span>")
-		to_chat(src, "<span class='notice'>\The [grabber] scoops you up!</span>")
+		to_chat(grabber, SPAN("notice", "You scoop up \the [src]!"))
+		to_chat(src, SPAN("notice", "\The [grabber] scoops you up!"))
 
-	src.forceMove(H)
+	for(var/obj/item/grab/G in grabbed_by)
+		qdel(G) // All the checks have been done above, it's safe to murder one (or even two, who knows) of grabber's grab objects.
+
+	forceMove(H)
 	if(isanimal(src))
 		var/mob/living/simple_animal/SA = src
 		SA.panic_target = null

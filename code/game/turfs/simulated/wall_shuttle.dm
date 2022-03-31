@@ -31,6 +31,11 @@
 	name = "shuttle wall"
 	icon_state = "merchwall0"
 
+/turf/simulated/shuttle/wall/syndi
+	name = "shuttle wall"
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "syndiwall0"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -194,6 +199,20 @@
 /turf/simulated/shuttle/wall/corner/merchant/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/merchant/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/syndi
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "corner_syndiwall"
+	corner_overlay_state = "corner_syndiwall"
+
+/turf/simulated/shuttle/wall/corner/syndi/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/syndi/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/sw
 	dir = SOUTH|WEST
 
 //Corners for the guitar ship; might look a bit off but it's better than glowing walls;

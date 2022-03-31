@@ -2,7 +2,7 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 	name = "Conductor"
 	priority = SS_PRIORITY_CONDUCTOR
 	flags = SS_NO_INIT | SS_BACKGROUND
-	runlevels = RUNLEVEL_GAME
+	runlevels = RUNLEVEL_GAME | RUNLEVEL_POSTGAME
 	wait = 10 SECONDS
 
 /datum/controller/subsystem/processing/conductor/fire(resumed)
@@ -36,20 +36,27 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 				C.play_ambience_music(GET_SFX(SFX_AMBIENT_MUSIC_SPACE_TRAVEL))
 				continue
 
-		var/tag = pick(A.ambient_music_meta_tags)
+		var/tag = pick(A.ambient_music_tags)
+
+		// The conductor decided to not play music but keep silence.
+		if(!tag)
+			C.last_time_ambient_music_played = world.time
+
 		var/file_to_play = get_sound_by_tag(tag)
 		C.play_ambience_music(file_to_play)
 
 /datum/controller/subsystem/processing/conductor/proc/get_sound_by_tag(meta_tag)
 	switch(meta_tag)
-		if(META_MYSTIC)
+		if(MUSIC_TAG_MYSTIC)
 			return GET_SFX(SFX_AMBIENT_MUSIC_MYSTIC)
-		if(META_SPACE)
+		if(MUSIC_TAG_SPACE)
 			if(prob(20))
 				return GET_SFX(SFX_AMBIENT_MUSIC_MYSTIC)
 
 			return GET_SFX(SFX_AMBIENT_MUSIC_SPACE)
-		if(META_CENTCOMM)
+		if(MUSIC_TAG_CENTCOMM)
 			return GET_SFX(SFX_AMBIENT_MUSIC_CENTCOMM)
 		else
+			if(prob(50))
+				return
 			return GET_SFX(SFX_AMBIENT_MUSIC_NORMAL)

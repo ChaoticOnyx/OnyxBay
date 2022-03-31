@@ -1,7 +1,7 @@
 /* Toxins, poisons, venoms */
 
 /datum/reagent/toxin
-	name = "toxin"
+	name = "Toxin"
 	description = "A toxic chemical."
 	taste_description = "bitterness"
 	taste_mult = 1.2
@@ -593,7 +593,7 @@
 		E.s_tone = null
 		E.s_col = ReadRGB("#05ff9b")
 		E.s_col_blend = ICON_ADD
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status |= ORGAN_MUTATED
 		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 		E.dislocated = -1

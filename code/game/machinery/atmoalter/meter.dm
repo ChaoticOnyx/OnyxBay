@@ -18,11 +18,11 @@
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
 	target = new_target
-	GLOB.destroyed_event.register(target, src, .proc/clear_target)
+	register_signal(target, SIGNAL_DESTROY, .proc/clear_target)
 
 /obj/machinery/meter/proc/clear_target()
 	if(target)
-		GLOB.destroyed_event.unregister(target, src)
+		unregister_signal(target, SIGNAL_DESTROY)
 		target = null
 
 /obj/machinery/meter/Destroy()

@@ -33,7 +33,7 @@ var/global/list/robot_modules = list(
 		LANGUAGE_SIGN = 0,
 		LANGUAGE_INDEPENDENT = 1,
 		LANGUAGE_SPACER = 1)
-	var/sprites = list()
+	var/hulls = list()
 	var/can_be_pushed = 1
 	var/no_slip = 0
 	var/list/modules = list()
@@ -70,8 +70,8 @@ var/global/list/robot_modules = list(
 	if(R.silicon_radio)
 		R.silicon_radio.recalculateChannels()
 
-	R.set_module_sprites(sprites)
-	R.choose_icon(R.module_sprites.len + 1, R.module_sprites)
+	R.set_module_hulls(hulls)
+	R.choose_hull(R.module_hulls.len + 1, R.module_hulls)
 
 	for(var/obj/item/I in modules)
 		I.canremove = 0
@@ -84,7 +84,9 @@ var/global/list/robot_modules = list(
 
 	if(R.silicon_radio)
 		R.silicon_radio.recalculateChannels()
-	R.choose_icon(0, R.set_module_sprites(list("Default" = "robot")))
+	R.choose_hull(0, R.set_module_hulls(list(
+		"Default" = new /datum/robot_hull/spider/robot
+		)))
 
 /obj/item/robot_module/Destroy()
 	for(var/module in modules)
@@ -189,13 +191,13 @@ var/global/list/robot_modules = list(
 
 /obj/item/robot_module/standard
 	name = "standard robot module"
-	sprites = list(
-					"Default" = "robot",
-					"Basic" = "robot_old",
-					"Android" = "droid",
-					"Drone" = "drone-standard",
-					"Doot" = "eyebot-standard"
-				  )
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot,
+		"Basic" = new /datum/robot_hull/legs/robot_old,
+		"Android" = new /datum/robot_hull/spider/droid,
+		"Drone" = new /datum/robot_hull/flying/drone_standard,
+		"Doot" = new /datum/robot_hull/flying/eyebot_standard
+	)
 
 /obj/item/robot_module/standard/New()
 	src.modules += new /obj/item/device/flash(src)
@@ -240,14 +242,14 @@ var/global/list/robot_modules = list(
 
 /obj/item/robot_module/medical/crisis
 	name = "medical robot module"
-	sprites = list(
-					"Default" = "robot-medical",
-					"Basic" = "Medbot",
-					"Standard" = "surgeon",
-					"Advanced Droid" = "droid-medical",
-					"Drone" = "drone-medical",
-					"Doot" = "eyebot-medical"
-					)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_medical,
+		"Basic" = new /datum/robot_hull/legs/medbot,
+		"Standard" = new /datum/robot_hull/flying/surgeon,
+		"Advanced Droid" = new /datum/robot_hull/legs/droid_medical,
+		"Drone" = new /datum/robot_hull/flying/drone_medical,
+		"Doot" = new /datum/robot_hull/flying/eyebot_medical
+	)
 
 /obj/item/robot_module/medical/crisis/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/blood_printer)
@@ -316,14 +318,14 @@ var/global/list/robot_modules = list(
 
 /obj/item/robot_module/medical/crisis_adv
 	name = "advanced medical robot module"
-	sprites = list(
-					"Default" = "robot-medical",
-					"Basic" = "Medbot",
-					"Standard" = "surgeon",
-					"Advanced Droid" = "droid-medical",
-					"Drone" = "drone-medical",
-					"Doot" = "eyebot-medical"
-					)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_medical,
+		"Basic" = new /datum/robot_hull/legs/medbot,
+		"Standard" = new /datum/robot_hull/flying/surgeon,
+		"Advanced Droid" = new /datum/robot_hull/legs/droid_medical,
+		"Drone" = new /datum/robot_hull/flying/drone_medical,
+		"Doot" = new /datum/robot_hull/flying/eyebot_medical
+	)
 
 /obj/item/robot_module/medical/crisis_adv/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/blood_printer)
@@ -404,15 +406,16 @@ var/global/list/robot_modules = list(
 	channels = list("Engineering" = 1)
 	networks = list(NETWORK_ENGINEERING)
 	subsystems = list(/datum/nano_module/power_monitor, /datum/nano_module/supermatter_monitor)
-	sprites = list(
-					"Default" = "robot-engineer",
-					"Basic" = "Engineering",
-					"Antique" = "engineerrobot",
-					"Landmate" = "landmate",
-					"Landmate - Treaded" = "engiborg+tread",
-					"Drone" = "drone-engineer",
-					"Doot" = "eyebot-engineering"
-					)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_engineer,
+		"Basic" = new /datum/robot_hull/legs/engineering,
+		"Antique" = new /datum/robot_hull/legs/engineerrobot,
+		"Landmate" = new /datum/robot_hull/spider/landmate,
+		"Landmate - Treaded" = new /datum/robot_hull/truck/engiborg_tread,
+		"Drone" = new /datum/robot_hull/flying/drone_engineer,
+		"Doot" = new /datum/robot_hull/flying/eyebot_engineering
+	)
+
 	no_slip = 1
 
 /obj/item/robot_module/engineering/New()
@@ -602,17 +605,17 @@ var/global/list/robot_modules = list(
 	supported_upgrades += list(/obj/item/borg/upgrade/lasercooler,/obj/item/borg/upgrade/tasercooler,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/detective)
 
 /obj/item/robot_module/security/general
-	sprites = list(
-					"Default" = "robot-security",
-					"Basic" = "secborg",
-					"Red Knight" = "Security",
-					"Black Knight" = "securityrobot",
-					"Bloodhound" = "bloodhound",
-					"Bloodhound - Treaded" = "secborg+tread",
-					"Drone" = "drone-sec",
-					"Doot" = "eyebot-security",
-					"Tridroid" = "orb-security"
-				)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_security,
+		"Basic" = new /datum/robot_hull/legs/secborg,
+		"Red Knight" = new /datum/robot_hull/legs/security,
+		"Black Knight" = new /datum/robot_hull/legs/securityrobot,
+		"Bloodhound" = new /datum/robot_hull/spider/bloodhound,
+		"Bloodhound - Treaded" = new /datum/robot_hull/truck/secborg_tread,
+		"Drone" = new /datum/robot_hull/flying/drone_sec,
+		"Doot" = new /datum/robot_hull/flying/eyebot_security,
+		"Tridroid" = new /datum/robot_hull/flying/orb_security
+	)
 
 /obj/item/robot_module/security/general/New()
 	src.modules += new /obj/item/device/flash(src)
@@ -663,15 +666,15 @@ var/global/list/robot_modules = list(
 /obj/item/robot_module/janitor
 	name = "janitorial robot module"
 	channels = list("Service" = 1)
-	sprites = list(
-					"Default" = "robot-janitor",
-					"Basic" = "JanBot2",
-					"Mopbot"  = "janitorrobot",
-					"Mop Gear Rex" = "mopgearrex",
-					"Drone" = "drone-janitor",
-					"Doot" = "eyebot-janitor",
-					"Robo-Maid" = "maidbot"
-					)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_janitor,
+		"Basic" = new /datum/robot_hull/legs/janbot2,
+		"Mopbot" = new /datum/robot_hull/legs/janitorrobot,
+		"Mop Gear Rex" = new /datum/robot_hull/truck/mopgearrex,
+		"Drone" = new /datum/robot_hull/flying/drone_janitor,
+		"Doot" = new /datum/robot_hull/flying/eyebot_janitor,
+		"Robo-Maid" = new /datum/robot_hull/legs/maidbot
+	)
 
 /obj/item/robot_module/janitor/general/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/paramedic)
@@ -725,18 +728,18 @@ var/global/list/robot_modules = list(
 
 
 /obj/item/robot_module/service/butler
-	sprites = list(
-					"Default" = "robot-service",
-					"Waitress" = "Service",
-					"Kent" = "toiletbot",
-					"Bro" = "Brobot",
-					"Rich" = "maximillion",
-					"Basic" = "Service2",
-					"Drone - Service" = "drone-service",
-					"Drone - Hydro" = "drone-hydro",
-					"Doot" = "eyebot-standard",
-					"Robo-Maid" = "maidbot"
-				  	)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_service,
+		"Waitress" = new /datum/robot_hull/legs/service,
+		"Kent" = new /datum/robot_hull/flying/toiletbot,
+		"Bro" = new /datum/robot_hull/legs/brobot,
+		"Rich" = new /datum/robot_hull/legs/maximillion,
+		"Waiter" = new /datum/robot_hull/legs/service2,
+		"Drone - Service" = new /datum/robot_hull/flying/drone_service,
+		"Drone - Hydro" = new /datum/robot_hull/flying/drone_hydro,
+		"Doot" = new /datum/robot_hull/flying/eyebot_standard,
+		"Robo-Maid" = new /datum/robot_hull/legs/maidbot
+	)
 
 /obj/item/robot_module/service/butler/New()
 	src.modules += new /obj/item/device/flash(src)
@@ -784,14 +787,14 @@ var/global/list/robot_modules = list(
 	subsystems = list(/datum/nano_module/supply)
 	channels = list("Supply" = 1, "Science" = 1)
 	networks = list(NETWORK_MINE)
-	sprites = list(
-					"Default" = "robot-mining",
-					"Basic" = "Miner_old",
-					"Advanced Droid" = "droid-miner",
-					"Treadhead" = "Miner",
-					"Drone" = "drone-miner",
-					"Doot" = "eyebot-miner"
-				)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_mining,
+		"Basic" = new /datum/robot_hull/legs/miner_old,
+		"Advanced Droid" = new /datum/robot_hull/legs/droid_miner,
+		"Treadhead" = new /datum/robot_hull/truck/miner,
+		"Drone" = new /datum/robot_hull/flying/drone_miner,
+		"Doot" = new /datum/robot_hull/flying/eyebot_miner
+	)
 
 /obj/item/robot_module/miner/New()
 	..()
@@ -834,13 +837,12 @@ var/global/list/robot_modules = list(
 
 	channels = list("Science" = 1)
 	networks = list(NETWORK_RESEARCH)
-	//subsystems = list(/datum/nano_module/computer_ntnetmonitor) reserved for adv_science
-	sprites = list(
-					"Default" = "robot-science",
-					"Droid" = "droid-science",
-					"Drone" = "drone-science",
-					"Doot" = "eyebot-science"
-					)
+	hulls = list(
+		"Default" = new /datum/robot_hull/spider/robot_science,
+		"Droid" = new /datum/robot_hull/legs/droid_science,
+		"Drone" = new /datum/robot_hull/flying/drone_science,
+		"Doot" = new /datum/robot_hull/flying/eyebot_science
+	)
 
 /obj/item/robot_module/research/general/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist,/obj/item/borg/upgrade/integrated_circuit_upgrade)
@@ -900,8 +902,8 @@ var/global/list/robot_modules = list(
 /obj/item/robot_module/syndicate
 	name = "illegal robot module"
 	hide_on_manifest = 1
-	sprites = list(
-					"Dread" = "securityrobot",
+	hulls = list(
+					"Dread" = new /datum/robot_hull/legs/securityrobot,
 				)
 	var/id
 
@@ -931,7 +933,9 @@ var/global/list/robot_modules = list(
 /obj/item/robot_module/security/combat
 	name = "combat robot module"
 	hide_on_manifest = 1
-	sprites = list("Combat Android" = "droid-combat")
+	hulls = list(
+		"Combat Android" = new /datum/robot_hull/spider/droid_combat
+	)
 
 /obj/item/robot_module/security/combat/New()
 	src.modules += new /obj/item/device/flash(src)
