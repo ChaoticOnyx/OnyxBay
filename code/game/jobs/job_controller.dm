@@ -496,16 +496,17 @@ var/global/datum/controller/occupations/job_master
 		var/alt_title = null
 		if(H.mind)
 			H.mind.assigned_role = rank
-			alt_title = H.mind.role_alt_title
+			alt_title = get_job_title(H.mind.role_alt_title)
 
-			switch(rank)
+			var/title_job = get_job_title(rank, normal_name = TRUE)
+			switch(title_job)
 				if("Cyborg")
 					return H.Robotize()
 				if("AI")
 					return H
 				if("Captain")
 					var/sound/announce_sound = (GAME_STATE <= RUNLEVEL_SETUP)? null : sound('sound/misc/boatswain.ogg', volume=20)
-					captain_announcement.Announce("All hands, Captain [H.real_name] on deck!", new_sound=announce_sound)
+					captain_announcement.Announce("All hands, [job.title] [H.real_name] on deck!", new_sound=announce_sound)
 
 		// put any loadout items that couldn't spawn into storage or on the ground
 		for(var/datum/gear/G in spawn_in_storage)
@@ -704,7 +705,7 @@ var/global/datum/controller/occupations/job_master
 /datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
 	for(var/obj/effect/landmark/sloc in GLOB.landmarks_list)
-		if(sloc.name != rank)
+		if(sloc.name != get_job_title(rank, TRUE))
 			continue
 		if(locate(/mob/living) in sloc.loc)
 			continue

@@ -314,7 +314,7 @@ Helpers
 /datum/controller/subsystem/ticker/proc/equip_characters()
 	var/captainless = TRUE
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
-		if(player && player.mind && player.mind.assigned_role)
+		if(player && player.mind && get_job_title(player.mind.assigned_role, TRUE))
 			if(player.mind.assigned_role == "Captain")
 				captainless = FALSE
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))

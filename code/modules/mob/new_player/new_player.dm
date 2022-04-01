@@ -90,7 +90,7 @@
 	if(href_list["show_preferences"])
 		client.prefs.ShowChoices(src)
 		return 1
-	
+
 	if(href_list["show_settings"])
 		client.settings.tgui_interact(src)
 		return 1
@@ -222,7 +222,7 @@
 		var/datum/species/S = all_species[client.prefs.species]
 		if(!check_species_allowed(S))
 			return 0
-		var/role = job.title
+		var/role = get_job_title(job.title, TRUE)
 		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
 			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 

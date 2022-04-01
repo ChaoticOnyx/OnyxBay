@@ -180,6 +180,14 @@
 			output += L[i]
 	return output
 
+// Just reverse position of key and value
+/proc/reverse_assoc_list(list/L)
+	var/list/output = list()
+	if(length(L))
+		for(var/key in L)
+			output[L[key]] = key
+	return output
+
 //Randomize: Return the list in a random order
 /proc/shuffle(list/L)
 	if(!L)

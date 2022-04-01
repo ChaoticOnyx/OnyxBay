@@ -270,7 +270,7 @@
 		update_icon()
 	else
 		user.examinate(src)
-		if(rigged && (Holiday == "April Fool's Day") && !spam_flag)
+		if(rigged && (Holiday == HOLIDAY_APRIL_FOOLS) && !spam_flag)
 			spam_flag = TRUE
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 			spawn(20) spam_flag = FALSE

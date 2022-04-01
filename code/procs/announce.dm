@@ -123,7 +123,7 @@
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
 
-	var/rank = job.title
+	var/rank = get_job_title(job.title, TRUE)
 
 	for(var/mob/M in GLOB.player_list)
 		M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', arrival_sound_volume)

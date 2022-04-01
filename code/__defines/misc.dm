@@ -270,3 +270,6 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+// Holidays
+#define HOLIDAY_APRIL_FOOLS "April Fool's Day"
