@@ -1,7 +1,7 @@
 /datum/preferences
 	var/real_name						//our character's name
 	var/be_random_name = 0				//whether we are a random name every round
-	var/gender = MALE					//gender of character (well duh)
+	var/gender = FEMALE					//gender of character (well duh)
 	var/body = "Default"
 	var/age = 30						//age of character
 	var/spawnpoint = "Default" 			//where this character will spawn (0-2).
@@ -88,7 +88,7 @@
 
 	else if(href_list["gender"])
 		var/new_gender = input(user, "Choose your character's gender:", CHARACTER_PREFERENCE_INPUT_TITLE, pref.gender) as null|anything in S.genders
-		S = all_species[pref.species]
+		S = FEMALE
 		if(new_gender && CanUseTopic(user) && (new_gender in S.genders))
 			pref.gender = new_gender
 
