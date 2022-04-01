@@ -38,7 +38,7 @@ GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 
 GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
-GLOBAL_LIST_INIT(old_job_to_new_job, list(
+GLOBAL_LIST_INIT(april_jobs, list(
 	"Captain" = "Cocktain",
 	"Assistant" = "Vagabond",
 	"Technical Assistant" = "Technical Vagabond",
@@ -104,21 +104,21 @@ GLOBAL_LIST_INIT(old_job_to_new_job, list(
 	"Clown" = "Loud Killer"
 ))
 
-GLOBAL_LIST_INIT(new_job_to_old_job, reverse_assoc_list(GLOB.old_job_to_new_job))
+GLOBAL_LIST_INIT(april_jobs_to_normal_job, reverse_assoc_list(GLOB.april_jobs))
 
 /proc/guest_jobbans(job)
 	return (get_job_title(job, TRUE) in GLOB.whitejobs) //rot beycev ebal
 
 /proc/get_job_title(old_name, normal_name = FALSE)
-	if(!((old_name in GLOB.old_job_to_new_job) || (old_name in GLOB.new_job_to_old_job)))
+	if(!((old_name in GLOB.april_jobs) || (old_name in GLOB.april_jobs_to_normal_job)))
 		return old_name
 	var/title
 	if(normal_name)
-		if(old_name in GLOB.old_job_to_new_job || !(old_name in GLOB.new_job_to_old_job))
+		if(old_name in GLOB.april_jobs || !(old_name in GLOB.april_jobs_to_normal_job))
 			return old_name
-		title = GLOB.new_job_to_old_job[old_name]
+		title = GLOB.april_jobs_to_normal_job[old_name]
 	else
-		title = GLOB.old_job_to_new_job[old_name]
+		title = GLOB.april_jobs[old_name]
 	if(!title)
 		title = old_name
 	return title
