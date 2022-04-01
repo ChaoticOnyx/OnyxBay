@@ -1,5 +1,48 @@
 [
   {
+    "author": "KreeperHLC",
+    "date": "2022-04-01T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Balance",
+        "message": "Установлено равноправие.",
+        "pr": 7868
+      },
+      {
+        "prefix": "RscDel",
+        "message": "Мужчины вырезаны из игры.",
+        "pr": 7868
+      }
+    ]
+  },
+  {
+    "author": "igorsaux",
+    "date": "2022-04-01T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлен `Follow` у призраков.",
+        "pr": 7866
+      }
+    ]
+  },
+  {
+    "author": "Zert0X",
+    "date": "2022-04-01T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Небольшие багфиксы абдукторов",
+        "pr": 7850
+      },
+      {
+        "prefix": "Balance",
+        "message": "Небольшие правки баланса абдукторов",
+        "pr": 7850
+      }
+    ]
+  },
+  {
     "author": "O0oMaximo0O",
     "date": "2022-03-31T00:00:00+03:00",
     "changes": [
