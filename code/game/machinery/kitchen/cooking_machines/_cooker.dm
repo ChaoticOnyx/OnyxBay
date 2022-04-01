@@ -80,16 +80,13 @@
 	if(istype(I, /obj/item/reagent_containers/food/snacks/badrecipe))
 		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
 		return 0
-	else if(istype(I, /obj/item/reagent_containers/food/snacks/slice))
-		to_chat(user, SPAN_WARNING(""))
+	else if(istype(I, /obj/item/reagent_containers/food/snacks/slice) && cook_type == "baked")
+		to_chat(user, SPAN_WARNING("\The [I] too small for being [cook_type]."))
 		return 0
 	else if(istype(I.return_item(), /obj/item/reagent_containers/food/snacks))
 		check = I.return_item()
 		if(cook_type in check.cooked_types)
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
-			return 0
-		if("baked" in check.cooked_types)
-			to_chat(user, SPAN_WARNING("\The [I] too small for being [cook_type]."))
 			return 0
 	else if(istype(I, /obj/item/reagent_containers/food/condiment))
 		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
