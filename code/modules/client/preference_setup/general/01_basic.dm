@@ -16,7 +16,7 @@
 /datum/category_item/player_setup_item/general/basic/load_character(datum/pref_record_reader/R)
 	pref.real_name =      R.read("real_name")
 	pref.be_random_name = R.read("name_is_always_random")
-	pref.gender =         R.read("gender")
+	pref.gender =         FEMALE
 	pref.body =           R.read("body")
 	if(!pref.body)
 		pref.body = "Default" // fucking crutch for hot fix
