@@ -76,7 +76,7 @@
 	return
 
 
-/obj/item/paper_bin/attackby(obj/item/i as obj, mob/user as mob)
+/obj/item/paper_bin/attackby(obj/item/i, mob/user)
 	if(istype(i, /obj/item/paper))
 		if(istype(i, /obj/item/paper/talisman))
 			return
