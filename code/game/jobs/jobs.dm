@@ -39,7 +39,7 @@ GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 GLOBAL_LIST_INIT(whitejobs, list("Captain", "Head of Personnel", "Head of Security", "Chief Engineer", "Chief Medical Officer", "Research Director", "AI"))
 
 GLOBAL_LIST_INIT(april_jobs, list(
-	"Captain" = "Cocktain",
+	"Captain" = "Condom",
 	"Assistant" = "Vagabond",
 	"Technical Assistant" = "Technical Vagabond",
 	"Medical Intern" = "Medical Maid",
