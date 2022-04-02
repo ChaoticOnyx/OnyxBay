@@ -157,3 +157,76 @@
 	name = "sheet snatcher 9000"
 	desc = ""
 	capacity = 500//Borgs get more because >specialization
+
+// -----------------------------
+//    Music Tape Boxes
+// -----------------------------
+/obj/item/storage/box/music_tape
+	name = "Music Tape box"
+	desc = "You should not see that."
+
+	max_w_class = ITEM_SIZE_SMALL 
+	max_storage_space = 1
+	can_hold = list(/obj/item/music_tape)
+
+	var/obj/item/music_tape/random/music_tape
+
+/obj/item/storage/box/music_tape/Initialize()
+	..()
+	contents += music_tape
+
+	desc = "A box with [music_tape.name]. It contains following playlist"
+	for(var/datum/track/track in music_tape.tracks)
+		desc += "<br>[track.title]"
+	desc += "."
+
+/obj/item/storage/box/music_tape/attackby(obj/item/A as obj, mob/user as mob)
+	if(istype(A, /obj/item/music_tape))
+		var/obj/item/storage/box/music_tape/C = A
+		if(music_tape)
+			to_chat(user, SPAN("warning", "[src] already has a tape."))
+			return
+
+		user.remove_from_mob(C)
+		C.loc = src
+		music_tape =  C
+		contents = music_tape
+		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
+	else
+		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
+	update_icon()
+
+/obj/item/storage/box/music_tape/attack_hand(mob/user)
+	if(loc != user)
+		..()
+	else
+		if(music_tape)
+			user.put_in_hands(music_tape)
+			music_tape.add_fingerprint(user)
+			music_tape.update_icon()
+
+			src.contents -= music_tape
+			src.music_tape = null
+			user.visible_message("[user] removes the tape from the [src].", "You remove the tape from the [src].")
+			update_icon()
+			add_fingerprint(user)
+
+/obj/item/storage/box/music_tape/AltClick(mob/usr)
+	if(!canremove)
+		return
+
+	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
+		add_fingerprint(usr)
+		attack_hand(usr)
+		return TRUE
+
+/obj/item/storage/box/music_tape/newyear
+	name = "New Year tape box"
+	music_tape = new /obj/item/music_tape/random/newyear
+
+/obj/item/storage/box/music_tape/classic
+	name = "Classic Music tape box"
+	music_tape = new /obj/item/music_tape/random/classic
+/obj/item/storage/box/music_tape/frontier
+	name = "NSS Frontier tape box"
+	music_tape = new /obj/item/music_tape/random/frontier

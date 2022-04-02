@@ -16,7 +16,7 @@
 
 	var/datum/track/track
 
-	var/list/datum/track/tracks
+	var/list/datum/track/tracks = list()
 	var/uploader_ckey
 
 /obj/item/music_tape/Initialize()
@@ -89,40 +89,16 @@
 
 // Random music tapes for jukeboxes with multiple tracks
 /obj/item/music_tape/random
-<<<<<<< HEAD
-	name = "random tape"
-	desc = "Magnetic tape adapted to outdated but proven music formats such as ogg, midi and module files."
-	icon = 'icons/obj/device.dmi'
-	icon_state = "tape_white"
-	item_state = "analyzer"
-	w_class = ITEM_SIZE_TINY
-	force = 1
-	throwforce = 0
-
-	matter = list(MATERIAL_PLASTIC = 20, MATERIAL_STEEL = 5, MATERIAL_GLASS= 5)
-
-	random_color = FALSE
-
-	//var/list/datum/track/tracks
-=======
 	name = "Random tape"
-	random_color = FALSE
->>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
 	var/list/tracklist
 
 /obj/item/music_tape/random/Initialize()
 	. = ..()
-	tracks = setup_music_tracks(track, tracklist)
+	tracks = setup_music_tracks(tracks, tracklist)
 
-<<<<<<< HEAD
-/obj/item/music_tape/random/proc/setup_music_tracks(list/tracks, list/globtracks, numtoadd)
-	. = list()
-	for(var/i=1 to numtoadd)
-=======
 /obj/item/music_tape/random/proc/setup_music_tracks(list/tracks, list/globtracks)
 	. = list()
-	for(var/i=1 to 5)
->>>>>>> b59c14728c86b38eceddfbaebb18b39fb1d40204
+	for(var/i=1 to rand(5,8))
 		var/track_name = pick(globtracks)
-		. += new /datum/track(track_name, globtracks[track_name])
-	. = uniquelist(.)
+		if(!(.[track_name]))
+			. += new /datum/track(track_name, globtracks[track_name])
