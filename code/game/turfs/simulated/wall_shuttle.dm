@@ -86,7 +86,7 @@
 	if(corner_overlay)
 		overlays -= corner_overlay
 	else
-		corner_overlay = image(icon = 'icons/turf/shuttle.dmi', icon_state = corner_overlay_state, dir = src.dir)
+		corner_overlay = image(icon, icon_state = corner_overlay_state, dir = src.dir)
 		corner_overlay.plane = initial(src.plane)
 		corner_overlay.layer = initial(src.layer)
 	overlays += corner_overlay
