@@ -44,7 +44,7 @@ GLOBAL_LIST_INIT(april_jobs, list(
 	"Technical Assistant" = "Technical Vagabond",
 	"Medical Intern" = "Medical Maid",
 	"Research Assistant" = "Research Vagabond",
-	"Head of Personnel" = "Meister",
+	"Head of Personnel" = "Batman",
 	"Bartender" = "NT Agent",
 	"Chef" = "Monkey Killer",
 	"Gardener" = "Cannabis supplier",
