@@ -702,4 +702,5 @@ its easier to just keep the beam vertical.
 		SEND_SIGNAL(src, SIGNAL_INVISIBILITY_SET, src, old_invisibility, new_invisibility)
 
 /atom/proc/recursive_dir_set(atom/a, old_dir, new_dir)
-	set_dir(new_dir)
+	if(loc != a)
+		set_dir(new_dir)
