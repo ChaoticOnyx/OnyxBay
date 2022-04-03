@@ -247,3 +247,8 @@
 	name = "NSS Frontier tape box"
 	icon_closed = "box_frontier"
 	music_tape = new /obj/item/music_tape/random/frontier
+
+/obj/item/storage/box/music_tape/exodus
+	name = "NSS Exodus tape box"
+	icon_closed = "box_exodus"
+	music_tape = new /obj/item/music_tape/random/exodus

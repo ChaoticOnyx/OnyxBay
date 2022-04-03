@@ -1169,7 +1169,7 @@ something, make sure it's not in one of the other lists.
 
 /obj/random/music_tape/spawn_choices()
 	return list(/obj/item/storage/box/music_tape/jazz,
-				/obj/item/storage/box/music_tape/classic
+				/obj/item/storage/box/music_tape/classic,
 				/obj/item/storage/box/music_tape/frontier,
 				/obj/item/storage/box/music_tape/exodus)
 
