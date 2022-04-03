@@ -164,6 +164,8 @@
 /obj/item/storage/box/music_tape
 	name = "Music Tape box"
 	desc = "You should not see that."
+	icon = 'icons/obj/tapes.dmi'
+	var/icon_closed 
 
 	max_w_class = ITEM_SIZE_SMALL 
 	max_storage_space = 1
@@ -174,6 +176,7 @@
 /obj/item/storage/box/music_tape/Initialize()
 	..()
 	contents += music_tape
+	icon_state = icon_closed
 
 	desc = "A box with [music_tape.name]. It contains following playlist"
 	for(var/datum/track/track in music_tape.tracks)
@@ -195,6 +198,13 @@
 	else
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
+
+/obj/item/storage/box/music_tape/update_icon()
+	..()
+	if(music_tape)
+		icon_state = icon_closed
+	else
+		icon_state = icon_closed + "_open"
 
 /obj/item/storage/box/music_tape/attack_hand(mob/user)
 	if(loc != user)
@@ -222,11 +232,18 @@
 
 /obj/item/storage/box/music_tape/newyear
 	name = "New Year tape box"
+	icon_closed = "box_xmas"
 	music_tape = new /obj/item/music_tape/random/newyear
 
+/obj/item/storage/box/music_tape/jazz
+	name = "Jazz tape box"
+	icon_closed = "box_jazz"
+	music_tape = new /obj/item/music_tape/random/jazz
 /obj/item/storage/box/music_tape/classic
 	name = "Classic Music tape box"
+	icon_closed = "box_classic"
 	music_tape = new /obj/item/music_tape/random/classic
 /obj/item/storage/box/music_tape/frontier
 	name = "NSS Frontier tape box"
+	icon_closed = "box_frontier"
 	music_tape = new /obj/item/music_tape/random/frontier

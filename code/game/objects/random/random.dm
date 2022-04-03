@@ -1167,11 +1167,11 @@ something, make sure it's not in one of the other lists.
 	desc = "This is a random music tape."
 	icon_state = "landmark_tape"
 
-/obj/random/powercell/spawn_choices()
-	return list(/obj/item/music_tape/random/newyear,
-				/obj/item/music_tape/random/jazz,
-				/obj/item/music_tape/random/frontier,
-				/obj/item/music_tape/random/classic)
+/obj/random/music_tape/spawn_choices()
+	return list(/obj/item/storage/box/music_tape/jazz,
+				/obj/item/storage/box/music_tape/classic
+				/obj/item/storage/box/music_tape/frontier,
+				/obj/item/storage/box/music_tape/exodus)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns

@@ -94,11 +94,11 @@
 
 /obj/item/music_tape/random/Initialize()
 	. = ..()
-	tracks = setup_music_tracks(tracks, tracklist)
+	tracks = setup_music_tracks(tracklist)
 
-/obj/item/music_tape/random/proc/setup_music_tracks(list/tracks, list/globtracks)
+/obj/item/music_tape/random/proc/setup_music_tracks(list/tracklist)
 	. = list()
-	for(var/i=1 to rand(5,8))
-		var/track_name = pick(globtracks)
-		if(!(.[track_name]))
-			. += new /datum/track(track_name, globtracks[track_name])
+	for(var/i=1 to rand(3,8))
+		var/track_name = pick_n_take(tracklist)
+		if(track_name)
+			. += new /datum/track(track_name, tracklist[track_name])

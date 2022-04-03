@@ -27,18 +27,33 @@
 		"Lone Digger" 					= 'sound/music/jazz/lonedigger.ogg',
 		"Rush"                			= 'sound/music/jazz/rush.ogg',
 		"Mr. Sandman"            	    = 'sound/music/jazz/sandman.ogg',
-		"What A Wonderful World"        = 'sound/music/jazz/wonderful_world.ogg',
+		"What A Wonderful World"        = 'sound/music/jazz/wonderful_world.ogg'
 	)
 
 /obj/item/music_tape/random/frontier
 	name = "NSS Frontier Tape"
 	tracklist = list(
+		"Don`t Bother Me"				= 'sound/music/frontier/dont_bother_me.ogg',
 		"It's The End Of The World"     = 'sound/music/frontier/end_of_the_world.ogg',
 		"Little Dark Age"               = 'sound/music/frontier/little_dark_age.ogg',
 		"Piano Bar I" 					= 'sound/music/frontier/piano_bar.ogg',
 		"Resonance"              	    = 'sound/music/frontier/resonance.ogg',
-		"The Man Who Sold The World"    = 'sound/music/frontier/the_man_who_sold_the_world.ogg',
+		"Rust"    						= 'sound/music/frontier/rust.ogg',
 		"Split"                  	 	= 'sound/music/frontier/split.ogg',
+		"The Man Who Sold The World"    = 'sound/music/frontier/the_man_who_sold_the_world.ogg'
+	)
+
+/obj/item/music_tape/random/exodus
+	name = "NSS Exodus Tape"
+	tracklist = list(
+		"Any Special Order?"     		= 'sound/music/exodus/any_special_order.ogg',
+		"Bluespace"     				= 'sound/music/exodus/bluespace.ogg',
+		"Buy Something Will Ya?"     	= 'sound/music/exodus/buy_something.ogg',
+		"Earth Trax"             		= 'sound/music/exodus/earth_trax.ogg',
+		"Sunshine" 						= 'sound/music/exodus/sunshine.ogg',
+		"The Tale Of a Cruel World"     = 'sound/music/exodus/tale_of_a_cruel_world.ogg',
+		"The Other Room"    			= 'sound/music/exodus/the_other_room.ogg',
+		"Whirling Cafeteria"            = 'sound/music/exodus/whirling_cafeteria.ogg'
 	)
 /obj/item/music_tape/random/classic
 	name = "Classic Music Tape"
@@ -60,7 +75,7 @@
 		"Reaper \'n Blues"              = 'sound/music/classic/reapernblues.ogg',
 		"Undead Man Walkin`"            = 'sound/music/classic/undeadwalking.ogg',
 		"Space Oddity"                  = 'sound/music/classic/space_oddity.ogg',
-		"Crockett's Theme"              = 'sound/music/classic/crokett_39_s_theme.ogg',
+		"Crockett's Theme"              = 'sound/music/classic/crokett_39_s_theme.ogg'
 	)
 /obj/item/music_tape/custom
 	name = "dusty tape"
