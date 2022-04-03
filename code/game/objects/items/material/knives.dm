@@ -146,14 +146,15 @@
 	randpixel = 0
 	m_overlay = 1
 	material_amount = 2
-	var/hasgrip = 0
+	var/hasgrip = FALSE
 
-/obj/item/material/knife/shiv/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/material/knife/shiv/attackby(obj/item/W, mob/user)
 	if(!hasgrip)
-		if(istype(W,/obj/item/material/shivgrip))
-			hasgrip = 1
-			name = "[src:material.display_name] knife"
-			desc = "A small blade. This one has a comfortable [src:material.display_name] grip."
+		if(istype(W, /obj/item/material/shivgrip))
+			var/obj/item/material/shivgrip/SG = W
+			hasgrip = TRUE
+			name = "[material.display_name] knife"
+			desc = "A small blade. This one has a comfortable [SG.material.display_name] grip."
 			mod_weight += 0.10
 			mod_handy = W.mod_handy
 			unbreakable = 1
