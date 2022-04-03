@@ -66,29 +66,36 @@
 	. = ..()
 
 /datum/storage_ui/default/on_open(mob/user)
-	if (user.s_active)
-		user.s_active.close(user)
+	user?.s_active?.close(user)
 
 /datum/storage_ui/default/after_close(mob/user)
-	user.s_active = null
+	user?.s_active = null
 
 /datum/storage_ui/default/on_insertion(mob/user)
+	if(user?.s_active == storage) // Because of deeply-nested storages (i.e. storage accessories)
+		storage.show_to(user)
 	for(var/mob/M in range(1, storage.loc))
 		if(M.s_active == storage)
-			M.s_active.show_to(M)
+			storage.show_to(M)
 
 /datum/storage_ui/default/on_pre_remove(mob/user, obj/item/W)
+	if(user?.s_active == storage)
+		user.client?.screen -= W
 	for(var/mob/M in range(1, storage.loc))
 		if(M.s_active == storage)
 			if(M.client)
 				M.client.screen -= W
 
 /datum/storage_ui/default/on_post_remove(mob/user)
+	if(user?.s_active == storage)
+		storage.show_to(user)
 	for(var/mob/M in range(1, storage.loc))
 		if(M.s_active == storage)
-			M.s_active.show_to(M)
+			storage.show_to(M)
 
 /datum/storage_ui/default/on_hand_attack(mob/user)
+	if(user?.s_active == storage)
+		storage.close(user)
 	for(var/mob/M in range(1, storage.loc))
 		if(M.s_active == storage)
 			storage.close(M)
