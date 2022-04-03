@@ -33,15 +33,25 @@
 	log_and_message_admins("attempted to convert [player.current] to the [faction.faction_role_text] faction.")
 
 	player.rev_cooldown = world.time + 100
-	if (!faction.is_antagonist(player))
-		var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
-		if(!(player.current in able_mobs_in_oview(src)))
+
+	if (faction.is_antagonist(player))
+		return
+
+	var/datum/antagonist/antag
+	for(var/antag_type in GLOB.all_antag_types_)
+		antag = GLOB.all_antag_types_[antag_type]
+		if(antag.is_antagonist(player))
+			to_chat(src, SPAN_DANGER("\The [player.current] doesn't seem a bit interested in your offer. Seems like you won't be able to convert them..."))
 			return
-		if(choice == "Yes!" && faction.add_antagonist_mind(player, 1, faction.faction_role_text, faction.faction_welcome))
-			to_chat(src, SPAN_NOTICE("\The [player.current] joins the [faction.faction_descriptor]!"))
-			return
-		if(choice == "No!")
-			to_chat(player, SPAN_DANGER("You reject this traitorous cause!"))
+
+	var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
+	if(!(player.current in able_mobs_in_oview(src)))
+		return
+	if(choice == "Yes!" && faction.add_antagonist_mind(player, 1, faction.faction_role_text, faction.faction_welcome))
+		to_chat(src, SPAN_NOTICE("\The [player.current] joins the [faction.faction_descriptor]!"))
+		return
+	if(choice == "No!")
+		to_chat(player, SPAN_DANGER("You reject this traitorous cause!"))
 	to_chat(src, SPAN_DANGER("\The [player.current] does not support the [faction.faction_descriptor]!"))
 
 /mob/living/proc/convert_to_loyalist(mob/M in able_mobs_in_oview(src))
