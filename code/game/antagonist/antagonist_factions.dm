@@ -12,6 +12,13 @@
 		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
 		return
 
+	var/datum/antagonist/antag
+	for(var/antag_type in GLOB.all_antag_types_)
+		antag = GLOB.all_antag_types_[antag_type]
+		if(antag.is_antagonist(M.mind))
+			to_chat(src, SPAN_DANGER("\The [M] doesn't seem even remotely interested in your offer. Seems like you won't be able to convert them..."))
+			return
+
 	convert_to_faction(M.mind, GLOB.revs)
 
 /mob/living/proc/convert_to_faction(datum/mind/player, datum/antagonist/faction)
@@ -36,13 +43,6 @@
 
 	if (faction.is_antagonist(player))
 		return
-
-	var/datum/antagonist/antag
-	for(var/antag_type in GLOB.all_antag_types_)
-		antag = GLOB.all_antag_types_[antag_type]
-		if(antag.is_antagonist(player))
-			to_chat(src, SPAN_DANGER("\The [player.current] doesn't seem a bit interested in your offer. Seems like you won't be able to convert them..."))
-			return
 
 	var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
 	if(!(player.current in able_mobs_in_oview(src)))
