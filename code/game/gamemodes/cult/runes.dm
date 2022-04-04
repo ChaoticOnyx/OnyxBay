@@ -188,10 +188,15 @@
 		return FALSE
 
 	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
-		to_chat(target, SPAN_DANGER("<b>You feel your newfound belief enter your mind as your previous power aggressively channels itself to your new partners' bodies. Seems like your initiation cost them their lives.</b>"))
+		to_chat(target, SPAN_DANGER("<b>You feel your newfound belief enter your mind as your previous power aggressively channels itself to your new partners' heads. Seems like your initiation cost them their lives.</b>"))
 		for(var/mob/living/M in cultists)
-			to_chat(M, SPAN_DANGER("<b>You feel a mighty mental force break into your mind as it clashes with your faith, the discord of their struggle tearing your mind and body apart. Trying to persist is no use. Seems like this conversion was your greatest and final one.</b>"))
-			M.gib()
+			to_chat(M, SPAN_DANGER("<b>You feel a mighty mental force break into your mind as it clashes with your faith, the discord of their struggle tearing your mind apart and frying your brain. Trying to persist is no use. Seems like this conversion was your greatest and final one.</b>"))
+			if(!ishuman(M))
+				M.gib()
+				continue
+			var/mob/living/carbon/human/H = M
+			H.apply_damage(666, BURN, BP_HEAD, 0, 0, used_weapon = "fourth degree burns with no apparent cause")
+			H.death()
 		return TRUE
 
 	var/datum/antagonist/antag
