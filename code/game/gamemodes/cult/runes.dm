@@ -177,13 +177,22 @@
 	cultname = "convert"
 	var/spamcheck = 0
 
-/obj/effect/rune/convert/proc/antag_check(mob/living/target)
-	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
-		to_chat(target, SPAN_DANGER("<b>You feel two mighty forces clash inside you, the discord of their struggle tearing your mind and body apart. Trying to persist is no use. Seems like accepting that offer was the worst and last mistake of your life.</b>"))
-		target.gib()
-		for(var/mob/living/M in get_cultists())
-			to_chat(M, SPAN_DANGER("Seems like converting them was a bad idea..."))
+/obj/effect/rune/convert/proc/antag_check(mob/living/target, list/mob/living/cultists)
+	if(!target || !target.mind)
 		return FALSE
+
+	if(iscultist(target))
+		return FALSE
+
+	if(!cultists.len)
+		return FALSE
+
+	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
+		to_chat(target, SPAN_DANGER("<b>You feel your newfound belief enter your mind as your previous power aggressively channels itself to your new partners' bodies. Seems like your initiation cost them their lives.</b>"))
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("<b>You feel a mighty mental force break into your mind as it clashes with your faith, the discord of their struggle tearing your mind and body apart. Trying to persist is no use. Seems like this conversion was your greatest and final one.</b>"))
+			M.gib()
+		return TRUE
 
 	var/datum/antagonist/antag
 	for(var/antag_type in GLOB.all_antag_types_)
@@ -214,7 +223,7 @@
 	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || istype(target, /mob/living/carbon/human/abductor))
 		to_chat(target, SPAN("changeling", "You feel a slight buzz in your head as a foreign mental force makes futile attempts at invading your mind."))
 		for(var/mob/living/M in cultists)
-			to_chat(M, SPAN_DANGER("You feel a strong mental force blocking your belief from entering their mind.<br>Seems like you won't be able to convert [target]..."))
+			to_chat(M, SPAN_DANGER("You feel a strong mental force blocking your belief from entering their mind.<br>Seems like you won't be able to convert \the [target]..."))
 		return
 
 	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
@@ -222,15 +231,18 @@
 		if(!GLOB.cult.can_become_antag(target.mind, 1))
 			to_chat(target, SPAN_DANGER("Are you going insane?"))
 		else
-			if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
-				to_chat(target, SPAN_DANGER("<b>Yet something in your mind reminds you of your true beliefs and values. You feel like you shouldn't accept this offer...</b>"))
 			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore the offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
+
+	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
+		to_chat(target, SPAN_DANGER("<b>Yet you still sense your true powers angrily lurking inside you. Seems like your initiation will cost these adherents a great deal...</b>"))
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("<b>You feel a strong mental force coming from \the [target]'s mind.<br>Seems like their conversion can only be done at the cost of your lives. If you're unwilling to make that sacrifice, you better stop now.</b>"))
 
 	spamcheck = 1
 	spawn(30)
 		spamcheck = 0
 		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1) && cultists.len >= 2)
-			if(antag_check(target))
+			if(antag_check(target, cultists))
 				GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
 		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
@@ -251,7 +263,7 @@
 /obj/effect/rune/convert/Topic(href, href_list)
 	var/list/mob/living/cultists = get_cultists()
 	if(href_list["join"] && cultists.len)
-		if(usr.loc == loc && !iscultist(usr) && antag_check(usr))
+		if(usr.loc == loc && !iscultist(usr) && antag_check(usr, cultists))
 			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
 
 /obj/effect/rune/teleport
