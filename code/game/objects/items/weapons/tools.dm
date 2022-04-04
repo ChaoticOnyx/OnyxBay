@@ -275,7 +275,6 @@
 	if(ispath(tank))
 		tank = new tank
 
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 
 	. = ..()
@@ -473,8 +472,7 @@
 /obj/item/weldingtool/update_icon()
 	..()
 
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-	icon_state = welding ? "[bis.base_icon_state]1" : "[bis.base_icon_state]"
+	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
 	item_state = welding ? "welder1" : "welder"
 
 	underlays.Cut()

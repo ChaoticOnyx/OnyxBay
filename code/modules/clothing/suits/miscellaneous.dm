@@ -156,7 +156,8 @@
 
 /obj/item/clothing/suit/cardborg/Initialize()
 	. = ..()
-	set_extension(src, /datum/extension/appearance, /datum/extension/appearance/cardborg)
+
+	AddComponent(/datum/component/cardborg)
 
 /*
  * Misc

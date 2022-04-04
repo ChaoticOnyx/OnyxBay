@@ -12,15 +12,13 @@
 
 /obj/item/clothing/head/soft/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 
 /obj/item/clothing/head/soft/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
 	if(flipped)
-		icon_state = "[bis.base_icon_state]_flipped"
+		icon_state = "[initial(icon_state)]_flipped"
 	else
-		icon_state = bis.base_icon_state
+		icon_state = initial(icon_state)
 
 /obj/item/clothing/head/soft/dropped()
 	src.flipped=0
