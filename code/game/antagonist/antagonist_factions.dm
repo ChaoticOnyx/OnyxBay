@@ -8,7 +8,7 @@
 		return
 	if(!ishuman(M))
 		return
-	if (!(src in able_mobs_in_oview(M)))
+	if(!(src in able_mobs_in_oview(M)))
 		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
 		return
 
@@ -28,7 +28,7 @@
 	if(!faction.faction_verb || !faction.faction_descriptor || !faction.faction_verb)
 		return
 
-	if(!faction.can_become_antag(player, 1) || player_is_antag(player))
+	if(!faction.can_become_antag(player, TRUE) || player_is_antag(player))
 		to_chat(src, SPAN_WARNING("\The [player.current] cannot be \a [faction.faction_role_text]!"))
 		return
 
@@ -41,13 +41,13 @@
 
 	player.rev_cooldown = world.time + 100
 
-	if (faction.is_antagonist(player))
+	if(faction.is_antagonist(player))
 		return
 
 	var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
 	if(!(player.current in able_mobs_in_oview(src)))
 		return
-	if(choice == "Yes!" && faction.add_antagonist_mind(player, 1, faction.faction_role_text, faction.faction_welcome))
+	if(choice == "Yes!" && faction.add_antagonist_mind(player, TRUE, faction.faction_role_text, faction.faction_welcome))
 		to_chat(src, SPAN_NOTICE("\The [player.current] joins the [faction.faction_descriptor]!"))
 		return
 	if(choice == "No!")
@@ -64,7 +64,7 @@
 		return
 	if(!ishuman(M))
 		return
-	if (!(src in able_mobs_in_oview(M)))
+	if(!(src in able_mobs_in_oview(M)))
 		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
 		return
 
