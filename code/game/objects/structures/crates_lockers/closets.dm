@@ -164,15 +164,17 @@
 	return TRUE
 
 /obj/structure/closet/proc/dump_contents()
+	var/atom/L = drop_location()
+
 	for(var/mob/M in src)
-		M.forceMove(loc)
+		M.forceMove(L)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM,/obj/item/shield/closet))
-			AM.forceMove(loc)
+		if(!istype(AM, /obj/item/shield/closet))
+			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()
 	var/stored_units = 0
@@ -781,3 +783,6 @@
 	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 	playsound(src.loc, "spark", 50, 1)
 	open()
+
+/obj/structure/closet/allow_drop()
+	return TRUE

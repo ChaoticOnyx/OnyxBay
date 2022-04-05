@@ -79,6 +79,12 @@
 /atom/proc/LateInitialize()
 	return
 
+/atom/proc/drop_location()
+	var/atom/L = loc
+	if(!L)
+		return null
+	return L.allow_drop() ? L : get_turf(L)
+
 /atom/Entered(atom/movable/enterer, atom/old_loc)
 	..()
 
@@ -137,6 +143,9 @@
 	proc/can_add_container()
 		return flags & INSERT_CONTAINER
 */
+
+/atom/proc/allow_drop()
+	return FALSE
 
 /atom/proc/CheckExit()
 	return 1

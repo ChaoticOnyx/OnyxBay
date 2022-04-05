@@ -1606,6 +1606,9 @@
 	else
 		return 0
 
+/obj/structure/disposalholder/allow_drop()
+	return TRUE
+
 // a broken pipe
 /obj/structure/disposalpipe/broken
 	icon_state = "pipe-b"
