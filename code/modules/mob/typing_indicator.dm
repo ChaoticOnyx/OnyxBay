@@ -22,8 +22,8 @@ I IS TYPIN'!'
 	src.master = master
 	name = master.name
 	glide_size = master.glide_size
-	register_signal(master, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
 
+	register_signal(master, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
 	register_signal(master, SIGNAL_STAT_SET, /datum/proc/qdel_self) // Making the assumption master is conscious at creation.
 	register_signal(master, SIGNAL_LOGGED_OUT, /datum/proc/qdel_self)
 	register_signal(master, SIGNAL_DESTROY, /datum/proc/qdel_self)
