@@ -96,9 +96,10 @@
 	var/datum/money_account/M = create_account(H.real_name, money_amount, null, off_station)
 	if(H.mind)
 		var/remembered_info = ""
-		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
-		remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
-		remembered_info += "<b>Your account funds are:</b> T[M.money]<br>"
+		remembered_info += "<b>Your account:</b><br>"
+		remembered_info += "<b>Number:</b> #[M.account_number]<br>"
+		remembered_info += "<b>Pin:</b> [M.remote_access_pin]<br>"
+		remembered_info += "<b>Funds:</b> [M.money]cr.<br>"
 
 		if(M.transaction_log.len)
 			var/datum/transaction/T = M.transaction_log[1]
