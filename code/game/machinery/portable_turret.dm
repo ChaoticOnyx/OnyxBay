@@ -59,7 +59,15 @@
 	var/wrenching = 0
 	var/last_target			//last target fired at, prevents turrets from erratically firing at all valid targets in range
 
-	var/list/turfs_in_range = list()
+	// TODO: Move turf's things to some kind of a component.
+	// The plan is to have the two type of turf lists:
+	// - We can view
+	// - We can not view
+	// The first type of turfs free us from making "view" test for mobs there.
+	// The second type is the turfs which can be visible some day (remember that the first type can be too).
+
+	var/list/turfs_in_view_range = list()
+	var/list/turfs_not_in_view_range = list()
 
 	/// List of primary targets.
 	var/list/targets = list()
@@ -102,26 +110,58 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	for(var/turf/T in range(world.view, src))
-		_register_turf(T)
+	_recalculate_turfs()
 
 	setup()
 
-/obj/machinery/porta_turret/proc/_register_turf(turf/T)
+/obj/machinery/porta_turret/proc/_unregister_all_turfs()
+	for(var/turf/T in turfs_in_view_range)
+		_unregister_visible_turf(T)
+
+	for(var/turf/T in turfs_not_in_view_range)
+		_unregister_not_visible_turf(T)
+
+	turfs_in_view_range = list()
+	turfs_not_in_view_range = list()
+
+/obj/machinery/porta_turret/proc/_recalculate_turfs()
+	_unregister_all_turfs()
+
+	turfs_in_view_range = list()
+	turfs_not_in_view_range = list()
+
+	for(var/turf/T in range(world.view, src))
+		if(T in view(world.view, src))
+			_register_visible_turf(T)
+			turfs_in_view_range += T
+		else
+			_register_not_visible_turf(T)
+			turfs_not_in_view_range += T
+
+/obj/machinery/porta_turret/proc/_register_visible_turf(turf/T)
 	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)
 	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
-	turfs_in_range += T
+	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
 
-/obj/machinery/porta_turret/proc/_unregister_turf(turf/T)
+/obj/machinery/porta_turret/proc/_register_not_visible_turf(turf/T)
+	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
+
+/obj/machinery/porta_turret/proc/_unregister_visible_turf(turf/T)
 	unregister_signal(T, SIGNAL_ENTERED)
 	unregister_signal(T, SIGNAL_EXITED)
-	turfs_in_range -= T
+	unregister_signal(T, SIGNAL_TURF_CHANGED)
 
+/obj/machinery/porta_turret/proc/_unregister_not_visible_turf(turf/T)
+	unregister_signal(T, SIGNAL_TURF_CHANGED)
+
+/obj/machinery/porta_turret/proc/_turf_changed(turf/T, old_density, density, old_opacity, opacity)
+	if(old_opacity != opacity)
+		_recalculate_turfs()
 
 /obj/machinery/porta_turret/proc/_on_turf_entered(turf/T, atom/enterer)
 	var/mob/M = enterer
 
-	if(!istype(M) || !(M in view(world.view, src)))
+	if(!istype(M))
 		return
 
 	assess_and_assign(M)
@@ -144,8 +184,7 @@
 	qdel(spark_system)
 	spark_system = null
 	
-	for(var/turf/T in turfs_in_range)
-		_unregister_turf(T)
+	_unregister_all_turfs()
 
 	. = ..()
 
