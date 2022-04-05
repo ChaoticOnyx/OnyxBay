@@ -9,3 +9,6 @@
 
 /// Called on `/mob/living/set_stat` (/mob/living, old_stat, new_stat)
 #define SIGNAL_STAT_SET "set_stat"
+
+#define COMSIG_MOB_LOGIN "mob_login"							//from base of /mob/Login(): ()
+#define COMSIG_MOB_LOGOUT "mob_logout"							//from base of /mob/Logout(): ()
