@@ -307,13 +307,13 @@ SUBSYSTEM_DEF(garbage)
 
 	if(isnull(D.gc_destroyed))
 		// Give the components a chance to prevent their parent from being deleted.
-		if (SEND_SIGNAL(D, SIGNAL_PREQDELETING, force) || SEND_GLOBAL_SIGNAL(SIGNAL_PREQDELETING, force))
+		if (SEND_SIGNAL(D, SIGNAL_PREQDELETING, D, force) || SEND_GLOBAL_SIGNAL(SIGNAL_PREQDELETING, D, force))
 			return
 		D.gc_destroyed = GC_CURRENTLY_BEING_QDELETED
 		var/start_time = world.time
 		var/start_tick = world.tick_usage
-		SEND_SIGNAL(D, SIGNAL_QDELETING, force) // Let the (remaining) components know about the result of Destroy
-		SEND_GLOBAL_SIGNAL(SIGNAL_QDELETING, force)
+		SEND_SIGNAL(D, SIGNAL_QDELETING, D, force) // Let the (remaining) components know about the result of Destroy
+		SEND_GLOBAL_SIGNAL(SIGNAL_QDELETING, D, force)
 		var/hint = D.Destroy(arglist(args.Copy(2))) // Let our friend know they're about to get fucked up.
 		if(world.time != start_time)
 			I.slept_destroy++
