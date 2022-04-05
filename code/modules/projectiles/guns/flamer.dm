@@ -300,9 +300,10 @@
 			blocked = TRUE
 		if(distance > max_range)
 			break
-
+		if(T.density)
+			break
 		for(var/obj/O in T)
-			if(O.density && !O.throwpass)
+			if(O.density && !O.throwpass && !(O.obj_flags & ATOM_FLAG_CHECKS_BORDER))
 				blocked = TRUE
 				break
 
