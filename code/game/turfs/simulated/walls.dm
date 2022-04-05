@@ -44,9 +44,10 @@
 	. = ..()
 
 /turf/simulated/wall/Destroy()
-	STOP_PROCESSING(SSturf, src)
 	dismantle_wall(null,null,1)
-	. = ..()
+	
+	// At this point `src` is a new instance, the old one was destroyed in `dismantle_wall`.
+	return QDEL_HINT_LETMELIVE
 
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()

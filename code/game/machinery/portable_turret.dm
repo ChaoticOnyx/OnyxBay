@@ -59,6 +59,13 @@
 	var/wrenching = 0
 	var/last_target			//last target fired at, prevents turrets from erratically firing at all valid targets in range
 
+	var/list/turfs_in_range = list()
+
+	/// List of primary targets.
+	var/list/targets = list()
+	/// Targets that are least important.
+	var/list/secondary_targets = list()
+
 /obj/machinery/porta_turret/crescent
 	enabled = 0
 	ailock = 1
@@ -85,7 +92,7 @@
 	change_power_consumption(round(initial(active_power_usage) * 5), POWER_USE_ACTIVE)
 	return 1
 
-/obj/machinery/porta_turret/New()
+/obj/machinery/porta_turret/Initialize()
 	..()
 	req_access.Cut()
 	req_one_access = list(access_security, access_heads)
@@ -95,9 +102,40 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
+	for(var/turf/T in range(world.view, src))
+		_register_turf(T)
+
 	setup()
 
-/obj/machinery/porta_turret/crescent/New()
+/obj/machinery/porta_turret/proc/_register_turf(turf/T)
+	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)
+	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
+	turfs_in_range += T
+
+/obj/machinery/porta_turret/proc/_unregister_turf(turf/T)
+	unregister_signal(T, SIGNAL_ENTERED)
+	unregister_signal(T, SIGNAL_EXITED)
+	turfs_in_range -= T
+
+
+/obj/machinery/porta_turret/proc/_on_turf_entered(turf/T, atom/enterer)
+	var/mob/M = enterer
+
+	if(!istype(M) || !(M in view(world.view, src)))
+		return
+
+	assess_and_assign(M)
+
+/obj/machinery/porta_turret/proc/_on_turf_exited(turf/T, atom/exitee)
+	var/mob/M = exitee
+
+	if(!istype(M))
+		return
+	
+	targets -= M
+	secondary_targets -= M
+
+/obj/machinery/porta_turret/crescent/Initialize()
 	..()
 	req_one_access.Cut()
 	req_access = list(access_cent_specops)
@@ -105,6 +143,10 @@
 /obj/machinery/porta_turret/Destroy()
 	qdel(spark_system)
 	spark_system = null
+	
+	for(var/turf/T in turfs_in_range)
+		_unregister_turf(T)
+
 	. = ..()
 
 /obj/machinery/porta_turret/proc/setup()
@@ -452,14 +494,8 @@ var/list/turret_icons
 		popDown()
 		return
 
-	var/list/targets = list()			//list of primary targets
-	var/list/secondarytargets = list()	//targets that are least important
-
-	for(var/mob/M in mobs_in_view(world.view, src))
-		assess_and_assign(M, targets, secondarytargets)
-
 	if(!tryToShootAt(targets))
-		if(!tryToShootAt(secondarytargets)) // if no valid targets, go for secondary targets
+		if(!tryToShootAt(secondary_targets)) // if no valid targets, go for secondary targets
 			spawn()
 				popDown() // no valid targets, close the cover
 
@@ -467,12 +503,12 @@ var/list/turret_icons
 		use_power_oneoff(20000)
 		health = min(health+1, maxhealth) // 1HP for 20kJ
 
-/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L, list/targets, list/secondarytargets)
+/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L)
 	switch(assess_living(L))
 		if(TURRET_PRIORITY_TARGET)
 			targets += L
 		if(TURRET_SECONDARY_TARGET)
-			secondarytargets += L
+			secondary_targets += L
 
 /obj/machinery/porta_turret/proc/assess_living(mob/living/L)
 	if(!istype(L))
