@@ -34,14 +34,14 @@
 
 	destination = A
 	
-	register_signal(destination, SIGNAL_DESTROY, /datum/build_mode/move_into/proc/ClearDestination)
+	register_signal(destination, SIGNAL_QDELETING, /datum/build_mode/move_into/proc/ClearDestination)
 	to_chat(user, "<span class='notice'>Will now move targets into \the [destination].</span>")
 
 /datum/build_mode/move_into/proc/ClearDestination(feedback)
 	if(!destination)
 		return
 
-	unregister_signal(destination, SIGNAL_DESTROY)
+	unregister_signal(destination, SIGNAL_QDELETING)
 	destination = null
 	if(feedback)
 		Warn("The selected destination was deleted.")

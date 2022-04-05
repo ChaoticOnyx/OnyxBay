@@ -98,14 +98,14 @@
 		var/obj/machinery/power/shield_generator/S = locate(href_list["ref"]) in shields
 		if(S)
 			deselect_shield()
-			register_signal(S, SIGNAL_DESTROY, /datum/nano_module/shields_monitor/proc/deselect_shield)
+			register_signal(S, SIGNAL_QDELETING, /datum/nano_module/shields_monitor/proc/deselect_shield)
 			active = S
 		return 1
 
 /datum/nano_module/shields_monitor/proc/deselect_shield(source)
 	if(!active)
 		return
-	unregister_signal(active, SIGNAL_DESTROY)
+	unregister_signal(active, SIGNAL_QDELETING)
 	active = null
 	if(source) // source is only set if called by the shield destroyed event, which is the only time we want to update the UI
 		SSnano.update_uis(src)

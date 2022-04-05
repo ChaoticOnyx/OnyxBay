@@ -86,10 +86,10 @@
 	appearance = daddy.appearance
 	register_signal(daddy, SIGNAL_MOVED, /obj/effect/bluegoast/proc/mirror)
 	register_signal(daddy, SIGNAL_DIR_SET, /obj/effect/bluegoast/proc/mirror_dir)
-	register_signal(daddy, SIGNAL_DESTROY, /datum/proc/qdel_self)
+	register_signal(daddy, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 /obj/effect/bluegoast/Destroy()
-	unregister_signal(daddy, SIGNAL_DESTROY)
+	unregister_signal(daddy, SIGNAL_QDELETING)
 	unregister_signal(daddy, SIGNAL_DIR_SET)
 	unregister_signal(daddy, SIGNAL_MOVED)
 

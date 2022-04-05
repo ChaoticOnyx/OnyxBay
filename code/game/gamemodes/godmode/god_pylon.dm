@@ -30,14 +30,14 @@
 		return
 	to_chat(L, "<span class='notice'>You place your hands on \the [src], feeling yourself intune to its vibrations.</span>")
 	intuned += L
-	register_signal(L, SIGNAL_DESTROY, /obj/structure/deity/pylon/proc/remove_intuned)
+	register_signal(L, SIGNAL_QDELETING, /obj/structure/deity/pylon/proc/remove_intuned)
 
 /obj/structure/deity/pylon/proc/remove_intuned(mob/living/L)
 	if(!(L in intuned))
 		return
 	to_chat(L, "<span class='warning'>You no longer feel intuned to \the [src].</span>")
 	intuned -= L
-	unregister_signal(L, SIGNAL_DESTROY)
+	unregister_signal(L, SIGNAL_QDELETING)
 
 
 /obj/structure/deity/pylon/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
