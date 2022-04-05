@@ -21,7 +21,7 @@
 	SEND_SIGNAL(target, SIGNAL_ELEMENT_ATTACH, src)
 
 	if(element_flags & ELEMENT_DETACH)
-		register_signal(target, SIGNAL_PARENT_QDELETING, .proc/on_target_delete, override = TRUE)
+		register_signal(target, SIGNAL_QDELETING, .proc/on_target_delete, override = TRUE)
 
 /datum/element/proc/on_target_delete(datum/source, force)
 	detach(source)
@@ -30,7 +30,7 @@
 /datum/element/proc/detach(datum/source, ...)
 	SEND_SIGNAL(source, SIGNAL_ELEMENT_DETACH, src)
 	SHOULD_CALL_PARENT(TRUE)
-	unregister_signal(source, SIGNAL_PARENT_QDELETING)
+	unregister_signal(source, SIGNAL_QDELETING)
 
 /datum/element/Destroy(force)
 	if(!force)

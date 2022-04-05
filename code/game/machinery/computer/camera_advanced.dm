@@ -30,7 +30,7 @@
 			var/mob/living/L = I
 			GrantActions(L)
 			vision.possess(L)
-			register_signal(L, SIGNAL_DESTROY, /obj/machinery/computer/camera_advanced/proc/release)
+			register_signal(L, SIGNAL_QDELETING, /obj/machinery/computer/camera_advanced/proc/release)
 			register_signal(L, SIGNAL_LOGGED_OUT, /obj/machinery/computer/camera_advanced/proc/release)
 
 /obj/machinery/computer/camera_advanced/proc/release(mob/living/L)
@@ -38,7 +38,7 @@
 	for(var/datum/action/A in actions)
 		A.Remove(L)
 	
-	unregister_signal(L, SIGNAL_DESTROY)
+	unregister_signal(L, SIGNAL_QDELETING)
 	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
 

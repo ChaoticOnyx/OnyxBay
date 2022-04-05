@@ -17,7 +17,7 @@
 /obj/item/device/multitool/hacktool/Destroy()
 	for(var/T in known_targets)
 		var/atom/target = T
-		unregister_signal(target, SIGNAL_DESTROY)
+		unregister_signal(target, SIGNAL_QDELETING)
 	known_targets.Cut()
 	qdel(hack_state)
 	hack_state = null
@@ -61,7 +61,7 @@
 		to_chat(user, "<span class='notice'>Your hacking attempt was succesful!</span>")
 		user.playsound_local(get_turf(src), 'sound/piano/A#6.ogg', 50)
 		known_targets.Insert(1, target)	// Insert the newly hacked target first,
-		register_signal(target, SIGNAL_DESTROY, /obj/item/device/multitool/hacktool/proc/on_target_destroy)
+		register_signal(target, SIGNAL_QDELETING, /obj/item/device/multitool/hacktool/proc/on_target_destroy)
 	else
 		to_chat(user, "<span class='warning'>Your hacking attempt failed!</span>")
 	return 1
@@ -72,7 +72,7 @@
 	if(known_targets.len > max_known_targets)
 		for(var/i = (max_known_targets + 1) to known_targets.len)
 			var/atom/A = known_targets[i]
-			unregister_signal(A, SIGNAL_DESTROY)
+			unregister_signal(A, SIGNAL_QDELETING)
 		known_targets.Cut(max_known_targets + 1)
 
 /obj/item/device/multitool/hacktool/proc/on_target_destroy(target)

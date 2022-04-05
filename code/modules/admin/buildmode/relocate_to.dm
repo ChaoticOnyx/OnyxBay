@@ -34,14 +34,14 @@
 	ClearRelocator()
 
 	to_relocate = new_relocator
-	register_signal(to_relocate, SIGNAL_DESTROY, /datum/build_mode/relocate_to/proc/ClearRelocator)
+	register_signal(to_relocate, SIGNAL_QDELETING, /datum/build_mode/relocate_to/proc/ClearRelocator)
 	to_chat(user, "<span class='notice'>Will now be relocating \the [to_relocate].</span>")
 
 /datum/build_mode/relocate_to/proc/ClearRelocator(feedback)
 	if(!to_relocate)
 		return
 
-	unregister_signal(to_relocate, SIGNAL_DESTROY)
+	unregister_signal(to_relocate, SIGNAL_QDELETING)
 	to_relocate = null
 	if(feedback)
 		Warn("The selected relocation object was deleted.")
