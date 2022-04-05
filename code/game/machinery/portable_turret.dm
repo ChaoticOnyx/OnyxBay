@@ -545,8 +545,14 @@ var/list/turret_icons
 /obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L)
 	switch(assess_living(L))
 		if(TURRET_PRIORITY_TARGET)
+			if(L in targets)
+				return
+
 			targets += L
 		if(TURRET_SECONDARY_TARGET)
+			if(L in secondary_targets)
+				return
+
 			secondary_targets += L
 
 /obj/machinery/porta_turret/proc/assess_living(mob/living/L)
