@@ -17,13 +17,9 @@
 	if(!istype(target))
 		EXCEPTION("Invalid target given")
 	if(QDELETED(User) || !istype(User))
-		stack_trace("/datum/progressbar created with [isnull(User) ? "null" : "invalid"] user")
-		qdel(src)
-		return
+		CRASH("/datum/progressbar created with [isnull(User) ? "null" : "invalid"] user")
 	if(!isnum(goal_number))
-		stack_trace("/datum/progressbar created with [isnull(User) ? "null" : "invalid"] goal_number")
-		qdel(src)
-		return
+		CRASH("/datum/progressbar created with [isnull(User) ? "null" : "invalid"] goal_number")
 	goal = goal_number
 	bar = image('icons/effects/progressbar.dmi', target, "prog_bar_0", HUD_BASE_LAYER)
 	bar.plane = ABOVE_HUD_PLANE
@@ -45,7 +41,7 @@
 		client = user.client
 		add_prog_bar_image_to_client()
 
-	register_signal(user, SIGNAL_PARENT_QDELETING, .proc/on_user_delete)
+	register_signal(user, SIGNAL_QDELETING, .proc/on_user_delete)
 	register_signal(user, SIGNAL_LOGGED_OUT, .proc/clean_user_client)
 	register_signal(user, SIGNAL_LOGGED_IN, .proc/on_user_login)
 
@@ -56,29 +52,21 @@
 	animate(bar, pixel_y = dist_to_travel, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
 
 /datum/progressbar/Destroy()
-	if(user)
-		for(var/pb in user.progressbars[bar.loc])
-			var/datum/progressbar/progress_bar = pb
-			if(progress_bar == src || progress_bar.listindex <= listindex)
-				continue
-			progress_bar.listindex--
+	unregister_signal(user, SIGNAL_QDELETING)
+	unregister_signal(user, SIGNAL_LOGGED_OUT)
+	unregister_signal(user, SIGNAL_LOGGED_IN)
 
-			progress_bar.bar.pixel_y = 32 + (PROGRESSBAR_HEIGHT * (progress_bar.listindex - 1))
-			var/dist_to_travel = 32 + (PROGRESSBAR_HEIGHT * (progress_bar.listindex - 1)) - PROGRESSBAR_HEIGHT
-			animate(progress_bar.bar, pixel_y = dist_to_travel, time = PROGRESSBAR_ANIMATION_TIME, easing = SINE_EASING)
+	for(var/I in user.progressbars[bar.loc])
+		var/datum/progressbar/P = I
+		if(P != src && P.listindex > listindex)
+			P.shiftDown()
 
+	var/list/bars = user.progressbars[bar.loc]
+	bars.Remove(src)
+	if(!bars.len)
 		LAZYREMOVE(user.progressbars, bar.loc)
-		user = null
 
-	if(client)
-		clean_user_client()
-
-	bar.loc = null
-
-	if(bar)
-		QDEL_NULL(bar)
-
-	return ..()
+	. = ..()
 
 
 ///Called right before the user's Destroy()
