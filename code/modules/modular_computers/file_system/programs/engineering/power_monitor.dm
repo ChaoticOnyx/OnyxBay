@@ -96,7 +96,7 @@
 				warning("Powernet sensor with unset ID Tag! [S.x]X [S.y]Y [S.z]Z")
 			else
 				grid_sensors += S
-				register_signal(S, SIGNAL_DESTROY, /datum/nano_module/power_monitor/proc/remove_sensor)
+				register_signal(S, SIGNAL_QDELETING, /datum/nano_module/power_monitor/proc/remove_sensor)
 
 /datum/nano_module/power_monitor/proc/remove_sensor(removed_sensor, update_ui = TRUE)
 	if(active_sensor == removed_sensor)
@@ -104,7 +104,7 @@
 		if(update_ui)
 			SSnano.update_uis(src)
 	grid_sensors -= removed_sensor
-	unregister_signal(removed_sensor, SIGNAL_DESTROY)
+	unregister_signal(removed_sensor, SIGNAL_QDELETING)
 
 // Allows us to process UI clicks, which are relayed in form of hrefs.
 /datum/nano_module/power_monitor/Topic(href, href_list)

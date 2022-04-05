@@ -56,8 +56,8 @@
 		M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 		transformed_dudes[trans] = M
 		register_signal(trans, SIGNAL_MOB_DEATH, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		register_signal(trans, SIGNAL_DESTROY, /datum/spell/targeted/shapeshift/proc/stop_transformation)
-		register_signal(M, SIGNAL_DESTROY, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
+		register_signal(trans, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		register_signal(M, SIGNAL_QDELETING, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
 		if(duration)
 			spawn(duration)
 				stop_transformation(trans)
@@ -88,9 +88,9 @@
 
 /datum/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
 	var/mob/current = transformed_dudes[target]
-	unregister_signal(target, SIGNAL_DESTROY)
+	unregister_signal(target, SIGNAL_QDELETING)
 	unregister_signal(current, SIGNAL_MOB_DEATH)
-	unregister_signal(current, SIGNAL_DESTROY)
+	unregister_signal(current, SIGNAL_QDELETING)
 	transformed_dudes[target] = null
 	transformed_dudes -= target
 

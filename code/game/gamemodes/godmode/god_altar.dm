@@ -63,13 +63,13 @@
 	START_PROCESSING(SSobj, src)
 	target = L
 	update_icon()
-	register_signal(L, SIGNAL_DESTROY, /obj/structure/deity/altar/proc/remove_target)
+	register_signal(L, SIGNAL_QDELETING, /obj/structure/deity/altar/proc/remove_target)
 	register_signal(L, SIGNAL_MOVED, /obj/structure/deity/altar/proc/remove_target)
 	register_signal(L, SIGNAL_MOB_DEATH, /obj/structure/deity/altar/proc/remove_target)
 
 /obj/structure/deity/altar/proc/remove_target()
 	STOP_PROCESSING(SSobj, src)
-	unregister_signal(target, SIGNAL_DESTROY)
+	unregister_signal(target, SIGNAL_QDELETING)
 	unregister_signal(target, SIGNAL_MOVED)
 	unregister_signal(target, SIGNAL_MOB_DEATH)
 	target = null
