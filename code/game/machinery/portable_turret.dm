@@ -130,8 +130,11 @@
 	turfs_in_view_range = list()
 	turfs_not_in_view_range = list()
 
+	// Lummox says `view` has caching, anyway lets be sure).
+	var/list/cached_view = view(world.view, src)
+
 	for(var/turf/T in range(world.view, src))
-		if(T in view(world.view, src))
+		if(T in cached_view)
 			_register_visible_turf(T)
 			turfs_in_view_range += T
 		else
