@@ -178,7 +178,7 @@ var/last_chew = 0
 /obj/item/handcuffs/cyborg
 	dispenser = 1
 
-/obj/item/handcuffs/cyborg/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/handcuffs/cyborg/afterattack(atom/A, mob/user, proximity)
 	if (istype(A,/obj/item/handcuffs))
 		qdel(A)
 
