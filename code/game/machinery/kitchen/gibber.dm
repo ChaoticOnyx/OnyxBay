@@ -175,7 +175,7 @@
 		slab_nutrition = C.nutrition / 15
 
 	// Some mobs have specific meat item types.
-	if(istype(src.occupant, /mob/living/carbon/alien))
+	if(istype(occupant, /mob/living/carbon/alien))
 		var/mob/living/carbon/alien/critter = src.occupant
 		if(critter.meat_amount)
 			slab_count = critter.meat_amount
