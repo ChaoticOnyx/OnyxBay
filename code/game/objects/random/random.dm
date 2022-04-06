@@ -1165,7 +1165,7 @@ something, make sure it's not in one of the other lists.
 /obj/random/music_tape
 	name = "random music tape"
 	desc = "This is a random music tape."
-	icon_state = "landmark_unique_red"
+	icon_state = "landmark_tape"
 
 /obj/random/music_tape/spawn_choices()
 	return list(/obj/item/storage/box/music_tape/jazz = 10,
