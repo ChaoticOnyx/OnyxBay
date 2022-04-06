@@ -176,7 +176,7 @@
 
 	// Some mobs have specific meat item types.
 	if(istype(occupant, /mob/living/carbon/alien))
-		var/mob/living/carbon/alien/critter = src.occupant
+		var/mob/living/carbon/alien/critter = occupant
 		if(critter.meat_amount)
 			slab_count = critter.meat_amount
 		if(critter.meat_type)
