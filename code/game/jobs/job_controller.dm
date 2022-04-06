@@ -481,15 +481,17 @@ var/global/datum/controller/occupations/job_master
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
 
-		// If they're head, give them the account info for their department
-		if(H.mind && job.head_position)
+		if(H.mind)
 			var/remembered_info = ""
 			var/datum/money_account/department_account = department_accounts[job.department]
 
 			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
+				remembered_info += "<b>Your [job.department] department account:</b><br>"
+				remembered_info += "<b>Number:</b> #[department_account.account_number]<br>"
+			// And if they're head, give them the pin and funds info for their department
+			if(job.head_position || job.title == "Quartermaster" || job.title ==  "Internal Affairs Agent")
+				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
+				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
 			H.mind.store_memory(remembered_info)
 
