@@ -169,10 +169,10 @@
 	spawn(15)
 		explode()
 
-/obj/machinery/media/jukebox/attack_ai(mob/user as mob)
+/obj/machinery/media/jukebox/attack_ai(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/media/jukebox/attack_hand(mob/user as mob)
+/obj/machinery/media/jukebox/attack_hand(mob/user)
 	interact(user)
 
 /obj/machinery/media/jukebox/proc/explode()
@@ -188,7 +188,7 @@
 	new /obj/effect/decal/cleanable/blood/oil(loc)
 	qdel(src)
 
-/obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/media/jukebox/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		add_fingerprint(user)
 		wrench_floor_bolts(user, 0)

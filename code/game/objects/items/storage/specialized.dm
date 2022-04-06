@@ -85,7 +85,7 @@
 
 
 // Modified handle_item_insertion.  Would prefer not to, but...
-	handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
+	handle_item_insertion(obj/item/W, prevent_warning = 0)
 		var/obj/item/stack/material/S = W
 		if(!istype(S)) return 0
 
@@ -183,7 +183,7 @@
 		desc += "<br>[track.title]"
 	desc += "."
 
-/obj/item/storage/box/music_tape/attackby(obj/item/A as obj, mob/user as mob)
+/obj/item/storage/box/music_tape/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/music_tape))
 		var/obj/item/storage/box/music_tape/C = A
 		if(music_tape)
