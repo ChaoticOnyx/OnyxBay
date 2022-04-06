@@ -601,7 +601,7 @@
 "lC" = (/obj/structure/bed/chair{dir = 1},/obj/effect/shuttle_landmark/syndi/start,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "lD" = (/obj/structure/bed/chair/comfy/black{dir = 4},/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "lE" = (/obj/item/folder{pixel_y = 2},/obj/structure/table/glass,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
-"lF" = (/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen{pixel_y = 4},/obj/structure/table/glass,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
+"lF" = (/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen{pixel_y = 4},/obj/structure/table/glass,/obj/item/storage/box/music_tape/syndie,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "lG" = (/obj/structure/bed/chair/comfy/black{dir = 8},/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "lH" = (/obj/structure/table/reinforced,/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/turf/unsimulated/floor{icon_state = "white"},/area/syndicate_mothership)
 "lI" = (/obj/structure/table/rack,/obj/item/clothing/shoes/magboots,/obj/item/clothing/suit/space/syndicate/black/green,/obj/item/clothing/mask/breath,/obj/item/clothing/head/helmet/space/syndicate/black/green,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)
