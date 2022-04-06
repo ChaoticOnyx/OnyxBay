@@ -54,7 +54,16 @@
 		A.forceMove(null)
 
 	var/old_opaque_counter = opaque_counter
+	var/old_lookups = comp_lookup.Copy()
+	var/old_components = datum_components.Copy()
+	var/old_signals = signal_procs.Copy()
+
 	var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
+
+	comp_lookup = old_lookups
+	datum_components = old_components
+	signal_procs = old_signals
+
 	for(var/atom/movable/A in old_contents)
 		A.forceMove(W)
 
@@ -95,8 +104,7 @@
 			else
 				lighting_clear_overlay()
 
-	if(.)
-		SEND_SIGNAL(src, SIGNAL_TURF_CHANGED, src, old_density, density, old_opacity, opacity)
+	SEND_SIGNAL(src, SIGNAL_TURF_CHANGED, src, old_density, density, old_opacity, opacity)
 
 /turf/proc/transport_properties_from(turf/other)
 	if(!istype(other, src.type))
