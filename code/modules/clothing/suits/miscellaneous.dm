@@ -163,7 +163,7 @@
  */
 
 /obj/item/clothing/suit/straight_jacket
-	name = "straitjacket"
+	name = "strait jacket"
 	desc = "A suit that completely restrains the wearer."
 	icon_state = "straight_jacket"
 	item_state = "straight_jacket"
@@ -171,12 +171,17 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 
 /obj/item/clothing/suit/straight_jacket/equipped(mob/user, slot)
-	if(slot == slot_wear_suit)
-		if(iscarbon(user))
-			var/mob/living/carbon/C = user
-			C.drop_from_inventory(C.handcuffed)
-		user.drop_l_hand()
-		user.drop_r_hand()
+	..()
+	if(ishuman(user) && slot == slot_wear_suit)
+		var/mob/living/carbon/C = user
+		C.handcuffed = src
+
+
+/obj/item/clothing/suit/straight_jacket/dropped(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/C = user
+		C.handcuffed = null
+	..()
 
 /obj/item/clothing/suit/ianshirt
 	name = "worn shirt"
@@ -184,6 +189,7 @@
 	icon_state = "ianshirt"
 	item_state = "ianshirt"
 	body_parts_covered = UPPER_TORSO|ARMS
+
 
 //pyjamas
 //originally intended to be pinstripes >.>

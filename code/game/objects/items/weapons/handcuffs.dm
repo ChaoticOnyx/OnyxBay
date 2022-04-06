@@ -105,21 +105,21 @@
 		cuffs = new(get_turf(user))
 	else
 		user.drop_from_inventory(cuffs)
-	target.equip_to_slot(cuffs,slot_handcuffed)
+	target.equip_to_slot(cuffs, slot_handcuffed)
 	on_restraint_apply(src)
 	return 1
 
 var/last_chew = 0
 /mob/living/carbon/human/RestrainedClickOn(atom/A)
-	if (A != src) return ..()
-	if (last_chew + 26 > world.time) return
+	if(A != src) return ..()
+	if(last_chew + 26 > world.time) return
 
 	var/mob/living/carbon/human/H = A
-	if (!H.handcuffed) return
-	if (H.a_intent != I_HURT) return
-	if (H.zone_sel.selecting != BP_MOUTH) return
-	if (H.wear_mask) return
-	if (istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
+	if(!H.handcuffed) return
+	if(H.a_intent != I_HURT) return
+	if(H.zone_sel.selecting != BP_MOUTH) return
+	if(H.wear_mask) return
+	if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket)) return
 
 	var/obj/item/organ/external/O = H.organs_by_name[(H.hand ? BP_L_HAND : BP_R_HAND)]
 	if (!O) return
