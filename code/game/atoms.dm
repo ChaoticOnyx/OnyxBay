@@ -79,6 +79,17 @@
 /atom/proc/LateInitialize()
 	return
 
+/atom/Entered(atom/movable/enterer, atom/old_loc)
+	..()
+
+	SEND_SIGNAL(src, SIGNAL_ENTERED, src, enterer, old_loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, enterer, old_loc, enterer.loc)
+
+/atom/Exited(atom/movable/exitee, atom/new_loc)
+	. = ..()
+
+	SEND_SIGNAL(src, SIGNAL_EXITED, src, exitee, new_loc)
+
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
@@ -278,9 +289,13 @@ its easier to just keep the beam vertical.
 //called to set the atom's dir and used to add behaviour to dir-changes
 /atom/proc/set_dir(new_dir)
 	var/old_dir = dir
+
 	if(new_dir == old_dir)
 		return FALSE
+
 	dir = new_dir
+	SEND_SIGNAL(src, SIGNAL_DIR_SET, src, old_dir, dir)
+
 	return TRUE
 
 /atom/proc/set_icon_state(new_icon_state)
@@ -655,3 +670,37 @@ its easier to just keep the beam vertical.
 				break
 
 	return TRUE
+
+/atom/proc/post_attach_label()
+	return
+
+/atom/proc/post_remove_label()
+	return
+
+/atom/proc/SetName(new_name)
+	var/old_name = name
+
+	if(old_name != new_name)
+		name = new_name
+
+/atom/proc/set_opacity(new_opacity)
+	if(new_opacity != opacity)
+		var/old_opacity = opacity
+		opacity = new_opacity
+
+		SEND_SIGNAL(src, SIGNAL_OPACITY_SET, src, old_opacity, new_opacity)
+
+		return TRUE
+	else
+		return FALSE
+
+/atom/proc/set_invisibility(new_invisibility = 0)
+	var/old_invisibility = invisibility
+	if(old_invisibility != new_invisibility)
+		invisibility = new_invisibility
+
+		SEND_SIGNAL(src, SIGNAL_INVISIBILITY_SET, src, old_invisibility, new_invisibility)
+
+/atom/proc/recursive_dir_set(atom/a, old_dir, new_dir)
+	if(loc != a)
+		set_dir(new_dir)

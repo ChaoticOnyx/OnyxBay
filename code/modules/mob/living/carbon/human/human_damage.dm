@@ -6,7 +6,7 @@
 		set_stat(CONSCIOUS)
 		return
 
-	health = maxHealth - getBrainLoss()
+	health = maxHealth - (getBrainLoss() * 2) // Since brains' get 50% of maxHealth as their HP
 
 	//TODO: fix husking
 	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)

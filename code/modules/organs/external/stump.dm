@@ -7,7 +7,8 @@
 /obj/item/organ/external/stump/New(mob/living/carbon/holder, internal, obj/item/organ/external/limb)
 	if(istype(limb))
 		organ_tag = limb.organ_tag
-		icon_name = limb.icon_name
+		if(!BP_IS_ROBOTIC(limb)) // These nasty fucks are broken, fuck robolimbs, their dumb icons and whomever the fuck created them in their current fucking state
+			icon_name = limb.icon_name
 		body_part = limb.body_part
 		amputation_point = limb.amputation_point
 		joint = limb.joint
@@ -20,3 +21,16 @@
 
 /obj/item/organ/external/stump/is_stump()
 	return 1
+
+/obj/item/organ/external/stump/rejuvenate(ignore_prosthetic_prefs)
+	. = ..()
+	var/mob/living/carbon/human/H = owner
+	removed(drop_organ = FALSE)
+	H.restore_limb(organ_tag)
+	if(organ_tag == BP_L_ARM||organ_tag == BP_R_ARM)
+		H.restore_limb(organ_tag==BP_L_ARM?BP_L_HAND:BP_R_HAND)
+
+	if(organ_tag == BP_L_LEG||organ_tag == BP_R_LEG)
+		H.restore_limb(organ_tag==BP_L_LEG?BP_L_FOOT:BP_R_FOOT)
+
+	H.regenerate_icons()

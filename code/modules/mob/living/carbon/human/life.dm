@@ -321,7 +321,7 @@
 		return
 
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species_organ]
-	if(!L || nervous_system_failure())
+	if(!L)
 		failed_last_breath = 1
 	else
 		failed_last_breath = L.handle_breath(breath) //if breath is null or vacuum, the lungs will handle it for us
@@ -1160,6 +1160,15 @@
 			else
 				holder.icon_state = "hudxeno3"
 		hud_list[XENO_HUD] = holder
+
+	if(BITTEST(hud_updateflag, GLAND_HUD) && hud_list[GLAND_HUD])
+		var/image/holder = hud_list[GLAND_HUD]
+		var/obj/item/organ/internal/heart/gland/gland = internal_organs_by_name[BP_HEART]
+		if(!gland)
+			holder.icon_state = "hudblank"
+		else
+			gland.update_gland_hud()
+		hud_list[GLAND_HUD] = holder
 
 	hud_updateflag = 0
 

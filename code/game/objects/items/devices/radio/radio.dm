@@ -745,6 +745,7 @@
 
 /obj/item/device/radio/announcer/Destroy()
 	crash_with("attempt to delete a [src.type] detected, and prevented.")
+	..()
 	return QDEL_HINT_LETMELIVE
 
 /obj/item/device/radio/announcer/Initialize()

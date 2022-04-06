@@ -142,11 +142,11 @@ a creative player the means to solve many problems.  Circuits are held inside an
 // called when we add component to assembly
 /obj/item/integrated_circuit/proc/create_moved_event()
 	if(moved_event_created) // if moved event already created, rerigester it
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 	if(ext_moved_triggerable)
 		moved_event_created = TRUE
 		moved_object = get_object()
-		GLOB.moved_event.register(moved_object, src, .proc/ext_moved)
+		register_signal(moved_object, SIGNAL_MOVED, .proc/ext_moved)
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return
@@ -155,7 +155,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 // created for not to use moved_event when we are not in assembly.
 /obj/item/integrated_circuit/proc/removed_from_assembly()
 	if(ext_moved_triggerable && moved_event_created)
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 
 /obj/item/integrated_circuit/Destroy()
 	. = ..()
@@ -164,7 +164,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	QDEL_LIST(activators)
 	SScircuit_components.dequeue_component(src)
 	if(ext_moved_triggerable && moved_event_created)
-		GLOB.moved_event.unregister(moved_object, src)
+		unregister_signal(moved_object, SIGNAL_MOVED)
 
 /obj/item/integrated_circuit/emp_act(severity)
 	for(var/k in inputs)

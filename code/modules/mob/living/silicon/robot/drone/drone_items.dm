@@ -194,7 +194,9 @@
 		/obj/item/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/grown,
-		/obj/item/glass_extra
+		/obj/item/glass_extra,
+		/obj/item/material/kitchen,
+		/obj/item/material/knife
 		)
 
 	cant_hold = list() // understandable, have a great day

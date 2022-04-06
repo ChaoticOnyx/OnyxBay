@@ -34,14 +34,14 @@
 
 /obj/item/storage/secure/attackby(obj/item/W, mob/user)
 	if(locked)
-		if(istype(W, /obj/item/melee/energy/blade) && emag_act(INFINITY, user, "You slice through the lock of \the [src]"))
+		if(istype(W, /obj/item/melee/energy/blade))
+			emag_act(INFINITY, user, W, "You slice through the lock of \the [src]")
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
 			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 			playsound(src.loc, SFX_SPARK, 50, 1)
 			return
-
 		if(isScrewdriver(W))
 			if(do_after(user, 20, src))
 				src.open =! src.open
@@ -144,16 +144,12 @@
 			return
 	return
 
-/obj/item/storage/secure/emag_act(remaining_charges, mob/user, feedback)
-	if(!emagged)
-		emagged = 1
-		src.overlays += image('icons/obj/storage.dmi', icon_sparking)
-		sleep(6)
-		src.overlays = null
-		overlays += image('icons/obj/storage.dmi', icon_locking)
-		locked = 0
-		to_chat(user, (feedback ? feedback : "You short out the lock of \the [src]."))
-		return 1
+
+/obj/item/storage/secure/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
+	var/obj/item/melee/energy/WS = emag_source
+	if(WS.active)
+		on_hack_behavior(WS, user)
+		return TRUE
 
 // -----------------------------
 //        Secure Briefcase
@@ -402,3 +398,17 @@
 				show_lock_menu(M)
 			return
 	return
+
+/obj/item/storage/secure/proc/on_hack_behavior()
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, src.loc)
+	spark_system.start()
+	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
+	playsound(src.loc, "spark", 50, 1)
+	if(!emagged)
+		emagged = TRUE
+		overlays += image('icons/obj/storage.dmi', icon_sparking)
+		sleep(6)
+		overlays = null
+		overlays += image('icons/obj/storage.dmi', icon_locking)
+		locked = FALSE

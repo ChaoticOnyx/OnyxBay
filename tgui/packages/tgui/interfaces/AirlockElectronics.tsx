@@ -3,21 +3,21 @@ import { Button, Flex, LabeledList, Section, Tabs } from '../components'
 import { Window } from '../layouts'
 
 interface Access {
-  name: string;
-  id: number;
-  req: number;
+  name: string
+  id: number
+  req: number
 }
 
 interface Region {
-  name: string;
-  accesses: Access[];
+  name: string
+  accesses: Access[]
 }
 
 interface InputData {
-  regions: Region[];
-  oneAccess: number;
-  locked: number;
-  lockable: number;
+  regions: Region[]
+  oneAccess: number
+  locked: number
+  lockable: number
 }
 
 export const AirlockElectronics = (props: any, context: any) => {
@@ -26,9 +26,9 @@ export const AirlockElectronics = (props: any, context: any) => {
   const oneAccess = data.oneAccess
   let accesses: Access[] = []
   data.regions.map(
-    (region) =>
+    region =>
       (accesses = accesses.concat(
-        region.accesses.filter((access) => access.req !== 0)
+        region.accesses.filter(access => access.req !== 0)
       ))
   )
 
@@ -81,9 +81,9 @@ const AirlockAccessList = (props: any, context: any) => {
     selectedList = [],
     accessMod
   }: {
-    regions: Region[];
-    selectedList: any[];
-    accessMod: (id: number) => void;
+    regions: Region[]
+    selectedList: any[]
+    accessMod: (id: number) => void
   } = props
   const [selectedRegionName, setSelectedRegionName] = useLocalState(
     context,
@@ -91,7 +91,7 @@ const AirlockAccessList = (props: any, context: any) => {
     regions[0]?.name
   )
   const selectedAccess = regions.find(
-    (region) => region.name === selectedRegionName
+    region => region.name === selectedRegionName
   )
   const selectedAccessEntries = selectedAccess?.accesses || []
 
@@ -119,7 +119,7 @@ const AirlockAccessList = (props: any, context: any) => {
       <Flex>
         <Flex.Item>
           <Tabs vertical>
-            {regions.map((access) => {
+            {regions.map(access => {
               const entries = access.accesses || []
               const icon = diffMap[checkAccessIcon(entries)].icon
               const color = diffMap[checkAccessIcon(entries)].color
@@ -138,7 +138,7 @@ const AirlockAccessList = (props: any, context: any) => {
           </Tabs>
         </Flex.Item>
         <Flex.Item grow={1} ml={1.5}>
-          {selectedAccessEntries.map((entry) => (
+          {selectedAccessEntries.map(entry => (
             <Button.Checkbox
               fluid
               key={entry.name}

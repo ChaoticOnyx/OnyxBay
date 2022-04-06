@@ -3,7 +3,9 @@ var/global/list/all_objectives = list()
 
 /datum/objective
 	var/datum/mind/owner = null			//Who owns the objective.
+	var/datum/team/team 				//An alternative to 'owner': a team. Use this when writing new code.
 	var/explanation_text = "Nothing"	//What that person is supposed to do.
+	var/team_explanation_text 			//For when there are multiple owners.
 	var/datum/mind/target = null		//If they are focused on a particular person.
 	var/target_amount = 0				//If they are focused on a particular number. Steal objectives have their own counter.
 	var/completed = 0					//currently only used for custom objectives.
@@ -21,11 +23,16 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/check_completion()
 	return completed
 
+/datum/objective/proc/target_is_disallowed(mob/living/carbon/human/H)
+	return FALSE
+
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
 		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
 			var/mob/living/carbon/human/H = possible_target.current
+			if(target_is_disallowed(H))
+				continue
 			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				possible_targets += possible_target
 	if(possible_targets.len > 0)
@@ -310,6 +317,10 @@ var/global/list/all_objectives = list()
 
 
 /datum/objective/escape/changeling
+
+/datum/objective/escape/changeling/target_is_disallowed(mob/living/carbon/human/H)
+	if(H.full_prosthetic)
+		return TRUE
 
 /datum/objective/escape/changeling/find_target()
 	. = ..()

@@ -736,3 +736,14 @@ ERROR_SILENCE_TIME 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 ERROR_MSG_DELAY 50
+
+# # # # # # # # # # # # # # # # # # # # # #
+#             TIME SETTINGS               #
+# # # # # # # # # # # # # # # # # # # # # #
+# Time before a round starts
+# DEFAULT: 1800 (3 MINUTES)
+PREGAME_TIMELEFT 1800
+
+# Time left after round end before reboot.
+# DEFAULT: 600 (1 MINUTE)
+RESTART_TIMEOUT 600

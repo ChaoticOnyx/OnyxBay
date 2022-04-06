@@ -41,6 +41,7 @@
 	color_description = "red ink"
 
 /obj/item/pen/multi
+	name = "multicolor pen"
 	desc = "It's a pen with multiple colors of ink!"
 	var/selectedColor = 1
 	var/colors = list("black","blue","red")
@@ -51,15 +52,16 @@
 	if(++selectedColor > 3)
 		selectedColor = 1
 
+	var/new_color = colors[selectedColor]
 	colour = colors_code[selectedColor]
 	color_description = color_descriptions[selectedColor]
 
-	if(colour == "black")
+	if(new_color == "black")
 		icon_state = "pen"
 	else
-		icon_state = "pen_[colour]"
+		icon_state = "pen_[new_color]"
 
-	to_chat(user, "<span class='notice'>Changed color to '[colour].'</span>")
+	to_chat(user, SPAN("notice", "Changed color to [new_color]."))
 
 /obj/item/pen/invisible
 	desc = "It's an invisble pen marker."

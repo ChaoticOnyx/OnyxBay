@@ -23,8 +23,9 @@
 	..() // I'm cautious about this, but its the right thing to do.
 	owner = L
 	sync_icon(L)
-	GLOB.dir_set_event.register(L, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.register(L, src, /mob/zshadow/proc/update_invisibility)
+
+	register_signal(L, SIGNAL_DIR_SET, /mob/zshadow/proc/update_dir)
+	register_signal(L, SIGNAL_INVISIBILITY_SET, /mob/zshadow/proc/update_invisibility)
 
 
 /mob/Destroy()
@@ -34,8 +35,8 @@
 	. = ..()
 
 /mob/zshadow/Destroy()
-	GLOB.dir_set_event.unregister(owner, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.unregister(owner, src, /mob/zshadow/proc/update_invisibility)
+	unregister_signal(owner, SIGNAL_DIR_SET)
+	unregister_signal(owner, SIGNAL_INVISIBILITY_SET)
 	. = ..()
 
 /mob/zshadow/examine(mob/user, infix, suffix)
