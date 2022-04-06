@@ -299,12 +299,8 @@ its easier to just keep the beam vertical.
 	return TRUE
 
 /atom/proc/set_icon_state(new_icon_state)
-	if(has_extension(src, /datum/extension/base_icon_state))
-		var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-		bis.base_icon_state = new_icon_state
-		update_icon()
-	else
-		icon_state = new_icon_state
+	icon_state = new_icon_state
+	update_icon()
 
 /atom/proc/update_icon()
 	CAN_BE_REDEFINED(TRUE)
