@@ -7,6 +7,10 @@
 	name = "tape - \"Clouds\""
 	track = new /datum/track("Clouds of Fire", 'sound/music/classic/clouds.s3m')
 
+/obj/item/music_tape/syndie
+	name = "Unsuspicious Music Tape"
+	track = new /datum/track("Space Asshole", 'sound/music/space_asshole.ogg')
+
 /obj/item/music_tape/random/newyear
 	name = "Christmas Music Tape"
 	tracklist = list(
@@ -23,10 +27,12 @@
 	name = "Jazzy Jazz Tape"
 	tracklist = list(
 		"Booty Swing"              		= 'sound/music/jazz/booty_swing.ogg',
+		"Fire In The Brain"            	= 'sound/music/jazz/fire_in_the_brain.ogg',
 		"Fly Me To The Moon"            = 'sound/music/jazz/fly_me_to_the_moon.ogg',
 		"Lone Digger" 					= 'sound/music/jazz/lonedigger.ogg',
 		"Rush"                			= 'sound/music/jazz/rush.ogg',
 		"Mr. Sandman"            	    = 'sound/music/jazz/sandman.ogg',
+		"The Only Thing"            	= 'sound/music/jazz/the_only_thing.ogg',
 		"What A Wonderful World"        = 'sound/music/jazz/wonderful_world.ogg'
 	)
 
@@ -34,7 +40,7 @@
 	name = "NSS Frontier Tape"
 	tracklist = list(
 		"Don`t Bother Me"				= 'sound/music/frontier/dont_bother_me.ogg',
-		"It's The End Of The World"     = 'sound/music/frontier/end_of_the_world.ogg',
+		"It`s The End Of The World"     = 'sound/music/frontier/end_of_the_world.ogg',
 		"Little Dark Age"               = 'sound/music/frontier/little_dark_age.ogg',
 		"Piano Bar I" 					= 'sound/music/frontier/piano_bar.ogg',
 		"Resonance"              	    = 'sound/music/frontier/resonance.ogg',
@@ -72,10 +78,28 @@
 		"End"                           = 'sound/music/classic/end.ogg',
 		"Magicfly"                      = 'sound/music/classic/magicfly.ogg',
 		"Self Justified Sacrifices"     = 'sound/music/classic/self_justified_sacrifices.ogg',
-		"Reaper \'n Blues"              = 'sound/music/classic/reapernblues.ogg',
+		"Reaper `n Blues"              = 'sound/music/classic/reapernblues.ogg',
 		"Undead Man Walkin`"            = 'sound/music/classic/undeadwalking.ogg',
 		"Space Oddity"                  = 'sound/music/classic/space_oddity.ogg',
 		"Crockett's Theme"              = 'sound/music/classic/crokett_39_s_theme.ogg'
+	)
+
+/obj/item/music_tape/random/valhalla
+	name = "Cyber Bar Tape"
+	tracklist = list(
+		"A New Frontier"                          = 'sound/music/valhalla/a_new_frontier.ogg',
+		"A Star Pierces The Darkness"             = 'sound/music/valhalla/a_star_pierces_the_darkness.ogg',
+		"Base Of The Titans"                      = 'sound/music/valhalla/base_of_the_titans.ogg',
+		"Follow The Trail"                        = 'sound/music/valhalla/follow_the_trail.ogg',
+		"Good For Health, Bad For Education"      = 'sound/music/valhalla/good_for_health.ogg',
+		"Heart Of The Sity"                       = 'sound/music/valhalla/heart_of_the_sity.ogg',
+		"Meet The Staff"                          = 'sound/music/valhalla/meet_the_staff.ogg',
+		"Skyline"                                 = 'sound/music/valhalla/skyline.ogg',
+		"Snowfall"                                = 'sound/music/valhalla/snowfall.ogg',
+		"Strictly Business"                       = 'sound/music/valhalla/strictly_business.ogg',
+		"Underground Club"                        = 'sound/music/valhalla/underground_club.ogg',
+		"Who Was I"                               = 'sound/music/valhalla/who_was_i.ogg',
+		"You`ve Got Me"                           = 'sound/music/valhalla/youve_got_me.ogg',
 	)
 /obj/item/music_tape/custom
 	name = "dusty tape"

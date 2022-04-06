@@ -252,3 +252,13 @@
 	name = "NSS Exodus tape box"
 	icon_closed = "box_exodus"
 	music_tape = new /obj/item/music_tape/random/exodus
+
+/obj/item/storage/box/music_tape/syndie
+	name = "Unsuspicious tape box"
+	icon_closed = "box_syndi"
+	music_tape = new /obj/item/music_tape/syndie
+
+/obj/item/storage/box/music_tape/valhalla
+	name = "Cyber Bar tape box"
+	icon_closed = "box_cyber"
+	music_tape = new /obj/item/music_tape/random/valhalla
