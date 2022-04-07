@@ -3,13 +3,13 @@
   "tasks": [
     {
       "type": "dreammaker",
-      "dme": "baystation12.dme",
+      "dme": "onyxbay.dme",
       "problemMatcher": ["$dreammaker"],
       "group": {
         "kind": "build",
         "isDefault": true
       },
-      "label": "dm: build - baystation12.dme"
+      "label": "dm: build - onyxbay.dme"
     }
   ]
 }
