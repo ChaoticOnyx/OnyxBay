@@ -7,9 +7,9 @@
 	var/list/transaction_log = list()
 	var/suspended = 0
 	var/off_station = FALSE
-	var/security_level = 1	//0 - auto-identify from worn ID, require only account number
-							//1 - require manual login / account number and pin
-							//2 - require card and manual login
+	var/security_level = BANK_SECURITY_MODERATE	// BANK_SECURITY_MINIMUM  - auto-identify from worn ID, require only account number
+												// BANK_SECURITY_MODERATE - require manual login / account number and pin
+												// BANK_SECURITY_MAXIMUM  - require card and manual login
 
 /datum/money_account/proc/do_transaction(datum/transaction/T)
 	money = max(0, money + T.amount)
@@ -59,7 +59,7 @@
 	//create a new account
 	var/datum/money_account/M = new()
 	M.owner_name = new_owner_name
-	M.remote_access_pin = rand(1111, 111111)
+	M.remote_access_pin = rand(1111, 9999)
 	M.money = starting_funds
 
 	//create an entry in the account transaction log for when it was created

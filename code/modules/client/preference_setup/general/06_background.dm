@@ -11,6 +11,9 @@
 	var/faction = "NanoTrasen"          //General associated faction.
 	var/religion = "None"               //Religious association.
 
+	var/bank_security = BANK_SECURITY_MODERATE // bank account security level
+	var/bank_pin = 0 // bank account PIN, 0 gives a random PIN
+
 /datum/category_item/player_setup_item/general/background
 	name = "Background"
 	sort_order = 6
@@ -21,6 +24,8 @@
 	pref.citizenship = R.read("citizenship")
 	pref.faction = R.read("faction")
 	pref.religion = R.read("religion")
+	pref.bank_security = R.read("bank_security")
+	pref.bank_pin = R.read("bank_pin")
 	pref.med_record = R.read("med_record")
 	pref.gen_record = R.read("gen_record")
 	pref.sec_record = R.read("sec_record")
@@ -42,6 +47,8 @@
 	W.write("citizenship", pref.citizenship)
 	W.write("faction", pref.faction)
 	W.write("religion", pref.religion)
+	W.write("bank_security", pref.bank_security)
+	W.write("bank_pin", pref.bank_pin)
 	W.write("med_record", pref.med_record)
 	W.write("gen_record", pref.gen_record)
 	W.write("sec_record", pref.sec_record)
@@ -58,6 +65,8 @@
 	if(!pref.religion)
 		pref.religion =    "None"
 
+	pref.bank_security = sanitize_integer(pref.bank_security, BANK_SECURITY_MINIMUM, BANK_SECURITY_MAXIMUM, initial(pref.bank_security))
+	pref.bank_pin = sanitize_integer(pref.bank_pin, 1111, 9999, initial(pref.bank_pin))
 	pref.nanotrasen_relation = sanitize_inlist(pref.nanotrasen_relation, COMPANY_ALIGNMENTS, initial(pref.nanotrasen_relation))
 
 /datum/category_item/player_setup_item/general/background/content(mob/user)
@@ -67,6 +76,10 @@
 	. += "Citizenship: <a href='?src=\ref[src];citizenship=1'>[pref.citizenship]</a><br/>"
 	. += "Faction: <a href='?src=\ref[src];faction=1'>[pref.faction]</a><br/>"
 	. += "Religion: <a href='?src=\ref[src];religion=1'>[pref.religion]</a><br/>"
+
+	. += "<br/><b>Bank Account</b>:<br/>"
+	. += "Security Level: <a href='?src=\ref[src];bank_security=1'>[pref.bank_security ? pref.bank_security == 2 ? "Maximum" : "Moderate" : "Minimum" ]</a><br>"
+	. += "PIN: <a href='?src=\ref[src];bank_pin=1'>[pref.bank_pin ? pref.bank_pin : "Random"]</a><br>"
 
 	. += "<br/><b>Records</b>:<br/>"
 	if(jobban_isbanned(user, "Records"))
@@ -131,6 +144,33 @@
 				pref.religion = sanitize(raw_choice)
 		else
 			pref.religion = choice
+		return TOPIC_REFRESH
+
+	else if(href_list["bank_security"])
+		var/list/sec_levels = list("Minimum", "Moderate", "Maximum")
+		var/choice = input(user, "Choose your bank account's security level:", CHARACTER_PREFERENCE_INPUT_TITLE, "Moderate") as null|anything in sec_levels
+		if(!choice || !CanUseTopic(user))
+			return TOPIC_NOACTION
+		switch(choice)
+			if("Minimum")
+				pref.bank_security = BANK_SECURITY_MINIMUM
+			if("Moderate")
+				pref.bank_security = BANK_SECURITY_MODERATE
+			if("Maximum")
+				pref.bank_security = BANK_SECURITY_MAXIMUM
+		return TOPIC_REFRESH
+
+	else if(href_list["bank_pin"])
+		var/choice = input(user, "Set your bank account's PIN (1111-9999):\nSet to 1 to use a random PIN for each round.\nSet to 2 to generate a random PIN.", CHARACTER_PREFERENCE_INPUT_TITLE, pref.bank_pin) as num|null
+		if(!choice || !CanUseTopic(user))
+			return TOPIC_NOACTION
+		switch(choice)
+			if(1111 to 9999)
+				pref.bank_pin = choice
+			if(1)
+				pref.bank_pin = 0
+			if(2)
+				pref.bank_pin = rand(1111, 9999)
 		return TOPIC_REFRESH
 
 	else if(href_list["set_medical_records"])

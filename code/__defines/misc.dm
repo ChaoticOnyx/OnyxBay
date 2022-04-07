@@ -270,3 +270,8 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+// Bank accounts' security levels
+#define BANK_SECURITY_MINIMUM 0
+#define BANK_SECURITY_MODERATE 1
+#define BANK_SECURITY_MAXIMUM 2
