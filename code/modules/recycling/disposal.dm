@@ -114,7 +114,7 @@
 							 "You stuff [H] into \the [src].")
 		for(var/atom/movable/AM in H)
 			AM.forceMove(src)
-		user.drop_from_inventory(H)
+		qdel(H)
 		playsound(src, SFX_DISPOSAL, 75, 0)
 		update_icon()
 		return

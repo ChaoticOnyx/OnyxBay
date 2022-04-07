@@ -235,7 +235,9 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	if(!user.IsAdvancedToolUser(TRUE))
 		show_inv_reduced(user)
@@ -296,7 +298,9 @@
 
 // Used when the user is not an advanced tool user (i.e. xenomorph)
 /mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE

@@ -15,8 +15,6 @@ var/list/holder_mob_icon_cache = list()
 		)
 	pixel_y = 8
 
-	var/last_holder
-
 /obj/item/holder/New()
 	..()
 	START_PROCESSING(SSobj, src)
@@ -27,39 +25,27 @@ var/list/holder_mob_icon_cache = list()
 	qdel(src)
 
 /obj/item/holder/Destroy()
-	if(last_holder)
-		var/mob/M = last_holder
+	if(ismob(loc))
+		var/mob/M = loc
 		M.drop_from_inventory(src, get_turf(M))
-		last_holder = null
-	for(var/atom/movable/AM in src)
-		AM.forceMove(get_turf(src))
+	for(var/thing in src)
+		var/mob/M = thing
+		M.dropInto(loc)
+		M.reset_view()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/holder/Process()
-	update_state()
+	check_condition()
 
 /obj/item/holder/dropped()
 	..()
 	spawn(1)
-		update_state()
+		check_condition()
 
-/obj/item/holder/proc/update_state()
-	if(last_holder != loc)
-		for(var/mob/M in contents)
-			unregister_all_movement(last_holder, M)
-
-	if(istype(loc,/turf) || !(contents.len))
-		for(var/mob/M in contents)
-			var/atom/movable/mob_container = M
-			mob_container.dropInto(loc)
-			M.reset_view()
+/obj/item/holder/proc/check_condition()
+	if(isturf(loc) || !(contents.len))
 		qdel(src)
-	else if(last_holder != loc)
-		for(var/mob/M in contents)
-			register_all_movement(loc, M)
-
-	last_holder = loc
 
 /obj/item/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
@@ -80,6 +66,7 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/holder/attack_self()
 	for(var/mob/M in contents)
 		M.show_inv(usr)
+		usr.show_inventory?.open()
 
 /obj/item/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
@@ -94,7 +81,7 @@ var/list/holder_mob_icon_cache = list()
 		for(var/mob/victim in src.contents)
 			M.devour(victim)
 
-		update_state()
+		check_condition()
 
 	..()
 
@@ -108,10 +95,6 @@ var/list/holder_mob_icon_cache = list()
 	name = M.name
 	desc = M.desc
 	overlays |= M.overlays
-	var/mob/living/carbon/human/H = loc
-	if(hasorgans(H))
-		last_holder = H
-		register_all_movement(H, M)
 
 	update_held_icon()
 
