@@ -30,8 +30,8 @@ var/decl/appearance_manager/appearance_manager = new()
 	if(viewer.client)
 		viewer.client.images -= ad.images
 	if(!pq.Length())
-		unregister_signal(viewer, SIGNAL_LOGGED_IN, /decl/appearance_manager/proc/apply_appearance_images)
-		register_signal(viewer, SIGNAL_QDELETING, /decl/appearance_manager/proc/remove_appearances)
+		unregister_signal(viewer, SIGNAL_LOGGED_IN)
+		unregister_signal(viewer, SIGNAL_QDELETING)
 		appearances_ -= viewer
 
 /decl/appearance_manager/proc/remove_appearances(mob/viewer)

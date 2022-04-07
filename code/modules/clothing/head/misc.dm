@@ -129,6 +129,8 @@
 /obj/item/clothing/head/cardborg/Initialize()
 	. = ..()
 
+	AddComponent(/datum/component/cardborg)
+
 /obj/item/clothing/head/justice
 	name = "justice hat"
 	desc = "fight for what's righteous!"
