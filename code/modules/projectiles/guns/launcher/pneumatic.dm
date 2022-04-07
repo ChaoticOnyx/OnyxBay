@@ -70,6 +70,8 @@
 		tank = W
 		user.visible_message("[user] jams [W] into [src]'s valve and twists it closed.","You jam [W] into [src]'s valve and twist it closed.")
 		update_icon()
+	else if(istype(W, /obj/item/holder))
+		to_chat(user, SPAN("warning", "[W] doesn't seem to fit inside."))
 	else if(istype(W) && item_storage.can_be_inserted(W, user))
 		item_storage.handle_item_insertion(W)
 
