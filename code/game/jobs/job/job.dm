@@ -94,6 +94,9 @@
 
 	var/money_amount = (rand(5,50) + rand(5, 50)) * loyalty * economic_modifier * species_modifier * GLOB.using_map.salary_modifier
 	var/datum/money_account/M = create_account(H.real_name, money_amount, null, off_station)
+	if(H.client)
+		M.security_level = H.client.prefs.bank_security
+		M.remote_access_pin = H.client.prefs.bank_pin
 	if(H.mind)
 		var/remembered_info = ""
 		remembered_info += "<b>Your account:</b><br>"
