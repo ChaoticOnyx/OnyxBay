@@ -6,7 +6,7 @@
 	icon_screen = "robot"
 	light_color = "#a97faa"
 	req_access = list(access_robotics)
-	circuit = /obj/item/weapon/circuitboard/robotics
+	circuit = /obj/item/circuitboard/robotics
 
 /obj/machinery/computer/robotics/attack_ai(mob/user as mob)
 	ui_interact(user)
@@ -133,7 +133,7 @@
 
 		if(R.stat)
 			robot["status"] = "Not Responding"
-		else if (!R.canmove)
+		else if(R.lockcharge)
 			robot["status"] = "Lockdown"
 		else
 			robot["status"] = "Operational"

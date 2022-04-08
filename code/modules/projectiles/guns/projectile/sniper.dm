@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/heavysniper
+/obj/item/gun/projectile/heavysniper
 	name = "anti-materiel rifle"
 	desc = "A portable anti-armour rifle fitted with a scope, the HI PTR-7 Rifle was originally designed to used against armoured exosuits. It is capable of punching through windows and non-reinforced walls with ease. Fires armor piercing 14.5mm shells."
 	icon_state = "heavysniper"
@@ -21,48 +21,50 @@
 	scoped_accuracy = 5 //increased accuracy over the LWAP because only one shot
 	var/bolt_open = 0
 	wielded_item_state = "heavysniper-wielded" //sort of placeholder
+	fire_sound = 'sound/effects/weapons/gun/fire_sniper2.ogg'
 
-/obj/item/weapon/gun/projectile/heavysniper/update_icon()
+/obj/item/gun/projectile/heavysniper/update_icon()
 	..()
 	if(bolt_open)
 		icon_state = "heavysniper-open"
 	else
 		icon_state = "heavysniper"
 
-/obj/item/weapon/gun/projectile/heavysniper/attack_self(mob/user as mob)
-	playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+/obj/item/gun/projectile/heavysniper/attack_self(mob/user as mob)
 	bolt_open = !bolt_open
 	if(bolt_open)
 		if(chambered)
 			to_chat(user, "<span class='notice'>You work the bolt open, ejecting [chambered]!</span>")
-			chambered.loc = get_turf(src)
+			ejectCasing()
 			loaded -= chambered
 			chambered = null
 		else
 			to_chat(user, "<span class='notice'>You work the bolt open.</span>")
+		playsound(src.loc, 'sound/effects/weapons/gun/bolt_back.ogg', 50, 1)
 	else
 		to_chat(user, "<span class='notice'>You work the bolt closed.</span>")
+		playsound(src.loc, 'sound/effects/weapons/gun/bolt_forward.ogg', 50, 1)
 		bolt_open = 0
 	add_fingerprint(user)
 	update_icon()
 
-/obj/item/weapon/gun/projectile/heavysniper/special_check(mob/user)
+/obj/item/gun/projectile/heavysniper/special_check(mob/user)
 	if(bolt_open)
 		to_chat(user, "<span class='warning'>You can't fire [src] while the bolt is open!</span>")
 		return 0
 	return ..()
 
-/obj/item/weapon/gun/projectile/heavysniper/load_ammo(obj/item/A, mob/user)
+/obj/item/gun/projectile/heavysniper/load_ammo(obj/item/A, mob/user)
 	if(!bolt_open)
 		return
 	..()
 
-/obj/item/weapon/gun/projectile/heavysniper/unload_ammo(mob/user, allow_dump=1)
+/obj/item/gun/projectile/heavysniper/unload_ammo(mob/user, allow_dump=1)
 	if(!bolt_open)
 		return
 	..()
 
-/obj/item/weapon/gun/projectile/heavysniper/verb/scope()
+/obj/item/gun/projectile/heavysniper/verb/scope()
 	set category = "Object"
 	set name = "Use Scope"
 	set popup_menu = 1

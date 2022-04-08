@@ -21,7 +21,7 @@
 
 	var/datum/effect/effect/system/trail/trail
 	var/kickstand = 1
-	var/obj/item/weapon/engine/engine = null
+	var/obj/item/engine/engine = null
 	var/engine_type
 	var/prefilled = 0
 
@@ -68,7 +68,7 @@
 	kickstand = !kickstand
 	anchored = (kickstand || on)
 
-/obj/vehicle/bike/proc/load_engine(obj/item/weapon/engine/E, mob/user)
+/obj/vehicle/bike/proc/load_engine(obj/item/engine/E, mob/user)
 	if(engine)
 		return
 	if(user)
@@ -102,12 +102,12 @@
 		engine.emp_act(severity)
 	..()
 
-/obj/vehicle/bike/insert_cell(obj/item/weapon/cell/C, mob/living/carbon/human/H)
+/obj/vehicle/bike/insert_cell(obj/item/cell/C, mob/living/carbon/human/H)
 	return
 
 /obj/vehicle/bike/attackby(obj/item/W as obj, mob/user as mob)
 	if(open)
-		if(istype(W, /obj/item/weapon/engine))
+		if(istype(W, /obj/item/engine))
 			if(engine)
 				to_chat(user, "<span class='warning'>There is already an engine block in \the [src].</span>")
 				return 1
@@ -204,15 +204,13 @@
 /obj/vehicle/bike/Destroy()
 	qdel(trail)
 	qdel(engine)
-	..()
 
-
-
+	return ..()
 
 /obj/vehicle/bike/thermal
-	engine_type = /obj/item/weapon/engine/thermal
+	engine_type = /obj/item/engine/thermal
 	prefilled = 1
 
 /obj/vehicle/bike/electric
-	engine_type = /obj/item/weapon/engine/electric
+	engine_type = /obj/item/engine/electric
 	prefilled = 1

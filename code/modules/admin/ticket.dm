@@ -65,7 +65,7 @@ var/list/ticket_panels = list()
 	for(var/datum/client_lite/assigned_admin in assigned_admins)
 		. |= assigned_admin.ckey
 
-proc/get_open_ticket_by_client(datum/client_lite/owner)
+/proc/get_open_ticket_by_client(datum/client_lite/owner)
 	for(var/datum/ticket/ticket in tickets)
 		if(ticket.owner.ckey == owner.ckey && (ticket.status == TICKET_OPEN || ticket.status == TICKET_ASSIGNED))
 			return ticket // there should only be one open ticket by a client at a time, so no need to keep looking
@@ -151,7 +151,7 @@ proc/get_open_ticket_by_client(datum/client_lite/owner)
 			var/list/msg_dat = list()
 			for(var/datum/ticket_msg/msg in open_ticket.msgs)
 				var/msg_to = msg.msg_to ? msg.msg_to : "Adminhelp"
-				msg_dat += "<li>\[[msg.time_stamp]\] [msg.msg_from] -> [msg_to]: [cp1251_to_utf8(C.holder ? generate_ahelp_key_words(C.mob, msg.msg) : msg.msg)]</li>"
+				msg_dat += "<li>\[[msg.time_stamp]\] [msg.msg_from] -> [msg_to]: [C.holder ? generate_ahelp_key_words(C.mob, msg.msg) : msg.msg]</li>"
 
 			if(msg_dat.len)
 				dat += "<ul>[jointext(msg_dat, null)]</ul></div>"

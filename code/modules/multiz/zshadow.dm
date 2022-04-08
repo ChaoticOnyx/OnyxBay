@@ -23,8 +23,9 @@
 	..() // I'm cautious about this, but its the right thing to do.
 	owner = L
 	sync_icon(L)
-	GLOB.dir_set_event.register(L, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.register(L, src, /mob/zshadow/proc/update_invisibility)
+
+	register_signal(L, SIGNAL_DIR_SET, /mob/zshadow/proc/update_dir)
+	register_signal(L, SIGNAL_INVISIBILITY_SET, /mob/zshadow/proc/update_invisibility)
 
 
 /mob/Destroy()
@@ -34,12 +35,12 @@
 	. = ..()
 
 /mob/zshadow/Destroy()
-	GLOB.dir_set_event.unregister(owner, src, /mob/zshadow/proc/update_dir)
-	GLOB.invisibility_set_event.unregister(owner, src, /mob/zshadow/proc/update_invisibility)
+	unregister_signal(owner, SIGNAL_DIR_SET)
+	unregister_signal(owner, SIGNAL_INVISIBILITY_SET)
 	. = ..()
 
-/mob/zshadow/examine(mob/user, distance, infix, suffix)
-	return owner.examine(user, distance, infix, suffix)
+/mob/zshadow/examine(mob/user, infix, suffix)
+	return owner.examine(user, infix, suffix)
 
 // Relay some stuff they hear
 /mob/zshadow/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)

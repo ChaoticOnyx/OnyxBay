@@ -6,18 +6,18 @@
 	icon_state = "sheater-off"
 	name = "space heater"
 	desc = "Made by Space Amish using traditional space techniques, this heater is guaranteed not to set anything, or anyone, on fire."
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/on = 0
 	var/set_temperature = T0C + 20	//K
 	var/active = 0
 	var/heating_power = 40 KILOWATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	clicksound = "switch_large"
+	clicksound = SFX_USE_LARGE_SWITCH
 
 
 /obj/machinery/space_heater/New()
 	..()
-	cell = new /obj/item/weapon/cell/high(src)
+	cell = new /obj/item/cell/high(src)
 	update_icon()
 
 /obj/machinery/space_heater/update_icon(rebuild_overlay = 0)
@@ -36,13 +36,13 @@
 			overlays  += "sheater-open"
 
 /obj/machinery/space_heater/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
-	to_chat(user, "The heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"].")
+	. += "\nThe heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"]."
 	if(panel_open)
-		to_chat(user, "The power cell is [cell ? "installed" : "missing"].")
+		. += "\nThe power cell is [cell ? "installed" : "missing"]."
 	else
-		to_chat(user, "The charge meter reads [cell ? round(cell.percent(),1) : 0]%")
+		. += "\nThe charge meter reads [cell ? round(cell.percent(),1) : 0]%"
 	return
 
 /obj/machinery/space_heater/emp_act(severity)
@@ -54,14 +54,14 @@
 	..(severity)
 
 /obj/machinery/space_heater/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(panel_open)
 			if(cell)
 				to_chat(user, "There is already a power cell inside.")
 				return
 			else
 				// insert cell
-				var/obj/item/weapon/cell/C = usr.get_active_hand()
+				var/obj/item/cell/C = usr.get_active_hand()
 				if(istype(C))
 					user.drop_item()
 					cell = C
@@ -78,7 +78,7 @@
 		user.visible_message("<span class='notice'>[user] [panel_open ? "opens" : "closes"] the hatch on the [src].</span>", "<span class='notice'>You [panel_open ? "open" : "close"] the hatch on the [src].</span>")
 		update_icon(1)
 		if(!panel_open && user.machine == src)
-			show_browser(user, null, "window=spaceheater")
+			close_browser(user, "window=spaceheater")
 			user.unset_machine()
 	else
 		..()
@@ -123,7 +123,7 @@
 
 /obj/machinery/space_heater/Topic(href, href_list, state = GLOB.physical_state)
 	if (..())
-		show_browser(usr, null, "window=spaceheater")
+		close_browser(usr, "window=spaceheater")
 		usr.unset_machine()
 		return 1
 
@@ -146,7 +146,7 @@
 
 		if("cellinstall")
 			if(panel_open && !cell)
-				var/obj/item/weapon/cell/C = usr.get_active_hand()
+				var/obj/item/cell/C = usr.get_active_hand()
 				if(istype(C))
 					usr.drop_item()
 					cell = C
@@ -156,6 +156,7 @@
 					usr.visible_message("<span class='notice'>[usr] inserts \the [C] into \the [src].</span>", "<span class='notice'>You insert \the [C] into \the [src].</span>")
 
 	updateDialog()
+	return TOPIC_REFRESH
 
 /obj/machinery/space_heater/Process()
 	if(on)

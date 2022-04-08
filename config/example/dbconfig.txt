@@ -24,3 +24,10 @@ FEEDBACK_PASSWORD mypassword
 # Track population and death statistics
 # Comment this out to disable
 #ENABLE_STAT_TRACKING
+
+# Third database, external bots can only access it
+DONATION_ADDRESS localhost
+DONATION_PORT 3306
+DONATION_DATABASE tgstation
+DONATION_LOGIN mylogin
+DONATION_PASSWORD mypassword

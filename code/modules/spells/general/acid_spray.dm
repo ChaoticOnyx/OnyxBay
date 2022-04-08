@@ -1,20 +1,20 @@
-/spell/acid_spray
+/datum/spell/acid_spray
 	name = "Acid Spray"
 	desc = "A common spell used to destroy basically anything in front of the wizard."
 	school = "conjuration"
 	feedback = "as"
 	spell_flags = 0
 	charge_max  = 600
-	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
 	invocation = "Tagopar lethodar!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	var/reagent_type = /datum/reagent/acid/hydrochloric
-	hud_state = "wiz_acid"
+	icon_state = "wiz_acid"
 
-/spell/acid_spray/choose_targets()
+/datum/spell/acid_spray/choose_targets()
 	return list(holder)
 
-/spell/acid_spray/cast(list/targets, mob/user)
+/datum/spell/acid_spray/cast(list/targets, mob/user)
 	var/atom/target = targets[1]
 	var/angle = dir2angle(target.dir)
 	for(var/mod in list(315, 0, 45))

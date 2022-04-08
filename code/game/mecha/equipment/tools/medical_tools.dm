@@ -1,8 +1,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper
 	name = "mounted sleeper"
 	desc = "A sleeper. Mountable to an exosuit. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/Cryogenic2.dmi'
-	icon_state = "sleeper_0"
+	icon_state = "mecha_sleeper"
 	origin_tech = list(TECH_DATA = 2, TECH_BIO = 3)
 	energy_drain = 20
 	range = MELEE
@@ -39,9 +38,9 @@
 	if(occupant)
 		occupant_message("The sleeper is already occupied")
 		return
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			occupant_message("[target] will not fit into the sleeper because they have a slime latched onto their head.")
+			occupant_message("[target] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return
 	occupant_message("You start putting [target] into [src].")
 	chassis.visible_message("[chassis] starts putting [target] into the [src].")
@@ -100,17 +99,18 @@
 	if(F.get("eject"))
 		go_out()
 	if(F.get("view_stats"))
-		chassis.occupant << browse(get_occupant_stats(),"window=msleeper")
+		show_browser(chassis.occupant, get_occupant_stats(), "window=msleeper")
 		onclose(chassis.occupant, "msleeper")
 		return
 	if(F.get("inject"))
-		inject_reagent(F.getType("inject",/datum/reagent),F.getObj("source"))
+		inject_reagent(F.getType("inject", /datum/reagent), F.getObj("source"))
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper/proc/get_occupant_stats()
 	if(!occupant)
 		return
 	return {"<html>
+				<meta charset=\"utf-8\">
 				<head>
 				<title>[occupant] statistics</title>
 				<script language='javascript' type='text/javascript'>
@@ -218,10 +218,9 @@
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun
-	name = "syringe gun"
+	name = "mounted syringe gun"
 	desc = "Exosuit-mounted chem synthesizer with syringe gun. Reagents inside are held in stasis, so no reactions will occur. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "syringegun"
+	icon_state = "mecha_syringe_gun"
 	var/list/syringes
 	var/list/known_reagents
 	var/list/processed_reagents
@@ -263,10 +262,10 @@
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/action(atom/movable/target)
 	if(!action_checks(target))
 		return
-	if(istype(target,/obj/item/weapon/reagent_containers/syringe))
+	if(istype(target,/obj/item/reagent_containers/syringe))
 		return load_syringe(target)
-	if(istype(target,/obj/item/weapon/storage))//Loads syringes from boxes
-		for(var/obj/item/weapon/reagent_containers/syringe/S in target.contents)
+	if(istype(target,/obj/item/storage))//Loads syringes from boxes
+		for(var/obj/item/reagent_containers/syringe/S in target.contents)
 			load_syringe(S)
 		return
 	if(mode)
@@ -280,7 +279,7 @@
 	set_ready_state(0)
 	chassis.use_power(energy_drain)
 	var/turf/trg = get_turf(target)
-	var/obj/item/weapon/reagent_containers/syringe/S = syringes[1]
+	var/obj/item/reagent_containers/syringe/S = syringes[1]
 	S.forceMove(get_turf(chassis))
 	reagents.trans_to_obj(S, min(S.volume, reagents.total_volume))
 	syringes -= S
@@ -347,7 +346,7 @@
 			log_message("Reagent processing started.")
 		return
 	if(F.get("show_reagents"))
-		chassis.occupant << browse(get_reagents_page(),"window=msyringegun")
+		show_browser(chassis.occupant, get_reagents_page(), "window=msyringegun")
 	if(F.get("purge_reagent"))
 		var/datum/reagent/R = locate(F.get("purge_reagent")) in reagents.reagent_list
 		if(R)
@@ -360,6 +359,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/proc/get_reagents_page()
 	var/output = {"<html>
+						<meta charset=\"utf-8\">
 						<head>
 						<title>Reagent Synthesizer</title>
 						<script language='javascript' type='text/javascript'>
@@ -417,7 +417,7 @@
 		output += "Total: [round(reagents.total_volume,0.001)]/[reagents.maximum_volume] - <a href=\"?src=\ref[src];purge_all=1\">Purge All</a>"
 	return output || "None"
 
-/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/proc/load_syringe(obj/item/weapon/reagent_containers/syringe/S)
+/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/proc/load_syringe(obj/item/reagent_containers/syringe/S)
 	if(syringes.len<max_syringes)
 		if(get_dist(src,S) >= 2)
 			occupant_message("The syringe is too far away.")

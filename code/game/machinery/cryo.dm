@@ -17,12 +17,30 @@
 
 	var/temperature_archived
 	var/mob/living/carbon/human/occupant = null
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/glass/beaker = null
 
 	var/current_heat_capacity = 50
 
-	var/occupant_icon_update_timer = 0
 	var/ejecting = 0
+	var/biochemical_stasis = 0
+
+	component_types = list(
+		/obj/item/circuitboard/cryo_cell,
+		/obj/item/device/healthanalyzer,
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator = 3,
+		/obj/item/stock_parts/console_screen
+	)
+
+	beepsounds = list(
+		'sound/effects/machinery/medical/beep1.ogg',
+		'sound/effects/machinery/medical/beep2.ogg',
+		'sound/effects/machinery/medical/beep3.ogg',
+		'sound/effects/machinery/medical/beep4.ogg',
+		'sound/effects/machinery/medical/beep5.ogg',
+		'sound/effects/machinery/medical/beep6.ogg'
+	)
 
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
@@ -30,22 +48,37 @@
 	update_icon()
 	initialize_directions = dir
 
+	RefreshParts()
+	update_icon()
+
 /obj/machinery/atmospherics/unary/cryo_cell/Destroy()
 	var/turf/T = loc
 	T.contents += contents
 	if(beaker)
 		beaker.forceMove(get_step(loc, SOUTH)) //Beaker is carefully ejected from the wreckage of the cryotube
 		beaker = null
+	if(occupant)
+		occupant.forceMove(get_step(loc, SOUTH))
+		occupant = null
 	. = ..()
 
 /obj/machinery/atmospherics/unary/cryo_cell/atmos_init()
 	..()
-	if(node) return
+	if(node)
+		return
 	var/node_connect = dir
-	for(var/obj/machinery/atmospherics/target in get_step(src,node_connect))
-		if(target.initialize_directions & get_dir(target,src))
+	for(var/obj/machinery/atmospherics/target in get_step(src, node_connect))
+		if(target.initialize_directions & get_dir(target, src))
 			node = target
 			break
+
+/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
+	. = ..()
+	if(user.Adjacent(src))
+		if(beaker)
+			. += "\nIt is loaded with a beaker."
+		if(emagged)
+			. += "\nThe panel is loose and the circuitry is charred."
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
 	if(stat & (BROKEN|NOPOWER))
@@ -57,16 +90,19 @@
 	if(!on)
 		return
 
+	play_beep()
+
 	if(occupant)
 		if(occupant.stat != DEAD)
-			if (occupant_icon_update_timer < world.time)
+			THROTTLE(icon_update_cooldown, 3 SECONDS)
+			if(icon_update_cooldown)
 				update_icon()
 			process_occupant()
 
 	if(air_contents)
 		temperature_archived = air_contents.temperature
 		heat_gas_contents()
-		if (occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
+		if(occupant && iscarbon(occupant) && occupant.stat != DEAD && !occupant.is_asystole() && !occupant.losebreath)
 			expel_gas()
 
 	if(abs(temperature_archived-air_contents.temperature) > 1)
@@ -74,12 +110,13 @@
 
 	return 1
 
-/obj/machinery/atmospherics/unary/cryo_cell/relaymove(mob/user as mob)
-	if (!ejecting)
-		move_eject()
+/obj/machinery/atmospherics/unary/cryo_cell/relaymove(mob/user) // note that relaymove will also be called for mobs outside the cell with UI open
+	if(occupant == user && !user.stat)
+		go_out()
 
 /obj/machinery/atmospherics/unary/cryo_cell/attack_hand(mob/user)
 	ui_interact(user)
+	return 1
 
  /**
   * The ui_interact proc is used to open and update Nano UIs
@@ -93,7 +130,6 @@
   * @return nothing
   */
 /obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-
 	if(user == occupant || user.stat)
 		return
 
@@ -104,7 +140,7 @@
 	data["notFunctional"] = 0
 	if(stat & (BROKEN|NOPOWER))
 		data["notFunctional"] = 1
-	if (occupant)
+	if(occupant)
 		var/cloneloss = "none"
 		var/amount = occupant.getCloneLoss()
 		if(amount > 50)
@@ -140,9 +176,11 @@
 		data["beakerLabel"] = beaker.name
 		data["beakerVolume"] = beaker.reagents.total_volume
 
+	data["biochemicalStasis"] = biochemical_stasis
+
 	// update the ui if it exists, returns null if no ui is passed/found
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		// the ui does not exist, so we'll create a new() one
 		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
 		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 630)
@@ -156,9 +194,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/OnTopic(user, href_list)
 	if(user == occupant)
 		return STATUS_CLOSE
-	return ..()
 
-/obj/machinery/atmospherics/unary/cryo_cell/OnTopic(user, href_list)
 	if(href_list["switchOn"])
 		on = 1
 		update_icon()
@@ -176,16 +212,33 @@
 		return TOPIC_REFRESH
 
 	if(href_list["ejectOccupant"])
-		if(!occupant || isslime(user) || ispAI(user))
+		if(!occupant || ismetroid(user) || ispAI(user))
 			return TOPIC_HANDLED // don't update UIs attached to this object
 		go_out()
 		return TOPIC_REFRESH
 
+	if(href_list["biochemicalStasisOn"])
+		biochemical_stasis = 1
+		update_icon()
+		return TOPIC_REFRESH
+
+	if(href_list["biochemicalStasisOff"])
+		biochemical_stasis = 0
+		update_icon()
+		return TOPIC_REFRESH
+
+	. = ..()
 
 /obj/machinery/atmospherics/unary/cryo_cell/attackby(obj/G, mob/user as mob)
-	if(istype(G, /obj/item/weapon/reagent_containers/glass))
+	if(default_deconstruction_screwdriver(user, G))
+		return
+	if(default_deconstruction_crowbar(user, G))
+		return
+	if(default_part_replacement(user, G))
+		return
+	if(istype(G, /obj/item/reagent_containers/glass))
 		if(beaker)
-			to_chat(user, "<span class='warning'>A beaker is already loaded into the machine.</span>")
+			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return
 
 		beaker =  G
@@ -195,26 +248,32 @@
 	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))
 			return
-		for(var/mob/living/carbon/slime/M in range(1,G:affecting))
+		for(var/mob/living/carbon/metroid/M in range(1, G:affecting))
 			if(M.Victim == G:affecting)
-				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
+				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a metroid latched onto their head.")
 				return
+		user.visible_message(SPAN("notice", "\The [user] begins placing \the [G:affecting] into \the [src]."), SPAN("notice", "You start placing \the [G:affecting] into \the [src]."))
+		if(!do_after(user, 30, src))
+			return
+		if(!ismob(G:affecting))
+			return
 		var/mob/M = G:affecting
 		if(put_mob(M))
 			qdel(G)
+			user.visible_message(SPAN("notice", "\The [user] places \the [M] into \the [src]."), SPAN("notice", "You place \the [M] into \the [src]."))
 	return
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
 	overlays.Cut()
+	var/overlays_state = 0
 	if(stat & (BROKEN|NOPOWER))
-		icon_state = "pod0"
+		overlays_state = 0
 	else
-		icon_state = "pod[on]"
+		overlays_state = !on ? 0 : biochemical_stasis ? 2 : 1
+
+	icon_state = "pod[overlays_state]"
 	var/image/I
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "pod0_top")
-	else
-		I = image(icon, "pod[on]_top")
+	I = image(icon, "pod[overlays_state]_top")
 
 	I.pixel_z = 32
 	overlays += I
@@ -225,18 +284,11 @@
 		pickle.overlays = occupant.overlays
 		pickle.pixel_z = 18
 		overlays += pickle
-		occupant_icon_update_timer = world.time + 30
 
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "lid0")
-	else
-		I = image(icon, "lid[on]")
+	I = image(icon, "lid[overlays_state]")
 	overlays += I
 
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "lid0_top")
-	else
-		I = image(icon, "lid[on]_top")
+	I = image(icon, "lid[overlays_state]_top")
 	I.pixel_z = 32
 	overlays += I
 
@@ -248,7 +300,7 @@
 			return
 
 		// Just empty a cryo if occupant isn't here
-		if (!(occupant in src))
+		if(!(occupant in src))
 			go_out(force_move=FALSE)
 			return
 
@@ -256,11 +308,13 @@
 		var/has_cryo_medicine = occupant.reagents.has_any_reagent(list(/datum/reagent/cryoxadone, /datum/reagent/clonexadone)) >= REM
 		if(beaker && !has_cryo_medicine && !emagged)
 			beaker.reagents.trans_to_mob(occupant, REM, CHEM_BLOOD)
-		if (emagged)
+		if(occupant.InStasis() && !biochemical_stasis)
+			occupant.handle_chemicals_in_body(handle_ingested = FALSE)
+		if(emagged)
 			if(prob(5))
-				to_chat(occupant, "<span class='notice'>You feel strange.</span>")
+				to_chat(occupant, SPAN("notice", "You feel strange."))
 			else if(prob(3))
-				to_chat(occupant, "<span class='notice'>Your skin is itching.</span>")
+				to_chat(occupant, SPAN("notice", "Your skin is itching."))
 
 			if(beaker)
 				if (beaker.reagents.has_reagent(/datum/reagent/cryoxadone))
@@ -292,18 +346,18 @@
 	air_contents.remove(air_contents.total_moles/50)
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/go_out(force_move=TRUE)
-	if(!( occupant ))
+	if(!occupant)
 		return
 	//for(var/obj/O in src)
 	//	O.loc = loc
-	if (occupant.client)
+	if(occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 
-	if (force_move)
+	if(force_move)
 		occupant.forceMove(get_step(loc, SOUTH))	//this doesn't account for walls or anything, but i don't forsee that being a problem.
 
-	if (occupant.bodytemperature < 261 && occupant.bodytemperature >= 70) //Patch by Aranclanos to stop people from taking burn damage after being ejected
+	if(occupant.bodytemperature < 261 && occupant.bodytemperature >= 70) //Patch by Aranclanos to stop people from taking burn damage after being ejected
 		occupant.bodytemperature = 261									  // Changed to 70 from 140 by Zuhayr due to reoccurance of bug.
 	occupant = null
 	current_heat_capacity = initial(current_heat_capacity)
@@ -312,19 +366,19 @@
 	return
 /obj/machinery/atmospherics/unary/cryo_cell/proc/put_mob(mob/living/carbon/M as mob)
 	if (stat & (NOPOWER|BROKEN))
-		to_chat(usr, "<span class='warning'>The cryo cell is not functioning.</span>")
+		to_chat(usr, SPAN("warning", "The cryo cell is not functioning."))
 		return
 	if (!istype(M))
-		to_chat(usr, "<span class='danger'>The cryo cell cannot handle such a lifeform!</span>")
+		to_chat(usr, SPAN("danger", "The cryo cell cannot handle such a lifeform!"))
 		return
 	if (occupant)
-		to_chat(usr, "<span class='danger'>The cryo cell is already occupied!</span>")
+		to_chat(usr, SPAN("danger", "The cryo cell is already occupied!"))
 		return
 	if (M.abiotic())
-		to_chat(usr, "<span class='warning'>Subject may not have abiotic items on.</span>")
+		to_chat(usr, SPAN("warning", "Subject may not have abiotic items on."))
 		return
 	if(!node)
-		to_chat(usr, "<span class='warning'>The cell is not correctly connected to its pipe network!</span>")
+		to_chat(usr, SPAN("warning", "The cell is not correctly connected to its pipe network!"))
 		return
 	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
@@ -333,25 +387,37 @@
 	M.forceMove(src)
 	M.ExtinguishMob()
 	if(M.stat != DEAD)
-		to_chat(M, "<span class='notice'><b>You feel a cold liquid surround you. Your skin starts to freeze up.</b></span>")
+		to_chat(M, SPAN("notice", "<b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"))
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
+
+	for(var/obj/item/clothing/mask/smokable/cig in M.contents)
+		cig.die(nomessage = TRUE, nodestroy = TRUE)
+
 	add_fingerprint(usr)
+	occupant.update_icon()
 	update_icon()
+	return 1
+
+/obj/machinery/atmospherics/unary/cryo_cell/proc/check_compatibility(mob/target, mob/user)
+	if(!CanMouseDrop(target, user))
+		return 0
+	if (!istype(target))
+		return 0
+	if (target.buckled)
+		to_chat(user, SPAN("warning", "Unbuckle the subject before attempting to move them."))
+		return 0
 	return 1
 
 	//Like grab-putting, but for mouse-dropping.
 /obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
-	if(!CanMouseDrop(target, user))
+	if(!check_compatibility(target, user))
 		return
-	if (!istype(target))
-		return
-	if (target.buckled)
-		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
-		return
-	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
+	user.visible_message(SPAN("notice", "\The [user] begins placing \the [target] into \the [src]."), SPAN("notice", "You start placing \the [target] into \the [src]."))
 	if(!do_after(user, 30, src))
+		return
+	if(!check_compatibility(target, user))
 		return
 	put_mob(target)
 
@@ -361,16 +427,16 @@
 	set category = "Object"
 	set src in oview(1)
 	if(usr == occupant)//If the user is inside the tube...
-		if (usr.stat == 2 || ejecting)//and he's not dead or not trying already....
+		if(usr.stat == 2 || ejecting)//and he's not dead or not trying already....
 			return
-		to_chat(usr, "<span class='notice'>Release sequence activated. This will take two minutes.</span>")
+		to_chat(usr, SPAN("notice", "Release sequence activated. This will take two minutes."))
 		ejecting = 1
 		if(do_after(occupant, 1200, src, needhand = 0, incapacitation_flags = 0) && (src || usr || occupant || (occupant == usr))) //Check if someone's released/replaced/bombed him already
 			ejecting = 0
 			go_out()//and release him from the eternal prison.
 		ejecting = 0
 	else
-		if (usr.stat != 0)
+		if(usr.stat != 0)
 			return
 		go_out()
 	add_fingerprint(usr)
@@ -380,7 +446,7 @@
 	set name = "Move Inside"
 	set category = "Object"
 	set src in oview(1)
-	for(var/mob/living/carbon/slime/M in range(1,usr))
+	for(var/mob/living/carbon/metroid/M in range(1,usr))
 		if(M.Victim == usr)
 			to_chat(usr, "You're too busy getting your life sucked out of you.")
 			return
@@ -418,14 +484,10 @@
 /obj/machinery/atmospherics/unary/cryo_cell/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
-	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
+	to_chat(user, SPAN("danger", "You short out \the [src]'s circuits."))
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
 	spark_system.start()
 	return 1
-
-/obj/machinery/atmospherics/unary/cryo_cell/examine()
-	. = ..()
-	if(emagged)
-		to_chat(usr, "The panel is loose and circuits is charred.")

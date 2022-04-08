@@ -32,7 +32,7 @@ other types of metals and chemistry for reagents).
 	var/category = null 			//Primarily used for Mech Fabricators, but can be used for anything
 	var/sort_string = "ZZZZZ"		//Sorting order
 
-	var/list/category_items = "Misc" //"Stock Parts", "Bluespace", "Data", "Engineering", "Medical", "Surgery",
+	var/list/category_items = list("Misc") //"Stock Parts", "Bluespace", "Data", "Engineering", "Medical", "Surgery",
 	//"Mining", "Robotics", "Weapons", "Misc", "Device", "PDA", "RIG", "Machine Boards", "Console Boards",
 	//"Engineering Boards", "Mecha Boards", "Module Boards"
 
@@ -69,19 +69,19 @@ other types of metals and chemistry for reagents).
 
 /datum/design/item/hud
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
-	category_items = "Misc"
+	category_items = list("Misc")
 
 /datum/design/item/hud/AssembleDesignDesc()
 	desc = "Allows for the construction of \a [item_name] HUD glasses."
 
 /datum/design/item/synthstorage
-	category_items = "Robotics"
+	category_items = list("Robotics")
 
 /datum/design/item/biostorage
-	category_items = "Robotics"
+	category_items = list("Robotics")
 
 /datum/design/item/tool
-	category_items = "Misc"
+	category_items = list("Misc")
 
 
 /datum/design/item/integrated_printer
@@ -121,18 +121,18 @@ CIRCUITS BELOW
 	materials = list(MATERIAL_GLASS = 2000)
 	chemicals = list(/datum/reagent/acid = 20)
 	time = 5
-	category_items = "Machine Boards"
+	category_items = list("Machine Boards")
 
 /datum/design/circuit/AssembleDesignName()
 	..()
 	if(build_path)
-		var/obj/item/weapon/circuitboard/C = build_path
+		var/obj/item/circuitboard/C = build_path
 		if(initial(C.board_type) == "machine")
 			name = "Machine circuit design ([item_name])"
-			category_items = "Machine Boards"
+			category_items = list("Machine Boards")
 		else if(initial(C.board_type) == "computer")
 			name = "Computer circuit design ([item_name])"
-			category_items = "Console Boards"
+			category_items = list("Console Boards")
 		else
 			name = "Circuit design ([item_name])"
 

@@ -53,11 +53,11 @@ var/global/universe_has_ended = 0
 
 	// Disable Nar-Sie.
 	GLOB.cult.allow_narsie = 0
-
+	GLOB.ert.is_station_secure = FALSE
 	PlayerSet()
 	SSskybox.reinstate_skyboxes("cascade", FALSE)
 
-	new /obj/singularity/narsie/large/exit(pick(endgame_exits))
+	new /obj/singularity/narsie/exit(pick(GLOB.endgame_exits))
 	spawn(rand(30,60) SECONDS)
 		var/txt = {"
 A galaxy-wide electromagnetic pulse has been detected. All systems across space are heavily damaged and many personnel have died or are dying. We are currently detecting increasing indications that the universe itself is beginning to unravel.
@@ -97,12 +97,12 @@ AUTOMATED ALERT: Link to [command_name()] lost.
 			OnTurfChange(T)
 
 /datum/universal_state/supermatter_cascade/proc/MiscSet()
-	for (var/obj/machinery/firealarm/alm in SSmachines.machinery)
+	for (var/obj/machinery/firealarm/alm in GLOB.firealarm_list)
 		if (!(alm.stat & BROKEN))
 			alm.ex_act(2)
 
 /datum/universal_state/supermatter_cascade/proc/APCSet()
-	for (var/obj/machinery/power/apc/APC in SSmachines.machinery)
+	for (var/obj/machinery/power/apc/APC in GLOB.apc_list)
 		if (!(APC.stat & BROKEN) && !APC.is_critical)
 			APC.chargemode = 0
 			if(APC.cell)

@@ -26,9 +26,9 @@
 	visible_message("<span class='warning'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/weapon/secbot_assembly/ed209_assembly(Tsec)
+	new /obj/item/secbot_assembly/ed209_assembly(Tsec)
 
-	var/obj/item/weapon/gun/energy/taser/G = new /obj/item/weapon/gun/energy/taser(Tsec)
+	var/obj/item/gun/energy/taser/G = new /obj/item/gun/energy/taser(Tsec)
 	G.power_supply.charge = 0
 	if(prob(50))
 		new /obj/item/robot_parts/l_leg(Tsec)
@@ -58,15 +58,15 @@
 	last_shot = world.time
 	var/projectile = /obj/item/projectile/beam/stun
 	if(emagged)
-		projectile = /obj/item/projectile/beam
+		projectile = /obj/item/projectile/beam/laser/mid
 
-	playsound(loc, emagged ? 'sound/weapons/Laser.ogg' : 'sound/weapons/Taser.ogg', 50, 1)
+	playsound(loc, emagged ? 'sound/effects/weapons/energy/Laser.ogg' : 'sound/effects/weapons/energy/Taser.ogg', 50, 1)
 	var/obj/item/projectile/P = new projectile(loc)
 	var/def_zone = get_exposed_defense_zone(A)
 	P.launch(A, def_zone)
 // Assembly
 
-/obj/item/weapon/secbot_assembly/ed209_assembly
+/obj/item/secbot_assembly/ed209_assembly
 	name = "ED-209 assembly"
 	desc = "Some sort of bizarre assembly."
 	icon = 'icons/obj/aibots.dmi'
@@ -75,10 +75,10 @@
 	created_name = "ED-209 Security Robot"
 	var/lasercolor = ""
 
-/obj/item/weapon/secbot_assembly/ed209_assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/secbot_assembly/ed209_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/weapon/pen))
+	if(istype(W, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter new robot name", name, created_name), MAX_NAME_LEN)
 		if(!t)
 			return
@@ -103,7 +103,7 @@
 					icon_state = "ed209_legs"
 
 		if(2)
-			if(istype(W, /obj/item/clothing/suit/storage/vest) || istype(W, /obj/item/clothing/suit/armor/pcarrier) || istype(W, /obj/item/clothing/accessory/armorplate) || istype(W, /obj/item/clothing/suit/armor/vest/old))
+			if(istype(W, /obj/item/clothing/suit/armor/vest) || istype(W, /obj/item/clothing/suit/armor/pcarrier) || istype(W, /obj/item/clothing/accessory/armorplate))
 				if(istype(W, /obj/item/clothing/suit/armor/pcarrier))
 					if(!locate(/obj/item/clothing/accessory/armorplate) in W.contents)
 						to_chat(user, "There's no armor plates on this [W].")
@@ -118,7 +118,7 @@
 
 		if(3)
 			if(isWelder(W))
-				var/obj/item/weapon/weldingtool/WT = W
+				var/obj/item/weldingtool/WT = W
 				if(WT.remove_fuel(0, user))
 					build_step++
 					SetName("shielded frame assembly")
@@ -158,7 +158,7 @@
 				return
 
 		if(7)
-			if(istype(W, /obj/item/weapon/gun/energy/taser) || istype(W, /obj/item/weapon/gun/energy/classictaser))
+			if(istype(W, /obj/item/gun/energy/taser) || istype(W, /obj/item/gun/energy/classictaser))
 				SetName("taser ED-209 assembly")
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
@@ -179,7 +179,7 @@
 					to_chat(user, "<span class='notice'>Taser gun attached.</span>")
 
 		if(9)
-			if(istype(W, /obj/item/weapon/cell))
+			if(istype(W, /obj/item/cell))
 				build_step++
 				to_chat(user, "<span class='notice'>You complete the ED-209.</span>")
 				var/turf/T = get_turf(src)

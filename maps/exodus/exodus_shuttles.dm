@@ -88,19 +88,6 @@
 /obj/effect/shuttle_landmark/escape_pod/transit/pod5
 	number = 5
 
-//Transport shuttle
-
-/datum/shuttle/autodock/ferry/transport
-	name = "Transport"
-	warmup_time = 10
-	location = 1
-	shuttle_area = /area/shuttle/transport/centcom
-	dock_target = "centcom_transport_shuttle"
-	landmark_transition = "nav_transport_transition"
-	waypoint_offsite = "nav_transport_start"
-	waypoint_station = "nav_transport_station"
-	move_time = 30
-
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
 	landmark_tag = "nav_transport_start"
@@ -163,6 +150,44 @@
 /obj/effect/shuttle_landmark/elevator/bottom
 	name = "Lower Deck"
 	landmark_tag = "nav_cargo_elevator_bottom"
+	autoset = 1
+
+//Mining Mothership
+
+/datum/shuttle/autodock/multi/antag/mining
+	name = "Creaker"
+	warmup_time = 15
+	destination_tags = list(
+		"nav_creaker_station",
+		"nav_creaker_north",
+		"nav_creaker_west",
+		"nav_creaker_east",
+		)
+	shuttle_area = /area/creaker/station
+	dock_target = "mining_vessel"
+	current_location = "nav_creaker_station"
+	home_waypoint = "nav_creaker_station"
+
+/obj/effect/shuttle_landmark/creaker/station
+	name = "Mining Ship Dock"
+	landmark_tag = "nav_creaker_station"
+	docking_controller = "creaker_dock_airlock"
+	base_area = /area/space
+	base_turf = /turf/simulated/floor/asteroid
+
+/obj/effect/shuttle_landmark/creaker/north
+	name = "northern asteroid field"
+	landmark_tag = "nav_creaker_north"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/creaker/west
+	name = "western asteroid field"
+	landmark_tag = "nav_creaker_west"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/creaker/east
+	name = "eastern asteroid field"
+	landmark_tag = "nav_creaker_east"
 	autoset = 1
 
 //Research Shuttle
@@ -382,10 +407,10 @@
 	docking_controller = "admin_shuttle_dock_airlock"
 	autoset = 1
 
-// Merc
+// Syndi
 
-/datum/shuttle/autodock/multi/antag/mercenary
-	name = "Mercenary"
+/datum/shuttle/autodock/multi/antag/syndicate
+	name = "Syndicate"
 	warmup_time = 10
 	destination_tags = list(
 		"nav_merc_start",
@@ -407,50 +432,50 @@
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
 	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
 
-/obj/effect/shuttle_landmark/merc/start
-	name = "Mercenary Base"
+/obj/effect/shuttle_landmark/syndi/start
+	name = "Syndicate Base"
 	landmark_tag = "nav_merc_start"
 	docking_controller = "merc_base"
 
-/obj/effect/shuttle_landmark/merc/internim
+/obj/effect/shuttle_landmark/syndi/internim
 	name = "In transit"
 	landmark_tag = "nav_merc_transition"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/dock
+/obj/effect/shuttle_landmark/syndi/dock
 	name = "North West"
 	landmark_tag = "nav_merc_dock"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/coupole
+/obj/effect/shuttle_landmark/syndi/coupole
 	name = "South West"
 	landmark_tag = "nav_merc_coupole"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/minage
+/obj/effect/shuttle_landmark/syndi/minage
 	name = "South East"
 	landmark_tag = "nav_merc_minage"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/residentiel
+/obj/effect/shuttle_landmark/syndi/residentiel
 	name = "North East"
 	landmark_tag = "nav_merc_residentiel"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/north
+/obj/effect/shuttle_landmark/syndi/north
 	name = "North"
 	landmark_tag = "nav_merc_north"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/south
+/obj/effect/shuttle_landmark/syndi/south
 	name = "South"
 	landmark_tag = "nav_merc_south"
 	autoset = 1
 
-// Elite Merc
+// Elite syndi
 
-/datum/shuttle/autodock/multi/antag/elite_mercenary
-	name = "Elite Mercenary"
+/datum/shuttle/autodock/multi/antag/elite_syndicate
+	name = "Elite Syndicate Operative"
 	warmup_time = 10
 	destination_tags = list(
 		"nav_emerc_start",
@@ -466,32 +491,32 @@
 	home_waypoint = "nav_emerc_start"
 	move_time = 120
 
-/obj/effect/shuttle_landmark/elite_mercenary/start
-	name = "Elite Mercenary Base"
+/obj/effect/shuttle_landmark/elite_syndicate/start
+	name = "Elite Syndicate Operative Base"
 	landmark_tag = "nav_emerc_start"
 	docking_controller = "emerc_base"
 
-/obj/effect/shuttle_landmark/elite_mercenary/internim
+/obj/effect/shuttle_landmark/elite_syndicate/internim
 	name = "In transit"
 	landmark_tag = "nav_emerc_transition"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/northwest
+/obj/effect/shuttle_landmark/elite_syndicate/northwest
 	name = "North West"
 	landmark_tag = "nav_emerc_nw"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/southwest
+/obj/effect/shuttle_landmark/elite_syndicate/southwest
 	name = "South West"
 	landmark_tag = "nav_emerc_sw"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/southeast
+/obj/effect/shuttle_landmark/elite_syndicate/southeast
 	name = "South East"
 	landmark_tag = "nav_emerc_se"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/northeast
+/obj/effect/shuttle_landmark/elite_syndicate/northeast
 	name = "North East"
 	landmark_tag = "nav_emerc_ne"
 	autoset = 1
@@ -536,12 +561,14 @@
 		"nav_merchant_out",
 		"nav_merchant_shop",
 		"nav_merchant_space",
+		"nav_merchant_outpost"
 		)
 	shuttle_area = /area/shuttle/merchant/home
 	landmark_transition = "nav_merchant_transition"
 	current_location = "nav_merchant_start"
 	dock_target = "merchant_ship_dock"
 	home_waypoint = "nav_merchant_start"
+	cloaked = 1
 	move_time = 60
 	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
@@ -574,6 +601,11 @@
 	landmark_tag = "nav_merchant_space"
 	autoset = 1
 
+/obj/effect/shuttle_landmark/merchant/outpost
+	name = "Outpost North East"
+	landmark_tag = "nav_merchant_outpost"
+	autoset = 1
+
 
 //Skipjack
 
@@ -592,7 +624,7 @@
 	current_location = "nav_skipjack_start"
 	landmark_transition = "nav_skipjack_transition"
 	home_waypoint = "nav_skipjack_start"
-	cloaked = 0
+	cloaked = 1
 	move_time = 120
 	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."

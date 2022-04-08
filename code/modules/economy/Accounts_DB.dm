@@ -6,19 +6,19 @@
 	req_one_access = list(access_hop, access_captain, access_cent_captain)
 	var/receipt_num
 	var/machine_id = ""
-	var/obj/item/weapon/card/id/held_card
+	var/obj/item/card/id/held_card
 	var/datum/money_account/detailed_account_view
 	var/creating_new_account = 0
 	var/const/fund_cap = 1000000
 
-	circuit = /obj/item/weapon/circuitboard/account_database
+	circuit = /obj/item/circuitboard/account_database
 
 	proc/get_access_level()
 		if (!held_card)
 			return 0
 		if(access_cent_captain in held_card.access)
 			return 2
-		else if(access_hop in held_card.access || access_captain in held_card.access)
+		else if((access_hop in held_card.access) || (access_captain in held_card.access))
 			return 1
 
 	proc/create_transation(target, reason, amount)
@@ -44,7 +44,7 @@
 	..()
 
 /obj/machinery/computer/account_database/attackby(obj/O, mob/user)
-	if(!istype(O, /obj/item/weapon/card/id))
+	if(!istype(O, /obj/item/card/id))
 		return ..()
 
 	if(!held_card)
@@ -168,8 +168,8 @@
 
 				else
 					var/obj/item/I = usr.get_active_hand()
-					if (istype(I, /obj/item/weapon/card/id))
-						var/obj/item/weapon/card/id/C = I
+					if (istype(I, /obj/item/card/id))
+						var/obj/item/card/id/C = I
 						usr.drop_item()
 						C.loc = src
 						held_card = C
@@ -198,7 +198,7 @@
 
 			if("print")
 				var/text
-				var/obj/item/weapon/paper/P = new(loc)
+				var/obj/item/paper/P = new(loc)
 				if (detailed_account_view)
 					P.SetName("account #[detailed_account_view.account_number] details")
 					var/title = "Account #[detailed_account_view.account_number] Details"

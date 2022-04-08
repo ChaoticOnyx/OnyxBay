@@ -1,12 +1,12 @@
 
 //SACRIFICE DAGGER
 //If used on a person on an altar, causes the user to carve into them, dealing moderate damage and gaining points for the altar's god.
-/obj/item/weapon/material/knife/ritual/sacrifice
+/obj/item/material/knife/ritual/sacrifice
 	name = "sacrificial dagger"
 	desc = "This knife is dull but well used."
 	default_material = MATERIAL_CULT
 
-/obj/item/weapon/material/knife/ritual/sacrifice/resolve_attackby(atom/a, mob/user, click_params)
+/obj/item/material/knife/ritual/sacrifice/resolve_attackby(atom/a, mob/user, click_params)
 	var/turf/T = get_turf(a)
 	var/obj/structure/deity/altar/altar = locate() in T
 	if(!altar)
@@ -35,19 +35,20 @@
 
 //EXEC AXE
 //If a person hit by this axe within three seconds dies, sucks in their soul to be harvested at altars.
-/obj/item/weapon/material/twohanded/fireaxe/cult
+/obj/item/material/twohanded/fireaxe/cult
 	name = "terrible axe"
 	desc = "Its head is sharp and stained red with heavy use."
 	icon_state = "bone_axe0"
 	base_icon = "bone_axe"
 	var/stored_power = 0
 
-/obj/item/weapon/material/twohanded/fireaxe/cult/examine(mob/user)
+/obj/item/material/twohanded/fireaxe/cult/examine(mob/user)
 	. = ..()
-	if(. && stored_power)
-		to_chat(user, "<span class='notice'>It exudes a death-like smell.</span>")
+	if(!. || !stored_power)
+		return
+	. += "\n<span class='notice'>It exudes a death-like smell.</span>"
 
-/obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
+/obj/item/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))
 		var/obj/structure/deity/altar/altar = a
 		if(stored_power && altar.linked_god)
@@ -57,16 +58,16 @@
 	if(ismob(a))
 		var/mob/M = a
 		if(M.stat != DEAD)
-			GLOB.death_event.register(M,src,/obj/item/weapon/material/twohanded/fireaxe/cult/proc/gain_power)
+			register_signal(M, SIGNAL_MOB_DEATH, /obj/item/material/twohanded/fireaxe/cult/proc/gain_power)
 		spawn(30)
-			GLOB.death_event.unregister(M,src)
+			unregister_signal(M, SIGNAL_MOB_DEATH)
 	return ..()
 
-/obj/item/weapon/material/twohanded/fireaxe/cult/proc/gain_power()
+/obj/item/material/twohanded/fireaxe/cult/proc/gain_power()
 	stored_power += 50
 	src.visible_message("<span class='cult'>\The [src] screeches as the smell of death fills the air!</span>")
 
-/obj/item/weapon/reagent_containers/food/drinks/zombiedrink
+/obj/item/reagent_containers/food/drinks/zombiedrink
 	name = "well-used urn"
 	desc = "Said to bring those who drink it back to life, no matter the price."
 	icon = 'icons/obj/xenoarchaeology.dmi'
@@ -74,6 +75,6 @@
 	volume = 120
 	amount_per_transfer_from_this = 30
 
-/obj/item/weapon/reagent_containers/food/drinks/zombiedrink/New()
-	..()
+/obj/item/reagent_containers/food/drinks/zombiedrink/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/toxin/zombie,120)

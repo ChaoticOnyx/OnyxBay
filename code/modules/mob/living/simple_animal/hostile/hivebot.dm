@@ -14,13 +14,14 @@
 	melee_damage_lower = 2
 	melee_damage_upper = 3
 	attacktext = "clawed"
-	projectilesound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	projectilesound = 'sound/effects/weapons/gun/fire_generic_pistol.ogg'
 	projectiletype = /obj/item/projectile/hivebotbullet
 	faction = "hivebot"
 	min_gas = null
 	max_gas = null
 	minbodytemp = 0
 	speed = 4
+	bodyparts = /decl/simple_animal_bodyparts/hivebot
 
 /mob/living/simple_animal/hostile/hivebot/range
 	name = "Hivebot"
@@ -100,3 +101,6 @@
 
 /mob/living/simple_animal/hostile/hivebot/tele/rapid
 	bot_type = /mob/living/simple_animal/hostile/hivebot/rapid
+
+/decl/simple_animal_bodyparts/hivebot
+	hit_zones = list("central chassis", "positioning servo", "head", "sensor suite", "manipulator arm", "shoulder weapon mount", "weapons array", "front right leg", "front left leg", "rear left leg", "rear right leg")

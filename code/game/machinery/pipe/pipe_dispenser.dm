@@ -76,17 +76,14 @@
 ///// Z-Level stuff
 //What number the make points to is in the define # at the top of construction.dm in same folder
 
-	user << browse("<HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
+	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
 	onclose(user, "pipedispenser")
 	return
 
 /obj/machinery/pipedispenser/Topic(href, href_list)
-	if(..())
+	if((. = ..()) || unwrenched)
+		close_browser(usr, "window=pipedispenser")
 		return
-	if(unwrenched || !usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
-		usr << browse(null, "window=pipedispenser")
-		return
-	usr.set_machine(src)
 	if(href_list["make"])
 		if(!wait)
 			var/p_type = text2num(href_list["make"])
@@ -113,7 +110,7 @@
 		return
 	else if(isWrench(W))
 		add_fingerprint(usr)
-		if (unwrenched==0)
+		if(unwrenched==0)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			to_chat(user, "<span class='notice'>You begin to unfasten \the [src] from the floor...</span>")
 			if (do_after(user, 40, src))
@@ -124,8 +121,8 @@
 				src.anchored = 0
 				src.stat |= MAINT
 				src.unwrenched = 1
-				if (usr.machine==src)
-					usr << browse(null, "window=pipedispenser")
+				if(usr.machine==src)
+					close_browser(usr, "window=pipedispenser")
 		else /*if (unwrenched==1)*/
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			to_chat(user, "<span class='notice'>You begin to fasten \the [src] to the floor...</span>")
@@ -158,14 +155,14 @@ Nah
 */
 
 //Allow you to drag-drop disposal pipes into it
-/obj/machinery/pipedispenser/disposal/MouseDrop_T(obj/structure/disposalconstruct/pipe as obj, mob/usr as mob)
-	if(!usr.canmove || usr.stat || usr.restrained())
+/obj/machinery/pipedispenser/disposal/MouseDrop_T(obj/structure/disposalconstruct/pipe, mob/user)
+	if(!CanPhysicallyInteract(user))
 		return
 
-	if (!istype(pipe) || get_dist(usr, src) > 1 || get_dist(src,pipe) > 1 )
+	if(!istype(pipe) || get_dist(src, pipe) > 1 )
 		return
 
-	if (pipe.anchored)
+	if(pipe.anchored)
 		return
 
 	qdel(pipe)
@@ -196,20 +193,17 @@ Nah
 "}
 ///// Z-Level stuff
 
-	user << browse("<HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
+	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
 	return
 
 // 0=straight, 1=bent, 2=junction-j1, 3=junction-j2, 4=junction-y, 5=trunk
 
 
 /obj/machinery/pipedispenser/disposal/Topic(href, href_list)
-	if(..())
+	if((. = ..()) || unwrenched)
+		close_browser(usr, "window=pipedispenser")
 		return
-	usr.set_machine(src)
 	if(href_list["dmake"])
-		if(unwrenched || !usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
-			usr << browse(null, "window=pipedispenser")
-			return
 		if(!wait)
 			var/p_type = text2num(href_list["dmake"])
 			if(p_type == 15)

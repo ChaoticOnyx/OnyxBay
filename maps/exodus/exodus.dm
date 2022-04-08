@@ -9,11 +9,6 @@
 	#include "exodus_shuttles.dm"
 	#include "exodus_jobs.dm"
 
-	#include "exodus_unit_testing.dm"
-	#include "exodus_zas_tests.dm"
-
-	#include "../shared/exodus_torch/_include.dm"
-
 	#include "dynamic/null-1.dmm"
 	#include "dynamic/null-2.dmm"
 	#include "dynamic/null-3.dmm"
@@ -22,14 +17,10 @@
 	#include "dynamic/null-6.dmm"
 	#include "exodus-7.dmm"
 	#include "derelicts/snowasteroid.dmm"
-	#include "derelicts/djstation.dmm"
-	#include "derelicts/casino.dmm"
+	#include "derelicts/original/derelict.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"
-	#include "derelicts/lar_maria/lar_maria-1.dmm"
-	#include "derelicts/lar_maria/lar_maria-2.dmm"
-
-
+	#include "derelicts/jungleplanet/jungle_planet.dmm"
 
 	#define USING_MAP_DATUM /datum/map/exodus
 

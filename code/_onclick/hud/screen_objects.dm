@@ -38,8 +38,8 @@
 
 /obj/screen/close/Click()
 	if(master)
-		if(istype(master, /obj/item/weapon/storage))
-			var/obj/item/weapon/storage/S = master
+		if(istype(master, /obj/item/storage))
+			var/obj/item/storage/S = master
 			S.close(usr)
 	return 1
 
@@ -48,7 +48,7 @@
 	var/obj/item/owner
 
 /obj/screen/item_action/Destroy()
-	..()
+	. = ..()
 	owner = null
 
 /obj/screen/item_action/Click()
@@ -158,10 +158,9 @@
 /obj/screen/zone_sel/update_icon()
 	overlays.Cut()
 	overlays += image('icons/mob/zone_sel.dmi', "[selecting]")
-
 /obj/screen/intent
 	name = "intent"
-	icon = 'icons/mob/screen1_White.dmi'
+	icon = 'icons/mob/screen1_white.dmi'
 	icon_state = "intent_help"
 	screen_loc = ui_acti
 	var/intent = I_HELP
@@ -171,6 +170,8 @@
 	var/icon_x = text2num(P["icon-x"])
 	var/icon_y = text2num(P["icon-y"])
 	intent = I_DISARM
+
+
 	if(icon_x <= world.icon_size/2)
 		if(icon_y <= world.icon_size/2)
 			intent = I_HURT
@@ -185,7 +186,6 @@
 	icon_state = "intent_[intent]"
 
 /obj/screen/Click(location, control, params)
-	if(!usr)	return 1
 	switch(name)
 		if("toggle")
 			if(usr.hud_used.inventory_shown)
@@ -208,18 +208,23 @@
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.resist()
+		if("rest")
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.lay_down()
 
 		if("mov_intent")
 			switch(usr.m_intent)
-				if("run")
-					usr.m_intent = "walk"
+				if(M_RUN)
+					usr.m_intent = M_WALK
 					usr.hud_used.move_intent.icon_state = "walking"
-				if("walk")
-					usr.m_intent = "run"
+				if(M_WALK)
+					usr.m_intent = M_RUN
 					usr.hud_used.move_intent.icon_state = "running"
 
 		if("Reset Machine")
 			usr.unset_machine()
+
 		if("internal")
 			if(iscarbon(usr))
 				var/mob/living/carbon/C = usr
@@ -257,16 +262,16 @@
 								tankcheck = list(C.r_hand, C.l_hand, C.back)
 
 							// Rigs are a fucking pain since they keep an air tank in nullspace.
-							if(istype(C.back,/obj/item/weapon/rig))
-								var/obj/item/weapon/rig/rig = C.back
+							if(istype(C.back,/obj/item/rig))
+								var/obj/item/rig/rig = C.back
 								if(rig.air_supply)
 									from = "in"
-									nicename |= "hardsuit"
+									nicename |= "powersuit"
 									tankcheck |= rig.air_supply
 
 							for(var/i=1, i<tankcheck.len+1, ++i)
-								if(istype(tankcheck[i], /obj/item/weapon/tank))
-									var/obj/item/weapon/tank/t = tankcheck[i]
+								if(istype(tankcheck[i], /obj/item/tank))
+									var/obj/item/tank/t = tankcheck[i]
 									if (!isnull(t.manipulated_by) && t.manipulated_by != C.real_name && findtext(t.desc,breathes))
 										contents.Add(t.air_contents.total_moles)	//Someone messed with the tank and put unknown gasses
 										continue					//in it, so we're going to believe the tank is what it says it is
@@ -280,14 +285,14 @@
 												contents.Add(0)
 
 										if ("oxygen")
-											if(t.air_contents.gas["oxygen"] && !t.air_contents.gas["phoron"])
+											if(t.air_contents.gas["oxygen"] && !t.air_contents.gas["plasma"])
 												contents.Add(t.air_contents.gas["oxygen"])
 											else
 												contents.Add(0)
 
 										// No races breath this, but never know about downstream servers.
 										if ("carbon dioxide")
-											if(t.air_contents.gas["carbon_dioxide"] && !t.air_contents.gas["phoron"])
+											if(t.air_contents.gas["carbon_dioxide"] && !t.air_contents.gas["plasma"])
 												contents.Add(t.air_contents.gas["carbon_dioxide"])
 											else
 												contents.Add(0)
@@ -322,27 +327,31 @@
 									C.internals.icon_state = "internal1"
 							else
 								to_chat(C, "<span class='notice'>You don't have a[breathes=="oxygen" ? "n oxygen" : addtext(" ",breathes)] tank.</span>")
+
 		if("act_intent")
 			usr.a_intent_change("right")
 
 		if("pull")
+
 			usr.stop_pulling()
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
-				usr:toggle_throw_mode()
+				usr.toggle_throw_mode()
+
 		if("drop")
-			if(usr.client)
-				usr.client.drop_item()
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.hotkey_drop()
 
 		if("block")
 			if(istype(usr,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
-				H:useblock()
+				H.useblock()
 
 		if("blockswitch")
 			if(istype(usr,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = usr
-				H:blockswitch()
+				H.blockswitch()
 
 		if("module")
 			if(isrobot(usr))
@@ -350,7 +359,7 @@
 //				if(R.module)
 //					R.hud_used.toggle_show_robot_modules()
 //					return 1
-				R.pick_module()
+				R.choose_module()
 
 		if("inventory")
 			if(isrobot(usr))
@@ -363,10 +372,12 @@
 
 		if("radio")
 			if(issilicon(usr))
-				usr:radio_menu()
+				var/mob/living/silicon/robot/R = usr
+				R.radio_menu()
 		if("panel")
 			if(issilicon(usr))
-				usr:installed_modules()
+				var/mob/living/silicon/robot/R = usr
+				R.installed_modules()
 
 		if("store")
 			if(isrobot(usr))
@@ -379,15 +390,156 @@
 
 		if("module1")
 			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(1)
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(1)
 
 		if("module2")
 			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(2)
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(2)
 
 		if("module3")
 			if(istype(usr, /mob/living/silicon/robot))
-				usr:toggle_module(3)
+				var/mob/living/silicon/robot/R = usr
+				R.toggle_module(3)
+
+
+		if("AI core")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.view_core()
+
+		if("Set AI Core Display")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.pick_icon()
+
+		if("AI Status")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_statuschange()
+
+		if("Change Hologram")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_hologram_change()
+
+		if("Show Camera List")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/network = input(AI, "Chooce which network you want to view", "Networks") as null|anything in AI.get_camera_network_list()
+			AI.ai_network_change(network)
+			var/camera = input(AI, "Choose which camera you want to view", "Cameras") as null|anything in AI.get_camera_list()
+			AI.ai_camera_list(camera)
+
+		if("Track With Camera")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/target_name = input(AI, "Choose who you want to track", "Tracking") as null|anything in AI.trackable_mobs()
+			AI.ai_camera_track(target_name)
+
+		if("Toggle Camera Light")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.toggle_camera_light()
+
+		if("Store Camera Location")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/name_l = input(AI, "Enter name camera location", "Name")
+			AI.ai_store_location(name_l)
+
+		if("Goto Camera Location")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/cam_loc = input(AI, "Choose which location you want to view", "Locations") as null|anything in AI.sorted_stored_locations()
+			AI.ai_goto_location(cam_loc)
+
+		if("Delete Camera Location")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			var/delete = input(AI, "Choose which location you want to delete", "Locations") as null|anything in AI.sorted_stored_locations()
+			AI.ai_remove_location(delete)
+
+		if("Crew Manifest")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_roster()
+
+		if("Make Announcement")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_announcement()
+
+		if("Call Emergency Shuttle")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_call_shuttle()
+
+		if("State Laws")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_checklaws()
+
+		if("Sensor Augmentation")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.toggle_sensor_mode()
+
+		if("Radio Settings")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.control_integrated_radio()
+
+		if("Take Image")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.silicon_camera.toggle_camera_mode()
+
+		if("View Images")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.silicon_camera.viewpictures()
+
+		if("Delete Image")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.silicon_camera.deletepicture()
+
+		if("Toggle Shutdown")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_shutdown()
+
+		if("Toggle Power Override")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.ai_power_override()
+
+		if("Toggle Ringer")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.aiPDA.cmd_toggle_pda_silent()
+
+		if("Send Message")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.aiPDA.cmd_send_pdamesg()
+
+		if("Show Message Log")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.aiPDA.cmd_show_message_log()
+
+		if("Toggle Sender/Receiver")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.aiPDA.cmd_toggle_pda_receiver()
+
+		if("Toggle Multitool Mode")
+			ASSERT(isAI(usr))
+			var/mob/living/silicon/ai/AI = usr
+			AI.multitool_mode()
 		else
 			return 0
 	return 1
@@ -411,9 +563,9 @@
 				var/mob/living/carbon/C = usr
 				C.activate_hand("l")
 		if("swap")
-			usr:swap_hand()
+			usr.swap_hand()
 		if("hand")
-			usr:swap_hand()
+			usr.swap_hand()
 		else
 			if(usr.attack_ui(slot_id))
 				usr.update_inv_l_hand(0)

@@ -5,19 +5,19 @@
 	icon_screen = "mecha"
 	light_color = "#a97faa"
 	req_access = list(access_robotics)
-	circuit = /obj/item/weapon/circuitboard/mecha_control
+	circuit = /obj/item/circuitboard/mecha_control
 	var/list/located = list()
 	var/screen = 0
 	var/stored_data
 
-	attack_ai(var/mob/user as mob)
+	attack_ai(mob/user as mob)
 		return src.attack_hand(user)
 
-	attack_hand(var/mob/user as mob)
+	attack_hand(mob/user as mob)
 		if(..())
 			return
 		user.set_machine(src)
-		var/dat = "<html><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
+		var/dat = "<html><meta charset=\"utf-8\"><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
 		if(screen == 0)
 			dat += "<h3>Tracking beacons data</h3>"
 			for(var/obj/item/mecha_parts/mecha_tracking/TR in world)
@@ -35,7 +35,7 @@
 		dat += "<A href='?src=\ref[src];refresh=1'>(Refresh)</A><BR>"
 		dat += "</body></html>"
 
-		user << browse(dat, "window=computer;size=400x500")
+		show_browser(user, dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 
@@ -85,7 +85,7 @@
 							<b>Active equipment:</b> [M.selected||"None"]"}
 		if(istype(M, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/RM = M
-			answer += "<b>Used cargo space:</b> [RM.cargo.len/RM.cargo_capacity*100]%<br>"
+			answer += "<br><b>Used cargo space:</b> [length(RM.cargo)/RM.cargo_capacity*100]%<br>"
 
 		return answer
 

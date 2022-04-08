@@ -9,7 +9,7 @@
 	var/open = 1
 
 /obj/structure/pit/attackby(obj/item/W, mob/user)
-	if( istype(W,/obj/item/weapon/shovel) )
+	if( istype(W,/obj/item/shovel) )
 		visible_message("<span class='notice'>\The [user] starts [open ? "filling" : "digging open"] \the [src]</span>")
 		if( do_after(user, 50) )
 			visible_message("<span class='notice'>\The [user] [open ? "fills" : "digs open"] \the [src]!</span>")
@@ -37,11 +37,6 @@
 
 /obj/structure/pit/update_icon()
 	icon_state = "pit[open]"
-	if(istype(loc,/turf/simulated/floor/exoplanet))
-		var/turf/simulated/floor/exoplanet/E = loc
-		if(E.mudpit)
-			icon_state="pit[open]mud"
-			blend_mode = BLEND_OVERLAY
 
 /obj/structure/pit/proc/open()
 	name = "pit"
@@ -136,9 +131,9 @@
 /obj/structure/gravemarker/cross
 	icon_state = "cross"
 
-/obj/structure/gravemarker/examine()
-	..()
-	to_chat(usr,"It says: '[message]'")
+/obj/structure/gravemarker/examine(mob/user)
+	. = ..()
+	. += "\nIt says: '[message]'"
 
 /obj/structure/gravemarker/random/Initialize()
 	generate()
@@ -156,13 +151,13 @@
 	message = "Here lies [nam], [born] - [died]."
 
 /obj/structure/gravemarker/attackby(obj/item/W, mob/user)
-	if(istype(W,/obj/item/weapon/material/hatchet))
+	if(istype(W,/obj/item/material/hatchet))
 		visible_message("<span class = 'warning'>\The [user] starts hacking away at \the [src] with \the [W].</span>")
 		if(!do_after(user, 30))
 			visible_message("<span class = 'warning'>\The [user] hacks \the [src] apart.</span>")
 			new /obj/item/stack/material/wood(src)
 			qdel(src)
-	if(istype(W,/obj/item/weapon/pen))
+	if(istype(W,/obj/item/pen))
 		var/msg = sanitize(input(user, "What should it say?", "Grave marker", message) as text|null)
 		if(msg)
 			message = msg

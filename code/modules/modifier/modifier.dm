@@ -49,7 +49,6 @@
 	var/accuracy                        // Positive numbers makes hitting things with guns easier, negatives make it harder.
 	var/accuracy_dispersion             // Positive numbers make gun firing cover a wider tile range, and therefore more inaccurate.  Negatives help negate dispersion penalties.
 	var/metabolism_percent              // Adjusts the mob's metabolic rate, which affects reagent processing.  Won't affect mobs without reagent processing.
-	var/icon_scale_percent              // Makes the holder's icon get scaled up or down.
 	var/attack_speed_percent            // Makes the holder's 'attack speed' (click delay) shorter or longer.
 	var/pain_immunity                   // Makes the holder not care about pain while this is on. Only really useful to human mobs.
 	var/stammering
@@ -81,9 +80,6 @@
 	holder.modifiers.Remove(src)
 	if(mob_overlay_state) // We do this after removing ourselves from the list so that the overlay won't remain.
 		holder.update_modifier_visuals()
-	if(icon_scale_percent) // Correct the scaling.
-//		holder.update_icons()
-		holder.update_transform()
 	if(client_color)
 		holder.update_client_color()
 	qdel(src)
@@ -149,8 +145,6 @@
 	mod.on_applied()
 	if(mod.mob_overlay_state)
 		update_modifier_visuals()
-	if(mod.icon_scale_percent)
-		update_icons()
 	if(mod.client_color)
 		update_client_color()
 
@@ -240,9 +234,6 @@
 	if(!isnull(metabolism_percent))
 		effects += "Your metabolism is [metabolism_percent > 1.0 ? "faster" : "slower"], \
 		causing reagents in your body to process, and hunger to occur [multipler_to_percentage(metabolism_percent, TRUE)] [metabolism_percent > 1.0 ? "faster" : "slower"]."
-
-	if(!isnull(icon_scale_percent))
-		effects += "Your appearance is [multipler_to_percentage(icon_scale_percent, TRUE)] [icon_scale_percent > 1 ? "larger" : "smaller"]."
 
 	if(!isnull(attack_speed_percent))
 		effects += "The delay between attacking is [multipler_to_percentage(attack_speed_percent, TRUE)] [disable_duration_percent > 1.0 ? "longer" : "shorter"]."

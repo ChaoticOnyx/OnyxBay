@@ -11,8 +11,9 @@
 
 	var/icon_keyboard = "generic_key"
 	var/icon_screen = "generic"
-	var/light_range_on = 2
-	var/light_power_on = 1
+	var/light_max_bright_on = 0.4
+	var/light_inner_range_on = 0.5
+	var/light_outer_range_on = 1
 	var/overlay_layer
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = 'sound/effects/using/console/press10.ogg'
@@ -23,15 +24,20 @@
 
 /obj/machinery/computer/Initialize()
 	. = ..()
+	GLOB.computer_list += src
 	power_change()
 	update_icon()
+
+/obj/machinery/computer/Destroy()
+	GLOB.computer_list -= src
+	..()
 
 /obj/machinery/computer/emp_act(severity)
 	if(prob(20/severity)) set_broken(TRUE)
 	..()
 
 /obj/machinery/computer/ex_act(severity)
-	playsound(src, "console_breaking", 75, FALSE)
+	playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
 
 	switch(severity)
 		if(1.0)
@@ -51,11 +57,11 @@
 					verbs -= x
 				set_broken(TRUE)
 
-/obj/machinery/computer/blob_act(destroy, obj/effect/blob/source)
-	if (stat & BROKEN)
+/obj/machinery/computer/blob_act(damage)
+	if(stat & BROKEN)
 		return
 
-	playsound(src, "console_breaking", 75, FALSE)
+	playsound(src, SFX_BREAK_CONSOLE, 75, FALSE)
 	set_broken(TRUE)
 
 /obj/machinery/computer/bullet_act(obj/item/projectile/Proj)
@@ -71,12 +77,12 @@
 			overlays += image(icon,"[icon_keyboard]_off", overlay_layer)
 		return
 	else
-		set_light(light_range_on, light_power_on)
+		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 3.5, light_color)
 
 	if(stat & BROKEN)
-		overlays += image(icon,"[icon_state]_broken", overlay_layer)
+		overlays += image(icon, "[icon_state]_broken", overlay_layer)
 	else
-		overlays += image(icon,icon_screen, overlay_layer)
+		overlays += image(icon, icon_screen, overlay_layer)
 
 	if(icon_keyboard)
 		overlays += image(icon, icon_keyboard, overlay_layer)
@@ -86,19 +92,19 @@
 	text = replacetext(text, "\n", "<BR>")
 	return text
 
-/obj/machinery/computer/attackby(I as obj, user as mob)
+/obj/machinery/computer/attackby(obj/item/I, user)
 	if(isScrewdriver(I) && circuit)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-			var/obj/item/weapon/circuitboard/M = new circuit( A )
+			var/obj/item/circuitboard/M = new circuit( A )
 			A.circuit = M
 			A.anchored = 1
 			for (var/obj/C in src)
 				C.dropInto(loc)
 			if (src.stat & BROKEN)
 				to_chat(user, "<span class='notice'>The broken glass falls out.</span>")
-				new /obj/item/weapon/material/shard( src.loc )
+				new /obj/item/material/shard( src.loc )
 				A.state = 3
 				A.icon_state = "3"
 			else

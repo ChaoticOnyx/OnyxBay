@@ -3,7 +3,10 @@
 	desc = "There's something alien about this."
 	icon = 'icons/mob/alien.dmi'
 	layer = ABOVE_OBJ_LAYER
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	var/health = 50
+
+	hitby_sound = 'sound/effects/attackblob.ogg'
 
 /obj/structure/alien/proc/healthcheck()
 	if(health <=0)
@@ -31,32 +34,29 @@
 	healthcheck()
 	return
 
-/obj/structure/alien/hitby(AM as mob|obj)
+/obj/structure/alien/hitby(atom/movable/AM, speed, nomsg)
 	..()
-	visible_message("<span class='danger'>\The [src] was hit by \the [AM].</span>")
 	var/tforce = 0
 	if(ismob(AM))
 		tforce = 10
 	else
 		tforce = AM:throwforce
-	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
+
 	health = max(0, health - tforce)
 	healthcheck()
-	..()
 	return
 
 /obj/structure/alien/attack_generic()
 	attack_hand(usr)
 
-/obj/structure/alien/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/alien/attackby(obj/item/W, mob/user)
+	..()
 	health = max(0, health - W.force)
 	playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 	healthcheck()
-	..()
 	return
 
-/obj/structure/alien/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 0
+/obj/structure/alien/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return !opacity
 	return !density

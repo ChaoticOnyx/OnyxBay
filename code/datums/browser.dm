@@ -17,27 +17,36 @@
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
-
 	user = nuser
 	window_id = nwindow_id
-	if (ntitle)
+	if(ntitle)
 		title = format_text(ntitle)
-	if (nwidth)
+	if(nwidth)
 		width = nwidth
-	if (nheight)
+	if(nheight)
 		height = nheight
-	if (nref)
+	if(nref)
 		ref = nref
 	// If a client exists, but they have disabled fancy windowing, disable it!
-	if(user && user.client && user.client.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
+	if(user?.client?.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
 		return
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
+
+/datum/browser/proc/process_icons(text)
+	//taken from to_chat(), processes all explanded \icon macros since they don't work in minibrowser (they only work in text output)
+	var/static/regex/icon_replacer = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")	//syntax highlighter fix -> '
+	while(icon_replacer.Find(text))
+		text =\
+			copytext(text,1,icon_replacer.index) +\
+			icon2html(locate(icon_replacer.group[1]), target = user, icon_state=icon_replacer.group[2]) +\
+			copytext(text,icon_replacer.next)
+	return text
 
 /datum/browser/proc/set_title(ntitle)
 	title = format_text(ntitle)
 
 /datum/browser/proc/add_head_content(nhead_content)
-	head_content = nhead_content
+	head_content += process_icons(nhead_content)
 
 /datum/browser/proc/set_title_buttons(ntitle_buttons)
 	title_buttons = ntitle_buttons
@@ -55,22 +64,22 @@
 	scripts[name] = file
 
 /datum/browser/proc/set_content(ncontent)
-	content = ncontent
+	content = process_icons(ncontent)
 
 /datum/browser/proc/add_content(ncontent)
-	content += ncontent
+	content += process_icons(ncontent)
 
 /datum/browser/proc/get_header()
 	var/key
 	var/filename
 	for (key in stylesheets)
 		filename = "[ckey(key)].css"
-		user << browse_rsc(stylesheets[key], filename)
+		send_rsc(user, stylesheets[key], filename)
 		head_content += "<link rel='stylesheet' type='text/css' href='[filename]'>"
 
 	for (key in scripts)
 		filename = "[ckey(key)].js"
-		user << browse_rsc(scripts[key], filename)
+		send_rsc(user, scripts[key], filename)
 		head_content += "<script type='text/javascript' src='[filename]'></script>"
 
 	var/title_attributes = "class='uiTitle'"
@@ -79,7 +88,7 @@
 
 	return {"<!DOCTYPE html>
 <html>
-	<meta charset=ISO-8859-1">
+	<meta charset=\"utf-8\">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		[head_content]
@@ -106,10 +115,11 @@
 
 /datum/browser/proc/open(use_onclose = 1)
 	var/window_size = ""
-	if (width && height)
+	if(width && height)
 		window_size = "size=[width]x[height];"
-	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
-	if (use_onclose)
+	show_browser(user, get_content(), "window=[window_id];[window_size][window_options]")
+	winset(user, "mapwindow.map", "focus=true")
+	if(use_onclose)
 		onclose(user, window_id, ref)
 
 /datum/browser/proc/update(force_open = 0, use_onclose = 1)
@@ -119,7 +129,13 @@
 		send_output(user, get_content(), "[window_id].browser")
 
 /datum/browser/proc/close()
-	user << browse(null, "window=[window_id]")
+	close_browser(user, "window=[window_id]")
+
+/datum/browser/Destroy()
+	ref = null
+	user = null
+
+	. = ..()
 
 // This will allow you to show an icon in the browse window
 // This is added to mob so that it can be used without a reference to the browser object
@@ -134,7 +150,7 @@
 		dir = "default"
 
 	var/filename = "[ckey("[icon]_[icon_state]_[dir]")].png"
-	src << browse_rsc(I, filename)
+	send_rsc(src, I, filename)
 	return filename
 	*/
 
@@ -146,7 +162,7 @@
 // e.g. canisters, timers, etc.
 //
 // windowid should be the specified window name
-// e.g. code is	: user << browse(text, "window=fred")
+// e.g. code is	: show_browser(user, text, "window=fred")
 // then use 	: onclose(user, "fred")
 //
 // Optionally, specify the "ref" parameter as the controlled atom (usually src)
@@ -159,9 +175,11 @@
 	if(ref)
 		param = "\ref[ref]"
 
-	spawn(2)
-		if(!user.client) return
-		winset(user, windowid, "on-close=\".windowclose [param]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_onclose, windowid, param), 2)
+
+/mob/proc/post_onclose(windowid, param)
+	if(client)
+		winset(src, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 

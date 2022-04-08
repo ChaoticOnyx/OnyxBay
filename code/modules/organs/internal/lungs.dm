@@ -24,7 +24,7 @@
 	var/SA_para_min = 1
 	var/SA_sleep_min = 5
 	var/breathing = 0
-	var/last_failed_breath
+	var/last_successful_breath
 	var/breath_fail_ratio // How badly they failed a breath. Higher is worse.
 
 /obj/item/organ/internal/lungs/proc/remove_oxygen_deprivation(amount)
@@ -61,7 +61,7 @@
 /obj/item/organ/internal/lungs/proc/sync_breath_types()
 	min_breath_pressure = species.breath_pressure
 	breath_type = species.breath_type ? species.breath_type : "oxygen"
-	poison_type = species.poison_type ? species.poison_type : "phoron"
+	poison_type = species.poison_type ? species.poison_type : "plasma"
 	exhale_type = species.exhale_type ? species.exhale_type : "carbon_dioxide"
 
 /obj/item/organ/internal/lungs/Process()
@@ -100,12 +100,6 @@
 
 			owner.losebreath += round(damage/2)
 
-/obj/item/organ/internal/lungs/proc/rupture()
-	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-	if(istype(parent))
-		owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 50, affecting = parent)
-	bruise()
-
 /obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, forced)
 	if(!owner)
 		return 1
@@ -120,13 +114,17 @@
 	if(breath_pressure < species.hazard_low_pressure || breath_pressure > species.hazard_high_pressure)
 		var/datum/gas_mixture/environment = loc.return_air_for_internal_lifeform()
 		var/env_pressure = environment.return_pressure()
-		var/lung_rupture_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
+		var/lung_damage_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
-			if(!is_bruised() && lung_rupture_prob) //only rupture if NOT already ruptured
-				rupture()
-	if(breath.total_moles == 0)
-		breath_fail_ratio = 1
-		handle_failed_breath()
+			if(lung_damage_prob)
+				take_internal_damage(5)
+				if(is_bruised()) //only spam pain if already ruptured
+					var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
+					if(istype(parent))
+						owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 20, affecting = parent)
+		if(breath.total_moles == 0)
+			breath_fail_ratio = 1
+			handle_failed_breath()
 		return 1
 
 	var/safe_pressure_min = min_breath_pressure // Minimum safe partial pressure of breathable gas in kPa
@@ -203,9 +201,9 @@
 			ratio /= 2 //Robolungs filter out some of the inhaled toxic air.
 		owner.reagents.add_reagent(/datum/reagent/toxin, Clamp(ratio, MIN_TOXIN_DAMAGE, MAX_TOXIN_DAMAGE))
 		breath.adjust_gas(poison_type, -poison/6, update = 0) //update after
-		owner.phoron_alert = 1
+		owner.plasma_alert = 1
 	else
-		owner.phoron_alert = 0
+		owner.plasma_alert = 0
 
 	// If there's some other shit in the air lets deal with it here.
 	if(breath.gas["sleeping_agent"])
@@ -222,11 +220,8 @@
 
 	// Were we able to breathe?
 	var/failed_breath = failed_inhale || failed_exhale
-	if(failed_breath)
-		if(isnull(last_failed_breath))
-			last_failed_breath = world.time
-	else
-		last_failed_breath = null
+	if(!failed_breath)
+		last_successful_breath = world.time
 		owner.adjustOxyLoss(-5 * inhale_efficiency)
 		if(!BP_IS_ROBOTIC(src) && species.breathing_sound && is_below_sound_pressure(get_turf(owner)))
 			if(breathing || owner.shock_stage >= 10)
@@ -252,8 +247,8 @@
 		else
 			owner.emote(pick("shiver","twitch"))
 
-	if(damage || owner.chem_effects[CE_BREATHLOSS] || world.time > last_failed_breath + 2 MINUTES)
-		owner.adjustOxyLoss(HUMAN_MAX_OXYLOSS*breath_fail_ratio)
+	if(damage || owner.chem_effects[CE_BREATHLOSS] || owner.nervous_system_failure() || world.time > last_successful_breath + 2 MINUTES)
+		owner.adjustOxyLoss(HUMAN_MAX_OXYLOSS * breath_fail_ratio)
 
 	owner.oxygen_alert = max(owner.oxygen_alert, 2)
 

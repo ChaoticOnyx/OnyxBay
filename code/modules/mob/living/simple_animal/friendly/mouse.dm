@@ -18,7 +18,7 @@
 	see_in_dark = 6
 	maxHealth = 1
 	health = 1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/snacks/meat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "stamps on"
@@ -28,12 +28,13 @@
 	maxbodytemp = 323	//Above 50 Degrees Celcius
 	universal_speak = 0
 	universal_understand = 1
-	holder_type = /obj/item/weapon/holder/mouse
+	holder_type = /obj/item/holder/mouse
 	mob_size = MOB_MINISCULE
 	possession_candidate = 1
 	can_escape = 1
 	shy_animal = 1
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	var/obj/item/holding_item = null
 	var/datum/disease2/disease/virus = null
 
@@ -44,7 +45,7 @@
 	..()
 	if(!stat && prob(speak_chance))
 		for(var/mob/M in view())
-			sound_to(M, 'sound/effects/mousesqueek.ogg')
+			sound_to(M, sound('sound/effects/mousesqueek.ogg'))
 
 	if(!ckey && stat == CONSCIOUS && prob(0.5))
 		set_stat(UNCONSCIOUS)
@@ -107,7 +108,7 @@
 /mob/living/simple_animal/mouse/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		to_chat(user, SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape."))
+		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"
 
 /mob/living/simple_animal/mouse/proc/splat()
 	icon_dead = "mouse_[body_color]_splat"
@@ -122,7 +123,7 @@
 			to_chat(src, SPAN_WARNING("You can't bite while you are hiding!"))
 			return
 
-		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_BELOW_GROIN
+		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_FEET
 		var/obj/item/organ/external/limb
 		for(var/L in shuffle(available_limbs))
 			limb = H.get_organ(L)
@@ -130,7 +131,14 @@
 				break
 
 		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
-		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && prob(70 - blocked))
+		for(var/obj/item/clothing/clothes in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
+			if(istype(clothes) && (clothes.body_parts_covered & limb.body_part) && ((clothes.item_flags & ITEM_FLAG_THICKMATERIAL) || (blocked >= 30)))
+				visible_message(SPAN_NOTICE("[src] bites [H]'s [clothes] harmlessly."),
+								SPAN_WARNING("You failed to bite through [H]'s [clothes]."))
+				do_attack_animation(H)
+				return
+
+		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && !BP_IS_ROBOTIC(limb) && prob(70 - blocked))
 			limb.germ_level += rand(75, 150)
 			if(virus)
 				infect_virus2(H, virus)
@@ -146,7 +154,7 @@
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
 	if(!client && ishuman(AM) && !stat)
 		var/mob/M = AM
-		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
+		to_chat(M, SPAN("warning", "\icon[src] Squeek!"))
 		playsound(loc, 'sound/effects/mousesqueek.ogg', 40)
 		resting = 0
 		icon_state = "mouse_[body_color]"
@@ -167,7 +175,7 @@
 		return ..()
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
-	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
+	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/tape_roll) && O.w_class == ITEM_SIZE_TINY)
 		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
 							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))

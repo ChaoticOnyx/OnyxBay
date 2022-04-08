@@ -274,6 +274,7 @@
 	memory["purge"] = cycle_to_external_air
 
 /datum/computer/file/embedded_program/airlock/proc/begin_cycle_out()
+	playsound(master.loc, 'sound/signals/alarm13.ogg', 50)
 	state = STATE_IDLE
 	target_state = TARGET_OUTOPEN
 	memory["purge"] = cycle_to_external_air
@@ -335,7 +336,7 @@
 			signalDoor(tag_exterior_door, command)
 			signalDoor(tag_interior_door, command)
 
-datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
+/datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
 	var/datum/signal/signal = new
 	signal.data["tag"] = sensor
 	signal.data["command"] = command

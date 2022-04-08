@@ -7,7 +7,7 @@
 	shoes = /obj/item/clothing/shoes/black
 
 	id_slot = slot_wear_id
-	id_type = /obj/item/weapon/card/id/civilian
+	id_type = /obj/item/card/id/civilian
 	pda_slot = slot_belt
 	pda_type = /obj/item/device/pda
 	backpack_contents = list()
@@ -15,7 +15,7 @@
 	flags = OUTFIT_HAS_BACKPACK
 
 /decl/hierarchy/outfit/job/equip_id(mob/living/carbon/human/H)
-	var/obj/item/weapon/card/id/C = ..()
+	var/obj/item/card/id/C = ..()
 	if(!C)
 		return
 	if(H.mind)

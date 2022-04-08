@@ -14,8 +14,10 @@ SUBSYSTEM_DEF(misc)
 	job_master.SetupOccupations(setup_titles=1)
 	job_master.LoadJobs("config/jobs.txt")
 
-	syndicate_code_phrase = generate_code_phrase()
-	syndicate_code_response	= generate_code_phrase()
+	GLOB.syndicate_code_phrase = generate_code_phrase()
+	GLOB.code_phrase_highlight_rule = generate_code_regex(GLOB.syndicate_code_phrase, @"\u0430-\u0451") // Russian chars only
+	GLOB.syndicate_code_response = generate_code_phrase()
+	GLOB.code_response_highlight_rule = generate_code_regex(GLOB.syndicate_code_response, @"\u0430-\u0451") // Russian chars only
 
 	setupgenetics()
 

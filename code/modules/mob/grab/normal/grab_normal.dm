@@ -55,8 +55,9 @@
 			G.attacking = 0
 			G.action_used()
 			affecting.Weaken(2)
+			affecting.Stun(2)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
-			affecting.poise = 0
+			affecting.damage_poise(affecting.poise)
 
 			return 1
 		else
@@ -80,7 +81,9 @@
 	G.attacking = 1
 
 	if(do_mob(assailant, affecting, action_cooldown - 1))
-
+		if(!G?.has_hold_on_organ(O))
+			to_chat(assailant, SPAN("warning", "You must keep a hold on your target to jointlock!"))
+			return 0
 		G.attacking = 0
 		G.action_used()
 		O.jointlock(assailant)
@@ -110,7 +113,9 @@
 		G.attacking = 1
 
 		if(do_mob(assailant, affecting, action_cooldown - 1))
-
+			if(!G?.has_hold_on_organ(O))
+				to_chat(assailant, SPAN_WARNING("You must keep a hold on your target to dislocate!"))
+				return 0
 			G.attacking = 0
 			G.action_used()
 			O.dislocate(1)
@@ -140,7 +145,7 @@
 			else
 				if(headbutt(G))
 					if(drop_headbutt)
-						let_go()
+						G.delete_self()
 					return 1
 		//else if(G.target_zone ==
 	return 0
@@ -173,7 +178,7 @@
 	if(target.lying)
 		return
 
-	var/damage = 20
+	var/damage = 15
 	var/obj/item/clothing/hat = attacker.head
 	var/damage_flags = 0
 	if(istype(hat))
@@ -193,7 +198,7 @@
 		target.apply_effect(20, PARALYZE)
 		target.visible_message("<span class='danger'>[target] [target.species.get_knockout_message(target)]</span>")
 
-	playsound(attacker.loc, "swing_hit", 25, 1, -1)
+	playsound(attacker.loc, SFX_FIGHTING_SWING, 25, 1, -1)
 
 	admin_attack_log(attacker, target, "Headbutted their victim.", "Was headbutted.", "headbutted")
 	return 1
@@ -371,7 +376,7 @@
 	if(user.a_intent != I_HURT)
 		return 0 // Not trying to hurt them.
 
-	if(!istype(W,/obj/item/weapon/material/kitchen/utensil/spoon))
+	if(!istype(W,/obj/item/material/kitchen/utensil/spoon))
 		if(!W.sharp || !W.force || W.damtype != BRUTE || W.w_class > ITEM_SIZE_NORMAL)
 			return 0 //unsuitable weapon
 
@@ -405,6 +410,7 @@
 			affecting.eye_blurry += 10
 			affecting.Paralyse(1)
 			affecting.Weaken(4)
+			affecting.Stun(4)
 		if (eyes.damage >= eyes.min_broken_damage)
 			if(affecting.stat != 2)
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")

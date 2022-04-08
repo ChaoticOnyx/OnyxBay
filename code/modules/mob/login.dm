@@ -3,7 +3,7 @@
 	//Multikey checks and logging
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
-	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
+	log_access("Login: [key_name(src, include_name = FALSE)] from [lastKnownIP ? MARK_IP(lastKnownIP) : MARK_IP("localhost")]-[MARK_COMPUTER_ID(computer_id)] || BYOND v[client.byond_version]")
 	if(config.log_access)
 		var/is_multikeying = 0
 		for(var/mob/M in GLOB.player_list)
@@ -19,10 +19,10 @@
 				if(matches)
 					if(M.client)
 						message_admins("<font color='red'><B>Notice: </B></font><span class='info'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</span>", 1)
-						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].")
+						log_access("Notice: [key_name(src, include_name = FALSE)] has the same [matches] as [key_name(M, include_name = FALSE)].")
 					else
 						message_admins("<font color='red'><B>Notice: </B></font><span class='info'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </span>", 1)
-						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
+						log_access("Notice: [key_name(src, include_name = FALSE)] has the same [matches] as [key_name(M, include_name = FALSE)] (no longer logged in).")
 		if(is_multikeying && !client.warned_about_multikeying)
 			client.warned_about_multikeying = 1
 			spawn(1 SECOND)
@@ -45,7 +45,8 @@
 	var/client/my_client // Need to keep track of this ourselves, since by the time Logout() is called the client has already been nulled
 
 /mob/Login()
-
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 	GLOB.player_list |= src
 	update_Login_details()
 	world.update_status()
@@ -70,9 +71,23 @@
 	if(eyeobj)
 		eyeobj.possess(src)
 
+	l_plane = new()
+	l_general = new()
+	client.screen += l_plane
+	client.screen += l_general
+
 	refresh_client_images()
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
 	add_click_catcher()
 
+	client.mob.update_client_color()
+
 	//set macro to normal incase it was overriden (like cyborg currently does)
-	winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
+	if(hotkey_mode == GLOB.PREF_YES)
+		winset(src, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true input.focus=false")
+	else
+		winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+
+	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_IN, src)
+	SEND_SIGNAL(src, SIGNAL_LOGGED_IN, src)

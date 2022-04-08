@@ -58,12 +58,6 @@
 	desc = "Toxins Lab"
 	region = ACCESS_REGION_RESEARCH
 
-/var/const/access_genetics = 9
-/datum/access/genetics
-	id = access_genetics
-	desc = "Genetics Lab"
-	region = ACCESS_REGION_MEDBAY
-
 /var/const/access_engine = 10
 /datum/access/engine
 	id = access_engine
@@ -232,9 +226,9 @@
 	desc = "Library"
 	region = ACCESS_REGION_GENERAL
 
-/var/const/access_lawyer = 38
-/datum/access/lawyer
-	id = access_lawyer
+/var/const/access_iaa = 38
+/datum/access/iaa
+	id = access_iaa
 	desc = "Internal Affairs"
 	region = ACCESS_REGION_COMMAND
 
@@ -392,6 +386,12 @@
 	id = access_medical_equip
 	desc = "Medical Equipment"
 	region = ACCESS_REGION_MEDBAY
+
+/var/const/access_lawyer = 67
+/datum/access/lawyer
+	id = access_lawyer
+	desc = "Lawyer"
+	region = ACCESS_REGION_GENERAL
 
 /******************
 * Central Command *

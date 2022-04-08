@@ -1,4 +1,4 @@
-//Procedures in this file: Gneric surgery steps
+//Procedures in this file: Generic surgery steps
 //////////////////////////////////////////////////////////////////
 //						COMMON STEPS							//
 //////////////////////////////////////////////////////////////////
@@ -12,7 +12,7 @@
 	shock_level = 10
 
 /datum/surgery_step/generic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if (isslime(target))
+	if (ismetroid(target))
 		return 0
 	if (target_zone == BP_EYES)	//there are specific steps for eye surgery
 		return 0
@@ -31,14 +31,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cut_with_laser
 	allowed_tools = list(
-	/obj/item/weapon/scalpel/laser3 = 95, \
-	/obj/item/weapon/scalpel/laser2 = 85, \
-	/obj/item/weapon/scalpel/laser1 = 75, \
-	/obj/item/weapon/melee/energy/sword = 5
+	/obj/item/scalpel/laser3 = 100, \
+	/obj/item/scalpel/laser2 = 100, \
+	/obj/item/scalpel/laser1 = 100, \
+	/obj/item/melee/energy/sword/one_hand = 50
 	)
 	priority = 2
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/generic/cut_with_laser/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -57,7 +56,7 @@
 	user.visible_message("<span class='notice'>[user] has made a bloodless incision on [target]'s [affected.name] with \the [tool].</span>", \
 	"<span class='notice'>You have made a bloodless incision on [target]'s [affected.name] with \the [tool].</span>",)
 	affected.createwound(CUT, affected.min_broken_damage/2, 1)
-	affected.clamp()
+	affected.clamp_organ()
 	spread_germs_to_organ(affected, user)
 
 /datum/surgery_step/generic/cut_with_laser/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -72,31 +71,36 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/incision_manager
 	allowed_tools = list(
-	/obj/item/weapon/scalpel/manager = 100
+	/obj/item/scalpel/manager = 100
 	)
 	priority = 2
-	min_duration = 80
-	max_duration = 120
+	duration = CUT_DURATION
 
 /datum/surgery_step/generic/incision_manager/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		return affected && affected.open() == SURGERY_CLOSED && target_zone != BP_MOUTH
+		return affected && (affected.open() == SURGERY_CLOSED || affected.open() == SURGERY_OPEN) && target_zone != BP_MOUTH
 
 /datum/surgery_step/generic/incision_manager/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("[user] starts to construct a prepared incision on and within [target]'s [affected.name] with \the [tool].", \
-	"You start to construct a prepared incision on and within [target]'s [affected.name] with \the [tool].")
+	if(affected.open() == SURGERY_CLOSED)
+		user.visible_message("[user] starts to construct a prepared incision on [target]'s [affected.name] with \the [tool].", \
+		"You carefully start incision on [target]'s [affected.name], while \the [tool] makes all the side work for you.")
+	else
+		user.visible_message("[user] starts sliding \the [tool] above the cut on [target]'s [affected.name].", \
+		"You carefully start sliding \the [tool] above the cut on [target]'s [affected.name], while it makes all the side work for you.")
 	target.custom_pain("You feel a horrible, searing pain in your [affected.name] as it is pushed apart!",50, affecting = affected)
 	..()
 
 /datum/surgery_step/generic/incision_manager/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='notice'>[user] has constructed a prepared incision on and within [target]'s [affected.name] with \the [tool].</span>", \
-	"<span class='notice'>You have constructed a prepared incision on and within [target]'s [affected.name] with \the [tool].</span>",)
+	user.visible_message("<span class='notice'>[user] has constructed a prepared incision on [target]'s [affected.name] with \the [tool].</span>", \
+	"<span class='notice'>You have constructed a prepared incision on [target]'s [affected.name] with \the [tool].</span>",)
 
-	affected.createwound(CUT, affected.min_broken_damage/2, 1)
-	affected.clamp()
+	if(affected.open() == SURGERY_CLOSED)
+		affected.createwound(CUT, affected.min_broken_damage/2, 1)
+	affected.clamp_organ()
+	affected.open_incision()
 
 /datum/surgery_step/generic/incision_manager/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -109,15 +113,14 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cut_open
 	allowed_tools = list(
-	/obj/item/weapon/scalpel = 100,		\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/knife = 75,	\
-	/obj/item/weapon/broken_bottle = 50,
-	/obj/item/weapon/material/shard = 50, 		\
+	/obj/item/scalpel = 100,		\
+	/obj/item/material/knife = 75,	\
+	/obj/item/material/kitchen/utensil/knife = 75,	\
+	/obj/item/broken_bottle = 50,
+	/obj/item/material/shard = 50, 		\
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/generic/cut_open/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -155,13 +158,12 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/clamp_bleeders
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
+	/obj/item/hemostat = 100,	\
 	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 20
 	)
 
-	min_duration = 40
-	max_duration = 60
+	duration = CLAMP_DURATION
 
 /datum/surgery_step/generic/clamp_bleeders/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -179,7 +181,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='notice'>[user] clamps bleeders in [target]'s [affected.name] with \the [tool].</span>",	\
 	"<span class='notice'>You clamp bleeders in [target]'s [affected.name] with \the [tool].</span>")
-	affected.clamp()
+	affected.clamp_organ()
 	spread_germs_to_organ(affected, user)
 	playsound(target.loc, 'sound/items/Welder.ogg', 15, 1)
 
@@ -194,15 +196,14 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/retract_skin
 	allowed_tools = list(
-	/obj/item/weapon/retractor = 100, 	\
-	/obj/item/weapon/crowbar = 75,
-	/obj/item/weapon/material/knife = 50,	\
-	/obj/item/weapon/material/kitchen/utensil/fork = 50
+	/obj/item/retractor = 100, 	\
+	/obj/item/crowbar = 75,
+	/obj/item/material/knife = 50,	\
+	/obj/item/material/kitchen/utensil/fork = 50
 	)
 
 	priority = 1
-	min_duration = 30
-	max_duration = 40
+	duration = RETRACT_DURATION
 
 /datum/surgery_step/generic/retract_skin/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -220,11 +221,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='notice'>[user] keeps the incision open on [target]'s [affected.name] with \the [tool].</span>",	\
 	"<span class='notice'>You keep the incision open on [target]'s [affected.name] with \the [tool].</span>")
-	var/datum/wound/W = affected.get_incision()
-	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage)) //damage up to the max of the wound.
-	if(!affected.encased)
-		for(var/obj/item/weapon/implant/I in affected.implants)
-			I.exposed()
+	affected.open_incision()
 
 /datum/surgery_step/generic/retract_skin/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -237,14 +234,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cauterize
 	allowed_tools = list(
-	/obj/item/weapon/cautery = 100,			\
+	/obj/item/cautery = 100,			\
 	/obj/item/clothing/mask/smokable/cigarette = 75,	\
-	/obj/item/weapon/flame/lighter = 50,			\
-	/obj/item/weapon/weldingtool = 25
+	/obj/item/flame/lighter = 50,			\
+	/obj/item/weldingtool = 25
 	)
 
-	min_duration = 70
-	max_duration = 100
+	duration = CAUTERIZE_DURATION
 
 /datum/surgery_step/generic/cauterize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -279,6 +275,8 @@
 	var/datum/wound/cut/W = affected.get_incision()
 	user.visible_message("<span class='notice'>[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>", \
 	"<span class='notice'>You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>")
+	if(affected.clamped())
+		affected.remove_clamps()
 	if(W)
 		W.close()
 	if(affected.is_stump())
@@ -295,13 +293,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/amputate
 	allowed_tools = list(
-	/obj/item/weapon/circular_saw = 100, \
-	/obj/item/weapon/material/hatchet = 75, \
-	/obj/item/weapon/material/twohanded/fireaxe = 85
+	/obj/item/circular_saw = 100, \
+	/obj/item/material/hatchet = 75, \
+	/obj/item/material/twohanded/fireaxe = 85, \
+	/obj/item/gun/energy/plasmacutter = 90
 	)
 
-	min_duration = 110
-	max_duration = 160
+	duration = 125 //hardcoded by design
 
 /datum/surgery_step/generic/amputate/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (target_zone == BP_EYES)	//there are specific steps for eye surgery

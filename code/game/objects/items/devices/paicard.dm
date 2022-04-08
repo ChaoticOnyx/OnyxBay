@@ -13,9 +13,12 @@
 /obj/item/device/paicard/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
-	var/obj/item/weapon/rig/rig = src.get_rig()
+	var/obj/item/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
+	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))
+		var/obj/item/integrated_circuit/input/pAI_connector/tank = loc
+		tank.relaymove(user, direction)
 
 /obj/item/device/paicard/New()
 	..()
@@ -29,12 +32,13 @@
 	return ..()
 
 /obj/item/device/paicard/attack_self(mob/user)
-	if (!in_range(src, user))
+	if(!in_range(src, user))
 		return
 	user.set_machine(src)
 	var/dat = {"
 		<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 		<html>
+			<meta charset=\"utf-8\">
 			<head>
 				<style>
 					body {
@@ -220,13 +224,17 @@
 				<br>
 				<p>Each time this button is pressed, a request will be sent out to any available personalities. Check back often give plenty of time for personalities to respond. This process could take anywhere from 15 seconds to several minutes, depending on the available personalities' timeliness.</p>
 			"}
-	user << browse(dat, "window=paicard")
+	show_browser(user, dat, "window=paicard")
 	onclose(user, "paicard")
 	return
 
-/obj/item/device/paicard/Topic(href, href_list)
+/obj/item/device/paicard/CanUseTopic(mob/user, datum/topic_state/state, href_list)
+	. = ..()
+	if(href_list && (href_list["setdna"] || href_list["setlaws"] || href_list["wires"]) && !istype(pai))
+		return FALSE
 
-	if(!usr || usr.stat)
+/obj/item/device/paicard/Topic(href, href_list)
+	if ((. = ..()))
 		return
 
 	if(href_list["setdna"])
@@ -321,7 +329,7 @@
 		qdel(src)
 
 /obj/item/device/paicard/see_emote(mob/living/M, text)
-	if(pai && pai.client && !pai.canmove)
+	if(pai && pai.client && pai.stat == CONSCIOUS)
 		var/rendered = "<span class='message'>[text]</span>"
 		pai.show_message(rendered, 2)
 	..()

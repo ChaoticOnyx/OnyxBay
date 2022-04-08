@@ -23,7 +23,7 @@
 			G.affecting.forceMove(get_turf(src))
 			G.affecting.Weaken(1)
 			user.visible_message("<span class='warning'>\The [user] throws \the [G.affecting] onto \the [src]!</span>")
-			user.drop_from_inventory(G)
+			G.delete_self()
 	else ..()
 
 /obj/structure/deity/altar/Process()
@@ -63,15 +63,15 @@
 	START_PROCESSING(SSobj, src)
 	target = L
 	update_icon()
-	GLOB.destroyed_event.register(L,src,/obj/structure/deity/altar/proc/remove_target)
-	GLOB.moved_event.register(L, src, /obj/structure/deity/altar/proc/remove_target)
-	GLOB.death_event.register(L, src, /obj/structure/deity/altar/proc/remove_target)
+	register_signal(L, SIGNAL_QDELETING, /obj/structure/deity/altar/proc/remove_target)
+	register_signal(L, SIGNAL_MOVED, /obj/structure/deity/altar/proc/remove_target)
+	register_signal(L, SIGNAL_MOB_DEATH, /obj/structure/deity/altar/proc/remove_target)
 
 /obj/structure/deity/altar/proc/remove_target()
 	STOP_PROCESSING(SSobj, src)
-	GLOB.destroyed_event.unregister(target, src)
-	GLOB.moved_event.unregister(target, src)
-	GLOB.death_event.unregister(target, src)
+	unregister_signal(target, SIGNAL_QDELETING)
+	unregister_signal(target, SIGNAL_MOVED)
+	unregister_signal(target, SIGNAL_MOB_DEATH)
 	target = null
 	update_icon()
 

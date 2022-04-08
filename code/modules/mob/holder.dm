@@ -1,10 +1,11 @@
 var/list/holder_mob_icon_cache = list()
 
 //Helper object for picking dionaea (and other creatures) up.
-/obj/item/weapon/holder
+/obj/item/holder
 	name = "holder"
 	desc = "You shouldn't ever see this."
 	icon = 'icons/obj/objects.dmi'
+	icon_state = "blank"
 	slot_flags = SLOT_HEAD | SLOT_HOLSTER
 
 	origin_tech = null
@@ -14,82 +15,77 @@ var/list/holder_mob_icon_cache = list()
 		)
 	pixel_y = 8
 
-	var/last_holder
-
-/obj/item/weapon/holder/New()
+/obj/item/holder/New()
 	..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/weapon/holder/proc/destroy_all()
+/obj/item/holder/proc/destroy_all()
 	for(var/atom/movable/AM in src)
 		qdel(AM)
 	qdel(src)
 
-/obj/item/weapon/holder/Destroy()
-	for(var/atom/movable/AM in src)
-		AM.forceMove(get_turf(src))
-	last_holder = null
+/obj/item/holder/Destroy()
+	if(ismob(loc))
+		var/mob/M = loc
+		M.drop_from_inventory(src, get_turf(M))
+	for(var/thing in src)
+		var/mob/M = thing
+		M.dropInto(loc)
+		M.reset_view()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/weapon/holder/Process()
-	update_state()
+/obj/item/holder/Process()
+	check_condition()
 
-/obj/item/weapon/holder/dropped()
+/obj/item/holder/dropped()
 	..()
 	spawn(1)
-		update_state()
+		check_condition()
 
-/obj/item/weapon/holder/proc/update_state()
-	if(last_holder != loc)
-		for(var/mob/M in contents)
-			unregister_all_movement(last_holder, M)
-
-	if(istype(loc,/turf) || !(contents.len))
-		for(var/mob/M in contents)
-			var/atom/movable/mob_container = M
-			mob_container.dropInto(loc)
-			M.reset_view()
+/obj/item/holder/proc/check_condition()
+	if(isturf(loc) || !(contents.len))
 		qdel(src)
-	else if(last_holder != loc)
-		for(var/mob/M in contents)
-			register_all_movement(loc, M)
 
-	last_holder = loc
-
-/obj/item/weapon/holder/onDropInto(atom/movable/AM)
+/obj/item/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
 		return loc.loc
 	return ..()
 
-/obj/item/weapon/holder/GetIdCard()
+/obj/item/holder/GetIdCard()
 	for(var/mob/M in contents)
 		var/obj/item/I = M.GetIdCard()
 		if(I)
 			return I
 	return null
 
-/obj/item/weapon/holder/GetAccess()
+/obj/item/holder/GetAccess()
 	var/obj/item/I = GetIdCard()
 	return I ? I.GetAccess() : ..()
 
-/obj/item/weapon/holder/attack_self()
+/obj/item/holder/attack_self()
 	for(var/mob/M in contents)
 		M.show_inv(usr)
+		usr.show_inventory?.open()
 
-/obj/item/weapon/holder/attack(mob/target, mob/user)
+/obj/item/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
-
+		if(M.isSynthetic())
+			return
+		var/obj/item/blocked = M.check_mouth_coverage()
+		if(blocked)
+			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
+			return 1
 		for(var/mob/victim in src.contents)
 			M.devour(victim)
 
-		update_state()
+		check_condition()
 
 	..()
 
-/obj/item/weapon/holder/proc/sync(mob/living/M)
+/obj/item/holder/proc/sync(mob/living/M)
 	dir = 2
 	overlays.Cut()
 	icon = M.icon
@@ -99,32 +95,42 @@ var/list/holder_mob_icon_cache = list()
 	name = M.name
 	desc = M.desc
 	overlays |= M.overlays
-	var/mob/living/carbon/human/H = loc
-	last_holder = H
-	register_all_movement(H, M)
 
 	update_held_icon()
 
 //Mob specific holders.
+/obj/item/holder/diona
+	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 5)
+	slot_flags = SLOT_HEAD | SLOT_OCLOTHING | SLOT_HOLSTER
 
-/obj/item/weapon/holder/drone
+/obj/item/holder/drone
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 5)
 
-/obj/item/weapon/holder/mouse
+/obj/item/holder/mouse
 	w_class = ITEM_SIZE_TINY
 
-/obj/item/weapon/holder/borer
+/obj/item/holder/borer
 	origin_tech = list(TECH_BIO = 6)
 
 //need own subtype to work with recipies
-/obj/item/weapon/holder/corgi
+/obj/item/holder/corgi
 	origin_tech = list(TECH_BIO = 4)
 
-/obj/item/weapon/holder/lizard
+/obj/item/holder/lizard
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
 
-/obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/holder/parrot
+	origin_tech = list(TECH_BIO = 4)
+
+/obj/item/holder/crab
+	origin_tech = list(TECH_BIO = 3)
+
+/obj/item/holder/chicken
+	origin_tech = list(TECH_BIO = 2)
+	slot_flags = SLOT_HOLSTER
+
+/obj/item/holder/attackby(obj/item/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)
 		M.attackby(W,user)
 
@@ -137,28 +143,41 @@ var/list/holder_mob_icon_cache = list()
 		return
 
 	if(self_grab)
-		if(src.incapacitated()) return
+		if(incapacitated())
+			return
 	else
-		if(grabber.incapacitated()) return
+		if(grabber.incapacitated())
+			return
 
-	var/obj/item/weapon/holder/H = new holder_type(get_turf(src))
+	for(var/obj/item/grab/G in grabbed_by)
+		if(self_grab) // Somebody's grabbing us, no way to climb onto anyone.
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber] while being grabbed!"))
+			return
+		else if(G.assailant != grabber) // Grabber's trying to scoop us up, but somebody else's grabbing us.
+			to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of [G.assailant]'s grab!"))
+			return
+
+	var/obj/item/holder/H = new holder_type(get_turf(src))
 
 	if(self_grab)
-		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail=0, disable_warning=1))
-			to_chat(src, "<span class='warning'>You can't climb onto [grabber]!</span>")
+		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail = FALSE, disable_warning = TRUE))
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber]!"))
 			return
 
-		to_chat(grabber, "<span class='notice'>\The [src] clambers onto you!</span>")
-		to_chat(src, "<span class='notice'>You climb up onto \the [grabber]!</span>")
+		to_chat(grabber, SPAN("notice", "\The [src] clambers onto you!"))
+		to_chat(src, SPAN("notice", "You climb up onto \the [grabber]!"))
 	else
 		if(!grabber.put_in_hands(H))
-			to_chat(grabber, "<span class='warning'>Your hands are full!</span>")
+			to_chat(grabber, SPAN("warning", "Your hands are full!"))
 			return
 
-		to_chat(grabber, "<span class='notice'>You scoop up \the [src]!</span>")
-		to_chat(src, "<span class='notice'>\The [grabber] scoops you up!</span>")
+		to_chat(grabber, SPAN("notice", "You scoop up \the [src]!"))
+		to_chat(src, SPAN("notice", "\The [grabber] scoops you up!"))
 
-	src.forceMove(H)
+	for(var/obj/item/grab/G in grabbed_by)
+		qdel(G) // All the checks have been done above, it's safe to murder one (or even two, who knows) of grabber's grab objects.
+
+	forceMove(H)
 	if(isanimal(src))
 		var/mob/living/simple_animal/SA = src
 		SA.panic_target = null
@@ -182,13 +201,13 @@ var/list/holder_mob_icon_cache = list()
 /mob/living/carbon/human/scoop_check(mob/living/scooper)
 	return (scooper.mob_size > src.mob_size && a_intent == I_HELP)
 
-/obj/item/weapon/holder/human
+/obj/item/holder/human
 	icon = 'icons/mob/holder_complex.dmi'
 	var/list/generate_for_slots = list(slot_l_hand_str, slot_r_hand_str, slot_back_str)
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/weapon/holder/human/sync(mob/living/M)
+/obj/item/holder/human/sync(mob/living/M)
 	// Generate appropriate on-mob icons.
 	var/mob/living/carbon/human/owner = M
 	if(istype(owner) && owner.species)

@@ -24,13 +24,17 @@
 	radiation_count = SSradiation.get_rads_at_turf(get_turf(src))
 	update_icon()
 
+	THROTTLE(sound_cooldown, 1 SECOND)
+	if(sound_cooldown)
+		play_sound()
+
 /obj/item/device/geiger/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/msg = "[scanning ? "ambient" : "stored"] Radiation level: [radiation_count ? radiation_count : "0"] Bq."
 	if(radiation_count > RAD_LEVEL_LOW)
-		to_chat(user, "<span class='warning'>[msg]</span>")
+		. += "\n<span class='warning'>[msg]</span>"
 	else
-		to_chat(user, "<span class='notice'>[msg]</span>")
+		. += "\n<span class='notice'>[msg]</span>"
 
 /obj/item/device/geiger/attack_self(mob/user)
 	scanning = !scanning
@@ -47,10 +51,35 @@
 		return 1
 
 	switch(radiation_count)
-		if(null) icon_state = "geiger_on_1"
-		if(-INFINITY to RAD_LEVEL_LOW) icon_state = "geiger_on_1"
-		if(RAD_LEVEL_LOW + 0.01 to RAD_LEVEL_MODERATE) icon_state = "geiger_on_2"
-		if(RAD_LEVEL_MODERATE + 0.1 to RAD_LEVEL_HIGH) icon_state = "geiger_on_3"
-		if(RAD_LEVEL_HIGH + 1 to RAD_LEVEL_VERY_HIGH) icon_state = "geiger_on_4"
-		if(RAD_LEVEL_VERY_HIGH + 1 to INFINITY) icon_state = "geiger_on_5"
+		if(null)
+			icon_state = "geiger_on_0"
+			return
+		if(-INFINITY to 0)
+			icon_state = "geiger_on_0"
+			return
+		if(0 to RAD_LEVEL_LOW)
+			icon_state = "geiger_on_1"
+			return
+		if(RAD_LEVEL_LOW to RAD_LEVEL_MODERATE)
+			icon_state = "geiger_on_2"
+			return
+		if(RAD_LEVEL_MODERATE to RAD_LEVEL_HIGH)
+			icon_state = "geiger_on_3"
+			return
+		if(RAD_LEVEL_HIGH to RAD_LEVEL_VERY_HIGH)
+			icon_state = "geiger_on_4"
+			return
+		if(RAD_LEVEL_VERY_HIGH to INFINITY)
+			icon_state = "geiger_on_5"
+			return
 
+/obj/item/device/geiger/proc/play_sound()
+	switch(radiation_count)
+		if(0.1 to RAD_LEVEL_LOW)
+			playsound(src, GET_SFX(SFX_GEIGER_LOW), 25, FALSE)
+		if(RAD_LEVEL_LOW to RAD_LEVEL_MODERATE)
+			playsound(src, GET_SFX(SFX_GEIGER_MODERATE), 25, FALSE)
+		if(RAD_LEVEL_MODERATE to RAD_LEVEL_HIGH)
+			playsound(src, GET_SFX(SFX_GEIGER_HIGH), 25, FALSE)
+		if(RAD_LEVEL_HIGH to INFINITY)
+			playsound(src, GET_SFX(SFX_GEIGER_VERY_HIGH), 25, FALSE)

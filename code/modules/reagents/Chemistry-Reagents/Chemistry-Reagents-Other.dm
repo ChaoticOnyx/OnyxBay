@@ -148,11 +148,12 @@
 	color = "#d0d0d0"
 
 /datum/reagent/uranium
-	name = MATERIAL_URANIUM
+	name = "Uranium"
 	description = "A silvery-white metallic chemical element in the actinide series, weakly radioactive."
 	taste_description = "the inside of a reactor"
 	reagent_state = SOLID
 	color = "#b8b8c0"
+	radiation = 0.05
 
 /datum/reagent/uranium/affect_touch(mob/living/carbon/M, alien, removed)
 	affect_ingest(M, alien, removed)
@@ -164,9 +165,13 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
-			return
+				glow = new (T)
+				glow.create_reagents(volume)
+
+			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
+			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
 
 /datum/reagent/water/holywater
 	name = "Holy Water"
@@ -181,15 +186,25 @@
 	if(ishuman(M)) // Any location
 		if(iscultist(M))
 			if(prob(10))
-				GLOB.cult.offer_uncult(M)
+				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
 				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
-				M.visible_message("<span class='warning'>\The [M] coughs up \the [S]!</span>")
+				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
+		if(M.mind && M.mind.vampire)
+			M.adjustFireLoss(6)
+			M.adjust_fire_stacks(1)
+			M.IgniteMob()
+			if(prob(20))
+				for (var/mob/V in viewers(src))
+					V.show_message(SPAN_WARNING("[M]'s skin sizzles and burns."), 1)
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
-		T.holy = 1
-	return
+		T.holy = TRUE
+
+		var/area/A = get_area(T)
+		if(A && !isspace(A))
+			A.holy = TRUE
 
 /datum/reagent/diethylamine
 	name = "Diethylamine"
@@ -257,7 +272,7 @@
 		T.clean_blood()
 
 
-		for(var/mob/living/carbon/slime/M in T)
+		for(var/mob/living/carbon/metroid/M in T)
 			M.adjustToxLoss(rand(5, 10))
 
 /datum/reagent/space_cleaner/affect_touch(mob/living/carbon/M, alien, removed)
@@ -290,7 +305,7 @@
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#009ca8"
 
@@ -352,6 +367,13 @@
 	taste_description = "wood"
 	reagent_state = LIQUID
 	color = "#b97a57"
+
+/datum/reagent/glass
+	name = "Glass"
+	description = "A regular silicate glass, in form of a fine powder."
+	taste_description = "tiny cuts"
+	reagent_state = SOLID
+	color = "#b5edff"
 
 /datum/reagent/luminol
 	name = "Luminol"

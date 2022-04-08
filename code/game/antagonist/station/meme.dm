@@ -5,6 +5,12 @@
 	welcome_text = "You'r meme now. Enjoy!"
 	flags = ANTAG_RANDSPAWN | ANTAG_VOTABLE | ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB
 	antaghud_indicator = "hudmeme"
+	station_crew_involved = FALSE
+
+/datum/antagonist/meme/Initialize()
+	. = ..()
+	if(config.meme_min_age)
+		min_player_age = config.meme_min_age
 
 /datum/antagonist/meme/get_special_objective_text(datum/mind/player)
 	return "<br><b>Human indoctrinated:</b> [player.current:indoctrinated.len]"

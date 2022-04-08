@@ -11,9 +11,10 @@
 	icon_state = "acid"
 	icon = 'icons/mob/alien.dmi'
 
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = FALSE
+	opacity = FALSE
+	anchored = TRUE
+	layer = ABOVE_WINDOW_LAYER
 
 	var/atom/target
 	var/acid_strength = ACID_WEAK
@@ -24,6 +25,9 @@
 	..(loc)
 	target = supplied_target
 	melt_time = melt_time / acid_strength
+	desc += "\n<b>It's melting \the [target]!</b>"
+	pixel_x = target.pixel_x
+	pixel_y = target.pixel_y
 	START_PROCESSING(SSprocessing, src)
 
 /obj/effect/acid/Destroy()
@@ -59,9 +63,6 @@
  * Egg
  */
 
-
-#define MAX_PROGRESS 100
-
 /obj/structure/alien/egg
 	desc = "It looks like a weird egg."
 	name = "egg"
@@ -69,6 +70,7 @@
 	density = 0
 	anchored = 1
 	var/progress = 0
+	var/progress_max = 75 // Point at which we can harvest it manually; hatches autimatically at progress_max*2
 
 /obj/structure/alien/egg/Initialize()
 	. = ..()
@@ -78,91 +80,61 @@
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/structure/alien/egg/CanUseTopic(mob/user)
-	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
-
-/obj/structure/alien/egg/Topic(href, href_list)
-	if(..())
-		return 1
-
-	if(href_list["spawn"])
-		attack_ghost(usr)
-
 /obj/structure/alien/egg/Process()
 	progress++
-	if(progress >= MAX_PROGRESS)
-		for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
-			if(O.client && O.client.prefs && (MODE_XENOMORPH in O.client.prefs.be_special_role))
-				to_chat(O, "<span class='notice'>An alien is ready to hatch! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];spawn=1'>spawn</a>)</span>")
-		STOP_PROCESSING(SSobj, src)
-		update_icon()
+	if(progress >= progress_max*2)
+		hatch()
+
+/obj/structure/alien/egg/attack_hand(mob/user)
+	if(progress == -1)
+		return ..()
+	if(!isliving(user))
+		return ..()
+	var/mob/living/M = user
+	if(progress < progress_max)
+		if(M.faction != "xenomorph")
+			to_chat(M, "You touch \the [src].")
+		else
+			to_chat(M, "<span class='alium'>\The [src] is not ready to hatch yet.</alium>")
+		return
+	if(M.faction != "xenomorph")
+		to_chat(M, "You touch \the [src]... And it starts moving.")
+	else
+		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
+	hatch()
+
+/obj/structure/alien/egg/examine(mob/user)
+	. = ..()
+	if(isliving(user))
+		var/mob/living/M = user
+		if(M.faction == "xenomorph")
+			if(progress < progress_max)
+				. += "\nIt's not ready to hatch yet..."
+			else
+				. += "\nIt's ready to hatch!"
 
 /obj/structure/alien/egg/update_icon()
 	if(progress == -1)
-		icon_state = "egg_hatched"
-	else if(progress < MAX_PROGRESS)
+		icon_state = "egg_opened"
+	else if(progress < progress_max)
 		icon_state = "egg_growing"
 	else
 		icon_state = "egg"
 
-/obj/structure/alien/egg/attack_ghost(mob/observer/ghost/user)
-	if(progress == -1) //Egg has been hatched
-		return
+/obj/structure/alien/egg/proc/hatch()
+	set waitfor = 0
 
-	if(progress < MAX_PROGRESS)
-		to_chat(user, "\The [src] has not yet matured.")
-		return
-
-	if(!user.MayRespawn(1))
-		return
-
-	// Check for bans properly.
-	if(jobban_isbanned(user, MODE_XENOMORPH))
-		to_chat(user, "<span class='danger'>You are banned from playing a Xenophage.</span>")
-		return
-
-	var/confirm = alert(user, "Are you sure you want to join as a Xenophage larva?", "Become Larva", "No", "Yes")
-
-	if(!src || confirm != "Yes")
-		return
-
-	if(!user || !user.ckey)
-		return
-
-	if(progress == -1) //Egg has been hatched.
-		to_chat(user, "Too slow...")
-		return
-
-	flick("egg_opening",src)
-	progress = -1 // No harvesting pls.
-	sleep(5)
-
-	if(!src || !user)
-		visible_message("<span class='alium'>\The [src] writhes with internal motion, but nothing comes out.</span>")
-		progress = MAX_PROGRESS // Someone else can have a go.
-		return // What a pain.
-
-	// Create the mob, transfer over key.
-	var/mob/living/carbon/alien/larva/larva = new(get_turf(src))
-	larva.ckey = user.ckey
-	GLOB.xenomorphs.add_antagonist(larva.mind, 1)
-	spawn(-1)
-		if(user)
-			qdel(user) // Remove the keyless ghost if it exists.
-	visible_message("<span class='alium'>\The [src] splits open with a wet slithering noise, and \the [larva] writhes free!</span>")
-
-	// Turn us into a hatched egg.
-	name = "hatched alien egg"
-	desc += " This one has hatched."
+	progress = -1
+	STOP_PROCESSING(SSobj, src)
 	update_icon()
-
-#undef MAX_PROGRESS
+	flick("egg_opening", src)
+	sleep(5)
+	if(get_turf(src))
+		new /mob/living/simple_animal/hostile/facehugger(get_turf(src))
 
 /*
  * Weeds
  */
-#define NODERANGE 3
-
 /obj/effect/alien/weeds
 	name = "weeds"
 	desc = "Weird purple weeds."
@@ -180,8 +152,7 @@
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
-	light_range = NODERANGE
-	var/node_range = NODERANGE
+	var/node_range = 3
 
 /obj/effect/alien/weeds/node/New()
 	..(src.loc, src)
@@ -210,17 +181,24 @@
 	if(!linked_node || (get_dist(linked_node, src) > linked_node.node_range) )
 		return
 
-	direction_loop:
-		for(var/dirn in GLOB.cardinal)
-			var/turf/T = get_step(src, dirn)
+	for(var/dirn in GLOB.cardinal)
+		var/turf/T = get_step(src, dirn)
 
-			if (!istype(T) || T.density || locate(/obj/effect/alien/weeds) in T || istype(T, /turf/space))
-				continue
+		if(!istype(T) || T.density || (locate(/obj/effect/alien/weeds) in T) || istype(T, /turf/space))
+			continue
 
-			for(var/obj/O in T)
-				if(O.density)
-					continue direction_loop
+		var/turf_eligible = TRUE
+		var/atom/previous_loc = get_step(src, get_dir(src, linked_node))
+		for(var/obj/O in T)
+			if(istype(O, /obj/structure/window))
+				if(!O.CanPass(src, previous_loc))
+					turf_eligible = FALSE
+					break
+			if(!O.CanZASPass(previous_loc)) // So it will grow through the stuff like consoles and disposal units, but will get blocked by airlocks and inflatable walls
+				turf_eligible = FALSE
+				break
 
+		if(turf_eligible)
 			new /obj/effect/alien/weeds(T, linked_node)
 
 
@@ -236,14 +214,14 @@
 				qdel(src)
 	return
 
-/obj/effect/alien/weeds/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/alien/weeds/attackby(obj/item/W, mob/user)
 	if(W.attack_verb.len)
 		visible_message("<span class='danger'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
 	else
 		visible_message("<span class='danger'>\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]</span>")
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/WT = W
+	if(istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			qdel(src)
 			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
@@ -263,5 +241,3 @@
 /obj/effect/alien/weeds/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300 + T0C && prob(80))
 		qdel(src)
-
-#undef NODERANGE

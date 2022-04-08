@@ -2,12 +2,16 @@
 				INTERNAL ORGANS DEFINES
 ****************************************************/
 /obj/item/organ/internal
+	food_organ_type = /obj/item/reagent_containers/food/snacks/organ
+	throwforce = 0.1 // Enough to upset you, not enough to crack your ribcage open
 	var/dead_icon // Icon to use when the organ has died.
 	var/surface_accessible = FALSE
 	var/relative_size = 25   // Relative size of the organ. Roughly % of space they take in the target projection :D
 	var/list/will_assist_languages = list()
 	var/list/datum/language/assists_languages = list()
 	var/min_bruised_damage = 10       // Damage before considered bruised
+	var/foreign = FALSE 			  // foreign organs shouldn't be removed or recreated on revive
+	var/override_species_icon = FALSE // Should we ignore species-specific icons?
 
 /obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)
@@ -24,6 +28,8 @@
 			E.internal_organs |= src
 			E.cavity_max_w_class = max(E.cavity_max_w_class, w_class)
 
+		handle_foreign()
+
 /obj/item/organ/internal/Destroy()
 	if(owner)
 		owner.internal_organs.Remove(src)
@@ -37,7 +43,7 @@
 
 /obj/item/organ/internal/set_dna(datum/dna/new_dna)
 	..()
-	if(species && species.organs_icon)
+	if(!override_species_icon && species && species.organs_icon)
 		icon = species.organs_icon
 
 //disconnected the organ from it's owner but does not remove it, instead it becomes an implant that can be removed with implant surgery
@@ -48,7 +54,7 @@
 		removed(user, 0)
 		parent.implants += src
 
-/obj/item/organ/internal/removed(mob/living/user, drop_organ=1, detach=1)
+/obj/item/organ/internal/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(owner)
 		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
@@ -106,6 +112,9 @@
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
+	override_species_icon = TRUE
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
+
 /obj/item/organ/internal/proc/getToxLoss()
 	if(BP_IS_ROBOTIC(src))
 		return damage * 0.5
@@ -154,3 +163,7 @@
 			take_internal_damage(3)
 		if (3)
 			take_internal_damage(1)
+
+// Things we should do if we are a foreign organ. Used only by lings' biostructures for now.
+/obj/item/organ/internal/proc/handle_foreign()
+	return

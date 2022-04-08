@@ -44,7 +44,7 @@
 			src.state = STATE_DEFAULT
 		if("login")
 			var/mob/M = usr
-			var/obj/item/weapon/card/id/I = M.get_active_hand()
+			var/obj/item/card/id/I = M.get_active_hand()
 			if (I && istype(I))
 				if(src.check_access(I))
 					authenticated = 1
@@ -65,7 +65,7 @@
 	if(..())
 		return
 	user.machine = src
-	var/dat = "<head><title>Engine Computer</title></head><body>"
+	var/dat = "<meta charset=\"utf-8\"><head><title>Engine Computer</title></head><body>"
 	switch(src.state)
 		if(STATE_DEFAULT)
 			if (src.authenticated)
@@ -89,6 +89,6 @@
 			dat += "<BR>Contents:<br>[src.connected_E.H_fuel]kg of Hydrogen<br>[src.connected_E.antiH_fuel]kg of Anti-Hydrogen<br>"
 
 	dat += "<BR>\[ [(src.state != STATE_DEFAULT) ? "<A HREF='?src=\ref[src];operation=main'>Main Menu</A> | " : ""]<A HREF='?src=\ref[user];mach_close=communications'>Close</A> \]"
-	user << browse(dat, "window=communications;size=400x500")
+	show_browser(user, dat, "window=communications;size=400x500")
 	onclose(user, "communications")
 

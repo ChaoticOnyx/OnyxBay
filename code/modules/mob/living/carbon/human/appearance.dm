@@ -30,6 +30,20 @@
 /mob/living/carbon/human/proc/randomize_gender()
 	change_gender(pick(species.genders))
 
+/mob/living/carbon/human/proc/sanitize_body()
+	var/list/body_builds = src.species.get_body_build_datum_list(src.gender)
+	if(!(body_build in body_builds))
+		body_build = body_builds[1]
+		regenerate_icons()
+
+/mob/living/carbon/human/proc/change_body_build(body_build)
+	if(src.body_build == body_build)
+		return
+
+	src.body_build = body_build
+	regenerate_icons()
+	return 1
+
 /mob/living/carbon/human/proc/change_hair(hair_style)
 	if(!hair_style)
 		return
@@ -139,6 +153,7 @@
 /mob/living/carbon/human/proc/update_dna()
 	check_dna()
 	dna.ready_dna(src)
+	sync_organ_dna()
 
 /mob/living/carbon/human/proc/generate_valid_species(check_whitelist = 1, list/whitelist = list(), list/blacklist = list())
 	var/list/valid_species = new()

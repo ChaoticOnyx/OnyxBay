@@ -6,7 +6,7 @@
 	var/list/law_channels = list()
 
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
 	silicon_subsystems = list(
 		/datum/nano_module/law_manager
@@ -23,18 +23,14 @@
 		if(stat!=DEAD)	//If not dead.
 			death(1)	//Brains can die again. AND THEY SHOULD AHA HA HA HA HA HA
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
-	..()
+
+	return ..()
 
 /mob/living/silicon/sil_brainmob/update_canmove()
 	if(in_contents_of(/obj/mecha))
-		canmove = 1
 		use_me = 1
 	else if(container && istype(container, /obj/item/organ/internal/posibrain) && istype(container.loc, /turf))
-		canmove = 1
 		use_me = 1
-	else
-		canmove = 0
-	return canmove
 
 /mob/living/silicon/sil_brainmob/isSynthetic()
 	return 1

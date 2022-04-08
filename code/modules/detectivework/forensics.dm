@@ -1,17 +1,17 @@
-/obj/item/weapon/forensics
+/obj/item/forensics
 	icon = 'icons/obj/forensics.dmi'
 	w_class = ITEM_SIZE_TINY
 
 //This is the output of the stringpercent(print) proc, and means about 80% of
 //the print must be there for it to be complete.  (Prints are 32 digits)
 var/const/FINGERPRINT_COMPLETE = 6
-proc/is_complete_print(print)
+/proc/is_complete_print(print)
 	return stringpercent(print) <= FINGERPRINT_COMPLETE
 
-atom/var/list/suit_fibers
-atom/var/var/list/fingerprints
-atom/var/var/list/fingerprintshidden
-atom/var/var/fingerprintslast = null
+/atom/var/list/suit_fibers
+/atom/var/var/list/fingerprints
+/atom/var/var/list/fingerprintshidden
+/atom/var/var/fingerprintslast = null
 
 /atom/proc/add_hiddenprint(mob/M)
 	if(!M || !M.key)
@@ -113,7 +113,7 @@ atom/var/var/fingerprintslast = null
 		A.fingerprintshidden |= fingerprintshidden.Copy()    //admin
 		A.fingerprintslast = fingerprintslast
 
-atom/proc/add_fibers(mob/living/carbon/human/M)
+/atom/proc/add_fibers(mob/living/carbon/human/M)
 	if(!istype(M))
 		return
 	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))

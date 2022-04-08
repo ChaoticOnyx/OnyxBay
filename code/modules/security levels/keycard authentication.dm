@@ -10,7 +10,7 @@
 	var/confirm_delay = 3 SECONDS
 	var/busy = 0 //Busy when waiting for authentication or an event request has been sent from this device.
 	var/obj/machinery/keycard_auth/event_source
-	var/obj/item/weapon/card/id/initial_card
+	var/obj/item/card/id/initial_card
 	var/mob/event_triggered_by
 	var/mob/event_confirmed_by
 	//1 = select event
@@ -18,26 +18,26 @@
 	anchored = 1.0
 	idle_power_usage = 2
 	active_power_usage = 6
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 
 /obj/machinery/keycard_auth/attack_ai(mob/user)
 	to_chat(user, SPAN_WARNING("A firewall prevents you from interfacing with this device!"))
 	return
 
-/obj/machinery/keycard_auth/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/keycard_auth/attackby(obj/item/W, mob/user)
 	if(stat & (NOPOWER|BROKEN))
 		to_chat(user, SPAN_WARNING("This device is not powered."))
 		return
-	if(istype(W,/obj/item/weapon/card/id))
+	if(istype(W,/obj/item/card/id))
 		visible_message(SPAN_NOTICE("\The [user] swipes \the [W] through \the [src]."))
-		var/obj/item/weapon/card/id/ID = W
+		var/obj/item/card/id/ID = W
 		if(access_keycard_auth in ID.access)
 			if(active)
 				if(event_source && initial_card != ID)
 					event_source.confirmed = 1
 					event_source.event_confirmed_by = user
 				else
-					to_chat(user, SPAN_WARNING("Unable to confirm the event with the same card."))
+					visible_message(SPAN_WARNING("\The [src] blinks and displays a message: Unable to confirm the event with the same card."), range=2)
 			else if(screen == 2)
 				event_triggered_by = user
 				initial_card = ID
@@ -60,7 +60,7 @@
 
 	user.set_machine(src)
 
-	var/dat = "<h1>Keycard Authentication Device</h1>"
+	var/dat = "<meta charset=\"utf-8\"><h1>Keycard Authentication Device</h1>"
 
 	dat += "This device is used to trigger some high security events. It requires the simultaneous swipe of two high-level ID cards."
 	dat += "<br><hr><br>"
@@ -77,11 +77,11 @@
 		dat += "<li><A href='?src=\ref[src];triggerevent=Revoke Emergency Maintenance Access'>Revoke Emergency Maintenance Access</A></li>"
 		dat += "<li><A href='?src=\ref[src];triggerevent=Grant Nuclear Authorization Code'>Grant Nuclear Authorization Code</A></li>"
 		dat += "</ul>"
-		user << browse(dat, "window=keycard_auth;size=500x250")
+		show_browser(user, dat, "window=keycard_auth;size=500x250")
 	if(screen == 2)
 		dat += "Please swipe your card to authorize the following event: <b>[event]</b>"
 		dat += "<p><A href='?src=\ref[src];reset=1'>Back</A>"
-		user << browse(dat, "window=keycard_auth;size=500x250")
+		show_browser(user, dat, "window=keycard_auth;size=500x250")
 	return
 
 /obj/machinery/keycard_auth/CanUseTopic(mob/user, href_list)
@@ -125,7 +125,7 @@
 		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
-		addtimer(CALLBACK(src, .broadcast_check), confirm_delay)
+		addtimer(CALLBACK(src, .proc/broadcast_check), confirm_delay)
 
 /obj/machinery/keycard_auth/proc/broadcast_check()
 	if(confirmed)
@@ -135,7 +135,7 @@
 		message_admins("[key_name(event_triggered_by)] triggered and [key_name(event_confirmed_by)] confirmed event [event]", 1)
 	reset()
 
-/obj/machinery/keycard_auth/proc/receive_request(obj/machinery/keycard_auth/source, obj/item/weapon/card/id/ID)
+/obj/machinery/keycard_auth/proc/receive_request(obj/machinery/keycard_auth/source, obj/item/card/id/ID)
 	if(stat & (BROKEN|NOPOWER))
 		return
 	event_source = source
@@ -166,7 +166,7 @@
 			feedback_inc("alert_keycard_auth_maintRevoke",1)
 		if("Emergency Response Team")
 			if(is_ert_blocked())
-				to_chat(usr, "<span class='warning'>All emergency response teams are dispatched and can not be called at this time.</span>")
+				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."), range=2)
 				return
 
 			trigger_armed_response_team(1)
@@ -174,9 +174,9 @@
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 			if(nuke)
-				to_chat(usr, "The nuclear authorization code is [nuke.r_code]")
+				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: The nuclear authorization code is [nuke.r_code]"), range=2)
 			else
-				to_chat(usr, "No self destruct terminal found.")
+				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: No self destruct terminal found."), range=2)
 			feedback_inc("alert_keycard_auth_nukecode",1)
 
 /obj/machinery/keycard_auth/proc/is_ert_blocked()

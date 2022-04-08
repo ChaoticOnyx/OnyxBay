@@ -19,15 +19,15 @@
 
 /obj/structure/closet/secure_closet/medical1/WillContain()
 	return list(
-		/obj/item/weapon/storage/box/autoinjectors,
-		/obj/item/weapon/storage/box/syringes,
-		/obj/item/weapon/reagent_containers/dropper = 2,
-		/obj/item/weapon/reagent_containers/glass/beaker = 2,
-		/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline = 2,
-		/obj/item/weapon/reagent_containers/glass/bottle/antitoxin = 2,
+		/obj/item/storage/box/autoinjectors,
+		/obj/item/storage/box/syringes,
+		/obj/item/reagent_containers/dropper = 2,
+		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/glass/bottle/inaprovaline = 2,
+		/obj/item/reagent_containers/glass/bottle/antitoxin = 2,
 		/obj/random/firstaid,
-		/obj/item/weapon/storage/box/masks,
-		/obj/item/weapon/storage/box/gloves
+		/obj/item/storage/box/masks,
+		/obj/item/storage/box/gloves
 	)
 
 /obj/structure/closet/secure_closet/medical2
@@ -42,7 +42,7 @@
 
 /obj/structure/closet/secure_closet/medical2/WillContain()
 	return list(
-		/obj/item/weapon/tank/anesthetic = 3,
+		/obj/item/tank/anesthetic = 3,
 		/obj/item/clothing/mask/breath/medical = 3
 	)
 
@@ -57,8 +57,8 @@
 
 /obj/structure/closet/secure_closet/medical3/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/medic, /obj/item/weapon/storage/backpack/satchel_med)),
-		new /datum/atom_creator/simple(/obj/item/weapon/storage/backpack/dufflebag/med, 50),
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/medic, /obj/item/storage/backpack/satchel/med)),
+		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/med, 50),
 		/obj/item/clothing/under/rank/nursesuit,
 		/obj/item/clothing/head/nursehat,
 		/obj/item/clothing/under/rank/medical,
@@ -70,7 +70,7 @@
 		/obj/item/clothing/shoes/white,
 		/obj/item/device/radio/headset/headset_med,
 		/obj/item/taperoll/medical,
-		/obj/item/weapon/storage/belt/medical/emt,
+		/obj/item/storage/belt/medical/emt,
 		RANDOM_SCRUBS,
 		RANDOM_SCRUBS
 	)
@@ -87,25 +87,25 @@
 
 /obj/structure/closet/secure_closet/paramedic/WillContain()
 	return list(
-	    /obj/item/weapon/storage/box/autoinjectors,
-	    /obj/item/weapon/storage/box/syringes,
-	    /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline,
-	    /obj/item/weapon/reagent_containers/glass/bottle/antitoxin,
-	    /obj/item/weapon/storage/belt/medical/emt,
+	    /obj/item/storage/box/autoinjectors,
+	    /obj/item/storage/box/syringes,
+	    /obj/item/reagent_containers/glass/bottle/inaprovaline,
+	    /obj/item/reagent_containers/glass/bottle/antitoxin,
+	    /obj/item/storage/belt/medical/emt,
 	    /obj/item/clothing/mask/gas,
 	    /obj/item/clothing/suit/storage/toggle/fr_jacket,
 	    /obj/item/clothing/suit/storage/toggle/labcoat,
 	    /obj/item/device/radio/headset/headset_med,
-	    /obj/item/weapon/cartridge/medical,
+	    /obj/item/cartridge/medical,
 	    /obj/item/device/flashlight,
-	    /obj/item/weapon/tank/emergency/oxygen/engi,
-	    /obj/item/clothing/glasses/hud/health,
+	    /obj/item/tank/emergency/oxygen/engi,
+	    /obj/item/clothing/glasses/hud/one_eyed/oneye/medical,
 	    /obj/item/device/healthanalyzer,
 	    /obj/item/device/radio/off,
 	    /obj/random/medical,
-	    /obj/item/weapon/crowbar,
-	    /obj/item/weapon/extinguisher/mini,
-	    /obj/item/weapon/storage/box/freezer,
+	    /obj/item/crowbar,
+	    /obj/item/extinguisher/mini,
+	    /obj/item/storage/box/freezer,
 	    /obj/item/clothing/accessory/storage/white_vest,
 	)
 
@@ -120,20 +120,21 @@
 
 /obj/structure/closet/secure_closet/CMO/WillContain()
 	return list(
-		new /datum/atom_creator/weighted(list(/obj/item/weapon/storage/backpack/medic, /obj/item/weapon/storage/backpack/satchel_med)),
-		new /datum/atom_creator/simple(/obj/item/weapon/storage/backpack/dufflebag/med, 50),
+		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/medic, /obj/item/storage/backpack/satchel/med)),
+		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/med, 50),
 		/obj/item/clothing/suit/bio_suit/cmo,
 		/obj/item/clothing/head/bio_hood/cmo,
 		/obj/item/clothing/shoes/white,
 		/obj/item/clothing/under/rank/chief_medical_officer,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmo,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
-		/obj/item/weapon/cartridge/cmo,
+		/obj/item/clothing/accessory/storage/white_vest,
+		/obj/item/cartridge/cmo,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/clothing/shoes/brown,
 		/obj/item/device/radio/headset/heads/cmo,
 		/obj/item/device/flash,
-		/obj/item/weapon/reagent_containers/hypospray/vial,
+		/obj/item/reagent_containers/hypospray/vial,
 		RANDOM_SCRUBS
 	)
 
@@ -149,8 +150,8 @@
 
 /obj/structure/closet/secure_closet/chemical/WillContain()
 	return list(
-		/obj/item/weapon/storage/box/pillbottles = 2,
-		/obj/item/weapon/reagent_containers/glass/beaker/cryoxadone,
+		/obj/item/storage/box/pillbottles = 2,
+		/obj/item/reagent_containers/glass/beaker/cryoxadone,
 		/obj/random/medical = 12
 	)
 
@@ -186,17 +187,17 @@
 		/obj/item/clothing/under/rank/chaplain,
 		/obj/item/clothing/shoes/black,
 		/obj/item/clothing/suit/chaplain_hoodie,
-		/obj/item/weapon/storage/fancy/candle_box = 2,
-		/obj/item/weapon/deck/tarot,
-		/obj/item/weapon/reagent_containers/food/drinks/bottle/holywater,
-		/obj/item/weapon/nullrod,
+		/obj/item/storage/fancy/candle_box = 2,
+		/obj/item/deck/tarot,
+		/obj/item/reagent_containers/food/drinks/bottle/holywater,
+		/obj/item/nullrod,
 		/obj/item/clothing/suit/straight_jacket,
-		/obj/item/weapon/reagent_containers/glass/bottle/stoxin,
-		/obj/item/weapon/reagent_containers/syringe,
-		/obj/item/weapon/storage/pill_bottle/citalopram,
-		/obj/item/weapon/reagent_containers/pill/methylphenidate,
-		/obj/item/weapon/clipboard,
-		/obj/item/weapon/folder/white,
+		/obj/item/reagent_containers/glass/bottle/stoxin,
+		/obj/item/reagent_containers/syringe,
+		/obj/item/storage/pill_bottle/citalopram,
+		/obj/item/reagent_containers/pill/methylphenidate,
+		/obj/item/clipboard,
+		/obj/item/folder/white,
 		/obj/item/device/taperecorder,
 		/obj/item/device/tape/random = 3,
 		/obj/item/device/camera,
@@ -214,22 +215,22 @@
 
 /obj/structure/closet/secure_closet/virology/WillContain()
 	return list(
-		/obj/item/weapon/storage/box/autoinjectors,
-		/obj/item/weapon/storage/box/syringes,
-		/obj/item/weapon/reagent_containers/dropper = 2,
-		/obj/item/weapon/reagent_containers/glass/beaker = 2,
-		/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline,
-		/obj/item/weapon/storage/pill_bottle/spaceacillin,
-		/obj/item/weapon/reagent_containers/syringe/antiviral,
-		/obj/item/weapon/reagent_containers/glass/bottle/antitoxin,
-		/obj/item/weapon/storage/box/masks,
-		/obj/item/weapon/storage/box/gloves,
+		/obj/item/storage/box/autoinjectors,
+		/obj/item/storage/box/syringes,
+		/obj/item/reagent_containers/dropper = 2,
+		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/glass/bottle/inaprovaline,
+		/obj/item/storage/pill_bottle/spaceacillin,
+		/obj/item/reagent_containers/syringe/antiviral/packaged,
+		/obj/item/reagent_containers/glass/bottle/antitoxin,
+		/obj/item/storage/box/masks,
+		/obj/item/storage/box/gloves,
 		/obj/item/clothing/under/rank/virologist,
 		/obj/item/clothing/shoes/white,
 		/obj/item/clothing/suit/storage/toggle/labcoat/virologist,
 		/obj/item/clothing/mask/surgical,
 		/obj/item/device/healthanalyzer,
-		/obj/item/clothing/glasses/hud/health
+		/obj/item/clothing/glasses/hud/one_eyed/oneye/medical
 	)
 
 /obj/structure/closet/secure_closet/psychiatry
@@ -245,11 +246,11 @@
 /obj/structure/closet/secure_closet/psychiatry/WillContain()
 	return list(
 		/obj/item/clothing/suit/straight_jacket,
-		/obj/item/weapon/reagent_containers/glass/bottle/stoxin,
-		/obj/item/weapon/reagent_containers/syringe,
-		/obj/item/weapon/storage/pill_bottle/citalopram,
-		/obj/item/weapon/storage/pill_bottle/methylphenidate,
-		/obj/item/weapon/storage/pill_bottle/paroxetine,
+		/obj/item/reagent_containers/glass/bottle/stoxin,
+		/obj/item/reagent_containers/syringe,
+		/obj/item/storage/pill_bottle/citalopram,
+		/obj/item/storage/pill_bottle/methylphenidate,
+		/obj/item/storage/pill_bottle/paroxetine,
 		/obj/item/clothing/under/rank/psych/turtleneck,
 		/obj/item/clothing/under/rank/psych
 	)

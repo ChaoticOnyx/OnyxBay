@@ -1,7 +1,6 @@
 /datum/gear/suit
 	slot = slot_wear_suit
-	sort_category = "Suits and Overwear"
-	category = /datum/gear/suit
+	sort_category = "Suits"
 
 /datum/gear/suit/poncho
 	display_name = "poncho selection"
@@ -12,22 +11,27 @@
 /datum/gear/suit/security_poncho
 	display_name = "poncho, security"
 	path = /obj/item/clothing/suit/poncho/roles/security
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/suit/medical_poncho
 	display_name = "poncho, medical"
 	path = /obj/item/clothing/suit/poncho/roles/medical
+	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/suit/engineering_poncho
 	display_name = "poncho, engineering"
 	path = /obj/item/clothing/suit/poncho/roles/engineering
+	allowed_roles = ENGINEERING_ROLES
 
 /datum/gear/suit/science_poncho
 	display_name = "poncho, science"
 	path = /obj/item/clothing/suit/poncho/roles/science
+	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/suit/cargo_poncho
 	display_name = "poncho, supply"
 	path = /obj/item/clothing/suit/poncho/roles/cargo
+	allowed_roles = SUPPLY_ROLES
 
 /datum/gear/suit/suit_jacket
 	display_name = "standard suit jackets"
@@ -48,7 +52,7 @@
 
 
 /datum/gear/suit/varsity
-	display_name = "Varsity, various colors"
+	display_name = "varsity, various colors"
 	path = /obj/item/clothing/suit/storage/toggle/varsity
 
 /datum/gear/suit/varsity/New()
@@ -143,7 +147,91 @@
 /datum/gear/suit/trenchcoat/New()
 	..()
 	var/trenchcoats = list()
-	trenchcoats += /obj/item/clothing/suit/storage/det_trench
-	trenchcoats += /obj/item/clothing/suit/storage/det_trench/grey
-	trenchcoats += /obj/item/clothing/suit/leathercoat
+	trenchcoats += /obj/item/clothing/suit/storage/civ_trench
+	trenchcoats += /obj/item/clothing/suit/storage/civ_trench/grey
+	trenchcoats += /obj/item/clothing/suit/storage/toggle/leathercoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
+
+//
+// Donator's shop
+//
+
+/datum/gear/suit/pirate
+	display_name = "pirate suit"
+	path = /obj/item/clothing/suit/pirate
+	price = 15
+
+/datum/gear/suit/cardborg
+	display_name = "cardborg suit"
+	path = /obj/item/clothing/suit/cardborg
+	price = 6
+
+/datum/gear/suit/santa
+	display_name = "santa's suit"
+	path = /obj/item/clothing/suit/space/santa
+	price = 40
+
+/datum/gear/suit/plaguedoctorsuit
+	display_name = "plague doctor suit"
+	path = /obj/item/clothing/suit/bio_suit/plaguedoctorsuit
+	price = 20
+
+/datum/gear/suit/hgpirate
+	display_name = "pirate captain coat"
+	path = /obj/item/clothing/suit/hgpirate
+	price = 10
+
+/datum/gear/suit/johnny_coat
+	display_name = "johnny coat"
+	path = /obj/item/clothing/suit/johnny_coat
+	price = 10
+
+/datum/gear/suit/judgerobe
+	display_name = "judge's robe"
+	path = /obj/item/clothing/suit/judgerobe
+	price = 10
+
+/datum/gear/suit/monkeysuit
+	display_name = "monkey suit"
+	path = /obj/item/clothing/suit/monkeysuit
+	price = 10
+
+/datum/gear/suit/chickensuit
+	display_name = "chicken suit"
+	path = /obj/item/clothing/suit/chickensuit
+	price = 10
+
+/datum/gear/suit/wizrobe_fake
+	display_name = "wizard robe"
+	path = /obj/item/clothing/suit/wizrobe/fake
+	price = 20
+
+/datum/gear/suit/wizrobe_marisa_fake
+	display_name = "witch robe"
+	path = /obj/item/clothing/suit/wizrobe/marisa/fake
+	price = 20
+
+/datum/gear/suit/ianshirt
+	display_name = "ian shirt"
+	path = /obj/item/clothing/suit/ianshirt
+	price = 5
+
+/datum/gear/suit/punk_jacket_AC
+	display_name = "punk jacket black"
+	path = /obj/item/clothing/suit/storage/punk_jacket_AC
+	price = 20
+
+/datum/gear/suit/punk_jacket_RD
+	display_name = "punk jacket raven"
+	path = /obj/item/clothing/suit/storage/punk_jacket_RD
+	price = 20
+
+/datum/gear/suit/punk_jacket_TS
+	display_name = "punk jacket brown"
+	path = /obj/item/clothing/suit/storage/punk_jacket_TS
+	price = 20
+
+/datum/gear/suit/fashionable_coat
+	display_name = "fashionable coat"
+	path = /obj/item/clothing/suit/storage/fashionable_coat
+	price = 20

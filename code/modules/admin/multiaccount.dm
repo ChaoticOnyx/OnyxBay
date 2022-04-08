@@ -14,16 +14,38 @@
 			holder.showAccounts(input("Select ckey", "Ckey") in targets)
 		if("Type ckey")
 			var/target = ckey(input(usr, "Type in ckey for check.", "Ckey") as text|null)
-			if(!target) //Cancel теперь работает
+			if(!target) //Cancel works now
 				return
 			holder.showAccounts(target)
 
 /datum/admins/proc/showAccounts(targetkey)
-	var/size = 0
-	var/output = "<center><table border='1'> <caption>Совпадение по computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
+	if(!establish_db_connection())
+		return
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey,firstseen,lastseen,ip,computerid FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[targetkey]')")
-	query.Execute()
+	var/size = 0
+	var/output = "<meta charset=\"utf-8\"><center><table border='1'> <caption>Matching computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
+
+	var/DBQuery/query = sql_query({"
+		SELECT
+			ckey,
+			firstseen,
+			lastseen,
+			ip,
+			computerid
+		FROM
+			erro_player
+		WHERE
+			computerid
+			IN
+				(SELECT DISTINCT
+					computerid
+				FROM
+					erro_player
+				WHERE
+					ckey LIKE $targetkey
+				)
+		"}, dbcon, list(targetkey = targetkey))
+
 	while(query.NextRow())
 		size += 1
 		output+="<tr><td>[query.item[1]]</td>"
@@ -34,10 +56,37 @@
 
 	output+="</table>"
 
-	output += "<center><table border='1'> <caption>Совпадение по IP</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
+	output += "<center><table border='1'> <caption>Matching IP</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
 
-	query = dbcon.NewQuery("SELECT ckey,firstseen,lastseen,ip,computerid FROM erro_player WHERE ip IN (SELECT DISTINCT ip FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[targetkey]'))")
-	query.Execute()
+	query = sql_query({"
+		SELECT
+			ckey,
+			firstseen,
+			lastseen,
+			ip,
+			computerid
+		FROM
+			erro_player
+		WHERE
+			ip
+			IN
+				(SELECT DISTINCT
+					ip
+				FROM
+					erro_player
+				WHERE
+					computerid
+					IN
+						(SELECT DISTINCT
+							computerid
+						FROM
+							erro_player
+						WHERE
+							ckey LIKE $targetkey
+						)
+				)
+		"}, dbcon, list(targetkey = targetkey))
+
 	while(query.NextRow())
 		size += 1
 		output+="<tr><td>[query.item[1]]</td>"
@@ -48,19 +97,42 @@
 
 	output+="</table></center>"
 
-
-
-	usr << browse(output, "window=accaunts;size=600x[size*50+100]")
+	show_browser(usr, output, "window=accaunts;size=600x[size*50+100]")
 
 /datum/admins/proc/checkAllAccounts()
+	if(!establish_db_connection())
+		return
+
 	var/DBQuery/query
 	var/t1 = ""
-	var/output = "<B>Совпадение по IP</B><BR><BR>"
+	var/output = "<meta charset=\"utf-8\"><B>Matching IP</B><BR><BR>"
 
 	for (var/client/C in GLOB.clients)
 		t1 =""
-		query = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ip IN (SELECT DISTINCT ip FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[C.ckey]'))")
-		query.Execute()
+		query = sql_query({"
+			SELECT
+				ckey
+			FROM
+				erro_player
+			WHERE
+				ip
+				IN
+					(SELECT DISTINCT
+						ip
+					FROM
+						erro_player
+					WHERE
+						computerid
+						IN
+							(SELECT DISTINCT
+								computerid
+							FROM
+								erro_player
+							WHERE
+								ckey LIKE $ckey
+							)
+					)
+			"}, dbcon, list(ckey = C.ckey))
 		var/c = 0
 
 		while(query.NextRow())
@@ -69,12 +141,26 @@
 		if (c > 1)
 			output+= "Ckey: [C.ckey] <A href='?_src_=holder;showmultiacc=[C.ckey]'>Show</A><BR>" + t1
 
-	output+= "<BR><BR><B>Совпадение по computerID</B><BR><BR>"
+	output+= "<BR><BR><B>Matching computerID</B><BR><BR>"
 
 	for (var/client/C in GLOB.clients)
 		t1 =""
-		query = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[C.ckey]'))")
-		query.Execute()
+		query = sql_query({"
+			SELECT
+				ckey
+			FROM
+				erro_player
+			WHERE
+				computerid
+				IN
+					(SELECT DISTINCT
+						computerid
+					FROM
+						erro_player
+					WHERE
+						ckey LIKE $ckey
+					)
+			"}, dbcon, list(ckey = C.ckey))
 		var/c = 0
 		while(query.NextRow())
 			c++
@@ -82,4 +168,6 @@
 		if (c > 1)
 			output+= "Ckey: [C.ckey] <A href='?_src_=holder;showmultiacc=[C.ckey]'>Show</A><BR>" + t1
 
-	usr << browse(output, "window=accauntsall;size=400x800")
+	output+= "<BR><BR><B>Matching cookies</B><BR><BR>"
+
+	show_browser(usr, output, "window=accauntsall;size=400x800")

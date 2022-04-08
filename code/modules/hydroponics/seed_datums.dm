@@ -4,7 +4,7 @@
 	seed_name = "chili"
 	display_name = "chili plants"
 	chems = list(/datum/reagent/capsaicin = list(3,5), /datum/reagent/nutriment = list(1,25))
-	mutants = list("icechili")
+	mutants = list("icechili","flamechili")
 	kitchen_tag = "chili"
 
 /datum/seed/chili/New()
@@ -33,6 +33,20 @@
 	set_trait(TRAIT_MATURATION,4)
 	set_trait(TRAIT_PRODUCTION,4)
 	set_trait(TRAIT_PRODUCT_COLOUR,"#00edc6")
+
+/datum/seed/chili/flame
+	name = "flamechili"
+	seed_name = "flame chili"
+	display_name = "flame chili plants"
+	mutants = null
+	chems = list(/datum/reagent/fuel = list(5,10))
+	kitchen_tag = "flamechili"
+	fun_level = 1
+
+/datum/seed/chili/flame/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#743300")
+	set_trait(TRAIT_JUICY,1)
 
 // Berry plants/variants.
 /datum/seed/berry
@@ -163,7 +177,7 @@
 	name = "tomato"
 	seed_name = "tomato"
 	display_name = "tomato plant"
-	mutants = list("bluetomato","bloodtomato")
+	mutants = list("bluetomato","bloodtomato","tomacco")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/tomato = list(10,10))
 	kitchen_tag = "tomato"
 
@@ -176,7 +190,7 @@
 	set_trait(TRAIT_YIELD,2)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"tomato")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#d10000")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FF0000")
 	set_trait(TRAIT_PLANT_ICON,"bush3")
 	set_trait(TRAIT_IDEAL_LIGHT, 6)
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
@@ -186,14 +200,41 @@
 	name = "bloodtomato"
 	seed_name = "blood tomato"
 	display_name = "blood tomato plant"
-	mutants = list("killer")
+	mutants = list("killertomato","nanotomato")
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/blood = list(1,5))
 	splat_type = /obj/effect/decal/cleanable/blood/splatter
 
 /datum/seed/tomato/blood/New()
 	..()
 	set_trait(TRAIT_YIELD,3)
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ff0000")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#CB0000")
+
+/datum/seed/tomato/blood/nano
+	name = "nanotomato"
+	seed_name = "nanoblood tomato"
+	display_name = "nanoblood tomato plant"
+	mutants = list("automato")
+	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nanoblood = list(1,5))
+
+/datum/seed/tomato/blood/nano/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#CB0089")
+
+/datum/seed/tomato/automato
+	name = "automato"
+	seed_name = "automato"
+	display_name = "automato plant"
+	mutants = null
+	chems = list(/datum/reagent/nanites = list(1,10))
+	splat_type = /obj/effect/decal/cleanable/blood/oil
+	fun_level = 1
+
+/datum/seed/tomato/automato/New()
+	..()
+	set_trait(TRAIT_YIELD,3)
+	set_trait(TRAIT_PRODUCT_COLOUR,"#A0A1BA")
+	set_trait(TRAIT_PRODUCT_ICON,"automato")
+	set_trait(TRAIT_PLANT_COLOUR,"#606060")
 
 /datum/seed/tomato/killer
 	name = "killertomato"
@@ -201,12 +242,20 @@
 	display_name = "killer tomato plant"
 	mutants = null
 	can_self_harvest = 1
-	has_mob_product = /mob/living/simple_animal/tomato
+	has_mob_product = /mob/living/simple_animal/hostile/tomato
+	fun_level = 1
 
 /datum/seed/tomato/killer/New()
 	..()
 	set_trait(TRAIT_YIELD,2)
 	set_trait(TRAIT_PRODUCT_COLOUR,"#a86747")
+
+/datum/seed/tomato/tomacco
+	name = "tomacco"
+	seed_name = "tomacco"
+	display_name = "tomacco plant"
+	mutants = null
+	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nicotine = list(1,10))
 
 /datum/seed/tomato/blue
 	name = "bluetomato"
@@ -226,6 +275,7 @@
 	display_name = "bluespace tomato plant"
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/ethanol/singulo = list(10,5))
+	fun_level = 1
 
 /datum/seed/tomato/blue/teleport/New()
 	..()
@@ -256,13 +306,26 @@
 	set_trait(TRAIT_IDEAL_HEAT, 298)
 	set_trait(TRAIT_IDEAL_LIGHT, 7)
 
+/datum/seed/eggplant/realeggplant
+	name = "realeggplant"
+	seed_name = "egg plant"
+	display_name = "egg plants"
+	mutants = null
+	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
+	fun_level = 1
+
+/datum/seed/eggplant/realeggplant/New()
+	..()
+	set_trait(TRAIT_YIELD,3)
+	set_trait(TRAIT_PRODUCT_COLOUR,"#F7C8AD")
+
 //Apples/varieties.
 /datum/seed/apple
 	name = "apple"
-	seed_name = "apple"
+	seed_name = "red apple"
 	display_name = "apple tree"
-	mutants = list("poisonapple","goldapple")
-	chems = list(/datum/reagent/nutriment = list(1,10))
+	mutants = list("poisonapple","greenapple","yellowapple")
+	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/apple = list(10,10))
 	kitchen_tag = "apple"
 
 /datum/seed/apple/New()
@@ -273,15 +336,45 @@
 	set_trait(TRAIT_YIELD,5)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"apple")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ff540a")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FF3C0A")
 	set_trait(TRAIT_PLANT_ICON,"tree2")
 	set_trait(TRAIT_FLESH_COLOUR,"#e8e39b")
 	set_trait(TRAIT_IDEAL_LIGHT, 4)
+
+/datum/seed/apple/green
+	name = "greenapple"
+	seed_name = "green apple"
+	mutants = list("rapple","apple","yellowapple")
+
+/datum/seed/apple/green/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#67B248")
+
+/datum/seed/apple/yellow
+	name = "yellowapple"
+	seed_name = "yellow apple"
+	mutants = list("goldapple","apple","greenapple")
+
+/datum/seed/apple/yellow/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#EAD759")
 
 /datum/seed/apple/poison
 	name = "poisonapple"
 	mutants = null
 	chems = list(/datum/reagent/toxin/cyanide = list(1,5))
+
+/datum/seed/apple/rapple
+	name = "rapple"
+	seed_name = "radioactive apple"
+	display_name = "radioactive apple tree"
+	mutants = null
+	chems = list(/datum/reagent/radium = list(1,15))
+	fun_level = 1
+
+/datum/seed/apple/rapple/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#72FF4F")
 
 /datum/seed/apple/gold
 	name = "goldapple"
@@ -290,6 +383,7 @@
 	mutants = null
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/gold = list(1,5))
 	kitchen_tag = "goldapple"
+	fun_level = 1
 
 /datum/seed/apple/gold/New()
 	..()
@@ -399,6 +493,7 @@
 	mutants = null
 	can_self_harvest = 1
 	has_mob_product = /mob/living/simple_animal/mushroom
+	fun_level = 1
 
 /datum/seed/mushroom/plump/walking/New()
 	..()
@@ -551,8 +646,9 @@
 	name = "poppies"
 	seed_name = "poppy"
 	display_name = "poppies"
-	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol = list(1,10))
+	chems = list(/datum/reagent/nutriment = list(1,20))
 	kitchen_tag = "poppy"
+	mutants = list("opiumpoppies")
 
 /datum/seed/flower/poppy/New()
 	..()
@@ -567,10 +663,31 @@
 	set_trait(TRAIT_WATER_CONSUMPTION, 0.5)
 	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.15)
 
+/datum/seed/flower/poppy/opium
+	name = "opiumpoppies"
+	seed_name = "somniferum poppy"
+	display_name = "somniferum poppies"
+	mutants = null
+	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol/opium = list(1,10))
+
+/datum/seed/flower/poppy/opium/New()
+	..()
+	set_trait(TRAIT_POTENCY,20)
+	set_trait(TRAIT_MATURATION,8)
+	set_trait(TRAIT_PRODUCTION,6)
+	set_trait(TRAIT_YIELD,6)
+	set_trait(TRAIT_PRODUCT_ICON,"bulbflower")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#7d9b55")
+	set_trait(TRAIT_PLANT_ICON,"bulbflower")
+	set_trait(TRAIT_IDEAL_LIGHT, 6)
+	set_trait(TRAIT_WATER_CONSUMPTION, 0.5)
+	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.15)
+
 /datum/seed/flower/sunflower
 	name = "sunflowers"
 	seed_name = "sunflower"
 	display_name = "sunflowers"
+	mutants = list("moonflowers")
 
 /datum/seed/flower/sunflower/New()
 	..()
@@ -581,6 +698,18 @@
 	set_trait(TRAIT_IDEAL_LIGHT, 7)
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
 	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.15)
+
+/datum/seed/flower/sunflower/moon
+	name = "moonflowers"
+	seed_name = "moonflower"
+	display_name = "moonflowers"
+	mutants = null
+	chems = list(/datum/reagent/ethanol/moonshine = list(1,20))
+
+/datum/seed/flower/sunflower/moon/New()
+	..()
+	set_trait(TRAIT_PRODUCT_ICON,"flowermoon")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FFFB9B")
 
 /datum/seed/flower/lavender
 	name = "lavender"
@@ -632,7 +761,7 @@
 
 /datum/seed/grapes/green/New()
 	..()
-	set_trait(TRAIT_PRODUCT_COLOUR,"42ed2f")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#42ed2f")
 
 //Everything else
 /datum/seed/peanuts
@@ -698,8 +827,9 @@
 	seed_name = "banana"
 	display_name = "banana tree"
 	chems = list(/datum/reagent/drink/juice/banana = list(10,10))
-	trash_type = /obj/item/weapon/bananapeel
+	trash_type = /obj/item/bananapeel
 	kitchen_tag = "banana"
+	mutants = list("lubanana","bunana")
 
 /datum/seed/banana/New()
 	..()
@@ -708,12 +838,51 @@
 	set_trait(TRAIT_PRODUCTION,6)
 	set_trait(TRAIT_YIELD,3)
 	set_trait(TRAIT_PRODUCT_ICON,"bananas")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ffec1f")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FFEC58")
 	set_trait(TRAIT_PLANT_COLOUR,"#69ad50")
 	set_trait(TRAIT_PLANT_ICON,"tree4")
 	set_trait(TRAIT_IDEAL_HEAT, 298)
 	set_trait(TRAIT_IDEAL_LIGHT, 7)
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
+
+/datum/seed/banana/bunana
+	name = "bunana"
+	seed_name = "bunana"
+	display_name = "bunana tree"
+	chems = list(/datum/reagent/drink/juice/banana = list(20,20))
+	mutants = null
+	fun_level = 1
+
+/datum/seed/banana/bunana/New()
+	..()
+	set_trait(TRAIT_PRODUCT_ICON,"bunanas")
+	set_trait(TRAIT_WATER_CONSUMPTION, 9)
+
+/datum/seed/banana/lubanana
+	name = "lubanana"
+	seed_name = "lubanana"
+	display_name = "lubanana tree"
+	chems = list(/datum/reagent/lube = list(10,10))
+	mutants = list("banbanana")
+	fun_level = 1
+
+/datum/seed/banana/lubanana/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#BEECD1")
+	set_trait(TRAIT_JUICY,2)
+	set_trait(TRAIT_WATER_CONSUMPTION, 9)
+
+/datum/seed/banana/banbanana
+	name = "banbanana"
+	seed_name = "BANana"
+	display_name = "BANana tree"
+	mutants = null
+	has_custom_product = /obj/item/toy/banbanana
+	fun_level = 2
+
+/datum/seed/banana/banbanana/New()
+	..()
+	set_trait(TRAIT_YIELD,1)
 
 /datum/seed/corn
 	name = "corn"
@@ -721,7 +890,7 @@
 	display_name = "ears of corn"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/nutriment/cornoil = list(1,10))
 	kitchen_tag = "corn"
-	trash_type = /obj/item/weapon/corncob
+	trash_type = /obj/item/corncob
 
 /datum/seed/corn/New()
 	..()
@@ -743,6 +912,7 @@
 	display_name = "potatoes"
 	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/potato = list(10,10))
 	kitchen_tag = "potato"
+	mutants = list("potatocell")
 
 /datum/seed/potato/New()
 	..()
@@ -752,9 +922,21 @@
 	set_trait(TRAIT_YIELD,4)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"potato")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#d4cab4")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#BFA876")
 	set_trait(TRAIT_PLANT_ICON,"bush2")
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
+
+/datum/seed/potato/cell
+	name = "potatocell"
+	seed_name = "electric potato"
+	display_name = "electric potatoes"
+	mutants = null
+	has_custom_product = /obj/item/cell/potato
+	fun_level = 1
+
+/datum/seed/potato/cell/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#BCB596")
 
 /datum/seed/garlic
 	name = "garlic"
@@ -769,7 +951,7 @@
 	set_trait(TRAIT_PRODUCTION,1)
 	set_trait(TRAIT_YIELD,5)
 	set_trait(TRAIT_POTENCY,12)
-	set_trait(TRAIT_PRODUCT_ICON,"bulb")
+	set_trait(TRAIT_PRODUCT_ICON,"garlic")
 	set_trait(TRAIT_PRODUCT_COLOUR,"#fff8dd")
 	set_trait(TRAIT_PLANT_ICON,"stalk")
 	set_trait(TRAIT_WATER_CONSUMPTION, 7)
@@ -787,8 +969,8 @@
 	set_trait(TRAIT_PRODUCTION,1)
 	set_trait(TRAIT_YIELD,4)
 	set_trait(TRAIT_POTENCY,10)
-	set_trait(TRAIT_PRODUCT_ICON,"bulb")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ffeedd")
+	set_trait(TRAIT_PRODUCT_ICON,"onion")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FFC080")
 	set_trait(TRAIT_PLANT_ICON,"stalk")
 	set_trait(TRAIT_WATER_CONSUMPTION, 5)
 
@@ -864,7 +1046,8 @@
 	set_trait(TRAIT_YIELD,5)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"carrot")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ffdb4a")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FF8C4A")
+	set_trait(TRAIT_FLESH_COLOUR,"#20C11F")
 	set_trait(TRAIT_PLANT_ICON,"carrot")
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
 
@@ -962,9 +1145,10 @@
 	set_trait(TRAIT_YIELD,3)
 	set_trait(TRAIT_POTENCY,10)
 	set_trait(TRAIT_PRODUCT_ICON,"vine2")
-	set_trait(TRAIT_PRODUCT_COLOUR,"#f9ab28")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#F98C28")
 	set_trait(TRAIT_PLANT_COLOUR,"#bae8c1")
 	set_trait(TRAIT_PLANT_ICON,"vine2")
+	set_trait(TRAIT_FLESH_COLOUR,"#74741F")
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
 
 /datum/seed/citrus
@@ -982,7 +1166,7 @@
 	set_trait(TRAIT_PRODUCTION,6)
 	set_trait(TRAIT_YIELD,4)
 	set_trait(TRAIT_POTENCY,15)
-	set_trait(TRAIT_PRODUCT_ICON,"treefruit")
+	set_trait(TRAIT_PRODUCT_ICON,"lemon")
 	set_trait(TRAIT_PRODUCT_COLOUR,"#3af026")
 	set_trait(TRAIT_PLANT_ICON,"tree")
 	set_trait(TRAIT_FLESH_COLOUR,"#3af026")
@@ -1010,7 +1194,8 @@
 
 /datum/seed/citrus/orange/New()
 	..()
-	set_trait(TRAIT_PRODUCT_COLOUR,"#ffc20a")
+	set_trait(TRAIT_PRODUCT_ICON,"orange")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#FF8000")
 	set_trait(TRAIT_FLESH_COLOUR,"#ffc20a")
 
 /datum/seed/grass
@@ -1051,6 +1236,42 @@
 	set_trait(TRAIT_PLANT_ICON,"tree2")
 	set_trait(TRAIT_IDEAL_HEAT, 298)
 	set_trait(TRAIT_WATER_CONSUMPTION, 6)
+
+/datum/seed/coconut
+	name = "coconut"
+	seed_name = "coconut"
+	display_name = "coconut palm"
+	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/drink/juice/coconut = list(20,40))
+	mutants = list("cowcownut")
+
+/datum/seed/coconut/New()
+	..()
+	set_trait(TRAIT_HARVEST_REPEAT,1)
+	set_trait(TRAIT_MATURATION,6)
+	set_trait(TRAIT_PRODUCTION,6)
+	set_trait(TRAIT_YIELD,3)
+	set_trait(TRAIT_PRODUCT_ICON,"coconut")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#724C1D")
+	set_trait(TRAIT_PLANT_COLOUR,"#69ad50")
+	set_trait(TRAIT_PLANT_ICON,"tree4")
+	set_trait(TRAIT_IDEAL_HEAT, 298)
+	set_trait(TRAIT_IDEAL_LIGHT, 7)
+	set_trait(TRAIT_WATER_CONSUMPTION, 7)
+
+/datum/seed/coconut/cowcownut
+	name = "cowcownut"
+	seed_name = "cowcownut"
+	display_name = "cowcownut palm"
+	has_mob_product = /mob/living/simple_animal/cow/cowcownut
+	chems = null
+	mutants = null
+	fun_level = 1
+
+/datum/seed/coconut/cowcownut/New()
+	..()
+	set_trait(TRAIT_YIELD,1)
+	set_trait(TRAIT_PRODUCT_ICON,"cowcownut")
+	set_trait(TRAIT_MATURATION,9)
 
 /datum/seed/cherries
 	name = "cherry"
@@ -1099,11 +1320,11 @@
 	display_name = "replicant pods"
 	can_self_harvest = 1
 	has_mob_product = /mob/living/carbon/alien/diona
+	mutants = list("maneater")
 
 /datum/seed/diona/New()
 	..()
-	set_trait(TRAIT_IMMUTABLE,1)
-	set_trait(TRAIT_ENDURANCE,8)
+	set_trait(TRAIT_ENDURANCE,15)
 	set_trait(TRAIT_MATURATION,5)
 	set_trait(TRAIT_PRODUCTION,10)
 	set_trait(TRAIT_YIELD,1)
@@ -1112,6 +1333,23 @@
 	set_trait(TRAIT_PRODUCT_COLOUR,"#799957")
 	set_trait(TRAIT_PLANT_COLOUR,"#66804b")
 	set_trait(TRAIT_PLANT_ICON,"alien4")
+
+/datum/seed/diona/maneater
+	name = "maneater"
+	seed_name = "man-eating plant"
+	display_name = "man-eating plant"
+	has_mob_product = /mob/living/simple_animal/hostile/maneater
+	mutants = null
+	customsprite = 1
+	fun_level = 1
+
+/datum/seed/diona/maneater/New()
+	..()
+	set_trait(TRAIT_ENDURANCE,50)
+	set_trait(TRAIT_YIELD,1)
+	set_trait(TRAIT_PRODUCT_ICON,"maneater")
+	set_trait(TRAIT_PLANT_COLOUR,"#8AA97B")
+	set_trait(TRAIT_PLANT_ICON,"maneater")
 
 /datum/seed/shand
 	name = "shand"
@@ -1207,7 +1445,7 @@
 	seed_name = "alien weed"
 	display_name = "alien weeds"
 	force_layer = OBJ_LAYER
-	chems = list(/datum/reagent/toxin/phoron = list(1,3))
+	chems = list(/datum/reagent/toxin/plasma = list(1,3))
 
 /datum/seed/xenomorph/New()
 	..()
@@ -1234,7 +1472,6 @@
 	set_trait(TRAIT_HARVEST_REPEAT,1)
 	set_trait(TRAIT_MATURATION,4)
 	set_trait(TRAIT_YIELD,3)
-	set_trait(TRAIT_JUICY,1)
 	set_trait(TRAIT_POTENCY,4)
 	set_trait(TRAIT_PRODUCT_ICON,"cannabis")
 	set_trait(TRAIT_PLANT_ICON,"cannabis")

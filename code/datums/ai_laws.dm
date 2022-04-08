@@ -230,6 +230,19 @@
 		else
 			to_chat(who, "[law.get_index()]. [law.law]")
 
+/datum/ai_laws/proc/print_laws()
+	sort_laws()
+	var/list/parts = list()
+	for(var/datum/ai_law/law in sorted_laws)
+		if(law == zeroth_law_borg)
+			continue
+		if(law == zeroth_law)
+			parts += SPAN_DANGER("[law.get_index()]. [law.law]")
+		else
+			parts += "[law.get_index()]. [law.law]"
+	return parts.Join("<br>")
+
+
 /********************
 *	Stating Laws	*
 ********************/

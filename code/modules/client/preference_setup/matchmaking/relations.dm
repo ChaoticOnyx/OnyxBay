@@ -6,17 +6,17 @@
 	name = "Matchmaking"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/relations/load_character(savefile/S)
-	S["relations"]	>> pref.relations
-	S["relations_info"]	>> pref.relations_info
+/datum/category_item/player_setup_item/relations/load_character(datum/pref_record_reader/R)
+	pref.relations = R.read("relations")
+	pref.relations_info = R.read("relations_info")
 
-	for (var/T in pref.relations)
-		if (!matchmaker.relation_types.Find(T))
+	for(var/T in pref.relations)
+		if(!matchmaker.relation_types.Find(T))
 			pref.relations.Remove(T)
 
-/datum/category_item/player_setup_item/relations/save_character(savefile/S)
-	S["relations"]	<< pref.relations
-	S["relations_info"]	<< pref.relations_info
+/datum/category_item/player_setup_item/relations/save_character(datum/pref_record_writer/W)
+	W.write("relations", pref.relations)
+	W.write("relations_info", pref.relations_info)
 
 /datum/category_item/player_setup_item/relations/sanitize_character()
 	if(!pref.relations)
@@ -53,7 +53,7 @@
 		return TOPIC_REFRESH
 	if(href_list["relation_info"])
 		var/R = href_list["relation_info"]
-		var/info = sanitize(input_utf8("Character info", "What would you like the other party for this connection to know about your character?",pref.relations_info[R]))
+		var/info = sanitize(input("Character info", "What would you like the other party for this connection to know about your character?",pref.relations_info[R]))
 		if(info)
 			pref.relations_info[R] = info
 		return TOPIC_REFRESH

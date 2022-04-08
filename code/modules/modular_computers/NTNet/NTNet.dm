@@ -8,7 +8,6 @@ var/global/datum/ntnet/ntnet_global = new()
 	var/list/available_station_software = list()
 	var/list/available_software_by_category = list()
 	var/list/available_antag_software = list()
-	var/list/available_news = list()
 	var/list/chat_channels = list()
 	var/list/fileservers = list()
 	var/list/email_accounts = list()				// I guess we won't have more than 999 email accounts active at once in single round, so this will do until Servers are implemented someday.
@@ -32,20 +31,19 @@ var/global/datum/ntnet/ntnet_global = new()
 /datum/ntnet/New()
 	if(ntnet_global && (ntnet_global != src))
 		ntnet_global = src // There can be only one.
-	for(var/obj/machinery/ntnet_relay/R in SSmachines.machinery)
+	for(var/obj/machinery/ntnet_relay/R in GLOB.machines)
 		relays.Add(R)
 		R.NTNet = src
 	build_software_lists()
-	build_news_list()
 	build_emails_list()
 	add_log("NTNet logging system activated.")
 
-/datum/ntnet/proc/add_log_with_ids_check(log_string, obj/item/weapon/computer_hardware/network_card/source = null)
+/datum/ntnet/proc/add_log_with_ids_check(log_string, obj/item/computer_hardware/network_card/source = null)
 	if(intrusion_detection_enabled)
 		add_log(log_string, source)
 
 // Simplified logging: Adds a log. log_string is mandatory parameter, source is optional.
-/datum/ntnet/proc/add_log(log_string, obj/item/weapon/computer_hardware/network_card/source = null)
+/datum/ntnet/proc/add_log(log_string, obj/item/computer_hardware/network_card/source = null)
 	var/log_text = "[stationtime2text()] - "
 	if(source)
 		log_text += "[source.get_network_tag()] - "
@@ -117,14 +115,6 @@ var/global/datum/ntnet/ntnet_global = new()
 			ADD_SORTED(category_list, prog, /proc/cmp_program)
 		if(prog.available_on_syndinet)
 			ADD_SORTED(available_antag_software, prog, /proc/cmp_program)
-
-// Builds lists that contain downloadable software.
-/datum/ntnet/proc/build_news_list()
-	available_news = list()
-	for(var/F in typesof(/datum/computer_file/data/news_article/))
-		var/datum/computer_file/data/news_article/news = new F(1)
-		if(news.stored_data)
-			available_news.Add(news)
 
 // Generates service email list. Currently only used by broadcaster service
 /datum/ntnet/proc/build_emails_list()

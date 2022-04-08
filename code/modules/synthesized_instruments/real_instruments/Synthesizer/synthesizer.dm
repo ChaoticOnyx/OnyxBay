@@ -13,7 +13,7 @@
 	sound_player = /datum/sound_player/synthesizer
 
 /obj/structure/synthesized_instrument/synthesizer/attackby(obj/item/O, mob/user, params)
-	if (istype(O, /obj/item/weapon/wrench))
+	if (istype(O, /obj/item/wrench))
 		if (!anchored && !isinspace())
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			to_chat(usr, "<span class='notice'> You begin to tighten \the [src] to the floor...</span>")
@@ -46,6 +46,7 @@
 	name = "Synthesizer Mini"
 	desc = "The power of an entire orchestra in a handy midi keyboard format."
 	icon_state = "h_synthesizer"
+	force = 6
 	path = /datum/instrument
 	sound_player = /datum/sound_player/synthesizer
 

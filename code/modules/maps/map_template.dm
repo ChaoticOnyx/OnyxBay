@@ -22,7 +22,7 @@
 
 /datum/map_template/proc/preload_size()
 	var/list/bounds = list(1.#INF, 1.#INF, 1.#INF, -1.#INF, -1.#INF, -1.#INF)
-	var/z_offset = 1 // needed to calculate z-bounds correctly
+	var/z_offset = 1 // Needed to calculate z-bounds correctly
 	for (var/mappath in mappaths)
 		var/datum/map_load_metadata/M = maploader.load_map(file(mappath), 1, 1, z_offset, cropMap = FALSE, measureOnly = TRUE, no_changeturf = TRUE, clear_contents = template_flags & TEMPLATE_FLAG_CLEAR_CONTENTS)
 		if(M)
@@ -37,7 +37,7 @@
 
 /datum/map_template/proc/init_atoms(list/atoms)
 	if (SSatoms.init_state == INITIALIZATION_INSSATOMS)
-		return // let proper initialisation handle it later
+		return // Let proper initialisation handle it later
 
 	var/list/turf/turfs = list()
 	var/list/obj/machinery/atmospherics/atmos_machines = list()
@@ -56,8 +56,8 @@
 
 	SSatoms.InitializeAtoms(atoms)
 
-	SSmachines.setup_powernets_for_cables(cables)
-	SSmachines.setup_atmos_machinery(atmos_machines)
+	SSmachines.setup_template_powernets(cables)
+	SSair.setup_template_machinery(atmos_machines)
 
 	for (var/i in machines)
 		var/obj/machinery/machine = i
@@ -101,7 +101,7 @@
 			GLOB.using_map.base_turf_by_z[num2text(z_index)] = base_turf_for_zs
 		GLOB.using_map.player_levels |= z_index
 
-	//initialize things that are normally initialized after map load
+	// Initialize things that are normally initialized after map load
 	init_atoms(atoms_to_initialise)
 	init_shuttles()
 	log_game("Z-level [name] loaded at [x],[y],[world.maxz]")
@@ -128,7 +128,7 @@
 		else
 			return FALSE
 
-	//initialize things that are normally initialized after map load
+	// Initialize things that are normally initialized after map load
 	init_atoms(atoms_to_initialise)
 	init_shuttles()
 	SSlighting.InitializeTurfs(atoms_to_initialise)	// Hopefully no turfs get placed on new coords by SSatoms.
@@ -145,7 +145,6 @@
 		bounds_to_combine[max_bound] = max(existing_bounds[max_bound], new_bounds[max_bound])
 	return bounds_to_combine
 
-
 /datum/map_template/proc/get_affected_turfs(turf/T, centered = FALSE)
 	var/turf/placement = T
 	if(centered)
@@ -154,8 +153,6 @@
 			placement = corner
 	return block(placement, locate(placement.x+width-1, placement.y+height-1, placement.z))
 
-//for your ever biggening badminnery kevinz000
-//❤ - Cyberboss
 /proc/load_new_z_level(file, name)
 	var/datum/map_template/template = new(file, name)
 	template.load_new_z()

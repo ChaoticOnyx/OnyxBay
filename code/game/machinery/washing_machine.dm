@@ -21,9 +21,9 @@
 	//1 = hacked
 	var/gibs_ready = 0
 	var/obj/crayon
-	var/obj/item/weapon/reagent_containers/pill/detergent/detergent
+	var/obj/item/reagent_containers/pill/detergent/detergent
 	obj_flags = OBJ_FLAG_ANCHORABLE
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 40
 
 	// Power
@@ -40,7 +40,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!istype(usr, /mob/living)) //ew ew ew usr, but it's the only way to check.
+	if(!isliving(usr)) //ew ew ew usr, but it's the only way to check.
 		return
 
 	if( state != 4 )
@@ -90,8 +90,8 @@
 /obj/machinery/washing_machine/update_icon()
 	icon_state = "wm_[state][panel]"
 
-/obj/machinery/washing_machine/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/pen/crayon) || istype(W,/obj/item/weapon/stamp))
+/obj/machinery/washing_machine/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W,/obj/item/pen/crayon) || istype(W,/obj/item/stamp))
 		if( state in list(	1, 3, 6 ) )
 			if(!crayon)
 				user.drop_item()
@@ -117,7 +117,8 @@
 		istype(W,/obj/item/clothing/gloves) || \
 		istype(W,/obj/item/clothing/shoes) || \
 		istype(W,/obj/item/clothing/suit) || \
-		istype(W,/obj/item/weapon/bedsheet))
+		istype(W,/obj/item/underwear) || \
+		istype(W,/obj/item/bedsheet))
 
 		//YES, it's hardcoded... saves a var/can_be_washed for every single clothing item.
 		if ( istype(W,/obj/item/clothing/suit/space ) )
@@ -129,9 +130,6 @@
 //		if ( istype(W,/obj/item/clothing/suit/powered ) )
 //			to_chat(user, "This item does not fit.")
 //			return
-		if ( istype(W,/obj/item/clothing/suit/cyborg_suit ) )
-			to_chat(user, "This item does not fit.")
-			return
 		if ( istype(W,/obj/item/clothing/suit/bomb_suit ) )
 			to_chat(user, "This item does not fit.")
 			return
@@ -163,9 +161,9 @@
 				W.loc = src
 				state = 3
 			else
-				to_chat(user, "<span class='notice'>You can't put the item in right now.</span>")
+				to_chat(user, SPAN("notice", "You can't put the item in right now."))
 		else
-			to_chat(user, "<span class='notice'>The washing machine is full.</span>")
+			to_chat(user, SPAN("notice", "The washing machine is full."))
 	else
 		..()
 	update_icon()
@@ -183,11 +181,11 @@
 		if(4)
 			state = 3
 			for(var/atom/movable/O in contents)
-				O.forceMove(src)
+				O.forceMove(loc)
 			crayon = null
 			state = 1
 		if(5)
-			to_chat(user, "<span class='warning'>The [src] is busy.</span>")
+			to_chat(user, SPAN("warning", "The [src] is busy."))
 		if(6)
 			state = 7
 		if(7)

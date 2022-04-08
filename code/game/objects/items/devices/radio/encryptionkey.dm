@@ -12,11 +12,11 @@
 	var/syndie = 0
 	var/list/channels = list()
 
-/obj/item/device/encryptionkey/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/encryptionkey/attackby(obj/item/W as obj, mob/user as mob)
 
 /obj/item/device/encryptionkey/syndicate
 	icon_state = "cypherkey"
-	channels = list("Mercenary" = 1)
+	channels = list("Syndicate" = 1)
 	origin_tech = list(TECH_ILLEGAL = 3)
 	syndie = 1//Signifies that it de-crypts Syndicate transmissions
 

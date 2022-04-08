@@ -1,7 +1,6 @@
 
 /datum/gear/accessory
 	sort_category = "Accessories"
-	category = /datum/gear/accessory
 	slot = slot_tie
 
 /datum/gear/accessory/tie
@@ -51,6 +50,11 @@
 /datum/gear/accessory/locket
 	display_name = "locket"
 	path = /obj/item/clothing/accessory/locket
+
+/datum/gear/accessory/aquila
+	display_name = "aquila"
+	path = /obj/item/clothing/accessory/necklace/aquila
+	slot = slot_tie
 
 /datum/gear/accessory/necklace
 	display_name = "necklace, colour select"

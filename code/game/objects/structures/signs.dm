@@ -20,9 +20,9 @@
 		else
 	return
 
-/obj/structure/sign/attackby(obj/item/tool as obj, mob/user as mob)	//deconstruction
-	if(isScrewdriver(tool) && !istype(src, /obj/structure/sign/double))
-		to_chat(user, "You unfasten the sign with your [tool.name].")
+/obj/structure/sign/attackby(obj/item/W, mob/user)	//deconstruction
+	if(isScrewdriver(W) && !istype(src, /obj/structure/sign/double))
+		to_chat(user, "You unfasten the sign with your [W].")
 		var/obj/item/sign/S = new(src.loc)
 		S.SetName(name)
 		S.desc = desc
@@ -37,28 +37,44 @@
 	icon = 'icons/obj/decals.dmi'
 	w_class = ITEM_SIZE_NORMAL		//big
 	var/sign_state = ""
+	var/fastening = 0
 
-/obj/item/sign/attackby(obj/item/tool as obj, mob/user as mob)	//construction
-	if(istype(tool, /obj/item/weapon/screwdriver) && isturf(user.loc))
+/obj/item/sign/attackby(obj/item/W, mob/user)	//construction
+	if(isScrewdriver(W) && isturf(user.loc))
+		if(fastening)
+			return
+		fastening = 1
+		var/loc_W = W.loc
+		var/loc_user = user.loc
 		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
-		if(direction == "Cancel") return
-		var/obj/structure/sign/S = new(user.loc)
-		switch(direction)
-			if("North")
-				S.pixel_y = 32
-			if("East")
-				S.pixel_x = 32
-			if("South")
-				S.pixel_y = -32
-			if("West")
-				S.pixel_x = -32
-			else return
-		S.SetName(name)
-		S.desc = desc
-		S.icon_state = sign_state
-		to_chat(user, "You fasten \the [S] with your [tool].")
-		qdel(src)
-	else ..()
+		if(direction == "Cancel")
+			fastening = 0
+			return
+		if(!QDELETED(src) && do_after(user, 10, src))
+			if(!(loc_W == W.loc && loc_user == user.loc && Adjacent(user)))
+				fastening = 0
+				return
+			var/obj/structure/sign/S = new(user.loc)
+			switch(direction)
+				if("North")
+					S.pixel_y = 32
+				if("East")
+					S.pixel_x = 32
+				if("South")
+					S.pixel_y = -32
+				if("West")
+					S.pixel_x = -32
+				else
+					return
+			S.SetName(name)
+			S.desc = desc
+			S.icon_state = sign_state
+			to_chat(user, "You fasten \the [S] with your [W].")
+			qdel(src)
+		else
+			fastening = 0
+	else
+		..()
 
 /obj/structure/sign/double/map
 	name = "map"
@@ -78,6 +94,45 @@
 	name = "\improper Mr. Deempisi portrait"
 	desc = "Under the painting a plaque reads: 'While the meat grinder may not have spared you, fear not. Not one part of you has gone to waste... You were delicious.'"
 	icon_state = "monkey_painting"
+
+/obj/structure/sign/crime
+	name = "\improper Educational poster"
+	desc = "Or does it?..."
+	icon_state = "crime"
+
+/obj/structure/sign/periodic
+	name = "\improper Periodic table"
+	desc = "Say my name."
+	icon_state = "periodic"
+
+/obj/structure/sign/recruitment
+	name = "\improper Recruitment poster"
+	desc = "No, you don't."
+	icon_state = "you_4_nt"
+
+/obj/structure/sign/highexplosive
+	name = "\improper HIGH EXPLOSIVE"
+	icon_state = "highexplosive"
+
+/obj/structure/sign/eyetest
+	name = "\improper Eye test poster"
+	icon_state = "wall_poster_eyetest"
+
+/obj/structure/sign/firstaid
+	name = "\improper FIRST AID"
+	icon_state = "firstaid"
+
+/obj/structure/sign/colony
+	name = "\improper New Reno Colony sign"
+	icon = 'icons/obj/new-reno-sign.dmi'
+	icon_state = "new_reno_sign"
+	density = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/sign/junglecamo
+	name = "camo netting"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "camo"
 
 /obj/structure/sign/warning
 	name = "\improper WARNING"
@@ -269,6 +324,25 @@
 /obj/structure/sign/double/maltesefalcon/right
 	icon_state = "maltesefalcon-right"
 
+/obj/structure/sign/double/picturemount/left
+	icon_state = "mountain-left"
+
+/obj/structure/sign/double/picturemount/right
+	icon_state = "mountain-right"
+
+/obj/structure/sign/double/picturesky/left
+	icon_state = "sky-left"
+
+/obj/structure/sign/double/picturesky/right
+	icon_state = "sky-right"
+
+/obj/structure/sign/double/pictureplanet/left
+	icon_state = "planet-left"
+
+/obj/structure/sign/double/pictureplanet/right
+	icon_state = "planet-right"
+
+
 /obj/structure/sign/warning/science
 	name = "\improper SCIENCE!"
 	icon_state = "science1"
@@ -329,6 +403,11 @@
 	desc = "A warning sign which reads 'BOTANY!'."
 	icon_state = "hydro3"
 
+/obj/structure/sign/departments/holy
+	name = "HOLY"
+	desc = "A sign labelling a <b>holy<b> area."
+	icon_state = "holy"
+
 /obj/structure/sign/hydro
 	name = "\improper HYDROPONICS"
 	desc = "A sign labelling an area as a place where plants are grown."
@@ -338,6 +417,30 @@
 	name = "\improper HYDROPONICS STORAGE"
 	desc = "A sign labelling an area as a place where plant growing supplies are kept."
 	icon_state = "hydro3"
+
+/obj/structure/sign/eva
+	name = "\improper EVA"
+	icon_state = "eva"
+
+/obj/structure/sign/cargo
+	name = "\improper CARGO"
+	icon_state = "cargo"
+
+/obj/structure/sign/security
+	name = "\improper SECURITY"
+	icon_state = "sec"
+
+/obj/structure/sign/evac
+	name = "\improper EVAC"
+	icon_state = "evac"
+
+/obj/structure/sign/engineering
+	name = "\improper ENGINEERING"
+	icon_state = "engi"
+
+/obj/structure/sign/custodian
+	name = "\improper CUSTODIAN"
+	icon_state = "custodian"
 
 /obj/structure/sign/directions
 	name = "direction sign"
@@ -419,8 +522,8 @@
 	..()
 
 /obj/item/sign/medipolma/examine(mob/user)
-	..()
+	. = ..()
 	if(claimant)
-		to_chat(user,"This one belongs to Dr.[claimant], MD.")
+		. += "\nThis one belongs to Dr.[claimant], MD."
 	else
-		to_chat(user,"The name is left blank for some reason.")
+		. += "\nThe name is left blank for some reason."

@@ -5,46 +5,59 @@
 	icon_state = "empty"
 	appearance_flags = 0
 	anchored = 1
-	var/cult = 0
+	var/emagged = FALSE
 
-/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1)
+/obj/structure/sign/double/barsign/proc/get_valid_states(initial = FALSE, mob/living/user = null)
 	. = icon_states(icon)
 	. -= "on"
-	. -= "narsiebistro"
+	if(!user || !iscultist(user))
+		. -= "Nar-sie Bistro"
+	if(!emagged)
+		. -= "The Syndi Cat"
+		. -= "Vlad's Salad Bar"
+		. -= "Combo Cafe"
+	. -= "???"
 	. -= "empty"
-	if(initial)
+	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
 
 /obj/structure/sign/double/barsign/examine(mob/user)
 	. = ..()
 	switch(icon_state)
 		if("Off")
-			to_chat(user, "It appears to be switched off.")
-		if("narsiebistro")
-			to_chat(user, "It shows a picture of a large black and red being. Spooky!")
+			. += "\nIt appears to be switched off."
+		if("Nar-sie Bistro")
+			. += "\nIt shows a picture of a large black and red being. Spooky!"
 		if("on", "empty")
-			to_chat(user, "The lights are on, but there's no picture.")
+			. += "\nThe lights are on, but there's no picture."
 		else
-			to_chat(user, "It says '[icon_state]'")
+			. += "\nIt says '[icon_state]'"
 
-/obj/structure/sign/double/barsign/New()
-	..()
-	icon_state = pick(get_valid_states())
+/obj/structure/sign/double/barsign/Initialize()
+	. = ..()
+	icon_state = pick(get_valid_states(initial = TRUE))
 
-/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/user)
-	if(cult)
-		return ..()
-
-	var/obj/item/weapon/card/id/card = I.GetIdCard()
-	if(istype(card))
-		if(access_bar in card.GetAccess())
-			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0)
-			if(!sign_type)
+/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
+	var/obj/item/card/id/card = I.GetIdCard()
+	if(istype(card) || emagged)
+		if(access_bar in card.GetAccess() || emagged)
+			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
+			if(!sign_type || !Adjacent(user))
 				return
 			icon_state = sign_type
-			to_chat(user, "<span class='notice'>You change the barsign.</span>")
+			to_chat(user, SPAN("notice", "You change the barsign."))
 		else
-			to_chat(user, "<span class='warning'>Access denied.</span>")
+			to_chat(user, SPAN("warning", "Access denied."))
 		return
-
 	return ..()
+
+/obj/structure/sign/double/barsign/emag_act(remaining_charges, mob/user)
+	if(!emagged)
+		emagged = TRUE
+		to_chat(user, SPAN("notice", "You overload the access verification system and open access to special propaganda."))
+		return 1
+	return
+
+/obj/structure/sign/double/barsign/emp_act(severity)
+	icon_state = "???"
+	..(severity)

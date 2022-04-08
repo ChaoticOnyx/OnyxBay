@@ -6,7 +6,7 @@
 	anchored = 1.0
 	icon_keyboard = "med_key"
 	icon_screen = "crew"
-	circuit = /obj/item/weapon/circuitboard/operating
+	circuit = /obj/item/circuitboard/operating
 	var/mob/living/carbon/human/victim = null
 	var/obj/machinery/optable/table = null
 
@@ -14,50 +14,39 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		table = locate(/obj/machinery/optable, get_step(src, dir))
-		if (table)
-			table.computer = src
-			break
-
-/obj/machinery/computer/operating/attack_ai(mob/user)
-	if(stat & (BROKEN|NOPOWER))
-		return
-	interact(user)
-
+		if(!table || table?.computer)
+			continue
+		table.computer = src
+		break
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
-	..()
-	if(stat & (BROKEN|NOPOWER))
+	. = ..()
+
+	if(!.)
+		tgui_interact(user)
+
+/obj/machinery/computer/operating/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "OperatingTable", name)
+		ui.open()
+		ui.set_autoupdate(TRUE)
+
+/obj/machinery/computer/operating/tgui_act(action, params)
+	. = ..()
+
+	if(.)
 		return
-	interact(user)
 
+	switch(action)
+		if("remove_clothes")
+			table?.remove_clothes()
+			return TRUE
 
-/obj/machinery/computer/operating/interact(mob/user)
-	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if (!istype(user, /mob/living/silicon))
-			user.unset_machine()
-			user << browse(null, "window=op")
-			return
+/obj/machinery/computer/operating/tgui_data(mob/user)
+	var/list/data = list(
+		"medical_data" = table.victim?.get_medical_data_ui()
+	)
 
-	user.set_machine(src)
-	var/dat = "<HEAD><TITLE>Operating Computer</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
-	dat += "<A HREF='?src=\ref[user];mach_close=op'>Close</A><br><br>" //| <A HREF='?src=\ref[user];update=1'>Update</A>"
-	if(src.table && (src.table.check_victim()))
-		src.victim = src.table.victim
-		dat += {"
-<B>Patient Information:</B><BR>
-<BR>
-[medical_scan_results(victim, 1)]
-"}
-	else
-		src.victim = null
-		dat += {"
-<B>Patient Information:</B><BR>
-<BR>
-<B>No Patient Detected</B>
-"}
-	user << browse(dat, "window=op")
-	onclose(user, "op")
-
-/obj/machinery/computer/operating/Process()
-	if(!inoperable())
-		updateDialog()
+	return data

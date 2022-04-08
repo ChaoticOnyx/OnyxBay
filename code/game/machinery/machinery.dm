@@ -21,9 +21,9 @@ Class Variables:
    power_channel (num)
 	  What channel to draw from when drawing power for power mode
 	  Possible Values:
-		 EQUIP:1 -- Equipment Channel
-		 LIGHT:2 -- Lighting Channel
-		 ENVIRON:3 -- Environment Channel
+		 STATIC_EQUIP:1 -- Equipment Channel
+		 STATIC_LIGHT:2 -- Lighting Channel
+		 STATIC_ENVIRON:3 -- Environment Channel
 
    component_parts (list)
 	  A list of component parts of machine used by frame based machines.
@@ -86,7 +86,8 @@ Class Procs:
 	name = "machinery"
 	icon = 'icons/obj/stationobjs.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
+	layer = BELOW_OBJ_LAYER
 
 	var/stat = 0
 	var/emagged = 0
@@ -97,7 +98,7 @@ Class Procs:
 		//2 = run auto, use active
 	var/idle_power_usage = 0
 	var/active_power_usage = 0
-	var/power_channel = EQUIP //EQUIP, ENVIRON or LIGHT
+	var/power_channel = STATIC_EQUIP //STATIC_EQUIP, STATIC_ENVIRON or STATIC_LIGHT
 	/* List of types that should be spawned as component_parts for this machine.
 		Structure:
 			type -> num_objects
@@ -120,11 +121,18 @@ Class Procs:
 	var/clicksound			// sound played on succesful interface use by a carbon lifeform
 	var/clickvol = 40		// sound played on succesful interface use
 	var/life_tick = 0		// O P T I M I Z A T I O N
+	var/beep_last_played = 0
+	var/list/beepsounds = null
+
+	var/current_power_usage = 0 // How much power are we currently using, dont change by hand, change power_usage vars and then use set_power_use
+	var/area/current_power_area // What area are we powering currently
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
 	if(d)
 		set_dir(d)
+
+	GLOB.machines += src
 
 	if (populate_components && component_types)
 		component_parts = list()
@@ -140,10 +148,19 @@ Class Procs:
 			RefreshParts()
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
-	SSmachines.machinery += src // All machines should remain in this list, always.
+
+
+/obj/machinery/proc/play_beep()
+	if (isnull(beepsounds))
+		return
+
+	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
+		beep_last_played = world.time
+		playsound(src.loc, pick(beepsounds), 30)
 
 /obj/machinery/Destroy()
-	SSmachines.machinery -= src
+	GLOB.machines -= src
+	set_power_use(NO_POWER_USE)
 	STOP_PROCESSING(SSmachines, src)
 	if(component_parts)
 		for(var/atom/A in component_parts)
@@ -187,6 +204,14 @@ Class Procs:
 		else
 	return
 
+/obj/machinery/blob_act()
+	if(stat & BROKEN)
+		qdel(src)
+		return
+
+	if(prob(10))
+		set_broken(TRUE)
+
 /obj/machinery/proc/set_broken(new_state)
 	if(new_state && !(stat & BROKEN))
 		stat |= BROKEN
@@ -213,14 +238,24 @@ Class Procs:
 	if(!interact_offline && (stat & NOPOWER))
 		return STATUS_CLOSE
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			return STATUS_CLOSE
+
 	return ..()
+
+/obj/machinery/tgui_state(mob/user)
+	return GLOB.tgui_machinery_state
 
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
-	user.set_machine(src)
+	if(user)
+		user.set_machine(src)
 
 /obj/machinery/CouldNotUseTopic(mob/user)
-	user.unset_machine()
+	if(user)
+		user.unset_machine()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -235,26 +270,29 @@ Class Procs:
 
 /obj/machinery/attack_hand(mob/user as mob)
 	if(inoperable(MAINT))
-		return 1
+		return TRUE
 	if(user.lying || user.stat)
-		return 1
+		return TRUE
 	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon)))
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
-		return 1
+		return TRUE
 /*
 	//distance checks are made by atom/proc/DblClick
 	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
-		return 1
+		return TRUE
 */
 	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			to_chat(user, SPAN("warning", "I'm not smart enough to do that!"))
+			return TRUE
 		if(H.getBrainLoss() >= 55)
-			visible_message("<span class='warning'>[H] stares cluelessly at \the [src].</span>")
-			return 1
+			visible_message(SPAN("warning", "[H] stares cluelessly at \the [src]."))
+			return TRUE
 		else if(prob(H.getBrainLoss()))
-			to_chat(user, "<span class='warning'>You momentarily forget how to use \the [src].</span>")
-			return 1
+			to_chat(user, SPAN("warning", "You momentarily forget how to use \the [src]."))
+			return TRUE
 
 	return ..()
 
@@ -278,9 +316,9 @@ Class Procs:
 
 /obj/machinery/proc/shock(mob/user, prb)
 	if(inoperable())
-		return 0
+		return FALSE
 	if(!prob(prb))
-		return 0
+		return FALSE
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()
@@ -295,14 +333,14 @@ Class Procs:
 			return 1
 	return 0
 
-/obj/machinery/proc/default_deconstruction_crowbar(mob/user, obj/item/weapon/crowbar/C)
+/obj/machinery/proc/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
 	if(!istype(C))
 		return 0
 	if(!panel_open)
 		return 0
 	. = dismantle()
 
-/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, obj/item/weapon/screwdriver/S)
+/obj/machinery/proc/default_deconstruction_screwdriver(mob/user, obj/item/screwdriver/S)
 	if(!istype(S))
 		return 0
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
@@ -311,20 +349,20 @@ Class Procs:
 	update_icon()
 	return 1
 
-/obj/machinery/proc/default_part_replacement(mob/user, obj/item/weapon/storage/part_replacer/R)
+/obj/machinery/proc/default_part_replacement(mob/user, obj/item/storage/part_replacer/R)
 	if(!istype(R))
 		return 0
 	if(!component_parts)
 		return 0
 	if(panel_open)
-		var/obj/item/weapon/circuitboard/CB = locate(/obj/item/weapon/circuitboard) in component_parts
+		var/obj/item/circuitboard/CB = locate(/obj/item/circuitboard) in component_parts
 		var/P
-		for(var/obj/item/weapon/stock_parts/A in component_parts)
+		for(var/obj/item/stock_parts/A in component_parts)
 			for(var/T in CB.req_components)
 				if(ispath(A.type, T))
 					P = T
 					break
-			for(var/obj/item/weapon/stock_parts/B in R.contents)
+			for(var/obj/item/stock_parts/B in R.contents)
 				if(istype(B, P) && istype(A, P))
 					if(B.rating > A.rating)
 						R.remove_from_storage(B, src)
@@ -364,27 +402,56 @@ Class Procs:
 /obj/machinery/proc/malf_upgrade(mob/living/silicon/ai/user)
 	return 0
 
+/obj/machinery/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return TRUE
+
+	if(clicksound && istype(usr, /mob/living/carbon))
+		playsound(src, clicksound, clickvol)
+
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
 	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
 /obj/machinery/proc/display_parts(mob/user)
-	to_chat(user, "<span class='notice'>Following parts detected in the machine:</span>")
-	for(var/var/obj/item/C in component_parts)
-		to_chat(user, "<span class='notice'>	[C.name]</span>")
+	. = "<span class='notice'>Following parts detected in the machine:</span>"
+	for(var/obj/item/C in component_parts)
+		. += "\n<span class='notice'>	[C.name]</span>"
 
 /obj/machinery/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		display_parts(user)
+		. += "\n[display_parts(user)]"
 
-/obj/machinery/blob_act(destroy, obj/effect/blob/source)
-	if (stat & BROKEN)
-		qdel(src)
+/obj/machinery/proc/update_power_use()
+	set_power_use(use_power)
 
-	if (destroy)
-		set_broken(TRUE)
-	else
-		if (prob(10))
-			set_broken(TRUE)
+// The main proc that controls power usage of a machine, change use_power only with this proc
+/obj/machinery/proc/set_power_use(new_use_power)
+	if(current_power_usage && current_power_area) // We are tracking the area that is powering us so we can remove power from the right one if we got moved or something
+		current_power_area.removeStaticPower(current_power_usage, power_channel)
+		current_power_area = null
+
+	current_power_usage = 0
+	use_power = new_use_power
+
+	var/area/A = get_area(src)
+	if(!A || !anchored || stat & NOPOWER) // Unwrenched machines aren't plugged in, unpowered machines don't use power
+		return
+
+	if(use_power == IDLE_POWER_USE && idle_power_usage)
+		current_power_area = A
+		current_power_usage = idle_power_usage
+		current_power_area.addStaticPower(current_power_usage, power_channel)
+	else if(use_power == ACTIVE_POWER_USE && active_power_usage)
+		current_power_area = A
+		current_power_usage = active_power_usage
+		current_power_area.addStaticPower(current_power_usage, power_channel)
+
+
+// Unwrenching = unpluging from a power source
+/obj/machinery/wrenched_change()
+	update_power_use()

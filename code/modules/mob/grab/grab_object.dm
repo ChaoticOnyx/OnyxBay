@@ -1,6 +1,8 @@
 
 /obj/item/grab
 	name = "grab"
+	canremove = FALSE
+	force_drop = TRUE
 
 	var/mob/living/carbon/human/affecting = null
 	var/mob/living/carbon/human/assailant = null
@@ -17,6 +19,7 @@
 
 	var/attacking = 0
 	var/target_zone
+	var/done_struggle = FALSE // Used by struggle grab datum to keep track of state.
 
 	w_class = ITEM_SIZE_NO_CONTAINER
 	throw_range = 3
@@ -30,21 +33,22 @@
 	affecting = victim
 	target_zone = attacker.zone_sel.selecting
 	var/obj/item/O = get_targeted_organ()
+
 	SetName("[name] ([O.name])")
 
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
 
 /obj/item/grab/examine(user)
-	..()
+	. = ..()
 	var/obj/item/O = get_targeted_organ()
-	to_chat(user,"A grab on \the [affecting]'s [O.name].")
+	. += "\nA grab on \the [affecting]'s [O.name]."
 
 /obj/item/grab/Process()
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)
-	if(!assailant)
+	if(!assailant || !affecting)
 		return
 	switch(assailant.a_intent)
 		if(I_HELP)
@@ -57,9 +61,14 @@
 
 /obj/item/grab/dropped()
 	..()
-	loc = null
-	if(!QDELETED(src))
+	delete_self()
+
+/obj/item/grab/proc/delete_self()
+	if(!QDELING(src))
 		qdel(src)
+
+/obj/item/grab/can_be_dropped_by_client(mob/M)
+	return M == assailant
 
 /obj/item/grab/Destroy()
 	if(affecting)
@@ -68,7 +77,10 @@
 		affecting.reset_plane_and_layer()
 		affecting = null
 	if(assailant)
+		assailant.u_equip(src)
+		assailant.client?.screen -= src
 		assailant = null
+		loc = null
 	return ..()
 
 /*
@@ -87,29 +99,42 @@
 	else
 		return 0
 
-
-/obj/item/grab/proc/force_drop()
-	assailant.drop_from_inventory(src)
-
-/obj/item/grab/proc/can_grab()
-
+/obj/item/grab/proc/is_eligible()
 	// can't grab non-carbon/human/'s
 	if(!istype(affecting))
-		return 0
+		return FALSE
 
 	if(assailant.anchored || affecting.anchored)
-		return 0
+		return FALSE
 
 	if(!assailant.Adjacent(affecting))
-		return 0
+		return FALSE
+
+	if(assailant.buckled || affecting.buckled)
+		return FALSE
+
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you were grabbing!"))
+		return FALSE
+
+	return TRUE
+
+/obj/item/grab/proc/can_grab()
+	if(!is_eligible())
+		return FALSE
+
+	if(length(affecting.grabbed_by))
+		to_chat(assailant, SPAN("notice", "Someone already grabbed [affecting]!"))
+		return FALSE
 
 	for(var/obj/item/grab/G in affecting.grabbed_by)
 		if(G.assailant == assailant && G.target_zone == target_zone)
 			var/obj/O = G.get_targeted_organ()
-			to_chat(assailant, "<span class='notice'>You already grabbed [affecting]'s [O.name].</span>")
-			return 0
+			to_chat(assailant, SPAN("notice", "You already grabbed [affecting]'s [O.name]."))
+			return FALSE
 
-	return 1
+	return TRUE
 
 // This is for all the sorts of things that need to be checked for pretty much every
 // grab made. Feel free to override it but it stops a lot of situations that could
@@ -117,6 +142,9 @@
 /obj/item/grab/proc/pre_check()
 
 	if(!assailant || !affecting)
+		return 0
+
+	if(assailant.lying)
 		return 0
 
 	if(assailant == affecting)
@@ -131,6 +159,11 @@
 		to_chat(assailant, "<span class='notice'>You can't grab someone if you're being grabbed.</span>")
 		return 0
 
+	var/obj/item/organ/external/O = get_targeted_organ()
+	if(!O)
+		to_chat(assailant, SPAN("warning", "[affecting] is missing the body part you tried to grab!"))
+		return 0 // This check is kinda extra, but you can never be sure
+
 	return 1
 
 /obj/item/grab/proc/init()
@@ -142,9 +175,7 @@
 
 // Returns the organ of the grabbed person that the grabber is targeting
 /obj/item/grab/proc/get_targeted_organ()
-	if(!affecting)
-		return
-	return (affecting.get_organ(target_zone))
+	return (affecting?.get_organ(target_zone))
 
 /obj/item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
 	if((M && ishuman(M)) && I)
@@ -175,7 +206,7 @@
 		current_grab.enter_as_up(src)
 
 /obj/item/grab/proc/downgrade()
-	var/datum/grab/downgrab = current_grab.downgrade(src)
+	var/datum/grab/downgrab = current_grab.downgrade()
 	if(downgrab)
 		current_grab = downgrab
 		update_icons()
@@ -203,17 +234,27 @@
 /obj/item/grab/proc/handle_resist()
 	current_grab.handle_resist(src)
 
-/obj/item/grab/proc/adjust_position(force = 0)
-	if(force)	affecting.forceMove(assailant.loc)
+/obj/item/grab/proc/adjust_position(force = FALSE)
+	if(force)
+		affecting.forceMove(assailant.loc)
 
 	if(!assailant || !affecting || !assailant.Adjacent(affecting))
-		qdel(src)
-		return 0
+		delete_self()
+		return FALSE
 	else
 		current_grab.adjust_position(src)
 
 /obj/item/grab/proc/reset_position()
-	current_grab.reset_position(src)
+	current_grab?.reset_position(src)
+
+/obj/item/grab/proc/has_hold_on_organ(obj/item/organ/external/O)
+	if(!O)
+		return FALSE
+
+	if(get_targeted_organ() == O)
+		return TRUE
+
+	return FALSE
 
 /*
 	This section is for the simple procs used to return things from current_grab.
@@ -231,8 +272,8 @@
 /obj/item/grab/proc/can_absorb()
 	return current_grab.can_absorb
 
-/obj/item/grab/proc/assailant_reverse_facing()
-	return current_grab.reverse_facing
+/obj/item/grab/proc/reverse_moving()
+	return current_grab.reverse_moving
 
 /obj/item/grab/proc/shield_assailant()
 	return current_grab.shield_assailant
@@ -249,12 +290,8 @@
 /obj/item/grab/proc/ladder_carry()
 	return current_grab.ladder_carry
 
-/obj/item/grab/proc/assailant_moved()
-	current_grab.assailant_moved(src)
-
 /obj/item/grab/proc/restrains()
 	return current_grab.restrains
 
 /obj/item/grab/proc/resolve_openhand_attack()
 		return current_grab.resolve_openhand_attack(src)
-

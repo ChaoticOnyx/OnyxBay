@@ -23,6 +23,7 @@
 	randpixel = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
 	flash_protection = FLASH_PROTECTION_MAJOR
+	has_visor = 0
 
 	var/obj/machinery/camera/camera
 
@@ -59,8 +60,9 @@
 			to_chat(usr, "<span class='notice'>Camera deactivated.</span>")
 
 /obj/item/clothing/head/helmet/space/examine(mob/user)
-	if(..(user, 1) && camera)
-		to_chat(user, "This helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active.")
+	. = ..()
+	if(get_dist(src, user) <= 1 && camera)
+		. += "\nThis helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active."
 
 /obj/item/clothing/suit/space
 	name = "Space suit"
@@ -79,7 +81,7 @@
 	permeability_coefficient = 0
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency,/obj/item/device/suit_cooling_unit)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank/emergency,/obj/item/device/suit_cooling_unit)
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 100, rad = 50)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
@@ -89,7 +91,3 @@
 	randpixel = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
-
-/obj/item/clothing/suit/space/New()
-	..()
-	slowdown_per_slot[slot_wear_suit] = 1

@@ -72,11 +72,11 @@
 	..()
 
 /obj/item/clothing/accessory/holster/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if (holstered)
-		to_chat(user, "A [holstered] is holstered here.")
+		. += "\nA [holstered] is holstered here."
 	else
-		to_chat(user, "It is empty.")
+		. += "\nIt is empty."
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()
@@ -108,11 +108,11 @@
 		to_chat(usr, "<span class='warning'>Something is very wrong.</span>")
 
 	if(!H.holstered)
-		var/obj/item/W = usr.get_active_hand()
-		if(!istype(W, /obj/item))
+		var/obj/item/I = usr.get_active_hand()
+		if(!istype(I, /obj/item))
 			to_chat(usr, "<span class='warning'>You're not holding anything to holster.</span>")
 			return
-		H.holster(W, usr)
+		H.holster(I, usr)
 	else
 		H.unholster(usr)
 
@@ -141,4 +141,4 @@
 	name = "machete sheath"
 	desc = "A handsome synthetic leather sheath with matching belt."
 	icon_state = "holster_machete"
-	can_hold = list(/obj/item/weapon/material/hatchet/machete)
+	can_hold = list(/obj/item/material/hatchet/machete)

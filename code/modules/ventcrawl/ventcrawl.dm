@@ -5,12 +5,14 @@ var/list/ventcrawl_machinery = list(
 
 // Vent crawling whitelisted items, whoo
 /mob/living/var/list/can_enter_vent_with = list(
-	/obj/item/weapon/implant,
+	/obj/item/implant,
 	/obj/item/device/radio/borg,
-	/obj/item/weapon/holder,
+	/obj/item/holder,
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer,
-	/obj/item/organ/internal/biostructure
+	/obj/item/organ/internal/biostructure,
+	/obj/effect/abstract/proximity_checker, //spiderbot staff
+	/obj/item/organ/internal/heart/gland/ventcrawling
 	)
 
 /mob/living/var/list/icon/pipes_shown = list()
@@ -36,12 +38,12 @@ var/list/ventcrawl_machinery = list(
 		remove_ventcrawl()
 		add_ventcrawl(loc)
 
-/mob/living/carbon/slime/can_ventcrawl()
+/mob/living/carbon/metroid/can_ventcrawl()
 	if(Victim)
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
 		return FALSE
 	. = ..()
-	
+
 /mob/living/carbon/human/can_ventcrawl()
 	if(handcuffed)
 		to_chat(src, "<span class='warning'>You can't vent crawl while you're restrained!</span>")
@@ -50,7 +52,11 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl in your current state!</span>")
 		return FALSE
 	if(isMonkey(src))
-		return TRUE				
+		return TRUE
+	if(istype(species, /datum/species/xenos))
+		return TRUE
+	if(istype(internal_organs_by_name[BP_HEART], /obj/item/organ/internal/heart/gland/ventcrawling))
+		return TRUE
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()
@@ -112,7 +118,7 @@ var/list/ventcrawl_machinery = list(
 		pipe = pipes[1]
 	else
 		pipe = input("Crawl Through Vent", "Pick a pipe") as null|anything in pipes
-	if(canmove && pipe)
+	if(!is_physically_disabled() && pipe)
 		return pipe
 
 /mob/living/carbon/alien/ventcrawl_carry()
@@ -167,6 +173,9 @@ var/list/ventcrawl_machinery = list(
 				return
 			if(!can_ventcrawl())
 				return
+			if(!vent_found.can_crawl_through())
+				to_chat(src, "This vent is no longer accessible!")
+				return
 
 			visible_message("<B>[src] scrambles into the ventilation ducts!</B>", "You climb into the ventilation system.")
 
@@ -177,9 +186,9 @@ var/list/ventcrawl_machinery = list(
 			to_chat(src, "This vent is not connected to anything.")
 	else
 		to_chat(src, "You must be standing on or beside an air vent to enter it.")
+
 /mob/living/proc/add_ventcrawl(obj/machinery/atmospherics/starting_machine)
 	is_ventcrawling = 1
-	//candrop = 0
 	var/datum/pipe_network/network = starting_machine.return_network(starting_machine)
 	if(!network)
 		return
@@ -194,7 +203,6 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/proc/remove_ventcrawl()
 	is_ventcrawling = 0
-	//candrop = 1
 	if(client)
 		for(var/image/current_image in pipes_shown)
 			client.images -= current_image

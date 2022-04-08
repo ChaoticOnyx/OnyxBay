@@ -17,6 +17,7 @@
 	max_damage = 300
 	broken_damage = 150
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	beepsounds = SFX_TRR
 
 /obj/item/modular_computer/console/CouldUseTopic(mob/user)
 	..()

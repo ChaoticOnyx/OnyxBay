@@ -9,14 +9,21 @@
 	icon = 'icons/obj/vehicles.dmi'
 
 	layer = ABOVE_HUMAN_LAYER
+	appearance_flags = LONG_GLIDE
 	density = 1
 	anchored = 1
 	animate_movement=1
-	light_range = 3
+	light_outer_range = 3
 
 	can_buckle = 1
 	buckle_movable = 1
 	buckle_lying = 0
+
+	movement_handlers = list(
+		/datum/movement_handler/deny_stairs,
+		/datum/movement_handler/deny_multiz,
+		/datum/movement_handler/move_relay_self
+	)
 
 	var/attack_log = null
 	var/on = 0
@@ -31,7 +38,7 @@
 	var/powered = 0		//set if vehicle is powered and should use fuel when moving
 	var/move_delay = 1	//set this to limit the speed of the vehicle
 
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/charge_use = 200 //W
 
 	var/atom/movable/load		//all vehicles can take a load, since they should all be a least drivable
@@ -48,34 +55,35 @@
 
 /obj/vehicle/Move()
 	if(world.time > l_move_time + move_delay)
-		var/old_loc = get_turf(src)
 		if(on && powered && cell.charge < (charge_use * CELLRATE))
 			turn_off()
 
+		var/old_loc = get_turf(src)
 		var/init_anc = anchored
+		// Hack to let the vehicle fall() in open spaces.
 		anchored = 0
-		if(!..())
-			anchored = init_anc
-			return 0
+
+		. = ..()
 
 		set_dir(get_dir(old_loc, loc))
 		anchored = init_anc
 
-		if(on && powered)
-			cell.use(charge_use * CELLRATE)
-
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
-			load.forceMove(loc)
+			if(ismob(load))
+				var/mob/M = load
+				M.forceMove(loc, unbuckle_mob=FALSE)
+			else
+				load.forceMove(loc)
 			load.set_dir(dir)
 
 		return 1
 	else
 		return 0
 
-/obj/vehicle/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/hand_labeler))
+/obj/vehicle/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/hand_labeler))
 		return
 	if(isScrewdriver(W))
 		if(!locked)
@@ -85,10 +93,10 @@
 	else if(isCrowbar(W) && cell && open)
 		remove_cell(user)
 
-	else if(istype(W, /obj/item/weapon/cell) && !cell && open)
+	else if(istype(W, /obj/item/cell) && !cell && open)
 		insert_cell(W, user)
 	else if(isWelder(W))
-		var/obj/item/weapon/weldingtool/T = W
+		var/obj/item/weldingtool/T = W
 		if(T.welding)
 			if(health < maxhealth)
 				if(open)
@@ -163,6 +171,9 @@
 	if(load == .)
 		unload(.)
 
+/obj/vehicle/hides_inside_walls()
+	return istype(load, /mob/living) ? 0 : 1
+
 //-------------------------------------------
 // Vehicle procs
 //-------------------------------------------
@@ -172,7 +183,7 @@
 	if(powered && cell.charge < (charge_use * CELLRATE))
 		return 0
 	on = 1
-	set_light(initial(light_range))
+	set_light(initial(light_max_bright), 1, 5)
 	update_icon()
 	return 1
 
@@ -183,6 +194,7 @@
 
 /obj/vehicle/emag_act(remaining_charges, mob/user as mob)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		if(locked)
 			locked = 0
@@ -234,7 +246,7 @@
 		turn_on()
 		return
 
-/obj/vehicle/proc/insert_cell(obj/item/weapon/cell/C, mob/living/carbon/human/H)
+/obj/vehicle/proc/insert_cell(obj/item/cell/C, mob/living/carbon/human/H)
 	if(cell)
 		return
 	if(!istype(C))

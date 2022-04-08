@@ -10,7 +10,7 @@
 	var/health = null
 	var/burn_point = null
 	var/burning = null
-	var/hitsound = null
+	var/hitsound = SFX_FIGHTING_SWING
 	var/slot_flags = 0		//This is used to determine on which slots an item can fit.
 	var/no_attack_log = 0			//If it's an item we don't want to log attack_logs with, set this to 1
 	pass_flags = PASS_FLAG_TABLE
@@ -29,6 +29,7 @@
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
 	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
 	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.3 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
+	var/check_armour = "melee" // Defines what armor to use when it hits things.  Must be set to bullet/laser/energy/bomb/bio/rad
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -54,13 +55,14 @@
 	var/slowdown_per_slot[slot_last] // How much clothing is slowing you down. This is an associative list: item slot - slowdown
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
-	var/candrop = 1
+	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
 	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	var/list/allowed = null //suit storage stuff.
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
 	var/surgery_speed = 1 //When this item is used as a surgery tool, multiply the delay of the surgery step by this much.
+	var/clumsy_unaffected = FALSE
 
 	var/icon_override = null  //Used to override hardcoded clothing dmis in human clothing proc.
 
@@ -82,6 +84,8 @@
 
 	var/pickup_sound = null
 
+	var/ear_protection = 0
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
@@ -89,15 +93,20 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
-	qdel(hidden_uplink)
-	hidden_uplink = null
+	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-		m.update_inv_r_hand()
-		m.update_inv_l_hand()
-		src.loc = null
-	return ..()
+	if(maptext)
+		maptext = ""
+
+	if(istype(src.loc, /obj/item/storage))
+		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
+		storage.on_item_pre_deletion(src) // must be done before deletion
+		. = ..()
+		storage.on_item_post_deletion() // must be done after deletion
+	else
+		return ..()
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
@@ -157,7 +166,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user, distance = -1)
+/obj/item/examine(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -203,7 +212,7 @@
 		desc_comp += "<BR>*--------* <BR>"
 
 		if(origin_tech)
-			desc_comp += "<span class='notice'>Testing potentials:</span><BR>"
+			desc_comp += SPAN("notice", "Testing potentials:<BR>")
 			//var/list/techlvls = params2list(origin_tech)
 			for(var/T in origin_tech)
 				desc_comp += "Tech: Level [origin_tech[T]] [CallTechName(T)] <BR>"
@@ -211,52 +220,55 @@
 			desc_comp += "No tech origins detected.<BR>"
 
 		if(LAZYLEN(matter))
-			desc_comp += "<span class='notice'>Extractable materials:</span><BR>"
+			desc_comp += SPAN("notice", "Extractable materials:<BR>")
 			for(var/mat in matter)
 				desc_comp += "[get_material_by_name(mat)]<BR>"
 		else
-			desc_comp += "<span class='danger'>No extractable materials detected.</span><BR>"
+			desc_comp += SPAN("danger", "No extractable materials detected.<BR>")
 		desc_comp += "*--------*"
 
 	//if(weapon_desc)
 	//	desc_comp += handle_weapon_desc()
 
-	return ..(user, distance, "", desc_comp)
+	return ..(user, "", desc_comp)
 
-/obj/item/attack_hand(mob/user as mob)
-	if (!user)
+/obj/item/attack_hand(mob/user)
+	if(!user)
 		return
-	if (anchored)
+	if(anchored)
 		return ..()
-	if(istype(user, /mob/living/carbon/human/xenos))
-		to_chat(user, "<span class='notice'>You're not smart enough to do that!</span>")
-		return
-	if (hasorgans(user))
+	if(hasorgans(user))
 		var/mob/living/carbon/human/H = user
+		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
+			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
+			return
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (user.hand)
 			temp = H.organs_by_name[BP_L_HAND]
 		if(temp && !temp.is_usable())
-			to_chat(user, "<span class='notice'>You try to move your [temp.name], but cannot!</span>")
+			to_chat(user, SPAN("notice", "You try to move your [temp.name], but cannot!"))
 			return
 		if(!temp)
-			to_chat(user, "<span class='notice'>You try to use your hand, but realize it is no longer attached!</span>")
+			to_chat(user, SPAN("notice", "You try to use your hand, but realize it is no longer attached!"))
 			return
 
-	var/old_loc = src.loc
+	var/old_loc = loc
 
-	src.pickup(user)
-	if (istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = src.loc
+	pickup(user)
+	if (istype(loc, /obj/item/storage))
+		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 
-	src.throwing = 0
-	if (src.loc == user)
+	throwing = 0
+	if (loc == user)
 		if(!user.unEquip(src))
 			return
 	else
-		if(isliving(src.loc))
+		if(isliving(loc))
 			return
+
+	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+		return
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -271,8 +283,8 @@
 			pixel_y = 0
 	return
 
-/obj/item/attack_ai(mob/user as mob)
-	if (istype(src.loc, /obj/item/weapon/robot_module))
+/obj/item/attack_ai(mob/user)
+	if (istype(src.loc, /obj/item/robot_module))
 		//If the item is part of a cyborg module, equip it
 		if(!isrobot(user))
 			return
@@ -280,9 +292,9 @@
 		R.activate_module(src)
 		R.hud_used.update_robot_modules_display()
 
-/obj/item/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
+/obj/item/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/storage))
+		var/obj/item/storage/S = W
 		if(S.use_to_pickup)
 			if(S.collection_mode) //Mode is set to collect all items
 				if(isturf(src.loc))
@@ -290,18 +302,16 @@
 			else if(S.can_be_inserted(src, user))
 				S.handle_item_insertion(src)
 
-/obj/item/proc/talk_into(mob/M as mob, text)
+/obj/item/proc/talk_into(mob/M, text)
 	return
 
-/obj/item/proc/moved(mob/user as mob, old_loc as turf)
+/obj/item/proc/moved(mob/user, old_loc)
 	return
 
 // apparently called whenever an item is removed from a slot, container, or anything else.
-/obj/item/proc/dropped(mob/user as mob)
+/obj/item/proc/dropped(mob/user)
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
-	if(zoom)
-		zoom(user) //binoculars, scope, etc
 
 	update_twohanding()
 	if(user)
@@ -310,20 +320,22 @@
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
 
+	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	return
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
-/obj/item/proc/on_exit_storage(obj/item/weapon/storage/S as obj)
+/obj/item/proc/on_exit_storage(obj/item/storage/S)
 	return
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
-/obj/item/proc/on_enter_storage(obj/item/weapon/storage/S as obj)
+/obj/item/proc/on_enter_storage(obj/item/storage/S)
 	return
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
-/obj/item/proc/on_found(mob/finder as mob)
+/obj/item/proc/on_found(mob/finder)
 	return
 
 // called after an item is placed in an equipment slot
@@ -344,6 +356,8 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+
+	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(
@@ -367,7 +381,7 @@ var/list/global/slot_flags_enumeration = list(
 //Set disable_warning to 1 if you wish it to not give you outputs.
 //Should probably move the bulk of this into mob code some time, as most of it is related to the definition of slots and not item-specific
 //set force to ignore blocking overwear and occupied slots
-/obj/item/proc/mob_can_equip(M as mob, slot, disable_warning = 0, force = 0)
+/obj/item/proc/mob_can_equip(M, slot, disable_warning = 0, force = 0)
 	if(!slot) return 0
 	if(!M) return 0
 
@@ -410,12 +424,12 @@ var/list/global/slot_flags_enumeration = list(
 				return 1
 			else if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
-					to_chat(H, "<span class='warning'>You need a jumpsuit before you can attach this [name].</span>")
+					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
 				return 0
 		if(slot_l_store, slot_r_store)
 			if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
-					to_chat(H, "<span class='warning'>You need a jumpsuit before you can attach this [name].</span>")
+					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
 				return 0
 			if(slot_flags & SLOT_DENYPOCKET)
 				return 0
@@ -426,21 +440,21 @@ var/list/global/slot_flags_enumeration = list(
 		if(slot_s_store)
 			if(!H.wear_suit && (slot_wear_suit in mob_equip))
 				if(!disable_warning)
-					to_chat(H, "<span class='warning'>You need a suit before you can attach this [name].</span>")
+					to_chat(H, SPAN("warning", "You need a suit before you can attach this [name]."))
 				return 0
 			if(!H.wear_suit.allowed)
 				if(!disable_warning)
-					to_chat(usr, "<span class='warning'>You somehow have a suit with no defined allowed items for suit storage, stop that.</span>")
+					to_chat(usr, SPAN("warning", "You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return 0
-			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/weapon/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
+			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/weapon/handcuffs))
+			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
-			if(H.back && istype(H.back, /obj/item/weapon/storage/backpack))
-				var/obj/item/weapon/storage/backpack/B = H.back
+			if(H.back && istype(H.back, /obj/item/storage/backpack))
+				var/obj/item/storage/backpack/B = H.back
 				if(B.can_be_inserted(src,M,1))
 					allow = 1
 			if(!allow)
@@ -448,22 +462,25 @@ var/list/global/slot_flags_enumeration = list(
 		if(slot_tie)
 			if((!H.w_uniform && (slot_w_uniform in mob_equip)) && (!H.wear_suit && (slot_wear_suit in mob_equip)))
 				if(!disable_warning)
-					to_chat(H, "<span class='warning'>You need something you can attach \the [src] to.</span>")
+					to_chat(H, SPAN("warning", "You need something you can attach \the [src] to."))
 				return 0
 			if(H.w_uniform && (slot_w_uniform in mob_equip))
 				var/obj/item/clothing/under/uniform = H.w_uniform
 				if(uniform && !uniform.can_attach_accessory(src))
 					if (!disable_warning)
-						to_chat(H, "<span class='warning'>You cannot equip \the [src] to \the [uniform].</span>")
+						to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [uniform]."))
 					return 0
 			if(H.wear_suit && (slot_wear_suit in mob_equip))
 				var/obj/item/clothing/suit/suit = H.wear_suit
 				if(suit && !suit.can_attach_accessory(src))
 					if (!disable_warning)
-						to_chat(H, "<span class='warning'>You cannot equip \the [src] to \the [suit].</span>")
+						to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [suit]."))
 					return 0
 
 	return 1
+
+/obj/item/proc/return_item()
+	return src
 
 /obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
 	if(!slot) return 0
@@ -475,6 +492,9 @@ var/list/global/slot_flags_enumeration = list(
 		return 0
 	return 1
 
+/obj/item/proc/can_be_dropped_by_client(mob/M)
+	return M.canUnEquip(src)
+
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
 	set category = "Object"
@@ -482,25 +502,25 @@ var/list/global/slot_flags_enumeration = list(
 
 	if(!(usr)) //BS12 EDIT
 		return
-	if(!usr.canmove || usr.stat || usr.restrained() || !Adjacent(usr))
+	if(!CanPhysicallyInteract(usr))
 		return
 	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/carbon/brain)))//Is humanoid, and is not a brain
-		to_chat(usr, "<span class='warning'>You can't pick things up!</span>")
+		to_chat(usr, SPAN("warning", "You can't pick things up!"))
 		return
 	if( usr.stat || usr.restrained() )//Is not asleep/dead and is not restrained
-		to_chat(usr, "<span class='warning'>You can't pick things up!</span>")
+		to_chat(usr, SPAN("warning", "You can't pick things up!"))
 		return
 	if(src.anchored) //Object isn't anchored
-		to_chat(usr, "<span class='warning'>You can't pick that up!</span>")
+		to_chat(usr, SPAN("warning", "You can't pick that up!"))
 		return
 	if(!usr.hand && usr.r_hand) //Right hand is not full
-		to_chat(usr, "<span class='warning'>Your right hand is full.</span>")
+		to_chat(usr, SPAN("warning", "Your right hand is full."))
 		return
 	if(usr.hand && usr.l_hand) //Left hand is not full
-		to_chat(usr, "<span class='warning'>Your left hand is full.</span>")
+		to_chat(usr, SPAN("warning", "Your left hand is full."))
 		return
 	if(!istype(src.loc, /turf)) //Object is on a turf
-		to_chat(usr, "<span class='warning'>You can't pick that up!</span>")
+		to_chat(usr, SPAN("warning", "You can't pick that up!"))
 		return
 	//All checks are done, time to pick it up!
 	usr.UnarmedAttack(src)
@@ -519,45 +539,60 @@ var/list/global/slot_flags_enumeration = list(
 //For non-projectile attacks this usually means the attack is blocked.
 //Otherwise should return 0 to indicate that the attack is not affected in any way.
 /obj/item/proc/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-
-	if(!user.blocking) return 0 // We weren't ready bruh
-	if(istype(damage_source,/obj/item/projectile))
+	if(!user.blocking)
+		return 0 // We weren't ready bruh
+	if(user.incapacitated(INCAPACITATION_DISABLED))
+		return 0
+	if(istype(damage_source, /obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
-		if(src.mod_shield >= 2.5)
-			if(istype(user,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = user
-				H.useblock_off()
-			if(P.starting)
-				visible_message("<span class='warning'>\The [user] reflects [P] with their [src.name]!</span>")
-
-				// Find a turf near or on the original location to bounce to
-				var/new_x = P.starting.x + rand(-2,2)
-				var/new_y = P.starting.y + rand(-2,2)
-				var/turf/curloc = get_turf(user)
-
-				// redirect the projectile
-				P.redirect(new_x, new_y, curloc, user)
-
-			 	// some effects here
-				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-				spark_system.set_up(3, 0, user.loc)
-				spark_system.start()
-
-				return PROJECTILE_CONTINUE // complete projectile permutation
-		else if(src.mod_shield >= 1.3)
-			if(P.armor_penetration > (25*src.mod_shield)-5)
-				visible_message("<span class='warning'>\The [user] tries to block [P] with their [src.name]. <b>Not the best idea.</b></span>")
+		if(!P.blockable)
+			return 0
+		if(mod_shield >= 1.3)
+			if(P.armor_penetration > (25 * mod_shield) - 5)
+				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
 				return 0
-			visible_message("<span class='warning'>\The [user] blocks [P] with their [src.name]!</span>")
-			if(istype(user,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = user
-				H.poise -= P.damage/src.mod_shield
-				if(H.poise < P.damage/src.mod_shield)
-					visible_message("<span class='warning'>[H] falls down, unable to keep balance !</span>")
-					H.apply_effect(3, WEAKEN, 0)
-				H.useblock_off()
+			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
+			proj_poise_drain(user, P, TRUE)
+			spawn()
+				shake_camera(user, 1)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
+
+/obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P, weak_shield = FALSE)
+	if(istype(user, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		var/poise_dmg = P.damage / (mod_shield * 2.5)
+		if(weak_shield && P.damage_type == BRUTE)
+			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
+		if(src != H.get_active_hand())
+			poise_dmg *= 2
+		H.damage_poise(poise_dmg)
+		if(H.poise < poise_dmg)
+			shot_out(H, P)
+
+/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
+	H.useblock_off()
+	H.damage_poise(10)
+	if(!canremove)
+		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
+		return
+	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
+	H.drop_from_inventory(src)
+	if(src && istype(loc,/turf))
+		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+
+/obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
+	H.useblock_off()
+	if(canremove)
+		H.drop_from_inventory(src)
+		if(src && istype(loc,/turf))
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+		if(!strong_knock)
+			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
+			return TRUE
+	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
+	H.apply_effect(3, WEAKEN, 0)
+	return canremove ? TRUE : FALSE
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc
@@ -565,18 +600,18 @@ var/list/global/slot_flags_enumeration = list(
 		L = L.loc
 	return loc
 
-/obj/item/proc/eyestab(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/proc/eyestab(mob/living/carbon/M, mob/living/carbon/user)
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
 		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
 			if(protection && (protection.body_parts_covered & EYES))
 				// you can't stab someone in the eyes wearing a mask!
-				to_chat(user, "<span class='warning'>You're going to need to remove the eye covering first.</span>")
+				to_chat(user, SPAN("warning", "You're going to need to remove the eye covering first."))
 				return
 
 	if(!M.has_eyes())
-		to_chat(user, "<span class='warning'>You cannot locate any eyes on [M]!</span>")
+		to_chat(user, SPAN("warning", "You cannot locate any eyes on [M]!"))
 		return
 
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
@@ -588,7 +623,7 @@ var/list/global/slot_flags_enumeration = list(
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		M = user
 
-		to_chat(M, "<span class='warning'>You stab yourself in the eye.</span>")
+		to_chat(M, SPAN("warning", "You stab yourself in the eye."))
 		M.sdisabilities |= BLIND
 		M.weakened += 4
 		M.adjustBruteLoss(10)
@@ -600,30 +635,30 @@ var/list/global/slot_flags_enumeration = list(
 
 		if(H != user)
 			for(var/mob/O in (viewers(M) - user - M))
-				O.show_message("<span class='danger'>[M] has been stabbed in the eye with [src] by [user].</span>", 1)
-			to_chat(M, "<span class='danger'>[user] stabs you in the eye with [src]!</span>")
-			to_chat(user, "<span class='danger'>You stab [M] in the eye with [src]!</span>")
+				O.show_message(SPAN("danger", "[M] has been stabbed in the eye with [src] by [user]."), 1)
+			to_chat(M, SPAN("danger", "[user] stabs you in the eye with [src]!"))
+			to_chat(user, SPAN("danger", "You stab [M] in the eye with [src]!"))
 		else
 			user.visible_message( \
-				"<span class='danger'>[user] has stabbed themself with [src]!</span>", \
-				"<span class='danger'>You stab yourself in the eyes with [src]!</span>" \
+				SPAN("danger", "[user] has stabbed themself with [src]!"), \
+				SPAN("danger", "You stab yourself in the eyes with [src]!") \
 			)
 
 		eyes.damage += rand(3,4)
 		if(eyes.damage >= eyes.min_bruised_damage)
 			if(M.stat != 2)
 				if(!BP_IS_ROBOTIC(eyes)) //robot eyes bleeding might be a bit silly
-					to_chat(M, "<span class='danger'>Your eyes start to bleed profusely!</span>")
+					to_chat(M, SPAN("danger", "Your eyes start to bleed profusely!"))
 			if(prob(50))
 				if(M.stat != 2)
-					to_chat(M, "<span class='warning'>You drop what you're holding and clutch at your eyes!</span>")
+					to_chat(M, SPAN("warning", "You drop what you're holding and clutch at your eyes!"))
 					M.drop_item()
 				M.eye_blurry += 10
 				M.Paralyse(1)
 				M.Weaken(4)
 			if (eyes.damage >= eyes.min_broken_damage)
 				if(M.stat != 2)
-					to_chat(M, "<span class='warning'>You go blind!</span>")
+					to_chat(M, SPAN("warning", "You go blind!"))
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
 		affecting.take_external_damage(7)
@@ -647,11 +682,11 @@ var/list/global/slot_flags_enumeration = list(
 		blood_overlay.color = COLOR_LUMINOL
 		update_icon()
 
-/obj/item/add_blood(mob/living/carbon/human/M as mob)
+/obj/item/add_blood(mob/living/carbon/human/M)
 	if (!..())
 		return 0
 
-	if(istype(src, /obj/item/weapon/melee/energy))
+	if(istype(src, /obj/item/melee/energy))
 		return
 
 	//if we haven't made our blood_overlay already
@@ -678,11 +713,10 @@ GLOBAL_LIST_EMPTY(blood_overlay_cache)
 	if(GLOB.blood_overlay_cache["[icon]" + icon_state])
 		blood_overlay = GLOB.blood_overlay_cache["[icon]" + icon_state]
 		return
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/blood.dmi', rgb(255,255,255)), ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
-	blood_overlay = image(I)
-	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood_overlay
+	var/image/blood = image(icon = 'icons/effects/blood.dmi', icon_state = "itemblood")
+	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
+	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood
+	blood_overlay = blood
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
@@ -702,70 +736,88 @@ modules/mob/mob_movement.dm if you move you will be zoomed out
 modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 */
 //Looking through a scope or binoculars should /not/ improve your periphereal vision. Still, increase viewsize a tiny bit so that sniping isn't as restricted to NSEW
-/obj/item/proc/zoom(mob/user, tileoffset = 14,viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
+/obj/item/proc/zoom(mob/user, tileoffset = 14, viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
 	if(!user.client)
 		return
+	if(zoom)
+		return
 
-	var/devicename
-	if(zoomdevicename)
-		devicename = zoomdevicename
-	else
-		devicename = src.name
-
-	var/cannotzoom
+	var/devicename = zoomdevicename || name
 
 	var/mob/living/carbon/human/H = user
 	if(user.incapacitated(INCAPACITATION_DISABLED))
-		to_chat(user, "<span class='warning'>You are unable to focus through the [devicename].</span>")
-		cannotzoom = 1
+		to_chat(user, SPAN("warning", "You are unable to focus through the [devicename]."))
+		return
 	else if(!zoom && istype(H) && H.equipment_tint_total >= TINT_MODERATE)
-		to_chat(user, "<span class='warning'>Your visor gets in the way of looking through the [devicename].</span>")
-		cannotzoom = 1
-	else if(!zoom && usr.get_active_hand() != src)
-		to_chat(user, "<span class='warning'>You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better.</span>")
-		cannotzoom = 1
-	else if (!zoom && H.machine_visual)
-		to_chat(user, "<span class='warning'>You are unable to focus through the monitor.</span>")
-		cannotzoom = 1
+		to_chat(user, SPAN("warning", "Your visor gets in the way of looking through the [devicename]."))
+		return
+	else if(!zoom && user.get_active_hand() != src)
+		to_chat(user, SPAN("warning", "You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better."))
+		return
 
-	if(!zoom && !cannotzoom)
-		if(user.hud_used.hud_shown)
-			user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
-		user.client.view = viewsize
-		zoom = 1
+	if(user.hud_used.hud_shown)
+		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
+	user.client.view = viewsize
+	zoom = 1
 
-		var/tilesize = 32
-		var/viewoffset = tilesize * tileoffset
+	var/viewoffset = WORLD_ICON_SIZE * tileoffset
+	switch(user.dir)
+		if (NORTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = viewoffset
+		if (SOUTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = -viewoffset
+		if (EAST)
+			user.client.pixel_x = viewoffset
+			user.client.pixel_y = 0
+		if (WEST)
+			user.client.pixel_x = -viewoffset
+			user.client.pixel_y = 0
 
-		switch(user.dir)
-			if (NORTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = viewoffset
-			if (SOUTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = -viewoffset
-			if (EAST)
-				user.client.pixel_x = viewoffset
-				user.client.pixel_y = 0
-			if (WEST)
-				user.client.pixel_x = -viewoffset
-				user.client.pixel_y = 0
+	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-		user.visible_message("\The [user] peers through the [zoomdevicename ? "[zoomdevicename] of [src]" : "[src]"].")
+	register_signal(src, SIGNAL_QDELETING, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
+	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
 
-	else
-		user.client.view = world.view
-		if(!user.hud_used.hud_shown)
-			user.toggle_zoom_hud()
-		zoom = 0
+/obj/item/proc/zoom_drop(obj/item/I, mob/user)
+	unzoom(user)
 
-		user.client.pixel_x = 0
-		user.client.pixel_y = 0
+/obj/item/proc/zoom_move(atom/movable/AM)
+	if(ismob(AM.loc))
+		var/mob/M = AM.loc
+		unzoom(M)
 
-		if(!cannotzoom)
-			user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
+/obj/item/proc/unzoom(mob/user)
+	if(!zoom)
+		return
+	zoom = 0
 
-	return
+	unregister_signal(src, SIGNAL_QDELETING)
+	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	unregister_signal(src, SIGNAL_DIR_SET)
+	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
+
+	user = user == src ? loc : (user || loc)
+	if(!istype(user))
+		crash_with("[log_info_line(src)]: Zoom user lost]")
+		return
+
+	unregister_signal(user, SIGNAL_STAT_SET)
+
+	if(!user.client)
+		return
+
+	user.client.view = world.view
+	if(!user.hud_used.hud_shown)
+		user.toggle_zoom_hud()
+
+	user.client.pixel_x = 0
+	user.client.pixel_y = 0
+	user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
 
 /obj/item/proc/pwr_drain()
 	return 0 // Process Kill
@@ -838,7 +890,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/get_examine_line()
 	if(blood_DNA)
-		. = "<span class='warning'>\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]</span>"
+		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]")
 	else
 		. = "\icon[src] \a [src]"
 
@@ -856,4 +908,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return
 
 /obj/item/proc/on_restraint_apply(mob/living/carbon/C)
+	return
+
+/obj/item/Bump(mob/M)
+	spawn()
+		..()
 	return

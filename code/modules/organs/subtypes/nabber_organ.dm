@@ -1,6 +1,7 @@
 /obj/item/organ/internal/voicebox/nabber
 	status = ORGAN_ROBOTIC
 	name = "vocal synthesiser"
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "voicebox"
 	parent_organ = BP_CHEST
 	organ_tag = BP_VOICE
@@ -14,7 +15,7 @@
 /obj/item/organ/internal/eyes/nabber
 	name = "compound eyes"
 	innate_flash_protection = FLASH_PROTECTION_VULNERABLE
-	phoron_guard = 1
+	plasma_guard = 1
 	var/eyes_shielded
 
 /obj/item/organ/internal/eyes/nabber/additional_flash_effects(intensity)
@@ -48,15 +49,15 @@
 		owner.eye_blind = 20
 	..()
 
-/obj/item/organ/internal/phoron
-	name = "phoron storage"
+/obj/item/organ/internal/plasma
+	name = "plasma storage"
 	icon_state = "stomach"
-	organ_tag = BP_PHORON
+	organ_tag = BP_PLASMA
 	parent_organ = BP_CHEST
 	var/dexalin_level = 10
-	var/phoron_level = 0.5
+	var/plasma_level = 0.5
 
-/obj/item/organ/internal/phoron/Process()
+/obj/item/organ/internal/plasma/Process()
 	if(owner)
 		var/amount = 0.1
 		if(is_broken())
@@ -65,10 +66,10 @@
 			amount *= 0.1
 
 		var/dexalin_volume_raw = owner.reagents.get_reagent_amount(/datum/reagent/dexalin)
-		var/phoron_volume_raw = owner.reagents.get_reagent_amount(/datum/reagent/toxin/phoron)
+		var/plasma_volume_raw = owner.reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
 
-		if((dexalin_volume_raw < dexalin_level || !dexalin_volume_raw) && (phoron_volume_raw < phoron_level || !phoron_volume_raw))
-			owner.reagents.add_reagent(/datum/reagent/toxin/phoron, amount)
+		if((dexalin_volume_raw < dexalin_level || !dexalin_volume_raw) && (plasma_volume_raw < plasma_level || !plasma_volume_raw))
+			owner.reagents.add_reagent(/datum/reagent/toxin/plasma, amount)
 	..()
 
 /obj/item/organ/internal/liver/nabber
@@ -114,7 +115,7 @@
 
 	if(breath_fail_ratio < 0.25 && owner.chem_effects[CE_OXYGENATED])
 		H.oxygen_alert = 0
-	if(breath_fail_ratio >= 0.25 && (damage || world.time > last_failed_breath + 2 MINUTES))
+	if(breath_fail_ratio >= 0.25 && (damage || world.time > last_successful_breath + 2 MINUTES))
 		H.adjustOxyLoss(HUMAN_MAX_OXYLOSS * breath_fail_ratio)
 		if(owner.chem_effects[CE_OXYGENATED])
 			H.oxygen_alert = 1

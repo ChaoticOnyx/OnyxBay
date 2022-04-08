@@ -39,11 +39,10 @@
 
 	limb_blend = ICON_MULTIPLY
 
-	blood_mask = 'icons/mob/human_races/masks/blood_nabber.dmi'
-
 	has_floating_eyes = 1
 
-	darksight = 8
+	darksight_range = 8
+	darksight_tint = DARKTINT_GOOD
 	slowdown = -0.5
 	rarity_value = 4
 	hud_type = /datum/hud_data/nabber
@@ -81,7 +80,7 @@
 		BP_TRACH =    /obj/item/organ/internal/lungs/nabber,
 		BP_HEART =    /obj/item/organ/internal/heart/nabber,
 		BP_LIVER =    /obj/item/organ/internal/liver/nabber,
-		BP_PHORON =   /obj/item/organ/internal/phoron,
+		BP_PLASMA =   /obj/item/organ/internal/plasma,
 		BP_VOICE =    /obj/item/organ/internal/voicebox/nabber
 		)
 

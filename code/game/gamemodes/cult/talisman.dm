@@ -1,23 +1,24 @@
-/obj/item/weapon/paper/talisman
+/obj/item/paper/talisman
 	icon_state = "paper_talisman"
+	dynamic_icon = TRUE
 	var/imbue = null
 	info = "<center><img src='talisman.png'></center><br/><br/>"
 
-/obj/item/weapon/paper/talisman/attack_self(mob/living/user)
+/obj/item/paper/talisman/attack_self(mob/living/user)
 	if(iscultist(user))
 		to_chat(user, "Attack your target to use this talisman.")
 	else
 		to_chat(user, "You see strange symbols on the paper. Are they supposed to mean something?")
 
-/obj/item/weapon/paper/talisman/attack(mob/living/M, mob/living/user)
+/obj/item/paper/talisman/attack(mob/living/M, mob/living/user)
 	return
 
-/obj/item/weapon/paper/talisman/emp/attack_self(mob/living/user)
+/obj/item/paper/talisman/emp/attack_self(mob/living/user)
 	if(iscultist(user))
 		to_chat(user, "This is an emp talisman.")
 	..()
 
-/obj/item/weapon/paper/talisman/emp/afterattack(atom/target, mob/user, proximity)
+/obj/item/paper/talisman/emp/afterattack(atom/target, mob/user, proximity)
 	if(!iscultist(user))
 		return
 	if(!proximity)
@@ -26,17 +27,17 @@
 	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
 	target.emp_act(1)
 	qdel(src)
-	
-/obj/item/weapon/paper/talisman/stun/afterattack(atom/target, mob/user, proximity)
+
+/obj/item/paper/talisman/stun/afterattack(atom/target, mob/user, proximity)
 	if(!iscultist(user))
 		return
 	if(!proximity)
 		return
 	user.say("Ra'gh fara[pick("'","`")]ydar fel d'amar det in girdiun!")
 	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
-	var/obj/item/weapon/nullrod/N = locate() in target
+	var/obj/item/nullrod/N = locate() in target
 	if(N)
-		return	
+		return
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
 		C.eye_blurry += 50
@@ -45,4 +46,4 @@
 	else if(issilicon(target))
 		var/mob/living/silicon/S = target
 		S.Weaken(10)
-	qdel(src)	
+	qdel(src)

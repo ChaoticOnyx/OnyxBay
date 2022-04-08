@@ -7,6 +7,13 @@
 
 #define ZONE_MIN_SIZE 14 //zones with less than this many turfs will always merge, even if the connection is not direct
 
+// Used for quickly making certain things allow airflow or not.
+// More complicated, conditional airflow should override CanZASPass().
+#define ATMOS_PASS_YES      1 // Always blocks air and zones.
+#define ATMOS_PASS_NO       2 // Never blocks air or zones.
+#define ATMOS_PASS_DENSITY  3 // Blocks air and zones if density = 1, allows both if density = 0
+#define ATMOS_PASS_PROC     4 // Call CanZASPass() using c_airblock
+
 #define CANPASS_ALWAYS 1
 #define CANPASS_DENSITY 2
 #define CANPASS_PROC 3

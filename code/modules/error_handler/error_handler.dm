@@ -93,8 +93,36 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 		GLOB.error_cache.log_error(E, desclines)
 
 	log_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
-	webhook_send_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
 	for(var/line in desclines)
 		log_runtime(line)
+
+// SQL runtime logging
+	if(!config.sql_enabled)
+		return
+	if(!establish_don_db_connection())
+		return
+	sql_query({"
+		INSERT INTO runtimes
+			(date,
+			game_id,
+			build_version,
+			file,
+			line,
+			body)
+		VALUES
+			(NOW(),
+			$game_id,
+			$revision,
+			$file,
+			$line,
+			$body)"},
+			dbcon_don,
+			list(
+				game_id = game_id,
+				revision = revdata.revision,
+				file = E.file,
+				line = E.line,
+				body = E.name + "\n" + desclines.Join("\n")
+			))
 
 #endif

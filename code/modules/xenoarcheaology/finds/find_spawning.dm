@@ -1,11 +1,11 @@
 /proc/get_archeological_find_by_findtype(find_type)
-	for(var/T in typesof(/obj/item/weapon/archaeological_find))
-		var/obj/item/weapon/archaeological_find/F = T
+	for(var/T in typesof(/obj/item/archaeological_find))
+		var/obj/item/archaeological_find/F = T
 		if(find_type == initial(F.find_type))
 			return T
-	return /obj/item/weapon/archaeological_find
+	return /obj/item/archaeological_find
 
-/obj/item/weapon/archaeological_find
+/obj/item/archaeological_find
 	name = "object"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "unknown2"
@@ -16,7 +16,7 @@
 	var/apply_image_decorations = 0
 	var/additional_desc
 
-/obj/item/weapon/archaeological_find/Initialize()
+/obj/item/archaeological_find/Initialize()
 	. = ..()
 	var/obj/item/I = spawn_item()
 
@@ -39,7 +39,7 @@
 		if(prob(30))
 			descriptors.Add("is encircled with bands of [pick("quadrinium","cordite","ferritic-alloy","plasteel","duranium")]")
 		if(prob(30))
-			descriptors.Add("menaces with spikes of [pick("solid phoron", MATERIAL_URANIUM,"white pearl","black steel")]")
+			descriptors.Add("menaces with spikes of [pick("solid plasma", MATERIAL_URANIUM,"white pearl","black steel")]")
 		if(descriptors.len > 0)
 			decorations = "It "
 			for(var/index=1, index <= descriptors.len, index++)
@@ -55,17 +55,19 @@
 
 	var/engravings = ""
 	if(apply_image_decorations)
-		var/obj/effect/overmap/sector/exoplanet/E = map_sectors["[z]"]
 		engravings = "[pick("Engraved","Carved","Etched")] on the item is [pick("an image of","a frieze of","a depiction of")] "
-		if(istype(E))
-			engravings += E.get_engravings()
-		else
-			engravings += "[pick("an alien humanoid","an amorphic blob","a short, hairy being","a rodent-like creature","a robot","a primate","a reptilian alien","an unidentifiable object","a statue","a starship","unusual devices","a structure")] \
+		engravings += "[pick("an alien humanoid","an amorphic blob","a short, hairy being","a rodent-like creature","a robot","a primate","a reptilian alien","an unidentifiable object","a statue","a starship","unusual devices","a structure")] \
 			[pick("surrounded by","being held aloft by","being struck by","being examined by","communicating with")] \
 			[pick("alien humanoids","amorphic blobs","short, hairy beings","rodent-like creatures","robots","primates","reptilian aliens")]"
-			if(prob(50))
-				engravings += ", [pick("they seem to be enjoying themselves","they seem extremely angry","they look pensive","they are making gestures of supplication","the scene is one of subtle horror","the scene conveys a sense of desperation","the scene is completely bizarre")]"
-			engravings += "."
+		if(prob(50))
+			engravings += ", [pick("they seem to be enjoying themselves","they seem extremely angry","they look pensive","they are making gestures of supplication","the scene is one of subtle horror","the scene conveys a sense of desperation","the scene is completely bizarre")]"
+		engravings += "."
+		engravings += "[pick("an alien humanoid","an amorphic blob","a short, hairy being","a rodent-like creature","a robot","a primate","a reptilian alien","an unidentifiable object","a statue","a starship","unusual devices","a structure")] \
+		[pick("surrounded by","being held aloft by","being struck by","being examined by","communicating with")] \
+		[pick("alien humanoids","amorphic blobs","short, hairy beings","rodent-like creatures","robots","primates","reptilian aliens")]"
+		if(prob(50))
+			engravings += ", [pick("they seem to be enjoying themselves","they seem extremely angry","they look pensive","they are making gestures of supplication","the scene is one of subtle horror","the scene conveys a sense of desperation","the scene is completely bizarre")]"
+		engravings += "."
 
 		if(desc)
 			desc += " "
@@ -91,46 +93,46 @@
 
 	I.origin_tech = list()
 	if(prob(50))
-		I.origin_tech.Add(TECH_MATERIAL = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_MATERIAL] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(25))
-		I.origin_tech.Add(TECH_ENGINEERING = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_ENGINEERING] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(10))
-		I.origin_tech.Add(TECH_MAGNET = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_MAGNET] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(5))
-		I.origin_tech.Add(TECH_PHORON = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_PLASMA] = pick(1, 2, 3, 4, 5, 6)
 
 	return INITIALIZE_HINT_QDEL
 
-/obj/item/weapon/archaeological_find/proc/spawn_item()
-	var/obj/item/weapon/material/kitchen/utensil/fork/F = new(loc)
+/obj/item/archaeological_find/proc/spawn_item()
+	var/obj/item/material/kitchen/utensil/fork/F = new(loc)
 	F.icon = 'icons/obj/xenoarchaeology.dmi'
 	F.icon_state = "unknown[rand(1,4)]"
 	return F
 
-/obj/item/weapon/archaeological_find/bowl
+/obj/item/archaeological_find/bowl
 	find_type = ARCHAEO_BOWL
 	item_type = "bowl"
 	icon_state = "bowl"
 	apply_image_decorations = 1
 
-/obj/item/weapon/archaeological_find/bowl/spawn_item()
-	var/obj/item/weapon/reagent_containers/R
+/obj/item/archaeological_find/bowl/spawn_item()
+	var/obj/item/reagent_containers/R
 	if(prob(33))
-		R = new /obj/item/weapon/reagent_containers/glass/replenishing(loc)
+		R = new /obj/item/reagent_containers/glass/replenishing(loc)
 	else
-		R = new /obj/item/weapon/reagent_containers/glass/beaker(loc)
+		R = new /obj/item/reagent_containers/glass/beaker(loc)
 	R.icon = 'icons/obj/xenoarchaeology.dmi'
 	R.icon_state = "bowl"
 	if(prob(20))
 		additional_desc = "There appear to be [pick("dark","faintly glowing","pungent","bright")] [pick("red","purple","green","blue")] stains inside."
 	return R
 
-/obj/item/weapon/archaeological_find/bowl/urn
+/obj/item/archaeological_find/bowl/urn
 	find_type = ARCHAEO_URN
 	item_type = "urn"
 	icon_state = "urn"
 
-/obj/item/weapon/archaeological_find/bowl/urn/spawn_item()
+/obj/item/archaeological_find/bowl/urn/spawn_item()
 	var/obj/item/I = ..()
 	I.icon_state = "urn"
 	if(prob(20))
@@ -139,32 +141,32 @@
 		additional_desc = null
 	return I
 
-/obj/item/weapon/archaeological_find/cutlery
+/obj/item/archaeological_find/cutlery
 	item_type = "cutlery"
 	find_type = ARCHAEO_CUTLERY
 
-/obj/item/weapon/archaeological_find/cutlery/spawn_item()
+/obj/item/archaeological_find/cutlery/spawn_item()
 	var/obj/item/new_item
 	if(prob(25))
-		new_item = new /obj/item/weapon/material/kitchen/utensil/fork(loc)
+		new_item = new /obj/item/material/kitchen/utensil/fork(loc)
 	else if(prob(50))
-		new_item = new /obj/item/weapon/material/kitchen/utensil/knife(loc)
+		new_item = new /obj/item/material/kitchen/utensil/knife(loc)
 	else
-		new_item = new /obj/item/weapon/material/kitchen/utensil/spoon(loc)
+		new_item = new /obj/item/material/kitchen/utensil/spoon(loc)
 	additional_desc = "[pick("It's like no [item_type] you've ever seen before",\
 	"It's a mystery how anyone is supposed to eat with this",\
 	"You wonder what the creator's mouth was shaped like")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/statuette
+/obj/item/archaeological_find/statuette
 	item_type = "statuette"
 	icon_state = "statuette"
 	find_type = ARCHAEO_STATUETTE
 
-/obj/item/weapon/archaeological_find/statuette/spawn_item()
+/obj/item/archaeological_find/statuette/spawn_item()
 	var/obj/item/new_item
 	if(prob(25))
-		new_item = new /obj/item/weapon/vampiric(loc)
+		new_item = new /obj/item/vampiric(loc)
 	else
 		new_item = new(loc)
 	new_item.SetName("statuette")
@@ -176,12 +178,12 @@
 	[pick("performing unspeakable acts","posing heroically","in a fetal position","cheering","sobbing","making a plaintive gesture","making a rude gesture")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/instrument
+/obj/item/archaeological_find/instrument
 	item_type = "instrument"
 	icon_state = "instrument"
 	find_type = ARCHAEO_INSTRUMENT
 
-/obj/item/weapon/archaeological_find/instrument/spawn_item()
+/obj/item/archaeological_find/instrument/spawn_item()
 	var/obj/item/new_item = new(loc)
 	new_item.SetName("instrument")
 	new_item.icon = 'icons/obj/xenoarchaeology.dmi'
@@ -194,52 +196,52 @@
 		"You wonder what kind of music was made with it")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/knife
+/obj/item/archaeological_find/knife
 	item_type = "knife"
 	find_type = ARCHAEO_KNIFE
 
-/obj/item/weapon/archaeological_find/knife/spawn_item()
+/obj/item/archaeological_find/knife/spawn_item()
 	item_type = "[pick("bladed knife","serrated blade","sharp cutting implement")]"
-	var/obj/item/new_item = new /obj/item/weapon/material/knife(loc)
+	var/obj/item/new_item = new /obj/item/material/knife(loc)
 	additional_desc = "[pick("It doesn't look safe.",\
 	"It looks wickedly jagged",\
 	"There appear to be [pick("dark red","dark purple","dark green","dark blue")] stains along the edges")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/coin
+/obj/item/archaeological_find/coin
 	item_type = "coin"
 	find_type = ARCHAEO_COIN
 	apply_prefix = 0
 	apply_material_decorations = 0
 	apply_image_decorations = 1
 
-/obj/item/weapon/archaeological_find/coin/spawn_item()
-	var/obj/item/weapon/coin/C = pick(subtypesof(/obj/item/weapon/coin))
+/obj/item/archaeological_find/coin/spawn_item()
+	var/obj/item/material/coin/C = pick(subtypesof(/obj/item/material/coin))
 	C = new C(loc)
 	return C
 
-/obj/item/weapon/archaeological_find/trap
+/obj/item/archaeological_find/trap
 	item_type = "trap"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "beartrap0"
 	find_type = ARCHAEO_BEARTRAP
 	apply_prefix = 0
 
-/obj/item/weapon/archaeological_find/trap/spawn_item()
+/obj/item/archaeological_find/trap/spawn_item()
 	item_type = "[pick("wicked","evil","byzantine","dangerous")] looking [pick("device","contraption","thing","trap")]"
-	var/obj/item/new_item = new /obj/item/weapon/beartrap(loc)
+	var/obj/item/new_item = new /obj/item/beartrap(loc)
 	additional_desc = "[pick("It looks like it could take a limb off",\
 	"Could be some kind of animal trap",\
 	"There appear to be [pick("dark red","dark purple","dark green","dark blue")] stains along part of it")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/container
+/obj/item/archaeological_find/container
 	item_type = "container"
 	icon_state = "box"
 	find_type = ARCHAEO_BOX
 
-/obj/item/weapon/archaeological_find/container/spawn_item()
-	var/obj/item/weapon/storage/box/new_box = new(loc)
+/obj/item/archaeological_find/container/spawn_item()
+	var/obj/item/storage/box/new_box = new(loc)
 	new_box.icon = 'icons/obj/xenoarchaeology.dmi'
 	new_box.max_w_class = pick(ITEM_SIZE_TINY,2;ITEM_SIZE_SMALL,3;ITEM_SIZE_NORMAL,4;ITEM_SIZE_LARGE)
 	var/storage_amount = base_storage_cost(new_box.max_w_class)
@@ -249,30 +251,30 @@
 		apply_image_decorations = 1
 	return new_box
 
-/obj/item/weapon/archaeological_find/tank
+/obj/item/archaeological_find/tank
 	item_type = "tank"
 	find_type = ARCHAEO_GASTANK
 
-/obj/item/weapon/archaeological_find/tank/spawn_item()
+/obj/item/archaeological_find/tank/spawn_item()
 	item_type = "[pick("cylinder","tank","chamber")]"
-	var/obj/item/weapon/tank/new_item = new /obj/item/weapon/tank(loc)
+	var/obj/item/tank/new_item = new /obj/item/tank(loc)
 	new_item.air_contents.gas.Cut()
 	new_item.air_contents.adjust_gas(pick(gas_data.gases),15)
 	additional_desc = "It [pick("gloops","sloshes")] slightly when you shake it."
 	return new_item
 
-/obj/item/weapon/archaeological_find/tool
+/obj/item/archaeological_find/tool
 	item_type = "tool"
 	find_type = ARCHAEO_TOOL
 
-/obj/item/weapon/archaeological_find/tool/spawn_item()
-	var/obj/item/weapon/new_item
+/obj/item/archaeological_find/tool/spawn_item()
+	var/obj/item/new_item
 	if(prob(25))
-		new_item = new /obj/item/weapon/wrench(loc)
+		new_item = new /obj/item/wrench(loc)
 	else if(prob(25))
-		new_item = new /obj/item/weapon/crowbar(loc)
+		new_item = new /obj/item/crowbar(loc)
 	else
-		new_item = new /obj/item/weapon/screwdriver(loc)
+		new_item = new /obj/item/screwdriver(loc)
 	new_item.icon = 'icons/obj/xenoarchaeology.dmi'
 	new_item.icon_state = "unknown[rand(1,4)]"
 	additional_desc = "[pick("It doesn't look safe.",\
@@ -280,18 +282,18 @@
 	"There appear to be [pick("dark red","dark purple","dark green","dark blue")] stains on it")]."
 	return new_item
 
-/obj/item/weapon/archaeological_find/material
+/obj/item/archaeological_find/material
 	item_type = "material lump"
 	find_type = ARCHAEO_METAL
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/material/spawn_item()
+/obj/item/archaeological_find/material/spawn_item()
 	var/list/possible_spawns = list()
 	possible_spawns += /obj/item/stack/material/steel
 	possible_spawns += /obj/item/stack/material/plasteel
 	possible_spawns += /obj/item/stack/material/glass
 	possible_spawns += /obj/item/stack/material/glass/reinforced
-	possible_spawns += /obj/item/stack/material/phoron
+	possible_spawns += /obj/item/stack/material/plasma
 	possible_spawns += /obj/item/stack/material/gold
 	possible_spawns += /obj/item/stack/material/silver
 	possible_spawns += /obj/item/stack/material/uranium
@@ -302,14 +304,14 @@
 	new_item.amount = rand(5,45)
 	return new_item
 
-/obj/item/weapon/archaeological_find/crystal
+/obj/item/archaeological_find/crystal
 	item_type = "crystal"
 	icon_state = "Green lump"
 	find_type = ARCHAEO_CRYSTAL
 	apply_prefix = 0
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/crystal/spawn_item()
+/obj/item/archaeological_find/crystal/spawn_item()
 	var/obj/item/new_item
 	if(prob(25))
 		new_item = new /obj/item/device/soulstone(loc)
@@ -329,39 +331,39 @@
 		item_type = "rough red crystal"
 		new_item.icon_state = "changerock"
 
-/obj/item/weapon/archaeological_find/blade
+/obj/item/archaeological_find/blade
 	item_type = "blade"
 	find_type = ARCHAEO_CULTBLADE
 	apply_prefix = 0
 	apply_material_decorations = 0
 	apply_image_decorations = 0
 
-/obj/item/weapon/archaeological_find/blade/spawn_item()
-	return new /obj/item/weapon/melee/cultblade(loc)
+/obj/item/archaeological_find/blade/spawn_item()
+	return new /obj/item/melee/cultblade(loc)
 
-/obj/item/weapon/archaeological_find/beacon
+/obj/item/archaeological_find/beacon
 	item_type = "device"
 	find_type = ARCHAEO_TELEBEACON
 
-/obj/item/weapon/archaeological_find/beacon/spawn_item()
+/obj/item/archaeological_find/beacon/spawn_item()
 	var/obj/item/device/radio/beacon/new_item = new(loc)
 	new_item.icon = 'icons/obj/xenoarchaeology.dmi'
 	new_item.icon_state = "unknown[rand(1,4)]"
 	new_item.desc = ""
 	return new_item
 
-/obj/item/weapon/archaeological_find/sword
+/obj/item/archaeological_find/sword
 	item_type = "sword"
 	find_type = ARCHAEO_CLAYMORE
 
-/obj/item/weapon/archaeological_find/sword/spawn_item()
-	return new /obj/item/weapon/material/sword(loc)
+/obj/item/archaeological_find/sword/spawn_item()
+	return new /obj/item/material/sword(loc)
 
-/obj/item/weapon/archaeological_find/robes
+/obj/item/archaeological_find/robes
 	item_type = "garments"
 	find_type = ARCHAEO_CULTROBES
 
-/obj/item/weapon/archaeological_find/robes/spawn_item()
+/obj/item/archaeological_find/robes/spawn_item()
 	var/list/possible_spawns = list(/obj/item/clothing/head/culthood,
 	/obj/item/clothing/head/culthood/magus,
 	/obj/item/clothing/head/culthood/alt,
@@ -369,37 +371,37 @@
 	var/new_type = pick(possible_spawns)
 	return new new_type(loc)
 
-/obj/item/weapon/archaeological_find/katana
+/obj/item/archaeological_find/katana
 	item_type = "blade"
 	find_type = ARCHAEO_KATANA
 
-/obj/item/weapon/archaeological_find/katana/spawn_item()
-	return new /obj/item/weapon/material/sword/katana(loc)
+/obj/item/archaeological_find/katana/spawn_item()
+	return new /obj/item/material/sword/katana(loc)
 
-/obj/item/weapon/archaeological_find/parts
+/obj/item/archaeological_find/parts
 	item_type = "parts"
 	find_type = ARCHAEO_STOCKPARTS
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/parts/spawn_item()
-	var/list/possible_spawns = subtypesof(/obj/item/weapon/stock_parts)
-	possible_spawns -= /obj/item/weapon/stock_parts/subspace
+/obj/item/archaeological_find/parts/spawn_item()
+	var/list/possible_spawns = subtypesof(/obj/item/stock_parts)
+	possible_spawns -= /obj/item/stock_parts/subspace
 	var/new_type = pick(possible_spawns)
 	return new new_type(loc)
 
-/obj/item/weapon/archaeological_find/laser
+/obj/item/archaeological_find/laser
 	item_type = "gun"
 	icon_state = "egun1"
 	find_type = ARCHAEO_LASER
 	apply_prefix = 0
 
-/obj/item/weapon/archaeological_find/laser/spawn_item()
+/obj/item/archaeological_find/laser/spawn_item()
 	var/spawn_type = pick(\
-	/obj/item/weapon/gun/energy/laser/practice,\
-	/obj/item/weapon/gun/energy/laser,\
-	/obj/item/weapon/gun/energy/xray,\
-	/obj/item/weapon/gun/energy/captain)
-	var/obj/item/weapon/gun/energy/new_gun =  new spawn_type(loc)
+	/obj/item/gun/energy/laser/practice,\
+	/obj/item/gun/energy/laser,\
+	/obj/item/gun/energy/xray,\
+	/obj/item/gun/energy/captain)
+	var/obj/item/gun/energy/new_gun =  new spawn_type(loc)
 
 	new_gun.icon = 'icons/obj/xenoarchaeology.dmi'
 	new_gun.icon_state = "egun[rand(1,6)]"
@@ -418,13 +420,13 @@
 
 	return new_gun
 
-/obj/item/weapon/archaeological_find/gun
+/obj/item/archaeological_find/gun
 	item_type = "gun"
 	icon_state = "gun1"
 	find_type = ARCHAEO_GUN
 
-/obj/item/weapon/archaeological_find/gun/spawn_item()
-	var/obj/item/weapon/gun/projectile/revolver/new_gun = new(loc)
+/obj/item/archaeological_find/gun/spawn_item()
+	var/obj/item/gun/projectile/revolver/new_gun = new(loc)
 
 	new_gun.icon = 'icons/obj/xenoarchaeology.dmi'
 	new_gun.icon_state = "gun[rand(1,4)]"
@@ -448,7 +450,7 @@
 
 	return new_gun
 
-/obj/item/weapon/archaeological_find/fossil
+/obj/item/archaeological_find/fossil
 	item_type = "bones"
 	icon_state = "bone"
 	find_type = ARCHAEO_FOSSIL
@@ -456,13 +458,13 @@
 	apply_image_decorations = 0
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/fossil/spawn_item()
-	var/list/candidates = list(/obj/item/weapon/fossil/bone=9,/obj/item/weapon/fossil/skull=3,
-	/obj/item/weapon/fossil/skull/horned=2)
+/obj/item/archaeological_find/fossil/spawn_item()
+	var/list/candidates = list(/obj/item/fossil/bone=9,/obj/item/fossil/skull=3,
+	/obj/item/fossil/skull/horned=2)
 	var/spawn_type = pickweight(candidates)
 	return new spawn_type(loc)
 
-/obj/item/weapon/archaeological_find/shell
+/obj/item/archaeological_find/shell
 	item_type = "shell"
 	icon_state = "shell"
 	find_type = ARCHAEO_SHELL
@@ -470,12 +472,12 @@
 	apply_image_decorations = 0
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/shell/spawn_item()
+/obj/item/archaeological_find/shell/spawn_item()
 	if(prob(10))
 		apply_image_decorations = 1
-	return new /obj/item/weapon/fossil/shell(loc)
+	return new /obj/item/fossil/shell(loc)
 
-/obj/item/weapon/archaeological_find/plant
+/obj/item/archaeological_find/plant
 	item_type = "fossilized plant"
 	icon_state = "plant1"
 	find_type = ARCHAEO_PLANT
@@ -483,10 +485,10 @@
 	apply_image_decorations = 0
 	apply_material_decorations = 0
 
-/obj/item/weapon/archaeological_find/plant/spawn_item()
-	return new /obj/item/weapon/fossil/plant(loc)
+/obj/item/archaeological_find/plant/spawn_item()
+	return new /obj/item/fossil/plant(loc)
 
-/obj/item/weapon/archaeological_find/remains
+/obj/item/archaeological_find/remains
 	item_type = "remains"
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "remains"
@@ -501,7 +503,7 @@
 	"The are battered and broken, in some cases less than splinters are left.",\
 	"The mouth is wide open in a death rictus, the victim would appear to have died screaming.")
 
-/obj/item/weapon/archaeological_find/remains/spawn_item()
+/obj/item/archaeological_find/remains/spawn_item()
 	item_type = "humanoid [pick("remains","skeleton")]"
 	if(prob(5))
 		apply_image_decorations = 1
@@ -511,7 +513,7 @@
 	additional_desc = pick(descs)
 	return I
 
-/obj/item/weapon/archaeological_find/remains/robot
+/obj/item/archaeological_find/remains/robot
 	icon_state = "remainsrobot"
 	find_type = ARCHAEO_REMAINS_ROBOT
 	descs = list("Almost mistakeable for the remains of a modern cyborg.",\
@@ -522,11 +524,11 @@
 			"The chassis is battered and broken, in some cases only chunks of metal are left.",\
 			"A pile of wires and crap metal that looks vaguely robotic.")
 
-/obj/item/weapon/archaeological_find/remains/robot/spawn_item()
+/obj/item/archaeological_find/remains/robot/spawn_item()
 	. = ..()
 	item_type = "[pick("mechanical","robotic","cyborg")] [pick("remains","chassis","debris")]"
 
-/obj/item/weapon/archaeological_find/remains/xeno
+/obj/item/archaeological_find/remains/xeno
 	icon_state = "remainsxeno"
 	find_type = ARCHAEO_REMAINS_ROBOT
 	descs = list("It looks vaguely reptilian, but with more teeth.",\
@@ -538,15 +540,15 @@
 			"This creature would have been twisted and monstrous when it was alive.",\
 			"It doesn't look human.")
 
-/obj/item/weapon/archaeological_find/remains/xeno/spawn_item()
+/obj/item/archaeological_find/remains/xeno/spawn_item()
 	. = ..()
 	item_type = "alien [pick("remains","skeleton")]"
 
-/obj/item/weapon/archaeological_find/mask
+/obj/item/archaeological_find/mask
 	item_type = "mask"
 	find_type = ARCHAEO_GASMASK
 
-/obj/item/weapon/archaeological_find/mask/spawn_item()
+/obj/item/archaeological_find/mask/spawn_item()
 	var/obj/item/clothing/mask/gas/new_item
 	if(prob(25))
 		new_item = new /obj/item/clothing/mask/gas/poltergeist(loc)

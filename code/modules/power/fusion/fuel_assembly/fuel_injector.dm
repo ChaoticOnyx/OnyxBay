@@ -13,7 +13,7 @@ var/list/fuel_injectors = list()
 	var/fuel_usage = 0.0001
 	var/id_tag
 	var/injecting = 0
-	var/obj/item/weapon/fuel_assembly/cur_assembly
+	var/obj/item/fuel_assembly/cur_assembly
 
 /obj/machinery/fusion_fuel_injector/New()
 	..()
@@ -40,12 +40,12 @@ var/list/fuel_injectors = list()
 /obj/machinery/fusion_fuel_injector/attackby(obj/item/W, mob/user)
 
 	if(isMultitool(W))
-		var/new_ident = input("Enter a new ident tag.", "Fuel Injector", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Fuel Injector", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 		return
 
-	if(istype(W, /obj/item/weapon/fuel_assembly))
+	if(istype(W, /obj/item/fuel_assembly))
 
 		if(injecting)
 			to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")
@@ -80,6 +80,8 @@ var/list/fuel_injectors = list()
 	return ..()
 
 /obj/machinery/fusion_fuel_injector/attack_hand(mob/user)
+	if(..())
+		return
 
 	if(injecting)
 		to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")

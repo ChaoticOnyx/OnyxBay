@@ -5,16 +5,20 @@
 
 /obj/structure/deity/trap/New()
 	..()
-	GLOB.entered_event.register(get_turf(src),src,/obj/structure/deity/trap/proc/trigger)
+
+	register_signal(get_turf(src), SIGNAL_ENTERED, /obj/structure/deity/trap/proc/trigger)
 
 /obj/structure/deity/trap/Destroy()
-	GLOB.entered_event.unregister(get_turf(src),src)
+	unregister_signal(get_turf(src), SIGNAL_ENTERED)
+
 	return ..()
 
 /obj/structure/deity/trap/Move()
-	GLOB.entered_event.unregister(get_turf(src),src)
+	unregister_signal(get_turf(src), SIGNAL_ENTERED)
+
 	. = ..()
-	GLOB.entered_event.register(get_turf(src), src, /obj/structure/deity/trap/proc/trigger)
+
+	register_signal(get_turf(src), SIGNAL_ENTERED, /obj/structure/deity/trap/proc/trigger)
 
 /obj/structure/deity/trap/attackby(obj/item/W as obj, mob/user as mob)
 	trigger(user)

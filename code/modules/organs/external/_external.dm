@@ -8,7 +8,9 @@
 	max_damage = 0
 	dir = SOUTH
 	organ_tag = "limb"
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+
+	food_organ_type = /obj/item/reagent_containers/food/snacks/meat/human
 
 	throwforce = 2.5
 	// Strings
@@ -26,6 +28,13 @@
 	var/pain = 0                       // How much the limb hurts.
 	var/full_pain = 0                  // Overall pain including damages.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
+
+	// Movement delay vars.
+	var/movement_tally    = 0          // Defines movement speed
+	var/damage_multiplier = 0.5        // Default damage multiplier
+	var/stumped_tally     = 8          // 4.0  tally if limb stmuped
+	var/splinted_tally    = 2          // 1.0 tally if limb splinted
+	var/broken_tally      = 3          // 1.5 tally if limb broken
 
 	// A bitfield for a collection of limb behavior flags.
 	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
@@ -79,6 +88,7 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
+	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
@@ -93,6 +103,11 @@
 		if(print)
 			return print
 
+/obj/item/organ/external/organ_eaten(mob/user)
+	for(var/obj/item/organ/external/stump/stump in children)
+		qdel(stump)
+	..()
+
 /obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
 	..()
 	if(proximity && get_fingerprint())
@@ -106,6 +121,9 @@
 		replaced(owner)
 		sync_colour_to_human(owner)
 	get_icon()
+
+	if(food_organ in implants)
+		implants -= food_organ
 
 /obj/item/organ/external/Destroy()
 
@@ -122,12 +140,16 @@
 		for(var/obj/item/organ/external/C in children)
 			qdel(C)
 
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
+
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+		internal_organs.Cut()
 
 	applied_pressure = null
-	if(splinted && splinted.loc == src)
+	if(splinted?.loc == src)
 		qdel(splinted)
 	splinted = null
 
@@ -181,6 +203,8 @@
 		for(var/obj/item/I in E.contents)
 			if(istype(I,/obj/item/organ))
 				continue
+			if(I == E.return_item())
+				continue
 			removable_objects |= I
 	if(removable_objects.len)
 		var/obj/item/I = pick(removable_objects)
@@ -192,16 +216,18 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/examine()
+/obj/item/organ/external/examine(mob/user)
 	. = ..()
-	if(in_range(usr, src) || isghost(usr))
+	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
-			to_chat(usr, "<span class='danger'>There is \a [I] sticking out of it.</span>")
+			if(I == return_item())
+				continue
+			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			to_chat(usr, "<span class='notice'>There is [ouchies] visible on it.</span>")
+			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
 
 	return
 
@@ -210,20 +236,21 @@
 	for(var/obj/item/organ/external/child in children)
 		child.show_decay_status(user)
 
-/obj/item/organ/external/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/organ/external/attackby(obj/item/W, mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
 			if(W.sharp)
-				user.visible_message("<span class='danger'><b>[user]</b> cuts [src] open with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 				stage++
 				return
 		if(1)
 			if(istype(W))
-				user.visible_message("<span class='danger'><b>[user]</b> cracks [src] open like an egg with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
 				stage++
 				return
 		if(2)
-			if(W.sharp || istype(W,/obj/item/weapon/hemostat) || isWirecutter(W))
+			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
 				var/list/organs = get_contents_recursive()
 				if(organs.len)
 					var/obj/item/removing = pick(organs)
@@ -237,23 +264,30 @@
 						var/obj/item/organ/internal/mmi_holder/O = removing
 						removing = O.transfer_and_delete()
 
-					removing.forceMove(get_turf(user))
-
-					if(!(user.l_hand && user.r_hand))
-						user.put_in_hands(removing)
-					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
+					removing.forceMove(get_turf(src))
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
-						if(istype(src.loc,/turf))
-							new /obj/item/weapon/skull(src.loc)
-							gibs(src.loc)
+						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+						if(!H.skull_path)
+							user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+							return
+						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
+						if(istype(H.loc, /turf))
+							new H.skull_path(H.loc)
+							gibs(H.loc)
 						else
-							new /obj/item/weapon/skull(user.loc)
+							new H.skull_path(user.loc)
 							gibs(user.loc)
+						H.skull_path = null // So no skulls dupe in case of lags
 						qdel(src)
 					else
-						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
+						if(src && !QDELETED(src))
+							food_organ.appearance = food_organ_type
+							food_organ.forceMove(get_turf(loc))
+							food_organ = null
+							qdel(src)
+						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
@@ -331,8 +365,8 @@
 		for(var/obj/implant in implants)
 			implant.forceMove(owner)
 
-			if(istype(implant, /obj/item/weapon/implant))
-				var/obj/item/weapon/implant/imp_device = implant
+			if(istype(implant, /obj/item/implant))
+				var/obj/item/implant/imp_device = implant
 
 				// we can't use implanted() here since it's often interactive
 				imp_device.imp_in = owner
@@ -405,7 +439,7 @@
 /*
 This function completely restores a damaged organ to perfect condition.
 */
-/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage_state = "00"
 
 	status = 0
@@ -425,7 +459,7 @@ This function completely restores a damaged organ to perfect condition.
 
 	// remove embedded objects and drop them on the floor
 	for(var/obj/implanted_object in implants)
-		if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+		if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 			implanted_object.loc = get_turf(src)
 			implants -= implanted_object
 
@@ -457,17 +491,14 @@ This function completely restores a damaged organ to perfect condition.
 	..()
 
 /obj/item/organ/external/proc/createwound(type = CUT, damage, surgical)
-
 	if(damage <= 0)
 		return
-
 	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
 	//Brute damage can possibly trigger an internal wound, too.
-	var/local_damage = brute_dam + burn_dam + damage
-	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > 30)
-
+	var/local_damage = brute_dam + burn_dam
+	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > min_broken_damage)
 		var/internal_damage
-		if(prob(damage) && sever_artery())
+		if(prob(ceil(damage/2)) && sever_artery())
 			internal_damage = TRUE
 		if(prob(ceil(damage/4)) && sever_tendon())
 			internal_damage = TRUE
@@ -533,7 +564,7 @@ This function completely restores a damaged organ to perfect condition.
 
 //Determines if we even need to process this organ.
 /obj/item/organ/external/proc/need_process()
-	if(get_full_pain())
+	if(get_pain())
 		return 1
 	if(status & (ORGAN_CUT_AWAY|ORGAN_BLEEDING|ORGAN_BROKEN|ORGAN_DEAD|ORGAN_MUTATED))
 		return 1
@@ -550,8 +581,6 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/Process()
 	if(owner)
-		update_pain()
-
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
 			update_wounds()
@@ -561,6 +590,15 @@ This function completely restores a damaged organ to perfect condition.
 	else
 		remove_all_pain()
 		..()
+/obj/item/organ/external/cook_organ()
+	..()
+	for(var/obj/item/organ/internal in internal_organs)
+		internal.cook_organ()
+
+/obj/item/organ/external/die()
+	for(var/obj/item/organ/external/E in children)
+		E.take_external_damage(10, 0, used_weapon = "parent organ sepsis")
+	..()
 
 //Updating germ levels. Handles organ germ levels and necrosis.
 /*
@@ -806,20 +844,24 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(disintegrate == DROPLIMB_EDGE && species.limbs_are_nonsolid)
 		disintegrate = DROPLIMB_BLUNT //splut
 
-	var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
-	if(LAZYLEN(organ_msgs) >= 3)
-		owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
-			"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
-			"<span class='danger'>[organ_msgs[3]]</span>")
+	if(!silent)
+		var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
+		if(LAZYLEN(organ_msgs) >= 3)
+			owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
+				"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
+				"<span class='danger'>[organ_msgs[3]]</span>")
 
 	var/mob/living/carbon/human/victim = owner //Keep a reference for post-removed().
 	var/obj/item/organ/external/parent_organ = parent
 
 	var/use_flesh_colour = species.get_flesh_colour(owner)
 	var/use_blood_colour = species.get_blood_colour(owner)
-
-	removed(null, ignore_children)
 	adjust_pain(60)
+
+	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
+	if(QDELETED(src))
+		return
+
 	if(!clean)
 		victim.shock_stage += min_broken_damage
 
@@ -835,19 +877,23 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
+			if(limb_flags & ORGAN_FLAG_GENDERED_ICON)
+				stump.limb_flags |= ORGAN_FLAG_GENDERED_ICON
 			if(BP_IS_ROBOTIC(src))
 				stump.robotize()
 			stump.wounds |= W
 			victim.organs |= stump
+			stump.movement_tally = stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
 	spawn(1)
-		victim.updatehealth()
-		victim.UpdateDamageIcon()
-		victim.regenerate_icons()
-		dir = 2
+		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
+			victim.updatehealth()
+			victim.UpdateDamageIcon()
+			victim.regenerate_icons()
 
+	dir = 2
 	switch(disintegrate)
 		if(DROPLIMB_EDGE)
 			compile_icon()
@@ -859,39 +905,34 @@ Note that amputating the affected organ does in fact remove the infection from t
 				M.Turn(rand(180))
 			src.transform = M
 			update_icon_drop(victim)
-			forceMove(get_turf(src))
-			if(!clean)
-				// Throw limb around.
-				if(src && istype(loc,/turf))
-					throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-				dir = 2
+			forceMove(victim.loc)
+			if(!clean) // Throw limb around.
+				spawn()
+					if(!QDELETED(src) && isturf(loc))
+						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
+					dir = 2
 		if(DROPLIMB_BURN)
-			new /obj/effect/decal/cleanable/ash(get_turf(victim))
+			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
-				if(I.w_class > ITEM_SIZE_SMALL && !istype(I,/obj/item/organ))
-					I.loc = get_turf(src)
+				if(I.w_class > ITEM_SIZE_SMALL && !istype(I, /obj/item/organ))
+					I.forceMove(victim.loc)
 			qdel(src)
 		if(DROPLIMB_BLUNT)
 			var/obj/effect/decal/cleanable/blood/gibs/gore
 			if(BP_IS_ROBOTIC(src))
-				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(victim.loc)
 			else
-				gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs(victim.loc)
 				if(species)
 					gore.fleshcolor = use_flesh_colour
 					gore.basecolor = use_blood_colour
 					gore.update_icon()
 
-			gore.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
-			for(var/obj/item/organ/I in internal_organs)
-				I.removed()
-				if(istype(loc,/turf))
-					I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
 			for(var/obj/item/I in src)
-				I.loc = get_turf(src)
-				I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
+				I.forceMove(victim.loc)
+				if(isturf(I.loc))
+					spawn()
+						I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
 
 			qdel(src)
 
@@ -907,7 +948,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		holder = owner
 	if(!holder)
 		return
-	if (holder.handcuffed && body_part in list(ARM_LEFT, ARM_RIGHT, HAND_LEFT, HAND_RIGHT))
+	if (holder.handcuffed && (body_part in list(ARM_LEFT, ARM_RIGHT, HAND_LEFT, HAND_RIGHT)))
 		holder.visible_message(\
 			"\The [holder.handcuffed.name] falls off of [holder.name].",\
 			"\The [holder.handcuffed.name] falls off you.")
@@ -959,7 +1000,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		W.germ_level = 0
 	return rval
 
-/obj/item/organ/external/proc/clamp()
+/obj/item/organ/external/proc/clamp_organ()
 	var/rval = 0
 	src.status &= ~ORGAN_BLEEDING
 	for(var/datum/wound/W in wounds)
@@ -972,7 +1013,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
-obj/item/organ/external/proc/remove_clamps()
+/obj/item/organ/external/proc/remove_clamps()
 	var/rval = 0
 	for(var/datum/wound/W in wounds)
 		rval |= W.clamped
@@ -987,8 +1028,15 @@ obj/item/organ/external/proc/remove_clamps()
 	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
 
 	if(!encased)
-		for(var/obj/item/weapon/implant/I in implants)
+		for(var/obj/item/implant/I in implants)
 			I.exposed()
+
+/obj/item/organ/external/proc/update_tally()
+	movement_tally = initial(movement_tally)
+	if(splinted)
+		movement_tally += splinted_tally * damage_multiplier
+	else if(status & ORGAN_BROKEN)
+		movement_tally += broken_tally * damage_multiplier
 
 /obj/item/organ/external/proc/fracture()
 	if(!config.bones_can_break)
@@ -1007,15 +1055,17 @@ obj/item/organ/external/proc/remove_clamps()
 		if(can_feel_pain())
 			owner.emote("scream")
 
-	playsound(src.loc, "fracture", 100, 1, -2)
+	playsound(src.loc, SFX_BREAK_BONE, 100, 1, -2)
 	status |= ORGAN_BROKEN
+	update_tally()
 
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
 			owner.Weaken(2)
+			owner.Stun(1)
 
-	broken_description = pick("broken","fracture","hairline fracture")
+	broken_description = pick("broken", "fracture", "hairline fracture")
 
 	// Fractures have a chance of getting you out of restraints
 	if (prob(25))
@@ -1028,18 +1078,20 @@ obj/item/organ/external/proc/remove_clamps()
 		var/obj/item/clothing/suit/space/rig/suit = owner.wear_suit
 		suit.handle_fracture(owner, src)
 
-/obj/item/organ/external/proc/mend_fracture()
+/obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
-		return 0	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(brute_dam > min_broken_damage * config.organ_health_multiplier)
-		return 0	//will just immediately fracture again
+		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
+	if(use_damage_check && (brute_dam > min_broken_damage * config.organ_health_multiplier))
+		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
-	return 1
+	update_tally()
+	return TRUE
 
 /obj/item/organ/external/proc/apply_splint(atom/movable/splint)
 	if(!splinted)
 		splinted = splint
+		update_tally()
 		if(!applied_pressure)
 			applied_pressure = splint
 		return 1
@@ -1052,6 +1104,7 @@ obj/item/organ/external/proc/remove_clamps()
 		if(applied_pressure == splinted)
 			applied_pressure = null
 		splinted = null
+		update_tally()
 		return 1
 	return 0
 
@@ -1063,7 +1116,7 @@ obj/item/organ/external/proc/remove_clamps()
 	..()
 	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
 
-	if (just_printed)
+	if(just_printed)
 		status |= ORGAN_CUT_AWAY
 
 	if(company)
@@ -1082,6 +1135,7 @@ obj/item/organ/external/proc/remove_clamps()
 	remove_splint()
 	update_icon(1)
 	unmutate()
+	update_tally()
 
 	for(var/obj/item/organ/external/T in children)
 		T.robotize(company, 1)
@@ -1122,7 +1176,7 @@ obj/item/organ/external/proc/remove_clamps()
 /obj/item/organ/external/proc/is_malfunctioning()
 	return (BP_IS_ROBOTIC(src) && (brute_dam + burn_dam) >= 10 && prob(brute_dam + burn_dam))
 
-/obj/item/organ/external/proc/embed(obj/item/weapon/W, silent = 0, supplied_message, datum/wound/supplied_wound)
+/obj/item/organ/external/proc/embed(obj/item/W, silent = 0, supplied_message, datum/wound/supplied_wound)
 	if(!owner || loc != owner)
 		return
 	if(W.w_class > ITEM_SIZE_NORMAL)
@@ -1156,7 +1210,7 @@ obj/item/organ/external/proc/remove_clamps()
 		H.drop_from_inventory(W)
 	W.loc = owner
 
-/obj/item/organ/external/removed(mob/living/user, ignore_children = 0)
+/obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
 		return
 
@@ -1166,8 +1220,12 @@ obj/item/organ/external/proc/remove_clamps()
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
 			owner.drop_from_inventory(owner.shoes)
-		if(HAND_LEFT, HAND_RIGHT)
+		if(HAND_LEFT)
 			owner.drop_from_inventory(owner.gloves)
+			owner.drop_l_hand()
+		if(HAND_RIGHT)
+			owner.drop_from_inventory(owner.gloves)
+			owner.drop_r_hand()
 		if(HEAD)
 			owner.drop_from_inventory(owner.glasses)
 			owner.drop_from_inventory(owner.head)
@@ -1189,8 +1247,8 @@ obj/item/organ/external/proc/remove_clamps()
 			implant.forceMove(src)
 
 			// let actual implants still inside know they're no longer implanted
-			if(istype(I, /obj/item/weapon/implant))
-				var/obj/item/weapon/implant/imp_device = I
+			if(istype(I, /obj/item/implant))
+				var/obj/item/implant/imp_device = I
 				imp_device.removed()
 		else
 			implants.Remove(implant)
@@ -1200,7 +1258,7 @@ obj/item/organ/external/proc/remove_clamps()
 	if(!ignore_children)
 		for(var/obj/item/organ/external/O in children)
 			O.removed()
-			if(O)
+			if(!QDELETED(O) && !detach_children_and_internals)
 				O.forceMove(src)
 
 				// if we didn't lose the organ we still want it as a child
@@ -1209,8 +1267,9 @@ obj/item/organ/external/proc/remove_clamps()
 
 	// Grab all the internal giblets too.
 	for(var/obj/item/organ/organ in internal_organs)
-		organ.removed(user, 0, 0)  // Organ stays inside and connected
-		organ.forceMove(src)
+		organ.removed(user, 0, detach_children_and_internals)  // Organ stays inside and connected
+		if(!QDELETED(organ))
+			organ.forceMove(src)
 
 	// Remove parent references
 	if(parent)
@@ -1220,6 +1279,7 @@ obj/item/organ/external/proc/remove_clamps()
 	release_restraints(victim)
 	victim.organs -= src
 	victim.organs_by_name.Remove(organ_tag) // Remove from owner's vars.
+	victim.organs_by_name -= organ_tag
 
 	//Robotic limbs explode if sabotaged.
 	if(BP_IS_ROBOTIC(src) && (status & ORGAN_SABOTAGED))
@@ -1227,7 +1287,7 @@ obj/item/organ/external/proc/remove_clamps()
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
 			"<span class='danger'>You hear an explosion!</span>")
-		explosion(get_turf(owner),-1,-1,2,3)
+		explosion(get_turf(owner), -1, -1, 2, 3)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, victim)
 		spark_system.attach(owner)
@@ -1238,8 +1298,10 @@ obj/item/organ/external/proc/remove_clamps()
 	else if(is_stump())
 		qdel(src)
 
-/obj/item/organ/external/proc/disfigure(type = "brute")
+/obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
+		return
+	if(!(limb_flags & ORGAN_FLAG_CAN_BREAK)) // No need to disfigure xenomorphs and dionaea, right?
 		return
 	if(owner)
 		if(type == "brute")
@@ -1391,10 +1453,10 @@ obj/item/organ/external/proc/remove_clamps()
 		. += "Bleeding"
 	if(status & ORGAN_BROKEN)
 		. += capitalize(broken_description)
-	if (implants.len)
+	if(length(implants))
 		var/unknown_body = 0
 		for(var/I in implants)
-			var/obj/item/weapon/implant/imp = I
+			var/obj/item/implant/imp = I
 			if(istype(imp) && imp.known)
 				. += "[capitalize(imp.name)] implanted"
 			else
@@ -1495,7 +1557,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return !BP_IS_ROBOTIC(src) && species && species.sexybits_location == organ_tag
 
 // Added to the mob's move delay tally if this organ is being used to move with.
-obj/item/organ/external/proc/movement_delay(max_delay)
+/obj/item/organ/external/proc/movement_delay(max_delay)
 	. = 0
 	if(is_stump())
 		. += max_delay

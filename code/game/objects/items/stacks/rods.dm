@@ -39,7 +39,7 @@
 
 /obj/item/stack/rods/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(get_amount() < 2)
 			to_chat(user, "<span class='warning'>You need at least two rods to do this.</span>")
@@ -58,7 +58,7 @@
 				user.put_in_hands(new_item)
 		return
 
-	if (istype(W, /obj/item/weapon/tape_roll))
+	if (istype(W, /obj/item/tape_roll))
 		var/obj/item/stack/medical/splint/ghetto/new_splint = new(user.loc)
 		new_splint.dropInto(loc)
 		new_splint.add_fingerprint(user)
@@ -71,45 +71,81 @@
 	..()
 
 
-/obj/item/stack/rods/attack_self(mob/user as mob)
-	src.add_fingerprint(user)
+/obj/item/stack/rods/attack_self(mob/user)
+	add_fingerprint(user)
 
-	if(!istype(user.loc,/turf)) return 0
+	if(!isturf(user.loc))
+		return
 
-	if (locate(/obj/structure/grille, usr.loc))
-		for(var/obj/structure/grille/G in usr.loc)
-			if (G.destroyed)
+	if(GLOB.using_map.legacy_mode)
+		place_grille(user)
+	else
+		place_window_frame(user)
+
+/obj/item/stack/rods/proc/place_window_frame(mob/user)
+	if(locate(/obj/structure/grille, user.loc))
+		for(var/obj/structure/grille/G in user.loc)
+			if(G.destroyed)
 				G.health = 10
 				G.set_density(1)
 				G.destroyed = 0
 				G.icon_state = "grille"
 				use(1)
-			else
-				return 1
+				to_chat(user, SPAN("notice", "You reconstruct an old grille."))
+			return
+	else if(!in_use)
+		if(get_amount() < 2)
+			to_chat(user, SPAN("warning", "You need at least two rods to do this."))
+			return
+		if(locate(/obj/structure/window_frame) in user.loc)
+			to_chat(user, SPAN("warning", "There is another frame in this location."))
+			return
+		to_chat(usr, SPAN("notice", "Assembling a window frame..."))
+		in_use = TRUE
+		if(!do_after(usr, 1 SECOND))
+			in_use = FALSE
+			return
+		in_use = FALSE
+		if(locate(/obj/structure/window_frame) in user.loc)
+			to_chat(user, SPAN("warning", "There is another frame in this location."))
+			return
+		if(!use(2))
+			return
+		var/obj/structure/window_frame/WF = new /obj/structure/window_frame(get_turf(user))
+		WF.add_fingerprint(usr)
+		WF.anchored = FALSE
+		to_chat(user, SPAN("notice", "You assemble a window frame."))
+	return
+
+/obj/item/stack/rods/proc/place_grille(mob/user)
+	if(locate(/obj/structure/grille, user.loc))
+		for(var/obj/structure/grille/G in user.loc)
+			if(G.destroyed)
+				G.health = 10
+				G.set_density(1)
+				G.destroyed = 0
+				G.icon_state = "old-grille"
+				use(1)
+			return
 
 	else if(!in_use)
 		if(get_amount() < 2)
-			to_chat(user, "<span class='warning'>You need at least two rods to do this.</span>")
+			to_chat(user, SPAN("notice", "You need at least two rods to do this."))
 			return
-		to_chat(usr, "<span class='notice'>Assembling grille...</span>")
+		to_chat(usr, SPAN("notice", "Assembling grille..."))
 		in_use = 1
-		if (!do_after(usr, 10))
+		if(!do_after(usr, 1 SECOND))
 			in_use = 0
 			return
-		var/obj/structure/grille/F = new /obj/structure/grille/ ( usr.loc )
-		to_chat(usr, "<span class='notice'>You assemble a grille</span>")
+		var/obj/structure/grille/F = new /obj/structure/grille(user.loc)
+		to_chat(usr, SPAN("notice", "You assemble a grille"))
 		in_use = 0
-		F.add_fingerprint(usr)
+		F.add_fingerprint(user)
 		use(2)
 	return
 
 /obj/item/stack/rods/update_icon()
-	if(amount == 1)
-		icon = 'icons/obj/weapons.dmi'
-		icon_state = "metal-rod"
-	else
-		icon = initial(icon)
-		icon_state = initial(icon_state)
+	icon_state = "rods[(amount < 5) ? amount : ""]"
 
 /obj/item/stack/rods/use()
 	. = ..()

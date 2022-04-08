@@ -13,8 +13,8 @@
 
 	density = 0
 	stat = DEAD
-	canmove = 0
 
+	movement_handlers = list()
 	anchored = 1	//  don't get pushed around
 
 	virtual_mob = null // Hear no evil, speak no evil
@@ -25,14 +25,16 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
-/mob/new_player/verb/new_player_panel()
-	set src = usr
+/mob/new_player/proc/new_player_panel(forced = FALSE)
+	if(!SScharacter_setup.initialized && !forced)
+		return // Not ready yet.
 	new_player_panel_proc()
 
 /mob/new_player/proc/new_player_panel_proc()
 	var/output = "<div align='center'>"
 	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
+	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings<sup><b>β</b></sup></a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
 		if(ready)
@@ -88,12 +90,13 @@
 	if(href_list["show_preferences"])
 		client.prefs.ShowChoices(src)
 		return 1
+	
+	if(href_list["show_settings"])
+		client.settings.tgui_interact(src)
+		return 1
 
 	if(href_list["ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started
-			if (!client.EAMS_CheckForAccess())
-				return
-
 			if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
 				to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
 				return
@@ -105,7 +108,12 @@
 			if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 				to_chat(src, "<span class='warning'>No traps allowed.</span>")
 				return
-			ready = text2num(href_list["ready"])
+
+			var/value = text2num(href_list["ready"])
+			if (value && !SSeams.CheckForAccess(client))
+				return
+
+			ready = value
 		else
 			ready = 0
 
@@ -118,7 +126,7 @@
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
@@ -131,7 +139,7 @@
 
 			observer.started_as_observer = 1
 			close_spawn_windows()
-			var/obj/O = locate("landmark*Observer-Start")
+			var/obj/O = locate("landmark*Observer")
 			if(istype(O))
 				to_chat(src, "<span class='notice'>Now teleporting.</span>")
 				observer.forceMove(O.loc)
@@ -142,10 +150,11 @@
 			if(isnull(client.holder))
 				announce_ghost_joinleave(src)
 
-			var/mob/living/carbon/human/dummy/mannequin = new()
-			client.prefs.dress_preview_mob(mannequin)
-			observer.set_appearance(mannequin)
-			qdel(mannequin)
+			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
+			if(mannequin)
+				client.prefs.dress_preview_mob(mannequin)
+				observer.set_appearance(mannequin)
+				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)
@@ -166,7 +175,7 @@
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
@@ -193,8 +202,15 @@
 			to_chat(usr, "<span class='danger'>The job '[href_list["SelectedJob"]]' doesn't exist!</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
+
+		//Prevents people rejoining as same character.
+		for (var/mob/living/carbon/human/C in SSmobs.mob_list)
+			var/char_name = client.prefs.real_name
+			if(char_name == C.real_name)
+				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
+				return
 
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
@@ -214,14 +230,12 @@
 		return
 
 	if(href_list["privacy_poll"])
-		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!establish_db_connection())
 			return
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
-		query.Execute()
+		var/DBQuery/query = sql_query("SELECT * FROM erro_privacy WHERE ckey = $ckey", dbcon, list(ckey = ckey))
 		while(query.NextRow())
 			voted = 1
 			break
@@ -236,7 +250,7 @@
 			if("nostats")
 				option = "NOSTATS"
 			if("later")
-				usr << browse(null,"window=privacypoll")
+				close_browser(usr, "window=privacypoll")
 				return
 			if("abstain")
 				option = "ABSTAIN"
@@ -245,11 +259,9 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
-			var/DBQuery/query_insert = dbcon.NewQuery(sql)
-			query_insert.Execute()
+			sql_query("INSERT INTO erro_privacy VALUES (null, Now(), $ckey, $option)", dbcon, list(ckey = ckey, option = option))
 			to_chat(usr, "<b>Thank you for your vote!</b>")
-			usr << browse(null,"window=privacypoll")
+			close_browser(usr, "window=privacypoll")
 
 	if(!ready && href_list["preference"])
 		if(client)
@@ -392,7 +404,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceCyborg(character, job.title, "has been downloaded to the empty core in \the [character.loc.loc]")
+		AnnounceArrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -405,30 +417,25 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, job, spawnpoint.msg)
-		else
-			AnnounceCyborg(character, job, spawnpoint.msg)
 
-		for (var/mob/M in GLOB.player_list)
-			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
+		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
-
 
 /mob/new_player/proc/AnnounceCyborg(mob/living/character, rank, join_message)
 	if (GAME_STATE == RUNLEVEL_GAME)
 		if(character.mind.role_alt_title)
 			rank = character.mind.role_alt_title
 		// can't use their name here, since cyborg namepicking is done post-spawn, so we'll just say "A new Cyborg has arrived"/"A new Android has arrived"/etc.
-		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", "Arrivals Announcement Computer")
+		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", get_announcement_computer())
 		log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 
 /mob/new_player/proc/LateChoices()
 	var/name = client.prefs.be_random_name ? "friend" : client.prefs.real_name
 
-	var/list/dat = list("<html><body><center>")
+	var/list/dat = list("<html><meta charset=\"utf-8\"><body><center>")
 	dat += "<b>Welcome, [name].<br></b>"
 	dat += "Round Duration: [roundduration2text()]<br>"
 
@@ -455,14 +462,20 @@
 			for(var/mob/M in GLOB.player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
 				active++
 
+			var/active_vacancies = 0
+			if(job.open_vacancies && job.open_vacancies - job.filled_vacancies > 0)
+				active_vacancies = job.open_vacancies - job.filled_vacancies
+
 			if(job.is_restricted(client.prefs))
 				if(show_invalid_jobs)
-					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 			else
-				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 
 	dat += "</table></center>"
-	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
+	var/datum/browser/popup = new(src, "latechoices", "Late Join", 450, 640, src)
+	popup.set_content(jointext(dat, null))
+	popup.open()
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
@@ -483,9 +496,10 @@
 			spawning = 0 //abort
 			return null
 		new_character = new(spawn_turf, chosen_species.name)
-		if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
+		/*if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
 			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
-			if(B)	B.shackle(client.prefs.get_lawset())
+			if(B)
+				B.shackle(client.prefs.get_lawset())*/ // Removed until we get those cyberdummies working
 
 	if(!new_character)
 		new_character = new(spawn_turf)
@@ -504,13 +518,13 @@
 		client.prefs.real_name = random_name(new_character.gender)
 		client.prefs.randomize_appearance_and_body_for(new_character)
 	else
-		client.prefs.copy_to(new_character)
-
 		if(jobban_isbanned(src, "NAME"))
 			client.prefs.real_name = random_name(new_character.gender)
 
 		if(jobban_isbanned(src, "APPEARANCE"))
 			client.prefs.randomize_appearance_and_body_for(new_character)
+
+		client.prefs.copy_to(new_character)
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
@@ -557,7 +571,7 @@
 /mob/new_player/proc/ViewManifest()
 	var/dat = "<div align='center'>"
 	dat += html_crew_manifest(OOC = 1)
-	//src << browse(dat, "window=manifest;size=370x420;can_close=1")
+	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
@@ -566,7 +580,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	src << browse(null, "window=latechoices") //closes late choices window
+	show_browser(src, null, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()
@@ -613,7 +627,7 @@
 /mob/new_player/show_message(msg, type, alt, alt_type)
 	return
 
-mob/new_player/MayRespawn()
+/mob/new_player/MayRespawn()
 	return 1
 
 /mob/new_player/touch_map_edge()
@@ -621,3 +635,6 @@ mob/new_player/MayRespawn()
 
 /mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)
+
+/mob/new_player/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

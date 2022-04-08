@@ -189,7 +189,7 @@
 			return
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
 			return
 
 		if(burn_damage <= 0)
@@ -205,14 +205,14 @@
 	else if(isWelder(W))
 
 		if(istype(src.loc,/mob/living))
-			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
+			to_chat(user, "<span class='warning'>How do you intend to patch a powersuit while someone is wearing it?</span>")
 			return
 
 		if (brute_damage <= 0)
 			to_chat(user, "There is no structural damage on \the [src] to repair.")
 			return
 
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(5))
 			to_chat(user, "<span class='warning'>You need more welding fuel to repair this suit.</span>")
 			return
@@ -220,7 +220,7 @@
 		repair_breaches(BRUTE, 3, user)
 		return
 
-	else if(istype(W, /obj/item/weapon/tape_roll))
+	else if(istype(W, /obj/item/tape_roll))
 		var/datum/breach/target_breach		//Target the largest unpatched breach.
 		for(var/datum/breach/B in breaches)
 			if(B.patched)
@@ -231,7 +231,7 @@
 		if(!target_breach)
 			to_chat(user, "There are no open breaches to seal with \the [W].")
 		else if(user != loc || do_after(user, 30, src))		//Doing this in your own inventory is awkward.
-			user.visible_message("<b>[user]</b> uses \the [W] to seal \the [target_breach] on \the [src].")
+			user.visible_message("<b>[user]</b> uses \the [W] to seal \the [target_breach.descriptor] on \the [src].")
 			target_breach.patched = TRUE
 			target_breach.update_descriptor()
 			calc_breach_damage()
@@ -240,7 +240,7 @@
 	..()
 
 /obj/item/clothing/suit/space/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)
-			to_chat(user, "<span class='danger'>It has \a [B.descriptor].</span>")
+			. += "\n<span class='danger'>It has \a [B.descriptor].</span>"

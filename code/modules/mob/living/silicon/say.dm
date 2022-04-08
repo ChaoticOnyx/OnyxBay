@@ -1,8 +1,9 @@
-/mob/living/silicon/say(message, sanitize = 1)
-	return ..(sanitize ? sanitize(message) : message)
+/mob/living/silicon/say(message, sanitize = TRUE, log_message = TRUE)
+	return ..(sanitize ? sanitize(message) : message, log_message = log_message)
 
 /mob/living/silicon/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
-	log_say("[key_name(src)] : [message]")
+	if(playable_mob) // I don't know why it's here, because living/say already does logging stuff.
+		log_say("[key_name(src)]: [message]")
 
 /mob/living/silicon/robot/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	..()
@@ -61,9 +62,9 @@
 /mob/living/silicon/ai/say(message, sanitize = 1)
 	if (holo)
 		//check if AI using radio while in hologramm
-		if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
+		if(length_char(message) >= 1 && copytext_char(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
 			. = ..()
-		else if(length(message) >= 2 && (copytext(message, 1 ,3) in department_radio_keys))
+		else if(length_char(message) >= 2 && (copytext_char(message, 1 ,3) in department_radio_keys))
 			. = ..()
 		else
 			. = ..(":H[message]")
@@ -72,7 +73,7 @@
 //For holopads only. Usable by AI.
 /mob/living/silicon/ai/proc/holopad_talk(message, verb, datum/language/speaking)
 
-	log_say("[key_name(src)] : [message]")
+	log_say("[key_name(src)]: [message]")
 
 	message = trim(message)
 
@@ -126,7 +127,7 @@
 
 /mob/living/silicon/ai/proc/holopad_emote(message) //This is called when the AI uses the 'me' verb while using a holopad.
 
-	log_emote("[key_name(src)] : [message]")
+	log_emote("[key_name(src)]: [message]")
 
 	message = trim(message)
 

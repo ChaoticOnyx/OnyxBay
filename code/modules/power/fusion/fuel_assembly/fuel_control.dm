@@ -13,6 +13,8 @@
 	attack_hand(user)
 
 /obj/machinery/computer/fusion_fuel_control/attack_hand(mob/user)
+	if(..())
+		return
 	add_fingerprint(user)
 	interact(user)
 
@@ -20,12 +22,12 @@
 
 	if(stat & (BROKEN|NOPOWER))
 		user.unset_machine()
-		user << browse(null, "window=fuel_control")
+		close_browser(user, "window=fuel_control")
 		return
 
 	if (!istype(user, /mob/living/silicon) && get_dist(src, user) > 1)
 		user.unset_machine()
-		user << browse(null, "window=fuel_control")
+		close_browser(user, "window=fuel_control")
 		return
 
 	if(!id_tag)
@@ -90,7 +92,7 @@
 				I.BeginInjecting()
 
 	if( href_list["close"] )
-		usr << browse(null, "window=fuel_control")
+		close_browser(usr, "window=fuel_control")
 		usr.unset_machine()
 
 	updateDialog()
@@ -98,7 +100,7 @@
 
 /obj/machinery/computer/fusion_fuel_control/attackby(obj/item/W, mob/user)
 	if(isMultitool(W))
-		var/new_ident = input("Enter a new ident tag.", "Fuel Control", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Fuel Control", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 		return

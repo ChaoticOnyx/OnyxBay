@@ -5,7 +5,7 @@
 	icon = 'icons/obj/aibots.dmi'
 	universal_speak = 1
 	density = 0
-	var/obj/item/weapon/card/id/botcard = null
+	var/obj/item/card/id/botcard = null
 	var/list/botcard_access = list()
 	var/on = 1
 	var/open = 0
@@ -41,7 +41,7 @@
 	..()
 	update_icons()
 
-	botcard = new /obj/item/weapon/card/id(src)
+	botcard = new /obj/item/card/id(src)
 	botcard.access = botcard_access.Copy()
 
 	access_scanner = new /obj(src)
@@ -71,6 +71,8 @@
 	if(!on && client)
 		ghostize()
 
+	update_icons()
+
 /mob/living/bot/updatehealth()
 	if(status_flags & GODMODE)
 		health = maxHealth
@@ -89,6 +91,7 @@
 		health -= amount
 
 /mob/living/bot/death()
+	resetTarget()
 	stat = DEAD
 	explode()
 
@@ -128,6 +131,11 @@
 	Interact(user)
 
 /mob/living/bot/attack_hand(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H) && H.a_intent == "harm")
+			attack_generic(H, rand(10, 20), "slashes at")
+			return
 	Interact(user)
 
 /mob/living/bot/proc/Interact(mob/user)
@@ -222,9 +230,11 @@
 	return 0
 
 /mob/living/bot/proc/handleAI()
+	set waitfor = 0
+
 	if(client)
 		return
-	if(ignore_list.len)
+	if(length(ignore_list))
 		for(var/atom/A in ignore_list)
 			if(!A || !A.loc || prob(1))
 				ignore_list -= A
@@ -361,7 +371,7 @@
 	if(stat)
 		return 0
 	on = 1
-	set_light(light_strength)
+	set_light(0.5, 0.1, light_strength)
 	update_icons()
 	resetTarget()
 	patrol_path = list()
@@ -386,7 +396,7 @@
 
 // Returns the surrounding cardinal turfs with open links
 // Including through doors openable with the ID
-/turf/proc/CardinalTurfsWithAccess(obj/item/weapon/card/id/ID)
+/turf/proc/CardinalTurfsWithAccess(obj/item/card/id/ID)
 	var/L[] = new()
 
 	//	for(var/turf/simulated/t in oview(src,1))
@@ -401,7 +411,7 @@
 
 // Returns true if a link between A and B is blocked
 // Movement through doors allowed if ID has access
-/proc/LinkBlockedWithAccess(turf/A, turf/B, obj/item/weapon/card/id/ID)
+/proc/LinkBlockedWithAccess(turf/A, turf/B, obj/item/card/id/ID)
 
 	if(A == null || B == null) return 1
 	var/adir = get_dir(A,B)
@@ -430,7 +440,7 @@
 
 // Returns true if direction is blocked from loc
 // Checks doors against access with given ID
-/proc/DirBlockedWithAccess(turf/loc,dir,obj/item/weapon/card/id/ID)
+/proc/DirBlockedWithAccess(turf/loc,dir,obj/item/card/id/ID)
 	for(var/obj/structure/window/D in loc)
 		if(!D.density)			continue
 		if(D.dir == SOUTHWEST)	return 1

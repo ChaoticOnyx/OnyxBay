@@ -3,7 +3,7 @@
 #define BOOK_VERSION_MIN	1
 #define BOOK_VERSION_MAX	2
 #define BOOK_PATH			"data/books/"
-#define BOOKS_USE_SQL		0				// no guarentee for this branch to work right with sql
+#define BOOKS_USE_SQL		0				// no guarentee for this branch to work right with sql  // TODO: make books work normally with SQL
 
 var/global/datum/book_manager/book_mgr = new()
 
@@ -32,7 +32,7 @@ datum/book_manager/proc/freeid()
 
 	return id
 
-/client/proc/delbook()
+/client/proc/delbook() // TODO: normal db establish instead of recreating db
 	set name = "Delete Book"
 	set desc = "Permamently deletes a book from the database."
 	set category = "Admin"
@@ -44,16 +44,11 @@ datum/book_manager/proc/freeid()
 	if(!isbn)
 		return
 
-	if(BOOKS_USE_SQL && config.sql_enabled)
-		var/DBConnection/dbcon = new()
-		dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-		if(!dbcon.IsConnected())
+	if(BOOKS_USE_SQL && config.sql_enabled) // always false. see todo on line 6 of this file
+		if(!establish_db_connection())
 			alert("Connection to Archive has been severed. Aborting.")
 		else
-			var/DBQuery/query = dbcon.NewQuery("DELETE FROM library WHERE id=[isbn]")
-			if(!query.Execute())
-				to_chat(usr, query.ErrorMsg())
-			dbcon.Disconnect()
+			var/DBQuery/query = sql_query("DELETE FROM library WHERE id=$$", dbcon, isbn)
 	else
 		book_mgr.remove(isbn)
 	log_admin("[usr.key] has deleted the book [isbn]")
@@ -81,22 +76,22 @@ datum/archived_book/New(path)
 	var/savefile/F = new(path)
 
 	var/version
-	F["version"] >> version
+	from_file(F["version"], version)
 
 	if (isnull(version) || version < BOOK_VERSION_MIN || version > BOOK_VERSION_MAX)
 		fdel(path)
 		to_chat(usr, "What book?")
 		return 0
 
-	F["author"] >> author
-	F["title"] >> title
-	F["category"] >> category
-	F["id"] >> id
-	F["dat"] >> dat
+	from_file(F["author"],      author)
+	from_file(F["title"],       title)
+	from_file(F["category"],    category)
+	from_file(F["id"],          id)
+	from_file(F["dat"],         dat)
 
-	F["author_real"] >> author_real
-	F["author_key"] >> author_key
-	F["photos"] >> photos
+	from_file(F["author_real"], author_real)
+	from_file(F["author_key"],  author_key)
+	from_file(F["photos"],      photos)
 	if(!photos)
 		photos = new()
 
@@ -110,16 +105,16 @@ datum/archived_book/New(path)
 datum/archived_book/proc/save()
 	var/savefile/F = new(book_mgr.path(id))
 
-	F["version"] << BOOK_VERSION_MAX
-	F["author"] << author
-	F["title"] << title
-	F["category"] << category
-	F["id"] << id
-	F["dat"] << dat
+	to_file(F["version"],     BOOK_VERSION_MAX)
+	to_file(F["author"],      author)
+	to_file(F["title"],       title)
+	to_file(F["category"],    category)
+	to_file(F["id"],          id)
+	to_file(F["dat"],         dat)
 
-	F["author_real"] << author_real
-	F["author_key"] << author_key
-	F["photos"] << photos
+	to_file(F["author_real"], author_real)
+	to_file(F["author_key"],  author_key)
+	to_file(F["photos"],      photos)
 
 #undef BOOK_VERSION_MIN
 #undef BOOK_VERSION_MAX

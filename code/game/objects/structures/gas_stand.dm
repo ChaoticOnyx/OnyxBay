@@ -3,8 +3,9 @@
 	icon = 'icons/obj/gas_stand.dmi'
 	desc = "Gas stand with retractable gas mask."
 	icon_state = "gas_stand_idle"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 
-	var/obj/item/weapon/tank/tank
+	var/obj/item/tank/tank
 	var/mob/living/carbon/breather
 	var/obj/item/clothing/mask/breath/contained
 
@@ -30,15 +31,15 @@
 	overlays.Cut()
 
 	if (tank)
-		if(istype(tank,/obj/item/weapon/tank/anesthetic))
+		if(istype(tank,/obj/item/tank/anesthetic))
 			overlays += "tank_anest"
-		else if(istype(tank,/obj/item/weapon/tank/nitrogen))
+		else if(istype(tank,/obj/item/tank/nitrogen))
 			overlays += "tank_nitro"
-		else if(istype(tank,/obj/item/weapon/tank/oxygen))
+		else if(istype(tank,/obj/item/tank/oxygen))
 			overlays += "tank_oxyg"
-		else if(istype(tank,/obj/item/weapon/tank/phoron))
-			overlays += "tank_phoron"
-		else if(istype(tank,/obj/item/weapon/tank/hydrogen))
+		else if(istype(tank,/obj/item/tank/plasma))
+			overlays += "tank_plasma"
+		else if(istype(tank,/obj/item/tank/hydrogen))
 			overlays += "tank_hydro"
 		else
 			overlays += "tank_other"
@@ -53,7 +54,7 @@
 		qdel(tank)
 	if(breather)
 		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before /the [src] is destroyed!</span>")
+		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
 	qdel(contained)
 	contained = null
 	breather = null
@@ -105,8 +106,8 @@
 				breather.internal = tank
 				if(breather.internals)
 					breather.internals.icon_state = "internal1"
-			valve_opened = TRUE	
-			playsound(get_turf(src), 'sound/effects/internals.ogg', 100, 1)
+			valve_opened = TRUE
+			playsound(src, 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
 			START_PROCESSING(SSobj,src)
 
@@ -152,7 +153,7 @@
 		return
 	return 1
 
-/obj/structure/gas_stand/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/gas_stand/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		if (valve_opened)
 			to_chat(user, "<span class='warning'>Close the valve first.</span>")
@@ -170,7 +171,7 @@
 			to_chat(user, "<span class='warning'>There is no tank in \the [src].</span>")
 			return
 
-	if(istype(W, /obj/item/weapon/tank))
+	if(istype(W, /obj/item/tank))
 		if(tank)
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else if(!is_loosen)
@@ -187,12 +188,12 @@
 	. = ..()
 	if(tank)
 		if (!is_loosen)
-			to_chat(user, "\The [tank] connected to it.")
-		to_chat(user, "The meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"].")
+			. += "\n\The [tank] connected to it."
+		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"]."
 		if (tank.distribute_pressure == 0)
-			to_chat(user, "Use wrench to replace tank.")
+			. += "\nUse wrench to replace tank."
 	else
-		to_chat(user, "<span class='warning'>It is missing a tank!</span>")
+		. += "\n<span class='warning'>It is missing a tank!</span>"
 
 /obj/structure/gas_stand/Process()
 	if(breather)
@@ -231,7 +232,7 @@
 	icon_state = "gas_stand_idle"
 	name = "anaesthetic machine"
 	desc = "Anaesthetic machine used to support the administration of anaesthesia ."
-	spawn_type = /obj/item/weapon/tank/anesthetic
+	spawn_type = /obj/item/tank/anesthetic
 	mask_type = /obj/item/clothing/mask/breath/anesthetic
 	is_loosen = FALSE
 

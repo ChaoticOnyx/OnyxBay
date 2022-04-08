@@ -59,6 +59,8 @@
 				to_chat(D, "<span class='warning'>You hit [M]!</span>")
 				msg_admin_attack("[D.name] ([D.ckey]) hit [M.name] ([M.ckey]) with [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
 
+	..()
+
 
 //-------------------------------------------
 // Vehicle procs
@@ -84,7 +86,7 @@
 
 	if(user != load)
 		if(user in src)		//for handling players stuck in src - this shouldn't happen - but just in case it does
-			user.forceMove(T)
+			user.forceMove(T, unbuckle_mob = FALSE)
 			return 1
 		return 0
 
@@ -95,7 +97,7 @@
 	return 1
 
 /obj/vehicle/train/MouseDrop_T(atom/movable/C, mob/user as mob)
-	if(user.buckled || user.stat || user.restrained() || !Adjacent(user) || !user.Adjacent(C) || !istype(C) || (user == C && !user.canmove))
+	if(!CanPhysicallyInteract(user) || !user.Adjacent(C) || !istype(C) || (user == C))
 		return
 	if(istype(C,/obj/vehicle/train))
 		latch(C, user)
@@ -125,7 +127,7 @@
 	if(!istype(usr, /mob/living/carbon/human))
 		return
 
-	if(!usr.canmove || usr.stat || usr.restrained() || !Adjacent(usr))
+	if(!CanPhysicallyInteract(usr))
 		return
 
 	unattach(usr)

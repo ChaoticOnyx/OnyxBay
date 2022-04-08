@@ -13,9 +13,6 @@
 /datum/species/proc/get_tail_hair(mob/living/carbon/human/H)
 	return tail_hair
 
-/datum/species/proc/get_blood_mask(mob/living/carbon/human/H)
-	return blood_mask
-
 /datum/species/proc/get_damage_overlays(mob/living/carbon/human/H)
 	return damage_overlays
 
@@ -83,6 +80,12 @@
 	for(var/datum/body_build/BB in body_builds)
 		if(gender in BB.genders)
 			. += BB.name
+
+/datum/species/proc/get_body_build_datum_list(gender)
+	. = list()
+	for(var/datum/body_build/BB in body_builds)
+		if(gender in BB.genders)
+			. += BB
 
 /datum/species/proc/get_random_name(gender)
 	if(!name_language)

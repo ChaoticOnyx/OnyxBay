@@ -47,9 +47,9 @@
 /turf/simulated/open/proc/update()
 	plane = OPENSPACE_PLANE + (src.z * PLANE_DIFFERENCE)
 	below = GetBelow(src)
-	GLOB.turf_changed_event.register(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.register(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.register(below, src, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
+	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	register_signal(below, SIGNAL_ENTERED, /turf/simulated/open/proc/handle_move)
 	levelupdate()
 	for(var/atom/movable/A in src)
 		A.fall()
@@ -77,12 +77,13 @@
 
 
 
-/turf/simulated/open/examine(mob/user, distance, infix, suffix)
-	if(..(user, 2))
+/turf/simulated/open/examine(mob/user, infix, suffix)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		var/depth = 1
 		for(var/T = GetBelow(src); isopenspace(T); T = GetBelow(T))
 			depth += 1
-		to_chat(user, "It is about [depth] level\s deep.")
+		. += "\nIt is about [depth] level\s deep."
 
 
 
@@ -192,9 +193,9 @@
 
 /turf/simulated/open/proc/clean_up()
 	//Unregister
-	GLOB.turf_changed_event.unregister(below, src,/turf/simulated/open/proc/turf_change)
-	GLOB.exited_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
-	GLOB.entered_event.unregister(below, src, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_TURF_CHANGED)
+	unregister_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
+	unregister_signal(below, SIGNAL_ENTERED)
 	//Take care of shadow
 	for(var/mob/zshadow/M in src)
 		qdel(M)
@@ -207,7 +208,7 @@
 
 //The two situations which require unregistering
 
-/turf/simulated/open/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
+/turf/simulated/open/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	//We do not want to change any of the behaviour, just make sure this goes away
 	src.clean_up()
 	. = ..()

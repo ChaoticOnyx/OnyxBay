@@ -7,7 +7,7 @@
 		A.forceMove(src)
 
 /mob/living/deity/proc/grant_boon(mob/living/L)
-	if(istype(current_boon, /spell) && !grant_spell(L, current_boon))
+	if(istype(current_boon, /datum/spell) && !grant_spell(L, current_boon))
 		return
 	else if(istype(current_boon, /obj/item))
 		var/obj/item/I = current_boon
@@ -29,10 +29,10 @@
 	current_boon = null
 	return
 
-/mob/living/deity/proc/grant_spell(mob/living/target, spell/spell)
+/mob/living/deity/proc/grant_spell(mob/living/target, datum/spell/spell)
 	var/datum/mind/M = target.mind
 	for(var/s in M.learned_spells)
-		var/spell/S = s
+		var/datum/spell/S = s
 		if(istype(S, spell.type))
 			to_chat(src, "<span class='warning'>They already know that spell!</span>")
 			return 0

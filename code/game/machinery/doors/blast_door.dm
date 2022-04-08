@@ -19,6 +19,8 @@
 	var/icon_state_closed = null
 	var/icon_state_closing = null
 
+	explosion_block = 3
+
 	var/open_sound = 'sound/machines/blastdoor_open.ogg'
 	var/close_sound = 'sound/machines/blastdoor_close.ogg'
 
@@ -26,6 +28,8 @@
 	var/id = 1.0
 	dir = 1
 	explosion_resistance = 25
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION | ATOM_FLAG_FULLTILE_OBJECT
+	var/keep_items_on_close = FALSE
 
 	//Most blast doors are infrequently toggled and sometimes used with regular doors anyways,
 	//turning this off prevents awkward zone geometry in places like medbay lobby, for example.
@@ -46,6 +50,7 @@
 		set_density(0)
 		set_opacity(0)
 		layer = open_layer
+		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 	implicit_material = get_material_by_name(MATERIAL_PLASTEEL)
 
@@ -78,40 +83,43 @@
 // Parameters: None
 // Description: Opens the door. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_open()
-	src.operating = 1
-	playsound(src.loc, open_sound, 100, 1)
+	operating = TRUE
+	playsound(loc, open_sound, 100, 1)
 	flick(icon_state_opening, src)
-	src.set_density(0)
+	set_density(FALSE)
 	update_nearby_tiles()
-	src.update_icon()
-	src.set_opacity(0)
+	update_icon()
+	set_opacity(FALSE)
 	sleep(15)
-	src.layer = open_layer
-	src.operating = 0
+	layer = open_layer
+	operating = FALSE
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_close()
 // Parameters: None
 // Description: Closes the door. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_close()
-	src.operating = 1
-	playsound(src.loc, close_sound, 100, 1)
+	operating = TRUE
+	playsound(loc, close_sound, 100, 1)
 	src.layer = closed_layer
 	flick(icon_state_closing, src)
-	src.set_density(1)
+	set_density(TRUE)
 	update_nearby_tiles()
-	src.update_icon()
-	src.set_opacity(1)
+	update_icon()
+	set_opacity(TRUE)
 	sleep(15)
-	src.operating = 0
+	shove_everything(shove_items = !keep_items_on_close)
+	operating = FALSE
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 // Proc: force_toggle()
 // Parameters: None
 // Description: Opens or closes the door, depending on current state. No checks are done inside this proc.
 /obj/machinery/door/blast/proc/force_toggle()
-	if(src.density)
-		src.force_open()
+	if(density)
+		force_open()
 	else
-		src.force_close()
+		force_close()
 
 /obj/machinery/door/blast/get_material()
 	return implicit_material
@@ -120,9 +128,9 @@
 // Parameters: 2 (C - Item this object was clicked with, user - Mob which clicked this object)
 // Description: If we are clicked with crowbar or wielded fire axe, try to manually open the door.
 // This only works on broken doors or doors without power. Also allows repair with Plasteel.
-/obj/machinery/door/blast/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/obj/machinery/door/blast/attackby(obj/item/C as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, C)
-	if(isCrowbar(C) || (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && C:wielded == 1))
+	if((isCrowbar(C) && !istype(C, /obj/item/crowbar/emergency)) || (istype(C, /obj/item/material/twohanded/fireaxe) && C:wielded == 1))
 		if(((stat & NOPOWER) || (stat & BROKEN)) && !( src.operating ))
 			force_toggle()
 		else
@@ -175,11 +183,6 @@
 	health = maxhealth
 	set_broken(FALSE)
 
-/obj/machinery/door/blast/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 1
-	return ..()
-
-
 
 // SUBTYPE: Regular
 // Your classical blast door, found almost everywhere.
@@ -195,9 +198,17 @@
 /obj/machinery/door/blast/regular/open
 	begins_closed = FALSE
 
-/obj/machinery/door/blast/regular/singulo
-	emp_act()
-		return
+/obj/machinery/door/blast/regular/singulo/emp_act()
+	return
+
+/obj/machinery/door/blast/regular/retro
+	desc = "That looks like it doesn't open easily. However, it's probably not as durable as the modern ones."
+	icon_state_open = "old_pdoor0"
+	icon_state_opening = "old_pdoorc0"
+	icon_state_closed = "old_pdoor1"
+	icon_state_closing = "old_pdoorc1"
+	icon_state = "old_pdoor1"
+	maxhealth = 300
 
 // SUBTYPE: Shutters
 // Nicer looking, and also weaker, shutters. Found in kitchen and similar areas.
@@ -209,6 +220,7 @@
 	icon_state = "shutter1"
 	open_sound = 'sound/machines/shutters_open.ogg'
 	close_sound = 'sound/machines/shutters_close.ogg'
+	keep_items_on_close = TRUE // These are placed over tables often, so let's keep items be.
 
 /obj/machinery/door/blast/shutters/open
 	begins_closed = FALSE

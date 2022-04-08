@@ -12,7 +12,7 @@
 
 
 /datum/event/brand_intelligence/start()
-	for(var/obj/machinery/vending/V in SSmachines.machinery)
+	for(var/obj/machinery/vending/V in GLOB.machines)
 		if(V.z in affecting_z)
 			vendingMachines += weakref(V)
 
@@ -20,7 +20,7 @@
 		kill()
 		return
 
-	originMachine = pick(vendingMachines)
+	originMachine = pick(vendingMachines).resolve()
 	vendingMachines.Remove(originMachine)
 	originMachine.shut_up = 0
 	originMachine.shoot_inventory = 1

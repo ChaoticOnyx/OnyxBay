@@ -25,13 +25,12 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/unscrew_hatch
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
-		/obj/item/weapon/material/kitchen/utensil/knife = 50
+		/obj/item/screwdriver = 100,
+		/obj/item/material/coin = 50,
+		/obj/item/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/robotics/unscrew_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -60,13 +59,12 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/screw_hatch
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
-		/obj/item/weapon/coin = 50,
-		/obj/item/weapon/material/kitchen/utensil/knife = 50
+		/obj/item/screwdriver = 100,
+		/obj/item/material/coin = 50,
+		/obj/item/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/robotics/screw_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -95,13 +93,12 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/open_hatch
 	allowed_tools = list(
-		/obj/item/weapon/retractor = 100,
-		/obj/item/weapon/crowbar = 100,
-		/obj/item/weapon/material/kitchen/utensil = 50
+		/obj/item/retractor = 100,
+		/obj/item/crowbar = 100,
+		/obj/item/material/kitchen/utensil = 50
 	)
 
-	min_duration = 30
-	max_duration = 40
+	duration = RETRACT_DURATION
 
 /datum/surgery_step/robotics/open_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -130,13 +127,12 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/close_hatch
 	allowed_tools = list(
-		/obj/item/weapon/retractor = 100,
-		/obj/item/weapon/crowbar = 100,
-		/obj/item/weapon/material/kitchen/utensil = 50
+		/obj/item/retractor = 100,
+		/obj/item/crowbar = 100,
+		/obj/item/material/kitchen/utensil = 50
 	)
 
-	min_duration = 70
-	max_duration = 100
+	duration = RETRACT_DURATION
 
 /datum/surgery_step/robotics/close_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -166,18 +162,17 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/repair_brute
 	allowed_tools = list(
-		/obj/item/weapon/weldingtool = 100,
-		/obj/item/weapon/gun/energy/plasmacutter = 50
+		/obj/item/weldingtool = 100,
+		/obj/item/gun/energy/plasmacutter = 50
 	)
 
-	min_duration = 50
-	max_duration = 60
+	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/robotics/repair_brute/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
 		if(isWelder(tool))
-			var/obj/item/weapon/weldingtool/welder = tool
+			var/obj/item/weldingtool/welder = tool
 			if(!welder.isOn() || !welder.remove_fuel(1,user))
 				return 0
 		return affected && affected.hatch_state == HATCH_OPENED && ((affected.status & ORGAN_DISFIGURED) || affected.brute_dam > 0) && target_zone != BP_MOUTH
@@ -210,8 +205,7 @@
 		/obj/item/stack/cable_coil = 100
 	)
 
-	min_duration = 50
-	max_duration = 60
+	duration = CONNECT_DURATION
 
 /datum/surgery_step/robotics/repair_burn/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -226,17 +220,6 @@
 				C.use(3)
 				return 1
 		return SURGERY_FAILURE
-
-		if(!limb_can_operate)
-			return 0
-
-		if(istype(C))
-			if(!C.can_use(10))
-				to_chat(user, "<span class='danger'>You need ten or more cable pieces to repair this damage.</span>")//usage amount made more consistent with regular cable repair
-
-				return SURGERY_FAILURE
-			C.use(10)
-		return 1
 
 /datum/surgery_step/robotics/repair_burn/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -263,12 +246,11 @@
 /datum/surgery_step/robotics/fix_organ_robotic //For artificial organs
 	allowed_tools = list(
 	/obj/item/stack/nanopaste = 100,		\
-	/obj/item/weapon/bonegel = 30, 		\
-	/obj/item/weapon/screwdriver = 70,	\
+	/obj/item/bonegel = 30, 		\
+	/obj/item/screwdriver = 70,	\
 	)
 
-	min_duration = 70
-	max_duration = 90
+	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/robotics/fix_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (!hasorgans(target))
@@ -332,8 +314,7 @@
 	/obj/item/device/multitool = 100
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION * 1.75
 
 /datum/surgery_step/robotics/detatch_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -382,11 +363,10 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/robotics/attach_organ_robotic
 	allowed_tools = list(
-		/obj/item/weapon/screwdriver = 100,
+		/obj/item/screwdriver = 100,
 	)
 
-	min_duration = 100
-	max_duration = 120
+	duration = CONNECT_DURATION
 
 /datum/surgery_step/robotics/attach_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -438,8 +418,7 @@
 	/obj/item/device/mmi = 100,
 	)
 
-	min_duration = 60
-	max_duration = 80
+	duration = ATTACH_DURATION
 
 /datum/surgery_step/robotics/install_mmi/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 

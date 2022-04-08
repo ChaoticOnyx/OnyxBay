@@ -23,24 +23,24 @@
 	..()
 	inner_tank.volume = tank_volume
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/oxyregenerator(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)//Takes CO2
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)//Breaks bond
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)//Stores carbon
+	component_parts += new /obj/item/circuitboard/oxyregenerator(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)//Takes CO2
+	component_parts += new /obj/item/stock_parts/micro_laser(src)//Breaks bond
+	component_parts += new /obj/item/stock_parts/matter_bin(src)//Stores carbon
 	RefreshParts()
 
 /obj/machinery/atmospherics/binary/oxyregenerator/RefreshParts()
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(istype(P, /obj/item/weapon/stock_parts/matter_bin))
+	for(var/obj/item/stock_parts/P in component_parts)
+		if(istype(P, /obj/item/stock_parts/matter_bin))
 			carbon_efficiency += 0.25 * (P.rating-1) //plus 25% per stock item rank
-		if(istype(P, /obj/item/weapon/stock_parts/manipulator))
+		if(istype(P, /obj/item/stock_parts/manipulator))
 			intake_power_efficiency -= 0.1 * (P.rating-1) //10% better intake power efficiency per stock item rank
-		if(istype(P, /obj/item/weapon/stock_parts/micro_laser))
+		if(istype(P, /obj/item/stock_parts/micro_laser))
 			power_rating -= power_rating * 0.05 * (P.rating-1) //5% better power efficiency per stock item rank
 
 /obj/machinery/atmospherics/binary/oxyregenerator/examine(user)
-	..()
-	to_chat(user,"Its outlet port is to the [dir2text(dir)]")
+	. = ..()
+	. += "\nIts outlet port is to the [dir2text(dir)]"
 
 /obj/machinery/atmospherics/binary/oxyregenerator/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))
@@ -133,7 +133,7 @@
 			carbon_stored += co2_intake * carbon_efficiency
 			while (carbon_stored >= carbon_moles_per_piece)
 				carbon_stored -= carbon_moles_per_piece
-				var/atom/movable/product = new /obj/item/weapon/ore/coal
+				var/atom/movable/product = new /obj/item/ore/coal
 				product.dropInto(loc)
 			power_draw = power_rating * co2_intake
 			last_power_draw = power_draw

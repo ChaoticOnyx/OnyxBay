@@ -9,6 +9,7 @@
 	overshoes = 1
 	var/magpulse = 0
 	var/icon_base = "magboots"
+	var/traction_system = "mag-pulse"
 	action_button_name = "Toggle Magboots"
 	var/obj/item/clothing/shoes/shoes = null	//Undershoes
 	var/mob/living/carbon/human/wearer = null	//For shoe procs
@@ -16,6 +17,7 @@
 	randpixel = 0
 
 	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
+	siemens_coefficient = 0.3
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.
@@ -29,18 +31,19 @@
 		set_slowdown()
 		force = 3
 		if(icon_base) icon_state = "[icon_base]0"
-		to_chat(user, "You disable the mag-pulse traction system.")
+		to_chat(user, "You disable the [traction_system] traction system.")
 	else
 		item_flags |= ITEM_FLAG_NOSLIP
 		magpulse = 1
 		set_slowdown()
 		force = 5
 		if(icon_base) icon_state = "[icon_base]1"
-		playsound(get_turf(src), 'sound/effects/magnetclamp.ogg', 20)
-		to_chat(user, "You enable the mag-pulse traction system.")
+		playsound(src, 'sound/effects/magnetclamp.ogg', 20)
+		to_chat(user, "You enable the [traction_system] traction system.")
 	user.update_inv_shoes()	//so our mob-overlays update
 	user.update_action_buttons()
 	user.update_floating()
+	user.update_equipment_slowdown()
 
 /obj/item/clothing/shoes/magboots/mob_can_equip(mob/user)
 	var/mob/living/carbon/human/H = user
@@ -86,8 +89,8 @@
 	wearer = null
 
 /obj/item/clothing/shoes/magboots/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/state = "disabled"
 	if(item_flags & ITEM_FLAG_NOSLIP)
 		state = "enabled"
-	to_chat(user, "Its mag-pulse traction system appears to be [state].")
+	. += "\nIts [traction_system] traction system appears to be [state]."

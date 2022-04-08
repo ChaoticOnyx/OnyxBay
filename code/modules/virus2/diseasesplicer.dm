@@ -7,7 +7,7 @@
 	var/datum/disease2/effect/memorybank = null
 	var/list/species_buffer = null
 	var/analysed = 0
-	var/obj/item/weapon/virusdish/dish = null
+	var/obj/item/virusdish/dish = null
 	var/burning = 0
 	var/splicing = 0
 	var/scanning = 0
@@ -16,7 +16,7 @@
 	if(isScrewdriver(I))
 		return ..(I,user)
 
-	if(istype(I,/obj/item/weapon/virusdish))
+	if(istype(I,/obj/item/virusdish))
 		var/mob/living/carbon/c = user
 		if (dish)
 			to_chat(user, "\The [src] is already loaded.")
@@ -26,9 +26,9 @@
 		c.drop_item()
 		I.loc = src
 
-	if(istype(I,/obj/item/weapon/diseasedisk))
+	if(istype(I,/obj/item/diseasedisk))
 		to_chat(user, "You upload the contents of the disk onto the buffer.")
-		var/obj/item/weapon/diseasedisk/disk = I
+		var/obj/item/diseasedisk/disk = I
 		memorybank = disk.effect
 		species_buffer = disk.species
 		analysed = disk.analysed
@@ -103,7 +103,7 @@
 	if(burning)
 		burning -= 1
 		if(!burning)
-			var/obj/item/weapon/diseasedisk/d = new /obj/item/weapon/diseasedisk(src.loc)
+			var/obj/item/diseasedisk/d = new /obj/item/diseasedisk(src.loc)
 			d.analysed = analysed
 			if(analysed)
 				if (memorybank)
@@ -161,16 +161,22 @@
 
 				var/datum/disease2/effect/target_effect
 				var/list/illegal_types = list()
+				var/datum/disease2/effect/neweffect = new memorybank.type
+				neweffect.generate(memorybank.data)
+				neweffect.chance = memorybank.chance
+				neweffect.multiplier = memorybank.multiplier
+				neweffect.stage = target
 				for(var/datum/disease2/effect/e in dish.virus2.effects)
 					if(e.stage == target)
 						target_effect = e
 					if(!e.allow_multiple)
 						illegal_types += e.type
-				if(memorybank.type in illegal_types)
+				if(neweffect.type in illegal_types)
 					to_chat(user, "<span class='warning'>Virus DNA can't hold more than one [memorybank]</span>")
 					return 1
 				dish.virus2.effects -= target_effect
-				dish.virus2.effects += memorybank
+				dish.virus2.effects += neweffect
+				dish.virus2.update_disease()
 				qdel(target_effect)
 
 			else if(species_buffer && target == -1)

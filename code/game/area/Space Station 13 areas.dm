@@ -28,7 +28,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 0
 	mouse_opacity = 0
 	var/lightswitch = 1
-
+	var/lighting_mode = ""
+	var/list/enabled_lighting_modes = list()
 	var/eject = null
 
 	var/debug = 0
@@ -38,9 +39,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/power_equip = 1 // Status
 	var/power_light = 1
 	var/power_environ = 1
-	var/used_equip = 0  // Continuous drain; don't mess with these directly.
-	var/used_light = 0
-	var/used_environ = 0
 	var/oneoff_equip   = 0 //Used once and cleared each tick.
 	var/oneoff_light   = 0
 	var/oneoff_environ = 0
@@ -52,10 +50,14 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 //	var/list/lights				// list of all lights on this area
 	var/list/all_doors = null		//Added by Strumpetplaya - Alarm Change - Contains a list of doors adjacent to this area
 	var/air_doors_activated = 0
-	var/list/ambience = list("global_ambient")
+	/// Plays when an area has power.
+	var/list/ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL)
+	/// Plays when an area has no power.
+	var/list/ambience_off = list(SFX_AMBIENT_OFF_GLOBAL)
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
+	var/holy = FALSE
 
 /*-----------------------------------------------------------------------------*/
 
@@ -74,12 +76,14 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambience = list("space_ambient")
+	ambient_music_tags = list(MUSIC_TAG_SPACE)
+	ambience_off = list(SFX_AMBIENT_SPACE)
+	ambience_powered = list(SFX_AMBIENT_SPACE)
 
 /area/space/update_icon()
 	return
 
-area/space/atmosalert()
+/area/space/atmosalert()
 	return
 
 /area/space/fire_alert()
@@ -102,6 +106,7 @@ area/space/atmosalert()
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
+	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
@@ -109,6 +114,7 @@ area/space/atmosalert()
 /area/chapel
 	name = "\improper Chapel"
 	icon_state = "chapel"
+	holy = TRUE
 
 /area/centcom/specops
 	name = "\improper Centcom Special Ops"
@@ -121,7 +127,7 @@ area/space/atmosalert()
 	GLOB.hallway += src
 
 /area/medical
-	ambience = list("global_ambient", "science_ambient")
+	ambience_powered = list(SFX_AMBIENT_SCIENCE)
 
 /area/medical/virology
 	name = "\improper Virology"
@@ -135,9 +141,6 @@ area/space/atmosalert()
 	name = "\improper Security - Brig"
 	icon_state = "brig"
 
-
-
-
 /area/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
@@ -146,10 +149,12 @@ area/space/atmosalert()
 	area_flags = AREA_FLAG_RAD_SHIELDED
 	sound_env = TUNNEL_ENCLOSED
 	turf_initializer = /decl/turf_initializer/maintenance
-	ambience = list("global_ambient", "maintenance_ambient")
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC)
 
 /area/rnd
-	ambience = list("global_ambient", "science_ambient")
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_SCIENCE)
 
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
@@ -190,7 +195,7 @@ area/space/atmosalert()
 	icon_state = "shuttle3"
 
 /area/syndicate_mothership/elite_squad
-	name = "\improper Elite Mercenary Squad"
+	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
 
 ////////////
@@ -224,7 +229,7 @@ area/space/atmosalert()
 	..()
 	var/sound/S = new /sound()
 	mysound = S
-	S.file = 'sound/ambience/shore.ogg'
+	S.file = 'sound/ambient/shore.ogg'
 	S.repeat = 1
 	S.wait = 0
 	S.channel = 123
@@ -254,7 +259,7 @@ area/space/atmosalert()
 	var/sound/S = null
 	var/sound_delay = 0
 	if(prob(25))
-		S = sound(file=pick('sound/ambience/seag1.ogg','sound/ambience/seag2.ogg','sound/ambience/seag3.ogg'), volume=100)
+		S = sound(file=pick('sound/ambient/seag1.ogg','sound/ambient/seag2.ogg','sound/ambient/seag3.ogg'), volume=100)
 		sound_delay = rand(0, 50)
 
 	for(var/mob/living/carbon/human/H in src)
@@ -273,3 +278,12 @@ area/space/atmosalert()
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+
+//Abductors
+/area/abductor_ship
+	name = "Abductor Ship"
+	icon_state = "yellow"
+	requires_power = FALSE
+	requires_power = 0
+	dynamic_lighting = 0
+	luminosity = 1

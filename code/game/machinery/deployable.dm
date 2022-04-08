@@ -83,36 +83,55 @@ for reference:
 /obj/structure/barricade/get_material()
 	return material
 
-/obj/structure/barricade/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/stack))
+/obj/structure/barricade/attack_hand(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			shake_animation(stime = 1)
+			H.do_attack_animation(src)
+			H.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			visible_message(SPAN("warning", "\The [user] slashes at [src]!"))
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			take_damage(rand(7.5, 12.5))
+			return
+	..()
+
+/obj/structure/barricade/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/stack))
 		var/obj/item/stack/D = W
 		if(D.get_material_name() != material.name)
 			return //hitting things with the wrong type of stack usually doesn't produce messages, and probably doesn't need to.
-		if (health < maxhealth)
-			if (D.get_amount() < 1)
-				to_chat(user, "<span class='warning'>You need one sheet of [material.display_name] to repair \the [src].</span>")
+		if(health < maxhealth)
+			if(D.get_amount() < 1)
+				to_chat(user, SPAN("warning", "You need one sheet of [material.display_name] to repair \the [src]."))
 				return
-			visible_message("<span class='notice'>[user] begins to repair \the [src].</span>")
-			if(do_after(user,20,src) && health < maxhealth)
-				if (D.use(1))
+			visible_message(SPAN("notice", "[user] begins to repair \the [src]."))
+			if(do_after(user, 20, src) && health < maxhealth)
+				if(D.use(1))
 					health = maxhealth
-					visible_message("<span class='notice'>[user] repairs \the [src].</span>")
+					visible_message(SPAN("notice", "[user] repairs \the [src]."))
 				return
 		return
 	else
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		switch(W.damtype)
 			if("fire")
-				src.health -= W.force * 1
+				take_damage(W.force)
+				return
 			if("brute")
-				src.health -= W.force * 0.75
-			else
-		if (src.health <= 0)
-			visible_message("<span class='danger'>The barricade is smashed apart!</span>")
-			dismantle()
-			qdel(src)
-			return
+				user.do_attack_animation(src)
+				visible_message(SPAN_DANGER("\The [user] attacks \the [src] with \the [W]!"))
+				playsound(src, 'sound/effects/metalhit2.ogg', rand(50, 75), 1, -1)
+				take_damage(W.force*0.75)
+				return
 		..()
+
+/obj/structure/barricade/proc/take_damage(damage)
+	health -= damage
+	if(health <= 0)
+		visible_message(SPAN("danger", "\The [src] is smashed apart!"))
+		dismantle()
+		qdel(src)
 
 /obj/structure/barricade/proc/dismantle()
 	material.place_dismantled_product(get_turf(src))
@@ -132,13 +151,10 @@ for reference:
 				dismantle()
 			return
 
-/obj/structure/barricade/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-	if(air_group || (height==0))
-		return 1
+/obj/structure/barricade/CanPass(atom/movable/mover, turf/target) //So bullets will fly over and stuff.
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return 0
+		return TRUE
+	return FALSE
 
 //Actual Deployable machinery stuff
 /obj/machinery/deployable
@@ -164,8 +180,8 @@ for reference:
 
 		src.icon_state = "barrier[src.locked]"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id/) || istype(W, /obj/item/weapon/card/robot_sec/) )
+	attackby(obj/item/W as obj, mob/user as mob)
+		if (istype(W, /obj/item/card/id/) || istype(W, /obj/item/card/robot_sec/) )
 			if (src.allowed(user))
 				if	(src.emagged < 2.0)
 					src.locked = !src.locked
@@ -226,13 +242,10 @@ for reference:
 			anchored = !anchored
 			icon_state = "barrier[src.locked]"
 
-	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
-			return 1
+	CanPass(atom/movable/mover, turf/target) //So bullets will fly over and stuff.
 		if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-			return 1
-		else
-			return 0
+			return TRUE
+		return FALSE
 
 	proc/explode()
 
@@ -251,6 +264,7 @@ for reference:
 
 /obj/machinery/deployable/barrier/emag_act(remaining_charges, mob/user)
 	if (src.emagged == 0)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		src.req_access.Cut()
 		src.req_one_access.Cut()
@@ -261,6 +275,7 @@ for reference:
 		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1
 	else if (src.emagged == 1)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 2
 		to_chat(user, "You short out the anchoring mechanism on \the [src].")
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread

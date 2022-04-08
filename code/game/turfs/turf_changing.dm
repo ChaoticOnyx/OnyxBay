@@ -16,9 +16,8 @@
 		T.update_icon()
 
 //Creates a new turf
-/turf/proc/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
-	if (!N)
-		return
+/turf/proc/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
+	ASSERT(N)
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
 	if(N == /turf/space)
@@ -27,6 +26,7 @@
 			N = below.density ? /turf/simulated/floor/plating/airless : /turf/simulated/open
 
 	var/obj/fire/old_fire = fire
+	var/old_density = density
 	var/old_opacity = opacity
 	var/old_dynamic_lighting = dynamic_lighting
 	var/old_affecting_lights = affecting_lights
@@ -53,19 +53,30 @@
 		old_contents += A
 		A.forceMove(null)
 
+	var/old_opaque_counter = opaque_counter
+	var/old_lookups = comp_lookup.Copy()
+	var/old_components = datum_components.Copy()
+	var/old_signals = signal_procs.Copy()
+
 	var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
-	for(var/atom/movable/A in old_contents)
-		A.forceMove(W)
+
+	comp_lookup = old_lookups
+	datum_components = old_components
+	signal_procs = old_signals
 
 	for(var/atom/movable/A in old_contents)
 		A.forceMove(W)
 
-	W.opaque_counter = opaque_counter
+	for(var/atom/movable/A in old_contents)
+		A.forceMove(W)
+
+	W.opaque_counter = old_opaque_counter
+	W.RecalculateOpacity()
 
 	if(ispath(N, /turf/simulated))
 		if(old_fire)
 			fire = old_fire
-		if (istype(W,/turf/simulated/floor))
+		if(istype(W, /turf/simulated/floor))
 			W.RemoveLattice()
 	else if(old_fire)
 		old_fire.RemoveFire()
@@ -92,6 +103,8 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
+
+	SEND_SIGNAL(src, SIGNAL_TURF_CHANGED, src, old_density, density, old_opacity, opacity)
 
 /turf/proc/transport_properties_from(turf/other)
 	if(!istype(other, src.type))

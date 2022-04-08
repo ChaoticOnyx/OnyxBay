@@ -17,7 +17,7 @@
 
 	var/last_special = 0 //Used by the resist verb, likely used to prevent players from bypassing next_move by logging in/out.
 
-	var/t_phoron = null
+	var/t_plasma = null
 	var/t_oxygen = null
 	var/t_sl_gas = null
 	var/t_n2 = null
@@ -31,7 +31,7 @@
 	var/mob/living/cameraFollow = null
 	var/list/datum/action/actions = list()
 
-	var/update_slimes = 1
+	var/update_metroids = 1
 	var/silent = null 		// Can't talk. Value goes down every life proc.
 	var/on_fire = 0 //The "Are we on fire?" var
 	var/fire_stacks
@@ -57,3 +57,5 @@
 	var/evasion = 0 // Makes attacks harder to land. Negative numbers increase hit chance.
 
 	var/controllable = FALSE // If ghosts can possess a mob without permissions
+
+	var/give_ghost_proc_at_initialize = TRUE

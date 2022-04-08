@@ -57,7 +57,7 @@
 			light_intensity = 4
 		if(25 to INFINITY) //Change luminosity based on the fire's intensity
 			light_intensity = 6
-	set_light(light_intensity, null, light_color)
+	set_light(0.7, 0.1, light_intensity, 2, light_color)
 
 /obj/flamer_fire/Process()
 	var/turf/T = loc

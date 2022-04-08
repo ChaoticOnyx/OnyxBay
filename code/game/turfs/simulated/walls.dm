@@ -8,6 +8,8 @@
 	blocks_air = 1
 	thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 	heat_capacity = 312500 //a little over 5 cm thick , 312500 for 1 m by 2.5 m by 0.25 m plasteel wall
+	hitby_sound = 'sound/effects/metalhit2.ogg'
+	explosion_block = 1
 
 	var/damage = 0
 	var/damage_overlay = 0
@@ -22,9 +24,12 @@
 	var/hitsound = 'sound/effects/fighting/Genhit.ogg'
 	var/list/wall_connections = list("0", "0", "0", "0")
 	var/floor_type = /turf/simulated/floor/plating //turf it leaves after destruction
+	var/masks_icon = 'icons/turf/wall_masks.dmi'
 
 /turf/simulated/wall/New(newloc, materialtype, rmaterialtype)
 	..(newloc)
+	if(GLOB.using_map.legacy_mode)
+		masks_icon = 'icons/turf/wall_masks_legacy.dmi'
 	icon_state = "blank"
 	if(!materialtype)
 		materialtype = DEFAULT_WALL_MATERIAL
@@ -39,14 +44,15 @@
 	. = ..()
 
 /turf/simulated/wall/Destroy()
-	STOP_PROCESSING(SSturf, src)
 	dismantle_wall(null,null,1)
-	. = ..()
+	
+	// At this point `src` is a new instance, the old one was destroyed in `dismantle_wall`.
+	return QDEL_HINT_LETMELIVE
 
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
-		O.hide(1)
+		O.hide(O.hides_inside_walls())
 
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
@@ -56,8 +62,6 @@
 	var/how_often = max(round(2 SECONDS/wait), 1)
 	if(times_fired % how_often)
 		return //We only work about every 2 seconds
-	if(!radiate())
-		return PROCESS_KILL
 
 /turf/simulated/wall/proc/get_material()
 	return material
@@ -154,11 +158,8 @@
 				return abs((check_y0 - check_y1) / (check_x0 - check_x1))
 		return
 
-/turf/simulated/wall/blob_act(destroy, obj/effect/blob/source)
-	if (destroy)
-		dismantle_wall(TRUE)
-	else
-		take_damage(25)
+/turf/simulated/wall/blob_act(damage)
+	take_damage(damage)
 
 /turf/simulated/wall/bullet_act(obj/item/projectile/Proj)
 	var/proj_damage = Proj.get_structure_damage()
@@ -268,15 +269,20 @@
 	take_damage(damage)
 	return
 
-/turf/simulated/wall/hitby(AM as mob|obj, speed=THROWFORCE_SPEED_DIVISOR)
+/turf/simulated/wall/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR, nomsg = FALSE)
 	..()
+	play_hitby_sound(AM)
 	if(ismob(AM))
 		return
 
-	var/tforce = AM:throwforce * (speed/THROWFORCE_SPEED_DIVISOR)
-	if (tforce < 17.5)
+	var/tforce = AM:throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+	if(tforce < 17.5)
+		if(!nomsg)
+			visible_message("[AM] bounces off \the [src].")
 		return
 
+	if(!nomsg)
+		visible_message(SPAN("warning", "[src] was hit by [AM]."))
 	take_damage(tforce)
 
 /turf/simulated/wall/proc/clear_plants()
@@ -288,29 +294,28 @@
 			plant.update_icon()
 			plant.pixel_x = 0
 			plant.pixel_y = 0
-		plant.update_neighbors()
 
-/turf/simulated/wall/ChangeTurf(newtype)
+/turf/simulated/wall/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	clear_plants()
-	return ..(newtype)
+	return ..()
 
 //Appearance
 /turf/simulated/wall/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	if(!damage)
-		to_chat(user, "<span class='notice'>It looks fully intact.</span>")
+		. += "\n<span class='notice'>It looks fully intact.</span>"
 	else
 		var/dam = damage / material.integrity
 		if(dam <= 0.3)
-			to_chat(user, "<span class='warning'>It looks slightly damaged.</span>")
+			. += "\n<span class='warning'>It looks slightly damaged.</span>"
 		else if(dam <= 0.6)
-			to_chat(user, "<span class='warning'>It looks moderately damaged.</span>")
+			. += "\n<span class='warning'>It looks moderately damaged.</span>"
 		else
-			to_chat(user, "<span class='danger'>It looks heavily damaged.</span>")
+			. += "\n<span class='danger'>It looks heavily damaged.</span>"
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
-		to_chat(user, "<span class='warning'>There is fungus growing on [src].</span>")
+		. += "\n<span class='warning'>There is fungus growing on [src].</span>"
 
 //Damage
 
@@ -362,7 +367,7 @@
 
 /turf/simulated/wall/proc/dismantle_wall(devastated, explode, no_product)
 
-	playsound(src, 'sound/items/Welder.ogg', 100, 1)
+	playsound(src, 'sound/items/Deconstruct.ogg', 100, 1)
 	if(!no_product)
 		if(reinf_material)
 			reinf_material.place_dismantled_girder(src, reinf_material)
@@ -387,7 +392,7 @@
 /turf/simulated/wall/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			src.ChangeTurf(get_base_turf(src.z))
+			src.ChangeTurf(get_base_turf_by_area(src))
 			return
 		if(2.0)
 			if(prob(75))
@@ -438,14 +443,6 @@
 //	F.sd_LumReset()		//TODO: ~Carn
 	return
 
-/turf/simulated/wall/proc/radiate()
-	var/total_radiation = material.radioactivity + (reinf_material ? reinf_material.radioactivity / 2 : 0)
-	if(!total_radiation)
-		return
-
-	SSradiation.radiate(src, total_radiation)
-	return total_radiation
-
 /turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
 	return round(damage/material.integrity*180)
 
@@ -456,5 +453,5 @@
 			src.ChangeTurf(/turf/simulated/floor)
 			for(var/turf/simulated/wall/W in range(3,src))
 				W.burn((temperature/4))
-			for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
+			for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 				D.ignite(temperature/4)

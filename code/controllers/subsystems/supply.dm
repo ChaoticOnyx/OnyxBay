@@ -5,13 +5,14 @@ SUBSYSTEM_DEF(supply)
 	//Initializes at default time
 	flags = SS_NO_TICK_CHECK
 
+	var/illegal_alert_chance = 0
 	//supply points
 	var/points = 50
 	var/points_per_process = 1
 	var/points_per_slip = 2
 	var/material_buy_prices = list(
 		/material/platinum = 5,
-		/material/phoron = 5
+		/material/plasma = 5
 	) //Should only contain material datums, with values the profit per sheet sold.
 	var/point_sources = list()
 	var/pointstotalsum = 0
@@ -69,7 +70,7 @@ SUBSYSTEM_DEF(supply)
 /datum/controller/subsystem/supply/proc/forbidden_atoms_check(atom/A)
 	if(istype(A,/mob/living))
 		return 1
-	if(istype(A,/obj/item/weapon/disk/nuclear))
+	if(istype(A,/obj/item/disk/nuclear))
 		return 1
 	if(istype(A,/obj/machinery/nuclearbomb))
 		return 1
@@ -97,8 +98,8 @@ SUBSYSTEM_DEF(supply)
 				for(var/atom in CR)
 					// Sell manifests
 					var/atom/A = atom
-					if(find_slip && istype(A,/obj/item/weapon/paper/manifest))
-						var/obj/item/weapon/paper/manifest/slip = A
+					if(find_slip && istype(A,/obj/item/paper/manifest))
+						var/obj/item/paper/manifest/slip = A
 						if(!slip.is_copy && slip.stamped && slip.stamped.len) //Any stamp works.
 							add_points_from_source(points_per_slip, "manifest")
 							find_slip = 0
@@ -113,17 +114,9 @@ SUBSYSTEM_DEF(supply)
 						continue
 
 					// Must sell ore detector disks in crates
-					if(istype(A, /obj/item/weapon/disk/survey))
-						var/obj/item/weapon/disk/survey/D = A
+					if(istype(A, /obj/item/disk/survey))
+						var/obj/item/disk/survey/D = A
 						add_points_from_source(round(D.Value() * 0.005), "gep")
-
-					// Sell neuromods
-					if (istype(A, /obj/item/weapon/reagent_containers/neuromod_shell))
-						var/obj/item/weapon/reagent_containers/neuromod_shell/NS = A
-						if (NS.neuromod)
-							add_points_from_source(150, "science")
-						else
-							add_points_from_source(25, "science")
 			qdel(AM)
 
 	if(material_count.len)
@@ -131,6 +124,14 @@ SUBSYSTEM_DEF(supply)
 			var/profit = material_count[material_type] * material_buy_prices[material_type]
 			var/material/material = material_type //False typing.
 			add_points_from_source(profit, initial(material.name))
+// Alert crew to illegal items
+/datum/controller/subsystem/supply/proc/alert_crew(chance, force = FALSE)
+	var/announce = FALSE
+	announce = prob(chance) || force
+	if(announce)
+		var/message = "Suspicious cargo shipment has been detected. Security intervention is recommended in the supply department."
+		var/customname = "[GLOB.using_map.company_name] Cargo Security Departament"
+		command_announcement.Announce(message, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1)
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()
@@ -160,20 +161,26 @@ SUBSYSTEM_DEF(supply)
 		var/datum/supply_order/SO = S
 		var/decl/hierarchy/supply_pack/SP = SO.object
 
+		if(SP.contraband)
+			illegal_alert_chance += 30
+		else
+			illegal_alert_chance += 5
+		illegal_alert_chance = clamp(illegal_alert_chance, 0, 90)
 		var/obj/A = new SP.containertype(pickedloc)
 		A.SetName("[SP.containername][SO.comment ? " ([SO.comment])":"" ]")
 		//supply manifest generation begin
 
-		var/obj/item/weapon/paper/manifest/slip
+		var/obj/item/paper/manifest/slip
 		if(!SP.contraband)
-			var/info = list()
+			var/info = ""
 			info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 			info +="Order #[SO.ordernum]<br>"
 			info +="Destination: [GLOB.using_map.station_name]<br>"
-			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
+//			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
 			info +="CONTENTS:<br><ul>"
 
-			slip = new /obj/item/weapon/paper/manifest(A, jointext(info, null))
+			slip = new /obj/item/paper/manifest(A)
+			slip.set_content(info, rawhtml = TRUE)
 			slip.is_copy = 0
 
 		//spawn the stuff, finish generating the manifest while you're at it
@@ -189,6 +196,8 @@ SUBSYSTEM_DEF(supply)
 			for(var/atom/content in spawned)
 				slip.info += "<li>[content.name]</li>" //add the item to the manifest
 			slip.info += "</ul><br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
+	alert_crew(illegal_alert_chance)
+	illegal_alert_chance = 0
 
 /datum/supply_order
 	var/ordernum

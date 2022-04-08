@@ -14,7 +14,7 @@
 	anchored = 1
 	idle_power_usage = 40
 	var/processing = 0
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/glass/beaker = null
 	var/points = 0
 	var/state = BG_READY
 	var/denied = 0
@@ -22,30 +22,31 @@
 	var/eat_eff = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/biogenerator,
-		/obj/item/weapon/stock_parts/matter_bin,
-		/obj/item/weapon/stock_parts/manipulator
+		/obj/item/circuitboard/biogenerator,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator
 	)
 
 
 	var/list/products = list(
 		"Food" = list(
-			/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton = 30,
-			/obj/item/weapon/reagent_containers/food/snacks/meat = 50),
+			/obj/item/reagent_containers/food/drinks/milk/smallcarton = 30,
+			/obj/item/reagent_containers/food/snacks/meat = 50),
 		"Nutrients" = list(
-			/obj/item/weapon/reagent_containers/glass/bottle/eznutrient = 60,
-			/obj/item/weapon/reagent_containers/glass/bottle/left4zed = 120,
-			/obj/item/weapon/reagent_containers/glass/bottle/robustharvest = 120),
+			/obj/item/reagent_containers/glass/bottle/big/compost = 60,
+			/obj/item/reagent_containers/glass/bottle/eznutrient = 120,
+			/obj/item/reagent_containers/glass/bottle/left4zed = 120,
+			/obj/item/reagent_containers/glass/bottle/robustharvest = 120),
 		"Leather" = list(
-			/obj/item/weapon/storage/wallet/leather = 100,
+			/obj/item/storage/wallet/leather = 100,
 			/obj/item/clothing/gloves/thick/botany = 250,
-			/obj/item/weapon/storage/belt/utility = 300,
-			/obj/item/weapon/storage/backpack/satchel = 400,
-			/obj/item/weapon/storage/bag/cash = 400,
+			/obj/item/storage/belt/utility = 300,
+			/obj/item/storage/backpack/satchel = 400,
+			/obj/item/storage/bag/cash = 400,
 			/obj/item/clothing/shoes/workboots = 400,
 			/obj/item/clothing/shoes/leather = 400,
 			/obj/item/clothing/shoes/dress = 400,
-			/obj/item/clothing/suit/leathercoat = 500,
+			/obj/item/clothing/suit/storage/toggle/leathercoat = 500,
 			/obj/item/clothing/suit/storage/toggle/brown_jacket = 500,
 			/obj/item/clothing/suit/storage/toggle/bomber = 500,
 			/obj/item/clothing/suit/storage/hooded/wintercoat = 500))
@@ -53,7 +54,7 @@
 /obj/machinery/biogenerator/New()
 	..()
 	create_reagents(1000)
-	beaker = new /obj/item/weapon/reagent_containers/glass/bottle(src)
+	beaker = new /obj/item/reagent_containers/glass/bottle(src)
 
 	RefreshParts()
 
@@ -76,7 +77,7 @@
 		return
 	if(default_part_replacement(user, O))
 		return
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/glass))
 		if(beaker)
 			to_chat(user, "<span class='notice'>]The [src] is already loaded.</span>")
 		else
@@ -87,16 +88,16 @@
 			updateUsrDialog()
 	else if(processing)
 		to_chat(user, "<span class='notice'>\The [src] is currently processing.</span>")
-	else if(istype(O, /obj/item/weapon/storage/plants))
-		var/obj/item/weapon/storage/plants/P = O
+	else if(istype(O, /obj/item/storage/plants))
+		var/obj/item/storage/plants/P = O
 		var/i = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in contents)
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is already full! Activate it.</span>")
 		else
 			var/hadPlants = 0
-			for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in P.contents)
+			for(var/obj/item/reagent_containers/food/snacks/grown/G in P.contents)
 				hadPlants = 1
 				P.remove_from_storage(G, src)
 				i++
@@ -109,11 +110,11 @@
 				to_chat(user, "<span class='notice'>You empty \the [P] into \the [src].</span>")
 
 
-	else if(!istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown))
+	else if(!istype(O, /obj/item/reagent_containers/food/snacks/grown))
 		to_chat(user, "<span class='notice'>You cannot put this in \the [src].</span>")
 	else
 		var/i = 0
-		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/reagent_containers/food/snacks/grown/G in contents)
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is full! Activate it.</span>")
@@ -200,7 +201,7 @@
 		return
 
 	var/S = 0
-	for(var/obj/item/weapon/reagent_containers/food/snacks/grown/I in contents)
+	for(var/obj/item/reagent_containers/food/snacks/grown/I in contents)
 		S += 5
 		if(I.reagents.get_reagent_amount(/datum/reagent/nutriment) < 0.1)
 			points += 1
@@ -239,7 +240,7 @@
 	var/man_rating = 0
 	var/bin_rating = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismatterbin(P))
 			bin_rating += P.rating
 		else if(ismanipulator(P))

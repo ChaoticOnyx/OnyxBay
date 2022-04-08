@@ -4,8 +4,8 @@
 	plane = EFFECTS_ABOVE_LIGHTING_PLANE
 	layer = BEAM_PROJECTILE_LAYER //Muzzle flashes would be above the lighting plane anyways.
 	//Standard compiletime light vars aren't working here, so we've made some of our own.
-	light_range = 2
-	light_power = 1
+	light_outer_range = 2
+	light_max_bright = 1
 	light_color = "#FF00DC"
 	anchored = 1 // The reason this is here is to stop the curving of emitter shots.
 
@@ -16,7 +16,7 @@
 //----------------------------
 // Laser beam
 //----------------------------
-/obj/effect/projectile/laser/
+/obj/effect/projectile/laser
 	light_color = COLOR_RED_LIGHT
 
 /obj/effect/projectile/laser/tracer
@@ -77,7 +77,7 @@
 // Heavy laser beam
 //----------------------------
 /obj/effect/projectile/laser/heavy
-	light_power = 3
+	light_max_bright = 1
 
 /obj/effect/projectile/laser/heavy/tracer
 	icon_state = "beam_heavy"
@@ -89,10 +89,25 @@
 	icon_state = "impact_beam_heavy"
 
 //----------------------------
+// Small laser beam
+//----------------------------
+/obj/effect/projectile/laser/small
+	light_max_bright = 0.7
+
+/obj/effect/projectile/laser/small/tracer
+	icon_state = "beam_small"
+
+/obj/effect/projectile/laser/small/muzzle
+	icon_state = "muzzle_beam_small"
+
+/obj/effect/projectile/laser/small/impact
+	icon_state = "impact_beam_small"
+
+//----------------------------
 // Pulse laser beam
 //----------------------------
 /obj/effect/projectile/laser/pulse
-	light_power = 2
+	light_max_bright = 1
 	light_color = COLOR_DEEP_SKY_BLUE
 
 /obj/effect/projectile/laser/pulse/tracer
@@ -110,13 +125,13 @@
 //----------------------------
 /obj/effect/projectile/pulse/muzzle
 	icon_state = "muzzle_pulse"
-	light_power = 2
+	light_max_bright = 1
 	light_color = COLOR_DEEP_SKY_BLUE
 
 //----------------------------
 // Treye beam
 //----------------------------
-/obj/effect/projectile/trilaser/
+/obj/effect/projectile/trilaser
 	light_color = COLOR_LUMINOL
 
 /obj/effect/projectile/trilaser/tracer
@@ -131,8 +146,8 @@
 //----------------------------
 // Emitter beam
 //----------------------------
-/obj/effect/projectile/laser/emitter/
-	light_power = 3
+/obj/effect/projectile/laser/emitter
+	light_max_bright = 1
 	light_color = "#00cc00"
 
 /obj/effect/projectile/laser/emitter/tracer
@@ -147,7 +162,7 @@
 //----------------------------
 // Stun beam
 //----------------------------
-/obj/effect/projectile/stun/
+/obj/effect/projectile/stun
 	light_color = COLOR_YELLOW
 
 /obj/effect/projectile/stun/tracer
@@ -164,6 +179,6 @@
 //----------------------------
 /obj/effect/projectile/bullet/muzzle
 	icon_state = "muzzle_bullet"
-	light_range = 5
-	light_power = 1
+	light_outer_range = 5
+	light_max_bright = 1
 	light_color = COLOR_MUZZLE_FLASH

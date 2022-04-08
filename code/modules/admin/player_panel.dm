@@ -2,7 +2,7 @@
 /datum/admins/proc/player_panel_new()//The new one
 	if (!usr.client.holder)
 		return
-	var/dat = "<html><head><title>Admin Player Panel</title></head>"
+	var/dat = "<html><meta charset=\"utf-8\"><head><title>Admin Player Panel</title></head>"
 
 	//javascript, the part that does most of the work~
 	dat += {"
@@ -233,8 +233,8 @@
 					if(ishuman(M))
 						var/mob/living/carbon/human/H = M
 						M_job = H.job
-					else if(isslime(M))
-						M_job = "slime"
+					else if(ismetroid(M))
+						M_job = "metroid"
 					else if(issmall(M))
 						M_job = "Monkey"
 					else if(isalien(M))
@@ -319,14 +319,14 @@
 	</body></html>
 	"}
 
-	usr << browse(dat, "window=players;size=600x480")
+	show_browser(usr, dat, "window=players;size=600x480")
 
 //The old one
 /datum/admins/proc/player_panel_old()
 	if (!usr.client.holder)
 		return
 
-	var/dat = "<html><head><title>Player Menu</title></head>"
+	var/dat = "<html><meta charset=\"utf-8\"><head><title>Player Menu</title></head>"
 	dat += "<body><table border=1 cellspacing=5><B><tr><th>Name</th><th>Real Name</th><th>Assigned Job</th><th>Key</th><th>Options</th><th>PM</th><th>Traitor?</th></tr></B>"
 	//add <th>IP:</th> to this if wanting to add back in IP checking
 	//add <td>(IP: [M.lastKnownIP])</td> if you want to know their ip to the lists below
@@ -390,14 +390,14 @@
 
 	dat += "</table></body></html>"
 
-	usr << browse(dat, "window=players;size=640x480")
+	show_browser(usr, dat, "window=players;size=640x480")
 
 
 
 /datum/admins/proc/check_antagonists()
 	if (GAME_STATE >= RUNLEVEL_GAME)
 		var/dat = list()
-		dat += "<html><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
+		dat += "<html><meta charset=\"utf-8\"><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
 		dat += "Current Game Mode: <B>[SSticker.mode.name]</B><BR>"
 		dat += "Round Duration: <B>[roundduration2text()]</B><BR>"
 		dat += "<B>Evacuation</B><BR>"
@@ -416,6 +416,6 @@
 			var/datum/antagonist/A = all_antag_types[antag_type]
 			dat += A.get_check_antag_output(src)
 		dat += "</body></html>"
-		usr << browse(jointext(dat,null), "window=roundstatus;size=400x500")
+		show_browser(usr, jointext(dat,null), "window=roundstatus;size=400x500")
 	else
 		alert("The game hasn't started yet!")

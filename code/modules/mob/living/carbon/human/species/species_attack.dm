@@ -65,7 +65,11 @@
 
 /datum/unarmed_attack/claws/strong/xeno
 	attack_verb = list("slashed", "gouged", "stabbed")
-	damage = 10
+	damage = 12.5
+
+/datum/unarmed_attack/claws/strong/xeno/feral
+	attack_verb = list("slashed", "gouged", "stabbed")
+	damage = 17.5
 
 /datum/unarmed_attack/claws/strong/xeno/queen
 	attack_verb = list("slashed", "gouged", "stabbed", "gored")
@@ -77,14 +81,15 @@
 	shredding = 1
 
 /datum/unarmed_attack/bite/strong/xeno
-	damage = 10
+	damage = 12.5
+	sharp = 1
 
-/datum/unarmed_attack/slime_glomp
+/datum/unarmed_attack/metroid_glomp
 	attack_verb = list("glomped")
 	attack_noun = list("body")
 	damage = 2
 
-/datum/unarmed_attack/slime_glomp/apply_effects(mob/living/carbon/human/user,mob/living/carbon/human/target,armour,attack_damage,zone)
+/datum/unarmed_attack/metroid_glomp/apply_effects(mob/living/carbon/human/user,mob/living/carbon/human/target,armour,attack_damage,zone)
 	..()
 	user.apply_stored_shock_to(target)
 

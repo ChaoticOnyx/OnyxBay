@@ -4,7 +4,7 @@
 	set desc = "Visit the wiki."
 	set hidden = 1
 	if( config.wikiurl )
-		src << link(config.wikiurl)
+		send_link(src, config.wikiurl)
 	else
 		to_chat(src, "<span class='warning'>The wiki URL is not set in the server configuration.</span>")
 	return
@@ -14,7 +14,7 @@
 	set desc = "Show Server Rules."
 	set hidden = 1
 	if( config.rulesurl )
-		src << link(config.rulesurl)
+		send_link(src, config.rulesurl)
 	else
 		to_chat(src, "<span class='warning'>The rules URL is not set in the server configuration.</span>")
 	return
@@ -24,7 +24,7 @@
 	set desc = "Show server Backstory."
 	set hidden = 1
 	if( config.backstoryurl )
-		src << link(config.backstoryurl)
+		send_link(src, config.backstoryurl)
 	else
 		to_chat(src, "<span class='warning'>The backstory URL is not set in the server configuration.</span>")
 	return
@@ -34,7 +34,7 @@
 	set desc = "Visit the forum."
 	set hidden = 1
 	if( config.forumurl )
-		src << link(config.forumurl)
+		send_link(src, config.forumurl)
 	else
 		to_chat(src, "<span class='warning'>The forum URL is not set in the server configuration.</span>")
 	return
@@ -44,7 +44,7 @@
 	set desc = "Visit the community Discord."
 	set hidden = 1
 	if( config.discordurl )
-		src << link(config.discordurl)
+		send_link(src, config.discordurl)
 	else
 		to_chat(src, "<span class='warning'>The Discord URL is not set in the server configuration.</span>")
 	return
@@ -54,7 +54,7 @@
 	set desc = "Create bug report to developers."
 	set hidden = 1
 	if( config.githuburl )
-		src << link("[config.githuburl]/issues")
+		send_link(src, "[config.githuburl]/issues")
 	else
 		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
 	return
@@ -90,6 +90,7 @@ Hotkey-Mode: (hotkey-mode must be on)
 \t5 = emote
 \tx = swap-hand
 \tz = activate held object (or y)
+\tc = block
 \tj = toggle-aiming-mode
 \tf = cycle-intents-left
 \tg = cycle-intents-right

@@ -1,60 +1,46 @@
 var/list/department_radio_keys = list(
-	  ":r" = "right ear",	":ê" = "right ear",
-	  ":l" = "left ear",	":ä" = "left ear",
-	  ":i" = "intercom",	":ø" = "intercom",
-	  ":h" = "department",	":ð" = "department",
-	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
-	  ":c" = "Command",		":ñ" = "Command",
-	  ":n" = "Science",		":ò" = "Science",
-	  ":m" = "Medical",		":ü" = "Medical",
-	  ":e" = "Engineering", ":ó" = "Engineering",
-	  ":s" = "Security",	":û" = "Security",
-	  ":w" = "whisper",		":ö" = "whisper",
-	  ":t" = "Mercenary",	":å" = "Mercenary",
-	  ":x" = "Raider",		":÷" = "Raider",
-	  ":u" = "Supply",		":ã" = "Supply",
-	  ":v" = "Service",		":ì" = "Service",
-	  ":p" = "AI Private",	":ç" = "AI Private",
-	  ":z" = "Entertainment",":ÿ" = "Entertainment",
-	  ":y" = "Exploration",		":í" = "Exploration",
+	  ":r" = "right ear",	":Ðº" = "right ear",
+	  ":l" = "left ear",	":Ð´" = "left ear",
+	  ":i" = "intercom",	":Ñˆ" = "intercom",
+	  ":h" = "department",	":Ñ€" = "department",
+	  ":+" = "special",		".+" = "special", // activate radio-specific special functions
+	  ":c" = "Command",		":Ñ" = "Command",
+	  ":n" = "Science",		":Ñ‚" = "Science",
+	  ":m" = "Medical",		":ÑŒ" = "Medical",
+	  ":e" = "Engineering", ":Ñƒ" = "Engineering",
+	  ":s" = "Security",	":Ñ‹" = "Security",
+	  ":w" = "whisper",		":Ñ†" = "whisper",
+	  ":t" = "Syndicate",	":Ðµ" = "Syndicate",
+	  ":x" = "Raider",		":Ñ‡" = "Raider",
+	  ":u" = "Supply",		":Ð³" = "Supply",
+	  ":v" = "Service",		":Ð¼" = "Service",
+	  ":p" = "AI Private",	":Ð·" = "AI Private",
+	  ":z" = "Entertainment",":Ñ" = "Entertainment",
+	  ":y" = "Exploration",		":Ð½" = "Exploration",
 
-	  ":R" = "right ear",	":Ê" = "right ear",
-	  ":L" = "left ear",	":Ä" = "left ear",
-	  ":I" = "intercom",	":Ø" = "intercom",
-	  ":H" = "department",	":Ð" = "department",
-	  ":C" = "Command",		":Ñ" = "Command",
-	  ":N" = "Science",		":Ò" = "Science",
-	  ":M" = "Medical",		":Ü" = "Medical",
-	  ":E" = "Engineering",	":Ó" = "Engineering",
-	  ":S" = "Security",	":Û" = "Security",
-	  ":W" = "whisper",		":Ö" = "whisper",
-	  ":T" = "Mercenary",	":Å" = "Mercenary",
-	  ":X" = "Raider",		":×" = "Raider",
-	  ":U" = "Supply",		":Ã" = "Supply",
-	  ":V" = "Service",		":Ì" = "Service",
-	  ":P" = "AI Private",	":Ç" = "AI Private",
-	  ":Z" = "Entertainment",":ß" = "Entertainment",
-	  ":Y" = "Exploration",		":Í" = "Exploration",
-
-	  //kinda localization -- rastaf0 uebalo ruslan
-	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
-	  ":Ãª" = "right ear",	".Ãª" = "right ear",
-	  ":Ã¤" = "left ear",	".Ã¤" = "left ear",
-	  ":Ã¸" = "intercom",	".Ã¸" = "intercom",
-	  ":Ã°" = "department",	".Ã°" = "department",
-	  ":Ã±" = "Command",		".Ã±" = "Command",
-	  ":Ã²" = "Science",		".Ã²" = "Science",
-	  ":Ã¼" = "Medical",		".Ã¼" = "Medical",
-	  ":Ã³" = "Engineering",	".Ã³" = "Engineering",
-	  ":Ã»" = "Security",	".Ã»" = "Security",
-	  ":Ã¶" = "whisper",		".Ã¶" = "whisper",
-	  ":Ã¥" = "Mercenary",	".Ã¥" = "Mercenary",
-	  ":Ã©" = "Supply",		".Ã©" = "Supply",
+	  ":R" = "right ear",	":Ðš" = "right ear",
+	  ":L" = "left ear",	":Ð”" = "left ear",
+	  ":I" = "intercom",	":Ð¨" = "intercom",
+	  ":H" = "department",	":Ð " = "department",
+	  ":C" = "Command",		":Ð¡" = "Command",
+	  ":N" = "Science",		":Ð¢" = "Science",
+	  ":M" = "Medical",		":Ð¬" = "Medical",
+	  ":E" = "Engineering",	":Ð£" = "Engineering",
+	  ":S" = "Security",	":Ð«" = "Security",
+	  ":W" = "whisper",		":Ð¦" = "whisper",
+	  ":T" = "Syndicate",	":Ð•" = "Syndicate",
+	  ":X" = "Raider",		":Ð§" = "Raider",
+	  ":U" = "Supply",		":Ð“" = "Supply",
+	  ":V" = "Service",		":Ðœ" = "Service",
+	  ":P" = "AI Private",	":Ð—" = "AI Private",
+	  ":Z" = "Entertainment",":Ð¯" = "Entertainment",
+	  ":Y" = "Exploration",		":Ð" = "Exploration",
 )
 
 
 var/list/channel_to_radio_key = new
-proc/get_radio_key_from_channel(channel)
+
+/proc/get_radio_key_from_channel(channel)
 	var/key = channel_to_radio_key[channel]
 	if(!key)
 		for(var/radio_key in department_radio_keys)
@@ -69,14 +55,14 @@ proc/get_radio_key_from_channel(channel)
 
 /mob/living/proc/binarycheck()
 
-	if (istype(src, /mob/living/silicon/pai))
+	if(istype(src, /mob/living/silicon/pai))
 		return
 
-	if (!ishuman(src))
+	if(!ishuman(src))
 		return
 
 	var/mob/living/carbon/human/H = src
-	if (H.l_ear || H.r_ear)
+	if(H.l_ear || H.r_ear)
 		var/obj/item/device/radio/headset/dongle
 		if(istype(H.l_ear,/obj/item/device/radio/headset))
 			dongle = H.l_ear
@@ -89,43 +75,43 @@ proc/get_radio_key_from_channel(channel)
 	return default_language
 
 /mob/proc/is_muzzled()
-	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/grenade)))
 
-//Takes a list of the form list(message, verb, whispering) and modifies it as needed
-//Returns 1 if a speech problem was applied, 0 otherwise
+// Takes a list of the form list(message, verb, whispering) and modifies it as needed
+// Returns 1 if a speech problem was applied, 0 otherwise
 /mob/living/proc/handle_speech_problems(list/message_data)
-	var/message = rhtml_decode(message_data[1])
+	var/message = html_decode(message_data[1])
 	var/verb = message_data[2]
 
 	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
-		message = "[ruppertext(message)]!!!"
+		message = "[uppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
-		. = TRUE
-	if(slurring)
-		message = slur(message)
-		verb = pick("slobbers","slurs")
-		. = TRUE
-	if(stuttering)
-		message = stutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(stammering)
-		message = NewStutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(burrieng)
-		message = burr(message)
-		verb = pick("burrs","croups")
 		. = TRUE
 	if(lisping)
 		message = lisp(message)
 		verb = pick("lisps","croups")
 		. = TRUE
+	if(burrieng)
+		message = burr(message)
+		verb = pick("burrs","croups")
+		. = TRUE
+	if(slurring)
+		message = slur(message)
+		verb = pick("slobbers","slurs")
+		. = TRUE
+	if(stammering)
+		message = stammer(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
+	if(stuttering)
+		message = stutter(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
 
-	message_data[1] = russian_to_cp1251(message)
+	message_data[1] = message
 	message_data[2] = verb
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
@@ -148,7 +134,7 @@ proc/get_radio_key_from_channel(channel)
 		return "asks"
 	return verb
 
-/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering)
+/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering, log_message = TRUE)
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
 			to_chat(src, "<span class='warning'>You cannot speak in IC (Muted).</span>")
@@ -159,27 +145,27 @@ proc/get_radio_key_from_channel(channel)
 			return say_dead(message)
 		return
 
-	var/prefix = copytext(message,1,2)
+	var/prefix = copytext_char(message,1,2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		return emote(copytext(message,2))
+		return emote(copytext_char(message,2))
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
-		return custom_emote(1, copytext(message,2))
+		return custom_emote(1, copytext_char(message,2))
 
-	//parse the radio code and consume it
+	// parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
-	if (message_mode)
-		if (message_mode == "headset")
-			message = copytext(message,2)	//it would be really nice if the parse procs could do this for us.
+	if(message_mode)
+		if(message_mode == "headset")
+			message = copytext_char(message,2)	// it would be really nice if the parse procs could do this for us.
 		else
-			message = copytext(message,3)
+			message = copytext_char(message,3)
 
 	message = trim_left(message)
 
-	//parse the language code and consume it
+	// parse the language code and consume it
 	if(!speaking)
 		speaking = parse_language(message)
 		if(speaking)
-			message = copytext(message,2+length(speaking.key))
+			message = copytext_char(message,2+length_char(speaking.key))
 		else
 			speaking = get_default_language()
 
@@ -189,15 +175,16 @@ proc/get_radio_key_from_channel(channel)
 		speaking.broadcast(src,trim(message))
 		return 1
 
-	if(is_muzzled())
+	if(is_muzzled() && !(speaking.flags & NONVERBAL|SIGNLANG))
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
-	if (speaking)
+	if(speaking)
 		if(whispering)
 			verb = speaking.whisper_verb ? speaking.whisper_verb : speaking.speech_verb
 		else
 			verb = say_quote(message, speaking)
+	client?.spellcheck(message)
 
 	message = trim_left(message)
 
@@ -227,7 +214,7 @@ proc/get_radio_key_from_channel(channel)
 		italics = 1
 		message_range = 1
 
-	//speaking into radios
+	// speaking into radios
 	if(used_radios.len)
 		italics = 1
 		message_range = 1
@@ -246,27 +233,28 @@ proc/get_radio_key_from_channel(channel)
 	var/list/listening_obj = list()
 	var/turf/T = get_turf(src)
 
-	//handle nonverbal and sign languages here
-	if (speaking)
-		if (speaking.flags & NONVERBAL)
-			if (prob(30))
+	// handle nonverbal and sign languages here
+	if(speaking)
+		if(speaking.flags & NONVERBAL)
+			if(prob(30))
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
-		if (speaking.flags & SIGNLANG)
-			log_say("[name]/[key] : SIGN: [message]")
-			log_message(message, INDIVIDUAL_SAY_LOG)
+		if(speaking.flags & SIGNLANG)
+			if(log_message)
+				log_say("[name]/[key]: SIGN: [message]")
+				log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	if(T)
-		//make sure the air can transmit speech - speaker's side
+		// make sure the air can transmit speech - speaker's side
 		var/datum/gas_mixture/environment = T.return_air()
 		var/pressure = (environment)? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE)
 			message_range = 1
 
-		if (pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
+		if(pressure < ONE_ATMOSPHERE*0.4) // sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
 			italics = 1
-			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
+			sound_vol *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
 
 		get_mobs_and_objs_in_view_fast(T, message_range, listening, listening_obj, /datum/client_preference/ghost_ears)
 
@@ -301,7 +289,7 @@ proc/get_radio_key_from_channel(channel)
 
 	for(var/obj/O in listening_obj)
 		spawn(0)
-			if(O) //It's possible that it could be deleted in the meantime.
+			if(O) // It's possible that it could be deleted in the meantime.
 				O.hear_talk(src, message, verb, speaking)
 
 	if(whispering)
@@ -313,21 +301,22 @@ proc/get_radio_key_from_channel(channel)
 		eavesdroping_obj -= listening_obj
 		for(var/mob/M in eavesdroping)
 			if(M)
-				show_image(M, speech_bubble)
+				image_to(M, speech_bubble)
 				M.hear_say(stars(message), verb, speaking, alt_name, italics, src, speech_sound, sound_vol)
 
 		for(var/obj/O in eavesdroping)
 			spawn(0)
-				if(O) //It's possible that it could be deleted in the meantime.
+				if(O) // It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message), verb, speaking)
 
 
-	if(whispering)
-		log_whisper("[name]/[key] : [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
-	else
-		log_say("[name]/[key] : [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
+	if(log_message)
+		if(whispering)
+			log_whisper("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
+		else
+			log_say("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 
 /mob/living/proc/say_signlang(message, verb="gestures", datum/language/language)

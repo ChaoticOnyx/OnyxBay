@@ -4,8 +4,8 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	id = MODE_GODCULTIST
 	role_text = "God Cultist"
 	role_text_plural = "God Cultists"
-	restricted_jobs = list(/datum/job/lawyer, /datum/job/captain, /datum/job/hos)
-	protected_jobs = list(/datum/job/merchant, /datum/job/officer, /datum/job/warden, /datum/job/detective)
+	restricted_jobs = list(/datum/job/merchant, /datum/job/iaa, /datum/job/captain, /datum/job/hos)
+	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
 	feedback_tag = "godcult_objective"
 	antag_indicator = "hudcultist"
@@ -22,7 +22,12 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	initial_spawn_target = 2
 	antaghud_indicator = "hudcultist"
 
-/datum/antagonist/godcultist/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, mob/living/deity/specific_god)
+/datum/antagonist/godcultist/Initialize()
+	. = ..()
+	if(config.godcultist_min_age)
+		min_player_age = config.godcultist_min_age
+
+/datum/antagonist/godcultist/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, max_stat, mob/living/deity/specific_god)
 	if(!..())
 		return 0
 

@@ -17,6 +17,8 @@
 /obj/item/robot_parts/New(newloc, model)
 	..(newloc)
 	if(model_info && model)
+		if(isnull(model))
+			model = "Unbranded"
 		model_info = model
 		var/datum/robolimb/R = all_robolimbs[model]
 		if(R)
@@ -70,7 +72,7 @@
 	model_info = 1
 	bp_tag = BP_CHEST
 	var/wires = 0.0
-	var/obj/item/weapon/cell/cell = null
+	var/obj/item/cell/cell = null
 
 /obj/item/robot_parts/chest/can_install(mob/user)
 	var/success = TRUE
@@ -136,7 +138,7 @@
 	if(istype(W, /obj/item/stack/material) && W.get_material_name() == MATERIAL_STEEL && !parts[BP_L_ARM] && !parts[BP_R_ARM] && !parts[BP_L_LEG] && !parts[BP_R_LEG] && !parts[BP_CHEST] && !parts[BP_HEAD])
 		var/obj/item/stack/material/M = W
 		if (M.use(1))
-			var/obj/item/weapon/secbot_assembly/ed209_assembly/B = new /obj/item/weapon/secbot_assembly/ed209_assembly
+			var/obj/item/secbot_assembly/ed209_assembly/B = new /obj/item/secbot_assembly/ed209_assembly
 			B.loc = get_turf(src)
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
 			if (user.get_inactive_hand()==src)
@@ -225,7 +227,7 @@
 		else
 			to_chat(user, "<span class='warning'>The MMI must go in after everything else!</span>")
 
-	if (istype(W, /obj/item/weapon/pen))
+	if (istype(W, /obj/item/pen))
 		var/t = sanitizeSafe(input(user, "Enter new robot name", src.name, src.created_name), MAX_NAME_LEN)
 		if (!t)
 			return
@@ -238,7 +240,7 @@
 
 /obj/item/robot_parts/chest/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/cell))
+	if(istype(W, /obj/item/cell))
 		if(src.cell)
 			to_chat(user, "<span class='warning'>You have already inserted a cell!</span>")
 			return
@@ -304,6 +306,9 @@
 			var/chest_company = model_info
 			chest.robotize(chest_company)
 
+			var/obj/item/organ/external/groin = H.organs_by_name[BP_GROIN]
+			groin.robotize(chest_company)
+
 			// Cleanup
 			qdel(W)
 			qdel(src)
@@ -329,7 +334,7 @@
 				add_flashes(W,user)
 		else
 			add_flashes(W,user)
-	else if(istype(W, /obj/item/weapon/stock_parts/manipulator))
+	else if(istype(W, /obj/item/stock_parts/manipulator))
 		to_chat(user, "<span class='notice'>You install some manipulators and modify the head, creating a functional spider-bot!</span>")
 		new /mob/living/simple_animal/spiderbot(get_turf(loc))
 		user.drop_item()

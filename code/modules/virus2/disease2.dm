@@ -9,29 +9,54 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/clicks = 0
 	var/uniqueID = 0
 	var/list/datum/disease2/effect/effects = list()
+	var/mob/living/carbon/human/infected = null // Someone who will suffer from disease
 	var/antigen = list() // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 	var/max_stage = 4
-	var/list/affected_species = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_SKRELL,SPECIES_TAJARA)
+	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
 
 /datum/disease2/disease/New(random_severity = 0)
-	uniqueID = rand(0,10000)
+	uniqueID = rand(0, 10000)
 	if(random_severity)
 		makerandom(random_severity)
 
-/datum/disease2/disease/proc/makerandom(severity=2)
+/datum/disease2/disease/proc/update_disease()
+	var/list/datum/disease2/effect/effects_sorted = list() //Sort effects by stage
+
+	for(var/i in 1 to max_stage)
+		for(var/datum/disease2/effect/D in effects)
+			if(D.stage == i)
+				effects_sorted.Add(D)
+
+	effects = effects_sorted
+	if(!antigen)
+		antigen = list(pick(ALL_ANTIGENS))
+		antigen |= pick(ALL_ANTIGENS)
+
+	if(infected) //if virus mutated inside human, update his virus2
+		for(var/ID in infected.virus2)
+			var/datum/disease2/disease/V = infected.virus2["[ID]"]
+			if(V.uniqueID != ID)
+				infected.virus2.Remove("[ID]")
+				infected.virus2["[V.uniqueID]"] = V
+
+	for(var/datum/disease2/effect/E in effects)
+		E.parent_disease = src
+		E.change_parent()
+
+/datum/disease2/disease/proc/makerandom(severity = 2)
 	var/list/excludetypes = list()
-	for(var/i=1 ; i <= max_stage ; i++ )
+	for(var/i = 1 ; i <= max_stage ; i++)
 		var/datum/disease2/effect/E = get_random_virus2_effect(i, severity, excludetypes)
 		E.stage = i
 		if(!E.allow_multiple)
 			excludetypes += E.type
 		effects += E
-	uniqueID = rand(0,10000)
+	uniqueID = rand(0, 10000)
 	switch(severity)
-		if(1,2)
-			infectionchance = rand(10,20)
+		if(1, 2)
+			infectionchance = rand(10, 20)
 		else
-			infectionchance = rand(60,90)
+			infectionchance = rand(60, 90)
 
 	antigen = list(pick(ALL_ANTIGENS))
 	antigen |= pick(ALL_ANTIGENS)
@@ -39,6 +64,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	if(all_species.len)
 		affected_species = get_infectable_species()
+	update_disease()
 
 /proc/get_infectable_species()
 	var/list/meat = list()
@@ -48,42 +74,45 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if((S.spawn_flags & SPECIES_CAN_JOIN) && !S.get_virus_immune() && !S.greater_form)
 			meat += S
 	if(meat.len)
-		var/num = rand(1,meat.len)
-		for(var/i=0,i<num,i++)
+		var/num = rand(1, meat.len)
+		for(var/i = 0, i<num, i++)
 			var/datum/species/picked = pick_n_take(meat)
 			res |= picked.name
 			if(picked.primitive_form)
 				res |= picked.primitive_form
 	return res
 
-/datum/disease2/disease/proc/process(mob/living/carbon/human/H)
-	if(dead)
-		cure(H)
+/datum/disease2/disease/proc/process()
+	if(!infected)
 		return
 
-	if(H.stat == DEAD)
+	if(dead)
+		cure()
+		return
+
+	if(infected.stat == DEAD)
 		return
 
 	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
-		if(prob(H.virus_immunity() * 0.05))
-			cure(H, 1)
+		if(prob(infected.virus_immunity() * 0.05))
+			cure()
 			return
 
 	// Some species are flat out immune to organic viruses.
-	if(H.species.get_virus_immune(H))
-		cure(H)
+	if(infected.species.get_virus_immune(infected))
+		cure()
 		return
 
-	if(H.radiation > 50)
-		if(prob(1))
+	if(infected.radiation > 50)
+		if(prob(4))
 			majormutate()
 
-	if(prob(H.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
-		cure(H, 1)
+	if(prob(infected.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
+		cure()
 	//Waiting out the disease the old way
-	if(stage == max_stage && clicks > max(stage*100, 300))
-		if(prob(H.virus_immunity() * 0.05 + 100-infectionchance))
-			cure(H, 1)
+	if(stage == max_stage && clicks > max(stage * 100, 300))
+		if(prob(infected.virus_immunity() * 0.05 + 100 - infectionchance))
+			cure()
 
 	var/top_badness = 1
 	for(var/datum/disease2/effect/e in effects)
@@ -91,45 +120,70 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 			top_badness = max(top_badness, e.badness)
 
 	//Space antibiotics might stop disease completely
-	if(H.chem_effects[CE_ANTIVIRAL] > top_badness)
+	if(infected.chem_effects[CE_ANTIVIRAL] > top_badness)
 		if(stage == 1 && prob(20))
-			cure(H)
+			cure()
 		return
 
 	clicks += speed
 	//Virus food speeds up disease progress
-	if(H.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
-		H.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
+	if(infected.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
+		infected.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
 		clicks += 10
 
 	//Moving to the next stage
-	if(clicks > max(stage*100, 300))
+	if(clicks > max(stage * 100, 300))
 		if(stage < max_stage && prob(10))
 			stage++
 			clicks = 0
 
 	//Do nasty effects
 	for(var/datum/disease2/effect/e in effects)
-		e.fire(H,stage)
+		e.fire(stage)
 
 	//fever
-	if(!H.chem_effects[CE_ANTIVIRAL])
-		H.bodytemperature = max(H.bodytemperature, min(310+5*min(stage,max_stage), H.bodytemperature+5*min(stage,max_stage)))
+	if(!infected.chem_effects[CE_ANTIVIRAL])
+		infected.bodytemperature = max(infected.bodytemperature, min(310 + 5 * min(stage, max_stage), infected.bodytemperature + 5 * min(stage, max_stage)))
 
-/datum/disease2/disease/proc/cure(mob/living/carbon/H, antigen)
-	if(!H)
-		return
+/datum/disease2/disease/proc/cure()
+	ASSERT(infected) //You can't cure disease if there's no diseased
+
+	SSvirus.dequeue_virus(src)
 	for(var/datum/disease2/effect/e in effects)
-		e.deactivate(H)
-	H.virus2.Remove("[uniqueID]")
+		e.deactivate(infected)
+	infected.virus2.Remove("[uniqueID]")
 	if(antigen)
-		H.antibodies |= antigen
+		infected.antibodies |= antigen
 
-	BITSET(H.hud_updateflag, STATUS_HUD)
+	BITSET(infected.hud_updateflag, STATUS_HUD)
 
 /datum/disease2/disease/proc/minormutate()
 	var/datum/disease2/effect/E = pick(effects)
 	E.minormutate()
+
+/datum/disease2/disease/proc/mediummutate()
+	var/list/datum/disease2/effect/mutable_effects = list()
+	for(var/datum/disease2/effect/T in effects)
+		if(T.possible_mutations && T.possible_mutations.len)
+			mutable_effects += T
+	if(!mutable_effects.len)
+		return 0
+
+	uniqueID = rand(0,10000)
+	var/datum/disease2/effect/mutating_effect = pick(mutable_effects)
+	var/list/exclude = list()
+	for(var/datum/disease2/effect/D in effects)
+		if(D != mutating_effect)
+			exclude += D.type
+	var/datum/disease2/effect/new_effect = get_mutated_effect(mutating_effect)
+	if(!new_effect)
+		return 0
+	mutating_effect.deactivate()
+	effects -= mutating_effect
+	effects += new_effect
+	update_disease()
+	qdel(mutating_effect)
+	return 1
 
 /datum/disease2/disease/proc/majormutate(badness = VIRUS_ENGINEERED)
 	uniqueID = rand(0,10000)
@@ -146,12 +200,25 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	effects += get_random_virus2_effect(effect_stage, badness, exclude)
 
-	if (prob(5))
+	if(prob(5))
 		antigen = list(pick(ALL_ANTIGENS))
 		antigen |= pick(ALL_ANTIGENS)
 
-	if (prob(5) && all_species.len)
+	if(prob(5) && all_species.len)
 		affected_species = get_infectable_species()
+	update_disease()
+
+/datum/disease2/disease/proc/stageshift()
+	uniqueID = rand(0, 10000)
+	var/list/exclude = list()
+	for(var/datum/disease2/effect/D in effects)
+		if(!D.stage == 1 || !D.stage == max_stage)
+			exclude += D.type
+		D.stage += 1
+		if(D.stage > max_stage)
+			effects -= D
+	effects += get_random_virus2_effect(1, VIRUS_MILD, exclude)
+	update_disease()
 
 /datum/disease2/disease/proc/getcopy()
 	var/datum/disease2/disease/disease = new /datum/disease2/disease
@@ -166,9 +233,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		neweffect.generate(effect.data)
 		neweffect.chance = effect.chance
 		neweffect.multiplier = effect.multiplier
-		neweffect.oneshot = effect.oneshot
 		neweffect.stage = effect.stage
 		disease.effects += neweffect
+	disease.update_disease()
 	return disease
 
 /datum/disease2/disease/proc/issame(datum/disease2/disease/disease)
@@ -181,7 +248,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if(!(d.type in types))
 			return 0
 
-	if (antigen != disease.antigen)
+	if(antigen != disease.antigen)
 		return 0
 
 /proc/virus_copylist(list/datum/disease2/disease/viruses)
@@ -225,7 +292,7 @@ var/global/list/virusDB = list()
 	return r
 
 /datum/disease2/disease/proc/addToDB()
-	if ("[uniqueID]" in virusDB)
+	if("[uniqueID]" in virusDB)
 		return 0
 	var/datum/computer_file/data/virus_record/v = new()
 	v.fields["id"] = uniqueID
@@ -237,7 +304,7 @@ var/global/list/virusDB = list()
 	return 1
 
 
-proc/virology_letterhead(report_name)
+/proc/virology_letterhead(report_name)
 	return {"
 		<center><h1><b>[report_name]</b></h1></center>
 		<center><small><i>[station_name()] Virology Lab</i></small></center>
@@ -248,5 +315,4 @@ proc/virology_letterhead(report_name)
 	for(var/datum/disease2/effect/H in effects)
 		if(H.type == type && !H.allow_multiple)
 			return 0
-
 	return 1

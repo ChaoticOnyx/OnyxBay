@@ -107,9 +107,10 @@ SUBSYSTEM_DEF(timer)
 		do
 			var/datum/callback/callBack = timer.callBack
 			if (!callBack)
+				var/qdeleted = QDELETED(timer)
 				qdel(timer)
 				bucket_resolution = null //force bucket recreation
-				CRASH("Invalid timer: [timer] timer.timeToRun=[timer.timeToRun]||QDELETED(timer)=[QDELETED(timer)]||world.time=[world.time]||head_offset=[head_offset]||practical_offset=[practical_offset]||timer.spent=[timer.spent]")
+				CRASH("Invalid timer: [timer] timer.timeToRun=[timer.timeToRun]||QDELETED(timer)=[qdeleted]||world.time=[world.time]||head_offset=[head_offset]||practical_offset=[practical_offset]||timer.spent=[timer.spent]")
 
 			if (!timer.spent)
 				spent += timer
@@ -223,6 +224,7 @@ SUBSYSTEM_DEF(timer)
 	var/list/flags
 	var/spent = FALSE //set to true right before running.
 	var/name //for easy debugging.
+	var/startTime = 0
 
 	//cicular doublely linked list
 	var/datum/timedevent/next
@@ -236,6 +238,7 @@ SUBSYSTEM_DEF(timer)
 	src.timeToRun = timeToRun
 	src.flags = flags
 	src.hash = hash
+	src.startTime = world.time
 
 	if (flags & TIMER_UNIQUE)
 		SStimer.hashes[hash] = src
@@ -391,6 +394,10 @@ SUBSYSTEM_DEF(timer)
 	var/datum/timedevent/timer = new(callback, timeToRun, flags, hash)
 	if (flags & TIMER_STOPPABLE)
 		return timer.id
+
+/proc/gettimer(id)
+	ASSERT(id)
+	return SStimer.timer_id_dict["timerid[id]"]
 
 /proc/deltimer(id)
 	if (!id)

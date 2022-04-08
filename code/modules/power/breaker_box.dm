@@ -20,7 +20,7 @@
 	var/update_locked = 0
 
 /obj/machinery/power/breakerbox/Destroy()
-	..()
+	. = ..()
 	for(var/datum/nano_module/rcon/R in world)
 		R.FindDevices()
 
@@ -34,11 +34,11 @@
 
 /obj/machinery/power/breakerbox/examine(mob/user)
 	. = ..()
-	to_chat(user, "Large machine with heavy duty switching circuits used for advanced grid control")
+	. += "\nLarge machine with heavy duty switching circuits used for advanced grid control"
 	if(on)
-		to_chat(user, "<span class='good'>It seems to be online.</span>")
+		. += "\n<span class='good'>It seems to be online.</span>"
 	else
-		to_chat(user, "<span class='warning'>It seems to be offline.</span>")
+		. += "\n<span class='warning'>It seems to be offline.</span>"
 
 /obj/machinery/power/breakerbox/attack_ai(mob/user)
 	if(update_locked)
@@ -83,7 +83,7 @@
 			update_locked = 0
 	busy = 0
 
-/obj/machinery/power/breakerbox/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/power/breakerbox/attackby(obj/item/W as obj, mob/user as mob)
 	if(isMultitool(W))
 		var/newtag = input(user, "Enter new RCON tag. Use \"NO_TAG\" to disable RCON or leave empty to cancel.", "SMES RCON system") as text
 		if(newtag)

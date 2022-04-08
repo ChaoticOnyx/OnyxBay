@@ -43,10 +43,13 @@
 
 	blood_color = "#2299fc"
 	flesh_color = "#808d11"
+	organs_icon = 'icons/mob/human_races/organs/vox.dmi'
 
 	reagent_tag = IS_VOX
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_leap,
 		/mob/living/carbon/human/proc/leap
 		)
 
@@ -66,6 +69,7 @@
 
 
 	has_organ = list(
+		BP_STOMACH =  /obj/item/organ/internal/stomach/vox,
 		BP_HEART =    /obj/item/organ/internal/heart/vox,
 		BP_LUNGS =    /obj/item/organ/internal/lungs/vox,
 		BP_LIVER =    /obj/item/organ/internal/liver/vox,
@@ -84,13 +88,13 @@
 /datum/species/vox/equip_survival_gear(mob/living/carbon/human/H)
 	H.equip_to_slot_or_del(new /obj/item/clothing/mask/breath(H), slot_wear_mask)
 
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
-		H.equip_to_slot_or_del(new /obj/item/weapon/tank/nitrogen(H), slot_r_hand)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/vox(H.back), slot_in_backpack)
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
+		H.equip_to_slot_or_del(new /obj/item/tank/nitrogen(H), slot_r_hand)
+		H.equip_to_slot_or_del(new /obj/item/storage/box/vox(H.back), slot_in_backpack)
 		H.internal = H.r_hand
 	else
-		H.equip_to_slot_or_del(new /obj/item/weapon/tank/nitrogen(H), slot_back)
-		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/vox(H), slot_r_hand)
+		H.equip_to_slot_or_del(new /obj/item/tank/nitrogen(H), slot_back)
+		H.equip_to_slot_or_del(new /obj/item/storage/box/vox(H), slot_r_hand)
 		H.internal = H.back
 
 	if(H.internals)

@@ -2,9 +2,7 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
-									//I would just like the code ready should it ever need to be used.
-#define MAX_CLIENT_VERSION	512
+#define MIN_CLIENT_VERSION	513
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -31,14 +29,14 @@
 	If you have any  questions about this stuff feel free to ask. ~Carn
 	*/
 /client/Topic(href, href_list, hsrc)
-	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
+	if(!usr || usr != mob)	// stops us calling Topic for somebody else's client. Also helps prevent usr = null
 		return
 
 	#if defined(TOPIC_DEBUGGING)
 	log_debug("[src]'s Topic: [href] destined for [hsrc].")
 
-	if(href_list["nano_err"]) //nano throwing errors
-		log_debug("## NanoUI, Subject [src]: " + html_decode(href_list["nano_err"]))//NANO DEBUG HOOK
+	if(href_list["nano_err"]) // nano throwing errors
+		log_debug("## NanoUI, Subject [src]: " + html_decode(href_list["nano_err"]))// NANO DEBUG HOOK
 
 
 	#endif
@@ -48,63 +46,65 @@
 	if(href_list["asset_cache_confirm_arrival"])
 		asset_cache_job = text2num(href_list["asset_cache_confirm_arrival"])
 
-		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
-		//	into letting append to a list without limit.
-		if (!asset_cache_job || asset_cache_job > last_asset_job)
+		// because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		// into letting append to a list without limit.
+		if(!asset_cache_job || asset_cache_job > last_asset_job)
 			return
 
-		if (!(asset_cache_job in completed_asset_jobs))
+		if(!(asset_cache_job in completed_asset_jobs))
 			completed_asset_jobs += asset_cache_job
-			log_debug_verbose("\[ASSETS\] Job #[asset_cache_job] is completed (client: [ckey]).")
 			return
 
-	if (config.minutetopiclimit)
+	if(config.minutetopiclimit)
 		var/minute = round(world.time, 600)
-		if (!topiclimiter)
+		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if (minute != topiclimiter[CURRENT_MINUTE])
+		if(minute != topiclimiter[CURRENT_MINUTE])
 			topiclimiter[CURRENT_MINUTE] = minute
 			topiclimiter[MINUTE_COUNT] = 0
 		topiclimiter[MINUTE_COUNT] += 1
-		if (topiclimiter[MINUTE_COUNT] > config.minutetopiclimit)
+		if(topiclimiter[MINUTE_COUNT] > config.minutetopiclimit)
 			var/msg = "Your previous action was ignored because you've done too many in a minute."
-			if (minute != topiclimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
+			if(minute != topiclimiter[ADMINSWARNED_AT]) // only one admin message per-minute. (if they spam the admins can just boot/ban them)
 				topiclimiter[ADMINSWARNED_AT] = minute
 				msg += " Administrators have been informed."
 				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
 				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
-			to_chat(src, "<span class='danger'>[msg]</span>")
+			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if (config.secondtopiclimit)
+	if(config.secondtopiclimit)
 		var/second = round(world.time, 10)
-		if (!topiclimiter)
+		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
-		if (second != topiclimiter[CURRENT_SECOND])
+		if(second != topiclimiter[CURRENT_SECOND])
 			topiclimiter[CURRENT_SECOND] = second
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
-		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
-			to_chat(src, "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>")
+		if(topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
+			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
-	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+	// Logs all hrefs
+	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
+
+	// Tgui Topic middleware
+	if(tgui_Topic(href_list))
+		return
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
-	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
-		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
-		src << browse("...", "window=asset_cache_browser")
+	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
+		to_chat(src, SPAN("danger", "An error has been detected in how your client is receiving resources. Attempting to correct... (If you keep seeing these messages you might want to close byond and reconnect)"))
+		show_browser(src, "...", "window=asset_cache_browser")
 
-	//search the href for script injection
-	if( findtext(href,"<script",1,0) )
-		world.log << "Attempted use of scripts within a topic call, by [src]"
+	// search the href for script injection
+	if(findtext(href, "<script", 1, 0))
+		to_world_log("Attempted use of scripts within a topic call, by [src]")
 		message_admins("Attempted use of scripts within a topic call, by [src]")
 		//qdel(usr)
 		return
 
-	//Admin PM
+	// Admin PM
 	if(href_list["priv_msg"])
 		var/client/C = locate(href_list["priv_msg"])
 		var/datum/ticket/ticket = locate(href_list["ticket"])
@@ -117,10 +117,10 @@
 
 	if(href_list["irc_msg"])
 		if(!holder && received_irc_pm < world.time - 6000) //Worse they can do is spam IRC for 10 minutes
-			to_chat(usr, "<span class='warning'>You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you</span>")
+			to_chat(usr, SPAN("warning", "You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you."))
 			return
 		if(mute_irc)
-			to_chat(usr, "<span class='warning'You cannot use this as your client has been muted from sending messages to the admins on IRC</span>")
+			to_chat(usr, SPAN("warning", "You cannot use this as your client has been muted from sending messages to the admins on IRC."))
 			return
 		cmd_admin_irc_pm(href_list["irc_msg"])
 		return
@@ -136,23 +136,22 @@
 	switch(href_list["_src_"])
 		if("holder")	hsrc = holder
 		if("usr")		hsrc = mob
-		if("prefs")		return prefs.process_link(usr,href_list)
-		if("vars")		return view_var_Topic(href,href_list,hsrc)
-		if("chat")		return chatOutput.Topic(href, href_list)
+		if("prefs")		return prefs.process_link(usr, href_list)
+		if("vars")		return view_var_Topic(href, href_list, hsrc)
 
 	switch(href_list["action"])
 		if("openLink")
-			src << link(href_list["link"])
+			send_link(src, href_list["link"])
 
-	..()	//redirect to hsrc.Topic()
+	..()	// redirect to hsrc.Topic()
 
-//This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
+// This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
 /client/AllowUpload(filename, filelength)
 	if(filelength > UPLOAD_LIMIT)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>")
 		return 0
-/*	//Don't need this at the moment. But it's here if it's needed later.
-	//Helps prevent multiple files being uploaded at once. Or right after eachother.
+/*	// Don't need this at the moment. But it's here if it's needed later.
+	// Helps prevent multiple files being uploaded at once. Or right after eachother.
 	var/time_to_wait = fileaccess_timer - world.time
 	if(time_to_wait > 0)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): Spam prevention. Please wait [round(time_to_wait/10)] seconds.</font>")
@@ -165,48 +164,31 @@
 	//CONNECT//
 	///////////
 /client/New(TopicData)
-	TopicData = null							//Prevent calls to client.Topic from connect
+	TopicData = null							// Prevent calls to client.Topic from connect
 
-	// Load onyxchat
-	chatOutput = new(src)
-
-	if(!(connection in list("seeker", "web")))					//Invalid connection type.
-		return null
-	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
-		alert(src,"Your BYOND version is too out of date. Please update it.","Out of date","OK")
-		qdel(src)
+	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
 	if(!config.guests_allowed && IsGuestKey(key))
-		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
+		alert(src, "This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.", "Guest", "OK")
 		qdel(src)
 		return
 
-	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
-		if(config.panic_address && TopicData != "redirect")
-			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
-		else
-			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
-
-		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-		qdel(src)
-		return
-
+	/* Should be uncommented as soon as we manage to set a working resource URL. For now, messing with clients' preload_rsc at runtime may rain holy hell down upon us.
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
+	*/
 
-	if(byond_version < DM_VERSION)
-		to_chat(src, "<span class='warning'>You are running an older version of BYOND than the server and may experience issues.</span>")
-		to_chat(src, "<span class='warning'>It is recommended that you update to at least [DM_VERSION] at http://www.byond.com/download/.</span>")
-	to_chat(src, "<span class='warning'>If the title screen is black, resources are still downloading. Please be patient until the title screen appears.</span>")
+	DIRECT_OUTPUT(src, SPAN("warning", "If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears."))
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
-	//Admin Authorisation
+	// Instantiate tgui panel
+	tgui_panel = new(src)
+
+	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
 	if(admin_datum)
 		if(admin_datum in GLOB.deadmined_list)
@@ -220,34 +202,29 @@
 	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
 		var/player_age = get_player_age(ckey)
 		if(config.panic_address && TopicData != "redirect")
-			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
-			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]</span>")
-			to_chat(src, "<span class='notice'>Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].</span>")
+			log_access("Panic Bunker: ([key_name(key, include_name = FALSE)] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
+			message_admins(SPAN("adminnotice", "Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]"))
+			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]."))
 			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
+			send_link(src, "[config.panic_address]?redirect")
 		else
-			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirecting is not configured.")
+			log_access("Panic Bunker: ([key_name(key, include_name = FALSE)] | age [player_age]) - attempted to connect. Redirecting is not configured.")
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
 		qdel(src)
 		return
 
 	// Load EAMS data
-	EAMS_CollectData()
+	SSeams.CollectDataForClient(src)
 
-	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = SScharacter_setup.preferences_datums[ckey]
-	if(!prefs)
-		prefs = new /datum/preferences(src)
-	prefs.last_ip = address				//these are gonna be used for banning
-	prefs.last_id = computer_id			//these are gonna be used for banning
-	apply_fps(prefs.clientfps)
+	setup_preferences()
 
-	. = ..()	//calls mob.Login()
+	. = ..()	// calls mob.Login()
 
-	if(byond_version > MAX_CLIENT_VERSION)
-		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
+	if(byond_version < MIN_CLIENT_VERSION)
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
-		return null
+		return
 
 	GLOB.using_map.map_info(src)
 
@@ -271,29 +248,35 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
-	SSdonations.LogAndLoadPlayerData(src)
+	SSdonations.log_client_to_db(src)
+	SSdonations.update_donator(src)
+	SSdonations.update_donator_items(src)
 
 	send_resources()
 
-	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
-		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
-		if(config.aggressive_changelog)
-			src.changes()
-
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
-		to_chat(src, "<span class='warning'>Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you.</span>")
+		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
 
-	chatOutput.start()
+	if(prefs && !istype(mob, world.mob))
+		prefs.apply_post_login_preferences(src)
 
-	// Change position only if it not default
-	if (get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
-		update_chat_position(TRUE)
+	settings = new(src)
 
-	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
-		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+			winset(src, null, "command=.options")
+			send_link(src, "[config.panic_address]?redirect")
+
+		else
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 /*	if(holder)
-		src.control_freak = 0 //Devs need 0 for profiler access
+		src.control_freak = 0 // Devs need 0 for profiler access
 */
 	//////////////
 	//DISCONNECT//
@@ -316,14 +299,10 @@
 // Returns null if no DB connection can be established, or -1 if the requested key was not found in the database
 
 /proc/get_player_age(key)
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return null
 
-	var/sql_ckey = sql_sanitize_text(ckey(key))
-
-	var/DBQuery/query = dbcon.NewQuery("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $ckey", dbcon, list(ckey = ckey(key)))
 
 	if(query.NextRow())
 		return text2num(query.item[1])
@@ -341,33 +320,27 @@
 
 /client/proc/log_client_to_db()
 
-	if ( IsGuestKey(src.key) )
+	if(IsGuestKey(src.key))
 		return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return
 
-	var/sql_ckey = sql_sanitize_text(src.ckey)
-
-	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
-	query.Execute()
-	var/sql_id = 0
+	var/DBQuery/query = sql_query("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $ckey", dbcon, list(ckey = ckey))
+	var/id = 0
 	player_age = 0	// New players won't have an entry so knowing we have a connection we set this to zero to be updated if their is a record.
 	while(query.NextRow())
-		sql_id = query.item[1]
+		id = query.item[1]
 		player_age = text2num(query.item[2])
 		break
 
-	var/DBQuery/query_ip = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ip = '[address]'")
-	query_ip.Execute()
+	var/DBQuery/query_ip = sql_query("SELECT ckey FROM erro_player WHERE ip = $address", dbcon, list(address = address))
 	related_accounts_ip = ""
 	while(query_ip.NextRow())
 		related_accounts_ip += "[query_ip.item[1]], "
 		break
 
-	var/DBQuery/query_cid = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE computerid = '[computer_id]'")
-	query_cid.Execute()
+	var/DBQuery/query_cid = sql_query("SELECT ckey FROM erro_player WHERE computerid = $computer_id", dbcon, list(computer_id = computer_id))
 	related_accounts_cid = ""
 	while(query_cid.NextRow())
 		related_accounts_cid += "[query_cid.item[1]], "
@@ -375,43 +348,32 @@
 
 	watchlist.OnLogin(src)
 
-	//Just the standard check to see if it's actually a number
-	if(sql_id)
-		if(istext(sql_id))
-			sql_id = text2num(sql_id)
-		if(!isnum(sql_id))
+	// Just the standard check to see if it's actually a number
+	if(id)
+		if(istext(id))
+			id = text2num(id)
+		if(!isnum(id))
 			return
 
 	var/admin_rank = "Player"
 	if(src.holder)
 		admin_rank = src.holder.rank
 
-	var/sql_ip = sql_sanitize_text(src.address)
-	var/sql_computerid = sql_sanitize_text(src.computer_id)
-	var/sql_admin_rank = sql_sanitize_text(admin_rank)
-
-
-	if(sql_id)
-		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = '[sql_ip]', computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE id = [sql_id]")
-		query_update.Execute()
+	if(id)
+		// Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
+		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $address, computerid = $computer_id, lastadminrank = $admin_rank WHERE id = $id", dbcon, list(address = address, computer_id = computer_id, admin_rank = admin_rank, id = id))
 	else
-		//New player!! Need to insert all the stuff
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_ip]', '[sql_computerid]', '[sql_admin_rank]')")
-		query_insert.Execute()
+		// New player!! Need to insert all the stuff
+		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id, admin_rank = admin_rank))
 
-	//Logging player access
-	var/serverip = "[world.internet_address]:[world.port]"
-	var/DBQuery/query_accesslog = dbcon.NewQuery("INSERT INTO `erro_connection_log`(`id`,`datetime`,`serverip`,`ckey`,`ip`,`computerid`) VALUES(null,Now(),'[serverip]','[sql_ckey]','[sql_ip]','[sql_computerid]');")
-	query_accesslog.Execute()
+	sql_query("INSERT INTO connection(datetime, ckey, ip, computerid) VALUES (Now(), $ckey, $address, $computer_id)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id))
 
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
-#undef MAX_CLIENT_VERSION
 
-//checks if a client is afk
-//3000 frames = 5 minutes
+// checks if a client is afk
+// 3000 frames = 5 minutes
 /client/proc/is_afk(duration=3000)
 	if(inactivity > duration)	return inactivity
 	return 0
@@ -431,27 +393,29 @@
 	statpanel("Status")
 
 	. = ..()
-	sleep(1)
+	stoplag(1)
 
-//send resources to the client. It's here in its own proc so we can move it around easiliy if need be
+// send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
 	getFiles(
+		'html/images/ntlogo.png',
+		'html/images/ntlogo_hand.png',
+		'html/images/bluentlogo.png',
+		'html/images/bluentlogo_hand.png',
 		'html/search.js',
 		'html/panels.css',
 		'html/spacemag.css',
 		'html/images/loading.gif',
-		'html/images/ntlogo.png',
-		'html/images/bluentlogo.png',
-		'html/images/sollogo.png',
-		'html/images/terralogo.png',
-		'html/images/talisman.png'
-		)
+		'html/images/talisman.png',
+		'html/images/line_hand.png',
+		'html/images/borders_hand.png',
+		'html/good_vibes/good_vibes.woff'
+	)
 
-	spawn (10) //removing this spawn causes all clients to not get verbs.
+	spawn (10) // removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected
 			return
-		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
 
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
@@ -467,23 +431,20 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
-				log_debug_verbose("\[ASSETS\] Failed to sent resources to [ckey]![src ? " Reason is client was disconnected!" : ""]")
+			if (!D.send_slow(src)) // Precache the client with all other assets slowly, so as to not block other browse() calls
 				return
 
-		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
-
-mob/proc/MayRespawn()
+/mob/proc/MayRespawn()
 	return 0
 
-client/proc/MayRespawn()
+/client/proc/MayRespawn()
 	if(mob)
 		return mob.MayRespawn()
 
 	// Something went wrong, client is usually kicked or transfered to a new mob at this point
 	return 0
 
-client/verb/character_setup()
+/client/verb/character_setup()
 	set name = "Character Setup"
 	set category = "OOC"
 	if(prefs)
@@ -491,16 +452,18 @@ client/verb/character_setup()
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
-		vars["fps"] = prefs.clientfps
+		fps = client_fps
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
-	input_height = winget(src, "input", "size")
-	input_height = text2num(splittext(input_height, "x")[2])
+	var/mode = get_preference_value(/datum/client_preference/chat_position)
+	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
 
 	// Hell
+	if(mode == GLOB.PREF_YES && !currently_alternative)
+		input_height = winget(src, "input", "size")
+		input_height = text2num(splittext(input_height, "x")[2])
 
-	if (use_alternative == TRUE)
 		winset(src, "input_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "hotkey_toggle_alt", "is-visible=true;is-disabled=false;is-default=true")
 		winset(src, "saybutton_alt", "is-visible=true;is-disabled=false;is-default=true")
@@ -517,7 +480,10 @@ client/verb/character_setup()
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else
+	else if(mode == GLOB.PREF_NO && currently_alternative)
+		input_height = winget(src, "input_alt", "size")
+		input_height = text2num(splittext(input_height, "x")[2])
+
 		winset(src, "input_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "hotkey_toggle_alt", "is-visible=false;is-disabled=true;is-default=false")
 		winset(src, "saybutton_alt", "is-visible=false;is-disabled=true;is-default=false")
@@ -534,7 +500,6 @@ client/verb/character_setup()
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	fit_viewport()
 
 /client/proc/toggle_fullscreen(new_value)
 	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
@@ -547,7 +512,6 @@ client/verb/character_setup()
 		winset(src, "mainwindow", "menu=menu;statusbar=true")
 		winset(src, "mainwindow.mainvsplit", "pos=3x0")
 	winset(src, "mainwindow", "is-maximized=true")
-	fit_viewport()
 
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"
@@ -561,11 +525,12 @@ client/verb/character_setup()
 	// Calculate desired pixel width using window size and aspect ratio
 	var/sizes = params2list(winget(src, "mainwindow.mainvsplit;mapwindow", "size"))
 	var/map_size = splittext(sizes["mapwindow.size"], "x")
+	if(!length(map_size))
+		return // Something's broken. Happens when a client connects multiple times at once.
 	var/height = text2num(map_size[2])
 	var/desired_width = round(height * aspect_ratio)
-	if (text2num(map_size[1]) == desired_width)
-		// Nothing to do
-		return
+	if(text2num(map_size[1]) == desired_width)
+		return // Nothing to do
 
 	var/split_size = splittext(sizes["mainwindow.mainvsplit.size"], "x")
 	var/split_width = text2num(split_size[1])
@@ -594,3 +559,43 @@ client/verb/character_setup()
 
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+/client/verb/release_shift()
+	set name = ".release_shift"
+
+	shift_released_at = world.time
+
+/client/proc/setup_preferences(initialization = FALSE)
+	// This proc will be called twice if SScharacter_setup is not initialized,
+	// so, don't create prefs again.
+	if(!prefs)
+		// preferences datum - also holds 	some persistant data for the client (because we may as well keep these datums to a minimum)
+		prefs = new /datum/preferences(src)
+		prefs.last_ip = address				// these are gonna be used for banning
+		prefs.last_id = computer_id			// these are gonna be used for banning
+		apply_fps(prefs.clientfps ? prefs.clientfps : config.clientfps)
+
+	if(initialization || SScharacter_setup.initialized)
+		prefs.setup()
+	else
+		SScharacter_setup.queue_client(src)
+
+/client/proc/play_ambience_music(file_path)
+	if(get_preference_value(/datum/client_preference/play_ambience_music) == GLOB.PREF_NO)
+		return
+
+	var/sound/S = sound(file_path, FALSE, FALSE, SOUND_CHANNEL_AMBIENT_MUSIC, VOLUME_AMBIENT_MUSIC)
+	S.echo = 0
+	S.environment = -1
+
+	last_time_ambient_music_played = world.time
+	DIRECT_OUTPUT(src, S)
+
+/client/proc/is_ambience_music_playing()
+	var/list/sounds = SoundQuery()
+
+	for(var/sound/S in sounds)
+		if(S.channel == SOUND_CHANNEL_AMBIENT_MUSIC)
+			return TRUE
+
+	return FALSE

@@ -3,26 +3,26 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "med_key"
 	icon_screen = "dna"
-	circuit = /obj/item/weapon/circuitboard/curefab
+	circuit = /obj/item/circuitboard/curefab
 	idle_power_usage = 500
 	var/curing
 	var/virusing
 
-	var/obj/item/weapon/reagent_containers/container = null
+	var/obj/item/reagent_containers/container = null
 
 /obj/machinery/computer/curer/attackby(obj/I as obj, mob/user as mob)
-	if(istype(I,/obj/item/weapon/reagent_containers))
+	if(istype(I,/obj/item/reagent_containers))
 		var/mob/living/carbon/C = user
 		if(!container)
 			container = I
 			C.drop_item()
 			I.loc = src
 		return
-	if(istype(I,/obj/item/weapon/virusdish))
+	if(istype(I,/obj/item/virusdish))
 		if(virusing)
 			to_chat(user, "<b>The pathogen materializer is still recharging..</b>")
 			return
-		var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
+		var/obj/item/reagent_containers/glass/beaker/product = new(src.loc)
 
 		var/list/data = list("donor" = null, "blood_DNA" = null, "blood_type" = null, "trace_chem" = null, "virus2" = list(), "antibodies" = list())
 		data["virus2"] |= I:virus2
@@ -43,17 +43,17 @@
 	if(..())
 		return
 	user.machine = src
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
-		dat = "Antibody production in progress"
+		dat += "Antibody production in progress"
 	else if(virusing)
-		dat = "Virus production in progress"
+		dat += "Virus production in progress"
 	else if(container)
 		// see if there's any blood in the container
 		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in container.reagents.reagent_list
 
 		if(B)
-			dat = "Blood sample inserted."
+			dat += "Blood sample inserted."
 			dat += "<BR>Antibodies: [antigens2string(B.data["antibodies"])]"
 			dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
 		else
@@ -62,7 +62,7 @@
 	else
 		dat = "Please insert a container."
 
-	user << browse(dat, "window=computer;size=400x500")
+	show_browser(user, dat, "window=computer;size=400x500")
 	onclose(user, "computer")
 	return
 
@@ -91,8 +91,8 @@
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
 
-/obj/machinery/computer/curer/proc/createcure(obj/item/weapon/reagent_containers/container)
-	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
+/obj/machinery/computer/curer/proc/createcure(obj/item/reagent_containers/container)
+	var/obj/item/reagent_containers/glass/beaker/product = new(src.loc)
 
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
 

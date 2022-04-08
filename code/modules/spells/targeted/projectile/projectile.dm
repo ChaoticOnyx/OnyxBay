@@ -5,17 +5,18 @@ spell_projectiles call their spell's (carried) prox_cast when they get in range 
 If the spell_projectile is seeking, it will update its target every process and follow them
 */
 
-/spell/targeted/projectile
+/datum/spell/targeted/projectile
 	name = "projectile spell"
 
 	range = 7
+	need_target = 0
 
 	var/proj_type = /obj/item/projectile/spell_projectile //use these. They are very nice
 
 	var/proj_step_delay = 1 //lower = faster
 	var/cast_prox_range = 1
 
-/spell/targeted/projectile/cast(list/targets, mob/user = usr)
+/datum/spell/targeted/projectile/cast(list/targets, mob/user = usr)
 
 	if(istext(proj_type))
 		proj_type = text2path(proj_type) // sanity filters
@@ -41,7 +42,7 @@ If the spell_projectile is seeking, it will update its target every process and 
 		projectile.launch(target)
 	return
 
-/spell/targeted/projectile/proc/choose_prox_targets(mob/user = usr, atom/movable/spell_holder)
+/datum/spell/targeted/projectile/proc/choose_prox_targets(mob/user = usr, atom/movable/spell_holder)
 	var/list/targets = list()
 	for(var/mob/living/M in range(spell_holder, cast_prox_range))
 		if(M == user && !(spell_flags & INCLUDEUSER))
@@ -49,5 +50,5 @@ If the spell_projectile is seeking, it will update its target every process and 
 		targets += M
 	return targets
 
-/spell/targeted/projectile/proc/prox_cast(list/targets, atom/movable/spell_holder)
+/datum/spell/targeted/projectile/proc/prox_cast(list/targets, atom/movable/spell_holder)
 	return targets

@@ -1,3 +1,5 @@
+#define MAP_PADDING 7
+
 /obj/skybox
 	name = "skybox"
 	mouse_opacity = 0
@@ -28,8 +30,23 @@
 	if(isnull(owner) || isnull(owner.client))
 		qdel(src)
 	else
-		var/turf/T = get_turf(owner.client.eye)
-		screen_loc = "CENTER:[-224-(T&&T.x)],CENTER:[-224-(T&&T.y)]"
+		var/view_size = owner.client.view
+		var/view_maxx
+		var/view_maxy
+
+		if(istext(view_size))
+			var/splitted = splittext(view_size, "x")
+			view_maxx = text2num(splitted[1]) + 1
+			view_maxy = text2num(splitted[2]) + 1
+		else
+			view_maxx = view_maxy = view_size + 1
+
+		var/atom/position = owner.client.eye
+		var/normalized_x = (position.x - MAP_PADDING) / (world.maxx - (MAP_PADDING * 2))
+		var/normalized_y = (position.y - MAP_PADDING) / (world.maxy - (MAP_PADDING * 2))
+		var/result_x = round(view_maxx * WORLD_ICON_SIZE * normalized_x)
+		var/result_y = round(view_maxy * WORLD_ICON_SIZE * normalized_y)
+		screen_loc = "BOTTOM:[-result_y],LEFT:[-result_x]"
 
 /obj/skybox/proc/DoRotate()
 	var/matrix/rotation = matrix()
@@ -72,3 +89,5 @@
 		client.screen -= skybox
 	QDEL_NULL(skybox)
 	return ..()
+
+#undef MAP_PADDING

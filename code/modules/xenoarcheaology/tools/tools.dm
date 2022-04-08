@@ -13,9 +13,9 @@
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
 /obj/item/device/gps/examine(mob/user)
-	..()
+	. = ..()
 	var/turf/T = get_turf(src)
-	to_chat(user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
+	. += "\n<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>"
 
 /obj/item/device/measuring_tape
 	name = "measuring tape"
@@ -26,7 +26,7 @@
 	matter = list(MATERIAL_STEEL = 100)
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/weapon/storage/bag/fossils
+/obj/item/storage/bag/fossils
 	name = "Fossil Satchel"
 	desc = "Transports delicate fossils in suspension so they don't break during transit."
 	icon = 'icons/obj/mining.dmi'
@@ -36,16 +36,16 @@
 	storage_slots = 50
 	max_storage_space = 200
 	max_w_class = ITEM_SIZE_NORMAL
-	can_hold = list(/obj/item/weapon/fossil)
+	can_hold = list(/obj/item/fossil)
 
-/obj/item/weapon/storage/box/samplebags
+/obj/item/storage/box/samplebags
 	name = "sample bag box"
 	desc = "A box claiming to contain sample bags."
 
-/obj/item/weapon/storage/box/samplebags/New()
+/obj/item/storage/box/samplebags/New()
 	..()
 	for(var/i = 1 to 7)
-		var/obj/item/weapon/evidencebag/S = new(src)
+		var/obj/item/evidencebag/S = new(src)
 		S.SetName("sample bag")
 		S.desc = "a bag for holding research samples."
 
@@ -175,7 +175,7 @@
 	interact(user)
 
 /obj/item/device/depth_scanner/interact(mob/user as mob)
-	var/dat = "<b>Coordinates with positive matches</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Coordinates with positive matches</b><br>"
 
 	dat += "<A href='?src=\ref[src];clear=0'>== Clear all ==</a><br>"
 
@@ -205,7 +205,7 @@
 	dat += "<hr>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Refresh</a><br>"
 	dat += "<A href='?src=\ref[src];close=1'>Close</a><br>"
-	user << browse(dat,"window=depth_scanner;size=300x500")
+	show_browser(user, dat, "window=depth_scanner;size=300x500")
 	onclose(user, "depth_scanner")
 
 /obj/item/device/depth_scanner/OnTopic(user, href_list)
@@ -219,24 +219,30 @@
 		if(index)
 			if(index <= positive_locations.len)
 				var/datum/depth_scan/D = positive_locations[index]
+				if(current == D)
+					current = null
 				positive_locations.Remove(D)
 				qdel(D)
 		else
-			//GC will hopefully pick them up before too long
-			positive_locations = list()
-			QDEL_NULL(current)
+			current = null
+			QDEL_LIST(positive_locations)
+		. = TOPIC_REFRESH
+	else if(href_list["refresh"])
 		. = TOPIC_REFRESH
 	else if(href_list["close"])
 		close_browser(user, "window=depth_scanner")
-	updateSelfDialog()
+		. = TOPIC_HANDLED
+
+	if(. == TOPIC_REFRESH)
+		interact(user)
 
 //Radio beacon locator
-/obj/item/weapon/pinpointer/radio
+/obj/item/pinpointer/radio
 	name = "locator device"
 	desc = "Used to scan and locate signals on a particular frequency."
 	var/tracking_freq = PUB_FREQ
 
-/obj/item/weapon/pinpointer/radio/acquire_target()
+/obj/item/pinpointer/radio/acquire_target()
 	var/turf/T = get_turf(src)
 	var/zlevels = GetConnectedZlevels(T.z)
 	var/cur_dist = world.maxx+world.maxy
@@ -247,11 +253,11 @@
 				cur_dist = check_dist
 				. = weakref(R)
 
-/obj/item/weapon/pinpointer/radio/attack_self(mob/user as mob)
+/obj/item/pinpointer/radio/attack_self(mob/user as mob)
 	interact(user)
 
-/obj/item/weapon/pinpointer/radio/interact(mob/user)
-	var/dat = "<b>Radio frequency tracker</b><br>"
+/obj/item/pinpointer/radio/interact(mob/user)
+	var/dat = "<meta charset=\"utf-8\"><b>Radio frequency tracker</b><br>"
 	dat += {"
 				Tracking: <A href='byond://?src=\ref[src];toggle=1'>[active ? "Enabled" : "Disabled"]</A><BR>
 				<A href='byond://?src=\ref[src];reset_tracking=1'>Reset tracker</A><BR>
@@ -262,10 +268,10 @@
 				<A href='byond://?src=\ref[src];freq=2'>+</A>
 				<A href='byond://?src=\ref[src];freq=10'>+</A><BR>
 				"}
-	user << browse(dat,"window=locater;size=300x150")
+	show_browser(user, dat, "window=locater;size=300x150")
 	onclose(user, "locater")
 
-/obj/item/weapon/pinpointer/radio/OnTopic(user, href_list)
+/obj/item/pinpointer/radio/OnTopic(user, href_list)
 	if(href_list["toggle"])
 		toggle(user)
 		. = TOPIC_REFRESH

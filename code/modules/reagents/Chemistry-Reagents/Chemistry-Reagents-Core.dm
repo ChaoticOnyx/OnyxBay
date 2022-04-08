@@ -54,11 +54,28 @@
 		data["antibodies"] = list()
 	data["antibodies"] |= newdata["antibodies"]
 
+/datum/reagent/antibodies/mix_data(newdata, newamount)
+	if(!islist(newdata))
+		return
+	if(!data["antibodies"])
+		data["antibodies"] = list()
+	data["antibodies"] |= newdata["antibodies"]
+
 /datum/reagent/blood/get_data() // Just in case you have a reagent that handles data differently.
 	var/t = data.Copy()
 	if(t["virus2"])
 		var/list/v = t["virus2"]
 		t["virus2"] = v.Copy()
+	if(t["antibodies"])
+		var/list/a = t["antibodies"]
+		t["antibodies"] = a.Copy()
+	return t
+
+/datum/reagent/antibodies/get_data() // Just in case you have a reagent that handles data differently.
+	var/t = data.Copy()
+	if(t["antibodies"])
+		var/list/v = t["antibodies"]
+		t["antibodies"] = v.Copy()
 	return t
 
 /datum/reagent/blood/touch_turf(turf/simulated/T)
@@ -112,7 +129,7 @@
 /datum/reagent/antibodies
 	data = list("antibodies"=list())
 	name = "Antibodies"
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#0050f0"
 
@@ -131,14 +148,15 @@
 	taste_description = "water"
 	glass_name = "water"
 	glass_desc = "The father of all refreshments."
+	var/slippery = 1
 
 /datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(2 * removed)
 
 /datum/reagent/water/affect_ingest(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(2 * removed)
 
@@ -161,20 +179,20 @@
 	if(flamer && !istype(T, /turf/space))
 		qdel(flamer)
 
-	if (environment && environment.temperature > min_temperature) // Abstracted as steam or something
+	if(environment && environment.temperature > min_temperature) // Abstracted as steam or something
 		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)
-		if (prob(5))
+		if(prob(5))
 			T.visible_message("<span class='warning'>The water sizzles as it lands on \the [T]!</span>")
 
-	else if(volume >= 10)
+	else if(volume >= 10 && slippery)
 		var/turf/simulated/S = T
 		S.wet_floor(1, TRUE)
 
 
 /datum/reagent/water/touch_obj(obj/O)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/monkeycube))
-		var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cube = O
+	if(istype(O, /obj/item/reagent_containers/food/snacks/monkeycube))
+		var/obj/item/reagent_containers/food/snacks/monkeycube/cube = O
 		if(!cube.wrapped)
 			cube.Expand()
 
@@ -190,10 +208,10 @@
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(10 * removed)	// Babies have 150 health, adults have 200; So, 15 units and 20
-	var/mob/living/carbon/slime/S = M
+	var/mob/living/carbon/metroid/S = M
 	if(!S.client && istype(S))
 		if(S.Target) // Like cats
 			S.Target = null
@@ -202,6 +220,13 @@
 	if(M.chem_doses[type] == removed)
 		M.visible_message("<span class='warning'>[S]'s flesh sizzles where the water touches it!</span>", "<span class='danger'>Your flesh burns in the water!</span>")
 		M.confused = max(M.confused, 2)
+
+/datum/reagent/water/firefoam
+	name = "Firefighting foam"
+	description = "A substance used for fire suppression. Its role is to cool the fire and to coat the fuel, preventing its contact with oxygen, resulting in suppression of the combustion."
+	taste_description = "foamy dryness"
+	color = "#e2e2e2"
+	slippery = 0
 
 /datum/reagent/fuel
 	name = "Welding fuel"

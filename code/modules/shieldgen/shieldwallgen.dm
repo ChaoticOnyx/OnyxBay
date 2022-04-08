@@ -213,7 +213,7 @@
 			src.anchored = 0
 			return
 
-	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+	if(istype(W, /obj/item/card/id)||istype(W, /obj/item/device/pda))
 		if (src.allowed(user))
 			src.locked = !src.locked
 			to_chat(user, "Controls are now [src.locked ? "locked." : "unlocked."]")
@@ -261,7 +261,7 @@
 	anchored = 1
 	density = 1
 	unacidable = 1
-	light_range = 3
+	light_outer_range = 3
 	var/needs_power = 0
 	var/active = 1
 	var/delay = 5
@@ -288,7 +288,7 @@
 
 /obj/machinery/shieldwall/Destroy()
 	update_nearby_tiles()
-	..()
+	return ..()
 
 /obj/machinery/shieldwall/attack_hand(mob/user as mob)
 	return
@@ -338,16 +338,12 @@
 	return
 
 
-/obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+/obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
 		return prob(20)
-	else
-		if (istype(mover, /obj/item/projectile))
-			return prob(10)
-		else
-			return !src.density
+	if(istype(mover, /obj/item/projectile))
+		return prob(10)
+	return !src.density
 
 /obj/machinery/shieldwallgen/online
 	anchored = 1

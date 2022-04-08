@@ -12,7 +12,7 @@ REAGENT SCANNER
 	name = "health analyzer"
 	desc = "A hand-held body scanner able to distinguish vital signs of the subject."
 	icon_state = "health"
-	item_state = "analyzer"
+	item_state = "healthanalyzer"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 3
@@ -42,10 +42,11 @@ REAGENT SCANNER
 	if (!istype(C) || C.isSynthetic())
 		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
 		return
-	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	//show_browser(user, medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
-/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
+/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target, master_ui = null, datum/topic_state/state = GLOB.default_state)
 
 	var/data[0]
 
@@ -71,13 +72,18 @@ REAGENT SCANNER
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370)
+		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
 		ui.open()
 
-proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
+/obj/item/device/healthanalyzer/CanUseTopic(mob/user, datum/topic_state/state)
+	. = ..()
+	var/atom/src_object = nano_host()
+	if(src_object in get_rig()?.selected_module)
+		return STATUS_INTERACTIVE
 
+/proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	. = list()
 	var/p_name = list()
 	p_name = "<span class='notice'><b>Scan results for \the [H]:</b></span>"
@@ -158,7 +164,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	if(H.getOxyLoss() > 50)
 		status_data += "<span class='info'><b>Severe oxygen deprivation detected.</b></span>"
 	if(H.getToxLoss() > 50)
-		status_data += "<font color='green'><b>Major systemic organ failure detected.</b></font>"
+		status_data += "<font color='black'><b>Major systemic organ failure detected.</b></font>"
 	if(H.getFireLoss() > 50)
 		status_data += "<font color='#ffa500'><b>Severe burn damage detected.</b></font>"
 	if(H.getBruteLoss() > 50)
@@ -374,7 +380,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 
 
 // Calculates severity based on the ratios defined external limbs.
-proc/get_wound_severity(damage_ratio, vital = 0)
+/proc/get_wound_severity(damage_ratio, vital = 0)
 	var/degree
 
 	switch(damage_ratio)
@@ -430,17 +436,17 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	if (istype(M,/mob/living/carbon/human))
 		dat = M.get_medical_data()
 		last_target = M
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 	return 1
 
 /obj/item/device/healthanalyzer_advanced/attack_self(mob/user)
 	if (last_target && dat)
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 
 /obj/item/device/healthanalyzer_advanced/examine(mob/user)
-	..()
+	. = ..()
 	if (last_target)
-		to_chat(user, "It contains saved data for [last_target].")
+		. += "\nIt contains saved data for [last_target]."
 
 
 /obj/item/device/healthanalyzer_advanced/attack(mob/living/carbon/human/M, mob/living/user)
@@ -448,7 +454,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	if (istype(M,/mob/living/carbon/human))
 		dat = M.get_medical_data()
 		last_target = M
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 		if(isrobot(user))
 			var/mob/living/silicon/robot/R = user
 			if(R.cell)
@@ -458,7 +464,8 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
+		var/obj/item/paper/P = new /obj/item/paper/(get_turf(src))
+		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
@@ -644,9 +651,9 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 
 	var/value = get_value(target)
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
-	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] Thalers")
+	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] credits")
 
-/obj/item/device/slime_scanner
+/obj/item/device/metroid_scanner
 	name = "xenolife scanner"
 	desc = "Multipurpose organic life scanner. With spectral breath analyzer you can find out what snacks Ian had! Or what gasses alien life breathes."
 	icon_state = "xenobio"
@@ -657,13 +664,13 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/slime_scanner/proc/list_gases(gases)
+/obj/item/device/metroid_scanner/proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"
 	return english_list(.)
 
-/obj/item/device/slime_scanner/afterattack(mob/target, mob/user, proximity)
+/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -687,22 +694,22 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 		user.show_message("Breathes:\t[list_gases(A.min_gas)]")
 		user.show_message("Known toxins:\t[list_gases(A.max_gas)]")
 		user.show_message("Temperature comfort zone:\t[A.minbodytemp] K to [A.maxbodytemp] K")
-	else if(istype(target, /mob/living/carbon/slime/))
-		var/mob/living/carbon/slime/T = target
-		user.show_message("<span class='notice'>Slime scan result for \the [T]:</span>")
-		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] slime")
+	else if(istype(target, /mob/living/carbon/metroid/))
+		var/mob/living/carbon/metroid/T = target
+		user.show_message("<span class='notice'>Metroid scan result for \the [T]:</span>")
+		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] metroid")
 		user.show_message("Nutrition:\t[T.nutrition]/[T.get_max_nutrition()]")
 		if(T.nutrition < T.get_starve_nutrition())
-			user.show_message("<span class='alert'>Warning:\tthe slime is starving!</span>")
+			user.show_message("<span class='alert'>Warning:\tthe metroid is starving!</span>")
 		else if (T.nutrition < T.get_hunger_nutrition())
-			user.show_message("<span class='warning'>Warning:\tthe slime is hungry.</span>")
+			user.show_message("<span class='warning'>Warning:\tthe metroid is hungry.</span>")
 		user.show_message("Electric charge strength:\t[T.powerlevel]")
 		user.show_message("Health:\t[round(T.health / T.maxHealth)]%")
 
 		var/list/mutations = T.GetMutations()
 
 		if(!mutations.len)
-			user.show_message("This slime will never mutate.")
+			user.show_message("This metroid will never mutate.")
 		else
 			var/list/mutationChances = list()
 			for(var/i in mutations)
@@ -720,7 +727,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 			user.show_message("Possible colours on splitting:\t[english_list(mutationTexts)]")
 
 		if (T.cores > 1)
-			user.show_message("Anomalous slime core amount detected.")
+			user.show_message("Anomalous metroid core amount detected.")
 		user.show_message("Growth progress:\t[T.amount_grown]/10.")
 	else
 		user.show_message("Incompatible life form, analysis failed.")

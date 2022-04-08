@@ -17,7 +17,7 @@
 	max_equip = 3
 
 /obj/mecha/combat/gygax/dark
-	desc = "A lightweight exosuit used by Heavy Asset Protection. A significantly upgraded Gygax security mech."
+	desc = "A lightweight exosuit used by the infamous Death Squad. A significantly upgraded Gygax security mech."
 	name = "Dark Gygax"
 	icon_state = "darkgygax"
 	initial_icon = "darkgygax"
@@ -43,7 +43,7 @@
 	return
 
 /obj/mecha/combat/gygax/dark/add_cell()
-	cell = new /obj/item/weapon/cell/hyper(src)
+	cell = new /obj/item/cell/hyper(src)
 
 /obj/mecha/combat/gygax/verb/overload()
 	set category = "Exosuit Interface"

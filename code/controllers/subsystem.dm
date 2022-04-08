@@ -88,8 +88,8 @@
 		queue_node_priority = queue_node.queued_priority
 		queue_node_flags = queue_node.flags
 
-		if (queue_node_flags & SS_TICKER)
-			if (!(SS_flags & SS_TICKER))
+		if (queue_node_flags & (SS_TICKER|SS_BACKGROUND) == SS_TICKER)
+			if ((SS_flags & (SS_TICKER|SS_BACKGROUND)) != SS_TICKER)
 				continue
 			if (queue_node_priority < SS_priority)
 				break
@@ -236,6 +236,9 @@
 
 /datum/controller/subsystem/VV_static()
 	return ..() + list("queued_priority", "suspended")
+
+/datum/controller/subsystem/proc/_log_debug(text)
+	log_debug("\[[name]]: [text]")
 
 /decl/vv_set_handler/subsystem_handler
 	handled_type = /datum/controller/subsystem

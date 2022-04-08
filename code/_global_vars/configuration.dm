@@ -2,7 +2,6 @@
 GLOBAL_VAR_INIT(max_explosion_range, 14)
 
 
-var/href_logfile        = null
 var/game_version        = "Baystation12"
 var/changelog_hash      = ""
 var/game_year           = (text2num(time2text(world.realtime, "YYYY")) + 544)
@@ -16,6 +15,7 @@ var/Debug2 = 0
 // Ideally, the connection dies when the server restarts (After feedback logging.).
 var/DBConnection/dbcon     = new() // Feedback    database (New database)
 var/DBConnection/dbcon_old = new() // /tg/station database (Old database) -- see the files in the SQL folder for information on what goes where.
+var/DBConnection/dbcon_don = new() // Second database, used for bots as they cannot access main db
 
 // For FTP requests. (i.e. downloading runtime logs.)
 // However it'd be ok to use for accessing attack logs and such too, which are even laggier.

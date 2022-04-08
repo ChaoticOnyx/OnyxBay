@@ -96,6 +96,11 @@
 	icon_state = "necklace"
 	slot_flags = SLOT_MASK | SLOT_TIE
 
+/obj/item/clothing/accessory/necklace/aquila
+	name = "aquila"
+	desc = "You can see the Emperor smiling in the reflection."
+	icon_state = "aquila"
+
 //Misc
 /obj/item/clothing/accessory/kneepads
 	name = "kneepads"

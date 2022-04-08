@@ -18,7 +18,7 @@
 	New()
 		block=GLOB.REMOTEVIEWBLOCK
 
-	activate(var/mob/M, var/connected, var/flags)
+	activate(mob/M, connected, flags)
 		..(M,connected,flags)
 		M.verbs += /mob/living/carbon/human/proc/remoteobserve
 
@@ -46,7 +46,7 @@
 	New()
 		block=GLOB.REMOTETALKBLOCK
 
-	activate(var/mob/M, var/connected, var/flags)
+	activate(mob/M, connected, flags)
 		..(M,connected,flags)
 		M.verbs += /mob/living/carbon/human/proc/remotesay
 
@@ -58,7 +58,7 @@
 	New()
 		block=GLOB.MORPHBLOCK
 
-	activate(var/mob/M)
+	activate(mob/M)
 		..(M)
 		M.verbs += /mob/living/carbon/human/proc/morph
 
@@ -93,7 +93,7 @@
 	New()
 		block=GLOB.FIREBLOCK
 
-	can_activate(var/mob/M,var/flags)
+	can_activate(mob/M, flags)
 		if(flags & MUTCHK_FORCED)
 			return 1
 		//	return !(/datum/dna/gene/basic/heat_resist in M.active_genes)
@@ -104,7 +104,7 @@
 		if(probinj(_prob,(flags&MUTCHK_FORCED)))
 			return 1
 
-	OnDrawUnderlays(var/mob/M,var/g,var/fat)
+	OnDrawUnderlays(mob/M, g, fat)
 		return "fire[fat]_s"
 
 /datum/dna/gene/basic/noprints
@@ -131,17 +131,17 @@
 	New()
 		block=GLOB.SMALLSIZEBLOCK
 
-	can_activate(var/mob/M,var/flags)
+	can_activate(mob/M, flags)
 		// Can't be big and small.
 		if(MUTATION_HULK in M.mutations)
 			return 0
 		return ..(M,flags)
 
-	activate(var/mob/M, var/connected, var/flags)
+	activate(mob/M, connected, flags)
 		..(M,connected,flags)
 		M.pass_flags |= 1
 
-	deactivate(var/mob/M, var/connected, var/flags)
+	deactivate(mob/M, connected, flags)
 		..(M,connected,flags)
 		M.pass_flags &= ~1 //This may cause issues down the track, but offhand I can't think of any other way for humans to get passtable short of varediting so it should be fine. ~Z
 
@@ -153,20 +153,19 @@
 	New()
 		block=GLOB.HULKBLOCK
 
-	can_activate(var/mob/M,var/flags)
+	can_activate(mob/M, flags)
 		// Can't be big and small.
 		if(mSmallsize in M.mutations)
 			return 0
 		return ..(M,flags)
 
-	OnDrawUnderlays(var/mob/M,var/g,var/fat)
+	OnDrawUnderlays(mob/M, g, fat)
 		if(fat)
 			return "hulk_[fat]_s"
 		else
 			return "hulk_[g]_s"
-		return 0
 
-	OnMobLife(var/mob/living/carbon/human/M)
+	OnMobLife(mob/living/carbon/human/M)
 		if(!istype(M)) return
 		if(M.health <= 25)
 			M.mutations.Remove(MUTATION_HULK)
@@ -191,5 +190,5 @@
 
 	New()
 		block=GLOB.TELEBLOCK
-	OnDrawUnderlays(var/mob/M,var/g,var/fat)
+	OnDrawUnderlays(mob/M, g, fat)
 		return "telekinesishead[fat]_s"

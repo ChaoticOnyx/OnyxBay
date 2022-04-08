@@ -1,7 +1,7 @@
 /obj/machinery/resleever
 	name = "neural lace resleever"
 	desc = "It's a machine that allows neural laces to be sleeved into new bodies."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 
 	anchored = 1
 	density = 1
@@ -28,10 +28,11 @@
 /obj/machinery/resleever/New()
 	..()
 	component_parts = list()
+	component_parts += new /obj/item/circuitboard/resleever(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src, 3)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src, 3)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 
 	RefreshParts()
 	update_icon()
@@ -42,8 +43,7 @@
 	return ..()
 
 
-obj/machinery/resleever/Process()
-
+/obj/machinery/resleever/Process()
 	if(occupant)
 		occupant.Paralyse(4) // We need to always keep the occupant sleeping if they're in here.
 	if(stat & (NOPOWER|BROKEN) || !anchored)
@@ -99,7 +99,7 @@ obj/machinery/resleever/Process()
 		to_chat(usr, "\The [src] doesn't appear to function.")
 		return
 
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /obj/machinery/resleever/ui_status(mob/user, datum/ui_state/state)
 	if(!anchored || inoperable())
@@ -107,13 +107,15 @@ obj/machinery/resleever/Process()
 	return ..()
 
 
-/obj/machinery/resleever/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "resleever", "Neural Lace Resleever", 400, 300, master_ui, state)
-		ui.open()
+/obj/machinery/resleever/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
-/obj/machinery/resleever/ui_data()
+	if(!ui)
+		ui = new(user, src, "ReSleever", name)
+		ui.open()
+		ui.set_autoupdate(TRUE)
+
+/obj/machinery/resleever/tgui_data()
 	var/list/data = list(
 		"name" = occupant_name,
 		"lace" = lace_name,
@@ -127,9 +129,12 @@ obj/machinery/resleever/Process()
 
 	return data
 
-/obj/machinery/resleever/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/machinery/resleever/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return
+
 	switch(action)
 		if("begin")
 			sleeve()
@@ -152,7 +157,7 @@ obj/machinery/resleever/Process()
 	else
 		return
 
-/obj/machinery/resleever/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/resleever/attackby(obj/item/W as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, W))
 		if(occupant)
 			to_chat(user, "<span class='warning'>You need to remove the occupant first!</span>")
@@ -215,6 +220,32 @@ obj/machinery/resleever/Process()
 			if(M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
+
+/obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
+	if(occupant)
+		to_chat(user, SPAN_WARNING("\The [src] is in use."))
+		return
+
+	if(!ismob(target))
+		return
+
+	if(!check_occupant_allowed(target))
+		return
+
+	visible_message("[user] starts putting [target] into \the [src].", 3)
+
+	if(do_after(user, 20, src))
+		if(!target || !(target in range(2, src)))
+			return
+
+		target.forceMove(src)
+		occupant = target
+		occupant_name = occupant.name
+		update_icon()
+		if(target.client)
+			target.client.perspective = EYE_PERSPECTIVE
+			target.client.eye = src
+
 
 /obj/machinery/resleever/proc/eject_occupant()
 	if(!(occupant))

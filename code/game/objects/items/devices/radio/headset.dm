@@ -37,11 +37,12 @@
 	return list_secure_channels()
 
 /obj/item/device/radio/headset/examine(mob/user)
-	if(!(..(user, 1) && radio_desc))
+	. = ..()
+	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
 
-	to_chat(user, "The following channels are available:")
-	to_chat(user, radio_desc)
+	. += "\nThe following channels are available:"
+	. += "\n[radio_desc]"
 
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M as mob, message, channel)
 	if (channel == "special")
@@ -77,6 +78,16 @@
 	origin_tech = list(TECH_ILLEGAL = 2)
 	syndie = 1
 	ks1type = /obj/item/device/encryptionkey/raider
+
+/obj/item/device/radio/headset/abductor
+	name = "alien headset"
+	desc = "An advanced alien headset designed to monitor communications of human space stations. Why does it have a microphone? No one knows."
+	origin_tech = list(TECH_ILLEGAL = 2)
+	icon = 'icons/obj/abductor.dmi'
+	icon_state = "abductor_headset"
+	item_state = "headset"
+	syndie = 1
+	var/team_number
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
@@ -134,6 +145,25 @@
 	icon_state = "com_headset"
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/headset_com
+
+/obj/item/device/radio/headset/heads/verb/try_to_toggle_mode()
+	set name = "Toggle Command Mode"
+	set category = "Object"
+	set src in usr
+
+	toggle_mode(usr)
+
+/obj/item/device/radio/headset/heads/AltClick(mob/user)
+	toggle_mode(user)
+
+/obj/item/device/radio/headset/heads/proc/toggle_mode(mob/user)
+	if(!user)
+		return
+	if(!CanPhysicallyInteract(user))
+		return
+
+	loud = !loud
+	to_chat(user, SPAN("notice", "You have [loud ? "enabled" : "disabled"] command mode for [src]."))
 
 /obj/item/device/radio/headset/heads/captain
 	name = "captain's headset"
@@ -238,7 +268,33 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/specops
 
-/obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/headset/tactical
+	name = "tactical earmuffs"
+	desc = "The earmuffs of the cool."
+	icon_state = "tac_earmuffs"
+	item_state = "tac_earmuffs"
+	slot_flags = SLOT_EARS | SLOT_TWOEARS
+	ear_protection = 0.5 // Worn on both ears, effectively providing 1 ear protection
+
+/obj/item/device/radio/headset/tactical/sec
+	ks2type = /obj/item/device/encryptionkey/headset_sec
+
+/obj/item/device/radio/headset/tactical/hos
+	desc = "These ones seem even more tactical than usual."
+	ks2type = /obj/item/device/encryptionkey/heads/hos
+
+/obj/item/device/radio/headset/tactical/emp_act(severity)
+	if(istype(src.loc, /mob/living/carbon/human))
+		var/mob/living/carbon/human/M = src.loc
+		if(M.l_ear == src || M.r_ear == src)
+			to_chat(M, SPAN("danger", "You hear a loud deafening screech!"))
+			M.Stun(10)
+			M.Weaken(3)
+			M.ear_damage += rand(0, 5)
+			M.ear_deaf = max(M.ear_deaf,15)
+	..()
+
+/obj/item/device/radio/headset/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))

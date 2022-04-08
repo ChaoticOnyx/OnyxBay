@@ -58,11 +58,11 @@
 	if (!.)
 		. = B.qdels - A.qdels
 
-/proc/cmp_ruincost_priority(datum/map_template/ruin/A, datum/map_template/ruin/B)
-	return initial(A.cost) - initial(B.cost)
-
 /proc/cmp_timer(datum/timedevent/a, datum/timedevent/b)
 	return a.timeToRun - b.timeToRun
 
 /proc/cmp_program(datum/computer_file/program/A, datum/computer_file/program/B)
 	return cmp_text_asc(A.filedesc, B.filedesc)
+
+/proc/cmp_marking_order(list/A, list/B)
+	return A[1] - B[1][1]

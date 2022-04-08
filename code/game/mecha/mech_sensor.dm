@@ -1,27 +1,27 @@
 /obj/machinery/mech_sensor
 	icon = 'icons/obj/airlock_machines.dmi'
-	icon_state = "airlock_sensor_off"
+	icon_state = "mech_sensor_standby"
 	name = "mechatronic sensor"
 	desc = "Regulates mech movement."
 	anchored = 1
 	density = 1
 	throwpass = 1
 	layer = ABOVE_WINDOW_LAYER
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	var/on = 0
 	var/id_tag = null
 
 	var/frequency = 1379
 	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/mech_sensor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(!src.enabled()) return 1
-	if(air_group || (height==0)) return 1
+/obj/machinery/mech_sensor/CanPass(atom/movable/mover, turf/target)
+	if(!src.enabled())
+		return TRUE
 
-	if ((get_dir(loc, target) & dir) && src.is_blocked(mover))
+	if((get_dir(loc, target) & dir) && src.is_blocked(mover))
 		src.give_feedback(mover)
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /obj/machinery/mech_sensor/proc/is_blocked(O as obj)
 	if(istype(O, /obj/mecha/medical/odysseus))
@@ -58,9 +58,9 @@
 
 /obj/machinery/mech_sensor/update_icon(safety = 0)
 	if (enabled())
-		icon_state = "airlock_sensor_standby"
+		icon_state = "mech_sensor_standby"
 	else
-		icon_state = "airlock_sensor_off"
+		icon_state = "mech_sensor_off"
 
 /obj/machinery/mech_sensor/Initialize()
 	. = ..()

@@ -2,6 +2,10 @@
 	name = "cultify"
 	effect_type = EFFECT_TRANSFORM
 
+/datum/artifact_effect/cultify/New(atom/location)
+	..()
+	effect = pick(EFFECT_AURA, EFFECT_PULSE)
+
 /datum/artifact_effect/cultify/DoEffectAura()
 	make_culty(min(3, effectrange))
 

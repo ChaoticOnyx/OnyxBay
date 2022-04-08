@@ -20,21 +20,23 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	var/atom/holder
 	var/setup = 0
 
-	proc/set_up(n = 3, c = 0, turf/loc)
-		if(n > 10)
-			n = 10
-		number = n
-		cardinals = c
-		location = loc
-		setup = 1
+/datum/effect/effect/system/proc/set_up(n = 3, c = 0, turf/loc)
+	number = min(n, 10)
+	cardinals = c
+	location = loc
+	setup = 1
 
-	proc/attach(atom/atom)
-		holder = atom
+/datum/effect/effect/system/proc/attach(atom/atom)
+	holder = atom
 
-	proc/start()
+/datum/effect/effect/system/proc/start()
 
-	proc/spread()
+/datum/effect/effect/system/proc/spread()
 
+/datum/effect/effect/system/Destroy()
+	..()
+	holder = null
+	location = null
 
 /////////////////////////////////////////////
 // GENERIC STEAM SPREAD SYSTEM
@@ -102,7 +104,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/sparks/New()
 	..()
-	playsound(src.loc, "spark", 100, 1)
+	playsound(src.loc, SFX_SPARK, 100, 1)
 	var/turf/T = src.loc
 	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
@@ -209,7 +211,6 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/illumination/New(newloc, lifetime=10, range=null, power=null, color=null)
 	time_to_live=lifetime
 	..()
-	set_light(range, power, color)
 
 /////////////////////////////////////////////
 // Bad smoke

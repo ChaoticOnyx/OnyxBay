@@ -7,14 +7,13 @@
 	var/flags
 	var/log_proc
 	var/mute_setting
-	var/show_preference_setting
 
 /*
 * Procs for handling sending communication messages
 */
 /decl/communication_channel/proc/communicate(datum/communicator, message)
 	if(can_communicate(arglist(args)))
-		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()] : [message]")
+		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()]: [message]")
 		return do_communicate(arglist(args))
 	return FALSE
 
@@ -32,10 +31,6 @@
 
 	var/client/C = communicator.get_client()
 
-	if(C && show_preference_setting && C.get_preference_value(show_preference_setting) == GLOB.PREF_HIDE && !check_rights(R_INVESTIGATE,0,C))
-		to_chat(communicator, "<span class='warning'>You have [name] muted.</span>")
-		return FALSE
-
 	if(C && mute_setting && (C.prefs.muted & mute_setting))
 		to_chat(communicator, "<span class='danger'>You cannot use [name] (muted).</span>")
 		return FALSE
@@ -48,6 +43,10 @@
 
 /decl/communication_channel/proc/do_communicate(communicator, message)
 	return
+
+/decl/communication_channel/proc/get_message_type()
+	CAN_BE_REDEFINED(TRUE)
+	CRASH("Channel [src] has no message type")
 
 /*
 * Procs for handling the reception of communication messages
@@ -67,23 +66,17 @@
 		do_receive_communication(arglist(args))
 
 /decl/communication_channel/proc/can_receive_communication(datum/receiver)
-	if(show_preference_setting)
-		var/client/C = receiver.get_client()
-		// Admins (investigators) are expected to monitor channels. They can deadmin if they don't wish to see everything.
-		if(C && C.get_preference_value(show_preference_setting) == GLOB.PREF_HIDE && !check_rights(R_INVESTIGATE, 0 , C))
-			return FALSE
 	return TRUE
 
 /decl/communication_channel/proc/do_receive_communication(datum/communicator, datum/receiver, message)
-	to_chat(receiver, message)
+	to_chat(receiver, message, type = get_message_type())
 
 // Misc. helpers
 /datum/proc/communication_identifier()
-	return usr ? "[src] - usr: [plain_key_name(usr)]" : "[src]"
+	return usr ? "[key_name(usr)]" : "[key_name(src)]"
 
 /mob/communication_identifier()
-	var/key_name = plain_key_name(src)
-	return usr != src ? "[key_name] - usr: [plain_key_name(usr)]" : key_name
+	return usr != src ? "[key_name(usr)]" : "[key_name(src)]"
 
 /proc/sanitize_and_communicate(channel_type, communicator, message)
 	message = sanitize(message)

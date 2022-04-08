@@ -1,6 +1,6 @@
 //Contains the rapid construction device.
 
-/obj/item/weapon/rcd
+/obj/item/rcd
 	name = "rapid construction device"
 	desc = "Small, portable, and far, far heavier than it looks, this gun-shaped device has a port into which one may insert compressed matter cartridges."
 	description_info = "On use, this device will toggle between various types of structures (or their removal). You can examine it to see its current mode. It must be loaded with compressed matter cartridges, which can be obtained from an autolathe. Click an adjacent tile to use the device."
@@ -34,7 +34,7 @@
 	var/canRwall = 0
 	var/disabled = 0
 
-/obj/item/weapon/rcd/Initialize()
+/obj/item/rcd/Initialize()
 	. = ..()
 
 	if(!work_modes)
@@ -42,33 +42,33 @@
 		work_modes = h.children
 	work_mode = work_modes[1]
 
-/obj/item/weapon/rcd/attack()
+/obj/item/rcd/attack()
 	return 0
 
-/obj/item/weapon/rcd/proc/can_use(mob/user,turf/T)
+/obj/item/rcd/proc/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && user.get_active_hand() == src && !user.incapacitated())
 
-/obj/item/weapon/rcd/examine(user)
+/obj/item/rcd/examine(user)
 	. = ..()
-	if(src.type == /obj/item/weapon/rcd && loc == user)
-		to_chat(user, "The current mode is '[work_mode]'")
-		to_chat(user, "It currently holds [stored_matter]/[max_stored_matter] matter-units.")
+	if(src.type == /obj/item/rcd && loc == user)
+		. += "\nThe current mode is '[work_mode]'"
+		. += "\nIt currently holds [stored_matter]/[max_stored_matter] matter-units."
 
-/obj/item/weapon/rcd/New()
+/obj/item/rcd/New()
 	..()
 	src.spark_system = new /datum/effect/effect/system/spark_spread
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-/obj/item/weapon/rcd/Destroy()
+/obj/item/rcd/Destroy()
 	qdel(spark_system)
 	spark_system = null
 	return ..()
 
-/obj/item/weapon/rcd/attackby(obj/item/weapon/W, mob/user)
+/obj/item/rcd/attackby(obj/item/W, mob/user)
 	update_icon()
-	if(istype(W, /obj/item/weapon/rcd_ammo))
-		var/obj/item/weapon/rcd_ammo/cartridge = W
+	if(istype(W, /obj/item/rcd_ammo))
+		var/obj/item/rcd_ammo/cartridge = W
 		if((stored_matter + cartridge.remaining) > 30)
 			to_chat(user, "<span class='notice'>The RCD can't hold that many additional matter-units.</span>")
 			return
@@ -81,7 +81,7 @@
 		return
 	..()
 
-/obj/item/weapon/rcd/attack_self(mob/user)
+/obj/item/rcd/attack_self(mob/user)
 	//Change the mode
 	work_id++
 	work_mode = next_in_list(work_mode, work_modes)
@@ -89,7 +89,7 @@
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 	if(prob(20)) src.spark_system.start()
 
-/obj/item/weapon/rcd/afterattack(atom/A, mob/user, proximity)
+/obj/item/rcd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
 	if(disabled && !isrobot(user))
 		return 0
@@ -98,21 +98,21 @@
 	work_id++
 	work_mode.do_work(src, A, user)
 
-/obj/item/weapon/rcd/proc/useResource(amount, mob/user)
+/obj/item/rcd/proc/useResource(amount, mob/user)
     if(stored_matter < amount)
         return 0
     stored_matter -= amount
     update_icon()
     return 1
 
-/obj/item/weapon/rcd/update_icon()
+/obj/item/rcd/update_icon()
 	..()
 	if(stored_matter > 0)
 		icon_state = "rcd"
 	else
 		icon_state = "rcd-e"
 
-/obj/item/weapon/rcd_ammo
+/obj/item/rcd_ammo
 	name = "compressed matter cartridge"
 	desc = "A highly-compressed matter cartridge usable in rapid construction (and deconstruction) devices, such as railguns."
 	icon = 'icons/obj/ammo.dmi'
@@ -123,22 +123,22 @@
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 7500)
 	var/remaining = 10
 
-/obj/item/weapon/rcd_ammo/examine(mob/user)
-	. = ..(user,1)
-	if(.)
-		to_chat(user, "<span class='notice'>It has [remaining] unit\s of matter left.</span>")
+/obj/item/rcd_ammo/examine(mob/user)
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n<span class='notice'>It has [remaining] unit\s of matter left.</span>"
 
-/obj/item/weapon/rcd_ammo/large
+/obj/item/rcd_ammo/large
 	name = "high-capacity matter cartridge"
 	desc = "Do not ingest."
 	matter = list(MATERIAL_STEEL = 45000, MATERIAL_GLASS = 22500)
 	remaining = 30
 	origin_tech = list(TECH_MATERIAL = 4)
 
-/obj/item/weapon/rcd/borg
+/obj/item/rcd/borg
 	canRwall = 1
 
-/obj/item/weapon/rcd/borg/useResource(amount, mob/user)
+/obj/item/rcd/borg/useResource(amount, mob/user)
 	if(isrobot(user))
 		var/mob/living/silicon/robot/R = user
 		if(R.cell)
@@ -148,14 +148,14 @@
 				return 1
 	return 0
 
-/obj/item/weapon/rcd/borg/attackby()
+/obj/item/rcd/borg/attackby()
 	return
 
-/obj/item/weapon/rcd/borg/can_use(mob/user,turf/T)
+/obj/item/rcd/borg/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && !user.incapacitated())
 
 
-/obj/item/weapon/rcd/mounted/useResource(amount, mob/user)
+/obj/item/rcd/mounted/useResource(amount, mob/user)
 	var/cost = amount*130 //so that a rig with default powercell can build ~2.5x the stuff a fully-loaded RCD can.
 	if(istype(loc,/obj/item/rig_module))
 		var/obj/item/rig_module/module = loc
@@ -165,10 +165,10 @@
 				return 1
 	return 0
 
-/obj/item/weapon/rcd/mounted/attackby()
+/obj/item/rcd/mounted/attackby()
 	return
 
-/obj/item/weapon/rcd/mounted/can_use(mob/user,turf/T)
+/obj/item/rcd/mounted/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && !user.incapacitated())
 
 
@@ -179,7 +179,7 @@
 	var/handles_type
 	var/work_type
 
-/decl/hierarchy/rcd_mode/proc/do_work(obj/item/weapon/rcd/rcd, atom/target, user)
+/decl/hierarchy/rcd_mode/proc/do_work(obj/item/rcd/rcd, atom/target, user)
 	for(var/child in children)
 		var/decl/hierarchy/rcd_mode/rcdm = child
 		if(!rcdm.can_handle_work(rcd, target))
@@ -188,7 +188,7 @@
 			to_chat(user, "<span class='warning'>Insufficient resources.</span>")
 			return FALSE
 
-		playsound(get_turf(user), 'sound/machines/click.ogg', 50, 1)
+		playsound(user, 'sound/machines/click.ogg', 50, 1)
 		rcdm.work_message(target, user, rcd)
 
 		if(rcdm.delay)
@@ -197,12 +197,12 @@
 				return FALSE
 
 		rcdm.do_handle_work(target)
-		playsound(get_turf(user), 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(user, 'sound/items/Deconstruct.ogg', 50, 1)
 		return TRUE
 
 	return FALSE
 
-/decl/hierarchy/rcd_mode/proc/can_handle_work(obj/item/weapon/rcd/rcd, atom/target)
+/decl/hierarchy/rcd_mode/proc/can_handle_work(obj/item/rcd/rcd, atom/target)
 	return istype(target, handles_type)
 
 /decl/hierarchy/rcd_mode/proc/do_handle_work(atom/target)
@@ -251,10 +251,10 @@
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf
 	cost = 1
 	delay = 2 SECONDS
-	work_type = /turf/simulated/floor/plating/airless
+	work_type = /turf/simulated/floor/tiled
 
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf/can_handle_work(rcd, turf/target)
-	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)))
+	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)) || isopenspace(target))
 
 /decl/hierarchy/rcd_mode/floor_and_walls/floor_turf
 	cost = 3
@@ -290,5 +290,5 @@
 	handles_type = /turf/simulated/wall
 	work_type = /turf/simulated/floor
 
-/decl/hierarchy/rcd_mode/deconstruction/wall/can_handle_work(obj/item/weapon/rcd/rcd, turf/simulated/wall/target)
+/decl/hierarchy/rcd_mode/deconstruction/wall/can_handle_work(obj/item/rcd/rcd, turf/simulated/wall/target)
 	return ..() && (rcd.canRwall || !target.reinf_material)

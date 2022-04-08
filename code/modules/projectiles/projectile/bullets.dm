@@ -126,24 +126,24 @@
 /* short-casing projectiles, like the kind used in pistols or SMGs */
 
 /obj/item/projectile/bullet/pistol
-	damage = 25 //9mm, .38, etc
+	damage = 27.5 //9mm, .38, etc
 	armor_penetration = 13.5
 
 /obj/item/projectile/bullet/pistol/medium
-	damage = 26.5 //.45
+	damage = 30 //.45
 	armor_penetration = 14.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
-	fire_sound = 'sound/weapons/gunshot/gunshot_smg.ogg'
-	damage = 28 //10mm
-	armor_penetration = 18
+	damage = 32.5 //10mm
+	armor_penetration = 19.5
 
 /obj/item/projectile/bullet/pistol/medium/revolver
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
-	damage = 30 //.44 magnum or something
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	damage = 37.5 //.44 magnum or something
+	armor_penetration = 20
 
 /obj/item/projectile/bullet/pistol/strong //matebas
-	fire_sound = 'sound/weapons/gun_mateba.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_mateba.ogg'
 	damage = 60 //.50AE
 	armor_penetration = 30
 
@@ -159,6 +159,7 @@
 	embed = 0
 	sharp = 0
 	armor_penetration = 2.5
+	penetration_modifier = 0.2
 
 /obj/item/projectile/bullet/pistol/rubber/c44
 	name = "rubber bullet"
@@ -167,18 +168,19 @@
 	agony = 35
 	embed = 0
 	sharp = 0
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
-/obj/item/projectile/bullet/pistol/accelerated/c44
+/obj/item/projectile/bullet/pistol/accelerated/c38
 	name = "accelerated bullet"
-	damage = 42.5 //.44 magnum + gauss
-	armor_penetration = 45
+	damage = 35.0 // .38 + gauss
+	armor_penetration = 35
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
 
 
 /* shotgun projectiles */
 
 /obj/item/projectile/bullet/shotgun
 	name = "slug"
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
 	damage = 55
 	armor_penetration = 20
 
@@ -189,16 +191,26 @@
 	agony = 60
 	embed = 0
 	sharp = 0
+	penetration_modifier = 0.2
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
 /obj/item/projectile/bullet/pellet/shotgun
 	name = "shrapnel"
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
 	damage = 20
 	pellets = 6
 	range_step = 1
 	spread_step = 10
+	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
+
+/obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
+	name = "shrapnel"
+	damage = 35
+	armor_penetration = 20
+	pellets = 5
+	range_step = 2
+	spread_step = 15
+	penetration_modifier = 1.2
 
 /* "Rifle" rounds */
 
@@ -207,16 +219,13 @@
 	penetrating = 1
 
 /obj/item/projectile/bullet/rifle/a556
-	fire_sound = 'sound/weapons/gunshot/gunshot3.ogg'
-	damage = 30
+	damage = 27.5
 
 /obj/item/projectile/bullet/rifle/a762
-	fire_sound = 'sound/weapons/gunshot/gunshot2.ogg'
 	damage = 35
 	armor_penetration = 30
 
 /obj/item/projectile/bullet/rifle/a145
-	fire_sound = 'sound/weapons/gunshot/sniper.ogg'
 	damage = 80
 	stun = 3
 	weaken = 3
@@ -252,7 +261,7 @@
 /obj/item/projectile/bullet/gyro/Initialize()
 	. = ..()
 
-	fire_sound = get_sfx("explosion")
+	fire_sound = GET_SFX(SFX_EXPLOSION)
 
 /obj/item/projectile/bullet/gyro/on_hit(atom/target, blocked = 0)
 	if(isturf(target))

@@ -5,11 +5,13 @@
 	a hostile enviroment."
 	icon = 'icons/obj/cryobag.dmi'
 	icon_state = "bodybag_folded"
+	item_state = "bodybag_folded"
 	origin_tech = list(TECH_BIO = 4)
 	var/stasis_power
+	var/bag_structure = /obj/structure/closet/body_bag/cryobag
 
 /obj/item/bodybag/cryobag/attack_self(mob/user)
-	var/obj/structure/closet/body_bag/cryobag/R = new /obj/structure/closet/body_bag/cryobag(user.loc)
+	var/obj/structure/closet/body_bag/cryobag/R = new bag_structure(user.loc)
 	if(stasis_power)
 		R.stasis_power = stasis_power
 	R.update_icon()
@@ -25,7 +27,7 @@
 
 	storage_types = CLOSET_STORAGE_MOBS
 	var/datum/gas_mixture/airtank
-	
+
 	var/syndi
 
 	var/stasis_power = 20
@@ -103,9 +105,9 @@
 
 /obj/structure/closet/body_bag/cryobag/examine(mob/user)
 	. = ..()
-	to_chat(user,"The stasis meter shows '[stasis_power]x'.")
+	. += "\nThe stasis meter shows '[stasis_power]x'."
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
-		to_chat(user, "<span class='info'>You peer into \the [src].</span>")
+		. += "\n<span class='info'>You peer into \the [src].</span>"
 		for(var/mob/living/L in contents)
 			L.examine(user)
 
@@ -114,18 +116,11 @@
 	desc = "Pretty useless now.."
 	icon_state = "bodybag_used"
 	icon = 'icons/obj/cryobag.dmi'
-	
+
 /obj/item/bodybag/cryobag/syndi
 	name = "modified stasis bag"
 	icon = 'icons/obj/syndi_cryobag.dmi'
-
-/obj/item/bodybag/cryobag/syndi/attack_self(mob/user)
-	var/obj/structure/closet/body_bag/cryobag/syndi/R = new /obj/structure/closet/body_bag/cryobag/syndi(user.loc)
-	if(stasis_power)
-		R.stasis_power = stasis_power
-	R.update_icon()
-	R.add_fingerprint(user)
-	qdel(src)
+	bag_structure = /obj/structure/closet/body_bag/cryobag/syndi
 
 /obj/structure/closet/body_bag/cryobag/syndi
 	name = "modified stasis bag"
@@ -134,22 +129,49 @@
 	item_path = /obj/item/bodybag/cryobag/syndi
 	stasis_power = 10
 	degradation_time = 300
-	
+
 /obj/structure/closet/body_bag/cryobag/syndi/fold(user)
 	var/obj/item/bodybag/cryobag/syndi/folded = ..()
 	if(istype(folded))
 		folded.stasis_power = stasis_power
-		folded.color = color_saturation(get_saturation())	
-		
+		folded.color = color_saturation(get_saturation())
+
 /obj/structure/closet/body_bag/cryobag/syndi/Process()
 	..()
-	
+
 	var/mob/living/carbon/human/H = locate() in src
 	if(!H)
 		return PROCESS_KILL
-	
+
 	H.add_chemical_effect(CE_CRYO, 2)
 	H.add_chemical_effect(CE_STABLE)
 	H.add_chemical_effect(CE_OXYGENATED, 1)
 	H.add_chemical_effect(CE_ANTITOX , 1)
 	H.add_chemical_effect(CE_PULSE, -1)
+
+// Bag'o'Vat
+/obj/item/bodybag/cryobag/vatgrownbody
+	name = "VAT stasis bag"
+	icon = 'icons/obj/vat_cryobag.dmi'
+	bag_structure = /obj/structure/closet/body_bag/cryobag/vatgrownbody
+
+/obj/structure/closet/body_bag/cryobag/vatgrownbody
+	name = "VAT stasis bag"
+	desc = "A non-reusable plastic bag designed to prevent additional damage to an occupant, especially useful if short on time or in \
+	a hostile enviroment. This one is marked with big \"VAT\" letters and has some sort of document glued to it."
+	icon = 'icons/obj/vat_cryobag.dmi'
+	item_path = /obj/item/bodybag/cryobag/vatgrownbody
+	var/mobpath = null
+
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/Initialize()
+	. = ..()
+	if(mobpath)
+		new mobpath(src)
+		contains_body = 1
+		update_icon()
+
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/male
+	mobpath = /mob/living/carbon/human/vatgrown
+
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/female
+	mobpath = /mob/living/carbon/human/vatgrown/female

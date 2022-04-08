@@ -8,7 +8,7 @@
 	layer = BELOW_DOOR_LAYER
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O,/obj/item/weapon/tank))
+	if(istype(O,/obj/item/tank))
 		return
 	else
 		..()

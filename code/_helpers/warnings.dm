@@ -13,12 +13,12 @@ SUBSYSTEM_DEF(warnings)
 		shown_warnings_this_round[type] = list()
 		shown_warnings[type] = list()
 		var/savefile/S = new(data_path+type+".sav")
-		if(!lentext(S))
+		if(!length(S))
 			continue
-		for(var/I in S)
-			S[I] >> shown_warnings[type][I]
+		for(var/ckey in S.dir)
+			from_file(S[ckey], shown_warnings[type][ckey])
 
-/datum/controller/subsystem/warnings/proc/show_warning(var/client/C, var/type, var/options="window=Warning;size=480x320")
+/datum/controller/subsystem/warnings/proc/show_warning(client/C, type, options="window=Warning;size=480x320")
 	ASSERT(C)
 	ASSERT(type)
 	ASSERT(options)
@@ -37,4 +37,4 @@ SUBSYSTEM_DEF(warnings)
 		fdel(file(data_path+type+".sav"))
 		var/savefile/S = new(data_path+type+".sav")
 		for(var/I in shown_warnings[type])
-			S[I] << shown_warnings[type][I]
+			to_file(S[I], shown_warnings[type][I])

@@ -24,6 +24,9 @@
 
 #define SEE_IN_DARK_DEFAULT 2
 
+//for obj explosion block calculation
+#define EXPLOSION_BLOCK_PROC -1
+
 #define SEE_INVISIBLE_MINIMUM 5
 #define INVISIBILITY_MAXIMUM 100
 
@@ -40,7 +43,9 @@
 #define    IMPTRACK_HUD 7 // Tracking implant.
 #define SPECIALROLE_HUD 8 // AntagHUD image.
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
-#define 	  LIFE_HUD  10 // STATUS_HUD that only reports dead or alive
+#define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
+#define        XENO_HUD 11 // Alien embryo status.
+#define       GLAND_HUD 12 // Abductors data hud
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
@@ -91,7 +96,9 @@
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
-#define CUSTOM_ITEM_SYNTH null
+#define CUSTOM_ITEM_ROBOTS 'icons/mob/robots_custom.dmi'
+#define CUSTOM_ITEM_AI 'icons/mob/ai_custom/ai_cores.dmi'
+#define CUSTOM_ITEM_AI_HOLO 'icons/mob/ai_custom/ai_holos.dmi'
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2
@@ -131,6 +138,7 @@
 #define PROG_ADMIN		"NTNet Administration"
 #define PROG_UTIL		"Utility"
 #define PROG_SEC		"Security"
+#define PROG_MED		"Medical"
 #define PROG_MONITOR	"Monitoring"
 
 // Caps for NTNet logging. Less than 10 would make logging useless anyway, more than 500 may make the log browser too laggy. Defaults to 100 unless user changes it.
@@ -194,7 +202,8 @@
 #define VIRUS_MILD			1
 #define VIRUS_COMMON		2	//Random events don't go higher (mutations aside)
 #define VIRUS_ENGINEERED	3
-#define VIRUS_EXOTIC		4	//Usually adminbus only
+#define VIRUS_MUTATION		4
+#define VIRUS_EXOTIC		5	//Usually adminbus only
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
@@ -227,3 +236,42 @@
 #define FOURSPACES "&nbsp;&nbsp;&nbsp;&nbsp;"
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 #define GRAYSCALE list(0.3,0.3,0.3,0,0.59,0.59,0.59,0,0.11,0.11,0.11,0,0,0,0,1,0,0,0,0)
+
+#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+
+//Wiki book styles
+#define WIKI_FULL   1 // This is a standart web page. Beware, navigaton throw the internet is allowed!
+#define WIKI_MINI   2 // This is a beautiful copy of wiki topic. Beware, font is really small!
+#define WIKI_MOBILE 3 // This is a highly visible variantion. Beware, decoration elements are lost!
+#define WIKI_TEXT	4 // This is a distorted version. Everything is lost except unformatted text!
+
+//https://secure.byond.com/docs/ref/info.html#/atom/var/mouse_opacity
+#define MOUSE_OPACITY_TRANSPARENT 0
+#define MOUSE_OPACITY_ICON 1
+#define MOUSE_OPACITY_OPAQUE 2
+
+//How pulling an object affects mob's movement speed.
+#define PULL_SLOWDOWN_WEIGHT   -1  // Default value, slowdown's handled by an object's w_class.
+#define PULL_SLOWDOWN_EXTREME 4.5
+#define PULL_SLOWDOWN_HEAVY   3.5
+#define PULL_SLOWDOWN_MEDIUM  2.5
+#define PULL_SLOWDOWN_LIGHT   1.5
+#define PULL_SLOWDOWN_TINY    0.5
+#define PULL_SLOWDOWN_NONE    0
+
+#define JOB_VACANCY_STATUS_OPEN "Open"
+#define JOB_VACANCY_STATUS_COMPLETED "Completed"
+#define JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART 3
+#define JOB_VACANCIES_SLOT_PER_TIME (10 MINUTES)
+
+//Syringe states
+#define SYRINGE_DRAW "draw"
+#define SYRINGE_INJECT "inject"
+#define SYRINGE_BROKEN "broken"
+#define SYRINGE_PACKAGED "packaged"
+
+// Bank accounts' security levels
+#define BANK_SECURITY_MINIMUM 0
+#define BANK_SECURITY_MODERATE 1
+#define BANK_SECURITY_MAXIMUM 2

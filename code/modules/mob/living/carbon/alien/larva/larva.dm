@@ -1,39 +1,73 @@
 /mob/living/carbon/alien/larva
 	name = "alien larva"
 	real_name = "alien larva"
+	adult_form = /mob/living/carbon/human
 	speak_emote = list("hisses")
 	icon_state = "larva"
 	language = "Hivemind"
-	maxHealth = 25
-	health = 25
-	faction = "xeno"
-
-	var/adult_form = /mob/living/carbon/human
-	var/amount_grown = 0
-	var/max_grown = 200
-	var/time_of_birth
-	var/can_namepick_as_adult = 0
-	var/adult_name
+	maxHealth = 30
+	health = 30
+	faction = "xenomorph"
+	species_language = "Xenomorph"
+	density = 0
+	max_grown = 180
+	see_in_dark = 8
 
 /mob/living/carbon/alien/larva/Initialize()
-	time_of_birth = world.time
 	. = ..()
 	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
+	verbs += /mob/living/carbon/proc/toggle_darksight
 
-/mob/living/carbon/alien/larva/update_icons()
+/obj/structure/alien/egg/CanUseTopic(mob/user)
+	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
 
-	var/state = 0
-	if(amount_grown > max_grown*0.75)
-		state = 2
-	else if(amount_grown > max_grown*0.25)
-		state = 1
+/mob/living/carbon/alien/larva/Topic(href, href_list)
+	if(..())
+		return TRUE
 
-	if(stat == DEAD)
-		icon_state = "[initial(icon_state)][state]_dead"
-	else if (stunned)
-		icon_state = "[initial(icon_state)][state]_stun"
-	else if(lying || resting)
-		icon_state = "[initial(icon_state)][state]_sleep"
-	else
-		icon_state = "[initial(icon_state)][state]"
+	if(href_list["occupy"])
+		attack_ghost(usr)
+
+/mob/living/carbon/alien/larva/attack_ghost(mob/observer/ghost/user)
+	if(client)
+		return ..()
+
+	if(jobban_isbanned(user, MODE_XENOMORPH))
+		to_chat(user, SPAN("danger", "You are banned from playing a xenomorph."))
+		return
+
+	var/confirm = alert(user, "Are you sure you want to join as a xenomorph larva?", "Become Larva", "No", "Yes")
+
+	if(!src || confirm != "Yes")
+		return
+
+	if(!user || !user.ckey)
+		return
+
+	if(client) //Already occupied.
+		to_chat(user, "Too slow...")
+		return
+
+	ckey = user.ckey
+
+	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
+		GLOB.xenomorphs.add_antagonist(mind, 1)
+
+	spawn(-1)
+		if(user)
+			qdel(user) // Remove the keyless ghost if it exists.
+
+/mob/living/carbon/alien/larva/Login()
+	. = ..()
+	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
+		GLOB.xenomorphs.add_antagonist(mind, 1)
+
+/mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
+	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
+		if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
+			to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];occupy=1'>OCCUPY</a>)"))
+
+/mob/living/carbon/alien/larva/update_living_sight()
+	..()
+	set_sight(sight|SEE_MOBS)

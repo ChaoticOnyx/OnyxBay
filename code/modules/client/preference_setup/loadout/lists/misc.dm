@@ -1,80 +1,43 @@
 /datum/gear/cane
 	display_name = "cane"
-	path = /obj/item/weapon/cane
+	path = /obj/item/cane
 
 /datum/gear/dice
 	display_name = "dice pack"
-	path = /obj/item/weapon/storage/pill_bottle/dice
+	path = /obj/item/storage/pill_bottle/dice
 
 /datum/gear/dice/nerd
 	display_name = "dice pack (gaming)"
-	path = /obj/item/weapon/storage/pill_bottle/dice_nerd
+	path = /obj/item/storage/pill_bottle/dice_nerd
 
 /datum/gear/cards
 	display_name = "deck of cards"
-	path = /obj/item/weapon/deck/cards
+	path = /obj/item/deck/cards
 
 /datum/gear/tarot
 	display_name = "deck of tarot cards"
-	path = /obj/item/weapon/deck/tarot
+	path = /obj/item/deck/tarot
 
 /datum/gear/holder
 	display_name = "card holder"
-	path = /obj/item/weapon/deck/holder
+	path = /obj/item/deck/holder
 
 /datum/gear/cardemon_pack
 	display_name = "Cardemon booster pack"
-	path = /obj/item/weapon/pack/cardemon
+	path = /obj/item/pack/cardemon
 
 /datum/gear/spaceball_pack
 	display_name = "Spaceball booster pack"
-	path = /obj/item/weapon/pack/spaceball
-
-/datum/gear/flask
-	display_name = "flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
-
-/datum/gear/flask/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
-
-/datum/gear/vacflask
-	display_name = "vacuum-flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
-
-/datum/gear/vacflask/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_drink_reagents())
+	path = /obj/item/pack/spaceball
 
 /datum/gear/coffeecup
 	display_name = "coffee cup"
-	path = /obj/item/weapon/reagent_containers/food/drinks/coffeecup
+	path = /obj/item/reagent_containers/food/drinks/coffeecup
 	flags = GEAR_HAS_TYPE_SELECTION
-
-/datum/gear/boot_knife
-	display_name = "boot knife"
-	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
-	cost = 3
-
-/datum/gear/lunchbox
-	display_name = "lunchbox"
-	description = "A little lunchbox."
-	cost = 2
-	path = /obj/item/weapon/storage/lunchbox
-
-/datum/gear/lunchbox/New()
-	..()
-	var/list/lunchboxes = list()
-	for(var/lunchbox_type in typesof(/obj/item/weapon/storage/lunchbox))
-		var/obj/item/weapon/storage/lunchbox/lunchbox = lunchbox_type
-		if(!initial(lunchbox.filled))
-			lunchboxes[initial(lunchbox.name)] = lunchbox_type
-	gear_tweaks += new /datum/gear_tweak/path(lunchboxes)
-	gear_tweaks += new /datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
 
 /datum/gear/towel
 	display_name = "towel"
-	path = /obj/item/weapon/towel
+	path = /obj/item/towel
 	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/plush_toy
@@ -91,27 +54,22 @@
 	plushes["lizard plush"] = /obj/item/toy/plushie/lizard
 	plushes["spider plush"] = /obj/item/toy/plushie/spider
 	plushes["farwa plush"] = /obj/item/toy/plushie/farwa
+	plushes["snail plush"] = /obj/item/toy/plushie/snail
 	gear_tweaks += new /datum/gear_tweak/path(plushes)
 
-/datum/gear/mirror/
+/datum/gear/mirror
 	display_name = "handheld mirror"
-	sort_category = "Cosmetics"
-	path = /obj/item/weapon/mirror
+	path = /obj/item/mirror
 
 /datum/gear/lipstick
 	display_name = "lipstick selection"
-	path = /obj/item/weapon/lipstick
+	path = /obj/item/lipstick
 	flags = GEAR_HAS_TYPE_SELECTION
 
 /datum/gear/comb
 	display_name = "plastic comb"
-	path = /obj/item/weapon/haircomb
+	path = /obj/item/haircomb
 	flags = GEAR_HAS_COLOR_SELECTION
-
-/datum/gear/mask
-	display_name = "sterile mask"
-	path = /obj/item/clothing/mask/surgical
-	cost = 2
 
 /datum/gear/smokingpipe
 	display_name = "pipe, smoking"
@@ -121,25 +79,13 @@
 	display_name = "pipe, corn"
 	path = /obj/item/clothing/mask/smokable/pipe/cobpipe
 
-/datum/gear/matchbook
-	display_name = "matchbook"
-	path = /obj/item/weapon/storage/box/matches
-
-/datum/gear/lighter
-	display_name = "cheap lighter"
-	path = /obj/item/weapon/flame/lighter
-
-/datum/gear/zippo
-	display_name = "zippo"
-	path = /obj/item/weapon/flame/lighter/zippo
-
 /datum/gear/ashtray
 	display_name = "ashtray, plastic"
-	path = /obj/item/weapon/material/ashtray/plastic
+	path = /obj/item/material/ashtray/plastic
 
 /datum/gear/cigars
 	display_name = "fancy cigar case"
-	path = /obj/item/weapon/storage/fancy/cigar
+	path = /obj/item/storage/fancy/cigar
 	cost = 2
 
 /datum/gear/cigar
@@ -162,19 +108,88 @@
 	path = /obj/item/clothing/mask/smokable/ecig/deluxe
 	cost = 2
 
-datum/gear/mask/scarf
-	display_name ="neck scarf"
-	path = /obj/item/clothing/mask/bluescarf
+/datum/gear/accessory/wallet
+	display_name = "wallet, colour select"
+	path = /obj/item/storage/wallet
+	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/mask/scarf/New()
+/datum/gear/accessory/wallet_poly
+	display_name = "wallet, polychromic"
+	path = /obj/item/storage/wallet/poly
+	cost = 2
+
+/datum/gear/welding_cover
+	display_name = "welding helmet covers selection"
+	path = /obj/item/welding_cover/knight
+
+/datum/gear/welding_cover/New()
 	..()
-	var/scarfs = list()
-	scarfs["blue scarf"] = /obj/item/clothing/mask/bluescarf
-	scarfs["green scarf"] = /obj/item/clothing/mask/greenscarf
-	scarfs["red scarf"] = /obj/item/clothing/mask/redscarf
-	scarfs["red white scarf"] = /obj/item/clothing/mask/redwscarf
-	scarfs["ninja scarf"] = /obj/item/clothing/mask/ninjascarf
-	scarfs["stripped blue scarf"] = /obj/item/clothing/mask/sbluescarf
-	scarfs["stripped green scarf"] = /obj/item/clothing/mask/sgreenscarf
-	scarfs["stipped red scarf"] = /obj/item/clothing/mask/sredscarf
-	gear_tweaks += new /datum/gear_tweak/path(scarfs)
+	var/cover_type = list()
+	cover_type["knight"] = /obj/item/welding_cover/knight
+	cover_type["engie"]  = /obj/item/welding_cover/engie
+	cover_type["demon"]  = /obj/item/welding_cover/demon
+	cover_type["fancy"]  = /obj/item/welding_cover/fancy
+	cover_type["carp"]   = /obj/item/welding_cover/carp
+	cover_type["hockey"] = /obj/item/welding_cover/hockey
+	cover_type["blue"]   = /obj/item/welding_cover/blue
+	cover_type["flame"]  = /obj/item/welding_cover/flame
+	cover_type["white"]  = /obj/item/welding_cover/white
+	gear_tweaks += new /datum/gear_tweak/path(cover_type)
+
+//Donator's Shop
+
+/datum/gear/rubberducky
+	display_name = "bike horn"
+	path = /obj/item/bikehorn
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "vuvuzela"
+	path = /obj/item/bikehorn/vuvuzela
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "rubber ducky"
+	path = /obj/item/bikehorn/rubberducky
+	price = 25
+
+/datum/gear/champion
+	display_name = "champion's belt"
+	path = /obj/item/storage/belt/champion
+	slot = slot_belt
+	price = 20
+
+/datum/gear/bedsheet_clown
+	display_name = "clown's bedsheet"
+	path = /obj/item/bedsheet/clown
+	price = 10
+
+/datum/gear/bedsheet_mime
+	display_name = "mime's bedsheet"
+	path = /obj/item/bedsheet/mime
+	price = 10
+
+/datum/gear/bedsheet_rainbow
+	display_name = "rainbow's bedsheet"
+	path = /obj/item/bedsheet/rainbow
+	price = 10
+
+/datum/gear/bosunwhistle
+	display_name = "bosun's whistle"
+	path = /obj/item/toy/bosunwhistle
+	price = 75
+
+/datum/gear/balloon
+	display_name = "balloon"
+	path = /obj/item/toy/balloon
+	price = 100
+
+/datum/gear/balloon/nanotrasen
+	display_name = "'motivational' balloon"
+	path = /obj/item/toy/balloon/nanotrasen
+	price = 75
+
+/datum/gear/spinningtoy
+	display_name = "gravitational singularity"
+	path = /obj/item/toy/spinningtoy
+	price = 30

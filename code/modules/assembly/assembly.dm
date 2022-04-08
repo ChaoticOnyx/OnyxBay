@@ -96,7 +96,7 @@
 	return 0
 
 
-/obj/item/device/assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/assembly/attackby(obj/item/W as obj, mob/user as mob)
 	if(isassembly(W))
 		var/obj/item/device/assembly/A = W
 		if((!A.secured) && (!secured))
@@ -117,12 +117,12 @@
 
 
 /obj/item/device/assembly/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if((in_range(src, user) || loc == user))
 		if(secured)
-			to_chat(user, "\The [src] is ready!")
+			. += "\n\The [src] is ready!"
 		else
-			to_chat(user, "\The [src] can be attached!")
+			. += "\n\The [src] can be attached!"
 	return
 
 

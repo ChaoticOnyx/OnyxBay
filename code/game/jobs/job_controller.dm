@@ -3,6 +3,7 @@ var/global/datum/controller/occupations/job_master
 #define GET_RANDOM_JOB 0
 #define BE_ASSISTANT 1
 #define RETURN_TO_LOBBY 2
+#define NEW_PLAYER_WAYFINDING_TRACKER 21 // 3 weeks
 
 /datum/controller/occupations
 		//List of all jobs
@@ -17,7 +18,7 @@ var/global/datum/controller/occupations/job_master
 	var/list/job_debug = list()
 
 
-	proc/SetupOccupations(var/setup_titles = 0)
+	proc/SetupOccupations(setup_titles = 0)
 		occupations = list()
 		occupations_by_type = list()
 		occupations_by_title = list()
@@ -61,20 +62,20 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/Debug(var/text)
+	proc/Debug(text)
 		if(!Debug2)	return 0
 		job_debug.Add(text)
 		return 1
 
 
-	proc/GetJob(var/rank)
+	proc/GetJob(rank)
 		if(!rank)	return null
 		for(var/datum/job/J in occupations)
 			if(!J)	continue
 			if(J.title == rank)	return J
 		return null
 
-	proc/ShouldCreateRecords(var/rank)
+	proc/ShouldCreateRecords(rank)
 		if(!rank) return 0
 		var/datum/job/job = GetJob(rank)
 		if(!job) return 0
@@ -83,7 +84,7 @@ var/global/datum/controller/occupations/job_master
 	proc/GetPlayerAltTitle(mob/new_player/player, rank)
 		return player.client.prefs.GetPlayerAltTitle(GetJob(rank))
 
-	proc/CheckGeneralJoinBlockers(var/mob/new_player/joining, var/datum/job/job)
+	proc/CheckGeneralJoinBlockers(mob/new_player/joining, datum/job/job)
 		if(!istype(joining) || !joining.client || !joining.client.prefs)
 			return FALSE
 		if(!istype(job))
@@ -117,7 +118,7 @@ var/global/datum/controller/occupations/job_master
 			return FALSE
 		return TRUE
 
-	proc/CheckUnsafeSpawn(var/mob/living/spawner, var/turf/spawn_turf)
+	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
 		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
 		if(airstatus || radlevel > 0)
@@ -148,7 +149,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.is_restricted(player.client.prefs))
 				return FALSE
 
-			var/position_limit = job.total_positions
+			var/position_limit = job.total_positions + job.open_vacancies
 			if(!latejoin)
 				position_limit = job.spawn_positions
 			if((job.current_positions < position_limit) || position_limit == -1)
@@ -157,11 +158,13 @@ var/global/datum/controller/occupations/job_master
 				player.mind.role_alt_title = GetPlayerAltTitle(player, rank)
 				unassigned -= player
 				job.current_positions++
+				if(job.open_vacancies && job.current_positions > job.total_positions)
+					job_master.fill_vacancy(job.title, player.client.prefs.real_name)
 				return TRUE
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return FALSE
 
-	proc/FreeRole(var/rank)	//making additional slot on the fly
+	proc/FreeRole(rank)	//making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
 		if(job && job.current_positions >= job.total_positions && job.total_positions != -1)
 			job.total_positions++
@@ -192,7 +195,7 @@ var/global/datum/controller/occupations/job_master
 				candidates += player
 		return candidates
 
-	proc/GiveRandomJob(var/mob/new_player/player)
+	proc/GiveRandomJob(mob/new_player/player)
 		Debug("GRJ Giving random job, Player: [player]")
 		for(var/datum/job/job in shuffle(occupations))
 			if(!job)
@@ -200,7 +203,7 @@ var/global/datum/controller/occupations/job_master
 
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				continue
-			
+
 			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
@@ -279,7 +282,7 @@ var/global/datum/controller/occupations/job_master
 
 
 	///This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
-	proc/CheckHeadPositions(var/level)
+	proc/CheckHeadPositions(level)
 		for(var/command_position in GLOB.command_positions)
 			var/datum/job/job = GetJob(command_position)
 			if(!job)	continue
@@ -403,7 +406,7 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
+	proc/EquipRank(mob/living/carbon/human/H, rank, joined_late = 0)
 		if(!H)	return null
 
 		var/datum/job/job = GetJob(rank)
@@ -422,22 +425,25 @@ var/global/datum/controller/occupations/job_master
 				for(var/thing in H.client.prefs.Gear())
 					var/datum/gear/G = gear_datums[thing]
 					if(G)
-						var/permitted
-						if(G.allowed_roles)
+						var/permitted = TRUE
+						if(length(G.allowed_roles))
+							permitted = FALSE
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
-									permitted = 1
-						else
-							permitted = 1
+									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
-							permitted = 0
+							permitted = FALSE
+
+						if(!G.is_allowed_to_equip(H))
+							permitted = FALSE
 
 						if(!permitted)
-							to_chat(H, "<span class='warning'>Your current species, job or whitelist status does not permit you to spawn with [thing]!</span>")
+							to_chat(H, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
 							continue
 
-						if(!G.slot || G.slot == slot_tie || (G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
+						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
 							spawn_in_storage.Add(G)
 						else
 							loadout_taken_slots.Add(G.slot)
@@ -475,15 +481,17 @@ var/global/datum/controller/occupations/job_master
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
 
-		// If they're head, give them the account info for their department
-		if(H.mind && job.head_position)
+		if(H.mind)
 			var/remembered_info = ""
 			var/datum/money_account/department_account = department_accounts[job.department]
 
 			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
+				remembered_info += "<b>Your [job.department] department account:</b><br>"
+				remembered_info += "<b>Number:</b> #[department_account.account_number]<br>"
+			// And if they're head, give them the pin and funds info for their department
+			if(job.head_position || job.title == "Quartermaster" || job.title ==  "Internal Affairs Agent")
+				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
+				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
 			H.mind.store_memory(remembered_info)
 
@@ -523,9 +531,12 @@ var/global/datum/controller/occupations/job_master
 
 		to_chat(H, "<b>To speak on your department's radio channel use :h. For the use of other channels, examine your headset.</b>")
 
+		if(rank == "Merchant" && GLOB.merchant_illegalness)
+			to_chat(H, SPAN_DANGER("<b>Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal!</b>"))
+			H.mind.store_memory("Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal.")
+
 		if(job.req_admin_notify)
 			to_chat(H, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
-
 
 		// EMAIL GENERATION
 		var/domain
@@ -559,6 +570,17 @@ var/global/datum/controller/occupations/job_master
 			if(equipped)
 				var/obj/item/clothing/glasses/G = H.glasses
 				G.prescription = 7
+
+		// give pinpointer to new players
+		var/wayfinding_pref = H.get_preference_value(/datum/client_preference/give_wayfinding)
+		var/player_age = H?.client?.player_age
+		if(istext(player_age)) // database not initialized
+			player_age = 0
+		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
+			var/obj/item/pinpointer/wayfinding/W = new(H)
+			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
+			if(equipped)
+				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))
 
 		BITSET(H.hud_updateflag, ID_HUD)
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
@@ -683,11 +705,109 @@ var/global/datum/controller/occupations/job_master
 
 /datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
-	for(var/obj/effect/landmark/start/sloc in landmarks_list)
-		if(sloc.name != rank)	continue
-		if(locate(/mob/living) in sloc.loc)	continue
+	for(var/obj/effect/landmark/sloc in GLOB.landmarks_list)
+		if(sloc.name != rank)
+			continue
+		if(locate(/mob/living) in sloc.loc)
+			continue
 		loc_list += sloc
-	if(loc_list.len)
+	if(length(loc_list))
 		return pick(loc_list)
 	else
 		return locate("start*[rank]") // use old stype
+
+/*
+* Job Vacancy procs and datums
+*/
+
+/datum/controller/occupations/proc/open_vacancy(title)
+	if(!title)
+		return FALSE
+
+	var/datum/job/J = GetJob(title)
+	if(!J)
+		return FALSE
+
+	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
+	if(length(GLOB.vacancies) >= available_vacancies)
+		return FALSE
+	++J.open_vacancies
+
+	var/datum/job_vacancy/JV = new
+	JV.title = J.title
+	JV.status = JOB_VACANCY_STATUS_OPEN
+	JV.time = stationtime2text()
+	JV.filledby = "None"
+	JV.id = sequential_id(/datum/job_vacancy)
+	return TRUE
+
+/datum/controller/occupations/proc/fill_vacancy(title, name)
+	if(!title)
+		return
+	if(!name)
+		return
+
+	var/datum/job/J = GetJob(title)
+	if(!J)
+		return FALSE
+	if(J.filled_vacancies >= J.open_vacancies)
+		return FALSE
+	++J.filled_vacancies
+
+	for(var/i in GLOB.vacancies)
+		var/datum/job_vacancy/JV = i
+		if(JV.status != JOB_VACANCY_STATUS_OPEN)
+			continue
+		if(JV.title != title)
+			continue
+
+		JV.filledby = name
+		JV.status = JOB_VACANCY_STATUS_COMPLETED
+		return
+
+/datum/controller/occupations/proc/delete_vacancy(id)
+	if(!id)
+		return FALSE
+
+	var/datum/job_vacancy/JV
+	for(var/i in GLOB.vacancies)
+		var/datum/job_vacancy/JVT = i
+		if(id == JVT.id)
+			JV = JVT
+			break
+
+	if(!JV)
+		return FALSE
+	if(JV.status != JOB_VACANCY_STATUS_OPEN)
+		return FALSE
+
+	var/datum/job/J = GetJob(JV.title)
+	if(!J)
+		return FALSE
+	J.open_vacancies = max(--J.open_vacancies, 0)
+
+	qdel(JV)
+	return TRUE
+
+/datum/controller/occupations/proc/get_available_vacancies()
+	return round(round_duration_in_ticks/JOB_VACANCIES_SLOT_PER_TIME) + JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART
+
+GLOBAL_LIST_EMPTY(vacancies)
+
+/datum/job_vacancy
+	var/title
+	var/status
+	var/time
+	var/filledby
+	var/id
+
+/datum/job_vacancy/New()
+	. = ..()
+	GLOB.vacancies += src
+
+/datum/job_vacancy/Destroy()
+	GLOB.vacancies -= src
+	return ..()
+
+#undef NEW_PLAYER_WAYFINDING_TRACKER

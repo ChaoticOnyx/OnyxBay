@@ -33,10 +33,9 @@
 	handle_power() // Handles all computer power interaction
 	check_update_ui_need()
 
-	var/static/list/beepsounds = list('sound/effects/compbeep1.ogg','sound/effects/compbeep2.ogg','sound/effects/compbeep3.ogg','sound/effects/compbeep4.ogg','sound/effects/compbeep5.ogg')
 	if(enabled && world.time > ambience_last_played + 60 SECONDS && prob(1))
 		ambience_last_played = world.time
-		playsound(src.loc, pick(beepsounds),15,1,10, is_ambiance = 1)
+		playsound(src.loc, beepsounds,30,0,10, is_ambiance = 1)
 
 // Used to perform preset-specific hardware changes.
 /obj/item/modular_computer/proc/install_default_hardware()
@@ -67,7 +66,7 @@
 /obj/item/modular_computer/Destroy()
 	kill_program(1)
 	STOP_PROCESSING(SSobj, src)
-	for(var/obj/item/weapon/computer_hardware/CH in src.get_all_components())
+	for(var/obj/item/computer_hardware/CH in src.get_all_components())
 		uninstall_component(null, CH)
 		qdel(CH)
 	return ..()
@@ -77,6 +76,7 @@
 		to_chat(user, "\The [src] was already emagged.")
 		return NO_EMAG_ACT
 	else
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		computer_emagged = 1
 		to_chat(user, "You emag \the [src]. It's screen briefly shows a \"OVERRIDE ACCEPTED: New software downloads available.\" message.")
 		return 1
@@ -93,7 +93,7 @@
 			overlays.Add(icon_state_screensaver)
 		set_light(0)
 		return
-	set_light(light_strength)
+	set_light(0.2, 0.1, light_strength)
 	if(active_program)
 		overlays.Add(active_program.program_icon_state ? active_program.program_icon_state : icon_state_menu)
 		if(active_program.program_key_state)
@@ -149,6 +149,7 @@
 	return ntnet_global.add_log(text, network_card)
 
 /obj/item/modular_computer/proc/shutdown_computer(loud = 1)
+	playsound(src.loc, offsound, 50)
 	kill_program(1)
 	for(var/datum/computer_file/program/P in idle_threads)
 		P.kill_program(1)
@@ -159,6 +160,7 @@
 	update_icon()
 
 /obj/item/modular_computer/proc/enable_computer(mob/user = null)
+	playsound(src.loc, runsound, 50)
 	enabled = 1
 	update_icon()
 

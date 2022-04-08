@@ -8,15 +8,6 @@
 	var/obj/item/organ/external/E = get_organ(zone)
 	if(E) . = E.name
 
-/mob/living/carbon/human/proc/recheck_bad_external_organs()
-	var/damage_this_tick = getToxLoss()
-	for(var/obj/item/organ/external/O in organs)
-		damage_this_tick += O.burn_dam + O.brute_dam
-
-	if(damage_this_tick > last_dam)
-		. = TRUE
-	last_dam = damage_this_tick
-
 /mob/living/carbon/human/proc/restore_limb(limb_type, show_message = FALSE)	//only for changling for now
 	var/obj/item/organ/external/E = organs_by_name[limb_type]
 	if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
@@ -37,7 +28,7 @@
 			visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [src]'s [O.amputation_point], forming a new [O.name]!</span>")
 		return 1
 	else if (E.damage > 0 || E.status & (ORGAN_BROKEN) || E.status & (ORGAN_ARTERY_CUT))
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status &= ~ORGAN_ARTERY_CUT
 		for(var/datum/wound/W in E.wounds)
 			if(W.wound_damage() == 0 && prob(50))
@@ -49,15 +40,14 @@
 
 /mob/living/carbon/human/proc/restore_organ(organ_type)	//only for changling for now
 	var/obj/item/organ/internal/E = internal_organs_by_name[organ_type]
-	if(E && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-		E.removed()//...because no one wants their head to explode to make way for a new one.
+	if(E && !E.vital && !E.is_usable() && E.organ_tag != BP_BRAIN) //Skips brains and vital bits...
+		E.removed()
 		qdel(E)
 		E = null
 	if(!E)
-		var/list/organ_data = species.has_organ[organ_type]
-		var/organ_path = organ_data["path"]
+		var/organ_path = species.has_organ[organ_type]
 		var/obj/item/organ/internal/O = new organ_path(src)
-		organ_data["descriptor"] = O.name
+		internal_organs_by_name[organ_type] = O
 		O.set_dna(dna)
 		update_body()
 		if(O.organ_tag == BP_BRAIN)
@@ -69,6 +59,19 @@
 		return TRUE
 	else
 		return FALSE
+
+/mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
+	for(var/obj/item/organ/external/O in organs)
+		O.update_pain()
+
+/mob/living/carbon/human/proc/recheck_bad_external_organs()
+	var/damage_this_tick = getToxLoss()
+	for(var/obj/item/organ/external/O in organs)
+		damage_this_tick += O.burn_dam + O.brute_dam
+
+	if(damage_this_tick > last_dam)
+		. = TRUE
+	last_dam = damage_this_tick
 
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
@@ -99,23 +102,23 @@
 		else
 			E.Process()
 
-			if (!lying && !buckled && world.time - l_move_time < 15)
+			if(!lying && !buckled && world.time - l_move_time < 15)
 			//Moving around with fractured ribs won't do you any good
-				if (prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
+				if(prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
 					custom_pain("Pain jolts through your broken [E.encased ? E.encased : E.name], staggering you!", 50, affecting = E)
 					drop_item(loc)
 					Stun(2)
 
 				//Moving makes open wounds get infected much faster
-				if (E.wounds.len)
+				if(E.wounds.len)
 					for(var/datum/wound/W in E.wounds)
-						if (W.infection_check())
+						if(W.infection_check())
 							W.germ_level += 1
 
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways
 	// unless their stance is damaged, and we want to check if they should stay down
-	if (!stance_damage && (lying || resting) && (life_tick % 4) != 0)
+	if(!stance_damage && (lying || resting) && (life_tick % 4) != 0)
 		return
 
 	stance_damage = 0
@@ -123,12 +126,12 @@
 	stance_d_r = 0
 
 	// Buckled to a bed/chair. Stance damage is forced to 0 since they're sitting on something solid
-	if (istype(buckled, /obj/structure/bed))
+	if(istype(buckled, /obj/structure/bed))
 		return
 
 	// Can't fall if nothing pulls you down
 	var/area/area = get_area(src)
-	if (!area || !area.has_gravity())
+	if(!area || !area.has_gravity())
 		return
 
 	var/limb_pain
@@ -155,9 +158,10 @@
 		else if(E.is_dislocated())
 			stance_d_l += 1
 
-		if(E) limb_pain = E.can_feel_pain()
+		if(E)
+			limb_pain = E.can_feel_pain()
 
-		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
+		if(l_hand && istype(l_hand, /obj/item/cane))
 			stance_d_l -= 1.5
 
 	for(var/limb_tag in list(BP_R_LEG, BP_R_FOOT))	// Right leg processing
@@ -183,84 +187,81 @@
 		else if(E.is_dislocated())
 			stance_d_r += 1
 
-		if(E) limb_pain = E.can_feel_pain()
+		if(E)
+			limb_pain = E.can_feel_pain()
 
-		if (r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l
+	if(!stance_damage)
+		return	// We're all good
 	// standing is poor
 	if(!(lying || resting))
-		if(((stance_d_l >= 5) && (stance_d_r >= 5)))
+		if(((stance_d_l >= 5) && (stance_d_r >= 5))) // Both legs are missing, but hey at least there's nothing to ache
 			custom_emote(VISIBLE_MESSAGE, "can't stand without legs!")
 			Weaken(10)
-		else if(((stance_d_l >= 5) && (stance_d_r > 1)) || ((stance_d_l > 1) && (stance_d_r >= 5)))
+		else if(((stance_d_l >= 5) && (stance_d_r > 2)) || ((stance_d_l > 2) && (stance_d_r >= 5))) // One leg is missing and the other one is at least broken
 			if(limb_pain)
 				emote("scream")
 				shock_stage+=5
 			custom_emote(VISIBLE_MESSAGE, "collapses!")
 			Weaken(10)
-		else if(((stance_d_l >= 4) && (stance_d_l > 0)) || ((stance_d_l > 0) && (stance_d_r >= 4)))
+		else if(((stance_d_l >= 4) && (stance_d_l > 0)) || ((stance_d_l > 0) && (stance_d_r >= 4))) // One leg is totally wrecked and the other one is hurt
 			if(prob(60))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=50
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(10)
-		else if((stance_d_l >= 2) && (stance_d_r >= 2))
+		else if((stance_d_l >= 2) && (stance_d_r >= 2)) // Both legs are broken
 			if(prob(40))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=25
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(10)
-		else if(((stance_d_l >= 2) && (stance_d_r > 0)) || ((stance_d_l > 0) && (stance_d_r >= 2)))
+		else if(((stance_d_l >= 2) && (stance_d_r > 0)) || ((stance_d_l > 0) && (stance_d_r >= 2))) // One leg is broken and the other one is hort
 			if(prob(30))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=15
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(7)
-		else if((stance_d_l > 0) && (stance_d_r > 0))
+		else if((stance_d_l > 0) && (stance_d_r > 0)) // Borth legs are hurt
 			if(prob(20))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=12.5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 5) || (stance_d_r >= 5))
+		else if((stance_d_l >= 5) || (stance_d_r >= 5)) // One leg is missing and the other one is ok
 			if(prob(10))
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(3)
-		else if((stance_d_l >= 4) || (stance_d_r >= 4))
+		else if((stance_d_l >= 4) || (stance_d_r >= 4)) // One leg is wrecked and the other one is ok
 			if(prob(8))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=12.5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 3) || (stance_d_r >= 3))
-			if(prob(6))
+		else if((stance_d_l >= 3) || (stance_d_r >= 3)) // One leg is broken + dislocated and the other one is ok
+			if(prob(4))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=10
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 2) || (stance_d_r >= 2))
-			if(prob(4))
-				if(limb_pain)
-					emote("scream")
-					shock_stage+=5
-				custom_emote(VISIBLE_MESSAGE, "collapses!")
-				Weaken(3)
-		else if((stance_d_l >= 1) || (stance_d_r >= 1))
+		else if((stance_d_l >= 2) || (stance_d_r >= 2)) // One leg is broken and the other one is ok
 			if(prob(2))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(3)
-		else return
+		else
+			return
 
 /mob/living/carbon/human/proc/handle_grasp()
 	if(!l_hand && !r_hand)
@@ -268,42 +269,38 @@
 
 	// You should not be able to pick anything up, but stranger things have happened.
 	if(l_hand)
-		for(var/limb_tag in list(BP_L_HAND, BP_L_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-				drop_from_inventory(l_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
+			drop_from_inventory(l_hand)
 
 	if(r_hand)
-		for(var/limb_tag in list(BP_R_HAND, BP_R_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-				drop_from_inventory(r_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
+			drop_from_inventory(r_hand)
 
 	// Check again...
 	if(!l_hand && !r_hand)
 		return
 
-	for (var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in grasp_limbs)
 		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)
 
 /mob/living/carbon/human/proc/stance_damage_prone(obj/item/organ/external/affected)
-
 	if(affected)
 		switch(affected.body_part)
 			if(FOOT_LEFT, FOOT_RIGHT)
-				to_chat(src, "<span class='warning'>You lose your footing as your [affected.name] spasms!</span>")
+				to_chat(src, SPAN("warning", "You lose your footing as your [affected.name] spasms!"))
 			if(LEG_LEFT, LEG_RIGHT)
-				to_chat(src, "<span class='warning'>Your [affected.name] buckles from the shock!</span>")
+				to_chat(src, SPAN("warning", "Your [affected.name] buckles from the shock!"))
 			else
 				return
-	Weaken(5)
+		Stun(2)
+		Weaken(5)
 
 /mob/living/carbon/human/proc/grasp_damage_disarm(obj/item/organ/external/affected)
 	var/disarm_slot
@@ -321,7 +318,8 @@
 	if(!thing)
 		return
 
-	drop_from_inventory(thing)
+	if(!unEquip(thing))
+		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))
 		visible_message("<B>\The [src]</B> drops what they were holding, \his [affected.name] malfunctioning!")
@@ -360,7 +358,7 @@
 	return FALSE
 
 /mob/living/carbon/human/is_asystole()
-	if(isSynthetic())
+	if(full_prosthetic)
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
 		if(istype(C) && !C.is_usable())
 			return TRUE

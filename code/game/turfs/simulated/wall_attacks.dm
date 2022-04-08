@@ -29,9 +29,10 @@
 		update_icon()
 		update_air()
 		sleep(15)
-		set_light(1)
+		set_light(0.4, 0.1, 1)
 		src.blocks_air = 1
 		set_opacity(1)
+		shove_everything()
 		for(var/turf/simulated/turf in loc)
 			SSair.mark_for_update(turf)
 
@@ -76,19 +77,22 @@
 			dismantle_wall()
 			return 1
 
-	if(..()) return 1
-
 	if(!can_open)
-		to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
+		if(user.a_intent == I_HURT)
+			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
+								 "<span class='danger'>You bang against \the [src]!</span>",
+								 "You hear a banging sound.")
+			user.do_attack_animation(src)
+		else
+			to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
 		playsound(src, hitsound, 25, 1)
 	else
+		to_chat(user, "<span class='notice'>You push \the [src] and it retracts.</span>")
 		toggle_open(user)
 	return 0
 
 
 /turf/simulated/wall/attack_hand(mob/user)
-
-	radiate()
 	add_fingerprint(user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/rotting = (locate(/obj/effect/overlay/wallrot) in src)
@@ -102,8 +106,6 @@
 	try_touch(user, rotting)
 
 /turf/simulated/wall/attack_generic(mob/user, damage, attack_message, wallbreaker)
-
-	radiate()
 	if(!istype(user))
 		return
 
@@ -123,8 +125,7 @@
 		return success_smash(user)
 	return fail_smash(user)
 
-/turf/simulated/wall/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
+/turf/simulated/wall/attackby(obj/item/W as obj, mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
@@ -134,13 +135,12 @@
 	if(!istype(user.loc, /turf))	return	//can't do this stuff whilst inside objects and such
 
 	if(W)
-		radiate()
-		if(is_hot(W))
-			burn(is_hot(W))
+		if(W.get_temperature_as_from_ignitor())
+			burn(W.get_temperature_as_from_ignitor())
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		if(isWelder(W))
-			var/obj/item/weapon/weldingtool/WT = W
+			var/obj/item/weldingtool/WT = W
 			if( WT.remove_fuel(0,user) )
 				to_chat(user, "<span class='notice'>You burn away the fungi with \the [WT].</span>")
 				playsound(src, 'sound/items/Welder.ogg', 10, 1)
@@ -155,21 +155,21 @@
 	//THERMITE related stuff. Calls src.thermitemelt() which handles melting simulated walls and the relevant effects
 	if(thermite)
 		if(isWelder(W))
-			var/obj/item/weapon/weldingtool/WT = W
+			var/obj/item/weldingtool/WT = W
 			if( WT.remove_fuel(0,user) )
 				thermitemelt(user)
 				return
 
-		else if(istype(W, /obj/item/weapon/gun/energy/plasmacutter))
+		else if(istype(W, /obj/item/gun/energy/plasmacutter))
 			thermitemelt(user)
 			return
 
-		else if( istype(W, /obj/item/weapon/melee/energy/blade) )
-			var/obj/item/weapon/melee/energy/blade/EB = W
+		else if( istype(W, /obj/item/melee/energy/blade) )
+			var/obj/item/melee/energy/blade/EB = W
 
 			EB.spark_system.start()
 			to_chat(user, "<span class='notice'>You slash \the [src] with \the [EB]; the thermite ignites!</span>")
-			playsound(src, "spark", 50, 1)
+			playsound(src, SFX_SPARK, 50, 1)
 			playsound(src, 'sound/weapons/blade1.ogg', 50, 1)
 
 			thermitemelt(user)
@@ -177,9 +177,9 @@
 
 	var/turf/T = user.loc	//get user's location for delay checks
 
-	if(damage && istype(W, /obj/item/weapon/weldingtool))
+	if(damage && istype(W, /obj/item/weldingtool))
 
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(!WT.isOn())
 			return
@@ -202,8 +202,8 @@
 		var/dismantle_verb
 		var/dismantle_sound
 
-		if(istype(W,/obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/WT = W
+		if(istype(W,/obj/item/weldingtool))
+			var/obj/item/weldingtool/WT = W
 			if(!WT.isOn())
 				return
 			if(!WT.remove_fuel(0,user))
@@ -212,12 +212,12 @@
 			dismantle_verb = "cutting"
 			dismantle_sound = 'sound/items/Welder.ogg'
 			cut_delay *= 0.7
-		else if(istype(W,/obj/item/weapon/melee/energy/blade))
+		else if(istype(W,/obj/item/melee/energy/blade))
 			dismantle_sound = "spark"
 			dismantle_verb = "slicing"
 			cut_delay *= 0.5
-		else if(istype(W,/obj/item/weapon/pickaxe))
-			var/obj/item/weapon/pickaxe/P = W
+		else if(istype(W,/obj/item/pickaxe))
+			var/obj/item/pickaxe/P = W
 			dismantle_verb = P.drill_verb
 			dismantle_sound = P.drill_sound
 			cut_delay -= P.digspeed
@@ -270,8 +270,8 @@
 						return
 			if(4)
 				var/cut_cover
-				if(istype(W,/obj/item/weapon/weldingtool))
-					var/obj/item/weapon/weldingtool/WT = W
+				if(istype(W,/obj/item/weldingtool))
+					var/obj/item/weldingtool/WT = W
 					if(!WT.isOn())
 						return
 					if(WT.remove_fuel(0,user))
@@ -279,7 +279,7 @@
 					else
 						to_chat(user, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 						return
-				else if (istype(W, /obj/item/weapon/gun/energy/plasmacutter))
+				else if (istype(W, /obj/item/gun/energy/plasmacutter))
 					cut_cover = 1
 				if(cut_cover)
 					to_chat(user, "<span class='notice'>You begin slicing through the metal cover.</span>")
@@ -312,14 +312,14 @@
 					return
 			if(1)
 				var/cut_cover
-				if(istype(W, /obj/item/weapon/weldingtool))
-					var/obj/item/weapon/weldingtool/WT = W
+				if(istype(W, /obj/item/weldingtool))
+					var/obj/item/weldingtool/WT = W
 					if( WT.remove_fuel(0,user) )
 						cut_cover=1
 					else
 						to_chat(user, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 						return
-				else if(istype(W, /obj/item/weapon/gun/energy/plasmacutter))
+				else if(istype(W, /obj/item/gun/energy/plasmacutter))
 					cut_cover = 1
 				if(cut_cover)
 					to_chat(user, "<span class='notice'>You begin slicing through the support rods.</span>")
@@ -346,22 +346,20 @@
 		F.try_build(src)
 		return
 
-	else if(!istype(W,/obj/item/weapon/rcd) && !istype(W, /obj/item/weapon/reagent_containers))
+	else if(!istype(W,/obj/item/rcd) && !istype(W, /obj/item/reagent_containers))
 		if(!W.force)
 			return attack_hand(user)
 		var/dam_threshhold = material.integrity
 		if(reinf_material)
 			dam_threshhold = ceil(max(dam_threshhold,reinf_material.integrity)/2)
-		var/dam_prob = min(100, material.hardness*1.5)
-		if(dam_prob < 100 && W.force > (dam_threshhold/10))
-			playsound(src, 'sound/effects/metalhit.ogg', 50, 1)
-			if(!prob(dam_prob))
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W] and it [material.destruction_desc]!</span>")
-				dismantle_wall(1)
-			else
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
-		else
-			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		var/dam_prob = min(100, material.hardness*1.5)
+		if(dam_prob < 100 && W.force > (dam_threshhold/10))
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
+			take_damage(W.force)
+		else
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', 20, 1, -1)
 		return

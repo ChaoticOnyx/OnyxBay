@@ -45,6 +45,7 @@
 //		else
 //			t1 = "-------"	Speaker: [src.listening ? "<A href='byond://?src=\ref[src];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[src];listen=1'>Disengaged</A>"]<BR>
 	var/dat = {"
+		<meta charset=\"utf-8\">
 		<TT>
 
 		<A href='byond://?src=\ref[src];send=1'>Send Signal</A><BR>
@@ -64,16 +65,16 @@
 		<A href='byond://?src=\ref[src];code=5'>+</A><BR>
 		[t1]
 		</TT>"}
-	user << browse(dat, "window=radio")
+	show_browser(user, dat, "window=radio")
 	onclose(user, "radio")
 	return
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
-	if(..()) return 1
-
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
-		usr << browse(null, "window=radio")
+	if((!istype(loc, /obj/item/gripper) || !(loc in usr.contents)) && (usr.stat || !(src in usr.contents)))
+		return
+	if((. = ..()))
+		close_browser(usr, "window=radio")
 		onclose(usr, "radio")
 		return
 
@@ -102,6 +103,7 @@
 /obj/item/device/assembly/signaler/proc/signal()
 	if(!radio_connection) return
 
+	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
 	var/datum/signal/signal = new
 	signal.source = src
 	signal.encryption = code
@@ -123,6 +125,9 @@
 		connected.Pulse(src)
 	else if(holder)
 		holder.process_activation(src, 1, 0)
+	else if(istype(loc, /obj/structure/window_frame))
+		var/obj/structure/window_frame/WF = loc
+		WF.signaler_pulse()
 	else
 		..(radio)
 	return 1

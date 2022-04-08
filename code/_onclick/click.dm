@@ -55,7 +55,10 @@
 		CtrlAltClickOn(A)
 		return 1
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(modifiers["shift"])
+			ShiftMiddleClickOn(A)
+		else
+			MiddleClickOn(A)
 		return 1
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -93,10 +96,10 @@
 			return 1
 		throw_mode_off()
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/I = get_active_hand()
 
-	if(W == A) // Handle attack_self
-		W.attack_self(src)
+	if(I == A) // Handle attack_self
+		I.attack_self(src)
 		trigger_aiming(TARGET_CAN_CLICK)
 		if(hand)
 			update_inv_l_hand(0)
@@ -108,10 +111,10 @@
 	// A is your location but is not a turf; or is on you (backpack); or is on something on you (box in backpack); sdepth is needed here because contents depth does not equate inventory storage depth.
 	var/sdepth = A.storage_depth(src)
 	if((!isturf(A) && A == loc) || (sdepth != -1 && sdepth <= 1))
-		if(W)
-			var/resolved = W.resolve_attackby(A, src, params)
-			if(!resolved && A && W)
-				W.afterattack(A, src, 1, params) // 1 indicates adjacency
+		if(I)
+			var/resolved = I.resolve_attackby(A, src, params)
+			if(!resolved && A && I)
+				I.afterattack(A, src, 1, params) // 1 indicates adjacency
 		else
 			if(ismob(A)) // No instant mob attacking
 				setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -127,12 +130,17 @@
 	// A is a turf or is on a turf, or in something on a turf (pen in a box); but not something in something on a turf (pen in a box in a backpack)
 	sdepth = A.storage_depth_turf()
 	if(isturf(A) || isturf(A.loc) || (sdepth != -1 && sdepth <= 1))
-		if(A.Adjacent(src)) // see adjacent.dm
-			if(W)
+		if(Adjacent(A)) // see adjacent.dm
+			for(var/atom/movable/AM in get_turf(A)) // Checks if A is obscured by something
+				if(AM.layer > A.layer && AM.atom_flags & ATOM_FLAG_FULLTILE_OBJECT)
+					if((A.atom_flags & ATOM_FLAG_ADJACENT_EXCEPTION) || (A.atom_flags & ATOM_FLAG_FULLTILE_OBJECT))
+						continue
+					return FALSE
+			if(I)
 				// Return 1 in attackby() to prevent afterattack() effects (when safely moving items for example)
-				var/resolved = W.resolve_attackby(A,src, params)
-				if(!resolved && A && W)
-					W.afterattack(A, src, 1, params) // 1: clicking something Adjacent
+				var/resolved = I.resolve_attackby(A,src, params)
+				if(!resolved && A && I)
+					I.afterattack(A, src, 1, params) // 1: clicking something Adjacent
 			else
 				if(ismob(A)) // No instant mob attacking
 					setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -141,8 +149,8 @@
 			trigger_aiming(TARGET_CAN_CLICK)
 			return
 		else // non-adjacent click
-			if(W)
-				W.afterattack(A, src, 0, params) // 0: not Adjacent
+			if(I)
+				I.afterattack(A, src, 0, params) // 0: not Adjacent
 			else
 				RangedAttack(A, params)
 
@@ -214,8 +222,17 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
+		if(pointed(A))
+			return
 	swap_hand()
 	return
+
+/mob/proc/ShiftMiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
+		if(pointed(A))
+			return
+
 
 // In case of use break glass
 /*
@@ -232,7 +249,7 @@
 	A.ShiftClick(src)
 	return
 /atom/proc/ShiftClick(mob/user)
-	if(user.client && user.client.eye == user)
+	if(user.client && (src in view(user.client.eye)))
 		user.examinate(src)
 
 	return
@@ -313,7 +330,7 @@
 	var/obj/item/projectile/beam/LE = new (T)
 	LE.icon = 'icons/effects/genetics.dmi'
 	LE.icon_state = "eyelasers"
-	playsound(usr.loc, 'sound/weapons/taser2.ogg', 75, 1)
+	playsound(usr.loc, 'sound/effects/weapons/energy/taser2.ogg', 75, 1)
 	LE.launch(A)
 /mob/living/carbon/human/LaserEyes()
 	if(nutrition>0)
@@ -348,6 +365,7 @@
 	screen_loc = "CENTER-7,CENTER-7"
 
 /obj/screen/click_catcher/Destroy()
+	..()
 	return QDEL_HINT_LETMELIVE
 
 /proc/create_click_catcher()
@@ -397,11 +415,11 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	..()
 	src.user = user
 	if(flags & (CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT))
-		GLOB.logged_out_event.register(user, src, /datum/click_handler/proc/OnMobLogout)
+		register_signal(user, SIGNAL_LOGGED_OUT, /datum/click_handler/proc/OnMobLogout)
 
 /datum/click_handler/Destroy()
 	if(flags & (CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT))
-		GLOB.logged_out_event.unregister(user, src, /datum/click_handler/proc/OnMobLogout)
+		unregister_signal(user, SIGNAL_LOGGED_OUT, /datum/click_handler/proc/OnMobLogout)
 	user = null
 	. = ..()
 
@@ -468,6 +486,8 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 	click_handler.Enter()
 	click_handlers.Push(click_handler)
 
+	return click_handler
+
 /datum/click_handler/proc/mob_check(mob/living/carbon/human/user) //Check can mob use a ability
 	return
 
@@ -483,122 +503,32 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 /////////////////
 //Changeling CH//
 /////////////////
-
 /datum/click_handler/changeling/mob_check(mob/living/carbon/human/user)
 	if(ishuman(user) && user.mind && user.mind.changeling)
 		return TRUE
 	return FALSE
 
-/datum/click_handler/changeling/OnClick(atom/target) //Check can mob use a ability
+/datum/click_handler/changeling/sting
+	var/datum/changeling_power/toggled/sting/sting = null
+
+/datum/click_handler/changeling/sting/OnClick(atom/target)
+	if(!sting)
+		return
+	if(!user?.mind?.changeling)
+		return
+	if(!ishuman(target) || (target == user))
+		target.Click()
+		return
+	sting.sting_target(target)
 	return
-
-/datum/click_handler/changeling/changeling_lsdsting
-	handler_name = "Hallucination Sting"
-
-/datum/click_handler/changeling/changeling_lsdsting/OnClick(atom/target)
-	user.changeling_lsdsting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_silence_sting
-	handler_name = "Silence Sting"
-
-/datum/click_handler/changeling/changeling_silence_sting/OnClick(atom/target)
-	user.changeling_silence_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_chemical_sting
-	handler_name = "Chem Sting"
-
-/datum/click_handler/changeling/changeling_chemical_sting/OnClick(atom/target)
-	user.changeling_chemical_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_blind_sting
-	handler_name = "Blind Sting"
-
-/datum/click_handler/changeling/changeling_blind_sting/OnClick(atom/target)
-	user.changeling_blind_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_deaf_sting
-	handler_name = "Deaf Sting"
-
-/datum/click_handler/changeling/changeling_deaf_sting/OnClick(atom/target)
-	user.changeling_deaf_sting(target)
-	user.PopClickHandler()
-	return
-
-/*
-/datum/click_handler/changeling/changeling_paralysis_sting
-	handler_name = "Paralysis Sting"
-
-/datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
-	return user.changeling_paralysis_sting(target)
-
-/datum/click_handler/changeling/changeling_paralysis_sting
-	handler_name = "Transformation Sting"
-
-/datum/click_handler/changeling/changeling_paralysis_sting/OnClick(atom/target)
-	return user.changeling_paralysis_sting(target)
-
-/datum/click_handler/changeling/changeling_unfat_sting
-	handler_name = "Unfat Sting"
-
-/datum/click_handler/changeling/changeling_unfat_sting/OnClick(atom/target)
-	return user.changeling_unfat_sting(target)
-*/
 
 /datum/click_handler/changeling/infest
 	handler_name = "Infest"
 
 /datum/click_handler/changeling/infest/OnClick(atom/target)
 	var/mob/living/simple_animal/hostile/little_changeling/L = user
+	user.PopClickHandler() // Executing it earlier since user gets lost during successful infest()
 	L.infest(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_death_sting
-	handler_name = "Death Sting"
-
-/datum/click_handler/changeling/changeling_death_sting/OnClick(atom/target)
-	user.changeling_death_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_extract_dna_sting
-	handler_name = "Extract DNA Sting"
-
-/datum/click_handler/changeling/changeling_extract_dna_sting/OnClick(atom/target)
-	user.changeling_extract_dna_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_fake_arm_blade_sting
-	handler_name = "Fake arm Blade"
-
-/datum/click_handler/changeling/changeling_fake_arm_blade_sting/OnClick(atom/target)
-	user.changeling_fake_arm_blade_sting(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_bioelectrogenesis
-	handler_name = "Bioelectrogenesis"
-
-/datum/click_handler/changeling/changeling_bioelectrogenesis/OnClick(atom/target)
-	user.changeling_bioelectrogenesis(target)
-	user.PopClickHandler()
-	return
-
-/datum/click_handler/changeling/changeling_vomit_sting
-	handler_name = "Vomit Sting"
-
-/datum/click_handler/changeling/changeling_vomit_sting/OnClick(atom/target)
-	user.changeling_vomit_sting(target)
-	user.PopClickHandler()
 	return
 
 /datum/click_handler/changeling/little_paralyse
@@ -625,7 +555,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 /datum/click_handler/wizard/fireball/OnClick(atom/target)
 	if (!isliving(target) && !isturf(target))
 		return 0
-	for(var/spell/spell_storage in user.mind.learned_spells)
+	for(var/datum/spell/spell_storage in user.mind.learned_spells)
 		if (src.handler_name == spell_storage.name)
 			return spell_storage.perform(user,0,target)
 	to_chat(user, "We cannot find it's power... call admins")

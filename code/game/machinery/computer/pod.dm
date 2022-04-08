@@ -5,7 +5,7 @@
 	desc = "A control console for launching pods. Some people prefer firing Mechas."
 	icon_screen = "mass_driver"
 	light_color = "#00b000"
-	circuit = /obj/item/weapon/circuitboard/pod
+	circuit = /obj/item/circuitboard/pod
 	var/id = 1.0
 	var/obj/machinery/mass_driver/connected = null
 	var/timing = 0.0
@@ -16,7 +16,7 @@
 /obj/machinery/computer/pod/New()
 	..()
 	spawn( 5 )
-		for(var/obj/machinery/mass_driver/M in world)
+		for(var/obj/machinery/mass_driver/M in GLOB.machines)
 			if(M.id == id)
 				connected = M
 			else
@@ -32,19 +32,19 @@
 		to_chat(viewers(null, null), "Cannot locate mass driver connector. Cancelling firing sequence!")
 		return
 
-	for(var/obj/machinery/door/blast/M in world)
+	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 		if(M.id == id)
 			M.open()
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in world)
+	for(var/obj/machinery/mass_driver/M in GLOB.machines)
 		if(M.id == id)
 			M.power = connected.power
 			M.drive()
 
 	sleep(50)
-	for(var/obj/machinery/door/blast/M in world)
+	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 		if(M.id == id)
 			M.close()
 			return
@@ -52,24 +52,24 @@
 
 /*
 /obj/machinery/computer/pod/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/screwdriver))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			if(stat & BROKEN)
 				to_chat(user, "<span class='notice'>The broken glass falls out.</span>")
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
-				new /obj/item/weapon/material/shard( loc )
+				new /obj/item/material/shard( loc )
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
-				var/obj/item/weapon/circuitboard/pod/M = null
+				var/obj/item/circuitboard/pod/M = null
 				if(istype(src, /obj/machinery/computer/pod/old))
-					M = new /obj/item/weapon/circuitboard/olddoor( A )
+					M = new /obj/item/circuitboard/olddoor( A )
 					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
-						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
+						M = new /obj/item/circuitboard/syndicatedoor( A )
 					if(istype(src, /obj/machinery/computer/pod/old/swf))
-						M = new /obj/item/weapon/circuitboard/swfdoor( A )
+						M = new /obj/item/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
-					M = new /obj/item/weapon/circuitboard/pod( A )
+					M = new /obj/item/circuitboard/pod( A )
 
 				for (var/obj/C in src)
 					C.dropInto(loc)
@@ -84,15 +84,15 @@
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
-				var/obj/item/weapon/circuitboard/pod/M = null
+				var/obj/item/circuitboard/pod/M = null
 				if(istype(src, /obj/machinery/computer/pod/old))
-					M = new /obj/item/weapon/circuitboard/olddoor( A )
+					M = new /obj/item/circuitboard/olddoor( A )
 					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
-						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
+						M = new /obj/item/circuitboard/syndicatedoor( A )
 					if(istype(src, /obj/machinery/computer/pod/old/swf))
-						M = new /obj/item/weapon/circuitboard/swfdoor( A )
+						M = new /obj/item/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
-					M = new /obj/item/weapon/circuitboard/pod( A )
+					M = new /obj/item/circuitboard/pod( A )
 
 				for (var/obj/C in src)
 					C.dropInto(loc)
@@ -115,7 +115,7 @@
 	if(..())
 		return
 
-	var/dat = "<HTML><BODY><TT><B>[title]</B>"
+	var/dat = "<HTML><meta charset=\"utf-8\"><BODY><TT><B>[title]</B>"
 	user.set_machine(src)
 	if(connected)
 		var/d2
@@ -137,7 +137,7 @@
 	else
 		dat += "<BR>\n<A href = '?src=\ref[src];door=1'>Toggle Outer Door</A><BR>"
 	dat += "<BR><BR><A href='?src=\ref[user];mach_close=computer'>Close</A></TT></BODY></HTML>"
-	user << browse(dat, "window=computer;size=400x500")
+	show_browser(user, dat, "window=computer;size=400x500")
 	onclose(user, "computer")
 	return
 
@@ -165,7 +165,7 @@
 		alarm()
 		. = TOPIC_REFRESH
 	else if(href_list["drive"])
-		for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
+		for(var/obj/machinery/mass_driver/M in GLOB.machines)
 			if(M.id == id)
 				M.power = connected.power
 				M.drive()
@@ -179,7 +179,7 @@
 		time = min(max(round(time), 0), 120)
 		. = TOPIC_REFRESH
 	else if(href_list["door"])
-		for(var/obj/machinery/door/blast/M in world)
+		for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 			if(M.id == id)
 				if(M.density)
 					M.open()

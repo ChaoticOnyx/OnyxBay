@@ -73,15 +73,19 @@
 #define I_GRAB		"grab"
 #define I_HURT		"harm"
 
+// Movement flags. For fuck's sake, we were using "run"s and "walk"s till 2021
+#define M_RUN  "run"
+#define M_WALK "walk"
+
 //These are used Bump() code for living mobs, in the mob_bump_flag, mob_swap_flags, and mob_push_flags vars to determine whom can bump/swap with whom.
 #define HUMAN 1
 #define MONKEY 2
 #define ALIEN 4
 #define ROBOT 8
-#define SLIME 16
+#define METROID 16
 #define SIMPLE_ANIMAL 32
 #define HEAVY 64
-#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|SLIME|SIMPLE_ANIMAL|HEAVY)
+#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|METROID|SIMPLE_ANIMAL|HEAVY)
 
 // Robot AI notifications
 #define ROBOT_NOTIFICATION_NEW_UNIT 1
@@ -94,12 +98,13 @@
 #define APPEARANCE_UPDATE_DNA  0x1
 #define APPEARANCE_RACE       (0x2|APPEARANCE_UPDATE_DNA)
 #define APPEARANCE_GENDER     (0x4|APPEARANCE_UPDATE_DNA)
-#define APPEARANCE_SKIN        0x8
-#define APPEARANCE_HAIR        0x10
-#define APPEARANCE_HAIR_COLOR  0x20
-#define APPEARANCE_FACIAL_HAIR 0x40
-#define APPEARANCE_FACIAL_HAIR_COLOR 0x80
-#define APPEARANCE_EYE_COLOR 0x100
+#define APPEARANCE_BODY_BUILD  0x8
+#define APPEARANCE_SKIN        0x10
+#define APPEARANCE_HAIR        0x20
+#define APPEARANCE_HAIR_COLOR  0x40
+#define APPEARANCE_FACIAL_HAIR 0x80
+#define APPEARANCE_FACIAL_HAIR_COLOR 0x100
+#define APPEARANCE_EYE_COLOR 0x200
 #define APPEARANCE_ALL_HAIR (APPEARANCE_HAIR|APPEARANCE_HAIR_COLOR|APPEARANCE_FACIAL_HAIR|APPEARANCE_FACIAL_HAIR_COLOR)
 #define APPEARANCE_ALL       0xFFFF
 
@@ -128,6 +133,12 @@
 
 #define COMPANY_OPPOSING		list(COMPANY_SKEPTICAL,COMPANY_OPPOSED)
 #define COMPANY_ALIGNMENTS		list(COMPANY_LOYAL,COMPANY_SUPPORTATIVE,COMPANY_NEUTRAL,COMPANY_SKEPTICAL,COMPANY_OPPOSED)
+
+// Awareness about syndicate, it`s agents and equipment
+#define SYNDICATE_UNAWARE            0
+#define SYNDICATE_AWARE              1
+#define SYNDICATE_GREATLY_AWARE      2
+#define SYNDICATE_SUSPICIOUSLY_AWARE 3
 
 // Defines mob sizes, used by lockers and to determine what is considered a small sized mob, etc.
 #define MOB_LARGE  		40
@@ -197,7 +208,6 @@
 #define BP_LIVER    "liver"
 #define BP_KIDNEYS  "kidneys"
 #define BP_STOMACH  "stomach"
-#define BP_PLASMA   "plasma vessel"
 #define BP_APPENDIX "appendix"
 #define BP_CELL     "cell"
 #define BP_HIVE     "hive node"
@@ -210,9 +220,11 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PHORON   "phoron filter"
+#define BP_PLASMA   "plasma vessel"
 #define BP_CHANG    "biostructure"
-#define BP_CANCER    "cancer"
+#define BP_CANCER   "cancer"
+#define BP_EMBRYO   "alien embryo"
+#define BP_GANGLION "spinal ganglion"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -234,7 +246,7 @@
 #define BP_GROIN  "groin"
 #define BP_ALL_LIMBS list(BP_CHEST, BP_GROIN, BP_HEAD, BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 #define BP_BY_DEPTH list(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_GROIN, BP_CHEST)
-#define BP_BELOW_GROIN list(BP_GROIN, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)
+#define BP_FEET list(BP_L_FOOT, BP_R_FOOT)
 
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
@@ -288,13 +300,19 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
+#define SPECIES_MONKEY      "Monkey"
+#define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
-#define SPECIES_XENO			"Xenomorph"
-#define SPECIES_XENO_DRONE		"Xenomorph Drone"
-#define SPECIES_XENO_HUNTER		"Xenomorph Hunter"
-#define SPECIES_XENO_SENTINEL	"Xenomorph Sentinel"
-#define SPECIES_XENO_QUEEN		"Xenomorph Queen"
+#define SPECIES_XENO                 "Xenomorph"
+#define SPECIES_XENO_DRONE           "Xenomorph Drone"
+#define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
+#define SPECIES_XENO_SENTINEL        "Xenomorph Sentinel"
+#define SPECIES_XENO_QUEEN           "Xenomorph Queen"
+#define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
+#define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
+#define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
@@ -312,10 +330,35 @@
 #define AURA_TYPE_THROWN "Thrown"
 #define AURA_TYPE_LIFE   "Life"
 
-#define SLIME_EVOLUTION_THRESHOLD 10
+#define METROID_EVOLUTION_THRESHOLD 10
 
 //Used in mob/proc/get_input
 
 #define MOB_INPUT_TEXT "text"
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
+
+#define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
+#define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
+#define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
+
+#define STOMACH_FULLNESS_SUPER_LOW  25
+#define STOMACH_FULLNESS_LOW        125
+#define STOMACH_FULLNESS_MEDIUM     250
+#define STOMACH_FULLNESS_HIGH       425
+#define STOMACH_FULLNESS_SUPER_HIGH 550
+
+#define STOMACH_CAPACITY_LOW    0.75 // Slim people
+#define STOMACH_CAPACITY_NORMAL 1.0  // Normal human beings
+#define STOMACH_CAPACITY_HIGH   1.45 // Spherical boiz
+
+#define HUMAN_POWER_NONE    "None"
+#define HUMAN_POWER_SPIT    "Spit"
+#define HUMAN_POWER_LEAP    "Leap"
+#define HUMAN_POWER_TACKLE  "Tackle"
+
+#define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
+#define HUMAN_HIGH_POISE    60
+#define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
+#define HUMAN_LOW_POISE     45
+#define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.

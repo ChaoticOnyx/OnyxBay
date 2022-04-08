@@ -10,16 +10,35 @@
 	var/mob/living/carbon/human/victim = null
 	var/strapped = 0.0
 	var/busy = FALSE
+	var/time_to_strip = 5 SECONDS
 
 	var/obj/machinery/computer/operating/computer = null
+
+	component_types = list(
+		/obj/item/circuitboard/optable,
+		/obj/item/stock_parts/manipulator = 4
+	)
+
+	beepsounds = SFX_BEEP_MEDICAL
+
+/obj/machinery/optable/RefreshParts()
+    var/default_strip = 6 SECONDS
+    var/efficiency = 0
+    for(var/obj/item/stock_parts/P in component_parts)
+        if(ismanipulator(P))
+            efficiency += 0.25 * P.rating
+    time_to_strip = clamp(default_strip - efficiency, 1 SECONDS, 5 SECONDS)
 
 /obj/machinery/optable/Initialize()
 	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if (computer)
-			computer.table = src
-			break
+		if(!computer || computer?.table)
+			continue
+		computer.table = src
+		break
+	RefreshParts()
+	update_icon()
 
 /obj/machinery/optable/ex_act(severity)
 
@@ -46,18 +65,14 @@
 		qdel(src)
 	return
 
-/obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+/obj/machinery/optable/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return 0
+		return TRUE
+	return FALSE
 
 
-/obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
-
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+/obj/machinery/optable/MouseDrop_T(obj/O, mob/user)
+	if((!istype(O, /obj/item) || user.get_active_hand() != O))
 		return
 	user.drop_item()
 	if (O.loc != src.loc)
@@ -66,7 +81,7 @@
 
 /obj/machinery/optable/verb/remove_clothes()
 	set name = "Remove Clothes"
-	set category = "IC"
+	set category = "Object"
 	set src in oview(1)
 
 	if(!ishuman(usr) && !issilicon(usr))
@@ -79,7 +94,7 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
-	if(istype(victim.back, /obj/item/weapon/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
+	if(istype(victim.back, /obj/item/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
 		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)
@@ -91,17 +106,18 @@
 	if(busy)
 		to_chat(usr, SPAN_DANGER("[victim] is already undressing."))
 		return
-	
+
 	busy = TRUE
 	usr.visible_message(SPAN_DANGER("[usr] begins to undress [victim] on the table with the built-in tool."),
 						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
-	if(do_after(usr, 5 SECONDS, victim))
+	if(do_after(usr, time_to_strip, victim))
 		if(!victim)
+			busy = FALSE
 			return
 		for(var/obj/item/clothing/C in victim.contents)
 			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
 				continue
-			victim.drop_from_inventory(C)
+			victim.unEquip(C)
 			use_power_oneoff(100)
 		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
 							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
@@ -109,6 +125,7 @@
 
 /obj/machinery/optable/proc/check_victim()
 	if(locate(/mob/living/carbon/human, src.loc))
+		play_beep()
 		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
 		if(M.lying)
 			src.victim = M
@@ -132,6 +149,8 @@
 	C.resting = 1
 	C.dropInto(loc)
 	for(var/obj/O in src)
+		if(O in component_parts)
+			continue
 		O.dropInto(loc)
 	src.add_fingerprint(user)
 	if(ishuman(C))
@@ -157,8 +176,14 @@
 
 	take_victim(usr,usr)
 
-/obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/grab))
+/obj/machinery/optable/attackby(obj/item/W as obj, mob/living/carbon/user as mob)
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
+	if(default_part_replacement(user, W))
+		return
+	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
 			take_victim(G.affecting,usr)

@@ -1,11 +1,11 @@
 //Adminpaper - it's like paper, but more adminny!
-/obj/item/weapon/paper/admin
+/obj/item/paper/admin
 	name = "administrative paper"
 	desc = "If you see this, something has gone horribly wrong."
 	var/datum/admins/admindatum = null
 
 	var/interactions = null
-	var/isCrayon = 0
+	var/isCrayon = FALSE
 	var/origin = null
 	var/mob/sender = null
 	var/obj/machinery/photocopier/faxmachine/destination
@@ -19,12 +19,11 @@
 	var/logo_list = list("ntlogo.png","sollogo.png","terralogo.png")
 	var/logo = ""
 
-/obj/item/weapon/paper/admin/New()
+/obj/item/paper/admin/New()
 	..()
 	generateInteractions()
 
-
-/obj/item/weapon/paper/admin/proc/generateInteractions()
+/obj/item/paper/admin/proc/generateInteractions()
 	//clear first
 	interactions = null
 
@@ -40,7 +39,7 @@
 	interactions += "<A href='?src=\ref[src];clear=1'>Clear page</A> "
 	interactions += "</center>"
 
-/obj/item/weapon/paper/admin/proc/generateHeader()
+/obj/item/paper/admin/proc/generateHeader()
 	var/originhash = md5("[origin]")
 	var/challengehash = copytext(md5("[game_id]"),1,10) // changed to a hash of the game ID so it's more consistant but changes every round.
 	var/text = null
@@ -52,7 +51,7 @@
 
 	header = text
 
-/obj/item/weapon/paper/admin/proc/generateFooter()
+/obj/item/paper/admin/proc/generateFooter()
 	var/text = null
 
 	text = "<hr><font size= \"1\">"
@@ -64,22 +63,21 @@
 	footer = text
 
 
-/obj/item/weapon/paper/admin/proc/adminbrowse()
-	updateinfolinks()
+/obj/item/paper/admin/proc/adminbrowse()
 	generateHeader()
 	generateFooter()
 	updateDisplay()
 
-obj/item/weapon/paper/admin/proc/updateDisplay()
-	usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[headerOn ? header : ""][info_links][stamps][footerOn ? footer : ""][interactions]</BODY></HTML>", "window=[name];can_close=0")
+/obj/item/paper/admin/proc/updateDisplay()
+	show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[headerOn ? header : ""][info_links][stamps][footerOn ? footer : ""][interactions]</BODY></HTML>", "window=[name];can_close=0")
 
 
 
-/obj/item/weapon/paper/admin/Topic(href, href_list)
+/obj/item/paper/admin/Topic(href, href_list)
 	if(href_list["write"])
 		var/id = href_list["write"]
 		if(free_space <= 0)
-			to_chat(usr, "<span class='info'>There isn't enough space left on \the [src] to write anything.</span>")
+			to_chat(usr, SPAN("info", "There isn't enough space left on \the [src] to write anything."))
 			return
 
 		var/t =  sanitize(input("Enter what you want to write:", "Write", null, null) as message, free_space, extra = 0)
@@ -87,25 +85,20 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		if(!t)
 			return
 
-		var last_fields_value = fields
-
 		//t = html_encode(t)
 		t = replacetext(t, "\n", "<BR>")
 		t = parsepencode(t,,, isCrayon) // Encode everything from pencode to html
 
+		var/terminated = FALSE
+		if (findtext(t, @"[end]"))
+			t = replacetext(t, @"[end]", "")
+			terminated = TRUE
 
-		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
-			fields = last_fields_value
-			return
+		addtofield(id, t, terminated) // He wants to edit a field, let him.
+		if (id == "end" && terminated)
+			appendable = FALSE
 
-		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
-		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
-			updateinfolinks()
-
-		update_space(t)
+		update_space()
 
 		updateDisplay()
 
@@ -116,11 +109,17 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		switch(alert("Are you sure you want to send the fax as is?",, "Yes", "No"))
 			if("Yes")
 				if(headerOn)
+					var/header_with_links = field_regex.Replace(header, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					header_with_links = sign_field_regex.Replace(header_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info = header + info
+					info_links = header_with_links + info_links
 				if(footerOn)
+					var/footer_with_links = field_regex.Replace(footer, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					footer_with_links = sign_field_regex.Replace(footer_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info += footer
-				updateinfolinks()
-				usr << browse(null, "window=[name]")
+					info_links += footer_with_links
+
+				close_browser(usr, "window=[name]")
 				admindatum.faxCallback(src, destination)
 		return
 
@@ -131,7 +130,7 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		return
 
 	if(href_list["cancel"])
-		usr << browse(null, "window=[name]")
+		close_browser(usr, "window=[name]")
 		qdel(src)
 		return
 
@@ -149,12 +148,12 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		footerOn = !footerOn
 		updateDisplay()
 		return
-	
+
 	if(href_list["changelogo"])
 		logo = input(usr, "What logo?", "Choose a logo", "") as null|anything in (logo_list)
 		generateHeader()
 		updateDisplay()
 		return
 
-/obj/item/weapon/paper/admin/get_signature()
+/obj/item/paper/admin/get_signature()
 	return input(usr, "Enter the name you wish to sign the paper with (will prompt for multiple entries, in order of entry)", "Signature") as text|null

@@ -129,7 +129,7 @@
 		O.ordernum = SSsupply.ordernum
 		O.object = P
 		O.orderedby = idname
-		O.reason = rustoutf(reason)
+		O.reason = reason
 		O.orderedrank = idrank
 		O.comment = "#[O.ordernum]"
 		SSsupply.requestlist += O
@@ -268,7 +268,7 @@
 	t += "CONTENTS:<br>"
 	t += O.object.manifest
 	t += "<hr>"
-	print_text(t, user)
+	print_text(t, user, rawhtml = TRUE)
 
 /datum/nano_module/supply/proc/print_summary(mob/user)
 	var/t = ""

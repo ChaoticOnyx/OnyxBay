@@ -1,4 +1,4 @@
-/obj/item/weapon/reagent_containers/chem_disp_cartridge
+/obj/item/reagent_containers/chem_disp_cartridge
 	name = "chemical dispenser cartridge"
 	desc = "This goes in a chemical dispenser."
 	icon_state = "cartridge"
@@ -10,35 +10,39 @@
 	// Large, but inaccurate. Use a chem dispenser or beaker for accuracy.
 	possible_transfer_amounts = "50;100"
 	unacidable = 1
+	// Save the chemists from being bald.
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/spawn_reagent = null
 	var/label = ""
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/New()
+/obj/item/reagent_containers/chem_disp_cartridge/Initialize()
 	. = ..()
 	if(spawn_reagent)
 		reagents.add_reagent(spawn_reagent, volume)
 		var/datum/reagent/R = spawn_reagent
 		setLabel(initial(R.name))
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/examine(mob/user)
+/obj/item/reagent_containers/chem_disp_cartridge/examine(mob/user)
 	. = ..()
-	to_chat(user, "It has a capacity of [volume] units.")
+	. += "\nIt has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)
-		to_chat(user, "It is empty.")
+		. += "\nIt is empty."
 	else
-		to_chat(user, "It contains [reagents.total_volume] units of liquid.")
+		. += "\nIt contains [reagents.total_volume] units of liquid."
 	if(!is_open_container())
-		to_chat(user, "The cap is sealed.")
+		. += "\nThe cap is sealed."
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/verb/verb_set_label(L as text)
+/obj/item/reagent_containers/chem_disp_cartridge/verb/verb_set_label()
 	set name = "Set Cartridge Label"
 	set category = "Object"
-	set src in view(usr, 1)
+	set src in usr
 
-	setLabel(L, usr)
+	var/L = sanitizeSafe(input(usr, "Set Cartridge Label", "Cartridge Label", label) as null|text)
+	if(CanPhysicallyInteract(usr))
+		setLabel(L, usr)
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/proc/setLabel(L, mob/user = null)
+/obj/item/reagent_containers/chem_disp_cartridge/proc/setLabel(L, mob/user = null)
 	if(L)
 		if(user)
 			to_chat(user, "<span class='notice'>You set the label on \the [src] to '[L]'.</span>")
@@ -51,7 +55,7 @@
 		label = ""
 		SetName(initial(name))
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/attack_self()
+/obj/item/reagent_containers/chem_disp_cartridge/attack_self()
 	..()
 	if (is_open_container())
 		to_chat(usr, "<span class = 'notice'>You put the cap on \the [src].</span>")
@@ -60,11 +64,11 @@
 		to_chat(usr, "<span class = 'notice'>You take the cap off \the [src].</span>")
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/afterattack(obj/target, mob/user , flag)
-	if (!is_open_container() || !flag)
+/obj/item/reagent_containers/chem_disp_cartridge/afterattack(obj/target, mob/user , flag)
+	if(!is_open_container() || !flag)
 		return
 
-	else if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+	else if(istype(target, /obj/structure/reagent_dispensers) || istype(target, /obj/item/backwear/reagent)) //A dispenser. Transfer FROM it TO us.
 		target.add_fingerprint(user)
 
 		if(!target.reagents.total_volume && target.reagents)

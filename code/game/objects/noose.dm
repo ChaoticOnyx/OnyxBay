@@ -1,10 +1,14 @@
-GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
+GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, /obj/structure/table, /obj/structure/bed))
 
 /proc/is_standing_on_object(x)
 	if(!x) return FALSE
 
 	for(var/obj/O in get_turf(x))
 		if(is_type_in_list(O, GLOB.standing_objects))
+			if(istype(O, /obj/structure/table))
+				var/obj/structure/table/T = O
+				if(T.flipped)
+					return FALSE
 			return TRUE
 	return FALSE
 
@@ -152,6 +156,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 				SPAN_WARNING("[M] unties the noose over their neck!"),\
 				SPAN_NOTICE("You untie the noose over your neck!"))
 			M.Weaken(3)
+			M.Stun(2)
 		unbuckle_mob()
 		add_fingerprint(user)
 

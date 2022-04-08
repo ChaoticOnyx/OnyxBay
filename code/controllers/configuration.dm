@@ -4,13 +4,18 @@ var/list/gamemode_cache = list()
 	var/server_name = null					// server name (for world name / status)
 	var/server_id = null					// server id (used for separate bans storing)
 	var/server_suffix = 0					// generate numeric suffix based on server port
+	var/subserver_name = null               // subserver name in window title, ignored if null
 
+	var/clientfps = 65				     	// Default fps for clients with "0" in prefs. -1 for synced with server.
+
+	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
 	var/log_say = 0							// Log client say
 	var/log_admin = 0						// Log admin actions
 	var/log_asay = 0						// Log admin/mod say
 	var/log_debug = 1						// Log debug output
+	var/log_debug_verbose = 1               // Log verbose debug output
 	var/log_game = 0						// Log game events
 	var/log_vote = 0						// Log voting
 	var/log_whisper = 0						// Log client whisper
@@ -20,7 +25,7 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
 	var/log_pda = 0							// Log pda messages
 	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_world_output = 0				// Log world.log << messages
+	var/log_world_output = 0				// Log to_world_log(messages)
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
 
@@ -66,6 +71,7 @@ var/list/gamemode_cache = list()
 	var/guest_jobban = 1
 	var/panic_bunker = 0
 	var/eams = 0
+	var/eams_blocks_ooc = 0
 	var/usewhitelist = 0
 	var/kick_inactive = 0				//force disconnect for inactive players after this many minutes, if non-0
 	var/mods_can_tempban = 0
@@ -107,11 +113,13 @@ var/list/gamemode_cache = list()
 	var/forumurl
 	var/discordurl
 	var/githuburl
+	var/patreonurl
 
 	var/minutetopiclimit
 	var/secondtopiclimit
 
 	var/forbid_singulo_possession = 0
+	var/forbid_singulo_following = 1
 
 	//game_options.txt configs
 
@@ -128,8 +136,6 @@ var/list/gamemode_cache = list()
 	var/bones_can_break = 1
 	var/limbs_can_break = 1
 
-	var/revival_pod_plants = 1
-	var/revival_cloning = 1
 	var/revival_brain_life = -1
 
 	var/use_loyalty_implants = 0
@@ -148,7 +154,7 @@ var/list/gamemode_cache = list()
 	var/robot_delay = 0
 	var/monkey_delay = 0
 	var/alien_delay = 0
-	var/slime_delay = 0
+	var/metroid_delay = 0
 	var/animal_delay = 0
 	var/maximum_mushrooms = 15 //After this amount alive, mushrooms will not boom boom
 
@@ -159,6 +165,32 @@ var/list/gamemode_cache = list()
 	var/ban_legacy_system = 0	//Defines whether the server uses the legacy banning system with the files in /data or the SQL system. Config option in config.txt
 	var/use_age_restriction_for_jobs = 0   //Do jobs use account age restrictions?   --requires database
 	var/use_age_restriction_for_antags = 0 //Do antags use account age restrictions? --requires database
+
+	// Minimum age requirements in days for antagonists, not used at all without a value. Depends on use_age_restriction_for_antags.
+	var/traitor_min_age
+	var/changeling_min_age
+	var/ninja_min_age
+	var/raider_min_age
+	var/nuke_min_age
+	var/wizard_min_age
+	var/xeno_min_age
+	var/malf_min_age
+	var/cultist_min_age
+	var/actor_min_age
+	var/ert_min_age
+	var/revolutionary_min_age
+	var/vampire_min_age
+	var/thrall_min_age
+	//Deprecated
+	var/renegade_min_age
+	var/borer_min_age
+	var/loyalist_min_age
+	var/meme_min_age
+	var/deathsquad_min_age
+	var/commando_min_age
+	var/deity_min_age
+	var/godcultist_min_age
+	var/loyalists_min_age
 
 	var/simultaneous_pm_warning_timeout = 100
 
@@ -244,12 +276,26 @@ var/list/gamemode_cache = list()
 	var/server_port
 
 	var/donations = FALSE
+	var/storyteller = FALSE
 
 	var/projectile_basketball
 
 	// Splash screen options
 	var/list/lobby_images = list('icons/splashes/onyx_old.png', 'icons/splashes/onyx_new.png')
 	var/current_lobbyscreen = null
+
+	var/db_uses_cp1251_encoding = FALSE
+
+	// round OOC disable
+	var/disable_ooc_roundstart = FALSE
+	var/disable_looc_roundstart = FALSE
+
+	// Timing settings
+	var/pregame_timeleft = 3 MINUTES
+	var/restart_timeout = 1 MINUTE
+
+	// Non-that-serious features that can be disabled for higher RP levels
+	var/fun_hydroponics = 2
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -324,11 +370,67 @@ var/list/gamemode_cache = list()
 				if ("use_age_restriction_for_antags")
 					config.use_age_restriction_for_antags = 1
 
+				if ("disable_ooc_at_roundstart")
+					disable_ooc_roundstart = TRUE
+
+				if ("disable_looc_at_roundstart")
+					disable_looc_roundstart = TRUE
+
+				if ("traitor_min_age")
+					config.traitor_min_age = text2num(value)
+				if ("changeling_min_age")
+					config.changeling_min_age = text2num(value)
+				if ("ninja_min_age")
+					config.ninja_min_age = text2num(value)
+				if ("raider_min_age")
+					config.raider_min_age = text2num(value)
+				if ("nuke_min_age")
+					config.nuke_min_age = text2num(value)
+				if ("wizard_min_age")
+					config.wizard_min_age = text2num(value)
+				if ("xeno_min_age")
+					config.xeno_min_age = text2num(value)
+				if ("malf_min_age")
+					config.malf_min_age = text2num(value)
+				if ("cultist_min_age")
+					config.cultist_min_age = text2num(value)
+				if ("actor_min_age")
+					config.actor_min_age = text2num(value)
+				if ("ert_min_age")
+					config.ert_min_age = text2num(value)
+				if ("revolutionary_min_age")
+					config.revolutionary_min_age = text2num(value)
+				if ("vampire_min_age")
+					config.vampire_min_age = text2num(value)
+				if ("thrall_min_age")
+					config.thrall_min_age = text2num(value)
+				if ("renegade_min_age")
+					config.renegade_min_age = text2num(value)
+				if ("borer_min_age")
+					config.borer_min_age = text2num(value)
+				if ("loyalist_min_age")
+					config.loyalist_min_age = text2num(value)
+				if ("meme_min_age")
+					config.meme_min_age = text2num(value)
+				if ("deathsquad_min_age")
+					config.deathsquad_min_age = text2num(value)
+				if ("commando_min_age")
+					config.commando_min_age = text2num(value)
+				if ("deity_min_age")
+					config.deity_min_age = text2num(value)
+				if ("godcultist_min_age")
+					config.godcultist_min_age = text2num(value)
+				if ("loyalists_min_age")
+					config.loyalists_min_age = text2num(value)
+
 				if ("jobs_have_minimal_access")
 					config.jobs_have_minimal_access = 1
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
+
+				if("log_story")
+					config.log_story = TRUE
 
 				if ("log_ooc")
 					config.log_ooc = 1
@@ -353,6 +455,9 @@ var/list/gamemode_cache = list()
 
 				if ("log_debug")
 					config.log_debug = 1
+
+				if ("log_debug_verbose")
+					config.log_debug_verbose = 1
 
 				if ("log_game")
 					config.log_game = 1
@@ -390,7 +495,7 @@ var/list/gamemode_cache = list()
 				if ("no_click_cooldown")
 					config.no_click_cooldown = 1
 
-				if("allow_admin_ooccolor")
+				if ("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 
 				if ("allow_vote_restart")
@@ -429,14 +534,11 @@ var/list/gamemode_cache = list()
 				if ("vote_autogamemode_timeleft")
 					config.vote_autogamemode_timeleft = text2num(value)
 
-				if("ert_admin_only")
+				if ("ert_admin_only")
 					config.ert_admin_call_only = 1
 
 				if ("allow_ai")
 					config.allow_ai = 1
-
-//				if ("authentication")
-//					config.enable_authentication = 1
 
 				if ("respawn_delay")
 					config.respawn_delay = text2num(value)
@@ -450,6 +552,9 @@ var/list/gamemode_cache = list()
 
 				if ("serversuffix")
 					config.server_suffix = 1
+
+				if ("subserver_name")
+					config.subserver_name = value
 
 				if ("hostedby")
 					config.hostedby = value
@@ -480,6 +585,9 @@ var/list/gamemode_cache = list()
 
 				if ("githuburl")
 					config.githuburl = value
+
+				if ("patreonurl")
+					config.patreonurl = value
 
 				if ("ghosts_can_possess_animals")
 					config.ghosts_can_possess_animals = value
@@ -529,7 +637,7 @@ var/list/gamemode_cache = list()
 				if ("aliens_allowed")
 					config.aliens_allowed = 1
 
-				if("alien_eggs_allowed")
+				if ("alien_eggs_allowed")
 					config.alien_eggs_allowed = 1
 
 				if ("ninjas_allowed")
@@ -596,6 +704,9 @@ var/list/gamemode_cache = list()
 				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
 
+				if("forbid_singulo_following")
+					forbid_singulo_following = text2num(value)
+
 				if("popup_admin_pm")
 					config.popup_admin_pm = 1
 
@@ -610,8 +721,8 @@ var/list/gamemode_cache = list()
 					if(ticklag > 0)
 						fps = 10 / ticklag
 
-				if("fps")
-					fps = text2num(value)
+				if("clientfps")
+					clientfps = text2num(value)
 
 				if("tick_limit_mc_init")
 					tick_limit_mc_init = text2num(value)
@@ -767,7 +878,10 @@ var/list/gamemode_cache = list()
 						panic_address = value
 
 				if("eams")
-					config.eams = 1
+					config.eams = TRUE
+
+				if("eams_blocks_ooc")
+					config.eams_blocks_ooc = TRUE
 
 				if("delist_when_no_admins")
 					config.delist_when_no_admins = TRUE
@@ -786,9 +900,6 @@ var/list/gamemode_cache = list()
 
 				if("autostealth")
 					config.autostealth = text2num(value)
-
-				if("radiation_lower_limit")
-					radiation_lower_limit = text2num(value)
 
 				if("projectile_basketball")
 					config.projectile_basketball = 1
@@ -825,59 +936,54 @@ var/list/gamemode_cache = list()
 				if("donations")
 					donations = TRUE
 
-				else
-					log_misc("Unknown setting in configuration: '[name]'")
+				if("storyteller")
+					storyteller = TRUE
 
-		else if(type == "game_options")
-			if(!value)
-				log_misc("Unknown value for setting [name] in [filename].")
-			value = text2num(value)
+				if("db_uses_cp1251_encoding")
+					db_uses_cp1251_encoding = TRUE
 
-			switch(name)
 				if("health_threshold_dead")
-					config.health_threshold_dead = value
-				if("revival_pod_plants")
-					config.revival_pod_plants = value
-				if("revival_cloning")
-					config.revival_cloning = value
+					config.health_threshold_dead = text2num(value)
 				if("revival_brain_life")
-					config.revival_brain_life = value
+					config.revival_brain_life = text2num(value)
 				if("organ_health_multiplier")
-					config.organ_health_multiplier = value / 100
+					config.organ_health_multiplier = text2num(value) / 100
 				if("organ_regeneration_multiplier")
-					config.organ_regeneration_multiplier = value / 100
+					config.organ_regeneration_multiplier = text2num(value) / 100
 				if("organ_damage_spillover_multiplier")
-					config.organ_damage_spillover_multiplier = value / 100
+					config.organ_damage_spillover_multiplier = text2num(value) / 100
 				if("organs_can_decay")
 					config.organs_decay = 1
 				if("bones_can_break")
-					config.bones_can_break = value
+					config.bones_can_break = text2num(value)
 				if("limbs_can_break")
-					config.limbs_can_break = value
-
+					config.limbs_can_break = text2num(value)
 				if("run_speed")
-					config.run_speed = value
+					config.run_speed = text2num(value)
 				if("walk_speed")
-					config.walk_speed = value
-
+					config.walk_speed = text2num(value)
 				if("human_delay")
-					config.human_delay = value
+					config.human_delay = text2num(value)
 				if("robot_delay")
-					config.robot_delay = value
+					config.robot_delay = text2num(value)
 				if("monkey_delay")
-					config.monkey_delay = value
+					config.monkey_delay = text2num(value)
 				if("alien_delay")
-					config.alien_delay = value
-				if("slime_delay")
-					config.slime_delay = value
+					config.alien_delay = text2num(value)
+				if("metroid_delay")
+					config.metroid_delay = text2num(value)
 				if("animal_delay")
-					config.animal_delay = value
+					config.animal_delay = text2num(value)
 				if("maximum_mushrooms")
-					config.maximum_mushrooms = value
-
-
+					config.maximum_mushrooms = text2num(value)
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
+				if("pregame_timeleft")
+					config.pregame_timeleft = text2num(value)
+				if("restart_timeout")
+					config.restart_timeout = text2num(value)
+				if("fun_hydroponics")
+					config.fun_hydroponics = text2num(value)
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
@@ -929,6 +1035,16 @@ var/list/gamemode_cache = list()
 				sqlfdbkpass = value
 			if ("enable_stat_tracking")
 				sqllogging = TRUE
+			if ("donation_address")
+				sqldonaddress = value
+			if ("donation_port")
+				sqldonport = value
+			if ("donation_database")
+				sqldondb = value
+			if ("donation_login")
+				sqldonlogin = value
+			if ("donation_password")
+				sqldonpass = value
 			else
 				log_misc("Unknown setting in configuration: '[name]'")
 

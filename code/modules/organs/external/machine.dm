@@ -1,13 +1,15 @@
 /obj/item/organ/internal/cell
 	name = "microbattery"
 	desc = "A small, powerful cell for use in fully prosthetic bodies."
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cell"
-	dead_icon = "cell_bork"
+	dead_icon = "cell-br"
 	organ_tag = BP_CELL
 	parent_organ = BP_CHEST
 	vital = 1
+	override_species_icon = TRUE
 	var/open
-	var/obj/item/weapon/cell/cell = /obj/item/weapon/cell/high
+	var/obj/item/cell/cell = /obj/item/cell/high
 	//at 0.8 completely depleted after 60ish minutes of constant walking or 130 minutes of standing still
 	var/servo_cost = 0.8
 
@@ -66,7 +68,7 @@
 	if(cell)
 		cell.emp_act(severity)
 
-/obj/item/organ/internal/cell/attackby(obj/item/weapon/W, mob/user)
+/obj/item/organ/internal/cell/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		if(open)
 			open = 0
@@ -82,7 +84,7 @@
 				to_chat(user, "<span class='notice'>You remove \the [cell] from \the [src].</span>")
 				cell = null
 
-	if (istype(W, /obj/item/weapon/cell))
+	if (istype(W, /obj/item/cell))
 		if(open)
 			if(cell)
 				to_chat(user, "<span class ='warning'>There is a power cell already installed.</span>")
@@ -94,9 +96,10 @@
 /obj/item/organ/internal/cell/replaced()
 	..()
 	// This is very ghetto way of rebooting an IPC. TODO better way.
-	if(owner && owner.stat == DEAD)
+	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
+	if(owner && owner.stat == DEAD && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
-		owner.visible_message("<span class='danger'>\The [owner] twitches visibly!</span>")
+		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
 
 /obj/item/organ/internal/cell/listen()
 	if(get_charge())
@@ -105,10 +108,12 @@
 // Used for an MMI or posibrain being installed into a human.
 /obj/item/organ/internal/mmi_holder
 	name = "brain interface"
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
 	organ_tag = BP_BRAIN
 	parent_organ = BP_HEAD
 	vital = 1
+	override_species_icon = TRUE
 	var/obj/item/device/mmi/stored_mmi
 	var/datum/mind/persistantMind //Mind that the organ will hold on to after being removed, used for transfer_and_delete
 	var/ownerckey // used in the event the owner is out of body
@@ -173,4 +178,5 @@
 			var/response = input(find_dead_player(ownerckey, 1), "Your [initial(stored_mmi.name)] has been removed from your body. Do you wish to return to life?", "Robotic Rebirth") as anything in list("Yes", "No")
 			if(response == "Yes")
 				persistantMind.transfer_to(stored_mmi.brainmob)
+		stored_mmi.update_icon()
 	qdel(src)

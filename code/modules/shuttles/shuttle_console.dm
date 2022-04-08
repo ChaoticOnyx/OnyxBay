@@ -99,6 +99,7 @@
 
 /obj/machinery/computer/shuttle_control/emag_act(remaining_charges, mob/user)
 	if (!hacked)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		req_access = list()
 		req_one_access = list()
 		hacked = 1

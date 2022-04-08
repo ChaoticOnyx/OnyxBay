@@ -35,7 +35,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		var/list/archivedwarrants = list()
 		for(var/datum/computer_file/data/warrant/W in GLOB.all_warrants)
 			var/charges = W.fields["charges"]
-			if(lentext(charges) > 50)
+			if(length(charges) > 50)
 				charges = copytext(charges, 1, 50) + "..."
 			var/warrant = list(
 			"warrantname" = W.fields["namewarrant"],
@@ -82,7 +82,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 	var/mob/user = usr
 	if(!istype(user))
 		return
-	var/obj/item/weapon/card/id/I = user.GetIdCard()
+	var/obj/item/card/id/I = user.GetIdCard()
 	if(!istype(I) || !I.registered_name || !(access_security in I.access))
 		to_chat(user, "Authentication error: Unable to locate ID with apropriate access to allow this operation.")
 		return
@@ -168,7 +168,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		if(CanInteract(user, GLOB.default_state))
 			if (!new_charges || !activewarrant)
 				return
-			activewarrant.fields["charges"] = rustoutf(new_charges)
+			activewarrant.fields["charges"] = new_charges
 
 	if(href_list["editwarrantauth"])
 		. = 1

@@ -13,18 +13,18 @@
 	M.adjustToxLoss(removed * 3)
 
 /datum/reagent/acetone/touch_obj(obj/O)	//I copied this wholesale from ethanol and could likely be converted into a shared proc. ~Techhead
-	if(istype(O, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/paperaffected = O
+	if(istype(O, /obj/item/paper))
+		var/obj/item/paper/paperaffected = O
 		paperaffected.clearpaper()
 		to_chat(usr, "The solution dissolves the ink on the paper.")
 		return
-	if(istype(O, /obj/item/weapon/book))
+	if(istype(O, /obj/item/book))
 		if(volume < 5)
 			return
-		if(istype(O, /obj/item/weapon/book/tome))
+		if(istype(O, /obj/item/book/tome))
 			to_chat(usr, "<span class='notice'>The solution does nothing. Whatever this is, it isn't normal ink.</span>")
 			return
-		var/obj/item/weapon/book/affectedbook = O
+		var/obj/item/book/affectedbook = O
 		affectedbook.dat = null
 		to_chat(usr, "<span class='notice'>The solution dissolves the ink on the book.</span>")
 	return
@@ -87,92 +87,6 @@
 	taste_description = "copper"
 	color = "#6e3b08"
 
-/datum/reagent/ethanol
-	name = "Ethanol" //Parent class for all alcoholic reagents.
-	description = "A well-known alcohol with a variety of applications."
-	taste_description = "pure alcohol"
-	reagent_state = LIQUID
-	color = "#404030"
-	touch_met = 5
-	var/nutriment_factor = 0
-	var/strength = 10 // This is, essentially, units between stages - the lower, the stronger. Less fine tuning, more clarity.
-	var/toxicity = 1
-
-	var/druggy = 0
-	var/adj_temp = 0
-	var/targ_temp = 310
-	var/halluci = 0
-
-	glass_name = "ethanol"
-	glass_desc = "A well-known alcohol with a variety of applications."
-
-/datum/reagent/ethanol/touch_mob(mob/living/L, amount)
-	if(istype(L))
-		L.adjust_fire_stacks(amount / 15)
-
-/datum/reagent/ethanol/affect_blood(mob/living/carbon/M, alien, removed)
-	M.adjustToxLoss(removed * 2 * toxicity)
-	return
-
-/datum/reagent/ethanol/affect_ingest(mob/living/carbon/M, alien, removed)
-	M.nutrition += nutriment_factor * removed
-	var/strength_mod = 1
-	if(alien == IS_SKRELL)
-		strength_mod *= 5
-	if(alien == IS_DIONA)
-		strength_mod = 0
-
-	M.add_chemical_effect(CE_ALCOHOL, 1)
-	var/effective_dose = M.chem_doses[type] * strength_mod * (1 + volume/60) //drinking a LOT will make you go down faster
-
-	if(effective_dose >= strength) // Early warning
-		M.make_dizzy(6) // It is decreased at the speed of 3 per tick
-	if(effective_dose >= strength * 2) // Slurring
-		M.add_chemical_effect(CE_PAINKILLER, 150/strength)
-		M.slurring = max(M.slurring, 30)
-	if(effective_dose >= strength * 3) // Confusion - walking in random directions
-		M.add_chemical_effect(CE_PAINKILLER, 150/strength)
-		M.confused = max(M.confused, 20)
-	if(effective_dose >= strength * 4) // Blurry vision
-		M.add_chemical_effect(CE_PAINKILLER, 150/strength)
-		M.eye_blurry = max(M.eye_blurry, 10)
-	if(effective_dose >= strength * 5) // Drowsyness - periodically falling asleep
-		M.add_chemical_effect(CE_PAINKILLER, 150/strength)
-		M.drowsyness = max(M.drowsyness, 20)
-	if(effective_dose >= strength * 6) // Toxic dose
-		M.add_chemical_effect(CE_ALCOHOL_TOXIC, toxicity)
-	if(effective_dose >= strength * 7) // Pass out
-		M.Paralyse(20)
-		M.Sleeping(30)
-
-	if(druggy != 0)
-		M.druggy = max(M.druggy, druggy)
-
-	if(adj_temp > 0 && M.bodytemperature < targ_temp) // 310 is the normal bodytemp. 310.055
-		M.bodytemperature = min(targ_temp, M.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
-	if(adj_temp < 0 && M.bodytemperature > targ_temp)
-		M.bodytemperature = min(targ_temp, M.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
-
-	if(halluci)
-		M.adjust_hallucination(halluci, halluci)
-
-/datum/reagent/ethanol/touch_obj(obj/O)
-	if(istype(O, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/paperaffected = O
-		paperaffected.clearpaper()
-		to_chat(usr, "The solution dissolves the ink on the paper.")
-		return
-	if(istype(O, /obj/item/weapon/book))
-		if(volume < 5)
-			return
-		if(istype(O, /obj/item/weapon/book/tome))
-			to_chat(usr, "<span class='notice'>The solution does nothing. Whatever this is, it isn't normal ink.</span>")
-			return
-		var/obj/item/weapon/book/affectedbook = O
-		affectedbook.dat = null
-		to_chat(usr, "<span class='notice'>The solution dissolves the ink on the book.</span>")
-	return
-
 /datum/reagent/hydrazine
 	name = "Hydrazine"
 	description = "A toxic, colorless, flammable liquid with a strong ammonia-like odor, in hydrate form."
@@ -214,8 +128,8 @@
 
 /datum/reagent/lithium/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
-			step(M, pick(GLOB.cardinal))
+		if(istype(M.loc, /turf/space))
+			M.SelfMove(pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
 
@@ -228,8 +142,8 @@
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
-			step(M, pick(GLOB.cardinal))
+		if(istype(M.loc, /turf/space))
+			M.SelfMove(pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
 		M.adjustBrainLoss(0.1)
@@ -254,6 +168,7 @@
 	taste_description = "the color blue, and regret"
 	reagent_state = SOLID
 	color = "#c7c7c7"
+	radiation = 0.15
 
 /datum/reagent/radium/affect_blood(mob/living/carbon/M, alien, removed)
 	M.apply_effect(10 * removed, IRRADIATE, blocked = 0) // Radium may increase your chances to cure a disease
@@ -275,9 +190,13 @@
 	if(volume >= 3)
 		if(!istype(T, /turf/space))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
+
 			if(!glow)
-				new /obj/effect/decal/cleanable/greenglow(T)
-			return
+				glow = new (T)
+				glow.create_reagents(volume)
+
+			glow.reagents.maximum_volume = glow.reagents.total_volume + volume
+			glow.reagents.add_reagent(type, volume, get_data(), FALSE)
 
 /datum/reagent/acid
 	name = "Sulphuric acid"
@@ -350,7 +269,6 @@
 				if(!screamed && affecting.can_feel_pain())
 					screamed = 1
 					H.emote("scream")
-				affecting.status |= ORGAN_DISFIGURED
 
 /datum/reagent/acid/touch_obj(obj/O)
 	if(O.unacidable)

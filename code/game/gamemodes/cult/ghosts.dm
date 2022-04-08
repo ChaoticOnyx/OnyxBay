@@ -116,7 +116,7 @@
 	if(!ghost_ability_check())
 		return
 
-	playsound(loc, "window_breaking", 50, 1)
+	playsound(loc, SFX_BREAK_WINDOW, 50, 1)
 
 	ghost_magic_cd = world.time + 5 SECONDS
 

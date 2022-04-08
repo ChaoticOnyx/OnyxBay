@@ -24,6 +24,19 @@
     </div>
 {{/if}}
 
+{{if data.change_body_build}}
+    <div class="item">
+        <div class="itemLabelNarrow">
+            Body Build:
+        </div>
+        <div class="itemContentWide">
+            {{if data.change_body_build}}
+                {{:helper.link(data.body_build, null, { 'bodybuild' : 1})}}
+            {{/if}}
+        </div>
+    </div>
+{{/if}}
+
 {{if data.change_eye_color || data.change_skin_tone || data.change_skin_color || data.change_hair_color || data.change_facial_hair_color}}
     <div class="item">
         <div class="itemLabelNarrow">

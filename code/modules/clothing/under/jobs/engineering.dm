@@ -34,3 +34,4 @@
 	name = "roboticist's jumpskirt"
 	icon_state = "roboticsf"
 	worn_state = "roboticsf"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS

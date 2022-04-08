@@ -57,16 +57,15 @@
 					break
 			isactive[name] = active ? "Active" : "Inactive"
 		else
-			isactive[name] = CR.get_status()
+			isactive[name] = CR.get_status_physical()
 
-		var/datum/job/job = job_master.occupations_by_title[rank]
-		var/found_place = 0
-		if(job)
-			for(var/list/department in dept_data)
-				var/list/names = department["names"]
-				if(job.department_flag & department["flag"])
-					names[name] = rank
-					found_place = 1
+		var/found_place = FALSE
+		for(var/list/department in dept_data)
+			var/list/names = department["names"]
+			//if(CR.get_department() && (GLOB.text_to_department_flags[CR.get_department()] & department["flag"]))
+			if(department["flag"] in CR.assigned_deparment_flags)
+				names[name] = rank
+				found_place = TRUE
 		if(!found_place)
 			misc[name] = rank
 
@@ -118,7 +117,7 @@
 		filtered_entries.Add(list(list(
 			"name" = CR.get_name(),
 			"rank" = CR.get_job(),
-			"status" = CR.get_status(),
+			"status" = CR.get_status_physical(),
 			"branch" = CR.get_branch(),
 			"milrank" = CR.get_rank()
 		)))

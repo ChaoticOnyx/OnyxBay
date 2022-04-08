@@ -1,7 +1,7 @@
 /mob/living/carbon/human
 	hud_type = /datum/hud/human
 
-/datum/hud/human/FinalizeInstantiation(ui_style='icons/mob/screen1_White.dmi', ui_color = "#ffffff", ui_alpha = 255)
+/datum/hud/human/FinalizeInstantiation(ui_style='icons/mob/screen1_white.dmi', ui_color = "#ffffff", ui_alpha = 255)
 	var/mob/living/carbon/human/target = mymob
 	var/datum/hud_data/hud_data
 	if(!istype(target))
@@ -58,6 +58,7 @@
 	if(hud_data.has_a_intent)
 
 		using = new /obj/screen/intent()
+		using.icon = ui_style
 		src.adding += using
 		action_intent = using
 
@@ -67,7 +68,7 @@
 		using = new /obj/screen()
 		using.SetName("mov_intent")
 		using.icon = ui_style
-		using.icon_state = (mymob.m_intent == "run" ? "running" : "walking")
+		using.icon_state = (mymob.m_intent == M_RUN ? "running" : "walking")
 		using.screen_loc = ui_movi
 		using.color = ui_color
 		using.alpha = ui_alpha
@@ -83,6 +84,17 @@
 		using.color = ui_color
 		using.alpha = ui_alpha
 		src.hotkeybuttons += using
+
+	if(hud_data.has_rest)
+		using = new /obj/screen()
+		using.SetName("rest")
+		using.icon = ui_style
+		using.icon_state = "rest"
+		using.screen_loc = ui_rest_act
+		using.color = ui_color
+		using.alpha = ui_alpha
+		src.adding += using
+
 
 	if(hud_data.has_hands)
 
@@ -221,6 +233,14 @@
 		mymob.fire.screen_loc = ui_fire
 		hud_elements |= mymob.fire
 
+	if(hud_data.has_pain)
+		mymob.pains = new /obj/screen()
+		mymob.pains.icon = ui_style
+		mymob.pains.icon_state = "pain0"
+		mymob.pains.SetName("pain")
+		mymob.pains.screen_loc = ui_health
+		hud_elements |= mymob.pains
+
 	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()
 		mymob.healths.icon = ui_style
@@ -260,6 +280,14 @@
 		mymob.nutrition_icon.SetName("nutrition")
 		mymob.nutrition_icon.screen_loc = ui_nutrition
 		hud_elements |= mymob.nutrition_icon
+
+	if(hud_data.has_poise)
+		mymob.poise_icon = new /obj/screen()
+		mymob.poise_icon.icon = 'icons/mob/screen1_poise.dmi'
+		mymob.poise_icon.icon_state = "50"
+		mymob.poise_icon.SetName("poise")
+		mymob.poise_icon.screen_loc = ui_health
+		hud_elements |= mymob.poise_icon
 
 
 	mymob.pain = new /obj/screen/fullscreen/pain( null )

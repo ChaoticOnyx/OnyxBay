@@ -204,7 +204,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/valve/return_network_air(datum/network/reference)
+/obj/machinery/atmospherics/valve/return_network_air(datum/pipe_network/reference)
 	return null
 
 /obj/machinery/atmospherics/valve/disconnect(obj/machinery/atmospherics/reference)
@@ -280,8 +280,8 @@
 				open()
 
 
-/obj/machinery/atmospherics/valve/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (!istype(W, /obj/item/weapon/wrench))
+/obj/machinery/atmospherics/valve/attackby(obj/item/W as obj, mob/user as mob)
+	if (!istype(W, /obj/item/wrench))
 		return ..()
 	var/datum/gas_mixture/int_air = return_air()
 	var/datum/gas_mixture/env_air = loc.return_air()
@@ -300,4 +300,4 @@
 
 /obj/machinery/atmospherics/valve/examine(mob/user)
 	. = ..()
-	to_chat(user, "It is [open ? "open" : "closed"].")
+	. += "\nIt is [open ? "open" : "closed"]."

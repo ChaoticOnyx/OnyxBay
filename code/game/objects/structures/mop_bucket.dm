@@ -7,6 +7,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/amount_per_transfer_from_this = 5	//shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 
 
@@ -15,11 +16,12 @@
 	..()
 
 /obj/structure/mopbucket/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, "[src] \icon[src] contains [reagents.total_volume] unit\s of water!")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of water!"
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/mop))
+	if(istype(I, /obj/item/mop))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='warning'>\The [src] is out of water!</span>")
 		else

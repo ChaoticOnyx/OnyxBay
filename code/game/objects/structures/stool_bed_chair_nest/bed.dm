@@ -17,6 +17,7 @@
 	buckle_dir = SOUTH
 	buckle_lying = 1
 	buckle_pixel_shift = "x=0;y=3"
+	appearance_flags = LONG_GLIDE
 	var/material/material
 	var/material/padding_material
 	var/base_icon = "bed"
@@ -69,11 +70,10 @@
 		desc = initial(desc)
 		desc += padding_material ? " It's made of [material.use_name] and covered with [padding_material.use_name]." : " It's made of [material.use_name]."
 
-/obj/structure/bed/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/bed/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return ..()
+		return TRUE
+	return ..()
 
 /obj/structure/bed/ex_act(severity)
 	switch(severity)
@@ -89,7 +89,22 @@
 				qdel(src)
 				return
 
-/obj/structure/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/bed/bullet_act(obj/item/projectile/Proj)
+	var/damage = Proj.get_structure_damage()
+	if(!damage)
+		return
+	..()
+	if(prob(50))
+		return
+	if(material)
+		if(prob(20))
+			material.place_sheet(loc)
+		else
+			material.place_shard(loc)
+	qdel(src)
+	return
+
+/obj/structure/bed/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dismantle()
@@ -147,13 +162,13 @@
 /obj/structure/bed/Move()
 	. = ..()
 	if(buckled_mob)
-		buckled_mob.forceMove(src.loc)
+		buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 
 /obj/structure/bed/forceMove()
 	. = ..()
 	if(buckled_mob)
-		if(isturf(src.loc))
-			buckled_mob.forceMove(src.loc)
+		if(isturf(loc))
+			buckled_mob.forceMove(loc, unbuckle_mob = FALSE)
 		else
 			unbuckle_mob()
 
@@ -202,28 +217,32 @@
 	icon_state = "rollerbed"
 	anchored = 0
 	buckle_pixel_shift = "x=0;y=6"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
 
 /obj/structure/bed/roller/adv
 	name = "advanced roller bed"
+	desc = "An advanced bed-on-wheels made for transporting medical patients with maximum speed."
 	icon_state = "rollerbedadv"
 	bedtype = /obj/structure/bed/roller/adv
 	rollertype = /obj/item/roller/adv
+	pull_slowdown = PULL_SLOWDOWN_NONE
 
 /obj/structure/bed/roller/update_icon()
 	return // Doesn't care about material or anything else.
 
-/obj/structure/bed/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(isWrench(W) || istype(W,/obj/item/stack) || isWirecutter(W))
+/obj/structure/bed/roller/attackby(obj/item/W as obj, mob/user as mob)
+	if(isWrench(W) || istype(W, /obj/item/stack) || isWirecutter(W))
 		return
-	else if(istype(W,/obj/item/roller_holder))
+	else if(istype(W, /obj/item/roller_holder))
 		if(buckled_mob)
 			user_unbuckle_mob(user)
-		else
+		else if(rollertype)
 			visible_message("[user] collapses \the [src.name].")
 			new rollertype(get_turf(src))
-			QDEL_IN(src, 0)
+			rollertype = null
+			qdel(src)
 		return
 	..()
 
@@ -234,7 +253,7 @@
 	icon_state = "rollerbed_folded"
 	item_state = "rbed"
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_NO_CONTAINER // Can't be put in backpacks. Oh well. For now.
+	w_class = ITEM_SIZE_GARGANTUAN // Not sure if it's actually necessary, I can barely imagine this thing being bigger than a mecha part;
 	var/rollertype = /obj/item/roller
 	var/bedtype = /obj/structure/bed/roller
 
@@ -247,17 +266,19 @@
 	bedtype = /obj/structure/bed/roller/adv
 
 /obj/item/roller/attack_self(mob/user)
+	if(!bedtype)
+		return
 	var/obj/structure/bed/roller/R = new bedtype(user.loc)
 	R.add_fingerprint(user)
+	bedtype = null
 	qdel(src)
 
-/obj/item/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
-	if(istype(W,/obj/item/roller_holder))
+/obj/item/roller/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/roller_holder))
 		var/obj/item/roller_holder/RH = W
 		if(!RH.held)
 			to_chat(user, "<span class='notice'>You collect the roller bed.</span>")
-			src.forceMove(RH)
+			forceMove(RH)
 			RH.held = src
 			return
 	..()
@@ -273,8 +294,7 @@
 	..()
 	held = new /obj/item/roller(src)
 
-/obj/item/roller_holder/attack_self(mob/user as mob)
-
+/obj/item/roller_holder/attack_self(mob/user)
 	if(!held)
 		to_chat(user, "<span class='notice'>The rack is empty.</span>")
 		return
@@ -282,10 +302,9 @@
 	to_chat(user, "<span class='notice'>You deploy the roller bed.</span>")
 	var/obj/structure/bed/roller/R = new held.bedtype(user.loc)
 	R.add_fingerprint(user)
-	qdel(held)
-	held = null
+	QDEL_NULL(held)
 
-/obj/structure/bed/roller/post_buckle_mob(mob/living/M as mob)
+/obj/structure/bed/roller/post_buckle_mob(mob/living/M)
 	if(M == buckled_mob)
 		set_density(1)
 		icon_state = "[initial(icon_state)]_up"
@@ -298,11 +317,16 @@
 /obj/structure/bed/roller/MouseDrop(over_object, src_location, over_location)
 	..()
 	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
-		if(buckled_mob)	return 0
+		if(!rollertype)
+			return
+		if(!ishuman(usr))
+			return
+		if(buckled_mob)
+			return 0
 		visible_message("[usr] collapses \the [src.name].")
 		new rollertype(get_turf(src))
-		QDEL_IN(src, 0)
+		rollertype = null
+		qdel(src)
 		return
 
 ///
@@ -316,6 +340,7 @@
 	icon_state = "wheelbed"
 	base_icon = "wheelbed"
 	buckle_pixel_shift = "x=0;y=3"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/bed/wheel/padded/New(newloc)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)

@@ -2,7 +2,7 @@
 	set category = "Server"
 	set name = "Toggle Panic Bunker"
 
-	if (!dbcon || !dbcon.IsConnected())
+	if (!establish_db_connection())
 		to_chat(usr, "<span class='adminnotice'>The Database is not connected!</span>")
 		return
 

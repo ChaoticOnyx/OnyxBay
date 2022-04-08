@@ -6,7 +6,7 @@
 		set_stat(CONSCIOUS)
 		return
 
-	health = maxHealth - getBrainLoss()
+	health = maxHealth - (getBrainLoss() * 2) // Since brains' get 50% of maxHealth as their HP
 
 	//TODO: fix husking
 	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)
@@ -60,11 +60,11 @@
 /mob/living/carbon/human/getHalLoss()
 	var/amount = 0
 	for(var/obj/item/organ/external/E in organs)
-		amount += E.get_full_pain()
+		amount += E.full_pain
 	return amount
 
 /mob/living/carbon/human/setHalLoss(amount)
-	adjustHalLoss(getHalLoss()-amount)
+	adjustHalLoss(getHalLoss() - amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
 	if(!amount)
@@ -225,7 +225,7 @@
 			breathe_organ.add_oxygen_deprivation(amount)
 	BITSET(hud_updateflag, HEALTH_HUD)
 
-/mob/living/carbon/human/getToxLoss()
+/mob/living/carbon/human/getToxLoss() // In fact, returns internal organs damage. Should be reworked sometime in the future.
 	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
 		return 0
 	var/amount = 0
@@ -256,8 +256,13 @@
 	if(kidneys)
 		pick_organs -= kidneys
 		pick_organs.Insert(1, kidneys)
+	// Liver is buffering some toxic damage, preventing its friends from getting damage unless it's too busy with filtering.
 	var/obj/item/organ/internal/liver/liver = internal_organs_by_name[BP_LIVER]
 	if(liver)
+		if(!heal)
+			amount -= liver.store_tox(amount)
+			if(amount <= 0)
+				return // Try to store toxins in the liver; stop right here if it sponges all the damage
 		pick_organs -= liver
 		pick_organs.Insert(1, liver)
 
@@ -355,6 +360,21 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 	updatehealth()
 
+// damage ONE organic external organ, organ gets randomly selected from all damagable
+/mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
+	var/list/organic_organs = list()
+
+	for(var/obj/item/organ/external/organ in get_damageable_organs())
+		if(!BP_IS_ROBOTIC(organ))
+			organic_organs += organ
+
+	if(organic_organs.len == 0) return
+
+	var/obj/item/organ/external/damaged_organ = pick(organic_organs)
+	if(damaged_organ.take_external_damage(brute, burn))
+		BITSET(hud_updateflag, HEALTH_HUD)
+
+	updatehealth()
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)
@@ -408,7 +428,7 @@ This function restores the subjects blood to max.
 /*
 This function restores all organs.
 */
-/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs)
+/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	for(var/bodypart in BP_BY_DEPTH)
 		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
 		if(istype(current_organ))
@@ -491,7 +511,7 @@ This function restores all organs.
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
-	if (!can_feel_pain())
+	if(!can_feel_pain())
 		return 0
 
 	var/traumatic_shock = getHalLoss()                 // Pain.
@@ -499,7 +519,7 @@ This function restores all organs.
 
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
-	return max(0,traumatic_shock)
+	return max(0, traumatic_shock)
 
 /mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
 	if(effecttype == IRRADIATE && (effect * blocked_mult(blocked) <= RAD_LEVEL_LOW))

@@ -10,7 +10,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	take_external_damage(amount)
 
 /obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null)
-	if(owner.status_flags & GODMODE)
+	if(owner && owner.status_flags & GODMODE)
 		return 0
 	brute = round(brute * brute_mod, 0.1)
 	burn = round(burn * burn_mod, 0.1)
@@ -24,6 +24,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
+
+	if(brute)
+		SSstoryteller.report_wound(owner, BRUTE, brute)
+	if(burn)
+		SSstoryteller.report_wound(owner, BURN, burn)
+
 	var/can_cut = (!BP_IS_ROBOTIC(src) && (sharp || prob(brute*2)))
 	var/spillover = 0
 	var/pure_brute = brute
@@ -51,9 +57,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 				//Check edge eligibility
 				var/edge_eligible = 0
 				if(edge)
-					if(istype(used_weapon,/obj/item))
-						var/obj/item/W = used_weapon
-						if(W.w_class >= w_class)
+					if(istype(used_weapon, /obj/item))
+						var/obj/item/I = used_weapon
+						if(I.w_class >= w_class)
 							edge_eligible = 1
 					else
 						edge_eligible = 1
@@ -75,39 +81,49 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 						droplimb(0, DROPLIMB_EDGE)
 						return
 				else if(force_droplimb)
-					droplimb(0, DROPLIMB_BLUNT)
+					if(edge_eligible)
+						droplimb(0, DROPLIMB_EDGE)
+						return
+					else if(burn)
+						droplimb(0, DROPLIMB_BURN)
+						return
+					else if(prob(25)) // A chance for a limb to be torn off instead of getting gibbed
+						droplimb(0, DROPLIMB_EDGE)
+					else
+						droplimb(0, DROPLIMB_BLUNT)
 					return
 
 	// High brute damage or sharp objects may damage internal organs
-	var/damage_amt = brute
-	var/cur_damage = brute_dam
-	if(laser)
-		damage_amt += burn
-		cur_damage += burn_dam
-	var/organ_damage_threshold = 5
-	if(sharp)
-		organ_damage_threshold *= 0.5
-	var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
-	if(sharp)
-		organ_damage_prob *= 1.5
-	if(cur_damage >= 15)
-		organ_damage_prob *= cur_damage/15
-	if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
-		organ_damage_prob *= 0.5
-	if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
-		// Damage an internal organ
-		var/list/victims = list()
-		for(var/obj/item/organ/internal/I in internal_organs)
-			if(I.damage < I.max_damage && prob(I.relative_size))
-				victims += I
-		if(!victims.len)
-			victims += pick(internal_organs)
-		for(var/obj/item/organ/internal/victim in victims)
-			brute /= 2
-			if(laser)
-				burn /= 3
-			damage_amt /= 2
-			victim.take_internal_damage(damage_amt)
+	if(!istype(used_weapon, /obj/item/projectile)) // Projectiles organ damage is being processed in human_defense.dm
+		var/damage_amt = brute
+		var/cur_damage = brute_dam
+		if(laser)
+			damage_amt += burn
+			cur_damage += burn_dam
+		var/organ_damage_threshold = 5
+		if(sharp)
+			organ_damage_threshold *= 0.5
+		var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
+		if(sharp)
+			organ_damage_prob *= 1.5
+		if(cur_damage >= 15)
+			organ_damage_prob *= cur_damage/15
+		if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
+			organ_damage_prob *= 0.5
+		if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
+			// Damage an internal organ
+			var/list/victims = list()
+			for(var/obj/item/organ/internal/I in internal_organs)
+				if(I.damage < I.max_damage && prob(I.relative_size))
+					victims += I
+			if(!victims.len)
+				victims += pick(internal_organs)
+			for(var/obj/item/organ/internal/victim in victims)
+				brute /= 2
+				if(laser)
+					burn /= 3
+				damage_amt /= 2
+				victim.take_internal_damage(damage_amt)
 
 	if(status & ORGAN_BROKEN && brute)
 		jostle_bone(brute)
@@ -169,7 +185,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 			brute = W.heal_damage(brute)
 
 	if(internal)
-		status &= ~ORGAN_BROKEN
+		mend_fracture(TRUE)
 
 	//Sync the organ's damage with its wounds
 	src.update_damages()
@@ -186,7 +202,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 // Geneloss/cloneloss.
 /obj/item/organ/external/proc/get_genetic_damage()
-	return ((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || BP_IS_ROBOTIC(src)) ? 0 : genetic_degradation
+	return (BP_IS_ROBOTIC(src) || (species?.species_flags & SPECIES_FLAG_NO_SCAN)) ? 0 : genetic_degradation
 
 /obj/item/organ/external/proc/remove_genetic_damage(amount)
 	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
@@ -220,11 +236,13 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return
 	src.status |= ORGAN_MUTATED
-	if(owner) owner.update_body()
+	if(owner)
+		owner.update_body()
 
 /obj/item/organ/external/proc/unmutate()
 	src.status &= ~ORGAN_MUTATED
-	if(owner) owner.update_body()
+	if(owner)
+		owner.update_body()
 
 /obj/item/organ/external/proc/update_pain()
 	if(!can_feel_pain())
@@ -252,9 +270,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 /obj/item/organ/external/proc/get_pain()
 	return pain
 
-/obj/item/organ/external/proc/get_full_pain()
-	return full_pain
-
 /obj/item/organ/external/proc/adjust_pain(change)
 	if(!can_feel_pain())
 		return 0
@@ -279,17 +294,17 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
 			owner.grasp_damage_disarm(src)
 
-		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 2 : 4),70)))
+		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2), 70)))
 			owner.stance_damage_prone(src)
 
-		if(vital && get_full_pain() > 0.5 * max_damage)
-			owner.visible_message("<span class='warning'>[owner] reels in pain!</span>")
-			if(has_genitals() || get_full_pain() + agony_amount > max_damage)
+		if(vital && full_pain > 0.5 * max_damage)
+			owner.visible_message("<b>[owner]</b> reels in pain!")
+			if(has_genitals() || full_pain + agony_amount > max_damage)
 				owner.Weaken(6)
 			else
-				owner.Stun(6)
 				owner.drop_l_hand()
 				owner.drop_r_hand()
+			owner.Stun(6)
 			return 1
 
 /obj/item/organ/external/proc/get_agony_multiplier()

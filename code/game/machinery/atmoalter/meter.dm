@@ -5,7 +5,7 @@
 	icon_state = "meterX"
 	var/atom/target = null //A pipe for the base type
 	anchored = 1.0
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	var/frequency = 0
 	var/id
 	idle_power_usage = 15
@@ -18,12 +18,12 @@
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
 	target = new_target
-	GLOB.destroyed_event.register(target, src, .proc/clear_target)
+	register_signal(target, SIGNAL_QDELETING, .proc/clear_target)
 
 /obj/machinery/meter/proc/clear_target()
 	if(target)
-		GLOB.destroyed_event.unregister(target, src)
-		target = null	
+		unregister_signal(target, SIGNAL_QDELETING)
+		target = null
 
 /obj/machinery/meter/Destroy()
 	clear_target()
@@ -78,19 +78,19 @@
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))
-		to_chat(user, "<span class='warning'>You are too far away to read it.</span>")
+		. += "\n<span class='warning'>You are too far away to read it.</span>"
 
 	else if(stat & (NOPOWER|BROKEN))
-		to_chat(user, "<span class='warning'>The display is off.</span>")
+		. += "\n<span class='warning'>The display is off.</span>"
 
 	else if(src.target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
-			to_chat(user, "The pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)")
+			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)"
 		else
-			to_chat(user, "The sensor error light is blinking.")
+			. += "\nThe sensor error light is blinking."
 	else
-		to_chat(user, "The connect error light is blinking.")
+		. += "\nThe connect error light is blinking."
 
 
 /obj/machinery/meter/Click()
@@ -101,7 +101,7 @@
 
 	return ..()
 
-/obj/machinery/meter/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/meter/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -121,4 +121,4 @@
 		set_target(loc)
 	. = ..()
 
-/obj/machinery/meter/turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/meter/turf/attackby(obj/item/W as obj, mob/user as mob)

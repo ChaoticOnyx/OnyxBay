@@ -31,7 +31,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		var/obj/item/device/paicard/card = locate(href_list["device"])
 		if(card.pai)
 			return
-		if(istype(card,/obj/item/device/paicard) && istype(candidate,/datum/paiCandidate))
+		if(istype(card, /obj/item/device/paicard) && istype(candidate, /datum/paiCandidate))
 			var/mob/living/silicon/pai/pai = new(card)
 			if(!candidate.name)
 				pai.SetName(pick(GLOB.ninja_names))
@@ -43,13 +43,16 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			card.setPersonality(pai)
 			card.looking_for_personality = 0
 
-			if(pai.mind) update_antag_icons(pai.mind)
+			if(pai.mind)
+				update_antag_icons(pai.mind)
 
 			pai_candidates -= candidate
-			usr << browse(null, "window=findPai")
+			close_browser(usr, "window=findPai")
 
 	if(href_list["new"])
 		var/datum/paiCandidate/candidate = locate(href_list["candidate"])
+		if(!istype(candidate))
+			return
 		var/option = href_list["option"]
 		var/t = ""
 
@@ -71,9 +74,9 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				if(t)
 					candidate.comments = sanitize(t)
 			if("save")
-				candidate.savefile_save(usr)
+				candidate.savefile_save(usr.client)
 			if("load")
-				candidate.savefile_load(usr)
+				candidate.savefile_load(usr.client)
 				//In case people have saved unsanitized stuff.
 				if(candidate.name)
 					candidate.name = sanitizeSafe(candidate.name, MAX_NAME_LEN)
@@ -90,7 +93,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 					for(var/obj/item/device/paicard/p in world)
 						if(p.looking_for_personality == 1)
 							p.alertUpdate()
-				usr << browse(null, "window=paiRecruit")
+				close_browser(usr, "window=paiRecruit")
 				return
 
 		recruitWindow(usr, href_list["allow_submit"] != "0")
@@ -107,7 +110,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		candidate.key = M.key
 		pai_candidates.Add(candidate)
 
-	var/dat = ""
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += {"
 			<style type="text/css">
 				body {
@@ -225,7 +228,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	<body>
 	"}
 
-	M << browse(dat, "window=paiRecruit;size=580x580;")
+	show_browser(M, dat, "window=paiRecruit;size=580x580;")
 
 /datum/paiController/proc/findPAI(obj/item/device/paicard/p, mob/user)
 	requestRecruits(user)
@@ -243,6 +246,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	dat += {"
 		<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 		<html>
+			<meta charset=\"utf-8\">
 			<head>
 				<style>
 					body {
@@ -341,7 +345,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		</html>
 	"}
 
-	user << browse(dat, "window=findPai")
+	show_browser(user, dat, "window=findPai")
 
 
 /datum/paiController/proc/requestRecruits(mob/user)
@@ -357,16 +361,18 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			else
 				asked.Remove(O.key)
 		if(O.client)
-			if(BE_PAI in O.client.prefs.be_special_role)
+			if(O.client.wishes_to_be_role(BE_PAI))
 				question(O.client)
 
 /datum/paiController/proc/question(client/C)
 	spawn(0)
-		if(!C)	return
+		if(!C)
+			return
 		asked.Add(C.key)
 		asked[C.key] = world.time
 		var/response = alert(C, "[inquirer] is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
-		if(!C)	return		//handle logouts that happen whilst the alert is waiting for a response.
+		if(!C)
+			return		//handle logouts that happen whilst the alert is waiting for a response.
 		if(response == "Yes")
 			recruitWindow(C.mob)
 		else if (response == "Never for this round")

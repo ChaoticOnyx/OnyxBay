@@ -13,8 +13,8 @@
 	icon = 'icons/turf/flooring/circuit.dmi'
 	icon_state = "rcircuit"
 	initial_flooring = /decl/flooring/reinforced/circuit/red
-	light_range = 2
-	light_power = 2
+	light_outer_range = 2
+	light_max_bright = 3
 	light_color = COLOR_RED
 
 /turf/simulated/floor/grid/bluegrid
@@ -22,8 +22,8 @@
 	icon = 'icons/turf/flooring/circuit.dmi'
 	icon_state = "bcircuit"
 	initial_flooring = /decl/flooring/reinforced/circuit
-	light_range = 2
-	light_power = 3
+	light_outer_range = 2
+	light_max_bright = 3
 	light_color = COLOR_BLUE
 
 /turf/simulated/floor/grid/bluegrid/airless
@@ -34,8 +34,8 @@
 	icon = 'icons/turf/flooring/circuit.dmi'
 	icon_state = "gcircuit"
 	initial_flooring = /decl/flooring/reinforced/circuit/green
-	light_range = 2
-	light_power = 3
+	light_outer_range = 2
+	light_max_bright = 3
 	light_color = COLOR_GREEN
 
 /turf/simulated/floor/grid/greengrid/airless
@@ -65,15 +65,15 @@
 /turf/simulated/floor/reinforced/oxygen
 	initial_gas = list("oxygen" = ATMOSTANK_OXYGEN)
 
-/turf/simulated/floor/reinforced/phoron
-	initial_gas = list("phoron" = ATMOSTANK_PHORON)
+/turf/simulated/floor/reinforced/plasma
+	initial_gas = list("plasma" = ATMOSTANK_PLASMA)
 
 /turf/simulated/floor/reinforced/nitrogen/engine
 	name = "engine floor"
 	initial_gas = list("nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/reinforced/phoron/fuel
-	initial_gas = list("phoron" = ATMOSTANK_PHORON_FUEL)
+/turf/simulated/floor/reinforced/plasma/fuel
+	initial_gas = list("plasma" = ATMOSTANK_PLASMA_FUEL)
 
 /turf/simulated/floor/reinforced/hydrogen
 	initial_gas = list("hydrogen" = ATMOSTANK_HYDROGEN)
@@ -245,6 +245,11 @@
 	icon_state = "blue2"
 	initial_flooring = /decl/flooring/carpet/blue2
 
+/turf/simulated/floor/trim/carpet/gblue
+	name = "pale blue carpet"
+	icon_state = "gblue"
+	initial_flooring = /decl/flooring/carpet/gblue
+
 /turf/simulated/floor/trim/carpet/oldred
 	name = "red carpet"
 	icon = 'icons/turf/flooring/carpet.dmi'
@@ -255,6 +260,11 @@
 	name = "purple carpet"
 	icon_state = "purple"
 	initial_flooring = /decl/flooring/carpet/purple
+
+/turf/simulated/floor/trim/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple"
+	initial_flooring = /decl/flooring/carpet/gpurple
 
 /turf/simulated/floor/trim/carpet/orange
 	name = "orange carpet"
@@ -340,6 +350,116 @@
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
+//JUNGLE
+
+/turf/simulated/floor/natural/jungle
+	name = "grass"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "grass1"
+
+/turf/simulated/floor/natural/jungle/grasscorner1
+	name = "grass"
+	icon_state = "grassdirt_corner"
+
+/turf/simulated/floor/natural/jungle/grasscorner2
+	name = "grass"
+	icon_state = "grassdirt_corner2"
+
+/turf/simulated/floor/natural/jungle/grassedge
+	name = "grass"
+	icon_state = "grassdirt_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrassedge
+	name = "grass"
+	icon_state = "grasssand_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner1
+	name = "grass"
+	icon_state = "grasssand_corner"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner2
+	name = "grass"
+	icon_state = "grasssand_corner2"
+
+/turf/simulated/floor/natural/jungle/dirt
+	name = "dirt"
+	desc = "Looks dirty."
+	icon_state = "dirt"
+
+/turf/simulated/floor/natural/jungle/water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seashallow"
+	var/overlay = TRUE
+
+/turf/simulated/floor/natural/jungle/water/New()
+	..()
+	if(overlay)
+		overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1)
+
+/turf/simulated/floor/natural/jungle/water/edge
+	icon_state = "beach"
+	overlay = FALSE
+/turf/simulated/floor/natural/jungle/water/corner
+	icon_state = "beachcorner"
+	overlay = FALSE
+
+/turf/simulated/floor/natural/jungle/sand
+	name = "sand"
+	desc = "Looks sandy."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "desert0"
+	base_name = "sand"
+	base_desc = "Looks sandy."
+	base_icon = 'icons/misc/beach.dmi'
+	base_icon_state = "desert0"
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/jungle/sand/New()
+	if(rand_state)
+		icon_state = "desert[rand(0, 5)]"
+	..()
+
+//SAND
+
+/turf/simulated/floor/natural/sand
+	name = "sand"
+	desc = "Crumbly."
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand0"
+	base_name = "sand"
+	base_desc = "Crumbly."
+	base_icon = 'icons/turf/flooring/sand.dmi'
+	base_icon_state = "sand0"
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/sand/New()
+	if(rand_state)
+		icon_state = "sand[rand(0, 12)]"
+	..()
+
+/turf/simulated/floor/natural/sand/cave
+	name = "cave floor"
+
+/turf/simulated/floor/natural/sand/pure
+	rand_state = FALSE
+
+/turf/simulated/floor/natural/sand/gray
+	rand_state = FALSE
+	icon_state = "sand_gray"
+	base_icon_state = "sand_gray"
+
+/turf/simulated/floor/natural/sand/darksand
+	rand_state = FALSE
+	icon_state = "asteroidplating"
+	icon = 'icons/turf/floors.dmi'
+
+/turf/simulated/floor/sand_floor
+	name = "sand floor"
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand_floor"
+	initial_flooring = /decl/flooring/sand_tile
 
 //MISCELLANEOUS FLOORING
 
@@ -349,11 +469,42 @@
 	icon_state = "plating"
 	initial_flooring = null
 
+/turf/simulated/floor/misc/concrete
+	name = "concrete"
+	icon = 'icons/turf/flooring/misc.dmi'
+	icon_state = "concrete"
+
+/turf/simulated/floor/misc/diona
+	name = "biomass"
+	icon = 'icons/turf/floors.dmi'
+	initial_flooring = /decl/flooring/diona
+
 /turf/simulated/floor/misc/cult
 	name = "engraved floor"
 	icon = 'icons/turf/flooring/cult.dmi'
 	icon_state = "cult"
 	initial_flooring = /decl/flooring/reinforced/cult
+	var/previous_type = /turf/simulated/floor
 
 /turf/simulated/floor/misc/cult/cultify()
 	return
+
+/turf/simulated/floor/water/fountain
+	name = "water"
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seadeep"
+
+/turf/simulated/floor/water/fountain/Crossed(atom/movable/AM)
+	if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		M.slip(src, 4)
+
+/turf/simulated/floor/misc/abductor
+	name = "alien floor"
+	icon = 'icons/turf/flooring/abductor.dmi'
+	icon_state = "alienpod1"
+	var/previous_type = /turf/simulated/floor
+
+/turf/simulated/floor/misc/abductor/Initialize()
+	icon_state = "alienpod[rand(1,9)]"
+	..()

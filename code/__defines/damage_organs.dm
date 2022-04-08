@@ -38,7 +38,7 @@
 #define ORGAN_MUTATED    (1<<4)  // The organ is unusable due to genetic damage.
 #define ORGAN_ARTERY_CUT (1<<6)  // The organ has had its artery cut.
 #define ORGAN_TENDON_CUT (1<<7)  // The organ has had its tendon cut.
-#define ORGAN_DISFIGURED (1<<8)  // The organ is scarred/disfigured. Alters whether or not the face can be recognised.
+#define ORGAN_DISFIGURED (1<<8)  // The organ is scarred/disfigured. Alters whether or not the face can be recognised. // I'm gonna eat you if you hang this flag for something that is not the face. ~TapoK
 #define ORGAN_SABOTAGED  (1<<9)  // The organ will explode if exposed to EMP, if prosthetic.
 #define ORGAN_ASSISTED   (1<<10) // The organ is partially prosthetic. No mechanical effect.
 #define ORGAN_ROBOTIC    (1<<11) // The organ is robotic. Changes numerous behaviors, search BP_IS_ROBOTIC for checks.
@@ -68,7 +68,7 @@
 // proportion of their max blood volume to be lost
 // (e.g. 0.6 == 60% lost if 200 burn damage is taken).
 #define FLUIDLOSS_WIDE_BURN 0.6 //for burns from heat applied over a wider area, like from fire
-#define FLUIDLOSS_CONC_BURN 0.4 //for concentrated burns, like from lasers
+#define FLUIDLOSS_CONC_BURN 0.3 //for concentrated burns, like from lasers
 
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30

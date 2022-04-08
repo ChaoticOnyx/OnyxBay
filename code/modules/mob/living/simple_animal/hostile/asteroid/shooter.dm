@@ -26,6 +26,7 @@
 	attacktext = "bites into"
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 	ranged_cooldown_cap = 4
 	aggro_vision_range = 7
 	idle_vision_range = 2
@@ -33,13 +34,13 @@
 /obj/item/projectile/energy/neurotoxin/shockzard
 	name = "energy blast"
 	icon_state = "ice_2"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 5
 	damage_type = BURN
 	nodamage = 0
 	check_armour = "energy"
 	weaken=5
-	
+
 /mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
 	if(!client)
 		target_mob = new_target
@@ -57,13 +58,13 @@
 		if(3.0)
 			adjustBruteLoss(110)
 
-/mob/living/simple_animal/hostile/asteroid/shooter/death(gibbed)
-	var/counter
-	for(counter=0, counter<2, counter++)
-		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
-		D.layer = 4.1
-	..(gibbed)
-
+/mob/living/simple_animal/hostile/asteroid/shooter/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		var/counter
+		for(counter = 0, counter < 2, counter++)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
+			D.layer = 4.1
 
 
 ////////////////Beholder (formerly known as spectator)////////////////
@@ -86,6 +87,7 @@
 	melee_damage_lower = 22
 	melee_damage_upper = 22
 	attacktext = "gnaws and mauls"
+	bodyparts = /decl/simple_animal_bodyparts/beholder
 	aggro_vision_range = 9
 	idle_vision_range = 5
 	var/list/projectiletypes = list(/obj/item/projectile/beam/mindflayer,
@@ -95,7 +97,7 @@
 									/obj/item/projectile/energy/declone,
 									/obj/item/projectile/energy/dart,
 									/obj/item/projectile/energy/neurotoxin,
-									/obj/item/projectile/energy/phoron,
+									/obj/item/projectile/energy/plasma,
 									/obj/item/projectile/energy/electrode,
 									/obj/item/projectile/energy/flash,
 									/obj/item/projectile/energy/flash/flare,
@@ -118,13 +120,17 @@
 			visible_message("<span class='danger'>The [src.name]'s evil gaze chills [L.name] to the bone!</span>")
 	return
 
-/mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed)
-	var/counter
-	for(counter=0, counter<2, counter++)
-		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
-		D.layer = 4.1
-	new /obj/item/asteroid/beholder_eye(src.loc)
-	..(gibbed)
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		var/counter
+		for(counter = 0, counter < 2, counter++)
+			var/obj/item/ore/diamond/D = new /obj/item/ore/diamond(src.loc)
+			D.layer = 4.1
+		new /obj/item/asteroid/beholder_eye(src.loc)
+
+/decl/simple_animal_bodyparts/beholder
+	hit_zones = list("giant eye", "maw", "far left eyestalk", "left eyestalk", "central eyestalk", "right eyestalk", "far right eyestalk", "chin", "cheek", "forehead")
 
 
 ////////////////Item: Beholder eye////////////////
@@ -143,9 +149,9 @@
 	hitsound = 'sound/items/welder2.ogg'
 	w_class = 3
 	layer = 4
-	
-/obj/item/asteroid/beholder_eye/attack_self(mob/user as mob)
-	if (!(MUTATION_XRAY in user.mutations))
+
+/obj/item/asteroid/beholder_eye/attack_self(mob/user)
+	if(!(MUTATION_XRAY in user.mutations))
 		user.mutations.Add(MUTATION_XRAY)
 		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
 		user.set_see_in_dark(8)

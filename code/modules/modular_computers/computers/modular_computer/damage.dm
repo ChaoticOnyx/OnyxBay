@@ -1,15 +1,15 @@
 /obj/item/modular_computer/examine(mob/user)
 	. = ..()
 	if(damage > broken_damage)
-		to_chat(user, "<span class='danger'>It is heavily damaged!</span>")
+		. += "\n<span class='danger'>It is heavily damaged!</span>"
 	else if(damage)
-		to_chat(user, "It is damaged.")
+		. += "\nIt is damaged."
 
 /obj/item/modular_computer/proc/break_apart()
 	visible_message("\The [src] breaks apart!")
 	var/turf/newloc = get_turf(src)
 	new /obj/item/stack/material/steel(newloc, round(steel_sheet_cost/2))
-	for(var/obj/item/weapon/computer_hardware/H in get_all_components())
+	for(var/obj/item/computer_hardware/H in get_all_components())
 		uninstall_component(null, H)
 		H.forceMove(newloc)
 		if(prob(25))
@@ -26,7 +26,7 @@
 		damage = between(0, damage, max_damage)
 
 	if(component_probability)
-		for(var/obj/item/weapon/computer_hardware/H in get_all_components())
+		for(var/obj/item/computer_hardware/H in get_all_components())
 			if(prob(component_probability))
 				H.take_damage(round(amount / 2))
 

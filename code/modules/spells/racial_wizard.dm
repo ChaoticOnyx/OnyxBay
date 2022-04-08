@@ -1,6 +1,6 @@
 //this file is full of all the racial spells/artifacts/etc that each species has.
 
-/obj/item/weapon/magic_rock
+/obj/item/magic_rock
 	name = "magical rock"
 	desc = "Legends say that this rock will unlock the true potential of anyone who touches it."
 	icon = 'icons/obj/wizard.dmi'
@@ -10,15 +10,15 @@
 	throw_range = 3
 	force = 15
 	var/list/potentials = list(
-		SPECIES_HUMAN = /obj/item/weapon/storage/bag/cash/infinite,
-		SPECIES_VOX = /spell/targeted/shapeshift/true_form,
-		SPECIES_TAJARA = /spell/messa_shroud,
-		SPECIES_UNATHI = /spell/moghes_blessing,
-		SPECIES_DIONA = /spell/aoe_turf/conjure/grove/gestalt,
-		SPECIES_SKRELL = /obj/item/weapon/contract/apprentice/skrell,
-		SPECIES_IPC = /spell/camera_connection)
+		SPECIES_HUMAN = /obj/item/storage/bag/cash/infinite,
+		SPECIES_VOX = /datum/spell/targeted/shapeshift/true_form,
+		SPECIES_TAJARA = /datum/spell/messa_shroud,
+		SPECIES_UNATHI = /datum/spell/moghes_blessing,
+		SPECIES_DIONA = /datum/spell/aoe_turf/conjure/grove/gestalt,
+		SPECIES_SKRELL = /obj/item/contract/apprentice/skrell,
+		SPECIES_IPC = /datum/spell/camera_connection)
 
-/obj/item/weapon/magic_rock/attack_self(mob/user)
+/obj/item/magic_rock/attack_self(mob/user)
 	if(!istype(user,/mob/living/carbon/human))
 		to_chat(user, "\The [src] can do nothing for such a simple being.")
 		return
@@ -27,39 +27,39 @@
 	if(!reward)
 		to_chat(user, "\The [src] does not know what to make of you.")
 		return
-	for(var/spell/S in user.mind.learned_spells)
+	for(var/datum/spell/S in user.mind.learned_spells)
 		if(istype(S,reward))
 			to_chat(user, "\The [src] can do no more for you.")
 			return
 	user.drop_from_inventory(src)
 	var/a = new reward()
-	if(ispath(reward,/spell))
+	if(ispath(reward, /datum/spell))
 		H.add_spell(a)
 	else if(ispath(reward,/obj))
 		H.put_in_hands(a)
 	to_chat(user, "\The [src] crumbles in your hands.")
 	qdel(src)
 
-/obj/item/weapon/storage/bag/cash/infinite
-	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 1)
+/obj/item/storage/bag/cash/infinite
+	startswith = list(/obj/item/spacecash/bundle/c1000 = 1)
 
 //HUMAN
-/obj/item/weapon/storage/bag/cash/infinite/remove_from_storage(obj/item/W as obj, atom/new_location)
+/obj/item/storage/bag/cash/infinite/remove_from_storage(obj/item/W as obj, atom/new_location)
 	. = ..()
 	if(.)
-		if(istype(W,/obj/item/weapon/spacecash)) //only matters if its spacecash.
-			var/obj/item/I = new /obj/item/weapon/spacecash/bundle/c1000()
+		if(istype(W,/obj/item/spacecash)) //only matters if its spacecash.
+			var/obj/item/I = new /obj/item/spacecash/bundle/c1000()
 			src.handle_item_insertion(I,1)
 
 
 //Tajaran
-/spell/messa_shroud
+/datum/spell/messa_shroud
 	name = "Messa's Shroud"
 	desc = "This spell causes darkness at the point of the caster for a duration of time."
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "mutters a small prayer, the light around them darkening."
 	charge_max = 300 //30 seconds
 
@@ -68,32 +68,32 @@
 
 	cast_sound = 'sound/effects/bamf.ogg'
 
-	hud_state = "wiz_tajaran"
+	icon_state = "wiz_tajaran"
 
-/spell/messa_shroud/choose_targets()
+/datum/spell/messa_shroud/choose_targets()
 	return list(get_turf(holder))
 
-/spell/messa_shroud/cast(list/targets, mob/user)
+/datum/spell/messa_shroud/cast(list/targets, mob/user)
 	var/turf/T = targets[1]
 
 	if(!istype(T))
 		return
 
 	var/obj/O = new /obj(T)
-	O.set_light(range, -10, "#ffffff")
+	O.set_light(-10, 0.1, 10, 2, "#ffffff")
 
 	spawn(duration)
 		qdel(O)
 
 //VOX
-/spell/targeted/shapeshift/true_form
+/datum/spell/targeted/shapeshift/true_form
 	name = "True Form"
 	desc = "Pay respect to your heritage. Become what you once were."
 
 	school = "racial"
 	spell_flags = INCLUDEUSER
-	invocation_type = SpI_EMOTE
-	range = -1
+	invocation_type = SPI_EMOTE
+	range = 0
 	invocation = "begins to grow!"
 	charge_max = 1200 //2 minutes
 	duration = 300 //30 seconds
@@ -103,7 +103,7 @@
 
 	possible_transformations = list(/mob/living/simple_animal/hostile/armalis)
 
-	hud_state = "wiz_vox"
+	icon_state = "wiz_vox"
 
 	cast_sound = 'sound/voice/shriek1.ogg'
 	revert_sound = 'sound/voice/shriek1.ogg'
@@ -112,21 +112,21 @@
 
 
 //UNATHI
-/spell/moghes_blessing
+/datum/spell/moghes_blessing
 	name = "Moghes Blessing"
 	desc = "Imbue your weapon with memories of Moghes"
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "whispers something."
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "bruteloss"
 	holder_var_amount = 10
 
-	hud_state = "wiz_unathi"
+	icon_state = "wiz_unathi"
 
-/spell/moghes_blessing/choose_targets(mob/user = usr)
+/datum/spell/moghes_blessing/choose_targets(mob/user = usr)
 	var/list/hands = list()
 	for(var/obj/item/I in list(user.l_hand, user.r_hand))
 		//make sure it's not already blessed
@@ -134,7 +134,7 @@
 			hands += I
 	return hands
 
-/spell/moghes_blessing/cast(list/targets, mob/user)
+/datum/spell/moghes_blessing/cast(list/targets, mob/user)
 	for(var/obj/item/I in targets)
 		set_extension(I, /datum/extension/moghes_blessing, /datum/extension/moghes_blessing)
 
@@ -154,107 +154,107 @@
 	I.color = "#663300"
 
 //DIONA
-/spell/aoe_turf/conjure/grove/gestalt
+/datum/spell/aoe_turf/conjure/grove/gestalt
 	name = "Convert Gestalt"
 	desc = "Converts the surrounding area into a Dionaea gestalt."
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "rumbles as green alien plants grow quickly along the floor."
 
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "bruteloss"
 	holder_var_amount = 20
 
 	spell_flags = Z2NOCAST | IGNOREPREV | IGNOREDENSE
-	summon_type = list(/turf/simulated/floor/diona)
+	summon_type = list(/turf/simulated/floor/misc/diona)
 	seed_type = /datum/seed/diona
 
-	hud_state = "wiz_diona"
+	icon_state = "wiz_diona"
 
 //SKRELL
-/obj/item/weapon/contract/apprentice/skrell
+/obj/item/contract/apprentice/skrell
 	name = "skrellian apprenticeship contract"
-	var/obj/item/weapon/spellbook/linked
+	var/obj/item/spellbook/linked
 	color = "#3366ff"
-	contract_spells = list(/spell/contract/return_master) //somewhat of a necessity due to how many spells they would have after a while.
+	contract_spells = list(/datum/spell/contract/return_master) //somewhat of a necessity due to how many spells they would have after a while.
 
-/obj/item/weapon/contract/apprentice/skrell/New(newloc,spellbook, owner)
+/obj/item/contract/apprentice/skrell/New(newloc,spellbook, owner)
 	..()
-	if(istype(spellbook,/obj/item/weapon/spellbook))
+	if(istype(spellbook,/obj/item/spellbook))
 		linked = spellbook
 	if(istype(owner,/mob))
 		contract_master = owner
 
-/obj/item/weapon/contract/apprentice/skrell/attack_self(mob/user as mob)
+/obj/item/contract/apprentice/skrell/attack_self(mob/user as mob)
 	if(!linked)
 		to_chat(user, "<span class='warning'>This contract requires a link to a spellbook.</span>")
 		return
 	..()
 
-/obj/item/weapon/contract/apprentice/skrell/afterattack(atom/A, mob/user as mob, proximity)
-	if(!linked && istype(A,/obj/item/weapon/spellbook))
+/obj/item/contract/apprentice/skrell/afterattack(atom/A, mob/user as mob, proximity)
+	if(!linked && istype(A,/obj/item/spellbook))
 		linked = A
 		to_chat(user, "<span class='notice'>You've linked \the [A] to \the [src]</span>")
 		return
 	..()
 
-/obj/item/weapon/contract/apprentice/skrell/contract_effect(mob/user as mob)
+/obj/item/contract/apprentice/skrell/contract_effect(mob/user as mob)
 	. = ..()
 	if(.)
 		linked.uses += 0.5
-		var/obj/item/I = new /obj/item/weapon/contract/apprentice/skrell(get_turf(src),linked,contract_master)
+		var/obj/item/I = new /obj/item/contract/apprentice/skrell(get_turf(src),linked,contract_master)
 		user.put_in_hands(I)
-		new /obj/item/weapon/contract/apprentice/skrell(get_turf(src),linked,contract_master)
+		new /obj/item/contract/apprentice/skrell(get_turf(src),linked,contract_master)
 
 //IPC
-/spell/camera_connection
+/datum/spell/camera_connection
 	name = "Camera Connection"
 	desc = "This spell allows the wizard to connect to the local camera network and see what it sees."
 
 	school = "racial"
 
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "emits a beeping sound before standing very, very still."
 
 	charge_max = 600 //1 minute
-	charge_type = Sp_RECHARGE
+	charge_type = SP_RECHARGE
 
 
 	spell_flags = Z2NOCAST
-	hud_state = "wiz_IPC"
+	icon_state = "wiz_IPC"
 	var/mob/observer/eye/vision
 	var/eye_type = /mob/observer/eye/wizard_eye
 
-/spell/camera_connection/New()
+/datum/spell/camera_connection/New()
 	..()
 	vision = new eye_type(src)
 
-/spell/camera_connection/Destroy()
+/datum/spell/camera_connection/Destroy()
 	qdel(vision)
 	vision = null
 	. = ..()
 
-/spell/camera_connection/choose_targets()
+/datum/spell/camera_connection/choose_targets()
 	var/mob/living/L = holder
 	if(!istype(L) || L.eyeobj) //no using if we already have an eye on.
 		return null
 	return list(holder)
 
-/spell/camera_connection/cast(list/targets, mob/user)
+/datum/spell/camera_connection/cast(list/targets, mob/user)
 	var/mob/living/L = targets[1]
 
 	vision.possess(L)
-	GLOB.destroyed_event.register(L, src, /spell/camera_connection/proc/release)
-	GLOB.logged_out_event.register(L, src, /spell/camera_connection/proc/release)
+	register_signal(L, SIGNAL_QDELETING, /datum/spell/camera_connection/proc/release)
+	register_signal(L, SIGNAL_LOGGED_OUT, /datum/spell/camera_connection/proc/release)
 	L.verbs += /mob/living/proc/release_eye
 
-/spell/camera_connection/proc/release(mob/living/L)
+/datum/spell/camera_connection/proc/release(mob/living/L)
 	vision.release(L)
 	L.verbs -= /mob/living/proc/release_eye
-	GLOB.destroyed_event.unregister(L, src)
-	GLOB.logged_out_event.unregister(L, src)
+	unregister_signal(L, SIGNAL_QDELETING)
+	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
 /mob/observer/eye/wizard_eye
 	name_sufix = "Wizard Eye"

@@ -53,9 +53,10 @@ SUBSYSTEM_DEF(wireless)
 		return
 
 /datum/controller/subsystem/wireless/proc/process_queue(list/process_connections, list/unsuccesful_connections)
-	while(process_connections.len)
-		var/datum/connection_request/C = process_connections[process_connections.len]
-		process_connections--
+	var/process_number = process_connections.len
+	while(process_number)
+		var/datum/connection_request/C = process_connections[process_number]
+		--process_number
 		var/target_found = 0
 		for(var/datum/wifi/receiver/R in receiver_list)
 			if(R.id == C.id)

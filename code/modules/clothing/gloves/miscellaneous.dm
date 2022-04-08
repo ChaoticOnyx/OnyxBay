@@ -3,6 +3,7 @@
 	name = "captain's gloves"
 	icon_state = "captain"
 	armor = list(melee = 20, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
+	siemens_coefficient = 0 // These are ELITE
 
 /obj/item/clothing/gloves/insulated
 	desc = "These gloves will protect the wearer from electric shocks."
@@ -41,7 +42,7 @@
 	desc = "These work gloves are thick and fire-resistant."
 	name = "work gloves"
 	icon_state = "black"
-	siemens_coefficient = 0.50
+	siemens_coefficient = 0.5
 	permeability_coefficient = 0.05
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
@@ -58,6 +59,7 @@
 	name = "\improper SWAT Gloves"
 	force = 5
 	armor = list(melee = 45, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
+	siemens_coefficient = 0.3
 
 /obj/item/clothing/gloves/thick/security
 	name = "\improper Security Gloves"

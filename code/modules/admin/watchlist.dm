@@ -2,17 +2,22 @@
 
 
 /datum/watchlist/proc/Add(target_ckey, browse = 0)
+	if(!establish_db_connection())
+		return
+
 	if (!target_ckey)
 		var/new_ckey = ckey(input(usr, "Who would you like to add to the watchlist?", "Enter a ckey", null) as text)
-		new_ckey = sanitizeSQL(new_ckey)
 		if (!new_ckey)
 			return
 
-		var/DBQuery/query_watchfind = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ckey = '[new_ckey]'")
-		if (!query_watchfind.Execute())
-			var/err = query_watchfind.ErrorMsg()
-			log_DB("Watchlist error: ckey can't be obtained from players table \[[err]\].", notify_admin = TRUE)
-			return
+		var/DBQuery/query_watchfind = sql_query({"
+			SELECT
+				ckey
+			FROM
+				erro_player
+			WHERE
+				ckey = $new_ckey
+			"}, dbcon, list(new_ckey = new_ckey))
 
 		if (!query_watchfind.NextRow())
 			if (alert(usr, "[new_ckey] has not been seen before, are you sure you want to add them to the watchlist?", "Unknown ckey", "Yes", "No", "Cancel") != "Yes")
@@ -20,29 +25,33 @@
 
 		target_ckey = new_ckey
 
-	target_ckey = sanitizeSQL(target_ckey)
-
 	if (Check(target_ckey))
 		to_chat(usr, "<span class='redtext'>[target_ckey] is already on the watchlist.</span>")
 		return
 
-	var/reason = sanitize(input_utf8(usr, "Please State Reason", "Reason"))
-	reason = sanitizeSQL(reason)
+	var/reason = sanitize(input(usr, "Please State Reason", "Reason"))
 	if (!reason)
 		return
 
 	var/adminckey = usr.ckey
-	adminckey = sanitizeSQL(adminckey)
 	if (!adminckey)
 		return
 
-	var/DBQuery/query_watchadd = dbcon.NewQuery("INSERT INTO erro_watch (ckey, reason, adminckey, timestamp) VALUES ('[target_ckey]', '[reason]', '[adminckey]', Now())")
-	if (!query_watchadd.Execute())
-		var/err = query_watchadd.ErrorMsg()
-		log_DB("Watchlist error during adding new watch entry \[[err]\].", notify_admin = TRUE)
-		return
+	sql_query({"
+		INSERT INTO
+			erro_watch
+				(ckey,
+				reason,
+				adminckey,
+				timestamp)
+		VALUES
+			($target_ckey,
+			$reason,
+			$adminckey,
+			Now())
+		"}, dbcon, list(target_ckey = target_ckey, reason = reason, adminckey = adminckey))
 
-	reason = utf8_to_cp1251(rhtml_decode(reason))
+	reason = html_decode(reason)
 	log_admin("[key_name(usr)] has added [target_ckey] to the watchlist - Reason: [reason]", notify_admin = TRUE)
 
 	for(var/client/player in GLOB.clients)
@@ -55,28 +64,34 @@
 
 
 /datum/watchlist/proc/Check(target_ckey)
-	target_ckey = sanitizeSQL(target_ckey)
-
-	var/DBQuery/query_watch = dbcon.NewQuery("SELECT reason FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watch.Execute())
-		var/err = query_watch.ErrorMsg()
-		log_DB("Watchlist error: reason can't be obtained from watch table \[[err]\].", notify_admin = TRUE)
+	if(!establish_db_connection())
 		return
 
+	var/DBQuery/query_watch = sql_query({"
+		SELECT
+			reason
+		FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
+
 	if (query_watch.NextRow())
-		return utf8_to_cp1251(rhtml_decode(query_watch.item[1]))
+		return html_decode(query_watch.item[1])
 	else
 		return null
 
 
 /datum/watchlist/proc/Remove(target_ckey, browse = 0)
-	target_ckey = sanitizeSQL(target_ckey)
-
-	var/DBQuery/query_watchdel = dbcon.NewQuery("DELETE FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watchdel.Execute())
-		var/err = query_watchdel.ErrorMsg()
-		log_DB("Watchlist error during removing watch entry \[[err]\].", notify_admin = TRUE)
+	if(!establish_db_connection())
 		return
+
+	sql_query({"
+		DELETE FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
 
 	log_admin("[key_name(usr)] has removed [target_ckey] from the watchlist", notify_admin = TRUE)
 
@@ -85,39 +100,48 @@
 			player.watchlist_warn = null
 			break
 
-	if (browse)
+	if(browse)
 		Show()
 
 
 /datum/watchlist/proc/Edit(target_ckey, browse = 0)
-	target_ckey = sanitizeSQL(target_ckey)
-
-	var/DBQuery/query_watchreason = dbcon.NewQuery("SELECT reason FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watchreason.Execute())
-		var/err = query_watchreason.ErrorMsg()
-		log_DB("Watchlist error: reason can't be obtained from watch table \[[err]\].", notify_admin = TRUE)
+	if(!establish_db_connection())
 		return
+
+	var/DBQuery/query_watchreason = sql_query({"
+		SELECT
+			reason
+		FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
 
 	if (query_watchreason.NextRow())
 		var/watch_reason = query_watchreason.item[1]
 
-		var/new_reason = sanitize(input_utf8(usr, "Input new reason", "New Reason", rhtml_decode(watch_reason)))
-		new_reason = sanitizeSQL(new_reason)
+		var/new_reason = sanitize(input(usr, "Input new reason", "New Reason", html_decode(watch_reason)))
 		if (!new_reason)
 			return
 
-		var/admin_ckey = sanitizeSQL(usr.ckey)
+		var/admin_ckey = usr.ckey
 		var/edit_text = "Edited by [admin_ckey] on [time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")] from<br>[watch_reason]<br>to<br>[new_reason]<hr>"
-		edit_text = sanitizeSQL(edit_text)
+		sql_query({"
+			UPDATE
+				erro_watch
+			SET
+				reason = $new_reason,
+				last_editor = $admin_ckey,
+				edits = CONCAT(
+					IFNULL(edits,''),
+					$edit_text
+				)
+			WHERE
+				ckey = $target_ckey
+			"}, dbcon, list(new_reason = new_reason, admin_ckey = admin_ckey, edit_text = edit_text, target_ckey = target_ckey))
 
-		var/DBQuery/query_watchupdate = dbcon.NewQuery("UPDATE erro_watch SET reason = '[new_reason]', last_editor = '[admin_ckey]', edits = CONCAT(IFNULL(edits,''),'[edit_text]') WHERE ckey = '[target_ckey]'")
-		if (!query_watchupdate.Execute())
-			var/err = query_watchupdate.ErrorMsg()
-			log_DB("Watchlist error: reason can't be updated \[[err]\].", notify_admin = TRUE)
-			return
-
-		watch_reason = utf8_to_cp1251(rhtml_decode(watch_reason))
-		new_reason = utf8_to_cp1251(rhtml_decode(new_reason))
+		watch_reason = html_decode(watch_reason)
+		new_reason = html_decode(new_reason)
 		log_admin("[key_name(usr)] has edited [target_ckey]'s watchlist reason from [watch_reason] to [new_reason]", notify_admin = TRUE)
 
 		for(var/client/player in GLOB.clients)
@@ -130,7 +154,10 @@
 
 
 /datum/watchlist/proc/Show(search)
-	var/output
+	if(!establish_db_connection())
+		return
+
+	var/output = "<meta charset=\"utf-8\">"
 	output += "<form method='GET' name='search' action='?'>\
 	<input type='hidden' name='_src_' value='holder'>\
 	<input type='text' name='watchsearch' value='[search]'>\
@@ -142,13 +169,21 @@
 		search = "^[search]"
 	else
 		search = "^."
-	search = sanitizeSQL(search)
 
-	var/DBQuery/query_watchlist = dbcon.NewQuery("SELECT ckey, reason, adminckey, timestamp, last_editor FROM erro_watch WHERE ckey REGEXP '[search]' ORDER BY ckey")
-	if(!query_watchlist.Execute())
-		var/err = query_watchlist.ErrorMsg()
-		log_DB("Watchlist error: watch table can't be obtained \[[err]\].", notify_admin = TRUE)
-		return
+	var/DBQuery/query_watchlist = sql_query({"
+		SELECT
+			ckey,
+			reason,
+			adminckey,
+			timestamp,
+			last_editor
+		FROM
+			erro_watch
+		WHERE
+			ckey REGEXP $search
+		ORDER BY
+			ckey
+		"}, dbcon, list(search = search))
 
 	while(query_watchlist.NextRow())
 		var/ckey = query_watchlist.item[1]
@@ -161,7 +196,7 @@
 			output += " <font size='2'>Last edit by [last_editor] <a href='?_src_=holder;watcheditlog=[ckey]'>(Click here to see edit log)</a></font>"
 		output += "<br>[reason]<hr style='background:#000000; border:0; height:1px'>"
 
-	usr << browse(output, "window=watchwin;size=900x500")
+	show_browser(usr, output, "window=watchwin;size=900x500")
 
 /datum/watchlist/proc/OnLogin(client/C)
 	if (!C)
@@ -211,14 +246,20 @@
 		Show()
 
 	else if(href_list["watcheditlog"])
-		var/target_ckey = sanitizeSQL("[href_list["watcheditlog"]]")
-
-		var/DBQuery/query_watchedits = dbcon.NewQuery("SELECT edits FROM erro_watch WHERE ckey = '[target_ckey]'")
-		if(!query_watchedits.Execute())
-			var/err = query_watchedits.ErrorMsg()
-			log_game("SQL ERROR obtaining edits from watch table. Error : \[[err]\]\n")
+		if(!establish_db_connection())
 			return
+
+		var/target_ckey = href_list["watcheditlog"]
+
+		var/DBQuery/query_watchedits = sql_query({"
+			SELECT
+				edits
+			FROM
+				erro_watch
+			WHERE
+				ckey = $target_ckey
+			"}, dbcon, list(target_ckey = target_ckey))
 
 		if(query_watchedits.NextRow())
 			var/edit_log = query_watchedits.item[1]
-			usr << browse(edit_log,"window=watchedits")
+			show_browser(usr, edit_log,"window=watchedits")

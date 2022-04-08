@@ -4,7 +4,7 @@ RSF
 
 */
 
-/obj/item/weapon/rsf
+/obj/item/rsf
 	name = "\improper Rapid-Service-Fabricator"
 	desc = "A device used to rapidly deploy service items."
 	icon = 'icons/obj/items.dmi'
@@ -16,13 +16,14 @@ RSF
 	var/mode = 1
 	w_class = ITEM_SIZE_NORMAL
 
-/obj/item/weapon/rsf/examine(mob/user)
-	if(..(user, 0))
-		to_chat(user, "It currently holds [stored_matter]/30 fabrication-units.")
+/obj/item/rsf/examine(mob/user)
+	. = ..()
+	if(get_dist(src, user) <= 0)
+		. += "\nIt currently holds [stored_matter]/30 fabrication-units."
 
-/obj/item/weapon/rsf/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/rsf/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if (istype(W, /obj/item/weapon/rcd_ammo))
+	if (istype(W, /obj/item/rcd_ammo))
 
 		if ((stored_matter + 10) > 30)
 			to_chat(user, "The RSF can't hold any more matter.")
@@ -35,7 +36,7 @@ RSF
 		to_chat(user, "The RSF now holds [stored_matter]/30 fabrication-units.")
 		return
 
-/obj/item/weapon/rsf/attack_self(mob/user as mob)
+/obj/item/rsf/attack_self(mob/user as mob)
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 
 	switch(mode)
@@ -74,7 +75,7 @@ RSF
 			to_chat(user, "Changed dispensing mode to 'Cigarette'")
 
 
-/obj/item/weapon/rsf/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/rsf/afterattack(atom/A, mob/user as mob, proximity)
 
 	if(!proximity) return
 
@@ -98,25 +99,25 @@ RSF
 			product = new /obj/item/clothing/mask/smokable/cigarette()
 			used_energy = 10
 		if(2)
-			product = new /obj/item/weapon/reagent_containers/food/drinks/glass2()
+			product = new /obj/item/reagent_containers/food/drinks/glass2()
 			used_energy = 50
 		if(3)
-			product = new /obj/item/weapon/paper()
+			product = new /obj/item/paper()
 			used_energy = 10
 		if(4)
-			product = new /obj/item/weapon/pen()
+			product = new /obj/item/pen()
 			used_energy = 50
 		if(5)
-			product = new /obj/item/weapon/storage/pill_bottle/dice()
+			product = new /obj/item/storage/pill_bottle/dice()
 			used_energy = 200
 		if(6)
-			product = new /obj/item/weapon/reagent_containers/food/drinks/glass2/shot()
+			product = new /obj/item/reagent_containers/food/drinks/glass2/shot()
 			used_energy = 20
 		if(7)
-			product = new /obj/item/weapon/reagent_containers/food/drinks/glass2/rocks()
+			product = new /obj/item/reagent_containers/food/drinks/glass2/rocks()
 			used_energy = 50
 		if(8)
-			product = new /obj/item/weapon/reagent_containers/food/drinks/glass2/mug()
+			product = new /obj/item/reagent_containers/food/drinks/glass2/mug()
 			used_energy = 50
 
 	to_chat(user, "Dispensing [product ? product : "product"]...")

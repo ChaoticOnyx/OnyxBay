@@ -79,13 +79,6 @@
 	var/list/valid_colors = list("#c20c00", "#0227f7", "#6262ff", "#454545", "#009900", "#e17291")
 	gear_tweaks = list(new /datum/gear_tweak/color(valid_colors))
 
-/datum/gear/mask/ipc_monitor
-	display_name = "display monitor (IPC)"
-	path = /obj/item/clothing/mask/monitor
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_IPC)
-	cost = 1
-
 /datum/gear/shoes/toeless
 	display_name = "toeless jackboots"
 	path = /obj/item/clothing/shoes/jackboots/unathi

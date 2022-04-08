@@ -12,11 +12,6 @@
 		if (client && (client.prefs.muted & MUTE_IC))
 			to_chat(src, "<span class='warning'>You cannot send IC messages (muted).</span>")
 			return
-
-		if(act == "help")
-			to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
-			return
-
 		if(!can_emote(m_type))
 			to_chat(src, "<span class='warning'>You cannot currently [m_type == AUDIBLE_MESSAGE ? "audibly" : "visually"] emote!</span>")
 			return
@@ -35,11 +30,17 @@
 				m_type = AUDIBLE_MESSAGE
 			return custom_emote(m_type, message)
 
-	var/splitpoint = findtext(act, " ")
+	var/splitpoint = findtext_char(act, " ")
 	if(splitpoint > 0)
 		var/tempstr = act
-		act = copytext(tempstr,1,splitpoint)
-		message = copytext(tempstr,splitpoint+1,0)
+		act = copytext_char(tempstr,1,splitpoint)
+		message = copytext_char(tempstr,splitpoint+1,0)
+
+	act = sanitize_cyrillic_string(act)
+
+	if(act == "help")
+		to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
+		return
 
 	var/decl/emote/use_emote = usable_emotes[act]
 	if(!use_emote)
@@ -56,7 +57,7 @@
 	else
 		use_emote.do_emote(src, message)
 
-	for (var/obj/item/weapon/implant/I in src)
+	for (var/obj/item/implant/I in src)
 		if (I.implanted)
 			I.trigger(act, src)
 
@@ -77,7 +78,7 @@
 	name_anchor = findtext(message, "^")
 	if(name_anchor > 0) // User supplied emote with a carat
 		pretext = copytext(message, 1, name_anchor)
-		subtext = copytext(message, name_anchor + 1, lentext(message) + 1)
+		subtext = copytext(message, name_anchor + 1, length(message) + 1)
 	else
 		// No carat. Just the emote as usual.
 		subtext = message
@@ -91,12 +92,12 @@
 	if(pretext)
 		pretext = capitalize(pretext)
 		// Add a space at the end if we didn't already supply one.
-		end_char = copytext(pretext, lentext(pretext), lentext(pretext) + 1)
+		end_char = copytext(pretext, length(pretext), length(pretext) + 1)
 		if(end_char != " ")
 			pretext += " "
 
 	// Grab the last character of the emote message.
-	end_char = copytext(subtext, lentext(subtext), lentext(subtext) + 1)
+	end_char = copytext(subtext, length(subtext), length(subtext) + 1)
 	if(end_char != "." && end_char != "?" && end_char != "!" && end_char != "\"")
 		// No punctuation supplied. Tack a period on the end.
 		subtext += "."
@@ -127,7 +128,9 @@
 		return
 
 	if (message)
-		log_emote("[name]/[key] : [message]")
+		log_emote("[key_name(src)]: [message]")
+		log_message(input, INDIVIDUAL_SAY_LOG, "\[EMOTE\]")
+
 	//do not show NPC animal emotes to ghosts, it turns into hellscape
 	var/check_ghosts = client ? /datum/client_preference/ghost_sight : null
 	if(m_type == VISIBLE_MESSAGE)

@@ -4,6 +4,8 @@ var/list/client_preference_stats_
 	. = list()
 	if(!user)
 		return
+	if(!SScharacter_setup.initialized)
+		return
 	if(!client_preference_stats_)
 		client_preference_stats_ = list()
 		for(var/datum/client_preference/client_pref in get_client_preferences())
@@ -11,7 +13,7 @@ var/list/client_preference_stats_
 
 	for(var/client_pref_description in client_preference_stats_)
 		var/stat_client_preference/scp = client_preference_stats_[client_pref_description]
-		if(scp.client_preference.may_set(user))
+		if(scp.client_preference.may_set(user.client))
 			scp.update_name(user)
 			.[client_pref_description] = scp
 

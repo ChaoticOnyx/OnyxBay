@@ -7,6 +7,12 @@
 /obj/vehicle/train/get_mob()
 	return buckled_mob
 
+/mob/get_selected_zone()
+	return zone_sel.selecting
+
+/mob/get_active_item()
+	return get_active_hand()
+
 /mob/get_mob()
 	return src
 
@@ -27,7 +33,7 @@
 
 	return mobs
 
-proc/random_hair_style(gender, species = SPECIES_HUMAN)
+/proc/random_hair_style(gender, species = SPECIES_HUMAN)
 	var/h_style = "Bald"
 
 	var/datum/species/mob_species = all_species[species]
@@ -37,7 +43,7 @@ proc/random_hair_style(gender, species = SPECIES_HUMAN)
 
 	return h_style
 
-proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
+/proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 	var/f_style = "Shaved"
 
 	var/datum/species/mob_species = all_species[species]
@@ -47,14 +53,14 @@ proc/random_facial_hair_style(gender, species = SPECIES_HUMAN)
 
 		return f_style
 
-proc/sanitize_name(name, species = SPECIES_HUMAN)
+/proc/sanitize_name(name, species = SPECIES_HUMAN)
 	var/datum/species/current_species
 	if(species)
 		current_species = all_species[species]
 
 	return current_species ? current_species.sanitize_name(name) : sanitizeName(name)
 
-proc/random_name(gender, species = SPECIES_HUMAN)
+/proc/random_name(gender, species = SPECIES_HUMAN)
 
 	var/datum/species/current_species
 	if(species)
@@ -68,7 +74,7 @@ proc/random_name(gender, species = SPECIES_HUMAN)
 	else
 		return current_species.get_random_name(gender)
 
-proc/random_skin_tone(datum/species/current_species)
+/proc/random_skin_tone(datum/species/current_species)
 	var/species_tone = current_species ? 35 - current_species.max_skin_tone() : -185
 	switch(pick(60;"caucasian", 15;"afroamerican", 10;"african", 10;"latino", 5;"albino"))
 		if("caucasian")		. = -10
@@ -80,7 +86,7 @@ proc/random_skin_tone(datum/species/current_species)
 
 	return min(max(. + rand(-25, 25), species_tone), 34)
 
-proc/skintone2racedescription(tone)
+/proc/skintone2racedescription(tone)
 	switch (tone)
 		if(30 to INFINITY)		return "albino"
 		if(20 to 30)			return "pale"
@@ -92,7 +98,7 @@ proc/skintone2racedescription(tone)
 		if(-INFINITY to -65)	return "black"
 		else					return "unknown"
 
-proc/age2agedescription(age)
+/proc/age2agedescription(age)
 	switch(age)
 		if(0 to 1)			return "infant"
 		if(1 to 3)			return "toddler"
@@ -122,52 +128,58 @@ proc/age2agedescription(age)
 /proc/get_exposed_defense_zone(atom/movable/target)
 	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
 
-/proc/do_mob(mob/user , mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
-	if(!user || !target)
-		return 0
-	var/user_loc = user.loc
+/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = FALSE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT)
+	if(!affecter || !target)
+		return FALSE
+	var/mob/user = affecter
+	var/is_mob_type = istype(user)
+	var/user_loc = affecter.loc
 	var/target_loc = target.loc
 
-	var/holding = user.get_active_hand()
+	var/holding = affecter.get_active_item()
 	var/datum/progressbar/progbar
-	if (progress)
+	if(is_mob_type && progress)
 		progbar = new(user, time, target)
 
 	var/endtime = world.time+time
 	var/starttime = world.time
-	. = 1
+	. = TRUE
 	while (world.time < endtime)
-		stoplag()
-		if (progress)
+
+		stoplag(1)
+
+		if(!QDELETED(progbar))
 			progbar.update(world.time - starttime)
-		if(!user || !target)
-			. = 0
+
+		if(!affecter || !target)
+			. = FALSE
 			break
+
 		if(uninterruptible)
 			continue
 
-		if(!user || user.incapacitated(incapacitation_flags) || user.loc != user_loc)
-			. = 0
+		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
+			. = FALSE
 			break
 
 		if(target.loc != target_loc)
-			. = 0
+			. = FALSE
 			break
 
-		if(user.get_active_hand() != holding)
-			. = 0
+		if(affecter.get_active_item() != holding)
+			. = FALSE
 			break
 
-		if(target_zone && user.zone_sel.selecting != target_zone)
-			. = 0
+		if(target_zone && affecter.get_selected_zone() != target_zone)
+			. = FALSE
 			break
 
-	if (progbar)
-		qdel(progbar)
+	if(!QDELETED(progbar))
+		progbar.end_progress()
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0)
+/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE)
 	if(!user)
-		return 0
+		return FALSE
 	var/atom/target_loc = null
 	var/target_type = null
 
@@ -187,27 +199,34 @@ proc/age2agedescription(age)
 
 	var/endtime = world.time + delay
 	var/starttime = world.time
-	. = 1
+	. = TRUE
 	while (world.time < endtime)
-		stoplag()
-		if (progress)
+		stoplag(1)
+		if(!QDELETED(progbar))
 			progbar.update(world.time - starttime)
 
 		if(!user || user.incapacitated(incapacitation_flags) || (user.loc != original_loc && !can_move) || (same_direction && user.dir != original_dir))
-			. = 0
+			. = FALSE
 			break
 
 		if(target_loc && (!target || QDELETED(target) || target_loc != target.loc || target_type != target.type))
-			. = 0
+			. = FALSE
 			break
 
 		if(needhand)
 			if(user.get_active_hand() != holding)
-				. = 0
+				. = FALSE
 				break
 
-	if (progbar)
-		qdel(progbar)
+	if(!QDELETED(progbar))
+		progbar.end_progress()
+
+/proc/is_species(A, species_datum)
+	. = FALSE
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+		if(istype(H.species, species_datum))
+			. = TRUE
 
 /proc/able_mobs_in_oview(origin)
 	var/list/mobs = list()
@@ -241,11 +260,20 @@ proc/age2agedescription(age)
 
 // Returns true if the mob was in neither the dead or living list
 /mob/proc/add_to_dead_mob_list()
+	CAN_BE_REDEFINED(TRUE)
+
+	SEND_SIGNAL(src, SIGNAL_MOB_DEATH, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_MOB_DEATH, src)
+
 	return FALSE
+
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
+
+	..()
 	GLOB.dead_mob_list_ += src
+
 	return TRUE
 
 // Returns true if the mob was removed form the dead list
@@ -317,7 +345,7 @@ proc/age2agedescription(age)
 				. += target.wear_suit
 			if(target.w_uniform)
 				. += target.w_uniform
-			if(istype(target.belt, /obj/item/weapon/storage))
+			if(istype(target.belt, /obj/item/storage))
 				. += target.belt
 
 		if(BP_L_FOOT, BP_R_FOOT)

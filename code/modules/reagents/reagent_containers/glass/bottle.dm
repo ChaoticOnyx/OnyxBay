@@ -1,275 +1,120 @@
 
-//Not to be confused with /obj/item/weapon/reagent_containers/food/drinks/bottle
+//Not to be confused with /obj/item/reagent_containers/food/drinks/bottle
 
-/obj/item/weapon/reagent_containers/glass/bottle
+/obj/item/reagent_containers/glass/bottle
 	name = "bottle"
-	desc = "A small bottle."
+	desc = "A regular glass bottle."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = null
+	icon_state = "bottle_medium"
 	item_state = "atoxinbottle"
+	center_of_mass = "x=16;y=11"
 	randpixel = 7
-	center_of_mass = "x=15;y=10"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60"
 	w_class = ITEM_SIZE_SMALL
 	item_flags = 0
 	obj_flags = 0
 	volume = 60
+	matter = list(MATERIAL_GLASS = 2000)
+	atom_flags = null
+	var/lid_state = "lid_bottle_medium"
+	var/use_filling_states = TRUE
+	var/default_name = "bottle"
+	var/default_desc = "A regular glass bottle."
+	var/starting_label = null
 
-	on_reagent_change()
-		update_icon()
+/obj/item/reagent_containers/glass/bottle/small
+	name = "small bottle"
+	desc = "A small glass bottle."
+	icon_state = "bottle_small"
+	amount_per_transfer_from_this = 5
+	possible_transfer_amounts = "5;10;15;30"
+	w_class = ITEM_SIZE_TINY
+	volume = 30
+	matter = list(MATERIAL_GLASS = 1000)
+	lid_state = "lid_bottle_small"
+	default_name = "small bottle"
+	default_desc = "A small glass bottle."
 
-	pickup(mob/user)
-		..()
-		update_icon()
+/obj/item/reagent_containers/glass/bottle/big
+	name = "big bottle"
+	desc = "A big glass bottle."
+	icon_state = "bottle_big"
+	amount_per_transfer_from_this = 15
+	possible_transfer_amounts = "5;10;15;25;30;60"
+	volume = 90
+	matter = list(MATERIAL_GLASS = 3000)
+	lid_state = "lid_bottle_big"
+	default_name = "big bottle"
+	default_desc = "A big glass bottle."
 
-	dropped(mob/user)
-		..()
-		update_icon()
+/obj/item/reagent_containers/glass/bottle/big/get_storage_cost()
+	return ..() * 1.5
 
-	attack_hand()
-		..()
-		update_icon()
 
-	New()
-		..()
-		if(!icon_state)
-			icon_state = "bottle-[rand(1,4)]"
-
+/obj/item/reagent_containers/glass/bottle/Initialize()
+	. = ..()
+	if(!default_name)
+		default_name = name
+	if(!default_desc)
+		default_desc = desc
+	if(starting_label)
+		name = default_name
+		AddComponent(/datum/component/label, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+	if(!icon_state)
+		icon_state = "bottle-[rand(1,4)]"
+		lid_state = "lid_bottle"
 	update_icon()
-		overlays.Cut()
 
-		if(reagents.total_volume && (icon_state == "bottle-1" || icon_state == "bottle-2" || icon_state == "bottle-3" || icon_state == "bottle-4"))
-			var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[icon_state]10")
+//obj/item/reagent_containers/glass/bottle/proc/setup_bottle(new_label = null
 
-			var/percent = round((reagents.total_volume / volume) * 100)
-			switch(percent)
-				if(0 to 9)		filling.icon_state = "[icon_state]--10"
-				if(10 to 24) 	filling.icon_state = "[icon_state]-10"
-				if(25 to 49)	filling.icon_state = "[icon_state]-25"
-				if(50 to 74)	filling.icon_state = "[icon_state]-50"
-				if(75 to 79)	filling.icon_state = "[icon_state]-75"
-				if(80 to 90)	filling.icon_state = "[icon_state]-80"
-				if(91 to INFINITY)	filling.icon_state = "[icon_state]-100"
+/obj/item/reagent_containers/glass/bottle/on_reagent_change()
+	update_icon()
 
-			filling.color = reagents.get_color()
-			overlays += filling
-
-		if (!is_open_container())
-			var/image/lid = image(icon, src, "lid_bottle")
-			overlays += lid
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
-	name = "inaprovaline bottle"
-	desc = "A small bottle. Contains inaprovaline - used to stabilize patients."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline/New()
+/obj/item/reagent_containers/glass/bottle/pickup(mob/user)
 	..()
-	reagents.add_reagent(/datum/reagent/inaprovaline, 60)
 	update_icon()
 
-
-/obj/item/weapon/reagent_containers/glass/bottle/toxin
-	name = "toxin bottle"
-	desc = "A small bottle of toxins. Do not drink, it is poisonous."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-3"
-
-/obj/item/weapon/reagent_containers/glass/bottle/toxin/New()
+/obj/item/reagent_containers/glass/bottle/dropped(mob/user)
 	..()
-	reagents.add_reagent(/datum/reagent/toxin, 60)
 	update_icon()
 
-
-/obj/item/weapon/reagent_containers/glass/bottle/cyanide
-	name = "cyanide bottle"
-	desc = "A small bottle of cyanide. Bitter almonds?"
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-3"
-
-/obj/item/weapon/reagent_containers/glass/bottle/cyanide/New()
+/obj/item/reagent_containers/glass/bottle/attack_hand()
 	..()
-	reagents.add_reagent(/datum/reagent/toxin/cyanide, 30) //volume changed to match chloral
 	update_icon()
 
+/obj/item/reagent_containers/glass/bottle/post_attach_label()
+	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/stoxin
-	name = "soporific bottle"
-	desc = "A small bottle of soporific. Just the fumes make you sleepy."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-3"
-
-/obj/item/weapon/reagent_containers/glass/bottle/stoxin/New()
+/obj/item/reagent_containers/glass/bottle/post_remove_label()
 	..()
-	reagents.add_reagent(/datum/reagent/soporific, 60)
+	desc = default_desc
 	update_icon()
 
+/obj/item/reagent_containers/glass/bottle/update_icon()
+	overlays.Cut()
 
-/obj/item/weapon/reagent_containers/glass/bottle/chloralhydrate
-	name = "Chloral Hydrate Bottle"
-	desc = "A small bottle of Choral Hydrate. Mickey's Favorite!"
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-3"
+	if(reagents.total_volume && use_filling_states)
+		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[icon_state]10")
 
-/obj/item/weapon/reagent_containers/glass/bottle/chloralhydrate/New()
-	..()
-	reagents.add_reagent(/datum/reagent/chloralhydrate, 30)		//Intentionally low since it is so strong. Still enough to knock someone out.
-	update_icon()
+		var/percent = round((reagents.total_volume / volume) * 100)
+		switch(percent)
+			if(0 to 9)		filling.icon_state = "[icon_state]--10"
+			if(10 to 24) 	filling.icon_state = "[icon_state]-10"
+			if(25 to 49)	filling.icon_state = "[icon_state]-25"
+			if(50 to 74)	filling.icon_state = "[icon_state]-50"
+			if(75 to 79)	filling.icon_state = "[icon_state]-75"
+			if(80 to 90)	filling.icon_state = "[icon_state]-80"
+			if(91 to INFINITY)	filling.icon_state = "[icon_state]-100"
 
+		filling.color = reagents.get_color()
+		overlays += filling
 
-/obj/item/weapon/reagent_containers/glass/bottle/antitoxin
-	name = "dylovene bottle"
-	desc = "A small bottle of dylovene. Counters poisons, and repairs damage. A wonder drug."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
+	overlays += image(icon, src, "over_[icon_state]")
 
-/obj/item/weapon/reagent_containers/glass/bottle/antitoxin/New()
-	..()
-	reagents.add_reagent(/datum/reagent/dylovene, 60)
-	update_icon()
+	if(length(get_components(/datum/component/label)))
+		overlays += image(icon, src, "label_[icon_state]")
 
-
-/obj/item/weapon/reagent_containers/glass/bottle/mutagen
-	name = "unstable mutagen bottle"
-	desc = "A small bottle of unstable mutagen. Randomly changes the DNA structure of whoever comes in contact."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-1"
-
-/obj/item/weapon/reagent_containers/glass/bottle/mutagen/New()
-	..()
-	reagents.add_reagent(/datum/reagent/mutagen, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/ammonia
-	name = "ammonia bottle"
-	desc = "A small bottle."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-1"
-
-/obj/item/weapon/reagent_containers/glass/bottle/ammonia/New()
-	..()
-	reagents.add_reagent(/datum/reagent/ammonia, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/eznutrient
-	name = "\improper EZ NUtrient bottle"
-	desc = "A small bottle."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/eznutrient/New()
-	..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/eznutrient, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/left4zed
-	name = "\improper Left-4-Zed bottle"
-	desc = "A small bottle."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/left4zed/New()
-	..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/left4zed, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/robustharvest
-	name = "\improper Robust Harvest"
-	desc = "A small bottle."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/robustharvest/New()
-	..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/robustharvest, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/diethylamine
-	name = "diethylamine bottle"
-	desc = "A small bottle."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/diethylamine/New()
-	..()
-	reagents.add_reagent(/datum/reagent/diethylamine, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/pacid
-	name = "Polytrinic Acid Bottle"
-	desc = "A small bottle. Contains a small amount of Polytrinic Acid."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/pacid/New()
-	..()
-	reagents.add_reagent(/datum/reagent/acid/polyacid, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/adminordrazine
-	name = "Adminordrazine Bottle"
-	desc = "A small bottle. Contains the liquid essence of the gods."
-	icon = 'icons/obj/drinks.dmi'
-	icon_state = "holyflask"
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/adminordrazine/New()
-	..()
-	reagents.add_reagent(/datum/reagent/adminordrazine, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/capsaicin
-	name = "Capsaicin Bottle"
-	desc = "A small bottle. Contains hot sauce."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/capsaicin/New()
-	..()
-	reagents.add_reagent(/datum/reagent/capsaicin, 60)
-	update_icon()
-
-
-/obj/item/weapon/reagent_containers/glass/bottle/frostoil
-	name = "Frost Oil Bottle"
-	desc = "A small bottle. Contains cold sauce."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/frostoil/New()
-	..()
-	reagents.add_reagent(/datum/reagent/frostoil, 60)
-	update_icon()
-
-/obj/item/weapon/reagent_containers/glass/bottle/spaceacillin
-	name = "spaceacillin bottle"
-	desc = "A small bottle of spaceacillin. It has antiviral and antibiotic effects."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
-
-/obj/item/weapon/reagent_containers/glass/bottle/spaceacillin/New()
-	..()
-	reagents.add_reagent(/datum/reagent/spaceacillin, 60)
-	update_icon()
-
-/obj/item/weapon/reagent_containers/glass/bottle/slimetoxin
-	name = "Mysterious Bottle"
-	desc = "An old ketchup bottle filled with some sort of gelatinous substance. Must be szechuan sauce! Or not."
-	icon = 'icons/obj/food.dmi'
-	icon_state = "ketchupold"
-
-/obj/item/weapon/reagent_containers/glass/bottle/slimetoxin/New()
-	..()
-	reagents.add_reagent(/datum/reagent/slimetoxin, 60)
-	update_icon()
+	if(!is_open_container())
+		var/image/lid = image(icon, src, lid_state)
+		overlays += lid

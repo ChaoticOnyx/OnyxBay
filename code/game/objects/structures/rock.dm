@@ -15,11 +15,11 @@
 	icon_state = pick(iconlist)
 
 /obj/structure/rock/Destroy()
-	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, phoron = 20)
+	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
 	if(prob(20))
 		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
-		var/ore = text2path("/obj/item/weapon/ore/[mineral_name]")
+		var/ore = text2path("/obj/item/ore/[mineral_name]")
 		for(var/i=1,i <= rand(2,6),i++)
 			new ore(get_turf(src))
 	return ..()
@@ -28,11 +28,11 @@
 	if (isMonkey(user))
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
-	if (istype(I, /obj/item/weapon/pickaxe))
+	if (istype(I, /obj/item/pickaxe))
 		if(!istype(user.loc, /turf))
 			return
 
-		var/obj/item/weapon/pickaxe/P = I
+		var/obj/item/pickaxe/P = I
 		if(last_act + P.digspeed > world.time)//prevents message spam
 			return
 		last_act = world.time
@@ -50,14 +50,14 @@
 	. = ..()
 	if(istype(AM,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
-		if((istype(H.l_hand,/obj/item/weapon/pickaxe)) && (!H.hand))
+		if((istype(H.l_hand,/obj/item/pickaxe)) && (!H.hand))
 			attackby(H.l_hand,H)
-		else if((istype(H.r_hand,/obj/item/weapon/pickaxe)) && H.hand)
+		else if((istype(H.r_hand,/obj/item/pickaxe)) && H.hand)
 			attackby(H.r_hand,H)
 
 	else if(istype(AM,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = AM
-		if(istype(R.module_active,/obj/item/weapon/pickaxe))
+		if(istype(R.module_active,/obj/item/pickaxe))
 			attackby(R.module_active,R)
 
 	else if(istype(AM,/obj/mecha))

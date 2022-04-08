@@ -6,11 +6,10 @@
 
 	drop_headbutt = 0
 
-	shift = -10
-
+	shift = 8
 
 	stop_move = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 1
 	point_blank_mult = 1
@@ -18,6 +17,7 @@
 	can_throw = 1
 	force_danger = 1
 	restrains = 1
+	ladder_carry = 1
 
 	icon_state = "kill"
 
@@ -31,5 +31,6 @@
 
 	if(affecting.lying)
 		affecting.Weaken(4)
+		affecting.Stun(2)
 
 	affecting.adjustOxyLoss(1)

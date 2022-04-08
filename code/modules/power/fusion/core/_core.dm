@@ -33,7 +33,7 @@ var/list/fusion_cores = list()
 	fusion_cores += src
 
 /obj/machinery/power/fusion_core/Destroy()
-	for(var/obj/machinery/computer/fusion_core_control/FCC in SSmachines.machinery)
+	for(var/obj/machinery/computer/fusion_core_control/FCC in GLOB.computer_list)
 		FCC.connected_devices -= src
 		if(FCC.cur_viewed_device == src)
 			FCC.cur_viewed_device = null
@@ -104,7 +104,7 @@ var/list/fusion_cores = list()
 		return
 
 	if(isMultitool(W))
-		var/new_ident = input("Enter a new ident tag.", "Fusion Core", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Fusion Core", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 		return

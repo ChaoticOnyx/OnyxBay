@@ -43,7 +43,7 @@
 	name = "supermatter supply beacon"
 	drop_type = "supermatter"
 
-/obj/machinery/power/supply_beacon/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/power/supply_beacon/attackby(obj/item/W, mob/user)
 	if(!use_power && isWrench(W))
 		if(!anchored && !connect_to_network())
 			to_chat(user, "<span class='warning'>This device must be placed over an exposed cable.</span>")
@@ -77,7 +77,7 @@
 	if(surplus() < 500)
 		if(user) to_chat(user, "<span class='notice'>The connected wire doesn't have enough current.</span>")
 		return
-	set_light(3, 3, "#00ccaa")
+	set_light(1, 0.5, 2, 2, "#00ccaa")
 	icon_state = "beacon_active"
 	update_use_power(POWER_USE_IDLE)
 	if(user) to_chat(user, "<span class='notice'>You activate the beacon. The supply drop will be dispatched soon.</span>")
@@ -96,7 +96,7 @@
 /obj/machinery/power/supply_beacon/Destroy()
 	if(use_power)
 		deactivate()
-	..()
+	return ..()
 
 /obj/machinery/power/supply_beacon/Process()
 	if(expended)

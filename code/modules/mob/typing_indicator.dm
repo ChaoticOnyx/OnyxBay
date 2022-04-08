@@ -11,6 +11,7 @@ I IS TYPIN'!'
 	icon_state = "typing"
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
+	appearance_flags = LONG_GLIDE
 
 /atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)
@@ -20,20 +21,20 @@ I IS TYPIN'!'
 	master.typing_indicator = src
 	src.master = master
 	name = master.name
+	glide_size = master.glide_size
 
-	GLOB.moved_event.register(master, src, /atom/movable/proc/move_to_turf_or_null)
-
-	GLOB.stat_set_event.register(master, src, /datum/proc/qdel_self) // Making the assumption master is conscious at creation
-	GLOB.logged_out_event.register(master, src, /datum/proc/qdel_self)
-	GLOB.destroyed_event.register(master, src, /datum/proc/qdel_self)
+	register_signal(master, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
+	register_signal(master, SIGNAL_STAT_SET, /datum/proc/qdel_self) // Making the assumption master is conscious at creation.
+	register_signal(master, SIGNAL_LOGGED_OUT, /datum/proc/qdel_self)
+	register_signal(master, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 /atom/movable/overlay/typing_indicator/Destroy()
 	var/mob/M = master
 
-	GLOB.moved_event.unregister(master, src)
-	GLOB.stat_set_event.unregister(master, src)
-	GLOB.logged_out_event.unregister(master, src)
-	GLOB.destroyed_event.unregister(master, src)
+	unregister_signal(master, SIGNAL_MOVED)
+	unregister_signal(master, SIGNAL_STAT_SET)
+	unregister_signal(master, SIGNAL_LOGGED_OUT)
+	unregister_signal(master, SIGNAL_QDELETING)
 
 	M.typing_indicator = null
 	master = null
@@ -41,34 +42,41 @@ I IS TYPIN'!'
 	. = ..()
 
 /mob/proc/create_typing_indicator()
-	if(client && !stat && get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW)
+	if(!client || stat)
+		return
+	if((get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW) == (client.shift_released_at <= world.time - 2))
 		new /atom/movable/overlay/typing_indicator(get_turf(src), src)
 
 /mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
 	QDEL_NULL(typing_indicator)
 
-/mob/verb/say_wrapper()
-	set name = ".Say"
+/client/proc/close_saywindow(return_content = FALSE)
+	winset(src, null, "saywindow.is-visible=false;mapwindow.map.focus=true")
+	if (return_content)
+		. = winget(src, "saywindow.saywindow-input", "text")
+	winset(src, "saywindow.saywindow-input", "text=\"\"")
+
+/mob/verb/add_typing_indicator(is_sayinput as num|null)
+	set name = ".add_typing_indicator"
 	set hidden = 1
 
+	ASSERT(client && src == usr)
 
-	create_typing_indicator()
-	var/message = input("","say (text)") as text
+	if (is_sayinput)
+		create_typing_indicator()
+		return
+
+	var/text = winget(usr, "input", "text")
+	if(findtextEx(text, "Say ", 1, 5))
+		create_typing_indicator()
+
+/mob/verb/remove_typing_indicator_verb()
+	set name = ".remove_typing_indicator"
+	set hidden = 1
+
+	ASSERT(client && src == usr)
+
 	remove_typing_indicator()
-	if(message)
-		say_verb(message)
-
-	/* Well maybe some day. Later.
-	var/dat = ""
-	dat += "<form name='Say' action='?src=\ref[src]' method='get'>"
-	dat += "<input type='hidden' name='src' value='\ref[src]'>"
-	dat += "<input type='hidden' name='choice' value='Say'>"
-	dat += "<input type='submit' value='Say'><input type='text' id='mobsay' name='mobsay' value='' style='width:350px; background-color:white;'>"
-	dat += "</form>"
-	var/datum/browser/popup = new(src, "Say", ntitle = "Say (text)", nwidth = 440, nheight = 90)
-	visible_message("<span class='danger'>[src] uses chat.</span>")
-	popup.set_content(jointext(dat,null))
-	popup.open()*/
 
 /mob/verb/me_wrapper()
 	set name = ".Me"

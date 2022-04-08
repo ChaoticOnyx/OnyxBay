@@ -1,15 +1,21 @@
 /atom
 	var/level = 2
 	var/atom_flags
+	var/effect_flags
 	var/list/blood_DNA
 	var/was_bloodied
 	var/blood_color
 	var/last_bumped = 0
 	var/pass_flags = 0
 	var/throwpass = 0
+	var/hitby_sound = null
+	var/hitby_loudness_multiplier = 1.0
 	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
+
+	///Value used to increment ex_act() if reactionary_explosions is on
+	var/explosion_block = 0
 
 	///Proximity monitor associated with this atom
 	var/datum/proximity_monitor/proximity_monitor
@@ -24,6 +30,7 @@
 	var/list/climbers = list()
 
 /atom/New(loc, ...)
+	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
@@ -42,9 +49,6 @@
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		verbs += /atom/proc/climb_on
 
-	if(opacity)
-		updateVisibility(src)
-
 //Called after New if the map is being loaded. mapload = TRUE
 //Called from base of New if the map is not being loaded. mapload = FALSE
 //This base must be called or derivatives must set initialized to TRUE
@@ -53,18 +57,44 @@
 //Must return an Initialize hint. Defined in __DEFINES/subsystems.dm
 
 /atom/proc/Initialize(mapload, ...)
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	if(light_power && light_range)
+	if(light_max_bright && light_outer_range)
 		update_light()
+
+	if(opacity)
+		updateVisibility(src)
+		var/turf/T = loc
+		if(istype(T))
+			T.RecalculateOpacity()
 
 	return INITIALIZE_HINT_NORMAL
 
 //called if Initialize returns INITIALIZE_HINT_LATELOAD
 /atom/proc/LateInitialize()
 	return
+
+/atom/proc/drop_location()
+	var/atom/L = loc
+	if(!L)
+		return null
+	return L.allow_drop() ? L : get_turf(L)
+
+/atom/Entered(atom/movable/enterer, atom/old_loc)
+	..()
+
+	SEND_SIGNAL(src, SIGNAL_ENTERED, src, enterer, old_loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, enterer, old_loc, enterer.loc)
+
+/atom/Exited(atom/movable/exitee, atom/new_loc)
+	. = ..()
+
+	SEND_SIGNAL(src, SIGNAL_EXITED, src, exitee, new_loc)
 
 /atom/Destroy()
 	QDEL_NULL(reagents)
@@ -114,12 +144,15 @@
 		return flags & INSERT_CONTAINER
 */
 
+/atom/proc/allow_drop()
+	return FALSE
+
 /atom/proc/CheckExit()
 	return 1
 
 // If you want to use this, the atom must have the PROXMOVE flag, and the moving
 // atom must also have the PROXMOVE flag currently to help with lag. ~ ComicIronic
-/atom/proc/HasProximity(atom/movable/AM as mob|obj)
+/atom/proc/HasProximity(atom/movable/AM)
 	return
 
 /atom/proc/emp_act(severity)
@@ -239,7 +272,7 @@ its easier to just keep the beam vertical.
 
 
 //All atoms
-/atom/proc/examine(mob/user, distance = -1, infix = "", suffix = "")
+/atom/proc/examine(mob/user, infix = "", suffix = "")
 	//This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [src][infix]."
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
@@ -252,10 +285,10 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	to_chat(user, "\icon[src] That's [f_name] [suffix]")
-	to_chat(user, desc)
+	. = "\icon[src] That's [f_name] [suffix]"
+	. += "\n[desc]"
 
-	return distance == -1 || (get_dist(src, user) <= distance)
+	return
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
@@ -265,41 +298,63 @@ its easier to just keep the beam vertical.
 //called to set the atom's dir and used to add behaviour to dir-changes
 /atom/proc/set_dir(new_dir)
 	var/old_dir = dir
+
 	if(new_dir == old_dir)
 		return FALSE
+
 	dir = new_dir
+	SEND_SIGNAL(src, SIGNAL_DIR_SET, src, old_dir, dir)
+
 	return TRUE
 
 /atom/proc/set_icon_state(new_icon_state)
-	if(has_extension(src, /datum/extension/base_icon_state))
-		var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-		bis.base_icon_state = new_icon_state
-		update_icon()
-	else
-		icon_state = new_icon_state
+	icon_state = new_icon_state
+	update_icon()
 
 /atom/proc/update_icon()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
+/atom/proc/blob_act(damage)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/ex_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/emag_act(remaining_charges, mob/user, emag_source)
+	CAN_BE_REDEFINED(TRUE)
 	return NO_EMAG_ACT
 
 /atom/proc/fire_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/melt()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/hitby(atom/movable/AM as mob|obj)
-	if (density)
+/atom/proc/hitby(atom/movable/AM, speed = 0, nomsg = FALSE)
+	if(density)
 		AM.throwing = 0
+		play_hitby_sound(AM)
+		if(!nomsg)
+			visible_message(SPAN("warning", "[src] was hit by \the [AM]."))
 	return
+
+/atom/proc/play_hitby_sound(atom/movable/AM)
+	if(!hitby_sound)
+		return
+	var/sound_loudness = rand(65, 85)
+
+	if(istype(AM, /obj/item/projectile))
+		sound_loudness = 100
+	if(isobj(AM))
+		var/obj/O = AM
+		sound_loudness = min(100, O.w_class * (O.throwforce ? 10 : 5) * hitby_loudness_multiplier)
+
+	playsound(src, hitby_sound, sound_loudness, 1)
 
 
 //returns 1 if made bloody, returns 0 otherwise
@@ -360,30 +415,20 @@ its easier to just keep the beam vertical.
 /atom/proc/isinspace()
 	return istype(get_turf(src), /turf/space)
 
-// Byond seemingly calls stat, each tick.
-// Calling things each tick can get expensive real quick.
-// So we slow this down a little.
-// See: http://www.byond.com/docs/ref/info.html#/client/proc/Stat
-/atom/Stat()
-	. = ..()
-	sleep(1)
-	stoplag()
-
 // Show a message to all mobs and objects in sight of this atom
 // Use for objects performing visible actions
 // message is output to anyone who can see, e.g. "The [src] does something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /atom/proc/visible_message(message, blind_message, range = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T,range, mobs, objs, checkghosts)
+	var/list/seeing_mobs = list()
+	var/list/seeing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
-	for(var/o in objs)
+	for(var/o in seeing_objs)
 		var/obj/O = o
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in mobs)
+	for(var/m in seeing_mobs)
 		var/mob/M = m
 		if(M.see_invisible >= invisibility)
 			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
@@ -396,17 +441,17 @@ its easier to just keep the beam vertical.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T, hearing_distance, mobs, objs, checkghosts)
+	var/list/hearing_mobs = list()
+	var/list/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
-	for(var/m in mobs)
-		var/mob/M = m
-		M.show_message(message,2,deaf_message,1)
-	for(var/o in objs)
+	for(var/o in hearing_objs)
 		var/obj/O = o
-		O.show_message(message,2,deaf_message,1)
+		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+
+	for(var/m in hearing_mobs)
+		var/mob/M = m
+		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
@@ -549,3 +594,118 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+// Called after we wrench/unwrench this object
+/obj/proc/wrenched_change()
+	return
+
+// Pushes A away from the atom's location, unless they are anchored or buckled. Gives up if impossible.
+/atom/proc/shove_out(atom/movable/A)
+	set waitfor = 0
+
+	if(A.anchored)
+		return FALSE
+
+	if(isliving(A))
+		var/mob/living/L = A
+		if(L.buckled)
+			return FALSE
+
+	var/turf/T = loc
+	if(!istype(T))
+		return FALSE
+
+	var/list/valid_turfs = list()
+	for(var/dir_to_test in GLOB.cardinal)
+		var/turf/new_turf = get_step(T, dir_to_test)
+		if(!new_turf.contains_dense_objects(FALSE))
+			valid_turfs |= new_turf
+
+	while(valid_turfs.len)
+		T = pick(valid_turfs)
+		valid_turfs -= T // Try to move us to the turf. If all turfs fail for some reason we will stay on this tile.
+		if(A.forceMove(T))
+			return TRUE
+
+	return FALSE
+
+// Pushes all living mobs and items away from the atom's location. Unless they are buckled or anchored. Gives up if impossible.
+/atom/proc/shove_everything(shove_mobs = TRUE, shove_objects = TRUE, shove_items = TRUE, min_w_class = ITEM_SIZE_TINY, max_w_class = ITEM_SIZE_HUGE)
+	set waitfor = 0
+
+	var/turf/T = loc
+	if(!istype(T))
+		return FALSE
+
+	var/list/valid_turfs = list()
+	for(var/dir_to_test in GLOB.cardinal)
+		var/turf/new_turf = get_step(T, dir_to_test)
+		if(!new_turf.contains_dense_objects(FALSE))
+			valid_turfs.Add("[dir_to_test]")
+			valid_turfs["[dir_to_test]"] = new_turf
+
+	if(!length(valid_turfs))
+		return FALSE
+
+	for(var/atom/movable/A in T)
+		if(A == src)
+			continue
+		if(A.anchored)
+			continue
+		if(istype(A, /obj/item))
+			if(!shove_items)
+				continue
+			var/obj/item/I = A
+			if(I.w_class < min_w_class || I.w_class > max_w_class)
+				continue
+		else if(isliving(A))
+			if(!shove_mobs)
+				continue
+			var/mob/living/L = A
+			if(L.buckled)
+				continue
+			if("[L.dir]" in valid_turfs)
+				if(L.forceMove(valid_turfs["[L.dir]"])) // We prefer shoving mobs according to their facing direction.
+					continue
+		else if(isobj(A) && !shove_objects)
+			continue
+
+		for(var/i in shuffle(valid_turfs))
+			if(A.forceMove(valid_turfs[i]))
+				break
+
+	return TRUE
+
+/atom/proc/post_attach_label()
+	return
+
+/atom/proc/post_remove_label()
+	return
+
+/atom/proc/SetName(new_name)
+	var/old_name = name
+
+	if(old_name != new_name)
+		name = new_name
+
+/atom/proc/set_opacity(new_opacity)
+	if(new_opacity != opacity)
+		var/old_opacity = opacity
+		opacity = new_opacity
+
+		SEND_SIGNAL(src, SIGNAL_OPACITY_SET, src, old_opacity, new_opacity)
+
+		return TRUE
+	else
+		return FALSE
+
+/atom/proc/set_invisibility(new_invisibility = 0)
+	var/old_invisibility = invisibility
+	if(old_invisibility != new_invisibility)
+		invisibility = new_invisibility
+
+		SEND_SIGNAL(src, SIGNAL_INVISIBILITY_SET, src, old_invisibility, new_invisibility)
+
+/atom/proc/recursive_dir_set(atom/a, old_dir, new_dir)
+	if(loc != a)
+		set_dir(new_dir)

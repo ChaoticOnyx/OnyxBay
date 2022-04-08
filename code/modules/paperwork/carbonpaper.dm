@@ -1,51 +1,33 @@
-/obj/item/weapon/paper/carbon
+/obj/item/paper/carbon
 	name = "paper"
 	icon_state = "paper_stack"
 	item_state = "paper"
-	var/copied = 0
-	var/iscopy = 0
+	var/copied = FALSE
 
 
-/obj/item/weapon/paper/carbon/update_icon()
-	if(iscopy)
-		if(info)
-			icon_state = "cpaper_words"
-			return
-		icon_state = "cpaper"
-	else if (copied)
-		if(info)
-			icon_state = "paper_words"
-			return
-		icon_state = "paper"
+/obj/item/paper/carbon/update_icon()
+	if(!crumpled)
+		icon_state = copied ? "cpaper" : "paper_stack"
+		if(!is_clean())
+			icon_state = "[icon_state]_words"
 	else
-		if(info)
-			icon_state = "paper_stack_words"
-			return
-		icon_state = "paper_stack"
+		icon_state = "scrap"
+	if(taped)
+		icon_state = "[icon_state]_taped"
 
 
-
-/obj/item/weapon/paper/carbon/verb/removecopy()
+/obj/item/paper/carbon/verb/removecopy()
 	set name = "Remove carbon-copy"
 	set category = "Object"
 	set src in usr
 
-	if (copied == 0)
-		var/obj/item/weapon/paper/carbon/c = src
-		var/copycontents = rhtml_decode(c.info)
-		var/obj/item/weapon/paper/carbon/copy = new /obj/item/weapon/paper/carbon (usr.loc)
-		// <font>
-		copycontents = replacetext(copycontents, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")	//state of the art techniques in action
-		copycontents = replacetext(copycontents, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")	//This basically just breaks the existing color tag, which we need to do because the innermost tag takes priority.
-		copy.info += copycontents
-		copy.info += "</font>"
-		copy.SetName("Copy - " + c.name)
-		copy.fields = c.fields
-		copy.updateinfolinks()
-		to_chat(usr, "<span class='notice'>You tear off the carbon-copy!</span>")
-		c.copied = 1
-		copy.iscopy = 1
-		copy.update_icon()
-		c.update_icon()
-	else
-		to_chat(usr, "There are no more carbon copies attached to this paper!")
+	if(copied)
+		to_chat(usr, SPAN_NOTICE("There are no more carbon copies attached to this paper!"))
+		return
+	var/obj/item/paper/copy = copy(usr.loc, generate_stamps = FALSE)
+	copy.recolorize(saturation = 1, grayscale = TRUE)
+	copy.SetName("Copy - " + copy.name)
+	to_chat(usr, SPAN_NOTICE("You tear off the carbon-copy!"))
+	copied = TRUE
+	update_icon()
+	copy.update_icon()

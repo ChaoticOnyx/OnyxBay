@@ -15,7 +15,7 @@
 	var/living_antags = 0 //Are antagonists, and currently alive
 	var/dead_antags = 0 //Are antagonists, and have finally met their match
 	var/rights = check_rights(R_INVESTIGATE, FALSE)
-	var/preference = get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
+	var/preference = try_get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
 
 	if(rights && preference)
 		for(var/client/C in GLOB.clients)

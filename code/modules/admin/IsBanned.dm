@@ -32,7 +32,7 @@
 		//Ban Checking
 		. = CheckBan(ckeytext, computer_id, address)
 		if(.)
-			log_access("Failed Login: [key] [computer_id] [address] - Banned [.["reason"]]")
+			log_access("Failed Login: [key_name(key)] [MARK_COMPUTER_ID(computer_id)] [address] - Banned [.["reason"]]")
 			message_admins("<span class='notice'>Failed Login: [key] id:[computer_id] ip:[address] - Banned [.["reason"]]</span>")
 			key_cache[key] = 0
 			return .
@@ -55,19 +55,43 @@
 		var/cidquery = ""
 		if(address)
 			failedip = 0
-			ipquery = " OR ip = '[address]' "
+			ipquery = " OR ip = $address "
 
 		if(computer_id)
 			failedcid = 0
-			cidquery = " OR computerid = '[computer_id]' "
+			cidquery = " OR computerid = $computer_id "
 
-		var/DBQuery/query
-		if (isnull(config.server_id))
-			query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM erro_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned)")
-		else
-			query = dbcon.NewQuery("SELECT ckey, ip, computerid, a_ckey, reason, expiration_time, duration, bantime, bantype FROM erro_ban WHERE (ckey = '[ckeytext]' [ipquery] [cidquery]) AND (bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now())) AND isnull(unbanned) AND server_id = '[config.server_id]'")
-
-		query.Execute()
+		var/DBQuery/query = sql_query({"
+			SELECT
+				ckey,
+				ip,
+				computerid,
+				a_ckey,
+				reason,
+				expiration_time,
+				duration,
+				bantime,
+				bantype
+			FROM
+				erro_ban
+			WHERE
+				(ckey = $ckeytext
+				[ipquery]
+				[cidquery])
+				AND
+				(
+					bantype = 'PERMABAN'
+					OR
+					(
+						bantype = 'TEMPBAN'
+						AND
+						expiration_time > Now()
+					)
+				)
+				AND
+				isnull(unbanned)
+				[isnull(config.server_id) ? "" : " AND server_id = $server_id"]
+			"}, dbcon, list(ckeytext = ckeytext, address = address, computer_id = computer_id, server_id = config.server_id))
 
 		while(query.NextRow())
 			var/pckey = query.item[1]
@@ -84,7 +108,11 @@
 			if(text2num(duration) > 0)
 				expires = " The ban is for [duration] minutes and expires on [expiration] UTC."
 
-			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires]"
+			var/appeal
+			if(config && config.banappeals)
+				appeal = "\nTo get more information about your ban, or to appeal it, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
+
+			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires][appeal]"
 
 			key_cache[key] = 0
 			return list("reason"="[bantype]", "desc"="[desc]")

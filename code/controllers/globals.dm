@@ -33,18 +33,10 @@ GLOBAL_REAL(GLOB, /datum/controller/global_vars)
 		throw e
 
 
-/datum/controller/global_vars/Destroy(force)
-	crash_with("There was an attempt to qdel the global vars holder!")
-	if(!force)
-		return QDEL_HINT_LETMELIVE
+/datum/controller/global_vars/Destroy()
+	..()
 
-	QDEL_NULL(statclick)
-	gvars_datum_protected_varlist.Cut()
-	gvars_datum_in_built_vars.Cut()
-
-	GLOB = null
-
-	return ..()
+	return QDEL_HINT_IWILLGC
 
 /datum/controller/global_vars/stat_entry()
 	if(!statclick)

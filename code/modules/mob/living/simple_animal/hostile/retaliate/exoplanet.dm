@@ -38,27 +38,6 @@
 					else
 						qdel(S)
 
-/mob/living/simple_animal/proc/name_species()
-	set name = "Name Alien Species"
-	set category = "Exploration"
-	set src in view()
-
-	if(!GLOB.using_map.use_overmap)
-		return
-	if(!CanInteract(usr, GLOB.conscious_state))
-		return
-
-	for(var/obj/effect/overmap/sector/exoplanet/E)
-		if(src in E.animals)
-			var/newname = input("What do you want to name this species?", "Species naming", E.get_random_species_name()) as text|null
-			newname = sanitizeName(newname, allow_numbers = TRUE, force_first_letter_uppercase = FALSE)
-			if(newname && CanInteract(usr, GLOB.conscious_state))
-				if(E.rename_species(type, newname))
-					to_chat(usr,"<span class='notice'>This species will be known from now on as '[newname]'.</span>")
-				else
-					to_chat(usr,"<span class='warning'>This species has already been named!</span>")
-			return
-
 /mob/living/simple_animal/hostile/retaliate/beast/samak
 	name = "samak"
 	desc = "A fast, armoured predator accustomed to hiding and ambushing in cold terrain."
@@ -78,6 +57,7 @@
 	speak = list("Hruuugh!","Hrunnph")
 	emote_see = list("paws the ground","shakes its mane","stomps")
 	emote_hear = list("snuffles")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/hostile/retaliate/beast/diyaab
 	name = "diyaab"
@@ -98,6 +78,7 @@
 	speak = list("Awrr?","Aowrl!","Worrl")
 	emote_see = list("sniffs the air cautiously","looks around")
 	emote_hear = list("snuffles")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/hostile/retaliate/beast/shantak
 	name = "shantak"
@@ -117,6 +98,7 @@
 	speak_chance = 2
 	speak = list("Shuhn","Shrunnph?","Shunpf")
 	emote_see = list("scratches the ground","shakes out it's mane","tinkles gently")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/yithian
 	name = "yithian"

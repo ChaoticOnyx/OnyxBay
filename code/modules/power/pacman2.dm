@@ -4,55 +4,55 @@
 //PACMAN variant that can run on the small plasma tanks.
 /obj/machinery/power/port_gen/pacman2
 	name = "Pacman II"
-	desc = "P.A.C.M.A.N. type II portable generator. Uses liquid phoron as a fuel source."
+	desc = "P.A.C.M.A.N. type II portable generator. Uses liquid plasma as a fuel source."
 	power_gen = 4500
-	var/obj/item/weapon/tank/phoron/P = null
-	var/board_path = /obj/item/weapon/circuitboard/pacman2
+	var/obj/item/tank/plasma/P = null
+	var/board_path = /obj/item/circuitboard/pacman2
 	var/emagged = 0
 	var/heat = 0
 /*
 	process()
 		if(P)
-			if(P.air_contents.phoron <= 0)
-				P.air_contents.phoron = 0
+			if(P.air_contents.plasma <= 0)
+				P.air_contents.plasma = 0
 				eject()
 			else
-				P.air_contents.phoron -= 0.001
+				P.air_contents.plasma -= 0.001
 		return
 */
 
 	HasFuel()
-		if(P.air_contents.phoron >= 0.1)
+		if(P.air_contents.plasma >= 0.1)
 			return 1
 		return 0
 
 	UseFuel()
-		P.air_contents.phoron -= 0.01
+		P.air_contents.plasma -= 0.01
 		return
 
 	New()
 		..()
 		component_parts = list()
-		component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-		component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
+		component_parts += new /obj/item/stock_parts/matter_bin(src)
+		component_parts += new /obj/item/stock_parts/micro_laser(src)
 		component_parts += new /obj/item/stack/cable_coil(src)
 		component_parts += new /obj/item/stack/cable_coil(src)
-		component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
+		component_parts += new /obj/item/stock_parts/capacitor(src)
 		component_parts += new board_path(src)
 		RefreshParts()
 
 	RefreshParts()
 		var/temp_rating = 0
-		for(var/obj/item/weapon/stock_parts/SP in component_parts)
-			if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
+		for(var/obj/item/stock_parts/SP in component_parts)
+			if(istype(SP, /obj/item/stock_parts/matter_bin))
 				//max_coins = SP.rating * SP.rating * 1000
-			else if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+			else if(istype(SP, /obj/item/stock_parts/micro_laser) || istype(SP, /obj/item/stock_parts/capacitor))
 				temp_rating += SP.rating
 		power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
 	examine(mob/user)
 		. = ..(user)
-		to_chat(user, "<span class='notice'>The generator has [P.air_contents.phoron] units of fuel left, producing [power_gen] per cycle.</span>")
+		to_chat(user, "<span class='notice'>The generator has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle.</span>")
 	handleInactive()
 		heat -= 2
 		if (heat < 0)
@@ -67,14 +67,14 @@
 			explosion(get_turf(src), 2, 5, 2, -1)
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O, /obj/item/weapon/tank/phoron))
+		if(istype(O, /obj/item/tank/plasma))
 			if(P)
-				to_chat(user, "<span class='warning'>The generator already has a phoron tank loaded!</span>")
+				to_chat(user, "<span class='warning'>The generator already has a plasma tank loaded!</span>")
 				return
 			P = O
 			user.drop_item()
 			O.loc = src
-			to_chat(user, "<span class='notice'>You add the phoron tank to the generator.</span>")
+			to_chat(user, "<span class='notice'>You add the plasma tank to the generator.</span>")
 		else if(!active)
 			if(isWrench(O))
 				anchored = !anchored
@@ -117,24 +117,24 @@
 			if (get_dist(src, user) > 1 )
 				if (!istype(user, /mob/living/silicon/ai))
 					user.machine = null
-					user << browse(null, "window=port_gen")
+					close_browser(user, "window=port_gen")
 					return
 
 			user.machine = src
 
-			var/dat = text("<b>[name]</b><br>")
+			var/dat = text("<meta charset=\"utf-8\"><b>[name]</b><br>")
 			if (active)
 				dat += text("Generator: <A href='?src=\ref[src];action=disable'>On</A><br>")
 			else
 				dat += text("Generator: <A href='?src=\ref[src];action=enable'>Off</A><br>")
 			if(P)
-				dat += text("Currently loaded phoron tank: [P.air_contents.phoron]<br>")
+				dat += text("Currently loaded plasma tank: [P.air_contents.plasma]<br>")
 			else
-				dat += text("No phoron tank currently loaded.<br>")
+				dat += text("No plasma tank currently loaded.<br>")
 			dat += text("Power output: <A href='?src=\ref[src];action=lower_power'>-</A> [power_gen * power_output] <A href='?src=\ref[src];action=higher_power'>+</A><br>")
 			dat += text("Heat: [heat]<br>")
 			dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-			user << browse("[dat]", "window=port_gen")
+			show_browser(user, "[dat]", "window=port_gen")
 
 	Topic(href, href_list)
 		if(..())
@@ -161,10 +161,11 @@
 					power_output++
 					src.updateUsrDialog()
 			if (href_list["action"] == "close")
-				usr << browse(null, "window=port_gen")
+				close_browser(usr, "window=port_gen")
 				usr.machine = null
 
 /obj/machinery/power/port_gen/pacman2/emag_act(remaining_uses, mob/user)
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	emp_act(1)
 	return 1

@@ -7,7 +7,7 @@ the HUD updates properly! */
 	appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
 
 //Medical HUD outputs. Called by the Life() proc of the mob using it, usually.
-proc/process_med_hud(mob/M, local_scanner, mob/Alt)
+/proc/process_med_hud(mob/M, local_scanner, mob/Alt)
 	if(!can_process_hud(M))
 		return
 
@@ -28,7 +28,7 @@ proc/process_med_hud(mob/M, local_scanner, mob/Alt)
 				P.Client.images += patient.hud_list[LIFE_HUD]
 
 //Security HUDs. Pass a value for the second argument to enable implant viewing or other special features.
-proc/process_sec_hud(mob/M, advanced_mode, mob/Alt)
+/proc/process_sec_hud(mob/M, advanced_mode, mob/Alt)
 	if(!can_process_hud(M))
 		return
 	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.sec_hud_users)
@@ -44,12 +44,36 @@ proc/process_sec_hud(mob/M, advanced_mode, mob/Alt)
 			P.Client.images += perp.hud_list[IMPLOYAL_HUD]
 			P.Client.images += perp.hud_list[IMPCHEM_HUD]
 
-datum/arranged_hud_process
+/proc/process_xeno_hud(mob/M, mob/Alt)
+	if(!can_process_hud(M))
+		return
+
+	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.xeno_hud_users)
+	for(var/mob/living/carbon/human/victim in P.Mob.in_view(P.Turf))
+
+		if(victim.is_invisible_to(P.Mob))
+			continue
+
+		P.Client.images += victim.hud_list[XENO_HUD]
+
+/proc/process_gland_hud(mob/M, mob/Alt)
+	if(!can_process_hud(M))
+		return
+
+	var/datum/arranged_hud_process/P = arrange_hud_process(M, Alt, GLOB.gland_hud_users)
+	for(var/mob/living/carbon/human/victim in P.Mob.in_view(P.Turf))
+
+		if(victim.is_invisible_to(P.Mob))
+			continue
+
+		P.Client.images += victim.hud_list[GLAND_HUD]
+
+/datum/arranged_hud_process
 	var/client/Client
 	var/mob/Mob
 	var/turf/Turf
 
-proc/arrange_hud_process(mob/M, mob/Alt, list/hud_list)
+/proc/arrange_hud_process(mob/M, mob/Alt, list/hud_list)
 	hud_list |= M
 	var/datum/arranged_hud_process/P = new
 	P.Client = M.client
@@ -57,7 +81,7 @@ proc/arrange_hud_process(mob/M, mob/Alt, list/hud_list)
 	P.Turf = get_turf(P.Mob)
 	return P
 
-proc/can_process_hud(mob/M)
+/proc/can_process_hud(mob/M)
 	if(!M)
 		return 0
 	if(!M.client)
@@ -67,16 +91,17 @@ proc/can_process_hud(mob/M)
 	return 1
 
 //Deletes the current HUD images so they can be refreshed with new ones.
-mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
+/mob/proc/handle_hud_glasses() //Used in the life.dm of mobs that can use HUDs.
 	if(client)
 		for(var/image/hud_overlay/hud in client.images)
 			client.images -= hud
 
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src
-	GLOB.psychoscope_hud_users -= src
+	GLOB.xeno_hud_users -= src
+	GLOB.gland_hud_users -= src
 
-mob/proc/in_view(turf/T)
+/mob/proc/in_view(turf/T)
 	return view(T)
 
 /mob/observer/eye/in_view(turf/T)

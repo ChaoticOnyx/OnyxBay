@@ -1,7 +1,7 @@
 /* Toxins, poisons, venoms */
 
 /datum/reagent/toxin
-	name = "toxin"
+	name = "Toxin"
 	description = "A toxic chemical."
 	taste_description = "bitterness"
 	taste_mult = 1.2
@@ -56,12 +56,12 @@
 	target_organ = BP_BRAIN
 	strength = 10
 
-/datum/reagent/toxin/phoron
-	name = "Phoron"
-	description = "Phoron in its liquid form."
+/datum/reagent/toxin/plasma
+	name = "Plasma"
+	description = "Plasma in its liquid form."
 	taste_mult = 1.5
 	reagent_state = LIQUID
-	color = "#ff3300"
+	color = "#e90eb8"
 	strength = 30
 	touch_met = 5
 	var/fire_mult = 5
@@ -75,38 +75,38 @@
 	strength = 15
 	metabolism = REM
 
-/datum/reagent/toxin/phoron/touch_mob(mob/living/L, amount)
+/datum/reagent/toxin/plasma/touch_mob(mob/living/L, amount)
 	if(istype(L))
 		L.adjust_fire_stacks(amount / fire_mult)
 
-/datum/reagent/toxin/phoron/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/toxin/plasma/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_NABBER)
 		return
 	..()
 
-/datum/reagent/toxin/phoron/affect_touch(mob/living/carbon/M, alien, removed)
-	M.take_organ_damage(0, removed * 0.1) //being splashed directly with phoron causes minor chemical burns
+/datum/reagent/toxin/plasma/affect_touch(mob/living/carbon/M, alien, removed)
+	M.take_organ_damage(0, removed * 0.1) //being splashed directly with plasma causes minor chemical burns
 	if(prob(10 * fire_mult))
 		M.pl_effects()
 
-/datum/reagent/toxin/phoron/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("phoron", volume, T20C)
+	T.assume_gas("plasma", volume, T20C)
 	remove_self(volume)
 
 // Produced during deuterium synthesis. Super poisonous, SUPER flammable (doesn't need oxygen to burn).
-/datum/reagent/toxin/phoron/oxygen
-	name = "Oxyphoron"
+/datum/reagent/toxin/plasma/oxygen
+	name = "Plasmygen"
 	description = "An exceptionally flammable molecule formed from deuterium synthesis."
 	strength = 15
 	fire_mult = 15
 
-/datum/reagent/toxin/phoron/oxygen/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
 	T.assume_gas("oxygen", ceil(volume/2), T20C)
-	T.assume_gas("phoron", ceil(volume/2), T20C)
+	T.assume_gas("plasma", ceil(volume/2), T20C)
 	remove_self(volume)
 
 /datum/reagent/toxin/cyanide //Fast and Lethal
@@ -140,6 +140,7 @@
 				H.losebreath = max(10, H.losebreath - 10)
 			H.adjustOxyLoss(2)
 			H.Weaken(10)
+			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
 
 
@@ -161,6 +162,7 @@
 				H.losebreath = max(10, M.losebreath-10)
 			H.adjustOxyLoss(2)
 			H.Weaken(10)
+			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
 
 /datum/reagent/toxin/zombiepowder
@@ -180,6 +182,7 @@
 	M.status_flags |= FAKEDEATH
 	M.adjustOxyLoss(3 * removed)
 	M.Weaken(10)
+	M.Stun(10)
 	M.silent = max(M.silent, 10)
 	if(M.chem_doses[type] <= removed) //half-assed attempt to make timeofdeath update only at the onset
 		M.timeofdeath = world.time
@@ -192,7 +195,7 @@
 	. = ..()
 
 /datum/reagent/toxin/fertilizer //Reagents used for plant fertilizers.
-	name = /datum/reagent/toxin/fertilizer
+	name = "Fertilizer"
 	description = "A chemical mix good for growing plants with."
 	taste_description = "plant food"
 	taste_mult = 0.5
@@ -205,9 +208,17 @@
 
 /datum/reagent/toxin/fertilizer/left4zed
 	name = "Left-4-Zed"
+	color = "#515130"
 
 /datum/reagent/toxin/fertilizer/robustharvest
 	name = "Robust Harvest"
+	taste_description = "robust plant food"
+	color = "#4e204b"
+
+/datum/reagent/toxin/fertilizer/compost
+	name = "compost"
+	taste_description = "literal shit"
+	color = "#7f4323"
 
 /datum/reagent/toxin/plantbgone
 	name = "Plant-B-Gone"
@@ -277,10 +288,11 @@
 /datum/reagent/mutagen
 	name = "Unstable mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	taste_description = "slime"
+	taste_description = "metroid"
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
+	var/mutation_potency = 0.1 // Determines the probability of causing mutations
 
 /datum/reagent/mutagen/affect_touch(mob/living/carbon/M, alien, removed)
 	if(prob(33))
@@ -300,7 +312,7 @@
 		return
 
 	if(M.dna)
-		if(prob(removed * 0.1)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
+		if(prob(removed * mutation_potency)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
 			randmuti(M)
 			if(prob(98))
 				randmutb(M)
@@ -310,15 +322,22 @@
 			M.UpdateAppearance()
 	M.apply_effect(10 * removed, IRRADIATE, blocked = 0)
 
-/datum/reagent/slimejelly
-	name = "Slime Jelly"
+/datum/reagent/mutagen/industrial
+	name = "Industrial mutagen"
+	description = "A rather stable form of mutagen usually used for agricultural purposes. However, it's still extremely poisonous."
+	taste_mult = 0.7
+	color = "#4d9e6c"
+	mutation_potency = 0.025
+
+/datum/reagent/metroidjelly
+	name = "Metroid Jelly"
 	description = "A gooey semi-liquid produced from one of the deadliest lifeforms in existence. SO REAL."
-	taste_description = "slime"
+	taste_description = "metroid"
 	taste_mult = 1.3
 	reagent_state = LIQUID
 	color = "#801e28"
 
-/datum/reagent/slimejelly/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/metroidjelly/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	if(prob(10))
@@ -375,7 +394,7 @@
 	if(alien == IS_SKRELL)
 		threshold = 1.2
 
-	if(M.chem_doses[type] == metabolism * threshold)
+	if(M.chem_doses[type] < metabolism * threshold)
 		M.confused += 2
 		M.drowsyness += 2
 	else if(M.chem_doses[type] < 2 * threshold)
@@ -399,7 +418,7 @@
 /* Drugs */
 
 /datum/reagent/space_drugs
-	name = "Space drugs"
+	name = "Space Drugs"
 	description = "An illegal chemical compound used as drug."
 	taste_description = "bitterness"
 	taste_mult = 0.4
@@ -417,8 +436,8 @@
 		drug_strength = drug_strength * 0.8
 
 	M.druggy = max(M.druggy, drug_strength)
-	if(prob(10) && isturf(M.loc) && !istype(M.loc, /turf/space) && M.canmove && !M.restrained())
-		step(M, pick(GLOB.cardinal))
+	if(prob(10))
+		M.SelfMove(pick(GLOB.cardinal))
 	if(prob(7))
 		M.emote(pick("twitch", "drool", "moan", "giggle"))
 	M.add_chemical_effect(CE_PULSE, -1)
@@ -535,15 +554,15 @@
 
 /* Transformations */
 
-/datum/reagent/slimetoxin
+/datum/reagent/metroidtoxin
 	name = "Mutation Toxin"
-	description = "A corruptive toxin produced by slimes."
+	description = "A corruptive toxin produced by metroids."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#13bc5e"
 	metabolism = REM * 0.4
 
-/datum/reagent/slimetoxin/affect_blood(mob/living/carbon/human/H, alien, removed)
+/datum/reagent/metroidtoxin/affect_blood(mob/living/carbon/human/H, alien, removed)
 	if(!istype(H))
 		return
 	if(H.species.name == SPECIES_PROMETHEAN)
@@ -574,7 +593,7 @@
 		E.s_tone = null
 		E.s_col = ReadRGB("#05ff9b")
 		E.s_col_blend = ICON_ADD
-		E.status &= ~ORGAN_BROKEN
+		E.mend_fracture()
 		E.status |= ORGAN_MUTATED
 		E.limb_flags &= ~ORGAN_FLAG_CAN_BREAK
 		E.dislocated = -1
@@ -586,28 +605,27 @@
 		O.droplimb()
 	H.update_body()
 
-/datum/reagent/aslimetoxin
+/datum/reagent/ametroidtoxin
 	name = "Advanced Mutation Toxin"
-	description = "An advanced corruptive toxin produced by slimes."
+	description = "An advanced corruptive toxin produced by metroids."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#13bc5e"
 
-/datum/reagent/aslimetoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
-	if(M.transforming)
+/datum/reagent/ametroidtoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(M))
 		return
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
-	M.transforming = 1
-	M.canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(M)
 	M.icon = null
 	M.overlays.Cut()
 	M.set_invisibility(101)
-	for(var/obj/item/W in M)
-		if(istype(W, /obj/item/weapon/implant)) //TODO: Carn. give implants a dropped() or something
-			qdel(W)
+	for(var/obj/item/I in M)
+		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something
+			qdel(I)
 			continue
-		M.drop_from_inventory(W)
-	var/mob/living/carbon/slime/new_mob = new /mob/living/carbon/slime(M.loc)
+		M.drop_from_inventory(I)
+	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1
 	if(M.mind)
@@ -619,9 +637,28 @@
 /datum/reagent/nanites
 	name = "Nanomachines"
 	description = "Microscopic construction robots."
-	taste_description = "slimey metal"
+	taste_description = "metroidy metal"
 	reagent_state = LIQUID
 	color = "#535e66"
+	overdose = 5
+
+/datum/reagent/nanites/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.heal_organ_damage(15 * removed, 15 * removed)
+		M.add_chemical_effect(CE_OXYGENATED, 2)
+
+/datum/reagent/nanites/affect_ingest(mob/living/carbon/M, alien, removed)
+	affect_blood(M, alien, removed)
+
+/datum/reagent/nanites/overdose(mob/living/carbon/M, alien)
+	if(prob(80))
+		if(prob(50))
+			var/msg = pick("clicking","clanking","beeping","buzzing","pinging")
+			to_chat(M, "<span class='warning'>You can feel something [msg] inside of you!</span>")
+	else
+		if(istype(M, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = M
+			H.Robotize()
 
 /datum/reagent/xenomicrobes
 	name = "Xenomicrobes"
@@ -670,6 +707,13 @@
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
 
+/datum/reagent/vecuronium_bromide
+	name = "Vecuronium Bromide"
+	description = "A general anaesthetic, provides prolonged paralysis without unconsciousness or pain relief."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#cccccc"
+
 /datum/reagent/vecuronium_bromide/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
@@ -684,6 +728,7 @@
 	if(M.chem_doses[type] > threshold * 0.5)
 		M.make_dizzy(3)
 		M.Weaken(2)
+		M.Stun(2)
 	if(M.chem_doses[type] == round(threshold * 0.5, metabolism))
 		to_chat(M, SPAN_WARNING("Your muscles slacken and cease to obey you."))
 	if(M.chem_doses[type] >= threshold)

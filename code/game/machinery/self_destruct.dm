@@ -5,7 +5,7 @@
 	icon_state = "empty"
 	density = 0
 	anchored = 1
-	var/obj/item/weapon/nuclear_cylinder/cylinder
+	var/obj/item/nuclear_cylinder/cylinder
 	var/armed = 0
 	var/damaged = 0
 
@@ -14,14 +14,14 @@
 		if(damaged)
 			usr.visible_message("[usr] begins to repair [src].", "You begin repairing [src].")
 			if(do_after(usr, 100, src))
-				var/obj/item/weapon/weldingtool/w
+				var/obj/item/weldingtool/w
 				if(w.burn_fuel(10))
 					damaged = 0
 					usr.visible_message("[usr] repairs [src].", "You repair [src].")
 				else
 					to_chat(usr, "<span class='warning'>There is not enough fuel to repair [src].</span>")
 				return
-	if(istype(W, /obj/item/weapon/nuclear_cylinder))
+	if(istype(W, /obj/item/nuclear_cylinder))
 		if(damaged)
 			to_chat(usr, "<span class='warning'>[src] is damaged, you cannot place the cylinder.</span>")
 			return
@@ -102,16 +102,16 @@
 		src.visible_message("<span class='warning'>[src] dents and chars.</span>")
 		damaged = 1
 
-/obj/machinery/self_destruct/examine(mob/usr)
+/obj/machinery/self_destruct/examine(mob/user)
 	. = ..()
 	if(damaged)
-		to_chat(usr, "<span class='warning'>[src] is damaged, it needs repairs.</span>")
+		. += "\n<span class='warning'>[src] is damaged, it needs repairs.</span>"
 		return
 	if(armed)
-		to_chat(usr, "[src] is armed and ready.")
+		. += "\n[src] is armed and ready."
 		return
 	if(cylinder)
-		to_chat(usr, "[src] is loaded and ready to be armed.")
+		. += "\n[src] is loaded and ready to be armed."
 		return
 
 /obj/machinery/self_destruct/update_icon()

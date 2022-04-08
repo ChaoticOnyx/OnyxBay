@@ -23,6 +23,7 @@
 	user.controlling_drone = src
 	controlling_ai = user
 	verbs += /mob/living/silicon/robot/drone/proc/release_ai_control_verb
+	verbs -= /mob/living/proc/ghost
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
@@ -99,6 +100,7 @@
 		controlling_ai = null
 
 	verbs -= /mob/living/silicon/robot/drone/proc/release_ai_control_verb
+	verbs += /mob/living/proc/ghost
 	full_law_reset()
 	updatename()
 	death()

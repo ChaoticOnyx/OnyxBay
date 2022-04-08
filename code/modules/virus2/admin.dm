@@ -69,6 +69,7 @@
 
 	proc/show_ui(mob/user)
 		var/H = {"
+		<meta charset=\"utf-8\">
 		<center><h3>Virus2 Virus Editor</h3></center><br />
 		<b>Effects:</b><br />
 		"}
@@ -113,9 +114,12 @@
 		<a href="?src=\ref[src];what=go" style="color:#ff0000">RELEASE</a>
 		"}
 
-		user << browse(H, "window=virus2edit")
+		show_browser(user, H, "window=virus2edit")
 
 	Topic(href, href_list)
+		if(!check_rights(R_ADMIN|R_SPAWN))
+			href_exploit(usr.ckey, href)
+			return
 		switch(href_list["what"])
 			if("effect")
 				var/stage = text2num(href_list["stage"])

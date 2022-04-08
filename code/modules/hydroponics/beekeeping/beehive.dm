@@ -37,7 +37,7 @@
 /obj/machinery/beehive/examine(mob/user)
 	. = ..()
 	if(!closed)
-		to_chat(user, "The lid is open.")
+		. += "\nThe lid is open."
 
 /obj/machinery/beehive/attackby(obj/item/I, mob/user)
 	if(isCrowbar(I))
@@ -241,7 +241,7 @@
 	recipes = wax_recipes
 
 var/global/list/datum/stack_recipe/wax_recipes = list( \
-	new /datum/stack_recipe("candle", /obj/item/weapon/flame/candle) \
+	new /datum/stack_recipe("candle", /obj/item/flame/candle) \
 )
 
 /obj/item/bee_pack
@@ -283,4 +283,4 @@ var/global/list/datum/stack_recipe/wax_recipes = list( \
 	new /obj/item/honey_frame(src)
 	new /obj/item/honey_frame(src)
 	new /obj/item/bee_pack(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/crowbar(src)

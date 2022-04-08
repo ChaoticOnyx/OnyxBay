@@ -40,6 +40,7 @@
 	attacktext = "pinches"
 	resistance = 9
 	can_escape = 1 //snip snip
+	bodyparts = /decl/simple_animal_bodyparts/crab
 
 /*familiar version of the Pike w/o all the other hostile/carp stuff getting in the way (namely life)
 */
@@ -61,10 +62,11 @@
 	melee_damage_lower = 10
 	melee_damage_upper = 10
 	can_escape = 1
+	bodyparts = /decl/simple_animal_bodyparts/fish
 
 	min_gas = null
 
-	wizardy_spells = list(/spell/aoe_turf/conjure/forcewall)
+	wizardy_spells = list(/datum/spell/aoe_turf/conjure/forcewall)
 
 /mob/living/simple_animal/familiar/pike/Allow_Spacemove(check_drift = 0)
 	return 1	//No drifting in space for space carp!	//original comments do not steal
@@ -85,8 +87,9 @@
 	melee_damage_lower = 5
 	melee_damage_upper = 8
 	attacktext = "touches"
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 
-	wizardy_spells = list(/spell/targeted/torment)
+	wizardy_spells = list(/datum/spell/targeted/torment)
 
 /mob/living/simple_animal/familiar/horror/death(gibbed, deathmessage, show_dead_message)
 	..(null,"rapidly deteriorates","The bonds tying you to this mortal plane have been severed.")
@@ -110,8 +113,8 @@
 	health = 25
 	maxHealth = 25
 
-	wizardy_spells = list(/spell/targeted/heal_target,
-						/spell/targeted/heal_target/area)
+	wizardy_spells = list(/datum/spell/targeted/heal_target,
+						/datum/spell/targeted/heal_target/area)
 
 
 
@@ -135,7 +138,7 @@
 	icon_rest = "mouse_gray_sleep"
 
 	speak_emote = list("squeeks")
-	holder_type = /obj/item/weapon/holder/mouse
+	holder_type = /obj/item/holder/mouse
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_MINISCULE
 
@@ -147,8 +150,9 @@
 	melee_damage_upper = 1
 	can_escape = 1
 	attacktext = "nibbles"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
-	wizardy_spells = list(/spell/aoe_turf/smoke)
+	wizardy_spells = list(/datum/spell/aoe_turf/smoke)
 
 /mob/living/simple_animal/familiar/pet/mouse/New()
 	..()
@@ -166,7 +170,7 @@
 
 
 	speak_emote = list("meows", "purrs")
-	holder_type = /obj/item/weapon/holder/cat
+	holder_type = /obj/item/holder/cat
 	mob_size = MOB_SMALL
 
 	health = 25
@@ -174,5 +178,25 @@
 	melee_damage_lower = 3
 	melee_damage_upper = 4
 	attacktext = "claws"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
-	wizardy_spells = list(/spell/targeted/subjugation)
+	wizardy_spells = list(/datum/spell/targeted/subjugation)
+
+/mob/living/simple_animal/familiar/goat
+	name = "goat"
+	desc = "A goat. This one looks a bit satanic."
+	icon = 'icons/mob/animal.dmi'
+	icon_state = "goat"
+	icon_living = "goat"
+	icon_dead = "goat_dead"
+	speak_emote = list("brays")
+	mob_size = MOB_MEDIUM
+
+	health = 60
+	maxHealth = 60
+	melee_damage_lower = 10
+	melee_damage_upper = 20
+	attacktext = "kicked"
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
+
+	wizardy_spells = list(/datum/spell/targeted/projectile/magic_missile)

@@ -10,7 +10,7 @@
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	origin_tech = list(TECH_MATERIAL = 6, TECH_BLUESPACE = 4)
 
-/obj/item/stack/telecrystal/afterattack(obj/item/I as obj, mob/user as mob, proximity)
+/obj/item/stack/telecrystal/afterattack(obj/item/I, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(I, /obj/item))
@@ -19,15 +19,17 @@
 			I.hidden_uplink.update_nano_data()
 			SSnano.update_uis(I.hidden_uplink)
 			use(amount)
-			to_chat(user, "<span class='notice'>You slot \the [src] into \the [I] and charge its internal uplink.</span>")
+			to_chat(user, SPAN("notice", "You slot \the [src] into \the [I] and charge its internal uplink."))
 
 /obj/item/stack/telecrystal/attack_self(mob/user)
 	var/turf/Turf = get_turf(src)
 	if(!(Turf.z in GLOB.using_map.player_levels))
-		to_chat(user, SPAN_WARNING("[src] doesn't work on this location!"))
+		to_chat(user, SPAN("warning", "[src] doesn't work on this location!"))
 		return
-	if(use(ceil(DEFAULT_TELECRYSTAL_AMOUNT/20)))
-		user.visible_message("<span class='warning'>\The [user] crushes a crystal!</span>", "<span class='warning'>You crush \a [src]!</span>", "You hear the sound of a crystal breaking just before a sudden crack of electricity.")
+	if(use(1))
+		user.visible_message(SPAN("warning", "\The [user] crushes a crystal!"), \
+							 SPAN("notice", "You crush \a [src]!"), \
+							 SPAN("italics", "You hear the sound of a crystal breaking just before a sudden crack of electricity."))
 		var/turf/T = get_random_turf_in_range(user, 7, 3)
 		if(T)
 			user.phase_out(T, get_turf(user))

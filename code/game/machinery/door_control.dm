@@ -3,7 +3,7 @@
 	desc = "It controls objects, remotely."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "doorctrl"
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	var/desiredstate = 0
 	var/exposedwires = 0
 	var/wires = 3
@@ -22,14 +22,14 @@
 	else
 		to_chat(user, "Error, no route to host.")
 
-/obj/machinery/button/remote/attackby(obj/item/weapon/W, mob/user as mob)
+/obj/machinery/button/remote/attackby(obj/item/W, mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/button/remote/emag_act(remaining_charges, mob/user)
 	if(req_access.len || req_one_access.len)
 		req_access = list()
 		req_one_access = list()
-		playsound(src.loc, "spark", 100, 1)
+		playsound(src.loc, SFX_SPARK, 100, 1)
 		return 1
 
 /obj/machinery/button/remote/attack_hand(mob/user as mob)
@@ -85,7 +85,7 @@
 	*/
 
 /obj/machinery/button/remote/airlock/trigger()
-	for(var/obj/machinery/door/airlock/D in world)
+	for(var/obj/machinery/door/airlock/D in GLOB.all_doors)
 		if(D.id_tag == src.id)
 			if(specialfunctions & OPEN)
 				if (D.density)
@@ -130,7 +130,7 @@
 	icon_state = "blastctrl"
 
 /obj/machinery/button/remote/blast_door/trigger()
-	for(var/obj/machinery/door/blast/M in world)
+	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 		if(M.id == src.id)
 			if(M.density)
 				spawn(0)
@@ -139,7 +139,7 @@
 			else
 				spawn(0)
 					M.close()
-	for(var/obj/machinery/door/window/W in world)  // windoor rmote control
+	for(var/obj/machinery/door/window/W in GLOB.all_doors)  // windoor rmote control
 		if(W.id == src.id)
 			if(W.density)
 				spawn(0)
@@ -157,7 +157,7 @@
 	name = "remote emitter control"
 	desc = "It controls emitters, remotely."
 
-/obj/machinery/button/remote/emitter/trigger(mob/user as mob)
+/obj/machinery/button/remote/emitter/trigger(mob/user)
 	for(var/obj/machinery/power/emitter/E in world)
 		if(E.id == src.id)
 			spawn(0)
@@ -173,12 +173,12 @@
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "launcherbtt"
 
-/obj/machinery/button/remote/driver/trigger(mob/user as mob)
+/obj/machinery/button/remote/driver/trigger(mob/user)
 	set waitfor = 0
 	active = 1
 	update_icon()
 
-	for(var/obj/machinery/door/blast/M in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 		if (M.id == src.id)
 			spawn( 0 )
 				M.open()
@@ -186,13 +186,13 @@
 
 	sleep(20)
 
-	for(var/obj/machinery/mass_driver/M in SSmachines.machinery)
+	for(var/obj/machinery/mass_driver/M in GLOB.machines)
 		if(M.id == src.id)
 			M.drive()
 
 	sleep(50)
 
-	for(var/obj/machinery/door/blast/M in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/M in GLOB.all_doors)
 		if (M.id == src.id)
 			spawn(0)
 				M.close()

@@ -59,7 +59,7 @@
 		add_clothing_protection(wear_mask)
 		if(wear_mask.overlay)
 			equipment_overlays |= wear_mask.overlay
-	if(istype(back,/obj/item/weapon/rig))
+	if(istype(back,/obj/item/rig))
 		process_rig(back)
 
 	// Removes zoom effect
@@ -72,26 +72,26 @@
 			client.pixel_x = 0
 
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
-	if (machine_visual)
+	if(machine_visual && !istype(G, /obj/item/clothing/glasses/regular)) //Doesn't allow the use of night vision devices and other funny devices except glasses for vision correction
 		return
+	if(!G)
+		return
+	equipment_darkness_modifier += G.darkness_view
+	equipment_vision_flags |= G.vision_flags
+	equipment_prescription += G.prescription
+	equipment_light_protection += G.light_protection
+	if(G.overlay)
+		equipment_overlays |= G.overlay
+	if(G.see_invisible >= 0)
+		if(equipment_see_invis)
+			equipment_see_invis = min(equipment_see_invis, G.see_invisible)
+		else
+			equipment_see_invis = G.see_invisible
 
-	if(G && G.active)
-		equipment_darkness_modifier += G.darkness_view
-		equipment_vision_flags |= G.vision_flags
-		equipment_prescription += G.prescription
-		equipment_light_protection += G.light_protection
-		if(G.overlay)
-			equipment_overlays |= G.overlay
-		if(G.see_invisible >= 0)
-			if(equipment_see_invis)
-				equipment_see_invis = min(equipment_see_invis, G.see_invisible)
-			else
-				equipment_see_invis = G.see_invisible
+	add_clothing_protection(G)
+	G.process_hud(src)
 
-		add_clothing_protection(G)
-		G.process_hud(src)
-
-/mob/living/carbon/human/proc/process_rig(obj/item/weapon/rig/O)
+/mob/living/carbon/human/proc/process_rig(obj/item/rig/O)
 	if(O.visor && O.visor.active && O.visor.vision && O.visor.vision.glasses && (!O.helmet || (head && O.helmet == head)))
 		process_glasses(O.visor.vision.glasses)
 
@@ -114,8 +114,8 @@
 	var/search_pda = 1
 
 	for(var/A in searching)
-		if(search_id && istype(A,/obj/item/weapon/card/id))
-			var/obj/item/weapon/card/id/ID = A
+		if(search_id && istype(A,/obj/item/card/id))
+			var/obj/item/card/id/ID = A
 			if(ID.registered_name == old_name)
 				ID.registered_name = new_name
 				ID.update_name()
@@ -193,7 +193,7 @@
 		ping_image.layer = BEAM_PROJECTILE_LAYER
 		ping_image.pixel_x = (T.x - src.x) * WORLD_ICON_SIZE
 		ping_image.pixel_y = (T.y - src.y) * WORLD_ICON_SIZE
-		show_image(src, ping_image)
+		image_to(src, ping_image)
 		spawn(8)
 			qdel(ping_image)
 		var/feedback = list("<span class='notice'>There are noises of movement ")
@@ -232,6 +232,10 @@
 /mob/living/carbon/human/proc/make_grab(mob/living/carbon/human/attacker, mob/living/carbon/human/victim, grab_tag)
 	var/obj/item/grab/G
 
+	if(!victim.get_organ(attacker.zone_sel.selecting))
+		to_chat(attacker, SPAN("warning", "[victim] is missing the body part you tried to grab!"))
+		return FALSE
+
 	if(!grab_tag)
 		G = new attacker.current_grab_type(attacker, victim)
 	else
@@ -240,17 +244,14 @@
 
 	if(!G.pre_check())
 		qdel(G)
-		return 0
+		return FALSE
 
 	if(G.can_grab())
 		G.init()
-		victim.m_intent = "walk"
-		if(victim.hud_used)
-			victim.hud_used.move_intent.icon_state = "walking"
-		return 1
+		return TRUE
 	else
 		qdel(G)
-		return 0
+		return FALSE
 
 /mob/living/carbon/human
 	var/list/cloaking_sources
@@ -314,3 +315,12 @@
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
+
+/mob/living/carbon/human/get_ear_protection()
+	for(var/obj/item/C in list(l_ear, r_ear, head))
+		if(istype(C))
+			. += C.ear_protection
+	return .
+
+/mob/living/carbon/human/is_eligible_for_antag_spawn(antag_id)
+	return species ? species.is_eligible_for_antag_spawn(antag_id) : TRUE // No species = no problems, assuming ourselves to be a baseline human being

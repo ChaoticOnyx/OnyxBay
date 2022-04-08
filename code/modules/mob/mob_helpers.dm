@@ -24,6 +24,8 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
+	if(istype(species, /datum/species/machine))
+		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)
@@ -36,36 +38,36 @@
 /mob/living/silicon/isSynthetic()
 	return 1
 
-proc/isMonkey(A)
+/proc/isMonkey(A)
 	if (istype(A,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
 		return istype(H.species, /datum/species/monkey)
 	return 0
 
-proc/isdeaf(A)
+/proc/isdeaf(A)
 	if(isliving(A))
 		var/mob/living/M = A
 		return (M.sdisabilities & DEAF) || M.ear_deaf
 	return 0
 
-proc/hasorgans(A) // Fucking really??
+/proc/hasorgans(A) // Fucking really??
 	return ishuman(A)
 
-proc/iscuffed(A)
+/proc/iscuffed(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
 		if(C.handcuffed)
 			return 1
 	return 0
 
-proc/hassensorlevel(A, level)
+/proc/hassensorlevel(A, level)
 	var/mob/living/carbon/human/H = A
 	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
 		return U.sensor_mode >= level
 	return 0
 
-proc/getsensorlevel(A)
+/proc/getsensorlevel(A)
 	var/mob/living/carbon/human/H = A
 	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
@@ -188,12 +190,12 @@ var/list/global/organ_rel_size = list(
 			return n
 	var/te = n
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = null
 	p = 1
 	var/intag = 0
 	while(p <= n)
-		var/char = copytext(te, p, p + 1)
+		var/char = copytext_char(te, p, p + 1)
 		if (char == "<") //let's try to not break tags
 			intag = !intag
 		if (intag || char == " " || prob(pr))
@@ -205,59 +207,51 @@ var/list/global/organ_rel_size = list(
 		p++
 	return t
 
-proc/slur(phrase)
-	phrase = rhtml_decode(phrase)
-	var/leng=lentext(phrase)
-	var/counter=lentext(phrase)
-	var/newphrase=""
-	var/newletter=""
-	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,3)==3)
-			if(rlowertext(newletter)=="o")	newletter="u"
-			if(rlowertext(newletter)=="s")	newletter="ch"
-			if(rlowertext(newletter)=="a")	newletter="ah"
-			if(rlowertext(newletter)=="c")	newletter="k"
-		switch(rand(1,15))
-			if(1,3,5,8)	newletter="[rlowertext(newletter)]"
-			if(2,4,6,15)	newletter="[ruppertext(newletter)]"
-			if(7)	newletter+="'"
-			//if(9,10)	newletter="<b>[newletter]</b>"
-			//if(11,12)	newletter="<big>[newletter]</big>"
-			//if(13)	newletter="<small>[newletter]</small>"
-		newphrase+="[newletter]";counter-=1
-	return newphrase
+// This is temporary effect, often caused by alcohol
+/proc/slur(phrase)
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	var/list/replacements_consonants = list(
+		"s" = "ch", "c" = "k",
+		"–≥" = "—Ö", "–∫" = "—Ö", "–∑" = "—Å", "—Ü" = "—Å", "—á" = "—â", "—â" = "—à—à", "–ø" = "–±"
+		)
+	var/list/replacements_vowels = list(
+		"o" = "u",
+		"—ã" = "'", "–∞" = "'", "–µ" = "—ç", "—ë" = "'", "–∏" = "'", "–æ" = "'", "—É" = "'", "—é" = "'"
+		)
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		if(lowertext(letter) in replacements_consonants)
+			if(prob(40))
+				letter = replacements_consonants[lowertext(letter)]
+		else if(lowertext(letter) in replacements_vowels)
+			if(prob(12))
+				letter = replacements_vowels[lowertext(letter)]
+		new_phrase += pick(
+			65; letter,
+			20; lowertext(letter),
+			15; uppertext(letter),
+			)
+	return html_encode(new_phrase)
 
-/proc/stutter(n)
-	var/te = rhtml_decode(n)
-	var/t = ""//placed before the message. Not really sure what it's for.
-	n = length(n)//length of the entire word
-	var/p = null
-	p = 1//1 is the start of any word
-	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
-		var/n_letter = copytext(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
-		if (prob(80) && (rlowertext(n_letter) in list("·","‚","„","‰","Ê","Á","È","Í","Î","Ï","Ì","Ô","","Ò","Ú","Ù","ı","ˆ","˜","¯","˘","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z")))
-			if (prob(10))
-				n_letter = text("[n_letter]-[n_letter]-[n_letter]-[n_letter]")//replaces the current letter with this instead.
-			else
-				if (prob(20))
-					n_letter = text("[n_letter]-[n_letter]-[n_letter]")
-				else
-					if (prob(5))
-						n_letter = null
-					else
-						n_letter = text("[n_letter]-[n_letter]")
-		t = text("[t][n_letter]")//since the above is ran through for each letter, the text just adds up back to the original word.
-		p++//for each letter p is increased to find where the next letter will be.
-	return sanitize(t)
+// This is temporary effect, often caused by shock
+/proc/stutter(phrase)
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		new_phrase += letter
+		if(lowertext(letter) in list("–±", "–≥", "–¥", "–∫", "–ø", "—Ç", "—Ü", "—á", "b", "c", "d", "f", "g", "j", "k", "p", "q", "t", "x"))
+			while(prob(45))
+				new_phrase += "-[letter]"
+	return html_encode(new_phrase)
 
-
-proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
+/proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
-	for(var/i = 1, i <= length(t), i++)
+	for(var/i = 1, i <= length_char(t), i++)
 
-		var/letter = copytext(t, i, i+1)
+		var/letter = copytext_char(t, i, i+1)
 		if(prob(50))
 			if(p >= 70)
 				letter = ""
@@ -276,9 +270,9 @@ The difference with stutter is that this proc can stutter more than 1 letter
 The issue here is that anything that does not have a space is treated as one word (in many instances). For instance, "LOOKING," is a word, including the comma.
 It's fairly easy to fix if dealing with single letters but not so much with compounds of letters./N
 */
-	var/te = rhtml_decode(n)
+	var/te = html_decode(n)
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = 1
 	while(p <= n)
 		var/n_letter
@@ -298,14 +292,14 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		p=p+n_mod
 	return sanitize(t)
 
-/mob/proc/log_message(message, message_type)
+/mob/proc/log_message(message, message_type, message_tag)
 	if(!LAZYLEN(message) || !message_type)
 		return
 
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [key_name(src)]" = message)
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
 
 	logging[message_type] += timestamped_message
 
@@ -324,6 +318,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 		var/x
 		for(x=0; x<duration, x++)
+			if(!M.client)
+				return
+
 			if(aiEyeFlag)
 				M.client.eye = locate(dd_range(1,oldeye.loc.x+rand(-strength,strength),world.maxx),dd_range(1,oldeye.loc.y+rand(-strength,strength),world.maxy),oldeye.loc.z)
 			else
@@ -370,7 +367,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	set name = "a-intent"
 	set hidden = 1
 
-	if(ishuman(src) || isbrain(src) || isslime(src))
+	if(ishuman(src) || isbrain(src) || ismetroid(src))
 		switch(input)
 			if(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = input
@@ -395,7 +392,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			else
 				hud_used.action_intent.icon_state = I_HELP
 
-proc/is_blind(A)
+/proc/is_blind(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)
@@ -403,10 +400,10 @@ proc/is_blind(A)
 	return 0
 
 /proc/broadcast_security_hud_message(message, broadcast_source)
-	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud/security)
+	broadcast_hud_message(message, broadcast_source, GLOB.sec_hud_users, /obj/item/clothing/glasses/hud)
 
 /proc/broadcast_medical_hud_message(message, broadcast_source)
-	broadcast_hud_message(message, broadcast_source, GLOB.med_hud_users, /obj/item/clothing/glasses/hud/health)
+	broadcast_hud_message(message, broadcast_source, GLOB.med_hud_users, /obj/item/clothing/glasses/hud)
 
 /proc/broadcast_hud_message(message, broadcast_source, list/targets, icon)
 	var/turf/sourceturf = get_turf(broadcast_source)
@@ -440,18 +437,7 @@ proc/is_blind(A)
 			C = M.original.client
 
 	if(C)
-		var/name
-		if(C.mob)
-			var/mob/M = C.mob
-			if(M.mind && M.mind.name)
-				name = M.mind.name
-			if(M.real_name && M.real_name != name)
-				if(name)
-					name += " ([M.real_name])"
-				else
-					name = M.real_name
-		if(!name)
-			name = C.key
+		var/name = key_name(C)
 		var/diedat = ""
 		if(C.mob.lastarea)
 			diedat = " at [C.mob.lastarea]"
@@ -462,7 +448,7 @@ proc/is_blind(A)
 		communicate(/decl/communication_channel/dsay, C || O, message, /decl/dsay_communication/direct)
 
 /mob/proc/switch_to_camera(obj/machinery/camera/C)
-	if (!C.can_use() || stat || (get_dist(C, src) > 1 || machine != src || blinded || !canmove))
+	if (!C.can_use() || stat || (get_dist(C, src) > 1 || machine != src || blinded))
 		return 0
 	check_eye(src)
 	return 1
@@ -503,24 +489,24 @@ proc/is_blind(A)
 		return SAFE_PERP
 
 	//Agent cards lower threatlevel.
-	var/obj/item/weapon/card/id/id = GetIdCard()
-	if(id && istype(id, /obj/item/weapon/card/id/syndicate))
+	var/obj/item/card/id/id = GetIdCard()
+	if(id && istype(id, /obj/item/card/id/syndicate))
 		threatcount -= 2
 	// A proper	CentCom id is hard currency.
-	else if(id && istype(id, /obj/item/weapon/card/id/centcom))
+	else if(id && istype(id, /obj/item/card/id/centcom))
 		return SAFE_PERP
 
 	if(check_access && !access_obj.allowed(src))
 		threatcount += 4
 
 	if(auth_weapons && !access_obj.allowed(src))
-		if(istype(l_hand, /obj/item/weapon/gun) || istype(l_hand, /obj/item/weapon/melee))
+		if(istype(l_hand, /obj/item/gun) || istype(l_hand, /obj/item/melee))
 			threatcount += 4
 
-		if(istype(r_hand, /obj/item/weapon/gun) || istype(r_hand, /obj/item/weapon/melee))
+		if(istype(r_hand, /obj/item/gun) || istype(r_hand, /obj/item/melee))
 			threatcount += 4
 
-		if(istype(belt, /obj/item/weapon/gun) || istype(belt, /obj/item/weapon/melee))
+		if(istype(belt, /obj/item/gun) || istype(belt, /obj/item/melee))
 			threatcount += 2
 
 		if(species.name != SPECIES_HUMAN)
@@ -647,3 +633,7 @@ proc/is_blind(A)
 	if(isnull(choice) || src.incapacitated() || (required_item && !GLOB.hands_state.can_use_topic(required_item,src)))
 		return null
 	return choice
+
+// Checks if the mob is eligible for antag automatic/storyteller spawn. Manual role assignment (i.e. runic convert or badmin magic) bypasses this.
+/mob/proc/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

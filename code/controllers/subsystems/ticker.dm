@@ -6,7 +6,6 @@ SUBSYSTEM_DEF(ticker)
 	flags = SS_NO_TICK_CHECK | SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
-	var/pregame_timeleft = 3 MINUTES
 	var/list/gamemode_vote_results  //Will be a list, in order of preference, of form list(config_tag = number of votes).
 	var/bypass_gamemode_vote = TRUE //Intended for use with admin tools. Will avoid voting and ignore any results.
 
@@ -20,7 +19,6 @@ SUBSYSTEM_DEF(ticker)
 	var/end_game_state = END_GAME_NOT_OVER
 	var/delay_end = 0               //Can be set true to postpone restart.
 	var/delay_notified = 0          //Spam prevention.
-	var/restart_timeout = 1 MINUTE
 
 	var/force_end = FALSE
 
@@ -28,7 +26,13 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/pregame_timeleft
+	var/restart_timeout
+
 /datum/controller/subsystem/ticker/Initialize()
+	pregame_timeleft = config.pregame_timeleft
+	restart_timeout = config.restart_timeout
+
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
 	return ..()
@@ -88,6 +92,8 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		CreateModularRecord(H)
 
+	SSstoryteller.setup()
+
 	callHook("roundstart")
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
@@ -102,6 +108,12 @@ SUBSYSTEM_DEF(ticker)
 
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
+
+	if(config.disable_ooc_roundstart)
+		disable_ooc()
+
+	if(config.disable_looc_roundstart)
+		disable_looc()
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -152,9 +164,9 @@ SUBSYSTEM_DEF(ticker)
 				if(!delay_end)
 					to_world("<span class='notice'><b>Restarting in [restart_timeout/10] seconds</b></span>")
 
-			if(blackbox)
-				blackbox.save_all_data_to_sql()
 			handle_tickets()
+			SSstoryteller.collect_statistics()
+
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
 			if(restart_timeout <= 0)
@@ -360,7 +372,7 @@ Helpers
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
-		return evacuation_controller.round_over() || mode.station_was_nuked || mode.blob_domination
+		return evacuation_controller.round_over() || mode.station_was_nuked
 	else
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
@@ -391,87 +403,8 @@ Helpers
 	for(var/client/C in GLOB.clients)
 		if(!C.credits && C.get_preference_value(/datum/client_preference/cinema_credits) == GLOB.PREF_YES)
 			C.RollCredits()
-	// TODO [V] Make these credits more like represing real state of things
-	// This is not a movie afterall
-	for(var/mob/Player in GLOB.player_list)
-		if(Player.mind && !isnewplayer(Player))
-			if(Player.stat != DEAD)
-				var/turf/playerTurf = get_turf(Player)
-				if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
-					if(isNotAdminLevel(playerTurf.z))
-						to_chat(Player, "<span class='info'><b>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</b></span>")
-					else
-						to_chat(Player, "<font color='green'><b>You managed to survive the events on [station_name()] as [Player.real_name].</b></font>")
-				else if(isAdminLevel(playerTurf.z))
-					to_chat(Player, "<font color='green'><b>You successfully underwent crew transfer after events on [station_name()] as [Player.real_name].</b></font>")
-				else if(issilicon(Player))
-					to_chat(Player, "<font color='green'><b>You remain operational after the events on [station_name()] as [Player.real_name].</b></font>")
-				else
-					to_chat(Player, "<span class='info'><b>You got through just another workday on [station_name()] as [Player.real_name].</b></span>")
-			else
-				if(isghost(Player))
-					var/mob/observer/ghost/O = Player
-					if(!O.started_as_observer)
-						to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
-				else
-					to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
-	to_world("<br>")
 
-	for (var/mob/living/silicon/ai/aiPlayer in SSmobs.mob_list)
-		if (aiPlayer.stat != 2)
-			to_world("<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws at the end of the round were:</b>")
-
-		else
-			to_world("<b>[aiPlayer.name] (Played by: [aiPlayer.key])'s laws when it was deactivated were:</b>")
-
-		aiPlayer.show_laws(1)
-
-		if (aiPlayer.connected_robots.len)
-			var/robolist = "<b>The AI's loyal minions were:</b> "
-			for(var/mob/living/silicon/robot/robo in aiPlayer.connected_robots)
-				robolist += "[robo.name][robo.stat?" (Deactivated) (Played by: [robo.key]), ":" (Played by: [robo.key]), "]"
-			to_world("[robolist]")
-
-	var/dronecount = 0
-
-	for (var/mob/living/silicon/robot/robo in SSmobs.mob_list)
-
-		if(istype(robo,/mob/living/silicon/robot/drone))
-			dronecount++
-			continue
-
-		if (!robo.connected_ai)
-			if (robo.stat != 2)
-				to_world("<b>[robo.name] (Played by: [robo.key]) survived as an AI-less synthetic! Its laws were:</b>")
-
-			else
-				to_world("<b>[robo.name] (Played by: [robo.key]) was unable to survive the rigors of being a synthetic without an AI. Its laws were:</b>")
-
-
-			if(robo) //How the hell do we lose robo between here and the world messages directly above this?
-				robo.laws.show_laws(world)
-
-	if(dronecount)
-		to_world("<b>There [dronecount>1 ? "were" : "was"] [dronecount] industrious maintenance [dronecount>1 ? "drones" : "drone"] at the end of this round.</b>")
-
-	if(all_money_accounts.len)
-		var/datum/money_account/max_profit = all_money_accounts[1]
-		var/datum/money_account/max_loss = all_money_accounts[1]
-		for(var/datum/money_account/D in all_money_accounts)
-			if(D == vendor_account) //yes we know you get lots of money
-				continue
-			var/saldo = D.get_balance()
-			if(saldo >= max_profit.get_balance())
-				max_profit = D
-			if(saldo <= max_loss.get_balance())
-				max_loss = D
-		to_world("<b>[max_profit.owner_name]</b> received most <font color='green'><B>PROFIT</B></font> today, with net profit of <b>T[max_profit.get_balance()]</b>.")
-		to_world("On the other hand, <b>[max_loss.owner_name]</b> had most <font color='red'><B>LOSS</B></font>, with total loss of <b>T[max_loss.get_balance()]</b>.")
-
-	mode.declare_completion()//To declare normal completion.
-
-	//Ask the event manager to print round end information
-	SSevent.RoundEnd()
+	display_report()
 
 	//Print a list of antagonists to the server log
 	var/list/total_antagonists = list()

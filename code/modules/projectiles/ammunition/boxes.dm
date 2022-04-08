@@ -25,7 +25,7 @@
 	name = "speed loader (.38)"
 	desc = "A speed loader for revolvers."
 	icon_state = "38"
-	caliber = "38"
+	caliber = ".38"
 	matter = list(MATERIAL_STEEL = 360)
 	ammo_type = /obj/item/ammo_casing/c38
 	max_ammo = 6
@@ -35,6 +35,22 @@
 	name = "speed loader (.38, rubber)"
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c38/rubber
+
+/obj/item/ammo_magazine/c38/spec
+	name = "speed loader (.38 SPEC)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "38spec"
+	ammo_type = /obj/item/ammo_casing/c38/spec
+	matter = list(MATERIAL_STEEL = 1000)
+	max_ammo = 5
+
+/obj/item/ammo_magazine/c38/chem
+	name = "speed loader (.38 CHEM)"
+	desc = "A five-round speed loader for M2019."
+	icon_state = "38chem"
+	ammo_type = /obj/item/ammo_casing/c38/chem
+	matter = list(MATERIAL_STEEL = 1500)
+	max_ammo = 5
 
 /obj/item/ammo_magazine/c44
 	name = "speed loader (.44 magnum)"
@@ -51,22 +67,6 @@
 	icon_state = "R38"
 	ammo_type = /obj/item/ammo_casing/c44/rubber
 
-/obj/item/ammo_magazine/c44/spec
-	name = "speed loader (.44 SPEC)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "44spec"
-	ammo_type = /obj/item/ammo_casing/c44/spec
-	matter = list(MATERIAL_STEEL = 1000)
-	max_ammo = 5
-
-/obj/item/ammo_magazine/c44/chem
-	name = "speed loader (.44 CHEM)"
-	desc = "A five-round speed loader for M2019."
-	icon_state = "44chem"
-	ammo_type = /obj/item/ammo_casing/c44/chem
-	matter = list(MATERIAL_STEEL = 1500)
-	max_ammo = 5
-
 /obj/item/ammo_magazine/c45m
 	name = "magazine (.45)"
 	icon_state = "45"
@@ -82,6 +82,7 @@
 
 /obj/item/ammo_magazine/c45m/rubber
 	name = "magazine (.45, rubber)"
+	icon_state = "45r"
 	ammo_type = /obj/item/ammo_casing/c45/rubber
 
 /obj/item/ammo_magazine/c45m/practice
@@ -91,6 +92,12 @@
 /obj/item/ammo_magazine/c45m/flash
 	name = "magazine (.45, flash)"
 	ammo_type = /obj/item/ammo_casing/c45/flash
+
+/obj/item/ammo_magazine/c45m/stun
+	name = "magazine (.45, stun)"
+	icon_state = "45s"
+	desc = "A magazine for some kind of gun. This one has yellow strips on its sides."
+	ammo_type = /obj/item/ammo_casing/c45/stun
 
 /obj/item/ammo_magazine/c45uzi
 	name = "stick magazine (.45)"
@@ -168,6 +175,7 @@
 
 /obj/item/ammo_magazine/mc9mmt/rubber
 	name = "top mounted magazine (9mm, rubber)"
+	icon_state = "9mmtr"
 	ammo_type = /obj/item/ammo_casing/c9mm/rubber
 
 /obj/item/ammo_magazine/mc9mmt/practice
@@ -246,13 +254,13 @@
 
 /obj/item/ammo_magazine/box/a556
 	name = "magazine box (5.56mm)"
-	icon_state = "a762"
+	icon_state = "a556"
 	origin_tech = list(TECH_COMBAT = 2)
 	mag_type = MAGAZINE
 	caliber = "a556"
-	matter = list(MATERIAL_STEEL = 4500)
+	matter = list(MATERIAL_STEEL = 5400)
 	ammo_type = /obj/item/ammo_casing/a556
-	max_ammo = 50
+	max_ammo = 60
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/box/a556/empty
@@ -263,9 +271,9 @@
 	icon_state = "c762"
 	mag_type = MAGAZINE
 	caliber = "a556"
-	matter = list(MATERIAL_STEEL = 1800)
+	matter = list(MATERIAL_STEEL = 2250)
 	ammo_type = /obj/item/ammo_casing/a556
-	max_ammo = 20
+	max_ammo = 25
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/caps

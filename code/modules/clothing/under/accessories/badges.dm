@@ -17,7 +17,7 @@
 	stored_name = new_name
 	name = "[initial(name)] ([stored_name])"
 
-/obj/item/clothing/accessory/badge/attack_self(mob/user as mob)
+/obj/item/clothing/accessory/badge/attack_self(mob/user)
 
 	if(!stored_name)
 		to_chat(user, "You inspect your [src.name]. Everything seems to be in order and you give it a quick cleaning with your hand.")
@@ -60,13 +60,14 @@
 
 /obj/item/clothing/accessory/badge/holo/cord
 	icon_state = "holobadge-cord"
+	item_state = "holobadge-cord"
 	slot_flags = SLOT_MASK | SLOT_TIE
-
 /obj/item/clothing/accessory/badge/holo/NT/cord
 	icon_state = "holobadge-cord"
+	item_state = "holobadge-cord"
 	slot_flags = SLOT_MASK | SLOT_TIE
 
-/obj/item/clothing/accessory/badge/holo/attack_self(mob/user as mob)
+/obj/item/clothing/accessory/badge/holo/attack_self(mob/user)
 	if(!stored_name)
 		to_chat(user, "Waving around a holobadge before swiping an ID would be pretty pointless.")
 		return
@@ -81,12 +82,12 @@
 		to_chat(user, "<span class='danger'>You crack the holobadge security checks.</span>")
 		return 1
 
-/obj/item/clothing/accessory/badge/holo/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/card/id) || istype(O, /obj/item/device/pda))
+/obj/item/clothing/accessory/badge/holo/attackby(obj/item/O, mob/user)
+	if(istype(O, /obj/item/card/id) || istype(O, /obj/item/device/pda))
 
-		var/obj/item/weapon/card/id/id_card = null
+		var/obj/item/card/id/id_card = null
 
-		if(istype(O, /obj/item/weapon/card/id))
+		if(istype(O, /obj/item/card/id))
 			id_card = O
 		else
 			var/obj/item/device/pda/pda = O
@@ -103,13 +104,13 @@
 		return
 	..()
 
-/obj/item/weapon/storage/box/holobadge
+/obj/item/storage/box/holobadge
 	name = "holobadge box"
 	desc = "A box containing security holobadges."
 	startswith = list(/obj/item/clothing/accessory/badge/holo = 4,
 					  /obj/item/clothing/accessory/badge/holo/cord = 2)
 
-/obj/item/weapon/storage/box/holobadgeNT
+/obj/item/storage/box/holobadgeNT
 	name = "\improper NT holobadge box"
 	desc = "A box containing NanoTrasen security holobadges."
 	startswith = list(/obj/item/clothing/accessory/badge/holo/NT = 4,

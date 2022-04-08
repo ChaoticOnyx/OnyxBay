@@ -26,8 +26,8 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	role_text_plural = "Cultists"
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
-							/datum/job/merchant, /datum/job/lawyer)
-	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
+							/datum/job/merchant, /datum/job/iaa)
+	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
 	feedback_tag = "cult_objective"
 	antag_indicator = "hudcultist"
@@ -53,8 +53,14 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	var/list/cult_rating_bounds = list(CULT_RUNES_1, CULT_RUNES_2, CULT_RUNES_3, CULT_GHOSTS_1, CULT_GHOSTS_2, CULT_GHOSTS_3)
 	var/max_cult_rating = 0
 	var/conversion_blurb = "You catch a glimpse of the Realm of Nar-Sie, the Geometer of Blood. You now see how flimsy the world is, you see that it should be open to the knowledge of That Which Waits. Assist your new compatriots in their dark dealings. Their goals are yours, and yours are theirs. You serve the Dark One above all else. Bring It back."
+	var/narsie_summoned = FALSE
 
 	faction = "cult"
+
+/datum/antagonist/cultist/Initialize()
+	. = ..()
+	if(config.cultist_min_age)
+		min_player_age = config.cultist_min_age
 
 /datum/antagonist/cultist/create_global_objectives()
 
@@ -77,7 +83,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	if(!..())
 		return 0
 
-	var/obj/item/weapon/book/tome/T = new(get_turf(player))
+	var/obj/item/book/tome/T = new(get_turf(player))
 	var/list/slots = list (
 		"backpack" = slot_in_backpack,
 		"left pocket" = slot_l_store,
@@ -89,7 +95,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 		player.equip_to_slot(T, slot)
 		if(T.loc == player)
 			break
-	var/obj/item/weapon/storage/S = locate() in player.contents
+	var/obj/item/storage/S = locate() in player.contents
 	if(istype(S))
 		T.forceMove(S)
 
@@ -103,7 +109,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	remove_cult_magic(player.current)
 	remove_cultiness(CULTINESS_PER_CULTIST)
 
-/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
+/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat, team)
 	. = ..()
 	if(.)
 		to_chat(player, "<span class='cult'>[conversion_blurb]</span>")
@@ -154,16 +160,6 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	if((CULT_GHOSTS_1 in to_update) || (CULT_GHOSTS_2 in to_update) || (CULT_GHOSTS_3 in to_update))
 		for(var/mob/observer/ghost/D in SSmobs.mob_list)
 			add_ghost_magic(D)
-
-/datum/antagonist/cultist/proc/offer_uncult(mob/M)
-	if(!iscultist(M) || !M.mind)
-		return
-
-	to_chat(M, "<span class='cult'>Do you want to abandon the cult of Nar'Sie? <a href='?src=\ref[src];confirmleave=1'>ACCEPT</a></span>")
-
-/datum/antagonist/cultist/Topic(href, href_list)
-	if(href_list["confirmleave"])
-		GLOB.cult.remove_antagonist(usr.mind, 1)
 
 /datum/antagonist/cultist/proc/remove_cultiness(amount)
 	cult_rating = max(0, cult_rating - amount)

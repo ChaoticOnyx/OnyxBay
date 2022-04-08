@@ -1,5 +1,5 @@
 //like orange but only checks north/south/east/west for one step
-proc/cardinalrange(center)
+/proc/cardinalrange(center)
 	var/list/things = list()
 	for(var/direction in GLOB.cardinal)
 		var/turf/T = get_step(center, direction)
@@ -9,7 +9,7 @@ proc/cardinalrange(center)
 
 /obj/machinery/am_shielding
 	name = "antimatter reactor section"
-	desc = "This device was built using a phoron life-form that seems to increase phoron's natural ability to react with neutrinos while reducing the combustibility."
+	desc = "This device was built using a plasma life-form that seems to increase plasma's natural ability to react with neutrinos while reducing the combustibility."
 
 	icon = 'icons/obj/machines/antimatter.dmi'
 	icon_state = "shield"
@@ -23,7 +23,7 @@ proc/cardinalrange(center)
 	var/obj/machinery/power/am_control_unit/control_unit = null
 	var/processing = 0//To track if we are in the update list or not, we need to be when we are damaged and if we ever
 	var/stability = 100//If this gets low bad things tend to happen
-	var/efficiency = 1//How many cores this core counts for when doing power processing, phoron in the air and stability could affect this
+	var/efficiency = 1//How many cores this core counts for when doing power processing, plasma in the air and stability could affect this
 
 
 /obj/machinery/am_shielding/New(loc)
@@ -69,19 +69,16 @@ proc/cardinalrange(center)
 	if(processing)	shutdown_core()
 	visible_message("<span class='warning'>\The [src] melts!</span>")
 	//Might want to have it leave a mess on the floor but no sprites for now
-	..()
-	return
+	return ..()
 
 
-/obj/machinery/am_shielding/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0))	return 1
-	return 0
-
+/obj/machinery/am_shielding/CanPass(atom/movable/mover, turf/target)
+	return FALSE
 
 /obj/machinery/am_shielding/Process()
 	if(!processing) . = PROCESS_KILL
 	//TODO: core functions and stability
-	//TODO: think about checking the airmix for phoron and increasing power output
+	//TODO: think about checking the airmix for plasma and increasing power output
 	return
 
 
@@ -150,6 +147,7 @@ proc/cardinalrange(center)
 
 /obj/machinery/am_shielding/proc/setup_core()
 	processing = 1
+	GLOB.machines += src
 	START_PROCESSING(SSmachines, src)
 	if(!control_unit)	return
 	control_unit.linked_cores.Add(src)

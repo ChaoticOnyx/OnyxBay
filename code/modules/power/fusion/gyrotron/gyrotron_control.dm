@@ -13,6 +13,8 @@
 	attack_hand(user)
 
 /obj/machinery/computer/gyrotron_control/attack_hand(mob/user)
+	if(..())
+		return
 	add_fingerprint(user)
 	interact(user)
 
@@ -88,7 +90,7 @@
 
 /obj/machinery/computer/gyrotron_control/attackby(obj/item/W, mob/user)
 	if(isMultitool(W))
-		var/new_ident = input("Enter a new ident tag.", "Gyrotron Control", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Gyrotron Control", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 		return

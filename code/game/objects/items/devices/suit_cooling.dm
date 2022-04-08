@@ -25,7 +25,7 @@
 
 	var/on = 0								//is it turned on?
 	var/cover_open = 0						//is the cover open?
-	var/obj/item/weapon/cell/cell
+	var/obj/item/cell/cell
 	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
 	var/charge_consumption = 2 KILOWATTS	// energy usage at full power
 	var/thermostat = T20C
@@ -36,7 +36,7 @@
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
-	cell = new /obj/item/weapon/cell/high()		// 10K rated cell.
+	cell = new /obj/item/cell/high()		// 10K rated cell.
 	cell.forceMove(src)
 
 /obj/item/device/suit_cooling_unit/Destroy()
@@ -114,7 +114,7 @@
 		turn_on()
 	to_chat(user, "<span class='notice'>You switch \the [src] [on ? "on" : "off"].</span>")
 
-/obj/item/device/suit_cooling_unit/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/suit_cooling_unit/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(cover_open)
 			cover_open = 0
@@ -125,7 +125,7 @@
 		update_icon()
 		return
 
-	if (istype(W, /obj/item/weapon/cell))
+	if (istype(W, /obj/item/cell))
 		if(cover_open)
 			if(cell)
 				to_chat(user, "There is a [cell] already installed here.")
@@ -169,16 +169,17 @@
 
 
 /obj/item/device/suit_cooling_unit/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	if (on)
-		to_chat(user, "It's switched on and running.")
+		. += "\nIt's switched on and running."
 	else
-		to_chat(user, "It is switched off.")
+		. += "\nIt is switched off."
 
 	if (cover_open)
-		to_chat(user, "The panel is open.")
+		. += "\nThe panel is open."
 
 	if (cell)
-		to_chat(user, "The charge meter reads [round(cell.percent())]%.")
+		. += "\nThe charge meter reads [round(cell.percent())]%."

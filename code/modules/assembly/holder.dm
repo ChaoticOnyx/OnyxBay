@@ -15,15 +15,19 @@
 	var/obj/special_assembly = null
 
 /obj/item/device/assembly_holder/proc/attach(obj/item/device/D, obj/item/device/D2, mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
-/obj/item/device/assembly_holder/proc/attach_special(obj/O, var/mob/user)
+/obj/item/device/assembly_holder/proc/attach_special(obj/O, mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/process_activation(obj/item/device/D)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/detached()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 
@@ -73,12 +77,12 @@
 		master.update_icon()
 
 /obj/item/device/assembly_holder/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if ((in_range(src, user) || src.loc == user))
 		if (src.secured)
-			to_chat(user, "\The [src] is ready!")
+			. += "\n\The [src] is ready!"
 		else
-			to_chat(user, "\The [src] can be attached!")
+			. += "\n\The [src] can be attached!"
 	return
 
 
@@ -127,7 +131,7 @@
 	return
 
 
-/obj/item/device/assembly_holder/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/assembly_holder/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		if(!a_left || !a_right)
 			to_chat(user, "<span class='warning'>BUG:Assembly part missing, please report this!</span>")
@@ -182,7 +186,7 @@
 	return
 
 
-/obj/item/device/assembly_holder/process_activation(var/obj/D, var/normal = 1, var/special = 1)
+/obj/item/device/assembly_holder/process_activation(obj/D, normal = 1, special = 1)
 	if(!D)	return 0
 	if(!secured)
 		visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")
@@ -244,8 +248,8 @@
 
 		if ( !(usr.stat || usr.restrained()) )
 			var/obj/item/device/assembly_holder/holder
-			if(istype(src,/obj/item/weapon/grenade/chem_grenade))
-				var/obj/item/weapon/grenade/chem_grenade/gren = src
+			if(istype(src,/obj/item/grenade/chem_grenade))
+				var/obj/item/grenade/chem_grenade/gren = src
 				holder=gren.detonator
 			var/obj/item/device/assembly/timer/tmr = holder.a_left
 			if(!istype(tmr,/obj/item/device/assembly/timer))

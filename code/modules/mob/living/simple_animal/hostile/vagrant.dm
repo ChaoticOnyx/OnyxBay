@@ -27,6 +27,7 @@
 	min_gas = null
 	max_gas = null
 	minbodytemp = 0
+	bodyparts = /decl/simple_animal_bodyparts/metroid // Kinda close I guess
 	var/datum/disease2/disease/carried
 	var/cloaked = 0
 	var/mob/living/carbon/human/gripping = null
@@ -90,7 +91,7 @@
 	else //It's fight time
 		alpha = 255
 		icon_state = "vagrant_glowing"
-		set_light(4)
+		set_light(0.2, 0.1, 3)
 		move_to_delay = 2
 
 /mob/living/simple_animal/hostile/vagrant/AttackingTarget()
@@ -99,6 +100,7 @@
 		var/mob/living/carbon/human/H = .
 		if(gripping == H)
 			H.Weaken(3)
+			H.Stun(3)
 			return
 		//This line ensures there's always a reasonable chance of grabbing, while still
 		//Factoring in health
@@ -107,6 +109,7 @@
 			cloaked = 0
 			update_icon()
 			H.Weaken(3)
+			H.Stun(3)
 			H.visible_message("<span class='danger'>\the [src] latches onto \the [H], pulsating!</span>")
 			if(carried && length(gripping.virus2) == 0)
 				infect_virus2(gripping, carried, 1)

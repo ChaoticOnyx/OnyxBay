@@ -2,9 +2,10 @@ var/list/organ_cache = list()
 
 /obj/item/organ
 	name = "organ"
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
+	dir = SOUTH
 
 	// Strings.
 	var/organ_tag = "organ"           // Unique identifier.
@@ -27,9 +28,25 @@ var/list/organ_cache = list()
 
 	var/death_time
 
+	var/food_organ_type				  // path of food made from organ, ex.
+	var/obj/item/reagent_containers/food/snacks/food_organ
+	var/disable_food_organ = FALSE // used to override food_organ's creation and using
+
+/obj/item/organ/return_item()
+	return food_organ
+
+/obj/item/organ/proc/organ_eaten(mob/user)
+	qdel(src)
+
+/obj/item/organ/proc/update_food_from_organ()
+	food_organ.SetName(name)
+	food_organ.appearance = src
+	reagents.trans_to(food_organ, reagents.total_volume)
+
 /obj/item/organ/Destroy()
 	owner = null
 	dna = null
+	QDEL_NULL(food_organ)
 	return ..()
 
 /obj/item/organ/proc/update_health()
@@ -40,6 +57,9 @@ var/list/organ_cache = list()
 
 /obj/item/organ/New(mob/living/carbon/holder)
 	..(holder)
+
+	if(food_organ_type && !disable_food_organ)
+		food_organ = new food_organ_type(src)
 
 	if(max_damage)
 		min_broken_damage = Floor(max_damage / 2)
@@ -91,29 +111,28 @@ var/list/organ_cache = list()
 	//dead already, no need for more processing
 	if(status & ORGAN_DEAD)
 		return
-	// Don't process if we're in a freezer, an MMI or a stasis bag.or a freezer or something I dunno
-	if(is_preserved())
-		return
+
 	//Process infections
-	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
 		return
 
-	if(!owner && reagents)
-		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
-		if(B && prob(40))
-			reagents.remove_reagent(/datum/reagent/blood,0.1)
-			blood_splatter(src,B,1)
-		if(config.organs_decay)
-			take_general_damage(rand(1,3))
-		germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			die()
+	if(!owner)
+		if(reagents && !is_preserved())
+			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
+			if(B && prob(40))
+				reagents.remove_reagent(/datum/reagent/blood, 0.1)
+				blood_splatter(src, B, 1)
+			if(config.organs_decay)
+				take_general_damage(rand(1, 3))
+			germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_TWO)
+				germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_THREE)
+				die()
 
-	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
-		//** Handle antibiotics and curing infections
+	else if(owner.bodytemperature >= 170) // Cryo stops germs from moving and doing their bad stuffs
+		// Handle antibiotics and curing infections
 		handle_antibiotics()
 		handle_rejection()
 		handle_germ_effects()
@@ -122,20 +141,29 @@ var/list/organ_cache = list()
 	if(damage >= max_damage)
 		die()
 
+	if(food_organ)
+		update_food_from_organ()
+
+/obj/item/organ/proc/cook_organ()
+	die()
+
 /obj/item/organ/proc/is_preserved()
 	if(istype(loc,/obj/item/organ))
 		var/obj/item/organ/O = loc
 		return O.is_preserved()
 	else
-		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
+		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
 /obj/item/organ/examine(mob/user)
-	. = ..(user)
-	show_decay_status(user)
+	. = ..()
+	. += "\n[show_decay_status(user)]"
+	if(get_dist(src, user) > 1)
+		return
+	. += food_organ.get_bitecount()
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		to_chat(user, "<span class='notice'>The decay has set into \the [src].</span>")
+		return SPAN_NOTICE("\The [src] looks severely damaged.")
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
@@ -199,7 +227,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/remove_rejuv()
 	qdel(src)
 
-/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage = 0
 	status = 0
 	if(!ignore_prosthetic_prefs && owner && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)
@@ -242,15 +270,14 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
-
+/obj/item/organ/proc/removed(mob/living/user, drop_organ = TRUE)
 	if(!istype(owner))
 		return
 
 	if(drop_organ)
 		dropInto(owner.loc)
 
-	playsound(src, "crunch", rand(65, 80), FALSE)
+	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
 	START_PROCESSING(SSobj, src)
@@ -278,27 +305,17 @@ var/list/organ_cache = list()
 	if(status & ORGAN_ROBOTIC || !istype(target) || !istype(user) || (user != target && user.a_intent == I_HELP))
 		return ..()
 
-	if(alert("Do you really want to use this organ as food? It will be useless for anything else afterwards.",,"Ew, no.","Bon appetit!") == "Ew, no.")
-		to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
-		return
+	if(food_organ.bitecount == 0)
+		if(alert("Do you really want to use this organ as food? It will be useless for anything else afterwards.",,"Ew, no.","Bon appetit!") == "Ew, no.")
+			to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
+			return
+		update_food_from_organ()
+		cook_organ()
 
 	if(QDELETED(src))
 		return
 
-	user.drop_from_inventory(src)
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/O = new(get_turf(src))
-	O.SetName(name)
-	O.appearance = src
-	reagents.trans_to(O, reagents.total_volume)
-	if(fingerprints)
-		O.fingerprints = fingerprints.Copy()
-	if(fingerprintshidden)
-		O.fingerprintshidden = fingerprintshidden.Copy()
-	if(fingerprintslast)
-		O.fingerprintslast = fingerprintslast
-	user.put_in_active_hand(O)
-	qdel(src)
-	target.attackby(O, user)
+	target.attackby(return_item(), user)
 
 /obj/item/organ/proc/can_feel_pain()
 	return (!BP_IS_ROBOTIC(src) && (!species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
@@ -322,9 +339,9 @@ var/list/organ_cache = list()
 		. += "Genetic Deformation"
 	if(status & ORGAN_DEAD)
 		if(can_recover())
-			. += "Decaying"
+			. += "Critical"
 		else
-			. += "Necrotic"
+			. += "Destroyed"
 	switch (germ_level)
 		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
 			. +=  "Mild Infection"
