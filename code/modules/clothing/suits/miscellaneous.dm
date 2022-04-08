@@ -174,6 +174,7 @@
 	..()
 	if(ishuman(user) && slot == slot_wear_suit)
 		var/mob/living/carbon/C = user
+		C.drop_from_inventory(C.handcuffed)
 		C.handcuffed = src
 
 
