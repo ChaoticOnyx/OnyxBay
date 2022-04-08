@@ -761,6 +761,16 @@
 			else
 				to_chat(M, SPAN("warning", "You feel like you should smoke less often..."))
 
+	if(alien == IS_UNATHI)
+		if(M.chem_doses[type] == metabolism * 2 || prob(5))
+			M.emote("cough")
+		M.add_chemical_effect(CE_TOXIN, 4)
+		var/obj/item/organ/internal/I = M.internal_organs_by_name["liver"]
+		if(prob(3))
+			I.take_internal_damage(1, silent=TRUE)
+		if(prob(5))
+			M.adjustToxLoss(3)
+
 /datum/reagent/nicotine/overdose(mob/living/carbon/M, alien)
 	..()
 	M.add_chemical_effect(CE_PULSE, 2)

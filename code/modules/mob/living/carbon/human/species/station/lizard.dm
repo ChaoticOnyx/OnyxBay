@@ -7,20 +7,21 @@
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
-	generic_attack_mod = 2.0
+	generic_attack_mod = 1.0
 	primitive_form = "Stok"
 	darksight_range = 3
 	darksight_tint = DARKTINT_MODERATE
 	gluttonous = GLUT_TINY
 	strength = STR_HIGH
 	slowdown = 0.5
-	brute_mod = 0.8
+	brute_mod = 1
 	blood_volume = 800
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_UNATHI)
 	name_language = LANGUAGE_UNATHI
 	health_hud_intensity = 2
-	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
+	hunger_factor = DEFAULT_HUNGER_FACTOR
+	var/agressive_mode = FALSE
 
 	min_age = 18
 	max_age = 260
@@ -82,12 +83,49 @@
 	if(H.InStasis() || H.stat == DEAD)
 		return
 	if(H.nutrition < 50)
-		H.adjustToxLoss(2,0)
+		H.adjustToxLoss(2)
 		return
 	if(!H.innate_heal)
 		return
+	if(active_stage_check(H))
+		active_stage(H)
+	else
+		agressive_mode = FALSE
 
-	//Heals normal damage.
+/datum/species/unathi/proc/active_stage_check(mob/living/carbon/human/H)
+	var/pain_lvl = H.shock_stage
+	var/list/inhibitors = list(/datum/reagent/sugar,  /datum/reagent/soporific, /datum/reagent/tramadol, /datum/reagent/chloralhydrate)
+	var/list/triggers = list(/datum/reagent/adrenaline)
+
+	for(var/T in H.chem_doses)
+		var/datum/reagent/R = T
+		if(pain_lvl >= 15)
+			return TRUE
+		if(R in inhibitors)
+			if(H.chem_doses[R] > 0.3)
+				return FALSE
+		if(R in triggers)
+			if(H.chem_doses[R] > 0.2)
+				return TRUE
+
+/datum/species/unathi/proc/active_stage(mob/living/carbon/human/H)
+	if(!agressive_mode)
+		agressive_mode = TRUE
+		H.visible_message(SPAN("warning", "[H] eyes turned red!"), SPAN("danger", "My body feels energized!"))
+
+	slowdown = 0
+	brute_mod = 0.7
+	hunger_factor = DEFAULT_HUNGER_FACTOR * 6
+	generic_attack_mod = 2.0
+
+	if(prob(80))
+		heal_normal_damage(H)
+	if(prob(10) && H.nutrition > 100)
+		heal_internal_damage(H)
+	if(prob(5) && H.nutrition > 150)
+		regenerate_limbs(H)
+
+/datum/species/unathi/proc/heal_normal_damage(mob/living/carbon/human/H)
 	if(H.getBruteLoss())
 		H.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 		H.nutrition -= 1
@@ -98,14 +136,13 @@
 		H.adjustToxLoss(-1 * config.organ_regeneration_multiplier)
 		H.nutrition -= 1
 
-	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
+/datum/species/unathi/proc/heal_internal_damage(mob/living/carbon/human/H)
+
+	if(!H.getBruteLoss() && !H.getFireLoss())
 		var/obj/item/organ/external/head/D = H.organs_by_name["head"]
 		if (D.status & ORGAN_DISFIGURED)
 			D.status &= ~ORGAN_DISFIGURED
 			H.nutrition -= 20
-
-	if(H.nutrition <= 100)
-		return
 
 	for(var/bpart in shuffle(H.internal_organs_by_name - BP_BRAIN))
 
@@ -118,45 +155,44 @@
 				regen_organ.damage = max(regen_organ.damage - 5, 0)
 				H.nutrition -= 5
 				if(prob(5))
-					to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
+					to_chat(H, SPAN("warning", "You feel a soothing sensation as your [regen_organ] mends..."))
 
-	if(prob(2) && H.nutrition > 150)
-		for(var/limb_type in has_limbs)
-			var/list/obj/item/organ/internal/foreign_organs = list()
-			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-				E.removed()			//...because no one wants their head to explode to make way for a new one.
-				for(var/obj/item/organ/internal/O in E.internal_organs)
-					if(istype(O) && O.foreign)
-						E.internal_organs.Remove(O)
-						H.internal_organs.Remove(O)
-						foreign_organs |= O
-				qdel(E)
-				E = null
-			if(!E)
-				var/list/organ_data = has_limbs[limb_type]
-				var/limb_path = organ_data["path"]
-				var/obj/item/organ/external/O = new limb_path(H)
-				organ_data["descriptor"] = O.name
-				to_chat(H, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
-				H.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!</span>")
-				H.nutrition -= 50
-				var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list
-				blood_splatter(H,B,1)
-				O.set_dna(H.dna)
-				H.update_body()
+/datum/species/unathi/proc/regenerate_limbs(mob/living/carbon/human/H)
+	for(var/limb_type in has_limbs)
+		var/list/obj/item/organ/internal/foreign_organs = list()
+		var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+		if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+			E.removed()			//...because no one wants their head to explode to make way for a new one.
+			for(var/obj/item/organ/internal/O in E.internal_organs)
+				if(istype(O) && O.foreign)
+					E.internal_organs.Remove(O)
+					H.internal_organs.Remove(O)
+					foreign_organs |= O
+			qdel(E)
+			E = null
+		if(!E)
+			var/list/organ_data = has_limbs[limb_type]
+			var/limb_path = organ_data["path"]
+			var/obj/item/organ/external/O = new limb_path(H)
+			organ_data["descriptor"] = O.name
+			to_chat(H, SPAN("danger", "With a shower of fresh blood, a new [O.name] forms."))
+			H.visible_message(SPAN("danger", "With a shower of fresh blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
+			H.nutrition -= 50
+			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list
+			blood_splatter(H,B,1)
+			O.set_dna(H.dna)
+			H.update_body()
 
-				for(var/obj/item/organ/internal/organ in foreign_organs)
-					organ.owner = H
-					organ.rejuvenate()
-					var/obj/item/organ/external/FE = H.get_organ(organ.parent_organ)
-					FE.internal_organs |= organ
-					H.internal_organs |= organ
-					H.internal_organs_by_name[organ.organ_tag] = organ
-					organ.handle_foreign()
-				return
-			else
-				for(var/datum/wound/W in E.wounds)
-					if(W.wound_damage() == 0 && prob(50))
-						E.wounds -= W
-
+			for(var/obj/item/organ/internal/organ in foreign_organs)
+				organ.owner = H
+				organ.rejuvenate()
+				var/obj/item/organ/external/FE = H.get_organ(organ.parent_organ)
+				FE.internal_organs |= organ
+				H.internal_organs |= organ
+				H.internal_organs_by_name[organ.organ_tag] = organ
+				organ.handle_foreign()
+			return
+		else
+			for(var/datum/wound/W in E.wounds)
+				if(W.wound_damage() == 0 && prob(50))
+					E.wounds -= W
