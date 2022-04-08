@@ -449,7 +449,7 @@ var/list/global/slot_flags_enumeration = list(
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/handcuffs))
+			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
