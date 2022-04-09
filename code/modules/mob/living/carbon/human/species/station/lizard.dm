@@ -118,11 +118,11 @@
 	hunger_factor = DEFAULT_HUNGER_FACTOR * 6
 	generic_attack_mod = 2.0
 
-	if(prob(80))
+	if(prob(20)) //Life() every 2 seconds, prob(20) -> around 1 times in ~10 seconds
 		heal_normal_damage(H)
-	if(prob(10) && H.nutrition > 100)
+	if(prob(5) && H.nutrition > 100)
 		heal_internal_damage(H)
-	if(prob(5) && H.nutrition > 150)
+	if(prob(2) && H.nutrition > 150)
 		regenerate_limbs(H)
 
 /datum/species/unathi/proc/heal_normal_damage(mob/living/carbon/human/H)
