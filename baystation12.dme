@@ -273,6 +273,7 @@
 #include "code\datums\components\label.dm"
 #include "code\datums\components\sentry.dm"
 #include "code\datums\elements\_element.dm"
+#include "code\datums\elements\last_words.dm"
 #include "code\datums\extensions\_defines.dm"
 #include "code\datums\extensions\extensions.dm"
 #include "code\datums\extensions\interactive.dm"

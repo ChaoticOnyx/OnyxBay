@@ -1,4 +1,6 @@
 /mob/living/Initialize()
+	AddElement(/datum/element/last_words)
+
 	. = ..()
 	if(stat == DEAD)
 		add_to_dead_mob_list()
