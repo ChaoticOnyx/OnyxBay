@@ -128,9 +128,9 @@
 /proc/get_exposed_defense_zone(atom/movable/target)
 	return pick(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_FOOT, BP_R_FOOT, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_CHEST, BP_GROIN)
 
-/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = FALSE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT)
+/proc/do_mob(atom/movable/affecter, mob/target, time = 30, target_zone = 0, uninterruptible = 0, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT)
 	if(!affecter || !target)
-		return FALSE
+		return 0
 	var/mob/user = affecter
 	var/is_mob_type = istype(user)
 	var/user_loc = affecter.loc
@@ -143,43 +143,43 @@
 
 	var/endtime = world.time+time
 	var/starttime = world.time
-	. = TRUE
+	. = 1
 	while (world.time < endtime)
 
 		stoplag(1)
 
-		if(!QDELETED(progbar))
+		if(progbar)
 			progbar.update(world.time - starttime)
 
 		if(!affecter || !target)
-			. = FALSE
+			. = 0
 			break
 
 		if(uninterruptible)
 			continue
 
 		if(!affecter || (is_mob_type && user.incapacitated(incapacitation_flags)) || affecter.loc != user_loc)
-			. = FALSE
+			. = 0
 			break
 
 		if(target.loc != target_loc)
-			. = FALSE
+			. = 0
 			break
 
 		if(affecter.get_active_item() != holding)
-			. = FALSE
+			. = 0
 			break
 
 		if(target_zone && affecter.get_selected_zone() != target_zone)
-			. = FALSE
+			. = 0
 			break
 
-	if(!QDELETED(progbar))
-		progbar.end_progress()
+	if(progbar)
+		qdel(progbar)
 
-/proc/do_after(mob/user, delay, atom/target = null, needhand = TRUE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = FALSE, can_move = FALSE)
+/proc/do_after(mob/user, delay, atom/target = null, needhand = 1, progress = 1, incapacitation_flags = INCAPACITATION_DEFAULT, same_direction = 0, can_move = 0)
 	if(!user)
-		return FALSE
+		return 0
 	var/atom/target_loc = null
 	var/target_type = null
 
@@ -199,27 +199,27 @@
 
 	var/endtime = world.time + delay
 	var/starttime = world.time
-	. = TRUE
+	. = 1
 	while (world.time < endtime)
 		stoplag(1)
-		if(!QDELETED(progbar))
+		if (progress)
 			progbar.update(world.time - starttime)
 
 		if(!user || user.incapacitated(incapacitation_flags) || (user.loc != original_loc && !can_move) || (same_direction && user.dir != original_dir))
-			. = FALSE
+			. = 0
 			break
 
 		if(target_loc && (!target || QDELETED(target) || target_loc != target.loc || target_type != target.type))
-			. = FALSE
+			. = 0
 			break
 
 		if(needhand)
 			if(user.get_active_hand() != holding)
-				. = FALSE
+				. = 0
 				break
 
-	if(!QDELETED(progbar))
-		progbar.end_progress()
+	if (progbar)
+		qdel(progbar)
 
 /proc/is_species(A, species_datum)
 	. = FALSE
@@ -270,7 +270,7 @@
 /mob/living/add_to_dead_mob_list()
 	if((src in GLOB.living_mob_list_) || (src in GLOB.dead_mob_list_))
 		return FALSE
-
+	
 	..()
 	GLOB.dead_mob_list_ += src
 
