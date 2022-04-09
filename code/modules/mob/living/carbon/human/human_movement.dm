@@ -35,9 +35,9 @@
 
 	. += blocking * 1.5
 
-	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 40)
-		. += (health_deficiency / 25)
+	var/health_deficiency_percent = 100 - (health / maxHealth) * 100
+	if(health_deficiency_percent >= 40)
+		. += (health_deficiency_percent / 25)
 
 	var/shock = get_shock()
 	if(shock >= 10)

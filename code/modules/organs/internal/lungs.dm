@@ -29,12 +29,12 @@
 
 /obj/item/organ/internal/lungs/proc/remove_oxygen_deprivation(amount)
 	var/last_suffocation = oxygen_deprivation
-	oxygen_deprivation = min(species.total_health,max(0,oxygen_deprivation - amount))
+	oxygen_deprivation = clamp(oxygen_deprivation - amount, 0, species.total_health)
 	return -(oxygen_deprivation - last_suffocation)
 
 /obj/item/organ/internal/lungs/proc/add_oxygen_deprivation(amount)
 	var/last_suffocation = oxygen_deprivation
-	oxygen_deprivation = min(species.total_health,max(0,oxygen_deprivation + amount))
+	oxygen_deprivation = clamp(oxygen_deprivation + amount, 0, species.total_health)
 	return (oxygen_deprivation - last_suffocation)
 
 // Returns a percentage value for use by GetOxyloss().

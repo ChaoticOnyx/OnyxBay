@@ -50,7 +50,7 @@
 	..()
 	max_damage = 100
 	if(species)
-		max_damage = species.total_health/2
+		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
