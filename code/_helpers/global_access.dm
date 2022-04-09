@@ -103,8 +103,6 @@
 			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
-		if("SSturf")
-			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSvote")
@@ -1002,8 +1000,6 @@
 			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
-		if("SSturf")
-			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSvote")
@@ -1853,7 +1849,6 @@
 	"SSticker",
 	"SStimer",
 	"SStrade",
-	"SSturf",
 	"SSvines",
 	"SSvote",
 	"SSwireless",

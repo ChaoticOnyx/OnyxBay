@@ -39,10 +39,6 @@
 	update_material()
 	hitsound = material.hitsound
 
-/turf/simulated/wall/Initialize()
-	START_PROCESSING(SSturf, src) //Used for radiation.
-	. = ..()
-
 /turf/simulated/wall/Destroy()
 	dismantle_wall(null,null,1)
 	
