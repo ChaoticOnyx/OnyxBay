@@ -593,7 +593,7 @@
 		if(hallucination_power)
 			handle_hallucinations()
 
-		if(get_shock() >= species.total_health)
+		if(get_shock() >= species.total_health * 2)
 			if(!stat)
 				to_chat(src, "<span class='warning'>[species.halloss_message_self]</span>")
 				src.visible_message("<B>[src]</B> [species.halloss_message]")
@@ -699,20 +699,21 @@
 		return
 
 	if(stat != DEAD)
-		if(stat == UNCONSCIOUS && health < maxHealth/2)
+		if(stat == UNCONSCIOUS && health < maxHealth * 0.25)
 			//Critical damage passage overlay
 			var/severity = 0
-			switch(health - maxHealth/2)
-				if(-20 to -10)       severity = 1
-				if(-30 to -20)       severity = 2
-				if(-40 to -30)       severity = 3
-				if(-50 to -40)       severity = 4
-				if(-60 to -50)       severity = 5
-				if(-70 to -60)       severity = 6
-				if(-80 to -70)       severity = 7
-				if(-90 to -80)       severity = 8
-				if(-95 to -90)       severity = 9
-				if(-INFINITY to -95) severity = 10
+			var/health_deficiency_percent = 100 - (health / maxHealth) * 100
+			switch(health_deficiency_percent)
+				if(75.0 to 77.5)       severity = 1
+				if(77.5 to 80.0)       severity = 2
+				if(80.0 to 82.5)       severity = 3
+				if(82.5 to 85.0)       severity = 4
+				if(85.0 to 87.5)       severity = 5
+				if(87.5 to 90.0)       severity = 6
+				if(90.0 to 92.5)       severity = 7
+				if(92.5 to 95.0)       severity = 8
+				if(95.0 to 97.5)       severity = 9
+				if(97.5 to INFINITY)   severity = 10
 			overlay_fullscreen("crit", /obj/screen/fullscreen/crit, severity)
 		else
 			clear_fullscreen("crit")
@@ -768,7 +769,7 @@
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
 				var/canfeelpain = can_feel_pain()
 				if(canfeelpain)
-					trauma_val = max(shock_stage,get_shock())/(species.total_health-100)
+					trauma_val = max(shock_stage, get_shock()) / species.total_health
 				// Collect and apply the images all at once to avoid appearance churn.
 				var/list/health_images = list()
 				for(var/obj/item/organ/external/E in organs)

@@ -1682,7 +1682,7 @@
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()
-	return getBrainLoss() >= maxHealth * 0.4 // > than 80 brain dmg - ur rekt
+	return getBrainLoss() >= maxHealth * 0.8 // > than 80 brain dmg - ur rekt
 
 /mob/living/carbon/human/verb/useblock()
 	set name = "Block"
