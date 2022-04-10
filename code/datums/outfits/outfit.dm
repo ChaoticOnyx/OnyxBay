@@ -190,7 +190,7 @@ var/list/outfits_decls_by_type_
 			H.species.equip_survival_gear(H, 2)
 		else if(flags & OUTFIT_EXTENDED_SURVIVAL)
 			H.species.equip_survival_gear(H, 1)
-		else
+		else if(!(flags & OUTFIT_NO_SURVIVAL))
 			H.species.equip_survival_gear(H)
 	check_and_try_equip_xeno(H)
 
