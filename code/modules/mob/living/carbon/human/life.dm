@@ -43,6 +43,11 @@
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 	var/last_block = 0
 
+/mob/living/carbon/human/Initialize()
+	. = ..()
+	
+	AddElement(/datum/element/last_words)
+
 /mob/living/carbon/human/Life()
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED

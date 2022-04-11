@@ -36,7 +36,7 @@ GLOBAL_LIST_EMPTY(last_words)
 
 			data.words = L.logging[INDIVIDUAL_SAY_LOG][entry]
 			data.time_of_death = L.timeofdeath
-			data.real_name = L.real_name
+			data.real_name = L.real_name || L.name
 			data.job_title = L.job || "Unemployed"
 
 			GLOB.last_words += data
