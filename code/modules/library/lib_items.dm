@@ -299,7 +299,7 @@
 	var/style = WIKI_MINI
 	var/censored = 1
 
-/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle, temporary = FALSE)
 	if(ntopic)
 		topic = ntopic
 	if(!isnull(ncensored))
@@ -311,6 +311,9 @@
 	if(title)
 		SetName(title)
 	dat = wiki_request(topic, style, censored, src)
+	if(temporary) // I hate myself for doing this
+		atom_flags |= ATOM_FLAG_INITIALIZED
+		return INITIALIZE_HINT_QDEL
 	. = ..(mapload)
 
 /obj/item/book/wiki/Topic(href, href_list[])

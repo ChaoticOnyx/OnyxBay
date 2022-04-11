@@ -22,6 +22,7 @@
 	var/default_name = "bottle"
 	var/default_desc = "A regular glass bottle."
 	var/starting_label = null
+	var/has_label = FALSE
 
 /obj/item/reagent_containers/glass/bottle/small
 	name = "small bottle"
@@ -84,10 +85,12 @@
 	update_icon()
 
 /obj/item/reagent_containers/glass/bottle/post_attach_label()
+	has_label = TRUE
 	update_icon()
 
 /obj/item/reagent_containers/glass/bottle/post_remove_label()
 	..()
+	has_label = FALSE
 	desc = default_desc
 	update_icon()
 
@@ -112,7 +115,7 @@
 
 	overlays += image(icon, src, "over_[icon_state]")
 
-	if(length(get_components(/datum/component/label)))
+	if(has_label)
 		overlays += image(icon, src, "label_[icon_state]")
 
 	if(!is_open_container())
