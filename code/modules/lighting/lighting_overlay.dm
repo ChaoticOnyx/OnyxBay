@@ -135,6 +135,8 @@
 	. = ..()
 
 /atom/movable/lighting_overlay/forceMove()
+	if(QDELING(src))
+		return ..()
 	return 0 //should never move
 
 /atom/movable/lighting_overlay/Move()

@@ -39,12 +39,6 @@
 	update_material()
 	hitsound = material.hitsound
 
-/turf/simulated/wall/Destroy()
-	dismantle_wall(null,null,1)
-	
-	// At this point `src` is a new instance, the old one was destroyed in `dismantle_wall`.
-	return QDEL_HINT_LETMELIVE
-
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)

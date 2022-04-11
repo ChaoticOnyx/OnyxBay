@@ -61,7 +61,7 @@
 			else
 				_register_not_visible_turf(T)
 				turfs_not_in_view_range += T
-		
+
 		if(A in cached_view)
 			view += A
 
@@ -69,21 +69,28 @@
 	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)
 	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
 	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
+	register_signal(T, SIGNAL_OPACITY_SET, .proc/_turf_opacity_set)
 
 /datum/component/sentry_view/proc/_register_not_visible_turf(turf/T)
 	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
+	register_signal(T, SIGNAL_OPACITY_SET, .proc/_turf_opacity_set)
 
 /datum/component/sentry_view/proc/_unregister_visible_turf(turf/T)
 	unregister_signal(T, SIGNAL_ENTERED)
 	unregister_signal(T, SIGNAL_EXITED)
 	unregister_signal(T, SIGNAL_TURF_CHANGED)
+	unregister_signal(T, SIGNAL_OPACITY_SET)
 
 /datum/component/sentry_view/proc/_unregister_not_visible_turf(turf/T)
 	unregister_signal(T, SIGNAL_TURF_CHANGED)
+	unregister_signal(T, SIGNAL_OPACITY_SET)
 
 /datum/component/sentry_view/proc/_turf_changed(turf/T, old_density, density, old_opacity, opacity)
 	if(old_opacity != opacity)
 		_recalculate_turfs()
+
+/datum/component/sentry_view/proc/_turf_opacity_set()
+	_recalculate_turfs()
 
 /datum/component/sentry_view/proc/_on_turf_entered(turf/new_turf, atom/enterer, turf/old_turf)
 	if(!(old_turf in turfs_in_view_range))

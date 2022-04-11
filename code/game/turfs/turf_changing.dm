@@ -1,7 +1,9 @@
 /turf/proc/ReplaceWithLattice()
-	src.ChangeTurf(get_base_turf_by_area(src))
-	spawn()
-		new /obj/structure/lattice( locate(src.x, src.y, src.z) )
+	var base_turf = get_base_turf_by_area(src)
+	if(type != base_turf)
+		ChangeTurf(get_base_turf_by_area(src))
+	if(!locate(/obj/structure/lattice) in src)
+		new /obj/structure/lattice(src)
 
 // Removes all signs of lattice on the pos of the turf -Donkieyo
 /turf/proc/RemoveLattice()
@@ -35,6 +37,7 @@
 
 //	log_debug("Replacing [src.type] with [N]")
 
+	changing_turf = TRUE
 
 	if(connections) connections.erase_all()
 
@@ -54,11 +57,18 @@
 		A.forceMove(null)
 
 	var/old_opaque_counter = opaque_counter
-	var/old_lookups = comp_lookup.Copy()
-	var/old_components = datum_components.Copy()
-	var/old_signals = signal_procs.Copy()
 
-	var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
+	var/old_lookups = comp_lookup?.Copy()
+	var/old_components = datum_components?.Copy()
+	var/old_signals = signal_procs?.Copy()
+	comp_lookup?.Cut()
+	datum_components?.Cut()
+	signal_procs?.Cut()
+
+	// Run the Destroy() chain.
+	qdel(src)
+
+	var/turf/simulated/W = new N(src)
 
 	comp_lookup = old_lookups
 	datum_components = old_components
@@ -103,6 +113,9 @@
 				lighting_build_overlay()
 			else
 				lighting_clear_overlay()
+
+	for(var/turf/T in RANGE_TURFS(1, src))
+		T.update_icon()
 
 	SEND_SIGNAL(src, SIGNAL_TURF_CHANGED, src, old_density, density, old_opacity, opacity)
 
