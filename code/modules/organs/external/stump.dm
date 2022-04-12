@@ -34,3 +34,7 @@
 		H.restore_limb(organ_tag==BP_L_LEG?BP_L_FOOT:BP_R_FOOT)
 
 	H.regenerate_icons()
+
+/obj/item/organ/external/stump/update_damstate()
+	damage_state = "00"
+	return

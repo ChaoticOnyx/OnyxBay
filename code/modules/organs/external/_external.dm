@@ -526,7 +526,7 @@ This function completely restores a damaged organ to perfect condition.
 			if(compatible_wounds.len)
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage)
-				if(prob(25))
+				if(owner && prob(25))
 					if(BP_IS_ROBOTIC(src))
 						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
 						"<span class='danger'>The damage to your [name] worsens.</span>",\
@@ -860,6 +860,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
 	if(QDELETED(src))
+		victim.updatehealth()
+		victim.UpdateDamageIcon()
+		victim.regenerate_icons()
 		return
 
 	if(!clean)
@@ -887,7 +890,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
-	spawn(1)
+			stump.replaced(victim)
+	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
 			victim.UpdateDamageIcon()
@@ -904,8 +908,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			else
 				M.Turn(rand(180))
 			src.transform = M
-			update_icon_drop(victim)
 			forceMove(victim.loc)
+			update_icon_drop(victim)
 			if(!clean) // Throw limb around.
 				spawn()
 					if(!QDELETED(src) && isturf(loc))
