@@ -193,7 +193,8 @@ var/const/NO_EMAG_ACT = -50
 	id_card.age = 0
 	id_card.registered_name		= real_name
 	id_card.sex 				= capitalize(gender)
-	id_card.set_id_photo(src)
+	spawn(1 SECOND)
+		id_card.set_id_photo(src)
 
 	if(dna)
 		id_card.blood_type		= dna.b_type
