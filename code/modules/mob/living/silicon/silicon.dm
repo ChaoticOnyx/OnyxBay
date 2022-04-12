@@ -47,6 +47,8 @@
 	init_subsystems()
 	avaliable_huds = list("Disable", "Security", "Medical")		//("Security", "Medical", "Meson", "Science", "Night Vision", "Material", "Thermal", "X-Ray", "Flash Screen", "Disable")
 
+	AddElement(/datum/element/last_words)
+
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
 	QDEL_NULL(silicon_radio)
