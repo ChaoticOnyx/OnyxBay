@@ -272,11 +272,12 @@ var/global/list/damage_icon_parts = list()
 
 	for(var/organ_tag in species.has_limbs)
 		var/obj/item/organ/external/part = organs_by_name[organ_tag]
-		if(isnull(part) || part.is_stump())
+		if(isnull(part))
 			icon_key += "0"
 			continue
 		if(part.is_stump())
 			icon_key += "S"
+			continue
 
 		for(var/E in part.markings)
 			var/datum/sprite_accessory/marking/M = E
