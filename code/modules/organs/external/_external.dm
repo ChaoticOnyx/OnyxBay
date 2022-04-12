@@ -526,7 +526,7 @@ This function completely restores a damaged organ to perfect condition.
 			if(compatible_wounds.len)
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage)
-				if(prob(25))
+				if(owner && prob(25))
 					if(BP_IS_ROBOTIC(src))
 						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
 						"<span class='danger'>The damage to your [name] worsens.</span>",\
@@ -904,8 +904,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			else
 				M.Turn(rand(180))
 			src.transform = M
-			update_icon_drop(victim)
 			forceMove(victim.loc)
+			update_icon_drop(victim)
 			if(!clean) // Throw limb around.
 				spawn()
 					if(!QDELETED(src) && isturf(loc))
