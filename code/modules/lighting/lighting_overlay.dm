@@ -130,8 +130,6 @@
 	if(istype(T))
 		T.lighting_overlay = null
 
-	loc = null
-
 	. = ..()
 
 /atom/movable/lighting_overlay/forceMove()
