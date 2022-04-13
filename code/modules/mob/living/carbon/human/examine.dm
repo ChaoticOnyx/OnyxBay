@@ -36,7 +36,7 @@
 	if(get_dist(user, src) > 3)
 		skipears = 1
 
-	var/list/msg = list("<span class='info'>This is ")
+	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
@@ -49,7 +49,7 @@
 		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
 		CRASH("Gender datum was null; key was '[(skipjumpsuit && skipface) ? PLURAL : gender]'")
 
-	msg += "<EM>[src.name]</EM>"
+	msg += SPAN("info", "<em>[src.name]</em>")
 
 	var/is_synth = isSynthetic()
 	if(!(skipjumpsuit && skipface))
@@ -326,7 +326,6 @@
 
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
-	msg += "</span>"
 	msg += applying_pressure
 
 	if (pose)
