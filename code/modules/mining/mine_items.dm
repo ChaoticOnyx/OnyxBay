@@ -431,7 +431,7 @@
 	if(!malfunctioning)
 		malfunctioning = TRUE
 
-/obj/item/lazarus_injector/examine(mob/user)
+/obj/item/lazarus_injector/_examine_text(mob/user)
 	. = ..()
 	if(!loaded)
 		. += "\n<span class='info'>[src] is empty.</span>"
@@ -457,7 +457,7 @@
 			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
-/obj/item/card/mining_point_card/examine(mob/user)
+/obj/item/card/mining_point_card/_examine_text(mob/user)
 	. = ..()
 	. += "\nThere's [points] point\s on the card."
 

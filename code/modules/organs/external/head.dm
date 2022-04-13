@@ -34,7 +34,7 @@
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
 	user.put_in_active_hand(SK)
 
-/obj/item/organ/external/head/examine(mob/user)
+/obj/item/organ/external/head/_examine_text(mob/user)
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)

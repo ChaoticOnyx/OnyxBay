@@ -271,9 +271,8 @@ its easier to just keep the beam vertical.
 	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
 
 
-//All atoms
-/atom/proc/examine(mob/user, infix = "", suffix = "")
-	//This reformat names to get a/an properly working on item descriptions when they are bloody
+/atom/proc/_examine_text(mob/user, infix = "", suffix = "")
+	// This reformat names to get a/an properly working on item descriptions when they are bloody
 	var/f_name = "\a [src][infix]."
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
@@ -289,6 +288,16 @@ its easier to just keep the beam vertical.
 	. += "\n[desc]"
 
 	return
+
+/atom/proc/examine(...)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/content = "<div class='Examine'>"
+	
+	content += _examine_text(args)
+	content += "</div>"
+
+	return content
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.

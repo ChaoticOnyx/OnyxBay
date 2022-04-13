@@ -13,7 +13,7 @@
 	var/loaded = 1
 	var/mode = "completely"
 
-/obj/item/device/dociler/examine(mob/user)
+/obj/item/device/dociler/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It is currently set to [mode] docile mode.</span>"
 

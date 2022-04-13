@@ -127,7 +127,7 @@
 	else
 		return SPAN_NOTICE("\n\The [src] was bitten multiple times!")
 
-/obj/item/reagent_containers/food/snacks/examine(mob/user)
+/obj/item/reagent_containers/food/snacks/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

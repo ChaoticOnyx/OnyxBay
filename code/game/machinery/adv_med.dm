@@ -46,7 +46,7 @@
 	src.go_out()
 	return
 
-/obj/machinery/bodyscanner/examine(mob/user)
+/obj/machinery/bodyscanner/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)

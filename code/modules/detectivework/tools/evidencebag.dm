@@ -99,7 +99,7 @@
 		icon_state = "evidenceobj"
 	return
 
-/obj/item/evidencebag/examine(mob/user)
+/obj/item/evidencebag/_examine_text(mob/user)
 	. = ..()
 	if (!stored_item)
 		return

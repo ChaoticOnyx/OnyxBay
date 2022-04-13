@@ -166,7 +166,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/_examine_text(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)

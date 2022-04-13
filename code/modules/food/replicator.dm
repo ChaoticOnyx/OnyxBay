@@ -154,7 +154,7 @@
 				start_making = 1
 	..()
 
-/obj/machinery/food_replicator/examine(mob/user)
+/obj/machinery/food_replicator/_examine_text(mob/user)
 	. = ..()
 	if(panel_open)
 		. += "\nThe maintenance hatch is open."

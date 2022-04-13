@@ -67,7 +67,7 @@
 					infect_virus2(target, src.virus2)
 		qdel(src)
 
-/obj/item/virusdish/examine(mob/user)
+/obj/item/virusdish/_examine_text(mob/user)
 	. = ..()
 	if(basic_info)
 		. += "\n[basic_info] : <a href='?src=\ref[src];info=1'>More Information</a>"

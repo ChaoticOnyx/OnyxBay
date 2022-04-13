@@ -80,7 +80,7 @@ var/list/global/tank_gauge_cache = list()
 
 	. = ..()
 
-/obj/item/tank/examine(mob/user)
+/obj/item/tank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		var/descriptive
@@ -618,4 +618,3 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/projectile/bullet/pellet/fragment/tank/big
 	name = "large metal fragment"
 	damage = 17
-

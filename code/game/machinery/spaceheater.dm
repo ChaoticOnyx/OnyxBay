@@ -35,7 +35,7 @@
 		if(panel_open)
 			overlays  += "sheater-open"
 
-/obj/machinery/space_heater/examine(mob/user)
+/obj/machinery/space_heater/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nThe heater is [on ? "on" : "off"] and the hatch is [panel_open ? "open" : "closed"]."

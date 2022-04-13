@@ -64,7 +64,7 @@ var/global/photo_count = 0
 			scribble = txt
 	..()
 
-/obj/item/photo/examine(mob/user)
+/obj/item/photo/_examine_text(mob/user)
 	if(in_range(user, src))
 		show(user)
 		. += "\n[desc]"
@@ -228,7 +228,7 @@ var/global/photo_count = 0
 
 	update_icon()
 
-/obj/item/device/camera/examine(mob/user)
+/obj/item/device/camera/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nIt has [pictures_left] photo\s left."

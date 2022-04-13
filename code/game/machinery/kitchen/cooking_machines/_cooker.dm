@@ -47,7 +47,7 @@
 		stop()
 	return ..()
 
-/obj/machinery/cooker/examine(mob/user)
+/obj/machinery/cooker/_examine_text(mob/user)
 	. = ..()
 	if(Adjacent(user))
 		switch(product_status())

@@ -507,7 +507,7 @@
 		if(3)
 			take_damage(rand(50, 100))
 
-/obj/machinery/power/smes/examine(mob/user)
+/obj/machinery/power/smes/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe service hatch is [panel_open ? "open" : "closed"]."
 	if(!damage)

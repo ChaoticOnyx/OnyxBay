@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 					return suit.cell
 	return null
 
-/obj/item/gun/energy/examine(mob/user)
+/obj/item/gun/energy/_examine_text(mob/user)
 	. = ..()
 	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
 
@@ -198,7 +198,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	return new_mode
 
-/obj/item/gun/energy/secure/examine(mob/user)
+/obj/item/gun/energy/secure/_examine_text(mob/user)
 	. = ..()
 
 	if(registered_owner)

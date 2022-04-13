@@ -224,7 +224,7 @@
 /obj/item/crossbowframe/update_icon()
 	icon_state = "crossbowframe[buildstate]"
 
-/obj/item/crossbowframe/examine(mob/user)
+/obj/item/crossbowframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a loose rod frame in place."

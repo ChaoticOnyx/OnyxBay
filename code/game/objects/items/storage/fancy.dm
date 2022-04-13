@@ -41,7 +41,7 @@
 
 	. = ..()
 
-/obj/item/storage/fancy/examine(mob/user)
+/obj/item/storage/fancy/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

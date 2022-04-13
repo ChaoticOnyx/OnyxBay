@@ -39,7 +39,7 @@
 	if(start_grab_name)
 		current_grab = all_grabstates[start_grab_name]
 
-/obj/item/grab/examine(user)
+/obj/item/grab/_examine_text(user)
 	. = ..()
 	var/obj/item/O = get_targeted_organ()
 	. += "\nA grab on \the [affecting]'s [O.name]."

@@ -837,7 +837,7 @@
 
 	return ..()
 
-/obj/machinery/alarm/examine(mob/user)
+/obj/machinery/alarm/_examine_text(mob/user)
 	. = ..(user)
 	if (buildstage < 2)
 		. += "\nIt is not wired."

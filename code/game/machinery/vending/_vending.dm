@@ -99,7 +99,7 @@
 	power_change()
 	setup_icon_states()
 
-/obj/machinery/vending/examine(mob/user)
+/obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
 	if(.)
 		if(stat & BROKEN)

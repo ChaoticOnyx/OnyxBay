@@ -16,7 +16,7 @@ RSF
 	var/mode = 1
 	w_class = ITEM_SIZE_NORMAL
 
-/obj/item/rsf/examine(mob/user)
+/obj/item/rsf/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\nIt currently holds [stored_matter]/30 fabrication-units."

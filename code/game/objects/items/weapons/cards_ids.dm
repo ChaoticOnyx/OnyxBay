@@ -116,7 +116,7 @@ var/const/NO_EMAG_ACT = -50
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
 
-/obj/item/card/emag/robot/examine(mob/user)
+/obj/item/card/emag/robot/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It has [uses] uses left.</span>"
 
@@ -158,7 +158,7 @@ var/const/NO_EMAG_ACT = -50
 			assignment = rank
 			access |= j.get_access()
 
-/obj/item/card/id/examine(mob/user)
+/obj/item/card/id/_examine_text(mob/user)
 	if(in_range(user, src))
 		show(user)
 		return desc

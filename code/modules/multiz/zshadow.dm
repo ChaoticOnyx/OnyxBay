@@ -39,7 +39,7 @@
 	unregister_signal(owner, SIGNAL_INVISIBILITY_SET)
 	. = ..()
 
-/mob/zshadow/examine(mob/user, infix, suffix)
+/mob/zshadow/_examine_text(mob/user, infix, suffix)
 	return owner.examine(user, infix, suffix)
 
 // Relay some stuff they hear

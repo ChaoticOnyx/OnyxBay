@@ -292,7 +292,7 @@
 	find_control_computer()
 	announce = new /obj/item/device/radio/intercom(src)
 
-/obj/machinery/cryopod/examine(mob/user)
+/obj/machinery/cryopod/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)

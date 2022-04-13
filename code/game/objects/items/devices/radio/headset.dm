@@ -36,7 +36,7 @@
 /obj/item/device/radio/headset/list_channels(mob/user)
 	return list_secure_channels()
 
-/obj/item/device/radio/headset/examine(mob/user)
+/obj/item/device/radio/headset/_examine_text(mob/user)
 	. = ..()
 	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return

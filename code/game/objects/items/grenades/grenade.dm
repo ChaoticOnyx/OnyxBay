@@ -23,7 +23,7 @@
 		return 0
 	return 1
 
-/obj/item/grenade/examine(mob/user)
+/obj/item/grenade/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		if(det_time > 1)

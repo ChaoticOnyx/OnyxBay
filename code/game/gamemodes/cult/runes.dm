@@ -119,7 +119,7 @@
 		else
 			animate(src)
 
-/obj/effect/rune/examine(mob/user)
+/obj/effect/rune/_examine_text(mob/user)
 	..()
 	if(iscultist(user) || isghost(user))
 		to_chat(user, "This is \a [cultname] rune.")
@@ -245,7 +245,7 @@
 		A.forceMove(T)
 	return ..()
 
-/obj/effect/rune/teleport/examine(mob/user)
+/obj/effect/rune/teleport/_examine_text(mob/user)
 	. = ..()
 	if(iscultist(user))
 		to_chat(user, "Its name is [destination].")
@@ -366,7 +366,7 @@
 		rune = null
 	return ..()
 
-/obj/effect/cultwall/examine(mob/user)
+/obj/effect/cultwall/_examine_text(mob/user)
 	. = ..()
 	if(iscultist(user))
 		if(health == max_health)

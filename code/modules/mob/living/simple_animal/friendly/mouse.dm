@@ -105,7 +105,7 @@
 		QDEL_NULL(holding_item)
 	return ..()
 
-/mob/living/simple_animal/mouse/examine(mob/user)
+/mob/living/simple_animal/mouse/_examine_text(mob/user)
 	. = ..()
 	if(holding_item)
 		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"

@@ -123,7 +123,7 @@
 /obj/structure/closet/proc/WillContain()
 	return null
 
-/obj/structure/closet/examine(mob/user)
+/obj/structure/closet/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0

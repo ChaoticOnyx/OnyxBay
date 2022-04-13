@@ -50,7 +50,7 @@
 	set src = usr.contents
 	return 0
 
-/mob/observer/eye/examine(mob/user)
+/mob/observer/eye/_examine_text(mob/user)
 	return
 
 /mob/observer/eye/proc/possess(mob/user)

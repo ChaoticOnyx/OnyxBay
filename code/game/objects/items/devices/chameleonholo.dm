@@ -33,7 +33,7 @@
 		deactivate()
 		return
 
-/obj/item/device/chameleonholo/examine(mob/user)
+/obj/item/device/chameleonholo/_examine_text(mob/user)
 	if(!active)
 		return ..()
 	return saved_examine_result

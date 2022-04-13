@@ -198,7 +198,7 @@
 			break
 	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
-/obj/item/paper/examine(mob/user)
+/obj/item/paper/_examine_text(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."

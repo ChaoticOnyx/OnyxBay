@@ -23,7 +23,7 @@
 	var/max_rockets = 1
 	var/list/rockets = new /list()
 
-/obj/item/gun/launcher/rocket/examine(mob/user)
+/obj/item/gun/launcher/rocket/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

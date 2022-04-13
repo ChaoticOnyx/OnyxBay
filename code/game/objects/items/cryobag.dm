@@ -103,7 +103,7 @@
 		return airtank
 	..()
 
-/obj/structure/closet/body_bag/cryobag/examine(mob/user)
+/obj/structure/closet/body_bag/cryobag/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe stasis meter shows '[stasis_power]x'."
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.

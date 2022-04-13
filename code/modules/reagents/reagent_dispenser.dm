@@ -29,7 +29,7 @@
 
 	..()
 
-/obj/structure/reagent_dispensers/examine(mob/user)
+/obj/structure/reagent_dispensers/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -95,7 +95,7 @@
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/structure/reagent_dispensers/fueltank/examine(mob/user)
+/obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

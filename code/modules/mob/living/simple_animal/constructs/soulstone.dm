@@ -30,7 +30,7 @@
 	QDEL_NULL(shade)
 	return ..()
 
-/obj/item/device/soulstone/examine(mob/user)
+/obj/item/device/soulstone/_examine_text(mob/user)
 	. = ..()
 	if(full == SOULSTONE_EMPTY)
 		. += "\nThe shard still flickers with a fraction of the full artifact's power, but it needs to be filled with the essence of someone's life before it can be used."
