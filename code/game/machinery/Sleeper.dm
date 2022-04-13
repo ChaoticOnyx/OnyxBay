@@ -61,7 +61,7 @@
 		if (beaker)
 			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))

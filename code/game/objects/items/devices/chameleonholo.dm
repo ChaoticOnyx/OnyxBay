@@ -65,7 +65,7 @@
 	saved_appearance = object.appearance
 	saved_dir = object.dir
 	saved_density = object.density
-	saved_examine_result = object.examine(user)
+	saved_examine_result = object._examine_text(user)
 
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)

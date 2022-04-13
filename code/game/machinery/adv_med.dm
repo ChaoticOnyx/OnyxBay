@@ -50,7 +50,7 @@
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)
