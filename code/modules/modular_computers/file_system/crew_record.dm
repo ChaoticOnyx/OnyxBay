@@ -156,7 +156,7 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
 	GLOB.all_crew_records.Add(CR)
 	CR.load_from_mob(H, TRUE)
-	spawn(1 SECOND)
+	spawn(2 SECONDS)
 		CR.take_mob_photo(H)
 	return CR
 
