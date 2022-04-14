@@ -1,5 +1,38 @@
 [
   {
+    "author": "igorsaux",
+    "date": "2022-04-14T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Небольшие правки дизайна экзамайна.",
+        "pr": 7990
+      }
+    ]
+  },
+  {
+    "author": "TobyThorne",
+    "date": "2022-04-14T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Исправлено отображение уголков шаттлов.",
+        "pr": 7993
+      }
+    ]
+  },
+  {
+    "author": "Eshanko",
+    "date": "2022-04-14T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Теперь Randomize Name выдает скрелам скрельские имена, а не человеческие.",
+        "pr": 7989
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2022-04-12T00:00:00+03:00",
     "changes": [
