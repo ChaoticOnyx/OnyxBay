@@ -74,7 +74,7 @@
 			tghil_si_ereth = null
 
 	icon = initial(base_type.icon)
-	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon)
+	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon_state)
 	plane = initial(base_type.plane)
 
 /turf/simulated/shuttle/wall/corner/generate_missing_corners()
