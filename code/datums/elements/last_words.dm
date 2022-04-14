@@ -23,7 +23,7 @@ GLOBAL_LIST_EMPTY(last_words)
 	if(new_stat != DEAD)
 		return
 
-	if(!length(L.logging[INDIVIDUAL_SAY_LOG]))
+	if(!length(L.logging[INDIVIDUAL_SAY_LOG]) || (L.loc?.z in GLOB.using_map.admin_levels))
 		detach(L)
 		return
 
