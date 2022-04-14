@@ -141,6 +141,12 @@
 		else
 			. += "\nIt is full."
 
+	if(isghost(user) && user.client?.inquisitive_ghost)
+		if(src.opened)
+			return
+		
+		. += "\nIt contains: [items_english_list(contents)]."
+
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)
 		return TRUE
@@ -514,12 +520,6 @@
 	src.add_fingerprint(user)
 	if(!src.toggle())
 		to_chat(usr, SPAN_NOTICE("It won't budge!"))
-
-/obj/structure/closet/attack_ghost(mob/ghost)
-	if(ghost.client && ghost.client.inquisitive_ghost)
-		ghost.examinate(src)
-		if (!src.opened)
-			to_chat(ghost, "It contains: [english_list(contents)].")
 
 /obj/structure/closet/verb/verb_toggleopen()
 	set src in oview(1)
