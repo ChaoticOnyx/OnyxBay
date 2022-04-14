@@ -350,13 +350,13 @@
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			. += "\n[desc] It is turned [on? "on" : "off"]."
+			. += "\nIt is turned [on? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			. += "\n[desc] The [fitting] has been removed."
+			. += "\nThe [fitting] has been removed."
 		if(LIGHT_BURNED)
-			. += "\n[desc] The [fitting] is burnt out."
+			. += "\nThe [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			. += "\n[desc] The [fitting] has been smashed."
+			. += "\nThe [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/light/L = light_type
