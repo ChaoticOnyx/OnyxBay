@@ -46,11 +46,11 @@
 	src.go_out()
 	return
 
-/obj/machinery/bodyscanner/examine(mob/user)
+/obj/machinery/bodyscanner/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)

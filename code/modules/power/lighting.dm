@@ -44,7 +44,7 @@
 		if(2) icon_state = "tube-construct-stage2"
 		if(3) icon_state = "tube-empty"
 
-/obj/machinery/light_construct/examine(mob/user)
+/obj/machinery/light_construct/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -345,7 +345,7 @@
 	queue_icon_update()
 
 // examine verb
-/obj/machinery/light/examine(mob/user)
+/obj/machinery/light/_examine_text(mob/user)
 	. = ..()
 	var/fitting = get_fitting_name()
 	switch(get_status())

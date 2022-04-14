@@ -28,7 +28,7 @@
 	if(sound_cooldown)
 		play_sound()
 
-/obj/item/device/geiger/examine(mob/user)
+/obj/item/device/geiger/_examine_text(mob/user)
 	. = ..()
 	var/msg = "[scanning ? "ambient" : "stored"] Radiation level: [radiation_count ? radiation_count : "0"] Bq."
 	if(radiation_count > RAD_LEVEL_LOW)

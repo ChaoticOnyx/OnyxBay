@@ -30,7 +30,7 @@
 			for(var/obj/item/device/assembly/A in src)
 				A.activate()
 
-/obj/structure/closet/crate/examine(mob/user)
+/obj/structure/closet/crate/_examine_text(mob/user)
 	. = ..()
 	if(rigged && opened)
 		var/list/devices = list()

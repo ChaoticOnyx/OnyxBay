@@ -147,7 +147,7 @@
 	. = ..()
 	QDEL_NULL(bcell)
 
-/obj/item/backwear/powered/examine(mob/user)
+/obj/item/backwear/powered/_examine_text(mob/user)
 	. = ..()
 	if(bcell)
 		. += "\nIt has \the [bcell] installed."
@@ -197,7 +197,7 @@
 	if(!possible_transfer_amounts)
 		src.verbs -= /obj/item/backwear/reagent/verb/set_APTFT
 
-/obj/item/backwear/reagent/examine(mob/user)
+/obj/item/backwear/reagent/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

@@ -60,7 +60,7 @@
 	else
 		..()
 
-/obj/item/reagent_containers/ivbag/examine(mob/user, distance = 2)
+/obj/item/reagent_containers/ivbag/_examine_text(mob/user, distance = 2)
 	. = ..()
 	if (vampire_marks)
 		. += SPAN_WARNING("There are teeth marks on it.")

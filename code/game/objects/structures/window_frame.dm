@@ -425,7 +425,7 @@
 	for(var/obj/structure/window_frame/W in orange(src, 1))
 		W.update_icon()
 
-/obj/structure/window_frame/examine(mob/user)
+/obj/structure/window_frame/_examine_text(mob/user)
 	. = ..()
 	if(outer_pane)
 		if(frame_state == FRAME_REINFORCED)

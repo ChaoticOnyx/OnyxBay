@@ -116,7 +116,7 @@
 	return PROCESS_KILL
 
 
-/obj/item/device/assembly/examine(mob/user)
+/obj/item/device/assembly/_examine_text(mob/user)
 	. = ..()
 	if((in_range(src, user) || loc == user))
 		if(secured)

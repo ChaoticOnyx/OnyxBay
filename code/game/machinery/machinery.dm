@@ -421,7 +421,7 @@ Class Procs:
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
-/obj/machinery/examine(mob/user)
+/obj/machinery/_examine_text(mob/user)
 	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
 		. += "\n[display_parts(user)]"

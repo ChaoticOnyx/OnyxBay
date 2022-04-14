@@ -9,7 +9,7 @@
 	var/board = list()
 	var/selected = -1
 
-/obj/item/board/examine(mob/user)
+/obj/item/board/_examine_text(mob/user)
 	if(in_range(user,src))
 		user.set_machine(src)
 		interact(user)

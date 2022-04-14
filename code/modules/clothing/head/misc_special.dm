@@ -32,7 +32,7 @@
 	tint = TINT_HEAVY
 	var/obj/item/welding_cover/cover = null
 
-/obj/item/clothing/head/welding/examine(mob/user)
+/obj/item/clothing/head/welding/_examine_text(mob/user)
 	. = ..()
 	if(cover)
 		. += " [cover.cover_desc]"

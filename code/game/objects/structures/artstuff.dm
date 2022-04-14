@@ -128,7 +128,7 @@
 	.["name"] = painting_name
 	.["finalized"] = finalized
 
-/obj/item/canvas/examine(mob/user)
+/obj/item/canvas/_examine_text(mob/user)
 	. = ..()
 	tgui_interact(user)
 	if(!user.mind || !is_propaganda)

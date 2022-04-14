@@ -308,7 +308,7 @@
 /obj/item/zipgunframe/update_icon()
 	icon_state = "zipgun[buildstate]"
 
-/obj/item/zipgunframe/examine(mob/user)
+/obj/item/zipgunframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a barrel loosely fitted to the stock."

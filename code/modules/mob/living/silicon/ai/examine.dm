@@ -1,4 +1,4 @@
-/mob/living/silicon/ai/examine(mob/user)
+/mob/living/silicon/ai/_examine_text(mob/user)
 	. = ..()
 	var/msg = ""
 	if (stat == DEAD)

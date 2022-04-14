@@ -61,7 +61,7 @@
 	alarm = round(max(alarm, duration))
 	update_icon()
 
-/obj/machinery/shield_diffuser/examine(mob/user)
+/obj/machinery/shield_diffuser/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt is [enabled ? "enabled" : "disabled"]."
 	if(alarm)

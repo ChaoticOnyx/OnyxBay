@@ -55,13 +55,13 @@
 		new /obj/item/reagent_containers/glass/beaker/large(src))
 	RefreshParts()
 
-/obj/machinery/sleeper/examine(mob/user)
+/obj/machinery/sleeper/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if (beaker)
 			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))

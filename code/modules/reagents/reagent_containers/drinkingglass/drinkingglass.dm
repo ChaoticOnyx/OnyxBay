@@ -28,7 +28,7 @@
 	possible_transfer_amounts = "5;10;15;30"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/reagent_containers/food/drinks/glass2/examine(mob/M as mob)
+/obj/item/reagent_containers/food/drinks/glass2/_examine_text(mob/M as mob)
 	. = ..()
 
 	for(var/I in extras)

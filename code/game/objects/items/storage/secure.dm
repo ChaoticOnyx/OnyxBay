@@ -28,7 +28,7 @@
 	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = DEFAULT_BOX_STORAGE
 
-/obj/item/storage/secure/examine(mob/user)
+/obj/item/storage/secure/_examine_text(mob/user)
 	if(..(user, 1))
 		to_chat(user, text("The service panel is [src.open ? "open" : "closed"]."))
 

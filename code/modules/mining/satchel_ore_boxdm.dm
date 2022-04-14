@@ -41,7 +41,7 @@
 		else
 			stored_ore[O.name] = 1
 
-/obj/structure/ore_box/examine(mob/user)
+/obj/structure/ore_box/_examine_text(mob/user)
 	. = ..()
 
 	// Borgs can now check contents too.

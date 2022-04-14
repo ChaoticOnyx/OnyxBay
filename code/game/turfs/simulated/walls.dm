@@ -285,7 +285,7 @@
 	return ..()
 
 //Appearance
-/turf/simulated/wall/examine(mob/user)
+/turf/simulated/wall/_examine_text(mob/user)
 	. = ..()
 
 	if(!damage)

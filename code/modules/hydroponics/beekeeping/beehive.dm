@@ -34,7 +34,7 @@
 			if(81 to 100)
 				overlays += "bees3"
 
-/obj/machinery/beehive/examine(mob/user)
+/obj/machinery/beehive/_examine_text(mob/user)
 	. = ..()
 	if(!closed)
 		. += "\nThe lid is open."

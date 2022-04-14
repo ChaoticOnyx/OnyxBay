@@ -42,7 +42,7 @@
 	base_icon = "bone_axe"
 	var/stored_power = 0
 
-/obj/item/material/twohanded/fireaxe/cult/examine(mob/user)
+/obj/item/material/twohanded/fireaxe/cult/_examine_text(mob/user)
 	. = ..()
 	if(!. || !stored_power)
 		return

@@ -105,7 +105,7 @@
 	return
 
 
-/obj/item/paper_bin/examine(mob/user)
+/obj/item/paper_bin/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(amount)

@@ -287,7 +287,7 @@
 
 	return ..()
 
-/obj/item/weldingtool/examine(mob/user)
+/obj/item/weldingtool/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		if(tank)
@@ -791,7 +791,7 @@
 	var/list/tools = list()
 	var/current_tool = 1
 
-/obj/item/combitool/examine()
+/obj/item/combitool/_examine_text()
 	..()
 	if(loc == usr && tools.len)
 		to_chat(usr, "It has the following fittings:")

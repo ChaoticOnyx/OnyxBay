@@ -166,7 +166,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/_examine_text(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -890,9 +890,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/get_examine_line()
 	if(blood_DNA)
-		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]")
+		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
-		. = "\icon[src] \a [src]"
+		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()

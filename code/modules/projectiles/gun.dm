@@ -513,7 +513,7 @@
 	accuracy = initial(accuracy)
 	screen_shake = initial(screen_shake)
 
-/obj/item/gun/examine(mob/user)
+/obj/item/gun/_examine_text(mob/user)
 	. = ..()
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]

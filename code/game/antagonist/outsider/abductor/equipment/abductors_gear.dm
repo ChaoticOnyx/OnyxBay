@@ -551,7 +551,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	to_chat(user, "[SPAN_NOTICE("Probing result:")][species]")
 	to_chat(user, "[helptext]")
 
-/obj/item/melee/baton/abductor/examine(mob/user)
+/obj/item/melee/baton/abductor/_examine_text(mob/user)
 	. = ..()
 	if(AbductorCheck(user))
 		switch(mode)

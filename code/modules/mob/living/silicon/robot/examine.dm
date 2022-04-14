@@ -1,4 +1,4 @@
-/mob/living/silicon/robot/examine(mob/user)
+/mob/living/silicon/robot/_examine_text(mob/user)
 	var/custom_infix = custom_name ? ", [modtype] [braintype]" : ""
 	. = ..(user, infix = custom_infix)
 

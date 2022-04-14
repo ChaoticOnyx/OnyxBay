@@ -33,7 +33,7 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/gun/flamer/examine(mob/user)
+/obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
 
 	if(igniter)

@@ -216,7 +216,7 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/examine(mob/user)
+/obj/item/organ/external/_examine_text(mob/user)
 	. = ..()
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)

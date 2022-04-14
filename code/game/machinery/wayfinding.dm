@@ -60,7 +60,7 @@
 	if(way_target)
 		return weakref(way_target)
 
-/obj/item/pinpointer/wayfinding/examine(mob/user)
+/obj/item/pinpointer/wayfinding/_examine_text(mob/user)
 	. = ..()
 	var/msg = " Its tracking indicator reads "
 	if(target)

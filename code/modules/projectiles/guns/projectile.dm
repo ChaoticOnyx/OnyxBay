@@ -232,7 +232,7 @@
 		ammo_magazine = null
 		update_icon() //make sure to do this after unsetting ammo_magazine
 
-/obj/item/gun/projectile/examine(mob/user)
+/obj/item/gun/projectile/_examine_text(mob/user)
 	. = ..()
 	if(is_jammed)
 		. += "\n<span class='warning'>It looks jammed.</span>"

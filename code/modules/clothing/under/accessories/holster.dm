@@ -76,7 +76,7 @@
 		holstered.emp_act(severity)
 	..()
 
-/obj/item/clothing/accessory/holster/examine(mob/user)
+/obj/item/clothing/accessory/holster/_examine_text(mob/user)
 	. = ..()
 	if (holstered)
 		. += "\nA [holstered] is holstered here."

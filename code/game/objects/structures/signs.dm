@@ -521,7 +521,7 @@
 		claimant = user.real_name
 	..()
 
-/obj/item/sign/medipolma/examine(mob/user)
+/obj/item/sign/medipolma/_examine_text(mob/user)
 	. = ..()
 	if(claimant)
 		. += "\nThis one belongs to Dr.[claimant], MD."

@@ -131,7 +131,7 @@
 /obj/structure/gravemarker/cross
 	icon_state = "cross"
 
-/obj/structure/gravemarker/examine(mob/user)
+/obj/structure/gravemarker/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt says: '[message]'"
 

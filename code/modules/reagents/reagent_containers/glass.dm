@@ -48,7 +48,7 @@
 	. = ..()
 	base_name = name
 
-/obj/item/reagent_containers/glass/examine(mob/user)
+/obj/item/reagent_containers/glass/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

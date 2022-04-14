@@ -96,7 +96,7 @@
 	if(istype(dart))
 		fill_dart(dart)
 
-/obj/item/gun/projectile/dartgun/examine(mob/user)
+/obj/item/gun/projectile/dartgun/_examine_text(mob/user)
 	. = ..()
 	if (beakers.len)
 		. += "\n<span class='notice'>\The [src] contains:</span>"

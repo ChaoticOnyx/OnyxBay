@@ -48,7 +48,7 @@
 	reagents.add_reagent(ff_reagent, max_volume)
 	..()
 
-/obj/item/extinguisher/examine(mob/user)
+/obj/item/extinguisher/_examine_text(mob/user)
 	. = ..()
 	if((get_dist(src, user) <= 0) && !external_source)
 		. += "\n[text("\icon[] [] contains [] units of reagents left!", src, src.name, src.reagents.total_volume)]"

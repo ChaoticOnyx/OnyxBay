@@ -109,7 +109,7 @@
 			else
 				to_chat(user, "<span class='warning'>\The [W] is empty.</span>")
 
-/obj/item/grenade/chem_grenade/examine(mob/user)
+/obj/item/grenade/chem_grenade/_examine_text(mob/user)
 	. = ..(user)
 	if(detonator)
 		to_chat(user, "With attached [detonator.name]")
