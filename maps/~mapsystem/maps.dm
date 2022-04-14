@@ -61,13 +61,13 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/map_admin_faxes = list()
 
-	var/shuttle_docked_message
-	var/shuttle_leaving_dock
-	var/shuttle_called_message
-	var/shuttle_recall_message
-	var/emergency_shuttle_docked_message
-	var/emergency_shuttle_leaving_dock
-	var/emergency_shuttle_recall_message
+	var/shuttle_docked_message_l
+	var/shuttle_leaving_dock_l
+	var/shuttle_called_message_l
+	var/shuttle_recall_message_l
+	var/emergency_shuttle_docked_message_l
+	var/emergency_shuttle_leaving_dock_l
+	var/emergency_shuttle_recall_message_l
 
 	var/list/station_networks = list() 		// Camera networks that will show up on the console.
 

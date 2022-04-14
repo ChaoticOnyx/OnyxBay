@@ -24,10 +24,10 @@
 	company_short = "NT"
 	system_name   = "Arcturus"
 
-	emergency_shuttle_docked_message = "The Emergency Request for RnCC Demeter Was successfully approved Evacuation is mandatory for all Foundation personnel. Shuttles will depart in %ETD%."
-	emergency_shuttle_leaving_dock = "The Emergency Shuttles is departing from RnCC Demeter and will arrive in %ETA%. Please cooperate with Responders upon arrival."
-	emergency_shuttle_called_message = "An Emergency Request has been ordered for this facility. All authorized evacuees must proceed to the outbound Evacuation Zone within %ETA%."
-	emergency_shuttle_recall_message = "An Emergency Request has been declined by Overwatch. Return to your post."
+	emergency_shuttle_docked_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_DOCKED_DEMETER
+	emergency_shuttle_leaving_dock_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_LEAVING_DOCK_DEMETER
+	emergency_shuttle_called_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_CALLED_DEMETER
+	emergency_shuttle_recall_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_RECALL_DEMETER
 
 /datum/map/exodus/Demeter/perform_map_generation()
 	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 300, 300) // Create the mining Z-level.

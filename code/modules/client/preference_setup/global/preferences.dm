@@ -25,6 +25,8 @@ GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 GLOBAL_VAR_CONST(PREF_WHITE, "White")
 GLOBAL_VAR_CONST(PREF_DARK, "Dark")
+GLOBAL_VAR_CONST(PREF_EN, "English")
+GLOBAL_VAR_CONST(PREF_RU, "русский")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -310,6 +312,11 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_CONTROL
 	default_value = GLOB.PREF_NO
 
+/datum/client_preference/language
+	description = "Language"
+	key = "LANGUAGE"
+	category = PREF_CATEGORY_UI
+	options = list(GLOB.PREF_EN, GLOB.PREF_RU)
 
 /********************
 * General Staff Preferences *

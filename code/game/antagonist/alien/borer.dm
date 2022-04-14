@@ -20,13 +20,13 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	initial_spawn_req = 3
 	initial_spawn_target = 5
 
-	spawn_announcement_title = "Lifesign Alert"
+	spawn_announcement_title_l = L10N_ANNOUNCE_BORER_SPAWN_TITLE
 	spawn_announcement_delay = 5000
 
 	station_crew_involved = FALSE
 
 /datum/antagonist/borer/Initialize()
-	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
+	spawn_announcement_l = L10N_ANNOUNCE_BORER_SPAWN
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
 	. = ..()
 	if(config.borer_min_age)

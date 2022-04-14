@@ -429,8 +429,8 @@
 	home_waypoint = "nav_merc_start"
 	cloaked = 0
 	move_time = 120
-	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
-	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
+	arrival_message_l = L10N_ANNOUNCE_ARRIVAL_MESSAGE_SYNDICATE
+	departure_message_l = L10N_ANNOUNCE_DEPARTURE_MESSAGE_SYNDICATE
 
 /obj/effect/shuttle_landmark/syndi/start
 	name = "Syndicate Base"
@@ -571,7 +571,7 @@
 	cloaked = 1
 	move_time = 60
 	announcer = "NMV Icarus Sensor Array"
-	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
+	arrival_message_l = L10N_ANNOUNCE_ARRIVAL_MESSAGE_MERCHANT
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
@@ -627,8 +627,8 @@
 	cloaked = 1
 	move_time = 120
 	announcer = "NMV Icarus Sensor Array"
-	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
-	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
+	arrival_message_l = L10N_ANNOUNCE_ARRIVAL_MESSAGE_SKIPJACK
+	departure_message_l = L10N_ANNOUNCE_DEPARTURE_MESSAGE_SKIPJACK
 
 /obj/effect/shuttle_landmark/skipjack/start
 	name = "Raider Base"

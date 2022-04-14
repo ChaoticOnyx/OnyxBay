@@ -13,11 +13,10 @@
 
 /datum/event/money_hacker/announce()
 	// Hide the account number for now since it's all you need to access a standard-security account. Change when that's no longer the case.
-	var/message = "A brute force hack has been detected (in progress since [stationtime2text()]). The target of the attack is: Financial accounts, \
-	without intervention this attack will succeed in approximately 10 minutes. Possible solutions: suspension of accounts, disabling NTnet server, \
-	increase account security level. Notifications will be sent as updates occur."
-	command_announcement.Announce(message, "[location_name()] Firewall Subroutines")
-
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_MONEY_HACKER, null, list("time" = stationtime2text())),
+		TR_DATA(L10N_ANNOUNCE_MONEY_HACKER, null, list("location_name" = location_name()))
+	)
 
 /datum/event/money_hacker/tick()
 	if(world.time >= end_time)
@@ -42,7 +41,7 @@
 
 	if(ntnet_global?.check_function() && length(affected_accounts))
 		//hacker wins
-		message = "The hack attempt has succeeded."
+		message = TR_DATA(L10N_ANNOUNCE_MONEY_HACKER_WINS, null, null)
 
 		var/target_name = pick("","yo brotha from anotha motha","el Presidente","chieF smackDowN")
 		var/purpose = pick("Ne$ ---ount fu%ds init*&lisat@*n","PAY BACK YOUR MUM","Funds withdrawal","pWnAgE","l33t hax","liberationez")
@@ -70,5 +69,5 @@
 
 	else
 		//crew wins
-		message = "The attack has ceased, the affected accounts can now be brought online."
-	command_announcement.Announce(message, "[location_name()] Firewall Subroutines")
+		message = TR_DATA(L10N_ANNOUNCE_MONEY_HACKER_LOOSE, null, null)
+	command_announcement.AnnounceLocalizeable(message, TR_DATA(L10N_ANNOUNCE_MONEY_HACKER_TITLE, null, list("location_name" = location_name())))

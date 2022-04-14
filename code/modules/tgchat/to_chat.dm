@@ -103,4 +103,19 @@ else if(!istext(variable)) { CRASH("Trying to send non-text content") }
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	SSchat.queue(target, message)
 
+/proc/to_chat_localizeable(target, localize_data, type)
+	var/code = null
+
+	if(istype(target, /client))
+		var/client/C = target
+		code = CODE_FROM_CLIENT(C)
+	else
+		var/mob/M = target
+		code = CODE_FROM_MOB(M)
+
+	TR_SET_CODE(localize_data, code)
+	var/message = TR(localize_data)
+
+	to_chat(target, null, type, message)
+
 #undef SANITIZE

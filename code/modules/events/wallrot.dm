@@ -3,7 +3,11 @@
 	endWhen = announceWhen + 1
 
 /datum/event/wallrot/announce()
-	command_announcement.Announce("Harmful fungi detected on [location_name()]. Structures may be contaminated.", "Biohazard Alert", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_WALLROT, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_WALLROT_TITLE, null, null),
+		zlevels = affecting_z
+	)
 
 /datum/event/wallrot/start()
 	spawn()

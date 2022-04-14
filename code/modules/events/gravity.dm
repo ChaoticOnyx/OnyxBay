@@ -5,7 +5,11 @@
 	announceWhen = rand(15, 60)
 
 /datum/event/gravity/announce()
-	command_announcement.Announce("Feedback surge detected in mass-distributions systems. Engineers are strongly advised to deal with the problem.", "Gravity Failure", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_GRAVITY, null, null),
+		TR_DATA(L10N_ANNOUNCE_GRAVITY_TITLE, null, null),
+		zlevels = affecting_z
+	)
 
 /datum/event/gravity/start()
 	var/obj/machinery/gravity_generator/main/GG = GLOB.station_gravity_generator

@@ -32,7 +32,11 @@
 		wormholes += create_wormhole(enter, exit)
 
 /datum/event/wormholes/announce()
-	command_announcement.Announce("Space-time anomalies detected on the station. There is no additional data.", "[location_name()] Sensor Array", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_WORMHOLES, null, null),
+		TR_DATA(L10N_ANNOUNCE_WORMHOLES_TITLE, null, list("location_name" = location_name())),
+		zlevels = affecting_z
+	)
 
 /datum/event/wormholes/tick()
 	if(activeFor % shift_frequency == 0)

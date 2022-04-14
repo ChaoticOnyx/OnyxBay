@@ -1,11 +1,11 @@
 /datum/map/exodus
-	emergency_shuttle_docked_message = "The Emergency Shuttle has docked with the station. You have approximately %ETD% to board the Emergency Shuttle."
-	emergency_shuttle_leaving_dock = "The Emergency Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
+	emergency_shuttle_docked_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_DOCKED_EXODUS
+	emergency_shuttle_leaving_dock_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_LEAVING_DOCK_EXODUS
 
-	emergency_shuttle_called_message = "An emergency evacuation shuttle has been called. It will arrive in approximately %ETA%"
+	emergency_shuttle_called_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_CALLED_EXODUS
 	emergency_shuttle_called_sound = 'sound/AI/shuttlecalled.ogg'
 
-	emergency_shuttle_recall_message = "The emergency shuttle has been recalled."
+	emergency_shuttle_recall_message_l = L10N_ANNOUNCE_EMERGENCY_SHUTTLE_RECALL_EXODUS
 
 	command_report_sound = 'sound/AI/commandreport.ogg'
 	grid_check_sound = 'sound/AI/poweroff.ogg'

@@ -91,4 +91,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	for(var/obj/effect/immovablerod/imm in world)
 		return
 	sleep(50)
-	command_announcement.Announce("What the fuck was that?!", "General Alert")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_IMMOVABLE_ROD, null, null),
+		TR_DATA(L10N_ANNOUNCE_IMMOVABLE_ROD_TITLE, null, null)
+	)

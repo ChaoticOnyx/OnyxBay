@@ -9,7 +9,12 @@
 	var/postStartTicks 		= 0
 
 /datum/event/radiation_storm/announce()
-	command_announcement.Announce("High levels of radiation detected in proximity of the [location_name()]. Please evacuate into one of the shielded maintenance tunnels.", "[location_name()] Sensor Array", new_sound = GLOB.using_map.radiation_detected_sound, zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_RADIATION_STORM, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_RADIATION_STORM_TITLE, null, list("location_name" = location_name())),
+		new_sound = GLOB.using_map.radiation_detected_sound,
+		zlevels = affecting_z
+	)
 
 /datum/event/radiation_storm/start()
 	make_maint_all_access()
@@ -19,7 +24,11 @@
 
 /datum/event/radiation_storm/tick()
 	if(activeFor == enterBelt)
-		command_announcement.Announce("The [location_name()] has entered the radiation belt. Please remain in a sheltered area until we have passed the radiation belt.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_RADIATION_STORM_ENTERED, null, list("location_name" = location_name())),
+			TR_DATA(L10N_ANNOUNCE_RADIATION_STORM_TITLE, null, list("location_name" = location_name())),
+			zlevels = affecting_z
+		)
 		radiate()
 
 	if(activeFor >= enterBelt && activeFor <= leaveBelt)
@@ -30,7 +39,11 @@
 		radiate()
 
 	else if(activeFor == leaveBelt)
-		command_announcement.Announce("The [location_name()] has passed the radiation belt. Please allow for up to one minute while radiation levels dissipate, and report to the infirmary if you experience any unusual symptoms. Maintenance will lose all access again shortly.", "[location_name()] Sensor Array", zlevels = affecting_z)
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_RADIATION_STORM_PASSED, null, list("location_name" = location_name())),
+			TR_DATA(L10N_ANNOUNCE_RADIATION_STORM_TITLE, null, list("location_name" = location_name())),
+			zlevels = affecting_z
+		)
 
 		for(var/area/A in GLOB.hallway)
 			A.set_lighting_mode(LIGHTMODE_RADSTORM, FALSE)

@@ -507,7 +507,10 @@ var/global/datum/controller/occupations/job_master
 					return H
 				if("Captain")
 					var/sound/announce_sound = (GAME_STATE <= RUNLEVEL_SETUP)? null : sound('sound/misc/boatswain.ogg', volume=20)
-					captain_announcement.Announce("All hands, Captain [H.real_name] on deck!", new_sound=announce_sound)
+					captain_announcement.AnnounceLocalizeable(
+						TR_DATA(L10N_ANNOUNCE_CAPTAIN_JOINED, null, list("name" = H.real_name)),
+						new_sound=announce_sound
+					)
 
 		// put any loadout items that couldn't spawn into storage or on the ground
 		for(var/datum/gear/G in spawn_in_storage)

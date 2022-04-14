@@ -215,7 +215,10 @@
 
 /datum/hallucination/evacuation/start()
 	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
-	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
+
+	var/code = CODE_FROM_MOB(holder)
+	var/data = TR_DATA(GLOB.using_map.emergency_shuttle_docked_message_l, code, list("etd" = 3))
+	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", TR(data))]")
 
 //Seeing stuff
 /datum/hallucination/mirage

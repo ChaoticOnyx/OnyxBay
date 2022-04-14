@@ -6,8 +6,7 @@
 				starting_locations |= get_turf(sloc)
 
 /datum/antagonist/proc/announce_antagonist_spawn()
-
-	if(spawn_announcement)
+	if(spawn_announcement_l)
 		if(announced)
 			return
 		announced = 1
@@ -15,9 +14,17 @@
 			if(spawn_announcement_delay)
 				sleep(spawn_announcement_delay)
 			if(spawn_announcement_sound)
-				command_announcement.Announce("[spawn_announcement]", "[spawn_announcement_title ? spawn_announcement_title : "Priority Alert"]", new_sound = spawn_announcement_sound)
+				command_announcement.AnnounceLocalizeable(
+					TR_DATA(spawn_announcement_l, null, list("station_name" = station_name())),
+					TR_DATA(spawn_announcement_title_l ? spawn_announcement_title_l : L10N_ANNOUNCE_PRIORITY_ALERT, null, null),
+					new_sound = spawn_announcement_sound
+				)
 			else
-				command_announcement.Announce("[spawn_announcement]", "[spawn_announcement_title ? spawn_announcement_title : "Priority Alert"]")
+				command_announcement.AnnounceLocalizeable(
+					TR_DATA(spawn_announcement_l, null, list("station_name" = station_name())),
+					TR_DATA(spawn_announcement_title_l ? spawn_announcement_title_l : L10N_ANNOUNCE_PRIORITY_ALERT, null, null)
+				)
+
 	return
 
 /datum/antagonist/proc/place_mob(mob/living/mob)

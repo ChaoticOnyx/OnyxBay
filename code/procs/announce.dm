@@ -29,6 +29,54 @@
 	title = "[command_name()] Update"
 	announcement_type = "[command_name()] Update"
 
+/datum/announcement/proc/AnnounceLocalizeable(message_l, title_l, new_sound = sound, do_newscast = newscast, zlevels = GLOB.using_map.contact_levels)
+	for(var/mob/M in GLOB.player_list)
+		if(should_recieve_announce(M, zlevels))
+			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
+
+			spawn (2)
+				if(new_sound)
+					M.playsound_local(M.loc, new_sound, 75)
+
+			TR_SET_CODE(message_l, CODE_FROM_MOB(M))
+
+			var/message = TR(message_l)
+			var/new_title = title
+
+			if(title_l)
+				TR_SET_CODE(title_l, CODE_FROM_MOB(M))
+				new_title = TR(title_l)
+
+			var/msg = FormMessage(message, new_title)
+			to_chat(M, msg)
+
+	if(do_newscast)
+		TR_SET_CODE(message_l, LANG_EN)
+		var/message = TR(message_l)
+
+		var/new_title = title
+
+		if(title_l)
+			TR_SET_CODE(title_l, LANG_EN)
+			new_title = TR(title_l)
+
+		// TODO: Add news localization
+		NewsCast(message, new_title)
+
+	if(log)
+		TR_SET_CODE(message_l, LANG_EN)
+		var/message = TR(message_l)
+
+		var/new_title = title
+
+		if(title_l)
+			TR_SET_CODE(title_l, LANG_EN)
+			new_title = TR(title_l)
+
+		var/log_msg = "[key_name(usr)] has made \a [announcement_type]: [message] - [new_title] - [announcer]"
+		log_game(log_msg, notify_admin = TRUE)
+		log_story("GAME", log_msg)
+
 /datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
 	if(!message)
 		return
@@ -117,7 +165,10 @@
 	GLOB.using_map.level_x_biohazard_announcement(7)
 
 /proc/ion_storm_announcement()
-	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_ION_STORM, null, list("station_name" = station_name())),
+		TR_DATA(L10N_ANNOUNCE_ION_STORM_TITLE, null, null)
+	)
 
 /proc/AnnounceArrival(name, datum/job/job, datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
@@ -160,7 +211,10 @@
 
 /proc/AnnounceArrivalCaptain(name, captain_sound_volume)
 	var/sound/announce_sound = sound('sound/misc/boatswain.ogg', volume=captain_sound_volume)
-	captain_announcement.Announce("All hands, Captain [name] on deck!", new_sound=announce_sound)
+	captain_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_CAPTAIN_JOINED, null, list("name" = name)),
+		new_sound=announce_sound
+	)
 
 /proc/get_announcement_frequency(datum/job/job)
 	// During red alert all jobs are announced on main frequency.

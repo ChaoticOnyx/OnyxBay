@@ -37,8 +37,11 @@
 
 /datum/event/prison_break/announce()
 	if(areas && areas.len > 0)
-		command_announcement.Announce("[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [location_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [location_name()] AI involvement is recommended.", "[eventDept] Alert", zlevels = affecting_z)
-
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_PRISON_BREAK, null, list("location_name" = location_name(), "type" = (eventDept == "Security") ? "imprisonment" : "containment")),
+			TR_DATA(L10N_ANNOUNCE_PRISON_BREAK_TITLE, null, list("dept" = eventDept)),
+			zlevels = affecting_z
+		)
 
 /datum/event/prison_break/start()
 	for(var/area/A in world)

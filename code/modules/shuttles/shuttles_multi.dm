@@ -30,8 +30,8 @@
 
 	var/cloaked = 1
 	var/announcer
-	var/arrival_message
-	var/departure_message
+	var/arrival_message_l
+	var/departure_message_l
 	var/return_warning = 0
 
 	category = /datum/shuttle/autodock/multi/antag
@@ -51,14 +51,16 @@
 	..()
 
 /datum/shuttle/autodock/multi/antag/proc/announce_departure()
-	if(cloaked || isnull(departure_message))
+	if(cloaked || isnull(departure_message_l))
 		return
-	command_announcement.Announce(departure_message, announcer || "[GLOB.using_map.boss_name]")
+
+	command_announcement.AnnounceLocalizeable(departure_message_l, announcer || "[GLOB.using_map.boss_name]")
 
 /datum/shuttle/autodock/multi/antag/proc/announce_arrival()
-	if(cloaked || isnull(arrival_message))
+	if(cloaked || isnull(arrival_message_l))
 		return
-	command_announcement.Announce(arrival_message, announcer || "[GLOB.using_map.boss_name]")
+
+	command_announcement.AnnounceLocalizeable(arrival_message_l, announcer || "[GLOB.using_map.boss_name]")
 
 /datum/shuttle/autodock/multi/antag/set_destination(destination_key, mob/user)
 	if(!return_warning && destination_key == home_waypoint.name)

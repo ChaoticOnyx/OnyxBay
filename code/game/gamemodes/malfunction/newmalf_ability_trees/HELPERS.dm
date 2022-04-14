@@ -153,17 +153,17 @@
 	var/fulltext = ""
 	switch(user.hack_fails)
 		if(1)
-			fulltext = "We have detected a hack attempt into your [text]. The intruder failed to access anything of importance, but disconnected before we could complete our traces."
+			fulltext = TR_DATA(L10N_ANNOUNCE_HACK_FAILURE_01, null, list("text" = text))
 		if(2)
-			fulltext = "We have detected another hack attempt. It was targeting [text]. The intruder almost gained control of the system, so we had to disconnect them. We partially finished our trace and it seems to be originating either from the [station_name()], or its immediate vicinity."
+			fulltext = TR_DATA(L10N_ANNOUNCE_HACK_FAILURE_02, null, list("text" = text, "station_name" = station_name()))
 		if(3)
-			fulltext = "Another hack attempt has been detected, this time targeting [text]. We are certain the intruder entered the network via a terminal located somewhere on the [station_name()]."
+			fulltext = TR_DATA(L10N_ANNOUNCE_HACK_FAILURE_03, null, list("text" = text, "station_name" = station_name()))
 		if(4)
-			fulltext = "We have finished our traces and it seems the recent hack attempts are originating from your AI system [user.name]. We recommend investigation."
+			fulltext = TR_DATA(L10N_ANNOUNCE_HACK_FAILURE_04, null, list("user" = user.name))
 		else
-			fulltext = "Another hack attempt has been detected, targeting [text]. The source still seems to be your AI system [user.name]."
+			fulltext = TR_DATA(L10N_ANNOUNCE_HACK_FAILURE_OTHER, null, list("text" = text, "user" = user.name))
 
-	command_announcement.Announce(fulltext)
+	command_announcement.AnnounceLocalizeable(fulltext)
 
 // Proc: get_unhacked_apcs()
 // Parameters: None

@@ -880,7 +880,9 @@
 	log_and_message_admins_many(cultists, "started summoning Nar-sie.")
 
 	var/area/A = get_area(src)
-	command_announcement.Announce("High levels of bluespace interference detected at \the [A]. Suspected wormhole forming. Investigate it immediately.")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_TEAR_REALITY, null, list("area" = A.name))
+	)
 	while(cultists.len > 4 || the_end_comes)
 		cultists = get_cultists()
 		if(cultists.len > 8)
@@ -903,7 +905,9 @@
 	if(the_end_comes >= the_time_has_come)
 		HECOMES = new /obj/singularity/narsie(get_turf(src))
 	else
-		command_announcement.Announce("Bluespace anomaly has ceased.")
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_TEAR_REALITY_CEASED, null, null)
+		)
 		qdel(src)
 
 /obj/effect/rune/tearreality/attack_hand(mob/living/user)

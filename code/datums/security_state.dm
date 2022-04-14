@@ -160,20 +160,26 @@
 
 /decl/security_level/default
 	icon = 'icons/misc/security_state.dmi'
-	var/up_description
-	var/down_description
+	var/up_description_l
+	var/down_description_l
 
 	var/static/datum/announcement/priority/security/security_announcement_up = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/signals/alarm2.ogg'))
 	var/static/datum/announcement/priority/security/security_announcement_down = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/signals/start1.ogg'))
 
 /decl/security_level/default/switching_up_to()
-	if(up_description)
-		security_announcement_up.Announce(up_description, "Attention! Alert level elevated to [name]!")
+	if(up_description_l)
+		security_announcement_up.AnnounceLocalizeable(
+			TR_DATA(up_description_l, null, null),
+			TR_DATA(L10N_ANNOUNCE_SECURITY_CODE_ELEVATED_TITLE, null, list("name" = name))
+		)
 	notify_station()
 
 /decl/security_level/default/switching_down_to()
-	if(down_description)
-		security_announcement_down.Announce(down_description, "Attention! Alert level changed to [name]!")
+	if(down_description_l)
+		security_announcement_down.AnnounceLocalizeable(
+			TR_DATA(down_description_l, null, null),
+			TR_DATA(L10N_ANNOUNCE_SECURITY_CODE_CHANGED_TITLE, null, list("name" = name))
+		)
 	notify_station()
 
 /decl/security_level/default/proc/notify_station()
@@ -195,7 +201,7 @@
 	overlay_alarm = "alarm_green"
 	overlay_status_display = "status_display_green"
 
-	down_description = "All threats to the station have passed. Security may not have weapons visible, privacy laws are once again fully enforced."
+	down_description_l = L10N_ANNOUNCE_SECURITY_CODE_GREEN_DOWN
 
 /decl/security_level/default/code_blue
 	name = "code blue"
@@ -210,8 +216,8 @@
 	overlay_alarm = "alarm_blue"
 	overlay_status_display = "status_display_blue"
 
-	up_description = "The station has received reliable information about possible hostile activity on the station. Security staff may have weapons visible, random searches are permitted."
-	down_description = "The immediate threat has passed. Security may no longer have weapons drawn at all times, but may continue to have them visible. Random searches are still allowed."
+	up_description_l = L10N_ANNOUNCE_SECURITY_CODE_BLUE_UP
+	down_description_l = L10N_ANNOUNCE_SECURITY_CODE_BLUE_DOWN
 
 /decl/security_level/default/code_red
 	name = "code red"
@@ -226,8 +232,8 @@
 	overlay_alarm = "alarm_red"
 	overlay_status_display = "status_display_red"
 
-	up_description = "There is an immediate serious threat to the station. Security may have weapons unholstered at all times. Random searches are allowed and advised."
-	down_description = "The self-destruct mechanism has been deactivated, there is still however an immediate serious threat to the station. Security may have weapons unholstered at all times, random searches are allowed and advised."
+	up_description_l = L10N_ANNOUNCE_SECURITY_CODE_RED_UP
+	down_description_l = L10N_ANNOUNCE_SECURITY_CODE_RED_DOWN
 
 /decl/security_level/default/code_delta
 	name = "code delta"
@@ -245,5 +251,9 @@
 	var/static/datum/announcement/priority/security/security_announcement_delta = new(do_log = 0, do_newscast = 1, new_sound = sound('sound/effects/siren.ogg'))
 
 /decl/security_level/default/code_delta/switching_up_to()
-	security_announcement_delta.Announce("The self-destruct mechanism has been engaged. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill.", "Attention! Delta security level reached!")
+	security_announcement_delta.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_SECURITY_CODE_DELTA_ON, null, null),
+		TR_DATA(L10N_ANNOUNCE_SECURITY_CODE_DELTA_ON_TITLE, null, null)
+	)
+
 	notify_station()

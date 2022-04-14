@@ -3,7 +3,9 @@
 /datum/ictus/New()
 	start()
 	if(prob(65))
-		command_announcement.Announce("Suspicious biological activity was noticed at the station. The medical crew should immediately prepare for the fight against the pathogen. Infected crew members must not leave the station under any circumstances.")
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_ICTUS, null, null)
+		)
 	..()
 
 /datum/ictus/proc/start()

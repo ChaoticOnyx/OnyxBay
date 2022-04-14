@@ -27,7 +27,12 @@
 /proc/power_restore_quick(announce = 1)
 
 	if(announce)
-		command_announcement.Announce("All SMESs on the [station_name()] have been recharged. We apologize for the inconvenience.", "Power Systems Nominal", new_sound = GLOB.using_map.grid_restored_sound)
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_POWER_RESTORE, null, list("station_name" = station_name())),
+			TR_DATA(L10N_ANNOUNCE_POWER_RESTORE_TITLE, null, null),
+			new_sound = GLOB.using_map.grid_restored_sound
+		)
+
 	for(var/obj/machinery/power/smes/S in GLOB.smes_list)
 		S.failure_timer = 0
 		S.charge = S.capacity

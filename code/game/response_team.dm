@@ -146,11 +146,17 @@ var/can_call_ert
 
 	// there's only a certain chance a team will be sent
 	if(!prob(send_team_chance))
-		command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. Unfortunately, we were unable to send one at this time.", "[GLOB.using_map.boss_name]")
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_CALL_FAILED, null, list("station_name" = station_name())),
+			TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_CALL_FAILED_TITLE, null, list("boss_name" = GLOB.using_map.boss_name))
+		)
 		can_call_ert = 0 // Only one call per round, ladies.
 		return
 
-	command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "[GLOB.using_map.boss_name]")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_CALLED, null, list("station_name" = station_name())),
+		TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_CALLED_TITLE, null, list("boss_name" = GLOB.using_map.boss_name))
+	)
 	evacuation_controller.add_can_call_predicate(new /datum/evacuation_predicate/ert())
 
 	can_call_ert = 0 // Only one call per round, gentleman.

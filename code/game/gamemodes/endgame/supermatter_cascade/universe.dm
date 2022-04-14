@@ -44,7 +44,9 @@ var/global/universe_has_ended = 0
 		M.flash_eyes()
 
 	if(evacuation_controller.cancel_evacuation())
-		priority_announcement.Announce("The evacuation has been aborted due to bluespace distortion.")
+		priority_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_BLUESPACE_DISTORTION_CANCELS_EVACUATION, null, null)
+		)
 
 	AreaSet()
 	MiscSet()
@@ -59,19 +61,10 @@ var/global/universe_has_ended = 0
 
 	new /obj/singularity/narsie/exit(pick(GLOB.endgame_exits))
 	spawn(rand(30,60) SECONDS)
-		var/txt = {"
-A galaxy-wide electromagnetic pulse has been detected. All systems across space are heavily damaged and many personnel have died or are dying. We are currently detecting increasing indications that the universe itself is beginning to unravel.
-
-[station_name()], the largest source of disturbances has been pinpointed directly to you. We estimate you have five minutes until a bluespace rift opens within your facilities.
-
-There is no known way to stop the formation of the rift, nor any way to escape it. You are entirely alone.
-
-God help your s\[\[###!!!-
-
-AUTOMATED ALERT: Link to [command_name()] lost.
-
-"}
-		priority_announcement.Announce(txt,"SUPERMATTER CASCADE DETECTED")
+		priority_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_SUPERMATTER_CASCADE, null, list("station_name" = station_name(), "command_name" = command_name())),
+			TR_DATA(L10N_ANNOUNCE_SUPERMATTER_CASCADE_TITLE, null, null)
+		)
 
 		spawn(5 MINUTES)
 			GLOB.cinematic.station_explosion_cinematic(0,null) // TODO: Custom cinematic

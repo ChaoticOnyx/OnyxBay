@@ -71,7 +71,11 @@
 				S.amount_grown = -1
 
 /datum/event/infestation/announce()
-	command_announcement.Announce("Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.", "Major Bill's Shipping Critter Sensor", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_INFESTATION, null, list("vermstring" = vermstring, "location" = location.name)),
+		TR_DATA(L10N_ANNOUNCE_INFESTATION_TITLE, null, null),
+		zlevels = affecting_z
+	)
 
 /datum/event/infestation/proc/set_location_get_infestation_turfs()
 	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))

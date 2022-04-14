@@ -42,10 +42,14 @@
 				pod.move_time = (evac_transit_delay/10)
 				pod.launch(src)
 
-		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.emergency_shuttle_leaving_dock, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60,1)] minute\s"))
+		priority_announcement.AnnounceLocalizeable(
+			TR_DATA(GLOB.using_map.emergency_shuttle_leaving_dock_l, null, list("dock_name" = GLOB.using_map.dock_name, "eta" = round(get_eta() / 60, 1)))
+		)
 	else
 		// Bluespace Jump
-		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_leaving_dock, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60,1)] minute\s"))
+		priority_announcement.AnnounceLocalizeable(
+			TR_DATA(GLOB.using_map.shuttle_leaving_dock_l, null, list("dock_name" = GLOB.using_map.dock_name, "eta" = round(get_eta()/60,1)))
+		)
 		SetUniversalState(/datum/universal_state/bluespace_jump, arguments=list(GLOB.using_map.station_levels))
 
 /datum/evacuation_controller/starship/finish_evacuation()

@@ -8,7 +8,11 @@
 
 
 /datum/event/brand_intelligence/announce()
-	command_announcement.Announce("Rampant brand intelligence has been detected aboard the [location_name()]. The origin is believed to be \a \"[initial(originMachine.name)]\" type. Fix it, before it spreads to other vending machines.", "Machine Learning Alert", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_BRAND_INTELLIGENCE, null, list("location_name" = location_name(), "machine_name" = initial(originMachine.name))),
+		TR_DATA(L10N_ANNOUNCE_BRAND_INTELLIGENCE_TITLE, null, null),
+		zlevels = affecting_z
+	)
 
 
 /datum/event/brand_intelligence/start()
@@ -59,7 +63,10 @@
 			continue
 		infectedMachine.shut_up = 1
 		infectedMachine.shoot_inventory = 0
-	command_announcement.Announce("All traces of the rampant brand intelligence have disappeared from the systems.", "[location_name()] Firewall Subroutines")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_BRAND_INTELLIGENCE_END, null, null),
+		TR_DATA(L10N_ANNOUNCE_BRAND_INTELLIGENCE_END_TITLE, null, list("location_name" = location_name()))
+	)
 	originMachine = null
 	infectedVendingMachines.Cut()
 	vendingMachines.Cut()

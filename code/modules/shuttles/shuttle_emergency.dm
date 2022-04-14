@@ -28,7 +28,7 @@
 /datum/shuttle/autodock/ferry/emergency/shuttle_moved()
 	if(current_location == waypoint_station)
 		emergency_controller.shuttle_leaving()
-		priority_announcement.Announce(replacetext(replacetext((emergency_controller.emergency_evacuation ? GLOB.using_map.emergency_shuttle_leaving_dock : GLOB.using_map.shuttle_leaving_dock), "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(emergency_controller.get_eta()/60,1)] minute\s"))
+		priority_announcement.AnnounceLocalizeable(TR_DATA((emergency_controller.emergency_evacuation ? GLOB.using_map.emergency_shuttle_leaving_dock_l : GLOB.using_map.shuttle_leaving_dock_l), null, list("dock_name" = GLOB.using_map.dock_name, "eta" = round(emergency_controller.get_eta() / 60, 1))))
 	..()
 	if(current_location == waypoint_offsite && emergency_controller.has_evacuated())
 		emergency_controller.shuttle_evacuated()

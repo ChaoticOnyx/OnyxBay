@@ -130,7 +130,10 @@ var/hadevent    = 0
 				temp_timer.releasetime = 1
 
 		sleep(150)
-		command_announcement.Announce("Gr3y.T1d3 virus detected in [station_name()] imprisonment subroutines. Recommend AI involvement.", "Security Alert")
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_GREY_TIDE, null, list("station_name" = station_name())),
+			TR_DATA(L10N_ANNOUNCE_GREY_TIDE_TITLE, null, null)
+		)
 	else
 		to_world_log("ERROR: Could not initate grey-tide. Unable find prison or brig area.")
 
@@ -144,7 +147,10 @@ var/hadevent    = 0
 
 /proc/lightsout(isEvent = 0, lightsoutAmount = 1,lightsoutRange = 25) //leave lightsoutAmount as 0 to break ALL lights
 	if(isEvent)
-		command_announcement.Announce("An Electrical storm has been detected in your area, please repair potential electronic overloads.","Electrical Storm Alert")
+		command_announcement.AnnounceLocalizeable(
+			TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM, null, null),
+			TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_TITLE, null, null)
+		)
 
 	if(lightsoutAmount)
 		var/list/epicentreList = list()

@@ -536,7 +536,10 @@ var/bomb_set
 	if(timeleft > 0 && GAME_STATE < RUNLEVEL_POSTGAME)
 		if(timeleft <= self_destruct_cutoff)
 			if(!announced)
-				priority_announcement.Announce("The self-destruct sequence has reached terminal countdown, abort systems have been disabled.", "Self-Destruct Control Computer")
+				priority_announcement.AnnounceLocalizeable(
+					TR_DATA(L10N_ANNOUNCE_SELF_DESTRUCT_TERMINAL_STAGE, null, null),
+					TR_DATA(L10N_ANNOUNCE_SELF_DESTRUCT_TERMINAL_STAGE_TITLE, null, null)
+				)
 				announced = 1
 			if(world.time >= time_to_explosion)
 				var/range

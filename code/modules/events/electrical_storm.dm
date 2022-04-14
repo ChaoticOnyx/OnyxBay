@@ -8,11 +8,23 @@
 	..()
 	switch(severity)
 		if(EVENT_LEVEL_MUNDANE)
-			command_announcement.Announce("A minor electrical storm has been detected near the [location_name()]. Please watch out for possible electrical discharges.", "[location_name()] Sensor Array", zlevels = affecting_z)
+			command_announcement.AnnounceLocalizeable(
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_MUNDANE, null, list("location_name" = location_name())),
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_TITLE_02, null, list("location_name" = location_name())),
+				zlevels = affecting_z
+			)
 		if(EVENT_LEVEL_MODERATE)
-			command_announcement.Announce("The [location_name()] is about to pass through an electrical storm. Please secure sensitive electrical equipment until the storm passes.", "[location_name()] Sensor Array", new_sound = GLOB.using_map.electrical_storm_moderate_sound, zlevels = affecting_z)
+			command_announcement.AnnounceLocalizeable(
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_MODERATE, null, list("location_name" = location_name())),
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_TITLE_02, null, list("location_name" = location_name())),
+				zlevels = affecting_z
+			)
 		if(EVENT_LEVEL_MAJOR)
-			command_announcement.Announce("Alert. A strong electrical storm has been detected in proximity of the [location_name()]. It is recommended to immediately secure sensitive electrical equipment until the storm passes.", "[location_name()] Sensor Array", new_sound = GLOB.using_map.electrical_storm_major_sound, zlevels = affecting_z)
+			command_announcement.AnnounceLocalizeable(
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_MAJOR, null, list("location_name" = location_name())),
+				TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_TITLE_02, null, list("location_name" = location_name())),
+				zlevels = affecting_z
+			)
 
 /datum/event/electrical_storm/start()
 	..()
@@ -68,4 +80,7 @@
 
 /datum/event/electrical_storm/end()
 	..()
-	command_announcement.Announce("The [location_name()] has cleared the electrical storm. Please repair any electrical overloads.", "Electrical Storm Alert")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_END, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_ELECTRICAL_STORM_END_TITLE, null, null)
+	)

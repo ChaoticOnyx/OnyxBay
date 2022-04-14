@@ -8,7 +8,11 @@ datum/event/viral_outbreak/setup()
 	severity = rand(2, 4)
 
 datum/event/viral_outbreak/announce()
-	command_announcement.Announce("Confirmed outbreak of level 7 biohazard aboard the [location_name()]. All personnel must contain the outbreak.", "Biohazard Alert", new_sound = GLOB.using_map.level_x_biohazard_sound(7))
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_VIRAL_OUTBREAK, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_VIRAL_OUTBREAK_TITLE, null, null),
+		new_sound = GLOB.using_map.level_x_biohazard_sound(7)
+	)
 
 datum/event/viral_outbreak/start()
 	var/list/candidates = list()	//list of candidate keys

@@ -11,7 +11,11 @@
 	endWhen = startWhen + rand(30,90) + rand(30,90) //2-6 minute duration
 
 /datum/event/solar_storm/announce()
-	command_announcement.Announce("A solar storm has been detected approaching the [location_name()]. Please halt all EVA activites immediately and return inside.", "[location_name()] Sensor Array", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM_TITLE, null, list("location_name" = location_name())),
+		zlevels = affecting_z
+	)
 	adjust_solar_output(1.5)
 
 /datum/event/solar_storm/proc/adjust_solar_output(mult = 1)
@@ -20,7 +24,11 @@
 
 
 /datum/event/solar_storm/start()
-	command_announcement.Announce("The solar storm has reached the [location_name()]. Please refain from EVA and remain inside until it has passed.", "[location_name()] Sensor Array", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM_START, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM_TITLE, null, list("location_name" = location_name())),
+		zlevels = affecting_z
+	)
 	adjust_solar_output(5)
 
 
@@ -46,7 +54,11 @@
 
 
 /datum/event/solar_storm/end()
-	command_announcement.Announce("The solar storm has passed the [location_name()]. It is now safe to resume EVA activities. ", "[location_name()] Sensor Array", zlevels = affecting_z)
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM_END, null, list("location_name" = location_name())),
+		TR_DATA(L10N_ANNOUNCE_SOLAR_STORM_TITLE, null, list("location_name" = location_name())),
+		zlevels = affecting_z
+	)
 	adjust_solar_output()
 
 

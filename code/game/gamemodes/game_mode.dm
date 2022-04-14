@@ -252,39 +252,10 @@ var/global/list/additional_antag_types = list()
 	if(!ert_disabled)
 		return
 
-	var/list/reasons = list(
-		"political instability",
-		"quantum fluctuations",
-		"hostile raiders",
-		"derelict station debris",
-		"REDACTED",
-		"ancient alien artillery",
-		"solar magnetic storms",
-		"sentient time-travelling killbots",
-		"gravitational anomalies",
-		"wormholes to another dimension",
-		"a telescience mishap",
-		"radiation flares",
-		"supermatter dust",
-		"leaks into a negative reality",
-		"antiparticle clouds",
-		"residual bluespace energy",
-		"suspected criminal operatives",
-		"malfunctioning von Neumann probe swarms",
-		"shadowy interlopers",
-		"a stranded Vox arkship",
-		"haywire IPC constructs",
-		"rogue Unathi exiles",
-		"artifacts of eldritch horror",
-		"a brain slug infestation",
-		"killer bugs that lay eggs in the husks of the living",
-		"a deserted transport carrying xenomorph specimens",
-		"an emissary for the gestalt requesting a security detail",
-		"a Tajaran slave rebellion",
-		"radical Skrellian transevolutionaries",
-		"classified security operations"
-		)
-	command_announcement.Announce("The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.","Emergency Transmission")
+	command_announcement.AnnounceLocalizeable(
+		TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_DISABLED, null, null),
+		TR_DATA(L10N_ANNOUNCE_RESPONSE_TEAM_DISABLED_TITLE, null, null)
+	)
 
 /datum/game_mode/proc/check_finished()
 	if(evacuation_controller.round_over() || station_was_nuked)
