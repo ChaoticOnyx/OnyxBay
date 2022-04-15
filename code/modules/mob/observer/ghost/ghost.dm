@@ -439,12 +439,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/verb/analyse_health(mob/living/carbon/human/H as mob in GLOB.human_mob_list)
 	set category = null
 	set name = "Analyse Health"
-
-	if(!has_enabled_antagHUD)
-		var/obj/item/device/healthanalyzer/HA = new /obj/item/device/healthanalyzer(src)
-		HA.ui_interact(usr,target = H)
-	if(has_enabled_antagHUD)
-		show_browser(usr, H.get_medical_data() + text("<BR><A href='?src=\ref[];mach_close=scanconsole'>Close</A>", usr) , "window=scanconsole;size=430x600")
+	show_browser(usr, medical_scan_results(H,1), "window=scanconsole;size=430x350")	
 
 //This is called when a ghost is drag clicked to something.
 /mob/observer/ghost/MouseDrop(atom/over)
