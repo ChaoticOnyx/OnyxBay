@@ -747,12 +747,6 @@
 			return global.sqladdress;
 		if("sqldb")
 			return global.sqldb;
-		if("sqlfdbkdb")
-			return global.sqlfdbkdb;
-		if("sqlfdbklogin")
-			return global.sqlfdbklogin;
-		if("sqlfdbkpass")
-			return global.sqlfdbkpass;
 		if("sqllogging")
 			return global.sqllogging;
 		if("sqllogin")
@@ -1648,12 +1642,6 @@
 			global.sqladdress=newval;
 		if("sqldb")
 			global.sqldb=newval;
-		if("sqlfdbkdb")
-			global.sqlfdbkdb=newval;
-		if("sqlfdbklogin")
-			global.sqlfdbklogin=newval;
-		if("sqlfdbkpass")
-			global.sqlfdbkpass=newval;
 		if("sqllogging")
 			global.sqllogging=newval;
 		if("sqllogin")
@@ -2195,9 +2183,6 @@
 	"splatter_cache",
 	"sqladdress",
 	"sqldb",
-	"sqlfdbkdb",
-	"sqlfdbklogin",
-	"sqlfdbkpass",
 	"sqllogging",
 	"sqllogin",
 	"sqlpass",
