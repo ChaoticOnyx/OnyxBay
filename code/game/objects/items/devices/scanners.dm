@@ -55,8 +55,7 @@ REAGENT SCANNER
 		data["p_name"] = "<span class='black'><b>Scan results for the floor:</b><br></span>"
 		data["brain"] = "<span class='black'>Overall Status: Healthy</span>"
 	else
-		if(!istype(user,/mob/observer/ghost)) //Without this, living people will hear how ghosts check their health
-			user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [target].</span>")
+		user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [target].</span>")
 		var/list/scan_data = medical_scan_results(target, mode, 1)
 		for(var/i = 1,i <= scan_data.len,i++)
 			scan_data[i] = replacetext(scan_data[i],"'notice'","'black'")
