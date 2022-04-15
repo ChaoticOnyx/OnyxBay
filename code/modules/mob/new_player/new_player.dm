@@ -34,7 +34,7 @@
 	var/output = "<div align='center'>"
 	output +="<hr>"
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
-	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings<sup><b>β</b></sup></a></p>"
+	output += "<p><a href='byond://?src=\ref[src];show_settings=1'>Settings</a></p>"
 
 	if(GAME_STATE <= RUNLEVEL_LOBBY)
 		if(ready)
