@@ -1,6 +1,6 @@
 /client/verb/settings()
 	set category = "OOC"
-	set name = "Settings β"
+	set name = "Settings"
 
 	settings.tgui_interact(mob)
 
