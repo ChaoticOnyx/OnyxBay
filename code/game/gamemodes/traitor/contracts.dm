@@ -20,7 +20,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
 	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray/vial),
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
 	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/automatic/wt550),
