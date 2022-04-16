@@ -4,7 +4,7 @@
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src, include_name = FALSE)] from [lastKnownIP ? MARK_IP(lastKnownIP) : MARK_IP("localhost")]-[MARK_COMPUTER_ID(computer_id)] || BYOND v[client.byond_version]")
-	if(config.log.log_access)
+	if(config.log.access)
 		var/is_multikeying = 0
 		for(var/mob/M in GLOB.player_list)
 			if(M == src)	continue

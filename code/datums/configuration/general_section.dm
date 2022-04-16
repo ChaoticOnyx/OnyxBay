@@ -12,7 +12,6 @@
 	var/ticklag = 0.625
 	var/client_fps = 65
 	var/fps = 20
-	var/lobby_images = null
 	var/aggressive_changelog = FALSE
 	var/resource_urls = null
 	var/tick_limit_mc_init = TICK_LIMIT_MC_INIT_DEFAULT
@@ -38,14 +37,6 @@
 
 	if(fps <= 0)
 		fps = initial(fps)
-
-	CONFIG_LOAD_LIST(lobby_images, data["lobby_images"])
-
-	if(lobby_images)
-		var/lobbyscreen_file = file(pick(lobby_images))
-
-		if(isfile(lobbyscreen_file))
-			GLOB.current_lobbyscreen = lobbyscreen_file
 
 	CONFIG_LOAD_BOOL(aggressive_changelog, data["aggressive_changelog"])
 	CONFIG_LOAD_LIST(resource_urls, data["resource_urls"])

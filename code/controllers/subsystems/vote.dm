@@ -68,7 +68,7 @@ SUBSYSTEM_DEF(vote)
 		return FALSE
 
 	if(last_started_time != null && !(is_admin(creator) || automatic))
-		var/next_allowed_time = (last_started_time + config.vote.vote_delay)
+		var/next_allowed_time = (last_started_time + config.vote.delay)
 		if(next_allowed_time > world.time)
 			return FALSE
 

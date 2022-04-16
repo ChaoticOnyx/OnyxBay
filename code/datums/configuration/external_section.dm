@@ -3,7 +3,6 @@
 
 	var/sql_enabled = FALSE
 	var/db_uses_cp1251_encoding = FALSE
-	var/donations = FALSE
 	var/comms_password = null
 	var/ban_comms_password = null
 	var/webhook_address = null
@@ -20,7 +19,6 @@
 /datum/configuration_section/external/load_data(list/data)
 	CONFIG_LOAD_BOOL(sql_enabled, data["sql_enabled"])
 	CONFIG_LOAD_BOOL(db_uses_cp1251_encoding, data["db_uses_cp1251_encoding"])
-	CONFIG_LOAD_BOOL(donations, data["donations"])
 	CONFIG_LOAD_STR(comms_password, data["comms_password"])
 	CONFIG_LOAD_STR(ban_comms_password, data["ban_comms_password"])
 	CONFIG_LOAD_STR(webhook_address, data["webhook_address"])

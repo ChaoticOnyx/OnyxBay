@@ -48,12 +48,12 @@
 /datum/vote/proc/start_vote()
 	start_time = world.time
 	status = VOTE_STATUS_ACTIVE
-	time_remaining = round(config.vote.vote_period/10)
+	time_remaining = round(config.vote.period/10)
 
 	var/text = get_start_text()
 
 	log_vote(text)
-	to_world("<font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='?src=\ref[SSvote];vote_panel=1'>here</a> to place your votes.\nYou have [config.vote.vote_period/10] seconds to vote.</font>")
+	to_world("<font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='?src=\ref[SSvote];vote_panel=1'>here</a> to place your votes.\nYou have [config.vote.period/10] seconds to vote.</font>")
 	sound_to(world, sound('sound/misc/vote.ogg', repeat = 0, wait = 0, volume = 50, channel = 3))
 
 /datum/vote/proc/get_start_text()
@@ -135,7 +135,7 @@
 /datum/vote/Process()
 	if(status == VOTE_STATUS_ACTIVE)
 		if(time_remaining > 0)
-			time_remaining = round((start_time + config.vote.vote_period - world.time)/10)
+			time_remaining = round((start_time + config.vote.period - world.time)/10)
 			return VOTE_PROCESS_ONGOING
 		else
 			status = VOTE_STATUS_COMPLETE

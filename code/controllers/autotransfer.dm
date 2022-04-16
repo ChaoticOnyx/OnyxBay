@@ -4,7 +4,7 @@ var/datum/controller/transfer_controller/transfer_controller
 	var/timerbuffer = 0 //buffer for time check
 
 /datum/controller/transfer_controller/New()
-	timerbuffer = config.vote.vote_autotransfer_initial
+	timerbuffer = config.vote.autotransfer_initial
 	START_PROCESSING(SSprocessing, src)
 
 /datum/controller/transfer_controller/Destroy()
@@ -14,7 +14,7 @@ var/datum/controller/transfer_controller/transfer_controller
 /datum/controller/transfer_controller/Process()
 	if (time_till_transfer_vote() <= 0)
 		SSvote.initiate_vote(/datum/vote/transfer, automatic = 1)
-		timerbuffer += config.vote.vote_autotransfer_interval
+		timerbuffer += config.vote.autotransfer_interval
 
 /datum/controller/transfer_controller/proc/time_till_transfer_vote()
 	return timerbuffer - round_duration_in_ticks - (1 MINUTE)

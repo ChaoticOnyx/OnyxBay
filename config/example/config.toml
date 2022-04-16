@@ -41,9 +41,6 @@ client_fps = 65
 ## Defines the world fps.
 fps = 20
 
-## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list).
-lobby_images = ["icons/splashes/onyx_old.png", "icons/splashes/onyx_new.png"]
-
 ## Set to true to have the changelog file automatically open when a user connects and hasn't seen the latest changelog.
 aggressive_changelog = false
 
@@ -67,64 +64,67 @@ minute_topic_limit = 100
 ## Set to true to make Dream Daemon refuse to reboot for any reason other than `SIGUSR1`.
 wait_for_sigusr1 = false
 
+[lobby]
+splashes = ["icons/splashes/onyx_old.png", "icons/splashes/onyx_new.png"]
+
 [log]
 ## Log client say.
-log_say = true
+say = true
 
 ## Log asay/msay.
-log_asay = true
+asay = true
 
 ## Log emotes.
-log_emote = true
+emote = true
 
 ## Log OOC channel.
-log_ooc = true
+ooc = true
 
 ## Log client whisper.
-log_whisper = true
+whisper = true
 
 ## Log pda messages.
-log_pda = true
+pda = true
 
 ## Log attack messages.
-log_attack = true
+attack = true
 
 ## Log player votes.
-log_vote = true
+vote = true
 
 ## Log admin actions.
-log_admin = true
+admin = true
 
 ## log admin chat messages.
-log_adminchat = true
+adminchat = true
 
 ## Log admin warning messages.
 ## Also duplicates a bunch of other messages.
-log_adminwarn = true
+adminwarn = true
 
 ## Log client access (logon/logoff).
-log_access = true
+access = true
 
 ## Log game actions (start of round, results, etc.).
-log_game = true
+game = true
 
 ## Log debug output.
-log_debug = true
+debug = true
 
 ## Log debug verbose output.
-log_debug_verbose = true
+debug_verbose = true
 
 ## Log all Topic() calls (for use by coders in tracking down Topic issues).
-log_hrefs = true
+hrefs = true
 
 ## Log world.log and runtime errors to a file.
-log_runtime = true
+runtime = true
 
 ## Log world.log messages.
-log_world_output = true
+world_output = true
 
 ## Log story output.
-log_story = true
+story = true
 
 [multiaccount]
 ## If set true1, redirects all players whose age less than 1 day.
@@ -356,6 +356,12 @@ guest_jobban = true
 ## Set to false to stop people connecting to your server without a registered ckey. (i.e. guest-* are all blocked from connecting)
 guests_allowed = true
 
+# Time before a round starts.
+pregame_timeleft = 1800
+
+# Time left after round end before reboot.
+restart_timeout = 600
+
 [character-setup]
 ## Sets the number of available character slots
 character_slots = 10
@@ -393,19 +399,19 @@ req_cult_ghostwriter = 6
 
 [radiation]
 ## How much radiation levels self-reduce by each tick.
-radiation_decay_rate = 1
+decay_rate = 1
 
 ## The amount of radiation resistance on a turf is multiplied by this value.
-radiation_resistance_multiplier = 1.25
+resistance_multiplier = 1.25
 
 ## General material radiation resistance is divided by this value.
-radiation_material_resistance_divisor = 2
+material_resistance_divisor = 2
 
 ## Below this point, radiation is ignored.
 ## Radiation weakens with distance from the source; stop calculating when the strength falls below this value.
 ## Lower values mean radiation reaches smaller (with increasingly trivial damage) at the cost of more cpu usage.
 ## Max `range = distance^2 * power / radiation_lower_limit`
-radiation_lower_limit = 0.35
+lower_limit = 0.35
 
 [health]
 ## level of health at which a mob becomes dead
@@ -581,19 +587,19 @@ allow_vote_mode = true
 allow_extra_antags = false
 
 ## Min delay (deciseconds) between voting sessions (default 10 minutes).
-vote_delay = 6000
+delay = 6000
 
 ## Time period (deciseconds) which voting session will last (default 1 minute).
-vote_period = 600
+period = 600
 
 ## Autovote initial delay (deciseconds) before first automatic transfer vote call (default 180 minutes).
-vote_autotransfer_initial = 108000
+autotransfer_initial = 108000
 
 ## Autovote delay (deciseconds) before sequential automatic transfer votes are called (default 60 minutes).
-vote_autotransfer_interval = 36000
+autotransfer_interval = 36000
 
 ## Time left (seconds) before round start when automatic gamemote vote is called (default 100).
-vote_autogamemode_timeleft = 100
+autogamemode_timeleft = 100
 
 ## Prevents dead players from voting or starting votes.
 no_dead_vote = false
@@ -626,15 +632,16 @@ default_no_vote = true
 ## Patreon URL
 # patreon = "http://example.com"
 
+[donations]
+## Set to true to enable donations subsystem. Server must be connected to proper database.
+enable = false
+
 [external]
 ## SQL storage switching. Uncomment to enable.
 sql_enabled = false
 
 ## Uncomment if your database uses cp1251 encode.
 db_uses_cp1251_encoding = false
-
-## Uncomment to enable donations subsystem. Server must be connected to proper database.
-donations = false
 
 ## Password used for authorizing ircbot and other external tools.
 # comms_password = "pass"
@@ -672,39 +679,32 @@ use_irc_bot = false
 announce_shuttle_dock_to_irc = false
 
 [random-events]
-## Hash out to disable random events during the round.
-allow_random_events = true
+## Enable random events during the round.
+enable = true
 
 ## Expected round length in minutes. Used for event balancing.
 expected_round_length = 180
 
 ## The lower and upper delay between events in minutes.
 ## Affect mundane, moderate, and major events respectively.
-event_delay_lower = [10, 30, 50]
-event_delay_upper = [15, 45, 70]
+delay_lower = [10, 30, 50]
+delay_upper = [15, 45, 70]
 
 ## The delay until the first time an event of the given severity runs in minutes.
-## Unset setting use the `event_delay_lower` and `event_delay_upper` values instead.
-# event_custom_start_mundane = [10, 15]
-# event_custom_start_moderate [30, 45]
-# event_custom_start_major [80, 100]
+## Unset setting use the `delay_lower` and `delay_upper` values instead.
+# custom_start_mundane = [10, 15]
+# custom_start_moderate [30, 45]
+# custom_start_major [80, 100]
 
-[error-handling]
+[error]
 ## The "cooldown" time for each occurrence of a unique error.
-error_cooldown = 600
+cooldown = 600
 
 ## How many occurrences before the next will silence them.
-error_limit = 50
+limit = 50
 
 ## How long a unique error will be silenced for.
-error_silence_time = 6000
+silence_time = 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
-error_msg_delay = 50
-
-[time]
-# Time before a round starts.
-pregame_timeleft = 1800
-
-# Time left after round end before reboot.
-restart_timeout = 600
+msg_delay = 50

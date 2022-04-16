@@ -847,12 +847,12 @@ Ccomp's first proc.
 	set desc = "Toggles random events such as meteors, black holes on/off"
 	if(!check_rights(R_SERVER))	return
 
-	if(!config.random_events.allow_random_events)
-		config.random_events.allow_random_events = 1
+	if(!config.random_events.enable)
+		config.random_events.enable = 1
 		to_chat(usr, "Random events enabled")
 		message_admins("Admin [key_name_admin(usr)] has enabled random events.", 1)
 	else
-		config.random_events.allow_random_events = 0
+		config.random_events.enable = 0
 		to_chat(usr, "Random events disabled")
 		message_admins("Admin [key_name_admin(usr)] has disabled random events.", 1)
 	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

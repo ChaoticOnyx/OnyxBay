@@ -11,7 +11,7 @@
 					dust_swarm("weak")
 			if(!event)
 				//CARN: checks to see if random events are enabled.
-				if(config.random_events.allow_random_events)
+				if(config.random_events.enable)
 					if(prob(eventchance))
 						event()
 						hadevent = 1

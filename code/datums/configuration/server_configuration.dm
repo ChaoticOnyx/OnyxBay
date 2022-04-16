@@ -6,6 +6,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 /// Represents a base configuration datum. Has everything else bundled into it
 /datum/server_configuration
 	var/datum/configuration_section/general/general = new
+	var/datum/configuration_section/lobby/lobby = new
 	var/datum/configuration_section/log/log = new
 	var/datum/configuration_section/multiaccount/multiaccount = new
 	var/datum/configuration_section/gamemode/gamemode = new
@@ -23,8 +24,8 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/link/link = new
 	var/datum/configuration_section/external/external = new
 	var/datum/configuration_section/random_events/random_events = new
-	var/datum/configuration_section/error_handling/error_handling = new
-	var/datum/configuration_section/time/time = new
+	var/datum/configuration_section/error/error = new
+	var/datum/configuration_section/donations/donations = new
 
 	/// Raw data. Stored here to avoid passing data between procs constantly
 	var/list/raw_data = list()

@@ -10,7 +10,6 @@
 /datum/configuration_section/gamemode/load_data(data)
 	CONFIG_LOAD_LIST(probabilities, data["probabilities"])
 
-
 	for(var/game_mode in probabilities)
 		if(game_mode in gamemode_cache)
 			log_misc("Probability of [game_mode] is [probabilities[game_mode]].")

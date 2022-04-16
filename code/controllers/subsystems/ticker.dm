@@ -30,8 +30,8 @@ SUBSYSTEM_DEF(ticker)
 	var/restart_timeout
 
 /datum/controller/subsystem/ticker/Initialize()
-	pregame_timeleft = config.time.pregame_timeleft
-	restart_timeout = config.time.restart_timeout
+	pregame_timeleft = config.game.pregame_timeleft
+	restart_timeout = config.game.restart_timeout
 
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
@@ -55,7 +55,7 @@ SUBSYSTEM_DEF(ticker)
 		Master.SetRunLevel(RUNLEVEL_SETUP)
 		return
 
-	if(!bypass_gamemode_vote && (pregame_timeleft <= config.vote.vote_autogamemode_timeleft SECONDS) && !gamemode_vote_results)
+	if(!bypass_gamemode_vote && (pregame_timeleft <= config.vote.autogamemode_timeleft SECONDS) && !gamemode_vote_results)
 		if(!SSvote.active_vote)
 			SSvote.initiate_vote(/datum/vote/gamemode, automatic = 1)
 

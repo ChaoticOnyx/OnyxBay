@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system is disabled with SQL!")
 		return
 
-	if(!config.external.donations)
+	if(!config.donations.enable)
 		log_debug("Donations system is disabled by configuration!")
 		return
 
@@ -251,7 +251,7 @@ SUBSYSTEM_DEF(donations)
 		to_chat(usr, "Donations system cannot be used, because SQL is disabled by configuration!")
 		return
 
-	if(!config.external.donations)
+	if(!config.donations.enable)
 		to_chat(usr, "Donations system is disabled by configuration!")
 		return
 

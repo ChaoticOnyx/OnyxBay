@@ -47,6 +47,8 @@
 	var/use_loyalty_implants = FALSE
 	var/guest_jobban = TRUE
 	var/guests_allowed = FALSE
+	var/pregame_timeleft = 1800
+	var/restart_timeout = 600
 
 /datum/configuration_section/game/load_data(list/data)
 	CONFIG_LOAD_BOOL(map_switching, data["map_switching"])
@@ -94,3 +96,5 @@
 	CONFIG_LOAD_BOOL(use_loyalty_implants, data["use_loyalty_implants"])
 	CONFIG_LOAD_BOOL(guest_jobban, data["guest_jobban"])
 	CONFIG_LOAD_BOOL(guests_allowed, data["guests_allowed"])
+	CONFIG_LOAD_NUM(pregame_timeleft, data["pregame_timeleft"])
+	CONFIG_LOAD_NUM(restart_timeout, data["restart_timeout"])
