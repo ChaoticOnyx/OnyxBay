@@ -192,7 +192,7 @@ Works together with spawning an observer, noted above.
 		ghost.can_reenter_corpse = can_reenter_corpse
 		ghost.timeofdeath = src.stat == DEAD ? src.timeofdeath : world.time
 		ghost.key = key
-		if(ghost.client && !ghost.client.holder && !config.antag_hud_allowed)		// For new ghosts we remove the verb from even showing up if it's not allowed.
+		if(ghost.client && !ghost.client.holder && !config.ghost.allow_antag_hud)		// For new ghosts we remove the verb from even showing up if it's not allowed.
 			ghost.verbs -= /mob/observer/ghost/verb/toggle_antagHUD	// Poor guys, don't know what they are missing!
 		return ghost
 
@@ -212,7 +212,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		to_chat(src, SPAN("warning", "You may not to ghost right now."))
 		return
 
-	var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to [config.respawn_delay ? "play this round for another [config.respawn_delay] minute\s" : "return to this body"]! You can't change your mind so choose wisely!)", "Are you sure you want to ghost?", "Ghost", "Stay in body")
+	var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to [config.misc.respawn_delay ? "play this round for another [config.misc.respawn_delay] minute\s" : "return to this body"]! You can't change your mind so choose wisely!)", "Are you sure you want to ghost?", "Ghost", "Stay in body")
 	if(response == "Stay in body" || !may_ghost())
 		return
 
@@ -305,14 +305,14 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(!client)
 		return
 	var/mentor = is_mentor(usr.client)
-	if(!config.antag_hud_allowed && (!client.holder || mentor))
+	if(!config.ghost.allow_antag_hud && (!client.holder || mentor))
 		to_chat(src, "<span class='warning'>Admins have disabled this for this round.</span>")
 		return
 	var/mob/observer/ghost/M = src
 	if(jobban_isbanned(M, "AntagHUD"))
 		to_chat(src, "<span class='danger'>You have been banned from using this feature</span>")
 		return
-	if(config.antag_hud_restricted && !M.has_enabled_antagHUD && (!client.holder || mentor))
+	if(config.ghost.antag_hud_restricted && !M.has_enabled_antagHUD && (!client.holder || mentor))
 		var/response = alert(src, "If you turn this on, you will not be able to take any part in the round.","Are you sure you want to turn this feature on?","Yes","No")
 		if(response == "No") return
 		M.can_reenter_corpse = 0
@@ -458,7 +458,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return ..()
 
 /mob/observer/ghost/proc/try_possession(mob/living/M)
-	if(!config.ghosts_can_possess_animals)
+	if(!config.ghost.ghosts_can_possess_animals)
 		to_chat(src, "<span class='warning'>Ghosts are not permitted to possess animals.</span>")
 		return 0
 	if(!M.can_be_possessed_by(src))
@@ -544,7 +544,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(feedback)
 			to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning."))
 		return FALSE
-	if(config.antag_hud_restricted && has_enabled_antagHUD == TRUE)
+	if(config.ghost.antag_hud_restricted && has_enabled_antagHUD == TRUE)
 		if(feedback)
 			to_chat(src, SPAN_WARNING("antagHUD restrictions prevent you from respawning."))
 		return FALSE
@@ -592,7 +592,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Respawn"
 	set category = "OOC"
 
-	if (!(config.abandon_allowed))
+	if (!(config.misc.abandon_allowed))
 		to_chat(usr, "<span class='notice'>Respawn is disabled.</span>")
 		return
 	if (!SSticker.mode)
@@ -601,7 +601,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if (SSticker.mode.deny_respawn)
 		to_chat(usr, "<span class='notice'>Respawn is disabled for this roundtype.</span>")
 		return
-	else if(!MayRespawn(1, config.respawn_delay))
+	else if(!MayRespawn(1, config.misc.respawn_delay))
 		return
 
 	to_chat(usr, "You can respawn now, enjoy your new life!")

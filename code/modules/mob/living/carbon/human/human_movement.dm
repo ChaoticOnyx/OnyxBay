@@ -3,7 +3,7 @@
 
 	. += species.handle_movement_delay_special(src)
 
-	var/human_delay = config.human_delay
+	var/human_delay = config.movement.human_delay
 
 	if(istype(loc, /turf/space))
 		return (. + human_delay) // It's hard to be slowed down in space by... anything. Except for your shitty physical body restrictions.
@@ -79,7 +79,7 @@
 	for(var/E in chem_effects)
 		switch(E)
 			if(CE_SPEEDBOOST)
-				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.run_speed/2))
+				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.movement.run_speed/2))
 			if(CE_SLOWDOWN)
 				. += chem_effects[CE_SLOWDOWN]
 

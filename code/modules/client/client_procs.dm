@@ -55,7 +55,7 @@
 			completed_asset_jobs += asset_cache_job
 			return
 
-	if(config.minutetopiclimit)
+	if(config.general.minute_topic_limit)
 		var/minute = round(world.time, 600)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -63,17 +63,17 @@
 			topiclimiter[CURRENT_MINUTE] = minute
 			topiclimiter[MINUTE_COUNT] = 0
 		topiclimiter[MINUTE_COUNT] += 1
-		if(topiclimiter[MINUTE_COUNT] > config.minutetopiclimit)
+		if(topiclimiter[MINUTE_COUNT] > config.general.minute_topic_limit)
 			var/msg = "Your previous action was ignored because you've done too many in a minute."
 			if(minute != topiclimiter[ADMINSWARNED_AT]) // only one admin message per-minute. (if they spam the admins can just boot/ban them)
 				topiclimiter[ADMINSWARNED_AT] = minute
 				msg += " Administrators have been informed."
-				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
-				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
+				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.general.minute_topic_limit] topic calls in a given game minute")
+				message_admins("[key_name_admin(src)] Has hit the per-minute topic limit of [config.general.minute_topic_limit] topic calls in a given game minute")
 			to_chat(src, SPAN("danger", "[msg]"))
 			return
 
-	if(config.secondtopiclimit)
+	if(config.general.second_topic_limit)
 		var/second = round(world.time, 10)
 		if(!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -81,7 +81,7 @@
 			topiclimiter[CURRENT_SECOND] = second
 			topiclimiter[SECOND_COUNT] = 0
 		topiclimiter[SECOND_COUNT] += 1
-		if(topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
+		if(topiclimiter[SECOND_COUNT] > config.general.second_topic_limit)
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
@@ -169,7 +169,7 @@
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
-	if(!config.guests_allowed && IsGuestKey(key))
+	if(!config.game.guests_allowed && IsGuestKey(key))
 		alert(src, "This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.", "Guest", "OK")
 		qdel(src)
 		return
@@ -199,14 +199,14 @@
 			GLOB.admins += src
 		admin_datum.owner = src
 
-	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
+	else if((config.multiaccount.panic_bunker != 0) && (get_player_age(ckey) < config.multiaccount.panic_bunker))
 		var/player_age = get_player_age(ckey)
-		if(config.panic_address && TopicData != "redirect")
-			log_access("Panic Bunker: ([key_name(key, include_name = FALSE)] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
-			message_admins(SPAN("adminnotice", "Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]"))
-			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]."))
+		if(config.multiaccount.panic_server_address && TopicData != "redirect")
+			log_access("Panic Bunker: ([key_name(key, include_name = FALSE)] | age [player_age]) - attempted to connect. Redirected to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]")
+			message_admins(SPAN("adminnotice", "Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]"))
+			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]."))
 			winset(src, null, "command=.options")
-			send_link(src, "[config.panic_address]?redirect")
+			send_link(src, "[config.multiaccount.panic_server_address]?redirect")
 		else
 			log_access("Panic Bunker: ([key_name(key, include_name = FALSE)] | age [player_age]) - attempted to connect. Redirecting is not configured.")
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
@@ -262,16 +262,16 @@
 
 	settings = new(src)
 
-	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
-		if(config.panic_address && TopicData != "redirect")
-			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+	if(config.general.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.multiaccount.panic_server_address && TopicData != "redirect")
+			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.multiaccount.panic_server_name ? config.multiaccount.panic_server_name : config.multiaccount.panic_server_address]</h1>"))
 			winset(src, null, "command=.options")
-			send_link(src, "[config.panic_address]?redirect")
+			send_link(src, "[config.multiaccount.panic_server_address]?redirect")
 
 		else
 			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
 
-		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.general.player_limit])")
 		qdel(src)
 		return
 
@@ -315,8 +315,8 @@
 /proc/is_player_rejected_by_player_limit(mob/user, ckey)
 	if(ckey in admin_datums)
 		return FALSE
-	if(GLOB.clients.len >= config.player_limit)
-		if(config.hard_player_limit && GLOB.clients.len <= config.hard_player_limit && user && (user in GLOB.living_mob_list_))
+	if(GLOB.clients.len >= config.general.player_limit)
+		if(config.general.hard_player_limit && GLOB.clients.len <= config.general.hard_player_limit && user && (user in GLOB.living_mob_list_))
 			return FALSE
 		return TRUE
 	return FALSE
@@ -576,7 +576,7 @@
 		prefs = new /datum/preferences(src)
 		prefs.last_ip = address				// these are gonna be used for banning
 		prefs.last_id = computer_id			// these are gonna be used for banning
-		apply_fps(prefs.clientfps ? prefs.clientfps : config.clientfps)
+		apply_fps(prefs.clientfps ? prefs.clientfps : config.general.client_fps)
 
 	if(initialization || SScharacter_setup.initialized)
 		prefs.setup()

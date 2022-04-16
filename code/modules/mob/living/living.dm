@@ -511,7 +511,7 @@
 	set category = "OOC"
 	set src in view()
 
-	if(config.allow_Metadata)
+	if(config.character_setup.allow_metadata)
 		if(client)
 			to_chat(usr, "[src]'s Metainfo:<br>[client.prefs.metadata]")
 		else

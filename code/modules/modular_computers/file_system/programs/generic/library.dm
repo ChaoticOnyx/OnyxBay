@@ -268,9 +268,9 @@ The answer was five and a half years -ZeroBits
 	if (!ui)
 		ui = new(user, src, ui_key, "wiki_topics.tmpl", "Knowledge Base", 575, 700, state = state)
 		ui.add_script("wiki_topics.js")
-		ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_COMMON_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+		ui.add_script("[config.link.wiki]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_COMMON_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
 		if(emagged)
-			ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_HACKED_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+			ui.add_script("[config.link.wiki]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_HACKED_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
 		ui.set_initial_data(data)
 		ui.open()
 

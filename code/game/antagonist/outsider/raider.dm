@@ -107,8 +107,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 /datum/antagonist/raider/Initialize()
 	. = ..()
-	if(config.raider_min_age)
-		min_player_age = config.raider_min_age
+	if(config.game.raider_min_age)
+		min_player_age = config.game.raider_min_age
 
 /datum/antagonist/raider/update_access(mob/living/player)
 	for(var/obj/item/card/id/id in player.contents)
@@ -150,7 +150,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	var/win_msg = ""
 
 	//No objectives, go straight to the feedback.
-	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || !global_objectives.len)
+	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || !global_objectives.len)
 		return
 
 	var/success = global_objectives.len
@@ -306,4 +306,3 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		player.internals.icon_state = "internal1"
 
 	return 1
-

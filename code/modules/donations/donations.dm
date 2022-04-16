@@ -4,11 +4,11 @@ SUBSYSTEM_DEF(donations)
 	flags = SS_NO_FIRE
 
 /datum/controller/subsystem/donations/Initialize(timeofday)
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		log_debug("Donations system is disabled with SQL!")
 		return
 
-	if(!config.donations)
+	if(!config.external.donations)
 		log_debug("Donations system is disabled by configuration!")
 		return
 
@@ -234,11 +234,11 @@ SUBSYSTEM_DEF(donations)
 	switch(href_list["action"])
 		if("go_to_patreon")
 			log_debug("\[Donations] patreon link used by '[user]'")
-			send_link(user, config.patreonurl)
+			send_link(user, config.link.patreon)
 			return 1
 		if("go_to_discord")
 			log_debug("\[Donations] discord link used by '[user]'")
-			send_link(user, config.discordurl)
+			send_link(user, config.link.discord)
 			return 1
 
 	return 0
@@ -247,11 +247,11 @@ SUBSYSTEM_DEF(donations)
 	set name = ".chaotic-token"
 	set hidden = TRUE
 
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		to_chat(usr, "Donations system cannot be used, because SQL is disabled by configuration!")
 		return
 
-	if(!config.donations)
+	if(!config.external.donations)
 		to_chat(usr, "Donations system is disabled by configuration!")
 		return
 

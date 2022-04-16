@@ -7,7 +7,7 @@
 	msg = sanitize(msg)
 	if(!msg)	return
 
-	if (config.log_asay)
+	if (config.log.log_asay)
 		log_admin("ADMIN: [key_name(src)]: [msg]")
 
 	if(check_rights(R_ADMIN,0))
@@ -25,7 +25,7 @@
 	if(!check_rights(R_ADMIN|R_MOD|R_MENTOR))	return
 
 	msg = sanitize(msg)
-	if (config.log_asay)
+	if (config.log.log_asay)
 		log_admin("MOD: [key_name(src)]: [msg]")
 
 	if (!msg)
