@@ -436,6 +436,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 
+/mob/observer/ghost/verb/analyse_health(mob/living/carbon/human/H as mob in GLOB.human_mob_list)
+	set category = null
+	set name = "Analyse Health"
+	show_browser(usr, medical_scan_results(H,1), "window=scanconsole;size=430x350")
+
 //This is called when a ghost is drag clicked to something.
 /mob/observer/ghost/MouseDrop(atom/over)
 	if(!usr || !over) return
