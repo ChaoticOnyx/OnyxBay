@@ -440,7 +440,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = null
 	set name = "Analyse Health"
 	if(!istype(H, /mob)) 
-    	return;
 	show_browser(usr, medical_scan_results(H,1), "window=scanconsole;size=430x350")	
 
 //This is called when a ghost is drag clicked to something.
