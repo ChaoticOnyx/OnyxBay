@@ -30,7 +30,7 @@
 	affecting.drop_r_hand()
 
 	if(affecting.lying)
-		affecting.Weaken(4)
+		affecting.Weaken(2)
 		affecting.Stun(2)
 
 	affecting.adjustOxyLoss(1)
