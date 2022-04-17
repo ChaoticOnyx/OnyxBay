@@ -50,6 +50,8 @@
 /obj/item/grab/attack_self(mob/user)
 	if(!assailant || !affecting)
 		return
+	if(!assailant.canClick())
+		return
 	switch(assailant.a_intent)
 		if(I_HELP)
 			downgrade()
