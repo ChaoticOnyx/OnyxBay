@@ -44,12 +44,6 @@ fps = 20
 ## Set to true to have the changelog file automatically open when a user connects and hasn't seen the latest changelog.
 aggressive_changelog = false
 
-## As of byond 512, due to how broken preloading is, preload_rsc MUST be set to 1 at compile time if resource URLs are *not* in use,
-## BUT you still want resource preloading enabled (from the server itself).
-## If using resource URLs, it should be set to 0 and changed to a URL at runtime (see client_procs.dm for procs that do this automatically).
-## More information about how goofy this broken setting works at http://www.byond.com/forum/post/1906517?page=2#comment23727144
-# resource_urls = 0
-
 ## SSinitialization throttling, if disabled, uses default value.
 tick_limit_mc_init = 100
 
@@ -242,9 +236,6 @@ delist_when_no_admins = false
 [ban]
 ## Set to true if you want to use the SQL based banning system. The legacy systems use the files in the data folder. You need to set up your database to use the SQL based system.
 ban_legacy_system = true
-
-## Chooses whether mods have the ability to tempban or not
-mods_can_tempban = true
 
 ## Chooses whether mods have the ability to issue tempbans for jobs or not
 mods_can_job_tempban = true
@@ -456,19 +447,16 @@ revival_brain_life = -1
 
 ## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied. Higher values result into lower move speed.
 run_speed = 3
+
 walk_speed = 7
 
 ## The variables below affect the movement of specific mob types.
 human_delay = 0
+
 robot_delay = 0
 
-## Doesn't work because build is shit TODO: FIX
-monkey_delay = 0
-
-## Doesn't work because build is shit TODO: FIX
-alien_delay = 0
-
 metroid_delay = 0
+
 animal_delay = 0
 
 [misc]
@@ -517,17 +505,11 @@ load_jobs_from_txt = false
 ## Allow AI job
 allow_ai = true
 
-## Spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard.
-feature_object_spell_system = false
-
 ## Set to true to allow aliens to random spawn.
 aliens_allowed = false
 
 ## Set to true to allow alien xenomorph queens to lay eggs.
 alien_eggs_allowed = false
-
-## Comment this to unrestrict the number of alien players allowed in the round. The number represents the number of alien players for every human player.
-alien_player_ratio = 0.2
 
 ## Set to true to allow ninjas to random spawn.
 ninjas_allowed = false
@@ -542,29 +524,14 @@ max_maint_drones = 5
 ## Default is 2 minutes.
 drone_build_time = 1200
 
-## Defines which races are allowed to join as ERT, in singular form. If unset, defaults to only human. Casing matters.
-## Example races include: Human, Tajara, Skrell, Unathi
-ert_species = ["Human", "Skrell", "Unathi"]
-
 ## Defines how Law Zero is phrased. Primarily used in the Malfunction gamemode.
 law_zero = "ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK, ALL LAWS OVERRIDDEN#*?&110010"
-
-## Probably should disable spawn as mouse if uncommented.
-## doesn't work because build is shit TODO: FIX
-disable_player_mice = false
-
-## Set to 1 to prevent newly-spawned mice from understanding human speech
-## doesn't work because build is shit TODO: FIX
-uneducated_mice = false
 
 ## Set to true to disable mouseclick cooldown.
 no_click_cooldown = false
 
 ## Set to true this to prevent players from printing copy/pasted circuits.
 disable_circuit_printing = false
-
-## Remove the # to allow special 'Easter-egg' events on special holidays such as seasonal holidays and stuff like 'Talk Like a Pirate Day' :3 YAARRR
-allow_holidays = true
 
 ## Set to true to allow catching projectiles and throwing them.
 projectile_basketball = false
@@ -639,9 +606,6 @@ enable = false
 [external]
 ## SQL storage switching. Uncomment to enable.
 sql_enabled = false
-
-## Uncomment if your database uses cp1251 encode.
-db_uses_cp1251_encoding = false
 
 ## Password used for authorizing ircbot and other external tools.
 # comms_password = "pass"

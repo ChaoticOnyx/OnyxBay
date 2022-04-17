@@ -5,8 +5,6 @@
 	var/walk_speed = 7
 	var/human_delay = 0
 	var/robot_delay = 0
-	var/monkey_delay = 0
-	var/alien_delay = 0
 	var/metroid_delay = 0
 	var/animal_delay = 0
 
@@ -15,7 +13,5 @@
 	CONFIG_LOAD_NUM(walk_speed, data["walk_speed"])
 	CONFIG_LOAD_NUM(human_delay, data["human_delay"])
 	CONFIG_LOAD_NUM(robot_delay, data["robot_delay"])
-	CONFIG_LOAD_NUM(monkey_delay, data["monkey_delay"])
-	CONFIG_LOAD_NUM(alien_delay, data["alien_delay"])
 	CONFIG_LOAD_NUM(metroid_delay, data["metroid_delay"])
 	CONFIG_LOAD_NUM(animal_delay, data["animal_delay"])

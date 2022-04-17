@@ -13,7 +13,6 @@
 	var/client_fps = 65
 	var/fps = 20
 	var/aggressive_changelog = FALSE
-	var/resource_urls = null
 	var/tick_limit_mc_init = TICK_LIMIT_MC_INIT_DEFAULT
 	var/minute_topic_limit = null
 	var/second_topic_limit = null
@@ -39,7 +38,6 @@
 		fps = initial(fps)
 
 	CONFIG_LOAD_BOOL(aggressive_changelog, data["aggressive_changelog"])
-	CONFIG_LOAD_LIST(resource_urls, data["resource_urls"])
 	CONFIG_LOAD_NUM(tick_limit_mc_init, data["tick_limit_mc_init"])
 	CONFIG_LOAD_NUM(minute_topic_limit, data["minute_topic_limit"])
 	CONFIG_LOAD_NUM(second_topic_limit, data["second_topic_limit"])

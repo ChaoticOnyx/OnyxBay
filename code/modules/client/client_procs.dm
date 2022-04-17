@@ -174,13 +174,6 @@
 		qdel(src)
 		return
 
-	/* Should be uncommented as soon as we manage to set a working resource URL. For now, messing with clients' preload_rsc at runtime may rain holy hell down upon us.
-	// Change the way they should download resources.
-	if(config.resource_urls && config.resource_urls.len)
-		src.preload_rsc = pick(config.resource_urls)
-	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
-	*/
-
 	DIRECT_OUTPUT(src, SPAN("warning", "If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears."))
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
