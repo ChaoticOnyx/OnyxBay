@@ -48,6 +48,14 @@
 		/decl/emote/audible/bug_chitter
 		)
 
+/datum/species/skrell
+	default_emotes = list(
+		/decl/emote/audible/warble,
+		/decl/emote/audible/croak,
+		/decl/emote/audible/croon,
+		/decl/emote/audible/lowarble
+		)
+
 /mob/living/carbon/human/set_species(new_species, default_colour)
 	. = ..()
 	update_emotes()
