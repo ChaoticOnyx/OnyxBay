@@ -705,9 +705,9 @@ var/failed_don_db_connections = 0
 	if(!dbcon)
 		dbcon = new()
 
-	var/user = sqlfdbklogin
-	var/pass = sqlfdbkpass
-	var/db = sqlfdbkdb
+	var/user = sql_feedback_login
+	var/pass = sql_feedback_pass
+	var/db = sql_feedback_db
 	var/address = sqladdress
 	var/port = sqlport
 

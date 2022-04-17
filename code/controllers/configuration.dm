@@ -1028,11 +1028,11 @@ var/list/gamemode_cache = list()
 			if ("password")
 				sqlpass = value
 			if ("feedback_database")
-				sqlfdbkdb = value
+				sql_feedback_db = value
 			if ("feedback_login")
-				sqlfdbklogin = value
+				sql_feedback_login = value
 			if ("feedback_password")
-				sqlfdbkpass = value
+				sql_feedback_pass = value
 			if ("enable_stat_tracking")
 				sqllogging = TRUE
 			if ("donation_address")
