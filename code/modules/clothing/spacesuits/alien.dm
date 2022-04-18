@@ -371,7 +371,7 @@
 			if(V.getFireLoss())
 				V.adjustFireLoss(-5 * config.health.organ_regeneration_multiplier)
 			if(V.getToxLoss())
-				V.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
+				V.adjustToxLoss(-5 * config.health.organ_regeneration_multiplier)
 			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 	else
@@ -381,7 +381,7 @@
 			if(V.getFireLoss())
 				V.adjustFireLoss(-2 * config.health.organ_regeneration_multiplier)
 			if(V.getToxLoss())
-				V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
+				V.adjustToxLoss(-2 * config.health.organ_regeneration_multiplier)
 			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 
