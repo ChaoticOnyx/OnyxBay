@@ -27,7 +27,7 @@
 			if(1.25 to 1.65)
 				. += "Long"
 			else
-				. += "Very heavy"
+				. += "Very long"
 
 		. += "\nConvenience: "
 		switch(mod_handy)
