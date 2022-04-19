@@ -94,7 +94,7 @@
 		if(status & TRADER_BLACKLIST_SUB)
 			possible -= subtypesof(type)
 		if(status & TRADER_BLACKLIST_ALL)
-			possible -= type
+			possible -= typesof(type)
 			possible -= subtypesof(type)
 
 	if(possible.len)
