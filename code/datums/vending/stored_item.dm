@@ -8,12 +8,14 @@
 /datum/stored_items/New(atom/storing_object, path, name = null, amount = 0)
 	if(!istype(storing_object))
 		CRASH("Unexpected storing object.")
+
 	src.storing_object = storing_object
-	src.item_path = path
 	src.amount = amount
 
 	if(istext(path))
 		path = text2path(path)
+
+	src.item_path = path
 
 	ASSERT(path)
 
