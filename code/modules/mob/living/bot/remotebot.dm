@@ -59,7 +59,7 @@
 	return ..()
 
 /mob/living/bot/remotebot/proc/pickup(obj/item/I)
-	if(holding || get_dist(src,I) > 1 || istype(I, /obj/item/device/radio/intercom))
+	if(holding || get_dist(src, I) > 1 || I.anchored)
 		return
 	src.visible_message("<b>\The [src]</b> picks up \the [I].")
 	flick("fetchbot-c", src)
