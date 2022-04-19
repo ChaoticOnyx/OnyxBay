@@ -226,12 +226,6 @@
 	icon_state = "browncoat"
 	item_state = "browncoat"
 
-/obj/item/clothing/suit/neocoat
-	name = "black coat"
-	desc = "A flowing, black coat."
-	icon_state = "neocoat"
-	item_state = "neocoat"
-
 //stripper
 /obj/item/clothing/under/stripper
 	body_parts_covered = 0
@@ -240,25 +234,28 @@
 	name = "pink swimsuit"
 	desc = "A rather skimpy pink swimsuit."
 	icon_state = "stripper_p_under"
+	item_state = "stripper_p_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/stripper_green
 	name = "green swimsuit"
 	desc = "A rather skimpy green swimsuit."
 	icon_state = "stripper_g_under"
+	item_state = "stripper_g_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_pink
 	name = "pink skimpy dress"
 	desc = "A rather skimpy pink dress."
 	icon_state = "stripper_p_over"
+	item_state = "stripper_p_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_green
 	name = "green skimpy dress"
 	desc = "A rather skimpy green dress."
 	icon_state = "stripper_g_over"
-	//item_state = "stripper_g"
+	item_state = "stripper_g_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/mankini

@@ -141,7 +141,6 @@
 								/obj/item/clothing/suit/bio_suit			= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/fire				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/lightrig			= TRADER_BLACKLIST_ALL,
-								/obj/item/clothing/suit/neocoat				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/poncho				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/poncho/roles		= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/radiation			= TRADER_BLACKLIST,
