@@ -354,7 +354,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of <b>[count]<b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
