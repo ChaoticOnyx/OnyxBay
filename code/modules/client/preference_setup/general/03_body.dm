@@ -328,7 +328,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			reset_limbs() // Safety for species with incompatible manufacturers; easier than trying to do it case by case.
 			pref.body_markings.Cut() // Basically same as above.
 
-			prune_occupation_prefs()
+			prune_job_prefs()
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["eye_color"])

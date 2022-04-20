@@ -151,14 +151,6 @@
 	return (supplied_title == desired_title) || (H.mind && H.mind.role_alt_title == desired_title)
 
 /datum/job/proc/is_restricted(datum/preferences/prefs, feedback)
-	if(!is_branch_allowed(prefs.char_branch))
-		to_chat(feedback, "<span class='boldannounce'>Wrong branch of service for [title]. Valid branches are: [get_branches()].</span>")
-		return TRUE
-
-	if(!is_rank_allowed(prefs.char_branch, prefs.char_rank))
-		to_chat(feedback, "<span class='boldannounce'>Wrong rank for [title]. Valid ranks in [prefs.char_branch] are: [get_ranks(prefs.char_branch)].</span>")
-		return TRUE
-
 	var/datum/species/S = all_species[prefs.species]
 	if(!is_species_allowed(S))
 		to_chat(feedback, "<span class='boldannounce'>Restricted species, [S], for [title].</span>")
