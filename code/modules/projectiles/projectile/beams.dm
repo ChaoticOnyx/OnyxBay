@@ -10,7 +10,7 @@
 	eyeblur = 4
 	hitscan = 1
 	invisibility = 101	//beam projectiles are invisible as they are rendered by the effect engine
-	penetration_modifier = 0.5
+	penetration_modifier = 0.45
 
 	muzzle_type = /obj/effect/projectile/laser/muzzle
 	tracer_type = /obj/effect/projectile/laser/tracer
@@ -26,25 +26,45 @@
 	check_armour = "laser"
 	eyeblur = 2
 
-/obj/item/projectile/beam/smalllaser
-	damage = 25
-	armor_penetration = 5
+/obj/item/projectile/beam/laser
+	name = "laser beam"
+	icon_state = "laser"
+	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 
-/obj/item/projectile/beam/midlaser
+/obj/item/projectile/beam/laser/small
+	name = "small laser beam"
+	damage = 27.5
+	armor_penetration = 20
+
+	muzzle_type = /obj/effect/projectile/laser/small/muzzle
+	tracer_type = /obj/effect/projectile/laser/small/tracer
+	impact_type = /obj/effect/projectile/laser/small/impact
+
+/obj/item/projectile/beam/laser/lesser
+	damage = 32.5
+	armor_penetration = 22.5
+
+/obj/item/projectile/beam/laser/mid
 	icon_state = "laser"
 	damage = 37.5
-	armor_penetration = 15
+	armor_penetration = 25
 
-/obj/item/projectile/beam/heavylaser
-	name = "heavy laser"
+/obj/item/projectile/beam/laser/greater
+	name = "large laser beam"
+	damage = 42.5
+	armor_penetration = 27.5
+
+/obj/item/projectile/beam/laser/heavy
+	name = "heavy laser beam"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
-	damage = 50
-	armor_penetration = 35
+	damage = 55.0
+	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
 	impact_type = /obj/effect/projectile/laser/heavy/impact
+
 
 /obj/item/projectile/beam/sniper
 	name = "sniper beam"

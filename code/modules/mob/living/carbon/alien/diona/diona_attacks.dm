@@ -16,7 +16,7 @@
 
 	return ..()
 
-/mob/living/carbon/alien/diona/attackby(obj/item/weapon/W, mob/user)
+/mob/living/carbon/alien/diona/attackby(obj/item/W, mob/user)
 	if(user.a_intent == I_HELP && istype(W, /obj/item/clothing/head))
 		if(hat)
 			to_chat(user, "<span class='warning'>\The [src] is already wearing \the [hat].</span>")

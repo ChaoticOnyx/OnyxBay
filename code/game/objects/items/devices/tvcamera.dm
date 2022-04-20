@@ -89,7 +89,7 @@
 	if ((!istype(S, /obj/item/device/assembly/infra)))
 		..()
 		return
-	var/obj/item/weapon/TVAssembly/A = new(user)
+	var/obj/item/TVAssembly/A = new(user)
 	qdel(S)
 	user.put_in_hands(A)
 	to_chat(user, "<span class='notice'>You add the infrared sensor to the robot head.</span>")
@@ -98,7 +98,7 @@
 
 /* Using camcorder icon as I can't sprite.
 Using robohead because of restricting to roboticist */
-/obj/item/weapon/TVAssembly
+/obj/item/TVAssembly
 	name = "TV Camera assembly"
 	desc = "A robotic head with an infrared sensor inside"
 	icon = 'icons/obj/robot_parts.dmi'
@@ -107,7 +107,7 @@ Using robohead because of restricting to roboticist */
 	var/buildstep = 0
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/weapon/TVAssembly/attackby(W, mob/user)
+/obj/item/TVAssembly/attackby(W, mob/user)
 	switch(buildstep)
 		if(0)
 			if(istype(W, /obj/item/robot_parts/robot_component/camera))

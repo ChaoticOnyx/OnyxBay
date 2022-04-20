@@ -1,4 +1,4 @@
-/obj/item/weapon/tape_roll
+/obj/item/tape_roll
 	name = "duct tape"
 	desc = "A roll of sticky tape. Possibly for taping ducks... or was that ducts?"
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -6,7 +6,7 @@
 	var/tape_speed = 30
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/weapon/tape_roll/attack(mob/living/carbon/human/H, mob/user)
+/obj/item/tape_roll/attack(mob/living/carbon/human/H, mob/user)
 	if(istype(H))
 		if(user.zone_sel.selecting == BP_EYES)
 
@@ -60,7 +60,7 @@
 			H.equip_to_slot_or_del(new /obj/item/clothing/mask/muzzle/tape(H), slot_wear_mask)
 
 		else if(user.zone_sel.selecting == BP_R_HAND || user.zone_sel.selecting == BP_L_HAND)
-			var/obj/item/weapon/handcuffs/cable/tape/T = new(user)
+			var/obj/item/handcuffs/cable/tape/T = new(user)
 			if(!T.place_handcuffs(H, user))
 				user.unEquip(T)
 				qdel(T)
@@ -76,7 +76,7 @@
 			return ..()
 		return 1
 
-/obj/item/weapon/tape_roll/syndie
+/obj/item/tape_roll/syndie
 	desc = "A roll of sticky tape. This one is suspiciously sticky."
 	icon_state = "syndietape"
 	tape_speed = 5

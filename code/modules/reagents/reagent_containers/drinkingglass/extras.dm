@@ -1,8 +1,8 @@
-/obj/item/weapon/reagent_containers/food/drinks/glass2/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/reagent_containers/food/drinks/glass2/attackby(obj/item/I as obj, mob/user as mob)
 	if(extras.len >= 2) return ..() // max 2 extras, one on each side of the drink
 
-	if(istype(I, /obj/item/weapon/glass_extra))
-		var/obj/item/weapon/glass_extra/GE = I
+	if(istype(I, /obj/item/glass_extra))
+		var/obj/item/glass_extra/GE = I
 		if(can_add_extra(GE))
 			extras += GE
 			user.remove_from_mob(GE)
@@ -11,11 +11,11 @@
 			update_icon()
 		else
 			to_chat(user, "<span class=warning>There's no space to put \the [GE] on \the [src]!</span>")
-	else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/fruit_slice))
+	else if(istype(I, /obj/item/reagent_containers/food/snacks/fruit_slice))
 		if(!rim_pos)
 			to_chat(user, "<span class=warning>There's no space to put \the [I] on \the [src]!</span>")
 			return
-		var/obj/item/weapon/reagent_containers/food/snacks/fruit_slice/FS = I
+		var/obj/item/reagent_containers/food/snacks/fruit_slice/FS = I
 		extras += FS
 		user.remove_from_mob(FS)
 		FS.pixel_x = 0 // Reset its pixel offsets so the icons work!
@@ -26,7 +26,7 @@
 	else
 		return ..()
 
-/obj/item/weapon/reagent_containers/food/drinks/glass2/attack_hand(mob/user as mob)
+/obj/item/reagent_containers/food/drinks/glass2/attack_hand(mob/user as mob)
 	if(src != user.get_inactive_hand())
 		return ..()
 
@@ -46,7 +46,7 @@
 
 	update_icon()
 
-/obj/item/weapon/glass_extra
+/obj/item/glass_extra
 	name = "generic glass addition"
 	desc = "This goes on a glass."
 	var/glass_addition
@@ -56,21 +56,21 @@
 	w_class = ITEM_SIZE_TINY
 	icon = DRINK_ICON_FILE
 
-/obj/item/weapon/glass_extra/stick
+/obj/item/glass_extra/stick
 	name = "stick"
 	desc = "This goes in a glass."
 	glass_addition = "stick"
 	glass_desc = "There is a stick in the glass."
 	icon_state = "stick"
 
-/obj/item/weapon/glass_extra/straw
+/obj/item/glass_extra/straw
 	name = "straw"
 	desc = "This goes in a glass."
 	glass_addition = "straw"
 	glass_desc = "There is a straw in the glass."
 	icon_state = "straw"
 
-/obj/item/weapon/glass_extra/orange_slice
+/obj/item/glass_extra/orange_slice
 	name = "orange slice"
 	desc = "Made of silicone."
 	glass_addition = "orange"
@@ -78,7 +78,7 @@
 	icon_state = "orange"
 	isoverlaying = 1
 
-/obj/item/weapon/glass_extra/lime_slice
+/obj/item/glass_extra/lime_slice
 	name = "lime slice"
 	desc = "Tiny lime slice made of silicone."
 	glass_addition = "lime"
@@ -86,7 +86,7 @@
 	icon_state = "lime"
 	isoverlaying = 1
 
-/obj/item/weapon/glass_extra/glassholder
+/obj/item/glass_extra/glassholder
 	name = "podstakannik"
 	desc = "Should've been named 'a glass holder'. Or not. Oh, these space russians!"
 	glass_addition = "holder"

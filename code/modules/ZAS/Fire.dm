@@ -197,7 +197,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 	SSair.active_hotspots.Add(src)
 
 	if (fl >= 2)
-		playsound(src.loc, "fuel_explosion", 50, FALSE, 15)
+		playsound(src.loc, SFX_EXPLOSION_FUEL, 50, FALSE, 15)
 
 /obj/fire/proc/fire_color(env_temperature)
 	var/temperature = max(4000*sqrt(firelevel/vsc.fire_firelevel_multiplier), env_temperature)

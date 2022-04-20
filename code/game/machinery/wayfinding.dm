@@ -4,7 +4,7 @@
 	icon_state = "cart"
 	use_vend_state = TRUE
 	vend_delay = 23
-	products = list(/obj/item/weapon/pinpointer/wayfinding = 10)
+	products = list(/obj/item/pinpointer/wayfinding = 10)
 	slogan_list = list("Find a wayfinding pinpointer? Give it to me! I'll make it worth your while. Please. Daddy needs his medicine.", //last sentence is a reference to Sealab 2021
 						"See a wayfinding pinpointer? Don't let it go to the crusher! Recycle it with me instead. I'll pay you or not.", //I see these things heading for disposals through cargo all the time
 						"Can't find the disk? Need a pinpointer? Buy a wayfinding pinpointer and find the captain's office today!",
@@ -19,7 +19,7 @@
 						"We need a slogan!") //Liberal Crime Squad reference
 
 //Pinpointer itself
-/obj/item/weapon/pinpointer/wayfinding //Help players new to a station find their way around
+/obj/item/pinpointer/wayfinding //Help players new to a station find their way around
 	name = "wayfinding pinpointer"
 	desc = "A handheld tracking device that points to useful places."
 	icon_state = "pinpointer_way"
@@ -27,7 +27,7 @@
 	var/obj/machinery/navbeacon/wayfinding/way_target
 	var/list/beacons = list()
 
-/obj/item/weapon/pinpointer/wayfinding/attack_self(mob/living/user)
+/obj/item/pinpointer/wayfinding/attack_self(mob/living/user)
 	if(active)
 		..()
 		return
@@ -51,16 +51,16 @@
 	target = acquire_target()
 	..()
 
-/obj/item/weapon/pinpointer/wayfinding/toggle()
+/obj/item/pinpointer/wayfinding/toggle()
 	..()
 	if(!active)
 		way_target = null
 
-/obj/item/weapon/pinpointer/wayfinding/acquire_target()
+/obj/item/pinpointer/wayfinding/acquire_target()
 	if(way_target)
 		return weakref(way_target)
 
-/obj/item/weapon/pinpointer/wayfinding/examine(mob/user)
+/obj/item/pinpointer/wayfinding/examine(mob/user)
 	. = ..()
 	var/msg = " Its tracking indicator reads "
 	if(target)

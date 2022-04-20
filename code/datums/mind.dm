@@ -69,6 +69,7 @@
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
 	var/was_antag_given_by_storyteller = FALSE
+	var/antag_was_given_at = ""
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
@@ -89,10 +90,9 @@
 /datum/mind/proc/transfer_to(mob/living/new_character)
 	if(!istype(new_character))
 		to_world_log("## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform developers.")
+		return FALSE
+
 	if(current)					//remove ourself from our old body's mind variable
-		if(changeling)
-			current.remove_changeling_powers()
-			current.verbs -= /datum/changeling/proc/EvolutionMenu
 		if(vampire)
 			current.remove_vampire_powers()
 		current.mind = null
@@ -108,13 +108,15 @@
 		restore_spells(new_character)
 
 	if(changeling)
-		new_character.make_changeling()
+		changeling.transfer_to(new_character)
 
 	if(vampire)
 		new_character.make_vampire()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
+
+	return TRUE
 
 /datum/mind/proc/store_memory(new_text)
 	memory += "[new_text]<BR>"
@@ -364,7 +366,7 @@
 
 		switch(href_list["implant"])
 			if("remove")
-				for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+				for(var/obj/item/implant/loyalty/I in H.contents)
 					for(var/obj/item/organ/external/organs in H.organs)
 						if(I in organs.implants)
 							qdel(I)
@@ -419,8 +421,8 @@
 	else if (href_list["common"])
 		switch(href_list["common"])
 			if("undress")
-				for(var/obj/item/W in current)
-					current.drop_from_inventory(W)
+				for(var/obj/item/I in current)
+					current.drop_from_inventory(I)
 			if("takeuplink")
 				take_uplink()
 				memory = null//Remove any memory they may have had.
@@ -468,7 +470,7 @@
 	var/is_currently_brigged = FALSE
 	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
 		is_currently_brigged = TRUE
-		for(var/obj/item/weapon/card/id/card in current)
+		for(var/obj/item/card/id/card in current)
 			is_currently_brigged = FALSE
 			break
 		for(var/obj/item/device/pda/P in current)

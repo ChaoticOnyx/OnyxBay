@@ -11,7 +11,7 @@
 	. = ..()
 	underlays += image('icons/obj/objects.dmi', "echair_over", dir)
 
-/obj/structure/bed/chair/e_chair/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/bed/chair/e_chair/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		var/obj/structure/bed/chair/C = new /obj/structure/bed/chair(loc)
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -32,9 +32,9 @@
 	var/area/A = get_area(src)
 	if(!isarea(A))
 		return
-	if(!A.powered(EQUIP))
+	if(!A.powered(STATIC_EQUIP))
 		return
-	A.use_power_oneoff(5000, EQUIP)
+	A.use_power_oneoff(5000, STATIC_EQUIP)
 	var/light = A.power_light
 	A.update_icon()
 

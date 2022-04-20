@@ -174,8 +174,8 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 										atoms_to_initialise += M.atoms_to_initialise
 										atoms_to_delete += M.atoms_to_delete
 								#ifdef TESTING
-								else
-									++turfsSkipped
+							else
+								++turfsSkipped
 								#endif
 								CHECK_TICK
 							maxx = max(maxx, xcrd)

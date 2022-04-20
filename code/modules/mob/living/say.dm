@@ -75,7 +75,7 @@ var/list/channel_to_radio_key = new
 	return default_language
 
 /mob/proc/is_muzzled()
-	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/grenade)))
 
 // Takes a list of the form list(message, verb, whispering) and modifies it as needed
 // Returns 1 if a speech problem was applied, 0 otherwise
@@ -134,7 +134,7 @@ var/list/channel_to_radio_key = new
 		return "asks"
 	return verb
 
-/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering)
+/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering, log_message = TRUE)
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
 			to_chat(src, "<span class='warning'>You cannot speak in IC (Muted).</span>")
@@ -240,8 +240,9 @@ var/list/channel_to_radio_key = new
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
 		if(speaking.flags & SIGNLANG)
-			log_say("[name]/[key]: SIGN: [message]")
-			log_message(message, INDIVIDUAL_SAY_LOG)
+			if(log_message)
+				log_say("[name]/[key]: SIGN: [message]")
+				log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	if(T)
@@ -309,12 +310,13 @@ var/list/channel_to_radio_key = new
 					O.hear_talk(src, stars(message), verb, speaking)
 
 
-	if(whispering)
-		log_whisper("[key_name(src)]: [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
-	else
-		log_say("[key_name(src)]: [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
+	if(log_message)
+		if(whispering)
+			log_whisper("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
+		else
+			log_say("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 
 /mob/living/proc/say_signlang(message, verb="gestures", datum/language/language)

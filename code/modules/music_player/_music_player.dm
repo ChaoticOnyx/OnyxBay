@@ -42,7 +42,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	var/broken
 	var/panel = PANEL_CLOSED
 
-	var/obj/item/weapon/cell/device/cell = /obj/item/weapon/cell/device
+	var/obj/item/cell/device/cell = /obj/item/cell/device
 	var/power_usage = 250
 	var/obj/item/music_tape/tape = null
 
@@ -108,7 +108,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(value == mode)
 		return
 
-	playsound(src, mode == (PLAYER_STATE_OFF || PLAYER_STATE_PAUSE) ? GLOB.switch_small_sound[1] : GLOB.switch_small_sound[2], 35)
+	playsound(src, GET_SFX(SFX_USE_SMALL_SWITCH), 35)
 
 	if(broken)
 		return
@@ -154,8 +154,8 @@ GLOBAL_LIST_EMPTY(music_players)
 		update_icon()
 		return
 
-	if(istype(I, /obj/item/weapon/cell/device))
-		var/obj/item/weapon/cell/device/C = I
+	if(istype(I, /obj/item/cell/device))
+		var/obj/item/cell/device/C = I
 		if(panel == PANEL_OPENED)
 			if(cell)
 				to_chat(user, SPAN_NOTICE("[src] already has \a [cell] installed."))
@@ -313,6 +313,20 @@ GLOBAL_LIST_EMPTY(music_players)
 /obj/item/music_player/attack_ai(mob/user)
 	return
 
+/obj/item/music_player/proc/eject(mob/user)
+	if(mode)
+		StopPlaying()
+
+	playsound(src, 'sound/items/Screwdriver3.ogg', 20, 1)
+	if(user)
+		visible_message(
+			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
+			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
+		user.put_in_hands(tape)
+	else
+		tape.dropInto(loc)
+	tape = null
+
 /obj/item/music_player/MouseDrop(obj/over_object)
 	if(!over_object)
 		return
@@ -331,30 +345,16 @@ GLOBAL_LIST_EMPTY(music_players)
 			eject(usr)
 	update_icon()
 
-/obj/item/music_player/verb/eject(mob/user)
+/obj/item/music_player/verb/eject_verb()
 	set name = "Eject Tape"
 	set category = "Object"
-
-	if(usr)
-		user = usr
+	var/mob/user = usr
 
 	if(!tape)
 		to_chat(user, SPAN_NOTICE("There's no tape in \the [src]."))
 		return
 
-	if(mode)
-		StopPlaying()
-
-	playsound(src, 'sound/items/Screwdriver3.ogg', 20, 1)
-	if(user)
-		visible_message(
-			SPAN_NOTICE("[user] eject \a [tape] from \the [src]."),
-			SPAN_NOTICE("You eject \a [tape] from \the [src]."))
-	if(user)
-		user.put_in_hands(tape)
-	else
-		tape.dropInto(loc)
-	tape = null
+	eject(user)
 
 /obj/item/music_player/verb/volume()
 	set name = "Change Volume"

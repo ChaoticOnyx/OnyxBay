@@ -14,7 +14,7 @@
  * - shaped: if true make explosions look like circle
  * - sfx_to_play: sound to play, when expolosion near player
  */
-/proc/explosion(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = "explosion")
+/proc/explosion(turf/epicenter, devastation_range = 0, heavy_impact_range = 0, light_impact_range = 0, flash_range = 0, adminlog = 1, z_transfer = UP|DOWN, shaped, sfx_to_play = SFX_EXPLOSION)
 	UNLINT(src = null)	//so we don't abort once src is deleted
 	. = SSexplosions.explode(arglist(args))
 

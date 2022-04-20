@@ -333,7 +333,7 @@
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
 	P.set_content(t1, "Transcript", TRUE)
 	canprint = 0
 	sleep(300)
@@ -418,7 +418,7 @@
 			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
 			fix()
 		return
-	else if(istype(I, /obj/item/weapon/pen))
+	else if(istype(I, /obj/item/pen))
 		if(loc == user && !user.incapacitated())
 			var/new_name = sanitize(input(user, "What would you like to label the tape?", "Tape labeling") as null|text)
 			if(isnull(new_name)) return

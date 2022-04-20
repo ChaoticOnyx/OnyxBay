@@ -17,12 +17,13 @@ config/*
 !config/names/
 !config/example/
 !config/warnings_templates/
+!config/schema/
 build_log.txt
 use_map
 stopserver
 reboot_called
 atupdate
 __pycache__
-
+.idea
 
 sql/test_db

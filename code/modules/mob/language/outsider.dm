@@ -33,7 +33,7 @@
 	return 0
 
 /datum/language/ling
-	name = "Changeling"
+	name = LANGUAGE_LING
 	desc = "Although they are normally wary and suspicious of each other, changelings can commune over a distance."
 	speech_verb = "says"
 	colour = "changeling"

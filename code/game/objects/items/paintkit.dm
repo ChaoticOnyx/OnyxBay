@@ -80,7 +80,7 @@
 	for(var/exotype in allowed_types)
 		. += "\n- [capitalize(exotype)]"
 
-/obj/mecha/attackby(obj/item/weapon/W, mob/user)
+/obj/mecha/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/device/kit/paint))
 		if(occupant)
 			to_chat(user, "You can't customize a mech while someone is piloting it - that would be unsafe!")

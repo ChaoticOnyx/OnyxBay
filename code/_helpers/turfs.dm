@@ -153,6 +153,6 @@
 
 	for(var/mob/M in source)
 		if(isEye(M)) continue // If we need to check for more mobs, I'll add a variable
-		M.forceMove(target)
+		M.forceMove(target, unbuckle_mob = FALSE)
 
 	return target

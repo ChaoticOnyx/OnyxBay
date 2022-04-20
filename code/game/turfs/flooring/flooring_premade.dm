@@ -350,6 +350,77 @@
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
+//JUNGLE
+
+/turf/simulated/floor/natural/jungle
+	name = "grass"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "grass1"
+
+/turf/simulated/floor/natural/jungle/grasscorner1
+	name = "grass"
+	icon_state = "grassdirt_corner"
+
+/turf/simulated/floor/natural/jungle/grasscorner2
+	name = "grass"
+	icon_state = "grassdirt_corner2"
+
+/turf/simulated/floor/natural/jungle/grassedge
+	name = "grass"
+	icon_state = "grassdirt_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrassedge
+	name = "grass"
+	icon_state = "grasssand_edge"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner1
+	name = "grass"
+	icon_state = "grasssand_corner"
+
+/turf/simulated/floor/natural/jungle/sandgrasscorner2
+	name = "grass"
+	icon_state = "grasssand_corner2"
+
+/turf/simulated/floor/natural/jungle/dirt
+	name = "dirt"
+	desc = "Looks dirty."
+	icon_state = "dirt"
+
+/turf/simulated/floor/natural/jungle/water
+	name = "water"
+	desc = "Looks wet."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seashallow"
+	var/overlay = TRUE
+
+/turf/simulated/floor/natural/jungle/water/New()
+	..()
+	if(overlay)
+		overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="riverwater","layer"=MOB_LAYER+1)
+
+/turf/simulated/floor/natural/jungle/water/edge
+	icon_state = "beach"
+	overlay = FALSE
+/turf/simulated/floor/natural/jungle/water/corner
+	icon_state = "beachcorner"
+	overlay = FALSE
+
+/turf/simulated/floor/natural/jungle/sand
+	name = "sand"
+	desc = "Looks sandy."
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "desert0"
+	base_name = "sand"
+	base_desc = "Looks sandy."
+	base_icon = 'icons/misc/beach.dmi'
+	base_icon_state = "desert0"
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/jungle/sand/New()
+	if(rand_state)
+		icon_state = "desert[rand(0, 5)]"
+	..()
+
 //SAND
 
 /turf/simulated/floor/natural/sand
@@ -367,6 +438,9 @@
 	if(rand_state)
 		icon_state = "sand[rand(0, 12)]"
 	..()
+
+/turf/simulated/floor/natural/sand/cave
+	name = "cave floor"
 
 /turf/simulated/floor/natural/sand/pure
 	rand_state = FALSE
@@ -395,6 +469,11 @@
 	icon_state = "plating"
 	initial_flooring = null
 
+/turf/simulated/floor/misc/concrete
+	name = "concrete"
+	icon = 'icons/turf/flooring/misc.dmi'
+	icon_state = "concrete"
+
 /turf/simulated/floor/misc/diona
 	name = "biomass"
 	icon = 'icons/turf/floors.dmi'
@@ -409,3 +488,13 @@
 
 /turf/simulated/floor/misc/cult/cultify()
 	return
+
+/turf/simulated/floor/water/fountain
+	name = "water"
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seadeep"
+
+/turf/simulated/floor/water/fountain/Crossed(atom/movable/AM)
+	if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		M.slip(src, 4)

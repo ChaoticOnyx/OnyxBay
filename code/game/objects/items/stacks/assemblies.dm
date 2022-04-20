@@ -1,6 +1,7 @@
 /obj/item/stack/gassembly
 	name = "girder assemblies"
 	singular_name = "girder assembly"
+	plural_name = "assemblies"
 	desc = "A wall girder's embryo."
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "gassembly"
@@ -24,7 +25,7 @@
 
 /obj/item/stack/gassembly/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(WT.remove_fuel(0,user))
 			var/obj/item/stack/material/steel/new_item

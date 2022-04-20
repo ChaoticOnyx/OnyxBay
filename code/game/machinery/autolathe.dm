@@ -26,10 +26,10 @@
 	var/datum/wires/autolathe/wires = null
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/autolathe,
-		/obj/item/weapon/stock_parts/matter_bin = 3,
-		/obj/item/weapon/stock_parts/manipulator,
-		/obj/item/weapon/stock_parts/console_screen
+		/obj/item/circuitboard/autolathe,
+		/obj/item/stock_parts/matter_bin = 3,
+		/obj/item/stock_parts/manipulator,
+		/obj/item/stock_parts/console_screen
 	)
 
 /obj/machinery/autolathe/Initialize()
@@ -306,7 +306,7 @@
 				var/obj/item/stack/S = I
 				S.amount = multiplier
 				S.update_icon()
-			
+
 			tgui_update()
 
 
@@ -318,7 +318,7 @@
 	..()
 	var/mb_rating = 0
 	var/man_rating = 0
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismatterbin(P))
 			mb_rating += P.rating
 		else if(ismanipulator(P))

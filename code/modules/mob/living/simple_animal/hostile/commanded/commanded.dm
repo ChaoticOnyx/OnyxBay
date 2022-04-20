@@ -8,19 +8,19 @@
 	var/list/known_commands = list("stay", "stop", "attack", "follow")
 	var/mob/master = null //undisputed master. Their commands hold ultimate sway and ultimate power.
 	var/list/allowed_targets = list() //WHO CAN I KILL D:
-	var/retribution = 1 //whether or not they will attack us if we attack them like some kinda dick.
+	var/retribution = TRUE //whether or not they will attack us if we attack them like some kinda dick.
 
 /mob/living/simple_animal/hostile/commanded/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	if((weakref(speaker) in friends) || speaker == master)
 		command_buffer.Add(speaker)
 		command_buffer.Add(lowertext(html_decode(message)))
-	return 0
+	return FALSE
 
 /mob/living/simple_animal/hostile/commanded/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
 	if((weakref(speaker) in friends) || speaker == master)
 		command_buffer.Add(speaker)
 		command_buffer.Add(lowertext(html_decode(message)))
-	return 0
+	return FALSE
 
 /mob/living/simple_animal/hostile/commanded/Life()
 	while(command_buffer.len > 0)
@@ -73,7 +73,7 @@
 
 
 /mob/living/simple_animal/hostile/commanded/proc/follow_target()
-	stop_automated_movement = 1
+	stop_automated_movement = TRUE
 	if(!target_mob)
 		return
 	if(target_mob in ListTargets(10))
@@ -101,7 +101,7 @@
 				else
 					misc_command(speaker,text) //for specific commands
 
-	return 1
+	return TRUE
 
 //returns a list of everybody we wanna do stuff with.
 /mob/living/simple_animal/hostile/commanded/proc/get_targets_by_name(text, filter_friendlies = 0)
@@ -110,16 +110,16 @@
 	for(var/mob/M in possible_targets)
 		if(filter_friendlies && ((weakref(M) in friends) || M.faction == faction || M == master))
 			continue
-		var/found = 0
+		var/found = FALSE
 		if(findtext(text, "[M]"))
-			found = 1
+			found = TRUE
 		else
 			var/list/parsed_name = splittext(replace_characters(lowertext(html_decode("[M]")),list("-"=" ", "."=" ", "," = " ", "'" = " ")), " ") //this big MESS is basically 'turn this into words, no punctuation, lowercase so we can check first name/last name/etc'
 			for(var/a in parsed_name)
 				if(a == "the" || length(a) < 2) //get rid of shit words.
 					continue
 				if(findtext(text,"[a]"))
-					found = 1
+					found = TRUE
 					break
 		if(found)
 			. += M
@@ -127,7 +127,7 @@
 
 /mob/living/simple_animal/hostile/commanded/proc/attack_command(mob/speaker,text)
 	target_mob = null //want me to attack something? Well I better forget my old target.
-	walk_to(src,0)
+	walk_to(src, 0)
 	stance = HOSTILE_STANCE_IDLE
 	if(text == "attack" || findtext(text,"everyone") || findtext(text,"anybody") || findtext(text, "somebody") || findtext(text, "someone")) //if its just 'attack' then just attack anybody, same for if they say 'everyone', somebody, anybody. Assuming non-pickiness.
 		allowed_targets = list("everyone")//everyone? EVERYONE
@@ -140,17 +140,17 @@
 /mob/living/simple_animal/hostile/commanded/proc/stay_command(mob/speaker,text)
 	target_mob = null
 	stance = COMMANDED_STOP
-	stop_automated_movement = 1
-	walk_to(src,0)
+	stop_automated_movement = TRUE
+	walk_to(src, 0)
 	return 1
 
 /mob/living/simple_animal/hostile/commanded/proc/stop_command(mob/speaker,text)
 	allowed_targets = list()
-	walk_to(src,0)
+	walk_to(src, 0)
 	target_mob = null //gotta stop SOMETHIN
 	stance = HOSTILE_STANCE_IDLE
-	stop_automated_movement = 0
-	return 1
+	stop_automated_movement = FALSE
+	return TRUE
 
 /mob/living/simple_animal/hostile/commanded/proc/follow_command(mob/speaker,text)
 	//we can assume 'stop following' is handled by stop_command
@@ -165,10 +165,10 @@
 	stance = COMMANDED_FOLLOW //GOT SOMEBODY. BETTER FOLLOW EM.
 	target_mob = targets[1] //YEAH GOOD IDEA
 
-	return 1
+	return TRUE
 
 /mob/living/simple_animal/hostile/commanded/proc/misc_command(mob/speaker,text)
-	return 0
+	return FALSE
 
 
 /mob/living/simple_animal/hostile/commanded/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)

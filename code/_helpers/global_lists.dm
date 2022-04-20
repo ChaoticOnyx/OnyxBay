@@ -1,9 +1,10 @@
 //Since it didn't really belong in any other category, I'm putting this here
 //This is for procs to replace all the goddamn 'in world's that are chilling around the code
 
+GLOBAL_LIST_EMPTY(landmarks_list) // List of all landmarks created.
+
 var/global/list/cable_list = list()					//Index for all cables, so that powernets don't have to look through the entire world all the time
 var/global/list/chemical_reactions_list				//list of all /datum/chemical_reaction datums. Used during chemical reactions
-var/global/list/landmarks_list = list()				//list of all landmarks created
 var/global/list/surgery_steps = list()				//list of all surgery steps  |BS12
 var/global/list/side_effects = list()				//list of all medical sideeffects types by thier names |BS12
 var/global/list/mechas_list = list()				//list of all mechs. Used by hostile mobs target tracking.
@@ -11,6 +12,17 @@ var/global/list/joblist = list()					//list of all jobstypes, minus borg and AI
 
 #define all_genders_define_list list(MALE,FEMALE,PLURAL,NEUTER)
 #define all_genders_text_list list("Male","Female","Plural","Neuter")
+
+//Machinery lists
+GLOBAL_LIST_EMPTY(alarm_list)
+GLOBAL_LIST_EMPTY(ai_status_display_list)
+GLOBAL_LIST_EMPTY(apc_list)
+GLOBAL_LIST_EMPTY(smes_list)
+GLOBAL_LIST_EMPTY(machines)
+GLOBAL_LIST_EMPTY(firealarm_list)
+GLOBAL_LIST_EMPTY(computer_list)
+GLOBAL_LIST_EMPTY(all_doors)
+GLOBAL_LIST_EMPTY(atmos_machinery)
 
 //Languages/species/whitelist.
 var/global/list/all_species[0]
@@ -34,6 +46,7 @@ var/list/obj/item/device/uplink/world_uplinks = list()
 //Preferences stuff
 //Hairstyles
 GLOBAL_LIST_EMPTY(hair_styles_list)        //stores /datum/sprite_accessory/hair indexed by name
+GLOBAL_LIST_EMPTY(hair_styles_icons)   // Stores all icon states from icons/mob/human_face.dmi
 GLOBAL_LIST_EMPTY(facial_hair_styles_list) //stores /datum/sprite_accessory/facial_hair indexed by name
 
 var/global/list/skin_styles_female_list = list()		//unused
@@ -51,8 +64,6 @@ var/datum/visualnet/camera/cameranet = new()
 
 // Runes
 var/global/list/rune_list = new()
-var/global/list/endgame_exits = list()
-var/global/list/endgame_safespawns = list()
 
 var/global/list/syndicate_access = list(access_maint_tunnels, access_syndicate, access_external_airlocks)
 
@@ -135,7 +146,7 @@ var/global/list/string_slot_flags = list(
 	for(var/path in paths)
 		var/datum/sprite_accessory/hair/H = new path()
 		GLOB.hair_styles_list[H.name] = H
-
+	GLOB.hair_styles_icons = icon_states('icons/mob/human_face.dmi')
 	//Facial Hair - Initialise all /datum/sprite_accessory/facial_hair into an list indexed by facialhair-style name
 	paths = typesof(/datum/sprite_accessory/facial_hair) - /datum/sprite_accessory/facial_hair
 	for(var/path in paths)
@@ -215,9 +226,9 @@ var/global/list/string_slot_flags = list(
 		G.refresh_updown()
 
 	//Manuals
-	paths = typesof(/obj/item/weapon/book/wiki) - /obj/item/weapon/book/wiki - /obj/item/weapon/book/wiki/template
+	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
-		var/obj/item/weapon/book/wiki/manual = new booktype
+		var/obj/item/book/wiki/manual = new booktype
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
 		qdel(manual)

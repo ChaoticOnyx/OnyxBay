@@ -5,7 +5,7 @@
 	icon_state = "gas_stand_idle"
 	pull_slowdown = PULL_SLOWDOWN_TINY
 
-	var/obj/item/weapon/tank/tank
+	var/obj/item/tank/tank
 	var/mob/living/carbon/breather
 	var/obj/item/clothing/mask/breath/contained
 
@@ -31,15 +31,15 @@
 	overlays.Cut()
 
 	if (tank)
-		if(istype(tank,/obj/item/weapon/tank/anesthetic))
+		if(istype(tank,/obj/item/tank/anesthetic))
 			overlays += "tank_anest"
-		else if(istype(tank,/obj/item/weapon/tank/nitrogen))
+		else if(istype(tank,/obj/item/tank/nitrogen))
 			overlays += "tank_nitro"
-		else if(istype(tank,/obj/item/weapon/tank/oxygen))
+		else if(istype(tank,/obj/item/tank/oxygen))
 			overlays += "tank_oxyg"
-		else if(istype(tank,/obj/item/weapon/tank/plasma))
+		else if(istype(tank,/obj/item/tank/plasma))
 			overlays += "tank_plasma"
-		else if(istype(tank,/obj/item/weapon/tank/hydrogen))
+		else if(istype(tank,/obj/item/tank/hydrogen))
 			overlays += "tank_hydro"
 		else
 			overlays += "tank_other"
@@ -153,7 +153,7 @@
 		return
 	return 1
 
-/obj/structure/gas_stand/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/gas_stand/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		if (valve_opened)
 			to_chat(user, "<span class='warning'>Close the valve first.</span>")
@@ -171,7 +171,7 @@
 			to_chat(user, "<span class='warning'>There is no tank in \the [src].</span>")
 			return
 
-	if(istype(W, /obj/item/weapon/tank))
+	if(istype(W, /obj/item/tank))
 		if(tank)
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else if(!is_loosen)
@@ -232,7 +232,7 @@
 	icon_state = "gas_stand_idle"
 	name = "anaesthetic machine"
 	desc = "Anaesthetic machine used to support the administration of anaesthesia ."
-	spawn_type = /obj/item/weapon/tank/anesthetic
+	spawn_type = /obj/item/tank/anesthetic
 	mask_type = /obj/item/clothing/mask/breath/anesthetic
 	is_loosen = FALSE
 

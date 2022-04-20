@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/energy/temperature
+/obj/item/gun/energy/temperature
 	name = "temperature gun"
 	icon_state = "freezegun"
 	item_state = "freezegun"
@@ -14,25 +14,25 @@
 	wielded_item_state = "gun_wielded"
 
 	projectile_type = /obj/item/projectile/temp
-	cell_type = /obj/item/weapon/cell/high
+	cell_type = /obj/item/cell/high
 	combustion = 0
 
 
-/obj/item/weapon/gun/energy/temperature/examine(mob/user)
+/obj/item/gun/energy/temperature/examine(mob/user)
 	. = ..()
 	. += "\nThe temperature sensor shows: [round(temperature-T0C)]&deg;C"
 
-/obj/item/weapon/gun/energy/temperature/Initialize()
+/obj/item/gun/energy/temperature/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
 
-/obj/item/weapon/gun/energy/temperature/Destroy()
+/obj/item/gun/energy/temperature/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 
-/obj/item/weapon/gun/energy/temperature/attack_self(mob/living/user)
+/obj/item/gun/energy/temperature/attack_self(mob/living/user)
 	user.set_machine(src)
 	var/temp_text = ""
 	if(temperature > (T0C - 50))
@@ -48,10 +48,10 @@
 	show_browser(user, dat, "window=freezegun;size=450x300;can_resize=1;can_close=1;can_minimize=1")
 	onclose(user, "window=freezegun", src)
 
-/obj/item/weapon/gun/energy/temperature/Topic(user, href_list, state = GLOB.inventory_state)
+/obj/item/gun/energy/temperature/Topic(user, href_list, state = GLOB.inventory_state)
 	..()
 
-/obj/item/weapon/gun/energy/temperature/OnTopic(user, href_list)
+/obj/item/gun/energy/temperature/OnTopic(user, href_list)
 	if(href_list["temp"])
 		var/amount = text2num(href_list["temp"])
 		if(amount > 0)
@@ -62,7 +62,7 @@
 
 		attack_self(user)
 
-/obj/item/weapon/gun/energy/temperature/Process()
+/obj/item/gun/energy/temperature/Process()
 	switch(temperature)
 		if(100 to 200) charge_cost = 10
 		if(201 to 200) charge_cost = 20
@@ -83,12 +83,12 @@
 		else
 			temperature = current_temperature
 
-/obj/item/weapon/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
+/obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
 	if(temperature >= 450)
 		temperature -= rand(0,100)
 	. = ..()
 
-/obj/item/weapon/gun/energy/temperature/consume_next_projectile()
+/obj/item/gun/energy/temperature/consume_next_projectile()
 	if(!power_supply) return null
 	if(!ispath(projectile_type)) return null
 	if(!power_supply.checked_use(charge_cost)) return null

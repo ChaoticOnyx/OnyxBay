@@ -207,7 +207,7 @@
 	floor = 1
 	return 1
 
-/obj/effect/vine/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/vine/attackby(obj/item/W, mob/user)
 	START_PROCESSING(SSvines, src)
 
 	if(W.edge && W.w_class < ITEM_SIZE_NORMAL && user.a_intent != I_HURT)

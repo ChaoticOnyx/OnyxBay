@@ -72,7 +72,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/connect
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
+	/obj/item/hemostat = 100,	\
 	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 20
 	)
@@ -97,6 +97,8 @@
 	if(E.children)
 		for(var/obj/item/organ/external/C in E.children)
 			C.status &= ~ORGAN_CUT_AWAY
+			C.update_tally()
+	E.update_tally()
 	target.update_body()
 	target.updatehealth()
 	target.UpdateDamageIcon()

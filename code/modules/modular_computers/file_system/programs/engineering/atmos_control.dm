@@ -35,7 +35,7 @@
 		log_debug("\The [src] given an unepxected req_one_access: [req_one_access]")
 
 	if(monitored_alarm_ids)
-		for(var/obj/machinery/alarm/alarm in SSmachines.machinery)
+		for(var/obj/machinery/alarm/alarm in GLOB.alarm_list)
 			if(!(alarm.z in GLOB.using_map.station_levels))
 				continue
 			if(alarm.alarm_id && (alarm.alarm_id in monitored_alarm_ids))
@@ -49,7 +49,7 @@
 
 	if(href_list["alarm"])
 		if(ui_ref)
-			var/obj/machinery/alarm/alarm = locate(href_list["alarm"]) in (monitored_alarms.len ? monitored_alarms : SSmachines.machinery)
+			var/obj/machinery/alarm/alarm = locate(href_list["alarm"]) in (monitored_alarms.len ? monitored_alarms : GLOB.alarm_list)
 			if(alarm)
 				var/datum/topic_state/TS = generate_state(alarm)
 				alarm.ui_interact(usr, master_ui = ui_ref, state = TS)
@@ -62,7 +62,7 @@
 	var/alarmsDanger[0]
 
 	// TODO: Move these to a cache, similar to cameras
-	for(var/obj/machinery/alarm/alarm in (monitored_alarms.len ? monitored_alarms : SSmachines.machinery))
+	for(var/obj/machinery/alarm/alarm in (monitored_alarms.len ? monitored_alarms : GLOB.alarm_list))
 		var/Z = get_host_z()
 		if ((!monitored_alarms.len) && (!Z || !AreConnectedZLevels(Z, alarm.z)))
 			continue

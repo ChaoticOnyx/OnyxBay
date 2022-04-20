@@ -240,7 +240,7 @@
 
 /datum/follow_holder/nuke_disc
 	sort_order = 11
-	followed_type = /obj/item/weapon/disk/nuclear
+	followed_type = /obj/item/disk/nuclear
 
 /datum/follow_holder/nuclear_bomb
 	sort_order = 12
@@ -248,7 +248,7 @@
 
 /datum/follow_holder/captains_spare
 	sort_order = 13
-	followed_type = /obj/item/weapon/card/id/captains_spare
+	followed_type = /obj/item/card/id/captains_spare
 
 /datum/follow_holder/stack
 	sort_order = 14

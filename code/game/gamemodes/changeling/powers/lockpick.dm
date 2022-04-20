@@ -1,15 +1,16 @@
 
-//Emag-lite
-/mob/proc/changeling_electric_lockpick()
-	set category = "Changeling"
-	set name = "Electric Lockpick (5 + 10/use)"
-	set desc = "Bruteforces open most electrical locking systems, at 10 chemicals per use."
+// Emag-lite
+/datum/changeling_power/item/lockpick
+	name = "Bioelectric Lockpick"
+	desc = "Bruteforces open most electrical locking systems, consuming 20 chemicals per use."
+	icon_state = "ling_lockpick"
+	required_chems = 10
+	power_item_type = /obj/item/finger_lockpick
+	var/last_time_used = 0
+	var/fingerpick_cost = 20
+	var/fingerpick_cooldown = 10 SECONDS
 
-	var/datum/changeling/changeling = changeling_power(5)
-	if(!changeling)
-		return FALSE
-
-	var/obj/held_item = get_active_hand()
-
-	if(held_item == null)
-		changeling_generic_weapon(/obj/item/weapon/finger_lockpick, 5, FALSE) // Chemical cost is handled in the equip proc.
+/datum/changeling_power/item/lockpick/activate()
+	if(check_incapacitated())
+		return
+	create_item(power_item_type, FALSE)

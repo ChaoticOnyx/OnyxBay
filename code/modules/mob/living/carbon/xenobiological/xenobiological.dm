@@ -274,7 +274,7 @@
 						sleep(3)
 						step_away(src,M,15)
 
-				playsound(loc, attack ? attack.attack_sound : "punch", rand(80, 100), 1, -1)
+				playsound(loc, attack ? attack.attack_sound : SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 				visible_message(
 					SPAN("danger", "[M] has [attack_verb]ed [src]!"),
 					SPAN("danger", "You has been [attack_verb]ed by [src]!")

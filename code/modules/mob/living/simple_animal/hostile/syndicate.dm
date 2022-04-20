@@ -20,6 +20,7 @@
 	can_escape = 1
 	attacktext = "punched"
 	a_intent = I_HURT
+	bodyparts = /decl/simple_animal_bodyparts/humanoid
 	var/corpse = /obj/effect/landmark/corpse/syndicate
 	var/weapon1
 	var/weapon2
@@ -46,8 +47,8 @@
 	melee_damage_upper = 25
 	icon_state = "syndicatemelee"
 	icon_living = "syndicatemelee"
-	weapon1 = /obj/item/weapon/melee/energy/sword/one_hand/red
-	weapon2 = /obj/item/weapon/shield/energy
+	weapon1 = /obj/item/melee/energy/sword/one_hand/red
+	weapon2 = /obj/item/shield/energy
 	attacktext = "slashed"
 	status_flags = 0
 
@@ -75,6 +76,9 @@
 		visible_message("<span class='danger'>\The [src] blocks \the [Proj] with its shield!</span>")
 	return 0
 
+/mob/living/simple_animal/hostile/syndicate/melee/weaponless
+	weapon1 = null
+	weapon2 = null
 
 /mob/living/simple_animal/hostile/syndicate/melee/space
 	min_gas = null
@@ -91,11 +95,14 @@
 	rapid = 1
 	icon_state = "syndicateranged"
 	icon_living = "syndicateranged"
-	casingtype = /obj/item/ammo_casing/a10mm
+	casingtype = /obj/item/ammo_casing/a10mm/used
 	projectilesound = 'sound/effects/weapons/gun/fire_generic_smg.ogg'
 	projectiletype = /obj/item/projectile/bullet/pistol/medium
 
-	weapon1 = /obj/item/weapon/gun/projectile/automatic/c20r
+	weapon1 = /obj/item/gun/projectile/automatic/c20r
+
+/mob/living/simple_animal/hostile/syndicate/ranged/weaponless
+	weapon1 = null
 
 /mob/living/simple_animal/hostile/syndicate/ranged/space
 	icon_state = "syndicaterangedpsace"

@@ -97,7 +97,7 @@
 
 	// for some reasons proximity_monitor removes himself from GLOB.moved_event.event_sources
 	// so we want to re-check
-	if(!(host in GLOB.moved_event.event_sources))	
+	if(!(host in GLOB.moved_event.event_sources))
 		GLOB.moved_event.register(host, src, .proc/HandleMove)
 
 /obj/effect/abstract/proximity_checker
@@ -114,6 +114,7 @@
 		return INITIALIZE_HINT_QDEL
 
 /obj/effect/abstract/proximity_checker/Destroy()
+	LAZYREMOVE(monitor.checkers, src)
 	monitor = null
 	return ..()
 

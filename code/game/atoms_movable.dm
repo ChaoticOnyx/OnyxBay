@@ -50,6 +50,9 @@
 	..()
 	return
 
+/atom/movable/proc/on_purchase()
+	return
+
 /atom/movable/proc/forceMove(atom/destination)
 	if(loc == destination)
 		return 0

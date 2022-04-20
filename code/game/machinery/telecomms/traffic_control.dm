@@ -10,63 +10,10 @@
 
 	var/screen = 0				// the screen number:
 	var/list/servers = list()	// the servers located by the computer
-	var/mob/editingcode
-	var/mob/lasteditor
-	var/list/viewingcode = list()
 	var/obj/machinery/telecomms/server/SelectedServer
 
 	var/network = "NULL"		// the network to probe
 	var/temp = ""				// temporary feedback messages
-
-	var/storedcode = ""			// code stored
-
-
-	proc/update_ide()
-
-		// loop if there's someone manning the keyboard
-		while(editingcode)
-			if(!editingcode.client)
-				editingcode = null
-				break
-
-			// For the typer, the input is enabled. Buffer the typed text
-			if(editingcode)
-				storedcode = "[winget(editingcode, "tcscode", "text")]"
-			if(editingcode) // double if's to work around a runtime error
-				winset(editingcode, "tcscode", "is-disabled=false")
-
-			// If the player's not manning the keyboard anymore, adjust everything
-			if( (!(editingcode in range(1, src)) && !issilicon(editingcode)) || (editingcode.machine != src && !issilicon(editingcode)))
-				if(editingcode)
-					winshow(editingcode, "Telecomms IDE", 0) // hide the window!
-				editingcode = null
-				break
-
-			// For other people viewing the typer type code, the input is disabled and they can only view the code
-			// (this is put in place so that there's not any magical shenanigans with 50 people inputting different code all at once)
-
-			if(length(viewingcode))
-				// This piece of code is very important - it escapes quotation marks so string aren't cut off by the input element
-				var/showcode = replacetext(storedcode, "\\\"", "\\\\\"")
-				showcode = replacetext(storedcode, "\"", "\\\"")
-
-				for(var/mob/M in viewingcode)
-
-					if( (M.machine == src && (M in view(1, src) )) || issilicon(M))
-						winset(M, "tcscode", "is-disabled=true")
-						winset(M, "tcscode", "text=\"[showcode]\"")
-					else
-						viewingcode.Remove(M)
-						winshow(M, "Telecomms IDE", 0) // hide the window!
-
-			sleep(5)
-
-		if(length(viewingcode) > 0)
-			editingcode = pick(viewingcode)
-			viewingcode.Remove(editingcode)
-			update_ide()
-
-
 
 	req_access = list(access_tcomsat)
 
@@ -102,12 +49,6 @@
 				dat += "<center><a href='?src=\ref[src];operation=mainmenu'>\[Main Menu\]</a>     <a href='?src=\ref[src];operation=refresh'>\[Refresh\]</a></center>"
 				dat += "<br>Current Network: [network]"
 				dat += "<br>Selected Server: [SelectedServer.id]<br><br>"
-				dat += "<br><a href='?src=\ref[src];operation=editcode'>\[Edit Code\]</a>"
-				dat += "<br>Signal Execution: "
-				if(SelectedServer.autoruncode)
-					dat += "<a href='?src=\ref[src];operation=togglerun'>ALWAYS</a>"
-				else
-					dat += "<a href='?src=\ref[src];operation=togglerun'>NEVER</a>"
 
 
 		show_browser(user, dat, "window=traffic_control;size=575x400")
@@ -159,33 +100,6 @@
 
 						screen = 0
 
-				if("editcode")
-					if(editingcode == usr) return
-					if(usr in viewingcode) return
-
-					if(!editingcode)
-						lasteditor = usr
-						editingcode = usr
-						winshow(editingcode, "Telecomms IDE", 1) // show the IDE
-						winset(editingcode, "tcscode", "is-disabled=false")
-						winset(editingcode, "tcscode", "text=\"\"")
-						var/showcode = replacetext(storedcode, "\\\"", "\\\\\"")
-						showcode = replacetext(storedcode, "\"", "\\\"")
-						winset(editingcode, "tcscode", "text=\"[showcode]\"")
-						spawn()
-							update_ide()
-
-					else
-						viewingcode.Add(usr)
-						winshow(usr, "Telecomms IDE", 1) // show the IDE
-						winset(usr, "tcscode", "is-disabled=true")
-						winset(editingcode, "tcscode", "text=\"\"")
-						var/showcode = replacetext(storedcode, "\"", "\\\"")
-						winset(usr, "tcscode", "text=\"[showcode]\"")
-
-				if("togglerun")
-					SelectedServer.autoruncode = !(SelectedServer.autoruncode)
-
 		if(href_list["network"])
 
 			var/newnet = sanitize(input(usr, "Which network do you want to view?", "Comm Monitor", network) as null|text)
@@ -204,15 +118,15 @@
 		updateUsrDialog()
 		return
 
-	attackby(var/obj/item/weapon/D as obj, var/mob/user as mob)
+	attackby(obj/item/D as obj, mob/user as mob)
 		if(isScrewdriver(D))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20, src))
 				if (src.stat & BROKEN)
 					to_chat(user, "<span class='notice'>The broken glass falls out.</span>")
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-					new /obj/item/weapon/material/shard( src.loc )
-					var/obj/item/weapon/circuitboard/comm_traffic/M = new /obj/item/weapon/circuitboard/comm_traffic( A )
+					new /obj/item/material/shard( src.loc )
+					var/obj/item/circuitboard/comm_traffic/M = new /obj/item/circuitboard/comm_traffic( A )
 					for (var/obj/C in src)
 						C.loc = src.loc
 					A.circuit = M
@@ -223,7 +137,7 @@
 				else
 					to_chat(user, "<span class='notice'>You disconnect the monitor.</span>")
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-					var/obj/item/weapon/circuitboard/comm_traffic/M = new /obj/item/weapon/circuitboard/comm_traffic( A )
+					var/obj/item/circuitboard/comm_traffic/M = new /obj/item/circuitboard/comm_traffic( A )
 					for (var/obj/C in src)
 						C.loc = src.loc
 					A.circuit = M

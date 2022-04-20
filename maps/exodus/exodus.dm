@@ -20,6 +20,7 @@
 	#include "derelicts/original/derelict.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"
+	#include "derelicts/jungleplanet/jungle_planet.dmm"
 
 	#define USING_MAP_DATUM /datum/map/exodus
 

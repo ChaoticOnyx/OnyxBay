@@ -6,8 +6,9 @@
 	var/emp_damage = 0//Handles a type of MMI damage
 	var/alert = null
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	icon_state = "brain1"
+	species_language = LANGUAGE_GALCOM // galcom is default for sapient life in game.
 
 /mob/living/carbon/brain/New()
 	create_reagents(1000)
@@ -20,34 +21,16 @@
 		ghostize()		//Ghostize checks for key so nothing else is necessary.
 	. = ..()
 
-/mob/living/carbon/brain/incapacitated()
+/mob/living/carbon/brain/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
+	// brain can't be knocked out.
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (container && istype(container, /obj/item/device/mmi)))
+		return FALSE
 	return TRUE
 
-/mob/living/carbon/brain/say_understands(other)//Goddamn is this hackish, but this say code is so odd
-	if (istype(other, /mob/living/silicon/ai))
-		if(!(container && istype(container, /obj/item/device/mmi)))
-			return 0
-		else
-			return 1
-	if (istype(other, /mob/living/silicon/decoy))
-		if(!(container && istype(container, /obj/item/device/mmi)))
-			return 0
-		else
-			return 1
-	if (istype(other, /mob/living/silicon/pai))
-		if(!(container && istype(container, /obj/item/device/mmi)))
-			return 0
-		else
-			return 1
-	if (istype(other, /mob/living/silicon/robot))
-		if(!(container && istype(container, /obj/item/device/mmi)))
-			return 0
-		else
-			return 1
-	if (istype(other, /mob/living/carbon/human))
-		return 1
-	if (istype(other, /mob/living/carbon/metroid))
-		return 1
+/mob/living/carbon/brain/say_understands(mob/other, datum/language/speaking)
+	// If brain is not in MMI, it can't hear mob/other.
+	if(!(container && istype(container, /obj/item/device/mmi)))
+		return FALSE
 	return ..()
 
 /mob/living/carbon/brain/update_canmove()

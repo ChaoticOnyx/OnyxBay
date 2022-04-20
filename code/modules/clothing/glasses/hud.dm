@@ -260,7 +260,7 @@
 	if(lenses)
 		overlays += overlay_image(icon, "[hud_icon]_[lenses.icon_state]")
 
-/obj/item/clothing/glasses/hud/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/glasses/hud/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		if(!matrix)
 			if(lenses)

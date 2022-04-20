@@ -43,21 +43,21 @@
 				"You hear a tinkle of crystal shards"
 				)
 			user.do_attack_animation(src)
-			playsound(src, get_sfx("window_breaking"), 75, 1)
+			playsound(src, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
 			isbroken = 1
 			set_density(0)
 			icon_state = "pylon-broken"
 			set_light(0)
 		else
 			to_chat(user, "You hit the pylon!")
-			playsound(src, get_sfx("glass_hit"), 75, 1)
+			playsound(src, GET_SFX(SFX_GLASS_HIT), 75, 1)
 	else
 		if(prob(damage * 2))
 			to_chat(user, "You pulverize what was left of the pylon!")
 			qdel(src)
 		else
 			to_chat(user, "You hit the pylon!")
-		playsound(src, get_sfx("glass_hit"), 75, 1)
+		playsound(src, GET_SFX(SFX_GLASS_HIT), 75, 1)
 
 
 /obj/structure/cult/pylon/proc/repair(mob/user as mob)
@@ -147,11 +147,11 @@
 			if(Robot.mmi)
 				qdel(Robot.mmi)
 		else
-			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))
-					qdel(W)
+			for(var/obj/item/I in M)
+				if(istype(I, /obj/item/implant))
+					qdel(I)
 					continue
-				M.drop_from_inventory(W)
+				M.drop_from_inventory(I)
 
 		var/mob/living/new_mob = new /mob/living/simple_animal/corgi(A.loc)
 		new_mob.a_intent = I_HURT

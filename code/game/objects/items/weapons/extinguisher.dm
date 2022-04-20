@@ -1,4 +1,4 @@
-/obj/item/weapon/extinguisher
+/obj/item/extinguisher
 	name = "fire extinguisher"
 	desc = "A traditional red fire extinguisher."
 	icon = 'icons/obj/items.dmi'
@@ -26,7 +26,7 @@
 	var/ff_reagent = /datum/reagent/water/firefoam
 	var/external_source = FALSE
 
-/obj/item/weapon/extinguisher/mini
+/obj/item/extinguisher/mini
 	name = "fire extinguisher"
 	desc = "A light and compact fibreglass-framed model fire extinguisher."
 	icon_state = "miniFE0"
@@ -43,18 +43,18 @@
 	sprite_name = "miniFE"
 	matter = list(MATERIAL_STEEL = 500)
 
-/obj/item/weapon/extinguisher/New()
+/obj/item/extinguisher/New()
 	create_reagents(max_volume)
 	reagents.add_reagent(ff_reagent, max_volume)
 	..()
 
-/obj/item/weapon/extinguisher/examine(mob/user)
+/obj/item/extinguisher/examine(mob/user)
 	. = ..()
 	if((get_dist(src, user) <= 0) && !external_source)
 		. += "\n[text("\icon[] [] contains [] units of reagents left!", src, src.name, src.reagents.total_volume)]"
 	return
 
-/obj/item/weapon/extinguisher/attack_self(mob/user)
+/obj/item/extinguisher/attack_self(mob/user)
 	if(external_source)
 		return
 	safety = !safety
@@ -63,7 +63,7 @@
 	to_chat(user, "The safety is [safety ? "on" : "off"].")
 	return
 
-/obj/item/weapon/extinguisher/attack(mob/living/M, mob/user)
+/obj/item/extinguisher/attack(mob/living/M, mob/user)
 	if((user.a_intent == I_HELP) && !external_source)
 		if(safety || (world.time < last_use + 20)) // We still catch help intent to not randomly attack people
 			return
@@ -80,7 +80,7 @@
 		return 1 // No afterattack
 	return ..()
 
-/obj/item/weapon/extinguisher/proc/propel_object(obj/O, mob/user, movementdirection)
+/obj/item/extinguisher/proc/propel_object(obj/O, mob/user, movementdirection)
 	if(O.anchored)
 		return
 
@@ -107,11 +107,11 @@
 		O.Move(get_step(user,movementdirection), movementdirection)
 		sleep(3)
 
-/obj/item/weapon/extinguisher/afterattack(atom/target, mob/user, flag)
+/obj/item/extinguisher/afterattack(atom/target, mob/user, flag)
 	//TODO; Add support for reagents in water.
 	if(external_source)
 		return ..()
-	if((istype(target, /obj/structure/reagent_dispensers/watertank) || istype(target, /obj/item/weapon/backwear/reagent/extinguisher)) && flag)
+	if((istype(target, /obj/structure/reagent_dispensers/watertank) || istype(target, /obj/item/backwear/reagent/extinguisher)) && flag)
 		var/obj/O = target
 		var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
 		if(!O.reagents.total_volume)

@@ -17,7 +17,7 @@
 	)
 
 /obj/item/integrated_circuit/input/card_reader/attackby_react(obj/item/I, mob/living/user, intent)
-	var/obj/item/weapon/card/id/card = I.GetIdCard()
+	var/obj/item/card/id/card = I.GetIdCard()
 	var/list/access = I.GetAccess()
 	var/passkey = strtohex(XorEncrypt(json_encode(access), SScircuit.cipherkey))
 
@@ -53,10 +53,12 @@
 	)
 
 /obj/item/integrated_circuit/output/access_displayer/do_work()
-	var/passkey = get_pin_data(IC_INPUT, 1)
+	var/passkey = sanitize(get_pin_data(IC_INPUT, 1), max_length = MAX_PAPER_MESSAGE_LEN)
+	passkey = hextostr(passkey, TRUE)
+	passkey = XorEncrypt(passkey, SScircuit.cipherkey)
 
 	// from hippie_xor_decrypt proc
-	var/list/access = json_decode(XorEncrypt(hextostr(passkey, TRUE), SScircuit.cipherkey))
+	var/list/access = json_decode(passkey)
 	if(access && islist(access) && assembly)
 		// reset previus card access and set new access
 		assembly.access_card.access = access

@@ -213,8 +213,8 @@
 			return
 
 	// Repair
-	if(health < maxhealth && istype(W, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/F = W
+	if(health < maxhealth && istype(W, /obj/item/weldingtool))
+		var/obj/item/weldingtool/F = W
 		if(F.welding)
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 			if(do_after(user, 20, src))
@@ -223,7 +223,7 @@
 				return
 
 	// (Un)Anchor
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		user.visible_message(anchored ? "<span class='notice'>\The [user] begins unscrewing \the [src].</span>" : "<span class='notice'>\The [user] begins fasten \the [src].</span>" )
 		playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
 		if(do_after(user, 10, src))
@@ -319,3 +319,30 @@
 		user.visible_message("<span class='warning'>\The [user] climbs over \the [src]!</span>")
 
 	climbers -= user
+
+/obj/structure/railing/steel
+	icon_state = "newrailing0"
+
+/obj/structure/railing/steel/update_icon(UpdateNeighgors = 1)
+	NeighborsCheck(UpdateNeighgors)
+	overlays.Cut()
+	if (!check || !anchored)
+		icon_state = "newrailing0"
+	else
+		icon_state = "newrailing1"
+		if (check & 32)
+			overlays += image ('icons/obj/railing.dmi', src, "newcorneroverlay")
+		if ((check & 16) || !(check & 32) || (check & 64))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_l")
+		if (!(check & 2) || (check & 1) || (check & 4))
+			overlays += image ('icons/obj/railing.dmi', src, "newfrontoverlay_r")
+			if(check & 4)
+				switch (src.dir)
+					if (NORTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = 32)
+					if (SOUTH)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_x = -32)
+					if (EAST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = -32)
+					if (WEST)
+						overlays += image ('icons/obj/railing.dmi', src, "newmcorneroverlay", pixel_y = 32)

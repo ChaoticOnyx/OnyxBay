@@ -1,5 +1,5 @@
 /datum/species/golem
-	name = "Golem"
+	name = SPECIES_GOLEM
 	name_plural = "golems"
 
 	icobase = 'icons/mob/human_races/r_golem.dmi'
@@ -7,7 +7,8 @@
 
 	language = "Sol Common" //todo?
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
-	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD
+	generic_attack_mod = 1.5
+	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET
 	spawn_flags = SPECIES_IS_RESTRICTED
 	siemens_coefficient = 0
 
@@ -31,3 +32,6 @@
 	H.real_name = "adamantine golem ([rand(1, 1000)])"
 	H.SetName(H.real_name)
 	..()
+
+/datum/species/golem/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

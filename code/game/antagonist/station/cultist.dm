@@ -26,7 +26,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	role_text_plural = "Cultists"
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
-							/datum/job/merchant, /datum/job/lawyer)
+							/datum/job/merchant, /datum/job/iaa)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
 	feedback_tag = "cult_objective"
@@ -83,7 +83,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	if(!..())
 		return 0
 
-	var/obj/item/weapon/book/tome/T = new(get_turf(player))
+	var/obj/item/book/tome/T = new(get_turf(player))
 	var/list/slots = list (
 		"backpack" = slot_in_backpack,
 		"left pocket" = slot_l_store,
@@ -95,7 +95,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 		player.equip_to_slot(T, slot)
 		if(T.loc == player)
 			break
-	var/obj/item/weapon/storage/S = locate() in player.contents
+	var/obj/item/storage/S = locate() in player.contents
 	if(istype(S))
 		T.forceMove(S)
 
@@ -109,7 +109,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	remove_cult_magic(player.current)
 	remove_cultiness(CULTINESS_PER_CULTIST)
 
-/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
+/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat)
 	. = ..()
 	if(.)
 		to_chat(player, "<span class='cult'>[conversion_blurb]</span>")

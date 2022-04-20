@@ -11,21 +11,21 @@ import { addScrollableNode, removeScrollableNode } from '../events'
 import { BoxProps, computeBoxClassName, computeBoxProps } from './Box'
 
 interface SectionProps extends BoxProps {
-  className?: string;
-  title?: string;
-  buttons?: InfernoNode;
-  fill?: boolean;
-  fitted?: boolean;
-  scrollable?: boolean;
+  className?: string
+  title?: string
+  buttons?: InfernoNode
+  fill?: boolean
+  fitted?: boolean
+  scrollable?: boolean
   /** @deprecated This property no longer works, please remove it. */
-  level?: boolean;
+  level?: boolean
   /** @deprecated Please use `scrollable` property */
-  overflowY?: any;
+  overflowY?: any
 }
 
 export class Section extends Component<SectionProps> {
-  scrollableRef: RefObject<HTMLDivElement>;
-  scrollable: boolean;
+  scrollableRef: RefObject<HTMLDivElement>
+  scrollable: boolean
 
   constructor (props) {
     super(props)

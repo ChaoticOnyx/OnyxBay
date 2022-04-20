@@ -2,7 +2,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ
 	name = "organ"
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/human.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
 	dir = SOUTH
@@ -29,7 +29,7 @@ var/list/organ_cache = list()
 	var/death_time
 
 	var/food_organ_type				  // path of food made from organ, ex.
-	var/obj/item/weapon/reagent_containers/food/snacks/food_organ
+	var/obj/item/reagent_containers/food/snacks/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
 /obj/item/organ/return_item()
@@ -85,8 +85,6 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	src.after_organ_creation()
-
 	update_icon()
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
@@ -113,29 +111,28 @@ var/list/organ_cache = list()
 	//dead already, no need for more processing
 	if(status & ORGAN_DEAD)
 		return
-	// Don't process if we're in a freezer, an MMI or a stasis bag.or a freezer or something I dunno
-	if(is_preserved())
-		return
+
 	//Process infections
-	if (BP_IS_ROBOTIC(src) || (owner && owner.species && (owner.species.species_flags & SPECIES_FLAG_IS_PLANT)))
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
 		return
 
-	if(!owner && reagents)
-		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
-		if(B && prob(40))
-			reagents.remove_reagent(/datum/reagent/blood,0.1)
-			blood_splatter(src,B,1)
-		if(config.organs_decay)
-			take_general_damage(rand(1,3))
-		germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
-		if(germ_level >= INFECTION_LEVEL_THREE)
-			die()
+	if(!owner)
+		if(reagents && !is_preserved())
+			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
+			if(B && prob(40))
+				reagents.remove_reagent(/datum/reagent/blood, 0.1)
+				blood_splatter(src, B, 1)
+			if(config.organs_decay)
+				take_general_damage(rand(1, 3))
+			germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_TWO)
+				germ_level += rand(2, 6)
+			if(germ_level >= INFECTION_LEVEL_THREE)
+				die()
 
-	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
-		//** Handle antibiotics and curing infections
+	else if(owner.bodytemperature >= 170) // Cryo stops germs from moving and doing their bad stuffs
+		// Handle antibiotics and curing infections
 		handle_antibiotics()
 		handle_rejection()
 		handle_germ_effects()
@@ -155,7 +152,7 @@ var/list/organ_cache = list()
 		var/obj/item/organ/O = loc
 		return O.is_preserved()
 	else
-		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
+		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
 /obj/item/organ/examine(mob/user)
 	. = ..()
@@ -273,15 +270,14 @@ var/list/organ_cache = list()
  *
  *  drop_organ - if true, organ will be dropped at the loc of its former owner
  */
-/obj/item/organ/proc/removed(mob/living/user, drop_organ=1)
-
+/obj/item/organ/proc/removed(mob/living/user, drop_organ = TRUE)
 	if(!istype(owner))
 		return
 
 	if(drop_organ)
 		dropInto(owner.loc)
 
-	playsound(src, "crunch", rand(65, 80), FALSE)
+	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
 	START_PROCESSING(SSobj, src)
@@ -363,10 +359,6 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
-
-// special organ instruction for correct functional
-/obj/item/organ/proc/after_organ_creation()
-	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

@@ -2,7 +2,7 @@
 	name = "Druid"
 	feedback_tag = "DL"
 	description = "Summons, nature, and a bit o' healin."
-	points = 6
+	points = 8
 	can_make_contracts = TRUE
 
 	spells = list(
@@ -25,8 +25,8 @@
 
 	artifacts = list(
 		ARTIFACT_DATA(/obj/structure/closet/wizard/souls,         1),
-		ARTIFACT_DATA(/obj/item/weapon/magic_rock,                1),
-		ARTIFACT_DATA(/obj/item/weapon/monster_manual,            1),
-		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
-		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+		ARTIFACT_DATA(/obj/item/magic_rock,                1),
+		ARTIFACT_DATA(/obj/item/monster_manual,            1),
+		ARTIFACT_DATA(/obj/item/contract/wizard/telepathy, 1),
+		ARTIFACT_DATA(/obj/item/contract/apprentice,       1)
 	)

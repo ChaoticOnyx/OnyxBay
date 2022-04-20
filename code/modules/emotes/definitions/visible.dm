@@ -86,6 +86,17 @@
 	key = "salute"
 	emote_message_3p_target = "USER salutes to TARGET."
 	emote_message_3p = "USER salutes."
+
+/decl/emote/visible/flap
+	key = "flap"
+	check_restraints = TRUE
+	emote_message_3p = "USER flaps USER_THEIR wings."
+
+/decl/emote/visible/aflap
+	key = "aflap"
+	check_restraints = TRUE
+	emote_message_3p = "USER flaps USER_THEIR wings ANGRILY!"
+
 /decl/emote/visible/eyebrow
 	key = "eyebrow"
 	emote_message_3p = "USER raises an eyebrow."
@@ -121,20 +132,20 @@
 	emote_message_3p = "USER waves."
 	emote_message_3p_target = "USER waves at TARGET."
 
-/decl/emote/visible/look
-	key = "look"
-	emote_message_3p_target = "USER looks at TARGET."
-	emote_message_3p = "USER looks."
-
 /decl/emote/visible/glare
 	key = "glare"
-	emote_message_3p_target = "USER glares at TARGET."
+	emote_message_3p = "USER glares at TARGET."
 	emote_message_3p = "USER glares."
 
 /decl/emote/visible/stare
 	key = "stare"
-	emote_message_3p_target = "USER stares at TARGET."
+	emote_message_3p = "USER stares at TARGET."
 	emote_message_3p = "USER stares."
+
+/decl/emote/visible/look
+	key = "look"
+	emote_message_3p = "USER looks at TARGET."
+	emote_message_3p = "USER looks."
 
 /decl/emote/visible/point
 	key = "point"
@@ -171,6 +182,12 @@
 	key = "wink"
 	emote_message_3p = "USER winks."
 
+/decl/emote/visible/hug
+	key = "hug"
+	check_restraints = TRUE
+	emote_message_3p = "USER hugs USER_THEMself."
+	emote_message_3p_target = "USER hugs TARGET."
+
 /decl/emote/visible/dap
 	key = "dap"
 	check_restraints = TRUE
@@ -204,6 +221,19 @@
 /decl/emote/visible/deathgasp_robot
 	key = "deathgasp"
 	emote_message_3p = "USER shudders violently for a moment, then becomes motionless, USER_THEIR eyes slowly darkening."
+
+/decl/emote/visible/handshake
+	key = "handshake"
+	check_restraints = TRUE
+	emote_message_3p = "USER shakes hands with USER_THEMself."
+	emote_message_3p_target = "USER shakes hands with TARGET."
+	message_type = VISIBLE_MESSAGE
+
+/decl/emote/visible/handshake/get_emote_message_3p(atom/user, atom/target, extra_params)
+	if(target && !user.Adjacent(target))
+		return "USER holds out USER_HIS hand out to TARGET."
+	return ..()
+
 /decl/emote/visible/signal
 	key = "signal"
 	emote_message_3p = "USER signals."

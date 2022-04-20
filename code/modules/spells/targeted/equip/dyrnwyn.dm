@@ -13,12 +13,12 @@
 	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	duration = 0
 	max_targets = 1
-	equipped_summons = list("active hand" = /obj/item/weapon/material/sword)
+	equipped_summons = list("active hand" = /obj/item/material/sword)
 	delete_old = TRUE
 	single_item = TRUE
 	icon_state = "gen_immolate"
 
-/obj/item/weapon/melee/energy/sword/dyrnwyn
+/obj/item/melee/energy/sword/dyrnwyn
 	name = "Dyrnwyn"
 	desc = "Legendary sword of Rhydderch Hael, said to draw in flame when held by a worthy man."
 	hitsound = 'sound/weapons/bladeslice.ogg'
@@ -41,7 +41,7 @@
 	activate_sound = 'sound/effects/explosions/fuel_explosion3.ogg'
 	deactivate_sound = 'sound/effects/explosions/fuel_explosion3.ogg'
 
-/obj/item/weapon/melee/energy/sword/dyrnwyn/activate(mob/living/user)
+/obj/item/melee/energy/sword/dyrnwyn/activate(mob/living/user)
 	if(!active)
 		to_chat(user, SPAN("notice", "\The [src] is engulfed in flames."))
 	..()
@@ -51,7 +51,7 @@
 	icon_state = "dyrwyn_active"
 	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 
-/obj/item/weapon/melee/energy/sword/dyrnwyn/deactivate(mob/living/user)
+/obj/item/melee/energy/sword/dyrnwyn/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, SPAN("notice", "\The [src] flames disappear!"))
 	..()
@@ -64,5 +64,5 @@
 /datum/spell/targeted/equip_item/dyrnwyn/empower_spell()
 	if(!..())
 		return FALSE
-	equipped_summons = list("active hand" = /obj/item/weapon/melee/energy/sword/dyrnwyn)
+	equipped_summons = list("active hand" = /obj/item/melee/energy/sword/dyrnwyn)
 	return "Dyrnwyn full power is unlocked"

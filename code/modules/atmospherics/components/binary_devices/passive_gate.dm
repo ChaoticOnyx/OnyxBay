@@ -240,7 +240,7 @@
 	src.add_fingerprint(usr)
 	return TOPIC_REFRESH
 
-/obj/machinery/atmospherics/binary/passive_gate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/binary/passive_gate/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	if (unlocked)

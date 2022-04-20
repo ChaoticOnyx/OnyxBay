@@ -10,7 +10,7 @@
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SMALLER
 
-	idcard = /obj/item/weapon/card/id
+	idcard = /obj/item/card/id
 	silicon_radio = null // pAIs get their radio from the card they belong to.
 
 	var/network = "SS13"
@@ -41,7 +41,7 @@
 		"Canine" = list("yaps", "barks", "woofs")
 		)
 
-	var/obj/item/weapon/pai_cable/cable		// The cable we produce and use when door or camera jacking
+	var/obj/item/pai_cable/cable		// The cable we produce and use when door or camera jacking
 
 	var/master				// Name of the one who commands us
 	var/master_dna			// DNA string for owner verification
@@ -236,10 +236,9 @@
 	if(src.loc != card)
 		return
 
-	if(world.time <= last_special)
+	THROTTLE_SHARED(cooldown, 100, last_special)
+	if(!cooldown)
 		return
-
-	last_special = world.time + 100
 
 	//I'm not sure how much of this is necessary, but I would rather avoid issues.
 	if(istype(card.loc, /obj/item/rig_module) || istype(card.loc, /obj/item/integrated_circuit/input/pAI_connector))
@@ -325,7 +324,7 @@
 	// Pass lying down or getting up to our pet human, if we're in a rig.
 	if(istype(src.loc, /obj/item/device/paicard))
 		resting = 0
-		var/obj/item/weapon/rig/rig = get_rig()
+		var/obj/item/rig/rig = get_rig()
 		if(istype(rig))
 			rig.force_rest(src)
 	else
@@ -334,7 +333,7 @@
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
 
 //Overriding this will stop a number of headaches down the track.
-/mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/mob/living/silicon/pai/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.force)
 		visible_message("<span class='danger'>[user.name] attacks [src] with [W]!</span>")
 		src.adjustBruteLoss(W.force)
@@ -368,7 +367,7 @@
 	resting = 0
 
 	// If we are being held, handle removing our holder from their inv.
-	var/obj/item/weapon/holder/H = loc
+	var/obj/item/holder/H = loc
 	if(istype(H))
 		var/mob/living/M = H.loc
 		if(istype(M))
@@ -389,7 +388,7 @@
 
 // Handle being picked up.
 /mob/living/silicon/pai/get_scooped(mob/living/carbon/grabber, self_grab)
-	var/obj/item/weapon/holder/H = ..(grabber, self_grab)
+	var/obj/item/holder/H = ..(grabber, self_grab)
 	if(!istype(H))
 		return
 	H.icon_state = "pai-[icon_state]"

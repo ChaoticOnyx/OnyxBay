@@ -33,10 +33,10 @@
 	icon_keyboard = "rd_key"
 	icon_screen = "rdcomp"
 	light_color = "#a97faa"
-	circuit = /obj/item/weapon/circuitboard/rdconsole
+	circuit = /obj/item/circuitboard/rdconsole
 	var/datum/research/files							// Stores all the collected research data.
-	var/obj/item/weapon/disk/tech_disk/t_disk = null	// Stores the technology disk.
-	var/obj/item/weapon/disk/design_disk/d_disk = null	// Stores the design disk.
+	var/obj/item/disk/tech_disk/t_disk = null	// Stores the technology disk.
+	var/obj/item/disk/design_disk/d_disk = null	// Stores the design disk.
 
 	var/obj/machinery/r_n_d/destructive_analyzer/linked_destroy = null	// Linked Destructive Analyzer
 	var/obj/machinery/r_n_d/protolathe/linked_lathe = null				// Linked Protolathe
@@ -75,7 +75,7 @@
 
 // Have it automatically push research to the centcomm server so wild griffins can't fuck up R&D's work
 /obj/machinery/computer/rdconsole/proc/griefProtection()
-	for(var/obj/machinery/r_n_d/server/centcom/C in SSmachines.machinery)
+	for(var/obj/machinery/r_n_d/server/centcom/C in GLOB.machines)
 		for(var/datum/tech/T in files.known_tech)
 			C.files.AddTech2Known(T)
 		for(var/datum/design/D in files.known_designs)
@@ -86,7 +86,7 @@
 	..()
 	files = new /datum/research(src) // Setup the research data holder.
 	if(!id)
-		for(var/obj/machinery/r_n_d/server/centcom/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/centcom/S in GLOB.machines)
 			S.update_connections()
 			break
 
@@ -94,16 +94,16 @@
 	SyncRDevices()
 	. = ..()
 
-/obj/machinery/computer/rdconsole/attackby(obj/item/weapon/D, mob/user)
+/obj/machinery/computer/rdconsole/attackby(obj/item/D, mob/user)
 	// Loading a disk into it.
-	if(istype(D, /obj/item/weapon/disk))
+	if(istype(D, /obj/item/disk))
 		if(t_disk || d_disk)
 			to_chat(user, "A disk is already loaded into the machine.")
 			return
 
-		if(istype(D, /obj/item/weapon/disk/tech_disk))
+		if(istype(D, /obj/item/disk/tech_disk))
 			t_disk = D
-		else if (istype(D, /obj/item/weapon/disk/design_disk))
+		else if (istype(D, /obj/item/disk/design_disk))
 			d_disk = D
 		else
 			to_chat(user, SPAN("notice", "Machine cannot accept disks in that format."))
@@ -183,11 +183,11 @@
 		)
 	)
 
-	var/obj/item/weapon/disk = t_disk || d_disk
+	var/obj/item/disk = t_disk || d_disk
 
 	if(disk)
-		var/obj/item/weapon/disk/tech_disk/tech_disk = disk
-		var/obj/item/weapon/disk/design_disk/design_disk = disk
+		var/obj/item/disk/tech_disk/tech_disk = disk
+		var/obj/item/disk/design_disk/design_disk = disk
 
 		if(istype(tech_disk))
 			var/datum/tech/T = tech_disk.stored
@@ -284,7 +284,7 @@
 	if(!linked_destroy)
 		return null
 
-	var/obj/item/weapon/loaded_item = linked_destroy.loaded_item
+	var/obj/item/loaded_item = linked_destroy.loaded_item
 
 	var/list/data = list(
 		"item" = null,
@@ -576,7 +576,7 @@
 		if(!src)
 			return
 
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
 			var/server_processed = 0
 			if((id in S.id_with_upload) || istype(S, /obj/machinery/r_n_d/server/centcom))
 				for(var/datum/tech/T in files.known_tech)
@@ -616,7 +616,7 @@
 		linked_destroy.icon_state = "d_analyzer"
 
 /obj/machinery/computer/rdconsole/proc/make_report(body)
-	var/obj/item/weapon/paper/PR = new /obj/item/weapon/paper
+	var/obj/item/paper/PR = new /obj/item/paper
 
 	PR.name = "fabricator report"
 	PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"

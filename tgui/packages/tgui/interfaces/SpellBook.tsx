@@ -44,14 +44,12 @@ interface User {
   points: number;
   spells: UserSpells[];
   can_reset_class: boolean;
-  can_invest: boolean;
 }
 
 interface Flags {
   noRevert: number;
   locked: number;
   can_make_contracts: number;
-  investable: number;
 }
 
 interface SpellFlags {
@@ -214,12 +212,6 @@ const classCard = (props: Class, context: any, key: any) => {
       <Flex.Item>{props.description}</Flex.Item>
       <Flex.Item>
         <b>Points:</b> {props.points}
-        <br />
-        {props.flags.investable
-          ? (
-          <span className='Flag Flag--investable'>Investable</span>
-            )
-          : null}
         <br />
         {props.flags.can_make_contracts
           ? (
@@ -750,13 +742,6 @@ const characterPage = (props: any, context: any) => {
         <br />
         <b>Free Points: </b>
         {user.points}
-        <br />
-        <Button
-          onClick={() => act('invest')}
-          title='Spend one of your points and get 2 points after 15 minutes.'
-          disabled={!user.can_invest}
-          content='Invest'
-        />
       </Flex.Item>
       <Flex.Item>
         <Collapsible

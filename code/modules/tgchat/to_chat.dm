@@ -3,6 +3,10 @@
  * SPDX-License-Identifier: MIT
  */
 
+#define SANITIZE(variable)\
+if(isnum(variable)) { variable = num2text(variable) }\
+else if(!istext(variable)) { CRASH("Trying to send non-text content") }
+
 /**
  * Circumvents the message queue and sends the message
  * to the recipient (target) as soon as possible.
@@ -25,9 +29,11 @@
 	if(type)
 		message["type"] = type
 	if(text)
+		SANITIZE(text)
 		text = replacetext(text, GLOB.pua, "")
 		message["text"] = text
 	if(html)
+		SANITIZE(html)
 		html = replacetext(html, GLOB.pua, "")
 		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
@@ -84,9 +90,11 @@
 
 	if(type) message["type"] = type
 	if(text)
+		SANITIZE(text)
 		text = replacetext(text, GLOB.pua, "")
 		message["text"] = text
 	if(html)
+		SANITIZE(html)
 		while(i.Find(html))
 			html = copytext(html, 1, i.index) + icon2html(locate(i.group[1]), target, icon_state = i.group[2]) + copytext(html, i.next)
 
@@ -94,3 +102,5 @@
 		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	SSchat.queue(target, message)
+
+#undef SANITIZE

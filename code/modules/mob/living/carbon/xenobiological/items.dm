@@ -14,7 +14,7 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
 	attackby(obj/item/O as obj, mob/user as mob)
-		if(istype(O, /obj/item/weapon/metroidsteroid2))
+		if(istype(O, /obj/item/metroidsteroid2))
 			if(enhanced == 1)
 				to_chat(user, "<span class='warning'> This extract has already been enhanced!</span>")
 				return ..()
@@ -121,7 +121,7 @@
 
 ////Pet metroid Creation///
 
-/obj/item/weapon/metroidpotion
+/obj/item/metroidpotion
 	name = "docility potion"
 	desc = "A potent chemical mix that will nullify a metroid's powers, causing it to become docile and tame."
 	icon = 'icons/obj/chemical.dmi'
@@ -155,7 +155,7 @@
 		pet.real_name = newname
 		qdel(src)
 
-/obj/item/weapon/metroidpotion2
+/obj/item/metroidpotion2
 	name = "advanced docility potion"
 	desc = "A potent chemical mix that will nullify a metroid's powers, causing it to become docile and tame. This one is meant for adult metroids."
 	icon = 'icons/obj/chemical.dmi'
@@ -187,13 +187,13 @@
 		qdel(src)
 
 
-/obj/item/weapon/metroidsteroid
+/obj/item/metroidsteroid
 	name = "metroid steroid"
 	desc = "A potent chemical mix that will cause a metroid to generate more extract."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potpurple"
 
-/obj/item/weapon/metroidsteroid/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
+/obj/item/metroidsteroid/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
 		to_chat(user, "<span class='warning'> The steroid only works on baby metroids!</span>")
 		return ..()
@@ -211,13 +211,13 @@
 	M.cores = 3
 	qdel(src)
 
-/obj/item/weapon/metroidsteroid2
+/obj/item/metroidsteroid2
 	name = "extract enhancer"
 	desc = "A potent chemical mix that will give a metroid extract three uses."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle17"
 
-/obj/item/weapon/metroidsteroid2/afterattack(obj/target, mob/user , flag)
+/obj/item/metroidsteroid2/afterattack(obj/target, mob/user , flag)
 	if(istype(target, /obj/item/metroid_extract))
 		var/obj/item/metroid_extract/extract = target
 		if(extract.enhanced == 1)
@@ -231,13 +231,13 @@
 		extract.enhanced = 1
 		qdel(src)
 
-/obj/item/weapon/metroid_stabilizer
+/obj/item/metroid_stabilizer
 	name = "metroid stabilizer"
 	desc = "A potent chemical mix that will reduce a metroid's mutation chance."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potcyan"
 
-/obj/item/weapon/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
+/obj/item/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
 		to_chat(user, "<span class='warning'> The stabilizer only works on metroids!</span>")
 		return ..()
@@ -250,14 +250,14 @@
 		M.mutation_chance = 0
 	qdel(src)
 
-/obj/item/weapon/chill_potion
+/obj/item/chill_potion
 	name = "metroid chill potion"
 	desc = "A potent chemical mix that will fireproofs anything it's used on."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potblue"
 	var/uses = 3
 
-/obj/item/weapon/chill_potion/afterattack(obj/target, mob/user, flag)
+/obj/item/chill_potion/afterattack(obj/target, mob/user, flag)
 	if(istype(target, /obj/item/clothing))
 		var/obj/item/clothing/clothing = target
 		if(clothing.max_heat_protection_temperature == FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
@@ -269,13 +269,13 @@
 		if(!uses)
 			qdel(src)
 
-/obj/item/weapon/metroid_mutation
+/obj/item/metroid_mutation
 	name = "metroid mutation potion"
 	desc = "A potent chemical mix that will increase a metroid's mutation chance."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "potred"
 
-/obj/item/weapon/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
+/obj/item/metroid_stabilizer/attack(mob/living/carbon/metroid/M as mob, mob/user as mob)
 	if(!istype(M, /mob/living/carbon/metroid))//If target is not a metroid.
 		to_chat(user, "<span class='warning'> The mutation potion only works on metroids!</span>")
 		return ..()
