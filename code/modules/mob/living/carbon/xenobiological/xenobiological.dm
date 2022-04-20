@@ -93,7 +93,7 @@
 		if(reagents.has_reagent(/datum/reagent/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
 			tally *= 5
 
-	if(health <= 0) // if damaged, the metroid moves twice as slow
+	if(health <= maxHealth) // if damaged, the metroid moves twice as slow
 		tally *= 2
 
 	return tally + config.metroid_delay
@@ -199,49 +199,39 @@
 /mob/living/carbon/metroid/attack_ui(slot)
 	return
 
-/mob/living/carbon/metroid/attack_hand(mob/living/carbon/human/M as mob)
+/mob/living/carbon/metroid/attack_hand(mob/living/carbon/human/H as mob)
 
 	..()
 
 	if(Victim)
-		if(Victim == M)
-			if(prob(60))
-				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off!"))
-				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
+		var/probability = 60
+		var/victim_substr = ""
+		if(Victim != H)
+			probability = 30
+			victim_substr = " \the [Victim]"
 
-			else
-				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off!"))
-				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-
-				confused = max(confused, 2)
-				Feedstop()
-				UpdateFace()
-				step_away(src, M)
-			return
+		if(prob(probability))
+			visible_message(SPAN("warning", "\The [H] attempts to wrestle \the [src] off[victim_substr]!"))
+			playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 
 		else
-			if(prob(30))
-				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off \the [Victim]!"))
-				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
+			visible_message(SPAN("warning", "\The [H] manages to wrestle \the [src] off[victim_substr]!"))
+			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
-			else
-				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off \the [Victim]!"))
-				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
+			confused = max(confused, 2)
+			Feedstop()
+			UpdateFace()
+			step_away(src, H)
+		return
 
-				confused = max(confused, 2)
-				Feedstop()
-				UpdateFace()
-				step_away(src, M)
-			return
-
-	switch(M.a_intent)
+	switch(H.a_intent)
 
 		if(I_HELP)
-			help_shake_act(M)
+			help_shake_act(H)
 
 		if(I_DISARM)
 			var/success = prob(40)
-			visible_message(SPAN("warning", "The [M] pushes \the [src]!"+(success ? " \The [src] looks momentarily disoriented!" : "")))
+			visible_message(SPAN("warning", "The [H] pushes \the [src]!"+(success ? " \The [src] looks momentarily disoriented!" : "")))
 			if(success)
 				confused = max(confused, 2)
 				UpdateFace()
@@ -252,8 +242,6 @@
 		else
 
 			var/damage = rand(1, 9)
-
-			var/mob/living/carbon/human/H = M
 			var/hit_zone = H.zone_sel.selecting
 			var/datum/unarmed_attack/attack = H.get_unarmed_attack(src, hit_zone)
 
@@ -264,19 +252,19 @@
 
 			attacked += 10
 			if (prob(90))
-				if (MUTATION_HULK in M.mutations)
+				if (MUTATION_HULK in H.mutations)
 					damage += 5
 					if(Victim || Target)
 						Feedstop()
 						Target = null
 					spawn(0)
-						step_away(src,M,15)
+						step_away(src, H, 15)
 						sleep(3)
-						step_away(src,M,15)
+						step_away(src, H, 15)
 
 				playsound(loc, attack ? attack.attack_sound : SFX_FIGHTING_PUNCH, rand(80, 100), 1, -1)
 				visible_message(
-					SPAN("danger", "[M] has [attack_verb]ed [src]!"),
+					SPAN("danger", "[H] has [attack_verb]ed [src]!"),
 					SPAN("danger", "You has been [attack_verb]ed by [src]!")
 				)
 
@@ -284,7 +272,7 @@
 				updatehealth()
 			else
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message(SPAN("danger", "[M] has attempted to [attack_verb] [src]!"))
+				visible_message(SPAN("danger", "[H] has attempted to [attack_verb] [src]!"))
 	return
 
 /mob/living/carbon/metroid/attackby(obj/item/W, mob/user)
