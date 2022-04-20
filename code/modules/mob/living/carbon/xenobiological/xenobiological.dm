@@ -193,13 +193,13 @@
 	updatehealth()
 
 
-/mob/living/carbon/metroid/u_equip(obj/item/W as obj)
+/mob/living/carbon/metroid/u_equip(obj/item/W)
 	return
 
 /mob/living/carbon/metroid/attack_ui(slot)
 	return
 
-/mob/living/carbon/metroid/attack_hand(mob/living/carbon/human/H as mob)
+/mob/living/carbon/metroid/attack_hand(mob/living/carbon/human/H)
 
 	..()
 
