@@ -193,9 +193,3 @@
 	name = "workboots"
 	icon_state = "workbootscheap"
 	desc = "A pair of sham work boots. These have never been designed for use in industrial settings."
-
-/obj/item/clothing/shoes/portalshoes
-	name = "long fall boots"
-	icon_state = "jackboots" // I NEED FORKING SPRITES
-	desc = "A pair of white elastic boots. They look like you could fall off a ship into the sun and not get damaged... From a fall."
-	item_flags = ITEM_FLAG_NOSLIP

@@ -200,11 +200,6 @@
 	if(species && species.handle_fall_special(src, landing))
 		return
 
-	var/obj/item/clothing/shoes/shoes = get_equipped_item(slot_shoes)
-	if(istype(shoes) && shoes.item_flags & ITEM_FLAG_NOSLIP)
-		shoes.visible_message("\The [shoes] jumps off \the [landing]")
-		return
-
 	var/old_stat = stat
 
 	..()
