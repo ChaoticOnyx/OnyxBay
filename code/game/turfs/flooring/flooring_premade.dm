@@ -306,6 +306,20 @@
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
 
+/turf/simulated/floor/natural/frozenground
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "frozen_ground"
+
+/turf/simulated/floor/natural/frozenground/cave
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "wground1"
+
+/turf/simulated/floor/natural/frozenground/ice/shallow
+	icon = 'icons/turf/ice.dmi'
+	icon_state = "ice1"
+
 /turf/simulated/floor/natural/lava
 	name = "lava"
 	icon = 'icons/turf/flooring/lava.dmi'
