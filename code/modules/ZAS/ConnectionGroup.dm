@@ -95,8 +95,11 @@ Class Procs:
 /connection_edge/proc/recheck()
 
 /connection_edge/proc/flow(list/movable, differential, repelled)
-	for(var/i = 1; i <= movable.len; i++)
-		var/atom/movable/M = movable[i]
+	for(var/weakref/W in movable)
+		var/atom/movable/M = W.resolve()
+
+		if(!M)
+			return
 
 		//If they're already being tossed, don't do it again.
 		if(M.last_airflow > world.time - vsc.airflow_delay) continue

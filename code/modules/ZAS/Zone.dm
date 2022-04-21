@@ -48,7 +48,7 @@ Class Procs:
 			if(!A.simulated || A.anchored || istype(A, /obj/effect) || isobserver(A))
 				continue
 
-			__value += A
+			__value += weakref(A)
 
 	return __value
 
