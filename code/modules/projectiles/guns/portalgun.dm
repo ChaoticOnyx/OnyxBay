@@ -17,7 +17,7 @@
 	var/obj/effect/portal/linked/blue_portal
 	var/obj/effect/portal/linked/red_portal
 
-/obj/item/gun/portalgun/examine(mob/user)
+/obj/item/gun/portalgun/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt's current setting is <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"]</span>."
 
