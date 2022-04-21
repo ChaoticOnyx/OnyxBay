@@ -225,9 +225,9 @@
 			current_floor_image = I
 			current_color = I.color
 			need_ligh_update = FALSE
-	overlays.Add(current_crack_image)
 	if(must_work)
 		overlays.Add(current_floor_image)
+	overlays.Add(current_crack_image)
 
 /obj/machinery/floor_light/proc/update_floor_image(image/I, _layer)
 	I.color = broken() ? FLOOR_LIGHT_BROKEN_LIGHT_COLOUR : get_light_color()
