@@ -294,7 +294,7 @@
 			icon_base = "winframe_e"
 			icon_border = "winborder"
 			hitby_loudness_multiplier = 0.5
-			density = FALSE
+			density = outer_pane ? TRUE : FALSE
 			max_health = 8
 			pane_melee_mult = 1.0
 		if(FRAME_RELECTRIC)
@@ -425,7 +425,7 @@
 	for(var/obj/structure/window_frame/W in orange(src, 1))
 		W.update_icon()
 
-/obj/structure/window_frame/examine(mob/user)
+/obj/structure/window_frame/_examine_text(mob/user)
 	. = ..()
 	if(outer_pane)
 		if(frame_state == FRAME_REINFORCED)
@@ -590,7 +590,7 @@
 			if(outer_pane)
 				to_chat(user, SPAN("notice", "You can't seem to find a way to place another windowpane in \the [src]."))
 				if(frame_state == FRAME_REINFORCED && !inner_pane)
-					to_chat(user, SPAN("notice", "Strangely enough, \the [src] is missing the inner windowpane. Replacing it requires unstalling the outer pane first."))
+					to_chat(user, SPAN("notice", "Strangely enough, \the [src] is missing the inner windowpane. Replacing it requires uninstalling the outer pane first."))
 				return
 			if(!anchored)
 				to_chat(user, SPAN("notice", "\The [src] must be secured to the floor first."))

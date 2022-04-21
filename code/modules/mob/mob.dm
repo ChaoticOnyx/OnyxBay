@@ -5,6 +5,7 @@
 	GLOB.player_list -= src
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
@@ -17,7 +18,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
+	if(mind?.current == src)
 		spellremove(src)
 	ghostize()
 	return ..()
@@ -257,7 +258,7 @@
 /mob/proc/show_inv(mob/user)
 	return
 
-//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
+//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/_examine_text()
 /mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
@@ -627,11 +628,6 @@
 
 /mob/proc/is_dead()
 	return stat == DEAD
-
-/mob/proc/is_mechanical()
-	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
-		return 1
-	return istype(src, /mob/living/silicon) || get_species() == SPECIES_IPC
 
 /mob/proc/is_ready()
 	return client && !!mind
@@ -1131,3 +1127,22 @@
 
 /mob/proc/InStasis()
 	return FALSE
+
+/mob/proc/set_see_in_dark(new_see_in_dark)
+	var/old_see_in_dark = see_in_dark
+
+	if(old_see_in_dark != new_see_in_dark)
+		see_in_dark = new_see_in_dark
+		SEND_SIGNAL(src, SIGNAL_SEE_IN_DARK_SET, src, old_see_in_dark, new_see_in_dark)
+
+/mob/proc/set_see_invisible(new_see_invisible)
+	var/old_see_invisible = see_invisible
+	if(old_see_invisible != new_see_invisible)
+		see_invisible = new_see_invisible
+		SEND_SIGNAL(src, SIGNAL_SEE_INVISIBLE_SET, src, old_see_invisible, new_see_invisible)
+
+/mob/proc/set_sight(new_sight)
+	var/old_sight = sight
+	if(old_sight != new_sight)
+		sight = new_sight
+		SEND_SIGNAL(src, SIGNAL_SIGHT_SET, src, old_sight, new_sight)

@@ -47,8 +47,8 @@ meteor_act
 	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
 
 	var/overkill_value = 1
-	if(organ.damage >= organ.max_damage * 1.5) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
-		overkill_value *= 3
+	if(organ.damage > organ.max_damage) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
+		overkill_value *= organ.damage / organ.max_damage * 2
 
 	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
 		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
@@ -874,6 +874,7 @@ meteor_act
 				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
+				embed(O)
 				var/turf/T = near_wall(dir, 2)
 
 				if(T)

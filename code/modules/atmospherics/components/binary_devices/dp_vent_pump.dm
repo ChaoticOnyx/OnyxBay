@@ -194,7 +194,7 @@
 	if(frequency)
 		set_frequency(frequency)
 
-/obj/machinery/atmospherics/binary/dp_vent_pump/examine(mob/user)
+/obj/machinery/atmospherics/binary/dp_vent_pump/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"

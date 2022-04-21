@@ -64,13 +64,15 @@ var/list/mob_hat_cache = list()
 
 /mob/living/silicon/robot/drone/New()
 	..()
-	GLOB.moved_event.register(src, src, /mob/living/silicon/robot/drone/proc/on_moved)
+
+	register_signal(src, SIGNAL_MOVED, /mob/living/silicon/robot/drone/proc/on_moved)
 
 /mob/living/silicon/robot/drone/Destroy()
 	if(hat)
 		hat.dropInto(loc)
 		hat = null
-	GLOB.moved_event.unregister(src, src, /mob/living/silicon/robot/drone/proc/on_moved)
+
+	unregister_signal(src, SIGNAL_MOVED)
 	. = ..()
 
 /mob/living/silicon/robot/drone/proc/on_moved(atom/movable/am, turf/old_loc, turf/new_loc)
@@ -178,7 +180,7 @@ var/list/mob_hat_cache = list()
 	if(hat) // Let the drones wear hats.
 		overlays |= get_hat_icon(hat, hat_x_offset, hat_y_offset)
 
-/mob/living/silicon/robot/drone/choose_icon()
+/mob/living/silicon/robot/drone/choose_hull()
 	return
 
 /mob/living/silicon/robot/drone/choose_module()

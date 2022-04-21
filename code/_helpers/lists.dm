@@ -10,12 +10,20 @@
  */
 
 //Returns a list in plain english as a string
-/proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "" )
+/proc/english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "")
 	switch(input.len)
 		if(0) return nothing_text
 		if(1) return "[input[1]]"
 		if(2) return "[input[1]][and_text][input[2]]"
 		else  return "[jointext(input, comma_text, 1, -1)][final_comma_text][and_text][input[input.len]]"
+
+/proc/items_english_list(list/input, nothing_text = "nothing", and_text = " and ", comma_text = ", ", final_comma_text = "")
+	var/out = list()
+
+	for(var/atom/I in input)
+		out += SPAN("info", I.name)
+
+	return english_list(out, nothing_text, and_text, comma_text, final_comma_text)
 
 //Returns list element or null. Should prevent "index out of bounds" error.
 /proc/listgetindex(list/list,index)
@@ -728,3 +736,7 @@ proc/dd_sortedObjectList(list/incoming)
 			.[i] = .(.[i])
 
 #define IS_VALID_INDEX(list, index) (list.len && index > 0 && index <= list.len)
+
+/// Sort any value in a list.
+/proc/sort_list(list/list_to_sort, cmp=/proc/cmp_text_asc)
+	return sortTim(list_to_sort.Copy(), cmp)

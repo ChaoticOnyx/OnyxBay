@@ -99,7 +99,7 @@
 	var/new_range = range + (rand(0,6) / severity) - (rand(0,3) / severity)
 	set_range(new_range)
 
-/obj/item/device/suit_sensor_jammer/examine(user)
+/obj/item/device/suit_sensor_jammer/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) <= 3)
 		var/list/message = list()

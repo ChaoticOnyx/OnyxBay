@@ -285,7 +285,7 @@
 		if(!debug && !subtract_material_costs(cost, usr))
 			return
 
-		var/obj/item/built = new build_type(get_turf(src))
+		var/obj/item/built = new build_type(drop_location())
 		usr.put_in_hands(built)
 
 		if(istype(built, /obj/item/device/electronic_assembly))

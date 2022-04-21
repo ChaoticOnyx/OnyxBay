@@ -486,7 +486,7 @@
 	icon_state = "ship"
 	w_class = ITEM_SIZE_SMALL
 	var/active = 0 //if the ship is on
-/obj/item/orion_ship/examine(mob/user)
+/obj/item/orion_ship/_examine_text(mob/user)
 	. = ..()
 	if(!(in_range(user, src)))
 		return

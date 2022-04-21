@@ -25,7 +25,7 @@
 	update_icon()
 	if(starting_label)
 		name = "pill bottle"
-		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+		AddComponent(/datum/component/label, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 
 /obj/item/storage/pill_bottle/post_remove_label()
 	..()

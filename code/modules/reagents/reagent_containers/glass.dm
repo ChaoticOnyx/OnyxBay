@@ -48,7 +48,7 @@
 	. = ..()
 	base_name = name
 
-/obj/item/reagent_containers/glass/examine(mob/user)
+/obj/item/reagent_containers/glass/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -128,7 +128,7 @@
 		user.drop_from_inventory(src)
 		qdel(src)
 		return
-	else if(istype(D, /obj/item/mop))
+	else if(istype(D, /obj/item/mop) || (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
 		if(reagents.total_volume < 1)
 			to_chat(user, "<span class='warning'>\The [src] is empty!</span>")
 		else

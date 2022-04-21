@@ -290,14 +290,14 @@
 
 	if(p_diff > assailant.poise || prob(p_diff))
 		if(can_downgrade_on_resist && !prob(p_diff))
-			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
-			G.downgrade()
+			affecting.visible_message(SPAN("warning", "[affecting] has loosened [assailant]'s grip!"))
 			assailant.setClickCooldown(10)
+			G.downgrade()
 			return
 		else
-			affecting.visible_message("<span class='warning'>[affecting] has broken free of [assailant]'s grip!</span>")
-			G.delete_self()
+			affecting.visible_message(SPAN("warning", "[affecting] has broken free of [assailant]'s grip!"))
 			assailant.setClickCooldown(15)
+			G.delete_self()
 
 /datum/grab/proc/size_difference(mob/A, mob/B)
 	return mob_size_difference(A.mob_size, B.mob_size)

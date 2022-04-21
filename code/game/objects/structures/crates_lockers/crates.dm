@@ -30,7 +30,7 @@
 			for(var/obj/item/device/assembly/A in src)
 				A.activate()
 
-/obj/structure/closet/crate/examine(mob/user)
+/obj/structure/closet/crate/_examine_text(mob/user)
 	. = ..()
 	if(rigged && opened)
 		var/list/devices = list()
@@ -215,6 +215,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/science
 	name = "science crate"
@@ -236,6 +237,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/radiation_gear/WillContain()
 	return list(/obj/item/clothing/suit/radiation = 8)
@@ -388,6 +390,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)

@@ -55,7 +55,7 @@
 
 	var/list/stat_rig_module/stat_modules = new()
 
-/obj/item/rig_module/examine(mob/user)
+/obj/item/rig_module/_examine_text(mob/user)
 	. = ..()
 	switch(damage)
 		if(0)

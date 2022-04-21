@@ -260,6 +260,8 @@
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
 
+	settings = new(src)
+
 	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.panic_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
@@ -332,7 +334,7 @@
 		player_age = text2num(query.item[2])
 		break
 
-	var/DBQuery/query_ip = sql_query("SELECT ckey FROM erro_player WHERE ip = $address", dbcon, list(address = address))
+	var/DBQuery/query_ip = sql_query("SELECT ckey FROM erro_player WHERE ip = $address", dbcon, list(address = address || "127.0.0.1"))
 	related_accounts_ip = ""
 	while(query_ip.NextRow())
 		related_accounts_ip += "[query_ip.item[1]], "
@@ -359,12 +361,12 @@
 
 	if(id)
 		// Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $address, computerid = $computer_id, lastadminrank = $admin_rank WHERE id = $id", dbcon, list(address = address, computer_id = computer_id, admin_rank = admin_rank, id = id))
+		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $address, computerid = $computer_id, lastadminrank = $admin_rank WHERE id = $id", dbcon, list(address = address || "127.0.0.1", computer_id = computer_id, admin_rank = admin_rank, id = id))
 	else
 		// New player!! Need to insert all the stuff
-		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id, admin_rank = admin_rank))
+		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address || "127.0.0.1", computer_id = computer_id, admin_rank = admin_rank))
 
-	sql_query("INSERT INTO connection(datetime, ckey, ip, computerid) VALUES (Now(), $ckey, $address, $computer_id)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id))
+	sql_query("INSERT INTO connection(datetime, ckey, ip, computerid) VALUES (Now(), $ckey, $address, $computer_id)", dbcon, list(ckey = ckey, address = address || "127.0.0.1", computer_id = computer_id))
 
 
 #undef UPLOAD_LIMIT

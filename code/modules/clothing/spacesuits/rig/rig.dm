@@ -86,7 +86,7 @@
 	var/datum/wires/rig/wires
 	var/datum/effect/effect/system/spark_spread/spark_system
 
-/obj/item/rig/examine(mob/user)
+/obj/item/rig/_examine_text(mob/user)
 	. = ..()
 	if(wearer)
 		for(var/obj/item/piece in list(helmet,gloves,chest,boots))

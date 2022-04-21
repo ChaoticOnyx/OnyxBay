@@ -121,6 +121,7 @@
 	toggleable = 0
 	disruptive = 0
 	use_power_cost = 500
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	engage_string = "Inject"
 

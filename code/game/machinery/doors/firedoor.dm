@@ -74,7 +74,7 @@
 /obj/machinery/door/firedoor/get_material()
 	return get_material_by_name(MATERIAL_STEEL)
 
-/obj/machinery/door/firedoor/examine(mob/user)
+/obj/machinery/door/firedoor/_examine_text(mob/user)
 	. = ..()
 	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
 		return

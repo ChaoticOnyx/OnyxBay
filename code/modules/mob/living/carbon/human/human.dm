@@ -8,7 +8,7 @@
 	throw_range = 4
 
 	var/equipment_slowdown = -1
-	var/list/hud_list[11]
+	var/list/hud_list[12]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 
@@ -53,6 +53,7 @@
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
 	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[GLAND_HUD]        = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -234,7 +235,9 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	if(!user.IsAdvancedToolUser(TRUE))
 		show_inv_reduced(user)
@@ -295,7 +298,9 @@
 
 // Used when the user is not an advanced tool user (i.e. xenomorph)
 /mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE
@@ -999,8 +1004,8 @@
 		return 1
 
 /mob/living/carbon/human/get_visible_implants(class = 0)
+	var/list/visible_implants = ..()
 
-	var/list/visible_implants = list()
 	for(var/obj/item/organ/external/organ in src.organs)
 		for(var/obj/item/O in organ.implants)
 			if(!istype(O,/obj/item/implant) && (O.w_class > class) && !istype(O,/obj/item/material/shard/shrapnel))
@@ -1677,7 +1682,7 @@
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()
-	return getBrainLoss() >= maxHealth * 0.4 // > than 80 brain dmg - ur rekt
+	return getBrainLoss() >= maxHealth * 0.8 // > than 80 brain dmg - ur rekt
 
 /mob/living/carbon/human/verb/useblock()
 	set name = "Block"

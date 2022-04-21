@@ -122,7 +122,7 @@
 			to_chat(usr, "<span class='notice'>Synthesizer is now producing '[initial(R.name)]'.</span>")
 		return TOPIC_REFRESH
 
-/obj/item/reagent_containers/borghypo/examine(mob/user)
+/obj/item/reagent_containers/borghypo/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

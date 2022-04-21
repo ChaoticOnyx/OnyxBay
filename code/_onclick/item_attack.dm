@@ -149,4 +149,5 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			return 1
 		else if(devour(I))
 			return 1
+
 	return ..()

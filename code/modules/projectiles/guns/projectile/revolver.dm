@@ -182,7 +182,7 @@
 	return null*/
 
 
-/obj/item/gun/projectile/revolver/m2019/detective/examine(mob/user)
+/obj/item/gun/projectile/revolver/m2019/detective/_examine_text(mob/user)
 	. = ..()
 	if(!bcell)
 		. += "\n\The [src] has no power cell installed."

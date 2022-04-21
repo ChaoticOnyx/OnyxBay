@@ -5,6 +5,10 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 
 	for(var/obj/O in get_turf(x))
 		if(is_type_in_list(O, GLOB.standing_objects))
+			if(istype(O, /obj/structure/table))
+				var/obj/structure/table/T = O
+				if(T.flipped)
+					return FALSE
 			return TRUE
 	return FALSE
 

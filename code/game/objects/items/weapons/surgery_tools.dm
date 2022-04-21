@@ -312,7 +312,7 @@
 	else
 		..()
 
-/obj/item/organfixer/examine(mob/user)
+/obj/item/organfixer/_examine_text(mob/user)
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(gel_amt_max > 0)

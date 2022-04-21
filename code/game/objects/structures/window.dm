@@ -27,7 +27,7 @@
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
 
-/obj/structure/window/examine(mob/user)
+/obj/structure/window/_examine_text(mob/user)
 	. = ..()
 
 	if(health == maxhealth)
@@ -557,6 +557,17 @@
 	icon = 'icons/obj/podwindows.dmi'
 	icon_state = "window-res"
 	basestate = "window-res"
+	reinf = 1
+	maxhealth = 40
+	explosion_block = 3
+	dir = 5
+
+/obj/structure/window/syndi
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window-syndi"
+	basestate = "window-syndi"
 	reinf = 1
 	maxhealth = 40
 	explosion_block = 3

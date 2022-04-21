@@ -2,7 +2,7 @@
 	name = "Generic Ship"
 	ambience_powered = list('sound/ambient/mine/ambimine.ogg')
 	ambience_off = list('sound/ambient/mine/ambimine.ogg')
-	ambient_music_meta_tags = list(META_MYSTIC, META_SPACE)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_SPACE)
 
 /area/ship/scrap/crew
 	name = "Crew Compartements"

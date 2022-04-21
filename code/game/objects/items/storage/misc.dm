@@ -34,6 +34,7 @@
 	icon_state = "donutbox"
 	name = "donut box"
 	can_hold = list(/obj/item/reagent_containers/food/snacks/donut)
+	max_storage_space = 12 // Eggs-actly 6 donuts, not a single bite more
 	foldable = /obj/item/stack/material/cardboard
 
 	startswith = list(/obj/item/reagent_containers/food/snacks/donut/normal = 6)

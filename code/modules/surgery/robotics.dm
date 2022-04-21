@@ -26,7 +26,7 @@
 /datum/surgery_step/robotics/unscrew_hatch
 	allowed_tools = list(
 		/obj/item/screwdriver = 100,
-		/obj/item/coin = 50,
+		/obj/item/material/coin = 50,
 		/obj/item/material/kitchen/utensil/knife = 50
 	)
 
@@ -60,7 +60,7 @@
 /datum/surgery_step/robotics/screw_hatch
 	allowed_tools = list(
 		/obj/item/screwdriver = 100,
-		/obj/item/coin = 50,
+		/obj/item/material/coin = 50,
 		/obj/item/material/kitchen/utensil/knife = 50
 	)
 

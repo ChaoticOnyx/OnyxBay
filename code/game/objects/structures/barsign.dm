@@ -21,7 +21,7 @@
 	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
 
-/obj/structure/sign/double/barsign/examine(mob/user)
+/obj/structure/sign/double/barsign/_examine_text(mob/user)
 	. = ..()
 	switch(icon_state)
 		if("Off")

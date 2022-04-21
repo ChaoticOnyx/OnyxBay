@@ -36,7 +36,7 @@
 		generator.loc = src.loc
 		generator.connect_to_network()
 
-/obj/structure/bed/chair/pedalgen/examine(mob/user)
+/obj/structure/bed/chair/pedalgen/_examine_text(mob/user)
 	. = ..()
 	if(generator.raw_power > 0)
 		. += "\nIt has [generator.raw_power] raw power stored, it generates [generator.raw_power > 10 ? "20" : "10" ]kW!"

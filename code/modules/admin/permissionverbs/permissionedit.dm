@@ -79,13 +79,15 @@
 		admin_id = text2num(select_query.item[1])
 
 	if(new_admin)
+		var/log_msg = "Added new admin [adm_ckey] to rank [new_rank]"
 		sql_query("INSERT INTO erro_admin VALUES (null, $adm_ckey, $new_rank, 0)", dbcon, list(adm_ckey = adm_ckey, new_rank = new_rank))
-		sql_query("INSERT INTO test.erro_admin_log (id, datetime, adminckey, adminip, log ) VALUES (NULL , NOW() , $ckey, $address, 'Added new admin $adm_ckey to rank $new_rank');", dbcon, list(ckey = usr.ckey, address = usr.client.address, adm_ckey = adm_ckey, new_rank = new_rank))
+		sql_query("INSERT INTO erro_admin_log (id, datetime, adminckey, adminip, log ) VALUES (NULL , NOW() , $ckey, $address, $log);", dbcon, list(ckey = usr.ckey, address = usr.client.address || "127.0.0.1", adm_ckey = adm_ckey, new_rank = new_rank, log = log_msg))
 		to_chat(usr, "<span class='notice'>New admin added.</span>")
 	else
 		if(!isnull(admin_id) && isnum(admin_id))
+			var/log_msg = "Edited the rank of [adm_ckey] to [new_rank]"
 			sql_query("UPDATE erro_admin SET `rank` = $new_rank WHERE id = $admin_id", dbcon, list(new_rank = new_rank, admin_id = admin_id))
-			sql_query("INSERT INTO test.erro_admin_log (id, datetime, adminckey, adminip. log) VALUES (NULL , NOW( ) , $ckey, $address, 'Edited the rank of $adm_ckey to $new_rank');", dbcon, list(ckey = usr.ckey, address = usr.client.address, adm_ckey = adm_ckey, new_rank = new_rank))
+			sql_query("INSERT INTO erro_admin_log (id, datetime, adminckey, adminip, log) VALUES (NULL , NOW( ) , $ckey, $address, $log);", dbcon, list(ckey = usr.ckey, address = usr.client.address || "127.0.0.1", adm_ckey = adm_ckey, new_rank = new_rank, log = log_msg))
 			to_chat(usr, "<span class='notice'>Admin rank changed.</span>")
 
 /datum/admins/proc/log_admin_permission_modification(adm_ckey, new_permission)
@@ -127,11 +129,15 @@
 	if(!admin_id)
 		return
 
+	var/new_permissiont = rights2text(new_permission)
+
 	if(admin_rights & new_permission) //This admin already has this permission, so we are removing it.
+		var/log_msg = "Removed permission [new_permissiont] (flag = [new_permission]) to admin [adm_ckey]"
 		sql_query("UPDATE erro_admin SET flags = $flags WHERE id = $admin_id", dbcon, list(flags = admin_rights & ~new_permission, admin_id = admin_id))
-		sql_query("INSERT INTO test.erro_admin_log (id, datetime, adminckey, adminip, log) VALUES (NULL, NOW(), $ckey, $address, 'Removed permission $new_permissiont (flag = $new_permission) to admin $adm_ckey');", dbcon, list(ckey = usr.ckey, address = usr.client.address, new_permissiont = rights2text(new_permission), new_permission = new_permission, adm_ckey = adm_ckey))
+		sql_query("INSERT INTO erro_admin_log (id, datetime, adminckey, adminip, log) VALUES (NULL, NOW(), $ckey, $address, $log);", dbcon, list(ckey = usr.ckey, address = usr.client.address || "127.0.0.1", new_permissiont, new_permission = new_permission, adm_ckey = adm_ckey, log = log_msg))
 		to_chat(usr, "<span class='notice'>Permission removed.</span>")
 	else //This admin doesn't have this permission, so we are adding it.
+		var/log_msg = "Added permission [new_permissiont] (flag = [new_permission]) to admin [adm_ckey]"
 		sql_query("UPDATE erro_admin SET flags = $flags WHERE id = $admin_id", dbcon, list(flags = admin_rights | new_permission, admin_id = admin_id))
-		sql_query("INSERT INTO test.erro_admin_log (id, datetime, adminckey, adminip, log) VALUES (NULL, NOW(), $ckey, $address, 'Added permission $new_permissiont (flag = $new_permission) to admin $adm_ckey')", dbcon, list(ckey = usr.ckey, address = usr.client.address, new_permissiont = rights2text(new_permission), new_permission = new_permission, adm_ckey = adm_ckey))
+		sql_query("INSERT INTO erro_admin_log (id, datetime, adminckey, adminip, log) VALUES (NULL, NOW(), $ckey, $address, $log)", dbcon, list(ckey = usr.ckey, address = usr.client.address || "127.0.0.1", new_permissiont, new_permission = new_permission, adm_ckey = adm_ckey, log = log_msg))
 		to_chat(usr, "<span class='notice'>Permission added.</span>")

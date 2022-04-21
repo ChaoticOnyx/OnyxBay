@@ -509,7 +509,7 @@
 		return get_mobs_or_objects_in_view(canhear_range, src)
 
 
-/obj/item/device/radio/examine(mob/user)
+/obj/item/device/radio/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)
@@ -745,6 +745,7 @@
 
 /obj/item/device/radio/announcer/Destroy()
 	crash_with("attempt to delete a [src.type] detected, and prevented.")
+	..()
 	return QDEL_HINT_LETMELIVE
 
 /obj/item/device/radio/announcer/Initialize()

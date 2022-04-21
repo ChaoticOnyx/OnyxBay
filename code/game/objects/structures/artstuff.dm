@@ -57,9 +57,38 @@
 	var/framed_offset_x = 9
 	var/framed_offset_y = 10
 
+	// for gamemodes
+	var/is_mount = FALSE
+	var/is_propaganda = FALSE
+	var/is_revolutionary = FALSE
+
 /obj/item/canvas/Initialize()
 	. = ..()
 	reset_grid()
+
+/obj/item/canvas/pickup()
+	. = ..()
+	if(is_mount)
+		is_mount = FALSE
+		area_manipulation()
+
+/obj/item/canvas/proc/area_manipulation()
+	if(!is_propaganda || !icon_generated)
+		return
+	var/turf/T = get_turf(src)
+	var/area/A = T?.loc
+	if(!A)
+		return
+	if(is_mount)
+		if(is_revolutionary)
+			A.loyalty -= 1
+		else
+			A.loyalty += 1
+	else
+		if(is_revolutionary)
+			A.loyalty += 1
+		else
+			A.loyalty -= 1
 
 /obj/item/canvas/proc/reset_grid()
 	grid = new /list(width,height)
@@ -99,9 +128,18 @@
 	.["name"] = painting_name
 	.["finalized"] = finalized
 
-/obj/item/canvas/examine(mob/user)
+/obj/item/canvas/_examine_text(mob/user)
 	. = ..()
 	tgui_interact(user)
+	if(!user.mind || !is_propaganda)
+		return
+	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
+	var/is_loyalist_user = antag.is_antagonist(user.mind) || (user.mind.assigned_role in GLOB.command_positions) || (user.mind.assigned_role in GLOB.security_positions)
+	antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
+	var/is_revolutionary_user = antag.is_antagonist(user.mind)
+	var/message = SPAN_DANGER("You hate \the [src]. You want to burn it down!")
+	if((is_revolutionary && is_loyalist_user) || (is_revolutionary_user && !is_revolutionary))
+		. += "\n" + message
 
 /obj/item/canvas/tgui_act(action, params)
 	. = ..()
@@ -125,15 +163,25 @@
 			if(!finalized)
 				finalize(user)
 
-/obj/item/canvas/proc/finalize(mob/user)
+/obj/item/canvas/proc/finalize(mob/user, is_copy = FALSE)
 	finalized = TRUE
-	author_ckey = author_ckey || user?.ckey || crash_with("THIS IS BUG! ALARM!")
+	author_ckey = author_ckey || user.ckey
 	paint_image()
 	try_rename(user)
 	var/turf/epicenter = get_turf(src)
-	if(!epicenter)
+	if(!epicenter && !author_ckey)
 		return
-	message_admins("The new art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+	message_admins("The [is_copy ? "copy of" : "new"] art has been created by [author_ckey] in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>(x:[epicenter.x], y:[epicenter.y], z:[epicenter.z])</a>")
+
+/obj/item/canvas/proc/copy()
+	if(!finalized)
+		return
+	var/obj/item/canvas/C = new type()
+	C.grid = grid
+	C.author_ckey = author_ckey
+	C.finalize(is_copy = TRUE)
+	C.no_save = TRUE // only original can be copied.
+	return C
 
 /obj/item/canvas/afterattack(atom/a, mob/user, proximity)
 	if(proximity && istype(a ,/turf) && a.density && taped)
@@ -157,6 +205,8 @@
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
+	is_mount = TRUE
+	area_manipulation()
 	if(user.unEquip(src,T))
 		switch(ndir)
 			if(NORTH)
@@ -179,6 +229,10 @@
 		overlays = canvas_overlay
 		if(blood_overlay)
 			overlays += blood_overlay
+	if(is_propaganda)
+		var/image/detail_overlay = image(icon, src, "[icon_state]frame_[is_revolutionary]")
+		overlays.Add(detail_overlay)
+	if(icon_generated)
 		return
 	if(!wip_detail_added && used)
 		var/mutable_appearance/detail = new(image(icon, "[icon_state]wip"))
@@ -219,7 +273,7 @@
 	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/glass/rag))
 		return canvas_color
 
-/obj/item/canvas/proc/save_canvas()
+/obj/item/canvas/proc/to_json()
 	if(!icon_generated || no_save)
 		return
 	var/list/data = list()
@@ -243,6 +297,44 @@
 			painting_name = new_name
 			SStgui.update_uis(src)
 	desc = "[desc]\nIt has name of [painting_name]"
+
+/obj/item/canvas/verb/make_rev_poster_verb()
+	set name = "Make Revolutionary Poster"
+	set desc = "Die corporation die!"
+	set category = "Object"
+	set hidden = TRUE // TODO: delete me when points are used in something
+	if(!Debug2) // TODO: delete me when points are used in something
+		return // TODO: delete me when points are used in something
+	if(isliving(usr))
+		make_rev_poster(usr)
+
+/obj/item/canvas/proc/make_rev_poster(mob/living/H)
+	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_REVOLUTIONARY]
+	if(!istype(H) || !H.mind || !antag.is_antagonist(H.mind) || is_propaganda)
+		return
+	is_propaganda = TRUE
+	is_revolutionary = TRUE
+	to_chat(H, "You've marked canvas as revolutionary.")
+	update_icon()
+
+/obj/item/canvas/verb/make_corp_poster_verb()
+	set name = "Make Corporate Poster"
+	set desc = "Make corporation great again!"
+	set category = "Object"
+	set hidden = TRUE // TODO: delete me when points are used in something
+	if(!Debug2) // TODO: delete me when points are used in something
+		return // TODO: delete me when points are used in something
+	if(isliving(usr))
+		make_corp_poster(usr)
+
+/obj/item/canvas/proc/make_corp_poster(mob/living/H)
+	var/datum/antagonist/antag = GLOB.all_antag_types_[MODE_LOYALIST]
+	if(!istype(H) || !H.mind || !(antag.is_antagonist(H.mind) || (H.mind.assigned_role in GLOB.command_positions)) || is_propaganda)
+		return
+	is_propaganda = TRUE
+	is_revolutionary = FALSE
+	to_chat(H, "You've marked canvas as corporate.")
+	update_icon()
 
 /obj/item/canvas/nineteen_nineteen
 	icon_state = "19x19"

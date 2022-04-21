@@ -97,7 +97,7 @@
 /obj/item/boomstickframe/update_icon()
 	icon_state = "boomstick[buildstate]"
 
-/obj/item/boomstickframe/examine(mob/user)
+/obj/item/boomstickframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(0) . += "\nIt has a pipe loosely fitted to the welding tool."

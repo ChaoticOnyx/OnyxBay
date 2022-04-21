@@ -12,6 +12,9 @@
 	hide_client_images()
 	..()
 
+	SEND_GLOBAL_SIGNAL(SIGNAL_LOGGED_OUT, src, client)
+	SEND_SIGNAL(src, SIGNAL_LOGGED_OUT, src, client)
+
 	my_client = null
 	return 1
 

@@ -75,7 +75,7 @@
 /obj/item/reagent_containers/food/drinks/self_feed_message(mob/user)
 	to_chat(user, "<span class='notice'>You swallow a gulp from \the [src].</span>")
 
-/obj/item/reagent_containers/food/drinks/examine(mob/user)
+/obj/item/reagent_containers/food/drinks/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

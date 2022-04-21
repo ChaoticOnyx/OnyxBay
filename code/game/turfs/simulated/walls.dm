@@ -39,15 +39,6 @@
 	update_material()
 	hitsound = material.hitsound
 
-/turf/simulated/wall/Initialize()
-	START_PROCESSING(SSturf, src) //Used for radiation.
-	. = ..()
-
-/turf/simulated/wall/Destroy()
-	STOP_PROCESSING(SSturf, src)
-	dismantle_wall(null,null,1)
-	. = ..()
-
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
@@ -56,13 +47,6 @@
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
 	return (istype(O) && O.hides_under_flooring()) || ..()
-
-/turf/simulated/wall/Process(wait, times_fired)
-	var/how_often = max(round(2 SECONDS/wait), 1)
-	if(times_fired % how_often)
-		return //We only work about every 2 seconds
-	if(!radiate())
-		return PROCESS_KILL
 
 /turf/simulated/wall/proc/get_material()
 	return material
@@ -301,7 +285,7 @@
 	return ..()
 
 //Appearance
-/turf/simulated/wall/examine(mob/user)
+/turf/simulated/wall/_examine_text(mob/user)
 	. = ..()
 
 	if(!damage)
@@ -443,14 +427,6 @@
 			qdel(O)
 //	F.sd_LumReset()		//TODO: ~Carn
 	return
-
-/turf/simulated/wall/proc/radiate()
-	var/total_radiation = material.radioactivity + (reinf_material ? reinf_material.radioactivity / 2 : 0)
-	if(!total_radiation)
-		return
-
-	SSradiation.radiate(src, total_radiation)
-	return total_radiation
 
 /turf/simulated/wall/proc/CheckPenetration(base_chance, damage)
 	return round(damage/material.integrity*180)

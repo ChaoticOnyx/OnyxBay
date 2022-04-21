@@ -2,7 +2,11 @@
 /mob/proc/attack_ui(slot)
 	var/obj/item/I = get_active_hand()
 	var/obj/item/E = get_equipped_item(slot)
-	if (istype(E))
+	if(ishuman(src))
+		var/mob/living/carbon/C = src
+		if(C.handcuffed)
+			return
+	if(istype(E))
 		if(istype(I))
 			E.attackby(I, src)
 		else

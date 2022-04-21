@@ -48,7 +48,7 @@
 /obj/item/rcd/proc/can_use(mob/user,turf/T)
 	return (user.Adjacent(T) && user.get_active_hand() == src && !user.incapacitated())
 
-/obj/item/rcd/examine(user)
+/obj/item/rcd/_examine_text(user)
 	. = ..()
 	if(src.type == /obj/item/rcd && loc == user)
 		. += "\nThe current mode is '[work_mode]'"
@@ -123,7 +123,7 @@
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 7500)
 	var/remaining = 10
 
-/obj/item/rcd_ammo/examine(mob/user)
+/obj/item/rcd_ammo/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\n<span class='notice'>It has [remaining] unit\s of matter left.</span>"

@@ -236,7 +236,7 @@ var/list/hash_to_gear = list()
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(!gear_allowed_to_equip(G, user))
+			else if(!gear_allowed_to_equip(G, user) && G.price)
 				display_class = "gold"
 				discountText = G.price && G.discount ? "<b>(-[round(G.discount * 100)]%)</b>" : ""
 			else if(!allowed_to_see)
@@ -273,7 +273,7 @@ var/list/hash_to_gear = list()
 		var/datum/gear_data/gd = new(selected_gear.path)
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_gear_data(selected_tweaks["[gt]"], gd)
-		var/obj/gear_virtual_item = new gd.path
+		var/atom/movable/gear_virtual_item = new gd.path
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
 		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)
@@ -370,17 +370,20 @@ var/list/hash_to_gear = list()
 			flag_not_enough_opyxes = FALSE
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
+		var/not_available_message = SPAN_NOTICE("This item will never spawn with you, using your current preferences.")
 		if(gear_allowed_to_equip(selected_gear, user))
 			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.gear_hash)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
-			if (selected_gear.price)
-				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
-			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			if(selected_gear.price)
+				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
+				. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			else
+				. += not_available_message
 
 		if(!gear_allowed_to_see(selected_gear))
 			. += "<br>"
-			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
+			. += not_available_message
 
 		. += "</td>"
 
@@ -577,6 +580,7 @@ var/list/hash_to_gear = list()
 		if((total_cost+TG.cost) <= config.max_gear_cost)
 			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 
+
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
 	var/gear_hash          //MD5 hash of display_name. Used to get item in Topic calls. See href problem with ' symbol
@@ -616,6 +620,7 @@ var/list/hash_to_gear = list()
 		return FALSE
 	if(!is_allowed_to_display(user))
 		return FALSE
+
 	return TRUE
 
 /datum/gear/proc/get_description(metadata)

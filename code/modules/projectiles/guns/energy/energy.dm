@@ -142,7 +142,7 @@
 	else if(fail_counter > 15)
 		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/gun/energy/gun/nuclear/examine(mob/user)
+/obj/item/gun/energy/gun/nuclear/_examine_text(mob/user)
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)

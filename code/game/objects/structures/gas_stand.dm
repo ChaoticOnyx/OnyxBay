@@ -184,7 +184,7 @@
 			src.add_fingerprint(user)
 			update_icon()
 
-/obj/structure/gas_stand/examine(mob/user)
+/obj/structure/gas_stand/_examine_text(mob/user)
 	. = ..()
 	if(tank)
 		if (!is_loosen)
@@ -235,4 +235,3 @@
 	spawn_type = /obj/item/tank/anesthetic
 	mask_type = /obj/item/clothing/mask/breath/anesthetic
 	is_loosen = FALSE
-

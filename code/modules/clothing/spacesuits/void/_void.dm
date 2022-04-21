@@ -78,7 +78,7 @@ else if(##equipment_var) {\
 	..()
 	slowdown_per_slot[slot_wear_suit] = 1
 
-/obj/item/clothing/suit/space/void/examine(user)
+/obj/item/clothing/suit/space/void/_examine_text(user)
 	. = ..()
 	var/list/part_list = new
 	for(var/obj/item/I in list(helmet,boots,tank))

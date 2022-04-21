@@ -117,8 +117,8 @@
 	if(source in sources)
 		return FALSE
 	sources += source
-	GLOB.moved_event.register(source, src, /datum/visualnet/proc/source_moved)
-	GLOB.destroyed_event.register(source, src, /datum/visualnet/proc/remove_source)
+	register_signal(source, SIGNAL_MOVED, /datum/visualnet/proc/source_moved)
+	register_signal(source, SIGNAL_QDELETING, /datum/visualnet/proc/remove_source)
 	for_all_chunks_in_range(source, /datum/chunk/proc/add_source, list(source))
 	if(update_visibility)
 		update_visibility(source, opacity_check)
@@ -128,8 +128,8 @@
 	if(!sources.Remove(source))
 		return FALSE
 
-	GLOB.moved_event.unregister(source, src, /datum/visualnet/proc/source_moved)
-	GLOB.destroyed_event.unregister(source, src, /datum/visualnet/proc/remove_source)
+	unregister_signal(source, SIGNAL_MOVED)
+	unregister_signal(source, SIGNAL_QDELETING)
 	for_all_chunks_in_range(source, /datum/chunk/proc/remove_source, list(source))
 	if(update_visibility)
 		update_visibility(source, opacity_check)

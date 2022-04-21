@@ -194,7 +194,9 @@
 		/obj/item/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/grown,
-		/obj/item/glass_extra
+		/obj/item/glass_extra,
+		/obj/item/material/kitchen,
+		/obj/item/material/knife
 		)
 
 	cant_hold = list() // understandable, have a great day
@@ -238,7 +240,7 @@
 		/obj/item/stack/material
 		)
 
-/obj/item/gripper/examine(mob/user)
+/obj/item/gripper/_examine_text(mob/user)
 	. = ..()
 	if(wrapped)
 		. += "\nIt is holding \a [wrapped]."
@@ -261,7 +263,7 @@
 
 /obj/item/gripper/verb/drop_item()
 
-	set name = "Drop Item"
+	set name = "Drop Content"
 	set desc = "Release an item from your magnetic gripper."
 	set category = "Silicon Commands"
 

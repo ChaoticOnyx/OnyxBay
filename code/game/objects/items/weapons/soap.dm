@@ -16,7 +16,7 @@
 	create_reagents(30)
 	wet()
 
-/obj/item/soap/examine(mob/user)
+/obj/item/soap/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

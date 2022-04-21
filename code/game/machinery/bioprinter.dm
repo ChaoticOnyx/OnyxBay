@@ -63,7 +63,7 @@
 	component_parts += new /obj/item/stock_parts/manipulator(src)
 	RefreshParts()
 
-/obj/machinery/organ_printer/examine(mob/user)
+/obj/machinery/organ_printer/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>"
 

@@ -83,7 +83,7 @@
 		G.transfer_personality(user, brainmob)
 	return
 
-/obj/item/organ/internal/posibrain/examine(mob/user)
+/obj/item/organ/internal/posibrain/_examine_text(mob/user)
 	. = ..()
 
 	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"

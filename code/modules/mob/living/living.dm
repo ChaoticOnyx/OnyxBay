@@ -667,9 +667,15 @@
 		return TRUE
 
 	//Breaking out of a locker?
-	if( src.loc && (istype(src.loc, /obj/structure/closet)) )
+	if(src.loc && (istype(src.loc, /obj/structure/closet)) )
 		var/obj/structure/closet/C = loc
 		spawn() C.mob_breakout(src)
+		return TRUE
+
+	//Trying to escape from abductors?
+	if(src.loc && (istype(src.loc, /obj/machinery/abductor/experiment)))
+		var/obj/machinery/abductor/experiment/E = loc
+		spawn() E.mob_breakout(src)
 		return TRUE
 
 /mob/living/proc/escape_inventory(obj/item/holder/H)
@@ -890,3 +896,9 @@
 
 /mob/living/proc/on_ghost_possess()
 	return
+
+/mob/living/set_stat(new_stat)
+	var/old_stat = stat
+	. = ..()
+	if(stat != old_stat)
+		SEND_SIGNAL(src, SIGNAL_STAT_SET, src, old_stat, new_stat)

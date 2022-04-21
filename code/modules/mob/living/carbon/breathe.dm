@@ -15,7 +15,13 @@
 	var/datum/gas_mixture/breath = null
 
 	//First, check if we can breathe at all
-	if(is_asystole() && !(CE_STABLE in chem_effects) && active_breathe) //crit aka circulatory shock
+	var/inflict_losebreath = FALSE
+	if(nervous_system_failure()) // braian be break, breath two hard
+		inflict_losebreath = TRUE
+	else if(is_asystole() && !(CE_STABLE in chem_effects) && active_breathe) //crit aka circulatory shock
+		inflict_losebreath = TRUE
+
+	if(inflict_losebreath)
 		losebreath = max(2, losebreath + 1)
 
 	if(losebreath > 0) //Suffocating so do not take a breath

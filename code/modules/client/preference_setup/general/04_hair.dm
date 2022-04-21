@@ -72,7 +72,6 @@
 /datum/category_item/player_setup_item/general/hair/proc/show_facial_hair_choices(mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(pref.gender)
-	to_chat(user,valid_facialhairstyles)
 	var/dat = "<a href='?src=\ref[src];cycle_f_hair_pages=-1'>&#8592;</a> Page: <a href='?src=\ref[src];enter_facial_hair_page=1'>[page+1]</a> <a href='?src=\ref[src];cycle_f_hair_pages=1'>&#8594;</a><br>"
 	var/old_f_style = pref.f_style
 	var/datum/browser/popup = new(user, "Facial hair choose","Facial hair choose", 550, 650, src)

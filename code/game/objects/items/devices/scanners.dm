@@ -443,7 +443,7 @@ REAGENT SCANNER
 	if (last_target && dat)
 		show_browser(user, dat, "window=scanconsole;size=430x600")
 
-/obj/item/device/healthanalyzer_advanced/examine(mob/user)
+/obj/item/device/healthanalyzer_advanced/_examine_text(mob/user)
 	. = ..()
 	if (last_target)
 		. += "\nIt contains saved data for [last_target]."

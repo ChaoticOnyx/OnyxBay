@@ -205,7 +205,7 @@
 	else
 		return ..()
 
-/obj/vehicle/train/cargo/engine/examine(mob/user)
+/obj/vehicle/train/cargo/engine/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

@@ -565,7 +565,7 @@
 	else if(dead)
 		remove_dead(user)
 
-/obj/machinery/portable_atmospherics/hydroponics/examine(mob/user)
+/obj/machinery/portable_atmospherics/hydroponics/_examine_text(mob/user)
 
 	. = ..()
 
@@ -641,3 +641,6 @@
 	lastcycle = world.time
 	qdel(S)
 	check_health()
+
+/obj/machinery/portable_atmospherics/hydroponics/post_attach_label()
+	update_icon()

@@ -11,9 +11,10 @@
 	mod_handy = 0.5
 	w_class = ITEM_SIZE_SMALL
 	hitsound = SFX_FIGHTING_SWING
+	material_amount = 2
 	var/max_butts = 10
 
-/obj/item/material/ashtray/examine(mob/user)
+/obj/item/material/ashtray/_examine_text(mob/user)
 	. = ..()
 	if(material)
 		. += "\nIt's made of [material.display_name]."

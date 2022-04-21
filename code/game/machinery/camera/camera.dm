@@ -37,7 +37,7 @@
 
 	var/affected_by_emp_until = 0
 
-/obj/machinery/camera/examine(mob/user)
+/obj/machinery/camera/_examine_text(mob/user)
 	. = ..()
 	if(stat & BROKEN)
 		. += "\n<span class='warning'>It is completely demolished.</span>"

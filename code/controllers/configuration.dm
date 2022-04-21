@@ -290,6 +290,10 @@ var/list/gamemode_cache = list()
 	var/disable_ooc_roundstart = FALSE
 	var/disable_looc_roundstart = FALSE
 
+	// Timing settings
+	var/pregame_timeleft = 3 MINUTES
+	var/restart_timeout = 1 MINUTE
+
 	// Non-that-serious features that can be disabled for higher RP levels
 	var/fun_hydroponics = 2
 
@@ -974,6 +978,10 @@ var/list/gamemode_cache = list()
 					config.maximum_mushrooms = text2num(value)
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
+				if("pregame_timeleft")
+					config.pregame_timeleft = text2num(value)
+				if("restart_timeout")
+					config.restart_timeout = text2num(value)
 				if("fun_hydroponics")
 					config.fun_hydroponics = text2num(value)
 
@@ -1020,11 +1028,11 @@ var/list/gamemode_cache = list()
 			if ("password")
 				sqlpass = value
 			if ("feedback_database")
-				sqlfdbkdb = value
+				sql_feedback_db = value
 			if ("feedback_login")
-				sqlfdbklogin = value
+				sql_feedback_login = value
 			if ("feedback_password")
-				sqlfdbkpass = value
+				sql_feedback_pass = value
 			if ("enable_stat_tracking")
 				sqllogging = TRUE
 			if ("donation_address")
