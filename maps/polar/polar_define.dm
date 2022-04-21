@@ -1,7 +1,7 @@
 
 /datum/map/exodus/polar
-	name = "polar"
-	full_name = "NSS polar"
+	name = "Polar"
+	full_name = "NSS Polar"
 	path = "polar"
 
 	station_levels = list(1, 2)
@@ -13,7 +13,7 @@
 	accessible_z_levels = list("1" = 5, "2" = 5, "3" = 10, "4" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5)
 	dynamic_z_levels = list("1" = 'polar-1.dmm', "2" = 'polar-2.dmm', "3" = 'polar-3.dmm', "4" = 'polar-4.dmm')
 
-	station_name  = "NSS Exodus"
+	station_name  = "NSS Polar"
 	station_short = "Exodus"
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
