@@ -24,7 +24,7 @@
 	var/image/current_crack_image
 	var/image/current_floor_image
 	var/current_color
-	var/health = FLOOR_LIGHT_MAX_HEALTH	// Hits to destroy
+	var/health = FLOOR_LIGHT_MAX_HEALTH
 	var/current_damage = 0
 	var/cracks = 0
 	var/need_crack_update = TRUE
