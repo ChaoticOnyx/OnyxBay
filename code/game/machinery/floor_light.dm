@@ -148,6 +148,10 @@
 			levelupdate()
 			visible_message(SPAN("notice", "\The [user] has [anchored ? "attached" : "detached"] \the [src]."))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+		if(!anchored)
+			must_work = FALSE
+			on = FALSE
+		on_params_update()
 
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
 	user.visible_message("[user.name] hits \the [src].", "You hit \the [src].", "You hear the sound of hitting \the [src].")
@@ -194,7 +198,6 @@
 		update_use_power(POWER_USE_OFF)
 		change_power_consumption(0, POWER_USE_OFF)
 	update_icon()
-	light_colour = null
 
 /obj/machinery/floor_light/update_icon()
 	. = ..()
@@ -222,7 +225,9 @@
 			current_floor_image = I
 			current_color = I.color
 			need_ligh_update = FALSE
-	overlays.Add(current_crack_image, current_floor_image)
+	overlays.Add(current_crack_image)
+	if(must_work)
+		overlays.Add(current_floor_image)
 
 /obj/machinery/floor_light/proc/update_floor_image(image/I, _layer)
 	I.color = broken() ? FLOOR_LIGHT_BROKEN_LIGHT_COLOUR : get_light_color()
