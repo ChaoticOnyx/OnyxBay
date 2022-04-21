@@ -381,8 +381,6 @@
 			return global.floorIsLava;
 		if("floor_decals")
 			return global.floor_decals;
-		if("floor_light_cache")
-			return global.floor_light_cache;
 		if("flooring_cache")
 			return global.flooring_cache;
 		if("flooring_types")
@@ -1276,8 +1274,6 @@
 			global.floorIsLava=newval;
 		if("floor_decals")
 			global.floor_decals=newval;
-		if("floor_light_cache")
-			global.floor_light_cache=newval;
 		if("flooring_cache")
 			global.flooring_cache=newval;
 		if("flooring_types")
@@ -1989,7 +1985,6 @@
 	"flesh_hud_colours",
 	"floorIsLava",
 	"floor_decals",
-	"floor_light_cache",
 	"flooring_cache",
 	"flooring_types",
 	"fluidtrack_cache",

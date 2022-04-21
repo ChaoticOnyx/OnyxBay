@@ -1,5 +1,12 @@
-var/static/list/floor_light_cache = list()
-var/static/list/floor_light_color_cache = list()
+#define FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT 0.75
+#define FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE 1
+#define FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE 3
+#define FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR "#69baff"
+#define FLOOR_LIGHT_BROKEN_LIGHT_COLOUR "#FFFFFF"
+#define FLOOR_LIGHT_LIGHT_LAYER DECAL_LAYER
+#define FLOOR_LIGHT_MAX_HEALTH 60
+#define FLOOR_LIGHT_SHIELD FLOOR_LIGHT_MAX_HEALTH * 0.6	// Hits to broke
+#define FLOOR_LIGHT_CRACK_LAYER DECAL_LAYER
 
 /obj/machinery/floor_light
 	name = "floor light"
@@ -14,25 +21,21 @@ var/static/list/floor_light_color_cache = list()
 	power_channel = STATIC_EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
-	#define FLOOR_LIGHT_MAX_HEALTH 60
-	#define FLOOR_LIGHT_SHIELD FLOOR_LIGHT_MAX_HEALTH * 0.6	// Hits to broke
-	#define FLOOR_LIGHT_CRACK_LAYER DECAL_LAYER
-	var/ID
+	var/image/current_crack_image
+	var/image/current_floor_image
+	var/current_color
 	var/health = FLOOR_LIGHT_MAX_HEALTH	// Hits to destroy
-	var/damaged = FALSE
+	var/current_damage = 0
 	var/cracks = 0
+	var/need_crack_update = TRUE
+	var/need_ligh_update = TRUE
 
-	#define FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT 0.75
-	#define FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE 1
-	#define FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE 3
-	#define FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR "#69baff"
-	#define FLOOR_LIGHT_BROKEN_LIGHT_COLOUR "#FFFFFF"
-	#define FLOOR_LIGHT_LIGHT_LAYER DECAL_LAYER
+	var/timer_id = ""
 	var/must_work = FALSE
 	var/on = FALSE
 	var/light_intensity = 1
 	var/inverted = FALSE
-	var/light_colour = "#69baff"
+	var/light_colour = FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR
 
 	var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
 	var/static/radial_intensity = image(icon = 'icons/mob/radial.dmi', icon_state = "intensity")
@@ -56,11 +59,8 @@ var/static/list/floor_light_color_cache = list()
 	..()
 	if(powered(power_channel) && anchored)
 		if(broken())
-			if(must_work)
-				must_work = FALSE
-				update_brightness()
-			else if(prob(on ? 30 : 15))
-				flicker()
+			if(!gettimer(timer_id))
+				timer_id = addtimer(CALLBACK(src, .proc/flick_light), flick_light())
 		else if(must_work != on)
 			must_work = on
 			update_brightness()
@@ -120,9 +120,9 @@ var/static/list/floor_light_color_cache = list()
 			else
 				return
 		playsound(src.loc, 'sound/effects/using/console/press2.ogg', 50, 1)
-		update_brightness()
+		on_params_update()
 
-	if(isWelder(W) && damaged)
+	if(isWelder(W) && current_damage)
 		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(cracks, user))
 			to_chat(user, SPAN("warning", "\The [WT.name] must be on and have at least [cracks] units of fuel to complete this task."))
@@ -134,9 +134,10 @@ var/static/list/floor_light_color_cache = list()
 			return
 		visible_message(SPAN("notice", "\The [user] has repaired \the [src]."))
 		set_broken(FALSE)
-		damaged = FALSE
+		current_damage = 0
 		health = FLOOR_LIGHT_MAX_HEALTH
-		update_brightness()
+		need_crack_update = TRUE
+		on_params_update()
 		return
 
 	if(isScrewdriver(W))
@@ -149,21 +150,22 @@ var/static/list/floor_light_color_cache = list()
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
 /obj/machinery/floor_light/proc/hit(damage, mob/user)
-	user.visible_message("[user.name] hits the [src.name].", "You hit the [src.name].", "You hear the sound of hitting the [src.name].")
+	user.visible_message("[user.name] hits \the [src].", "You hit \the [src].", "You hear the sound of hitting \the [src].")
 	playsound(loc, GET_SFX(SFX_GLASS_HIT), 100, 1)
 	if(broken())
 		visible_message("[src] looks seriously damaged!")
 
-	damaged++
-	if((health - damage) <= 0)
-		return
-	health -= damage
+	need_crack_update = TRUE
+	health -= current_damage++
+	if(health < 0)
+		health = 0
+	// all parametres for this action will be handled by need_crack_update var
 	update_brightness()
 
 /obj/machinery/floor_light/attack_hand(mob/user)
 	if(user.a_intent == I_HURT && !issmall(user))
 		playsound(src.loc, GET_SFX(SFX_GLASS_KNOCK), 80, 1)
-		user.visible_message("[user.name] knocks on the [src.name].", "You knock on the [src.name].", "You hear a knocking sound.")
+		user.visible_message("[user.name] knocks on \the [src].", "You knock on \the [src].", "You hear a knocking sound.")
 		return
 	else
 		on = !on
@@ -178,40 +180,37 @@ var/static/list/floor_light_color_cache = list()
 				to_chat(user, SPAN("warning", "\The [src] is unpowered."))
 
 /obj/machinery/floor_light/proc/update_brightness()
-	ID = "\ref[src]"
 	if(must_work)
 		if(broken())
 			set_light(FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT / 2, FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE / 2, FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE / 2, 2, FLOOR_LIGHT_BROKEN_LIGHT_COLOUR)
 			update_use_power(POWER_USE_IDLE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_IDLE)
 		else
-			set_light(FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT, FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE, FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE, 2, light_color_check(ID))
+			set_light(FLOOR_LIGHT_DEFAULT_LIGHT_MAX_BRIGHT, FLOOR_LIGHT_DEFAULT_LIGHT_INNER_RANGE, FLOOR_LIGHT_DEFAULT_LIGHT_OUTER_RANGE, 2, get_light_color())
 			update_use_power(POWER_USE_ACTIVE)
 			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	else
 		set_light(0)
 		update_use_power(POWER_USE_OFF)
 		change_power_consumption(0, POWER_USE_OFF)
-	update_icon(ID)
+	update_icon()
 	light_colour = null
 
-/obj/machinery/floor_light/update_icon(ID)
-	if(broken())
-		var/crack
-		while(cracks < damaged)
-			crack = rand(1,8)
-			var/cache_key = "floorlight[ID]-damaged[crack]"
+/obj/machinery/floor_light/update_icon()
+	. = ..()
+	overlays.Cut()
+	if(broken() && need_crack_update)
+		var/crack = rand(1,8)
+		while(cracks < current_damage)
 			var/image/I = image("damaged[crack]")
 			playsound(loc, "sound/effects/glass_step.ogg", 100, 1)
-			update_light_cache(ID, cache_key, I, FLOOR_LIGHT_CRACK_LAYER)
+			update_floor_image(I, FLOOR_LIGHT_CRACK_LAYER)
 			cracks++
-	else overlays.Cut()
+			current_crack_image = I
+			need_crack_update = FALSE
 	if(must_work)
-		overlays -= floor_light_cache["floorlight[ID]-glowing"]
-		overlays -= floor_light_color_cache["floorlight[ID]-glowing"]
-		if(!broken())
+		if(!broken() && need_ligh_update)
 			var/image/I
-			var/cache_key = "floorlight[ID]-glowing"
 			switch(light_intensity)
 				if(1)
 					I = inverted ? image("glowing_invert") : image("glowing")
@@ -219,34 +218,35 @@ var/static/list/floor_light_color_cache = list()
 					I = inverted ? image("glowing_slow_invert") : image("glowing_slow")
 				if(2)
 					I = inverted ? image("glowing_fast_invert") : image("glowing_fast")
-			update_light_cache(ID, cache_key, I, FLOOR_LIGHT_LIGHT_LAYER)
+			update_floor_image(I, FLOOR_LIGHT_LIGHT_LAYER)
+			current_floor_image = I
+			current_color = I.color
+			need_ligh_update = FALSE
+	overlays.Add(current_crack_image, current_floor_image)
 
-/obj/machinery/floor_light/proc/update_light_cache(ID, cache_key, image/I, _layer)
-	I.color = broken() ? FLOOR_LIGHT_BROKEN_LIGHT_COLOUR : light_color_check(ID)
+/obj/machinery/floor_light/proc/update_floor_image(image/I, _layer)
+	I.color = broken() ? FLOOR_LIGHT_BROKEN_LIGHT_COLOUR : get_light_color()
 	I.plane = plane
 	I.layer = _layer
-	floor_light_cache[cache_key] = I
-	floor_light_color_cache[cache_key] = I.color
-	overlays |= floor_light_cache[cache_key]
 
-/obj/machinery/floor_light/proc/flicker()
-	do
-		must_work = TRUE
-		update_brightness()
-		sleep(rand(1, 10))
+/obj/machinery/floor_light/proc/on_params_update()
+	need_ligh_update = TRUE
+	update_brightness()
+
+/obj/machinery/floor_light/proc/flick_light()
+	if(must_work)
 		must_work = FALSE
-		update_brightness()
-		sleep(rand(1, 5))
-	while(prob(50))
+		on_params_update()
+		return rand(1,5)
+	if(on ? prob(30) : prob(15) && prob(50))
+		must_work = TRUE
+		on_params_update()
+		return rand(1,10)
 
 /obj/machinery/floor_light/proc/broken()
 	return health < FLOOR_LIGHT_SHIELD
 
-/obj/machinery/floor_light/proc/light_color_check(ID)
-	if(isnull(light_colour))
-		if(floor_light_cache["floorlight[ID]-glowing"] && !broken())
-			return floor_light_color_cache["floorlight[ID]-glowing"]
-		if(floor_light_cache["floorlight[ID]-flickering"])
-			return floor_light_color_cache["floorlight[ID]-flickering"]
-		return FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR
-	return light_colour
+/obj/machinery/floor_light/proc/get_light_color()
+	if(light_colour)
+		return light_colour
+	return FLOOR_LIGHT_DEFAULT_LIGHT_COLOUR
