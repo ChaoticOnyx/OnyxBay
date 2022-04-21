@@ -162,11 +162,11 @@ Class Procs:
 		var/list/attracted
 		var/list/repelled
 		if(differential > 0)
-			attracted = A.movables()
-			repelled = B.movables()
+			attracted = LAZY_GET(A, movables)
+			repelled = LAZY_GET(B, movables)
 		else
-			attracted = B.movables()
-			repelled = A.movables()
+			attracted = LAZY_GET(B, movables)
+			repelled = LAZY_GET(A, movables)
 
 		flow(attracted, abs(differential), 0)
 		flow(repelled, abs(differential), 1)
@@ -231,7 +231,7 @@ Class Procs:
 
 	var/differential = A.air.return_pressure() - air.return_pressure()
 	if(abs(differential) >= vsc.airflow_lightest_pressure)
-		var/list/attracted = A.movables()
+		var/list/attracted = LAZY_GET(A, movables)
 		flow(attracted, abs(differential), differential < 0)
 
 	if(equiv)
