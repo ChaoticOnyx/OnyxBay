@@ -6,11 +6,9 @@
 	desc = "There's a hole in the sky... through which I can fly."
 	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal_gun"
-	//item_state = "portalgun0"
-	item_state = "portalgun0" // TODO: make portal gun sprite in hand
+	item_state = "portalgun0" // TODO [V]: make portal gun sprite in hand
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_MATERIAL = 7, TECH_BLUESPACE = 6, TECH_MAGNET = 5)
-	//inhand_states = list("left_hand" = 'icons/mob/in-hand/left/guns_experimental.dmi', "right_hand" = 'icons/mob/in-hand/right/guns_experimental.dmi') // need sprite
 	w_class = ITEM_SIZE_NORMAL
 	fire_delay = 2
 	fire_sound = 'sound/weapons/portalgun_blue.ogg'
@@ -48,7 +46,6 @@
 	overlays.Add(portal_icon)
 	if(blood_overlay)
 		overlays += blood_overlay
-	//item_state = "portalgun[setting]" // need sprite
 	return ..()
 
 /obj/item/gun/portalgun/proc/open_portal(proj_setting, turf/T, atom/A, mob/firer)

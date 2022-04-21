@@ -161,10 +161,6 @@
 	var/turf/target_turf = get_turf(P.original)
 	var/x_diff = target_turf.x - loc_turf.x
 	var/y_diff = target_turf.y - loc_turf.y
-	// if(P.dir & SOUTH)
-	// 	x_diff = -x_diff
-	// if(P.dir & WEST)
-	// 	y_diff = -y_diff
 	// get x, y offset from P.setup_trajectory
 	var/x_offset = round(P.xo - P.original.x + P.starting.x, 1)
 	var/y_offset = round(P.yo - P.original.y + P.starting.y, 1)
