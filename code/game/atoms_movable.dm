@@ -40,7 +40,7 @@
 		qdel(virtual_mob)
 		virtual_mob = null
 
-	. = ..()
+	return ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)

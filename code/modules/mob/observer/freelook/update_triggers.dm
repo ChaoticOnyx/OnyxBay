@@ -13,7 +13,8 @@
 /atom/Destroy()
 	if(opacity)
 		updateVisibility(src)
-	. = ..()
+	
+	return ..()
 
 /atom/movable/Move()
 	. = ..()
