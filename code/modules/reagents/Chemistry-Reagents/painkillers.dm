@@ -103,7 +103,7 @@
 	color = "#800080"
 	overdose = REAGENTS_OVERDOSE * 0.5
 
-	pain_power = 200
+	pain_power = 180
 	effective_dose = 2.0
 	tolerance_threshold = 10.0
 	tolerance_mult = 0.075
