@@ -102,8 +102,11 @@
 	taste_description = "bitterness"
 	color = "#800080"
 	overdose = REAGENTS_OVERDOSE * 0.5
-	pain_power = 180
+
+	pain_power = 200
 	effective_dose = 2.0
+	tolerance_threshold = 10.0
+	tolerance_mult = 0.075
 
 /datum/reagent/painkiller/tramadol/oxycodone/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()
