@@ -480,6 +480,7 @@
 	var/list/fields = list()
 	var/quick_burst_mod = 0.8
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+	in_use = FALSE
 
 /obj/item/resonator/upgraded
 	name = "upgraded resonator"
@@ -513,9 +514,11 @@
 
 /obj/item/resonator/afterattack(atom/target, mob/user, proximity_flag)
 	..()
-	if(user.Adjacent(target))
-		if(isturf(target))
-			CreateResonance(target, user)
+	if(user.Adjacent(target) && isturf(target) && !in_use)
+		in_use = TRUE
+		CreateResonance(target, user)
+		if(do_after(user, DEFAULT_WEAPON_COOLDOWN, get_turf(user)))
+			in_use = FALSE
 
 /obj/effect/resonance
 	name = "resonance field"
