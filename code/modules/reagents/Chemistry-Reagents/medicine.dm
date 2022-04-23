@@ -368,7 +368,7 @@
 	metabolism = REM * 0.5
 	ingest_met = REM * 0.25 // True speed requires shots, you weakling
 	absorbability = 1.0 // But at least some speed is still achievable even thru oral intake
-	excretion = REM * 0.5
+	excretion = 0.5
 	overdose = REAGENTS_OVERDOSE * 0.5
 	var/tolerance_threshold = 15.0 // Having more than this value in chem_traces will cause pain
 	var/tolerance_mult = 2.0 // Amount of pain for each unit over tolerance_threshold
