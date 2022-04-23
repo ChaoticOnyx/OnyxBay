@@ -518,7 +518,12 @@
 		in_use = TRUE
 		CreateResonance(target, user)
 		if(do_after(user, DEFAULT_WEAPON_COOLDOWN, get_turf(user)))
+			playsound(src,'sound/effects/weapons/energy/toggle_mode1.ogg',50,1)
 			in_use = FALSE
+
+/obj/item/resonator/dropped()
+	. = ..()
+	in_use = FALSE
 
 /obj/effect/resonance
 	name = "resonance field"
