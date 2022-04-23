@@ -184,7 +184,7 @@
 
 /obj/item/reagent_containers/glass/bottle/opium/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/tramadol/opium, 60)
+	reagents.add_reagent(/datum/reagent/painkiller/opium, 60)
 	update_icon()
 
 //////////
@@ -195,5 +195,16 @@
 
 /obj/item/reagent_containers/glass/bottle/tarine/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
+	reagents.add_reagent(/datum/reagent/painkiller/opium/tarine, 60)
+	update_icon()
+
+//////////
+/obj/item/reagent_containers/glass/bottle/painkiller
+	name = "metazine bottle"
+	desc = "A small bottle of metazine. A very potent painkiller. Although it's not an opiate, users may quickly develop a tolerance to the drug."
+	starting_label = "Metazine"
+
+/obj/item/reagent_containers/glass/bottle/painkiller/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/painkiller, 60)
 	update_icon()

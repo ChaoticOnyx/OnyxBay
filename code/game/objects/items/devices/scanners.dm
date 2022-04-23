@@ -321,12 +321,12 @@ REAGENT SCANNER
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
 		reagents_data += "<span class='danger'>Warning: Subject suffering from alcohol intoxication.</span>"
 
-	if(H.chem_doses.len)
+	if(H.chem_traces.len)
 		var/list/chemtraces = list()
-		for(var/T in H.chem_doses)
+		for(var/T in H.chem_traces)
 			var/datum/reagent/R = T
 			if(initial(R.scannable))
-				chemtraces += "[initial(R.name)] ([H.chem_doses[T]])"
+				chemtraces += "[initial(R.name)] ([H.chem_traces[T]])"
 		if(chemtraces.len)
 			reagents_data += "<span class='notice'>Metabolism products of [english_list(chemtraces)] found in subject's system.</span>"
 	var/virus_data = list()

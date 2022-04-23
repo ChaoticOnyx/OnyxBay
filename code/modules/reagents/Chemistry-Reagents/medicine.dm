@@ -11,13 +11,14 @@
 	color = "#00bfff"
 	overdose = REAGENTS_OVERDOSE * 2
 	metabolism = REM * 0.5
-	scannable = 1
+	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/inaprovaline/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
+		var/effect_mult = removed / metabolism
 		M.add_chemical_effect(CE_STABLE)
-		M.add_chemical_effect(CE_PAINKILLER, 10)
+		M.add_chemical_effect(CE_PAINKILLER, 10 * effect_mult)
 
 /datum/reagent/inaprovaline/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_SLOWDOWN, 1)
@@ -34,13 +35,14 @@
 	reagent_state = LIQUID
 	color = "#bf0000"
 	overdose = REAGENTS_OVERDOSE
-	scannable = 1
+	scannable = TRUE
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/bicaridine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
+		var/effect_mult = removed / metabolism
 		M.heal_organ_damage(6 * removed, 0)
-		M.add_chemical_effect(CE_PAINKILLER, 10)
+		M.add_chemical_effect(CE_PAINKILLER, 10 * effect_mult)
 
 /datum/reagent/bicaridine/overdose(mob/living/carbon/M, alien)
 	..()
@@ -122,6 +124,7 @@
 	overdose = REAGENTS_OVERDOSE
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
+	absorbability = 1.0 // Just sip your oxygen cocktail and stay cool
 
 /datum/reagent/dexalin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_VOX)
@@ -139,6 +142,7 @@
 	overdose = REAGENTS_OVERDOSE * 0.5
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
+	absorbability = 1.0
 
 /datum/reagent/dexalinp/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_VOX)
@@ -240,184 +244,6 @@
 
 			H.heal_organ_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
 
-/* Painkillers */
-
-/datum/reagent/paracetamol
-	name = "Paracetamol"
-	description = "Most probably know this as Tylenol, but this chemical is a mild, simple painkiller."
-	taste_description = "sickness"
-	reagent_state = LIQUID
-	color = "#c8a5dc"
-	overdose = 60
-	reagent_state = LIQUID
-	scannable = 1
-	metabolism = 0.02
-	flags = IGNORE_MOB_SIZE
-
-/datum/reagent/paracetamol/affect_blood(mob/living/carbon/M, alien, removed)
-	M.add_chemical_effect(CE_PAINKILLER, 35)
-
-/datum/reagent/paracetamol/overdose(mob/living/carbon/M, alien)
-	M.add_chemical_effect(CE_TOXIN, 1)
-	M.druggy = max(M.druggy, 2)
-	M.add_chemical_effect(CE_PAINKILLER, 10)
-
-/datum/reagent/tramadol
-	name = "Tramadol"
-	description = "A simple, yet effective painkiller. Don't mix with alcohol."
-	taste_description = "sourness"
-	reagent_state = LIQUID
-	color = "#cb68fc"
-	overdose = 30
-	scannable = 1
-	metabolism = 0.05
-	ingest_met = 0.02
-	flags = IGNORE_MOB_SIZE
-	var/pain_power = 120 //magnitide of painkilling effect
-	var/effective_dose = 0.5 //how many units it need to process to reach max power
-	var/soft_overdose = 15 //determines when it starts causing negative effects w/out actually causing OD
-
-/datum/reagent/tramadol/affect_blood(mob/living/carbon/M, alien, removed)
-	var/effectiveness = 1
-	if(M.chem_doses[type] < effective_dose) //some ease-in ease-out for the effect
-		effectiveness = M.chem_doses[type]/effective_dose
-	else if(volume < effective_dose)
-		effectiveness = volume/effective_dose
-	M.add_chemical_effect(CE_PAINKILLER, pain_power * effectiveness)
-	handle_painkiller_overdose(M)
-	var/boozed = isboozed(M)
-	if(boozed)
-		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
-		M.add_chemical_effect(CE_BREATHLOSS, 0.1 * boozed) //drinking and opiating makes breathing kinda hard
-
-/datum/reagent/tramadol/overdose(mob/living/carbon/M, alien)
-	..()
-	M.hallucination(120, 30)
-	M.druggy = max(M.druggy, 10)
-	M.add_chemical_effect(CE_PAINKILLER, pain_power*0.5) //extra painkilling for extra trouble
-	M.add_chemical_effect(CE_BREATHLOSS, 0.6) //Have trouble breathing, need more air
-	if(isboozed(M))
-		M.add_chemical_effect(CE_BREATHLOSS, 0.2) //Don't drink and OD on opiates folks
-
-/datum/reagent/tramadol/proc/handle_painkiller_overdose(mob/living/carbon/M)
-	if(M.chem_doses[type] > soft_overdose)
-		M.add_chemical_effect(CE_SLOWDOWN, 1)
-		if(prob(1))
-			M.slurring = max(M.slurring, 10)
-	if(M.chem_doses[type] > (overdose+soft_overdose)/2)
-		if(prob(5))
-			M.slurring = max(M.slurring, 20)
-	if(M.chem_doses[type] > overdose)
-		M.slurring = max(M.slurring, 30)
-		if(prob(1))
-			M.Weaken(2)
-			M.drowsyness = max(M.drowsyness, 5)
-
-/datum/reagent/tramadol/proc/isboozed(mob/living/carbon/M)
-	. = 0
-	var/datum/reagents/ingested = M.get_ingested_reagents()
-	if(ingested)
-		var/list/pool = M.reagents.reagent_list | ingested.reagent_list
-		for(var/datum/reagent/ethanol/booze in pool)
-			if(M.chem_doses[booze.type] < 2) //let them experience false security at first
-				continue
-			. = 1
-			if(booze.strength < 40) //liquor stuff hits harder
-				return 2
-
-/datum/reagent/tramadol/oxycodone
-	name = "Oxycodone"
-	description = "An effective and very addictive painkiller. Don't mix with alcohol."
-	taste_description = "bitterness"
-	color = "#800080"
-	overdose = 20
-	pain_power = 200
-	effective_dose = 2
-
-/datum/reagent/tramadol/opium // yes, opium is a subtype of tramadol, for reasons ~Toby
-	name = "Opium"
-	description = "Latex obtained from the opium poppy. An effective, but addictive painkiller."
-	taste_description = "bitterness"
-	color = "#63311b"
-	overdose = 20
-	soft_overdose = 10
-	scannable = 0
-	reagent_state = SOLID
-	data = 0
-	pain_power = 150
-	var/drugdata = 0
-
-/datum/reagent/tramadol/opium/affect_blood(mob/living/carbon/M, alien, removed)
-	var/effectiveness = 1
-	if(volume < effective_dose) //reverse order compared to tramadol for quicker effect uppon injecting
-		effectiveness = volume/effective_dose
-	else if(M.chem_doses[type] < effective_dose)
-		effectiveness = M.chem_doses[type]/effective_dose
-	M.add_chemical_effect(CE_PAINKILLER, pain_power * effectiveness)
-	handle_painkiller_overdose(M)
-	var/boozed = isboozed(M)
-	if(boozed)
-		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
-		M.add_chemical_effect(CE_BREATHLOSS, 0.1 * boozed) //drinking and opiating makes breathing kinda hard
-	if(world.time > drugdata + DRUGS_MESSAGE_DELAY)
-		drugdata = world.time
-		var/msg = ""
-		if(pain_power > 200)
-			msg = pick("unbeliveably happy", "like living your best life", "blissful", "blessed", "unearthly tranquility")
-		else
-			msg = pick("happy", "joyful", "relaxed", "tranquility")
-		to_chat(M, SPAN("notice", "You feel [msg]."))
-
-/datum/reagent/tramadol/opium/handle_painkiller_overdose(mob/living/carbon/M)
-	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
-	if(whole_volume > soft_overdose)
-		M.add_chemical_effect(CE_SLOWDOWN, 1)
-		M.druggy = max(M.druggy, 10)
-		if(prob(1))
-			M.slurring = max(M.slurring, 10)
-	if(whole_volume > (overdose+soft_overdose)/2)
-		M.eye_blurry = max(M.eye_blurry, 10)
-		if(prob(5))
-			M.slurring = max(M.slurring, 20)
-	if(whole_volume > overdose)
-		M.add_chemical_effect(CE_SLOWDOWN, 2)
-		M.slurring = max(M.slurring, 30)
-		if(prob(1))
-			M.Weaken(2)
-			M.drowsyness = max(M.drowsyness, 5)
-
-/datum/reagent/tramadol/opium/tarine
-	name = "Tarine"
-	description = "An opioid most commonly used as a recreational drug for its euphoric effects. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
-	color = "#b79a8d"
-	overdose = 15
-	soft_overdose = 7.5
-	pain_power = 240
-	scannable = 0
-	reagent_state = SOLID
-
-/datum/reagent/tramadol/opium/tarine/affect_blood(mob/living/carbon/M, alien, removed)
-	..()
-	M.add_chemical_effect(CE_SLOWDOWN, 1)
-
-/datum/reagent/tramadol/opium/tarine/handle_painkiller_overdose(mob/living/carbon/M)
-	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
-	if(whole_volume > soft_overdose)
-		M.hallucination(30, 30)
-		M.eye_blurry = max(M.eye_blurry, 10)
-		M.drowsyness = max(M.drowsyness, 5)
-		M.druggy = max(M.druggy, 10)
-		M.add_chemical_effect(CE_SLOWDOWN, 2)
-		if(prob(5))
-			M.slurring = max(M.slurring, 20)
-	if(whole_volume > overdose)
-		M.add_chemical_effect(CE_SLOWDOWN, 3)
-		M.slurring = max(M.slurring, 30)
-		M.Weaken(5)
-		if(prob(25))
-			M.sleeping = max(M.sleeping, 3)
-		M.add_chemical_effect(CE_BREATHLOSS, 0.2)
-
 /* Other medicine */
 
 /datum/reagent/synaptizine
@@ -430,18 +256,22 @@
 	overdose = REAGENTS_OVERDOSE
 	scannable = 1
 
-/datum/reagent/synaptizine/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/synaptizine/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
-	M.drowsyness = max(M.drowsyness - 5, 0)
+	var/effect_mult = removed / metabolism
+	M.drowsyness = max(M.drowsyness - (5 * effect_mult), 0)
 	M.AdjustParalysis(-1)
 	M.AdjustStunned(-1)
 	M.AdjustWeakened(-1)
-	holder.remove_reagent(/datum/reagent/mindbreaker, 5)
-	M.adjust_hallucination(-10)
+	holder.remove_reagent(/datum/reagent/mindbreaker, 5 * effect_mult)
+	M.adjust_hallucination(-10 * effect_mult)
 	M.add_chemical_effect(CE_MIND, 2)
 	M.adjustToxLoss(5 * removed) // It used to be incredibly deadly due to an oversight. Not anymore!
-	M.add_chemical_effect(CE_PAINKILLER, 20)
+
+	if(affecting_dose < 1.5)
+		effect_mult *= affecting_dose / 1.5 // We no longer use effect_mult for other purposes, safe to change it
+	M.add_chemical_effect(CE_PAINKILLER, 20 * effect_mult)
 
 /datum/reagent/alkysine
 	name = "Alkysine"
@@ -450,6 +280,7 @@
 	reagent_state = LIQUID
 	color = "#ffff66"
 	metabolism = REM * 0.25
+	absorbability = 1.0 // TODO: Redo CE_BRAIN_REGEN some day to make orally-taken alkysine weaker
 	overdose = REAGENTS_OVERDOSE
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
@@ -474,10 +305,10 @@
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 
-
 /datum/reagent/imidazoline/affect_blood(mob/living/carbon/M, alien, removed)
-	M.eye_blurry = max(M.eye_blurry - 5, 0)
-	M.eye_blind = max(M.eye_blind - 5, 0)
+	var/effect_mult = removed / metabolism
+	M.eye_blurry = max(M.eye_blurry - (5 * effect_mult), 0)
+	M.eye_blind = max(M.eye_blind - (5 * effect_mult), 0)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
@@ -534,15 +365,31 @@
 	taste_description = "acid"
 	reagent_state = LIQUID
 	color = "#ff3300"
-	metabolism = REM * 0.15
+	metabolism = REM * 0.5
+	ingest_met = REM * 0.25 // True speed requires shots, you weakling
+	absorbability = 1.0 // But at least some speed is still achievable even thru oral intake
+	excretion = REM * 0.5
 	overdose = REAGENTS_OVERDOSE * 0.5
+	var/tolerance_threshold = 15.0 // Having more than this value in chem_traces will cause pain
+	var/tolerance_mult = 2.0 // Amount of pain for each unit over tolerance_threshold
 
-/datum/reagent/hyperzine/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/hyperzine/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
+		return
+	if(affecting_dose < 0.5)
+		if(M.chem_doses[type] == metabolism * 2 && M.chem_traces[type] < tolerance_threshold)
+			to_chat(M, SPAN("notice", "You can feel your muscles tense up!"))
 		return
 	if(prob(5))
 		M.emote(pick("twitch", "blink_r", "shiver"))
-	M.add_up_to_chemical_effect(CE_SPEEDBOOST, 2)
+
+	var/effectiveness = removed / metabolism
+	if(M.chem_traces[type] > tolerance_threshold)
+		var/tolerance_excess = M.chem_traces[type] - tolerance_threshold
+		if(prob(min(25, tolerance_excess)))
+			M.custom_pain("Your muscles ache from tension!", tolerance_excess * tolerance_mult, FALSE)
+
+	M.add_up_to_chemical_effect(CE_SPEEDBOOST, 2 * effectiveness)
 	M.add_chemical_effect(CE_PULSE, 2)
 
 /datum/reagent/ethylredoxrazine
@@ -564,6 +411,7 @@
 		for(var/datum/reagent/R in ingested.reagent_list)
 			if(istype(R, /datum/reagent/ethanol))
 				M.chem_doses[R.type] = max(M.chem_doses[R.type] - removed * 5, 0)
+				M.chem_traces[R.type] = max(M.chem_traces[R.type] - removed * 3, 0)
 
 /datum/reagent/hyronalin
 	name = "Hyronalin"
@@ -741,6 +589,7 @@
 	reagent_state = LIQUID
 	color = "#efebaa"
 	metabolism = REM * 0.025
+	excretion = REM * 0.05
 	overdose = 6
 	scannable = 1
 	data = 0
@@ -750,7 +599,7 @@
 		return
 	if(prob(volume*20))
 		M.add_chemical_effect(CE_PULSE, 1)
-	if(volume <= 0.02 && M.chem_doses[type] >= 0.05 && world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY * 0.3)
+	if(volume <= 0.02 && M.chem_traces[type] >= 0.05 && world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY * 0.3)
 		data = world.time
 		to_chat(M, SPAN("warning", "You feel antsy, your concentration wavers..."))
 	else
@@ -848,9 +697,10 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/noexcutite/affect_blood(mob/living/carbon/M, alien, removed)
-
-	if(alien != IS_DIONA)
-		M.make_jittery(-50)
+	if(alien == IS_DIONA)
+		return
+	var/effect_mult = removed / metabolism
+	M.make_jittery(-50 * effect_mult)
 
 /datum/reagent/antidexafen
 	name = "Antidexafen"
@@ -860,7 +710,7 @@
 	color = "#c8a5dc"
 	overdose = 60
 	scannable = 1
-	metabolism = REM * 0.05
+	metabolism = REM * 0.15
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/antidexafen/affect_blood(mob/living/carbon/M, alien, removed)
@@ -883,7 +733,7 @@
 	color = "#c8a5dc"
 	scannable = 1
 	overdose = 20
-	metabolism = 0.1
+	metabolism = REM * 0.5
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
@@ -909,14 +759,14 @@
 	color = "#c10158"
 	scannable = 1
 	overdose = 5
-	metabolism = 1
+	metabolism = REM * 5
 
 /datum/reagent/nanoblood/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 	if(M.regenerate_blood(4 * removed))
 		M.immunity = max(M.immunity - 0.1, 0)
-		if(M.chem_doses[type] > M.species.blood_volume/8) //half of blood was replaced with us, rip white bodies
+		if(M.chem_traces[type] > M.species.blood_volume/8) //half of blood was replaced with us, rip white bodies
 			M.immunity = max(M.immunity - 0.5, 0)
 
 /* Cannabis Stuff ~TobyThorne */
@@ -933,18 +783,20 @@
 	color = "#778800"
 	scannable = 1
 	overdose = 50
-	metabolism = 0.05
+	metabolism = REM * 0.25
+	ingest_met = REM * 0.15
+	absorbability = 0.75
 	data = 0
 	var/thcdata = 0
 
-/datum/reagent/thc/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/thc/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
 
-	if (volume >= 34 || M.chem_doses[type] >= 28)	//Stoned
+	if(affecting_dose >= 15) // Stoned
 		M.add_chemical_effect(CE_MIND, 3)
-		M.nutrition -= 50 * removed
-		M.add_chemical_effect(CE_PAINKILLER, 85)
+		M.nutrition = max(0, M.nutrition - 50 * removed)
+		M.add_chemical_effect(CE_PAINKILLER, 75)
 		M.drowsyness = max(M.drowsyness, 10)
 		if(prob(30))
 			M.druggy = max(M.druggy, 6)
@@ -952,17 +804,17 @@
 			M.emote(pick("cough", "giggle", "laugh"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
-			to_chat(M, "<span class='notice'>You don't give a fuck about anything.</span>")
+			to_chat(M, SPAN("notice", "You don't give a fuck about anything."))
 		if(world.time > thcdata + DRUGS_MESSAGE_DELAY)
 			thcdata = world.time
 			if(prob(60))
-				to_chat(M, "<span class='warning'>You feel stoned.</span>")
+				to_chat(M, SPAN("warning", "You feel stoned."))
 			else
-				to_chat(M, "<span class='warning'>You are hungry as fuck!</span>")
+				to_chat(M, SPAN("warning", "You are hungry as fuck!"))
 
-	else if (volume >= 24 || M.chem_doses[type] >= 12) // Smoked a good load of kush.
+	else if(affecting_dose >= 10) // Smoked a good load of kush.
 		M.add_chemical_effect(CE_MIND, 2)
-		M.nutrition -= 20 * removed
+		M.nutrition -= max(0, M.nutrition - 20 * removed)
 		M.add_chemical_effect(CE_PAINKILLER, 50)
 		if(prob(15))
 			M.druggy = max(M.druggy, 2)
@@ -971,17 +823,17 @@
 			M.emote(pick("cough", "giggle"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
-			to_chat(M, "<span class='notice'>Your mind feels much more stable.</span>")
+			to_chat(M, SPAN("notice", "Your mind feels much more stable."))
 		if(world.time > thcdata + DRUGS_MESSAGE_DELAY)
 			thcdata = world.time
 			if(prob(60))
-				to_chat(M, "<span class='notice'>You feel high and happy.</span>")
+				to_chat(M, SPAN("notice", "You feel high and happy."))
 			else
-				to_chat(M, "<span class='warning'>You feel really hungry.</span>")
+				to_chat(M, SPAN("warning", "You feel really hungry."))
 
-	else if (volume >= 12 || M.chem_doses[type] >= 3) // Smoked a single bud.
+	else if(affecting_dose >= 5) // Smoked a single bud.
 		M.add_chemical_effect(CE_MIND, 1)
-		M.nutrition -= 10 * removed
+		M.nutrition -= max(0, M.nutrition - 10 * removed)
 		M.add_chemical_effect(CE_PAINKILLER, 25)
 		if(prob(10))
 			M.druggy = max(M.druggy, 2)
@@ -990,46 +842,45 @@
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
-			to_chat(M, "<span class='notice'>Your mind feels stable.</span>")
+			to_chat(M, SPAN("notice", "Your mind feels stable."))
 		if(world.time > thcdata + DRUGS_MESSAGE_DELAY)
 			thcdata = world.time
 			if(prob(60))
-				to_chat(M, "<span class='notice'>You feel high and happy.</span>")
+				to_chat(M, SPAN("notice", "You feel high and happy."))
 			else
-				to_chat(M, "<span class='notice'>Why not to find something to eat?</span>")
+				to_chat(M, SPAN("notice", "Why not to find something to eat?"))
 
-	else if (volume >= 3 || M.chem_doses[type] >= 1) // The end of the trip.
+	else if(affecting_dose >= 2) // The end of the trip.
 		M.add_chemical_effect(CE_MIND, 0.5)
-		M.nutrition -= 3 * removed
+		M.nutrition -= max(0, M.nutrition - 3 * removed)
 		M.add_chemical_effect(CE_PAINKILLER, 5)
 		if(prob(3))
 			M.druggy = max(M.druggy, 2)
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
-			to_chat(M, "<span class='notice'>Your mind feels stable... a little stable.</span>")
+			to_chat(M, SPAN("notice", "Your mind feels stable... a little stable."))
 		if(world.time > thcdata + DRUGS_MESSAGE_DELAY)
 			thcdata = world.time
 			if(prob(60))
-				to_chat(M, "<span class='notice'>You feel funny.</span>")
+				to_chat(M, SPAN("notice", "You feel funny."))
 			else
-				to_chat(M, "<span class='notice'>You are a bit hungry.</span>")
+				to_chat(M, SPAN("notice", "You are a bit hungry."))
 
-	if(volume <= 0.1 && M.chem_doses[type] <= 0.5 && world.time > data + DRUGS_MESSAGE_DELAY)
-		data = world.time
-		to_chat(M, "<span class='notice'>Weed...</span>")
-
-
+	else if(affecting_dose <= 0.5 && world.time > thcdata + DRUGS_MESSAGE_DELAY)
+		thcdata = world.time
+		to_chat(M, SPAN("notice", "Weed..."))
 
 /datum/reagent/thc/overdose(mob/living/carbon/M, alien)
 	if(world.time > thcdata + DRUGS_MESSAGE_DELAY/2)
 		thcdata = world.time
-		to_chat(M, "<span class='warning'>That's it. Whitey. Man up and deal with it.</span>")  // Blyat pacani ya blednogo lovlu, pomogite!
+		var/message = pick("That's it. Whitey. Man up and deal with it.", "You are stoned as hell.", "Damn it...", "You can barely stand.")
+		to_chat(M, SPAN("warning", "[message]"))  // Blyat pacani ya blednogo lovlu, pomogite!
 	if(prob(10))
 		M.emote(pick("cough", "vomit", "drool", "moan"))
 	M.hallucination(15, 15)
 	M.drowsyness = max(M.drowsyness, 30)
-	M.add_chemical_effect(CE_PAINKILLER, 120)
+	M.add_chemical_effect(CE_PAINKILLER, 100)
 
 
 
@@ -1041,7 +892,9 @@
 	color = "#803835"
 	scannable = 1
 	overdose = 25
-	metabolism = 0.1
+	metabolism = REM
+	ingest_met = REM * 0.5
+	absorbability = 1.0
 
 /datum/reagent/albumin/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.

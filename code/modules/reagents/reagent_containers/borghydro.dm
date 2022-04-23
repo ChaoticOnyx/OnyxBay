@@ -18,7 +18,7 @@
 	var/list/reagent_names = list()
 
 /obj/item/reagent_containers/borghypo/crisis
-	reagent_ids = list(	/datum/reagent/tramadol,
+	reagent_ids = list(	/datum/reagent/painkiller/tramadol,
 						/datum/reagent/inaprovaline,
 						/datum/reagent/tricordrazine,
 						/datum/reagent/bicaridine,
@@ -31,7 +31,7 @@
 						/datum/reagent/hyronalin,
 						/datum/reagent/peridaxon,
 						/datum/reagent/spaceacillin,
-						/datum/reagent/tramadol/oxycodone,
+						/datum/reagent/painkiller,
 						/datum/reagent/bicaridine,
 						/datum/reagent/kelotane,
 						/datum/reagent/dexalinp,
