@@ -295,39 +295,56 @@
 	if (istype(target, /obj/item) && !(istype(target, /obj/item/storage) && !istype(target,/obj/item/storage/box)))
 		var/obj/item/O = target
 		if (src.amount > 1)
-			var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
-			if(!istype(O.loc, /turf))
-				if(user.client)
-					user.client.screen -= O
-			P.wrapped = O
-			P.w_class = O.w_class
-			var/i = round(O.w_class)
-			if(i in list(1,2,3,4,5))
-				P.icon_state = "deliverycrate[i]"
-				switch(i)
-					if(1) P.SetName("tiny parcel")
-					if(3) P.SetName("normal-sized parcel")
-					if(4) P.SetName("large parcel")
-					if(5) P.SetName("huge parcel")
-			if(i < 1)
-				P.icon_state = "deliverycrate1"
-				P.SetName("tiny parcel")
-			if(i > 5)
-				P.icon_state = "deliverycrate5"
-				P.SetName("huge parcel")
-			P.add_fingerprint(usr)
-			O.add_fingerprint(usr)
+			if(istype(O, /obj/item/reagent_containers/food/snacks/grown))
+				var/quanity = 0
+				for(var/obj/item/reagent_containers/food/snacks/grown in target.loc)
+					quanity++
+				if(quanity < 3)
+					return
+				var/obj/item/storage/bouquet/N = new /obj/item/storage/bouquet(O)
+				to_chat(user, "You make the bouquet.")
+				var/quanity_target = quanity - 3
+				for(var/obj/item/reagent_containers/food/snacks/grown in target.loc)
+					quanity--
+					qdel(grown)
+					if(quanity_target == quanity)
+						break
+				N.add_fingerprint(usr)
+			else
+				var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
+				if(!istype(O.loc, /turf))
+					if(user.client)
+						user.client.screen -= O
+				P.wrapped = O
+				P.w_class = O.w_class
+				var/i = round(O.w_class)
+				if(i in list(1,2,3,4,5))
+					P.icon_state = "deliverycrate[i]"
+					switch(i)
+						if(1) P.SetName("tiny parcel")
+						if(3) P.SetName("normal-sized parcel")
+						if(4) P.SetName("large parcel")
+						if(5) P.SetName("huge parcel")
+				if(i < 1)
+					P.icon_state = "deliverycrate1"
+					P.SetName("tiny parcel")
+				if(i > 5)
+					P.icon_state = "deliverycrate5"
+					P.SetName("huge parcel")
+				P.add_fingerprint(usr)
+				O.add_fingerprint(usr)
+				user.visible_message("\The [user] wraps \a [target] with \a [src].",\
+				SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
+				"You hear someone taping paper around a small object.")
+				if(istype(O, /obj/item/storage/box))
+					var/obj/item/storage/box/B = O
+					B.close(user)
+					P.SetName("box-shaped parcel")
+					P.icon_state = "deliverybox"
+				O.forceMove(P)
 			src.add_fingerprint(usr)
 			src.amount -= 1
-			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
-			"You hear someone taping paper around a small object.")
-			if(istype(O, /obj/item/storage/box))
-				var/obj/item/storage/box/B = O
-				B.close(user)
-				P.SetName("box-shaped parcel")
-				P.icon_state = "deliverybox"
-			O.forceMove(P)
+
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
 		if (src.amount > 3 && !O.opened)
