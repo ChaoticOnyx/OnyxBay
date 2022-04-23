@@ -589,7 +589,7 @@
 	reagent_state = LIQUID
 	color = "#efebaa"
 	metabolism = REM * 0.025
-	excretion = REM * 0.05
+	excretion = 1.0
 	overdose = 6
 	scannable = 1
 	data = 0
