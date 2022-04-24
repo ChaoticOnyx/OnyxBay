@@ -37,6 +37,12 @@ var/list/ventcrawl_machinery = list(
 		remove_ventcrawl()
 		add_ventcrawl(loc)
 
+/mob/living/simple_animal/borer/can_ventcrawl()
+	if(host)
+		to_chat(src, SPAN("warning", "You can't ventcrawl into host!"))
+		return FALSE
+	return ..()
+
 /mob/living/carbon/metroid/can_ventcrawl()
 	if(Victim)
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
@@ -119,6 +125,9 @@ var/list/ventcrawl_machinery = list(
 		return pipe
 
 /mob/living/carbon/alien/ventcrawl_carry()
+	return 1
+
+/mob/living/simple_animal/borer/ventcrawl_carry()
 	return 1
 
 /mob/living/proc/handle_ventcrawl(atom/clicked_on)
