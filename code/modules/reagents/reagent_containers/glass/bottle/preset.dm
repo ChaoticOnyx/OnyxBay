@@ -81,7 +81,7 @@
 	desc = "A small bottle. Contains the liquid essence of the gods."
 	icon = 'icons/obj/drinks.dmi'
 	icon_state = "holyflask"
-	startswith = list(/datum/reagent/acid/adminordrazine)
+	startswith = list(/datum/reagent/adminordrazine)
 
 //////////
 /obj/item/reagent_containers/glass/bottle/capsaicin

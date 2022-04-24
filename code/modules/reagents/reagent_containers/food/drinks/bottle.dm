@@ -484,7 +484,7 @@
 	desc = "Contains only water, malt and hops."
 	icon_state = "beer"
 	center_of_mass = "x=16;y=12"
-	startswith = list(/datum/reagent/ethanol/beer, 45)
+	startswith = list(/datum/reagent/ethanol/beer = 45)
 
 /obj/item/reagent_containers/food/drinks/bottle/small/ale
 	name = "\improper Magm-Ale"
@@ -492,7 +492,7 @@
 	icon_state = "alebottle"
 	item_state = "beer"
 	center_of_mass = "x=16;y=10"
-	startswith = list(/datum/reagent/ethanol/ale, 45)
+	startswith = list(/datum/reagent/ethanol/ale = 45)
 
 /obj/item/reagent_containers/food/drinks/bottle/small/darkbeer
 	name = "Dark Space Beer"
@@ -500,7 +500,7 @@
 	icon_state = "darkbeer"
 	item_state = "beer"
 	center_of_mass = "x=16;y=12"
-	startswith = list(/datum/reagent/ethanol/beer/dark, 45)
+	startswith = list(/datum/reagent/ethanol/beer/dark = 45)
 
 //Pourers and stuff
 

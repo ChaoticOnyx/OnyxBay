@@ -27,7 +27,7 @@
 	create_reagents(volume)
 	if(startswith)
 		for(var/thing in startswith)
-			reagents.add_reagent(thing, startswith[thing] ? startswith[thing] : volume)
+			reagents.add_reagent(thing, isnull(startswith[thing]) ? startswith[thing] : volume)
 		startswith = null // Unnecessary lists bad
 		update_icon()
 

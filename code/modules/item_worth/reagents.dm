@@ -399,7 +399,7 @@
 /datum/reagent/clonexadone
 	value = 5.5
 
-/datum/reagent/paracetamol
+/datum/reagent/painkiller/paracetamol
 	value = 3.3
 
 /datum/reagent/painkiller

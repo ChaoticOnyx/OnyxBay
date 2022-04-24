@@ -2080,7 +2080,7 @@
 /datum/chemical_reaction/antidexafen
 	name = "Antidexafen"
 	result = /datum/reagent/antidexafen
-	required_reagents = list(/datum/reagent/paracetamol = 1, /datum/reagent/carbon = 1)
+	required_reagents = list(/datum/reagent/painkiller/paracetamol = 1, /datum/reagent/carbon = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/nanoblood

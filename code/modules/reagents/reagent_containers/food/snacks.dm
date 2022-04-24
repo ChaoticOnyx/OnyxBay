@@ -355,7 +355,7 @@
 	desc = "Goes great with Robust Coffee."
 	icon_state = "donut1"
 	nutriment_amt = 3
-	startswith = list(nutriment/sprinkles = 1)
+	startswith = list(/datum/reagent/nutriment/sprinkles = 1)
 	bitesize = 3
 
 /obj/item/reagent_containers/food/snacks/donut/normal/Initialize()
@@ -588,20 +588,6 @@
 	filling_color = "#ffffff"
 	startswith = list(/datum/reagent/nutriment/protein = 3)
 	bitesize = 1
-
-/obj/item/reagent_containers/food/snacks/organ
-	name = "organ"
-	desc = "It's good for you."
-	icon = 'icons/obj/surgery.dmi'
-	icon_state = "appendix"
-	filling_color = "#e00d34"
-	center_of_mass = "x=16;y=16"
-	bitesize = 3
-
-/obj/item/reagent_containers/food/snacks/organ/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/protein, rand(3, 5))
-	reagents.add_reagent(/datum/reagent/toxin, rand(1, 3))
 
 /obj/item/reagent_containers/food/snacks/tofu
 	name = "Tofu"
@@ -2271,7 +2257,7 @@
 	icon_state = "eggbowl"
 	trash = /obj/item/trash/dish/bowl
 	center_of_mass = "x=15;y=15"
-	nutrient_amt = 10
+	nutriment_amt = 10
 	bitesize = 3
 
 /obj/item/reagent_containers/food/snacks/meatbun
@@ -2279,7 +2265,7 @@
 	desc = "Has the potential to not be a dog."
 	icon_state = "meatbun"
 	center_of_mass = "x=15;y=15"
-	nutrient_amt = 6
+	nutriment_amt = 6
 	startswith = list(/datum/reagent/nutriment/protein = 2)
 	bitesize = 4
 
@@ -2289,7 +2275,7 @@
 	icon_state = "eggsbenedict"
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
-	nutrient_amt = 6
+	nutriment_amt = 6
 	startswith = list(/datum/reagent/nutriment/protein = 4)
 	bitesize = 4
 

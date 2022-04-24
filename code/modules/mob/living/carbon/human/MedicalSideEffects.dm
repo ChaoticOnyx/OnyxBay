@@ -83,7 +83,7 @@
 /datum/medical_effect/headache
 	name = "Headache"
 	triggers = list(/datum/reagent/cryoxadone = 10, /datum/reagent/bicaridine = 15, /datum/reagent/tricordrazine = 15)
-	cures = list(/datum/reagent/alkysine, /datum/reagent/painkiller/tramadol, /datum/reagent/paracetamol, /datum/reagent/painkiller/tramadol/oxycodone, /datum/reagent/painkiller, /datum/reagent/painkiller/opium, /datum/reagent/painkiller/opium/tarine)
+	cures = list(/datum/reagent/alkysine, /datum/reagent/painkiller/tramadol, /datum/reagent/painkiller/paracetamol, /datum/reagent/painkiller/tramadol/oxycodone, /datum/reagent/painkiller, /datum/reagent/painkiller/opium, /datum/reagent/painkiller/opium/tarine)
 	cure_message = "Your head stops throbbing..."
 
 /datum/medical_effect/headache/on_life(mob/living/carbon/human/H, strength)
