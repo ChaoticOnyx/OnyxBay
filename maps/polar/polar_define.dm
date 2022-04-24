@@ -1,11 +1,11 @@
 
-/datum/map/exodus/polar
+/datum/map/polar
 	name = "Polar"
 	full_name = "NSS Polar"
 	path = "polar"
 
-	station_levels = list(1, 2)
-	admin_levels = list(3)
+	station_levels = list(1,3,4)
+	admin_levels = list(5)
 	contact_levels = list(1,2,3,4)
 	player_levels = list(1,2,3,4,6,7,8,9,10,11,12)
 	sealed_levels = list(12)
@@ -30,6 +30,6 @@
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
 /datum/map/exodus/polar/perform_map_generation()
-	new /datum/random_map/automata/cave_system(null, 1, 1, 6, 255, 255) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 6, 255, 255)         // Create the mining ore distribution map.
+	new /datum/random_map/automata/cave_system(null, 1, 1, 3, 255, 255) // Create the mining Z-level.
+	new /datum/random_map/noise/ore(null, 1, 1, 3, 255, 255)         // Create the mining ore distribution map.
 	return 1
