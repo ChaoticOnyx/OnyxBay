@@ -152,7 +152,7 @@
 		return FALSE
 
 	if(is_ventcrawling)
-		to_chat(src, SPAN("warning", "You cannot leap into vents."))
+		to_chat(src, SPAN("warning", "You cannot leap from vents."))
 		return FALSE
 
 	if(T == src)
