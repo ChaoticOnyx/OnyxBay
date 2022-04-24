@@ -303,11 +303,14 @@
 					return
 				var/obj/item/storage/bouquet/N = new /obj/item/storage/bouquet(O)
 				to_chat(user, "You make the bouquet.")
-				var/quanity_target = quanity - 3
-				for(var/obj/item/reagent_containers/food/snacks/grown in target.loc)
-					quanity--
-					qdel(grown)
-					if(quanity_target == quanity)
+
+				N.desc += " Smells like [O.name]s."
+				qdel(O)
+				var/quanity_process = 0
+				for(var/obj/item/reagent_containers/food/snacks/grown in N.loc)
+					quanity_process++
+					grown.forceMove(N)
+					if(quanity_process == 2)
 						break
 				N.add_fingerprint(usr)
 			else
