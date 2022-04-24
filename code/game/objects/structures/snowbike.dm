@@ -2,6 +2,7 @@
 	name = "Snowbike"
 	icon = 'icons/obj/vehicles.dmi'
 	icon_state = "snowbike_1"
+	base_icon = "snowbike_1"
 	anchored = 0
 	density = 1
 	foldable = FALSE
