@@ -37,7 +37,7 @@
 		strength_mod = 0
 
 	M.add_chemical_effect(CE_ALCOHOL, 1)
-	var/effective_dose = M.chem_doses[type] * strength_mod * (1 + volume/60) //drinking a LOT will make you go down faster
+	var/effective_dose = M.chem_traces[type] * strength_mod * (1 + volume/60) //drinking a LOT will make you go down faster
 
 	if(effective_dose >= strength) // Early warning
 		M.make_dizzy(6) // It is decreased at the speed of 3 per tick
@@ -1230,13 +1230,13 @@
 
 /datum/reagent/ethanol/pwine/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
-	if(M.chem_doses[type] > 30)
+	if(M.chem_traces[type] > 30)
 		M.adjustToxLoss(2 * removed)
-	if(M.chem_doses[type] > 60 && ishuman(M) && prob(5))
+	if(M.chem_traces[type] > 60 && ishuman(M) && prob(5))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/internal/heart/L = H.internal_organs_by_name[BP_HEART]
-		if (L && istype(L))
-			if(M.chem_doses[type] < 120)
+		if(L && istype(L))
+			if(M.chem_traces[type] < 120)
 				L.take_internal_damage(10 * removed, 0)
 			else
 				L.take_internal_damage(100, 0)

@@ -125,7 +125,7 @@
 		if(H.getBrainLoss() > 15)
 			to_chat(user, SPAN("notice", "There's visible lag between left and right pupils' reactions."))
 
-		var/list/pinpoint = list(/datum/reagent/tramadol/oxycodone = 1, /datum/reagent/tramadol = 5)
+		var/list/pinpoint = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/painkiller/tramadol = 5, /datum/reagent/painkiller = 2, /datum/reagent/painkiller/opium = 3, /datum/reagent/painkiller/opium/tarine = 1)
 		var/list/dilating = list(/datum/reagent/space_drugs = 5, /datum/reagent/mindbreaker = 1, /datum/reagent/adrenaline = 1)
 		var/datum/reagents/ingested = H.get_ingested_reagents()
 		if(H.reagents.has_any_reagent(pinpoint) || ingested.has_any_reagent(pinpoint))

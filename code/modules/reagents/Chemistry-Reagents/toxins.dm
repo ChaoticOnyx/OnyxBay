@@ -153,8 +153,12 @@
 	strength = 10
 	overdose = 20
 
-/datum/reagent/toxin/potassium_chlorophoride/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/toxin/potassium_chlorophoride/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()
+	if(affecting_dose < 1)
+		if(M.chem_doses[type] == metabolism)
+			to_chat(M, SPAN("danger", "You can feel your heart going numb!"))
+		return
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.stat != 1)
@@ -218,6 +222,7 @@
 /datum/reagent/toxin/fertilizer/compost
 	name = "compost"
 	taste_description = "literal shit"
+	taste_mult = 1.0
 	color = "#7f4323"
 
 /datum/reagent/toxin/plantbgone
@@ -332,7 +337,7 @@
 /datum/reagent/metroidjelly
 	name = "Metroid Jelly"
 	description = "A gooey semi-liquid produced from one of the deadliest lifeforms in existence. SO REAL."
-	taste_description = "metroid"
+	taste_description = "slime"
 	taste_mult = 1.3
 	reagent_state = LIQUID
 	color = "#801e28"
@@ -354,21 +359,22 @@
 	color = "#009ca8"
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE
+	absorbability = 0.75
 
-/datum/reagent/soporific/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/soporific/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
 
-	var/threshold = 1
+	var/threshold = metabolism / removed
 	if(alien == IS_SKRELL)
-		threshold = 1.2
+		threshold *= 1.2
 
-	if(M.chem_doses[type] < 1 * threshold)
-		if(M.chem_doses[type] == metabolism * 2 || prob(5))
+	if(affecting_dose < threshold)
+		if(affecting_dose == metabolism * 2 || prob(5))
 			M.emote("yawn")
-	else if(M.chem_doses[type] < 1.5 * threshold)
+	else if(affecting_dose < threshold * 1.5)
 		M.eye_blurry = max(M.eye_blurry, 10)
-	else if(M.chem_doses[type] < 5 * threshold)
+	else if(affecting_dose < threshold * 5)
 		if(prob(50))
 			M.Weaken(2)
 		M.drowsyness = max(M.drowsyness, 20)
@@ -385,25 +391,26 @@
 	color = "#000067"
 	metabolism = REM * 0.5
 	overdose = REAGENTS_OVERDOSE * 0.5
+	absorbability = 0.75
 
-/datum/reagent/chloralhydrate/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/chloralhydrate/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
 
-	var/threshold = 1
+	var/threshold = metabolism / removed
 	if(alien == IS_SKRELL)
-		threshold = 1.2
+		threshold *= 1.2
 
-	if(M.chem_doses[type] < metabolism * threshold)
+	if(affecting_dose < threshold * 0.5)
 		M.confused += 2
 		M.drowsyness += 2
-	else if(M.chem_doses[type] < 2 * threshold)
+	else if(affecting_dose < threshold * 2)
 		M.Weaken(30)
 		M.eye_blurry = max(M.eye_blurry, 10)
 	else
 		M.sleeping = max(M.sleeping, 30)
 
-	if(M.chem_doses[type] > 1 * threshold)
+	if(affecting_dose > threshold)
 		M.adjustToxLoss(removed)
 
 /datum/reagent/chloralhydrate/beer2 //disguised as normal beer for use by emagged brobots
@@ -412,6 +419,7 @@
 	taste_description = "shitty piss water"
 	reagent_state = LIQUID
 	color = "#ffd300"
+	absorbability = 1.0 // SpEcIaL ingestible chloralhydrate
 
 	glass_name = "beer"
 	glass_desc = "A freezing pint of beer"
@@ -431,11 +439,11 @@
 	if(alien == IS_DIONA)
 		return
 
-	var/drug_strength = 15
+	var/effect_mult = removed / metabolism
 	if(alien == IS_SKRELL)
-		drug_strength = drug_strength * 0.8
+		effect_mult *= 0.8
 
-	M.druggy = max(M.druggy, drug_strength)
+	M.druggy = max(M.druggy, 15 * effect_mult)
 	if(prob(10))
 		M.SelfMove(pick(GLOB.cardinal))
 	if(prob(7))
@@ -470,11 +478,11 @@
 /datum/reagent/cryptobiolin/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
-	var/drug_strength = 4
+	var/effect_mult = removed / metabolism
 	if(alien == IS_SKRELL)
-		drug_strength = drug_strength * 0.8
-	M.make_dizzy(drug_strength)
-	M.confused = max(M.confused, drug_strength * 5)
+		effect_mult *= 0.8
+	M.make_dizzy(4 * effect_mult)
+	M.confused = max(M.confused, 5 * effect_mult)
 
 /datum/reagent/impedrezene
 	name = "Impedrezene"
@@ -487,7 +495,8 @@
 /datum/reagent/impedrezene/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
-	M.jitteriness = max(M.jitteriness - 5, 0)
+	var/effect_mult = removed / metabolism
+	M.jitteriness = max(M.jitteriness - (5 * effect_mult), 0)
 	if(prob(80))
 		M.adjustBrainLoss(0.1 * removed)
 	if(prob(50))
@@ -508,10 +517,11 @@
 	if(alien == IS_DIONA)
 		return
 	M.add_chemical_effect(CE_MIND, -2)
+	var/effect_mult = removed / metabolism
 	if(alien == IS_SKRELL)
-		M.hallucination(25, 30)
+		M.hallucination(25 * effect_mult, 30 * effect_mult)
 	else
-		M.hallucination(50, 50)
+		M.hallucination(25 * effect_mult, 25 * effect_mult)
 
 /datum/reagent/psilocybin
 	name = "Psilocybin"
@@ -520,8 +530,9 @@
 	color = "#e700e7"
 	overdose = REAGENTS_OVERDOSE
 	metabolism = REM * 0.5
+	absorbability = 0.75
 
-/datum/reagent/psilocybin/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/psilocybin/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_DIONA)
 		return
 
@@ -529,26 +540,26 @@
 	if(alien == IS_SKRELL)
 		threshold = 1.2
 
-	M.druggy = max(M.druggy, 30)
-
-	if(M.chem_doses[type] < 1 * threshold)
+	var/effect_mult = removed / metabolism
+	if(affecting_dose < 1 * threshold)
 		M.apply_effect(3, STUTTER)
-		M.make_dizzy(5)
+		M.make_dizzy(5 * effect_mult)
+		M.druggy = max(M.druggy, 30 * effect_mult)
 		if(prob(5))
 			M.emote(pick("twitch", "giggle"))
-	else if(M.chem_doses[type] < 2 * threshold)
+	else if(affecting_dose < 2 * threshold)
 		M.apply_effect(3, STUTTER)
-		M.make_jittery(5)
-		M.make_dizzy(5)
-		M.druggy = max(M.druggy, 35)
+		M.make_jittery(5 * effect_mult)
+		M.make_dizzy(5 * effect_mult)
+		M.druggy = max(M.druggy, 35 * effect_mult)
 		if(prob(10))
 			M.emote(pick("twitch", "giggle"))
 	else
 		M.add_chemical_effect(CE_MIND, -1)
 		M.apply_effect(3, STUTTER)
-		M.make_jittery(10)
-		M.make_dizzy(10)
-		M.druggy = max(M.druggy, 40)
+		M.make_jittery(10 * effect_mult)
+		M.make_dizzy(10 * effect_mult)
+		M.druggy = max(M.druggy, 40 * effect_mult)
 		if(prob(15))
 			M.emote(pick("twitch", "giggle"))
 
@@ -701,7 +712,7 @@
 	..()
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/true_dose = H.chem_doses[type] + volume
+		var/true_dose = H.chem_traces[type] + volume
 		if ((true_dose >= amount_to_zombify) || (true_dose > 1 && prob(20)))
 			H.zombify()
 		else if (prob(10))

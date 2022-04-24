@@ -700,7 +700,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	/// Amount to inject per second
 	var/inject_am = 0.5
 
-	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/tramadol)
+	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/painkiller/tramadol)
 
 /obj/machinery/optable/abductor/take_victim(mob/living/carbon/C, mob/living/carbon/user)
 	if (C == user)

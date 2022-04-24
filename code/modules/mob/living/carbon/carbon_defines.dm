@@ -13,7 +13,8 @@
 	//Active emote/pose
 	var/pose = null
 	var/list/chem_effects = list()
-	var/list/chem_doses = list()
+	var/list/chem_traces = list() // Long-lasting "inactive" metabolism products, mostly for analyzing and simulating chemical tolerance
+	var/list/chem_doses = list() // "Active" metabolized reagents, cleared as soon as the corresponding reagent leaves the mob's system
 	var/datum/reagents/metabolism/bloodstr = null
 	var/datum/reagents/metabolism/touching = null
 	var/losebreath = 0 //if we failed to breathe last tick

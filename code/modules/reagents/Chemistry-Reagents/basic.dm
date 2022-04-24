@@ -1,3 +1,86 @@
+#define WATER_LATENT_HEAT 19000 // How much heat is removed when applied to a hot turf, in J/unit (19000 makes 120 u of water roughly equivalent to 4L)
+/datum/reagent/water
+	name = "Water"
+	description = "A ubiquitous chemical substance that is composed of hydrogen and oxygen."
+	reagent_state = LIQUID
+	color = "#0064c877"
+	metabolism = REM * 10
+	taste_description = "water"
+	glass_name = "water"
+	glass_desc = "The father of all refreshments."
+	var/slippery = 1
+
+/datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
+		return
+	M.adjustToxLoss(2 * removed)
+
+/datum/reagent/water/affect_ingest(mob/living/carbon/M, alien, removed)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
+		return
+	M.adjustToxLoss(2 * removed)
+
+/datum/reagent/water/touch_turf(turf/simulated/T)
+	if(!istype(T))
+		return
+
+	var/datum/gas_mixture/environment = T.return_air()
+	var/min_temperature = T0C + 100 // 100C, the boiling point of water
+
+	var/hotspot = (locate(/obj/fire) in T)
+	if(hotspot && !istype(T, /turf/space))
+		var/datum/gas_mixture/lowertemp = T.remove_air(T:air:total_moles)
+		lowertemp.temperature = max(min(lowertemp.temperature-2000, lowertemp.temperature / 2), 0)
+		lowertemp.react()
+		T.assume_air(lowertemp)
+		qdel(hotspot)
+
+	var/flamer = (locate(/obj/flamer_fire) in T)
+	if(flamer && !istype(T, /turf/space))
+		qdel(flamer)
+
+	if(environment && environment.temperature > min_temperature) // Abstracted as steam or something
+		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
+		environment.add_thermal_energy(-removed_heat)
+		if(prob(5))
+			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
+
+	else if(volume >= 10 && slippery)
+		var/turf/simulated/S = T
+		S.wet_floor(1, TRUE)
+
+
+/datum/reagent/water/touch_obj(obj/O)
+	if(istype(O, /obj/item/reagent_containers/food/snacks/monkeycube))
+		var/obj/item/reagent_containers/food/snacks/monkeycube/cube = O
+		if(!cube.wrapped)
+			cube.Expand()
+
+/datum/reagent/water/touch_mob(mob/living/L, amount)
+	if(istype(L))
+		var/needed = L.fire_stacks * 10
+		if(amount > needed)
+			L.fire_stacks = 0
+			L.ExtinguishMob()
+			remove_self(needed)
+		else
+			L.adjust_fire_stacks(-(amount / 10))
+			remove_self(amount)
+
+/datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
+		return
+	M.adjustToxLoss(10 * removed)	// Babies have 150 health, adults have 200; So, 15 units and 20
+	var/mob/living/carbon/metroid/S = M
+	if(!S.client && istype(S))
+		if(S.Target) // Like cats
+			S.Target = null
+		if(S.Victim)
+			S.Feedstop()
+	if(M.chem_doses[type] == removed)
+		M.visible_message("<span class='warning'>[S]'s flesh sizzles where the water touches it!</span>", "<span class='danger'>Your flesh burns in the water!</span>")
+		M.confused = max(M.confused, 2)
+
 /datum/reagent/acetone
 	name = "Acetone"
 	description = "A colorless liquid solvent used in chemical synthesis."
@@ -6,11 +89,12 @@
 	color = "#808080"
 	metabolism = REM * 0.2
 
-/datum/reagent/acetone/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/acetone/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	if(alien == IS_NABBER)
 		return
-
 	M.adjustToxLoss(removed * 3)
+	if(affecting_dose > 5.0)
+		M.adjustBrainLoss(removed * 12.5) // Acetone causes nerve tissue damage, don't chug on it
 
 /datum/reagent/acetone/touch_obj(obj/O)	//I copied this wholesale from ethanol and could likely be converted into a shared proc. ~Techhead
 	if(istype(O, /obj/item/paper))
@@ -36,6 +120,12 @@
 	description = "A silvery white and ductile member of the boron group of chemical elements."
 	reagent_state = SOLID
 	color = "#a8a8a8"
+	metabolism = REM * 0.1
+
+/datum/reagent/aluminum/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien == IS_DIONA)
+		return
+	M.adjustToxLoss(removed)
 
 /datum/reagent/ammonia
 	name = "Ammonia"
@@ -65,7 +155,7 @@
 	if(alien == IS_DIONA)
 		return
 	var/datum/reagents/ingested = M.get_ingested_reagents()
-	if(ingested && ingested.reagent_list.len > 1) // Need to have at least 2 reagents - cabon and something to remove
+	if(ingested?.reagent_list.len > 1) // Need to have at least 2 reagents - cabon and something to remove
 		var/effect = 1 / (ingested.reagent_list.len - 1)
 		for(var/datum/reagent/R in ingested.reagent_list)
 			if(R == src)
@@ -114,10 +204,13 @@
 	taste_description = "metal"
 	reagent_state = SOLID
 	color = "#353535"
+	metabolism = REM * 0.3
+	absorbability = 0.75
+	overdose = REAGENTS_OVERDOSE
 
-/datum/reagent/iron/affect_ingest(mob/living/carbon/M, alien, removed)
+/datum/reagent/iron/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.add_chemical_effect(CE_BLOODRESTORE, 8 * removed)
+		M.add_chemical_effect(CE_BLOODRESTORE, 12 * removed)
 
 /datum/reagent/lithium
 	name = "Lithium"
@@ -138,6 +231,7 @@
 	description = "A chemical element."
 	taste_mult = 0 //mercury apparently is tasteless. IDK
 	reagent_state = LIQUID
+	metabolism = REM * 0.2
 	color = "#484848"
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/M, alien, removed)
@@ -155,12 +249,20 @@
 	reagent_state = SOLID
 	color = "#832828"
 
+/datum/reagent/phosphorus/affect_blood(mob/living/carbon/M, alien, removed)
+	M.adjustToxLoss(3 * removed)
+
 /datum/reagent/potassium
 	name = "Potassium"
 	description = "A soft, low-melting solid that can easily be cut with a knife. Reacts violently with water."
 	taste_description = "sweetness" //potassium is bitter in higher doses but sweet in lower ones.
 	reagent_state = SOLID
+	metabolism = REM * 0.5
+	overdose = REAGENTS_OVERDOSE
 	color = "#a0a0a0"
+
+/datum/reagent/potassium/affect_blood(mob/living/carbon/M, alien, removed)
+	M.adjustBrainLoss(-0.5 * removed)
 
 /datum/reagent/radium
 	name = "Radium"
@@ -294,6 +396,8 @@
 	name = "Silicon"
 	description = "A tetravalent metalloid, silicon is less reactive than its chemical analog carbon."
 	reagent_state = SOLID
+	metabolism = REM * 0.1 // Totally inert
+	excretion = 20.0
 	color = "#a8a8a8"
 
 /datum/reagent/sodium
@@ -344,4 +448,5 @@
 	description = "A chemical element, and a strong oxidising agent."
 	taste_mult = 0 //no taste
 	reagent_state = SOLID
+	metabolism = REM * 0.2
 	color = "#dcdcdc"

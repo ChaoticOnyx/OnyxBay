@@ -45,7 +45,7 @@
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
-	
+
 	AddElement(/datum/element/last_words)
 
 /mob/living/carbon/human/Life()
@@ -551,14 +551,19 @@
 		if(ingested && handle_ingested)
 			metabolize_ingested_reagents()
 
-	// Trace chemicals
 	for(var/T in chem_doses)
 		if(bloodstr.has_reagent(T) || ingested.has_reagent(T) || touching.has_reagent(T))
 			continue
+		chem_doses -= T
+
+	// Trace chemicals
+	for(var/T in chem_traces)
+		if(bloodstr.has_reagent(T) || ingested.has_reagent(T) || touching.has_reagent(T))
+			continue
 		var/datum/reagent/R = T
-		chem_doses[T] -= initial(R.metabolism)*2
-		if(chem_doses[T] <= 0)
-			chem_doses -= T
+		chem_traces[T] -= initial(R.metabolism) * initial(R.excretion)
+		if(chem_traces[T] <= 0)
+			chem_traces -= T
 
 	updatehealth()
 

@@ -387,3 +387,36 @@
 
 /datum/reagent/luminol/touch_mob(mob/living/L)
 	L.reveal_blood()
+
+/datum/reagent/fuel
+	name = "Welding fuel"
+	description = "Required for welders. Flamable."
+	taste_description = "gross metal"
+	reagent_state = LIQUID
+	color = "#660000"
+	touch_met = 5
+	absorbability = 1.0
+
+	glass_name = "welder fuel"
+	glass_desc = "Unless you are an industrial tool, this is probably not safe for consumption."
+
+/datum/reagent/fuel/touch_turf(turf/T)
+	new /obj/effect/decal/cleanable/liquid_fuel(T, volume)
+	remove_self(volume)
+	return
+
+/datum/reagent/fuel/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien == IS_DIONA)
+		M.adjust_fire_stacks(removed)
+	M.adjustToxLoss(3 * removed)
+
+/datum/reagent/fuel/touch_mob(mob/living/L, amount)
+	if(istype(L))
+		L.adjust_fire_stacks(amount / 10) // Splashing people with welding fuel to make them easy to ignite!
+
+/datum/reagent/water/firefoam
+	name = "Firefighting foam"
+	description = "A substance used for fire suppression. Its role is to cool the fire and to coat the fuel, preventing its contact with oxygen, resulting in suppression of the combustion."
+	taste_description = "foamy dryness"
+	color = "#e2e2e2"
+	slippery = 0

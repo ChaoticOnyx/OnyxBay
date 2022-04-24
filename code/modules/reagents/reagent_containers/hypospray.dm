@@ -159,13 +159,13 @@
 	icon_state = "purple1"
 	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
 	base_state = "purple"
-	starts_with = list(/datum/reagent/tramadol = 10)
+	starts_with = list(/datum/reagent/painkiller/tramadol = 10)
 
 /obj/item/reagent_containers/hypospray/autoinjector/combatpain
 	icon_state = "black1"
-	content_desc = "Oxycodone 5u"
+	content_desc = "Metazine 5u"
 	base_state = "black"
-	starts_with = list(/datum/reagent/tramadol/oxycodone = 5)
+	starts_with = list(/datum/reagent/painkiller = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5
 

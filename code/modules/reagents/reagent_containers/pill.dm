@@ -140,7 +140,7 @@
 	icon_state = "pill3"
 /obj/item/reagent_containers/pill/tramadol/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/tramadol, 15)
+	reagents.add_reagent(/datum/reagent/painkiller/tramadol, 15)
 	color = reagents.get_color()
 
 

@@ -103,29 +103,36 @@
 	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/potassium = 1, /datum/reagent/ammonia = 1)
 	result_amount = 3
 
+/datum/chemical_reaction/painkiller
+	name = "Metazine"
+	result = /datum/reagent/painkiller
+	required_reagents = list(/datum/reagent/painkiller/tramadol = 1, /datum/reagent/ammonia = 1, /datum/reagent/phosphorus = 1)
+	catalysts = list(/datum/reagent/toxin/plasma = 5)
+	result_amount = 1
+
 /datum/chemical_reaction/tramadol
 	name = "Tramadol"
-	result = /datum/reagent/tramadol
+	result = /datum/reagent/painkiller/tramadol
 	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/ethanol = 1, /datum/reagent/acetone = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/paracetamol
 	name = "Paracetamol"
-	result = /datum/reagent/paracetamol
-	required_reagents = list(/datum/reagent/tramadol = 1, /datum/reagent/sugar = 1, /datum/reagent/water = 1)
+	result = /datum/reagent/painkiller/paracetamol
+	required_reagents = list(/datum/reagent/painkiller/tramadol = 1, /datum/reagent/sugar = 1, /datum/reagent/water = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/oxycodone
 	name = "Oxycodone"
-	result = /datum/reagent/tramadol/oxycodone
-	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/tramadol = 1)
+	result = /datum/reagent/painkiller/tramadol/oxycodone
+	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/painkiller/tramadol = 1)
 	catalysts = list(/datum/reagent/toxin/plasma = 5)
 	result_amount = 1
 
 /datum/chemical_reaction/tarine
 	name = "Tarine"
-	result = /datum/reagent/tramadol/opium/tarine
-	required_reagents = list(/datum/reagent/tramadol/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
+	result = /datum/reagent/painkiller/opium/tarine
+	required_reagents = list(/datum/reagent/painkiller/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/sterilizine
@@ -450,7 +457,7 @@
 /datum/chemical_reaction/noexcutite
 	name = "Noexcutite"
 	result = /datum/reagent/noexcutite
-	required_reagents = list(/datum/reagent/tramadol/oxycodone = 1, /datum/reagent/dylovene = 1)
+	required_reagents = list(/datum/reagent/painkiller/tramadol/oxycodone = 1, /datum/reagent/dylovene = 1)
 	result_amount = 2
 
 /* Solidification */

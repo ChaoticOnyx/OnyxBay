@@ -402,10 +402,13 @@
 /datum/reagent/paracetamol
 	value = 3.3
 
-/datum/reagent/tramadol
+/datum/reagent/painkiller
+	value = 5.5
+
+/datum/reagent/painkiller/tramadol
 	value = 3.1
 
-/datum/reagent/tramadol/oxycodone
+/datum/reagent/painkiller/tramadol/oxycodone
 	value = 3.3
 
 /datum/reagent/synaptizine
