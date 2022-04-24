@@ -98,11 +98,6 @@
 		throw EXCEPTION("Trying to get [ckey]'s preferences before the subsystem's initialization.")
 
 	if(!prefs)
-		log_error("[ckey]'s preferences are broken. Creating new one.")
-		prefs = new /datum/preferences(src)
-		setup_preferences()
-
-	if(!prefs)
 		CRASH("Can't create preferences for [ckey].")
 
 	var/datum/client_preference/cp = get_client_preference(preference)
