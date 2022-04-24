@@ -162,9 +162,6 @@
 	set desc = "Spit of your choice to be launched at someone."
 	set category = "Abilities"
 
-	if(!check_spit())
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/L in oview(7, src))
@@ -177,7 +174,20 @@
 	if(!T || !src || src.stat)
 		return
 
-	if(!check_spit())
+	if(incapacitated(INCAPACITATION_DISABLED))
+		to_chat(src, SPAN("warning", "I cannot spit in my current state."))
+		return
+
+	if(!spitting)
+		to_chat(src, "I must choose spit type firstly.")
+		return
+
+	if(is_ventcrawling)
+		to_chat(src, SPAN("warning", "I can't spit into vents."))
+		return
+
+	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
+		to_chat(src, SPAN("warning", "I have not yet prepared my chemical glands. I must wait before spitting again."))
 		return
 
 	if(!check_alien_ability(25, BP_ACID, FALSE, TRUE))
@@ -187,25 +197,6 @@
 	var/obj/item/projectile/P = new spit_projectile(get_turf(src))
 	P.launch(T, get_organ_target())
 	playsound(loc, 'sound/weapons/pierce.ogg', 25, 0)
-
-/mob/living/carbon/human/proc/check_spit()
-	if(incapacitated(INCAPACITATION_DISABLED))
-		to_chat(src, SPAN("warning", "I cannot spit in my current state."))
-		return FALSE
-
-	if(!spitting)
-		to_chat(src, "I must choose spit type firstly.")
-		return FALSE
-
-	if(is_ventcrawling)
-		to_chat(src, SPAN("warning", "I can't spit into vents."))
-		return FALSE
-
-	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
-		to_chat(src, SPAN("warning", "I have not yet prepared my chemical glands. I must wait before spitting again."))
-		return FALSE
-
-	return TRUE
 
 /mob/living/carbon/human/proc/corrosive_acid(O as obj|turf in oview(1)) //If they right click to corrode, an error will flash if its an invalid target./N
 	set name = "Corrosive Acid (200)"
