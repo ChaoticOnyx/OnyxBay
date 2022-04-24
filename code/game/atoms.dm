@@ -99,7 +99,8 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-	. = ..()
+
+	return ..()
 
 /atom/proc/reveal_blood()
 	return

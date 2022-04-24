@@ -3,7 +3,7 @@
 
 /datum/Destroy()
 	weakref = null // Clear this reference to ensure it's kept for as brief duration as possible.
-	. = ..()
+	return ..()
 
 //obtain a weak reference to a datum
 /proc/weakref(datum/D)
