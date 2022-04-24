@@ -34,12 +34,8 @@
 	filling_color = "#7d5f46"
 	nutriment_desc = list("nougat-n-nuts" = 6)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/tweakers/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
+	startswith = list(/datum/reagent/sugar = 3)
 	bitesize = 3
-
 
 /obj/item/reagent_containers/food/snacks/packaged/sweetroid
 	name = "Sweetroid bar"
@@ -49,12 +45,8 @@
 	filling_color = "#5ba652"
 	nutriment_desc = list("chewy sourness" = 6)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/sweetroid/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
+	startswith = list(/datum/reagent/sugar = 3)
 	bitesize = 3
-
 
 /obj/item/reagent_containers/food/snacks/packaged/sugarmatter
 	name = "SugarMatter bar"
@@ -64,12 +56,8 @@
 	filling_color = "#5ba652"
 	nutriment_desc = list("extreme sweetness" = 6)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/sugarmatter/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 6)
+	startswith = list(/datum/reagent/sugar = 6)
 	bitesize = 4
-
 
 /obj/item/reagent_containers/food/snacks/packaged/jellaws
 	name = "Jellaw's Jellybaton"
@@ -79,14 +67,11 @@
 	filling_color = "#5ba652"
 	nutriment_desc = list("spicy cherry" = 3)
 	nutriment_amt = 3
-
-/obj/item/reagent_containers/food/snacks/packaged/jellaws/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
-	reagents.add_reagent(/datum/reagent/capsaicin, 1)
-	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 2)
+	startswith = list(
+		/datum/reagent/sugar = 3,
+		/datum/reagent/capsaicin = 1,
+		/datum/reagent/nutriment/cherryjelly = 2)
 	bitesize = 3
-
 
 /obj/item/reagent_containers/food/snacks/packaged/nutribar
 	name = "protein nutrition bar"
@@ -96,13 +81,10 @@
 	nutriment_amt = 7
 	filling_color = "#e5bf00"
 	nutriment_desc = list("packaging foam" = 1)
-
-/obj/item/reagent_containers/food/snacks/packaged/nutribar/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
-	reagents.add_reagent(/datum/reagent/sugar, 2)
+	startswith = list(
+		/datum/reagent/nutriment/protein = 7,
+		/datum/reagent/sugar = 2)
 	bitesize = 4
-
 
 /obj/item/reagent_containers/food/snacks/packaged/chips
 	name = "chips"
@@ -112,12 +94,8 @@
 	filling_color = "#e8c31e"
 	nutriment_amt = 6
 	nutriment_desc = list("salt" = 1, "chips" = 2)
-
-/obj/item/reagent_containers/food/snacks/packaged/chips/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sodiumchloride, 2)
+	startswith = list(/datum/reagent/sodiumchloride = 2)
 	bitesize = 1
-
 
 /obj/item/reagent_containers/food/snacks/packaged/sosjerky
 	name = "Scaredy's Private Reserve Beef Jerky"
@@ -127,13 +105,10 @@
 	filling_color = "#631212"
 	nutriment_desc = list("cured meat" = 5, "salt" = 2)
 	nutriment_amt = 2
-
-/obj/item/reagent_containers/food/snacks/packaged/sosjerky/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
-	reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+	startswith = list(
+		/datum/reagent/nutriment/protein = 7,
+		/datum/reagent/sodiumchloride = 1)
 	bitesize = 2
-
 
 /obj/item/reagent_containers/food/snacks/packaged/no_raisin
 	name = "4no Raisins"
@@ -143,12 +118,8 @@
 	filling_color = "#542342"
 	nutriment_desc = list("raisins" = 6)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/no_raisin/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/juice/grape, 4)
+	startswith = list(/datum/reagent/drink/juice/grape = 4)
 	bitesize = 1
-
 
 /obj/item/reagent_containers/food/snacks/packaged/cheesiehonkers
 	name = "Cheesie Honkers"
@@ -158,12 +129,8 @@
 	filling_color = "#ffa305"
 	nutriment_desc = list("cheese" = 5, "chips" = 2)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/cheesiehonkers/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sodiumchloride, 2)
+	startswith = list(/datum/reagent/sodiumchloride = 2)
 	bitesize = 1
-
 
 /obj/item/reagent_containers/food/snacks/packaged/hematogen
 	name = "Hema-2-Gen"
@@ -173,14 +140,11 @@
 	filling_color = "#7d5f46"
 	nutriment_amt = 2
 	nutriment_desc = list("candy" = 1)
-
-/obj/item/reagent_containers/food/snacks/packaged/hematogen/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/protein, 1)
-	reagents.add_reagent(/datum/reagent/sugar, 2)
-	reagents.add_reagent(/datum/reagent/albumin, 10)
+	startswith = list(
+		/datum/reagent/nutriment/protein = 1,
+		/datum/reagent/sugar = 2,
+		/datum/reagent/albumin = 10)
 	bitesize = 5
-
 
 /obj/item/reagent_containers/food/snacks/packaged/hemptogen
 	name = "Hemp-2-Gen"
@@ -190,13 +154,10 @@
 	filling_color = "#7d5f46"
 	nutriment_amt = 2
 	nutriment_desc = list("candy" = 1, "hemp" = 1)
-
-/obj/item/reagent_containers/food/snacks/packaged/hemptogen/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
-	reagents.add_reagent(/datum/reagent/thc, 10)
+	startswith = list(
+		/datum/reagent/sugar = 3,
+		/datum/reagent/thc = 10)
 	bitesize = 5
-
 
 /obj/item/reagent_containers/food/snacks/packaged/tastybread
 	name = "bread tube"
@@ -206,11 +167,7 @@
 	filling_color = "#a66829"
 	nutriment_desc = list("bread" = 2, "sweetness" = 3)
 	nutriment_amt = 6
-
-/obj/item/reagent_containers/food/snacks/packaged/tastybread/Initialize()
-	. = ..()
 	bitesize = 2
-
 
 /obj/item/reagent_containers/food/snacks/packaged/skrellsnacks
 	name = "\improper SkrellSnax"
@@ -220,12 +177,8 @@
 	trash = /obj/item/trash/skrellsnacks
 	nutriment_desc = list("mushroom" = 5, "salt" = 2)
 	nutriment_amt = 9
-
-/obj/item/reagent_containers/food/snacks/packaged/skrellsnacks/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+	startswith = list(/datum/reagent/sodiumchloride = 1)
 	bitesize = 2
-
 
 /obj/item/reagent_containers/food/snacks/packaged/syndicake
 	name = "Syndi-Cakes"
@@ -235,8 +188,5 @@
 	trash = /obj/item/trash/syndi_cakes
 	nutriment_desc = list("sweetness" = 3, "cake" = 1)
 	nutriment_amt = 4
-
-/obj/item/reagent_containers/food/snacks/packaged/syndicake/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/doctor_delight, 5)
+	startswith = list(/datum/reagent/drink/doctor_delight = 5)
 	bitesize = 3
