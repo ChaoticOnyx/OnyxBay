@@ -5,7 +5,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	role_text = "Raider"
 	role_text_plural = "Raiders"
 	antag_indicator = "hudmutineer"
-	landmark_id = "voxstart"
+	landmark_id = "Vox"
 	welcome_text = "Use :H to talk on your encrypted channel."
 	mob_path = /mob/living/carbon/human/vox
 	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_VOTABLE | ANTAG_HAS_LEADER
@@ -17,7 +17,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	initial_spawn_req = 3
 	initial_spawn_target = 4
 
-	id_type = /obj/item/weapon/card/id/syndicate
+	id_type = /obj/item/card/id/syndicate
 
 	faction = "pirate"
 
@@ -69,34 +69,34 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		)
 
 	var/list/raider_guns = list(
-		/obj/item/weapon/gun/energy/laser,
-		/obj/item/weapon/gun/energy/retro,
-		/obj/item/weapon/gun/energy/xray,
-		/obj/item/weapon/gun/energy/xray/pistol,
-		/obj/item/weapon/gun/energy/mindflayer,
-		/obj/item/weapon/gun/energy/toxgun,
-		/obj/item/weapon/gun/energy/stunrevolver,
-		/obj/item/weapon/gun/energy/ionrifle,
-		/obj/item/weapon/gun/energy/taser,
-		/obj/item/weapon/gun/energy/crossbow/largecrossbow,
-		/obj/item/weapon/gun/launcher/crossbow,
-		/obj/item/weapon/gun/launcher/grenade/loaded,
-		/obj/item/weapon/gun/launcher/pneumatic,
-		/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi,
-		/obj/item/weapon/gun/projectile/automatic/c20r,
-		/obj/item/weapon/gun/projectile/automatic/wt550,
-		/obj/item/weapon/gun/projectile/automatic/as75,
-		/obj/item/weapon/gun/projectile/pistol/silenced,
-		/obj/item/weapon/gun/projectile/shotgun/pump,
-		/obj/item/weapon/gun/projectile/shotgun/pump/combat,
-		/obj/item/weapon/gun/projectile/shotgun/doublebarrel,
-		/obj/item/weapon/gun/projectile/shotgun/doublebarrel/pellet,
-		/obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn,
-		/obj/item/weapon/gun/projectile/pistol/colt,
-		/obj/item/weapon/gun/projectile/pistol/vp78,
-		/obj/item/weapon/gun/projectile/pistol/holdout,
-		/obj/item/weapon/gun/projectile/revolver,
-		/obj/item/weapon/gun/projectile/pirate
+		/obj/item/gun/energy/laser,
+		/obj/item/gun/energy/retro,
+		/obj/item/gun/energy/xray,
+		/obj/item/gun/energy/xray/pistol,
+		/obj/item/gun/energy/mindflayer,
+		/obj/item/gun/energy/toxgun,
+		/obj/item/gun/energy/stunrevolver,
+		/obj/item/gun/energy/ionrifle,
+		/obj/item/gun/energy/taser,
+		/obj/item/gun/energy/crossbow/largecrossbow,
+		/obj/item/gun/launcher/crossbow,
+		/obj/item/gun/launcher/grenade/loaded,
+		/obj/item/gun/launcher/pneumatic,
+		/obj/item/gun/projectile/automatic/machine_pistol/mini_uzi,
+		/obj/item/gun/projectile/automatic/c20r,
+		/obj/item/gun/projectile/automatic/wt550,
+		/obj/item/gun/projectile/automatic/as75,
+		/obj/item/gun/projectile/pistol/silenced,
+		/obj/item/gun/projectile/shotgun/pump,
+		/obj/item/gun/projectile/shotgun/pump/combat,
+		/obj/item/gun/projectile/shotgun/doublebarrel,
+		/obj/item/gun/projectile/shotgun/doublebarrel/pellet,
+		/obj/item/gun/projectile/shotgun/doublebarrel/sawn,
+		/obj/item/gun/projectile/pistol/colt,
+		/obj/item/gun/projectile/pistol/vp78,
+		/obj/item/gun/projectile/pistol/holdout,
+		/obj/item/gun/projectile/revolver,
+		/obj/item/gun/projectile/pirate
 		)
 
 	var/list/raider_holster = list(
@@ -111,7 +111,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		min_player_age = config.raider_min_age
 
 /datum/antagonist/raider/update_access(mob/living/player)
-	for(var/obj/item/weapon/card/id/id in player.contents)
+	for(var/obj/item/card/id/id in player.contents)
 		id.SetName("[player.real_name]'s Passport")
 		id.registered_name = player.real_name
 
@@ -226,11 +226,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		player.equip_to_slot_or_del(new new_suit(player),slot_wear_suit)
 		equip_weapons(player)
 
-	var/obj/item/weapon/card/id/id = create_id("Visitor", player)
+	var/obj/item/card/id/id = create_id("Visitor", player)
 	id.SetName("[player.real_name]'s Passport")
 	id.icon_state = "bum"
 
-	var/obj/item/weapon/storage/wallet/W = new(player)
+	var/obj/item/storage/wallet/W = new(player)
 	player.equip_to_slot_or_del(W, slot_l_store)
 	spawn_money(rand(50,150)*10,W)
 	create_radio(RAID_FREQ, player)
@@ -247,7 +247,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 	//Give some of the raiders a pirate gun as a secondary
 	if(prob(60))
-		var/obj/item/secondary = new /obj/item/weapon/gun/projectile/pirate(T)
+		var/obj/item/secondary = new /obj/item/gun/projectile/pirate(T)
 		if(!(primary.slot_flags & SLOT_HOLSTER))
 			holster = new new_holster(T)
 			holster.holstered = secondary
@@ -276,15 +276,15 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		else
 			player.put_in_any_hand_if_possible(holster)
 
-/datum/antagonist/raider/proc/equip_ammo(mob/living/carbon/human/player, obj/item/weapon/gun/gun)
-	if(istype(gun, /obj/item/weapon/gun/projectile))
-		var/obj/item/weapon/gun/projectile/bullet_thrower = gun
+/datum/antagonist/raider/proc/equip_ammo(mob/living/carbon/human/player, obj/item/gun/gun)
+	if(istype(gun, /obj/item/gun/projectile))
+		var/obj/item/gun/projectile/bullet_thrower = gun
 		if(bullet_thrower.magazine_type)
 			player.equip_to_slot_or_del(new bullet_thrower.magazine_type(player), slot_l_store)
 			if(prob(20)) //don't want to give them too much
 				player.equip_to_slot_or_del(new bullet_thrower.magazine_type(player), slot_r_store)
 		else if(bullet_thrower.ammo_type)
-			var/obj/item/weapon/storage/box/ammobox = new(get_turf(player.loc))
+			var/obj/item/storage/box/ammobox = new(get_turf(player.loc))
 			for(var/i in 1 to rand(3,5) + rand(0,2))
 				new bullet_thrower.ammo_type(ammobox)
 			player.put_in_any_hand_if_possible(ammobox)
@@ -298,11 +298,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/magboots/vox(player), slot_shoes) // REPLACE THESE WITH CODED VOX ALTERNATIVES.
 	player.equip_to_slot_or_del(new /obj/item/clothing/gloves/vox(player), slot_gloves) // AS ABOVE.
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat/vox(player), slot_wear_mask)
-	player.equip_to_slot_or_del(new /obj/item/weapon/tank/nitrogen(player), slot_back)
+	player.equip_to_slot_or_del(new /obj/item/tank/nitrogen(player), slot_back)
 	player.equip_to_slot_or_del(new /obj/item/device/flashlight(player), slot_r_store)
 
-	player.internal = locate(/obj/item/weapon/tank) in player.contents
-	if(istype(player.internal,/obj/item/weapon/tank) && player.internals)
+	player.internal = locate(/obj/item/tank) in player.contents
+	if(istype(player.internal,/obj/item/tank) && player.internals)
 		player.internals.icon_state = "internal1"
 
 	return 1

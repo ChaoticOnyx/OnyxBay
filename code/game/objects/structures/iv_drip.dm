@@ -6,7 +6,7 @@
 	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/mob/living/carbon/human/attached
 	var/mode = 1 // 1 is injecting, 0 is taking blood.
-	var/obj/item/weapon/reagent_containers/beaker
+	var/obj/item/reagent_containers/beaker
 	var/list/transfer_amounts = list(REM, 1, 2)
 	var/transfer_amount = 1
 
@@ -68,8 +68,8 @@
 
 	update_icon()
 
-/obj/structure/iv_drip/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/reagent_containers))
+/obj/structure/iv_drip/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W, /obj/item/reagent_containers))
 		if(!isnull(src.beaker))
 			to_chat(user, "There is already a reagent container loaded!")
 			return

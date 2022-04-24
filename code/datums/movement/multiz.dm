@@ -1,4 +1,4 @@
-/datum/movement_handler/mob/multiz/DoMove(var/direction, var/mob/mover, var/is_external)
+/datum/movement_handler/mob/multiz/DoMove(direction, mob/mover, is_external)
 	if(!(direction & (UP|DOWN)))
 		return MOVEMENT_PROCEED
 
@@ -33,7 +33,7 @@
 	return MOVEMENT_PROCEED
 
 //For ghosts and such
-/datum/movement_handler/mob/multiz_connected/DoMove(var/direction, var/mob/mover, var/is_external)
+/datum/movement_handler/mob/multiz_connected/DoMove(direction, mob/mover, is_external)
 	if(!(direction & (UP|DOWN)))
 		return MOVEMENT_PROCEED
 
@@ -44,7 +44,26 @@
 
 	return MOVEMENT_PROCEED
 
-/datum/movement_handler/deny_multiz/DoMove(var/direction, var/mob/mover, var/is_external)
+/datum/movement_handler/deny_multiz/DoMove(direction, mob/mover, is_external)
 	if(direction & (UP|DOWN))
 		return MOVEMENT_HANDLED
+	return MOVEMENT_PROCEED
+
+/datum/movement_handler/deny_stairs/DoMove(direction, mob/mover, is_external)
+	if (direction & (UP | DOWN))
+		return MOVEMENT_PROCEED
+
+	var/turf/destination = get_step(mover, direction)
+
+	if (istype(destination, /turf/simulated/open))
+		var/turf/below = get_step(destination, DOWN)
+
+		if (locate(/obj/structure/stairs) in below)
+			return MOVEMENT_HANDLED
+
+		return MOVEMENT_PROCEED
+
+	if (locate(/obj/structure/stairs) in destination)
+		return MOVEMENT_HANDLED
+
 	return MOVEMENT_PROCEED

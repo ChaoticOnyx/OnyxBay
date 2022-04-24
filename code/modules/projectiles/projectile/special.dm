@@ -7,10 +7,12 @@
 	nodamage = 1
 	check_armour = "energy"
 	blockable = FALSE
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIGHT_CYAN
 	var/heavy_effect_range = 1
 	var/light_effect_range = 2
 
-	on_impact(var/atom/A)
+/obj/item/projectile/ion/on_impact(atom/A)
 		empulse(A, heavy_effect_range, light_effect_range)
 		return 1
 
@@ -18,14 +20,17 @@
 	name = "ion pulse"
 	heavy_effect_range = 0
 	light_effect_range = 1
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/ion/c44
+/obj/item/projectile/ion/c38
 	name = "ion bullet"
 	icon_state = "ionbullet"
 	nodamage = 0
 	damage = 10
 	heavy_effect_range = 0
 	light_effect_range = 0
+	projectile_inner_range = 0.2
+	projectile_outer_range = 1.25
 
 /obj/item/projectile/bullet/gyro
 	name ="explosive bolt"
@@ -35,26 +40,28 @@
 	sharp = 1
 	edge = 1
 
-	on_hit(var/atom/target, var/blocked = 0)
-		explosion(target, -1, 0, 2)
-		return 1
+/obj/item/projectile/bullet/gyro/on_hit(atom/target, blocked = 0)
+	explosion(target, -1, 0, 2)
+	return 1
 
 /obj/item/projectile/temp
-	name = "freeze beam"
+	name = "hot beam"
 	icon_state = "ice_2"
 	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_DEEP_SKY_BLUE
 	var/temperature = 300
 
 
-	on_hit(var/atom/target, var/blocked = 0)//These two could likely check temp protection on the mob
-		if(istype(target, /mob/living))
-			var/mob/M = target
-			M.bodytemperature = temperature
-		return 1
+/obj/item/projectile/temp/on_hit(atom/target, blocked = 0)//These two could likely check temp protection on the mob
+	if(istype(target, /mob/living))
+		var/mob/M = target
+		M.bodytemperature = temperature
+	return 1
 
 /obj/item/projectile/meteor
 	name = "meteor"
@@ -66,26 +73,24 @@
 	check_armour = "bullet"
 	blockable = FALSE
 
-	Bump(atom/A, forced = FALSE)
-		if(A == firer)
-			loc = A.loc
-			return
+/obj/item/projectile/meteor/Bump(atom/A, forced = FALSE)
+	if(A == firer)
+		loc = A.loc
+		return
 
-		sleep(-1) //Might not be important enough for a sleep(-1) but the sleep/spawn itself is necessary thanks to explosions and metoerhits
+	if(src)//Do not add to this if() statement, otherwise the meteor won't delete them
+		if(A)
 
-		if(src)//Do not add to this if() statement, otherwise the meteor won't delete them
-			if(A)
+			A.ex_act(2)
+			playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
 
-				A.ex_act(2)
-				playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
-
-				for(var/mob/M in range(10, src))
-					if(!M.stat && !istype(M, /mob/living/silicon/ai))\
-						shake_camera(M, 3, 1)
-				qdel(src)
-				return 1
-		else
-			return 0
+			for(var/mob/M in range(10, src))
+				if(!M.stat && !istype(M, /mob/living/silicon/ai))
+					shake_camera(M, 3, 1)
+			qdel(src)
+			return 1
+	else
+		return 0
 
 /obj/item/projectile/energy/floramut
 	name = "alpha somatoray"
@@ -95,32 +100,35 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIME
+	projectile_inner_range = 0.2
 
-	on_hit(var/atom/target, var/blocked = 0)
-		var/mob/living/M = target
-		if(ishuman(target))
-			var/mob/living/carbon/human/H = M
-			if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
-				if(prob(15))
-					H.apply_effect((rand(30,80)),IRRADIATE,blocked = H.getarmor(null, "rad"))
-					H.Weaken(5)
-					H.Stun(5)
-					for (var/mob/V in viewers(src))
-						V.show_message("<span class='warning'>[M] writhes in pain as \his vacuoles boil.</span>", 3, "<span class='warning'>You hear the crunching of leaves.</span>", 2)
-				if(prob(35))
-					if(prob(80))
-						randmutb(M)
-						domutcheck(M,null)
-					else
-						randmutg(M)
-						domutcheck(M,null)
+/obj/item/projectile/energy/floramut/on_hit(atom/target, blocked = 0)
+	var/mob/living/M = target
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = M
+		if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
+			if(prob(15))
+				H.apply_effect((rand(30,80)),IRRADIATE,blocked = H.getarmor(null, "rad"))
+				H.Weaken(5)
+				H.Stun(5)
+				for (var/mob/V in viewers(src))
+					V.show_message(SPAN_WARNING("[M] writhes in pain as \his vacuoles boil."), 3, SPAN_WARNING("You hear the crunching of leaves."), 2)
+			if(prob(35))
+				if(prob(80))
+					randmutb(M)
+					domutcheck(M,null)
 				else
-					M.adjustFireLoss(rand(5,15))
-					M.show_message("<span class='danger'>The radiation beam singes you!</span>")
-		else if(istype(target, /mob/living/carbon/))
-			M.show_message("<span class='notice'>The radiation beam dissipates harmlessly through your body.</span>")
-		else
-			return 1
+					randmutg(M)
+					domutcheck(M,null)
+			else
+				M.adjustFireLoss(rand(5,15))
+				M.show_message(SPAN_DANGER("The radiation beam singes you!"))
+	else if(istype(target, /mob/living/carbon))
+		M.show_message(SPAN_NOTICE("The radiation beam dissipates harmlessly through your body."))
+	else
+		return 1
 
 /obj/item/projectile/energy/floramut/gene
 	name = "gamma somatoray"
@@ -130,6 +138,7 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_brightness_color = "#e6d1b5"
 	var/decl/plantgene/gene = null
 
 /obj/item/projectile/energy/florayield
@@ -140,26 +149,29 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = "#e6d1b5"
+	projectile_inner_range = 0.2
 
-	on_hit(var/atom/target, var/blocked = 0)
-		var/mob/M = target
-		if(ishuman(target)) //These rays make plantmen fat.
-			var/mob/living/carbon/human/H = M
-			if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
-				H.nutrition += 30
-		else if (istype(target, /mob/living/carbon/))
-			M.show_message("<span class='notice'>The radiation beam dissipates harmlessly through your body.</span>")
-		else
-			return 1
+/obj/item/projectile/energy/florayield/on_hit(atom/target, blocked = 0)
+	var/mob/M = target
+	if(ishuman(target)) //These rays make plantmen fat.
+		var/mob/living/carbon/human/H = M
+		if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
+			H.nutrition += 30
+	else if (istype(target, /mob/living/carbon))
+		M.show_message(SPAN_NOTICE("The radiation beam dissipates harmlessly through your body."))
+	else
+		return 1
 
 
 /obj/item/projectile/beam/mindflayer
 	name = "flayer ray"
 
-	on_hit(var/atom/target, var/blocked = 0)
-		if(ishuman(target))
-			var/mob/living/carbon/human/M = target
-			M.confused += rand(5,8)
+/obj/item/projectile/beam/mindflayer/on_hit(atom/target, blocked = 0)
+	if(ishuman(target))
+		var/mob/living/carbon/human/M = target
+		M.confused += rand(5,8)
 /obj/item/projectile/chameleon
 	name = "bullet"
 	icon_state = "bullet"
@@ -179,34 +191,51 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
+	tasing = FALSE // Nah, that's too much
 	penetration_modifier = 0.35
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_RED_LIGHT
 
-/obj/item/projectile/energy/laser/small
+/obj/item/projectile/energy/laser/small // Pistol level
+	name = "small laser bolt"
 	icon_state = "laser_small"
-	damage = 40
-	armor_penetration = 15
+	damage = 35
+	armor_penetration = 10
+	projectile_inner_range = 0.15
 
-/obj/item/projectile/energy/laser/lesser
-	icon_state = "laser"
-	damage = 50
+/obj/item/projectile/energy/laser/lesser // Carbine level
+	icon_state = "laser_lesser"
+	damage = 45
 	agony = 5
-	armor_penetration = 20
+	armor_penetration = 12.5
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/laser/mid
+/obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
-	damage = 60
+	damage = 55
 	agony = 10
-	armor_penetration = 25
+	armor_penetration = 15.0
 
-/obj/item/projectile/energy/laser/heavy
+/obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
+	name = "large laser bolt"
+	icon_state = "laser_greater"
+	damage = 65
+	agony = 15
+	armor_penetration = 17.5
+	projectile_inner_range = 0.35
+	projectile_outer_range = 1.75
+
+/obj/item/projectile/energy/laser/heavy // Cannon level
 	name = "heavy laser bolt"
-	icon_state = "laser_huge"
-	damage = 80
+	icon_state = "laser_heavy"
+	damage = 75
 	agony = 20
-	armor_penetration = 45
+	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
+	projectile_inner_range = 0.4
+	projectile_outer_range = 2.0
 
 /obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
 	name = "alien"

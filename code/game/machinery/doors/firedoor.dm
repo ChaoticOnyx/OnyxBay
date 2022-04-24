@@ -19,6 +19,7 @@
 	layer = BELOW_DOOR_LAYER
 	open_layer = BELOW_DOOR_LAYER
 	closed_layer = ABOVE_DOOR_LAYER
+	atom_flags = ATOM_FLAG_ADJACENT_EXCEPTION
 
 	//These are frequenly used with windows, so make sure zones can pass.
 	//Generally if a firedoor is at a place where there should be a zone boundery then there will be a regular door underneath it.
@@ -36,7 +37,7 @@
 
 	var/hatch_open = 0
 
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	idle_power_usage = 5
 
 	var/list/tile_info[4]
@@ -75,7 +76,7 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	if(get_dist(src, user) > 1 || !density)
+	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
 		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
@@ -202,12 +203,12 @@
 		return
 	..()
 
-/obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
+/obj/machinery/door/firedoor/attackby(obj/item/C as obj, mob/user as mob)
 	add_fingerprint(user, 0, C)
 	if(operating)
 		return//Already doing something.
 	if(isWelder(C) && !repairing)
-		var/obj/item/weapon/weldingtool/W = C
+		var/obj/item/weldingtool/W = C
 		if(W.remove_fuel(0, user))
 			blocked = !blocked
 			user.visible_message("<span class='danger'>\The [user] [blocked ? "welds" : "unwelds"] \the [src] with \a [W].</span>",\
@@ -242,7 +243,7 @@
 		to_chat(user, "<span class='danger'>\The [src] is welded shut!</span>")
 		return
 
-	if(isCrowbar(C) || istype(C,/obj/item/weapon/material/twohanded/fireaxe))
+	if(isCrowbar(C) || istype(C,/obj/item/material/twohanded/fireaxe))
 		if(operating)
 			return
 
@@ -252,40 +253,41 @@
 			"You hear someone struggle and metal straining.")
 			return
 
-		if(istype(C,/obj/item/weapon/material/twohanded/fireaxe))
-			var/obj/item/weapon/material/twohanded/fireaxe/F = C
+		if(istype(C,/obj/item/material/twohanded/fireaxe))
+			var/obj/item/material/twohanded/fireaxe/F = C
 			if(!F.wielded)
 				return
 
 		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
 				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
 				"You hear metal strain.")
-		var/forcing_time = istype(C, /obj/item/weapon/crowbar/emergency) ? 60 : 30
-		if(do_after(user, forcing_time, src))
-			if(isCrowbar(C))
-				if(stat & (BROKEN|NOPOWER) || !density)
-					user.visible_message("<span class='danger'>\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
-					"You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
-					"You hear metal strain, and a door [density ? "open" : "close"].")
-			else
-				user.visible_message("<span class='danger'>\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!</span>",\
-					"You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
-					"You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
-			if(density)
-				spawn(0)
-					open(1)
-			else
-				spawn(0)
-					close()
+		var/forcing_time = istype(C, /obj/item/crowbar/emergency) ? 60 : 30
+		if(!do_after(user, forcing_time, src))
 			return
+		if(isCrowbar(C))
+			if(stat & (BROKEN|NOPOWER) || !density)
+				user.visible_message(SPAN("danger", "\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!"),\
+									 "You force \the [src] [density ? "open" : "closed"] with \the [C]!",\
+									 "You hear metal strain, and a door [density ? "open" : "close"].")
+		else
+			user.visible_message(SPAN("danger", "\The [user] forces \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \a [C]!"),\
+								 "You force \the [ blocked ? "welded" : "" ] [src] [density ? "open" : "closed"] with \the [C]!",\
+								 "You hear metal strain and groan, and a door [density ? "opening" : "closing"].")
+		if(density)
+			spawn()
+				open(TRUE)
+		else
+			spawn()
+				close()
+		return
 
 	return ..()
 
 /obj/machinery/door/firedoor/deconstruct(mob/user, moved = FALSE)
 	if (stat & BROKEN)
-		new /obj/item/weapon/circuitboard/broken(src.loc)
+		new /obj/item/circuitboard/broken(src.loc)
 	else
-		new /obj/item/weapon/airalarm_electronics(src.loc)
+		new /obj/item/airalarm_electronics(src.loc)
 
 	var/obj/structure/firedoor_assembly/FA = new /obj/structure/firedoor_assembly(src.loc)
 	FA.anchored = !moved

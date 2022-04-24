@@ -11,15 +11,15 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead())
+			if (CR.get_name() == M.real_name && !M.is_dead() && !M.ssd_check())
 				personnel++
 
 	for (var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-		if (!ai.is_dead())
+		if (!ai.is_dead() && !ai.ssd_check())
 			AIs++
 
 	for (var/mob/living/silicon/robot/robot in SSmobs.mob_list)
-		if (!robot.is_dead())
+		if (!robot.is_dead() && !robot.ssd_check())
 			cyborgs++
 
 	var/result = personnel + AIs + cyborgs
@@ -47,7 +47,7 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead())
+			if (CR.get_name() == M.real_name && !M.is_dead()  && !M.ssd_check())
 				var/add_manpower = 0
 				switch (CR.get_job())
 					if ("Captain")          add_manpower = 7
@@ -60,8 +60,8 @@
 					_log_debug("+[add_manpower] for an [CR.get_job()]")
 
 	for (var/mob/living/silicon/robot/robot in GLOB.player_list)
-		if (!robot.is_dead())
-			if (istype(robot.module, /obj/item/weapon/robot_module/security/general) || istype(robot.module, /obj/item/weapon/robot_module/security/combat))
+		if (!robot.is_dead() && !robot.ssd_check())
+			if (istype(robot.module, /obj/item/robot_module/security/general) || istype(robot.module, /obj/item/robot_module/security/combat))
 				var/add_manpower = 3
 				security_manpower += add_manpower
 				_log_debug("+[add_manpower] for a Security Cyborg")
@@ -86,7 +86,6 @@
 		if(MODE_CHANGELING)    return 8
 		if(MODE_NINJA)         return 12
 		if(MODE_WIZARD)        return 16
-		if(MODE_BLOB)          return 24
 		if(MODE_MALFUNCTION)   return 24
 	return 0
 
@@ -108,6 +107,9 @@
 					continue
 				if(antag.station_crew_involved && M.is_brigged(0))
 					_log_debug("Brigged antagonist: [L] ([role_id])")
+					continue
+				if(L.ssd_check())
+					_log_debug("SSD antagonist: [L] ([role_id])")
 					continue
 				count++
 		if(count)

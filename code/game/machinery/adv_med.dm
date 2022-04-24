@@ -12,10 +12,10 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/body_scanner,
+		/obj/item/circuitboard/body_scanner,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module = 3,
-		/obj/item/weapon/stock_parts/manipulator = 4,
+		/obj/item/stock_parts/scanning_module = 3,
+		/obj/item/stock_parts/manipulator = 4,
 	)
 
 	idle_power_usage = 60
@@ -29,7 +29,7 @@
 	..()
 
 /obj/machinery/bodyscanner/Initialize()
-	..()
+	. = ..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
 		if(!console || console?.connected)
@@ -252,7 +252,7 @@
 	anchored = 1
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/bodyscanner_console
+		/obj/item/circuitboard/bodyscanner_console
 	)
 
 /obj/machinery/body_scanconsole/Destroy()
@@ -287,34 +287,34 @@
 	. = ..()
 
 	if(.)
-		return
+		return TRUE
 
 	if(!allowed(usr))
 		to_chat(usr, SPAN("warning", "Access denied."))
-		return
+		return TRUE
 
 	switch (action)
 		if ("print")
 			if (!src.connected)
 				to_chat(usr, SPAN("warning", "Error: No body scanner connected."))
-				return
+				return TRUE
 
 			var/mob/living/carbon/human/occupant = src.connected.occupant
 			if (!src.connected.occupant)
 				to_chat(usr, SPAN("warning", "The body scanner is empty."))
-				return
+				return TRUE
 
 			if (!istype(occupant, /mob/living/carbon/human))
 				to_chat(usr, SPAN("warning", "The body scanner cannot scan that lifeform."))
-				return
+				return TRUE
 
-			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
+			var/obj/item/paper/P = new /obj/item/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
-			return
+			return TRUE
 		if ("eject")
 			if (connected)
 				connected.eject()
-				return
+				return TRUE
 
 /obj/machinery/body_scanconsole/tgui_data(mob/user)
 	var/list/data = list()
@@ -333,6 +333,7 @@
 	if(!ui)
 		ui = new(user, src, "BodyScanner", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
 	if(..())

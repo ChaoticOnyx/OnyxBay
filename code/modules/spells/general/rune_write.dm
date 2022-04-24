@@ -1,22 +1,22 @@
-/spell/rune_write
+/datum/spell/rune_write
 	name = "Scribe a Rune"
 	desc = "Let's you instantly manifest a working rune."
 
 	school = "evocation"
 	charge_max = 100
-	charge_type = Sp_RECHARGE
-	invocation_type = SpI_NONE
+	charge_type = SP_RECHARGE
+	invocation_type = SPI_NONE
 
 	spell_flags = CONSTRUCT_CHECK
 
-	hud_state = "const_rune"
+	icon_state = "const_rune"
 
 	smoke_amt = 1
 
-/spell/rune_write/choose_targets(mob/user = usr)
+/datum/spell/rune_write/choose_targets(mob/user = usr)
 	return list(user)
 
-/spell/rune_write/cast(null, mob/user = usr)
+/datum/spell/rune_write/cast(null, mob/user = usr)
 	if(!cultwords["travel"])
 		runerandom()
 	var/list/runes = list("Teleport", "Teleport Other", "Spawn a Tome", "Change Construct Type", "Convert", "EMP", "Drain Blood", "See Invisible", "Resurrect", "Hide Runes", "Reveal Runes", "Astral Journey", "Manifest a Ghost", "Imbue Talisman", "Sacrifice", "Wall", "Free Cultist", "Summon Cultist", "Deafen", "Blind", "BloodBoil", "Communicate", "Stun")

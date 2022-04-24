@@ -11,6 +11,7 @@
 	req_access = list(access_robotics)
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/speed = 1
 	var/mat_efficiency = 1
@@ -31,12 +32,12 @@
 	. = ..()
 
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/mechfab(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/circuitboard/mechfab(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 
 	manufacturer = basic_robolimb.company
@@ -72,13 +73,13 @@
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
 	res_max_amount = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		res_max_amount += M.rating * 100000 // 200k -> 600k
 	var/T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T += M.rating
 	mat_efficiency = 1 - (T - 1) / 4 // 1 -> 0.5
-	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts) // Not resetting T is intended; speed is affected by both
+	for(var/obj/item/stock_parts/micro_laser/M in component_parts) // Not resetting T is intended; speed is affected by both
 		T += M.rating
 	speed = T / 2 // 1 -> 3
 
@@ -114,19 +115,19 @@
 
 			if(R.unavailable_at_fab || R.applies_to_part.len)
 				continue
-			
+
 			T += list(list(
 				"id" = A,
 				"company" = R.company
 			))
-		
+
 		data["manufacturers"] = T
 		data["manufacturer"] = manufacturer
-	
+
 	data["materials"] = get_materials()
 	data["maxres"] = res_max_amount
 	data["sync"] = sync_message
-	
+
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
 
@@ -134,7 +135,7 @@
 
 /obj/machinery/mecha_part_fabricator/tgui_act(action, params)
 	. = ..()
-	
+
 	if(.)
 		return
 
@@ -158,6 +159,9 @@
 		if("manufacturer")
 			manufacturer = params["manufacturer"]
 			. = TRUE
+
+	if(.)
+		tgui_update()
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/item/I, mob/user)
 	if(busy)
@@ -231,6 +235,8 @@
 			busy = 0
 	else
 		busy = 0
+
+	tgui_update()
 
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]

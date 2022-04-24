@@ -4,26 +4,27 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
-import { Box, Button, ByondUi, Section } from '../components';
-import { logger } from '../logging';
+import { useLocalState } from '../backend'
+import { Box, Button, ByondUi, Section } from '../components'
+import { logger } from '../logging'
 
 export const meta = {
   title: 'ByondUi',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = (props, context) => {
   const [code, setCode] = useLocalState(context,
     'byondUiEvalCode',
-    `Byond.winset('${window.__windowId__}', {\n  'is-visible': true,\n})`);
+    `Byond.winset('${window.__windowId__}', {\n  'is-visible': true,\n})`)
   return (
     <>
       <Section title='Button'>
         <ByondUi
           params={{
             type: 'button',
-            text: 'Button',
+            text: 'Button'
           }} />
       </Section>
       <Section
@@ -33,17 +34,16 @@ const Story = (props, context) => {
             icon='chevron-right'
             onClick={() => setImmediate(() => {
               try {
-                const result = new Function('return (' + code + ')')();
+                // eslint-disable-next-line no-new-func
+                const result = new Function('return (' + code + ')')()
                 if (result && result.then) {
-                  logger.log('Promise');
-                  result.then(logger.log);
+                  logger.log('Promise')
+                  result.then(logger.log)
+                } else {
+                  logger.log(result)
                 }
-                else {
-                  logger.log(result);
-                }
-              }
-              catch (err) {
-                logger.log(err);
+              } catch (err) {
+                logger.log(err)
               }
             })}>
             Evaluate
@@ -58,5 +58,5 @@ const Story = (props, context) => {
         </Box>
       </Section>
     </>
-  );
-};
+  )
+}

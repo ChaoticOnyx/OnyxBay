@@ -1,6 +1,7 @@
-import { useBackend } from '../backend';
-import { Window } from '../layouts';
-import { Button, Section, ProgressBar, LabeledList } from '../components';
+/* eslint-disable camelcase */
+import { useBackend } from '../backend'
+import { Window } from '../layouts'
+import { Button, Section, ProgressBar, LabeledList } from '../components'
 
 interface Method {
   name: string;
@@ -21,9 +22,9 @@ interface InputData {
 }
 
 export const SuitSensorJammer = (props, context) => {
-  const { act, data } = useBackend<InputData>(context);
-  const charge = data.current_charge / data.max_charge;
-  const methods = data.methods || [];
+  const { act, data } = useBackend<InputData>(context)
+  const charge = data.current_charge / data.max_charge
+  const methods = data.methods || []
 
   return (
     <Window width={350} height={506}>
@@ -49,7 +50,7 @@ export const SuitSensorJammer = (props, context) => {
                 ranges={{
                   good: [0.6, 1.0],
                   average: [0.4, 0.6],
-                  bad: [0.0, 0.4],
+                  bad: [0.0, 0.4]
                 }}
                 value={String(charge)}
               />
@@ -87,10 +88,10 @@ export const SuitSensorJammer = (props, context) => {
                 />
                 <br />
               </>
-            );
+            )
           })}
         </Section>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

@@ -4,31 +4,22 @@
  * @license MIT
  */
 
-import { connectionLost, connectionRestored, roundRestarted } from './actions';
-import { selectGame } from './selectors';
-import { CONNECTION_LOST_AFTER } from './constants';
+import { roundRestarted } from './actions'
 
 const withTimestamp = action => ({
   ...action,
   meta: {
     ...action.meta,
-    now: Date.now(),
-  },
-});
+    now: Date.now()
+  }
+})
 
 export const gameMiddleware = store => {
-  setInterval(() => {
-    const state = store.getState();
-    if (!state) {
-      return;
-    }
-    const game = selectGame(state);
-  }, 1000);
   return next => action => {
-    const { type, payload, meta } = action;
+    const { type } = action
     if (type === roundRestarted.type) {
-      return next(withTimestamp(action));
+      return next(withTimestamp(action))
     }
-    return next(action);
-  };
-};
+    return next(action)
+  }
+}

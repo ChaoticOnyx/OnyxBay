@@ -31,7 +31,7 @@
 	name = "orion trail"
 	desc = "Imported straight from Outpost-T71!"
 	icon_state = "arcade"
-	circuit = /obj/item/weapon/circuitboard/arcade/orion_trail
+	circuit = /obj/item/circuitboard/arcade/orion_trail
 	var/list/supplies = list("1" = 0, "2" = 0, "3" = 0, "4" = 0, "5" = 0, "6" = 0) //engine,hull,electronics,food,fuel
 	var/list/supply_cost = list("1" = 1000, "2" = 950, "3" = 1100, "4" = 75, "5" = 100)
 	var/list/supply_name = list("1" = "engine parts", "2" = "hull parts", "3" = "electronic parts", "4" = "food", "5" = "fuel", "6" = "credits")
@@ -184,13 +184,14 @@
 			if(event == ORION_TRAIL_GAMEOVER)
 				event = null
 				attack_hand(user)
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
+				//This used to be "return TOPIC_REFRESH". It wouldn't leave time for operations with the dot variable.
 			if(!settlers.len)
 				event_desc = "You and your crew were killed on the way to Orion, your ship left abandoned for scavengers to find."
 				next_event = ORION_TRAIL_GAMEOVER
 			if(port == 9)
 				win()
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
 			var/travel = min(rand(1000,10000),distance)
 			if(href_list["fix"])
 				var/item = href_list["fix"]
@@ -231,34 +232,34 @@
 				generate_event(next_event)
 		else
 			view = ORION_VIEW_MAIN
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["supplies"])
 		view = ORION_VIEW_SUPPLIES
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["crew"])
 		view = ORION_VIEW_CREW
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["buy"])
 		var/item = href_list["buy"]
 		if(supply_cost["[item]"] <= supplies["6"])
 			supplies["[item]"] += (text2num(item) > 3 ? 10 : 1)
 			supplies["6"] -= supply_cost["[item]"]
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["sell"])
 		var/item = href_list["sell"]
 		if(supplies["[item]"] >= (text2num(item) > 3 ? 10 : 1))
 			supplies["6"] += supply_cost["[item]"]
 			supplies["[item]"] -= (text2num(item) > 3 ? 10 : 1)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["kill"])
 		var/item = text2num(href_list["kill"])
 		remove_settler(item)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["attack"])
 		supply_cost = list()
@@ -276,7 +277,7 @@
 				if(prob(10))
 					remove_settler(null, "died while you were escaping!")
 		event = ORION_TRAIL_SPACEPORT_RAIDED
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
@@ -470,7 +471,7 @@
 /obj/machinery/computer/arcade/orion_trail/proc/win()
 	src.visible_message("\The [src] plays a triumpant tune, stating 'CONGRATULATIONS, YOU HAVE MADE IT TO ORION.'")
 	if(emagged)
-		new /obj/item/weapon/orion_ship(src.loc)
+		new /obj/item/orion_ship(src.loc)
 		message_admins("[key_name_admin(usr)] made it to Orion on an emagged machine and got an explosive toy ship.")
 		log_game("[key_name(usr)] made it to Orion on an emagged machine and got an explosive toy ship.")
 	else
@@ -478,14 +479,14 @@
 	event = null
 	src.updateUsrDialog()
 
-/obj/item/weapon/orion_ship
+/obj/item/orion_ship
 	name = "model settler ship"
 	desc = "A model spaceship, it looks like those used back in the day when travelling to Orion! It even has a miniature FX-293 reactor, which was renowned for its instability and tendency to explode..."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "ship"
 	w_class = ITEM_SIZE_SMALL
 	var/active = 0 //if the ship is on
-/obj/item/weapon/orion_ship/examine(mob/user)
+/obj/item/orion_ship/examine(mob/user)
 	. = ..()
 	if(!(in_range(user, src)))
 		return
@@ -493,7 +494,7 @@
 		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped down.</span>"
 	else
 		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped up.</span>"
-/obj/item/weapon/orion_ship/attack_self(mob/user)
+/obj/item/orion_ship/attack_self(mob/user)
 	if(active)
 		return
 	message_admins("[key_name_admin(usr)] primed an explosive Orion ship for detonation.")

@@ -4,103 +4,102 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
-import { Component, createRef } from 'inferno';
-import { Box } from './Box';
-import { KEY_ESCAPE, KEY_ENTER } from 'common/keycodes';
+import { classes } from 'common/react'
+import { Component, createRef } from 'inferno'
+import { Box } from './Box'
+import { KEY_ESCAPE, KEY_ENTER } from 'common/keycodes'
 
 export const toInputValue = (value) =>
-  typeof value !== 'number' && typeof value !== 'string' ? '' : String(value);
+  typeof value !== 'number' && typeof value !== 'string' ? '' : String(value)
 
 export class Input extends Component {
-  constructor() {
-    super();
-    this.inputRef = createRef();
+  constructor () {
+    super()
+    this.inputRef = createRef()
     this.state = {
-      editing: false,
-    };
+      editing: false
+    }
     this.handleInput = (e) => {
-      const { editing } = this.state;
-      const { onInput } = this.props;
+      const { editing } = this.state
+      const { onInput } = this.props
       if (!editing) {
-        this.setEditing(true);
+        this.setEditing(true)
       }
       if (onInput) {
-        onInput(e, e.target.value);
+        onInput(e, e.target.value)
       }
-    };
+    }
     this.handleFocus = (e) => {
-      const { editing } = this.state;
+      const { editing } = this.state
       if (!editing) {
-        this.setEditing(true);
+        this.setEditing(true)
       }
-    };
+    }
     this.handleBlur = (e) => {
-      const { editing } = this.state;
-      const { onChange } = this.props;
+      const { editing } = this.state
+      const { onChange } = this.props
       if (editing) {
-        this.setEditing(false);
+        this.setEditing(false)
         if (onChange) {
-          onChange(e, e.target.value);
+          onChange(e, e.target.value)
         }
       }
-    };
+    }
     this.handleKeyDown = (e) => {
-      const { onInput, onChange, onEnter } = this.props;
+      const { onInput, onChange, onEnter } = this.props
       if (e.keyCode === KEY_ENTER) {
-        this.setEditing(false);
+        this.setEditing(false)
         if (onChange) {
-          onChange(e, e.target.value);
+          onChange(e, e.target.value)
         }
         if (onInput) {
-          onInput(e, e.target.value);
+          onInput(e, e.target.value)
         }
         if (onEnter) {
-          onEnter(e, e.target.value);
+          onEnter(e, e.target.value)
         }
         if (this.props.selfClear) {
-          e.target.value = '';
+          e.target.value = ''
         } else {
-          e.target.blur();
+          e.target.blur()
         }
-        return;
+        return
       }
       if (e.keyCode === KEY_ESCAPE) {
-        this.setEditing(false);
-        e.target.value = toInputValue(this.props.value);
-        e.target.blur();
-        return;
+        this.setEditing(false)
+        e.target.value = toInputValue(this.props.value)
+        e.target.blur()
       }
-    };
+    }
   }
 
-  componentDidMount() {
-    const nextValue = this.props.value;
-    const input = this.inputRef.current;
+  componentDidMount () {
+    const nextValue = this.props.value
+    const input = this.inputRef.current
     if (input) {
-      input.value = toInputValue(nextValue);
+      input.value = toInputValue(nextValue)
     }
     if (this.props.autoFocus) {
-      setTimeout(() => input.focus(), 1);
+      setTimeout(() => input.focus(), 1)
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { editing } = this.state;
-    const prevValue = prevProps.value;
-    const nextValue = this.props.value;
-    const input = this.inputRef.current;
+  componentDidUpdate (prevProps, prevState) {
+    const { editing } = this.state
+    const prevValue = prevProps.value
+    const nextValue = this.props.value
+    const input = this.inputRef.current
     if (input && !editing && prevValue !== nextValue) {
-      input.value = toInputValue(nextValue);
+      input.value = toInputValue(nextValue)
     }
   }
 
-  setEditing(editing) {
-    this.setState({ editing });
+  setEditing (editing) {
+    this.setState({ editing })
   }
 
-  render() {
-    const { props } = this;
+  render () {
+    const { props } = this
     // Input only props
     const {
       selfClear,
@@ -111,16 +110,16 @@ export class Input extends Component {
       maxLength,
       placeholder,
       ...boxProps
-    } = props;
+    } = props
     // Box props
-    const { className, fluid, monospace, ...rest } = boxProps;
+    const { className, fluid, monospace, ...rest } = boxProps
     return (
       <Box
         className={classes([
           'Input',
           fluid && 'Input--fluid',
           monospace && 'Input--monospace',
-          className,
+          className
         ])}
         {...rest}>
         <div className='Input__baseline'>.</div>
@@ -135,6 +134,6 @@ export class Input extends Component {
           maxLength={maxLength}
         />
       </Box>
-    );
+    )
   }
 }

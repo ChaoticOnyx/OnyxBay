@@ -57,3 +57,10 @@
 		prefs.UI_style_color = UI_style_color_new
 		SScharacter_setup.queue_preferences_save(prefs)
 		to_chat(usr, "UI was saved")
+	else
+		ic = all_ui_styles[prefs.UI_style]
+		for(var/obj/screen/I in icons)
+			if(I.name in list(I_HELP, I_HURT, I_DISARM, I_GRAB)) continue
+			I.icon = ic
+			I.color = prefs.UI_style_color
+			I.alpha = prefs.UI_style_alpha

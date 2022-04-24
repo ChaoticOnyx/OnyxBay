@@ -73,6 +73,7 @@
 	inputs = list()
 	outputs = list()
 	activators = list("toggle light" = IC_PINTYPE_PULSE_IN)
+	power_draw_per_use = 1
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/light_toggled = FALSE
 	var/light_brightness = 6
@@ -82,6 +83,10 @@
 /obj/item/integrated_circuit/output/light/do_work()
 	light_toggled = !light_toggled
 	update_lighting()
+
+/obj/item/integrated_circuit/output/light/removed_from_assembly()
+	power_fail()
+	..()
 
 /obj/item/integrated_circuit/output/light/proc/update_lighting()
 	if(light_toggled)
@@ -137,6 +142,7 @@
 	outputs = list()
 	activators = list("play sound" = IC_PINTYPE_PULSE_IN)
 	power_draw_per_use = 10
+	var/volume
 	var/list/sounds = list()
 
 /obj/item/integrated_circuit/output/sound/Initialize()
@@ -150,7 +156,7 @@
 
 /obj/item/integrated_circuit/output/sound/do_work()
 	var/ID = get_pin_data(IC_INPUT, 1)
-	var/vol = get_pin_data(IC_INPUT, 2)
+	var/vol = volume
 	var/freq = get_pin_data(IC_INPUT, 3)
 	if(!isnull(ID) && !isnull(vol))
 		var/selected_sound = sounds[ID]
@@ -162,9 +168,8 @@
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
-	var/volume = get_pin_data(IC_INPUT, 2)
+	volume = get_pin_data(IC_INPUT, 2)
 	volume = Clamp(volume, 0, 100)
-	set_pin_data(IC_INPUT, 2, volume)
 	power_draw_per_use =  volume * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
@@ -240,6 +245,14 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 
+/mob/living/silicon/integrated_circuit
+	name = "Integrated Circuit"
+	playable_mob = FALSE
+	//Used in say.dm.
+	speak_statement = "enounces"
+	speak_exclamation = "enounces"
+	speak_query = "enounces"
+
 /obj/item/integrated_circuit/output/text_to_speech
 	name = "text-to-speech circuit"
 	desc = "Takes any string as an input and will make the device say the string when pulsed."
@@ -252,13 +265,24 @@
 	activators = list("to speech" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 60
+	// TODO: replace this cringe with say for objects
+	var/mob/living/silicon/integrated_circuit/speaker
+
+/obj/item/integrated_circuit/output/text_to_speech/Initialize()
+	. = ..()
+	speaker = new(src)
+
+/obj/item/integrated_circuit/output/text_to_speech/Destroy()
+	QDEL_NULL(speaker)
+	. = ..()
 
 /obj/item/integrated_circuit/output/text_to_speech/do_work()
 	text = get_pin_data(IC_INPUT, 1)
-	if(!isnull(text))
-		var/atom/movable/A = get_object()
-		var/sanitized_text = sanitize(html_decode(text))
-		A.audible_message("\The [A] states, \"[sanitized_text]\"")
+	if(!isnull(text) && !QDELETED(speaker))
+		speaker.name = get_object().name
+		var/sanitized_text = sanitize(text)
+		sanitized_text = replace_characters(sanitized_text, list("&#34;" = "\""))
+		speaker.say(sanitized_text, all_languages[LANGUAGE_GALCOM], FALSE)
 		if(assembly)
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else

@@ -118,11 +118,11 @@
 	if(running)
 		if(footstep >= 2)
 			footstep = 0
-			playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
+			playsound(src, SFX_CLOWN, 50, 1) // this will get annoying very fast.
 		else
 			footstep++
 	else
-		playsound(src, "clownstep", 20, 1)
+		playsound(src, SFX_CLOWN, 20, 1)
 
 /obj/item/clothing/shoes/cult
 	name = "boots"

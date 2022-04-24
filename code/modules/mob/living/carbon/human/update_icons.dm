@@ -642,7 +642,7 @@ var/global/list/damage_icon_parts = list()
 
 // Mask
 /mob/living/carbon/human/update_inv_wear_mask(update_icons=1)
-	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) || istype(wear_mask, /obj/item/weapon/grenade) || istype(wear_mask, /obj/item/weapon/holder)) && !(head && head.flags_inv & HIDEMASK))
+	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) || istype(wear_mask, /obj/item/grenade) || istype(wear_mask, /obj/item/holder)) && !(head && head.flags_inv & HIDEMASK))
 		overlays_standing[HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src,slot_wear_mask_str)
 	else
 		overlays_standing[HO_FACEMASK_LAYER] = null
@@ -776,12 +776,12 @@ var/global/list/damage_icon_parts = list()
 	if(stat != DEAD)
 		set_tail_state("[species.get_tail(src)]_idle[rand(0,9)]")
 	else
-		set_tail_state("[species.get_tail(src)]_static")
+		set_tail_state("[species.get_tail(src)]")
 
 	if(update_icons) queue_icon_update()
 
 /mob/living/carbon/human/proc/animate_tail_stop(update_icons=1)
-	set_tail_state("[species.get_tail(src)]_static")
+	set_tail_state("[species.get_tail(src)]")
 
 	if(update_icons) queue_icon_update()
 

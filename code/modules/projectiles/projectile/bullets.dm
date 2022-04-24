@@ -170,11 +170,11 @@
 	sharp = 0
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
-/obj/item/projectile/bullet/pistol/accelerated/c44
+/obj/item/projectile/bullet/pistol/accelerated/c38
 	name = "accelerated bullet"
-	damage = 40 //.44 magnum + gauss
-	armor_penetration = 45
-	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
+	damage = 35.0 // .38 + gauss
+	armor_penetration = 35
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg' // Gauss .38 should sound like a badass
 
 
 /* shotgun projectiles */
@@ -261,7 +261,7 @@
 /obj/item/projectile/bullet/gyro/Initialize()
 	. = ..()
 
-	fire_sound = get_sfx("explosion")
+	fire_sound = GET_SFX(SFX_EXPLOSION)
 
 /obj/item/projectile/bullet/gyro/on_hit(atom/target, blocked = 0)
 	if(isturf(target))

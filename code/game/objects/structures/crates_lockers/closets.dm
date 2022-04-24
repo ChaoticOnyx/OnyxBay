@@ -3,7 +3,7 @@
 	desc = "It's a basic storage unit."
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
-	pull_sound = "pull_closet"
+	pull_sound = SFX_PULL_CLOSET
 	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
@@ -23,8 +23,8 @@
 	var/breakout = 0 //if someone is currently breaking out. mutex
 	var/storage_capacity = 2 * MOB_MEDIUM //This is so that someone can't pack hundreds of items in a locker/crate
 							  //then open it in a populated area to crash clients.
-	var/open_sound = "closet_open"
-	var/close_sound = "closet_close"
+	var/open_sound = SFX_OPEN_CLOSET
+	var/close_sound = SFX_CLOSE_CLOSET
 
 	var/storage_types = CLOSET_STORAGE_ALL
 	var/setup = CLOSET_CAN_BE_WELDED
@@ -34,7 +34,7 @@
 	var/opened = FALSE
 	var/locked = FALSE
 
-	var/obj/item/weapon/shield/closet/cdoor
+	var/obj/item/shield/closet/cdoor
 	var/dremovable = TRUE	//	some closets' doors cannot be removed
 	var/nodoor = FALSE	// for crafting
 
@@ -47,7 +47,7 @@
 	opened = TRUE
 	density = FALSE
 
-/obj/item/weapon/shield/closet
+/obj/item/shield/closet
 	name = "closet door"
 	desc = "An essential part of a closet. Could it be used as a tower shield?.."
 	icon = 'icons/obj/closet_doors.dmi'
@@ -98,7 +98,7 @@
 		store_contents()
 
 	if(dremovable && !nodoor)
-		var/obj/item/weapon/shield/closet/ndoor = new /obj/item/weapon/shield/closet(src.loc)
+		var/obj/item/shield/closet/ndoor = new /obj/item/shield/closet(src.loc)
 		ndoor.icon_closed = icon_closed
 		ndoor.icon_opened = icon_opened
 
@@ -171,7 +171,7 @@
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM,/obj/item/weapon/shield/closet))
+		if(!istype(AM,/obj/item/shield/closet))
 			AM.dropInto(loc)
 
 /obj/structure/closet/proc/store_contents()
@@ -226,7 +226,7 @@
 		AD.forceMove(src)
 
 	for(var/obj/item/I in loc)
-		if(istype(I,/obj/item/weapon/shield/closet))
+		if(istype(I,/obj/item/shield/closet))
 			break
 		if(I.anchored)
 			continue
@@ -342,13 +342,13 @@
 			if(!(--Proj.penetrating))
 				break
 
-/obj/structure/closet/blob_act(destroy)
+/obj/structure/closet/blob_act()
 	if(opened)
 		qdel(src)
 	else
 		break_open()
 
-/obj/structure/closet/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/closet/attackby(obj/item/W, mob/user)
 	if(src.opened)
 		if(istype(W, /obj/item/grab))
 			var/obj/item/grab/G = W
@@ -357,12 +357,12 @@
 		if(istype(W,/obj/item/tk_grab))
 			return FALSE
 		if(isWelder(W))
-			var/obj/item/weapon/weldingtool/WT = W
+			var/obj/item/weldingtool/WT = W
 			if(WT.isOn())
 				slice_into_parts(WT, user)
 				return
-		if(istype(W, /obj/item/weapon/storage/laundry_basket) && W.contents.len)
-			var/obj/item/weapon/storage/laundry_basket/LB = W
+		if(istype(W, /obj/item/storage/laundry_basket) && W.contents.len)
+			var/obj/item/storage/laundry_basket/LB = W
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in LB.contents)
 				LB.remove_from_storage(I, T)
@@ -371,7 +371,7 @@
 								 \SPAN_NOTICE("You hear rustling of clothes."))
 			return
 
-		if(istype(W, /obj/item/weapon/screwdriver) && dremovable && cdoor)
+		if(istype(W, /obj/item/screwdriver) && dremovable && cdoor)
 			user.visible_message(SPAN_NOTICE("[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 30))
@@ -382,8 +382,8 @@
 				user.visible_message(SPAN("notice", "[user] unscrewed [cdoor] from [src]."))
 			return
 
-		if(istype(W, /obj/item/weapon/shield/closet) && dremovable && !cdoor)
-			var/obj/item/weapon/shield/closet/C = W
+		if(istype(W, /obj/item/shield/closet) && dremovable && !cdoor)
+			var/obj/item/shield/closet/C = W
 			user.visible_message(SPAN_NOTICE("[user] starts connecting [C] to [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 20))
@@ -401,18 +401,18 @@
 			W.pixel_z = 0
 			W.pixel_w = 0
 		return
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))
+	else if(istype(W, /obj/item/melee/energy/blade))
 		if(emag_act(INFINITY, user, SPAN_DANGER("The locker has been sliced open by [user] with \an [W]!"), SPAN_DANGER("You hear metal being sliced and sparks flying.")))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
 			playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
-			playsound(src.loc, "spark", 50, 1)
+			playsound(src.loc, SFX_SPARK, 50, 1)
 			open()
-	else if(istype(W, /obj/item/weapon/packageWrap))
+	else if(istype(W, /obj/item/packageWrap))
 		return
 	else if(isWelder(W) && (setup & CLOSET_CAN_BE_WELDED))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(0,user))
 			if(!WT.isOn())
 				return
@@ -432,7 +432,7 @@
 		for(var/i in 1 to rand(4, 8))
 			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
 								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200)|| locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && !cdoor))
+			if(!do_after(user, 200) || locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && dremovable && !cdoor))
 				multi.in_use = 0
 				return
 		locked = !locked
@@ -446,7 +446,7 @@
 	else
 		src.attack_hand(user)
 
-/obj/structure/closet/proc/slice_into_parts(obj/item/weapon/weldingtool/WT, mob/user)
+/obj/structure/closet/proc/slice_into_parts(obj/item/weldingtool/WT, mob/user)
 	if(!WT.remove_fuel(0,user))
 		to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
 		return
@@ -649,7 +649,7 @@
 
 	return togglelock(usr)
 
-/obj/structure/closet/proc/togglelock(mob/user, obj/item/weapon/card/id/id_card)
+/obj/structure/closet/proc/togglelock(mob/user, obj/item/card/id/id_card)
 	if(!(setup & CLOSET_HAS_LOCK))
 		return FALSE
 	if(!CanPhysicallyInteract(user))
@@ -679,7 +679,7 @@
 		to_chat(user, SPAN_WARNING("Access denied!"))
 		return FALSE
 
-/obj/structure/closet/proc/CanToggleLock(mob/user, obj/item/weapon/card/id/id_card)
+/obj/structure/closet/proc/CanToggleLock(mob/user, obj/item/card/id/id_card)
 	return allowed(user) || (istype(id_card) && check_access_list(id_card.GetAccess()))
 
 /obj/structure/closet/AltClick(mob/user)
@@ -750,7 +750,7 @@
 
 	return TRUE
 
-/obj/structure/closet/proc/attach_door(obj/item/weapon/shield/closet/C)
+/obj/structure/closet/proc/attach_door(obj/item/shield/closet/C)
 	if(cdoor)
 		return FALSE
 	broken = FALSE

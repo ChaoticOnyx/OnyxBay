@@ -1,7 +1,7 @@
 #define CONSTRUCT_SPELL_COST 1
 #define CONSTRUCT_SPELL_TYPE 2
 
-/spell/construction
+/datum/spell/construction
 	name = "Construction"
 	desc = "This ability will let you summon a structure of your choosing."
 
@@ -9,12 +9,12 @@
 	charge_max = 100
 	spell_flags = Z2NOCAST
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 
-	hud_state = "const_wall"
+	icon_state = "const_wall"
 	cast_sound = 'sound/effects/meteorimpact.ogg'
 
-/spell/construction/choose_targets()
+/datum/spell/construction/choose_targets()
 	var/list/possible_targets = list()
 	if(connected_god && connected_god.form)
 		for(var/type in connected_god.form.buildables)
@@ -33,7 +33,7 @@
 	else
 		return
 
-/spell/construction/cast_check(skipcharge, mob/user, list/targets)
+/datum/spell/construction/cast_check(skipcharge, mob/user, list/targets)
 	if(!..())
 		return 0
 	var/turf/T = get_turf(user)
@@ -46,7 +46,7 @@
 				return 0
 	return 1
 
-/spell/construction/cast(target, mob/user)
+/datum/spell/construction/cast(target, mob/user)
 	charge_max = target[CONSTRUCT_SPELL_COST]
 	target = target[CONSTRUCT_SPELL_TYPE]
 	var/turf/T = get_turf(user)

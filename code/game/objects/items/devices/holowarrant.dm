@@ -38,9 +38,9 @@
 			active = W
 	update_icon()
 
-/obj/item/device/holowarrant/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/holowarrant/attackby(obj/item/W, mob/user)
 	if(active)
-		var/obj/item/weapon/card/id/I = W.GetIdCard()
+		var/obj/item/card/id/I = W.GetIdCard()
 		if(I && (access_security in I.access))
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")
@@ -71,7 +71,7 @@
 	if(active.fields["arrestsearch"] == "arrest")
 		var/output = {"
 		<meta charset=\"utf-8\"><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
-		<BODY bgcolor='#ffffff'><center><large><b>Sol Central Government Colonial Marshal Bureau</b></large></br>
+		<BODY bgcolor='#ffffff'><center><large><b>Nano Trasen Board of Directors</b></large></br>
 		in the jurisdiction of the</br>
 		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
 		</br>

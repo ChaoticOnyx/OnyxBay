@@ -88,7 +88,7 @@
 		icon_state = "migniter-p"
 //		src.sd_SetLuminosity(0)
 
-/obj/machinery/sparker/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/sparker/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		add_fingerprint(user)
 		disable = !disable
@@ -146,12 +146,12 @@
 	active = 1
 	icon_state = "launcheract"
 
-	for(var/obj/machinery/sparker/M in SSmachines.machinery)
+	for(var/obj/machinery/sparker/M in GLOB.machines)
 		if (M.id == id)
 			spawn( 0 )
 				M.ignite()
 
-	for(var/obj/machinery/igniter/M in SSmachines.machinery)
+	for(var/obj/machinery/igniter/M in GLOB.machines)
 		if(M.id == id)
 			M.ignite()
 

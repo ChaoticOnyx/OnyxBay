@@ -1,6 +1,7 @@
 /obj/item/organ/internal/voicebox/nabber
 	status = ORGAN_ROBOTIC
 	name = "vocal synthesiser"
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "voicebox"
 	parent_organ = BP_CHEST
 	organ_tag = BP_VOICE

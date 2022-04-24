@@ -8,14 +8,14 @@
 /mob/living/carbon/human/proc/vampire_alertness()
 	set category = "Vampire"
 	set name = "Victim Alertness"
-	set desc = "Toggle whether you wish for your victims to get paralyzed and forget your deeds."
+	set desc = "Toggle whether you wish for your victims to forget your deeds."
 	var/power_use_cost = 0
 	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
 	vampire.stealth = !vampire.stealth
 	if(vampire.stealth)
-		to_chat(src, SPAN_NOTICE("Your victims will now forget your interactions, and get paralyzed when you do them."))
+		to_chat(src, SPAN_NOTICE("Your victims will now forget your interactions."))
 	else
-		to_chat(src, SPAN_NOTICE("Your victims will now remember your interactions, and stay completely mobile during them."))
+		to_chat(src, SPAN_NOTICE("Your victims will now remember your interactions."))
 
 // Drains the target's blood.
 /mob/living/carbon/human/proc/vampire_drain_blood()
@@ -36,7 +36,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (!istype(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (!istype(T) || T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		//Added this to prevent vampires draining diona and IPCs
 		//Diona have 'blood' but its really green sap and shouldn't help vampires
 		//IPCs leak oil
@@ -153,9 +153,11 @@
 	if(target_aware)
 		T.paralysis = 0
 		if(T.stat != DEAD && vampire.stealth)
-			to_chat(T, SPAN("warning", FONT_LARGE("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]")))
+			spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
+				alert(T, "You remember NOTHING about the cause of your blackout. Instead, you remember having a pleasant encounter with [src.name].", "Bitten by a vampire")
 		else if(T.stat != DEAD)
-			to_chat(T, SPAN("warning", FONT_LARGE("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.")))
+			spawn()
+				alert(T, "You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.", "Bitten by a vampire")
 	verbs -= /mob/living/carbon/human/proc/vampire_drain_blood
 	if(blood_drained <= 85)
 
@@ -610,7 +612,7 @@
 
 			// remove embedded objects and drop them on the floor
 			for(var/obj/implanted_object in current_organ.implants)
-				if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+				if(!istype(implanted_object,/obj/item/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
 					implanted_object.loc = get_turf(src)
 					current_organ.implants -= implanted_object
 
@@ -624,7 +626,7 @@
 				E.status &= ~ORGAN_TENDON_CUT
 				blood_used += 12
 			if(E.status & ORGAN_BROKEN)
-				E.status &= ~ORGAN_BROKEN
+				E.mend_fracture()
 				E.stage = 0
 				blood_used += 12
 				healed = TRUE
@@ -746,10 +748,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(is_mechanical(T))
-		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
-		return
-	if (!istype(T))
+	if(!istype(T) || T.isSynthetic())
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
 	if (!vampire_can_affect_target(T, 1, 1))
@@ -862,7 +861,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 
@@ -902,7 +901,7 @@
 	if (T.stat == 2)
 		to_chat(src, SPAN_WARNING("[T]'s body is broken and damaged beyond salvation. You have no use for them."))
 		return
-	if (T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 	if (vampire.status & VAMP_DRAINING)
@@ -927,8 +926,7 @@
 				return
 
 			GLOB.thralls.remove_antagonist(T.mind, 0, 0)
-			qdel(draining_vamp)
-			draining_vamp = null
+			draining_vamp.status &= ~VAMP_ISTHRALL
 		else
 			to_chat(src, SPAN_WARNING("You feel corruption running in [T]'s blood. Much like yourself, \he[T] is already a spawn of the Veil, and cannot be Embraced."))
 			return

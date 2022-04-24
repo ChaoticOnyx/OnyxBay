@@ -151,7 +151,7 @@ public sealed class Changelog
                 ChangePrefix.Experiment => "fas fa-hard-hat",
                 ChangePrefix.Admin => "fas fa-crown",
                 ChangePrefix.Balance => "fas fa-balance-scale",
-                _ => throw new NotImplementedException($"  🚫Для {prefix} не определена иконка.")
+                _ => throw new NotImplementedException($"  🚫 Для {prefix} не определена иконка.")
             };
         }
 
@@ -177,7 +177,7 @@ public sealed class Changelog
                 ChangePrefix.SoundDel
                 or ChangePrefix.RscDel
                 or ChangePrefix.ImageDel => "red",
-                _ => throw new NotImplementedException($"  🚫Для {prefix} не определён цвет.")
+                _ => throw new NotImplementedException($"  🚫 Для {prefix} не определён цвет.")
             };
         }
     }
@@ -238,12 +238,23 @@ public static class Github
         /// <returns>Чейнджлог</returns>
         public Changelog ParseChangelog()
         {
+            if (String.IsNullOrEmpty(Body))
+            {
+                throw new Exceptions.ChangelogNotFound("  🚫 Тело пулл реквеста пустое.");
+            }
+
             var changesBody = s_clBody.Match(Body);
+
+            if (!changesBody.Success)
+            {
+                throw new Exceptions.ChangelogNotFound("  🚫 Чейнджлог не обнаружен.");
+            }
+
             var matches = s_clSplit.Matches(changesBody.Value);
 
             if (matches.Count == 0)
             {
-                throw new InvalidOperationException($"  🚫Чейнджлог не обнаружен.");
+                throw new Exceptions.ChangelogIsEmpty("  🚫 Чейнджлог пустой или имеет неверный формат.");
             }
 
             var author = changesBody.Groups[2].Value.Trim();
@@ -265,7 +276,7 @@ public static class Github
 
                 if (parts.Length < 2)
                 {
-                    throw new InvalidOperationException($"  🚫Неверный формат изменения: '{match.Value}'");
+                    throw new InvalidOperationException($"  🚫 Неверный формат изменения: '{match.Value}'");
                 }
 
                 var prefix = parts[0].Trim();
@@ -336,5 +347,22 @@ public static class Github
         ///     Цвет плашки.
         /// </summary>
         public string Color { get; init; } = string.Empty;
+    }
+}
+
+public static class Exceptions
+{
+    public class ChangelogNotFound : Exception
+    {
+        public ChangelogNotFound() : base() {}
+        public ChangelogNotFound(string message) : base(message) {}
+        public ChangelogNotFound(string message, Exception inner) : base(message, inner) {}
+    }
+
+    public class ChangelogIsEmpty : Exception
+    {
+        public ChangelogIsEmpty() : base() { }
+        public ChangelogIsEmpty(string message) : base(message) { }
+        public ChangelogIsEmpty(string message, Exception inner) : base(message, inner) { }
     }
 }

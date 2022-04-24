@@ -15,7 +15,7 @@
 	animation.icon_state = "blank"
 	animation.icon = 'icons/mob/mob.dmi'
 	animation.master = src
-	playsound(src, "gib", 75, 1)
+	playsound(src, SFX_GIB, 75, 1)
 
 	flick(anim, animation)
 	if(do_gibs)

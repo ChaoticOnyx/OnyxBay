@@ -1,25 +1,29 @@
+#define CONTRACT_REASON 1
+#define CONTRACT_REWARD 2
+#define CONTRACT_CHANCE 3
+
 GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
+	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
-	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
-	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
+	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/rcd),
+	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
 	"a captain's jumpsuit" =                            list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
 	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
  	"the station's blueprints" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
 	"a sample of metroid extract" =                     list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
-	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/snacks/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
 	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/weapon/reagent_containers/hypospray),
-	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/pinpointer),
-	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/ionrifle/small),
-	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/projectile/automatic/wt550),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray),
+	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
+	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
+	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/automatic/wt550),
 	"an riot helmet" =                                  list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
 	"an riot armor vest" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
 	"an ballistic helmet" =                             list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ballistic),
@@ -57,38 +61,46 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return src
 
 /datum/antag_contract/proc/ban_non_crew_antag()
-	for(var/antag_type in list(MODE_MEME, MODE_BLOB, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
+	for(var/antag_type in list(MODE_MEME, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
 		reason_list[antag_type] = list("NA", "NA", 0)
 
 /datum/antag_contract/proc/generate_antag_reasons() // call this first!
     for(var/antag_type in GLOB.all_antag_types_)
         reason_list[antag_type] = list() // 1 - reason, 2 - reward mod, 3 - chance to pick
 
-/datum/antag_contract/proc/skip_antag_role(skip_third_param = FALSE)
-	var/return_value = TRUE // return TRUE if you need to delete contract
-	if(length(reason_list) && target_mind && player_is_antag(target_mind))
-		for(var/antag_type in GLOB.all_antag_types_)
-			var/datum/antagonist/antag = GLOB.all_antag_types_[antag_type]
-			if(antag.is_antagonist(target_mind))
-				var/list/params = reason_list[antag_type]
-				if(length(params) > 2)
-					var/chance = params[3]
-					if(skip_third_param)
-						chance = 100
-					if(prob(chance))
-						reason = params[1]
-						reward = reward * params[2]
-						return_value = FALSE
-					else
-						return_value = TRUE
-					break
-				else
-					return_value = FALSE
-	else
-		return_value = FALSE
-	return return_value
+// Return TRUE if you need to delete the contract
+/datum/antag_contract/proc/skip_antag_role(skip_chance_check = FALSE)
+	if(!length(reason_list))
+		return TRUE // Something's wrong, contracts can wait
+	if(!target_mind)
+		return FALSE // Something's wrong, but let's handle it outside this proc
+	if(!player_is_antag(target_mind))
+		return FALSE // No need to check at all
 
-/datum/antag_contract/proc/create_contract(Creason, target)
+	for(var/antag_type in GLOB.all_antag_types_)
+		var/datum/antagonist/antag = GLOB.all_antag_types_[antag_type]
+		if(!antag.is_antagonist(target_mind))
+			continue
+
+		var/list/params = reason_list[antag_type]
+		if(length(params) < 3)
+			continue // This exact role is not in the check-list, but there's still a possibility of the target having multiple roles at once.
+
+		if(skip_chance_check || prob(params[CONTRACT_CHANCE]))
+			reason = params[CONTRACT_REASON]
+			reward = reward * params[CONTRACT_REWARD]
+			return FALSE // RNG wants the target dead regardless of their role
+
+		return TRUE // The target's role has saved them from being a target
+
+	return FALSE
+
+/datum/antag_contract/proc/skip_unwanted_species(mob/living/carbon/human/H)
+	if(!H?.species)
+		return FALSE
+	return !!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET)
+
+/datum/antag_contract/proc/create_contract(new_reason, target)
 	return
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
@@ -136,11 +148,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 // A contract to steal a specific item - allows you to check all contents (recursively) for the target item
 /datum/antag_contract/item
 
-/datum/antag_contract/item/proc/on_container(obj/item/weapon/storage/briefcase/std/container)
+/datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
 		complete(container.uplink)
 
-/datum/antag_contract/item/proc/check(obj/item/weapon/storage/container)
+/datum/antag_contract/item/proc/check(obj/item/storage/container)
 	return check_contents(container.GetAllContents())
 
 /datum/antag_contract/item/proc/check_contents(list/contents)
@@ -163,12 +175,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reason_list[MODE_ERT] = list("they want to get location of ERT base and [GLOB.using_map.company_name] objects security codes", 2, 80)
 	ban_non_crew_antag()
 
-/datum/antag_contract/implant/create_contract(Creason, datum/mind/target)
+/datum/antag_contract/implant/create_contract(new_reason, datum/mind/target)
 	generate_antag_reasons()
-	if(!Creason)
-		reason = pick("they want to known the target's patterns", "they want to know the status of the target's importance for [GLOB.using_map.company_name]", "they want to know what the target does on [GLOB.using_map.station_name]")
+	if(!new_reason)
+		reason = pick("they want to known the target's patterns", \
+					  "they want to know the status of the target's importance for [GLOB.using_map.company_name]", \
+					  "they want to know what the target does on [GLOB.using_map.station_name]")
 	else
-		reason = Creason
+		reason = new_reason
 
 	var/mob/living/carbon/human/H
 	if(!target)
@@ -187,15 +201,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 				continue
 
 			target_mind = candidate_mind
-			var/skipped = skip_antag_role()
-			if(skipped)
+			if(skip_antag_role() || skip_unwanted_species(H))
 				target_mind = null
 				H = null
 				continue
 			name = "[name] [H.real_name]"
 			break
 	else
-		if(!Creason)
+		if(!new_reason)
 			skip_antag_role(TRUE)
 		H = target.current
 		if(!istype(H))
@@ -210,7 +223,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/implant/can_place()
 	return ..() && target_mind
 
-/datum/antag_contract/implant/proc/check(obj/item/weapon/implant/spy/implant)
+/datum/antag_contract/implant/proc/check(obj/item/implant/spy/implant)
 	if(completed)
 		return
 	if(implant.imp_in && implant.imp_in.mind == target_mind)
@@ -250,10 +263,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/item/steal/create_contract(Creason, target)
+/datum/antag_contract/item/steal/create_contract(new_reason, target)
 	target_type = target
-	if(Creason)
-		reason = Creason
+	if(new_reason)
+		reason = new_reason
 	else
 		reason = get_steal_reason()
 	if(!target_type)
@@ -290,11 +303,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/item/steal_ai/create_contract(Creason, mob/living/silicon/ai/target)
-	if(!Creason)
+/datum/antag_contract/item/steal_ai/create_contract(new_reason, mob/living/silicon/ai/target)
+	if(!new_reason)
 		reason = pick("they want to spread a virus to the main [GLOB.using_map.company_name]'s AI module responsible for creating new AI personalities using the AI ​​you will steal")
 	else
-		reason = Creason
+		reason = new_reason
 	if(target)
 		AI = target
 	else
@@ -317,7 +330,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return ..() && istype(AI)
 
 /datum/antag_contract/item/steal_ai/check_contents(list/contents)
-	var/obj/item/weapon/aicard/card = locate() in contents
+	var/obj/item/aicard/card = locate() in contents
 	return card?.carded_ai == AI
 
 /datum/antag_contract/item/blood
@@ -332,11 +345,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/item/blood/create_contract(Creason, target)
-	if(!Creason)
+/datum/antag_contract/item/blood/create_contract(new_reason, target)
+	if(!new_reason)
 		reason = pick("they want to research a NanoTrasen employee's genome")
 	else
-		reason = Creason
+		reason = new_reason
 	if(!isnum_safe(target))
 		count = rand(3, 6)
 	else
@@ -345,7 +358,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
-	for(var/obj/item/weapon/reagent_containers/C in contents)
+	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
 		if(!data || (data["blood_DNA"] in samples))
 			continue
@@ -377,12 +390,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reason_list[MODE_ERT] = list("the target is very dangerous for the current operations at this object", 4, 85)
 	ban_non_crew_antag()
 
-/datum/antag_contract/item/assassinate/create_contract(Creason, datum/mind/Ctarget)
+/datum/antag_contract/item/assassinate/create_contract(new_reason, datum/mind/Ctarget)
 	generate_antag_reasons()
-	if(!Creason)
+	if(!new_reason)
 		reason = pick("the target shut down their agent on mission", "the target important to NanoTransen")
 	else
-		reason = Creason
+		reason = new_reason
 
 	if(!Ctarget)
 		var/list/candidates = SSticker.minds.Copy()
@@ -401,8 +414,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			target_real_name = H.real_name
 			target_mind = candidate_mind
-			var/skipped = skip_antag_role()
-			if(skipped)
+			if(skip_antag_role() || skip_unwanted_species())
 				target_mind = null
 				H = null
 				continue
@@ -410,7 +422,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			break
 	else
 		target_mind = Ctarget
-		if(!Creason)
+		if(!new_reason)
 			skip_antag_role(TRUE)
 		H = target_mind.current
 		if(!istype(H))
@@ -473,11 +485,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	organization = contract_organization
 	create_contract(reason, target)
 
-/datum/antag_contract/item/dump/create_contract(Creason, target)
-	if(!Creason)
+/datum/antag_contract/item/dump/create_contract(new_reason, target)
+	if(!new_reason)
 		reason = pick("they want to finance their agent on another object of [GLOB.using_map.company_name]'s station", "they want to update their stocks on local [GLOB.using_map.company_name]'s market")
 	else
-		reason = Creason
+		reason = new_reason
 	if(!isnum_safe(target))
 		sum = rand(30, 40) * 500
 	else
@@ -487,7 +499,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
-	for(var/obj/item/weapon/spacecash/cash in contents)
+	for(var/obj/item/spacecash/cash in contents)
 		received += cash.worth
 	return received == sum
 
@@ -504,11 +516,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	organization = contract_organization
 	create_contract(reason, target)
 
-/datum/antag_contract/item/research/create_contract(Creason, list/datum/design/target)
-	if(!Creason)
+/datum/antag_contract/item/research/create_contract(new_reason, list/datum/design/target)
+	if(!new_reason)
 		reason = pick("a foreigh research division needs your help in acquiring valuable scientific data", "they have high-likely rumors about some designs located on [GLOB.using_map.station_name]")
 	else
-		reason = Creason
+		reason = new_reason
 	var/list/targets_name = list()
 	if(!islist(target))
 		var/list/datum/design/candidates = list()
@@ -534,7 +546,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(R?.build_path)
 				targets.Add(R)
 				targets_name.Add(R.name)
-	create_explain_text("send a <b>fabricator data disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
+	create_explain_text("send a <b>component design disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
@@ -544,7 +556,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	++counter
 
 /datum/antag_contract/item/research/check_contents(list/contents)
-	for(var/obj/item/weapon/disk/design_disk/D in contents)
+	for(var/obj/item/disk/design_disk/D in contents)
 		if(D.blueprint.type in targets)
 			return TRUE
 	return FALSE
@@ -560,11 +572,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/recon/create_contract(Creason, list/area/target)
-	if(!Creason)
+/datum/antag_contract/recon/create_contract(new_reason, list/area/target)
+	if(!new_reason)
 		reason = pick("they want to know what objects are located in this area")
 	else
-		reason = Creason
+		reason = new_reason
 	if(islist(target))
 		for(var/area/A in target)
 			targets.Add(A)
@@ -591,3 +603,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	for(var/area/A in sensor.active_recon_areas_list)
 		if(A in targets)
 			complete(sensor.uplink)
+
+#undef CONTRACT_REASON
+#undef CONTRACT_REWARD
+#undef CONTRACT_CHANCE

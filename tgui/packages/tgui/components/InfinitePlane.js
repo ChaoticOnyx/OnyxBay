@@ -1,17 +1,17 @@
-import { computeBoxProps } from './Box';
-import { Stack } from './Stack';
-import { ProgressBar } from './ProgressBar';
-import { Button } from './Button';
-import { Component } from 'inferno';
+import { computeBoxProps } from './Box'
+import { Stack } from './Stack'
+import { ProgressBar } from './ProgressBar'
+import { Button } from './Button'
+import { Component } from 'inferno'
 
-const ZOOM_MIN_VAL = 0.5;
-const ZOOM_MAX_VAL = 1.5;
+const ZOOM_MIN_VAL = 0.5
+const ZOOM_MAX_VAL = 1.5
 
-const ZOOM_INCREMENT = 0.1;
+const ZOOM_INCREMENT = 0.1
 
 export class InfinitePlane extends Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
 
     this.state = {
       mouseDown: false,
@@ -22,68 +22,68 @@ export class InfinitePlane extends Component {
       lastLeft: 0,
       lastTop: 0,
 
-      zoom: 1,
-    };
+      zoom: 1
+    }
 
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseMove = this.handleMouseMove.bind(this);
-    this.onMouseUp = this.onMouseUp.bind(this);
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
 
-    this.doOffsetMouse = this.doOffsetMouse.bind(this);
+    this.doOffsetMouse = this.doOffsetMouse.bind(this)
   }
 
-  componentDidMount() {
-    window.addEventListener('mouseup', this.onMouseUp);
+  componentDidMount () {
+    window.addEventListener('mouseup', this.onMouseUp)
 
-    window.addEventListener('mousedown', this.doOffsetMouse);
-    window.addEventListener('mousemove', this.doOffsetMouse);
-    window.addEventListener('mouseup', this.doOffsetMouse);
+    window.addEventListener('mousedown', this.doOffsetMouse)
+    window.addEventListener('mousemove', this.doOffsetMouse)
+    window.addEventListener('mouseup', this.doOffsetMouse)
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('mouseup', this.onMouseUp);
+  componentWillUnmount () {
+    window.removeEventListener('mouseup', this.onMouseUp)
 
-    window.removeEventListener('mousedown', this.doOffsetMouse);
-    window.removeEventListener('mousemove', this.doOffsetMouse);
-    window.removeEventListener('mouseup', this.doOffsetMouse);
+    window.removeEventListener('mousedown', this.doOffsetMouse)
+    window.removeEventListener('mousemove', this.doOffsetMouse)
+    window.removeEventListener('mouseup', this.doOffsetMouse)
   }
 
-  doOffsetMouse(event) {
-    const { zoom } = this.state;
-    event.screenZoomX = event.screenX * Math.pow(zoom, -1);
-    event.screenZoomY = event.screenY * Math.pow(zoom, -1);
+  doOffsetMouse (event) {
+    const { zoom } = this.state
+    event.screenZoomX = event.screenX * Math.pow(zoom, -1)
+    event.screenZoomY = event.screenY * Math.pow(zoom, -1)
   }
 
-  handleMouseDown(event) {
+  handleMouseDown (event) {
     this.setState((state) => {
       return {
         mouseDown: true,
         lastLeft: event.clientX - state.left,
-        lastTop: event.clientY - state.top,
-      };
-    });
+        lastTop: event.clientY - state.top
+      }
+    })
   }
 
-  onMouseUp() {
+  onMouseUp () {
     this.setState({
-      mouseDown: false,
-    });
+      mouseDown: false
+    })
   }
 
-  handleMouseMove(event) {
+  handleMouseMove (event) {
     if (this.state.mouseDown) {
       this.setState((state) => {
         return {
           left: event.clientX - state.lastLeft,
-          top: event.clientY - state.lastTop,
-        };
-      });
+          top: event.clientY - state.lastTop
+        }
+      })
     }
   }
 
-  render() {
-    const { children, backgroundImage, imageWidth, ...rest } = this.props;
-    const { left, top, zoom } = this.state;
+  render () {
+    const { children, backgroundImage, imageWidth, ...rest } = this.props
+    const { left, top, zoom } = this.state
 
     return (
       <div
@@ -93,31 +93,31 @@ export class InfinitePlane extends Component {
           style: {
             ...rest.style,
             overflow: 'hidden',
-            position: 'relative',
-          },
+            position: 'relative'
+          }
         })}>
         <div
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           style={{
-            'position': 'fixed',
-            'height': '100%',
-            'width': '100%',
+            position: 'fixed',
+            height: '100%',
+            width: '100%',
             'background-image': `url("${backgroundImage}")`,
             'background-position': `${left}px ${top}px`,
             'background-repeat': 'repeat',
-            'background-size': `${zoom * imageWidth}px`,
+            'background-size': `${zoom * imageWidth}px`
           }}
         />
         <div
           onMouseDown={this.handleMouseDown}
           onMouseMove={this.handleMouseMove}
           style={{
-            'position': 'fixed',
-            'transform': `translate(${left}px, ${top}px) scale(${zoom})`,
+            position: 'fixed',
+            transform: `translate(${left}px, ${top}px) scale(${zoom})`,
             'transform-origin': 'top left',
-            'height': '100%',
-            'width': '100%',
+            height: '100%',
+            width: '100%'
           }}>
           {children}
         </div>
@@ -128,7 +128,7 @@ export class InfinitePlane extends Component {
               icon='minus'
               onClick={() =>
                 this.setState({
-                  zoom: Math.max(zoom - ZOOM_INCREMENT, ZOOM_MIN_VAL),
+                  zoom: Math.max(zoom - ZOOM_INCREMENT, ZOOM_MIN_VAL)
                 })
               }
             />
@@ -146,13 +146,13 @@ export class InfinitePlane extends Component {
               icon='plus'
               onClick={() =>
                 this.setState({
-                  zoom: Math.min(zoom + ZOOM_INCREMENT, ZOOM_MAX_VAL),
+                  zoom: Math.min(zoom + ZOOM_INCREMENT, ZOOM_MAX_VAL)
                 })
               }
             />
           </Stack.Item>
         </Stack>
       </div>
-    );
+    )
   }
 }

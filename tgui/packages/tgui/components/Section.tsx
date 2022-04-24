@@ -1,50 +1,51 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { canRender, classes } from 'common/react';
-import { Component, createRef, InfernoNode, RefObject } from 'inferno';
-import { addScrollableNode, removeScrollableNode } from '../events';
-import { BoxProps, computeBoxClassName, computeBoxProps } from './Box';
+import { canRender, classes } from 'common/react'
+import { Component, createRef, InfernoNode, RefObject } from 'inferno'
+import { addScrollableNode, removeScrollableNode } from '../events'
+import { BoxProps, computeBoxClassName, computeBoxProps } from './Box'
 
 interface SectionProps extends BoxProps {
-  className?: string;
-  title?: string;
-  buttons?: InfernoNode;
-  fill?: boolean;
-  fitted?: boolean;
-  scrollable?: boolean;
+  className?: string
+  title?: string
+  buttons?: InfernoNode
+  fill?: boolean
+  fitted?: boolean
+  scrollable?: boolean
   /** @deprecated This property no longer works, please remove it. */
-  level?: boolean;
+  level?: boolean
   /** @deprecated Please use `scrollable` property */
-  overflowY?: any;
+  overflowY?: any
 }
 
 export class Section extends Component<SectionProps> {
-  scrollableRef: RefObject<HTMLDivElement>;
-  scrollable: boolean;
+  scrollableRef: RefObject<HTMLDivElement>
+  scrollable: boolean
 
-  constructor(props) {
-    super(props);
-    this.scrollableRef = createRef();
-    this.scrollable = props.scrollable;
+  constructor (props) {
+    super(props)
+    this.scrollableRef = createRef()
+    this.scrollable = props.scrollable
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.scrollable) {
-      addScrollableNode(this.scrollableRef.current);
+      addScrollableNode(this.scrollableRef.current)
     }
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     if (this.scrollable) {
-      removeScrollableNode(this.scrollableRef.current);
+      removeScrollableNode(this.scrollableRef.current)
     }
   }
 
-  render() {
+  render () {
     const {
       className,
       title,
@@ -54,8 +55,8 @@ export class Section extends Component<SectionProps> {
       scrollable,
       children,
       ...rest
-    } = this.props;
-    const hasTitle = canRender(title) || canRender(buttons);
+    } = this.props
+    const hasTitle = canRender(title) || canRender(buttons)
     return (
       <div
         className={classes([
@@ -65,7 +66,7 @@ export class Section extends Component<SectionProps> {
           fitted && 'Section--fitted',
           scrollable && 'Section--scrollable',
           className,
-          computeBoxClassName(rest),
+          computeBoxClassName(rest)
         ])}
         {...computeBoxProps(rest)}>
         {hasTitle && (
@@ -80,6 +81,6 @@ export class Section extends Component<SectionProps> {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }

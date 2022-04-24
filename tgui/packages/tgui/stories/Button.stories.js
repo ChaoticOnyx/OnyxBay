@@ -4,12 +4,13 @@
  * @license MIT
  */
 
-import { Box, Button, Section } from '../components';
+import { Box, Button, Section } from '../components'
 
 export const meta = {
   title: 'Button',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const COLORS_SPECTRUM = [
   'red',
@@ -23,16 +24,16 @@ const COLORS_SPECTRUM = [
   'purple',
   'pink',
   'brown',
-  'grey',
-];
+  'grey'
+]
 
 const COLORS_STATES = [
   'good',
   'average',
   'bad',
   'black',
-  'white',
-];
+  'white'
+]
 
 const Story = (props, context) => {
   return (
@@ -78,5 +79,5 @@ const Story = (props, context) => {
         ))}
       </Box>
     </Section>
-  );
-};
+  )
+}

@@ -4,7 +4,7 @@
 	icon_keyboard = "atmos_key"
 	icon_screen = "area_atmos"
 	light_color = "#e6ffff"
-	circuit = /obj/item/weapon/circuitboard/area_atmos
+	circuit = /obj/item/circuitboard/area_atmos
 
 	var/list/connectedscrubbers = new()
 	var/status = ""
@@ -20,10 +20,10 @@
 		spawn(10)
 			scanscrubbers()
 
-	attack_ai(var/mob/user as mob)
+	attack_ai(mob/user as mob)
 		return src.attack_hand(user)
 
-	attack_hand(var/mob/user as mob)
+	attack_hand(mob/user as mob)
 		if(..(user))
 			return
 		var/dat = {"
@@ -114,7 +114,7 @@
 			scrubber.on = text2num(href_list["toggle"])
 			scrubber.update_icon()
 
-	proc/validscrubber( var/obj/machinery/portable_atmospherics/powered/scrubber/huge/scrubber as obj )
+	proc/validscrubber(obj/machinery/portable_atmospherics/powered/scrubber/huge/scrubber as obj)
 		if(!isobj(scrubber) || get_dist(scrubber.loc, src.loc) > src.range || scrubber.loc.z != src.loc.z)
 			return 0
 
@@ -138,7 +138,7 @@
 /obj/machinery/computer/area_atmos/area
 	zone = "This computer is working in a wired network limited to this area."
 
-	validscrubber( var/obj/machinery/portable_atmospherics/powered/scrubber/huge/scrubber as obj )
+	validscrubber(obj/machinery/portable_atmospherics/powered/scrubber/huge/scrubber as obj)
 		if(!isobj(scrubber))
 			return 0
 

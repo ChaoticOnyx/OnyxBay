@@ -4,9 +4,9 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
-import { computeBoxClassName, computeBoxProps } from '../components/Box';
-import { addScrollableNode, removeScrollableNode } from '../events';
+import { classes } from 'common/react'
+import { computeBoxClassName, computeBoxProps } from '../components/Box'
+import { addScrollableNode, removeScrollableNode } from '../events'
 
 export const Layout = props => {
   const {
@@ -14,22 +14,22 @@ export const Layout = props => {
     theme = 'nanotrasen',
     children,
     ...rest
-  } = props;
-  
+  } = props
+
   return (
     <div className={'theme-' + theme}>
       <div
         className={classes([
           'Layout',
           className,
-          ...computeBoxClassName(rest),
+          ...computeBoxClassName(rest)
         ])}
         {...computeBoxProps(rest)}>
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
 const LayoutContent = props => {
   const {
@@ -37,24 +37,24 @@ const LayoutContent = props => {
     scrollable,
     children,
     ...rest
-  } = props;
+  } = props
   return (
     <div
       className={classes([
         'Layout__content',
         scrollable && 'Layout__content--scrollable',
         className,
-        ...computeBoxClassName(rest),
+        ...computeBoxClassName(rest)
       ])}
       {...computeBoxProps(rest)}>
       {children}
     </div>
-  );
-};
+  )
+}
 
 LayoutContent.defaultHooks = {
   onComponentDidMount: node => addScrollableNode(node),
-  onComponentWillUnmount: node => removeScrollableNode(node),
-};
+  onComponentWillUnmount: node => removeScrollableNode(node)
+}
 
-Layout.Content = LayoutContent;
+Layout.Content = LayoutContent

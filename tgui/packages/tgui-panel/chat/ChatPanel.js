@@ -4,58 +4,58 @@
  * @license MIT
  */
 
-import { shallowDiffers } from 'common/react';
-import { Component, createRef } from 'inferno';
-import { Button } from 'tgui/components';
-import { chatRenderer } from './renderer';
+import { shallowDiffers } from 'common/react'
+import { Component, createRef } from 'inferno'
+import { Button } from 'tgui/components'
+import { chatRenderer } from './renderer'
 
 export class ChatPanel extends Component {
-  constructor() {
-    super();
-    this.ref = createRef();
+  constructor () {
+    super()
+    this.ref = createRef()
     this.state = {
-      scrollTracking: true,
-    };
+      scrollTracking: true
+    }
     this.handleScrollTrackingChange = (value) =>
       this.setState({
-        scrollTracking: value,
-      });
+        scrollTracking: value
+      })
   }
 
-  componentDidMount() {
-    chatRenderer.mount(this.ref.current);
+  componentDidMount () {
+    chatRenderer.mount(this.ref.current)
     chatRenderer.events.on(
       'scrollTrackingChanged',
-      this.handleScrollTrackingChange,
-    );
-    this.componentDidUpdate();
+      this.handleScrollTrackingChange
+    )
+    this.componentDidUpdate()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     chatRenderer.events.off(
       'scrollTrackingChanged',
-      this.handleScrollTrackingChange,
-    );
+      this.handleScrollTrackingChange
+    )
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate (prevProps) {
     requestAnimationFrame(() => {
-      chatRenderer.ensureScrollTracking();
-    });
-    const shouldUpdateStyle
-      = !prevProps || shallowDiffers(this.props, prevProps);
+      chatRenderer.ensureScrollTracking()
+    })
+    const shouldUpdateStyle =
+      !prevProps || shallowDiffers(this.props, prevProps)
     if (shouldUpdateStyle) {
       chatRenderer.assignStyle({
-        'width': '100%',
+        width: '100%',
         'white-space': 'pre-wrap',
         'font-size': this.props.fontSize,
-        'line-height': this.props.lineHeight,
-      });
+        'line-height': this.props.lineHeight
+      })
     }
   }
 
-  render() {
-    const { scrollTracking } = this.state;
+  render () {
+    const { scrollTracking } = this.state
     return (
       <>
         <div className='Chat' ref={this.ref} />
@@ -68,6 +68,6 @@ export class ChatPanel extends Component {
           </Button>
         )}
       </>
-    );
+    )
   }
 }

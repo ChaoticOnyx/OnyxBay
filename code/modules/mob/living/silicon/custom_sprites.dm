@@ -1,4 +1,3 @@
-// look in config/custom_sprites.json for example.
 //list(ckey = real_name,)
 //Since the ckey is used as the icon_state, the current system will only permit a single custom robot sprite per ckey.
 //While it might be possible for a ckey to use that custom sprite for several real_names, it seems rather pointless to support it.
@@ -6,9 +5,11 @@ GLOBAL_LIST_EMPTY(robot_custom_icons)
 GLOBAL_LIST_EMPTY(ai_custom_icons)
 
 /hook/startup/proc/load_silicon_custom_sprites()
+	if(!fexists("config/custom_sprites.json"))
+		return
 	var/list/config_json = json_decode(file2text("config/custom_sprites.json"))
 #ifdef CUSTOM_ITEM_AI_HOLO
-	for(var/list/item in config_json["aiholo"])
+	for(var/list/item in config_json["ai_holo"])
 		var/ckey = item["ckey"]
 		var/real_name = item["sprite"]
 
@@ -31,7 +32,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 	var/list/custom_icon_states = icon_states(CUSTOM_ITEM_AI)
 	var/custom_index = 0
 
-	for(var/list/item in config_json["aicore"])
+	for(var/list/item in config_json["ai_core"])
 		var/ckey = item["ckey"]
 		var/real_name = item["sprite"]
 
@@ -65,4 +66,3 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 			else
 				to_chat(src, SPAN_WARNING("Could not locate [ckey]-Standard sprite. Please report this to local developer"))
 				icon =  'icons/mob/robots.dmi'
-

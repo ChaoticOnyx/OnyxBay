@@ -1,4 +1,4 @@
-/spell/targeted/projectile/dumbfire/passage
+/datum/spell/targeted/projectile/dumbfire/passage
 	name = "Passage"
 	desc = "throw a spell towards an area and teleport to it."
 	feedback = "PA"
@@ -9,20 +9,20 @@
 	charge_max = 250
 	spell_flags = 0
 	invocation = "A'YASAMA"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 15
 
 
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	spell_flags = NEEDSCLOTHES
 	duration = 10
 
 	proj_step_delay = 1
 
-	hud_state = "gen_project"
+	icon_state = "gen_project"
 
 
-/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)
+/datum/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)
 	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
 		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
 		cell.go_out()
@@ -37,7 +37,7 @@
 	S.start()
 
 
-/spell/targeted/projectile/dumbfire/passage/empower_spell()
+/datum/spell/targeted/projectile/dumbfire/passage/empower_spell()
 	if(!..())
 		return FALSE
 

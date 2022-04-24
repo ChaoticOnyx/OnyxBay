@@ -7,6 +7,7 @@
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
+	generic_attack_mod = 2.0
 	primitive_form = "Stok"
 	darksight_range = 3
 	darksight_tint = DARKTINT_MODERATE
@@ -152,7 +153,7 @@
 					FE.internal_organs |= organ
 					H.internal_organs |= organ
 					H.internal_organs_by_name[organ.organ_tag] = organ
-					organ.after_organ_creation()
+					organ.handle_foreign()
 				return
 			else
 				for(var/datum/wound/W in E.wounds)

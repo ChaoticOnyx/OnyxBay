@@ -69,7 +69,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/glass))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")
@@ -367,15 +367,14 @@
 	desc = "A genuine Admiral Krush Bosun's Whistle, for the aspiring ship's captain! Suitable for ages 8 and up, do not swallow."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "bosunwhistle"
-	var/cooldown = 0
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 
 /obj/item/toy/bosunwhistle/attack_self(mob/user)
-	if(cooldown < world.time - 35)
+	THROTTLE(cooldown, 35)
+	if(cooldown)
 		to_chat(user, "<span class='notice'>You blow on [src], creating an ear-splitting noise!</span>")
 		playsound(user, 'sound/misc/boatswain.ogg', 20, 1)
-		cooldown = world.time
 
 /*
  * Mech prizes
@@ -383,21 +382,21 @@
 /obj/item/toy/prize
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "ripleytoy"
-	var/cooldown = 0
 
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize/attack_self(mob/user)
-	if(cooldown < world.time - 8)
+	THROTTLE(cooldown, 8)
+	if(cooldown)
 		to_chat(user, "<span class='notice'>You play with [src].</span>")
 		playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
 		cooldown = world.time
 
 /obj/item/toy/prize/attack_hand(mob/user)
 	if(loc == user)
-		if(cooldown < world.time - 8)
+		THROTTLE(cooldown, 8)
+		if(cooldown)
 			to_chat(user, "<span class='notice'>You play with [src].</span>")
 			playsound(user, 'sound/mecha/mechturn.ogg', 20, 1)
-			cooldown = world.time
 			return
 	..()
 
@@ -813,7 +812,7 @@
 	w_class = ITEM_SIZE_HUGE
 	attack_verb = list("attacked", "slashed", "stabbed", "poked")
 
-/obj/item/weapon/inflatable_duck
+/obj/item/inflatable_duck
 	name = "inflatable duck"
 	desc = "No bother to sink or swim when you can just float!"
 	icon_state = "inflatable"
@@ -821,7 +820,7 @@
 	icon = 'icons/obj/clothing/belts.dmi'
 	slot_flags = SLOT_BELT
 
-/obj/item/weapon/marshalling_wand
+/obj/item/marshalling_wand
 	name = "marshalling wand"
 	desc = "An illuminated, hand-held baton used by hangar personnel to visually signal shuttle pilots. The signal changes depending on your intent."
 	icon_state = "marshallingwand"
@@ -836,11 +835,11 @@
 	force = 1
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
 
-/obj/item/weapon/marshalling_wand/Initialize()
+/obj/item/marshalling_wand/Initialize()
 	set_light(0.6, 0.5, 2, 2, "#ff0000")
 	return ..()
 
-/obj/item/weapon/marshalling_wand/attack_self(mob/living/user)
+/obj/item/marshalling_wand/attack_self(mob/living/user)
 	if (user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'>[user] beckons with \the [src], signalling forward motion.</span>",
 							"<span class='notice'>You beckon with \the [src], signalling forward motion.</span>")
@@ -890,6 +889,12 @@
 	density = 1
 	var/dodgecount = 0
 	var/spam_flag = 0
+	var/very_dangerous = TRUE
+
+/obj/item/toy/chubbyskeleton/notsans
+	name = "Unknown"
+	icon_state = "notsans"
+	very_dangerous = FALSE
 
 /obj/item/toy/chubbyskeleton/New()
 	..()
@@ -959,9 +964,10 @@
 		speak(pick("geeettttttt dunked on!!!","told ya."))
 		if(istype(user, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = user
-			H.ChangeToSkeleton()
-			for(var/obj/item/W in H)
-				H.drop_from_inventory(W)
+			if(very_dangerous)
+				H.ChangeToSkeleton()
+			for(var/obj/item/I in H)
+				H.drop_from_inventory(I)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
 
 /obj/item/toy/banbanana

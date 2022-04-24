@@ -2,10 +2,10 @@
  * Uses DOMPurify to purify/sanitise HTML.
  */
 
-import DOMPurify from 'dompurify';
+import DOMPurify from 'dompurify'
 
 // Default values
-let defTag = [
+const defTag = [
   'b',
   'br',
   'center',
@@ -25,9 +25,9 @@ let defTag = [
   'th',
   'tr',
   'u',
-  'ul',
-];
-let defAttr = ['class', 'style'];
+  'ul'
+]
+const defAttr = ['class', 'style']
 
 /**
  * Feed it a string and it should spit out a sanitized version.
@@ -44,6 +44,10 @@ export const sanitizeText = (input, tags = defTag, forbidAttr = defAttr) => {
   // kill href links or such
   return DOMPurify.sanitize(input, {
     ALLOWED_TAGS: tags,
-    FORBID_ATTR: forbidAttr,
-  });
-};
+    FORBID_ATTR: forbidAttr
+  })
+}
+
+export const escapeRegExp = (string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
+}

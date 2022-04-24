@@ -1,16 +1,17 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-export const THEMES = ['light', 'dark'];
+export const THEMES = ['light', 'dark']
 
-const COLOR_DARK_BG = '#202020';
-const COLOR_DARK_BG_DARKER = '#171717';
-const COLOR_DARK_TEXT = '#a4bad6';
+const COLOR_DARK_BG = '#202020'
+const COLOR_DARK_BG_DARKER = '#171717'
+const COLOR_DARK_TEXT = '#a4bad6'
 
-let setClientThemeTimer = null;
+let setClientThemeTimer = null
 
 /**
  * Darkmode preference, originally by Kmc2000.
@@ -25,11 +26,11 @@ let setClientThemeTimer = null;
 export const setClientTheme = name => {
   // Transmit once for fast updates and again in a little while in case we won
   // the race against statbrowser init.
-  clearInterval(setClientThemeTimer);
-  Byond.command(`.output statbrowser:set_theme ${name}`);
+  clearInterval(setClientThemeTimer)
+  Byond.command(`.output statbrowser:set_theme ${name}`)
   setClientThemeTimer = setTimeout(() => {
-    Byond.command(`.output statbrowser:set_theme ${name}`);
-  }, 1500);
+    Byond.command(`.output statbrowser:set_theme ${name}`)
+  }, 1500)
 
   if (name === 'light') {
     return Byond.winset({
@@ -76,17 +77,17 @@ export const setClientTheme = name => {
       'saybutton.background-color': 'none',
       'saybutton.text-color': '#000000',
       'hotkey_toggle.background-color': 'none',
-      'hotkey_toggle.text-color': '#000000',   
+      'hotkey_toggle.text-color': '#000000',
       'input.background-color': 'none',
-      'input.text-color': '#000000',   
+      'input.text-color': '#000000',
       // Alt variants
       'saybutton_alt.background-color': 'none',
       'saybutton_alt.text-color': '#000000',
       'hotkey_toggle_alt.background-color': 'none',
-      'hotkey_toggle_alt.text-color': '#000000',      
+      'hotkey_toggle_alt.text-color': '#000000',
       'input_alt.background-color': 'none',
-      'input_alt.text-color': '#000000',
-    });
+      'input_alt.text-color': '#000000'
+    })
   }
   if (name === 'dark') {
     Byond.winset({
@@ -142,7 +143,7 @@ export const setClientTheme = name => {
       'hotkey_toggle_alt.background-color': COLOR_DARK_BG,
       'hotkey_toggle_alt.text-color': COLOR_DARK_TEXT,
       'input_alt.background-color': COLOR_DARK_BG,
-      'input_alt.text-color': COLOR_DARK_TEXT,
-    });
+      'input_alt.text-color': COLOR_DARK_TEXT
+    })
   }
-};
+}

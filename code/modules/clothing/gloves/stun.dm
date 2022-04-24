@@ -8,7 +8,7 @@
 	var/obj/item/clothing/gloves/base_gloves
 	var/agonyforce = 50
 	var/attack_cost = 50
-	var/obj/item/weapon/cell/device/bcell
+	var/obj/item/cell/device/bcell
 
 /obj/item/clothing/gloves/stun/Initialize(mapload, obj/item/clothing/gloves/G)
 	. = ..(mapload)
@@ -44,7 +44,7 @@
 	else
 		. += "<br>\The [src] are [round(bcell.percent())]% charged."
 
-/obj/item/clothing/gloves/stun/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/gloves/stun/attackby(obj/item/W, mob/user)
 	if(isWirecutter(W))
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		if(bcell)
@@ -65,7 +65,7 @@
 		qdel(src)
 		return
 
-	if(istype(W, /obj/item/weapon/cell/device))
+	if(istype(W, /obj/item/cell/device))
 		if(bcell)
 			to_chat(user, SPAN("notice", "The [src] already have \the [bcell] installed."))
 			return

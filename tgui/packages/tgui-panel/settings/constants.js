@@ -7,20 +7,23 @@
 export const SETTINGS_TABS = [
   {
     id: 'general',
-    name: 'General',
+    name: 'General'
   },
   {
     id: 'chatPage',
-    name: 'Chat Tabs',
+    name: 'Chat Tabs'
   },
   {
     id: 'backgroundImage',
-    name: 'Background Image',
+    name: 'Background Image'
   },
-];
+  {
+    id: 'css',
+    name: 'CSS Editor'
+  }
+]
 
-
-export const FONTS_DISABLED = "Default";
+export const FONTS_DISABLED = 'Default'
 
 export const FONTS = [
   FONTS_DISABLED,
@@ -33,17 +36,17 @@ export const FONTS = [
   'Tahoma',
   'Trebuchet MS',
   'Courier New',
-  'Lucida Console',
-];
+  'Lucida Console'
+]
 
 export const REPEAT_MODE = {
   no: 'no-repeat',
   repeat: 'repeat',
   repeatx: 'repeat-x',
-  repeaty: 'repeat-y',
-};
+  repeaty: 'repeat-y'
+}
 
 export const SIZE_MODE = {
   cover: 'cover',
-  contain: 'contain',
-};
+  contain: 'contain'
+}

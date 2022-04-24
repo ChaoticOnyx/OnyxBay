@@ -27,9 +27,9 @@
 		breath = get_breath_from_internal() //First, check for air from internals
 		if(breath && src.type == /mob/living/carbon/human && prob(5))
 			if(gender == "male")
-				sound_to(src, sound(get_sfx("male_closed_breath"), volume = 5))
+				sound_to(src, sound(GET_SFX(SFX_MALE_INTERNAL_BREATH), volume = 5))
 			else
-				sound_to(src, sound(get_sfx("female_closed_breath"), volume = 5))
+				sound_to(src, sound(GET_SFX(SFX_FEMALE_INTERNAL_BREATH), volume = 5))
 		if(!breath)
 			breath = get_breath_from_environment() //No breath from internals so let's try to get air from our location
 		if(!breath)

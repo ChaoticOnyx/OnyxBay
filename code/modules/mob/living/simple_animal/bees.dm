@@ -21,7 +21,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	density = 0
 
-/mob/living/simple_animal/bee/New(loc, var/obj/machinery/beehive/new_parent)
+/mob/living/simple_animal/bee/New(loc, obj/machinery/beehive/new_parent)
 	parent = new_parent
 	..()
 

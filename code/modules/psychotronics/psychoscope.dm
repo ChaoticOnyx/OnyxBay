@@ -48,16 +48,16 @@
 	w_class = ITEM_SIZE_NORMAL
 
 	/* ENERGY MANAGEMENT */
-	var/obj/item/weapon/cell/bcell = null
+	var/obj/item/cell/bcell = null
 	var/cell_panel_opened = FALSE
 
 	/* DATA MANAGEMENT */
 	var/selected_lifeform = null			// For UI
 	var/list/scanned = list()				// List of all scanned data, every scanned mob, opened neuromods/techs and etc.
 	var/is_scanning = FALSE					// Must be TRUE while a psychoscope does scan.
-	var/list/accepts_disks = list(/obj/item/weapon/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
-								  /obj/item/weapon/disk/neuromod_disk,
-								  /obj/item/weapon/disk/lifeform_disk)
+	var/list/accepts_disks = list(/obj/item/disk/tech_disk,		// Disks which can be inserted into a psychoscope.
+								  /obj/item/disk/neuromod_disk,
+								  /obj/item/disk/lifeform_disk)
 
 /* OPENING PROCS */
 
@@ -436,7 +436,7 @@
 			to_chat(usr, "Psychoscope's disk slot is already occupied.")
 			return
 
-	var/obj/item/weapon/disk/disk = usr.get_active_hand()
+	var/obj/item/disk/disk = usr.get_active_hand()
 
 	if(!disk || !(disk.type in accepts_disks))
 		return
@@ -482,8 +482,8 @@
 		crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
-	var/obj/item/weapon/disk/lifeform_disk/lifeform_disk = null
-	lifeform_disk = (locate(/obj/item/weapon/disk/lifeform_disk) in contents)
+	var/obj/item/disk/lifeform_disk/lifeform_disk = null
+	lifeform_disk = (locate(/obj/item/disk/lifeform_disk) in contents)
 
 	if(!lifeform_disk)
 		return
@@ -509,8 +509,8 @@
 	if(istext(neuromod_type))
 		neuromod_type = text2path(neuromod_type)
 
-	var/obj/item/weapon/disk/neuromod_disk/neuromod_disk = null
-	neuromod_disk = (locate(/obj/item/weapon/disk/neuromod_disk/) in contents)
+	var/obj/item/disk/neuromod_disk/neuromod_disk = null
+	neuromod_disk = (locate(/obj/item/disk/neuromod_disk/) in contents)
 
 	if(!neuromod_disk)
 		return
@@ -537,8 +537,8 @@
 		crash_with("tech_level is null")
 		return
 
-	var/obj/item/weapon/disk/tech_disk/tech_disk = null
-	tech_disk = (locate(/obj/item/weapon/disk/tech_disk/) in contents)
+	var/obj/item/disk/tech_disk/tech_disk = null
+	tech_disk = (locate(/obj/item/disk/tech_disk/) in contents)
 
 	if(!tech_disk)
 		return
@@ -656,7 +656,7 @@
 
 	. = ..()
 
-/obj/item/clothing/glasses/psychoscope/attackby(obj/item/weapon/I, mob/user)
+/obj/item/clothing/glasses/psychoscope/attackby(obj/item/I, mob/user)
 	if(isScrewdriver(I))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
@@ -668,7 +668,7 @@
 
 		return
 
-	if(istype(I, /obj/item/weapon/cell))
+	if(istype(I, /obj/item/cell))
 		if(cell_panel_opened && !bcell)
 			if(!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
 				return
@@ -729,8 +729,8 @@
 /*
 	Inserting a disk.
 */
-/obj/item/clothing/glasses/psychoscope/attackby(obj/item/weapon/I, mob/user)
-	if(istype(I, /obj/item/weapon/disk))
+/obj/item/clothing/glasses/psychoscope/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/disk))
 		InsertDisk()
 		return
 
@@ -769,14 +769,14 @@
 		data["charge"] = bcell.charge
 		data["max_charge"] = bcell.maxcharge
 
-	var/obj/item/weapon/disk/inserted_disk = null
-	inserted_disk = (locate(/obj/item/weapon/disk) in contents)
+	var/obj/item/disk/inserted_disk = null
+	inserted_disk = (locate(/obj/item/disk) in contents)
 
-	if(istype(inserted_disk, /obj/item/weapon/disk/tech_disk))
+	if(istype(inserted_disk, /obj/item/disk/tech_disk))
 		data["inserted_disk"] = "tech"
-	else if(istype(inserted_disk, /obj/item/weapon/disk/neuromod_disk))
+	else if(istype(inserted_disk, /obj/item/disk/neuromod_disk))
 		data["inserted_disk"] = "neuromod"
-	else if(istype(inserted_disk, /obj/item/weapon/disk/lifeform_disk))
+	else if(istype(inserted_disk, /obj/item/disk/lifeform_disk))
 		data["inserted_disk"] = "lifeform"
 
 	if(selected_lifeform)

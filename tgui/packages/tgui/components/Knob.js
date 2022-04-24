@@ -1,20 +1,21 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { keyOfMatchingRange, scale } from 'common/math';
-import { classes } from 'common/react';
-import { computeBoxClassName, computeBoxProps } from './Box';
-import { DraggableControl } from './DraggableControl';
-import { NumberInput } from './NumberInput';
+import { keyOfMatchingRange, scale } from 'common/math'
+import { classes } from 'common/react'
+import { computeBoxClassName, computeBoxProps } from './Box'
+import { DraggableControl } from './DraggableControl'
+import { NumberInput } from './NumberInput'
 
-export const Knob = (props) => {
+export const Knob = props => {
   // IE8: I don't want to support a yet another component on IE8.
   // IE8: It also can't handle SVG.
   if (Byond.IS_LTE_IE8) {
-    return <NumberInput {...props} />;
+    return <NumberInput {...props} />
   }
   const {
     // Draggable props (passthrough)
@@ -40,7 +41,7 @@ export const Knob = (props) => {
     bipolar,
     children,
     ...rest
-  } = props;
+  } = props
   return (
     <DraggableControl
       dragMatrix={[0, -1]}
@@ -56,27 +57,26 @@ export const Knob = (props) => {
         stepPixelSize,
         suppressFlicker,
         unit,
-        value,
+        value
       }}>
-      {(control) => {
+      {control => {
         const {
           dragging,
-          editing,
           value,
           displayValue,
           displayElement,
           inputElement,
-          handleDragStart,
-        } = control;
+          handleDragStart
+        } = control
         const scaledFillValue = scale(
           fillValue ?? displayValue,
           minValue,
-          maxValue,
-        );
-        const scaledDisplayValue = scale(displayValue, minValue, maxValue);
-        const effectiveColor
-          = color || keyOfMatchingRange(fillValue ?? value, ranges) || 'default';
-        const rotation = Math.min((scaledDisplayValue - 0.5) * 270, 225);
+          maxValue
+        )
+        const scaledDisplayValue = scale(displayValue, minValue, maxValue)
+        const effectiveColor =
+          color || keyOfMatchingRange(fillValue ?? value, ranges) || 'default'
+        const rotation = Math.min((scaledDisplayValue - 0.5) * 270, 225)
         return (
           <div
             className={classes([
@@ -84,21 +84,21 @@ export const Knob = (props) => {
               'Knob--color--' + effectiveColor,
               bipolar && 'Knob--bipolar',
               className,
-              computeBoxClassName(rest),
+              computeBoxClassName(rest)
             ])}
             {...computeBoxProps({
               style: {
                 'font-size': size + 'em',
-                ...style,
+                ...style
               },
-              ...rest,
+              ...rest
             })}
             onMouseDown={handleDragStart}>
             <div className='Knob__circle'>
               <div
                 className='Knob__cursorBox'
                 style={{
-                  transform: `rotate(${rotation}deg)`,
+                  transform: `rotate(${rotation}deg)`
                 }}>
                 <div className='Knob__cursor' />
               </div>
@@ -118,11 +118,11 @@ export const Knob = (props) => {
                 className='Knob__ringFill'
                 style={{
                   'stroke-dashoffset': Math.max(
-                    ((bipolar ? 2.75 : 2.0) - scaledFillValue * 1.5)
-                      * Math.PI
-                      * 50,
-                    0,
-                  ),
+                    ((bipolar ? 2.75 : 2.0) - scaledFillValue * 1.5) *
+                      Math.PI *
+                      50,
+                    0
+                  )
                 }}
                 cx='50'
                 cy='50'
@@ -131,8 +131,8 @@ export const Knob = (props) => {
             </svg>
             {inputElement}
           </div>
-        );
+        )
       }}
     </DraggableControl>
-  );
-};
+  )
+}

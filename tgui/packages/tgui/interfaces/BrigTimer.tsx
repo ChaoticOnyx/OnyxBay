@@ -1,6 +1,6 @@
-import { useBackend } from '../backend';
-import { Button, Stack, Section, NumberInput, Input } from '../components';
-import { Window } from '../layouts';
+import { useBackend } from '../backend'
+import { Button, Stack, Section, NumberInput } from '../components'
+import { Window } from '../layouts'
 
 interface Flash {
   status: number;
@@ -15,9 +15,9 @@ interface InputData {
 }
 
 export const BrigTimer = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const flashCharging: boolean
-    = data.flashes.filter((flash, _) => !flash.status).length > 0;
+  const { act, data } = useBackend<InputData>(context)
+  const flashCharging: boolean =
+    data.flashes.filter((flash, _) => !flash.status).length > 0
 
   return (
     <Window width={300} height={140}>
@@ -57,7 +57,7 @@ export const BrigTimer = (props: any, context: any) => {
                 unit='Minutes'
                 value={data.timetoset / 600}
                 onChange={(e: any, value: number) =>
-                  act('time', { 'adjust': -data.timetoset + value * 600 })
+                  act('time', { adjust: -data.timetoset + value * 600 })
                 }
               />{' '}
               <Button
@@ -90,5 +90,5 @@ export const BrigTimer = (props: any, context: any) => {
         </Section>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

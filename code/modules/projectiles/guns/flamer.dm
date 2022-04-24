@@ -1,6 +1,6 @@
 //FLAMETHROWER
 
-/obj/item/weapon/gun/flamer
+/obj/item/gun/flamer
 	name = "\improper unbranded flamerthrower"
 	desc = "Unbranded agricultural flamethrower. Used to burn weeds and pests or, you know, humans?"
 	icon = 'icons/obj/flamer.dmi'
@@ -14,8 +14,8 @@
 	force = 10
 	fire_sound = 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg'
 	var/ignite_sound = list('sound/weapons/gunshot/flamethrower/ignite_flamethrower1.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower2.ogg', 'sound/weapons/gunshot/flamethrower/ignite_flamethrower3.ogg')
-	var/obj/item/weapon/welder_tank/fuel_tank = null
-	var/obj/item/weapon/tank/oxygen/pressure_tank = null
+	var/obj/item/welder_tank/fuel_tank = null
+	var/obj/item/tank/oxygen/pressure_tank = null
 	var/obj/item/device/assembly/igniter/igniter = null
 	var/obj/item/device/analyzer/gauge = null
 	var/max_range = 5
@@ -29,11 +29,11 @@
 	var/last_fired = 0
 	fire_delay = 35
 
-/obj/item/weapon/gun/flamer/Initialize()
+/obj/item/gun/flamer/Initialize()
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/weapon/gun/flamer/examine(mob/user)
+/obj/item/gun/flamer/examine(mob/user)
 	. = ..()
 
 	if(igniter)
@@ -58,7 +58,7 @@
 	else
 		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
 
-/obj/item/weapon/gun/flamer/update_icon()
+/obj/item/gun/flamer/update_icon()
 	overlays.Cut()
 	if(igniter)
 		overlays += "+igniter"
@@ -72,7 +72,7 @@
 		overlays += "+lit"
 	. = ..()
 
-/obj/item/weapon/gun/flamer/proc/remove_fuel_tank(mob/user)
+/obj/item/gun/flamer/proc/remove_fuel_tank(mob/user)
 	if(!fuel_tank)
 		to_chat(user, "There's no fuel tank in [src].")
 		return
@@ -84,21 +84,21 @@
 	update_icon()
 	return
 
-/obj/item/weapon/gun/flamer/ui_action_click()
+/obj/item/gun/flamer/ui_action_click()
 	remove_fuel_tank(usr)
 
-/obj/item/weapon/gun/flamer/attack_hand(mob/user)
+/obj/item/gun/flamer/attack_hand(mob/user)
 	if(user.get_inactive_hand() == src)
 		remove_fuel_tank(user)
 		return
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/flamer/attackby(obj/item/W, mob/user)
+/obj/item/gun/flamer/attackby(obj/item/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
 
-	if(istype(W, /obj/item/weapon/welder_tank))
+	if(istype(W, /obj/item/welder_tank))
 		if(fuel_tank)
 			to_chat(user, "Remove the current fuel tank first.")
 			return
@@ -145,7 +145,7 @@
 		update_icon()
 		return
 
-	if(istype(W, /obj/item/weapon/tank/oxygen))
+	if(istype(W, /obj/item/tank/oxygen))
 		if(pressure_tank)
 			to_chat(user, "Remove the current pressure tank first.")
 			return
@@ -177,10 +177,10 @@
 	update_icon()
 	. = ..()
 
-/obj/item/weapon/gun/flamer/attack_self(mob/user)
+/obj/item/gun/flamer/attack_self(mob/user)
 	return toggle_flame(user)
 
-/obj/item/weapon/gun/flamer/proc/toggle_flame(mob/user)
+/obj/item/gun/flamer/proc/toggle_flame(mob/user)
 
 	if(!igniter)
 		to_chat(user, SPAN_WARNING("Install ingiter first!"))
@@ -196,7 +196,7 @@
 	update_icon()
 	return TRUE
 
-/obj/item/weapon/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
+/obj/item/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
 	var/turf/curloc = get_turf(user) //In case the target or we are expired.
 	var/turf/targloc = get_turf(target)
 	if(!targloc || !curloc)
@@ -220,7 +220,7 @@
 			return
 
 
-/obj/item/weapon/gun/flamer/proc/is_flamer_can_fire(mob/user)
+/obj/item/gun/flamer/proc/is_flamer_can_fire(mob/user)
 
 	if(!fuel_tank)
 		to_chat(user, SPAN_WARNING("[src] isn't has a fuel tank"))
@@ -246,12 +246,17 @@
 		return
 	return TRUE
 
-/obj/item/weapon/gun/flamer/handle_suicide(mob/living/user)
+/obj/item/gun/flamer/handle_suicide(mob/living/user)
 	if(!is_flamer_can_fire(user))
 		return
 	. = ..()
 
-/obj/item/weapon/gun/flamer/Destroy()
+/obj/item/gun/flamer/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+	if(!is_flamer_can_fire(user))
+		return
+	. = ..()
+
+/obj/item/gun/flamer/Destroy()
 	QDEL_NULL(fuel_tank)
 	QDEL_NULL(pressure_tank)
 	QDEL_NULL(igniter)
@@ -259,19 +264,19 @@
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/weapon/gun/flamer/Process()
+/obj/item/gun/flamer/Process()
 	if(lit)
 		if(!lited(0.05))
 			lit = FALSE
 
-/obj/item/weapon/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank
+/obj/item/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank
 	if(!lit && !fuel_tank)
 		return FALSE
 	if(get_fuel() >= amount)
 		fuel_tank.reagents.remove_reagent(/datum/reagent/fuel, amount)
 		return TRUE
 
-/obj/item/weapon/gun/flamer/proc/unleash_flame(atom/target, mob/living/user)
+/obj/item/gun/flamer/proc/unleash_flame(atom/target, mob/living/user)
 
 	last_fired = world.time
 	var/burnlevel
@@ -324,11 +329,11 @@
 		sleep(1)
 
 //Returns the amount of fuel in the flamer
-/obj/item/weapon/gun/flamer/proc/get_fuel()
+/obj/item/gun/flamer/proc/get_fuel()
 	return fuel_tank ? fuel_tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
 
-/obj/item/weapon/gun/flamer/proc/flame_turf(turf/T, mob/living/user, heat, burn)
+/obj/item/gun/flamer/proc/flame_turf(turf/T, mob/living/user, heat, burn)
 	if(!istype(T))
 		return
 
@@ -338,7 +343,7 @@
 		M.adjust_fire_stacks(rand(2, burn))
 		M.IgniteMob()
 
-/obj/item/weapon/gun/flamer/get_temperature_as_from_ignitor()
+/obj/item/gun/flamer/get_temperature_as_from_ignitor()
 	if(lit)
 		return 3800
 	return 0

@@ -50,7 +50,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	var/t = 0
 	var/timeout_time = (ASSET_CACHE_SEND_TIMEOUT * client.sending.len) + ASSET_CACHE_SEND_TIMEOUT
 	while(client && !client.completed_asset_jobs.Find(job) && t < timeout_time) // Reception is handled in Topic()
-		sleep(1) // Lock up the caller until this is received.
+		stoplag(1) // Lock up the caller until this is received.
 		t++
 
 	if(client)
@@ -91,7 +91,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	var/t = 0
 	var/timeout_time = ASSET_CACHE_SEND_TIMEOUT * client.sending.len
 	while(client && !client.completed_asset_jobs.Find(job) && t < timeout_time) // Reception is handled in Topic()
-		sleep(1) // Lock up the caller until this is received.
+		stoplag(1) // Lock up the caller until this is received.
 		t++
 
 	if(client)
@@ -108,7 +108,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		if(!client)
 			return FALSE
 		send_asset(client, file)
-		sleep(0) //queuing calls like this too quickly can cause issues in some client versions
+		stoplag(0) //queuing calls like this too quickly can cause issues in some client versions
 	return TRUE
 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
@@ -249,6 +249,34 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"codicon.ttf" = 'html/codicon/codicon.ttf'
 	)
 
+/datum/asset/simple/reaver
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"reaver.css" = 'html/reaver/reaver.css',
+		"Reaver-Black.woff" = 'html/reaver/Reaver-Black.woff',
+		"Reaver-Bold.woff" = 'html/reaver/Reaver-Bold.woff',
+		"Reaver-Regular.woff" = 'html/reaver/Reaver-Regular.woff',
+		"Reaver-SemiBold.woff" = 'html/reaver/Reaver-SemiBold.woff',
+	)
+
+/datum/asset/simple/exocet
+	isTrivial = FALSE
+	verify = FALSE
+	assets = list(
+		"exocet.css" = 'html/exocet/exocet.css',
+		"exocet_bold.woff" = 'html/exocet/exocet_bold.woff',
+		"exocet_regular.woff" = 'html/exocet/exocet_regular.woff'
+	)
+
+/datum/asset/simple/pelagiad
+	isTrivial = FALSE
+	verify = FALSE
+	assets = list(
+		"pelagiad.css" = 'html/pelagiad/pelagiad.css',
+		"Pelagiad.woff" = 'html/pelagiad/Pelagiad.woff'
+	)
+
 /datum/asset/simple/tgui_common
 	isTrivial = TRUE
 	verify = FALSE
@@ -272,15 +300,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"tgui-panel.bundle.css" = 'tgui/public/tgui-panel.bundle.css',
 	)
 
-/datum/asset/simple/tgfont
-	isTrivial = TRUE
-	verify = FALSE
-	assets = list(
-		"tgfont.eot" = 'tgui/packages/tgfont/dist/tgfont.eot',
-		"tgfont.woff2" = 'tgui/packages/tgfont/dist/tgfont.woff2',
-		"tgfont.css" = 'tgui/packages/tgfont/dist/tgfont.css'
-	)
-
 /datum/asset/directories/nanoui
 	isTrivial = FALSE
 	dirs = list(
@@ -293,6 +312,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"nano/images/source/",
 		"nano/images/modular_computers/",
 		"nano/images/exodus/",
+		"nano/images/frontier/",
 		"nano/images/example/"
 	)
 

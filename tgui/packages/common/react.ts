@@ -7,16 +7,17 @@
 /**
  * Helper for conditionally adding/removing classes in React
  */
+// eslint-disable-next-line no-use-before-define
 export const classes = (classNames: (string | BooleanLike)[]) => {
-  let className = '';
+  let className = ''
   for (let i = 0; i < classNames.length; i++) {
-    const part = classNames[i];
+    const part = classNames[i]
     if (typeof part === 'string') {
-      className += part + ' ';
+      className += part + ' '
     }
   }
-  return className;
-};
+  return className
+}
 
 /**
  * Normalizes children prop, so that it is always an array of VDom
@@ -24,50 +25,50 @@ export const classes = (classNames: (string | BooleanLike)[]) => {
  */
 export const normalizeChildren = <T>(children: T | T[]) => {
   if (Array.isArray(children)) {
-    return children.flat().filter(value => value) as T[];
+    return children.flat().filter(value => value) as T[]
   }
   if (typeof children === 'object') {
-    return [children];
+    return [children]
   }
-  return [];
-};
+  return []
+}
 
 /**
  * Shallowly checks if two objects are different.
  * Credit: https://github.com/developit/preact-compat
  */
 export const shallowDiffers = (a: object, b: object) => {
-  let i;
+  let i
   for (i in a) {
     if (!(i in b)) {
-      return true;
+      return true
     }
   }
   for (i in b) {
     if (a[i] !== b[i]) {
-      return true;
+      return true
     }
   }
-  return false;
-};
+  return false
+}
 
 /**
  * Default inferno hooks for pure components.
  */
 export const pureComponentHooks = {
   onComponentShouldUpdate: (lastProps, nextProps) => {
-    return shallowDiffers(lastProps, nextProps);
-  },
-};
+    return shallowDiffers(lastProps, nextProps)
+  }
+}
 
 /**
  * A helper to determine whether the object is renderable by React.
  */
 export const canRender = (value: unknown) => {
-  return value !== undefined
-    && value !== null
-    && typeof value !== 'boolean';
-};
+  return value !== undefined &&
+    value !== null &&
+    typeof value !== 'boolean'
+}
 
 /**
  * A common case in tgui, when you pass a value conditionally, these are

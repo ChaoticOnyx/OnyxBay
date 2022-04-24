@@ -11,6 +11,7 @@
 #define MATERIAL_COTTON                  "cotton"
 #define MATERIAL_CARBON                  "carbon"
 #define MATERIAL_WOOD                    "wood"
+#define MATERIAL_DARKWOOD                "darkwood"
 #define MATERIAL_SANDSTONE               "sandstone"
 #define MATERIAL_LEATHER                 "leather"
 #define MATERIAL_IRON                    "iron"
@@ -19,6 +20,8 @@
 #define MATERIAL_REINFORCED_GLASS        "rglass"
 #define MATERIAL_PLASS                   "plass"
 #define MATERIAL_REINFORCED_PLASS        "rplass"
+#define MATERIAL_BLACK_GLASS             "bglass"
+#define MATERIAL_REINFORCED_BLACK_GLASS  "rbglass"
 #define MATERIAL_MARBLE                  "marble"
 #define MATERIAL_RESIN                   "resin"
 #define MATERIAL_CULT                    "cult"
@@ -63,7 +66,7 @@
 
 #define TABLE_BRITTLE_MATERIAL_MULTIPLIER 4 // Amount table damage is multiplied by if it is made of a brittle material (e.g. glass)
 
-/proc/get_icon_for_material(var/material)
+/proc/get_icon_for_material(material)
 	var/static/list/material_icons = list(
 		MATERIAL_PLASTIC                    = icon(MATERIALS_ICON, "plastic"),
 		MATERIAL_PLASTEEL                   = icon(MATERIALS_ICON, "plasteel"),

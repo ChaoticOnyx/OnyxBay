@@ -17,21 +17,20 @@
 
 	var/temperature_archived
 	var/mob/living/carbon/human/occupant = null
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/glass/beaker = null
 
 	var/current_heat_capacity = 50
 
-	var/occupant_icon_update_timer = 0
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
 	component_types = list(
-		/obj/item/weapon/circuitboard/cryo_cell,
+		/obj/item/circuitboard/cryo_cell,
 		/obj/item/device/healthanalyzer,
-		/obj/item/weapon/stock_parts/scanning_module,
-		/obj/item/weapon/stock_parts/matter_bin,
-		/obj/item/weapon/stock_parts/manipulator = 3,
-		/obj/item/weapon/stock_parts/console_screen
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/stock_parts/matter_bin,
+		/obj/item/stock_parts/manipulator = 3,
+		/obj/item/stock_parts/console_screen
 	)
 
 	beepsounds = list(
@@ -95,7 +94,8 @@
 
 	if(occupant)
 		if(occupant.stat != DEAD)
-			if(occupant_icon_update_timer < world.time)
+			THROTTLE(icon_update_cooldown, 3 SECONDS)
+			if(icon_update_cooldown)
 				update_icon()
 			process_occupant()
 
@@ -236,7 +236,7 @@
 		return
 	if(default_part_replacement(user, G))
 		return
-	if(istype(G, /obj/item/weapon/reagent_containers/glass))
+	if(istype(G, /obj/item/reagent_containers/glass))
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return
@@ -284,7 +284,6 @@
 		pickle.overlays = occupant.overlays
 		pickle.pixel_z = 18
 		overlays += pickle
-		occupant_icon_update_timer = world.time + 30
 
 	I = image(icon, "lid[overlays_state]")
 	overlays += I

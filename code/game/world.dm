@@ -23,6 +23,36 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
+/proc/toggle_ooc()
+	config.ooc_allowed = !config.ooc_allowed
+	if(config.ooc_allowed)
+		to_world("<b>The OOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The OOC channel has been globally disabled!</b>")
+
+/proc/disable_ooc()
+	if(config.ooc_allowed)
+		toggle_ooc()
+
+/proc/enable_ooc()
+	if(!config.ooc_allowed)
+		toggle_ooc()
+
+/proc/toggle_looc()
+	config.looc_allowed = !config.looc_allowed
+	if(config.looc_allowed)
+		to_world("<b>The LOOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The LOOC channel has been globally disabled!</b>")
+
+/proc/disable_looc()
+	if(config.ooc_allowed)
+		toggle_ooc()
+
+/proc/enable_looc()
+	if(!config.looc_allowed)
+		toggle_looc()
+
 // Find mobs matching a given string
 //
 // search_string: the string to search for, in params format; for example, "some_key;mob_name"
@@ -67,7 +97,7 @@ var/server_name = "OnyxBay"
 
 	return match
 
-#define RECOMMENDED_VERSION 511
+#define RECOMMENDED_VERSION 514
 /world/New()
 	SetupLogs()
 
@@ -400,11 +430,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		config.ooc_allowed = !(config.ooc_allowed)
-		if (config.ooc_allowed)
-			to_world("<B>The OOC channel has been globally enabled!</B>")
-		else
-			to_world("<B>The OOC channel has been globally disabled!</B>")
+		toggle_ooc()
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 
@@ -649,7 +675,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	WORLD_SETUP_LOG_DETAILED(qdel)
 	WORLD_SETUP_LOG_DETAILED(debug)
 	WORLD_SETUP_LOG_DETAILED(hrefs)
-	WORLD_SETUP_LOG_DETAILED(story)
+	WORLD_SETUP_LOG(story)
 	WORLD_SETUP_LOG(common)
 
 #undef WORLD_SETUP_LOG_DETAILED

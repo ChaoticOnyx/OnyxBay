@@ -54,7 +54,7 @@
 /obj/item/clothing/head/welding/attack_self()
 	toggle()
 
-/obj/item/clothing/head/welding/attackby(obj/item/weapon/W, mob/user)
+/obj/item/clothing/head/welding/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welding_cover))
 		if(!cover && user.unEquip(W))
 			attach_cover(user, W)

@@ -1,4 +1,4 @@
-/obj/item/weapon/rig/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/rig/attackby(obj/item/W as obj, mob/user as mob)
 
 	if(!istype(user,/mob/living)) return 0
 
@@ -50,7 +50,7 @@
 				to_chat(user, "You can't reach the wiring.")
 			return
 		// Air tank.
-		if(istype(W,/obj/item/weapon/tank)) //Todo, some kind of check for suits without integrated air supplies.
+		if(istype(W,/obj/item/tank)) //Todo, some kind of check for suits without integrated air supplies.
 
 			if(air_supply)
 				to_chat(user, "\The [src] already has a tank installed.")
@@ -62,20 +62,20 @@
 			to_chat(user, "You slot [W] into [src] and tighten the connecting valve.")
 			return
 
-		// Check if this is a hardsuit upgrade or a modification.
+		// Check if this is a powersuit upgrade or a modification.
 		else if(istype(W,/obj/item/rig_module))
 
 			if(istype(src.loc,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "<span class='danger'>You can't install a hardsuit module while the suit is being worn.</span>")
+					to_chat(user, "<span class='danger'>You can't install a powersuit module while the suit is being worn.</span>")
 					return 1
 
 			if(!installed_modules) installed_modules = list()
 			if(installed_modules.len)
 				for(var/obj/item/rig_module/installed_mod in installed_modules)
 					if(!installed_mod.redundant && istype(installed_mod,W))
-						to_chat(user, "The hardsuit already has a module of that class installed.")
+						to_chat(user, "The powersuit already has a module of that class installed.")
 						return 1
 
 			var/obj/item/rig_module/mod = W
@@ -92,7 +92,7 @@
 			update_icon()
 			return 1
 
-		else if(!cell && istype(W,/obj/item/weapon/cell))
+		else if(!cell && istype(W,/obj/item/cell))
 
 			if(!user.unEquip(W)) return
 			to_chat(user, "You jack \the [W] into \the [src]'s battery mount.")
@@ -124,7 +124,7 @@
 			if(istype(src.loc,/mob/living/carbon/human) && to_remove != "cell")
 				var/mob/living/carbon/human/H = src.loc
 				if(H.back == src)
-					to_chat(user, "You can't remove an installed device while the hardsuit is being worn.")
+					to_chat(user, "You can't remove an installed device while the powersuit is being worn.")
 					return
 
 			switch(to_remove)
@@ -173,14 +173,14 @@
 	..()
 
 
-/obj/item/weapon/rig/attack_hand(mob/user)
+/obj/item/rig/attack_hand(mob/user)
 
 	if(electrified != 0)
 		if(shock(user)) //Handles removing charge from the cell, as well. No need to do that here.
 			return
 	..()
 
-/obj/item/weapon/rig/emag_act(remaining_charges, mob/user)
+/obj/item/rig/emag_act(remaining_charges, mob/user)
 	if(!subverted)
 		req_access.Cut()
 		req_one_access.Cut()

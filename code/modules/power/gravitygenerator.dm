@@ -22,7 +22,8 @@
 	icon = 'icons/obj/machines/gravity_generator.dmi'
 	anchored = 1
 	density = 1
-	use_power = 0
+	power_channel = STATIC_ENVIRON
+	use_power = IDLE_POWER_USE
 	unacidable = 1
 
 	light_color = "#7de1e1"
@@ -45,7 +46,7 @@
 /obj/machinery/gravity_generator/bullet_act(obj/item/projectile/P, def_zone)
 	return
 
-/obj/machinery/gravity_generator/blob_act(destroy, obj/effect/blob/source)
+/obj/machinery/gravity_generator/blob_act()
 	return
 
 /obj/machinery/gravity_generator/proc/take_damage(amount)
@@ -77,7 +78,7 @@ GLOBAL_VAR(station_gravity_generator)
 	icon_state = "0_8"
 	idle_power_usage = 0
 	active_power_usage = 100000
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	sprite_number = 8
 	use_power = POWER_USE_ACTIVE
 
@@ -115,8 +116,10 @@ GLOBAL_VAR(station_gravity_generator)
 			qdel(P)
 	middle = null
 	lights = null
+	if(enabled)
+		enabled = FALSE
+		update_connectected_areas_gravity()
 	connected_areas = null
-	update_connectected_areas_gravity()
 	return ..()
 
 /obj/machinery/gravity_generator/main/examine(mob/user)
@@ -158,11 +161,8 @@ GLOBAL_VAR(station_gravity_generator)
 		if(BURN)
 			take_damage(P.damage)
 
-/obj/machinery/gravity_generator/main/blob_act(destroy, obj/effect/blob/source)
-	if(destroy)
-		take_damage(rand(500, 1000))
-	else
-		take_damage(rand(50, 150))
+/obj/machinery/gravity_generator/main/blob_act(damage)
+	take_damage(damage)
 
 /obj/machinery/gravity_generator/main/take_damage(amount)
 	var/new_health = max(0, health - amount)
@@ -246,7 +246,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to weld the damaged parts."))
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-				var/obj/item/weapon/weldingtool/WT = I
+				var/obj/item/weldingtool/WT = I
 				if(!do_after(user, 15 SECONDS, middle) || !WT.remove_fuel(1, user) || broken_state != GRAV_NEEDS_WELDING)
 					return
 				health += 250
@@ -559,14 +559,14 @@ GLOBAL_VAR(station_gravity_generator)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
 
+/obj/machinery/gravity_generator/part/blob_act(damage)
+	return main_part.blob_act(damage)
+
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)
 
 /obj/machinery/gravity_generator/part/bullet_act(obj/item/projectile/P)
 	return main_part.bullet_act(P)
-
-/obj/machinery/gravity_generator/part/blob_act(destroy, obj/effect/blob/source)
-	return main_part.blob_act(destroy, source)
 
 #undef POWER_IDLE
 #undef POWER_UP

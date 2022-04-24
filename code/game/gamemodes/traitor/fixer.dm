@@ -60,7 +60,9 @@
 		var/datum/antag_contract/C = new contract_type(src)
 		if(!C)
 			continue
-		var/not_avaliable = (intents ^ C.intent || prob(75))
+		var/not_avaliable = (intents ^ C.intent)
+		if(not_avaliable && prob(25))
+			not_avaliable = FALSE
 		if(!C.can_place() || not_avaliable)
 			candidates -= contract_type
 			qdel(C)

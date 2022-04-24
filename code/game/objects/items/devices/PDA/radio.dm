@@ -13,7 +13,7 @@
 		if (istype(loc.loc, /obj/item/device/pda))
 			hostpda = loc.loc
 
-	proc/post_signal(var/freq, var/key, var/value, var/key2, var/value2, var/key3, var/value3, s_filter)
+	proc/post_signal(freq, key, value, key2, value2, key3, value3, s_filter)
 
 //		log_debug("Post: [freq]: [key]=[value], [key2]=[value2]")
 

@@ -3,6 +3,7 @@ var/global/datum/controller/occupations/job_master
 #define GET_RANDOM_JOB 0
 #define BE_ASSISTANT 1
 #define RETURN_TO_LOBBY 2
+#define NEW_PLAYER_WAYFINDING_TRACKER 21 // 3 weeks
 
 /datum/controller/occupations
 		//List of all jobs
@@ -17,7 +18,7 @@ var/global/datum/controller/occupations/job_master
 	var/list/job_debug = list()
 
 
-	proc/SetupOccupations(var/setup_titles = 0)
+	proc/SetupOccupations(setup_titles = 0)
 		occupations = list()
 		occupations_by_type = list()
 		occupations_by_title = list()
@@ -61,20 +62,20 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/Debug(var/text)
+	proc/Debug(text)
 		if(!Debug2)	return 0
 		job_debug.Add(text)
 		return 1
 
 
-	proc/GetJob(var/rank)
+	proc/GetJob(rank)
 		if(!rank)	return null
 		for(var/datum/job/J in occupations)
 			if(!J)	continue
 			if(J.title == rank)	return J
 		return null
 
-	proc/ShouldCreateRecords(var/rank)
+	proc/ShouldCreateRecords(rank)
 		if(!rank) return 0
 		var/datum/job/job = GetJob(rank)
 		if(!job) return 0
@@ -83,7 +84,7 @@ var/global/datum/controller/occupations/job_master
 	proc/GetPlayerAltTitle(mob/new_player/player, rank)
 		return player.client.prefs.GetPlayerAltTitle(GetJob(rank))
 
-	proc/CheckGeneralJoinBlockers(var/mob/new_player/joining, var/datum/job/job)
+	proc/CheckGeneralJoinBlockers(mob/new_player/joining, datum/job/job)
 		if(!istype(joining) || !joining.client || !joining.client.prefs)
 			return FALSE
 		if(!istype(job))
@@ -117,7 +118,7 @@ var/global/datum/controller/occupations/job_master
 			return FALSE
 		return TRUE
 
-	proc/CheckUnsafeSpawn(var/mob/living/spawner, var/turf/spawn_turf)
+	proc/CheckUnsafeSpawn(mob/living/spawner, turf/spawn_turf)
 		var/radlevel = SSradiation.get_rads_at_turf(spawn_turf)
 		var/airstatus = IsTurfAtmosUnsafe(spawn_turf)
 		if(airstatus || radlevel > 0)
@@ -163,7 +164,7 @@ var/global/datum/controller/occupations/job_master
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return FALSE
 
-	proc/FreeRole(var/rank)	//making additional slot on the fly
+	proc/FreeRole(rank)	//making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
 		if(job && job.current_positions >= job.total_positions && job.total_positions != -1)
 			job.total_positions++
@@ -194,7 +195,7 @@ var/global/datum/controller/occupations/job_master
 				candidates += player
 		return candidates
 
-	proc/GiveRandomJob(var/mob/new_player/player)
+	proc/GiveRandomJob(mob/new_player/player)
 		Debug("GRJ Giving random job, Player: [player]")
 		for(var/datum/job/job in shuffle(occupations))
 			if(!job)
@@ -281,7 +282,7 @@ var/global/datum/controller/occupations/job_master
 
 
 	///This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
-	proc/CheckHeadPositions(var/level)
+	proc/CheckHeadPositions(level)
 		for(var/command_position in GLOB.command_positions)
 			var/datum/job/job = GetJob(command_position)
 			if(!job)	continue
@@ -405,7 +406,7 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
+	proc/EquipRank(mob/living/carbon/human/H, rank, joined_late = 0)
 		if(!H)	return null
 
 		var/datum/job/job = GetJob(rank)
@@ -424,19 +425,22 @@ var/global/datum/controller/occupations/job_master
 				for(var/thing in H.client.prefs.Gear())
 					var/datum/gear/G = gear_datums[thing]
 					if(G)
-						var/permitted
-						if(G.allowed_roles)
+						var/permitted = TRUE
+						if(length(G.allowed_roles))
+							permitted = FALSE
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
-									permitted = 1
-						else
-							permitted = 1
+									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
-							permitted = 0
+							permitted = FALSE
+
+						if(!G.is_allowed_to_equip(H))
+							permitted = FALSE
 
 						if(!permitted)
-							to_chat(H, "<span class='warning'>Your current species, job or whitelist status does not permit you to spawn with [thing]!</span>")
+							to_chat(H, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
 							continue
 
 						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
@@ -565,6 +569,17 @@ var/global/datum/controller/occupations/job_master
 				var/obj/item/clothing/glasses/G = H.glasses
 				G.prescription = 7
 
+		// give pinpointer to new players
+		var/wayfinding_pref = H.get_preference_value(/datum/client_preference/give_wayfinding)
+		var/player_age = H?.client?.player_age
+		if(istext(player_age)) // database not initialized
+			player_age = 0
+		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
+			var/obj/item/pinpointer/wayfinding/W = new(H)
+			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
+			if(equipped)
+				to_chat(H, SPAN("notice", "You can use [W.name] to obtain location of most popular places."))
+
 		BITSET(H.hud_updateflag, ID_HUD)
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
@@ -688,11 +703,13 @@ var/global/datum/controller/occupations/job_master
 
 /datum/controller/occupations/proc/get_roundstart_spawnpoint(rank)
 	var/list/loc_list = list()
-	for(var/obj/effect/landmark/start/sloc in landmarks_list)
-		if(sloc.name != rank)	continue
-		if(locate(/mob/living) in sloc.loc)	continue
+	for(var/obj/effect/landmark/sloc in GLOB.landmarks_list)
+		if(sloc.name != rank)
+			continue
+		if(locate(/mob/living) in sloc.loc)
+			continue
 		loc_list += sloc
-	if(loc_list.len)
+	if(length(loc_list))
 		return pick(loc_list)
 	else
 		return locate("start*[rank]") // use old stype
@@ -790,3 +807,5 @@ GLOBAL_LIST_EMPTY(vacancies)
 /datum/job_vacancy/Destroy()
 	GLOB.vacancies -= src
 	return ..()
+
+#undef NEW_PLAYER_WAYFINDING_TRACKER

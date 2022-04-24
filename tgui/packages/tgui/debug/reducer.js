@@ -5,18 +5,18 @@
  */
 
 export const debugReducer = (state = {}, action) => {
-  const { type, payload } = action;
+  const { type } = action
   if (type === 'debug/toggleKitchenSink') {
     return {
       ...state,
-      kitchenSink: !state.kitchenSink,
-    };
+      kitchenSink: !state.kitchenSink
+    }
   }
   if (type === 'debug/toggleDebugLayout') {
     return {
       ...state,
-      debugLayout: !state.debugLayout,
-    };
+      debugLayout: !state.debugLayout
+    }
   }
-  return state;
-};
+  return state
+}

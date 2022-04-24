@@ -43,6 +43,7 @@
 #define SS_PRIORITY_EVAC          20    // Processes the evac controller.
 #define SS_PRIORITY_WIRELESS      10    // Wireless connection setup.
 #define SS_PRIORITY_PING          10    // Client ping.
+#define SS_PRIORITY_CONDUCTOR     05    // Conductor.
 
 
 // Subsystem fire priority, from lowest to highest priority

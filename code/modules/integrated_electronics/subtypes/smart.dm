@@ -80,46 +80,32 @@
 	icon_state = "numberpad"
 	complexity = 40
 	cooldown_per_use = 5 SECONDS
-	inputs = list("X target" = IC_PINTYPE_NUMBER,"Y target" = IC_PINTYPE_NUMBER,"obstacle" = IC_PINTYPE_REF,"access" = IC_PINTYPE_STRING)
+	inputs = list("X target" = IC_PINTYPE_NUMBER,"Y target" = IC_PINTYPE_NUMBER,"obstacle" = IC_PINTYPE_REF)
 	outputs = list("X" = IC_PINTYPE_LIST,"Y" = IC_PINTYPE_LIST)
 	activators = list("calculate path" = IC_PINTYPE_PULSE_IN, "on calculated" = IC_PINTYPE_PULSE_OUT,"not calculated" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
-	var/obj/item/weapon/card/id/idc
 
 /obj/item/integrated_circuit/smart/advanced_pathfinder/Initialize()
 	.=..()
-	idc = new(src)
 
 /obj/item/integrated_circuit/smart/advanced_pathfinder/do_work()
 	if(!assembly)
 		activate_pin(3)
 		return
-	var/Ps = hippie_xor_decrypt()
-
-	var/list/signature_and_data = splittext(Ps, ":")
-
-	if(signature_and_data.len < 2)
-		return
-
-	var/signature = signature_and_data[1]
-	var/result = signature_and_data[2]
-
-	if(!check_data_signature(signature, result))
-		activate_pin(3)
-		return
 
 	var/turf/a_loc = get_turf(assembly)
-	var/list/P = AStar(a_loc, locate(get_pin_data(IC_INPUT, 1), get_pin_data(IC_INPUT, 2), a_loc.z), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 200, id=idc, exclude=get_turf(get_pin_data_as_type(IC_INPUT, 3, /atom)))
+	var/turf/b_loc = locate(Clamp(get_pin_data(IC_INPUT, 1), 0, world.maxx), Clamp(get_pin_data(IC_INPUT, 2), 0, world.maxy), a_loc.z)
+	var/list/P = AStar(a_loc, b_loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 200, id = assembly.access_card, exclude=get_turf(get_pin_data_as_type(IC_INPUT, 3, /atom)))
 
-	if(!P)
+	if(!islist(P))
 		activate_pin(3)
 		return
 	else
-		var/list/Xn =  new /list(P.len)
-		var/list/Yn =  new /list(P.len)
+		var/list/Xn[length(P)]
+		var/list/Yn[length(P)]
 		var/turf/T
-		for(var/i =1 to P.len)
+		for(var/i = 1 to length(P))
 			T=P[i]
 			Xn[i] = T.x
 			Yn[i] = T.y
@@ -127,15 +113,6 @@
 		set_pin_data(IC_OUTPUT, 2, Yn)
 		push_data()
 		activate_pin(2)
-
-/obj/item/integrated_circuit/smart/advanced_pathfinder/proc/hippie_xor_decrypt()
-	var/Ps = get_pin_data(IC_INPUT, 4)
-	if(!Ps)
-		return
-	var/list/Pl = json_decode(XorEncrypt(hextostr(Ps, TRUE), SScircuit.cipherkey))
-	if(Pl&&islist(Pl))
-		idc.access = Pl
-	return Ps
 
 // - MMI Tank - //
 /obj/item/integrated_circuit/input/mmi_tank
@@ -164,8 +141,12 @@
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
+	radial_menu_icon = "mmi_holder"
 
 	var/obj/item/device/mmi/installed_brain
+
+/obj/item/integrated_circuit/input/mmi_tank/ask_for_input(mob/user)
+	attack_self(user)
 
 /obj/item/integrated_circuit/input/mmi_tank/attackby(obj/item/device/mmi/O, mob/user)
 	if(!istype(O,/obj/item/device/mmi))
@@ -177,7 +158,6 @@
 	user.drop_item(O)
 	O.forceMove(src)
 	installed_brain = O
-	can_be_asked_input = FALSE
 	to_chat(user, SPAN("notice", "You gently place \the man-machine interface inside the tank."))
 	to_chat(O, SPAN("notice", "You are slowly being placed inside the man-machine-interface tank."))
 	set_pin_data(IC_OUTPUT, 1, O)
@@ -212,7 +192,6 @@
 
 /obj/item/integrated_circuit/input/mmi_tank/proc/RemoveBrain()
 	if(installed_brain)
-		can_be_asked_input = TRUE
 		installed_brain.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 
@@ -283,8 +262,12 @@
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
 	demands_object_input = TRUE
+	radial_menu_icon = "pai_holder"
 
 	var/obj/item/device/paicard/installed_pai
+
+/obj/item/integrated_circuit/input/pAI_connector/ask_for_input(mob/user)
+	attack_self(user)
 
 /obj/item/integrated_circuit/input/pAI_connector/attackby(obj/item/device/paicard/O, mob/user)
 	if(!istype(O,/obj/item/device/paicard))
@@ -296,7 +279,6 @@
 	user.drop_item(O)
 	O.forceMove(src)
 	installed_pai = O
-	can_be_asked_input = FALSE
 	to_chat(user, SPAN("notice", "You slowly connect the circuit's pins to the [installed_pai]."))
 	to_chat(O, SPAN("notice", "You are slowly being connected to the pAI connector."))
 	set_pin_data(IC_OUTPUT, 1, O)
@@ -332,7 +314,6 @@
 
 /obj/item/integrated_circuit/input/pAI_connector/proc/RemovepAI()
 	if(installed_pai)
-		can_be_asked_input = TRUE
 		installed_pai.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 

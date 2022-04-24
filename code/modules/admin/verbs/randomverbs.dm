@@ -9,8 +9,8 @@
 	if(confirm != "Yes")
 		return
 
-	for(var/obj/item/W in M)
-		M.drop_from_inventory(W)
+	for(var/obj/item/I in M)
+		M.drop_from_inventory(I)
 
 	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
@@ -27,8 +27,8 @@
 			alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
 			return
 		//strip their stuff before they teleport into a cell :downs:
-		for(var/obj/item/W in M)
-			M.drop_from_inventory(W)
+		for(var/obj/item/I in M)
+			M.drop_from_inventory(I)
 		//teleport person to cell
 		M.Paralyse(5)
 		sleep(5)	//so they black out before warping
@@ -840,7 +840,7 @@ Ccomp's first proc.
 	set category = "Server"
 	set name = "Toggle random events on/off"
 
-	set desc = "Toggles random events such as meteors, black holes, blob (but not space dust) on/off"
+	set desc = "Toggles random events such as meteors, black holes on/off"
 	if(!check_rights(R_SERVER))	return
 
 	if(!config.allow_random_events)

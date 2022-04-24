@@ -12,6 +12,11 @@
 	src.item_path = path
 	src.amount = amount
 
+	if(istext(path))
+		path = text2path(path)
+
+	ASSERT(path)
+
 	if(!name)
 		var/atom/tmp = path
 		src.item_name = initial(tmp.name)

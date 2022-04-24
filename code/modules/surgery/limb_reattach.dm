@@ -15,10 +15,14 @@
 	clothes_penalty = FALSE
 
 /datum/surgery_step/limb/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if (!hasorgans(target))
+	if(!hasorgans(target))
 		return 0
 
 	var/obj/item/organ/external/E = tool
+
+	if(!istype(E))
+		return 0
+
 	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	if(!P || P.is_stump())
 		to_chat(user, SPAN("notice", "The [E.amputation_point] is missing!"))
@@ -68,7 +72,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/limb/connect
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
+	/obj/item/hemostat = 100,	\
 	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 20
 	)
@@ -93,6 +97,8 @@
 	if(E.children)
 		for(var/obj/item/organ/external/C in E.children)
 			C.status &= ~ORGAN_CUT_AWAY
+			C.update_tally()
+	E.update_tally()
 	target.update_body()
 	target.updatehealth()
 	target.UpdateDamageIcon()

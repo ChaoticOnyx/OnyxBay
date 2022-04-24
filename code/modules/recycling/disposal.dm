@@ -23,8 +23,7 @@
 	var/flushing = 0	// true if flushing in progress
 	var/flush_every_ticks = 30 //Every 30 ticks it will look whether it is ready to flush
 	var/flush_count = 0 //this var adds 1 once per tick. When it reaches flush_every_ticks it resets and tries to flush.
-	var/last_sound = 0
-	var/list/allowed_objects = list(/obj/structure/closet)
+	var/list/allowed_objects = list(/obj/structure/closet, /obj/structure/bigDelivery)
 	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
 	idle_power_usage = 100
 	atom_flags = ATOM_FLAG_CLIMBABLE
@@ -77,7 +76,7 @@
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
-			var/obj/item/weapon/weldingtool/W = I
+			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0, user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal unit.")
@@ -99,11 +98,11 @@
 				to_chat(user, "You need more welding fuel to complete this task.")
 				return
 
-	if(istype(I, /obj/item/weapon/storage/bag/trash))
-		var/obj/item/weapon/storage/bag/trash/T = I
+	if(istype(I, /obj/item/storage/bag/trash))
+		var/obj/item/storage/bag/trash/T = I
 		to_chat(user, "<span class='notice'>You empty the bag.</span>")
 		for(var/obj/item/O in T.contents)
-			playsound(src, "disposal", 75, 0)
+			playsound(src, SFX_DISPOSAL, 75, 0)
 			T.remove_from_storage(O,src)
 		T.update_icon()
 		update_icon()
@@ -116,7 +115,7 @@
 			for (var/mob/V in viewers(usr))
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
 			if(do_after(usr, 20, src))
-				playsound(src, "disposal", 75, 0)
+				playsound(src, SFX_DISPOSAL, 75, 0)
 				if(GM.client)
 					GM.client.perspective = EYE_PERSPECTIVE
 					GM.client.eye = src
@@ -137,7 +136,7 @@
 	if(I.loc != src)
 		return
 
-	playsound(src, "disposal", 75, 0)
+	playsound(src, SFX_DISPOSAL, 75, 0)
 	to_chat(user, "You place \the [I] into the [src].")
 	for(var/mob/M in viewers(src))
 		if(M == user)
@@ -434,9 +433,9 @@
 
 
 	sleep(10)
-	if(last_sound < world.time + 1)
+	THROTTLE(last_sound, 1)
+	if(last_sound)
 		playsound(src, 'sound/machines/disposalflush.ogg', 50, 0, 0)
-		last_sound = world.time
 	sleep(5) // wait for animation to finish
 
 
@@ -519,7 +518,7 @@
 
 
 	// initialize a holder from the contents of a disposal unit
-/obj/structure/disposalholder/proc/init(var/obj/machinery/disposal/D, var/datum/gas_mixture/flush_gas)
+/obj/structure/disposalholder/proc/init(obj/machinery/disposal/D, datum/gas_mixture/flush_gas)
 	gas = flush_gas// transfer gas resv. into holder object -- let's be explicit about the data this proc consumes, please.
 
 	//Check for any living mobs trigger hasmob.
@@ -554,7 +553,7 @@
 
 // start the movement process
 // argument is the disposal unit the holder started in
-/obj/structure/disposalholder/proc/start(var/obj/machinery/disposal/D)
+/obj/structure/disposalholder/proc/start(obj/machinery/disposal/D)
 	if(!D.trunk)
 		D.expel(src)	// no trunk connected, so expel immediately
 		return
@@ -600,7 +599,7 @@
 	return get_step(loc,dir)
 
 // find a matching pipe on a turf
-/obj/structure/disposalholder/proc/findpipe(var/turf/T)
+/obj/structure/disposalholder/proc/findpipe(turf/T)
 	if(!T)
 		return null
 
@@ -613,7 +612,7 @@
 
 // merge two holder objects
 // used when a a holder meets a stuck holder
-/obj/structure/disposalholder/proc/merge(var/obj/structure/disposalholder/other)
+/obj/structure/disposalholder/proc/merge(obj/structure/disposalholder/other)
 	for(var/atom/movable/AM in other)
 		AM.forceMove(src)		// move everything in other holder to this one
 		if(ismob(AM))
@@ -624,10 +623,10 @@
 	qdel(other)
 
 
-/obj/structure/disposalholder/proc/settag(var/new_tag)
+/obj/structure/disposalholder/proc/settag(new_tag)
 	destinationTag = new_tag
 
-/obj/structure/disposalholder/proc/setpartialtag(var/new_tag)
+/obj/structure/disposalholder/proc/setpartialtag(new_tag)
 	if(partialTag == new_tag)
 		destinationTag = new_tag
 		partialTag = ""
@@ -641,10 +640,12 @@
 
 	var/mob/living/U = user
 
-	if (U.stat || U.last_special <= world.time)
+	if (U.stat)
 		return
 
-	U.last_special = world.time+100
+	THROTTLE_SHARED(cooldown, 100, U.last_special)
+	if(!cooldown)
+		return
 
 	if (src.loc)
 		for (var/mob/M in hearers(src.loc.loc))
@@ -653,7 +654,7 @@
 	playsound(src.loc, 'sound/effects/clang.ogg', 50, 0, 0)
 
 // called to vent all gas in holder to a location
-/obj/structure/disposalholder/proc/vent_gas(var/atom/location)
+/obj/structure/disposalholder/proc/vent_gas(atom/location)
 	location.assume_air(gas)  // vent all gas to turf
 	return
 
@@ -715,13 +716,13 @@
 
 	// returns the direction of the next pipe object, given the entrance dir
 	// by default, returns the bitmask of remaining directions
-	proc/nextdir(var/fromdir)
+	proc/nextdir(fromdir)
 		return dpdir & (~turn(fromdir, 180))
 
 	// transfer the holder through this pipe segment
 	// overriden for special behaviour
 	//
-	proc/transfer(var/obj/structure/disposalholder/H)
+	proc/transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.set_dir(nextdir)
 		var/turf/T = H.nextloc()
@@ -748,7 +749,7 @@
 
 	// hide called by levelupdate if turf intact status changes
 	// change visibility status and force update of icon
-	hide(var/intact)
+	hide(intact)
 		set_invisibility(intact ? 101: 0)	// hide if floor is intact
 		update_icon()
 
@@ -767,7 +768,7 @@
 
 	// expel the held objects into a turf
 	// called when there is a break in the pipe
-	proc/expel(var/obj/structure/disposalholder/H, var/turf/T, var/direction)
+	proc/expel(obj/structure/disposalholder/H, turf/T, direction)
 		if(!istype(H))
 			return
 
@@ -826,7 +827,7 @@
 	// will expel any holder inside at the time
 	// then delete the pipe
 	// remains : set to leave broken pipe pieces in place
-	proc/broken(var/remains = 0)
+	proc/broken(remains = 0)
 		if(remains)
 			for(var/D in GLOB.cardinal)
 				if(D & dpdir)
@@ -885,14 +886,14 @@
 	//attack by item
 	//weldingtool: unfasten and convert to obj/disposalconstruct
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 
 		var/turf/T = src.loc
 		if(!T.is_plating())
 			return		// prevent interaction with T-scanner revealed pipes
 		src.add_fingerprint(user, 0, I)
-		if(istype(I, /obj/item/weapon/weldingtool))
-			var/obj/item/weapon/weldingtool/W = I
+		if(istype(I, /obj/item/weldingtool))
+			var/obj/item/weldingtool/W = I
 
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
@@ -1007,7 +1008,7 @@
 		update()
 		return
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/nextdir
 		if(fromdir == 11)
 			nextdir = dir
@@ -1015,7 +1016,7 @@
 			nextdir = 12
 		return nextdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.set_dir(nextdir)
 
@@ -1057,7 +1058,7 @@
 		update()
 		return
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/nextdir
 		if(fromdir == 12)
 			nextdir = dir
@@ -1065,7 +1066,7 @@
 			nextdir = 11
 		return nextdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir)
 		H.dir = nextdir
 
@@ -1122,7 +1123,7 @@
 	// if coming in from secondary dirs, then next is primary dir
 	// if coming in from primary dir, then next is equal chance of other dirs
 
-	nextdir(var/fromdir)
+	nextdir(fromdir)
 		var/flipdir = turn(fromdir, 180)
 		if(flipdir != dir)	// came from secondary dir
 			return dir		// so exit through primary
@@ -1172,7 +1173,7 @@
 		updatedesc()
 		update()
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(..())
 			return
 
@@ -1186,7 +1187,7 @@
 				updatename()
 				updatedesc()
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		if(sort_tag)
 			if(partial)
 				H.setpartialtag(sort_tag)
@@ -1401,7 +1402,7 @@
 		updatedesc()
 		update()
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(..())
 			return
 
@@ -1415,7 +1416,7 @@
 				updatename()
 				updatedesc()
 
-	proc/divert_check(var/checkTag)
+	proc/divert_check(checkTag)
 		return sortType == checkTag
 
 	// next direction to move
@@ -1423,7 +1424,7 @@
 	// if coming in from posdir, then flip around and go back to posdir
 	// if coming in from sortdir, go to posdir
 
-	nextdir(var/fromdir, var/sortTag)
+	nextdir(fromdir, sortTag)
 		if(fromdir != sortdir)	// probably came from the negdir
 			if(divert_check(sortTag))
 				return sortdir
@@ -1433,7 +1434,7 @@
 							// so go with the flow to positive direction
 			return posdir
 
-	transfer(var/obj/structure/disposalholder/H)
+	transfer(obj/structure/disposalholder/H)
 		var/nextdir = nextdir(H.dir, H.destinationTag)
 		H.set_dir(nextdir)
 		var/turf/T = H.nextloc()
@@ -1457,7 +1458,7 @@
 	name = "wildcard sorting junction"
 	desc = "An underfloor disposal pipe which filters all wrapped and tagged items."
 	subtype = 1
-	divert_check(var/checkTag)
+	divert_check(checkTag)
 		return checkTag != ""
 
 //junction that filters all untagged items
@@ -1465,7 +1466,7 @@
 	name = "untagged sorting junction"
 	desc = "An underfloor disposal pipe which filters all untagged items."
 	subtype = 2
-	divert_check(var/checkTag)
+	divert_check(checkTag)
 		return checkTag == ""
 
 /obj/structure/disposalpipe/sortjunction/flipped //for easier and cleaner mapping
@@ -1545,8 +1546,8 @@
 	if(!T.is_plating())
 		return		// prevent interaction with T-scanner revealed pipes
 	src.add_fingerprint(user, 0, I)
-	if(istype(I, /obj/item/weapon/weldingtool))
-		var/obj/item/weapon/weldingtool/W = I
+	if(istype(I, /obj/item/weldingtool))
+		var/obj/item/weldingtool/W = I
 
 		if(W.remove_fuel(0,user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
@@ -1641,7 +1642,7 @@
 
 	// expel the contents of the holder object, then delete it
 	// called when the holder exits the outlet
-	proc/expel(var/obj/structure/disposalholder/H)
+	proc/expel(obj/structure/disposalholder/H)
 
 		flick("outlet-open", src)
 		playsound(src, 'sound/machines/warning-buzzer.ogg', 50, 0, 0)
@@ -1660,7 +1661,7 @@
 
 		return
 
-	attackby(var/obj/item/I, var/mob/user)
+	attackby(obj/item/I, mob/user)
 		if(!I || !user)
 			return
 		src.add_fingerprint(user, 0, I)
@@ -1675,8 +1676,8 @@
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(istype(I,/obj/item/weapon/weldingtool) && mode==1)
-			var/obj/item/weapon/weldingtool/W = I
+		else if(istype(I,/obj/item/weldingtool) && mode==1)
+			var/obj/item/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal outlet.")

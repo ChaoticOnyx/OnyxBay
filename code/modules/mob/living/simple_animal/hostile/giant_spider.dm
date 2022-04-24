@@ -16,7 +16,7 @@
 	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 10
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "pokes"
@@ -35,6 +35,7 @@
 	move_to_delay = 6
 	speed = 3
 	controllable = TRUE
+	bodyparts = /decl/simple_animal_bodyparts/spider
 
 //nursemaids - these create webs and eggs
 /mob/living/simple_animal/hostile/giant_spider/nurse
@@ -224,3 +225,6 @@
 #undef LAYING_EGGS
 #undef MOVING_TO_TARGET
 #undef SPINNING_COCOON
+
+/decl/simple_animal_bodyparts/spider
+	hit_zones = list("cephalothorax", "abdomen", "left forelegs", "right forelegs", "left hind legs", "right hind legs", "pedipalp", "mouthparts")

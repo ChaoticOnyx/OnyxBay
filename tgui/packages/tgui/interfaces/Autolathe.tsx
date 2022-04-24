@@ -1,4 +1,4 @@
-import { useBackend, useLocalState } from '../backend';
+import { useBackend, useLocalState } from '../backend'
 import {
   AnimatedNumber,
   Box,
@@ -8,10 +8,10 @@ import {
   Input,
   Section,
   Stack,
-  Table,
-} from '../components';
-import { GameIcon } from '../components/GameIcon';
-import { Window } from '../layouts';
+  Table
+} from '../components'
+import { GameIcon } from '../components/GameIcon'
+import { Window } from '../layouts'
 
 interface Material {
   name: string;
@@ -29,6 +29,7 @@ interface Recipe {
   name: string;
   index: number;
   category: string;
+  // eslint-disable-next-line camelcase
   can_make: boolean;
   hidden: boolean;
   required: Material[];
@@ -42,13 +43,13 @@ interface InputData {
   recipes: Recipe[];
 }
 
-const MAX_PER_PAGE = 15;
+const MAX_PER_PAGE = 15
 
-const numberWithinRange = (min: number, n: number, max: number) => Math.min(Math.max(n, min), max);
+const numberWithinRange = (min: number, n: number, max: number) => Math.min(Math.max(n, min), max)
 
 const paginator = (recipes: Recipe[], context: any) => {
-  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1);
-  const totalPages = Math.ceil(recipes.length / MAX_PER_PAGE);
+  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1)
+  const totalPages = Math.ceil(recipes.length / MAX_PER_PAGE)
 
   return (
     <Stack width='100%' justify='space-between'>
@@ -64,23 +65,23 @@ const paginator = (recipes: Recipe[], context: any) => {
         <Button.Segmented icon='fast-forward' onClick={() => setCurrentPage(totalPages)} />
       </Stack.Item>
     </Stack>
-  );
-};
+  )
+}
 
 export const Autolathe = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
-  let [searchQuery, setSearchQuery] = useLocalState(
+  const { act, data, getTheme } = useBackend<InputData>(context)
+  const [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null,
-  );
-  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1);
-  let found: Recipe[] = data.recipes;
+    null
+  )
+  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1)
+  let found: Recipe[] = data.recipes
 
   if (searchQuery !== null) {
     found = data.recipes.filter(
-      (recipe, _) => recipe.name.search(searchQuery) >= 0,
-    );
+      (recipe, _) => recipe.name.search(searchQuery) >= 0
+    )
   }
 
   return (
@@ -101,7 +102,7 @@ export const Autolathe = (props: any, context: any) => {
                   />
                   /{material.capacity.toLocaleString()}
                 </Flex.Item>
-              );
+              )
             })}
           </Flex>
         </Section>
@@ -110,8 +111,8 @@ export const Autolathe = (props: any, context: any) => {
             placeholder='Search'
             fluid
             onInput={(e: any) => {
-              setCurrentPage(1);
-              return setSearchQuery(e.target.value);
+              setCurrentPage(1)
+              return setSearchQuery(e.target.value)
             }}
           />
           <Divider />
@@ -123,15 +124,14 @@ export const Autolathe = (props: any, context: any) => {
                   <Button.Label
                     selected={data.category.selected === category}
                     content={category}
-                    onClick={() =>
-                      {
-                        setCurrentPage(1);
-                        return act('change_category', { category: category });
+                    onClick={() => {
+                      setCurrentPage(1)
+                      return act('change_category', { category: category })
                     }
                     }
                   />
                 </Flex.Item>
-              );
+              )
             })}
           </Flex>
           <Divider />
@@ -148,9 +148,9 @@ export const Autolathe = (props: any, context: any) => {
             </Table.Row>
             {found.slice((currentPage - 1) * MAX_PER_PAGE, currentPage * MAX_PER_PAGE).map((recipe, i) => {
               if (searchQuery !== null) {
-                let found = recipe.name.search(searchQuery);
+                const found = recipe.name.search(searchQuery)
                 if (found < 0) {
-                  return null;
+                  return null
                 }
               }
 
@@ -165,7 +165,8 @@ export const Autolathe = (props: any, context: any) => {
                         act('make', { make: recipe.index, multiplier: 1 })
                       }
                     />
-                    {recipe.multipliers.length > 0 ? (
+                    {recipe.multipliers.length > 0
+                      ? (
                       <Box ml='0.2rem' mb='0.5rem'>
                         {recipe.multipliers.map((mult, k) => {
                           return (
@@ -175,32 +176,33 @@ export const Autolathe = (props: any, context: any) => {
                               onClick={() =>
                                 act('make', {
                                   make: recipe.index,
-                                  multiplier: mult,
+                                  multiplier: mult
                                 })
                               }
                             />
-                          );
+                          )
                         })}
                       </Box>
-                    ) : null}
+                        )
+                      : null}
                   </Table.Cell>
                   <Table.Cell>
                     {recipe.required.map((material, i) => {
                       return (
                         <div key={i}>
-                          {material.name
-                            + ' '
-                            + material.count.toLocaleString()}
+                          {material.name +
+                            ' ' +
+                            material.count.toLocaleString()}
                         </div>
-                      );
+                      )
                     })}
                   </Table.Cell>
                 </Table.Row>
-              );
+              )
             })}
           </Table>
         </Section>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

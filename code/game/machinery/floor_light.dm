@@ -10,7 +10,7 @@ var/list/floor_light_cache = list()
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = LIGHT
+	power_channel = STATIC_LIGHT
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/on
@@ -28,7 +28,7 @@ var/list/floor_light_cache = list()
 		anchored = !anchored
 		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
 			to_chat(user, "<span class='warning'>\The [src] must be on to complete this task.</span>")
 			return
@@ -50,11 +50,11 @@ var/list/floor_light_cache = list()
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
-			playsound(src, "window_breaking", 70, 1)
+			playsound(src, SFX_BREAK_WINDOW, 70, 1)
 			set_broken(TRUE)
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			if(isnull(damaged)) damaged = 0
 		update_brightness()
 		return

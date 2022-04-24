@@ -10,7 +10,7 @@
 	var/health = null
 	var/burn_point = null
 	var/burning = null
-	var/hitsound = null
+	var/hitsound = SFX_FIGHTING_SWING
 	var/slot_flags = 0		//This is used to determine on which slots an item can fit.
 	var/no_attack_log = 0			//If it's an item we don't want to log attack_logs with, set this to 1
 	pass_flags = PASS_FLAG_TABLE
@@ -29,6 +29,7 @@
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
 	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
 	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.3 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
+	var/check_armour = "melee" // Defines what armor to use when it hits things.  Must be set to bullet/laser/energy/bomb/bio/rad
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
 	var/cold_protection = 0 //flags which determine which body parts are protected from cold. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -54,13 +55,14 @@
 	var/slowdown_per_slot[slot_last] // How much clothing is slowing you down. This is an associative list: item slot - slowdown
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
-	var/candrop = 1 //Mostly for the fake armblade code. Prevents drop_from_inventory(), making the wielder unable to drop it at all unless forced.
+	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
 	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	var/list/allowed = null //suit storage stuff.
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used
 	var/zoom = 0 //1 if item is actively being used to zoom. For scoped guns and binoculars.
 	var/surgery_speed = 1 //When this item is used as a surgery tool, multiply the delay of the surgery step by this much.
+	var/clumsy_unaffected = FALSE
 
 	var/icon_override = null  //Used to override hardcoded clothing dmis in human clothing proc.
 
@@ -98,8 +100,8 @@
 	if(maptext)
 		maptext = ""
 
-	if(istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/storage = loc // some ui cleanup needs to be done
+	if(istype(src.loc, /obj/item/storage))
+		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
 		storage.on_item_pre_deletion(src) // must be done before deletion
 		. = ..()
 		storage.on_item_post_deletion() // must be done after deletion
@@ -237,7 +239,7 @@
 		return ..()
 	if(hasorgans(user))
 		var/mob/living/carbon/human/H = user
-		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+		if(loc != H && H.IsAdvancedToolUser(TRUE) == FALSE)
 			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
 			return
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
@@ -250,20 +252,23 @@
 			to_chat(user, SPAN("notice", "You try to use your hand, but realize it is no longer attached!"))
 			return
 
-	var/old_loc = src.loc
+	var/old_loc = loc
 
-	src.pickup(user)
-	if (istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = src.loc
+	pickup(user)
+	if (istype(loc, /obj/item/storage))
+		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 
-	src.throwing = 0
-	if (src.loc == user)
+	throwing = 0
+	if (loc == user)
 		if(!user.unEquip(src))
 			return
 	else
-		if(isliving(src.loc))
+		if(isliving(loc))
 			return
+
+	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+		return
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -279,7 +284,7 @@
 	return
 
 /obj/item/attack_ai(mob/user)
-	if (istype(src.loc, /obj/item/weapon/robot_module))
+	if (istype(src.loc, /obj/item/robot_module))
 		//If the item is part of a cyborg module, equip it
 		if(!isrobot(user))
 			return
@@ -287,9 +292,9 @@
 		R.activate_module(src)
 		R.hud_used.update_robot_modules_display()
 
-/obj/item/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
+/obj/item/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/storage))
+		var/obj/item/storage/S = W
 		if(S.use_to_pickup)
 			if(S.collection_mode) //Mode is set to collect all items
 				if(isturf(src.loc))
@@ -320,11 +325,11 @@
 	return
 
 // called when this item is removed from a storage item, which is passed on as S. The loc variable is already set to the new destination before this is called.
-/obj/item/proc/on_exit_storage(obj/item/weapon/storage/S)
+/obj/item/proc/on_exit_storage(obj/item/storage/S)
 	return
 
 // called when this item is added into a storage item, which is passed on as S. The loc variable is already set to the storage item.
-/obj/item/proc/on_enter_storage(obj/item/weapon/storage/S)
+/obj/item/proc/on_enter_storage(obj/item/storage/S)
 	return
 
 // called when "found" in pockets and storage items. Returns 1 if the search should end.
@@ -437,15 +442,15 @@ var/list/global/slot_flags_enumeration = list(
 				if(!disable_warning)
 					to_chat(usr, SPAN("warning", "You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return 0
-			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/weapon/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
+			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/weapon/handcuffs))
+			if(!istype(src, /obj/item/handcuffs))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
-			if(H.back && istype(H.back, /obj/item/weapon/storage/backpack))
-				var/obj/item/weapon/storage/backpack/B = H.back
+			if(H.back && istype(H.back, /obj/item/storage/backpack))
+				var/obj/item/storage/backpack/B = H.back
 				if(B.can_be_inserted(src,M,1))
 					allow = 1
 			if(!allow)
@@ -482,6 +487,9 @@ var/list/global/slot_flags_enumeration = list(
 	if(!M.slot_is_accessible(slot, src, disable_warning? null : M))
 		return 0
 	return 1
+
+/obj/item/proc/can_be_dropped_by_client(mob/M)
+	return M.canUnEquip(src)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
@@ -541,6 +549,8 @@ var/list/global/slot_flags_enumeration = list(
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
 			proj_poise_drain(user, P, TRUE)
+			spawn()
+				shake_camera(user, 1)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 
@@ -672,7 +682,7 @@ var/list/global/slot_flags_enumeration = list(
 	if (!..())
 		return 0
 
-	if(istype(src, /obj/item/weapon/melee/energy))
+	if(istype(src, /obj/item/melee/energy))
 		return
 
 	//if we haven't made our blood_overlay already
@@ -894,4 +904,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	return
 
 /obj/item/proc/on_restraint_apply(mob/living/carbon/C)
+	return
+
+/obj/item/Bump(mob/M)
+	spawn()
+		..()
 	return

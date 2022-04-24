@@ -48,8 +48,6 @@ var/list/event_last_fired = list()
 		possibleEvents[/datum/event/spacevine] = 10 + 5 * active_with_role["Engineer"]
 	if(minutes_passed >= 30) // Give engineers time to set up engine
 		possibleEvents[/datum/event/meteor_wave] = 10 * active_with_role["Engineer"]
-		// TODO [V] Return this back when lighting problem will be fixed
-		// possibleEvents[/datum/event/blob] = 10 * active_with_role["Engineer"]
 
 	if(active_with_role["Medical"] > 0)
 		possibleEvents[/datum/event/radiation_storm] = active_with_role["Medical"] * 10
@@ -172,13 +170,13 @@ var/list/event_last_fired = list()
 		if(istype(M, /mob/living/silicon/robot))
 			var/mob/living/silicon/robot/R = M
 			if(R.module)
-				if(istype(R.module, /obj/item/weapon/robot_module/engineering))
+				if(istype(R.module, /obj/item/robot_module/engineering))
 					active_with_role["Engineer"]++
-				else if(istype(R.module, /obj/item/weapon/robot_module/security))
+				else if(istype(R.module, /obj/item/robot_module/security))
 					active_with_role["Security"]++
-				else if(istype(R.module, /obj/item/weapon/robot_module/medical))
+				else if(istype(R.module, /obj/item/robot_module/medical))
 					active_with_role["Medical"]++
-				else if(istype(R.module, /obj/item/weapon/robot_module/research))
+				else if(istype(R.module, /obj/item/robot_module/research))
 					active_with_role["Scientist"]++
 
 		if(M.mind.assigned_role in GLOB.engineering_positions)

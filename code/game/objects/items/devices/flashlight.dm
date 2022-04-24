@@ -182,7 +182,7 @@
 	force = 10
 	attack_verb = list ("smacked", "thwacked", "thunked")
 	matter = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 50)
-	hitsound = "swing_hit"
+	hitsound = SFX_FIGHTING_SWING
 
 	brightness_color = "#ffffff"
 
@@ -209,6 +209,15 @@
 	flashlight_falloff_curve = 2.5
 	brightness_color = "#ffc58f"
 	light_overlay = FALSE
+
+/obj/item/device/flashlight/lantern/active
+	flashlight_outer_range = 4
+	on = TRUE
+
+/obj/item/device/flashlight/lantern/active/Initialize()
+	. = ..()
+	switch_light(TRUE)
+	update_icon()
 
 // the desk lamps are a bit special
 /obj/item/device/flashlight/lamp

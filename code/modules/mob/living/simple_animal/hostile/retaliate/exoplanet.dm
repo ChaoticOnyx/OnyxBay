@@ -57,6 +57,7 @@
 	speak = list("Hruuugh!","Hrunnph")
 	emote_see = list("paws the ground","shakes its mane","stomps")
 	emote_hear = list("snuffles")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/hostile/retaliate/beast/diyaab
 	name = "diyaab"
@@ -77,6 +78,7 @@
 	speak = list("Awrr?","Aowrl!","Worrl")
 	emote_see = list("sniffs the air cautiously","looks around")
 	emote_hear = list("snuffles")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/hostile/retaliate/beast/shantak
 	name = "shantak"
@@ -96,6 +98,7 @@
 	speak_chance = 2
 	speak = list("Shuhn","Shrunnph?","Shunpf")
 	emote_see = list("scratches the ground","shakes out it's mane","tinkles gently")
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 /mob/living/simple_animal/yithian
 	name = "yithian"

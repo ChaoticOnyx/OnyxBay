@@ -101,7 +101,10 @@
 	. = max(., 0)
 
 /proc/clothes_check(user, target, target_zone)
-	if(length(get_target_clothes(target, target_zone)))
+	var/list/clothes = get_target_clothes(target, target_zone)
+	for(var/obj/item/clothing/C in clothes)
+		if(!(C.body_parts_covered & body_part_flags[target_zone]))
+			continue
 		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_BLOCKED
 

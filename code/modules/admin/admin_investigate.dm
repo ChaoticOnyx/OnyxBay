@@ -29,7 +29,7 @@
 	log_integrated_circuits(log)
 
 //ADMINVERBS
-/client/proc/investigate_show( subject in list("hrefs","notes","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT) )
+/client/proc/investigate_show(subject in list("hrefs","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT))
 	set name = "Investigate"
 	set category = "Admin"
 	if(!holder)	return

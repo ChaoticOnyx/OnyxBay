@@ -1,4 +1,4 @@
-/spell/mark_recall
+/datum/spell/mark_recall
 	name = "Mark and Recall"
 	desc = "This spell was created so wizards could get home from the bar without driving. Does not require wizard garb."
 	feedback = "MK"
@@ -6,26 +6,26 @@
 	charge_max = 600 //1 minutes for how OP this shit is (apparently not as op as I thought)
 	spell_flags = Z2NOCAST
 	invocation = "Re-Alki R'natha."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	cooldown_min = 300
 	need_target = FALSE
 
 	smoke_amt = 1
 	smoke_spread = 5
 
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 1)
 
 	cast_sound = 'sound/effects/teleport.ogg'
-	hud_state = "wiz_mark"
+	icon_state = "wiz_mark"
 	var/mark = null
 
-/spell/mark_recall/choose_targets()
+/datum/spell/mark_recall/choose_targets()
 	if(!mark)
 		return list("magical fairy dust") //because why not
 	else
 		return list(mark)
 
-/spell/mark_recall/cast(list/targets, mob/user)
+/datum/spell/mark_recall/cast(list/targets, mob/user)
 	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
 		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
 		cell.go_out()
@@ -43,7 +43,7 @@
 	user.forceMove(T)
 	..()
 
-/spell/mark_recall/empower_spell()
+/datum/spell/mark_recall/empower_spell()
 	if(!..())
 		return FALSE
 
@@ -61,7 +61,7 @@
 	unacidable = TRUE
 	layer = TURF_LAYER
 
-	var/spell/mark_recall/spell
+	var/datum/spell/mark_recall/spell
 
 /obj/effect/decal/cleanable/wizard_mark/New(newloc,mrspell)
 	..()
@@ -79,7 +79,7 @@
 	..()
 
 /obj/effect/decal/cleanable/wizard_mark/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/nullrod) || istype(I, /obj/item/weapon/spellbook))
+	if(istype(I, /obj/item/nullrod) || istype(I, /obj/item/spellbook))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		src.visible_message("\The [src] fades away!")
 		qdel(src)

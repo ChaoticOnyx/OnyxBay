@@ -99,7 +99,7 @@
 /datum/robot_component/cell
 	name = "power cell"
 	max_damage = 50
-	var/obj/item/weapon/cell/stored_cell = null
+	var/obj/item/cell/stored_cell = null
 
 /datum/robot_component/cell/destroy()
 	..()

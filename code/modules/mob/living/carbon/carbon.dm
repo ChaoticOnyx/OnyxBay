@@ -49,27 +49,29 @@
 
 /mob/living/carbon/relaymove(mob/living/user, direction)
 	if((user in src.stomach_contents) && istype(user))
-		if(user.last_special <= world.time)
-			user.last_special = world.time + 50
-			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
-			var/obj/item/I = user.get_active_hand()
-			var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
-			if(istype(src, /mob/living/carbon/human))
-				var/mob/living/carbon/human/H = src
-				var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
-				if (istype(organ))
-					organ.take_external_damage(dmg, 0)
-				H.updatehealth()
-			else
-				take_organ_damage(dmg)
-			user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
-			playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+		THROTTLE_SHARED(cooldown, 50, user.last_special)
+		if(!cooldown)
+			return
 
-			if(prob(getBruteLoss() - 50))
-				for(var/atom/movable/A in stomach_contents)
-					A.loc = loc
-					stomach_contents.Remove(A)
-				gib()
+		src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
+		var/obj/item/I = user.get_active_hand()
+		var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
+		if(istype(src, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
+			if (istype(organ))
+				organ.take_external_damage(dmg, 0)
+			H.updatehealth()
+		else
+			take_organ_damage(dmg)
+		user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
+		playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
+
+		if(prob(getBruteLoss() - 50))
+			for(var/atom/movable/A in stomach_contents)
+				A.loc = loc
+				stomach_contents.Remove(A)
+			gib()
 
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
@@ -105,7 +107,7 @@
 
 	stun_effect_act(agony_amount=shock_damage, def_zone=def_zone)
 
-	playsound(loc, "spark", 50, 1, -1)
+	playsound(loc, SFX_SPARK, 50, 1, -1)
 	if (shock_damage > 15)
 		src.visible_message(
 			"<span class='warning'>[src] was electrocuted[source ? " by the [source]" : ""]!</span>", \
@@ -297,12 +299,13 @@
 		return
 
 	var/obj/item/I = item
-	if(!I.candrop)
+	var/is_grab = istype(item, /obj/item/grab)
+	if(!I.canremove && !is_grab)
 		return
 
 	var/throw_range = item.throw_range
 	var/itemsize
-	if(istype(item, /obj/item/grab))
+	if(is_grab)
 		var/obj/item/grab/G = item
 		item = G.throw_held() // throw the person instead of the grab
 		if(ismob(item))
@@ -328,7 +331,7 @@
 	//actually throw it!
 	visible_message(SPAN("warning", "[src] has thrown [item]."), range = min(itemsize * 2, world.view))
 	var/sfx_loudness = min(100, 5 + (itemsize * 5))
-	playsound(src, "throwing", sfx_loudness, 1)
+	playsound(src, SFX_THROWING, sfx_loudness, 1)
 
 	if(!lastarea)
 		lastarea = get_area(loc)
@@ -441,7 +444,7 @@
 	<BR><B>Head(Mask):</B> <A href='?src=\ref[src];item=mask'>[(wear_mask ? wear_mask : "Nothing")]</A>
 	<BR><B>Left Hand:</B> <A href='?src=\ref[src];item=l_hand'>[(l_hand ? l_hand  : "Nothing")]</A>
 	<BR><B>Right Hand:</B> <A href='?src=\ref[src];item=r_hand'>[(r_hand ? r_hand : "Nothing")]</A>
-	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/weapon/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
+	<BR><B>Back:</B> <A href='?src=\ref[src];item=back'>[(back ? back : "Nothing")]</A> [((istype(wear_mask, /obj/item/clothing/mask) && istype(back, /obj/item/tank) && !( internal )) ? text(" <A href='?src=\ref[];item=internal'>Set Internal</A>", src) : "")]
 	<BR>[(internal ? text("<A href='?src=\ref[src];item=internal'>Remove Internal</A>") : "")]
 	<BR><A href='?src=\ref[src];item=pockets'>Empty Pockets</A>
 	<BR><A href='?src=\ref[user];refresh=1'>Refresh</A>
@@ -511,7 +514,7 @@
 		return
 	stasis_sources[source] = factor
 
-/mob/living/carbon/proc/InStasis()
+/mob/living/carbon/InStasis()
 	if(!stasis_value)
 		return FALSE
 	return life_tick % stasis_value

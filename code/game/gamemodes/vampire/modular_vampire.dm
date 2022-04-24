@@ -6,8 +6,8 @@ var/list/datum/power/vampire/vampirepowers = list()
 
 /datum/power/vampire/alertness
 	name = "Alertness"
-	desc = "Toggle whether you wish for your victims to get paralyzed and forget your deeds."
-	helptext = "If active, victims will become paralyzed and forget that you fed on them, instead remembering only a pleasant encounter."
+	desc = "Toggle whether you wish for your victims to forget your deeds."
+	helptext = "If active, victims will forget that you fed on them, instead remembering only a pleasant encounter."
 	verbpath = /mob/living/carbon/human/proc/vampire_alertness
 
 /datum/power/vampire/drain_blood

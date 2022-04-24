@@ -1,16 +1,34 @@
-import { useBackend } from '../backend';
+import { useBackend } from '../backend'
 import {
   Button,
   Divider,
   Icon,
   LabeledList,
   Modal,
-  Stack,
-} from '../components';
-import { GameIcon } from '../components/GameIcon';
-import { Window } from '../layouts';
+  Stack
+} from '../components'
+import { GameIcon } from '../components/GameIcon'
+import { Window } from '../layouts'
 
-export interface InputData {
+interface Product {
+  key: number;
+  name: string;
+  price: number;
+  color: null;
+  amount: number;
+  icon: string;
+}
+
+interface Payment {
+  message: string;
+  price: number;
+  product: string;
+  icon: string;
+  // eslint-disable-next-line camelcase
+  message_err: number;
+}
+
+interface InputData {
   mode: number;
   products: Product[];
   panel: number;
@@ -21,29 +39,12 @@ export interface InputData {
   ready: number;
 }
 
-export interface Product {
-  key: number;
-  name: string;
-  price: number;
-  color: null;
-  amount: number;
-  icon: string;
-}
-
-export interface Payment {
-  message: string;
-  price: number;
-  product: string;
-  icon: string;
-  message_err: number;
-}
-
 const product = (product: Product, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const outOfStock = product.amount === 0;
-  const isFree = product.price === 0;
-  const capitalizedName
-    = product.name[0].toUpperCase() + product.name.substr(1);
+  const { act } = useBackend<InputData>(context)
+  const outOfStock = product.amount === 0
+  const isFree = product.price === 0
+  const capitalizedName =
+    product.name[0].toUpperCase() + product.name.substr(1)
 
   return (
     <Button
@@ -61,25 +62,27 @@ const product = (product: Product, context: any) => {
           {
             <>
               {isFree ? product.amount : product.price}
-              {isFree ? (
-                <i style={{ 'margin-left': '.5rem' }} class='fas fa-boxes' />
-              ) : (
+              {isFree
+                ? (
+                <i style={{ 'margin-left': '.5rem' }} className='fas fa-boxes' />
+                  )
+                : (
                 <i
                   style={{ 'margin-left': '.5rem' }}
-                  class='fas fa-money-bill-alt'
+                  className='fas fa-money-bill-alt'
                 />
-              )}
+                  )}
             </>
           }
         </Stack.Item>
       </Stack>
     </Button>
-  );
-};
+  )
+}
 
 const pay = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const { payment } = data;
+  const { act, data } = useBackend<InputData>(context)
+  const { payment } = data
 
   return (
     <Modal className='Payment'>
@@ -92,12 +95,12 @@ const pay = (props: any, context: any) => {
         </LabeledList.Item>
         <LabeledList.Item label='Price'>
           {payment.price}{' '}
-          <i style={{ 'margin-left': '.5rem' }} class='fas fa-money-bill-alt' />
+          <i style={{ 'margin-left': '.5rem' }} className='fas fa-money-bill-alt' />
         </LabeledList.Item>
       </LabeledList>
       <Divider hidden />
-      {(payment.message_err && <Icon mr='.5rem' name='exclamation-circle' />)
-        || null}
+      {(payment.message_err && <Icon mr='.5rem' name='exclamation-circle' />) ||
+        null}
       {payment.message}
       <Divider hidden />
       <Stack justify='space-between' align='center'>
@@ -120,8 +123,8 @@ const pay = (props: any, context: any) => {
         </Stack.Item>
       </Stack>
     </Modal>
-  );
-};
+  )
+}
 
 const vendingProgress = () => {
   return (
@@ -133,12 +136,12 @@ const vendingProgress = () => {
         </Stack.Item>
       </Stack>
     </Modal>
-  );
-};
+  )
+}
 
 export const Vending = (props: any, context: any) => {
-  const { act, data, getTheme } = useBackend<InputData>(context);
-  const { products, mode, ready } = data;
+  const { act, data, getTheme } = useBackend<InputData>(context)
+  const { products, mode, ready } = data
 
   return (
     <Window
@@ -155,8 +158,8 @@ export const Vending = (props: any, context: any) => {
             content={`Speaker ${data.speaker ? 'Enabled' : 'Disabled'}`}
             onClick={() => act('togglevoice')}
           />
-        ))
-          || null}
+        )) ||
+          null}
         {data.coin && (
           <Button
             icon='coins'
@@ -171,5 +174,5 @@ export const Vending = (props: any, context: any) => {
       {mode === 1 && pay(props, context)}
       {!ready && vendingProgress()}
     </Window>
-  );
-};
+  )
+}

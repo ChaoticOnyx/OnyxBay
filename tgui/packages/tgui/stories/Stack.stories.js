@@ -4,18 +4,19 @@
  * @license MIT
  */
 
-import { Box, Section, Stack } from '../components';
+import { Box, Section, Stack } from '../components'
 
 export const meta = {
   title: 'Stack',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Filler = () => (
   <Box inline width={1} height={1}>
     A
   </Box>
-);
+)
 
 const SmallStackItems = () => (
   <>
@@ -27,7 +28,7 @@ const SmallStackItems = () => (
       <Filler />
     </Stack.Item>
   </>
-);
+)
 
 const Story = (props, context) => {
   return (
@@ -51,5 +52,5 @@ const Story = (props, context) => {
         </Stack.Item>
       </Stack>
     </Section>
-  );
-};
+  )
+}

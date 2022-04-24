@@ -1,150 +1,150 @@
+/* eslint-disable no-undef */
 /**
  * @file
  * @copyright 2020 Aleksej Komarov
  * @license MIT
  */
 
-import { clamp } from 'common/math';
-import { classes, pureComponentHooks } from 'common/react';
-import { Component, createRef } from 'inferno';
-import { AnimatedNumber } from './AnimatedNumber';
-import { Box } from './Box';
+import { clamp } from 'common/math'
+import { classes, pureComponentHooks } from 'common/react'
+import { Component, createRef } from 'inferno'
+import { AnimatedNumber } from './AnimatedNumber'
+import { Box } from './Box'
 
-const DEFAULT_UPDATE_RATE = 400;
+const DEFAULT_UPDATE_RATE = 400
 
 export class NumberInput extends Component {
-  constructor(props) {
-    super(props);
-    const { value } = props;
-    this.inputRef = createRef();
+  constructor (props) {
+    super(props)
+    const { value } = props
+    this.inputRef = createRef()
     this.state = {
       value,
       dragging: false,
       editing: false,
       internalValue: null,
       origin: null,
-      suppressingFlicker: false,
-    };
+      suppressingFlicker: false
+    }
 
     // Suppresses flickering while the value propagates through the backend
-    this.flickerTimer = null;
+    this.flickerTimer = null
     this.suppressFlicker = () => {
-      const { suppressFlicker } = this.props;
+      const { suppressFlicker } = this.props
       if (suppressFlicker > 0) {
         this.setState({
-          suppressingFlicker: true,
-        });
-        clearTimeout(this.flickerTimer);
-        this.flickerTimer = setTimeout(() => this.setState({
-          suppressingFlicker: false,
-        }), suppressFlicker);
+          suppressingFlicker: true
+        })
+        clearTimeout(this.flickerTimer)
+        this.flickerTimer = setTimeout(
+          () =>
+            this.setState({
+              suppressingFlicker: false
+            }),
+          suppressFlicker
+        )
       }
-    };
+    }
 
     this.handleDragStart = e => {
-      const { value } = this.props;
-      const { editing } = this.state;
+      const { value } = this.props
+      const { editing } = this.state
       if (editing) {
-        return;
+        return
       }
-      document.body.style['pointer-events'] = 'none';
-      this.ref = e.target;
+      document.body.style['pointer-events'] = 'none'
+      this.ref = e.target
       this.setState({
         dragging: false,
         origin: e.screenY,
         value,
-        internalValue: value,
-      });
+        internalValue: value
+      })
       this.timer = setTimeout(() => {
         this.setState({
-          dragging: true,
-        });
-      }, 250);
+          dragging: true
+        })
+      }, 250)
       this.dragInterval = setInterval(() => {
-        const { dragging, value } = this.state;
-        const { onDrag } = this.props;
+        const { dragging, value } = this.state
+        const { onDrag } = this.props
         if (dragging && onDrag) {
-          onDrag(e, value);
+          onDrag(e, value)
         }
-      }, this.props.updateRate || DEFAULT_UPDATE_RATE);
-      document.addEventListener('mousemove', this.handleDragMove);
-      document.addEventListener('mouseup', this.handleDragEnd);
-    };
+      }, this.props.updateRate || DEFAULT_UPDATE_RATE)
+      document.addEventListener('mousemove', this.handleDragMove)
+      document.addEventListener('mouseup', this.handleDragEnd)
+    }
 
     this.handleDragMove = e => {
-      const { minValue, maxValue, step, stepPixelSize } = this.props;
+      const { minValue, maxValue, step, stepPixelSize } = this.props
       this.setState(prevState => {
-        const state = { ...prevState };
-        const offset = state.origin - e.screenY;
+        const state = { ...prevState }
+        const offset = state.origin - e.screenY
         if (prevState.dragging) {
-          const stepOffset = Number.isFinite(minValue)
-            ? minValue % step
-            : 0;
+          const stepOffset = Number.isFinite(minValue) ? minValue % step : 0
           // Translate mouse movement to value
           // Give it some headroom (by increasing clamp range by 1 step)
           state.internalValue = clamp(
-            state.internalValue + offset * step / stepPixelSize,
+            state.internalValue + (offset * step) / stepPixelSize,
             minValue - step,
-            maxValue + step);
+            maxValue + step
+          )
           // Clamp the final value
           state.value = clamp(
-            state.internalValue
-              - state.internalValue % step
-              + stepOffset,
+            state.internalValue - (state.internalValue % step) + stepOffset,
             minValue,
-            maxValue);
-          state.origin = e.screenY;
+            maxValue
+          )
+          state.origin = e.screenY
+        } else if (Math.abs(offset) > 4) {
+          state.dragging = true
         }
-        else if (Math.abs(offset) > 4) {
-          state.dragging = true;
-        }
-        return state;
-      });
-    };
+        return state
+      })
+    }
 
     this.handleDragEnd = e => {
-      const { onChange, onDrag } = this.props;
-      const { dragging, value, internalValue } = this.state;
-      document.body.style['pointer-events'] = 'auto';
-      clearTimeout(this.timer);
-      clearInterval(this.dragInterval);
+      const { onChange, onDrag } = this.props
+      const { dragging, value, internalValue } = this.state
+      document.body.style['pointer-events'] = 'auto'
+      clearTimeout(this.timer)
+      clearInterval(this.dragInterval)
       this.setState({
         dragging: false,
         editing: !dragging,
-        origin: null,
-      });
-      document.removeEventListener('mousemove', this.handleDragMove);
-      document.removeEventListener('mouseup', this.handleDragEnd);
+        origin: null
+      })
+      document.removeEventListener('mousemove', this.handleDragMove)
+      document.removeEventListener('mouseup', this.handleDragEnd)
       if (dragging) {
-        this.suppressFlicker();
+        this.suppressFlicker()
         if (onChange) {
-          onChange(e, value);
+          onChange(e, value)
         }
         if (onDrag) {
-          onDrag(e, value);
+          onDrag(e, value)
         }
-      }
-      else if (this.inputRef) {
-        const input = this.inputRef.current;
-        input.value = internalValue;
+      } else if (this.inputRef) {
+        const input = this.inputRef.current
+        input.value = internalValue
         // IE8: Dies when trying to focus a hidden element
         // (Error: Object does not support this action)
         try {
-          input.focus();
-          input.select();
-        }
-        catch {}
+          input.focus()
+          input.select()
+        } catch {}
       }
-    };
+    }
   }
 
-  render() {
+  render () {
     const {
       dragging,
       editing,
       value: intermediateValue,
-      suppressingFlicker,
-    } = this.state;
+      suppressingFlicker
+    } = this.state
     const {
       className,
       fluid,
@@ -159,35 +159,31 @@ export class NumberInput extends Component {
       fontSize,
       format,
       onChange,
-      onDrag,
-    } = this.props;
-    let displayValue = value;
+      onDrag
+    } = this.props
+    let displayValue = value
     if (dragging || suppressingFlicker) {
-      displayValue = intermediateValue;
+      displayValue = intermediateValue
     }
     // IE8: Use an "unselectable" prop because "user-select" doesn't work.
     const renderContentElement = value => (
-      <div
-        className='NumberInput__content'
-        unselectable={Byond.IS_LTE_IE8}>
+      <div className='NumberInput__content' unselectable={Byond.IS_LTE_IE8}>
         {value + (unit ? ' ' + unit : '')}
       </div>
-    );
-    const contentElement = (animated && !dragging && !suppressingFlicker && (
-      <AnimatedNumber
-        value={displayValue}
-        format={format}>
-        {renderContentElement}
-      </AnimatedNumber>
-    ) || (
+    )
+    const contentElement =
+      (animated && !dragging && !suppressingFlicker && (
+        <AnimatedNumber value={displayValue} format={format}>
+          {renderContentElement}
+        </AnimatedNumber>
+      )) ||
       renderContentElement(format ? format(displayValue) : displayValue)
-    ));
     return (
       <Box
         className={classes([
           'NumberInput',
           fluid && 'NumberInput--fluid',
-          className,
+          className
         ])}
         minWidth={width}
         minHeight={height}
@@ -198,10 +194,14 @@ export class NumberInput extends Component {
           <div
             className='NumberInput__bar'
             style={{
-              height: clamp(
-                (displayValue - minValue) / (maxValue - minValue) * 100,
-                0, 100) + '%',
-            }} />
+              height:
+                clamp(
+                  ((displayValue - minValue) / (maxValue - minValue)) * 100,
+                  0,
+                  100
+                ) + '%'
+            }}
+          />
         </div>
         {contentElement}
         <input
@@ -211,32 +211,29 @@ export class NumberInput extends Component {
             display: !editing ? 'none' : undefined,
             height: height,
             'line-height': lineHeight,
-            'font-size': fontSize,
+            'font-size': fontSize
           }}
           onBlur={e => {
             if (!editing) {
-              return;
+              return
             }
-            const value = clamp(
-              parseFloat(e.target.value),
-              minValue,
-              maxValue);
+            const value = clamp(parseFloat(e.target.value), minValue, maxValue)
             if (Number.isNaN(value)) {
               this.setState({
-                editing: false,
-              });
-              return;
+                editing: false
+              })
+              return
             }
             this.setState({
               editing: false,
-              value,
-            });
-            this.suppressFlicker();
+              value
+            })
+            this.suppressFlicker()
             if (onChange) {
-              onChange(e, value);
+              onChange(e, value)
             }
             if (onDrag) {
-              onDrag(e, value);
+              onDrag(e, value)
             }
           }}
           onKeyDown={e => {
@@ -244,43 +241,44 @@ export class NumberInput extends Component {
               const value = clamp(
                 parseFloat(e.target.value),
                 minValue,
-                maxValue);
+                maxValue
+              )
               if (Number.isNaN(value)) {
                 this.setState({
-                  editing: false,
-                });
-                return;
+                  editing: false
+                })
+                return
               }
               this.setState({
                 editing: false,
-                value,
-              });
-              this.suppressFlicker();
+                value
+              })
+              this.suppressFlicker()
               if (onChange) {
-                onChange(e, value);
+                onChange(e, value)
               }
               if (onDrag) {
-                onDrag(e, value);
+                onDrag(e, value)
               }
-              return;
+              return
             }
             if (e.keyCode === 27) {
               this.setState({
-                editing: false,
-              });
-              return;
+                editing: false
+              })
             }
-          }} />
+          }}
+        />
       </Box>
-    );
+    )
   }
 }
 
-NumberInput.defaultHooks = pureComponentHooks;
+NumberInput.defaultHooks = pureComponentHooks
 NumberInput.defaultProps = {
   minValue: -Infinity,
   maxValue: +Infinity,
   step: 1,
   stepPixelSize: 1,
-  suppressFlicker: 50,
-};
+  suppressFlicker: 50
+}

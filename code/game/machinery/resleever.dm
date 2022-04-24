@@ -28,11 +28,11 @@
 /obj/machinery/resleever/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/resleever(src)
+	component_parts += new /obj/item/circuitboard/resleever(src)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src, 3)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src, 3)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 
 	RefreshParts()
 	update_icon()
@@ -113,6 +113,7 @@
 	if(!ui)
 		ui = new(user, src, "ReSleever", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/resleever/tgui_data()
 	var/list/data = list(
@@ -156,7 +157,7 @@
 	else
 		return
 
-/obj/machinery/resleever/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/resleever/attackby(obj/item/W as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, W))
 		if(occupant)
 			to_chat(user, "<span class='warning'>You need to remove the occupant first!</span>")

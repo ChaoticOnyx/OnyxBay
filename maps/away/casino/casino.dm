@@ -1,36 +1,3 @@
-#include "casino_areas.dm"
-#include "../mining/mining_areas.dm"
-
-/obj/effect/shuttle_landmark/nav_casino/nav1
-	name = "Casino Ship Navpoint #1"
-	landmark_tag = "nav_casino_1"
-
-/obj/effect/shuttle_landmark/nav_casino/nav2
-	name = "Casino Ship Navpoint #2"
-	landmark_tag = "nav_casino_2"
-
-/obj/effect/shuttle_landmark/nav_casino/nav3
-	name = "Casino Ship Navpoint #3"
-	landmark_tag = "nav_casino_3"
-
-/obj/effect/shuttle_landmark/nav_casino/nav4
-	name = "Casino Ship Navpoint #4"
-	landmark_tag = "nav_casino_4"
-
-/obj/effect/shuttle_landmark/nav_casino/nav5
-	name = "Casino Ship Navpoint #5"
-	landmark_tag = "nav_casino_antag"
-
-/obj/effect/shuttle_landmark/nav_casino/cutter_hangar
-	name = "Casino Hangar"
-	landmark_tag = "nav_casino_hangar"
-	base_area = /area/casino/casino_hangar
-	base_turf = /turf/simulated/floor/plating
-
-/obj/effect/shuttle_landmark/nav_casino/cutter_transit
-	name = "In transit"
-	landmark_tag = "nav_casino_transit"
-
 /obj/machinery/computer/shuttle_control/explore/casino_cutter
 	name = "cutter control console"
 	shuttle_tag = "Casino Cutter"
@@ -120,6 +87,24 @@
 	pixel_y = rand(-10, 10)
 
 /obj/item/ammo_casing/a50/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/a10mm/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/c9mm/used/Initialize()
+	. = ..()
+	expend()
+	pixel_x = rand(-10, 10)
+	pixel_y = rand(-10, 10)
+
+/obj/item/ammo_casing/shotgun/pellet/used/Initialize()
 	. = ..()
 	expend()
 	pixel_x = rand(-10, 10)

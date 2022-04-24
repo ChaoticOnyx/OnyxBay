@@ -6,7 +6,7 @@
 	var/list/law_channels = list()
 
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
-	icon = 'icons/obj/surgery.dmi'
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "brain-prosthetic"
 	silicon_subsystems = list(
 		/datum/nano_module/law_manager

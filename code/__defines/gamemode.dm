@@ -60,7 +60,6 @@
 #define MODE_MEME "meme"
 #define MODE_DEITY "deity"
 #define MODE_GODCULTIST "god cultist"
-#define MODE_BLOB "blob"
 
 #define DEFAULT_TELECRYSTAL_AMOUNT 12
 #define NUCLEAR_TELECRYSTAL_AMOUNT 15
@@ -89,20 +88,20 @@
 #define NO_BUTTON		0x200	//spell won't show up in the HUD with this
 
 //invocation
-#define SpI_SHOUT	"shout"
-#define SpI_WHISPER	"whisper"
-#define SpI_EMOTE	"emote"
-#define SpI_NONE	"none"
+#define SPI_SHOUT	"shout"
+#define SPI_WHISPER	"whisper"
+#define SPI_EMOTE	"emote"
+#define SPI_NONE	"none"
 
 //upgrading
-#define Sp_SPEED	"speed"
-#define Sp_POWER	"power"
-#define Sp_TOTAL	"total"
+#define SP_SPEED	"speed"
+#define SP_POWER	"power"
+#define SP_TOTAL	"total"
 
 //casting costs
-#define Sp_RECHARGE	"recharge"
-#define Sp_CHARGES	"charges"
-#define Sp_HOLDVAR	"holdervar"
+#define SP_RECHARGE	"recharge"
+#define SP_CHARGES	"charges"
+#define SP_HOLDVAR	"holdervar"
 
 //Voting-related
 #define VOTE_PROCESS_ABORT    1

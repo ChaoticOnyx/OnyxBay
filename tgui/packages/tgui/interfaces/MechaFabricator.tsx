@@ -1,4 +1,4 @@
-import { useBackend, useLocalState } from '../backend';
+import { useBackend, useLocalState } from '../backend'
 import {
   AnimatedNumber,
   Button,
@@ -10,24 +10,10 @@ import {
   Table,
   Input,
   ProgressBar,
-  Box,
-} from '../components';
-import { GameIcon } from '../components/GameIcon';
-import { Window } from '../layouts';
-
-interface InputData {
-  current?: string;
-  queue: string[];
-  buildable: Buildable[];
-  category: string;
-  categories: string[];
-  manufacturers: Manufacturer[];
-  manufacturer: string;
-  materials: Material[];
-  maxres: number;
-  sync: string;
-  builtperc: number;
-}
+  Box
+} from '../components'
+import { GameIcon } from '../components/GameIcon'
+import { Window } from '../layouts'
 
 interface Buildable {
   name: string;
@@ -55,14 +41,28 @@ interface Queue {
   index: number;
 }
 
-const ejectMultipliers = [1, 5, 10];
+interface InputData {
+  current?: string;
+  queue: string[];
+  buildable: Buildable[];
+  category: string;
+  categories: string[];
+  manufacturers: Manufacturer[];
+  manufacturer: string;
+  materials: Material[];
+  maxres: number;
+  sync: string;
+  builtperc: number;
+}
+
+const ejectMultipliers = [1, 5, 10]
 
 const queueElement = (
   props: Queue,
   context: any,
-  addDivider: boolean = false,
+  addDivider: boolean = false
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>(context)
 
   return (
     <Stack vertical className='MechaFabricator__slideAnimation'>
@@ -84,11 +84,11 @@ const queueElement = (
         </Stack>
       </Stack.Item>
     </Stack>
-  );
-};
+  )
+}
 
 const fabricatorStorage = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { act, data } = useBackend<InputData>(context)
 
   return (
     <Section className='Storage' minHeight='100%' title='Storage'>
@@ -112,12 +112,12 @@ const fabricatorStorage = (props: any, context: any) => {
                       onClick={() =>
                         act('eject', {
                           eject: material.mat,
-                          amount: multiplier,
+                          amount: multiplier
                         })
                       }
                       content={`x${multiplier}`}
                     />
-                  );
+                  )
                 })}
                 <Button.Segmented
                   disabled={material.amt === 0}
@@ -136,32 +136,32 @@ const fabricatorStorage = (props: any, context: any) => {
               </Box>
               {k < data.materials.length - 1 && <Divider />}
             </Stack.Item>
-          );
+          )
         })}
       </Stack>
     </Section>
-  );
-};
+  )
+}
 
 const fabricatorProduction = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  let [searchQuery, setSearchQuery] = useLocalState(
+  const { act, data } = useBackend<InputData>(context)
+  const [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null,
-  );
+    null
+  )
 
-  let buildableToShow: Buildable[] = data.buildable;
+  let buildableToShow: Buildable[] = data.buildable
 
   buildableToShow = buildableToShow
     .filter((value) => {
-      return value.category === data.category;
+      return value.category === data.category
     })
     .filter((value) => {
       return searchQuery === null
         ? true
-        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
-    });
+        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0
+    })
 
   return (
     <Section
@@ -197,7 +197,7 @@ const fabricatorProduction = (props: any, context: any) => {
                 {manufacturer.company}
               </Button.Label>
             </Flex.Item>
-          );
+          )
         })}
       </Flex>
       <Divider />
@@ -212,7 +212,7 @@ const fabricatorProduction = (props: any, context: any) => {
                 {category}
               </Button.Label>
             </Flex.Item>
-          );
+          )
         })}
       </Flex>
       <Divider />
@@ -230,49 +230,51 @@ const fabricatorProduction = (props: any, context: any) => {
               <Table.Cell width='40ch'>{buildable.resourses}</Table.Cell>
               <Table.Cell textAlign='center'>{buildable.time}</Table.Cell>
             </Table.Row>
-          );
+          )
         })}
       </Table>
     </Section>
-  );
-};
+  )
+}
 
 const fabricatorQueue = (props: any, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
 
   return (
     <Section width='22rem' minHeight='100%' title='Queue'>
-      {data.current ? (
+      {data.current
+        ? (
         <>
           {queueElement(
             {
               index: 1,
               name: data.current,
-              progress: data.builtperc,
+              progress: data.builtperc
             },
-            context,
+            context
           )}
           {data.queue.map((queue, i) => {
             return queueElement(
               {
                 index: i + 2,
                 name: queue,
-                progress: 'Queued',
+                progress: 'Queued'
               },
               context,
-              true,
-            );
+              true
+            )
           })}
         </>
-      ) : (
-        'Nothing'
-      )}
+          )
+        : (
+            'Nothing'
+          )}
     </Section>
-  );
-};
+  )
+}
 
 export const MechaFabricator = (props: any, context: any) => {
-  const { getTheme } = useBackend<InputData>(context);
+  const { getTheme } = useBackend<InputData>(context)
 
   return (
     <Window
@@ -290,5 +292,5 @@ export const MechaFabricator = (props: any, context: any) => {
         </Stack>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

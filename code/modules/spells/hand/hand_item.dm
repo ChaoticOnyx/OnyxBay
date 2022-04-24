@@ -11,9 +11,9 @@ Basically: I can use it to target things where I click. I can then pass these ta
 	simulated = 0
 	icon_state = "spell"
 	var/next_spell_time = 0
-	var/spell/hand/hand_spell
+	var/datum/spell/hand/hand_spell
 
-/obj/item/magic_hand/New(spell/hand/S)
+/obj/item/magic_hand/New(datum/spell/hand/S)
 	hand_spell = S
 	name = "[name] ([S.name])"
 	icon_state = S.hand_state
@@ -75,13 +75,13 @@ Basically: I can use it to target things where I click. I can then pass these ta
 /obj/item/magic_hand/control_hand
 	icon_state = "domination_spell"
 	var/list/instructions
-	var/spell/hand/mind_control/mind_spell
+	var/datum/spell/hand/mind_control/mind_spell
 
 /obj/item/magic_hand/control_hand/attack_self(mob/user)
 	. = ..()
 	mind_spell.interact(user)
 
-/obj/item/magic_hand/control_hand/New(spell/hand/S)
+/obj/item/magic_hand/control_hand/New(datum/spell/hand/S)
 	hand_spell = S
 	mind_spell = S
 	name = "[name] ([S.name])"

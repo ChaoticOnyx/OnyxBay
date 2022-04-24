@@ -10,6 +10,9 @@
 	anchored = 1 //There's a reason this is here, Mport. God fucking damn it -Agouri. Find&Fix by Pete. The reason this is here is to stop the curving of emitter shots.
 	pass_flags = PASS_FLAG_TABLE
 	mouse_opacity = 0
+
+	check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
+
 	var/bumped = 0		//Prevents it from hitting more than one guy at once
 	var/def_zone = ""	//Aiming at
 	var/mob/firer = null//Who shot it
@@ -34,7 +37,6 @@
 	var/damage = 10
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE, PAIN are the only things that should be in here
 	var/nodamage = 0 //Determines if the projectile will skip any damage inflictions
-	var/check_armour = "bullet" //Defines what armor to use when it hits things.  Must be set to bullet, laser, energy,or bomb	//Cael - bio and rad are also valid
 	var/projectile_type = /obj/item/projectile
 	var/penetrating = 0 //If greater than zero, the projectile will pass through dense objects as specified by on_penetrate()
 	var/kill_count = 50 //This will de-increment every process(). When 0, it will delete the projectile.
@@ -70,6 +72,13 @@
 	var/matrix/effect_transform			// matrix to rotate and scale projectile effects - putting it here so it doesn't
 										//  have to be recreated multiple times
 
+	var/projectile_light = FALSE        // whether the projectile should emit light at all
+	var/projectile_max_bright    = 1.0 // brightness of light, must be no greater than 1.
+	var/projectile_inner_range   = 0.3 // inner range of light, can be negative
+	var/projectile_outer_range   = 1.5 // outer range of light, can be negative
+	var/projectile_falloff_curve = 6.0
+	var/projectile_brightness_color = "#fff3b2"
+
 /obj/item/projectile/Initialize()
 	damtype = damage_type //TODO unify these vars properly
 	if(!hitscan)
@@ -77,7 +86,13 @@
 	if(config.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
-	else animate_movement = NO_STEPS
+	else
+		animate_movement = NO_STEPS
+
+	if(projectile_light)
+		layer = ABOVE_LIGHTING_LAYER
+		plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		set_light(projectile_max_bright, projectile_inner_range, projectile_outer_range, projectile_falloff_curve, projectile_brightness_color)
 	. = ..()
 
 /obj/item/projectile/Destroy()
@@ -171,7 +186,7 @@
 		QDEL_NULL_LIST(segments)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/gun/launcher, target_zone, x_offset=0, y_offset=0)
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
 		qdel(src)
@@ -231,11 +246,28 @@
 				admin_victim_log(target_mob, "was shot by an <b>UNKNOWN SUBJECT (No longer exists)</b> using \a [src] (blocked)")
 		return 1
 
+	var/impacted_organ = parse_zone(def_zone)
+	if(istype(target_mob, /mob/living/simple_animal))
+		var/mob/living/simple_animal/SM = target_mob
+		var/decl/simple_animal_bodyparts/body_plan = SM.bodyparts
+		if(body_plan != decls_repository.get_decl(/decl/simple_animal_bodyparts/humanoid)) // No need to override
+			if(length(body_plan.hit_zones))
+				impacted_organ = pick(body_plan.hit_zones)
+			else
+				impacted_organ = null
+
 	//hit messages
 	if(silenced)
-		to_chat(target_mob, "<span class='danger'>You've been hit in the [parse_zone(def_zone)] by \the [src]!</span>")
+		if(impacted_organ)
+			to_chat(target_mob, SPAN("danger", "You've been hit in the [impacted_organ] by \the [src]!"))
+		else
+			to_chat(target_mob, SPAN("danger", "You've been hit by \the [src]!"))
 	else
-		target_mob.visible_message("<span class='danger'>\The [target_mob] is hit by \the [src] in the [parse_zone(def_zone)]!</span>")//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		if(impacted_organ)
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src] in the [impacted_organ]!"))//X has fired Y is now given by the guns so you cant tell who shot you if you could not see the shooter
+		else
+			target_mob.visible_message(SPAN("danger", "\The [target_mob] is hit by \the [src]!"))
+
 		new /obj/effect/effect/hitmarker(target_mob.loc)
 		for(var/mob/O in hearers(7, get_turf(target_mob)))
 			if(O.client)

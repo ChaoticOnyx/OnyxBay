@@ -4,142 +4,127 @@
  * @license MIT
  */
 
-import { shallowDiffers } from 'common/react';
-import { debounce } from 'common/timer';
-import { Component, createRef } from 'inferno';
-import { createLogger } from '../logging';
-import { computeBoxProps } from './Box';
+import { shallowDiffers } from 'common/react'
+import { debounce } from 'common/timer'
+import { Component, createRef } from 'inferno'
+import { createLogger } from '../logging'
+import { computeBoxProps } from './Box'
 
-const logger = createLogger('ByondUi');
+const logger = createLogger('ByondUi')
 
 // Stack of currently allocated BYOND UI element ids.
-const byondUiStack = [];
+const byondUiStack = []
 
 const createByondUiElement = elementId => {
   // Reserve an index in the stack
-  const index = byondUiStack.length;
-  byondUiStack.push(null);
+  const index = byondUiStack.length
+  byondUiStack.push(null)
   // Get a unique id
-  const id = elementId || 'byondui_' + index;
-  logger.log(`allocated '${id}'`);
+  const id = elementId || 'byondui_' + index
+  logger.log(`allocated '${id}'`)
   // Return a control structure
   return {
     render: params => {
-      logger.log(`rendering '${id}'`);
-      byondUiStack[index] = id;
-      Byond.winset(id, params);
+      logger.log(`rendering '${id}'`)
+      byondUiStack[index] = id
+      Byond.winset(id, params)
     },
     unmount: () => {
-      logger.log(`unmounting '${id}'`);
-      byondUiStack[index] = null;
+      logger.log(`unmounting '${id}'`)
+      byondUiStack[index] = null
       Byond.winset(id, {
-        parent: '',
-      });
-    },
-  };
-};
+        parent: ''
+      })
+    }
+  }
+}
 
 window.addEventListener('beforeunload', () => {
   // Cleanly unmount all visible UI elements
   for (let index = 0; index < byondUiStack.length; index++) {
-    const id = byondUiStack[index];
+    const id = byondUiStack[index]
     if (typeof id === 'string') {
-      logger.log(`unmounting '${id}' (beforeunload)`);
-      byondUiStack[index] = null;
+      logger.log(`unmounting '${id}' (beforeunload)`)
+      byondUiStack[index] = null
       Byond.winset(id, {
-        parent: '',
-      });
+        parent: ''
+      })
     }
   }
-});
+})
 
 /**
  * Get the bounding box of the DOM element.
  */
 const getBoundingBox = element => {
-  const rect = element.getBoundingClientRect();
+  const rect = element.getBoundingClientRect()
   return {
-    pos: [
-      rect.left,
-      rect.top,
-    ],
-    size: [
-      rect.right - rect.left,
-      rect.bottom - rect.top,
-    ],
-  };
-};
+    pos: [rect.left, rect.top],
+    size: [rect.right - rect.left, rect.bottom - rect.top]
+  }
+}
 
 export class ByondUi extends Component {
-  constructor(props) {
-    super(props);
-    this.containerRef = createRef();
-    this.byondUiElement = createByondUiElement(props.params?.id);
+  constructor (props) {
+    super(props)
+    this.containerRef = createRef()
+    this.byondUiElement = createByondUiElement(props.params?.id)
     this.handleResize = debounce(() => {
-      this.forceUpdate();
-    }, 100);
+      this.forceUpdate()
+    }, 100)
   }
 
-  shouldComponentUpdate(nextProps) {
-    const {
-      params: prevParams = {},
-      ...prevRest
-    } = this.props;
-    const {
-      params: nextParams = {},
-      ...nextRest
-    } = nextProps;
-    return shallowDiffers(prevParams, nextParams)
-      || shallowDiffers(prevRest, nextRest);
+  shouldComponentUpdate (nextProps) {
+    const { params: prevParams = {}, ...prevRest } = this.props
+    const { params: nextParams = {}, ...nextRest } = nextProps
+    return (
+      shallowDiffers(prevParams, nextParams) ||
+      shallowDiffers(prevRest, nextRest)
+    )
   }
 
-  componentDidMount() {
+  componentDidMount () {
     // IE8: It probably works, but fuck you anyway.
     if (Byond.IS_LTE_IE10) {
-      return;
+      return
     }
-    window.addEventListener('resize', this.handleResize);
-    this.componentDidUpdate();
-    this.handleResize();
+    window.addEventListener('resize', this.handleResize)
+    this.componentDidUpdate()
+    this.handleResize()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     // IE8: It probably works, but fuck you anyway.
     if (Byond.IS_LTE_IE10) {
-      return;
+      return
     }
-    const {
-      params = {},
-    } = this.props;
-    const box = getBoundingBox(this.containerRef.current);
-    logger.debug('bounding box', box);
+    const { params = {} } = this.props
+    const box = getBoundingBox(this.containerRef.current)
+    logger.debug('bounding box', box)
     this.byondUiElement.render({
       parent: window.__windowId__,
       ...params,
       pos: box.pos[0] + ',' + box.pos[1],
-      size: box.size[0] + 'x' + box.size[1],
-    });
+      size: box.size[0] + 'x' + box.size[1]
+    })
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     // IE8: It probably works, but fuck you anyway.
     if (Byond.IS_LTE_IE10) {
-      return;
+      return
     }
-    window.removeEventListener('resize', this.handleResize);
-    this.byondUiElement.unmount();
+    window.removeEventListener('resize', this.handleResize)
+    this.byondUiElement.unmount()
   }
 
-  render() {
-    const { params, ...rest } = this.props;
-    const boxProps = computeBoxProps(rest);
+  render () {
+    const { params, ...rest } = this.props
     return (
-      <div
-        ref={this.containerRef}
-        {...boxProps}>
+      <div ref={this.containerRef} {...computeBoxProps(rest)}>
         {/* Filler */}
         <div style={{ 'min-height': '22px' }} />
       </div>
-    );
+    )
   }
 }

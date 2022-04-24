@@ -130,13 +130,13 @@
 			return
 		var/slab_name = buckled_mob.name
 		var/slab_count = 3
-		var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+		var/slab_type = /obj/item/reagent_containers/food/snacks/meat
 		var/slab_nutrition = 20
 		if (iscarbon(buckled_mob))
 			var/mob/living/carbon/C = buckled_mob
 			slab_nutrition = C.nutrition / 15
 			if (istype(buckled_mob, /mob/living/carbon/alien))
-				slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
+				slab_type = /obj/item/reagent_containers/food/snacks/meat/xeno
 
 		if (istype(buckled_mob,/mob/living/simple_animal))
 			var/mob/living/simple_animal/critter = buckled_mob
@@ -155,7 +155,7 @@
 			reagent_transfer_amt = round(buckled_mob.reagents.total_volume / slab_count, 1)
 
 		for (var/i=1 to slab_count)
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
+			var/obj/item/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
 			if (istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
 				new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition)
@@ -217,7 +217,7 @@
 		if (H.can_feel_pain())
 			H.emote("scream")
 		H.nutrition -= slab_nutrition
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
+		var/obj/item/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
 		if (istype(new_meat))
 			new_meat.SetName("[slab_name] [new_meat.name]")
 			new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition * nutrition_transfer_mod)

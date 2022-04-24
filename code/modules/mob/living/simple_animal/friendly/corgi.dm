@@ -13,7 +13,7 @@
 	emote_see = list("shakes its head", "shivers")
 	speak_chance = 1
 	turns_per_move = 10
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
+	meat_type = /obj/item/reagent_containers/food/snacks/meat/corgi
 	meat_amount = 3
 	response_help  = "pets"
 	response_disarm = "bops"
@@ -23,10 +23,11 @@
 	health = 30
 	maxHealth = 30
 	possession_candidate = 1
-	holder_type = /obj/item/weapon/holder/corgi
+	holder_type = /obj/item/holder/corgi
 	var/obj/item/hat
 	var/old_dir
 	var/obj/movement_target
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
@@ -59,7 +60,7 @@
 			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
-				for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(src,3))
+				for(var/obj/item/reagent_containers/food/snacks/S in oview(src,3))
 					if(isturf(S.loc) || ishuman(S.loc))
 						movement_target = S
 						break
@@ -141,10 +142,72 @@
 			else
 				healths.icon_state = "health7"
 
-/obj/item/weapon/reagent_containers/food/snacks/meat/corgi
+/obj/item/reagent_containers/food/snacks/meat/corgi
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
+/mob/living/simple_animal/corgi/show_inv(mob/user)
+	user.set_machine(src)
+	if(user.stat) return
+
+	var/dat = 	"<meta charset=\"utf-8\"><div align='center'><b>Inventory of [name]</b></div><p>"
+	if(hat)
+		dat +=	"<br><b>Head:</b> [hat] (<a href='?src=\ref[src];remove_inv=hat'>Remove</a>)"
+	else
+		dat +=	"<br><b>Head:</b> <a href='?src=\ref[src];add_inv=hat'>Nothing</a>"
+	show_browser(user, dat, text("window=mob[];size=325x325", name))
+	onclose(user, "mob[real_name]")
+	return
+
+/mob/living/simple_animal/corgi/Topic(href, href_list)
+	//Can the usr physically do this?
+	if(!CanPhysicallyInteract(usr))
+		return
+
+	//Is the usr's mob type able to do this?
+	if(ishuman(usr) || issmall(usr) || isrobot(usr))
+		//Removing from inventory
+		if(href_list["remove_inv"])
+			var/remove_from = href_list["remove_inv"]
+			switch(remove_from)
+				if("hat")
+					if(hat)
+						hat.loc = loc
+						hat = null
+						overlays.Cut()
+					else
+						to_chat(usr, SPAN_WARNING("There is nothing to remove from [name]"))
+						return
+		else if(href_list["add_inv"])
+			var/add_to = href_list["add_inv"]
+			if(!usr.get_active_hand())
+				to_chat(usr, SPAN_WARNING("You have nothing in your hand to put on its [add_to]."))
+				return
+			switch(add_to)
+				if("hat")
+					if(hat)
+						to_chat(usr, SPAN_WARNING("[name] is already wearing \the [hat]."))
+						return
+					else
+						var/obj/item/item_to_add = usr.get_active_hand()
+						if(!item_to_add)
+							return
+						if(!istype(item_to_add, /obj/item/clothing/head/))
+							to_chat(usr, SPAN_WARNING("[name] cannot wear this!"))
+							return
+						if(istype(item_to_add, /obj/item/clothing/head/helmet)) // Looks too bad on corgi
+							to_chat(usr, SPAN_WARNING("\The [item_to_add] is too small for [name] head."))
+							return
+						if(istype(item_to_add, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
+							to_chat(usr, SPAN_WARNING("[name] cannot wear \the [item_to_add]!"))
+							return
+						usr.unEquip(item_to_add)
+						wear_hat(item_to_add)
+						usr.visible_message(SPAN_WARNING("[usr] puts \the [item_to_add] on [name]."))
+
+
+
+/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  // Marker -Agouri
 /mob/living/simple_animal/corgi/attackby(obj/item/O, mob/user)  // Marker -Agouri
 	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
 		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
@@ -160,7 +223,7 @@
 		wear_hat(O)
 		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
 		return
-	if(istype(O, /obj/item/weapon/newspaper))
+	if(istype(O, /obj/item/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
