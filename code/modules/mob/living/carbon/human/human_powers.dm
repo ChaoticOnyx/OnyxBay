@@ -67,12 +67,7 @@
 	set name = "Tackle"
 	set desc = "Tackle someone down."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+	if(!check_tackle())
 		return
 
 	var/mob/living/target
@@ -86,14 +81,10 @@
 	process_tackle(target)
 
 /mob/living/carbon/human/proc/process_tackle(mob/living/T)
-	if(!T || !src || src.stat)
+	if(!check_tackle())
 		return
 
-	if(last_special > world.time)
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+	if(!T)
 		return
 
 	if(T == src)
@@ -114,6 +105,25 @@
 	else
 		visible_message(SPAN("danger", "\The [src] has tried to tackle down [T]!"))
 
+/mob/living/carbon/human/proc/check_tackle()
+	if(!src || src.stat)
+		return FALSE
+
+	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
+		return FALSE
+
+	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
+		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+		return FALSE
+
+	if(is_ventcrawling)
+		to_chat(src, SPAN("warning", "You cannot tackle into vents."))
+		return FALSE
+
+	return TRUE
+
+
 /mob/living/carbon/human/proc/toggle_leap()
 	set category = "Abilities"
 	set name = "Set Leap"
@@ -129,12 +139,7 @@
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+	if(!check_leap())
 		return
 
 	var/mob/living/target
@@ -151,16 +156,11 @@
 	process_leap(target)
 
 /mob/living/carbon/human/proc/process_leap(mob/living/T)
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+	if(!check_leap())
 		return
 
 	if(T == src)
 		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return
 
 	if(!T || !isturf(T.loc) || !src || !isturf(loc))
@@ -194,6 +194,21 @@
 
 	if(make_grab(src, T))
 		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
+
+/mob/living/carbon/human/proc/check_leap()
+	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+		return FALSE
+
+	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+		return FALSE
+
+	if(is_ventcrawling)
+		to_chat(src, SPAN("warning", "You cannot leap into vents."))
+		return FALSE
+
+	return TRUE
 
 /mob/living/carbon/human/proc/commune()
 	set category = "Abilities"
