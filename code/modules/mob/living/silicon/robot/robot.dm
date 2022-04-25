@@ -134,7 +134,7 @@ var/global/list/robot_footstep_sounds = list(
 
 // Hulls Medical: "Default",	"Basic",	"Standard",	"Advanced Droid",	"Drone",	"Doot"
 	var/static/radial_hull_choice_medical_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-medical")
-	var/static/radial_hull_choice_medical_medbot = image(icon = 'icons/mob/robots.dmi', icon_state = "medbot")
+	var/static/radial_hull_choice_medical_medbot = image(icon = 'icons/mob/robots.dmi', icon_state = "Medbot")
 	var/static/radial_hull_choice_medical_surgeon = image(icon = 'icons/mob/robots.dmi', icon_state = "surgeon")
 	var/static/radial_hull_choice_medical_droid_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "droid-medical")
 	var/static/radial_hull_choice_medical_drone_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-medical")
@@ -145,10 +145,10 @@ var/global/list/robot_footstep_sounds = list(
 
 // Hulls Engineering: "Default",	"Basic",	"Antique",	"Landmate",	"Landmate - Treaded",	"Drone",	"Doot"
 	var/static/radial_hull_choice_engineering_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-engineer")
-	var/static/radial_hull_choice_engineering_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "engineering")
+	var/static/radial_hull_choice_engineering_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "Engineering")
 	var/static/radial_hull_choice_engineering_engineerrobot = image(icon = 'icons/mob/robots.dmi', icon_state = "engineerrobot")
 	var/static/radial_hull_choice_engineering_landmate = image(icon = 'icons/mob/robots.dmi', icon_state = "landmate")
-	var/static/radial_hull_choice_engineering_engiborg_tread = image(icon = 'icons/mob/robots.dmi', icon_state = "engiborg-tread")
+	var/static/radial_hull_choice_engineering_engiborg_tread = image(icon = 'icons/mob/robots.dmi', icon_state = "engiborg+tread")
 	var/static/radial_hull_choice_engineering_drone_engineer = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-engineer")
 	var/static/radial_hull_choice_engineering_eyebot_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-engineering")
 	var/static/list/hull_options_engineering = list("Default" = radial_hull_choice_engineering_standart, "Basic" = radial_hull_choice_engineering_engineering, \
@@ -173,10 +173,10 @@ var/global/list/robot_footstep_sounds = list(
 		"Tridroid" = radial_hull_choice_security_orb_security)
 
 // Hulls Janitor: "Default",	"Basic",	"Mopbot",	"Mop Gear Rex",	"Drone",	"Doot",	"Robo-Maid"
-	var/static/radial_hull_choice_janitor_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-janitor")
-	var/static/radial_hull_choice_janitor_janbot2 = image(icon = 'icons/mob/robots.dmi', icon_state = "janbot2")
+	var/static/radial_hull_choice_janitor_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-janitor", pixel_y -= 2)
+	var/static/radial_hull_choice_janitor_janbot2 = image(icon = 'icons/mob/robots.dmi', icon_state = "JanBot2")
 	var/static/radial_hull_choice_janitor_janitorrobot = image(icon = 'icons/mob/robots.dmi', icon_state = "janitorrobot")
-	var/static/radial_hull_choice_janitor_mopgearrex = image(icon = 'icons/mob/robots.dmi', icon_state = "mopgearrex")
+	var/static/radial_hull_choice_janitor_mopgearrex = image(icon = 'icons/mob/robots.dmi', icon_state = "mopgearrex", pixel_y -= 6)
 	var/static/radial_hull_choice_janitor_drone_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-janitor")
 	var/static/radial_hull_choice_janitor_eyebot_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-janitor")
 	var/static/radial_hull_choice_janitor_maidbot = image(icon = 'icons/mob/robots.dmi', icon_state = "maidbot")
@@ -204,9 +204,9 @@ var/global/list/robot_footstep_sounds = list(
 
 // Hulls Mining: "Default",	"Basic",	"Advanced Droid",	"Treadhead",	"Drone",	"Doot"
 	var/static/radial_hull_choice_mining_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-mining")
-	var/static/radial_hull_choice_mining_miner_old = image(icon = 'icons/mob/robots.dmi', icon_state = "miner-old")
+	var/static/radial_hull_choice_mining_miner_old = image(icon = 'icons/mob/robots.dmi', icon_state = "Miner_old")
 	var/static/radial_hull_choice_mining_droid_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "droid-miner")
-	var/static/radial_hull_choice_mining_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "miner")
+	var/static/radial_hull_choice_mining_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "Miner")
 	var/static/radial_hull_choice_mining_drone_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-miner")
 	var/static/radial_hull_choice_mining_eyebot_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-miner")
 	var/static/list/hull_options_mining = list("Default" = radial_hull_choice_mining_standart, "Basic" = radial_hull_choice_mining_miner_old, \
