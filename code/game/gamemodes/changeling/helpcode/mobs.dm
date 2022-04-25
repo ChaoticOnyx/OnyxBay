@@ -72,7 +72,7 @@
 	response_help = "touch the"
 	response_disarm = "pushes aside the"
 	response_harm = "hits the"
-	speed = -1
+	speed = 0
 	maxHealth = 50
 	health = 50
 	meat_type = /obj/item/reagent_containers/food/snacks/meat/human
@@ -98,7 +98,6 @@
 	break_stuff_probability = 15
 	faction = "changeling"
 
-	attack_delay = DEFAULT_QUICK_COOLDOWN
 	move_to_delay = 2
 
 	var/absorbing = FALSE
