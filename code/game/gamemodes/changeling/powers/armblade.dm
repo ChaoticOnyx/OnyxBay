@@ -14,7 +14,7 @@
 	my_mob.visible_message("<b>[my_mob]</b>'s arm twitches.", \
 		SPAN("changeling", "The flesh of our hand is transforming."))
 
-	spawn(4 SECONDS)
+	spawn(2 SECONDS)
 		if(!create_item(power_item_type))
 			return
 
