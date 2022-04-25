@@ -6,7 +6,7 @@
 	icon_state = "ling_regeneration"
 	power_processing = TRUE
 	max_stat = UNCONSCIOUS
-	required_chems = 1
+	required_chems = 20
 	chems_drain = 1
 
 	text_activate = "We activate our stemocyte pool and begin intensive fleshmending."
