@@ -67,14 +67,6 @@
 	set name = "Tackle"
 	set desc = "Tackle someone down."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/M in oview(1, src))
@@ -90,10 +82,15 @@
 		return
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
+		return
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot tackle anyone from here!"))
 		return
 
 	if(T == src)
@@ -104,6 +101,7 @@
 		return
 
 	if(istype(T, /mob/living/silicon))
+		to_chat(src, SPAN("warning", "[T] is too massive to be tackled down!"))
 		return
 
 	last_special = world.time + (5 SECONDS)
@@ -129,14 +127,6 @@
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."
 
-	if(last_special > world.time)
-		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
-		return
-
 	var/mob/living/target
 	var/list/mob/living/targets = list()
 	for(var/mob/living/M in oview(4, src))
@@ -151,19 +141,23 @@
 	process_leap(target)
 
 /mob/living/carbon/human/proc/process_leap(mob/living/T)
+	if(!T || !isturf(T.loc) || !src)
+		return
+
 	if(last_special > world.time)
 		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
+		return FALSE
+
+	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
+		return FALSE
+
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot leap from here!"))
 		return
 
 	if(T == src)
 		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
-		return
-
-	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
-		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
-		return
-
-	if(!T || !isturf(T.loc) || !src || !isturf(loc))
 		return
 
 	if(istype(T,/mob/living/silicon))
