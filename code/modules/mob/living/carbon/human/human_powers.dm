@@ -141,7 +141,7 @@
 	process_leap(target)
 
 /mob/living/carbon/human/proc/process_leap(mob/living/T)
-	if(!T || !isturf(T.loc) || !src || !isturf(loc))
+	if(!T || !isturf(T.loc) || !src)
 		return
 
 	if(last_special > world.time)
