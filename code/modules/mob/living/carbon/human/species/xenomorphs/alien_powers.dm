@@ -179,11 +179,11 @@
 		return
 
 	if(!spitting)
-		to_chat(src, "I must choose spit type firstly.")
+		to_chat(src, "I must choose a spit type first.")
 		return
 
-	if(is_ventcrawling)
-		to_chat(src, SPAN("warning", "I can't spit into vents."))
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "I cannot spit from here!"))
 		return
 
 	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
