@@ -120,6 +120,31 @@ var/global/list/robot_footstep_sounds = list(
 		/mob/living/silicon/robot/proc/ResetSecurityCodes
 	)
 
+//Radial Menu
+	//Modules: "standard",	"engineering",	"medical",	"miner",	"janitor",	"service",	"security",	"research"
+	var/static/radial_mode_choice_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot")
+	var/static/radial_mode_choice_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-engineering")
+	var/static/radial_mode_choice_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-medical")
+	var/static/radial_mode_choice_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-miner")
+	var/static/radial_mode_choice_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-janitor")
+	var/static/radial_mode_choice_service = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-service")
+	var/static/radial_mode_choice_security = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-security")
+	var/static/radial_mode_choice_research = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-research")
+	var/static/list/mode_options = list("standard" = radial_mode_choice_standart, "engineering" = radial_mode_choice_engineering, \
+		"medical" = radial_mode_choice_medical, "miner" = radial_mode_choice_miner, "janitor" = radial_mode_choice_janitor, \
+		"service" = radial_mode_choice_service, "security" = radial_mode_choice_security, "research" = radial_mode_choice_research)
+	var/static/list/ai_mode_options = mode_options
+
+	//Hulls: "Default",	"Basic",	"Android",	"Drone",	"Doot"
+	var/static/radial_hull_choice_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot")
+	var/static/radial_hull_choice_robot_old = image(icon = 'icons/mob/robots.dmi', icon_state = "robot_old")
+	var/static/radial_hull_choice_droid = image(icon = 'icons/mob/robots.dmi', icon_state = "droid")
+	var/static/radial_hull_choice_drone_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "drone_standard")
+	var/static/radial_hull_choice_eyebot_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot_standard")
+	var/static/list/hull_options = list("Default" = radial_hull_choice_standart, "Basic" = radial_hull_choice_robot_old, \
+		"Android" = radial_hull_choice_droid, "Drone" = radial_hull_choice_drone_standard, "Doot" = radial_hull_choice_eyebot_standard)
+	var/static/list/ai_hull_options = hull_options
+
 /mob/living/silicon/robot/New(loc,unfinished = 0)
 	spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src)
@@ -288,6 +313,35 @@ var/global/list/robot_footstep_sounds = list(
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
 		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
 		modules += "Combat"
+	//TODO: Delete Trash
+	// var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
+	// // we show the button even if the proc will not work
+	// var/static/list/settings_options = list("Color" = radial_color_input, "Intensity" = radial_intensity, "Invert" = radial_invert)
+	// var/settings_choice = show_radial_menu(user, src, isAI(user) ? ai_settings_options : settings_options, require_near = !issilicon(user))
+	// 	switch(settings_choice)
+	// 		if("Color")
+	// 			return
+
+	//TODO: Radial Menu
+	var/mode_choice = show_radial_menu(user, src, isAI(user) ? ai_mode_options : mode_options, require_near = !issilicon(user))
+	//Modules: "standard",	"engineering",	"medical",	"miner",	"janitor",	"service",	"security",	"research"
+	switch(mode_choice)
+		if("standard")
+			visible_message("FIX ME!")
+	 	if("engineering")
+			visible_message("FIX ME!")
+	 	if("medical")
+			visible_message("FIX ME!")
+	 	if("miner")
+			visible_message("FIX ME!")
+	 	if("janitor")
+			visible_message("FIX ME!")
+	 	if("service")
+			visible_message("FIX ME!")
+	 	if("security")
+			visible_message("FIX ME!")
+	 	if("research")
+			visible_message("FIX ME!")
 	selected_module = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
 	if(!(selected_module in GLOB.robot_module_types))
 		return
