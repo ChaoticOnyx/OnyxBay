@@ -39,7 +39,7 @@ var/list/ventcrawl_machinery = list(
 
 /mob/living/simple_animal/borer/can_ventcrawl()
 	if(host)
-		to_chat(src, SPAN("warning", "You can't ventcrawl into host!"))
+		to_chat(src, SPAN("warning", "You can't ventcrawl being inside a host!"))
 		return FALSE
 	return ..()
 
