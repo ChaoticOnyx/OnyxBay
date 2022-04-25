@@ -77,7 +77,7 @@
 	health = 50
 	meat_type = /obj/item/reagent_containers/food/snacks/meat/human
 	pass_flags = PASS_FLAG_TABLE
-	harm_intent_damage = 20
+	harm_intent_damage = 5
 	melee_damage_lower = 7.5
 	melee_damage_upper = 12.5
 	attacktext = "bitten"
@@ -97,6 +97,8 @@
 	maxbodytemp = 350
 	break_stuff_probability = 15
 	faction = "changeling"
+
+	move_to_delay = 2
 
 	var/absorbing = FALSE
 

@@ -8,7 +8,7 @@
 	power_item_type = /obj/item/finger_lockpick
 	var/last_time_used = 0
 	var/fingerpick_cost = 20
-	var/fingerpick_cooldown = 10 SECONDS
+	var/fingerpick_cooldown = 3 SECONDS
 
 /datum/changeling_power/item/lockpick/activate()
 	if(check_incapacitated())
