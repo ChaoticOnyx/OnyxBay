@@ -121,29 +121,105 @@ var/global/list/robot_footstep_sounds = list(
 	)
 
 //Radial Menu
-	//Modules: "standard",	"engineering",	"medical",	"miner",	"janitor",	"service",	"security",	"research"
-	var/static/radial_mode_choice_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot")
-	var/static/radial_mode_choice_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-engineering")
-	var/static/radial_mode_choice_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-medical")
-	var/static/radial_mode_choice_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-miner")
-	var/static/radial_mode_choice_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-janitor")
-	var/static/radial_mode_choice_service = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-service")
-	var/static/radial_mode_choice_security = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-security")
-	var/static/radial_mode_choice_research = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-research")
-	var/static/list/mode_options = list("standard" = radial_mode_choice_standart, "engineering" = radial_mode_choice_engineering, \
-		"medical" = radial_mode_choice_medical, "miner" = radial_mode_choice_miner, "janitor" = radial_mode_choice_janitor, \
-		"service" = radial_mode_choice_service, "security" = radial_mode_choice_security, "research" = radial_mode_choice_research)
-	var/static/list/ai_mode_options = mode_options
+// Modules: "Standard",	"Engineering",	"Medical",	"Miner",	"Janitor",	"Service",	"Security",	"Research"
+// Hulls Regular: "Default",	"Basic",	"Android",	"Drone",	"Doot"
+	var/static/radial_hull_choice_regular_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot")
+	var/static/radial_hull_choice_regular_robot_old = image(icon = 'icons/mob/robots.dmi', icon_state = "robot_old")
+	var/static/radial_hull_choice_regular_droid = image(icon = 'icons/mob/robots.dmi', icon_state = "droid")
+	var/static/radial_hull_choice_regular_drone_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-standard")
+	var/static/radial_hull_choice_regular_eyebot_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-standard")
+	var/static/list/hull_options_regular = list("Default" = radial_hull_choice_regular_standart, "Basic" = radial_hull_choice_regular_robot_old, \
+		"Android" = radial_hull_choice_regular_droid, "Drone" = radial_hull_choice_regular_drone_standard, \
+		"Doot" = radial_hull_choice_regular_eyebot_standard)
 
-	//Hulls: "Default",	"Basic",	"Android",	"Drone",	"Doot"
-	var/static/radial_hull_choice_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot")
-	var/static/radial_hull_choice_robot_old = image(icon = 'icons/mob/robots.dmi', icon_state = "robot_old")
-	var/static/radial_hull_choice_droid = image(icon = 'icons/mob/robots.dmi', icon_state = "droid")
-	var/static/radial_hull_choice_drone_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "drone_standard")
-	var/static/radial_hull_choice_eyebot_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot_standard")
-	var/static/list/hull_options = list("Default" = radial_hull_choice_standart, "Basic" = radial_hull_choice_robot_old, \
-		"Android" = radial_hull_choice_droid, "Drone" = radial_hull_choice_drone_standard, "Doot" = radial_hull_choice_eyebot_standard)
-	var/static/list/ai_hull_options = hull_options
+// Hulls Medical: "Default",	"Basic",	"Standard",	"Advanced Droid",	"Drone",	"Doot"
+	var/static/radial_hull_choice_medical_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-medical")
+	var/static/radial_hull_choice_medical_medbot = image(icon = 'icons/mob/robots.dmi', icon_state = "medbot")
+	var/static/radial_hull_choice_medical_surgeon = image(icon = 'icons/mob/robots.dmi', icon_state = "surgeon")
+	var/static/radial_hull_choice_medical_droid_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "droid-medical")
+	var/static/radial_hull_choice_medical_drone_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-medical")
+	var/static/radial_hull_choice_medical_eyebot_medical = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-medical")
+	var/static/list/hull_options_medical = list("Default" = radial_hull_choice_medical_standart, "Basic" = radial_hull_choice_medical_medbot, \
+		"Standard" = radial_hull_choice_medical_surgeon, "Advanced Droid" = radial_hull_choice_medical_drone_medical, \
+		"Drone" = radial_hull_choice_medical_drone_medical, "Doot" = radial_hull_choice_medical_eyebot_medical)
+
+// Hulls Engineering: "Default",	"Basic",	"Antique",	"Landmate",	"Landmate - Treaded",	"Drone",	"Doot"
+	var/static/radial_hull_choice_engineering_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-engineer")
+	var/static/radial_hull_choice_engineering_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "engineering")
+	var/static/radial_hull_choice_engineering_engineerrobot = image(icon = 'icons/mob/robots.dmi', icon_state = "engineerrobot")
+	var/static/radial_hull_choice_engineering_landmate = image(icon = 'icons/mob/robots.dmi', icon_state = "landmate")
+	var/static/radial_hull_choice_engineering_engiborg_tread = image(icon = 'icons/mob/robots.dmi', icon_state = "engiborg-tread")
+	var/static/radial_hull_choice_engineering_drone_engineer = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-engineer")
+	var/static/radial_hull_choice_engineering_eyebot_engineering = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-engineering")
+	var/static/list/hull_options_engineering = list("Default" = radial_hull_choice_engineering_standart, "Basic" = radial_hull_choice_engineering_engineering, \
+		"Antique" = radial_hull_choice_engineering_engineerrobot, "Landmate" = radial_hull_choice_engineering_landmate, \
+		"Landmate - Treaded" = radial_hull_choice_engineering_engiborg_tread, "Drone" = radial_hull_choice_engineering_drone_engineer, \
+		"Doot" = radial_hull_choice_engineering_eyebot_engineering)
+
+// Hulls Security: "Default",	"Basic",	"Red Knight",	"Black Knight",	"Bloodhound",	"Bloodhound - Treaded",	"Drone",	"Doot",	"Tridroid"
+	var/static/radial_hull_choice_security_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-security")
+	var/static/radial_hull_choice_security_secborg = image(icon = 'icons/mob/robots.dmi', icon_state = "secborg")
+	var/static/radial_hull_choice_security_security = image(icon = 'icons/mob/robots.dmi', icon_state = "security")
+	var/static/radial_hull_choice_security_securityrobot = image(icon = 'icons/mob/robots.dmi', icon_state = "securityrobot")
+	var/static/radial_hull_choice_security_bloodhound = image(icon = 'icons/mob/robots.dmi', icon_state = "bloodhound")
+	var/static/radial_hull_choice_security_secborg_tread = image(icon = 'icons/mob/robots.dmi', icon_state = "secborg-tread")
+	var/static/radial_hull_choice_security_drone_sec = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-sec")
+	var/static/radial_hull_choice_security_eyebot_security = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-security")
+	var/static/radial_hull_choice_security_orb_security = image(icon = 'icons/mob/robots.dmi', icon_state = "orb-security")
+	var/static/list/hull_options_security = list("Default" = radial_hull_choice_security_standart, "Basic" = radial_hull_choice_security_secborg, \
+		"Red Knight" = radial_hull_choice_security_security, "Black Knight" = radial_hull_choice_security_securityrobot, \
+		"Bloodhound" = radial_hull_choice_security_bloodhound, "Bloodhound - Treaded" = radial_hull_choice_security_secborg_tread, \
+		"Drone" = radial_hull_choice_security_drone_sec, "Doot" = radial_hull_choice_security_eyebot_security, \
+		"Tridroid" = radial_hull_choice_security_orb_security)
+
+// Hulls Janitor: "Default",	"Basic",	"Mopbot",	"Mop Gear Rex",	"Drone",	"Doot",	"Robo-Maid"
+	var/static/radial_hull_choice_janitor_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-janitor")
+	var/static/radial_hull_choice_janitor_janbot2 = image(icon = 'icons/mob/robots.dmi', icon_state = "janbot2")
+	var/static/radial_hull_choice_janitor_janitorrobot = image(icon = 'icons/mob/robots.dmi', icon_state = "janitorrobot")
+	var/static/radial_hull_choice_janitor_mopgearrex = image(icon = 'icons/mob/robots.dmi', icon_state = "mopgearrex")
+	var/static/radial_hull_choice_janitor_drone_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-janitor")
+	var/static/radial_hull_choice_janitor_eyebot_janitor = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-janitor")
+	var/static/radial_hull_choice_janitor_maidbot = image(icon = 'icons/mob/robots.dmi', icon_state = "maidbot")
+	var/static/list/hull_options_janitor = list("Default" = radial_hull_choice_regular_standart, "Basic" = radial_hull_choice_janitor_janbot2, \
+		"Mopbot" = radial_hull_choice_janitor_janitorrobot, "Mop Gear Rex" = radial_hull_choice_janitor_mopgearrex, \
+		"Drone" = radial_hull_choice_janitor_drone_janitor, "Doot" = radial_hull_choice_janitor_eyebot_janitor, \
+		"Robo-Maid" = radial_hull_choice_janitor_maidbot)
+
+// Hulls Service: "Default",	"Waitress",	"Kent",	"Bro",	"Rich",	"Waiter",	"Drone - Service",	"Drone - Hydro"	,	"Doot",	"Robo-Maid"
+	var/static/radial_hull_choice_service_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot_service")
+	var/static/radial_hull_choice_service_service = image(icon = 'icons/mob/robots.dmi', icon_state = "service")
+	var/static/radial_hull_choice_service_toiletbot = image(icon = 'icons/mob/robots.dmi', icon_state = "toiletbot")
+	var/static/radial_hull_choice_service_brobot = image(icon = 'icons/mob/robots.dmi', icon_state = "brobot")
+	var/static/radial_hull_choice_service_maximillion = image(icon = 'icons/mob/robots.dmi', icon_state = "maximillion")
+	var/static/radial_hull_choice_service_service2 = image(icon = 'icons/mob/robots.dmi', icon_state = "service2")
+	var/static/radial_hull_choice_service_drone_service = image(icon = 'icons/mob/robots.dmi', icon_state = "drone_service")
+	var/static/radial_hull_choice_service_drone_hydro = image(icon = 'icons/mob/robots.dmi', icon_state = "drone_hydro")
+	var/static/radial_hull_choice_service_eyebot_standard = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot_standard")
+	var/static/radial_hull_choice_service_maidbot = image(icon = 'icons/mob/robots.dmi', icon_state = "maidbot")
+	var/static/list/hull_options_service = list("Default" = radial_hull_choice_service_standart, "Waitress" = radial_hull_choice_service_service, \
+		"Kent" = radial_hull_choice_service_toiletbot, "Bro" = radial_hull_choice_service_brobot, \
+		"Rich" = radial_hull_choice_service_maximillion, "Waiter" = radial_hull_choice_service_service2, \
+		"Drone - Service" = radial_hull_choice_service_drone_service, "Drone - Hydro" = radial_hull_choice_service_drone_hydro, \
+		"Doot" = radial_hull_choice_service_eyebot_standard, "Robo-Maid" = radial_hull_choice_service_maidbot)
+
+// Hulls Mining: "Default",	"Basic",	"Advanced Droid",	"Treadhead",	"Drone",	"Doot"
+	var/static/radial_hull_choice_mining_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-mining")
+	var/static/radial_hull_choice_mining_miner_old = image(icon = 'icons/mob/robots.dmi', icon_state = "miner-old")
+	var/static/radial_hull_choice_mining_droid_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "droid-miner")
+	var/static/radial_hull_choice_mining_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "miner")
+	var/static/radial_hull_choice_mining_drone_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-miner")
+	var/static/radial_hull_choice_mining_eyebot_miner = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-miner")
+	var/static/list/hull_options_mining = list("Default" = radial_hull_choice_mining_standart, "Basic" = radial_hull_choice_mining_miner_old, \
+		"Advanced Droid" = radial_hull_choice_mining_droid_miner, "Treadhead" = radial_hull_choice_mining_miner, \
+		"Drone" = radial_hull_choice_mining_drone_miner, "Doot" = radial_hull_choice_mining_eyebot_miner)
+
+// Hulls Research: "Default",	"Basic",	"Android",	"Drone",	"Doot"
+	var/static/radial_hull_choice_research_standart = image(icon = 'icons/mob/robots.dmi', icon_state = "robot-science")
+	var/static/radial_hull_choice_research_droid_science = image(icon = 'icons/mob/robots.dmi', icon_state = "droid-science")
+	var/static/radial_hull_choice_research_drone_science = image(icon = 'icons/mob/robots.dmi', icon_state = "drone-science")
+	var/static/radial_hull_choice_research_eyebot_science = image(icon = 'icons/mob/robots.dmi', icon_state = "eyebot-science")
+	var/static/list/hull_options_research = list("Default" = radial_hull_choice_research_standart, "Droid" = radial_hull_choice_research_droid_science, \
+		"Drone" = radial_hull_choice_research_drone_science, "Doot" = radial_hull_choice_research_eyebot_science)
 
 /mob/living/silicon/robot/New(loc,unfinished = 0)
 	spark_system = new /datum/effect/effect/system/spark_spread()
@@ -313,35 +389,6 @@ var/global/list/robot_footstep_sounds = list(
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
 		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
 		modules += "Combat"
-	//TODO: Delete Trash
-	// var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
-	// // we show the button even if the proc will not work
-	// var/static/list/settings_options = list("Color" = radial_color_input, "Intensity" = radial_intensity, "Invert" = radial_invert)
-	// var/settings_choice = show_radial_menu(user, src, isAI(user) ? ai_settings_options : settings_options, require_near = !issilicon(user))
-	// 	switch(settings_choice)
-	// 		if("Color")
-	// 			return
-
-	//TODO: Radial Menu
-	var/mode_choice = show_radial_menu(user, src, isAI(user) ? ai_mode_options : mode_options, require_near = !issilicon(user))
-	//Modules: "standard",	"engineering",	"medical",	"miner",	"janitor",	"service",	"security",	"research"
-	switch(mode_choice)
-		if("standard")
-			visible_message("FIX ME!")
-	 	if("engineering")
-			visible_message("FIX ME!")
-	 	if("medical")
-			visible_message("FIX ME!")
-	 	if("miner")
-			visible_message("FIX ME!")
-	 	if("janitor")
-			visible_message("FIX ME!")
-	 	if("service")
-			visible_message("FIX ME!")
-	 	if("security")
-			visible_message("FIX ME!")
-	 	if("research")
-			visible_message("FIX ME!")
 	selected_module = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
 	if(!(selected_module in GLOB.robot_module_types))
 		return
@@ -1142,20 +1189,146 @@ var/global/list/robot_footstep_sounds = list(
 		if(!(icontype in module_hulls))
 			icontype = module_hulls[1]
 	else
-		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
+		icontype = "Default"
+		switch(selected_module)
+			if("Standart")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_regular, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Android")
+						icontype = "Android"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+			if("Engineering")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_engineering, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Antique")
+						icontype = "Antique"
+					if("Landmate")
+						icontype = "Landmate"
+					if("Landmate - Treaded")
+						icontype = "Landmate - Treaded"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+			if("Medical")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_medical, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Standard")
+						icontype = "Standard"
+					if("Advanced Droid")
+						icontype = "Advanced Droid"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+			if("Miner")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_mining, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Advanced Droid")
+						icontype = "Advanced Droid"
+					if("Treadhead")
+						icontype = "Treadhead"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+			if("Janitor")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_janitor, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Mopbot")
+						icontype = "Mopbot"
+					if("Mop Gear Rex")
+						icontype = "Mop Gear Rex"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+					if("Robo-Maid")
+						icontype = "Robo-Maid"
+			if("Service")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_service, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Waitress")
+						icontype = "Waitress"
+					if("Kent")
+						icontype = "Kent"
+					if("Bro")
+						icontype = "Bro"
+					if("Rich")
+						icontype = "Rich"
+					if("Waiter")
+						icontype = "Waiter"
+					if("Drone - Service")
+						icontype = "Drone - Service"
+					if("Drone - Hydro")
+						icontype = "Drone - Hydro"
+					if("Doot")
+						icontype = "Doot"
+					if("Robo-Maid")
+						icontype = "Robo-Maid"
+			if("Security")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_security, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Basic")
+						icontype = "Basic"
+					if("Red Knight")
+						icontype = "Red Knight"
+					if("Black Knight")
+						icontype = "Black Knight"
+					if("Bloodhound")
+						icontype = "Bloodhound"
+					if("Bloodhound - Treaded")
+						icontype = "Bloodhound - Treaded"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
+					if("Tridroid")
+						icontype = "Tridroid"
+			if("Research")
+				var/hull_choice = show_radial_menu(usr, src, hull_options_research, require_near = !issilicon(usr))
+				switch(hull_choice)
+					if("Default")
+						icontype = "Default"
+					if("Droid")
+						icontype = "Droid"
+					if("Drone")
+						icontype = "Drone"
+					if("Doot")
+						icontype = "Doot"
 	footstep_sound = module_hulls[icontype].footstep_sound
 	icon_state = module_hulls[icontype].icon_state
 	var/list/valid_states = icon_states(icon)
 	if(!(icon_state in valid_states))
 		icon = original_icon
 	update_icon()
-
-	if (module_hulls.len > 1 && triesleft >= 1 && client)
-		icon_selection_tries--
-		var/choice = input(src,"Look at your icon - is this what you want?") in list("Yes","No")
-		if(choice=="No")
-			choose_hull(icon_selection_tries, module_hulls)
-			return
 
 	icon_selected = 1
 	icon_selection_tries = 0
