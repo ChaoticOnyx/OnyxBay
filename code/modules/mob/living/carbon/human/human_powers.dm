@@ -89,8 +89,8 @@
 		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	if(is_ventcrawling)
-		to_chat(src, SPAN("warning", "You cannot tackle into vents."))
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot tackle anyone from here!"))
 		return
 
 	if(T == src)
@@ -101,6 +101,7 @@
 		return
 
 	if(istype(T, /mob/living/silicon))
+		to_chat(src, SPAN("warning", "[T] is too massive to be tackled down!"))
 		return
 
 	last_special = world.time + (5 SECONDS)
@@ -151,9 +152,9 @@
 		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return FALSE
 
-	if(is_ventcrawling)
-		to_chat(src, SPAN("warning", "You cannot leap from vents."))
-		return FALSE
+	if(!isturf(loc))
+		to_chat(src, SPAN("danger", "You cannot leap from here!"))
+		return
 
 	if(T == src)
 		to_chat(src, SPAN("warning", "You cannot leap on yourself!"))
