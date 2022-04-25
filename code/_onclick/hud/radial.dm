@@ -295,7 +295,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	var/datum/radial_menu/menu = new
 	GLOB.radial_menus[uniqueid] = menu
 	if(radius)
-		menu.radius = radius * (1 + 0.05 * choices.len)
+		menu.radius = radius
 	if(istype(custom_check))
 		menu.custom_check_callback = custom_check
 	menu.hudfix_method = use_hudfix_method
