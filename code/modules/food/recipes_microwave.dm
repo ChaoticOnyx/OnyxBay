@@ -84,7 +84,7 @@ I said no!
 /datum/recipe/brainburger
 	items = list(
 		/obj/item/reagent_containers/food/snacks/bun,
-		/obj/item/organ/internal/brain
+		/obj/item/reagent_containers/food/snacks/organ/brain
 	)
 	result = /obj/item/reagent_containers/food/snacks/brainburger
 
@@ -1050,7 +1050,7 @@ I said no!
 	result = /obj/item/reagent_containers/food/snacks/sliceable/applecake
 
 /datum/recipe/cake/brain
-	items = list(/obj/item/organ/internal/brain)
+	items = list(/obj/item/reagent_containers/food/snacks/organ/brain)
 	reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/nutriment/flour = 15, /datum/reagent/nutriment/protein/egg = 9, /datum/reagent/sugar = 15)
 	result = /obj/item/reagent_containers/food/snacks/sliceable/braincake
 

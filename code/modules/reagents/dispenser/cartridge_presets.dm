@@ -72,7 +72,7 @@
 	// ERT
 	inaprov		spawn_reagent = /datum/reagent/inaprovaline
 	ryetalyn	spawn_reagent = /datum/reagent/ryetalyn
-	paracetamol	spawn_reagent = /datum/reagent/paracetamol
+	paracetamol	spawn_reagent = /datum/reagent/painkiller/paracetamol
 	tramadol	spawn_reagent = /datum/reagent/painkiller/tramadol
 	oxycodone	spawn_reagent = /datum/reagent/painkiller/tramadol/oxycodone
 	sterilizine	spawn_reagent = /datum/reagent/sterilizine

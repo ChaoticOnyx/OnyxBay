@@ -239,7 +239,7 @@
 	tolerance_threshold = 30.0
 	tolerance_mult = 0.05
 
-/datum/reagent/paracetamol/overdose(mob/living/carbon/M, alien)
+/datum/reagent/painkiller/paracetamol/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.druggy = max(M.druggy, 2)
 	M.add_chemical_effect(CE_PAINKILLER, 10)
