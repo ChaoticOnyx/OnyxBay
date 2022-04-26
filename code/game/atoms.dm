@@ -64,6 +64,9 @@
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
+	if(loc)
+		SEND_SIGNAL(loc, SIGNAL_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
+
 	if(light_max_bright && light_outer_range)
 		update_light()
 
@@ -293,7 +296,7 @@ its easier to just keep the beam vertical.
 	SHOULD_NOT_OVERRIDE(TRUE)
 
 	var/content = "<div class='Examine'>"
-	
+
 	content += _examine_text(arglist(args))
 	content += "</div>"
 
