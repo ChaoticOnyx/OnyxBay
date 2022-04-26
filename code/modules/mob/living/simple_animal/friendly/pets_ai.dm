@@ -10,6 +10,11 @@
 	var/mob/master = null //undisputed master. Their commands hold ultimate sway and ultimate power.
 	var/static/list/text_to_command = list()
 
+/datum/mob_ai/pet/Destroy()
+	master = null
+	target_mob = null
+	return ..()
+
 /datum/mob_ai/pet/New()
 	. = ..()
 	if(!length(text_to_command))
