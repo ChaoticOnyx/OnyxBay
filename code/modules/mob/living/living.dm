@@ -843,7 +843,7 @@
 		for(var/a in auras)
 			remove_aura(a)
 	if(mind)
-		mind.current = null
+		mind.set_current(null)
 	QDEL_NULL(aiming)
 	return ..()
 
