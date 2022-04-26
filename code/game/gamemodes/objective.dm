@@ -29,7 +29,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && (possible_target.current.loc?.z in GLOB.using_map.admin_levels))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(target_is_disallowed(H))
 				continue
@@ -41,7 +41,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role)  && (possible_target.current.loc?.z in GLOB.using_map.admin_levels))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
