@@ -49,6 +49,7 @@
 	spawn(0)
 		if (A && yes)
 			A.last_bumped = world.time
+			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 			A.Bumped(src)
 		return
 	..()
