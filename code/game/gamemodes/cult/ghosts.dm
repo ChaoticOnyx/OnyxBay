@@ -144,7 +144,7 @@
 
 	var/list/obj/item/choices = list()
 	for(var/obj/item/I in range(1))
-		if(I.w_class <= 2)
+		if(I.w_class <= 2 || I == ghost_multitool)
 			choices += I
 
 	if(!choices.len)
