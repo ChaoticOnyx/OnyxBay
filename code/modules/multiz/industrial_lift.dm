@@ -191,8 +191,6 @@ GLOBAL_LIST_EMPTY(lifts)
 
 /obj/structure/industrial_lift/proc/AddItemOnLift(atom/AM)
 	SHOULD_NOT_SLEEP(TRUE)
-	if(istype(AM,/obj/structure/window/shuttle))
-		world << "lol";
 	if(istype(AM, /obj/structure/rail) || AM.invisibility == 101) //prevents the tram from stealing things like landmarks
 		return
 	if(AM in lift_load)
