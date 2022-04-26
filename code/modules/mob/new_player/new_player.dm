@@ -19,8 +19,13 @@
 
 	virtual_mob = null // Hear no evil, speak no evil
 
-/mob/new_player/New()
-	. = ..()
+/mob/new_player/Initialize(mapload)
+	SHOULD_CALL_PARENT(FALSE)
+
+	if(atom_flags & ATOM_FLAG_INITIALIZED)
+		crash_with("Warning: [src]([type]) initialized multiple times!")
+	atom_flags |= ATOM_FLAG_INITIALIZED
+
 	verbs += /mob/proc/toggle_antag_pool
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
@@ -90,7 +95,7 @@
 	if(href_list["show_preferences"])
 		client.prefs.ShowChoices(src)
 		return 1
-	
+
 	if(href_list["show_settings"])
 		client.settings.tgui_interact(src)
 		return 1
@@ -165,6 +170,7 @@
 			observer.key = key
 			var/obj/screen/splash/S = new(observer.client, TRUE)
 			S.Fade(TRUE, TRUE)
+			QDEL_NULL(mind)
 			qdel(src)
 
 			return 1
@@ -580,7 +586,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	show_browser(src, null, "window=latechoices") //closes late choices window
+	close_browser(src, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()

@@ -245,7 +245,7 @@
 		return
 
 	var/obj/item/melee/energy/blade/blade = new(M)
-	blade.creator = M
+	blade.creator = weakref(M)
 	M.put_in_hands(blade)
 
 /obj/item/rig_module/mounted/energy_blade/deactivate()

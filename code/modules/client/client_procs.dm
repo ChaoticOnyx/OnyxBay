@@ -281,16 +281,19 @@
 	//////////////
 	//DISCONNECT//
 	//////////////
+
 /client/Del()
+	if(!gc_destroyed)
+		Destroy()
+	return ..()
+
+/client/Destroy()
 	ticket_panels -= src
 	if(holder)
 		holder.owner = null
 		GLOB.admins -= src
 	GLOB.ckey_directory -= ckey
 	GLOB.clients -= src
-	return ..()
-
-/client/Destroy()
 	..()
 	return QDEL_HINT_HARDDEL_NOW
 

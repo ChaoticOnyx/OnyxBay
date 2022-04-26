@@ -255,19 +255,19 @@
 	var/old_loc = loc
 
 	pickup(user)
-	if (istype(loc, /obj/item/storage))
+	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 
 	throwing = 0
-	if (loc == user)
+	if(loc == user)
 		if(!user.unEquip(src))
 			return
 	else
 		if(isliving(loc))
 			return
 
-	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
 
 	if(user.put_in_active_hand(src))

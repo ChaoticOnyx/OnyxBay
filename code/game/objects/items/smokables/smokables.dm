@@ -18,6 +18,9 @@
 /obj/item/clothing/mask/smokable/New()
 	..()
 	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+
+/obj/item/clothing/mask/smokable/Initialize()
+	. = ..()
 	create_reagents(chem_volume) // making the cigarrete a chemical holder with a maximum volume of [chem_volume]
 
 /obj/item/clothing/mask/smokable/Destroy()
@@ -37,7 +40,7 @@
 				reagents.remove_any(smokeamount*amount)
 			smoke_loc = C.loc
 		smoke_effect++
-		if(smoke_effect >= 3 || manual)
+		if((smoke_effect >= 3 || manual) && isturf(smoke_loc))
 			smoke_effect = 0
 			new /obj/effect/effect/cig_smoke(smoke_loc)
 	else

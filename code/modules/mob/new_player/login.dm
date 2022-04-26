@@ -48,7 +48,7 @@
 	if(!mind)
 		mind = new /datum/mind(key)
 		mind.active = 1
-		mind.current = src
+		mind.set_current(src)
 
 	loc = null
 	new /obj/screen/splash(client, TRUE)
@@ -64,7 +64,7 @@
 /mob/new_player/proc/handle_changelog()
 	if(client.prefs.lastchangelog == changelog_hash)
 		return
-	
+
 	client.prefs.lastchangelog = changelog_hash
 	SScharacter_setup.queue_preferences_save(client.prefs)
 
@@ -79,7 +79,7 @@
 /mob/new_player/proc/deferred_login()
 	if(!client)
 		return
-	
+
 	client.prefs.apply_post_login_preferences(client)
 	client.playtitlemusic()
 

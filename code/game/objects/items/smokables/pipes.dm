@@ -12,8 +12,8 @@
 	chem_volume = 50
 	filter_trans = 0.9
 
-/obj/item/clothing/mask/smokable/pipe/New()
-	..()
+/obj/item/clothing/mask/smokable/pipe/Initialize()
+	. = ..()
 	name = "empty [initial(name)]"
 
 /obj/item/clothing/mask/smokable/pipe/light(obj/used_tool, mob/holder)

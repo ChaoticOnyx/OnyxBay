@@ -16,8 +16,8 @@
 	var/list/filling = list(/datum/reagent/tobacco = 3)
 	var/ember_state = "cigember"
 
-/obj/item/clothing/mask/smokable/cigarette/New()
-	..()
+/obj/item/clothing/mask/smokable/cigarette/Initialize()
+	. = ..()
 	for(var/R in filling)
 		reagents.add_reagent(R, filling[R])
 
@@ -225,8 +225,8 @@
 	slot_flags = SLOT_EARS
 	throwforce = 0
 
-/obj/item/cigbutt/New()
-	..()
+/obj/item/cigbutt/Initialize()
+	. = ..()
 	transform = turn(transform,rand(0,360))
 
 ////////////////

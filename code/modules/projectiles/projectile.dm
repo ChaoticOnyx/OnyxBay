@@ -96,6 +96,8 @@
 	. = ..()
 
 /obj/item/projectile/Destroy()
+	if(trajectory)
+		QDEL_NULL(trajectory)
 	return ..()
 
 /obj/item/projectile/forceMove()
