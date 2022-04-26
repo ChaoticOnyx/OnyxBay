@@ -3,9 +3,9 @@
 	var/area/safe_area
 
 /datum/mob_ai/Destroy()
-	. = ..()
 	holder = null
 	safe_area = null
+	return ..()
 
 /datum/mob_ai/proc/attempt_escape()
 	if(holder.buckled && holder.can_escape)
