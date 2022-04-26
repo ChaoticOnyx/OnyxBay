@@ -31,12 +31,18 @@
 			if(insults)
 				for(var/mob/O in (viewers(user)))
 					O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[pick(insultmsg)]\"")]", AUDIBLE_MESSAGE)
+				for(var/obj/item/device/radio/intercom/I in view(3, usr))
+					if(I.broadcasting)
+						I.talk_into(usr, message, verb = "shout")
 				insults--
 			else
 				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
 			for(var/mob/O in (viewers(user)))
 				O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[message]\"")]", AUDIBLE_MESSAGE)
+			for(var/obj/item/device/radio/intercom/I in view(3, usr))
+				if(I.broadcasting)
+					I.talk_into(usr, message, verb = "shout")
 
 		spamcheck = 1
 		spawn(20)
