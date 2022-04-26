@@ -3,9 +3,8 @@
   "name": "tgui-workspace",
   "version": "4.3.0",
   "scripts": {
-    "dev": "node packages/tgui-dev-server/index.esm.js",
-    "lint": "tsc && eslint packages --ext \".js,.cjs,.ts,.tsx\"",
-    "build": "npm run lint && webpack-cli --mode=production"
+    "dev": "node --experimental-modules packages/tgui-dev-server/index.js",
+    "build": "webpack"
   },
   "workspaces": [
     "packages/common",

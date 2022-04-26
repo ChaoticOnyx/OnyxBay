@@ -4,12 +4,12 @@
  * @license MIT
  */
 
-const webpack = require('webpack');
-const path = require('path');
-const ExtractCssPlugin = require('mini-css-extract-plugin');
-const { createBabelConfig } = require('./babel.config.js');
+const webpack = require("webpack");
+const path = require("path");
+const ExtractCssPlugin = require("mini-css-extract-plugin");
+const { createBabelConfig } = require("./babel.config.js");
 
-const createStats = verbose => ({
+const createStats = (verbose) => ({
   assets: verbose,
   builtAt: verbose,
   cached: false,
@@ -25,31 +25,26 @@ const createStats = verbose => ({
 });
 
 module.exports = (env = {}, argv) => {
-  const mode = argv.mode === 'production' ? 'production' : 'development';
+  const mode = argv.mode || "production";
+  const bench = env.TGUI_BENCH;
   const config = {
-    mode,
+    mode: mode === "production" ? "production" : "development",
     context: path.resolve(__dirname),
-    target: ['web', 'es3', 'browserslist:ie 8'],
+    target: ["web", "es3", "browserslist:ie 8"],
     entry: {
-      'tgui': [
-        './packages/tgui-polyfill',
-        './packages/tgui',
-      ],
-      'tgui-panel': [
-        './packages/tgui-polyfill',
-        './packages/tgui-panel',
-      ],
+      tgui: ["./packages/tgui-polyfill", "./packages/tgui"],
+      "tgui-panel": ["./packages/tgui-polyfill", "./packages/tgui-panel"],
     },
     output: {
       path: argv.useTmpFolder
-        ? path.resolve(__dirname, './public/.tmp')
-        : path.resolve(__dirname, './public'),
-      filename: '[name].bundle.js',
-      chunkFilename: '[name].bundle.js',
+        ? path.resolve(__dirname, "./public/.tmp")
+        : path.resolve(__dirname, "./public"),
+      filename: "[name].bundle.js",
+      chunkFilename: "[name].bundle.js",
       chunkLoadTimeout: 15000,
     },
     resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
+      extensions: [".tsx", ".ts", ".js"],
       alias: {},
     },
     module: {
@@ -58,8 +53,10 @@ module.exports = (env = {}, argv) => {
           test: /\.(js|cjs|ts|tsx)$/,
           use: [
             {
-              loader: require.resolve('babel-loader'),
-              options: createBabelConfig({ mode }),
+              loader: require.resolve("babel-loader"),
+              options: createBabelConfig({
+                removeConsole: !bench,
+              }),
             },
           ],
         },
@@ -73,13 +70,13 @@ module.exports = (env = {}, argv) => {
               },
             },
             {
-              loader: require.resolve('css-loader'),
+              loader: require.resolve("css-loader"),
               options: {
                 esModule: false,
               },
             },
             {
-              loader: require.resolve('sass-loader'),
+              loader: require.resolve("sass-loader"),
             },
           ],
         },
@@ -87,7 +84,7 @@ module.exports = (env = {}, argv) => {
           test: /\.(png|jpg|svg)$/,
           use: [
             {
-              loader: require.resolve('url-loader'),
+              loader: require.resolve("url-loader"),
               options: {
                 esModule: false,
               },
@@ -98,17 +95,13 @@ module.exports = (env = {}, argv) => {
     },
     optimization: {
       emitOnErrors: false,
-      splitChunks: {
-        chunks: 'initial',
-        name: 'tgui-common',
-      },
     },
     performance: {
       hints: false,
     },
     devtool: false,
     cache: {
-      type: 'filesystem',
+      type: "filesystem",
       cacheLocation: path.resolve(__dirname, `.yarn/webpack/${mode}`),
       buildDependencies: {
         config: [__filename],
@@ -117,29 +110,29 @@ module.exports = (env = {}, argv) => {
     stats: createStats(true),
     plugins: [
       new webpack.EnvironmentPlugin({
-        NODE_ENV: env.NODE_ENV || argv.mode || 'development',
+        NODE_ENV: env.NODE_ENV || mode,
         WEBPACK_HMR_ENABLED: env.WEBPACK_HMR_ENABLED || argv.hot || false,
         DEV_SERVER_IP: env.DEV_SERVER_IP || null,
       }),
       new ExtractCssPlugin({
-        filename: '[name].bundle.css',
-        chunkFilename: '[name].bundle.css',
+        filename: "[name].bundle.css",
+        chunkFilename: "[name].bundle.css",
       }),
     ],
   };
 
-  // Add a bundle analyzer to the plugins array
-  if (argv.analyze) {
-    const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-    config.plugins = [
-      ...config.plugins,
-      new BundleAnalyzerPlugin(),
-    ];
+  if (bench) {
+    config.entry = {
+      "tgui-bench": [
+        "./packages/tgui-polyfill",
+        "./packages/tgui-bench/entrypoint",
+      ],
+    };
   }
 
   // Production build specific options
-  if (argv.mode === 'production') {
-    const TerserPlugin = require('terser-webpack-plugin');
+  if (mode === "production") {
+    const TerserPlugin = require("terser-webpack-plugin");
     config.optimization.minimizer = [
       new TerserPlugin({
         extractComments: false,
@@ -155,8 +148,8 @@ module.exports = (env = {}, argv) => {
   }
 
   // Development build specific options
-  if (argv.mode !== 'production') {
-    config.devtool = 'cheap-module-source-map';
+  if (mode !== "production") {
+    config.devtool = "cheap-module-source-map";
   }
 
   // Development server specific options
@@ -165,7 +158,7 @@ module.exports = (env = {}, argv) => {
       progress: false,
       quiet: false,
       noInfo: false,
-      clientLogLevel: 'silent',
+      clientLogLevel: "silent",
       stats: createStats(false),
     };
   }

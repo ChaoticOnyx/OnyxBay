@@ -3,9 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-/**
- * tgui datum (represents a UI).
- */
+/// tgui datum (represents a UI).
 /datum/tgui
 	/// The mob who opened/is using the UI.
 	var/mob/user
@@ -36,20 +34,16 @@
 	/// If the window should update
 	var/needs_update = FALSE
 
-/**
- * public
- *
- * Create a new UI.
- *
- * required user mob The mob who opened/is using the UI.
- * required src_object datum The object or datum which owns the UI.
- * required interface string The interface used to render the UI.
- * optional title string The title of the UI.
- * optional ui_x int Deprecated: Window width.
- * optional ui_y int Deprecated: Window height.
- *
- * return datum/tgui The requested UI.
- */
+/// Create a new UI.
+///
+/// required user mob The mob who opened/is using the UI.
+/// required src_object datum The object or datum which owns the UI.
+/// required interface string The interface used to render the UI.
+/// optional title string The title of the UI.
+/// optional ui_x int Deprecated: Window width.
+/// optional ui_y int Deprecated: Window height.
+///
+/// return datum/tgui The requested UI.
 /datum/tgui/New(mob/user, datum/src_object, interface, title, ui_x, ui_y)
 	var/is_fancy = user?.get_preference_value(/datum/client_preference/tgui_style) == GLOB.PREF_FANCY
 	log_tgui(user,
@@ -66,19 +60,16 @@
 	if(ui_x && ui_y)
 		src.window_size = list(ui_x, ui_y)
 
-/**
- * public
- *
- * Open this UI (and initialize it with data).
- *
- * return bool - TRUE if a new pooled window is opened, FALSE in all other situations including if a new pooled window didn't open because one already exists.
- */
+/// Open this UI (and initialize it with data).
+///
+/// return bool - TRUE if a new pooled window is opened,
+/// FALSE in all other situations including if a new pooled window didn't open because one already exists.
 /datum/tgui/proc/open()
 	if(!user.client)
 		return FALSE
 	if(window)
 		return FALSE
-	process_status()
+	_process_status()
 	if(status < UI_UPDATE)
 		return FALSE
 	window = SStgui.request_pooled_window(user)
@@ -89,7 +80,7 @@
 	if(!window.is_ready())
 		window.initialize(
 			fancy = user.get_preference_value(/datum/client_preference/tgui_style) == GLOB.PREF_FANCY,
-			inline_assets = list(
+			assets = list(
 				get_asset_datum(/datum/asset/simple/tgui_common),
 				get_asset_datum(/datum/asset/simple/tgui),
 				get_asset_datum(/datum/asset/simple/fontawesome)
@@ -99,20 +90,16 @@
 	window.send_asset(get_asset_datum(/datum/asset/simple/fontawesome))
 	for(var/datum/asset/asset in src_object.tgui_assets(user))
 		window.send_asset(asset)
-	window.send_message("update", get_payload(
+	window.send_message("update", _get_payload(
 		with_data = TRUE,
 		with_static_data = TRUE))
 	SStgui.on_open(src)
 
 	return TRUE
 
-/**
- * public
- *
- * Close the UI.
- *
- * optional can_be_suspended bool
- */
+/// Close the UI.
+///
+/// optional can_be_suspended bool
 /datum/tgui/proc/close(can_be_suspended = TRUE)
 	if(closing)
 		return
@@ -130,81 +117,57 @@
 	state = null
 	qdel(src)
 
-/**
- * public
- *
- * Enable/disable auto-updating of the UI.
- *
- * required value bool Enable/disable auto-updating.
- */
+/// Enable/disable auto-updating of the UI.
+///
+/// required value bool Enable/disable auto-updating.
 /datum/tgui/proc/set_autoupdate(autoupdate)
 	src.autoupdate = autoupdate
 
-/**
- * public
- *
- * Replace current ui.state with a new one.
- *
- * required state datum/ui_state/state Next state
- */
+/// Replace current ui.state with a new one.
+///
+/// required state datum/ui_state/state Next state
 /datum/tgui/proc/set_state(datum/ui_state/state)
 	src.state = state
 
-/**
- * public
- *
- * Makes an asset available to use in tgui.
- *
- * required asset datum/asset
- *
- * return bool - true if an asset was actually sent
- */
+/// Makes an asset available to use in tgui.
+///
+/// required asset datum/asset
+///
+/// return bool - true if an asset was actually sent
 /datum/tgui/proc/send_asset(datum/asset/asset)
 	if(!window)
 		CRASH("send_asset() was called either without calling open() first or when open() did not return TRUE.")
 	return window.send_asset(asset)
 
-/**
- * public
- *
- * Send a full update to the client (includes static data).
- *
- * optional custom_data list Custom data to send instead of ui_data.
- * optional force bool Send an update even if UI is not interactive.
- */
+/// Send a full update to the client (includes static data).
+///
+/// optional custom_data list Custom data to send instead of ui_data.
+/// optional force bool Send an update even if UI is not interactive.
 /datum/tgui/proc/send_full_update(custom_data, force)
 	if(!user.client || !initialized || closing)
 		return
 	var/should_update_data = force || status >= UI_UPDATE
-	window.send_message("update", get_payload(
+	window.send_message("update", _get_payload(
 		custom_data,
 		with_data = should_update_data,
 		with_static_data = TRUE))
 
-/**
- * public
- *
- * Send a partial update to the client (excludes static data).
- *
- * optional custom_data list Custom data to send instead of ui_data.
- * optional force bool Send an update even if UI is not interactive.
- */
+/// Send a partial update to the client (excludes static data).
+///
+/// optional custom_data list Custom data to send instead of ui_data.
+/// optional force bool Send an update even if UI is not interactive.
 /datum/tgui/proc/send_update(custom_data, force)
 	if(!user.client || !initialized || closing)
 		return
 	var/should_update_data = force || status >= UI_UPDATE
-	window.send_message("update", get_payload(
+	window.send_message("update", _get_payload(
 		custom_data,
 		with_data = should_update_data))
 
-/**
- * private
- *
- * Package the data to send to the UI, as JSON.
- *
- * return list
- */
-/datum/tgui/proc/get_payload(custom_data, with_data, with_static_data)
+/// Package the data to send to the UI, as JSON.
+///
+/// return list
+/datum/tgui/proc/_get_payload(custom_data, with_data, with_static_data)
 	var/list/json_data = list()
 	json_data["config"] = list(
 		"title" = title,
@@ -237,12 +200,8 @@
 		json_data["shared"] = src_object.tgui_shared_states
 	return json_data
 
-/**
- * private
- *
- * Run an update cycle for this UI. Called internally by SStgui
- * every second or so.
- */
+/// Run an update cycle for this UI. Called internally by SStgui
+/// every second or so.
 /datum/tgui/Process(delta_time, force = FALSE)
 	if(closing)
 		return
@@ -263,36 +222,28 @@
 		src_object.tgui_interact(user, src)
 		return
 	// Update status only
-	var/needs_update = process_status()
+	var/needs_update = _process_status()
 	if(status <= UI_CLOSE)
 		close()
 		return
 	if(needs_update)
-		window.send_message("update", get_payload())
+		window.send_message("update", _get_payload())
 
-/**
- * private
- *
- * Updates the status, and returns TRUE if status has changed.
- */
-/datum/tgui/proc/process_status()
+/// Updates the status, and returns TRUE if status has changed.
+/datum/tgui/proc/_process_status()
 	var/prev_status = status
 	status = src_object.ui_status(user, state)
 	return prev_status != status
 
-/**
- * private
- *
- * Callback for handling incoming tgui messages.
- */
-/datum/tgui/proc/on_message(type, list/payload, list/href_list)
+/// Callback for handling incoming tgui messages.
+/datum/tgui/proc/_on_message(type, list/payload, list/href_list)
 	// Pass act type messages to ui_act
 	if(type && copytext(type, 1, 5) == "act/")
 		var/act_type = copytext(type, 5)
 		log_tgui(user, "Action: [act_type] [href_list["payload"]]",
 			window = window,
 			src_object = src_object)
-		process_status()
+		_process_status()
 		if(src_object.tgui_act(act_type, payload, src, state))
 			SStgui.update_uis(src_object)
 		return FALSE

@@ -4,69 +4,70 @@
  * @license MIT
  */
 
-import { classes } from 'common/react'
-import { Component } from 'inferno'
-import { Box } from './Box'
-import { Icon } from './Icon'
+import { classes } from "common/react";
+import { Component } from "inferno";
+import { Box } from "./Box";
+import { Icon } from "./Icon";
 
 export class Dropdown extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       selected: props.selected,
-      open: false
-    }
+      open: false,
+    };
     this.handleClick = () => {
       if (this.state.open) {
-        this.setOpen(false)
+        this.setOpen(false);
       }
-    }
+    };
   }
 
-  componentWillUnmount () {
-    window.removeEventListener('click', this.handleClick)
+  componentWillUnmount() {
+    window.removeEventListener("click", this.handleClick);
   }
 
-  setOpen (open) {
-    this.setState({ open: open })
+  setOpen(open) {
+    this.setState({ open: open });
     if (open) {
-      setTimeout(() => window.addEventListener('click', this.handleClick))
-      this.menuRef.focus()
+      setTimeout(() => window.addEventListener("click", this.handleClick));
+      this.menuRef.focus();
     } else {
-      window.removeEventListener('click', this.handleClick)
+      window.removeEventListener("click", this.handleClick);
     }
   }
 
-  setSelected (selected) {
+  setSelected(selected) {
     this.setState({
-      selected: selected
-    })
-    this.setOpen(false)
-    this.props.onSelected(selected)
+      selected: selected,
+    });
+    this.setOpen(false);
+    this.props.onSelected(selected);
   }
 
-  buildMenu () {
-    const { options = [] } = this.props
+  buildMenu() {
+    const { options = [] } = this.props;
     const ops = options.map((option) => (
       <Box
         key={option}
-        className='Dropdown__menuentry'
+        className="Dropdown__menuentry"
         onClick={() => {
-          this.setSelected(option)
-        }}>
+          this.setSelected(option);
+        }}
+      >
         {option}
       </Box>
-    ))
-    return ops.length ? ops : 'No Options Found'
+    ));
+    return ops.length ? ops : "No Options Found";
   }
 
-  render () {
-    const { props } = this
+  render() {
+    const { props } = this;
     const {
       icon,
       iconRotation,
       iconSpin,
-      color = 'default',
+      color = "default",
       over,
       noscroll,
       nochevron,
@@ -76,62 +77,62 @@ export class Dropdown extends Component {
       disabled,
       displayText,
       ...boxProps
-    } = props
-    const { className, ...rest } = boxProps
+    } = props;
+    const { className, ...rest } = boxProps;
 
-    const adjustedOpen = over ? !this.state.open : this.state.open
+    const adjustedOpen = over ? !this.state.open : this.state.open;
 
-    const menu = this.state.open
-      ? (
+    const menu = this.state.open ? (
       <div
         ref={(menu) => {
-          this.menuRef = menu
+          this.menuRef = menu;
         }}
-        tabIndex='-1'
+        tabIndex="-1"
         style={{
-          width: width
+          width: width,
         }}
         className={classes([
-          (noscroll && 'Dropdown__menu-noscroll') || 'Dropdown__menu',
-          over && 'Dropdown__over'
-        ])}>
+          (noscroll && "Dropdown__menu-noscroll") || "Dropdown__menu",
+          over && "Dropdown__over",
+        ])}
+      >
         {this.buildMenu()}
       </div>
-        )
-      : null
+    ) : null;
 
     return (
-      <div className='Dropdown'>
+      <div className="Dropdown">
         <Box
           width={width}
           className={classes([
-            'Dropdown__control',
-            'Button',
-            'Button--color--' + color,
-            disabled && 'Button--disabled',
-            className
+            "Dropdown__control",
+            "Button",
+            "Button--color--" + color,
+            disabled && "Button--disabled",
+            className,
           ])}
           {...rest}
           onClick={() => {
             if (disabled && !this.state.open) {
-              return
+              return;
             }
-            this.setOpen(!this.state.open)
-          }}>
+            this.setOpen(!this.state.open);
+          }}
+        >
           {icon && (
             <Icon name={icon} rotation={iconRotation} spin={iconSpin} mr={1} />
           )}
-          <span className='Dropdown__selected-text'>
+          <span className="Dropdown__selected-text">
             {displayText || this.state.selected}
           </span>
           {!!nochevron || (
-            <span className='Dropdown__arrow-button'>
-              <Icon name={adjustedOpen ? 'chevron-up' : 'chevron-down'} />
+            <span className="Dropdown__arrow-button">
+              <Icon name={adjustedOpen ? "chevron-up" : "chevron-down"} />
             </span>
           )}
         </Box>
         {menu}
       </div>
-    )
+    );
   }
 }
