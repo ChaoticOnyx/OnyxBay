@@ -2,6 +2,11 @@
 	var/mob/living/simple_animal/holder // contains the connected mob
 	var/area/safe_area
 
+/datum/mob_ai/Destroy()
+	. = ..()
+	holder = null
+	safe_area = null
+
 /datum/mob_ai/proc/attempt_escape()
 	if(holder.buckled && holder.can_escape)
 		if(istype(holder.buckled, /obj/effect/energy_net))
