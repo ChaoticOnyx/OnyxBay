@@ -4,8 +4,9 @@
 
 /area/polarplanet/street
 	name = "Polarplanet - street"
-	luminosity = 1
+	luminosity = 2
 	requires_power = 0
+	dynamic_lighting = 0
 
 
 // Security
