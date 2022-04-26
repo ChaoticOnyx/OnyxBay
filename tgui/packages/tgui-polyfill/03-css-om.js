@@ -9,10 +9,10 @@
  */
 
 /* eslint-disable */
-(function(Proto) {
-  'use strict';
+(function (Proto) {
+  "use strict";
 
-  if (typeof Proto.setAttribute !== 'undefined') {
+  if (typeof Proto.setAttribute !== "undefined") {
     function toAttr(prop) {
       return prop.replace(/-[a-z]/g, function (bit) {
         return bit[1].toUpperCase();
@@ -40,5 +40,4 @@
       return value;
     };
   }
-
 })(CSSStyleDeclaration.prototype);

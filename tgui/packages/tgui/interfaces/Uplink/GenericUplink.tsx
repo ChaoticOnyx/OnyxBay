@@ -1,57 +1,57 @@
-import { BooleanLike } from 'common/react'
-import { useLocalState, useSharedState } from '../../backend'
+import { BooleanLike } from "common/react";
+import { useLocalState, useSharedState } from "../../backend";
 import {
   Button,
   Input,
   Section,
   Tabs,
   NoticeBox,
-  Stack
-} from '../../components'
+  Stack,
+} from "../../components";
 
 export type Item<ItemData = {}> = {
-  id: string | number
-  name: string
-  category: string
-  cost: JSX.Element | string
-  desc: JSX.Element | string
-  disabled: BooleanLike
-  extraData?: ItemData
-}
+  id: string | number;
+  name: string;
+  category: string;
+  cost: JSX.Element | string;
+  desc: JSX.Element | string;
+  disabled: BooleanLike;
+  extraData?: ItemData;
+};
 
 type GenericUplinkProps = {
-  categories: string[]
-  items: Item[]
+  categories: string[];
+  items: Item[];
 
-  handleBuy: (item: Item) => void
-}
+  handleBuy: (item: Item) => void;
+};
 
 export const GenericUplink = (props: GenericUplinkProps, context) => {
   const {
     categories,
 
-    handleBuy
-  } = props
-  const [searchText, setSearchText] = useLocalState(context, 'searchText', '')
+    handleBuy,
+  } = props;
+  const [searchText, setSearchText] = useLocalState(context, "searchText", "");
   const [selectedCategory, setSelectedCategory] = useLocalState(
     context,
-    'category',
+    "category",
     categories[0]
-  )
+  );
   const [compactMode, setCompactMode] = useSharedState(
     context,
-    'compactModeUplink',
+    "compactModeUplink",
     false
-  )
-  const items = props.items.filter(value => {
+  );
+  const items = props.items.filter((value) => {
     if (searchText.length === 0) {
-      return value.category === selectedCategory
+      return value.category === selectedCategory;
     }
-    return value.name.toLowerCase().includes(searchText.toLowerCase())
-  })
+    return value.name.toLowerCase().includes(searchText.toLowerCase());
+  });
   return (
     <Section
-      title='cr'
+      title="cr"
       buttons={
         <>
           Search
@@ -62,21 +62,23 @@ export const GenericUplink = (props: GenericUplinkProps, context) => {
             mx={1}
           />
           <Button
-            icon={compactMode ? 'list' : 'info'}
-            content={compactMode ? 'Compact' : 'Detailed'}
+            icon={compactMode ? "list" : "info"}
+            content={compactMode ? "Compact" : "Detailed"}
             onClick={() => setCompactMode(!compactMode)}
           />
         </>
-      }>
+      }
+    >
       <Stack>
         {searchText.length === 0 && (
           <Stack.Item mr={1}>
             <Tabs vertical>
-              {categories.map(category => (
+              {categories.map((category) => (
                 <Tabs.Tab
                   key={category}
                   selected={category === selectedCategory}
-                  onClick={() => setSelectedCategory(category)}>
+                  onClick={() => setSelectedCategory(category)}
+                >
                   {category}
                 </Tabs.Tab>
               ))}
@@ -87,8 +89,8 @@ export const GenericUplink = (props: GenericUplinkProps, context) => {
           {items.length === 0 && (
             <NoticeBox>
               {searchText.length === 0
-                ? 'No items in this category.'
-                : 'No results found.'}
+                ? "No items in this category."
+                : "No results found."}
             </NoticeBox>
           )}
           <ItemList
@@ -99,18 +101,18 @@ export const GenericUplink = (props: GenericUplinkProps, context) => {
         </Stack.Item>
       </Stack>
     </Section>
-  )
-}
+  );
+};
 
 export type ItemListProps = {
-  compactMode: BooleanLike
-  items: Item[]
+  compactMode: BooleanLike;
+  items: Item[];
 
-  handleBuy: (item: Item) => void
-}
+  handleBuy: (item: Item) => void;
+};
 
 const ItemList = (props: ItemListProps, context: any) => {
-  const { compactMode, items, handleBuy } = props
+  const { compactMode, items, handleBuy } = props;
   return (
     <Stack vertical>
       {items.map((item, index) => (
@@ -122,13 +124,14 @@ const ItemList = (props: ItemListProps, context: any) => {
               <Button
                 content={item.cost}
                 disabled={item.disabled}
-                onClick={e => handleBuy(item)}
+                onClick={(e) => handleBuy(item)}
               />
-            }>
+            }
+          >
             {compactMode ? null : item.desc}
           </Section>
         </Stack.Item>
       ))}
     </Stack>
-  )
-}
+  );
+};

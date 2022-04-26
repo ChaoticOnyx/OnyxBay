@@ -11,16 +11,16 @@
  * Moves focus to the BYOND map window.
  */
 export const focusMap = () => {
-  Byond.winset('mapwindow.map', {
-    focus: true
-  })
-}
+  Byond.winset("mapwindow.map", {
+    focus: true,
+  });
+};
 
 /**
  * Moves focus to the browser window.
  */
 export const focusWindow = () => {
-  Byond.winset(window.__windowId__, {
-    focus: true
-  })
-}
+  Byond.winset(Byond.windowId, {
+    focus: true,
+  });
+};
