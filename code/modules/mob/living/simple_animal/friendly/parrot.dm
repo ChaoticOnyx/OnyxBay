@@ -185,9 +185,9 @@
 				if("ears")
 					if(ears)
 						if(available_channels.len)
-							src.say("[pick(available_channels)] ÐÐÐßßßß ÎÑÒÀÂÜ ÍÀÓØÍÈÊ ÐÐßßßßßß!")
+							src.say("[pick(available_channels)] РРРЯЯЯЯ ОСТАВЬ НАУШНИК РРЯЯЯЯЯЯ!")
 						else
-							src.say("ÐÐßßßßß ÎÑÒÀÂÜ ÍÀÓØÍÈÊ ÐÐÐßßßßß!")
+							src.say("РРЯЯЯЯЯ ОСТАВЬ НАУШНИК РРРЯЯЯЯЯ!")
 						ears.loc = src.loc
 						ears = null
 						for(var/possible_phrase in speak)
@@ -201,9 +201,9 @@
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
 						return
 					if(available_channels.len)
-						src.say("[pick(available_channels)] ÐÐÐßßßßß ÏÎËÎÆÈ ÍÀ ÌÅÑÒÎ ÐÐßßßßßß!")
+						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
 					else
-						src.say("ÐÐÐßßßß ÏÎËÎÆÈ ÍÀ ÌÅÑÒÎ ÐÐÐßßßßßß!")
+						src.say("РРРЯЯЯЯ ПОЛОЖИ НА МЕСТО РРРЯЯЯЯЯЯ!")
 					held_item.loc = src.loc
 					held_item = null
 
@@ -267,9 +267,9 @@
 							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
 							if(istype(src, /mob/living/simple_animal/parrot/Poly))
 								if(prob(50))
-									say("Ïîëè íðàâèòñÿ!")
+									say("Поли нравится!")
 								else
-									say("Ïîëè íåäîâîëåí!")
+									say("Поли недоволен!")
 		else
 			..()
 
@@ -747,7 +747,7 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Ïîëè õî÷åò êðåêåð!", ":e Ïðîâåðüòå ìàòåðèþ, óùåðáû!",":e Íàñòðàèâàéòå ÑÌÅÑû, ëåíèâûå æîïû!",":e ÊÒÎ ÑÏÈÇÄÈË ×ÅÐÒÎÂÛ ÐÈÃÈ?",":e ÎÍÀ ÑÅÉ×ÀÑ ÅÁÍÅÒ ÂÛÇÛÂÀÉÒÅ ØÀÒÒË!")
+	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА СЕЙЧАС ЕБНЕТ ВЫЗЫВАЙТЕ ШАТТЛ!")
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
