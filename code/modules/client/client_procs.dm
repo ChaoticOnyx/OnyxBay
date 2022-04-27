@@ -281,16 +281,19 @@
 	//////////////
 	//DISCONNECT//
 	//////////////
+
 /client/Del()
+	if(!gc_destroyed)
+		Destroy()
+	return ..()
+
+/client/Destroy()
 	ticket_panels -= src
 	if(holder)
 		holder.owner = null
 		GLOB.admins -= src
 	GLOB.ckey_directory -= ckey
 	GLOB.clients -= src
-	return ..()
-
-/client/Destroy()
 	..()
 	return QDEL_HINT_HARDDEL_NOW
 
@@ -448,7 +451,7 @@
 	set name = "Character Setup"
 	set category = "OOC"
 	if(prefs)
-		prefs.ShowChoices(usr)
+		prefs.open_setup_window(usr)
 
 /client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)

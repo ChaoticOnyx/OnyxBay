@@ -13,11 +13,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle-4"
 	reagent = /datum/reagent/inaprovaline
-
-/obj/item/reagent_containers/glass/bottle/robot/inaprovaline/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/inaprovaline, 60)
-	update_icon()
+	startswith = list(/datum/reagent/inaprovaline)
 
 /obj/item/reagent_containers/glass/bottle/robot/antitoxin
 	name = "internal anti-toxin bottle"
@@ -25,9 +21,4 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle-4"
 	reagent = /datum/reagent/dylovene
-
-/obj/item/reagent_containers/glass/bottle/robot/antitoxin/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/dylovene, 60)
-	update_icon()
-
+	startswith = list(/datum/reagent/dylovene)

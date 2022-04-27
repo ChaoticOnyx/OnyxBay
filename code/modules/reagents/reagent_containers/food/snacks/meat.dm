@@ -5,13 +5,10 @@
 	health = 180
 	filling_color = "#ff1c1c"
 	center_of_mass = "x=16;y=14"
+	startswith = list(/datum/reagent/nutriment/protein = 9)
+	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/meat/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/protein, 9)
-	src.bitesize = 3
-
-/obj/item/reagent_containers/food/snacks/meat/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_containers/food/snacks/meat/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/knife))
 		new /obj/item/reagent_containers/food/snacks/rawcutlet(src)
 		new /obj/item/reagent_containers/food/snacks/rawcutlet(src)
@@ -53,8 +50,7 @@
 	desc = "A slab of green meat. Smells like acid."
 	icon_state = "xenomeat"
 	filling_color = "#43de18"
-
-/obj/item/reagent_containers/food/snacks/meat/xeno/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/acid/polyacid, 9)
-	src.bitesize = 6
+	startswith = list(
+		/datum/reagent/nutriment/protein = 9,
+		/datum/reagent/acid/polyacid = 9)
+	bitesize = 6

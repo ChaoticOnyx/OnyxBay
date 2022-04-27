@@ -185,10 +185,7 @@
 	icon_state = "milk"
 	item_state = "carton"
 	center_of_mass = "x=16;y=9"
-
-/obj/item/reagent_containers/food/drinks/milk/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/milk, 50)
+	startswith = list(/datum/reagent/drink/milk)
 
 /obj/item/reagent_containers/food/drinks/soymilk
 	name = "soymilk carton"
@@ -196,38 +193,25 @@
 	icon_state = "soymilk"
 	item_state = "carton"
 	center_of_mass = "x=16;y=9"
-
-/obj/item/reagent_containers/food/drinks/soymilk/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/milk/soymilk, 50)
+	startswith = list(/datum/reagent/drink/milk/soymilk)
 
 /obj/item/reagent_containers/food/drinks/milk/smallcarton
 	name = "small milk carton"
 	volume = 30
 	icon_state = "mini-milk"
-
-/obj/item/reagent_containers/food/drinks/milk/smallcarton/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/milk, 30)
+	startswith = list(/datum/reagent/drink/milk)
 
 /obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate
 	name = "small chocolate milk carton"
 	desc = "It's milk! This one is in delicious chocolate flavour."
-
-/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/milk/chocolate, 30)
-
+	startswith = list(/datum/reagent/drink/milk/chocolate)
 
 /obj/item/reagent_containers/food/drinks/coffee
 	name = "\improper Robust Coffee"
 	desc = "Careful, the beverage you're about to enjoy is extremely hot."
 	icon_state = "coffee"
 	center_of_mass = "x=15;y=10"
-
-/obj/item/reagent_containers/food/drinks/coffee/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/coffee, 30)
+	startswith = list(/datum/reagent/drink/coffee = 30)
 
 /obj/item/reagent_containers/food/drinks/tea
 	name = "cup of Duke Purple Tea"
@@ -238,20 +222,14 @@
 	filling_states = "100"
 	base_name = "cup"
 	base_icon = "teacup"
-
-/obj/item/reagent_containers/food/drinks/tea/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/tea, 30)
+	startswith = list(/datum/reagent/drink/tea = 30)
 
 /obj/item/reagent_containers/food/drinks/ice
 	name = "cup of ice"
 	desc = "Careful, cold ice, do not chew."
 	icon_state = "coffee"
 	center_of_mass = "x=15;y=10"
-
-/obj/item/reagent_containers/food/drinks/ice/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/ice, 30)
+	startswith = list(/datum/reagent/drink/ice = 30)
 
 /obj/item/reagent_containers/food/drinks/h_chocolate
 	name = "cup of Dutch hot coco"
@@ -259,10 +237,7 @@
 	icon_state = "hot_coco"
 	item_state = "coffee"
 	center_of_mass = "x=15;y=13"
-
-/obj/item/reagent_containers/food/drinks/h_chocolate/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/hot_coco, 30)
+	startswith = list(/datum/reagent/drink/hot_coco = 30)
 
 /obj/item/reagent_containers/food/drinks/dry_ramen
 	name = "cup ramen"
@@ -270,10 +245,7 @@
 	desc = "Just add 10ml water, self heats! A taste that reminds you of your school years."
 	icon_state = "ramen"
 	center_of_mass = "x=16;y=11"
-
-/obj/item/reagent_containers/food/drinks/dry_ramen/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/dry_ramen, 30)
+	startswith = list(/datum/reagent/drink/dry_ramen = 30)
 
 /obj/item/reagent_containers/food/drinks/chickensoup
 	name = "cup of chicken soup"
@@ -281,10 +253,7 @@
 	icon_state = "chickensoup"
 	item_state = "ramen"
 	center_of_mass = "x=16;y=11"
-
-/obj/item/reagent_containers/food/drinks/chickensoup/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/chicken_powder, 30)
+	startswith = list(/datum/reagent/drink/chicken_powder = 30)
 
 /obj/item/reagent_containers/food/drinks/sillycup
 	name = "paper cup"
@@ -424,11 +393,7 @@
 	desc = "A white coffee cup, prominently featuring a \"#1 monkey\"."
 	icon_state = "coffeecup_punitelli"
 	base_name = "#1 monkey cup"
-
-/obj/item/reagent_containers/food/drinks/coffeecup/punitelli/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/juice/banana, 30)
-	update_icon()
+	startswith = list(/datum/reagent/drink/juice/banana = 30)
 
 /obj/item/reagent_containers/food/drinks/coffeecup/rainbow
 	name = "rainbow coffee cup"

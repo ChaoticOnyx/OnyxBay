@@ -100,8 +100,11 @@ SUBSYSTEM_DEF(ticker)
 		mode.post_setup()
 		to_world("<span class='info'><B>Enjoy the game!</B></span>")
 
-		for (var/mob/M in GLOB.player_list)
+		for(var/mob/M in GLOB.player_list)
 			M.playsound_local(M.loc, GLOB.using_map.welcome_sound, 75)
+			if(istype(M, /mob/new_player))
+				var/mob/new_player/player = M
+				player.new_player_panel()
 
 		//Holiday Round-start stuff	~Carn
 		Holiday_Game_Start()

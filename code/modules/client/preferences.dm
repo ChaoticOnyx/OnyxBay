@@ -117,16 +117,11 @@
 
 	return 1
 
-/datum/preferences/proc/ShowChoices(mob/user)
-	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
-		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
+/datum/preferences/proc/get_content(mob/user)
+	if(!SScharacter_setup.initialized)
 		return
 
-	if(!user || !user.client)
-		return
-
-	if(!get_mob_by_key(client_ckey))
-		to_chat(user, "<span class='danger'>No mob exists for the given client!</span>")
+	if(!user?.client)
 		return
 
 	var/dat = "<center>"
@@ -147,10 +142,27 @@
 	dat += "<br><HR></center>"
 	dat += player_setup.content(user)
 
-	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
-	popup.set_content(dat)
+	return dat
+
+/datum/preferences/proc/open_setup_window(mob/user)
+	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
+		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
+		return
+	var/datum/browser/popup = new(user, "preferences_browser","Character Setup", 1200, 800, src)
+	var/content = {"
+	<script type='text/javascript'>
+		function update_content(data){
+			document.getElementById('content').innerHTML = data;
+		}
+	</script>
+	<div id='content'>[get_content(user)]</div>
+	"}
+	popup.set_content(content)
 	popup.open()
 	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
+
+/datum/preferences/proc/update_setup_window(mob/user)
+	send_output(user, url_encode(get_content(user)), "preferences_browser.browser:update_content")
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 
@@ -163,7 +175,7 @@
 		else
 			to_chat(user, "<span class='danger'>The forum URL is not set in the server configuration.</span>")
 			return
-	ShowChoices(usr)
+	update_setup_window(usr)
 	return 1
 
 /datum/preferences/Topic(href, list/href_list)
@@ -185,6 +197,14 @@
 		load_character(text2num(href_list["changeslot"]))
 		sanitize_preferences()
 		close_load_dialog(usr)
+
+		if(winget(usr, "preferences_browser", "is-visible") == "true")
+			open_setup_window(usr)
+
+		if(istype(client.mob, /mob/new_player))
+			var/mob/new_player/M = client.mob
+			M.new_player_panel()
+
 	else if(href_list["resetslot"])
 		if(real_name != input("This will reset the current slot. Enter the character's full name to confirm."))
 			return 0
@@ -193,7 +213,7 @@
 	else
 		return 0
 
-	ShowChoices(usr)
+	update_setup_window(usr)
 	return 1
 
 /datum/preferences/proc/copy_to(mob/living/carbon/human/character, is_preview_copy = FALSE)

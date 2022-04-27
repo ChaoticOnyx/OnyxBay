@@ -108,12 +108,8 @@
 	possible_transfer_amounts = "5;10;15;30"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/reagent_containers/glass/beaker/cryoxadone/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/cryoxadone, 30)
-	update_icon()
+/obj/item/reagent_containers/glass/beaker/cryoxadone
+	startswith = list(/datum/reagent/cryoxadone = 30)
 
-/obj/item/reagent_containers/glass/beaker/sulphuric/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/acid, 60)
-	update_icon()
+/obj/item/reagent_containers/glass/beaker/sulphuric
+	startswith = list(/datum/reagent/acid = 60)

@@ -18,9 +18,10 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
+	ghostize()
 	if(mind?.current == src)
 		spellremove(src)
-	ghostize()
+		mind.set_current(null)
 	return ..()
 
 /mob/proc/flash_weak_pain()

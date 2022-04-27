@@ -39,10 +39,7 @@
 	icon_state = "cola"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/cola
-
-/obj/item/reagent_containers/food/drinks/cans/cola/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/space_cola, 40)
+	startswith = list(/datum/reagent/drink/space_cola = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/colavanilla
 	name = "\improper Vanilla Space Cola"
@@ -50,11 +47,8 @@
 	icon_state = "colavanilla"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/colavanilla
-
-/obj/item/reagent_containers/food/drinks/cans/colavanilla/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/space_cola, 30)
-	reagents.add_reagent(/datum/reagent/drink/milkshake, 10)
+	startswith = list(/datum/reagent/drink/space_cola = 30,
+					  /datum/reagent/drink/milkshake = 10)
 
 /obj/item/reagent_containers/food/drinks/cans/colacherry
 	name = "\improper Cherry Space Cola"
@@ -62,11 +56,8 @@
 	icon_state = "colacherry"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/colacherry
-
-/obj/item/reagent_containers/food/drinks/cans/colacherry/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/space_cola, 30)
-	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 10)
+	startswith = list(/datum/reagent/drink/space_cola = 30,
+					  /datum/reagent/nutriment/cherryjelly = 10)
 
 /obj/item/reagent_containers/food/drinks/cans/dopecola
 	name = "\improper Dope Cola"
@@ -74,11 +65,8 @@
 	icon_state = "dopecola"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/dopecola
-
-/obj/item/reagent_containers/food/drinks/cans/dopecola/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/space_cola, 30)
-	reagents.add_reagent(/datum/reagent/thc, 10)
+	startswith = list(/datum/reagent/drink/space_cola = 30,
+					  /datum/reagent/thc = 10)
 
 /obj/item/reagent_containers/food/drinks/cans/waterbottle
 	name = "bottled water"
@@ -87,10 +75,7 @@
 	item_state = "bottle"
 	opencan_state = ""
 	center_of_mass = "x=15;y=8"
-
-/obj/item/reagent_containers/food/drinks/cans/waterbottle/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/water, 45)
+	startswith = list(/datum/reagent/water)
 
 /obj/item/reagent_containers/food/drinks/cans/waterbottle/open(mob/user)
 	playsound(loc,'sound/effects/bonebreak1.ogg', rand(10,50), 1)
@@ -109,10 +94,7 @@
 	icon_state = "space_mountain_wind"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/space_mountain_wind
-
-/obj/item/reagent_containers/food/drinks/cans/space_mountain_wind/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/spacemountainwind, 40)
+	startswith = list(/datum/reagent/drink/spacemountainwind = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/thirteenloko
 	name = "\improper Thirteen Loko"
@@ -120,10 +102,7 @@
 	icon_state = "thirteen_loko"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/thirteenloko
-
-/obj/item/reagent_containers/food/drinks/cans/thirteenloko/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/ethanol/thirteenloko, 40)
+	startswith = list(/datum/reagent/ethanol/thirteenloko = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/dr_gibb
 	name = "\improper Dr. Gibb"
@@ -131,10 +110,7 @@
 	icon_state = "dr_gibb"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/dr_gibb
-
-/obj/item/reagent_containers/food/drinks/cans/dr_gibb/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/dr_gibb, 40)
+	startswith = list(/datum/reagent/drink/dr_gibb = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/starkist
 	name = "\improper Star-kist"
@@ -142,10 +118,7 @@
 	icon_state = "starkist"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/starkist
-
-/obj/item/reagent_containers/food/drinks/cans/starkist/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/brownstar, 40)
+	startswith = list(/datum/reagent/drink/brownstar = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/space_up
 	name = "\improper Space-Up"
@@ -153,10 +126,7 @@
 	icon_state = "space-up"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/space_up
-
-/obj/item/reagent_containers/food/drinks/cans/space_up/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/space_up, 40)
+	startswith = list(/datum/reagent/drink/space_up = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/lemon_lime
 	name = "\improper Lemon-Lime"
@@ -164,10 +134,7 @@
 	icon_state = "lemon-lime"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/lemon_lime
-
-/obj/item/reagent_containers/food/drinks/cans/lemon_lime/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/lemon_lime, 40)
+	startswith = list(/datum/reagent/drink/lemon_lime = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/iced_tea
 	name = "\improper Vrisk Serket Iced Tea"
@@ -175,10 +142,7 @@
 	icon_state = "ice_tea_can"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/iced_tea
-
-/obj/item/reagent_containers/food/drinks/cans/iced_tea/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/tea/icetea, 40)
+	startswith = list(/datum/reagent/drink/tea/icetea = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/grape_juice
 	name = "\improper Grapel Juice"
@@ -186,10 +150,7 @@
 	icon_state = "purple_can"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/grape_juice
-
-/obj/item/reagent_containers/food/drinks/cans/grape_juice/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/juice/grape, 40)
+	startswith = list(/datum/reagent/drink/juice/grape = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/tonic
 	name = "\improper T-Borg's Tonic Water"
@@ -197,10 +158,7 @@
 	icon_state = "tonic"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/tonic
-
-/obj/item/reagent_containers/food/drinks/cans/tonic/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/tonic, 40)
+	startswith = list(/datum/reagent/drink/tonic = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/sodawater
 	name = "soda water"
@@ -208,10 +166,7 @@
 	icon_state = "sodawater"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/sodawater
-
-/obj/item/reagent_containers/food/drinks/cans/sodawater/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/sodawater, 40)
+	startswith = list(/datum/reagent/drink/sodawater = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/machpellabeer
 	name = "\improper Machpella Dark Beer"
@@ -219,10 +174,7 @@
 	icon_state = "machpellabeer"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/machpellabeer
-
-/obj/item/reagent_containers/food/drinks/cans/machpellabeer/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/ethanol/beer/dark/machpella, 40)
+	startswith = list(/datum/reagent/ethanol/beer/dark/machpella = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/applecider
 	name = "\improper MeadBy Apple Cider"
@@ -230,10 +182,7 @@
 	icon_state = "applecider"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/applecider
-
-/obj/item/reagent_containers/food/drinks/cans/applecider/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/ethanol/cider/apple, 40)
+	startswith = list(/datum/reagent/ethanol/cider/apple = 40)
 
 /obj/item/reagent_containers/food/drinks/cans/red_mule
 	name = "\improper Red MULE"
@@ -241,7 +190,4 @@
 	icon_state = "red_mule"
 	center_of_mass = "x=16;y=10"
 	trash = /obj/item/trash/cans/red_mule
-
-/obj/item/reagent_containers/food/drinks/cans/red_mule/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/drink/energy, 40)
+	startswith = list(/datum/reagent/drink/energy = 40)

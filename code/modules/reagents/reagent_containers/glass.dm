@@ -115,9 +115,8 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 0
 
-/obj/item/reagent_containers/glass/bucket/full/Initialize()
-  . = ..()
-  reagents.add_reagent(/datum/reagent/water, 180)
+/obj/item/reagent_containers/glass/bucket/full
+	startswith = list(/datum/reagent/water)
 
 /obj/item/reagent_containers/glass/bucket/attackby(obj/D, mob/user as mob)
 

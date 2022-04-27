@@ -20,14 +20,15 @@
 				continue
 			if(turf_contains_dense_objects(T))
 				continue
-			pick_turfs += T
-			
-	for(var/i in 1 to number_of_wormholes)
-		var/turf/enter = pick(pick_turfs)
-		pick_turfs -= enter
+			pick_turfs.Add(weakref(T))
 
-		var/turf/exit = pick(pick_turfs)
-		pick_turfs -= exit
+	for(var/i in 1 to number_of_wormholes)
+		var/turf/enter = pick(pick_turfs).resolve()
+		var/turf/exit = pick(pick_turfs).resolve()
+		if(!istype(enter) || !istype(exit))
+			continue
+		pick_turfs -= weakref(enter)
+		pick_turfs -= weakref(exit)
 
 		wormholes += create_wormhole(enter, exit)
 
@@ -37,7 +38,7 @@
 /datum/event/wormholes/tick()
 	if(activeFor % shift_frequency == 0)
 		for(var/obj/effect/portal/wormhole/O in wormholes)
-			var/turf/T = pick(pick_turfs)
+			var/turf/T = pick(pick_turfs).resolve()
 			if(T)
 				O.forceMove(T)
 

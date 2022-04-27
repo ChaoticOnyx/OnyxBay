@@ -142,23 +142,16 @@
 	name = "Universal Enzyme"
 	desc = "Used in cooking various dishes."
 	icon_state = "enzyme"
-
-/obj/item/reagent_containers/food/condiment/enzyme/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/enzyme, 50)
+	startswith = list(/datum/reagent/enzyme)
 
 /obj/item/reagent_containers/food/condiment/barbecue
 	name = "Barbecue Sauce"
 	desc = "Barbecue sauce, it's labeled 'sweet and spicy'"
 	icon_state = "barbecue"
+	startswith = list(/datum/reagent/nutriment/barbecue)
 
-/obj/item/reagent_containers/food/condiment/barbecue/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/barbecue, 50)
-
-/obj/item/reagent_containers/food/condiment/sugar/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 50)
+/obj/item/reagent_containers/food/condiment/sugar
+	startswith = list(/datum/reagent/sugar)
 
 /obj/item/reagent_containers/food/condiment/small
 	possible_transfer_amounts = "1;20"
@@ -173,30 +166,21 @@
 	desc = "Salt. From space oceans, presumably."
 	icon_state = "saltshakersmall"
 	center_of_mass = "x=16;y=9"
-
-/obj/item/reagent_containers/food/condiment/small/saltshaker/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sodiumchloride, 20)
+	startswith = list(/datum/reagent/sodiumchloride)
 
 /obj/item/reagent_containers/food/condiment/small/peppermill
 	name = "pepper mill"
 	desc = "Often used to flavor food or make people sneeze."
 	icon_state = "peppermillsmall"
 	center_of_mass = "x=16;y=8"
-
-/obj/item/reagent_containers/food/condiment/small/peppermill/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/blackpepper, 20)
+	startswith = list(/datum/reagent/blackpepper)
 
 /obj/item/reagent_containers/food/condiment/small/sugar
 	name = "sugar"
 	desc = "Sweetness in a bottle"
 	icon_state = "sugarsmall"
 	center_of_mass = "x=17;y=9"
-
-/obj/item/reagent_containers/food/condiment/small/sugar/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 20)
+	startswith = list(/datum/reagent/sugar)
 
 /obj/item/reagent_containers/food/condiment/flour
 	name = "flour sack"
@@ -205,10 +189,7 @@
 	icon_state = "flour"
 	item_state = "flour"
 	randpixel = 10
+	startswith = list(/datum/reagent/nutriment/flour)
 
 /obj/item/reagent_containers/food/condiment/flour/on_reagent_change()
 	return
-
-/obj/item/reagent_containers/food/condiment/flour/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/flour, 30)

@@ -329,7 +329,7 @@
 	force_drop = TRUE
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/effects/fighting/energy1.ogg'
-	var/mob/living/creator
+	var/weakref/creator
 	var/datum/effect/effect/system/spark_spread/spark_system
 
 /obj/item/melee/energy/blade/New()
@@ -344,6 +344,7 @@
 
 /obj/item/melee/energy/blade/Destroy()
 	STOP_PROCESSING(SSobj, src)
+	QDEL_NULL(spark_system)
 	. = ..()
 
 /obj/item/melee/energy/blade/get_storage_cost()
@@ -357,7 +358,8 @@
 	QDEL_IN(src, 0)
 
 /obj/item/melee/energy/blade/Process()
-	if(!creator || loc != creator || (creator.l_hand != src && creator.r_hand != src))
+	var/mob/living/_creator = creator.resolve()
+	if(!_creator || loc != _creator || (_creator.l_hand != src && _creator.r_hand != src))
 		// Tidy up a bit.
 		if(isliving(loc))
 			var/mob/living/carbon/human/host = loc

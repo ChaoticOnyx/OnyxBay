@@ -37,8 +37,7 @@
 		QDEL_NULL_LIST(movement_handlers)
 
 	if(virtual_mob && !ispath(virtual_mob))
-		qdel(virtual_mob)
-		virtual_mob = null
+		QDEL_NULL(virtual_mob)
 
 	return ..()
 
