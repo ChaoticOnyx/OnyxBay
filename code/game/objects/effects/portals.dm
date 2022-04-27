@@ -156,6 +156,10 @@
 /obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
 	if(P.kill_count < 1 || !P.dir || !target)
 		return FALSE
+	// Sometimes a projectile during the "momentum saving"
+	// does not meet any object for impact and hits the portals over and over again,
+	// which causes the wildest lags, this should fix this bug
+	stoplag(1)
 	// get x, y between correct loc and target
 	var/turf/loc_turf = get_turf(src)
 	var/turf/target_turf = get_turf(P.original)
@@ -181,6 +185,10 @@
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
+	// sometimes the thrown object during the "momentum saving"
+	// does not meet any object to hit and falls into the portals over and over again,
+	// which causes the wildest lags, this should fix this bug
+	stoplag(1)
 	var/thrown_dir = hit_atom.throw_dir
 	var/previous_dir = hit_atom.dir
 	if(hit_atom.thrown_to == get_turf(src))
