@@ -61,7 +61,7 @@
 /obj/item/rcd/_examine_text(user)
 	. = ..()
 
-	if(src.type == /obj/item/rcd && loc == user)
+	if(type == /obj/item/rcd && loc == user)
 		. += "\nThe current mode is '[SPAN("notice", "[selected_work]")]'"
 		. += "\nIt currently holds [SPAN("notice", "[stored_matter]")]/[SPAN("notice", "[max_stored_matter]")] matter-units."
 
