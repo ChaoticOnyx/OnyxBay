@@ -143,7 +143,7 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/check_fire(atom/target as mob, mob/living/user as mob)  //Checks if you can hit them or not.
+/obj/item/projectile/proc/check_fire(atom/target, mob/living/user)  //Checks if you can hit them or not.
 	check_trajectory(target, user, pass_flags, item_flags, obj_flags)
 
 //sets the click point of the projectile using mouse input params
