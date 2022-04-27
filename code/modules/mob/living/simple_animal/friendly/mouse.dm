@@ -93,10 +93,14 @@
 	icon_dead = "mouse_[body_color]_dead"
 	desc = "It's a small [body_color] rodent, often seen hiding in maintenance areas and making a nuisance of itself."
 
-/mob/living/simple_animal/mouse/Destroy()
-	if(holding_item)
+/mob/living/simple_animal/mouse/death(gibbed, deathmessage, show_dead_message)
+	. = ..(gibbed, deathmessage, show_dead_message)
+	if(. && holding_item)
 		holding_item.dropInto(src)
 		holding_item = null
+
+/mob/living/simple_animal/mouse/Destroy()
+	QDEL_NULL(holding_item)
 	virus = null
 	return ..()
 
