@@ -11,7 +11,7 @@
 
 	var/cost = _calculate_cost(target) || 0
 
-	if(!rcd.useResource(cost, user))
+	if(!rcd.use_resource(cost, user))
 		to_chat(user, SPAN("warning", "Insufficient resources."))
 		return FALSE
 

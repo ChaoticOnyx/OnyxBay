@@ -118,7 +118,7 @@
 			W.do_work(src, A, user)
 			return
 
-/obj/item/rcd/proc/useResource(amount, mob/user)
+/obj/item/rcd/proc/use_resource(amount, mob/user)
 	if(stored_matter < amount)
 		return FALSE
 
@@ -145,7 +145,7 @@
 /obj/item/rcd/borg
 	can_rwall = TRUE
 
-/obj/item/rcd/borg/useResource(amount, mob/user)
+/obj/item/rcd/borg/use_resource(amount, mob/user)
 	if(!isrobot(user))
 		return FALSE
 
@@ -162,15 +162,20 @@
 /obj/item/rcd/borg/attackby()
 	return
 
-/obj/item/rcd/mounted/useResource(amount, mob/user)
-	var/cost = amount*130 //so that a rig with default powercell can build ~2.5x the stuff a fully-loaded RCD can.
-	if(istype(loc,/obj/item/rig_module))
+/obj/item/rcd/mounted/use_resource(amount, mob/user)
+	// So that a rig with default powercell can build ~2.5x the stuff a fully-loaded RCD can.
+	var/cost = amount*130
+
+	if(istype(loc, /obj/item/rig_module))
+
 		var/obj/item/rig_module/module = loc
+
 		if(module.holder && module.holder.cell)
 			if(module.holder.cell.charge >= cost)
 				module.holder.cell.use(cost)
-				return 1
-	return 0
+
+				return TRUE
+	return FALSE
 
 /obj/item/rcd/mounted/attackby()
 	return
