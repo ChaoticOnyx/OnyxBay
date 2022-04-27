@@ -31,11 +31,9 @@
 /obj/item/csi_marker/Initialize(mapload)
 	. = ..()
 	desc += " This one is marked with [number]."
+	icon_state = "card[Clamp(number,1,7)]"
 	update_icon()
 
-/obj/item/csi_marker/on_update_icon()
-	icon_state = "card[Clamp(number,1,7)]"
-	
 /obj/item/csi_marker/n1
 	number = 1
 /obj/item/csi_marker/n2
