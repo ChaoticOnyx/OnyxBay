@@ -142,7 +142,7 @@
 	if(href_list["PRG_deletechannel"])
 		. = 1
 		if(channel && ((channel.operator == src) || netadmin_mode))
-			qdel(channel)
+			del(channel)
 			channel = null
 	if(href_list["PRG_setpassword"])
 		. = 1
