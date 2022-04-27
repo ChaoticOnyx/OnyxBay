@@ -192,6 +192,7 @@
 	var/thrown_dir = hit_atom.throw_dir
 	var/previous_dir = hit_atom.dir
 	if(hit_atom.thrown_to == get_turf(src))
+		teleport(P, TRUE)
 		return
 	var/turf/loc_turf = get_turf(src)
 	var/turf/target_turf = get_turf(hit_atom.thrown_to)
