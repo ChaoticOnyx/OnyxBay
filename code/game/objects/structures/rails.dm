@@ -5,3 +5,4 @@
 	icon_state = "rail"
 	density = 0
 	anchored = 1
+	layer = BELOW_DOOR_LAYER

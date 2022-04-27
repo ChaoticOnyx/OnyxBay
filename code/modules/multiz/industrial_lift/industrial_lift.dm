@@ -11,6 +11,7 @@
 		/obj/machinery/power/supermatter,
 		/obj/machinery/holosign
 	)
+	var/moving_status = ELEVATOR_IDLE
 
 /datum/lift_master/New(obj/structure/industrial_lift/lift_platform)
 	Rebuild_lift_plaform(lift_platform)
@@ -56,6 +57,25 @@
 					possible_expansions |= lift_platform
 			possible_expansions -= borderline
 
+//General use for console
+/datum/lift_master/proc/use(result)
+	switch(result)
+		if("Up")
+			// We have to make sure that they don't do illegal actions by not having their radial menu refresh from someone else moving the lift.
+			if(!Check_lift_move(UP))
+				return
+			moving_status = ELEVATOR_INTRANSIT
+			spawn(3 SECOND)
+				MoveLift(UP)
+		if("Down")
+			if(!Check_lift_move(DOWN))
+				return
+			moving_status = ELEVATOR_INTRANSIT
+			spawn(3 SECOND)
+				MoveLift(DOWN)
+		if("Cancel")
+			moving_status = ELEVATOR_IDLE
+			return
 /**
  * Moves the lift UP or DOWN, this is what users invoke with their hand.
  * This is a SAFE proc, ensuring every part of the lift moves SANELY.
@@ -122,6 +142,8 @@
 
 ///Check destination turfs
 /datum/lift_master/proc/Check_lift_move(check_dir)
+	if(moving_status == ELEVATOR_INTRANSIT)
+		return FALSE
 	for(var/l in lift_platforms)
 		var/obj/structure/industrial_lift/lift_platform = l
 		var/turf/T = get_step(lift_platform, check_dir)
@@ -142,9 +164,11 @@
  * Sets all lift parts's controls_locked variable. Used to prevent moving mid movement, or cooldowns.
  */
 /datum/lift_master/proc/set_controls(state)
+	moving_status = state==LOCKED?ELEVATOR_INTRANSIT:ELEVATOR_IDLE
 	for(var/l in lift_platforms)
 		var/obj/structure/industrial_lift/lift_platform = l
 		lift_platform.controls_locked = state
+
 
 GLOBAL_LIST_EMPTY(lifts)
 /obj/structure/industrial_lift
@@ -157,6 +181,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	layer = LATTICE_LAYER //under pipes
 	plane = FLOOR_PLANE
 
+
 	var/id = null //ONLY SET THIS TO ONE OF THE LIFT'S PARTS. THEY'RE CONNECTED! ONLY ONE NEEDS THE SIGNAL!
 	var/pass_through_floors = FALSE //if true, the elevator works through floors
 	var/controls_locked = FALSE //if true, the lift cannot be manually moved.
@@ -167,8 +192,8 @@ GLOBAL_LIST_EMPTY(lifts)
 	. = ..()
 	GLOB.lifts.Add(src)
 	var/static/list/loc_connections = list(
-		SIGNAL_EXITED =.proc/UncrossedRemoveItemFromLift,
-		SIGNAL_ENTERED = .proc/AddItemOnLift,
+		SIGNAL_EXITED =.proc/AtomExitHandler,
+		SIGNAL_ENTERED = .proc/AtomEnterHandler,
 		SIGNAL_ATOM_INITIALIZED_ON = .proc/AddItemOnLift
 	)
 	AddElement(/datum/element/connect_loc, loc_connections)
@@ -177,10 +202,32 @@ GLOBAL_LIST_EMPTY(lifts)
 	if(!lift_master_datum)
 		lift_master_datum = new(src)
 
+/obj/structure/industrial_lift/LateInitialize()
+	. = ..()
+	for(var/AM in src.loc.contents)
+		if(!istype(AM,/obj/structure/industrial_lift))
+			AddItemOnLift(AM)
 
 /obj/structure/industrial_lift/proc/UncrossedRemoveItemFromLift(atom/movable/gone, direction)
 	SHOULD_NOT_SLEEP(TRUE)
 	RemoveItemFromLift(gone)
+
+
+//IDK how to do it better so...
+/obj/structure/industrial_lift/proc/AtomExitHandler(turf/T, atom/AM)
+	UncrossedRemoveItemFromLift(AM)
+
+/obj/structure/industrial_lift/proc/AtomEnterHandler(turf/T, atom/AM)
+	AddItemOnLift(AM)
+///////////////////////////////////
+/obj/structure/industrial_lift/proc/AddItemOnLift(atom/AM)
+	SHOULD_NOT_SLEEP(TRUE)
+	if(istype(AM, /obj/structure/rail) || AM.invisibility == 101) //prevents the tram from stealing things like landmarks
+		return
+	if(AM in lift_load)
+		return
+	LAZYADD(lift_load, AM)
+	register_signal(AM, SIGNAL_QDELETING, .proc/RemoveItemFromLift)
 
 /obj/structure/industrial_lift/proc/RemoveItemFromLift(atom/movable/potential_rider)
 	SHOULD_NOT_SLEEP(TRUE)
@@ -188,17 +235,6 @@ GLOBAL_LIST_EMPTY(lifts)
 		return
 	LAZYREMOVE(lift_load, potential_rider)
 	unregister_signal(potential_rider, SIGNAL_QDELETING)
-
-/obj/structure/industrial_lift/proc/AddItemOnLift(atom/AM)
-	SHOULD_NOT_SLEEP(TRUE)
-	if(istype(AM,/obj/structure/window/shuttle))
-		world << "lol";
-	if(istype(AM, /obj/structure/rail) || AM.invisibility == 101) //prevents the tram from stealing things like landmarks
-		return
-	if(AM in lift_load)
-		return
-	LAZYADD(lift_load, AM)
-	register_signal(AM, SIGNAL_QDELETING, .proc/RemoveItemFromLift)
 
 /**
  * Signal for when the tram runs into a field of which it cannot go through.
@@ -303,48 +339,6 @@ GLOBAL_LIST_EMPTY(lifts)
 		thing.set_glide_size(gliding_amount) //matches the glide size of the moving platform to stop them from jittering on it.
 		thing.forceMove(destination)
 
-/obj/structure/industrial_lift/proc/use(mob/living/user)
-	if(!isliving(user) || !in_range(src, user))
-		return
-
-	var/list/tool_list = list()
-	if(lift_master_datum.Check_lift_move(UP))
-		tool_list["Up"] = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = NORTH)
-	if(lift_master_datum.Check_lift_move(DOWN))
-		tool_list["Down"] = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = SOUTH)
-	if(!length(tool_list))
-		to_chat(user, SPAN_WARNING("[src] doesn't seem to able to move anywhere!"))
-		add_fingerprint(user)
-		return
-	if(controls_locked)
-		to_chat(user, SPAN_WARNING("[src] has its controls locked! It must already be trying to do something!"))
-		add_fingerprint(user)
-		return
-	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user, src.loc), require_near = TRUE)
-	if(!isliving(user) || !in_range(src, user))
-		return //nice try
-	switch(result)
-		if("Up")
-			// We have to make sure that they don't do illegal actions by not having their radial menu refresh from someone else moving the lift.
-			if(!lift_master_datum.Check_lift_move(UP))
-				to_chat(user, SPAN_WARNING("[src] doesn't seem to able to move up!"))
-				add_fingerprint(user)
-				return
-			lift_master_datum.MoveLift(UP, user)
-			show_fluff_message(TRUE, user)
-			use(user)
-		if("Down")
-			if(!lift_master_datum.Check_lift_move(DOWN))
-				to_chat(user, SPAN_WARNING("[src] doesn't seem to able to move down!"))
-				add_fingerprint(user)
-				return
-			lift_master_datum.MoveLift(DOWN, user)
-			show_fluff_message(FALSE, user)
-			use(user)
-		if("Cancel")
-			return
-	add_fingerprint(user)
-
 /**
  * Proc to ensure that the radial menu closes when it should.
  * Arguments:
@@ -363,7 +357,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	. = ..()
 	if(.)
 		return
-	use(user)
+	//use(user)
 
 //ai probably shouldn't get to use lifts but they sure are great for admins to crush people with
 /obj/structure/industrial_lift/attack_ghost(mob/user)
@@ -372,11 +366,11 @@ GLOBAL_LIST_EMPTY(lifts)
 		return
 
 /obj/structure/industrial_lift/attackby(obj/item/W, mob/user, params)
-	return use(user)
+	return //use(user)
 
 /obj/structure/industrial_lift/attack_robot(mob/living/silicon/robot/R)
 	if(R.Adjacent(src))
-		return use(R)
+		return //use(R)
 
 /**
  * Shows a message indicating that the lift has moved up or down.
@@ -398,60 +392,6 @@ GLOBAL_LIST_EMPTY(lifts)
 	for(var/border_lift in border_lift_platforms)
 		lift_master_datum = new(border_lift)
 	return ..()
-
-/obj/structure/industrial_lift/debug
-	name = "transport platform"
-	desc = "A lightweight platform. It moves in any direction, except up and down."
-	color = "#5286b9ff"
-
-/obj/structure/industrial_lift/debug/use(mob/user)
-	if (!in_range(src, user))
-		return
-//NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST
-	var/static/list/tool_list = list(
-		"NORTH" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = NORTH),
-		"NORTHEAST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = NORTH),
-		"EAST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = EAST),
-		"SOUTHEAST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = EAST),
-		"SOUTH" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = SOUTH),
-		"SOUTHWEST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = SOUTH),
-		"WEST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = WEST),
-		"NORTHWEST" = image(icon = 'icons/testing/turf_analysis.dmi', icon_state = "red_arrow", dir = WEST)
-		)
-
-	var/result = show_radial_menu(user, src, tool_list, custom_check = CALLBACK(src, .proc/check_menu, user, loc), require_near = TRUE)
-	if (!in_range(src, user))
-		return  // nice try
-
-	switch(result)
-		if("NORTH")
-			lift_master_datum.MoveLiftHorizontal(NORTH, z)
-			use(user)
-		if("NORTHEAST")
-			lift_master_datum.MoveLiftHorizontal(NORTHEAST, z)
-			use(user)
-		if("EAST")
-			lift_master_datum.MoveLiftHorizontal(EAST, z)
-			use(user)
-		if("SOUTHEAST")
-			lift_master_datum.MoveLiftHorizontal(SOUTHEAST, z)
-			use(user)
-		if("SOUTH")
-			lift_master_datum.MoveLiftHorizontal(SOUTH, z)
-			use(user)
-		if("SOUTHWEST")
-			lift_master_datum.MoveLiftHorizontal(SOUTHWEST, z)
-			use(user)
-		if("WEST")
-			lift_master_datum.MoveLiftHorizontal(WEST, z)
-			use(user)
-		if("NORTHWEST")
-			lift_master_datum.MoveLiftHorizontal(NORTHWEST, z)
-			use(user)
-		if("Cancel")
-			return
-
-	add_fingerprint(user)
 
 /obj/structure/tramwall
 	name = "wall"
@@ -501,6 +441,9 @@ GLOBAL_LIST_EMPTY(central_trams)
 /obj/structure/industrial_lift/tram/LateInitialize()
 	. = ..()
 	find_our_location()
+	for(var/AM in src.loc.contents)
+		if(!istype(AM,/obj/structure/industrial_lift))
+			AddItemOnLift(AM)
 
 
 /**
@@ -524,9 +467,6 @@ GLOBAL_LIST_EMPTY(central_trams)
 
 	src.travelling = travelling
 	SEND_SIGNAL(src, SIGNAL_TRAM_SET_TRAVELLING, travelling)
-
-/obj/structure/industrial_lift/tram/use(mob/user) //dont click the floor dingus we use computers now
-	return
 
 /obj/structure/industrial_lift/tram/Process()
 	if(!travel_distance)

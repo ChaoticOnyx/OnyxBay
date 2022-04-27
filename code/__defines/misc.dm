@@ -52,6 +52,10 @@
 #define SHUTTLE_WARMUP    1
 #define SHUTTLE_INTRANSIT 2
 
+// Elevator moving status.
+#define ELEVATOR_IDLE      0
+#define ELEVATOR_INTRANSIT 1
+
 // Autodock shuttle processing status.
 #define IDLE_STATE   0
 #define WAIT_LAUNCH  1
