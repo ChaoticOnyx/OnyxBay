@@ -33,6 +33,7 @@
 /mob/living/simple_animal/hostile/Destroy()
 	set_target(null)
 	friends.Cut()
+	return ..()
 
 /mob/living/simple_animal/hostile/proc/find_target()
 	if(!faction || client) //No faction, no reason to attack anybody.
