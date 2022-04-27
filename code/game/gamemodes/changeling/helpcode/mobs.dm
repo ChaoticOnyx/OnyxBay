@@ -317,7 +317,7 @@
 	return
 
 
-/mob/living/simple_animal/hostile/little_changeling/FindTarget()
+/mob/living/simple_animal/hostile/little_changeling/find_target()
 	. = ..()
 	if(.)
 		custom_emote(1, "nashes at [.]")

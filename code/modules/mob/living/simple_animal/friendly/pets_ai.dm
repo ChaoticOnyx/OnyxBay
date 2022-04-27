@@ -33,12 +33,6 @@
 				continue
 			text_to_command[command_text] = COMMAND_WANDERING
 
-/datum/mob_ai/pet/Destroy()
-	delete_wandering_timer()
-	target_mob = null
-	master = null
-	return ..()
-
 /datum/mob_ai/pet/do_move()
 	..()
 	var/turf/T = get_turf(holder)

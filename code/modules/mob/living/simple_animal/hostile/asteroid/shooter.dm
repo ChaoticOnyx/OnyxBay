@@ -41,14 +41,6 @@
 	check_armour = "energy"
 	weaken=5
 
-/mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
-	if(!client)
-		target_mob = new_target
-	if(target_mob != null)
-		Aggro()
-		stance = HOSTILE_STANCE_ATTACK
-	return
-
 /mob/living/simple_animal/hostile/asteroid/shooter/ex_act(severity, target_mob)
 	switch(severity)
 		if(1.0)
@@ -109,16 +101,10 @@
 	. = ..()
 	projectiletype = pick(projectiletypes)
 
-/mob/living/simple_animal/hostile/asteroid/shooter/beholder/GiveTarget(new_target)
-	if(!client)
-		target_mob = new_target
-	if(target_mob != null)
-		Aggro()
-		stance = HOSTILE_STANCE_ATTACK
-		if(isliving(target_mob))
-			var/mob/living/L = target_mob
-			visible_message("<span class='danger'>The [src.name]'s evil gaze chills [L.name] to the bone!</span>")
-	return
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/set_target(new_target)
+	. = ..()
+	if(target_mob)
+		visible_message(SPAN("danger", "\The [src]'s evil gaze chills [target_mob] to the bone!"))
 
 /mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed, deathmessage, show_dead_message)
 	. = ..()

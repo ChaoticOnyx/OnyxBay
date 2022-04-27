@@ -110,6 +110,8 @@
 /mob/living/simple_animal/parrot/Destroy()
 	QDEL_NULL(ears)
 	QDEL_NULL(held_item)
+	set_interest(null)
+	set_perch(null)
 	return ..()
 
 /mob/living/simple_animal/parrot/death(gibbed, deathmessage, show_dead_message)
@@ -128,7 +130,7 @@
 	if(parrot_interest)
 		unregister_signal(parrot_interest, SIGNAL_QDELETING)
 	parrot_interest = AM
-	if(!isnull(parrot_interest))
+	if(!isnull(parrot_interest) && !client)
 		register_signal(parrot_interest, SIGNAL_QDELETING, .proc/_interest_deleted)
 
 /mob/living/simple_animal/parrot/proc/_interest_deleted()
@@ -138,7 +140,7 @@
 	if(parrot_perch)
 		unregister_signal(parrot_perch, SIGNAL_QDELETING)
 	parrot_perch = O
-	if(!isnull(parrot_perch))
+	if(!isnull(parrot_perch) && !client)
 		register_signal(parrot_perch, SIGNAL_QDELETING, .proc/_perch_deleted)
 
 /mob/living/simple_animal/parrot/proc/_perch_deleted()

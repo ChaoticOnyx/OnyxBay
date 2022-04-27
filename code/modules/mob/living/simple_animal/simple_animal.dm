@@ -91,6 +91,7 @@
 
 /mob/living/simple_animal/Destroy()
 	QDEL_NULL(mob_ai)
+	panic_target = null
 	. = ..()
 
 /mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
