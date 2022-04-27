@@ -36,7 +36,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 
-	speak = list("Ïğèâåò","Êğåêåğ?","Ğßßßß Ôğıä Êîëëîí óáèâàåò â òåõàõ")
+	speak = list("ĞŸÑ€Ğ¸Ğ²ĞµÑ‚","ĞšÑ€ĞµĞºĞµÑ€?","Ğ Ğ¯Ğ¯Ğ¯Ğ¯ Ğ¤Ñ€ÑĞ´ ĞšĞ¾Ğ»Ğ»Ğ¾Ğ½ ÑƒĞ±Ğ¸Ğ²Ğ°ĞµÑ‚ Ğ² Ñ‚ĞµÑ…Ğ°Ñ…")
 	speak_emote = list("squawks","says","yells")
 	emote_hear = list("squawks","bawks")
 	emote_see = list("flutters its wings")
@@ -185,9 +185,9 @@
 				if("ears")
 					if(ears)
 						if(available_channels.len)
-							src.say("[pick(available_channels)] ĞĞĞßßßß ÎÑÒÀÂÜ ÍÀÓØÍÈÊ ĞĞßßßßßß!")
+							src.say("[pick(available_channels)] ÃÃÃÃŸÃŸÃŸÃŸ ÃÃ‘Ã’Ã€Ã‚Ãœ ÃÃ€Ã“Ã˜ÃÃˆÃŠ ÃÃÃŸÃŸÃŸÃŸÃŸÃŸ!")
 						else
-							src.say("ĞĞßßßßß ÎÑÒÀÂÜ ÍÀÓØÍÈÊ ĞĞĞßßßßß!")
+							src.say("ÃÃÃŸÃŸÃŸÃŸÃŸ ÃÃ‘Ã’Ã€Ã‚Ãœ ÃÃ€Ã“Ã˜ÃÃˆÃŠ ÃÃÃÃŸÃŸÃŸÃŸÃŸ!")
 						ears.loc = src.loc
 						ears = null
 						for(var/possible_phrase in speak)
@@ -201,9 +201,9 @@
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
 						return
 					if(available_channels.len)
-						src.say("[pick(available_channels)] ĞĞĞßßßßß ÏÎËÎÆÈ ÍÀ ÌÅÑÒÎ ĞĞßßßßßß!")
+						src.say("[pick(available_channels)] ÃÃÃÃŸÃŸÃŸÃŸÃŸ ÃÃÃ‹ÃÃ†Ãˆ ÃÃ€ ÃŒÃ…Ã‘Ã’Ã ÃÃÃŸÃŸÃŸÃŸÃŸÃŸ!")
 					else
-						src.say("ĞĞĞßßßß ÏÎËÎÆÈ ÍÀ ÌÅÑÒÎ ĞĞĞßßßßßß!")
+						src.say("ÃÃÃÃŸÃŸÃŸÃŸ ÃÃÃ‹ÃÃ†Ãˆ ÃÃ€ ÃŒÃ…Ã‘Ã’Ã ÃÃÃÃŸÃŸÃŸÃŸÃŸÃŸ!")
 					held_item.loc = src.loc
 					held_item = null
 
@@ -267,9 +267,9 @@
 							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
 							if(istype(src, /mob/living/simple_animal/parrot/Poly))
 								if(prob(50))
-									say("Ïîëè íğàâèòñÿ!")
+									say("ÃÃ®Ã«Ã¨ Ã­Ã°Ã Ã¢Ã¨Ã²Ã±Ã¿!")
 								else
-									say("Ïîëè íåäîâîëåí!")
+									say("ÃÃ®Ã«Ã¨ Ã­Ã¥Ã¤Ã®Ã¢Ã®Ã«Ã¥Ã­!")
 		else
 			..()
 
@@ -747,7 +747,7 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Ïîëè õî÷åò êğåêåğ!", ":e Ïğîâåğüòå ìàòåğèş, óùåğáû!",":e Íàñòğàèâàéòå ÑÌÅÑû, ëåíèâûå æîïû!",":e ÊÒÎ ÑÏÈÇÄÈË ×ÅĞÒÎÂÛ ĞÈÃÈ?",":e ÎÍÀ ÑÅÉ×ÀÑ ÅÁÍÅÒ ÂÛÇÛÂÀÉÒÅ ØÀÒÒË!")
+	speak = list("ÃÃ®Ã«Ã¨ ÃµÃ®Ã·Ã¥Ã² ÃªÃ°Ã¥ÃªÃ¥Ã°!", ":e ÃÃ°Ã®Ã¢Ã¥Ã°Ã¼Ã²Ã¥ Ã¬Ã Ã²Ã¥Ã°Ã¨Ã¾, Ã³Ã¹Ã¥Ã°Ã¡Ã»!",":e ÃÃ Ã±Ã²Ã°Ã Ã¨Ã¢Ã Ã©Ã²Ã¥ Ã‘ÃŒÃ…Ã‘Ã», Ã«Ã¥Ã­Ã¨Ã¢Ã»Ã¥ Ã¦Ã®Ã¯Ã»!",":e ÃŠÃ’Ã Ã‘ÃÃˆÃ‡Ã„ÃˆÃ‹ Ã—Ã…ÃÃ’ÃÃ‚Ã› ÃÃˆÃƒÃˆ?",":e ÃÃÃ€ Ã‘Ã…Ã‰Ã—Ã€Ã‘ Ã…ÃÃÃ…Ã’ Ã‚Ã›Ã‡Ã›Ã‚Ã€Ã‰Ã’Ã… Ã˜Ã€Ã’Ã’Ã‹!")
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
