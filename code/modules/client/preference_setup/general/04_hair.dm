@@ -39,12 +39,11 @@
 /datum/category_item/player_setup_item/general/hair/proc/name_unsanitize(name)
 	return replacetext(name,"_","'")
 
-/datum/category_item/player_setup_item/general/hair/proc/show_hair_choices(mob/user)
+/datum/category_item/player_setup_item/general/hair/proc/get_content_hair(mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
 	var/list/valid_hairstyles = mob_species.get_hair_styles()
 	var/dat = "<a href='?src=\ref[src];cycle_hair_pages=-1'>&#8592;</a> Page: <a href='?src=\ref[src];enter_hair_page=1'>[page+1]</a> <a href='?src=\ref[src];cycle_hair_pages=1'>&#8594;</a><br>"
 	var/old_h_style = pref.h_style
-	var/datum/browser/popup = new(user, "Hair choose","Hair choose", 550, 650, src)
 	var/in_row_counter = 1
 	dat+="<table><tr>"
 	for (var/i=1+(page*PER_PAGE),i<=PER_PAGE+(page*PER_PAGE),i++)
@@ -63,18 +62,32 @@
 		else
 			dat+="</tr><tr>"
 			in_row_counter=1
-
 	pref.h_style = old_h_style
+	return dat
+
+/datum/category_item/player_setup_item/general/hair/proc/open_hair_choices(mob/user)
+	var/datum/browser/popup = new(user, "hair_choices_browser","Hair choose", 550, 535, src)
+	var/content = {"
+	<script type='text/javascript'>
+		function update_content(data){
+			document.getElementById('content').innerHTML = data;
+		}
+	</script>
+	<div id='content'>[get_content_hair(user)]</div>
+	"}
 	pref.update_preview_icon()
-	popup.set_content(dat)
+	popup.set_content(content)
 	popup.open()
 
-/datum/category_item/player_setup_item/general/hair/proc/show_facial_hair_choices(mob/user)
+/datum/category_item/player_setup_item/general/hair/proc/update_hair_choices(mob/user)
+	pref.update_preview_icon()
+	send_output(user, url_encode(get_content_hair(user)), "hair_choices_browser.browser:update_content")
+
+/datum/category_item/player_setup_item/general/hair/proc/get_content_facial_hair(mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(pref.gender)
 	var/dat = "<a href='?src=\ref[src];cycle_f_hair_pages=-1'>&#8592;</a> Page: <a href='?src=\ref[src];enter_facial_hair_page=1'>[page+1]</a> <a href='?src=\ref[src];cycle_f_hair_pages=1'>&#8594;</a><br>"
 	var/old_f_style = pref.f_style
-	var/datum/browser/popup = new(user, "Facial hair choose","Facial hair choose", 550, 650, src)
 	var/in_row_counter = 1
 	dat+="<table><tr>"
 	for (var/i=1+(page*PER_PAGE),i<=PER_PAGE+(page*PER_PAGE),i++)
@@ -93,11 +106,26 @@
 		else
 			dat+="</tr><tr>"
 			in_row_counter=1
-
 	pref.f_style = old_f_style
+	return dat
+
+/datum/category_item/player_setup_item/general/hair/proc/open_facial_hair_choices(mob/user)
+	var/datum/browser/popup = new(user, "facial_hair_choices_browser","Facial hair choose", 550, 535, src)
+	var/content = {"
+	<script type='text/javascript'>
+		function update_content(data){
+			document.getElementById('content').innerHTML = data;
+		}
+	</script>
+	<div id='content'>[get_content_facial_hair(user)]</div>
+	"}
 	pref.update_preview_icon()
-	popup.set_content(dat)
+	popup.set_content(content)
 	popup.open()
+
+/datum/category_item/player_setup_item/general/hair/proc/update_facial_hair_choices(mob/user)
+	pref.update_preview_icon()
+	send_output(user, url_encode(get_content_facial_hair(user)), "facial_hair_choices_browser.browser:update_content")
 
 /datum/category_item/player_setup_item/general/hair/OnTopic(href,list/href_list, mob/user)
 	var/datum/species/mob_species = all_species[pref.species]
@@ -105,7 +133,7 @@
 	var/list/valid_facialhairstyles = mob_species.get_facial_hair_styles(pref.gender)
 	if(href_list["hair_style"])
 		page = 0
-		show_hair_choices(user)
+		open_hair_choices(user)
 		return TOPIC_NOACTION
 
 	else if(href_list["h_style_change"])
@@ -113,7 +141,7 @@
 		mob_species = all_species[pref.species]
 		if(new_h_style && (new_h_style in valid_hairstyles))
 			pref.h_style = new_h_style
-			show_hair_choices(user)
+			update_hair_choices(user)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 		return TOPIC_NOACTION
 
@@ -141,7 +169,7 @@
 			page = new_page-1
 		else
 			return TOPIC_NOACTION
-		show_hair_choices(user)
+		update_hair_choices(user)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["enter_facial_hair_page"])
@@ -150,7 +178,7 @@
 			page = new_page-1
 		else
 			return TOPIC_NOACTION
-		show_facial_hair_choices(user)
+		update_facial_hair_choices(user)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["cycle_hair_pages"])
@@ -158,7 +186,7 @@
 		if(new_page<0 || new_page>round(length(valid_hairstyles)/PER_PAGE))
 			return TOPIC_NOACTION
 		page = new_page
-		show_hair_choices(user)
+		update_hair_choices(user)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["cycle_f_hair_pages"])
@@ -166,7 +194,7 @@
 		if(new_page<0 || new_page>round(length(valid_facialhairstyles)/PER_PAGE))
 			return TOPIC_NOACTION
 		page = new_page
-		show_facial_hair_choices(user)
+		update_facial_hair_choices(user)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["facial_color"])
@@ -181,7 +209,7 @@
 
 	else if(href_list["facial_style"])
 		page = 0
-		show_facial_hair_choices(user)
+		open_facial_hair_choices(user)
 		return TOPIC_NOACTION
 
 	else if(href_list["f_style_change"])
@@ -189,7 +217,7 @@
 		mob_species = all_species[pref.species]
 		if(new_f_style && CanUseTopic(user) && valid_facialhairstyles)
 			pref.f_style = new_f_style
-			show_facial_hair_choices(user)
+			update_facial_hair_choices(user)
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if (href_list["cycle_fhair_style"])
