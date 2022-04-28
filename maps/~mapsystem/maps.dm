@@ -203,14 +203,20 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 // By default transition randomly to another zlevel
 /datum/map/proc/get_transit_zlevel(current_z_level)
-	var/list/candidates = GLOB.using_map.player_levels - GLOB.using_map.sealed_levels
-	candidates.Remove(current_z_level)
-
-	log_to_dd("Candidates to tranist: [candidates]")
+	var/list/candidates = list()
+	
+	for(var/level = 1; level <= world.maxz; level++)
+		if(level == current_z_level)
+			continue
+		else if(level in GLOB.using_map.sealed_levels)
+			continue
+		
+		candidates += level
 
 	if(!candidates.len)
 		return current_z_level
-	return text2num(pick(candidates))
+
+	return pick(candidates)
 
 /datum/map/proc/get_empty_zlevel()
 	if(empty_levels == null)
