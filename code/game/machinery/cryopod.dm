@@ -548,7 +548,6 @@
 		for(var/channel in list("Security", "Medical"))
 			GLOB.global_headset.autosay("Someone tryies to store dead body in [name] in [location]!", get_announcement_computer("[name] warning"), channel)
 		return
-	//TODO trash the trash
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")
 	else
