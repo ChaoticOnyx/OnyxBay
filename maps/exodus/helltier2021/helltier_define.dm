@@ -5,19 +5,15 @@
 	path = "exodus/helltier2021"
 
 	station_levels = list(1)
-	admin_levels = list(3)
-	contact_levels = list(1,4)
-	player_levels = list(1,4,5,7,12)
-	sealed_levels = list(12)
+	admin_levels = list(2)
+	contact_levels = list(1,2)
+	player_levels = list(1,2)
+	sealed_levels = list(2)
 	empty_levels = list()
 	//base_turf_by_z = list("1" = /turf/simulated/floor/asteroid) // Moonbase
 	dynamic_z_levels = list(
 		'helltier-1.dmm',
-		'maps/exodus/exodus-2.dmm',
 		'helltier-3.dmm',
-		'maps/exodus/exodus-4.dmm',
-		'maps/exodus/exodus-5.dmm',
-		'maps/exodus/exodus-6.dmm'
 	)
 
 	station_name  = "NSS Helltier"

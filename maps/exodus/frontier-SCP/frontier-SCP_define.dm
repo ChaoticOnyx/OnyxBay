@@ -7,14 +7,13 @@
 
 	station_levels = list(1)
 	admin_levels = list(3)
-	contact_levels = list(1,4)
-	player_levels = list(1,4,5,7,12)
-	sealed_levels = list(12)
+	contact_levels = list(1,2)
+	player_levels = list(1,2)
+	sealed_levels = list(2)
 	empty_levels = list()
 	//base_turf_by_z = list("1" = /turf/simulated/floor/asteroid) // Moonbase
 	dynamic_z_levels = list(
 		'frontier-SCP-1.dmm',
-		'maps/exodus/exodus-2.dmm',
 		'frontier-SCP-3.dmm'
 	)
 

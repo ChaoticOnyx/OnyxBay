@@ -9,9 +9,9 @@
 	load_legacy_saves = TRUE
 	station_levels = list(1, 2)
 	admin_levels = list(3)
-	contact_levels = list(1,2,4,6)
-	player_levels = list(1,2,4,5,6,7,8,9,10,11,12,13)
-	sealed_levels = list(12)
+	contact_levels = list(1,2,3,4,6)
+	player_levels = list(1,2,3,4,5,6)
+	sealed_levels = list(3,7)
 	empty_levels = list(6)
 
 	dynamic_z_levels = list(
@@ -20,14 +20,14 @@
 		'exodus-3.dmm',
 		'exodus-4.dmm',
 		'exodus-5.dmm',
-		'exodus-6.dmm'
+		'exodus-6.dmm',
+		'derelicts/jungleplanet/jungle_planet.dmm'
 	)
 
 	derelict_levels = list(
 		'derelicts/snowasteroid.dmm' = 80,
 		'derelicts/original/derelict.dmm' = 70,
 		list('derelicts/bearcat/bearcat-1.dmm', 'derelicts/bearcat/bearcat-2.dmm') = 75,
-		'derelicts/jungleplanet/jungle_planet.dmm' = 80,
 		'derelicts/old_restaurant/old_restaurant.dmm' = 75
 	)
 

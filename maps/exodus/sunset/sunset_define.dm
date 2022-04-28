@@ -6,9 +6,9 @@
 
 	station_levels = list(1,2,3)
 	admin_levels = list(4)
-	contact_levels = list(1,2,3,5)
-	player_levels = list(1,2,3,5,6,7)
-	empty_levels = list(7)
+	contact_levels = list(1,2,3,4)
+	player_levels = list(1,2,3,4)
+	sealed_levels = list(4)
 	dynamic_z_levels = list(
 		'sunset-1.dmm',
 		'sunset-2.dmm',
