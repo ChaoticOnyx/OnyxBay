@@ -36,10 +36,19 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	var/weakref/creator // the creator
 	var/destroy_objects = FALSE
 	var/knockdown_people = FALSE
+	var/default_appearance = /obj/structure/closet/crate
 
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
-	o = o || /obj/structure/closet/crate
+	o = o || default_appearance
+
+	if(!o)
+		var/list/valid_targets = list()
+		
+		for(var/obj/O in (view(world.view) - src))
+			valid_targets += O
+		
+		o = pick(valid_targets)
 	if(ispath(o))
 		o = new o(newloc)
 	CopyObject(o,creator)

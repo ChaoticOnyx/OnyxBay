@@ -2841,6 +2841,7 @@
 #include "maps\exodus\exodus_define.dm"
 #include "maps\exodus\derelicts\bearcat\bearcat.dm"
 #include "maps\exodus\derelicts\jungleplanet\jungleplanet_areas.dm"
+#include "maps\exodus\derelicts\old_restaurant\old_restaurant.dm"
 #include "maps\exodus\derelicts\original\derelict_areas.dm"
 #include "maps\exodus\frontier\frontier_areas.dm"
 #include "maps\exodus\frontier\frontier_define.dm"
