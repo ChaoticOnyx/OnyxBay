@@ -59,19 +59,22 @@
 
 //General use for console
 /datum/lift_master/proc/use(result)
+	var/datum/lift_master/master = src
 	switch(result)
 		if("Up")
 			// We have to make sure that they don't do illegal actions by not having their radial menu refresh from someone else moving the lift.
 			if(!Check_lift_move(UP))
 				return
 			moving_status = ELEVATOR_INTRANSIT
-			spawn(3 SECOND)
+			playsound(master.lift_platforms[1],'sound/machines/elevator_loop.ogg', 70, TRUE)
+			spawn(4 SECOND)
 				MoveLift(UP)
 		if("Down")
 			if(!Check_lift_move(DOWN))
 				return
 			moving_status = ELEVATOR_INTRANSIT
-			spawn(3 SECOND)
+			playsound(master.lift_platforms[1],'sound/machines/elevator_loop.ogg', 70, TRUE)
+			spawn(4 SECOND)
 				MoveLift(DOWN)
 		if("Cancel")
 			moving_status = ELEVATOR_IDLE
