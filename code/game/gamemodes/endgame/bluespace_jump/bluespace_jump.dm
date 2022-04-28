@@ -25,7 +25,7 @@
 		goast.alpha = 255
 	old_accessible_z_levels = GLOB.using_map.player_levels.Copy()
 	for(var/z in affected_levels)
-		GLOB.using_map.player_levels -= "[z]" //not accessible during the jump
+		GLOB.using_map.player_levels -= z //not accessible during the jump
 
 /datum/universal_state/bluespace_jump/OnExit()
 	for(var/M in bluespaced)
