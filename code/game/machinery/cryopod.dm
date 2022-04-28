@@ -546,7 +546,7 @@
 		var/area/t = get_area(M)
 		var/location = t.name
 		for(var/channel in list("Security", "Medical"))
-			GLOB.global_headset.autosay("Someone tryies to store dead body in [name] in [location]!", get_announcement_computer("[name] warning"), channel)
+			GLOB.global_headset.autosay("Someone tryies to store dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
 		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")
