@@ -46,6 +46,11 @@
 		return
 
 	if(isWrench(W) && !in_use)
+
+		if (istype(src.loc,/turf) && !isfloor(src.loc))
+			to_chat(user, "<span class='warning'>\The [name] must be constructed on the floor!</span>")
+			return
+
 		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
 				"<span class='notice'>You begin assembling \the [singular_name].</span>")
 		in_use = 1
@@ -73,7 +78,9 @@
 /obj/item/stack/gassembly/attack_self(mob/user as mob)
 	src.add_fingerprint(user)
 
-	if(!istype(user.loc,/turf)) return 0
+	if (istype(user.loc,/turf) && !isfloor(user.loc))
+		to_chat(user, "<span class='warning'>\The [name] must be constructed on the floor!</span>")
+		return
 
 	if(!in_use)
 		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
