@@ -11,9 +11,12 @@
 	player_levels = list(1,4,5,7,12)
 	sealed_levels = list(12)
 	empty_levels = list()
-	accessible_z_levels = list("1" = 10, "4" = 10, "5" = 15, "7" = 60)
 	//base_turf_by_z = list("1" = /turf/simulated/floor/asteroid) // Moonbase
-	dynamic_z_levels = list("1" = 'frontier-SCP-1.dmm',"3" = 'frontier-SCP-3.dmm')
+	dynamic_z_levels = list(
+		'frontier-SCP-1.dmm',
+		'maps/exodus/exodus-2.dmm',
+		'frontier-SCP-3.dmm'
+	)
 
 	station_name  = "RnCC Demeter"
 	station_short = "Demeter"

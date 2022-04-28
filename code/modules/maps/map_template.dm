@@ -7,7 +7,6 @@
 	var/loaded = 0 // Times loaded this round
 	var/list/shuttles_to_initialise = list()
 	var/base_turf_for_zs = null
-	var/accessibility_weight = 0
 	var/template_flags = TEMPLATE_FLAG_ALLOW_DUPLICATES
 
 /datum/map_template/New(list/paths = null, rename = null)
@@ -95,8 +94,6 @@
 			return FALSE
 
 	for (var/z_index = bounds[MAP_MINZ]; z_index <= bounds[MAP_MAXZ]; z_index++)
-		if (accessibility_weight)
-			GLOB.using_map.accessible_z_levels[num2text(z_index)] = accessibility_weight
 		if (base_turf_for_zs)
 			GLOB.using_map.base_turf_by_z[num2text(z_index)] = base_turf_for_zs
 		GLOB.using_map.player_levels |= z_index

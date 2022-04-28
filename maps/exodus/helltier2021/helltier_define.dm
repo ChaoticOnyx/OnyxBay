@@ -10,9 +10,15 @@
 	player_levels = list(1,4,5,7,12)
 	sealed_levels = list(12)
 	empty_levels = list()
-	accessible_z_levels = list("1" = 10, "4" = 10, "5" = 15, "7" = 60)
 	//base_turf_by_z = list("1" = /turf/simulated/floor/asteroid) // Moonbase
-	dynamic_z_levels = list("1" = 'helltier-1.dmm',"3" = 'helltier-3.dmm')
+	dynamic_z_levels = list(
+		'helltier-1.dmm',
+		'maps/exodus/exodus-2.dmm',
+		'helltier-3.dmm',
+		'maps/exodus/exodus-4.dmm',
+		'maps/exodus/exodus-5.dmm',
+		'maps/exodus/exodus-6.dmm'
+	)
 
 	station_name  = "NSS Helltier"
 	station_short = "Helltier"

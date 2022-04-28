@@ -34,14 +34,12 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/list/map_levels              // Z-levels available to various consoles, such as the crew monitor. Defaults to station_levels if unset.
 
 	var/list/dynamic_z_levels        // Z-levels to load in runtime
+	var/list/derelict_levels         // Derelicts to load in runtime (with a chance)
 
 	var/list/base_turf_by_z = list() // Custom base turf by Z-level. Defaults to world.turf for unlisted Z-levels
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
 	var/base_floor_area                                 // Replacement area, if a base_floor_type is generated. Leave blank to skip.
-
-	//This list contains the z-level numbers which can be accessed via space travel and the percentile chances to get there.
-	var/list/accessible_z_levels = list()
 
 	var/list/allowed_jobs          //Job datums to use.
 	                               //Works a lot better so if we get to a point where three-ish maps are used
@@ -155,8 +153,25 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/setup_map()
 	if(dynamic_z_levels)
-		for(var/level in dynamic_z_levels)
-			maploader.load_map(dynamic_z_levels[level], 1, 1, text2num(level), FALSE, FALSE, TRUE, FALSE)
+		for(var/level = 1; level <= length(dynamic_z_levels); level++)
+			log_to_dd("Loading map '[dynamic_z_levels[level]]' at [level]")
+			maploader.load_map(dynamic_z_levels[level], 1, 1, level, FALSE, FALSE, TRUE, FALSE)
+	
+	if(derelict_levels)
+		for(var/level in derelict_levels)
+			var/chance = derelict_levels[level]
+
+			if(!prob(chance))
+				continue
+
+			if(islist(level))
+				for(var/sublevel in level)
+					log_to_dd("Loading derelict '[sublevel]' at [world.maxz + 1]")
+					maploader.load_map(sublevel, 1, 1, world.maxz + 1, FALSE, FALSE, TRUE, FALSE)
+			else
+				log_to_dd("Loading derelict '[level]' at [world.maxz + 1]")
+				maploader.load_map(level, 1, 1, world.maxz + 1, FALSE, FALSE, TRUE, FALSE)
+
 	world.update_status()
 	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)
@@ -188,12 +203,14 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 // By default transition randomly to another zlevel
 /datum/map/proc/get_transit_zlevel(current_z_level)
-	var/list/candidates = GLOB.using_map.accessible_z_levels.Copy()
-	candidates.Remove(num2text(current_z_level))
+	var/list/candidates = GLOB.using_map.player_levels - GLOB.using_map.sealed_levels
+	candidates.Remove(current_z_level)
+
+	log_to_dd("Candidates to tranist: [candidates]")
 
 	if(!candidates.len)
 		return current_z_level
-	return text2num(pickweight(candidates))
+	return text2num(pick(candidates))
 
 /datum/map/proc/get_empty_zlevel()
 	if(empty_levels == null)

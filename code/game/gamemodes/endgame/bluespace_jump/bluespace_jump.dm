@@ -23,16 +23,16 @@
 		goast.mouse_opacity = 0	//can't let you click that Dave
 		goast.set_invisibility(SEE_INVISIBLE_LIVING)
 		goast.alpha = 255
-	old_accessible_z_levels = GLOB.using_map.accessible_z_levels.Copy()
+	old_accessible_z_levels = GLOB.using_map.player_levels.Copy()
 	for(var/z in affected_levels)
-		GLOB.using_map.accessible_z_levels -= "[z]" //not accessible during the jump
+		GLOB.using_map.player_levels -= "[z]" //not accessible during the jump
 
 /datum/universal_state/bluespace_jump/OnExit()
 	for(var/M in bluespaced)
 		clear_bluespaced(M)
 
 	bluespaced.Cut()
-	GLOB.using_map.accessible_z_levels = old_accessible_z_levels
+	GLOB.using_map.player_levels = old_accessible_z_levels
 	old_accessible_z_levels = null
 
 /datum/universal_state/bluespace_jump/OnPlayerLatejoin(mob/living/M)
