@@ -98,17 +98,17 @@
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		target_mob = user
+		set_target(user)
 	return ..()
 
 /mob/living/simple_animal/hostile/bear/attack_hand(mob/living/carbon/human/M)
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		target_mob = M
+		set_target(M)
 	return ..()
 
-/mob/living/simple_animal/hostile/bear/FindTarget()
+/mob/living/simple_animal/hostile/bear/find_target()
 	. = ..()
 	if(.)
 		custom_emote(1,"stares alertly at [.]")

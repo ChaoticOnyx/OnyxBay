@@ -332,7 +332,7 @@
 		return
 
 	for (var/mob/living/simple_animal/hostile/scarybat/bat in spawned)
-		LAZYADD(bat.friends, src)
+		LAZYADD(bat.friends, weakref(src))
 
 		if (vampire.thralls.len)
 			LAZYADD(bat.friends, vampire.thralls)

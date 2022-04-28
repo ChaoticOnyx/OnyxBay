@@ -265,8 +265,10 @@ var/global/list/robot_footstep_sounds = list(
 	QDEL_NULL(storage)
 	QDEL_NULL(spark_system)
 	QDEL_NULL(ion_trail)
-	QDEL_NULL_LIST(components)
-	cell = null
+	for(var/i in components)
+		qdel(components[i])
+	components.Cut()
+	QDEL_NULL(cell)
 	return ..()
 
 /mob/living/silicon/robot/proc/set_module_hulls(list/new_sprites)

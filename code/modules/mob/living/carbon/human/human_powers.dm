@@ -375,7 +375,7 @@
 	if(prob(90) && src.make_grab(src, T, GRAB_NAB_SPECIAL))
 		T.Weaken(rand(1,3))
 		visible_message("<span class='danger'>\The [src] suddenly lunges out and grabs \the [T]!</span>")
-		LAssailant = src
+		LAssailant = weakref(src)
 
 		src.do_attack_animation(T)
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)

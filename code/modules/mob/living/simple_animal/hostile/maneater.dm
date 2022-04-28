@@ -48,11 +48,11 @@
 			user.drop_from_inventory(O)
 			qdel(O)
 			angry = 1
-			friends += user
+			friends += weakref(user)
 	else
 		..()
 
-/mob/living/simple_animal/hostile/maneater/FindTarget()
+/mob/living/simple_animal/hostile/maneater/find_target()
 	if(!angry)
 		return null // Don't just return 0 or i'll beat you with a stick
 	. = ..()

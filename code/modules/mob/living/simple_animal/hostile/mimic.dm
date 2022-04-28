@@ -44,7 +44,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		o = new o(newloc)
 	CopyObject(o,creator)
 
-/mob/living/simple_animal/hostile/mimic/FindTarget()
+/mob/living/simple_animal/hostile/mimic/find_target()
 	. = ..()
 	if(.)
 		audible_emote("growls at [.]")
