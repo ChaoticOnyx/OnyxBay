@@ -1,5 +1,5 @@
 /obj/machinery/camera
-	var/list/motionTargets = list()
+	var/list/weakref/motionTargets = list()
 	var/detectTime = 0
 	var/alarm_delay = 100 // Don't forget, there's another 10 seconds in queueAlarm()
 
@@ -20,26 +20,25 @@
 		if (elapsed > alarm_delay)
 			triggerAlarm()
 	else if (detectTime == -1)
-		for (var/mob/target in motionTargets)
-			if (target.stat == DEAD)
-				lostTarget(target)
-			// See if the camera is still in range
-			if(!in_range(src, target))
-				// If they aren't in range, lose the target.
-				lostTarget(target)
+		for (var/weakref/targetref in motionTargets)
+			var/mob/target = targetref?.resolve()
+			if(QDELETED(target) || target.stat == DEAD || !in_range(src, target))
+				lostTargetRef(targetref)
 
 /obj/machinery/camera/proc/newTarget(mob/target)
-	if (istype(target, /mob/living/silicon/ai)) return 0
-	if (detectTime == 0)
+	if(istype(target, /mob/living/silicon/ai))
+		return FALSE
+	if(detectTime == 0)
 		detectTime = world.time // start the clock
-	if (!(target in motionTargets))
-		motionTargets += target
-	return 1
+	var/targetref = weakref(target)
+	if(!(targetref in motionTargets))
+		motionTargets |= targetref
+	return TRUE
 
-/obj/machinery/camera/proc/lostTarget(mob/target)
-	if (target in motionTargets)
-		motionTargets -= target
-	if (motionTargets.len == 0)
+/obj/machinery/camera/proc/lostTargetRef(weakref/R)
+	if(R in motionTargets)
+		motionTargets -= R
+	if(motionTargets.len == 0)
 		cancelAlarm()
 
 /obj/machinery/camera/proc/cancelAlarm()

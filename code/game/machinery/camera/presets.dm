@@ -63,33 +63,57 @@
 
 // CHECKS
 
+/obj/machinery/camera/proc/get_assembly()
+	var/obj/item/camera_assembly/assembly = assembly_ref?.resolve()
+	if(QDELETED(assembly))
+		return null
+	return assembly
+
 /obj/machinery/camera/proc/isEmpProof()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	var/O = locate(/obj/item/stack/material/osmium) in assembly.upgrades
 	return O
 
 /obj/machinery/camera/proc/isXRay()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	var/obj/item/stock_parts/scanning_module/O = locate(/obj/item/stock_parts/scanning_module) in assembly.upgrades
 	if (O && O.rating >= 2)
 		return O
 	return null
 
 /obj/machinery/camera/proc/isMotion()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	var/O = locate(/obj/item/device/assembly/prox_sensor) in assembly.upgrades
 	return O
 
 // UPGRADE PROCS
 
 /obj/machinery/camera/proc/upgradeEmpProof()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	assembly.upgrades.Add(new /obj/item/stack/material/osmium(assembly))
 	setPowerUsage()
 	update_coverage()
 
 /obj/machinery/camera/proc/upgradeXRay()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	assembly.upgrades.Add(new /obj/item/stock_parts/scanning_module/adv(assembly))
 	setPowerUsage()
 	update_coverage()
 
 /obj/machinery/camera/proc/upgradeMotion()
+	var/obj/item/camera_assembly/assembly = get_assembly()
+	if(!assembly)
+		return
 	assembly.upgrades.Add(new /obj/item/device/assembly/prox_sensor(assembly))
 	setPowerUsage()
 	START_PROCESSING(SSmachines, src)
