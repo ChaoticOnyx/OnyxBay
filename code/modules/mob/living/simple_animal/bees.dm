@@ -66,7 +66,7 @@
 				feral += 1
 
 			if(target_mob)
-				target_mob = null
+				set_target_mob(null)
 				target_turf = null
 			if(strength > 5)
 				//calm down and spread out a little
@@ -103,7 +103,7 @@
 			if(feral > 0)
 				src.visible_message("\blue The bees calm down!")
 			feral = -10
-			target_mob = null
+			set_target_mob(null)
 			target_turf = null
 			icon_state = "bees"
 			wander = 1
@@ -141,7 +141,7 @@
 
 			else // My target's gone! But I might still be pissed! You there. You look like a good stinging target!
 				for(var/mob/living/carbon/G in view(src,7))
-					target_mob = G
+					set_target_mob(G)
 					break
 
 		if(target_turf)

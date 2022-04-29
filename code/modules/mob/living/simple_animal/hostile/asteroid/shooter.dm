@@ -101,7 +101,7 @@
 	. = ..()
 	projectiletype = pick(projectiletypes)
 
-/mob/living/simple_animal/hostile/asteroid/shooter/beholder/set_target(new_target)
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/set_target_mob(new_target)
 	. = ..()
 	if(target_mob)
 		visible_message(SPAN("danger", "\The [src]'s evil gaze chills [target_mob] to the bone!"))
