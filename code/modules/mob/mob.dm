@@ -1,25 +1,29 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
-	death(TRUE) // One hell of a dirty move, but it's still safer to actually kill off the mob before wiping it off.
 	STOP_PROCESSING(SSmobs, src)
-	GLOB.dead_mob_list_ -= src
-	GLOB.living_mob_list_ -= src
-	GLOB.player_list -= src
+	remove_from_dead_mob_list()
+	remove_from_living_mob_list()
+	GLOB.player_list.Remove(src)
+
 	unset_machine()
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
+
 	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	remove_screen_obj_references()
 	if(client)
-		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
 			var/obj/screen/screenobj = AM
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
+
 	ghostize()
 	if(mind?.current == src)
 		spellremove(src)

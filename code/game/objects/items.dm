@@ -100,6 +100,9 @@
 	if(maptext)
 		maptext = ""
 
+	master = null
+	QDEL_NULL(action)
+
 	if(istype(src.loc, /obj/item/storage))
 		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
 		storage.on_item_pre_deletion(src) // must be done before deletion
