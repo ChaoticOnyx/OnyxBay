@@ -16,11 +16,10 @@
 /mob/zshadow/can_fall()
 	return FALSE
 
-/mob/zshadow/New(mob/L)
+/mob/zshadow/Initialize(mapload, mob/L)
 	if(!istype(L))
-		qdel(src)
-		return
-	..() // I'm cautious about this, but its the right thing to do.
+		return INITIALIZE_HINT_QDEL
+	. = ..() // I'm cautious about this, but its the right thing to do.
 	owner = L
 	sync_icon(L)
 
@@ -37,6 +36,7 @@
 /mob/zshadow/Destroy()
 	unregister_signal(owner, SIGNAL_DIR_SET)
 	unregister_signal(owner, SIGNAL_INVISIBILITY_SET)
+	owner = null
 	. = ..()
 
 /mob/zshadow/_examine_text(mob/user, infix, suffix)
