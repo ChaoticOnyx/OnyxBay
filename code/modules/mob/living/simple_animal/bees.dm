@@ -31,6 +31,17 @@
 
 	return ..()
 
+/mob/living/simple_animal/bee/proc/set_target_mob(mob/L)
+	if(target_mob != L)
+		if(target_mob)
+			unregister_signal(target_mob, SIGNAL_QDELETING)
+		target_mob = L
+		if(!isnull(target_mob) && !client)
+			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+
+/mob/living/simple_animal/bee/proc/_target_deleted()
+	set_target_mob(null)
+
 /mob/living/simple_animal/bee/Life()
 	..()
 
