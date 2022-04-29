@@ -2227,7 +2227,6 @@
 #include "code\modules\modular_computers\NTNet\NTNRC\conversation.dm"
 #include "code\modules\multiz\_stubs.dm"
 #include "code\modules\multiz\basic.dm"
-#include "code\modules\multiz\industrial_lift.dm"
 #include "code\modules\multiz\movement.dm"
 #include "code\modules\multiz\pipes.dm"
 #include "code\modules\multiz\structures.dm"
