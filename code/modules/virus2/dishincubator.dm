@@ -84,7 +84,7 @@
 			var/list/virus = B.data["virus2"]
 			for (var/ID in virus)
 				data["blood_already_infected"] = virus[ID]
-			if (dish && dish.analysed)
+			if (dish && dish.analysed && dish.virus2)
 				var/beaker_species = B.data["species"]
 				for (var/S in dish.virus2.affected_species)
 					if (beaker_species == S)
