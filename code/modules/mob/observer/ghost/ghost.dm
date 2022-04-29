@@ -82,10 +82,9 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	..()
 
 /mob/observer/ghost/Destroy()
-	GLOB.ghost_mob_list -= src
+	GLOB.ghost_mob_list.Remove(src)
 	stop_following()
-	qdel(ghost_multitool)
-	ghost_multitool = null
+	QDEL_NULL(ghost_multitool)
 	if(hud_images)
 		for(var/image/I in hud_images)
 			show_hud_icon(I.icon_state, FALSE)

@@ -845,6 +845,9 @@
 	if(mind)
 		mind.set_current(null)
 	QDEL_NULL(aiming)
+	if(controllable)
+		controllable = FALSE
+		GLOB.available_mobs_for_possess -= src
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
