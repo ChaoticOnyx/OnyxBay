@@ -332,9 +332,7 @@
 	..()
 
 	if(!stat && !resting && !buckled)
-		turns_since_scan++
-		if(turns_since_scan > 15)
-			turns_since_scan = 0
+		if(turns_since_scan == 0)
 			var/alone = 1
 			var/ian = 0
 			for(var/mob/M in oviewers(7, src))

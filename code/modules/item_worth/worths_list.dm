@@ -628,6 +628,7 @@ var/list/worths = list(
 					/mob/living/silicon = 5000,
 					/mob/living/simple_animal/borer = 10000,
 					/mob/living/simple_animal/corgi/Ian = 1000, //Ian is valuable,
+					/mob/living/simple_animal/corgi/Lisa = 999,
 					/mob/living/simple_animal/cow = 2000, //Cow expensive,
 					/mob/living/simple_animal/hostile  = 1000,
 					/mob/living/simple_animal = 500,
@@ -755,4 +756,3 @@ var/list/worths = list(
 					/obj/machinery/bookbinder = -1200,
 					/obj/machinery = -1000,
 					) //Must be in descending order. Child before parents, otherwise it doesn't work.,
-
