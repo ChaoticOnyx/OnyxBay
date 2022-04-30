@@ -3,7 +3,7 @@
 	icon = 'icons/misc/landmarks.dmi'
 	icon_state = "landmark"
 
-	anchored = 1
+	anchored = TRUE
 	unacidable = 1
 	simulated = 0
 	invisibility = 101

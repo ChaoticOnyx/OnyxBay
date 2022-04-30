@@ -63,7 +63,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	icon_state = "mining"
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	var/obj/item/card/id/inserted_id
 
 /datum/data/mining_equipment

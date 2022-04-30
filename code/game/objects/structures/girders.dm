@@ -1,6 +1,6 @@
 /obj/structure/girder
 	icon_state = "girder"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	w_class = ITEM_SIZE_NO_CONTAINER
@@ -14,7 +14,7 @@
 
 /obj/structure/girder/displaced
 	icon_state = "displaced"
-	anchored = 0
+	anchored = FALSE
 
 /obj/structure/girder/_examine_text(mob/user)
 	. = ..()
@@ -51,7 +51,7 @@
 	return
 
 /obj/structure/girder/proc/reset_girder()
-	anchored = 1
+	anchored = TRUE
 	cover = initial(cover)
 	health = min(health,max_health)
 	state = 0
@@ -130,7 +130,7 @@
 			user.visible_message(SPAN("notice", "[user] dislodged \the [src]."), \
 				                 SPAN("notice", "You dislodged \the [src]."))
 			icon_state = "displaced"
-			anchored = 0
+			anchored = FALSE
 			cover = 40
 
 	else if(istype(W,/obj/item/weldingtool))

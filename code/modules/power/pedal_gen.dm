@@ -21,7 +21,7 @@
 	desc = "This machine generates power from raw human force."
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "pedalgenerator"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	var/obj/machinery/power/dynamo/generator = null
 	var/pedaled = 0

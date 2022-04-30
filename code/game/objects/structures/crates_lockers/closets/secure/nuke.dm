@@ -8,7 +8,7 @@
 	icon_opened = "self_destruct_wall_open"
 	icon_broken = "self_destruct_wall_spark"
 	icon_off = "self_destruct_wall_off"
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	wall_mounted = 1
 	req_access = list(access_heads_vault)

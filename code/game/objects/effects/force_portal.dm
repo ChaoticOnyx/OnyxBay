@@ -6,7 +6,7 @@
 	blend_mode = BLEND_SUBTRACT
 	density = 1
 	unacidable = 1
-	anchored = 1
+	anchored = TRUE
 	var/boom_time = 1
 
 /obj/effect/force_portal/Initialize()

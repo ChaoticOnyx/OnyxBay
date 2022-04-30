@@ -23,7 +23,7 @@
 	var/build_cost = 0 //How much it costs to build this item.
 	var/deity_flags = DEITY_STRUCTURE_NEAR_IMPORTANT
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	icon_state = "tomealtar"
 
 /obj/structure/deity/New(newloc, god)

@@ -11,7 +11,7 @@
 	icon_state = "biogen-stand"
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 40
 	var/processing = 0
 	var/obj/item/reagent_containers/glass/beaker = null

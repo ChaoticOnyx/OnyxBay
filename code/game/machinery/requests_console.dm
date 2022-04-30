@@ -25,7 +25,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 /obj/machinery/requests_console
 	name = "Requests Console"
 	desc = "A console intended to send requests to different departments."
-	anchored = 1
+	anchored = TRUE
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "req_comp0"
 	layer = ABOVE_WINDOW_LAYER

@@ -2,7 +2,7 @@
 
 /obj/structure/computerframe
 	density = 1
-	anchored = 0
+	anchored = FALSE
 	name = "computer frame"
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "0"
@@ -19,7 +19,7 @@
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				if(do_after(user, 20, src))
 					to_chat(user, "<span class='notice'>You wrench the frame into place.</span>")
-					src.anchored = 1
+					src.anchored = TRUE
 					src.state = 1
 			if(isWelder(P))
 				var/obj/item/weldingtool/WT = P
@@ -37,7 +37,7 @@
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 				if(do_after(user, 20, src))
 					to_chat(user, "<span class='notice'>You unfasten the frame.</span>")
-					src.anchored = 0
+					src.anchored = FALSE
 					src.state = 0
 			if(istype(P, /obj/item/circuitboard) && !circuit)
 				var/obj/item/circuitboard/B = P

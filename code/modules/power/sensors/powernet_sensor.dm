@@ -10,7 +10,7 @@
 /obj/machinery/power/sensor
 	name = "Powernet Sensor"
 	desc = "Small machine which transmits data about specific powernet."
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	level = 1
 	icon = 'icons/obj/objects.dmi'
@@ -186,8 +186,3 @@
 		data["load_percentage"] = 100
 	data["alarm"] = powernet.problem ? 1 : 0
 	return data
-
-
-
-
-

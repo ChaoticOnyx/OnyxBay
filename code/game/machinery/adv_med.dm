@@ -9,7 +9,7 @@
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scanner_0"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 
 	component_types = list(
 		/obj/item/circuitboard/body_scanner,
@@ -249,7 +249,7 @@
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scannerconsole"
 	density = 0
-	anchored = 1
+	anchored = TRUE
 
 	component_types = list(
 		/obj/item/circuitboard/bodyscanner_console

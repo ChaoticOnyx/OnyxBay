@@ -289,7 +289,7 @@
 	qdel(src)
 
 /obj/effect/golemrune
-	anchored = 1
+	anchored = TRUE
 	desc = "A strange rune used to create golems. It glows when spirits are nearby."
 	name = "rune"
 	icon = 'icons/obj/rune.dmi'
@@ -340,4 +340,3 @@
 			var/area/A = get_area(src)
 			if(A)
 				to_chat(G, "Golem rune created in [A.name].")
-

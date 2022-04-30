@@ -7,7 +7,7 @@
 	icon_state = "bullet"
 	density = 1
 	unacidable = 1
-	anchored = 1 //There's a reason this is here, Mport. God fucking damn it -Agouri. Find&Fix by Pete. The reason this is here is to stop the curving of emitter shots.
+	anchored = TRUE //There's a reason this is here, Mport. God fucking damn it -Agouri. Find&Fix by Pete. The reason this is here is to stop the curving of emitter shots.
 	pass_flags = PASS_FLAG_TABLE
 	mouse_opacity = 0
 
@@ -84,7 +84,7 @@
 	if(!hitscan)
 		animate_movement = SLIDE_STEPS
 	if(config.projectile_basketball)
-		anchored = 0
+		anchored = FALSE
 		mouse_opacity = 1
 	else
 		animate_movement = NO_STEPS
@@ -546,5 +546,3 @@
 	var/output = trace.launch(target) //Test it!
 	qdel(trace) //No need for it anymore
 	return output //Send it back to the gun!
-
-

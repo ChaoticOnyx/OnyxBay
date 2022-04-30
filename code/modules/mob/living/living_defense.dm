@@ -238,7 +238,7 @@
 				if(T)
 					src.loc = T
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
+					anchored = TRUE
 					pinned += O
 
 /mob/living/play_hitby_sound(atom/movable/AM)

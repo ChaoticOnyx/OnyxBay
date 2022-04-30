@@ -12,7 +12,7 @@
 	desc = "This is used to lie in, sleep in or strap on."
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "bed"
-	anchored = 1
+	anchored = TRUE
 	can_buckle = 1
 	buckle_dir = SOUTH
 	buckle_lying = 1
@@ -215,7 +215,7 @@
 	desc = "A portable bed-on-wheels made for transporting medical patients."
 	icon = 'icons/obj/rollerbed.dmi'
 	icon_state = "rollerbed"
-	anchored = 0
+	anchored = FALSE
 	buckle_pixel_shift = "x=0;y=6"
 	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/bedtype = /obj/structure/bed/roller
@@ -336,7 +336,7 @@
 /obj/structure/bed/wheel
 	name = "roller bed"
 	desc = "Truly a racing bed."
-	anchored = 0
+	anchored = FALSE
 	icon_state = "wheelbed"
 	base_icon = "wheelbed"
 	buckle_pixel_shift = "x=0;y=3"

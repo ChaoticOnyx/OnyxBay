@@ -7,7 +7,7 @@
 	unacidable = 1//Can't destroy energy portals.
 	var/obj/item/target = null
 	var/creator = null
-	anchored = 1.0
+	anchored = TRUE
 	var/dangerous = 0
 	var/failchance = 0
 

@@ -2,7 +2,7 @@
 	name = "rune"
 	desc = "A rune drawn in crayon."
 	icon = 'icons/obj/rune.dmi'
-	anchored = 1
+	anchored = TRUE
 
 	New(location,main = "#ffffff",shade = "#000000", drawing = "rune1", visible_name = "drawing")
 		..()

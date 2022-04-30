@@ -68,7 +68,7 @@
 	name = "egg"
 	icon_state = "egg_growing"
 	density = 0
-	anchored = 1
+	anchored = TRUE
 	var/progress = 0
 	var/progress_max = 75 // Point at which we can harvest it manually; hatches autimatically at progress_max*2
 
@@ -141,7 +141,7 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "weeds"
 
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	plane = FLOOR_PLANE
 	layer = ABOVE_TILE_LAYER

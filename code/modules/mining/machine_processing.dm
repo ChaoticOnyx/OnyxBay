@@ -5,7 +5,7 @@
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	use_power = 1
 	idle_power_usage = 15
 	active_power_usage = 50
@@ -146,7 +146,7 @@
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "furnace-off"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	light_outer_range = 3
 	var/obj/machinery/mineral/input = null
 	var/obj/machinery/mineral/output = null

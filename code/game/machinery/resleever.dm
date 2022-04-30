@@ -3,7 +3,7 @@
 	desc = "It's a machine that allows neural laces to be sleeved into new bodies."
 	icon = 'icons/obj/cryogenic2.dmi'
 
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	idle_power_usage = 4
 	active_power_usage = 4000 // 4 Kw. A CT scan machine uses 1-15 kW depending on the model and equipment involved.
@@ -184,10 +184,10 @@
 	else if(isWrench(W))
 		if(isnull(occupant))
 			if(anchored)
-				anchored = 0
+				anchored = FALSE
 				user.visible_message("[user] unsecures [src] from the floor.", "You unsecure [src] from the floor.")
 			else
-				anchored = 1
+				anchored = TRUE
 				user.visible_message("[user] secures [src] to the floor.", "You secure [src] to the floor.")
 			playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 		else

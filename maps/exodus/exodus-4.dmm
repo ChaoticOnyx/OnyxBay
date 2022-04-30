@@ -23,7 +23,7 @@
 "aw" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_straight"},/area/space)
 "ax" = (/turf/simulated/floor/shuttle/white,/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/nw,/area/derelict/ship)
 "ay" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "swall_t"},/area/derelict/ship)
-"az" = (/obj/structure/computerframe{anchored = 1},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
+"az" = (/obj/structure/computerframe{anchored = TRUE},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "aA" = (/obj/structure/table/standard,/obj/item/storage/firstaid/regular{pixel_x = 6; pixel_y = -5},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "aB" = (/turf/simulated/shuttle/wall{dir = 2; icon_state = "swall15"},/area/derelict/ship)
 "aC" = (/turf/simulated/shuttle/wall{dir = 2; icon_state = "swall_t"},/area/derelict/ship)
@@ -407,7 +407,7 @@
 "hW" = (/obj/structure/table/standard,/obj/item/device/radio/off,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "hX" = (/obj/machinery/light,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "hY" = (/obj/structure/bed/chair,/obj/item/material/shard,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
-"hZ" = (/obj/structure/computerframe{anchored = 1},/obj/item/stack/cable_coil/cut,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
+"hZ" = (/obj/structure/computerframe{anchored = TRUE},/obj/item/stack/cable_coil/cut,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "ia" = (/obj/machinery/light/small,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "ib" = (/obj/structure/table/standard,/obj/item/screwdriver,/obj/item/contraband/poster,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 

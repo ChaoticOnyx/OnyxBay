@@ -52,7 +52,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	icon_state = "server"
 	name = "Messaging Server"
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 	idle_power_usage = 10
 	active_power_usage = 100
 
@@ -74,7 +74,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	name = "Dead Messaging Server"
 	desc = "Dead-as-hell messaging server. You don't think that it ever will work again."
 	density = 1
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/message_server/New()
 	if(message_servers.len >= 1)
@@ -246,7 +246,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	icon_state = "blackbox"
 	name = "Blackbox Recorder"
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 	idle_power_usage = 10
 	active_power_usage = 100
 	var/list/messages = list()		//Stores messages of non-standard frequencies

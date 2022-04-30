@@ -5,7 +5,7 @@
 	icon = 'icons/obj/cryogenics.dmi' // map only
 	icon_state = "pod_preview"
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 	interact_offline = 1
 	layer = ABOVE_HUMAN_LAYER // this needs to be fairly high so it displays over most things, but it needs to be under lighting
 

@@ -18,14 +18,14 @@ var/list/fusion_cores = list()
 	use_power = POWER_USE_IDLE
 	idle_power_usage = 50
 	active_power_usage = 500 //multiplied by field strength
-	anchored = 0
+	anchored = FALSE
 
 	var/obj/effect/fusion_em_field/owned_field
 	var/field_strength = 1//0.01
 	var/id_tag
 
 /obj/machinery/power/fusion_core/mapped
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/power/fusion_core/Initialize()
 	. = ..()

@@ -5,7 +5,7 @@
 	icon_state = "asteroid_bigstone1"
 	opacity = 0
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	var/list/iconlist = list("asteroid_bigstone1","asteroid_bigstone2","asteroid_bigstone3","asteroid_bigstone4")
 	var/health = 40
 	var/last_act = 0

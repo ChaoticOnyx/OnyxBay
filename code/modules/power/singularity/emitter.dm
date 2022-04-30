@@ -8,7 +8,7 @@
 	description_antag = "This baby is capable of slicing through walls, sealed lockers, and people."
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "emitter"
-	anchored = 0
+	anchored = FALSE
 	density = 1
 	req_access = list(access_engine_equip)
 	var/id = null
@@ -31,7 +31,7 @@
 	var/datum/wifi/receiver/button/emitter/wifi_receiver
 
 /obj/machinery/power/emitter/anchored
-	anchored = 1
+	anchored = TRUE
 	state = 2
 
 /obj/machinery/power/emitter/verb/rotate()
@@ -164,14 +164,14 @@
 				user.visible_message("[user.name] secures [src] to the floor.", \
 					"You secure the external reinforcing bolts to the floor.", \
 					"You hear a ratchet")
-				anchored = 1
+				anchored = TRUE
 			if(1)
 				state = 0
 				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] unsecures [src] reinforcing bolts from the floor.", \
 					"You undo the external reinforcing bolts.", \
 					"You hear a ratchet")
-				anchored = 0
+				anchored = FALSE
 			if(2)
 				to_chat(user, "<span class='warning'>\The [src] needs to be unwelded from the floor.</span>")
 		return

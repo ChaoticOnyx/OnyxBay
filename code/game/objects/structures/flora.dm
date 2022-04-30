@@ -4,7 +4,7 @@
 //trees
 /obj/structure/flora/tree
 	name = "tree"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	pixel_x = -16
 	layer = ABOVE_HUMAN_LAYER
@@ -209,7 +209,7 @@
 /obj/structure/flora/grass
 	name = "grass"
 	icon = 'icons/obj/flora/snowflora.dmi'
-	anchored = 1
+	anchored = TRUE
 	layer = BELOW_DOOR_LAYER
 
 /obj/structure/flora/grass/brown
@@ -240,7 +240,7 @@
 	name = "bush"
 	icon = 'icons/obj/flora/snowflora.dmi'
 	icon_state = "snowbush1"
-	anchored = 1
+	anchored = TRUE
 
 /obj/structure/flora/bush/New()
 	..()
@@ -331,7 +331,7 @@
 	name = "bush"
 	icon = 'icons/obj/flora/ausflora.dmi'
 	icon_state = "firstbush_1"
-	anchored = 1
+	anchored = TRUE
 	layer = BELOW_DOOR_LAYER
 	var/cut_level = PLANT_CUT
 	var/cut_hits = 3
@@ -500,7 +500,7 @@
 	name = "shrub"
 	icon = 'icons/obj/flora/goonbushes.dmi'
 	icon_state = ""
-	anchored = 1
+	anchored = TRUE
 	layer = ABOVE_HUMAN_LAYER
 
 /obj/structure/flora/goonbushes/shrub
@@ -537,7 +537,7 @@
 	icon = 'icons/obj/flora/junglevines.dmi'
 	icon_state = "light0"
 	desc = "A mass of twisted vines."
-	anchored = 1
+	anchored = TRUE
 	density = 0
 	layer = ABOVE_HUMAN_LAYER
 	var/cut_level = PLANT_NO_CUT
@@ -600,7 +600,7 @@
 	name = "plant"
 	icon = 'icons/obj/flora/jungleplants.dmi'
 	icon_state = "junglebush1"
-	anchored = 1
+	anchored = TRUE
 	layer = ABOVE_HUMAN_LAYER
 	var/light_overlay = FALSE
 	var/l_max_bright = 1

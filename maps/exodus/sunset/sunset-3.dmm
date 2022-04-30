@@ -2049,7 +2049,7 @@
 "PY" = (/obj/effect/landmark/map_data{height = 3},/turf/space,/area/space)
 "Qb" = (/obj/structure/window_frame/grille/rglass,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/cable{d2 = 8; dir = 2; icon_state = "0-8"},/turf/simulated/floor/plating,/area/turret_protected/ai_upload)
 "Qd" = (/obj/structure/bed/psych,/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/tiled/dark,/area/maintenance/medbay)
-"Qo" = (/obj/structure/door_assembly/door_assembly_med{anchored = 1},/obj/structure/barricade,/turf/simulated/floor/plating,/area/maintenance/medbay)
+"Qo" = (/obj/structure/door_assembly/door_assembly_med{anchored = TRUE},/obj/structure/barricade,/turf/simulated/floor/plating,/area/maintenance/medbay)
 "Qs" = (/obj/machinery/light/small/he{dir = 8},/turf/simulated/floor/tiled/dark,/area/turret_protected/ai_upload)
 "Qt" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/tiled/dark,/area/turret_protected/ai_upload)
 "Qy" = (/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/wood/broken4,/area/maintenance/medbay)

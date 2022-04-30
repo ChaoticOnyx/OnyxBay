@@ -4,7 +4,7 @@
 	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
-	anchored = 0
+	anchored = FALSE
 	pull_sound = SFX_PULL_MACHINE
 	pull_slowdown = PULL_SLOWDOWN_LIGHT
 	var/capacity_max = 300

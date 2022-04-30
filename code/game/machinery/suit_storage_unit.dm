@@ -9,7 +9,7 @@
 	icon = 'icons/obj/suitstorage.dmi'
 	icon_state = "close"
 	layer = BELOW_OBJ_LAYER
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	idle_power_usage = 50
 	active_power_usage = 200
@@ -672,7 +672,7 @@
 
 	name = "suit cycler"
 	desc = "An industrial machine for painting and refitting voidsuits."
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	layer = BELOW_OBJ_LAYER
 

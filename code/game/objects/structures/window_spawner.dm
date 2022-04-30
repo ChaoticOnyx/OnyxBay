@@ -8,7 +8,7 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "wingrille"
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 	can_atmos_pass = ATMOS_PASS_NO
 	var/win_path = /obj/structure/window/basic
 	var/activated = FALSE

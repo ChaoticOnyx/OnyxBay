@@ -12,7 +12,7 @@
 	name = "scanner"
 	icon = 'icons/obj/library.dmi'
 	icon_state = "bigscanner"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	var/obj/item/book/cache		// Last scanned book
 	var/obj/item/canvas/art_cache // Last scanned art
@@ -73,7 +73,7 @@
 	name = "Space Binder"
 	icon = 'icons/obj/library.dmi'
 	icon_state = "binder"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/obj/item/print_object

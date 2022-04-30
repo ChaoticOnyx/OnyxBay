@@ -6,7 +6,7 @@
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "toilet00"
 	density = 0
-	anchored = 1
+	anchored = TRUE
 	var/open = 0			//if the lid is up
 	var/cistern = 0			//if the cistern bit is open
 	var/w_items = 0			//the combined w_class of all the items in the cistern
@@ -73,7 +73,7 @@
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "urinal"
 	density = 0
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/shower
 	name = "shower"
@@ -103,7 +103,7 @@
 	icon_state = "mist"
 
 	layer = ABOVE_HUMAN_LAYER
-	anchored = 1
+	anchored = TRUE
 	mouse_opacity = 0
 
 /obj/machinery/shower/attack_hand(mob/M as mob)
@@ -305,7 +305,7 @@
 	icon = 'icons/obj/watercloset.dmi'
 	icon_state = "sink"
 	desc = "A sink used for washing one's hands and face."
-	anchored = 1
+	anchored = TRUE
 	var/busy = 0 	//Something's being washed at the moment
 
 /obj/structure/sink/MouseDrop_T(obj/item/thing, mob/user)

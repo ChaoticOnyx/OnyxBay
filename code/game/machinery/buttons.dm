@@ -7,7 +7,7 @@
 	var/id = null
 	var/active = 0
 	var/operating = 0
-	anchored = 1.0
+	anchored = TRUE
 	idle_power_usage = 2
 	active_power_usage = 4
 	var/_wifi_id

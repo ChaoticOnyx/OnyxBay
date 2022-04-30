@@ -8,7 +8,7 @@
 	/// We can't create our actions until after LateInitialize
 	/// So we instead do it on the first call to GrantActions
 	var/abduct_created = FALSE
-	anchored = 1
+	anchored = TRUE
 	icon = 'icons/obj/abductor.dmi'
 	icon_state = "camera"
 	icon_keyboard = null

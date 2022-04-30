@@ -3,7 +3,7 @@
 	desc = "It can save lives."
 	icon = 'icons/obj/doors/doorhazard.dmi'
 	icon_state = "door_construction"
-	anchored = 0
+	anchored = FALSE
 	opacity = 0
 	density = 1
 	var/wired = 0

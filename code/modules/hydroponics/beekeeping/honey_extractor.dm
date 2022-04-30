@@ -3,7 +3,7 @@
 	desc = "A machine used to extract honey and wax from a beehive frame."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 
 	var/processing = 0

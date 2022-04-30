@@ -17,7 +17,7 @@ var/list/gyrotrons = list()
 
 
 /obj/machinery/power/emitter/gyrotron/anchored
-	anchored = 1
+	anchored = TRUE
 	state = 2
 
 /obj/machinery/power/emitter/gyrotron/Initialize()

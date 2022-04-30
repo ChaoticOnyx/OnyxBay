@@ -4,7 +4,7 @@
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "latticefull"
 	density = 0
-	anchored = 1.0
+	anchored = TRUE
 	w_class = ITEM_SIZE_NORMAL
 	layer = LATTICE_LAYER
 	//	obj_flags = OBJ_FLAG_CONDUCTIBLE

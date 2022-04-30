@@ -10,7 +10,7 @@
 	mod_weight = 1.5
 	mod_reach = 1.5
 	mod_handy = 1.75
-	anchored = 1
+	anchored = TRUE
 	throwforce = 0 //Just to be on the safe side
 	throw_range = 0
 	throw_speed = 0

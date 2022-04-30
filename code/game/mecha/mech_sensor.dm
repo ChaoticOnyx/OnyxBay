@@ -3,7 +3,7 @@
 	icon_state = "mech_sensor_standby"
 	name = "mechatronic sensor"
 	desc = "Regulates mech movement."
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	throwpass = 1
 	layer = ABOVE_WINDOW_LAYER

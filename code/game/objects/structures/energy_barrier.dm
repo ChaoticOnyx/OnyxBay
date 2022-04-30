@@ -23,7 +23,7 @@
 	name = "energy barrier"
 	desc = "An energy barrier. It doesn't look like there's a way to disable it without destroying it with brute force."
 	icon = 'icons/obj/objects.dmi'
-	anchored = 1.0
+	anchored = TRUE
 	density = TRUE
 	icon_state = "ebarrier"
 	var/health = 250.0

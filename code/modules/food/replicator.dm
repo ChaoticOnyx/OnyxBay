@@ -4,7 +4,7 @@
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "soda"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 40
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/biomass = 100

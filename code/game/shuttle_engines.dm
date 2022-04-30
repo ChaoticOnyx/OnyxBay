@@ -8,7 +8,7 @@
 	icon_state = "1"
 	density = 1
 	opacity = 0
-	anchored = 1
+	anchored = TRUE
 	can_atmos_pass = ATMOS_PASS_NO
 
 /obj/structure/shuttle/window/CanPass(atom/movable/mover, turf/target)
@@ -19,7 +19,7 @@
 /obj/structure/shuttle/engine
 	name = "engine"
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 
 /obj/structure/shuttle/engine/heater
 	name = "heater"

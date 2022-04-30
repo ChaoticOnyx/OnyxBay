@@ -151,7 +151,7 @@ var/const/tk_maxrange = 15
 	if(!focus)	return
 	var/obj/effect/overlay/O = new /obj/effect/overlay(locate(focus.x,focus.y,focus.z))
 	O.SetName("sparkles")
-	O.anchored = 1
+	O.anchored = TRUE
 	O.set_density(0)
 	O.layer = FLY_LAYER
 	O.set_dir(pick(GLOB.cardinal))

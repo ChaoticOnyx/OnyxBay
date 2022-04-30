@@ -7,7 +7,7 @@
 #define TELEPORT_COOLDOWN 20 SECONDS
 /obj/machinery/abductor
 	var/team_number = 0
-	anchored = 1
+	anchored = TRUE
 
 /obj/machinery/abductor/console
 	name = "abductor console"

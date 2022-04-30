@@ -1,7 +1,7 @@
 /obj/machinery/power/am_engine
 	icon = 'icons/am_engine.dmi'
 	density = 1
-	anchored = 1.0
+	anchored = TRUE
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
 
 /obj/machinery/power/am_engine/bits

@@ -4,5 +4,5 @@
 	icon = 'icons/obj/rails.dmi'
 	icon_state = "rail"
 	density = 0
-	anchored = 1
+	anchored = TRUE
 	layer = BELOW_DOOR_LAYER

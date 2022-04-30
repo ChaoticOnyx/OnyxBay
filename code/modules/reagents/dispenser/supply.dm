@@ -4,7 +4,7 @@
 /decl/hierarchy/supply_pack/reagents/chemistry_dispenser
 	name = "Reagent dispenser"
 	contains = list(
-			/obj/machinery/chemical_dispenser{anchored = 0}
+			/obj/machinery/chemical_dispenser{anchored = FALSE}
 		)
 	cost = 25
 	containertype = /obj/structure/largecrate
@@ -13,7 +13,7 @@
 /decl/hierarchy/supply_pack/reagents/beer_dispenser
 	name = "Booze dispenser"
 	contains = list(
-			/obj/machinery/chemical_dispenser/bar_alc{anchored = 0}
+			/obj/machinery/chemical_dispenser/bar_alc{anchored = FALSE}
 		)
 	cost = 25
 	containertype = /obj/structure/largecrate
@@ -22,7 +22,7 @@
 /decl/hierarchy/supply_pack/reagents/soda_dispenser
 	name = "Soda dispenser"
 	contains = list(
-			/obj/machinery/chemical_dispenser/bar_soft{anchored = 0}
+			/obj/machinery/chemical_dispenser/bar_soft{anchored = FALSE}
 		)
 	cost = 25
 	containertype = /obj/structure/largecrate

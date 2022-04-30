@@ -170,7 +170,7 @@
 	desc = "A bewildering tangle of machinery and pipes."
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "cryo_rear"
-	anchored = 1
+	anchored = TRUE
 	dir = WEST
 
 //Cryopods themselves.
@@ -180,7 +180,7 @@
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scanner_0"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	dir = WEST
 	req_one_access = list(access_security)
 

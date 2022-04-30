@@ -14,7 +14,7 @@
 	desc = "A pneumatic waste disposal unit."
 	icon = 'icons/obj/pipes/disposal.dmi'
 	icon_state = "disposal"
-	anchored = 1
+	anchored = TRUE
 	density = 1
 	var/datum/gas_mixture/air_contents	// internal reservoir
 	var/mode = 1	// item mode 0=off 1=charging 2=charged
@@ -89,7 +89,7 @@
 					var/obj/structure/disposalconstruct/C = new (src.loc)
 					transfer_fingerprints_to(C)
 					C.ptype = 6 // 6 = disposal unit
-					C.anchored = 1
+					C.anchored = TRUE
 					C.set_density(1)
 					C.update()
 					qdel(src)
@@ -682,7 +682,7 @@
 	desc = "An underfloor disposal pipe."
 	plane = DEFAULT_PLANE
 	layer = TURF_DETAIL_LAYER
-	anchored = 1
+	anchored = TRUE
 	density = 0
 
 	level = 1			// underfloor only
@@ -959,7 +959,7 @@
 		src.transfer_fingerprints_to(C)
 		C.set_dir(dir)
 		C.set_density(0)
-		C.anchored = 1
+		C.anchored = TRUE
 		C.update()
 
 		qdel(src)
@@ -1637,7 +1637,7 @@
 	icon = 'icons/obj/pipes/disposal.dmi'
 	icon_state = "outlet"
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	var/active = 0
 	var/turf/target	// this will be where the output objects are 'thrown' to.
 	var/mode = 0
@@ -1702,7 +1702,7 @@
 					src.transfer_fingerprints_to(C)
 					C.ptype = 7 // 7 =  outlet
 					C.update()
-					C.anchored = 1
+					C.anchored = TRUE
 					C.set_density(1)
 					qdel(src)
 				return

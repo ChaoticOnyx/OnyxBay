@@ -4,7 +4,7 @@
 	icon = 'icons/obj/catwalks.dmi'
 	icon_state = "catwalk"
 	density = 0
-	anchored = 1.0
+	anchored = TRUE
 	layer = CATWALK_LAYER
 
 /obj/structure/catwalk/Initialize()

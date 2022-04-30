@@ -18,7 +18,7 @@
 	dir = EAST
 	density = 1
 	var/obj/structure/m_tray/connected = null
-	anchored = 1.0
+	anchored = TRUE
 
 /obj/structure/morgue/Destroy()
 	if(connected)
@@ -138,7 +138,7 @@
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	var/obj/structure/morgue/connected = null
-	anchored = 1
+	anchored = TRUE
 	throwpass = 1
 
 /obj/structure/m_tray/Destroy()
@@ -391,7 +391,7 @@
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	var/obj/structure/crematorium/connected = null
-	anchored = 1
+	anchored = TRUE
 	throwpass = 1
 
 /obj/structure/c_tray/Destroy()

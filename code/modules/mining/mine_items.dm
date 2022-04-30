@@ -274,7 +274,7 @@
 	pixel_x = 0
 	pixel_y = 0
 	upright = 1
-	anchored = 1
+	anchored = TRUE
 	icon_state = "[initial(icon_state)]_open"
 	if(fringe)
 		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
@@ -287,7 +287,7 @@
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
 	upright = 0
-	anchored = 0
+	anchored = FALSE
 	icon_state = initial(icon_state)
 	overlays.Cut()
 	set_light(0)
@@ -640,7 +640,7 @@
 	icon_state = "sculpting_block"
 	density = 1
 	opacity = 1
-	anchored = 0
+	anchored = FALSE
 	var/sculpted = 0
 	var/mob/living/T
 	var/times_carved = 0

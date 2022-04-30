@@ -24,7 +24,7 @@
 	icon_state = "seeds"
 	layer = BELOW_OBJ_LAYER
 	density = 1
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 100
 
 	var/list/datum/seed_pile/piles = list()

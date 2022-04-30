@@ -59,7 +59,7 @@ for reference:
 	desc = "This space is blocked off by a barricade."
 	icon = 'icons/obj/structures.dmi'
 	icon_state = "barricade"
-	anchored = 1.0
+	anchored = TRUE
 	density = 1
 	var/health = 100
 	var/maxhealth = 100
@@ -167,7 +167,7 @@ for reference:
 	name = "deployable barrier"
 	desc = "A deployable barrier. Swipe your ID card to lock/unlock it."
 	icon = 'icons/obj/objects.dmi'
-	anchored = 0.0
+	anchored = FALSE
 	density = 1
 	icon_state = "barrier0"
 	var/health = 100.0

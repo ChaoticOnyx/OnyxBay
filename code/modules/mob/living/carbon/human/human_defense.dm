@@ -880,7 +880,7 @@ meteor_act
 				if(T)
 					loc = T
 					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
-					anchored = 1
+					anchored = TRUE
 					pinned += O
 
 /mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)

@@ -154,5 +154,5 @@
 	icon_state = "pine_c"
 	density = 1
 	opacity = 0
-	anchored = 1
+	anchored = TRUE
 	layer = ABOVE_HUMAN_LAYER
