@@ -32,7 +32,7 @@
 
 /mob/living/simple_animal/hostile/asteroid/hoverhead/OpenFire(the_target)
 	var/mob/living/simple_animal/hostile/asteroid/p_anomaly/A = new /mob/living/simple_animal/hostile/asteroid/p_anomaly(src.loc)
-	A.set_target(target_mob)
+	A.set_target_mob(target_mob)
 	A.friends = friends
 	A.faction = faction
 	return

@@ -31,7 +31,7 @@
 	var/ranged_cooldown_cap = 3 //What ranged attacks, after being used are set to, to go back on cooldown, defaults to 3 life() ticks
 
 /mob/living/simple_animal/hostile/Destroy()
-	set_target(null)
+	set_target_mob(null)
 	friends.Cut()
 	return ..()
 
@@ -87,22 +87,24 @@
 		if(stance == HOSTILE_STANCE_IDLE)//If we took damage while idle, immediately attempt to find the source of it so we find a living target
 			Aggro()
 			if(!client)
-				set_target(find_target())
+				set_target_mob(find_target())
 		if(stance == HOSTILE_STANCE_ATTACK)//No more pulling a mob forever and having a second player attack it, it can switch targets now if it finds a more suitable one
 			if(target_mob != null && prob(25) && !client)
-				set_target(find_target())
+				set_target_mob(find_target())
 
-/mob/living/simple_animal/hostile/proc/set_target(mob/living/L)
+/mob/living/simple_animal/hostile/proc/set_target_mob(mob/living/L)
+	if(target_mob != L)
+		if(target_mob)
+			unregister_signal(target_mob, SIGNAL_QDELETING)
+		target_mob = L
+		if(!isnull(target_mob) && !client)
+			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
 	if(target_mob)
-		unregister_signal(target_mob, SIGNAL_QDELETING)
-	target_mob = L
-	if(!isnull(target_mob) && !client)
-		register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
 		Aggro()
 		stance = HOSTILE_STANCE_ATTACK
 
 /mob/living/simple_animal/hostile/proc/_target_deleted()
-	set_target(null)
+	set_target_mob(null)
 
 /mob/living/simple_animal/hostile/proc/MoveToTarget()
 	stop_automated_movement = 1
@@ -177,7 +179,7 @@
 
 /mob/living/simple_animal/hostile/proc/LoseTarget()
 	stance = HOSTILE_STANCE_IDLE
-	target_mob = null
+	set_target_mob(null)
 	walk(src, 0)
 	LoseAggro()
 
@@ -212,7 +214,7 @@
 		if(!stat)
 			switch(stance)
 				if(HOSTILE_STANCE_IDLE)
-					set_target(find_target())
+					set_target_mob(find_target())
 
 				if(HOSTILE_STANCE_ATTACK)
 					if(destroy_surroundings)
@@ -231,7 +233,7 @@
 		if(stance != HOSTILE_STANCE_INSIDE)
 			stance = HOSTILE_STANCE_INSIDE
 			walk(src, 0)
-			target_mob = null
+			set_target_mob(null)
 	if(!target_mob)
 		LoseAggro()
 
@@ -239,20 +241,20 @@
 	. = ..()
 	var/oldhealth = health
 	if(health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		target_mob = user
+		set_target_mob(user)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	if(M.a_intent == I_HURT && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		target_mob = M
+		set_target_mob(M)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 	var/oldhealth = health
 	if(!target_mob && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		set_target(Proj.firer)
+		set_target_mob(Proj.firer)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/proc/OpenFire(target_mob)

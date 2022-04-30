@@ -98,14 +98,14 @@
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		set_target(user)
+		set_target_mob(user)
 	return ..()
 
 /mob/living/simple_animal/hostile/bear/attack_hand(mob/living/carbon/human/M)
 	if(stance != HOSTILE_STANCE_ATTACK && stance != HOSTILE_STANCE_ATTACKING && !client)
 		stance = HOSTILE_STANCE_ALERT
 		stance_step = 6
-		set_target(M)
+		set_target_mob(M)
 	return ..()
 
 /mob/living/simple_animal/hostile/bear/find_target()
