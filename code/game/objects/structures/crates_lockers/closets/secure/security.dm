@@ -239,7 +239,8 @@
 		/obj/item/reagent_containers/food/drinks/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
-		/obj/item/storage/secure/guncase/detective
+		/obj/item/storage/secure/guncase/detective,
+		/obj/item/storage/csi_markers
 	)
 
 /obj/structure/closet/secure_closet/injection
