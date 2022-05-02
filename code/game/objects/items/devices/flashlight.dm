@@ -508,8 +508,8 @@
 		addtimer(CALLBACK(src, .proc/ignite, FALSE), time MINUTES)
 
 	else
-		lit = null
-		done = null
+		lit = FALSE
+		done = FALSE
 		burned = TRUE
 		name = "burned stick"
 		desc = "A burnt stick, nothing interesting"
