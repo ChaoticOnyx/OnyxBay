@@ -452,3 +452,96 @@
 
 /obj/item/device/flashlight/metroid/attack_self(mob/user)
 	return //Bio-luminescence does not toggle.
+
+// TRIBAL POWER by Osumi
+/obj/item/device/flashlight/torch
+
+	name = "torch"
+	desc = "Ordinary stick, if you wrap it with a rag, then the torch will come out. Easy yeah?"
+	icon_state = "torch"
+	item_state = "torch"
+	matter = list(MATERIAL_WOOD = 100)
+	w_class = ITEM_SIZE_HUGE
+	force = 7
+
+	flashlight_max_bright = 0.6
+	flashlight_inner_range = 2
+	flashlight_outer_range = 6
+	flashlight_falloff_curve = 2
+	action_button_name = null
+	brightness_color = "#d46f40"
+	var/done = FALSE
+	var/lit = FALSE
+	var/burned = FALSE
+	var/produce_heat = 1900
+
+/obj/item/device/flashlight/torch/attack_self(mob/user)
+	if(!lit)
+		to_chat(user, SPAN("notice", "To the touch like a wood, nothing like that"))
+
+	else
+		to_chat(user, SPAN("notice", "The wood is warm from the heat of flaming rags"))
+
+/obj/item/device/flashlight/torch/update_icon()
+	var/mob/M = loc
+	if (istype(M))
+		if (M.l_hand == src)
+			M.update_inv_l_hand()
+
+		if (M.r_hand == src)
+			M.update_inv_r_hand()
+
+	if (!done)
+		icon_state = "[initial(icon_state)]-rag"
+
+	if (lit)
+		icon_state = "[initial(icon_state)]-lit"
+		item_state = "[initial(icon_state)]-lit"
+
+	if (burned)
+		icon_state = "[initial(icon_state)]-burn"
+		item_state = "[initial(icon_state)]-burn"
+
+/obj/item/device/flashlight/torch/proc/ignite(lit)
+	. = ..()
+	if (lit)
+		var/time = rand(10, 12)
+		addtimer(CALLBACK(src, .proc/ignite, FALSE), time MINUTES)
+
+	else
+		lit = null
+		done = null
+		burned = TRUE
+		name = "burned stick"
+		desc = "A burnt stick, nothing interesting"
+		w_class = ITEM_SIZE_SMALL
+		set_light(0)
+		update_icon()
+		STOP_PROCESSING(SSobj, src)
+
+/obj/item/device/flashlight/torch/attackby(obj/item/W, mob/user)
+	. = ..()
+	var/can_ignite = istype(W, /obj/item/flame/lighter/zippo) || istype(W, /obj/item/flame/lighter) || istype(W, /obj/item/weldingtool)
+	if (can_ignite && done && !lit && !burned)
+		lit = TRUE
+		to_chat(user, SPAN("notice", "You lit \the [src] then you have rapid think about caves, and mammoths"))
+		update_icon()
+		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, flashlight_falloff_curve, brightness_color)
+		ignite(lit)
+
+	else if (lit)
+		to_chat(user, SPAN("warning", "\The [src] already lit"))
+
+	var/is_cloth = istype(W, /obj/item/bedsheet) || istype(W, /obj/item/reagent_containers/glass/rag)
+	if (is_cloth && !done && !lit && !burned)
+		to_chat(user, SPAN("notice", "You rag \the [W.name] and attach pieces to \the [src]."))
+		qdel(W)
+		update_icon()
+		done = TRUE
+		desc = "This is a torch if he burn and make light, easy yeah?"
+
+	else if (done && !lit)
+		to_chat(user, SPAN("warning", "Rags already at \the [src]"))
+
+	if (burned)
+		to_chat(user, SPAN("warning", "\The [src] is burned try to make another..."))

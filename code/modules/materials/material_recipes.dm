@@ -134,6 +134,7 @@
 	recipes += new /datum/stack_recipe("coilgun stock", /obj/item/coilgun_assembly, 5)
 	recipes += new /datum/stack_recipe("stick", /obj/item/material/stick, 1)
 	recipes += new /datum/stack_recipe("small knife grip", /obj/item/material/shivgrip/wood, 2, time = 20, one_per_turf = 0, on_floor = 1, supplied_material = "[name]")
+	recipes += new /datum/stack_recipe("torch", /obj/item/device/flashlight/torch, 1, time = 30, one_per_turf = 0, on_floor = 1, supplied_material = "[name]")
 
 /material/cardboard/generate_recipes()
 	..()
