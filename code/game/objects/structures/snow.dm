@@ -2,7 +2,7 @@
 	name = "snow"
 	desc = "An extremely toxic precipitation."
 	icon = 'icons/obj/snow2.dmi'
-	icon_state = "snow1"
+	icon_state = "snow0-0"
 	anchored = 1
 	density = 0
 	layer = 2.45
@@ -57,14 +57,8 @@
 			qdel(src)
 
 /obj/structure/snow/attackby(obj/item/C as obj, mob/user as mob)
-	if(isWelder(C))
-		var/obj/item/weldingtool/WT = C
-		if(WT.remove_fuel(0, user))
-			playsound(src, 'sound/items/Welder.ogg', 100, 1)
-			to_chat(user, "<span class='notice'>Slicing snow joints ...</span>")
-			new /obj/item/stack/rods(src.loc)
-			new /obj/item/stack/rods(src.loc)
-			//Lattice would delete itself, but let's save ourselves a new obj
-			if(istype(src.loc, /turf/space) || istype(src.loc, /turf/simulated/open))
-				new /obj/structure/lattice/(src.loc)
+	if(istype(C, /obj/item/shovel))
+		playsound(src, 'sound/items/snow_shoveling.ogg', 100, 1)
+		to_chat(user, "<span class='notice'>Removing snow...</span>")
+		if(do_after(user, 30))
 			qdel(src)

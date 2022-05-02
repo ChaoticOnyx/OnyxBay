@@ -4,10 +4,6 @@
 
 /area/polarplanet/street
 	name = "Polarplanet - street"
-	luminosity = 2
-	requires_power = 0
-	dynamic_lighting = 0
-
 
 // Security
 
@@ -35,7 +31,7 @@
 	name = "\improper Singularity Generator"
 	icon_state = "engine"
 
-/datum/map/exodus
+/datum/map/polar
 	post_round_safe_areas = list (
 		/area/polarplanet/centcom,
 		/area/polarplanet/shuttle/escape/centcom,
@@ -61,8 +57,8 @@
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
 
-/area/polarplanet/shuttle/supply/elevator
-	name = "Cargo Elevator"
+/area/polarplanet/shuttle/train/evac
+	name = "Evac Train"
 	icon_state = "shuttle3"
 
 /area/polarplanet/shuttle/supply/elevator/upper
@@ -2289,11 +2285,13 @@
 	icon_state = "firingrange"
 
 /area/polarplanet/mine
+	base_turf = /turf/simulated/floor/natural/frozenground/cave
 	icon_state = "mining"
 	sound_env = 5 // stoneroom
 	ambience_off = list(SFX_AMBIENT_MINE)
 	ambience_powered = list(SFX_AMBIENT_MINE)
 	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_SPACE)
+
 /area/polarplanet/mine/explored
 	name = "Mine"
 	icon_state = "explored"
@@ -2751,3 +2749,9 @@
 /area/polarplanet/derelict/singularity_engine
 	name = "\improper Derelict Singularity Engine"
 	icon_state = "engine"
+
+//Nuclear shelters
+/area/polarplanet/shelter/nuclear1
+	name = "\improper Nuclear Shelter One"
+/area/polarplanet/shelter/nuclear2
+	name = "\improper Nuclear Shelter Two"

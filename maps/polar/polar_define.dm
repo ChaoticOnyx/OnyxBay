@@ -1,9 +1,8 @@
 
 /datum/map/polar
 	name = "Polar"
-	full_name = "NSS Polar"
+	full_name = "Polar Colony"
 	path = "polar"
-
 	station_levels = list(1,3,4)
 	admin_levels = list(5)
 	contact_levels = list(1,2,3,4)
@@ -13,8 +12,8 @@
 	accessible_z_levels = list("1" = 5, "2" = 5, "3" = 10, "4" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5)
 	dynamic_z_levels = list("1" = 'polar-1.dmm', "2" = 'polar-2.dmm', "3" = 'polar-3.dmm', "4" = 'polar-4.dmm')
 
-	station_name  = "NSS Polar"
-	station_short = "Exodus"
+	station_name  = "Polar Colony"
+	station_short = "Polar"
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
@@ -29,11 +28,13 @@
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
+	base_floor_type = /turf/simulated/floor/natural/frozenground/cave
+	base_floor_area = /area/polarplanet/street
+
 /datum/map/polar/perform_map_generation()
 	//1-z level
-	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 255, 255) // Create the mining Z-level.
+	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 200, 200) // Create the mining Z-level.
 	new /datum/random_map/noise/ore(null, 1, 1, 1, 255, 255)         // Create the mining ore distribution map.
 	//2-z level
-	new /datum/random_map/automata/cave_system(null, 1, 1, 2, 255, 255) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 2, 255, 255)         // Create the mining ore distribution map.
+	new /datum/random_map/noise/ore(null, 1, 1, 2, 200, 200)         // Create the mining ore distribution map.
 	return 1
