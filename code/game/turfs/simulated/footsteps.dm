@@ -182,6 +182,12 @@
 		return
 
 	for(var/mob/M in GLOB.player_list)
+		if(M == src)
+			continue
+
+		if(istype(M, /mob/new_player))
+			continue
+
 		// This IS NOT a permanent solution, but I've spent too much time trying to track down
 		// the way a mob can get nullspace'd BEFORE getting removed from the player_list.
 		// Testing it on a local machine is totally pointless.
@@ -189,12 +195,6 @@
 		if(!M.loc)
 			crash_with("[M] was in nullspace trying to receive [src]'s distant footstep sound!")
 			return
-
-		if(M == src)
-			continue
-
-		if(istype(M, /mob/new_player))
-			continue
 
 		if(M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
 			continue
