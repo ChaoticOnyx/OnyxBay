@@ -503,7 +503,6 @@
 		item_state = "[initial(icon_state)]-burn"
 
 /obj/item/device/flashlight/torch/proc/ignite(lit)
-	. = ..()
 	if (lit)
 		var/time = rand(10, 12)
 		addtimer(CALLBACK(src, .proc/ignite, FALSE), time MINUTES)
