@@ -538,7 +538,7 @@
 		update_icon()
 		done = TRUE
 		desc = "This is a torch if he burn and make light, easy yeah?"
-
+		desc = "It's a torch, if it burns, it glows, isn't it easy?"
 	else if (done && !lit)
 		to_chat(user, SPAN("warning", "Rags already at \the [src]"))
 
