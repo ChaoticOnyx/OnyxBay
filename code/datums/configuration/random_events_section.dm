@@ -14,7 +14,19 @@
 	CONFIG_LOAD_BOOL(enable, data["enable"])
 	CONFIG_LOAD_NUM(expected_round_length, data["expected_round_length"])
 	CONFIG_LOAD_LIST(delay_lower, data["delay_lower"])
+
+	if(delay_lower)
+		delay_lower[EVENT_LEVEL_MUNDANE] = MinutesToTicks(delay_lower[1])
+		delay_lower[EVENT_LEVEL_MODERATE] = MinutesToTicks(delay_lower[2])
+		delay_lower[EVENT_LEVEL_MAJOR] = MinutesToTicks(delay_lower[3])
+
 	CONFIG_LOAD_LIST(delay_upper, data["delay_upper"])
+
+	if(delay_upper)
+		delay_upper[EVENT_LEVEL_MUNDANE] = MinutesToTicks(delay_upper[1])
+		delay_upper[EVENT_LEVEL_MODERATE] = MinutesToTicks(delay_upper[2])
+		delay_upper[EVENT_LEVEL_MAJOR] = MinutesToTicks(delay_upper[3])
+
 	CONFIG_LOAD_LIST(custom_start_mundane, data["custom_start_mundane"])
 	
 	if(custom_start_mundane)
