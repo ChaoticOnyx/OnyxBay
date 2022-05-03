@@ -56,7 +56,7 @@
 		user.visible_message("[user] takes a [pick("drag","puff","pull")] like a boss from \his [name].", \
 							 "You take a [pick("drag","puff","pull")] on your [name].")
 
-		smoke(15, TRUE)
+		smoke(3, TRUE)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		return 1
 
