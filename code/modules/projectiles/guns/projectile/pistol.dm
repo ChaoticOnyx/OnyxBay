@@ -86,7 +86,7 @@
 
 /obj/item/gun/projectile/pistol/vp78/wood
 	name = "VP78 Special"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
+	desc = "The VP78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
 	accuracy = 0.35
 	fire_delay = 4.5
