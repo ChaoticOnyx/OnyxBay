@@ -381,7 +381,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
 		if(!ckey||!message)
 			return
-		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
+		if(!config.misc.ooc_allowed && !input["isadmin"])
 			return "globally muted"
 		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
