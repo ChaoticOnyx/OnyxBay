@@ -268,7 +268,7 @@ storyteller = false
 continuous_rounds = false
 
 ## Set to false to prevent anyone from joining the round by default.
-enter_allowed = false
+enter_allowed = true
 
 ## Set to false if you wish to use the setup where jobs have more access.
 ## This is intended for servers with low populations - where there are not enough players to fill all roles, so players need to do more than just one job.
