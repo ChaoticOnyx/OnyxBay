@@ -3,7 +3,6 @@ var/list/IClog     = list()
 var/list/OOClog    = list()
 var/list/adminlog  = list()
 
-GLOBAL_REAL(config,    /datum/configuration)
 GLOBAL_REAL(watchlist, /datum/watchlist)
 
 var/list/jobMax        = list()

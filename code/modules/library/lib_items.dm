@@ -331,7 +331,7 @@
 	var/ref = source ? "var ref = \ref[source];" : "";
 	switch(style)
 		if(WIKI_FULL)
-			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
+			script = "window.location='[config.link.wiki]/index.php?title=[topic]&printable=yes'"
 		if(WIKI_MINI)
 			script = file2text('code/js/wiki_html.js')
 			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
@@ -355,7 +355,7 @@
 		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
 		<body>[preamble]<div id='status'>Turning on...</div></body>
 		<script>
-		var mainPage = '[config.wikiurl]';
+		var mainPage = '[config.link.wiki]';
 		var topic = '[topic][add_params]';
 		var censorship = [censorship];
 		[ref]

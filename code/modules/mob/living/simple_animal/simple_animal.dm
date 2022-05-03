@@ -277,7 +277,7 @@
 			tally = 1
 		tally *= purge
 
-	return tally+config.animal_delay
+	return tally + config.movement.animal_delay
 
 /mob/living/simple_animal/Stat()
 	. = ..()

@@ -90,7 +90,7 @@ var/list/mob_hat_cache = list()
 /mob/living/silicon/robot/drone/can_be_possessed_by(mob/observer/ghost/possessor)
 	if(!istype(possessor) || !possessor.client || !possessor.ckey)
 		return 0
-	if(!config.allow_drone_spawn)
+	if(!config.misc.allow_drone_spawn)
 		to_chat(src, "<span class='danger'>Playing as drones is not currently permitted.</span>")
 		return 0
 	if(too_many_active_drones())
@@ -216,7 +216,7 @@ var/list/mob_hat_cache = list()
 
 		if(stat == 2)
 
-			if(!config.allow_drone_spawn || emagged || health < -35) //It's dead, Dave.
+			if(!config.misc.allow_drone_spawn || emagged || health < -35) //It's dead, Dave.
 				to_chat(user, "<span class='danger'>The interface is fried, and a distressing burned smell wafts from the robot's interior. You're not rebooting this one.</span>")
 				return
 
@@ -393,7 +393,7 @@ var/list/mob_hat_cache = list()
 	for(var/mob/living/silicon/robot/drone/D in GLOB.silicon_mob_list)
 		if(D.key && D.client)
 			drones++
-	return drones >= config.max_maint_drones
+	return drones >= config.misc.max_maint_drones
 
 /mob/living/silicon/robot/drone/show_laws(everyone = 0)
 	if(!controlling_ai)

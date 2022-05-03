@@ -17,13 +17,13 @@ SUBSYSTEM_DEF(storyteller)
 	var/list/__ckey_to_ui_data = new
 
 /datum/controller/subsystem/storyteller/Initialize(timeofday)
-	if (config.storyteller)
+	if (config.game.storyteller)
 		return ..()
 	flags = SS_NO_FIRE
 
 // called on round setup, after players spawn and mode setup
 /datum/controller/subsystem/storyteller/proc/setup()
-	if (!config.storyteller)
+	if (!config.game.storyteller)
 		return
 	_log_debug("Setup called")
 
@@ -39,7 +39,7 @@ SUBSYSTEM_DEF(storyteller)
 
 // called in the round end
 /datum/controller/subsystem/storyteller/proc/collect_statistics()
-	if (!config.storyteller)
+	if (!config.game.storyteller)
 		return
 	_log_debug("ROUND STATISTICS")
 	for (var/M in __metrics)
@@ -91,7 +91,7 @@ SUBSYSTEM_DEF(storyteller)
 	return data
 
 /datum/controller/subsystem/storyteller/proc/open_control_panel(mob/user, drop_data = TRUE)
-	if (!config.storyteller)
+	if (!config.game.storyteller)
 		return
 	ASSERT(user)
 

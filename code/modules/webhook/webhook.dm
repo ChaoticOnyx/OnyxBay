@@ -31,8 +31,8 @@
 	webhook_send("token", query)
 
 /proc/webhook_send(method, data)
-	if(!config.webhook_address || !config.webhook_key)
+	if(!config.external.webhook_address || !config.external.webhook_key)
 		return
-	var/query = "[config.webhook_address]?key=[config.webhook_key]&method=[method]&data=[url_encode(list2json(data))]"
+	var/query = "[config.external.webhook_address]?key=[config.external.webhook_key]&method=[method]&data=[url_encode(list2json(data))]"
 	spawn(-1)
 		world.Export(query)

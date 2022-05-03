@@ -83,13 +83,13 @@ var/list/hash_to_gear = list()
 		. += gear_name
 
 /datum/category_item/player_setup_item/loadout/sanitize_character()
-	pref.gear_slot = sanitize_integer(pref.gear_slot, 1, config.loadout_slots, initial(pref.gear_slot))
+	pref.gear_slot = sanitize_integer(pref.gear_slot, 1, config.character_setup.loadout_slots, initial(pref.gear_slot))
 	if(!islist(pref.gear_list)) pref.gear_list = list()
 
-	if(pref.gear_list.len < config.loadout_slots)
-		pref.gear_list.len = config.loadout_slots
+	if(pref.gear_list.len < config.character_setup.loadout_slots)
+		pref.gear_list.len = config.character_setup.loadout_slots
 
-	for(var/index = 1 to config.loadout_slots)
+	for(var/index = 1 to config.character_setup.loadout_slots)
 		var/list/gears = pref.gear_list[index]
 
 		if(istype(gears))
@@ -105,7 +105,7 @@ var/list/hash_to_gear = list()
 					gears -= gear_name
 				else
 					var/datum/gear/G = gear_datums[gear_name]
-					if(total_cost + G.cost > config.max_gear_cost)
+					if(total_cost + G.cost > config.character_setup.max_gear_cost)
 						gears -= gear_name
 					else
 						total_cost += G.cost
@@ -129,7 +129,7 @@ var/list/hash_to_gear = list()
 			total_cost += G.cost
 
 	var/fcolor =  "#3366cc"
-	if(total_cost < config.max_gear_cost)
+	if(total_cost < config.character_setup.max_gear_cost)
 		fcolor = "#e67300"
 
 	. += "<table style='width: 100%;'><tr>"
@@ -141,8 +141,8 @@ var/list/hash_to_gear = list()
 	. += "<td><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></td>"
 
 	. += "<td style=\"vertical-align: top;\">"
-	if(config.max_gear_cost < INFINITY)
-		. += "<font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.<br>"
+	if(config.character_setup.max_gear_cost < INFINITY)
+		. += "<font color = '[fcolor]'>[total_cost]/[config.character_setup.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
@@ -467,7 +467,7 @@ var/list/hash_to_gear = list()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["next_slot"])
 		pref.gear_slot = pref.gear_slot+1
-		if(pref.gear_slot > config.loadout_slots)
+		if(pref.gear_slot > config.character_setup.loadout_slots)
 			pref.gear_slot = 1
 		selected_gear = null
 		selected_tweaks.Cut()
@@ -477,7 +477,7 @@ var/list/hash_to_gear = list()
 	if(href_list["prev_slot"])
 		pref.gear_slot = pref.gear_slot-1
 		if(pref.gear_slot < 1)
-			pref.gear_slot = config.loadout_slots
+			pref.gear_slot = config.character_setup.loadout_slots
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
@@ -521,9 +521,9 @@ var/list/hash_to_gear = list()
 	var/list/pool = new
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.character_setup.max_gear_cost)
 			pool += G
-	var/points_left = config.max_gear_cost
+	var/points_left = config.character_setup.max_gear_cost
 	while (points_left > 0 && length(pool))
 		var/datum/gear/chosen = pick(pool)
 		var/list/chosen_tweaks = new
@@ -577,7 +577,7 @@ var/list/hash_to_gear = list()
 		for(var/gear_name in pref.gear_list[pref.gear_slot])
 			var/datum/gear/G = gear_datums[gear_name]
 			if(istype(G)) total_cost += G.cost
-		if((total_cost+TG.cost) <= config.max_gear_cost)
+		if((total_cost+TG.cost) <= config.character_setup.max_gear_cost)
 			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 
 

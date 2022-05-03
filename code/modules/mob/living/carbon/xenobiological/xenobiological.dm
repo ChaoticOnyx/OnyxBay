@@ -96,7 +96,7 @@
 	if(health <= 0) // if damaged, the metroid moves twice as slow
 		tally *= 2
 
-	return tally + config.metroid_delay
+	return tally + config.movement.metroid_delay
 
 /mob/living/carbon/metroid/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!(yes) || now_pushing))

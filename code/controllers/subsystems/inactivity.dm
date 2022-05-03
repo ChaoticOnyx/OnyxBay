@@ -7,7 +7,7 @@ SUBSYSTEM_DEF(inactivity)
 	var/number_kicked = 0
 
 /datum/controller/subsystem/inactivity/fire(resumed = FALSE)
-	if(!config.kick_inactive)
+	if(!config.misc.kick_inactive)
 		suspend()
 		return
 	if(!resumed)
@@ -16,9 +16,9 @@ SUBSYSTEM_DEF(inactivity)
 	while(client_list.len)
 		var/client/C = client_list[client_list.len]
 		client_list.len--
-		if(!C.holder && C.is_afk(config.kick_inactive MINUTES) && !isobserver(C.mob))
+		if(!C.holder && C.is_afk(config.misc.kick_inactive MINUTES) && !isobserver(C.mob))
 			log_access("AFK: [key_name(C)]")
-			to_chat(C, SPAN("warning", "You have been inactive for more than [config.kick_inactive] minute\s and have been disconnected."), type = MESSAGE_TYPE_SYSTEM)
+			to_chat(C, SPAN("warning", "You have been inactive for more than [config.misc.kick_inactive] minute\s and have been disconnected."), type = MESSAGE_TYPE_SYSTEM)
 			qdel(C)
 			number_kicked++
 		if(MC_TICK_CHECK)
