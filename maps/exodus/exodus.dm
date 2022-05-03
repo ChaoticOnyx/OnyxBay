@@ -22,6 +22,7 @@
 	#include "derelicts/bearcat/bearcat-2.dmm"
 	#include "derelicts/jungleplanet/jungle_planet.dmm"
 	#include "derelicts/old_restaurant/old_restaurant.dmm"
+	#include "derelicts/sensor_array/sensor_array.dmm"
 
 	#define USING_MAP_DATUM /datum/map/exodus
 
