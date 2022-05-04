@@ -24,7 +24,7 @@
 
 /obj/item/remains/mouse
 	desc = "They look like the remains of a small rodent."
-	icon_state = "rat"
+	icon_state = "mouse"
 
 /obj/item/remains/lizard
 	desc = "They look like the remains of a small rodent."
