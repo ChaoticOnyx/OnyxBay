@@ -66,7 +66,7 @@
 		"The weed of crime bears bitter fruit.",
 		"Just say \"No!\" to space drugs!",
 		"Violence is never the answer.",
-		"I'm not an officer, I'm a Security <em>monitor</em>.",
+		"I'm not an officer, I'm a Security monitor.",
 		"I am the law.",
 		"Solve your problems with your head.",
 		"Keep your words to yourself, thug.",
