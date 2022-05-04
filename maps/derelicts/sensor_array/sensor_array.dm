@@ -112,6 +112,9 @@
 	if(..())
 		return TRUE
 	
+	if(isghost(usr))
+		return TRUE
+	
 	if(stat & (BROKEN|NOPOWER))
 		return TRUE
 
