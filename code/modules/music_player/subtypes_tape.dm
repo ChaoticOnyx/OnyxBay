@@ -14,7 +14,6 @@
 /obj/item/music_tape/random/newyear
 	name = "Christmas Music Tape"
 	tracklist = list(
-		"Final Countdown"               = 'sound/music/newyear/christmasamb1.ogg',
 		"Last Christmas"                = 'sound/music/newyear/christmasamb2.ogg',
 		"We Wish You a Merry Christmas" = 'sound/music/newyear/christmasamb3.ogg',
 		"Jingle Bells"                  = 'sound/music/newyear/christmasamb4.ogg',
@@ -41,7 +40,6 @@
 	tracklist = list(
 		"Don`t Bother Me"				= 'sound/music/frontier/dont_bother_me.ogg',
 		"It`s The End Of The World"     = 'sound/music/frontier/end_of_the_world.ogg',
-		"Little Dark Age"               = 'sound/music/frontier/little_dark_age.ogg',
 		"Piano Bar I" 					= 'sound/music/frontier/piano_bar.ogg',
 		"Resonance"              	    = 'sound/music/frontier/resonance.ogg',
 		"Rust"    						= 'sound/music/frontier/rust.ogg',
@@ -56,6 +54,7 @@
 		"Bluespace"     				= 'sound/music/exodus/bluespace.ogg',
 		"Buy Something Will Ya?"     	= 'sound/music/exodus/buy_something.ogg',
 		"Earth Trax"             		= 'sound/music/exodus/earth_trax.ogg',
+		"Final Countdown"               = 'sound/music/newyear/final_countdown.ogg',
 		"Sunshine" 						= 'sound/music/exodus/sunshine.ogg',
 		"The Tale Of a Cruel World"     = 'sound/music/exodus/tale_of_a_cruel_world.ogg',
 		"The Other Room"    			= 'sound/music/exodus/the_other_room.ogg',
