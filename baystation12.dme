@@ -2886,8 +2886,6 @@
 #include "maps\exodus\frontier\frontier_define.dm"
 #include "maps\exodus\frontier-SCP\frontier-SCP_define.dm"
 #include "maps\exodus\genesis\genesis_define.dm"
-#include "maps\exodus\helltier2021\helltier_areas.dm"
-#include "maps\exodus\helltier2021\helltier_define.dm"
 #include "maps\exodus\sunset\sunset_define.dm"
 #include "maps\polar\polar_areas.dm"
 #include "maps\polar\polar_define.dm"
