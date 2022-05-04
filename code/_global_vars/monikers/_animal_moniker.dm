@@ -139,7 +139,7 @@
     	"monkey",
     	"moose",
     	"moth",
-    	"mouse",
+    	"rat",
     	"mule",
     	"narwhal",
     	"newt",

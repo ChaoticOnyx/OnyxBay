@@ -390,7 +390,7 @@
 		GLOB.living_mob_list_.len * 6;   "animal",
 		GLOB.living_mob_list_.len * 5;   "xenomorph",
 		GLOB.living_mob_list_.len * 2;   "bot",
-		GLOB.living_mob_list_.len    ;   "mouse",
+		GLOB.living_mob_list_.len    ;   "rat",
 		GLOB.ghost_mob_list.len   * 3;   "ghost"
 	)
 
@@ -411,7 +411,7 @@
 			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/metroid, /mob/living/deity))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))
-		if("mouse")
+		if("rat")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal/mouse))
 		if("ghost")
 			fake_candidates = GLOB.ghost_mob_list
