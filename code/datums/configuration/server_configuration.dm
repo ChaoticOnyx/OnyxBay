@@ -37,6 +37,7 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 		// I wish I didn't have to instance the game modes in order to look up
 		// their information, but it is the only way (at least that I know of).
 		var/datum/game_mode/M = new T()
+		log_to_dd("Initialized game mode [M.config_tag]")
 
 		if (M.config_tag)
 			gamemode_cache[M.config_tag] = M // So we don't instantiate them repeatedly.
