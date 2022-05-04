@@ -27,18 +27,18 @@
 		/datum/shuttle/autodock/multi/antag/skipjack,
 	)
 	load_legacy_saves = TRUE
-	station_levels = list(1, 2)
-	admin_levels = list(3)
+	station_levels = list(1,2)
+	admin_levels = list(4)
 	contact_levels = list(1,2,4,6)
-	player_levels = list(1,2,4,5,6,7,8,9,10,11,12,13,14,15,16)
+	player_levels = list(1,2,3,5,6,7,8,9,10,11,12,13,14,15,16)
 	sealed_levels = list(12)
 	accessible_z_levels = list(
 		"1" = 5,
 		"2" = 5,
-		"4" = 10,
+		"3" = 10,
 		"5" = 15,
-		"6" = 15,
-		"7" = 30,
+		"6" = 30,
+		"7" = 15,
 		"8" = 5,
 		"9" = 5,
 		"10" = 5,
@@ -51,12 +51,12 @@
 	dynamic_z_levels = list(
 		'exodus-1.dmm',
 		'exodus-2.dmm',
-		// CC
 		'exodus-3.dmm',
+		// CC
 		'exodus-4.dmm',
-		'exodus-5.dmm',
-		'exodus-6.dmm',
+		'maps/telecomms.dmm',
 		'maps/null-space.dmm',
+		'maps/derelicts/construction_site.dmm',
 		'maps/derelicts/snowasteroid.dmm',
 		'maps/derelicts/original/derelict.dmm',
 		'maps/derelicts/bearcat/bearcat-1.dmm',
