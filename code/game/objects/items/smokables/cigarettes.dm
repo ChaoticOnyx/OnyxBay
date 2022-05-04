@@ -40,7 +40,7 @@
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
 			if(!M.stat)
-				for(var/obj/item/material/ashtray/A in view(1, loc))
+				for(var/obj/item/material/ashtray/A in oview(1, loc))
 					if(A.contents.len < A.max_butts)
 						A.attackby(src, loc)
 						return
