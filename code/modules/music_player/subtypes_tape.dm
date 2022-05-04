@@ -54,7 +54,7 @@
 		"Bluespace"     				= 'sound/music/exodus/bluespace.ogg',
 		"Buy Something Will Ya?"     	= 'sound/music/exodus/buy_something.ogg',
 		"Earth Trax"             		= 'sound/music/exodus/earth_trax.ogg',
-		"Final Countdown"               = 'sound/music/newyear/final_countdown.ogg',
+		"Final Countdown"               = 'sound/music/exodus/final_countdown.ogg',
 		"Sunshine" 						= 'sound/music/exodus/sunshine.ogg',
 		"The Tale Of a Cruel World"     = 'sound/music/exodus/tale_of_a_cruel_world.ogg',
 		"The Other Room"    			= 'sound/music/exodus/the_other_room.ogg',
