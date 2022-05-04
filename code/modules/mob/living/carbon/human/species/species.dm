@@ -75,7 +75,7 @@
 	var/additional_langs                      // Any other languages the species always gets.
 
 	// Combat vars.
-	var/total_health = 200                   // Point at which the mob will enter crit.
+	var/total_health = 100                   // Point at which the mob will enter crit.
 	var/list/unarmed_types = list(           // Possible unarmed attacks that the mob will use in combat,
 		/datum/unarmed_attack,
 		/datum/unarmed_attack/bite
@@ -536,7 +536,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
 	H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 
-	if(config.welder_vision)
+	if(config.misc.welder_vision_allowed)
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)

@@ -216,7 +216,7 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/examine(mob/user)
+/obj/item/organ/external/_examine_text(mob/user)
 	. = ..()
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
@@ -511,7 +511,7 @@ This function completely restores a damaged organ to perfect condition.
 		switch(type)
 			if(BURN)  fluid_loss_severity = FLUIDLOSS_WIDE_BURN
 			if(LASER) fluid_loss_severity = FLUIDLOSS_CONC_BURN
-		var/fluid_loss = (damage/(owner.maxHealth - config.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
+		var/fluid_loss = (damage/(owner.maxHealth - config.health.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
 		owner.remove_blood(fluid_loss)
 
 	// first check whether we can widen an existing wound
@@ -526,7 +526,7 @@ This function completely restores a damaged organ to perfect condition.
 			if(compatible_wounds.len)
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage)
-				if(prob(25))
+				if(owner && prob(25))
 					if(BP_IS_ROBOTIC(src))
 						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
 						"<span class='danger'>The damage to your [name] worsens.</span>",\
@@ -722,7 +722,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		//we only update wounds once in [wound_update_accuracy] ticks so have to emulate realtime
 		heal_amt = heal_amt * wound_update_accuracy
 		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
-		heal_amt = heal_amt * config.organ_regeneration_multiplier
+		heal_amt = heal_amt * config.health.organ_regeneration_multiplier
 		// amount of healing is spread over all the wounds
 		heal_amt = heal_amt / (wounds.len + 1)
 		// making it look prettier on scanners
@@ -860,6 +860,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
 	if(QDELETED(src))
+		victim.updatehealth()
+		victim.UpdateDamageIcon()
+		victim.regenerate_icons()
 		return
 
 	if(!clean)
@@ -887,7 +890,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
-	spawn(1)
+			stump.replaced(victim)
+	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
 			victim.UpdateDamageIcon()
@@ -904,8 +908,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			else
 				M.Turn(rand(180))
 			src.transform = M
-			update_icon_drop(victim)
 			forceMove(victim.loc)
+			update_icon_drop(victim)
 			if(!clean) // Throw limb around.
 				spawn()
 					if(!QDELETED(src) && isturf(loc))
@@ -1039,7 +1043,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		movement_tally += broken_tally * damage_multiplier
 
 /obj/item/organ/external/proc/fracture()
-	if(!config.bones_can_break)
+	if(!config.health.bones_can_break)
 		return
 	if(BP_IS_ROBOTIC(src))
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
@@ -1081,7 +1085,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(use_damage_check && (brute_dam > min_broken_damage * config.organ_health_multiplier))
+	if(use_damage_check && (brute_dam > min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN

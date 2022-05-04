@@ -29,7 +29,7 @@
 	radio.set_frequency(ENT_FREQ)
 	update_icon()
 
-/obj/item/device/tvcamera/examine(mob/user)
+/obj/item/device/tvcamera/_examine_text(mob/user)
 	. = ..()
 	. += "\nVideo feed is currently: [camera.status ? "Online" : "Offline"]"
 	. += "\nAudio feed is currently: [radio.broadcasting ? "Online" : "Offline"]"

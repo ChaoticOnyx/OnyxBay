@@ -52,6 +52,10 @@
 #define SHUTTLE_WARMUP    1
 #define SHUTTLE_INTRANSIT 2
 
+// Elevator moving status.
+#define ELEVATOR_IDLE      0
+#define ELEVATOR_INTRANSIT 1
+
 // Autodock shuttle processing status.
 #define IDLE_STATE   0
 #define WAIT_LAUNCH  1
@@ -270,3 +274,8 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+// Bank accounts' security levels
+#define BANK_SECURITY_MINIMUM 0
+#define BANK_SECURITY_MODERATE 1
+#define BANK_SECURITY_MAXIMUM 2

@@ -2,32 +2,32 @@
  * Uses DOMPurify to purify/sanitise HTML.
  */
 
-import DOMPurify from 'dompurify'
+import DOMPurify from "dompurify";
 
 // Default values
 const defTag = [
-  'b',
-  'br',
-  'center',
-  'code',
-  'div',
-  'font',
-  'hr',
-  'i',
-  'li',
-  'menu',
-  'ol',
-  'p',
-  'pre',
-  'span',
-  'table',
-  'td',
-  'th',
-  'tr',
-  'u',
-  'ul'
-]
-const defAttr = ['class', 'style']
+  "b",
+  "br",
+  "center",
+  "code",
+  "div",
+  "font",
+  "hr",
+  "i",
+  "li",
+  "menu",
+  "ol",
+  "p",
+  "pre",
+  "span",
+  "table",
+  "td",
+  "th",
+  "tr",
+  "u",
+  "ul",
+];
+const defAttr = ["class", "style"];
 
 /**
  * Feed it a string and it should spit out a sanitized version.
@@ -44,10 +44,10 @@ export const sanitizeText = (input, tags = defTag, forbidAttr = defAttr) => {
   // kill href links or such
   return DOMPurify.sanitize(input, {
     ALLOWED_TAGS: tags,
-    FORBID_ATTR: forbidAttr
-  })
-}
+    FORBID_ATTR: forbidAttr,
+  });
+};
 
 export const escapeRegExp = (string) => {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
-}
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+};

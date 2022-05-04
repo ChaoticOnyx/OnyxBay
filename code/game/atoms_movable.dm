@@ -19,6 +19,11 @@
 	var/pull_sound = null
 
 /atom/movable/Destroy()
+	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
+		crash_with("Was deleted before initalization")
+
+	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
+
 	for(var/A in src)
 		qdel(A)
 
@@ -32,10 +37,9 @@
 		QDEL_NULL_LIST(movement_handlers)
 
 	if(virtual_mob && !ispath(virtual_mob))
-		qdel(virtual_mob)
-		virtual_mob = null
+		QDEL_NULL(virtual_mob)
 
-	. = ..()
+	return ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
@@ -45,6 +49,7 @@
 	spawn(0)
 		if (A && yes)
 			A.last_bumped = world.time
+			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 			A.Bumped(src)
 		return
 	..()
@@ -60,6 +65,8 @@
 	return
 
 /atom/movable/proc/forceMove(atom/destination)
+	if((gc_destroyed && gc_destroyed != GC_CURRENTLY_BEING_QDELETED) && !isnull(destination))
+		CRASH("Attempted to forceMove a QDELETED [src] out of nullspace!")
 	if(loc == destination)
 		return 0
 	var/is_origin_turf = isturf(loc)

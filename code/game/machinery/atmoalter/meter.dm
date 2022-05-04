@@ -74,7 +74,7 @@
 		)
 		radio_connection.post_signal(src, signal)
 
-/obj/machinery/meter/examine(mob/user)
+/obj/machinery/meter/_examine_text(mob/user)
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))

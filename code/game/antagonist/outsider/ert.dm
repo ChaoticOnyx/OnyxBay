@@ -36,8 +36,8 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/Initialize()
 	..()
 	leader_welcome_text = "As leader of the Emergency Response Team, you answer only to [GLOB.using_map.boss_name], and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however."
-	if(config.ert_min_age)
-		min_player_age = config.ert_min_age
+	if(config.game.ert_min_age)
+		min_player_age = config.game.ert_min_age
 
 /datum/antagonist/ert/create_global_objectives()
 	if(!..())

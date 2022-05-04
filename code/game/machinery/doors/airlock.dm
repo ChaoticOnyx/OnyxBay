@@ -974,7 +974,7 @@ About the new airlock wires panel:
 	else
 		..(amount)
 
-/obj/machinery/door/airlock/examine(mob/user)
+/obj/machinery/door/airlock/_examine_text(mob/user)
 	. = ..()
 	if(lock_cut_state == BOLTS_EXPOSED)
 		. += "\nThe bolt cover has been cut open."

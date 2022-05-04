@@ -60,7 +60,7 @@
 	else
 		set_light(0)
 
-/obj/item/melee/baton/examine(mob/user)
+/obj/item/melee/baton/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

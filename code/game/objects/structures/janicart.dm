@@ -20,7 +20,7 @@
 	create_reagents(180)
 
 
-/obj/structure/janitorialcart/examine(mob/user)
+/obj/structure/janitorialcart/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!"
@@ -183,7 +183,7 @@
 	create_reagents(100)
 
 
-/obj/structure/bed/chair/janicart/examine(mob/user)
+/obj/structure/bed/chair/janicart/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

@@ -149,6 +149,7 @@ var/list/limb_icon_cache = list()
 			dir = EAST
 		if(mob_icon)
 			icon = mob_icon
+	return icon
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return

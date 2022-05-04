@@ -27,7 +27,7 @@
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
 
-/obj/structure/window/examine(mob/user)
+/obj/structure/window/_examine_text(mob/user)
 	. = ..()
 
 	if(health == maxhealth)

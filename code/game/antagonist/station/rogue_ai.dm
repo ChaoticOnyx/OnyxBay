@@ -18,8 +18,8 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 
 /datum/antagonist/rogue_ai/Initialize()
 	. = ..()
-	if(config.malf_min_age)
-		min_player_age = config.malf_min_age
+	if(config.game.malf_min_age)
+		min_player_age = config.game.malf_min_age
 
 /datum/antagonist/rogue_ai/can_become_antag(datum/mind/player, ignore_role, max_stat)
 	. = ..()
@@ -104,4 +104,3 @@ GLOBAL_DATUM_INIT(malf, /datum/antagonist/rogue_ai, new)
 	if (newname)
 		player.fully_replace_character_name(newname)
 	if(player.mind) player.mind.name = player.name
-

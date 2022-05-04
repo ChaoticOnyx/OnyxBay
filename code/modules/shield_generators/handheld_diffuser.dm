@@ -44,7 +44,7 @@
 		STOP_PROCESSING(SSobj, src)
 	to_chat(usr, "You turn \the [src] [enabled ? "on" : "off"].")
 
-/obj/item/shield_diffuser/examine(mob/user)
+/obj/item/shield_diffuser/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe charge meter reads [cell ? cell.percent() : 0]%"
 	. += "\nIt is [enabled ? "enabled" : "disabled"]."

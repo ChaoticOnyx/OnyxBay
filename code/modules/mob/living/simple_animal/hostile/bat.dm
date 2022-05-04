@@ -39,7 +39,7 @@
 	if(istype(L))
 		owner = L
 
-/mob/living/simple_animal/hostile/scarybat/FindTarget()
+/mob/living/simple_animal/hostile/scarybat/find_target()
 	. = ..()
 	if(.)
 		emote("flutters towards [.]")

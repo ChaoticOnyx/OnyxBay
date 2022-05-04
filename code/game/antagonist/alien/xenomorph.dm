@@ -31,8 +31,8 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
 	. = ..()
-	if(config.xeno_min_age)
-		min_player_age = config.xeno_min_age
+	if(config.game.xeno_min_age)
+		min_player_age = config.game.xeno_min_age
 
 /datum/antagonist/xenos/greet(datum/mind/player)
 	to_chat(player.current, SPAN("danger", "<font size=3>You are a [role_text]!</font>"))
@@ -40,14 +40,14 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		to_chat(player.current, SPAN("notice", "Hiss! You are a xenomorph! Do everything you can to make sure the hive thriving!"))
 	else
 		to_chat(player.current, SPAN("notice", "[welcome_text]"))
-	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
 		to_chat(player.current, SPAN("notice", "[antag_text]"))
 
 	show_objectives_at_creation(player)
 	return TRUE
 
 /datum/antagonist/xenos/attempt_random_spawn()
-	if(config.aliens_allowed)
+	if(config.misc.aliens_allowed)
 		..()
 
 /datum/antagonist/xenos/antags_are_dead()

@@ -24,6 +24,9 @@
 	heat_capacity = 10000
 	var/lava = 0
 
+/turf/simulated/floor/proc/dismantle_floor()
+	ChangeTurf(get_base_turf_by_area(src))
+
 /turf/simulated/floor/is_plating()
 	return !flooring
 

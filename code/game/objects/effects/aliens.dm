@@ -103,7 +103,7 @@
 		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
 	hatch()
 
-/obj/structure/alien/egg/examine(mob/user)
+/obj/structure/alien/egg/_examine_text(mob/user)
 	. = ..()
 	if(isliving(user))
 		var/mob/living/M = user

@@ -123,7 +123,7 @@ var/list/organ_cache = list()
 			if(B && prob(40))
 				reagents.remove_reagent(/datum/reagent/blood, 0.1)
 				blood_splatter(src, B, 1)
-			if(config.organs_decay)
+			if(config.health.organs_can_decay)
 				take_general_damage(rand(1, 3))
 			germ_level += rand(2, 6)
 			if(germ_level >= INFECTION_LEVEL_TWO)
@@ -154,7 +154,7 @@ var/list/organ_cache = list()
 	else
 		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
-/obj/item/organ/examine(mob/user)
+/obj/item/organ/_examine_text(mob/user)
 	. = ..()
 	. += "\n[show_decay_status(user)]"
 	if(get_dist(src, user) > 1)

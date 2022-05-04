@@ -18,7 +18,7 @@
 		tally += (2 * holding.w_class)
 	return tally
 
-/mob/living/bot/remotebot/examine(mob/user)
+/mob/living/bot/remotebot/_examine_text(mob/user)
 	. = ..()
 	if(holding)
 		. += "\n<span class='notice'>It is holding \the \icon[holding] [holding].</span>"
@@ -59,7 +59,7 @@
 	return ..()
 
 /mob/living/bot/remotebot/proc/pickup(obj/item/I)
-	if(holding || get_dist(src,I) > 1)
+	if(holding || get_dist(src, I) > 1 || I.anchored)
 		return
 	src.visible_message("<b>\The [src]</b> picks up \the [I].")
 	flick("fetchbot-c", src)

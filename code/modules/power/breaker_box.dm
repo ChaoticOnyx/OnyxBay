@@ -32,7 +32,7 @@
 	set_state(1)
 	. = ..()
 
-/obj/machinery/power/breakerbox/examine(mob/user)
+/obj/machinery/power/breakerbox/_examine_text(mob/user)
 	. = ..()
 	. += "\nLarge machine with heavy duty switching circuits used for advanced grid control"
 	if(on)

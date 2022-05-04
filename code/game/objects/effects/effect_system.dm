@@ -34,9 +34,10 @@ would spawn and follow the beaker, even if it is carried or thrown.
 /datum/effect/effect/system/proc/spread()
 
 /datum/effect/effect/system/Destroy()
-	..()
 	holder = null
 	location = null
+
+	return ..()
 
 /////////////////////////////////////////////
 // GENERIC STEAM SPREAD SYSTEM

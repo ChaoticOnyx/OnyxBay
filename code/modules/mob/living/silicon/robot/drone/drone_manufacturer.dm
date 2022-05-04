@@ -29,9 +29,6 @@
 	fabricator_tag = "Derelict"
 	drone_type = /mob/living/silicon/robot/drone/construction
 
-/obj/machinery/drone_fabricator/New()
-	..()
-
 /obj/machinery/drone_fabricator/power_change()
 	..()
 	if (stat & NOPOWER)
@@ -52,14 +49,14 @@
 
 	icon_state = "drone_fab_active"
 	var/elapsed = world.time - time_last_drone
-	drone_progress = round((elapsed/config.drone_build_time)*100)
+	drone_progress = round((elapsed / config.misc.drone_build_time)*100)
 
 	if(drone_progress >= 100)
 		visible_message("\The [src] voices a strident beep, indicating a drone chassis is prepared.")
 
-/obj/machinery/drone_fabricator/examine(mob/user)
+/obj/machinery/drone_fabricator/_examine_text(mob/user)
 	. = ..()
-	if(produce_drones && drone_progress >= 100 && isghost(user) && config.allow_drone_spawn && count_drones() < config.max_maint_drones)
+	if(produce_drones && drone_progress >= 100 && isghost(user) && config.misc.allow_drone_spawn && count_drones() < config.misc.max_maint_drones)
 		. += "\n<BR><B>A drone is prepared. Select 'Join As Drone' from the Ghost tab to spawn as a maintenance drone.</B>"
 
 /obj/machinery/drone_fabricator/proc/handle_customs(/mob/living/silicon/robot/drone/D, client/player)
@@ -80,7 +77,7 @@
 	if(stat & NOPOWER)
 		return
 
-	if(!produce_drones || !config.allow_drone_spawn || count_drones() >= config.max_maint_drones)
+	if(!produce_drones || !config.misc.allow_drone_spawn || count_drones() >= config.misc.max_maint_drones)
 		return
 
 	if(player && !isghost(player.mob))
@@ -112,7 +109,7 @@
 		to_chat(user, "<span class='danger'>The game hasn't started yet!</span>")
 		return
 
-	if(!(config.allow_drone_spawn))
+	if(!(config.misc.allow_drone_spawn))
 		to_chat(user, "<span class='danger'>That verb is not currently permitted.</span>")
 		return
 
@@ -120,7 +117,7 @@
 		to_chat(user, "<span class='danger'>You are banned from playing synthetics and cannot spawn as a drone.</span>")
 		return
 
-	if(config.use_age_restriction_for_jobs && isnum(user.client.player_age))
+	if(config.game.use_age_restriction_for_jobs && isnum(user.client.player_age))
 		if(user.client.player_age <= 30)
 			to_chat(user, "<span class='danger'> Your account is not old enough to play as a maintenance drone.</span>")
 			return

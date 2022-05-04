@@ -2,12 +2,7 @@
 /obj/item/reagent_containers/glass/bottle/big/compost
 	name = "compost bottle"
 	starting_label = "compost"
-
-/obj/item/reagent_containers/glass/bottle/big/compost/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 90)
-	update_icon()
-
+	startswith = list(/datum/reagent/toxin/fertilizer/compost)
 
 /obj/item/reagent_containers/glass/bottle/eznutrient
 	name = "\improper EZ NUtrient bottle"
@@ -18,12 +13,7 @@
 	use_filling_states = FALSE
 	default_name = null
 	default_desc = null
-
-/obj/item/reagent_containers/glass/bottle/eznutrient/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/eznutrient, 60)
-	update_icon()
-
+	startswith = list(/datum/reagent/toxin/fertilizer/eznutrient)
 
 /obj/item/reagent_containers/glass/bottle/left4zed
 	name = "\improper Left-4-Zed bottle"
@@ -34,12 +24,7 @@
 	use_filling_states = FALSE
 	default_name = null
 	default_desc = null
-
-/obj/item/reagent_containers/glass/bottle/left4zed/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/left4zed, 60)
-	update_icon()
-
+	startswith = list(/datum/reagent/toxin/fertilizer/left4zed)
 
 /obj/item/reagent_containers/glass/bottle/robustharvest
 	name = "\improper Robust Harvest"
@@ -50,12 +35,7 @@
 	use_filling_states = FALSE
 	default_name = null
 	default_desc = null
-
-/obj/item/reagent_containers/glass/bottle/robustharvest/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/toxin/fertilizer/robustharvest, 60)
-	update_icon()
-
+	startswith = list(/datum/reagent/toxin/fertilizer/robustharvest)
 
 /obj/item/reagent_containers/glass/bottle/mutogrow
 	name = "\improper Mut'o'Grow"
@@ -66,8 +46,4 @@
 	use_filling_states = FALSE
 	default_name = null
 	default_desc = null
-
-/obj/item/reagent_containers/glass/bottle/mutogrow/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/mutagen/industrial, 60)
-	update_icon()
+	startswith = list(/datum/reagent/mutagen/industrial)

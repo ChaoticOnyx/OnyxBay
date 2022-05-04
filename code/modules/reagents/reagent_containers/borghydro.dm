@@ -18,7 +18,7 @@
 	var/list/reagent_names = list()
 
 /obj/item/reagent_containers/borghypo/crisis
-	reagent_ids = list(	/datum/reagent/tramadol,
+	reagent_ids = list(	/datum/reagent/painkiller/tramadol,
 						/datum/reagent/inaprovaline,
 						/datum/reagent/tricordrazine,
 						/datum/reagent/bicaridine,
@@ -31,7 +31,7 @@
 						/datum/reagent/hyronalin,
 						/datum/reagent/peridaxon,
 						/datum/reagent/spaceacillin,
-						/datum/reagent/tramadol/oxycodone,
+						/datum/reagent/painkiller,
 						/datum/reagent/bicaridine,
 						/datum/reagent/kelotane,
 						/datum/reagent/dexalinp,
@@ -122,7 +122,7 @@
 			to_chat(usr, "<span class='notice'>Synthesizer is now producing '[initial(R.name)]'.</span>")
 		return TOPIC_REFRESH
 
-/obj/item/reagent_containers/borghypo/examine(mob/user)
+/obj/item/reagent_containers/borghypo/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return

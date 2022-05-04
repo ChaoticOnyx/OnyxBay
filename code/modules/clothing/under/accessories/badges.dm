@@ -17,7 +17,7 @@
 	stored_name = new_name
 	name = "[initial(name)] ([stored_name])"
 
-/obj/item/clothing/accessory/badge/attack_self(mob/user as mob)
+/obj/item/clothing/accessory/badge/attack_self(mob/user)
 
 	if(!stored_name)
 		to_chat(user, "You inspect your [src.name]. Everything seems to be in order and you give it a quick cleaning with your hand.")
@@ -60,13 +60,14 @@
 
 /obj/item/clothing/accessory/badge/holo/cord
 	icon_state = "holobadge-cord"
+	item_state = "holobadge-cord"
 	slot_flags = SLOT_MASK | SLOT_TIE
-
 /obj/item/clothing/accessory/badge/holo/NT/cord
 	icon_state = "holobadge-cord"
+	item_state = "holobadge-cord"
 	slot_flags = SLOT_MASK | SLOT_TIE
 
-/obj/item/clothing/accessory/badge/holo/attack_self(mob/user as mob)
+/obj/item/clothing/accessory/badge/holo/attack_self(mob/user)
 	if(!stored_name)
 		to_chat(user, "Waving around a holobadge before swiping an ID would be pretty pointless.")
 		return
@@ -81,7 +82,7 @@
 		to_chat(user, "<span class='danger'>You crack the holobadge security checks.</span>")
 		return 1
 
-/obj/item/clothing/accessory/badge/holo/attackby(obj/item/O as obj, mob/user as mob)
+/obj/item/clothing/accessory/badge/holo/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/card/id) || istype(O, /obj/item/device/pda))
 
 		var/obj/item/card/id/id_card = null

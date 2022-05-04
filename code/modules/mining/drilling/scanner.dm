@@ -10,7 +10,7 @@
 	matter = list(MATERIAL_STEEL = 150)
 	var/survey_data = 0
 
-/obj/item/mining_scanner/examine(mob/user)
+/obj/item/mining_scanner/_examine_text(mob/user)
 	. = ..()
 	. += "\nTiny indicator shows it holds [survey_data] Good Explorer Points worth of data."
 
@@ -99,7 +99,7 @@
 	icon_state = "nucleardisk"
 	var/data
 
-/obj/item/disk/survey/examine(mob/user)
+/obj/item/disk/survey/_examine_text(mob/user)
 	. = ..()
 	. += "\nTiny indicator shows it holds [data] Good Explorer Points of data."
 

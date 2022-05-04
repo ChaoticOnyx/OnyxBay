@@ -9,6 +9,7 @@
 	var/volume = 30
 	var/label_text
 	var/can_be_splashed = FALSE
+	var/list/startswith // List of reagents to start with
 
 /obj/item/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -24,6 +25,11 @@
 	if(!possible_transfer_amounts)
 		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
 	create_reagents(volume)
+	if(startswith)
+		for(var/thing in startswith)
+			reagents.add_reagent(thing, startswith[thing] ? startswith[thing] : volume)
+		startswith = null // Unnecessary lists bad
+		update_icon()
 
 /obj/item/reagent_containers/attack_self(mob/user)
 	return
@@ -203,7 +209,7 @@
 	else
 		return ..()
 
-/obj/item/reagent_containers/examine(mob/user)
+/obj/item/reagent_containers/_examine_text(mob/user)
 	. = ..()
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\n<span class='notice'>The [src] contains: [reagents.get_reagents()].</span>"

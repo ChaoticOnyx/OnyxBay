@@ -3,13 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-/**
- * tgui subsystem
- *
- * Contains all tgui state and subsystem code.
- *
- */
-
+/// Contains all tgui state and subsystem code.
 SUBSYSTEM_DEF(tgui)
 	name = "tgui"
 	wait = 9
@@ -28,6 +22,10 @@ SUBSYSTEM_DEF(tgui)
 
 /datum/controller/subsystem/tgui/PreInit()
 	basehtml = file2text('tgui/public/tgui.html')
+	// Inject inline polyfills
+	var/polyfill = file2text('tgui/public/tgui-polyfill.bundle.js')
+	polyfill = "<script>\n[polyfill]\n</script>"
+	basehtml = replacetextEx(basehtml, "<!-- tgui:inline-polyfill -->", polyfill)
 
 /datum/controller/subsystem/tgui/Shutdown()
 	close_all_uis()
@@ -146,7 +144,7 @@ SUBSYSTEM_DEF(tgui)
 	// Couldn't find a UI.
 	if(isnull(ui))
 		return null
-	ui.process_status()
+	ui._process_status()
 	// UI ended up with the closed status
 	// or is actively trying to close itself.
 	// FIXME: Doesn't actually fix the paper bug.
@@ -172,7 +170,7 @@ SUBSYSTEM_DEF(tgui)
 	if(isnull(open_uis_by_src[key]) || !istype(open_uis_by_src[key], /list))
 		return null
 	for(var/datum/tgui/ui in open_uis_by_src[key])
-		// Make sure we have the right user
+		// Make sure we have the right userc
 		if(ui.user == user)
 			return ui
 	return null

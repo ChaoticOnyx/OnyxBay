@@ -123,7 +123,7 @@
 /obj/structure/closet/proc/WillContain()
 	return null
 
-/obj/structure/closet/examine(mob/user)
+/obj/structure/closet/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
@@ -140,6 +140,12 @@
 			. += "\nThere is still some free space."
 		else
 			. += "\nIt is full."
+
+	if(isghost(user) && user.client?.inquisitive_ghost)
+		if(src.opened)
+			return
+		
+		. += "\nIt contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)
@@ -164,15 +170,17 @@
 	return TRUE
 
 /obj/structure/closet/proc/dump_contents()
+	var/atom/L = drop_location()
+
 	for(var/mob/M in src)
-		M.forceMove(loc)
+		M.forceMove(L)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM,/obj/item/shield/closet))
-			AM.forceMove(loc)
+		if(!istype(AM, /obj/item/shield/closet))
+			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()
 	var/stored_units = 0
@@ -513,12 +521,6 @@
 	if(!src.toggle())
 		to_chat(usr, SPAN_NOTICE("It won't budge!"))
 
-/obj/structure/closet/attack_ghost(mob/ghost)
-	if(ghost.client && ghost.client.inquisitive_ghost)
-		ghost.examinate(src)
-		if (!src.opened)
-			to_chat(ghost, "It contains: [english_list(contents)].")
-
 /obj/structure/closet/verb/verb_toggleopen()
 	set src in oview(1)
 	set category = "Object"
@@ -781,3 +783,6 @@
 	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 	playsound(src.loc, "spark", 50, 1)
 	open()
+
+/obj/structure/closet/allow_drop()
+	return TRUE

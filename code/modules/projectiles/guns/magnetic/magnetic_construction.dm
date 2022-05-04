@@ -87,7 +87,7 @@
 		construction_stage++
 	icon_state = "coilgun_construction_[construction_stage]"
 
-/obj/item/coilgun_assembly/examine(mob/user)
+/obj/item/coilgun_assembly/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		switch(construction_stage)

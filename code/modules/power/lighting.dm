@@ -44,7 +44,7 @@
 		if(2) icon_state = "tube-construct-stage2"
 		if(3) icon_state = "tube-empty"
 
-/obj/machinery/light_construct/examine(mob/user)
+/obj/machinery/light_construct/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -345,18 +345,18 @@
 	queue_icon_update()
 
 // examine verb
-/obj/machinery/light/examine(mob/user)
+/obj/machinery/light/_examine_text(mob/user)
 	. = ..()
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			. += "\n[desc] It is turned [on? "on" : "off"]."
+			. += "\nIt is turned [on? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			. += "\n[desc] The [fitting] has been removed."
+			. += "\nThe [fitting] has been removed."
 		if(LIGHT_BURNED)
-			. += "\n[desc] The [fitting] is burnt out."
+			. += "\nThe [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			. += "\n[desc] The [fitting] has been smashed."
+			. += "\nThe [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/light/L = light_type

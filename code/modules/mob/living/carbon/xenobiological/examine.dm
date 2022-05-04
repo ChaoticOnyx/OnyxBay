@@ -1,4 +1,4 @@
-/mob/living/carbon/metroid/examine(mob/user)
+/mob/living/carbon/metroid/_examine_text(mob/user)
 	. = ..()
 	var/msg = ""
 	if (src.stat == DEAD)

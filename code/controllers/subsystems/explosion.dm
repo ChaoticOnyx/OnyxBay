@@ -178,7 +178,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/list/affected_turfs = GatherSpiralTurfs(max_range, epicenter)
 
-	var/reactionary = config.use_recursive_explosions
+	var/reactionary = config.game.use_recursive_explosions
 	var/list/cached_exp_block
 
 	if(reactionary)

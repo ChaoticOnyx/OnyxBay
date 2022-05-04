@@ -26,7 +26,7 @@
 	if(owner)
 		Start()
 
-/obj/item/organ/internal/heart/gland/examine(mob/user)
+/obj/item/organ/internal/heart/gland/_examine_text(mob/user)
 	. = ..()
 	if(isobserver(user))
 		. += SPAN_NOTICE("It is \a [abductor_hint]")

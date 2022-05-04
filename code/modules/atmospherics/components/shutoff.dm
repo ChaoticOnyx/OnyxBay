@@ -12,7 +12,7 @@
 /obj/machinery/atmospherics/valve/shutoff/update_icon()
 	icon_state = "vclamp[open]"
 
-/obj/machinery/atmospherics/valve/shutoff/examine(mob/user)
+/obj/machinery/atmospherics/valve/shutoff/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe automatic shutoff circuit is [override_open ? "disabled" : "enabled"]."
 

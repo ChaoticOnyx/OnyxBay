@@ -153,7 +153,6 @@
 	if(dormant)
 		unregister_signal(src, SIGNAL_MOVED)
 	STOP_PROCESSING(SSobj, src)
-	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 	. = ..()
 
 /obj/effect/spider/spiderling/attackby(obj/item/W, mob/user)

@@ -225,7 +225,7 @@
 		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
 
-/obj/item/gun/energy/plasmacutter/examine(mob/user)
+/obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
 	. = ..()
 	to_chat(user, "It has a recharge port with a capital letter P.")
 

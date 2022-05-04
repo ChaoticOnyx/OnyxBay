@@ -72,7 +72,7 @@
 			node = target
 			break
 
-/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/_examine_text(mob/user)
 	. = ..()
 	if(user.Adjacent(src))
 		if(beaker)

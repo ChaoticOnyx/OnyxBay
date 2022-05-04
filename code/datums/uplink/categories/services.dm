@@ -62,7 +62,7 @@
 		deactivate()
 	. = ..()
 
-/obj/item/device/uplink_service/examine(user)
+/obj/item/device/uplink_service/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

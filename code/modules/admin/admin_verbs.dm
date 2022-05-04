@@ -362,7 +362,7 @@ var/list/admin_verbs_mentor = list(
 		if(holder.rights & R_SERVER)		verbs += admin_verbs_server
 		if(holder.rights & R_DEBUG)
 			verbs += admin_verbs_debug
-			if(config.debugparanoid && !(holder.rights & R_ADMIN))
+			if(config.admin.debug_paranoid && !(holder.rights & R_ADMIN))
 				verbs.Remove(admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
 		if(holder.rights & R_POSSESS)		verbs += admin_verbs_possess
 		if(holder.rights & R_PERMISSIONS)	verbs += admin_verbs_permissions
@@ -502,7 +502,7 @@ var/list/admin_verbs_mentor = list(
 	set name = "Display Job bans"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(config.ban.ban_legacy_system)
 			holder.Jobbans()
 		else
 			holder.DB_ban_panel()
@@ -529,7 +529,7 @@ var/list/admin_verbs_mentor = list(
 	set name = "Unban Panel"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(config.ban.ban_legacy_system)
 			holder.unbanpanel()
 		else
 			holder.DB_ban_panel()
@@ -908,12 +908,12 @@ var/list/admin_verbs_mentor = list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.cult_ghostwriter)
-			config.cult_ghostwriter = 0
+		if(config.ghost.allow_cult_ghostwriter)
+			config.ghost.allow_cult_ghostwriter = 0
 			to_chat(src, "<b>Disallowed ghost writers.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled ghost writers.", 1)
 		else
-			config.cult_ghostwriter = 1
+			config.ghost.allow_cult_ghostwriter = 1
 			to_chat(src, "<b>Enabled ghost writers.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled ghost writers.", 1)
 
@@ -922,12 +922,12 @@ var/list/admin_verbs_mentor = list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.allow_drone_spawn)
-			config.allow_drone_spawn = 0
+		if(config.misc.allow_drone_spawn)
+			config.misc.allow_drone_spawn = 0
 			to_chat(src, "<b>Disallowed maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled maint drones.", 1)
 		else
-			config.allow_drone_spawn = 1
+			config.misc.allow_drone_spawn = 1
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
@@ -972,7 +972,7 @@ var/list/admin_verbs_mentor = list(
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.projectile_basketball = !(config.projectile_basketball)
+	config.misc.projectile_basketball = !(config.misc.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
 	feedback_add_details("admin_verb","PROBAS")
 

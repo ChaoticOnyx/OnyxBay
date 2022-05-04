@@ -668,7 +668,7 @@
 	seed_name = "somniferum poppy"
 	display_name = "somniferum poppies"
 	mutants = null
-	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol/opium = list(1,10))
+	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/painkiller/opium = list(1,10))
 
 /datum/seed/flower/poppy/opium/New()
 	..()

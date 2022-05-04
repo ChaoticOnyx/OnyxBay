@@ -29,7 +29,7 @@
 	if(ruined)
 		overlays += "ribbonoverlay"
 
-/obj/item/music_tape/examine(mob/user)
+/obj/item/music_tape/_examine_text(mob/user)
 	. = ..()
 	if(track?.title)
 		. += "\n[SPAN_NOTICE("It's labeled as \"[track.title]\".")]"

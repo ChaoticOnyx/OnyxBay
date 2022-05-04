@@ -93,6 +93,8 @@
 			possible -= type
 		if(status & TRADER_BLACKLIST_SUB)
 			possible -= subtypesof(type)
+		if(status & TRADER_BLACKLIST_ALL)
+			possible -= typesof(type)
 
 	if(possible.len)
 		var/picked = pick(possible)
@@ -205,8 +207,11 @@
 /datum/trader/proc/trade(list/offers, num, turf/location)
 	for(var/offer in offers)
 		if(istype(offer, /mob))
+			var/mob/M = offer
 			var/text = mob_transfer_message
-			to_chat(offer, replacetext(text, "ORIGIN", origin))
+			to_chat(M, replacetext(text, "ORIGIN", origin))
+			if(M.key)
+				M.ghostize()
 		if(istype(offer, /obj/mecha))
 			var/obj/mecha/M = offer
 			M.wreckage = null //So they don't ruin the illusion

@@ -28,7 +28,7 @@
 
 	return ..()
 
-/obj/item/tank/jetpack/examine(mob/living/user)
+/obj/item/tank/jetpack/_examine_text(mob/living/user)
 	. = ..()
 	if(air_contents.total_moles < 5)
 		. += "\n<span class='danger'>The meter on \the [src] indicates you are almost out of gas!</span>"
@@ -104,7 +104,7 @@
 	name = "jetpack"
 	var/obj/item/rig/holder
 
-/obj/item/tank/jetpack/rig/examine(mob/user)
+/obj/item/tank/jetpack/rig/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt's a jetpack. If you can see this, report it on the bug tracker."
 	return 0

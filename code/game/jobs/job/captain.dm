@@ -31,8 +31,9 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 
 /datum/job/hop
 	title = "Head of Personnel"
+	department = "Civilian"
 	head_position = 1
-	department_flag = COM|CIV
+	department_flag = COM|CIV|SRV
 
 	total_positions = 1
 	spawn_positions = 1

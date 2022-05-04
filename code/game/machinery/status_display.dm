@@ -138,7 +138,7 @@
 			return 1
 	return 0
 
-/obj/machinery/status_display/examine(mob/user)
+/obj/machinery/status_display/_examine_text(mob/user)
 	. = ..()
 	if(mode != STATUS_DISPLAY_BLANK && mode != STATUS_DISPLAY_ALERT)
 		. += "\nThe display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"

@@ -31,6 +31,8 @@
 
 	var/movement_delay
 
+	var/changing_turf
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
@@ -41,6 +43,10 @@
 	RecalculateOpacity()
 
 /turf/Destroy()
+	if(!changing_turf)
+		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+
+	changing_turf = FALSE
 	remove_cleanables()
 	..()
 	return QDEL_HINT_IWILLGC
@@ -272,3 +278,6 @@ var/const/enterloopsanity = 100
 		if(isliving(AM))
 			var/mob/living/M = AM
 			M.turf_collision(src, speed)
+
+/turf/allow_drop()
+	return TRUE

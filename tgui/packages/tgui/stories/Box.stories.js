@@ -4,41 +4,25 @@
  * @license MIT
  */
 
-import { Box, Section } from '../components'
+import { Box, Section } from "../components";
 
 export const meta = {
-  title: 'Box',
+  title: "Box",
   // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
   return (
     <Section>
-      <Box bold>
-        bold
-      </Box>
-      <Box italic>
-        italic
-      </Box>
-      <Box opacity={0.5}>
-        opacity 0.5
-      </Box>
-      <Box opacity={0.25}>
-        opacity 0.25
-      </Box>
-      <Box m={2}>
-        m: 2
-      </Box>
-      <Box textAlign='left'>
-        left
-      </Box>
-      <Box textAlign='center'>
-        center
-      </Box>
-      <Box textAlign='right'>
-        right
-      </Box>
+      <Box bold>bold</Box>
+      <Box italic>italic</Box>
+      <Box opacity={0.5}>opacity 0.5</Box>
+      <Box opacity={0.25}>opacity 0.25</Box>
+      <Box m={2}>m: 2</Box>
+      <Box textAlign="left">left</Box>
+      <Box textAlign="center">center</Box>
+      <Box textAlign="right">right</Box>
     </Section>
-  )
-}
+  );
+};

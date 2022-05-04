@@ -6,10 +6,10 @@
 		set_stat(CONSCIOUS)
 		return
 
-	health = maxHealth - (getBrainLoss() * 2) // Since brains' get 50% of maxHealth as their HP
+	health = maxHealth - getBrainLoss()
 
 	//TODO: fix husking
-	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)
+	if(((maxHealth - getFireLoss()) < config.health.health_threshold_dead) && stat == DEAD)
 		ChangeToHusk()
 	return
 
@@ -193,7 +193,7 @@
 	else
 		var/obj/item/organ/internal/lungs/breathe_organ = internal_organs_by_name[species.breathing_organ]
 		if(!breathe_organ)
-			return maxHealth/2
+			return maxHealth
 		return breathe_organ.get_oxygen_deprivation()
 
 /mob/living/carbon/human/setOxyLoss(amount)
@@ -304,9 +304,9 @@
 	if(!species || !dam_type) return FALSE
 
 	if(dam_type == BRUTE)
-		return(getBruteLoss() < species.total_health / 2)
+		return(getBruteLoss() < species.total_health)
 	else if(dam_type == BURN)
-		return(getFireLoss() < species.total_health / 2)
+		return(getFireLoss() < species.total_health)
 	return FALSE
 
 ////////////////////////////////////////////

@@ -81,7 +81,7 @@
 	qdel(src)
 	return
 
-/mob/living/simple_animal/hostile/hivebot/tele/FindTarget()
+/mob/living/simple_animal/hostile/hivebot/tele/find_target()
 	if(..() && !spawn_time)
 		spawn_time = world.time + spawn_delay
 		visible_message("<span class='danger'>\The [src] turns on!</span>")

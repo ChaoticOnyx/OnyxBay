@@ -32,7 +32,7 @@
 
 	faction = "floral"
 
-/mob/living/simple_animal/hostile/tree/FindTarget()
+/mob/living/simple_animal/hostile/tree/find_target()
 	. = ..()
 	if(.)
 		audible_emote("growls at [.]")

@@ -509,7 +509,7 @@
 		return get_mobs_or_objects_in_view(canhear_range, src)
 
 
-/obj/item/device/radio/examine(mob/user)
+/obj/item/device/radio/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)

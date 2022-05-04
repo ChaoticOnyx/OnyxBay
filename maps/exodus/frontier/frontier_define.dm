@@ -10,7 +10,7 @@
 	player_levels = list(1,4,5,7,8,9,10,11,12)
 	sealed_levels = list(12)
 	empty_levels = list()
-	accessible_z_levels = list("1" = 10, "4" = 10, "5" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5)
+	accessible_z_levels = list("1" = 10, "4" = 10, "5" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5, "13" = 3, "14" = 5)
 	//base_turf_by_z = list("1" = /turf/simulated/floor/asteroid) // Moonbase
 	dynamic_z_levels = list("1" = 'frontier-1.dmm',"3" = 'frontier-3.dmm')
 

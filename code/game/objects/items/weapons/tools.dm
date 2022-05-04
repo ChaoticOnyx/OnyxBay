@@ -275,7 +275,6 @@
 	if(ispath(tank))
 		tank = new tank
 
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 
 	. = ..()
@@ -288,7 +287,7 @@
 
 	return ..()
 
-/obj/item/weldingtool/examine(mob/user)
+/obj/item/weldingtool/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		if(tank)
@@ -473,8 +472,7 @@
 /obj/item/weldingtool/update_icon()
 	..()
 
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-	icon_state = welding ? "[bis.base_icon_state]1" : "[bis.base_icon_state]"
+	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
 	item_state = welding ? "welder1" : "welder"
 
 	underlays.Cut()
@@ -793,7 +791,7 @@
 	var/list/tools = list()
 	var/current_tool = 1
 
-/obj/item/combitool/examine()
+/obj/item/combitool/_examine_text()
 	..()
 	if(loc == usr && tools.len)
 		to_chat(usr, "It has the following fittings:")

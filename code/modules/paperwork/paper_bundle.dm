@@ -93,7 +93,7 @@
 			else
 				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
-/obj/item/paper_bundle/examine(mob/user)
+/obj/item/paper_bundle/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)

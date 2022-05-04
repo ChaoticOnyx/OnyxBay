@@ -240,7 +240,7 @@
 		/obj/item/stack/material
 		)
 
-/obj/item/gripper/examine(mob/user)
+/obj/item/gripper/_examine_text(mob/user)
 	. = ..()
 	if(wrapped)
 		. += "\nIt is holding \a [wrapped]."

@@ -78,7 +78,7 @@
 	failmsg = "The [name]'s refill light blinks red."
 	..()
 
-/obj/item/device/lightreplacer/examine(mob/user)
+/obj/item/device/lightreplacer/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		. += "\nIt has [uses] light\s remaining."

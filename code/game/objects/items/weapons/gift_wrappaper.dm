@@ -189,7 +189,7 @@
 	return
 
 
-/obj/item/wrapping_paper/examine(mob/user)
+/obj/item/wrapping_paper/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\n[text("There is about [] square units of paper left!", src.amount)]"

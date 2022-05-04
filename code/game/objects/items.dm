@@ -100,6 +100,9 @@
 	if(maptext)
 		maptext = ""
 
+	master = null
+	QDEL_NULL(action)
+
 	if(istype(src.loc, /obj/item/storage))
 		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
 		storage.on_item_pre_deletion(src) // must be done before deletion
@@ -166,7 +169,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/_examine_text(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -255,19 +258,19 @@
 	var/old_loc = loc
 
 	pickup(user)
-	if (istype(loc, /obj/item/storage))
+	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 
 	throwing = 0
-	if (loc == user)
+	if(loc == user)
 		if(!user.unEquip(src))
 			return
 	else
 		if(isliving(loc))
 			return
 
-	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
 
 	if(user.put_in_active_hand(src))
@@ -449,7 +452,7 @@ var/list/global/slot_flags_enumeration = list(
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/handcuffs))
+			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
@@ -890,9 +893,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/get_examine_line()
 	if(blood_DNA)
-		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]")
+		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
-		. = "\icon[src] \a [src]"
+		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()

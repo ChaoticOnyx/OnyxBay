@@ -355,7 +355,7 @@
 
 		if(istype(H, /mob/living/carbon/human))
 			var/mob/living/carbon/human/M = H
-			var/msg = M.examine()
+			var/msg = M._examine_text()
 			if(msg)
 				set_pin_data(IC_OUTPUT, 2, msg)
 

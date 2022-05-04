@@ -228,10 +228,9 @@ var/global/list/string_slot_flags = list(
 	//Manuals
 	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
-		var/obj/item/book/wiki/manual = new booktype
+		var/obj/item/book/wiki/manual = new booktype(null, null, null, null, TRUE)
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
-		qdel(manual)
 
 	paths = typesof(/datum/body_build)
 	for(var/T in paths)

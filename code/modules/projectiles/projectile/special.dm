@@ -292,7 +292,7 @@
 			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
 			break
 
-	holder.FindTarget()
+	holder.set_target_mob(holder.find_target())
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null
 

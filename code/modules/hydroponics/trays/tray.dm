@@ -401,7 +401,7 @@
 	var/newseed = seed.get_mutant_variant()
 	if(newseed in SSplants.seeds)
 		var/datum/seed/mut_seed = SSplants.seeds[newseed]
-		if(mut_seed.fun_level > config.fun_hydroponics) // Too fun to be true
+		if(mut_seed.fun_level > config.misc.fun_hydroponics) // Too fun to be true
 			return
 		seed = mut_seed
 	else
@@ -565,7 +565,7 @@
 	else if(dead)
 		remove_dead(user)
 
-/obj/machinery/portable_atmospherics/hydroponics/examine(mob/user)
+/obj/machinery/portable_atmospherics/hydroponics/_examine_text(mob/user)
 
 	. = ..()
 
