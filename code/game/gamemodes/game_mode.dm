@@ -476,7 +476,7 @@ var/global/list/additional_antag_types = list()
 
 	if(!player || !player.current) return
 
-	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || !player.objectives.len)
 		return
 
 	var/obj_count = 1

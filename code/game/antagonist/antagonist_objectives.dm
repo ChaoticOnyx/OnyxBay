@@ -1,12 +1,12 @@
 /datum/antagonist/proc/create_global_objectives(override=0)
-	if(config.gamemode.objectives_disabled != CONFIG_OBJECTIVE_ALL && !override)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL && !override)
 		return 0
 	if(global_objectives && global_objectives.len)
 		return 0
 	return 1
 
 /datum/antagonist/proc/create_objectives(datum/mind/player, override=0)
-	if(config.gamemode.objectives_disabled != CONFIG_OBJECTIVE_ALL && !override)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL && !override)
 		return 0
 	if(create_global_objectives(override) || global_objectives.len)
 		player.objectives |= global_objectives
@@ -17,7 +17,7 @@
 
 /datum/antagonist/proc/print_roundend()
 	var/result = 1
-	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL)
 		return
 	if(global_objectives && global_objectives.len)
 		for(var/datum/objective/O in global_objectives)
