@@ -6,6 +6,26 @@
 
 	lobby_icon = 'maps/exodus/exodus_lobby.dmi'
 
+	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod1,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod2,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod3,
+		/datum/shuttle/autodock/ferry/escape_pod/escape_pod5,
+		/datum/shuttle/autodock/ferry/supply/drone,
+		/datum/shuttle/autodock/ferry/elevator,
+		/datum/shuttle/autodock/multi/antag/mining,
+		/datum/shuttle/autodock/ferry/research,
+		/datum/shuttle/autodock/ferry/engie,
+		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/multi/antag/rescue,
+		/datum/shuttle/autodock/ferry/emergency/centcom,
+		/datum/shuttle/autodock/ferry/administration,
+		/datum/shuttle/autodock/multi/antag/syndicate,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate,
+		/datum/shuttle/autodock/ferry/deathsquad,
+		/datum/shuttle/autodock/multi/antag/merchant,
+		/datum/shuttle/autodock/multi/antag/skipjack,
+	)
 	load_legacy_saves = TRUE
 	station_levels = list(1, 2)
 	admin_levels = list(3)

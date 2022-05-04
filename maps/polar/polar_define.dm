@@ -3,6 +3,23 @@
 	name = "Polar"
 	full_name = "Polar Colony"
 	path = "polar"
+
+	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/supply/drone,
+		/datum/shuttle/autodock/ferry/elevator,
+		/datum/shuttle/autodock/multi/antag/mining,
+		/datum/shuttle/autodock/ferry/research,
+		/datum/shuttle/autodock/ferry/engie,
+		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/multi/antag/rescue,
+		/datum/shuttle/autodock/ferry/emergency/centcom,
+		/datum/shuttle/autodock/ferry/administration,
+		/datum/shuttle/autodock/multi/antag/syndicate,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate,
+		/datum/shuttle/autodock/ferry/deathsquad,
+		/datum/shuttle/autodock/multi/antag/merchant,
+		/datum/shuttle/autodock/multi/antag/skipjack,
+	)
 	station_levels = list(1,2,3,4)
 	admin_levels = list(5)
 	contact_levels = list(1,2,3,4)
