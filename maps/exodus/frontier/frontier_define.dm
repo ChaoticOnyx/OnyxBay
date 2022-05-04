@@ -7,8 +7,8 @@
 	station_levels = list(1)
 	admin_levels = list(2)
 	contact_levels = list(1,4)
-	player_levels = list(1,3,4,5,6,7,8,9)
-	sealed_levels = list(12)
+	player_levels = list(1,3,4,5,6,7,8,9,10,11,12)
+	sealed_levels = list(8)
 	empty_levels = list(3)
 	accessible_z_levels = list(
 		"1" = 10,
@@ -19,7 +19,9 @@
 		"7" = 5,
 		"8" = 5,
 		"9" = 5,
-		"10" = 3
+		"10" = 3,
+		"11" = 3,
+		"12" = 3
 	)
 
 	dynamic_z_levels = list(
@@ -33,7 +35,9 @@
 		'maps/derelicts/bearcat/bearcat-2.dmm',
 		'maps/derelicts/jungleplanet/jungle_planet.dmm',
 		'maps/derelicts/old_restaurant/old_restaurant.dmm',
-		'maps/derelicts/sensor_array/sensor_array.dmm'
+		'maps/derelicts/sensor_array/sensor_array.dmm',
+		'maps/derelicts/science_ship/science_ship-1.dmm',
+		'maps/derelicts/science_ship/science_ship-2.dmm'
 	)
 
 	station_name  = "NSS Frontier"
