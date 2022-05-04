@@ -47,7 +47,7 @@ SUBSYSTEM_DEF(shuttle)
 
 //This is called by gameticker after all the machines and radio frequencies have been properly initialized
 /datum/controller/subsystem/shuttle/proc/initialize_shuttles()
-	for(var/shuttle_type in subtypesof(/datum/shuttle))
+	for(var/shuttle_type in GLOB.using_map.shuttle_types)
 		var/datum/shuttle/shuttle = shuttle_type
 		if((shuttle in shuttles_to_initialize) || !initial(shuttle.defer_initialisation))
 			initialise_shuttle(shuttle_type, TRUE)

@@ -24,6 +24,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/full_name = "Unnamed Map"
 	var/path
 
+	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/station_levels = list() // Z-levels the station exists on
 	var/list/admin_levels = list()   // Z-levels for admin functionality (Centcom, shuttle transit, etc)
 	var/list/contact_levels = list() // Z-levels that can be contacted from the station, for eg announcements
@@ -152,6 +153,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		map_levels = station_levels.Copy()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
+	if(!shuttle_types)
+		crash_with("[src] has no shuttle_types!")
 
 /datum/map/proc/setup_map()
 	if(dynamic_z_levels)
