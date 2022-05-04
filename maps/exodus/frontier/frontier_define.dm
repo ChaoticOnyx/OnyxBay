@@ -12,9 +12,9 @@
 	empty_levels = list(3)
 	accessible_z_levels = list(
 		"1" = 10,
-		"3" = 30,
-		"4" = 15,
-		"5" = 30,
+		"3" = 15,
+		"4" = 30,
+		"5" = 15,
 		"6" = 5,
 		"7" = 5,
 		"8" = 5,
@@ -28,7 +28,9 @@
 		'frontier-1.dmm',
 		// CC
 		'frontier-2.dmm',
+		'maps/telecomms.dmm',
 		'maps/null-space.dmm',
+		'maps/derelicts/construction_site.dmm',
 		'maps/derelicts/snowasteroid.dmm',
 		'maps/derelicts/original/derelict.dmm',
 		'maps/derelicts/bearcat/bearcat-1.dmm',

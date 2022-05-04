@@ -14,16 +14,17 @@
 		"1" = 10,
 		"2" = 10,
 		"3" = 10,
-		"5" = 30,
-		"6" = 5,
-		"7" = 5,
+		"5" = 15,
+		"6" = 30,
+		"7" = 15,
 		"8" = 5,
 		"9" = 5,
-		"10" = 3,
-		"11" = 5,
+		"10" = 5,
+		"11" = 3,
 		"12" = 5,
-		"13" = 3,
-		"14" = 3
+		"13" = 5,
+		"14" = 3,
+		"15" = 3
 	)
 	dynamic_z_levels = list(
 		'sunset-1.dmm',
@@ -31,7 +32,9 @@
 		'sunset-3.dmm',
 		// CC
 		'sunset-4.dmm',
+		'maps/telecomms.dmm',
 		'maps/null-space.dmm',
+		'maps/derelicts/construction_site.dmm',
 		'maps/derelicts/snowasteroid.dmm',
 		'maps/derelicts/original/derelict.dmm',
 		'maps/derelicts/bearcat/bearcat-1.dmm',
