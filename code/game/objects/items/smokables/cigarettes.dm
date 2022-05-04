@@ -39,6 +39,11 @@
 			var/mob/living/M = loc
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
+			if(!M.stat)
+				for(var/obj/item/material/ashtray/A in view(1, loc))
+					if(A.contents.len < A.max_butts)
+						A.attackby(src, loc)
+						return
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
 
