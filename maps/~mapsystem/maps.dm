@@ -155,8 +155,10 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/setup_map()
 	if(dynamic_z_levels)
-		for(var/level in dynamic_z_levels)
-			maploader.load_map(dynamic_z_levels[level], 1, 1, text2num(level), FALSE, FALSE, TRUE, FALSE)
+		for(var/level = 1; level <= length(dynamic_z_levels); level++)
+			log_to_dd("Loading map '[dynamic_z_levels[level]]' at [level]")
+			maploader.load_map(dynamic_z_levels[level], 1, 1, level, FALSE, FALSE, TRUE, FALSE)
+
 	world.update_status()
 	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)
