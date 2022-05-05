@@ -6624,7 +6624,7 @@
 "cxv" = (/obj/machinery/vending/snack,/obj/effect/floor_decal/corner/white/diagonal,/turf/simulated/floor/tiled,/area/engineering/break_room)
 "cxw" = (/obj/structure/extinguisher_cabinet{pixel_x = -27; pixel_y = 1},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/sleep/engi_wash)
 "cxx" = (/obj/machinery/shower{dir = 8; pixel_x = -5; pixel_y = -5},/obj/structure/curtain/open/shower/engineering,/obj/structure/window/basic{dir = 1},/obj/machinery/door/window/westright{name = "Shower"},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/sleep/engi_wash)
-"cxy" = (/obj/machinery/door/airlock/medical{autoclose = 0; icon_state = "door_open"; id_tag = "engineering_cubicle"; name = "Restroom"},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/sleep/engi_wash)
+"cxy" = (/obj/machinery/door/airlock/medical{icon_state = "door_open"; id_tag = "engineering_cubicle"; name = "Restroom"},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/sleep/engi_wash)
 "cxz" = (/obj/effect/floor_decal/corner/paleblue{dir = 6},/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/white,/area/medical/medbay4)
 "cxA" = (/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/corner/paleblue{dir = 9},/obj/effect/floor_decal/industrial/warning{dir = 8},/turf/simulated/floor/tiled/white,/area/medical/medbay4)
 "cxB" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/turf/simulated/floor/plating,/area/maintenance/medbay)
