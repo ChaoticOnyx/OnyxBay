@@ -33,7 +33,7 @@ var/list/nuke_disks = list()
 
 /datum/game_mode/nuclear/special_report()
 	var/datum/antagonist/syndi = GLOB.all_antag_types_[MODE_NUKE]
-	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || (syndi && !syndi.global_objectives.len))
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || (syndi && !syndi.global_objectives.len))
 		return ..()
 	var/disk_rescued = 1
 	for(var/obj/item/disk/nuclear/D in nuke_disks)

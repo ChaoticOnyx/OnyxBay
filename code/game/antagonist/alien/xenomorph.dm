@@ -40,7 +40,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		to_chat(player.current, SPAN("notice", "Hiss! You are a xenomorph! Do everything you can to make sure the hive thriving!"))
 	else
 		to_chat(player.current, SPAN("notice", "[welcome_text]"))
-	if(config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if(config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || !player.objectives.len)
 		to_chat(player.current, SPAN("notice", "[antag_text]"))
 
 	show_objectives_at_creation(player)

@@ -985,8 +985,9 @@
 		if(SSticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
 		var/dat = {"<meta charset=\"utf-8\"><B>What mode do you wish to play?</B><HR>"}
-		for(var/datum/game_mode/mode in gamemode_cache)
-			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[mode.name]</A><br>"}
+		for(var/mode in gamemode_cache)
+			var/datum/game_mode/M = gamemode_cache[mode]
+			dat += {"<A href='?src=\ref[src];c_mode2=[mode]'>[M.name]</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=random'>Random</A><br>"}
 		dat += {"Now: [SSticker.master_mode]"}
@@ -1000,8 +1001,9 @@
 		if(SSticker.master_mode != "secret")
 			return alert(usr, "The game mode has to be secret!", null, null, null, null)
 		var/dat = {"<meta charset=\"utf-8\"><B>What game mode do you want to force secret to be? Use this if you want to change the game mode, but want the players to believe it's secret. This will only work if the current game mode is secret.</B><HR>"}
-		for(var/datum/game_mode/mode in gamemode_cache)
-			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[mode.name]</A><br>"}
+		for(var/mode in gamemode_cache)
+			var/datum/game_mode/M = gamemode_cache[mode]
+			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[M.name]</A><br>"}
 		dat += {"<A href='?src=\ref[src];f_secret2=secret'>Random (default)</A><br>"}
 		dat += {"Now: [secret_force_mode]"}
 		show_browser(usr, dat, "window=f_secret")

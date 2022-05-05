@@ -143,10 +143,10 @@ eams_blocks_ooc = false
 traitor_scaling = true
 
 ## Uncomment and set value to disable antag objectives.
-## "none" disable them at all
+## "none" enable all
 ## "verb" to allow getting objectives via special verb
-## "all" to give objectives everytime? or disable them at all too, idk
-# objectives_disabled = "all"
+## "all" disable them at all
+disable_objectives = "none"
 
 ## Make ERT's be only called by admins
 ert_admin_only = false

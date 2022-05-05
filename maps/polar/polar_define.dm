@@ -3,14 +3,44 @@
 	name = "Polar"
 	full_name = "Polar Colony"
 	path = "polar"
-	station_levels = list(1,3,4)
+
+	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/supply/drone,
+		/datum/shuttle/autodock/ferry/elevator,
+		/datum/shuttle/autodock/multi/antag/mining,
+		/datum/shuttle/autodock/ferry/research,
+		/datum/shuttle/autodock/ferry/engie,
+		/datum/shuttle/autodock/ferry/mining,
+		/datum/shuttle/autodock/multi/antag/rescue,
+		/datum/shuttle/autodock/ferry/emergency/centcom,
+		/datum/shuttle/autodock/ferry/administration,
+		/datum/shuttle/autodock/multi/antag/syndicate,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate,
+		/datum/shuttle/autodock/ferry/deathsquad,
+		/datum/shuttle/autodock/multi/antag/merchant,
+		/datum/shuttle/autodock/multi/antag/skipjack,
+	)
+	station_levels = list(1,2,3,4)
 	admin_levels = list(5)
 	contact_levels = list(1,2,3,4)
-	player_levels = list(1,2,3,4,6,7,8,9,10,11,12)
-	sealed_levels = list(12)
-	empty_levels = list(6)
-	accessible_z_levels = list("1" = 5, "2" = 5, "3" = 10, "4" = 15, "6" = 15, "7" = 30, "8" = 5, "9" = 5, "10" = 5, "11" = 5)
-	dynamic_z_levels = list("1" = 'polar-1.dmm', "2" = 'polar-2.dmm', "3" = 'polar-3.dmm', "4" = 'polar-4.dmm')
+	player_levels = list(1,2,3,4)
+	sealed_levels = list(7)
+	accessible_z_levels = list(
+		"1" = 5,
+		"2" = 5,
+		"3" = 10,
+		"4" = 15,
+	)
+	dynamic_z_levels = list(
+		'polar-1.dmm',
+		'polar-2.dmm',
+		'polar-3.dmm',
+		'polar-4.dmm',
+		// CC
+		'polar-5.dmm',
+		'maps/null-frozen.dmm',
+		'maps/derelicts/jungleplanet/jungle_planet.dmm'
+	)
 
 	station_name  = "Polar Colony"
 	station_short = "Polar"

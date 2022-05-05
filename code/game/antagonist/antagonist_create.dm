@@ -104,7 +104,7 @@
 		to_chat(player.current, "<span class='notice'>[leader_welcome_text]</span>")
 	else
 		to_chat(player.current, "<span class='notice'>[welcome_text]</span>")
-	if (config.gamemode.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if (config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || !player.objectives.len)
 		to_chat(player.current, "<span class='notice'>[antag_text]</span>")
 
 	if((flags & ANTAG_HAS_NUKE) && !spawned_nuke)

@@ -3,7 +3,7 @@
 
 	var/list/probabilities = list()
 	var/traitor_scaling = FALSE
-	var/objectives_disabled = null
+	var/disable_objectives = "none"
 	var/ert_admin_only = FALSE
 	var/protect_roles_from_antagonist = FALSE
 
@@ -17,19 +17,19 @@
 			log_misc("Unknown game mode probability configuration definition: [game_mode].")
 
 	CONFIG_LOAD_BOOL(traitor_scaling, data["traitor_scaling"])
-	CONFIG_LOAD_STR(objectives_disabled, data["objectives_disabled"])
+	CONFIG_LOAD_STR(disable_objectives, data["disable_objectives"])
 
-	if(objectives_disabled != null)
-		switch(objectives_disabled)
+	if(disable_objectives != null)
+		switch(disable_objectives)
 			if("none")
-				objectives_disabled = CONFIG_OBJECTIVE_NONE
+				disable_objectives = CONFIG_OBJECTIVE_NONE
 			if("verb")
-				objectives_disabled = CONFIG_OBJECTIVE_VERB
+				disable_objectives = CONFIG_OBJECTIVE_VERB
 			if("all")
-				objectives_disabled = CONFIG_OBJECTIVE_ALL
+				disable_objectives = CONFIG_OBJECTIVE_ALL
 			else
-				log_misc("Incorrect objective disabled definition: [objectives_disabled]")
-				objectives_disabled = CONFIG_OBJECTIVE_NONE
+				log_misc("Incorrect objective disabled definition: [disable_objectives]")
+				disable_objectives = CONFIG_OBJECTIVE_NONE
 
 	CONFIG_LOAD_BOOL(ert_admin_only, data["ert_admin_only"])
 	CONFIG_LOAD_BOOL(protect_roles_from_antagonist, data["protect_roles_from_antagonist"])
