@@ -106,7 +106,8 @@ var/list/admin_verbs_admin = list(
 	/datum/admins/proc/sendFax,
 	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/datum/admins/proc/follow_panel
 	)
 
 var/list/admin_verbs_ban = list(
@@ -338,7 +339,8 @@ var/list/admin_verbs_mod = list(
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax,
 	/client/proc/check_fax_history,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/datum/admins/proc/follow_panel
 	)
 
 var/list/admin_verbs_mentor = list(

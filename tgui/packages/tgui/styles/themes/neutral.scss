@@ -86,4 +86,16 @@
       background-image: url('../../assets/settings/items.png');
     }
   }
+
+  .Section__title {
+    border-bottom-color: #3b3b3b;
+  }
+
+  .Table tbody :first-child {
+    margin: 4px;
+  }
+
+  .Table tbody tr:nth-child(even) {
+    background-color: transparentize($color: black, $amount: 0.9);
+  }
 }
