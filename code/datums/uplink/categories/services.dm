@@ -186,7 +186,7 @@
 	state = CURRENTLY_ACTIVE
 	var/input = sanitize(input(user, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
 	if(!input)
-		state = CURRENTLY_ACTIVE
+		state = AWAITING_ACTIVATION
 		return
 	var/customname = sanitizeSafe(input(user, "Pick a title for the report.", "Title") as text|null)
 	if(!customname)
