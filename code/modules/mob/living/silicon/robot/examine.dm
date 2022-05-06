@@ -28,8 +28,9 @@
 		msg += "<span class='warning'>It appears to be running on backup power.</span>\n"
 
 	switch(stat)
-		if(CONSCIOUS && ssd_check())
-			msg += "It appears to be in stand-by mode.\n" //afk
+		if(CONSCIOUS)
+			if (ssd_check())
+				msg += "It appears to be in stand-by mode.\n" //afk
 		if(UNCONSCIOUS)
 			msg += "<span class='warning'>It doesn't seem to be responding.</span>\n"
 		if(DEAD)
