@@ -542,6 +542,13 @@
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 		return
+	if(name == "cryogenic freezer" && M.stat == DEAD)
+		to_chat(user, "<span class='warning'>\The [src]s are not designed to store bodies. Contact the medical unit.</span>")
+		var/area/t = get_area(M)
+		var/location = t.name
+		for(var/channel in list("Security", "Medical"))
+			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
+		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")
 	else
