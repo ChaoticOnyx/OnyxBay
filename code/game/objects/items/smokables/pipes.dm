@@ -58,7 +58,7 @@
 
 		smoke(3, TRUE)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		return 1
+		return TRUE
 
 	if(!lit && istype(M) && M.on_fire)
 		user.do_attack_animation(M)
