@@ -186,7 +186,7 @@
 
 	T.Weaken(3)
 
-	if(make_grab(src, T))
+	if(ishuman(T) && make_grab(src, T))
 		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()
@@ -239,7 +239,7 @@
 		src.visible_message("<span class='danger'>[src] hurls out the contents of their stomach!</span>")
 	return
 
-/mob/living/carbon/human/proc/psychic_whisper(mob/M as mob in oview())
+/mob/living/carbon/human/proc/psychic_whisper(mob/M in oview())
 	set name = "Psychic Whisper"
 	set desc = "Whisper silently to someone over a distance."
 	set category = "Abilities"
