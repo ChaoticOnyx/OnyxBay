@@ -39,7 +39,7 @@
 			var/mob/living/M = loc
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
-			if(!M.stat)
+			if(!M.stat && (src == M.get_equipped_item(slot_wear_mask) || src == M.get_equipped_item(slot_l_hand) || src == M.get_equipped_item(slot_r_hand)))
 				for(var/obj/item/material/ashtray/A in oview(1, loc))
 					if(A.contents.len < A.max_butts)
 						A.attackby(src, loc)
