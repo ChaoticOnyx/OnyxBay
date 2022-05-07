@@ -63,7 +63,7 @@
 	if(!lit && istype(M) && M.on_fire)
 		user.do_attack_animation(M)
 		light(M, user)
-		return 1
+		return TRUE
 
 	return ..()
 
