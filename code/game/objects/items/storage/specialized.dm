@@ -85,7 +85,7 @@
 
 
 // Modified handle_item_insertion.  Would prefer not to, but...
-	handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
+	handle_item_insertion(obj/item/W, prevent_warning = 0)
 		var/obj/item/stack/material/S = W
 		if(!istype(S)) return 0
 
@@ -157,3 +157,108 @@
 	name = "sheet snatcher 9000"
 	desc = ""
 	capacity = 500//Borgs get more because >specialization
+
+// -----------------------------
+//    Music Tape Boxes
+// -----------------------------
+/obj/item/storage/box/music_tape
+	name = "Music Tape box"
+	desc = "You should not see that."
+	icon = 'icons/obj/tapes.dmi'
+	var/icon_closed 
+
+	max_w_class = ITEM_SIZE_SMALL 
+	max_storage_space = 1
+	can_hold = list(/obj/item/music_tape)
+
+	var/obj/item/music_tape/random/music_tape
+
+/obj/item/storage/box/music_tape/Initialize()
+	..()
+	contents += music_tape
+	icon_state = icon_closed
+
+	desc = "A box with [music_tape.name]. It contains following playlist"
+	for(var/datum/track/track in music_tape.tracks)
+		desc += "<br>[track.title]"
+	desc += "."
+
+/obj/item/storage/box/music_tape/attackby(obj/item/A, mob/user)
+	if(istype(A, /obj/item/music_tape))
+		var/obj/item/storage/box/music_tape/C = A
+		if(music_tape)
+			to_chat(user, SPAN("warning", "[src] already has a tape."))
+			return
+
+		user.remove_from_mob(C)
+		C.loc = src
+		music_tape =  C
+		contents = music_tape
+		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
+	else
+		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
+	update_icon()
+
+/obj/item/storage/box/music_tape/update_icon()
+	..()
+	if(music_tape)
+		icon_state = icon_closed
+	else
+		icon_state = icon_closed + "_open"
+
+/obj/item/storage/box/music_tape/attack_hand(mob/user)
+	if(loc != user)
+		..()
+	else
+		if(music_tape)
+			user.put_in_hands(music_tape)
+			music_tape.add_fingerprint(user)
+			music_tape.update_icon()
+
+			src.contents -= music_tape
+			src.music_tape = null
+			user.visible_message("[user] removes the tape from the [src].", "You remove the tape from the [src].")
+			update_icon()
+			add_fingerprint(user)
+
+/obj/item/storage/box/music_tape/AltClick(mob/usr)
+	if(!canremove)
+		return
+
+	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
+		add_fingerprint(usr)
+		attack_hand(usr)
+		return TRUE
+
+/obj/item/storage/box/music_tape/newyear
+	name = "New Year tape box"
+	icon_closed = "box_xmas"
+	music_tape = new /obj/item/music_tape/random/newyear
+
+/obj/item/storage/box/music_tape/jazz
+	name = "Jazz tape box"
+	icon_closed = "box_jazz"
+	music_tape = new /obj/item/music_tape/random/jazz
+/obj/item/storage/box/music_tape/classic
+	name = "Classic Music tape box"
+	icon_closed = "box_classic"
+	music_tape = new /obj/item/music_tape/random/classic
+/obj/item/storage/box/music_tape/frontier
+	name = "NSS Frontier tape box"
+	icon_closed = "box_frontier"
+	music_tape = new /obj/item/music_tape/random/frontier
+
+/obj/item/storage/box/music_tape/exodus
+	name = "NSS Exodus tape box"
+	icon_closed = "box_exodus"
+	music_tape = new /obj/item/music_tape/random/exodus
+
+/obj/item/storage/box/music_tape/syndie
+	name = "Unsuspicious tape box"
+	icon_closed = "box_syndi"
+	music_tape = new /obj/item/music_tape/syndie
+
+/obj/item/storage/box/music_tape/valhalla
+	name = "Cyber Bar tape box"
+	icon_closed = "box_cyber"
+	music_tape = new /obj/item/music_tape/random/valhalla
