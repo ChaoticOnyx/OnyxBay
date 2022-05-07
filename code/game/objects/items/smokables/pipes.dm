@@ -44,7 +44,7 @@
 // Actually i take this from cigarette, but... who cares?
 /obj/item/clothing/mask/smokable/pipe/attack(mob/living/M, mob/user, def_zone)
 
-	if(lit && M == user && istype(M, /mob/living/carbon/human))
+	if(lit && M == user && ishuman(M))
 
 		var/mob/living/carbon/human/H = M
 		var/obj/item/blocked = H.check_mouth_coverage()
