@@ -87,6 +87,13 @@ var/list/lunchables_ethanol_reagents_ = list(
 												/datum/reagent/ethanol/quas
 											)
 
+// Add reagent to [vacuum]-flask no need delete reagent from lunchables_ethanol_reagents_ it's works fine
+var/list/additional_reagents = list(
+										/datum/reagent/drink/tea,
+										/datum/reagent/ethanol/coffee,
+										/datum/reagent/drink/hot_coco,
+										/datum/reagent/drink/milkshake
+									)
 /proc/lunchables_lunches()
 	if(!(lunchables_lunches_[lunchables_lunches_[1]]))
 		lunchables_lunches_ = init_lunchable_list(lunchables_lunches_)
@@ -109,7 +116,7 @@ var/list/lunchables_ethanol_reagents_ = list(
 
 /proc/lunchables_ethanol_reagents()
 	if(!(lunchables_ethanol_reagents_[lunchables_ethanol_reagents_[1]]))
-		lunchables_ethanol_reagents_ = init_lunchable_reagent_list(lunchables_ethanol_reagents_, /datum/reagent/ethanol)
+		lunchables_ethanol_reagents_ = init_lunchable_reagent_list(lunchables_ethanol_reagents_, /datum/reagent/ethanol, additional_reagents)
 	return lunchables_ethanol_reagents_
 
 /proc/init_lunchable_list(list/lunches)
@@ -119,11 +126,20 @@ var/list/lunchables_ethanol_reagents_ = list(
 		.[initial(O.name)] = lunch
 	return sortAssoc(.)
 
-/proc/init_lunchable_reagent_list(list/banned_reagents, reagent_types)
+/proc/init_lunchable_reagent_list(list/banned_reagents, reagent_types, list/additional_reagents)
 	. = list()
 	for(var/reagent_type in subtypesof(reagent_types))
+
 		if(reagent_type in banned_reagents)
 			continue
+
 		var/datum/reagent/reagent = reagent_type
 		.[initial(reagent.name)] = reagent_type
+
+	for(var/reagent_type in additional_reagents)
+		if(!(reagent_type in .))
+
+			var/datum/reagent/reagent = reagent_type
+			.[initial(reagent.name)] = reagent_type
+
 	return sortAssoc(.)
