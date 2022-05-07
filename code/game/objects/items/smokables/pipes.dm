@@ -51,7 +51,7 @@
 
 		if(blocked)
 			to_chat(H, SPAN("warning", "\The [blocked] is in the way!"))
-			return 1
+			return TRUE
 
 		user.visible_message("[user] takes a [pick("drag","puff","pull")] like a boss from \his [name].", \
 							 "You take a [pick("drag","puff","pull")] on your [name].")
