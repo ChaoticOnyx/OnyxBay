@@ -240,7 +240,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	unregister_signal(potential_rider, SIGNAL_QDELETING)
 
 /obj/structure/industrial_lift/proc/CheckItemsOnLift()
-	for(var/AM in src.loc.contents)
+	for(var/AM in loc.contents)
 		if(!istype(AM,/obj/structure/industrial_lift) && !(AM in lift_load))
 			AddItemOnLift(AM)
 /**
