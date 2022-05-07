@@ -226,6 +226,7 @@
 	type_butt = /obj/item/cigbutt/joint
 	chem_volume = 10.0
 	filter_trans = 0.9
+	dynamic_icon = FALSE
 
 /obj/item/clothing/mask/smokable/cigarette/roll/joint/good
 	name = "joint"
@@ -277,6 +278,7 @@
 	chem_volume = 15
 	filter_trans = 1.0 // Smoke it all, b1tch!
 	filling = list(/datum/reagent/thc = 12)
+	dynamic_icon = FALSE
 
 /obj/item/clothing/mask/smokable/cigarette/spliff/generate_lighting_message(obj/tool, mob/holder)
 	if(!holder || !tool)
