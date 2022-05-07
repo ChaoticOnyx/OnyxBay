@@ -7,7 +7,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 	var/spamcheck = 0
-	var/emagged = 0
+	var/is_emagged = FALSE
 	var/insults = 0
 	var/list/insultmsg = list("FUCK EVERYONE!", "I'M A TATER!", "ALL SECURITY TO SHOOT ME ON SIGHT!", "I HAVE A BOMB!", "CAPTAIN IS A COMDOM!", "FOR THE SYNDICATE!")
 
@@ -26,32 +26,30 @@
 	if(!message)
 		return
 	message = capitalize(message)
-	if ((src.loc == user && usr.stat == 0))
-		if(emagged)
+	if ((src.loc == user && user.stat == 0))
+		if(is_emagged)
 			if(insults)
-				for(var/mob/O in (viewers(user)))
-					O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[pick(insultmsg)]\"")]", AUDIBLE_MESSAGE)
-				for(var/obj/item/device/radio/intercom/I in view(3, usr))
-					if(I.broadcasting)
-						I.talk_into(usr, message, verb = "shout")
+				speak(user, message, TRUE)
 				insults--
 			else
 				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
-			for(var/mob/O in (viewers(user)))
-				O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[message]\"")]", AUDIBLE_MESSAGE)
-			for(var/obj/item/device/radio/intercom/I in view(3, usr))
-				if(I.broadcasting)
-					I.talk_into(usr, message, verb = "shout")
-
+			speak(user, message)
 		spamcheck = 1
 		spawn(20)
 			spamcheck = 0
 		return
 
+/obj/item/device/megaphone/proc/speak(mob/living/user, message, is_emagged = FALSE)
+	for(var/mob/O in (viewers(user)))
+		O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[is_emagged ? pick(insultmsg) : message]\"")]", AUDIBLE_MESSAGE)
+	for(var/obj/item/device/radio/intercom/I in view(3, user))
+		if(I.broadcasting)
+			I.talk_into(user, message, verb = "shout")
+
 /obj/item/device/megaphone/emag_act(remaining_charges, mob/user)
-	if(!emagged)
+	if(!is_emagged)
 		to_chat(user, SPAN_WARNING("You overload \the [src]'s voice synthesizer."))
-		emagged = 1
+		is_emagged = TRUE
 		insults = rand(1, 3)//to prevent dickflooding
 		return 1
