@@ -47,7 +47,7 @@
 
 	if(isWrench(W) && !in_use)
 
-		if (istype(src.loc,/turf) && !isfloor(src.loc))
+		if(istype(loc, /turf) && !isfloor(loc))
 			to_chat(user, SPAN_WARNING("\The [name] must be constructed on the floor!"))
 			return
 
