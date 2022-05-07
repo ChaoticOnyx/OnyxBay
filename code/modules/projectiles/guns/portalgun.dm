@@ -104,3 +104,6 @@
 
 	//updating their atmos connection
 	blue_portal.connect_atmospheres()
+
+#undef BLUE_PORTAL
+#undef ORANGE_PORTAL

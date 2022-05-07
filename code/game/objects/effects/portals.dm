@@ -95,7 +95,7 @@
 	var/list/static/portal_cache = list()
 	teleport_type = /decl/teleport/sparks/precision
 
-/obj/effect/portal/linked/Initialize(mapload, end, delete_after, failure_rate)
+/obj/effect/portal/linked/Initialize()
 	. = ..()
 	if(istype(loc, /obj/item/gun/portalgun))
 		portal_creator = loc
@@ -213,8 +213,7 @@
 	var/x = linked_turf.x + x_diff
 	var/y = linked_turf.y + y_diff
 	target_turf = locate(max(min(x, world.maxx), 1), max(min(y, world.maxy), 1), target.z)
-	spawn()
-		hit_atom.throw_at(target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
+	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
 
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)
