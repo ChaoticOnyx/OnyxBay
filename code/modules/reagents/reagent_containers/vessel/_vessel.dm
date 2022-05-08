@@ -18,6 +18,7 @@
 	can_be_splashed = TRUE
 
 	var/brittle = FALSE
+	var/smash_weaken = 0 // Decides how much weakening it may inflict (if any) when smashing someone's head
 
 	var/base_name = null // Name to put in front of stuff, i.e. "[base_name] of [contents]"
 	var/base_desc = null
@@ -64,7 +65,8 @@
 
 /obj/item/reagent_containers/vessel/Initialize()
 	. = ..()
-	base_icon = icon_state
+	if(!base_icon)
+		base_icon = icon_state
 	if(!base_name)
 		base_name = name
 	if(!base_desc)
@@ -100,14 +102,16 @@
 	..()
 	update_icon()
 
-/obj/item/reagent_containers/vessel/post_attach_label()
+/obj/item/reagent_containers/vessel/post_attach_label(datum/component/label/L)
 	has_label = TRUE
+	label_text = L.label_name
 	update_icon()
 
-/obj/item/reagent_containers/vessel/post_remove_label()
+/obj/item/reagent_containers/vessel/post_remove_label(datum/component/label/L)
 	..()
 	has_label = FALSE
 	desc = base_desc
+	label_text = ""
 	update_icon()
 
 /// Layers order:
@@ -121,14 +125,15 @@
 	if(reagents?.reagent_list.len > 0)
 		if(dynamic_name)
 			var/datum/reagent/R = reagents.get_master_reagent()
-			SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
+			update_name_label()
+			SetName("[name] of [R.glass_name ? R.glass_name : "something"]")
 			desc = R.glass_desc ? R.glass_desc : base_desc
 		if(filling_states)
 			var/image/filling = image(icon, src, "[base_icon][get_filling_state()]")
 			filling.color = reagents.get_color()
 			overlays += filling
 	else
-		SetName(base_name)
+		update_name_label()
 		desc = base_desc
 
 	if(overlay_icon)
@@ -146,15 +151,20 @@
 		if(percent <= k)
 			return k
 
+/obj/item/reagent_containers/vessel/update_name_label()
+	if(label_text == "")
+		SetName(base_name)
+	else
+		SetName("[base_name] ([label_text])")
+
 /obj/item/reagent_containers/vessel/_examine_text(mob/user)
 	. = ..()
-	if(precise_measurement)
-		. += " Can hold up to [volume] units."
+	. += "\nCan hold up to <b>[volume]</b> units."
 	if(get_dist(src, user) > 2)
 		return
 	if(precise_measurement)
 		if(reagents?.reagent_list.len)
-			. += SPAN("notice", "\nIt contains [reagents.total_volume] units of liquid.")
+			. += SPAN("notice", "\nIt contains <b>[reagents.total_volume]</b> units of liquid.")
 		else
 			. += SPAN("notice", "\nIt is empty.")
 	else
@@ -173,7 +183,7 @@
 				ratio_text = "almost full"
 			else
 				ratio_text = "full"
-		. += SPAN("notice", "\n\The [src] is [ratio_text]!")
+		. += SPAN("notice", "\n\The [src] is <b>[ratio_text]</b>!")
 
 	if(lid)
 		. += lid.get_examine_hint()
@@ -183,26 +193,6 @@
 	if(lid?.toggle(user))
 		update_icon()
 		return
-
-// Opens closed and sealed lids, closes open lids, informs the user if one exists.
-/obj/item/reagent_containers/vessel/proc/toggle_lid(user)
-	switch(lid.state)
-		if(LID_OPEN)
-			atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
-			lid_state = LID_CLOSED
-			if(user)
-				to_chat(usr, SPAN("notice", "You put the lid on \the [src]."))
-		if(LID_CLOSED)
-			atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			lid_state = LID_OPEN
-			if(user)
-				to_chat(usr, SPAN("notice", "You take the lid off \the [src]."))
-		if(LID_SEALED)
-			atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			lid_state = LID_NONE
-			if(user)
-				to_chat(usr, SPAN("notice", "You unseal \the [src]."))
-	update_icon()
 
 /obj/item/reagent_containers/vessel/attack(mob/M, mob/user, def_zone)
 	if(force && !(item_flags & ITEM_FLAG_NO_BLUDGEON) && user.a_intent == I_HURT)
@@ -234,7 +224,7 @@
 	return ..()
 
 /obj/item/reagent_containers/vessel/self_feed_message(mob/user)
-	to_chat(user, SPAN("notice", "You swallow a gulp from \the [src]."))
+	to_chat(user, SPAN("notice", "You [pick("swallow a gulp", "take a sip", "chug", "drink")] from \the [src]."))
 
 /obj/item/reagent_containers/vessel/afterattack(obj/target, mob/user, proximity)
 	if(!is_open_container() || !proximity) //Is the container open & are they next to whatever they're clicking?
@@ -310,9 +300,9 @@
 	if(istype(H) && H.headcheck(hit_zone))
 		var/obj/item/organ/affecting = H.get_organ(hit_zone) // headcheck should ensure that affecting is not null
 		user.visible_message(SPAN("danger", "[user] smashes [src] into [H]'s [affecting.name]!"))
-		if(weaken_duration)
+		if(smash_weaken)
 			if(prob(100 - H.poise)) // 50% if poise is full, 100% is poise is empty
-				target.apply_effect(min(weaken_duration, 5), WEAKEN, blocked) // Never weaken more than a flash!
+				target.apply_effect(min(smash_weaken, 5), WEAKEN, blocked) // Never weaken more than a flash!
 	else
 		user.visible_message(SPAN("danger", "\The [user] smashes [src] into [target]!"))
 
@@ -326,6 +316,55 @@
 	user.put_in_active_hand(B)
 
 	return blocked
+
+
+/obj/item/reagent_containers/vessel/verb/drink_whole()
+	set category = "Object"
+	set name = "Drink Down"
+
+	var/mob/living/carbon/C = usr
+	if(!iscarbon(C))
+		return
+
+	if(!istype(C.get_active_hand(), src))
+		to_chat(C, SPAN("warning", "You need to hold \the [src] in hands!"))
+		return
+
+	if(is_open_container())
+		if(!C.check_has_mouth())
+			to_chat(C, SPAN("warning", "How do you intend to drink \the [src]? You don't have a mouth!"))
+			return
+		var/obj/item/blocked = C.check_mouth_coverage()
+		if(blocked)
+			to_chat(C, SPAN("warning", "\The [blocked] is in the way!"))
+			return
+
+		if(reagents.total_volume > 30) // 30 equates to 3 SECONDS.
+			C.visible_message(\
+				SPAN("notice", "[C] prepares to drink down [src]."),\
+				SPAN("notice", "You prepare to drink down [src]."))
+			playsound(C, 'sound/items/drinking.ogg', reagents.total_volume, 1)
+
+		if(!do_after(C, reagents.total_volume))
+			if(!Adjacent(C))
+				return
+			standard_splash_mob(src, src)
+			C.visible_message(\
+				SPAN("danger", "[C] splashed \the [src]'s contents on self while trying drink it down."),\
+				SPAN("danger", "You splash \the [src]'s contents on yourself!"))
+			return
+
+		else
+			if(!Adjacent(C))
+				return
+			C.visible_message(\
+				SPAN("notice", "[C] drinked down the whole [src]!"),\
+				SPAN("notice", "You drink down the whole [src]!"))
+			playsound(C, 'sound/items/drinking_after.ogg', reagents.total_volume, 1)
+			reagents.trans_to_mob(C, reagents.total_volume, CHEM_INGEST)
+	else
+		to_chat(C, SPAN("notice", "You need to open \the [src] first!"))
+
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle

@@ -25,8 +25,10 @@
 	switch(state)
 		if(LID_NONE, LID_OPEN)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 		if(LID_CLOSED, LID_SEALED)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 
 /datum/vessel_lid/proc/toggle(mob/user)
 	return
@@ -52,12 +54,14 @@
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You take the [name] off \the [owner]."))
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put the [name] on \the [owner]."))
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -73,12 +77,14 @@
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You pull the [name] out of \the [owner]."))
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You push the [name] into \the [owner]."))
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -94,6 +100,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
+		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -118,6 +125,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
+		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -136,6 +144,7 @@
 			to_chat(user, SPAN("notice", "You rip open \the [src]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
+		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -155,19 +164,22 @@
 			if(user)
 				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [cap], destroying the safety seal!"))
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			state = LID_NONE
+			state = LID_OPEN
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You take \the [name] off \the [owner]."))
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -175,4 +187,4 @@
 	if(lid_state == LID_SEALED)
 		return SPAN("notice", "It's safety seal is intact.")
 	else if(lid_state == LID_CLOSED)
-		return SPAN("notice", "It's closed."
+		return SPAN("notice", "It's closed.")

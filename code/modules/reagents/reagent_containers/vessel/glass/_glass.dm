@@ -1,34 +1,24 @@
-#define DRINK_ICON_FILE 'icons/obj/drink_glasses.dmi'
-#define DRINK_COCKTAILICON_FILE 'icons/obj/drink_cocktails.dmi'
 
-/var/const/DRINK_FIZZ = "fizz"
-/var/const/DRINK_ICE = "ice"
-/var/const/DRINK_VAPOR = "vapor"
-/var/const/DRINK_ICON_DEFAULT = ""
-/var/const/DRINK_ICON_NOISY = "_noise"
-
-/obj/item/reagent_containers/food/drinks/glass2
+/obj/item/reagent_containers/vessel/glass
 	name = "glass" // Name when empty
 	base_name = "glass"
 	desc = "A generic drinking glass." // Description when empty
 	icon = DRINK_ICON_FILE
 	base_icon = "square" // Base icon name
+	center_of_mass ="x=16;y=9"
 	filling_states = "20;40;60;80;100"
 	volume = 30
 	matter = list(MATERIAL_GLASS = 65)
 	can_be_splashed = TRUE
-
-	var/list/extras = list() // List of extras. Two extras maximum
-
-	var/rim_pos // Position of the rim for fruit slices. list(y, x_left, x_right)
-
-	center_of_mass ="x=16;y=9"
-
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = "5;10;15;30"
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	lid_type = null
+	overlay_icon = TRUE
 
-/obj/item/reagent_containers/food/drinks/glass2/_examine_text(mob/M as mob)
+	var/list/extras = list() // List of extras. Two extras maximum
+	var/rim_pos // Position of the rim for fruit slices. list(y, x_left, x_right)
+
+/obj/item/reagent_containers/vessel/glass/_examine_text(mob/M)
 	. = ..()
 
 	for(var/I in extras)
@@ -45,17 +35,16 @@
 	if(has_fizz())
 		. += "\nIt is fizzing slightly."
 
-/obj/item/reagent_containers/food/drinks/glass2/proc/has_ice()
-	if(reagents.reagent_list.len > 0)
+/obj/item/reagent_containers/vessel/glass/proc/has_ice()
+	if(reagents?.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
 		if(!((R.type == /datum/reagent/drink/ice) || ("ice" in R.glass_special))) // if it's not a cup of ice, and it's not already supposed to have ice in, see if the bartender's put ice in it
 			if(reagents.has_reagent(/datum/reagent/drink/ice, reagents.total_volume / 10)) // 10% ice by volume
-				return 1
+				return TRUE
+	return FALSE
 
-	return 0
-
-/obj/item/reagent_containers/food/drinks/glass2/proc/has_fizz()
-	if(reagents.reagent_list.len > 0)
+/obj/item/reagent_containers/vessel/glass/proc/has_fizz()
+	if(reagents?.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
 		if(!("fizz" in R.glass_special))
 			var/totalfizzy = 0
@@ -63,11 +52,11 @@
 				if("fizz" in re.glass_special)
 					totalfizzy += re.volume
 			if(totalfizzy >= reagents.total_volume / 5) // 20% fizzy by volume
-				return 1
-	return 0
+				return TRUE
+	return FALSE
 
-/obj/item/reagent_containers/food/drinks/glass2/proc/has_vapor()
-	if(reagents.reagent_list.len > 0)
+/obj/item/reagent_containers/vessel/glass/proc/has_vapor()
+	if(reagents?.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
 		if(!("vapor" in R.glass_special))
 			var/totalvape = 0
@@ -75,30 +64,21 @@
 				if("vapor" in re.glass_special)
 					totalvape += re.volume
 			if(totalvape >= volume * 0.6) // 60% vapor by container volume
-				return 1
-	return 0
+				return TRUE
+	return FALSE
 
-/obj/item/reagent_containers/food/drinks/glass2/Initialize()
-	. = ..()
-	unacidable = 1
-	icon_state = base_icon
-
-/obj/item/reagent_containers/food/drinks/glass2/on_reagent_change()
-	update_icon()
-
-/obj/item/reagent_containers/food/drinks/glass2/proc/can_add_extra(obj/item/glass_extra/GE)
-	if (reagents.reagent_list.len > 0)
+/obj/item/reagent_containers/vessel/glass/proc/can_add_extra(obj/item/glass_extra/GE)
+	if(reagents?.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
-		if (R.glass_required == base_icon)
-			return 0
+		if(R.glass_required == base_icon)
+			return FALSE
 	if(!("[base_icon]_[GE.glass_addition]left" in icon_states(DRINK_ICON_FILE)))
-		return 0
+		return FALSE
 	if(!("[base_icon]_[GE.glass_addition]right" in icon_states(DRINK_ICON_FILE)))
-		return 0
+		return FALSE
+	return TRUE
 
-	return 1
-
-/obj/item/reagent_containers/food/drinks/glass2/update_icon()
+/obj/item/reagent_containers/vessel/glass/update_icon()
 	underlays.Cut()
 	overlays.Cut()
 	icon = DRINK_ICON_FILE
@@ -110,9 +90,9 @@
 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
 		desc = R.glass_desc ? R.glass_desc : initial(desc)
 
-		if (R.glass_required == base_icon)
+		if(R.glass_required == base_icon)
 			desc = "[desc] It's classicaly served."
-		if ((R.glass_required == base_icon) && R.glass_icon_state)
+		if((R.glass_required == base_icon) && R.glass_icon_state)
 			icon = DRINK_COCKTAILICON_FILE
 			icon_state = R.glass_icon_state
 			return
@@ -146,6 +126,8 @@
 
 			for(var/k in over_liquid)
 				underlays += image(DRINK_ICON_FILE, src, k, -1)
+			if(overlay_icon)
+				overlays += image(icon, src, overlay_icon)
 	else
 		SetName(initial(name))
 		desc = initial(desc)
@@ -174,19 +156,21 @@
 			M.Translate(fsx, fsy)
 			I.transform = M
 			underlays += I
-		else continue
+		else
+			continue
 		side = "right"
 
-/obj/item/reagent_containers/food/drinks/glass2/attackby(obj/item/W, mob/user)
+/obj/item/reagent_containers/vessel/glass/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/material/kitchen/utensil/spoon))
 		if(user.a_intent == I_HURT)
-			user.visible_message("<span class='warning'>[user] bashes \the [src] with a spoon, shattering it to pieces! What a rube.</span>")
+			user.visible_message(SPAN("warning", "[user] bashes \the [src] with a spoon, shattering it to pieces! What a rube."))
 			playsound(src, SFX_BREAK_WINDOW, 30, 1)
 			if(reagents)
-				user.visible_message("<span class='notice'>The contents of \the [src] splash all over [user]!</span>")
+				user.visible_message(SPAN("notice", "The contents of \the [src] splash all over [user]!</span>")
 				reagents.splash(user, reagents.total_volume)
 			qdel(src)
 			return
-		user.visible_message("<span class='notice'>[user] gently strikes \the [src] with a spoon, calling the room to attention.</span>")
+		user.visible_message(SPAN("notice", "[user] gently strikes \the [src] with a spoon, calling the room to attention."))
 		playsound(src, "sound/items/wineglass.ogg", 65, 1)
-	else return ..()
+	else
+		return ..()

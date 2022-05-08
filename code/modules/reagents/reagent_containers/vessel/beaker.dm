@@ -9,7 +9,7 @@
 	matter = list(MATERIAL_GLASS = 2500)
 	brittle = TRUE
 	precise_measurement = TRUE
-	filling_states = "10;25;50;75;80;100"
+	filling_states = "5;10;25;50;75;80;100"
 	label_icon = TRUE
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/lid
@@ -72,22 +72,3 @@
 	possible_transfer_amounts = "5;10;15;30"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	lid_type = /datum/vessel_lid/cork
-
-// Presetties
-/obj/item/reagent_containers/vessel/beaker/cryoxadone
-	name = "cryoxadone beaker"
-	desc = "Just put it into the nearest cryocell. Please."
-	base_name = "beaker"
-	base_desc = "A beaker."
-	starting_label = "cryoxadone"
-	startswith = list(/datum/reagent/cryoxadone = 30)
-	override_lid_state = LID_CLOSED
-
-/obj/item/reagent_containers/vessel/beaker/sulphuric
-	name = "sulphuric acid beaker"
-	desc = "Suphuric acid is used for printing various circuits. Or melting down people's faces."
-	base_name = "beaker"
-	base_desc = "A beaker."
-	starting_label = "sulphuric acid"
-	startswith = list(/datum/reagent/acid = 60)
-	override_lid_state = LID_CLOSED

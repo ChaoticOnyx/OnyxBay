@@ -1,3 +1,6 @@
+///
+/// Presets for /obj/item/reagent_containers/vessel/bottle
+///
 
 /obj/item/reagent_containers/vessel/bottle/gin
 	name = "Griffeater Gin"
@@ -66,6 +69,7 @@
 	icon_state = "holyflask"
 	center_of_mass = "x=17;y=10"
 	startswith = list(/datum/reagent/water/holywater)
+	lid_type = null
 
 /obj/item/reagent_containers/vessel/bottle/vermouth
 	name = "Goldeneye Vermouth"
@@ -221,7 +225,7 @@
 	name = "Chateau [namepick] De Blanc"
 	desc += " This bottle is marked as [agedyear] Vintage."
 
-//Small bottles
+/// Small bottles (/obj/item/reagent_containers/vessel/bottle/small)
 /obj/item/reagent_containers/vessel/bottle/small/beer
 	name = "Space Beer"
 	desc = "Contains only water, malt and hops."

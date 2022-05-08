@@ -1,15 +1,210 @@
 
-/obj/item/reagent_containers/vessel/waterbottle
-	name = "bottled water"
-	desc = "Pure drinking water, imported from the Martian poles."
-	icon_state = "waterbottle"
-	item_state = "bottle"
-	center_of_mass = "x=15;y=8"
-	startswith = list(/datum/reagent/water)
-	lid_type = /datum/vessel_lid/cap
 
-/obj/item/reagent_containers/vessel/waterbottle/fi4i
-	name = "\improper FI4I water"
-	desc = "Said to be NanoTrasen's finest water. In fact, it's just an expensive water container."
-	icon_state = "fi4i"
-	center_of_mass = "x=17;y=9"
+/obj/item/reagent_containers/vessel/golden_cup
+	desc = "A golden cup."
+	name = "golden cup"
+	icon_state = "golden_cup"
+	item_state = "" //nope :(
+	w_class = ITEM_SIZE_HUGE
+	force = 14
+	throwforce = 10
+	amount_per_transfer_from_this = 20
+	possible_transfer_amounts = null
+	volume = 150
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	lid_type = null
+
+///////////////////////////////////////////////Drinks
+//Notes by Darem: Drinks are simply containers that start preloaded. Unlike condiments, the contents can be ingested directly
+//	rather then having to add it to something else first. They should only contain liquids. They have a default container size of 50.
+//	Formatting is the same as food.
+
+/obj/item/reagent_containers/vessel/coffee
+	name = "\improper Robust Coffee"
+	desc = "Careful, the beverage you're about to enjoy is extremely hot."
+	icon_state = "coffee"
+	center_of_mass = "x=15;y=10"
+	startswith = list(/datum/reagent/drink/coffee = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/tea
+	name = "cup of Duke Purple Tea"
+	desc = "An insult to Duke Purple is an insult to the Space Queen! Any proper gentleman will fight you, if you sully this tea."
+	icon_state = "teacup"
+	item_state = "coffee"
+	center_of_mass = "x=16;y=14"
+	filling_states = "100"
+	base_name = "cup"
+	base_icon = "teacup"
+	startswith = list(/datum/reagent/drink/tea = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/ice
+	name = "cup of ice"
+	desc = "Careful, cold ice, do not chew."
+	icon_state = "coffee"
+	center_of_mass = "x=15;y=10"
+	startswith = list(/datum/reagent/drink/ice = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/h_chocolate
+	name = "cup of Dutch hot coco"
+	desc = "Made in Space South America."
+	icon_state = "hot_coco"
+	item_state = "coffee"
+	center_of_mass = "x=15;y=13"
+	startswith = list(/datum/reagent/drink/hot_coco = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/dry_ramen
+	name = "cup ramen"
+	gender = PLURAL
+	desc = "Just add 10ml water, self heats! A taste that reminds you of your school years."
+	icon_state = "ramen"
+	center_of_mass = "x=16;y=11"
+	startswith = list(/datum/reagent/drink/dry_ramen = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/chickensoup
+	name = "cup of chicken soup"
+	desc = "Just add 10ml water, self heats! Keep yourself warm!"
+	icon_state = "chickensoup"
+	item_state = "ramen"
+	center_of_mass = "x=16;y=11"
+	startswith = list(/datum/reagent/drink/chicken_powder = 30)
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/sillycup
+	name = "paper cup"
+	desc = "A paper water cup."
+	icon_state = "water_cup"
+	possible_transfer_amounts = null
+	volume = 10
+	center_of_mass = "x=16;y=12"
+	filling_states = "3;5;10"
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/sillycup/on_reagent_change()
+	if(reagents.total_volume)
+		icon_state = "water_cup"
+	else
+		icon_state = "water_cup_e"
+
+/obj/item/reagent_containers/vessel/shaker
+	name = "shaker"
+	desc = "A metal shaker to mix drinks in."
+	icon_state = "shaker"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;15;25;30;60" //Professional bartender should be able to transfer as much as needed
+	volume = 120
+	center_of_mass = "x=17;y=10"
+	lid_type = /datum/vessel_lid/cap
+	override_lid_state = LID_CLOSED
+
+/obj/item/reagent_containers/vessel/teapot
+	name = "teapot"
+	desc = "An elegant teapot. It simply oozes class."
+	icon_state = "teapot"
+	item_state = "teapot"
+	amount_per_transfer_from_this = 10
+	volume = 120
+	center_of_mass = "x=17;y=7"
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/pitcher
+	name = "pitcher"
+	desc = "Everyone's best friend in the morning."
+	icon_state = "pitcher"
+	volume = 120
+	amount_per_transfer_from_this = 10
+	center_of_mass = "x=16;y=9"
+	filling_states = "15;30;50;70;85;100"
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/flask
+	name = "\improper Captain's flask"
+	desc = "A metal flask belonging to the captain."
+	icon_state = "flask"
+	volume = 60
+	center_of_mass = "x=17;y=7"
+	lid_type = /datum/vessel_lid/cap
+	override_lid_state = LID_CLOSED
+
+/obj/item/reagent_containers/vessel/flask/shiny
+	name = "shiny flask"
+	desc = "A shiny metal flask. It appears to have a Greek symbol inscribed on it."
+	icon_state = "shinyflask"
+
+/obj/item/reagent_containers/vessel/flask/lithium
+	name = "lithium flask"
+	desc = "A flask with a Lithium Atom symbol on it."
+	icon_state = "lithiumflask"
+
+/obj/item/reagent_containers/vessel/flask/detflask
+	name = "\improper Detective's flask"
+	desc = "A metal flask with a leather band and golden badge belonging to the detective."
+	icon_state = "detflask"
+	volume = 60
+	center_of_mass = "x=17;y=8"
+
+/obj/item/reagent_containers/vessel/flask/barflask
+	name = "flask"
+	desc = "For those who can't be bothered to hang out at the bar to drink."
+	icon_state = "barflask"
+	volume = 60
+	center_of_mass = "x=17;y=7"
+
+/obj/item/reagent_containers/vessel/flask/vacuumflask
+	name = "vacuum flask"
+	desc = "Keeping your drinks at the perfect temperature since 1892."
+	icon_state = "vacuumflask"
+	volume = 60
+	center_of_mass = "x=15;y=4"
+
+/obj/item/reagent_containers/vessel/skullgoblet
+	name = "skull goblet"
+	desc = "Great for dancing on the barrows of your enemies."
+	icon_state = "skullcup"
+	item_state = "skullmask"
+	w_class = ITEM_SIZE_NORMAL
+	volume = 50
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	lid_type = null
+
+/obj/item/reagent_containers/vessel/skullgoblet/gold
+	name = "golden skull goblet"
+	desc = "<b>Perfect</b> for dancing on the barrows of your enemies."
+	icon_state = "skullcup_gold"
+
+/obj/item/reagent_containers/vessel/fitnessflask
+	name = "fitness shaker"
+	desc = "Big enough to contain enough protein to get perfectly swole. Don't mind the bits."
+	icon_state = "fitness-cup_black"
+	base_icon = "fitness-cup"
+	volume = 100
+	matter = list(MATERIAL_PLASTIC = 2000)
+	filling_states = "1;20;30;40;50;60;70;80;90;100"
+	possible_transfer_amounts = "5;10;15;25"
+	lid_type = null
+	var/lid_color = "black"
+
+/obj/item/reagent_containers/vessel/fitnessflask/Initialize()
+	. = ..()
+	lid_color = pick("black", "red", "blue")
+	update_icon()
+
+/obj/item/reagent_containers/vessel/fitnessflask/update_icon()
+	..()
+	icon_state = "[base_icon]_[lid_color]"
+
+/obj/item/reagent_containers/vessel/fitnessflask/proteinshake
+	name = "protein shake"
+
+/obj/item/reagent_containers/vessel/fitnessflask/proteinshake/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nutriment, 30)
+	reagents.add_reagent(/datum/reagent/iron, 10)
+	reagents.add_reagent(/datum/reagent/nutriment/protein, 15)
+	reagents.add_reagent(/datum/reagent/water, 45)

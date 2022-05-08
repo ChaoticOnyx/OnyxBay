@@ -1,4 +1,4 @@
-/obj/item/reagent_containers/food/drinks/glass2/square
+/obj/item/reagent_containers/vessel/glass/square
 	name = "half-pint glass"
 	icon_state = "square"
 	base_name = "glass"
@@ -9,7 +9,7 @@
 	possible_transfer_amounts = "5;10;15;30"
 	rim_pos = "y=23;x_left=13;x_right=20"
 
-/obj/item/reagent_containers/food/drinks/glass2/rocks
+/obj/item/reagent_containers/vessel/glass/rocks
 	name = "rocks glass"
 	icon_state = "rocks"
 	base_name = "glass"
@@ -19,7 +19,7 @@
 	possible_transfer_amounts = "5;10;20"
 	rim_pos = "y=21;x_left=10;x_right=23"
 
-/obj/item/reagent_containers/food/drinks/glass2/shake
+/obj/item/reagent_containers/vessel/glass/shake
 	name = "tall cocktail glass"
 	icon_state = "shake"
 	base_name = "glass"
@@ -29,7 +29,7 @@
 	possible_transfer_amounts = "5;10;15;30"
 	rim_pos = "y=25;x_left=13;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/cocktail
+/obj/item/reagent_containers/vessel/glass/cocktail
 	name = "cocktail glass"
 	icon_state = "cocktail"
 	base_name = "glass"
@@ -39,7 +39,7 @@
 	possible_transfer_amounts = "5;10;15"
 	rim_pos = "y=22;x_left=13;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/shot
+/obj/item/reagent_containers/vessel/glass/shot
 	name = "shot glass"
 	icon_state = "shot"
 	base_name = "shot"
@@ -50,7 +50,7 @@
 	possible_transfer_amounts = "1;2;5"
 	rim_pos = "y=17;x_left=13;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/pint
+/obj/item/reagent_containers/vessel/glass/pint
 	name = "pint glass"
 	icon_state = "pint"
 	base_name = "pint"
@@ -60,7 +60,7 @@
 	possible_transfer_amounts = "5;10;15;30;60"
 	rim_pos = "y=25;x_left=12;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/mug
+/obj/item/reagent_containers/vessel/glass/mug
 	name = "glass mug"
 	icon_state = "mug"
 	base_name = "mug"
@@ -70,7 +70,7 @@
 	possible_transfer_amounts = "5;10;20;40"
 	rim_pos = "y=22;x_left=12;x_right=20"
 
-/obj/item/reagent_containers/food/drinks/glass2/wine
+/obj/item/reagent_containers/vessel/glass/wine
 	name = "wine glass"
 	icon_state = "wine"
 	base_name = "glass"
@@ -80,7 +80,7 @@
 	possible_transfer_amounts = "5;10;15;25"
 	rim_pos = "y=25;x_left=12;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/carafe
+/obj/item/reagent_containers/vessel/glass/carafe
 	name = "carafe"
 	icon_state = "carafe"
 	base_name = "carafe"
@@ -92,7 +92,7 @@
 	rim_pos = "y=26;x_left=12;x_right=21"
 	center_of_mass = "x=16;y=7"
 
-/obj/item/reagent_containers/food/drinks/glass2/vodkaglass
+/obj/item/reagent_containers/vessel/glass/vodkaglass
 	name = "rumka"
 	icon_state = "vodka"
 	base_name = "rumka"
@@ -103,7 +103,7 @@
 	possible_transfer_amounts = "1;2;5"
 	rim_pos = "y=21;x_left=14;x_right=21"
 
-/obj/item/reagent_containers/food/drinks/glass2/cognac
+/obj/item/reagent_containers/vessel/glass/cognac
 	name = "cognac glass"
 	icon_state = "cognac"
 	base_name = "glass"
@@ -113,7 +113,7 @@
 	possible_transfer_amounts = "5;10;15;25"
 	rim_pos = "y=22;x_left=13;x_right=20"
 
-/obj/item/reagent_containers/food/drinks/glass2/bigmug
+/obj/item/reagent_containers/vessel/glass/bigmug
 	name = "large mug"
 	icon_state = "bigmug"
 	base_name = "big mug"
@@ -123,7 +123,7 @@
 	possible_transfer_amounts = "5;10;15;30;45;60"
 	rim_pos = "y=22;x_left=12;x_right=20"
 
-/obj/item/reagent_containers/food/drinks/glass2/hurricane
+/obj/item/reagent_containers/vessel/glass/hurricane
 	name = "hurricane glass"
 	icon_state = "hurricane"
 	base_name = "glass"
@@ -133,7 +133,7 @@
 	possible_transfer_amounts = "5;10;15;30;45;60"
 	rim_pos = "y=25;x_left=13;x_right=20"
 
-/obj/item/reagent_containers/food/drinks/glass2/dshot
+/obj/item/reagent_containers/vessel/glass/dshot
 	name = "double shot"
 	icon_state = "dshot"
 	base_name = "double shot"
