@@ -10,7 +10,7 @@
 	organ_tag = "limb"
 	appearance_flags = PIXEL_SCALE | LONG_GLIDE
 
-	food_organ_type = /obj/item/reagent_containers/food/snacks/meat/human
+	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
 	throwforce = 2.5
 	// Strings

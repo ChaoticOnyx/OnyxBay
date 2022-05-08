@@ -37,7 +37,7 @@
 	max_storage_space = 100
 	max_w_class = ITEM_SIZE_SMALL
 	w_class = ITEM_SIZE_NORMAL
-	can_hold = list(/obj/item/reagent_containers/food/snacks/grown,/obj/item/seeds,/obj/item/grown)
+	can_hold = list(/obj/item/reagent_containers/food/grown,/obj/item/seeds,/obj/item/grown)
 	allow_quick_gather = 1
 	allow_quick_empty = 1
 	use_to_pickup = 1
@@ -165,9 +165,9 @@
 	name = "Music Tape box"
 	desc = "You should not see that."
 	icon = 'icons/obj/tapes.dmi'
-	var/icon_closed 
+	var/icon_closed
 
-	max_w_class = ITEM_SIZE_SMALL 
+	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = 1
 	can_hold = list(/obj/item/music_tape)
 

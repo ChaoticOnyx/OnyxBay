@@ -600,13 +600,13 @@
 					beaker.reagents.add_reagent(stack.material.reagent_path, (amount_to_take * REAGENTS_PER_MATERIAL_SHEET))
 			continue
 
-		var/obj/item/reagent_containers/food/snacks/internal_snack = null
+		var/obj/item/reagent_containers/food/internal_snack = null
 		if(istype(O, /obj/item/organ/internal))
-			var/obj/item/reagent_containers/food/snacks/organ/organ_snack = locate() in O.contents
+			var/obj/item/reagent_containers/food/organ/organ_snack = locate() in O.contents
 			if(istype(organ_snack))
 				internal_snack = organ_snack
 		else if(istype(O, /obj/item/organ/external))
-			var/obj/item/reagent_containers/food/snacks/meat/meat_snack = locate() in O.contents
+			var/obj/item/reagent_containers/food/meat/meat_snack = locate() in O.contents
 			if(istype(meat_snack))
 				internal_snack = meat_snack
 

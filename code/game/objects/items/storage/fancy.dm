@@ -65,13 +65,13 @@
 	max_w_class = ITEM_SIZE_SMALL
 	w_class = ITEM_SIZE_NORMAL
 
-	key_type = /obj/item/reagent_containers/food/snacks/egg
+	key_type = /obj/item/reagent_containers/food/egg
 	can_hold = list(
-		/obj/item/reagent_containers/food/snacks/egg,
-		/obj/item/reagent_containers/food/snacks/boiledegg
+		/obj/item/reagent_containers/food/egg,
+		/obj/item/reagent_containers/food/boiledegg
 		)
 
-	startswith = list(/obj/item/reagent_containers/food/snacks/egg = 12)
+	startswith = list(/obj/item/reagent_containers/food/egg = 12)
 
 /obj/item/storage/fancy/egg_box/empty
 	startswith = null

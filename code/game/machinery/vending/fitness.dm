@@ -12,8 +12,8 @@
 					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 8,
 					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 8,
 					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask = 8,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 8,
-					/obj/item/reagent_containers/food/snacks/liquidfood = 8,
+					/obj/item/reagent_containers/food/packaged/nutribar = 8,
+					/obj/item/reagent_containers/food/liquidfood = 8,
 					/obj/item/reagent_containers/pill/diet = 8,
 					/obj/item/towel/random = 8)
 
@@ -21,8 +21,8 @@
 					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 3,
 					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 20,
 					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask = 5,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 5,
-					/obj/item/reagent_containers/food/snacks/liquidfood = 5,
+					/obj/item/reagent_containers/food/packaged/nutribar = 5,
+					/obj/item/reagent_containers/food/liquidfood = 5,
 					/obj/item/reagent_containers/pill/diet = 25,
 					/obj/item/towel/random = 40)
 

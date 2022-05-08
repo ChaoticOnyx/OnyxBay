@@ -14,12 +14,12 @@
 	var/list/queued_dishes = list()
 	var/make_time = 0
 	var/start_making = 0
-	var/list/menu = list("nutrition slab" = /obj/item/reagent_containers/food/snacks/tofu,
-					 "turkey substitute" = /obj/item/reagent_containers/food/snacks/tofurkey,
-					 "waffle substitute" = /obj/item/reagent_containers/food/snacks/soylenviridians,
-					 "nutrition fries" = /obj/item/reagent_containers/food/snacks/fries,
-					 "liquid nutrition" = /obj/item/reagent_containers/food/snacks/soydope,
-					 "pudding substitute" = /obj/item/reagent_containers/food/snacks/ricepudding)
+	var/list/menu = list("nutrition slab" = /obj/item/reagent_containers/food/tofu,
+					 "turkey substitute" = /obj/item/reagent_containers/food/tofurkey,
+					 "waffle substitute" = /obj/item/reagent_containers/food/soylenviridians,
+					 "nutrition fries" = /obj/item/reagent_containers/food/fries,
+					 "liquid nutrition" = /obj/item/reagent_containers/food/soydope,
+					 "pudding substitute" = /obj/item/reagent_containers/food/ricepudding)
 
 /obj/machinery/food_replicator/New()
 	..()
@@ -32,8 +32,8 @@
 	RefreshParts()
 
 /obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/food/snacks))
-		var/obj/item/reagent_containers/food/snacks/S = O
+	if(istype(O, /obj/item/reagent_containers/food))
+		var/obj/item/reagent_containers/food/S = O
 		user.drop_item(O)
 		for(var/datum/reagent/nutriment/N in S.reagents.reagent_list)
 			biomass = Clamp(biomass + round(N.volume*deconstruct_eff),1,biomass_max)
@@ -42,7 +42,7 @@
 		if(!O.contents || !O.contents.len)
 			return
 		to_chat(user, "You empty \the [O] into \the [src]")
-		for(var/obj/item/reagent_containers/food/snacks/grown/G in O.contents)
+		for(var/obj/item/reagent_containers/food/grown/G in O.contents)
 			var/obj/item/storage/S = O
 			S.remove_from_storage(G, null)
 			for(var/datum/reagent/nutriment/N in G.reagents.reagent_list)

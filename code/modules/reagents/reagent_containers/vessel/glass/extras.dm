@@ -11,11 +11,11 @@
 			update_icon()
 		else
 			to_chat(user, "<span class=warning>There's no space to put \the [GE] on \the [src]!</span>")
-	else if(istype(I, /obj/item/reagent_containers/food/snacks/fruit_slice))
+	else if(istype(I, /obj/item/reagent_containers/food/fruit_slice))
 		if(!rim_pos)
 			to_chat(user, "<span class=warning>There's no space to put \the [I] on \the [src]!</span>")
 			return
-		var/obj/item/reagent_containers/food/snacks/fruit_slice/FS = I
+		var/obj/item/reagent_containers/food/fruit_slice/FS = I
 		extras += FS
 		user.remove_from_mob(FS)
 		FS.pixel_x = 0 // Reset its pixel offsets so the icons work!

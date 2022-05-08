@@ -11,7 +11,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	icon_state = "crate"
 	icon_living = "crate"
 
-	meat_type = /obj/item/reagent_containers/food/snacks/carpmeat
+	meat_type = /obj/item/reagent_containers/food/carpmeat
 	response_help = "touches"
 	response_disarm = "pushes"
 	response_harm = "hits"
@@ -44,10 +44,10 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 	if(!o)
 		var/list/valid_targets = list()
-		
+
 		for(var/obj/O in (view(world.view) - src))
 			valid_targets += O
-		
+
 		o = pick(valid_targets)
 	if(ispath(o))
 		o = new o(newloc)

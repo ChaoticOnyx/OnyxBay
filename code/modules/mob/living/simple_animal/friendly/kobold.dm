@@ -15,7 +15,7 @@
 	see_in_dark = 6
 	maxHealth = 75
 	health = 75
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/meat/monkey
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"

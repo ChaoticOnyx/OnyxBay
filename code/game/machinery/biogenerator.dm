@@ -31,7 +31,7 @@
 	var/list/products = list(
 		"Food" = list(
 			/obj/item/reagent_containers/food/drinks/milk/smallcarton = 30,
-			/obj/item/reagent_containers/food/snacks/meat = 50),
+			/obj/item/reagent_containers/food/meat = 50),
 		"Nutrients" = list(
 			/obj/item/reagent_containers/vessel/bottle/chemical/big/compost = 60,
 			/obj/item/reagent_containers/vessel/bottle/plastic/eznutrient = 120,
@@ -91,13 +91,13 @@
 	else if(istype(O, /obj/item/storage/plants))
 		var/obj/item/storage/plants/P = O
 		var/i = 0
-		for(var/obj/item/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/reagent_containers/food/grown/G in contents)
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is already full! Activate it.</span>")
 		else
 			var/hadPlants = 0
-			for(var/obj/item/reagent_containers/food/snacks/grown/G in P.contents)
+			for(var/obj/item/reagent_containers/food/grown/G in P.contents)
 				hadPlants = 1
 				P.remove_from_storage(G, src)
 				i++
@@ -110,11 +110,11 @@
 				to_chat(user, "<span class='notice'>You empty \the [P] into \the [src].</span>")
 
 
-	else if(!istype(O, /obj/item/reagent_containers/food/snacks/grown))
+	else if(!istype(O, /obj/item/reagent_containers/food/grown))
 		to_chat(user, "<span class='notice'>You cannot put this in \the [src].</span>")
 	else
 		var/i = 0
-		for(var/obj/item/reagent_containers/food/snacks/grown/G in contents)
+		for(var/obj/item/reagent_containers/food/grown/G in contents)
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is full! Activate it.</span>")
@@ -201,7 +201,7 @@
 		return
 
 	var/S = 0
-	for(var/obj/item/reagent_containers/food/snacks/grown/I in contents)
+	for(var/obj/item/reagent_containers/food/grown/I in contents)
 		S += 5
 		if(I.reagents.get_reagent_amount(/datum/reagent/nutriment) < 0.1)
 			points += 1

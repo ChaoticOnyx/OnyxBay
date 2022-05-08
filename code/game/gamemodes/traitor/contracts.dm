@@ -14,7 +14,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
  	"the station's blueprints" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
 	"a sample of metroid extract" =                     list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
-	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/snacks/meat/corgi),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),

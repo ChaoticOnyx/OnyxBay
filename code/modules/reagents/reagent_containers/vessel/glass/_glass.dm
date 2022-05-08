@@ -24,7 +24,7 @@
 	for(var/I in extras)
 		if(istype(I, /obj/item/glass_extra))
 			. += "\nThere is \a [I] in \the [src]."
-		else if(istype(I, /obj/item/reagent_containers/food/snacks/fruit_slice))
+		else if(istype(I, /obj/item/reagent_containers/food/fruit_slice))
 			. += "\nThere is \a [I] on the rim."
 		else
 			. += "\nThere is \a [I] somewhere on the glass. Somehow."
@@ -143,7 +143,7 @@
 				overlays += I
 			else
 				underlays += I
-		else if(rim_pos && istype(item, /obj/item/reagent_containers/food/snacks/fruit_slice))
+		else if(rim_pos && istype(item, /obj/item/reagent_containers/food/fruit_slice))
 			var/obj/FS = item
 			var/image/I = image(FS)
 

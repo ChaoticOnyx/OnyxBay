@@ -80,7 +80,7 @@
 					/obj/item/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 1)
+					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
 /obj/item/storage/box/vox
 	name = "vox survival kit"
@@ -91,7 +91,7 @@
 					/obj/item/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 1)
+					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
 /obj/item/storage/box/engineer
 	name = "engineer survival kit"
@@ -104,7 +104,7 @@
 					/obj/item/reagent_containers/hypospray/autoinjector/detox = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick/orange = 1,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 1)
+					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
 /obj/item/storage/box/security
 	name = "security survival kit"
@@ -117,7 +117,7 @@
 					/obj/item/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick/red = 1,
-					/obj/item/reagent_containers/food/snacks/packaged/nutribar = 1)
+					/obj/item/reagent_containers/food/packaged/nutribar = 1)
 
 /obj/item/storage/box/gloves
 	name = "box of sterile gloves"
@@ -311,36 +311,36 @@
 	name = "box of donk-pockets"
 	desc = "<B>Instructions:</B> <I>Heat in microwave. Product will cool if not eaten within seven minutes.</I>"
 	icon_state = "donk_kit"
-	startswith = list(/obj/item/reagent_containers/food/snacks/donkpocket = 6)
+	startswith = list(/obj/item/reagent_containers/food/donkpocket = 6)
 
 /obj/item/storage/box/sinpockets
 	name = "box of sin-pockets"
 	desc = "<B>Instructions:</B> <I>Crush bottom of package to initiate chemical heating. Wait for 20 seconds before consumption. Product will cool if not eaten within seven minutes.</I>"
 	icon_state = "donk_kit"
-	startswith = list(/obj/item/reagent_containers/food/snacks/donkpocket/sinpocket = 6)
+	startswith = list(/obj/item/reagent_containers/food/donkpocket/sinpocket = 6)
 
 /obj/item/storage/box/monkeycubes
 	name = "monkey cube box"
 	desc = "Drymate brand monkey cubes. Just add water!"
 	icon = 'icons/obj/food.dmi'
 	icon_state = "monkeycubebox"
-	can_hold = list(/obj/item/reagent_containers/food/snacks/monkeycube)
-	startswith = list(/obj/item/reagent_containers/food/snacks/monkeycube/wrapped = 5)
+	can_hold = list(/obj/item/reagent_containers/food/monkeycube)
+	startswith = list(/obj/item/reagent_containers/food/monkeycube/wrapped = 5)
 
 /obj/item/storage/box/monkeycubes/farwacubes
 	name = "farwa cube box"
 	desc = "Drymate brand farwa cubes, shipped from Ahdomai. Just add water!"
-	startswith = list(/obj/item/reagent_containers/food/snacks/monkeycube/wrapped/farwacube = 5)
+	startswith = list(/obj/item/reagent_containers/food/monkeycube/wrapped/farwacube = 5)
 
 /obj/item/storage/box/monkeycubes/stokcubes
 	name = "stok cube box"
 	desc = "Drymate brand stok cubes, shipped from Moghes. Just add water!"
-	startswith = list(/obj/item/reagent_containers/food/snacks/monkeycube/wrapped/stokcube = 5)
+	startswith = list(/obj/item/reagent_containers/food/monkeycube/wrapped/stokcube = 5)
 
 /obj/item/storage/box/monkeycubes/neaeracubes
 	name = "neaera cube box"
 	desc = "Drymate brand neaera cubes, shipped from Jargon 4. Just add water!"
-	startswith = list(/obj/item/reagent_containers/food/snacks/monkeycube/wrapped/neaeracube = 5)
+	startswith = list(/obj/item/reagent_containers/food/monkeycube/wrapped/neaeracube = 5)
 
 /obj/item/storage/box/ids
 	name = "box of spare IDs"
@@ -544,31 +544,31 @@
 	icon_state = "checkers"
 	max_storage_space = 24
 	foldable = null
-	can_hold = list(/obj/item/reagent_containers/food/snacks/checker)
-	startswith = list(/obj/item/reagent_containers/food/snacks/checker = 12,
-					/obj/item/reagent_containers/food/snacks/checker/red = 12)
+	can_hold = list(/obj/item/reagent_containers/food/checker)
+	startswith = list(/obj/item/reagent_containers/food/checker = 12,
+					/obj/item/reagent_containers/food/checker/red = 12)
 
 /obj/item/storage/box/checkers/chess
 	name = "black chess box"
 	desc = "This box holds all the pieces needed for the black side of the chess board."
 	icon_state = "chess_b"
-	startswith = list(/obj/item/reagent_containers/food/snacks/checker/pawn = 8,
-				/obj/item/reagent_containers/food/snacks/checker/knight = 2,
-				/obj/item/reagent_containers/food/snacks/checker/bishop = 2,
-				/obj/item/reagent_containers/food/snacks/checker/rook = 2,
-				/obj/item/reagent_containers/food/snacks/checker/queen = 1,
-				/obj/item/reagent_containers/food/snacks/checker/king = 1)
+	startswith = list(/obj/item/reagent_containers/food/checker/pawn = 8,
+				/obj/item/reagent_containers/food/checker/knight = 2,
+				/obj/item/reagent_containers/food/checker/bishop = 2,
+				/obj/item/reagent_containers/food/checker/rook = 2,
+				/obj/item/reagent_containers/food/checker/queen = 1,
+				/obj/item/reagent_containers/food/checker/king = 1)
 
 /obj/item/storage/box/checkers/chess/red
 	name = "red chess box"
 	desc = "This box holds all the pieces needed for the red side of the chess board."
 	icon_state = "chess_r"
-	startswith = list(/obj/item/reagent_containers/food/snacks/checker/pawn/red = 8,
-				/obj/item/reagent_containers/food/snacks/checker/knight/red = 2,
-				/obj/item/reagent_containers/food/snacks/checker/bishop/red = 2,
-				/obj/item/reagent_containers/food/snacks/checker/rook/red = 2,
-				/obj/item/reagent_containers/food/snacks/checker/queen/red = 1,
-				/obj/item/reagent_containers/food/snacks/checker/king/red = 1)
+	startswith = list(/obj/item/reagent_containers/food/checker/pawn/red = 8,
+				/obj/item/reagent_containers/food/checker/knight/red = 2,
+				/obj/item/reagent_containers/food/checker/bishop/red = 2,
+				/obj/item/reagent_containers/food/checker/rook/red = 2,
+				/obj/item/reagent_containers/food/checker/queen/red = 1,
+				/obj/item/reagent_containers/food/checker/king/red = 1)
 
 
 /obj/item/storage/box/headset

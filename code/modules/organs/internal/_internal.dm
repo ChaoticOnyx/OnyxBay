@@ -2,7 +2,7 @@
 				INTERNAL ORGANS DEFINES
 ****************************************************/
 /obj/item/organ/internal
-	food_organ_type = /obj/item/reagent_containers/food/snacks/organ
+	food_organ_type = /obj/item/reagent_containers/food/organ
 	throwforce = 0.1 // Enough to upset you, not enough to crack your ribcage open
 	var/dead_icon // Icon to use when the organ has died.
 	var/surface_accessible = FALSE

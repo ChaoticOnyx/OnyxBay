@@ -12,14 +12,14 @@
 	can_burn_food = 1
 
 	output_options = list(
-		"Personal Pizza" = /obj/item/reagent_containers/food/snacks/variable/pizza,
-		"Bread" = /obj/item/reagent_containers/food/snacks/sliceable/bread/variable,
-		"Pie" = /obj/item/reagent_containers/food/snacks/pie/variable,
-		"Small Cake" = /obj/item/reagent_containers/food/snacks/sliceable/plaincake/variable,
-		"Hot Pocket" = /obj/item/reagent_containers/food/snacks/donkpocket/variable,
-		"Kebab" = /obj/item/reagent_containers/food/snacks/tofukabob/variable,
-		"Waffles" = /obj/item/reagent_containers/food/snacks/waffles/variable,
-		"Pancakes" = /obj/item/reagent_containers/food/snacks/pancakes/variable,
-		"Cookie" = /obj/item/reagent_containers/food/snacks/cookie/variable,
-		"Donut" = /obj/item/reagent_containers/food/snacks/donut/variable,
+		"Personal Pizza" = /obj/item/reagent_containers/food/variable/pizza,
+		"Bread" = /obj/item/reagent_containers/food/sliceable/bread/variable,
+		"Pie" = /obj/item/reagent_containers/food/pie/variable,
+		"Small Cake" = /obj/item/reagent_containers/food/sliceable/plaincake/variable,
+		"Hot Pocket" = /obj/item/reagent_containers/food/donkpocket/variable,
+		"Kebab" = /obj/item/reagent_containers/food/tofukabob/variable,
+		"Waffles" = /obj/item/reagent_containers/food/waffles/variable,
+		"Pancakes" = /obj/item/reagent_containers/food/pancakes/variable,
+		"Cookie" = /obj/item/reagent_containers/food/cookie/variable,
+		"Donut" = /obj/item/reagent_containers/food/donut/variable,
 		)

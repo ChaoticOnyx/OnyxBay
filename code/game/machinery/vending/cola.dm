@@ -22,7 +22,7 @@
 
 	contraband = list(/obj/item/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/reagent_containers/food/drinks/cans/dopecola = 5,
-					  /obj/item/reagent_containers/food/snacks/liquidfood = 6)
+					  /obj/item/reagent_containers/food/liquidfood = 6)
 
 	premium = list(/obj/item/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
 

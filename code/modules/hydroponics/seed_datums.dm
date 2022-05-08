@@ -311,7 +311,7 @@
 	seed_name = "egg plant"
 	display_name = "egg plants"
 	mutants = null
-	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
+	has_custom_product = /obj/item/reagent_containers/food/egg/randomcolor
 	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()

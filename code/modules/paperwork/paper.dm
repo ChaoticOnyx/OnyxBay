@@ -452,8 +452,8 @@
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
-	else if(istype(P, /obj/item/reagent_containers/food/snacks/grown))
-		var/obj/item/reagent_containers/food/snacks/grown/G = P
+	else if(istype(P, /obj/item/reagent_containers/food/grown))
+		var/obj/item/reagent_containers/food/grown/G = P
 		if(!G.dry)
 			to_chat(user, SPAN_NOTICE("[G] must be dried before you can grind and roll it."))
 			return

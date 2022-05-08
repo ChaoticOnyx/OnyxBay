@@ -25,11 +25,11 @@
 	switch(spell_levels[SP_POWER])
 		if(1)
 			equipped_summons = list("active hand" = /obj/item/reagent_containers/food/drinks/bottle/small/beer,
-								"off hand" = /obj/item/reagent_containers/food/snacks/poppypretzel)
+								"off hand" = /obj/item/reagent_containers/food/poppypretzel)
 			return "The spell will now give everybody a preztel as well."
 		if(2)
 			equipped_summons = list("active hand" = /obj/item/reagent_containers/food/drinks/bottle/absinthe,
-								"off hand" = /obj/item/reagent_containers/food/snacks/poppypretzel,
+								"off hand" = /obj/item/reagent_containers/food/poppypretzel,
 								"[slot_head]" = /obj/item/clothing/head/collectable/wizard)
 			return "Woo! Now everybody gets a cool wizard hat and MORE BOOZE!"
 

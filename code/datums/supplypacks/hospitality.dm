@@ -73,21 +73,21 @@
 
 /decl/hierarchy/supply_pack/hospitality/beef
 	name = "Beef crate"
-	contains = list(/obj/item/reagent_containers/food/snacks/meat/beef = 6)
+	contains = list(/obj/item/reagent_containers/food/meat/beef = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Beef crate"
 	cost = 10
 
 /decl/hierarchy/supply_pack/hospitality/goat
 	name = "Goat meat crate"
-	contains = list(/obj/item/reagent_containers/food/snacks/meat/goat = 6)
+	contains = list(/obj/item/reagent_containers/food/meat/goat = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Goat meat crate"
 	cost = 10
 
 /decl/hierarchy/supply_pack/hospitality/chicken
 	name = "Chicken meat crate"
-	contains = list(/obj/item/reagent_containers/food/snacks/meat/chicken = 6)
+	contains = list(/obj/item/reagent_containers/food/meat/chicken = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Chicken meat crate"
 	cost = 10

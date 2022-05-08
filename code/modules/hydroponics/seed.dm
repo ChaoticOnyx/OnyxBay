@@ -729,7 +729,7 @@
 			else if(has_custom_product)
 				product = new has_custom_product(get_turf(user),name)
 			else
-				product = new /obj/item/reagent_containers/food/snacks/grown(get_turf(user),name)
+				product = new /obj/item/reagent_containers/food/grown(get_turf(user),name)
 			. += product
 
 			if(get_trait(TRAIT_PRODUCT_COLOUR))

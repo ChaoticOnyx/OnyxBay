@@ -57,14 +57,14 @@
 /obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/food/snacks))
-		var/obj/item/reagent_containers/food/snacks/G = W
-		if(istype(W, /obj/item/reagent_containers/food/snacks/grown))
+	if(istype(W, /obj/item/reagent_containers/food))
+		var/obj/item/reagent_containers/food/G = W
+		if(istype(W, /obj/item/reagent_containers/food/grown))
 			G = W
 			if(!G.dry)
 				to_chat(user, SPAN("notice", "[G] must be dried before you stuff it into [src]."))
 				return
-		else if(!istype(W, /obj/item/reagent_containers/food/snacks/tobacco))
+		else if(!istype(W, /obj/item/reagent_containers/food/tobacco))
 			return
 		if(smoketime)
 			to_chat(user, SPAN("notice", "[src] is already packed."))

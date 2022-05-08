@@ -6,7 +6,7 @@
 	icon_dead = "maneater_dead"
 	speak_emote = list("gibbers")
 	turns_per_move = 2
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
