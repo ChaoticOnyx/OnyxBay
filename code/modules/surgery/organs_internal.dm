@@ -707,7 +707,7 @@
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100, 	\
 		/obj/item/reagent_containers/glass/bottle = 75,	\
-		/obj/item/reagent_containers/glass/beaker = 75,	\
+		/obj/item/reagent_containers/vessel/beaker = 75,	\
 		/obj/item/reagent_containers/spray = 50,	\
 		/obj/item/reagent_containers/vessel/bucket = 50
 	)

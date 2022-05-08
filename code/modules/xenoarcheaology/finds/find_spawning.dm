@@ -120,7 +120,7 @@
 	if(prob(33))
 		R = new /obj/item/reagent_containers/glass/replenishing(loc)
 	else
-		R = new /obj/item/reagent_containers/glass/beaker(loc)
+		R = new /obj/item/reagent_containers/vessel/beaker(loc)
 	R.icon = 'icons/obj/xenoarchaeology.dmi'
 	R.icon_state = "bowl"
 	if(prob(20))

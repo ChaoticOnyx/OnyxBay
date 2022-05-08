@@ -32,7 +32,7 @@
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/hypospray/autoinjector,
-		/obj/item/reagent_containers/glass/beaker/vial,
+		/obj/item/reagent_containers/vessel/beaker/vial,
 		/obj/item/device/radio/headset,
 		/obj/item/device/paicard,
 		/obj/item/stamp,

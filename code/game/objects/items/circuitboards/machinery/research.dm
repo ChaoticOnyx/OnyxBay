@@ -39,7 +39,7 @@
 	req_components = list(
 							/obj/item/stock_parts/matter_bin = 2,
 							/obj/item/stock_parts/manipulator = 2,
-							/obj/item/reagent_containers/glass/beaker = 2)
+							/obj/item/reagent_containers/vessel/beaker = 2)
 
 
 /obj/item/circuitboard/circuit_imprinter
@@ -50,7 +50,7 @@
 	req_components = list(
 							/obj/item/stock_parts/matter_bin = 1,
 							/obj/item/stock_parts/manipulator = 1,
-							/obj/item/reagent_containers/glass/beaker = 2)
+							/obj/item/reagent_containers/vessel/beaker = 2)
 
 /obj/item/circuitboard/mechfab
 	name = "Circuit board (Exosuit Fabricator)"

@@ -5,7 +5,7 @@
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "incubator"
 	var/obj/item/virusdish/dish
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/radiation = 0
 	var/mutagen = 0
 

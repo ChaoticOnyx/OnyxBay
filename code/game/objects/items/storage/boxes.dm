@@ -149,7 +149,7 @@
 /obj/item/storage/box/beakers
 	name = "box of beakers"
 	icon_state = "beaker"
-	startswith = list(/obj/item/reagent_containers/glass/beaker = 7)
+	startswith = list(/obj/item/reagent_containers/vessel/beaker = 7)
 
 /obj/item/storage/box/blanks
 	name = "box of blank shells"

@@ -14,7 +14,7 @@
 					/obj/item/reagent_containers/glass/bottle/spaceacillin = 2,
 					/obj/item/reagent_containers/syringe = 12,
 					/obj/item/device/healthanalyzer = 5,
-					/obj/item/reagent_containers/glass/beaker = 4,
+					/obj/item/reagent_containers/vessel/beaker = 4,
 					/obj/item/reagent_containers/dropper = 2,
 					/obj/item/stack/medical/advanced/bruise_pack = 3,
 					/obj/item/stack/medical/advanced/ointment = 3,

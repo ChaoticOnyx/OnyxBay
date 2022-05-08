@@ -276,17 +276,17 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/beaker
 	name = "glass beaker"
-	path = /obj/item/reagent_containers/glass/beaker
+	path = /obj/item/reagent_containers/vessel/beaker
 	category = "Medical"
 
 /datum/autolathe/recipe/beaker_large
 	name = "large glass beaker"
-	path = /obj/item/reagent_containers/glass/beaker/large
+	path = /obj/item/reagent_containers/vessel/beaker/large
 	category = "Medical"
 
 /datum/autolathe/recipe/vial
 	name = "glass vial"
-	path = /obj/item/reagent_containers/glass/beaker/vial
+	path = /obj/item/reagent_containers/vessel/beaker/vial
 	category = "Medical"
 
 /datum/autolathe/recipe/bottle_small

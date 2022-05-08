@@ -12,7 +12,7 @@
 	var/path = 0
 	var/obj/item/device/assembly_holder/detonator = null
 	var/list/beakers = new /list()
-	var/list/allowed_containers = list(/obj/item/reagent_containers/glass/beaker, /obj/item/reagent_containers/glass/bottle)
+	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/glass/bottle)
 	var/affected_area = 3
 
 /obj/item/grenade/chem_grenade/Initialize()
@@ -197,8 +197,8 @@
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/aluminum, 30)
 	B2.reagents.add_reagent(/datum/reagent/foaming_agent, 10)
@@ -218,8 +218,8 @@
 
 /obj/item/grenade/chem_grenade/incendiary/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/aluminum, 15)
 	B1.reagents.add_reagent(/datum/reagent/fuel,20)
@@ -241,8 +241,8 @@
 
 /obj/item/grenade/chem_grenade/antiweed/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/toxin/plantbgone, 25)
 	B1.reagents.add_reagent(/datum/reagent/potassium, 25)
@@ -263,8 +263,8 @@
 
 /obj/item/grenade/chem_grenade/cleaner/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/surfactant, 40)
 	B2.reagents.add_reagent(/datum/reagent/water, 40)
@@ -284,8 +284,8 @@
 
 /obj/item/grenade/chem_grenade/teargas/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/large/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
 	B1.reagents.add_reagent(/datum/reagent/potassium, 40)

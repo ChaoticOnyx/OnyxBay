@@ -633,7 +633,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/TakeReagents()
-	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (!beaker)
 		crash_with("beaker is null")
@@ -653,7 +653,7 @@
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/BeakerToList()
-	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -674,7 +674,7 @@
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetMutagen()
-	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -696,7 +696,7 @@
 	TRUE OR FALSE
 */
 /obj/machinery/computer/neuromod_rnd/proc/CheckBeakerContent()
-	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (!beaker) return null
 
@@ -716,13 +716,13 @@
 	Returns an inserted beaker
 
 	Returns:
-	/obj/item/reagent_containers/glass/beaker/
+	/obj/item/reagent_containers/vessel/beaker/
 	OR
 	null
 */
 /obj/machinery/computer/neuromod_rnd/proc/GetBeaker()
-	var/obj/item/reagent_containers/glass/beaker/beaker = null
-	beaker = (locate(/obj/item/reagent_containers/glass/beaker) in contents)
+	var/obj/item/reagent_containers/vessel/beaker/beaker = null
+	beaker = (locate(/obj/item/reagent_containers/vessel/beaker) in contents)
 
 	return beaker
 
@@ -733,7 +733,7 @@
 	Nothing
 */
 /obj/machinery/computer/neuromod_rnd/proc/EjectBeaker()
-	var/obj/item/reagent_containers/glass/beaker/beaker = GetBeaker()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (beaker)
 		contents -= beaker
@@ -750,7 +750,7 @@
 		to_chat(usr, "Console's beaker slot is already occupied.")
 		return
 
-	var/obj/item/reagent_containers/glass/beaker/beaker = usr.get_active_hand()
+	var/obj/item/reagent_containers/vessel/beaker/beaker = usr.get_active_hand()
 
 	if (beaker)
 		usr.drop_item(beaker)
@@ -816,7 +816,7 @@
 	if (istype(I, /obj/item/reagent_containers/neuromod_shell))
 		InsertNeuromodShell()
 		return
-	else if (istype(I, /obj/item/reagent_containers/glass/beaker))
+	else if (istype(I, /obj/item/reagent_containers/vessel/beaker))
 		InsertBeaker()
 		return
 	else

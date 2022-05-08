@@ -57,12 +57,12 @@
 	name = "hypospray"
 	item_state = "autoinjector"
 	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replacable 30u vial."
-	var/obj/item/reagent_containers/glass/beaker/vial/loaded_vial
+	var/obj/item/reagent_containers/vessel/beaker/vial/loaded_vial
 	volume = 0
 
 /obj/item/reagent_containers/hypospray/vial/Initialize()
 	. = ..()
-	loaded_vial = new /obj/item/reagent_containers/glass/beaker/vial(src)
+	loaded_vial = new /obj/item/reagent_containers/vessel/beaker/vial(src)
 	volume = loaded_vial.volume
 	reagents.maximum_volume = loaded_vial.reagents.maximum_volume
 
@@ -83,7 +83,7 @@
 		return ..()
 
 /obj/item/reagent_containers/hypospray/vial/attackby(obj/item/W, mob/user as mob)
-	if(istype(W, /obj/item/reagent_containers/glass/beaker/vial))
+	if(istype(W, /obj/item/reagent_containers/vessel/beaker/vial))
 		if(!loaded_vial)
 			if(!do_after(user,10) || loaded_vial || !(W in user))
 				return 0

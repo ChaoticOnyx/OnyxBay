@@ -22,7 +22,7 @@
 		/obj/item/storage/box/autoinjectors,
 		/obj/item/storage/box/syringes,
 		/obj/item/reagent_containers/dropper = 2,
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/vessel/beaker = 2,
 		/obj/item/reagent_containers/glass/bottle/inaprovaline = 2,
 		/obj/item/reagent_containers/glass/bottle/antitoxin = 2,
 		/obj/random/firstaid,
@@ -151,7 +151,7 @@
 /obj/structure/closet/secure_closet/chemical/WillContain()
 	return list(
 		/obj/item/storage/box/pillbottles = 2,
-		/obj/item/reagent_containers/glass/beaker/cryoxadone,
+		/obj/item/reagent_containers/vessel/beaker/cryoxadone,
 		/obj/random/medical = 12
 	)
 
@@ -218,7 +218,7 @@
 		/obj/item/storage/box/autoinjectors,
 		/obj/item/storage/box/syringes,
 		/obj/item/reagent_containers/dropper = 2,
-		/obj/item/reagent_containers/glass/beaker = 2,
+		/obj/item/reagent_containers/vessel/beaker = 2,
 		/obj/item/reagent_containers/glass/bottle/inaprovaline,
 		/obj/item/storage/pill_bottle/spaceacillin,
 		/obj/item/reagent_containers/syringe/antiviral/packaged,

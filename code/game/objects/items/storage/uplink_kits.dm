@@ -130,7 +130,7 @@
 	name = "toxin kit"
 	desc = "An apple will not be enough to keep the doctor away after this."
 	startswith = list(
-		/obj/item/reagent_containers/glass/beaker/vial/random/toxin,
+		/obj/item/reagent_containers/vessel/beaker/vial/random/toxin,
 		/obj/item/reagent_containers/syringe
 	)
 

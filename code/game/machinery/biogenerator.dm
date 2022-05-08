@@ -14,7 +14,7 @@
 	anchored = 1
 	idle_power_usage = 40
 	var/processing = 0
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/points = 0
 	var/state = BG_READY
 	var/denied = 0

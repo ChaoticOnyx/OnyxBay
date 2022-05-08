@@ -95,7 +95,7 @@
 	icon_off = "smartfridge_virology-off"
 
 /obj/machinery/smartfridge/secure/virology/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass/beaker/vial/))
+	if(istype(O,/obj/item/reagent_containers/vessel/beaker/vial/))
 		return 1
 	if(istype(O,/obj/item/virusdish/))
 		return 1

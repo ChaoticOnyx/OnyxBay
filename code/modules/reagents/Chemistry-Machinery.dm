@@ -13,7 +13,7 @@
 	idle_power_usage = 20
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
-	var/obj/item/reagent_containers/glass/beaker
+	var/obj/item/reagent_containers/vessel/beaker
 	var/obj/item/storage/pill_bottle/loaded_pill_bottle
 	var/mode = 0
 	var/condi = 0
@@ -390,7 +390,7 @@
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
 	if(mapload)
-		beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
+		beaker = new /obj/item/reagent_containers/vessel/beaker/large(src)
 	update_icon()
 
 /obj/machinery/reagentgrinder/update_icon()
