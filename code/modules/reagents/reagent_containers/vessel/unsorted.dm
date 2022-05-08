@@ -15,10 +15,42 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	lid_type = null
 
-///////////////////////////////////////////////Drinks
-//Notes by Darem: Drinks are simply containers that start preloaded. Unlike condiments, the contents can be ingested directly
-//	rather then having to add it to something else first. They should only contain liquids. They have a default container size of 50.
-//	Formatting is the same as food.
+/obj/item/reagent_containers/vessel/bucket
+	desc = "It's a bucket."
+	name = "bucket"
+	icon = 'icons/obj/janitor.dmi'
+	icon_state = "bucket"
+	item_state = "bucket"
+	center_of_mass = "x=16;y=9"
+	matter = list(MATERIAL_STEEL = 4000)
+	w_class = ITEM_SIZE_NORMAL
+	amount_per_transfer_from_this = 20
+	possible_transfer_amounts = "10;20;30;60;120;150;180"
+	volume = 180
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	unacidable = 0
+
+/obj/item/reagent_containers/vessel/bucket/full
+	startswith = list(/datum/reagent/water)
+
+/obj/item/reagent_containers/vessel/bucket/attackby(obj/D, mob/user)
+	if(isprox(D))
+		to_chat(user, "You add [D] to [src].")
+		qdel(D)
+		user.put_in_hands(new /obj/item/bucket_sensor)
+		user.drop_from_inventory(src)
+		qdel(src)
+		return
+	else if(istype(D, /obj/item/mop) || (atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+		if(reagents.total_volume < 1)
+			to_chat(user, SPAN("warning", "\The [src] is empty!"))
+		else
+			reagents.trans_to_obj(D, 5)
+			to_chat(user, SPAN("notice", "You wet \the [D] in \the [src]."))
+			playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
+		return
+	else
+		return ..()
 
 /obj/item/reagent_containers/vessel/coffee
 	name = "\improper Robust Coffee"

@@ -22,7 +22,7 @@
 
 /decl/hierarchy/supply_pack/supply/janitor
 	name = "Janitorial supplies"
-	contains = list(/obj/item/reagent_containers/glass/bucket,
+	contains = list(/obj/item/reagent_containers/vessel/bucket,
 					/obj/item/mop,
 					/obj/item/caution = 4,
 					/obj/item/storage/bag/trash,

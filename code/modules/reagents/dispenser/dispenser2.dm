@@ -104,7 +104,7 @@
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
-		if(istype(RC,/obj/item/reagent_containers/glass/bucket))
+		if(istype(RC,/obj/item/reagent_containers/vessel/bucket))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 

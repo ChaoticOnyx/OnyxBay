@@ -213,13 +213,13 @@
 
 /obj/item/reagent_containers/vessel/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
 	if(!is_open_container())
-		to_chat(user, SPAN("notice", "You need to open \the [src] first.")
+		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return TRUE
 	return ..()
 
 /obj/item/reagent_containers/vessel/standard_pour_into(mob/user, atom/target)
 	if(!is_open_container())
-		to_chat(user, SPAN("notice", "You need to open \the [src] first.")
+		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return TRUE
 	return ..()
 

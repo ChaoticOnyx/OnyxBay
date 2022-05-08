@@ -32,7 +32,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/bucket
 	name = "bucket"
-	path = /obj/item/reagent_containers/glass/bucket
+	path = /obj/item/reagent_containers/vessel/bucket
 	category = "General"
 
 /datum/autolathe/recipe/drinkingglass

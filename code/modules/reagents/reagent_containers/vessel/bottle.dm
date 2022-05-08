@@ -78,7 +78,7 @@
 	if(rag || pourer)
 		return
 	if(!is_open_container())
-		to_chat(user, SPAN("notice", "You need to open \the [src] first.")
+		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return
 	if(user.unEquip(R))
 		to_chat(user, SPAN("notice", "You stuff \the [R] into \the [src]."))
@@ -99,7 +99,7 @@
 	if(rag || pourer)
 		return
 	if(!is_open_container())
-		to_chat(user, SPAN("notice", "You need to open \the [src] first.")
+		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return
 	if(user.unEquip(P))
 		to_chat(user, SPAN("notice", "You stuff [P] into [src]."))

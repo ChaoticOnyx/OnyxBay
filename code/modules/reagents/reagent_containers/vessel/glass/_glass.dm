@@ -166,7 +166,7 @@
 			user.visible_message(SPAN("warning", "[user] bashes \the [src] with a spoon, shattering it to pieces! What a rube."))
 			playsound(src, SFX_BREAK_WINDOW, 30, 1)
 			if(reagents)
-				user.visible_message(SPAN("notice", "The contents of \the [src] splash all over [user]!</span>")
+				user.visible_message(SPAN("notice", "The contents of \the [src] splash all over [user]!"))
 				reagents.splash(user, reagents.total_volume)
 			qdel(src)
 			return
