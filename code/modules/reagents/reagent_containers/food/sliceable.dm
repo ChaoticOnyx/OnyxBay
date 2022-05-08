@@ -2,7 +2,7 @@
 /////////////////////////////////////////////////Sliceable////////////////////////////////////////
 // All the food items that can be sliced into smaller bits like Meatbread and Cheesewheels
 
-/obj/item/reagent_containers/food/snacks/sliceable
+/obj/item/reagent_containers/food/sliceable
 	w_class = ITEM_SIZE_NORMAL //Whole pizzas and cakes shouldn't fit in a pocket, you can slice them if you want to do that.
 
 /**
@@ -11,7 +11,7 @@
  *  This path contains some extra code for spawning slices pre-filled with
  *  reagents.
  */
-/obj/item/reagent_containers/food/snacks/slice
+/obj/item/reagent_containers/food/slice
 	name = "slice of... something"
 	var/whole_path  // path for the item from which this slice comes
 	var/filled = FALSE  // should the slice spawn with any reagents
@@ -24,10 +24,10 @@
  *  whole item, transferring the reagents and deleting the whole item, which may
  *  have performance implications.
  */
-/obj/item/reagent_containers/food/snacks/slice/Initialize()
+/obj/item/reagent_containers/food/slice/Initialize()
 	. = ..()
 	if(filled)
-		var/obj/item/reagent_containers/food/snacks/whole = new whole_path()
+		var/obj/item/reagent_containers/food/whole = new whole_path()
 		if(whole && whole.slices_num)
 			var/reagent_amount = whole.reagents.total_volume/whole.slices_num
 			whole.reagents.trans_to_obj(src, reagent_amount)
@@ -35,23 +35,23 @@
 		qdel(whole)
 
 // slicable into 3xdoughslices
-/obj/item/reagent_containers/food/snacks/sliceable/flatdough
+/obj/item/reagent_containers/food/sliceable/flatdough
 	name = "flat dough"
 	desc = "A flattened dough."
 	icon = 'icons/obj/food_ingredients.dmi'
 	icon_state = "flat dough"
-	slice_path = /obj/item/reagent_containers/food/snacks/doughslice
+	slice_path = /obj/item/reagent_containers/food/doughslice
 	slices_num = 3
 	center_of_mass = "x=16;y=16"
 	nutriment_amt = 3
 	startswith = list(/datum/reagent/nutriment/protein = 1)
 
-/obj/item/reagent_containers/food/snacks/doughslice
+/obj/item/reagent_containers/food/doughslice
 	name = "dough slice"
 	desc = "A building block of an impressive dish."
 	icon = 'icons/obj/food_ingredients.dmi'
 	icon_state = "doughslice"
-	slice_path = /obj/item/reagent_containers/food/snacks/spagetti
+	slice_path = /obj/item/reagent_containers/food/spagetti
 	slices_num = 1
 	center_of_mass = "x=17;y=19"
 	nutriment_desc = list("dough" = 1)
@@ -59,33 +59,33 @@
 	bitesize = 2
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/salami
+/obj/item/reagent_containers/food/sliceable/salami
 	name = "Salami"
 	desc = "Not the best for sandwiches."
 	icon_state = "salami"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/salami
+	slice_path = /obj/item/reagent_containers/food/slice/salami
 	slices_num = 6
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 2
 	startswith = list(/datum/reagent/nutriment/protein = 12)
 
-/obj/item/reagent_containers/food/snacks/slice/salami
+/obj/item/reagent_containers/food/slice/salami
 	name = "Salami's slice"
 	desc = "A slice of salami. The best for sandwiches"
 	icon_state = "salami_s"
 	center_of_mass = "x=15;y=15"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/salami
+	whole_path = /obj/item/reagent_containers/food/sliceable/salami
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/salami/filled
+/obj/item/reagent_containers/food/slice/salami/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/sushi
+/obj/item/reagent_containers/food/sliceable/sushi
 	name = "Sushi"
 	desc = "Konnichiwa!"
 	icon_state = "sushi"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/sushi
+	slice_path = /obj/item/reagent_containers/food/slice/sushi
 	slices_num = 5
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 5
@@ -93,23 +93,23 @@
 		/datum/reagent/nutriment/protein = 3,
 		/datum/reagent/toxin/carpotoxin = 2)
 
-/obj/item/reagent_containers/food/snacks/slice/sushi
+/obj/item/reagent_containers/food/slice/sushi
 	name = "Sushi's slice"
 	desc = "A slice of sushi. Smaller konnichiwa."
 	icon_state = "sushi_s"
 	center_of_mass = "x=15;y=15"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/sushi
+	whole_path = /obj/item/reagent_containers/food/sliceable/sushi
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/sushi/filled
+/obj/item/reagent_containers/food/slice/sushi/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/meatbread
+/obj/item/reagent_containers/food/sliceable/meatbread
 	name = "meatbread loaf"
 	desc = "The culinary base of every self-respecting eloquen/tg/entleman."
 	icon_state = "meatbread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/meatbread
+	slice_path = /obj/item/reagent_containers/food/slice/meatbread
 	slices_num = 5
 	filling_color = "#ff7575"
 	center_of_mass = "x=19;y=9"
@@ -118,7 +118,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 20)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/meatbread
+/obj/item/reagent_containers/food/slice/meatbread
 	name = "meatbread slice"
 	desc = "A slice of delicious meatbread."
 	icon_state = "meatbreadslice"
@@ -126,17 +126,17 @@
 	filling_color = "#ff7575"
 	bitesize = 2
 	center_of_mass = "x=16;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/meatbread
+	whole_path = /obj/item/reagent_containers/food/sliceable/meatbread
 
-/obj/item/reagent_containers/food/snacks/slice/meatbread/filled
+/obj/item/reagent_containers/food/slice/meatbread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/xenomeatbread
+/obj/item/reagent_containers/food/sliceable/xenomeatbread
 	name = "xenomeatbread loaf"
 	desc = "The culinary base of every self-respecting eloquent gentleman. Extra Heretical."
 	icon_state = "xenomeatbread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/xenomeatbread
+	slice_path = /obj/item/reagent_containers/food/slice/xenomeatbread
 	slices_num = 5
 	filling_color = "#8aff75"
 	center_of_mass = "x=16;y=9"
@@ -145,7 +145,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 20)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/xenomeatbread
+/obj/item/reagent_containers/food/slice/xenomeatbread
 	name = "xenomeatbread slice"
 	desc = "A slice of delicious meatbread. Extra Heretical."
 	icon_state = "xenobreadslice"
@@ -153,17 +153,17 @@
 	filling_color = "#8aff75"
 	bitesize = 2
 	center_of_mass = "x=16;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/xenomeatbread
+	whole_path = /obj/item/reagent_containers/food/sliceable/xenomeatbread
 
-/obj/item/reagent_containers/food/snacks/slice/xenomeatbread/filled
+/obj/item/reagent_containers/food/slice/xenomeatbread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/bananabread
+/obj/item/reagent_containers/food/sliceable/bananabread
 	name = "Banana-nut bread"
 	desc = "A heavenly and filling treat."
 	icon_state = "bananabread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/bananabread
+	slice_path = /obj/item/reagent_containers/food/slice/bananabread
 	slices_num = 5
 	filling_color = "#ede5ad"
 	center_of_mass = "x=16;y=9"
@@ -172,7 +172,7 @@
 	startswith = list(/datum/reagent/drink/juice/banana = 20)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/bananabread
+/obj/item/reagent_containers/food/slice/bananabread
 	name = "Banana-nut bread slice"
 	desc = "A slice of delicious banana bread."
 	icon_state = "bananabreadslice"
@@ -180,17 +180,17 @@
 	filling_color = "#ede5ad"
 	bitesize = 2
 	center_of_mass = "x=16;y=8"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/bananabread
+	whole_path = /obj/item/reagent_containers/food/sliceable/bananabread
 
-/obj/item/reagent_containers/food/snacks/slice/bananabread/filled
+/obj/item/reagent_containers/food/slice/bananabread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/tofubread
+/obj/item/reagent_containers/food/sliceable/tofubread
 	name = "Tofubread"
 	icon_state = "Like meatbread but for vegetarians. Not guaranteed to give superpowers."
 	icon_state = "tofubread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/tofubread
+	slice_path = /obj/item/reagent_containers/food/slice/tofubread
 	slices_num = 5
 	filling_color = "#f7ffe0"
 	center_of_mass = "x=16;y=9"
@@ -198,7 +198,7 @@
 	nutriment_amt = 10
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/tofubread
+/obj/item/reagent_containers/food/slice/tofubread
 	name = "Tofubread slice"
 	desc = "A slice of delicious tofubread."
 	icon_state = "tofubreadslice"
@@ -206,17 +206,17 @@
 	filling_color = "#f7ffe0"
 	bitesize = 2
 	center_of_mass = "x=16;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/tofubread
+	whole_path = /obj/item/reagent_containers/food/sliceable/tofubread
 
-/obj/item/reagent_containers/food/snacks/slice/tofubread/filled
+/obj/item/reagent_containers/food/slice/tofubread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/carrotcake
+/obj/item/reagent_containers/food/sliceable/carrotcake
 	name = "Carrot Cake"
 	desc = "A favorite desert of a certain wascally wabbit. Not a lie."
 	icon_state = "carrotcake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/carrotcake
+	slice_path = /obj/item/reagent_containers/food/slice/carrotcake
 	slices_num = 5
 	filling_color = "#ffd675"
 	center_of_mass = "x=16;y=10"
@@ -225,7 +225,7 @@
 	startswith = list(/datum/reagent/imidazoline = 10)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/carrotcake
+/obj/item/reagent_containers/food/slice/carrotcake
 	name = "Carrot Cake slice"
 	desc = "Carrotty slice of Carrot Cake, carrots are good for your eyes! Also not a lie."
 	icon_state = "carrotcake_slice"
@@ -233,17 +233,17 @@
 	filling_color = "#ffd675"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/carrotcake
+	whole_path = /obj/item/reagent_containers/food/sliceable/carrotcake
 
-/obj/item/reagent_containers/food/snacks/slice/carrotcake/filled
+/obj/item/reagent_containers/food/slice/carrotcake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/braincake
+/obj/item/reagent_containers/food/sliceable/braincake
 	name = "Brain Cake"
 	desc = "A squishy cake-thing."
 	icon_state = "braincake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/braincake
+	slice_path = /obj/item/reagent_containers/food/slice/braincake
 	slices_num = 5
 	filling_color = "#e6aedb"
 	center_of_mass = "x=16;y=10"
@@ -254,7 +254,7 @@
 		/datum/reagent/alkysine = 10)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/braincake
+/obj/item/reagent_containers/food/slice/braincake
 	name = "Brain Cake slice"
 	desc = "Lemme tell you something about prions. THEY'RE DELICIOUS."
 	icon_state = "braincakeslice"
@@ -262,17 +262,17 @@
 	filling_color = "#e6aedb"
 	bitesize = 2
 	center_of_mass = "x=16;y=12"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/braincake
+	whole_path = /obj/item/reagent_containers/food/sliceable/braincake
 
-/obj/item/reagent_containers/food/snacks/slice/braincake/filled
+/obj/item/reagent_containers/food/slice/braincake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/cheesecake
+/obj/item/reagent_containers/food/sliceable/cheesecake
 	name = "Cheese Cake"
 	desc = "DANGEROUSLY cheesy."
 	icon_state = "cheesecake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/cheesecake
+	slice_path = /obj/item/reagent_containers/food/slice/cheesecake
 	slices_num = 5
 	filling_color = "#faf7af"
 	center_of_mass = "x=16;y=10"
@@ -281,7 +281,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 15)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/cheesecake
+/obj/item/reagent_containers/food/slice/cheesecake
 	name = "Cheese Cake slice"
 	desc = "Slice of pure cheestisfaction."
 	icon_state = "cheesecake_slice"
@@ -289,24 +289,24 @@
 	filling_color = "#faf7af"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/cheesecake
+	whole_path = /obj/item/reagent_containers/food/sliceable/cheesecake
 
-/obj/item/reagent_containers/food/snacks/slice/cheesecake/filled
+/obj/item/reagent_containers/food/slice/cheesecake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/plaincake
+/obj/item/reagent_containers/food/sliceable/plaincake
 	name = "Vanilla Cake"
 	desc = "A plain cake, not a lie."
 	icon_state = "plaincake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/plaincake
+	slice_path = /obj/item/reagent_containers/food/slice/plaincake
 	slices_num = 5
 	filling_color = "#f7edd5"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "vanilla" = 15)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/slice/plaincake
+/obj/item/reagent_containers/food/slice/plaincake
 	name = "Vanilla Cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "plaincake_slice"
@@ -314,24 +314,24 @@
 	filling_color = "#f7edd5"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/plaincake
+	whole_path = /obj/item/reagent_containers/food/sliceable/plaincake
 
-/obj/item/reagent_containers/food/snacks/slice/plaincake/filled
+/obj/item/reagent_containers/food/slice/plaincake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/orangecake
+/obj/item/reagent_containers/food/sliceable/orangecake
 	name = "Orange Cake"
 	desc = "A cake with added orange."
 	icon_state = "orangecake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/orangecake
+	slice_path = /obj/item/reagent_containers/food/slice/orangecake
 	slices_num = 5
 	filling_color = "#fada8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "orange" = 15)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/slice/orangecake
+/obj/item/reagent_containers/food/slice/orangecake
 	name = "Orange Cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "orangecake_slice"
@@ -339,24 +339,24 @@
 	filling_color = "#fada8e"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/orangecake
+	whole_path = /obj/item/reagent_containers/food/sliceable/orangecake
 
-/obj/item/reagent_containers/food/snacks/slice/orangecake/filled
+/obj/item/reagent_containers/food/slice/orangecake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/limecake
+/obj/item/reagent_containers/food/sliceable/limecake
 	name = "Lime Cake"
 	desc = "A cake with added lime."
 	icon_state = "limecake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/limecake
+	slice_path = /obj/item/reagent_containers/food/slice/limecake
 	slices_num = 5
 	filling_color = "#cbfa8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "lime" = 15)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/slice/limecake
+/obj/item/reagent_containers/food/slice/limecake
 	name = "Lime Cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "limecake_slice"
@@ -364,24 +364,24 @@
 	filling_color = "#cbfa8e"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/limecake
+	whole_path = /obj/item/reagent_containers/food/sliceable/limecake
 
-/obj/item/reagent_containers/food/snacks/slice/limecake/filled
+/obj/item/reagent_containers/food/slice/limecake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/lemoncake
+/obj/item/reagent_containers/food/sliceable/lemoncake
 	name = "Lemon Cake"
 	desc = "A cake with added lemon."
 	icon_state = "lemoncake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/lemoncake
+	slice_path = /obj/item/reagent_containers/food/slice/lemoncake
 	slices_num = 5
 	filling_color = "#fafa8e"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "lemon" = 15)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/slice/lemoncake
+/obj/item/reagent_containers/food/slice/lemoncake
 	name = "Lemon Cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "lemoncake_slice"
@@ -389,24 +389,24 @@
 	filling_color = "#fafa8e"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/lemoncake
+	whole_path = /obj/item/reagent_containers/food/sliceable/lemoncake
 
-/obj/item/reagent_containers/food/snacks/slice/lemoncake/filled
+/obj/item/reagent_containers/food/slice/lemoncake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/chocolatecake
+/obj/item/reagent_containers/food/sliceable/chocolatecake
 	name = "Chocolate Cake"
 	desc = "A cake with added chocolate."
 	icon_state = "chocolatecake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/chocolatecake
+	slice_path = /obj/item/reagent_containers/food/slice/chocolatecake
 	slices_num = 5
 	filling_color = "#805930"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "chocolate" = 15)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/slice/chocolatecake
+/obj/item/reagent_containers/food/slice/chocolatecake
 	name = "Chocolate Cake slice"
 	desc = "Just a slice of cake, it is enough for everyone."
 	icon_state = "chocolatecake_slice"
@@ -414,17 +414,17 @@
 	filling_color = "#805930"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/chocolatecake
+	whole_path = /obj/item/reagent_containers/food/sliceable/chocolatecake
 
-/obj/item/reagent_containers/food/snacks/slice/chocolatecake/filled
+/obj/item/reagent_containers/food/slice/chocolatecake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/cheesewheel
+/obj/item/reagent_containers/food/sliceable/cheesewheel
 	name = "Cheese wheel"
 	desc = "A big wheel of delcious Cheddar."
 	icon_state = "cheesewheel"
-	slice_path = /obj/item/reagent_containers/food/snacks/cheesewedge
+	slice_path = /obj/item/reagent_containers/food/cheesewedge
 	slices_num = 5
 	filling_color = "#fff700"
 	center_of_mass = "x=16;y=10"
@@ -433,7 +433,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 10)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/cheesewedge
+/obj/item/reagent_containers/food/cheesewedge
 	name = "Cheese wedge"
 	desc = "A wedge of delicious Cheddar. The cheese wheel it was cut from can't have gone far."
 	icon_state = "cheesewedge"
@@ -442,11 +442,11 @@
 	center_of_mass = "x=16;y=10"
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/birthdaycake
+/obj/item/reagent_containers/food/sliceable/birthdaycake
 	name = "Birthday Cake"
 	desc = "Happy Birthday..."
 	icon_state = "birthdaycake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/birthdaycake
+	slice_path = /obj/item/reagent_containers/food/slice/birthdaycake
 	slices_num = 5
 	filling_color = "#ffd6d6"
 	center_of_mass = "x=16;y=10"
@@ -456,7 +456,7 @@
 		/datum/reagent/nutriment/sprinkles = 10)
 	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/slice/birthdaycake
+/obj/item/reagent_containers/food/slice/birthdaycake
 	name = "Birthday Cake slice"
 	desc = "A slice of your birthday."
 	icon_state = "birthdaycakeslice"
@@ -464,17 +464,17 @@
 	filling_color = "#ffd6d6"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/birthdaycake
+	whole_path = /obj/item/reagent_containers/food/sliceable/birthdaycake
 
-/obj/item/reagent_containers/food/snacks/slice/birthdaycake/filled
+/obj/item/reagent_containers/food/slice/birthdaycake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/bread
+/obj/item/reagent_containers/food/sliceable/bread
 	name = "Bread"
 	icon_state = "Some plain old Earthen bread."
 	icon_state = "bread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/bread
+	slice_path = /obj/item/reagent_containers/food/slice/bread
 	slices_num = 5
 	filling_color = "#ffe396"
 	center_of_mass = "x=16;y=9"
@@ -482,7 +482,7 @@
 	nutriment_amt = 6
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/bread
+/obj/item/reagent_containers/food/slice/bread
 	name = "Bread slice"
 	desc = "A slice of home."
 	icon_state = "breadslice"
@@ -490,17 +490,17 @@
 	filling_color = "#d27332"
 	bitesize = 2
 	center_of_mass = "x=16;y=4"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/bread
+	whole_path = /obj/item/reagent_containers/food/sliceable/bread
 
-/obj/item/reagent_containers/food/snacks/slice/bread/filled
+/obj/item/reagent_containers/food/slice/bread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/creamcheesebread
+/obj/item/reagent_containers/food/sliceable/creamcheesebread
 	name = "Cream Cheese Bread"
 	desc = "Yum yum yum!"
 	icon_state = "creamcheesebread"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/creamcheesebread
+	slice_path = /obj/item/reagent_containers/food/slice/creamcheesebread
 	slices_num = 5
 	filling_color = "#fff896"
 	center_of_mass = "x=16;y=9"
@@ -509,7 +509,7 @@
 	startswith = list(/datum/reagent/nutriment/protein = 15)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/creamcheesebread
+/obj/item/reagent_containers/food/slice/creamcheesebread
 	name = "Cream Cheese Bread slice"
 	desc = "A slice of yum!"
 	icon_state = "creamcheesebreadslice"
@@ -517,13 +517,13 @@
 	filling_color = "#fff896"
 	bitesize = 2
 	center_of_mass = "x=16;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/creamcheesebread
+	whole_path = /obj/item/reagent_containers/food/sliceable/creamcheesebread
 
-/obj/item/reagent_containers/food/snacks/slice/creamcheesebread/filled
+/obj/item/reagent_containers/food/slice/creamcheesebread/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/watermelonslice
+/obj/item/reagent_containers/food/watermelonslice
 	name = "Watermelon Slice"
 	desc = "A slice of watery goodness."
 	icon_state = "watermelonslice"
@@ -532,18 +532,18 @@
 	center_of_mass = "x=16;y=10"
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/applecake
+/obj/item/reagent_containers/food/sliceable/applecake
 	name = "Apple Cake"
 	desc = "A cake centred with apples."
 	icon_state = "applecake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/applecake
+	slice_path = /obj/item/reagent_containers/food/slice/applecake
 	slices_num = 5
 	filling_color = "#ebf5b8"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("cake" = 10, "sweetness" = 10, "apple" = 15)
 	nutriment_amt = 15
 
-/obj/item/reagent_containers/food/snacks/slice/applecake
+/obj/item/reagent_containers/food/slice/applecake
 	name = "Apple Cake slice"
 	desc = "A slice of heavenly cake."
 	icon_state = "applecakeslice"
@@ -551,24 +551,24 @@
 	filling_color = "#ebf5b8"
 	bitesize = 2
 	center_of_mass = "x=16;y=14"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/applecake
+	whole_path = /obj/item/reagent_containers/food/sliceable/applecake
 
-/obj/item/reagent_containers/food/snacks/slice/applecake/filled
+/obj/item/reagent_containers/food/slice/applecake/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/pumpkinpie
+/obj/item/reagent_containers/food/sliceable/pumpkinpie
 	name = "Pumpkin Pie"
 	desc = "A delicious treat for the autumn months."
 	icon_state = "pumpkinpie"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/pumpkinpie
+	slice_path = /obj/item/reagent_containers/food/slice/pumpkinpie
 	slices_num = 5
 	filling_color = "#f5b951"
 	center_of_mass = "x=16;y=10"
 	nutriment_desc = list("pie" = 5, "cream" = 5, "pumpkin" = 5)
 	nutriment_amt = 15
 
-/obj/item/reagent_containers/food/snacks/slice/pumpkinpie
+/obj/item/reagent_containers/food/slice/pumpkinpie
 	name = "Pumpkin Pie slice"
 	desc = "A slice of pumpkin pie, with whipped cream on top. Perfection."
 	icon_state = "pumpkinpieslice"
@@ -576,18 +576,18 @@
 	filling_color = "#f5b951"
 	bitesize = 2
 	center_of_mass = "x=16;y=12"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/pumpkinpie
+	whole_path = /obj/item/reagent_containers/food/sliceable/pumpkinpie
 
-/obj/item/reagent_containers/food/snacks/slice/pumpkinpie/filled
+/obj/item/reagent_containers/food/slice/pumpkinpie/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/noel
+/obj/item/reagent_containers/food/sliceable/noel
 	name = "Buche de Noel"
 	desc = "What?"
 	icon_state = "noel"
 	trash = /obj/item/trash/dish/tray
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/noel
+	slice_path = /obj/item/reagent_containers/food/slice/noel
 	slices_num = 5
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 8
@@ -597,24 +597,24 @@
 		/datum/reagent/drink/juice/berry = 3,
 		/datum/reagent/nutriment/coco = 2)
 
-/obj/item/reagent_containers/food/snacks/slice/noel
+/obj/item/reagent_containers/food/slice/noel
 	name = "Noel's slice"
 	desc = "Slice of what?"
 	icon_state = "noel_s"
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/noel
+	whole_path = /obj/item/reagent_containers/food/sliceable/noel
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/noel/filled
+/obj/item/reagent_containers/food/slice/noel/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/choccherrycake
+/obj/item/reagent_containers/food/sliceable/choccherrycake
 	name = "Chocolate - cherry cake"
 	desc = "Another cake. However."
 	icon_state = "choccherrycake"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/choccherrycake
+	slice_path = /obj/item/reagent_containers/food/slice/choccherrycake
 	slices_num = 6
 	center_of_mass = "x=15;y=15"
 	nutriment_amt = 10
@@ -622,32 +622,32 @@
 		/datum/reagent/sugar = 3,
 		/datum/reagent/nutriment/coco = 4)
 
-/obj/item/reagent_containers/food/snacks/slice/choccherrycake
+/obj/item/reagent_containers/food/slice/choccherrycake
 	name = "Chocolate - cherry cake's slice"
 	desc = "Slice of another cake. Wait, what?"
 	icon_state = "choccherrycake_s"
 	trash = /obj/item/trash/dish/plate
 	center_of_mass = "x=15;y=15"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/choccherrycake
+	whole_path = /obj/item/reagent_containers/food/sliceable/choccherrycake
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/choccherrycake/filled
+/obj/item/reagent_containers/food/slice/choccherrycake/filled
 	filled = TRUE
 
 
 
 /////////////////////////////////////////////////PIZZA////////////////////////////////////////
 
-/obj/item/reagent_containers/food/snacks/sliceable/pizza
+/obj/item/reagent_containers/food/sliceable/pizza
 	slices_num = 6
 	filling_color = "#baa14c"
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita
+/obj/item/reagent_containers/food/sliceable/pizza/margherita
 	name = "Margherita"
 	desc = "The golden standard of pizzas."
 	icon_state = "pizzamargherita"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/margherita
+	slice_path = /obj/item/reagent_containers/food/slice/margherita
 	slices_num = 6
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 10, "tomato" = 10, "cheese" = 15)
@@ -657,24 +657,24 @@
 		/datum/reagent/drink/juice/tomato = 6)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/margherita
+/obj/item/reagent_containers/food/slice/margherita
 	name = "Margherita slice"
 	desc = "A slice of the classic pizza."
 	icon_state = "pizzamargheritaslice"
 	filling_color = "#baa14c"
 	bitesize = 2
 	center_of_mass = "x=18;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita
+	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/margherita
 
-/obj/item/reagent_containers/food/snacks/slice/margherita/filled
+/obj/item/reagent_containers/food/slice/margherita/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza
+/obj/item/reagent_containers/food/sliceable/pizza/meatpizza
 	name = "Meatpizza"
 	desc = "A pizza with meat topping."
 	icon_state = "meatpizza"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/meatpizza
+	slice_path = /obj/item/reagent_containers/food/slice/meatpizza
 	slices_num = 6
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 10, "tomato" = 10, "cheese" = 15)
@@ -684,24 +684,24 @@
 		/datum/reagent/drink/juice/tomato = 6)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/meatpizza
+/obj/item/reagent_containers/food/slice/meatpizza
 	name = "Meatpizza slice"
 	desc = "A slice of a meaty pizza."
 	icon_state = "meatpizzaslice"
 	filling_color = "#baa14c"
 	bitesize = 2
 	center_of_mass = "x=18;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza
+	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/meatpizza
 
-/obj/item/reagent_containers/food/snacks/slice/meatpizza/filled
+/obj/item/reagent_containers/food/slice/meatpizza/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza
+/obj/item/reagent_containers/food/sliceable/pizza/mushroompizza
 	name = "Mushroompizza"
 	desc = "Very special pizza."
 	icon_state = "mushroompizza"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/mushroompizza
+	slice_path = /obj/item/reagent_containers/food/slice/mushroompizza
 	slices_num = 6
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 10, "tomato" = 10, "cheese" = 5, "mushroom" = 10)
@@ -709,24 +709,24 @@
 	startswith = list(/datum/reagent/nutriment/protein = 5)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/mushroompizza
+/obj/item/reagent_containers/food/slice/mushroompizza
 	name = "Mushroompizza slice"
 	desc = "Maybe it is the last slice of pizza in your life."
 	icon_state = "mushroompizzaslice"
 	filling_color = "#baa14c"
 	bitesize = 2
 	center_of_mass = "x=18;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza
+	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/mushroompizza
 
-/obj/item/reagent_containers/food/snacks/slice/mushroompizza/filled
+/obj/item/reagent_containers/food/slice/mushroompizza/filled
 	filled = TRUE
 
 ////////////////////////
-/obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza
+/obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza
 	name = "Vegetable pizza"
 	desc = "No one of Tomato Sapiens were harmed during making this pizza."
 	icon_state = "vegetablepizza"
-	slice_path = /obj/item/reagent_containers/food/snacks/slice/vegetablepizza
+	slice_path = /obj/item/reagent_containers/food/slice/vegetablepizza
 	slices_num = 6
 	center_of_mass = "x=16;y=11"
 	nutriment_desc = list("pizza crust" = 10, "tomato" = 10, "cheese" = 5, "eggplant" = 5, "carrot" = 5, "corn" = 5)
@@ -737,16 +737,16 @@
 		/datum/reagent/imidazoline = 12)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/slice/vegetablepizza
+/obj/item/reagent_containers/food/slice/vegetablepizza
 	name = "Vegetable pizza slice"
 	desc = "A slice of the most green pizza of all pizzas not containing green ingredients."
 	icon_state = "vegetablepizzaslice"
 	filling_color = "#baa14c"
 	bitesize = 2
 	center_of_mass = "x=18;y=13"
-	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza
+	whole_path = /obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza
 
-/obj/item/reagent_containers/food/snacks/slice/vegetablepizza/filled
+/obj/item/reagent_containers/food/slice/vegetablepizza/filled
 	filled = TRUE
 
 ////////////////////////
@@ -758,7 +758,7 @@
 
 	var/open = 0 // Is the box open?
 	var/ismessy = 0 // Fancy mess on the lid
-	var/obj/item/reagent_containers/food/snacks/sliceable/pizza/pizza // Content pizza
+	var/obj/item/reagent_containers/food/sliceable/pizza/pizza // Content pizza
 	var/list/boxes = list() // If the boxes are stacked, they come here
 	var/boxtag = ""
 
@@ -879,7 +879,7 @@
 
 		return
 
-	if( istype(I, /obj/item/reagent_containers/food/snacks/sliceable/pizza/) ) // Long ass fucking object name
+	if( istype(I, /obj/item/reagent_containers/food/sliceable/pizza/) ) // Long ass fucking object name
 
 		if( src.open )
 			user.drop_item()
@@ -911,17 +911,17 @@
 	..()
 
 /obj/item/pizzabox/margherita/New()
-	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/margherita(src)
+	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/margherita(src)
 	boxtag = "Margherita Deluxe"
 
 /obj/item/pizzabox/vegetable/New()
-	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/vegetablepizza(src)
+	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/vegetablepizza(src)
 	boxtag = "Gourmet Vegatable"
 
 /obj/item/pizzabox/mushroom/New()
-	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/mushroompizza(src)
+	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/mushroompizza(src)
 	boxtag = "Mushroom Special"
 
 /obj/item/pizzabox/meat/New()
-	pizza = new /obj/item/reagent_containers/food/snacks/sliceable/pizza/meatpizza(src)
+	pizza = new /obj/item/reagent_containers/food/sliceable/pizza/meatpizza(src)
 	boxtag = "Meatlover's Supreme"

@@ -1,5 +1,5 @@
 
-/obj/item/reagent_containers/food/snacks/packaged
+/obj/item/reagent_containers/food/packaged
 	name = "packaged snack"
 	desc = "An edible object in a sealed wrapper."
 	icon_state = "chips"
@@ -9,14 +9,16 @@
 	atom_flags = null
 	nutriment_amt = 1
 
-/obj/item/reagent_containers/food/snacks/packaged/attack_self(mob/user)
+/obj/item/reagent_containers/food/packaged/attack_self(mob/user)
 	if(!is_open_container())
 		to_chat(user, SPAN("notice", "You open \the [src]!"))
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		update_icon()
 		playsound(loc, 'sound/items/shpshpsh.ogg', 50, 1)
+		return
+	return ..()
 
-/obj/item/reagent_containers/food/snacks/packaged/update_icon()
+/obj/item/reagent_containers/food/packaged/update_icon()
 	if(is_open_container())
 		if(bitecount)
 			icon_state = "[initial(icon_state)]2"
@@ -26,7 +28,7 @@
 		icon_state = initial(icon_state)
 
 
-/obj/item/reagent_containers/food/snacks/packaged/tweakers
+/obj/item/reagent_containers/food/packaged/tweakers
 	name = "Tweakers bar"
 	desc = "Nougat, love it or hate it. Along with caramel and peanuts, enrobed in milk chocolate. Technical assistants' favourite!"
 	icon_state = "tweakers"
@@ -37,7 +39,7 @@
 	startswith = list(/datum/reagent/sugar = 3)
 	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/packaged/sweetroid
+/obj/item/reagent_containers/food/packaged/sweetroid
 	name = "Sweetroid bar"
 	desc = "It's green, it's chewy, and it's somehow related to xenoscience. But most definitely it's a candy!"
 	icon_state = "sweetroid"
@@ -48,7 +50,7 @@
 	startswith = list(/datum/reagent/sugar = 3)
 	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/packaged/sugarmatter
+/obj/item/reagent_containers/food/packaged/sugarmatter
 	name = "SugarMatter bar"
 	desc = "Should've been called SuperSugar. <span class='danger'>You get toothaches just from looking at it.</span>"
 	icon_state = "sugarmatter"
@@ -59,7 +61,7 @@
 	startswith = list(/datum/reagent/sugar = 6)
 	bitesize = 4
 
-/obj/item/reagent_containers/food/snacks/packaged/jellaws
+/obj/item/reagent_containers/food/packaged/jellaws
 	name = "Jellaw's Jellybaton"
 	desc = "Not such a robust thing, but its flavorings are definitely stunning!"
 	icon_state = "jellaws"
@@ -73,7 +75,7 @@
 		/datum/reagent/nutriment/cherryjelly = 2)
 	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/packaged/nutribar
+/obj/item/reagent_containers/food/packaged/nutribar
 	name = "protein nutrition bar"
 	desc = "SwoleMAX brand nutrition protein bars, guaranteed to get you feeling perfectly overconfident (and overweight)."
 	icon_state = "nutribar"
@@ -86,7 +88,7 @@
 		/datum/reagent/sugar = 2)
 	bitesize = 4
 
-/obj/item/reagent_containers/food/snacks/packaged/chips
+/obj/item/reagent_containers/food/packaged/chips
 	name = "chips"
 	desc = "Commander Riker's What-The-Crisps."
 	icon_state = "chips"
@@ -97,7 +99,7 @@
 	startswith = list(/datum/reagent/sodiumchloride = 2)
 	bitesize = 1
 
-/obj/item/reagent_containers/food/snacks/packaged/sosjerky
+/obj/item/reagent_containers/food/packaged/sosjerky
 	name = "Scaredy's Private Reserve Beef Jerky"
 	icon_state = "sosjerky"
 	desc = "Beef jerky made from the finest space cows. Or, perhaps, the finest space soy?"
@@ -110,7 +112,7 @@
 		/datum/reagent/sodiumchloride = 1)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/packaged/no_raisin
+/obj/item/reagent_containers/food/packaged/no_raisin
 	name = "4no Raisins"
 	icon_state = "4no_raisins"
 	desc = "Best raisins in the universe. Not sure why."
@@ -121,7 +123,7 @@
 	startswith = list(/datum/reagent/drink/juice/grape = 4)
 	bitesize = 1
 
-/obj/item/reagent_containers/food/snacks/packaged/cheesiehonkers
+/obj/item/reagent_containers/food/packaged/cheesiehonkers
 	name = "Cheesie Honkers"
 	icon_state = "cheesie_honkers"
 	desc = "Bite sized cheesie snacks that will honk all over your mouth."
@@ -132,7 +134,7 @@
 	startswith = list(/datum/reagent/sodiumchloride = 2)
 	bitesize = 1
 
-/obj/item/reagent_containers/food/snacks/packaged/hematogen
+/obj/item/reagent_containers/food/packaged/hematogen
 	name = "Hema-2-Gen"
 	desc = "It's made of blood. It makes you produce blood. Ain't that kind of suspicious?.."
 	icon_state = "hema2gen"
@@ -146,7 +148,7 @@
 		/datum/reagent/albumin = 10)
 	bitesize = 5
 
-/obj/item/reagent_containers/food/snacks/packaged/hemptogen
+/obj/item/reagent_containers/food/packaged/hemptogen
 	name = "Hemp-2-Gen"
 	desc = "It's made of cannabis. It sends you high. That's the medicine we truly deserve."
 	icon_state = "hemp2gen"
@@ -159,7 +161,7 @@
 		/datum/reagent/thc = 10)
 	bitesize = 5
 
-/obj/item/reagent_containers/food/snacks/packaged/tastybread
+/obj/item/reagent_containers/food/packaged/tastybread
 	name = "bread tube"
 	desc = "Bread in a tube. Chewy...and surprisingly tasty."
 	icon_state = "tastybread"
@@ -169,7 +171,7 @@
 	nutriment_amt = 6
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/packaged/skrellsnacks
+/obj/item/reagent_containers/food/packaged/skrellsnacks
 	name = "\improper SkrellSnax"
 	desc = "Cured fungus shipped all the way from Jargon 4, almost like jerky! Almost."
 	icon_state = "skrellsnacks"
@@ -180,7 +182,7 @@
 	startswith = list(/datum/reagent/sodiumchloride = 1)
 	bitesize = 2
 
-/obj/item/reagent_containers/food/snacks/packaged/syndicake
+/obj/item/reagent_containers/food/packaged/syndicake
 	name = "Syndi-Cakes"
 	icon_state = "syndi_cakes"
 	desc = "An extremely moist snack cake that tastes just as good after being nuked."
