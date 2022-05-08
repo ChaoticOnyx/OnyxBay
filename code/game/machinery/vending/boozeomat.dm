@@ -18,7 +18,7 @@
 					/obj/item/reagent_containers/food/drinks/glass2/pint = 10,
 					/obj/item/reagent_containers/food/drinks/glass2/bigmug = 10,
 					/obj/item/reagent_containers/food/drinks/glass2/carafe = 2,
-					/obj/item/reagent_containers/food/drinks/coffeecup/metal = 10,
+					/obj/item/reagent_containers/vessel/mug/metal = 10,
 					/obj/item/reagent_containers/food/drinks/flask/barflask = 5,
 					/obj/item/reagent_containers/food/drinks/flask/vacuumflask = 5,
 					/obj/item/bottle_extra/pourer = 15,
