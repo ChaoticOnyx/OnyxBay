@@ -12,7 +12,7 @@
 	var/path = 0
 	var/obj/item/device/assembly_holder/detonator = null
 	var/list/beakers = new /list()
-	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/glass/bottle)
+	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/vessel/bottle/chemical)
 	var/affected_area = 3
 
 /obj/item/grenade/chem_grenade/Initialize()

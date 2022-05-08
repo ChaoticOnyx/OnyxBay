@@ -269,14 +269,14 @@
 		bottle_name = sanitizeSafe(input(user, "Name:", "Name your bottle!", reagents.get_master_reagent_name()), MAX_NAME_LEN)
 	if(!bottle_name)
 		bottle_name = reagents.get_master_reagent_name()
-	var/obj/item/reagent_containers/glass/bottle/B
+	var/obj/item/reagent_containers/vessel/bottle/chemical/B
 	switch(bottle_type)
 		if("small")
-			B = new /obj/item/reagent_containers/glass/bottle/small(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical/small(loc)
 		if("big")
-			B = new /obj/item/reagent_containers/glass/bottle/big(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical/big(loc)
 		else
-			B = new /obj/item/reagent_containers/glass/bottle(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical(loc)
 	B.AddComponent(/datum/component/label, bottle_name)
 	reagents.trans_to_obj(B, reagent_amount)
 	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist

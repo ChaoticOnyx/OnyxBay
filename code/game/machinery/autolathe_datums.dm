@@ -291,17 +291,17 @@ var/const/EXTRA_COST_FACTOR = 1.25
 
 /datum/autolathe/recipe/bottle_small
 	name = "small glass bottle"
-	path = /obj/item/reagent_containers/glass/bottle/small
+	path = /obj/item/reagent_containers/vessel/bottle/chemical/small
 	category = "Medical"
 
 /datum/autolathe/recipe/bottle
 	name = "glass bottle"
-	path = /obj/item/reagent_containers/glass/bottle
+	path = /obj/item/reagent_containers/vessel/bottle/chemical
 	category = "Medical"
 
 /datum/autolathe/recipe/bottle_big
 	name = "big glass bottle"
-	path = /obj/item/reagent_containers/glass/bottle/big
+	path = /obj/item/reagent_containers/vessel/bottle/chemical/big
 	category = "Medical"
 
 /datum/autolathe/recipe/syringe

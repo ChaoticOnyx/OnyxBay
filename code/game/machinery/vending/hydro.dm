@@ -7,15 +7,15 @@
 	icon_state = "nutri"
 	use_vend_state = TRUE
 	vend_delay = 26
-	products = list(/obj/item/reagent_containers/glass/bottle/eznutrient = 5,
-					/obj/item/reagent_containers/glass/bottle/left4zed = 5,
-					/obj/item/reagent_containers/glass/bottle/robustharvest = 5,
-					/obj/item/reagent_containers/glass/bottle/mutogrow = 5,
+	products = list(/obj/item/reagent_containers/vessel/bottle/plastic/eznutrient = 5,
+					/obj/item/reagent_containers/vessel/bottle/plastic/left4zed = 5,
+					/obj/item/reagent_containers/vessel/bottle/plastic/robustharvest = 5,
+					/obj/item/reagent_containers/vessel/bottle/plastic/mutogrow = 5,
 					/obj/item/plantspray/pests = 20,
 					/obj/item/reagent_containers/syringe = 5,
 					/obj/item/storage/plants = 5)
-	premium = list(/obj/item/reagent_containers/glass/bottle/ammonia = 10,
-			   	   /obj/item/reagent_containers/glass/bottle/diethylamine = 5)
+	premium = list(/obj/item/reagent_containers/vessel/bottle/chemical/ammonia = 10,
+			   	   /obj/item/reagent_containers/vessel/bottle/chemical/diethylamine = 5)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
 /obj/machinery/vending/hydroseeds

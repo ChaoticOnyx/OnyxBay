@@ -33,10 +33,10 @@
 			/obj/item/reagent_containers/food/drinks/milk/smallcarton = 30,
 			/obj/item/reagent_containers/food/snacks/meat = 50),
 		"Nutrients" = list(
-			/obj/item/reagent_containers/glass/bottle/big/compost = 60,
-			/obj/item/reagent_containers/glass/bottle/eznutrient = 120,
-			/obj/item/reagent_containers/glass/bottle/left4zed = 120,
-			/obj/item/reagent_containers/glass/bottle/robustharvest = 120),
+			/obj/item/reagent_containers/vessel/bottle/chemical/big/compost = 60,
+			/obj/item/reagent_containers/vessel/bottle/plastic/eznutrient = 120,
+			/obj/item/reagent_containers/vessel/bottle/plastic/left4zed = 120,
+			/obj/item/reagent_containers/vessel/bottle/plastic/robustharvest = 120),
 		"Leather" = list(
 			/obj/item/storage/wallet/leather = 100,
 			/obj/item/clothing/gloves/thick/botany = 250,
@@ -54,7 +54,7 @@
 /obj/machinery/biogenerator/New()
 	..()
 	create_reagents(1000)
-	beaker = new /obj/item/reagent_containers/glass/bottle(src)
+	beaker = new /obj/item/reagent_containers/vessel/bottle/chemical(src)
 
 	RefreshParts()
 
