@@ -776,7 +776,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/robot_module/general/butler/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
-	var/obj/item/reagent_containers/food/condiment/enzyme/E = locate() in src.modules
+	var/obj/item/reagent_containers/vessel/condiment/enzyme/E = locate() in src.modules
 	E.reagents.add_reagent(/datum/reagent/enzyme, 10 * amount)
 	if(src.emag)
 		var/obj/item/reagent_containers/vessel/bottle/small/beer/B = src.emag

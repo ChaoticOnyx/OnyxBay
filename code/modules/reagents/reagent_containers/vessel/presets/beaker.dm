@@ -7,7 +7,7 @@
 	desc = "Just put it into the nearest cryocell. Please."
 	base_name = "beaker"
 	base_desc = "A beaker."
-	starting_label = "cryoxadone"
+	start_label = "cryoxadone"
 	startswith = list(/datum/reagent/cryoxadone = 30)
 	override_lid_state = LID_CLOSED
 
@@ -16,6 +16,6 @@
 	desc = "Suphuric acid is used for printing various circuits. Or melting down people's faces."
 	base_name = "beaker"
 	base_desc = "A beaker."
-	starting_label = "sulphuric acid"
+	start_label = "sulphuric acid"
 	startswith = list(/datum/reagent/acid = 60)
 	override_lid_state = LID_CLOSED

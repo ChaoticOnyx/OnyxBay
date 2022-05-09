@@ -4,8 +4,8 @@
 
 /obj/structure/closet/secure_closet/freezer/kitchen/WillContain()
 	return list(
-		/obj/item/reagent_containers/food/condiment/flour = 7,
-		/obj/item/reagent_containers/food/condiment/sugar = 2
+		/obj/item/reagent_containers/vessel/condiment/flour = 7,
+		/obj/item/reagent_containers/vessel/condiment/sugar = 2
 	)
 
 /obj/structure/closet/secure_closet/freezer/kitchen/mining

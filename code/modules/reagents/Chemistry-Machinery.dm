@@ -227,7 +227,7 @@
 			if(!condi)
 				create_bottle(usr)
 			else
-				var/obj/item/reagent_containers/food/condiment/P = new /obj/item/reagent_containers/food/condiment(src.loc)
+				var/obj/item/reagent_containers/vessel/condiment/P = new /obj/item/reagent_containers/vessel/condiment(src.loc)
 				reagents.trans_to_obj(P, 50)
 
 		else if(href_list["createbottle_small"])

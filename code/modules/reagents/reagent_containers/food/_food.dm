@@ -52,7 +52,7 @@
 			if(trash_item)
 				trash_item.forceMove(get_turf(src))
 				if(is_held)
-					M.put_in_hands(TrashItem)
+					M.put_in_hands(trash_item)
 
 		if(istype(loc, /obj/item/organ))
 			var/obj/item/organ/O = loc

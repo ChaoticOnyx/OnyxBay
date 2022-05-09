@@ -88,7 +88,7 @@
 		if(cook_type in check.cooked_types)
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
 			return 0
-	else if(istype(I, /obj/item/reagent_containers/food/condiment))
+	else if(istype(I, /obj/item/reagent_containers/vessel/condiment))
 		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
 		return 0
 	else if(istype(I, /obj/item/reagent_containers/glass))

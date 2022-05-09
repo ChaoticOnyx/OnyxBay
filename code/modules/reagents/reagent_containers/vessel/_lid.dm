@@ -39,7 +39,7 @@
 	return "blank"
 
 /datum/vessel_lid/proc/get_examine_hint()
-	if(lid_state == LID_CLOSED)
+	if(state == LID_CLOSED)
 		return SPAN("notice", "The airtight [name] seals it completely.")
 
 // Generic lids - the ol' good lids
@@ -48,7 +48,7 @@
 	state = LID_CLOSED
 
 /datum/vessel_lid/lid/toggle(mob/user)
-	switch(lid_state)
+	switch(state)
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
@@ -71,7 +71,7 @@
 	state = LID_CLOSED
 
 /datum/vessel_lid/cork/toggle(mob/user)
-	switch(lid_state)
+	switch(state)
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
@@ -94,7 +94,7 @@
 	state = LID_SEALED
 
 /datum/vessel_lid/can/toggle(mob/user)
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(10, 50), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
@@ -110,7 +110,7 @@
 	return "blank"
 
 /datum/vessel_lid/can/get_examine_hint()
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		return SPAN("notice", "It's still closed.")
 
 // Metal caps - one-off openers for beer bottles and alikes
@@ -119,7 +119,7 @@
 	state = LID_SEALED
 
 /datum/vessel_lid/beercap/toggle(mob/user)
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(10, 50), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
@@ -130,7 +130,7 @@
 	return FALSE
 
 /datum/vessel_lid/beercap/get_examine_hint()
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		return SPAN("notice", "It's still closed.")
 
 // Carton seals - the same as pop tabs, but for cartons
@@ -139,7 +139,7 @@
 	state = LID_SEALED
 
 /datum/vessel_lid/carton/toggle(mob/user)
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		if(user)
 			to_chat(user, SPAN("notice", "You rip open \the [src]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
@@ -149,7 +149,7 @@
 	return FALSE
 
 /datum/vessel_lid/carton/get_examine_hint()
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		return SPAN("notice", "It's still closed.")
 
 // Sealed caps - the same as regular lids, but with an immersive effect upon the first opening
@@ -158,7 +158,7 @@
 	state = LID_SEALED
 
 /datum/vessel_lid/cap/toggle(mob/user)
-	switch(lid_state)
+	switch(state)
 		if(LID_SEALED)
 			playsound(owner.loc, 'sound/effects/bonebreak1.ogg', rand(10, 50), 1)
 			if(user)
@@ -184,7 +184,7 @@
 	return FALSE
 
 /datum/vessel_lid/cap/get_examine_hint()
-	if(lid_state == LID_SEALED)
+	if(state == LID_SEALED)
 		return SPAN("notice", "It's safety seal is intact.")
-	else if(lid_state == LID_CLOSED)
+	else if(state == LID_CLOSED)
 		return SPAN("notice", "It's closed.")

@@ -300,7 +300,7 @@
 /obj/item/storage/box/condimentbottles
 	name = "box of condiment bottles"
 	desc = "It has a large ketchup smear on it."
-	startswith = list(/obj/item/reagent_containers/food/condiment = 6)
+	startswith = list(/obj/item/reagent_containers/vessel/condiment = 6)
 
 /obj/item/storage/box/cups
 	name = "box of paper cups"

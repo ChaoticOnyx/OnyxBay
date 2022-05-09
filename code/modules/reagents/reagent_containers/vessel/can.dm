@@ -4,6 +4,7 @@
 	amount_per_transfer_from_this = 5
 	atom_flags = 0 //starts closed
 	lid_type = /datum/vessel_lid/can
+	var/trash = null
 
 /obj/item/reagent_containers/vessel/can/attack_self(mob/user)
 	if((!reagents || !reagents.total_volume) && trash && user.a_intent != I_HELP)
