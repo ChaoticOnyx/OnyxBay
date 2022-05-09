@@ -23,7 +23,7 @@
 	network = list(NETWORK_THUNDER)
 
 /obj/machinery/camera/network/engineering/singularity
-	network = list(NETWORK_ENGINE, NETWORK_MASTER)
+	network = list(NETWORK_MASTER)
 
 // EMP
 
