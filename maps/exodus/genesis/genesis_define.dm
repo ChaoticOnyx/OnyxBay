@@ -20,3 +20,8 @@
 	company_name  = "NanoTrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
+	
+/datum/map/exodus/genesis/perform_map_generation()
+	new /datum/random_map/automata/cave_system(null, 1, 1, 4, 300, 300) // Create the mining Z-level.
+	new /datum/random_map/noise/ore(null, 1, 1, 4, 300, 300)         // Create the mining ore distribution map.
+	return 1
