@@ -6,6 +6,10 @@
 	icon_state = "beaker"
 	item_state = "beaker"
 	center_of_mass = "x=17;y=10"
+	force = 5.0
+	mod_weight = 0.5
+	mod_reach = 0.25
+	mod_handy = 0.45
 	matter = list(MATERIAL_GLASS = 2500)
 	brittle = TRUE
 	precise_measurement = TRUE
@@ -19,6 +23,10 @@
 	desc = "A large beaker."
 	icon_state = "beakerlarge"
 	center_of_mass = "x=17;y=10"
+	force = 6.5
+	mod_weight = 0.65
+	mod_reach = 0.3
+	mod_handy = 0.45
 	matter = list(MATERIAL_GLASS = 5000)
 	volume = 120
 	amount_per_transfer_from_this = 10
@@ -53,6 +61,10 @@
 	desc = "A bluespace beaker, powered by experimental bluespace technology."
 	icon_state = "beakerbluespace"
 	center_of_mass = "x=17;y=10"
+	force = 6.5
+	mod_weight = 0.65
+	mod_reach = 0.3
+	mod_handy = 0.45
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 5000)
 	brittle = FALSE
 	volume = 300
@@ -65,6 +77,10 @@
 	desc = "A small glass vial."
 	icon_state = "vial"
 	center_of_mass = "x=16;y=10"
+	force = 2.5
+	mod_weight = 0.35
+	mod_reach = 0.2
+	mod_handy = 0.4
 	matter = list(MATERIAL_GLASS = 1250)
 	volume = 30
 	w_class = ITEM_SIZE_TINY //half the volume of a bottle, half the size

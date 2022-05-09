@@ -2513,6 +2513,7 @@
 #include "code\modules\reagents\reagent_containers\vessel\can.dm"
 #include "code\modules\reagents\reagent_containers\vessel\carton.dm"
 #include "code\modules\reagents\reagent_containers\vessel\condiment.dm"
+#include "code\modules\reagents\reagent_containers\vessel\flask.dm"
 #include "code\modules\reagents\reagent_containers\vessel\jar.dm"
 #include "code\modules\reagents\reagent_containers\vessel\mug.dm"
 #include "code\modules\reagents\reagent_containers\vessel\paint.dm"

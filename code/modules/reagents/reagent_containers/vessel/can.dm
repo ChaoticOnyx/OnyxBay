@@ -7,7 +7,12 @@
 	amount_per_transfer_from_this = 5
 	atom_flags = 0 //starts closed
 	lid_type = /datum/vessel_lid/can
-	icon = 'icons/obj/reagent_containers/mugs.dmi'
+	icon = 'icons/obj/reagent_containers/cans.dmi'
+	force = 6.0
+	mod_weight = 0.65
+	mod_reach = 0.25
+	mod_handy = 0.5
+	unacidable = FALSE
 	var/trash = null
 
 /obj/item/reagent_containers/vessel/can/attack_self(mob/user)

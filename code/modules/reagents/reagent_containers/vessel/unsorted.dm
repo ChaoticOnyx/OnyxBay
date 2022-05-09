@@ -21,13 +21,17 @@
 	icon_state = "bucket"
 	item_state = "bucket"
 	center_of_mass = "x=16;y=9"
+	force = 8.5
+	mod_weight = 0.75
+	mod_reach = 0.5
+	mod_handy = 0.75
 	matter = list(MATERIAL_STEEL = 4000)
 	w_class = ITEM_SIZE_NORMAL
 	amount_per_transfer_from_this = 20
 	possible_transfer_amounts = "10;20;30;60;120;150;180"
 	volume = 180
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	unacidable = 0
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
@@ -58,6 +62,7 @@
 	center_of_mass = "x=15;y=10"
 	startswith = list(/datum/reagent/drink/coffee = 30)
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/tea
 	name = "cup of Duke Purple Tea"
@@ -70,6 +75,7 @@
 	base_icon = "teacup"
 	startswith = list(/datum/reagent/drink/tea = 30)
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/ice
 	name = "cup of ice"
@@ -78,6 +84,7 @@
 	center_of_mass = "x=15;y=10"
 	startswith = list(/datum/reagent/drink/ice = 30)
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/h_chocolate
 	name = "cup of Dutch hot coco"
@@ -87,6 +94,7 @@
 	center_of_mass = "x=15;y=13"
 	startswith = list(/datum/reagent/drink/hot_coco = 30)
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/dry_ramen
 	name = "cup ramen"
@@ -96,6 +104,7 @@
 	center_of_mass = "x=16;y=11"
 	startswith = list(/datum/reagent/drink/dry_ramen = 30)
 	lid_type = /datum/vessel_lid/paper
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/chickensoup
 	name = "cup of chicken soup"
@@ -105,6 +114,7 @@
 	center_of_mass = "x=16;y=11"
 	startswith = list(/datum/reagent/drink/chicken_powder = 30)
 	lid_type = /datum/vessel_lid/paper
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/sillycup
 	name = "paper cup"
@@ -116,6 +126,7 @@
 	center_of_mass = "x=16;y=12"
 	filling_states = "3;5;10"
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/sillycup/on_reagent_change()
 	if(reagents.total_volume)
@@ -156,47 +167,6 @@
 	lid_type = null
 	precise_measurement = TRUE
 
-/obj/item/reagent_containers/vessel/flask
-	name = "\improper Captain's flask"
-	desc = "A metal flask belonging to the captain."
-	icon_state = "flask"
-	volume = 60
-	center_of_mass = "x=17;y=7"
-	lid_type = /datum/vessel_lid/flask
-
-/obj/item/reagent_containers/vessel/flask/shiny
-	name = "shiny flask"
-	desc = "A shiny metal flask. It appears to have a Greek symbol inscribed on it."
-	icon_state = "shinyflask"
-
-/obj/item/reagent_containers/vessel/flask/lithium
-	name = "lithium flask"
-	desc = "A flask with a Lithium Atom symbol on it."
-	icon_state = "lithiumflask"
-
-/obj/item/reagent_containers/vessel/flask/detflask
-	name = "\improper Detective's flask"
-	desc = "A metal flask with a leather band and golden badge belonging to the detective."
-	icon_state = "detflask"
-	volume = 60
-	center_of_mass = "x=17;y=8"
-
-/obj/item/reagent_containers/vessel/flask/barflask
-	name = "flask"
-	desc = "For those who can't be bothered to hang out at the bar to drink."
-	icon_state = "barflask"
-	volume = 60
-	center_of_mass = "x=17;y=7"
-
-/obj/item/reagent_containers/vessel/flask/vacuumflask
-	name = "vacuum flask"
-	desc = "Keeping your drinks at the perfect temperature since 1892."
-	icon_state = "vacuumflask"
-	volume = 60
-	center_of_mass = "x=15;y=4"
-	lid_type = /datum/vessel_lid/cap
-	override_lid_state = LID_CLOSED
-
 /obj/item/reagent_containers/vessel/skullgoblet
 	name = "skull goblet"
 	desc = "Great for dancing on the barrows of your enemies."
@@ -207,11 +177,13 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	lid_type = null
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/skullgoblet/gold
 	name = "golden skull goblet"
 	desc = "<b>Perfect</b> for dancing on the barrows of your enemies."
 	icon_state = "skullcup_gold"
+	unacidable = FALSE
 
 /obj/item/reagent_containers/vessel/fitnessflask
 	name = "fitness shaker"
@@ -224,6 +196,7 @@
 	possible_transfer_amounts = "5;10;15;25"
 	lid_type = null
 	precise_measurement = TRUE
+	unacidable = FALSE
 	var/lid_color = "black"
 
 /obj/item/reagent_containers/vessel/fitnessflask/Initialize()

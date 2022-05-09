@@ -5,6 +5,10 @@
 	icon = 'icons/obj/reagent_containers/mugs.dmi'
 	icon_state = "coffeecup"
 	item_state = "coffee"
+	force = 5.0
+	mod_weight = 0.45
+	mod_reach = 0.25
+	mod_handy = 0.65
 	volume = 30
 	center_of_mass = "x=15;y=13"
 	filling_states = "20;40;80;100"
@@ -57,6 +61,10 @@
 	desc = "A metal coffee mug. You're not sure which metal."
 	icon_state = "coffeecup_metal"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	force = 6.5
+	mod_weight = 0.55
+	mod_reach = 0.25
+	mod_handy = 0.65
 
 /obj/item/reagent_containers/vessel/mug/STC
 	name = "TCC mug"
@@ -82,6 +90,10 @@
 	name = "tall mug"
 	desc = "An unreasonably tall coffee mug, for when you really need to wake up in the morning."
 	icon_state = "coffeecup_tall"
+	force = 6.0
+	mod_weight = 0.55
+	mod_reach = 0.35
+	mod_handy = 0.65
 	volume = 60
 	center_of_mass = "x=15;y=19"
 	filling_states = "50;70;90;100"

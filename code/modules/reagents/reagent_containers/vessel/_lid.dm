@@ -14,6 +14,10 @@
 	var/icon
 	var/icon_state = "lid"
 
+/datum/vessel_lid/Destroy()
+	owner = null
+	return ..()
+
 /datum/vessel_lid/proc/setup(obj/item/reagent_containers/vessel/new_owner, override_state, override_icon_state)
 	owner = new_owner
 	icon = owner.icon
@@ -25,10 +29,10 @@
 	switch(state)
 		if(LID_NONE, LID_OPEN)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		if(LID_CLOSED, LID_SEALED)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
-			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
 
 /datum/vessel_lid/proc/toggle(mob/user)
 	return
@@ -52,16 +56,17 @@
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
+			playsound(owner.loc, 'sound/effects/pop.ogg', rand(10, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You take the [name] off \the [owner]."))
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put the [name] on \the [owner]."))
-			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -75,16 +80,17 @@
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
+			playsound(owner.loc, 'sound/effects/cork.ogg', rand(10, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You pull the [name] out of \the [owner]."))
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You push the [name] into \the [owner]."))
-			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -100,7 +106,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -125,7 +131,7 @@
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -140,11 +146,12 @@
 
 /datum/vessel_lid/carton/toggle(mob/user)
 	if(state == LID_SEALED)
+		playsound(owner.loc, 'sound/effects/duct_tape_peeling_off.ogg', rand(10, 50), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You rip open \the [owner]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 
@@ -165,21 +172,21 @@
 				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [name], destroying the safety seal!"))
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
 			if(user)
-				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+				to_chat(usr, SPAN("notice", "You take \the [name] off \the [owner]."))
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
-				to_chat(usr, SPAN("notice", "You take \the [name] off \the [owner]."))
-			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
+			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -198,18 +205,20 @@
 /datum/vessel_lid/flask/toggle(mob/user)
 	switch(state)
 		if(LID_CLOSED)
+			playsound(owner.loc, 'sound/effects/flask_lid2.ogg', rand(10, 30), 1)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
 			if(user)
 				to_chat(usr, SPAN("notice", "You open \the [owner]."))
-			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
+			playsound(owner.loc, 'sound/effects/flask_lid1.ogg', rand(10, 30), 1)
 			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You close \the [owner]."))
-			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -229,11 +238,12 @@
 
 /datum/vessel_lid/paper/toggle(mob/user)
 	if(state == LID_SEALED)
+		playsound(owner.loc, 'sound/effects/pageturn2.ogg', rand(20, 60), 1)
 		if(user)
-			to_chat(user, SPAN("notice", "You rip off \the [owner]'s [name]!"))
+			to_chat(user, SPAN("notice", "You peel off \the [owner]'s [name]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
-		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+		owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		return TRUE
 	return FALSE
 

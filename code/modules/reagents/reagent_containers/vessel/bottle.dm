@@ -13,10 +13,11 @@
 	item_flags = 0
 	obj_flags = 0
 	volume = 100
-	force = 7.5
+	force = 8.5
 	mod_weight = 0.75
 	mod_reach = 0.5
 	mod_handy = 0.75
+	smash_weaken = 5
 	matter = list(MATERIAL_GLASS = 2000)
 	brittle = TRUE
 	lid_type = /datum/vessel_lid/cap
@@ -117,6 +118,11 @@
 	volume = 50
 	rag_underlay = "rag_small"
 	lid_type = /datum/vessel_lid/beercap
+	force = 7.0
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 0.85
+	smash_weaken = 3
 
 /obj/item/reagent_containers/vessel/bottle/chemical
 	name = "bottle"
@@ -126,6 +132,11 @@
 	item_state = "atoxinbottle"
 	center_of_mass = "x=16;y=11"
 	randpixel = 7
+	force = 7.0
+	mod_weight = 0.65
+	mod_reach = 0.45
+	mod_handy = 0.65
+	smash_weaken = 0
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60"
 	w_class = ITEM_SIZE_SMALL
@@ -142,6 +153,11 @@
 	name = "small bottle"
 	desc = "A small glass bottle."
 	icon_state = "bottle_small"
+	force = 5.0
+	mod_weight = 0.5
+	mod_reach = 0.25
+	mod_handy = 0.65
+	smash_weaken = 0
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = "5;10;15;30"
 	w_class = ITEM_SIZE_TINY
@@ -154,6 +170,11 @@
 	name = "big bottle"
 	desc = "A big glass bottle."
 	icon_state = "bottle_big"
+	force = 8.5
+	mod_weight = 0.75
+	mod_reach = 0.5
+	mod_handy = 0.75
+	smash_weaken = 4
 	amount_per_transfer_from_this = 15
 	possible_transfer_amounts = "5;10;15;25;30;60"
 	volume = 90
@@ -178,6 +199,7 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	lid_type = null
 	volume = 60
+	force = 0
 	brittle = FALSE // No, for the love of god
 	var/reagent = ""
 
@@ -203,6 +225,7 @@
 /obj/item/bottle_extra
 	name = "generic bottle addition"
 	desc = "This goes on a bottle."
+	icon = 'icons/obj/reagent_containers/bottles.dmi'
 	var/bottle_addition
 	var/bottle_desc
 	var/bottle_color

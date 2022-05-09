@@ -86,6 +86,10 @@
 		AddComponent(/datum/component/label, start_label) // So the name isn't hardcoded and the label can be removed for reusability
 	update_icon()
 
+/obj/item/reagent_containers/vessel/Destroy()
+	QDEL_NULL(lid)
+	return ..()
+
 /obj/item/reagent_containers/vessel/on_reagent_change()
 	..()
 	update_icon()
@@ -152,7 +156,7 @@
 			return k
 
 /obj/item/reagent_containers/vessel/update_name_label()
-	if(label_text == "")
+	if(!label_text || label_text == "")
 		SetName(base_name)
 	else
 		SetName("[base_name] ([label_text])")
@@ -186,7 +190,7 @@
 		. += SPAN("notice", "\n\The [src] is <b>[ratio_text]</b>!")
 
 	if(lid)
-		. += lid.get_examine_hint()
+		. += "\n[lid.get_examine_hint()]"
 
 /obj/item/reagent_containers/vessel/attack_self(mob/user)
 	..()
@@ -251,13 +255,13 @@
 			smash(loc, hit_atom)
 
 /obj/item/reagent_containers/vessel/proc/smash_check(distance)
-	if(!brittle || !smash_weaken)
-		return 0
+	if(!brittle)
+		return FALSE
 
 	var/list/chance_table = list(95, 95, 90, 85, 75, 60, 40, 15) //starting from distance 0
 	var/idx = max(distance + 1, 1) //since list indices start at 1
 	if(idx > chance_table.len)
-		return 0
+		return FALSE
 	return prob(chance_table[idx])
 
 /obj/item/reagent_containers/vessel/proc/smash(newloc, atom/against = null)
@@ -272,7 +276,7 @@
 	B.icon_state = icon_state
 	B.w_class = w_class
 
-	var/icon/I = new('icons/obj/drinks.dmi', src.icon_state)
+	var/icon/I = new(src.icon, src.icon_state)
 	I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
 	I.SwapColor(rgb(255, 0, 220, 255), rgb(0, 0, 0, 0))
 	B.icon = I

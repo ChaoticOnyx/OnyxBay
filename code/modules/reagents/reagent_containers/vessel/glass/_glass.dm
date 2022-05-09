@@ -7,13 +7,19 @@
 	base_icon = "square" // Base icon name
 	center_of_mass ="x=16;y=9"
 	filling_states = "20;40;60;80;100"
+	force = 5.0
+	mod_weight = 0.45
+	mod_reach = 0.25
+	mod_handy = 0.65
 	volume = 30
 	matter = list(MATERIAL_GLASS = 65)
 	can_be_splashed = TRUE
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = "5;10;15;30"
 	lid_type = null
+	label_icon = TRUE
 	overlay_icon = TRUE
+	brittle = TRUE
 
 	var/list/extras = list() // List of extras. Two extras maximum
 	var/rim_pos // Position of the rim for fruit slices. list(y, x_left, x_right)
@@ -126,11 +132,12 @@
 
 			for(var/k in over_liquid)
 				underlays += image(DRINK_ICON_FILE, src, k, -1)
-			if(overlay_icon)
-				overlays += image(icon, src, overlay_icon)
 	else
 		SetName(initial(name))
 		desc = initial(desc)
+
+	if(overlay_icon)
+		overlays += image(icon, src, overlay_icon)
 
 	var/side = "left"
 	for(var/item in extras)
