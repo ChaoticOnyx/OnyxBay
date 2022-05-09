@@ -99,7 +99,7 @@ RSF
 			product = new /obj/item/clothing/mask/smokable/cigarette()
 			used_energy = 10
 		if(2)
-			product = new /obj/item/reagent_containers/food/drinks/glass2()
+			product = new /obj/item/reagent_containers/vessel/glass()
 			used_energy = 50
 		if(3)
 			product = new /obj/item/paper()
@@ -111,13 +111,13 @@ RSF
 			product = new /obj/item/storage/pill_bottle/dice()
 			used_energy = 200
 		if(6)
-			product = new /obj/item/reagent_containers/food/drinks/glass2/shot()
+			product = new /obj/item/reagent_containers/vessel/glass/shot()
 			used_energy = 20
 		if(7)
-			product = new /obj/item/reagent_containers/food/drinks/glass2/rocks()
+			product = new /obj/item/reagent_containers/vessel/glass/rocks()
 			used_energy = 50
 		if(8)
-			product = new /obj/item/reagent_containers/food/drinks/glass2/mug()
+			product = new /obj/item/reagent_containers/vessel/glass/mug()
 			used_energy = 50
 
 	to_chat(user, "Dispensing [product ? product : "product"]...")

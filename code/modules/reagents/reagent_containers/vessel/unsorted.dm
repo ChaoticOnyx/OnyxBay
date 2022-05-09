@@ -1,5 +1,4 @@
 
-
 /obj/item/reagent_containers/vessel/golden_cup
 	desc = "A golden cup."
 	name = "golden cup"
@@ -113,6 +112,7 @@
 	icon_state = "water_cup"
 	possible_transfer_amounts = null
 	volume = 10
+	matter = list(MATERIAL_CARDBOARD = 100)
 	center_of_mass = "x=16;y=12"
 	filling_states = "3;5;10"
 	lid_type = null

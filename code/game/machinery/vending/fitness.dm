@@ -10,8 +10,8 @@
 	rand_amount = TRUE
 	products = list(/obj/item/reagent_containers/food/drinks/milk/smallcarton = 8,
 					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 8,
-					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 8,
-					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask = 8,
+					/obj/item/reagent_containers/vessel/glass/fitnessflask/proteinshake = 8,
+					/obj/item/reagent_containers/vessel/glass/fitnessflask = 8,
 					/obj/item/reagent_containers/food/packaged/nutribar = 8,
 					/obj/item/reagent_containers/food/liquidfood = 8,
 					/obj/item/reagent_containers/pill/diet = 8,
@@ -19,8 +19,8 @@
 
 	prices = list(/obj/item/reagent_containers/food/drinks/milk/smallcarton = 3,
 					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 3,
-					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 20,
-					/obj/item/reagent_containers/food/drinks/glass2/fitnessflask = 5,
+					/obj/item/reagent_containers/vessel/glass/fitnessflask/proteinshake = 20,
+					/obj/item/reagent_containers/vessel/glass/fitnessflask = 5,
 					/obj/item/reagent_containers/food/packaged/nutribar = 5,
 					/obj/item/reagent_containers/food/liquidfood = 5,
 					/obj/item/reagent_containers/pill/diet = 25,

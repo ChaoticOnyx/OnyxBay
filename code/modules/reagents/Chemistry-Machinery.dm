@@ -412,7 +412,7 @@
 		return
 
 	if(istype(O,/obj/item/reagent_containers/glass) || \
-		istype(O,/obj/item/reagent_containers/food/drinks/glass2) || \
+		istype(O,/obj/item/reagent_containers/vessel/glass) || \
 		istype(O,/obj/item/reagent_containers/food/drinks/shaker))
 
 		if(beaker)
