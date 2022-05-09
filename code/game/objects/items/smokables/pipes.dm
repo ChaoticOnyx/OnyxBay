@@ -40,6 +40,34 @@
 		if (!nomessage)
 			to_chat(M, "<span class='notice'>Your [name] goes out, and you empty the ash.</span>")
 
+
+// Actually i take this from cigarette, but... who cares?
+/obj/item/clothing/mask/smokable/pipe/attack(mob/living/M, mob/user, def_zone)
+
+	if(lit && M == user && ishuman(M))
+
+		var/mob/living/carbon/human/H = M
+		var/obj/item/blocked = H.check_mouth_coverage()
+
+		if(blocked)
+			to_chat(H, SPAN("warning", "\The [blocked] is in the way!"))
+			return TRUE
+
+		user.visible_message("[user] takes a [pick("drag","puff","pull")] from \his [name].", \
+							 "You take a [pick("drag","puff","pull")] on your [name].")
+
+		smoke(3, TRUE)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		return TRUE
+
+	if(!lit && istype(M) && M.on_fire)
+		user.do_attack_animation(M)
+		light(M, user)
+		return TRUE
+
+	return ..()
+
+
 /obj/item/clothing/mask/smokable/pipe/attack_self(mob/user as mob)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
