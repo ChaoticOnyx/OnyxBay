@@ -5,9 +5,9 @@
 	var/bones_can_break = TRUE
 	var/limbs_can_break = TRUE
 	var/organs_can_decay = FALSE
-	var/organ_health_multiplier = 90
-	var/organ_regeneration_multiplier = 25
-	var/organ_damage_spillover_multiplier = 50
+	var/organ_health_multiplier = 0.9
+	var/organ_regeneration_multiplier = 0.25
+	var/organ_damage_spillover_multiplier = 0.5
 
 /datum/configuration_section/health/load_data(list/data)
 	CONFIG_LOAD_NUM(health_threshold_dead, data["health_threshold_dead"])
