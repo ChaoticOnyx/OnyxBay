@@ -12,7 +12,6 @@
 /obj/item/reagent_containers/vessel/bottle/chemical/toxin
 	name = "toxin bottle"
 	desc = "A small bottle of toxins. Do not drink, it is poisonous."
-	icon = 'icons/obj/chemical.dmi'
 	start_label = "toxin"
 	startswith = list(/datum/reagent/toxin)
 
@@ -82,8 +81,7 @@
 /obj/item/reagent_containers/vessel/bottle/chemical/adminordrazine
 	name = "Adminordrazine Bottle"
 	desc = "A small bottle. Contains the liquid essence of the gods."
-	icon = 'icons/obj/drinks.dmi'
-	icon_state = "holyflask"
+	start_label = "Adminordrazine"
 	startswith = list(/datum/reagent/adminordrazine)
 
 //////////
