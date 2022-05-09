@@ -2898,6 +2898,7 @@
 #include "maps\exodus\sunset\sunset_define.dm"
 #include "maps\polar\polar_areas.dm"
 #include "maps\polar\polar_define.dm"
+#include "maps\polar\polar_shuttles.dm"
 #include "maps\~mapsystem\map_preferences.dm"
 #include "maps\~mapsystem\map_ranks.dm"
 #include "maps\~mapsystem\maps.dm"

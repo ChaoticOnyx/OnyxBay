@@ -79,14 +79,8 @@
 	icon_state = "shuttlegrn"
 	base_turf = /turf/space/transit/south
 
-/area/polarplanet/shuttle/merchant/away
-	name = "\improper Merchant Van - Station North East"
-
 /area/polarplanet/shuttle/merchant/dock
-	name = "\improper Merchant Van - Station Docking Bay"
-
-/area/polarplanet/shuttle/merchant/ghetto
-	name = "\improper Merchant Van - Station Ghetto Dock"
+	name = "\improper Merchant Van - Planet Landing Site"
 
 /area/polarplanet/shuttle/merchant/outpost
 	name = "\improper Merchant Van - Outpost"
