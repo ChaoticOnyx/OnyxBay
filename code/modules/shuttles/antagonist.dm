@@ -9,9 +9,9 @@
 	shuttle_tag = "Syndicate"
 
 /obj/machinery/computer/shuttle_control/multi/elite_syndicate
-	name = "syndicate elite shuttle control console"
+	name = "elite syndicate operative shuttle control console"
 	req_access = list(access_syndicate)
-	shuttle_tag = "Syndicate Elite"
+	shuttle_tag = "Elite Syndicate Operative"
 
 /obj/machinery/computer/shuttle_control/multi/rescue
 	name = "rescue shuttle control console"
@@ -32,4 +32,3 @@
 	name = "Creaker control console"
 	req_access = list(access_mining)
 	shuttle_tag = "Creaker"
-

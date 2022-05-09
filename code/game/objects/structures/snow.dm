@@ -5,13 +5,14 @@
 	icon_state = "snow0-0"
 	anchored = 1
 	density = 0
-	layer = 2.45
+	layer = DECAL_LAYER
 	var/mineral = "metal"
 
 /obj/structure/snow/Initialize()
 	. = ..()
 	for(var/obj/structure/snow/C in get_turf(src))
 		if(C != src)
+			crash_with("Multiple snow objects on one turf! ([loc.x], [loc.y], [loc.z])")
 			qdel(C)
 	update_icon()
 	redraw_nearby_snows()
