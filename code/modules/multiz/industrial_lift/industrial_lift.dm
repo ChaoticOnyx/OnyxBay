@@ -239,6 +239,10 @@ GLOBAL_LIST_EMPTY(lifts)
 	LAZYREMOVE(lift_load, potential_rider)
 	unregister_signal(potential_rider, SIGNAL_QDELETING)
 
+/obj/structure/industrial_lift/proc/CheckItemsOnLift()
+	for(var/AM in loc.contents)
+		if(!istype(AM,/obj/structure/industrial_lift) && !(AM in lift_load))
+			AddItemOnLift(AM)
 /**
  * Signal for when the tram runs into a field of which it cannot go through.
  * Stops the train's travel fully, sends a message, and destroys the train.
@@ -269,6 +273,23 @@ GLOBAL_LIST_EMPTY(lifts)
 			continue
 		. += neighbor
 
+/obj/structure/industrial_lift/proc/smash_things(turf/destination, going)
+	for(var/obj/structure/victim_structure in destination.contents)
+		if(QDELETED(victim_structure))
+			continue
+		if(!is_type_in_list(victim_structure, lift_master_datum.ignored_smashthroughs))
+			qdel(victim_structure)
+
+	for(var/obj/machinery/victim_machine in destination.contents)
+		if(QDELETED(victim_machine))
+			continue
+		if(is_type_in_list(victim_machine, lift_master_datum.ignored_smashthroughs))
+			continue
+		if(victim_machine.layer >= ABOVE_OBJ_LAYER) //avoids stuff that is probably flush with the ground
+			playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
+			visible_message(SPAN_DANGER("[src] smashes through [victim_machine]!"))
+			qdel(victim_machine)
+
 /obj/structure/industrial_lift/proc/travel(going, gliding_amount = 8)
 	var/list/things_to_move = isnull(lift_load)?list():lift_load.Copy()
 	var/turf/destination
@@ -292,29 +313,12 @@ GLOBAL_LIST_EMPTY(lifts)
 			to_chat(crushed, SPAN_DANGER("You are crushed by [src]!"))
 			crushed.gib(FALSE,FALSE,FALSE)//the nicest kind of gibbing, keeping everything intact.
 
-	else if(going != UP) //can't really crush something upwards
-		var/atom/throw_target = get_edge_target_turf(src, turn(going, pick(45, -45))) //finds a spot to throw the victim at for daring to be hit by a tram
-		for(var/obj/structure/victim_structure in destination.contents)
-			if(QDELETED(victim_structure))
-				continue
-			if(!is_type_in_list(victim_structure, lift_master_datum.ignored_smashthroughs) && victim_structure.layer >= ABOVE_OBJ_LAYER)
-				if(victim_structure.anchored && initial(victim_structure.anchored) == TRUE)
-					visible_message(SPAN_DANGER("[src] smashes through [victim_structure]!"))
-					victim_structure.Destroy()
-				else
-					visible_message(SPAN_DANGER("[src] violently rams [victim_structure] out of the way!"))
-					victim_structure.anchored = FALSE
-					victim_structure.throw_at(throw_target, 200, 4)
+		smash_things(destination, going)
 
-		for(var/obj/machinery/victim_machine in destination.contents)
-			if(QDELETED(victim_machine))
-				continue
-			if(is_type_in_list(victim_machine, lift_master_datum.ignored_smashthroughs))
-				continue
-			if(victim_machine.layer >= ABOVE_OBJ_LAYER) //avoids stuff that is probably flush with the ground
-				playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
-				visible_message(SPAN_DANGER("[src] smashes through [victim_machine]!"))
-				qdel(victim_machine)
+	else if(going != UP) //can't really crush something upwards
+
+		var/atom/throw_target = get_edge_target_turf(src, turn(going, pick(45, -45))) //finds a spot to throw the victim at for daring to be hit by a tram
+		smash_things(destination, going)
 
 		for(var/mob/living/collided in destination.contents)
 			if(is_type_in_list(collided, lift_master_datum.ignored_smashthroughs))
@@ -341,7 +345,7 @@ GLOBAL_LIST_EMPTY(lifts)
 	for(var/atom/movable/thing as anything in things_to_move)
 		thing.set_glide_size(gliding_amount) //matches the glide size of the moving platform to stop them from jittering on it.
 		thing.forceMove(destination)
-
+	CheckItemsOnLift()
 /**
  * Proc to ensure that the radial menu closes when it should.
  * Arguments:
@@ -444,9 +448,7 @@ GLOBAL_LIST_EMPTY(central_trams)
 /obj/structure/industrial_lift/tram/LateInitialize()
 	. = ..()
 	find_our_location()
-	for(var/AM in src.loc.contents)
-		if(!istype(AM,/obj/structure/industrial_lift))
-			AddItemOnLift(AM)
+	CheckItemsOnLift()
 
 
 /**
