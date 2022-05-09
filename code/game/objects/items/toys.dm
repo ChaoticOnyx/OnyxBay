@@ -69,7 +69,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")

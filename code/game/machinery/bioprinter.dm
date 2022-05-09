@@ -211,8 +211,8 @@
 	desc = "It's a machine that prints replacement organs."
 	icon_state = "bioprinter"
 	var/list/amount_list = list(
-		/obj/item/reagent_containers/food/snacks/meat = 50,
-		/obj/item/reagent_containers/food/snacks/rawcutlet = 15
+		/obj/item/reagent_containers/food/meat = 50,
+		/obj/item/reagent_containers/food/rawcutlet = 15
 		)
 	var/loaded_dna //Blood sample for DNA hashing.
 
@@ -229,9 +229,9 @@
 /obj/machinery/organ_printer/flesh/dismantle()
 	var/turf/T = get_turf(src)
 	if(T)
-		while(stored_matter >= amount_list[/obj/item/reagent_containers/food/snacks/meat])
-			stored_matter -= amount_list[/obj/item/reagent_containers/food/snacks/meat]
-			new /obj/item/reagent_containers/food/snacks/meat(T)
+		while(stored_matter >= amount_list[/obj/item/reagent_containers/food/meat])
+			stored_matter -= amount_list[/obj/item/reagent_containers/food/meat]
+			new /obj/item/reagent_containers/food/meat(T)
 	return ..()
 
 /obj/machinery/organ_printer/flesh/New()

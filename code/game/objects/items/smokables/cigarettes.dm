@@ -82,7 +82,7 @@
 		return SPAN("notice", "[holder] casually lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name].")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/jackolantern))
 		return SPAN("notice", "[holder] shoves \his [name] into \a [tool] to light it up.")
@@ -177,10 +177,10 @@
 
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/glass/rag)) //you can dip cigarettes into beakers
-		var/obj/item/reagent_containers/glass/glass = W
+	if(istype(W, /obj/item/reagent_containers/vessel)) // you can dip cigarettes into vessels
+		var/obj/item/reagent_containers/vessel/glass = W
 		if(!glass.is_open_container())
-			to_chat(user, SPAN("notice", "You need to take the lid off first."))
+			to_chat(user, SPAN("notice", "You need to open \the [glass] first."))
 			return
 		var/transfered = glass.reagents.trans_to_obj(src, chem_volume)
 		if(transfered)	//if reagents were transfered, show the message
@@ -400,7 +400,7 @@
 		return SPAN("notice", "[holder] insults \his [name] by lighting it with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name] with the power of science.")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool]. What a clown!")
 	return ..()
 

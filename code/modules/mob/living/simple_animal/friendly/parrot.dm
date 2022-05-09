@@ -43,7 +43,7 @@
 
 	speak_chance = 5//5% (5 in 100) chance every tick; So about once per 30 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
-	meat_type = /obj/item/reagent_containers/food/snacks/cracker/
+	meat_type = /obj/item/reagent_containers/food/cracker/
 
 	response_help  = "pets"
 	response_disarm = "gently moves aside"

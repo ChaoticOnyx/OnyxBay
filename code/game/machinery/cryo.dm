@@ -17,7 +17,7 @@
 
 	var/temperature_archived
 	var/mob/living/carbon/human/occupant = null
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 
 	var/current_heat_capacity = 50
 
@@ -236,7 +236,7 @@
 		return
 	if(default_part_replacement(user, G))
 		return
-	if(istype(G, /obj/item/reagent_containers/glass))
+	if(istype(G, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return

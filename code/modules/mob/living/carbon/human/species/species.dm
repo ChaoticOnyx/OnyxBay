@@ -92,7 +92,7 @@
 	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
-	var/meat_type = /obj/item/reagent_containers/food/snacks/meat/human
+	var/meat_type = /obj/item/reagent_containers/food/meat/human
 	var/remains_type = /obj/item/remains/xeno
 	var/gibbed_anim = "gibbed-h"
 	var/dusted_anim = "dust-h"

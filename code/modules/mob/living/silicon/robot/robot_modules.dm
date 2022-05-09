@@ -685,7 +685,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/soap/nanotrasen(src)
 	src.modules += new /obj/item/storage/bag/trash(src)
 	src.modules += new /obj/item/mop(src)
-	var/obj/item/reagent_containers/glass/bucket/B = new /obj/item/reagent_containers/glass/bucket(src)
+	var/obj/item/reagent_containers/vessel/bucket/B = new /obj/item/reagent_containers/vessel/bucket(src)
 	B.reagents.add_reagent(/datum/reagent/water,180)
 	src.modules += B
 	src.modules += new /obj/item/device/lightreplacer(src)
@@ -704,7 +704,7 @@ var/global/list/robot_modules = list(
 	if(src.emag)
 		var/obj/item/reagent_containers/spray/S = src.emag
 		S.reagents.add_reagent(/datum/reagent/lube, 20 * amount)
-	var/obj/item/reagent_containers/glass/bucket/B = locate() in src.modules
+	var/obj/item/reagent_containers/vessel/bucket/B = locate() in src.modules
 	if (B.reagents.total_volume < B.reagents.maximum_volume)
 		B.reagents.add_reagent(/datum/reagent/water,20)
 
@@ -746,7 +746,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/crowbar(src)
 	src.modules += new /obj/item/extinguisher/mini(src)
 	src.modules += new /obj/item/gripper/service(src)
-	src.modules += new /obj/item/reagent_containers/glass/bucket(src)
+	src.modules += new /obj/item/reagent_containers/vessel/bucket(src)
 	src.modules += new /obj/item/material/minihoe(src)
 	src.modules += new /obj/item/material/hatchet(src)
 	src.modules += new /obj/item/device/analyzer/plant_analyzer(src)
@@ -767,7 +767,7 @@ var/global/list/robot_modules = list(
 
 	src.modules += new /obj/item/tray/robotray(src)
 	src.modules += new /obj/item/reagent_containers/borghypo/service(src)
-	src.emag = new /obj/item/reagent_containers/food/drinks/bottle/small/beer(src)
+	src.emag = new /obj/item/reagent_containers/vessel/bottle/small/beer(src)
 
 	var/datum/reagents/R = src.emag.create_reagents(50)
 	R.add_reagent(/datum/reagent/chloralhydrate/beer2, 50)
@@ -776,10 +776,10 @@ var/global/list/robot_modules = list(
 
 /obj/item/robot_module/general/butler/respawn_consumable(mob/living/silicon/robot/R, amount)
 	..()
-	var/obj/item/reagent_containers/food/condiment/enzyme/E = locate() in src.modules
+	var/obj/item/reagent_containers/vessel/condiment/enzyme/E = locate() in src.modules
 	E.reagents.add_reagent(/datum/reagent/enzyme, 10 * amount)
 	if(src.emag)
-		var/obj/item/reagent_containers/food/drinks/bottle/small/beer/B = src.emag
+		var/obj/item/reagent_containers/vessel/bottle/small/beer/B = src.emag
 		B.reagents.add_reagent(/datum/reagent/chloralhydrate/beer2, 10 * amount)
 
 /obj/item/robot_module/miner

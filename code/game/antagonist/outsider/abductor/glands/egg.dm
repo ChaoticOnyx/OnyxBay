@@ -18,14 +18,14 @@
 /obj/item/organ/internal/heart/gland/egg/activate()
 	owner.visible_message(SPAN_DANGER("[owner] [pick(EGG_LAYING_MESSAGES)]"))
 	var/turf/T = owner.loc
-	new /obj/item/reagent_containers/food/snacks/egg/gland(T)
+	new /obj/item/reagent_containers/food/egg/gland(T)
 
-/obj/item/reagent_containers/food/snacks/egg/gland
+/obj/item/reagent_containers/food/egg/gland
 	desc = "An egg! It looks weird..."
 
-/obj/item/reagent_containers/food/snacks/egg/gland/Initialize()
+/obj/item/reagent_containers/food/egg/gland/Initialize()
 	. = ..()
 	reagents.add_reagent(pick(subtypesof(/datum/reagent)-/datum/reagent/adminordrazine),rand(1,4))
 
-/obj/item/reagent_containers/food/snacks/egg/gland/Process() //Why it's even needed to be proccessed?
+/obj/item/reagent_containers/food/egg/gland/Process() //Why it's even needed to be proccessed?
 		return PROCESS_KILL

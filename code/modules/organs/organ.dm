@@ -29,7 +29,7 @@ var/list/organ_cache = list()
 	var/death_time
 
 	var/food_organ_type				  // path of food made from organ, ex.
-	var/obj/item/reagent_containers/food/snacks/food_organ
+	var/obj/item/reagent_containers/food/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
 /obj/item/organ/return_item()

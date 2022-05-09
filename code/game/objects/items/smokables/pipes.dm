@@ -57,14 +57,14 @@
 /obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/food/snacks))
-		var/obj/item/reagent_containers/food/snacks/G = W
-		if(istype(W, /obj/item/reagent_containers/food/snacks/grown))
+	if(istype(W, /obj/item/reagent_containers/food))
+		var/obj/item/reagent_containers/food/G = W
+		if(istype(W, /obj/item/reagent_containers/food/grown))
 			G = W
 			if(!G.dry)
 				to_chat(user, SPAN("notice", "[G] must be dried before you stuff it into [src]."))
 				return
-		else if(!istype(W, /obj/item/reagent_containers/food/snacks/tobacco))
+		else if(!istype(W, /obj/item/reagent_containers/food/tobacco))
 			return
 		if(smoketime)
 			to_chat(user, SPAN("notice", "[src] is already packed."))
@@ -96,7 +96,7 @@
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
 	if(istype(tool, /obj/item/weldingtool))
 		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
 	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))
 		return SPAN_NOTICE("[holder] dips \his [tool.name] into \a [name] to light it up.")

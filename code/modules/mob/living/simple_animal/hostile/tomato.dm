@@ -9,7 +9,7 @@
 	maxHealth = 42
 	health = 42
 	speed = 4
-	meat_type = /obj/item/reagent_containers/food/snacks/tomatomeat
+	meat_type = /obj/item/reagent_containers/food/tomatomeat
 	response_help  = "prods"
 	response_disarm = "pushes aside"
 	response_harm   = "smacks"

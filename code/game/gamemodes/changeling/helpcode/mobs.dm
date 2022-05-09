@@ -75,7 +75,7 @@
 	speed = 0
 	maxHealth = 50
 	health = 50
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/human
+	meat_type = /obj/item/reagent_containers/food/meat/human
 	pass_flags = PASS_FLAG_TABLE
 	harm_intent_damage = 20
 	melee_damage_lower = 7.5

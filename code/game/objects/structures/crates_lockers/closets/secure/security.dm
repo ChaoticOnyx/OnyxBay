@@ -236,7 +236,7 @@
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/taperoll/police,
 		/obj/item/clothing/accessory/holster/armpit,
-		/obj/item/reagent_containers/food/drinks/flask/detflask,
+		/obj/item/reagent_containers/vessel/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
 		/obj/item/storage/secure/guncase/detective

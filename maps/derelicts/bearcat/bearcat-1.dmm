@@ -41,7 +41,7 @@
 "aO" = (/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/machinery/atmospherics/pipe/manifold/hidden,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo/lower)
 "aP" = (/obj/effect/decal/cleanable/dirt,/obj/effect/floor_decal/industrial/warning{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 9},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo/lower)
 "aQ" = (/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo/lower)
-"aR" = (/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/corner/beige{dir = 6},/obj/effect/floor_decal/industrial/outline/yellow,/obj/structure/closet/crate/plastic,/obj/random/clothing/accessory,/obj/random/clothing/accessory,/obj/item/reagent_containers/glass/paint/random,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo/lower)
+"aR" = (/obj/effect/floor_decal/industrial/outline/yellow,/obj/effect/floor_decal/corner/beige{dir = 6},/obj/effect/floor_decal/industrial/outline/yellow,/obj/structure/closet/crate/plastic,/obj/random/clothing/accessory,/obj/random/clothing/accessory,/obj/item/reagent_containers/vessel/paint/random,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo/lower)
 "aS" = (/obj/machinery/door/airlock/autoname,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/usedup,/area/ship/scrap/escape_star)
 "aT" = (/turf/simulated/wall,/area/ship/scrap/crew/dorms1)
 "aU" = (/turf/simulated/wall/r_wall,/area/ship/scrap/crew/dorms1)

@@ -5,7 +5,7 @@
 /datum/component/label/Initialize(label_name)
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
-	
+
 	src.label_name = label_name
 	apply_label()
 
@@ -14,14 +14,14 @@
 	var/atom/owner = parent
 	owner.name += " ([label_name])"
 	owner.verbs += /atom/proc/RemoveLabel
-	owner.post_attach_label()
+	owner.post_attach_label(src)
 
 /// Removes the label from the parent's name.
 /datum/component/label/proc/remove_label()
 	var/atom/owner = parent
 	owner.name = replacetext(owner.name, "([label_name])", "")
 	owner.name = trim(owner.name)
-	owner.post_remove_label()
+	owner.post_remove_label(src)
 	qdel(src)
 
 /atom/proc/RemoveLabel()

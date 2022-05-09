@@ -7,7 +7,7 @@
 	products = list(/obj/structure/flora/pottedplant = 2,
 					/obj/item/device/flashlight/lamp = 2,
 					/obj/item/device/flashlight/lamp/green = 2,
-					/obj/item/reagent_containers/food/drinks/jar = 1,
+					/obj/item/reagent_containers/vessel/jar = 1,
 					/obj/item/nullrod = 1,
 					/obj/item/toy/cultsword = 4,
 					/obj/item/toy/katana = 2)
