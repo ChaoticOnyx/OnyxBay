@@ -534,7 +534,7 @@
 	foldable = null
 	max_w_class = ITEM_SIZE_NORMAL
 	w_class = ITEM_SIZE_HUGE
-	can_hold = list(/obj/item/organ, /obj/item/reagent_containers/food, /obj/item/reagent_containers/glass)
+	can_hold = list(/obj/item/organ, /obj/item/reagent_containers/food, /obj/item/reagent_containers/vessel, /obj/item/reagent_containers/ivbag)
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	use_to_pickup = 1 // for picking up broken bulbs, not that most people will try
 

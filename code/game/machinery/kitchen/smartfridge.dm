@@ -78,11 +78,11 @@
 	req_one_access = list(access_medical,access_chemistry)
 
 /obj/machinery/smartfridge/secure/medbay/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass/))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		return 1
-	if(istype(O,/obj/item/storage/pill_bottle/))
+	if(istype(O, /obj/item/storage/pill_bottle))
 		return 1
-	if(istype(O,/obj/item/reagent_containers/pill/))
+	if(istype(O, /obj/item/reagent_containers/pill))
 		return 1
 	return 0
 
@@ -120,7 +120,7 @@
 	desc = "A refrigerated storage unit for tasty tasty alcohol."
 
 /obj/machinery/smartfridge/drinks/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass) || istype(O,/obj/item/reagent_containers/food/drinks) || istype(O,/obj/item/reagent_containers/vessel/condiment))
+	if(istype(O,/obj/item/reagent_containers/vessel))
 		return 1
 
 /obj/machinery/smartfridge/secure/food

@@ -16,7 +16,7 @@
 	var/toxins = 0
 
 /obj/machinery/disease2/incubator/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/reagent_containers/glass) || istype(O,/obj/item/reagent_containers/syringe))
+	if(istype(O, /obj/item/reagent_containers/vessel/beaker) || istype(O, /obj/item/reagent_containers/vessel/bottle/chemical) || istype(O,/obj/item/reagent_containers/syringe))
 
 		if(beaker)
 			to_chat(user, "\The [src] is already loaded.")

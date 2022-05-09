@@ -1,9 +1,13 @@
 
 /obj/item/reagent_containers/vessel/can
+	name = "tin can"
+	desc = "It opens, but never closes."
+	matter = list(MATERIAL_STEEL = 500)
 	volume = 45 //just over one and a half cups
 	amount_per_transfer_from_this = 5
 	atom_flags = 0 //starts closed
 	lid_type = /datum/vessel_lid/can
+	icon = 'icons/obj/reagent_containers/mugs.dmi'
 	var/trash = null
 
 /obj/item/reagent_containers/vessel/can/attack_self(mob/user)

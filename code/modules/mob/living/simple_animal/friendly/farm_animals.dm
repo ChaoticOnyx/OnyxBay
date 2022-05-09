@@ -87,7 +87,7 @@
 			G.reagents.remove_any(1)
 			user.visible_message(SPAN("warning", "[user] gives something to \the [src]."))
 			Retaliate()
-		else if(istype(O, /obj/item/reagent_containers/glass))
+		else if(istype(O, /obj/item/reagent_containers/vessel))
 			if(G.reagents.total_volume >= G.volume)
 				to_chat(user, SPAN("notice", "The [O] is full."))
 				return
@@ -146,7 +146,7 @@
 	udder = new(50, src)
 
 /mob/living/simple_animal/cow/attackby(obj/item/O, mob/user)
-	var/obj/item/reagent_containers/glass/G = O
+	var/obj/item/reagent_containers/vessel/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
 		var/transfered = udder.trans_type_to(G, milktype, rand(5,10))

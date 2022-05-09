@@ -140,7 +140,7 @@
 	if(!stage || stage<2) return
 
 	var/has_reagents = 0
-	for(var/obj/item/reagent_containers/glass/G in beakers)
+	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		if(G.reagents.total_volume) has_reagents = 1
 
 	active = 0
@@ -158,7 +158,7 @@
 
 	playsound(src.loc, 'sound/effects/bamf.ogg', 50, 1)
 
-	for(var/obj/item/reagent_containers/glass/G in beakers)
+	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		G.reagents.trans_to_obj(src, G.reagents.total_volume)
 
 	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
@@ -185,7 +185,7 @@
 	name = "large chem grenade"
 	desc = "An oversized grenade that affects a larger area."
 	icon_state = "large_grenade"
-	allowed_containers = list(/obj/item/reagent_containers/glass)
+	allowed_containers = list(/obj/item/reagent_containers/vessel)
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3)
 	affected_area = 4
 

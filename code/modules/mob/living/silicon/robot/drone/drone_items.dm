@@ -78,7 +78,8 @@
 		)
 
 	can_hold = list(
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/ivbag,
 		/obj/item/stack/material/plasma,
@@ -162,7 +163,8 @@
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/metroid_extract,
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/food/monkeycube,
 		/obj/item/mecha_parts,
 		/obj/item/computer_hardware,
@@ -190,7 +192,7 @@
 	)
 
 	can_hold = list(
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel,
 		/obj/item/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/grown,
@@ -217,7 +219,8 @@
 	/obj/item/device/mmi,
 	/obj/item/robot_parts,
 	/obj/item/paper,
-	/obj/item/reagent_containers/glass,
+	/obj/item/reagent_containers/vessel/beaker,
+	/obj/item/reagent_containers/vessel/bottle/chemical,
 	/obj/item/reagent_containers/pill,
 	/obj/item/reagent_containers/ivbag,
 	/obj/item/stack/material/plasma,

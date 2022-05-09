@@ -171,10 +171,10 @@
 
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/rag)) //you can dip cigarettes into beakers
-		var/obj/item/reagent_containers/glass/glass = W
+	if(istype(W, /obj/item/reagent_containers/vessel)) // you can dip cigarettes into vessels
+		var/obj/item/reagent_containers/vessel/glass = W
 		if(!glass.is_open_container())
-			to_chat(user, SPAN("notice", "You need to take the lid off first."))
+			to_chat(user, SPAN("notice", "You need to open \the [glass] first."))
 			return
 		var/transfered = glass.reagents.trans_to_obj(src, chem_volume)
 		if(transfered)	//if reagents were transfered, show the message

@@ -106,12 +106,12 @@
 					. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 
 /obj/item/gun/projectile/dartgun/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_beaker(I, user)
 		return 1
 	..()
 
-/obj/item/gun/projectile/dartgun/proc/add_beaker(obj/item/reagent_containers/glass/B, mob/user)
+/obj/item/gun/projectile/dartgun/proc/add_beaker(obj/item/reagent_containers/vessel/B, mob/user)
 	if(!istype(B, container_type))
 		to_chat(user, "<span class='warning'>[B] doesn't seem to fit into [src].</span>")
 		return
@@ -122,7 +122,7 @@
 	beakers |= B
 	user.visible_message("\The [user] inserts \a [B] into [src].", "<span class='notice'>You slot [B] into [src].</span>")
 
-/obj/item/gun/projectile/dartgun/proc/remove_beaker(obj/item/reagent_containers/glass/B, mob/user)
+/obj/item/gun/projectile/dartgun/proc/remove_beaker(obj/item/reagent_containers/vessel/B, mob/user)
 	mixing -= B
 	beakers -= B
 	user.put_in_hands(B)

@@ -70,7 +70,7 @@
 	if(default_part_replacement(user, W))
 		return
 
-	if(istype(W, /obj/item/reagent_containers/glass))
+	if(istype(W, /obj/item/reagent_containers/vessel/beaker) || istype(W, /obj/item/reagent_containers/vessel/bottle/chemical))
 		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
@@ -411,10 +411,7 @@
 	if(default_part_replacement(user, O))
 		return
 
-	if(istype(O,/obj/item/reagent_containers/glass) || \
-		istype(O,/obj/item/reagent_containers/vessel/glass) || \
-		istype(O,/obj/item/reagent_containers/vessel/shaker))
-
+	if(istype(O, /obj/item/reagent_containers/vessel/beaker))
 		if(beaker)
 			return TRUE
 		else

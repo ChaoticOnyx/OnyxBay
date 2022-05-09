@@ -1332,7 +1332,7 @@
 	required = /obj/item/metroid_extract/pyrite
 
 /datum/chemical_reaction/metroid/paint/on_reaction(datum/reagents/holder)
-	new /obj/item/reagent_containers/glass/paint/random(get_turf(holder.my_atom))
+	new /obj/item/reagent_containers/vessel/paint/random(get_turf(holder.my_atom))
 	..()
 
 /datum/chemical_reaction/metroid/crayon

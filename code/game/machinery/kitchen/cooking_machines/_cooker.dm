@@ -91,7 +91,7 @@
 	else if(istype(I, /obj/item/reagent_containers/vessel/condiment))
 		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
 		return 0
-	else if(istype(I, /obj/item/reagent_containers/glass))
+	else if(istype(I, /obj/item/reagent_containers/vessel))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
 		return 0
 	else if(istype(I, /obj/item/holder))

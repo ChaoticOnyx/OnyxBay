@@ -77,7 +77,7 @@
 		return
 	if(default_part_replacement(user, O))
 		return
-	if(istype(O, /obj/item/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, "<span class='notice'>]The [src] is already loaded.</span>")
 		else

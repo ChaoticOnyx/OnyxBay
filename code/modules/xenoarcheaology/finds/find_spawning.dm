@@ -118,7 +118,7 @@
 /obj/item/archaeological_find/bowl/spawn_item()
 	var/obj/item/reagent_containers/R
 	if(prob(33))
-		R = new /obj/item/reagent_containers/glass/replenishing(loc)
+		R = new /obj/item/reagent_containers/vessel/replenishing(loc)
 	else
 		R = new /obj/item/reagent_containers/vessel/beaker(loc)
 	R.icon = 'icons/obj/xenoarchaeology.dmi'

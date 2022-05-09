@@ -156,10 +156,7 @@
 				SPAN("notice", "\The [user] has added \the [O] to \the [src]."), \
 				SPAN("notice", "You add \the [O] to \the [src]."))
 			return
-	else if(istype(O,/obj/item/reagent_containers/glass) || \
-	        istype(O,/obj/item/reagent_containers/food/drinks) || \
-	        istype(O,/obj/item/reagent_containers/vessel/condiment) \
-		)
+	else if(istype(O,/obj/item/reagent_containers/vessel))
 		if (!O.reagents)
 			return 1
 		for (var/datum/reagent/R in O.reagents.reagent_list)

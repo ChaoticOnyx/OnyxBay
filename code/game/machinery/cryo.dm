@@ -236,7 +236,7 @@
 		return
 	if(default_part_replacement(user, G))
 		return
-	if(istype(G, /obj/item/reagent_containers/glass))
+	if(istype(G, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return
