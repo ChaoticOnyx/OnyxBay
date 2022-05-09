@@ -19,8 +19,8 @@
 					/obj/item/reagent_containers/vessel/glass/bigmug = 10,
 					/obj/item/reagent_containers/vessel/glass/carafe = 2,
 					/obj/item/reagent_containers/vessel/mug/metal = 10,
-					/obj/item/reagent_containers/food/drinks/flask/barflask = 5,
-					/obj/item/reagent_containers/food/drinks/flask/vacuumflask = 5,
+					/obj/item/reagent_containers/vessel/flask/barflask = 5,
+					/obj/item/reagent_containers/vessel/flask/vacuumflask = 5,
 					/obj/item/bottle_extra/pourer = 15,
 					/obj/item/glass_extra/stick = 25,
 					/obj/item/glass_extra/straw = 25,
@@ -62,8 +62,8 @@
 					/obj/item/reagent_containers/vessel/can/cola =15,
 					/obj/item/reagent_containers/vessel/can/colavanilla = 15,
 					/obj/item/reagent_containers/vessel/can/colacherry =15,
-					/obj/item/reagent_containers/food/drinks/tea = 15,
-					/obj/item/reagent_containers/food/drinks/ice = 10)
+					/obj/item/reagent_containers/vessel/tea = 15,
+					/obj/item/reagent_containers/vessel/ice = 10)
 	contraband = list(/obj/item/reagent_containers/vessel/bottle/premiumwine = 2,
 					  /obj/item/reagent_containers/vessel/bottle/premiumvodka = 2,
 				      /obj/item/reagent_containers/vessel/can/dopecola = 5,

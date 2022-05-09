@@ -141,7 +141,7 @@
 /datum/vessel_lid/carton/toggle(mob/user)
 	if(state == LID_SEALED)
 		if(user)
-			to_chat(user, SPAN("notice", "You rip open \the [src]!"))
+			to_chat(user, SPAN("notice", "You rip open \the [owner]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		state = LID_NONE
 		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
@@ -188,3 +188,60 @@
 		return SPAN("notice", "It's safety seal is intact.")
 	else if(state == LID_CLOSED)
 		return SPAN("notice", "It's closed.")
+
+
+// Flask caps - they are connected to the thing, thus have two icon states
+/datum/vessel_lid/flask
+	name = "cap"
+	state = LID_CLOSED
+
+/datum/vessel_lid/flask/toggle(mob/user)
+	switch(state)
+		if(LID_CLOSED)
+			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+			state = LID_OPEN
+			if(user)
+				to_chat(usr, SPAN("notice", "You open \the [owner]."))
+			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+			return TRUE
+		if(LID_OPEN)
+			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			state = LID_CLOSED
+			if(user)
+				to_chat(usr, SPAN("notice", "You close \the [owner]."))
+			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
+			return TRUE
+	return FALSE
+
+/datum/vessel_lid/flask/get_icon_state()
+	if(state == LID_OPEN)
+		return "o-[icon_state]"
+	return "c-[icon_state]"
+
+/datum/vessel_lid/flask/get_examine_hint()
+	if(state == LID_CLOSED)
+		return SPAN("notice", "It's closed.")
+
+// Paper lids - for ramens and stuff
+/datum/vessel_lid/paper
+	name = "paper lid"
+	state = LID_SEALED
+
+/datum/vessel_lid/paper/toggle(mob/user)
+	if(state == LID_SEALED)
+		if(user)
+			to_chat(user, SPAN("notice", "You rip off \the [owner]'s [name]!"))
+		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+		state = LID_NONE
+		owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole
+		return TRUE
+	return FALSE
+
+/datum/vessel_lid/paper/get_icon_state()
+	if(state == LID_SEALED)
+		return "c-[icon_state]"
+	return "o-[icon_state]"
+
+/datum/vessel_lid/paper/get_examine_hint()
+	if(state == LID_SEALED)
+		return SPAN("notice", "It's [name] is intact.")

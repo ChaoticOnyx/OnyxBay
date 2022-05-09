@@ -91,20 +91,20 @@
 /obj/item/reagent_containers/vessel/dry_ramen
 	name = "cup ramen"
 	gender = PLURAL
-	desc = "Just add 10ml water, self heats! A taste that reminds you of your school years."
+	desc = "Just add 10u water, self heats! A taste that reminds you of your school years."
 	icon_state = "ramen"
 	center_of_mass = "x=16;y=11"
 	startswith = list(/datum/reagent/drink/dry_ramen = 30)
-	lid_type = null
+	lid_type = /datum/vessel_lid/paper
 
 /obj/item/reagent_containers/vessel/chickensoup
 	name = "cup of chicken soup"
-	desc = "Just add 10ml water, self heats! Keep yourself warm!"
+	desc = "Just add 10u water, self heats! Keep yourself warm!"
 	icon_state = "chickensoup"
 	item_state = "ramen"
 	center_of_mass = "x=16;y=11"
 	startswith = list(/datum/reagent/drink/chicken_powder = 30)
-	lid_type = null
+	lid_type = /datum/vessel_lid/paper
 
 /obj/item/reagent_containers/vessel/sillycup
 	name = "paper cup"
@@ -160,8 +160,7 @@
 	icon_state = "flask"
 	volume = 60
 	center_of_mass = "x=17;y=7"
-	lid_type = /datum/vessel_lid/cap
-	override_lid_state = LID_CLOSED
+	lid_type = /datum/vessel_lid/flask
 
 /obj/item/reagent_containers/vessel/flask/shiny
 	name = "shiny flask"
@@ -193,6 +192,8 @@
 	icon_state = "vacuumflask"
 	volume = 60
 	center_of_mass = "x=15;y=4"
+	lid_type = /datum/vessel_lid/cap
+	override_lid_state = LID_CLOSED
 
 /obj/item/reagent_containers/vessel/skullgoblet
 	name = "skull goblet"

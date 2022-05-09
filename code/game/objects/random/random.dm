@@ -686,7 +686,7 @@
 				/obj/item/reagent_containers/food/packaged/sweetroid,
 				/obj/item/reagent_containers/food/packaged/sugarmatter,
 				/obj/item/reagent_containers/food/packaged/jellaws,
-				/obj/item/reagent_containers/food/drinks/dry_ramen,
+				/obj/item/reagent_containers/vessel/dry_ramen,
 				/obj/item/reagent_containers/food/packaged/chips,
 				/obj/item/reagent_containers/food/packaged/sosjerky,
 				/obj/item/reagent_containers/food/packaged/no_raisin,

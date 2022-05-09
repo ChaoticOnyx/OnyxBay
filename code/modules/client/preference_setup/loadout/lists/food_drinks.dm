@@ -69,7 +69,7 @@
 /datum/gear/flask
 	sort_category = "Food and Drinks"
 	display_name = "flask"
-	path = /obj/item/reagent_containers/food/drinks/flask
+	path = /obj/item/reagent_containers/vessel/flask
 	price = 5
 
 /datum/gear/flask/New()
@@ -78,20 +78,20 @@
 
 /datum/gear/flask/bar
 	display_name = "bar flask"
-	path = /obj/item/reagent_containers/food/drinks/flask/barflask
+	path = /obj/item/reagent_containers/vessel/flask/barflask
 	price = 0
 
 /datum/gear/flask/vacuum
 	display_name = "vacuum flask"
-	path = /obj/item/reagent_containers/food/drinks/flask/vacuumflask
+	path = /obj/item/reagent_containers/vessel/flask/vacuumflask
 	price = 0
 
 /datum/gear/flask/lithium
 	display_name = "lithium flask"
-	path = /obj/item/reagent_containers/food/drinks/flask/lithium
+	path = /obj/item/reagent_containers/vessel/flask/lithium
 	price = 8
 
 /datum/gear/flask/shiny
 	display_name = "shiny flask"
-	path = /obj/item/reagent_containers/food/drinks/flask/shiny
+	path = /obj/item/reagent_containers/vessel/flask/shiny
 	price = 10
