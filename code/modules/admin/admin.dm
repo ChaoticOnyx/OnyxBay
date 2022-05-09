@@ -1533,3 +1533,13 @@ datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 		qdel(P)
 		faxreply = null
 	return
+
+/datum/admins/proc/follow_panel()
+	set category = "Admin"
+	set name = "Follow Panel"
+	set desc = "Robust version of 'Follow'"
+
+	if (!istype(src, /datum/admins))
+		src = usr.client.holder
+
+	follow_panel.tgui_interact(usr, null)
