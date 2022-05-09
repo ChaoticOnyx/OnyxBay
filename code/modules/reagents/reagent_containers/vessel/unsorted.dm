@@ -133,6 +133,7 @@
 	center_of_mass = "x=17;y=10"
 	lid_type = /datum/vessel_lid/cap
 	override_lid_state = LID_CLOSED
+	precise_measurement = TRUE
 
 /obj/item/reagent_containers/vessel/teapot
 	name = "teapot"
@@ -153,6 +154,7 @@
 	center_of_mass = "x=16;y=9"
 	filling_states = "15;30;50;70;85;100"
 	lid_type = null
+	precise_measurement = TRUE
 
 /obj/item/reagent_containers/vessel/flask
 	name = "\improper Captain's flask"
@@ -221,6 +223,7 @@
 	filling_states = "1;20;30;40;50;60;70;80;90;100"
 	possible_transfer_amounts = "5;10;15;25"
 	lid_type = null
+	precise_measurement = TRUE
 	var/lid_color = "black"
 
 /obj/item/reagent_containers/vessel/fitnessflask/Initialize()

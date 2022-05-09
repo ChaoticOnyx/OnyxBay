@@ -265,7 +265,7 @@
 		/obj/item/reagent_containers/pill,
 		/obj/item/storage/pill_bottle,
 		/obj/item/ore,
-		/obj/item/reagent_containers/food/drinks,
+		/obj/item/reagent_containers/vessel/can,
 		/obj/item/storage/plants
 		)
 
