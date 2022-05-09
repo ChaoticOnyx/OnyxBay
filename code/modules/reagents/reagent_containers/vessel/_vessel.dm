@@ -251,7 +251,7 @@
 			smash(loc, hit_atom)
 
 /obj/item/reagent_containers/vessel/proc/smash_check(distance)
-	if(!isGlass || !smash_duration)
+	if(!brittle || !smash_weaken)
 		return 0
 
 	var/list/chance_table = list(95, 95, 90, 85, 75, 60, 40, 15) //starting from distance 0
@@ -294,15 +294,15 @@
 	// You are going to knock someone out for longer if they are not wearing a helmet.
 	var/weaken_duration = 0
 	if(blocked < 100)
-		weaken_duration = smash_duration + min(0, force - target.getarmor(hit_zone, "melee") + 10)
+		weaken_duration = smash_weaken + min(0, force - target.getarmor(hit_zone, "melee") + 10)
 
 	var/mob/living/carbon/human/H = target
 	if(istype(H) && H.headcheck(hit_zone))
 		var/obj/item/organ/affecting = H.get_organ(hit_zone) // headcheck should ensure that affecting is not null
 		user.visible_message(SPAN("danger", "[user] smashes [src] into [H]'s [affecting.name]!"))
-		if(smash_weaken)
+		if(weaken_duration)
 			if(prob(100 - H.poise)) // 50% if poise is full, 100% is poise is empty
-				target.apply_effect(min(smash_weaken, 5), WEAKEN, blocked) // Never weaken more than a flash!
+				target.apply_effect(min(weaken_duration, 5), WEAKEN, blocked) // Never weaken more than a flash!
 	else
 		user.visible_message(SPAN("danger", "\The [user] smashes [src] into [target]!"))
 

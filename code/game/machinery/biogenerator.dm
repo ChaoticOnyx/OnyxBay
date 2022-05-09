@@ -30,13 +30,13 @@
 
 	var/list/products = list(
 		"Food" = list(
-			/obj/item/reagent_containers/food/drinks/milk/smallcarton = 30,
+			/obj/item/reagent_containers/vessel/carton/milk = 30,
 			/obj/item/reagent_containers/food/meat = 50),
 		"Nutrients" = list(
 			/obj/item/reagent_containers/vessel/bottle/chemical/big/compost = 60,
-			/obj/item/reagent_containers/vessel/bottle/plastic/eznutrient = 120,
-			/obj/item/reagent_containers/vessel/bottle/plastic/left4zed = 120,
-			/obj/item/reagent_containers/vessel/bottle/plastic/robustharvest = 120),
+			/obj/item/reagent_containers/vessel/plastic/eznutrient = 120,
+			/obj/item/reagent_containers/vessel/plastic/left4zed = 120,
+			/obj/item/reagent_containers/vessel/plastic/robustharvest = 120),
 		"Leather" = list(
 			/obj/item/storage/wallet/leather = 100,
 			/obj/item/clothing/gloves/thick/botany = 250,

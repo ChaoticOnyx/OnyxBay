@@ -1,7 +1,7 @@
 
 /obj/item/reagent_containers/vessel/bottle/chemical/big/compost
 	name = "compost bottle"
-	starting_label = "compost"
+	start_label = "compost"
 	startswith = list(/datum/reagent/toxin/fertilizer/compost)
 
 /obj/item/reagent_containers/vessel/plastic/eznutrient
@@ -22,7 +22,7 @@
 	icon_state = "fertilizer3"
 	startswith = list(/datum/reagent/toxin/fertilizer/robustharvest)
 
-/obj/item/reagent_containers/glass/plastic/mutogrow
+/obj/item/reagent_containers/vessel/plastic/mutogrow
 	name = "\improper Mut'o'Grow"
 	desc = "A small bottle of Mut'o'Grow. Randomly changes the DNA structure of plants. Warning: ingestion may (and will) cause severe poisoning!"
 	icon_state = "mutagen"

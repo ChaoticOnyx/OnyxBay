@@ -6,7 +6,7 @@
 	contains = list(
 			/obj/item/storage/box/mixedglasses = 2,
 			/obj/item/storage/box/glasses/square,
-			/obj/item/reagent_containers/food/drinks/shaker,
+			/obj/item/reagent_containers/vessel/shaker,
 			/obj/item/reagent_containers/vessel/flask/barflask,
 			/obj/item/reagent_containers/vessel/bottle/patron,
 			/obj/item/reagent_containers/vessel/bottle/goldschlager,
@@ -41,7 +41,7 @@
 			/obj/item/storage/box/glasses/shake,
 			/obj/item/storage/box/glasses/shot,
 			/obj/item/storage/box/glasses/mug,
-			/obj/item/reagent_containers/food/drinks/shaker,
+			/obj/item/reagent_containers/vessel/shaker,
 			/obj/item/storage/box/glass_extras/straws,
 			/obj/item/storage/box/glass_extras/sticks
 			)
@@ -101,7 +101,7 @@
 
 /decl/hierarchy/supply_pack/hospitality/milk
 	name = "Milk crate"
-	contains = list(/obj/item/reagent_containers/food/drinks/milk = 6)
+	contains = list(/obj/item/reagent_containers/vessel/plastic/milk = 6)
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Milk crate"
 	cost = 15

@@ -34,8 +34,8 @@
 
 /obj/structure/closet/secure_closet/freezer/fridge/WillContain()
 	return list(
-		/obj/item/reagent_containers/food/drinks/milk = 6,
-		/obj/item/reagent_containers/food/drinks/soymilk = 4,
+		/obj/item/reagent_containers/vessel/plastic/milk = 6,
+		/obj/item/reagent_containers/vessel/plastic/soymilk = 4,
 		/obj/item/storage/fancy/egg_box = 4
 	)
 

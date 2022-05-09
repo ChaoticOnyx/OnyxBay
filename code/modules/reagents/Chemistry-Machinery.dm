@@ -413,7 +413,7 @@
 
 	if(istype(O,/obj/item/reagent_containers/glass) || \
 		istype(O,/obj/item/reagent_containers/vessel/glass) || \
-		istype(O,/obj/item/reagent_containers/food/drinks/shaker))
+		istype(O,/obj/item/reagent_containers/vessel/shaker))
 
 		if(beaker)
 			return TRUE

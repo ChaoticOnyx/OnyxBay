@@ -162,7 +162,7 @@
 		if(LID_SEALED)
 			playsound(owner.loc, 'sound/effects/bonebreak1.ogg', rand(10, 50), 1)
 			if(user)
-				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [cap], destroying the safety seal!"))
+				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [name], destroying the safety seal!"))
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
 			owner.verbs += /obj/item/reagent_containers/vessel/verb/drink_whole

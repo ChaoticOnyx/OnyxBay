@@ -12,7 +12,7 @@
 	/obj/item/material/kitchen/utensil/spoon = 8,
 	/obj/item/material/knife/kitchen = 3,
 	/obj/item/material/kitchen/rollingpin = 2,
-	/obj/item/reagent_containers/food/drinks/pitcher = 2,
+	/obj/item/reagent_containers/vessel/pitcher = 2,
 	/obj/item/reagent_containers/vessel/mug = 8,
 	/obj/item/reagent_containers/vessel/glass/carafe = 2,
 	/obj/item/reagent_containers/vessel/glass/square = 8,

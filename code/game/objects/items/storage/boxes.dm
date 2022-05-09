@@ -305,7 +305,7 @@
 /obj/item/storage/box/cups
 	name = "box of paper cups"
 	desc = "It has pictures of paper cups on the front."
-	startswith = list(/obj/item/reagent_containers/food/drinks/sillycup = 7)
+	startswith = list(/obj/item/reagent_containers/vessel/sillycup = 7)
 
 /obj/item/storage/box/donkpockets
 	name = "box of donk-pockets"

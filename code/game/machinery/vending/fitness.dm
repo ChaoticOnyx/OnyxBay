@@ -8,19 +8,19 @@
 	use_vend_state = TRUE
 	vend_delay = 6
 	rand_amount = TRUE
-	products = list(/obj/item/reagent_containers/food/drinks/milk/smallcarton = 8,
-					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 8,
-					/obj/item/reagent_containers/vessel/glass/fitnessflask/proteinshake = 8,
-					/obj/item/reagent_containers/vessel/glass/fitnessflask = 8,
+	products = list(/obj/item/reagent_containers/vessel/carton/milk = 8,
+					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 8,
+					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 8,
+					/obj/item/reagent_containers/vessel/fitnessflask = 8,
 					/obj/item/reagent_containers/food/packaged/nutribar = 8,
 					/obj/item/reagent_containers/food/liquidfood = 8,
 					/obj/item/reagent_containers/pill/diet = 8,
 					/obj/item/towel/random = 8)
 
-	prices = list(/obj/item/reagent_containers/food/drinks/milk/smallcarton = 3,
-					/obj/item/reagent_containers/food/drinks/milk/smallcarton/chocolate = 3,
-					/obj/item/reagent_containers/vessel/glass/fitnessflask/proteinshake = 20,
-					/obj/item/reagent_containers/vessel/glass/fitnessflask = 5,
+	prices = list(/obj/item/reagent_containers/vessel/carton/milk = 3,
+					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 3,
+					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 20,
+					/obj/item/reagent_containers/vessel/fitnessflask = 5,
 					/obj/item/reagent_containers/food/packaged/nutribar = 5,
 					/obj/item/reagent_containers/food/liquidfood = 5,
 					/obj/item/reagent_containers/pill/diet = 25,

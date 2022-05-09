@@ -4,8 +4,8 @@
 /decl/hierarchy/supply_pack/supply/food
 	name = "Kitchen supply crate"
 	contains = list(/obj/item/reagent_containers/vessel/condiment/flour = 6,
-					/obj/item/reagent_containers/food/drinks/milk = 4,
-					/obj/item/reagent_containers/food/drinks/soymilk = 2,
+					/obj/item/reagent_containers/vessel/plastic/milk = 4,
+					/obj/item/reagent_containers/vessel/plastic/soymilk = 2,
 					/obj/item/storage/fancy/egg_box = 2,
 					/obj/item/reagent_containers/food/tofu = 4,
 					/obj/item/reagent_containers/food/meat = 4

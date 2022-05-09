@@ -69,11 +69,6 @@
 	else
 		..()
 
-/obj/item/reagent_containers/vessel/bottle/toggle_lid(user)
-	if(rag || pourer)
-		return
-	..()
-
 /obj/item/reagent_containers/vessel/bottle/proc/insert_rag(obj/item/reagent_containers/rag/R, mob/user)
 	if(rag || pourer)
 		return
@@ -173,7 +168,7 @@
 	. = ..()
 	if(!icon_state)
 		icon_state = "bottle-[rand(1,4)]"
-		lid_state = "lid_bottle"
+		lid.icon_state = "lid[icon_state]"
 		update_icon()
 
 
@@ -181,7 +176,7 @@
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;50;100"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	lid_state = LID_NONE
+	lid_type = null
 	volume = 60
 	brittle = FALSE // No, for the love of god
 	var/reagent = ""

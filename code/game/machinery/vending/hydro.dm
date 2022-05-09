@@ -7,10 +7,10 @@
 	icon_state = "nutri"
 	use_vend_state = TRUE
 	vend_delay = 26
-	products = list(/obj/item/reagent_containers/vessel/bottle/plastic/eznutrient = 5,
-					/obj/item/reagent_containers/vessel/bottle/plastic/left4zed = 5,
-					/obj/item/reagent_containers/vessel/bottle/plastic/robustharvest = 5,
-					/obj/item/reagent_containers/vessel/bottle/plastic/mutogrow = 5,
+	products = list(/obj/item/reagent_containers/vessel/plastic/eznutrient = 5,
+					/obj/item/reagent_containers/vessel/plastic/left4zed = 5,
+					/obj/item/reagent_containers/vessel/plastic/robustharvest = 5,
+					/obj/item/reagent_containers/vessel/plastic/mutogrow = 5,
 					/obj/item/plantspray/pests = 20,
 					/obj/item/reagent_containers/syringe = 5,
 					/obj/item/storage/plants = 5)
