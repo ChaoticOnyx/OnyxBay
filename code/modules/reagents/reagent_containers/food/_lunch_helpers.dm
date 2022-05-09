@@ -45,17 +45,17 @@ var/list/lunchables_snacks_ = list(
 								   )
 
 var/list/lunchables_drinks_ = list(
-									/obj/item/reagent_containers/food/drinks/cans/cola,
-									/obj/item/reagent_containers/food/drinks/cans/waterbottle,
-									/obj/item/reagent_containers/food/drinks/cans/space_mountain_wind,
-									/obj/item/reagent_containers/food/drinks/cans/dr_gibb,
-									/obj/item/reagent_containers/food/drinks/cans/starkist,
-									/obj/item/reagent_containers/food/drinks/cans/space_up,
-									/obj/item/reagent_containers/food/drinks/cans/lemon_lime,
-									/obj/item/reagent_containers/food/drinks/cans/iced_tea,
-									/obj/item/reagent_containers/food/drinks/cans/grape_juice,
-									/obj/item/reagent_containers/food/drinks/cans/tonic,
-									/obj/item/reagent_containers/food/drinks/cans/sodawater
+									/obj/item/reagent_containers/vessel/plastic/waterbottle,
+									/obj/item/reagent_containers/vessel/can/cola,
+									/obj/item/reagent_containers/vessel/can/space_mountain_wind,
+									/obj/item/reagent_containers/vessel/can/dr_gibb,
+									/obj/item/reagent_containers/vessel/can/starkist,
+									/obj/item/reagent_containers/vessel/can/space_up,
+									/obj/item/reagent_containers/vessel/can/lemon_lime,
+									/obj/item/reagent_containers/vessel/can/iced_tea,
+									/obj/item/reagent_containers/vessel/can/grape_juice,
+									/obj/item/reagent_containers/vessel/can/tonic,
+									/obj/item/reagent_containers/vessel/can/sodawater
 								   )
 
 // This default list is a bit different, it contains items we don't want

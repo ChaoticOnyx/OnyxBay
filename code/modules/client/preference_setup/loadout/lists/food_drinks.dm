@@ -4,32 +4,32 @@
 
 /datum/gear/drinks/absinthe
 	display_name = "jailbreaker verte"
-	path = /obj/item/reagent_containers/food/drinks/bottle/absinthe
+	path = /obj/item/reagent_containers/vessel/bottle/absinthe
 	price = 10
 
 /datum/gear/drinks/melonliquor
 	display_name = "emeraldine melon liquor"
-	path = /obj/item/reagent_containers/food/drinks/bottle/melonliquor
+	path = /obj/item/reagent_containers/vessel/bottle/melonliquor
 	price = 4
 
 /datum/gear/drinks/bluecuracao
 	display_name = "miss blue curacao"
-	path = /obj/item/reagent_containers/food/drinks/bottle/bluecuracao
+	path = /obj/item/reagent_containers/vessel/bottle/bluecuracao
 	price = 6
 
 /datum/gear/drinks/grenadine
 	display_name = "briar rose grenadine syrup"
-	path = /obj/item/reagent_containers/food/drinks/bottle/grenadine
+	path = /obj/item/reagent_containers/vessel/bottle/grenadine
 	price = 7
 
 /datum/gear/drinks/pwine
 	display_name = "warlock's velvet"
-	path = /obj/item/reagent_containers/food/drinks/bottle/pwine
+	path = /obj/item/reagent_containers/vessel/bottle/pwine
 	price = 10
 
 /datum/gear/drinks/absinthe
 	display_name = "premium wine"
-	path = /obj/item/reagent_containers/food/drinks/bottle/premiumwine
+	path = /obj/item/reagent_containers/vessel/bottle/premiumwine
 	price = 10
 
 /datum/gear/food

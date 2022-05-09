@@ -62,7 +62,7 @@
 		/obj/item/device/healthanalyzer,
 		/obj/item/storage/pill_bottle/dylovene,
 		/obj/item/reagent_containers/syringe/antitoxin/packaged = 3,
-		/obj/item/reagent_containers/food/drinks/cans/waterbottle
+		/obj/item/reagent_containers/vessel/plastic/waterbottle
 		)
 
 /obj/item/storage/firstaid/toxin/Initialize()

@@ -257,7 +257,7 @@
 		/obj/item/stack/material/animalhide,
 		/obj/item/flame/lighter,
 		/obj/item/storage/fancy/cigarettes,
-		/obj/item/reagent_containers/food/drinks/bottle,
+		/obj/item/reagent_containers/vessel/bottle,
 		/obj/item/stack/medical,
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/device/gps,

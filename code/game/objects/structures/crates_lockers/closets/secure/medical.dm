@@ -189,7 +189,7 @@
 		/obj/item/clothing/suit/chaplain_hoodie,
 		/obj/item/storage/fancy/candle_box = 2,
 		/obj/item/deck/tarot,
-		/obj/item/reagent_containers/food/drinks/bottle/holywater,
+		/obj/item/reagent_containers/vessel/bottle/holywater,
 		/obj/item/nullrod,
 		/obj/item/clothing/suit/straight_jacket,
 		/obj/item/reagent_containers/vessel/bottle/chemical/stoxin,

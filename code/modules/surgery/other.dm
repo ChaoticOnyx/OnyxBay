@@ -147,7 +147,7 @@
 		/obj/item/reagent_containers/vessel/bottle/chemical = 90,
 		/obj/item/reagent_containers/food/drinks/flask = 90,
 		/obj/item/reagent_containers/vessel/beaker = 75,
-		/obj/item/reagent_containers/food/drinks/bottle = 75,
+		/obj/item/reagent_containers/vessel/bottle = 75,
 		/obj/item/reagent_containers/food/drinks/glass2 = 75,
 		/obj/item/reagent_containers/vessel/bucket = 50
 	)

@@ -224,16 +224,16 @@
 	spawn_nothing_percentage = 25
 
 /obj/random/drinkbottle/spawn_choices()
-	return list(/obj/item/reagent_containers/food/drinks/bottle/whiskey,
-				/obj/item/reagent_containers/food/drinks/bottle/gin,
-				/obj/item/reagent_containers/food/drinks/bottle/specialwhiskey,
-				/obj/item/reagent_containers/food/drinks/bottle/vodka,
-				/obj/item/reagent_containers/food/drinks/bottle/tequilla,
-				/obj/item/reagent_containers/food/drinks/bottle/absinthe,
-				/obj/item/reagent_containers/food/drinks/bottle/wine,
-				/obj/item/reagent_containers/food/drinks/bottle/cognac,
-				/obj/item/reagent_containers/food/drinks/bottle/rum,
-				/obj/item/reagent_containers/food/drinks/bottle/patron)
+	return list(/obj/item/reagent_containers/vessel/bottle/whiskey,
+				/obj/item/reagent_containers/vessel/bottle/gin,
+				/obj/item/reagent_containers/vessel/bottle/specialwhiskey,
+				/obj/item/reagent_containers/vessel/bottle/vodka,
+				/obj/item/reagent_containers/vessel/bottle/tequilla,
+				/obj/item/reagent_containers/vessel/bottle/absinthe,
+				/obj/item/reagent_containers/vessel/bottle/wine,
+				/obj/item/reagent_containers/vessel/bottle/cognac,
+				/obj/item/reagent_containers/vessel/bottle/rum,
+				/obj/item/reagent_containers/vessel/bottle/patron)
 
 
 /obj/random/energy

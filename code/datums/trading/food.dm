@@ -96,10 +96,11 @@
 	trade_flags = TRADER_MONEY
 
 	possible_trading_items = list(/obj/item/reagent_containers/food                      = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/food/drinks/cans                       = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/food/drinks/bottle                     = TRADER_SUBTYPES_ONLY,
-							/obj/item/reagent_containers/food/drinks/bottle/small               = TRADER_BLACKLIST,
-							/obj/item/reagent_containers/food/boiledmetroidcore            = TRADER_BLACKLIST,
+							/obj/item/reagent_containers/vessel/can                      = TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/vessel/bottle                   = TRADER_SUBTYPES_ONLY,
+							/obj/item/reagent_containers/vessel/bottle/small             = TRADER_BLACKLIST,
+							/obj/item/reagent_containers/vessel/bottle/chemical          = TRADER_BLACKLIST_ALL,
+							/obj/item/reagent_containers/food/boiledmetroidcore          = TRADER_BLACKLIST,
 							/obj/item/reagent_containers/food/checker                    = TRADER_BLACKLIST_ALL,
 							/obj/item/reagent_containers/food/fruit_slice                = TRADER_BLACKLIST,
 							/obj/item/reagent_containers/food/slice                      = TRADER_BLACKLIST_ALL,

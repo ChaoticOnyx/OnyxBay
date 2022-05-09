@@ -767,7 +767,7 @@ var/global/list/robot_modules = list(
 
 	src.modules += new /obj/item/tray/robotray(src)
 	src.modules += new /obj/item/reagent_containers/borghypo/service(src)
-	src.emag = new /obj/item/reagent_containers/food/drinks/bottle/small/beer(src)
+	src.emag = new /obj/item/reagent_containers/vessel/bottle/small/beer(src)
 
 	var/datum/reagents/R = src.emag.create_reagents(50)
 	R.add_reagent(/datum/reagent/chloralhydrate/beer2, 50)
@@ -779,7 +779,7 @@ var/global/list/robot_modules = list(
 	var/obj/item/reagent_containers/food/condiment/enzyme/E = locate() in src.modules
 	E.reagents.add_reagent(/datum/reagent/enzyme, 10 * amount)
 	if(src.emag)
-		var/obj/item/reagent_containers/food/drinks/bottle/small/beer/B = src.emag
+		var/obj/item/reagent_containers/vessel/bottle/small/beer/B = src.emag
 		B.reagents.add_reagent(/datum/reagent/chloralhydrate/beer2, 10 * amount)
 
 /obj/item/robot_module/miner

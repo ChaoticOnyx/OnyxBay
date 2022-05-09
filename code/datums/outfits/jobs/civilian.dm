@@ -109,6 +109,6 @@
 	mask = /obj/item/clothing/mask/gas/mime
 	r_pocket = /obj/item/pen/crayon/mime
 	gloves = /obj/item/clothing/gloves/white
-	backpack_contents = list(/obj/item/reagent_containers/food/drinks/bottle/bottleofnothing = 1,
+	backpack_contents = list(/obj/item/reagent_containers/vessel/bottle/bottleofnothing = 1,
 							 /obj/item/clothing/accessory/suspenders = 1,
 							 /obj/item/reagent_containers/food/baguette = 1)

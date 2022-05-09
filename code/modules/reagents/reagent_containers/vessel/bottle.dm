@@ -118,7 +118,7 @@
 	update_icon()
 
 
-/obj/item/reagent_containers/food/drinks/bottle/small
+/obj/item/reagent_containers/vessel/bottle/small
 	volume = 50
 	rag_underlay = "rag_small"
 	lid_type = /datum/vessel_lid/beercap
