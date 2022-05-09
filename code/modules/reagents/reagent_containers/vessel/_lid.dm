@@ -56,7 +56,7 @@
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
-			playsound(owner.loc, 'sound/effects/pop.ogg', rand(10, 50), 1)
+			playsound(owner.loc, 'sound/effects/pop.ogg', rand(20, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You take the [name] off \the [owner]."))
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
@@ -80,7 +80,7 @@
 		if(LID_CLOSED)
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			state = LID_OPEN
-			playsound(owner.loc, 'sound/effects/cork.ogg', rand(10, 50), 1)
+			playsound(owner.loc, 'sound/effects/cork.ogg', rand(20, 50), 1)
 			if(user)
 				to_chat(usr, SPAN("notice", "You pull the [name] out of \the [owner]."))
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
@@ -101,7 +101,7 @@
 
 /datum/vessel_lid/can/toggle(mob/user)
 	if(state == LID_SEALED)
-		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(10, 50), 1)
+		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(20, 50), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
@@ -126,7 +126,7 @@
 
 /datum/vessel_lid/beercap/toggle(mob/user)
 	if(state == LID_SEALED)
-		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(10, 50), 1)
+		playsound(owner.loc ,'sound/effects/canopen.ogg', rand(20, 50), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You open \the [src] with an audible pop!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
@@ -146,7 +146,7 @@
 
 /datum/vessel_lid/carton/toggle(mob/user)
 	if(state == LID_SEALED)
-		playsound(owner.loc, 'sound/effects/duct_tape_peeling_off.ogg', rand(10, 50), 1)
+		playsound(owner.loc, 'sound/effects/duct_tape_peeling_off.ogg', rand(30, 40), 1)
 		if(user)
 			to_chat(user, SPAN("notice", "You rip open \the [owner]!"))
 		owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
@@ -167,7 +167,7 @@
 /datum/vessel_lid/cap/toggle(mob/user)
 	switch(state)
 		if(LID_SEALED)
-			playsound(owner.loc, 'sound/effects/bonebreak1.ogg', rand(10, 50), 1)
+			playsound(owner.loc, 'sound/effects/bonebreak1.ogg', rand(20, 50), 1)
 			if(user)
 				to_chat(user, SPAN("notice", "You twist open \the [owner]'s [name], destroying the safety seal!"))
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER

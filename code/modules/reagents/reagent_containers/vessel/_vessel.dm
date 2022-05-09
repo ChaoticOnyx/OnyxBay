@@ -271,10 +271,15 @@
 
 	//Creates a shattering noise and replaces the vessel with a broken_bottle
 	var/obj/item/broken_bottle/B = new /obj/item/broken_bottle(newloc)
-	if(prob(33))
+	if(prob(w_class * 2.5))
 		new /obj/item/material/shard(newloc) // Create a glass shard at the target's location!
+	B.SetName("broken [base_name]")
 	B.icon_state = icon_state
 	B.w_class = w_class
+	B.force = force
+	B.mod_weight = mod_weight
+	B.mod_reach = mod_reach
+	B.mod_handy = mod_handy
 
 	var/icon/I = new(src.icon, src.icon_state)
 	I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
@@ -369,11 +374,21 @@
 	else
 		to_chat(C, SPAN("notice", "You need to open \the [src] first!"))
 
+/obj/item/reagent_containers/vessel/bullet_act(obj/item/projectile/Proj)
+	if(Proj.get_structure_damage())
+		if(brittle)
+			visible_message(SPAN("warning", "\The [Proj] shatters \the [src]!"))
+			smash(loc)
+		else
+			visible_message(SPAN("warning", "\The [Proj] hits \the [src]!"))
+			throw_at(pick(GLOB.alldirs), rand(2, 3), 2)
+		return
+	return PROJECTILE_CONTINUE
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/broken_bottle
 	name = "Broken Bottle"
-	desc = "A bottle with a sharp broken bottom."
+	desc = "What used to be a glass vessel earlier, with a sharp broken bottom."
 	icon = 'icons/obj/reagent_containers/bottles.dmi'
 	icon_state = "broken_bottle"
 	force = 8.5
@@ -390,4 +405,4 @@
 	sharp = 1
 	edge = 0
 	unacidable = 1
-	var/icon/broken_outline = icon('icons/obj/drinks.dmi', "broken")
+	var/icon/broken_outline = icon('icons/obj/reagent_containers/vessels.dmi', "broken")
