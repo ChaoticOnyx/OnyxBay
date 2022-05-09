@@ -550,7 +550,7 @@
 				/obj/item/soap/deluxe = 3,
 				/obj/item/soap/syndie = 1,
 				/obj/item/soap/gold = 1,
-				/obj/item/reagent_containers/glass/rag = 2,
+				/obj/item/reagent_containers/rag = 2,
 				/obj/item/reagent_containers/spray/cleaner = 2,
 				/obj/item/grenade/chem_grenade/cleaner = 1)
 

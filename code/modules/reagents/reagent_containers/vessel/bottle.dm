@@ -21,7 +21,7 @@
 	brittle = TRUE
 	lid_type = /datum/vessel_lid/cap
 
-	var/obj/item/reagent_containers/glass/rag/rag = null
+	var/obj/item/reagent_containers/rag/rag = null
 	var/rag_underlay = "rag"
 
 	var/obj/item/bottle_extra/pourer/pourer = null
@@ -53,7 +53,7 @@
 	if(!rag && !pourer && istype(W, /obj/item/bottle_extra/pourer))
 		insert_pourer(W, user)
 		return
-	if(!rag && !pourer && istype(W, /obj/item/reagent_containers/glass/rag))
+	if(!rag && !pourer && istype(W, /obj/item/reagent_containers/rag))
 		insert_rag(W, user)
 		return
 	if(rag && istype(W, /obj/item/flame))
@@ -74,7 +74,7 @@
 		return
 	..()
 
-/obj/item/reagent_containers/vessel/bottle/proc/insert_rag(obj/item/reagent_containers/glass/rag/R, mob/user)
+/obj/item/reagent_containers/vessel/bottle/proc/insert_rag(obj/item/reagent_containers/rag/R, mob/user)
 	if(rag || pourer)
 		return
 	if(!is_open_container())

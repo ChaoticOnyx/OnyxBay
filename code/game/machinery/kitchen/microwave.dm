@@ -89,7 +89,7 @@
 			to_chat(user, SPAN("warning", "It's broken!"))
 			return 1
 	else if(src.dirty == 100) // The microwave is all dirty so can't be used!
-		if(istype(O, /obj/item/reagent_containers/spray/cleaner) || istype(O, /obj/item/reagent_containers/glass/rag)) // If they're trying to clean it then let them
+		if(istype(O, /obj/item/reagent_containers/spray/cleaner) || istype(O, /obj/item/reagent_containers/rag)) // If they're trying to clean it then let them
 			user.visible_message( \
 				SPAN("notice", "\The [user] starts to clean the microwave."), \
 				SPAN("notice", "You start to clean the microwave.") \

@@ -96,7 +96,7 @@
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
 	if(istype(tool, /obj/item/weldingtool))
 		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
 	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))
 		return SPAN_NOTICE("[holder] dips \his [tool.name] into \a [name] to light it up.")

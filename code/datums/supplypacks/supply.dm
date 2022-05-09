@@ -28,7 +28,7 @@
 					/obj/item/storage/bag/trash,
 					/obj/item/device/lightreplacer,
 					/obj/item/reagent_containers/spray/cleaner,
-					/obj/item/reagent_containers/glass/rag,
+					/obj/item/reagent_containers/rag,
 					/obj/item/grenade/chem_grenade/cleaner = 3,
 					/obj/structure/mopbucket)
 	cost = 10
