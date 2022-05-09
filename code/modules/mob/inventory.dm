@@ -235,7 +235,7 @@ var/list/slot_equipment_priority = list( \
 	if(QDELETED(I))
 		return
 	if(force || canUnEquip(I))
-		return drop_from_inventory(I, target)
+		return drop_from_inventory(I, target) && !QDELETED(I)
 	return FALSE
 
 //Attemps to remove an object on a mob.
