@@ -381,7 +381,7 @@
 			smash(loc)
 		else
 			visible_message(SPAN("warning", "\The [Proj] hits \the [src]!"))
-			throw_at(pick(GLOB.alldirs), rand(2, 3), 2)
+			throw_at(get_step(pick(GLOB.alldirs)), rand(2, 3), 2)
 		return
 	return PROJECTILE_CONTINUE
 
