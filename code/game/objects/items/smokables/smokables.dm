@@ -162,5 +162,5 @@
 	if(!proximity)
 		return
 
-	if(!lit && can_be_lit_with(W))
+	if(!lit && istype(W, /obj/item) && can_be_lit_with(W))
 		light(W, user)
