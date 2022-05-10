@@ -515,11 +515,13 @@
 /obj/item/resonator/afterattack(atom/target, mob/user, proximity_flag)
 	..()
 	if(user.Adjacent(target) && isturf(target) && !in_use)
-		in_use = TRUE
 		CreateResonance(target, user)
-		if(do_after(user, DEFAULT_WEAPON_COOLDOWN, get_turf(user)))
-			playsound(src,'sound/effects/weapons/energy/toggle_mode1.ogg',50,1)
-			in_use = FALSE
+		in_use = TRUE
+		addtimer(CALLBACK(src, .proc/ready_for_resonance), attack_cooldown)
+
+/obj/item/resonator/proc/ready_for_resonance()
+	playsound(src,'sound/effects/weapons/energy/toggle_mode1.ogg',50,1)
+	in_use = FALSE
 
 /obj/item/resonator/dropped()
 	. = ..()
