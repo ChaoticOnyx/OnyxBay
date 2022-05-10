@@ -206,7 +206,7 @@
 	else
 		icon_state = icon_closed + "_open"
 
-/obj/item/storage/music_tape/MouseDrop(obj/over_object as obj)
+/obj/item/storage/music_tape/MouseDrop()
 	return
 
 /obj/item/storage/music_tape/attack_hand(mob/user)
