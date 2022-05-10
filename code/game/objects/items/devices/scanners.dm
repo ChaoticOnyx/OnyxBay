@@ -33,29 +33,28 @@ REAGENT SCANNER
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	scan_mob(M, user)
 
-/obj/item/device/healthanalyzer/proc/scan_mob(mob/living/carbon/C, mob/living/user)
-
-	if (!user.IsAdvancedToolUser())
-		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
+/obj/item/device/healthanalyzer/proc/scan_mob(mob/living/carbon/human/H, mob/living/user)
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, SPAN("warning", "You are not nimble enough to use this device."))
 		return
 
-	if (!istype(C) || C.isSynthetic())
-		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
+	if(!istype(H) || H.isSynthetic())
+		to_chat(user, SPAN("warning", "\The [src] is designed for organic humanoid patients only."))
 		return
 	//show_browser(user, medical_scan_results(H, mode), "window=scanconsole;size=550x400")
-	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
-	ui_interact(user,target = C)
+	playsound(loc, 'sound/signals/processing21.ogg', 50)
+	ui_interact(user, target = H)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target, master_ui = null, datum/topic_state/state = GLOB.default_state)
 
 	var/data[0]
 
-	if ((MUTATION_CLUMSY in user.mutations) && prob(60))
-		user.visible_message("<span class='notice'>\The [user] runs \the [src] over the floor.</span>")
-		data["p_name"] = "<span class='black'><b>Scan results for the floor:</b><br></span>"
-		data["brain"] = "<span class='black'>Overall Status: Healthy</span>"
-	else
-		user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [target].</span>")
+	if((MUTATION_CLUMSY in user.mutations) && prob(60))
+		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over the floor."))
+		data["p_name"] = SPAN("black", "<b>Scan results for the floor:</b><br>")
+		data["brain"] = SPAN("black", "Overall Status: Healthy")
+	else if(target)
+		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over \the [target]."))
 		var/list/scan_data = medical_scan_results(target, mode, 1)
 		for(var/i = 1,i <= scan_data.len,i++)
 			scan_data[i] = replacetext(scan_data[i],"'notice'","'black'")
@@ -71,7 +70,7 @@ REAGENT SCANNER
 		data["virus"] = scan_data[8]
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
@@ -86,38 +85,47 @@ REAGENT SCANNER
 /proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	. = list()
 	var/p_name = list()
-	p_name = "<span class='notice'><b>Scan results for \the [H]:</b></span>"
+	p_name = SPAN("notice", "<b>Scan results for \the [H]:</b>")
 
 	// Brain activity.
 	var/brain_data = list()
 	var/brain_result = "normal"
-	var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
+
+	var/obj/item/organ/internal/brain/brain
+	if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/brain))
+		brain = H.internal_organs_by_name[BP_BRAIN]
+	else if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/mmi_holder))
+		var/obj/item/organ/internal/mmi_holder/MMI = H.internal_organs_by_name[BP_BRAIN]
+		brain = MMI.stored_mmi?.brainobj
+
 	if(H.should_have_organ(BP_BRAIN))
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			brain_result = "<span class='danger'>none, patient is braindead</span>"
+		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
+			brain_result = SPAN("danger", "ERROR - No organic tissue found")
+		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			switch(brain.get_current_damage_threshold())
 				if(0)
-					brain_result = "<span class='notice'>normal</span>"
+					brain_result = SPAN("notice", "normal")
 				if(1 to 2)
-					brain_result = "<span class='notice'>minor brain damage</span>"
+					brain_result = SPAN("notice", "minor brain damage")
 				if(3 to 5)
-					brain_result = "<span class='warning'>weak</span>"
+					brain_result = SPAN("warning", "weak")
 				if(6 to 8)
-					brain_result = "<span class='danger'>extremely weak</span>"
+					brain_result = SPAN("danger", "extremely weak")
 				if(9 to INFINITY)
-					brain_result = "<span class='danger'>fading</span>"
+					brain_result = SPAN("danger", "fading")
 				else
-					brain_result = "<span class='danger'>ERROR - Hardware fault</span>"
+					brain_result = SPAN("danger", "ERROR - Hardware fault")
 	else
-		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
+		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
 	brain_data += "<span class='notice'>Brain activity:</span> [brain_result]."
 
 	if(brain && (H.stat == DEAD || (H.status_flags & FAKEDEATH)))
-		brain_data += "<span class='notice'><b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]</span>"
+		brain_data += SPAN("notice", "<b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]")
 
-	if (H.internal_organs_by_name[BP_STACK])
-		brain_data += "<span class='notice'>Subject has a neural lace implant.</span>"
+	if(H.internal_organs_by_name[BP_STACK])
+		brain_data += SPAN("notice", "Subject has a neural lace implant.")
 
 	// Pulse rate.
 	var/blood_data = list()
