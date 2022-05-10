@@ -55,10 +55,13 @@ export function FollowPanel(props: any, context: any) {
   let result = data.targets.filter((t, _) => {
     let f = false;
 
-    f = ghostFilter && t.isGhost;
     f = f || (clientFilter && t.hasClient);
     f = f || (mobFilter && t.isMob);
     f = f || (objectFilter && !t.isMob);
+
+    if (!ghostFilter && t.isGhost) {
+      f = false;
+    }
 
     return f;
   });
@@ -72,7 +75,7 @@ export function FollowPanel(props: any, context: any) {
               onClick={() => setGhostFilter(!ghostFilter)}
               checked={ghostFilter}
             >
-              Ghost
+              Include Ghosts
             </ButtonCheckbox>
             <ButtonCheckbox
               onClick={() => setClientFilter(!clientFilter)}
