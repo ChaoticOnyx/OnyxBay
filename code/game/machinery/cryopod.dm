@@ -200,6 +200,7 @@
 	var/obj/machinery/computer/cryopod/control_computer
 	var/last_no_computer_message = 0
 	var/applies_stasis = 1
+	var/despawning_now = FALSE
 
 	// These items are preserved when the process() despawn proc occurs.
 	var/list/preserve_items = list(
@@ -351,8 +352,8 @@
 		if(!control_computer)
 			if(!find_control_computer(urgent=1))
 				return
-
-		despawn_occupant()
+		if(!despawning_now)
+			despawn_occupant()
 
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
@@ -372,10 +373,12 @@
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/proc/despawn_occupant()
-	if(!occupant)
+	set waitfor = 0
+
+	if(QDELETED(occupant))
 		log_and_message_admins("A mob was deleted while in a cryopod. This may cause errors!")
 		return
-
+	despawning_now = TRUE
 	//Drop all items into the pod.
 	for(var/obj/item/I in occupant)
 		occupant.drop_from_inventory(I)
@@ -467,7 +470,7 @@
 	// Delete the mob.
 	qdel(occupant)
 	set_occupant(null)
-
+	despawning_now = FALSE
 
 /obj/machinery/cryopod/attackby(obj/item/G as obj, mob/user as mob)
 
