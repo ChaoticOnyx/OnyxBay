@@ -108,7 +108,7 @@
 "acd" = (/obj/structure/reagent_dispensers/fueltank,/turf/simulated/floor/plating,/area/maintenance/underground/security_main)
 "ace" = (/turf/simulated/floor/trim/carpet/red,/area/maintenance/underground/security_breakroom)
 "acf" = (/obj/structure/window_frame/grille,/obj/structure/lattice,/turf/space,/area/space)
-"acg" = (/obj/structure/table/steel,/obj/item/storage/pill_bottle/dice_nerd,/obj/item/deck/cards,/obj/item/storage/box/music_tape/jazz,/turf/simulated/floor/trim/carpet/red,/area/maintenance/underground/security_breakroom)
+"acg" = (/obj/structure/table/steel,/obj/item/storage/pill_bottle/dice_nerd,/obj/item/deck/cards,/obj/item/storage/music_tape/jazz,/turf/simulated/floor/trim/carpet/red,/area/maintenance/underground/security_breakroom)
 "ach" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/plating,/area/maintenance/underground/security_lobby)
 "aci" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor/plating,/area/maintenance/underground/security_lobby)
 "acj" = (/obj/machinery/light/small{dir = 1},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6; pixel_y = 1},/turf/simulated/floor/tiled/freezer,/area/maintenance/underground/security_dorms)

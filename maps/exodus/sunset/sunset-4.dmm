@@ -601,7 +601,7 @@
 "alC" = (/obj/effect/shuttle_landmark/syndi/start,/obj/structure/bed/chair/comfy/captain{dir = 1},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "alD" = (/obj/structure/bed/chair/comfy/black{dir = 4},/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
 "alE" = (/obj/structure/closet/crate/bin,/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
-"alF" = (/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen{pixel_y = 4},/obj/structure/table/glass,/obj/item/clothing/glasses/rglasses,/obj/item/storage/box/music_tape/syndie,/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
+"alF" = (/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen{pixel_y = 4},/obj/structure/table/glass,/obj/item/clothing/glasses/rglasses,/obj/item/storage/music_tape/syndie,/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
 "alG" = (/obj/structure/bed/chair/comfy/black{dir = 8},/turf/unsimulated/floor{icon_state = "cult"; name = "plating"},/area/syndicate_mothership)
 "alH" = (/obj/structure/table/reinforced,/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/turf/unsimulated/floor{icon_state = "white"},/area/syndicate_mothership)
 "alI" = (/obj/structure/table/rack,/obj/item/clothing/shoes/magboots,/obj/item/clothing/suit/space/syndicate/black/green,/obj/item/clothing/mask/breath,/obj/item/clothing/head/helmet/space/syndicate/black/green,/obj/effect/floor_decal/industrial/hatch/red,/turf/unsimulated/floor{icon_state = "dark"},/area/syndicate_mothership)

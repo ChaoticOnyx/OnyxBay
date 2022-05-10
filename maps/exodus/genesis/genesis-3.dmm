@@ -600,7 +600,7 @@
 "alB" = (/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "alC" = (/obj/structure/bed/chair{dir = 1},/obj/effect/shuttle_landmark/syndi/start,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "alD" = (/obj/structure/bed/chair/comfy/black{dir = 4},/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
-"alE" = (/obj/item/folder{pixel_y = 2},/obj/structure/table/glass,/obj/item/storage/box/music_tape/syndie,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
+"alE" = (/obj/item/folder{pixel_y = 2},/obj/structure/table/glass,/obj/item/storage/music_tape/syndie,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "alF" = (/obj/item/paper_bin{pixel_x = -3; pixel_y = 7},/obj/item/pen{pixel_y = 4},/obj/structure/table/glass,/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "alG" = (/obj/structure/bed/chair/comfy/black{dir = 8},/turf/unsimulated/floor{name = "plating"; icon_state = "cult"},/area/syndicate_mothership)
 "alH" = (/obj/structure/table/reinforced,/obj/item/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/turf/unsimulated/floor{icon_state = "white"},/area/syndicate_mothership)
