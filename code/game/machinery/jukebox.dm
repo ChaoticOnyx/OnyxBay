@@ -26,7 +26,7 @@
 	idle_power_usage = 10
 	active_power_usage = 100
 	clicksound = 'sound/machines/buttonbeep.ogg'
-	req_access = list(25)
+	req_access = list(access_bar)
 	var/locked = 0
 
 	var/playing = 0
