@@ -324,6 +324,11 @@
 	cost = 10
 	containername = "\improper Pest Control Crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/music_tapes
+	name = "Music Tapes Party Kit"
+	contains = list(/obj/item/storage/music_tape/classic, /obj/item/storage/music_tape/jazz, /obj/item/storage/music_tape/exodus, /obj/item/storage/music_tape/newyear, /obj/item/storage/music_tape/frontier, /obj/item/storage/music_tape/valhalla)
+	cost = 20
+	containername = "\improper Music tapes crate"
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
 	name = "Box of bouquets"
 	contains = list(/obj/item/storage/bouquet/shotgun = 3)
