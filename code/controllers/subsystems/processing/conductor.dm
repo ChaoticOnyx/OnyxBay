@@ -15,11 +15,11 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 		processing -= player
 		var/client/C = player.client
 
-		if(!C)
+		if(C?.is_ambience_music_playing())
 			continue
 
-		if(C.is_ambience_music_playing())
-			continue
+		if(!C) // clients may get lost while the proc above is running
+			continue // and they do so way more frequent than you may think
 
 		THROTTLE_SHARED(cooldown, AMBIENT_MUSIC_COOLDOWN, C.last_time_ambient_music_played)
 
