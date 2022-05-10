@@ -11,7 +11,7 @@
 		"targets" = list()
 	)
 
-	var/list/targets = get_follow_targets()
+	var/list/targets = get_follow_targets() || list()
 
 	for(var/datum/follow_holder/H in targets)
 		var/atom/movable/I = H.followed_instance
