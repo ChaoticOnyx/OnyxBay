@@ -26,6 +26,8 @@
 	idle_power_usage = 10
 	active_power_usage = 100
 	clicksound = 'sound/machines/buttonbeep.ogg'
+	req_access = list(25)
+	var/locked = 0
 
 	var/playing = 0
 	var/volume = 20
@@ -194,6 +196,13 @@
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
+	else if(istype(W, /obj/item/card/id) || istype(W, /obj/item/device/pda))
+		if(allowed(user))
+			locked = !locked
+			to_chat(user, "The tape holder is now [locked ? "locked." : "unlocked."]")
+		else
+			to_chat(user, SPAN_WARNING("Access denied."))
+		return
 	else if(istype(W, /obj/item/music_tape))
 		var/obj/item/music_tape/D = W
 		if(tape)
@@ -265,6 +274,10 @@
 	set src in oview(1)
 
 	if(!CanPhysicallyInteract(usr))
+		return
+		
+	if(locked)
+		to_chat(usr, SPAN_WARNING("Tape holder is locked, you can't use it."))
 		return
 
 	if(tape)
