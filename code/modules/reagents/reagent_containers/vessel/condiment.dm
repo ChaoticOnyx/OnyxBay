@@ -187,7 +187,6 @@
 /obj/item/reagent_containers/vessel/condiment/flour
 	name = "flour sack"
 	desc = "A big bag of flour. Good for baking!"
-	icon = 'icons/obj/food.dmi'
 	icon_state = "flour"
 	item_state = "flour"
 	randpixel = 10

@@ -17,6 +17,8 @@
 
 
 /client/proc/update_ui()
+	if(!usr.hud_used) // usr's a new_player, s'too early to update things
+		return
 	var/list/icons = usr.hud_used.adding + usr.hud_used.other + usr.hud_used.hotkeybuttons
 	icons.Add(usr.zone_sel)
 	icons.Add(usr.gun_setting_icon)
@@ -27,7 +29,8 @@
 	var/icon/ic = all_ui_styles[prefs.UI_style]
 
 	for(var/obj/screen/I in icons)
-		if(I.name in list(I_HELP, I_HURT, I_DISARM, I_GRAB)) continue
+		if(I.name in list(I_HELP, I_HURT, I_DISARM, I_GRAB))
+			continue
 		I.icon = ic
 		I.color = prefs.UI_style_color
 		I.alpha = prefs.UI_style_alpha
