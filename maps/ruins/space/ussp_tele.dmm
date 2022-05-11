@@ -1,0 +1,383 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/template_noop,
+/area/template_noop)
+"c" = (
+/obj/item/stack/cable_coil/cut{
+	amount = 1
+	},
+/turf/template_noop)
+"d" = (
+/turf/template_noop)
+"e" = (
+/obj/structure/lattice,
+/turf/template_noop)
+"f" = (
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"g" = (
+/turf/simulated/wall,
+/area/derelict/teleporter)
+"h" = (
+/obj/structure/window_frame/grille/glass,
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"i" = (
+/obj/structure/grille/broken,
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"k" = (
+/obj/structure/girder,
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"l" = (
+/obj/machinery/power/apc/derelict,
+/turf/simulated/wall,
+/area/derelict/teleporter)
+"m" = (
+/turf/simulated/floor/tiled,
+/area/derelict/teleporter)
+"o" = (
+/obj/machinery/light_construct/small{
+	dir = 1
+	},
+/obj/structure/filingcabinet/chestdrawer,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"p" = (
+/obj/machinery/light_construct/small{
+	dir = 4
+	},
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"q" = (
+/obj/structure/table,
+/obj/item/clipboard,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"r" = (
+/obj/machinery/computer/teleporter,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"s" = (
+/obj/machinery/teleport/station,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"t" = (
+/obj/machinery/teleport/hub,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"u" = (
+/obj/machinery/atmospherics/pipe/simple/visible{
+	dir = 5
+	},
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"v" = (
+/obj/machinery/door/airlock/external{
+	name = "Crackden Airlock"
+	},
+/turf/simulated/floor/plating/airless,
+/area/derelict/teleporter)
+"x" = (
+/obj/structure/table,
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+"B" = (
+/turf/simulated/floor/tiled/dirty,
+/area/derelict/teleporter)
+
+(1,1,1) = {"
+a
+a
+a
+a
+e
+a
+a
+a
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+a
+a
+a
+e
+e
+a
+a
+a
+a
+a
+a
+"}
+(3,1,1) = {"
+a
+a
+a
+e
+e
+e
+a
+a
+a
+a
+a
+a
+"}
+(4,1,1) = {"
+a
+a
+a
+e
+e
+e
+a
+a
+a
+a
+a
+a
+"}
+(5,1,1) = {"
+a
+a
+a
+a
+e
+e
+g
+h
+h
+h
+g
+a
+"}
+(6,1,1) = {"
+a
+a
+a
+a
+e
+g
+g
+o
+q
+x
+g
+g
+"}
+(7,1,1) = {"
+a
+a
+a
+e
+e
+g
+f
+B
+m
+m
+f
+g
+"}
+(8,1,1) = {"
+a
+a
+a
+e
+f
+h
+B
+B
+r
+f
+B
+l
+"}
+(9,1,1) = {"
+a
+a
+e
+e
+f
+i
+B
+B
+s
+B
+B
+g
+"}
+(10,1,1) = {"
+a
+d
+e
+e
+f
+i
+B
+B
+t
+B
+B
+g
+"}
+(11,1,1) = {"
+e
+e
+e
+e
+f
+g
+B
+B
+B
+B
+f
+f
+"}
+(12,1,1) = {"
+a
+e
+e
+e
+e
+k
+f
+p
+u
+B
+g
+k
+"}
+(13,1,1) = {"
+e
+e
+e
+a
+e
+f
+f
+g
+v
+g
+g
+a
+"}
+(14,1,1) = {"
+a
+e
+a
+a
+e
+f
+e
+e
+f
+k
+a
+a
+"}
+(15,1,1) = {"
+a
+a
+a
+e
+e
+f
+e
+e
+f
+k
+a
+a
+"}
+(16,1,1) = {"
+c
+e
+a
+e
+e
+e
+e
+a
+e
+a
+a
+a
+"}
+(17,1,1) = {"
+e
+e
+a
+e
+e
+a
+a
+c
+e
+a
+a
+a
+"}
+(18,1,1) = {"
+a
+e
+e
+e
+a
+a
+a
+a
+d
+a
+a
+a
+"}
+(19,1,1) = {"
+a
+e
+e
+e
+e
+e
+e
+a
+a
+a
+a
+a
+"}
+(20,1,1) = {"
+e
+e
+e
+a
+e
+e
+a
+a
+a
+a
+a
+a
+"}
+(21,1,1) = {"
+a
+e
+a
+a
+a
+e
+a
+a
+a
+a
+a
+a
+"}

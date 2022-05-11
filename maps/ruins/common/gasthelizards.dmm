@@ -1,0 +1,501 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/template_noop,
+/area/template_noop)
+"c" = (
+/turf/simulated/wall,
+/area/ruin/unpowered)
+"d" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/structure/bed,
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"e" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"f" = (
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/obj/machinery/light{
+	dir = 1
+	},
+/obj/structure/bed,
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"h" = (
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"i" = (
+/obj/effect/landmark/corpse{
+	species = list("Unathi")
+	},
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"j" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/machinery/atmospherics/unary/outlet_injector,
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"k" = (
+/obj/structure/window/reinforced{
+	dir = 8
+	},
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"l" = (
+/obj/machinery/atmospherics/unary/outlet_injector,
+/turf/simulated/floor,
+/area/ruin/unpowered)
+"m" = (
+/obj/structure/closet/crate/freezer,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"n" = (
+/obj/structure/closet/crate/freezer,
+/obj/machinery/light{
+	dir = 1
+	},
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"p" = (
+/obj/structure/window/reinforced{
+	dir = 1;
+	layer = 2.9
+	},
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"r" = (
+/obj/machinery/door/window/brigdoor/northleft,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"u" = (
+/obj/machinery/light{
+	dir = 1
+	},
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"v" = (
+/obj/machinery/light{
+	dir = 4
+	},
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"w" = (
+/obj/structure/kitchenspike,
+/obj/effect/landmark/corpse{
+	species = list("Unathi")
+	},
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"x" = (
+/obj/structure/table/reinforced,
+/obj/item/reagent_containers/spray/pepper,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"y" = (
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"z" = (
+/obj/machinery/gibber,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"A" = (
+/obj/structure/table/reinforced,
+/obj/item/clothing/suit/straight_jacket,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"B" = (
+/obj/machinery/portable_atmospherics/canister/plasma/engine_setup,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"C" = (
+/obj/machinery/door/airlock/security,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"D" = (
+/obj/structure/table/reinforced,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"E" = (
+/obj/item/melee/baton/cattleprod,
+/obj/structure/table/rack,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"F" = (
+/obj/structure/table/reinforced,
+/obj/item/pen/red,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"G" = (
+/obj/structure/table/reinforced,
+/obj/item/paper_bin,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"H" = (
+/obj/structure/table/reinforced,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"I" = (
+/obj/structure/window/reinforced{
+	dir = 4
+	},
+/obj/machinery/light,
+/obj/structure/table/reinforced,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"J" = (
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"K" = (
+/obj/structure/table/reinforced,
+/obj/item/surgicaldrill,
+/obj/item/hemostat,
+/obj/item/scalpel,
+/obj/item/retractor,
+/obj/item/cautery,
+/obj/item/circular_saw,
+/obj/machinery/light,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"L" = (
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"M" = (
+/obj/structure/table/reinforced,
+/obj/item/reagent_containers/syringe,
+/obj/item/reagent_containers/dropper,
+/turf/simulated/floor/tiled/dark,
+/area/ruin/unpowered)
+"N" = (
+/obj/machinery/suit_storage_unit/security,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"O" = (
+/obj/machinery/light,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"P" = (
+/obj/structure/closet/emcloset,
+/turf/simulated/floor/tiled/white,
+/area/ruin/unpowered)
+"Q" = (
+/obj/machinery/door/airlock/external,
+/turf/simulated/floor/plating,
+/area/ruin/unpowered)
+"R" = (
+/turf/simulated/floor/plating,
+/area/ruin/unpowered)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(3,1,1) = {"
+a
+a
+a
+a
+a
+c
+c
+c
+c
+c
+c
+c
+a
+a
+"}
+(4,1,1) = {"
+a
+a
+a
+a
+a
+c
+J
+y
+B
+E
+N
+c
+a
+a
+"}
+(5,1,1) = {"
+a
+a
+c
+c
+c
+c
+u
+J
+J
+J
+O
+c
+c
+c
+"}
+(6,1,1) = {"
+a
+a
+c
+d
+i
+p
+J
+J
+J
+J
+J
+Q
+R
+Q
+"}
+(7,1,1) = {"
+a
+a
+c
+e
+j
+r
+J
+J
+J
+J
+P
+c
+c
+c
+"}
+(8,1,1) = {"
+a
+a
+c
+f
+k
+p
+J
+J
+J
+F
+c
+c
+a
+a
+"}
+(9,1,1) = {"
+a
+a
+c
+e
+j
+r
+J
+J
+J
+G
+c
+a
+a
+a
+"}
+(10,1,1) = {"
+a
+a
+c
+f
+k
+p
+J
+J
+J
+H
+c
+a
+a
+a
+"}
+(11,1,1) = {"
+a
+a
+c
+e
+j
+r
+J
+J
+J
+I
+c
+a
+a
+a
+"}
+(12,1,1) = {"
+a
+a
+c
+f
+k
+p
+J
+J
+J
+J
+c
+a
+a
+a
+"}
+(13,1,1) = {"
+a
+a
+c
+h
+l
+r
+v
+J
+J
+J
+c
+a
+a
+a
+"}
+(14,1,1) = {"
+a
+a
+c
+c
+c
+c
+c
+c
+C
+c
+c
+a
+a
+a
+"}
+(15,1,1) = {"
+a
+a
+a
+c
+m
+L
+w
+z
+L
+K
+c
+a
+a
+a
+"}
+(16,1,1) = {"
+a
+a
+a
+c
+n
+L
+L
+L
+L
+L
+c
+a
+a
+a
+"}
+(17,1,1) = {"
+a
+a
+a
+c
+m
+L
+x
+A
+D
+M
+c
+a
+a
+a
+"}
+(18,1,1) = {"
+a
+a
+a
+c
+c
+c
+c
+c
+c
+c
+c
+a
+a
+a
+"}
+(19,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}

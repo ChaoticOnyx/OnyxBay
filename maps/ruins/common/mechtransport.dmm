@@ -1,0 +1,296 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/template_noop,
+/area/template_noop)
+"b" = (
+/turf/simulated/shuttle/wall{
+	dir = 1;
+	icon_state = "swall_straight"
+	},
+/area/ruin/powered)
+"c" = (
+/obj/structure/window_frame/rblack,
+/turf/simulated/floor/plating/airless,
+/area/ruin/powered)
+"f" = (
+/obj/structure/closet/crate/secure/loot,
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"g" = (
+/obj/structure/table/reinforced,
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"i" = (
+/obj/machinery/computer{
+	name = "shuttle control console"
+	},
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"j" = (
+/obj/effect/decal/cleanable/vomit,
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"l" = (
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"m" = (
+/obj/structure/bed/chair/shuttle/black{
+	dir = 4
+	},
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"n" = (
+/obj/machinery/computer{
+	name = "exosuit control console"
+	},
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"p" = (
+/obj/machinery/door/airlock/hatch,
+/turf/simulated/floor/shuttle/blue,
+/area/ruin/powered)
+"q" = (
+/obj/structure/loot_pile/mecha/gygax,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"r" = (
+/turf/simulated/floor/shuttle/white,
+/area/ruin/powered)
+"s" = (
+/obj/structure/loot_pile/mecha/phazon,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"t" = (
+/obj/structure/loot_pile/mecha/deathripley,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"u" = (
+/obj/structure/loot_pile/mecha,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"v" = (
+/turf/simulated/shuttle/wall{
+	icon_state = "swall_c"
+	},
+/area/ruin/powered)
+"w" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"x" = (
+/obj/effect/decal/cleanable/blood/gibs/robot/up,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"y" = (
+/obj/machinery/door/blast/regular,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"z" = (
+/obj/effect/decal/cleanable/blood/gibs/robot,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"A" = (
+/obj/structure/loot_pile/mecha/durand,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"C" = (
+/turf/simulated/floor/plating/airless,
+/area/ruin/powered)
+"D" = (
+/obj/structure/lattice,
+/turf/template_noop)
+"E" = (
+/obj/item/stack/rods,
+/turf/simulated/floor/plating/airless,
+/area/ruin/powered)
+"F" = (
+/obj/effect/decal/cleanable/blood/gibs/robot,
+/turf/simulated/floor/plating/airless,
+/area/ruin/powered)
+"G" = (
+/turf/simulated/shuttle/wall{
+	dir = 4;
+	icon_state = "swall_c"
+	},
+/area/ruin/powered)
+"J" = (
+/obj/structure/loot_pile/mecha/odysseus,
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"K" = (
+/turf/template_noop)
+"L" = (
+/turf/simulated/floor/shuttle/yellow,
+/area/ruin/powered)
+"M" = (
+/turf/simulated/floor/plating/airless)
+"P" = (
+/obj/item/stack/rods,
+/turf/template_noop)
+"R" = (
+/obj/structure/shuttle/engine/propulsion,
+/turf/simulated/shuttle/wall{
+	dir = 1;
+	icon_state = "swall_straight"
+	},
+/area/ruin/powered)
+"U" = (
+/turf/simulated/shuttle/wall{
+	dir = 4;
+	icon_state = "swall_straight"
+	},
+/area/ruin/powered)
+
+(1,1,1) = {"
+a
+a
+a
+G
+b
+b
+b
+b
+C
+D
+C
+K
+a
+a
+a
+"}
+(2,1,1) = {"
+b
+b
+b
+U
+r
+s
+w
+z
+C
+E
+C
+D
+M
+P
+a
+"}
+(3,1,1) = {"
+c
+f
+j
+p
+r
+L
+L
+A
+L
+C
+C
+D
+D
+a
+a
+"}
+(4,1,1) = {"
+c
+f
+l
+U
+r
+L
+x
+C
+A
+L
+C
+C
+K
+a
+a
+"}
+(5,1,1) = {"
+c
+g
+l
+U
+r
+L
+L
+L
+L
+F
+J
+L
+E
+D
+a
+"}
+(6,1,1) = {"
+c
+g
+m
+U
+r
+u
+L
+L
+C
+z
+J
+C
+C
+a
+a
+"}
+(7,1,1) = {"
+c
+i
+n
+U
+r
+L
+t
+L
+L
+L
+L
+L
+q
+b
+R
+"}
+(8,1,1) = {"
+b
+b
+b
+U
+r
+t
+L
+L
+L
+w
+L
+L
+L
+b
+R
+"}
+(9,1,1) = {"
+a
+a
+a
+v
+b
+b
+b
+b
+y
+y
+y
+b
+b
+b
+R
+"}

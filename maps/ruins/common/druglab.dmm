@@ -1,0 +1,370 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/template_noop,
+/area/template_noop)
+"b" = (
+/turf/simulated/mineral,
+/area/derelict/teleporter)
+"c" = (
+/obj/machinery/floodlight{
+	in_use = 1
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"d" = (
+/obj/structure/closet/crate,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"e" = (
+/obj/structure/closet,
+/obj/item/clothing/head/bio_hood,
+/obj/item/clothing/suit/bio_suit,
+/obj/item/clothing/gloves/latex/nitrile,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"f" = (
+/obj/effect/decal/cleanable/blood/drip,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"g" = (
+/obj/effect/decal/cleanable/blood,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"h" = (
+/obj/machinery/door/airlock/external{
+	name = "Crackden Airlock"
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"k" = (
+/obj/machinery/door/airlock/external{
+	name = "Plain Airlock"
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"m" = (
+/obj/item/ammo_casing{
+	pixel_y = 3
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"n" = (
+/obj/effect/decal/cleanable/blood/oil,
+/obj/item/ammo_casing{
+	pixel_x = -4;
+	pixel_y = -6
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"o" = (
+/obj/structure/table/reinforced,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"p" = (
+/obj/structure/cable{
+	d2 = 2;
+	icon_state = "0-2";
+	pixel_y = 1
+	},
+/obj/machinery/power/apc{
+	dir = 4;
+	layer = 5;
+	name = "east bump";
+	pixel_x = 24
+	},
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"q" = (
+/obj/machinery/floodlight,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"r" = (
+/obj/machinery/chem_master,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"s" = (
+/obj/effect/decal/cleanable/blood/oil,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"t" = (
+/obj/machinery/power/port_gen/pacman,
+/obj/structure/cable,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"u" = (
+/obj/machinery/chemical_dispenser/full,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"v" = (
+/obj/structure/bed/chair/office/light,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"w" = (
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"x" = (
+/obj/machinery/portable_atmospherics/canister/air,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+"y" = (
+/obj/structure/table/reinforced,
+/obj/machinery/microwave,
+/turf/simulated/floor/plating,
+/area/derelict/teleporter)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+a
+b
+b
+b
+b
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+a
+a
+a
+b
+b
+b
+b
+b
+b
+a
+a
+a
+a
+"}
+(3,1,1) = {"
+a
+a
+a
+b
+b
+b
+b
+b
+b
+b
+b
+a
+a
+a
+"}
+(4,1,1) = {"
+a
+a
+a
+b
+b
+o
+o
+r
+u
+w
+b
+a
+a
+a
+"}
+(5,1,1) = {"
+a
+a
+a
+b
+c
+w
+w
+w
+v
+w
+b
+b
+b
+b
+"}
+(6,1,1) = {"
+a
+a
+b
+b
+d
+w
+w
+s
+w
+w
+y
+b
+b
+b
+"}
+(7,1,1) = {"
+a
+a
+b
+b
+e
+w
+p
+t
+b
+b
+b
+b
+b
+a
+"}
+(8,1,1) = {"
+a
+b
+b
+b
+f
+m
+b
+b
+b
+b
+b
+a
+a
+a
+"}
+(9,1,1) = {"
+b
+b
+b
+b
+f
+n
+w
+w
+w
+x
+b
+a
+a
+a
+"}
+(10,1,1) = {"
+b
+b
+b
+b
+g
+w
+w
+w
+w
+x
+b
+a
+a
+a
+"}
+(11,1,1) = {"
+a
+a
+b
+b
+h
+b
+q
+b
+b
+b
+b
+a
+a
+a
+"}
+(12,1,1) = {"
+a
+a
+b
+b
+w
+b
+b
+b
+b
+a
+a
+a
+a
+a
+"}
+(13,1,1) = {"
+a
+b
+b
+b
+w
+b
+b
+b
+b
+a
+a
+a
+a
+a
+"}
+(14,1,1) = {"
+a
+b
+b
+b
+k
+b
+b
+b
+a
+a
+a
+a
+a
+a
+"}
+(15,1,1) = {"
+a
+a
+b
+b
+a
+a
+b
+a
+a
+a
+a
+a
+a
+a
+"}
+(16,1,1) = {"
+a
+a
+a
+b
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
