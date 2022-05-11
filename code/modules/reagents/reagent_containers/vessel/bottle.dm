@@ -184,7 +184,7 @@
 	base_desc = "A big glass bottle."
 	rag_underlay = "rag_big"
 
-/obj/item/reagent_containers/vessel/bottle/chemical/get_storage_cost()
+/obj/item/reagent_containers/vessel/bottle/chemical/big/get_storage_cost()
 	return ..() * 1.5
 
 /obj/item/reagent_containers/vessel/bottle/chemical/Initialize()
