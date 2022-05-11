@@ -224,7 +224,7 @@
 			update_icon()
 			add_fingerprint(user)
 
-/obj/item/storage/music_tape/AltClick(mob/usr)
+/obj/item/storage/music_tape/AltClick(mob/user)
 	if(!canremove)
 		return
 
