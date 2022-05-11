@@ -249,6 +249,7 @@
 	name = "Space Beer"
 	desc = "Contains only water, malt and hops."
 	icon_state = "beer"
+	item_state = "beer"
 	center_of_mass = "x=16;y=12"
 	startswith = list(/datum/reagent/ethanol/beer = 45)
 
