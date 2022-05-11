@@ -498,11 +498,19 @@
 	if(R)
 		R.resonance_damage *= quick_burst_mod
 		R.burst(T)
-		return
+		return FALSE
 	if(fields.len < fieldlimit)
-		playsound(src,'sound/effects/weapons/energy/resonator_fire.ogg',50,1)
-		var/obj/effect/resonance/RE = new /obj/effect/resonance(T, creator, burst_time, src)
-		fields += RE
+		if(!in_use)
+			in_use = TRUE
+			playsound(src,'sound/effects/weapons/energy/resonator_fire.ogg',50,1)
+			var/obj/effect/resonance/RE = new /obj/effect/resonance(T, creator, burst_time, src)
+			fields += RE
+			return TRUE
+		else
+			to_chat(creator, SPAN("warning", "Reloading..."))
+	else
+		to_chat(creator, SPAN("notice", "Too far away."))
+	return FALSE
 
 /obj/item/resonator/attack_self(mob/user)
 	if(burst_time == 50)
@@ -514,14 +522,12 @@
 
 /obj/item/resonator/afterattack(atom/target, mob/user, proximity_flag)
 	..()
-	if(user.Adjacent(target) && isturf(target) && !in_use)
-		CreateResonance(target, user)
-		in_use = TRUE
-		addtimer(CALLBACK(src, .proc/ready_for_resonance), attack_cooldown)
-
-/obj/item/resonator/proc/ready_for_resonance()
-	playsound(src,'sound/effects/weapons/energy/toggle_mode1.ogg',50,1)
-	in_use = FALSE
+	if(user.Adjacent(target) && isturf(target))
+		if(CreateResonance(target, user))
+			spawn(attack_cooldown)
+				if(!QDELETED(src))
+					playsound(src,'sound/effects/weapons/energy/toggle_mode1.ogg', 50, 1)
+					in_use = FALSE
 
 /obj/item/resonator/dropped()
 	. = ..()
