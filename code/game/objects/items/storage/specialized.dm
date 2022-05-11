@@ -230,7 +230,7 @@
 
 	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
 		add_fingerprint(usr)
-		attack_hand(usr)
+ 		attack_hand(user)
 		return TRUE
 
 /obj/item/storage/music_tape/newyear
