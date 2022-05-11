@@ -72,15 +72,14 @@
 /area/space)
 "A" = (
 /obj/structure/closet/crate,
-/obj/item/reagent_containers/glass/beaker/bluespace,
+/obj/item/reagent_containers/vessel/beaker/bluespace,
 /turf/simulated/floor,
 /area/space)
-"E" = (
-/obj/item/reagent_containers/glass/beaker/large,
-/turf/space,
-/area/template_noop)
 "G" = (
 /obj/structure/safe,
+/obj/item/stack/telecrystal,
+/obj/item/stack/telecrystal,
+/obj/item/stack/telecrystal,
 /turf/simulated/floor,
 /area/space)
 "H" = (
@@ -458,7 +457,7 @@ a
 a
 I
 I
-E
+I
 I
 I
 V
