@@ -33,9 +33,7 @@
 /turf/space,
 /area/space)
 "o" = (
-/obj/machinery/door/airlock/command{
-	max_integrity = 40
-	},
+/obj/machinery/door/airlock/command,
 /area/space)
 "p" = (
 /mob/living/simple_animal/hostile/carp,
