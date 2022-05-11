@@ -14,6 +14,11 @@
 	material_amount = 2
 	var/max_butts = 10
 
+/obj/item/material/ashtray/Destroy()
+	for(var/obj/O in contents)
+		qdel(O)
+	return ..()
+
 /obj/item/material/ashtray/_examine_text(mob/user)
 	. = ..()
 	if(material)
@@ -74,6 +79,21 @@
 			return
 		update_icon()
 	return ..()
+
+/obj/item/material/ashtray/verb/empty_butts()
+	set name = "Empty Contents"
+	set category = "Object"
+
+	if(!ishuman(usr) || isobj(loc) || usr.stat || usr.restrained())
+		return
+
+	if(!contents.len)
+		to_chat(usr, SPAN("notice", "\The [src] is empty!"))
+		return
+
+	visible_message(SPAN("notice", "[usr] flips \the [src], spilling its contents!"))
+	for(var/obj/O in contents)
+		O.dropInto(loc)
 
 /obj/item/material/ashtray/plastic/New(newloc)
 	..(newloc, MATERIAL_PLASTIC)
