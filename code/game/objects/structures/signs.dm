@@ -266,6 +266,10 @@
 /obj/structure/sign/warning/vent_port
 	name = "\improper EJECTION/VENTING PORT"
 
+/obj/structure/sign/warning/anomalies
+	name = "\improper POSSIBLE BLUESPACE ANOMALIES"
+	icon_state = "anomalies"
+
 /obj/structure/sign/redcross
 	name = "medbay"
 	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here."
