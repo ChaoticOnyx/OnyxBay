@@ -175,7 +175,7 @@
 	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(A.hacker && A.hacker == user)
 			continue
-		if(A.z in GLOB.using_map.station_levels)
+		if(A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 			station_apcs.Add(A)
 		else
 			offstation_apcs.Add(A)

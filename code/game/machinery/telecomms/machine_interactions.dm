@@ -184,11 +184,11 @@
 	var/turf/position = get_turf(src)
 
 	// Toggle on/off getting signals from the station or the current Z level
-	if(src.listening_levels == GLOB.using_map.contact_levels) // equals the station
+	if(src.listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)) // equals the station
 		src.listening_levels = GetConnectedZlevels(position.z)
 		return 1
 	else
-		src.listening_levels = GLOB.using_map.contact_levels
+		src.listening_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)
 		return 1
 
 // Returns a multitool from a user depending on their mobtype.
@@ -243,7 +243,7 @@
 /obj/machinery/telecomms/relay/Options_Menu()
 	var/dat = ""
 	if(src.z == TELECOMM_Z)
-		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.contact_levels ? "TRUE" : "FALSE"]</a>"
+		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT) ? "TRUE" : "FALSE"]</a>"
 	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
 	dat += "<br>Receiving:    <A href='?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
 	return dat

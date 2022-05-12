@@ -10,9 +10,11 @@
 		/datum/shuttle/autodock/ferry/example
 	)
 
-	station_levels = list(1, 2, 3)
-	contact_levels = list(1, 2, 3)
-	player_levels = list(1, 2, 3)
+	map_levels = list(
+		new /datum/space_level/example_1,
+		new /datum/space_level/example_2,
+		new /datum/space_level/example_3
+	)
 
 	allowed_spawns = list("Arrivals Shuttle")
 

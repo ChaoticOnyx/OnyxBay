@@ -16,7 +16,7 @@
 /proc/is_on_same_plane_or_station(z1, z2)
 	if(z1 == z2)
 		return 1
-	if((z1 in GLOB.using_map.station_levels) &&	(z2 in GLOB.using_map.station_levels))
+	if((z1 in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) &&	(z2 in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 		return 1
 	return 0
 
@@ -64,22 +64,22 @@
 	source.luminosity = lum
 
 /proc/isStationLevel(level)
-	return level in GLOB.using_map.station_levels
+	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 /proc/isNotStationLevel(level)
 	return !isStationLevel(level)
 
 /proc/isPlayerLevel(level)
-	return level in GLOB.using_map.player_levels
+	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 /proc/isAdminLevel(level)
-	return level in GLOB.using_map.admin_levels
+	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)
 
 /proc/isNotAdminLevel(level)
 	return !isAdminLevel(level)
 
 /proc/isContactLevel(level)
-	return level in GLOB.using_map.contact_levels
+	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)
 
 /proc/circlerange(center = usr, radius = 3)
 	var/turf/centerturf = get_turf(center)

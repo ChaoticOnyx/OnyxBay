@@ -46,7 +46,7 @@
 	else
 		// Bluespace Jump
 		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_leaving_dock, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60,1)] minute\s"))
-		SetUniversalState(/datum/universal_state/bluespace_jump, arguments=list(GLOB.using_map.station_levels))
+		SetUniversalState(/datum/universal_state/bluespace_jump, arguments=list(GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 
 /datum/evacuation_controller/starship/finish_evacuation()
 	..()

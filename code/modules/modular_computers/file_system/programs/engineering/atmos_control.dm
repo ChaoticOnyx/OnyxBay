@@ -36,7 +36,7 @@
 
 	if(monitored_alarm_ids)
 		for(var/obj/machinery/alarm/alarm in GLOB.alarm_list)
-			if(!(alarm.z in GLOB.using_map.station_levels))
+			if(!(alarm.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 				continue
 			if(alarm.alarm_id && (alarm.alarm_id in monitored_alarm_ids))
 				monitored_alarms += alarm

@@ -892,7 +892,7 @@ About the new airlock wires panel:
 
 	//wires
 	var/turf/T = get_turf(newloc)
-	if(T && (T.z in GLOB.using_map.admin_levels))
+	if(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		secured_wires = 1
 	if(secured_wires)
 		wires = new /datum/wires/airlock/secure(src)

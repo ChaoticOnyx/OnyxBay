@@ -269,7 +269,7 @@
 	var/newz = GLOB.using_map.get_empty_zlevel()
 	if(possible_locations.len && prob(10))
 		newz = pick(possible_locations)
-	var/turf/nloc = locate(rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE),newz)
+	var/turf/nloc = locate(rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE), rand(TRANSITION_EDGE, world.maxy-TRANSITION_EDGE),newz)
 	if(!istype(nloc, /turf/space))
 		explosion(nloc, 1, 2, 3)
 	playsound(loc,'sound/effects/rocket.ogg',100)
