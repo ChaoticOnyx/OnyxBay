@@ -1,6 +1,6 @@
 #include "frontier-SCP_areas.dm"
 
-/datum/map/Demeter
+/datum/map/demeter
 	name = "Demeter"
 	full_name = "RnCC Demeter"
 	path = "frontier-SCP"
