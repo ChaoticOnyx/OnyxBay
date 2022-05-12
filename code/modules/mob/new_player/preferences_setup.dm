@@ -54,6 +54,7 @@
 
 	var/update_icon = FALSE
 	copy_to(mannequin, TRUE)
+	mannequin.update_icon = TRUE
 
 	var/datum/job/previewJob
 	if(equip_preview_mob && job_master)
@@ -68,12 +69,15 @@
 	else
 		return
 
-	if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
+	if(!previewJob && mannequin.icon)
+		update_icon = TRUE // So we don't end up stuck with a borg/AI icon after setting their priority to non-high
+	else if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
 		mannequin.job = previewJob.title
 		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title], mannequin.char_branch)
-		update_icon = TRUE
+		if(!previewJob.preview_override)
+			update_icon = TRUE
 
-	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
+	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !previewJob?.preview_override)
 		// Equip custom gear loadout, replacing any job items
 		var/list/loadout_taken_slots = list()
 		var/list/accessories = list()
