@@ -4682,7 +4682,7 @@
 "bMd" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/trim/carpet,/area/crew_quarters/captain)
 "bMe" = (/obj/structure/window_frame/grille,/obj/machinery/atmospherics/pipe/simple/visible/yellow,/obj/machinery/meter,/turf/simulated/wall/r_wall,/area/engineering/atmos)
 "bMf" = (/obj/structure/toilet{dir = 4},/turf/simulated/floor/tiled/freezer,/area/crew_quarters/captain)
-"bMg" = (/obj/machinery/light/small{dir = 8},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/visible/supply,/obj/machinery/atmospherics/pipe/simple/visible/scrubbers,/obj/structure/sign/warning/radioactive{pixel_x = -32},/turf/simulated/floor/plating,/area/crew_quarters/captain)
+"bMg" = (/obj/machinery/light/small{dir = 8},/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/visible/supply,/obj/machinery/atmospherics/pipe/simple/visible/scrubbers,/obj/structure/sign/warning/radioactive{pixel_x = -32; desc = "This area has no radiation protection."; name = "\improper POSSIBLE RADIOACTIVE AREA"},/turf/simulated/floor/plating,/area/crew_quarters/captain)
 "bMh" = (/obj/structure/disposalpipe/segment,/obj/item/device/radio/intercom{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled,/area/hallway/primary/central_two)
 "bMi" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/turf/simulated/floor/tiled,/area/hallway/primary/central_two)
 "bMj" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/maintenance/locker)
