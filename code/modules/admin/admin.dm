@@ -847,7 +847,8 @@ var/global/floorIsLava = 0
 	set desc="Start the round RIGHT NOW"
 	set name="Start Now"
 	if(GAME_STATE < RUNLEVEL_LOBBY)
-		alert("Unable to start the game as it is not set up.")
+		SSticker.auto_start = !SSticker.auto_start
+		alert("Unable to start the game as it is not set up. [SSticker.auto_start ? "It will automatically start as soon as possible" : "It will run in normal mode (with a timer)."]")
 		return 0
 	if(SSticker.start_now())
 		log_admin("[key_name(usr)] has started the game.")
