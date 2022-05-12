@@ -516,7 +516,7 @@
 	var/step_dir = get_pin_data(IC_INPUT, 2)
 	var/turf/rift_location = get_turf(src)
 
-	if(!rift_location || !isPlayerLevel(rift_location.z))
+	if(!rift_location || !isStationLevel(rift_location.z))
 		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 

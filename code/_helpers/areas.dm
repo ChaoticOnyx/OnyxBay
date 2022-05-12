@@ -86,7 +86,7 @@ GLOBAL_LIST_EMPTY(station_areas)
 	return A && isContactLevel(A.z)
 
 /proc/is_player_area(area/A)
-	return A && isPlayerLevel(A.z)
+	return A && isStationLevel(A.z)
 
 /proc/is_not_space_area(area/A)
 	. = !istype(A, /area/space)

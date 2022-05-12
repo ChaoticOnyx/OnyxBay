@@ -69,9 +69,6 @@
 /proc/isNotStationLevel(level)
 	return !isStationLevel(level)
 
-/proc/isPlayerLevel(level)
-	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
-
 /proc/isAdminLevel(level)
 	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)
 
