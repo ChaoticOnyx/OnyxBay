@@ -177,7 +177,7 @@
 
 /obj/machinery/media/jukebox/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\the [src] blows apart!"), 1)
+	src.visible_message(SPAN_DANGER("\the [src] blows apart!"))
 
 	explosion(get_turf(src), 0, 0, 1, rand(1,2), 1)
 

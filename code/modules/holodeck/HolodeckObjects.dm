@@ -317,9 +317,9 @@
 			return TRUE
 		if(prob(50))
 			I.forceMove(loc)
-			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>", 3)
+			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>")
 		else
-			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>", 3)
+			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>")
 		return FALSE
 	return ..()
 
