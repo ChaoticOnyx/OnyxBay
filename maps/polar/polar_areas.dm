@@ -4,6 +4,7 @@
 
 /area/polarplanet/street
 	name = "Polarplanet - street"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 // Security
 
@@ -81,6 +82,7 @@
 
 /area/polarplanet/shuttle/merchant/dock
 	name = "\improper Merchant Van - Planet Landing Site"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/merchant/outpost
 	name = "\improper Merchant Van - Outpost"
@@ -370,26 +372,32 @@
 /area/polarplanet/syndicate_station/southwest
 	name = "south-west of SS13"
 	icon_state = "southwest"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/northwest
 	name = "north-west of SS13"
 	icon_state = "northwest"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/northeast
 	name = "north-east of SS13"
 	icon_state = "northeast"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/southeast
 	name = "south-east of SS13"
 	icon_state = "southeast"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/north
 	name = "north of SS13"
 	icon_state = "north"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/south
 	name = "south of SS13"
 	icon_state = "south"
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/syndicate_station/transit
 	name = "\proper bluespace"
@@ -1016,22 +1024,27 @@
 /area/polarplanet/hallway/primary/central_one
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC1"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_two
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC2"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_three
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_fore
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_fife
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_six
 	name = "\improper Central Primary Hallway"
@@ -1077,12 +1090,12 @@
 	name = "\improper Dormitory Hallway"
 	icon_state = "Sleep"
 
-
-
-
 /area/polarplanet/hallway/secondary/exit
 	name = "\improper Escape Shuttle Hallway"
 	icon_state = "escape"
+
+/area/polarplanet/hallway/secondary/entry
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/secondary/entry/pods
 	name = "\improper Arrival Shuttle Hallway - Escape Pods"
@@ -1278,6 +1291,7 @@
 /area/polarplanet/crew_quarters/fitness
 	name = "\improper Fitness Room"
 	icon_state = "fitness"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/crew_quarters/fitness/arcade
 	name = "\improper Arcade"
@@ -1291,6 +1305,7 @@
 	name = "\improper Bar"
 	icon_state = "bar"
 	sound_env = LARGE_SOFTFLOOR
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/crew_quarters/barbackroom
 	name = "\improper Bar Backroom"
@@ -1304,6 +1319,7 @@
 	name = "\improper Mess Hall"
 	icon_state = "cafeteria"
 	sound_env = LARGE_SOFTFLOOR
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/library
  	name = "\improper Library"
@@ -1313,6 +1329,9 @@
 /area/polarplanet/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
+
+/area/polarplanet/chapel
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/chapel/main
 	name = "\improper Chapel"
@@ -1763,6 +1782,7 @@
 /area/polarplanet/quartermaster
 	name = "\improper Quartermasters"
 	icon_state = "quart"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/quartermaster/breakroom
 	name = "\improper Cargo Break Room"
@@ -2398,6 +2418,7 @@
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	requires_power = 0
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/security/armory
 	name = "\improper Security - Armory"
@@ -2512,6 +2533,7 @@
 /area/polarplanet/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/maintenance
 	area_flags = AREA_FLAG_RAD_SHIELDED

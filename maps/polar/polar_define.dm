@@ -56,6 +56,11 @@
 	base_floor_type = /turf/simulated/floor/natural/frozenground/cave
 	base_floor_area = /area/polarplanet/street
 
+/datum/map/polar/New()
+	. = ..()
+
+	AddComponent(/datum/component/polar_weather)
+
 /datum/map/polar/perform_map_generation()
 	//1-z level
 	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 200, 200) // Create the mining Z-level.
