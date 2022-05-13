@@ -849,7 +849,7 @@ var/global/floorIsLava = 0
 	if(GAME_STATE < RUNLEVEL_LOBBY)
 		SSticker.auto_start = !SSticker.auto_start
 		message_admins(SPAN("info", "[key_name(src)] set the server start round configuration to [SSticker.auto_start ? "automatically start game as soon as possible" : "start game in normal mode (with a timer)."]"))
-		alert("Unable to start the game as it is not set up. [SSticker.auto_start ? "It will automatically start game as soon as possible" : "It will start game in normal mode (with a timer)."]")
+		to_chat(owner, SPAN_NOTICE("Unable to start the game as it is not set up. [SSticker.auto_start ? "It will automatically start game as soon as possible" : "It will start game in normal mode (with a timer)."]"))
 		return 0
 	if(SSticker.start_now())
 		log_admin("[key_name(usr)] has started the game.")
