@@ -25,7 +25,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 		var/ckey = item["ckey"]
 		var/custom_icon_state = item["sprite"]
 		var/footstep_sound = item["footstep_sound"]
-		if(GLOB.robot_custom_icons[ckey])
+		if(!length(GLOB.robot_custom_icons[ckey]))
 			GLOB.robot_custom_icons[ckey] = list()
 
 		GLOB.robot_custom_icons[ckey] += list(list("item_state" = custom_icon_state, "footstep" = footstep_sound))
