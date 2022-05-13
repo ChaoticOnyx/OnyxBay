@@ -22,7 +22,7 @@
 		/datum/shuttle/autodock/multi/antag/elite_syndicate,
 		/datum/shuttle/autodock/ferry/deathsquad,
 		/datum/shuttle/autodock/multi/antag/merchant,
-		/datum/shuttle/autodock/multi/antag/skipjack,
+		/datum/shuttle/autodock/multi/antag/skipjack
 	)
 
 	map_levels = list(
