@@ -63,17 +63,14 @@
 	. = view(range, source)
 	source.luminosity = lum
 
+/proc/isPlayerLevel(level)
+	return !isAdminLevel(level)
+
 /proc/isStationLevel(level)
 	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
-/proc/isNotStationLevel(level)
-	return !isStationLevel(level)
-
 /proc/isAdminLevel(level)
 	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)
-
-/proc/isNotAdminLevel(level)
-	return !isAdminLevel(level)
 
 /proc/isContactLevel(level)
 	return level in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)

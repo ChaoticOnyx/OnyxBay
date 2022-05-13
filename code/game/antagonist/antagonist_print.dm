@@ -58,7 +58,7 @@
 	if(ply.current)
 		if(ply.current.stat == DEAD)
 			text += "died"
-		else if(isNotStationLevel(ply.current.z))
+		else if(!isStationLevel(ply.current.z))
 			text += "fled"
 		else
 			text += "survived"

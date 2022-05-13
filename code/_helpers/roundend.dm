@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		if(Player.stat != DEAD && !isbrain(Player))
 			var/turf/playerTurf = get_turf(Player)
 			if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
-				if(isNotAdminLevel(playerTurf.z))
+				if(!isAdminLevel(playerTurf.z))
 					parts += "<div class='panel stationborder'>"
 					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</span>"
 				else

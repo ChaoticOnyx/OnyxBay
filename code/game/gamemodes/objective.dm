@@ -972,7 +972,7 @@ var/global/list/all_objectives = list()
 		if(target in GLOB.revs.current_antagonists)
 			return 1
 		var/turf/T = get_turf(H)
-		if(T && isNotStationLevel(T.z))			//If they leave the station they count as dead for this
+		if(T && !isStationLevel(T.z))			//If they leave the station they count as dead for this
 			rval = 2
 		return 0
 	return rval
