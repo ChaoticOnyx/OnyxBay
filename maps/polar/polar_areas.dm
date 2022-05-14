@@ -2633,7 +2633,6 @@
 	for(var/mob/living/carbon/human/H in src)
 		if(H.client)
 			mysound.status = SOUND_UPDATE
-			to_chat(H, mysound)
 			if(S)
 				spawn(sound_delay)
 					sound_to(H, S)
