@@ -35,15 +35,35 @@
 
 Главная цель правильного именования и описания коммитов - упростить процесс чтения истории git. Чем понятнее написаны комментарии к коммитам, тем проще находить причины багов.
 
+Коммиты следует именовать по следующей схеме:
+
+```
+action(area): short one-line description
+
+long multiline description
+
+related items
+```
+
+- **action** - тип действия, которое совершается в коммите. Например, fix, feat, refact, tweak, delete, docs и т.д. Отвечает на вопрос "Что делаем?"
+- **area** - область кода, в которой происходит действие. Например, atmospherics, MC, changeling, exodus и т.д.
+- **related items** - иссуи, которых касается коммит. Еще какие-то ссылки, которые могут относиться к PR-у. В случае иссуев обязательно использование [ключевых слов Github](https://help.github.com/articles/closing-issues-via-commit-messages) для автоматического связывания коммита с иссуями.
+
 Пример хорошего описания коммита:
 
 ```
-More server-friendly vortex behavior and other tweaks
+tweak(vortex): more server-friendly vortex behavior and other tweaks
+
+Rebalance.
+Also fixes issue with O(N) intended malfunctions for 'battle function' becoming O(N^unknown) due to malfunction calling itself on each iteration.
+Therefore, base malfunction chance was raised a bit.
+Charge costs multiplied, as there was no 'bluespace cell' with 10k total capacity when previous values were implemented.
+
+PR #1766
+close #1432
 ```
 
-```
-Небольшие изменения баланса боёвки
-```
+Еще раз отдельно обратим внимание на то, что коммиты можно писать на русском языке по той же схеме. Однако `area` и разные ключевые слова обязательно нужно писать на английском языке, согласно тому, как оно пишется в коде, чтобы всем было понятно какой части кода касаются ваши изменения.
 
 # Continuous Integration
 
