@@ -310,7 +310,7 @@
 	if(!blood_carries_oxygen())
 		blood_volume = 100
 
-	var/blood_volume_mod = max(0, 1 - getOxyLoss()/(maxHealth/2))
+	var/blood_volume_mod = max(0, 1 - getOxyLoss() / maxHealth)
 	var/oxygenated_mult = 0
 	if(chem_effects[CE_OXYGENATED] == 1) // Dexalin.
 		oxygenated_mult = 0.5

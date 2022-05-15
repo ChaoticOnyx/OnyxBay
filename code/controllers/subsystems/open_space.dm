@@ -90,4 +90,4 @@ SUBSYSTEM_DEF(open_space)
 		var/turf/T = GetAbove(src)
 		if(isopenspace(T))
 			SSopen_space.add_turf(T, 1)
-	. = ..() // Important that this be at the bottom, or we will have been moved to nullspace.
+	return ..() // Important that this be at the bottom, or we will have been moved to nullspace.

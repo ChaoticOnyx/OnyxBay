@@ -414,7 +414,7 @@ var/bomb_set
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/storage/secure/briefcase/nukedisk/examine(user)
+/obj/item/storage/secure/briefcase/nukedisk/_examine_text(user)
 	. = ..()
 	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 

@@ -31,7 +31,7 @@
 /mob/living/simple_animal/hostile/faithless/Allow_Spacemove(check_drift = 0)
 	return 1
 
-/mob/living/simple_animal/hostile/faithless/FindTarget()
+/mob/living/simple_animal/hostile/faithless/find_target()
 	. = ..()
 	if(.)
 		audible_emote("wails at [.]")

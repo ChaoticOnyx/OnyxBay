@@ -140,8 +140,8 @@
 /obj/random/medical/spawn_choices()
 	return list(/obj/random/medical/lite = 21,
 				/obj/item/bodybag = 2,
-				/obj/item/reagent_containers/glass/bottle/inaprovaline = 2,
-				/obj/item/reagent_containers/glass/bottle/antitoxin = 2,
+				/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline = 2,
+				/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin = 2,
 				/obj/item/storage/pill_bottle = 2,
 				/obj/item/storage/pill_bottle/tramadol = 1,
 				/obj/item/storage/pill_bottle/citalopram = 2,
@@ -198,8 +198,8 @@
 				/obj/item/storage/pill_bottle/tramadol = 3,
 				/obj/item/storage/pill_bottle/happy = 2,
 				/obj/item/storage/pill_bottle/zoom = 2,
-				/obj/item/reagent_containers/glass/beaker/vial/random/toxin = 1,
-				/obj/item/reagent_containers/glass/beaker/sulphuric = 1,
+				/obj/item/reagent_containers/vessel/beaker/vial/random/toxin = 1,
+				/obj/item/reagent_containers/vessel/beaker/sulphuric = 1,
 				/obj/item/contraband/poster = 5,
 				/obj/item/material/butterfly = 2,
 				/obj/item/material/butterflyblade = 3,
@@ -224,16 +224,16 @@
 	spawn_nothing_percentage = 25
 
 /obj/random/drinkbottle/spawn_choices()
-	return list(/obj/item/reagent_containers/food/drinks/bottle/whiskey,
-				/obj/item/reagent_containers/food/drinks/bottle/gin,
-				/obj/item/reagent_containers/food/drinks/bottle/specialwhiskey,
-				/obj/item/reagent_containers/food/drinks/bottle/vodka,
-				/obj/item/reagent_containers/food/drinks/bottle/tequilla,
-				/obj/item/reagent_containers/food/drinks/bottle/absinthe,
-				/obj/item/reagent_containers/food/drinks/bottle/wine,
-				/obj/item/reagent_containers/food/drinks/bottle/cognac,
-				/obj/item/reagent_containers/food/drinks/bottle/rum,
-				/obj/item/reagent_containers/food/drinks/bottle/patron)
+	return list(/obj/item/reagent_containers/vessel/bottle/whiskey,
+				/obj/item/reagent_containers/vessel/bottle/gin,
+				/obj/item/reagent_containers/vessel/bottle/specialwhiskey,
+				/obj/item/reagent_containers/vessel/bottle/vodka,
+				/obj/item/reagent_containers/vessel/bottle/tequilla,
+				/obj/item/reagent_containers/vessel/bottle/absinthe,
+				/obj/item/reagent_containers/vessel/bottle/wine,
+				/obj/item/reagent_containers/vessel/bottle/cognac,
+				/obj/item/reagent_containers/vessel/bottle/rum,
+				/obj/item/reagent_containers/vessel/bottle/patron)
 
 
 /obj/random/energy
@@ -550,7 +550,7 @@
 				/obj/item/soap/deluxe = 3,
 				/obj/item/soap/syndie = 1,
 				/obj/item/soap/gold = 1,
-				/obj/item/reagent_containers/glass/rag = 2,
+				/obj/item/reagent_containers/rag = 2,
 				/obj/item/reagent_containers/spray/cleaner = 2,
 				/obj/item/grenade/chem_grenade/cleaner = 1)
 
@@ -681,32 +681,32 @@
 	spawn_nothing_percentage = 50
 
 /obj/random/snack/spawn_choices()
-	return list(/obj/item/reagent_containers/food/snacks/liquidfood,
-				/obj/item/reagent_containers/food/snacks/packaged/tweakers,
-				/obj/item/reagent_containers/food/snacks/packaged/sweetroid,
-				/obj/item/reagent_containers/food/snacks/packaged/sugarmatter,
-				/obj/item/reagent_containers/food/snacks/packaged/jellaws,
-				/obj/item/reagent_containers/food/drinks/dry_ramen,
-				/obj/item/reagent_containers/food/snacks/packaged/chips,
-				/obj/item/reagent_containers/food/snacks/packaged/sosjerky,
-				/obj/item/reagent_containers/food/snacks/packaged/no_raisin,
-				/obj/item/reagent_containers/food/snacks/spacetwinkie,
-				/obj/item/reagent_containers/food/snacks/packaged/cheesiehonkers,
-				/obj/item/reagent_containers/food/snacks/packaged/tastybread,
-				/obj/item/reagent_containers/food/snacks/packaged/nutribar,
-				/obj/item/reagent_containers/food/snacks/packaged/syndicake,
-				/obj/item/reagent_containers/food/snacks/donut,
-				/obj/item/reagent_containers/food/snacks/donut/cherryjelly,
-				/obj/item/reagent_containers/food/snacks/donut/jelly,
+	return list(/obj/item/reagent_containers/food/liquidfood,
+				/obj/item/reagent_containers/food/packaged/tweakers,
+				/obj/item/reagent_containers/food/packaged/sweetroid,
+				/obj/item/reagent_containers/food/packaged/sugarmatter,
+				/obj/item/reagent_containers/food/packaged/jellaws,
+				/obj/item/reagent_containers/vessel/dry_ramen,
+				/obj/item/reagent_containers/food/packaged/chips,
+				/obj/item/reagent_containers/food/packaged/sosjerky,
+				/obj/item/reagent_containers/food/packaged/no_raisin,
+				/obj/item/reagent_containers/food/spacetwinkie,
+				/obj/item/reagent_containers/food/packaged/cheesiehonkers,
+				/obj/item/reagent_containers/food/packaged/tastybread,
+				/obj/item/reagent_containers/food/packaged/nutribar,
+				/obj/item/reagent_containers/food/packaged/syndicake,
+				/obj/item/reagent_containers/food/donut,
+				/obj/item/reagent_containers/food/donut/cherryjelly,
+				/obj/item/reagent_containers/food/donut/jelly,
 				/obj/item/pizzabox/meat,
 				/obj/item/pizzabox/vegetable,
 				/obj/item/pizzabox/margherita,
 				/obj/item/pizzabox/mushroom,
-				/obj/item/reagent_containers/food/snacks/plumphelmetbiscuit,
-				/obj/item/reagent_containers/food/snacks/packaged/skrellsnacks,
-				/obj/item/reagent_containers/food/snacks/tortilla,
-				/obj/item/reagent_containers/food/snacks/popcorn,
-				/obj/item/reagent_containers/food/snacks/cookie)
+				/obj/item/reagent_containers/food/plumphelmetbiscuit,
+				/obj/item/reagent_containers/food/packaged/skrellsnacks,
+				/obj/item/reagent_containers/food/tortilla,
+				/obj/item/reagent_containers/food/popcorn,
+				/obj/item/reagent_containers/food/cookie)
 
 
 /obj/random/storage
@@ -1162,6 +1162,17 @@ something, make sure it's not in one of the other lists.
 				/obj/structure/sign/christmas/sockwizard = 1,
 				/obj/structure/sign/christmas/socksindy = 2)
 
+/obj/random/music_tape
+	name = "random music tape"
+	desc = "This is a random music tape."
+	icon_state = "landmark_tape"
+
+/obj/random/music_tape/spawn_choices()
+	return list(/obj/item/storage/box/music_tape/jazz = 10,
+				/obj/item/storage/box/music_tape/classic = 30,
+				/obj/item/storage/box/music_tape/frontier = 5,
+				/obj/item/storage/box/music_tape/exodus = 5,
+				/obj/item/storage/box/music_tape/valhalla = 3)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns

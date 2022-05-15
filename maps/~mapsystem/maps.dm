@@ -24,6 +24,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/full_name = "Unnamed Map"
 	var/path
 
+	var/shuttle_types = null         // Only the specified shuttles will be initialized.
 	var/list/station_levels = list() // Z-levels the station exists on
 	var/list/admin_levels = list()   // Z-levels for admin functionality (Centcom, shuttle transit, etc)
 	var/list/contact_levels = list() // Z-levels that can be contacted from the station, for eg announcements
@@ -152,11 +153,15 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		map_levels = station_levels.Copy()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
+	if(!shuttle_types)
+		crash_with("[src] has no shuttle_types!")
 
 /datum/map/proc/setup_map()
 	if(dynamic_z_levels)
-		for(var/level in dynamic_z_levels)
-			maploader.load_map(dynamic_z_levels[level], 1, 1, text2num(level), FALSE, FALSE, TRUE, FALSE)
+		for(var/level = 1; level <= length(dynamic_z_levels); level++)
+			log_to_dd("Loading map '[dynamic_z_levels[level]]' at [level]")
+			maploader.load_map(dynamic_z_levels[level], 1, 1, level, FALSE, FALSE, TRUE, FALSE)
+
 	world.update_status()
 	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)

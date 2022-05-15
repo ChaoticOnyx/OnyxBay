@@ -7,9 +7,9 @@
 #define SEND_GLOBAL_SIGNAL(sigtype, arguments...) ( SEND_SIGNAL(SSelements, sigtype, ##arguments) )
 
 /// A wrapper for _AddElement that allows us to pretend we're using normal named arguments.
-#define AddElement(arguments...) _AddElement(list(##arguments))
+#define AddElement(arguments...) _add_element(list(##arguments))
 /// A wrapper for _RemoveElement that allows us to pretend we're using normal named arguments.
-#define RemoveElement(arguments...) _RemoveElement(list(##arguments))
+#define RemoveElement(arguments...) _remove_element(list(##arguments))
 
 /// A wrapper for _add_component that allows us to pretend we're using normal named arguments.
 #define AddComponent(arguments...) _add_component(list(##arguments))

@@ -7,7 +7,7 @@
 	var/new_icon_file
 	var/uses = 1        // Uses before the kit deletes itself.
 
-/obj/item/device/kit/examine(mob/user)
+/obj/item/device/kit/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has [uses] use\s left."
 
@@ -73,7 +73,7 @@
 	var/removable = null
 	var/list/allowed_types = list()
 
-/obj/item/device/kit/paint/examine(mob/user)
+/obj/item/device/kit/paint/_examine_text(mob/user)
 	. = ..()
 	. += "\nThis kit will convert an exosuit into: [new_name]."
 	. += "\nThis kit can be used on the following exosuit models:"

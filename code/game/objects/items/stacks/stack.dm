@@ -44,7 +44,7 @@
 		close_browser(usr, "window=stack")
 	return ..()
 
-/obj/item/stack/examine(mob/user)
+/obj/item/stack/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)

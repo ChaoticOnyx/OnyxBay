@@ -292,11 +292,11 @@
 	find_control_computer()
 	announce = new /obj/item/device/radio/intercom(src)
 
-/obj/machinery/cryopod/examine(mob/user)
+/obj/machinery/cryopod/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
@@ -337,21 +337,22 @@
 
 //Lifted from Unity stasis.dm and refactored. ~Zuhayr
 /obj/machinery/cryopod/Process()
-	if(occupant)
-		if(applies_stasis && iscarbon(occupant))
-			var/mob/living/carbon/C = occupant
-			C.SetStasis(3)
+	if(QDELETED(occupant))
+		return
+	if(applies_stasis && iscarbon(occupant))
+		var/mob/living/carbon/C = occupant
+		C.SetStasis(3)
 
-		//Allow a ten minute gap between entering the pod and actually despawning.
-		if(world.time - time_entered < time_till_despawn)
-			return
+	//Allow a ten minute gap between entering the pod and actually despawning.
+	if(world.time - time_entered < time_till_despawn)
+		return
 
-		if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
-			if(!control_computer)
-				if(!find_control_computer(urgent=1))
-					return
+	if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
+		if(!control_computer)
+			if(!find_control_computer(urgent=1))
+				return
 
-			despawn_occupant()
+		despawn_occupant()
 
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
@@ -540,6 +541,13 @@
 		return
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+		return
+	if(name == "cryogenic freezer" && M.stat == DEAD)
+		to_chat(user, "<span class='warning'>\The [src]s are not designed to store bodies. Contact the medical unit.</span>")
+		var/area/t = get_area(M)
+		var/location = t.name
+		for(var/channel in list("Security", "Medical"))
+			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
 		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")

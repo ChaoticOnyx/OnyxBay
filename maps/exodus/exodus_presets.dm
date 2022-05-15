@@ -82,6 +82,9 @@ var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
 /obj/machinery/camera/network/engine
 	network = list(NETWORK_ENGINE, NETWORK_MASTER)
 
+/obj/machinery/camera/network/engineering/singularity
+	network = list(NETWORK_ENGINE, NETWORK_MASTER)
+
 // Motion
 /obj/machinery/camera/motion/command
 	network = list(NETWORK_COMMAND, NETWORK_MASTER)

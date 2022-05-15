@@ -49,7 +49,7 @@
 		antag_add_finished = 1
 		if(automatic)
 			// the buffer will already have half an hour added to it, so we'll give it one more
-			transfer_controller.timerbuffer += config.vote_autotransfer_interval
+			transfer_controller.timerbuffer += config.vote.autotransfer_interval
 	else
 		to_world("<b>No antags were added.</b>")
 		if(automatic)

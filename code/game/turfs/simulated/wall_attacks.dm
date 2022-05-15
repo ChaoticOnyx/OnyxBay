@@ -338,7 +338,7 @@
 					if(!do_after(user,100,src) || !istype(src, /turf/simulated/wall) || !user || !W || !T )	return
 					if(user.loc == T && user.get_active_hand() == W )
 						to_chat(user, "<span class='notice'>You pry off the outer sheath.</span>")
-						dismantle_wall()
+						dismantle_wall(TRUE)
 					return
 
 	if(istype(W,/obj/item/frame))

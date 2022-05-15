@@ -13,7 +13,7 @@
 	speak_chance = 1
 	turns_per_move = 0
 	anchored = 1
-	meat_type = /obj/item/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help  = "pets"
 	response_disarm = "pokes"
 	response_harm   = "hits"

@@ -70,7 +70,7 @@
 
 		var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 		dat += "<li><A href='?src=\ref[src];triggerevent=Red alert'>Engage [security_state.high_security_level.name]</A></li>"
-		if(!config.ert_admin_call_only)
+		if(!config.gamemode.ert_admin_only)
 			dat += "<li><A href='?src=\ref[src];triggerevent=Emergency Response Team'>Emergency Response Team</A></li>"
 
 		dat += "<li><A href='?src=\ref[src];triggerevent=Grant Emergency Maintenance Access'>Grant Emergency Maintenance Access</A></li>"
@@ -180,7 +180,7 @@
 			feedback_inc("alert_keycard_auth_nukecode",1)
 
 /obj/machinery/keycard_auth/proc/is_ert_blocked()
-	if(config.ert_admin_call_only) return 1
+	if(config.gamemode.ert_admin_only) return 1
 	return SSticker.mode && SSticker.mode.ert_disabled
 
 var/global/maint_all_access = 0

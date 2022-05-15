@@ -26,13 +26,13 @@
 	var/mob/living/carbon/human/H = my_mob
 
 	if(H.getBruteLoss())
-		H.adjustBruteLoss(-5.0 * config.organ_regeneration_multiplier) // Heal brute better than other ouchies.
+		H.adjustBruteLoss(-5.0 * config.health.organ_regeneration_multiplier) // Heal brute better than other ouchies.
 		any_effect = TRUE
 	if(H.getFireLoss())
-		H.adjustFireLoss(-3.5 * config.organ_regeneration_multiplier)
+		H.adjustFireLoss(-3.5 * config.health.organ_regeneration_multiplier)
 		any_effect = TRUE
 	if(H.getToxLoss())
-		H.adjustToxLoss(-5.0 * config.organ_regeneration_multiplier)
+		H.adjustToxLoss(-5.0 * config.health.organ_regeneration_multiplier)
 		any_effect = TRUE
 
 	if(prob(15) && !H.getBruteLoss() && !H.getFireLoss())

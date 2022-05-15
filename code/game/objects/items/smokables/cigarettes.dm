@@ -15,16 +15,22 @@
 	hitsound = 'sound/items/pffsh.ogg'
 	var/list/filling = list(/datum/reagent/tobacco = 3)
 	var/ember_state = "cigember"
+	var/dynamic_icon = TRUE
 
-/obj/item/clothing/mask/smokable/cigarette/New()
-	..()
+/obj/item/clothing/mask/smokable/cigarette/Initialize()
+	. = ..()
 	for(var/R in filling)
 		reagents.add_reagent(R, filling[R])
 
 /obj/item/clothing/mask/smokable/cigarette/update_icon()
 	..()
 	overlays.Cut()
-	if(lit)
+	if(dynamic_icon)
+		var/ratio = round(smoketime / initial(smoketime), 0.25) * 100
+		icon_state = ever_lit ? "[initial(icon_state)][ratio]" : initial(icon_state)
+		if(lit)
+			overlays += overlay_image(icon, "[ember_state][ratio]", flags=RESET_COLOR)
+	else if(lit)
 		overlays += overlay_image(icon, ember_state, flags=RESET_COLOR)
 
 /obj/item/clothing/mask/smokable/cigarette/die(nomessage = FALSE, nodestroy = FALSE)
@@ -81,7 +87,7 @@
 		return SPAN("notice", "[holder] casually lights \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name].")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/jackolantern))
 		return SPAN("notice", "[holder] shoves \his [name] into \a [tool] to light it up.")
@@ -176,10 +182,10 @@
 
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/glass) && !istype(W, /obj/item/reagent_containers/glass/rag)) //you can dip cigarettes into beakers
-		var/obj/item/reagent_containers/glass/glass = W
+	if(istype(W, /obj/item/reagent_containers/vessel)) // you can dip cigarettes into vessels
+		var/obj/item/reagent_containers/vessel/glass = W
 		if(!glass.is_open_container())
-			to_chat(user, SPAN("notice", "You need to take the lid off first."))
+			to_chat(user, SPAN("notice", "You need to open \the [glass] first."))
 			return
 		var/transfered = glass.reagents.trans_to_obj(src, chem_volume)
 		if(transfered)	//if reagents were transfered, show the message
@@ -192,10 +198,25 @@
 				to_chat(user, SPAN("notice", "[src] is full."))
 		die(nomessage = FALSE, nodestroy = TRUE)
 
-/obj/item/clothing/mask/smokable/cigarette/attack_self(mob/user as mob)
+/obj/item/clothing/mask/smokable/cigarette/attack_self(mob/user)
 	if(lit == 1)
 		user.visible_message(SPAN("notice", "[user] calmly drops and treads on the lit [src], putting it out instantly."))
-		die(nomessage = TRUE, nodestroy = FALSE)
+		if(dynamic_icon)
+			die(nomessage = TRUE, nodestroy = TRUE)
+			if(loc == user)
+				transform = turn(transform, round(rand(0, 360), 45))
+				pixel_x = rand(-10, 10)
+				pixel_y = rand(-10, 10)
+				user.remove_from_mob(src) // un-equip it so the overlays can update
+		else
+			die(nomessage = TRUE, nodestroy = FALSE)
+	return ..()
+
+/obj/item/clothing/mask/smokable/cigarette/attack_hand(mob/user)
+	if(ishuman(user) && dynamic_icon)
+		transform = matrix()
+		pixel_x = initial(pixel_x)
+		pixel_y = initial(pixel_y)
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
@@ -223,16 +244,16 @@
 /obj/item/cigbutt
 	name = "cigarette butt"
 	desc = "A manky old cigarette butt."
-	icon = 'icons/obj/clothing/masks.dmi'
+	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cigbutt"
 	randpixel = 10
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 	throwforce = 0
 
-/obj/item/cigbutt/New()
-	..()
-	transform = turn(transform,rand(0,360))
+/obj/item/cigbutt/Initialize()
+	. = ..()
+	transform = turn(transform, round(rand(0, 360), 45))
 
 ////////////////
 // CIGARETTES //
@@ -300,6 +321,7 @@
 	filter_trans = 0.25
 	type_butt = /obj/item/cigbutt/woodbutt
 	filling = list(/datum/reagent/tobacco/fine = 6)
+	dynamic_icon = FALSE
 
 /obj/item/cigbutt/woodbutt
 	name = "wooden tip"
@@ -367,6 +389,7 @@
 	chem_volume = 22.5
 	filter_trans = 0.25
 	filling = list(/datum/reagent/tobacco/fine = 15)
+	dynamic_icon = FALSE
 
 /obj/item/clothing/mask/smokable/cigarette/cigar/generate_lighting_message(obj/tool, mob/holder)
 	if(!holder || !tool)
@@ -382,7 +405,7 @@
 		return SPAN("notice", "[holder] insults \his [name] by lighting it with \a [tool].")
 	if(istype(tool, /obj/item/device/assembly/igniter))
 		return SPAN("notice", "[holder] fiddles with \his [tool.name], and manages to light \a [name] with the power of science.")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN("notice", "[holder] somehow manages to light \his [name] with \a [tool]. What a clown!")
 	return ..()
 

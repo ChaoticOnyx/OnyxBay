@@ -367,6 +367,9 @@
 
 	var/obj/item/reagent_containers/RG = O
 	if (istype(RG) && RG.is_open_container())
+		if(RG.reagents.total_volume == RG.volume)
+			to_chat(user, SPAN("notice", "\The [RG] is already full!"))
+			return
 		playsound(loc, 'sound/effects/using/sink/filling1.ogg', 75)
 		RG.reagents.add_reagent(/datum/reagent/water, min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message("<span class='notice'>[user] fills \the [RG] using \the [src].</span>","<span class='notice'>You fill \the [RG] using \the [src].</span>")

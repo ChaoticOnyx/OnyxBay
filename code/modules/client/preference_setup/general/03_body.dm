@@ -133,7 +133,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "(<a href='?src=\ref[src];random=1'>&reg;</A>)"
 	. += "<br>"
 
-	if(config.use_cortical_stacks)
+	if(config.revival.use_cortical_stacks)
 		. += "Neural lace: "
 		if(mob_species.spawn_flags & SPECIES_NO_LACE)
 			. += "incompatible."
@@ -621,7 +621,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</table><center><hr/>"
 
 	var/restricted = 0
-	if(config.usealienwhitelist) //If we're using the whitelist, make sure to check it!
+	if(config.game.use_ingame_alien_whitelist) //If we're using the whitelist, make sure to check it!
 		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
 		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))

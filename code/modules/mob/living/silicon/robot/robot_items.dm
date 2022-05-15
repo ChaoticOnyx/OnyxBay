@@ -100,7 +100,7 @@
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
 
-/obj/item/portable_destructive_analyzer/examine(mob/user)
+/obj/item/portable_destructive_analyzer/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'><b>Current science levels:</b></span>"
 	for(var/i = 1, i <= files.known_tech.len, i++)
@@ -174,7 +174,7 @@
 	for(var/path in surgery_item_paths)
 		surgery_items.Add(new path(src))
 
-/obj/item/surgical_selector/examine(mob/user)
+/obj/item/surgical_selector/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe selected tool is [selected_tool ? selected_tool : "nothing"]!"
 
@@ -420,7 +420,7 @@
 	max_walls = 10
 	max_doors = 5
 
-/obj/item/inflatable_dispenser/examine(mob/user)
+/obj/item/inflatable_dispenser/_examine_text(mob/user)
 	. = ..()
 	if(!.)
 		return
@@ -537,7 +537,7 @@
 			if(R && istype(R.loc,/turf))
 				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
 
-/obj/item/robot_rack/examine(mob/user)
+/obj/item/robot_rack/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt can hold up to [capacity] item[capacity == 1 ? "" : "s"]."
 	if (length(held))
@@ -626,7 +626,8 @@
 		/obj/item/bodybag,
 		/obj/item/reagent_containers/ivbag,
 		/obj/item/reagent_containers/pill,
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/stack/material/plasma,
 		/obj/item/clothing/mask,
 		/obj/item/clothing/gloves/latex,
@@ -776,7 +777,7 @@
 	..(name,type,delay,energy)
 	pipe_type = p_type
 
-/obj/item/robot_item_dispenser/examine(mob/user)
+/obj/item/robot_item_dispenser/_examine_text(mob/user)
 	. = ..()
 	. += "\n[selected.name] is chosen to be produced."
 

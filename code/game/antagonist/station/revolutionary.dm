@@ -34,8 +34,8 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 
 /datum/antagonist/revolutionary/Initialize()
 	. = ..()
-	if(config.revolutionary_min_age)
-		min_player_age = config.revolutionary_min_age
+	if(config.game.revolutionary_min_age)
+		min_player_age = config.game.revolutionary_min_age
 
 /datum/antagonist/revolutionary/proc/count_score()
 	var/rev_score = 0

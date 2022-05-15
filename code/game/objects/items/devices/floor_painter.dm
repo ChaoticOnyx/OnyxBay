@@ -182,7 +182,7 @@
 	. = ..()
 	tgui_interact(user)
 
-/obj/item/device/floor_painter/examine(mob/user)
+/obj/item/device/floor_painter/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint."
 

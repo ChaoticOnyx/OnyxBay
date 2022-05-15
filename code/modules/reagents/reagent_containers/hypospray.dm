@@ -57,12 +57,12 @@
 	name = "hypospray"
 	item_state = "autoinjector"
 	desc = "The DeForest Medical Corporation, a subsidiary of Zeng-Hu Pharmaceuticals, hypospray is a sterile, air-needle autoinjector for rapid administration of drugs to patients. Uses a replacable 30u vial."
-	var/obj/item/reagent_containers/glass/beaker/vial/loaded_vial
+	var/obj/item/reagent_containers/vessel/beaker/vial/loaded_vial
 	volume = 0
 
 /obj/item/reagent_containers/hypospray/vial/Initialize()
 	. = ..()
-	loaded_vial = new /obj/item/reagent_containers/glass/beaker/vial(src)
+	loaded_vial = new /obj/item/reagent_containers/vessel/beaker/vial(src)
 	volume = loaded_vial.volume
 	reagents.maximum_volume = loaded_vial.reagents.maximum_volume
 
@@ -83,7 +83,7 @@
 		return ..()
 
 /obj/item/reagent_containers/hypospray/vial/attackby(obj/item/W, mob/user as mob)
-	if(istype(W, /obj/item/reagent_containers/glass/beaker/vial))
+	if(istype(W, /obj/item/reagent_containers/vessel/beaker/vial))
 		if(!loaded_vial)
 			if(!do_after(user,10) || loaded_vial || !(W in user))
 				return 0
@@ -112,14 +112,12 @@
 	volume = 10
 	origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 2)
 	atom_flags = null
-	var/list/starts_with = list(/datum/reagent/inaprovaline = 10)
+	startswith = list(/datum/reagent/inaprovaline)
 	var/content_desc = "Inaprovaline 10u. Use to stabilize an injured person."
 	var/base_state = "blue"
 
 /obj/item/reagent_containers/hypospray/autoinjector/Initialize()
 	. = ..()
-	for(var/T in starts_with)
-		reagents.add_reagent(T, starts_with[T])
 	update_icon()
 	if(content_desc)
 		desc += " The label reads, \"[content_desc]\"."
@@ -136,7 +134,7 @@
 	else
 		icon_state = "[base_state]0"
 
-/obj/item/reagent_containers/hypospray/autoinjector/examine(mob/user)
+/obj/item/reagent_containers/hypospray/autoinjector/_examine_text(mob/user)
 	. = ..()
 	if(reagents && reagents.reagent_list.len)
 		. += "\n<span class='notice'>It is currently loaded.</span>"
@@ -147,41 +145,41 @@
 	icon_state = "green1"
 	content_desc = "Dylovene 10u. Use in case of poisoning."
 	base_state = "green"
-	starts_with = list(/datum/reagent/dylovene = 10)
+	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/hypospray/autoinjector/tricordrazine
 	icon_state = "red1"
 	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
 	base_state = "red"
-	starts_with = list(/datum/reagent/tricordrazine = 10)
+	startswith = list(/datum/reagent/tricordrazine)
 
 /obj/item/reagent_containers/hypospray/autoinjector/pain
 	icon_state = "purple1"
 	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
 	base_state = "purple"
-	starts_with = list(/datum/reagent/tramadol = 10)
+	startswith = list(/datum/reagent/painkiller/tramadol)
 
 /obj/item/reagent_containers/hypospray/autoinjector/combatpain
 	icon_state = "black1"
-	content_desc = "Oxycodone 5u"
+	content_desc = "Metazine 5u"
 	base_state = "black"
-	starts_with = list(/datum/reagent/tramadol/oxycodone = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5
+	startswith = list(/datum/reagent/painkiller)
 
 /obj/item/reagent_containers/hypospray/autoinjector/mindbreaker
 	icon_state = "black1"
 	content_desc = ""
 	base_state = "black"
-	starts_with = list(/datum/reagent/mindbreaker = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5
+	startswith = list(/datum/reagent/mindbreaker)
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad
 	icon_state = "orange1"
 	content_desc = "Hyronalin 10u. Use in case of radiation poisoning."
 	base_state = "orange"
-	starts_with = list(/datum/reagent/hyronalin = 10)
+	startswith = list(/datum/reagent/hyronalin)
 
 /obj/item/reagent_containers/hypospray/autoinjector/antirad/mine
 	name = "Radfi-X"
@@ -189,4 +187,6 @@
 	content_desc = "#1 brand among uranium miners across the galaxy!"
 	icon_state = "mine1"
 	base_state = "mine"
-	starts_with = list(/datum/reagent/hyronalin = 5, /datum/reagent/dylovene = 5)
+	startswith = list(
+		/datum/reagent/hyronalin = 5,
+		/datum/reagent/dylovene = 5)

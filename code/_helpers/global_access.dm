@@ -103,8 +103,6 @@
 			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
-		if("SSturf")
-			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSvote")
@@ -749,12 +747,6 @@
 			return global.sqladdress;
 		if("sqldb")
 			return global.sqldb;
-		if("sqlfdbkdb")
-			return global.sqlfdbkdb;
-		if("sqlfdbklogin")
-			return global.sqlfdbklogin;
-		if("sqlfdbkpass")
-			return global.sqlfdbkpass;
 		if("sqllogging")
 			return global.sqllogging;
 		if("sqllogin")
@@ -1002,8 +994,6 @@
 			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
-		if("SSturf")
-			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSvote")
@@ -1652,12 +1642,6 @@
 			global.sqladdress=newval;
 		if("sqldb")
 			global.sqldb=newval;
-		if("sqlfdbkdb")
-			global.sqlfdbkdb=newval;
-		if("sqlfdbklogin")
-			global.sqlfdbklogin=newval;
-		if("sqlfdbkpass")
-			global.sqlfdbkpass=newval;
 		if("sqllogging")
 			global.sqllogging=newval;
 		if("sqllogin")
@@ -1853,7 +1837,6 @@
 	"SSticker",
 	"SStimer",
 	"SStrade",
-	"SSturf",
 	"SSvines",
 	"SSvote",
 	"SSwireless",
@@ -2200,9 +2183,6 @@
 	"splatter_cache",
 	"sqladdress",
 	"sqldb",
-	"sqlfdbkdb",
-	"sqlfdbklogin",
-	"sqlfdbkpass",
 	"sqllogging",
 	"sqllogin",
 	"sqlpass",

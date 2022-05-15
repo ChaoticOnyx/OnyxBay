@@ -144,12 +144,12 @@
 	allowed_tools = list(
 		/obj/item/reagent_containers/spray = 100,
 		/obj/item/reagent_containers/dropper = 100,
-		/obj/item/reagent_containers/glass/bottle = 90,
-		/obj/item/reagent_containers/food/drinks/flask = 90,
-		/obj/item/reagent_containers/glass/beaker = 75,
-		/obj/item/reagent_containers/food/drinks/bottle = 75,
-		/obj/item/reagent_containers/food/drinks/glass2 = 75,
-		/obj/item/reagent_containers/glass/bucket = 50
+		/obj/item/reagent_containers/vessel/bottle/chemical = 90,
+		/obj/item/reagent_containers/vessel/flask = 90,
+		/obj/item/reagent_containers/vessel/beaker = 75,
+		/obj/item/reagent_containers/vessel/bottle = 75,
+		/obj/item/reagent_containers/vessel/glass = 75,
+		/obj/item/reagent_containers/vessel/bucket = 50
 	)
 
 	can_infect = 0

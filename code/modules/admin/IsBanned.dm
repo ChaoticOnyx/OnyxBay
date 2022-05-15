@@ -15,7 +15,7 @@
 		return ..()
 
 	//Guest Checking
-	if(!config.guests_allowed && IsGuestKey(key))
+	if(!config.game.guests_allowed && IsGuestKey(key))
 		log_access("Failed Login: [key] - Guests not allowed")
 		message_admins("<span class='notice'>Failed Login: [key] - Guests not allowed</span>")
 		key_cache[key] = 0
@@ -27,7 +27,7 @@
 		key_cache[key] = 0
 		return
 
-	if(config.ban_legacy_system)
+	if(config.ban.ban_legacy_system)
 
 		//Ban Checking
 		. = CheckBan(ckeytext, computer_id, address)
@@ -90,8 +90,8 @@
 				)
 				AND
 				isnull(unbanned)
-				[isnull(config.server_id) ? "" : " AND server_id = $server_id"]
-			"}, dbcon, list(ckeytext = ckeytext, address = address, computer_id = computer_id, server_id = config.server_id))
+				[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
+			"}, dbcon, list(ckeytext = ckeytext, address = address, computer_id = computer_id, server_id = config.general.server_id))
 
 		while(query.NextRow())
 			var/pckey = query.item[1]
@@ -109,8 +109,8 @@
 				expires = " The ban is for [duration] minutes and expires on [expiration] UTC."
 
 			var/appeal
-			if(config && config.banappeals)
-				appeal = "\nTo get more information about your ban, or to appeal it, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
+			if(config && config.link.banappeals)
+				appeal = "\nTo get more information about your ban, or to appeal it, head to <a href='[config.link.banappeals]'>[config.link.banappeals]</a>"
 
 			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires][appeal]"
 

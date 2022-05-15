@@ -97,7 +97,7 @@
 				state = 4
 				var/obj/machinery/camera/C = new(src.loc)
 				src.forceMove(C)
-				C.assembly = src
+				C.assembly_ref = weakref(src)
 
 				C.auto_turn()
 

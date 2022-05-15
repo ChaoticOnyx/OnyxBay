@@ -305,7 +305,7 @@
 	return
 
 
-/obj/machinery/door/examine(mob/user)
+/obj/machinery/door/_examine_text(mob/user)
 	. = ..()
 	if(src.health < src.maxhealth / 4)
 		. += "\n\The [src] looks like it's about to break!"

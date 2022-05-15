@@ -1,5 +1,5 @@
 /datum/controller/subsystem/storyteller/proc/report_wound(mob/victim, type, severity)
-	if(!config.storyteller)
+	if(!config.game.storyteller)
 		return
 
 	ASSERT(istype(victim)) 	     // not used yet, keep for the future

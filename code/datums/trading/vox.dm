@@ -45,6 +45,7 @@
 								/obj/item/stack/material            = TRADER_SUBTYPES_ONLY,
 								/obj/item/stack/material/cyborg     = TRADER_BLACKLIST_ALL,
 								/obj/item/organ                     = TRADER_SUBTYPES_ONLY,
+								/obj/item/organ/external/stump      = TRADER_BLACKLIST_ALL
 								)
 
 	possible_trading_items = list(/obj/item/gun/projectile/dartgun/vox           = TRADER_SUBTYPES_ONLY,

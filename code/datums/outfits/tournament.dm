@@ -38,13 +38,13 @@
 	uniform = /obj/item/clothing/under/rank/janitor
 	back = /obj/item/storage/backpack
 	r_hand = /obj/item/mop
-	l_hand = /obj/item/reagent_containers/glass/bucket
+	l_hand = /obj/item/reagent_containers/vessel/bucket
 	l_pocket = /obj/item/grenade/chem_grenade/cleaner
 	r_pocket = /obj/item/grenade/chem_grenade/cleaner
 	backpack_contents = list(/obj/item/stack/tile/floor = 6)
 
 /decl/hierarchy/outfit/tournament_gear/janitor/post_equip(mob/living/carbon/human/H)
 	..()
-	var/obj/item/reagent_containers/glass/bucket/bucket = locate(/obj/item/reagent_containers/glass/bucket) in H
+	var/obj/item/reagent_containers/vessel/bucket/bucket = locate(/obj/item/reagent_containers/vessel/bucket) in H
 	if(bucket)
 		bucket.reagents.add_reagent(/datum/reagent/water, 70)

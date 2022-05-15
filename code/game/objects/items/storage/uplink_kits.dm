@@ -130,7 +130,7 @@
 	name = "toxin kit"
 	desc = "An apple will not be enough to keep the doctor away after this."
 	startswith = list(
-		/obj/item/reagent_containers/glass/beaker/vial/random/toxin,
+		/obj/item/reagent_containers/vessel/beaker/vial/random/toxin,
 		/obj/item/reagent_containers/syringe
 	)
 
@@ -192,7 +192,7 @@
 		/obj/item/soap/syndie,
 		/obj/item/storage/bag/trash,
 		/obj/item/grenade/chem_grenade/cleaner = 3,
-		/obj/item/reagent_containers/glass/bucket/full,
+		/obj/item/reagent_containers/vessel/bucket/full,
 		/obj/item/mop,
 		/obj/item/storage/box/bodybags
 		)

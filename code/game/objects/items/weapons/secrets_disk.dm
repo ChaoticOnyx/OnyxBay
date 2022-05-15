@@ -28,7 +28,7 @@
 	subject += " " + pick("that is extremely powerful", "which is highly efficient", "which is incredibly compact",\
 	"that runs off of plasma", "that runs off of hydrogen gas", "created by the Skrell", "that just looks really cool")
 
-/obj/item/disk/secret_project/examine(user)
+/obj/item/disk/secret_project/_examine_text(user)
 	. = ..()
 	if(!locked)
 		. += "\nWith the disk's classified contents unlocked, \

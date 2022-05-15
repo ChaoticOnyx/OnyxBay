@@ -83,7 +83,7 @@
 	damtype = damage_type //TODO unify these vars properly
 	if(!hitscan)
 		animate_movement = SLIDE_STEPS
-	if(config.projectile_basketball)
+	if(config.misc.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
 	else
@@ -96,6 +96,8 @@
 	. = ..()
 
 /obj/item/projectile/Destroy()
+	if(trajectory)
+		QDEL_NULL(trajectory)
 	return ..()
 
 /obj/item/projectile/forceMove()
@@ -544,5 +546,3 @@
 	var/output = trace.launch(target) //Test it!
 	qdel(trace) //No need for it anymore
 	return output //Send it back to the gun!
-
-

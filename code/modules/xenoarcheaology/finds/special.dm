@@ -2,15 +2,15 @@
 
 
 //endless reagents!
-/obj/item/reagent_containers/glass/replenishing
+/obj/item/reagent_containers/vessel/replenishing
 	var/spawning_id
 
-/obj/item/reagent_containers/glass/replenishing/Initialize()
+/obj/item/reagent_containers/vessel/replenishing/Initialize()
 	. = ..()
 	spawning_id = pick(/datum/reagent/blood,/datum/reagent/water/holywater,/datum/reagent/lube,/datum/reagent/soporific,/datum/reagent/ethanol,/datum/reagent/drink/ice,/datum/reagent/glycerol,/datum/reagent/fuel,/datum/reagent/space_cleaner)
 	START_PROCESSING(SSobj, src)
 
-/obj/item/reagent_containers/glass/replenishing/Process()
+/obj/item/reagent_containers/vessel/replenishing/Process()
 	reagents.add_reagent(spawning_id, 0.3)
 
 

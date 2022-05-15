@@ -299,7 +299,7 @@
 	var/style = WIKI_MINI
 	var/censored = 1
 
-/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+/obj/item/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle, temporary = FALSE)
 	if(ntopic)
 		topic = ntopic
 	if(!isnull(ncensored))
@@ -311,6 +311,9 @@
 	if(title)
 		SetName(title)
 	dat = wiki_request(topic, style, censored, src)
+	if(temporary) // I hate myself for doing this
+		atom_flags |= ATOM_FLAG_INITIALIZED
+		return INITIALIZE_HINT_QDEL
 	. = ..(mapload)
 
 /obj/item/book/wiki/Topic(href, href_list[])
@@ -328,7 +331,7 @@
 	var/ref = source ? "var ref = \ref[source];" : "";
 	switch(style)
 		if(WIKI_FULL)
-			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
+			script = "window.location='[config.link.wiki]/index.php?title=[topic]&printable=yes'"
 		if(WIKI_MINI)
 			script = file2text('code/js/wiki_html.js')
 			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
@@ -352,7 +355,7 @@
 		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
 		<body>[preamble]<div id='status'>Turning on...</div></body>
 		<script>
-		var mainPage = '[config.wikiurl]';
+		var mainPage = '[config.link.wiki]';
 		var topic = '[topic][add_params]';
 		var censorship = [censorship];
 		[ref]

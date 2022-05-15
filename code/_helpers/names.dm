@@ -108,8 +108,8 @@ var/religion_name = null
 			GLOB.using_map.station_name += pick("13","XIII","Thirteen")
 
 
-	if (config && config.server_name)
-		world.name = "[config.server_name]: [name]"
+	if (config && config.game.use_age_restriction_for_jobs)
+		world.name = "[config.game.use_age_restriction_for_jobs]: [name]"
 	else
 		world.name = GLOB.using_map.station_name
 
@@ -118,8 +118,8 @@ var/religion_name = null
 /proc/world_name(name)
 	GLOB.using_map.station_name = name
 
-	if (config && config.server_name)
-		world.name = "[config.server_name]: [name]"
+	if (config && config.game.use_age_restriction_for_jobs)
+		world.name = "[config.game.use_age_restriction_for_jobs]: [name]"
 	else
 		world.name = name
 

@@ -132,8 +132,8 @@
 		to_chat(mob, SPAN_NOTICE("... [pick(reflections)] ..."))
 		if(prob(5))
 			mob.whisper_say("[pick(reflections)]")
-	if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
-		mob.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 5)
+	if(mob.reagents.get_reagent_amount(/datum/reagent/painkiller) < 5)
+		mob.reagents.add_reagent(/datum/reagent/painkiller, 2.5)
 	mob.add_modifier(/datum/modifier/nuclear)
 
 /datum/disease2/effect/nuclear/deactivate(mob/living/carbon/human/mob)

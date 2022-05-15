@@ -4,6 +4,6 @@
  * @license MIT
  */
 
-export { Layout } from './Layout'
-export { Pane } from './Pane'
-export { Window } from './Window'
+export { Layout } from "./Layout";
+export { Pane } from "./Pane";
+export { Window } from "./Window";

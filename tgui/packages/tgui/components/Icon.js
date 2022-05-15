@@ -6,62 +6,63 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react'
-import { computeBoxClassName, computeBoxProps } from './Box'
+import { classes, pureComponentHooks } from "common/react";
+import { computeBoxClassName, computeBoxProps } from "./Box";
 
-const FA_OUTLINE_REGEX = /-o$/
+const FA_OUTLINE_REGEX = /-o$/;
 
-export const Icon = props => {
-  const { name, size, spin, className, rotation, inverse, ...rest } = props
-  const boxProps = computeBoxProps(rest)
+export const Icon = (props) => {
+  const { name, size, spin, className, rotation, inverse, ...rest } = props;
+  const boxProps = computeBoxProps(rest);
   if (size) {
     if (!boxProps.style) {
-      boxProps.style = {}
+      boxProps.style = {};
     }
-    boxProps.style['font-size'] = size * 100 + '%'
+    boxProps.style["font-size"] = size * 100 + "%";
   }
-  if (typeof rotation === 'number') {
+  if (typeof rotation === "number") {
     if (!boxProps.style) {
-      boxProps.style = {}
+      boxProps.style = {};
     }
-    boxProps.style.transform = `rotate(${rotation}deg)`
+    boxProps.style.transform = `rotate(${rotation}deg)`;
   }
-  let iconClass = ''
-  if (name.startsWith('tg-')) {
+  let iconClass = "";
+  if (name.startsWith("tg-")) {
     // tgfont icon
-    iconClass = name
+    iconClass = name;
   } else {
     // font awesome icon
-    const faRegular = FA_OUTLINE_REGEX.test(name)
-    const faName = name.replace(FA_OUTLINE_REGEX, '')
+    const faRegular = FA_OUTLINE_REGEX.test(name);
+    const faName = name.replace(FA_OUTLINE_REGEX, "");
     iconClass =
-      (faRegular ? 'far ' : 'fas ') + 'fa-' + faName + (spin ? ' fa-spin' : '')
+      (faRegular ? "far " : "fas ") + "fa-" + faName + (spin ? " fa-spin" : "");
   }
   return (
     <i
       className={classes([
-        'Icon',
+        "Icon",
         iconClass,
         className,
-        computeBoxClassName(rest)
+        computeBoxClassName(rest),
       ])}
       {...boxProps}
     />
-  )
-}
+  );
+};
 
-Icon.defaultHooks = pureComponentHooks
+Icon.defaultHooks = pureComponentHooks;
 
-export const IconStack = props => {
-  const { className, children, ...rest } = props
+export const IconStack = (props) => {
+  const { className, children, ...rest } = props;
   return (
     <span
       // eslint-disable-next-line react/no-unknown-property
-      class={classes(['IconStack', className, computeBoxClassName(rest)])}
-      {...computeBoxProps(rest)}>
+      class={classes(["IconStack", className, computeBoxClassName(rest)])}
+      {...computeBoxProps(rest)}
+    >
       {children}
     </span>
-  )
-}
+  );
+};
 
-Icon.Stack = IconStack
+Icon.Stack = IconStack;

@@ -69,7 +69,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")
@@ -171,7 +171,7 @@
 	attack_verb = list("attacked", "struck", "hit")
 	var/bullets = 5
 
-	examine(mob/user)
+	_examine_text(mob/user)
 		if(..(user, 2) && bullets)
 			to_chat(user, "<span class='notice'>It is loaded with [bullets] foam darts!</span>")
 
@@ -901,7 +901,7 @@
 	pixel_x = 0
 	pixel_y = 0
 
-/obj/item/toy/chubbyskeleton/examine(mob/user)
+/obj/item/toy/chubbyskeleton/_examine_text(mob/user)
 	return "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>"
 
 /obj/item/toy/chubbyskeleton/attack_hand(mob/user)

@@ -12,7 +12,7 @@
 	var/path = 0
 	var/obj/item/device/assembly_holder/detonator = null
 	var/list/beakers = new /list()
-	var/list/allowed_containers = list(/obj/item/reagent_containers/glass/beaker, /obj/item/reagent_containers/glass/bottle)
+	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/vessel/bottle/chemical)
 	var/affected_area = 3
 
 /obj/item/grenade/chem_grenade/Initialize()
@@ -109,7 +109,7 @@
 			else
 				to_chat(user, "<span class='warning'>\The [W] is empty.</span>")
 
-/obj/item/grenade/chem_grenade/examine(mob/user)
+/obj/item/grenade/chem_grenade/_examine_text(mob/user)
 	. = ..(user)
 	if(detonator)
 		to_chat(user, "With attached [detonator.name]")
@@ -140,7 +140,7 @@
 	if(!stage || stage<2) return
 
 	var/has_reagents = 0
-	for(var/obj/item/reagent_containers/glass/G in beakers)
+	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		if(G.reagents.total_volume) has_reagents = 1
 
 	active = 0
@@ -158,7 +158,7 @@
 
 	playsound(src.loc, 'sound/effects/bamf.ogg', 50, 1)
 
-	for(var/obj/item/reagent_containers/glass/G in beakers)
+	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		G.reagents.trans_to_obj(src, G.reagents.total_volume)
 
 	if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
@@ -185,7 +185,7 @@
 	name = "large chem grenade"
 	desc = "An oversized grenade that affects a larger area."
 	icon_state = "large_grenade"
-	allowed_containers = list(/obj/item/reagent_containers/glass)
+	allowed_containers = list(/obj/item/reagent_containers/vessel)
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3)
 	affected_area = 4
 
@@ -197,8 +197,8 @@
 
 /obj/item/grenade/chem_grenade/metalfoam/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/aluminum, 30)
 	B2.reagents.add_reagent(/datum/reagent/foaming_agent, 10)
@@ -218,8 +218,8 @@
 
 /obj/item/grenade/chem_grenade/incendiary/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/aluminum, 15)
 	B1.reagents.add_reagent(/datum/reagent/fuel,20)
@@ -241,8 +241,8 @@
 
 /obj/item/grenade/chem_grenade/antiweed/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/toxin/plantbgone, 25)
 	B1.reagents.add_reagent(/datum/reagent/potassium, 25)
@@ -263,8 +263,8 @@
 
 /obj/item/grenade/chem_grenade/cleaner/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/surfactant, 40)
 	B2.reagents.add_reagent(/datum/reagent/water, 40)
@@ -284,8 +284,8 @@
 
 /obj/item/grenade/chem_grenade/teargas/Initialize()
 	. = ..()
-	var/obj/item/reagent_containers/glass/beaker/large/B1 = new(src)
-	var/obj/item/reagent_containers/glass/beaker/large/B2 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/large/B2 = new(src)
 
 	B1.reagents.add_reagent(/datum/reagent/phosphorus, 40)
 	B1.reagents.add_reagent(/datum/reagent/potassium, 40)

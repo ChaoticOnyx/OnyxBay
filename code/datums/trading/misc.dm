@@ -87,7 +87,7 @@
 								/obj/item/storage/backpack/clown									= TRADER_THIS_TYPE,
 								/obj/item/bananapeel												= TRADER_THIS_TYPE,
 								/obj/item/gun/launcher/money										= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/snacks/pie						= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/pie						= TRADER_THIS_TYPE,
 								/obj/item/bikehorn												= TRADER_ALL,
 								/obj/item/reagent_containers/spray/waterflower					= TRADER_THIS_TYPE,
 								/obj/item/gun/launcher/pneumatic/small							= TRADER_THIS_TYPE,
@@ -95,9 +95,9 @@
 								/obj/item/clothing/mask/fakemoustache									= TRADER_THIS_TYPE,
 								/obj/item/grenade/spawnergrenade/fake_carp						= TRADER_THIS_TYPE,
 								/obj/item/clothingbag											= TRADER_SUBTYPES_ONLY,
-								/obj/item/reagent_containers/glass/paint/random					= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/glass/paint/white					= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/food/drinks/bottle/bottleofnothing	= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/paint/random					= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/paint/white					= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/bottleofnothing      = TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/spray/hair_remover					= TRADER_THIS_TYPE
 								)
 

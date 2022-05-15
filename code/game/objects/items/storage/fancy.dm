@@ -41,7 +41,7 @@
 
 	. = ..()
 
-/obj/item/storage/fancy/examine(mob/user)
+/obj/item/storage/fancy/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
@@ -65,13 +65,13 @@
 	max_w_class = ITEM_SIZE_SMALL
 	w_class = ITEM_SIZE_NORMAL
 
-	key_type = /obj/item/reagent_containers/food/snacks/egg
+	key_type = /obj/item/reagent_containers/food/egg
 	can_hold = list(
-		/obj/item/reagent_containers/food/snacks/egg,
-		/obj/item/reagent_containers/food/snacks/boiledegg
+		/obj/item/reagent_containers/food/egg,
+		/obj/item/reagent_containers/food/boiledegg
 		)
 
-	startswith = list(/obj/item/reagent_containers/food/snacks/egg = 12)
+	startswith = list(/obj/item/reagent_containers/food/egg = 12)
 
 /obj/item/storage/fancy/egg_box/empty
 	startswith = null
@@ -327,8 +327,8 @@
 	max_w_class = ITEM_SIZE_TINY
 	storage_slots = 6
 
-	key_type = /obj/item/reagent_containers/glass/beaker/vial
-	startswith = list(/obj/item/reagent_containers/glass/beaker/vial = 6)
+	key_type = /obj/item/reagent_containers/vessel/beaker/vial
+	startswith = list(/obj/item/reagent_containers/vessel/beaker/vial = 6)
 
 /obj/item/storage/fancy/vials/update_icon()
 	var/key_count = count_by_type(contents, key_type)
@@ -345,10 +345,10 @@
 	max_storage_space = null
 	storage_slots = 6
 	req_access = list(access_virology)
-	can_hold = list(/obj/item/reagent_containers/glass/beaker/vial)
+	can_hold = list(/obj/item/reagent_containers/vessel/beaker/vial)
 
 /obj/item/storage/lockbox/vials/update_icon()
-	var/total_contents = count_by_type(contents, /obj/item/reagent_containers/glass/beaker/vial)
+	var/total_contents = count_by_type(contents, /obj/item/reagent_containers/vessel/beaker/vial)
 	overlays.Cut()
 	icon_state = "vialbox[Floor(total_contents)]"
 	if (!broken)

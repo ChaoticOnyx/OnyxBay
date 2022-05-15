@@ -7,14 +7,14 @@
 	var/curing
 	var/isolating
 
-	var/obj/item/reagent_containers/glass/beaker/vial/sample = null
+	var/obj/item/reagent_containers/vessel/beaker/vial/sample = null
 	var/datum/disease2/disease/virus2 = null
 
 /obj/machinery/computer/centrifuge/attackby(obj/O, mob/user)
 	if(isScrewdriver(O))
 		return ..(O,user)
 
-	if(istype(O,/obj/item/reagent_containers/glass/beaker/vial))
+	if(istype(O,/obj/item/reagent_containers/vessel/beaker/vial))
 		if(sample)
 			to_chat(user, "\The [src] is already loaded.")
 			return

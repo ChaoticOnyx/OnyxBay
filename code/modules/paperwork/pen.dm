@@ -205,7 +205,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 1.25
-	force = 25 // Half an esword's force
+	force = 0
 	armor_penetration = 35
 	sharp = TRUE
 	edge = TRUE
@@ -214,6 +214,7 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	check_armour = "laser"
+	var/active_force = 25.0 // Half an esword's force
 	var/active_max_bright = 0.17
 	var/active_outer_range = 1.65
 	var/brightness_color = "#ff5959"
@@ -243,6 +244,7 @@
 	slot_flags |= SLOT_DENYPOCKET
 	name = "energy dagger"
 	desc = "Bureaucracy has never ever been so deadly."
+	force = active_force
 	throwforce = 45
 	throw_speed = 1
 	icon_state = "edagger1"
@@ -256,6 +258,7 @@
 	slot_flags = initial(slot_flags)
 	name = initial(name)
 	desc = initial(desc)
+	force = initial(force)
 	throwforce = initial(throwforce)
 	throw_speed = initial(throw_speed)
 	icon_state = initial(icon_state)

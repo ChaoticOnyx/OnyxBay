@@ -63,7 +63,7 @@
 	component_parts += new /obj/item/stock_parts/manipulator(src)
 	RefreshParts()
 
-/obj/machinery/organ_printer/examine(mob/user)
+/obj/machinery/organ_printer/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>"
 
@@ -211,8 +211,8 @@
 	desc = "It's a machine that prints replacement organs."
 	icon_state = "bioprinter"
 	var/list/amount_list = list(
-		/obj/item/reagent_containers/food/snacks/meat = 50,
-		/obj/item/reagent_containers/food/snacks/rawcutlet = 15
+		/obj/item/reagent_containers/food/meat = 50,
+		/obj/item/reagent_containers/food/rawcutlet = 15
 		)
 	var/loaded_dna //Blood sample for DNA hashing.
 
@@ -229,9 +229,9 @@
 /obj/machinery/organ_printer/flesh/dismantle()
 	var/turf/T = get_turf(src)
 	if(T)
-		while(stored_matter >= amount_list[/obj/item/reagent_containers/food/snacks/meat])
-			stored_matter -= amount_list[/obj/item/reagent_containers/food/snacks/meat]
-			new /obj/item/reagent_containers/food/snacks/meat(T)
+		while(stored_matter >= amount_list[/obj/item/reagent_containers/food/meat])
+			stored_matter -= amount_list[/obj/item/reagent_containers/food/meat]
+			new /obj/item/reagent_containers/food/meat(T)
 	return ..()
 
 /obj/machinery/organ_printer/flesh/New()

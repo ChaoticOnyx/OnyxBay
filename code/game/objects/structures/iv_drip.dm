@@ -151,7 +151,7 @@
 	mode = !mode
 	to_chat(usr, "The IV drip is now [mode ? "injecting" : "taking blood"].")
 
-/obj/structure/iv_drip/examine(mob/user)
+/obj/structure/iv_drip/_examine_text(mob/user)
 	. = ..()
 
 	if (get_dist(src, user) > 2)

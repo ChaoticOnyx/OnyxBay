@@ -64,6 +64,9 @@
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
+	if(loc)
+		SEND_SIGNAL(loc, SIGNAL_ATOM_INITIALIZED_ON, src) /// Sends a signal that the new atom `src`, has been created at `loc`
+
 	if(light_max_bright && light_outer_range)
 		update_light()
 
@@ -79,6 +82,12 @@
 /atom/proc/LateInitialize()
 	return
 
+/atom/proc/drop_location()
+	var/atom/L = loc
+	if(!L)
+		return null
+	return L.allow_drop() ? L : get_turf(L)
+
 /atom/Entered(atom/movable/enterer, atom/old_loc)
 	..()
 
@@ -93,7 +102,8 @@
 /atom/Destroy()
 	QDEL_NULL(reagents)
 	QDEL_NULL(proximity_monitor)
-	. = ..()
+
+	return ..()
 
 /atom/proc/reveal_blood()
 	return
@@ -137,6 +147,9 @@
 	proc/can_add_container()
 		return flags & INSERT_CONTAINER
 */
+
+/atom/proc/allow_drop()
+	return FALSE
 
 /atom/proc/CheckExit()
 	return 1
@@ -262,17 +275,16 @@ its easier to just keep the beam vertical.
 	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
 
 
-//All atoms
-/atom/proc/examine(mob/user, infix = "", suffix = "")
-	//This reformat names to get a/an properly working on item descriptions when they are bloody
-	var/f_name = "\a [src][infix]."
+/atom/proc/_examine_text(mob/user, infix = "", suffix = "")
+	// This reformat names to get a/an properly working on item descriptions when they are bloody
+	var/f_name = "\a [SPAN("info", "<em>[src][infix]</em>")]."
 	if(src.blood_DNA && !istype(src, /obj/effect/decal))
 		if(gender == PLURAL)
 			f_name = "some "
 		else
 			f_name = "a "
 		if(blood_color != SYNTH_BLOOD_COLOUR)
-			f_name += "<span class='danger'>blood-stained</span> [name][infix]!"
+			f_name += "<span class='danger'>blood-stained</span> [SPAN("info", "<em>[name][infix]</em>")]!"
 		else
 			f_name += "oil-stained [name][infix]."
 
@@ -280,6 +292,16 @@ its easier to just keep the beam vertical.
 	. += "\n[desc]"
 
 	return
+
+/atom/proc/examine(...)
+	SHOULD_NOT_OVERRIDE(TRUE)
+
+	var/content = "<div class='Examine'>"
+
+	content += _examine_text(arglist(args))
+	content += "</div>"
+
+	return content
 
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
@@ -299,12 +321,8 @@ its easier to just keep the beam vertical.
 	return TRUE
 
 /atom/proc/set_icon_state(new_icon_state)
-	if(has_extension(src, /datum/extension/base_icon_state))
-		var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-		bis.base_icon_state = new_icon_state
-		update_icon()
-	else
-		icon_state = new_icon_state
+	icon_state = new_icon_state
+	update_icon()
 
 /atom/proc/update_icon()
 	CAN_BE_REDEFINED(TRUE)

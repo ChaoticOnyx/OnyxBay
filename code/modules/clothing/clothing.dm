@@ -763,7 +763,7 @@ BLIND     // can't see anything
 		M.update_inv_wear_id()
 
 
-/obj/item/clothing/under/examine(mob/user)
+/obj/item/clothing/under/_examine_text(mob/user)
 	. = ..()
 	switch(src.sensor_mode)
 		if(0)

@@ -216,7 +216,7 @@
 	else
 		return 0
 
-/obj/mecha/examine(mob/user)
+/obj/mecha/_examine_text(mob/user)
 	. = ..()
 	var/integrity = health/initial(health)*100
 	switch(integrity)

@@ -67,7 +67,7 @@
 	return
 
 
-/obj/item/fuel/examine(mob/user)
+/obj/item/fuel/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA magnetic storage ring, it contains [fuel]kg of [content ? content : "nothing"]."

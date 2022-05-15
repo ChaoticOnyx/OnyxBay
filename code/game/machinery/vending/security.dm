@@ -13,7 +13,7 @@
 					/obj/item/grenade/flashbang = 4,
 					/obj/item/grenade/chem_grenade/teargas = 4,
 					/obj/item/device/flash = 5,
-					/obj/item/reagent_containers/food/snacks/donut/normal = 12,
+					/obj/item/reagent_containers/food/donut/normal = 12,
 					/obj/item/storage/box/evidence = 6)
 	contraband = list(/obj/item/clothing/glasses/sunglasses = 2,
 					  /obj/item/storage/box/donut = 2)

@@ -56,7 +56,7 @@ var/DB_PORT = 3306 // This is the port your MySQL server is running on (3306 is 
 	_db_con = _dm_db_new_con()
 
 /DBConnection/proc/Connect(dbi_handler=src.dbi,user_handler=src.user,password_handler=src.password,cursor_handler)
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		return FALSE
 	if(!src)
 		return FALSE
@@ -69,7 +69,7 @@ var/DB_PORT = 3306 // This is the port your MySQL server is running on (3306 is 
 /DBConnection/proc/Disconnect() return _dm_db_close(_db_con)
 
 /DBConnection/proc/IsConnected()
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		return FALSE
 	var/success = _dm_db_is_connected(_db_con)
 	return success

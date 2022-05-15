@@ -32,7 +32,7 @@
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/device/spy_bug/examine(mob/user)
+/obj/item/device/spy_bug/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\nIt's a tiny camera, microphone, and transmission device in a happy union."
@@ -99,7 +99,7 @@
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/device/spy_monitor/examine(mob/user)
+/obj/item/device/spy_monitor/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nThe time '12:00' is blinking in the corner of the screen and \the [src] looks very cheaply made."

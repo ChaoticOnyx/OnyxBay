@@ -374,3 +374,9 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
+
+/area/allow_drop()
+	CRASH("Bad op: area/allow_drop() called")
+
+/area/drop_location()
+	CRASH("Bad op: area/drop_location() called")

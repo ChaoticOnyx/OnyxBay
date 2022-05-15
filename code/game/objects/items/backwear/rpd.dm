@@ -50,7 +50,7 @@
 	var/activate_sound = 'sound/items/polaroid3.ogg'
 	var/recycling_time = 30
 
-/obj/item/rpd/examine(mob/user)
+/obj/item/rpd/_examine_text(mob/user)
 	. = ..()
 	. += "\n[selected.name] is chosen to be produced."
 

@@ -27,7 +27,7 @@
 	var/mob/living/carbon/alien/diona/next_nymph
 	var/mob/living/carbon/alien/diona/last_nymph
 
-/mob/living/carbon/alien/diona/examine(mob/user)
+/mob/living/carbon/alien/diona/_examine_text(mob/user)
 	. = ..()
 	if(holding_item)
 		to_chat(user, SPAN("notice", "It is holding \icon[holding_item] \a [holding_item]."))

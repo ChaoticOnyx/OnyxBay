@@ -16,6 +16,7 @@ var/list/admin_datums = list()
 	var/datum/feed_message/admincaster_feed_message = new /datum/feed_message   //These two will act as holders.
 	var/datum/feed_channel/admincaster_feed_channel = new /datum/feed_channel
 	var/admincaster_signature	//What you'll sign the newsfeeds as
+	var/datum/follow_panel/follow_panel = new()
 
 /datum/admins/proc/marked_datum()
 	if(marked_datum_weak)
@@ -121,7 +122,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 
 	// If someone has been AFK since round-start or longer, stealth them
 	// BYOND keeps track of inactivity between rounds as long as it's not a full stop/start.
-	if(holder.stealthy_ == STEALTH_OFF && ((inactivity >= world.time) || (config.autostealth && inactivity >= MinutesToTicks(config.autostealth))))
+	if(holder.stealthy_ == STEALTH_OFF && ((inactivity >= world.time) || (config.admin.autostealth && inactivity >= MinutesToTicks(config.admin.autostealth))))
 		holder.stealthy_ = STEALTH_AUTO
 	else if(holder.stealthy_ == STEALTH_AUTO && inactivity < world.time)
 		// And if someone has been set to auto-stealth and returns, unstealth them

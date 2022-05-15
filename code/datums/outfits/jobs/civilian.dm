@@ -10,7 +10,7 @@
 	uniform = /obj/item/clothing/under/rank/bartender
 	id_type = /obj/item/card/id/civilian/bartender
 	pda_type = /obj/item/device/pda/bar
-	r_pocket = /obj/item/reagent_containers/food/snacks/monkeycube/punpuncube
+	r_pocket = /obj/item/reagent_containers/food/monkeycube/punpuncube
 	suit = /obj/item/clothing/suit/armor/vest
 
 /decl/hierarchy/outfit/job/service/chef
@@ -91,7 +91,7 @@
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	r_pocket = /obj/item/pen/crayon/rainbow
 	l_pocket = /obj/item/bikehorn
-	backpack_contents = list(/obj/item/reagent_containers/food/snacks/pie = 1,
+	backpack_contents = list(/obj/item/reagent_containers/food/pie = 1,
 							 /obj/item/bananapeel = 1,
 							 /obj/item/reagent_containers/spray/waterflower = 1)
 
@@ -109,6 +109,6 @@
 	mask = /obj/item/clothing/mask/gas/mime
 	r_pocket = /obj/item/pen/crayon/mime
 	gloves = /obj/item/clothing/gloves/white
-	backpack_contents = list(/obj/item/reagent_containers/food/drinks/bottle/bottleofnothing = 1,
+	backpack_contents = list(/obj/item/reagent_containers/vessel/bottle/bottleofnothing = 1,
 							 /obj/item/clothing/accessory/suspenders = 1,
-							 /obj/item/reagent_containers/food/snacks/baguette = 1)
+							 /obj/item/reagent_containers/food/baguette = 1)

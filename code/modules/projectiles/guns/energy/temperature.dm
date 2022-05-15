@@ -18,7 +18,7 @@
 	combustion = 0
 
 
-/obj/item/gun/energy/temperature/examine(mob/user)
+/obj/item/gun/energy/temperature/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe temperature sensor shows: [round(temperature-T0C)]&deg;C"
 

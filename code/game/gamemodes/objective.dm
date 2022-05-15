@@ -18,7 +18,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/Destroy()
 	all_objectives -= src
-	..()
+	return ..()
 
 /datum/objective/proc/check_completion()
 	return completed
@@ -29,7 +29,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && !(possible_target.current.loc?.z in GLOB.using_map.admin_levels))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(target_is_disallowed(H))
 				continue
@@ -41,7 +41,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role)  && !(possible_target.current.loc?.z in GLOB.using_map.admin_levels))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
@@ -496,7 +496,7 @@ var/global/list/all_objectives = list()
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/tank,
 		"a sample of metroid extract" = /obj/item/metroid_extract,
-		"a piece of corgi meat" = /obj/item/reagent_containers/food/snacks/meat/corgi,
+		"a piece of corgi meat" = /obj/item/reagent_containers/food/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
 		"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,

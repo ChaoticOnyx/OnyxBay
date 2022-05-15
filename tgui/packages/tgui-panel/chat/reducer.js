@@ -4,95 +4,102 @@
  * @license MIT
  */
 
-import { addChatPage, changeChatPage, loadChat, removeChatPage, toggleAcceptedType, updateChatPage, updateMessageCount, changeScrollTracking } from './actions'
-import { canPageAcceptType, createMainPage } from './model'
+import {
+  addChatPage,
+  changeChatPage,
+  loadChat,
+  removeChatPage,
+  toggleAcceptedType,
+  updateChatPage,
+  updateMessageCount,
+  changeScrollTracking,
+} from "./actions";
+import { canPageAcceptType, createMainPage } from "./model";
 
-const mainPage = createMainPage()
+const mainPage = createMainPage();
 
 export const initialState = {
   version: 5,
   currentPageId: mainPage.id,
   scrollTracking: true,
-  pages: [
-    mainPage.id
-  ],
+  pages: [mainPage.id],
   pageById: {
-    [mainPage.id]: mainPage
-  }
-}
+    [mainPage.id]: mainPage,
+  },
+};
 
 export const chatReducer = (state = initialState, action) => {
-  const { type, payload } = action
+  const { type, payload } = action;
   if (type === loadChat.type) {
     // Validate version and/or migrate state
     if (payload?.version !== state.version) {
-      return state
+      return state;
     }
     // Reset page message counts
     // NOTE: We are mutably changing the payload on the assumption
     // that it is a copy that comes straight from the web storage.
     for (const id of Object.keys(payload.pageById)) {
-      const page = payload.pageById[id]
-      page.unreadCount = 0
+      const page = payload.pageById[id];
+      page.unreadCount = 0;
     }
     return {
       ...state,
-      ...payload
-    }
+      ...payload,
+    };
   }
   if (type === changeScrollTracking.type) {
-    const scrollTracking = payload
+    const scrollTracking = payload;
     const nextState = {
       ...state,
-      scrollTracking
-    }
+      scrollTracking,
+    };
     if (scrollTracking) {
-      const pageId = state.currentPageId
+      const pageId = state.currentPageId;
       const page = {
         ...state.pageById[pageId],
-        unreadCount: 0
-      }
+        unreadCount: 0,
+      };
       nextState.pageById = {
         ...state.pageById,
-        [pageId]: page
-      }
+        [pageId]: page,
+      };
     }
-    return nextState
+    return nextState;
   }
   if (type === updateMessageCount.type) {
-    const countByType = payload
-    const pages = state.pages.map(id => state.pageById[id])
-    const currentPage = state.pageById[state.currentPageId]
-    const nextPageById = { ...state.pageById }
+    const countByType = payload;
+    const pages = state.pages.map((id) => state.pageById[id]);
+    const currentPage = state.pageById[state.currentPageId];
+    const nextPageById = { ...state.pageById };
     for (const page of pages) {
-      let unreadCount = 0
+      let unreadCount = 0;
       for (const type of Object.keys(countByType)) {
         // Message does not belong here
         if (!canPageAcceptType(page, type)) {
-          continue
+          continue;
         }
         // Current page is scroll tracked
         if (page === currentPage && state.scrollTracking) {
-          continue
+          continue;
         }
         // This page received the same message which we can read
         // on the current page.
         if (page !== currentPage && canPageAcceptType(currentPage, type)) {
-          continue
+          continue;
         }
-        unreadCount += countByType[type]
+        unreadCount += countByType[type];
       }
       if (unreadCount > 0) {
         nextPageById[page.id] = {
           ...page,
-          unreadCount: page.unreadCount + unreadCount
-        }
+          unreadCount: page.unreadCount + unreadCount,
+        };
       }
     }
     return {
       ...state,
-      pageById: nextPageById
-    }
+      pageById: nextPageById,
+    };
   }
   if (type === addChatPage.type) {
     return {
@@ -101,72 +108,72 @@ export const chatReducer = (state = initialState, action) => {
       pages: [...state.pages, payload.id],
       pageById: {
         ...state.pageById,
-        [payload.id]: payload
-      }
-    }
+        [payload.id]: payload,
+      },
+    };
   }
   if (type === changeChatPage.type) {
-    const { pageId } = payload
+    const { pageId } = payload;
     const page = {
       ...state.pageById[pageId],
-      unreadCount: 0
-    }
+      unreadCount: 0,
+    };
     return {
       ...state,
       currentPageId: pageId,
       pageById: {
         ...state.pageById,
-        [pageId]: page
-      }
-    }
+        [pageId]: page,
+      },
+    };
   }
   if (type === updateChatPage.type) {
-    const { pageId, ...update } = payload
+    const { pageId, ...update } = payload;
     const page = {
       ...state.pageById[pageId],
-      ...update
-    }
+      ...update,
+    };
     return {
       ...state,
       pageById: {
         ...state.pageById,
-        [pageId]: page
-      }
-    }
+        [pageId]: page,
+      },
+    };
   }
   if (type === toggleAcceptedType.type) {
-    const { pageId, type } = payload
-    const page = { ...state.pageById[pageId] }
-    page.acceptedTypes = { ...page.acceptedTypes }
-    page.acceptedTypes[type] = !page.acceptedTypes[type]
+    const { pageId, type } = payload;
+    const page = { ...state.pageById[pageId] };
+    page.acceptedTypes = { ...page.acceptedTypes };
+    page.acceptedTypes[type] = !page.acceptedTypes[type];
     return {
       ...state,
       pageById: {
         ...state.pageById,
-        [pageId]: page
-      }
-    }
+        [pageId]: page,
+      },
+    };
   }
   if (type === removeChatPage.type) {
-    const { pageId } = payload
+    const { pageId } = payload;
     const nextState = {
       ...state,
       pages: [...state.pages],
       pageById: {
-        ...state.pageById
-      }
-    }
-    delete nextState.pageById[pageId]
-    nextState.pages = nextState.pages.filter(id => id !== pageId)
+        ...state.pageById,
+      },
+    };
+    delete nextState.pageById[pageId];
+    nextState.pages = nextState.pages.filter((id) => id !== pageId);
     if (nextState.pages.length === 0) {
-      nextState.pages.push(mainPage.id)
-      nextState.pageById[mainPage.id] = mainPage
-      nextState.currentPageId = mainPage.id
+      nextState.pages.push(mainPage.id);
+      nextState.pageById[mainPage.id] = mainPage;
+      nextState.currentPageId = mainPage.id;
     }
     if (!nextState.currentPageId || nextState.currentPageId === pageId) {
-      nextState.currentPageId = nextState.pages[0]
+      nextState.currentPageId = nextState.pages[0];
     }
-    return nextState
+    return nextState;
   }
-  return state
-}
+  return state;
+};

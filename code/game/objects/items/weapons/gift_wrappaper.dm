@@ -86,8 +86,8 @@
 		/obj/item/toy/prize/seraph,
 		/obj/item/toy/spinningtoy,
 		/obj/item/toy/sword,
-		/obj/item/reagent_containers/food/snacks/grown/ambrosiadeus,
-		/obj/item/reagent_containers/food/snacks/grown/ambrosiavulgaris,
+		/obj/item/reagent_containers/food/grown/ambrosiadeus,
+		/obj/item/reagent_containers/food/grown/ambrosiavulgaris,
 		/obj/item/device/paicard,
 		/obj/item/instrument/violin,
 		/obj/item/storage/belt/utility/full,
@@ -189,7 +189,7 @@
 	return
 
 
-/obj/item/wrapping_paper/examine(mob/user)
+/obj/item/wrapping_paper/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\n[text("There is about [] square units of paper left!", src.amount)]"

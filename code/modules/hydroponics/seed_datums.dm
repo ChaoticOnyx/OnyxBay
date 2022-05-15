@@ -311,7 +311,7 @@
 	seed_name = "egg plant"
 	display_name = "egg plants"
 	mutants = null
-	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
+	has_custom_product = /obj/item/reagent_containers/food/egg/randomcolor
 	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()
@@ -668,7 +668,7 @@
 	seed_name = "somniferum poppy"
 	display_name = "somniferum poppies"
 	mutants = null
-	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol/opium = list(1,10))
+	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/painkiller/opium = list(1,10))
 
 /datum/seed/flower/poppy/opium/New()
 	..()

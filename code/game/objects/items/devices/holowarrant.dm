@@ -12,7 +12,7 @@
 	var/datum/computer_file/data/warrant/active
 
 //look at it
-/obj/item/device/holowarrant/examine(mob/user)
+/obj/item/device/holowarrant/_examine_text(mob/user)
 	. = ..()
 	if(active)
 		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."

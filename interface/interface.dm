@@ -3,8 +3,8 @@
 	set name = "Wiki"
 	set desc = "Visit the wiki."
 	set hidden = 1
-	if( config.wikiurl )
-		send_link(src, config.wikiurl)
+	if( config.link.wiki )
+		send_link(src, config.link.wiki)
 	else
 		to_chat(src, "<span class='warning'>The wiki URL is not set in the server configuration.</span>")
 	return
@@ -13,8 +13,8 @@
 	set name = "Rules"
 	set desc = "Show Server Rules."
 	set hidden = 1
-	if( config.rulesurl )
-		send_link(src, config.rulesurl)
+	if( config.link.rules )
+		send_link(src, config.link.rules)
 	else
 		to_chat(src, "<span class='warning'>The rules URL is not set in the server configuration.</span>")
 	return
@@ -23,8 +23,8 @@
 	set name = "Backstory"
 	set desc = "Show server Backstory."
 	set hidden = 1
-	if( config.backstoryurl )
-		send_link(src, config.backstoryurl)
+	if( config.link.backstory )
+		send_link(src, config.link.backstory)
 	else
 		to_chat(src, "<span class='warning'>The backstory URL is not set in the server configuration.</span>")
 	return
@@ -33,8 +33,8 @@
 	set name = "Forum"
 	set desc = "Visit the forum."
 	set hidden = 1
-	if( config.forumurl )
-		send_link(src, config.forumurl)
+	if( config.link.forum )
+		send_link(src, config.link.forum)
 	else
 		to_chat(src, "<span class='warning'>The forum URL is not set in the server configuration.</span>")
 	return
@@ -43,8 +43,8 @@
 	set name = "Discord"
 	set desc = "Visit the community Discord."
 	set hidden = 1
-	if( config.discordurl )
-		send_link(src, config.discordurl)
+	if( config.link.discord )
+		send_link(src, config.link.discord)
 	else
 		to_chat(src, "<span class='warning'>The Discord URL is not set in the server configuration.</span>")
 	return
@@ -53,8 +53,8 @@
 	set name = "Bug Report"
 	set desc = "Create bug report to developers."
 	set hidden = 1
-	if( config.githuburl )
-		send_link(src, "[config.githuburl]/issues")
+	if( config.link.github )
+		send_link(src, "[config.link.github]/issues")
 	else
 		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
 	return
