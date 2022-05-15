@@ -107,7 +107,7 @@
 
 /obj/item/projectile/beam/pulse/heavy
 	name = "heavy pulse laser"
-	icon_state = "pulse1_bl"
+	icon_state = "mecha_pulse1_bl"
 	var/life = 20
 
 /obj/item/projectile/beam/pulse/heavy/Bump(atom/A, forced = FALSE)
@@ -131,6 +131,8 @@
 	energy_drain = 200 KILOWATTS
 	equip_cooldown = 150
 	range = MELEE|RANGED
+	equip_slot = BACK
+	is_dyeable = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/can_attach(obj/mecha/combat/honker/M)
 	if(!istype(M))
@@ -232,6 +234,7 @@
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack
 	var/missile_speed = 2
 	var/missile_range = 30
+	equip_slot = BACK
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/Fire(atom/movable/AM, atom/target)
 	AM.throw_at(target,missile_range, missile_speed, chassis)
@@ -248,6 +251,8 @@
 	missile_speed = 1
 	missile_range = 15
 	required_type = /obj/mecha  //Why restrict it to just mining or combat mechs?
+	equip_slot = HAND
+	is_dyeable = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare/Fire(atom/movable/AM, atom/target, turf/aimloc)
 	var/obj/item/device/flashlight/flare/fired = AM
@@ -291,6 +296,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 200 KILOWATTS
 	equip_cooldown = 60
+	equip_slot = HAND
 	var/det_time = 20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/Fire(atom/movable/AM, atom/target)
@@ -318,6 +324,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 20
+	is_dyeable = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/banana_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())
@@ -346,6 +353,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 10
+	is_dyeable = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/mousetrap_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())

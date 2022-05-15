@@ -3,6 +3,7 @@
 	name = "Marauder"
 	icon_state = "marauder"
 	initial_icon = "marauder"
+	base_color = "#7886A5"
 	step_in = 5
 	health = 500
 	deflect_chance = 25
@@ -27,6 +28,7 @@
 	name = "Seraph"
 	icon_state = "seraph"
 	initial_icon = "seraph"
+	base_color = "#878C97"
 	operation_req_access = list(access_cent_creed)
 	step_in = 3
 	health = 550
@@ -40,6 +42,7 @@
 	name = "Mauler"
 	icon_state = "mauler"
 	initial_icon = "mauler"
+	base_color = "#272727"
 	operation_req_access = list(access_syndicate)
 	wreckage = /obj/effect/decal/mecha_wreckage/mauler
 
