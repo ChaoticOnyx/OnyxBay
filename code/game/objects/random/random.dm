@@ -1168,11 +1168,11 @@ something, make sure it's not in one of the other lists.
 	icon_state = "landmark_tape"
 
 /obj/random/music_tape/spawn_choices()
-	return list(/obj/item/storage/music_tape/jazz = 10,
-				/obj/item/storage/music_tape/classic = 30,
-				/obj/item/storage/music_tape/frontier = 5,
-				/obj/item/storage/music_tape/exodus = 5,
-				/obj/item/storage/music_tape/valhalla = 3)
+	return list(/obj/item/music_tapebox/jazz = 10,
+				/obj/item/music_tapebox/classic = 30,
+				/obj/item/music_tapebox/frontier = 5,
+				/obj/item/music_tapebox/exodus = 5,
+				/obj/item/music_tapebox/valhalla = 3)
 
 // Selects one spawn point out of a group of points with the same ID and asks it to generate its items
 var/list/multi_point_spawns
