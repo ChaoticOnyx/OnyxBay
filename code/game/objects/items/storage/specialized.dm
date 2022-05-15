@@ -168,7 +168,7 @@
 	var/icon_closed
 
 /obj/item/music_tapebox/Initialize()
-	..
+	..()
 	icon_state = icon_closed
 	
 	var/obj/item/music_tape/music_tape = contents[1]
