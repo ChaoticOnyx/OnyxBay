@@ -41,8 +41,8 @@
 		butt.color = color
 		if(brand)
 			butt.desc += " This one is \a [brand]."
-		if(ismob(loc))
-			var/mob/living/M = loc
+		if(iscarbon(loc))
+			var/mob/living/carbon/M = loc
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
 			if(!M.stat && (src == M.wear_mask || M.is_item_in_hands(src)) && !M.handcuffed)
