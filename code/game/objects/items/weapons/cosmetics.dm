@@ -46,7 +46,7 @@
 	else
 		icon_state = initial(icon_state)
 
-/obj/item/lipstick/attack_self(mob/user as mob)
+/obj/item/lipstick/attack_self(mob/user)
 	open = !open
 	to_chat(user, SPAN_NOTICE("You twist \the [src] [open ? "closed" : "open"]."))
 	update_icon()
