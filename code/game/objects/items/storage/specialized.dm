@@ -180,7 +180,7 @@
 /obj/item/music_tapebox/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/music_tape))
 		var/obj/item/music_tape/C = A
-		if(isemptylist(contents))
+		if(!isemptylist(contents))
 			to_chat(user, SPAN("warning", "[src] already has a tape."))
 			return
 
@@ -203,7 +203,7 @@
 	if(loc != user)
 		..()
 	else
-		if(isemptylist(contents))
+		if(!isemptylist(contents))
 			var/obj/item/music_tape/music_tape = contents[1]
 			user.put_in_hands(music_tape)
 			music_tape.add_fingerprint(user)
@@ -218,8 +218,8 @@
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
-		add_fingerprint(usr)
+	if((ishuman(user) || isrobot(user) || issmall(user)) && !user.incapacitated() && Adjacent(user))
+		add_fingerprint(user)
 		attack_hand(user)
 		return TRUE
 /obj/item/music_tapebox/newyear
