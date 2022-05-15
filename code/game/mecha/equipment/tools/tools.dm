@@ -168,7 +168,7 @@
 	energy_drain = 0
 	range = MELEE|RANGED
 	required_type = /obj/mecha/working
-	is_dyeable = FALSE
+	need_colorize = FALSE
 	var/spray_particles = 5
 	var/spray_amount = 200	//units of liquid per spray
 	var/max_volume = 5000
@@ -516,7 +516,7 @@
 	equip_cooldown = 10
 	energy_drain = 5 KILOWATTS
 	range = 0
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	var/deflect_coeff = 1
 	var/damage_coeff = 1
 	var/melee
@@ -608,7 +608,7 @@
 	equip_cooldown = 20
 	energy_drain = 10 KILOWATTS
 	range = 0
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	var/health_boost = 2
 	var/datum/global_iterator/pr_repair_droid
 	var/icon/droid_overlay
@@ -701,7 +701,7 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = 0
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
 	var/list/use_channels = list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT)
@@ -787,7 +787,7 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = MELEE
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	var/datum/global_iterator/pr_mech_generator
 	var/coeff = 100
 	var/obj/item/stack/material/fuel
@@ -953,7 +953,7 @@
 	var/dam_force = 0
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working/ripley
-	is_dyeable = FALSE
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp/attach(obj/mecha/M as obj)
 	..()
@@ -1018,7 +1018,7 @@
 	energy_drain = 1 KILOWATTS
 	range = MELEE
 	equip_cooldown = 20
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	var/mob/living/carbon/occupant = null
 	var/door_locked = 1
 	salvageable = 0
@@ -1308,7 +1308,7 @@
 	energy_drain = 2 KILOWATTS
 	range = 0
 	required_type = /obj/mecha/working
-	has_overlay = FALSE
+	has_equip_overlay = FALSE
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2)
 	var/consumption_coeff_normal = 1.5
 	var/consumption_coeff_turbo = 4.5

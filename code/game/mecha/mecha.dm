@@ -116,12 +116,12 @@
 	var/hand = 0
 	var/back = 0
 
-	if(selected && selected.has_overlay && selected.equip_slot == HAND)
+	if(selected && selected.has_equip_overlay && selected.equip_slot == HAND)
 		hand++
 		draw_layer(selected, hand)
 
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
-		if(i.has_overlay)
+		if(i.has_equip_overlay)
 			if(i != selected && i.equip_slot == HAND && hand <= 2)
 				draw_layer(i, hand)
 				hand++
@@ -133,7 +133,7 @@
 	var/icon_name = "[equip.icon_state][entry == 1 ? "_l" : "_r"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
 	overlays += weapon
-	if(equip.is_dyeable)
+	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
 		overlays += padding	

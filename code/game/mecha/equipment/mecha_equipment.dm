@@ -14,8 +14,8 @@
 	var/range = MELEE //bitflags
 	var/salvageable = 1
 	var/required_type = /obj/mecha //may be either a type or a list of allowed types
-	var/has_overlay = TRUE // in case we want our equipment to have a sprite on a mecha
-	var/is_dyeable = TRUE // in case we don't have a padding or don't want to color our equipment
+	var/has_equip_overlay = TRUE // in case we want our equipment to have a sprite on a mecha
+	var/need_colorize = TRUE // in case we don't have a padding or don't want to color our equipment
 	var/equip_slot = HAND // Used to specify "layer" so we can easily display abstract missile launcher with an abstract laser.
 
 

@@ -132,7 +132,7 @@
 	equip_cooldown = 150
 	range = MELEE|RANGED
 	equip_slot = BACK
-	is_dyeable = FALSE
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/can_attach(obj/mecha/combat/honker/M)
 	if(!istype(M))
@@ -252,7 +252,7 @@
 	missile_range = 15
 	required_type = /obj/mecha  //Why restrict it to just mining or combat mechs?
 	equip_slot = HAND
-	is_dyeable = FALSE
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare/Fire(atom/movable/AM, atom/target, turf/aimloc)
 	var/obj/item/device/flashlight/flare/fired = AM
@@ -324,7 +324,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 20
-	is_dyeable = FALSE
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/banana_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())
@@ -353,7 +353,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 10
-	is_dyeable = FALSE
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/mousetrap_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())
