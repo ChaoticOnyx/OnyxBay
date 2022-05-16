@@ -29,7 +29,7 @@
 		return
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language?.flags & NONVERBAL))
+	if (language?.flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !near)
 			message = stars(message)
 
