@@ -23,7 +23,7 @@
 		var/datum/reagent/R = spawn_reagent
 		setLabel(initial(R.name))
 
-/obj/item/reagent_containers/chem_disp_cartridge/examine(mob/user)
+/obj/item/reagent_containers/chem_disp_cartridge/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)

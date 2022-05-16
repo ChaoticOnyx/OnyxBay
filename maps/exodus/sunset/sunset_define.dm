@@ -7,10 +7,44 @@
 	station_levels = list(1,2,3)
 	admin_levels = list(4)
 	contact_levels = list(1,2,3,5)
-	player_levels = list(1,2,3,5,6,7)
-	empty_levels = list(7)
-	dynamic_z_levels = list("1" = 'sunset-1.dmm', "2" = 'sunset-2.dmm', "3" = 'sunset-3.dmm', "6" = 'sunset-4.dmm')
-	accessible_z_levels = list("1" = 10, "2" = 10, "3" = 10, "5" = 10, "6" = 15, "7" = 60)
+	player_levels = list(1,2,3,5,6,7,8,9,10,11,12,13,14)
+	sealed_levels = list(10)
+	empty_levels = list(5)
+	accessible_z_levels = list(
+		"1" = 10,
+		"2" = 10,
+		"3" = 10,
+		"5" = 15,
+		"6" = 30,
+		"7" = 15,
+		"8" = 5,
+		"9" = 5,
+		"10" = 5,
+		"11" = 3,
+		"12" = 5,
+		"13" = 5,
+		"14" = 3,
+		"15" = 3
+	)
+	dynamic_z_levels = list(
+		'sunset-1.dmm',
+		'sunset-2.dmm',
+		'sunset-3.dmm',
+		// CC
+		'sunset-4.dmm',
+		'maps/telecomms.dmm',
+		'maps/null-space.dmm',
+		'maps/derelicts/construction_site.dmm',
+		'maps/derelicts/snowasteroid.dmm',
+		'maps/derelicts/original/derelict.dmm',
+		'maps/derelicts/bearcat/bearcat-1.dmm',
+		'maps/derelicts/bearcat/bearcat-2.dmm',
+		'maps/derelicts/jungleplanet/jungle_planet.dmm',
+		'maps/derelicts/old_restaurant/old_restaurant.dmm',
+		'maps/derelicts/sensor_array/sensor_array.dmm',
+		'maps/derelicts/science_ship/science_ship-1.dmm',
+		'maps/derelicts/science_ship/science_ship-2.dmm'
+	)
 
 	station_name  = "NSS Sunset"
 	station_short = "Sunset"

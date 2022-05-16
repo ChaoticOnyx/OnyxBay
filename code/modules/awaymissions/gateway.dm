@@ -92,7 +92,7 @@ GLOBAL_LIST_EMPTY(world_awaygateways)
 
 /obj/machinery/gateway/centerstation/Initialize()
 	update_icon()
-	wait = world.time + config.gateway_delay	//+ thirty minutes default
+	wait = world.time + config.misc.gateway_delay	//+ thirty minutes default
 	. = ..()
 	GLOB.station_gateways.Add(src)
 

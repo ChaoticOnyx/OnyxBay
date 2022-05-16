@@ -90,7 +90,7 @@
 	update_icon()
 	return amount_used
 
-/obj/item/cell/examine(mob/user)
+/obj/item/cell/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe label states it's capacity is [maxcharge] Wh"
 	. += "\nThe charge meter reads [round(src.percent(), 0.1)]%"
@@ -303,7 +303,7 @@
 		if(overlay_state)
 			overlays += image('icons/obj/power.dmi', overlay_state)
 
-/obj/item/cell/quantum/examine(mob/user)
+/obj/item/cell/quantum/_examine_text(mob/user)
 	. = ..()
 	. += "\nIts quantum ID is: #[quantum_id]"
 	if(partner)

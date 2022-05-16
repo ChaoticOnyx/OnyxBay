@@ -30,7 +30,7 @@
 	else
 		overlays.Cut()
 
-/obj/machinery/cell_charger/examine(mob/user)
+/obj/machinery/cell_charger/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 5)
 		return

@@ -168,7 +168,7 @@
 			overlays.Add("battery-5")
 
 
-/obj/item/device/suit_cooling_unit/examine(mob/user)
+/obj/item/device/suit_cooling_unit/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

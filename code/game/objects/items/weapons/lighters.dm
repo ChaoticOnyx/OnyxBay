@@ -87,7 +87,6 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	. = ..()
 	create_reagents(max_fuel)
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 
 /obj/item/flame/lighter/proc/light(mob/user)
@@ -144,14 +143,13 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		spam_flag = 0
 
 /obj/item/flame/lighter/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
 	overlays.Cut()
 	if(lit)
-		icon_state = "[bis.base_icon_state]on"
+		icon_state = "[initial(icon_state)]on"
 		item_state = "[initial(item_state)]on"
 		overlays += image(icon, src, flame_overlay)
 	else
-		icon_state = "[bis.base_icon_state]"
+		icon_state = "[initial(icon_state)]"
 		item_state = initial(item_state)
 
 /obj/item/flame/attack(mob/living/carbon/M, mob/living/carbon/user)

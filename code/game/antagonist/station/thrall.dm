@@ -11,8 +11,8 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 
 /datum/antagonist/thrall/Initialize()
 	. = ..()
-	if(config.thrall_min_age)
-		min_player_age = config.thrall_min_age
+	if(config.game.thrall_min_age)
+		min_player_age = config.game.thrall_min_age
 
 /proc/isghoul(mob/player)
 	if(!GLOB.thralls || !player.mind)

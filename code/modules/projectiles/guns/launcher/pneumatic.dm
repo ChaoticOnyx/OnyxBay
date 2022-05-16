@@ -70,6 +70,8 @@
 		tank = W
 		user.visible_message("[user] jams [W] into [src]'s valve and twists it closed.","You jam [W] into [src]'s valve and twist it closed.")
 		update_icon()
+	else if(istype(W, /obj/item/holder))
+		to_chat(user, SPAN("warning", "[W] doesn't seem to fit inside."))
 	else if(istype(W) && item_storage.can_be_inserted(W, user))
 		item_storage.handle_item_insertion(W)
 
@@ -99,7 +101,7 @@
 	item_storage.remove_from_storage(launched, src)
 	return launched
 
-/obj/item/gun/launcher/pneumatic/examine(mob/user)
+/obj/item/gun/launcher/pneumatic/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -149,7 +151,7 @@
 /obj/item/cannonframe/update_icon()
 	icon_state = "pneumatic[buildstate]"
 
-/obj/item/cannonframe/examine(mob/user)
+/obj/item/cannonframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a pipe segment installed."

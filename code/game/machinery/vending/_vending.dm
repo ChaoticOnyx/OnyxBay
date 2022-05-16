@@ -99,7 +99,7 @@
 	power_change()
 	setup_icon_states()
 
-/obj/machinery/vending/examine(mob/user)
+/obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
 	if(.)
 		if(stat & BROKEN)
@@ -401,7 +401,7 @@
 		if(shock(user, 100))
 			return
 
-	if(user.a_intent == I_HURT)
+	if(user.a_intent == I_HURT && Adjacent(user))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		take_damage(2)
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)

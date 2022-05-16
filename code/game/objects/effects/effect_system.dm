@@ -37,6 +37,8 @@ would spawn and follow the beaker, even if it is carried or thrown.
 	holder = null
 	location = null
 
+	return ..()
+
 /////////////////////////////////////////////
 // GENERIC STEAM SPREAD SYSTEM
 

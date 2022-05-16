@@ -4,7 +4,7 @@
 #define HUMAN_MAX_OXYLOSS 1 //Defines how much oxyloss humans can get per tick. A tile with no air at all (such as space) applies this value, otherwise it's a percentage of it.
 
 #define HUMAN_CRIT_TIME_CUSHION (10 MINUTES) //approximate time limit to stabilize someone in crit
-#define HUMAN_CRIT_HEALTH_CUSHION (config.health_threshold_crit - config.health_threshold_dead)
+#define HUMAN_CRIT_HEALTH_CUSHION (config.health_threshold_crit - config.health.health_threshold_dead)
 
 //The amount of damage you'll get when in critical condition. We want this to be a HUMAN_CRIT_TIME_CUSHION long deal.
 //There are HUMAN_CRIT_HEALTH_CUSHION hp to get through, so (HUMAN_CRIT_HEALTH_CUSHION/HUMAN_CRIT_TIME_CUSHION) per tick.
@@ -42,6 +42,11 @@
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
 	var/last_block = 0
+
+/mob/living/carbon/human/Initialize()
+	. = ..()
+
+	AddElement(/datum/element/last_words)
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
@@ -321,7 +326,7 @@
 		return
 
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species_organ]
-	if(!L || nervous_system_failure())
+	if(!L)
 		failed_last_breath = 1
 	else
 		failed_last_breath = L.handle_breath(breath) //if breath is null or vacuum, the lungs will handle it for us
@@ -546,14 +551,19 @@
 		if(ingested && handle_ingested)
 			metabolize_ingested_reagents()
 
-	// Trace chemicals
 	for(var/T in chem_doses)
 		if(bloodstr.has_reagent(T) || ingested.has_reagent(T) || touching.has_reagent(T))
 			continue
+		chem_doses -= T
+
+	// Trace chemicals
+	for(var/T in chem_traces)
+		if(bloodstr.has_reagent(T) || ingested.has_reagent(T) || touching.has_reagent(T))
+			continue
 		var/datum/reagent/R = T
-		chem_doses[T] -= initial(R.metabolism)*2
-		if(chem_doses[T] <= 0)
-			chem_doses -= T
+		chem_traces[T] -= initial(R.metabolism) * initial(R.excretion)
+		if(chem_traces[T] <= 0)
+			chem_traces -= T
 
 	updatehealth()
 
@@ -593,7 +603,7 @@
 		if(hallucination_power)
 			handle_hallucinations()
 
-		if(get_shock() >= species.total_health)
+		if(get_shock() >= species.total_health * 2)
 			if(!stat)
 				to_chat(src, "<span class='warning'>[species.halloss_message_self]</span>")
 				src.visible_message("<B>[src]</B> [species.halloss_message]")
@@ -699,20 +709,21 @@
 		return
 
 	if(stat != DEAD)
-		if(stat == UNCONSCIOUS && health < maxHealth/2)
+		if(stat == UNCONSCIOUS && health < maxHealth * 0.25)
 			//Critical damage passage overlay
 			var/severity = 0
-			switch(health - maxHealth/2)
-				if(-20 to -10)       severity = 1
-				if(-30 to -20)       severity = 2
-				if(-40 to -30)       severity = 3
-				if(-50 to -40)       severity = 4
-				if(-60 to -50)       severity = 5
-				if(-70 to -60)       severity = 6
-				if(-80 to -70)       severity = 7
-				if(-90 to -80)       severity = 8
-				if(-95 to -90)       severity = 9
-				if(-INFINITY to -95) severity = 10
+			var/health_deficiency_percent = 100 - (health / maxHealth) * 100
+			switch(health_deficiency_percent)
+				if(75.0 to 77.5)       severity = 1
+				if(77.5 to 80.0)       severity = 2
+				if(80.0 to 82.5)       severity = 3
+				if(82.5 to 85.0)       severity = 4
+				if(85.0 to 87.5)       severity = 5
+				if(87.5 to 90.0)       severity = 6
+				if(90.0 to 92.5)       severity = 7
+				if(92.5 to 95.0)       severity = 8
+				if(95.0 to 97.5)       severity = 9
+				if(97.5 to INFINITY)   severity = 10
 			overlay_fullscreen("crit", /obj/screen/fullscreen/crit, severity)
 		else
 			clear_fullscreen("crit")
@@ -758,7 +769,9 @@
 				else                pains.icon_state = "pain0"
 		if(healths)
 			healths.overlays.Cut()
-			if(chem_effects[CE_PAINKILLER] > 100)
+			var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
+
+			if(painkiller_mult > 1)
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
@@ -768,13 +781,13 @@
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
 				var/canfeelpain = can_feel_pain()
 				if(canfeelpain)
-					trauma_val = max(shock_stage,get_shock())/(species.total_health-100)
+					trauma_val = max(shock_stage, get_shock()) / species.total_health
 				// Collect and apply the images all at once to avoid appearance churn.
 				var/list/health_images = list()
 				for(var/obj/item/organ/external/E in organs)
 					if(no_damage && (E.brute_dam || E.burn_dam))
 						no_damage = 0
-					health_images += E.get_damage_hud_image()
+					health_images += E.get_damage_hud_image(painkiller_mult)
 
 				// Apply a fire overlay if we're burning.
 				if(on_fire)
@@ -1160,6 +1173,15 @@
 			else
 				holder.icon_state = "hudxeno3"
 		hud_list[XENO_HUD] = holder
+
+	if(BITTEST(hud_updateflag, GLAND_HUD) && hud_list[GLAND_HUD])
+		var/image/holder = hud_list[GLAND_HUD]
+		var/obj/item/organ/internal/heart/gland/gland = internal_organs_by_name[BP_HEART]
+		if(!gland)
+			holder.icon_state = "hudblank"
+		else
+			gland.update_gland_hud()
+		hud_list[GLAND_HUD] = holder
 
 	hud_updateflag = 0
 

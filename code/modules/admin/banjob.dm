@@ -26,9 +26,9 @@ var/const/IAA_ban_reason = "Restricted by CentComm"
 		*/
 
 		if (guest_jobbans(rank))
-			if(config.guest_jobban && IsGuestKey(M.key))
+			if(config.game.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
-			if(config.usewhitelist && !check_whitelist(M))
+			if(config.game.use_whitelist && !check_whitelist(M))
 				return "Whitelisted Job"
 
 		for (var/s in jobban_keylist)
@@ -79,7 +79,7 @@ DEBUG
 	return 1
 
 /proc/jobban_loadbanfile()
-	if(config.ban_legacy_system)
+	if(config.ban.ban_legacy_system)
 		var/savefile/S=new("data/job_full.ban")
 		from_file(S["keys[0]"], jobban_keylist)
 		log_admin("Loading jobban_rank")
@@ -92,7 +92,7 @@ DEBUG
 		if(!establish_db_connection())
 			error("Database connection failed. Reverting to the legacy ban system.")
 			log_misc("Database connection failed. Reverting to the legacy ban system.")
-			config.ban_legacy_system = 1
+			config.ban.ban_legacy_system = 1
 			jobban_loadbanfile()
 			return
 
@@ -107,8 +107,8 @@ DEBUG
 				bantype = 'JOB_PERMABAN' 
 				AND 
 				isnull(unbanned)
-				[isnull(config.server_id) ? "" : " AND server_id = $sid"]
-			"}, dbcon, list(sid = config.server_id))
+				[isnull(config.general.server_id) ? "" : " AND server_id = $sid"]
+			"}, dbcon, list(sid = config.general.server_id))
 
 		while(query.NextRow())
 			var/ckey = query.item[1]
@@ -118,10 +118,10 @@ DEBUG
 
 		//Job tempbans
 		var/DBQuery/query1
-		if(isnull(config.server_id))
+		if(isnull(config.general.server_id))
 			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()", dbcon)
 		else
-			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = $$ AND expiration_time > Now()", dbcon, config.server_id)
+			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = $$ AND expiration_time > Now()", dbcon, config.general.server_id)
 
 		while(query1.NextRow())
 			var/ckey = query1.item[1]

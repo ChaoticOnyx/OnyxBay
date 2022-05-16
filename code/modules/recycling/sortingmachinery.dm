@@ -112,7 +112,7 @@
 			I.pixel_y = -3
 		overlays += I
 
-/obj/structure/bigDelivery/examine(mob/user)
+/obj/structure/bigDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -252,7 +252,7 @@
 				I.pixel_y = 1
 		overlays += I
 
-/obj/item/smallDelivery/examine(mob/user)
+/obj/item/smallDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -362,7 +362,7 @@
 		return
 	return
 
-/obj/item/packageWrap/examine(mob/user)
+/obj/item/packageWrap/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"

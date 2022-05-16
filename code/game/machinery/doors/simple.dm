@@ -188,7 +188,7 @@
 
 	return
 
-/obj/machinery/door/unpowered/simple/examine(mob/user)
+/obj/machinery/door/unpowered/simple/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && lock)
 		. += "\n<span class='notice'>It appears to have a lock.</span>"

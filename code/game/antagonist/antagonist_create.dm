@@ -1,9 +1,9 @@
-/datum/antagonist/proc/create_antagonist(datum/mind/target, move, gag_announcement, preserve_appearance)
+/datum/antagonist/proc/create_antagonist(datum/mind/target, move, gag_announcement, preserve_appearance, team)
 
 	if(!target)
 		return
 
-	update_antag_mob(target, preserve_appearance)
+	update_antag_mob(target, preserve_appearance, team)
 	if(!target.current)
 		remove_antagonist(target)
 		return 0
@@ -21,14 +21,14 @@
 	if(!gag_announcement)
 		announce_antagonist_spawn()
 
-/datum/antagonist/proc/create_default(mob/source)
+/datum/antagonist/proc/create_default(mob/source, team)
 	var/mob/living/M
 	if(mob_path)
 		M = new mob_path(get_turf(source))
 	else
 		M = new /mob/living/carbon/human(get_turf(source))
 	M.ckey = source.ckey
-	add_antagonist(M.mind, 1, 0, 1) // Equip them and move them to spawn.
+	add_antagonist(M.mind, 1, 0, 1, team=team) // Equip them and move them to spawn.
 	return M
 
 /datum/antagonist/proc/create_id(assignment, mob/living/carbon/human/player, equip = 1)
@@ -104,7 +104,7 @@
 		to_chat(player.current, "<span class='notice'>[leader_welcome_text]</span>")
 	else
 		to_chat(player.current, "<span class='notice'>[welcome_text]</span>")
-	if (config.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+	if (config.gamemode.disable_objectives == CONFIG_OBJECTIVE_ALL || !player.objectives.len)
 		to_chat(player.current, "<span class='notice'>[antag_text]</span>")
 
 	if((flags & ANTAG_HAS_NUKE) && !spawned_nuke)

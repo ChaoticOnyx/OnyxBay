@@ -100,6 +100,9 @@
 	if(maptext)
 		maptext = ""
 
+	master = null
+	QDEL_NULL(action)
+
 	if(istype(src.loc, /obj/item/storage))
 		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
 		storage.on_item_pre_deletion(src) // must be done before deletion
@@ -166,7 +169,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/_examine_text(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -255,19 +258,19 @@
 	var/old_loc = loc
 
 	pickup(user)
-	if (istype(loc, /obj/item/storage))
+	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 
 	throwing = 0
-	if (loc == user)
+	if(loc == user)
 		if(!user.unEquip(src))
 			return
 	else
 		if(isliving(loc))
 			return
 
-	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
 
 	if(user.put_in_active_hand(src))
@@ -320,6 +323,8 @@
 		if(user.r_hand)
 			user.r_hand.update_twohanding()
 
+	SEND_SIGNAL(src, SIGNAL_ITEM_UNEQUIPPED, src, user)
+
 // called just as an item is picked up (loc is not yet changed)
 /obj/item/proc/pickup(mob/user)
 	return
@@ -354,6 +359,8 @@
 		M.l_hand.update_twohanding()
 	if(M.r_hand)
 		M.r_hand.update_twohanding()
+
+	SEND_SIGNAL(src, SIGNAL_ITEM_EQUIPPED, src, user, slot)
 
 //Defines which slots correspond to which slot flags
 var/list/global/slot_flags_enumeration = list(
@@ -445,7 +452,7 @@ var/list/global/slot_flags_enumeration = list(
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/handcuffs))
+			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
@@ -773,11 +780,11 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.register(src, src, /obj/item/proc/zoom_move)
-	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
-	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_QDELETING, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
+	register_signal(user, SIGNAL_STAT_SET, /obj/item/proc/unzoom)
 
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
@@ -792,17 +799,17 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	zoom = 0
 
-	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.unregister(src, src, /obj/item/proc/zoom_move)
-	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
+	unregister_signal(src, SIGNAL_QDELETING)
+	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
+	unregister_signal(src, SIGNAL_DIR_SET)
+	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
 		crash_with("[log_info_line(src)]: Zoom user lost]")
 		return
 
-	GLOB.stat_set_event.unregister(user, src, /obj/item/proc/unzoom)
+	unregister_signal(user, SIGNAL_STAT_SET)
 
 	if(!user.client)
 		return
@@ -886,9 +893,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/get_examine_line()
 	if(blood_DNA)
-		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]")
+		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
-		. = "\icon[src] \a [src]"
+		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()

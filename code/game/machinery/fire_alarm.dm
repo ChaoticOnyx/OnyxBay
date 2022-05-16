@@ -17,7 +17,7 @@
 	var/wiresexposed = 0
 	var/buildstage = 2 // 2 = complete, 1 = no wires,  0 = circuit gone
 
-/obj/machinery/firealarm/examine(mob/user)
+/obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	. += "\nThe current alert level is [security_state.current_security_level.name]."

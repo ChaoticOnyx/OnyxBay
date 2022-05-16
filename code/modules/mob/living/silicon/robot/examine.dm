@@ -1,4 +1,4 @@
-/mob/living/silicon/robot/examine(mob/user)
+/mob/living/silicon/robot/_examine_text(mob/user)
 	var/custom_infix = custom_name ? ", [modtype] [braintype]" : ""
 	. = ..(user, infix = custom_infix)
 
@@ -28,8 +28,9 @@
 		msg += "<span class='warning'>It appears to be running on backup power.</span>\n"
 
 	switch(stat)
-		if(CONSCIOUS && ssd_check())
-			msg += "It appears to be in stand-by mode.\n" //afk
+		if(CONSCIOUS)
+			if (ssd_check())
+				msg += "It appears to be in stand-by mode.\n" //afk
 		if(UNCONSCIOUS)
 			msg += "<span class='warning'>It doesn't seem to be responding.</span>\n"
 		if(DEAD)

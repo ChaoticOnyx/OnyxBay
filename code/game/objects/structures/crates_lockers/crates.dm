@@ -30,7 +30,7 @@
 			for(var/obj/item/device/assembly/A in src)
 				A.activate()
 
-/obj/structure/closet/crate/examine(mob/user)
+/obj/structure/closet/crate/_examine_text(mob/user)
 	. = ..()
 	if(rigged && opened)
 		var/list/devices = list()
@@ -200,7 +200,7 @@
 
 
 /obj/structure/closet/crate/freezer/rations/WillContain()
-	return list(/obj/item/reagent_containers/food/snacks/liquidfood = 4)
+	return list(/obj/item/reagent_containers/food/liquidfood = 4)
 
 /obj/structure/closet/crate/bin
 	name = "large bin"

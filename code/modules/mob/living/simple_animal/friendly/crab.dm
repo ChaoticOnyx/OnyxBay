@@ -13,7 +13,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	speak_chance = 1
 	turns_per_move = 3
-	meat_type = /obj/item/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm = "stomps"

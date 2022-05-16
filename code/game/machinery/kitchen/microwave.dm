@@ -51,7 +51,7 @@
 		// will also allow anything using the holder item to be microwaved into
 		// impure carbon. ~Z
 		acceptable_items |= /obj/item/holder
-		acceptable_items |= /obj/item/reagent_containers/food/snacks/grown
+		acceptable_items |= /obj/item/reagent_containers/food/grown
 		acceptable_items |= /obj/item/organ
 
 /*******************
@@ -89,7 +89,7 @@
 			to_chat(user, SPAN("warning", "It's broken!"))
 			return 1
 	else if(src.dirty == 100) // The microwave is all dirty so can't be used!
-		if(istype(O, /obj/item/reagent_containers/spray/cleaner) || istype(O, /obj/item/reagent_containers/glass/rag)) // If they're trying to clean it then let them
+		if(istype(O, /obj/item/reagent_containers/spray/cleaner) || istype(O, /obj/item/reagent_containers/rag)) // If they're trying to clean it then let them
 			user.visible_message( \
 				SPAN("notice", "\The [user] starts to clean the microwave."), \
 				SPAN("notice", "You start to clean the microwave.") \
@@ -156,10 +156,7 @@
 				SPAN("notice", "\The [user] has added \the [O] to \the [src]."), \
 				SPAN("notice", "You add \the [O] to \the [src]."))
 			return
-	else if(istype(O,/obj/item/reagent_containers/glass) || \
-	        istype(O,/obj/item/reagent_containers/food/drinks) || \
-	        istype(O,/obj/item/reagent_containers/food/condiment) \
-		)
+	else if(istype(O,/obj/item/reagent_containers/vessel))
 		if (!O.reagents)
 			return 1
 		for (var/datum/reagent/R in O.reagents.reagent_list)
@@ -209,20 +206,20 @@
 			if(O in component_types)
 				continue
 			var/display_name = O.name
-			if(istype(O,/obj/item/reagent_containers/food/snacks/egg))
+			if(istype(O,/obj/item/reagent_containers/food/egg))
 				items_measures[display_name] = "egg"
 				items_measures_p[display_name] = "eggs"
-			if(istype(O,/obj/item/reagent_containers/food/snacks/tofu))
+			if(istype(O,/obj/item/reagent_containers/food/tofu))
 				items_measures[display_name] = "tofu chunk"
 				items_measures_p[display_name] = "tofu chunks"
-			if(istype(O,/obj/item/reagent_containers/food/snacks/meat)) //any meat
+			if(istype(O,/obj/item/reagent_containers/food/meat)) //any meat
 				items_measures[display_name] = "slab of meat"
 				items_measures_p[display_name] = "slabs of meat"
-			if(istype(O,/obj/item/reagent_containers/food/snacks/donkpocket))
+			if(istype(O,/obj/item/reagent_containers/food/donkpocket))
 				display_name = "Turnovers"
 				items_measures[display_name] = "turnover"
 				items_measures_p[display_name] = "turnovers"
-			if(istype(O,/obj/item/reagent_containers/food/snacks/carpmeat))
+			if(istype(O,/obj/item/reagent_containers/food/carpmeat))
 				items_measures[display_name] = "fillet of meat"
 				items_measures_p[display_name] = "fillets of meat"
 			items_counts[display_name]++
@@ -398,7 +395,7 @@
 				amount+=O.reagents.get_reagent_amount(reagent_type)
 		qdel(O)
 	src.reagents.clear_reagents()
-	var/obj/item/reagent_containers/food/snacks/badrecipe/ffuu = new(src)
+	var/obj/item/reagent_containers/food/badrecipe/ffuu = new(src)
 	ffuu.reagents.add_reagent(/datum/reagent/carbon, amount)
 	ffuu.reagents.add_reagent(/datum/reagent/toxin, amount/10)
 	return ffuu

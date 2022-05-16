@@ -58,6 +58,7 @@
 	parent_organ = BP_CHEST
 	icon_state = "xgibmid2"
 	organ_tag = BP_HIVE
+	relative_size = 15
 
 /obj/item/organ/internal/xenos/resinspinner
 	name = "resin spinner"
@@ -65,6 +66,7 @@
 	icon_state = "xgibmid2"
 	organ_tag = BP_RESIN
 	associated_power = /mob/living/carbon/human/proc/resin
+	relative_size = 20
 
 /obj/item/organ/internal/xenos/ganglion
 	name = "spinal ganglion"
@@ -73,13 +75,14 @@
 	parent_organ = BP_CHEST
 	icon_state = "weed_extract" // For now it looks... acceptable
 	organ_tag = BP_GANGLION
-	vital = 1
+	vital = TRUE
+	relative_size = 30
 
 /obj/item/organ/internal/xenos/ganglion/New(mob/living/carbon/holder)
 	..()
 	max_damage = 100
 	if(species)
-		max_damage = species.total_health*1.5
+		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
@@ -118,7 +121,7 @@
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
-	max_damage = 100
+	max_damage = 125
 	skull_path = null // The head itself is a skull. Exoskeleton, eh?
 
 /obj/item/organ/external/head/xeno/disfigure(type)
@@ -129,7 +132,7 @@
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
-	max_damage = 175
+	max_damage = 150
 
 /obj/item/organ/external/groin/xeno
 	dislocated = -1

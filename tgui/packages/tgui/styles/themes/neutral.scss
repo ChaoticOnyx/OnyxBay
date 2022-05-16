@@ -1,0 +1,101 @@
+[class^='theme-neutral-'] {
+  .Layout.Window {
+    background-image: none;
+  }
+
+  .Input,
+  .NumberInput {
+    border: none;
+  }
+
+  .SettingsWindow {
+    background-image: none !important;
+  }
+
+  .PreferencesCategory {
+    cursor: pointer;
+    background-color: #1c1c1c;
+
+    &:hover,
+    &:focus {
+      background-color: #3a3a3a;
+    }
+  }
+
+  .PreferenceOption {
+    background-color: #1c1c1c;
+
+    &:hover,
+    &:focus {
+      background-color: #3a3a3a;
+    }
+
+    &.Button--selected {
+      background-color: #1b9638;
+    }
+  }
+
+  .Button {
+    cursor: pointer;
+    background-color: #1c1c1c;
+
+    &:focus,
+    &:hover {
+      background-color: #3a3a3a;
+    }
+  }
+
+  .Tabs {
+    cursor: pointer;
+  }
+
+  .Dropdown__control {
+    background-color: #0a0a0a;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background-color: #3a3a3a;
+    }
+  }
+
+  .PreviewWindow {
+    position: relative;
+    border: 2px solid #1c1c1c;
+    border-radius: 2px;
+
+    &-Background {
+      position: relative;
+      width: 480px;
+      height: 480px;
+      background-image: url('../../assets/settings/preview.png');
+    }
+
+    &-Hud {
+      position: absolute;
+      top: 0;
+      width: 480px;
+      height: 480px;
+    }
+
+    &-Items {
+      position: absolute;
+      top: 0;
+      width: 480px;
+      height: 480px;
+      background-image: url('../../assets/settings/items.png');
+    }
+  }
+
+  .Section__title {
+    border-bottom-color: #3b3b3b;
+  }
+
+  .Table tbody :first-child {
+    margin: 4px;
+  }
+
+  .Table tbody tr:nth-child(even) {
+    background-color: transparentize($color: black, $amount: 0.9);
+  }
+}

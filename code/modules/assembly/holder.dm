@@ -76,7 +76,7 @@
 	if(master)
 		master.update_icon()
 
-/obj/item/device/assembly_holder/examine(mob/user)
+/obj/item/device/assembly_holder/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || src.loc == user))
 		if (src.secured)

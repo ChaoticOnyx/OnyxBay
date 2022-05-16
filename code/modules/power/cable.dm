@@ -564,7 +564,7 @@ var/list/possible_cable_coil_colours
 	else
 		w_class = ITEM_SIZE_SMALL
 
-/obj/item/stack/cable_coil/examine(mob/user)
+/obj/item/stack/cable_coil/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return

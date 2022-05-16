@@ -26,7 +26,7 @@
 	icon_state = "papers_good"
 	quality = "good"
 
-/obj/item/rollingpaper/proc/roll_smokable(obj/item/reagent_containers/food/snacks/W, mob/user, is_cig = FALSE)
+/obj/item/rollingpaper/proc/roll_smokable(obj/item/reagent_containers/food/W, mob/user, is_cig = FALSE)
 	var/obj/item/clothing/mask/smokable/cigarette/roll/R
 	var/R_loc = loc
 	var/roll_in_hands = FALSE
@@ -57,14 +57,14 @@
 		user.put_in_hands(R)
 
 /obj/item/rollingpaper/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/reagent_containers/food/snacks/grown))
-		var/obj/item/reagent_containers/food/snacks/grown/G = W
+	if(istype(W, /obj/item/reagent_containers/food/grown))
+		var/obj/item/reagent_containers/food/grown/G = W
 		if(!G.dry)
 			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
 			return
 		roll_smokable(W, user)
 		return
-	if(istype(W, /obj/item/reagent_containers/food/snacks/tobacco))
+	if(istype(W, /obj/item/reagent_containers/food/tobacco))
 		roll_smokable(W, user, TRUE)
 		return
 	..()
@@ -72,7 +72,7 @@
 /////////////
 // TOBACCO //
 /////////////
-/obj/item/reagent_containers/food/snacks/tobacco // tobacco is a snack, tasty and delicious
+/obj/item/reagent_containers/food/tobacco // tobacco is a snack, tasty and delicious
 	name = "tobacco pile"
 	desc = "A small pile of dried and grinded herbs."
 	icon = 'icons/obj/cigarettes.dmi'
@@ -85,54 +85,54 @@
 	throw_range = 1
 	throw_speed = 1
 
-/obj/item/reagent_containers/food/snacks/tobacco/Initialize()
+/obj/item/reagent_containers/food/tobacco/Initialize()
 	. = ..()
 	bitesize = 3
 
-/obj/item/reagent_containers/food/snacks/tobacco/generic/Initialize()
+/obj/item/reagent_containers/food/tobacco/generic/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 4)
 
-/obj/item/reagent_containers/food/snacks/tobacco/cherry
+/obj/item/reagent_containers/food/tobacco/cherry
 	desc = "A small pile of dried and grinded herbs. Smells of cherries."
 	icon_state = "tpile_cherry"
 
-/obj/item/reagent_containers/food/snacks/tobacco/cherry/Initialize()
+/obj/item/reagent_containers/food/tobacco/cherry/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 3)
 	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 2)
 
-/obj/item/reagent_containers/food/snacks/tobacco/menthol
+/obj/item/reagent_containers/food/tobacco/menthol
 	desc = "A small pile of dried and grinded herbs. Smells of mint."
 	icon_state = "tpile_menthol"
 
-/obj/item/reagent_containers/food/snacks/tobacco/menthol/Initialize()
+/obj/item/reagent_containers/food/tobacco/menthol/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 3)
 	reagents.add_reagent(/datum/reagent/menthol, 2)
 
-/obj/item/reagent_containers/food/snacks/tobacco/chocolate
+/obj/item/reagent_containers/food/tobacco/chocolate
 	desc = "A small pile of dried and grinded herbs. Smells of cocoa."
 	icon_state = "tpile_chocolate"
 
-/obj/item/reagent_containers/food/snacks/tobacco/chocolate/Initialize()
+/obj/item/reagent_containers/food/tobacco/chocolate/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 3)
 	reagents.add_reagent(/datum/reagent/nutriment/coco, 2)
 
-/obj/item/reagent_containers/food/snacks/tobacco/premium
+/obj/item/reagent_containers/food/tobacco/premium
 	desc = "A small pile of evenly dried and finely grounded herbs. Smells of quality."
 	icon_state = "tpile_premium"
 
-/obj/item/reagent_containers/food/snacks/tobacco/premium/Initialize()
+/obj/item/reagent_containers/food/tobacco/premium/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco/fine, 4)
 
-/obj/item/reagent_containers/food/snacks/tobacco/contraband
+/obj/item/reagent_containers/food/tobacco/contraband
 	desc = "A suspicious pile of dried and grinded herbs. Smells of something barely legal."
 	icon_state = "tpile_contraband"
 
-/obj/item/reagent_containers/food/snacks/tobacco/contraband/Initialize()
+/obj/item/reagent_containers/food/tobacco/contraband/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tobacco, 2)
 	reagents.add_reagent(/datum/reagent/thc, 4)
@@ -153,37 +153,37 @@
 	name = "bag of StarLing Classic"
 	desc = "A bag of tobacco."
 	icon_state ="tobacco_generic"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/generic = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/generic = 10)
 
 /obj/item/storage/tobaccopack/cherry
 	name = "bag of StarLing Cherry"
 	desc = "A bag of cherry-flavored tobacco."
 	icon_state ="tobacco_cherry"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/cherry = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/cherry = 10)
 
 /obj/item/storage/tobaccopack/menthol
 	name = "bag of StarLing Menthol"
 	desc = "A bag of menthol-flavored tobacco."
 	icon_state ="tobacco_menthol"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/menthol = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/menthol = 10)
 
 /obj/item/storage/tobaccopack/chocolate
 	name = "bag of StarLing Chocolate"
 	desc = "A bag of chocolate-flavored tobacco."
 	icon_state ="tobacco_chocolate"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/chocolate = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/chocolate = 10)
 
 /obj/item/storage/tobaccopack/premium
 	name = "box of Admiral's Pipe"
 	desc = "A small metal box of high-quality tobacco."
 	icon_state ="tobacco_premium"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/premium = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/premium = 10)
 
 /obj/item/storage/tobaccopack/contraband
 	name = "bag of Rawdmann's"
 	desc = "A bag of... whatever is this."
 	icon_state ="tobacco_contraband"
-	startswith = list(/obj/item/reagent_containers/food/snacks/tobacco/contraband = 10)
+	startswith = list(/obj/item/reagent_containers/food/tobacco/contraband = 10)
 
 ///////////////////////////
 //  HAND-ROLLS & JOINTS  //
@@ -226,6 +226,7 @@
 	type_butt = /obj/item/cigbutt/joint
 	chem_volume = 10.0
 	filter_trans = 0.9
+	dynamic_icon = FALSE
 
 /obj/item/clothing/mask/smokable/cigarette/roll/joint/good
 	name = "joint"
@@ -277,6 +278,7 @@
 	chem_volume = 15
 	filter_trans = 1.0 // Smoke it all, b1tch!
 	filling = list(/datum/reagent/thc = 12)
+	dynamic_icon = FALSE
 
 /obj/item/clothing/mask/smokable/cigarette/spliff/generate_lighting_message(obj/tool, mob/holder)
 	if(!holder || !tool)

@@ -50,7 +50,7 @@
 				temp_rating += SP.rating
 		power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-	examine(mob/user)
+	_examine_text(mob/user)
 		. = ..(user)
 		to_chat(user, "<span class='notice'>The generator has [P.air_contents.plasma] units of fuel left, producing [power_gen] per cycle.</span>")
 	handleInactive()

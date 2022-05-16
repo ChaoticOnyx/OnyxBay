@@ -121,7 +121,7 @@ var/global/list/rad_collectors = list()
 		return 1
 	return ..()
 
-/obj/machinery/power/rad_collector/examine(mob/user, distance)
+/obj/machinery/power/rad_collector/_examine_text(mob/user, distance)
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
 		. += "\nThe meter indicates that \the [src] is collecting [last_power] W."

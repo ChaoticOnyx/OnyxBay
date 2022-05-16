@@ -89,13 +89,13 @@
 
 	//Heals normal damage.
 	if(H.getBruteLoss())
-		H.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+		H.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 		H.nutrition -= 1
 	if(H.getFireLoss())
-		H.adjustFireLoss(-1 * config.organ_regeneration_multiplier)
+		H.adjustFireLoss(-1 * config.health.organ_regeneration_multiplier)
 		H.nutrition -= 1
 	if(H.getToxLoss())
-		H.adjustToxLoss(-1 * config.organ_regeneration_multiplier)
+		H.adjustToxLoss(-1 * config.health.organ_regeneration_multiplier)
 		H.nutrition -= 1
 
 	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
@@ -159,4 +159,3 @@
 				for(var/datum/wound/W in E.wounds)
 					if(W.wound_damage() == 0 && prob(50))
 						E.wounds -= W
-

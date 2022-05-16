@@ -236,7 +236,7 @@
 		icon_state = "carbine"
 	..()
 
-/obj/item/gun/projectile/automatic/z8/examine(mob/user)
+/obj/item/gun/projectile/automatic/z8/_examine_text(mob/user)
 	. = ..()
 	if(launcher.chambered)
 		. += "\n\The [launcher] has \a [launcher.chambered] loaded."

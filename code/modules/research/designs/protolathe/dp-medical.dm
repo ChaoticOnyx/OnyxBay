@@ -72,7 +72,7 @@
 	id = "plassbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
 	materials = list(MATERIAL_GLASS = 2500, MATERIAL_PLASMA = 1500)
-	build_path = /obj/item/reagent_containers/glass/beaker/plass
+	build_path = /obj/item/reagent_containers/vessel/beaker/plass
 	sort_string = "MCAAA"
 
 /datum/design/item/beaker/noreact
@@ -80,7 +80,7 @@
 	id = "splitbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
 	materials = list(MATERIAL_STEEL = 3000)
-	build_path = /obj/item/reagent_containers/glass/beaker/noreact
+	build_path = /obj/item/reagent_containers/vessel/beaker/noreact
 	sort_string = "MCAAB"
 
 /datum/design/item/beaker/bluespace
@@ -88,7 +88,7 @@
 	id = "bluespacebeaker"
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
 	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000, MATERIAL_DIAMOND = 500)
-	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
+	build_path = /obj/item/reagent_containers/vessel/beaker/bluespace
 	sort_string = "MCAAC"
 
 /datum/design/item/implant

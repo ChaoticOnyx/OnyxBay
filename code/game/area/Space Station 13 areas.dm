@@ -265,7 +265,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	for(var/mob/living/carbon/human/H in src)
 		if(H.client)
 			mysound.status = SOUND_UPDATE
-			to_chat(H, mysound)
 			if(S)
 				spawn(sound_delay)
 					sound_to(H, S)
@@ -278,3 +277,12 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+
+//Abductors
+/area/abductor_ship
+	name = "Abductor Ship"
+	icon_state = "yellow"
+	requires_power = FALSE
+	requires_power = 0
+	dynamic_lighting = 0
+	luminosity = 1

@@ -37,7 +37,7 @@
 		NME.check_for_new_messages(1)
 
 /datum/computer_file/program/email_client/proc/new_mail_notify()
-	computer.visible_message("\The [computer] beeps softly, indicating a new email has been received.", 1)
+	computer.visible_message("\The [computer] beeps softly, indicating a new email has been received.")
 
 /datum/computer_file/program/email_client/process_tick()
 	..()

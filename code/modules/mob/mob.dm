@@ -1,25 +1,33 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
 	STOP_PROCESSING(SSmobs, src)
-	GLOB.dead_mob_list_ -= src
-	GLOB.living_mob_list_ -= src
-	GLOB.player_list -= src
+	remove_from_dead_mob_list()
+	remove_from_living_mob_list()
+	GLOB.player_list.Remove(src)
+
 	unset_machine()
 	QDEL_NULL(hud_used)
+	QDEL_NULL(show_inventory)
+
+	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	remove_screen_obj_references()
 	if(client)
-		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
 			var/obj/screen/screenobj = AM
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
-		spellremove(src)
+
 	ghostize()
+	if(mind?.current == src)
+		spellremove(src)
+		mind.set_current(null)
 	return ..()
 
 /mob/proc/flash_weak_pain()
@@ -159,11 +167,11 @@
 	switch(m_intent)
 		if(M_RUN)
 			if(drowsyness > 0)
-				. += config.walk_speed
+				. += config.movement.walk_speed
 			else
-				. += config.run_speed
+				. += config.movement.run_speed
 		if(M_WALK)
-			. += config.walk_speed
+			. += config.movement.walk_speed
 
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
@@ -257,7 +265,7 @@
 /mob/proc/show_inv(mob/user)
 	return
 
-//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
+//mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/_examine_text()
 /mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
@@ -589,7 +597,7 @@
 		if(!iscarbon(src))
 			M.LAssailant = null
 		else
-			M.LAssailant = usr
+			M.LAssailant = weakref(usr)
 
 	else if(isobj(AM))
 		var/obj/I = AM
@@ -1126,3 +1134,22 @@
 
 /mob/proc/InStasis()
 	return FALSE
+
+/mob/proc/set_see_in_dark(new_see_in_dark)
+	var/old_see_in_dark = see_in_dark
+
+	if(old_see_in_dark != new_see_in_dark)
+		see_in_dark = new_see_in_dark
+		SEND_SIGNAL(src, SIGNAL_SEE_IN_DARK_SET, src, old_see_in_dark, new_see_in_dark)
+
+/mob/proc/set_see_invisible(new_see_invisible)
+	var/old_see_invisible = see_invisible
+	if(old_see_invisible != new_see_invisible)
+		see_invisible = new_see_invisible
+		SEND_SIGNAL(src, SIGNAL_SEE_INVISIBLE_SET, src, old_see_invisible, new_see_invisible)
+
+/mob/proc/set_sight(new_sight)
+	var/old_sight = sight
+	if(old_sight != new_sight)
+		sight = new_sight
+		SEND_SIGNAL(src, SIGNAL_SIGHT_SET, src, old_sight, new_sight)

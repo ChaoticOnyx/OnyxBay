@@ -167,7 +167,7 @@ var/global/Holiday = null
 			var/turf/simulated/floor/F = Floorlist[rand(1,Floorlist.len)]
 			Floorlist = null
 			var/obj/structure/closet/C = locate(/obj/structure/closet) in F
-			var/obj/item/reagent_containers/food/snacks/chocolateegg/wrapped/Egg
+			var/obj/item/reagent_containers/food/chocolateegg/wrapped/Egg
 			if( C )			Egg = new(C)
 			else			Egg = new(F)
 */

@@ -34,6 +34,8 @@
 
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
+#define isabductor(A) (is_species(A, /datum/species/abductor))
+
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -145,14 +147,6 @@
 
 #define CanPhysicallyInteractWith(user, target) CanInteractWith(user, target, GLOB.physical_state)
 
-#define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
-
-#define QDEL_LIST(L) if(L) { for(var/I in L) qdel(I); L.Cut(); }
-
-#define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
-
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel, item), time, TIMER_STOPPABLE)
-
 #define ARGS_DEBUG log_debug("[__FILE__] - [__LINE__]") ; for(var/arg in args) { log_debug("\t[log_info_line(arg)]") }
 
 // Helper macros to aid in optimizing lazy instantiation of lists.
@@ -220,4 +214,3 @@
 #define FONT_HUGE(X)     SPAN("huge", X)
 
 #define FONT_GIANT(X)    SPAN("giant", X)
-

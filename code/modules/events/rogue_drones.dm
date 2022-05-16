@@ -16,7 +16,7 @@
 
 	for(var/i=0, i<num, i++)
 		var/mob/living/simple_animal/hostile/retaliate/malf_drone/D = new(get_turf(pick(possible_spawns)))
-		drones_list.Add(D)
+		drones_list.Add(weakref(D))
 		if(prob(25))
 			D.disabled = rand(15, 60)
 
@@ -32,7 +32,10 @@
 
 /datum/event/rogue_drone/end()
 	var/num_recovered = 0
-	for(var/mob/living/simple_animal/hostile/retaliate/malf_drone/D in drones_list)
+	for(var/weakref/thing in drones_list)
+		var/mob/living/simple_animal/hostile/retaliate/malf_drone/D = thing.resolve()
+		if(!istype(D))
+			continue
 		var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 		sparks.set_up(3, 0, D.loc)
 		sparks.start()

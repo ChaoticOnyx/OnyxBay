@@ -33,7 +33,7 @@
 	. = ..()
 	START_PROCESSING(SSobj, src)
 
-/obj/item/gun/flamer/examine(mob/user)
+/obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
 
 	if(igniter)
@@ -296,13 +296,12 @@
 			continue
 		if(loc != user)
 			break
-		if(istype(T, /turf/simulated/wall))
-			blocked = TRUE
 		if(distance > max_range)
 			break
-
+		if(T.density)
+			break
 		for(var/obj/O in T)
-			if(O.density && !O.throwpass)
+			if(O.density && !O.throwpass || (O.atom_flags & ATOM_FLAG_FULLTILE_OBJECT))
 				blocked = TRUE
 				break
 
@@ -320,9 +319,9 @@
 		else
 			TF = T
 
-		flame_turf(TF,user, burntime, burnlevel)
 		if(blocked)
 			break
+		flame_turf(TF,user, burntime, burnlevel)
 		distance++
 		lited(distance/3)
 		prev_T = T

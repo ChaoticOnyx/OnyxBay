@@ -62,13 +62,13 @@
 		return
 	ClearValue()
 	value_to_set = new_value
-	GLOB.destroyed_event.register(value_to_set, src, /datum/build_mode/edit/proc/ClearValue)
+	register_signal(value_to_set, SIGNAL_QDELETING, /datum/build_mode/edit/proc/ClearValue)
 
 /datum/build_mode/edit/proc/ClearValue(feedback)
 	if(!istype(value_to_set, /datum))
 		return
 
-	GLOB.destroyed_event.unregister(value_to_set, src, /datum/build_mode/edit/proc/ClearValue)
+	unregister_signal(value_to_set, SIGNAL_QDELETING)
 	value_to_set = initial(value_to_set)
 	if(feedback)
 		Warn("The selected reference value was deleted. Default value restored.")

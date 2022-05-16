@@ -141,7 +141,6 @@
 								/obj/item/clothing/suit/bio_suit			= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/fire				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/lightrig			= TRADER_BLACKLIST_ALL,
-								/obj/item/clothing/suit/neocoat				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/poncho				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/poncho/roles		= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/radiation			= TRADER_BLACKLIST,
@@ -272,11 +271,12 @@ Sells devices, odds and ends, and medical stuff
 	possible_origins = list("AI for the Straight Guy", "Mechanical Buddies", "Bot Chop Shop", "Omni Consumer Projects")
 	possible_trading_items = list(/obj/item/device/bot_kit							= TRADER_THIS_TYPE,
 								/obj/item/device/paicard							= TRADER_THIS_TYPE,
-								/obj/item/aicard								= TRADER_THIS_TYPE,
+								/obj/item/aicard						    		= TRADER_THIS_TYPE,
 								/mob/living/bot										= TRADER_SUBTYPES_ONLY,
+								/mob/living/bot/mulebot                             = TRADER_BLACKLIST,
 								/obj/item/organ/internal/posibrain					= TRADER_THIS_TYPE,
 								/obj/item/robot_parts								= TRADER_SUBTYPES_ONLY,
-								/obj/item/stock_parts/manipulator			= TRADER_THIS_TYPE
+								/obj/item/stock_parts/manipulator			        = TRADER_THIS_TYPE
 								)
 	speech = list("hail_generic" = "Welcome to ORIGIN! Let me walk you through our fine robotic selection!",
 				"hail_silicon"   = "Welcome to ORIGIN! Let- oh, you're a synth! Well, your money is good anyway. Welcome, welcome!",
@@ -349,12 +349,15 @@ Sells devices, odds and ends, and medical stuff
 				"insult_bad"        = "*muffled laughter* Sorry, was that you trying to talk shit? Adorable.",
 				)
 
-	possible_wanted_items = list(/obj/item/reagent_containers/food/drinks/bottle 				= TRADER_THIS_TYPE,
-								/obj/item/organ/internal/liver											= TRADER_THIS_TYPE,
-								/obj/item/organ/internal/kidneys										= TRADER_THIS_TYPE,
-								/obj/item/organ/internal/lungs											= TRADER_THIS_TYPE,
-								/obj/item/organ/internal/heart											= TRADER_THIS_TYPE,
-								/obj/item/storage/fancy/cigarettes								= TRADER_ALL
+	possible_wanted_items = list(/obj/item/reagent_containers/vessel/bottle/chemical       = TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/big    = TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/small  = TRADER_THIS_TYPE,
+								/obj/item/organ/internal/liver                             = TRADER_THIS_TYPE,
+								/obj/item/organ/internal/kidneys                           = TRADER_THIS_TYPE,
+								/obj/item/organ/internal/lungs                             = TRADER_THIS_TYPE,
+								/obj/item/organ/internal/heart                             = TRADER_THIS_TYPE,
+								/obj/item/organ/internal/stomach                           = TRADER_THIS_TYPE,
+								/obj/item/storage/fancy/cigarettes                         = TRADER_ALL
 								)
 
 	possible_trading_items = list(/obj/item/storage/pill_bottle									= TRADER_SUBTYPES_ONLY,
@@ -372,10 +375,10 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/hemostat/pico											= TRADER_THIS_TYPE,
 								/obj/item/FixOVein/clot											= TRADER_THIS_TYPE,
 								/obj/item/stack/nanopaste												= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/glass/bottle/inaprovaline			= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/glass/bottle/stoxin					= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/glass/bottle/antitoxin				= TRADER_THIS_TYPE,
-								/obj/item/reagent_containers/glass/bottle/spaceacillin			= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline			= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/stoxin					= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin				= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/chemical/spaceacillin			= TRADER_THIS_TYPE,
 								/obj/item/bodybag/cryobag												= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/chem_disp_cartridge/dexalin/small	= TRADER_THIS_TYPE,
 								/obj/item/reagent_containers/hypospray/autoinjector/combatpain	= TRADER_THIS_TYPE,

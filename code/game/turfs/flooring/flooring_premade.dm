@@ -306,6 +306,22 @@
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
 
+/turf/simulated/floor/natural/frozenground
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "frozen_ground"
+	temperature = 193.15
+
+/turf/simulated/floor/natural/frozenground/cave
+	name = "frozen ground"
+	icon = 'icons/turf/flooring/frozenground.dmi'
+	icon_state = "wground1"
+	temperature = 243.15
+
+/turf/simulated/floor/natural/frozenground/ice/shallow
+	icon = 'icons/turf/ice.dmi'
+	icon_state = "ice1"
+
 /turf/simulated/floor/natural/lava
 	name = "lava"
 	icon = 'icons/turf/flooring/lava.dmi'
@@ -498,3 +514,13 @@
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		M.slip(src, 4)
+
+/turf/simulated/floor/misc/abductor
+	name = "alien floor"
+	icon = 'icons/turf/flooring/abductor.dmi'
+	icon_state = "alienpod1"
+	var/previous_type = /turf/simulated/floor
+
+/turf/simulated/floor/misc/abductor/Initialize()
+	icon_state = "alienpod[rand(1,9)]"
+	..()

@@ -22,8 +22,8 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 
 /datum/antagonist/syndicate/Initialize()
 	. = ..()
-	if(config.nuke_min_age)
-		min_player_age = config.nuke_min_age
+	if(config.game.nuke_min_age)
+		min_player_age = config.game.nuke_min_age
 
 /datum/antagonist/syndicate/create_global_objectives()
 	if(!..())

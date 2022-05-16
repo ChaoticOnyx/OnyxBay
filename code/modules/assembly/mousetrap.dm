@@ -7,7 +7,7 @@
 	var/armed = 0
 
 
-	examine(mob/user)
+	_examine_text(mob/user)
 		. = ..(user)
 		if(armed)
 			to_chat(user, "It looks like it's armed.")

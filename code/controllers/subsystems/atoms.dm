@@ -22,8 +22,8 @@ SUBSYSTEM_DEF(atoms)
 
 	// Mannequins refuse to spawn prior to atoms init, so refresh them in case anyone connected before init finished.
 	for(var/client/C)
-		if(C.prefs)
-			C.prefs.update_preview_icon()
+		if(!QDELETED(C))
+			C.prefs?.update_preview_icon()
 	return ..()
 
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
@@ -93,6 +93,9 @@ SUBSYSTEM_DEF(atoms)
 					A.LateInitialize(arglist(arguments))
 			if(INITIALIZE_HINT_QDEL)
 				qdel(A)
+				qdeleted = TRUE
+			if(INITIALIZE_HINT_QDEL_FORCE)
+				qdel(A, force = TRUE)
 				qdeleted = TRUE
 			else
 				BadInitializeCalls[the_type] |= BAD_INIT_NO_HINT

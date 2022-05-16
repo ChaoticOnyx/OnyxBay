@@ -420,7 +420,7 @@ About the new airlock wires panel:
 						shake_animation(2, 2)
 				return
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
-			visible_message(SPAN("danger", "[user] slashes at \the [name]."), 1)
+			visible_message(SPAN("danger", "[user] slashes at \the [name]."))
 			take_damage(10)
 			user.do_attack_animation(src)
 			user.setClickCooldown(5)
@@ -974,7 +974,7 @@ About the new airlock wires panel:
 	else
 		..(amount)
 
-/obj/machinery/door/airlock/examine(mob/user)
+/obj/machinery/door/airlock/_examine_text(mob/user)
 	. = ..()
 	if(lock_cut_state == BOLTS_EXPOSED)
 		. += "\nThe bolt cover has been cut open."

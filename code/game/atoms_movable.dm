@@ -19,6 +19,11 @@
 	var/pull_sound = null
 
 /atom/movable/Destroy()
+	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
+		crash_with("Was deleted before initalization")
+
+	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
+
 	for(var/A in src)
 		qdel(A)
 
@@ -32,10 +37,9 @@
 		QDEL_NULL_LIST(movement_handlers)
 
 	if(virtual_mob && !ispath(virtual_mob))
-		qdel(virtual_mob)
-		virtual_mob = null
+		QDEL_NULL(virtual_mob)
 
-	. = ..()
+	return ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
@@ -45,15 +49,24 @@
 	spawn(0)
 		if (A && yes)
 			A.last_bumped = world.time
+			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 			A.Bumped(src)
 		return
 	..()
+	return
+
+/atom/movable/proc/get_selected_zone()
+	return
+
+/atom/movable/proc/get_active_item()
 	return
 
 /atom/movable/proc/on_purchase()
 	return
 
 /atom/movable/proc/forceMove(atom/destination)
+	if((gc_destroyed && gc_destroyed != GC_CURRENTLY_BEING_QDELETED) && !isnull(destination))
+		CRASH("Attempted to forceMove a QDELETED [src] out of nullspace!")
 	if(loc == destination)
 		return 0
 	var/is_origin_turf = isturf(loc)
@@ -82,6 +95,9 @@
 					AM.Crossed(src)
 			if(is_new_area && is_destination_turf)
 				destination.loc.Entered(src, origin)
+
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
+
 	return 1
 
 //called when src is thrown into hit_atom
@@ -285,3 +301,26 @@
 		var/turf/T = locate(new_x, new_y, new_z)
 		if(T)
 			forceMove(T)
+
+/atom/movable/Entered(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.register_signal(src, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set, TRUE)
+
+/atom/movable/Exited(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.unregister_signal(src, SIGNAL_DIR_SET)
+	am.unregister_signal(src, SIGNAL_MOVED)
+
+/atom/movable/proc/move_to_turf(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+
+	if(T && T != loc)
+		forceMove(T)
+
+// Similar to above but we also follow into nullspace
+/atom/movable/proc/move_to_turf_or_null(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+	if(T != loc)
+		forceMove(T)

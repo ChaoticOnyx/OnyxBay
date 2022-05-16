@@ -84,14 +84,15 @@
 	daddy = ndaddy
 	set_dir(daddy.dir)
 	appearance = daddy.appearance
-	GLOB.moved_event.register(daddy, src, /obj/effect/bluegoast/proc/mirror)
-	GLOB.dir_set_event.register(daddy, src, /obj/effect/bluegoast/proc/mirror_dir)
-	GLOB.destroyed_event.register(daddy, src, /datum/proc/qdel_self)
+	register_signal(daddy, SIGNAL_MOVED, /obj/effect/bluegoast/proc/mirror)
+	register_signal(daddy, SIGNAL_DIR_SET, /obj/effect/bluegoast/proc/mirror_dir)
+	register_signal(daddy, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 /obj/effect/bluegoast/Destroy()
-	GLOB.destroyed_event.unregister(daddy, src)
-	GLOB.dir_set_event.unregister(daddy, src)
-	GLOB.moved_event.unregister(daddy, src)
+	unregister_signal(daddy, SIGNAL_QDELETING)
+	unregister_signal(daddy, SIGNAL_DIR_SET)
+	unregister_signal(daddy, SIGNAL_MOVED)
+
 	daddy = null
 	. = ..()
 
@@ -114,8 +115,8 @@
 /obj/effect/bluegoast/proc/mirror_dir(atom/movable/am, old_dir, new_dir)
 	set_dir(GLOB.reverse_dir[new_dir])
 
-/obj/effect/bluegoast/examine(user)
-	return daddy.examine(user)
+/obj/effect/bluegoast/_examine_text(user)
+	return daddy._examine_text(user)
 
 /obj/effect/bluegoast/proc/blueswitch()
 	var/mob/living/carbon/human/H = new(get_turf(src), daddy.species.name)

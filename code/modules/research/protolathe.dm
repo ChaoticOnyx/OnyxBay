@@ -28,8 +28,8 @@
 	component_parts += new /obj/item/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/stock_parts/manipulator(src)
 	component_parts += new /obj/item/stock_parts/manipulator(src)
-	component_parts += new /obj/item/reagent_containers/glass/beaker(src)
-	component_parts += new /obj/item/reagent_containers/glass/beaker(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
+	component_parts += new /obj/item/reagent_containers/vessel/beaker(src)
 	RefreshParts()
 
 /obj/machinery/r_n_d/protolathe/Process()
@@ -60,7 +60,7 @@
 
 /obj/machinery/r_n_d/protolathe/RefreshParts()
 	var/T = 0
-	for(var/obj/item/reagent_containers/glass/G in component_parts)
+	for(var/obj/item/reagent_containers/vessel/G in component_parts)
 		T += G.reagents.maximum_volume
 	create_reagents(T)
 	max_material_storage = 0

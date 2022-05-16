@@ -108,6 +108,17 @@
 		update_icon()
 		return
 
+	if(istype(I, /obj/item/holder))
+		var/obj/item/holder/H = I
+		user.visible_message("[user] stuffs [H] into \the [src]!", \
+							 "You stuff [H] into \the [src].")
+		for(var/atom/movable/AM in H)
+			AM.forceMove(src)
+		qdel(H)
+		playsound(src, SFX_DISPOSAL, 75, 0)
+		update_icon()
+		return
+
 	var/obj/item/grab/G = I
 	if(istype(G))	// handle grabbed mob
 		if(ismob(G.affecting))
@@ -1594,6 +1605,9 @@
 		return dir
 	else
 		return 0
+
+/obj/structure/disposalholder/allow_drop()
+	return TRUE
 
 // a broken pipe
 /obj/structure/disposalpipe/broken

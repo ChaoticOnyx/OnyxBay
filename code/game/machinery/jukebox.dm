@@ -36,7 +36,7 @@
 	var/obj/item/music_tape/tape
 
 	var/datum/track/current_track
-	var/list/datum/track/tracks
+	var/list/datum/track/tracks = list()
 
 	var/datum/track/rickroll = new("Never Gonna Give You Up", 'sound/music/rickroll.ogg')
 	var/rickrolling = FALSE
@@ -44,7 +44,7 @@
 
 /obj/machinery/media/jukebox/Initialize()
 	. = ..()
-	tracks = setup_music_tracks(tracks)
+
 	update_icon()
 	sound_id = "[/obj/machinery/media/jukebox]_[sequential_id(/obj/machinery/media/jukebox)]"
 
@@ -138,6 +138,9 @@
 			if(!rickrolling)
 				StartPlaying()
 
+	if (href_list["eject"])
+		eject()
+
 	if (href_list["volume"])
 		AdjustVolume(text2num(href_list["volume"]))
 
@@ -166,15 +169,15 @@
 	spawn(15)
 		explode()
 
-/obj/machinery/media/jukebox/attack_ai(mob/user as mob)
+/obj/machinery/media/jukebox/attack_ai(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/media/jukebox/attack_hand(mob/user as mob)
+/obj/machinery/media/jukebox/attack_hand(mob/user)
 	interact(user)
 
 /obj/machinery/media/jukebox/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\the [src] blows apart!"), 1)
+	src.visible_message(SPAN_DANGER("\the [src] blows apart!"))
 
 	explosion(get_turf(src), 0, 0, 1, rand(1,2), 1)
 
@@ -185,7 +188,7 @@
 	new /obj/effect/decal/cleanable/blood/oil(loc)
 	qdel(src)
 
-/obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/media/jukebox/attackby(obj/item/W, mob/user)
 	if(isWrench(W))
 		add_fingerprint(user)
 		wrench_floor_bolts(user, 0)
@@ -205,7 +208,10 @@
 			visible_message(SPAN_NOTICE("[usr] insert \a [tape] into \the [src]."))
 			D.forceMove(src)
 			tape = D
-			tracks += tape.track
+			if(istype(tape, /obj/item/music_tape/random))
+				tracks += tape.tracks
+			else
+				tracks += tape.track
 			verbs += /obj/machinery/media/jukebox/verb/eject
 		return
 	return ..()
@@ -264,9 +270,7 @@
 	if(tape)
 		StopPlaying()
 		current_track = null
-		for(var/datum/track/T in tracks)
-			if(T == tape.track)
-				tracks -= T
+		tracks = list()
 
 		if(!usr.put_in_hands(tape))
 			tape.dropInto(loc)

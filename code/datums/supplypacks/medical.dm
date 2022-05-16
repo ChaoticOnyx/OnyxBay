@@ -9,9 +9,9 @@
 					/obj/item/storage/firstaid/toxin,
 					/obj/item/storage/firstaid/o2,
 					/obj/item/storage/firstaid/adv,
-					/obj/item/reagent_containers/glass/bottle/antitoxin,
-					/obj/item/reagent_containers/glass/bottle/inaprovaline,
-					/obj/item/reagent_containers/glass/bottle/stoxin,
+					/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin,
+					/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline,
+					/obj/item/reagent_containers/vessel/bottle/chemical/stoxin,
 					/obj/item/storage/box/syringes,
 					/obj/item/storage/box/autoinjectors)
 	cost = 10
@@ -68,7 +68,7 @@
 	contains = list(/obj/item/gun/launcher/syringe = 2,
 					/obj/item/storage/box/syringegun = 2,
 					/obj/item/storage/box/syringes = 2,
-					/obj/item/reagent_containers/glass/bottle/stoxin = 2)
+					/obj/item/reagent_containers/vessel/bottle/chemical/stoxin = 2)
 	cost = 50
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Syringe guns crate"

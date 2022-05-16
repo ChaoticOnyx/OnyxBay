@@ -14,13 +14,13 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
  	"the station's blueprints" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
 	"a sample of metroid extract" =                     list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
-	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/snacks/meat/corgi),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
 	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray/vial),
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
 	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/automatic/wt550),
@@ -354,7 +354,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of <b>[count]<b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
@@ -414,7 +414,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			target_real_name = H.real_name
 			target_mind = candidate_mind
-			if(skip_antag_role() || skip_unwanted_species())
+			if(skip_antag_role() || skip_unwanted_species(H))
 				target_mind = null
 				H = null
 				continue

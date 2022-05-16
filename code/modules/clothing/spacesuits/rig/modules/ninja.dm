@@ -203,7 +203,7 @@
 			return
 
 		if(usr == holder.wearer)
-			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>",1)
+			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>")
 			sleep(blink_delay)
 
 	self_destructing = 1

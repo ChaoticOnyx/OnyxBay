@@ -220,7 +220,7 @@
 
 /obj/item/integrated_circuit/manipulation/seed_extractor/do_work()
 	..()
-	var/obj/item/reagent_containers/food/snacks/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/snacks/grown)
+	var/obj/item/reagent_containers/food/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/grown)
 	if(!check_target(O))
 		push_data()
 		activate_pin(2)
@@ -358,9 +358,9 @@
 					set_pin_data(IC_OUTPUT, 1, TRUE)
 					pulling = to_pull
 					acting_object.visible_message("\The [acting_object] starts pulling \the [to_pull] around.")
-					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
-					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
-					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
+					register_signal(to_pull, SIGNAL_MOVED, .proc/check_pull) // Whenever the target moves, make sure we can still pull it!
+					register_signal(to_pull, SIGNAL_QDELETING, .proc/stop_pulling) // Stop pulling if it gets destroyed.
+					register_signal(acting_object, SIGNAL_MOVED, .proc/pull) // Make sure we actually pull it.
 					var/atom/A = get_object()
 					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
@@ -399,10 +399,10 @@
 /obj/item/integrated_circuit/manipulation/claw/proc/stop_pulling()
 	if(pulling)
 		var/atom/movable/AM = get_object()
-		GLOB.moved_event.unregister(pulling, src)
-		GLOB.moved_event.unregister(AM, src)
+		unregister_signal(pulling, SIGNAL_MOVED)
+		unregister_signal(AM, SIGNAL_MOVED)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
-		GLOB.destroyed_event.unregister(pulling, src)
+		unregister_signal(pulling, SIGNAL_QDELETING)
 		var/atom/A = get_object()
 		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null

@@ -180,9 +180,9 @@
 #define FLASH_PROTECTION_MAJOR 2
 
 
-#define ANIMAL_SPAWN_DELAY  round(config.respawn_delay / 6)
-#define DRONE_SPAWN_DELAY   round(config.respawn_delay / 3)
-#define DEAD_ANIMAL_DELAY   round(config.respawn_delay / 3)
+#define ANIMAL_SPAWN_DELAY  round(config.misc.respawn_delay / 6)
+#define DRONE_SPAWN_DELAY   round(config.misc.respawn_delay / 3)
+#define DEAD_ANIMAL_DELAY   round(config.misc.respawn_delay / 3)
 
 // Incapacitation flags, used by the mob/proc/incapacitated() proc
 #define INCAPACITATION_NONE 0
@@ -302,6 +302,7 @@
 #define SPECIES_EGYNO       "Egyno"
 #define SPECIES_MONKEY      "Monkey"
 #define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
 #define SPECIES_XENO                 "Xenomorph"

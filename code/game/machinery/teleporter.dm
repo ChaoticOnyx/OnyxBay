@@ -33,7 +33,7 @@
 		hub.com = src
 		hub.set_dir(dir)
 
-/obj/machinery/computer/teleporter/examine(mob/user)
+/obj/machinery/computer/teleporter/_examine_text(mob/user)
 	. = ..()
 	if(locked)
 		var/turf/T = get_turf(locked)

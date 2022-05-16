@@ -23,6 +23,10 @@
 	var/const/WIRE_RADIO_RECEIVE = 8		//Allows Pulsed(1) to call Activate()
 	var/const/WIRE_RADIO_PULSE = 16		//Allows Pulse(1) to send a radio message
 
+/obj/item/device/assembly/Destroy()
+	holder = null
+	return ..()
+
 /obj/item/device/assembly/proc/activate()									//What the device does when turned on
 	return
 
@@ -116,7 +120,7 @@
 	return PROCESS_KILL
 
 
-/obj/item/device/assembly/examine(mob/user)
+/obj/item/device/assembly/_examine_text(mob/user)
 	. = ..()
 	if((in_range(src, user) || loc == user))
 		if(secured)

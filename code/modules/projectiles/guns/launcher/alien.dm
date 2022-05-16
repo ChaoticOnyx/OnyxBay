@@ -21,7 +21,7 @@
 		last_regen = world.time
 		update_icon()
 
-/obj/item/gun/launcher/alien/examine(mob/user)
+/obj/item/gun/launcher/alien/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has [ammo] [ammo_name]\s remaining."
 

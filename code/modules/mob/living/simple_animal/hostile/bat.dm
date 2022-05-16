@@ -8,7 +8,7 @@
 	icon_gib = "bat_dead"
 	speak_chance = 0
 	turns_per_move = 3
-	meat_type = /obj/item/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -39,7 +39,7 @@
 	if(istype(L))
 		owner = L
 
-/mob/living/simple_animal/hostile/scarybat/FindTarget()
+/mob/living/simple_animal/hostile/scarybat/find_target()
 	. = ..()
 	if(.)
 		emote("flutters towards [.]")
