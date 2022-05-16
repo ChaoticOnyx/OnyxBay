@@ -214,7 +214,7 @@
 			return
 
 		if(user.drop_item())
-			visible_message(SPAN_NOTICE("[usr] insert \a [tape] into \the [src]."))
+			visible_message(SPAN_NOTICE("[usr] inserts \a [D] into \the [src]."))
 			D.forceMove(src)
 			tape = D
 			if(istype(tape, /obj/item/music_tape/random))

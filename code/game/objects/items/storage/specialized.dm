@@ -170,6 +170,7 @@
 
 /obj/item/music_tapebox/Initialize()
 	..()
+	music_tape = new
 	icon_state = icon_closed
 
 	desc = "A box with [music_tape.name]. It contains following playlist"
@@ -187,7 +188,7 @@
 		user.remove_from_mob(C)
 		C.loc = src
 		music_tape = C
-		user.visible_message("[user] inserts \a [C] into [src].", SPAN("notice", "You insert \a [C] into [src].")
+		user.visible_message("[user] inserts \a [C] into [src].", SPAN("notice", "You insert \a [C] into [src]."))
 	else
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
@@ -223,34 +224,34 @@
 /obj/item/music_tapebox/newyear
 	name = "New Year tape box"
 	icon_closed = "box_xmas"
-	music_tape = new /obj/item/music_tape/random/newyear
+	music_tape = /obj/item/music_tape/random/newyear
 
 /obj/item/music_tapebox/jazz
 	name = "Jazz tape box"
 	icon_closed = "box_jazz"
-	music_tape = new /obj/item/music_tape/random/jazz
+	music_tape = /obj/item/music_tape/random/jazz
 
 /obj/item/music_tapebox/classic
 	name = "Classic Music tape box"
 	icon_closed = "box_classic"
-	music_tape = new /obj/item/music_tape/random/classic
+	music_tape = /obj/item/music_tape/random/classic
 
 /obj/item/music_tapebox/frontier
 	name = "NSS Frontier tape box"
 	icon_closed = "box_frontier"
-	music_tape = new /obj/item/music_tape/random/frontier
+	music_tape = /obj/item/music_tape/random/frontier
 
 /obj/item/music_tapebox/exodus
 	name = "NSS Exodus tape box"
 	icon_closed = "box_exodus"
-	music_tape = new /obj/item/music_tape/random/exodus
+	music_tape = /obj/item/music_tape/random/exodus
 
 /obj/item/music_tapebox/syndie
 	name = "Unsuspicious tape box"
 	icon_closed = "box_syndi"
-	music_tape = new /obj/item/music_tape/syndie
+	music_tape = /obj/item/music_tape/syndie
 
 /obj/item/music_tapebox/valhalla
 	name = "Cyber Bar tape box"
 	icon_closed = "box_cyber"
-	music_tape = new /obj/item/music_tape/random/valhalla
+	music_tape = /obj/item/music_tape/random/valhalla
