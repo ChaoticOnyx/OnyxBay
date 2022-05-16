@@ -187,7 +187,7 @@
 		user.remove_from_mob(C)
 		C.loc = src
 		music_tape = C
-		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
+		user.visible_message("[user] inserts \a [C] into [src].", SPAN("notice", "You insert \a [C] into [src].")
 	else
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
