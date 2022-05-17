@@ -827,10 +827,9 @@ var/global/floorIsLava = 0
 		return
 
 	world.visibility = !(world.visibility)
-	var/long_message = " toggled hub visibility.  The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
+	var/long_message = "[key_name(src)] toggled hub visibility. The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
 
-	send2adminirc("[key_name(src)]" + long_message)
-	log_and_message_admins("toggled hub visibility.")
+	log_and_message_admins(long_message)
 	feedback_add_details("admin_verb","THUB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc
 
 /datum/admins/proc/toggletraitorscaling()
