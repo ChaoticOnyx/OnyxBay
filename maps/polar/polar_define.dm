@@ -56,7 +56,7 @@
 	base_floor_type = /turf/simulated/floor/natural/frozenground/cave
 	base_floor_area = /area/polarplanet/street
 
-/datum/map/polar/New()
+/datum/map/polar/setup_map()
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
