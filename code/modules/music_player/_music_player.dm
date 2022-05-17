@@ -376,7 +376,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\The [src] blows apart!"), 1)
+	src.visible_message(SPAN_DANGER("\The [src] blows apart!"))
 
 	explosion(src.loc, 1, 1, 1, rand(3, 4), 1)
 

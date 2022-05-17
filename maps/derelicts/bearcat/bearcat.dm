@@ -1,5 +1,13 @@
 #include "bearcat_areas.dm"
 
+/datum/space_level/bearcat_1
+	path = 'bearcat-1.dmm'
+	travel_chance = 5
+
+/datum/space_level/bearcat_2
+	path = 'bearcat-2.dmm'
+	travel_chance = 5
+
 /datum/shuttle/autodock/ferry/lift
 	name = "Cargo Lift"
 	shuttle_area = /area/ship/scrap/shuttle/lift

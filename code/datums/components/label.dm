@@ -39,7 +39,7 @@
 
 	if(target_label && CanPhysicallyInteract(usr))
 		var/datum/component/label/label = labels[target_label]
-		usr.visible_message(SPAN("notice", "You remove a label, '[target_label]', from \the [src]."),
+		usr.visible_message(SPAN("notice", "[usr] removes a label, '[target_label]', from \the [src]."),
 			SPAN("notice", "You remove a label, '[target_label]', from \the [src]."))
 		label.remove_label()
 

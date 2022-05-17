@@ -29,7 +29,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && !(possible_target.current.loc?.z in GLOB.using_map.admin_levels))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && !(possible_target.current.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(target_is_disallowed(H))
 				continue
@@ -41,7 +41,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role)  && !(possible_target.current.loc?.z in GLOB.using_map.admin_levels))
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role)  && !(possible_target.current.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
@@ -240,7 +240,7 @@ var/global/list/all_objectives = list()
 		return 0
 
 	var/area/shuttle/shuttle_area = get_area(owner.current)
-	if(!istype(shuttle_area) || !(shuttle_area.z in GLOB.using_map.admin_levels))
+	if(!istype(shuttle_area) || !(shuttle_area.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 0
 
 	for(var/mob/living/player in GLOB.player_list)
@@ -972,7 +972,7 @@ var/global/list/all_objectives = list()
 		if(target in GLOB.revs.current_antagonists)
 			return 1
 		var/turf/T = get_turf(H)
-		if(T && isNotStationLevel(T.z))			//If they leave the station they count as dead for this
+		if(T && !isStationLevel(T.z))			//If they leave the station they count as dead for this
 			rval = 2
 		return 0
 	return rval

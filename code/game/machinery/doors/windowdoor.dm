@@ -178,7 +178,7 @@
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H))
 			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
-			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			visible_message("<span class='danger'>[user] smashes against the [name].</span>")
 			user.do_attack_animation(src)
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
