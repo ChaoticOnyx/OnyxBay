@@ -169,6 +169,9 @@
 			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
 
+/datum/reagent/toxin/potassium_chlorophoride/affect_ingest(mob/living/carbon/M, alien, removed, affecting_dose)
+	. = affect_blood(M, alien, removed, affecting_dose)
+
 /datum/reagent/toxin/zombiepowder
 	name = "Zombie Powder"
 	description = "A strong neurotoxin that puts the subject into a death-like state."
