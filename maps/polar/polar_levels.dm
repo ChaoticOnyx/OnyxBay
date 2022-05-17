@@ -29,7 +29,8 @@
 	travel_chance = 10
 	traits = list(
 		ZTRAIT_STATION,
-		ZTRAIT_CONTACT
+		ZTRAIT_CONTACT,
+		ZTRAIT_GLOBAL_DYNAMIC_LIGHTING
 	)
 
 /datum/space_level/polar_4
@@ -37,7 +38,8 @@
 	travel_chance = 15
 	traits = list(
 		ZTRAIT_STATION,
-		ZTRAIT_CONTACT
+		ZTRAIT_CONTACT,
+		ZTRAIT_GLOBAL_DYNAMIC_LIGHTING
 	)
 
 /datum/space_level/polar_5
