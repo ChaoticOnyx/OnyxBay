@@ -1007,6 +1007,8 @@
 /mob/living/carbon/human/proc/handle_poise()
 	poise_pool = body_build.poise_pool
 	if(poise >= poise_pool)
+		poise = poise_pool
+		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 		return
 	var/pregen = 5
 
