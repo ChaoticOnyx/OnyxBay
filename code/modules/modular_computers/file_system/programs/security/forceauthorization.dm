@@ -21,7 +21,7 @@
 	data["guns"] = list()
 	for(var/obj/item/gun/energy/secure/G in GLOB.registered_weapons)
 		var/turf/T = get_turf(G)
-		if(!T || !(T.z in GLOB.using_map.station_levels))
+		if(!T || !(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			continue
 
 		var/list/modes = list()

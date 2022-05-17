@@ -28,7 +28,7 @@
 	var/turf/T = get_turf(get_object())
 	if(!T)
 		return
-	var/valid_z_levels = (GetConnectedZlevels(T.z) & GLOB.using_map.station_levels)
+	var/valid_z_levels = (GetConnectedZlevels(T.z) & GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 	var/obj/machinery/power/supermatter/S = get_pin_data_as_type(IC_INPUT, 1, /obj/machinery/power/supermatter)
 	if(!istype(S) || S.grav_pulling || S.exploded || !(S.z in valid_z_levels) || !istype(S.loc, /turf/))
 		return

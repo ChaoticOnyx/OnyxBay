@@ -1,5 +1,3 @@
-#define MAP_PADDING 7
-
 /obj/skybox
 	name = "skybox"
 	mouse_opacity = 0
@@ -42,8 +40,8 @@
 			view_maxx = view_maxy = view_size + 1
 
 		var/atom/position = owner.client.eye
-		var/normalized_x = (position.x - MAP_PADDING) / (world.maxx - (MAP_PADDING * 2))
-		var/normalized_y = (position.y - MAP_PADDING) / (world.maxy - (MAP_PADDING * 2))
+		var/normalized_x = (position.x - TRANSITION_EDGE) / (world.maxx - (TRANSITION_EDGE * 2))
+		var/normalized_y = (position.y - TRANSITION_EDGE) / (world.maxy - (TRANSITION_EDGE * 2))
 		var/result_x = round(view_maxx * WORLD_ICON_SIZE * normalized_x)
 		var/result_y = round(view_maxy * WORLD_ICON_SIZE * normalized_y)
 		screen_loc = "BOTTOM:[-result_y],LEFT:[-result_x]"
@@ -89,5 +87,3 @@
 		client.screen -= skybox
 	QDEL_NULL(skybox)
 	return ..()
-
-#undef MAP_PADDING

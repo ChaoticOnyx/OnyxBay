@@ -15,26 +15,15 @@
 		/datum/shuttle/autodock/multi/antag/merchant_polar,
 		/datum/shuttle/autodock/multi/antag/skipjack,
 	)
-	station_levels = list(1,2,3,4)
-	admin_levels = list(5)
-	contact_levels = list(1,2,3,4)
-	player_levels = list(1,2,3,4)
-	sealed_levels = list(7)
-	accessible_z_levels = list(
-		"1" = 5,
-		"2" = 5,
-		"3" = 10,
-		"4" = 15,
-	)
-	dynamic_z_levels = list(
-		'polar-1.dmm',
-		'polar-2.dmm',
-		'polar-3.dmm',
-		'polar-4.dmm',
-		// CC
-		'polar-5.dmm',
-		'maps/null-frozen.dmm',
-		'maps/derelicts/jungleplanet/jungle_planet.dmm'
+
+	map_levels = list(
+		new /datum/space_level/polar_1,
+		new /datum/space_level/polar_2,
+		new /datum/space_level/polar_3,
+		new /datum/space_level/polar_4,
+		new /datum/space_level/polar_5,
+		new /datum/space_level/null_frozen,
+		new /datum/space_level/jungle_level
 	)
 
 	station_name  = "Polar Colony"
@@ -60,11 +49,3 @@
 	. = ..()
 
 	AddComponent(/datum/component/polar_weather)
-
-/datum/map/polar/perform_map_generation()
-	//1-z level
-	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 200, 200) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 1, 255, 255)         // Create the mining ore distribution map.
-	//2-z level
-	new /datum/random_map/noise/ore(null, 1, 1, 2, 200, 200)         // Create the mining ore distribution map.
-	return 1

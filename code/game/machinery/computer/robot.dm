@@ -126,7 +126,7 @@
 		var/turf/T = get_turf(R)
 		var/area/A = get_area(T)
 
-		if(istype(T) && istype(A) && (T.z in GLOB.using_map.contact_levels))
+		if(istype(T) && istype(A) && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)))
 			robot["location"] = "[A.name] ([T.x], [T.y])"
 		else
 			robot["location"] = "Unknown"
