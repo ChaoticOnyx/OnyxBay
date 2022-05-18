@@ -5,6 +5,7 @@
 /area/polarplanet/street
 	name = "Polarplanet - street"
 	environment_type = ENVIRONMENT_OUTSIDE
+	always_unpowered = TRUE
 
 // Security
 
