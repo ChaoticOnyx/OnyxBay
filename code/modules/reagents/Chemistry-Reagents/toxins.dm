@@ -152,6 +152,8 @@
 	color = "#ffffff"
 	strength = 10
 	overdose = 20
+	metabolism = REM * 0.5
+	absorbability = 0.75
 
 /datum/reagent/toxin/potassium_chlorophoride/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()
@@ -168,9 +170,6 @@
 			H.Weaken(10)
 			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
-
-/datum/reagent/toxin/potassium_chlorophoride/affect_ingest(mob/living/carbon/M, alien, removed, affecting_dose)
-	. = affect_blood(M, alien, removed, affecting_dose)
 
 /datum/reagent/toxin/zombiepowder
 	name = "Zombie Powder"
