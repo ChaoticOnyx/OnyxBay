@@ -20,3 +20,6 @@
 #define ZTRAIT_EMPTY    "Empty"
 /// This level has radio.
 #define ZTRAIT_CONTACT  "Contact"
+/// This level has some global dynamic lighting (a star or something).
+/// It's like the starlight but can be changed by time.
+#define ZTRAIT_GLOBAL_DYNAMIC_LIGHTING "lighting"

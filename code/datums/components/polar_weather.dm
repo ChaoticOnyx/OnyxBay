@@ -16,6 +16,18 @@
 		"[WEATHER_STORM]" = 240 SECONDS
 	)
 
+	// The current day time is between 0 and `day_duration`.
+	var/day_duration = 1 HOUR
+
+	// Keep current light color.
+	var/light_color
+	var/light_gradient = list(
+		"#7d6e57" = 0.2,
+		"#ffffff" = 0.3,
+		"#29160d" = 0.7,
+		"#000000" = 0.9
+	)
+
 /datum/component/polar_weather/Initialize()
 	. = ..()
 
@@ -50,7 +62,7 @@
 			continue
 		
 		var/is_playing_some = FALSE
-		
+
 		for(var/sound/S in sounds)
 			if(S.channel == SOUND_CHANNEL_WEATHER)
 				is_playing_some = TRUE
@@ -105,6 +117,36 @@
 		var/sound/S = sound(GET_SFX(sfx_to_play), FALSE, FALSE, SOUND_CHANNEL_WEATHER)
 		C.mob.playsound_local(get_turf(M), S, 20, FALSE)
 
+/datum/component/polar_weather/proc/update_lighting()
+	var/day_time = world.time % day_duration
+	var/normalized_time = day_time / day_duration
+
+	if(!light_color)
+		light_color = light_gradient[1]
+
+	// Update color
+	var/new_light_color
+
+	for(var/C in light_gradient)
+		var/start_from = light_gradient[C]
+
+		if(normalized_time >= start_from)
+			new_light_color = C
+	
+	if(!new_light_color || new_light_color == light_color)
+		return
+
+	light_color = new_light_color
+	var/list/target_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_GLOBAL_DYNAMIC_LIGHTING)
+
+	for(var/level in target_levels)
+		log_debug("Updating lighting on level [level] to color [light_color]")
+		for(var/turf/T in block(locate(1, 1, level), locate(world.maxx, world.maxy, level)))
+			var/area/A = get_area(T)
+
+			if(A.environment_type == ENVIRONMENT_OUTSIDE)
+				T.set_light(1, 1, 1.25, l_color = light_color)
+
 /datum/component/polar_weather/Process()
 	var/duration = states["[current_state]"]
 	THROTTLE_SHARED(state_cd, duration, last_weather_change)
@@ -116,6 +158,11 @@
 
 	if(sound_cd)
 		_play_sounds()
+	
+	THROTTLE(light_cd, 5 SECOND)
+	
+	if(light_cd)
+		update_lighting()
 
 /datum/component/polar_weather/Destroy()
 	STOP_PROCESSING(SSprocessing, src)
