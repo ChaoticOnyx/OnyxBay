@@ -139,7 +139,11 @@
 				if(isnull(current)) return CANCEL
 
 			if("type")
-				current = input("Select type for [arguments.len+1]\th argument") as null|anything in typesof(/obj, /mob, /area, /turf)
+				var/incurrent = input("Input type for [arguments.len+1]\th argument") as text
+				current = text2path(incurrent)
+				if(!ispath(current))
+					to_chat(usr, "Your type doesn't exist - [incurrent]")
+					current = null
 				if(isnull(current)) return CANCEL
 
 			if("obj reference")
