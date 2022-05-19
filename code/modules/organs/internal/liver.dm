@@ -13,7 +13,9 @@
 
 /obj/item/organ/internal/liver/robotize()
 	. = ..()
+	SetName("hepatic filter")
 	icon_state = "liver-prosthetic"
+	dead_icon = "liver-prosthetic-br"
 
 /obj/item/organ/internal/liver/proc/store_tox(amount) // Store toxins up to min_broken_damage, return excessive toxins
 	var/cap_toxins = max(0, min_broken_damage - tox_filtering)
