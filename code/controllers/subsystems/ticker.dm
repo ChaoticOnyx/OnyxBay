@@ -19,6 +19,7 @@ SUBSYSTEM_DEF(ticker)
 	var/end_game_state = END_GAME_NOT_OVER
 	var/delay_end = 0               //Can be set true to postpone restart.
 	var/delay_notified = 0          //Spam prevention.
+	var/auto_start = FALSE			// If TRUE it will start round as soon as game initialized
 
 	var/force_end = FALSE
 
@@ -51,7 +52,8 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/pregame_tick()
 	if(round_progressing && last_fire)
 		pregame_timeleft -= world.time - last_fire
-	if(pregame_timeleft <= 0)
+	if(pregame_timeleft <= 0 || auto_start)
+		pregame_timeleft = 0
 		Master.SetRunLevel(RUNLEVEL_SETUP)
 		return
 
