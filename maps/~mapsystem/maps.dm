@@ -177,7 +177,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 /datum/map/proc/perform_map_generation()
 	for(var/level = 1; level <= length(map_levels); level++)
 		var/datum/space_level/L = map_levels[level]
-		L.generate()
+		L.generate(level)
 
 // Used to apply various post-compile procedural effects to the map.
 /datum/map/proc/refresh_mining_turfs(zlevel)
