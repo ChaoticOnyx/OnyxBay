@@ -107,7 +107,7 @@
 
 /obj/item/projectile/beam/pulse/heavy
 	name = "heavy pulse laser"
-	icon_state = "mecha_pulse1_bl"
+	icon_state = "pulse1_bl"
 	var/life = 20
 
 /obj/item/projectile/beam/pulse/heavy/Bump(atom/A, forced = FALSE)
