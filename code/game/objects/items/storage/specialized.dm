@@ -161,14 +161,14 @@
 // -----------------------------
 //    Music Tape Boxes
 // -----------------------------
-/obj/item/music_tapebox
+/obj/item/music_tape_box
 	name = "Music Tape box"
 	desc = "You should not see that."
 	icon = 'icons/obj/tapes.dmi'
 	var/obj/item/music_tape/music_tape = null
 	var/icon_closed
 
-/obj/item/music_tapebox/Initialize()
+/obj/item/music_tape_box/Initialize()
 	..()
 	music_tape = new
 	icon_state = icon_closed
@@ -178,7 +178,7 @@
 		desc += "<br>[track.title]"
 	desc += "."
 
-/obj/item/music_tapebox/attackby(obj/item/A, mob/user)
+/obj/item/music_tape_box/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/music_tape))
 		var/obj/item/music_tape/C = A
 		if(music_tape)
@@ -193,14 +193,14 @@
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
 
-/obj/item/music_tapebox/update_icon()
+/obj/item/music_tape_box/update_icon()
 	..()
 	if(!music_tape)
 		icon_state = icon_closed + "_open"
 	else
 		icon_state = icon_closed
 
-/obj/item/music_tapebox/attack_hand(mob/user)
+/obj/item/music_tape_box/attack_hand(mob/user)
 	if(loc != user)
 		..()
 	else
@@ -213,7 +213,7 @@
 			update_icon()
 			add_fingerprint(user)
 
-/obj/item/music_tapebox/AltClick(mob/user)
+/obj/item/music_tape_box/AltClick(mob/user)
 	if(!canremove)
 		return
 
@@ -221,37 +221,37 @@
 		add_fingerprint(user)
 		attack_hand(user)
 		return TRUE
-/obj/item/music_tapebox/newyear
+/obj/item/music_tape_box/newyear
 	name = "New Year tape box"
 	icon_closed = "box_xmas"
 	music_tape = /obj/item/music_tape/random/newyear
 
-/obj/item/music_tapebox/jazz
+/obj/item/music_tape_box/jazz
 	name = "Jazz tape box"
 	icon_closed = "box_jazz"
 	music_tape = /obj/item/music_tape/random/jazz
 
-/obj/item/music_tapebox/classic
+/obj/item/music_tape_box/classic
 	name = "Classic Music tape box"
 	icon_closed = "box_classic"
 	music_tape = /obj/item/music_tape/random/classic
 
-/obj/item/music_tapebox/frontier
+/obj/item/music_tape_box/frontier
 	name = "NSS Frontier tape box"
 	icon_closed = "box_frontier"
 	music_tape = /obj/item/music_tape/random/frontier
 
-/obj/item/music_tapebox/exodus
+/obj/item/music_tape_box/exodus
 	name = "NSS Exodus tape box"
 	icon_closed = "box_exodus"
 	music_tape = /obj/item/music_tape/random/exodus
 
-/obj/item/music_tapebox/syndie
+/obj/item/music_tape_box/syndie
 	name = "Unsuspicious tape box"
 	icon_closed = "box_syndi"
 	music_tape = /obj/item/music_tape/syndie
 
-/obj/item/music_tapebox/valhalla
+/obj/item/music_tape_box/valhalla
 	name = "Cyber Bar tape box"
 	icon_closed = "box_cyber"
 	music_tape = /obj/item/music_tape/random/valhalla
