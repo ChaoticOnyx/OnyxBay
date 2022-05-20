@@ -383,6 +383,138 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/alt/brown/corner
 	icon_state = "browncorner"
 
+/obj/effect/floor_decal/corner/old
+	icon_state = "corner_oldtile"
+	alpha = 255
+
+/obj/effect/floor_decal/corner/old/red
+	name = "red corner"
+	color = "#8C4B4E"
+
+/obj/effect/floor_decal/corner/old/red/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/red/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/red/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/red/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/green
+	name = "green corner"
+	color = "#4A5F50"
+
+/obj/effect/floor_decal/corner/old/green/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/green/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/green/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/green/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/whitegreen
+	name = "whitegreen corner"
+	color = "#3F6452"
+
+/obj/effect/floor_decal/corner/old/whitegreen/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/whitegreen/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/whitegreen/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/whitegreen/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/cyan
+	name = "cyan corner"
+	color = "#486164"
+
+/obj/effect/floor_decal/corner/old/cyan/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/cyan/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/cyan/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/cyan/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/teal
+	name = "teal corner"
+	color = "#3C6568"
+
+/obj/effect/floor_decal/corner/old/teal/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/teal/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/teal/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/teal/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/blue
+	name = "blue corner"
+	color = "#3F526B"
+
+/obj/effect/floor_decal/corner/old/blue/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/blue/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/blue/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/blue/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/purple
+	name = "purple corner"
+	color = "#71677F"
+
+/obj/effect/floor_decal/corner/old/purple/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/purple/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/purple/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/purple/mono
+	icon_state = "corner_oldtile_mono"
+
+/obj/effect/floor_decal/corner/old/yellow
+	name = "yellow corner"
+	color = "#95784F"
+
+/obj/effect/floor_decal/corner/old/yellow/diagonal
+	icon_state = "corner_oldtile_diagonal"
+
+/obj/effect/floor_decal/corner/old/yellow/three_quarters
+	icon_state = "corner_oldtile_three_quarters"
+
+/obj/effect/floor_decal/corner/old/yellow/full
+	icon_state = "corner_oldtile_full"
+
+/obj/effect/floor_decal/corner/old/yellow/mono
+	icon_state = "corner_oldtile_mono"
+
 /obj/effect/floor_decal/corner_steel_grid
 	name = "corner steel_grid"
 	icon_state = "steel_grid"
@@ -933,6 +1065,19 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/floordetail/traction
 	icon_state = "traction"
 
+/obj/effect/floor_decal/floordetail/borderfloor/black
+	icon_state = "borderfloor_black"
+	color = null
+
+/obj/effect/floor_decal/floordetail/borderfloor/black/corner
+	icon_state = "borderfloorcorner_black"
+
+/obj/effect/floor_decal/floordetail/borderfloor/black/full
+	icon_state = "borderfloorfull_black"
+
+/obj/effect/floor_decal/floordetail/borderfloor/black/full/cee
+	icon_state = "borderfloorcee_black"
+
 /obj/effect/floor_decal/ntlogo
 	icon_state = "ntlogo"
 
@@ -1002,3 +1147,31 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/derelict/l16
 	name = "derelict16"
 	icon_state = "derelict16"
+
+/obj/effect/floor_decal/techfloor
+	name = "techfloor edges"
+	icon_state = "techfloor_edges"
+
+/obj/effect/floor_decal/techfloor/corner
+	name = "techfloor corner"
+	icon_state = "techfloor_corners"
+
+/obj/effect/floor_decal/techfloor/orange
+	name = "techfloor edges"
+	icon_state = "techfloororange_edges"
+
+/obj/effect/floor_decal/techfloor/orange/corner
+	name = "techfloor corner"
+	icon_state = "techfloororange_corners"
+
+/obj/effect/floor_decal/techgrid
+	name = "techgrid corner"
+	icon_state = "corner_techgrid"
+
+/obj/effect/floor_decal/techgrid/diagonal
+	name = "techgrid diagonal corner"
+	icon_state = "corner_techgrid_diagonal"
+
+/obj/effect/floor_decal/techgrid/full
+	name = "techgrid full corner"
+	icon_state = "corner_techgrid_full"
