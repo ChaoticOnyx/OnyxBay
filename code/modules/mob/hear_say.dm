@@ -75,7 +75,7 @@
 
 	var/track = null
 	if(isghost(src))
-		if(speaker.real_name && speaker_name != speaker.real_name)
+		if(speaker?.real_name && speaker_name != speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "([ghost_follow_link(speaker, src)]) "
 		if(get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && near)
