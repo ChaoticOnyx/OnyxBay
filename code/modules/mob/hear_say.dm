@@ -106,8 +106,8 @@
 
 		else
 			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
-		if(speech_sound && (dist_speech <= world.view && src.z == speaker.z))
-			var/turf/source = speaker? get_turf(speaker) : T
+		if(speech_sound && speaker && (dist_speech <= world.view && src.z == speaker.z))
+			var/turf/source = get_turf(speaker)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
 
 /mob/proc/on_hear_say(message)
@@ -156,26 +156,26 @@
 	if(copytext_char(message, -2) == "!!")
 		message = "<b>[message]</b>"
 
-	var/speaker_name = vname ? vname : speaker.name
+	var/speaker_name = vname ? vname : speaker?.name
 
-	if(istype(speaker, /mob/living/carbon/human))
+	if(ishuman(speaker))
 		var/mob/living/carbon/human/H = speaker
 		if(H.voice)
 			speaker_name = H.voice
 
 	if(hard_to_hear)
-		speaker_name = "unknown"
+		speaker_name = "Unknown"
 
 	var/changed_voice = FALSE
 
-	if(istype(src, /mob/living/silicon/ai) && !hard_to_hear)
+	if(isAI(src) && !hard_to_hear)
 		var/jobname // the mob's "job"
 		var/mob/living/carbon/human/impersonating //The crew member being impersonated, if any.
 
-		if (ishuman(speaker))
+		if(ishuman(speaker))
 			var/mob/living/carbon/human/H = speaker
 
-			if(H.wear_mask && istype(H.wear_mask,/obj/item/clothing/mask/chameleon/voice))
+			if(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/chameleon/voice))
 				changed_voice = TRUE
 				var/list/impersonated = new()
 				var/mob/living/carbon/human/I = impersonated[speaker_name]
@@ -217,7 +217,7 @@
 			track = "<a href='byond://?src=\ref[src];trackname=[html_encode(speaker_name)];track=\ref[speaker]'>[speaker_name] ([jobname])</a>"
 
 	if(isghost(src))
-		if(speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
+		if(speaker?.real_name && speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
