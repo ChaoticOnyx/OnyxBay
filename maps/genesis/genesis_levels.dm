@@ -17,6 +17,7 @@
 /datum/space_level/genesis_3
 	path = 'genesis-3.dmm'
 	traits = list(
+		ZTRAIT_CENTCOM,
 		ZTRAIT_SEALED,
 		ZTRAIT_CONTACT
 	)
