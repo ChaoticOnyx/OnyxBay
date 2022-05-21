@@ -194,7 +194,17 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			M.updateMineralOverlays()
 
 /datum/map/proc/get_network_access(network)
-	return 0
+	switch(network)
+		if(NETWORK_CIVILIAN_WEST)
+			return access_mailsorting
+		if(NETWORK_RESEARCH_OUTPOST)
+			return access_research
+		if(NETWORK_TELECOM)
+			return access_heads
+		if(NETWORK_COMMAND)
+			return access_heads
+		if(NETWORK_ENGINE, NETWORK_ENGINEERING_OUTPOST)
+			return access_engine
 
 // By default transition randomly to another zlevel
 /datum/map/proc/get_transit_zlevel(current_z_level)
