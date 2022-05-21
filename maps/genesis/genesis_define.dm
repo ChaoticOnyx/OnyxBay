@@ -41,10 +41,51 @@
 	company_name  = "NanoTrasen"
 	company_short = "NT"
 	system_name   = "Nyx"
-	
+
 	shuttle_docked_message = "The scheduled Crew Transfer Shuttle to %Dock_name% has docked with the station. It will depart in approximately %ETD%"
 	shuttle_leaving_dock = "The Crew Transfer Shuttle has left the station. Estimate %ETA% until the shuttle docks at %dock_name%."
 	shuttle_called_message = "A crew transfer to %Dock_name% has been scheduled. The shuttle has been called. It will arrive in approximately %ETA%"
 	shuttle_recall_message = "The scheduled crew transfer has been cancelled."
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
+
+	species_to_job_whitelist = list(
+		/datum/species/tajaran = list(
+									/datum/job/assistant,
+									/datum/job/bartender,
+									/datum/job/chef,
+									/datum/job/hydro,
+									/datum/job/cargo_tech,
+									/datum/job/mining,
+									/datum/job/janitor,
+									/datum/job/librarian,
+									/datum/job/merchant
+									),
+		/datum/species/unathi = list(
+									/datum/job/assistant,
+									/datum/job/bartender,
+									/datum/job/chef,
+									/datum/job/hydro,
+									/datum/job/cargo_tech,
+									/datum/job/mining,
+									/datum/job/janitor,
+									/datum/job/librarian,
+									/datum/job/officer,
+									/datum/job/merchant
+									),
+		/datum/species/skrell = list(/datum/job/assistant,
+									/datum/job/bartender,
+									/datum/job/chef,
+									/datum/job/hydro,
+									/datum/job/janitor,
+									/datum/job/librarian,
+									/datum/job/doctor,
+									/datum/job/virologist,
+									/datum/job/chemist,
+									/datum/job/psychiatrist,
+									/datum/job/scientist,
+									/datum/job/xenobiologist,
+									/datum/job/roboticist,
+									/datum/job/merchant
+									)
+	)
