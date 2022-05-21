@@ -79,6 +79,9 @@
 /obj/machinery/camera/network/crescent
 	network = list(NETWORK_CRESCENT)
 
+/obj/machinery/camera/network/voron
+	network = list(NETWORK_APPARAT_VORON)
+
 // All Upgrades
 /obj/machinery/camera/all/command
 	network = list(NETWORK_COMMAND)

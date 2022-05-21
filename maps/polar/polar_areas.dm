@@ -2771,3 +2771,101 @@
 	name = "\improper Nuclear Shelter One"
 /area/polarplanet/shelter/nuclear2
 	name = "\improper Nuclear Shelter Two"
+
+// Voron
+/area/polarplanet/voron/
+	name = "\improper Apparat Voron"
+	icon_state = "voron"
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_NORMAL)
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_OUTPOST)
+
+/area/polarplanet/voron/cargo_bay
+	name = "\improper Apparat Voron - Cargo Bay"
+	icon_state = "voron_cargo_bay"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/hangar
+	name = "\improper Apparat Voron - Hangar"
+	icon_state = "voron_hangar"
+
+/area/polarplanet/voron/dormitory
+	name = "\improper Apparat Voron - Dormitory"
+	icon_state = "voron_dormitory"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/closets
+	name = "\improper Apparat Voron - Closets"
+	icon_state = "voron_closets"
+
+/area/polarplanet/voron/restroom
+	name = "\improper Apparat Voron - Restroom"
+	icon_state = "voron_restroom"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/maintenance
+	name = "\improper Apparat Voron - Maintenance"
+	icon_state = "voron_maintenance"
+
+/area/polarplanet/voron/quartermaster
+	name = "\improper Apparat Voron - Quartermaster"
+	icon_state = "voron_quartermaster"
+
+/area/polarplanet/voron/quartermaster_room
+	name = "\improper Apparat Voron - Quartermaster Room"
+	icon_state = "voron_quartermaster_room"
+
+/area/polarplanet/voron/bridge
+	name = "\improper Apparat Voron - Bridge"
+	icon_state = "voron_bridge"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/cargo_warehouse
+	name = "\improper Apparat Voron - Cargo Warehouse"
+	icon_state = "voron_cargo_warehouse"
+
+/area/polarplanet/voron/entrance
+	name = "\improper Apparat Voron - Entrance"
+	icon_state = "voron_entrance"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/supply_entrance
+	name = "\improper Apparat Voron - Supply Entrance"
+	icon_state = "voron_supply_entrance"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/break_room
+	name = "\improper Apparat Voron - Break Room"
+	icon_state = "voron_break_room"
+
+/area/polarplanet/voron/infirmary
+	name = "\improper Apparat Voron - Infirmary"
+	icon_state = "voron_infirmary"
+
+/area/polarplanet/voron/mining_closets
+	name = "\improper Apparat Voron - Mining Closets"
+	icon_state = "voron_mining_closets"
+
+/area/polarplanet/voron/substation
+	name = "\improper Apparat Voron - Substation"
+	icon_state = "voron_substation"
+
+/area/polarplanet/voron/refinery_line
+	name = "\improper Apparat Voron - Refinery Line"
+	icon_state = "voron_refinery_line"
+
+/area/polarplanet/voron/mech_bay
+	name = "\improper Apparat Voron - Mech Bay"
+	icon_state = "voron_mech_bay"
+
+/area/polarplanet/voron/mining_warehouse
+	name = "\improper Apparat Voron - Mining Warehouse"
+	icon_state = "voron_mining_warehouse"
+
+/area/polarplanet/voron/hallway2
+	name = "\improper Apparat Voron - Hallway Deck 2"
+	icon_state = "voron_hallway2"
+
+/area/polarplanet/voron/hallway1
+	name = "\improper Apparat Voron - Hallway Deck 1"
+	icon_state = "voron_hallway1"
