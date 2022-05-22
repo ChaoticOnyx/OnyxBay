@@ -63,7 +63,7 @@
 		src.attack_hand(user)
 
 	if(on)
-		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
+		to_chat(user, SPAN("notice", "\The [src] is busy. Please wait for completion of previous operation."))
 		return 1
 	if(dish || beaker)
 		to_chat(user, "<span class='notice'>\The [src] is full. Please remove external items.</span>")
