@@ -1,5 +1,27 @@
 [
   {
+    "author": "MaxTheAstronaut",
+    "date": "2022-05-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "обновлены помады, теперь они корректно отображаются на куклах.",
+        "pr": 8367
+      }
+    ]
+  },
+  {
+    "author": "Tsurupeta",
+    "date": "2022-05-22T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Fixed sensors console.",
+        "pr": 8440
+      }
+    ]
+  },
+  {
     "author": "TermService",
     "date": "2022-05-21T00:00:00+03:00",
     "changes": [
