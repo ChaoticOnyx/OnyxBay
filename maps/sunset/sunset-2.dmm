@@ -630,7 +630,7 @@
 "mv" = (/obj/structure/bed/chair{dir = 8},/obj/machinery/light/small/hl{dir = 4},/turf/simulated/floor/trim/darkwood,/area/storage/art)
 "mw" = (/obj/structure/table/woodentable,/obj/item/device/camera,/turf/simulated/floor/trim/wood,/area/security/detectives_office)
 "mx" = (/obj/structure/table/woodentable,/obj/item/storage/photo_album{pixel_y = -10},/obj/item/device/camera_film,/obj/item/device/camera_film,/turf/simulated/floor/trim/wood,/area/security/detectives_office)
-"my" = (/obj/structure/closet/secure_closet/detective,/obj/item/reagent_containers/vessel/flask/detflask,/obj/machinery/alarm{dir = 1; pixel_y = -25},/turf/simulated/floor/trim/wood,/area/security/detectives_office)
+"my" = (/obj/structure/closet/secure_closet/detective,/obj/item/reagent_containers/vessel/flask/detflask,/obj/item/clothing/glasses/hud/standard/thermal,/obj/machinery/alarm{dir = 1; pixel_y = -25},/turf/simulated/floor/trim/wood,/area/security/detectives_office)
 "mz" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6},/turf/simulated/floor/trim/wood,/area/crew_quarters/sleep)
 "mA" = (/obj/structure/closet/secure_closet/personal,/obj/machinery/alarm{dir = 1; pixel_y = -22},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/trim/wood,/area/crew_quarters/sleep)
 "mB" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/machinery/portable_atmospherics/powered/pump/filled,/turf/simulated/floor/tiled,/area/crew_quarters/sleep)
