@@ -13,7 +13,7 @@
 			return access_cent_specops
 		if(NETWORK_MEDICAL)
 			return access_medical
-		if(NETWORK_MINE)
+		if(NETWORK_MINE, NETWORK_APPARAT_VORON)
 			return access_mailsorting // Cargo office - all cargo staff should have access here.
 		if(NETWORK_RESEARCH)
 			return access_research
