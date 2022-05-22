@@ -41,7 +41,7 @@
 	if(istype(O,/obj/item/virusdish))
 		var/mob/living/carbon/c = user
 		if (dish)
-			to_chat(user, "\The [src] is already loaded.")
+			to_chat(user, SPAN("notice", "\The [src] is already loaded."))
 			return
 
 		dish = O
