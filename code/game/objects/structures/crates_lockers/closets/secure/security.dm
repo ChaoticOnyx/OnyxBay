@@ -218,7 +218,6 @@
 
 /obj/structure/closet/secure_closet/detective/WillContain()
 	return list(
-		/obj/item/clothing/glasses/hud/standard/thermal,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,
 		/obj/item/clothing/under/det,
