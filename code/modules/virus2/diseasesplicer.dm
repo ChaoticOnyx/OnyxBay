@@ -3,32 +3,54 @@
 	icon = 'icons/obj/computer.dmi'
 	icon_keyboard = "med_key"
 	icon_screen = "crew"
+	component_types = list(
+		/obj/item/stock_parts/micro_laser = 2,
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/circuitboard/diseasesplicer
+	)
 
+	var/obj/item/virusdish/dish = null
 	var/datum/disease2/effect/memorybank = null
 	var/list/species_buffer = null
+
 	var/analysed = 0
-	var/obj/item/virusdish/dish = null
 	var/burning = 0
 	var/splicing = 0
 	var/scanning = 0
 
-/obj/machinery/computer/diseasesplicer/attackby(obj/I as obj, mob/user as mob)
-	if(isScrewdriver(I))
-		return ..(I,user)
+	var/speed = 1
 
-	if(istype(I,/obj/item/virusdish))
+/obj/machinery/computer/diseasesplicer/Initialize()
+	. = ..()
+	RefreshParts()
+
+/obj/machinery/computer/diseasesplicer/attackby(obj/O, mob/user)
+	if(burning || splicing || scanning)
+		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
+		return 1
+	if(dish)
+		to_chat(user, "<span class='notice'>\The [src] is full. Please remove external items.</span>")
+		return 1
+	if(default_deconstruction_screwdriver(user, O))
+		return
+	if(default_deconstruction_crowbar(user, O))
+		return
+	if(default_part_replacement(user, O))
+		return
+
+	if(istype(O,/obj/item/virusdish))
 		var/mob/living/carbon/c = user
 		if (dish)
 			to_chat(user, "\The [src] is already loaded.")
 			return
 
-		dish = I
+		dish = O
 		c.drop_item()
-		I.loc = src
+		O.loc = src
 
-	if(istype(I,/obj/item/diseasedisk))
+	if(istype(O,/obj/item/diseasedisk))
 		to_chat(user, "You upload the contents of the disk onto the buffer.")
-		var/obj/item/diseasedisk/disk = I
+		var/obj/item/diseasedisk/disk = O
 		memorybank = disk.effect
 		species_buffer = disk.species
 		analysed = disk.analysed
@@ -91,17 +113,19 @@
 		return
 
 	if(scanning)
-		scanning -= 1
+		scanning -= 1*speed
 		if(!scanning)
 			ping("\The [src] pings, \"Analysis complete.\"")
 			SSnano.update_uis(src)
+
 	if(splicing)
-		splicing -= 1
+		splicing -= 1*speed
 		if(!splicing)
 			ping("\The [src] pings, \"Splicing operation complete.\"")
 			SSnano.update_uis(src)
+
 	if(burning)
-		burning -= 1
+		burning -= 1*speed
 		if(!burning)
 			var/obj/item/diseasedisk/d = new /obj/item/diseasedisk(src.loc)
 			d.analysed = analysed
@@ -122,6 +146,14 @@
 
 			ping("\The [src] pings, \"Backup disk saved.\"")
 			SSnano.update_uis(src)
+
+/obj/machinery/computer/diseasesplicer/RefreshParts()
+	var/T = 0
+	for(var/obj/item/stock_parts/scanning_module/S in component_parts)
+		T += S.rating
+	for(var/obj/item/stock_parts/micro_laser/L in component_parts)
+		T += L.rating
+	speed = T/3
 
 /obj/machinery/computer/diseasesplicer/OnTopic(user, href_list)
 	if (href_list["close"])

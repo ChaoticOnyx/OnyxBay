@@ -1,9 +1,16 @@
-/obj/machinery/disease2/incubator/
+/obj/machinery/disease2/incubator
 	name = "pathogenic incubator"
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "incubator"
+	component_types = list(
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/stock_parts/scanning_module,
+		/obj/item/circuitboard/dishincubator
+	)
+
 	var/obj/item/virusdish/dish
 	var/obj/item/reagent_containers/vessel/beaker = null
 	var/radiation = 0
@@ -14,8 +21,16 @@
 
 	var/foodsupply = 0
 	var/toxins = 0
+	var/max_food_storage = 60
 
-/obj/machinery/disease2/incubator/attackby(obj/O as obj, mob/user as mob)
+	var/speed = 1
+	var/mutation_prob = 1
+
+/obj/machinery/disease2/incubator/Initialize()
+	. = ..()
+	RefreshParts()
+
+/obj/machinery/disease2/incubator/attackby(obj/O, mob/user)
 	if(istype(O, /obj/item/reagent_containers/vessel/beaker) || istype(O, /obj/item/reagent_containers/vessel/bottle/chemical) || istype(O,/obj/item/reagent_containers/syringe))
 
 		if(beaker)
@@ -47,6 +62,19 @@
 
 		src.attack_hand(user)
 
+	if(on)
+		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
+		return 1
+	if(dish || beaker)
+		to_chat(user, "<span class='notice'>\The [src] is full. Please remove external items.</span>")
+		return 1
+	if(default_deconstruction_screwdriver(user, O))
+		return
+	if(default_deconstruction_crowbar(user, O))
+		return
+	if(default_part_replacement(user, O))
+		return
+
 /obj/machinery/disease2/incubator/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
@@ -61,6 +89,7 @@
 	data["radiation"] = radiation
 	data["mutagen"] = min(mutagen, 100)
 	data["toxins"] = min(toxins, 100)
+	data["max_food_storage"] = max_food_storage
 	data["on"] = on
 	data["system_in_use"] = foodsupply > 0 || radiation > 0 || toxins > 0 || mutagen > 0
 	data["chemical_volume"] = beaker ? beaker.reagents.total_volume : 0
@@ -109,31 +138,31 @@
 			icon_state = "incubator"
 
 		if(foodsupply)
-			foodsupply -= 1
+			foodsupply -= 1*speed
 			if(foodsupply > 50 && dish.growth >= 100 && dish.virus2.infectionchance < 50)
 				if(prob(5))
 					dish.virus2.infectionchance += 1
 			if(dish.growth + 3 >= 100 && dish.growth < 100)
 				ping("\The [src] pings, \"Sufficient viral growth density achieved.\"")
-			dish.growth += 3
+			dish.growth += 3*speed
 			SSnano.update_uis(src)
 
 		if(radiation)
-			if(radiation > 50 && prob(5))
+			if(radiation > 50 && prob(5*mutation_prob))
 				dish.virus2.majormutate()
 				if(dish.info)
 					dish.info = "OUTDATED : [dish.info]"
 					dish.basic_info = "OUTDATED: [dish.basic_info]"
 					dish.analysed = 0
 				ping("\The [src] pings, \"Mutant viral strain detected.\"")
-			else if(prob(5))
+			else if(prob(5*mutation_prob))
 				dish.virus2.minormutate()
-			radiation -= 1
+			radiation -= 1*speed
 			SSnano.update_uis(src)
 		if(toxins)
-			if(prob(5))
+			if(prob(5*mutation_prob))
 				dish.virus2.infectionchance -= 1
-			if(toxins > 50 && prob(5))
+			if(toxins > 50 && prob(5*mutation_prob))
 				dish.virus2.stageshift()
 				if(dish.info)
 					dish.info = "OUTDATED : [dish.info]"
@@ -144,19 +173,19 @@
 				dish.growth = 0
 				dish.virus2 = null
 				ping("\The [src] pings, \"Virus sample has been destroyed\"")
-			toxins -= 1
+			toxins -= 1*speed
 			SSnano.update_uis(src)
 		if(mutagen)
-			if(mutagen > 50 && prob(5))
+			if(mutagen > 50 && prob(5*mutation_prob))
 				if(dish.virus2.mediummutate())
 					ping("\The [src] pings, \"Mutant viral strain detected.\"")
 					if(dish.info)
 						dish.info = "OUTDATED : [dish.info]"
 						dish.basic_info = "OUTDATED: [dish.basic_info]"
 						dish.analysed = 0
-			else if(prob(10))
+			else if(prob(10*mutation_prob))
 				dish.virus2.minormutate()
-			mutagen -= 1
+			mutagen -= 1*speed
 			SSnano.update_uis(src)
 
 
@@ -164,6 +193,18 @@
 		on = 0
 		icon_state = "incubator"
 		SSnano.update_uis(src)
+
+/obj/machinery/disease2/incubator/RefreshParts()
+	var/T = 0
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
+		T += M.rating
+	speed = T/2
+	for(var/obj/item/reagent_containers/vessel/beaker/B in component_parts)
+		max_food_storage = B.volume
+	T = 0
+	for(var/obj/item/stock_parts/scanning_module/S in component_parts)
+		T = S.rating
+	mutation_prob = T/2
 
 /obj/machinery/disease2/incubator/OnTopic(user, href_list)
 	if (href_list["close"])
@@ -191,17 +232,17 @@
 	if (href_list["chem"])
 		if(!beaker.reagents)
 			return TOPIC_REFRESH
-		if(beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food, 5) && foodsupply < 100)
+		if(beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food, 5) && foodsupply < max_food_storage)
 			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, 5)
-			foodsupply = min(100, foodsupply + 10)
-		if(beaker.reagents.has_reagent(/datum/reagent/radium, 5) && radiation < 100)
+			foodsupply = min(max_food_storage, foodsupply + 5)
+		if(beaker.reagents.has_reagent(/datum/reagent/radium, 5) && radiation < max_food_storage)
 			beaker.reagents.remove_reagent(/datum/reagent/radium, 5)
-			radiation = min(100, radiation + 10)
+			radiation = min(max_food_storage, radiation + 5)
 		if(mutagen < 100)
 			for(var/datum/reagent/mutagen/T in beaker.reagents.reagent_list)
 				if(T.volume >= 5)
 					beaker.reagents.remove_reagent(/datum/reagent/mutagen, 5)
-					mutagen = min(100, mutagen + 10)
+					mutagen = min(100, mutagen + 5)
 		if(toxins < 100)
 			for(var/datum/reagent/toxin/T in beaker.reagents.reagent_list)
 				if(T.volume >= 5)
