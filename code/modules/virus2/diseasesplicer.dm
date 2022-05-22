@@ -126,7 +126,7 @@
 
 	if(burning)
 		burning -= 1*speed
-		if(!burning)
+		if(burning <= 0)
 			var/obj/item/diseasedisk/d = new /obj/item/diseasedisk(src.loc)
 			d.analysed = analysed
 			if(analysed)
