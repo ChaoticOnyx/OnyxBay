@@ -105,7 +105,7 @@
 
 	if (curing)
 		curing -= speed
-		if (curing == 0)
+		if (curing <= 0)
 			cure()
 
 	if (isolating)
