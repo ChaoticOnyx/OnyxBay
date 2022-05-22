@@ -89,7 +89,7 @@
 				dish.loc = src.loc
 				dish = null
 
-				src.state("\The [src] buzzes, \"Insufficient growth density to complete analysis.\"")
+				src.state(SPAN("warning", "\The [src] buzzes, \"Insufficient growth density to complete analysis.\""))
 				pause = 0
 	return
 
