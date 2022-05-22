@@ -185,7 +185,7 @@
 						dish.analysed = 0
 			else if(prob(10*mutation_prob))
 				dish.virus2.minormutate()
-			mutagen -= 1*speed
+			mutagen -= 1
 			SSnano.update_uis(src)
 
 
