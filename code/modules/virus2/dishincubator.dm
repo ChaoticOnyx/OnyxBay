@@ -157,7 +157,7 @@
 				ping("\The [src] pings, \"Mutant viral strain detected.\"")
 			else if(prob(5*mutation_prob))
 				dish.virus2.minormutate()
-			radiation -= 1*speed
+			radiation -= 1
 			SSnano.update_uis(src)
 		if(toxins)
 			if(prob(5*mutation_prob))
