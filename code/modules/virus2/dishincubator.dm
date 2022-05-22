@@ -173,7 +173,7 @@
 				dish.growth = 0
 				dish.virus2 = null
 				ping("\The [src] pings, \"Virus sample has been destroyed\"")
-			toxins -= 1*speed
+			toxins -= 1
 			SSnano.update_uis(src)
 		if(mutagen)
 			if(mutagen > 50 && prob(5*mutation_prob))
