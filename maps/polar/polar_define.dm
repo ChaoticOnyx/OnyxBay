@@ -1,7 +1,7 @@
 
 /datum/map/polar
-	name = "Polar"
-	full_name = "Polar Colony"
+	name = "Pathos I"
+	full_name = "Pathos I"
 	path = "polar"
 
 	shuttle_types = list(
@@ -26,8 +26,8 @@
 		new /datum/space_level/jungle_level
 	)
 
-	station_name  = "Polar Colony"
-	station_short = "Polar"
+	station_name  = "Pathos I"
+	station_short = "Pathos I"
 	dock_name     = "NAS Crescent"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
