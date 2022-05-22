@@ -110,7 +110,7 @@
 
 	if (isolating)
 		isolating -= speed
-		if(isolating == 0)
+		if(isolating <= 0)
 			isolate()
 
 /obj/machinery/computer/centrifuge/RefreshParts()
