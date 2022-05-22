@@ -32,7 +32,7 @@
 
 	data["isAI"] = isAI(user)
 	data["crewmembers"] = list()
-	for(var/z_level in GLOB.using_map.map_levels)
+	for(var/z_level in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 		data["crewmembers"] += crew_repository.health_data(z_level)
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
