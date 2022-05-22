@@ -120,7 +120,7 @@
 
 	if(splicing)
 		splicing -= 1*speed
-		if(!splicing)
+		if(splicing <= 0)
 			ping("\The [src] pings, \"Splicing operation complete.\"")
 			SSnano.update_uis(src)
 
