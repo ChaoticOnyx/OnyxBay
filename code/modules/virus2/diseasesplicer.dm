@@ -57,10 +57,10 @@
 
 	src.attack_hand(user)
 
-/obj/machinery/computer/diseasesplicer/attack_ai(mob/user as mob)
+/obj/machinery/computer/diseasesplicer/attack_ai(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/computer/diseasesplicer/attack_hand(mob/user as mob)
+/obj/machinery/computer/diseasesplicer/attack_hand(mob/user)
 	if(..()) return
 	ui_interact(user)
 

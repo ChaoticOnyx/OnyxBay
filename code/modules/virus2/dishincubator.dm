@@ -75,7 +75,7 @@
 	if(default_part_replacement(user, O))
 		return
 
-/obj/machinery/disease2/incubator/attack_hand(mob/user as mob)
+/obj/machinery/disease2/incubator/attack_hand(mob/user)
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
 
