@@ -35,7 +35,7 @@
 	if(default_part_replacement(user, O))
 		return
 
-	if(!istype(O,/obj/item/virusdish))
+	if(!istype(O, /obj/item/virusdish))
 		return
 
 	if(dish)
