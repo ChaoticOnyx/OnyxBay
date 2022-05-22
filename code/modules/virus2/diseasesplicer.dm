@@ -114,7 +114,7 @@
 
 	if(scanning)
 		scanning -= 1*speed
-		if(!scanning)
+		if(scanning <= 0)
 			ping("\The [src] pings, \"Analysis complete.\"")
 			SSnano.update_uis(src)
 
