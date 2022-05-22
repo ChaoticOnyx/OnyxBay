@@ -53,7 +53,7 @@
 	if(default_part_replacement(user, O))
 		return
 	
-	if(!istype(O,/obj/item/reagent_containers/syringe))
+	if(!istype(O, /obj/item/reagent_containers/syringe))
 		return
 
 	var/obj/item/reagent_containers/syringe/S = O
