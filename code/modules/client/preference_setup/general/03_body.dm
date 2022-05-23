@@ -49,7 +49,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.g_eyes = R.read("eyes_green")
 	pref.b_eyes = R.read("eyes_blue")
 	pref.b_type = R.read("b_type")
-	pref.body_height = R.read("b_height")
+	pref.body_height = R.read("body_height")
 	pref.disabilities = R.read("disabilities")
 	pref.organ_data = R.read("organ_data")
 	pref.rlimb_data = R.read("rlimb_data")
@@ -103,7 +103,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.g_eyes			= sanitize_integer(pref.g_eyes, 0, 255, initial(pref.g_eyes))
 	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
-	pref.body_height    = sanitize_integer(pref.body_height, initial(pref.body_height))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
 
 	if(!pref.body_height || !(pref.body_height in list(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)))
@@ -580,8 +579,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["body_height"])
-		var/list/height_choices = list("Dwarfish", "Short", "Average", "Tall", "Towering")
-		var/new_state = input(user, "How tall do you want to be?") as null|anything in height_choices
+		var/new_state = input(user, "How tall do you want to be?") as null|anything in list("Dwarfish", "Short", "Average", "Tall", "Towering")
 		if(!new_state)
 			return
 		switch(new_state)
