@@ -17,7 +17,7 @@
 	buckle_dir = SOUTH
 	buckle_lying = 1
 	buckle_pixel_shift = "x=0;y=3"
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/material/material
 	var/material/padding_material
 	var/base_icon = "bed"

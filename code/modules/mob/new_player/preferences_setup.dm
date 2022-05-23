@@ -12,6 +12,7 @@
 			if (gender in build.genders)
 				available_body_builds += build
 		body = pick(available_body_builds).name
+		body_height = pick(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
@@ -134,12 +135,15 @@
 	preview_icon.Scale(48+32, 16+32)
 
 	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
 	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
 	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = TRUE)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 
 	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.

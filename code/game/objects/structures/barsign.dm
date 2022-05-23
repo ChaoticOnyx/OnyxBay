@@ -3,7 +3,7 @@
 	description_info = "If your ID has bar access, you may swipe it on this sign to alter its display."
 	icon = 'icons/obj/barsigns.dmi'
 	icon_state = "empty"
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 	anchored = 1
 	var/emagged = FALSE
 

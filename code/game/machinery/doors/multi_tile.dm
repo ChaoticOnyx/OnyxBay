@@ -2,7 +2,7 @@
 /obj/machinery/door/airlock/multi_tile
 	dir = EAST
 	width = 2
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /obj/machinery/door/airlock/multi_tile/New()
 	..()
