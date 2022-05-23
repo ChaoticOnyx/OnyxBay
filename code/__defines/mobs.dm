@@ -364,7 +364,7 @@
 #define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
 
 #define HUMAN_HEIGHT_TINY   0.93
-#define HUMAN_HEIGHT_SMALL  1.96
+#define HUMAN_HEIGHT_SMALL  0.96
 #define HUMAN_HEIGHT_NORMAL 1.0
 #define HUMAN_HEIGHT_LARGE  1.04
 #define HUMAN_HEIGHT_HUGE   1.07
