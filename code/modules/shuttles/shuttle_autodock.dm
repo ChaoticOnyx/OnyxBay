@@ -178,4 +178,9 @@
 //This can be used by subtypes to do things when the shuttle arrives.
 //Note that this is called when the shuttle leaves the WAIT_FINISHED state, the proc name is a little misleading
 /datum/shuttle/autodock/proc/arrived()
+	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, SIGNAL_SHUTTLE_ARRIVED, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_SHUTTLE_ARRIVED, src)
+
 	return	//do nothing for now

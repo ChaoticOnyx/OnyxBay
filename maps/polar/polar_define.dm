@@ -14,6 +14,7 @@
 		/datum/shuttle/autodock/ferry/deathsquad/polar,
 		/datum/shuttle/autodock/multi/antag/merchant/polar,
 		/datum/shuttle/autodock/multi/antag/skipjack/polar,
+		/datum/shuttle/autodock/ferry/train
 	)
 
 	map_levels = list(
@@ -28,7 +29,7 @@
 
 	station_name  = "Pathos I"
 	station_short = "Pathos I"
-	dock_name     = "NAS Crescent"
+	dock_name     = "Pathos I - Landing Zone"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
 	company_name  = "NanoTrasen"

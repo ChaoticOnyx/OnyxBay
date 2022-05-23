@@ -1,14 +1,3 @@
-// /obj/effect/shuttle_landmark/train/evac/station
-// 	name = "Station"
-// 	landmark_tag = "nav_train_evac_station"
-// 	autoset = 0
-// 	base_area =
-
-// /obj/effect/shuttle_landmark/train/evac/tcom
-// 	name = "TCOM"
-// 	landmark_tag = "nav_train_evac_tcom"
-// 	autoset = 1
-
 // Cargo shuttle
 
 /datum/shuttle/autodock/ferry/supply/drone/polar
@@ -67,7 +56,41 @@
 /datum/shuttle/autodock/ferry/deathsquad/polar
 	shuttle_area = /area/polarplanet/shuttle/deathsquad/centcom
 
-//Skipjack
+// Skipjack
 
 /datum/shuttle/autodock/multi/antag/skipjack/polar
 	shuttle_area = /area/polarplanet/skipjack_station/start
+
+// Train
+
+/datum/shuttle/autodock/ferry/train
+	name = "Train"
+	shuttle_area = /area/polarplanet/shuttle/train/station
+	waypoint_station = "nav_train_station"
+	waypoint_offsite = "nav_train_dock"
+	landmark_transition = "nav_train_transition"
+	dock_target = "train_shuttle"
+	warmup_time = 5
+	move_time = 5 SECONDS
+
+/datum/shuttle/autodock/ferry/train/New()
+	..()
+
+	AddComponent(/datum/component/train_auto)
+
+/obj/effect/shuttle_landmark/train/station
+	name = "Pathos-I"
+	landmark_tag = "nav_train_station"
+	docking_controller = "train_station_dock"
+	base_area = /area/polarplanet/hallway/secondary/entry/port
+
+/obj/effect/shuttle_landmark/train/transit
+	name = "In transit"
+	landmark_tag = "nav_train_transition"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/train/dock
+	name = "Landing Zone"
+	landmark_tag = "nav_train_dock"
+	docking_controller = "train_dock_dock"
+	autoset = 1

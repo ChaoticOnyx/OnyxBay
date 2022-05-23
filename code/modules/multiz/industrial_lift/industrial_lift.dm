@@ -250,20 +250,12 @@ GLOBAL_LIST_EMPTY(lifts)
  * bumped_atom - The atom this tram bumped into
  */
 /obj/structure/industrial_lift/proc/GracefullyBreak(atom/bumped_atom)
-	SHOULD_NOT_SLEEP(TRUE)
-
 	if(istype(bumped_atom, /obj/machinery/containment_field))
 		return
 	if(istype(bumped_atom, /obj/machinery/shieldwall))
 		return
 
 	bumped_atom.visible_message(SPAN_DANGER("[src] crashes into the field violently!"))
-	for(var/obj/structure/industrial_lift/tram/tram_part as anything in lift_master_datum.lift_platforms)
-		tram_part.travel_distance = 0
-		tram_part.set_travelling(FALSE)
-		if(prob(15) || locate(/mob/living) in tram_part.lift_load) //always go boom on people on the track
-			explosion(tram_part, devastation_range = rand(0, 1), heavy_impact_range = 2, light_impact_range = 3) //50% chance of gib
-		qdel(tram_part)
 
 /obj/structure/industrial_lift/proc/lift_platform_expansion(datum/lift_master/lift_master_datum)
 	. = list()
@@ -398,150 +390,4 @@ GLOBAL_LIST_EMPTY(lifts)
 	Move(null)
 	for(var/border_lift in border_lift_platforms)
 		lift_master_datum = new(border_lift)
-	return ..()
-
-/obj/structure/tramwall
-	name = "wall"
-	desc = "A huge chunk of metal used to separate rooms."
-	anchored = TRUE
-	icon = 'icons/turf/shuttle.dmi'
-	icon_state = "wall"
-	layer = ABOVE_OBJ_LAYER
-	density = TRUE
-	opacity = TRUE
-	can_atmos_pass = ATMOS_PASS_DENSITY
-	var/mineral = /obj/item/stack/material/steel
-	var/mineral_amount = 2
-
-/obj/structure/industrial_lift/tram
-	name = "tram"
-	desc = "A tram for traversing the station."
-	icon = 'icons/turf/floors.dmi'
-	icon_state = "steel_dirty_legacy"
-	/// Set by the tram control console in late initialize
-	var/travelling = FALSE
-	var/travel_distance = 0
-	/// For finding the landmark initially - should be the exact same as the landmark's destination id.
-	var/initial_id = "middle_part"
-	var/obj/effect/landmark/tram/from_where
-	var/travel_direction
-
-GLOBAL_LIST_EMPTY(central_trams)
-
-/obj/structure/industrial_lift/tram/Initialize(mapload)
-	. = ..()
-	return INITIALIZE_HINT_LATELOAD
-
-/obj/structure/industrial_lift/tram/central
-	var/tram_id = "tram_station"
-
-/obj/structure/industrial_lift/tram/central/Initialize(mapload)
-	. = ..()
-	if(!SStramprocess.can_fire)
-		SStramprocess.can_fire = TRUE
-	GLOB.central_trams += src
-
-/obj/structure/industrial_lift/tram/central/Destroy()
-	GLOB.central_trams -= src
-	return ..()
-
-/obj/structure/industrial_lift/tram/LateInitialize()
-	. = ..()
-	find_our_location()
-	CheckItemsOnLift()
-
-
-/**
- * Finds the location of the tram
- *
- * The initial_id is assumed to the be the landmark the tram is built on in the map
- * and where the tram will set itself to be on roundstart.
- * The central tram piece goes further into this by actually checking the contents of the turf its on
- * for a tram landmark when it docks anywhere. This assures the tram actually knows where it is after docking,
- * even in the worst cast scenario.
- */
-/obj/structure/industrial_lift/tram/proc/find_our_location()
-	for(var/obj/effect/landmark/tram/our_location in GLOB.tram_landmarks)
-		if(our_location.destination_id == initial_id)
-			from_where = our_location
-			break
-
-/obj/structure/industrial_lift/tram/proc/set_travelling(travelling)
-	if (src.travelling == travelling)
-		return
-
-	src.travelling = travelling
-	SEND_SIGNAL(src, SIGNAL_TRAM_SET_TRAVELLING, travelling)
-
-/obj/structure/industrial_lift/tram/Process()
-	if(!travel_distance)
-		addtimer(CALLBACK(src, .proc/unlock_controls), 3 SECONDS)
-		return PROCESS_KILL
-	else
-		travel_distance--
-		lift_master_datum.MoveLiftHorizontal(travel_direction, z, DELAY2GLIDESIZE(SStramprocess.wait))
-
-/**
- * Handles moving the tram
- *
- * Tells the individual tram parts where to actually go and has an extra safety check
- * incase multiple inputs get through, preventing conflicting directions and the tram
- * literally ripping itself apart. The proc handles the first move before the subsystem
- * takes over to keep moving it in process()
- */
-/obj/structure/industrial_lift/tram/proc/tram_travel(obj/effect/landmark/tram/to_where)
-	if(isnull(from_where))
-		find_our_location()
-
-	if(to_where == from_where)
-		return
-
-	visible_message(SPAN_NOTICE("[src] has been called to the [to_where]!"))
-
-	lift_master_datum.set_controls(LOCKED)
-	travel_direction = get_dir(from_where, to_where)
-	travel_distance = get_dist(from_where, to_where)
-	//first movement is immediate
-	for(var/obj/structure/industrial_lift/tram/other_tram_part as anything in lift_master_datum.lift_platforms) //only thing everyone needs to know is the new location.
-		if(other_tram_part.travelling) //wee woo wee woo there was a double action queued. damn multi tile structs
-			return //we don't care to undo locked controls, though, as that will resolve itself
-		SEND_SIGNAL(src, SIGNAL_TRAM_TRAVEL, from_where, to_where)
-		other_tram_part.set_travelling(TRUE)
-		other_tram_part.from_where = to_where
-	lift_master_datum.MoveLiftHorizontal(travel_direction, z, DELAY2GLIDESIZE(SStramprocess.wait))
-	travel_distance--
-
-	START_PROCESSING(SStramprocess, src)
-
-/**
- * Handles unlocking the tram controls for use after moving
- *
- * More safety checks to make sure the tram has actually docked properly
- * at a location before users are allowed to interact with the tram console again.
- * Tram finds its location at this point before fully unlocking controls to the user.
- */
-/obj/structure/industrial_lift/tram/proc/unlock_controls()
-	visible_message(SPAN_NOTICE("[src]'s controls are now unlocked."))
-	for(var/obj/structure/industrial_lift/tram/tram_part as anything in lift_master_datum.lift_platforms) //only thing everyone needs to know is the new location.
-		tram_part.set_travelling(FALSE)
-		lift_master_datum.set_controls(UNLOCKED)
-
-GLOBAL_LIST_EMPTY(tram_landmarks)
-
-/obj/effect/landmark/tram
-	name = "tram destination" //the tram buttons will mention this.
-	icon_state = "tram"
-	/// The ID of that particular destination.
-	var/destination_id
-	/// The ID of the tram that can travel to use
-	var/tram_id = "tram_station"
-	/// Icons for the tgui console to list out for what is at this location
-	var/list/tgui_icons = list()
-
-/obj/effect/landmark/tram/Initialize(mapload)
-	. = ..()
-	GLOB.tram_landmarks += src
-
-/obj/effect/landmark/tram/Destroy()
-	GLOB.tram_landmarks -= src
 	return ..()

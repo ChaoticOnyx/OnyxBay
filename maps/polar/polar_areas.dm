@@ -60,10 +60,6 @@
 	icon_state = "shuttlered2"
 	base_turf = /turf/simulated/floor/plating
 
-/area/polarplanet/shuttle/train/evac
-	name = "Evac Train"
-	icon_state = "shuttle3"
-
 /area/polarplanet/shuttle/supply/elevator/upper
 	name = "Cargo Elevator Upper Deck"
 	base_turf = /turf/simulated/open
@@ -354,6 +350,29 @@
 	name = "Skipjack Transit"
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
+
+// Train
+
+/area/polarplanet/shuttle/train/station
+	name = "Pathos I - Train Station"
+	icon_state = "shuttle2"
+	base_turf = /turf/simulated/open
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
+
+/area/polarplanet/shuttle/train/transit
+	name = "Pathos I - Train Transit"
+	icon_state = "shuttle"
+	base_turf = /turf/simulated/floor/plating
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
+
+/area/polarplanet/shuttle/train/dock
+	name = "Pathos I - Train Dock"
+	icon_state = "shuttle2"
+	base_turf = /turf/simulated/floor/plating
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
 
 // SUBSTATIONS (Subtype of maint, that should let them serve as shielded area/polarplanet during radstorm)
 
@@ -1006,6 +1025,7 @@
 /area/polarplanet/hallway/secondary/entry/port
 	name = "\improper Arrival Shuttle Hallway - Port"
 	icon_state = "entry_2"
+	base_turf = /turf/simulated/open
 
 /area/polarplanet/hallway/secondary/entry/starboard
 	name = "\improper Arrival Shuttle Hallway - Starboard"
