@@ -105,7 +105,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
 
-	if(!pref.body_height || !(pref.body_height in list(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)))
+	if(!pref.body_height || !(pref.body_height in body_heights))
 		pref.body_height = HUMAN_HEIGHT_NORMAL
 
 	var/datum/species/mob_species = all_species[pref.species]

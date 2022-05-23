@@ -33,7 +33,8 @@
 #define DNA_UI_GENDER      14
 #define DNA_UI_BEARD_STYLE 15
 #define DNA_UI_HAIR_STYLE  16
-#define DNA_UI_LENGTH      16 // Update this when you add something, or you WILL break shit.
+#define DNA_UI_BODY_HEIGHT 17
+#define DNA_UI_LENGTH      17 // Update this when you add something, or you WILL break shit.
 
 #define DNA_SE_LENGTH 27
 // For later:
@@ -82,6 +83,7 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	var/species = SPECIES_HUMAN
 	var/s_base = ""
 	var/list/body_markings = list()
+	var/body_height = HUMAN_HEIGHT_NORMAL
 
 // Make a copy of this strand.
 // USE THIS WHEN COPYING STUFF OR YOU'LL GET CORRUPTION!
@@ -94,6 +96,7 @@ var/global/list/datum/dna/gene/dna_genes[0]
 	new_dna.species=species
 	new_dna.body_markings=body_markings.Copy()
 	new_dna.s_base=s_base
+	new_dna.body_height=body_height
 	for(var/b=1;b<=DNA_SE_LENGTH;b++)
 		new_dna.SE[b]=SE[b]
 		if(b<=DNA_UI_LENGTH)
@@ -157,6 +160,7 @@ var/global/list/datum/dna/gene/dna_genes[0]
 
 	body_markings.Cut()
 	s_base = character.s_base
+	body_height = character.body_height
 	for(var/obj/item/organ/external/E in character.organs)
 		E.s_base = s_base
 		if(E.markings.len)

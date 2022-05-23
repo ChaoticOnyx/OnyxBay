@@ -12,7 +12,7 @@
 			if (gender in build.genders)
 				available_body_builds += build
 		body = pick(available_body_builds).name
-		body_height = pick(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)
+		body_height = pick(body_heights)
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
