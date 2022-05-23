@@ -5,15 +5,15 @@
 	path = "polar"
 
 	shuttle_types = list(
-		/datum/shuttle/autodock/ferry/supply/polar_drone,
-		/datum/shuttle/autodock/multi/antag/rescue,
-		/datum/shuttle/autodock/ferry/emergency/centcom,
-		/datum/shuttle/autodock/ferry/administration,
-		/datum/shuttle/autodock/multi/antag/syndicate,
-		/datum/shuttle/autodock/multi/antag/elite_syndicate,
-		/datum/shuttle/autodock/ferry/deathsquad,
-		/datum/shuttle/autodock/multi/antag/merchant_polar,
-		/datum/shuttle/autodock/multi/antag/skipjack,
+		/datum/shuttle/autodock/ferry/supply/drone/polar,
+		/datum/shuttle/autodock/multi/antag/rescue/polar,
+		/datum/shuttle/autodock/ferry/emergency/centcom/polar,
+		/datum/shuttle/autodock/ferry/administration/polar,
+		/datum/shuttle/autodock/multi/antag/syndicate/polar,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate/polar,
+		/datum/shuttle/autodock/ferry/deathsquad/polar,
+		/datum/shuttle/autodock/multi/antag/merchant/polar,
+		/datum/shuttle/autodock/multi/antag/skipjack/polar,
 	)
 
 	map_levels = list(

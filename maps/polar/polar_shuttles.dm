@@ -11,43 +11,63 @@
 
 // Cargo shuttle
 
-/datum/shuttle/autodock/ferry/supply/polar_drone
-	name = "Supply"
-	location = 1
-	warmup_time = 10
+/datum/shuttle/autodock/ferry/supply/drone/polar
 	shuttle_area = /area/polarplanet/supply/dock
-	dock_target = "supply_shuttle"
-	waypoint_offsite = "nav_cargo_start"
-	waypoint_station = "nav_cargo_station"
 
 // Emergency
 
-/datum/shuttle/autodock/ferry/emergency/centcom
-	name = "Escape"
-	location = 1
-	warmup_time = 10
-	shuttle_area = /area/shuttle/escape/centcom
-	dock_target = "escape_shuttle"
-	landmark_transition = "nav_escape_transition"
-	waypoint_offsite = "nav_centcom_dock"
-	waypoint_station = "nav_escape_dock"
+/datum/shuttle/autodock/ferry/emergency/centcom/polar
+	shuttle_area = /area/polarplanet/shuttle/escape/centcom
 
 //Merchant
 
-/datum/shuttle/autodock/multi/antag/merchant_polar
-	name = "Merchant"
-	warmup_time = 10
+/datum/shuttle/autodock/multi/antag/merchant/polar
 	destination_tags = list(
 		"nav_merchant_start",
 		"nav_merchant_shop"
 	)
 
 	shuttle_area = /area/polarplanet/shuttle/merchant/home
-	landmark_transition = "nav_merchant_transition"
-	current_location = "nav_merchant_start"
-	dock_target = "merchant_ship_dock"
-	home_waypoint = "nav_merchant_start"
-	cloaked = 1
-	move_time = 60
-	announcer = "Planet Sensor Array"
-	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the surface."
+
+// Emergency Response Team Shuttle
+
+/datum/shuttle/autodock/multi/antag/rescue/polar
+	destination_tags = list(
+		"nav_rescue_start",
+		"nav_rescue_station",
+		"nav_rescue_dock",
+		"nav_rescue_southeast",
+		"nav_rescue_northeast",
+	)
+	shuttle_area = /area/polarplanet/rescue_base/start
+
+// Administration
+
+/datum/shuttle/autodock/ferry/administration/polar
+	shuttle_area = /area/polarplanet/shuttle/administration/centcom
+
+// Syndi
+
+/datum/shuttle/autodock/multi/antag/syndicate/polar
+	destination_tags = list(
+		"nav_merc_start",
+		"nav_merc_dock",
+		"nav_merc_coupole",
+		"nav_merc_minage",
+		"nav_merc_residentiel",
+	)
+	shuttle_area = /area/polarplanet/syndicate_station/start
+
+// Elite syndi
+
+/datum/shuttle/autodock/multi/antag/elite_syndicate/polar
+	shuttle_area = /area/polarplanet/shuttle/syndicate_elite/mothership
+
+// Deathsquad
+/datum/shuttle/autodock/ferry/deathsquad/polar
+	shuttle_area = /area/polarplanet/shuttle/deathsquad/centcom
+
+//Skipjack
+
+/datum/shuttle/autodock/multi/antag/skipjack/polar
+	shuttle_area = /area/polarplanet/skipjack_station/start
