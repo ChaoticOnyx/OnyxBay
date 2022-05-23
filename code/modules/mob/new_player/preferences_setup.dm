@@ -135,15 +135,15 @@
 	preview_icon.Scale(48+32, 16+32)
 
 	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = TRUE)
-	stamp.Scale(1, body_height)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
 	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = TRUE)
-	stamp.Scale(1, body_height)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
 	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = TRUE)
-	stamp.Scale(1, body_height)
+	stamp.Scale(stamp.Width(), stamp.Height() * body_height)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 
 	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.
