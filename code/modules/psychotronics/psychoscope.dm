@@ -10,7 +10,7 @@
 	psychoscope_dot.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 
 	var/image/psychoscope_scan = new /image('icons/mob/hud.dmi', src, "psychoscope_scan")
-	psychoscope_scan.appearance_flags = RESET_COLOR|RESET_TRANSFORM|KEEP_APART
+	psychoscope_scan.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR | RESET_TRANSFORM | KEEP_APART
 	psychoscope_scan.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 
 	psychoscope_icons[PSYCHOSCOPE_ICON_DOT] = psychoscope_dot

@@ -362,3 +362,18 @@
 #define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
 #define HUMAN_LOW_POISE     45
 #define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
+
+#define HUMAN_HEIGHT_TINY   0.93
+#define HUMAN_HEIGHT_SMALL  1.96
+#define HUMAN_HEIGHT_NORMAL 1.0
+#define HUMAN_HEIGHT_LARGE  1.04
+#define HUMAN_HEIGHT_HUGE   1.07
+
+/proc/human_height_text(x)
+	switch(x)
+		if(HUMAN_HEIGHT_TINY) return "Dwarfish"
+		if(HUMAN_HEIGHT_SMALL) return "Short"
+		if(HUMAN_HEIGHT_NORMAL) return "Average"
+		if(HUMAN_HEIGHT_LARGE) return "Tall"
+		if(HUMAN_HEIGHT_HUGE) return "Towering"
+	return "Unusual"
