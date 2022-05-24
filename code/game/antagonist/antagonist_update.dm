@@ -9,7 +9,7 @@
 		var/mob/previous_mob = player.current
 		player.transfer_to(new mob_path(get_turf(previous_mob)))
 		if(previous_mob) qdel(previous_mob)
-	player.original = player.current
+	player.original_mob = weakref(player.current)
 	if(!preserve_appearance && (flags & ANTAG_SET_APPEARANCE))
 		spawn(3)
 			var/mob/living/carbon/human/H = player.current

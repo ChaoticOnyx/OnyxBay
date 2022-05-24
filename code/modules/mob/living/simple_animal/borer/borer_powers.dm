@@ -394,10 +394,10 @@ list(\
 	src.loc = get_turf(host)
 
 	reset_view(null)
-	machine = null
+	unset_machine()
 
 	H.reset_view(null)
-	H.machine = null
+	H.unset_machine()
 
 	H.status_flags &= ~PASSEMOTES
 	host = null

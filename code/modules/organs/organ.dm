@@ -44,7 +44,9 @@ var/list/organ_cache = list()
 	reagents.trans_to(food_organ, reagents.total_volume)
 
 /obj/item/organ/Destroy()
-	owner = null
+	if(owner)
+
+		owner = null
 	dna = null
 	QDEL_NULL(food_organ)
 	return ..()
