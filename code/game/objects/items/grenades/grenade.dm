@@ -10,13 +10,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_MASK
 	var/active = 0
-	var/det_time = 50
+	var/det_time = 20
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
+	var/obj/item/safety_pin = new /obj/item/safety_pin
 
 /obj/item/grenade/proc/clown_check(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='warning'>Huh? How does this thing work?</span>")
+		to_chat(user, SPAN("warning", "Huh? How does this thing work?"))
 		det_time = fail_det_time
 		activate(user)
 		add_fingerprint(user)
@@ -26,6 +27,10 @@
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
+		if(!isnull(safety_pin))
+			. += "\nThe safety pin is in place."
+		else
+			. += "\nThere is no safety pin in place."
 		if(det_time > 1)
 			. += "\nThe timer is set to [det_time/10] seconds."
 			return
@@ -33,10 +38,16 @@
 			return
 		. += "\n\The [src] is set for instant detonation."
 
-/obj/item/grenade/attack_self(mob/user as mob)
+/obj/item/grenade/attack_self(mob/user)
 	if(!active)
 		if(clown_check(user))
-			to_chat(user, "<span class='warning'>You prime \the [name]! [det_time/10] seconds!</span>")
+			if(safety_pin)
+				user.put_in_hands(safety_pin)
+				safety_pin = null;
+				playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
+				to_chat(user, SPAN("warning", "You remove the safety pin!"))
+				return
+			to_chat(user, SPAN("warning", "You prime \the [name]! [det_time/10] seconds!"))
 			activate(user)
 			add_fingerprint(user)
 			if(iscarbon(user))
@@ -60,24 +71,30 @@
 	if(T)
 		T.hotspot_expose(700,125)
 
-/obj/item/grenade/attackby(obj/item/W as obj, mob/user as mob)
-	if(isScrewdriver(W))
-		switch(det_time)
-			if (1)
-				det_time = 10
-				to_chat(user, "<span class='notice'>You set the [name] for 1 second detonation time.</span>")
-			if (10)
-				det_time = 30
-				to_chat(user, "<span class='notice'>You set the [name] for 3 second detonation time.</span>")
-			if (30)
-				det_time = 50
-				to_chat(user, "<span class='notice'>You set the [name] for 5 second detonation time.</span>")
-			if (50)
-				det_time = 1
-				to_chat(user, "<span class='notice'>You set the [name] for instant detonation.</span>")
+/obj/item/grenade/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/safety_pin))
+		if(isnull(safety_pin))
+			to_chat(user, SPAN("notice", "You insert [W] in place."))
+			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			safety_pin = W
+			user.remove_from_mob(W)
+			W.forceMove(src)
 		add_fingerprint(user)
 	..()
 
 /obj/item/grenade/attack_hand()
 	walk(src, null, null)
 	..()
+
+/obj/item/grenade/dropped()
+	..()
+	if(isnull(safety_pin))
+		activate()
+
+/obj/item/safety_pin
+	name = "safety pin"
+	icon = 'icons/obj/grenade.dmi'
+	icon_state = "safety_pin"
+	item_state = "safety_pin"
+	desc = "A grenade safety pin."
+	w_class = ITEM_SIZE_TINY
