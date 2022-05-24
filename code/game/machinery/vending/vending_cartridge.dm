@@ -4,7 +4,7 @@
 	icon_state = "romos1"
 	w_class = ITEM_SIZE_NORMAL
 	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
-	var/build_path = /obj/machinery/vending // Determines what kind of vending machine we want to build.
+	var/build_path = null // Determines what kind of vending machine we want to build.
 	var/list/legal = list()
 	var/list/illegal = list()
 	var/list/premium = list()
