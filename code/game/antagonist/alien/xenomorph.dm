@@ -85,5 +85,5 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		player.transfer_to(new mob_path(get_turf(previous_mob)))
 		if(previous_mob)
 			qdel(previous_mob)
-	player.original = player.current
+	player.original_mob = weakref(player.current)
 	return player.current
