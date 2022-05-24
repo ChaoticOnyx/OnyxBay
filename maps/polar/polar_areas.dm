@@ -289,19 +289,19 @@
 	base_turf = /turf/space/transit/north
 
 /area/polarplanet/shuttle/syndicate_elite/northwest
-	icon_state = "north west"
+	icon_state = "northwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/northeast
-	icon_state = "north east"
+	icon_state = "northeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/southwest
-	icon_state = "south west"
+	icon_state = "southwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/southeast
-	icon_state = "south east"
+	icon_state = "southeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/transit
