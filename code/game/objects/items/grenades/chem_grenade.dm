@@ -19,7 +19,7 @@
 	. = ..()
 	create_reagents(1000)
 
-/obj/item/grenade/chem_grenade/attack_self(mob/user as mob)
+/obj/item/grenade/chem_grenade/attack_self(mob/user)
 	if(!stage || stage==1)
 		if(detonator)
 			detonator.detached()
@@ -27,7 +27,7 @@
 			detonator=null
 			det_time = null
 			stage=0
-			icon_state = initial(icon_state)
+			update_icon()
 		else if(beakers.len)
 			for(var/obj/B in beakers)
 				if(istype(B))
@@ -35,7 +35,7 @@
 					user.put_in_hands(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 	if(stage > 1 && !active && clown_check(user))
-		to_chat(user, "<span class='warning'>You prime \the [name]!</span>")
+		to_chat(user, SPAN("warning", "You prime \the [name]!"))
 
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
@@ -45,17 +45,25 @@
 			var/mob/living/carbon/C = user
 			C.throw_mode_on()
 
-/obj/item/grenade/chem_grenade/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/grenade/chem_grenade/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && stage == 2)
+		if(isnull(safety_pin))
+			to_chat(user, SPAN("notice", "You insert [W] in place."))
+			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			safety_pin = W
+			user.remove_from_mob(W)
+			W.forceMove(src)
+			update_icon()
 	if(istype(W,/obj/item/device/assembly_holder) && (!stage || stage==1) && path != 2)
 		var/obj/item/device/assembly_holder/det = W
 		if(istype(det.a_left,det.a_right.type) || (!isigniter(det.a_left) && !isigniter(det.a_right)))
-			to_chat(user, "<span class='warning'>Assembly must contain one igniter.</span>")
+			to_chat(user, SPAN("warning", "Assembly must contain one igniter."))
 			return
 		if(!det.secured)
-			to_chat(user, "<span class='warning'>Assembly must be secured with screwdriver.</span>")
+			to_chat(user, SPAN("warning", "Assembly must be secured with screwdriver."))
 			return
 		path = 1
-		to_chat(user, "<span class='notice'>You add [W] to the metal casing.</span>")
+		to_chat(user, SPAN("notice", "You add [W] to the metal casing."))
 		playsound(src.loc, 'sound/items/Screwdriver2.ogg', 25, -3)
 		user.remove_from_mob(det)
 		det.loc = src
@@ -66,56 +74,59 @@
 		if(istimer(detonator.a_right))
 			var/obj/item/device/assembly/timer/T = detonator.a_right
 			det_time = 10*T.time
-		icon_state = initial(icon_state) +"_ass"
+		update_icon()
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 		stage = 1
 	else if(isScrewdriver(W) && path != 2)
 		if(stage == 1)
 			path = 1
 			if(beakers.len)
-				to_chat(user, "<span class='notice'>You lock the assembly.</span>")
+				to_chat(user, SPAN("notice", "You lock the assembly."))
 				SetName("grenade")
 			else
-				to_chat(user, "<span class='notice'>You lock the empty assembly.</span>")
+				to_chat(user, SPAN("notice", "You lock the empty assembly."))
 				SetName("fake grenade")
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 			icon_state = initial(icon_state) +"_locked"
 			stage = 2
 		else if(stage == 2)
-			if(active && prob(95))
-				to_chat(user, "<span class='warning'>You trigger the assembly!</span>")
+			if(active && prob(95) && isnull(safety_pin))
+				to_chat(user, SPAN("warning", "You trigger the assembly!"))
 				detonate()
 				return
 			else
-				to_chat(user, "<span class='notice'>You unlock the assembly.</span>")
+				to_chat(user, SPAN("notice", "You unlock the assembly."))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
-				icon_state = initial(icon_state) + (detonator?"_ass":"")
+				update_icon()
 				stage = 1
 				active = 0
 	else if(is_type_in_list(W, allowed_containers) && (!stage || stage==1) && path != 2)
 		path = 1
 		if(beakers.len == 2)
-			to_chat(user, "<span class='warning'>The grenade can not hold more containers.</span>")
+			to_chat(user, SPAN("warning", "The grenade can not hold more containers."))
 			return
 		else
 			if(W.reagents.total_volume)
-				to_chat(user, "<span class='notice'>You add \the [W] to the assembly.</span>")
+				to_chat(user, SPAN("notice", "You add \the [W] to the assembly."))
 				user.drop_item()
 				W.loc = src
 				beakers += W
 				stage = 1
 				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 			else
-				to_chat(user, "<span class='warning'>\The [W] is empty.</span>")
+				to_chat(user, SPAN("warning", "\The [W] is empty."))
 
 /obj/item/grenade/chem_grenade/_examine_text(mob/user)
 	. = ..(user)
 	if(detonator)
 		to_chat(user, "With attached [detonator.name]")
 
-/obj/item/grenade/chem_grenade/activate(mob/user as mob)
+/obj/item/grenade/chem_grenade/activate(mob/user)
 	if(active) return
+	if (safety_pin) 
+		to_chat(user, SPAN("notice", "You must remove the safety pin first!"))
+		return
 
 	if(detonator)
 		if(!isigniter(detonator.a_left))
@@ -124,17 +135,12 @@
 		if(!isigniter(detonator.a_right))
 			detonator.a_right.activate()
 			active = 1
-	if(active)
-		icon_state = initial(icon_state) + "_active"
+		update_icon()
 
 		if(user)
 			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 	return
-
-/obj/item/grenade/chem_grenade/proc/primed(primed = 1)
-	if(active)
-		icon_state = initial(icon_state) + (primed?"_primed":"_active")
 
 /obj/item/grenade/chem_grenade/detonate()
 	if(!stage || stage<2) return
@@ -145,7 +151,7 @@
 
 	active = 0
 	if(!has_reagents)
-		icon_state = initial(icon_state) +"_locked"
+		update_icon()
 		playsound(src.loc, 'sound/items/Screwdriver2.ogg', 50, 1)
 		spawn(0) //Otherwise det_time is erroneously set to 0 after this
 			if(istimer(detonator.a_left)) //Make sure description reflects that the timer has been reset
@@ -180,6 +186,14 @@
 	spawn(50)		   //To make sure all reagents can work
 		qdel(src)	   //correctly before deleting the grenade.
 
+/obj/item/grenade/chem_grenade/update_icon()
+	..()
+	if(!stage)
+		return // returns parent "initial(icon_state)"
+	if(!beakers.len)
+		icon_state = initial(icon_state) + "_ass"
+		return
+	icon_state = initial(icon_state) + "_locked"
 
 /obj/item/grenade/chem_grenade/large
 	name = "large chem grenade"

@@ -13,7 +13,8 @@
 	var/det_time = 20
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
-	var/obj/item/safety_pin = new /obj/item/safety_pin
+	var /obj/item/safety_pin/safety_pin = new /obj/item/safety_pin
+	var /obj/item/device/assembly/timer/timer = new /obj/item/device/assembly/timer
 
 /obj/item/grenade/proc/clown_check(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
@@ -41,12 +42,17 @@
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)
 		if(clown_check(user))
+			if(isnull(timer))
+				to_chat(user, SPAN("warning", "The grenade is missing a timer!"))
+				return
 			if(safety_pin)
 				user.put_in_hands(safety_pin)
 				safety_pin = null;
 				playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
 				to_chat(user, SPAN("warning", "You remove the safety pin!"))
+				update_icon()
 				return
+
 			to_chat(user, SPAN("warning", "You prime \the [name]! [det_time/10] seconds!"))
 			activate(user)
 			add_fingerprint(user)
@@ -61,8 +67,8 @@
 	if(user)
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
-	icon_state = initial(icon_state) + "_active"
 	active = 1
+	update_icon()
 	playsound(loc, arm_sound, 75, 0, -3)
 	addtimer(CALLBACK(src, .proc/detonate), det_time)
 
@@ -72,15 +78,41 @@
 		T.hotspot_expose(700,125)
 
 /obj/item/grenade/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/safety_pin))
+	if(isScrewdriver(W))
+		if(isnull(timer))
+			to_chat(user, SPAN("notice", "There is no timer inside."))
+			return 
+		user.put_in_hands(timer)
+		safety_pin = null;
+		to_chat(user, SPAN("notice", "You carefully remove [timer] from grenade chamber."))
+	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W))
 		if(isnull(safety_pin))
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			safety_pin = W
 			user.remove_from_mob(W)
 			W.forceMove(src)
-		add_fingerprint(user)
+			update_icon()
+		else
+			to_chat(user, SPAN("notice", "There is no need for second pin."))
+	if(istype(W, /obj/item/device/assembly/timer))
+		if(isnull(timer))
+			to_chat(user, SPAN("notice", "You insert [W] in place."))
+			timer = W
+			det_time = 10*timer.time
+			user.remove_from_mob(W)
+			W.forceMove(src)
+	add_fingerprint(user)
 	..()
+
+/obj/item/grenade/update_icon()
+	if(active)
+		icon_state = initial(icon_state) + "_active"
+		return
+	if(isnull(safety_pin))
+		icon_state = initial(icon_state) + "_primed"
+		return
+	icon_state = initial(icon_state)
 
 /obj/item/grenade/attack_hand()
 	walk(src, null, null)
@@ -98,3 +130,16 @@
 	item_state = "safety_pin"
 	desc = "A grenade safety pin."
 	w_class = ITEM_SIZE_TINY
+
+/obj/item/safety_pin/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/grenade) && user.is_item_in_hands(W))
+		var/obj/item/grenade/S = W
+		if(isnull(S.safety_pin))
+			to_chat(user, SPAN("notice", "You insert [src] in place."))
+			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			S.safety_pin = src
+			user.remove_from_mob(src)
+			src.forceMove(S)
+			update_icon()
+		else
+			to_chat(user, SPAN("notice", "There is no need for second pin."))
