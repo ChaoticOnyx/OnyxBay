@@ -11,10 +11,10 @@
 	slot_flags = SLOT_BELT|SLOT_MASK
 	var/active = 0
 	var/broken = FALSE
-	var/det_time = 20
+	var/det_time = null
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
-	var /obj/item/safety_pin/safety_pin = null
+	var/obj/item/safety_pin/safety_pin = null
 	var/obj/item/device/assembly_holder/detonator
 
 /obj/item/grenade/proc/clown_check(mob/living/user)
@@ -30,6 +30,8 @@
 	. = ..()
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	safety_pin = new /obj/item/safety_pin
+	var/obj/item/device/assembly/timer/T = detonator.a_left
+	det_time = 10*T.time
 
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
