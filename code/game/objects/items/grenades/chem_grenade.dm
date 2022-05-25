@@ -10,7 +10,6 @@
 	var/stage = 0
 	var/state = 0
 	var/path = 0
-	var/obj/item/device/assembly_holder/detonator = null
 	var/list/beakers = new /list()
 	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/vessel/bottle/chemical)
 	var/affected_area = 3
@@ -34,6 +33,13 @@
 					beakers -= B
 					user.put_in_hands(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
+	if(safety_pin)
+		user.put_in_hands(safety_pin)
+		safety_pin = null;
+		playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
+		to_chat(user, SPAN("warning", "You remove the safety pin!"))
+		update_icon()
+		return
 	if(stage > 1 && !active && clown_check(user))
 		to_chat(user, SPAN("warning", "You prime \the [name]!"))
 
@@ -123,8 +129,10 @@
 		to_chat(user, "With attached [detonator.name]")
 
 /obj/item/grenade/chem_grenade/activate(mob/user)
-	if(active) return
-	if (safety_pin) 
+	if(active) 
+		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
+		return
+	if(safety_pin) 
 		to_chat(user, SPAN("notice", "You must remove the safety pin first!"))
 		return
 
@@ -135,11 +143,10 @@
 		if(!isigniter(detonator.a_right))
 			detonator.a_right.activate()
 			active = 1
-		update_icon()
 
 		if(user)
 			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-
+	update_icon()
 	return
 
 /obj/item/grenade/chem_grenade/detonate()
@@ -188,11 +195,11 @@
 
 /obj/item/grenade/chem_grenade/update_icon()
 	..()
-	if(!stage)
-		return // returns parent "initial(icon_state)"
-	if(!beakers.len)
+	if(!detonator)
 		icon_state = initial(icon_state) + "_ass"
 		return
+	if(!stage)
+		return // returns parent "initial(icon_state)"
 	icon_state = initial(icon_state) + "_locked"
 
 /obj/item/grenade/chem_grenade/large

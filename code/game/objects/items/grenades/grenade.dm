@@ -10,11 +10,12 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_MASK
 	var/active = 0
+	var/broken = FALSE
 	var/det_time = 20
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
-	var /obj/item/safety_pin/safety_pin = new /obj/item/safety_pin
-	var /obj/item/device/assembly/timer/timer = new /obj/item/device/assembly/timer
+	var /obj/item/safety_pin/safety_pin = null
+	var/obj/item/device/assembly_holder/detonator
 
 /obj/item/grenade/proc/clown_check(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
@@ -24,6 +25,11 @@
 		add_fingerprint(user)
 		return 0
 	return 1
+
+/obj/item/grenade/Initialize()
+	. = ..()
+	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
+	safety_pin = new /obj/item/safety_pin
 
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
@@ -42,18 +48,6 @@
 /obj/item/grenade/attack_self(mob/user)
 	if(!active)
 		if(clown_check(user))
-			if(isnull(timer))
-				to_chat(user, SPAN("warning", "The grenade is missing a timer!"))
-				return
-			if(safety_pin)
-				user.put_in_hands(safety_pin)
-				safety_pin = null;
-				playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
-				to_chat(user, SPAN("warning", "You remove the safety pin!"))
-				update_icon()
-				return
-
-			to_chat(user, SPAN("warning", "You prime \the [name]! [det_time/10] seconds!"))
 			activate(user)
 			add_fingerprint(user)
 			if(iscarbon(user))
@@ -61,13 +55,30 @@
 				C.throw_mode_on()
 
 /obj/item/grenade/proc/activate(mob/user)
-	if(active)
+	if(active) return
+	if(broken) 
+		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
+		return
+	if(isnull(detonator))
+		to_chat(user, SPAN("warning", "The grenade is missing a detonator!"))
+		return
+	if(safety_pin)
+		user.put_in_hands(safety_pin)
+		safety_pin = null;
+		playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
+		to_chat(user, SPAN("warning", "You remove the safety pin!"))
+		update_icon()
 		return
 
+	if(!isigniter(detonator.a_left))
+		detonator.a_left.activate()
+		active = 1
+	if(!isigniter(detonator.a_right))
+		detonator.a_right.activate()
+		active = 1
 	if(user)
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-
-	active = 1
+	
 	update_icon()
 	playsound(loc, arm_sound, 75, 0, -3)
 	addtimer(CALLBACK(src, .proc/detonate), det_time)
@@ -79,14 +90,21 @@
 
 /obj/item/grenade/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
-		if(isnull(timer))
-			to_chat(user, SPAN("notice", "There is no timer inside."))
+		if(isnull(detonator))
+			to_chat(user, SPAN("notice", "There is no detonator inside."))
 			return 
-		user.put_in_hands(timer)
-		safety_pin = null;
-		to_chat(user, SPAN("notice", "You carefully remove [timer] from grenade chamber."))
+		if(active) 
+			to_chat(user, SPAN("notice", "You begin removing [detonator] from grenade chamber."))
+			if(do_after(usr, 50, src))
+				active = 0
+				broken = TRUE
+				update_icon()
+		user.put_in_hands(detonator)
+		detonator = null;
+		to_chat(user, SPAN("notice", "You carefully remove [detonator] from grenade chamber."))
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W))
 		if(isnull(safety_pin))
+			if(broken) broken = FALSE
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			safety_pin = W
@@ -95,13 +113,27 @@
 			update_icon()
 		else
 			to_chat(user, SPAN("notice", "There is no need for second pin."))
-	if(istype(W, /obj/item/device/assembly/timer))
-		if(isnull(timer))
-			to_chat(user, SPAN("notice", "You insert [W] in place."))
-			timer = W
-			det_time = 10*timer.time
-			user.remove_from_mob(W)
-			W.forceMove(src)
+	if(istype(W,/obj/item/device/assembly_holder)&& isnull(detonator))
+		var/obj/item/device/assembly_holder/det = W
+		if(istype(det.a_left,det.a_right.type) || (!isigniter(det.a_left) && !isigniter(det.a_right)))
+			to_chat(user, SPAN("warning", "Assembly must contain one igniter."))
+			return
+		if(!det.secured)
+			to_chat(user, SPAN("warning", "Assembly must be secured with screwdriver."))
+			return
+		to_chat(user, SPAN("notice", "You add [W] to the metal casing."))
+		playsound(src.loc, 'sound/items/Screwdriver2.ogg', 25, -3)
+		user.remove_from_mob(det)
+		det.loc = src
+		detonator = det
+		if(istimer(detonator.a_left))
+			var/obj/item/device/assembly/timer/T = detonator.a_left
+			det_time = 10*T.time
+		else if(istimer(detonator.a_right))
+			var/obj/item/device/assembly/timer/T = detonator.a_right
+			det_time = 10*T.time
+		else 
+			det_time = null
 	add_fingerprint(user)
 	..()
 
@@ -140,6 +172,6 @@
 			S.safety_pin = src
 			user.remove_from_mob(src)
 			src.forceMove(S)
-			update_icon()
+			S.update_icon()
 		else
 			to_chat(user, SPAN("notice", "There is no need for second pin."))

@@ -92,6 +92,7 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
+		chambered.safety_pin = null
 		chambered.det_time = 10
 		chambered.activate(null)
 	return chambered
