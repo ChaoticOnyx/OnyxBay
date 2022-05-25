@@ -110,27 +110,20 @@
 	return
 
 /obj/mecha/update_icon()
-	. = ..()
 	overlays.Cut()
-
 	var/hand = 0
 	var/back = 0
-
-	if(selected && selected.has_equip_overlay && selected.equip_slot == HAND)
-		hand++
-		draw_layer(selected, hand)
-
 	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
 		if(i.has_equip_overlay)
-			if(i != selected && i.equip_slot == HAND && hand <= 2)
+			if(i.equip_slot == HAND && hand < 2)
 				draw_layer(i, hand)
 				hand++
-			else if(i.equip_slot == BACK && back <= 2)
+			else if(i.equip_slot == BACK && back < 2)
 				draw_layer(i, back)
 				back++
 
 /obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
-	var/icon_name = "[equip.icon_state][entry == 1 ? "_l" : "_r"]"
+	var/icon_name = "[equip.icon_state][entry == 0 ? "_r" : "_l"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
 	overlays += weapon
 	if(equip.need_colorize)
