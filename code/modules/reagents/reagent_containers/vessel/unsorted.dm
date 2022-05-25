@@ -124,15 +124,9 @@
 	volume = 10
 	matter = list(MATERIAL_CARDBOARD = 100)
 	center_of_mass = "x=16;y=12"
-	filling_states = "3;5;10"
+	filling_states = "50;100"
 	lid_type = null
 	unacidable = FALSE
-
-/obj/item/reagent_containers/vessel/sillycup/on_reagent_change()
-	if(reagents.total_volume)
-		icon_state = "water_cup"
-	else
-		icon_state = "water_cup_e"
 
 /obj/item/reagent_containers/vessel/shaker
 	name = "shaker"
