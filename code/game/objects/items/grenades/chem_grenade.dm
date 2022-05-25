@@ -33,14 +33,14 @@
 					beakers -= B
 					user.put_in_hands(B)
 		SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
-	if(safety_pin)
-		user.put_in_hands(safety_pin)
-		safety_pin = null;
-		playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
-		to_chat(user, SPAN("warning", "You remove the safety pin!"))
-		update_icon()
-		return
 	if(stage > 1 && !active && clown_check(user))
+		if(safety_pin)
+			user.put_in_hands(safety_pin)
+			safety_pin = null
+			playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
+			to_chat(user, SPAN("warning", "You remove the safety pin!"))
+			update_icon()
+			return
 		to_chat(user, SPAN("warning", "You prime \the [name]!"))
 
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
@@ -52,10 +52,11 @@
 			C.throw_mode_on()
 
 /obj/item/grenade/chem_grenade/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && stage == 2)
+	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && stage == 2 && !active)
 		if(isnull(safety_pin))
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			broken = FALSE
 			safety_pin = W
 			user.remove_from_mob(W)
 			W.forceMove(src)
@@ -96,11 +97,18 @@
 			icon_state = initial(icon_state) +"_locked"
 			stage = 2
 		else if(stage == 2)
-			if(active && prob(95) && isnull(safety_pin))
-				to_chat(user, SPAN("warning", "You trigger the assembly!"))
-				detonate()
-				return
+			if(active)
+				if(do_after(usr, 50, src))
+					active = 0
+					update_icon()
+				else 
+					to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
+					detonate()
+					return
 			else
+				if(isnull(safety_pin))
+					to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
+					return
 				to_chat(user, SPAN("notice", "You unlock the assembly."))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
@@ -129,7 +137,8 @@
 		to_chat(user, "With attached [detonator.name]")
 
 /obj/item/grenade/chem_grenade/activate(mob/user)
-	if(active) 
+	if(active) return 
+	if(broken)
 		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
 		return
 	if(safety_pin) 
@@ -155,8 +164,8 @@
 	var/has_reagents = 0
 	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		if(G.reagents.total_volume) has_reagents = 1
-
 	active = 0
+	broken = TRUE
 	if(!has_reagents)
 		update_icon()
 		playsound(src.loc, 'sound/items/Screwdriver2.ogg', 50, 1)
@@ -194,12 +203,18 @@
 		qdel(src)	   //correctly before deleting the grenade.
 
 /obj/item/grenade/chem_grenade/update_icon()
-	..()
+	if(active)
+		icon_state = initial(icon_state) + "_active"
+		return
+	if(isnull(safety_pin))
+		icon_state = initial(icon_state) + "_primed"
+		return
 	if(!detonator)
 		icon_state = initial(icon_state) + "_ass"
 		return
 	if(!stage)
-		return // returns parent "initial(icon_state)"
+		icon_state = initial(icon_state)
+		return
 	icon_state = initial(icon_state) + "_locked"
 
 /obj/item/grenade/chem_grenade/large
