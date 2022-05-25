@@ -123,7 +123,7 @@
 				back++
 
 /obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
-	var/icon_name = "[equip.icon_state][entry == 0 ? "_r" : "_l"]"
+	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
 	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
 	overlays += weapon
 	if(equip.need_colorize)
