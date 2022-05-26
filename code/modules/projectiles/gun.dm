@@ -411,7 +411,7 @@
 			mouthshoot = 0
 			return
 		if(istype(in_chamber, /obj/item/projectile/energy/floramut))
-			user.show_message(SPAN("warning", "Sorry, you are not a flower.</span>"))
+			user.show_message(SPAN("warning", "Sorry, you are not a flower."))
 			mouthshoot = 0
 			return
 
