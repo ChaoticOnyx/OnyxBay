@@ -97,6 +97,9 @@
 			icon_state = initial(icon_state) +"_locked"
 			stage = 2
 		else if(stage == 2)
+			if(isnull(safety_pin) && !active)
+				to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
+				return
 			if(active)
 				if(do_after(usr, 50, src))
 					active = 0
@@ -106,9 +109,6 @@
 					detonate()
 					return
 			else
-				if(isnull(safety_pin))
-					to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
-					return
 				to_chat(user, SPAN("notice", "You unlock the assembly."))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
 				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")

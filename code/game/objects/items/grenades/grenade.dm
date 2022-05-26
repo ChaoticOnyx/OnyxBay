@@ -94,6 +94,9 @@
 		if(isnull(detonator))
 			to_chat(user, SPAN("notice", "There is no detonator inside."))
 			return 
+		if(isnull(safety_pin) && have_pin && !active)
+			to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
+			return
 		if(active) 
 			to_chat(user, SPAN("notice", "You begin to remove [detonator] from grenade chamber."))
 			if(do_after(usr, 50, src))
@@ -103,9 +106,6 @@
 			else 
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 				detonate()
-				return
-			if(isnull(safety_pin) && have_pin)
-				to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
 				return
 		user.put_in_hands(detonator)
 		detonator = null;
