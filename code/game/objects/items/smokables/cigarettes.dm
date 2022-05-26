@@ -49,8 +49,7 @@
 				for(var/obj/item/material/ashtray/A in view(1, loc))
 					if(length(A.contents) < A.max_butts)
 						A.attackby(butt, loc)
-						qdel(src)
-						return
+						break
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
 
