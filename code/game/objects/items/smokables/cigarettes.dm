@@ -48,7 +48,8 @@
 			if(!M.stat && (src == M.wear_mask || M.is_item_in_hands(src)) && !M.handcuffed && isturf(M.loc))
 				for(var/obj/item/material/ashtray/A in view(1, loc))
 					if(A.contents.len < A.max_butts)
-						A.attackby(src, loc)
+						A.attackby(butt, loc)
+						qdel(src)
 						return
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
