@@ -30,8 +30,9 @@
 
 /obj/item/grenade/Initialize()
 	. = ..()
+	if(have_pin)
+		safety_pin = new /obj/item/safety_pin
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
-	safety_pin = new /obj/item/safety_pin
 	var/obj/item/device/assembly/timer/T = detonator.a_left
 	det_time = 10*T.time
 
@@ -103,14 +104,14 @@
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 				detonate()
 				return
-			if(isnull(safety_pin))
+			if(isnull(safety_pin) && have_pin)
 				to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
 				return
 		user.put_in_hands(detonator)
 		detonator = null;
 		to_chat(user, SPAN("notice", "You carefully remove [detonator] from grenade chamber."))
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && have_pin)
-		if(isnull(safety_pin))
+		if(isnull(safety_pin) && have_pin)
 			if(broken) broken = FALSE
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
@@ -118,7 +119,7 @@
 			user.remove_from_mob(W)
 			W.forceMove(src)
 			update_icon()
-		else
+		else if(have_pin)
 			to_chat(user, SPAN("notice", "There is no need for second pin."))
 	if(istype(W,/obj/item/device/assembly_holder) && isnull(detonator))
 		var/obj/item/device/assembly_holder/det = W

@@ -9,10 +9,6 @@
 	var/spawner_type = null // must be an object path
 	var/deliveryamt = 1 // amount of type to deliver
 	var/list/newvars
-
-/obj/item/grenade/spawnergrenade/Initialize()
-	..()
-	safety_pin = null // These thingy only have a button 
 	have_pin = FALSE
 
 /obj/item/grenade/spawnergrenade/detonate()												// Prime now just handles the two loops that query for people in lockers and people who can see it.

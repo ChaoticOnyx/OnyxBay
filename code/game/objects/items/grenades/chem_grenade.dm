@@ -155,6 +155,7 @@
 
 		if(user)
 			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+	playsound(loc, arm_sound, 75, 0, -3)
 	update_icon()
 	return
 
