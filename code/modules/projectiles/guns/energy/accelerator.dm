@@ -1,8 +1,8 @@
 /obj/item/gun/energy/accelerator
-	name = "accelerator rifle"
+	name = "accelerator shotgun"
 	desc = "A NanoTrasen UPA \"Shepherd\". It synthesizes unstable particles and accelerates them, effectively shooting \"temporary\" bullets without using any ammunition besides electric power."
 	icon_state = "phazer"
-	item_state = "laserrifle"
+	item_state = "phazer"
 	wielded_item_state = "laserrifle-wielded"
 	icon_rounder = 20
 	slot_flags = SLOT_BACK
@@ -28,7 +28,7 @@
 		pumped = FALSE
 
 /obj/item/gun/energy/accelerator/attack_self(mob/living/user)
-	if(!pumped && world.time > recentpump + 1.2 SECOND)
+	if(!pumped && world.time > recentpump + 1.5 SECOND)
 		recentpump = world.time
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		add_fingerprint(user)
