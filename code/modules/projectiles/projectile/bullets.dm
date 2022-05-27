@@ -223,7 +223,7 @@
 	spread_step = 5
 	penetration_modifier = 1.1
 
-	muzzle_type = /obj/effect/projectile/bullet/muzzle
+	muzzle_type = /obj/effect/projectile/accel/muzzle
 
 /obj/item/projectile/bullet/pellet/accelerated/lesser
 	damage = 20
