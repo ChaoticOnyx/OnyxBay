@@ -5,6 +5,7 @@
 	item_state = "phazer"
 	wielded_item_state = "laserrifle-wielded"
 	icon_rounder = 20
+	screen_shake = 1
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_HUGE
 	force = 12.5
