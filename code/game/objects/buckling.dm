@@ -75,7 +75,7 @@
 	if(istype(M, /mob/living/carbon/metroid))
 		to_chat(user, SPAN("warning", "\The [M] is too squishy to buckle in."))
 		return 0
-	if(istype(M, /mob/living/silicon && ! /mob/living/silicon/robot/drone))
+	if(issilicon(M) && !is_drone(M))
 		to_chat(user, SPAN("warning", "\The [M] is too heavy to buckle in."))
 		return 0
 
