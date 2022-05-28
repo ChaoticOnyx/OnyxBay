@@ -1,6 +1,6 @@
 /obj/item/gun/energy/laser
 	name = "laser rifle"
-	desc = "A NanoTrasen G40E rifle, designed to kill with concentrated energy blasts."
+	desc = "A Hephaestus Industries G40E rifle, designed to kill with concentrated energy blasts."
 	icon_state = "laser"
 	item_state = "laserrifle"
 	slot_flags = SLOT_BACK
@@ -24,7 +24,7 @@
 	)
 
 /obj/item/gun/energy/laser/mounted
-	desc = "A modification of NanoTrasen G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
+	desc = "A modification Hephaestus Industries G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
 	self_recharge = 1
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
@@ -50,7 +50,7 @@
 
 /obj/item/gun/energy/laser/pistol
 	name = "laser pistol"
-	desc = "A NanoTrasen LP \"Arclight\", a combat laser pistol. Not as powerful as a laser rifle, it is much smaller and capable of shooting much more rapidly."
+	desc = "A Hephaestus Industries LP \"Arclight\", a combat laser pistol. Not as powerful as a laser rifle, it is much smaller and capable of shooting much more rapidly."
 	icon_state = "laser_pistol"
 	item_state = "laser"
 	w_class = ITEM_SIZE_NORMAL
@@ -73,7 +73,7 @@
 
 /obj/item/gun/energy/laser/practice
 	name = "practice laser rifle"
-	desc = "A modified version of the NT G40E, this one fires less concentrated energy bolts designed for target practice."
+	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."
 	icon_state = "laserp"
 	projectile_type = /obj/item/projectile/beam/practice
 	charge_cost = 10 //How much energy is needed to fire.
