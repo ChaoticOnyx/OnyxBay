@@ -101,6 +101,32 @@
     ]
   },
   {
+    "author": "Zert0X",
+    "date": "2022-05-28T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscDel",
+        "message": "Служба Безопасности NanoTrasen снова использует огнестрел.",
+        "pr": 8493
+      },
+      {
+        "prefix": "RscDel",
+        "message": "Убран новый тип вооружения - accelerator shotgun.",
+        "pr": 8493
+      },
+      {
+        "prefix": "RscDel",
+        "message": "Убраны изменения оружейных на Исходе и Фронтире.",
+        "pr": 8493
+      },
+      {
+        "prefix": "Tweak",
+        "message": "Спасибо за тестирование!",
+        "pr": 8493
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2022-05-23T00:00:00+03:00",
     "changes": [
