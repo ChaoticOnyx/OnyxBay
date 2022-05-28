@@ -326,7 +326,12 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/music_tapes
 	name = "Music Tapes Party Kit"
-	contains = list(/obj/item/storage/music_tape/classic, /obj/item/storage/music_tape/jazz, /obj/item/storage/music_tape/exodus, /obj/item/storage/music_tape/newyear, /obj/item/storage/music_tape/frontier, /obj/item/storage/music_tape/valhalla)
+	contains = list(/obj/item/music_tape_box/classic, 
+					/obj/item/music_tape_box/jazz, 
+					/obj/item/music_tape_box/exodus, 
+					/obj/item/music_tape_box/newyear, 
+					/obj/item/music_tape_box/frontier, 
+					/obj/item/music_tape_box/valhalla)
 	cost = 20
 	containername = "\improper Music tapes crate"
 	
