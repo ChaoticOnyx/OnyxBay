@@ -182,3 +182,9 @@
 	light_outer_range = 5
 	light_max_bright = 1
 	light_color = COLOR_MUZZLE_FLASH
+
+/obj/effect/projectile/accel/muzzle
+	icon_state = "muzzle_accel"
+	light_outer_range = 5
+	light_max_bright = 1
+	light_color = COLOR_OFF_WHITE
