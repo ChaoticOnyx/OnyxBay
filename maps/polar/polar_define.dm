@@ -1,19 +1,20 @@
 
 /datum/map/polar
-	name = "Polar"
-	full_name = "Polar Colony"
+	name = "Pathos I"
+	full_name = "Pathos I"
 	path = "polar"
 
 	shuttle_types = list(
-		/datum/shuttle/autodock/ferry/supply/polar_drone,
-		/datum/shuttle/autodock/multi/antag/rescue,
-		/datum/shuttle/autodock/ferry/emergency/centcom,
-		/datum/shuttle/autodock/ferry/administration,
-		/datum/shuttle/autodock/multi/antag/syndicate,
-		/datum/shuttle/autodock/multi/antag/elite_syndicate,
-		/datum/shuttle/autodock/ferry/deathsquad,
-		/datum/shuttle/autodock/multi/antag/merchant_polar,
-		/datum/shuttle/autodock/multi/antag/skipjack,
+		/datum/shuttle/autodock/ferry/supply/drone/polar,
+		/datum/shuttle/autodock/multi/antag/rescue/polar,
+		/datum/shuttle/autodock/ferry/emergency/centcom/polar,
+		/datum/shuttle/autodock/ferry/administration/polar,
+		/datum/shuttle/autodock/multi/antag/syndicate/polar,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate/polar,
+		/datum/shuttle/autodock/ferry/deathsquad/polar,
+		/datum/shuttle/autodock/multi/antag/merchant/polar,
+		/datum/shuttle/autodock/multi/antag/skipjack/polar,
+		/datum/shuttle/autodock/ferry/train
 	)
 
 	map_levels = list(
@@ -26,9 +27,9 @@
 		new /datum/space_level/jungle_level
 	)
 
-	station_name  = "Polar Colony"
-	station_short = "Polar"
-	dock_name     = "NAS Crescent"
+	station_name  = "Pathos I"
+	station_short = "Pathos I"
+	dock_name     = "Pathos I - Landing Zone"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
 	company_name  = "NanoTrasen"

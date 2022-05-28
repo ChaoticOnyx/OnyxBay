@@ -476,6 +476,7 @@
 	name = "Lethal Injection Syringe"
 	desc = "A syringe used for lethal injections."
 	amount_per_transfer_from_this = 60
+	mode = SYRINGE_INJECT
 	volume = 60
 	visible_name = "a giant syringe"
 	time = 300
@@ -491,8 +492,10 @@
 	..()
 
 /obj/item/reagent_containers/syringe/ld50_syringe/choral
-	mode = SYRINGE_INJECT
 	startswith = list(/datum/reagent/chloralhydrate)
+
+/obj/item/reagent_containers/syringe/ld50_syringe/potassium_chlorophoride
+	startswith = list(/datum/reagent/toxin/potassium_chlorophoride)
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/borg
