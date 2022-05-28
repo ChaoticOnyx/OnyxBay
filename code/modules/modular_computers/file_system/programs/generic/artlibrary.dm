@@ -216,9 +216,9 @@
 				if("23x19")
 					pre_icon.Crop(6, 26, 28, 8)
 				if("23x23")
-					pre_icon.Crop(6, 27, 27, 5)
+					pre_icon.Crop(6, 27, 28, 5)
 				if("24x24")
-					pre_icon.Crop(5, 27, 27, 4)
+					pre_icon.Crop(5, 27, 28, 4)
 			art_icon = icon2base64(pre_icon)
 			icon_cache[query.item[3]] = art_icon
 			current_art = list(

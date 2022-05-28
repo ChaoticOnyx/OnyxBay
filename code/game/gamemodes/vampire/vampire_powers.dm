@@ -190,7 +190,7 @@
 			continue
 		if (!vampire_can_affect_target(H, 0))
 			continue
-		if (eyecheck() > FLASH_PROTECTION_NONE)
+		if (H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
 		H.Stun(6)

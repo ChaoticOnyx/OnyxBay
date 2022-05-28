@@ -59,7 +59,7 @@
 	zone_sel = null
 	poise_icon = null
 
-/mob/Initialize()
+/mob/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSmobs, src)
 

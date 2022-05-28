@@ -388,7 +388,7 @@ var/bomb_set
 
 /obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
+	if(!T || !isStationLevel(T.z))
 		qdel(src)
 
 /obj/item/disk/nuclear/Destroy()

@@ -41,7 +41,7 @@
 	..()
 	underlays.Cut()
 	if(rag)
-		var/underlay_image = image(icon = 'icons/obj/drinks.dmi', icon_state = rag.on_fire? "[rag_underlay]_lit" : rag_underlay)
+		var/underlay_image = image(src.icon, icon_state = rag.on_fire? "[rag_underlay]_lit" : rag_underlay)
 		underlays += underlay_image
 		set_light(rag.light_max_bright, 0.1, rag.light_outer_range, 2, rag.light_color)
 	else if(pourer)
@@ -116,7 +116,6 @@
 
 /obj/item/reagent_containers/vessel/bottle/small
 	volume = 50
-	rag_underlay = "rag_small"
 	lid_type = /datum/vessel_lid/beercap
 	force = 7.0
 	mod_weight = 0.65
@@ -148,6 +147,7 @@
 	label_icon = TRUE
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/cork
+	rag_underlay = "rag_medium"
 
 /obj/item/reagent_containers/vessel/bottle/chemical/small
 	name = "small bottle"
@@ -165,6 +165,7 @@
 	matter = list(MATERIAL_GLASS = 1000)
 	base_name = "small bottle"
 	base_desc = "A small glass bottle."
+	rag_underlay = "rag_small"
 
 /obj/item/reagent_containers/vessel/bottle/chemical/big
 	name = "big bottle"
@@ -181,8 +182,9 @@
 	matter = list(MATERIAL_GLASS = 3000)
 	base_name = "big bottle"
 	base_desc = "A big glass bottle."
+	rag_underlay = "rag_big"
 
-/obj/item/reagent_containers/vessel/bottle/chemical/get_storage_cost()
+/obj/item/reagent_containers/vessel/bottle/chemical/big/get_storage_cost()
 	return ..() * 1.5
 
 /obj/item/reagent_containers/vessel/bottle/chemical/Initialize()

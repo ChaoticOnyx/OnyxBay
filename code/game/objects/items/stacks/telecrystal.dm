@@ -23,7 +23,7 @@
 
 /obj/item/stack/telecrystal/attack_self(mob/user)
 	var/turf/Turf = get_turf(src)
-	if(!(Turf.z in GLOB.using_map.player_levels))
+	if(!(Turf.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 		to_chat(user, SPAN("warning", "[src] doesn't work on this location!"))
 		return
 	if(use(1))

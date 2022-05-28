@@ -130,7 +130,11 @@
 	return 1
 
 /obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	usr.set_machine(src)
+	if(!user)
+		ui?.close()
+		return
+
+	user.set_machine(src)
 
 	var/list/data = new()
 

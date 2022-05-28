@@ -1,3 +1,7 @@
+/datum/space_level/sensor_array
+	path = 'sensor_array.dmm'
+	travel_chance = 5
+
 /area/sensor_array
 	name = "Sensor Array"
 	icon_state = "sensor_array"

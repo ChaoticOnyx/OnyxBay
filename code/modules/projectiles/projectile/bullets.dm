@@ -212,6 +212,22 @@
 	spread_step = 15
 	penetration_modifier = 1.2
 
+/obj/item/projectile/bullet/pellet/accelerated
+	name = "accelerated particles"
+	icon_state = "accel"
+	embed = FALSE // Unstable particles just disappear
+	damage = 22.5
+	armor_penetration = 15
+	pellets = 5
+	range_step = 2
+	spread_step = 5
+	penetration_modifier = 1.1
+
+	muzzle_type = /obj/effect/projectile/accel/muzzle
+
+/obj/item/projectile/bullet/pellet/accelerated/lesser
+	damage = 20
+
 /* "Rifle" rounds */
 
 /obj/item/projectile/bullet/rifle

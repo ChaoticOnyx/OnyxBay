@@ -1032,7 +1032,8 @@ var/global/list/robot_footstep_sounds = list(
 	set name = "Reset Security Codes"
 	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
 
-	if(!(mind.special_role && mind.original == src))
+	var/mob/living/original_mob = mind?.original_mob?.resolve()
+	if(!(mind.special_role && istype(original_mob) && original_mob == src))
 		to_chat(src, "Access denied.")
 		return
 

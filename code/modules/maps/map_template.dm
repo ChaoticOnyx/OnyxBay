@@ -94,13 +94,6 @@
 		else
 			return FALSE
 
-	for (var/z_index = bounds[MAP_MINZ]; z_index <= bounds[MAP_MAXZ]; z_index++)
-		if (accessibility_weight)
-			GLOB.using_map.accessible_z_levels[num2text(z_index)] = accessibility_weight
-		if (base_turf_for_zs)
-			GLOB.using_map.base_turf_by_z[num2text(z_index)] = base_turf_for_zs
-		GLOB.using_map.player_levels |= z_index
-
 	// Initialize things that are normally initialized after map load
 	init_atoms(atoms_to_initialise)
 	init_shuttles()

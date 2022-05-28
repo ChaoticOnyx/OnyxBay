@@ -39,18 +39,18 @@
 		anim_time = 1 //Thud
 
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
+		M.Scale(icon_scale, icon_scale * body_height)
 		M.Turn(90)
-		M.Scale(icon_scale)
 		M.Translate(1,-6)
 		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
 	else if(hanging && !species.prone_icon)
+		M.Scale(icon_scale, icon_scale * body_height)
 		M.Turn(180)
-		M.Scale(icon_scale)
-		M.Translate(0, -16*(icon_scale-1))
+		M.Translate(0, -16 * (icon_scale * body_height - 1))
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 	else
-		M.Scale(icon_scale)
-		M.Translate(0, 16*(icon_scale-1))
+		M.Scale(icon_scale, icon_scale * body_height)
+		M.Translate(0, 16 * (icon_scale * body_height - 1))
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 
 	animate(src, transform = M, time = anim_time)

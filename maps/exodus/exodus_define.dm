@@ -27,45 +27,24 @@
 		/datum/shuttle/autodock/multi/antag/skipjack,
 	)
 	load_legacy_saves = TRUE
-	station_levels = list(1,2)
-	admin_levels = list(4)
-	contact_levels = list(1,2,4,6)
-	player_levels = list(1,2,3,5,6,7,8,9,10,11,12,13,14,15,16)
-	sealed_levels = list(12)
-	accessible_z_levels = list(
-		"1" = 5,
-		"2" = 5,
-		"3" = 10,
-		"5" = 15,
-		"6" = 30,
-		"7" = 15,
-		"8" = 5,
-		"9" = 5,
-		"10" = 5,
-		"11" = 5,
-		"13" = 3,
-		"14" = 5,
-		"15" = 3,
-		"16" = 3
-	)
-	dynamic_z_levels = list(
-		'exodus-1.dmm',
-		'exodus-2.dmm',
-		'exodus-3.dmm',
-		// CC
-		'exodus-4.dmm',
-		'maps/telecomms.dmm',
-		'maps/null-space.dmm',
-		'maps/derelicts/construction_site.dmm',
-		'maps/derelicts/snowasteroid.dmm',
-		'maps/derelicts/original/derelict.dmm',
-		'maps/derelicts/bearcat/bearcat-1.dmm',
-		'maps/derelicts/bearcat/bearcat-2.dmm',
-		'maps/derelicts/jungleplanet/jungle_planet.dmm',
-		'maps/derelicts/old_restaurant/old_restaurant.dmm',
-		'maps/derelicts/sensor_array/sensor_array.dmm',
-		'maps/derelicts/science_ship/science_ship-1.dmm',
-		'maps/derelicts/science_ship/science_ship-2.dmm'
+
+	map_levels = list(
+		new /datum/space_level/exodus_1,
+		new /datum/space_level/exodus_2,
+		new /datum/space_level/exodus_3,
+		new /datum/space_level/exodus_4,
+		new /datum/space_level/null_space,
+		new /datum/space_level/telecomms,
+		new /datum/space_level/construction_site,
+		new /datum/space_level/snow_asteroid,
+		new /datum/space_level/derelict,
+		new /datum/space_level/bearcat_1,
+		new /datum/space_level/bearcat_2,
+		new /datum/space_level/jungle_level,
+		new /datum/space_level/old_restaurant,
+		new /datum/space_level/sensor_array,
+		new /datum/space_level/science_ship_1,
+		new /datum/space_level/science_ship_2
 	)
 
 	station_name  = "NSS Exodus"
@@ -84,7 +63,28 @@
 
 	evac_controller_type = /datum/evacuation_controller/shuttle
 
-/datum/map/exodus/perform_map_generation()
-	new /datum/random_map/automata/cave_system(null, 1, 1, 3, 255, 255) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 3, 255, 255)         // Create the mining ore distribution map.
-	return 1
+	station_networks = list(
+		NETWORK_CIVILIAN_EAST,
+		NETWORK_CIVILIAN_WEST,
+		NETWORK_COMMAND,
+		NETWORK_ENGINE,
+		NETWORK_ENGINEERING,
+		NETWORK_ENGINEERING_OUTPOST,
+		NETWORK_EXODUS,
+		NETWORK_MAINTENANCE,
+		NETWORK_MEDICAL,
+		NETWORK_MINE,
+		NETWORK_RESEARCH,
+		NETWORK_RESEARCH_OUTPOST,
+		NETWORK_ROBOTS,
+		NETWORK_PRISON,
+		NETWORK_SECURITY,
+		NETWORK_ALARM_ATMOS,
+		NETWORK_ALARM_CAMERA,
+		NETWORK_ALARM_FIRE,
+		NETWORK_ALARM_MOTION,
+		NETWORK_ALARM_POWER,
+		NETWORK_THUNDER,
+		NETWORK_TELECOM,
+		NETWORK_MASTER
+	)

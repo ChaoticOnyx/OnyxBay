@@ -90,17 +90,17 @@
 	var/startx
 	switch(startSide)
 		if(NORTH)
-			starty = world.maxy-(TRANSITIONEDGE+1)
-			startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
+			starty = world.maxy-(TRANSITION_EDGE+1)
+			startx = rand((TRANSITION_EDGE+1), world.maxx-(TRANSITION_EDGE+1))
 		if(EAST)
-			starty = rand((TRANSITIONEDGE+1),world.maxy-(TRANSITIONEDGE+1))
-			startx = world.maxx-(TRANSITIONEDGE+1)
+			starty = rand((TRANSITION_EDGE+1),world.maxy-(TRANSITION_EDGE+1))
+			startx = world.maxx-(TRANSITION_EDGE+1)
 		if(SOUTH)
-			starty = (TRANSITIONEDGE+1)
-			startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
+			starty = (TRANSITION_EDGE+1)
+			startx = rand((TRANSITION_EDGE+1), world.maxx-(TRANSITION_EDGE+1))
 		if(WEST)
-			starty = rand((TRANSITIONEDGE+1), world.maxy-(TRANSITIONEDGE+1))
-			startx = (TRANSITIONEDGE+1)
+			starty = rand((TRANSITION_EDGE+1), world.maxy-(TRANSITION_EDGE+1))
+			startx = (TRANSITION_EDGE+1)
 	var/turf/T = locate(startx, starty, Z)
 	return T
 
@@ -109,17 +109,17 @@
 	var/endx
 	switch(startSide)
 		if(NORTH)
-			endy = TRANSITIONEDGE
-			endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
+			endy = TRANSITION_EDGE
+			endx = rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE)
 		if(EAST)
-			endy = rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE)
-			endx = TRANSITIONEDGE
+			endy = rand(TRANSITION_EDGE, world.maxy-TRANSITION_EDGE)
+			endx = TRANSITION_EDGE
 		if(SOUTH)
-			endy = world.maxy-TRANSITIONEDGE
-			endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
+			endy = world.maxy-TRANSITION_EDGE
+			endx = rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE)
 		if(WEST)
-			endy = rand(TRANSITIONEDGE,world.maxy-TRANSITIONEDGE)
-			endx = world.maxx-TRANSITIONEDGE
+			endy = rand(TRANSITION_EDGE,world.maxy-TRANSITION_EDGE)
+			endx = world.maxx-TRANSITION_EDGE
 	var/turf/T = locate(endx, endy, Z)
 	return T
 
@@ -159,7 +159,7 @@
 		qdel(src)
 
 /obj/effect/meteor/touch_map_edge()
-	if(move_count > TRANSITIONEDGE)
+	if(move_count > TRANSITION_EDGE)
 		qdel(src)
 
 /obj/effect/meteor/Destroy()

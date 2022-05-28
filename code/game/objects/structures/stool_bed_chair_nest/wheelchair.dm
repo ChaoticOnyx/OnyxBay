@@ -12,7 +12,7 @@
 	)
 	foldable = FALSE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	var/driving = 0
 	var/mob/living/pulling = null

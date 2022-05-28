@@ -32,6 +32,7 @@
 	var/economic_modifier = 2             // With how much does this job modify the initial account amount?
 
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
+	var/list/preview_override             // Overrides the preview mannequin w/ given icon. Must be formatted as 'list(icon_state, icon)'.
 
 	var/loadout_allowed = TRUE            // Whether or not loadout equipment is allowed and to be created when joining.
 	var/list/allowed_branches             // For maps using branches and ranks, also expandable for other purposes
@@ -119,6 +120,15 @@
 	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title, branch)
 	if(!outfit)
 		return FALSE
+	if(!isnull(preview_override))
+		if(!islist(preview_override) || length(preview_override) != 2)
+			crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
+			return FALSE
+		H.overlays.Cut()
+		H.update_icon = FALSE
+		H.icon = preview_override[2]
+		H.icon_state = preview_override[1]
+		return TRUE
 	. = outfit.equip(H, title, alt_title, OUTFIT_ADJUSTMENT_SKIP_POST_EQUIP|OUTFIT_ADJUSTMENT_SKIP_ID_PDA)
 
 /datum/job/proc/get_access()

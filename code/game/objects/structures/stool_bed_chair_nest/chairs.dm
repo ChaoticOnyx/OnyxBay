@@ -9,7 +9,7 @@
 	buckle_pixel_shift = "x=0;y=0"
 	anchored = FALSE
 	pull_slowdown = PULL_SLOWDOWN_EXTREME
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 

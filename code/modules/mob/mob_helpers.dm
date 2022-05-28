@@ -431,10 +431,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
-		if(M.current && M.current.client)
+		var/mob/living/original_mob = M.original_mob?.resolve()
+		if(M.current?.client)
 			C = M.current.client
-		else if(M.original && M.original.client)
-			C = M.original.client
+		else if(istype(original_mob) && original_mob.client)
+			C = original_mob.client
 
 	if(C)
 		var/name = key_name(C)

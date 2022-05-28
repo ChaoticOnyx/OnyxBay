@@ -128,8 +128,8 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 
 /datum/computer_file/crew_record/proc/take_mob_photo(mob/living/carbon/human/H)
 	if(istype(H))
-		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = 1)
-		photo_side = getFlatIcon(H, WEST, always_use_defdir = 1)
+		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
+		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
 	else
 		photo_front = icon('icons/mob/human_races/r_human.dmi', "preview_m", SOUTH)
 		photo_side = icon('icons/mob/human_races/r_human.dmi', "preview_m", WEST)

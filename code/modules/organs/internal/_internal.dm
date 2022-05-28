@@ -152,16 +152,16 @@
 				owner.custom_pain("Something inside your [parent.name] hurts[degree].", amount, affecting = parent)
 
 /obj/item/organ/internal/emp_act(severity)
-	if(owner.status_flags & GODMODE)
+	if(owner?.status_flags & GODMODE)
 		return 0
 	if(!BP_IS_ROBOTIC(src))
 		return
-	switch (severity)
-		if (1)
+	switch(severity)
+		if(1)
 			take_internal_damage(9)
-		if (2)
+		if(2)
 			take_internal_damage(3)
-		if (3)
+		if(3)
 			take_internal_damage(1)
 
 // Things we should do if we are a foreign organ. Used only by lings' biostructures for now.

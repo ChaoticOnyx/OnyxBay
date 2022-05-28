@@ -465,7 +465,7 @@
 	strength = 15
 
 	glass_required = "wine"
-	glass_icon_state = "alloe"
+	glass_icon_state = "aloe"
 	glass_name = "Aloe"
 	glass_desc = "Very, very, very good."
 

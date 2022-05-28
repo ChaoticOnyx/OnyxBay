@@ -24,6 +24,12 @@
 /mob/living/carbon/human/dummy/mannequin/InitializeHud()
 	return	// Mannequins don't get HUDs
 
+/mob/living/carbon/human/dummy/mannequin/should_have_organ()
+	return FALSE // Mannequins are great no organs required
+
+/mob/living/carbon/human/dummy/mannequin/Life()
+	return // Because we never know
+
 /mob/living/carbon/human/skrell/New(new_loc)
 	h_style = "Skrell Male Tentacles"
 	..(new_loc, SPECIES_SKRELL)

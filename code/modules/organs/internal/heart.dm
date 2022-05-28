@@ -21,7 +21,9 @@
 
 /obj/item/organ/internal/heart/robotize()
 	. = ..()
+	SetName("blood pump")
 	icon_state = "heart-prosthetic"
+	dead_icon = "heart-prosthetic-br"
 
 /obj/item/organ/internal/heart/Process()
 	if(owner)
