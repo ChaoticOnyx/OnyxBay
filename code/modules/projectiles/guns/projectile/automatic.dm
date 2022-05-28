@@ -247,7 +247,7 @@
 /obj/item/gun/projectile/automatic/l6_saw
 	name = "light machine gun"
 	desc = "A heavily modified 5.56x45mm light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the reciever below the designation."
-	icon_state = "l6closed5"
+	icon_state = "l6closed100"
 	item_state = "l6closed"
 	wielded_item_state = "l6closed-wielded"
 	w_class = ITEM_SIZE_HUGE

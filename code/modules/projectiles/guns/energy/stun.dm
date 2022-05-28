@@ -130,7 +130,7 @@
 
 /obj/item/gun/energy/classictaser
 	name = "taser gun"
-	desc = "A small, low capacity gun manufactured by NanoTrasen. Used for non-lethal takedowns."
+	desc = "A small, low capacity gun used for non-lethal takedowns."
 	icon_state = "taser"
 	item_state = null
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
