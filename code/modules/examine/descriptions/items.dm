@@ -44,7 +44,7 @@
 
 		. += "\nAttack Cooldown: [round((attack_cooldown + DEFAULT_WEAPON_COOLDOWN * (mod_weight / mod_handy)) * mod_speed * 0.1, 0.1)]s"
 		. += "\nParry Window: [round(mod_handy * 12 * 0.1, 0.1)]s"
-	if(mod_shield >= 2.0)
+	if(block_tier == BLOCK_TIER_ADVANCED)
 		. += "\nIt may block or reflect projectiles really well."
-	else if(mod_shield >= 1.3)
+	else if(mod_shield == BLOCK_TIER_PROJECTILE)
 		. += "\nIt may block projectiles."

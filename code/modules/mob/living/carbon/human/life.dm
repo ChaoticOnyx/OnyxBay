@@ -1277,12 +1277,13 @@
 	if(MUTATION_XRAY in mutations)
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 
-/mob/living/carbon/human/proc/handle_tase(amount)
+/mob/living/carbon/human/proc/handle_tase(amount, obj/item/projectile/P = null)
 	if(status_flags & GODMODE)
 		return 0	//godmode
 
 	if((getHalLoss() + amount) > 100)
 		if(prob(95))
-			Stun(amount/12)
-			Weaken(amount/10)
+			var/normalized_amount = P ? (amount + P.agony) / 2 : amount
+			Stun(round(normalized_amount / 12))
+			Weaken(round(normalized_amount / 10))
 			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))

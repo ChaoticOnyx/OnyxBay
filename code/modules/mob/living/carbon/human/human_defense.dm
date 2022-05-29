@@ -36,11 +36,11 @@ meteor_act
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
+	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+
 	//Tase effect
 	if(P.tasing)
-		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
-
-	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+		handle_tase(P.agony * get_siemens_coefficient_organ(organ), P)
 
 	//Internal damage
 	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked

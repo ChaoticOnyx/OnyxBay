@@ -62,6 +62,7 @@
 	var/impact_type
 
 	var/ricochet_id = 0
+	var/can_ricochet = TRUE
 
 	var/fire_sound
 

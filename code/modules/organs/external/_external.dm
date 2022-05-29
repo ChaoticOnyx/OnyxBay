@@ -1062,8 +1062,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
-			owner.Weaken(2)
-			owner.Stun(1)
+			owner.Weaken(3)
+			owner.Stun(2)
 
 	broken_description = pick("broken", "fracture", "hairline fracture")
 
