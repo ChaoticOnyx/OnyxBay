@@ -170,7 +170,7 @@
 
 /obj/item/music_tape_box/Initialize()
 	..()
-	music_tape = new music_tape
+	music_tape = new music_tape()
 	icon_state = icon_closed
 
 	desc = "A box with [music_tape.name]. It contains following playlist"
