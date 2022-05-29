@@ -242,8 +242,11 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "facehugger_thrown"
 	embed = 0 // nope nope nope nope nope
+	damage = 5
 	damage_type = PAIN
 	pass_flags = PASS_FLAG_TABLE
+	kill_count = 12
+
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
@@ -296,8 +299,21 @@
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null
 
-
 	set_density(0)
 	set_invisibility(101)
 	qdel(src)
 	return TRUE
+
+/obj/item/projectile/facehugger_proj/on_impact(atom/A, use_impact = TRUE)
+	Bump(A)
+
+/obj/item/projectile/facehugger_proj/Destroy()
+	if(kill_count)
+		QDEL_NULL(holder)
+	else
+		var/turf/T = get_turf(loc)
+		if(T)
+			holder.forceMove(T)
+			holder = null
+
+	return ..()
