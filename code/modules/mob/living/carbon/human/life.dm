@@ -1284,6 +1284,6 @@
 	if((getHalLoss() + amount) > 100)
 		if(prob(95))
 			var/normalized_amount = P ? (amount + P.agony) / 2 : amount
-			Stun(round(amount / 12))
-			Weaken(round(amount / 10))
+			Stun(round(normalized_amount / 12))
+			Weaken(round(normalized_amount / 10))
 			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
