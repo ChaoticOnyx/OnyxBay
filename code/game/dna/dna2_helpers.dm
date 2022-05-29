@@ -166,6 +166,7 @@
 
 		H.body_build = H.species.get_body_build(H.gender, dna.body_build)
 		H.fix_body_build()
+		H.body_height = dna.body_height
 
 		//Body markings
 		for(var/tag in dna.body_markings)

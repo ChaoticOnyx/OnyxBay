@@ -48,7 +48,7 @@ SUBSYSTEM_DEF(skybox)
 
 		if(use_stars)
 			var/image/stars = image(star_path, src, star_state)
-			stars.appearance_flags = RESET_COLOR
+			stars.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 			P.overlays += stars
 
 //new_color_and_rotation(bool, bool, string) Where the string is to be a color in hexadecimal form. Accepts input as color.

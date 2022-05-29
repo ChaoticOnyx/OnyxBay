@@ -72,7 +72,8 @@
 			return TOPIC_HANDLED
 
 		// Antag AI checks
-		if(!istype(user, /mob/living/silicon/ai) || !(user.mind.special_role && user.mind.original == user))
+		var/mob/living/original_mob = user.mind?.original_mob?.resolve()
+		if(!istype(user, /mob/living/silicon/ai) || !(istype(original_mob) && user.mind.special_role && original_mob == user))
 			to_chat(user, "<span class='warning'>Access Denied</span>")
 			return TOPIC_HANDLED
 
@@ -150,7 +151,8 @@
 		robot["master_ai"] = R.connected_ai ? R.connected_ai.name : "None"
 		robot["hackable"] = 0
 		// Antag AIs know whether linked cyborgs are hacked or not.
-		if(operator && istype(operator, /mob/living/silicon/ai) && (R.connected_ai == operator) && (operator.mind.special_role && operator.mind.original == operator))
+		var/mob/living/original_mob = operator.mind?.original_mob?.resolve()
+		if(operator && istype(operator, /mob/living/silicon/ai) && (R.connected_ai == operator) && (istype(original_mob) && operator.mind.special_role && original_mob == operator))
 			robot["hacked"] = R.emagged ? 1 : 0
 			robot["hackable"] = R.emagged? 0 : 1
 		robots.Add(list(robot))

@@ -19,7 +19,7 @@
 
 	if(SSskybox.use_stars)
 		stars = image('icons/turf/skybox.dmi', src, SSskybox.star_state)
-		stars.appearance_flags = RESET_COLOR
+		stars.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		overlays += stars
 	DoRotate()
 	update()

@@ -247,7 +247,7 @@
 	req_access = list(access_captain)
 
 /obj/structure/closet/secure_closet/injection/WillContain()
-	return list(/obj/item/reagent_containers/syringe/ld50_syringe/choral = 2)
+	return list(/obj/item/reagent_containers/syringe/ld50_syringe/potassium_chlorophoride = 2)
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"

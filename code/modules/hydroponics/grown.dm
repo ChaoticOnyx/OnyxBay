@@ -11,17 +11,14 @@
 	var/datum/seed/seed
 	var/potency = -1
 
-/obj/item/reagent_containers/food/grown/New(newloc,planttype)
-	if(planttype)
-		plantname = planttype
-	..()
-	fill_reagents()
-
-/obj/item/reagent_containers/food/grown/Initialize()
-	. = ..()
+/obj/item/reagent_containers/food/grown/Initialize(mapload, planttype)
+	. = ..(mapload)
 	if(!SSplants)
 		log_error("<span class='danger'>Plant controller does not exist and [src] requires it. Aborting.</span>")
 		return INITIALIZE_HINT_QDEL
+
+	if(planttype)
+		plantname = planttype
 
 	seed = SSplants.seeds[plantname]
 
@@ -33,6 +30,7 @@
 	if(!dried_type)
 		dried_type = type
 
+	fill_reagents()
 	update_icon()
 
 
@@ -50,17 +48,17 @@
 	// Fill the object up with the appropriate reagents.
 	for(var/rid in seed.chems)
 		var/list/reagent_data = seed.chems[rid]
-		if(reagent_data && reagent_data.len)
+		if(LAZYLEN(reagent_data))
 			var/rtotal = reagent_data[1]
 			var/list/data = list()
-			if(reagent_data.len > 1 && potency > 0)
+			if(LAZYACCESS(reagent_data, 2) && potency > 0)
 				rtotal += round(potency/reagent_data[2])
 			if(rid == /datum/reagent/nutriment)
-				data[seed.seed_name] = max(1,rtotal)
+				LAZYSET(data, seed.seed_name, max(1, rtotal))
 			reagents.add_reagent(rid,max(1,rtotal),data)
 	update_desc()
 	if(reagents.total_volume > 0)
-		bitesize = 1+round(reagents.total_volume / 2, 1)
+		bitesize = 1 + round(reagents.total_volume / 2, 1)
 
 /obj/item/reagent_containers/food/grown/proc/update_desc()
 

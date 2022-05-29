@@ -68,8 +68,14 @@
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
 	worn_underwear = null
-	for(var/organ in organs)
-		qdel(organ)
+	QDEL_NULL_LIST(organs)
+	QDEL_NULL_LIST(stance_limbs)
+	QDEL_NULL_LIST(grasp_limbs)
+	QDEL_NULL_LIST(bad_external_organs)
+
+	QDEL_LIST_ASSOC(hud_list)
+
+	QDEL_NULL(vessel)
 	return ..()
 
 /mob/living/carbon/human/get_ingested_reagents()

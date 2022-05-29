@@ -63,6 +63,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_COMMAND             "Command"
 #define NETWORK_ENGINE              "Engine"
 #define NETWORK_ENGINEERING_OUTPOST "Engineering Outpost"
+#define NETWORK_APPARAT_VORON       "Apparat Voron"
 
 #define NETWORK_ALARM_ATMOS "Atmosphere Alarms"
 #define NETWORK_ALARM_CAMERA "Camera Alarms"

@@ -8,7 +8,7 @@
 	max_damage = 0
 	dir = SOUTH
 	organ_tag = "limb"
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
@@ -130,28 +130,22 @@
 	if(wounds)
 		for(var/datum/wound/wound in wounds)
 			wound.embedded_objects.Cut()
-		wounds.Cut()
+	QDEL_NULL_LIST(wounds)
 
-	if(parent && parent.children)
+	if(parent?.children)
 		parent.children -= src
 		parent = null
 
-	if(children)
-		for(var/obj/item/organ/external/C in children)
-			qdel(C)
+	QDEL_NULL_LIST(children)
 
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
 
-	if(internal_organs)
-		for(var/obj/item/organ/O in internal_organs)
-			qdel(O)
-		internal_organs.Cut()
+	QDEL_NULL_LIST(internal_organs)
 
 	applied_pressure = null
 	if(splinted?.loc == src)
-		qdel(splinted)
-	splinted = null
+		QDEL_NULL(splinted)
 
 	if(owner)
 		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
@@ -161,8 +155,10 @@
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
+		owner.bad_external_organs.Remove(src)
 
-	if(autopsy_data)    autopsy_data.Cut()
+	if(autopsy_data)
+		autopsy_data.Cut()
 
 	return ..()
 

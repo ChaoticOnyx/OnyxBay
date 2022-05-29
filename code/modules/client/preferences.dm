@@ -240,6 +240,7 @@
 	character.fix_body_build()
 	character.age = age
 	character.b_type = b_type
+	character.body_height = body_height
 
 	character.r_eyes = r_eyes
 	character.g_eyes = g_eyes

@@ -1,5 +1,5 @@
 /// # Component
-/// 
+///
 /// A component should be a single standalone unit
 /// of functionality, that works by receiving signals from it's parent
 /// object to provide some single functionality (i.e a slippery component)
@@ -145,7 +145,7 @@
 	return
 
 /// Register to listen for a signal from the passed in target.
-/// 
+///
 /// This sets up a listening relationship such that when the target object emits a signal
 /// the source datum this proc is called upon, will receive a callback to the given proctype.
 /// Return values from procs registered must be a bitfield.
@@ -329,7 +329,7 @@
 /datum/proc/get_component(datum/component/c_type)
 	if(initial(c_type.dupe_mode) == COMPONENT_DUPE_ALLOWED || initial(c_type.dupe_mode) == COMPONENT_DUPE_SELECTIVE)
 		crash_with("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
-	
+
 	var/list/dc = datum_components
 
 	if(!dc)
@@ -349,7 +349,7 @@
 /datum/proc/get_exact_component(datum/component/c_type)
 	if(initial(c_type.dupe_mode) == COMPONENT_DUPE_ALLOWED || initial(c_type.dupe_mode) == COMPONENT_DUPE_SELECTIVE)
 		crash_with("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
-	
+
 	var/list/dc = datum_components
 
 	if(!dc)
@@ -465,7 +465,7 @@
 
 /// Get existing component of type, or create it and return a reference to it.
 /// Use this if the item needs to exist at the time of this call, but may not have been created before now.
-/// 
+///
 /// `component_type` - The typepath of the component to create or return.
 /// `...` - additional arguments to be passed when creating the component if it does not exist.
 /datum/proc/_load_component(list/arguments)
