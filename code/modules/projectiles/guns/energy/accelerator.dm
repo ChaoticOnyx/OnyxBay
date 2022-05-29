@@ -3,7 +3,7 @@
 	desc = "A NanoTrasen UPA \"Shepherd\". It synthesizes unstable particles and accelerates them, effectively shooting \"temporary\" bullets without using any ammunition besides electric power."
 	icon_state = "phazer"
 	item_state = "phazer"
-	wielded_item_state = "laserrifle-wielded"
+	wielded_item_state = "phazer-wielded"
 	icon_rounder = 20
 	screen_shake = 1
 	slot_flags = SLOT_BACK
