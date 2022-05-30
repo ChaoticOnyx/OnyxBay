@@ -4,5 +4,10 @@
 	vend_delay = 21
 	icon_state = "Theater"
 	use_vend_state = TRUE
-	products = list(/obj/item/clothing/suit/storage/hooded/wintercoat = 10)
+	component_types = list(/obj/item/vending_cartridge/coat_dispenser)
+
+/obj/item/vending_cartridge/coat_dispenser
+	name = "coat"
+	build_path = /obj/machinery/vending/coat_dispenser
+	legal = list(/obj/item/clothing/suit/storage/hooded/wintercoat = 10)
 	prices = list(/obj/item/clothing/suit/storage/hooded/wintercoat= 300)

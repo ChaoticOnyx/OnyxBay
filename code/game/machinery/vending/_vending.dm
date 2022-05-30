@@ -36,20 +36,8 @@
 	var/status_message = "" // Status screen messages like "insufficient funds", displayed in NanoUI
 	var/status_error = FALSE // Set to TRUE if status_message is an error
 
-	/*
-		Variables used to initialize the product list
-		These are used for initialization only, and so are optional if
-		product_records is specified
-	*/
-	var/list/products	= list() // For each, use the following pattern:
-	var/list/contraband	= list() // list(/type/path = amount,/type/path2 = amount2)
-	var/list/premium 	= list() // No specified amount = only one in stock
-	var/list/prices     = list() // Prices for each item, list(/type/path = price), items not in the list don't have a price.
-
-	// List of vending_product items available.
-	var/list/product_records = list()
-
-	var/rand_amount = FALSE
+	var/obj/item/vending_cartridge/cartridge = null
+	component_types = list(/obj/item/vending_cartridge)
 
 	// Variables used to initialize advertising
 	var/product_slogans = "" //String of slogans spoken out loud, separated by semicolons
@@ -76,28 +64,36 @@
 	var/datum/wires/vending/wires = null
 	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
 
-/obj/machinery/vending/Initialize()
+/obj/machinery/vending/update_icon()
+	overlays.Cut()
+	if(stat & BROKEN)
+		icon_state = "[base_icon]-broken"
+	else if( !(stat & NOPOWER) )
+		icon_state = base_icon
+	else
+		icon_state = "[base_icon]-off"		
+	if(panel_open)
+		overlays += image(icon, "[base_icon]-panel")
+
+/obj/machinery/vending/Initialize(mapload)
 	. = ..()
-
 	wires = new(src)
-
 	if(vend_delay == null)
 		vend_delay = rand(4 SECONDS, 8 SECONDS)
-
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
-
 		// So not all machines speak at the exact same time.
 		// The first time this machine says something will be at slogantime + this random value,
 		// so if slogantime is 10 minutes, it will say it at somewhere between 10 and 20 minutes after the machine is crated.
 		last_slogan = world.time + rand(0, slogan_delay)
-
 	if(product_ads)
 		ads_list += splittext(product_ads, ";")
-
-	build_inventory()
+	refresh_cartridge()
 	power_change()
 	setup_icon_states()
+
+/obj/machinery/vending/proc/refresh_cartridge()
+	cartridge = locate() in component_parts
 
 /obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
@@ -116,43 +112,13 @@
 		if(health == 0)
 			set_broken(1)
 
-/**
- *  Build src.produdct_records from the products lists
- *
- *  src.products, src.contraband, src.premium, and src.prices allow specifying
- *  products that the vending machine is to carry without manually populating
- *  src.product_records.
- */
-/obj/machinery/vending/proc/build_inventory()
-	var/list/all_products = list(
-		list(products, CAT_NORMAL),
-		list(contraband, CAT_HIDDEN),
-		list(premium, CAT_COIN))
-
-	for(var/current_list in all_products)
-		var/category = current_list[2]
-
-		for(var/entry in current_list[1])
-			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry)
-
-			product.price = (entry in prices) ? prices[entry] : 0
-			product.category = category
-			if(rand_amount)
-				var/sum = current_list[1][entry]
-				product.amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
-			else
-				product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
-
-			product_records.Add(product)
-
 /obj/machinery/vending/Destroy()
 	qdel(wires)
 	wires = null
 	qdel(coin)
 	coin = null
-	for(var/datum/stored_items/vending_products/R in product_records)
-		qdel(R)
-	product_records = null
+	qdel(cartridge)
+	cartridge = null
 	. = ..()
 
 /obj/machinery/vending/ex_act(severity)
@@ -218,51 +184,29 @@
 	return FALSE
 
 /obj/machinery/vending/attackby(obj/item/W, mob/user)
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
 	if(pay(W, user))
 		return
-	else if(istype(W, /obj/item/screwdriver))
-		panel_open = !panel_open
-		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
-		overlays.Cut()
-		if(panel_open)
-			overlays += image(icon, "[base_icon]-panel")
-
-		return
-	else if(isMultitool(W) || isWirecutter(W))
+	if(isMultitool(W) || isWirecutter(W))
 		if(panel_open)
 			attack_hand(user)
 		return
-	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
+	if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
 		if(wrench_floor_bolts(user))
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/material/coin) && premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && cartridge.premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
 		return
-	else if(istype(W, /obj/item/weldingtool))
-		var/obj/item/weldingtool/WT = W
-		if(!WT.isOn())
-			return
-		if(health == max_health)
-			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
-			return
-		if(!WT.remove_fuel(0, user))
-			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-			return
-		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
-				             SPAN("notice", "You start repairing the damage to [src]..."))
-		playsound(src, 'sound/items/Welder.ogg', 100, 1)
-		if(!do_after(user, 30, src) && WT && WT.isOn())
-			return
-		health = max_health
-		set_broken(0)
-		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
-				             SPAN("notice", "You repair \the [src]."))
+	else if(attempt_to_repair(user, W))
 		return
 	else if(attempt_to_stock(W, user))
 		return
@@ -279,13 +223,59 @@
 		shake_animation(stime = 2)
 	return
 
+/obj/machinery/vending/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
+	if(active)
+		return 0
+	if(!istype(C))
+		return 0
+	if(!panel_open)
+		return 0
+	if(!do_after(user, 40, src) && active)
+		return 0
+	. = dismantle()
+
+/obj/machinery/vending/dismantle()
+	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
+	var/obj/machinery/vending_frame/V = new /obj/machinery/vending_frame(get_turf(src))
+	V.anchored = 1
+	V.set_dir(dir)
+	V.state = 3
+	for(var/obj/I in component_parts)
+		I.forceMove(V)
+	V.refresh_cartridge()
+	V.update_icon()
+	V.update_desc()
+	qdel(src)
+	return 1
+
+/obj/machinery/vending/proc/attempt_to_repair(mob/user, obj/item/weldingtool/W)
+	if(!istype(W))
+		return 0
+	if(!W.isOn())
+		return 0
+	if(health == max_health)
+		to_chat(user, SPAN("notice", "\The [src] is undamaged."))
+		return 0
+	if(!W.remove_fuel(0, user))
+		to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
+		return 0
+	playsound(src, 'sound/items/Welder.ogg', 100, 1)
+	user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), SPAN("notice", "You start repairing the damage to [src]..."))
+	if(do_after(user, 30, src) && W.isOn())
+		health = max_health
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), SPAN("notice", "You repair \the [src]."))
+		set_broken(0)
+	return 1
+
 /obj/machinery/vending/MouseDrop_T(obj/item/I, mob/user)
 	if(!CanMouseDrop(I, user) || (I.loc != user))
 		return
 	return attempt_to_stock(I, user)
 
 /obj/machinery/vending/proc/attempt_to_stock(obj/item/I, mob/user)
-	for(var/datum/stored_items/vending_products/R in product_records)
+	if(!cartridge)
+		return 0
+	for(var/datum/stored_items/vending_products/R in cartridge.product_records)
 		if(I.type == R.item_path)
 			stock(I, R, user)
 			return 1
@@ -447,19 +437,20 @@
 
 	var/list/listed_products = list()
 
-	for(var/key = 1 to product_records.len)
-		var/datum/stored_items/vending_products/I = product_records[key]
+	if(cartridge)
+		for(var/key = 1 to cartridge.product_records.len)
+			var/datum/stored_items/vending_products/I = cartridge.product_records[key]
 
-		if(!(I.category & categories))
-			continue
+			if(!(I.category & categories))
+				continue
 
-		listed_products.Add(list(list(
-			"key" = key,
-			"name" = I.item_name,
-			"price" = I.price,
-			"color" = I.display_color,
-			"amount" = I.get_amount(),
-			"icon" = icon2base64html(I.item_path))))
+			listed_products.Add(list(list(
+				"key" = key,
+				"name" = I.item_name,
+				"price" = I.price,
+				"color" = I.display_color,
+				"amount" = I.get_amount(),
+				"icon" = icon2base64html(I.item_path))))
 
 	data["products"] = listed_products
 
@@ -509,7 +500,7 @@
 				return TRUE
 
 			var/key = text2num(params["vend"])
-			var/datum/stored_items/vending_products/R = product_records[key]
+			var/datum/stored_items/vending_products/R = cartridge.product_records[key]
 
 			// This should not happen unless the request from NanoUI was bad
 			if(!(R.category & categories))
@@ -678,14 +669,6 @@
 /obj/machinery/vending/powered()
 	return anchored && ..()
 
-/obj/machinery/vending/update_icon()
-	if(stat & BROKEN)
-		icon_state = "[base_icon]-broken"
-	else if( !(stat & NOPOWER) )
-		icon_state = base_icon
-	else
-		icon_state = "[base_icon]-off"
-
 /obj/machinery/vending/proc/setup_icon_states()
 	if(use_alt_icons)
 		base_icon = pick(alt_icons)
@@ -704,7 +687,7 @@
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
-	for(var/datum/stored_items/vending_products/R in product_records)
+	for(var/datum/stored_items/vending_products/R in cartridge.product_records)
 		while(R.get_amount()>0)
 			R.get_product(loc)
 		break
@@ -717,7 +700,7 @@
 	if(!target)
 		return 0
 
-	for(var/datum/stored_items/vending_products/R in shuffle(product_records))
+	for(var/datum/stored_items/vending_products/R in shuffle(cartridge.product_records))
 		throw_item = R.get_product(loc)
 		if(throw_item)
 			break
