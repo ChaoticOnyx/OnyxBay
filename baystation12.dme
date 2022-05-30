@@ -827,7 +827,6 @@
 #include "code\game\machinery\vending\assist.dm"
 #include "code\game\machinery\vending\BODA.dm"
 #include "code\game\machinery\vending\boozeomat.dm"
-#include "code\game\machinery\vending\cart.dm"
 #include "code\game\machinery\vending\cigarette.dm"
 #include "code\game\machinery\vending\coat.dm"
 #include "code\game\machinery\vending\coffee.dm"
