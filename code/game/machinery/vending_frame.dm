@@ -130,9 +130,15 @@
 /obj/machinery/vending_frame/proc/create_vendomat()
 	playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 	var/obj/machinery/vending/new_vendomat = new cartridge.build_path(loc, dir)
+	if(new_vendomat.component_parts)
+		QDEL_LIST(new_vendomat.component_parts)
 	cartridge.forceMove(new_vendomat)
 	new_vendomat.component_parts.Add(cartridge)
+	new_vendomat.refresh_cartridge()
 	qdel(src)
+
+/obj/machinery/vending_frame/proc/refresh_cartridge()
+	cartridge = locate() in contents
 
 #undef STAGE_CABLE
 #undef STAGE_CARTRIDGE
