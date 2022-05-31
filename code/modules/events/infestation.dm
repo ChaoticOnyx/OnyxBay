@@ -47,7 +47,7 @@
 			max_number = 6
 			vermstring = "lizards"
 		if(VERM_SPIDERS)
-			spawn_types = list(/obj/effect/spider/spiderling)
+			spawn_types = list(/obj/structure/spider/spiderling)
 			max_number = 3
 			vermstring = "spiders"
 		if(VERM_CRABS)
@@ -66,7 +66,7 @@
 			num--
 
 			var/spawn_type = pick(spawn_types)
-			var/obj/effect/spider/spiderling/S = new spawn_type(T)
+			var/obj/structure/spider/spiderling/S = new spawn_type(T)
 			if(istype(S))
 				S.amount_grown = -1
 

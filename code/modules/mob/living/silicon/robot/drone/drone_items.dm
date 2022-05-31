@@ -543,7 +543,7 @@
 		if(istype(W,/obj/item/cigbutt))
 			if(plastic)
 				plastic.add_charge(250)
-		else if(istype(W,/obj/effect/spider/spiderling))
+		else if(istype(W,/obj/structure/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
 			if(plastic)

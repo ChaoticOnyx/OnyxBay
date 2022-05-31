@@ -188,7 +188,7 @@
 			if(prob(10))
 				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
-				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
+				var/obj/structure/spider/spiderling/S = new /obj/structure/spider/spiderling(M.loc)
 				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
 
 		if(M.mind && M.mind.vampire)
