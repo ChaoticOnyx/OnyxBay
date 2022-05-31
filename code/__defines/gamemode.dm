@@ -60,6 +60,7 @@
 #define MODE_TRAITOR "traitor"
 #define MODE_MEME "meme"
 #define MODE_DEITY "deity"
+#define MODE_SPIDER "spider"
 #define MODE_GODCULTIST "god cultist"
 
 #define DEFAULT_TELECRYSTAL_AMOUNT 12
