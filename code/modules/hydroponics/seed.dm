@@ -446,13 +446,12 @@
 		var/list/banned_chems = list(
 			/datum/reagent/adminordrazine,
 			/datum/reagent/nutriment,
-			/datum/reagent/nanites
+			/datum/reagent/nanites,
+			/datum/reagent/toxin/zombiepowder
 			)
 
 		if(prob(30))	banned_chems |= typesof(/datum/reagent/ethanol)
 		if(prob(30))	banned_chems |= typesof(/datum/reagent/toxin)
-
-		banned_chems |= /datum/reagent/toxin/zombiepowder
 
 		for(var/x=1;x<=additional_chems;x++)
 			var/new_chem = pick(subtypesof(/datum/reagent))
