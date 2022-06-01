@@ -1018,7 +1018,6 @@
 	if(blocking)
 		pregen -= 2.5
 
-	poise += pregen
 	poise = between(0, poise+pregen, poise_pool)
 
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"

@@ -304,7 +304,7 @@
 					obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 					return
 			var/obj/structure/obstacle = locate(/obj/structure, get_step(src, dir))
-			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille))
+			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille) || istype(obstacle, /obj/structure/window_frame))
 				obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 
 /mob/living/simple_animal/hostile/on_ghost_possess()

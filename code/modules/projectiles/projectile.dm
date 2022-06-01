@@ -237,7 +237,6 @@
 		if(!target_mob.aura_check(AURA_TYPE_BULLET, src,def_zone))
 			return 1
 		result = target_mob.bullet_act(src, def_zone)
-		target_mob.visible_message("!!! DUMB SHIT [src] GOES THROUGH [target_mob] BECAUSE FUCK YOU, bullet_act(src, def_zone) = [result]")
 
 	if(result == PROJECTILE_FORCE_MISS)
 		if(!silenced)
