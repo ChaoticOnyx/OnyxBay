@@ -23,8 +23,8 @@
 	mob_size = MOB_MINISCULE
 	can_escape = 1
 	pass_flags = PASS_FLAG_TABLE
-	melee_damage_lower = 5
-	melee_damage_upper = 7.5
+	melee_damage_lower = 2.5
+	melee_damage_upper = 5
 
 	min_gas = null
 	max_gas = null
