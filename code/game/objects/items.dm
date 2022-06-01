@@ -551,14 +551,26 @@ var/list/global/slot_flags_enumeration = list(
 		var/obj/item/projectile/P = damage_source
 		if(!P.blockable)
 			return 0
-		if(block_tier >= BLOCK_TIER_PROJECTILE)
+		if(block_tier == BLOCK_TIER_PROJECTILE)
 			if(P.armor_penetration > (25 * mod_shield) - 5)
 				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
-			proj_poise_drain(user, P, TRUE)
+			proj_poise_drain(user, P)
 			spawn()
 				shake_camera(user, 1)
+			return PROJECTILE_FORCE_BLOCK
+		else if(block_tier = BLOCK_TIER_ADVANCED)
+			var/obj/item/projectile/P = damage_source
+			if(!P.blockable)
+				return 0
+			// some effects here
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(3, 0, user.loc)
+			spark_system.start()
+
+			visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
+			proj_poise_drain(user, P)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 
@@ -567,7 +579,7 @@ var/list/global/slot_flags_enumeration = list(
 		var/mob/living/carbon/human/H = user
 		var/poise_dmg = P.damage / (mod_shield * 2.5)
 		if(block_tier != BLOCK_TIER_ADVANCED && P.damage_type == BRUTE)
-			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
+			poise_dmg = (P.damage + (P.agony / 1.5)) / (mod_shield * 2.5)
 		poise_dmg *= (src == H.get_active_hand()) ? 1.25 : 2.0
 		H.damage_poise(poise_dmg)
 		if(H.poise < poise_dmg)

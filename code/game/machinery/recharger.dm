@@ -9,7 +9,7 @@
 	idle_power_usage = 4
 	active_power_usage = 30 KILOWATTS
 	var/obj/item/charging = null
-	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig)
+	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
@@ -54,9 +54,9 @@
 			if(!J.bcell)
 				to_chat(user, "This device does not have a battery installed.")
 				return
-		if(istype(G, /obj/item/gun/magnetic/railgun))
-			var/obj/item/gun/magnetic/railgun/RG = G
-			if(!RG.cell)
+		if(istype(G, /obj/item/shield/barrier))
+			var/obj/item/shield/barrier/SB = G
+			if(!SB.cell)
 				to_chat(user, "This device does not have a battery installed.")
 				return
 
@@ -126,6 +126,12 @@
 		else if(istype(charging, /obj/item/clothing/mask/smokable/ecig))
 			var/obj/item/clothing/mask/smokable/ecig/CIG = charging
 			cell = CIG.cigcell
+		else if(istype(charging, /obj/item/clothing/mask/smokable/ecig))
+			var/obj/item/clothing/mask/smokable/ecig/CIG = charging
+			cell = CIG.cigcell
+		else if(istype(charging, /obj/item/shield/barrier))
+			var/obj/item/shield/barrier/SB = charging
+			cell = SB.cell
 
 		if(istype(cell, /obj/item/cell))
 			var/obj/item/cell/C = cell

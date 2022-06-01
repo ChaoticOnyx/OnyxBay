@@ -36,8 +36,8 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	..()
 	update_icon()
 
-/obj/item/gun/energy/New()
-	..()
+/obj/item/gun/energy/Initialize()
+	. = ..()
 	if(cell_type)
 		power_supply = new cell_type(src)
 	else

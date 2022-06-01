@@ -167,7 +167,7 @@
 	var/shotcost = 20
 	var/obj/item/cell/bcell
 
-/obj/item/gun/projectile/revolver/m2019/detective/New()
+/obj/item/gun/projectile/revolver/m2019/detective/Initialize()
 	bcell = new /obj/item/cell/device/high(src)
 	update_icon()
 	..()

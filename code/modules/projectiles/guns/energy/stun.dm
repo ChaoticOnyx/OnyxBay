@@ -1,7 +1,7 @@
 /obj/item/gun/energy/taser
 	name = "Mk30 NL"
 	desc = "The NT Mk30 NL is a small, low capacity gun used for non-lethal takedowns. Produced by NT, it's actually a licensed version of a W-T design. It can switch between high and low intensity stun shots."
-	icon_state = "taser"
+	icon_state = "taserold"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 5
 	projectile_type = /obj/item/projectile/beam/stun
@@ -35,7 +35,7 @@
 	wielded_item_state = "tasercarbine-wielded"
 
 	firemodes = list(
-		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode/stunsphere),
+		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode),
 		list(mode_name = "stun",   projectile_type = /obj/item/projectile/beam/stun/heavy),
 		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock/heavy),
 		)
@@ -67,7 +67,8 @@
 	icon_state = "stunrevolver"
 	item_state = "stunrevolver"
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
-	projectile_type = /obj/item/projectile/energy/electrode
+	projectile_type = /obj/item/projectile/energy/electrode/greater
+	fire_delay = 10
 	max_shots = 6
 	combustion = 0
 
@@ -131,8 +132,8 @@
 /obj/item/gun/energy/classictaser
 	name = "taser gun"
 	desc = "A small, low capacity gun manufactured by NanoTrasen. Used for non-lethal takedowns."
-	icon_state = "taser"
-	item_state = null
+	icon_state = "taserold"
+	item_state = "taser"
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	max_shots = 5
@@ -141,3 +142,156 @@
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
+
+/obj/item/gun/energy/security
+	name = "taser"
+	desc = "A taser gun manufactured by NanoTrasen. Used for non-lethal takedowns."
+	icon_state = "taserold"
+	item_state = null
+	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+	max_shots = 6
+	combustion = 0
+	force = 8.5
+	mod_weight = 0.7
+	mod_reach = 0.5
+	mod_handy = 1.0
+	burst_delay = 2
+
+	var/subtype = /decl/taser_types
+	var/owner = null
+
+/obj/item/gun/energy/security/Initialize()
+	. = ..()
+	if(subtype)
+		subtype = decls_repository.get_decl(subtype)
+	update_subtype()
+
+/obj/item/gun/energy/security/_examine_text(mob/user)
+	. = ..()
+	if(owner)
+		. += "\nIt is assigned to <b>[owner]</b>."
+
+/obj/item/gun/energy/security/proc/update_subtype()
+	var/decl/taser_types/tt = subtype
+	name = tt.name
+	desc = tt.desc
+	icon_state = tt.icon_state
+	wielded_item_state = tt.wielded_item_state
+	projectile_type = tt.projectile_type
+	max_shots = tt.max_shots
+	accuracy = tt.accuracy
+	one_hand_penalty = tt.one_hand_penalty
+	fire_delay = tt.fire_delay
+	w_class = tt.w_class
+	slot_flags = tt.slot_flags
+
+	set_firemodes(tt.firemodes)
+	var/old_charge_ratio = power_supply.charge / power_supply.maxcharge
+	power_supply.maxcharge = max_shots * charge_cost
+	power_supply.charge = power_supply.maxcharge * old_charge_ratio
+
+	modifystate = tt.icon_state
+	update_icon()
+
+/obj/item/gun/energy/security/update_icon()
+	var/ratio = 0
+	if(power_supply && power_supply.charge >= charge_cost)
+		ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+
+	icon_state = "[modifystate][ratio]"
+
+	var/mob/living/M = loc
+	if(istype(M))
+		if(M.can_wield_item(src) && is_held_twohanded(M))
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
+		else
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+	update_held_icon()
+
+/obj/item/gun/energy/security/pistol
+	name = "taser pistol"
+	icon_state = "taser"
+	subtype = /decl/taser_types/pistol
+
+/obj/item/gun/energy/security/smg
+	name = "taser SMG"
+	icon_state = "taser_smg"
+	subtype = /decl/taser_types/smg
+
+/obj/item/gun/energy/security/rifle
+	name = "taser rifle"
+	icon_state = "taser_rifle"
+	subtype = /decl/taser_types/rifle
+
+/decl/taser_types
+	var/name = "taser"
+	var/desc = "A perfectly generic taser."
+	var/icon_state = "taser"
+	var/wielded_item_state = null
+	var/projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+	var/max_shots = 6
+	var/accuracy = 0
+	var/one_hand_penalty = 0
+	var/fire_delay = 6
+	var/list/firemodes = list()
+	var/w_class = ITEM_SIZE_HUGE
+	var/slot_flags = SLOT_BACK
+	var/type_name = ""
+	var/type_desc = ""
+
+/decl/taser_types/pistol
+	name = "taser pistol"
+	desc = "The smallest of all the tasers. It only has a single fire mode, but each shot wields power."
+	icon_state = "taser"
+	wielded_item_state = null
+	projectile_type = /obj/item/projectile/energy/electrode
+	max_shots = 6
+	accuracy = 0
+	one_hand_penalty = 0
+	fire_delay = 6
+	list/firemodes = list()
+	w_class = ITEM_SIZE_NORMAL
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
+	type_name = "pistol"
+	type_desc = "Baseline taser gun. No alternative firemodes. Compact and lightweighted, it can be stored in holsters."
+
+/decl/taser_types/smg
+	name = "taser SMG"
+	desc = "This model is not as powerful as pistols, but is capable of launching electrodes left and right with its remarkable rate of fire."
+	icon_state = "taser_smg"
+	wielded_item_state = null
+	projectile_type = /obj/item/projectile/energy/electrode/small
+	max_shots = 15
+	accuracy = 0
+	one_hand_penalty = 1
+	fire_delay = 3
+	firemodes = list(
+		list(mode_name = "semiauto", fire_delay = 3,    burst = 1),
+		list(mode_name = "burst",    fire_delay = null, burst = 3)
+	)
+	w_class = ITEM_SIZE_NORMAL
+	slot_flags = SLOT_BELT
+	type_name = "SMG"
+	type_desc = "Rapid-firing taser gun. Can launch electrodes in 3-shot bursts. A little bigger than pistols, it cannot be holstered."
+
+/decl/taser_types/rifle
+	name = "taser rifle"
+	desc = "This model is bulky and heavy, it must be wielded with both hands. Although its rate of fire is way below average, it is capable of shooting stun beams."
+	icon_state = "taser_rifle"
+	wielded_item_state = null
+	projectile_type = /obj/item/projectile/energy/electrode/greater
+	max_shots = 6
+	accuracy = 0
+	one_hand_penalty = 2
+	fire_delay = 10
+	firemodes = list(
+		list(mode_name = "electrode", projectile_type = /obj/item/projectile/energy/electrode/greater),
+		list(mode_name = "beam",      projectile_type = /obj/item/projectile/beam/stun/greater)
+	)
+	w_class = ITEM_SIZE_LARGE
+	slot_flags = SLOT_BACK
+	type_name = "rifle"
+	type_desc = "Long-range taser gun. Single electrodes are more powerful than the pistols', capable of shooting beams. Can be worn on one's back."
