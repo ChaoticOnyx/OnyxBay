@@ -215,9 +215,9 @@
 /obj/item/shield/barrier/_examine_text(mob/user)
 	. = ..()
 	if(cell)
-		+= SPAN("notice", "\nHas <b>[cell.percent()]%</b> charge left.")
+		. += SPAN("notice", "\nHas <b>[cell.percent()]%</b> charge left.")
 	else
-		+= "\n<b>Has no battery installed.</b>"
+		. += "\n<b>Has no battery installed.</b>"
 
 /obj/item/shield/barrier/attackby(obj/item/I, mob/user)
 	if(isScrewdriver(I))
