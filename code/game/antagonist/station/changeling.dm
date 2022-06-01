@@ -18,8 +18,8 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 
 /datum/antagonist/changeling/Initialize()
 	. = ..()
-	if(config.changeling_min_age)
-		min_player_age = config.changeling_min_age
+	if(config.game.changeling_min_age)
+		min_player_age = config.game.changeling_min_age
 
 	// Building purchasable powers list.
 	if(!powerinstances.len)

@@ -93,7 +93,7 @@
 			to_chat(user, "<span class='notice'>You remove \the [C] from \the [src].</span>")
 			C.loc = loc
 
-	else if(istype(W, /obj/item/reagent_containers/glass) || istype(W, /obj/item/reagent_containers/food))
+	else if(istype(W, /obj/item/reagent_containers/vessel) || istype(W, /obj/item/reagent_containers/food))
 		if(container)
 			to_chat(user, "<span class='warning'>There is already \a [container] on \the [src]!</span>")
 			return
@@ -104,7 +104,7 @@
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
-		if(istype(RC,/obj/item/reagent_containers/glass/bucket))
+		if(istype(RC,/obj/item/reagent_containers/vessel/bucket))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 

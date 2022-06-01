@@ -7,12 +7,12 @@
 	movement_handlers = list(
 		/datum/movement_handler/deny_stairs,
 		/datum/movement_handler/deny_multiz,
-		/datum/movement_handler/delay = list(2),
+		/datum/movement_handler/delay = list(4),
 		/datum/movement_handler/move_relay_self
 	)
 	foldable = FALSE
 	pull_slowdown = PULL_SLOWDOWN_MEDIUM
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 	var/driving = 0
 	var/mob/living/pulling = null

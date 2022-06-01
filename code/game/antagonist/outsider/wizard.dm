@@ -20,8 +20,8 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 /datum/antagonist/wizard/Initialize()
 	. = ..()
-	if(config.wizard_min_age)
-		min_player_age = config.wizard_min_age
+	if(config.game.wizard_min_age)
+		min_player_age = config.game.wizard_min_age
 
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 

@@ -161,7 +161,7 @@
 	next_move = max(world.time + timeout, next_move)
 
 /mob/proc/canClick()
-	if(config.no_click_cooldown || next_move <= world.time)
+	if(config.misc.no_click_cooldown || next_move <= world.time)
 		return 1
 	return 0
 

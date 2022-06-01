@@ -23,7 +23,7 @@
 
 /obj/item/organ/internal/eyes/robotize()
 	..()
-	name = "optical sensors"
+	SetName("optical sensors")
 	icon_state = "eyes-prosthetic"
 	dead_icon = "eyes-prosthetic-br"
 	update_colour()

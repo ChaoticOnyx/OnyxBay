@@ -10,7 +10,7 @@
 	autolinkers = list("s_relay")
 
 /obj/machinery/telecomms/relay/preset/station/Initialize()
-	listening_levels = GLOB.using_map.contact_levels
+	listening_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)
 	return ..()
 
 /obj/machinery/telecomms/relay/preset/telecomms

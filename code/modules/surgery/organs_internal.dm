@@ -706,10 +706,10 @@
 	priority = 2
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100, 	\
-		/obj/item/reagent_containers/glass/bottle = 75,	\
-		/obj/item/reagent_containers/glass/beaker = 75,	\
+		/obj/item/reagent_containers/vessel/bottle/chemical = 75,	\
+		/obj/item/reagent_containers/vessel/beaker = 75,	\
 		/obj/item/reagent_containers/spray = 50,	\
-		/obj/item/reagent_containers/glass/bucket = 50
+		/obj/item/reagent_containers/vessel/bucket = 50
 	)
 
 	can_infect = 0

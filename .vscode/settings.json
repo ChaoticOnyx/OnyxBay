@@ -1,8 +1,4 @@
 {
-  // Lets you preview .dmi files in the editor
-  "workbench.editorAssociations": {
-    "*.dmi": "imagePreview.previewEditor"
-  },
   "files.associations": {
     "*.tmpl": "html"
   },

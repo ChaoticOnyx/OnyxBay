@@ -137,7 +137,7 @@
 	// handcuffed?
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/handcuffs/cable))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with cable!\n")
+			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with [handcuffed.name]!\n")
 		else if(istype(handcuffed, /obj/item/handcuffs))
 			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] handcuffed!\n")
 		else if(istype(handcuffed, /obj/item/clothing/suit/straight_jacket))

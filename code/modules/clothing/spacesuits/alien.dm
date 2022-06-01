@@ -367,23 +367,23 @@
 			for(var/obj/item/organ/external/regen_organ in V.organs)
 				regen_organ.damage = max(regen_organ.damage - 2, 0)
 			if(V.getBruteLoss())
-				V.adjustBruteLoss(-5 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+				V.adjustBruteLoss(-5 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 			if(V.getFireLoss())
-				V.adjustFireLoss(-5 * config.organ_regeneration_multiplier)
+				V.adjustFireLoss(-5 * config.health.organ_regeneration_multiplier)
 			if(V.getToxLoss())
-				V.adjustToxLoss(-5 * config.organ_regeneration_multiplier)
-			if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
-				V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
+				V.adjustToxLoss(-5 * config.health.organ_regeneration_multiplier)
+			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
+				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 	else
 		for(var/mob/living/carbon/human/vox/V in range(H, 1))
 			if(V.getBruteLoss())
-				V.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+				V.adjustBruteLoss(-2 * config.health.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
 			if(V.getFireLoss())
-				V.adjustFireLoss(-2 * config.organ_regeneration_multiplier)
+				V.adjustFireLoss(-2 * config.health.organ_regeneration_multiplier)
 			if(V.getToxLoss())
-				V.adjustToxLoss(-2 * config.organ_regeneration_multiplier)
-			if(V.reagents.get_reagent_amount(/datum/reagent/paracetamol) + 5 <= 20)
-				V.reagents.add_reagent(/datum/reagent/paracetamol, 5)
+				V.adjustToxLoss(-2 * config.health.organ_regeneration_multiplier)
+			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
+				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
 
 /obj/item/storage/belt/vox
 	name = "Vox belt"

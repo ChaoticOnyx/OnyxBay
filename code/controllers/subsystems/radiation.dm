@@ -25,7 +25,7 @@ SUBSYSTEM_DEF(radiation)
 		if(QDELETED(S))
 			sources -= S
 		else if(S.decay)
-			S.update_rad_power(S.rad_power - config.radiation_decay_rate)
+			S.update_rad_power(S.rad_power - config.radiation.decay_rate)
 		if (MC_TICK_CHECK)
 			return
 	
@@ -90,7 +90,7 @@ SUBSYSTEM_DEF(radiation)
 			if(!resistance_cache[origin]) //Only get the resistance if we don't already know it.
 				origin.calc_rad_resistance()
 			if(origin.cached_rad_resistance)
-				working = round((working / (origin.cached_rad_resistance * config.radiation_resistance_multiplier)), 0.1)
+				working = round((working / (origin.cached_rad_resistance * config.radiation.resistance_multiplier)), 0.1)
 			if((working <= .) || (working <= RADIATION_THRESHOLD_CUTOFF))
 				break // Already affected by a stronger source (or its zero...)
 		. = max((working / (dist ** 2)), .) //Butchered version of the inverse square law. Works for this purpose

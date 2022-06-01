@@ -363,6 +363,11 @@
 			status_error = TRUE
 			return 0
 
+	if(!currently_vending)
+		status_message = "Item not selected, operation canceled."
+		status_error = TRUE
+		return
+
 	if(currently_vending.price > customer_account.money)
 		status_message = "Insufficient funds in account."
 		status_error = TRUE
@@ -401,7 +406,7 @@
 		if(shock(user, 100))
 			return
 
-	if(user.a_intent == I_HURT)
+	if(user.a_intent == I_HURT && Adjacent(user))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		take_damage(2)
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)

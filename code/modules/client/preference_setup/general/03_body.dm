@@ -12,6 +12,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	var/b_eyes = 0						//Eye color
 	var/s_base = ""						//Base skin colour
 	var/list/body_markings = list()
+	var/body_height = HUMAN_HEIGHT_NORMAL // Character's height scale
 
 	// maps each organ to either null(intact), "cyborg" or "amputated"
 	// will probably not be able to do this for head and torso ;)
@@ -48,6 +49,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.g_eyes = R.read("eyes_green")
 	pref.b_eyes = R.read("eyes_blue")
 	pref.b_type = R.read("b_type")
+	pref.body_height = R.read("body_height")
 	pref.disabilities = R.read("disabilities")
 	pref.organ_data = R.read("organ_data")
 	pref.rlimb_data = R.read("rlimb_data")
@@ -75,6 +77,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	W.write("eyes_green", pref.g_eyes)
 	W.write("eyes_blue", pref.b_eyes)
 	W.write("b_type", pref.b_type)
+	W.write("body_height", pref.body_height)
 	W.write("disabilities", pref.disabilities)
 	W.write("organ_data", pref.organ_data)
 	W.write("rlimb_data", pref.rlimb_data)
@@ -101,6 +104,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.b_eyes			= sanitize_integer(pref.b_eyes, 0, 255, initial(pref.b_eyes))
 	pref.b_type			= sanitize_text(pref.b_type, initial(pref.b_type))
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
+
+	if(!pref.body_height || !(pref.body_height in body_heights))
+		pref.body_height = HUMAN_HEIGHT_NORMAL
 
 	var/datum/species/mob_species = all_species[pref.species]
 	if(mob_species && mob_species.spawn_flags & SPECIES_NO_LACE)
@@ -133,7 +139,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. += "(<a href='?src=\ref[src];random=1'>&reg;</A>)"
 	. += "<br>"
 
-	if(config.use_cortical_stacks)
+	if(config.revival.use_cortical_stacks)
 		. += "Neural lace: "
 		if(mob_species.spawn_flags & SPECIES_NO_LACE)
 			. += "incompatible."
@@ -142,6 +148,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			. += " \[<a href='byond://?src=\ref[src];toggle_stack=1'>toggle</a>\]"
 		. += "<br>"
 
+	. += "Height: <a href='?src=\ref[src];body_height=1'>[human_height_text(pref.body_height)]</a><br>"
 	. += "Species: <a href='?src=\ref[src];show_species=1'>[pref.species]</a><br>"
 	. += "Blood Type: <a href='?src=\ref[src];blood_type=1'>[pref.b_type]</a><br>"
 
@@ -571,6 +578,23 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		pref.bgstate = next_in_list(pref.bgstate, pref.bgstate_options)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 
+	else if(href_list["body_height"])
+		var/new_state = input(user, "How tall do you want to be?") as null|anything in list("Dwarfish", "Short", "Average", "Tall", "Towering")
+		if(!new_state)
+			return
+		switch(new_state)
+			if("Dwarfish")
+				pref.body_height = HUMAN_HEIGHT_TINY
+			if("Short")
+				pref.body_height = HUMAN_HEIGHT_SMALL
+			if("Average")
+				pref.body_height = HUMAN_HEIGHT_NORMAL
+			if("Tall")
+				pref.body_height = HUMAN_HEIGHT_LARGE
+			if("Towering")
+				pref.body_height = HUMAN_HEIGHT_HUGE
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+
 	return ..()
 
 /datum/category_item/player_setup_item/general/body/proc/reset_limbs()
@@ -621,7 +645,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "</table><center><hr/>"
 
 	var/restricted = 0
-	if(config.usealienwhitelist) //If we're using the whitelist, make sure to check it!
+	if(config.game.use_ingame_alien_whitelist) //If we're using the whitelist, make sure to check it!
 		if (!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
 		else if ((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))

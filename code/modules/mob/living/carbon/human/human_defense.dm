@@ -36,11 +36,11 @@ meteor_act
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
+	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+
 	//Tase effect
 	if(P.tasing)
-		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
-
-	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+		handle_tase(P.agony * get_siemens_coefficient_organ(organ), P)
 
 	//Internal damage
 	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
@@ -728,7 +728,7 @@ meteor_act
 		return 0
 
 	//want the dislocation chance to be such that the limb is expected to dislocate after dealing a fraction of the damage needed to break the limb
-	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.organ_health_multiplier)*100
+	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.health.organ_health_multiplier)*100
 	if(prob(dislocate_chance * blocked_mult(blocked)))
 		visible_message(SPAN("danger", "[src]'s [organ.joint] [pick("gives way","caves in","crumbles","collapses")]!"))
 		organ.dislocate(1)

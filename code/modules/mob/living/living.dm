@@ -129,7 +129,7 @@
 			if(!(tmob.status_flags & CANPUSH))
 				now_pushing = 0
 				return
-			tmob.LAssailant = src
+			tmob.LAssailant = weakref(src)
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
@@ -511,7 +511,7 @@
 	set category = "OOC"
 	set src in view()
 
-	if(config.allow_Metadata)
+	if(config.character_setup.allow_metadata)
 		if(client)
 			to_chat(usr, "[src]'s Metainfo:<br>[client.prefs.metadata]")
 		else
@@ -843,8 +843,11 @@
 		for(var/a in auras)
 			remove_aura(a)
 	if(mind)
-		mind.current = null
+		mind.set_current(null)
 	QDEL_NULL(aiming)
+	if(controllable)
+		controllable = FALSE
+		GLOB.available_mobs_for_possess -= src
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)

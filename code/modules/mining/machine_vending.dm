@@ -5,7 +5,7 @@
 //Think up of lots of items. Not everything needs to be unique or even mining-special, but it should be neat. Convert most of /tg/'s items. 25% of this at least
 //	should be bling. Things that shorten the distance between base and mining. Instant-teleporters should be one use.
 var/global/list/minevendor_list = list( //keep in order of price
-	new /datum/data/mining_equipment("Food Ration",                  /obj/item/reagent_containers/food/snacks/liquidfood,              10,     5),
+	new /datum/data/mining_equipment("Food Ration",                  /obj/item/reagent_containers/food/liquidfood,              10,     5),
 	new /datum/data/mining_equipment("Poster",                       /obj/item/contraband/poster,                                      10,    20),
 	new /datum/data/mining_equipment("Thermostabilizine Pill",       /obj/item/reagent_containers/pill/leporazine,                     15,    35),
 	new /datum/data/mining_equipment("Radfi-X",                      /obj/item/reagent_containers/hypospray/autoinjector/antirad/mine, 15,    35),

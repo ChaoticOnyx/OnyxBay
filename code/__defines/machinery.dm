@@ -53,7 +53,6 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ROBOTS              "Robots"
 #define NETWORK_SECURITY            "Security"
 #define NETWORK_THUNDER             "Thunderdome"
-// EXODUS networks
 #define NETWORK_CIVILIAN_EAST       "Civilian East"
 #define NETWORK_CIVILIAN_WEST       "Civilian West"
 #define NETWORK_MAINTENANCE         "Maintenance Deck"
@@ -61,6 +60,10 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_RESEARCH_OUTPOST    "Research Outpost"
 #define NETWORK_TELECOM             "Tcomsat"
 #define NETWORK_MASTER              "Master"
+#define NETWORK_COMMAND             "Command"
+#define NETWORK_ENGINE              "Engine"
+#define NETWORK_ENGINEERING_OUTPOST "Engineering Outpost"
+#define NETWORK_APPARAT_VORON       "Apparat Voron"
 
 #define NETWORK_ALARM_ATMOS "Atmosphere Alarms"
 #define NETWORK_ALARM_CAMERA "Camera Alarms"

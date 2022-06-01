@@ -1,26 +1,33 @@
 /mob/Destroy()//This makes sure that mobs with clients/keys are not just deleted from the game.
 	STOP_PROCESSING(SSmobs, src)
-	GLOB.dead_mob_list_ -= src
-	GLOB.living_mob_list_ -= src
-	GLOB.player_list -= src
+	remove_from_dead_mob_list()
+	remove_from_living_mob_list()
+	GLOB.player_list.Remove(src)
+
 	unset_machine()
 	QDEL_NULL(hud_used)
 	QDEL_NULL(show_inventory)
+
+	LAssailant = null
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
+
 	clear_fullscreen()
 	if(ability_master)
 		QDEL_NULL(ability_master)
+
+	remove_screen_obj_references()
 	if(client)
-		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
 			var/obj/screen/screenobj = AM
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
+
+	ghostize()
 	if(mind?.current == src)
 		spellremove(src)
-	ghostize()
+		mind.set_current(null)
 	return ..()
 
 /mob/proc/flash_weak_pain()
@@ -52,7 +59,7 @@
 	zone_sel = null
 	poise_icon = null
 
-/mob/Initialize()
+/mob/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSmobs, src)
 
@@ -160,11 +167,11 @@
 	switch(m_intent)
 		if(M_RUN)
 			if(drowsyness > 0)
-				. += config.walk_speed
+				. += config.movement.walk_speed
 			else
-				. += config.run_speed
+				. += config.movement.run_speed
 		if(M_WALK)
-			. += config.walk_speed
+			. += config.movement.walk_speed
 
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)
@@ -590,7 +597,7 @@
 		if(!iscarbon(src))
 			M.LAssailant = null
 		else
-			M.LAssailant = usr
+			M.LAssailant = weakref(usr)
 
 	else if(isobj(AM))
 		var/obj/I = AM

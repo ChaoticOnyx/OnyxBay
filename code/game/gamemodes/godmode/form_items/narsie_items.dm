@@ -67,14 +67,15 @@
 	stored_power += 50
 	src.visible_message("<span class='cult'>\The [src] screeches as the smell of death fills the air!</span>")
 
-/obj/item/reagent_containers/food/drinks/zombiedrink
+/obj/item/reagent_containers/vessel/zombiedrink
 	name = "well-used urn"
 	desc = "Said to bring those who drink it back to life, no matter the price."
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "urn"
 	volume = 120
 	amount_per_transfer_from_this = 30
+	lid_type = null
 
-/obj/item/reagent_containers/food/drinks/zombiedrink/Initialize()
+/obj/item/reagent_containers/vessel/zombiedrink/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/toxin/zombie,120)

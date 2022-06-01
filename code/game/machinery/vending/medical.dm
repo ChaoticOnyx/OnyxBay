@@ -7,14 +7,14 @@
 	vend_delay = 18
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	req_access = list(access_medical_equip)
-	products = list(/obj/item/reagent_containers/glass/bottle/antitoxin = 4,
-					/obj/item/reagent_containers/glass/bottle/inaprovaline = 4,
-					/obj/item/reagent_containers/glass/bottle/stoxin = 4,
-					/obj/item/reagent_containers/glass/bottle/toxin = 4,
-					/obj/item/reagent_containers/glass/bottle/spaceacillin = 2,
+	products = list(/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin = 4,
+					/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline = 4,
+					/obj/item/reagent_containers/vessel/bottle/chemical/stoxin = 4,
+					/obj/item/reagent_containers/vessel/bottle/chemical/toxin = 4,
+					/obj/item/reagent_containers/vessel/bottle/chemical/spaceacillin = 2,
 					/obj/item/reagent_containers/syringe = 12,
 					/obj/item/device/healthanalyzer = 5,
-					/obj/item/reagent_containers/glass/beaker = 4,
+					/obj/item/reagent_containers/vessel/beaker = 4,
 					/obj/item/reagent_containers/dropper = 2,
 					/obj/item/stack/medical/advanced/bruise_pack = 3,
 					/obj/item/stack/medical/advanced/ointment = 3,

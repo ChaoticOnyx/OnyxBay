@@ -3,7 +3,7 @@
 	GLOB.dview_mob.see_invisible = invis_flags; \
 	for(type in view(range, GLOB.dview_mob))
 
-#define END_FOR_DVIEW dview_mob.loc = null
+#define END_FOR_DVIEW GLOB.dview_mob.loc = null
 
 #define LIGHTING_ICON 'icons/effects/lighting_overlay.dmi' // icon used for lighting shading effects
 #define LIGHTING_ICON_STATE_DARK "dark" // Change between "soft_dark" and "dark" to swap soft darkvision

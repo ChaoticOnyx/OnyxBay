@@ -9,7 +9,7 @@
 	buckle_pixel_shift = "x=0;y=0"
 	anchored = FALSE
 	pull_slowdown = PULL_SLOWDOWN_EXTREME
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	var/propelled = 0 // Check for fire-extinguisher-driven chairs
 	var/foldable = TRUE
 
@@ -90,7 +90,7 @@
 	if(!usr || !Adjacent(usr))
 		return
 
-	if(usr.stat == DEAD && config.ghost_interaction)
+	if(usr.stat == DEAD && config.ghost.ghost_interaction)
 		var/area/A = get_area(src)
 		if(A?.holy)
 			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))

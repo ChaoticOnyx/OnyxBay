@@ -121,7 +121,7 @@
 			to_chat(user, SPAN("notice", "\The [I] is no longer in storage."))
 			return TOPIC_HANDLED
 
-		visible_message(SPAN("notice", "The console beeps happily as it disgorges \the [I]."), 3)
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges \the [I]."))
 
 		I.dropInto(loc)
 		frozen_items -= I
@@ -137,7 +137,7 @@
 			to_chat(user, SPAN("notice", "There is nothing to recover from storage."))
 			return TOPIC_HANDLED
 
-		visible_message(SPAN("notice", "The console beeps happily as it disgorges the desired objects."), 3)
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges the desired objects."))
 
 		for(var/obj/item/I in frozen_items)
 			I.dropInto(loc)
@@ -200,6 +200,7 @@
 	var/obj/machinery/computer/cryopod/control_computer
 	var/last_no_computer_message = 0
 	var/applies_stasis = 1
+	var/despawning_now = FALSE
 
 	// These items are preserved when the process() despawn proc occurs.
 	var/list/preserve_items = list(
@@ -268,7 +269,7 @@
 	var/newz = GLOB.using_map.get_empty_zlevel()
 	if(possible_locations.len && prob(10))
 		newz = pick(possible_locations)
-	var/turf/nloc = locate(rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE),newz)
+	var/turf/nloc = locate(rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE), rand(TRANSITION_EDGE, world.maxy-TRANSITION_EDGE),newz)
 	if(!istype(nloc, /turf/space))
 		explosion(nloc, 1, 2, 3)
 	playsound(loc,'sound/effects/rocket.ogg',100)
@@ -337,20 +338,21 @@
 
 //Lifted from Unity stasis.dm and refactored. ~Zuhayr
 /obj/machinery/cryopod/Process()
-	if(occupant)
-		if(applies_stasis && iscarbon(occupant))
-			var/mob/living/carbon/C = occupant
-			C.SetStasis(3)
+	if(QDELETED(occupant))
+		return
+	if(applies_stasis && iscarbon(occupant))
+		var/mob/living/carbon/C = occupant
+		C.SetStasis(3)
 
-		//Allow a ten minute gap between entering the pod and actually despawning.
-		if(world.time - time_entered < time_till_despawn)
-			return
+	//Allow a ten minute gap between entering the pod and actually despawning.
+	if(world.time - time_entered < time_till_despawn)
+		return
 
-		if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
-			if(!control_computer)
-				if(!find_control_computer(urgent=1))
-					return
-
+	if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
+		if(!control_computer)
+			if(!find_control_computer(urgent=1))
+				return
+		if(!despawning_now)
 			despawn_occupant()
 
 // This function can not be undone; do not call this unless you are sure
@@ -371,10 +373,12 @@
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/proc/despawn_occupant()
-	if(!occupant)
+	set waitfor = 0
+
+	if(QDELETED(occupant))
 		log_and_message_admins("A mob was deleted while in a cryopod. This may cause errors!")
 		return
-
+	despawning_now = TRUE
 	//Drop all items into the pod.
 	for(var/obj/item/I in occupant)
 		occupant.drop_from_inventory(I)
@@ -458,7 +462,7 @@
 	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
 
 	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", get_announcement_computer("[on_store_name]"))
-	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>", 3)
+	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>")
 
 	//This should guarantee that ghosts don't spawn.
 	occupant.ckey = null
@@ -466,7 +470,7 @@
 	// Delete the mob.
 	qdel(occupant)
 	set_occupant(null)
-
+	despawning_now = FALSE
 
 /obj/machinery/cryopod/attackby(obj/item/G as obj, mob/user as mob)
 
@@ -540,6 +544,13 @@
 		return
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+		return
+	if(name == "cryogenic freezer" && M.stat == DEAD)
+		to_chat(user, "<span class='warning'>\The [src]s are not designed to store bodies. Contact the medical unit.</span>")
+		var/area/t = get_area(M)
+		var/location = t.name
+		for(var/channel in list("Security", "Medical"))
+			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
 		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")

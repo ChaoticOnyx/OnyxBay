@@ -12,8 +12,8 @@
 	chem_volume = 50
 	filter_trans = 0.9
 
-/obj/item/clothing/mask/smokable/pipe/New()
-	..()
+/obj/item/clothing/mask/smokable/pipe/Initialize()
+	. = ..()
 	name = "empty [initial(name)]"
 
 /obj/item/clothing/mask/smokable/pipe/light(obj/used_tool, mob/holder)
@@ -40,6 +40,34 @@
 		if (!nomessage)
 			to_chat(M, "<span class='notice'>Your [name] goes out, and you empty the ash.</span>")
 
+
+// Actually i take this from cigarette, but... who cares?
+/obj/item/clothing/mask/smokable/pipe/attack(mob/living/M, mob/user, def_zone)
+
+	if(lit && M == user && ishuman(M))
+
+		var/mob/living/carbon/human/H = M
+		var/obj/item/blocked = H.check_mouth_coverage()
+
+		if(blocked)
+			to_chat(H, SPAN("warning", "\The [blocked] is in the way!"))
+			return TRUE
+
+		user.visible_message("[user] takes a [pick("drag","puff","pull")] from \his [name].", \
+							 "You take a [pick("drag","puff","pull")] on your [name].")
+
+		smoke(3, TRUE)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		return TRUE
+
+	if(!lit && istype(M) && M.on_fire)
+		user.do_attack_animation(M)
+		light(M, user)
+		return TRUE
+
+	return ..()
+
+
 /obj/item/clothing/mask/smokable/pipe/attack_self(mob/user as mob)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
@@ -57,14 +85,14 @@
 /obj/item/clothing/mask/smokable/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 
-	if(istype(W, /obj/item/reagent_containers/food/snacks))
-		var/obj/item/reagent_containers/food/snacks/G = W
-		if(istype(W, /obj/item/reagent_containers/food/snacks/grown))
+	if(istype(W, /obj/item/reagent_containers/food))
+		var/obj/item/reagent_containers/food/G = W
+		if(istype(W, /obj/item/reagent_containers/food/grown))
 			G = W
 			if(!G.dry)
 				to_chat(user, SPAN("notice", "[G] must be dried before you stuff it into [src]."))
 				return
-		else if(!istype(W, /obj/item/reagent_containers/food/snacks/tobacco))
+		else if(!istype(W, /obj/item/reagent_containers/food/tobacco))
 			return
 		if(smoketime)
 			to_chat(user, SPAN("notice", "[src] is already packed."))
@@ -96,7 +124,7 @@
 		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
 	if(istype(tool, /obj/item/weldingtool))
 		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
-	if(istype(tool, /obj/item/reagent_containers/glass/rag))
+	if(istype(tool, /obj/item/reagent_containers/rag))
 		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
 	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))
 		return SPAN_NOTICE("[holder] dips \his [tool.name] into \a [name] to light it up.")

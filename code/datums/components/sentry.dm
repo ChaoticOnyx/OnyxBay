@@ -18,7 +18,7 @@
 	var/on_entered = null
 	/// That will be called if watched thing exits the area. Arguments: `turf/old_turf, atom/thing, turf/new_turf`.
 	var/on_exited = null
-	/// Everything in view.
+	/// Everything in view (contains weakrefs).
 	var/list/view = list()
 
 /datum/component/sentry_view/Initialize(on_entered = null, on_exited = null, range = world.view, source = null)
@@ -63,7 +63,7 @@
 				turfs_not_in_view_range += T
 
 		if(A in cached_view)
-			view += A
+			view += weakref(A)
 
 /datum/component/sentry_view/proc/_register_visible_turf(turf/T)
 	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)

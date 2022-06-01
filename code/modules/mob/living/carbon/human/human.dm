@@ -68,8 +68,14 @@
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
 	worn_underwear = null
-	for(var/organ in organs)
-		qdel(organ)
+	QDEL_NULL_LIST(organs)
+	QDEL_NULL_LIST(stance_limbs)
+	QDEL_NULL_LIST(grasp_limbs)
+	QDEL_NULL_LIST(bad_external_organs)
+
+	QDEL_LIST_ASSOC(hud_list)
+
+	QDEL_NULL(vessel)
 	return ..()
 
 /mob/living/carbon/human/get_ingested_reagents()
@@ -199,7 +205,7 @@
 	apply_damage(damage, BRUTE, BP_CHEST, blocked)
 
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
-	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
+	if(!config.game.use_loyalty_implants && !override) return // Nuh-uh.
 
 	var/obj/item/implant/loyalty/L = new /obj/item/implant/loyalty(M)
 	L.imp_in = M
@@ -1199,7 +1205,7 @@
 	if(client)
 		Login()
 
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
+	if(config && config.revival.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
 		create_stack()
 	full_prosthetic = null
 

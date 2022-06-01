@@ -43,7 +43,7 @@
 			pref.preference_values -= key
 
 	pref.lastchangelog	= sanitize_text(pref.lastchangelog, initial(pref.lastchangelog))
-	pref.default_slot	= sanitize_integer(pref.default_slot, 1, config.character_slots, initial(pref.default_slot))
+	pref.default_slot	= sanitize_integer(pref.default_slot, 1, config.character_setup.character_slots, initial(pref.default_slot))
 
 /datum/category_item/player_setup_item/player_global/settings/content(mob/user)
 	. = list()
@@ -96,11 +96,6 @@
 	if(!SScharacter_setup.initialized)
 		// Too early to use any preferences
 		throw EXCEPTION("Trying to get [ckey]'s preferences before the subsystem's initialization.")
-
-	if(!prefs)
-		log_error("[ckey]'s preferences are broken. Creating new one.")
-		prefs = new /datum/preferences(src)
-		setup_preferences()
 
 	if(!prefs)
 		CRASH("Can't create preferences for [ckey].")

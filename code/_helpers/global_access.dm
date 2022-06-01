@@ -233,6 +233,8 @@
 			return global.blackbox;
 		if("blocked")
 			return global.blocked;
+		if("body_heights")
+			return global.body_heights;
 		if("bomb_set")
 			return global.bomb_set;
 		if("cable_list")
@@ -1128,6 +1130,8 @@
 			global.blackbox=newval;
 		if("blocked")
 			global.blocked=newval;
+		if("body_heights")
+			global.body_heights=newval;
 		if("bomb_set")
 			global.bomb_set=newval;
 		if("cable_list")
@@ -1912,6 +1916,7 @@
 	"basic_robolimb",
 	"blackbox",
 	"blocked",
+	"body_heights",
 	"bomb_set",
 	"cable_list",
 	"cached_space",

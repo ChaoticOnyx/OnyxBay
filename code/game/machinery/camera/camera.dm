@@ -17,7 +17,7 @@
 	anchored = 1.0
 	var/invuln = null
 	var/bugged = 0
-	var/obj/item/camera_assembly/assembly = null
+	var/weakref/assembly_ref = null
 
 	var/toughness = 5 //sorta fragile
 
@@ -105,8 +105,9 @@
 
 /obj/machinery/camera/New()
 	wires = new(src)
-	assembly = new(src)
+	var/obj/item/camera_assembly/assembly = new(src)
 	assembly.state = 4
+	assembly_ref = weakref(assembly)
 
 	/* // Use this to look for cameras that have the same c_tag.
 	for(var/obj/machinery/camera/C in cameranet.cameras)
@@ -139,11 +140,8 @@
 
 /obj/machinery/camera/Destroy()
 	deactivate(null, 0) //kick anyone viewing out
-	if(assembly)
-		qdel(assembly)
-		assembly = null
-	qdel(wires)
-	wires = null
+	QDEL_NULL(assembly_ref)
+	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/camera/Process()
@@ -221,6 +219,7 @@
 
 	else if(isWelder(W) && (wires.CanDeconstruct() || (stat & BROKEN)))
 		if(weld(W, user))
+			var/obj/item/camera_assembly/assembly = assembly_ref?.resolve()
 			if(assembly)
 				assembly.dropInto(loc)
 				assembly.anchored = 1
@@ -236,7 +235,7 @@
 					assembly.state = 1
 					to_chat(user, "<span class='notice'>You cut \the [src] free from the wall.</span>")
 					new /obj/item/stack/cable_coil(src.loc, length=2)
-				assembly = null //so qdel doesn't eat it.
+				assembly_ref = null //so qdel doesn't eat it.
 			qdel(src)
 			return
 

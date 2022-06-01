@@ -35,7 +35,7 @@
 	var/response_harm   = "tries to hurt"
 	var/harm_intent_damage = 3 // How much damage a human deals upon punching
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
-	var/mob/panic_target = null // shy simple animals run away from humans
+	var/weakref/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
 	var/shy_animal = 0
 
@@ -91,6 +91,7 @@
 
 /mob/living/simple_animal/Destroy()
 	QDEL_NULL(mob_ai)
+	panic_target = null
 	. = ..()
 
 /mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
@@ -276,7 +277,7 @@
 			tally = 1
 		tally *= purge
 
-	return tally+config.animal_delay
+	return tally + config.movement.animal_delay
 
 /mob/living/simple_animal/Stat()
 	. = ..()
@@ -396,15 +397,16 @@
 
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
-	if(panic_target)
-		if (!(panic_target.loc in view(src)))
+	var/mob/M = panic_target?.resolve()
+	if(istype(M))
+		if(M.loc in view(src))
+			stop_automated_movement = 1
+			walk_away(src, M, 7, 4)
+		else
 			panic_target = null
 			stop_automated_movement = 0
-		else
-			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 4)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)
-		panic_target = M
+		panic_target = weakref(M)
 		turns_since_scan = 5

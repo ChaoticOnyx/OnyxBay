@@ -255,6 +255,20 @@ var/global/list/robot_footstep_sounds = list(
 		connected_ai.connected_robots -= src
 	connected_ai = null
 	QDEL_NULL(wires)
+	QDEL_NULL(module)
+	QDEL_NULL(inv1)
+	QDEL_NULL(inv2)
+	QDEL_NULL(inv3)
+	QDEL_NULL(robot_modules_background)
+	QDEL_NULL(rbPDA)
+	QDEL_NULL(camera)
+	QDEL_NULL(storage)
+	QDEL_NULL(spark_system)
+	QDEL_NULL(ion_trail)
+	for(var/i in components)
+		qdel(components[i])
+	components.Cut()
+	QDEL_NULL(cell)
 	return ..()
 
 /mob/living/silicon/robot/proc/set_module_hulls(list/new_sprites)
@@ -1018,7 +1032,8 @@ var/global/list/robot_footstep_sounds = list(
 	set name = "Reset Security Codes"
 	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
 
-	if(!(mind.special_role && mind.original == src))
+	var/mob/living/original_mob = mind?.original_mob?.resolve()
+	if(!(mind.special_role && istype(original_mob) && original_mob == src))
 		to_chat(src, "Access denied.")
 		return
 

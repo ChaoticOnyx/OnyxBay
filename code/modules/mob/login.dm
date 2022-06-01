@@ -4,7 +4,7 @@
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src, include_name = FALSE)] from [lastKnownIP ? MARK_IP(lastKnownIP) : MARK_IP("localhost")]-[MARK_COMPUTER_ID(computer_id)] || BYOND v[client.byond_version]")
-	if(config.log_access)
+	if(config.log.access)
 		var/is_multikeying = 0
 		for(var/mob/M in GLOB.player_list)
 			if(M == src)	continue
@@ -28,7 +28,7 @@
 			spawn(1 SECOND)
 				to_chat(src, "<b>WARNING:</b> It would seem that you are sharing connection or computer with another player. If you haven't done so already, please contact the staff via the Adminhelp verb to resolve this situation. Failure to do so may result in administrative action. You have been warned.")
 
-	if(config.login_export_addr)
+	if(config.external.login_export_addr)
 		spawn(-1)
 			var/list/params = new
 			params["login"] = 1
@@ -39,7 +39,7 @@
 			params["clientid"] = client.computer_id
 			params["roundid"] = game_id
 			params["name"] = real_name || name
-			world.Export("[config.login_export_addr]?[list2params(params)]", null, 1)
+			world.Export("[config.external.login_export_addr]?[list2params(params)]", null, 1)
 
 /mob
 	var/client/my_client // Need to keep track of this ourselves, since by the time Logout() is called the client has already been nulled

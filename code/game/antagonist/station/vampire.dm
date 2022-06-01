@@ -17,8 +17,8 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 
 /datum/antagonist/vampire/Initialize()
 	. = ..()
-	if(config.vampire_min_age)
-		min_player_age = config.vampire_min_age
+	if(config.game.vampire_min_age)
+		min_player_age = config.game.vampire_min_age
 
 /datum/antagonist/vampire/create_objectives(datum/mind/player)
 	if(!..())

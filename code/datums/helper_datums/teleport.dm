@@ -30,7 +30,7 @@
 		return 0
 
 	if(istype(target, /obj/mecha))
-		if(destination.z in GLOB.using_map.admin_levels)
+		if(destination.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM))
 			var/obj/mecha/mech = target
 			to_chat(mech.occupant, "<span class='danger'>\The [target] would not survive the jump to a location so far away!</span>")
 			return 0

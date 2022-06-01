@@ -8,12 +8,12 @@
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 	var/mob/living/carbon/human/occupant = null
-	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
+	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/painkiller/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
 	var/available_chemicals = list()
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/filtering = 0
 	var/pump
 	var/list/possible_stasis = list(list(1, 2, 5),
@@ -52,7 +52,7 @@
 		new /obj/item/stock_parts/console_screen(src),
 		new /obj/item/reagent_containers/syringe(src),
 		new /obj/item/reagent_containers/syringe(src),
-		new /obj/item/reagent_containers/glass/beaker/large(src))
+		new /obj/item/reagent_containers/vessel/beaker/large(src))
 	RefreshParts()
 
 /obj/machinery/sleeper/_examine_text(mob/user)
@@ -123,7 +123,7 @@
 
 	stasis_settings = possible_stasis[freeze]
 
-	beaker = locate(/obj/item/reagent_containers/glass/beaker) in component_parts
+	beaker = locate(/obj/item/reagent_containers/vessel/beaker) in component_parts
 
 /obj/machinery/sleeper/attack_hand(mob/user)
 	if(..())
@@ -216,7 +216,7 @@
 	return attack_hand(user)
 
 /obj/machinery/sleeper/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_fingerprint(user)
 		if(!beaker)
 			beaker = I
@@ -413,7 +413,7 @@
 		beaker = null
 		toggle_filter()
 		toggle_pump()
-		for(var/obj/item/reagent_containers/glass/beaker/A in component_parts)
+		for(var/obj/item/reagent_containers/vessel/beaker/A in component_parts)
 			component_parts -= A
 
 /obj/machinery/sleeper/proc/inject_chemical(mob/living/user, chemical_name, amount)

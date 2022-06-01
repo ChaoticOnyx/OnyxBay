@@ -31,6 +31,7 @@
 	var/icon_update = 1 //whether icon updating shall take place
 
 	var/datum/body_build/body_build = null
+	var/body_height = HUMAN_HEIGHT_NORMAL
 
 	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
 

@@ -236,7 +236,7 @@
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/taperoll/police,
 		/obj/item/clothing/accessory/holster/armpit,
-		/obj/item/reagent_containers/food/drinks/flask/detflask,
+		/obj/item/reagent_containers/vessel/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
 		/obj/item/storage/secure/guncase/detective
@@ -247,7 +247,7 @@
 	req_access = list(access_captain)
 
 /obj/structure/closet/secure_closet/injection/WillContain()
-	return list(/obj/item/reagent_containers/syringe/ld50_syringe/choral = 2)
+	return list(/obj/item/reagent_containers/syringe/ld50_syringe/potassium_chlorophoride = 2)
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"

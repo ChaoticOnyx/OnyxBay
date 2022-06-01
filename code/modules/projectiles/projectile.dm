@@ -62,6 +62,7 @@
 	var/impact_type
 
 	var/ricochet_id = 0
+	var/can_ricochet = TRUE
 
 	var/fire_sound
 
@@ -84,7 +85,7 @@
 	damtype = damage_type //TODO unify these vars properly
 	if(!hitscan)
 		animate_movement = SLIDE_STEPS
-	if(config.projectile_basketball)
+	if(config.misc.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
 	else
@@ -97,6 +98,8 @@
 	. = ..()
 
 /obj/item/projectile/Destroy()
+	if(trajectory)
+		QDEL_NULL(trajectory)
 	return ..()
 
 /obj/item/projectile/forceMove()

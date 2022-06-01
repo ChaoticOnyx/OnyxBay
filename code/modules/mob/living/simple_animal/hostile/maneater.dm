@@ -6,7 +6,7 @@
 	icon_dead = "maneater_dead"
 	speak_emote = list("gibbers")
 	turns_per_move = 2
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -48,11 +48,11 @@
 			user.drop_from_inventory(O)
 			qdel(O)
 			angry = 1
-			friends += user
+			friends += weakref(user)
 	else
 		..()
 
-/mob/living/simple_animal/hostile/maneater/FindTarget()
+/mob/living/simple_animal/hostile/maneater/find_target()
 	if(!angry)
 		return null // Don't just return 0 or i'll beat you with a stick
 	. = ..()

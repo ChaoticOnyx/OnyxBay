@@ -207,7 +207,7 @@
 	//	burn(500)
 
 	// Bullets ricochet from walls made of specific materials with some little chance.
-	if(istype(Proj,/obj/item/projectile/bullet))
+	if(istype(Proj, /obj/item/projectile/bullet) && Proj.can_ricochet)
 		if(reinf_material)
 			if(material.resilience * reinf_material.resilience > 0)
 				var/ricochetchance = round(sqrt(material.resilience * reinf_material.resilience))

@@ -21,7 +21,8 @@
 				photosync()
 				to_chat(src, "<b>Laws synced with AI, be sure to note any changes.</b>")
 				// TODO: Update to new antagonist system.
-				if(mind && mind.special_role == "Traitor" && mind.original == src)
+				var/mob/living/original_mob = mind?.original_mob?.resolve()
+				if(istype(original_mob) && mind.special_role == "Traitor" && original_mob == src)
 					to_chat(src, "<b>Remember, your AI does NOT share or know about your law 0.</b>")
 		else
 			to_chat(src, "<b>No AI selected to sync laws with, disabling lawsync protocol.</b>")
@@ -30,11 +31,12 @@
 	to_chat(who, "<b>Obey these laws:</b>")
 	laws.show_laws(who)
 	// TODO: Update to new antagonist system.
-	if (mind && (mind.special_role == "Traitor" && mind.original == src) && connected_ai)
+	var/mob/living/original_mob = mind?.original_mob?.resolve()
+	if(istype(original_mob) && mind.special_role == "Traitor" && original_mob == src && connected_ai)
 		to_chat(who, "<b>Remember, [connected_ai.name] is technically your master, but your objective comes first.</b>")
-	else if (connected_ai)
+	else if(connected_ai)
 		to_chat(who, "<b>Remember, [connected_ai.name] is your master, other AIs can be ignored.</b>")
-	else if (emagged)
+	else if(emagged)
 		to_chat(who, "<b>Remember, you are not required to listen to the AI.</b>")
 	else
 		to_chat(who, "<b>Remember, you are not bound to any AI, you are not required to listen to them.</b>")

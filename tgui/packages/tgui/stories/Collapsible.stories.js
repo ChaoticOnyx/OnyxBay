@@ -4,25 +4,21 @@
  * @license MIT
  */
 
-import { Button, Collapsible, Section } from '../components'
-import { BoxWithSampleText } from './common'
+import { Button, Collapsible, Section } from "../components";
+import { BoxWithSampleText } from "./common";
 
 export const meta = {
-  title: 'Collapsible',
+  title: "Collapsible",
   // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = (props, context) => {
   return (
     <Section>
-      <Collapsible
-        title='Collapsible Demo'
-        buttons={(
-          <Button icon='cog' />
-        )}>
+      <Collapsible title="Collapsible Demo" buttons={<Button icon="cog" />}>
         <BoxWithSampleText />
       </Collapsible>
     </Section>
-  )
-}
+  );
+};

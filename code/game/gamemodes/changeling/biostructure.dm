@@ -74,7 +74,7 @@
 	if(brainchan)
 		if(brainchan.mind)
 			brainchan.mind.changeling.die()
-			brainchan.mind.current = null
+			brainchan.mind.set_current(null)
 		brainchan.death()
 	else
 		var/mob/host = loc

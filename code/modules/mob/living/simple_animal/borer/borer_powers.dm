@@ -2,7 +2,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 
 /proc/setup_borer_reagents()
 	. = list()
-	for(var/reagent_type in list(/datum/reagent/alkysine, /datum/reagent/bicaridine, /datum/reagent/hyperzine, /datum/reagent/tramadol))
+	for(var/reagent_type in list(/datum/reagent/alkysine, /datum/reagent/bicaridine, /datum/reagent/hyperzine, /datum/reagent/painkiller/tramadol))
 		var/datum/reagent/R = reagent_type
 		.[initial(R.name)] = reagent_type
 
@@ -394,10 +394,10 @@ list(\
 	src.loc = get_turf(host)
 
 	reset_view(null)
-	machine = null
+	unset_machine()
 
 	H.reset_view(null)
-	H.machine = null
+	H.unset_machine()
 
 	H.status_flags &= ~PASSEMOTES
 	host = null

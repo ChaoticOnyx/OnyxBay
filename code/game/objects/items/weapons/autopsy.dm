@@ -186,7 +186,7 @@
 	M.visible_message("<span class='notice'>\The [user] scans the wounds on [M]'s [S.name] with [src]</span>")
 
 	src.add_data(S)
-	for(var/T in M.chem_doses)
+	for(var/T in M.chem_traces)
 		var/datum/reagent/R = T
 		chemtraces += initial(R.name)
 

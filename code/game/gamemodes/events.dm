@@ -11,7 +11,7 @@
 					dust_swarm("weak")
 			if(!event)
 				//CARN: checks to see if random events are enabled.
-				if(config.allow_random_events)
+				if(config.random_events.enable)
 					if(prob(eventchance))
 						event()
 						hadevent = 1
@@ -42,7 +42,7 @@ var/hadevent    = 0
 
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in GLOB.atmos_machinery)
-		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.station_levels))
+		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			if(temp_vent.network.normal_members.len > 50) // Stops Aliens getting stuck in small networks. See: Security, Virology
 				vents += temp_vent
 
@@ -77,7 +77,7 @@ var/hadevent    = 0
 		var/turf/T = get_turf(H)
 		if(!T)
 			continue
-		if(isNotStationLevel(T.z))
+		if(!isStationLevel(T.z))
 			continue
 		if(istype(H,/mob/living/carbon/human))
 			H.apply_effect((rand(15,75)),IRRADIATE, blocked = H.getarmor(null, "rad"))

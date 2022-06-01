@@ -1,7 +1,7 @@
 /mob
 	density = 1
 
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 	animate_movement = 2
 
 	virtual_mob = /mob/observer/virtual/mob
@@ -152,7 +152,7 @@
 	var/parrying = 0
 
 //The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
-	var/mob/living/carbon/LAssailant = null
+	var/weakref/LAssailant = null // Must be mob/living/carbon
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 

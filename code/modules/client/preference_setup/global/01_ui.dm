@@ -76,9 +76,9 @@
 			version_message = "\nYou need to be using byond version 511 or later to take advantage of this feature, your version of [user.client.byond_version] is too low"
 		if (world.byond_version < 511)
 			version_message += "\nThis server does not currently support client side fps. You can set now for when it does."
-		var/new_fps = input(user, "Choose your desired fps.[version_message]\n(0 = default value ([config.clientfps]) < RECOMMENDED\n -1 = synced with server (currently:[world.fps]))", "Global Preference") as num|null
+		var/new_fps = input(user, "Choose your desired fps.[version_message]\n(0 = default value ([config.general.client_fps]) < RECOMMENDED\n -1 = synced with server (currently:[world.fps]))", "Global Preference") as num|null
 		if (isnum(new_fps) && CanUseTopic(user))
-			pref.clientfps = Clamp(new_fps ? new_fps : config.clientfps, CLIENT_MIN_FPS, CLIENT_MAX_FPS)
+			pref.clientfps = Clamp(new_fps ? new_fps : config.general.client_fps, CLIENT_MIN_FPS, CLIENT_MAX_FPS)
 
 			var/mob/target_mob = preference_mob()
 			if(target_mob && target_mob.client)
@@ -98,4 +98,4 @@
 	return ..()
 
 /proc/can_select_ooc_color(mob/user)
-	return config.allow_admin_ooccolor && check_rights(R_ADMIN, 0, user)
+	return config.admin.allow_admin_ooccolor && check_rights(R_ADMIN, 0, user)

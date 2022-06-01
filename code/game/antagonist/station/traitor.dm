@@ -12,8 +12,8 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 /datum/antagonist/traitor/Initialize()
 	..()
 	fixer = new()
-	if(config.traitor_min_age)
-		min_player_age = config.traitor_min_age
+	if(config.game.traitor_min_age)
+		min_player_age = config.game.traitor_min_age
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"

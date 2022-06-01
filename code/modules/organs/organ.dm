@@ -29,7 +29,7 @@ var/list/organ_cache = list()
 	var/death_time
 
 	var/food_organ_type				  // path of food made from organ, ex.
-	var/obj/item/reagent_containers/food/snacks/food_organ
+	var/obj/item/reagent_containers/food/food_organ
 	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 
 /obj/item/organ/return_item()
@@ -44,7 +44,9 @@ var/list/organ_cache = list()
 	reagents.trans_to(food_organ, reagents.total_volume)
 
 /obj/item/organ/Destroy()
-	owner = null
+	if(owner)
+
+		owner = null
 	dna = null
 	QDEL_NULL(food_organ)
 	return ..()
@@ -123,7 +125,7 @@ var/list/organ_cache = list()
 			if(B && prob(40))
 				reagents.remove_reagent(/datum/reagent/blood, 0.1)
 				blood_splatter(src, B, 1)
-			if(config.organs_decay)
+			if(config.health.organs_can_decay)
 				take_general_damage(rand(1, 3))
 			germ_level += rand(2, 6)
 			if(germ_level >= INFECTION_LEVEL_TWO)

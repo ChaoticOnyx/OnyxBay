@@ -4,46 +4,45 @@
  * @license MIT
  */
 
-import { Box, Button, Section, Tooltip } from '../components'
+import { Box, Button, Section, Tooltip } from "../components";
 
 export const meta = {
-  title: 'Tooltip',
+  title: "Tooltip",
   // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Story = () => {
   const positions = [
-    'top',
-    'left',
-    'right',
-    'bottom',
-    'bottom-start',
-    'bottom-end'
-  ]
+    "top",
+    "left",
+    "right",
+    "bottom",
+    "bottom-start",
+    "bottom-end",
+  ];
 
   return (
     <Section>
       <Box>
-        <Tooltip content='Tooltip text.'>
-          <Box inline position='relative' mr={1}>
+        <Tooltip content="Tooltip text.">
+          <Box inline position="relative" mr={1}>
             Box (hover me).
           </Box>
         </Tooltip>
-        <Button
-          tooltip='Tooltip text.'
-          content='Button' />
+        <Button tooltip="Tooltip text." content="Button" />
       </Box>
       <Box mt={1}>
-        {positions.map(position => (
+        {positions.map((position) => (
           <Button
             key={position}
-            color='transparent'
-            tooltip='Tooltip text.'
+            color="transparent"
+            tooltip="Tooltip text."
             tooltipPosition={position}
-            content={position} />
+            content={position}
+          />
         ))}
       </Box>
     </Section>
-  )
-}
+  );
+};

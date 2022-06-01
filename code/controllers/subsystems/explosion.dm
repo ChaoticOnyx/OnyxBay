@@ -178,7 +178,7 @@ SUBSYSTEM_DEF(explosions)
 
 	var/list/affected_turfs = GatherSpiralTurfs(max_range, epicenter)
 
-	var/reactionary = config.use_recursive_explosions
+	var/reactionary = config.game.use_recursive_explosions
 	var/list/cached_exp_block
 
 	if(reactionary)
@@ -318,7 +318,7 @@ SUBSYSTEM_DEF(explosions)
 	var/frequency = get_rand_frequency()
 	var/blast_z = epicenter.z
 	if(isnull(creaking)) // Autoset creaking.
-		var/on_station = (epicenter.z in GLOB.using_map.station_levels)
+		var/on_station = (epicenter.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 		if(on_station && prob((quake_factor * QUAKE_CREAK_PROB) + (echo_factor * ECHO_CREAK_PROB))) // Huge explosions are near guaranteed to make the station creak and whine, smaller ones might.
 			creaking = TRUE // prob over 100 always returns true
 		else

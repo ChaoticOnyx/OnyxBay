@@ -59,6 +59,7 @@
 	mod_reach = 1.5
 	mod_handy = 1.5
 	mod_shield = 2.0
+	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_GLASS = 7500, MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
@@ -157,6 +158,7 @@
 		mod_reach = 1.0
 		mod_handy = 1.5
 		mod_shield = 3.0
+		block_tier = BLOCK_TIER_ADVANCED
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] is now active.</span>")
 	else
@@ -167,6 +169,7 @@
 		mod_reach = initial(mod_reach)
 		mod_handy = initial(mod_handy)
 		mod_shield = initial(mod_shield)
+		block_tier = BLOCK_TIER_MELEE
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
 
