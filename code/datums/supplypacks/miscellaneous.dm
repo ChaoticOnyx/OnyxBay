@@ -332,7 +332,7 @@
 					/obj/item/music_tape_box/newyear, 
 					/obj/item/music_tape_box/frontier, 
 					/obj/item/music_tape_box/valhalla)
-	cost = 20
+	cost = 40
 	containername = "\improper Music tapes crate"
 	
 /decl/hierarchy/supply_pack/miscellaneous/bouquet
