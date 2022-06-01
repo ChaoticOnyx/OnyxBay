@@ -124,26 +124,10 @@
 	var/active = 0
 
 /obj/item/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
-	if(!active)
-		return 0 //turn it on first!
-	if(!user.blocking)
-		return 0
-	if(user.incapacitated(INCAPACITATION_DISABLED))
-		return 0
-	if(istype(damage_source, /obj/item/projectile))
-		var/obj/item/projectile/P = damage_source
-		if(!P.blockable)
-			return 0
-		// some effects here
-		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-		spark_system.set_up(3, 0, user.loc)
-		spark_system.start()
-
-		visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
-		proj_poise_drain(user, P)
+	. = ..()
+	if(. == PROJECTILE_FORCE_BLOCK)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
-		return PROJECTILE_FORCE_BLOCK
-	return 0
+	return
 
 /obj/item/shield/energy/attack_self(mob/living/user)
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
@@ -269,9 +253,7 @@
 
 /obj/item/shield/barrier/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	. = ..()
-	if(!.)
-		return
-	if(istype(damage_source, /obj/item/projectile))
+	if(. == PROJECTILE_FORCE_BLOCK)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
 		var/obj/item/projectile/P = damage_source
 		var/discharge = P.get_structure_damage()
