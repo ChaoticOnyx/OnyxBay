@@ -4,7 +4,7 @@
 	var/static/list/gun_options
 	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 
-/obj/item/gun/projectile/pistol/colt/detective/New()
+/obj/item/gun/projectile/pistol/colt/detective/Initialize()
 	..()
 	if(!gun_options)
 		gun_options = init_subtypes(/datum/detective_gun_skin)

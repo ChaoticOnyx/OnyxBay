@@ -276,8 +276,10 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return 0
 	var/last_pain = pain
 	pain = clamp(pain + change, 0, max_damage)
+	full_pain += pain - last_pain // Updating it without waiting for the next tick for the greater good
 
 	if(change > 0 && owner)
+		owner.full_pain += pain - last_pain
 		if((change > 15 && prob(20)) || (change > 30 && prob(60)))
 			owner.emote("scream")
 
@@ -285,6 +287,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 /obj/item/organ/external/proc/remove_all_pain()
 	pain = 0
+	owner?.full_pain -= full_pain
 	full_pain = 0
 
 /obj/item/organ/external/proc/get_default_pain_message(power)

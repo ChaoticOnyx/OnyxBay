@@ -28,7 +28,7 @@
 	if(!label || !length(label))
 		to_chat(user, SPAN("notice", "No label text set."))
 		return
-	
+
 	user.visible_message(SPAN("notice", "\The [user] attaches a label to \the [A]."),
 		SPAN("notice", "You attach a label, '[label]', to \the [A]."))
 

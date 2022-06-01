@@ -567,7 +567,7 @@ var/list/global/slot_flags_enumeration = list(
 		var/mob/living/carbon/human/H = user
 		var/poise_dmg = P.damage / (mod_shield * 2.5)
 		if(block_tier != BLOCK_TIER_ADVANCED && P.damage_type == BRUTE)
-			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
+			poise_dmg = (P.damage + (P.agony / 1.5)) / (mod_shield * 2.5)
 		poise_dmg *= (src == H.get_active_hand()) ? 1.25 : 2.0
 		H.damage_poise(poise_dmg)
 		if(H.poise < poise_dmg)

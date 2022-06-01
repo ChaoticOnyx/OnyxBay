@@ -4,7 +4,6 @@
 	damage = 0
 	damage_type = BURN
 	check_armour = "energy"
-	tasing = 1
 
 
 //releases a burst of light on impact or after travelling a distance
@@ -71,17 +70,33 @@
 
 /obj/item/projectile/energy/electrode
 	name = "electrode"
-	icon_state = "spark"
+	icon_state = "electrode"
 	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
-	nodamage = 1
-	agony = 50
+	nodamage = TRUE
+	agony = 65
+	tasing = 6
 	damage_type = PAIN
+	armor_penetration = 10
 	//Damage will be handled on the MOB side, to prevent window shattering.
 	projectile_light = TRUE
 	projectile_brightness_color = COLOR_YELLOW
 
+/obj/item/projectile/energy/electrode/small
+	icon_state = "electrode-small"
+	agony = 25
+
+/obj/item/projectile/energy/electrode/greater
+	agony = 85
+
+/obj/item/projectile/energy/electrode/heavy
+	icon_state = "electrode-heavy"
+	agony = 100
+	tasing = 8
+	armor_penetration = 15
+	hitscan = TRUE
+
 /obj/item/projectile/energy/electrode/stunshot
-	nodamage = 0
+	nodamage = FALSE
 	damage = 15
 	agony = 70
 	damage_type = BURN
@@ -90,6 +105,7 @@
 
 /obj/item/projectile/energy/electrode/stunsphere
 	damage_type = PAIN
+	icon_state = "spark"
 	agony = 70
 	stutter = 10
 	armor_penetration = 10
@@ -97,7 +113,7 @@
 /obj/item/projectile/energy/electrode/c45
 	name = "stun bullet"
 	icon_state = "stunbullet"
-	nodamage = 0
+	nodamage = FALSE
 	agony = 40 // Weaker than the stunsphere la'classique
 	damage_type = BURN
 	damage = 3 //A little ouchie.
@@ -108,7 +124,7 @@
 /obj/item/projectile/energy/electrode/c38
 	name = "shock bullet"
 	icon_state = "shockbullet"
-	nodamage = 0
+	nodamage = FALSE
 	agony = 60
 	damage_type = BRUTE
 	damage = 5 //It's still a bullet
