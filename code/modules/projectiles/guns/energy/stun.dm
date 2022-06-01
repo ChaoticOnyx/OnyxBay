@@ -35,7 +35,7 @@
 	wielded_item_state = "tasercarbine-wielded"
 
 	firemodes = list(
-		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode/stunsphere),
+		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode),
 		list(mode_name = "stun",   projectile_type = /obj/item/projectile/beam/stun/heavy),
 		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock/heavy),
 		)
@@ -67,7 +67,8 @@
 	icon_state = "stunrevolver"
 	item_state = "stunrevolver"
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
-	projectile_type = /obj/item/projectile/energy/electrode
+	projectile_type = /obj/item/projectile/energy/electrode/greater
+	fire_delay = 10
 	max_shots = 6
 	combustion = 0
 
