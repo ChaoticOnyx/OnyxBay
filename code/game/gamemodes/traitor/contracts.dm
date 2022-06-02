@@ -609,12 +609,13 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(C.completed)
 				continue
 			candidates -= C.targets
+		for(var/area/area_target in candidates)
+			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) || (area_target.area_flags & AREA_FLAG_NO_STATION))
+				candidates -= area_target
 		while(candidates.len && targets.len < GLOB.contract_recon_target_count)
 			var/area/area_target = pick(candidates)
-			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) && (area_target.area_flags & AREA_FLAG_EXTERNAL))
-				candidates -= area_target
-				continue
 			targets += area_target
+			candidates -= area_target
 	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug kit</b> and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
 
 /datum/antag_contract/recon/can_place()
