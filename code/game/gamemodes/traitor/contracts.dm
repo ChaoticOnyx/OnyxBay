@@ -358,13 +358,15 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = target
 	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
-/datum/antag_contract/item/blood/check_contents(list/contents)
+/datum/antag_contract/item/blood/check_contents(list/contents, add_checked = FALSE)
 	var/current_samples = 0
 	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
 		var/datum/species/spec = all_species[data["species"]]
 		if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 			continue
+		if(add_checked)
+			samples += data["blood_DNA"]
 		current_samples += 1
 		if(current_samples >= count)
 			return TRUE
@@ -373,12 +375,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/blood/on_container(obj/item/storage/briefcase/std/container)
 	. = ..()
 	if(.)
-		for(var/obj/item/reagent_containers/C in container.GetAllContents())
-			var/list/data = C.reagents?.get_data(/datum/reagent/blood)
-			var/datum/species/spec = all_species[data["species"]]
-			if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
-				continue
-			samples += data["blood_DNA"]
+		return check_contents(container.GetAllContents(), TRUE)
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
