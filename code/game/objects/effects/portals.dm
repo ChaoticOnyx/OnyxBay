@@ -91,7 +91,7 @@
 	var/obj/item/gun/portalgun/portal_creator
 	var/mob/owner
 	var/setting = 0
-	var/atmos_connected
+	var/atmos_connected = FALSE
 	var/list/static/portal_cache = list()
 	teleport_type = /decl/teleport/sparks/precision
 
@@ -120,15 +120,15 @@
 /obj/effect/portal/linked/proc/connect_atmospheres()
 	if(!atmos_connected && istype(target, /obj/effect/portal/linked))
 		var/obj/effect/portal/linked/P = target
-		if(get_turf(src) && get_turf(P))
+		var/turf/src_turf = get_turf(src)
+		var/turf/target_turf = get_turf(P)
+		if(src_turf && target_turf)
 			var/has_valid_connection = FALSE
-			var/turf/src_turf = get_turf(src)
-			var/turf/target_turf = get_turf(P)
 			if(TURF_HAS_VALID_ZONE(src_turf))
-				atmos_connection = new (get_turf(src), get_turf(P))
+				atmos_connection = new (src_turf, target_turf)
 				has_valid_connection = TRUE
 			if(TURF_HAS_VALID_ZONE(target_turf))
-				P.atmos_connection = new (get_turf(P), get_turf(src))
+				P.atmos_connection = new (target_turf, src_turf)
 				has_valid_connection = TRUE
 			if(has_valid_connection)
 				P.atmos_connected = TRUE
@@ -177,7 +177,7 @@
 	var/x = linked_turf.x
 	var/y = linked_turf.y
 	// get new target turf
-	target_turf = locate(max(min(x + x_diff, world.maxx), 1), max(min(y + y_diff, world.maxy), 1), target.z)
+	target_turf = locate(Clamp(x + x_diff, 1, world.maxx), Clamp(y + y_diff, 1, world.maxy), target.z)
 	// set new target turf as projectile target
 	P.original = target_turf
 	// rebuild trajectory by calling P.setup_projectory and our work there is done
@@ -212,7 +212,7 @@
 	var/turf/linked_turf = get_turf(target)
 	var/x = linked_turf.x + x_diff
 	var/y = linked_turf.y + y_diff
-	target_turf = locate(max(min(x, world.maxx), 1), max(min(y, world.maxy), 1), target.z)
+	target_turf = locate(Clamp(x, 1, world.maxx), Clamp(y, 1, world.maxy), target.z)
 	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
 
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)

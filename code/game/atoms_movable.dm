@@ -179,7 +179,7 @@
 
 
 
-		while(src && thrown_to &&((((src.x < thrown_to.x && dx == EAST) || (src.x > thrown_to.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(throwing && thrown_to && ((((x < thrown_to.x && dx == EAST) || (x > thrown_to.x && dx == WEST)) && dist_travelled < range) || a?.has_gravity == 0 || istype(loc, /turf/space)) && istype(loc, /turf))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dy)
@@ -208,7 +208,7 @@
 			a = get_area(src.loc)
 	else
 		var/error = dist_y/2 - dist_x
-		while(src && thrown_to &&((((src.y < thrown_to.y && dy == NORTH) || (src.y > thrown_to.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(throwing && thrown_to && ((((y < thrown_to.y && dy == NORTH) || (y > thrown_to.y && dy == SOUTH)) && dist_travelled < range) || a?.has_gravity == 0  || istype(loc, /turf/space)) && istype(loc, /turf))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dx)

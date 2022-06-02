@@ -22,10 +22,8 @@
 	. += "\nIt's current setting is <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"]</span>."
 
 /obj/item/gun/portalgun/Destroy()
-	if(blue_portal)
-		QDEL_NULL(blue_portal)
-	if(red_portal)
-		QDEL_NULL(red_portal)
+	QDEL_NULL(blue_portal)
+	QDEL_NULL(red_portal)
 	..()
 
 /obj/item/gun/portalgun/consume_next_projectile()
@@ -55,15 +53,13 @@
 	var/obj/effect/portal/linked/new_portal = new(T, null, 5 MINUTES) // Portal Gun-made portals stay open for 5 minutes by default.
 
 	switch(setting)
-		if(0)
-			if(blue_portal)
-				QDEL_NULL(blue_portal)
+		if(BLUE_PORTAL)
+			QDEL_NULL(blue_portal)
 			blue_portal = new_portal
 			blue_portal.portal_creator = src
 			blue_portal.owner = firer
-		if(1)
-			if(red_portal)
-				QDEL_NULL(red_portal)
+		if(ORANGE_PORTAL)
+			QDEL_NULL(red_portal)
 			red_portal = new_portal
 			red_portal.icon_state = "portal1"
 			red_portal.portal_creator = src
@@ -75,17 +71,12 @@
 		new_portal.Crossed(A)
 
 /obj/item/gun/portalgun/proc/sync_portals()
-	if(!blue_portal)
-		if(red_portal)
-			red_portal.overlays.Cut()
-			red_portal.target = null
-			red_portal.disconnect_atmospheres()
-		return
-	if(!red_portal)
-		if(blue_portal)
-			blue_portal.overlays.Cut()
-			blue_portal.target = null
-			blue_portal.disconnect_atmospheres()
+	if(!blue_portal || !red_portal)
+		var/obj/effect/portal/linked/single_portal = blue_portal || red_portal
+		if(single_portal)
+			single_portal.overlays.Cut()
+			single_portal.target = null
+			single_portal.disconnect_atmospheres()
 		return
 	red_portal.disconnect_atmospheres()
 	blue_portal.disconnect_atmospheres()
