@@ -148,6 +148,7 @@
 	desc = "A taser gun manufactured by NanoTrasen. Used for non-lethal takedowns."
 	icon_state = "taserold"
 	item_state = null
+	wielded_item_state = FALSE
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2)
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	max_shots = 6
@@ -183,6 +184,7 @@
 	accuracy = tt.accuracy
 	one_hand_penalty = tt.one_hand_penalty
 	fire_delay = tt.fire_delay
+	burst = tt.burst
 	w_class = tt.w_class
 	slot_flags = tt.slot_flags
 
@@ -203,7 +205,7 @@
 
 	var/mob/living/M = loc
 	if(istype(M))
-		if(M.can_wield_item(src) && is_held_twohanded(M))
+		if(wielded_item_state && M.can_wield_item(src) && is_held_twohanded(M))
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
 		else
@@ -230,15 +232,16 @@
 	var/name = "taser"
 	var/desc = "A perfectly generic taser."
 	var/icon_state = "taser"
-	var/wielded_item_state = null
+	var/wielded_item_state = FALSE
 	var/projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	var/max_shots = 6
 	var/accuracy = 0
 	var/one_hand_penalty = 0
 	var/fire_delay = 6
+	var/burst = 1
 	var/list/firemodes = list()
-	var/w_class = ITEM_SIZE_HUGE
-	var/slot_flags = SLOT_BACK
+	var/w_class = ITEM_SIZE_NORMAL
+	var/slot_flags = SLOT_BELT|SLOT_HOLSTER
 	var/type_name = ""
 	var/type_desc = ""
 
@@ -246,12 +249,13 @@
 	name = "taser pistol"
 	desc = "The smallest of all the tasers. It only has a single fire mode, but each shot wields power."
 	icon_state = "taser"
-	wielded_item_state = null
+	wielded_item_state = FALSE
 	projectile_type = /obj/item/projectile/energy/electrode
 	max_shots = 6
 	accuracy = 0
 	one_hand_penalty = 0
 	fire_delay = 6
+	burst = 1
 	list/firemodes = list()
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
@@ -262,12 +266,13 @@
 	name = "taser SMG"
 	desc = "This model is not as powerful as pistols, but is capable of launching electrodes left and right with its remarkable rate of fire."
 	icon_state = "taser_smg"
-	wielded_item_state = null
+	wielded_item_state = FALSE
 	projectile_type = /obj/item/projectile/energy/electrode/small
 	max_shots = 15
 	accuracy = 0
 	one_hand_penalty = 1
 	fire_delay = 3
+	burst = 1
 	firemodes = list(
 		list(mode_name = "semiauto", fire_delay = 3,    burst = 1),
 		list(mode_name = "burst",    fire_delay = null, burst = 3)
@@ -281,12 +286,13 @@
 	name = "taser rifle"
 	desc = "This model is bulky and heavy, it must be wielded with both hands. Although its rate of fire is way below average, it is capable of shooting stun beams."
 	icon_state = "taser_rifle"
-	wielded_item_state = null
+	wielded_item_state = TRUE
 	projectile_type = /obj/item/projectile/energy/electrode/greater
 	max_shots = 6
 	accuracy = 0
 	one_hand_penalty = 2
 	fire_delay = 10
+	burst = 1
 	firemodes = list(
 		list(mode_name = "electrode", projectile_type = /obj/item/projectile/energy/electrode/greater),
 		list(mode_name = "beam",      projectile_type = /obj/item/projectile/beam/stun/greater)
