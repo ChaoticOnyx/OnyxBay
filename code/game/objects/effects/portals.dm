@@ -88,8 +88,7 @@
 /obj/effect/portal/linked
 	var/mask = "portal_mask"
 	var/connection/atmos_connection
-	var/obj/item/gun/portalgun/portal_creator
-	var/mob/owner
+	var/weakref/portal_creator_weakref
 	var/setting = 0
 	var/atmos_connected = FALSE
 	var/list/static/portal_cache = list()
@@ -98,13 +97,14 @@
 /obj/effect/portal/linked/Initialize()
 	. = ..()
 	if(istype(loc, /obj/item/gun/portalgun))
-		portal_creator = loc
+		portal_creator_weakref = weakref(loc)
 	// stable enough
 	dangerous = FALSE
 	failchance = FALSE
 
 /obj/effect/portal/linked/Destroy()
 	disconnect_atmospheres()
+	var/obj/item/gun/portalgun/portal_creator = portal_creator_weakref?.resolve()
 	if(portal_creator)
 		if(src == portal_creator.blue_portal)
 			portal_creator.blue_portal = null
@@ -112,9 +112,7 @@
 		else if(src == portal_creator.red_portal)
 			portal_creator.red_portal = null
 			portal_creator.sync_portals()
-	portal_creator = null
 	target = null
-	owner = null
 	return ..()
 
 /obj/effect/portal/linked/proc/connect_atmospheres()
@@ -191,11 +189,11 @@
 	stoplag(1)
 	var/thrown_dir = hit_atom.throw_dir
 	var/previous_dir = hit_atom.dir
-	if(hit_atom.thrown_to == get_turf(src))
+	if(hit_atom.thrown_to?.resolve() == get_turf(src))
 		teleport(hit_atom, TRUE)
 		return
 	var/turf/loc_turf = get_turf(src)
-	var/turf/target_turf = get_turf(hit_atom.thrown_to)
+	var/turf/target_turf = get_turf(hit_atom.thrown_to?.resolve())
 	var/x_diff = abs(target_turf.x - loc_turf.x)
 	var/y_diff = abs(target_turf.y - loc_turf.y)
 	if(thrown_dir & SOUTH)
@@ -218,7 +216,7 @@
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)
 		return
-	if(M.thrown_to && !ignore_checks)
+	if(M.thrown_to?.resolve() && !ignore_checks)
 		return on_throw_impact(M)
 	return ..()
 

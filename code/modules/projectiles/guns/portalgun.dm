@@ -56,14 +56,12 @@
 		if(BLUE_PORTAL)
 			QDEL_NULL(blue_portal)
 			blue_portal = new_portal
-			blue_portal.portal_creator = src
-			blue_portal.owner = firer
+			blue_portal.portal_creator_weakref = weakref(src)
 		if(ORANGE_PORTAL)
 			QDEL_NULL(red_portal)
 			red_portal = new_portal
 			red_portal.icon_state = "portal1"
-			red_portal.portal_creator = src
-			red_portal.owner = firer
+			red_portal.portal_creator_weakref = weakref(src)
 
 	sync_portals()
 
