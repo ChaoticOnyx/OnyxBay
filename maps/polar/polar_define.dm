@@ -1,45 +1,35 @@
 
 /datum/map/polar
-	name = "Polar"
-	full_name = "Polar Colony"
+	name = "Pathos I"
+	full_name = "Pathos I"
 	path = "polar"
 
 	shuttle_types = list(
-		/datum/shuttle/autodock/ferry/supply/polar_drone,
-		/datum/shuttle/autodock/multi/antag/rescue,
-		/datum/shuttle/autodock/ferry/emergency/centcom,
-		/datum/shuttle/autodock/ferry/administration,
-		/datum/shuttle/autodock/multi/antag/syndicate,
-		/datum/shuttle/autodock/multi/antag/elite_syndicate,
-		/datum/shuttle/autodock/ferry/deathsquad,
-		/datum/shuttle/autodock/multi/antag/merchant_polar,
-		/datum/shuttle/autodock/multi/antag/skipjack,
-	)
-	station_levels = list(1,2,3,4)
-	admin_levels = list(5)
-	contact_levels = list(1,2,3,4)
-	player_levels = list(1,2,3,4)
-	sealed_levels = list(7)
-	accessible_z_levels = list(
-		"1" = 5,
-		"2" = 5,
-		"3" = 10,
-		"4" = 15,
-	)
-	dynamic_z_levels = list(
-		'polar-1.dmm',
-		'polar-2.dmm',
-		'polar-3.dmm',
-		'polar-4.dmm',
-		// CC
-		'polar-5.dmm',
-		'maps/null-frozen.dmm',
-		'maps/derelicts/jungleplanet/jungle_planet.dmm'
+		/datum/shuttle/autodock/ferry/supply/drone/polar,
+		/datum/shuttle/autodock/multi/antag/rescue/polar,
+		/datum/shuttle/autodock/ferry/emergency/centcom/polar,
+		/datum/shuttle/autodock/ferry/administration/polar,
+		/datum/shuttle/autodock/multi/antag/syndicate/polar,
+		/datum/shuttle/autodock/multi/antag/elite_syndicate/polar,
+		/datum/shuttle/autodock/ferry/deathsquad/polar,
+		/datum/shuttle/autodock/multi/antag/merchant/polar,
+		/datum/shuttle/autodock/multi/antag/skipjack/polar,
+		/datum/shuttle/autodock/ferry/train
 	)
 
-	station_name  = "Polar Colony"
-	station_short = "Polar"
-	dock_name     = "NAS Crescent"
+	map_levels = list(
+		new /datum/space_level/polar_1,
+		new /datum/space_level/polar_2,
+		new /datum/space_level/polar_3,
+		new /datum/space_level/polar_4,
+		new /datum/space_level/polar_5,
+		new /datum/space_level/null_frozen,
+		new /datum/space_level/jungle_level
+	)
+
+	station_name  = "Pathos I"
+	station_short = "Pathos I"
+	dock_name     = "Pathos I - Landing Zone"
 	boss_name     = "Central Command"
 	boss_short    = "Centcomm"
 	company_name  = "NanoTrasen"
@@ -56,10 +46,33 @@
 	base_floor_type = /turf/simulated/floor/natural/frozenground/cave
 	base_floor_area = /area/polarplanet/street
 
-/datum/map/polar/perform_map_generation()
-	//1-z level
-	new /datum/random_map/automata/cave_system(null, 1, 1, 1, 200, 200) // Create the mining Z-level.
-	new /datum/random_map/noise/ore(null, 1, 1, 1, 255, 255)         // Create the mining ore distribution map.
-	//2-z level
-	new /datum/random_map/noise/ore(null, 1, 1, 2, 200, 200)         // Create the mining ore distribution map.
-	return 1
+	station_networks = list(
+		NETWORK_CIVILIAN_EAST,
+		NETWORK_CIVILIAN_WEST,
+		NETWORK_COMMAND,
+		NETWORK_ENGINE,
+		NETWORK_ENGINEERING,
+		NETWORK_ENGINEERING_OUTPOST,
+		NETWORK_EXODUS,
+		NETWORK_MAINTENANCE,
+		NETWORK_MEDICAL,
+		NETWORK_RESEARCH,
+		NETWORK_RESEARCH_OUTPOST,
+		NETWORK_ROBOTS,
+		NETWORK_PRISON,
+		NETWORK_SECURITY,
+		NETWORK_ALARM_ATMOS,
+		NETWORK_ALARM_CAMERA,
+		NETWORK_ALARM_FIRE,
+		NETWORK_ALARM_MOTION,
+		NETWORK_ALARM_POWER,
+		NETWORK_THUNDER,
+		NETWORK_TELECOM,
+		NETWORK_MASTER,
+		NETWORK_APPARAT_VORON
+	)
+
+/datum/map/polar/setup_map()
+	. = ..()
+
+	AddComponent(/datum/component/polar_weather)

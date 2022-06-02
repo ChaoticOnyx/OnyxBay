@@ -1,5 +1,5 @@
 /atom/movable
-	appearance_flags = TILE_BOUND
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
 	glide_size = 8
 
 	var/last_move = null
@@ -272,7 +272,7 @@
 	if(!simulated)
 		return
 
-	if(!z || (z in GLOB.using_map.sealed_levels))
+	if(!z || (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED)))
 		return
 
 	if(!GLOB.universe.OnTouchMapEdge(src))
@@ -282,21 +282,21 @@
 	var/new_y
 	var/new_z = GLOB.using_map.get_transit_zlevel(z)
 	if(new_z)
-		if(x <= TRANSITIONEDGE)
-			new_x = world.maxx - TRANSITIONEDGE - 2
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		if(x <= TRANSITION_EDGE)
+			new_x = world.maxx - TRANSITION_EDGE - 2
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (x >= (world.maxx - TRANSITIONEDGE + 1))
-			new_x = TRANSITIONEDGE + 1
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		else if (x >= (world.maxx - TRANSITION_EDGE + 1))
+			new_x = TRANSITION_EDGE + 1
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (y <= TRANSITIONEDGE)
-			new_y = world.maxy - TRANSITIONEDGE -2
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y <= TRANSITION_EDGE)
+			new_y = world.maxy - TRANSITION_EDGE -2
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
-		else if (y >= (world.maxy - TRANSITIONEDGE + 1))
-			new_y = TRANSITIONEDGE + 1
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y >= (world.maxy - TRANSITION_EDGE + 1))
+			new_y = TRANSITION_EDGE + 1
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
 		var/turf/T = locate(new_x, new_y, new_z)
 		if(T)

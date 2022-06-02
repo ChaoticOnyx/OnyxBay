@@ -7,6 +7,7 @@
 	src.brainmob.set_stat(CONSCIOUS)
 	src.brainmob.add_language("Robot Talk")
 	src.brainmob.add_language("Encoded Audio Language")
+	src.brainmob.add_language("Galactic Common")
 
 	src.brainmob.container = src
 	src.brainmob.silent = 0

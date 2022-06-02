@@ -178,6 +178,7 @@
 				var/obj/item/paper/P = src[1]
 				usr.drop_from_inventory(src)
 				usr.put_in_hands(P)
+				usr.unset_machine() // Ensure the bundle GCs
 				qdel(src)
 
 				return

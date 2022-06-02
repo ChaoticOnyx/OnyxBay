@@ -260,7 +260,7 @@
 /mob/living/simple_animal/hostile/proc/OpenFire(target_mob)
 
 	var/target = target_mob
-	visible_message("\red <b>[src]</b> [ranged_message] at [target]!", 1)
+	visible_message("\red <b>[src]</b> [ranged_message] at [target]!")
 
 	if(rapid)
 		spawn(1)

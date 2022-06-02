@@ -32,7 +32,7 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 			continue
 
 		if(istype(A, /area/space))
-			if(!(player.loc.z in GLOB.using_map.station_levels) && prob(40))
+			if(!(player.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) && prob(40))
 				C.play_ambience_music(GET_SFX(SFX_AMBIENT_MUSIC_SPACE_TRAVEL))
 				continue
 

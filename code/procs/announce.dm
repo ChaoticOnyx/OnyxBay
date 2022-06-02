@@ -29,7 +29,7 @@
 	title = "[command_name()] Update"
 	announcement_type = "[command_name()] Update"
 
-/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
+/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 	if(!message)
 		return
 	var/message_title = new_title ? new_title : title
@@ -60,12 +60,12 @@
 /proc/should_recieve_announce(mob/M, list/contact_levels)
 	if (istype(M,/mob/new_player) || isdeaf(M))
 		return 0
-	if (M.z in (contact_levels | GLOB.using_map.admin_levels))
+	if (M.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 1
 	var/turf/loc_turf = get_turf(M.loc) // for mobs in lockers, sleepers, etc.
 	if (!loc_turf)
 		return 0
-	if (loc_turf.z in (contact_levels | GLOB.using_map.admin_levels))
+	if (loc_turf.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 1
 	return 0
 

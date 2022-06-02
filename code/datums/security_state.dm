@@ -178,7 +178,7 @@
 
 /decl/security_level/default/proc/notify_station()
 	for(var/obj/machinery/firealarm/FA in GLOB.firealarm_list)
-		if(FA.z in GLOB.using_map.contact_levels)
+		if(FA.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 			FA.update_icon()
 	post_status("alert")
 
