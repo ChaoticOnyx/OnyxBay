@@ -184,24 +184,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		allowed_jobs = subtypesof(/datum/job)
 	if(!shuttle_types)
 		crash_with("[src] has no shuttle_types!")
-	default_law_type = choose_laws()
-
-/datum/map/proc/choose_laws() //maybe le costil, it will choose one from "list" below with specific chance
-	var/random = rand(0,100)
-	if(random >= 0 && random <= 15)
-		return /datum/ai_laws/asimov
-	else if(random > 15 && random <= 20)
-		return /datum/ai_laws/nanotrasen_aggressive
-	else if(random > 20 && random <= 30)
-		return /datum/ai_laws/robocop
-	else if(random > 30 && random <= 40)
-		return /datum/ai_laws/tyrant
-	else if(random > 40 && random <= 50)
-		return /datum/ai_laws/paladin
-	else if(random > 50 && random <= 60)
-		return /datum/ai_laws/corporate
-	else
-		return /datum/ai_laws/nanotrasen
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)
