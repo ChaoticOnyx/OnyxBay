@@ -204,7 +204,7 @@
 	T = 0
 	for(var/obj/item/stock_parts/scanning_module/S in component_parts)
 		T = S.rating
-	mutation_prob = T/2
+	mutation_prob = T
 
 /obj/machinery/disease2/incubator/OnTopic(user, href_list)
 	if (href_list["close"])
@@ -234,15 +234,15 @@
 			return TOPIC_REFRESH
 		if(beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food, 5) && foodsupply < max_food_storage)
 			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, 5)
-			foodsupply = min(max_food_storage, foodsupply + 5)
+			foodsupply = min(max_food_storage, foodsupply + Clamp(max_food_storage - foodsupply, 0, 5))
 		if(beaker.reagents.has_reagent(/datum/reagent/radium, 5) && radiation < max_food_storage)
 			beaker.reagents.remove_reagent(/datum/reagent/radium, 5)
-			radiation = min(max_food_storage, radiation + 5)
+			radiation = min(100, radiation + Clamp(100 - radiation, 0, 5))
 		if(mutagen < 100)
 			for(var/datum/reagent/mutagen/T in beaker.reagents.reagent_list)
 				if(T.volume >= 5)
 					beaker.reagents.remove_reagent(/datum/reagent/mutagen, 5)
-					mutagen = min(100, mutagen + 5)
+					mutagen = min(100, mutagen + Clamp(100 - mutagen, 0, 5))
 		if(toxins < 100)
 			for(var/datum/reagent/toxin/T in beaker.reagents.reagent_list)
 				if(T.volume >= 5)
