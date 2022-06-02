@@ -89,6 +89,7 @@
 	var/mask = "portal_mask"
 	var/connection/atmos_connection
 	var/weakref/portal_creator_weakref
+	var/owner
 	var/setting = 0
 	var/atmos_connected = FALSE
 	var/list/static/portal_cache = list()
