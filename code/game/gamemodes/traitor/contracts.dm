@@ -453,7 +453,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 	var/obj/item/organ/_target
 	if(_H.organs_by_name[BP_STACK])
-		_target = _H.organs_by_name[BP_STACK]
+		_target = _H.internal_organs_by_name[BP_STACK]
 	else
 		_target = _H.organs_by_name[BP_HEAD]
 	target = weakref(_target)
