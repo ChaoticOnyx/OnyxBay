@@ -258,21 +258,25 @@
 
 	var/old_loc = loc
 
-	pickup(user)
+	// Removing from a storage
 	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
+	// Unequipping from self
+	else if(loc == user && !user.unEquip(src))
+		return
+	// Doing some unintended shit that may cause catastrophical events, aborting
+	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
+	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
+	else if(!isturf(loc))
+		return
 
 	throwing = 0
-	if(loc == user)
-		if(!user.unEquip(src))
-			return
-	else
-		if(isliving(loc))
-			return
 
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
+
+	pickup(user)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
