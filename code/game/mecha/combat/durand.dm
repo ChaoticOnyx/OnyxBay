@@ -3,6 +3,7 @@
 	name = "Durand"
 	icon_state = "durand"
 	initial_icon = "durand"
+	base_color = "#A8ABB3"
 	step_in = 4
 	health = 400
 	deflect_chance = 20
