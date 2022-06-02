@@ -151,6 +151,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
 		complete(container.uplink)
+		return TRUE
 
 /datum/antag_contract/item/proc/check(obj/item/storage/container)
 	return check_contents(container.GetAllContents())
@@ -338,6 +339,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	unique = TRUE
 	reward = 5
 	intent = CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_SOCIAL
+	var/static/list/samples = list()
 	var/count
 
 /datum/antag_contract/item/blood/New(datum/contract_organization/contract_organization, reason, target)
@@ -357,15 +359,26 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
-	var/list/samples = list()
+	var/current_samples = 0
 	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
-		if(!data || (data["blood_DNA"] in samples))
+		var/datum/species/spec = all_species[data["species"]]
+		if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 			continue
-		samples += data["blood_DNA"]
-		if(samples.len >= count)
+		current_samples += 1
+		if(current_samples >= count)
 			return TRUE
 	return FALSE
+
+/datum/antag_contract/item/blood/on_container(obj/item/storage/briefcase/std/container)
+	. = ..()
+	if(.)
+		for(var/obj/item/reagent_containers/C in container.GetAllContents())
+			var/list/data = C.reagents?.get_data(/datum/reagent/blood)
+			var/datum/species/spec = all_species[data["species"]]
+			if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
+				continue
+			samples += data["blood_DNA"]
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
@@ -439,7 +452,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(istype(idcard))
 		alternative_target = weakref(idcard)
 		alternative_message = " <b>[idcard], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
-	brain = weakref(_H.organs_by_name[BP_BRAIN])
+	brain = weakref(_H.internal_organs_by_name[BP_BRAIN])
 
 	var/obj/item/organ/_target
 	if(_H.organs_by_name[BP_STACK])
