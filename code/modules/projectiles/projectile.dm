@@ -83,13 +83,14 @@
 
 /obj/item/projectile/Initialize()
 	damtype = damage_type //TODO unify these vars properly
-	if(!hitscan)
+	if(hitscan)
+		animate_movement = NO_STEPS // Some fucking clown's put this under the if below and we enjoyed twitching projectiles for good 3 years
+	else
 		animate_movement = SLIDE_STEPS
+
 	if(config.misc.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
-	else
-		animate_movement = NO_STEPS
 
 	if(projectile_light)
 		layer = ABOVE_LIGHTING_LAYER
@@ -109,14 +110,22 @@
 
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
-	if(blocked >= 100)		return 0//Full block
-	if(!isliving(target))	return 0
-	if(isanimal(target))	return 0
+	if(blocked >= 100)
+		return 0 //Full block
+	if(!isliving(target))
+		return 0
+	if(isanimal(target))
+		return 0
 
 	var/mob/living/L = target
 
 	L.apply_effects(0, weaken, paralyze, 0, stutter, eyeblur, drowsy, 0, blocked)
-	L.stun_effect_act(stun, agony, def_zone, src)
+	if(ishuman(L) && tasing)
+		var/mob/living/carbon/human/H = L
+		spawn()
+			H.handle_tasing(agony, tasing, def_zone, src)
+	else
+		L.stun_effect_act(stun, agony, def_zone, src)
 	//radiation protection is handled separately from other armour types.
 	L.apply_effect(irradiate, IRRADIATE, L.getarmor(null, "rad"))
 	return 1

@@ -27,7 +27,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 
 /datum/antagonist/borer/Initialize()
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
-	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
+	spawn_announcement_sound = GLOB.using_map.unidentified_lifesigns_sound
 	. = ..()
 	if(config.game.borer_min_age)
 		min_player_age = config.game.borer_min_age

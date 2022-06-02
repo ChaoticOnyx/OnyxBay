@@ -33,7 +33,7 @@
 		wormholes += create_wormhole(enter, exit)
 
 /datum/event/wormholes/announce()
-	command_announcement.Announce("Space-time anomalies detected on the station. There is no additional data.", "[location_name()] Sensor Array", zlevels = affecting_z)
+	GLOB.using_map.space_time_anomaly_detected_annoncement()
 
 /datum/event/wormholes/tick()
 	if(activeFor % shift_frequency == 0)

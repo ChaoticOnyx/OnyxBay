@@ -342,7 +342,7 @@
 	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
 	//allow fire_stacks to go up to 4 for fires cooler than 700 K, since are being immersed in flame after all.
 	if(fire_stacks <= 4 || fire_burn_temperature() < temperature)
-		adjust_fire_stacks(2)
+		adjust_fire_stacks(4)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()
