@@ -69,7 +69,7 @@ var/datum/uplink/uplink = new()
 
 /datum/uplink_item/proc/can_view(obj/item/device/uplink/U)
 	// Making the assumption that if no uplink was supplied, then we don't care about antag roles
-	if(!U || !(antag_roles.len || job_specific.len))
+	if(!U)
 		return TRUE
 
 	// With no owner, there's no need to check antag status.
@@ -78,6 +78,9 @@ var/datum/uplink/uplink = new()
 
 	if(job_specific.len && !(U.uplink_owner.assigned_role in job_specific))
 		return FALSE
+
+	if(!antag_roles.len)
+		return TRUE
 
 	for(var/antag_role in antag_roles)
 		if(antag_role == "Exclude")
