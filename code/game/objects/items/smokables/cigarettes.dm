@@ -41,10 +41,15 @@
 		butt.color = color
 		if(brand)
 			butt.desc += " This one is \a [brand]."
-		if(ismob(loc))
-			var/mob/living/M = loc
+		if(iscarbon(loc))
+			var/mob/living/carbon/M = loc
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
+			if(!M.stat && (src == M.wear_mask || M.is_item_in_hands(src)) && !M.handcuffed && isturf(M.loc))
+				for(var/obj/item/material/ashtray/A in view(1, M))
+					if(length(A.contents) < A.max_butts)
+						A.attackby(butt, M)
+						break
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
 
