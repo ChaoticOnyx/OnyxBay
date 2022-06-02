@@ -144,7 +144,7 @@
 					dish.virus2.infectionchance += 1
 			if(dish.growth + 3*speed >= 100 && dish.growth < 100)
 				ping("\The [src] pings, \"Sufficient viral growth density achieved.\"")
-			dish.growth += 3*speed
+			dish.growth = Clamp(dish.growth + 3*speed, 0, 100)
 			SSnano.update_uis(src)
 
 		if(radiation)
