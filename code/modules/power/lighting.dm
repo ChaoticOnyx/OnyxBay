@@ -138,8 +138,8 @@
 	desc = "A lighting fixture."
 	anchored = 1
 
-	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
-	use_power = POWER_USE_ACTIVE
+	layer = ABOVE_HUMAN_LAYER // They were appearing under mobs which is a little weird - Ostaf
+	use_power = POWER_USE_OFF // It resets during initialization anyway, but using other options may cause some initially-unpowered areas to act silly.
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
@@ -606,8 +606,7 @@
 
 // called when area power state changes
 /obj/machinery/light/power_change()
-	spawn(10)
-		seton(powered())
+	seton(powered())
 
 // called when on fire
 
