@@ -83,7 +83,7 @@
 
 /obj/item/projectile/energy/electrode/small
 	icon_state = "electrode-small"
-	agony = 25
+	agony = 37.5
 
 /obj/item/projectile/energy/electrode/greater
 	agony = 85
