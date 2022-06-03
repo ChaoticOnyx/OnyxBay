@@ -25,6 +25,8 @@ SUBSYSTEM_DEF(xenoarch)
 		digsite_spawning_turfs = SSxenoarch.digsite_spawning_turfs
 
 /datum/controller/subsystem/xenoarch/proc/SetupXenoarch()
+	set background = TRUE
+
 	for(var/turf/simulated/mineral/M in world)
 		if(!M.density)
 			continue
