@@ -167,7 +167,7 @@
 			to_chat(user, "<span class='notice'>\The [src] cannot hold \the [W].</span>")
 		return 0
 
-	if(max_w_class != null && W.w_class > max_w_class && !(override_w_class.len && is_type_in_list(W, override_w_class)))
+	if(max_w_class != null && W.w_class > max_w_class && !(override_w_class?.len && is_type_in_list(W, override_w_class)))
 		if(!stop_messages)
 			to_chat(user, "<span class='notice'>\The [W] is too big for this [src.name].</span>")
 		return 0

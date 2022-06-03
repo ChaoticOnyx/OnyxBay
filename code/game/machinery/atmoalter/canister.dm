@@ -211,7 +211,7 @@ update_flag
 		else
 			environment = loc.return_air()
 
-		var/env_pressure = environment.return_pressure()
+		var/env_pressure = environment ? environment.return_pressure() : 0
 		var/pressure_delta = release_pressure - env_pressure
 
 		if((air_contents.temperature > 0) && (pressure_delta > 0))
