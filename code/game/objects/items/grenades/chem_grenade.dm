@@ -102,6 +102,7 @@
 					to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
 					detonate()
 					return
+				broken = TRUE
 			if(active)
 				if(do_after(usr, 50, src))
 					active = 0

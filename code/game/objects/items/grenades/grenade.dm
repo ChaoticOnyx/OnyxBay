@@ -95,8 +95,12 @@
 			to_chat(user, SPAN("notice", "There is no detonator inside."))
 			return 
 		if(isnull(safety_pin) && have_pin && !active)
-			to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
-			return
+			if(prob(5))
+				to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
+				detonate()
+				return
+			broken = TRUE
+			to_chat(user, SPAN("warning", "You broke grenade, while trying to remove detonator!"))
 		if(active) 
 			to_chat(user, SPAN("notice", "You begin to remove [detonator] from grenade chamber."))
 			if(do_after(usr, 50, src))
