@@ -71,3 +71,10 @@
 	item_cost = 8
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/storage/box/supermatters
+
+/datum/uplink_item/item/grenades/bomb
+	name = "TTV Bomb"
+	desc = "A huge two balloned bomb for if silence is not an option. Just be careful and keep distance."
+	item_cost = 8
+	antag_roles = list(MODE_NUKE) // yeah maybe regular traitors shouldn't be able to get these
+	path = /obj/effect/spawner/newbomb/timer/syndicate
