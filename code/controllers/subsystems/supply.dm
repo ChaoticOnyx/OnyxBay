@@ -164,7 +164,7 @@ SUBSYSTEM_DEF(supply)
 		if(SP.contraband)
 			illegal_alert_chance += 30
 		else
-			illegal_alert_chance += 5
+			illegal_alert_chance += 2
 		illegal_alert_chance = clamp(illegal_alert_chance, 0, 90)
 		var/obj/A = new SP.containertype(pickedloc)
 		A.SetName("[SP.containername][SO.comment ? " ([SO.comment])":"" ]")
