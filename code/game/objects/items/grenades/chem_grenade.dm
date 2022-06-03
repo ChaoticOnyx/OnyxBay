@@ -97,9 +97,11 @@
 			icon_state = initial(icon_state) +"_locked"
 			stage = 2
 		else if(stage == 2)
-			if(isnull(safety_pin) && !active)
-				to_chat(user, SPAN("notice", "The assembly is not going off without safety pin."))
-				return
+			if(isnull(safety_pin) && have_pin && !active)
+				if(prob(5))
+					to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
+					detonate()
+					return
 			if(active)
 				if(do_after(usr, 50, src))
 					active = 0
@@ -108,13 +110,11 @@
 					to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 					detonate()
 					return
-			else
-				to_chat(user, SPAN("notice", "You unlock the assembly."))
-				playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
-				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
-				update_icon()
-				stage = 1
-				active = 0
+			to_chat(user, SPAN("notice", "You unlock the assembly."))
+			playsound(src.loc, 'sound/items/Screwdriver.ogg', 25, -3)
+			SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
+			update_icon()
+			stage = 1
 	else if(is_type_in_list(W, allowed_containers) && (!stage || stage==1) && path != 2)
 		path = 1
 		if(beakers.len == 2)
