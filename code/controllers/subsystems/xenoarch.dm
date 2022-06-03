@@ -25,8 +25,6 @@ SUBSYSTEM_DEF(xenoarch)
 		digsite_spawning_turfs = SSxenoarch.digsite_spawning_turfs
 
 /datum/controller/subsystem/xenoarch/proc/SetupXenoarch()
-	set background = TRUE
-
 	for(var/turf/simulated/mineral/M in world)
 		if(!M.density)
 			continue
@@ -95,16 +93,19 @@ SUBSYSTEM_DEF(xenoarch)
 			//have a chance for an artifact to spawn here, but not in animal or plant digsites
 			if(isnull(M.artifact_find) && digsite != DIGSITE_GARDEN && digsite != DIGSITE_ANIMAL)
 				artifact_spawning_turfs.Add(archeo_turf)
+		CHECK_TICK
 
 	//create artifact machinery
 	var/num_artifacts_spawn = rand(ARTIFACTSPAWNNUM_LOWER, ARTIFACTSPAWNNUM_UPPER)
 	while(artifact_spawning_turfs.len > num_artifacts_spawn)
 		pick_n_take(artifact_spawning_turfs)
+		CHECK_TICK
 
 	var/list/artifacts_spawnturf_temp = artifact_spawning_turfs.Copy()
 	while(artifacts_spawnturf_temp.len > 0)
 		var/turf/simulated/mineral/artifact_turf = pop(artifacts_spawnturf_temp)
 		artifact_turf.artifact_find = new()
+		CHECK_TICK
 
 #undef XENOARCH_SPAWN_CHANCE
 #undef DIGSITESIZE_LOWER
