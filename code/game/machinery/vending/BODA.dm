@@ -45,5 +45,5 @@
 /obj/item/vending_cartridge/sovietsoda
 	name = "BODA"
 	build_path = /obj/machinery/vending/sovietsoda
-	legal = list(/obj/item/reagent_containers/vessel/bottle/space_up = 30)
-	illegal = list(/obj/item/reagent_containers/vessel/bottle/cola = 20)
+	legal = list(/obj/item/reagent_containers/vessel/bottle/space_up = 30) // TO-DO: Russian cola can
+	illegal = list(/obj/item/reagent_containers/vessel/bottle/cola = 20) // TO-DO: Russian cola can
