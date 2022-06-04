@@ -84,9 +84,8 @@ Small, little HP, poisonous.
 		if(!do_mob(user, H, 30))
 			return
 		user.drop_from_inventory(src)
-		V.attach(H)
-		mob = null
 		qdel(src)
+		V.attach(H)
 		return
 	..()
 

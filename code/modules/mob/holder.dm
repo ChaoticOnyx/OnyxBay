@@ -20,17 +20,25 @@ var/list/holder_mob_icon_cache = list()
 	var/last_holder
 
 /obj/item/holder/New(loc, mob_to_hold)
-	..()
+	..(loc)
 	ASSERT(mob_to_hold)
 	mob = mob_to_hold
+	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/holder/proc/destroy_all()
 	QDEL_NULL(mob)
 	qdel(src)
 
+/obj/item/holder/proc/onMobQdeleting()
+	ASSERT(mob)
+	unregister_signal(mob, SIGNAL_QDELETING)
+	mob = null
+	qdel(src)
+
 /obj/item/holder/Destroy()
 	if(mob)
+		unregister_signal(mob, SIGNAL_QDELETING)
 		mob.forceMove(get_turf(src))
 		mob = null
 	last_holder = null
@@ -79,9 +87,7 @@ var/list/holder_mob_icon_cache = list()
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
 			return 1
 		M.devour(mob)
-		mob = null
-
-		check_condition()
+		qdel(src)
 
 	..()
 
