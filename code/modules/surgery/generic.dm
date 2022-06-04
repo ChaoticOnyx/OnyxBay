@@ -31,9 +31,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cut_with_laser
 	allowed_tools = list(
-	/obj/item/scalpel/laser3 = 95, \
-	/obj/item/scalpel/laser2 = 85, \
-	/obj/item/scalpel/laser1 = 75, \
+	/obj/item/scalpel/laser3 = 100, \
+	/obj/item/scalpel/laser2 = 100, \
+	/obj/item/scalpel/laser1 = 100, \
 	/obj/item/melee/energy/sword/one_hand = 50
 	)
 	priority = 2

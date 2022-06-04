@@ -75,6 +75,7 @@
 	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
 	clicksound = SFX_USE_SMALL_SWITCH
+	layer = ABOVE_WINDOW_LAYER
 	var/needs_powerdown_sound
 	var/area/area
 	var/areastring = null
@@ -246,7 +247,7 @@
 	area.apc = src
 	update_icon()
 
-/obj/machinery/power/apc/examine(mob/user)
+/obj/machinery/power/apc/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)

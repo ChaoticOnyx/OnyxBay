@@ -3,12 +3,12 @@
 
 /decl/hierarchy/supply_pack/supply/food
 	name = "Kitchen supply crate"
-	contains = list(/obj/item/reagent_containers/food/condiment/flour = 6,
-					/obj/item/reagent_containers/food/drinks/milk = 4,
-					/obj/item/reagent_containers/food/drinks/soymilk = 2,
+	contains = list(/obj/item/reagent_containers/vessel/condiment/flour = 6,
+					/obj/item/reagent_containers/vessel/plastic/milk = 4,
+					/obj/item/reagent_containers/vessel/plastic/soymilk = 2,
 					/obj/item/storage/fancy/egg_box = 2,
-					/obj/item/reagent_containers/food/snacks/tofu = 4,
-					/obj/item/reagent_containers/food/snacks/meat = 4
+					/obj/item/reagent_containers/food/tofu = 4,
+					/obj/item/reagent_containers/food/meat = 4
 					)
 	cost = 25
 	containertype = /obj/structure/closet/crate/freezer
@@ -22,13 +22,13 @@
 
 /decl/hierarchy/supply_pack/supply/janitor
 	name = "Janitorial supplies"
-	contains = list(/obj/item/reagent_containers/glass/bucket,
+	contains = list(/obj/item/reagent_containers/vessel/bucket,
 					/obj/item/mop,
 					/obj/item/caution = 4,
 					/obj/item/storage/bag/trash,
 					/obj/item/device/lightreplacer,
 					/obj/item/reagent_containers/spray/cleaner,
-					/obj/item/reagent_containers/glass/rag,
+					/obj/item/reagent_containers/rag,
 					/obj/item/grenade/chem_grenade/cleaner = 3,
 					/obj/structure/mopbucket)
 	cost = 10
@@ -79,7 +79,6 @@
 					/obj/item/shovel,
 					/obj/item/pickaxe,
 					/obj/item/mining_scanner,
-					/obj/item/clothing/glasses/hud/standard/material,
 					/obj/item/clothing/glasses/hud/standard/meson)
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure

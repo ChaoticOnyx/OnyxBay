@@ -88,7 +88,7 @@
 		T.update_icon()
 	. = ..()
 
-/obj/structure/table/examine(mob/user)
+/obj/structure/table/_examine_text(mob/user)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)

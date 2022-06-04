@@ -44,7 +44,7 @@ var/global/datum/body_build/default_body_build = new
 		return I // Nonexistent slot, just give 'em an empty icon
 	for(var/datum/body_build/BB in list(src, default_body_build))
 		switch(slot)
-			if(slot_handcuffed_str || slot == slot_legcuffed_str)
+			if(slot_handcuffed_str, slot_legcuffed_str)
 				I = BB.misk_icon
 			else
 				I = BB.clothing_icons[slot]
@@ -260,7 +260,7 @@ var/global/datum/body_build/default_body_build = new
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',
-		"slot_suit"      = 'icons/inv_slots/suits/mob_unathi.dmi',
+		"slot_suit"      = 'icons/inv_slots/suits/mob.dmi', // They DO have their own assigned DMI but, well, just take a look yourself and leave it be.
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob.dmi',
 		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',

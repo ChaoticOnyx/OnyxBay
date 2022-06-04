@@ -2,7 +2,7 @@
 				INTERNAL ORGANS DEFINES
 ****************************************************/
 /obj/item/organ/internal
-	food_organ_type = /obj/item/reagent_containers/food/snacks/organ
+	food_organ_type = /obj/item/reagent_containers/food/organ
 	throwforce = 0.1 // Enough to upset you, not enough to crack your ribcage open
 	var/dead_icon // Icon to use when the organ has died.
 	var/surface_accessible = FALSE
@@ -112,6 +112,7 @@
 	min_bruised_damage += 5
 	min_broken_damage += 10
 
+	override_species_icon = TRUE
 	icon = 'icons/mob/human_races/organs/cyber.dmi'
 
 /obj/item/organ/internal/proc/getToxLoss()
@@ -151,16 +152,16 @@
 				owner.custom_pain("Something inside your [parent.name] hurts[degree].", amount, affecting = parent)
 
 /obj/item/organ/internal/emp_act(severity)
-	if(owner.status_flags & GODMODE)
+	if(owner?.status_flags & GODMODE)
 		return 0
 	if(!BP_IS_ROBOTIC(src))
 		return
-	switch (severity)
-		if (1)
+	switch(severity)
+		if(1)
 			take_internal_damage(9)
-		if (2)
+		if(2)
 			take_internal_damage(3)
-		if (3)
+		if(3)
 			take_internal_damage(1)
 
 // Things we should do if we are a foreign organ. Used only by lings' biostructures for now.

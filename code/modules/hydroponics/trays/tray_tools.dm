@@ -29,6 +29,11 @@
 		print_report(usr)
 
 /obj/item/device/analyzer/plant_analyzer/proc/print_report(mob/living/user)
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
+		to_chat(user, SPAN("notice", "\The [src]'s internal printer is still recharging."))
+		return
+
 	if(!last_data)
 		to_chat(user, "There is no scan data to print.")
 		return
@@ -49,9 +54,9 @@
 	var/datum/reagents/grown_reagents
 	if(istype(target,/obj/structure/table))
 		return ..()
-	else if(istype(target,/obj/item/reagent_containers/food/snacks/grown))
+	else if(istype(target,/obj/item/reagent_containers/food/grown))
 
-		var/obj/item/reagent_containers/food/snacks/grown/G = target
+		var/obj/item/reagent_containers/food/grown/G = target
 		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 

@@ -153,7 +153,7 @@
 /obj/item/clothing/suit/chameleon/New()
 	..()
 	if(!clothing_choices)
-		var/blocked = list(src.type, /obj/item/clothing/suit/cyborg_suit, /obj/item/clothing/suit/justice, /obj/item/clothing/suit/greatcoat)
+		var/blocked = list(src.type, /obj/item/clothing/suit/justice, /obj/item/clothing/suit/greatcoat)
 		clothing_choices = generate_chameleon_choices(/obj/item/clothing/suit, blocked)
 
 /obj/item/clothing/suit/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
@@ -305,7 +305,7 @@
 	unarmed_damage_override = 10
 	origin_tech = list(TECH_ILLEGAL = 5)
 
-/obj/item/clothing/gloves/chameleon/robust/examine(mob/user)
+/obj/item/clothing/gloves/chameleon/robust/_examine_text(mob/user)
 	. = ..()
 	. += "\nThese look extra robust."
 

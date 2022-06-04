@@ -5,6 +5,7 @@ var/list/holder_mob_icon_cache = list()
 	name = "holder"
 	desc = "You shouldn't ever see this."
 	icon = 'icons/obj/objects.dmi'
+	icon_state = "blank"
 	slot_flags = SLOT_HEAD | SLOT_HOLSTER
 
 	origin_tech = null
@@ -32,35 +33,24 @@ var/list/holder_mob_icon_cache = list()
 	if(mob)
 		mob.forceMove(get_turf(src))
 		mob = null
-	for(var/atom/movable/AM in src)
-		AM.forceMove(get_turf(src))
 	last_holder = null
+	if(ismob(loc))
+		var/mob/M = loc
+		M.drop_from_inventory(src, get_turf(M))
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/holder/Process()
-	update_state()
+	check_condition()
 
 /obj/item/holder/dropped()
 	..()
 	spawn(1)
-		update_state()
+		check_condition()
 
-/obj/item/holder/proc/update_state()
-	if(last_holder != loc)
-		unregister_all_movement(last_holder, mob)
-
-	if(istype(loc,/turf) || !mob)
-		if(mob)
-			var/atom/movable/mob_container = mob
-			mob_container.dropInto(loc)
-			mob.reset_view()
-			mob = null
+/obj/item/holder/proc/check_condition()
+	if(isturf(loc) || !mob)
 		qdel(src)
-	else if(last_holder != loc)
-		register_all_movement(loc, mob)
-
-	last_holder = loc
 
 /obj/item/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
@@ -76,11 +66,14 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/holder/attack_self()
 	mob.show_inv(usr)
+	usr.show_inventory?.open()
 
 /obj/item/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
+		if(M.isSynthetic())
+			return
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
@@ -88,7 +81,7 @@ var/list/holder_mob_icon_cache = list()
 		M.devour(mob)
 		mob = null
 
-		update_state()
+		check_condition()
 
 	..()
 
@@ -102,10 +95,6 @@ var/list/holder_mob_icon_cache = list()
 	name = mob.name
 	desc = mob.desc
 	overlays |= mob.overlays
-	var/mob/living/carbon/human/H = loc
-	if(hasorgans(H))
-		last_holder = H
-		register_all_movement(H, mob)
 
 	update_held_icon()
 
@@ -142,7 +131,8 @@ var/list/holder_mob_icon_cache = list()
 	slot_flags = SLOT_HOLSTER
 
 /obj/item/holder/attackby(obj/item/W, mob/user)
-	mob.attackby(W,user)
+	mob.attackby(W, user)
+	sync()
 
 //Mob procs and vars for scooping up
 /mob/living/var/holder_type
@@ -152,28 +142,44 @@ var/list/holder_mob_icon_cache = list()
 	if(!holder_type || buckled || pinned.len)
 		return
 
-	var/obj/item/holder/H = new holder_type(get_turf(src), src)
-
 	if(self_grab)
-		if(src.incapacitated())
+		if(incapacitated())
 			return
-		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail=0, disable_warning=1))
-			to_chat(src, "<span class='warning'>You can't climb onto [grabber]!</span>")
-			return
-
-		to_chat(grabber, "<span class='notice'>\The [src] clambers onto you!</span>")
-		to_chat(src, "<span class='notice'>You climb up onto \the [grabber]!</span>")
 	else
 		if(grabber.incapacitated())
 			return
-		if(!grabber.put_in_hands(H))
-			to_chat(grabber, "<span class='warning'>Your hands are full!</span>")
+
+	for(var/obj/item/grab/G in grabbed_by)
+		if(self_grab) // Somebody's grabbing us, no way to climb onto anyone.
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber] while being grabbed!"))
+			return
+		else if(G.assailant != grabber) // Grabber's trying to scoop us up, but somebody else's grabbing us.
+			to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of [G.assailant]'s grab!"))
 			return
 
-		to_chat(grabber, "<span class='notice'>You scoop up \the [src]!</span>")
-		to_chat(src, "<span class='notice'>\The [grabber] scoops you up!</span>")
+	var/obj/item/holder/H = new holder_type(get_turf(src), src)
 
-	src.forceMove(H)
+	if(self_grab)
+		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail = FALSE, disable_warning = TRUE))
+			to_chat(src, SPAN("warning", "You can't climb onto [grabber]!"))
+			qdel(H)
+			return
+
+		to_chat(grabber, SPAN("notice", "\The [src] clambers onto you!"))
+		to_chat(src, SPAN("notice", "You climb up onto \the [grabber]!"))
+	else
+		if(!grabber.put_in_hands(H))
+			to_chat(grabber, SPAN("warning", "Your hands are full!"))
+			qdel(H)
+			return
+
+		to_chat(grabber, SPAN("notice", "You scoop up \the [src]!"))
+		to_chat(src, SPAN("notice", "\The [grabber] scoops you up!"))
+
+	for(var/obj/item/grab/G in grabbed_by)
+		qdel(G) // All the checks have been done above, it's safe to murder one (or even two, who knows) of grabber's grab objects
+
+	forceMove(H)
 
 	if(isanimal(src))
 		var/mob/living/simple_animal/SA = src

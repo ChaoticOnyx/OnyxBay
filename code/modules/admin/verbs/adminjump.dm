@@ -11,7 +11,7 @@
 	set category = "Admin"
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
-	if(!config.allow_admin_jump)
+	if(!config.admin.allow_admin_jump)
 		return alert("Admin jumping disabled")
 
 	var/list/areas = area_repository.get_areas_by_z_level()
@@ -25,7 +25,7 @@
 	set category = "Admin"
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
-	if(!config.allow_admin_jump)
+	if(!config.admin.allow_admin_jump)
 		return alert("Admin jumping disabled")
 
 	log_and_message_admins("jumped to [T.x],[T.y],[T.z] in [T.loc]")
@@ -39,7 +39,7 @@
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 
-	if(config.allow_admin_jump)
+	if(config.admin.allow_admin_jump)
 		log_and_message_admins("jumped to [key_name(M)]")
 		if(mob)
 			var/turf/T = get_turf(M)
@@ -64,7 +64,7 @@
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 
-	if(!config.allow_admin_jump)
+	if(!config.admin.allow_admin_jump)
 		alert("Admin jumping disabled")
 		return
 	if(!mob)
@@ -88,7 +88,7 @@
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 
-	if(config.allow_admin_jump)
+	if(config.admin.allow_admin_jump)
 		if(!istype(C))
 			to_chat(usr, "[C] is not a client, somehow.")
 			return
@@ -106,7 +106,7 @@
 	set desc = "Mob to teleport"
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
-	if(config.allow_admin_jump)
+	if(config.admin.allow_admin_jump)
 		log_and_message_admins("teleported [key_name(M)] to self.")
 		M.jumpTo(get_turf(mob))
 		feedback_add_details("admin_verb","GM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -127,7 +127,7 @@
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 
-	if(config.allow_admin_jump)
+	if(config.admin.allow_admin_jump)
 		var/list/keys = list()
 		for(var/mob/M in GLOB.player_list)
 			keys += M.client
@@ -150,7 +150,7 @@
 	set name = "Send Mob"
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
-	if(!config.allow_admin_jump)
+	if(!config.admin.allow_admin_jump)
 		alert("Admin jumping disabled")
 		return
 
@@ -161,4 +161,3 @@
 		M.jumpTo(pick(get_area_turfs(A)))
 		feedback_add_details("admin_verb","SMOB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		log_and_message_admins("teleported [key_name(M)] to [A].")
-

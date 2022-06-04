@@ -43,7 +43,7 @@
 	return ..()
 
 /obj/machinery/smartfridge/proc/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/food/snacks/grown/) || istype(O,/obj/item/seeds/))
+	if(istype(O,/obj/item/reagent_containers/food/grown/) || istype(O,/obj/item/seeds/))
 		return 1
 	return 0
 
@@ -78,11 +78,11 @@
 	req_one_access = list(access_medical,access_chemistry)
 
 /obj/machinery/smartfridge/secure/medbay/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass/))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		return 1
-	if(istype(O,/obj/item/storage/pill_bottle/))
+	if(istype(O, /obj/item/storage/pill_bottle))
 		return 1
-	if(istype(O,/obj/item/reagent_containers/pill/))
+	if(istype(O, /obj/item/reagent_containers/pill))
 		return 1
 	return 0
 
@@ -95,7 +95,7 @@
 	icon_off = "smartfridge_virology-off"
 
 /obj/machinery/smartfridge/secure/virology/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass/beaker/vial/))
+	if(istype(O,/obj/item/reagent_containers/vessel/beaker/vial/))
 		return 1
 	if(istype(O,/obj/item/virusdish/))
 		return 1
@@ -120,7 +120,7 @@
 	desc = "A refrigerated storage unit for tasty tasty alcohol."
 
 /obj/machinery/smartfridge/drinks/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/glass) || istype(O,/obj/item/reagent_containers/food/drinks) || istype(O,/obj/item/reagent_containers/food/condiment))
+	if(istype(O,/obj/item/reagent_containers/vessel))
 		return 1
 
 /obj/machinery/smartfridge/secure/food
@@ -129,7 +129,7 @@
 	req_access = list(access_kitchen)
 
 /obj/machinery/smartfridge/secure/food/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/reagent_containers/food/snacks))
+	if(istype(O,/obj/item/reagent_containers/food))
 		return 1
 	return 0
 
@@ -141,8 +141,8 @@
 	icon_off = "drying_rack"
 
 /obj/machinery/smartfridge/drying_rack/accept_check(obj/item/O as obj)
-	if(istype(O, /obj/item/reagent_containers/food/snacks/))
-		var/obj/item/reagent_containers/food/snacks/S = O
+	if(istype(O, /obj/item/reagent_containers/food/))
+		var/obj/item/reagent_containers/food/S = O
 		if (S.dried_type)
 			return 1
 	return 0
@@ -168,7 +168,7 @@
 
 /obj/machinery/smartfridge/drying_rack/proc/dry()
 	for(var/datum/stored_items/I in item_records)
-		for(var/obj/item/reagent_containers/food/snacks/S in I.instances)
+		for(var/obj/item/reagent_containers/food/S in I.instances)
 			if(S.dry || !I.get_specific_product(get_turf(src), S)) continue
 			if(S.dried_type == S.type)
 				S.dry = 1
@@ -355,7 +355,7 @@
 /obj/machinery/smartfridge/secure/Topic(href, href_list)
 	if(stat & (NOPOWER|BROKEN)) return 0
 	if(usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf)))
-		if(!allowed(usr) && !emagged && locked != -1 && href_list["vend"])
+		if(!allowed(usr) && !emagged && scan_id && href_list["vend"])
 			to_chat(usr, "<span class='warning'>Access denied.</span>")
 			return 0
 	return ..()

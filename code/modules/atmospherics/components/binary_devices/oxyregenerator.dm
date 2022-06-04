@@ -38,7 +38,7 @@
 		if(istype(P, /obj/item/stock_parts/micro_laser))
 			power_rating -= power_rating * 0.05 * (P.rating-1) //5% better power efficiency per stock item rank
 
-/obj/machinery/atmospherics/binary/oxyregenerator/examine(user)
+/obj/machinery/atmospherics/binary/oxyregenerator/_examine_text(user)
 	. = ..()
 	. += "\nIts outlet port is to the [dir2text(dir)]"
 

@@ -60,6 +60,7 @@
 
 /obj/item/gun/projectile/revolver/mateba
 	name = "mateba"
+	desc = "The Lumoco Arms HE Colt is a choice revolver for when you absolutely, positively need to put a hole in the other guy. Uses .50 ammo."
 	icon_state = "mateba"
 	caliber = ".50"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
@@ -71,7 +72,7 @@
 	icon_state = "detective"
 	fire_sound = 'sound/effects/weapons/gun/fire_revolver1.ogg'
 	max_shells = 6
-	caliber = "38"
+	caliber = ".38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	ammo_type = /obj/item/ammo_casing/c38
 
@@ -182,7 +183,7 @@
 	return null*/
 
 
-/obj/item/gun/projectile/revolver/m2019/detective/examine(mob/user)
+/obj/item/gun/projectile/revolver/m2019/detective/_examine_text(mob/user)
 	. = ..()
 	if(!bcell)
 		. += "\n\The [src] has no power cell installed."

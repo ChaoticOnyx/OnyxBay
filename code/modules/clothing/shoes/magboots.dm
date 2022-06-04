@@ -88,7 +88,7 @@
 	wearer.update_floating()
 	wearer = null
 
-/obj/item/clothing/shoes/magboots/examine(mob/user)
+/obj/item/clothing/shoes/magboots/_examine_text(mob/user)
 	. = ..()
 	var/state = "disabled"
 	if(item_flags & ITEM_FLAG_NOSLIP)

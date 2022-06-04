@@ -2,7 +2,11 @@
 /mob/proc/attack_ui(slot)
 	var/obj/item/I = get_active_hand()
 	var/obj/item/E = get_equipped_item(slot)
-	if (istype(E))
+	if(ishuman(src))
+		var/mob/living/carbon/C = src
+		if(C.handcuffed)
+			return
+	if(istype(E))
 		if(istype(I))
 			E.attackby(I, src)
 		else
@@ -231,7 +235,7 @@ var/list/slot_equipment_priority = list( \
 	if(QDELETED(I))
 		return
 	if(force || canUnEquip(I))
-		return drop_from_inventory(I, target)
+		return drop_from_inventory(I, target) && !QDELETED(I)
 	return FALSE
 
 //Attemps to remove an object on a mob.

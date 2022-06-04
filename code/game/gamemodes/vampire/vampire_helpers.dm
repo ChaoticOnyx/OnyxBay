@@ -86,7 +86,7 @@
 				to_chat(src, SPAN_WARNING("You lack the power required to affect another creature of the Veil."))
 			return FALSE
 
-	if (is_mechanical(T))
+	if (T.isSynthetic())
 		if (notify)
 			to_chat(src, SPAN_WARNING("You lack the power interact with mechanical constructs."))
 		return FALSE

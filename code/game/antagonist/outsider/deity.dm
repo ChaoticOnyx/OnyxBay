@@ -19,5 +19,5 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 
 /datum/antagonist/deity/Initialize()
 	. = ..()
-	if(config.deity_min_age)
-		min_player_age = config.deity_min_age
+	if(config.game.deity_min_age)
+		min_player_age = config.game.deity_min_age

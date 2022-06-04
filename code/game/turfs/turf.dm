@@ -31,6 +31,8 @@
 
 	var/movement_delay
 
+	var/changing_turf
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
@@ -41,6 +43,10 @@
 	RecalculateOpacity()
 
 /turf/Destroy()
+	if(!changing_turf)
+		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+
+	changing_turf = FALSE
 	remove_cleanables()
 	..()
 	return QDEL_HINT_IWILLGC
@@ -232,13 +238,15 @@ var/const/enterloopsanity = 100
 				L.Add(t)
 	return L
 
-/turf/proc/contains_dense_objects()
+/turf/proc/contains_dense_objects(check_mobs = TRUE)
 	if(density)
-		return 1
+		return TRUE
 	for(var/atom/A in src)
+		if(!check_mobs && ismob(A))
+			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //expects an atom containing the reagents used to clean the turf
 /turf/proc/clean(atom/source, mob/user = null)
@@ -270,3 +278,6 @@ var/const/enterloopsanity = 100
 		if(isliving(AM))
 			var/mob/living/M = AM
 			M.turf_collision(src, speed)
+
+/turf/allow_drop()
+	return TRUE

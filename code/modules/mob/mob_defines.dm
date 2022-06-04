@@ -94,6 +94,7 @@
 	var/lying_prev = 0
 	var/hanging = FALSE
 	var/hanging_prev = FALSE
+	var/ignore_pull_slowdown = FALSE
 
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
@@ -151,7 +152,7 @@
 	var/parrying = 0
 
 //The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
-	var/mob/living/carbon/LAssailant = null
+	var/weakref/LAssailant = null // Must be mob/living/carbon
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 

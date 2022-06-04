@@ -34,7 +34,7 @@ var/datum/species/shapeshifter/promethean/prometheans
 	brute_mod =           0.5
 	burn_mod =            2
 	oxy_mod =             0
-	total_health =        240
+	total_health =        120
 	siemens_coefficient = -1
 	rarity_value =        5
 	limbs_are_nonsolid =  TRUE
@@ -152,3 +152,8 @@ var/datum/species/shapeshifter/promethean/prometheans
 			return "<span class='warning'>[G.He] [G.is] glowing brightly with high levels of electrical activity.</span>"
 		if(35 to INFINITY)
 			return "<span class='danger'>[G.He] [G.is] radiating massive levels of electrical activity!</span>"
+
+/datum/species/shapeshifter/promethean/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_TRAITOR) // The only role that looks somewhat suitable
+		return TRUE
+	return FALSE

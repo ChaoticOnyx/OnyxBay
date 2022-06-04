@@ -26,10 +26,10 @@
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
 	inherent_verbs = list(/mob/living/proc/ventcrawl)
 	hud_type = /datum/hud_data/monkey
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/meat/monkey
 
 	rarity_value = 0.1
-	total_health = 150
+	total_health = 75
 	brute_mod = 1.5
 	burn_mod = 1.5
 
@@ -38,6 +38,7 @@
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
 	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
+	species_flags = SPECIES_FLAG_NO_ANTAG_TARGET
 
 	pass_flags = PASS_FLAG_TABLE
 	holder_type = /obj/item/holder
@@ -122,6 +123,12 @@
 /datum/species/monkey/handle_post_spawn(mob/living/carbon/human/H)
 	..()
 	H.item_state = lowertext(name)
+
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_CHANGELING) // For memes sake
+		return TRUE
+	return FALSE
+
 
 /datum/species/monkey/tajaran
 	name = "Farwa"

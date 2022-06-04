@@ -211,6 +211,7 @@
 /obj/item/crossbowframe
 	name = "crossbow frame"
 	desc = "A half-finished crossbow."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "crossbowframe0"
 	item_state = "crossbow-solid"
 	force = 8.5
@@ -223,7 +224,7 @@
 /obj/item/crossbowframe/update_icon()
 	icon_state = "crossbowframe[buildstate]"
 
-/obj/item/crossbowframe/examine(mob/user)
+/obj/item/crossbowframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a loose rod frame in place."

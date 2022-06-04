@@ -12,7 +12,7 @@
 	var/datum/computer_file/data/warrant/active
 
 //look at it
-/obj/item/device/holowarrant/examine(mob/user)
+/obj/item/device/holowarrant/_examine_text(mob/user)
 	. = ..()
 	if(active)
 		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."
@@ -71,7 +71,7 @@
 	if(active.fields["arrestsearch"] == "arrest")
 		var/output = {"
 		<meta charset=\"utf-8\"><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
-		<BODY bgcolor='#ffffff'><center><large><b>Sol Central Government Colonial Marshal Bureau</b></large></br>
+		<BODY bgcolor='#ffffff'><center><large><b>Nano Trasen Board of Directors</b></large></br>
 		in the jurisdiction of the</br>
 		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
 		</br>

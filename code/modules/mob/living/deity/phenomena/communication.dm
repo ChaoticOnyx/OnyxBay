@@ -35,14 +35,14 @@
 			if((M in view) && M.client)
 				to_chat(M, "<span class='cult'>Your attention is eerily drawn to \the [a].</span>")
 				M.client.images += arrow
-				GLOB.logged_out_event.register(M, src, /datum/phenomena/point/proc/remove_image)
+				register_signal(M, SIGNAL_LOGGED_OUT, /datum/phenomena/point/proc/remove_image)
 				spawn(20)
 					if(M.client)
 						remove_image(M)
 
 /datum/phenomena/point/proc/remove_image(mob/living/L)
 	L.client.images -= arrow
-	GLOB.logged_out_event.unregister(L, src)
+	unregister_signal(L, SIGNAL_LOGGED_OUT)
 
 /datum/phenomena/punish
 	name = "Punish"

@@ -87,7 +87,7 @@
 	cur_max = hard_cap
 	if(!role_text_plural)
 		role_text_plural = role_text
-	if(config.protect_roles_from_antagonist)
+	if(config.gamemode.protect_roles_from_antagonist)
 		restricted_jobs |= additional_restricted_jobs
 	if(antaghud_indicator)
 		if(!GLOB.hud_icon_reference)
@@ -109,7 +109,7 @@
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+		else if(config.game.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
@@ -123,7 +123,11 @@
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(!is_mob_type_allowed(player))
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
+			if(ishuman(player.current))
+				var/mob/living/carbon/human/H = player.current
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Either '[H.type]' is not an allowed type of mob or '[H.species]' is not an allowed species!")
+			else
+				log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not an allowed type of mob!")
 		else
 			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
 			candidates |= player
@@ -138,7 +142,7 @@
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+		else if(config.game.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
@@ -290,14 +294,6 @@
 /datum/antagonist/proc/is_mob_type_allowed(datum/mind/player)
 	ASSERT(player)
 	ASSERT(player.current)
-	if (istype(player.current, /mob/living/carbon/human))
+	if(isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
 		return TRUE
-	if (istype(player.current, /mob/living/silicon/robot))
-		return TRUE
-	if (istype(player.current, /mob/living/silicon/ai))
-		return TRUE
-	if (isghostmind(player) && flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB))
-		return TRUE
-	if (istype(player.current, /mob/new_player))
-		return TRUE
-	return FALSE
+	return player.current.is_eligible_for_antag_spawn(id)

@@ -80,7 +80,7 @@ var/list/global/tank_gauge_cache = list()
 
 	. = ..()
 
-/obj/item/tank/examine(mob/user)
+/obj/item/tank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		var/descriptive
@@ -126,9 +126,9 @@ var/list/global/tank_gauge_cache = list()
 
 	if(isCoil(W))
 		var/obj/item/stack/cable_coil/C = W
-		if(C.use(1))
-			wired = 1
-			to_chat(user, "<span class='notice'>You attach the wires to the tank.</span>")
+		if(!wired && C.use(1))
+			wired = TRUE
+			to_chat(user, SPAN("notice", "You attach the wires to the tank."))
 			update_icon(TRUE)
 
 	if(isWirecutter(W))
@@ -618,4 +618,3 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/projectile/bullet/pellet/fragment/tank/big
 	name = "large metal fragment"
 	damage = 17
-

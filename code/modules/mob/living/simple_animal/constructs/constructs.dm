@@ -65,7 +65,7 @@
 		return
 	return ..()
 
-/mob/living/simple_animal/construct/examine(mob/user)
+/mob/living/simple_animal/construct/_examine_text(mob/user)
 	. = ..()
 	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
 	if (src.health < src.maxHealth)
@@ -97,6 +97,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "behemoth"
 	icon_living = "behemoth"
+	icon_dead = "behemoth_dead"
 	maxHealth = 250
 	health = 250
 	speak_emote = list("rumbles")
@@ -113,6 +114,7 @@
 	resistance = 10
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	ignore_pull_slowdown = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 /mob/living/simple_animal/construct/armoured/Life()
@@ -183,6 +185,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "artificer"
 	icon_living = "artificer"
+	icon_dead = "artificer_dead"
 	maxHealth = 50
 	health = 50
 	response_harm = "viciously beaten"
@@ -214,6 +217,7 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "behemoth"
 	icon_living = "behemoth"
+	icon_dead = "behemoth_dead"
 	maxHealth = 750
 	health = 750
 	speak_emote = list("rumbles")
@@ -230,6 +234,7 @@
 	var/max_energy = 1000
 	construct_spells = list(/datum/spell/aoe_turf/conjure/forcewall/lesser)
 	can_escape = 1
+	ignore_pull_slowdown = TRUE
 	bodyparts = /decl/simple_animal_bodyparts/juggernaut
 
 ////////////////////////Harvester////////////////////////////////

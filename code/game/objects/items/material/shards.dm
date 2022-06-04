@@ -21,6 +21,7 @@
 	default_material = MATERIAL_GLASS
 	unbreakable = 1 //It's already broken.
 	drops_debris = 0
+	material_amount = 1
 	var/handcutter = FALSE
 	var/noisystepper = FALSE
 

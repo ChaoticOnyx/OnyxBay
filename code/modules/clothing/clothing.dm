@@ -59,7 +59,9 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	gunshot_residue = null
 
 /obj/item/clothing/proc/get_fibers()
-	. = "material from \a [name]"
+	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
+
+	. = "material from \a [name] ([fiber_id])"
 	var/list/acc = list()
 	for(var/obj/item/clothing/accessory/A in accessories)
 		if(prob(40) && A.get_fibers())
@@ -254,7 +256,9 @@ BLIND     // can't see anything
 		overlays += image(icon, "gloves_wire")
 
 /obj/item/clothing/gloves/get_fibers()
-	return "material from a pair of [name]."
+	var/fiber_id = copytext(md5("\ref[src] fiber"), 1, 6)
+
+	return "material from a pair of [name] ([fiber_id])"
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
@@ -290,7 +294,7 @@ BLIND     // can't see anything
 			wired = TRUE
 			wire_color = C.color
 			update_icon(TRUE)
-			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
+			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
 	if(istype(W, /obj/item/tape_roll) && wired)
@@ -759,7 +763,7 @@ BLIND     // can't see anything
 		M.update_inv_wear_id()
 
 
-/obj/item/clothing/under/examine(mob/user)
+/obj/item/clothing/under/_examine_text(mob/user)
 	. = ..()
 	switch(src.sensor_mode)
 		if(0)

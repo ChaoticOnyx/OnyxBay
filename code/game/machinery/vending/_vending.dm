@@ -28,13 +28,13 @@
 	var/vend_power_usage = 150 //actuators and stuff
 
 	// Vending-related
-	var/active = 1 //No sales pitches if off!
-	var/vend_ready = 1 //Are we ready to vend?? Is it time??
-	var/vend_delay = 10 //How long does it take to vend?
+	var/active = TRUE // No sales pitches if off!
+	var/vend_ready = TRUE // Are we ready to vend?? Is it time??
+	var/vend_delay = null // How long does it take to vend? Uses random value if set to null.
 	var/categories = CAT_NORMAL // Bitmask of cats we're currently showing
 	var/datum/stored_items/vending_products/currently_vending = null // What we're requesting payment for right now
 	var/status_message = "" // Status screen messages like "insufficient funds", displayed in NanoUI
-	var/status_error = 0 // Set to 1 if status_message is an error
+	var/status_error = FALSE // Set to TRUE if status_message is an error
 
 	/*
 		Variables used to initialize the product list
@@ -72,12 +72,17 @@
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/scan_id = 1
-	var/obj/item/coin/coin
+	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
+	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
 
 /obj/machinery/vending/Initialize()
 	. = ..()
+
 	wires = new(src)
+
+	if(vend_delay == null)
+		vend_delay = rand(4 SECONDS, 8 SECONDS)
 
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
@@ -94,7 +99,7 @@
 	power_change()
 	setup_icon_states()
 
-/obj/machinery/vending/examine(mob/user)
+/obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
 	if(.)
 		if(stat & BROKEN)
@@ -232,7 +237,7 @@
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/coin) && premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
@@ -274,12 +279,12 @@
 		shake_animation(stime = 2)
 	return
 
-/obj/machinery/vending/MouseDrop_T(obj/item/I as obj, mob/user as mob)
+/obj/machinery/vending/MouseDrop_T(obj/item/I, mob/user)
 	if(!CanMouseDrop(I, user) || (I.loc != user))
 		return
 	return attempt_to_stock(I, user)
 
-/obj/machinery/vending/proc/attempt_to_stock(obj/item/I as obj, mob/user as mob)
+/obj/machinery/vending/proc/attempt_to_stock(obj/item/I, mob/user)
 	for(var/datum/stored_items/vending_products/R in product_records)
 		if(I.type == R.item_path)
 			stock(I, R, user)
@@ -318,7 +323,7 @@
 	visible_message(SPAN("info", "\The [usr] swipes \the [wallet] through \the [src]."))
 	if(currently_vending.price > wallet.worth)
 		status_message = "Insufficient funds on chargecard."
-		status_error = 1
+		status_error = TRUE
 		return 0
 	else
 		wallet.worth -= currently_vending.price
@@ -339,12 +344,12 @@
 	var/datum/money_account/customer_account = get_account(I.associated_account_number)
 	if(!customer_account)
 		status_message = "Error: Unable to access account. Please contact technical support if problem persists."
-		status_error = 1
+		status_error = TRUE
 		return 0
 
 	if(customer_account.suspended)
 		status_message = "Unable to access account: account suspended."
-		status_error = 1
+		status_error = TRUE
 		return 0
 
 	// Have the customer punch in the PIN before checking if there's enough money. Prevents people from figuring out acct is
@@ -355,12 +360,12 @@
 
 		if(!customer_account)
 			status_message = "Unable to access account: incorrect credentials."
-			status_error = 1
+			status_error = TRUE
 			return 0
 
 	if(currently_vending.price > customer_account.money)
 		status_message = "Insufficient funds in account."
-		status_error = 1
+		status_error = TRUE
 		return 0
 	else
 		// Okay to move the money at this point
@@ -379,22 +384,37 @@
  *
  *  Called after the money has already been taken from the customer.
  */
-/obj/machinery/vending/proc/credit_purchase(target as text)
+/obj/machinery/vending/proc/credit_purchase(target)
 	vendor_account.money += currently_vending.price
 
 	var/datum/transaction/T = new(target, "Purchase of [currently_vending.item_name]", currently_vending.price, name)
 	vendor_account.do_transaction(T)
 
-/obj/machinery/vending/attack_ai(mob/user as mob)
+/obj/machinery/vending/attack_ai(mob/user)
 	return attack_hand(user)
 
-/obj/machinery/vending/attack_hand(mob/user as mob)
+/obj/machinery/vending/attack_hand(mob/user)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
 	if(seconds_electrified != 0)
 		if(shock(user, 100))
 			return
+
+	if(user.a_intent == I_HURT && Adjacent(user))
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		take_damage(2)
+		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)
+		shake_animation(stime = 4)
+		user.do_attack_animation(src)
+		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"),
+			SPAN("danger", "You knock \the [src]!"),
+			SPAN("danger", "You hear a knock sound."))
+
+		if(is_stuck && prob(20))
+			unstuck()
+
+		return
 
 	wires.Interact(user)
 	tgui_interact(user)
@@ -496,6 +516,7 @@
 				return TRUE
 
 			if(R.price <= 0)
+				currently_vending = R
 				vend(R, usr)
 			else if(istype(usr, /mob/living/silicon)) // If the item is not free, provide feedback if a synth is trying to buy something.
 				to_chat(usr, SPAN("danger", "Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled."))
@@ -504,10 +525,10 @@
 				currently_vending = R
 				if(!vendor_account || vendor_account.suspended)
 					status_message = "This machine is currently unable to process payments due to problems with the associated account."
-					status_error = 1
+					status_error = TRUE
 				else
 					status_message = "Please swipe a card or insert cash to pay for the item."
-					status_error = 0
+					status_error = FALSE
 
 		if("cancelpurchase")
 			currently_vending = null
@@ -528,9 +549,9 @@
 		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
-	vend_ready = 0 // One thing at a time!!
+	vend_ready = FALSE // One thing at a time!!
 	status_message = "Vending..."
-	status_error = 0
+	status_error = FALSE
 
 	if(R.category & CAT_COIN)
 		if(!coin)
@@ -557,7 +578,13 @@
 	use_power_oneoff(vend_power_usage)	//actuators and stuff
 	if(use_vend_state) //Show the vending animation if needed
 		flick("[base_icon]-vend", src)
+
 	spawn(vend_delay) //Time to vend
+		// A chance to stuck in.
+		if(prob(5))
+			stuck()
+			return
+
 		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
 
 		if(prob(diona_spawn_chance)) //Hehehe
@@ -573,8 +600,33 @@
 					visible_message(SPAN("notice", "\The [src] clunks as it vends an additional [R.item_name]."))
 
 		status_message = ""
-		status_error = 0
-		vend_ready = 1
+		status_error = FALSE
+		vend_ready = TRUE
+		currently_vending = null
+
+/obj/machinery/vending/proc/stuck()
+	ASSERT(!is_stuck)
+	ASSERT(currently_vending)
+
+	playsound(src, 'sound/signals/error28.ogg', 40, FALSE)
+	status_message = "Unexpected error occurred. Please contact technical support."
+	speak(status_message)
+	status_error = TRUE
+	is_stuck = TRUE
+
+/obj/machinery/vending/proc/unstuck()
+	ASSERT(is_stuck)
+
+	playsound(src, 'sound/signals/error25.ogg', 40, FALSE)
+	is_stuck = FALSE
+
+	spawn(1 SECOND)
+		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
+		currently_vending.get_product(get_turf(src))
+		visible_message("\The [src] whirs as it vends \the [currently_vending.item_name].")
+		status_message = ""
+		status_error = FALSE
+		vend_ready = TRUE
 		currently_vending = null
 
 /**
@@ -683,16 +735,3 @@
 		spark_system.set_up(5, 0, loc)
 		spark_system.start()
 		playsound(loc, SFX_SPARK, 50, 1)
-
-/*
-/obj/machinery/vending/[vendors name here]   // --vending machine template   :)
-	name = ""
-	desc = ""
-	icon = ''
-	icon_state = ""
-	vend_delay = 15
-	products = list()
-	contraband = list()
-	premium = list()
-
-*/

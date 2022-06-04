@@ -48,7 +48,7 @@
 	var/obj/effect/portal/P = new(get_turf(a), null, 0)
 	P.failchance = 0
 	portals += P
-	GLOB.destroyed_event.register(P,src,/datum/phenomena/portals/proc/remove_portal)
+	register_signal(P, SIGNAL_QDELETING, /datum/phenomena/portals/proc/remove_portal)
 	if(portals.len > 2)
 		var/removed = portals[1]
 		remove_portal(removed)
@@ -61,7 +61,7 @@
 
 /datum/phenomena/portals/proc/remove_portal(portal)
 	portals -= portal
-	GLOB.destroyed_event.unregister(portal,src)
+	unregister_signal(portal, SIGNAL_QDELETING)
 	var/turf/T = get_turf(portal)
 	for(var/obj/effect/portal/P in portals)
 		if(P.target == T)
@@ -96,6 +96,8 @@
 	density = 0
 
 /obj/effect/rift/Destroy()
+	..()
+
 	for(var/o in contents)
 		var/atom/movable/M = o
 		M.forceMove(get_turf(src))

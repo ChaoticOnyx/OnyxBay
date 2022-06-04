@@ -73,6 +73,16 @@
 	set src in view(usr, 1)
 	set name = "Print Data"
 
+	if(!(ishuman(usr) || isrobot(usr)))
+		return
+	var/mob/living/L = usr
+	if(L.stat || L.restrained() || L.lying)
+		return
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
+		to_chat(L, SPAN("notice", "\The [src]'s internal printer is still recharging."))
+		return
+
 	var/scan_data = ""
 
 	if(timeofdeath)
@@ -176,7 +186,7 @@
 	M.visible_message("<span class='notice'>\The [user] scans the wounds on [M]'s [S.name] with [src]</span>")
 
 	src.add_data(S)
-	for(var/T in M.chem_doses)
+	for(var/T in M.chem_traces)
 		var/datum/reagent/R = T
 		chemtraces += initial(R.name)
 

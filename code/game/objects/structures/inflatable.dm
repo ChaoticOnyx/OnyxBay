@@ -42,6 +42,7 @@
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
 	can_atmos_pass = ATMOS_PASS_DENSITY
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 
 	var/undeploy_path = null
 	var/health = 10
@@ -93,7 +94,7 @@
 		if(health == round(0.3 * initial(health)))
 			visible_message(SPAN("warning", "\The [src] is barely holding up!"))
 
-/obj/structure/inflatable/examine(mob/user)
+/obj/structure/inflatable/_examine_text(mob/user)
 	. = ..()
 	if(health >= initial(health))
 		. += "\n[SPAN_NOTICE("It's undamaged.")]"
@@ -255,6 +256,7 @@
 	state = 1
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/proc/Close()
 	isSwitchingStates = 1
@@ -265,6 +267,7 @@
 	state = 0
 	update_icon()
 	isSwitchingStates = 0
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 
 /obj/structure/inflatable/door/update_icon()
 	if(state)

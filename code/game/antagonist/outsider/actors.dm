@@ -20,8 +20,8 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 
 /datum/antagonist/actor/Initialize()
 	. = ..()
-	if(config.actor_min_age)
-		min_player_age = config.actor_min_age
+	if(config.game.actor_min_age)
+		min_player_age = config.game.actor_min_age
 
 /datum/antagonist/actor/greet(datum/mind/player)
 	if(!..())

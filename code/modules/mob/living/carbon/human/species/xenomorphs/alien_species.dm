@@ -9,7 +9,7 @@
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno, /datum/unarmed_attack/bite/strong/xeno)
 	generic_attack_mod = 4.0
 	hud_type = /datum/hud_data/alien
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	rarity_value = 3
 
 	has_fine_manipulation = 0
@@ -26,7 +26,7 @@
 	cold_level_2 = -1
 	cold_level_3 = -1
 
-	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
+	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED | SPECIES_FLAG_NO_ANTAG_TARGET
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	reagent_tag = IS_XENOS
@@ -191,6 +191,9 @@
 	process_xeno_hud(H)
 	return TRUE
 
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	return FALSE
+
 
 // Caste species
 /datum/species/xenos/drone
@@ -198,12 +201,12 @@
 	caste_name = "drone"
 	weeds_plasma_rate = 15
 	slowdown = 0
-	total_health = 150
+	total_health = 100
 	tail = "xenos_drone_tail"
 	rarity_value = 5
 	strength = STR_MEDIUM
 	brute_mod = 0.85
-	burn_mod  = 1.75
+	burn_mod  = 1.6
 	generic_attack_mod = 3.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
@@ -256,11 +259,11 @@
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
 	slowdown = -0.5
-	total_health = 200
+	total_health = 125
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
 	brute_mod = 0.75
-	burn_mod  = 1.65
+	burn_mod  = 1.5
 	generic_attack_mod = 4.5
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
@@ -301,12 +304,12 @@
 	weeds_plasma_rate = 10
 	caste_name = "sentinel"
 	slowdown = 0
-	total_health = 200
+	total_health = 150
 	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
 	strength = STR_VHIGH
 	brute_mod = 0.65
-	burn_mod  = 1.55
+	burn_mod  = 1.4
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
@@ -338,7 +341,7 @@
 	name = SPECIES_XENO_SENTINEL_PRIMAL
 	caste_name = "primal sentinel"
 	weeds_heal_rate = 20
-	burn_mod  = 1.4
+	burn_mod  = 1.3
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
 	tail = "xenos_sentinel_primal_tail"
@@ -346,7 +349,7 @@
 /datum/species/xenos/queen
 
 	name = SPECIES_XENO_QUEEN
-	total_health = 250
+	total_health = 200
 	weeds_heal_rate = 20
 	weeds_plasma_rate = 20
 	caste_name = "queen"
@@ -355,7 +358,7 @@
 	rarity_value = 10
 	strength = STR_VHIGH
 	brute_mod = 0.5
-	burn_mod  = 1.25
+	burn_mod  = 1.2
 	icon_scale = 1.3
 	generic_attack_mod = 4.5
 

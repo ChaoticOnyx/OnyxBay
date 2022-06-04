@@ -9,7 +9,7 @@
 	icon_gib = "carp_gib"
 	speak_chance = 0
 	turns_per_move = 5
-	meat_type = /obj/item/reagent_containers/food/snacks/carpmeat
+	meat_type = /obj/item/reagent_containers/food/carpmeat
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -36,7 +36,7 @@
 /mob/living/simple_animal/hostile/carp/Allow_Spacemove(check_drift = 0)
 	return 1	//No drifting in space for space carp!	//original comments do not steal
 
-/mob/living/simple_animal/hostile/carp/FindTarget()
+/mob/living/simple_animal/hostile/carp/find_target()
 	. = ..()
 	if(.)
 		custom_emote(1,"nashes at [.]")

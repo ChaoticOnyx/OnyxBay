@@ -35,11 +35,11 @@ SUBSYSTEM_DEF(eams)
 	var/list/__postponed_clients = new
 
 /datum/controller/subsystem/eams/Initialize(timeofday)
-	if(!config.eams)
+	if(!config.multiaccount.eams)
 		log_debug("EAMS is disabled by configuration!")
 		return ..()
 
-	if(!config.sql_enabled)
+	if(!config.external.sql_enabled)
 		log_debug("EAMS system is disabled with SQL!")
 		return ..()
 

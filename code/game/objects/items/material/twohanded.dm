@@ -100,6 +100,7 @@
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	applies_material_colour = 0
 	unbreakable = 1 // Because why should it break at all
+	material_amount = 8
 
 /obj/item/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
@@ -142,6 +143,7 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = MATERIAL_GLASS
+	material_amount = 3
 
 /obj/item/material/twohanded/spear/shatter(consumed)
 	if(!consumed)
@@ -175,6 +177,7 @@
 	unwielded_force_const = 5.0
 	unwielded_force_divisor = 0.5 // 15 when unwielded based on above.
 	slot_flags = SLOT_BACK
+	material_amount = 5
 
 //Predefined materials go here.
 /obj/item/material/twohanded/baseballbat/metal/New(newloc)

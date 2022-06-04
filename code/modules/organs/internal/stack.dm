@@ -5,7 +5,9 @@
 /obj/item/organ/internal/stack
 	name = "neural lace"
 	parent_organ = BP_HEAD
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "cortical-stack"
+	override_species_icon = TRUE
 	organ_tag = BP_STACK
 	status = ORGAN_ROBOTIC
 	vital = 1

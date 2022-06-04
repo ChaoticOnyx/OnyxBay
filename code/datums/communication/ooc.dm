@@ -12,14 +12,14 @@
 		return
 
 	if(!C.holder)
-		if(!config.dooc_allowed && (C.mob.stat == DEAD))
+		if(!config.misc.dead_ooc_allowed && (C.mob.stat == DEAD))
 			to_chat(C, "<span class='danger'>[name] for dead mobs has been turned off.</span>")
 			return FALSE
 		if(findtext(message, "byond://"))
 			to_chat(C, "<B>Advertising other servers is not allowed.</B>")
 			log_and_message_admins("has attempted to advertise in [name]: [message]")
 			return FALSE
-		if (config.eams_blocks_ooc && !SSeams.CheckForAccess(C))
+		if (config.multiaccount.eams_blocks_ooc && !SSeams.CheckForAccess(C))
 			to_chat(C, "<span class='danger'>Sorry! EAMS protection doesn't allow you to write in OOC.</span>")
 			return FALSE
 

@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	role_text_plural = "Cortical Borers"
 	flags = ANTAG_RANDSPAWN | ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB
 	mob_path = /mob/living/simple_animal/borer/initial
-	welcome_text = "Use your Infest power to crawl into the ear of a host and fuse with their brain. You can only take control temporarily, and at risk of hurting your host, so be clever and careful; your host is encouraged to help you however they can. Talk to your fellow borers with :x."
+	welcome_text = "Use your Infest power to crawl into the ear of a host and fuse with their brain. You can only take control temporarily, and at risk of hurting your host, so be clever and careful; your host is encouraged to help you however they can. Talk to your fellow borers with ,x."
 	antag_indicator = "hudborer"
 	antaghud_indicator = "hudborer"
 
@@ -29,8 +29,8 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
 	. = ..()
-	if(config.borer_min_age)
-		min_player_age = config.borer_min_age
+	if(config.game.borer_min_age)
+		min_player_age = config.game.borer_min_age
 
 /datum/antagonist/borer/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];move_to_spawn=\ref[player.current]'>\[put in host\]</a>"

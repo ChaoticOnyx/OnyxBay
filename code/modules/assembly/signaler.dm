@@ -71,7 +71,7 @@
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
-	if(usr.stat || !(src in usr.contents))
+	if((!istype(loc, /obj/item/gripper) || !(loc in usr.contents)) && (usr.stat || !(src in usr.contents)))
 		return
 	if((. = ..()))
 		close_browser(usr, "window=radio")
@@ -125,6 +125,9 @@
 		connected.Pulse(src)
 	else if(holder)
 		holder.process_activation(src, 1, 0)
+	else if(istype(loc, /obj/structure/window_frame))
+		var/obj/structure/window_frame/WF = loc
+		WF.signaler_pulse()
 	else
 		..(radio)
 	return 1

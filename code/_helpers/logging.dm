@@ -13,7 +13,7 @@
 /proc/log_story(type, message, location)
 	var/static/datum/text_processor/confidential/P = new()
 
-	if(!config.log_story || !GLOB.world_story_log)
+	if(!config.log.story || !GLOB.world_story_log)
 		return
 
 	message = P.process(message)
@@ -24,7 +24,7 @@
 
 /proc/log_to_dd(text)
 	to_world_log(text)
-	if(config && config.log_world_output)
+	if(config && config.log.world_output)
 		log_debug("\[DD]: [text]")
 
 /proc/error(msg)
@@ -66,59 +66,59 @@
 			to_chat(C, rendered, message_type)
 
 /proc/log_roundend(text)
-	log_generic("ROUNDEND", text, null, config.log_game)
+	log_generic("ROUNDEND", text, null, config.log.game)
 
 /proc/log_admin(text, location, notify_admin)
-	log_generic("ADMIN", text, location, config.log_admin, notify_admin, MESSAGE_TYPE_ADMINLOG)
+	log_generic("ADMIN", text, location, config.log.admin, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_debug(text, location, type = MESSAGE_TYPE_DEBUG)
 	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, type)
-	if(!config.log_debug || !GLOB.world_debug_log)
+	if(!config.log.debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_debug_verbose(text)
-	if(!config.log_debug_verbose || !GLOB.world_debug_log)
+	if(!config.log.debug_verbose || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
-	log_generic("GAME", text, location, config.log_game, notify_admin)
+	log_generic("GAME", text, location, config.log.game, notify_admin)
 
 /proc/log_vote(text)
-	log_generic("VOTE", text, null, config.log_vote)
+	log_generic("VOTE", text, null, config.log.vote)
 
 /proc/log_access(text, notify_admin)
-	log_generic("ACCESS", text, null, config.log_access, notify_admin, MESSAGE_TYPE_ADMINLOG)
+	log_generic("ACCESS", text, null, config.log.access, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_say(text)
-	log_generic("SAY", text, null, config.log_say)
+	log_generic("SAY", text, null, config.log.say)
 	log_story("SAY", text, null)
 
 /proc/log_ooc(text)
-	log_generic("OOC", text, null, config.log_ooc)
+	log_generic("OOC", text, null, config.log.ooc)
 	log_story("OOC", text, null)
 
 /proc/log_whisper(text)
-	log_generic("WHISPER", text, null, config.log_whisper)
+	log_generic("WHISPER", text, null, config.log.whisper)
 	log_story("WHISPER", text, null)
 
 /proc/log_emote(text)
-	log_generic("EMOTE", text, null, config.log_emote)
+	log_generic("EMOTE", text, null, config.log.emote)
 	log_story("EMOTE", text, null)
 
 /proc/log_attack(text, location, notify_admin)
-	log_generic("ATTACK", text, location, config.log_attack, notify_admin, MESSAGE_TYPE_ATTACKLOG)
+	log_generic("ATTACK", text, location, config.log.attack, notify_admin, MESSAGE_TYPE_ATTACKLOG)
 	log_story("ATTACK", text, location)
 
 /proc/log_adminsay(text)
-	log_generic("ADMINSAY", text, null, config.log_adminchat, FALSE, MESSAGE_TYPE_ADMINLOG)
+	log_generic("ADMINSAY", text, null, config.log.adminchat, FALSE, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_adminwarn(text, location, notify_admin)
-	log_generic("ADMINWARN", text, location, config.log_adminwarn, notify_admin, MESSAGE_TYPE_ADMINLOG)
+	log_generic("ADMINWARN", text, location, config.log.adminwarn, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_pda(text)
-	log_generic("PDA", text, null, config.log_pda)
+	log_generic("PDA", text, null, config.log.pda)
 	log_story("PDA", text, null)
 
 /proc/log_misc(text) //Replace with log_game ?
@@ -134,7 +134,7 @@
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
 
 /proc/log_href(text)
-	if(!config.log_hrefs)
+	if(!config.log.hrefs)
 		return
 	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
 

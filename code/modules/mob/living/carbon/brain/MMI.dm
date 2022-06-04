@@ -53,7 +53,10 @@
 		return
 
 	icon_state = "mmi-inner"
-	overlays += "mmi-[lowertext(brainobj.species.name)]"
+	if(brainobj?.species)
+		overlays += "mmi-[lowertext(brainobj.species.name)]"
+	else
+		overlays += "mmi-human"
 	if(brainmob.stat == DEAD)
 		overlays += "mmi-outer-dead"
 	else

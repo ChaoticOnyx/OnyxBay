@@ -23,11 +23,11 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 
 /datum/antagonist/ninja/Initialize()
 	. = ..()
-	if(config.ninja_min_age)
-		min_player_age = config.ninja_min_age
+	if(config.game.ninja_min_age)
+		min_player_age = config.game.ninja_min_age
 
 /datum/antagonist/ninja/attempt_random_spawn()
-	if(config.ninjas_allowed) ..()
+	if(config.misc.ninjas_allowed) ..()
 
 /datum/antagonist/ninja/create_objectives(datum/mind/ninja)
 

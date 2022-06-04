@@ -1,134 +1,6 @@
 /obj/item/integrated_circuit/manipulation
 	category_text = "Manipulation"
 
-/obj/item/integrated_circuit/manipulation/weapon_firing
-	name = "weapon firing mechanism"
-	desc = "This somewhat complicated system allows one to slot in a gun, direct it towards a position, and remotely fire it."
-	extended_desc = "The firing mechanism can slot in any energy weapon. \
-	The first input pin need to be ref which correspond to target for the gun to fire. \
-	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the ref, if possible. Mode will switch between \
-	lethal (TRUE) or stun (FALSE) modes. It uses the internal battery of the weapon itself, not the assembly. If you wish to fire the gun while the circuit is in \
-	hand, you will need to use an assembly that is a gun."
-	complexity = 20
-	w_class = ITEM_SIZE_SMALL
-	size = 15
-	inputs = list(
-		"target"       = IC_PINTYPE_REF,
-		"bodypart"	   = IC_PINTYPE_STRING
-	)
-	outputs = list(
-		"reference to gun"	= IC_PINTYPE_REF,
-		"Weapon mode"		= IC_PINTYPE_STRING
-	)
-	activators = list(
-		"Fire"			= IC_PINTYPE_PULSE_IN,
-		"Switch mode"	= IC_PINTYPE_PULSE_IN,
-		"On fired"		= IC_PINTYPE_PULSE_OUT
-	)
-	var/obj/item/gun/energy/installed_gun = null
-	spawn_flags = IC_SPAWN_RESEARCH
-	action_flags = IC_ACTION_COMBAT
-	power_draw_per_use = 0
-	ext_cooldown = 1
-
-	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/Initialize()
-	. = ..()
-	extended_desc += "\nThe second input pin used for selection of target body part, the list of body parts: "
-	extended_desc += jointext(BP_ALL_LIMBS, ", ")
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/Destroy()
-	qdel(installed_gun)
-	return ..()
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/gun/energy))
-		var/obj/item/gun/energy/gun = O
-		if(installed_gun)
-			to_chat(user, SPAN("warning", "There's already a weapon installed."))
-			return
-		user.drop_item(gun)
-		gun.forceMove(src)
-		installed_gun = gun
-		to_chat(user, SPAN("notice", "You slide \the [gun] into the firing mechanism."))
-		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-		if(installed_gun.fire_delay)
-			cooldown_per_use = installed_gun.fire_delay * 10
-		if(cooldown_per_use < 30)
-			cooldown_per_use = 30 //If there's no defined fire delay let's put some
-		if(installed_gun.charge_cost)
-			power_draw_per_use = installed_gun.charge_cost
-		if(installed_gun.firemodes.len)
-			var/datum/firemode/fm = installed_gun.firemodes[installed_gun.sel_mode]
-			set_pin_data(IC_OUTPUT, 2, fm.name)
-		set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
-		push_data()
-	else
-		..()
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/attack_self(mob/user)
-	if(installed_gun)
-		installed_gun.forceMove(get_turf(user))
-		to_chat(user, SPAN("notice", "You slide \the [installed_gun] out of the firing mechanism."))
-		size = initial(size)
-		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-		installed_gun = null
-		set_pin_data(IC_OUTPUT, 1, weakref(null))
-		push_data()
-	else
-		to_chat(user, SPAN("notice", "There's no weapon to remove from the mechanism."))
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/do_work(ord)
-	if(!installed_gun)
-		return
-	if(!isturf(assembly.loc) && !(assembly.can_fire_equipped))
-		return
-	set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
-	push_data()
-	if(assembly)
-		switch(ord)
-			if(1)
-				var/atom/target = get_pin_data(IC_INPUT, 1)
-				if(!istype(target))
-					return
-				var/bodypart = sanitize(get_pin_data(IC_INPUT, 2))
-				if(!(bodypart in BP_ALL_LIMBS))
-					bodypart = pick(BP_ALL_LIMBS)
-
-				assembly.visible_message(SPAN("danger", "[assembly] fires [installed_gun]!"))
-				var/obj/item/projectile/P = shootAt(target, bodypart)
-				if(P)
-					installed_gun.play_fire_sound(assembly, P)
-					activate_pin(3)
-			if(2)
-				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
-				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
-				push_data()
-
-/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(atom/target, bodypart)
-	var/turf/T = get_turf(assembly)
-	if(!istype(T) || !istype(target))
-		return
-	if(!installed_gun.power_supply)
-		return
-	if(!installed_gun.power_supply.charge)
-		return
-	if(installed_gun.power_supply.charge < installed_gun.charge_cost)
-		return
-	update_icon()
-	var/obj/item/projectile/A = installed_gun.consume_next_projectile()
-	if(!A)
-		return
-	//Shooting Code:
-	A.shot_from = assembly.name
-	A.firer = assembly
-	A.launch(target, bodypart)
-	var/atom/AM = get_object()
-	AM.investigate_log("fired [installed_gun] to [A] with [src].", INVESTIGATE_CIRCUIT)
-	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
-	return A
-
 /obj/item/integrated_circuit/manipulation/locomotion
 	name = "locomotion circuit"
 	desc = "This allows a machine to move in a given direction."
@@ -348,7 +220,7 @@
 
 /obj/item/integrated_circuit/manipulation/seed_extractor/do_work()
 	..()
-	var/obj/item/reagent_containers/food/snacks/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/snacks/grown)
+	var/obj/item/reagent_containers/food/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/grown)
 	if(!check_target(O))
 		push_data()
 		activate_pin(2)
@@ -486,9 +358,9 @@
 					set_pin_data(IC_OUTPUT, 1, TRUE)
 					pulling = to_pull
 					acting_object.visible_message("\The [acting_object] starts pulling \the [to_pull] around.")
-					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
-					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
-					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
+					register_signal(to_pull, SIGNAL_MOVED, .proc/check_pull) // Whenever the target moves, make sure we can still pull it!
+					register_signal(to_pull, SIGNAL_QDELETING, .proc/stop_pulling) // Stop pulling if it gets destroyed.
+					register_signal(acting_object, SIGNAL_MOVED, .proc/pull) // Make sure we actually pull it.
 					var/atom/A = get_object()
 					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
@@ -527,10 +399,10 @@
 /obj/item/integrated_circuit/manipulation/claw/proc/stop_pulling()
 	if(pulling)
 		var/atom/movable/AM = get_object()
-		GLOB.moved_event.unregister(pulling, src)
-		GLOB.moved_event.unregister(AM, src)
+		unregister_signal(pulling, SIGNAL_MOVED)
+		unregister_signal(AM, SIGNAL_MOVED)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
-		GLOB.destroyed_event.unregister(pulling, src)
+		unregister_signal(pulling, SIGNAL_QDELETING)
 		var/atom/A = get_object()
 		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null

@@ -44,7 +44,7 @@ datum/book_manager/proc/freeid()
 	if(!isbn)
 		return
 
-	if(BOOKS_USE_SQL && config.sql_enabled) // always false. see todo on line 6 of this file
+	if(BOOKS_USE_SQL && config.external.sql_enabled) // always false. see todo on line 6 of this file
 		if(!establish_db_connection())
 			alert("Connection to Archive has been severed. Aborting.")
 		else

@@ -10,6 +10,7 @@
 	opacity = 1
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
+	atom_flags = ATOM_FLAG_FULLTILE_OBJECT
 	layer = CLOSED_DOOR_LAYER
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 	var/open_layer = OPEN_DOOR_LAYER
@@ -54,6 +55,7 @@
 	else
 		layer = open_layer
 		explosion_resistance = 0
+		atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 
 
 	if(width > 1)
@@ -248,7 +250,7 @@
 		return
 
 	//psa to whoever coded this, there are plenty of objects that need to call attack() on doors without bludgeoning them.
-	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
+	if(isobj(I) && density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			user.do_attack_animation(src)
 			user.setClickCooldown(I.update_attack_cooldown())
@@ -303,7 +305,7 @@
 	return
 
 
-/obj/machinery/door/examine(mob/user)
+/obj/machinery/door/_examine_text(mob/user)
 	. = ..()
 	if(src.health < src.maxhealth / 4)
 		. += "\n\The [src] looks like it's about to break!"
@@ -368,50 +370,54 @@
 	return
 
 
-/obj/machinery/door/proc/open(forced = 0)
+/obj/machinery/door/proc/open(forced = FALSE)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_open(forced))
 		return
-	operating = 1
+	operating = TRUE
 
 	do_animate("opening")
 	icon_state = "door0"
-	set_opacity(0)
+	set_opacity(FALSE)
 	sleep(3)
-	src.set_density(0)
+	set_density(FALSE)
 	update_nearby_tiles()
+	atom_flags &= ~ATOM_FLAG_FULLTILE_OBJECT
 	sleep(7)
-	src.layer = open_layer
+	layer = open_layer
 	explosion_resistance = 0
 	update_icon()
-	set_opacity(0)
-	operating = 0
+	set_opacity(FALSE)
+	operating = FALSE
 
 	if(autoclose)
 		addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 
-	return 1
+	return TRUE
 
-/obj/machinery/door/proc/close(forced = 0)
+/obj/machinery/door/proc/close(forced = FALSE, push_mobs = TRUE)
 	var/wait = normalspeed ? 150 : 5
 	if(!can_close(forced))
 		if(autoclose)
 			tryingToLock = TRUE
 			addtimer(CALLBACK(src, .proc/close), wait, TIMER_UNIQUE|TIMER_OVERRIDE)
 		return
-	operating = 1
+	operating = TRUE
 
 	do_animate("closing")
 	sleep(3)
-	src.set_density(1)
+	set_density(TRUE)
 	explosion_resistance = initial(explosion_resistance)
-	src.layer = closed_layer
+	layer = closed_layer
 	update_nearby_tiles()
+	atom_flags |= ATOM_FLAG_FULLTILE_OBJECT
 	sleep(7)
 	update_icon()
 	if(visible && !glass)
-		set_opacity(1)	//caaaaarn!
-	operating = 0
+		set_opacity(TRUE) //caaaaarn!
+	operating = FALSE
+
+	shove_everything(shove_mobs = push_mobs, min_w_class = ITEM_SIZE_NORMAL) // Door shields cheesy meta must be gone.
 
 	//I shall not add a check every x ticks if a door has closed over some fire.
 	var/obj/fire/fire = locate() in loc

@@ -12,7 +12,8 @@
 	slot_flags = SLOT_BELT
 	matter = list(MATERIAL_STEEL = 70)
 
-/obj/item/clipboard/New()
+/obj/item/clipboard/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/item/clipboard/MouseDrop(obj/over_object as obj) //Quick clipboard fix. -Agouri

@@ -169,7 +169,7 @@ var/global/list/image/splatter_cache=list()
 	else
 		icon_state = "writing1"
 
-/obj/effect/decal/cleanable/blood/writing/examine(mob/user)
+/obj/effect/decal/cleanable/blood/writing/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt reads: <font color='[basecolor]'>\"[message]\"</font>"
 

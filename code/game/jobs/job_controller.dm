@@ -93,7 +93,7 @@ var/global/datum/controller/occupations/job_master
 		if(!job.is_position_available())
 			to_chat(joining, "<span class='warning'>Unfortunately, that job is no longer available.</span>")
 			return FALSE
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(joining, "<span class='warning'>There is an administrative lock on entering the game!</span>")
 			return FALSE
 		if(SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -425,19 +425,22 @@ var/global/datum/controller/occupations/job_master
 				for(var/thing in H.client.prefs.Gear())
 					var/datum/gear/G = gear_datums[thing]
 					if(G)
-						var/permitted
-						if(G.allowed_roles)
+						var/permitted = TRUE
+						if(length(G.allowed_roles))
+							permitted = FALSE
 							for(var/job_type in G.allowed_roles)
 								if(job.type == job_type)
-									permitted = 1
-						else
-							permitted = 1
+									permitted = TRUE
+									break
 
 						if(G.whitelisted && (!(H.species.name in G.whitelisted)))
-							permitted = 0
+							permitted = FALSE
+
+						if(!G.is_allowed_to_equip(H))
+							permitted = FALSE
 
 						if(!permitted)
-							to_chat(H, "<span class='warning'>Your current species, job or whitelist status does not permit you to spawn with [thing]!</span>")
+							to_chat(H, SPAN("warning", "Your current species, job, whitelist status or loadout configuration does not permit you to spawn with [thing]!"))
 							continue
 
 						if(!G.slot || G.slot == slot_tie || G.slot == slot_belt ||(G.slot in loadout_taken_slots) || !G.spawn_on_mob(H, H.client.prefs.Gear()[G.display_name]))
@@ -478,15 +481,17 @@ var/global/datum/controller/occupations/job_master
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
 
-		// If they're head, give them the account info for their department
-		if(H.mind && job.head_position)
+		if(H.mind)
 			var/remembered_info = ""
 			var/datum/money_account/department_account = department_accounts[job.department]
 
 			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
+				remembered_info += "<b>Your [job.department] department account:</b><br>"
+				remembered_info += "<b>Number:</b> #[department_account.account_number]<br>"
+			// And if they're head, give them the pin and funds info for their department
+			if(job.head_position || job.title == "Quartermaster" || job.title ==  "Internal Affairs Agent")
+				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
+				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
 			H.mind.store_memory(remembered_info)
 
@@ -583,7 +588,7 @@ var/global/datum/controller/occupations/job_master
 		return H
 
 	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
-		if(!config.load_jobs_from_txt)
+		if(!config.misc.load_jobs_from_txt)
 			return 0
 
 		var/list/jobEntries = file2list(jobsfile)

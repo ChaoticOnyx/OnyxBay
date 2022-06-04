@@ -59,8 +59,8 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 
 /datum/antagonist/cultist/Initialize()
 	. = ..()
-	if(config.cultist_min_age)
-		min_player_age = config.cultist_min_age
+	if(config.game.cultist_min_age)
+		min_player_age = config.game.cultist_min_age
 
 /datum/antagonist/cultist/create_global_objectives()
 
@@ -109,7 +109,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	remove_cult_magic(player.current)
 	remove_cultiness(CULTINESS_PER_CULTIST)
 
-/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat)
+/datum/antagonist/cultist/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance, max_stat, team)
 	. = ..()
 	if(.)
 		to_chat(player, "<span class='cult'>[conversion_blurb]</span>")

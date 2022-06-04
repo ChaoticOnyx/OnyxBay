@@ -103,8 +103,6 @@
 			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
-		if("SSturf")
-			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSvote")
@@ -415,6 +413,8 @@
 			return global.gas_data;
 		if("gear_datums")
 			return global.gear_datums;
+		if("hash_to_gear")
+			return global.hash_to_gear;
 		if("gear_tweak_free_color_choice_")
 			return global.gear_tweak_free_color_choice_;
 		if("gender_datums")
@@ -747,12 +747,6 @@
 			return global.sqladdress;
 		if("sqldb")
 			return global.sqldb;
-		if("sqlfdbkdb")
-			return global.sqlfdbkdb;
-		if("sqlfdbklogin")
-			return global.sqlfdbklogin;
-		if("sqlfdbkpass")
-			return global.sqlfdbkpass;
 		if("sqllogging")
 			return global.sqllogging;
 		if("sqllogin")
@@ -1000,8 +994,6 @@
 			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
-		if("SSturf")
-			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSvote")
@@ -1316,6 +1308,8 @@
 			global.gas_data=newval;
 		if("gear_datums")
 			global.gear_datums=newval;
+		if("hash_to_gear")
+			global.hash_to_gear=newval;
 		if("gear_tweak_free_color_choice_")
 			global.gear_tweak_free_color_choice_=newval;
 		if("gender_datums")
@@ -1648,12 +1642,6 @@
 			global.sqladdress=newval;
 		if("sqldb")
 			global.sqldb=newval;
-		if("sqlfdbkdb")
-			global.sqlfdbkdb=newval;
-		if("sqlfdbklogin")
-			global.sqlfdbklogin=newval;
-		if("sqlfdbkpass")
-			global.sqlfdbkpass=newval;
 		if("sqllogging")
 			global.sqllogging=newval;
 		if("sqllogin")
@@ -1849,7 +1837,6 @@
 	"SSticker",
 	"SStimer",
 	"SStrade",
-	"SSturf",
 	"SSvines",
 	"SSvote",
 	"SSwireless",
@@ -2018,6 +2005,7 @@
 	"gamemode_cache",
 	"gas_data",
 	"gear_datums",
+	"hash_to_gear",
 	"gear_tweak_free_color_choice_",
 	"gender_datums",
 	"ghost_darkness_images",
@@ -2195,9 +2183,6 @@
 	"splatter_cache",
 	"sqladdress",
 	"sqldb",
-	"sqlfdbkdb",
-	"sqlfdbklogin",
-	"sqlfdbkpass",
 	"sqllogging",
 	"sqllogin",
 	"sqlpass",

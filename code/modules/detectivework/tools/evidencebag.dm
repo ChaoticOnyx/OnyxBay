@@ -99,11 +99,11 @@
 		icon_state = "evidenceobj"
 	return
 
-/obj/item/evidencebag/examine(mob/user)
+/obj/item/evidencebag/_examine_text(mob/user)
 	. = ..()
 	if (!stored_item)
 		return
-	. += "\n[stored_item.examine(user)]"
+	. += "\n[stored_item._examine_text(user)]"
 
 /obj/item/evidencebag/cyborg
 	name = "integrated evidence bag dispenser"

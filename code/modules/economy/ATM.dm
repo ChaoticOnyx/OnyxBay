@@ -10,8 +10,9 @@
 	desc = "For all your monetary needs!"
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
-	anchored = 1
+	anchored = TRUE
 	idle_power_usage = 10
+	layer = ABOVE_WINDOW_LAYER
 	var/datum/money_account/authenticated_account
 	var/number_incorrect_tries = 0
 	var/previous_account_number = 0
@@ -20,10 +21,10 @@
 	var/ticks_left_timeout = 0
 	var/machine_id = ""
 	var/obj/item/card/held_card
-	var/editing_security_level = 0
+	var/editing_security_level = BANK_SECURITY_MINIMUM
 	var/view_screen = NO_SCREEN
 	var/datum/effect/effect/system/spark_spread/spark_system
-	var/account_security_level = 0
+	var/account_security_level = BANK_SECURITY_MINIMUM
 
 /obj/machinery/atm/New()
 	..()
@@ -137,17 +138,17 @@
 					switch(view_screen)
 						if(CHANGE_SECURITY_LEVEL)
 							t += "Select a new security level for this account:<br><hr>"
-							if(authenticated_account.security_level != 0)
+							if(authenticated_account.security_level != BANK_SECURITY_MINIMUM)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=0'>Select Minimum Security</a><BR>"
 							else
 								t += "<span class='good'><b>Minimum security set: </b></span><BR>"
 							t += "Either the account number or card is required to access this account. EFTPOS transactions will require a card and ask for a pin, but not verify the pin is correct.<hr>"
-							if(authenticated_account.security_level != 1)
+							if(authenticated_account.security_level != BANK_SECURITY_MODERATE)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=1'>Select Moderate Security</a><BR>"
 							else
 								t += "<span class='average'><b>Moderate Security set: </b></span><BR>"
 							t += "An account number and pin must be manually entered to access this account and process transactions.<hr>"
-							if(authenticated_account.security_level != 2)
+							if(authenticated_account.security_level != BANK_SECURITY_MAXIMUM)
 								t += "<A href='?src=\ref[src];choice=change_security_level;new_security_level=2'>Select Maximum Security</a><BR>"
 							else
 								t += "<span class='bad'><b>Maximum security Set: </b></span><BR>"
@@ -204,18 +205,19 @@
 
 			else
 				//change our display depending on account security levels
-				if(!account_security_level)
-					t += "To log in to your savings account, press 'submit' with ID clearly displayed. If you wish to log into another account, please enter the account number into the field below or insert a registered ID card into the slot above and then press 'submit'.<BR>"
-				else if (account_security_level == 1)
-					t += "This account requires a PIN to access. For security reasons the account # will need re-entered or ID bound to this account re-scanned."
-				else
-					t += "<span class='bad'><b>Due to the security settings on this account, all information needs to be re-entered and the ID bound to this account placed in the slot above.</b></span><BR>"
+				switch(account_security_level)
+					if(BANK_SECURITY_MINIMUM)
+						t += "To log in to your savings account, press 'submit' with ID clearly displayed. If you wish to log into another account, please enter the account number into the field below or insert a registered ID card into the slot above and then press 'submit'.<BR>"
+					if(BANK_SECURITY_MODERATE)
+						t += "This account requires a PIN to access. For security reasons the account # will need re-entered or ID bound to this account re-scanned."
+					if(BANK_SECURITY_MAXIMUM)
+						t += "<span class='bad'><b>Due to the security settings on this account, all information needs to be re-entered and the ID bound to this account placed in the slot above.</b></span><BR>"
 				t += "<form name='atm_auth' action='?src=\ref[src]' method='get'>"
 				t += "<input type='hidden' name='src' value='\ref[src]'>"
 				t += "<input type='hidden' name='choice' value='attempt_auth'>"
 				t += "<b>Account:</b> <input type='text' id='account_num' name='account_num' style='width:250px; background-color:white;'><BR><BR>"
 				//Leave the PIN field out of sight until needed
-				if(account_security_level)
+				if(account_security_level != BANK_SECURITY_MINIMUM)
 					t += "<b>PIN:</b> <input type='text' id='account_pin' name='account_pin' style='width:250px; background-color:white;'><BR><BR>"
 				t += "<input type='submit' value='Submit'><br>"
 				t += "</div></form>"
@@ -270,7 +272,7 @@
 				if(!ticks_left_locked_down)
 					var/tried_account_num = text2num(href_list["account_num"])
 					//We WILL need an account number entered manually if security is high enough, do not automagic account number
-					if(!tried_account_num && login_card && (account_security_level != 2))
+					if(!tried_account_num && login_card && (account_security_level != BANK_SECURITY_MAXIMUM))
 						tried_account_num = login_card.associated_account_number
 					var/tried_pin = text2num(href_list["account_pin"])
 

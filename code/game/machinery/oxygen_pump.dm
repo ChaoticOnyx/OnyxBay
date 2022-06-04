@@ -8,6 +8,7 @@
 	icon_state = "emerg"
 
 	anchored = TRUE
+	layer = ABOVE_WINDOW_LAYER
 
 	var/obj/item/tank/tank
 	var/mob/living/carbon/breather
@@ -151,7 +152,7 @@
 	if(istype(W, /obj/item/tank) && !stat)
 		to_chat(user, "<span class='warning'>Please open the maintenance hatch first.</span>")
 
-/obj/machinery/oxygen_pump/examine(mob/user)
+/obj/machinery/oxygen_pump/_examine_text(mob/user)
 	. = ..()
 	if(tank)
 		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]"

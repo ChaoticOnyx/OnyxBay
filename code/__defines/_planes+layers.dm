@@ -116,6 +116,10 @@
 	#define TABLE_LAYER                 2.19
 	#define BELOW_OBJ_LAYER             2.20
 	#define STRUCTURE_LAYER             2.21
+	#define WINDOW_INNER_LAYER          2.22
+	#define WINDOW_FRAME_LAYER          2.23
+	#define WINDOW_OUTER_LAYER          2.24
+	#define WINDOW_BORDER_LAYER         2.25
 	// OBJ_LAYER                        3
 	#define ABOVE_OBJ_LAYER             3.01
 	#define CLOSED_DOOR_LAYER           3.02

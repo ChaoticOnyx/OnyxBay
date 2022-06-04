@@ -8,7 +8,9 @@
 
 
 //Main cryopod console.
-
+#define MAIN  1
+#define LOG   2
+#define ITEMS 3
 /obj/machinery/computer/cryopod
 	name = "cryogenic oversight console"
 	desc = "An interface between crew and the cryogenic storage oversight systems."
@@ -17,7 +19,8 @@
 	circuit = /obj/item/circuitboard/cryopodcontrol
 	density = 0
 	interact_offline = 1
-	var/mode = null
+	var/datum/browser/browser = null
+	var/menu = MAIN
 
 	//Used for logging people entering cryosleep and important items they are carrying.
 	var/list/frozen_crew = list()
@@ -46,47 +49,68 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	..()
+	interact(user)
 
-	user.set_machine(src)
 
-	var/dat = "<meta charset=\"utf-8\">"
+/obj/machinery/computer/cryopod/interact(mob/user)
+	var/dat = ""
+	switch(menu)
+		if(MAIN)
+			dat += "<meta charset=\"utf-8\">"
+			dat += "<hr><br><b>[storage_name]</b><br>"
+			dat += "<i>Welcome, [user.real_name].</i><br><br><hr>"
+			dat += "<a href='?src=\ref[src];log=1'>View storage log</a><br>"
+			if(allow_items)
+				dat += "<a href='?src=\ref[src];view=1'>View objects</a><br>"
+				dat += "<a href='?src=\ref[src];item=1'>Recover object</a><br>"
+				dat += "<a href='?src=\ref[src];allitems=1'>Recover all objects</a><br>"
+		if(LOG)
+			dat += "<b>Recently stored [storage_type]</b><br><hr><br>"
+			if(length(frozen_crew))
+				for(var/person in frozen_crew)
+					dat += "[person]<br>"
+			else
+				dat += "<i>Log is empty</i><br>"
+			dat += "<hr>"
+			dat += "<a href='?src=\ref[src];return=1'>Return to main menu</a><br>"
+		if(ITEMS)
+			dat += "<b>Recently stored objects</b><br><hr><br>"
+			if(length(frozen_items))
+				for(var/obj/item/I in frozen_items)
+					dat += "[I.name]<br>"
+			else
+				dat += "<i>Log is empty</i><br>"
+			dat += "<hr>"
+			dat += "<a href='?src=\ref[src];return=1'>Return to main menu</a><br>"
 
-	dat += "<hr/><br/><b>[storage_name]</b><br/>"
-	dat += "<i>Welcome, [user.real_name].</i><br/><br/><hr/>"
-	dat += "<a href='?src=\ref[src];log=1'>View storage log</a>.<br>"
-	if(allow_items)
-		dat += "<a href='?src=\ref[src];view=1'>View objects</a>.<br>"
-		dat += "<a href='?src=\ref[src];item=1'>Recover object</a>.<br>"
-		dat += "<a href='?src=\ref[src];allitems=1'>Recover all objects</a>.<br>"
-
-	show_browser(user, dat, "window=cryopod_console")
-	onclose(user, "cryopod_console")
+	if(!browser || browser.user != user)
+		browser = new(user, "cryopod_console", "[storage_name]", 400, 500)
+		browser.set_content(dat)
+	else
+		browser.set_content(dat)
+		browser.update()
+	browser.open()
 
 /obj/machinery/computer/cryopod/OnTopic(user, href_list, state)
 	if(href_list["log"])
-		var/dat = "<b>Recently stored [storage_type]</b><br/><hr/><br/>"
-		for(var/person in frozen_crew)
-			dat += "[person]<br/>"
-		dat += "<hr/>"
-		show_browser(user, dat, "window=cryolog")
+		menu = LOG
 		. = TOPIC_REFRESH
 
 	else if(href_list["view"])
 		if(!allow_items) return
 
-		var/dat = "<b>Recently stored objects</b><br/><hr/><br/>"
-		for(var/obj/item/I in frozen_items)
-			dat += "[I.name]<br/>"
-		dat += "<hr/>"
+		menu = ITEMS
+		. = TOPIC_REFRESH
 
-		show_browser(user, dat, "window=cryoitems")
-		. = TOPIC_HANDLED
+	else if(href_list["return"])
+		menu = MAIN
+		. = TOPIC_REFRESH
 
 	else if(href_list["item"])
 		if(!allow_items) return
 
 		if(frozen_items.len == 0)
-			to_chat(user, "<span class='notice'>There is nothing to recover from storage.</span>")
+			to_chat(user, SPAN("notice", "There is nothing to recover from storage."))
 			return TOPIC_HANDLED
 
 		var/obj/item/I = input(user, "Please choose which object to retrieve.","Object recovery",null) as null|anything in frozen_items
@@ -94,30 +118,40 @@
 			return TOPIC_HANDLED
 
 		if(!(I in frozen_items))
-			to_chat(user, "<span class='notice'>\The [I] is no longer in storage.</span>")
+			to_chat(user, SPAN("notice", "\The [I] is no longer in storage."))
 			return TOPIC_HANDLED
 
-		visible_message("<span class='notice'>The console beeps happily as it disgorges \the [I].</span>", 3)
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges \the [I]."))
 
 		I.dropInto(loc)
 		frozen_items -= I
+
+		menu = MAIN
 		. = TOPIC_REFRESH
 
 	else if(href_list["allitems"])
-		if(!allow_items) return TOPIC_HANDLED
-
-		if(frozen_items.len == 0)
-			to_chat(user, "<span class='notice'>There is nothing to recover from storage.</span>")
+		if(!allow_items)
 			return TOPIC_HANDLED
 
-		visible_message("<span class='notice'>The console beeps happily as it disgorges the desired objects.</span>", 3)
+		if(frozen_items.len == 0)
+			to_chat(user, SPAN("notice", "There is nothing to recover from storage."))
+			return TOPIC_HANDLED
+
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges the desired objects."))
 
 		for(var/obj/item/I in frozen_items)
 			I.dropInto(loc)
 			frozen_items -= I
+
+		menu = MAIN
 		. = TOPIC_REFRESH
 
-	attack_hand(user)
+	if(. == TOPIC_REFRESH)
+		interact(user)
+
+#undef MAIN
+#undef LOG
+#undef ITEMS
 
 /obj/item/circuitboard/cryopodcontrol
 	name = "Circuit board (Cryogenic Oversight Console)"
@@ -166,6 +200,7 @@
 	var/obj/machinery/computer/cryopod/control_computer
 	var/last_no_computer_message = 0
 	var/applies_stasis = 1
+	var/despawning_now = FALSE
 
 	// These items are preserved when the process() despawn proc occurs.
 	var/list/preserve_items = list(
@@ -258,11 +293,11 @@
 	find_control_computer()
 	announce = new /obj/item/device/radio/intercom(src)
 
-/obj/machinery/cryopod/examine(mob/user)
+/obj/machinery/cryopod/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
@@ -303,20 +338,21 @@
 
 //Lifted from Unity stasis.dm and refactored. ~Zuhayr
 /obj/machinery/cryopod/Process()
-	if(occupant)
-		if(applies_stasis && iscarbon(occupant))
-			var/mob/living/carbon/C = occupant
-			C.SetStasis(3)
+	if(QDELETED(occupant))
+		return
+	if(applies_stasis && iscarbon(occupant))
+		var/mob/living/carbon/C = occupant
+		C.SetStasis(3)
 
-		//Allow a ten minute gap between entering the pod and actually despawning.
-		if(world.time - time_entered < time_till_despawn)
-			return
+	//Allow a ten minute gap between entering the pod and actually despawning.
+	if(world.time - time_entered < time_till_despawn)
+		return
 
-		if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
-			if(!control_computer)
-				if(!find_control_computer(urgent=1))
-					return
-
+	if(!occupant.client && occupant.stat<2) //Occupant is living and has no client.
+		if(!control_computer)
+			if(!find_control_computer(urgent=1))
+				return
+		if(!despawning_now)
 			despawn_occupant()
 
 // This function can not be undone; do not call this unless you are sure
@@ -337,10 +373,12 @@
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/proc/despawn_occupant()
-	if(!occupant)
+	set waitfor = 0
+
+	if(QDELETED(occupant))
 		log_and_message_admins("A mob was deleted while in a cryopod. This may cause errors!")
 		return
-
+	despawning_now = TRUE
 	//Drop all items into the pod.
 	for(var/obj/item/I in occupant)
 		occupant.drop_from_inventory(I)
@@ -424,7 +462,7 @@
 	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
 
 	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", get_announcement_computer("[on_store_name]"))
-	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>", 3)
+	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>")
 
 	//This should guarantee that ghosts don't spawn.
 	occupant.ckey = null
@@ -432,7 +470,7 @@
 	// Delete the mob.
 	qdel(occupant)
 	set_occupant(null)
-
+	despawning_now = FALSE
 
 /obj/machinery/cryopod/attackby(obj/item/G as obj, mob/user as mob)
 
@@ -506,6 +544,13 @@
 		return
 	if(occupant)
 		to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
+		return
+	if(name == "cryogenic freezer" && M.stat == DEAD)
+		to_chat(user, "<span class='warning'>\The [src]s are not designed to store bodies. Contact the medical unit.</span>")
+		var/area/t = get_area(M)
+		var/location = t.name
+		for(var/channel in list("Security", "Medical"))
+			GLOB.global_headset.autosay("Someone is trying to store a dead body in [name] at [location]!", get_announcement_computer("[name] warning"), channel)
 		return
 	if(M == user)
 		visible_message("\The [user] starts climbing into \the [src].")

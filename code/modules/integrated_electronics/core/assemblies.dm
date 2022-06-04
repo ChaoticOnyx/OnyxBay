@@ -74,7 +74,7 @@
 /obj/item/device/electronic_assembly/GetAccess()
 	return access_card ? access_card.GetAccess() : list()
 
-/obj/item/device/electronic_assembly/examine(mob/user)
+/obj/item/device/electronic_assembly/_examine_text(mob/user)
 	. = ..()
 	if(can_anchor)
 		to_chat(user, SPAN_NOTICE("The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
@@ -841,6 +841,9 @@
 
 		if(choice)
 			choice.ask_for_input(user)
+
+/obj/item/device/electronic_assembly/proc/return_power()
+	return battery ? battery.charge * CELLRATE : 0
 
 /obj/item/device/electronic_assembly/emp_act(severity)
 	. = ..()

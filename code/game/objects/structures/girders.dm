@@ -16,7 +16,7 @@
 	icon_state = "displaced"
 	anchored = 0
 
-/obj/structure/girder/examine(mob/user)
+/obj/structure/girder/_examine_text(mob/user)
 	. = ..()
 	if(health <= 0.4 * max_health)
 		. += "\n[SPAN("warning", "It's heavily damaged!")]"
@@ -80,6 +80,7 @@
 				user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 					   	         	 SPAN("notice", "You secured \the [src]!"))
 				reset_girder()
+				shove_everything(shove_objects = FALSE, shove_items = FALSE)
 
 	else if((istype(W, /obj/item/gun/energy/plasmacutter) || (istype(W, /obj/item/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
 		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
@@ -203,6 +204,7 @@
 				        	 SPAN("notice", "You create a false wall! Push on it to open or close the passage.")) // Some stealthy stuff
 		wall_fake = 1
 
+	shove_everything(shove_objects = FALSE, shove_items = FALSE) // Hiding stuff inside walls is a feature. Probably.
 	var/turf/Tsrc = get_turf(src)
 	Tsrc.ChangeTurf(/turf/simulated/wall)
 	var/turf/simulated/wall/T = get_turf(src)

@@ -17,19 +17,19 @@
 	icon_state = "wiz_party"
 
 	compatible_mobs = list(/mob/living/carbon/human)
-	equipped_summons = list("active hand" = /obj/item/reagent_containers/food/drinks/bottle/small/beer)
+	equipped_summons = list("active hand" = /obj/item/reagent_containers/vessel/bottle/small/beer)
 
 /datum/spell/targeted/equip_item/party_hardy/empower_spell()
 	if(!..())
 		return 0
 	switch(spell_levels[SP_POWER])
 		if(1)
-			equipped_summons = list("active hand" = /obj/item/reagent_containers/food/drinks/bottle/small/beer,
-								"off hand" = /obj/item/reagent_containers/food/snacks/poppypretzel)
+			equipped_summons = list("active hand" = /obj/item/reagent_containers/vessel/bottle/small/beer,
+								"off hand" = /obj/item/reagent_containers/food/poppypretzel)
 			return "The spell will now give everybody a preztel as well."
 		if(2)
-			equipped_summons = list("active hand" = /obj/item/reagent_containers/food/drinks/bottle/absinthe,
-								"off hand" = /obj/item/reagent_containers/food/snacks/poppypretzel,
+			equipped_summons = list("active hand" = /obj/item/reagent_containers/vessel/bottle/absinthe,
+								"off hand" = /obj/item/reagent_containers/food/poppypretzel,
 								"[slot_head]" = /obj/item/clothing/head/collectable/wizard)
 			return "Woo! Now everybody gets a cool wizard hat and MORE BOOZE!"
 

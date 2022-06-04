@@ -234,7 +234,7 @@
 
 	// We heard it on our own radio? We use power for that.
 	if(istype(R) && R.myborg == src)
-		var/datum/robot_component/CO = get_component("radio")
+		var/datum/robot_component/CO = get_robot_component("radio")
 		if(!CO || !is_component_functioning("radio") || !cell_use_power(CO.active_usage))
 			return FALSE // Sorry, couldn't hear
 
@@ -657,7 +657,7 @@
 /proc/SecondsToTicks(seconds)
 	return seconds * 10
 
-/proc/round_is_spooky(spookiness_threshold = config.cult_ghostwriter_req_cultists)
+/proc/round_is_spooky(spookiness_threshold = config.ghost.req_cult_ghostwriter)
 	return (GLOB.cult.current_antagonists.len > spookiness_threshold)
 
 /proc/getviewsize(view)

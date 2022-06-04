@@ -198,7 +198,7 @@
 			break
 	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
-/obj/item/paper/examine(mob/user)
+/obj/item/paper/_examine_text(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
@@ -209,6 +209,10 @@
 
 /obj/item/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
+	if(can_read && ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(!H.IsAdvancedToolUser(TRUE))
+			can_read = FALSE
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
@@ -280,8 +284,8 @@
 
 /obj/item/paper/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(user.zone_sel.selecting == BP_EYES)
-		user.visible_message(SPAN_NOTICE("You show the paper to [M]."), \
-		                     SPAN_NOTICE("[user] holds up a paper and shows it to [M]."))
+		user.visible_message(SPAN_NOTICE("[user] holds up a paper and shows it to [M]."), \
+		                     SPAN_NOTICE("You show the paper to [M]."))
 		M.examinate(src)
 
 	else if(user.zone_sel.selecting == BP_MOUTH) // lipstick wiping
@@ -448,8 +452,8 @@
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
-	else if(istype(P, /obj/item/reagent_containers/food/snacks/grown))
-		var/obj/item/reagent_containers/food/snacks/grown/G = P
+	else if(istype(P, /obj/item/reagent_containers/food/grown))
+		var/obj/item/reagent_containers/food/grown/G = P
 		if(!G.dry)
 			to_chat(user, SPAN_NOTICE("[G] must be dried before you can grind and roll it."))
 			return

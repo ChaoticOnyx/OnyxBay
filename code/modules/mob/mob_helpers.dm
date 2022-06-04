@@ -24,6 +24,8 @@
 	return 0
 
 /mob/living/carbon/human/isSynthetic()
+	if(istype(species, /datum/species/machine))
+		return 1
 	if(isnull(full_prosthetic))
 		robolimb_count = 0
 		for(var/obj/item/organ/external/E in organs)
@@ -631,3 +633,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 	if(isnull(choice) || src.incapacitated() || (required_item && !GLOB.hands_state.can_use_topic(required_item,src)))
 		return null
 	return choice
+
+// Checks if the mob is eligible for antag automatic/storyteller spawn. Manual role assignment (i.e. runic convert or badmin magic) bypasses this.
+/mob/proc/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

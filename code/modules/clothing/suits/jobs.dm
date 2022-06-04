@@ -10,7 +10,7 @@
 	item_state = "apron"
 	blood_overlay_type = "armorblood"
 	body_parts_covered = 0
-	allowed = list (/obj/item/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/reagent_containers/glass/bottle,/obj/item/material/minihoe)
+	allowed = list (/obj/item/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/reagent_containers/vessel/bottle/chemical,/obj/item/material/minihoe)
 
 //Captain
 /obj/item/clothing/suit/captunic

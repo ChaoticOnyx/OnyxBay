@@ -12,8 +12,8 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 /datum/antagonist/traitor/Initialize()
 	..()
 	fixer = new()
-	if(config.traitor_min_age)
-		min_player_age = config.traitor_min_age
+	if(config.game.traitor_min_age)
+		min_player_age = config.game.traitor_min_age
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"
@@ -24,6 +24,21 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	if(href_list["spawn_uplink"])
 		spawn_uplink(locate(href_list["spawn_uplink"]))
 		return 1
+
+/datum/antagonist/traitor/get_special_objective_text(datum/mind/player)
+	var/contracts_num = player.completed_contracts
+	if(!contracts_num)
+		return "<br>The traitor hasn't completed a single contract. <b>[pick("What a shame", "Loser", "Sorry sight", "Lame duck", "Schlimazel", "Pantywaist", "We will talk about it later")].</b>"
+
+	var/contracts_text = ""
+	for(var/datum/antag_contract/AC in GLOB.all_contracts)
+		if(AC.completed_by == player)
+			contracts_text += "[AC.name], "
+	contracts_text = copytext(contracts_text, 1, length(contracts_text) - 1)
+	if(contracts_num == 1)
+		return "<br>The traitor has completed a single contract: [contracts_text]."
+	else
+		return "<br>The traitor has completed <b>[contracts_num] contracts: [contracts_text]."
 
 /datum/antagonist/traitor/create_objectives(datum/mind/traitor)
 	if(!..())

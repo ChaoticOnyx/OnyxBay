@@ -638,7 +638,7 @@
 
 /* OVERRIDES */
 
-/obj/item/clothing/glasses/psychoscope/examine(mob/user)
+/obj/item/clothing/glasses/psychoscope/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nThe battery panel is [cell_panel_opened ? "opened" : "closed"]."

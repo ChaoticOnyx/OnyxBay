@@ -309,6 +309,9 @@
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)
 
+/obj/item/storage/allow_drop()
+	return TRUE
+
 /obj/item/storage/attack_hand(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user

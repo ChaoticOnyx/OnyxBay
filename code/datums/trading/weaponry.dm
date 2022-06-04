@@ -25,7 +25,7 @@
 								/obj/item/gun/projectile/revolver/detective      = TRADER_ALL,
 								/obj/item/gun/projectile/pistol                  = TRADER_SUBTYPES_ONLY,
 								/obj/item/gun/projectile/pistol/secgun/MK        = TRADER_BLACKLIST,
-								/obj/item/gun/projectile/shotgun                 = TRADER_ALL,
+								/obj/item/gun/projectile/shotgun                 = TRADER_SUBTYPES_ONLY,
 								/obj/item/gun/projectile/shotgun/pump/boomstick  = TRADER_BLACKLIST,
 								/obj/item/ammo_magazine									= TRADER_SUBTYPES_ONLY,
 								/obj/item/storage/box/blanks						= TRADER_THIS_TYPE,

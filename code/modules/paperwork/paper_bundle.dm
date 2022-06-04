@@ -93,7 +93,7 @@
 			else
 				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
-/obj/item/paper_bundle/examine(mob/user)
+/obj/item/paper_bundle/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
@@ -123,7 +123,12 @@
 
 	if(istype(pages[page], /obj/item/paper))
 		var/obj/item/paper/P = W
-		if(!(istype(usr, /mob/living/carbon/human) || isghost(usr) || istype(usr, /mob/living/silicon)))
+		var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon))
+		if(can_read && ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(!H.IsAdvancedToolUser(TRUE))
+				can_read = FALSE
+		if(!can_read)
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"
 		else
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"

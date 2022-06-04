@@ -18,7 +18,7 @@
 /turf/simulated/post_change()
 	..()
 	var/turf/T = GetAbove(src)
-	if(istype(T,/turf/space) || (density && istype(T,/turf/simulated/open)))
+	if(istype(T,/turf/space) || (density && istype(T, /turf/simulated/open)))
 		var/new_turf_type = density ? (istype(T.loc, /area/space) ? /turf/simulated/floor/plating/airless : /turf/simulated/floor/plating) : /turf/simulated/open
 		T.ChangeTurf(new_turf_type)
 
@@ -55,10 +55,6 @@
 	if(istype(loc, /area/chapel))
 		holy = TRUE
 	levelupdate()
-
-/turf/simulated/Destroy()
-	deltimer(timer_id)
-	return ..()
 
 /turf/simulated/proc/AddTracks(typepath,bloodDNA,comingdir,goingdir,bloodcolor=COLOR_BLOOD_HUMAN)
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src

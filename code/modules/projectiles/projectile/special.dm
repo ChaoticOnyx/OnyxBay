@@ -7,6 +7,8 @@
 	nodamage = 1
 	check_armour = "energy"
 	blockable = FALSE
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIGHT_CYAN
 	var/heavy_effect_range = 1
 	var/light_effect_range = 2
 
@@ -18,6 +20,7 @@
 	name = "ion pulse"
 	heavy_effect_range = 0
 	light_effect_range = 1
+	projectile_inner_range = 0.2
 
 /obj/item/projectile/ion/c38
 	name = "ion bullet"
@@ -26,6 +29,8 @@
 	damage = 10
 	heavy_effect_range = 0
 	light_effect_range = 0
+	projectile_inner_range = 0.2
+	projectile_outer_range = 1.25
 
 /obj/item/projectile/bullet/gyro
 	name ="explosive bolt"
@@ -47,6 +52,8 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_DEEP_SKY_BLUE
 	var/temperature = 300
 
 
@@ -93,6 +100,9 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIME
+	projectile_inner_range = 0.2
 
 /obj/item/projectile/energy/floramut/on_hit(atom/target, blocked = 0)
 	var/mob/living/M = target
@@ -128,6 +138,7 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_brightness_color = "#e6d1b5"
 	var/decl/plantgene/gene = null
 
 /obj/item/projectile/energy/florayield
@@ -138,6 +149,9 @@
 	damage_type = TOX
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = "#e6d1b5"
+	projectile_inner_range = 0.2
 
 /obj/item/projectile/energy/florayield/on_hit(atom/target, blocked = 0)
 	var/mob/M = target
@@ -177,34 +191,51 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
+	tasing = FALSE // Nah, that's too much
 	penetration_modifier = 0.35
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_RED_LIGHT
 
-/obj/item/projectile/energy/laser/small
+/obj/item/projectile/energy/laser/small // Pistol level
+	name = "small laser bolt"
 	icon_state = "laser_small"
-	damage = 40
-	armor_penetration = 15
+	damage = 35
+	armor_penetration = 10
+	projectile_inner_range = 0.15
 
-/obj/item/projectile/energy/laser/lesser
-	icon_state = "laser"
-	damage = 50
+/obj/item/projectile/energy/laser/lesser // Carbine level
+	icon_state = "laser_lesser"
+	damage = 45
 	agony = 5
-	armor_penetration = 20
+	armor_penetration = 12.5
+	projectile_inner_range = 0.2
 
-/obj/item/projectile/energy/laser/mid
+/obj/item/projectile/energy/laser/mid // Rifle level
 	icon_state = "laser"
-	damage = 60
+	damage = 55
 	agony = 10
-	armor_penetration = 25
+	armor_penetration = 15.0
 
-/obj/item/projectile/energy/laser/heavy
+/obj/item/projectile/energy/laser/greater // Advanced laser rifle or something
+	name = "large laser bolt"
+	icon_state = "laser_greater"
+	damage = 65
+	agony = 15
+	armor_penetration = 17.5
+	projectile_inner_range = 0.35
+	projectile_outer_range = 1.75
+
+/obj/item/projectile/energy/laser/heavy // Cannon level
 	name = "heavy laser bolt"
-	icon_state = "laser_huge"
-	damage = 80
+	icon_state = "laser_heavy"
+	damage = 75
 	agony = 20
-	armor_penetration = 45
+	armor_penetration = 20
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
+	projectile_inner_range = 0.4
+	projectile_outer_range = 2.0
 
 /obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
 	name = "alien"
@@ -261,7 +292,7 @@
 			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
 			break
 
-	holder.FindTarget()
+	holder.set_target_mob(holder.find_target())
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null
 

@@ -32,7 +32,7 @@
 
 /datum/gear/coffeecup
 	display_name = "coffee cup"
-	path = /obj/item/reagent_containers/food/drinks/coffeecup
+	path = /obj/item/reagent_containers/vessel/mug
 	flags = GEAR_HAS_TYPE_SELECTION
 
 /datum/gear/towel

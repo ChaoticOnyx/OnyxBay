@@ -33,15 +33,16 @@
 	icon = 'icons/obj/food.dmi'
 	icon_state = "donutbox"
 	name = "donut box"
-	can_hold = list(/obj/item/reagent_containers/food/snacks/donut)
+	can_hold = list(/obj/item/reagent_containers/food/donut)
+	max_storage_space = 12 // Eggs-actly 6 donuts, not a single bite more
 	foldable = /obj/item/stack/material/cardboard
 
-	startswith = list(/obj/item/reagent_containers/food/snacks/donut/normal = 6)
+	startswith = list(/obj/item/reagent_containers/food/donut/normal = 6)
 
 /obj/item/storage/box/donut/update_icon()
 	overlays.Cut()
 	var/i = 0
-	for(var/obj/item/reagent_containers/food/snacks/donut/D in contents)
+	for(var/obj/item/reagent_containers/food/donut/D in contents)
 		var/image/lying_donut = image('icons/obj/food.dmi', "[i][D.overlay_state]")
 		lying_donut.color = D.color
 		overlays += lying_donut

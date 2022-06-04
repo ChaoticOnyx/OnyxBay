@@ -48,12 +48,12 @@
 #define SOUND_CHANNEL_AMBIENT_MUSIC 2
 #define SOUND_CHANNEL_HUM           3
 
-// Ambient meta tags
-#define META_NORMAL          0
-#define META_MYSTIC          1
-#define META_SPACE           2
-#define META_SPACE_TRAVELING 3
-#define META_CENTCOMM        4
+// Ambient music tags
+#define MUSIC_TAG_NORMAL          0
+#define MUSIC_TAG_MYSTIC          1
+#define MUSIC_TAG_SPACE           2
+#define MUSIC_TAG_SPACE_TRAVELING 3
+#define MUSIC_TAG_CENTCOMM        4
 
 // SFX List
 // FIREARMS SOUND
@@ -171,6 +171,12 @@
 #define SFX_FIGHTING_CRUNCH         "fighting_crunch"
 #define SFX_FIGHTING_PUNCH          "fighting_punch"
 #define SFX_FIGHTING_SWING          "fighting_swing"
+
+// DEVICES
+#define SFX_GEIGER_LOW              "geiger_low"
+#define SFX_GEIGER_MODERATE         "geiger_moderate"
+#define SFX_GEIGER_HIGH             "geiger_high"
+#define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
 
 // MISC
 #define SFX_VENT                    "vent"

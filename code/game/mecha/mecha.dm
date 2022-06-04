@@ -160,6 +160,9 @@
 ////// Helpers /////////
 ////////////////////////
 
+/obj/mecha/on_purchase()
+	operation_req_access = list() // trader disable locks on mech on their site.
+
 /obj/mecha/proc/removeVerb(verb_path)
 	verbs -= verb_path
 
@@ -213,7 +216,7 @@
 	else
 		return 0
 
-/obj/mecha/examine(mob/user)
+/obj/mecha/_examine_text(mob/user)
 	. = ..()
 	var/integrity = health/initial(health)*100
 	switch(integrity)

@@ -102,7 +102,7 @@
 		src.visible_message("<span class='warning'>[src] dents and chars.</span>")
 		damaged = 1
 
-/obj/machinery/self_destruct/examine(mob/user)
+/obj/machinery/self_destruct/_examine_text(mob/user)
 	. = ..()
 	if(damaged)
 		. += "\n<span class='warning'>[src] is damaged, it needs repairs.</span>"

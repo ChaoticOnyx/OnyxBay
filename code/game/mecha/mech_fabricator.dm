@@ -11,6 +11,7 @@
 	req_access = list(access_robotics)
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/speed = 1
 	var/mat_efficiency = 1

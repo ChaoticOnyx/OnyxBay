@@ -6,6 +6,10 @@
 
 	lobby_icon = 'maps/example/example_lobby.dmi'
 
+	shuttle_types = list(
+		/datum/shuttle/autodock/ferry/example
+	)
+
 	station_levels = list(1, 2, 3)
 	contact_levels = list(1, 2, 3)
 	player_levels = list(1, 2, 3)
