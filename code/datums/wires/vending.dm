@@ -21,7 +21,7 @@ var/const/VENDING_POWER = 16
 /datum/wires/vending/GetInteractWindow()
 	var/obj/machinery/vending/V = holder
 	. += ..()
-	. += "<BR>Main power is [V.active ? "on" : "off"].<BR>"
+	. += "<BR>The blue light is [V.active ? "on" : "off"].<BR>"
 	. += "The orange light is [V.seconds_electrified ? "off" : "on"].<BR>"
 	. += "The red light is [V.shoot_inventory ? "blinking" : "off"].<BR>"
 	. += "The green light is [(V.categories & CAT_HIDDEN) ? "on" : "off"].<BR>"
