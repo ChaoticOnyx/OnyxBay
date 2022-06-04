@@ -16,7 +16,7 @@
 
 /datum/category_item/player_setup_item/general/background
 	name = "Background"
-	sort_order = 6
+	sort_order = 5
 
 /datum/category_item/player_setup_item/general/background/load_character(datum/pref_record_reader/R)
 	pref.nanotrasen_relation = R.read("nanotrasen_relation")
