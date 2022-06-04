@@ -86,9 +86,9 @@
 
 	var/ear_protection = 0
 
-/obj/item/New()
+/obj/item/New(loc)
 	..()
-	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
+	if(randpixel && (!pixel_x && !pixel_y) && isturf(src.loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
 		pixel_x = rand(-randpixel, randpixel)
 		pixel_y = rand(-randpixel, randpixel)
 
