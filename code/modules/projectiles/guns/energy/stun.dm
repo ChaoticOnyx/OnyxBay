@@ -291,7 +291,7 @@
 	max_shots = 6
 	accuracy = 0
 	one_hand_penalty = 2
-	fire_delay = 10
+	fire_delay = 12
 	burst = 1
 	firemodes = list(
 		list(mode_name = "electrode", projectile_type = /obj/item/projectile/energy/electrode/greater),
