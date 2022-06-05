@@ -116,7 +116,7 @@ meteor_act
 	apply_effect(STUTTER, reduced_tasing)
 	apply_effect(EYE_BLUR, reduced_tasing)
 
-	if(poise <= 0 || getHalLoss() >= species.total_health || (affected && affected.pain > affected.max_pain))
+	if(poise <= 0 || getHalLoss() >= species.total_health || affected?.pain > species.total_health)
 		if(prob(95)) // May gods decide your destiny
 			if(!stunned)
 				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
