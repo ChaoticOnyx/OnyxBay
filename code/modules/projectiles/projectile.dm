@@ -90,11 +90,6 @@
 	if(config.misc.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
-
-	if(projectile_light)
-		layer = ABOVE_LIGHTING_LAYER
-		plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		set_light(projectile_max_bright, projectile_inner_range, projectile_outer_range, projectile_falloff_curve, projectile_brightness_color)
 	. = ..()
 
 /obj/item/projectile/Destroy()
