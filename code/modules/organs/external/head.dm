@@ -29,13 +29,13 @@
 
 	var/skull_path = /obj/item/skull
 
-/obj/item/organ/external/head/emp_act(severity)
+/obj/item/organ/external/head/droplimb()
 	if(BP_IS_ROBOTIC(src))
 		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
 		if(istype(FBP_brain))
 			FBP_brain.stored_mmi.forceMove(get_turf(owner))
 			owner.mind.transfer_to(FBP_brain.stored_mmi.brainmob)
-			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're but a brain now."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
 	return ..()
 
 /obj/item/organ/external/head/organ_eaten(mob/user)
