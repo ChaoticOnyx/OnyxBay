@@ -27,6 +27,7 @@
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
 	var/full_pain = 0                  // Overall pain including damages.
+	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
 	// Movement delay vars.
@@ -120,6 +121,10 @@
 	if(owner)
 		replaced(owner)
 		sync_colour_to_human(owner)
+		if(isnull(max_pain))
+			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
+	else if(isnull(max_pain))
+		max_pain = max_damage * 1.5 // Should not ~probably~ happen
 	get_icon()
 
 	if(food_organ in implants)
