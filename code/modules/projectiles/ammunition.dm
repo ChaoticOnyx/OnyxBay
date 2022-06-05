@@ -28,9 +28,9 @@
 /obj/item/ammo_casing/proc/expend()
 	. = BB
 	if(BB.projectile_light)
-		layer = ABOVE_LIGHTING_LAYER
-		plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		set_light(projectile_max_bright, projectile_inner_range, projectile_outer_range, projectile_falloff_curve, projectile_brightness_color)
+		BB.layer = ABOVE_LIGHTING_LAYER
+		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
 	BB = null
 	set_dir(pick(GLOB.alldirs)) //spin spent casings
 
