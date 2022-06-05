@@ -29,8 +29,8 @@
 
 	var/skull_path = /obj/item/skull
 
-/obj/item/organ/external/head/droplimb()
-	if(BP_IS_ROBOTIC(src))
+/obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
+	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
 		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
 		if(istype(FBP_brain))
 			FBP_brain.stored_mmi.forceMove(get_turf(owner))
