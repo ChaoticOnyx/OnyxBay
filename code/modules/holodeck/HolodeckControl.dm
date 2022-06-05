@@ -287,7 +287,7 @@
 	for(var/obj/effect/decal/cleanable/blood/B in linkedholodeck)
 		qdel(B)
 
-	holographic_objs = A.copy_contents_to(linkedholodeck , 1)
+	holographic_objs = A.copy_contents_to(linkedholodeck, TRUE, FALSE)
 	for(var/obj/holo_obj in holographic_objs)
 		holo_obj.alpha *= 0.8 //give holodeck objs a slight transparency
 

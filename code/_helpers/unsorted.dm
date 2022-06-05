@@ -693,7 +693,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/y_pos = null
 	var/z_pos = null
 
-/area/proc/copy_contents_to(area/A , platingRequired = 0 )
+/area/proc/copy_contents_to(area/A, platingRequired = FALSE, ignore_unsimulated = TRUE )
 	//Takes: Area. Optional: If it should copy to areas that don't have plating
 	//Returns: Nothing.
 	//Notes: Attempts to move the contents of one area to another area.
@@ -772,7 +772,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 					for(var/obj/O in T)
 
-						if(!istype(O,/obj) || !O.simulated)
+						if(!istype(O,/obj))
+							continue
+
+						if(ignore_unsimulated && !O.simulated)
 							continue
 
 						objs += O
@@ -787,7 +790,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 					for(var/mob/M in T)
 
-						if(!istype(M,/mob) || !M.simulated) continue // If we need to check for more mobs, I'll add a variable
+						// If we need to check for more mobs, I'll add a variable
+						if(!istype(M,/mob))
+							continue
+
+						if(ignore_unsimulated && !M.simulated)
+							continue
+
 						mobs += M
 
 					for(var/mob/M in mobs)

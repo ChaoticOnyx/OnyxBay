@@ -66,6 +66,7 @@
 	mod_reach = 1.4
 	mod_handy = 0.7
 	mod_shield = 1.3
+	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
@@ -144,7 +145,7 @@
 	if(isghost(user) && user.client?.inquisitive_ghost)
 		if(src.opened)
 			return
-		
+
 		. += "\nIt contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)

@@ -139,17 +139,16 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor
 	can_paint = 1
 
+/decl/flooring/tiling/dirty
+	icon_base = "steel_dirty"
+
 /decl/flooring/tiling/mono
-	icon_base = "monotile"
+	icon_base = "steel_mono"
 
 /decl/flooring/tiling/white
 	desc = "How sterile."
 	icon_base = "white"
 	build_type = /obj/item/stack/tile/floor_white
-
-/decl/flooring/tiling/dirty
-	desc = "How sterile."
-	icon_base = "steel_dirty"
 
 /decl/flooring/tiling/brown
 	desc = "How sterile."
@@ -157,7 +156,7 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor_brown
 
 /decl/flooring/tiling/white/mono
-	icon_base = "monotile"
+	icon_base = "white_mono"
 
 /decl/flooring/tiling/dark
 	desc = "How ominous."
@@ -165,7 +164,24 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor_dark
 
 /decl/flooring/tiling/dark/mono
-	icon_base = "monotile"
+	icon_base = "dark_mono"
+
+/decl/flooring/tiling/techfloor
+	desc = "How industrial."
+	icon_base = "techfloor"
+	build_type = /obj/item/stack/tile/techfloor
+
+/decl/flooring/tiling/techfloor/maint
+	icon_base = "techmaint"
+	build_type = /obj/item/stack/tile/techfloor/maint
+
+/decl/flooring/tiling/techfloor/grid
+	icon_base = "techgrid"
+	build_type = /obj/item/stack/tile/techfloor/grid
+
+/decl/flooring/tiling/techfloor/ridge
+	icon_base = "techridge"
+	build_type = /obj/item/stack/tile/techfloor/ridge
 
 /decl/flooring/tiling/freezer
 	desc = "Don't slip."

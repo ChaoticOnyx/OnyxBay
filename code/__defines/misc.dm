@@ -158,6 +158,12 @@
 #define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
 #define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
 
+// These determine how well one can block things with items
+#define BLOCK_TIER_NONE        0
+#define BLOCK_TIER_MELEE       1
+#define BLOCK_TIER_PROJECTILE  2
+#define BLOCK_TIER_ADVANCED    3
+
 //Camera capture modes
 #define CAPTURE_MODE_REGULAR 0 //Regular polaroid camera mode
 #define CAPTURE_MODE_ALL 1 //Admin camera mode

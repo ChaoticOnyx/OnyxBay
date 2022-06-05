@@ -123,7 +123,7 @@
 		else
 			stance = HOSTILE_STANCE_ATTACKING
 			Goto(target_mob, move_to_delay, minimum_distance)
-	if(target_mob.loc != null && get_dist(src, target_mob.loc) <= vision_range)//We can't see our target, but he's in our vision range still
+	if(target_mob?.loc != null && get_dist(src, target_mob.loc) <= vision_range)//We can't see our target, but he's in our vision range still
 		Goto(target_mob, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/Goto(target_mob, delay, minimum_distance)
@@ -258,6 +258,7 @@
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/proc/OpenFire(target_mob)
+	ranged_cooldown = ranged_cooldown_cap
 
 	var/target = target_mob
 	visible_message("\red <b>[src]</b> [ranged_message] at [target]!")
@@ -279,7 +280,6 @@
 		Shoot(target, src.loc, src)
 		if(casingtype)
 			new casingtype
-	ranged_cooldown = ranged_cooldown_cap
 	return
 
 /mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
@@ -304,7 +304,7 @@
 					obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 					return
 			var/obj/structure/obstacle = locate(/obj/structure, get_step(src, dir))
-			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille))
+			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille) || istype(obstacle, /obj/structure/window_frame))
 				obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 
 /mob/living/simple_animal/hostile/on_ghost_possess()
