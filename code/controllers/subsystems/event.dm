@@ -34,8 +34,7 @@ SUBSYSTEM_DEF(event)
 				EVENT_LEVEL_MODERATE	= new /datum/event_container/moderate,
 				EVENT_LEVEL_MAJOR 		= new /datum/event_container/major
 			)
-	if(GLOB.using_map.use_overmap)
-		overmap_event_handler.create_events(GLOB.using_map.overmap_z, GLOB.using_map.overmap_size, GLOB.using_map.overmap_event_areas)
+
 	. = ..()
 
 /datum/controller/subsystem/event/Recover()
@@ -59,7 +58,7 @@ SUBSYSTEM_DEF(event)
 			return
 
 	while (pos <= EVENT_LEVEL_MAJOR)
-		var/list/datum/event_container/EC = event_containers[pos]
+		var/datum/event_container/EC = event_containers[pos]
 		EC.process()
 		pos++
 		
@@ -87,7 +86,7 @@ SUBSYSTEM_DEF(event)
 	log_debug("Event '[EM.name]' has completed at [worldtime2stationtime(world.time)].")
 
 /datum/controller/subsystem/event/proc/delay_events(severity, delay)
-	var/list/datum/event_container/EC = event_containers[severity]
+	var/datum/event_container/EC = event_containers[severity]
 	EC.next_event_time += delay
 
 /datum/controller/subsystem/event/proc/Interact(mob/living/user)
@@ -125,7 +124,7 @@ SUBSYSTEM_DEF(event)
 //Event manager UI 
 /datum/controller/subsystem/event/proc/GetInteractWindow()
 	var/html = "<A align='right' href='?src=\ref[src];refresh=1'>Refresh</A>"
-	html += "<A align='right' href='?src=\ref[src];pause_all=[!config.allow_random_events]'>Pause All - [config.allow_random_events ? "Pause" : "Resume"]</A>"
+	html += "<A align='right' href='?src=\ref[src];pause_all=[!config.random_events.enable]'>Pause All - [config.random_events.enable ? "Pause" : "Resume"]</A>"
 
 	if(selected_event_container)
 		var/event_time = max(0, selected_event_container.next_event_time - world.time)
@@ -260,8 +259,8 @@ SUBSYSTEM_DEF(event)
 		EC.delayed = !EC.delayed
 		log_and_message_admins("has [EC.delayed ? "paused" : "resumed"] countdown for [severity_to_string[EC.severity]] events.")
 	else if(href_list["pause_all"])
-		config.allow_random_events = text2num(href_list["pause_all"])
-		log_and_message_admins("has [config.allow_random_events ? "resumed" : "paused"] countdown for all events.")
+		config.random_events.enable = text2num(href_list["pause_all"])
+		log_and_message_admins("has [config.random_events.enable ? "resumed" : "paused"] countdown for all events.")
 	else if(href_list["interval"])
 		var/delay = input("Enter delay modifier. A value less than one means events fire more often, higher than one less often.", "Set Interval Modifier") as num|null
 		if(delay && delay > 0)

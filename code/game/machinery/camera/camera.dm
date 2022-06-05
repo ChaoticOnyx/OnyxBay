@@ -17,7 +17,7 @@
 	anchored = 1.0
 	var/invuln = null
 	var/bugged = 0
-	var/obj/item/weapon/camera_assembly/assembly = null
+	var/weakref/assembly_ref = null
 
 	var/toughness = 5 //sorta fragile
 
@@ -37,7 +37,7 @@
 
 	var/affected_by_emp_until = 0
 
-/obj/machinery/camera/examine(mob/user)
+/obj/machinery/camera/_examine_text(mob/user)
 	. = ..()
 	if(stat & BROKEN)
 		. += "\n<span class='warning'>It is completely demolished.</span>"
@@ -105,14 +105,15 @@
 
 /obj/machinery/camera/New()
 	wires = new(src)
-	assembly = new(src)
+	var/obj/item/camera_assembly/assembly = new(src)
 	assembly.state = 4
+	assembly_ref = weakref(assembly)
 
 	/* // Use this to look for cameras that have the same c_tag.
 	for(var/obj/machinery/camera/C in cameranet.cameras)
 		var/list/tempnetwork = C.network&src.network
 		if(C != src && C.c_tag == src.c_tag && tempnetwork.len)
-			world.log << "[src.c_tag] [src.x] [src.y] [src.z] conflicts with [C.c_tag] [C.x] [C.y] [C.z]"
+			to_world_log("[src.c_tag] [src.x] [src.y] [src.z] conflicts with [C.c_tag] [C.x] [C.y] [C.z]")
 	*/
 	if(!src.network || src.network.len < 1)
 		if(loc)
@@ -139,11 +140,8 @@
 
 /obj/machinery/camera/Destroy()
 	deactivate(null, 0) //kick anyone viewing out
-	if(assembly)
-		qdel(assembly)
-		assembly = null
-	qdel(wires)
-	wires = null
+	QDEL_NULL(assembly_ref)
+	QDEL_NULL(wires)
 	return ..()
 
 /obj/machinery/camera/Process()
@@ -182,12 +180,10 @@
 
 	..() //and give it the regular chance of being deleted outright
 
-/obj/machinery/camera/hitby(AM as mob|obj)
+/obj/machinery/camera/hitby(atom/movable/AM, speed, nomsg)
 	..()
-	if (istype(AM, /obj))
+	if(istype(AM, /obj))
 		var/obj/O = AM
-		if (O.throwforce >= src.toughness)
-			visible_message("<span class='warning'><B>[src] was hit by [O].</B></span>")
 		take_damage(O.throwforce)
 
 /obj/machinery/camera/proc/setViewRange(num = 7)
@@ -201,8 +197,9 @@
 	if(user.species.can_shred(user))
 		set_status(0)
 		user.do_attack_animation(src)
+		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
-		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
+		playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 		add_hiddenprint(user)
 		destroy()
 
@@ -222,6 +219,7 @@
 
 	else if(isWelder(W) && (wires.CanDeconstruct() || (stat & BROKEN)))
 		if(weld(W, user))
+			var/obj/item/camera_assembly/assembly = assembly_ref?.resolve()
 			if(assembly)
 				assembly.dropInto(loc)
 				assembly.anchored = 1
@@ -237,19 +235,19 @@
 					assembly.state = 1
 					to_chat(user, "<span class='notice'>You cut \the [src] free from the wall.</span>")
 					new /obj/item/stack/cable_coil(src.loc, length=2)
-				assembly = null //so qdel doesn't eat it.
+				assembly_ref = null //so qdel doesn't eat it.
 			qdel(src)
 			return
 
 	// OTHER
-	else if (can_use() && (istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
+	else if (can_use() && (istype(W, /obj/item/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
 		var/mob/living/U = user
-		var/obj/item/weapon/paper/X = null
+		var/obj/item/paper/X = null
 		var/obj/item/device/pda/P = null
 
 		var/itemname = ""
 		var/info = ""
-		if(istype(W, /obj/item/weapon/paper))
+		if(istype(W, /obj/item/paper))
 			X = W
 			itemname = X.name
 			info = X.info
@@ -262,7 +260,7 @@
 			if(!O.client) continue
 			if(U.name == "Unknown") to_chat(O, "<b>[U]</b> holds \a [itemname] up to one of your cameras ...")
 			else to_chat(O, "<b><a href='byond://?src=\ref[O];track2=\ref[O];track=\ref[U];trackname=[U.name]'>[U]</a></b> holds \a [itemname] up to one of your cameras ...")
-			O << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
+			show_browser(O, text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
 
 	else if(W.damtype == BRUTE || W.damtype == BURN) //bashing cameras
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -319,7 +317,7 @@
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, loc)
 	spark_system.start()
-	playsound(loc, "spark", 50, 1)
+	playsound(loc, SFX_SPARK, 50, 1)
 
 /obj/machinery/camera/proc/set_status(newstatus)
 	if (status != newstatus)
@@ -394,7 +392,6 @@
 	for(var/obj/machinery/camera/C in oview(4, M))
 		if(C.can_use())	// check if camera disabled
 			return C
-			break
 	return null
 
 /proc/near_range_camera(mob/M)
@@ -402,11 +399,10 @@
 	for(var/obj/machinery/camera/C in range(4, M))
 		if(C.can_use())	// check if camera disabled
 			return C
-			break
 
 	return null
 
-/obj/machinery/camera/proc/weld(obj/item/weapon/weldingtool/WT, mob/user)
+/obj/machinery/camera/proc/weld(obj/item/weldingtool/WT, mob/user)
 
 	if(busy)
 		return 0

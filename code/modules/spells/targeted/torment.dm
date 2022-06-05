@@ -1,4 +1,4 @@
-/spell/targeted/torment
+/datum/spell/targeted/torment
 	name = "Torment"
 	desc = "this spell causes pain to all those in its radius."
 	feedback = "TM"
@@ -6,9 +6,9 @@
 	charge_max = 150
 	spell_flags = 0
 	invocation = "Rai Di-Kaal!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 5
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 0, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 0, SP_POWER = 3)
 	cooldown_min = 50
 	message = "<span class='danger'>So much pain! All you can hear is screaming!</span>"
 
@@ -17,15 +17,14 @@
 
 	var/loss = 30
 
-	hud_state = "wiz_horse"
+	icon_state = "wiz_horse"
 
-
-/spell/targeted/torment/cast(list/targets, mob/user)
+/datum/spell/targeted/torment/cast(list/targets, mob/user)
 	gibs(user.loc)
 	for(var/mob/living/carbon/human/H in targets)
 		H.adjustHalLoss(loss)
 
-/spell/targeted/torment/empower_spell()
+/datum/spell/targeted/torment/empower_spell()
 	if(!..())
 		return 0
 

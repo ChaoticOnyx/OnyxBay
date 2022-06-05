@@ -5,13 +5,14 @@
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 	var/capacity_max = 300
 	var/capacity = 300
 	var/gel_type = "unknown"
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/structure/geltank/examine(mob/user)
+/obj/structure/geltank/_examine_text(mob/user)
 	. = ..()
 	if(capacity >= 0)
 		. += "\nIt contains [capacity]/[capacity_max] units of gel."
@@ -48,8 +49,8 @@
 		var/obj/item/stack/medical/advanced/bruise_pack/O = W
 		fill_gel(O, user)
 		return
-	if(istype(W, /obj/item/weapon/organfixer))
-		var/obj/item/weapon/organfixer/G = W
+	if(istype(W, /obj/item/organfixer))
+		var/obj/item/organfixer/G = W
 		if(capacity <= 0)
 			to_chat(user, SPAN("warning", "\The [src] is empty!"))
 			return

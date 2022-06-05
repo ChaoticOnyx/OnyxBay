@@ -16,7 +16,10 @@
 		CtrlShiftClickOn(A)
 		return
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(modifiers["shift"])
+			ShiftMiddleClickOn(A)
+		else
+			MiddleClickOn(A)
 		return
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -51,30 +54,25 @@
 		return
 	*/
 
-	var/obj/item/W = get_active_hand()
+	var/obj/item/I = get_active_hand()
 
 	// Cyborgs have no range-checking unless there is item use
-	if(!W)
+	if(!I)
 		A.add_hiddenprint(src)
 		A.attack_robot(src)
 		return
 
-	// buckled cannot prevent machine interlinking but stops arm movement
-	if( buckled )
-		return
-
-	if(W == A)
-
-		W.attack_self(src)
+	if(I == A)
+		I.attack_self(src)
 		return
 
 	// cyborgs are prohibited from using storage items so we can I think safely remove (A.loc in contents)
 	if(A == loc || (A in loc) || (A in contents))
 		// No adjacency checks
 
-		var/resolved = W.resolve_attackby(A, src, params)
-		if(!resolved && A && W)
-			W.afterattack(A, src, 1, params) // 1 indicates adjacency
+		var/resolved = I.resolve_attackby(A, src, params)
+		if(!resolved && A && I)
+			I.afterattack(A, src, 1, params) // 1 indicates adjacency
 		return
 
 	if(!isturf(loc))
@@ -84,12 +82,12 @@
 	if(isturf(A) || isturf(A.loc))
 		if(A.Adjacent(src)) // see adjacent.dm
 
-			var/resolved = W.resolve_attackby(A, src, params)
-			if(!resolved && A && W)
-				W.afterattack(A, src, 1, params) // 1 indicates adjacency
+			var/resolved = I.resolve_attackby(A, src, params)
+			if(!resolved && A && I)
+				I.afterattack(A, src, 1, params) // 1 indicates adjacency
 			return
 		else
-			W.afterattack(A, src, 0, params)
+			I.afterattack(A, src, 0, params)
 			return
 	return
 
@@ -165,3 +163,14 @@
 /atom/proc/attack_robot(mob/user as mob)
 	attack_ai(user)
 	return
+
+// QOL feature, clicking on turf can toogle doors
+/turf/BorgCtrlClick(mob/living/silicon/robot/user)
+	AICtrlClick(user)
+
+/turf/BorgAltClick(mob/living/silicon/robot/user)
+	AIAltClick(user)
+
+/turf/BorgShiftClick(mob/living/silicon/robot/user)
+	AIShiftClick(user)
+	..()

@@ -26,21 +26,22 @@
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
 	inherent_verbs = list(/mob/living/proc/ventcrawl)
 	hud_type = /datum/hud_data/monkey
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/monkey
+	meat_type = /obj/item/reagent_containers/food/meat/monkey
 
 	rarity_value = 0.1
-	total_health = 150
+	total_health = 75
 	brute_mod = 1.5
 	burn_mod = 1.5
 
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	bump_flag = MONKEY
-	swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL
-	push_flags = MONKEY|SLIME|SIMPLE_ANIMAL|ALIEN
+	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
+	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
+	species_flags = SPECIES_FLAG_NO_ANTAG_TARGET
 
 	pass_flags = PASS_FLAG_TABLE
-	holder_type = /obj/item/weapon/holder
+	holder_type = /obj/item/holder
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin),
@@ -56,8 +57,8 @@
 		)
 
 	var/list/no_touchie = list(
-		/obj/item/weapon/mirror,
-		/obj/item/weapon/paper,
+		/obj/item/mirror,
+		/obj/item/paper,
 		/obj/item/device/taperecorder,
 		/obj/item/modular_computer,
 	)
@@ -66,8 +67,8 @@
 	if(H.stat != CONSCIOUS)
 		return
 
-	if(prob(25) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
-		step(H, pick(GLOB.cardinal))
+	if(prob(25) && isturf(H.loc) && !H.pulledby) //won't move if being pulled
+		H.SelfMove(pick(GLOB.cardinal))
 
 	if(prob(25))
 		H.hand = !(H.hand)
@@ -76,11 +77,11 @@
 	if(prob(5) && held)
 		var/turf/T = get_random_turf_in_range(H, 7, 2)
 		if(T && !is_type_in_list(T, no_touchie))
-			if(istype(held, /obj/item/weapon/gun) && prob(80))
-				var/obj/item/weapon/gun/G = held
+			if(istype(held, /obj/item/gun) && prob(80))
+				var/obj/item/gun/G = held
 				G.Fire(T, H)
-			if(istype(held, /obj/item/weapon/reagent_containers) && prob(80))
-				var/obj/item/weapon/reagent_containers/C = held
+			if(istype(held, /obj/item/reagent_containers) && prob(80))
+				var/obj/item/reagent_containers/C = held
 				C.attack(H, H)
 			if(istype(held, /obj/item/) && prob(50))
 				var/obj/item/O = held
@@ -122,6 +123,12 @@
 /datum/species/monkey/handle_post_spawn(mob/living/carbon/human/H)
 	..()
 	H.item_state = lowertext(name)
+
+/datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
+	if(antag_id == MODE_CHANGELING) // For memes sake
+		return TRUE
+	return FALSE
+
 
 /datum/species/monkey/tajaran
 	name = "Farwa"

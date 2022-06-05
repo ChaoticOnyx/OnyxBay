@@ -11,7 +11,7 @@
 
 	var/list/obj/machinery/am_shielding/linked_shielding
 	var/list/obj/machinery/am_shielding/linked_cores
-	var/obj/item/weapon/am_containment/fueljar
+	var/obj/item/am_containment/fueljar
 	var/update_shield_icons = 0
 	var/stability = 100
 	var/exploding = 0
@@ -38,8 +38,8 @@
 /obj/machinery/power/am_control_unit/Destroy()//Perhaps damage and run stability checks rather than just qdel on the others
 	for(var/obj/machinery/am_shielding/AMS in linked_shielding)
 		qdel(AMS)
-	..()
 
+	return ..()
 
 /obj/machinery/power/am_control_unit/Process()
 	if(exploding)
@@ -153,7 +153,7 @@
 			to_chat(user, "<span class='warning'>Once bolted and linked to a shielding unit it the [src.name] is unable to be moved!</span>")
 		return
 
-	if(istype(W, /obj/item/weapon/am_containment))
+	if(istype(W, /obj/item/am_containment))
 		if(fueljar)
 			to_chat(user, "<span class='warning'>There is already a [fueljar] inside!</span>")
 			return
@@ -249,7 +249,7 @@
 	if((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
 		if(!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			user << browse(null, "window=AMcontrol")
+			close_browser(user, "window=AMcontrol")
 			return
 	user.set_machine(src)
 
@@ -279,7 +279,7 @@
 		dat += "- <A href='?src=\ref[src];strengthdown=1'>--</A>|<A href='?src=\ref[src];strengthup=1'>++</A><BR><BR>"
 
 
-	user << browse(dat, "window=AMcontrol;size=420x500")
+	show_browser(user, dat, "window=AMcontrol;size=420x500")
 	onclose(user, "AMcontrol")
 	return
 
@@ -289,11 +289,11 @@
 	//Ignore input if we are broken or guy is not touching us, AI can control from a ways away
 	if(stat & (BROKEN|NOPOWER) || (get_dist(src, usr) > 1 && !istype(usr, /mob/living/silicon/ai)))
 		usr.unset_machine()
-		usr << browse(null, "window=AMcontrol")
+		close_browser(usr, "window=AMcontrol")
 		return
 
 	if(href_list["close"])
-		usr << browse(null, "window=AMcontrol")
+		close_browser(usr, "window=AMcontrol")
 		usr.unset_machine()
 		return
 

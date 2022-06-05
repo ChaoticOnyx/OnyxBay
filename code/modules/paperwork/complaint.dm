@@ -1,4 +1,4 @@
-/obj/item/weapon/paper/complaint_form
+/obj/item/paper/complaint_form
 	name = "Complaint form #______"
 
 	var/id
@@ -6,7 +6,7 @@
 	var/signed_ckey
 	var/signed_name
 
-/obj/item/weapon/paper/complaint_form/examine(mob/user)
+/obj/item/paper/complaint_form/_examine_text(mob/user)
 	. = ..()
 	if (signed)
 		. += "\n[SPAN_NOTICE("It appears to be signed. It can't be modified.")]"
@@ -14,23 +14,23 @@
 		. += "\n[SPAN_NOTICE("It appears to be unsigned and ready for modifications.")]"
 
 
-/obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
+/obj/item/paper/complaint_form/get_signature(obj/item/pen/P, mob/user, signfield)
 	. = ..()
 	if (signfield == "finish")
 		signed = TRUE
 		signed_ckey = user?.client?.ckey
 		if (isnull(signed_ckey))
-			crash_with("THIS IS NOT AN ERROR. obj/item/weapon/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
+			crash_with("THIS IS NOT AN ERROR. obj/item/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
 		signed_name = strip_html_properly(.)
 		name += ", signed by [signed_name]"
 		make_readonly() //nanomachines, son
 
-/obj/item/weapon/paper/complaint_form/rename()
+/obj/item/paper/complaint_form/rename()
 	set name = "Rename paper"
 	set hidden = 1
 	return
 
-/obj/item/weapon/paper/complaint_form/New(loc, id, target_name, target_occupation, noinit = FALSE)
+/obj/item/paper/complaint_form/New(loc, id, target_name, target_occupation, noinit = FALSE)
 	. = ..(loc)
 	if (noinit)
 		return
@@ -50,8 +50,8 @@
 	new_content += "\[br\]Sign: \[signfield=finish\]\[/right\]"
 	set_content(new_content, new_title)
 
-/obj/item/weapon/paper/complaint_form/copy()
-	var/obj/item/weapon/paper/complaint_form/CF = ..()
+/obj/item/paper/complaint_form/copy(loc = src.loc, generate_stamps = TRUE)
+	var/obj/item/paper/complaint_form/CF = ..()
 	CF.id = id
 	CF.signed = signed
 	CF.signed_ckey = signed_ckey
@@ -59,7 +59,7 @@
 	return CF
 
 
-/obj/item/weapon/complaint_folder
+/obj/item/complaint_folder
 	name = "Complaint #______"
 	desc = "The pen is mightier than the sword."
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -72,27 +72,27 @@
 	var/target_rank
 	var/target_ckey
 	var/signed = FALSE
-	var/obj/item/weapon/paper/complaint_form/main_form
+	var/obj/item/paper/complaint_form/main_form
 
 	var/finished = FALSE
 
-/obj/item/weapon/complaint_folder/proc/copy(loc = src.loc, generate_stamps = TRUE)
-	var/obj/item/weapon/complaint_folder/CFo = new src.type(loc, noinit = TRUE)
+/obj/item/complaint_folder/proc/copy(loc = src.loc, generate_stamps = TRUE)
+	var/obj/item/complaint_folder/CFo = new src.type(loc, noinit = TRUE)
 	CFo.name = name
 	CFo.id = id
 	CFo.target_name = target_name
 	CFo.target_occupation = target_occupation
-	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for (var/obj/item/paper/complaint_form/CF in contents)
 		if (CF != main_form)
 			CF.copy(CFo, generate_stamps)
 	CFo.main_form = main_form.copy(CFo, generate_stamps)
 	return CFo
 
-/obj/item/weapon/complaint_folder/proc/recolorize(saturation = 1, grayscale = FALSE, amount = 99)
+/obj/item/complaint_folder/proc/recolorize(saturation = 1, grayscale = FALSE, amount = 99)
 	if (amount < 1)
 		return 0
 	main_form.recolorize(saturation, grayscale)
-	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for (var/obj/item/paper/complaint_form/CF in contents)
 		if (CF == main_form)
 			continue
 		if (--amount < 0)
@@ -103,7 +103,7 @@
 
 
 
-/obj/item/weapon/complaint_folder/New(loc, id, noinit = FALSE)
+/obj/item/complaint_folder/New(loc, id, noinit = FALSE)
 	. = ..()
 	if (noinit)
 		return
@@ -111,17 +111,17 @@
 	name = "Complaint #[id]"
 	main_form = new(src, id)
 
-/obj/item/weapon/complaint_folder/examine(mob/user)
+/obj/item/complaint_folder/_examine_text(mob/user)
 	. = ..()
 	if (main_form.signed)
 		. += "\n[SPAN_NOTICE("It is signed by [main_form.signed_name]")]"
 		if (length(contents) > 1)
 			var/counter = 0
-			for (var/obj/item/weapon/paper/complaint_form/F in contents)
+			for (var/obj/item/paper/complaint_form/F in contents)
 				counter++
 			. += "\n[SPAN_NOTICE("It has [counter - 1] complaint forms attached")]"
 
-/obj/item/weapon/complaint_folder/proc/check_signed()
+/obj/item/complaint_folder/proc/check_signed()
 	if (signed)
 		return TRUE
 	if (main_form.signed)
@@ -141,9 +141,9 @@
 
 		return TRUE
 
-/obj/item/weapon/complaint_folder/attackby(obj/item/weapon/W, mob/user)
-	if (istype(W, /obj/item/weapon/paper/complaint_form))
-		var/obj/item/weapon/paper/complaint_form/CF = W
+/obj/item/complaint_folder/attackby(obj/item/W, mob/user)
+	if (istype(W, /obj/item/paper/complaint_form))
+		var/obj/item/paper/complaint_form/CF = W
 		if (!check_signed())
 			to_chat(user, SPAN_WARNING("Sign [src] first!"))
 			return
@@ -155,24 +155,24 @@
 		to_chat(user, SPAN_WARNING("IDs don't match!"))
 		return
 
-	if (istype(W, /obj/item/weapon/pen))
+	if (istype(W, /obj/item/pen))
 		main_form.attackby(W, user)
 		return
 
 	return ..()
 
-/obj/item/weapon/complaint_folder/attack_self(mob/living/user)
+/obj/item/complaint_folder/attack_self(mob/living/user)
 	user.examinate(main_form)
 	return ..()
 
-/obj/item/weapon/complaint_folder/attack_hand(mob/user)
+/obj/item/complaint_folder/attack_hand(mob/user)
 	if (user.get_inactive_hand() != src)
 		return ..()
 	if (!check_signed())
 		to_chat(user, SPAN_WARNING("Sign [src] first!"))
 		return
 	var/list/choices_list = list()
-	for (var/obj/item/weapon/paper/complaint_form/F in contents)
+	for (var/obj/item/paper/complaint_form/F in contents)
 		if (F != main_form)
 			choices_list += F
 	var/const/new_form_choice = "New complaint form"
@@ -180,12 +180,12 @@
 	var/action = input(user, "Choose form to take out", name, new_form_choice) as null|anything in choices_list
 	if (!action)
 		return
-	if (istype(action,/obj/item/weapon/paper/complaint_form))
+	if (istype(action,/obj/item/paper/complaint_form))
 		user.put_in_hands(action)
 		to_chat(user, SPAN_NOTICE("You take [action] out of [src]."))
 		return
 	if (action == new_form_choice)
-		var/new_form = new /obj/item/weapon/paper/complaint_form(src.loc, id, target_name, target_occupation)
+		var/new_form = new /obj/item/paper/complaint_form(src.loc, id, target_name, target_occupation)
 		user.put_in_hands(new_form)
 		to_chat(user, SPAN_NOTICE("You take [new_form] out of [src]."))
 		return
@@ -229,7 +229,7 @@
 //prevalidation happens before sending to admins, fail reason is shown to sender
 //validation happens after sending to admins but before working with database, fail reason is relayed to admins
 
-/obj/item/weapon/complaint_folder/proc/prevalidate()
+/obj/item/complaint_folder/proc/prevalidate()
 	if (finished)
 		return //no need to alert the crew
 
@@ -247,10 +247,10 @@
 	if (!main_record)
 		return "Main form is malformed"
 
-	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for (var/obj/item/paper/complaint_form/CF in contents)
 		if(!CF.signed)
 			return "At least one of supplementary forms is not signed"
-	
+
 	var/captains = 0
 	var/heads = 0
 	var/crewmembers = 0
@@ -258,7 +258,7 @@
 	var/list/names = list()
 	names += parsed_main_name
 
-	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for (var/obj/item/paper/complaint_form/CF in contents)
 		if (CF == main_form)
 			continue
 		var/parsed_data = CF.parse_named_fields()
@@ -267,7 +267,7 @@
 		var/parsed_reason = strip_html_properly(parsed_data["reason"])
 		var/parsed_brief_reason = strip_html_properly(parsed_data["brief_reason"])
 		var/record = check_records(parsed_name, parsed_occupation)
-		
+
 		if (!record || !parsed_reason || !parsed_brief_reason || parsed_name != CF.signed_name)
 			return "At least one of supplementary forms is malformed"
 		if (parsed_name in names)
@@ -288,11 +288,11 @@
 		return "Minimal requirements on supplementary complaints weren't reached"
 	return //success
 
-/obj/item/weapon/complaint_folder/proc/validate()
+/obj/item/complaint_folder/proc/validate()
 	if (finished)
 		return "Already finished"
 	var/list/ckeys = list()
-	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for (var/obj/item/paper/complaint_form/CF in contents)
 		if (CF.signed_ckey in ckeys)
 			return "Duplicate ckey found"
 		if (!CF.signed_ckey)
@@ -307,7 +307,7 @@
 		return "IAA wasn't assigned by Centcomm"
 	return //success
 
-/obj/item/weapon/complaint_folder/proc/postvalidate()
+/obj/item/complaint_folder/proc/postvalidate()
 	if (finished)
 		return "Already finished"
 	if (!target_ckey)
@@ -328,7 +328,7 @@
 	//success
 	var/list/others = list()
 	var/list/reason = list()
-	for(var/obj/item/weapon/paper/complaint_form/CF in contents)
+	for(var/obj/item/paper/complaint_form/CF in contents)
 		reason += "[CF.signed_name] ([CF.signed_ckey])<hr>[CF.info]"
 		if (CF == main_form)
 			continue

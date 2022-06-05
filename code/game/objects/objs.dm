@@ -15,8 +15,11 @@
 	var/damtype = "brute"
 	var/armor_penetration = 0
 	var/anchor_fall = FALSE
+	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
+	hitby_sound = 'sound/effects/metalhit2.ogg'
 
 /obj/Destroy()
+	CAN_BE_REDEFINED(TRUE)
 	var/obj/item/smallDelivery/delivery = loc
 
 	if (istype(delivery))
@@ -85,21 +88,25 @@
 
 /obj/attack_ghost(mob/user)
 	ui_interact(user)
-	tg_ui_interact(user)
+	tgui_interact(user)
 	..()
 
 /obj/proc/interact(mob/user)
 	return
 
 /mob/proc/unset_machine()
-	src.machine = null
+	if(!machine)
+		return
+	unregister_signal(machine, SIGNAL_QDELETING)
+	machine = null
 
 /mob/proc/set_machine(obj/O)
-	if(src.machine)
+	if(machine)
 		unset_machine()
-	src.machine = O
+	machine = O
+	register_signal(O, SIGNAL_QDELETING, .proc/unset_machine)
 	if(istype(O))
-		O.in_use = 1
+		O.in_use = TRUE
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
@@ -107,10 +114,14 @@
 		src.attack_self(M)
 
 /obj/proc/hide(hide)
+	pulledby?.stop_pulling()
 	set_invisibility(hide ? INVISIBILITY_MAXIMUM : initial(invisibility))
 
 /obj/proc/hides_under_flooring()
 	return level == 1
+
+/obj/proc/hides_inside_walls()
+	return 1
 
 /obj/proc/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
 	if(talking_atom)
@@ -153,16 +164,22 @@
 	else
 		user.visible_message("\The [user] begins securing \the [src] to the floor.", "You start securing \the [src] to the floor.")
 	if(do_after(user, delay, src))
-		if(!src) return
+		if(!src)
+			return 0
 		to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured \the [src]!</span>")
 		anchored = !anchored
-	return 1
+		return 1
+	return 0
 
 /obj/attack_hand(mob/living/user)
 	if(Adjacent(user))
 		add_fingerprint(user)
 	..()
-	
+
 // If object can not be used to start fire, return 0.
 /obj/proc/get_temperature_as_from_ignitor()
 	return 0
+
+///returns how much the object blocks an explosion. Used by subtypes.
+/obj/proc/GetExplosionBlock()
+	CRASH("Unimplemented GetExplosionBlock()")

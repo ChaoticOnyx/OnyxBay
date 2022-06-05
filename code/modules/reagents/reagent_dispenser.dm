@@ -6,20 +6,21 @@
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
-	pull_sound = "pull_machine"
+	pull_sound = SFX_PULL_MACHINE
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 	var/initial_capacity = 1000
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "10;25;50;100;500"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		return
+/obj/structure/reagent_dispensers/attackby(obj/item/W, mob/user)
+	return
 
 /obj/structure/reagent_dispensers/New()
 	create_reagents(initial_capacity)
 
-	if (!possible_transfer_amounts)
+	if(!possible_transfer_amounts)
 		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 
 	for(var/reagent_type in initial_reagent_types)
@@ -28,7 +29,7 @@
 
 	..()
 
-/obj/structure/reagent_dispensers/examine(mob/user)
+/obj/structure/reagent_dispensers/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -94,11 +95,11 @@
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
-/obj/structure/reagent_dispensers/fueltank/examine(mob/user)
+/obj/structure/reagent_dispensers/fueltank/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
-	if (modded)
+	if(modded)
 		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
 	if(rig)
 		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
@@ -112,9 +113,9 @@
 			rig = null
 			overlays = new /list()
 
-/obj/structure/reagent_dispensers/fueltank/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/reagent_dispensers/fueltank/attackby(obj/item/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
-	if (istype(W,/obj/item/weapon/wrench))
+	if (istype(W,/obj/item/wrench))
 		user.visible_message("[user] wrenches [src]'s faucet [modded ? "closed" : "open"].", \
 			"You wrench [src]'s faucet [modded ? "closed" : "open"]")
 		modded = modded ? 0 : 1
@@ -174,11 +175,11 @@
 
 /obj/structure/reagent_dispensers/fueltank/proc/explode()
 	if (reagents.total_volume > 500)
-		explosion(src.loc,1,2,4)
+		explosion(src.loc,1,2,4,sfx_to_play=SFX_EXPLOSION_FUEL)
 	else if (reagents.total_volume > 100)
-		explosion(src.loc,0,1,3)
+		explosion(src.loc,0,1,3,sfx_to_play=SFX_EXPLOSION_FUEL)
 	else if (reagents.total_volume > 50)
-		explosion(src.loc,-1,1,2)
+		explosion(src.loc,-1,1,2,sfx_to_play=SFX_EXPLOSION_FUEL)
 	if(src)
 		qdel(src)
 
@@ -240,8 +241,8 @@
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/water = 1)
 
-/obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/wrench))
+/obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/W as obj, mob/user as mob)
+	if (istype(W,/obj/item/wrench))
 		src.add_fingerprint(user)
 		if(anchored)
 			user.visible_message("\The [user] begins unsecuring \the [src] from the floor.", "You start unsecuring \the [src] from the floor.")
@@ -263,6 +264,7 @@
 	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"

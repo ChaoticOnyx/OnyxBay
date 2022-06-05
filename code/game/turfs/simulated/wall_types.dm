@@ -1,15 +1,20 @@
 /turf/simulated/wall/r_wall
 	icon_state = "rgeneric"
+
+	explosion_block = 2
 /turf/simulated/wall/r_wall/New(newloc)
 	..(newloc, MATERIAL_PLASTEEL, MATERIAL_PLASTEEL) //3strong
 
 /turf/simulated/wall/ocp_wall
 	icon_state = "rgeneric"
+
+	explosion_block = 2
 /turf/simulated/wall/ocp_wall/New(newloc)
 	..(newloc, MATERIAL_OSMIUM_CARBIDE_PLASTEEL, MATERIAL_OSMIUM_CARBIDE_PLASTEEL)
 
 /turf/simulated/wall/cult
 	icon_state = "cult"
+	var/previous_type = /turf/simulated/wall
 
 /turf/simulated/wall/cult/New(newloc, reinforce = 0)
 	..(newloc, MATERIAL_CULT, reinforce ? MATERIAL_REINFORCED_CULT : null)
@@ -42,8 +47,8 @@
 /turf/simulated/wall/silver/New(newloc)
 	..(newloc, MATERIAL_SILVER)
 
-/turf/simulated/wall/phoron/New(newloc)
-	..(newloc, MATERIAL_PHORON)
+/turf/simulated/wall/plasma/New(newloc)
+	..(newloc, MATERIAL_PLASMA)
 
 /turf/simulated/wall/sandstone/New(newloc)
 	..(newloc, MATERIAL_SANDSTONE)
@@ -51,8 +56,8 @@
 /turf/simulated/wall/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)
 
-/turf/simulated/wall/ironphoron/New(newloc)
-	..(newloc, MATERIAL_IRON, MATERIAL_PHORON)
+/turf/simulated/wall/ironplasma/New(newloc)
+	..(newloc, MATERIAL_IRON, MATERIAL_PLASMA)
 
 /turf/simulated/wall/golddiamond/New(newloc)
 	..(newloc, MATERIAL_GOLD, MATERIAL_DIAMOND)
@@ -61,6 +66,7 @@
 	..(newloc, MATERIAL_SILVER, MATERIAL_GOLD)
 
 /turf/simulated/wall/sandstonediamond/New(newloc)
+	explosion_block = 2
 	..(newloc, MATERIAL_SANDSTONE, MATERIAL_DIAMOND)
 
 // Kind of wondering if this is going to bite me in the butt.

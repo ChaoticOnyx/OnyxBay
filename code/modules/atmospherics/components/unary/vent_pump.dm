@@ -84,21 +84,21 @@
 
 /obj/machinery/atmospherics/unary/vent_pump/high_volume
 	name = "Large Air Vent"
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	power_rating = 15000	//15 kW ~ 20 HP
 
 /obj/machinery/atmospherics/unary/vent_pump/high_volume/New()
 	..()
-	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
+	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 650
 
 /obj/machinery/atmospherics/unary/vent_pump/engine
 	name = "Engine Core Vent"
-	power_channel = ENVIRON
+	power_channel = STATIC_EQUIP
 	power_rating = 30000	//15 kW ~ 20 HP
 
 /obj/machinery/atmospherics/unary/vent_pump/engine/New()
 	..()
-	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 500 //meant to match air injector
+	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 350 //meant to match air injector
 
 /obj/machinery/atmospherics/unary/vent_pump/update_icon(safety = 0)
 	if(!check_icon_cache())
@@ -156,10 +156,10 @@
 /obj/machinery/atmospherics/unary/vent_pump/Process()
 	..()
 
-	if (hibernate > world.time)
+	if(hibernate > world.time)
 		return 1
 
-	if (!node)
+	if(!node)
 		update_use_power(POWER_USE_OFF)
 	if(!can_pump())
 		return 0
@@ -335,7 +335,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W, mob/user)
 	if(isWelder(W))
 
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(!WT.isOn())
 			to_chat(user, "<span class='notice'>The welding tool needs to be on to start this task.</span>")
@@ -369,7 +369,7 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/unary/vent_pump/examine(mob/user)
+/obj/machinery/atmospherics/unary/vent_pump/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"
@@ -378,7 +378,7 @@
 	if(welded)
 		. += "\nIt seems welded shut."
 
-/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	if (!(stat & NOPOWER) && use_power)

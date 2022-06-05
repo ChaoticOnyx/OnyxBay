@@ -33,7 +33,7 @@
 
 /obj/item/clothing/suit/space/rig
 	name = "chestpiece"
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/suit_cooling_unit)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank,/obj/item/device/suit_cooling_unit)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	heat_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	cold_protection =    UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
@@ -58,7 +58,7 @@
 /obj/item/clothing/suit/space/rig/proc/can_support(mob/living/carbon/human/user)
 	if(user.wear_suit != src)
 		return 0 //not wearing the suit
-	var/obj/item/weapon/rig/rig = user.back
+	var/obj/item/rig/rig = user.back
 	if(!istype(rig) || rig.offline || rig.canremove)
 		return 0 //not wearing a rig control unit or it's offline or unsealed
 	return 1
@@ -70,7 +70,7 @@
 		return
 
 	if(can_support(user))
-		for(var/obj/item/organ/external/E in user.organs)
+		for(var/obj/item/organ/external/E in user.bad_external_organs)
 			if((E.body_part & body_parts_covered) && E.is_broken() && E.apply_splint(src))
 				to_chat(user, "<span class='notice'>You feel [src] constrict about your [E.name], supporting it.</span>")
 				supporting_limbs |= E
@@ -98,7 +98,7 @@
 	if(!istype(H) || !H.back)
 		return 0
 
-	var/obj/item/weapon/rig/suit = H.back
+	var/obj/item/rig/suit = H.back
 	if(!suit || !istype(suit) || !suit.installed_modules.len)
 		return 0
 

@@ -22,7 +22,8 @@
 	icon = 'icons/obj/machines/gravity_generator.dmi'
 	anchored = 1
 	density = 1
-	use_power = 0
+	power_channel = STATIC_ENVIRON
+	use_power = IDLE_POWER_USE
 	unacidable = 1
 
 	light_color = "#7de1e1"
@@ -45,7 +46,7 @@
 /obj/machinery/gravity_generator/bullet_act(obj/item/projectile/P, def_zone)
 	return
 
-/obj/machinery/gravity_generator/blob_act(destroy, obj/effect/blob/source)
+/obj/machinery/gravity_generator/blob_act()
 	return
 
 /obj/machinery/gravity_generator/proc/take_damage(amount)
@@ -77,7 +78,7 @@ GLOBAL_VAR(station_gravity_generator)
 	icon_state = "0_8"
 	idle_power_usage = 0
 	active_power_usage = 100000
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 	sprite_number = 8
 	use_power = POWER_USE_ACTIVE
 
@@ -115,11 +116,13 @@ GLOBAL_VAR(station_gravity_generator)
 			qdel(P)
 	middle = null
 	lights = null
+	if(enabled)
+		enabled = FALSE
+		update_connectected_areas_gravity()
 	connected_areas = null
-	update_connectected_areas_gravity()
 	return ..()
 
-/obj/machinery/gravity_generator/main/examine(mob/user)
+/obj/machinery/gravity_generator/main/_examine_text(mob/user)
 	. = ..()
 	if(panel_open)
 		. += "\nThe maintenance hatch is open."
@@ -158,11 +161,8 @@ GLOBAL_VAR(station_gravity_generator)
 		if(BURN)
 			take_damage(P.damage)
 
-/obj/machinery/gravity_generator/main/blob_act(destroy, obj/effect/blob/source)
-	if(destroy)
-		take_damage(rand(500, 1000))
-	else
-		take_damage(rand(50, 150))
+/obj/machinery/gravity_generator/main/blob_act(damage)
+	take_damage(damage)
 
 /obj/machinery/gravity_generator/main/take_damage(amount)
 	var/new_health = max(0, health - amount)
@@ -246,7 +246,7 @@ GLOBAL_VAR(station_gravity_generator)
 									SPAN_NOTICE("You begin to weld the damaged parts."))
 
 				playsound(loc, 'sound/items/Welder2.ogg', 50, 1)
-				var/obj/item/weapon/weldingtool/WT = I
+				var/obj/item/weldingtool/WT = I
 				if(!do_after(user, 15 SECONDS, middle) || !WT.remove_fuel(1, user) || broken_state != GRAV_NEEDS_WELDING)
 					return
 				health += 250
@@ -329,7 +329,7 @@ GLOBAL_VAR(station_gravity_generator)
 	return ..()
 
 // Interaction
-/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nano_ui/master_ui, datum/topic_state/state)
+/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
 	data["enabled"] = enabled
@@ -381,13 +381,13 @@ GLOBAL_VAR(station_gravity_generator)
 	for(var/i = 0, i <= 3, i++)
 		switch(i)
 			if(0)
-				set_light(8, 1,"#b30f00")
+				set_light(1, 1, 8, 2, "#b30f00")
 			if(1)
-				set_light(8, 0.75,"#b30f00")
+				set_light(0.75, 1, 8, 2, "#b30f00")
 			if(2)
-				set_light(8, 0.5,"#b30f00")
+				set_light(0.5, 1, 8, 2, "#b30f00")
 			if(3)
-				set_light(8, 0.25,"#b30f00")
+				set_light(0.25, 1, 8, 2, "#b30f00")
 
 		playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
 		sleep(25)
@@ -398,7 +398,7 @@ GLOBAL_VAR(station_gravity_generator)
 	update_icon()
 
 	if(announcer)
-		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
+		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 
 	SSradiation.radiate(src, 3 * charge)
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
@@ -431,19 +431,19 @@ GLOBAL_VAR(station_gravity_generator)
 	switch(charge_count)
 		if(0 to 20)
 			overlay_state = null
-			set_light(0,0,"#000000")
+			set_light(0)
 		if(21 to 40)
 			overlay_state = "startup"
-			set_light(4,0.2,"#6496fa")
+			set_light(0.2, 1, 4, 2, "#6496fa")
 		if(41 to 60)
 			overlay_state = "idle"
-			set_light(6,0.5,"#7d9bff")
+			set_light(0.5, 1, 6, 2, "#7d9bff")
 		if(61 to 80)
 			overlay_state = "activating"
-			set_light(6,0.8,"#7dc3ff")
+			set_light(0.8, 1, 6, 2, "#7dc3ff")
 		if(81 to 100)
 			overlay_state = "activated"
-			set_light(8,1,"#7de1e1")
+			set_light(1, 1, 8, 2, "#7de1e1")
 
 	if(middle)
 		middle.overlays.Cut()
@@ -504,7 +504,7 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", "Gravity Generator Alert System")
+					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", get_announcement_computer("Gravity Generator Alert System"))
 
 		if(POWER_DOWN)
 			charge_count = max(0, charge_count - 2)
@@ -516,9 +516,9 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
+					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 			else if(announcer && charge_count <= 50 && charge_count % 5 == 0)
-				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", "Gravity Generator Alert System", "Engineering")
+				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", get_announcement_computer("Gravity Generator Alert System"), "Engineering")
 
 
 /obj/machinery/gravity_generator/main/proc/update_gravity_status()
@@ -555,18 +555,18 @@ GLOBAL_VAR(station_gravity_generator)
 		QDEL_NULL(main_part)
 	return ..()
 
-/obj/machinery/gravity_generator/part/examine(mob/user)
+/obj/machinery/gravity_generator/part/_examine_text(mob/user)
 	. = ..()
 	. += "[main_part.show_broken_info()]"
+
+/obj/machinery/gravity_generator/part/blob_act(damage)
+	return main_part.blob_act(damage)
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)
 
 /obj/machinery/gravity_generator/part/bullet_act(obj/item/projectile/P)
 	return main_part.bullet_act(P)
-
-/obj/machinery/gravity_generator/part/blob_act(destroy, obj/effect/blob/source)
-	return main_part.blob_act(destroy, source)
 
 #undef POWER_IDLE
 #undef POWER_UP

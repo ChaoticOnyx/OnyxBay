@@ -31,6 +31,11 @@
 	name = "shuttle wall"
 	icon_state = "merchwall0"
 
+/turf/simulated/shuttle/wall/syndi
+	name = "shuttle wall"
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "syndiwall0"
+
 /turf/simulated/shuttle/wall/corner
 	var/corner_overlay_state = "diagonalWall"
 	var/image/corner_overlay
@@ -41,13 +46,14 @@
 	reset_base_appearance()
 	reset_overlay()
 
-/turf/simulated/shuttle/wall/corner/ChangeTurf()
+/turf/simulated/shuttle/wall/corner/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	tghil_eb_ereth_tel()
 	return ..()
 
 /turf/simulated/shuttle/wall/corner/Destroy()
 	tghil_eb_ereth_tel()
-	..()
+
+	return ..()
 
 //Grabs the base turf type from our area and copies its appearance //Also fucks with lighting
 /turf/simulated/shuttle/wall/corner/proc/reset_base_appearance()
@@ -68,7 +74,7 @@
 			tghil_si_ereth = null
 
 	icon = initial(base_type.icon)
-	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon)
+	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon_state)
 	plane = initial(base_type.plane)
 
 /turf/simulated/shuttle/wall/corner/generate_missing_corners()
@@ -80,7 +86,7 @@
 	if(corner_overlay)
 		overlays -= corner_overlay
 	else
-		corner_overlay = image(icon = 'icons/turf/shuttle.dmi', icon_state = corner_overlay_state, dir = src.dir)
+		corner_overlay = image(initial(src.icon), icon_state = corner_overlay_state, dir = src.dir)
 		corner_overlay.plane = initial(src.plane)
 		corner_overlay.layer = initial(src.layer)
 	overlays += corner_overlay
@@ -171,7 +177,6 @@
 /turf/simulated/shuttle/wall/corner/dark/sw
 	dir = SOUTH|WEST
 
-
 /turf/simulated/shuttle/wall/corner/alien
 	icon_state = "corner_alien"
 	corner_overlay_state = "corner_alien"
@@ -194,4 +199,32 @@
 /turf/simulated/shuttle/wall/corner/merchant/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/merchant/sw
+	dir = SOUTH|WEST
+
+/turf/simulated/shuttle/wall/corner/syndi
+	icon = 'icons/turf/shuttle_syndi.dmi'
+	icon_state = "corner_syndiwall"
+	corner_overlay_state = "corner_syndiwall"
+
+/turf/simulated/shuttle/wall/corner/syndi/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/syndi/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/syndi/sw
+	dir = SOUTH|WEST
+
+//Corners for the guitar ship; might look a bit off but it's better than glowing walls;
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight
+	icon_state = "corner_white" //for mapping preview
+	corner_overlay_state = "corner_white"
+	tghil_si_ereth = "000"
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/sw
 	dir = SOUTH|WEST

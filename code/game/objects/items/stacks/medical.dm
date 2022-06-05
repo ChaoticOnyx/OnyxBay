@@ -41,8 +41,6 @@
 	amount -= used
 	if(get_amount() <= 0)
 		if(!stack_empty)
-			if(usr)
-				usr.remove_from_mob(src)
 			qdel(src) //should be safe to qdel immediately since if someone is still using this stack it will persist for a little while longer
 			return 1
 		else
@@ -100,6 +98,10 @@
 		use(1)
 
 	M.updatehealth()
+
+/obj/item/stack/medical/get_storage_cost()
+	return base_storage_cost(w_class)
+
 /obj/item/stack/medical/bruise_pack
 	name = "roll of bandage"
 	singular_name = "bandage length"
@@ -163,6 +165,7 @@
 	gender = PLURAL
 	singular_name = "ointment dose"
 	icon_state = "salve"
+	item_state = "salve"
 	heal_burn = 7.5
 	origin_tech = list(TECH_BIO = 1)
 	animal_heal = 4
@@ -227,6 +230,7 @@
 	singular_name = "somatic gel dose"
 	desc = "A container of somatic gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. Effectively seals up even severe wounds."
 	icon_state = "brutegel"
+	item_state = "brutegel"
 	heal_brute = 7.5
 	origin_tech = list(TECH_BIO = 2)
 	animal_heal = 12
@@ -279,6 +283,7 @@
 	singular_name = "burn gel dose"
 	desc = "A container of protein-renaturating gel, manufactured by Vey-Med. A bendable nozzle makes it easy to apply. It's said to renaturate proteins, effectively treating severe burns. Doesn't cause skin cancer. Probably."
 	icon_state = "burngel"
+	item_state = "burngel"
 	heal_burn = 15
 	origin_tech = list(TECH_BIO = 3)
 	animal_heal = 7
@@ -394,6 +399,7 @@
 	animal_heal = 5
 	stack_full = 1
 	stack_empty = 1
+	splittable = 0
 
 /obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -430,3 +436,41 @@
 				else
 					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
 			use(used)
+
+
+/obj/item/stack/medical/advanced/resurrection_serum
+	name = "prototype serum injector"
+	singular_name = "serum dose"
+	desc = "A weird-looking injector with some sort of bloody-red serum inside."
+	description_antag = "This more-expensive-than-your-life-is liquid, rumored to be made of mysterious vampire-like creatures, is capable brining dead to life."
+	icon_state = "resurrect_serum"
+	origin_tech = list(TECH_BIO = 10)
+	amount = 1
+	stack_empty = 1
+	splittable = 0
+
+/obj/item/stack/medical/advanced/resurrection_serum/attack(mob/living/carbon/M, mob/user)
+	if(..())
+		return 1
+
+	if(M.stat != DEAD)
+		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as you bring it close to [M]."))
+		return
+
+	to_chat(user, SPAN("notice", "You prepare to inject [M]..."))
+	if(!do_after(user, 100))
+		return
+
+	if(M.stat != DEAD)
+		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as soon as you try to inject [M]!"))
+		return
+
+	M.revive()
+	to_chat(user, SPAN("notice", "You inject [M] with \the [src]. A moment later, their body twitches."))
+	to_chat(M, SPAN("notice", "You hear a swarm of voices. They tell us.. They tell you to come back."))
+	use(1)
+
+/obj/item/stack/medical/advanced/resurrection_serum/ten
+	name = "serum injector"
+	desc = "A weird-looking injector with some sort of bloody-red serum inside. For some reason you feel like this thing is unbeliveably valuable."
+	amount = 10

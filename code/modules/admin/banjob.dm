@@ -16,15 +16,19 @@ var/jobban_keylist[0]		//to store the keys & ranks
 var/const/IAA_ban_reason = "Restricted by CentComm"
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
+	//ckech if jobs subsystem doesn't runned yet.
+	if(!job_master)
+		return FALSE
+
 	if(M && rank)
 		/*
 		if(_jobban_isbanned(M, rank)) return "Reason Unspecified"	//for old jobban
 		*/
 
 		if (guest_jobbans(rank))
-			if(config.guest_jobban && IsGuestKey(M.key))
+			if(config.game.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
-			if(config.usewhitelist && !check_whitelist(M))
+			if(config.game.use_whitelist && !check_whitelist(M))
 				return "Whitelisted Job"
 
 		for (var/s in jobban_keylist)
@@ -75,11 +79,11 @@ DEBUG
 	return 1
 
 /proc/jobban_loadbanfile()
-	if(config.ban_legacy_system)
+	if(config.ban.ban_legacy_system)
 		var/savefile/S=new("data/job_full.ban")
-		S["keys[0]"] >> jobban_keylist
+		from_file(S["keys[0]"], jobban_keylist)
 		log_admin("Loading jobban_rank")
-		S["runonce"] >> jobban_runonce
+		from_file(S["runonce"], jobban_runonce)
 
 		if (!length(jobban_keylist))
 			jobban_keylist=list()
@@ -88,17 +92,23 @@ DEBUG
 		if(!establish_db_connection())
 			error("Database connection failed. Reverting to the legacy ban system.")
 			log_misc("Database connection failed. Reverting to the legacy ban system.")
-			config.ban_legacy_system = 1
+			config.ban.ban_legacy_system = 1
 			jobban_loadbanfile()
 			return
 
 		//Job permabans
-		var/DBQuery/query
-		if(isnull(config.server_id))
-			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)")
-		else
-			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned) AND server_id = '[config.server_id]'")
-		query.Execute()
+		var/DBQuery/query = sql_query({"
+			SELECT 
+				ckey, 
+				job 
+			FROM 
+				erro_ban 
+			WHERE 
+				bantype = 'JOB_PERMABAN' 
+				AND 
+				isnull(unbanned)
+				[isnull(config.general.server_id) ? "" : " AND server_id = $sid"]
+			"}, dbcon, list(sid = config.general.server_id))
 
 		while(query.NextRow())
 			var/ckey = query.item[1]
@@ -108,11 +118,10 @@ DEBUG
 
 		//Job tempbans
 		var/DBQuery/query1
-		if(isnull(config.server_id))
-			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()")
+		if(isnull(config.general.server_id))
+			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()", dbcon)
 		else
-			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = '[config.server_id]' AND expiration_time > Now()")
-		query1.Execute()
+			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = $$ AND expiration_time > Now()", dbcon, config.general.server_id)
 
 		while(query1.NextRow())
 			var/ckey = query1.item[1]
@@ -122,7 +131,7 @@ DEBUG
 
 /proc/jobban_savebanfile()
 	var/savefile/S=new("data/job_full.ban")
-	S["keys[0]"] << jobban_keylist
+	to_file(S["keys[0]"], jobban_keylist)
 
 /proc/jobban_unban(mob/M, rank)
 	jobban_remove("[M.ckey] - [rank]")

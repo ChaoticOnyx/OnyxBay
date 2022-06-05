@@ -1,9 +1,3 @@
-// idk where they got it from
-
-/*
-n_Json v11.3.21
-*/
-
 var/list/rus_unicode_conversion = list(
 	"À" = "\\u0410", "à" = "\\u0430",
 	"Á" = "\\u0411", "á" = "\\u0431",
@@ -43,77 +37,74 @@ var/list/rus_unicode_conversion = list(
 	"¨" = "\\u0401", "¸" = "\\u0451"
 	)
 
-proc
-	list2json(list/L)
-		var/static/json_writer/_jsonw = new()
-		return _jsonw.write(L)
+/proc/list2json(list/L)
+	var/static/json_writer/_jsonw = new()
+	return _jsonw.write(L)
 
-	list2json_usecache(list/L)
-		var/static/json_writer/_jsonw = new()
-		_jsonw.use_cache = 1
-		return _jsonw.write(L)
+/proc/list2json_usecache(list/L)
+	var/static/json_writer/_jsonw = new()
+	_jsonw.use_cache = 1
+	return _jsonw.write(L)
 
 /*
-Json Writer
+ Json Writer
 */
 
-json_writer
-	var
-		use_cache = 0
+/json_writer
+	var/use_cache = 0
 
-	proc
-		WriteObject(list/L, cached_data = null)
-			if(use_cache && L["__json_cache"])
-				return L["__json_cache"]
+/json_writer/proc/WriteObject(list/L, cached_data = null)
+	if(use_cache && L["__json_cache"])
+		return L["__json_cache"]
 
-			. = "{"
-			var/i = 1
-			for(var/k in L)
-				var/val = L[k]
-				. += {"\"[k]\":[write(val)]"}
-				if(i++ < L.len)
-					. += ","
-			. += "}"
+	. = "{"
+	var/i = 1
+	for(var/k in L)
+		var/val = L[k]
+		. += {"\"[k]\":[write(val)]"}
+		if(i++ < L.len)
+			. += ","
+	. += "}"
 
-		write(val)
-			if(isnum(val))
-				return num2text(val)
-			else if(isnull(val))
-				return "null"
-			else if(istype(val, /list))
-				if(is_associative(val))
-					return WriteObject(val)
-				else
-					return write_array(val)
-			else
-				. += write_string("[val]")
+/json_writer/proc/write(val)
+	if(isnum(val))
+		return num2text(val)
+	else if(isnull(val))
+		return "null"
+	else if(istype(val, /list))
+		if(is_associative(val))
+			return WriteObject(val)
+		else
+			return write_array(val)
+	else
+		. += write_string("[val]")
 
-		write_array(list/L)
-			. = "\["
-			for(var/i = 1 to L.len)
-				. += write(L[i])
-				if(i < L.len)
-					. += ","
-			. += "]"
+/json_writer/proc/write_array(list/L)
+	. = "\["
+	for(var/i = 1 to L.len)
+		. += write(L[i])
+		if(i < L.len)
+			. += ","
+	. += "]"
 
-		write_string(txt)
-			var/static/list/json_escape = list("\\" = "\\\\", "\"" = "\\\"", "\n" = "\\n")+rus_unicode_conversion
-			for(var/targ in json_escape)
-				var/start = 1
-				while(start <= length(txt))
-					var/i = findtext(txt, targ, start)
-					if(!i)
-						break
-					var/lrep = length(json_escape[targ])
-					txt = copytext(txt, 1, i) + json_escape[targ] + copytext(txt, i + length(targ))
-					start = i + lrep
+/json_writer/proc/write_string(txt)
+	var/static/list/json_escape = list("\\" = "\\\\", "\"" = "\\\"", "\n" = "\\n")+rus_unicode_conversion
+	for(var/targ in json_escape)
+		var/start = 1
+		while(start <= length(txt))
+			var/i = findtext(txt, targ, start)
+			if(!i)
+				break
+			var/lrep = length(json_escape[targ])
+			txt = copytext(txt, 1, i) + json_escape[targ] + copytext(txt, i + length(targ))
+			start = i + lrep
 
-			return {""[txt]""}
+	return {""[txt]""}
 
-		is_associative(list/L)
-			for(var/key in L)
-				// if the key is a list that means it's actually an array of lists (stupid Byond...)
-				if(!isnum(key) && !isnull(L[key]) && !istype(key, /list))
-					return TRUE
+/json_writer/proc/is_associative(list/L)
+	for(var/key in L)
+		// if the key is a list that means it's actually an array of lists (stupid Byond...)
+		if(!isnum(key) && !isnull(L[key]) && !istype(key, /list))
+			return TRUE
 
-//no readers/parsers because of hidden trojans
+// no readers/parsers because of hidden trojans

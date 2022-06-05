@@ -1,5 +1,5 @@
 // Species flags.
-#define SPECIES_FLAG_NO_MINOR_CUT        0x0001  // Can step on broken glass with no ill-effects. Either thick skin (diona/vox), cut resistant (slimes) or incorporeal (shadows)
+#define SPECIES_FLAG_NO_MINOR_CUT        0x0001  // Can step on broken glass with no ill-effects. Either thick skin (diona/vox), cut resistant (metroids) or incorporeal (shadows)
 #define SPECIES_FLAG_IS_PLANT            0x0002  // Is a treeperson.
 #define SPECIES_FLAG_NO_SCAN             0x0004  // Cannot be scanned in a DNA machine/genome-stolen.
 #define SPECIES_FLAG_NO_PAIN             0x0008  // Cannot suffer halloss/recieves deceptive health indicator.
@@ -11,6 +11,7 @@
 #define SPECIES_FLAG_NEED_DIRECT_ABSORB  0x0200  // This species can only have their DNA taken by direct absorption.
 #define SPECIES_FLAG_NO_TANGLE           0x0400  // This species wont get tangled up in weeds
 #define SPECIES_FLAG_NO_BLOOD            0x0800  // Cannot be drained by vampire, machine, diona, golem.
+#define SPECIES_FLAG_NO_ANTAG_TARGET     0x1000  // Cannot be randomly chosen as a target for antag objectives or traitor contracts (i.e. assassination).
 // unused: 0x8000 - higher than this will overflow
 
 // Species spawn flags
@@ -37,3 +38,10 @@
 // Skin Defines
 #define SKIN_NORMAL 0
 #define SKIN_THREAT 1
+
+// Darkvision Levels these are inverted from normal so pure white is the darkest
+
+// possible and pure black is none
+#define DARKTINT_NONE     "#ffffff"
+#define DARKTINT_MODERATE "#f9f9f5"
+#define DARKTINT_GOOD     "#ebebe6"

@@ -7,16 +7,21 @@
 	var/nopower_light = COLOR_WHITE
 	var/dead_icon = "ai-crash"
 	var/dead_light = "#000099"
+	var/ckey = ""
 
-/datum/ai_icon/New(name, alive_icon, dead_icon, dead_light, icon)
+/datum/ai_icon/New(name, alive_icon, dead_icon, dead_light, icon, ckey)
 	src.name          = name       || src.name
 	src.icon          = icon       || src.icon
 	src.alive_icon    = alive_icon || src.alive_icon
 	src.dead_icon     = dead_icon  || src.dead_icon
 	src.dead_light    = dead_light || src.dead_light
+	src.ckey		  = ckey	   || src.ckey
 
-/datum/ai_icon/proc/may_used_by_ai(mob/user)
-	return TRUE
+/datum/ai_icon/proc/may_used_by_ai(mob/living/silicon/ai/AI)
+	var/allowed = istype(AI)
+	if(ckey && (AI.ckey != ckey))
+		allowed = FALSE
+	return allowed
 
 /datum/ai_icon/malf
 	name = "Unlawed"
@@ -28,7 +33,7 @@
 	name = "[name] (Malf)"
 
 /datum/ai_icon/malf/may_used_by_ai(mob/living/silicon/ai/AI)
-	return istype(AI) && AI.is_malf_or_traitor()
+	return ..() && AI.is_malf_or_traitor()
 
 /datum/ai_icon/red
 	name = "Red"

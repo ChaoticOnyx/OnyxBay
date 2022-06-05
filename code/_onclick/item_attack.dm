@@ -94,6 +94,15 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			if(I_HURT)
 				if(hitsound) playsound(loc, hitsound, 50, 1, -1)
 				return target.hit_with_weapon(src, user, power, hit_zone)
+	if(istype(user, /mob/living/silicon/robot))
+		var/mob/living/silicon/robot/A = user
+		switch(A.a_intent)
+			if(I_HELP)
+				return target.touch_with_weapon(src, user, power, hit_zone)
+			if(I_HURT)
+				if(hitsound)
+					playsound(loc, hitsound, 50, 1, -1)
+				return target.hit_with_weapon(src, user, power, hit_zone)
 	else
 		if(hitsound) playsound(loc, hitsound, 50, 1, -1)
 		return target.hit_with_weapon(src, user, power, hit_zone)
@@ -103,6 +112,8 @@ avoid code duplication. This includes items that may sometimes act as a standard
 ////////////////////
 
 /atom/proc/attackby(obj/item/W, mob/user, click_params)
+	CAN_BE_REDEFINED(TRUE)
+
 	return
 
 /atom/movable/attackby(obj/item/W, mob/user)
@@ -113,7 +124,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		obj_attack_sound(W)
 
 /atom/proc/obj_attack_sound(obj/item/W)
-	if(W.hitsound == 'sound/effects/fighting/smash.ogg')
+	if(W?.hitsound == 'sound/effects/fighting/smash.ogg')
 		playsound(loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
 		return
 	playsound(loc, 'sound/effects/metalhit2.ogg', rand(45,65), 1, -1)
@@ -138,4 +149,5 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			return 1
 		else if(devour(I))
 			return 1
+
 	return ..()

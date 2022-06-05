@@ -8,7 +8,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		if(Player.stat != DEAD && !isbrain(Player))
 			var/turf/playerTurf = get_turf(Player)
 			if(evacuation_controller.round_over() && evacuation_controller.emergency_evacuation)
-				if(isNotAdminLevel(playerTurf.z))
+				if(!isAdminLevel(playerTurf.z))
 					parts += "<div class='panel stationborder'>"
 					parts += "<span class='marooned'>You managed to survive, but were marooned on [station_name()] as [Player.real_name]...</span>"
 				else
@@ -36,7 +36,6 @@ GLOBAL_LIST_EMPTY(common_report)
 	parts += "</div>"
 
 	return parts.Join()
-
 
 /datum/controller/subsystem/ticker/proc/survivor_report()
 	var/clients = 0
@@ -170,6 +169,23 @@ GLOBAL_LIST_EMPTY(common_report)
 	listclearnulls(parts)
 	return parts.len ? "<div class='panel stationborder'>[parts.Join("<br>")]</div>" : null
 
+/datum/controller/subsystem/ticker/proc/_last_words_report()
+	if(!length(GLOB.last_words))
+		return
+
+	var/list/parts = list()
+
+	parts += "<div class='panel stationborder'><span class='marooned'><b>Last words of the first victims:</b></span><br>"
+
+	for(var/index = 1 to min(length(GLOB.last_words), 4))
+		var/datum/last_words_data/data = GLOB.last_words[index]
+
+		parts += "<b>[data.real_name]</b>, the <b>[data.job_title]</b>: \"[data.words]\"<br>"
+
+	parts += "</div>"
+
+	return parts
+
 //Common part of the report
 /datum/controller/subsystem/ticker/proc/build_roundend_report()
 	var/list/parts = list()
@@ -189,6 +205,8 @@ GLOBAL_LIST_EMPTY(common_report)
 	parts += antag_report()
 
 	parts += SSevent.RoundEnd()
+
+	parts += _last_words_report()
 
 	listclearnulls(parts)
 
@@ -213,9 +231,12 @@ GLOBAL_LIST_EMPTY(common_report)
 		show_roundend_report(C)
 		give_show_report_button(C)
 		CHECK_TICK
-
+	log_roundend(GLOB.common_report)
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
+	if(!istype(C.mob, /mob/living))
+		return
+
 	var/datum/action/report/R = new
 	R.Grant(C.mob)
 	to_chat(C,"<a href='?src=\ref[R];report=1'>Show roundend report again</a>")
@@ -242,7 +263,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	return "data/roundend_reports/[ckey].html"
 
 /datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, previous = FALSE)
-	var/datum/browser/roundend_report = new(C, "roundend")
+	var/datum/browser/roundend_report = new(C.mob, "roundend")
 	roundend_report.width = 800
 	roundend_report.height = 600
 	var/content
@@ -258,4 +279,5 @@ GLOBAL_LIST_EMPTY(common_report)
 	roundend_report.stylesheets = list()
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
+	to_chat(C, content)
 	roundend_report.open(FALSE)

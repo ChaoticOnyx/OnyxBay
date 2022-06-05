@@ -1,5 +1,5 @@
 /datum/design/item/surgery
-	category_items = "Surgery"
+	category_items = list("Surgery")
 
 /datum/design/item/surgery/scalpel_laser1
 	name = "basic laser scalpel"
@@ -7,7 +7,7 @@
 	id = "scalpel_laser1"
 	req_tech = list(TECH_BIO = 2, TECH_MATERIAL = 2, TECH_MAGNET = 2)
 	materials = list(MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500)
-	build_path = /obj/item/weapon/scalpel/laser1
+	build_path = /obj/item/scalpel/laser1
 	sort_string = "MBEAA"
 
 /datum/design/item/surgery/scalpel_laser2
@@ -16,7 +16,7 @@
 	id = "scalpel_laser2"
 	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 4, TECH_MAGNET = 4)
 	materials = list(MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_SILVER = 2500)
-	build_path = /obj/item/weapon/scalpel/laser2
+	build_path = /obj/item/scalpel/laser2
 	sort_string = "MBEAB"
 
 /datum/design/item/surgery/scalpel_laser3
@@ -25,7 +25,7 @@
 	id = "scalpel_laser3"
 	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 6, TECH_MAGNET = 5)
 	materials = list(MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_SILVER = 2000, MATERIAL_GOLD = 1500)
-	build_path = /obj/item/weapon/scalpel/laser3
+	build_path = /obj/item/scalpel/laser3
 	sort_string = "MBEAC"
 
 /datum/design/item/surgery/scalpel_manager
@@ -34,7 +34,7 @@
 	id = "scalpel_manager"
 	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 7, TECH_MAGNET = 5, TECH_DATA = 4)
 	materials = list (MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_SILVER = 1500, MATERIAL_GOLD = 1500, MATERIAL_DIAMOND = 750)
-	build_path = /obj/item/weapon/scalpel/manager
+	build_path = /obj/item/scalpel/manager
 	sort_string = "MBEAD"
 
 /datum/design/item/surgery/pico_grasper
@@ -42,17 +42,17 @@
 	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
 	id = "pico_grasper"
 	req_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PHORON = 80)
-	build_path = /obj/item/weapon/hemostat/pico
+	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PLASMA = 80)
+	build_path = /obj/item/hemostat/pico
 	sort_string = "MBEAE"
 
 /datum/design/item/surgery/plasmasaw
 	name = "plasma saw"
 	desc = "Perfect for cutting through ice."
 	id = "plasmasaw"
-	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PHORON = 3)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PHORON = 500)
-	build_path = /obj/item/weapon/circular_saw/plasmasaw
+	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PLASMA = 3)
+	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PLASMA = 500)
+	build_path = /obj/item/circular_saw/plasmasaw
 	sort_string = "MBEAF"
 
 /datum/design/item/surgery/bonemender
@@ -62,7 +62,7 @@
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
 	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 500, MATERIAL_SILVER = 250)
 	category = "Surgery"
-	build_path = /obj/item/weapon/bonesetter/bone_mender
+	build_path = /obj/item/bonesetter/bone_mender
 	sort_string = "MBEAG"
 
 /datum/design/item/surgery/clot
@@ -72,7 +72,7 @@
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
 	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 8000, MATERIAL_SILVER = 1000)
 	category = "Surgery"
-	build_path = /obj/item/weapon/FixOVein/clot
+	build_path = /obj/item/FixOVein/clot
 	sort_string = "MBEAH"
 
 /datum/design/item/surgery/organfixer_adv
@@ -80,8 +80,8 @@
 	desc = "A modification of QROF-26 organ fixer design. This model uses a cluster of advanced manipulators, which allows it to fix multiple organs at once, as well as an enlarged gel storage tank."
 	id = "organfixer_advanced"
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 4)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 250, MATERIAL_SILVER = 750)
-	build_path = /obj/item/weapon/organfixer/advanced/empty
+	materials = list (MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500)
+	build_path = /obj/item/organfixer/advanced/empty
 	sort_string = "MBEAI"
 
 /datum/design/item/surgery/organfixer_bluespace
@@ -90,7 +90,7 @@
 	id = "organfixer_bluespace"
 	req_tech = list(TECH_MATERIAL = 7, TECH_ENGINEERING = 6, TECH_BIO = 6, TECH_BLUESPACE = 5)
 	materials = list (MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_GOLD = 1500, MATERIAL_SILVER = 2000, MATERIAL_DIAMOND = 750)
-	build_path = /obj/item/weapon/organfixer/advanced/bluespace
+	build_path = /obj/item/organfixer/advanced/bluespace
 	sort_string = "MBEAJ"
 
 /datum/design/item/surgery/advanced_roller
@@ -98,7 +98,7 @@
 	desc = "A more advanced version of the regular roller bed, with inbuilt surgical stabilisers and an improved folding system."
 	id = "roller_bed"
 	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 3, TECH_MAGNET = 3)
-	materials = list(MATERIAL_STEEL = 4000, MATERIAL_GLASS = 2000, MATERIAL_PHORON = 2000)
+	materials = list(MATERIAL_STEEL = 4000, MATERIAL_GLASS = 2000, MATERIAL_PLASMA = 2000)
 	build_path = /obj/item/roller/adv
 	sort_string = "MBEAK"
 
@@ -108,4 +108,4 @@
 	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 7500, MATERIAL_SILVER = 1000, MATERIAL_GOLD = 1000)
 	build_path = /obj/item/organ/internal/stack
 	sort_string = "VACBA"
-	category_items = "Surgery"
+	category_items = list("Surgery")

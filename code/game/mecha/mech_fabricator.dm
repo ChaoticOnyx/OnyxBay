@@ -9,10 +9,13 @@
 	idle_power_usage = 20
 	active_power_usage = 5000
 	req_access = list(access_robotics)
+	clicksound = 'sound/effects/using/console/press2.ogg'
+	clickvol = 30
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/speed = 1
 	var/mat_efficiency = 1
-	var/list/materials = list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0, MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PHORON = 0, MATERIAL_URANIUM = 0)
+	var/list/materials = list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0, MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PLASMA = 0, MATERIAL_URANIUM = 0)
 	var/res_max_amount = 200000
 
 	var/datum/research/files
@@ -29,12 +32,12 @@
 	. = ..()
 
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/mechfab(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
-	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
+	component_parts += new /obj/item/circuitboard/mechfab(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/stock_parts/console_screen(src)
 	RefreshParts()
 
 	manufacturer = basic_robolimb.company
@@ -70,13 +73,13 @@
 
 /obj/machinery/mecha_part_fabricator/RefreshParts()
 	res_max_amount = 0
-	for(var/obj/item/weapon/stock_parts/matter_bin/M in component_parts)
+	for(var/obj/item/stock_parts/matter_bin/M in component_parts)
 		res_max_amount += M.rating * 100000 // 200k -> 600k
 	var/T = 0
-	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
+	for(var/obj/item/stock_parts/manipulator/M in component_parts)
 		T += M.rating
 	mat_efficiency = 1 - (T - 1) / 4 // 1 -> 0.5
-	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts) // Not resetting T is intended; speed is affected by both
+	for(var/obj/item/stock_parts/micro_laser/M in component_parts) // Not resetting T is intended; speed is affected by both
 		T += M.rating
 	speed = T / 2 // 1 -> 3
 
@@ -85,67 +88,80 @@
 		return
 	if(!allowed(user))
 		return
-	ui_interact(user)
+	tgui_interact(user)
 
-/obj/machinery/mecha_part_fabricator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	var/data[0]
+/obj/machinery/mecha_part_fabricator/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
+	if(!ui)
+		ui = new(user, src, "MechaFabricator")
+		ui.open()
+
+/obj/machinery/mecha_part_fabricator/tgui_data(mob/user)
 	var/datum/design/current = queue.len ? queue[1] : null
-	if(current)
-		data["current"] = current.name
-	data["queue"] = get_queue_names()
-	data["buildable"] = get_build_options()
-	data["category"] = category
-	data["categories"] = categories
+	var/data = list(
+		"current" = current?.name,
+		"queue" = get_queue_names(),
+		"buildable" = get_build_options(),
+		"category" = category,
+		"categories" = categories
+	)
+
 	if(all_robolimbs)
 		var/list/T = list()
+
 		for(var/A in all_robolimbs)
 			var/datum/robolimb/R = all_robolimbs[A]
+
 			if(R.unavailable_at_fab || R.applies_to_part.len)
 				continue
-			T += list(list("id" = A, "company" = R.company))
+
+			T += list(list(
+				"id" = A,
+				"company" = R.company
+			))
+
 		data["manufacturers"] = T
 		data["manufacturer"] = manufacturer
+
 	data["materials"] = get_materials()
 	data["maxres"] = res_max_amount
 	data["sync"] = sync_message
+
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "mechfab.tmpl", "Exosuit Fabricator UI", 840, 600)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
+	return data
 
-/obj/machinery/mecha_part_fabricator/Topic(href, href_list)
-	if(..())
+/obj/machinery/mecha_part_fabricator/tgui_act(action, params)
+	. = ..()
+
+	if(.)
 		return
 
-	if(href_list["build"])
-		add_to_queue(text2num(href_list["build"]))
+	switch(action)
+		if("build")
+			add_to_queue(text2num(params["build"]))
+			. = TRUE
+		if("remove")
+			remove_from_queue(text2num(params["remove"]))
+			. = TRUE
+		if("category")
+			if(params["category"] in categories)
+				category = params["category"]
+				. = TRUE
+		if("eject")
+			eject_materials(params["eject"], text2num(params["amount"]))
+			. = TRUE
+		if("sync")
+			sync()
+			. = TRUE
+		if("manufacturer")
+			manufacturer = params["manufacturer"]
+			. = TRUE
 
-	if(href_list["remove"])
-		remove_from_queue(text2num(href_list["remove"]))
-
-	if(href_list["category"])
-		if(href_list["category"] in categories)
-			category = href_list["category"]
-
-	if(href_list["manufacturer"])
-		if(href_list["manufacturer"] in all_robolimbs)
-			manufacturer = href_list["manufacturer"]
-
-	if(href_list["eject"])
-		eject_materials(href_list["eject"], text2num(href_list["amount"]))
-
-	if(href_list["sync"])
-		sync()
-	else
-		sync_message = ""
-
-	return 1
+	if(.)
+		tgui_update()
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/item/I, mob/user)
 	if(busy)
@@ -194,6 +210,7 @@
 /obj/machinery/mecha_part_fabricator/emag_act(remaining_charges, mob/user)
 	switch(emagged)
 		if(0)
+			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emagged = 0.5
 			visible_message("\icon[src] <b>[src]</b> beeps: \"DB error \[Code 0x00F1\]\"")
 			sleep(10)
@@ -218,6 +235,8 @@
 			busy = 0
 	else
 		busy = 0
+
+	tgui_update()
 
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]
@@ -270,7 +289,7 @@
 		var/datum/design/D = files.known_designs[i]
 		if(!D.build_path || !(D.build_type & MECHFAB))
 			continue
-		. += list(list("name" = D.name, "id" = i, "category" = D.category, "resourses" = get_design_resourses(D), "time" = get_design_time(D)))
+		. += list(list("name" = D.name, "id" = i, "category" = D.category, "resourses" = get_design_resourses(D), "time" = get_design_time(D), "icon" = icon2base64html(D.build_path)))
 
 /obj/machinery/mecha_part_fabricator/proc/get_design_resourses(datum/design/D)
 	var/list/F = list()
@@ -294,7 +313,7 @@
 /obj/machinery/mecha_part_fabricator/proc/get_materials()
 	. = list()
 	for(var/T in materials)
-		. += list(list("mat" = capitalize(T), "amt" = materials[T]))
+		. += list(list("mat" = capitalize(T), "amt" = materials[T], "icon" = icon2base64html(get_icon_for_material(T))))
 
 /obj/machinery/mecha_part_fabricator/proc/eject_materials(material, amount) // 0 amount = 0 means ejecting a full stack; -1 means eject everything
 	var/recursive = amount == -1 ? 1 : 0
@@ -311,8 +330,8 @@
 			mattype = /obj/item/stack/material/silver
 		if(MATERIAL_DIAMOND)
 			mattype = /obj/item/stack/material/diamond
-		if(MATERIAL_PHORON)
-			mattype = /obj/item/stack/material/phoron
+		if(MATERIAL_PLASMA)
+			mattype = /obj/item/stack/material/plasma
 		if(MATERIAL_URANIUM)
 			mattype = /obj/item/stack/material/uranium
 		else

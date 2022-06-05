@@ -86,11 +86,11 @@
 
 	return ..()
 
-/obj/machinery/turretid/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/turretid/attackby(obj/item/W, mob/user)
 	if(stat & BROKEN)
 		return
 
-	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+	if(istype(W, /obj/item/card/id)||istype(W, /obj/item/device/pda))
 		if(src.allowed(usr))
 			if(emagged)
 				to_chat(user, "<span class='notice'>The turret control is unresponsive.</span>")
@@ -102,6 +102,7 @@
 
 /obj/machinery/turretid/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out the turret controls' access analysis module.</span>")
 		emagged = 1
 		locked = 0
@@ -213,13 +214,13 @@
 	else if (enabled)
 		if (lethal)
 			icon_state = "control_kill"
-			set_light(1.5, 1,"#990000")
+			set_light(0.5, 0.5, 2, 2, "#990000")
 		else
 			icon_state = "control_stun"
-			set_light(1.5, 1,"#ff9900")
+			set_light(0.5, 0.5, 2, 2, "#ff9900")
 	else
 		icon_state = "control_standby"
-		set_light(1.5, 1,"#003300")
+		set_light(0.5, 0.5, 2, 2, "#003300")
 
 /obj/machinery/turretid/emp_act(severity)
 	if(enabled)

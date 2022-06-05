@@ -23,7 +23,7 @@
 	dat += "<HR>"
 	dat += "<A href='byond://?src=\ref[src];lock=1'>Lock</a>"
 	dat += "</font></body>"
-	user << browse(dat, "window=hidden")
+	show_browser(user, dat, "window=hidden")
 	onclose(user, "hidden")
 	return
 

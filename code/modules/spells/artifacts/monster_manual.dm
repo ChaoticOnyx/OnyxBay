@@ -1,4 +1,4 @@
-/obj/item/weapon/monster_manual
+/obj/item/monster_manual
 	name = "monster manual"
 	desc = "A book detailing various magical creatures."
 	icon = 'icons/obj/library.dmi'
@@ -13,21 +13,23 @@
 							/mob/living/simple_animal/familiar/carcinus,
 							/mob/living/simple_animal/familiar/horror,
 							/mob/living/simple_animal/familiar/minor_amaros,
-							/mob/living/simple_animal/familiar/pike
+							/mob/living/simple_animal/familiar/pike,
+							/mob/living/simple_animal/familiar/goat
 							)
 	var/list/monster_info = list(   "It is well known that the blackest of cats make good familiars.",
 									"Mice are full of mischief and magic. A simple animal, yes, but one of the wizard's finest.",
 									"A mortal decendant of the original Carcinus, it is said their shells are near impenetrable and their claws as sharp as knives.",
 									"The physical embodiment of flesh and decay, its made from the reanimated corpse of a murdered man.",
 									"A small magical creature known for its healing powers and pacifist ways.",
-									"The more carnivorous and knowledge hungry cousin of the Space Carp. Keep away from books."
+									"The more carnivorous and knowledge hungry cousin of the Space Carp. Keep away from books.",
+									"The old symbol of Satan. But this one almost can`t do anything special."
 									)
 
-/obj/item/weapon/monster_manual/attack_self(mob/user as mob)
+/obj/item/monster_manual/attack_self(mob/user as mob)
 	user.set_machine(src)
 	interact(user)
 
-/obj/item/weapon/monster_manual/interact(mob/user as mob)
+/obj/item/monster_manual/interact(mob/user as mob)
 	var/dat
 	if(temp)
 		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
@@ -37,10 +39,10 @@
 			var/mob/M = monster[i]
 			var/name = capitalize(initial(M.name))
 			dat += "<BR><a href='byond://?src=\ref[src];path=\ref[monster[i]]'>[name]</a> - [monster_info[i]]</BR>"
-	user << browse(dat,"window=monstermanual")
-	onclose(user,"monstermanual")
+	show_browser(user, dat, "window=monstermanual")
+	onclose(user, "monstermanual")
 
-/obj/item/weapon/monster_manual/OnTopic(user, href_list, state)
+/obj/item/monster_manual/OnTopic(user, href_list, state)
 	if(href_list["temp"])
 		temp = null
 		. = TOPIC_REFRESH
@@ -65,7 +67,7 @@
 					qdel(F)
 				else
 					F.faction = usr.faction
-					F.add_spell(new /spell/contract/return_master(usr), "const_spell_ready")
+					F.add_spell(new /datum/spell/contract/return_master(usr), "const_spell_ready")
 					to_chat(F, "<span class='notice'>You are a familiar.</span>")
 					to_chat(F, "<b>You have been summoned by the wizard [usr] to assist in all matters magical and not.</b>")
 					to_chat(F, "<b>Do their bidding and help them with their goals.</b>")

@@ -1,7 +1,7 @@
 /obj/item/organ/internal/posibrain
 	name = "positronic brain"
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
-	icon = 'icons/obj/assemblies.dmi'
+	icon = 'icons/mob/human_races/organs/cyber.dmi'
 	icon_state = "posibrain"
 	organ_tag = BP_POSIBRAIN
 	parent_organ = BP_CHEST
@@ -48,12 +48,13 @@
 /obj/item/organ/internal/posibrain/Destroy()
 	if(brainmob)
 		QDEL_NULL(brainmob)
-	..()
+
+	return ..()
 
 /obj/item/organ/internal/posibrain/attack_self(mob/user as mob)
 	if(brainmob && !brainmob.key && searching == 0)
 		//Start the process of searching for a new user.
-		to_chat(user, "<span class='notice'>You carefully locate the manual activation switch and start the positronic brain's boot process.</span>")
+		to_chat(user, SPAN("notice", "You carefully locate the manual activation switch and start the positronic brain's boot process."))
 		icon_state = "posibrain-searching"
 		src.searching = 1
 		var/datum/ghosttrap/G = get_ghost_trap("positronic brain")
@@ -68,7 +69,7 @@
 
 	var/turf/T = get_turf_or_move(src.loc)
 	for (var/mob/M in viewers(T))
-		M.show_message("<span class='notice'>The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?</span>")
+		M.show_message(SPAN("notice", "The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?"))
 
 /obj/item/organ/internal/posibrain/attack_ghost(mob/observer/ghost/user)
 	if(!searching || (src.brainmob && src.brainmob.key))
@@ -82,7 +83,7 @@
 		G.transfer_personality(user, brainmob)
 	return
 
-/obj/item/organ/internal/posibrain/examine(mob/user)
+/obj/item/organ/internal/posibrain/_examine_text(mob/user)
 	. = ..()
 
 	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
@@ -155,10 +156,10 @@
 
 	update_icon()
 
-	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just \a [initial(src.name)].</span>")
+	to_chat(brainmob, SPAN("notice", "You feel slightly disoriented. That's normal when you're just \a [initial(src.name)]."))
 	callHook("debrain", list(brainmob))
 
-/obj/item/organ/internal/posibrain/removed(mob/living/user)
+/obj/item/organ/internal/posibrain/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	if(!istype(owner))
 		return ..()
 

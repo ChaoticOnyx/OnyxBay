@@ -90,17 +90,17 @@
 	var/startx
 	switch(startSide)
 		if(NORTH)
-			starty = world.maxy-(TRANSITIONEDGE+1)
-			startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
+			starty = world.maxy-(TRANSITION_EDGE+1)
+			startx = rand((TRANSITION_EDGE+1), world.maxx-(TRANSITION_EDGE+1))
 		if(EAST)
-			starty = rand((TRANSITIONEDGE+1),world.maxy-(TRANSITIONEDGE+1))
-			startx = world.maxx-(TRANSITIONEDGE+1)
+			starty = rand((TRANSITION_EDGE+1),world.maxy-(TRANSITION_EDGE+1))
+			startx = world.maxx-(TRANSITION_EDGE+1)
 		if(SOUTH)
-			starty = (TRANSITIONEDGE+1)
-			startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
+			starty = (TRANSITION_EDGE+1)
+			startx = rand((TRANSITION_EDGE+1), world.maxx-(TRANSITION_EDGE+1))
 		if(WEST)
-			starty = rand((TRANSITIONEDGE+1), world.maxy-(TRANSITIONEDGE+1))
-			startx = (TRANSITIONEDGE+1)
+			starty = rand((TRANSITION_EDGE+1), world.maxy-(TRANSITION_EDGE+1))
+			startx = (TRANSITION_EDGE+1)
 	var/turf/T = locate(startx, starty, Z)
 	return T
 
@@ -109,17 +109,17 @@
 	var/endx
 	switch(startSide)
 		if(NORTH)
-			endy = TRANSITIONEDGE
-			endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
+			endy = TRANSITION_EDGE
+			endx = rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE)
 		if(EAST)
-			endy = rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE)
-			endx = TRANSITIONEDGE
+			endy = rand(TRANSITION_EDGE, world.maxy-TRANSITION_EDGE)
+			endx = TRANSITION_EDGE
 		if(SOUTH)
-			endy = world.maxy-TRANSITIONEDGE
-			endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
+			endy = world.maxy-TRANSITION_EDGE
+			endx = rand(TRANSITION_EDGE, world.maxx-TRANSITION_EDGE)
 		if(WEST)
-			endy = rand(TRANSITIONEDGE,world.maxy-TRANSITIONEDGE)
-			endx = world.maxx-TRANSITIONEDGE
+			endy = rand(TRANSITION_EDGE,world.maxy-TRANSITION_EDGE)
+			endx = world.maxx-TRANSITION_EDGE
 	var/turf/T = locate(endx, endy, Z)
 	return T
 
@@ -140,7 +140,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	var/heavy = 0
 	var/z_original
-	var/meteordrop = /obj/item/weapon/ore/iron
+	var/meteordrop = /obj/item/ore/iron
 	var/dropamt = 1
 
 	var/move_count = 0
@@ -159,7 +159,7 @@
 		qdel(src)
 
 /obj/effect/meteor/touch_map_edge()
-	if(move_count > TRANSITIONEDGE)
+	if(move_count > TRANSITION_EDGE)
 		qdel(src)
 
 /obj/effect/meteor/Destroy()
@@ -176,7 +176,7 @@
 		ram_turf(get_turf(A))
 		get_hit() //should only get hit once per move attempt
 
-/obj/effect/meteor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/effect/meteor/CanPass(atom/movable/mover, turf/target)
 	return istype(mover, /obj/effect/meteor) ? 1 : ..()
 
 /obj/effect/meteor/proc/ram_turf(turf/T)
@@ -201,8 +201,8 @@
 /obj/effect/meteor/ex_act()
 	return
 
-/obj/effect/meteor/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if(istype(W, /obj/item/weapon/pickaxe))
+/obj/effect/meteor/attackby(obj/item/W as obj, mob/user as mob, params)
+	if(istype(W, /obj/item/pickaxe))
 		qdel(src)
 		return
 	..()
@@ -234,7 +234,7 @@
 	hits = 1
 	hitpwr = 3
 	dropamt = 1
-	meteordrop = /obj/item/weapon/ore/glass
+	meteordrop = /obj/item/ore/glass
 
 //Medium-sized
 /obj/effect/meteor/medium
@@ -263,7 +263,7 @@
 	icon_state = "flaming"
 	hits = 5
 	heavy = 1
-	meteordrop = /obj/item/weapon/ore/phoron
+	meteordrop = /obj/item/ore/plasma
 
 /obj/effect/meteor/flaming/meteor_effect()
 	..()
@@ -274,7 +274,7 @@
 	name = "glowing meteor"
 	icon_state = "glowing"
 	heavy = 1
-	meteordrop = /obj/item/weapon/ore/uranium
+	meteordrop = /obj/item/ore/uranium
 
 /obj/effect/meteor/irradiated/meteor_effect()
 	..()
@@ -286,19 +286,19 @@
 	name = "golden meteor"
 	icon_state = "glowing"
 	desc = "Shiny! But also deadly."
-	meteordrop = /obj/item/weapon/ore/gold
+	meteordrop = /obj/item/ore/gold
 
 /obj/effect/meteor/silver
 	name = "silver meteor"
 	icon_state = "glowing_blue"
 	desc = "Shiny! But also deadly."
-	meteordrop = /obj/item/weapon/ore/silver
+	meteordrop = /obj/item/ore/silver
 
 /obj/effect/meteor/emp
 	name = "conducting meteor"
 	icon_state = "glowing_blue"
 	desc = "Hide your floppies!"
-	meteordrop = /obj/item/weapon/ore/osmium
+	meteordrop = /obj/item/ore/osmium
 	dropamt = 2
 
 /obj/effect/meteor/emp/meteor_effect()
@@ -318,7 +318,7 @@
 	hits = 10
 	hitpwr = 1
 	heavy = 1
-	meteordrop = /obj/item/weapon/ore/diamond	// Probably means why it penetrates the hull so easily before exploding.
+	meteordrop = /obj/item/ore/diamond	// Probably means why it penetrates the hull so easily before exploding.
 
 /obj/effect/meteor/tunguska/meteor_effect()
 	..()

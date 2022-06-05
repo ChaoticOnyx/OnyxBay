@@ -25,6 +25,8 @@
 	var/has_custom_product		   // Spawns a custom item instead of regular harvest (i.e. real egg plants).
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
+	var/planter_ckey			   // ckey of player that plant seed.
+	var/fun_level = 1              // Disables this mutation if it's higher than config.misc.fun_hydroponics. 0 - regular plants, 1 - joke plants, 2 - somewhat OOC-related stuff.
 
 /datum/seed/New()
 
@@ -180,7 +182,7 @@
 				var/clr
 				if(get_trait(TRAIT_BIOLUM_COLOUR))
 					clr = get_trait(TRAIT_BIOLUM_COLOUR)
-				splat.set_light(get_trait(TRAIT_BIOLUM), l_color = clr)
+				splat.set_light(0.5, 0.1, get_trait(TRAIT_BIOLUM), l_color = clr)
 			var/flesh_colour = get_trait(TRAIT_FLESH_COLOUR)
 			if(!flesh_colour) flesh_colour = get_trait(TRAIT_PRODUCT_COLOUR)
 			if(flesh_colour) splat.color = get_trait(TRAIT_PRODUCT_COLOUR)
@@ -344,6 +346,7 @@
 			s.set_up(3, 1, get_turf(target))
 			s.start()
 			new /obj/effect/decal/cleanable/molten_item(get_turf(target)) // Leave a pile of goo behind for dramatic effect...
+			target.buckled?.unbuckle_mob()
 			target.forceMove(T)                                     // And teleport them to the chosen location.
 			impact = 1
 
@@ -425,12 +428,12 @@
 
 	if(prob(5))
 		consume_gasses = list()
-		var/gas = pick("oxygen","nitrogen","phoron","carbon_dioxide")
+		var/gas = pick("oxygen","nitrogen","plasma","carbon_dioxide")
 		consume_gasses[gas] = rand(3,9)
 
 	if(prob(5))
 		exude_gasses = list()
-		var/gas = pick("oxygen","nitrogen","phoron","carbon_dioxide")
+		var/gas = pick("oxygen","nitrogen","plasma","carbon_dioxide")
 		exude_gasses[gas] = rand(3,9)
 
 	chems = list()
@@ -726,14 +729,14 @@
 			else if(has_custom_product)
 				product = new has_custom_product(get_turf(user),name)
 			else
-				product = new /obj/item/weapon/reagent_containers/food/snacks/grown(get_turf(user),name)
+				product = new /obj/item/reagent_containers/food/grown(get_turf(user),name)
 			. += product
 
 			if(get_trait(TRAIT_PRODUCT_COLOUR))
 				if(!istype(product, /mob) && !has_custom_product)
 					product.color = get_trait(TRAIT_PRODUCT_COLOUR)
-					if(istype(product,/obj/item/weapon/reagent_containers/food))
-						var/obj/item/weapon/reagent_containers/food/food = product
+					if(istype(product,/obj/item/reagent_containers/food))
+						var/obj/item/reagent_containers/food/food = product
 						food.filling_color = get_trait(TRAIT_PRODUCT_COLOUR)
 
 			if(mysterious)
@@ -744,7 +747,7 @@
 				var/clr
 				if(get_trait(TRAIT_BIOLUM_COLOUR))
 					clr = get_trait(TRAIT_BIOLUM_COLOUR)
-				product.set_light(get_trait(TRAIT_BIOLUM), l_color = clr)
+				product.set_light(0.5, 0.1, get_trait(TRAIT_BIOLUM), l_color = clr)
 
 			//Handle spawning in living, mobile products (like dionaea).
 			if(istype(product,/mob/living))
@@ -825,6 +828,6 @@
 	if(leaves)
 		var/image/I = image(res.icon, "[plant_icon]-[growth_stage]-leaves")
 		I.color = leaves
-		I.appearance_flags = RESET_COLOR
+		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		res.overlays += I
 	return res

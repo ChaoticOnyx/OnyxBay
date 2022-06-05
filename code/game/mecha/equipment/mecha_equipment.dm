@@ -14,6 +14,9 @@
 	var/range = MELEE //bitflags
 	var/salvageable = 1
 	var/required_type = /obj/mecha //may be either a type or a list of allowed types
+	var/has_equip_overlay = TRUE // in case we want our equipment to have a sprite on a mecha
+	var/need_colorize = TRUE // in case we don't have a padding or don't want to color our equipment
+	var/equip_slot = HAND // Used to specify "layer" so we can easily display abstract missile launcher with an abstract laser.
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_cooldown(target=1)
@@ -50,9 +53,9 @@
 		chassis.occupant_message("<font color='red'>The [src] is destroyed!</font>")
 		chassis.log_append_to_last("[src] is destroyed.",1)
 		if(istype(src, /obj/item/mecha_parts/mecha_equipment/weapon))
-			sound_to(chassis.occupant, sound('sound/mecha/weapdestr.ogg',volume=50))
+			sound_to(chassis.occupant, sound('sound/mecha/weapdestr.ogg', volume=50))
 		else
-			sound_to(chassis.occupant, sound('sound/mecha/critdestr.ogg',volume=50))
+			sound_to(chassis.occupant, sound('sound/mecha/critdestr.ogg', volume=50))
 	spawn
 		qdel(src)
 	return
@@ -118,6 +121,7 @@
 			chassis.selected = null
 		update_chassis_page()
 		chassis.log_message("[src] removed from equipment.")
+		chassis.update_icon()
 		chassis = null
 		set_ready_state(1)
 	return

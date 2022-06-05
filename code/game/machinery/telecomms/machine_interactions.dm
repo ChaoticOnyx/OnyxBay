@@ -84,7 +84,7 @@
 
 						// If the machine wasn't made during runtime, probably doesn't have components:
 						// manually find the components and drop them!
-						var/obj/item/weapon/circuitboard/C = new circuitboard
+						var/obj/item/circuitboard/C = new circuitboard
 						for(var/I in C.req_components)
 							for(var/i = 1, i <= C.req_components[I], i++)
 								var/obj/item/s = new I
@@ -169,7 +169,7 @@
 
 	dat += "</font>"
 	temp = ""
-	user << browse(dat, "window=tcommachine;size=520x500;can_resize=0")
+	show_browser(user, dat, "window=tcommachine;size=520x500;can_resize=0")
 	onclose(user, "dormitory")
 
 
@@ -184,13 +184,12 @@
 	var/turf/position = get_turf(src)
 
 	// Toggle on/off getting signals from the station or the current Z level
-	if(src.listening_levels == GLOB.using_map.contact_levels) // equals the station
+	if(src.listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)) // equals the station
 		src.listening_levels = GetConnectedZlevels(position.z)
 		return 1
 	else
-		src.listening_levels = GLOB.using_map.contact_levels
+		src.listening_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)
 		return 1
-	return 0
 
 // Returns a multitool from a user depending on their mobtype.
 
@@ -201,8 +200,8 @@
 	if(!issilicon(user))
 		if(isMultitool(user.get_active_hand()))
 			P = user.get_active_hand()
-		else if(istype(user.get_active_hand(), /obj/item/weapon/combotool))
-			var/obj/item/weapon/combotool/tool = user.get_active_hand()
+		else if(istype(user.get_active_hand(), /obj/item/combotool))
+			var/obj/item/combotool/tool = user.get_active_hand()
 			P = tool.tool_u
 			if(!isMultitool(P))
 				P = null
@@ -244,7 +243,7 @@
 /obj/machinery/telecomms/relay/Options_Menu()
 	var/dat = ""
 	if(src.z == TELECOMM_Z)
-		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.contact_levels ? "TRUE" : "FALSE"]</a>"
+		dat += "<br>Signal Locked to the [station_name()]: <A href='?src=\ref[src];change_listening=1'>[listening_levels == GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT) ? "TRUE" : "FALSE"]</a>"
 	dat += "<br>Broadcasting: <A href='?src=\ref[src];broadcast=1'>[broadcasting ? "YES" : "NO"]</a>"
 	dat += "<br>Receiving:    <A href='?src=\ref[src];receive=1'>[receiving ? "YES" : "NO"]</a>"
 	return dat

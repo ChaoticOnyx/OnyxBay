@@ -24,24 +24,12 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/full_name = "Unnamed Map"
 	var/path
 
-	var/list/station_levels = list() // Z-levels the station exists on
-	var/list/admin_levels = list()   // Z-levels for admin functionality (Centcom, shuttle transit, etc)
-	var/list/contact_levels = list() // Z-levels that can be contacted from the station, for eg announcements
-	var/list/player_levels = list()  // Z-levels a character can typically reach
-	var/list/sealed_levels = list()  // Z-levels that don't allow random transit at edge
-	var/list/empty_levels = null     // Empty Z-levels that may be used for various things (currently used by bluespace jump)
+	var/shuttle_types = null         // Only the specified shuttles will be initialized.
+	var/list/map_levels
 
-	var/list/map_levels              // Z-levels available to various consoles, such as the crew monitor. Defaults to station_levels if unset.
-
-	var/list/dynamic_z_levels        // Z-levels to load in runtime
-
-	var/list/base_turf_by_z = list() // Custom base turf by Z-level. Defaults to world.turf for unlisted Z-levels
 	var/list/usable_email_tlds = list("freemail.nt")
 	var/base_floor_type = /turf/simulated/floor/plating/airless // The turf type used when generating floors between Z-levels at startup.
 	var/base_floor_area                                 // Replacement area, if a base_floor_type is generated. Leave blank to skip.
-
-	//This list contains the z-level numbers which can be accessed via space travel and the percentile chances to get there.
-	var/list/accessible_z_levels = list()
 
 	var/list/allowed_jobs          //Job datums to use.
 	                               //Works a lot better so if we get to a point where three-ish maps are used
@@ -69,6 +57,10 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/emergency_shuttle_leaving_dock
 	var/emergency_shuttle_recall_message
 
+	/// Areas where crew members are considered to have safely left the station.
+	/// Defaults to all area types on the centcom levels if left empty.
+	var/list/post_round_safe_areas = list()
+
 	var/list/station_networks = list() 		// Camera networks that will show up on the console.
 
 	var/list/holodeck_programs = list() // map of string ids to /datum/holodeck_program instances
@@ -82,10 +74,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/default_spawn = "Arrivals Shuttle"
 	var/flags = 0
 	var/evac_controller_type = /datum/evacuation_controller
-	var/use_overmap = 0		//If overmap should be used (including overmap space travel override)
-	var/overmap_size = 20		//Dimensions of overmap zlevel if overmap is used.
-	var/overmap_z = 0		//If 0 will generate overmap zlevel on init. Otherwise will populate the zlevel provided.
-	var/overmap_event_areas = 0 //How many event "clouds" will be generated
 
 	var/lobby_icon									// The icon which contains the lobby image(s)
 	var/list/lobby_screens = list()                 // The list of lobby screen to pick() from. If left unset the first icon state is always selected.
@@ -97,11 +85,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 	var/id_hud_icons = 'icons/mob/hud.dmi' // Used by the ID HUD (primarily sechud) overlay.
 
-	var/num_exoplanets = 0
-	var/list/planet_size  //dimensions of planet zlevel, defaults to world size. Due to how maps are generated, must be (2^n+1) e.g. 17,33,65,129 etc. Map will just round up to those if set to anything other.
-	var/away_site_budget = 0
-
 	var/list/loadout_blacklist	//list of types of loadout items that will not be pickable
+	var/legacy_mode = FALSE // When TRUE, some things (like walls and windows) use their classical appearance and mechanics
 
 	//Economy stuff
 	var/starting_money = 75000		//Money in station account
@@ -154,67 +139,85 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		"Atheism"
 		)
 
+	var/list/available_events = list(
+		/datum/event/nothing,
+		/datum/event/apc_damage,
+		/datum/event/brand_intelligence,
+		/datum/event/camera_damage,
+		/datum/event/economic_event,
+		/datum/event/carp_migration,
+		/datum/event/money_hacker,
+		/datum/event/money_lotto,
+		/datum/event/mundane_news,
+		/datum/event/shipping_error,
+		/datum/event/dust,
+		/datum/event/sensor_suit_jamming,
+		/datum/event/trivial_news,
+		/datum/event/infestation,
+		/datum/event/wallrot,
+		/datum/event/electrical_storm,
+		/datum/event/space_cold,
+		/datum/event/spontaneous_appendicitis,
+		/datum/event/communications_blackout,
+		/datum/event/grid_check,
+		/datum/event/ionstorm,
+		/datum/event/meteor_wave,
+		/datum/event/prison_break,
+		/datum/event/radiation_storm,
+		/datum/event/random_antag,
+		/datum/event/rogue_drone,
+		/datum/event/solar_storm,
+		/datum/event/prison_break/virology,
+		/datum/event/prison_break/xenobiology,
+		/datum/event/virus_minor,
+		/datum/event/stray_facehugger,
+		/datum/event/wormholes,
+		/datum/event/prison_break/station,
+		/datum/event/spacevine,
+		/datum/event/virus_major,
+		/datum/event/xenomorph_infestation,
+		/datum/event/biohazard_outbreak
+	)
+
 /datum/map/New()
-	if(!map_levels)
-		map_levels = station_levels.Copy()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
-	if(!planet_size)
-		planet_size = list(world.maxx, world.maxy)
+	if(!shuttle_types)
+		crash_with("[src] has no shuttle_types!")
+
+/datum/map/proc/level_has_trait(z, trait)
+	return map_levels[z].has_trait(trait)
 
 /datum/map/proc/setup_map()
-	if(dynamic_z_levels)
-		for(var/level in dynamic_z_levels)
-			maploader.load_map(dynamic_z_levels[level], 1, 1, text2num(level), FALSE, FALSE, TRUE, FALSE)
+	ASSERT(length(map_levels))
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		log_to_dd("Loading map '[L.path]' at [level]")
+		maploader.load_map(L.path, 1, 1, level, FALSE, FALSE, TRUE, FALSE)
+
 	world.update_status()
 	var/list/antags = GLOB.all_antag_types_
 	for(var/id in antags)
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()
 
+	if(!length(post_round_safe_areas))
+		post_round_safe_areas = list()
+
+		for(var/level = 1; level <= length(map_levels); level++)
+			var/datum/space_level/L = map_levels[level]
+
+			if(L.has_trait(ZTRAIT_CENTCOM))
+				post_round_safe_areas += level
+
 /datum/map/proc/send_welcome()
 	return
 
 /datum/map/proc/perform_map_generation()
-	return
-
-/datum/map/proc/build_away_sites()
-#ifdef UNIT_TEST
-	report_progress("Unit testing, so not loading away sites")
-	return // don't build away sites during unit testing
-#else
-	report_progress("Loading away sites...")
-	var/list/sites_by_spawn_weight = list()
-	for (var/site_name in SSmapping.away_sites_templates)
-		var/datum/map_template/ruin/away_site/site = SSmapping.away_sites_templates[site_name]
-
-		if((site.template_flags & TEMPLATE_FLAG_SPAWN_GUARANTEED) && site.load_new_z()) // no check for budget, but guaranteed means guaranteed
-			report_progress("Loaded guaranteed away site [site]!")
-			away_site_budget -= site.cost
-			continue
-
-		sites_by_spawn_weight[site] = site.spawn_weight
-	while (away_site_budget > 0 && sites_by_spawn_weight.len)
-		var/datum/map_template/ruin/away_site/selected_site = pickweight(sites_by_spawn_weight)
-		if (!selected_site)
-			break
-		sites_by_spawn_weight -= selected_site
-		if(selected_site.cost > away_site_budget)
-			continue
-		if (selected_site.load_new_z())
-			report_progress("Loaded away site [selected_site]!")
-			away_site_budget -= selected_site.cost
-	report_progress("Finished loading away sites, remaining budget [away_site_budget], remaining sites [sites_by_spawn_weight.len]")
-#endif
-
-/datum/map/proc/build_exoplanets()
-	if(!use_overmap)
-		return
-
-	for(var/i = 0, i < num_exoplanets, i++)
-		var/exoplanet_type = pick(subtypesof(/obj/effect/overmap/sector/exoplanet))
-		var/obj/effect/overmap/sector/exoplanet/new_planet = new exoplanet_type(null, planet_size[1], planet_size[2])
-		new_planet.build_level()
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+		L.generate(level)
 
 // Used to apply various post-compile procedural effects to the map.
 /datum/map/proc/refresh_mining_turfs(zlevel)
@@ -231,21 +234,45 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 			M.updateMineralOverlays()
 
 /datum/map/proc/get_network_access(network)
-	return 0
+	switch(network)
+		if(NETWORK_CIVILIAN_WEST)
+			return access_mailsorting
+		if(NETWORK_RESEARCH_OUTPOST)
+			return access_research
+		if(NETWORK_TELECOM)
+			return access_heads
+		if(NETWORK_COMMAND)
+			return access_heads
+		if(NETWORK_ENGINE, NETWORK_ENGINEERING_OUTPOST)
+			return access_engine
 
 // By default transition randomly to another zlevel
 /datum/map/proc/get_transit_zlevel(current_z_level)
-	var/list/candidates = GLOB.using_map.accessible_z_levels.Copy()
-	candidates.Remove(num2text(current_z_level))
+	var/list/candidates = list()
 
-	if(!candidates.len)
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		if(level == current_z_level)
+			continue
+
+		if(!L.has_trait(ZTRAIT_CENTCOM) && !L.has_trait(ZTRAIT_SEALED))
+			candidates["[level]"] = L.travel_chance
+
+	if(!length(candidates))
 		return current_z_level
+
 	return text2num(pickweight(candidates))
 
 /datum/map/proc/get_empty_zlevel()
-	if(empty_levels == null)
-		world.maxz++
-		empty_levels = list(world.maxz)
+	var/empty_levels = list()
+
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		if(L.has_trait(ZTRAIT_EMPTY))
+			empty_levels += level
+
 	return pick(empty_levels)
 
 
@@ -291,3 +318,55 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		num2text(SUP_FREQ)   = list(access_cargo),
 		num2text(SRV_FREQ)   = list(access_janitor, access_hydroponics),
 	)
+
+/datum/map/proc/get_levels_without_trait(trait)
+	var/list/result = list()
+
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		if(!L.has_trait(trait))
+			result += level
+	
+	return result
+
+/datum/map/proc/get_levels_with_trait(trait)
+	var/list/result = list()
+
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		if(L.has_trait(trait))
+			result += level
+
+	return result
+
+/datum/map/proc/get_levels_with_any_trait(...)
+	var/list/result = list()
+
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		for(var/T in args)
+			if(L.has_trait(T))
+				result += L
+				break
+	
+	return result
+
+/datum/map/proc/get_levels_with_all_traits(...)
+	var/list/result = list()
+
+	for(var/level = 1; level <= length(map_levels); level++)
+		var/datum/space_level/L = map_levels[level]
+
+		var/ok = TRUE
+		for(var/T in args)
+			if(!L.has_trait(T))
+				ok = FALSE
+				break
+		
+		if(ok)
+			result += L
+	
+	return result

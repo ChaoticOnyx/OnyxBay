@@ -21,14 +21,26 @@
 	pass_flags = PASS_FLAG_TABLE
 	density = 0
 
-/mob/living/simple_animal/bee/New(loc, var/obj/machinery/beehive/new_parent)
+/mob/living/simple_animal/bee/New(loc, obj/machinery/beehive/new_parent)
 	parent = new_parent
 	..()
 
 /mob/living/simple_animal/bee/Destroy()
 	if(parent)
 		parent.owned_bee_swarms.Remove(src)
-	..()
+
+	return ..()
+
+/mob/living/simple_animal/bee/proc/set_target_mob(mob/L)
+	if(target_mob != L)
+		if(target_mob)
+			unregister_signal(target_mob, SIGNAL_QDELETING)
+		target_mob = L
+		if(!isnull(target_mob) && !client)
+			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+
+/mob/living/simple_animal/bee/proc/_target_deleted()
+	set_target_mob(null)
 
 /mob/living/simple_animal/bee/Life()
 	..()
@@ -46,7 +58,7 @@
 				if(worn_helmet)
 					sting_prob -= min(worn_helmet.armor["bio"],30) // Is your helmet sealed? I can't get to 30% of your body.
 				if( prob(sting_prob) && (M.stat == CONSCIOUS || (M.stat == UNCONSCIOUS && prob(25))) ) // Try to sting! If you're not moving, think about stinging.
-					M.apply_damage(min(strength,2)+mut, BRUTE, sharp=1) // Stinging. The more mutated I am, the harder I sting.
+					M.apply_damage(min(strength,2)+mut, BRUTE) // Stinging. The more mutated I am, the harder I sting.
 					M.apply_damage((round(feral/10,1)*(max((round(strength/20,1)),1)))+toxic, TOX) // Bee venom based on how angry I am and how many there are of me!
 					to_chat(M, "\red You have been stung!")
 					M.flash_pain()
@@ -65,7 +77,7 @@
 				feral += 1
 
 			if(target_mob)
-				target_mob = null
+				set_target_mob(null)
 				target_turf = null
 			if(strength > 5)
 				//calm down and spread out a little
@@ -102,7 +114,7 @@
 			if(feral > 0)
 				src.visible_message("\blue The bees calm down!")
 			feral = -10
-			target_mob = null
+			set_target_mob(null)
 			target_turf = null
 			icon_state = "bees"
 			wander = 1
@@ -140,7 +152,7 @@
 
 			else // My target's gone! But I might still be pissed! You there. You look like a good stinging target!
 				for(var/mob/living/carbon/G in view(src,7))
-					target_mob = G
+					set_target_mob(G)
 					break
 
 		if(target_turf)
@@ -174,6 +186,6 @@
 	if(parent == null && prob(10))
 		strength -= 1
 		if(strength <= 0)
-			qdel(src)
+			death()
 		else if(strength <= 5)
 			icon_state = "bees"

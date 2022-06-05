@@ -14,7 +14,7 @@
 	var/machinedir = NORTHEAST
 	var/show_all_ores = 0
 	var/points = 0
-	var/obj/item/weapon/card/id/inserted_id
+	var/obj/item/card/id/inserted_id
 
 /obj/machinery/mineral/processing_unit_console/Initialize()
 	. = ..()
@@ -74,7 +74,7 @@
 	dat += "</table><hr>"
 	dat += "Currently displaying [show_all_ores ? "all ore types" : "only available ore types"]. <A href='?src=\ref[src];toggle_ores=1'>\[[show_all_ores ? "show less" : "show more"]\]</a></br>"
 	dat += "The ore processor is currently <A href='?src=\ref[src];toggle_power=1'>[(machine.active ? "<font color='green'>processing</font>" : "<font color='red'>disabled</font>")]</a>."
-	user << browse(dat, "window=processor_console;size=400x500")
+	show_browser(user, dat, "window=processor_console;size=400x500")
 	onclose(user, "processor_console")
 	return
 
@@ -103,7 +103,7 @@
 				else
 					to_chat(usr, "<span class='warning'>Required access not found.</span>")
 		else if(href_list["choice"] == "insert")
-			var/obj/item/weapon/card/id/I = usr.get_active_hand()
+			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
 				usr.drop_item()
 				I.loc = src
@@ -142,12 +142,12 @@
 
 
 /obj/machinery/mineral/processing_unit
-	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable phoron...
+	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "furnace-off"
 	density = 1
 	anchored = 1
-	light_range = 3
+	light_outer_range = 3
 	var/obj/machinery/mineral/input = null
 	var/obj/machinery/mineral/output = null
 	var/obj/machinery/mineral/processing_unit_console/console = null
@@ -161,11 +161,11 @@
 	active_power_usage = 50
 
 	component_types = list(
-			/obj/item/weapon/circuitboard/refiner,
-			/obj/item/weapon/stock_parts/capacitor = 2,
-			/obj/item/weapon/stock_parts/scanning_module,
-			/obj/item/weapon/stock_parts/micro_laser = 2,
-			/obj/item/weapon/stock_parts/matter_bin
+			/obj/item/circuitboard/refiner,
+			/obj/item/stock_parts/capacitor = 2,
+			/obj/item/stock_parts/scanning_module,
+			/obj/item/stock_parts/micro_laser = 2,
+			/obj/item/stock_parts/matter_bin
 		)
 
 /obj/machinery/mineral/processing_unit/Initialize()
@@ -201,12 +201,12 @@
 
 	//Grab some more ore to process this tick.
 	for(var/i = 0,i<sheets_per_tick,i++)
-		var/obj/item/weapon/ore/O = locate() in input.loc
+		var/obj/item/ore/O = locate() in input.loc
 		if(!O) break
 		if(O.ore && !isnull(ores_stored[O.ore.name]))
-			ores_stored[O.ore.name]++
+			ores_stored[O.ore.name] += 1
 		else
-			world.log << "[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!"
+			to_world_log("[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!")
 
 		qdel(O)
 
@@ -294,22 +294,22 @@
 					if(console)
 						console.points += O.worth
 					use_power_oneoff(100)
-					ores_stored[metal]--
+					ores_stored[metal] -= 1
 					sheets++
 					new M.stack_type(output.loc)
 			else
 				if(console)
 					console.points -= O.worth*3 //reee wasting our materials!
 				use_power_oneoff(500)
-				ores_stored[metal]--
+				ores_stored[metal] -= 1
 				sheets++
-				new /obj/item/weapon/ore/slag(output.loc)
+				new /obj/item/ore/slag(output.loc)
 		else
 			continue
 
 	console.updateUsrDialog()
 
-/obj/machinery/mineral/processing_unit/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/mineral/processing_unit/attackby(obj/item/W as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	else if(default_part_replacement(user, W))
@@ -321,7 +321,7 @@
 	var/cap_rating = 0
 	var/laser_rating = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(isscanner(P))
 			scan_rating += P.rating
 		else if(iscapacitor(P))

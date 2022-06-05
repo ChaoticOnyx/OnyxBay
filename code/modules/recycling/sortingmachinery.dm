@@ -30,7 +30,7 @@
 		var/obj/item/device/destTagger/O = W
 		if(O.currTag)
 			if(src.sortTag != O.currTag)
-				to_chat(user, "<span class='notice'>You have labeled the destination as [O.currTag].</span>")
+				to_chat(user, SPAN("notice", "You have labeled the destination as [O.currTag]"))
 				if(!src.sortTag)
 					src.sortTag = O.currTag
 					update_icon()
@@ -38,40 +38,50 @@
 					src.sortTag = O.currTag
 				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
-				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
+				to_chat(user, SPAN("warning", "The package is already labeled for [O.currTag]"))
 		else
-			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
+			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/pen) || istype(W, /obj/item/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'> Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
 					update_icon()
 				else
 					nameset = 1
+
 			if("Description")
 				var/str = sanitize(input(usr,"Label text?","Set label",""))
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'>Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(!examtext && !nameset)
 					examtext = str
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
-	return
+				if(istype(W, /obj/item/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
 	overlays = new()
@@ -102,7 +112,7 @@
 			I.pixel_y = -3
 		overlays += I
 
-/obj/structure/bigDelivery/examine(mob/user)
+/obj/structure/bigDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -161,7 +171,7 @@
 		var/obj/item/device/destTagger/O = W
 		if(O.currTag)
 			if(src.sortTag != O.currTag)
-				to_chat(user, "<span class='notice'>You have labeled the destination as [O.currTag].</span>")
+				to_chat(user, SPAN("notice", "You have labeled the destination as [O.currTag]"))
 				if(!src.sortTag)
 					src.sortTag = O.currTag
 					update_icon()
@@ -169,20 +179,25 @@
 					src.sortTag = O.currTag
 				playsound(src.loc, 'sound/signals/ping1.ogg', 50, 0)
 			else
-				to_chat(user, "<span class='warning'>The package is already labeled for [O.currTag].</span>")
+				to_chat(user, SPAN("warning", "The package is already labeled for [O.currTag]"))
 		else
-			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
+			to_chat(user, SPAN("warning", "You need to set a destination first!</span>"))
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/pen) || istype(W, /obj/item/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'> Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
+					SPAN("notice", "You title \the [src]: \"[str]\""),\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
@@ -193,16 +208,21 @@
 			if("Description")
 				var/str = sanitize(input(usr,"Label text?","Set label",""))
 				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'>Invalid text.</span>")
+					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(!examtext && !nameset)
 					examtext = str
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 	return
 
 /obj/item/smallDelivery/update_icon()
@@ -228,9 +248,11 @@
 				I.pixel_y = 3
 			if("deliverycrate5")
 				I.pixel_y = -3
+			if("deliverybox")
+				I.pixel_y = 1
 		overlays += I
 
-/obj/item/smallDelivery/examine(mob/user)
+/obj/item/smallDelivery/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
@@ -239,14 +261,14 @@
 			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
-/obj/item/weapon/packageWrap
+/obj/item/packageWrap
 	name = "package wrapper"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "deliveryPaper"
 	w_class = ITEM_SIZE_NORMAL
 	var/amount = 25.0
 
-/obj/item/weapon/c_tube
+/obj/item/c_tube
 	name = "cardboard tube"
 	desc = "A tube... of cardboard."
 	icon = 'icons/obj/items.dmi'
@@ -256,12 +278,12 @@
 	throw_speed = 4
 	throw_range = 5
 
-/obj/item/weapon/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
+/obj/item/packageWrap/afterattack(obj/target as obj, mob/user as mob, proximity)
 	if(!proximity) return
 	if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 		return
 	if(istype(target, /obj/item/smallDelivery) || istype(target,/obj/structure/bigDelivery) \
-	|| istype(target, /obj/item/weapon/gift) || istype(target, /obj/item/weapon/evidencebag))
+	|| istype(target, /obj/item/gift) || istype(target, /obj/item/evidencebag))
 		return
 	if(target.anchored)
 		return
@@ -270,7 +292,7 @@
 	if(user in target) //no wrapping closets that you are inside - it's not physically possible
 		return
 
-	if (istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
+	if (istype(target, /obj/item) && !(istype(target, /obj/item/storage) && !istype(target,/obj/item/storage/box)))
 		var/obj/item/O = target
 		if (src.amount > 1)
 			var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
@@ -278,7 +300,6 @@
 				if(user.client)
 					user.client.screen -= O
 			P.wrapped = O
-			O.forceMove(P)
 			P.w_class = O.w_class
 			var/i = round(O.w_class)
 			if(i in list(1,2,3,4,5))
@@ -299,8 +320,14 @@
 			src.add_fingerprint(usr)
 			src.amount -= 1
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
 			"You hear someone taping paper around a small object.")
+			if(istype(O, /obj/item/storage/box))
+				var/obj/item/storage/box/B = O
+				B.close(user)
+				P.SetName("box-shaped parcel")
+				P.icon_state = "deliverybox"
+			O.forceMove(P)
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
 		if (src.amount > 3 && !O.opened)
@@ -310,10 +337,10 @@
 			O.forceMove(P)
 			src.amount -= 3
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
 		else if(src.amount < 3)
-			to_chat(user, "<span class='warning'>You need more paper.</span>")
+			to_chat(user, SPAN("warning", "You need more paper"))
 	else if (istype (target, /obj/structure/closet))
 		var/obj/structure/closet/O = target
 		if (src.amount > 3 && !O.opened)
@@ -323,19 +350,19 @@
 			O.forceMove(P)
 			src.amount -= 3
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			"<span class='notice'>You wrap \the [target], leaving [amount] units of paper on \the [src].</span>",\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
 			"You hear someone taping paper around a large object.")
 		else if(src.amount < 3)
-			to_chat(user, "<span class='warning'>You need more paper.</span>")
+			to_chat(user, SPAN("warning", "You need more paper"))
 	else
-		to_chat(user, "<span class='notice'>The object you are trying to wrap is unsuitable for the sorting machinery!</span>")
+		to_chat(user, SPAN("notice", "The object you are trying to wrap is unsuitable for the sorting machinery!"))
 	if (src.amount <= 0)
-		new /obj/item/weapon/c_tube( src.loc )
+		new /obj/item/c_tube( src.loc )
 		qdel(src)
 		return
 	return
 
-/obj/item/weapon/packageWrap/examine(mob/user)
+/obj/item/packageWrap/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"
@@ -364,14 +391,14 @@
 
 	dat += "</tr></table><br>Current Selection: [currTag ? currTag : "None"]</tt>"
 	dat += "<br><a href='?src=\ref[src];nextTag=CUSTOM'>Enter custom location.</a>"
-	user << browse(dat, "window=destTagScreen;size=450x375")
+	show_browser(user, dat, "window=destTagScreen;size=450x375")
 	onclose(user, "destTagScreen")
 
 /obj/item/device/destTagger/attack_self(mob/user as mob)
 	openwindow(user)
 
 /obj/item/device/destTagger/OnTopic(user, href_list, state)
-	if(href_list["nextTag"] && href_list["nextTag"] in GLOB.tagger_locations)
+	if(href_list["nextTag"] && (href_list["nextTag"] in GLOB.tagger_locations))
 		src.currTag = href_list["nextTag"]
 		. = TOPIC_REFRESH
 	if(href_list["nextTag"] == "CUSTOM")
@@ -478,7 +505,7 @@
 			to_chat(user, "You attach the screws around the power connection.")
 			return
 	else if(isWelder(I) && c_mode==1)
-		var/obj/item/weapon/weldingtool/W = I
+		var/obj/item/weldingtool/W = I
 		if(W.remove_fuel(1,user))
 			to_chat(user, "You start slicing the floorweld off the delivery chute.")
 			if(do_after(user,20, src))
@@ -499,4 +526,5 @@
 /obj/machinery/disposal/deliveryChute/Destroy()
 	if(trunk)
 		trunk.linked = null
-	..()
+
+	return ..()

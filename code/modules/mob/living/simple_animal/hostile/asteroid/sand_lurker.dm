@@ -28,7 +28,13 @@
 	attacktext = "bites into"
 	a_intent = "harm"
 	attack_sound = 'sound/weapons/bladeslice.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/sand_lurker
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 
 /mob/living/simple_animal/hostile/asteroid/sand_lurker/Life()
-	..()
-	stop_automated_movement = 1
+	. = ..()
+	if(.)
+		stop_automated_movement = 1
+
+/decl/simple_animal_bodyparts/sand_lurker
+	hit_zones = list("cephalothorax", "pedipalp", "tail segment", "mouthparts")

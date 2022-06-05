@@ -16,13 +16,9 @@
 	)
 	desc = "A crimson spacesuit sporting clean lines and durable plating. Robust, reliable, and slightly suspicious."
 	w_class = ITEM_SIZE_NORMAL
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/melee/energy/sword,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/melee/energy/sword/one_hand,/obj/item/handcuffs,/obj/item/tank/emergency)
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30, rad = 30)
 	siemens_coefficient = 0.3
-
-/obj/item/clothing/suit/space/syndicate/New()
-	..()
-	slowdown_per_slot[slot_wear_suit] = 1
 
 //Green syndicate space suit
 /obj/item/clothing/head/helmet/space/syndicate/green

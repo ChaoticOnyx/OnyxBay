@@ -111,7 +111,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 	src.set_dir(turn(src.dir, 90))
 	return 1
 
-/obj/structure/particle_accelerator/examine(mob/user)
+/obj/structure/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -246,7 +246,6 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			update_state()
 		update_icon()
 		return 1
-	return 0
 
 
 
@@ -293,7 +292,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/machinery/particle_accelerator/update_icon()
 	return
 
-/obj/machinery/particle_accelerator/examine(mob/user)
+/obj/machinery/particle_accelerator/_examine_text(mob/user)
 	switch(src.construction_state)
 		if(0)
 			src.desc = text("A [name], looks like it's not attached to the flooring")
@@ -390,4 +389,3 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			update_use_power(POWER_USE_IDLE)
 		update_icon()
 		return 1
-	return 0

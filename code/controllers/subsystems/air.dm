@@ -95,7 +95,7 @@ SUBSYSTEM_DEF(air)
 	if (state != SS_IDLE)
 		report_progress("ZAS Rebuild initiated. Waiting for current air tick to complete before continuing.")
 		while (state != SS_IDLE)
-			stoplag()
+			stoplag(1)
 
 	while (zones.len)
 		var/zone/zone = zones[zones.len]
@@ -155,6 +155,9 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 
 		report_progress("Air settling completed in [(REALTIMEOFDAY - starttime)/10] seconds!")
 
+	setup_atmos_machinery()
+	setup_pipenets()
+
 	..(timeofday)
 
 /datum/controller/subsystem/air/fire(resumed = FALSE, no_mc_tick = FALSE)
@@ -183,9 +186,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 			continue
 
 		//check if the turf is self-zone-blocked
-		var/c_airblock
-		ATMOS_CANPASS_TURF(c_airblock, T, T)
-		if(c_airblock & ZONE_BLOCKED)
+		if(T.c_airblock(T) & ZONE_BLOCKED)
 			deferred += T
 			if (no_mc_tick)
 				CHECK_TICK
@@ -291,12 +292,10 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	ASSERT(isturf(A))
 	ASSERT(isturf(B))
 	#endif
-	var/ablock
-	ATMOS_CANPASS_TURF(ablock, A, B)
+	var/ablock = A.c_airblock(B)
 	if(ablock == BLOCKED)
 		return BLOCKED
-	ATMOS_CANPASS_TURF(., B, A)
-	return ablock | .
+	return ablock | B.c_airblock(A)
 
 /datum/controller/subsystem/air/proc/merge(zone/A, zone/B)
 	#ifdef ZASDBG
@@ -416,20 +415,15 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 		return edge
 
 /datum/controller/subsystem/air/proc/has_same_air(turf/A, turf/B)
-	if(A.initial_gas)
-		if(!B.initial_gas)
-			return 0
-		for(var/g in A.initial_gas)
-			if(A.initial_gas[g] != B.initial_gas[g])
-				return 0
-	if(B.initial_gas)
-		if(!A.initial_gas)
-			return 0
-		for(var/g in B.initial_gas)
-			if(A.initial_gas[g] != B.initial_gas[g])
-				return 0
+	if(!A.initial_gas || !B.initial_gas)
+		return 0
 	if(A.temperature != B.temperature)
 		return 0
+
+	for(var/g in A.initial_gas)
+		if(A.initial_gas[g] != B.initial_gas[g])
+			return 0
+
 	return 1
 
 /datum/controller/subsystem/air/proc/remove_edge(connection_edge/E)
@@ -438,3 +432,27 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 		active_edges -= E
 	if(processing_edges)
 		processing_edges -= E
+
+/datum/controller/subsystem/air/proc/setup_template_machinery(list/atmos_machines)
+	for(var/A in atmos_machines)
+		var/obj/machinery/atmospherics/AM = A
+		AM.atmos_init()
+		CHECK_TICK
+
+	for(var/A in atmos_machines)
+		var/obj/machinery/atmospherics/AM = A
+		AM.build_network()
+		CHECK_TICK
+
+/datum/controller/subsystem/air/proc/setup_atmos_machinery()
+	for (var/obj/machinery/atmospherics/AM in GLOB.atmos_machinery)
+		AM.atmos_init()
+		CHECK_TICK
+
+//this can't be done with setup_atmos_machinery() because
+//	all atmos machinery has to initalize before the first
+//	pipenet can be built.
+/datum/controller/subsystem/air/proc/setup_pipenets()
+	for (var/obj/machinery/atmospherics/AM in GLOB.atmos_machinery)
+		AM.build_network()
+		CHECK_TICK

@@ -87,14 +87,6 @@
 		installed = 1
 	return 1
 
-/obj/item/borg/upgrade/remodel/surgeon
-	name = "surgeon model board"
-	module = "Surgeon"
-
-/obj/item/borg/upgrade/remodel/advanced/surgeon
-	name = "advanced surgeon model board"
-	module = "Advanced Surgeon"
-
 /obj/item/borg/upgrade/remodel/service
 	name = "service model board"
 	module = "Service"
@@ -143,20 +135,20 @@
 	name = "robot reclassification board"
 	desc = "Used to rename a cyborg."
 	icon_state = "cyborg_upgrade1"
-	var/heldname = ""
+	var/held_name = "Default cyborg"
 
 /obj/item/borg/upgrade/rename/attack_self(mob/user as mob)
-	heldname = sanitizeSafe(input(user, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
+	held_name = sanitizeSafe(input(user, "Enter new robot name", "Robot Reclassification", held_name), MAX_NAME_LEN)
 
 /obj/item/borg/upgrade/rename/action(mob/living/silicon/robot/R)
 	if(..()) return 0
 	spawn(1)
-		if (heldname == "")
-			heldname = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", heldname), MAX_NAME_LEN)
-		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, heldname)
-		R.SetName(heldname)
-		R.custom_name = heldname
-		R.real_name = heldname
+		if (held_name == initial(held_name))
+			held_name = sanitizeSafe(input(R, "Enter new robot name", "Robot Reclassification", held_name), MAX_NAME_LEN)
+		R.notify_ai(ROBOT_NOTIFICATION_NEW_NAME, R.name, held_name)
+		R.SetName(held_name)
+		R.custom_name = held_name
+		R.real_name = held_name
 
 	return 1
 
@@ -231,7 +223,7 @@
 
 	if(!can_install(src,R))
 		return 0
-	var/obj/item/weapon/gun/energy/taser/mounted/cyborg/T = locate() in R.module
+	var/obj/item/gun/energy/taser/mounted/cyborg/T = locate() in R.module
 	if(!T)
 		T = locate() in R.module.contents
 	if(!T)
@@ -263,7 +255,7 @@
 
 	if(!can_install(src,R))
 		return 0
-	var/obj/item/weapon/gun/energy/laser/mounted/cyborg/T = locate() in R.module
+	var/obj/item/gun/energy/laser/mounted/cyborg/T = locate() in R.module
 	if(!T)
 		T = locate() in R.module.contents
 	if(!T)
@@ -295,12 +287,12 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		var/obj/item/weapon/tank/jetpack/carbondioxide/J = new /obj/item/weapon/tank/jetpack/carbondioxide
+		var/obj/item/tank/jetpack/carbondioxide/J = new /obj/item/tank/jetpack/carbondioxide
 		J.toggle()
 		R.module.modules += J
 		J.ion_trail.set_up(R)
 		J.ion_trail.start()
-		for(var/obj/item/weapon/tank/jetpack/carbondioxide in R.module.modules)
+		for(var/obj/item/tank/jetpack/carbondioxide in R.module.modules)
 			R.internals = src
 		installed = 1
 		return 1
@@ -397,7 +389,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/rcd/borg(R.module)
+		R.module.modules += new /obj/item/rcd/borg(R.module)
 		installed = 1
 		return 1
 
@@ -413,7 +405,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/storage/part_replacer(R.module)
+		R.module.modules += new /obj/item/storage/part_replacer(R.module)
 		installed = 1
 		return 1
 
@@ -429,7 +421,7 @@
 	if(!can_install(src,R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/bodybag(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/bodybag(R.module)
 		installed = 1
 		return 1
 
@@ -470,12 +462,12 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/pen/robopen(R.module)
-		R.module.modules += new /obj/item/weapon/form_printer(R.module)
-		R.module.modules += new /obj/item/weapon/gripper/paperwork(R.module)
-		R.module.modules += new /obj/item/weapon/hand_labeler(R.module)
-		R.module.modules += new /obj/item/weapon/stamp(R.module)
-		R.module.modules += new /obj/item/weapon/stamp/denied(R.module)
+		R.module.modules += new /obj/item/pen/robopen(R.module)
+		R.module.modules += new /obj/item/form_printer(R.module)
+		R.module.modules += new /obj/item/gripper/paperwork(R.module)
+		R.module.modules += new /obj/item/hand_labeler(R.module)
+		R.module.modules += new /obj/item/stamp(R.module)
+		R.module.modules += new /obj/item/stamp/denied(R.module)
 
 		installed = 1
 		return 1
@@ -493,8 +485,8 @@
 		return 0
 	else
 		R.module.modules += new /obj/item/device/destTagger(R.module)
-		R.module.modules += new /obj/item/weapon/packageWrap(R.module)
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/crates(R.module)
+		R.module.modules += new /obj/item/packageWrap(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/crates(R.module)
 		R.module.modules += new /obj/item/robot_rack/cargo(R.module)
 
 		installed = 1
@@ -512,18 +504,19 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/gripper/detective(R.module)
+		R.module.modules += new /obj/item/gripper/detective(R.module)
 		R.module.modules += new /obj/item/robot_rack/detective(R.module)
-		R.module.modules += new /obj/item/weapon/reagent_containers/spray/luminol(R.module)
+		R.module.modules += new /obj/item/reagent_containers/spray/luminol(R.module)
 		R.module.modules += new /obj/item/device/uv_light(R.module)
-		R.module.modules += new /obj/item/weapon/forensics/sample_kit(R.module)
-		R.module.modules += new /obj/item/weapon/forensics/sample_kit/powder(R.module)
-		R.module.modules += new /obj/item/weapon/forensics/swab/cyborg(R.module)
-		R.module.modules += new /obj/item/weapon/reagent_containers/dna_sampler/detective(R.module)
+		R.module.modules += new /obj/item/forensics/sample_kit(R.module)
+		R.module.modules += new /obj/item/forensics/sample_kit/powder(R.module)
+		R.module.modules += new /obj/item/forensics/swab/cyborg(R.module)
+		R.module.modules += new /obj/item/reagent_containers/dna_sampler/detective(R.module)
 		R.module.modules += new /obj/item/device/mass_spectrometer(R.module)
 		R.module.modules += new /obj/item/device/reagent_scanner(R.module)
-		R.module.modules += new /obj/item/weapon/scalpel(R.module)
-		R.module.modules += new /obj/item/weapon/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/scalpel(R.module)
+		R.module.modules += new /obj/item/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/evidencebag/cyborg(R.module)
 		installed = 1
 		return 1
 
@@ -539,20 +532,20 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/pickaxe/brush(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/one_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/two_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/three_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/four_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/five_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/six_pick(R.module)
-		R.module.modules += new /obj/item/weapon/pickaxe/hand(R.module)
-		if (istype(R.module,/obj/item/weapon/robot_module/research))
-			R.module.modules += new /obj/item/weapon/pickaxe(R.module)
+		R.module.modules += new /obj/item/pickaxe/brush(R.module)
+		R.module.modules += new /obj/item/pickaxe/one_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/two_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/three_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/four_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/five_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/six_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/hand(R.module)
+		if (istype(R.module,/obj/item/robot_module/research))
+			R.module.modules += new /obj/item/pickaxe(R.module)
 		R.module.modules += new /obj/item/device/measuring_tape(R.module)
 		R.module.modules += new /obj/item/device/core_sampler(R.module)
-		R.module.modules += new /obj/item/weapon/gripper/archeologist(R.module)
-		R.module.modules += new /obj/item/weapon/storage/bag/fossils(R.module)
+		R.module.modules += new /obj/item/gripper/archeologist(R.module)
+		R.module.modules += new /obj/item/storage/bag/fossils(R.module)
 		R.module.modules += new /obj/item/robot_rack/archeologist(R.module)
 		R.module.modules += new /obj/item/device/ano_scanner(R.module)
 		R.module.modules += new /obj/item/device/depth_scanner(R.module)
@@ -587,7 +580,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/organs(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/organs(R.module)
 		installed = 1
 		return 1
 
@@ -603,7 +596,24 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/blood(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/blood(R.module)
+		installed = 1
+		return 1
+
+/obj/item/borg/upgrade/art
+	name = "art module"
+	desc = "Contains instruments to create an art, but can robots create art?"
+	icon_state = "cyborg_upgrade3"
+	require_module = 1
+
+/obj/item/borg/upgrade/art/action(mob/living/silicon/robot/R)
+	if(..()) return 0
+
+	if(!can_install(src, R))
+		return 0
+	else
+		R.module.modules += new /obj/item/robot_item_dispenser/canvas(R.module)
+		R.module.modules += new /obj/item/pen/crayon/rainbow(R.module)
 		installed = 1
 		return 1
 
@@ -619,7 +629,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/pipe(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/pipe(R.module)
 		installed = 1
 		return 1
 
@@ -635,7 +645,7 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/weapon/robot_item_dispenser/engineer(R.module)
+		R.module.modules += new /obj/item/robot_item_dispenser/engineer(R.module)
 		installed = 1
 		return 1
 
@@ -668,19 +678,19 @@
 	var/area/t = get_area(host)
 	var/location = t.name
 	if (cause == "emp" && prob(50))
-		location =  pick(teleportlocs)
+		location =  pick(playerlocs)
 	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
 		var/area/default = world.area
 		location = initial(default.name)
 
-	var/death_message = "[host] has been destroyed in [location]!"
+	var/death_message = "Message from [name] acquired successful. [host] has been destroyed in [location]!"
 	if(!cause)
-		death_message = "[host] has been destroyed-zzzzt in-in-in..."
-	var/obj/item/weapon/robot_module/CH = host.module
+		death_message = "Message from [name] acquired successful. [host] has been destroyed-zzzzt in-in-in..."
+	var/obj/item/robot_module/CH = host.module
 	for(var/channel in CH.channels)
 		if (channel != "Science")
-			GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", channel)
-	GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", "Science")
+			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
+	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
 /obj/item/borg/upgrade/death_alarm/Process()
 	if (!installed) return
@@ -734,7 +744,7 @@
 		return FALSE
 	else
 		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
-		R.module.modules += new /obj/item/weapon/gripper/integrated_circuit(R.module)
+		R.module.modules += new /obj/item/gripper/integrated_circuit(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/wirer(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/debugger(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)

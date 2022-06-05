@@ -31,7 +31,7 @@
 	followed_objects_assoc[AM] = follow_holder
 	followed_objects.Add(follow_holder)
 
-	GLOB.destroyed_event.register(AM, src, /repository/follow/proc/remove_subject)
+	register_signal(AM, SIGNAL_QDELETING, /repository/follow/proc/remove_subject)
 
 /repository/follow/proc/remove_subject(atom/movable/AM)
 	cache = null
@@ -41,7 +41,7 @@
 	followed_objects_assoc -= AM
 	followed_objects.Remove(follow_holder)
 
-	GLOB.destroyed_event.unregister(AM, src, /repository/follow/proc/remove_subject)
+	unregister_signal(AM, SIGNAL_QDELETING)
 
 	qdel(follow_holder)
 
@@ -193,10 +193,10 @@
 	followed_type = /mob/living/simple_animal
 	suffix = "Animal"
 
-/datum/follow_holder/slime
+/datum/follow_holder/metroid
 	sort_order = 6
-	followed_type = /mob/living/carbon/slime
-	suffix = "Slime"
+	followed_type = /mob/living/carbon/metroid
+	suffix = "Metroid"
 
 /datum/follow_holder/spiderling
 	sort_order = 6
@@ -240,7 +240,7 @@
 
 /datum/follow_holder/nuke_disc
 	sort_order = 11
-	followed_type = /obj/item/weapon/disk/nuclear
+	followed_type = /obj/item/disk/nuclear
 
 /datum/follow_holder/nuclear_bomb
 	sort_order = 12
@@ -248,7 +248,7 @@
 
 /datum/follow_holder/captains_spare
 	sort_order = 13
-	followed_type = /obj/item/weapon/card/id/captains_spare
+	followed_type = /obj/item/card/id/captains_spare
 
 /datum/follow_holder/stack
 	sort_order = 14

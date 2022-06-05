@@ -1,5 +1,5 @@
 //A portable analyzer, for research borgs.  This is better then giving them a gripper which can hold anything and letting them use the normal analyzer.
-/obj/item/weapon/portable_destructive_analyzer
+/obj/item/portable_destructive_analyzer
 	name = "Portable Destructive Analyzer"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "portable_analyzer"
@@ -10,13 +10,13 @@
 	var/datum/research/techonly/files 	//The device uses the same datum structure as the R&D computer/server.
 										//This analyzer can only store tech levels, however.
 
-	var/obj/item/weapon/loaded_item	//What is currently inside the analyzer.
+	var/obj/item/loaded_item	//What is currently inside the analyzer.
 
-/obj/item/weapon/portable_destructive_analyzer/New()
+/obj/item/portable_destructive_analyzer/New()
 	..()
 	files = new /datum/research/techonly(src) //Setup the research data holder.
 
-/obj/item/weapon/portable_destructive_analyzer/attack_self(user as mob)
+/obj/item/portable_destructive_analyzer/attack_self(user as mob)
 	var/response = alert(user, 	"Analyzing the item inside will *DESTROY* the item for good.\n\
 							Syncing to the research server will send the data that is stored inside to research.\n\
 							Ejecting will place the loaded item onto the floor.",
@@ -27,7 +27,7 @@
 			if(confirm == "Yes") //This is pretty copypasta-y
 				to_chat(user, "You activate the analyzer's microlaser, analyzing \the [loaded_item] and breaking it down.")
 				flick("portable_analyzer_scan", src)
-				playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+				playsound(src.loc, 'sound/signals/processing22.ogg', 50)
 				for(var/T in loaded_item.origin_tech)
 					files.UpdateTech(T, loaded_item.origin_tech[T])
 					to_chat(user, "\The [loaded_item] had level [loaded_item.origin_tech[T]] in [CallTechName(T)].")
@@ -54,7 +54,7 @@
 			to_chat(user, "The [src] is empty.  Put something inside it first.")
 	if(response == "Sync")
 		var/success = 0
-		for(var/obj/machinery/r_n_d/server/S in SSmachines.machinery)
+		for(var/obj/machinery/r_n_d/server/S in GLOB.machines)
 			for(var/datum/tech/T in files.known_tech) //Uploading
 				S.files.AddTech2Known(T)
 			for(var/datum/tech/T in S.files.known_tech) //Downloading
@@ -63,10 +63,10 @@
 			files.RefreshResearch()
 		if(success)
 			to_chat(user, "You connect to the research server, push your data upstream to it, then pull the resulting merged data from the master branch.")
-			playsound(src.loc, 'sound/signals/ping6.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/processing13.ogg', 50)
 		else
 			to_chat(user, "Reserch server ping response timed out.  Unable to connect.  Please contact the system administrator.")
-			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/error30.ogg', 50, 0)
 	if(response == "Eject")
 		if(loaded_item)
 			loaded_item.loc = get_turf(src)
@@ -77,18 +77,21 @@
 			to_chat(user, "The [src] is already empty.")
 
 
-/obj/item/weapon/portable_destructive_analyzer/afterattack(atom/target, mob/living/user, proximity)
+/obj/item/portable_destructive_analyzer/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
 		return
 	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 		return
-	if(istype(target,/obj/item))
+	if(istype(target, /obj/item))
+		var/obj/item/I = target
+		if(!I.origin_tech)
+			to_chat(user, SPAN("notice", "This doesn't seem to have a tech origin."))
+			return
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
-		var/obj/item/I = target
 		I.loc = src
 		loaded_item = I
 		for(var/mob/M in viewers())
@@ -97,7 +100,7 @@
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
 
-/obj/item/weapon/portable_destructive_analyzer/examine(mob/user)
+/obj/item/portable_destructive_analyzer/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'><b>Current science levels:</b></span>"
 	for(var/i = 1, i <= files.known_tech.len, i++)
@@ -108,26 +111,26 @@
 			. += "\n<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>"
 
 	//This is used to unlock other borg covers.
-/obj/item/weapon/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
+/obj/item/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
 	name = "access code transmission device"
 	icon_state = "id-robot"
 	desc = "A circuit grafted onto the bottom of an ID card.  It is used to transmit access codes into other robot chassis, \
 	allowing you to lock and unlock other robots' panels."
 
-/obj/item/weapon/card/robot_sec //This is not a child of id cards, as to avoid dumb typechecks on computers.
+/obj/item/card/robot_sec //This is not a child of id cards, as to avoid dumb typechecks on computers.
 	name = "access code transmission device"
 	icon_state = "id-robot"
 	desc = "A circuit grafted onto the bottom of an ID card.  It is used to transmit access codes into security deployable barriers, \
 	allowing you to lock and unlock them."
 
 //A harvest item for serviceborgs.
-/obj/item/weapon/robot_harvester
+/obj/item/robot_harvester
 	name = "auto harvester"
 	desc = "A hand-held harvest tool that resembles a sickle.  It uses energy to cut plant matter very efficently."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "autoharvester"
 
-/obj/item/weapon/robot_harvester/afterattack(atom/target, mob/living/user, proximity)
+/obj/item/robot_harvester/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -141,32 +144,108 @@
 	else
 		to_chat(user, "Harvesting \a [target] is not the purpose of this tool. \The [src] is for plants being grown.")
 
+// A special medical instrument for medical droid. Allow droid to do all operations by selecting "surgery tool" mode, e.g. IMS
+/obj/item/surgical_selector
+	name = "surgery tools selector"
+	desc = "An integrated system to do some kind of operation on living... something"
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "autoclave"
+	var/list/obj/item/surgery_items = list()
+	var/list/surgery_item_paths = list(
+		/obj/item/scalpel/manager,
+		/obj/item/hemostat,
+		/obj/item/retractor,
+		/obj/item/cautery,
+		/obj/item/bonegel,
+		/obj/item/FixOVein,
+		/obj/item/bonesetter,
+		/obj/item/circular_saw,
+		/obj/item/surgicaldrill,
+		/obj/item/organfixer/standard,
+	)
+	var/obj/item/selected_tool
+
+/obj/item/surgical_selector/proc/refill()
+	var/obj/item/organfixer/OF = locate(/obj/item/organfixer) in surgery_items
+	OF.refill()
+
+/obj/item/surgical_selector/Initialize()
+	. = ..()
+	for(var/path in surgery_item_paths)
+		surgery_items.Add(new path(src))
+
+/obj/item/surgical_selector/_examine_text(mob/user)
+	. = ..()
+	. += "\nThe selected tool is [selected_tool ? selected_tool : "nothing"]!"
+
+/obj/item/surgical_selector/attack_self(mob/user)
+	select_tool(user)
+
+/obj/item/surgical_selector/resolve_attackby(atom/target, mob/living/user, params)
+	if(!target)
+		return
+	if(!isturf(target.loc))
+		return
+	if(target == user)
+		select_tool(user)
+		return
+	if(!selected_tool)
+		return
+	target.attackby(selected_tool, user)
+
+/obj/item/surgical_selector/proc/select_tool(mob/user)
+	var/list/obj/item/tool_images = list()
+	for(var/obj/item/tool in surgery_items)
+		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
+		img.overlays = tool.overlays
+		tool_images[tool] = img
+	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
+	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
+
+/obj/item/surgical_selector/return_item()
+	return selected_tool
+
+/obj/item/surgical_selector/Destroy()
+	QDEL_NULL_LIST(surgery_items)
+	return ..()
+
+/obj/item/surgical_selector/advanced
+	surgery_item_paths = list(
+		/obj/item/scalpel/manager,
+		/obj/item/hemostat/pico,
+		/obj/item/retractor,
+		/obj/item/cautery,
+		/obj/item/FixOVein/clot,
+		/obj/item/bonesetter/bone_mender,
+		/obj/item/circular_saw/plasmasaw,
+		/obj/item/surgicaldrill,
+		/obj/item/organfixer/advanced,
+	)
+
 // A special tray for the service droid. Allow droid to pick up and drop items as if they were using the tray normally
 // Click on table to unload, click on item to load. Otherwise works identically to a tray.
 // Unlike the base item "tray", robotrays ONLY pick up food, drinks and condiments.
 
-/obj/item/weapon/tray/robotray
+/obj/item/tray/robotray
 	name = "RoboTray"
 	desc = "An autoloading tray specialized for carrying refreshments."
 
-/obj/item/weapon/tray/robotray/afterattack(atom/target, mob/user as mob, proximity)
+/obj/item/tray/robotray/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if ( !target )
+	if(!target)
 		return
 	// pick up items, mostly copied from base tray pickup proc
 	// see code/game/objects/items/weapons/kitchen.dm line 241
-	if ( istype(target,/obj/item))
-		if ( !isturf(target.loc) ) // Don't load up stuff if it's inside a container or mob!
+	if(istype(target, /obj/item))
+		if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 			return
-		var turf/pickup = target.loc
+		var/turf/pickup = target.loc
 
-		var addedSomething = 0
+		var/addedSomething = 0
 
-		for(var/obj/item/weapon/reagent_containers/food/I in pickup)
-
-
-			if( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
+		for(var/obj/item/I in pickup)
+			if(I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile))
 				var/add = I.get_storage_cost()
 				if(calc_carry() + add >= max_carry)
 					break
@@ -175,8 +254,8 @@
 				carrying.Add(I)
 				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 				addedSomething = 1
-		if ( addedSomething )
-			user.visible_message("<span class='notice'>\The [user] load some items onto their service tray.</span>")
+		if (addedSomething)
+			user.visible_message(SPAN("notice", "'\The [user] load some items onto their service tray."))
 
 		return
 
@@ -228,12 +307,12 @@
 // A special pen for service droids. Can be toggled to switch between normal writting mode, and paper rename mode
 // Allows service droids to rename paper items.
 
-/obj/item/weapon/pen/robopen
+/obj/item/pen/robopen
 	desc = "A black ink printing attachment with a paper naming mode."
 	name = "Printing Pen"
 	var/mode = 1
 
-/obj/item/weapon/pen/robopen/attack_self(mob/user as mob)
+/obj/item/pen/robopen/attack_self(mob/user as mob)
 
 	var/choice = input("Would you like to change colour or mode?") as null|anything in list("Colour","Mode")
 	if(!choice) return
@@ -258,7 +337,7 @@
 // Copied over from paper's rename verb
 // see code/modules/paperwork/paper.dm line 62
 
-/obj/item/weapon/pen/robopen/proc/RenamePaper(mob/user as mob,obj/paper as obj)
+/obj/item/pen/robopen/proc/RenamePaper(mob/user as mob,obj/paper as obj)
 	if ( !user || !paper )
 		return
 	var/n_name = sanitizeSafe(input(user, "What would you like to label the paper?", "Paper Labelling", null)  as text, 32)
@@ -272,17 +351,17 @@
 	return
 
 //TODO: Add prewritten forms to dispense when you work out a good way to store the strings.
-/obj/item/weapon/form_printer
+/obj/item/form_printer
 	//name = "paperwork printer"
 	name = "paper dispenser"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "paper_bin1"
 	item_state = "sheet-metal"
 
-/obj/item/weapon/form_printer/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/form_printer/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	return
 
-/obj/item/weapon/form_printer/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
+/obj/item/form_printer/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
 
 	if(!target || !flag)
 		return
@@ -290,12 +369,12 @@
 	if(istype(target,/obj/structure/table))
 		deploy_paper(get_turf(target))
 
-/obj/item/weapon/form_printer/attack_self(mob/user as mob)
+/obj/item/form_printer/attack_self(mob/user as mob)
 	deploy_paper(get_turf(src))
 
-/obj/item/weapon/form_printer/proc/deploy_paper(turf/T)
+/obj/item/form_printer/proc/deploy_paper(turf/T)
 	T.visible_message("<span class='notice'>\The [src.loc] dispenses a sheet of crisp white paper.</span>")
-	new /obj/item/weapon/paper(T)
+	new /obj/item/paper(T)
 
 
 //Personal shielding for the combat module.
@@ -321,7 +400,7 @@
 	icon = 'icons/obj/decals.dmi'
 	icon_state = "shock"
 
-/obj/item/weapon/inflatable_dispenser
+/obj/item/inflatable_dispenser
 	name = "inflatables dispenser"
 	desc = "Hand-held device which allows rapid deployment and removal of inflatables."
 	icon = 'icons/obj/storage.dmi'
@@ -334,25 +413,25 @@
 	var/max_doors = 2
 	var/mode = 0 // 0 - Walls   1 - Doors
 
-/obj/item/weapon/inflatable_dispenser/robot
+/obj/item/inflatable_dispenser/robot
 	w_class = ITEM_SIZE_HUGE
 	stored_walls = 10
 	stored_doors = 5
 	max_walls = 10
 	max_doors = 5
 
-/obj/item/weapon/inflatable_dispenser/examine(mob/user)
+/obj/item/inflatable_dispenser/_examine_text(mob/user)
 	. = ..()
 	if(!.)
 		return
 	. += "\nIt has [stored_walls] wall segment\s and [stored_doors] door segment\s stored."
 	. += "\nIt is set to deploy [mode ? "doors" : "walls"]"
 
-/obj/item/weapon/inflatable_dispenser/attack_self()
+/obj/item/inflatable_dispenser/attack_self()
 	mode = !mode
 	to_chat(usr, "You set \the [src] to deploy [mode ? "doors" : "walls"].")
 
-/obj/item/weapon/inflatable_dispenser/afterattack(atom/A, mob/user)
+/obj/item/inflatable_dispenser/afterattack(atom/A, mob/user)
 	..(A, user)
 	if(!user)
 		return
@@ -364,7 +443,7 @@
 	if(istype(A, /obj/item/inflatable) || istype(A, /obj/structure/inflatable))
 		pick_up(A, user)
 
-/obj/item/weapon/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
+/obj/item/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
 	if(mode) // Door deployment
 		if(!stored_doors)
 			to_chat(user, "\The [src] is out of doors!")
@@ -386,7 +465,7 @@
 	playsound(T, 'sound/items/zip.ogg', 75, 1)
 	to_chat(user, "You deploy the inflatable [mode ? "door" : "wall"]!")
 
-/obj/item/weapon/inflatable_dispenser/proc/pick_up(obj/A, mob/living/user)
+/obj/item/inflatable_dispenser/proc/pick_up(obj/A, mob/living/user)
 	if(istype(A, /obj/structure/inflatable))
 		if(istype(A, /obj/structure/inflatable/wall))
 			if(stored_walls >= max_walls)
@@ -422,7 +501,7 @@
 	to_chat(user, "You fail to pick up \the [A] with \the [src]")
 	return
 
-/obj/item/weapon/reagent_containers/spray/cleaner/drone
+/obj/item/reagent_containers/spray/cleaner/drone
 	name = "space cleaner"
 	desc = "BLAM!-brand non-foaming space cleaner!"
 	volume = 150
@@ -452,13 +531,13 @@
 	if (length(held))
 		if (prob(40))
 			var/obj/item/R = held[length(held)]
-			R.forceMove(get_turf(src))
-			visible_message("<span class='danger'[held[length(held)]] drops on the [get_turf(src)]!</span>")
 			held -= R
+			R.forceMove(get_turf(src))
+			R.visible_message("<span class='danger'>[R] drops on the [get_turf(src)]!</span>")
 			if(R && istype(R.loc,/turf))
-				held.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
+				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
 
-/obj/item/robot_rack/examine(mob/user)
+/obj/item/robot_rack/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt can hold up to [capacity] item[capacity == 1 ? "" : "s"]."
 	if (length(held))
@@ -545,22 +624,21 @@
 	icon_state = "med_borg_box"
 	object_type = list(
 		/obj/item/bodybag,
-		/obj/item/weapon/reagent_containers/ivbag,
-		/obj/item/weapon/reagent_containers/pill,
-		/obj/item/weapon/reagent_containers/glass,
-		/obj/item/stack/material/phoron,
+		/obj/item/reagent_containers/ivbag,
+		/obj/item/reagent_containers/pill,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
+		/obj/item/stack/material/plasma,
 		/obj/item/clothing/mask,
 		/obj/item/clothing/gloves/latex,
-		/obj/item/weapon/cane,
+		/obj/item/cane,
 		/obj/item/clothing/glasses/regular,
 		/obj/item/device/mmi,
-		/obj/item/weapon/paper
+		/obj/item/paper,
+		/obj/item/organ
 		)
 	interact_type = /obj/item/bodybag
 	capacity = 3
-/obj/item/robot_rack/medical/surgical/New()
-	..()
-	object_type += list(/obj/item/organ)
 
 /obj/item/robot_rack/general
 	name = "item rack"
@@ -578,8 +656,8 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "weaponcrate"
 	object_type = list(
-		/obj/item/weapon/melee,
-		/obj/item/weapon/gun
+		/obj/item/melee,
+		/obj/item/gun
 		)
 	capacity = 3
 
@@ -599,11 +677,12 @@
 	icon = 'icons/obj/forensics.dmi'
 	icon_state = "case"
 	object_type = list(
-		/obj/item/weapon/sample/fibers,
-		/obj/item/weapon/forensics/swab,
-		/obj/item/weapon/sample/print
+		/obj/item/sample/fibers,
+		/obj/item/forensics/swab,
+		/obj/item/sample/print,
+		/obj/item/evidencebag
 		)
-	capacity = 8
+	capacity = 12
 
 /obj/item/robot_rack/archeologist
 	name = "archeologist rack"
@@ -611,11 +690,11 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "arch_borg_box"
 	object_type = list(
-		/obj/item/weapon/evidencebag,
-		/obj/item/weapon/rocksliver,
-		/obj/item/weapon/ore/strangerock,
-		/obj/item/weapon/archaeological_find,
-		/obj/item/weapon/fossil
+		/obj/item/evidencebag,
+		/obj/item/rocksliver,
+		/obj/item/ore/strangerock,
+		/obj/item/archaeological_find,
+		/obj/item/fossil
 		)
 	capacity = 8
 
@@ -625,19 +704,19 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "eng_borg_box"
 	object_type = list(
-		/obj/item/weapon/tank,
-		/obj/item/weapon/circuitboard,
-		/obj/item/weapon/smes_coil,
-		/obj/item/weapon/stock_parts,
-		/obj/item/weapon/cell,
-		/obj/item/weapon/airlock_electronics,
-		/obj/item/weapon/tracker_electronics,
-		/obj/item/weapon/airalarm_electronics,
-		/obj/item/weapon/firealarm_electronics,
-		/obj/item/weapon/module/power_control,
-		/obj/item/weapon/camera_assembly,
-		/obj/item/weapon/computer_hardware,
-		/obj/item/weapon/fuel_assembly,
+		/obj/item/tank,
+		/obj/item/circuitboard,
+		/obj/item/smes_coil,
+		/obj/item/stock_parts,
+		/obj/item/cell,
+		/obj/item/airlock_electronics,
+		/obj/item/tracker_electronics,
+		/obj/item/airalarm_electronics,
+		/obj/item/firealarm_electronics,
+		/obj/item/module/power_control,
+		/obj/item/camera_assembly,
+		/obj/item/computer_hardware,
+		/obj/item/fuel_assembly,
 		/obj/item/stack/material,
 		/obj/item/clamp,
 		/obj/item/pipe,
@@ -667,7 +746,7 @@
 	else if (icon_state_active && length(held) == capacity)
 		icon_state = icon_state_active
 
-/obj/item/weapon/robot_item_dispenser
+/obj/item/robot_item_dispenser
 	name = "item synthesizer"
 	desc = "A device used to rapidly synthesize items."
 	icon = 'icons/obj/items.dmi'
@@ -698,15 +777,15 @@
 	..(name,type,delay,energy)
 	pipe_type = p_type
 
-/obj/item/weapon/robot_item_dispenser/examine(mob/user)
+/obj/item/robot_item_dispenser/_examine_text(mob/user)
 	. = ..()
 	. += "\n[selected.name] is chosen to be produced."
 
 
-/obj/item/weapon/robot_item_dispenser/New()
+/obj/item/robot_item_dispenser/New()
 	selected = item_types[1]
 
-/obj/item/weapon/robot_item_dispenser/attack_self(mob/user as mob)
+/obj/item/robot_item_dispenser/attack_self(mob/user as mob)
 	var/t = ""
 	for(var/i = 1 to item_types.len)
 		if(t)
@@ -718,7 +797,7 @@
 	t = "Available products: [t]."
 	to_chat(user, t)
 
-/obj/item/weapon/robot_item_dispenser/OnTopic(href, list/href_list)
+/obj/item/robot_item_dispenser/OnTopic(href, list/href_list)
 	if(href_list["product_index"])
 		var/index = text2num(href_list["product_index"])
 		if(index > 0 && index <= item_types.len)
@@ -729,7 +808,7 @@
 		return TOPIC_REFRESH
 
 
-/obj/item/weapon/robot_item_dispenser/afterattack(atom/A, mob/user as mob, proximity)
+/obj/item/robot_item_dispenser/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity) return
 	if (!inuse)
 		for (var/datum/dispense_type/T in item_types)
@@ -789,7 +868,7 @@
 					if (O.ptype == 6 || O.ptype == 7 || O.ptype == 8)
 						O.set_density(1)
 					O.update()
-				else if (istype(product,/obj/item/weapon/reagent_containers/ivbag/blood/OMinus))
+				else if (istype(product,/obj/item/reagent_containers/ivbag/blood/OMinus))
 					product.name = "synthesised blood pack"
 
 			user.visible_message("<span class='notice'>\The [user]'s \the [src] spits out \the [selected.name].</span>")
@@ -802,14 +881,30 @@
 			inuse = 0
 			to_chat(user, "<span class='danger'>You failed to dispense the product</span>")
 
-/obj/item/weapon/robot_item_dispenser/crates
+/obj/item/robot_item_dispenser/canvas
+	name = "canvas assembler"
+	desc = "A device used to rapidly construct new canvas"
+	icon_state = "printer"
+	icon = 'icons/obj/robot_device.dmi'
+	icon_state = "printer"
+	recycling_time = 50
+
+/obj/item/robot_item_dispenser/canvas/New()
+	item_types += new /datum/dispense_type("canvas 11x11", /obj/item/canvas, 25, 100)
+	item_types += new /datum/dispense_type("canvas 19x19", /obj/item/canvas/nineteen_nineteen, 45, 100)
+	item_types += new /datum/dispense_type("canvas 23x19", /obj/item/canvas/twentythree_nineteen, 65, 100)
+	item_types += new /datum/dispense_type("canvas 23x23", /obj/item/canvas/twentythree_twentythree, 85, 100)
+	item_types += new /datum/dispense_type("canvas 24x24", /obj/item/canvas/twentyfour_twentyfour, 90, 100)
+	..()
+
+/obj/item/robot_item_dispenser/crates
 	name = "crates assembler"
 	desc = "A device used to rapidly construct crates."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "printer"
 	recycling_time = 50
 
-/obj/item/weapon/robot_item_dispenser/crates/New()
+/obj/item/robot_item_dispenser/crates/New()
 	item_types += new /datum/dispense_type("crate",/obj/structure/closet/crate, 50, 100)
 	item_types += new /datum/dispense_type("large crate",/obj/structure/closet/crate/large, 80, 100)
 	item_types += new /datum/dispense_type("secure crate",/obj/structure/closet/crate/secure, 80, 100)
@@ -819,24 +914,24 @@
 	..()
 
 
-/obj/item/weapon/robot_item_dispenser/bodybag
+/obj/item/robot_item_dispenser/bodybag
 	name = "bodybag synthesizer"
 	desc = "A device used to rapidly synthesize bodybags and stasis bags."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "mini_printer"
 
-/obj/item/weapon/robot_item_dispenser/bodybag/New()
+/obj/item/robot_item_dispenser/bodybag/New()
 	item_types += new /datum/dispense_type("stasis bag",/obj/structure/closet/body_bag/cryobag, 50, 250)
 	item_types += new /datum/dispense_type("body bag",/obj/structure/closet/body_bag, 30, 50)
 	..()
 
-/obj/item/weapon/robot_item_dispenser/organs
+/obj/item/robot_item_dispenser/organs
 	name = "organ synthesizer"
 	desc = "A device used to rapidly synthesize prosthetic organs and bodyparts."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "organ_printer"
 
-/obj/item/weapon/robot_item_dispenser/organs/New()
+/obj/item/robot_item_dispenser/organs/New()
 	item_types += new /datum/dispense_type("heart",/obj/item/organ/internal/heart,  50, 100)
 	item_types += new /datum/dispense_type("lungs",/obj/item/organ/internal/lungs,  70, 150)
 	item_types += new /datum/dispense_type("kidneys",/obj/item/organ/internal/kidneys,50, 50)
@@ -852,57 +947,57 @@
 	item_types += new /datum/dispense_type("right hand",/obj/item/organ/external/hand/right,  50, 50)
 	..()
 
-/obj/item/weapon/robot_item_dispenser/blood
+/obj/item/robot_item_dispenser/blood
 	name = "blood synthesizer"
 	desc = "A device used to create bloodpacks with synthesised blood."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "blood_printer"
 
-/obj/item/weapon/robot_item_dispenser/blood/New()
-	item_types += new /datum/dispense_type("synthesized blood pack",/obj/item/weapon/reagent_containers/ivbag/blood/OMinus, 100, 300)
+/obj/item/robot_item_dispenser/blood/New()
+	item_types += new /datum/dispense_type("synthesized blood pack",/obj/item/reagent_containers/ivbag/blood/OMinus, 100, 300)
 	..()
 
-/obj/item/weapon/robot_item_dispenser/janitor
+/obj/item/robot_item_dispenser/janitor
 	name = "janitor supplies synthesizer"
 	desc = "A device used to rapidly synthesize janitor supplies."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "mini_printer"
 	recycling_time = 10
 
-/obj/item/weapon/robot_item_dispenser/janitor/New()
-	item_types += new /datum/dispense_type("wet floor sign",/obj/item/weapon/caution, 10, 70)
+/obj/item/robot_item_dispenser/janitor/New()
+	item_types += new /datum/dispense_type("wet floor sign",/obj/item/caution, 10, 70)
 	item_types += new /datum/dispense_type("mouse trap",/obj/item/device/assembly/mousetrap, 20, 50)
 	..()
 
 
-/obj/item/weapon/robot_item_dispenser/engineer
+/obj/item/robot_item_dispenser/engineer
 	name = "construction part synthesizer"
 	desc = "A device used to rapidly synthesize construction part and basic circuits."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "printer"
 
-/obj/item/weapon/robot_item_dispenser/engineer/New()
-	item_types += new /datum/dispense_type("airlock circuit",/obj/item/weapon/airlock_electronics, 70, 200)
-	item_types += new /datum/dispense_type("air alarm circuit",/obj/item/weapon/airalarm_electronics, 70, 200)
-	item_types += new /datum/dispense_type("fire alarm circuit",/obj/item/weapon/firealarm_electronics, 70, 200)
-	item_types += new /datum/dispense_type("power cell",/obj/item/weapon/cell, 50, 200)
+/obj/item/robot_item_dispenser/engineer/New()
+	item_types += new /datum/dispense_type("airlock circuit",/obj/item/airlock_electronics, 70, 200)
+	item_types += new /datum/dispense_type("air alarm circuit",/obj/item/airalarm_electronics, 70, 200)
+	item_types += new /datum/dispense_type("fire alarm circuit",/obj/item/firealarm_electronics, 70, 200)
+	item_types += new /datum/dispense_type("power cell",/obj/item/cell, 50, 200)
 
-	item_types += new /datum/dispense_type("console screen",/obj/item/weapon/stock_parts/console_screen , 50, 100)
-	item_types += new /datum/dispense_type("matter bin",/obj/item/weapon/stock_parts/matter_bin , 80, 250)
-	item_types += new /datum/dispense_type("capacitor",/obj/item/weapon/stock_parts/capacitor , 80, 250)
-	item_types += new /datum/dispense_type("micro-laser",/obj/item/weapon/stock_parts/micro_laser, 80, 250)
-	item_types += new /datum/dispense_type("micro-manipulator",/obj/item/weapon/stock_parts/manipulator, 80, 250)
-	item_types += new /datum/dispense_type("scanning module",/obj/item/weapon/stock_parts/scanning_module , 80, 250)
+	item_types += new /datum/dispense_type("console screen",/obj/item/stock_parts/console_screen , 50, 100)
+	item_types += new /datum/dispense_type("matter bin",/obj/item/stock_parts/matter_bin , 80, 250)
+	item_types += new /datum/dispense_type("capacitor",/obj/item/stock_parts/capacitor , 80, 250)
+	item_types += new /datum/dispense_type("micro-laser",/obj/item/stock_parts/micro_laser, 80, 250)
+	item_types += new /datum/dispense_type("micro-manipulator",/obj/item/stock_parts/manipulator, 80, 250)
+	item_types += new /datum/dispense_type("scanning module",/obj/item/stock_parts/scanning_module , 80, 250)
 	..()
 
-/obj/item/weapon/robot_item_dispenser/pipe
+/obj/item/robot_item_dispenser/pipe
 	name = "pipe dispenser"
 	desc = "A device that can manufacture various types of pipes."
 	icon = 'icons/obj/robot_device.dmi'
 	icon_state = "pipe_printer"
 	recycling_time = 50
 
-/obj/item/weapon/robot_item_dispenser/pipe/New()	//Fuck the guy who coded pipes
+/obj/item/robot_item_dispenser/pipe/New()	//Fuck the guy who coded pipes
 	item_types += new /datum/dispense_type/pipe("pipe", /obj/item/pipe, 0, 50, 100)
 	item_types += new /datum/dispense_type/pipe("bent pipe", /obj/item/pipe, 1, 50, 100)
 	item_types += new /datum/dispense_type/pipe("manifold", /obj/item/pipe, 5, 70, 150)
@@ -939,7 +1034,7 @@
 	item_types += new /datum/dispense_type/pipe("chute", /obj/structure/disposalconstruct, 8, 120, 300)
 	..()
 
-/obj/item/weapon/robot_item_dispenser/pipe/attack_self(mob/user as mob)
+/obj/item/robot_item_dispenser/pipe/attack_self(mob/user as mob)
 	to_chat(user, "Available products:")
 	var/t = "Regular pipes: "
 	for(var/i = 1 ,i < 6, i++)

@@ -10,13 +10,14 @@ var/list/floor_light_cache = list()
 	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 20
-	power_channel = LIGHT
+	power_channel = STATIC_LIGHT
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/on
 	var/damaged
-	var/default_light_range = 4
-	var/default_light_power = 2
+	var/default_light_max_bright = 0.75
+	var/default_light_inner_range = 1
+	var/default_light_outer_range = 3
 	var/default_light_colour = "#ffffff"
 
 /obj/machinery/floor_light/prebuilt
@@ -27,7 +28,7 @@ var/list/floor_light_cache = list()
 		anchored = !anchored
 		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
 			to_chat(user, "<span class='warning'>\The [src] must be on to complete this task.</span>")
 			return
@@ -49,11 +50,11 @@ var/list/floor_light_cache = list()
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
-			playsound(src, "window_breaking", 70, 1)
+			playsound(src, SFX_BREAK_WINDOW, 70, 1)
 			set_broken(TRUE)
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
-			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+			playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 			if(isnull(damaged)) damaged = 0
 		update_brightness()
 		return
@@ -93,15 +94,14 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	if(on && use_power == POWER_USE_ACTIVE)
-		if(light_range != default_light_range || light_power != default_light_power || light_color != default_light_colour)
-			set_light(default_light_range, default_light_power, default_light_colour)
+		if(light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright || light_color != default_light_colour)
+			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, default_light_colour)
 	else
 		update_use_power(POWER_USE_OFF)
-		if(light_range || light_power)
+		if(light_outer_range || light_max_bright)
 			set_light(0)
 
-	//active_power_usage = ((light_range + light_power) * 10)
-	change_power_consumption((light_range + light_power) * 10, POWER_USE_ACTIVE)
+	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	update_icon()
 
 /obj/machinery/floor_light/update_icon()

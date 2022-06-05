@@ -272,7 +272,7 @@ About Recipes:
 	Procs:
 
 		can_happen(var/datum/reagents/holder)
-			Customizable. If it returns 0, reaction will not happen. Defaults to always returning 1. Used by slime core reactions.
+			Customizable. If it returns 0, reaction will not happen. Defaults to always returning 1. Used by metroid core reactions.
 
 		on_reaction(var/datum/reagents/holder, var/created_volume)
 			Called when reaction happens. Used by explosives.

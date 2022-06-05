@@ -32,7 +32,7 @@
 	var/list/species_allowed = list(SPECIES_HUMAN)
 
 	// Whether or not the accessory can be affected by colouration
-	var/do_colouration = 1
+	var/do_coloration = TRUE
 
 	var/blend = ICON_ADD
 
@@ -743,12 +743,12 @@
 
 /datum/sprite_accessory/hair/cossack
 	name = "Cossack"
-	icon_state = "hair_cossack_swtgr"
+	icon_state = "hair_cossack"
 	gender = MALE
 
 /datum/sprite_accessory/hair/cossack2
 	name = "Cossack2"
-	icon_state = "hair_cossack_swtgr2"
+	icon_state = "hair_cossack2"
 	gender = MALE
 
 /datum/sprite_accessory/hair/coffeehouse
@@ -821,7 +821,7 @@
 
 /datum/sprite_accessory/hair/ming_dynasty_swtgr
 	name = "Ming Dynasty"
-	icon_state = "hair_ming_dynasty_swtgr"
+	icon_state = "hair_ming_dynasty"
 
 /datum/sprite_accessory/hair/mbraid
 	name = "Medium Braid"
@@ -839,11 +839,16 @@
 
 /datum/sprite_accessory/hair/monk_tonsure_by_swtgr
 	name = "Monk Tonsure"
-	icon_state = "hair_monk_tonsure_by_swtgr"
+	icon_state = "hair_monk_tonsure"
 
 /datum/sprite_accessory/hair/nia
 	name = "Nia"
 	icon_state = "hair_nia"
+
+/datum/sprite_accessory/hair/bluntbangs
+	name = "Blunt Bangs"
+	icon_state = "hair_bluntbangs"
+	gender = FEMALE
 
 /datum/sprite_accessory/hair/oxton
 	name = "Oxton"
@@ -878,7 +883,7 @@
 
 /datum/sprite_accessory/hair/qing_dynasty_swtgr
 	name = "Qing Dynasty"
-	icon_state = "hair_qing_dynasty_swtgr"
+	icon_state = "hair_qing_dynasty"
 	gender = MALE
 
 /datum/sprite_accessory/hair/ramona
@@ -920,7 +925,7 @@
 
 /datum/sprite_accessory/hair/samurai_swtgr
 	name = "Samurai"
-	icon_state = "hair_samurai_swtgr"
+	icon_state = "hair_samurai"
 
 /datum/sprite_accessory/hair/unkept
 	name = "Unkept"
@@ -928,12 +933,12 @@
 
 /datum/sprite_accessory/hair/viking
 	name = "Viking"
-	icon_state = "hair_viking_swtgr"
+	icon_state = "hair_viking"
 	gender = MALE
 
 /datum/sprite_accessory/hair/viking2
 	name = "Viking 2"
-	icon_state = "hair_viking_swtgr2"
+	icon_state = "hair_viking2"
 	gender = MALE
 
 /datum/sprite_accessory/hair/veryshortovereye
@@ -953,6 +958,86 @@
 	icon_state = "hair_zone"
 	gender = FEMALE
 
+
+/datum/sprite_accessory/hair/square
+	name = "Square"
+	icon_state = "hair_square"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/pigtails_b
+	name = "Pigtails 2"
+	icon_state = "hair_pigtails_b"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/mist
+	name = "Mist"
+	icon_state = "hair_mist"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/maid_b
+	name = "Maid tail"
+	icon_state = "hair_maid_b"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_sideparts
+	name = "Long Sideparts"
+	icon_state = "hair_long_sideparts"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_braid
+	name = "Long Braid"
+	icon_state = "hair_long_braid"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_curls
+	name = "Long Curls"
+	icon_state = "hair_long_curls"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/long_bedhead_alt
+	name = "Long Bedhead Alt"
+	icon_state = "hair_long_bedhead_alt"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/new_era
+	name = "New Era"
+	icon_state = "hair_new_era"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/cotton_hair
+	name = "Cotton Hair"
+	icon_state = "hair_cotton_hair"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/braided_hair
+	name = "Braided Hair"
+	icon_state = "hair_braided_hair"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/blunt_bangs_curls
+	name = "Blunt Bangs Curls"
+	icon_state = "hair_blunt_bangs_curls"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/blunt_bangs_alt2
+	name = "Blunt Bangs Alt"
+	icon_state = "hair_blunt_bangs_alt2"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/blades_hair
+	name = "Blades Hair"
+	icon_state = "hair_blades"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/alien_h
+	name = "Alien"
+	icon_state = "hair_alien_h"
+	gender = FEMALE
+
+/datum/sprite_accessory/hair/african_pigtails
+	name = "African Pigtails"
+	icon_state = "hair_african_pigtails"
+	gender = FEMALE
 
 /*I'm sorry I made this hairstyle,
 May God have mercy.
@@ -988,14 +1073,14 @@ May God have mercy.
 /datum/sprite_accessory/hair/wolfmane
 	name = "Wolven mane"
 	icon_state = "hair_wolfmane"
-	
+
 /datum/sprite_accessory/hair/sickboy
     name = "Sick"
     icon_state = "hair_sickboy"
 
 /datum/sprite_accessory/hair/bowie
     name = "From Mars"
-    icon_state = "hair_bowie"	
+    icon_state = "hair_bowie"
 
 /*
 ///////////////////////////////////
@@ -1140,6 +1225,10 @@ May God have mercy.
 /datum/sprite_accessory/facial_hair/lumberjack
 	name = "Lumberjack"
 	icon_state = "facial_lumberjack"
+
+/datum/sprite_accessory/facial_hair/great
+	name = "Great Beard"
+	icon_state = "facial_great"
 
 /*
 ///////////////////////////////////
@@ -1350,7 +1439,7 @@ May God have mercy.
 */
 /datum/sprite_accessory/marking
 	icon = 'icons/mob/human_races/markings.dmi'
-	do_colouration = 1 //Almost all of them have it, COLOR_ADD
+	do_coloration = 1 //Almost all of them have it, COLOR_ADD
 
 	var/layer_blend = ICON_OVERLAY
 
@@ -1360,6 +1449,11 @@ May God have mercy.
 
 	var/body_parts = list() //A list of bodyparts this covers, in organ_tag defines
 	//Reminder: BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN,BP_HEAD
+
+	var/draw_target = MARKING_TARGET_SKIN
+	var/draw_order = 100 //A number used to sort markings before they are added to a sprite. Lower is earlier.
+
+	var/list/disallows = list() //A list of other marking types to ban from adding when this marking is already added
 
 /datum/sprite_accessory/marking/tat_heart
 	name = "Tattoo (Heart, Torso)"
@@ -1526,3 +1620,60 @@ May God have mercy.
 	icon_state = "taj_all"
 	body_parts = list(BP_HEAD)
 	species_allowed = list(SPECIES_TAJARA)
+
+// Hair Fade
+/datum/sprite_accessory/marking/hair_fade
+	icon = 'icons/mob/human_races/hair_fade.dmi'
+	species_allowed = list(SPECIES_HUMAN)
+	body_parts = list(BP_HEAD)
+	draw_target = MARKING_TARGET_HAIR
+	draw_order = 50 //before ears & horns
+	disallows = list(/datum/sprite_accessory/marking/hair_fade)
+
+/datum/sprite_accessory/marking/hair_fade/fade_up_short
+	name = "Fade (Up, Short)"
+	icon_state = "fade_up_short"
+
+/datum/sprite_accessory/marking/hair_fade/fade_up_long
+	name = "Fade (Up, Long)"
+	icon_state = "fade_up_long"
+
+/datum/sprite_accessory/marking/hair_fade/fade_down_short
+	name = "Fade (Down, Short)"
+	icon_state = "fade_down_short"
+
+/datum/sprite_accessory/marking/hair_fade/fade_down_long
+	name = "Fade (Down, Long)"
+	icon_state = "fade_down_long"
+
+/datum/sprite_accessory/marking/hair_fade/fade_high
+	name = "Fade (High)"
+	icon_state = "fade_high"
+
+/datum/sprite_accessory/marking/hair_fade/fade_wavy
+	name = "Fade (Wavy)"
+	icon_state = "fade_wavy"
+
+/datum/sprite_accessory/marking/hair_fade/fade_left
+	name = "Fade (Left)"
+	icon_state = "fade_left"
+
+/datum/sprite_accessory/marking/hair_fade/fade_right
+	name = "Fade (Right)"
+	icon_state = "fade_right"
+
+/datum/sprite_accessory/marking/hair_fade/split_vert_right
+	name = "Split (Right)"
+	icon_state = "split_vert_right"
+
+/datum/sprite_accessory/marking/hair_fade/split_vert_left
+	name = "Split (Left)"
+	icon_state = "split_vert_left"
+
+/datum/sprite_accessory/marking/hair_fade/split_horz_high
+	name = "Split (High)"
+	icon_state = "split_horz_high"
+
+/datum/sprite_accessory/marking/hair_fade/split_horz_low
+	name = "Split (Low)"
+	icon_state = "split_horz_low"

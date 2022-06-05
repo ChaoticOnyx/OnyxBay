@@ -5,13 +5,15 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	projectile_light = TRUE
+	projectile_brightness_color = COLOR_LIGHT_CYAN
 
 /obj/item/projectile/change/on_hit(atom/change)
 	wabbajack(change)
 
 /obj/item/projectile/change/proc/wabbajack(mob/M)
 	if(istype(M, /mob/living) && M.stat != DEAD)
-		if(M.transforming)
+		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(M))
 			return
 		if(M.has_brain_worms())
 			return //Borer stuff - RR
@@ -21,15 +23,15 @@
 			if(Robot.mmi)
 				qdel(Robot.mmi)
 		else
-			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
-					qdel(W)
+			for(var/obj/item/I in M)
+				if(istype(I, /obj/item/implant))	//TODO: Carn. give implants a dropped() or something
+					qdel(I)
 					continue
-				M.drop_from_inventory(W)
+				M.drop_from_inventory(I)
 
 		var/mob/living/new_mob
 
-		var/options = list("robot", "slime")
+		var/options = list("robot", "metroid")
 		for(var/t in all_species)
 			options += t
 		options -= "Xenomorph Queen"
@@ -41,8 +43,8 @@
 				options -= H.species.name
 		else if(isrobot(M))
 			options -= "robot"
-		else if(isslime(M))
-			options -= "slime"
+		else if(ismetroid(M))
+			options -= "metroid"
 
 		var/randomize = pick(options)
 		switch(randomize)
@@ -54,8 +56,8 @@
 				var/mob/living/silicon/robot/Robot = new_mob
 				Robot.mmi = new /obj/item/device/mmi(new_mob)
 				Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
-			if("slime")
-				new_mob = new /mob/living/carbon/slime(M.loc)
+			if("metroid")
+				new_mob = new /mob/living/carbon/metroid(M.loc)
 				new_mob.universal_speak = 1
 			else
 				var/mob/living/carbon/human/H
@@ -84,7 +86,7 @@
 				A.randomize_appearance_and_body_for(H)
 
 		if(new_mob)
-			for (var/spell/S in M.mind.learned_spells)
+			for (var/datum/spell/S in M.mind.learned_spells)
 				new_mob.add_spell(new S.type)
 
 			new_mob.a_intent = "hurt"

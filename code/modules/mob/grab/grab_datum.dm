@@ -7,11 +7,9 @@
 	var/datum/grab/upgrab						// The grab that this will upgrade to if it upgrades, null means no upgrade
 	var/datum/grab/downgrab						// The grab that this will downgrade to if it downgrades, null means break grab on downgrade
 
-	var/datum/time_counter						// For things that need to be timed
-
 	var/stop_move = 0							// Whether or not the grabbed person can move out of the grab
 	var/force_stand = 0							// Whether or not the grabbed person is forced to be standing
-	var/reverse_facing = 0						// Whether the person being grabbed is facing forwards or backwards.
+	var/reverse_moving = FALSE					// Whether the persons involved will move backwards
 	var/can_absorb = 0							// Whether this grab state is strong enough to, as a changeling, absorb the person you're grabbing.
 	var/shield_assailant = 0					// Whether the person you're grabbing will shield you from bullets.,,
 	var/point_blank_mult = 1					// How much the grab increases point blank damage.
@@ -87,19 +85,12 @@
 		return
 
 /datum/grab/proc/downgrade(obj/item/grab/G)
-	// Starts the process of letting go if there's no downgrade grab
-	if(can_downgrade())
-		downgrade_effect(G)
-		return downgrab
-	else
-		to_chat(G.assailant, "<span class='warning'>[string_process(G, fail_down)]</span>")
-		return
-
-/datum/grab/proc/let_go(obj/item/grab/G)
-	let_go_effect(G)
-	G.force_drop()
+	return downgrab
 
 /datum/grab/proc/process(obj/item/grab/G)
+	if(!G.is_eligible()) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
+		G.delete_self()
+		return
 	var/diff_zone = G.target_change()
 	if(diff_zone && G.special_target_functional)
 		special_target_change(G, diff_zone)
@@ -196,16 +187,9 @@
 		animate(affecting, pixel_x = 0, pixel_y = 0, 4, 1, LINEAR_EASING)
 	affecting.reset_plane_and_layer()
 
-// This is called whenever the assailant moves.
-/datum/grab/proc/assailant_moved(obj/item/grab/G)
-	adjust_position(G)
-	moved_effect(G)
-	if(downgrade_on_move)
-		G.downgrade()
-
 /*
 	Override these procs to set how the grab state will work. Some of them are best
-	overriden in the parent of the grab set (for example, the behaviour for on_hit_intent(var/obj/item/grab/G)
+	overriden in the parent of the grab set (for example, the behaviour for on_hit_intent(obj/item/grab/G)
 	procs is determined in /datum/grab/normal and then inherited by each intent).
 */
 
@@ -216,16 +200,9 @@
 /datum/grab/proc/can_upgrade(obj/item/grab/G)
 	return 1
 
-// What happens when you downgrade from one grab state to the next.
-/datum/grab/proc/downgrade_effect(obj/item/grab/G)
-
 // Conditions to see if downgrading is possible
 /datum/grab/proc/can_downgrade(obj/item/grab/G)
 	return 1
-
-// What happens when you let go of someone by either dropping the grab
-// or by downgrading from the lowest grab state.
-/datum/grab/proc/let_go_effect(obj/item/grab/G)
 
 // What happens each tic when process is called.
 /datum/grab/proc/process_effect(obj/item/grab/G)
@@ -276,7 +253,7 @@
 	var/mob/living/carbon/human/assailant = G.assailant
 
 	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED))
-		to_chat(G.assailant, "<span class='warning'>You can't resist in your current state!</span>")
+		to_chat(affecting, SPAN("warning", "You can't resist in your current state!"))
 
 	//var/break_strength = breakability + size_difference(affecting, assailant)
 
@@ -296,37 +273,31 @@
 	//	return
 
 	var/p_lost = (5.5 + affecting.poise/10 - assailant.poise/20) * p_mult
-	assailant.poise -= p_lost
-	affecting.poise -= 2.0
+	assailant.damage_poise(p_lost)
+	affecting.damage_poise(2.0)
 
 	//assailant.visible_message("Debug: [assailant] lost [p_lost] poise | now: [assailant.poise]/[assailant.poise_pool]") //Debug message
 
-	var/p_diff = 20.0 // If difference is less than equal 5.0 then the break chance is at minimum (10/6,6 for normal and agressive grabs respectively).
+	var/p_diff = 25.0 // If difference is less than 5.0 then the break chance is capped (12.5%/8.33% for normal and agressive grabs respectively).
 	if((affecting.poise - assailant.poise) > 5.0)
-		p_diff = (affecting.poise - assailant.poise) * 4
+		p_diff = (affecting.poise - assailant.poise) * 5
+	else if(assailant.poise - affecting.poise > 20.0) // HUGE difference, tiny chance to escape
+		p_diff = 10.0
+
 	p_diff /= breakability // 2 for a normal grab, 3 for agressive and kill grabs
 
 	//assailant.visible_message("Debug: p_diff = [p_diff] | breakability = [breakability]") //Debug message
 
 	if(p_diff > assailant.poise || prob(p_diff))
 		if(can_downgrade_on_resist && !prob(p_diff))
-			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
-			G.downgrade()
+			affecting.visible_message(SPAN("warning", "[affecting] has loosened [assailant]'s grip!"))
 			assailant.setClickCooldown(10)
+			G.downgrade()
 			return
 		else
-			affecting.visible_message("<span class='warning'>[affecting] has broken free of [assailant]'s grip!</span>")
-			let_go(G)
+			affecting.visible_message(SPAN("warning", "[affecting] has broken free of [assailant]'s grip!"))
 			assailant.setClickCooldown(15)
+			G.delete_self()
 
 /datum/grab/proc/size_difference(mob/A, mob/B)
 	return mob_size_difference(A.mob_size, B.mob_size)
-
-/datum/grab/proc/moved_effect(obj/item/grab/G)
-
-/client/proc/Process_Grab()
-	//if we are being grabbed
-	if(isliving(mob))
-		var/mob/living/L = mob
-		if(!L.canmove && L.grabbed_by.len)
-			L.resist() //shortcut for resisting grabs

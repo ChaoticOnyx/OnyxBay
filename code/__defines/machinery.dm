@@ -18,10 +18,15 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 
 // Channel numbers for power.
 #define POWER_CHAN -1 // Use default channel
-#define EQUIP   1
-#define LIGHT   2
-#define ENVIRON 3
-#define TOTAL   4 // For total power used only.
+#define TOTAL           1	//for total power used only
+#define STATIC_EQUIP    2
+#define STATIC_LIGHT    3
+#define STATIC_ENVIRON  4
+
+//Power use
+#define NO_POWER_USE 0
+#define IDLE_POWER_USE 1
+#define ACTIVE_POWER_USE 2
 
 // Bitflags for machine stat variable.
 #define BROKEN   0x1
@@ -42,13 +47,12 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ERT                 "ZeEmergencyResponseTeam"
 #define NETWORK_EXODUS              "Exodus"
 #define NETWORK_MEDICAL             "Medical"
-#define NETWORK_MERCENARY           "MercurialNet"
+#define NETWORK_SYNDICATE           "SyndieNet"
 #define NETWORK_MINE                "Mining"
 #define NETWORK_RESEARCH            "Research"
 #define NETWORK_ROBOTS              "Robots"
 #define NETWORK_SECURITY            "Security"
 #define NETWORK_THUNDER             "Thunderdome"
-// EXODUS networks
 #define NETWORK_CIVILIAN_EAST       "Civilian East"
 #define NETWORK_CIVILIAN_WEST       "Civilian West"
 #define NETWORK_MAINTENANCE         "Maintenance Deck"
@@ -56,6 +60,10 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_RESEARCH_OUTPOST    "Research Outpost"
 #define NETWORK_TELECOM             "Tcomsat"
 #define NETWORK_MASTER              "Master"
+#define NETWORK_COMMAND             "Command"
+#define NETWORK_ENGINE              "Engine"
+#define NETWORK_ENGINEERING_OUTPOST "Engineering Outpost"
+#define NETWORK_APPARAT_VORON       "Apparat Voron"
 
 #define NETWORK_ALARM_ATMOS "Atmosphere Alarms"
 #define NETWORK_ALARM_CAMERA "Camera Alarms"
@@ -64,7 +72,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ALARM_POWER "Power Alarms"
 
 // Those networks can only be accessed by pre-existing terminals. AIs and new terminals can't use them.
-var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret")
+var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_SYNDICATE,"Secret")
 
 
 //singularity defines
@@ -99,7 +107,7 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret
 
 // The flow rate/effectiveness of various atmos devices is limited by their internal volume,
 // so for many atmos devices these will control maximum flow rates in L/s.
-#define ATMOS_DEFAULT_VOLUME_PUMP   200 // Liters.
+#define ATMOS_DEFAULT_VOLUME_PUMP   350 // Liters.
 #define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
 #define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
 #define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.

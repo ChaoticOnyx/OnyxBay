@@ -27,6 +27,9 @@
 		return description_antag
 	return
 
+/atom/proc/get_description_combat()
+	return
+
 /mob/living/get_description_fluff()
 	if(flavor_text) //Get flavor text for the green text.
 		return flavor_text
@@ -44,6 +47,7 @@
 	description_holders["info"] = A.get_description_info()
 	description_holders["fluff"] = A.get_description_fluff()
 	description_holders["antag"] = (update_antag_info)? A.get_description_antag() : ""
+	description_holders["combat"] = A.get_description_combat()
 
 	description_holders["name"] = "[A.name]"
 	description_holders["icon"] = "\icon[A]"
@@ -54,6 +58,8 @@
 	if(client && statpanel("Examine"))
 		stat(null,"[client.description_holders["icon"]]    <font size='5'>[client.description_holders["name"]]</font>") //The name, written in big letters.
 		stat(null,"[client.description_holders["desc"]]") //the default examine text.
+		if(client.description_holders["combat"])
+			stat(null,"<b>[client.description_holders["combat"]]</b>") //Colorless, combat stats.
 		if(client.description_holders["info"])
 			stat(null,"<font color='#084b8a'><b>[client.description_holders["info"]]</b></font>") //Blue, informative text.
 		if(client.description_holders["fluff"])
@@ -62,7 +68,7 @@
 			stat(null,"<font color='#8a0808'><b>[client.description_holders["antag"]]</b></font>") //Red, malicious antag-related text
 
 //override examinate verb to update description holders when things are examined
-/mob/examinate(atom/A as mob|obj|turf in view())
+/mob/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	if(..())
 		return 1
 

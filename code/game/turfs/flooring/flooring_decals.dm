@@ -8,7 +8,7 @@ var/list/floor_decals = list()
 	icon = 'icons/turf/flooring/decals.dmi'
 	plane = FLOOR_PLANE
 	layer = DECAL_LAYER
-	appearance_flags = RESET_COLOR
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	var/supplied_dir
 
 /obj/effect/floor_decal/New(newloc, newdir, newcolour)
@@ -17,6 +17,7 @@ var/list/floor_decals = list()
 	..(newloc)
 
 /obj/effect/floor_decal/Initialize()
+	SHOULD_CALL_PARENT(FALSE)
 	if(supplied_dir) set_dir(supplied_dir)
 	var/turf/T = get_turf(src)
 	if(istype(T, /turf/simulated/floor) || istype(T, /turf/unsimulated/floor))
@@ -38,6 +39,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/reset
 	name = "reset marker"
+	icon_state = "clear"
 
 /obj/effect/floor_decal/reset/Initialize()
 	var/turf/T = get_turf(src)
@@ -62,6 +64,14 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/carpet/purple
 	name = "orange carpet"
 	icon_state = "purple_edges"
+
+/obj/effect/floor_decal/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple_edges"
+
+/obj/effect/floor_decal/carpet/gpurpledecal
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
 
 /obj/effect/floor_decal/carpet/orange
 	name = "orange carpet"
@@ -95,6 +105,14 @@ var/list/floor_decals = list()
 	name = "purple carpet"
 	icon_state = "purple_corners"
 
+/obj/effect/floor_decal/carpet/gpurple/corners
+	name = "purple carpet"
+	icon_state = "gpurple_corners"
+
+/obj/effect/floor_decal/carpet/gpurpledecal/corners
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
+
 /obj/effect/floor_decal/carpet/orange/corners
 	name = "orange carpet"
 	icon_state = "orange_corners"
@@ -121,6 +139,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/black/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/black/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/blue
 	name = "blue corner"
 	color = COLOR_BLUE_GRAY
@@ -130,6 +151,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/blue/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/blue/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/paleblue
 	name = "pale blue corner"
@@ -141,6 +165,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/paleblue/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/paleblue/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/green
 	name = "green corner"
 	color = COLOR_GREEN_GRAY
@@ -151,6 +178,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/green/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/green/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/lime
 	name = "lime corner"
 	color = COLOR_PALE_GREEN_GRAY
@@ -160,6 +190,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/lime/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/lime/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/yellow
 	name = "yellow corner"
@@ -174,6 +207,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/yellow/full
 	icon_state = "corner_white_full"
 
+/obj/effect/floor_decal/corner/yellow/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/beige
 	name = "beige corner"
 	color = COLOR_BEIGE
@@ -183,6 +219,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/beige/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/beige/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/red
 	name = "red corner"
@@ -197,6 +236,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/red/full
 	icon_state = "corner_white_full"
 
+/obj/effect/floor_decal/corner/red/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/pink
 	name = "pink corner"
 	color = COLOR_PALE_RED_GRAY
@@ -206,6 +248,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/pink/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/pink/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/purple
 	name = "purple corner"
@@ -217,6 +262,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/purple/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/purple/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/mauve
 	name = "mauve corner"
 	color = COLOR_PALE_PURPLE_GRAY
@@ -226,6 +274,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/mauve/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/mauve/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/orange
 	name = "orange corner"
@@ -237,6 +288,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/orange/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/orange/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/brown
 	name = "brown corner"
 	color = COLOR_DARK_BROWN
@@ -246,6 +300,9 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/brown/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/brown/full
+	icon_state = "corner_white_full"
 
 /obj/effect/floor_decal/corner/white
 	name = "white corner"
@@ -257,6 +314,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/corner/white/three_quarters
 	icon_state = "corner_white_three_quarters"
 
+/obj/effect/floor_decal/corner/white/full
+	icon_state = "corner_white_full"
+
 /obj/effect/floor_decal/corner/grey
 	name = "grey corner"
 	color = "#8d8c8c"
@@ -266,6 +326,62 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/corner/grey/three_quarters
 	icon_state = "corner_white_three_quarters"
+
+/obj/effect/floor_decal/corner/grey/full
+	icon_state = "corner_white_full"
+//ALT CORNER DECALS
+
+/obj/effect/floor_decal/corner/alt
+	icon = 'icons/turf/flooring/newdecals.dmi'
+	icon_state = "brown"
+
+/obj/effect/floor_decal/corner/alt/white
+	icon_state = "white"
+
+/obj/effect/floor_decal/corner/alt/white/corner
+	icon_state = "whitecorner"
+
+/obj/effect/floor_decal/corner/alt/blue
+	icon_state = "blue"
+
+/obj/effect/floor_decal/corner/alt/blue/corner
+	icon_state = "bluecorner"
+
+/obj/effect/floor_decal/corner/alt/green
+	icon_state = "green"
+
+/obj/effect/floor_decal/corner/alt/green/corner
+	icon_state = "greencorner"
+
+/obj/effect/floor_decal/corner/alt/darkgreen
+	icon_state = "darkgreen"
+
+/obj/effect/floor_decal/corner/alt/darkgreen/corner
+	icon_state = "darkgreencorner"
+
+/obj/effect/floor_decal/corner/alt/red
+	icon_state = "red"
+
+/obj/effect/floor_decal/corner/alt/red/corner
+	icon_state = "redcorner"
+
+/obj/effect/floor_decal/corner/alt/yellow
+	icon_state = "yellow"
+
+/obj/effect/floor_decal/corner/alt/yellow/corner
+	icon_state = "yellowcorner"
+
+/obj/effect/floor_decal/corner/alt/purple
+	icon_state = "purple"
+
+/obj/effect/floor_decal/corner/alt/purple/corner
+	icon_state = "purplecorner"
+
+/obj/effect/floor_decal/corner/alt/brown
+	icon_state = "brown"
+
+/obj/effect/floor_decal/corner/alt/brown/corner
+	icon_state = "browncorner"
 
 /obj/effect/floor_decal/corner_steel_grid
 	name = "corner steel_grid"
@@ -284,15 +400,8 @@ var/list/floor_decals = list()
 	icon_state = "spline_plain"
 	alpha = 229
 
-/obj/effect/floor_decal/spline/vox
-	name = "spline - vox"
-	icon_state = "spline_vox"
-	alpha = 229
-
-/obj/effect/floor_decal/spline/vox/vox2
-	name = "spline - vox2"
-	icon_state = "spline_vox2"
-	alpha = 229
+/obj/effect/floor_decal/spline/plain/corner
+	icon_state = "spline_plain_corner"
 
 /obj/effect/floor_decal/rust
 	name = "rust"
@@ -304,6 +413,40 @@ var/list/floor_decals = list()
 	icon_state = "oldfloor"
 	alpha = 120
 
+/obj/effect/floor_decal/sandfloordec
+	name = "sandfloor"
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "asteroidfloor"
+	alpha = 209
+
+/obj/effect/floor_decal/junglepath
+	name = "junglepath"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "pathway"
+
+/obj/effect/floor_decal/junglepath/end
+	name = "junglepath"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "pathway_end"
+
+/obj/effect/floor_decal/jungledirt
+	name = "dirt"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "dirt"
+
+/obj/effect/floor_decal/jungledirt/grass
+	name = "grass"
+	icon_state = "grass1"
+
+/obj/effect/floor_decal/jungledirt/grass/edge
+	icon_state = "grassdirt_edge"
+
+/obj/effect/floor_decal/jungledirt/grass/corner
+	icon_state = "grassdirt_corner"
+
+/obj/effect/floor_decal/jungledirt/grass/corner2
+	icon_state = "grassdirt_corner2"
+
 /obj/effect/floor_decal/stairs
 	name = "stairs"
 	icon_state = "stairs"
@@ -311,46 +454,91 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/spline/plain/black
 	color = "#333333"
 
+/obj/effect/floor_decal/spline/plain/corner/black
+	color = "#333333"
+
 /obj/effect/floor_decal/spline/plain/blue
+	color = COLOR_BLUE_GRAY
+
+/obj/effect/floor_decal/spline/plain/corner/blue
 	color = COLOR_BLUE_GRAY
 
 /obj/effect/floor_decal/spline/plain/paleblue
 	color = COLOR_PALE_BLUE_GRAY
 
+/obj/effect/floor_decal/spline/plain/corner/paleblue
+	color = COLOR_PALE_BLUE_GRAY
+
 /obj/effect/floor_decal/spline/plain/green
+	color = COLOR_GREEN_GRAY
+
+/obj/effect/floor_decal/spline/plain/corner/green
 	color = COLOR_GREEN_GRAY
 
 /obj/effect/floor_decal/spline/plain/lime
 	color = COLOR_PALE_GREEN_GRAY
 
+/obj/effect/floor_decal/spline/plain/corner/lime
+	color = COLOR_PALE_GREEN_GRAY
+
 /obj/effect/floor_decal/spline/plain/yellow
+	color = COLOR_BROWN
+
+/obj/effect/floor_decal/spline/plain/corner/yellow
 	color = COLOR_BROWN
 
 /obj/effect/floor_decal/spline/plain/beige
 	color = COLOR_BEIGE
 
+/obj/effect/floor_decal/spline/plain/corner/beige
+	color = COLOR_BEIGE
+
 /obj/effect/floor_decal/spline/plain/red
+	color = COLOR_RED_GRAY
+
+/obj/effect/floor_decal/spline/plain/corner/red
 	color = COLOR_RED_GRAY
 
 /obj/effect/floor_decal/spline/plain/pink
 	color = COLOR_PALE_RED_GRAY
 
+/obj/effect/floor_decal/spline/plain/corner/pink
+	color = COLOR_PALE_RED_GRAY
+
 /obj/effect/floor_decal/spline/plain/purple
+	color = COLOR_PURPLE_GRAY
+
+/obj/effect/floor_decal/spline/plain/corner/purple
 	color = COLOR_PURPLE_GRAY
 
 /obj/effect/floor_decal/spline/plain/mauve
 	color = COLOR_PALE_PURPLE_GRAY
 
+/obj/effect/floor_decal/spline/plain/corner/mauve
+	color = COLOR_PALE_PURPLE_GRAY
+
 /obj/effect/floor_decal/spline/plain/orange
+	color = COLOR_DARK_ORANGE
+
+/obj/effect/floor_decal/spline/plain/corner/orange
 	color = COLOR_DARK_ORANGE
 
 /obj/effect/floor_decal/spline/plain/brown
 	color = COLOR_DARK_BROWN
 
+/obj/effect/floor_decal/spline/plain/corner/brown
+	color = COLOR_DARK_BROWN
+
 /obj/effect/floor_decal/spline/plain/white
 	color = COLOR_WHITE
 
+/obj/effect/floor_decal/spline/plain/corner/white
+	color = COLOR_WHITE
+
 /obj/effect/floor_decal/spline/plain/grey
+	color = "#8d8c8c"
+
+/obj/effect/floor_decal/spline/plain/corner/grey
 	color = "#8d8c8c"
 
 /obj/effect/floor_decal/spline/fancy
@@ -394,6 +582,13 @@ var/list/floor_decals = list()
 	name = "hazard stripes"
 	icon_state = "warningcorner_dust"
 
+/obj/effect/floor_decal/industrial/warning/dust/cee
+	name = "hazard stripes"
+	icon_state = "warningcee_dust"
+
+/obj/effect/floor_decal/industrial/warning/dust/full
+	name = "hazard stripes"
+	icon_state = "warningfull_dust"
 /obj/effect/floor_decal/industrial/warning/red
 	name = "hazard stripes"
 	icon_state = "warning_red"
@@ -518,7 +713,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/industrial/outline/blue
 	name = "blue outline"
-	color = "#00b8b2"
+	color = COLOR_BLUE_GRAY
 
 /obj/effect/floor_decal/industrial/outline/yellow
 	name = "yellow outline"
@@ -664,6 +859,9 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/sign/cell3
 	icon_state = "cell_3"
 
+/obj/effect/floor_decal/sign/cell4
+	icon_state = "cell_4"
+
 /obj/effect/floor_decal/sign/armory
 	icon_state = "rigdecal"
 
@@ -704,11 +902,20 @@ var/list/floor_decals = list()
 	icon = 'icons/turf/overlays.dmi'
 	icon_state = "snowfloor"
 
+/obj/effect/floor_decal/snowedge
+	icon_state = "snow_edge"
+
+/obj/effect/floor_decal/snowedge/corner
+	icon_state = "snow_edge_corner"
+
+/obj/effect/floor_decal/snowedge/cee
+	icon_state = "snow_edge_cee"
+
 /obj/effect/floor_decal/floordetail
 	layer = TURF_DETAIL_LAYER
 	color = COLOR_GUNMETAL
 	icon_state = "manydot"
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /obj/effect/floor_decal/floordetail/New(newloc, newdir, newcolour)
 	color = null //color is here just for map preview, if left it applies both our and tile colors.
@@ -732,3 +939,66 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/ntlogo/sec
 	icon_state = "ntlogo_sec"
 
+/obj/effect/floor_decal/derelict/l1
+	name = "derelict1"
+	icon_state = "derelict1"
+
+/obj/effect/floor_decal/derelict/l2
+	name = "derelict2"
+	icon_state = "derelict2"
+
+/obj/effect/floor_decal/derelict/l3
+	name = "derelict3"
+	icon_state = "derelict3"
+
+/obj/effect/floor_decal/derelict/l4
+	name = "derelict4"
+	icon_state = "derelict4"
+
+/obj/effect/floor_decal/derelict/l5
+	name = "derelict5"
+	icon_state = "derelict5"
+
+/obj/effect/floor_decal/derelict/l6
+	name = "derelict6"
+	icon_state = "derelict6"
+
+/obj/effect/floor_decal/derelict/l7
+	name = "derelict7"
+	icon_state = "derelict7"
+
+/obj/effect/floor_decal/derelict/l8
+	name = "derelict8"
+	icon_state = "derelict8"
+
+/obj/effect/floor_decal/derelict/l9
+	name = "derelict9"
+	icon_state = "derelict9"
+
+/obj/effect/floor_decal/derelict/l10
+	name = "derelict10"
+	icon_state = "derelict10"
+
+/obj/effect/floor_decal/derelict/l11
+	name = "derelict11"
+	icon_state = "derelict11"
+
+/obj/effect/floor_decal/derelict/l12
+	name = "derelict12"
+	icon_state = "derelict12"
+
+/obj/effect/floor_decal/derelict/l13
+	name = "derelict13"
+	icon_state = "derelict13"
+
+/obj/effect/floor_decal/derelict/l14
+	name = "derelict14"
+	icon_state = "derelict14"
+
+/obj/effect/floor_decal/derelict/l15
+	name = "derelict15"
+	icon_state = "derelict15"
+
+/obj/effect/floor_decal/derelict/l16
+	name = "derelict16"
+	icon_state = "derelict16"

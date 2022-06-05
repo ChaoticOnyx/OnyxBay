@@ -12,9 +12,10 @@
 	minimal_access = list()	//See /datum/job/assistant/get_access()
 	alt_titles = list("Technical Assistant","Medical Intern","Research Assistant")
 	outfit_type = /decl/hierarchy/outfit/job/assistant
+	can_be_hired = FALSE
 
 /datum/job/assistant/get_access()
-	if(config.assistant_maint)
+	if(config.game.assistant_maint)
 		return list(access_maint_tunnels)
 	else
 		return list()

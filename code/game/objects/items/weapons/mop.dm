@@ -1,9 +1,9 @@
-/obj/item/weapon/mop
+/obj/item/mop
 	desc = "The world of janitalia wouldn't be complete without a mop."
 	name = "mop"
 	icon = 'icons/obj/janitor.dmi'
 	icon_state = "mop"
-	force = 7.5
+	force = 9.0
 	throwforce = 10.0
 	throw_speed = 5
 	throw_range = 10
@@ -13,10 +13,10 @@
 	mod_handy = 1.0
 	attack_verb = list("mopped", "bashed", "bludgeoned", "whacked")
 
-/obj/item/weapon/mop/New()
+/obj/item/mop/New()
 	create_reagents(30)
 
-/obj/item/weapon/mop/afterattack(atom/A, mob/user, proximity)
+/obj/item/mop/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
 	if(istype(A, /turf) || istype(A, /obj/effect/decal/cleanable) || istype(A, /obj/effect/overlay) || istype(A, /obj/effect/rune))
@@ -36,6 +36,6 @@
 
 
 /obj/effect/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/mop) || istype(I, /obj/item/weapon/soap))
+	if(istype(I, /obj/item/mop) || istype(I, /obj/item/soap))
 		return
 	..()

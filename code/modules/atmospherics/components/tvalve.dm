@@ -216,7 +216,7 @@
 	update_underlays()
 
 /obj/machinery/atmospherics/tvalve/build_network()
-	if(!network_node1 && node1)				
+	if(!network_node1 && node1)
 		network_node1 = new /datum/pipe_network()
 		network_node1.normal_members += src
 		network_node1.build_network(node1, src)
@@ -256,7 +256,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/tvalve/return_network_air(datum/network/reference)
+/obj/machinery/atmospherics/tvalve/return_network_air(datum/pipe_network/reference)
 	return null
 
 /obj/machinery/atmospherics/tvalve/disconnect(obj/machinery/atmospherics/reference)
@@ -339,7 +339,7 @@
 			else
 				go_to_side()
 
-/obj/machinery/atmospherics/tvalve/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/tvalve/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	if (istype(src, /obj/machinery/atmospherics/tvalve/digital))

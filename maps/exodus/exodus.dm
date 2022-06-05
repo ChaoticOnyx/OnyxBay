@@ -5,27 +5,8 @@
 	#include "exodus_effects.dm"
 	#include "exodus_elevator.dm"
 	#include "exodus_holodecks.dm"
-	#include "exodus_presets.dm"
 	#include "exodus_shuttles.dm"
 	#include "exodus_jobs.dm"
-
-	#include "exodus_unit_testing.dm"
-	#include "exodus_zas_tests.dm"
-
-	#include "../shared/exodus_torch/_include.dm"
-
-	#include "exodus-1.dmm"
-	#include "exodus-2.dmm"
-	#include "exodus-3.dmm"
-	#include "exodus-4.dmm"
-	#include "exodus-5.dmm"
-	#include "exodus-6.dmm"
-	#include "exodus-7.dmm"
-	#include "derelicts/snowasteroid.dmm"
-	#include "derelicts/djstation.dmm"
-	#include "derelicts/casino.dmm"
-	#include "derelicts/bearcat/bearcat-1.dmm"
-	#include "derelicts/bearcat/bearcat-2.dmm"
 
 	#define USING_MAP_DATUM /datum/map/exodus
 

@@ -1,11 +1,13 @@
 var/list/loadout_categories = list()
 var/list/gear_datums = list()
+var/list/hash_to_gear = list()
 
 /datum/preferences
 	var/list/gear_list //Custom/fluff item loadouts.
 	var/gear_slot = 1  //The current gear save slot
 	var/datum/gear/trying_on_gear
 	var/list/trying_on_tweaks = new
+	var/loadout_is_busy = FALSE // All these gear tweaks be slow as anything. Let's just force things to yield, sparing us from sanitizing and resanitizing stuff.
 
 /datum/preferences/proc/Gear()
 	return gear_list[gear_slot]
@@ -34,7 +36,9 @@ var/list/gear_datums = list()
 		if(!loadout_categories[use_category])
 			loadout_categories[use_category] = new /datum/loadout_category(use_category)
 		var/datum/loadout_category/LC = loadout_categories[use_category]
-		gear_datums[use_name] = new geartype
+		G = new geartype()
+		gear_datums[use_name] = G
+		hash_to_gear[G.gear_hash] = G
 		LC.gear[use_name] = gear_datums[use_name]
 
 	loadout_categories = sortAssoc(loadout_categories)
@@ -50,15 +54,16 @@ var/list/gear_datums = list()
 	var/datum/gear/selected_gear
 	var/list/selected_tweaks = new
 	var/hide_unavailable_gear = FALSE
+	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
 
-/datum/category_item/player_setup_item/loadout/load_character(savefile/S)
-	from_file(S["gear_list"], pref.gear_list)
-	from_file(S["gear_slot"], pref.gear_slot)
+/datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
+	pref.gear_list = R.read("gear_list")
+	pref.gear_slot = R.read("gear_slot")
 
-/datum/category_item/player_setup_item/loadout/save_character(savefile/S)
-	to_file(S["gear_list"], pref.gear_list)
-	to_file(S["gear_slot"], pref.gear_slot)
+/datum/category_item/player_setup_item/loadout/save_character(datum/pref_record_writer/W)
+	W.write("gear_list", pref.gear_list)
+	W.write("gear_slot", pref.gear_slot)
 
 /datum/category_item/player_setup_item/loadout/proc/valid_gear_choices(max_cost)
 	. = list()
@@ -79,13 +84,13 @@ var/list/gear_datums = list()
 		. += gear_name
 
 /datum/category_item/player_setup_item/loadout/sanitize_character()
-	pref.gear_slot = sanitize_integer(pref.gear_slot, 1, config.loadout_slots, initial(pref.gear_slot))
+	pref.gear_slot = sanitize_integer(pref.gear_slot, 1, config.character_setup.loadout_slots, initial(pref.gear_slot))
 	if(!islist(pref.gear_list)) pref.gear_list = list()
 
-	if(pref.gear_list.len < config.loadout_slots)
-		pref.gear_list.len = config.loadout_slots
+	if(pref.gear_list.len < config.character_setup.loadout_slots)
+		pref.gear_list.len = config.character_setup.loadout_slots
 
-	for(var/index = 1 to config.loadout_slots)
+	for(var/index = 1 to config.character_setup.loadout_slots)
 		var/list/gears = pref.gear_list[index]
 
 		if(istype(gears))
@@ -101,7 +106,7 @@ var/list/gear_datums = list()
 					gears -= gear_name
 				else
 					var/datum/gear/G = gear_datums[gear_name]
-					if(total_cost + G.cost > config.max_gear_cost)
+					if(total_cost + G.cost > config.character_setup.max_gear_cost)
 						gears -= gear_name
 					else
 						total_cost += G.cost
@@ -112,7 +117,7 @@ var/list/gear_datums = list()
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	user << browse_rsc(pref.preview_icon, "previewicon.png")
+	send_rsc(user, pref.preview_icon, "previewicon.png")
 
 	if(!user.client)
 		return
@@ -125,7 +130,7 @@ var/list/gear_datums = list()
 			total_cost += G.cost
 
 	var/fcolor =  "#3366cc"
-	if(total_cost < config.max_gear_cost)
+	if(total_cost < config.character_setup.max_gear_cost)
 		fcolor = "#e67300"
 
 	. += "<table style='width: 100%;'><tr>"
@@ -137,11 +142,12 @@ var/list/gear_datums = list()
 	. += "<td><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></td>"
 
 	. += "<td style=\"vertical-align: top;\">"
-	if(config.max_gear_cost < INFINITY)
-		. += "<font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.<br>"
+	if(config.character_setup.max_gear_cost < INFINITY)
+		. += "<font color = '[fcolor]'>[total_cost]/[config.character_setup.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
+	. += "<a href='?src=\ref[src];toggle_donate=1'>[hide_donate_gear ? "Show donate gears" : "Hide donate gears"]</a><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -216,23 +222,33 @@ var/list/gear_datums = list()
 		var/datum/gear/G = LC.gear[gear_name]
 		if(!G.path)
 			continue
+		if(hide_donate_gear && (G.price || G.patron_tier))
+			continue
+		if(!G.is_allowed_to_display(user))
+			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
 		var/allowed_to_see = gear_allowed_to_see(G)
 		var/display_class
+		var/discountText
+		if(ticked && !gear_allowed_to_equip(G, user))
+			toggle_gear(G)
+			ticked = FALSE
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(!gear_allowed_to_equip(G, user))
+			else if(!gear_allowed_to_equip(G, user) && G.price)
 				display_class = "gold"
+				discountText = G.price && G.discount ? "<b>(-[round(G.discount * 100)]%)</b>" : ""
 			else if(!allowed_to_see)
 				display_class = "red"
 			else
 				display_class = "gray"
 		else
 			display_class = "linkOn"
+
 		entry += "<tr>"
-		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
+		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.gear_hash)]'>[G.display_name] [discountText]</a></td>"
 		entry += "</td></tr>"
 
 		if(!hide_unavailable_gear || allowed_to_see || ticked)
@@ -258,12 +274,16 @@ var/list/gear_datums = list()
 		var/datum/gear_data/gd = new(selected_gear.path)
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_gear_data(selected_tweaks["[gt]"], gd)
-		var/obj/gear_virtual_item = new gd.path
+		var/atom/movable/gear_virtual_item = new gd.path
 		for(var/datum/gear_tweak/gt in selected_gear.gear_tweaks)
 			gt.tweak_item(gear_virtual_item, selected_tweaks["[gt]"])
 		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)
 		if(gear_virtual_item.color)
-			I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
+			if(islist(gear_virtual_item.color))
+				I.MapColors(arglist(gear_virtual_item.color))
+			else
+				I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
+
 		I.Scale(I.Width() * 2, I.Height() * 2)
 
 		. += "<td style='width: 80%;' class='block'>"
@@ -277,7 +297,7 @@ var/list/gear_datums = list()
 			. += "<b>Slot:</b> [slot_to_description(selected_gear.slot)]<br>"
 		. += "<b>Loadout Points:</b> [selected_gear.cost]<br>"
 
-		if(selected_gear.allowed_roles)
+		if(length(selected_gear.allowed_roles))
 			. += "<b>Has jobs restrictions!</b>"
 			. += "<br>"
 			. += "<i>"
@@ -296,7 +316,7 @@ var/list/gear_datums = list()
 					. += "<font color='#808080'>[J.title]</font>"
 			. += "</i>"
 			. += "<br>"
-		
+
 		if(selected_gear.whitelisted)
 			. += "<b>Has species restrictions!</b>"
 			. += "<br>"
@@ -328,15 +348,22 @@ var/list/gear_datums = list()
 
 		if(selected_gear.price)
 			. += "<br>"
-			. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
+			if(!gear_allowed_to_equip(selected_gear, user) && selected_gear.discount)
+				var/adjusted_price = selected_gear.price * selected_gear.discount
+				. += "<b>Price: <strike>[selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</strike></b> "
+				. += "<font color='#ff6600'><b>[adjusted_price] opyx[adjusted_price != 1 ? "es" : ""] ([round(selected_gear.discount * 100)] percents off!)</b></font>"
+			else
+				. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
 			. += "<br>"
 
 		// Tweaks
 		if(selected_gear.gear_tweaks.len)
 			. += "<br><b>Options:</b><br>"
 			for(var/datum/gear_tweak/tweak in selected_gear.gear_tweaks)
-				. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak.get_contents(selected_tweaks["[tweak]"])]</a>"
-				. += "<br>"
+				var/tweak_contents = tweak.get_contents(selected_tweaks["[tweak]"])
+				if(tweak_contents)
+					. += " <a href='?src=\ref[src];tweak=\ref[tweak]'>[tweak_contents]</a>"
+					. += "<br>"
 
 		. += "<br>"
 
@@ -344,17 +371,20 @@ var/list/gear_datums = list()
 			flag_not_enough_opyxes = FALSE
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
+		var/not_available_message = SPAN_NOTICE("This item will never spawn with you, using your current preferences.")
 		if(gear_allowed_to_equip(selected_gear, user))
-			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
+			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.gear_hash)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
-			if (selected_gear.price)
-				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
-			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			if(selected_gear.price)
+				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
+				. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			else
+				. += not_available_message
 
 		if(!gear_allowed_to_see(selected_gear))
 			. += "<br>"
-			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
+			. += not_available_message
 
 		. += "</td>"
 
@@ -380,8 +410,11 @@ var/list/gear_datums = list()
 
 /datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, mob/user)
 	ASSERT(istype(user))
+	if(pref.loadout_is_busy)
+		return TOPIC_NOACTION
 	if(href_list["select_gear"])
-		selected_gear = gear_datums[href_list["select_gear"]]
+		pref.loadout_is_busy = TRUE
+		selected_gear = hash_to_gear[href_list["select_gear"]]
 		selected_tweaks = pref.gear_list[pref.gear_slot][selected_gear.display_name]
 		if(!selected_tweaks)
 			selected_tweaks = new
@@ -389,30 +422,25 @@ var/list/gear_datums = list()
 				selected_tweaks["[tweak]"] = tweak.get_default()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_gear"])
-		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
+		pref.loadout_is_busy = TRUE
+		var/datum/gear/TG = hash_to_gear[href_list["toggle_gear"]]
 
-		// check if someone trying to tricking us. However, it's may be just a bug
-		ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
-		ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
+		toggle_gear(TG, user)
 
-		if(TG.display_name in pref.gear_list[pref.gear_slot])
-			pref.gear_list[pref.gear_slot] -= TG.display_name
-		else
-			var/total_cost = 0
-			for(var/gear_name in pref.gear_list[pref.gear_slot])
-				var/datum/gear/G = gear_datums[gear_name]
-				if(istype(G)) total_cost += G.cost
-			if((total_cost+TG.cost) <= config.max_gear_cost)
-				pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["tweak"])
+		pref.loadout_is_busy = TRUE
 		var/datum/gear_tweak/tweak = locate(href_list["tweak"])
 		if(!tweak || !istype(selected_gear) || !(tweak in selected_gear.gear_tweaks))
+			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
 		var/metadata = tweak.get_metadata(user, get_tweak_metadata(selected_gear, tweak))
 		if(!metadata || !CanUseTopic(user))
+			pref.loadout_is_busy = FALSE
 			return TOPIC_NOACTION
 		selected_tweaks["[tweak]"] = metadata
 		var/ticked = (selected_gear.display_name in pref.gear_list[pref.gear_slot])
@@ -421,69 +449,93 @@ var/list/gear_datums = list()
 		var/trying_on = (selected_gear.display_name == pref.trying_on_gear)
 		if(trying_on)
 			pref.trying_on_tweaks["[tweak]"] = metadata
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["buy_gear"])
 		var/datum/gear/G = locate(href_list["buy_gear"])
 		ASSERT(G.price)
 		ASSERT(!user.client.donator_info.has_item(G.type))
+		pref.loadout_is_busy = TRUE
 		var/comment = "Donation store purchase: [G.type]"
-		var/transaction = SSdonations.create_transaction(user.client, -G.price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
+		var/adjusted_price = G.discount ? G.price * G.discount : G.price
+		var/transaction = SSdonations.create_transaction(user.client, -adjusted_price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
 		if(transaction)
 			if(SSdonations.give_item(user.client, G.type, transaction))
 				pref.trying_on_gear = null
 				pref.trying_on_tweaks.Cut()
+				pref.loadout_is_busy = FALSE
 				return TOPIC_REFRESH_UPDATE_PREVIEW
 			else
 				SSdonations.remove_transaction(user.client, transaction)
+		pref.loadout_is_busy = FALSE
 		return TOPIC_NOACTION
 	if(href_list["try_on"])
 		if(!istype(selected_gear))
 			return TOPIC_NOACTION
+		pref.loadout_is_busy = TRUE
 		if(selected_gear.display_name == pref.trying_on_gear)
 			pref.trying_on_gear = null
 			pref.trying_on_tweaks.Cut()
 		else
 			pref.trying_on_gear = selected_gear.display_name
 			pref.trying_on_tweaks = selected_tweaks.Copy()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["next_slot"])
+		pref.loadout_is_busy = TRUE
 		pref.gear_slot = pref.gear_slot+1
-		if(pref.gear_slot > config.loadout_slots)
+		if(pref.gear_slot > config.character_setup.loadout_slots)
 			pref.gear_slot = 1
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["prev_slot"])
+		pref.loadout_is_busy = TRUE
 		pref.gear_slot = pref.gear_slot-1
 		if(pref.gear_slot < 1)
-			pref.gear_slot = config.loadout_slots
+			pref.gear_slot = config.character_setup.loadout_slots
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["select_category"])
+		pref.loadout_is_busy = TRUE
 		current_tab = href_list["select_category"]
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["clear_loadout"])
+		pref.loadout_is_busy = TRUE
 		var/list/gear = pref.gear_list[pref.gear_slot]
 		gear.Cut()
 		selected_gear = null
 		selected_tweaks.Cut()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["random_loadout"])
+		pref.loadout_is_busy = TRUE
 		randomize(user)
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_hiding"])
+		pref.loadout_is_busy = TRUE
 		hide_unavailable_gear = !hide_unavailable_gear
+		pref.loadout_is_busy = FALSE
+		return TOPIC_REFRESH
+	if(href_list["toggle_donate"])
+		pref.loadout_is_busy = TRUE
+		hide_donate_gear = !hide_donate_gear
+		pref.loadout_is_busy = FALSE
 		return TOPIC_REFRESH
 	if(href_list["get_opyxes"])
 		SSdonations.show_donations_info(user)
@@ -499,9 +551,9 @@ var/list/gear_datums = list()
 	var/list/pool = new
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.character_setup.max_gear_cost)
 			pool += G
-	var/points_left = config.max_gear_cost
+	var/points_left = config.character_setup.max_gear_cost
 	while (points_left > 0 && length(pool))
 		var/datum/gear/chosen = pick(pool)
 		var/list/chosen_tweaks = new
@@ -513,35 +565,12 @@ var/list/gear_datums = list()
 			if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
 				pool -= G
 
-/datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
-	if(preferences["version"] < 14)
-		var/list/old_gear = character["gear"]
-		if(istype(old_gear)) // During updates data isn't sanitized yet, we have to do manual checks
-			if(!istype(pref.gear_list)) pref.gear_list = list()
-			if(!pref.gear_list.len) pref.gear_list.len++
-			pref.gear_list[1] = old_gear
-		return 1
-
-	if(preferences["version"] < 15)
-		if(istype(pref.gear_list))
-			// Checks if the key of the pref.gear_list is a list.
-			// If not the key is replaced with the corresponding value.
-			// This will convert the loadout slot data to a reasonable and (more importantly) compatible format.
-			// I.e. list("1" = loadout_data1, "2" = loadout_data2, "3" = loadout_data3) becomes list(loadout_data1, loadout_data2, loadaout_data3)
-			for(var/index = 1 to pref.gear_list.len)
-				var/key = pref.gear_list[index]
-				if(islist(key))
-					continue
-				var/value = pref.gear_list[key]
-				pref.gear_list[index] = value
-		return 1
-
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_see(datum/gear/G)
 	ASSERT(G)
 	if(!G.path)
 		return FALSE
-	
-	if(G.allowed_roles)
+
+	if(length(G.allowed_roles))
 		ASSERT(job_master)
 		var/list/jobs = new
 		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
@@ -556,28 +585,40 @@ var/list/gear_datums = list()
 				break
 		if(!job_ok)
 			return FALSE
-	
+
 	if(G.whitelisted && !(pref.species in G.whitelisted))
 		return FALSE
-		
+
 	return TRUE
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
 	ASSERT(G)
-	ASSERT(user && user.client)
-	ASSERT(user.client.donator_info)
-	if(G.price && !user.client.donator_info.has_item(G.type))
-		return FALSE
-	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
-		return FALSE
-	return TRUE
+	return G.is_allowed_to_equip(user)
+
+/datum/category_item/player_setup_item/loadout/proc/toggle_gear(datum/gear/TG, mob/user)
+	// check if someone trying to tricking us. However, it's may be just a bug
+	ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
+	ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
+
+	if(TG.display_name in pref.gear_list[pref.gear_slot])
+		pref.gear_list[pref.gear_slot] -= TG.display_name
+	else
+		var/total_cost = 0
+		for(var/gear_name in pref.gear_list[pref.gear_slot])
+			var/datum/gear/G = gear_datums[gear_name]
+			if(istype(G)) total_cost += G.cost
+		if((total_cost+TG.cost) <= config.character_setup.max_gear_cost)
+			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
+
 
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
+	var/gear_hash          //MD5 hash of display_name. Used to get item in Topic calls. See href problem with ' symbol
 	var/description        //Description of this gear. If left blank will default to the description of the pathed item.
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
+	var/discount           //Discount to a price
 	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
@@ -587,6 +628,7 @@ var/list/gear_datums = list()
 	var/list/gear_tweaks = list() //List of datums which will alter the item after it has been spawned.
 
 /datum/gear/New()
+	gear_hash = md5(display_name)
 	if(FLAGS_EQUALS(flags, GEAR_HAS_TYPE_SELECTION|GEAR_HAS_SUBTYPE_SELECTION))
 		CRASH("May not have both type and subtype selection tweaks")
 	if(!description)
@@ -599,10 +641,26 @@ var/list/gear_datums = list()
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
 		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
 
+/datum/gear/proc/is_allowed_to_equip(mob/user)
+	ASSERT(user && user.client)
+	ASSERT(user.client.donator_info)
+	if(price && !user.client.donator_info.has_item(type))
+		return FALSE
+	if(patron_tier && !user.client.donator_info.patreon_tier_available(patron_tier))
+		return FALSE
+	if(!is_allowed_to_display(user))
+		return FALSE
+
+	return TRUE
+
 /datum/gear/proc/get_description(metadata)
 	. = description
 	for(var/datum/gear_tweak/gt in gear_tweaks)
 		. = gt.tweak_description(., metadata["[gt]"])
+
+// used when we forbid seeing gear in menu without any messages.
+/datum/gear/proc/is_allowed_to_display(mob/user)
+	return TRUE
 
 /datum/gear_data
 	var/path

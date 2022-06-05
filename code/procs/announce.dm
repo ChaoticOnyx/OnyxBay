@@ -29,7 +29,7 @@
 	title = "[command_name()] Update"
 	announcement_type = "[command_name()] Update"
 
-/datum/announcement/proc/Announce(message as text, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
+/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 	if(!message)
 		return
 	var/message_title = new_title ? new_title : title
@@ -40,7 +40,7 @@
 
 	var/msg = FormMessage(message, message_title)
 	for(var/mob/M in GLOB.player_list)
-		if((M.z in (zlevels | GLOB.using_map.admin_levels)) && !istype(M,/mob/new_player) && !isdeaf(M))
+		if(should_recieve_announce(M, zlevels))
 			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
 
 			spawn (2)
@@ -53,25 +53,39 @@
 		NewsCast(message, message_title)
 
 	if(log)
-		log_game("[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]", notify_admin = TRUE)
+		var/log_msg = "[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]"
+		log_game(log_msg, notify_admin = TRUE)
+		log_story("GAME", log_msg)
 
-datum/announcement/proc/FormMessage(message as text, message_title as text)
+/proc/should_recieve_announce(mob/M, list/contact_levels)
+	if (istype(M,/mob/new_player) || isdeaf(M))
+		return 0
+	if (M.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
+		return 1
+	var/turf/loc_turf = get_turf(M.loc) // for mobs in lockers, sleepers, etc.
+	if (!loc_turf)
+		return 0
+	if (loc_turf.z in (contact_levels | GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
+		return 1
+	return 0
+
+/datum/announcement/proc/FormMessage(message, message_title)
 	. = "<h2 class='alert'>[message_title]</h2>"
 	. += "<br><span class='alert'>[message]</span>"
 	if (announcer)
 		. += "<br><span class='alert'> -[html_encode(announcer)]</span>"
 
-datum/announcement/minor/FormMessage(message as text, message_title as text)
+/datum/announcement/minor/FormMessage(message, message_title)
 	. = "<b>[message]</b>"
 
-datum/announcement/priority/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/FormMessage(message, message_title)
 	. = "<h1 class='alert'>[message_title]</h1>"
 	. += "<br><span class='alert'>[message]</span>"
 	if(announcer)
 		. += "<br><span class='alert'> -[html_encode(announcer)]</span>"
 	. += "<br>"
 
-datum/announcement/priority/command/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/command/FormMessage(message, message_title)
 	. = "<h1 class='alert'>[command_name()] Update</h1>"
 	if (message_title)
 		. += "<br><h2 class='alert'>[message_title]</h2>"
@@ -79,11 +93,11 @@ datum/announcement/priority/command/FormMessage(message as text, message_title a
 	. += "<br><span class='alert'>[message]</span><br>"
 	. += "<br>"
 
-datum/announcement/priority/security/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/security/FormMessage(message, message_title)
 	. = "<font size=4 color='red'>[message_title]</font>"
 	. += "<br><font color='red'>[message]</font>"
 
-datum/announcement/proc/NewsCast(message as text, message_title as text)
+/datum/announcement/proc/NewsCast(message, message_title)
 	if(!newscast)
 		return
 
@@ -95,31 +109,55 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 	news.can_be_redacted = 0
 	announce_newscaster_news(news)
 
-/proc/GetNameAndAssignmentFromId(obj/item/weapon/card/id/I)
+/proc/GetNameAndAssignmentFromId(obj/item/card/id/I)
 	// Format currently matches that of newscaster feeds: Registered Name (Assigned Rank)
 	return I.assignment ? "[I.registered_name] ([I.assignment])" : I.registered_name
 
 /proc/level_seven_announcement()
 	GLOB.using_map.level_x_biohazard_announcement(7)
 
-/proc/ion_storm_announcement()
-	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
-
-/proc/AnnounceArrival(mob/living/carbon/human/character, datum/job/job, join_message)
-	if(!istype(job) || !job.announced)
-		return
+/proc/AnnounceArrival(name, datum/job/job, datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
-	var/rank = job.title
-	if(character.mind.role_alt_title)
-		rank = character.mind.role_alt_title
 
-	if("Common" != get_announcement_frequency(job))
-		AnnounceArrivalSimple(character.real_name, rank, join_message, "Common")
-	AnnounceArrivalSimple(character.real_name, rank, join_message, get_announcement_frequency(job))
+	var/rank = job.title
+
+	for(var/mob/M in GLOB.player_list)
+		M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', arrival_sound_volume)
+
+	if(rank == "AI")
+		AnnounceArrivalSimple(name, rank, "has been downloaded to the empty core in AI Core", "Common")
+		return
+
+	if(rank in list("Cyborg", "Android", "Robot"))
+		AnnounceArrivalSimple(name, rank, "A new [rank] has arrived", "Common")
+		return
+
+	if(rank == "Captain")
+		AnnounceArrivalCaptain(name, captain_sound_volume)
+
+	AnnounceArrivalSimple(name, rank, spawnpoint.msg, "Common")
+
+	var/announce_freq = get_announcement_frequency(job)
+	if("Common" != announce_freq)
+		AnnounceArrivalSimple(name, rank, spawnpoint.msg, announce_freq)
+
+/proc/get_announcement_computer(announcer = "Arrivals Announcement Computer")
+	if(length(ai_list))
+		var/list/mob/living/silicon/ai/valid_AIs = list()
+		for(var/mob/living/silicon/ai/AI in ai_list)
+			if(AI.stat != DEAD)
+				valid_AIs.Add(AI)
+		if(length(valid_AIs))
+			announcer = pick(valid_AIs)
+	return announcer
 
 /proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
-	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
+	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)
+
+/proc/AnnounceArrivalCaptain(name, captain_sound_volume)
+	var/sound/announce_sound = sound('sound/misc/boatswain.ogg', volume=captain_sound_volume)
+	captain_announcement.Announce("All hands, Captain [name] on deck!", new_sound=announce_sound)
 
 /proc/get_announcement_frequency(datum/job/job)
 	// During red alert all jobs are announced on main frequency.

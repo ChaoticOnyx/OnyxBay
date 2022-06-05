@@ -84,9 +84,9 @@
 	if(air_temporary)
 		loc.assume_air(air_temporary)
 
-	. = ..()
+	return ..()
 
-/obj/machinery/atmospherics/pipe/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
 		return ..()
 	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
@@ -189,9 +189,9 @@
 	plane = FLOOR_PLANE
 
 	switch(dir)
-		if(SOUTH || NORTH)
+		if(SOUTH, NORTH)
 			initialize_directions = SOUTH|NORTH
-		if(EAST || WEST)
+		if(EAST, WEST)
 			initialize_directions = EAST|WEST
 		if(NORTHEAST)
 			initialize_directions = NORTH|EAST
@@ -257,7 +257,8 @@
 	if(node2)
 		node2.disconnect(src)
 		node2 = null
-	. = ..()
+
+	return ..()
 
 /obj/machinery/atmospherics/pipe/simple/pipeline_expansion()
 	return list(node1, node2)
@@ -493,7 +494,7 @@
 		node3.disconnect(src)
 		node3 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -745,7 +746,7 @@
 		node4.disconnect(src)
 		node4 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold4w/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -1002,7 +1003,7 @@
 	if(node)
 		node.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/cap/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node)
@@ -1124,7 +1125,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/tank/pipeline_expansion()
 	return list(node1)
@@ -1227,19 +1228,19 @@
 	..()
 	icon_state = "co2"
 
-/obj/machinery/atmospherics/pipe/tank/phoron
-	name = "Pressure Tank (Phoron)"
-	icon_state = "phoron_map"
+/obj/machinery/atmospherics/pipe/tank/plasma
+	name = "Pressure Tank (Plasma)"
+	icon_state = "plasma_map"
 
-/obj/machinery/atmospherics/pipe/tank/phoron/New()
+/obj/machinery/atmospherics/pipe/tank/plasma/New()
 	air_temporary = new
 	air_temporary.volume = volume
 	air_temporary.temperature = T20C
 
-	air_temporary.adjust_gas("phoron", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
+	air_temporary.adjust_gas("plasma", (start_pressure)*(air_temporary.volume)/(R_IDEAL_GAS_EQUATION*air_temporary.temperature))
 
 	..()
-	icon_state = "phoron"
+	icon_state = "plasma"
 
 /obj/machinery/atmospherics/pipe/tank/nitrous_oxide
 	name = "Pressure Tank (Nitrous Oxide)"
@@ -1308,7 +1309,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/vent/pipeline_expansion()
 	return list(node1)

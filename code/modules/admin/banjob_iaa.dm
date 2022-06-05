@@ -10,6 +10,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 #define IAA_BAN_DURATION_DAYS       7
 
 /proc/IAA_approve(key)
+	if(!establish_db_connection())
+		return
 	key = ckey(key)
 	if (GLOB.IAA_approved_list[key])
 		GLOB.IAA_approved_list[key]++
@@ -20,7 +22,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				approvals = approvals + 1
 			WHERE
 				ckey = $$
-			"}, key)
+			"}, dbcon, key)
 	else
 		GLOB.IAA_approved_list[key] = 1
 		sql_query({"
@@ -30,10 +32,12 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				)
 			VALUES
 				($$)
-			"}, key)
+			"}, dbcon, key)
 	return
 
 /proc/IAA_disprove(key)
+	if(!establish_db_connection())
+		return
 	key = ckey(key)
 	GLOB.IAA_approved_list[key] = 0
 	sql_query({"
@@ -41,10 +45,12 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_approved
 		WHERE
 			ckey = $$
-		"}, key)
+		"}, dbcon, key)
 	return
 
 /proc/IAA_disprove_by_id(id)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			iaa_ckey,
@@ -53,7 +59,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	query.NextRow()
 	IAA_disprove(query.item[1])
 	var/list/others = splittext(query.item[2], ", ")
@@ -75,6 +81,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/expiration_time
 
 /datum/IAA_brief_jobban_info/proc/resolve(approved = TRUE, comment = "automatic_approval", ckey = "system")
+	if(!establish_db_connection())
+		return
 	ASSERT(status == IAA_STATUS_PENDING)
 	var/action = approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED
 	message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
@@ -92,7 +100,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				expiration_time = DATE_ADD(Now(), INTERVAL $duration DAY)
 			WHERE
 				id = $id
-			"}, list(
+			"}, dbcon, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
@@ -109,7 +117,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				resolve_ckey = $ckey
 			WHERE
 				id = $id
-			"}, list(
+			"}, dbcon, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
@@ -122,7 +130,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				erro_iaa_jobban
 			WHERE
 				id = $$
-			"}, id)
+			"}, dbcon, id)
 		query.NextRow()
 		expiration_time = query.item[1]
 		IAA_approve(src.ckey)
@@ -134,6 +142,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		qdel(src)
 
 /proc/IAAJ_cancel(id, comment, ckey)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			status,
@@ -142,7 +152,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	if (!query.NextRow())
 		to_chat(usr, "No entry with such id")
 		return
@@ -160,7 +170,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			cancel_comment = $comment,
 			cancel_ckey = $ckey
 		WHERE
-			id = $id"}, list(
+			id = $id"}, dbcon, list(
 		status = action,
 		comment = comment,
 		ckey = ckey,
@@ -175,7 +185,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return 1
 
 /proc/IAAJ_populate()
-	ASSERT(establish_db_connection())
+	if(!establish_db_connection())
+		warning("Failed to connect to DB, IAAJ module is not populated and will not work.")
+		return
 	var/DBQuery/query
 	query = sql_query({"
 		SELECT
@@ -194,7 +206,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			status = '[IAA_STATUS_APPROVED]'
 			AND
 			IFNULL(expiration_time, Now()) >= Now())
-		"})
+		"}, dbcon)
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
 		JB.id              = query.item[1]
@@ -213,12 +225,14 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			approvals
 		FROM
 			erro_iaa_approved
-		"})
+		"}, dbcon)
 
 	while (query.NextRow())
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
 /proc/IAAJ_check_fakeid_available(fakeid)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			fakeid
@@ -226,7 +240,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			fakeid = $$
-		"}, fakeid)
+		"}, dbcon, fakeid)
 	return !query.RowCount()
 
 /proc/IAAJ_generate_fake_id()
@@ -236,6 +250,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return IAAJ_generate_fake_id() //nigh impossible to get there, will be even more impossible to descend further into recursion
 
 /proc/IAAJ_insert_new(fakeid, ckey, iaa_ckey, other_ckeys, reason, job)
+	if(!establish_db_connection())
+		return
 	if (!IAAJ_check_fakeid_available(fakeid))
 		message_admins("IAAJ fakeid collision. Possible re-send and/or duplicate?")
 		return
@@ -269,7 +285,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				Now(),
 				$status
 			)
-			"}, list(
+			"}, dbcon, list(
 			fakeid = fakeid,
 			ckey = ckey,
 			iaa_ckey = iaa_ckey,
@@ -286,7 +302,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			fakeid = $$
-		"}, fakeid)
+		"}, dbcon, fakeid)
 	query.NextRow() //tbh I have no real idea how to handle database faults so might as well let it crash right there if it happens
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
@@ -323,9 +339,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
 			</tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=iaaj_ban;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_list_all_bans(startfrom = 0)
+	if(!establish_db_connection())
+		return
 	var/const/results_per_page = 10
 	if(!check_rights(R_BAN))
 		return
@@ -354,7 +372,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		ORDER BY id DESC
 		LIMIT [results_per_page]
 		OFFSET [startfrom]
-		"})
+		"}, dbcon)
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -371,9 +389,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
 			</tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=iaaj_ban;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_inspect_ban(id)
+	if(!establish_db_connection())
+		return
 	if(!check_rights(R_BAN))
 		return
 	var/DBQuery/query
@@ -399,7 +419,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	if (!query.NextRow())
 		to_chat(usr, "No entry with such id")
 		return
@@ -409,7 +429,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/other_ckeys       = query.item[ 5]
 	var/reason            = query.item[ 6]
 	var/job               = query.item[ 7]
-	var/creation_time     = query.item[ 8] 
+	var/creation_time     = query.item[ 8]
 	var/resolve_time      = query.item[ 9]
 	var/resolve_comment   = query.item[10]
 	var/resolve_ckey      = query.item[11]
@@ -436,7 +456,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		dat += "Expires at [expiration_time] <BR>"
 	dat += "<HR>"
 	dat += "Reason (everything below): <BR><BR> [reason]"
-	usr << browse(dat, "window=iaaj_ban_inspect;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban_inspect;size=400x400")
 	return
 
 /proc/IAAJ_AdminTopicProcess(datum/admins/source, list/href_list)
@@ -470,7 +490,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		source.IAAJ_inspect_ban(id)
 		return
 
-	if (href_list["iaaj_close"])			
+	if (href_list["iaaj_close"])
 		var/id = href_list["iaaj_close"]
 		var/comment = input(usr, "Enter comment:", "IAA closing comment") as text|null
 		if (!comment)
@@ -481,6 +501,6 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 
 #undef IAA_STATUS_PENDING
-#undef IAA_STATIS_APPROVED
+#undef IAA_STATUS_APPROVED
 #undef IAA_STATUS_DENIED
 #undef IAA_STATUS_CANCELLED

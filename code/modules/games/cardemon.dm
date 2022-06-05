@@ -1,9 +1,9 @@
-/obj/item/weapon/pack/cardemon
+/obj/item/pack/cardemon
 	name = "\improper Cardemon booster pack"
 	desc = "Finally! A children's card game in space!"
 	icon_state = "card_pack_cardemon"
 
-/obj/item/weapon/pack/cardemon/New()
+/obj/item/pack/cardemon/New()
 	var/datum/playingcard/P
 	var/i
 	for(i=0; i<6; i++)
@@ -19,7 +19,7 @@
 			else
 				rarity = "Silver"
 
-		var/nam = pick("Death","Life","Plant","Leaf","Air","Earth","Fire","Water","Killer","Holy", "God", "Ordinary","Demon","Angel", "Phoron", "Mad", "Insane", "Metal", "Steel", "Secret")
+		var/nam = pick("Death","Life","Plant","Leaf","Air","Earth","Fire","Water","Killer","Holy", "God", "Ordinary","Demon","Angel", "Plasma", "Mad", "Insane", "Metal", "Steel", "Secret")
 		var/nam2 = pick("Carp", "Corgi", "Cat", "Mouse", "Octopus", "Lizard", "Monkey", "Plant", "Duck", "Demon", "Spider", "Bird", "Shark", "Rock")
 
 		P = new()

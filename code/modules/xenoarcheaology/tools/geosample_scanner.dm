@@ -10,7 +10,7 @@
 	idle_power_usage = 20
 	active_power_usage = 300
 
-	//var/obj/item/weapon/reagent_containers/glass/coolant_container
+	//var/obj/item/reagent_containers/glass/coolant_container
 	var/scanning = 0
 	var/report_num = 0
 	//
@@ -74,17 +74,17 @@
 				N.use(amount_used)
 				scanner_seal_integrity = round(scanner_seal_integrity + amount_used * 10)
 				return
-		if(istype(I, /obj/item/weapon/reagent_containers/glass))
+		if(istype(I, /obj/item/reagent_containers/vessel))
 			var/choice = alert("What do you want to do with the container?","Radiometric Scanner","Add coolant","Empty coolant","Scan container")
 			if(choice == "Add coolant")
-				var/obj/item/weapon/reagent_containers/glass/G = I
+				var/obj/item/reagent_containers/vessel/G = I
 				var/amount_transferred = min(src.reagents.maximum_volume - src.reagents.total_volume, G.reagents.total_volume)
 				G.reagents.trans_to(src, amount_transferred)
 				to_chat(user, "<span class='info'>You empty [amount_transferred]u of coolant into [src].</span>")
 				update_coolant()
 				return
 			else if(choice == "Empty coolant")
-				var/obj/item/weapon/reagent_containers/glass/G = I
+				var/obj/item/reagent_containers/vessel/G = I
 				var/amount_transferred = min(G.reagents.maximum_volume - G.reagents.total_volume, src.reagents.total_volume)
 				src.reagents.trans_to(G, amount_transferred)
 				to_chat(user, "<span class='info'>You remove [amount_transferred]u of coolant from [src].</span>")
@@ -233,16 +233,16 @@
 			//emergency stop if seal integrity reaches 0
 			if(scanner_seal_integrity <= 0 || (scanner_temperature >= 1273 && !rad_shield))
 				stop_scanning()
-				src.visible_message("<span class='notice'>\icon[src] buzzes unhappily. It has failed mid-scan!</span>", 2)
+				src.visible_message("<span class='notice'>\icon[src] buzzes unhappily. It has failed mid-scan!</span>")
 
 			if(prob(5))
-				src.visible_message("<span class='notice'>\icon[src] [pick("whirrs","chuffs","clicks")][pick(" excitedly"," energetically"," busily")].</span>", 2)
+				src.visible_message("<span class='notice'>\icon[src] [pick("whirrs","chuffs","clicks")][pick(" excitedly"," energetically"," busily")].</span>")
 	else
 		//gradually cool down over time
 		if(scanner_temperature > 0)
 			scanner_temperature = max(scanner_temperature - 5 - 10 * rand(), 0)
 		if(prob(0.75))
-			src.visible_message("<span class='notice'>\icon[src] [pick("plinks","hisses")][pick(" quietly"," softly"," sadly"," plaintively")].</span>", 2)
+			src.visible_message("<span class='notice'>\icon[src] [pick("plinks","hisses")][pick(" quietly"," softly"," sadly"," plaintively")].</span>")
 	last_process_worldtime = world.time
 
 /obj/machinery/radiocarbon_spectrometer/proc/stop_scanning()
@@ -260,33 +260,27 @@
 		used_coolant = 0
 
 /obj/machinery/radiocarbon_spectrometer/proc/complete_scan()
-	src.visible_message("<span class='notice'>\icon[src] makes an insistent chime.</span>", 2)
+	src.visible_message("<span class='notice'>\icon[src] makes an insistent chime.</span>")
 
 	if(scanned_item)
-		//create report
-		var/obj/item/weapon/paper/P = new(src)
-		P.SetName("[src] report #[++report_num]: [scanned_item.name]")
-		P.stamped = list(/obj/item/weapon/stamp)
-		P.overlays = list("paper_stamped")
-
 		//work out data
 		var/data = " - Mundane object: [scanned_item.desc ? scanned_item.desc : "No information on record."]<br>"
 		var/datum/geosample/G
 		switch(scanned_item.type)
-			if(/obj/item/weapon/ore)
-				var/obj/item/weapon/ore/O = scanned_item
+			if(/obj/item/ore)
+				var/obj/item/ore/O = scanned_item
 				if(O.geologic_data)
 					G = O.geologic_data
 
-			if(/obj/item/weapon/rocksliver)
-				var/obj/item/weapon/rocksliver/O = scanned_item
+			if(/obj/item/rocksliver)
+				var/obj/item/rocksliver/O = scanned_item
 				if(O.geological_data)
 					G = O.geological_data
 
-			if(/obj/item/weapon/archaeological_find)
+			if(/obj/item/archaeological_find)
 				data = " - Mundane object (archaic xenos origins)<br>"
 
-				var/obj/item/weapon/archaeological_find/A = scanned_item
+				var/obj/item/archaeological_find/A = scanned_item
 				if(A.talking_atom)
 					data = " - Exhibits properties consistent with sonic reproduction and audio capture technologies.<br>"
 
@@ -314,11 +308,18 @@
 		if(!anom_found)
 			data += " - No anomalous data<br>"
 
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<b>Scanned item:</b> [scanned_item.name]<br><br>" + data
-		last_scan_data = P.info
-		P.loc = src.loc
+		//create report
+		var/title = "[src] report #[++report_num]: [scanned_item.name]"
+		var/text = "<b>[src] analysis report #[report_num]</b><br>"
+		text += "<b>Scanned item:</b> [scanned_item.name]<br><br>"
+		text += data
+		var/obj/item/paper/P = new(src, text, title)
+		P.stamped = list(/obj/item/stamp)
+		P.overlays = list("paper_stamped")
 
+		last_scan_data = text
+
+		P.loc = src.loc
 		scanned_item.loc = src.loc
 		scanned_item = null
 

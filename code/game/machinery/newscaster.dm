@@ -76,7 +76,7 @@
 	newChannel.channel_id = length(network_channels) + 1
 	network_channels += newChannel
 
-/datum/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/weapon/photo/photo, adminMessage = 0, message_type = "")
+/datum/feed_network/proc/SubmitArticle(msg, author, channel_name, obj/item/photo/photo, adminMessage = 0, message_type = "")
 	var/datum/feed_message/newMsg = new /datum/feed_message
 	newMsg.author = author
 	newMsg.body = msg
@@ -168,7 +168,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	var/c_locked=0;        //Will our new channel be locked to public submissions?
 	var/hitstaken = 0      //Death at 3 hits from an item with force>=15
 	var/datum/feed_channel/viewing_channel = null
-	light_range = 0
+	light_outer_range = 0
 	anchored = 1
 	layer = ABOVE_WINDOW_LAYER
 
@@ -186,7 +186,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /obj/machinery/newscaster/Destroy()
 	allCasters -= src
-	..()
+	return ..()
 
 /obj/machinery/newscaster/update_icon()
 	if(inoperable())
@@ -443,7 +443,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="<B>Description</B>: [news_network.wanted_issue.body]<BR>"
 				dat+="<B>Photo:</B>: "
 				if(news_network.wanted_issue.img)
-					usr << browse_rsc(news_network.wanted_issue.img, "tmp_photow.png")
+					send_rsc(usr, news_network.wanted_issue.img, "tmp_photow.png")
 					dat+="<BR><img src='tmp_photow.png' width = '180'>"
 				else
 					dat+="None"
@@ -461,7 +461,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
 
-		human_or_robot_user << browse(dat, "window=newscaster_main;size=400x600")
+		show_browser(human_or_robot_user, dat, "window=newscaster_main;size=400x600")
 		onclose(human_or_robot_user, "newscaster_main")
 
 /obj/machinery/newscaster/Topic(href, href_list)
@@ -513,7 +513,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			src.updateUsrDialog()
 
 		else if(href_list["set_new_message"])
-			src.msg = sanitize(input(usr, "Write your Feed story", "Network Channel Handler", ""))
+			src.msg = pencode2html(sanitize(input(usr, "Write your Feed story", "Network Channel Handler", "")as message|null))
 			src.updateUsrDialog()
 
 		else if(href_list["set_attachment"])
@@ -716,34 +716,33 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 
 
-/obj/machinery/newscaster/attackby(obj/item/I as obj, mob/user as mob)
-	if (stat & BROKEN)
-		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
-		for (var/mob/O in hearers(5, src.loc))
-			O.show_message("<EM>[user.name]</EM> further abuses the shattered [src.name].")
+/obj/machinery/newscaster/attackby(obj/item/I, mob/user)
+	if(user.a_intent != I_HURT)
+		return
+
+	if(stat & BROKEN)
+		playsound(loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
+		for(var/mob/O in hearers(5, loc))
+			O.show_message("<EM>[user.name]</EM> further abuses the shattered [name].")
 	else
-		if(istype(I, /obj/item/weapon) )
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			var/obj/item/weapon/W = I
-			if(W.force <15)
-				for (var/mob/O in hearers(5, src.loc))
-					O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [W.name] with no visible effect.</span>" )
-					playsound(src.loc, get_sfx("glass_hit"), 75, 1)
-			else
-				src.hitstaken++
-				if(hitstaken==3)
-					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
-					set_broken(TRUE)
-					playsound(src.loc, get_sfx("window_breaking"), 75, 1)
-				else
-					for (var/mob/O in hearers(5, src.loc))
-						O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
-					playsound(src.loc, get_sfx("glass_hit"), 75, 1)
-			user.setClickCooldown(I.update_attack_cooldown())
-			user.do_attack_animation(src)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		if(I.force <15)
+			for (var/mob/O in hearers(5, src.loc))
+				O.show_message("<span class='warning'>[user.name] hits the [src.name] with the [I.name] with no visible effect.</span>" )
+				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		else
-			to_chat(user, "<span class='notice'>This does nothing.</span>")
+			src.hitstaken++
+			if(hitstaken==3)
+				for (var/mob/O in hearers(5, src.loc))
+					O.show_message("<span class='warning'>[user.name] smashes the [src.name]!</span>" )
+				set_broken(TRUE)
+				playsound(src.loc, GET_SFX(SFX_BREAK_WINDOW), 75, 1)
+			else
+				for (var/mob/O in hearers(5, src.loc))
+					O.show_message("<span class='warning'>[user.name] forcefully slams the [src.name] with the [I.name]!</span>" )
+				playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
+		user.setClickCooldown(I.update_attack_cooldown())
+		user.do_attack_animation(src)
 	queue_icon_update()
 
 /obj/machinery/newscaster/attack_ai(mob/user as mob)
@@ -751,9 +750,9 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /datum/news_photo
 	var/is_synth = 0
-	var/obj/item/weapon/photo/photo = null
+	var/obj/item/photo/photo = null
 
-/datum/news_photo/New(obj/item/weapon/photo/p, synth)
+/datum/news_photo/New(obj/item/photo/p, synth)
 	is_synth = synth
 	photo = p
 
@@ -767,14 +766,14 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 		photo_data = null
 		return
 
-	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
+	if(istype(user.get_active_hand(), /obj/item/photo))
 		var/obj/item/photo = user.get_active_hand()
 		user.drop_item()
 		photo.loc = src
 		photo_data = new(photo, 0)
 	else if(istype(user,/mob/living/silicon))
 		var/mob/living/silicon/tempAI = user
-		var/obj/item/weapon/photo/selection = tempAI.GetPicture()
+		var/obj/item/photo/selection = tempAI.GetPicture()
 		if (!selection)
 			return
 
@@ -785,7 +784,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 //###################################### NEWSPAPER! ######################################################################
 //########################################################################################################################
 
-/obj/item/weapon/newspaper
+/obj/item/newspaper
 	name = "newspaper"
 	desc = "An issue of The Griffon, the space newspaper."
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -800,7 +799,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 	var/scribble=""
 	var/scribble_page = null
 
-obj/item/weapon/newspaper/attack_self(mob/user as mob)
+/obj/item/newspaper/attack_self(mob/user)
 	if(ishuman(user))
 		var/mob/living/carbon/human/human_user = user
 		var/dat = "<meta charset=\"utf-8\">"
@@ -863,7 +862,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 					dat+="<B>Description</B>: [important_message.body]<BR>"
 					dat+="<B>Photo:</B>: "
 					if(important_message.img)
-						user << browse_rsc(important_message.img, "tmp_photow.png")
+						send_rsc(user, important_message.img, "tmp_photow.png")
 						dat+="<BR><img src='tmp_photow.png' width = '180'>"
 					else
 						dat+="None"
@@ -876,13 +875,13 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
 		dat+="<BR><HR><div align='center'>[src.curr_page+1]</div>"
-		human_user << browse(dat, "window=newspaper_main;size=300x400")
+		show_browser(human_user, dat, "window=newspaper_main;size=300x400")
 		onclose(human_user, "newspaper_main")
 	else
 		to_chat(user, "The paper is full of intelligible symbols!")
 
 
-obj/item/weapon/newspaper/Topic(href, href_list)
+/obj/item/newspaper/Topic(href, href_list)
 	var/mob/living/U = usr
 	..()
 	if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
@@ -896,7 +895,7 @@ obj/item/weapon/newspaper/Topic(href, href_list)
 				if(curr_page == 0) //We're at the start, get to the middle
 					src.screen=1
 			src.curr_page++
-			playsound(src.loc, "pageturn", 50, 1)
+			playsound(src.loc, SFX_USE_PAGE, 50, 1)
 
 		else if(href_list["prev_page"])
 			if(curr_page == 0)
@@ -908,14 +907,14 @@ obj/item/weapon/newspaper/Topic(href, href_list)
 				if(curr_page == src.pages+1) //we're at the end, let's go back to the middle.
 					src.screen = 1
 			src.curr_page--
-			playsound(src.loc, "pageturn", 50, 1)
+			playsound(src.loc, SFX_USE_PAGE, 50, 1)
 
 		if (istype(src.loc, /mob))
 			src.attack_self(src.loc)
 
 
-obj/item/weapon/newspaper/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/pen))
+/obj/item/newspaper/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/pen))
 		if(src.scribble_page == src.curr_page)
 			to_chat(user, "<span class='info'>There's already a scribble in this page... You wouldn't want to make things too cluttered, would you?</span>")
 		else
@@ -944,8 +943,8 @@ obj/item/weapon/newspaper/attackby(obj/item/weapon/W as obj, mob/user as mob)
 					src.scanned_user = GetNameAndAssignmentFromId(P.id)
 				else
 					src.scanned_user = "Unknown"
-			else if(istype(human_user.wear_id, /obj/item/weapon/card/id) )
-				var/obj/item/weapon/card/id/ID = human_user.wear_id
+			else if(istype(human_user.wear_id, /obj/item/card/id) )
+				var/obj/item/card/id/ID = human_user.wear_id
 				src.scanned_user = GetNameAndAssignmentFromId(ID)
 			else
 				src.scanned_user ="Unknown"
@@ -958,7 +957,7 @@ obj/item/weapon/newspaper/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 /obj/machinery/newscaster/proc/print_paper()
 	feedback_inc("newscaster_newspapers_printed",1)
-	var/obj/item/weapon/newspaper/NEWSPAPER = new /obj/item/weapon/newspaper
+	var/obj/item/newspaper/NEWSPAPER = new /obj/item/newspaper
 	for(var/datum/feed_channel/FC in news_network.network_channels)
 		NEWSPAPER.news_content += FC
 	if(news_network.wanted_issue)

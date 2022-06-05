@@ -29,7 +29,7 @@
 	if(shattered)	return
 	shattered = 1
 	icon_state = "mirror_broke"
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	desc = "Oh no, seven years of bad luck!"
 
 
@@ -52,7 +52,7 @@
 		shatter()
 	else
 		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
-		playsound(src.loc, get_sfx("glass_hit"), 70, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 70, 1)
 	user.setClickCooldown(I.update_attack_cooldown())
 	user.do_attack_animation(src)
 
@@ -74,7 +74,8 @@
 		var/datum/nano_module/appearance_changer/AC = ui_users[user]
 		qdel(AC)
 	ui_users.Cut()
-	..()
+
+	return ..()
 
 // The following mirror is ~special~.
 /obj/structure/mirror/raider
@@ -104,14 +105,14 @@
 				qdel(user)
 	..()
 
-/obj/item/weapon/mirror
+/obj/item/mirror
 	name = "mirror"
 	desc = "A SalonPro Nano-Mirror(TM) brand mirror! Now a portable version."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "mirror"
 	var/list/ui_users = list()
 
-/obj/item/weapon/mirror/attack_self(mob/user as mob)
+/obj/item/mirror/attack_self(mob/user as mob)
 	if(ishuman(user))
 		if(jobban_isbanned(user, "APPEARANCE"))
 			to_chat(src, "<span class='danger'>This is useless for you.</span>")
@@ -125,9 +126,10 @@
 			ui_users[user] = AC
 		AC.ui_interact(user)
 
-/obj/item/weapon/mirror/Destroy()
+/obj/item/mirror/Destroy()
 	for(var/user in ui_users)
 		var/datum/nano_module/appearance_changer/AC = ui_users[user]
 		qdel(AC)
 	ui_users.Cut()
-	..()
+
+	return ..()

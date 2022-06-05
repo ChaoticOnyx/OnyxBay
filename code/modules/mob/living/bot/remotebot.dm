@@ -18,7 +18,7 @@
 		tally += (2 * holding.w_class)
 	return tally
 
-/mob/living/bot/remotebot/examine(mob/user)
+/mob/living/bot/remotebot/_examine_text(mob/user)
 	. = ..()
 	if(holding)
 		. += "\n<span class='notice'>It is holding \the \icon[holding] [holding].</span>"
@@ -59,7 +59,7 @@
 	return ..()
 
 /mob/living/bot/remotebot/proc/pickup(obj/item/I)
-	if(holding || get_dist(src,I) > 1)
+	if(holding || get_dist(src, I) > 1 || I.anchored)
 		return
 	src.visible_message("<b>\The [src]</b> picks up \the [I].")
 	flick("fetchbot-c", src)
@@ -107,7 +107,7 @@
 /obj/item/device/bot_controller/interact(mob/user)
 	user.set_machine(src)
 	if(!(src in user) || !bot)
-		user << browse(null, "window=bot_controller")
+		close_browser(user, "window=bot_controller")
 		return
 	var/dat = "<meta charset=\"utf-8\"><center><TT><b>Remote Control: [bot.name]</b></TT><br>"
 	dat += "Currently Holding: [bot.holding ? bot.holding.name : "Nothing"]<br><br>"
@@ -115,7 +115,7 @@
 	dat += "<a href='byond://?src=\ref[src];look=[is_looking];'>[is_looking ? "Stop" : "Start"] Looking</a><br>"
 	dat += "<a href='byond://?src=\ref[src];drop=1;'>Drop Item</a><br></center>"
 
-	user << browse(dat, "window=bot_controller")
+	show_browser(user, dat, "window=bot_controller")
 	onclose(user, "botcontroller")
 
 /obj/item/device/bot_controller/check_eye()

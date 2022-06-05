@@ -77,7 +77,7 @@
 		return
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-		M.slip("the foam", 6)
+		M.slip("the foam", 3)
 
 /datum/effect/effect/system/foam_spread
 	var/amount = 5				// the size of the foam spread.
@@ -129,6 +129,7 @@
 	anchored = 1
 	name = "foamed metal"
 	desc = "A lightweight foamed metal wall."
+	can_atmos_pass = ATMOS_PASS_NO
 	var/metal = 1 // 1 = aluminum, 2 = iron
 
 /obj/structure/foamedmetal/New()
@@ -138,7 +139,8 @@
 /obj/structure/foamedmetal/Destroy()
 	set_density(0)
 	update_nearby_tiles(1)
-	..()
+
+	return ..()
 
 /obj/structure/foamedmetal/update_icon()
 	if(metal == 1)
@@ -175,8 +177,3 @@
 		qdel(src)
 	else
 		to_chat(user, "<span class='notice'>You hit the metal foam to no effect.</span>")
-
-/obj/structure/foamedmetal/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
-	if(air_group)
-		return 0
-	return !density

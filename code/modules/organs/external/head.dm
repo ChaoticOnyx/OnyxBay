@@ -5,14 +5,14 @@
 	name = "head"
 	slot_flags = SLOT_BELT
 	max_damage = 75
-	min_broken_damage = 35
+	min_broken_damage = 40
 	w_class = ITEM_SIZE_NORMAL
 	body_part = HEAD
 	parent_organ = BP_CHEST
 	joint = "jaw"
 	amputation_point = "neck"
 	encased = "skull"
-	artery_name = "cartoid artery"
+	artery_name = "carotid artery"
 	cavity_name = "cranial"
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
@@ -27,6 +27,8 @@
 	var/forehead_graffiti
 	var/graffiti_style
 
+	var/skull_path = /obj/item/skull
+
 /obj/item/organ/external/head/emp_act(severity)
 	if(BP_IS_ROBOTIC(src))
 		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
@@ -34,8 +36,14 @@
 			FBP_brain.stored_mmi.forceMove(get_turf(owner))
 			owner.mind.transfer_to(FBP_brain.stored_mmi.brainmob)
 			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're but a brain now."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+	return ..()
 
-/obj/item/organ/external/head/examine(mob/user)
+/obj/item/organ/external/head/organ_eaten(mob/user)
+	. = ..()
+	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
+	user.put_in_active_hand(SK)
+
+/obj/item/organ/external/head/_examine_text(mob/user)
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
@@ -72,6 +80,8 @@
 			penman.visible_message("<span class='warning'>[penman] writes something on [head_name]!</span>", "You write something on [head_name].")
 			forehead_graffiti = graffiti
 			graffiti_style = style
+			if(owner)
+				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
@@ -81,14 +91,14 @@
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
-/obj/item/organ/external/head/robotize(company, skip_prosthetics, keep_organs)
+/obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
 			eye_icon = R.use_eye_icon
 	. = ..(company, skip_prosthetics, 1)
-	has_lips = null
+	has_lips = FALSE
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
@@ -101,13 +111,20 @@
 	eye_icon = "blank_eyes"
 
 /obj/item/organ/external/head/update_icon()
-
-	..()
+	overlays.Cut()
+	. = ..()
+	if(!.)
+		return
 
 	if(owner)
+		var/datum/body_build/BB = owner.body_build
 		if(eye_icon)
 			var/icon/eyes_icon = new /icon(eye_icon_location, eye_icon)
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[owner.species.vision_organ ? owner.species.vision_organ : BP_EYES]
+			if(!ishuman(loc))
+				for(var/thing in contents)
+					if(istype(thing, /obj/item/organ/internal/eyes))
+						eyes = thing
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
 			else if(owner.should_have_organ(BP_EYES))
@@ -118,10 +135,11 @@
 			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
 			overlays |= eyes_icon
 
-		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
-			var/icon/lip_icon = new /icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
-			overlays |= lip_icon
-			mob_icon.Blend(lip_icon, ICON_OVERLAY)
+			if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
+				var/icon/lip_icon = new /icon(owner.species.icobase, "lips[BB.index]")
+				lip_icon.Blend(owner.lip_style, ICON_ADD)
+				mob_icon.Blend(lip_icon, ICON_OVERLAY)
+				overlays |= lip_icon
 
 		overlays |= get_hair_icon()
 
@@ -133,46 +151,64 @@
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
 		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
 			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
-			if(facial_hair_style.do_colouration)
+			if(facial_hair_style.do_coloration)
 				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
 			res.overlays |= facial_s
 
 	if(owner.h_style)
-		var/style = owner.h_style
-		var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[style]
-		if(owner.head && (owner.head.flags_inv & BLOCKHEADHAIR))
-			if(!(hair_style.flags & VERY_SHORT))
-				hair_style = GLOB.hair_styles_list["Short Hair"]
-		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
-				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
-			res.overlays |= hair_s
+		var/icon/HI
+		var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
+		if((owner.head?.flags_inv & BLOCKHEADHAIR) && !(H.flags & VERY_SHORT))
+			H = GLOB.hair_styles_list["Short Hair"]
+		if(H)
+			if(!length(H.species_allowed) || (species.name in H.species_allowed))
+				var/slim_icon = ("[H.icon_state]_slim" in GLOB.hair_styles_icons)?"[H.icon_state]_slim":"[H.icon_state]_s"
+				HI = icon(H.icon, istype(owner.body_build,/datum/body_build/slim)?"[slim_icon]":"[H.icon_state]_s")
+				if(H.do_coloration && length(h_col) >= 3)
+					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
+		if(HI)
+			var/list/sorted_hair_markings = list()
+			for(var/E in markings)
+				var/datum/sprite_accessory/marking/M = E
+				if(M.draw_target == MARKING_TARGET_HAIR)
+					var/color = markings[E]
+					var/icon/I = icon(M.icon, M.icon_state)
+					I.Blend(HI, ICON_AND)
+					I.Blend(color, ICON_MULTIPLY)
+					ADD_SORTED(sorted_hair_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
+			for(var/entry in sorted_hair_markings)
+				HI.Blend(entry[2], ICON_OVERLAY)
+			res.overlays |= HI
+
+	var/list/sorted_head_markings = list()
+	for(var/E in markings)
+		var/datum/sprite_accessory/marking/M = E
+		if(M.draw_target == MARKING_TARGET_HEAD)
+			var/color = markings[E]
+			var/icon/I = icon(M.icon, M.icon_state)
+			if(!M.do_coloration && owner.h_style)
+				var/datum/sprite_accessory/hair/H = GLOB.hair_styles_list[owner.h_style]
+				if(H.do_coloration && length(h_col) >= 3)
+					I.Blend(rgb(h_col[1], h_col[2], h_col[3]), ICON_ADD)
+				else
+					I.Blend(rgb(200 + s_tone, 150 + s_tone, 123 + s_tone), ICON_ADD)
+			else
+				I.Blend(color, ICON_ADD)
+			icon_cache_key += "[M.name][color]"
+			ADD_SORTED(sorted_head_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
+	for(var/entry in sorted_head_markings)
+		res.overlays |= entry[2]
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
 	if(!powner)
 		return
+	owner = powner // This is kinda hackly ngl
+	get_hair_icon()
+	update_icon()
+	owner = null
 
-	overlays.Cut()
-	if(powner.f_style)
-		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
-			if(facial_hair_style.do_colouration)
-				facial_s.Blend(rgb(powner.r_facial, powner.g_facial, powner.b_facial), facial_hair_style.blend)
-			src.overlays += facial_s
-
-	if(powner.h_style)
-		var/style = powner.h_style
-		var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[style]
-		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
-				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
-			src.overlays += hair_s
-
-/obj/item/weapon/skull
+/obj/item/skull
 	name = "skull"
 	desc = "Supposed to be inside someone's head."
 	icon = 'icons/obj/items.dmi'
@@ -187,7 +223,7 @@
 	attack_verb = list("bludgeoned", "skulled", "buttheaded", "spooked")
 	var/iscut = 0
 
-/obj/item/weapon/skull/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/skull/attackby(obj/item/W as obj, mob/user as mob)
 	if(W.sharp && !iscut)
 		user.visible_message("<span class='warning'><b>[user]</b> cuts [src] open with [W]!</span>")
 		icon_state = "skull_human_cut"
@@ -195,7 +231,7 @@
 		name = "facial bones"
 		desc = "Used to be someone's face."
 		return
-	if((istype(W,/obj/item/weapon/handcuffs/cable)) && iscut)
+	if((istype(W,/obj/item/handcuffs/cable)) && iscut)
 		user.visible_message("<span class='notice'>[user] attaches [W] to [src].</span>")
 		new /obj/item/clothing/mask/skullmask(user.loc)
 		qdel(src)
@@ -205,13 +241,13 @@
 		var/obj/item/stack/M = W
 		if(M.get_material_name() == MATERIAL_STEEL)
 			if(do_after(usr, 10, src))
-				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
+				new /obj/item/reagent_containers/vessel/skullgoblet(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)
 		else if(M.get_material_name() == MATERIAL_GOLD)
 			if(do_after(usr, 10, src))
-				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
+				new /obj/item/reagent_containers/vessel/skullgoblet/gold(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)

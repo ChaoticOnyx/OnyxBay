@@ -1,14 +1,18 @@
 //This proc is called whenever someone clicks an inventory ui slot.
 /mob/proc/attack_ui(slot)
-	var/obj/item/W = get_active_hand()
+	var/obj/item/I = get_active_hand()
 	var/obj/item/E = get_equipped_item(slot)
-	if (istype(E))
-		if(istype(W))
-			E.attackby(W,src)
+	if(ishuman(src))
+		var/mob/living/carbon/C = src
+		if(C.handcuffed)
+			return
+	if(istype(E))
+		if(istype(I))
+			E.attackby(I, src)
 		else
 			E.attack_hand(src)
 	else
-		equip_to_slot_if_possible(W, slot)
+		equip_to_slot_if_possible(I, slot)
 
 /mob/proc/put_in_any_hand_if_possible(obj/item/W as obj, del_on_fail = 0, disable_warning = 1, redraw_mob = 1)
 	if(equip_to_slot_if_possible(W, slot_l_hand, del_on_fail, disable_warning, redraw_mob))
@@ -89,14 +93,14 @@ var/list/slot_equipment_priority = list( \
 
 /mob/proc/equip_to_storage(obj/item/newitem)
 	// Try put it in their backpack
-	if(istype(src.back,/obj/item/weapon/storage))
-		var/obj/item/weapon/storage/backpack = src.back
+	if(istype(src.back,/obj/item/storage))
+		var/obj/item/storage/backpack = src.back
 		if(backpack.can_be_inserted(newitem, null, 1))
 			newitem.forceMove(src.back)
 			return backpack
 
 	// Try to place it in any item that can store stuff, on the mob.
-	for(var/obj/item/weapon/storage/S in src.contents)
+	for(var/obj/item/storage/S in src.contents)
 		if(S.can_be_inserted(newitem, null, 1))
 			newitem.forceMove(S)
 			return S
@@ -151,13 +155,14 @@ var/list/slot_equipment_priority = list( \
 
 // Removes an item from inventory and places it in the target atom.
 // If canremove or other conditions need to be checked then use unEquip instead.
-/mob/proc/drop_from_inventory(obj/item/W, atom/target = null,force = null)
-	if(W && (W.candrop || force))
-		remove_from_mob(W, target)
-		if(!(W && W.loc)) return 1 // self destroying objects (tk, grabs)
-		update_icons()
-		return 1
-	return 0
+/mob/proc/drop_from_inventory(obj/item/W, atom/target = null)
+	if(!W)
+		return FALSE
+	remove_from_mob(W, target)
+	if(!W?.loc)
+		return TRUE // self destroying objects (tk, grabs)
+	update_icons()
+	return TRUE
 
 //Drops the item in our left hand
 /mob/proc/drop_l_hand(atom/Target, force)
@@ -226,11 +231,12 @@ var/list/slot_equipment_priority = list( \
 	return slot
 
 //This differs from remove_from_mob() in that it checks if the item can be unequipped first.
-/mob/proc/unEquip(obj/item/I, force = 0, atom/target = null) //Force overrides NODROP for things like wizarditis and admin undress.
-	if(!(force || canUnEquip(I)))
+/mob/proc/unEquip(obj/item/I, force = FALSE, atom/target = null) // Force overrides NODROP for things like wizarditis and admin undress.
+	if(QDELETED(I))
 		return
-	drop_from_inventory(I, target)
-	return 1
+	if(force || canUnEquip(I))
+		return drop_from_inventory(I, target) && !QDELETED(I)
+	return FALSE
 
 //Attemps to remove an object on a mob.
 /mob/proc/remove_from_mob(obj/O, atom/target)
@@ -300,3 +306,6 @@ var/list/slot_equipment_priority = list( \
 /mob/proc/is_item_in_hands(atom/A)
 	if(A && (l_hand == A || r_hand == A))
 		return TRUE
+
+/mob/proc/update_equipment_slowdown()
+	return

@@ -29,21 +29,21 @@
 	src.uses = uses
 	src.power_change()
 
-/obj/machinery/ai_slipper/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/ai_slipper/attackby(obj/item/W, mob/user)
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if (istype(user, /mob/living/silicon))
+	if(istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
 	else // trying to unlock the interface
-		if (src.allowed(usr))
+		if(src.allowed(usr))
 			locked = !locked
 			to_chat(user, "You [ locked ? "lock" : "unlock"] the device.")
-			if (locked)
-				if (user.machine==src)
+			if(locked)
+				if(user.machine==src)
 					user.unset_machine()
-					user << browse(null, "window=ai_slipper")
+					close_browser(user, "window=ai_slipper")
 			else
-				if (user.machine==src)
+				if(user.machine==src)
 					src.attack_hand(usr)
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
@@ -56,18 +56,18 @@
 /obj/machinery/ai_slipper/attack_hand(mob/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if ( (get_dist(src, user) > 1 ))
-		if (!istype(user, /mob/living/silicon))
+	if(get_dist(src, user) > 1)
+		if(!istype(user, /mob/living/silicon))
 			to_chat(user, text("Too far away."))
 			user.unset_machine()
-			user << browse(null, "window=ai_slipper")
+			close_browser(user, "window=ai_slipper")
 			return
 
 	user.set_machine(src)
 	var/loc = src.loc
-	if (istype(loc, /turf))
+	if(istype(loc, /turf))
 		loc = loc:loc
-	if (!istype(loc, /area))
+	if(!istype(loc, /area))
 		to_chat(user, text("Turret badly positioned - loc.loc is [].", loc))
 		return
 	var/area/area = loc
@@ -79,7 +79,7 @@
 		t += text("Dispenser [] - <A href='?src=\ref[];toggleOn=1'>[]?</a><br>\n", src.disabled?"deactivated":"activated", src, src.disabled?"Enable":"Disable")
 		t += text("Uses Left: [uses]. <A href='?src=\ref[src];toggleUse=1'>Activate the dispenser?</A><br>\n")
 
-	user << browse(t, "window=computer;size=575x450")
+	show_browser(user, t, "window=computer;size=575x450")
 	onclose(user, "computer")
 	return
 

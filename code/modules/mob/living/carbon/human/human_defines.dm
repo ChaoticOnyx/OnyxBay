@@ -31,6 +31,7 @@
 	var/icon_update = 1 //whether icon updating shall take place
 
 	var/datum/body_build/body_build = null
+	var/body_height = HUMAN_HEIGHT_NORMAL
 
 	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
 
@@ -73,6 +74,7 @@
 	var/special_voice = "" // For changing our voice. Used by a symptom.
 
 	var/last_dam = -1	//Used for determining if we need to process all organs or just some or even none.
+	var/list/bad_external_organs = list()// organs we check until they are good.
 
 	var/xylophone = 0 //For the spoooooooky xylophone cooldown
 
@@ -119,5 +121,6 @@
 	var/obj/item/grab/current_grab_type 	// What type of grab they use when they grab someone.
 	var/skin_state = SKIN_NORMAL
 	var/no_pain = 0
+	var/full_pain = 0 // Cheaper to actually store this than iterate over all the organs for every single check
 
 	var/debug = 0

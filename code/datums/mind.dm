@@ -33,7 +33,7 @@
 	var/key
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
-	var/mob/living/original	//TODO: remove.not used in any meaningful way ~Carn. First I'll need to tweak the way silicon-mobs handle minds.
+	var/weakref/original_mob = null // must contain /mob/living
 	var/active = 0
 
 	var/memory
@@ -47,15 +47,18 @@
 
 	var/datum/job/assigned_job
 
+	var/completed_contracts = 0
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
 	var/syndicate_awareness = SYNDICATE_UNAWARE
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
-	var/datum/faction/faction 			//associated faction
-	var/datum/changeling/changeling		//changeling holder
-	var/datum/vampire/vampire 			//vampire holder
+	var/datum/faction/faction 			// Associated faction
+	var/datum/changeling/changeling		// Changeling holder
+	var/datum/vampire/vampire 			// Vampire holder
+	var/datum/wizard/wizard				// Wizard holder
+	var/datum/abductor/abductor 		// Abductor holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -67,6 +70,7 @@
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
 	var/was_antag_given_by_storyteller = FALSE
+	var/antag_was_given_at = ""
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
@@ -82,37 +86,52 @@
 
 /datum/mind/Destroy()
 	SSticker.minds -= src
+	set_current(null)
+	original_mob = null
 	. = ..()
+
+/datum/mind/proc/set_current(mob/new_current)
+	if(new_current && QDELETED(new_current))
+		crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
+	if(current)
+		unregister_signal(src, SIGNAL_QDELETING)
+	current = new_current
+	if(current)
+		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+
+/datum/mind/proc/clear_current(datum/source)
+	set_current(null)
 
 /datum/mind/proc/transfer_to(mob/living/new_character)
 	if(!istype(new_character))
-		world.log << "## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform Carn"
+		to_world_log("## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform developers.")
+		return FALSE
+
 	if(current)					//remove ourself from our old body's mind variable
-		if(changeling)
-			current.remove_changeling_powers()
-			current.verbs -= /datum/changeling/proc/EvolutionMenu
 		if(vampire)
 			current.remove_vampire_powers()
 		current.mind = null
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
-		new_character.mind.current = null
+		new_character.mind.set_current(null)
 
-	current = new_character		//link ourself to our new body
-	new_character.mind = src	//and link our new body to ourself
+	set_current(new_character) //link ourself to our new body
+	new_character.mind = src   //and link our new body to ourself
 
 	if(learned_spells && learned_spells.len)
 		restore_spells(new_character)
 
 	if(changeling)
-		new_character.make_changeling()
+		changeling.transfer_to(new_character)
 
 	if(vampire)
 		new_character.make_vampire()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
+
+	return TRUE
 
 /datum/mind/proc/store_memory(new_text)
 	memory += "[new_text]<BR>"
@@ -130,7 +149,7 @@
 			obj_count++
 	if(ambitions)
 		output += "<HR><B>Ambitions:</B> [ambitions]<br>"
-	recipient << browse(output,"window=memory")
+	show_browser(recipient, output,"window=memory")
 
 /datum/mind/proc/edit_memory()
 	if(GAME_STATE <= RUNLEVEL_SETUP)
@@ -166,7 +185,7 @@
 		out += "None."
 	out += "<br><a href='?src=\ref[src];obj_add=1'>\[add\]</a><br><br>"
 	out += "<b>Ambitions:</b> [ambitions ? ambitions : "None"] <a href='?src=\ref[src];amb_edit=\ref[src]'>\[edit\]</a></br>"
-	usr << browse(out, "window=edit_memory[src]")
+	show_browser(usr, out, "window=edit_memory[src]")
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))	return
@@ -240,7 +259,7 @@
 			if(!def_value)//If it's a custom objective, it will be an empty string.
 				def_value = "custom"
 
-		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "mercenary", "capture", "absorb", "custom")
+		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "nuke", "capture", "absorb", "custom")
 		if (!new_obj_type) return
 
 		var/datum/objective/new_objective = null
@@ -294,7 +313,7 @@
 				new_objective = new /datum/objective/survive
 				new_objective.owner = src
 
-			if ("mercenary")
+			if ("nuke")
 				new_objective = new /datum/objective/nuclear
 				new_objective.owner = src
 
@@ -362,7 +381,7 @@
 
 		switch(href_list["implant"])
 			if("remove")
-				for(var/obj/item/weapon/implant/loyalty/I in H.contents)
+				for(var/obj/item/implant/loyalty/I in H.contents)
 					for(var/obj/item/organ/external/organs in H.organs)
 						if(I in organs.implants)
 							qdel(I)
@@ -417,8 +436,8 @@
 	else if (href_list["common"])
 		switch(href_list["common"])
 			if("undress")
-				for(var/obj/item/W in current)
-					current.drop_from_inventory(W)
+				for(var/obj/item/I in current)
+					current.drop_from_inventory(I)
 			if("takeuplink")
 				take_uplink()
 				memory = null//Remove any memory they may have had.
@@ -466,7 +485,7 @@
 	var/is_currently_brigged = FALSE
 	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
 		is_currently_brigged = TRUE
-		for(var/obj/item/weapon/card/id/card in current)
+		for(var/obj/item/card/id/card in current)
 			is_currently_brigged = FALSE
 			break
 		for(var/obj/item/device/pda/P in current)
@@ -519,10 +538,10 @@
 		mind.key = key
 	else
 		mind = new /datum/mind(key)
-		mind.original = src
+		mind.original_mob = weakref(src)
 		SSticker.minds += mind
 	if(!mind.name)	mind.name = real_name
-	mind.current = src
+	mind.set_current(src)
 	if(player_is_antag(mind))
 		src.client.verbs += /client/proc/aooc
 
@@ -531,14 +550,14 @@
 	..()
 	if(!mind.assigned_role)	mind.assigned_role = "Assistant"	//defualt
 
-//slime
-/mob/living/carbon/slime/mind_initialize()
+//metroid
+/mob/living/carbon/metroid/mind_initialize()
 	..()
-	mind.assigned_role = "slime"
+	mind.assigned_role = "metroid"
 
 /mob/living/carbon/alien/larva/mind_initialize()
 	..()
-	mind.special_role = "Larva"
+	mind.special_role = "Xenomorph"
 
 //AI
 /mob/living/silicon/ai/mind_initialize()

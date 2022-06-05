@@ -1,10 +1,10 @@
-/obj/item/weapon/storage/box/bloodpacks
+/obj/item/storage/box/bloodpacks
 	name = "blood packs box"
 	desc = "This box contains blood packs."
 	icon_state = "sterile"
-	startswith = list(/obj/item/weapon/reagent_containers/ivbag = 7)
+	startswith = list(/obj/item/reagent_containers/ivbag = 7)
 
-/obj/item/weapon/reagent_containers/ivbag
+/obj/item/reagent_containers/ivbag
 	name = "\improper IV bag"
 	desc = "Flexible bag for IV injectors."
 	icon = 'icons/obj/bloodpack.dmi'
@@ -18,12 +18,12 @@
 	var/vampire_marks = null
 	var/mob/living/carbon/human/attached
 
-/obj/item/weapon/reagent_containers/ivbag/Destroy()
+/obj/item/reagent_containers/ivbag/Destroy()
 	STOP_PROCESSING(SSobj,src)
 	attached = null
 	. = ..()
 
-/obj/item/weapon/reagent_containers/ivbag/on_reagent_change()
+/obj/item/reagent_containers/ivbag/on_reagent_change()
 	update_icon()
 	if(reagents.total_volume > volume/2)
 		w_class = ITEM_SIZE_NORMAL
@@ -32,7 +32,7 @@
 
 
 
-/obj/item/weapon/reagent_containers/ivbag/attack(mob/living/carbon/human/M, mob/living/carbon/human/user, target_zone)
+/obj/item/reagent_containers/ivbag/attack(mob/living/carbon/human/M, mob/living/carbon/human/user, target_zone)
 	if (user == M && M.mind && M.mind.vampire)
 		if (being_feed)
 			to_chat(user, SPAN_NOTICE("You are already feeding on \the [src]."))
@@ -41,7 +41,7 @@
 			user.visible_message(SPAN_WARNING("[user] raises \the [src] up to their mouth and bites into it."), SPAN_NOTICE("You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
 			being_feed = TRUE
 			vampire_marks = TRUE
-			while (do_after(user, 25, 5, 1))
+			while (do_after(user, 30, src))
 				if(!user)
 					return
 				var/blood_taken = 0
@@ -60,14 +60,14 @@
 	else
 		..()
 
-/obj/item/weapon/reagent_containers/ivbag/examine(mob/user, distance = 2)
+/obj/item/reagent_containers/ivbag/_examine_text(mob/user, distance = 2)
 	. = ..()
 	if (vampire_marks)
 		. += SPAN_WARNING("There are teeth marks on it.")
 
-/obj/item/weapon/reagent_containers/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
 
-/obj/item/weapon/reagent_containers/ivbag/update_icon()
+/obj/item/reagent_containers/ivbag/update_icon()
 	overlays.Cut()
 	var/percent = round(reagents.total_volume / volume * 100)
 	if(reagents.total_volume)
@@ -78,7 +78,7 @@
 	if(attached)
 		overlays += image('icons/obj/bloodpack.dmi', "dongle")
 
-/obj/item/weapon/reagent_containers/ivbag/MouseDrop(over_object, src_location, over_location)
+/obj/item/reagent_containers/ivbag/MouseDrop(over_object, src_location, over_location)
 	if(!CanMouseDrop(over_object))
 		return
 	if(!ismob(loc))
@@ -94,7 +94,7 @@
 			START_PROCESSING(SSobj,src)
 	update_icon()
 
-/obj/item/weapon/reagent_containers/ivbag/Process()
+/obj/item/reagent_containers/ivbag/Process()
 	if(!ismob(loc))
 		return PROCESS_KILL
 
@@ -117,34 +117,34 @@
 	reagents.trans_to_mob(attached, amount_per_transfer_from_this, CHEM_BLOOD)
 	update_icon()
 
-/obj/item/weapon/reagent_containers/ivbag/nanoblood/New()
-	..()
+/obj/item/reagent_containers/ivbag/nanoblood/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nanoblood, volume)
 
-/obj/item/weapon/reagent_containers/ivbag/blood
+/obj/item/reagent_containers/ivbag/blood
 	name = "blood pack"
 	var/blood_type = null
 
-/obj/item/weapon/reagent_containers/ivbag/blood/New()
-	..()
+/obj/item/reagent_containers/ivbag/blood/Initialize()
+	. = ..()
 	if(blood_type)
 		name = "blood pack [blood_type]"
 		reagents.add_reagent(/datum/reagent/blood, volume, list("donor" = null, "blood_DNA" = null, "blood_type" = blood_type, "trace_chem" = null, "virus2" = list(), "antibodies" = list()))
 
-/obj/item/weapon/reagent_containers/ivbag/blood/APlus
+/obj/item/reagent_containers/ivbag/blood/APlus
 	blood_type = "A+"
 
-/obj/item/weapon/reagent_containers/ivbag/blood/AMinus
+/obj/item/reagent_containers/ivbag/blood/AMinus
 	blood_type = "A-"
 
-/obj/item/weapon/reagent_containers/ivbag/blood/BPlus
+/obj/item/reagent_containers/ivbag/blood/BPlus
 	blood_type = "B+"
 
-/obj/item/weapon/reagent_containers/ivbag/blood/BMinus
+/obj/item/reagent_containers/ivbag/blood/BMinus
 	blood_type = "B-"
 
-/obj/item/weapon/reagent_containers/ivbag/blood/OPlus
+/obj/item/reagent_containers/ivbag/blood/OPlus
 	blood_type = "O+"
 
-/obj/item/weapon/reagent_containers/ivbag/blood/OMinus
+/obj/item/reagent_containers/ivbag/blood/OMinus
 	blood_type = "O-"

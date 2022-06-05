@@ -37,5 +37,7 @@
 	update_icon()
 	return 0
 
-/obj/effect/fusion_particle_catcher/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	return ismob(mover)
+/obj/effect/fusion_particle_catcher/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover, /obj/effect/accelerated_particle) || istype(mover, /obj/item/projectile/beam))
+		return !density
+	return TRUE

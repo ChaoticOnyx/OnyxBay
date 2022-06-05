@@ -1,6 +1,6 @@
 #define FONT_SIZE "5pt"
 #define FONT_COLOR "#09f"
-#define FONT_STYLE "Arial Black"
+#define FONT_STYLE "Small Fonts"
 #define SCROLL_SPEED 2
 
 // Status display
@@ -37,8 +37,9 @@
 
 	maptext_height = 26
 	maptext_width = 32
+	maptext_y = -1
 
-	var/const/CHARS_PER_LINE = 5
+	var/const/CHARS_PER_LINE = 8
 	var/const/STATUS_DISPLAY_BLANK = 0
 	var/const/STATUS_DISPLAY_TRANSFER_SHUTTLE_TIME = 1
 	var/const/STATUS_DISPLAY_MESSAGE = 2
@@ -48,6 +49,7 @@
 	var/const/STATUS_DISPLAY_CUSTOM = 99
 
 /obj/machinery/status_display/Destroy()
+	GLOB.ai_status_display_list -= src
 	if(radio_controller)
 		radio_controller.remove_object(src,frequency)
 	return ..()
@@ -55,6 +57,7 @@
 // register for radio system
 /obj/machinery/status_display/Initialize()
 	. = ..()
+	GLOB.ai_status_display_list += src
 	if(radio_controller)
 		radio_controller.add_object(src, frequency)
 
@@ -135,7 +138,7 @@
 			return 1
 	return 0
 
-/obj/machinery/status_display/examine(mob/user)
+/obj/machinery/status_display/_examine_text(mob/user)
 	. = ..()
 	if(mode != STATUS_DISPLAY_BLANK && mode != STATUS_DISPLAY_ALERT)
 		. += "\nThe display says:<br>\t[sanitize(message1)]<br>\t[sanitize(message2)]"
@@ -165,7 +168,7 @@
 	var/decl/security_level/sl = security_state.current_security_level
 
 	var/image/alert = image(sl.icon, sl.overlay_status_display)
-	set_light(l_range = sl.light_range, l_power = sl.light_power, l_color = sl.light_color_status_display)
+	set_light(sl.light_max_bright, sl.light_inner_range, sl.light_outer_range, 2, sl.light_color_alarm)
 	overlays |= alert
 
 /obj/machinery/status_display/proc/set_picture(state)
@@ -174,13 +177,13 @@
 		picture_state = state
 		picture = image('icons/obj/status_display.dmi', icon_state=picture_state)
 	overlays |= picture
-	set_light(1.5, 1, COLOR_WHITE)
+	set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/update_display(line1, line2)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
 	if(maptext != new_text)
 		maptext = new_text
-	set_light(1.5, 1, COLOR_WHITE)
+	set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
 /obj/machinery/status_display/proc/get_shuttle_timer()
 	var/timeleft = evacuation_controller.get_eta()

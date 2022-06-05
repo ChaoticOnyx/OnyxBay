@@ -101,19 +101,19 @@
 			paiController.pai_candidates.Remove(candidate)
 	feedback_add_details("admin_verb","MPAI") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/cmd_admin_slimeize(mob/M in SSmobs.mob_list)
+/client/proc/cmd_admin_metroidize(mob/M in SSmobs.mob_list)
 	set category = "Fun"
-	set name = "Make slime"
+	set name = "Make metroid"
 
 	if(GAME_STATE < RUNLEVEL_GAME)
 		alert("Wait until the game starts")
 		return
 	if(ishuman(M))
-		log_admin("[key_name(src)] has slimeized [M.key].")
+		log_admin("[key_name(src)] has metroidized [M.key].")
 		spawn(10)
-			M:slimeize()
+			M:metroidize()
 			feedback_add_details("admin_verb","MKMET") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		log_and_message_admins("made [key_name(M)] into a slime.")
+		log_and_message_admins("made [key_name(M)] into a metroid.")
 	else
 		alert("Invalid mob")
 
@@ -145,9 +145,9 @@
 	set category = "Server"
 	set name = "Toggle Aliens"
 
-	config.aliens_allowed = !config.aliens_allowed
-	log_admin("[key_name(src)] has turned aliens [config.aliens_allowed ? "on" : "off"].")
-	message_admins("[key_name_admin(src)] has turned aliens [config.aliens_allowed ? "on" : "off"].", 0)
+	config.misc.aliens_allowed = !config.misc.aliens_allowed
+	log_admin("[key_name(src)] has turned aliens [config.misc.aliens_allowed ? "on" : "off"].")
+	message_admins("[key_name_admin(src)] has turned aliens [config.misc.aliens_allowed ? "on" : "off"].", 0)
 	feedback_add_details("admin_verb","TAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_grantfullaccess(mob/M in SSmobs.mob_list)
@@ -160,14 +160,14 @@
 	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		if (H.wear_id)
-			var/obj/item/weapon/card/id/id = H.wear_id
+			var/obj/item/card/id/id = H.wear_id
 			if(istype(H.wear_id, /obj/item/device/pda))
 				var/obj/item/device/pda/pda = H.wear_id
 				id = pda.id
 			id.icon_state = "gold"
 			id.access = get_all_accesses()
 		else
-			var/obj/item/weapon/card/id/id = new /obj/item/weapon/card/id(M);
+			var/obj/item/card/id/id = new /obj/item/card/id(M);
 			id.icon_state = "gold"
 			id.access = get_all_accesses()
 			id.registered_name = H.real_name
@@ -221,27 +221,27 @@
 		if(!(A.type in areas_all))
 			areas_all.Add(A.type)
 
-	for(var/obj/machinery/power/apc/APC in world)
+	for(var/obj/machinery/power/apc/APC in GLOB.apc_list)
 		var/area/A = get_area(APC)
 		if(!(A.type in areas_with_APC))
 			areas_with_APC.Add(A.type)
 
-	for(var/obj/machinery/alarm/alarm in world)
+	for(var/obj/machinery/alarm/alarm in GLOB.firealarm_list)
 		var/area/A = get_area(alarm)
 		if(!(A.type in areas_with_air_alarm))
 			areas_with_air_alarm.Add(A.type)
 
-	for(var/obj/machinery/requests_console/RC in world)
+	for(var/obj/machinery/requests_console/RC in GLOB.machines)
 		var/area/A = get_area(RC)
 		if(!(A.type in areas_with_RC))
 			areas_with_RC.Add(A.type)
 
-	for(var/obj/machinery/light/L in world)
+	for(var/obj/machinery/light/L in GLOB.machines)
 		var/area/A = get_area(L)
 		if(!(A.type in areas_with_light))
 			areas_with_light.Add(A.type)
 
-	for(var/obj/machinery/light_switch/LS in world)
+	for(var/obj/machinery/light_switch/LS in GLOB.machines)
 		var/area/A = get_area(LS)
 		if(!(A.type in areas_with_LS))
 			areas_with_LS.Add(A.type)

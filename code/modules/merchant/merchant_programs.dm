@@ -122,9 +122,10 @@
 	if(pad)
 		var/list/targets = pad.get_targets()
 		for(var/target in targets)
-			if(istype(target, /obj/item/weapon/spacecash))
-				var/obj/item/weapon/spacecash/cash = target
+			if(istype(target, /obj/item/spacecash))
+				var/obj/item/spacecash/cash = target
 				bank += cash.worth
+				cash.worth = 0
 				qdel(target)
 		last_comms = "ALL MONEY DETECTED ON PAD TRANSFERED"
 		return
@@ -135,7 +136,7 @@
 		last_comms = "PAD NOT CONNECTED. CANNOT TRANSFER"
 		return
 	var/turf/T = get_turf(pad)
-	var/obj/item/weapon/spacecash/bundle/B = new(T)
+	var/obj/item/spacecash/bundle/B = new(T)
 	B.worth = bank
 	bank = 0
 	B.update_icon()

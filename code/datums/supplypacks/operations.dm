@@ -1,9 +1,23 @@
 /decl/hierarchy/supply_pack/operations
 	name = "Operations"
 
+/decl/hierarchy/supply_pack/operations/arts
+	name = "Arts Supplies"
+	cost = 10
+	contains = list(
+		/obj/structure/easel,
+		/obj/item/canvas/twentythree_twentythree,
+		/obj/item/canvas/twentythree_nineteen,
+		/obj/item/canvas/nineteen_nineteen,
+		/obj/item/canvas/twentyfour_twentyfour,
+		/obj/item/canvas = 2,
+		/obj/item/pen/crayon/rainbow = 2
+	)
+	containername = "Arts Crate"
+
 /decl/hierarchy/supply_pack/operations/mule
 	name = "MULEbot Crate"
-	contains = list()
+	contains = list(/mob/living/bot/mulebot)
 	cost = 20
 	containertype = /obj/structure/largecrate/animal/mulebot
 	containername = "Mulebot Crate"
@@ -24,29 +38,29 @@
 
 /decl/hierarchy/supply_pack/operations/artscrafts
 	name = "Arts and Crafts supplies"
-	contains = list(/obj/item/weapon/storage/fancy/crayons,
+	contains = list(/obj/item/storage/fancy/crayons,
 	/obj/item/device/camera,
 	/obj/item/device/camera_film = 2,
-	/obj/item/weapon/storage/photo_album,
-	/obj/item/weapon/packageWrap,
-	/obj/item/weapon/reagent_containers/glass/paint/red,
-	/obj/item/weapon/reagent_containers/glass/paint/green,
-	/obj/item/weapon/reagent_containers/glass/paint/blue,
-	/obj/item/weapon/reagent_containers/glass/paint/yellow,
-	/obj/item/weapon/reagent_containers/glass/paint/purple,
-	/obj/item/weapon/reagent_containers/glass/paint/black,
-	/obj/item/weapon/reagent_containers/glass/paint/white,
-	/obj/item/weapon/contraband/poster,
-	/obj/item/weapon/wrapping_paper = 3)
+	/obj/item/storage/photo_album,
+	/obj/item/packageWrap,
+	/obj/item/reagent_containers/vessel/paint/red,
+	/obj/item/reagent_containers/vessel/paint/green,
+	/obj/item/reagent_containers/vessel/paint/blue,
+	/obj/item/reagent_containers/vessel/paint/yellow,
+	/obj/item/reagent_containers/vessel/paint/purple,
+	/obj/item/reagent_containers/vessel/paint/black,
+	/obj/item/reagent_containers/vessel/paint/white,
+	/obj/item/contraband/poster,
+	/obj/item/wrapping_paper = 3)
 	cost = 10
 	containername = "\improper Arts and Crafts crate"
 
 /decl/hierarchy/supply_pack/operations/contraband
 	num_contained = 5
 	contains = list(/obj/item/seeds/bloodtomatoseed,
-					/obj/item/weapon/storage/pill_bottle/zoom,
-					/obj/item/weapon/storage/pill_bottle/happy,
-					/obj/item/weapon/reagent_containers/food/drinks/bottle/pwine)
+					/obj/item/storage/pill_bottle/zoom,
+					/obj/item/storage/pill_bottle/happy,
+					/obj/item/reagent_containers/vessel/bottle/pwine)
 
 	name = "Contraband crate"
 	cost = 30
@@ -56,7 +70,7 @@
 
 /decl/hierarchy/supply_pack/operations/hoverpod
 	name = "Hoverpod Shipment"
-	contains = list()
+	contains = list(/obj/mecha/working/hoverpod)
 	cost = 80
 	containertype = /obj/structure/largecrate/hoverpod
 	containername = "\improper Hoverpod Crate"

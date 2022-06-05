@@ -1,7 +1,7 @@
 //RIG Modules
 //Sidenote; Try to keep a requirement of 5 engineering for each, but keep the rest as similiar to it's original as possible.
 /datum/design/item/rig
-	category_items = "RIG"
+	category_items = list("RIG")
 
 /datum/design/item/rig/meson
 	name = "meson scanner"

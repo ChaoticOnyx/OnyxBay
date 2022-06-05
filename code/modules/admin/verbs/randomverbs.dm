@@ -9,8 +9,8 @@
 	if(confirm != "Yes")
 		return
 
-	for(var/obj/item/W in M)
-		M.drop_from_inventory(W)
+	for(var/obj/item/I in M)
+		M.drop_from_inventory(I)
 
 	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
@@ -27,8 +27,8 @@
 			alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
 			return
 		//strip their stuff before they teleport into a cell :downs:
-		for(var/obj/item/W in M)
-			M.drop_from_inventory(W)
+		for(var/obj/item/I in M)
+			M.drop_from_inventory(I)
 		//teleport person to cell
 		M.Paralyse(5)
 		sleep(5)	//so they black out before warping
@@ -93,7 +93,7 @@
 		to_chat(src, "Some accounts did not have proper ages set in their clients.  This function requires database to be present")
 
 	if(msg != "")
-		src << browse(msg, "window=Player_age_check")
+		show_browser(src, msg, "window=Player_age_check")
 	else
 		to_chat(src, "No matches for that age range found.")
 
@@ -217,7 +217,7 @@
 	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]", 1)
 	feedback_add_details("admin_verb","GOD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-proc/cmd_admin_mute(mob/M as mob, mute_type)
+/proc/cmd_admin_mute(mob/M, mute_type)
 	if(!usr || !usr.client)
 		return
 	if(!usr.client.holder)
@@ -322,7 +322,7 @@ Ccomp's first proc.
 		to_chat(src, "<span class='warning'>[selection] no longer has an associated ghost.</span>")
 		return
 
-	if(G.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
+	if(G.has_enabled_antagHUD == 1 && config.ghost.antag_hud_restricted)
 		var/response = alert(src, "[selection] has enabled antagHUD. Are you sure you wish to allow them to respawn?","Ghost has used AntagHUD","No","Yes")
 		if(response == "No") return
 	else
@@ -337,7 +337,7 @@ Ccomp's first proc.
 	G.can_reenter_corpse = CORPSE_CAN_REENTER_AND_RESPAWN
 
 	G.show_message("<span class=notice><b>You may now respawn.  You should roleplay as if you learned nothing about the round during your time with the dead.</b></span>", 1)
-	log_and_message_admins("has allowed [key_name(G)] to bypass the [config.respawn_delay] minute respawn limit.")
+	log_and_message_admins("has allowed [key_name(G)] to bypass the [config.misc.respawn_delay] minute respawn limit.")
 
 /client/proc/toggle_antagHUD_use()
 	set category = "Server"
@@ -347,7 +347,7 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.antag_hud_allowed)
+	if(config.ghost.allow_antag_hud)
 		for(var/mob/observer/ghost/g in get_ghosts())
 			if(!g.client.holder)						//Remove the verb from non-admin ghosts
 				g.verbs -= /mob/observer/ghost/verb/toggle_antagHUD
@@ -355,7 +355,7 @@ Ccomp's first proc.
 				g.antagHUD = 0						// Disable it on those that have it enabled
 				g.has_enabled_antagHUD = 2				// We'll allow them to respawn
 				to_chat(g, "<span class='danger'>The Administrator has disabled AntagHUD</span>")
-		config.antag_hud_allowed = 0
+		config.ghost.allow_antag_hud = 0
 		to_chat(src, "<span class='danger'>AntagHUD usage has been disabled</span>")
 		action = "disabled"
 	else
@@ -364,7 +364,7 @@ Ccomp's first proc.
 				g.verbs += /mob/observer/ghost/verb/toggle_antagHUD
 				to_chat(g, "<span class='notice'><B>The Administrator has enabled AntagHUD </B></span>")// Notify all observers they can now use AntagHUD
 
-		config.antag_hud_allowed = 1
+		config.ghost.allow_antag_hud = 1
 		action = "enabled"
 		to_chat(src, "<span class='notice'><B>AntagHUD usage has been enabled</B></span>")
 
@@ -381,11 +381,11 @@ Ccomp's first proc.
 	if(!holder)
 		to_chat(src, "Only administrators may use this command.")
 	var/action=""
-	if(config.antag_hud_restricted)
+	if(config.ghost.antag_hud_restricted)
 		for(var/mob/observer/ghost/g in get_ghosts())
 			to_chat(g, "<span class='notice'><B>The administrator has lifted restrictions on joining the round if you use AntagHUD</B></span>")
 		action = "lifted restrictions"
-		config.antag_hud_restricted = 0
+		config.ghost.antag_hud_restricted = 0
 		to_chat(src, "<span class='notice'><B>AntagHUD restrictions have been lifted</B></span>")
 	else
 		for(var/mob/observer/ghost/g in get_ghosts())
@@ -394,17 +394,17 @@ Ccomp's first proc.
 			g.antagHUD = 0
 			g.has_enabled_antagHUD = 0
 		action = "placed restrictions"
-		config.antag_hud_restricted = 1
+		config.ghost.antag_hud_restricted = 1
 		to_chat(src, "<span class='danger'>AntagHUD restrictions have been enabled</span>")
 
 	log_admin("[key_name(usr)] has [action] on joining the round if they use AntagHUD")
 	message_admins("Admin [key_name_admin(usr)] has [action] on joining the round if they use AntagHUD", 1)
 
 /*
-If a guy was gibbed and you want to revive him, this is a good way to do so.
-Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
-Traitors and the like can also be revived with the previous role mostly intact.
-/N */
+	If a guy was gibbed and you want to revive him, this is a good way to do so.
+	Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
+	Traitors and the like can also be revived with the previous role mostly intact.
+ */
 /client/proc/respawn_character()
 	set category = "Special Verbs"
 	set name = "Respawn Character"
@@ -434,12 +434,12 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(record_found)//If they have a record we can determine a few things.
 		new_character.real_name = record_found.get_name()
-		new_character.gender = record_found.get_sex()
+		new_character.gender = lowertext(record_found.get_sex())
 		new_character.age = record_found.get_age()
 		new_character.b_type = record_found.get_bloodtype()
 	else
 		new_character.gender = pick(MALE,FEMALE)
-		var/datum/preferences/A = new()
+		var/datum/preferences/A = new(G_found.client)
 		A.randomize_appearance_and_body_for(new_character)
 		new_character.real_name = G_found.real_name
 
@@ -479,11 +479,14 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	else
 		job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)
 
+	var/datum/job/job = job_master.GetJob(new_character.mind.assigned_role)
+
 	//Announces the character on all the systems, based on the record.
 	if(!issilicon(new_character))//If they are not a cyborg/AI.
 		if(!record_found && !player_is_antag(new_character.mind, only_offstation_roles = 1)) //If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
-				call(/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
+				var/datum/spawnpoint/arrivals/spawnpoint = new()
+				call(/proc/AnnounceArrival)(new_character.real_name, job, spawnpoint)
 
 	log_and_message_admins("has respawned [player_key] as [new_character.real_name].")
 
@@ -530,7 +533,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!istype(M))
 		alert("Cannot revive a ghost")
 		return
-	if(config.allow_admin_rev)
+	if(config.admin.allow_admin_rev)
 		M.revive()
 
 		log_and_message_admins("healed / revived [key_name_admin(M)]!")
@@ -576,7 +579,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		log_admin("[key_name(usr)] deleted [O] at ([O.x],[O.y],[O.z])")
 		message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])", 1)
 		feedback_add_details("admin_verb","DEL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-		qdel(O)
+		if(isturf(O))
+			var/turf/T = O
+			T.ChangeTurf(world.turf)
+		else
+			qdel(O)
 
 /client/proc/cmd_admin_list_open_jobs()
 	set category = "Admin"
@@ -605,7 +612,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	var/flash = input("Range of flash. -1 to none", text("Input"))  as num|null
 	if(flash == null) return
 	var/shaped = 0
-	if(config.use_recursive_explosions)
+	if(config.game.use_recursive_explosions)
 		if(alert(src, "Shaped explosion?", "Shape", "Yes", "No") == "Yes")
 			shaped = input("Shaped where to?", "Input")  as anything in list("NORTH","SOUTH","EAST","WEST")
 			shaped = text2dir(shaped)
@@ -694,7 +701,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	feedback_add_details("admin_verb","CC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /* This proc is DEFERRED. Does not do anything.
-/client/proc/cmd_admin_remove_phoron()
+/client/proc/cmd_admin_remove_plasma()
 	set category = "Debug"
 	set name = "Stabilize Atmos."
 	if(!holder)
@@ -837,15 +844,15 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Server"
 	set name = "Toggle random events on/off"
 
-	set desc = "Toggles random events such as meteors, black holes, blob (but not space dust) on/off"
+	set desc = "Toggles random events such as meteors, black holes on/off"
 	if(!check_rights(R_SERVER))	return
 
-	if(!config.allow_random_events)
-		config.allow_random_events = 1
+	if(!config.random_events.enable)
+		config.random_events.enable = 1
 		to_chat(usr, "Random events enabled")
 		message_admins("Admin [key_name_admin(usr)] has enabled random events.", 1)
 	else
-		config.allow_random_events = 0
+		config.random_events.enable = 0
 		to_chat(usr, "Random events disabled")
 		message_admins("Admin [key_name_admin(usr)] has disabled random events.", 1)
 	feedback_add_details("admin_verb","TRE") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

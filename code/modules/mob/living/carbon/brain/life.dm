@@ -94,7 +94,7 @@
 		blinded = 1
 		silent = 0
 	else				//ALIVE. LIGHTS ARE ON
-		if( !container && (health < config.health_threshold_dead || ((world.time - timeofhostdeath) > config.revival_brain_life)) )
+		if( !container && (health < config.health.health_threshold_dead || ((world.time - timeofhostdeath) > config.revival.revival_brain_life)) )
 			death()
 			blinded = 1
 			silent = 0
@@ -193,11 +193,3 @@
 				reset_view(null)
 
 	return 1
-
-	if (stat != 2)
-		if (machine)
-			if (machine.check_eye(src) < 0)
-				reset_view(null)
-		else
-			if(client && !client.adminobs)
-				reset_view(null)

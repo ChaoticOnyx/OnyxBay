@@ -5,6 +5,7 @@
 	icon_state = "densecrate"
 	density = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 /obj/structure/largecrate/Initialize()
 	. = ..()
@@ -17,7 +18,7 @@
 	to_chat(user, "<span class='notice'>You need a crowbar to pry this open!</span>")
 	return
 
-/obj/structure/largecrate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/largecrate/attackby(obj/item/W as obj, mob/user as mob)
 	if(isCrowbar(W))
 		new /obj/item/stack/material/wood(src)
 		var/turf/T = get_turf(src)
@@ -30,35 +31,35 @@
 	else
 		return attack_hand(user)
 
-/obj/structure/largecrate/mule
-	name = "MULE crate"
-
 /obj/structure/largecrate/hoverpod
 	name = "\improper Hoverpod assembly crate"
 	desc = "It comes in a box for the fabricator's sake. Where does the wood come from? ... And why is it lighter?"
 	icon_state = "mulecrate"
 
-/obj/structure/largecrate/hoverpod/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(isCrowbar(W))
-		var/obj/item/mecha_parts/mecha_equipment/ME
-		var/obj/mecha/working/hoverpod/H = new (loc)
+/obj/structure/largecrate/hoverpod/Initialize()
+	. = ..()
 
-		ME = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
-		ME.attach(H)
-		ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
-		ME.attach(H)
-	..()
+	var/obj/item/mecha_parts/mecha_equipment/ME
+	var/obj/mecha/working/hoverpod/H = new (src)
+
+	ME = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
+	ME.attach(H)
+	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
+	ME.attach(H)
+
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"
 	var/held_count = 1
 	var/held_type
 
-/obj/structure/largecrate/animal/New()
-	..()
+/obj/structure/largecrate/animal/Initialize()
+	. = ..()
+
 	if(held_type)
 		for(var/i = 1;i<=held_count;i++)
 			new held_type(src)
+
 
 /obj/structure/largecrate/animal/mulebot
 	name = "Mulebot crate"
@@ -87,3 +88,17 @@
 	name = "chicken crate"
 	held_count = 5
 	held_type = /mob/living/simple_animal/chick
+
+/obj/structure/largecrate/animal/parrot
+	name = "parrot crate"
+	held_type = /mob/living/simple_animal/parrot
+
+/obj/structure/largecrate/animal/vatgrownbody/male
+	name = "vat-grown body crate"
+	icon_state = "vatgrowncrate_male"
+	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/male
+
+/obj/structure/largecrate/animal/vatgrownbody/female
+	name = "vat-grown body crate"
+	icon_state = "vatgrowncrate_female"
+	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/female

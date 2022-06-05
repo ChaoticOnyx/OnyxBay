@@ -130,7 +130,7 @@
 	return user.has_internal_radio_channel_access(internal_channels[freq])
 
 /mob/proc/has_internal_radio_channel_access(list/req_one_accesses)
-	var/obj/item/weapon/card/id/I = GetIdCard()
+	var/obj/item/card/id/I = GetIdCard()
 	return has_access(list(), req_one_accesses, I ? I.GetAccess() : list())
 
 /mob/observer/ghost/has_internal_radio_channel_access(list/req_one_accesses)
@@ -179,7 +179,7 @@
 		set_frequency(new_frequency)
 		if(hidden_uplink)
 			if(hidden_uplink.check_trigger(usr, frequency, traitor_frequency))
-				usr << browse(null, "window=radio")
+				close_browser(usr, "window=radio")
 		. = 1
 	else if (href_list["talk"])
 		ToggleBroadcast()
@@ -216,10 +216,15 @@
 		channel = null
 	if (!istype(connection))
 		return
-	var/mob/living/silicon/ai/A = new /mob/living/silicon/ai(src, null, null, 1)
-	A.fully_replace_character_name(from)
-	talk_into(A, message, channel,"states")
-	qdel(A)
+	var/mob/living/silicon/ai/A
+	if(istext(from))
+		A = new /mob/living/silicon/ai(src, null, null, 1)
+		A.fully_replace_character_name(from)
+	else
+		A = from
+	talk_into(A, message, channel, "states")
+	if(istext(from))
+		qdel(A)
 
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)
@@ -244,11 +249,11 @@
 	if(!M || !message) return 0
 
 	if(speaking && (speaking.flags & (NONVERBAL|SIGNLANG))) return 0
-	
+
 	var/mob/living/carbon/C = M
 	if((istype(C)) && (C.chem_effects[CE_SEDATE]))
 		to_chat(M, SPAN_WARNING("You're unable to reach \the [src]."))
-		return 0	
+		return 0
 
 	if(istype(M)) M.trigger_aiming(TARGET_CAN_RADIO)
 
@@ -377,7 +382,7 @@
 			R.receive_signal(signal)
 
 		// Receiving code can be located in Telecommunications.dm
-		return signal.data["done"] && position.z in signal.data["level"]
+		return (signal.data["done"] && (position.z in signal.data["level"]))
 
 
   /* ###### Intercoms and station-bounced radios ###### */
@@ -429,7 +434,7 @@
 
 	sleep(rand(10,25)) // wait a little...
 
-	if(signal.data["done"] && position.z in signal.data["level"])
+	if(signal.data["done"] && (position.z in signal.data["level"]))
 		// we're done here.
 		return 1
 
@@ -467,8 +472,9 @@
 	// check if this radio can receive on the given frequency, and if so,
 	// what the range is in which mobs will hear the radio
 	// returns: -1 if can't receive, range otherwise
-
-	if (wires.IsIndexCut(WIRE_RECEIVE))
+	if(!wires)
+		return -1
+	if(wires.IsIndexCut(WIRE_RECEIVE))
 		return -1
 	if(!listening)
 		return -1
@@ -503,7 +509,7 @@
 		return get_mobs_or_objects_in_view(canhear_range, src)
 
 
-/obj/item/device/radio/examine(mob/user)
+/obj/item/device/radio/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)
@@ -512,7 +518,7 @@
 			. += "\n[SPAN_NOTICE("\The [src] can not be modified or attached!</span>")]"
 	return
 
-/obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) ))
@@ -581,7 +587,7 @@
 		var/datum/robot_component/C = R.components["radio"]
 		R.cell_use_power(C.active_usage)
 
-/obj/item/device/radio/borg/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/borg/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))
@@ -739,11 +745,14 @@
 
 /obj/item/device/radio/announcer/Destroy()
 	crash_with("attempt to delete a [src.type] detected, and prevented.")
-	return 1
+	..()
+	return QDEL_HINT_LETMELIVE
 
 /obj/item/device/radio/announcer/Initialize()
 	. = ..()
-	forceMove(locate(1,1,GLOB.using_map.contact_levels.len ? GLOB.using_map.contact_levels[1] : 1))
+
+	var/list/contact = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION, ZTRAIT_CONTACT)
+	forceMove(locate(1,1, length(contact) ? contact[1] : 1))
 
 /obj/item/device/radio/announcer/subspace
 	subspace_transmission = 1
@@ -766,7 +775,7 @@
 /obj/item/device/radio/CouldUseTopic(mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))
-		playsound(src, "button", 10)
+		playsound(src, SFX_USE_BUTTON, 10)
 
 /obj/item/device/radio/intercept
 	name = "bulky radio"

@@ -37,18 +37,26 @@ The answer was five and a half years -ZeroBits
 		data["current_book"] = current_book
 	else
 		var/list/all_entries[0]
-		establish_old_db_connection()
-		if(!dbcon_old.IsConnected())
+		if(!establish_old_db_connection())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
-			var/DBQuery/query = dbcon_old.NewQuery("SELECT id, author, title, category FROM library ORDER BY "+sanitizeSQL(sort_by))
-			query.Execute()
+			var/DBQuery/query = sql_query({"
+				SELECT
+					id,
+					author,
+					title,
+					category
+				FROM
+					library
+				ORDER BY
+					$sort_by
+				"}, dbcon_old, list(sort_by = sort_by))
 
 			while(query.NextRow())
 				all_entries.Add(list(list(
-				"id" = decode_from_db(query.item[1]),
-				"author" = decode_from_db(query.item[2]),
-				"title" = decode_from_db(query.item[3]),
+				"id" = query.item[1],
+				"author" = query.item[2],
+				"title" = query.item[3],
 				"category" = query.item[4]
 			)))
 		data["book_list"] = all_entries
@@ -68,7 +76,7 @@ The answer was five and a half years -ZeroBits
 		view_book(href_list["viewbook"])
 		return 1
 	if(href_list["viewid"])
-		view_book(sanitizeSQL(input("Enter USBN:") as num|null))
+		view_book(input("Enter USBN:") as num|null)
 		return 1
 	if(href_list["closebook"])
 		current_book = null
@@ -90,7 +98,7 @@ The answer was five and a half years -ZeroBits
 			error_message = "Interface Error: Scanner cache does not contain any data. Please scan a book."
 			return 1
 
-		var/obj/item/weapon/book/B = scanner.cache
+		var/obj/item/book/B = scanner.cache
 
 		if(B.unique)
 			error_message = "Interface Error: Cached book is copy-protected."
@@ -110,20 +118,26 @@ The answer was five and a half years -ZeroBits
 
 		var/choice = input(usr, "Upload [B.name] by [B.author] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
-			establish_old_db_connection()
-			if(!dbcon_old.IsConnected())
+			if(!establish_old_db_connection())
 				error_message = "Network Error: Connection to the Archive has been severed."
 				return 1
 
 			var/upload_category = input(usr, "Upload to which category?") in list("Fiction", "Non-Fiction", "Reference", "Religion")
 
-			var/sqltitle = encode_for_db(sanitizeSQL(B.name))
-			var/sqlauthor = encode_for_db(sanitizeSQL(B.author))
-			var/sqlcontent = encode_for_db(sanitizeSQL(B.dat))
-			var/sqlcategory = sanitizeSQL(upload_category)
-			var/DBQuery/query = dbcon_old.NewQuery("INSERT INTO library (author, title, content, category) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]')")
-			if(!query.Execute())
-				to_chat(usr, query.ErrorMsg())
+			var/DBQuery/query = sql_query({"
+				INSERT INTO
+					library
+						(author,
+						title,
+						content,
+						category)
+				VALUES
+					($author,
+					$title,
+					$content,
+					$upload_category)
+				"}, dbcon_old, list(author = B.author, title = B.name, content = B.dat, upload_category = upload_category))
+			if(!query)
 				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
 				return 1
 			else
@@ -145,14 +159,14 @@ The answer was five and a half years -ZeroBits
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
 			if(bndr && bndr.anchored && bndr.operable())
-				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
+				var/obj/item/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
 				if(new_book)
 					new_book.desc = current_book["author"] + ", " + current_book["title"] + ", " + "USBN " + current_book["id"]
 					bndr.visible_message("\The [bndr] whirs as it prints and binds a new book.")
 				return 1
 
 		//Regular printing
-		print_text("<i>Author: [current_book["author"]]<br>USBN: [current_book["id"]]</i><br><h3>[current_book["title"]]</h3><br>[current_book["content"]]", usr)
+		print_text("<i>Author: [current_book["author"]]<br>USBN: [current_book["id"]]</i><br><h3>[current_book["title"]]</h3><br>[current_book["content"]]", usr, rawhtml=TRUE)
 		return 1
 	if(href_list["sortby"])
 		sort_by = href_list["sortby"]
@@ -178,21 +192,18 @@ The answer was five and a half years -ZeroBits
 	if(current_book || !id)
 		return 0
 
-	var/sqlid = sanitizeSQL(id)
-	establish_old_db_connection()
-	if(!dbcon_old.IsConnected())
+	if(!establish_old_db_connection())
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return 1
 
-	var/DBQuery/query = dbcon_old.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT * FROM library WHERE id = $id", dbcon_old, list(id = id))
 
 	while(query.NextRow())
 		current_book = list(
 			"id" = query.item[1],
-			"author" = decode_from_db(query.item[2]),
-			"title" = decode_from_db(query.item[3]),
-			"content" = decode_from_db(query.item[4])
+			"author" = query.item[2],
+			"title" = query.item[3],
+			"content" = query.item[4]
 			)
 		break
 	return 1
@@ -203,26 +214,24 @@ The answer was five and a half years -ZeroBits
 	if(!check_rights(R_INVESTIGATE, TRUE, user))
 		return
 
-	var/sqlid = sanitizeSQL(id)
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
 		return
 
 	var/author
 	var/title
-	var/DBQuery/query = dbcon.NewQuery("SELECT author, title FROM library WHERE id=[sqlid]")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT author, title FROM library WHERE id = $id", dbcon, list(id = id))
+
 	if(query.NextRow())
 		author = query.item[1]
 		title = query.item[2]
 	else
-		to_chat(user, SPAN_WARNING("Book with ISBN number \[[sqlid]\] was not found!"))
+		to_chat(user, SPAN_WARNING("Book with ISBN number \[[id]\] was not found!"))
 		return
 
-	query = dbcon.NewQuery("DELETE FROM library WHERE id=[sqlid]")
-	if(query.Execute())
-		log_and_message_admins("has deleted the book: \[[sqlid]\] \"[title]\" by [author]", user)
+	query = sql_query("DELETE FROM library WHERE id = $id", dbcon, list(id = id))
+	if(query)
+		log_and_message_admins("has deleted the book: \[[id]\] \"[title]\" by [author]", user)
 
 #define WIKI_COMMON_CATEGORY "Available_in_library"
 #define WIKI_HACKED_CATEGORY "Available_in_hacked_library"
@@ -259,9 +268,9 @@ The answer was five and a half years -ZeroBits
 	if (!ui)
 		ui = new(user, src, ui_key, "wiki_topics.tmpl", "Knowledge Base", 575, 700, state = state)
 		ui.add_script("wiki_topics.js")
-		ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_COMMON_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+		ui.add_script("[config.link.wiki]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_COMMON_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
 		if(emagged)
-			ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_HACKED_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+			ui.add_script("[config.link.wiki]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_HACKED_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
 		ui.set_initial_data(data)
 		ui.open()
 
@@ -290,7 +299,7 @@ The answer was five and a half years -ZeroBits
 			if(!computer.nano_printer)
 				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
 				return 1
-		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		new /obj/item/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
 		return 1
 
 #undef WIKI_COMMON_CATEGORY

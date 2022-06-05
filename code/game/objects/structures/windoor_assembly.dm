@@ -9,7 +9,7 @@
  */
 
 
-obj/structure/windoor_assembly
+/obj/structure/windoor_assembly
 	name = "windoor assembly"
 	icon = 'icons/obj/doors/windoor.dmi'
 	icon_state = "l_windoor_assembly01"
@@ -18,14 +18,14 @@ obj/structure/windoor_assembly
 	dir = NORTH
 	w_class = ITEM_SIZE_NORMAL
 
-	var/obj/item/weapon/airlock_electronics/electronics = null
+	var/obj/item/airlock_electronics/electronics = null
 
 	//Vars to help with the icon's name
 	var/facing = "l"	//Does the windoor open to the left or right?
 	var/secure = ""		//Whether or not this creates a secure windoor
 	var/state = "01"	//How far the door assembly has progressed in terms of sprites
 
-obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
+/obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 	..()
 	if(constructed)
 		state = "01"
@@ -38,22 +38,21 @@ obj/structure/windoor_assembly/New(Loc, start_dir=NORTH, constructed=0)
 
 	update_nearby_tiles(need_rebuild=1)
 
-obj/structure/windoor_assembly/Destroy()
+/obj/structure/windoor_assembly/Destroy()
 	set_density(0)
 	update_nearby_tiles()
-	..()
+
+	return ..()
 
 /obj/structure/windoor_assembly/update_icon()
 	icon_state = "[facing]_[secure]windoor_assembly[state]"
 
-/obj/structure/windoor_assembly/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/windoor_assembly/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
-		return 1
+		return TRUE
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
-		if(air_group) return 0
 		return !density
-	else
-		return 1
+	return TRUE
 
 /obj/structure/windoor_assembly/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
@@ -69,7 +68,7 @@ obj/structure/windoor_assembly/Destroy()
 	switch(state)
 		if("01")
 			if(isWelder(W) && !anchored )
-				var/obj/item/weapon/weldingtool/WT = W
+				var/obj/item/weldingtool/WT = W
 				if (WT.remove_fuel(0,user))
 					user.visible_message("[user] dissassembles the windoor assembly.", "You start to dissassemble the windoor assembly.")
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
@@ -165,7 +164,7 @@ obj/structure/windoor_assembly/Destroy()
 						src.SetName("Anchored Windoor Assembly")
 
 			//Adding airlock electronics for access. Step 6 complete.
-			else if(istype(W, /obj/item/weapon/airlock_electronics) && W:icon_state != "door_electronics_smoked")
+			else if(istype(W, /obj/item/airlock_electronics) && W:icon_state != "door_electronics_smoked")
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 
@@ -192,7 +191,7 @@ obj/structure/windoor_assembly/Destroy()
 						src.SetName("Secure Wired Windoor Assembly")
 					else
 						src.SetName("Wired Windoor Assembly")
-					var/obj/item/weapon/airlock_electronics/ae = electronics
+					var/obj/item/airlock_electronics/ae = electronics
 					electronics = null
 					ae.loc = src.loc
 
@@ -201,7 +200,7 @@ obj/structure/windoor_assembly/Destroy()
 				if(!src.electronics)
 					to_chat(usr, "<span class='warning'>The assembly is missing electronics.</span>")
 					return
-				usr << browse(null, "window=windoor_access")
+				close_browser(usr, "window=windoor_access")
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 				user.visible_message("[user] pries the windoor into the frame.", "You start prying the windoor into the frame.")
 

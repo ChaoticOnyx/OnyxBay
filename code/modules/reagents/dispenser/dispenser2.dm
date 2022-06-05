@@ -3,36 +3,43 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "dispenser"
 	layer = BELOW_OBJ_LAYER
-	clicksound = "button"
+	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 
 	var/list/spawn_cartridges = null // Set to a list of types to spawn one of each on New()
 
 	var/list/cartridges = list() // Associative, label -> cartridge
-	var/obj/item/weapon/reagent_containers/container = null
+	var/obj/item/reagent_containers/container = null
 
 	var/ui_title = "Chemical Dispenser"
 
 	var/accept_drinking = 0
 	var/amount = 30
 
+	component_types = list(
+		/obj/item/circuitboard/chemical_dispenser,
+		/obj/item/device/healthanalyzer,
+		/obj/item/stock_parts/scanning_module = 2,
+		/obj/item/stock_parts/manipulator = 4,
+		/obj/item/stock_parts/console_screen,
+	)
+
 	idle_power_usage = 100
 	density = 1
 	anchored = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
-/obj/machinery/chemical_dispenser/New()
-	..()
-
+/obj/machinery/chemical_dispenser/Initialize()
+	. = ..()
 	if(spawn_cartridges)
 		for(var/type in spawn_cartridges)
 			add_cartridge(new type(src))
 
-/obj/machinery/chemical_dispenser/examine(mob/user)
+/obj/machinery/chemical_dispenser/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has [cartridges.len] cartridges installed, and has space for [DISPENSER_MAX_CARTRIDGES - cartridges.len] more."
 
-/obj/machinery/chemical_dispenser/proc/add_cartridge(obj/item/weapon/reagent_containers/chem_disp_cartridge/C, mob/user)
+/obj/machinery/chemical_dispenser/proc/add_cartridge(obj/item/reagent_containers/chem_disp_cartridge/C, mob/user)
 	if(!istype(C))
 		if(user)
 			to_chat(user, "<span class='warning'>\The [C] will not fit in \the [src]!</span>")
@@ -67,30 +74,37 @@
 	cartridges -= label
 	SSnano.update_uis(src)
 
-/obj/machinery/chemical_dispenser/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/reagent_containers/chem_disp_cartridge))
+/obj/machinery/chemical_dispenser/attackby(obj/item/W, mob/user)
+	if(default_deconstruction_crowbar(user, W))
+		return
+	if(default_part_replacement(user, W))
+		return
+
+	if(istype(W, /obj/item/reagent_containers/chem_disp_cartridge))
 		add_cartridge(W, user)
 
 	else if(isScrewdriver(W))
+		if(!length(cartridges) && default_deconstruction_screwdriver(user, W))
+			return
 		var/label = input(user, "Which cartridge would you like to remove?", "Chemical Dispenser") as null|anything in cartridges
 		if(!label) return
-		var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = remove_cartridge(label)
+		var/obj/item/reagent_containers/chem_disp_cartridge/C = remove_cartridge(label)
 		if(C)
 			to_chat(user, "<span class='notice'>You remove \the [C] from \the [src].</span>")
 			C.loc = loc
 
-	else if(istype(W, /obj/item/weapon/reagent_containers/glass) || istype(W, /obj/item/weapon/reagent_containers/food))
+	else if(istype(W, /obj/item/reagent_containers/vessel) || istype(W, /obj/item/reagent_containers/food))
 		if(container)
 			to_chat(user, "<span class='warning'>There is already \a [container] on \the [src]!</span>")
 			return
 
-		var/obj/item/weapon/reagent_containers/RC = W
+		var/obj/item/reagent_containers/RC = W
 
-		if(!accept_drinking && istype(RC,/obj/item/weapon/reagent_containers/food))
+		if(!accept_drinking && istype(RC,/obj/item/reagent_containers/food))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
-		if(istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
+		if(istype(RC,/obj/item/reagent_containers/vessel/bucket))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
@@ -130,7 +144,7 @@
 
 	var chemicals[0]
 	for(var/label in cartridges)
-		var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = cartridges[label]
+		var/obj/item/reagent_containers/chem_disp_cartridge/C = cartridges[label]
 		chemicals[++chemicals.len] = list("label" = label, "amount" = C.reagents.total_volume)
 	data["chemicals"] = chemicals
 
@@ -151,14 +165,14 @@
 		var/label = href_list["dispense"]
 		if(cartridges[label] && container && container.is_open_container())
 			playsound(loc, 'sound/effects/using/sink/fast_filling1.ogg', 75)
-			var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = cartridges[label]
+			var/obj/item/reagent_containers/chem_disp_cartridge/C = cartridges[label]
 			C.reagents.trans_to(container, amount)
 			return TOPIC_REFRESH
 		return TOPIC_HANDLED
 
 	else if(href_list["ejectBeaker"])
 		if(container)
-			var/obj/item/weapon/reagent_containers/B = container
+			var/obj/item/reagent_containers/B = container
 			B.dropInto(loc)
 			container = null
 			update_icon()

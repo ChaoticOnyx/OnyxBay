@@ -13,7 +13,8 @@
 	//Active emote/pose
 	var/pose = null
 	var/list/chem_effects = list()
-	var/list/chem_doses = list()
+	var/list/chem_traces = list() // Long-lasting "inactive" metabolism products, mostly for analyzing and simulating chemical tolerance
+	var/list/chem_doses = list() // "Active" metabolized reagents, cleared as soon as the corresponding reagent leaves the mob's system
 	var/datum/reagents/metabolism/bloodstr = null
 	var/datum/reagents/metabolism/touching = null
 	var/losebreath = 0 //if we failed to breathe last tick
@@ -24,7 +25,7 @@
 	var/lastpuke = 0
 	var/nutrition = 400
 
-	var/obj/item/weapon/tank/internal = null//Human/Monkey
+	var/obj/item/tank/internal = null//Human/Monkey
 
 
 	//these two help govern taste. The first is the last time a taste message was shown to the plaer.

@@ -1,6 +1,6 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
-#define PHORON_RELEASE_MODIFIER 1500		//Higher == less phoron released by reaction
+#define PLASMA_RELEASE_MODIFIER 1500		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
 
@@ -45,7 +45,7 @@
 	icon_state = "darkmatter"
 	density = 1
 	anchored = 0
-	light_range = 4
+	light_outer_range = 4
 
 	layer = ABOVE_OBJ_LAYER
 
@@ -206,8 +206,9 @@
 			continue
 
 		mob.Weaken(DETONATION_MOB_CONCUSSION)
+		mob.Stun(DETONATION_MOB_CONCUSSION/2)
 		to_chat(mob, "<span class='danger'>An invisible force slams you against the ground!</span>")
-		
+
 		if(iscarbon(mob))
 			var/mob/living/carbon/C = mob
 			var/area/A = get_area(TM)
@@ -217,7 +218,7 @@
 					C.hallucination(round(dist * 1.5), dist)
 
 	// Effect 2: Z-level wide electrical pulse
-	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
+	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(!(A.z in affected_z))
 			continue
 
@@ -231,7 +232,7 @@
 		else
 			A.energy_fail(round(DETONATION_SHUTDOWN_APC * random_change))
 
-	for(var/obj/machinery/power/smes/buildable/S in SSmachines.machinery)
+	for(var/obj/machinery/power/smes/buildable/S in GLOB.smes_list)
 		if(!(S.z in affected_z))
 			continue
 		// Causes SMESes to shut down for a bit
@@ -241,7 +242,7 @@
 			S.grounding = 0
 	// Effect 3: Break solar arrays
 
-	for(var/obj/machinery/power/solar/S in SSmachines.machinery)
+	for(var/obj/machinery/power/solar/S in GLOB.machines)
 		if(!(S.z in affected_z))
 			continue
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))
@@ -256,8 +257,8 @@
 
 //Changes color and luminosity of the light to these values if they were not already set
 /obj/machinery/power/supermatter/proc/shift_light(lum, clr)
-	if(lum != light_range || clr != light_color)
-		set_light(lum, l_color = clr)
+	if(lum != light_outer_range || clr != light_color)
+		set_light(1, 0.1, lum, l_color = clr)
 
 /obj/machinery/power/supermatter/proc/get_integrity()
 	var/integrity = damage / explosion_point
@@ -284,19 +285,19 @@
 	else
 		alert_msg = null
 	if(alert_msg)
-		GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor", "Engineering")
+		GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"), "Engineering")
 		//Public alerts
 		if((damage > emergency_point) && !public_alert)
-			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", "Supermatter Monitor")
+			GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL DELAMINATION IMMINENT!", get_announcement_computer("Supermatter Monitor"))
 			if(power >= 1400)
-				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", "Supermatter Monitor")
+				GLOB.global_announcer.autosay("WARNING: AN EXTREMELY POWERFUL EXPLOSION EXPECTED!", get_announcement_computer("Supermatter Monitor"))
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
-				if(T && (T.z in GLOB.using_map.station_levels) && !istype(M,/mob/new_player) && !isdeaf(M))
-					sound_to(M, 'sound/signals/alarm1.ogg')
+				if(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) && !istype(M,/mob/new_player) && !isdeaf(M))
+					sound_to(M, sound('sound/signals/alarm1.ogg'))
 		else if(safe_warned && public_alert)
-			GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor")
+			GLOB.global_announcer.autosay(alert_msg, get_announcement_computer("Supermatter Monitor"))
 			public_alert = 0
 
 
@@ -370,7 +371,7 @@
 
 		//Release reaction gasses
 		var/heat_capacity = removed.heat_capacity()
-		removed.adjust_multi("phoron", max(device_energy / PHORON_RELEASE_MODIFIER, 0), \
+		removed.adjust_multi("plasma", max(device_energy / PLASMA_RELEASE_MODIFIER, 0), \
 		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
 
 		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
@@ -384,13 +385,17 @@
 
 		env.merge(removed)
 
-	for(var/mob/living/carbon/human/l in view(src, min(7, round(sqrt(power/6))))) // If they can see it without mesons on.  Bad on them.
-		var/obj/item/organ/internal/eyes/E = l.internal_organs_by_name[BP_EYES]
-		var/obj/item/weapon/rig/r = l.back
-		if(E && !BP_IS_ROBOTIC(E) && !istype(l.glasses, /obj/item/clothing/glasses/meson)) //Synthetics eyes stop evil hallucination rays
-			if(!istype(r) || !istype(r.visor, /obj/item/rig_module/vision/meson) || !r.visor.active)
-				var/effect = max(0, min(200, power * config_hallucination_power * sqrt( 1 / max(1,get_dist(l, src)))) )
-				l.adjust_hallucination(effect, 0.25*effect)
+	for(var/mob/living/carbon/human/H in view(src, min(7, round(sqrt(power/6))))) // If they can see it without mesons on.  Bad on them.
+		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
+		if(E && !BP_IS_ROBOTIC(E)) //Synthetics eyes stop evil hallucination rays
+			var/obj/item/clothing/glasses/hud/G = H.glasses
+			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
+				continue
+			var/obj/item/rig/R = H.back
+			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
+				continue
+			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
+			H.adjust_hallucination(effect, 0.25 * effect)
 
 	SSradiation.radiate(src, power * 1.5) //Better close those shutters!
 	power -= (power/DECAY_FACTOR)**3		//energy losses due to radiation
@@ -458,8 +463,8 @@
 		ui.set_auto_update(1)
 
 
-/obj/machinery/power/supermatter/attackby(obj/item/weapon/W, mob/living/user)
-	if(istype(W, /obj/item/weapon/tape_roll))
+/obj/machinery/power/supermatter/attackby(obj/item/W, mob/living/user)
+	if(istype(W, /obj/item/tape_roll))
 		to_chat(user, "You repair some of the damage to \the [src] with \the [W].")
 		damage = max(damage -10, 0)
 
@@ -550,7 +555,7 @@
 
 #undef NITROGEN_RETARDATION_FACTOR
 #undef THERMAL_RELEASE_MODIFIER
-#undef PHORON_RELEASE_MODIFIER
+#undef PLASMA_RELEASE_MODIFIER
 #undef OXYGEN_RELEASE_MODIFIER
 #undef REACTION_POWER_MODIFIER
 #undef POWER_FACTOR

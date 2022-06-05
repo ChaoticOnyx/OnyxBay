@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "tgui-polyfill",
+  "version": "4.3.0",
+  "scripts": {
+    "build": "terser 00-html5shiv.js 01-ie8.js 02-dom4.js 03-css-om.js 10-misc.js --ie8 -f ascii_only,comments=false -o ../../public/tgui-polyfill.bundle.js"
+  },
+  "dependencies": {
+    "core-js": "3.x.x",
+    "regenerator-runtime": "0.13.x",
+    "unfetch": "4.x.x"
+  },
+  "devDependencies": {
+    "terser": "5.x.x"
+  }
+}

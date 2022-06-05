@@ -17,13 +17,17 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_NO_REACT               0x0008 // Reagents don't react inside this container.
 #define ATOM_FLAG_OPEN_CONTAINER         0x0010 // Is an open container for chemistry purposes.
 #define ATOM_FLAG_INITIALIZED            0x0020 // Has this atom been initialized
+#define ATOM_FLAG_FULLTILE_OBJECT        0x0040 // Blocks interactions with most atoms on the same tile, except mobs, items and anything that has the flag below, i.e. fulltile windows
+#define ATOM_FLAG_ADJACENT_EXCEPTION     0x0080 // Skips adjacent checks for atoms that should always be reachable in window tiles
 
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
 
+#define MOB_FLAG_HOLY_BAD                0x001  // If this mob is allergic to holiness
+
 //Flags for items (equipment)
 #define ITEM_FLAG_NO_BLUDGEON            0x0001 // When an item has this it produces no "X has been hit by Y with Z" message with the default handler.
-#define ITEM_FLAG_PHORONGUARD            0x0002 // Does not get contaminated by phoron.
+#define ITEM_FLAG_PLASMAGUARD            0x0002 // Does not get contaminated by plasma.
 #define ITEM_FLAG_NO_PRINT               0x0004 // This object does not leave the user's prints/fibres when using it
 #define ITEM_FLAG_THICKMATERIAL          0x0010 // Prevents syringes, reagent pens, and hyposprays if equiped to slot_suit or slot_head.
 #define ITEM_FLAG_STOPPRESSUREDAMAGE     0x0020 // Counts towards pressure protection. Note that like temperature protection, body_parts_covered is considered here as well.
@@ -37,4 +41,7 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define PASS_FLAG_TABLE  0x1
 #define PASS_FLAG_GLASS  0x2
 #define PASS_FLAG_GRILLE 0x4
-#define PASS_FLAG_BLOB 0x8
+
+// Flags for effect_flags
+/// Does not pass the radiation.
+#define EFFECT_FLAG_RAD_SHIELDED (1<<0)

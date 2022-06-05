@@ -38,7 +38,7 @@
 		holder.update_icon()
 	return
 
-/obj/item/device/assembly/signaler/interact(mob/user as mob, flag1)
+/obj/item/device/assembly/signaler/interact(mob/user, flag1)
 	var/t1 = "-------"
 //		if ((src.b_stat && !( flag1 )))
 //			t1 = text("-------<BR>\nGreen Wire: []<BR>\nRed Wire:   []<BR>\nBlue Wire:  []<BR>\n", (src.wires & 4 ? text("<A href='?src=\ref[];wires=4'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=4'>Mend Wire</A>", src)), (src.wires & 2 ? text("<A href='?src=\ref[];wires=2'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=2'>Mend Wire</A>", src)), (src.wires & 1 ? text("<A href='?src=\ref[];wires=1'>Cut Wire</A>", src) : text("<A href='?src=\ref[];wires=1'>Mend Wire</A>", src)))
@@ -65,16 +65,18 @@
 		<A href='byond://?src=\ref[src];code=5'>+</A><BR>
 		[t1]
 		</TT>"}
-	user << browse(dat, "window=radio")
+	show_browser(user, dat, "window=radio")
 	onclose(user, "radio")
 	return
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
-	if(..()) return 1
-
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
-		usr << browse(null, "window=radio")
+	if(ishuman(usr))
+		var/mob/living/carbon/human/H = usr
+		if(H.is_physically_disabled())
+			return
+	if((. = ..()))
+		close_browser(usr, "window=radio")
 		onclose(usr, "radio")
 		return
 
@@ -103,6 +105,7 @@
 /obj/item/device/assembly/signaler/proc/signal()
 	if(!radio_connection) return
 
+	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
 	var/datum/signal/signal = new
 	signal.source = src
 	signal.encryption = code
@@ -124,6 +127,9 @@
 		connected.Pulse(src)
 	else if(holder)
 		holder.process_activation(src, 1, 0)
+	else if(istype(loc, /obj/structure/window_frame))
+		var/obj/structure/window_frame/WF = loc
+		WF.signaler_pulse()
 	else
 		..(radio)
 	return 1

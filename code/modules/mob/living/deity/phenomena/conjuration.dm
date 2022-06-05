@@ -48,7 +48,7 @@
 	var/obj/effect/portal/P = new(get_turf(a), null, 0)
 	P.failchance = 0
 	portals += P
-	GLOB.destroyed_event.register(P,src,/datum/phenomena/portals/proc/remove_portal)
+	register_signal(P, SIGNAL_QDELETING, /datum/phenomena/portals/proc/remove_portal)
 	if(portals.len > 2)
 		var/removed = portals[1]
 		remove_portal(removed)
@@ -61,7 +61,7 @@
 
 /datum/phenomena/portals/proc/remove_portal(portal)
 	portals -= portal
-	GLOB.destroyed_event.unregister(portal,src)
+	unregister_signal(portal, SIGNAL_QDELETING)
 	var/turf/T = get_turf(portal)
 	for(var/obj/effect/portal/P in portals)
 		if(P.target == T)
@@ -77,7 +77,7 @@
 /datum/phenomena/banishing_smite/activate(mob/living/L, mob/living/deity/user)
 	..()
 	L.take_overall_damage(rand(5,30),0,0,0,"blunt intrument") //Actual spell does 5d10 but maaaybe too much.
-	playsound(get_turf(L), 'sound/effects/bamf.ogg', 100, 1)
+	playsound(L, 'sound/effects/bamf.ogg', 100, 1)
 	to_chat(L, "<span class='danger'>Something hard hits you!</span>")
 	if(L.health < L.maxHealth/2) //If it reduces past 50%
 		var/obj/effect/rift/R = new(get_turf(L))
@@ -96,6 +96,8 @@
 	density = 0
 
 /obj/effect/rift/Destroy()
+	..()
+
 	for(var/o in contents)
 		var/atom/movable/M = o
 		M.forceMove(get_turf(src))

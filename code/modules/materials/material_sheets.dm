@@ -2,12 +2,13 @@
 /obj/item/stack/material
 	force = 5.0
 	throwforce = 5
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	throw_speed = 3
 	throw_range = 3
-	max_amount = 60
+	max_amount = 50
 	center_of_mass = null
 	randpixel = 3
+	storage_cost_mult = 1.25
 
 	var/default_type = MATERIAL_STEEL
 	var/material/material
@@ -39,6 +40,10 @@
 	craft_tool = material.craft_tool
 	update_strings()
 
+	if(material.reagent_path)
+		create_reagents(get_max_amount() * REAGENTS_PER_MATERIAL_SHEET)
+		reagents.add_reagent(material.reagent_path, amount * REAGENTS_PER_MATERIAL_SHEET, null, FALSE)
+
 /obj/item/stack/material/get_material()
 	return material
 
@@ -55,9 +60,16 @@
 		desc = "A [material.sheet_singular_name] of [material.use_name]."
 		gender = NEUTER
 
+/obj/item/stack/material/add(extra)
+	. = ..(extra)
+	if(. && material.reagent_path)
+		reagents.add_reagent(material.reagent_path, (extra * REAGENTS_PER_MATERIAL_SHEET))
+
 /obj/item/stack/material/use(used)
 	. = ..()
 	update_strings()
+	if(. && material?.reagent_path)
+		reagents?.remove_reagent(material.reagent_path, (amount * REAGENTS_PER_MATERIAL_SHEET))
 	return
 
 /obj/item/stack/material/transfer_to(obj/item/stack/S, tamount=null, type_verified)
@@ -65,8 +77,10 @@
 	if(!istype(M) || material.name != M.material.name)
 		return 0
 	var/transfer = ..(S,tamount,1)
-	if(src) update_strings()
-	if(M) M.update_strings()
+	if(src)
+		update_strings()
+	if(M)
+		M.update_strings()
 	return transfer
 
 /obj/item/stack/material/attack_self(mob/user)
@@ -84,13 +98,13 @@
 
 /obj/item/stack/material/iron
 	name = "iron"
-	icon_state = "sheet-silver"
+	icon_state = "silver"
 	default_type = MATERIAL_IRON
 	apply_colour = 1
 
 /obj/item/stack/material/sandstone
 	name = "sandstone brick"
-	icon_state = "sheet-sandstone"
+	icon_state = "sandstone"
 	default_type = MATERIAL_SANDSTONE
 
 /obj/item/stack/material/sandstone/fifty
@@ -98,7 +112,7 @@
 
 /obj/item/stack/material/marble
 	name = "marble brick"
-	icon_state = "sheet-marble"
+	icon_state = "marble"
 	default_type = MATERIAL_MARBLE
 
 /obj/item/stack/material/marble/ten
@@ -109,7 +123,7 @@
 
 /obj/item/stack/material/diamond
 	name = "diamond"
-	icon_state = "sheet-diamond"
+	icon_state = "diamond"
 	default_type = MATERIAL_DIAMOND
 
 /obj/item/stack/material/diamond/ten
@@ -117,26 +131,26 @@
 
 /obj/item/stack/material/uranium
 	name = MATERIAL_URANIUM
-	icon_state = "sheet-uranium"
+	icon_state = "uranium"
 	default_type = MATERIAL_URANIUM
 
 /obj/item/stack/material/uranium/ten
 	amount = 10
 
-/obj/item/stack/material/phoron
-	name = "solid phoron"
-	icon_state = "sheet-phoron"
-	default_type = MATERIAL_PHORON
+/obj/item/stack/material/plasma
+	name = "solid plasma"
+	icon_state = "plasma"
+	default_type = MATERIAL_PLASMA
 
-/obj/item/stack/material/phoron/ten
+/obj/item/stack/material/plasma/ten
 	amount = 10
 
-/obj/item/stack/material/phoron/fifty
+/obj/item/stack/material/plasma/fifty
 	amount = 50
 
 /obj/item/stack/material/plastic
 	name = "plastic"
-	icon_state = "sheet-plastic"
+	icon_state = "plastic"
 	default_type = MATERIAL_PLASTIC
 
 /obj/item/stack/material/plastic/ten
@@ -147,7 +161,7 @@
 
 /obj/item/stack/material/gold
 	name = "gold"
-	icon_state = "sheet-gold"
+	icon_state = "gold"
 	default_type = MATERIAL_GOLD
 
 /obj/item/stack/material/gold/ten
@@ -155,7 +169,7 @@
 
 /obj/item/stack/material/silver
 	name = "silver"
-	icon_state = "sheet-silver"
+	icon_state = "silver"
 	default_type = MATERIAL_SILVER
 
 /obj/item/stack/material/silver/ten
@@ -164,7 +178,7 @@
 //Valuable resource, cargo can sell it.
 /obj/item/stack/material/platinum
 	name = "platinum"
-	icon_state = "sheet-adamantine"
+	icon_state = "adamantine"
 	default_type = MATERIAL_PLATINUM
 
 /obj/item/stack/material/platinum/ten
@@ -173,7 +187,7 @@
 //Extremely valuable to Research.
 /obj/item/stack/material/mhydrogen
 	name = "metallic hydrogen"
-	icon_state = "sheet-mythril"
+	icon_state = "hydrogen"
 	default_type = MATERIAL_HYDROGEN
 
 /obj/item/stack/material/mhydrogen/ten
@@ -182,7 +196,7 @@
 //Fuel for MRSPACMAN generator.
 /obj/item/stack/material/tritium
 	name = "tritium"
-	icon_state = "sheet-silver"
+	icon_state = "silver"
 	default_type = MATERIAL_TRITIUM
 	apply_colour = 1
 
@@ -194,7 +208,7 @@
 
 /obj/item/stack/material/osmium
 	name = "osmium"
-	icon_state = "sheet-silver"
+	icon_state = "silver"
 	default_type = MATERIAL_OSMIUM
 	apply_colour = 1
 
@@ -203,7 +217,7 @@
 
 /obj/item/stack/material/ocp
 	name = "osmium-carbide plasteel"
-	icon_state = "sheet-plasteel"
+	icon_state = "plasteel"
 	item_state = "sheet-metal"
 	default_type = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	apply_colour = 1
@@ -217,7 +231,7 @@
 // Fusion fuel.
 /obj/item/stack/material/deuterium
 	name = "deuterium"
-	icon_state = "sheet-silver"
+	icon_state = "silver"
 	default_type = MATERIAL_DEUTERIUM
 	apply_colour = 1
 
@@ -226,7 +240,7 @@
 
 /obj/item/stack/material/steel
 	name = "steel"
-	icon_state = "sheet-metal"
+	icon_state = "metal"
 	default_type = MATERIAL_STEEL
 
 /obj/item/stack/material/steel/ten
@@ -237,7 +251,7 @@
 
 /obj/item/stack/material/plasteel
 	name = "plasteel"
-	icon_state = "sheet-plasteel"
+	icon_state = "plasteel"
 	item_state = "sheet-metal"
 	default_type = MATERIAL_PLASTEEL
 
@@ -249,7 +263,7 @@
 
 /obj/item/stack/material/wood
 	name = "wooden plank"
-	icon_state = "sheet-wood"
+	icon_state = "wood"
 	default_type = MATERIAL_WOOD
 
 /obj/item/stack/material/wood/ten
@@ -260,12 +274,12 @@
 
 /obj/item/stack/material/cloth
 	name = "cloth"
-	icon_state = "sheet-cloth"
+	icon_state = "cloth"
 	default_type = MATERIAL_CLOTH
 
 /obj/item/stack/material/cardboard
 	name = "cardboard"
-	icon_state = "sheet-card"
+	icon_state = "card"
 	default_type = MATERIAL_CARDBOARD
 
 /obj/item/stack/material/cardboard/ten
@@ -277,12 +291,12 @@
 /obj/item/stack/material/leather
 	name = "leather"
 	desc = "The by-product of mob grinding."
-	icon_state = "sheet-leather"
+	icon_state = "leather"
 	default_type = MATERIAL_LEATHER
 
 /obj/item/stack/material/glass
 	name = "glass"
-	icon_state = "sheet-glass"
+	icon_state = "glass"
 	default_type = MATERIAL_GLASS
 
 /obj/item/stack/material/glass/ten
@@ -293,7 +307,7 @@
 
 /obj/item/stack/material/glass/reinforced
 	name = "reinforced glass"
-	icon_state = "sheet-rglass"
+	icon_state = "rglass"
 	default_type = MATERIAL_REINFORCED_GLASS
 
 /obj/item/stack/material/glass/reinforced/ten
@@ -302,19 +316,52 @@
 /obj/item/stack/material/glass/reinforced/fifty
 	amount = 50
 
-/obj/item/stack/material/glass/phoronglass
-	name = "borosilicate glass"
-	desc = "This sheet is special platinum-glass alloy designed to withstand large temperatures."
-	singular_name = "borosilicate glass sheet"
-	icon_state = "sheet-phoronglass"
-	default_type = MATERIAL_PHORON_GLASS
+/obj/item/stack/material/glass/plass
+	name = "plass"
+	desc = "This sheet is special plasma-glass alloy designed to withstand large temperatures."
+	singular_name = "plass sheet"
+	icon_state = "plass"
+	default_type = MATERIAL_PLASS
 
-/obj/item/stack/material/glass/phoronrglass
-	name = "reinforced borosilicate glass"
-	desc = "This sheet is special platinum-glass alloy designed to withstand large temperatures. It is reinforced with few rods."
-	singular_name = "reinforced borosilicate glass sheet"
-	icon_state = "sheet-phoronrglass"
-	default_type = MATERIAL_REINFORCED_PHORON_GLASS
-
-/obj/item/stack/material/glass/phoronrglass/ten
+/obj/item/stack/material/glass/plass/ten
 	amount = 10
+
+/obj/item/stack/material/glass/plass/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/rplass
+	name = "reinforced plass"
+	desc = "This sheet is special plasma-glass alloy designed to withstand large temperatures. It is reinforced with few rods."
+	singular_name = "reinforced plass sheet"
+	icon_state = "rplass"
+	default_type = MATERIAL_REINFORCED_PLASS
+
+/obj/item/stack/material/glass/rplass/ten
+	amount = 10
+
+/obj/item/stack/material/glass/rplass/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/black
+	name = "tinted glass"
+	singular_name = "tinted glass sheet"
+	icon_state = "bglass"
+	default_type = MATERIAL_BLACK_GLASS
+
+/obj/item/stack/material/glass/black/ten
+	amount = 10
+
+/obj/item/stack/material/glass/black/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/rblack
+	name = "reinforced tinted glass"
+	singular_name = "reinforced tinted glass sheet"
+	icon_state = "rbglass"
+	default_type = MATERIAL_REINFORCED_BLACK_GLASS
+
+/obj/item/stack/material/glass/rblack/ten
+	amount = 10
+
+/obj/item/stack/material/glass/rblack/fifty
+	amount = 50

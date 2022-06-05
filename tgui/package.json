@@ -1,0 +1,55 @@
+{
+  "private": true,
+  "name": "tgui-workspace",
+  "version": "4.3.0",
+  "scripts": {
+    "dev": "node packages/tgui-dev-server/index.esm.js",
+    "build": "webpack"
+  },
+  "workspaces": [
+    "packages/common",
+    "packages/tgui",
+    "packages/tgui-dev-server",
+    "packages/tgui-panel",
+    "packages/tgui-polyfill"
+  ],
+  "dependencies": {
+    "@babel/core": "7.x.x",
+    "@babel/eslint-parser": "7.x.x",
+    "@babel/plugin-proposal-class-properties": "7.x.x",
+    "@babel/plugin-transform-jscript": "7.x.x",
+    "@babel/preset-env": "7.x.x",
+    "@babel/preset-typescript": "7.x.x",
+    "@types/node": "16.x.x",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "5.5.x",
+    "babel-loader": "8.2.x",
+    "babel-plugin-inferno": "6.x.x",
+    "babel-plugin-transform-remove-console": "6.9.x",
+    "common": "4.3.0",
+    "css-loader": "6.x.x",
+    "eslint": "7.x.x",
+    "eslint-config-standard": "16.x.x",
+    "eslint-plugin-import": "2.x.x",
+    "eslint-plugin-json": "3.x.x",
+    "eslint-plugin-node": "11.x.x",
+    "eslint-plugin-promise": "5.x.x",
+    "eslint-plugin-radar": "0.2.x",
+    "eslint-plugin-react": "7.x.x",
+    "file-loader": "6.x.x",
+    "inferno": "7.4.x",
+    "mini-css-extract-plugin": "2.x.x",
+    "sass": "1.44.x",
+    "sass-loader": "12.x.x",
+    "style-loader": "3.x.x",
+    "terser-webpack-plugin": "5.x.x",
+    "typescript": "4.5.x",
+    "url-loader": "4.x.x",
+    "webpack": "5.x.x",
+    "webpack-bundle-analyzer": "4.x.x",
+    "webpack-cli": "4.x.x"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.3.0"
+  }
+}

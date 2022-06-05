@@ -21,6 +21,8 @@
 
 /* Tosses things in a certain direction */
 
+/datum/movement_handler/no_move/toss
+
 /obj/effect/step_trigger/thrower
 	var/direction = SOUTH // the direction of throw
 	var/tiles = 3	// if 0: forever until atom hits a stopper
@@ -42,7 +44,7 @@
 	if(ismob(AM))
 		var/mob/M = AM
 		if(immobilize)
-			M.canmove = 0
+			M.AddMovementHandler(/datum/movement_handler/no_move/toss)
 
 	affecting.Add(AM)
 	while(AM && !stopthrow)
@@ -79,7 +81,7 @@
 	if(ismob(AM))
 		var/mob/M = AM
 		if(immobilize)
-			M.canmove = 1
+			M.RemoveMovementHandler(/datum/movement_handler/no_move/toss)
 
 /* Stops things thrown by a thrower, doesn't do anything */
 
@@ -92,7 +94,7 @@
 	var/teleport_y = 0
 	var/teleport_z = 0
 
-	Trigger(var/atom/movable/A)
+	Trigger(atom/movable/A)
 		if(teleport_x && teleport_y && teleport_z)
 
 			A.x = teleport_x

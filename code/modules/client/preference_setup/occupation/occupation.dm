@@ -14,23 +14,23 @@
 	name = "Occupation"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/occupation/load_character(savefile/S)
-	S["alternate_option"]  >> pref.alternate_option
-	S["job_high"]          >> pref.job_high
-	S["job_medium"]        >> pref.job_medium
-	S["job_low"]           >> pref.job_low
-	S["player_alt_titles"] >> pref.player_alt_titles
-	S["char_branch"]       >> pref.char_branch
-	S["char_rank"]         >> pref.char_rank
+/datum/category_item/player_setup_item/occupation/load_character(datum/pref_record_reader/R)
+	pref.alternate_option = R.read("alternate_option")
+	pref.job_high = R.read("job_high")
+	pref.job_medium = R.read("job_medium")
+	pref.job_low = R.read("job_low")
+	pref.player_alt_titles = R.read("player_alt_titles")
+	pref.char_branch = R.read("char_branch")
+	pref.char_rank = R.read("char_rank")
 
-/datum/category_item/player_setup_item/occupation/save_character(savefile/S)
-	S["alternate_option"]  << pref.alternate_option
-	S["job_high"]          << pref.job_high
-	S["job_medium"]        << pref.job_medium
-	S["job_low"]           << pref.job_low
-	S["player_alt_titles"] << pref.player_alt_titles
-	S["char_branch"]       << pref.char_branch
-	S["char_rank"]         << pref.char_rank
+/datum/category_item/player_setup_item/occupation/save_character(datum/pref_record_writer/W)
+	W.write("alternate_option",  pref.alternate_option)
+	W.write("job_high",          pref.job_high)
+	W.write("job_medium",        pref.job_medium)
+	W.write("job_low",           pref.job_low)
+	W.write("player_alt_titles", pref.player_alt_titles)
+	W.write("char_branch",       pref.char_branch)
+	W.write("char_rank",         pref.char_rank)
 
 /datum/category_item/player_setup_item/occupation/sanitize_character()
 	if(!istype(pref.job_medium)) pref.job_medium = list()
@@ -350,7 +350,7 @@
 		if(!(job_title in allowed_titles))
 			pref.job_low -= job_title
 
-datum/category_item/player_setup_item/proc/prune_occupation_prefs()
+/datum/category_item/player_setup_item/proc/prune_occupation_prefs()
 	var/datum/species/S = preference_species()
 	if((GLOB.using_map.flags & MAP_HAS_BRANCH)\
 	   && (!pref.char_branch || !mil_branches.is_spawn_branch(pref.char_branch, S)))

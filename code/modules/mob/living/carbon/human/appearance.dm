@@ -153,6 +153,7 @@
 /mob/living/carbon/human/proc/update_dna()
 	check_dna()
 	dna.ready_dna(src)
+	sync_organ_dna()
 
 /mob/living/carbon/human/proc/generate_valid_species(check_whitelist = 1, list/whitelist = list(), list/blacklist = list())
 	var/list/valid_species = new()

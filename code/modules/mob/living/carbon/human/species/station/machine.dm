@@ -73,6 +73,8 @@
 		)
 	genders = list(NEUTER)
 
+	xenomorph_type = null
+
 /datum/species/machine/handle_death(mob/living/carbon/human/H)
 	..()
 	if(istype(H.wear_mask,/obj/item/clothing/mask/monitor))

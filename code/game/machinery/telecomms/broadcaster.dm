@@ -21,7 +21,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	machinetype = 5
 	produces_heat = 0
 	delay = 7
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/broadcaster
+	circuitboard = /obj/item/circuitboard/telecomms/broadcaster
 	outage_probability = 10
 
 /obj/machinery/telecomms/broadcaster/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
@@ -104,7 +104,8 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	// In case message_delay is left on 1, otherwise it won't reset the list and people can't say the same thing twice anymore.
 	if(message_delay)
 		message_delay = 0
-	..()
+
+	return ..()
 
 
 /*
@@ -225,9 +226,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 **/
 
 /proc/Broadcast_Message(datum/radio_frequency/connection, mob/M,
-						var/vmask, var/vmessage, var/obj/item/device/radio/radio,
-						var/message, var/name, var/job, var/realname, var/vname,
-						var/data, var/compression, var/list/level, var/freq, var/verbage = "says", var/datum/language/speaking = null, loud = FALSE)
+						vmask, vmessage, obj/item/device/radio/radio,
+						message, name, job, realname, vname,
+						data, compression, list/level, freq, verbage = "says", datum/language/speaking = null, loud = FALSE)
 
 
   /* ###### Prepare the radio connection ###### */
@@ -335,7 +336,9 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		var/part_b_extra = ""
 		if(data == 3) // intercepted radio message
 			part_b_extra = " <i>(Intercepted)</i>"
-		var/part_a = "<span class='[frequency_span_class(display_freq)]'>\icon[radio]<b>\[[freq_text]\][part_b_extra]</b> <span class='name'>" // goes in the actual output
+
+		var/radio_icon = istype(radio, /obj/item/device/radio/headset) ? "<IMG CLASS=icon SRC=\ref[radio.icon] ICONSTATE='headset_generic'>" : "\icon[radio]"
+		var/part_a = "<span class='[frequency_span_class(display_freq)]'>[radio_icon]<b>\[[freq_text]\][part_b_extra]</b> <span class='name'>" // goes in the actual output
 
 		// --- Some more pre-message formatting ---
 		var/part_b = "</span> <span class='message'>" // Tweaked for security headsets -- TLE
@@ -392,8 +395,8 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		/* but firstly, logging! */
 
-		log_say("[M.name]/[M.key] : \[[freq_text]\] [loud ? "\[LOUD\] " : ""][message]") 
-		M.log_message("\[[freq_text]\] [loud ? "\[LOUD\] " : ""][message]", INDIVIDUAL_SAY_LOG)
+		log_say("[key_name(M)]: \[[freq_text]\] [loud ? "\[LOUD\] ": ""][message]")
+		M.log_message("\[[freq_text]\] [loud ? "\[LOUD\] ": ""][message]", INDIVIDUAL_SAY_LOG)
 
 	  	/* --- Process all the mobs that heard a masked voice (understood) --- */
 
@@ -635,7 +638,6 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	if(do_sleep)
 		sleep(rand(10,25))
 
-	//world.log << "Level: [signal.data["level"]] - Done: [signal.data["done"]]"
+	//to_world_log("Level: [signal.data["level"]] - Done: [signal.data["done"]]")
 
 	return signal
-

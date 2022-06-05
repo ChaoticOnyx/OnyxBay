@@ -2,17 +2,21 @@
 	name = "tank transfer valve"
 	desc = "A small, versatile valve with dual-headed heat-resistant pipes. This mechanism is the standard size for coupling with portable gas tanks."
 	description_info = "This machine is used to merge the contents of two different gas tanks. Plug the tanks into the transfer, then open the valve to mix them together. You can also attach various assembly devices to trigger this process."
-	description_antag = "With a tank of hot phoron and cold oxygen, this benign little atmospheric device becomes an incredibly deadly bomb. You don't want to be anywhere near it when it goes off."
+	description_antag = "With a tank of hot plasma and cold oxygen, this benign little atmospheric device becomes an incredibly deadly bomb. You don't want to be anywhere near it when it goes off."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "valve_1"
-	var/obj/item/weapon/tank/tank_one
-	var/obj/item/weapon/tank/tank_two
+	var/obj/item/tank/tank_one
+	var/obj/item/tank/tank_two
 	var/obj/item/device/attached_device
 	var/mob/attacher = null
 	var/valve_open = 0
 	var/toggle = 1
 
 /obj/item/device/transfer_valve/proc/process_activation(obj/item/device/D)
+
+/obj/item/device/transfer_valve/Destroy()
+	attached_device = null
+	return ..()
 
 /obj/item/device/transfer_valve/IsAssemblyHolder()
 	return 1
@@ -24,7 +28,7 @@
 		return
 
 	var/turf/location = get_turf(src) // For admin logs
-	if(istype(item, /obj/item/weapon/tank))
+	if(istype(item, /obj/item/tank))
 
 		var/T1_weight = 0
 		var/T2_weight = 0
@@ -152,7 +156,7 @@
 	if(attached_device)
 		overlays += "device"
 
-/obj/item/device/transfer_valve/proc/remove_tank(obj/item/weapon/tank/T)
+/obj/item/device/transfer_valve/proc/remove_tank(obj/item/tank/T)
 	if(tank_one == T)
 		split_gases()
 		tank_one = null

@@ -11,7 +11,7 @@
 /*
  * Retractor
  */
-/obj/item/weapon/retractor
+/obj/item/retractor
 	name = "retractor"
 	desc = "Retracts stuff."
 	icon = 'icons/obj/surgery.dmi'
@@ -24,7 +24,7 @@
 /*
  * Hemostat
  */
-/obj/item/weapon/hemostat
+/obj/item/hemostat
 	name = "hemostat"
 	desc = "You think you have seen this before."
 	icon = 'icons/obj/surgery.dmi'
@@ -35,7 +35,7 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("attacked", "pinched")
 
-/obj/item/weapon/hemostat/pico
+/obj/item/hemostat/pico
 	name = "precision grasper"
 	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
 	icon_state = "pico_grasper"
@@ -44,7 +44,7 @@
 /*
  * Cautery
  */
-/obj/item/weapon/cautery
+/obj/item/cautery
 	name = "cautery"
 	desc = "This stops bleeding."
 	icon = 'icons/obj/surgery.dmi'
@@ -58,7 +58,7 @@
 /*
  * Surgical Drill
  */
-/obj/item/weapon/surgicaldrill
+/obj/item/surgicaldrill
 	name = "surgical drill"
 	desc = "You can drill using this item. You dig?"
 	icon = 'icons/obj/surgery.dmi'
@@ -78,7 +78,7 @@
 /*
  * Scalpel
  */
-/obj/item/weapon/scalpel
+/obj/item/scalpel
 	name = "scalpel"
 	desc = "Cut, cut, and once more cut."
 	icon = 'icons/obj/surgery.dmi'
@@ -98,34 +98,38 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /*
  * Researchable Scalpels
  */
-/obj/item/weapon/scalpel/laser1
-	name = "laser scalpel"
+/obj/item/scalpel/laser1
+	name = "basic laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks basic and could be improved."
 	icon_state = "scalpel_laser1_on"
 	damtype = "fire"
 	surgery_speed = 0.8
+	check_armour = "laser"
 
-/obj/item/weapon/scalpel/laser2
-	name = "laser scalpel"
+/obj/item/scalpel/laser2
+	name = "improved laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks somewhat advanced."
 	icon_state = "scalpel_laser2_on"
 	damtype = "fire"
 	force = 12.0
 	surgery_speed = 0.6
+	check_armour = "laser"
 
-/obj/item/weapon/scalpel/laser3
-	name = "laser scalpel"
+/obj/item/scalpel/laser3
+	name = "advanced laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks to be the pinnacle of precision energy cutlery!"
 	icon_state = "scalpel_laser3_on"
 	damtype = "fire"
 	force = 15.0
 	surgery_speed = 0.4
+	check_armour = "laser"
 
-/obj/item/weapon/scalpel/manager
+/obj/item/scalpel/manager
 	name = "incision management system"
 	desc = "A true extension of the surgeon's body, this marvel instantly and completely prepares an incision allowing for the immediate commencement of therapeutic steps."
 	icon_state = "scalpel_manager_on"
@@ -135,7 +139,7 @@
 /*
  * Circular Saw
  */
-/obj/item/weapon/circular_saw
+/obj/item/circular_saw
 	name = "circular saw"
 	desc = "For heavy duty cutting."
 	icon = 'icons/obj/surgery.dmi'
@@ -157,8 +161,8 @@
 	edge = 1
 	var/improved = 0
 
-/obj/item/weapon/circular_saw/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W,/obj/item/weapon/material/wirerod) && improved == 0)
+/obj/item/circular_saw/attackby(obj/item/W, mob/user)
+	if(istype(W,/obj/item/material/wirerod) && improved == 0)
 		user.drop_from_inventory(W)
 		qdel(W)
 		name = "circular spear"
@@ -170,8 +174,8 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/weapon/wirecutters) && improved == 1)
-		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
+	if(istype(W,/obj/item/wirecutters) && improved == 1)
+		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "For heavy duty cutting. It remembers its past glory..."
 		icon_state = "saw3"
@@ -184,7 +188,7 @@
 	..()
 
 
-/obj/item/weapon/circular_saw/plasmasaw //Orange transparent chainsaw!
+/obj/item/circular_saw/plasmasaw //Orange transparent chainsaw!
 	name = "plasma saw"
 	desc = "Perfect for cutting through ice."
 	icon_state = "plasmasaw"
@@ -192,8 +196,8 @@
 	surgery_speed = 0.5
 	//improved = 2 // Jeez I'm waaay to lazy to draw sprites for plasma chainspear
 
-/obj/item/weapon/circular_saw/plasmasaw/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W,/obj/item/weapon/material/wirerod) && improved == 0)
+/obj/item/circular_saw/plasmasaw/attackby(obj/item/W, mob/user)
+	if(istype(W,/obj/item/material/wirerod) && improved == 0)
 		user.drop_from_inventory(W)
 		qdel(W)
 		name = "plasma spear"
@@ -205,8 +209,8 @@
 		w_class = ITEM_SIZE_LARGE
 		improved = 1
 		surgery_speed = 1.2 // Well, it's bigger and heavier now
-	if(istype(W,/obj/item/weapon/wirecutters) && improved == 1)
-		new /obj/item/weapon/material/wirerod(get_turf(src)) //give back the wired rod
+	if(istype(W,/obj/item/wirecutters) && improved == 1)
+		new /obj/item/material/wirerod(get_turf(src)) //give back the wired rod
 		name = "circular saw"
 		desc = "Perfect for cutting through ice. And bodies."
 		icon_state = "plasmasaw"
@@ -219,7 +223,7 @@
 	..()
 
 //misc, formerly from code/defines/weapons.dm
-/obj/item/weapon/bonegel
+/obj/item/bonegel
 	name = "bone gel"
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "bone-gel"
@@ -227,7 +231,7 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
 
-/obj/item/weapon/FixOVein
+/obj/item/FixOVein
 	name = "FixOVein"
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "fixovein"
@@ -237,13 +241,13 @@
 	w_class = ITEM_SIZE_SMALL
 	var/usage_amount = 10
 
-/obj/item/weapon/FixOVein/clot
+/obj/item/FixOVein/clot
 	name = "capillary laying operation tool" //C.L.O.T.
 	desc = "A canister like tool that stores synthetic vein."
 	icon_state = "clot"
 	surgery_speed = 0.5
 
-/obj/item/weapon/bonesetter
+/obj/item/bonesetter
 	name = "bone setter"
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "bone setter"
@@ -257,13 +261,13 @@
 	mod_handy = 0.75
 	attack_verb = list("attacked", "hit", "bludgeoned")
 
-/obj/item/weapon/bonesetter/bone_mender
+/obj/item/bonesetter/bone_mender
 	name = "bone mender"
 	desc = "A favorite among skeletons. It even sounds like a skeleton too."
 	icon_state = "bone-mender"
 	surgery_speed = 0.5
 
-/obj/item/weapon/organfixer
+/obj/item/organfixer
 	name = "organ fixer"
 	desc = "A device used to fix internal organs."
 	icon = 'icons/obj/surgery.dmi'
@@ -280,17 +284,17 @@
 	var/gel_amt = 10
 	var/emagged = 0 // Emagged organ fixer destroys organs for good
 
-/obj/item/weapon/organfixer/New()
+/obj/item/organfixer/New()
 	..()
 	update_icon()
 
-/obj/item/weapon/organfixer/update_icon()
+/obj/item/organfixer/update_icon()
 	if(gel_amt == 0)
 		icon_state = "[initial(icon_state)]-empty"
 	else
 		icon_state = "[initial(icon_state)]"
 
-/obj/item/weapon/organfixer/attackby(obj/item/I, mob/user)
+/obj/item/organfixer/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/stack/medical/advanced/bruise_pack))
 		if(gel_amt_max == -1)
 			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
@@ -308,7 +312,7 @@
 	else
 		..()
 
-/obj/item/weapon/organfixer/examine(mob/user)
+/obj/item/organfixer/_examine_text(mob/user)
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(gel_amt_max > 0)
@@ -317,28 +321,28 @@
 			else
 				to_chat(user, "It has [gel_amt] doses of gel left.")
 
-/obj/item/weapon/organfixer/emag_act(remaining_charges, mob/user)
+/obj/item/organfixer/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
 	emagged = 1
 	to_chat(user, "<span class='danger'>You overload \the [src]'s circuits.</span>")
 	return 1
 
-/obj/item/weapon/organfixer/proc/refill(amt = 1)
+/obj/item/organfixer/proc/refill(amt = 1)
 	if(gel_amt >= gel_amt_max)
 		return 0
 	gel_amt += amt
 	update_icon()
 	return 1
 
-/obj/item/weapon/organfixer/standard
+/obj/item/organfixer/standard
 	desc = "QROF-26 produced by Vey-Med. This easy-to-use device utilizes somatic gel in order to repair even severely damaged internal organs."
 	icon_state = "organ-fixer"
 
-/obj/item/weapon/organfixer/standard/empty
+/obj/item/organfixer/standard/empty
 	gel_amt = 0
 
-/obj/item/weapon/organfixer/advanced
+/obj/item/organfixer/advanced
 	name = "advanced organ fixer"
 	desc = "A modified version of QROF-26. This model uses a cluster of advanced manipulators, which allows it to fix multiple organs at once, as well as an enlarged gel storage tank."
 	icon_state = "organ-fixer-up"
@@ -346,10 +350,10 @@
 	gel_amt = 20
 	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
 
-/obj/item/weapon/organfixer/advanced/empty
+/obj/item/organfixer/advanced/empty
 	gel_amt = 0
 
-/obj/item/weapon/organfixer/advanced/bluespace
+/obj/item/organfixer/advanced/bluespace
 	name = "bluespace organ fixer"
 	desc = "A heavyly modified device, resembling QROF-26 produced by Vey-Med. This prototype has some sort of bluespace-related device attached, and doesn't seem to have any gel injection ports."
 	icon_state = "organ-fixer-bs"
@@ -358,5 +362,5 @@
 	surgery_speed = 0.6
 	origin_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_BLUESPACE = 2)
 
-/obj/item/weapon/organfixer/advanced/bluespace/refill()
+/obj/item/organfixer/advanced/bluespace/refill()
 	return 0

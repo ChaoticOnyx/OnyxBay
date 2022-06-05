@@ -12,11 +12,6 @@
 		if (client && (client.prefs.muted & MUTE_IC))
 			to_chat(src, "<span class='warning'>You cannot send IC messages (muted).</span>")
 			return
-
-		if(act == "help")
-			to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
-			return
-
 		if(!can_emote(m_type))
 			to_chat(src, "<span class='warning'>You cannot currently [m_type == AUDIBLE_MESSAGE ? "audibly" : "visually"] emote!</span>")
 			return
@@ -35,11 +30,17 @@
 				m_type = AUDIBLE_MESSAGE
 			return custom_emote(m_type, message)
 
-	var/splitpoint = findtext(act, " ")
+	var/splitpoint = findtext_char(act, " ")
 	if(splitpoint > 0)
 		var/tempstr = act
-		act = copytext(tempstr,1,splitpoint)
-		message = copytext(tempstr,splitpoint+1,0)
+		act = copytext_char(tempstr,1,splitpoint)
+		message = copytext_char(tempstr,splitpoint+1,0)
+
+	act = sanitize_cyrillic_string(act)
+
+	if(act == "help")
+		to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
+		return
 
 	var/decl/emote/use_emote = usable_emotes[act]
 	if(!use_emote)
@@ -56,7 +57,7 @@
 	else
 		use_emote.do_emote(src, message)
 
-	for (var/obj/item/weapon/implant/I in src)
+	for (var/obj/item/implant/I in src)
 		if (I.implanted)
 			I.trigger(act, src)
 
@@ -127,7 +128,9 @@
 		return
 
 	if (message)
-		log_emote("[name]/[key] : [message]")
+		log_emote("[key_name(src)]: [message]")
+		log_message(input, INDIVIDUAL_SAY_LOG, "\[EMOTE\]")
+
 	//do not show NPC animal emotes to ghosts, it turns into hellscape
 	var/check_ghosts = client ? /datum/client_preference/ghost_sight : null
 	if(m_type == VISIBLE_MESSAGE)

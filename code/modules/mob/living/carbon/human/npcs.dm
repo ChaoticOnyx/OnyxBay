@@ -4,10 +4,10 @@
 	real_name = name
 	var/obj/item/clothing/C
 	if(prob(50))
-		C = new /obj/item/clothing/under/punpun(src)
+		C = new /obj/item/clothing/under/monkey/punpun(src)
 		equip_to_appropriate_slot(C)
 	else
-		C = new /obj/item/clothing/under/punpants(src)
+		C = new /obj/item/clothing/under/monkey/pants(src)
 		C.attach_accessory(null, new /obj/item/clothing/accessory/toggleable/hawaii/random(src))
 		equip_to_appropriate_slot(C)
 		if(prob(10))
@@ -21,6 +21,7 @@
 	head = /obj/item/clothing/head/helmet/facecover
 	mask = /obj/item/clothing/mask/muzzle
 	suit = /obj/item/clothing/suit/straight_jacket
+	flags = OUTFIT_NO_SURVIVAL
 
 /decl/hierarchy/outfit/blank_subject/post_equip(mob/living/carbon/human/H)
 	..()

@@ -31,12 +31,17 @@
 				"forumsqlport",
 				"sqladdress",
 				"sqldb",
-				"sqlfdbkdb",
-				"sqlfdbklogin",
-				"sqlfdbkpass",
+				"sql_feedback_db",
+				"sql_feedback_login",
+				"sql_feedback_pass",
 				"sqllogin",
 				"sqlpass",
 				"sqlport",
+				"sqldonaddress",
+				"sqldondb",
+				"sqldonport",
+				"sqldonlogin",
+				"sqldonpass",
 				"comms_password",
 				"ban_comms_password",
 				"login_export_addr"
@@ -49,3 +54,9 @@
 	if(!global_vars_)
 		global_vars_ = new()
 	debug_variables(global_vars_)
+
+/client/proc/debug_glob_variables()
+	set category = "Debug"
+	set name = "View GLOB Variables"
+
+	debug_variables(GLOB)

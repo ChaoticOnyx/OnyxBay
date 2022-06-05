@@ -3,6 +3,7 @@
 	name = "Gygax"
 	icon_state = "gygax"
 	initial_icon = "gygax"
+	base_color = "#ED5F3B"
 	step_in = 3
 	dir_in = 1 //Facing North.
 	health = 300
@@ -17,10 +18,11 @@
 	max_equip = 3
 
 /obj/mecha/combat/gygax/dark
-	desc = "A lightweight exosuit used by Heavy Asset Protection. A significantly upgraded Gygax security mech."
+	desc = "A lightweight exosuit used by the infamous Death Squad. A significantly upgraded Gygax security mech."
 	name = "Dark Gygax"
 	icon_state = "darkgygax"
 	initial_icon = "darkgygax"
+	base_color = "#4E4E4E"
 	health = 400
 	deflect_chance = 25
 	damage_absorption = list("brute"=0.6,"fire"=0.8,"bullet"=0.6,"laser"=0.5,"energy"=0.65,"bomb"=0.8)
@@ -43,7 +45,7 @@
 	return
 
 /obj/mecha/combat/gygax/dark/add_cell()
-	cell = new /obj/item/weapon/cell/hyper(src)
+	cell = new /obj/item/cell/hyper(src)
 
 /obj/mecha/combat/gygax/verb/overload()
 	set category = "Exosuit Interface"

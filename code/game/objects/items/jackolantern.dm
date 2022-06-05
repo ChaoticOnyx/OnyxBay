@@ -10,7 +10,7 @@
 	if(W.get_temperature_as_from_ignitor() && !lit_up)
 		user.visible_message("<span class='notice'>\The [user] lit up \the [src] with \the [W].</span>", "<span class='notice'>You lit up \the [src] with \the [W].</span>")
 		lit_up = TRUE
-		set_light(2, 1, COLOR_ORANGE)
+		set_light(0.5, 0.1, 2, 2, COLOR_ORANGE)
 		icon_state = "[initial(icon_state)]_lit_up"
 		START_PROCESSING(SSobj, src)
 

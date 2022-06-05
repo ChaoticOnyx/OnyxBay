@@ -6,7 +6,7 @@
 	icon_screen = "comm_logs"
 	light_color = "#00b000"
 	var/hack_icon = "error"
-	circuit = /obj/item/weapon/circuitboard/message_monitor
+	circuit = /obj/item/circuitboard/message_monitor
 	//Server linked to.
 	var/obj/machinery/message_server/linkedServer = null
 	//Sparks effect - For emag
@@ -30,7 +30,7 @@
 	var/custommessage 	= "This is a test, please ignore."
 
 
-/obj/machinery/computer/message_monitor/attackby(obj/item/weapon/O as obj, mob/living/user as mob)
+/obj/machinery/computer/message_monitor/attackby(obj/item/O as obj, mob/living/user as mob)
 	if(stat & (NOPOWER|BROKEN))
 		..()
 		return
@@ -49,11 +49,12 @@
 	// It'll take more time if there's more characters in the password..
 	if(!emag && operable())
 		if(!isnull(src.linkedServer))
+			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emag = 1
 			screen = 2
 			spark_system.set_up(5, 0, src)
 			src.spark_system.start()
-			var/obj/item/weapon/paper/monitorkey/MK = new /obj/item/weapon/paper/monitorkey
+			var/obj/item/paper/monitorkey/MK = new /obj/item/paper/monitorkey
 			MK.dropInto(loc)
 			// Will help make emagging the console not so easy to get away with.
 			MK.info += "<br><br><font color='red'>£%@%(*$%&(£&?*(%&£/{}</font>"
@@ -123,7 +124,8 @@
 			else
 				for(var/n = ++i; n <= optioncount; n++)
 					dat += "<dd><span class='info'>&#09;[n]. ---------------</span><br></dd>"
-			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (user.mind.special_role && user.mind.original == user))
+			var/mob/living/original_mob = user.mind?.original_mob?.resolve()
+			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (istype(original_mob) && user.mind.special_role && original_mob == user))
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.
 				dat += "<dd><A href='?src=\ref[src];hack=1'><i><font color='Red'>*&@#. Bruteforce Key</font></i></font></a><br></dd>"
 			else
@@ -254,7 +256,7 @@
 
 	dat += "</body>"
 	message = defaultmsg
-	user << browse(dat, "window=message;size=700x700")
+	show_browser(user, dat, "window=message;size=700x700")
 	onclose(user, "message")
 	return
 
@@ -358,7 +360,8 @@
 
 	//Hack the Console to get the password
 	if (href_list["hack"])
-		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (usr.mind.special_role && usr.mind.original == usr))
+		var/mob/living/original_mob = usr.mind?.original_mob?.resolve()
+		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (istype(original_mob) && usr.mind.special_role && original_mob == usr))
 			src.hacking = 1
 			src.screen = 2
 			update_icon()
@@ -500,12 +503,12 @@
 	return src.attack_hand(usr)
 
 
-/obj/item/weapon/paper/monitorkey
+/obj/item/paper/monitorkey
 	//..()
 	name = "Monitor Decryption Key"
 	var/obj/machinery/message_server/server = null
 
-/obj/item/weapon/paper/monitorkey/New()
+/obj/item/paper/monitorkey/New()
 	..()
 	spawn(10)
 		if(message_servers)

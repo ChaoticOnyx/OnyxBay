@@ -1,5 +1,5 @@
 /atom/movable
-	appearance_flags = TILE_BOUND
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
 	glide_size = 8
 
 	var/last_move = null
@@ -19,15 +19,27 @@
 	var/pull_sound = null
 
 /atom/movable/Destroy()
-	. = ..()
-	for(var/atom/movable/AM in src)
-		qdel(AM)
+	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
+		crash_with("Was deleted before initalization")
+
+	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
+
+	for(var/A in src)
+		qdel(A)
 
 	forceMove(null)
-	if (pulledby)
-		if (pulledby.pulling == src)
+	if(pulledby)
+		if(pulledby.pulling == src)
 			pulledby.pulling = null
 		pulledby = null
+
+	if(LAZYLEN(movement_handlers) && !ispath(movement_handlers[1]))
+		QDEL_NULL_LIST(movement_handlers)
+
+	if(virtual_mob && !ispath(virtual_mob))
+		QDEL_NULL(virtual_mob)
+
+	return ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
@@ -37,12 +49,24 @@
 	spawn(0)
 		if (A && yes)
 			A.last_bumped = world.time
+			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 			A.Bumped(src)
 		return
 	..()
 	return
 
+/atom/movable/proc/get_selected_zone()
+	return
+
+/atom/movable/proc/get_active_item()
+	return
+
+/atom/movable/proc/on_purchase()
+	return
+
 /atom/movable/proc/forceMove(atom/destination)
+	if((gc_destroyed && gc_destroyed != GC_CURRENTLY_BEING_QDELETED) && !isnull(destination))
+		CRASH("Attempted to forceMove a QDELETED [src] out of nullspace!")
 	if(loc == destination)
 		return 0
 	var/is_origin_turf = isturf(loc)
@@ -71,44 +95,57 @@
 					AM.Crossed(src)
 			if(is_new_area && is_destination_turf)
 				destination.loc.Entered(src, origin)
+
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, origin, destination)
+
 	return 1
 
 //called when src is thrown into hit_atom
-/atom/movable/proc/throw_impact(atom/hit_atom, speed)
-	if(istype(hit_atom,/mob/living))
+/atom/movable/proc/throw_impact(atom/hit_atom, speed, target_zone)
+	if(isliving(hit_atom))
 		var/mob/living/M = hit_atom
-		M.hitby(src,speed)
+		M.hitby(src, speed)
 
 	else if(isobj(hit_atom))
 		var/obj/O = hit_atom
 		if(!O.anchored)
 			step(O, src.last_move)
-		O.hitby(src,speed)
+		O.hitby(src, speed)
 
 	else if(isturf(hit_atom))
-		src.throwing = 0
+		throwing = 0
 		var/turf/T = hit_atom
-		T.hitby(src,speed)
+		T.hitby(src, speed)
 
 //decided whether a movable atom being thrown can pass through the turf it is in.
-/atom/movable/proc/hit_check(speed)
-	if(src.throwing)
-		for(var/atom/A in get_turf(src))
-			if(A == src) continue
-			if(istype(A,/mob/living))
-				if(A:lying) continue
-				src.throw_impact(A,speed)
-			if(isobj(A))
-				if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
-					src.throw_impact(A,speed)
+/atom/movable/proc/hit_check(speed, thrown_with, target_zone)
+	if(!throwing)
+		return
 
-/atom/movable/proc/throw_at(atom/target, range, speed, thrower)
+	for(var/atom/movable/A in get_turf(src))
+		if(A == src)
+			continue
+
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.lying)
+				continue
+			throw_impact(A, speed, thrown_with, target_zone)
+
+		if(isobj(A))
+			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
+				throw_impact(A, speed)
+
+/atom/movable/proc/throw_at(atom/target, range, speed, atom/thrower, thrown_with, target_zone)
 	if(!target || !src)
-		return 0
+		return FALSE
 	if(target.z != src.z)
-		return 0
+		return FALSE
+	// src loc check
+	if(thrower && !isturf(thrower.loc))
+		return FALSE
 	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
-	src.throwing = 1
+	src.throwing = TRUE
 	src.thrower = thrower
 	src.throw_source = get_turf(src)	//store the origin turf
 	src.pixel_z = 0
@@ -145,7 +182,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_x
 				dist_travelled++
 				dist_since_sleep++
@@ -157,7 +194,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -174,7 +211,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -186,7 +223,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_x
 				dist_travelled++
 				dist_since_sleep++
@@ -196,8 +233,13 @@
 
 			a = get_area(src.loc)
 
+
+	if(!src)
+		return
+
 	//done throwing, either because it hit something or it finished moving
-	if(isobj(src)) src.throw_impact(get_turf(src),speed)
+	if(isobj(src))
+		throw_impact(get_turf(src), speed)
 	src.throwing = 0
 	src.thrower = null
 	src.throw_source = null
@@ -230,36 +272,55 @@
 	if(!simulated)
 		return
 
-	if(!z || (z in GLOB.using_map.sealed_levels))
+	if(!z || (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED)))
 		return
 
 	if(!GLOB.universe.OnTouchMapEdge(src))
-		return
-
-	if(GLOB.using_map.use_overmap)
-		overmap_spacetravel(get_turf(src), src)
 		return
 
 	var/new_x
 	var/new_y
 	var/new_z = GLOB.using_map.get_transit_zlevel(z)
 	if(new_z)
-		if(x <= TRANSITIONEDGE)
-			new_x = world.maxx - TRANSITIONEDGE - 2
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		if(x <= TRANSITION_EDGE)
+			new_x = world.maxx - TRANSITION_EDGE - 2
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (x >= (world.maxx - TRANSITIONEDGE + 1))
-			new_x = TRANSITIONEDGE + 1
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		else if (x >= (world.maxx - TRANSITION_EDGE + 1))
+			new_x = TRANSITION_EDGE + 1
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (y <= TRANSITIONEDGE)
-			new_y = world.maxy - TRANSITIONEDGE -2
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y <= TRANSITION_EDGE)
+			new_y = world.maxy - TRANSITION_EDGE -2
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
-		else if (y >= (world.maxy - TRANSITIONEDGE + 1))
-			new_y = TRANSITIONEDGE + 1
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y >= (world.maxy - TRANSITION_EDGE + 1))
+			new_y = TRANSITION_EDGE + 1
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
 		var/turf/T = locate(new_x, new_y, new_z)
 		if(T)
 			forceMove(T)
+
+/atom/movable/Entered(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.register_signal(src, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set, TRUE)
+
+/atom/movable/Exited(atom/movable/am, atom/old_loc)
+	. = ..()
+
+	am.unregister_signal(src, SIGNAL_DIR_SET)
+	am.unregister_signal(src, SIGNAL_MOVED)
+
+/atom/movable/proc/move_to_turf(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+
+	if(T && T != loc)
+		forceMove(T)
+
+// Similar to above but we also follow into nullspace
+/atom/movable/proc/move_to_turf_or_null(atom/movable/am, old_loc, new_loc)
+	var/turf/T = get_turf(new_loc)
+	if(T != loc)
+		forceMove(T)

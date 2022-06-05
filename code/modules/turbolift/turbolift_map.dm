@@ -55,9 +55,7 @@
 	var/ez = (uz+(depth-1))
 
 	switch(dir)
-
 		if(NORTH)
-
 			int_panel_x = ux + Floor(lift_size_x/2)
 			int_panel_y = uy + 1
 			ext_panel_x = ux
@@ -74,7 +72,6 @@
 			light_y2 = uy + 1
 
 		if(SOUTH)
-
 			int_panel_x = ux + Floor(lift_size_x/2)
 			int_panel_y = ey - 1
 			ext_panel_x = ex
@@ -91,7 +88,6 @@
 			light_y2 = uy + lift_size_y - 1
 
 		if(EAST)
-
 			int_panel_x = ux+1
 			int_panel_y = uy + Floor(lift_size_y/2)
 			ext_panel_x = ex+2
@@ -108,7 +104,6 @@
 			light_y2 = uy + lift_size_x - 1
 
 		if(WEST)
-
 			int_panel_x = ex-1
 			int_panel_y = uy + Floor(lift_size_y/2)
 			ext_panel_x = ux-2
@@ -125,7 +120,7 @@
 			light_y2 = uy + lift_size_y - 1
 
 	// Generate each floor and store it in the controller datum.
-	for(var/cz = uz;cz<=ez;cz++)
+	for(var/cz = uz; cz <= ez; cz++)
 
 		var/datum/turbolift_floor/cfloor = new()
 		lift.floors += cfloor
@@ -134,8 +129,7 @@
 		// Update the appropriate turfs.
 		for(var/tx = ux to ex)
 			for(var/ty = uy to ey)
-
-				var/turf/checking = locate(tx,ty,cz)
+				var/turf/checking = locate(tx, ty, cz)
 
 				if(!istype(checking))
 					log_debug("[name] cannot find a component turf at [tx],[ty] on floor [cz]. Aborting.")
@@ -143,9 +137,9 @@
 					return
 
 				// Update path appropriately if needed.
-				var/swap_to = /turf/simulated/open
+				var/turf/swap_to = /turf/simulated/open
 				if(cz == uz)                                                                       // Elevator.
-					if((tx == ux || ty == uy || tx == ex || ty == ey) && !(tx >= door_x1 && tx <= door_x2 && ty >= door_y1 && ty <= door_y2))
+					if(((tx == ux) || (ty == uy) || (tx == ex) || (ty == ey)) && !((tx >= door_x1) && (tx <= door_x2) && (ty >= door_y1) && (ty <= door_y2)))
 						swap_to = wall_type
 					else
 						swap_to = floor_type
@@ -153,14 +147,14 @@
 				if(checking.type != swap_to)
 					checking.ChangeTurf(swap_to)
 					// Let's make absolutely sure that we have the right turf.
-					checking = locate(tx,ty,cz)
+					checking = locate(tx, ty, cz)
 
 				// Clear out contents.
 				for(var/atom/movable/thing in checking.contents)
 					if(thing.simulated)
 						qdel(thing)
 
-				if(tx >= ux && tx <= ex && ty >= uy && ty <= ey)
+				if((tx >= ux) && (tx <= ex) && (ty >= uy) && (ty <= ey))
 					floor_turfs += checking
 
 		// Do this area stuff before placing machinery or anything else. Otherwise it will potentially change areas without properly updating listeners.
@@ -173,13 +167,13 @@
 		// Place exterior doors.
 		for(var/tx = door_x1 to door_x2)
 			for(var/ty = door_y1 to door_y2)
-				var/turf/checking = locate(tx,ty,cz)
+				var/turf/checking = locate(tx, ty, cz)
 				var/internal = 1
 				if(!(checking in floor_turfs))
 					internal = 0
 					if(checking.type != floor_type)
 						checking.ChangeTurf(floor_type)
-						checking = locate(tx,ty,cz)
+						checking = locate(tx, ty, cz)
 					for(var/atom/movable/thing in checking.contents)
 						if(thing.simulated)
 							qdel(thing)

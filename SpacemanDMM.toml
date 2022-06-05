@@ -1,0 +1,26 @@
+[langserver]
+dreamchecker = true
+
+[debugger]
+engine = "auxtools"
+
+[diagnostics]
+field_access_static_type = "off"
+proc_call_static_type = "off"
+as_local_var = "error"
+duplicate_include = "error"
+macro_redefined = "error"
+macro_undefined_no_definition = "error"
+var_in_proc_parameter = "error"
+static_in_proc_parameter = "error"
+semicolon_in_proc_parameter = "error"
+unreachable_code = "error"
+control_condition_static = "error"
+if_condition_determinate = "error"
+loop_condition_determinate = "error"
+disabled_directive = "error"
+sets_directive_twice = "error"
+invalid_lint_directive_value = "error"
+invalid_set_value = "error"
+unknown_linter_setting = "error"
+as_in_proc_parameter = "error"

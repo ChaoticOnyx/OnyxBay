@@ -1,6 +1,6 @@
 //Analyzer, pestkillers, weedkillers, nutrients, hatchets, cutters.
 
-/obj/item/weapon/wirecutters/clippers
+/obj/item/wirecutters/clippers
 	name = "plant clippers"
 	desc = "A tool used to take samples from plants."
 
@@ -29,12 +29,15 @@
 		print_report(usr)
 
 /obj/item/device/analyzer/plant_analyzer/proc/print_report(mob/living/user)
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
+		to_chat(user, SPAN("notice", "\The [src]'s internal printer is still recharging."))
+		return
+
 	if(!last_data)
 		to_chat(user, "There is no scan data to print.")
 		return
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
-	P.SetName("paper - [form_title]")
-	P.info = "[last_data]"
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src), "[last_data]", "paper - [form_title]")
 	if(istype(user,/mob/living/carbon/human) && !(user.l_hand && user.r_hand))
 		user.put_in_hands(P)
 	user.visible_message("\The [src] spits out a piece of paper.")
@@ -51,15 +54,15 @@
 	var/datum/reagents/grown_reagents
 	if(istype(target,/obj/structure/table))
 		return ..()
-	else if(istype(target,/obj/item/weapon/reagent_containers/food/snacks/grown))
+	else if(istype(target,/obj/item/reagent_containers/food/grown))
 
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = target
+		var/obj/item/reagent_containers/food/grown/G = target
 		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 
-	else if(istype(target,/obj/item/weapon/grown))
+	else if(istype(target,/obj/item/grown))
 
-		var/obj/item/weapon/grown/G = target
+		var/obj/item/grown/G = target
 		grown_seed = SSplants.seeds[G.plantname]
 		grown_reagents = G.reagents
 
@@ -73,6 +76,8 @@
 		var/obj/machinery/portable_atmospherics/hydroponics/H = target
 		grown_seed = H.seed
 		grown_reagents = H.reagents
+
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 
 	if(!grown_seed)
 		to_chat(user, "<span class='danger'>[src] can tell you nothing about \the [target].</span>")
@@ -208,6 +213,6 @@
 	if(dat)
 		last_data = dat
 		dat += "<br><br>\[<a href='?src=\ref[src];print=1'>print report</a>\]"
-		user << browse(dat,"window=plant_analyzer")
+		show_browser(user, dat,"window=plant_analyzer")
 
 	return

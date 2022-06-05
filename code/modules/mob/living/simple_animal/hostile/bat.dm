@@ -8,7 +8,7 @@
 	icon_gib = "bat_dead"
 	speak_chance = 0
 	turns_per_move = 3
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -21,6 +21,7 @@
 	melee_damage_upper = 10
 	attacktext = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
+	bodyparts = /decl/simple_animal_bodyparts/bird
 
 	min_gas = null
 	max_gas = null
@@ -31,12 +32,14 @@
 	faction = "scarybat"
 	var/mob/living/owner
 
+	stance = HOSTILE_STANCE_ALERT
+
 /mob/living/simple_animal/hostile/scarybat/New(loc, mob/living/L as mob)
 	..()
 	if(istype(L))
 		owner = L
 
-/mob/living/simple_animal/hostile/scarybat/FindTarget()
+/mob/living/simple_animal/hostile/scarybat/find_target()
 	. = ..()
 	if(.)
 		emote("flutters towards [.]")

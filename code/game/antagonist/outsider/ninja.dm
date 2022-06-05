@@ -4,25 +4,30 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	id = MODE_NINJA
 	role_text = "Ninja"
 	role_text_plural = "Ninja"
-	landmark_id = "ninjastart"
+	landmark_id = "Ninja"
 	welcome_text = "<span class='info'>You are an elite mercenary assassin of the Spider Clan. You have a variety of abilities at your disposal, thanks to your nano-enhanced cyber armor.</span>"
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_RANDSPAWN | ANTAG_VOTABLE | ANTAG_SET_APPEARANCE
 	antaghud_indicator = "hudninja"
 
+	valid_species = list(SPECIES_UNATHI, SPECIES_HUMAN) // Spider Clan don't like weakness.
 	initial_spawn_req = 1
 	initial_spawn_target = 1
 	hard_cap = 1
 	hard_cap_round = 3
-	min_player_age = 18
 
-	id_type = /obj/item/weapon/card/id/syndicate
+	id_type = /obj/item/card/id/syndicate
 
 	faction = "ninja"
 
 	station_crew_involved = FALSE
 
+/datum/antagonist/ninja/Initialize()
+	. = ..()
+	if(config.game.ninja_min_age)
+		min_player_age = config.game.ninja_min_age
+
 /datum/antagonist/ninja/attempt_random_spawn()
-	if(config.ninjas_allowed) ..()
+	if(config.misc.ninjas_allowed) ..()
 
 /datum/antagonist/ninja/create_objectives(datum/mind/ninja)
 
@@ -104,7 +109,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	player.equip_to_slot_or_del(new /obj/item/device/flashlight(player), slot_belt)
 	create_id("Infiltrator", player)
 
-	var/obj/item/weapon/rig/light/ninja/ninjasuit = new(get_turf(player))
+	var/obj/item/rig/light/ninja/ninjasuit = new(get_turf(player))
 	ninjasuit.seal_delay = 0
 	player.put_in_hands(ninjasuit)
 	player.equip_to_slot_or_del(ninjasuit,slot_back)
@@ -112,8 +117,8 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 		ninjasuit.toggle_seals(src,1)
 		ninjasuit.seal_delay = initial(ninjasuit.seal_delay)
 
-	if(istype(player.back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = player.back
+	if(istype(player.back,/obj/item/rig))
+		var/obj/item/rig/rig = player.back
 		if(rig.air_supply)
 			player.internal = rig.air_supply
 

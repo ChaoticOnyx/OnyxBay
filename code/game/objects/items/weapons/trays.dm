@@ -1,7 +1,7 @@
 /*
  * Trays - Agouri
  */
-/obj/item/weapon/tray
+/obj/item/tray
 	name = "tray"
 	icon = 'icons/obj/food.dmi'
 	icon_state = "tray"
@@ -14,9 +14,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 3000)
 	var/list/carrying = list() // List of things on the tray. - Doohl
-	var/max_carry = 2*base_storage_cost(ITEM_SIZE_NORMAL)
+	var/max_carry = 0
 
-/obj/item/weapon/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/tray/Initialize()
+	. = ..()
+	if(!max_carry)
+		max_carry = 2 * base_storage_cost(ITEM_SIZE_NORMAL)
+
+/obj/item/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	// Drop all the things. All of them.
 	overlays.Cut()
@@ -135,14 +140,12 @@
 				return
 			return
 
-/obj/item/weapon/tray/var/cooldown = 0	//shield bash cooldown. based on world.time
-
-/obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/material/kitchen/rollingpin))
-		if(cooldown < world.time - 25)
+/obj/item/tray/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/material/kitchen/rollingpin))
+		THROTTLE(cooldown, 25)
+		if(cooldown)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 			playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
-			cooldown = world.time
 	else
 		..()
 
@@ -153,12 +156,12 @@
 =																			=
 ===============~~~~~================================~~~~~====================
 */
-/obj/item/weapon/tray/proc/calc_carry()
+/obj/item/tray/proc/calc_carry()
 	. = 0
 	for(var/obj/item/I in carrying)
 		. += I.get_storage_cost()
 
-/obj/item/weapon/tray/pickup(mob/user)
+/obj/item/tray/pickup(mob/user)
 
 	if(!isturf(loc))
 		return
@@ -173,7 +176,7 @@
 			carrying.Add(I)
 			overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer, "pixel_x" = I.pixel_x, "pixel_y" = I.pixel_y)
 
-/obj/item/weapon/tray/dropped(mob/user)
+/obj/item/tray/dropped(mob/user)
 	..()
 	spawn(1) //why sleep 1? Because forceMove first drops us on the ground.
 		if(!isturf(loc)) //to handle hand switching

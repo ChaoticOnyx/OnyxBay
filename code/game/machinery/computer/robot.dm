@@ -6,7 +6,7 @@
 	icon_screen = "robot"
 	light_color = "#a97faa"
 	req_access = list(access_robotics)
-	circuit = /obj/item/weapon/circuitboard/robotics
+	circuit = /obj/item/circuitboard/robotics
 
 /obj/machinery/computer/robotics/attack_ai(mob/user as mob)
 	ui_interact(user)
@@ -72,7 +72,8 @@
 			return TOPIC_HANDLED
 
 		// Antag AI checks
-		if(!istype(user, /mob/living/silicon/ai) || !(user.mind.special_role && user.mind.original == user))
+		var/mob/living/original_mob = user.mind?.original_mob?.resolve()
+		if(!istype(user, /mob/living/silicon/ai) || !(istype(original_mob) && user.mind.special_role && original_mob == user))
 			to_chat(user, "<span class='warning'>Access Denied</span>")
 			return TOPIC_HANDLED
 
@@ -126,14 +127,14 @@
 		var/turf/T = get_turf(R)
 		var/area/A = get_area(T)
 
-		if(istype(T) && istype(A) && (T.z in GLOB.using_map.contact_levels))
+		if(istype(T) && istype(A) && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT)))
 			robot["location"] = "[A.name] ([T.x], [T.y])"
 		else
 			robot["location"] = "Unknown"
 
 		if(R.stat)
 			robot["status"] = "Not Responding"
-		else if (!R.canmove)
+		else if(R.lockcharge)
 			robot["status"] = "Lockdown"
 		else
 			robot["status"] = "Operational"
@@ -150,7 +151,8 @@
 		robot["master_ai"] = R.connected_ai ? R.connected_ai.name : "None"
 		robot["hackable"] = 0
 		// Antag AIs know whether linked cyborgs are hacked or not.
-		if(operator && istype(operator, /mob/living/silicon/ai) && (R.connected_ai == operator) && (operator.mind.special_role && operator.mind.original == operator))
+		var/mob/living/original_mob = operator.mind?.original_mob?.resolve()
+		if(operator && istype(operator, /mob/living/silicon/ai) && (R.connected_ai == operator) && (istype(original_mob) && operator.mind.special_role && original_mob == operator))
 			robot["hacked"] = R.emagged ? 1 : 0
 			robot["hackable"] = R.emagged? 0 : 1
 		robots.Add(list(robot))

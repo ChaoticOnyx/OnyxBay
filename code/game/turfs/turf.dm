@@ -7,7 +7,7 @@
 
 	var/turf_flags
 
-	var/holy = 0
+	var/holy = FALSE
 
 	// Initial air contents (in moles)
 	var/list/initial_gas
@@ -20,6 +20,8 @@
 	var/temperature = T20C      // Initial turf temperature.
 	var/blocks_air = 0          // Does this turf contain air/let air through?
 
+	var/list/explosion_throw_details
+
 	// General properties.
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
@@ -29,14 +31,22 @@
 
 	var/movement_delay
 
-/turf/New()
-	..()
+	var/changing_turf
+
+/turf/Initialize(mapload, ...)
+	. = ..()
 	if(dynamic_lighting)
 		luminosity = 0
 	else
 		luminosity = 1
 
+	RecalculateOpacity()
+
 /turf/Destroy()
+	if(!changing_turf)
+		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+
+	changing_turf = FALSE
 	remove_cleanables()
 	..()
 	return QDEL_HINT_IWILLGC
@@ -68,11 +78,20 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	handle_crawling(user)
+	if(!user.pulling)
+		// QOL feature, clicking on turf can toogle doors
+		var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
+		if(AL)
+			AL.attack_hand(user)
+			return TRUE
+		var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
+		if(FD)
+			FD.attack_hand(user)
+			return TRUE
 
-	if(!(user.canmove) || user.restrained() || !(user.pulling))
+	if(user.restrained())
 		return 0
-	if(user.pulling.anchored || !isturf(user.pulling.loc))
+	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0
@@ -85,11 +104,14 @@
 		M.start_pulling(t)
 	else
 		step(user.pulling, get_dir(user.pulling.loc, src))
+		if(isobj(user.pulling))
+			var/obj/O = user.pulling
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
 	return 1
 
-/turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = W
+/turf/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/storage))
+		var/obj/item/storage/S = W
 		if(S.use_to_pickup && S.collection_mode)
 			S.gather_all(src, user)
 	return ..()
@@ -216,13 +238,15 @@ var/const/enterloopsanity = 100
 				L.Add(t)
 	return L
 
-/turf/proc/contains_dense_objects()
+/turf/proc/contains_dense_objects(check_mobs = TRUE)
 	if(density)
-		return 1
+		return TRUE
 	for(var/atom/A in src)
+		if(!check_mobs && ismob(A))
+			continue
 		if(A.density && !(A.atom_flags & ATOM_FLAG_CHECKS_BORDER))
-			return 1
-	return 0
+			return TRUE
+	return FALSE
 
 //expects an atom containing the reagents used to clean the turf
 /turf/proc/clean(atom/source, mob/user = null)
@@ -247,10 +271,13 @@ var/const/enterloopsanity = 100
 		decals = null
 
 // Called when turf is hit by a thrown object
-/turf/hitby(atom/movable/AM as mob|obj, speed)
+/turf/hitby(atom/movable/AM, speed, nomsg)
 	if(src.density)
 		spawn(2)
 			step(AM, turn(AM.last_move, 180))
 		if(isliving(AM))
 			var/mob/living/M = AM
 			M.turf_collision(src, speed)
+
+/turf/allow_drop()
+	return TRUE

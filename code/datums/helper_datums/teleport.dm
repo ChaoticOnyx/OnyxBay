@@ -1,5 +1,5 @@
 /decl/teleport
-	var/static/list/teleport_blacklist = list(/obj/item/weapon/disk/nuclear, /obj/item/weapon/storage/backpack/holding, /obj/effect/sparks) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
+	var/static/list/teleport_blacklist = list(/obj/item/disk/nuclear, /obj/item/storage/backpack/holding, /obj/effect/sparks) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
 
 /decl/teleport/proc/teleport(atom/target, atom/destination, precision = 0)
 	if(!can_teleport(target,destination))
@@ -25,7 +25,7 @@
 		return 0
 
 	if(istype(target, /obj/mecha))
-		if(destination.z in GLOB.using_map.admin_levels)
+		if(destination.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM))
 			var/obj/mecha/mech = target
 			to_chat(mech.occupant, "<span class='danger'>\The [target] would not survive the jump to a location so far away!</span>")
 			return 0

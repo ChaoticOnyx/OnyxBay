@@ -1,6 +1,8 @@
+// - card reader - //
 /obj/item/integrated_circuit/input/card_reader
 	name = "ID card reader" //To differentiate it from the data card reader
 	desc = "A circuit that can read the registred name, assignment, and PassKey string from an ID card."
+	extended_desc = "The access will be automatically added to assembly."
 	icon_state = "card_reader"
 
 	complexity = 4
@@ -14,19 +16,15 @@
 		"on read" = IC_PINTYPE_PULSE_OUT
 	)
 
-/obj/item/integrated_circuit/input/card_reader/old // adds compatibility for old TG blueprints
-	name = "card reader"
-	spawn_flags = 0
-
 /obj/item/integrated_circuit/input/card_reader/attackby_react(obj/item/I, mob/living/user, intent)
-	var/obj/item/weapon/card/id/card = I.GetIdCard()
+	var/obj/item/card/id/card = I.GetIdCard()
 	var/list/access = I.GetAccess()
-	var/json_access = json_encode(access)
-	var/passkey = add_data_signature(json_access)
+	var/passkey = strtohex(XorEncrypt(json_encode(access), SScircuit.cipherkey))
 
 	if(card) // An ID card.
 		set_pin_data(IC_OUTPUT, 1, card.registered_name)
 		set_pin_data(IC_OUTPUT, 2, card.assignment)
+		to_chat(user, SPAN_NOTICE("You slide ID card into [get_object()]"))
 
 	else if(length(access))	// A non-card object that has access levels.
 		set_pin_data(IC_OUTPUT, 1, null)
@@ -36,7 +34,7 @@
 		return FALSE
 
 	set_pin_data(IC_OUTPUT, 3, passkey)
-	user.visible_message("<span class='notice'>\The [user] swipes \the [I] onto \the [get_object()]'s card reader.</span>")
+
 	push_data()
 	activate_pin(1)
 	return TRUE
@@ -50,27 +48,18 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	inputs = list("passkey" = IC_PINTYPE_STRING)
 	activators = list(
-		"set passkey" = IC_PINTYPE_PULSE_IN
+		"set passkey" = IC_PINTYPE_PULSE_IN,
+		"passkey setted" = IC_PINTYPE_PULSE_OUT
 	)
-	var/list/access
 
 /obj/item/integrated_circuit/output/access_displayer/do_work()
-	var/list/signature_and_data = splittext(get_pin_data(IC_INPUT, 1), ":")
-	if(signature_and_data.len < 2)
-		return
+	var/passkey = sanitize(get_pin_data(IC_INPUT, 1), max_length = MAX_PAPER_MESSAGE_LEN)
+	passkey = hextostr(passkey, TRUE)
+	passkey = XorEncrypt(passkey, SScircuit.cipherkey)
 
-	var/signature = signature_and_data[1]
-	var/result = signature_and_data[2]
-
-	// check if the signature is valid
-	if(!check_data_signature(signature, result))
-		return FALSE
-	
-	if(length(result) > 1)
-		result = json_decode(result)
-	else
-		result = list(result)
-	access = result
-
-/obj/item/integrated_circuit/output/access_displayer/GetAccess()
-	return access
+	// from hippie_xor_decrypt proc
+	var/list/access = json_decode(passkey)
+	if(access && islist(access) && assembly)
+		// reset previus card access and set new access
+		assembly.access_card.access = access
+		activate_pin(2)

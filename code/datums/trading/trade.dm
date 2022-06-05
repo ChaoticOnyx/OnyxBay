@@ -93,6 +93,8 @@
 			possible -= type
 		if(status & TRADER_BLACKLIST_SUB)
 			possible -= subtypesof(type)
+		if(status & TRADER_BLACKLIST_ALL)
+			possible -= typesof(type)
 
 	if(possible.len)
 		var/picked = pick(possible)
@@ -148,7 +150,7 @@
 		if(blacklisted_trade_items && blacklisted_trade_items.len && is_type_in_list(offer,blacklisted_trade_items))
 			return 0
 
-		if(istype(offer,/obj/item/weapon/spacecash))
+		if(istype(offer,/obj/item/spacecash))
 			if(!(trade_flags & TRADER_MONEY))
 				return TRADER_NO_MONEY
 		else
@@ -203,19 +205,23 @@
 	return get_response("compliment_accept", "Thank you!")
 
 /datum/trader/proc/trade(list/offers, num, turf/location)
-	if(offers && offers.len)
-		for(var/offer in offers)
-			if(istype(offer,/mob))
-				var/text = mob_transfer_message
-				to_chat(offer, replacetext(text, "ORIGIN", origin))
-			if(istype(offer, /obj/mecha))
-				var/obj/mecha/M = offer
-				M.wreckage = null //So they don't ruin the illusion
-			qdel(offer)
+	for(var/offer in offers)
+		if(istype(offer, /mob))
+			var/mob/M = offer
+			var/text = mob_transfer_message
+			to_chat(M, replacetext(text, "ORIGIN", origin))
+			if(M.key)
+				M.ghostize()
+		if(istype(offer, /obj/mecha))
+			var/obj/mecha/M = offer
+			M.wreckage = null //So they don't ruin the illusion
+		qdel(offer)
 
+	num = Clamp(num, 1, trading_items.len)
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
+	M.on_purchase()
 	playsound(location, 'sound/effects/teleport.ogg', 50, 1)
 
 	disposition += rand(compliment_increase,compliment_increase*3) //Traders like it when you trade with them
@@ -223,8 +229,9 @@
 	return M
 
 /datum/trader/proc/how_much_do_you_want(num)
+	num = Clamp(num, 1, trading_items.len)
 	var/atom/movable/M = trading_items[num]
-	. = get_response("how_much", "Hmm.... how about VALUE thalers?")
+	. = get_response("how_much", "Hmm.... how about VALUE credits?")
 	. = replacetext(.,"VALUE",get_item_value(num))
 	. = replacetext(.,"ITEM", initial(M.name))
 
@@ -256,7 +263,7 @@
 			return TRADER_FOUND_UNWANTED
 		. += get_value(offer) * mult
 
-	playsound(get_turf(offers[1]), 'sound/effects/teleport.ogg', 50, 1)
+	playsound(offers[1], 'sound/effects/teleport.ogg', 50, 1)
 	for(var/offer in offers)
 		qdel(offer)
 

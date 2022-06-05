@@ -42,27 +42,63 @@
 #define DIGSITE_TEMPLE 5
 #define DIGSITE_WAR 6
 
-#define EFFECT_TOUCH 0
-#define EFFECT_AURA 1
-#define EFFECT_PULSE 2
-#define MAX_EFFECT 2
 
-#define TRIGGER_TOUCH 0
-#define TRIGGER_WATER 1
-#define TRIGGER_ACID 2
-#define TRIGGER_VOLATILE 3
-#define TRIGGER_TOXIN 4
-#define TRIGGER_FORCE 5
-#define TRIGGER_ENERGY 6
-#define TRIGGER_HEAT 7
-#define TRIGGER_COLD 8
-#define TRIGGER_PHORON 9
-#define TRIGGER_OXY 10
-#define TRIGGER_CO2 11
-#define TRIGGER_NITRO 12
-#define TRIGGER_DARK 13
-#define TRIGGER_LIGHT 14
-#define MAX_TRIGGER 14
+#define EFFECT_TOUCH   (1<<0)
+#define EFFECT_AURA    (1<<1)
+#define EFFECT_PULSE   (1<<2)
+
+#define EFFECTS_LIST \
+list(\
+EFFECT_TOUCH,\
+EFFECT_AURA,\
+EFFECT_PULSE,\
+)
+
+
+#define TRIGGER_TOUCH       (1<<0)
+#define TRIGGER_WATER       (1<<1)
+#define TRIGGER_ACID        (1<<2)
+#define TRIGGER_VOLATILE    (1<<3)
+#define TRIGGER_TOXIN       (1<<4)
+#define TRIGGER_FORCE       (1<<5)
+#define TRIGGER_ENERGY      (1<<6)
+#define TRIGGER_HEAT        (1<<7)
+#define TRIGGER_COLD        (1<<8)
+#define TRIGGER_PLASMA      (1<<9)
+#define TRIGGER_OXY         (1<<10)
+#define TRIGGER_CO2         (1<<11)
+#define TRIGGER_NITRO       (1<<12)
+#define TRIGGER_DARK        (1<<13)
+#define TRIGGER_LIGHT       (1<<14)
+
+#define TRIGGERS_ENVIROMENT \
+(\
+ TRIGGER_HEAT | TRIGGER_COLD | TRIGGER_PLASMA |\
+ TRIGGER_OXY  | TRIGGER_CO2  | TRIGGER_NITRO  |\
+ TRIGGER_DARK | TRIGGER_LIGHT\
+)
+
+#define TRIGGERS_LIST \
+list(\
+TRIGGER_TOUCH,\
+TRIGGER_WATER,\
+TRIGGER_ACID,\
+TRIGGER_VOLATILE,\
+TRIGGER_TOXIN,\
+TRIGGER_FORCE,\
+TRIGGER_ENERGY,\
+TRIGGER_HEAT,\
+TRIGGER_COLD,\
+TRIGGER_PLASMA,\
+TRIGGER_OXY,\
+TRIGGER_CO2,\
+TRIGGER_NITRO,\
+TRIGGER_DARK,\
+TRIGGER_LIGHT\
+)
+
+
+
 
 #define EFFECT_UNKNOWN 0
 #define EFFECT_ENERGY 1

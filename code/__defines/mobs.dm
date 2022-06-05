@@ -73,15 +73,19 @@
 #define I_GRAB		"grab"
 #define I_HURT		"harm"
 
+// Movement flags. For fuck's sake, we were using "run"s and "walk"s till 2021
+#define M_RUN  "run"
+#define M_WALK "walk"
+
 //These are used Bump() code for living mobs, in the mob_bump_flag, mob_swap_flags, and mob_push_flags vars to determine whom can bump/swap with whom.
 #define HUMAN 1
 #define MONKEY 2
 #define ALIEN 4
 #define ROBOT 8
-#define SLIME 16
+#define METROID 16
 #define SIMPLE_ANIMAL 32
 #define HEAVY 64
-#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|SLIME|SIMPLE_ANIMAL|HEAVY)
+#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|METROID|SIMPLE_ANIMAL|HEAVY)
 
 // Robot AI notifications
 #define ROBOT_NOTIFICATION_NEW_UNIT 1
@@ -176,9 +180,9 @@
 #define FLASH_PROTECTION_MAJOR 2
 
 
-#define ANIMAL_SPAWN_DELAY  round(config.respawn_delay / 6)
-#define DRONE_SPAWN_DELAY   round(config.respawn_delay / 3)
-#define DEAD_ANIMAL_DELAY   round(config.respawn_delay / 3)
+#define ANIMAL_SPAWN_DELAY  round(config.misc.respawn_delay / 6)
+#define DRONE_SPAWN_DELAY   round(config.misc.respawn_delay / 3)
+#define DEAD_ANIMAL_DELAY   round(config.misc.respawn_delay / 3)
 
 // Incapacitation flags, used by the mob/proc/incapacitated() proc
 #define INCAPACITATION_NONE 0
@@ -204,7 +208,6 @@
 #define BP_LIVER    "liver"
 #define BP_KIDNEYS  "kidneys"
 #define BP_STOMACH  "stomach"
-#define BP_PLASMA   "plasma vessel"
 #define BP_APPENDIX "appendix"
 #define BP_CELL     "cell"
 #define BP_HIVE     "hive node"
@@ -217,9 +220,11 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PHORON   "phoron filter"
+#define BP_PLASMA   "plasma vessel"
 #define BP_CHANG    "biostructure"
-#define BP_CANCER    "cancer"
+#define BP_CANCER   "cancer"
+#define BP_EMBRYO   "alien embryo"
+#define BP_GANGLION "spinal ganglion"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -295,13 +300,19 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
+#define SPECIES_MONKEY      "Monkey"
+#define SPECIES_GOLEM       "Golem"
+#define SPECIES_ABDUCTOR    "Abductor"
 
 // Ayyy IDs.
-#define SPECIES_XENO			"Xenomorph"
-#define SPECIES_XENO_DRONE		"Xenomorph Drone"
-#define SPECIES_XENO_HUNTER		"Xenomorph Hunter"
-#define SPECIES_XENO_SENTINEL	"Xenomorph Sentinel"
-#define SPECIES_XENO_QUEEN		"Xenomorph Queen"
+#define SPECIES_XENO                 "Xenomorph"
+#define SPECIES_XENO_DRONE           "Xenomorph Drone"
+#define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
+#define SPECIES_XENO_SENTINEL        "Xenomorph Sentinel"
+#define SPECIES_XENO_QUEEN           "Xenomorph Queen"
+#define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
+#define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
+#define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
@@ -319,10 +330,50 @@
 #define AURA_TYPE_THROWN "Thrown"
 #define AURA_TYPE_LIFE   "Life"
 
-#define SLIME_EVOLUTION_THRESHOLD 10
+#define METROID_EVOLUTION_THRESHOLD 10
 
 //Used in mob/proc/get_input
 
 #define MOB_INPUT_TEXT "text"
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
+
+#define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
+#define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
+#define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
+
+#define STOMACH_FULLNESS_SUPER_LOW  25
+#define STOMACH_FULLNESS_LOW        125
+#define STOMACH_FULLNESS_MEDIUM     250
+#define STOMACH_FULLNESS_HIGH       425
+#define STOMACH_FULLNESS_SUPER_HIGH 550
+
+#define STOMACH_CAPACITY_LOW    0.75 // Slim people
+#define STOMACH_CAPACITY_NORMAL 1.0  // Normal human beings
+#define STOMACH_CAPACITY_HIGH   1.45 // Spherical boiz
+
+#define HUMAN_POWER_NONE    "None"
+#define HUMAN_POWER_SPIT    "Spit"
+#define HUMAN_POWER_LEAP    "Leap"
+#define HUMAN_POWER_TACKLE  "Tackle"
+
+#define HUMAN_MAX_POISE     75 // 100% healthy, non-druged human being with magboots and heavy armor.
+#define HUMAN_HIGH_POISE    60
+#define HUMAN_DEFAULT_POISE 50 // 100% healthy, non-drugged human being.
+#define HUMAN_LOW_POISE     45
+#define HUMAN_MIN_POISE     25 // Some balancing stuff here. Even drunk pirates should be able to fight.
+
+#define HUMAN_HEIGHT_TINY   0.93
+#define HUMAN_HEIGHT_SMALL  0.96
+#define HUMAN_HEIGHT_NORMAL 1.0
+#define HUMAN_HEIGHT_LARGE  1.04
+#define HUMAN_HEIGHT_HUGE   1.07
+
+/proc/human_height_text(x)
+	switch(x)
+		if(HUMAN_HEIGHT_TINY) return "Dwarfish"
+		if(HUMAN_HEIGHT_SMALL) return "Short"
+		if(HUMAN_HEIGHT_NORMAL) return "Average"
+		if(HUMAN_HEIGHT_LARGE) return "Tall"
+		if(HUMAN_HEIGHT_HUGE) return "Towering"
+	return "Unusual"

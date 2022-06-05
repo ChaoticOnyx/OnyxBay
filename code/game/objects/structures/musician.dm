@@ -264,7 +264,7 @@
 	if(!anchored)
 		return
 
-	usr.machine = src
+	user.set_machine(src)
 	var/dat = "<HEAD><meta charset=\"utf-8\"><TITLE>Piano</TITLE></HEAD><BODY>"
 
 	if(song)
@@ -310,13 +310,12 @@
 		else
 			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
 	dat += "</BODY></HTML>"
-	user << browse(dat, "window=piano;size=700x300")
+	show_browser(user, dat, "window=piano;size=700x300")
 	onclose(user, "piano")
 
 /obj/structure/device/piano/Topic(href, href_list)
-
-	if(!in_range(src, usr) || issilicon(usr) || !anchored || !usr.canmove || usr.restrained())
-		usr << browse(null, "window=piano;size=700x300")
+	if((. = ..()))
+		close_browser(usr, "window=piano;size=700x300")
 		onclose(usr, "piano")
 		return
 

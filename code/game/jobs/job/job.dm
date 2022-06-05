@@ -2,7 +2,7 @@
 
 	//The name of the job
 	var/title = "NOPE"
-	//Job access. The use of minimal_access or access is determined by a config setting: config.jobs_have_minimal_access
+	//Job access. The use of minimal_access or access is determined by a config setting: config.game.jobs_have_minimal_access
 	var/list/minimal_access = list()      // Useful for servers which prefer to only have access given to the places a job absolutely needs (Larger server population)
 	var/list/access = list()              // Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
 	var/list/software_on_spawn = list()   // Defines the software files that spawn on tablets and labtops
@@ -11,6 +11,10 @@
 	var/spawn_positions = 0               // How many players can spawn in as this job
 	var/current_positions = 0             // How many players have this job
 	var/availablity_chance = 100          // Percentage chance job is available each round
+
+	var/open_vacancies   = 0              // How many vacancies were opened by heads
+	var/filled_vacancies = 0              // How many vacancies were filled
+	var/can_be_hired  = TRUE              // Can the Command  open a vacancy for this role?
 
 	var/supervisors = null                // Supervisors, who this person answers to directly
 	var/selection_color = "#ffffff"       // Selection screen color
@@ -28,6 +32,7 @@
 	var/economic_modifier = 2             // With how much does this job modify the initial account amount?
 
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
+	var/list/preview_override             // Overrides the preview mannequin w/ given icon. Must be formatted as 'list(icon_state, icon)'.
 
 	var/loadout_allowed = TRUE            // Whether or not loadout equipment is allowed and to be created when joining.
 	var/list/allowed_branches             // For maps using branches and ranks, also expandable for other purposes
@@ -35,6 +40,7 @@
 
 	var/announced = TRUE                  //If their arrival is announced on radio
 	var/latejoin_at_spawnpoints           //If this job should use roundstart spawnpoints for latejoin (offstation jobs etc)
+	var/off_station = FALSE
 
 	var/hud_icon						  //icon used for Sec HUD overlay
 
@@ -83,17 +89,22 @@
 
 	//give them an account in the station database
 	if(!(H.species && (H.species.type in economic_species_modifier)))
-		return //some bizarre species like shadow, slime, or monkey? You don't get an account.
+		return //some bizarre species like shadow, metroid, or monkey? You don't get an account.
 
 	var/species_modifier = economic_species_modifier[H.species.type]
 
 	var/money_amount = (rand(5,50) + rand(5, 50)) * loyalty * economic_modifier * species_modifier * GLOB.using_map.salary_modifier
-	var/datum/money_account/M = create_account(H.real_name, money_amount, null)
+	var/datum/money_account/M = create_account(H.real_name, money_amount, null, off_station)
+	if(H.client)
+		M.security_level = H.client.prefs.bank_security
+		if(H.client.prefs.bank_pin)
+			M.remote_access_pin = H.client.prefs.bank_pin
 	if(H.mind)
 		var/remembered_info = ""
-		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
-		remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
-		remembered_info += "<b>Your account funds are:</b> T[M.money]<br>"
+		remembered_info += "<b>Your account:</b><br>"
+		remembered_info += "<b>Number:</b> #[M.account_number]<br>"
+		remembered_info += "<b>Pin:</b> [M.remote_access_pin]<br>"
+		remembered_info += "<b>Funds:</b> [M.money]cr.<br>"
 
 		if(M.transaction_log.len)
 			var/datum/transaction/T = M.transaction_log[1]
@@ -109,10 +120,19 @@
 	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title, branch)
 	if(!outfit)
 		return FALSE
+	if(!isnull(preview_override))
+		if(!islist(preview_override) || length(preview_override) != 2)
+			crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
+			return FALSE
+		H.overlays.Cut()
+		H.update_icon = FALSE
+		H.icon = preview_override[2]
+		H.icon_state = preview_override[1]
+		return TRUE
 	. = outfit.equip(H, title, alt_title, OUTFIT_ADJUSTMENT_SKIP_POST_EQUIP|OUTFIT_ADJUSTMENT_SKIP_ID_PDA)
 
 /datum/job/proc/get_access()
-	if(minimal_access.len && (!config || config.jobs_have_minimal_access))
+	if(minimal_access.len && (!config || config.game.jobs_have_minimal_access))
 		return src.minimal_access.Copy()
 	else
 		return src.access.Copy()
@@ -122,7 +142,7 @@
 	return (available_in_days(C) == 0) //Available in 0 days = available right now = player is old enough to play.
 
 /datum/job/proc/available_in_days(client/C)
-	if(C && config.use_age_restriction_for_jobs && isnull(C.holder) && isnum(C.player_age) && isnum(minimal_player_age))
+	if(C && config.game.use_age_restriction_for_jobs && isnull(C.holder) && isnum(C.player_age) && isnum(minimal_player_age))
 		return max(0, minimal_player_age - C.player_age)
 	return 0
 
@@ -140,7 +160,7 @@
 			apply_fingerprints_to_item(holder, sub_item)
 
 /datum/job/proc/is_position_available()
-	return (current_positions < total_positions) || (total_positions == -1)
+	return (current_positions < total_positions + open_vacancies) || (total_positions == -1)
 
 /datum/job/proc/has_alt_title(mob/H, supplied_title, desired_title)
 	return (supplied_title == desired_title) || (H.mind && H.mind.role_alt_title == desired_title)

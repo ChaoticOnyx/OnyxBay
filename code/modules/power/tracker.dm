@@ -22,7 +22,8 @@
 
 /obj/machinery/power/tracker/Destroy()
 	unset_control() //remove from control computer
-	..()
+
+	return ..()
 
 //set the control of the tracker to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/tracker/proc/set_control(obj/machinery/power/solar_control/SC)
@@ -56,7 +57,7 @@
 	if(powernet && (powernet == control.powernet)) //update if we're still in the same powernet
 		control.cdir = angle
 
-/obj/machinery/power/tracker/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/power/tracker/attackby(obj/item/W, mob/user)
 
 	if(isCrowbar(W))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
@@ -74,7 +75,7 @@
 
 // Tracker Electronic
 
-/obj/item/weapon/tracker_electronics
+/obj/item/tracker_electronics
 
 	name = "tracker electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'

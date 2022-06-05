@@ -8,7 +8,7 @@
 
 	active_power_usage = 8000 //8kW for the scenery + 500W per holoitem
 
-	circuit = /obj/item/weapon/circuitboard/holodeckcontrol
+	circuit = /obj/item/circuitboard/holodeckcontrol
 
 	var/item_power_usage = 500
 
@@ -57,13 +57,13 @@
 
 	if(!linkedholodeck)
 		dat += "<span class='danger'>Warning: Unable to locate holodeck.<br></span>"
-		user << browse(dat, "window=computer;size=400x500")
+		show_browser(user, dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 
 	if(!supported_programs.len)
 		dat += "<span class='danger'>Warning: No supported holo-programs loaded.<br></span>"
-		user << browse(dat, "window=computer;size=400x500")
+		show_browser(user, dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 
@@ -101,7 +101,7 @@
 		dat += "Gravity is <A href='?src=\ref[src];gravity=1'><font color=green>(ON)</font></A><BR>"
 	else
 		dat += "Gravity is <A href='?src=\ref[src];gravity=1'><font color=blue>(OFF)</font></A><BR>"
-	user << browse(dat, "window=computer;size=400x500")
+	show_browser(user, dat, "window=computer;size=400x500")
 	onclose(user, "computer")
 	return
 
@@ -143,28 +143,28 @@
 	return
 
 /obj/machinery/computer/HolodeckControl/emag_act(remaining_charges, mob/user as mob)
-	playsound(src.loc, get_sfx("spark"), 75, 1)
 	last_to_emag = user //emag again to change the owner
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		safety_disabled = 1
 		update_projections()
 		to_chat(user, "<span class='notice'>You vastly increase projector power and override the safety and security protocols.</span>")
 		to_chat(user, "Warning.  Automatic shutoff and derezing protocols have been corrupted.  Please call [GLOB.using_map.company_name] maintenance and do not use the simulator.")
 		log_game("[key_name(usr)] emagged the Holodeck Control Computer")
-		return 1
 		src.updateUsrDialog()
+		return 1
 	else
 		..()
 
 /obj/machinery/computer/HolodeckControl/proc/update_projections()
 	if (safety_disabled)
 		item_power_usage = 2500
-		for(var/obj/item/weapon/holo/esword/H in linkedholodeck)
+		for(var/obj/item/holo/esword/H in linkedholodeck)
 			H.damtype = BRUTE
 	else
 		item_power_usage = initial(item_power_usage)
-		for(var/obj/item/weapon/holo/esword/H in linkedholodeck)
+		for(var/obj/item/holo/esword/H in linkedholodeck)
 			H.damtype = initial(H.damtype)
 
 	for(var/mob/living/simple_animal/hostile/carp/holodeck/C in holographic_mobs)
@@ -292,7 +292,7 @@
 		holo_obj.alpha *= 0.8 //give holodeck objs a slight transparency
 
 	if(HP.ambience)
-		linkedholodeck.ambience = HP.ambience
+		linkedholodeck.ambience_powered = HP.ambience
 
 	for(var/mob/living/M in mobs_in_area(linkedholodeck))
 		if(M.mind)

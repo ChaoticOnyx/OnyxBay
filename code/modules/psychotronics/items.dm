@@ -1,6 +1,6 @@
 /* NEUROMOD SHELL */
 
-/obj/item/weapon/reagent_containers/neuromod_shell
+/obj/item/reagent_containers/neuromod_shell
 	name = "\improper neuromod shell"
 	desc = "This is a neuromod."
 	icon = 'icons/obj/psychotronics.dmi'
@@ -14,14 +14,14 @@
 	var/mob/living/created_for = null	// Contains path of mob which this neuromod is for
 
 /* DEBUG */
-/obj/item/weapon/reagent_containers/neuromod_shell/proc/SetNeuromod(neuromod_path, mob_path)
+/obj/item/reagent_containers/neuromod_shell/proc/SetNeuromod(neuromod_path, mob_path)
 	neuromod = text2path(neuromod_path)
 	created_for = text2path(mob_path)
 
-/obj/item/weapon/reagent_containers/neuromod_shell/proc/ToList()
+/obj/item/reagent_containers/neuromod_shell/proc/ToList()
 	return null
 
-/obj/item/weapon/reagent_containers/neuromod_shell/proc/UpdateDesc()
+/obj/item/reagent_containers/neuromod_shell/proc/UpdateDesc()
 	if (!created_for || !neuromod)
 		desc = initial(desc) + "<br>Empty Shell"
 		return
@@ -37,21 +37,21 @@
 
 	desc = initial(desc) + "<br>Contains: [N.name]" + "<br>Created for [L.species]"
 
-/obj/item/weapon/reagent_containers/neuromod_shell/Initialize()
+/obj/item/reagent_containers/neuromod_shell/Initialize()
 	. = ..()
 
 	UpdateDesc()
 
-/obj/item/weapon/reagent_containers/neuromod_shell/Destroy()
+/obj/item/reagent_containers/neuromod_shell/Destroy()
 	neuromod = null
 	created_for = null
 
-	..()
+	return ..()
 
-/obj/item/weapon/reagent_containers/neuromod_shell/do_surgery(mob/living/carbon/M, mob/living/user)
+/obj/item/reagent_containers/neuromod_shell/do_surgery(mob/living/carbon/M, mob/living/user)
 	afterattack(M, user, 1)
 
-/obj/item/weapon/reagent_containers/neuromod_shell/afterattack(mob/living/target, mob/living/user, proximity)
+/obj/item/reagent_containers/neuromod_shell/afterattack(mob/living/target, mob/living/user, proximity)
 	if (!proximity)
 		return
 
@@ -113,7 +113,7 @@
 
 /* NEUROMOD DATA DISK */
 
-/obj/item/weapon/disk/neuromod_disk
+/obj/item/disk/neuromod_disk
 	name = "\improper neuromod data disk"
 	desc = "A disk for storing neuromod data."
 	icon = 'icons/obj/cloning.dmi'
@@ -127,14 +127,14 @@
 	var/researched_chance = 35
 
 /* A Disk with 100% chance to have a researched neuromod */
-/obj/item/weapon/disk/neuromod_disk/researched/Initialize()
+/obj/item/disk/neuromod_disk/researched/Initialize()
 	. = ..()
 
 	if (neuromod)
 		researched = TRUE
 
 /* If a disk has a neuromod on spawn - it may be researched */
-/obj/item/weapon/disk/neuromod_disk/Initialize()
+/obj/item/disk/neuromod_disk/Initialize()
 	. = ..()
 
 	if (neuromod)
@@ -143,7 +143,7 @@
 
 /* LIFEFORM DATA DISK */
 
-/obj/item/weapon/disk/lifeform_disk
+/obj/item/disk/lifeform_disk
 	name = "\improper lifeform data disk"
 	desc = "A disk for storing lifeform data."
 	icon = 'icons/obj/cloning.dmi'

@@ -1,23 +1,26 @@
 /mob/living/simple_animal/hostile
 	faction = "hostile"
+	stop_automated_movement_when_pulled = FALSE
+	a_intent = I_HURT
+	armor_projectile = 25
+	mouse_opacity = 2 //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
+
 	var/stance = HOSTILE_STANCE_IDLE	//Used to determine behavior
 	var/mob/living/target_mob
-	var/attack_same = 0
-	var/ranged = 0
-	var/rapid = 0
+	var/attack_same = FALSE
+
+	var/ranged = FALSE
+	var/pointblank_shooter = FALSE
+	var/rapid = FALSE
 	var/projectiletype
 	var/projectilesound
 	var/casingtype
+
 	var/move_to_delay = 4 //delay for the automated movement.
 	var/attack_delay = DEFAULT_ATTACK_COOLDOWN
 	var/list/friends = list()
 	var/break_stuff_probability = 10
-	stop_automated_movement_when_pulled = 0
-	var/destroy_surroundings = 1
-	a_intent = I_HURT
-
-	mouse_opacity = 2 //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
-	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
+	var/destroy_surroundings = TRUE
 
 	var/aggro_vision_range = 7 //If a mob is aggro, we search in this radius. Defaults to 7 to keep in line with original simple mob aggro radius
 	var/idle_vision_range = 7 //If a mob is just idling around, it's vision range is limited to this. Defaults to 7 to keep in line with original simple mob aggro radius
@@ -27,10 +30,12 @@
 	var/ranged_cooldown = 0 //What the starting cooldown is on ranged attacks
 	var/ranged_cooldown_cap = 3 //What ranged attacks, after being used are set to, to go back on cooldown, defaults to 3 life() ticks
 
-	var/shuttletarget = null
-	var/enroute = 0
+/mob/living/simple_animal/hostile/Destroy()
+	set_target_mob(null)
+	friends.Cut()
+	return ..()
 
-/mob/living/simple_animal/hostile/proc/FindTarget()
+/mob/living/simple_animal/hostile/proc/find_target()
 	if(!faction || client) //No faction, no reason to attack anybody.
 		return null
 	var/atom/T = null
@@ -49,7 +54,7 @@
 			var/mob/living/L = A
 			if(L.faction == src.faction && !attack_same)
 				continue
-			else if(L in friends)
+			else if(weakref(L) in friends)
 				continue
 			else
 				if(!L.stat)
@@ -76,22 +81,30 @@
 	Aggro()
 	return
 
-/mob/living/simple_animal/hostile/proc/GiveTarget(new_target)
-	target_mob = new_target
-	if(target_mob != null)
-		Aggro()
-		stance = HOSTILE_STANCE_ATTACK
-
 /mob/living/simple_animal/hostile/adjustBruteLoss(damage)
 	. = ..(damage)
 	if(!stat)
 		if(stance == HOSTILE_STANCE_IDLE)//If we took damage while idle, immediately attempt to find the source of it so we find a living target
 			Aggro()
 			if(!client)
-				GiveTarget(FindTarget())
+				set_target_mob(find_target())
 		if(stance == HOSTILE_STANCE_ATTACK)//No more pulling a mob forever and having a second player attack it, it can switch targets now if it finds a more suitable one
 			if(target_mob != null && prob(25) && !client)
-				GiveTarget(FindTarget())
+				set_target_mob(find_target())
+
+/mob/living/simple_animal/hostile/proc/set_target_mob(mob/living/L)
+	if(target_mob != L)
+		if(target_mob)
+			unregister_signal(target_mob, SIGNAL_QDELETING)
+		target_mob = L
+		if(!isnull(target_mob) && !client)
+			register_signal(target_mob, SIGNAL_QDELETING, .proc/_target_deleted)
+	if(target_mob)
+		Aggro()
+		stance = HOSTILE_STANCE_ATTACK
+
+/mob/living/simple_animal/hostile/proc/_target_deleted()
+	set_target_mob(null)
 
 /mob/living/simple_animal/hostile/proc/MoveToTarget()
 	stop_automated_movement = 1
@@ -100,7 +113,7 @@
 	if(target_mob in ListTargets(10))
 		var/target_distance = get_dist(src, target_mob)
 		if(ranged)
-			if(target_distance >= 2 && ranged_cooldown <= 0)
+			if(target_distance >= (pointblank_shooter ? 0 : 2) && ranged_cooldown <= 0)
 				OpenFire(target_mob)
 		if(retreat_distance != null)//If we have a retreat distance, check if we need to run from our target
 			if(target_distance <= retreat_distance)//If target's closer than our retreat distance, run
@@ -110,7 +123,7 @@
 		else
 			stance = HOSTILE_STANCE_ATTACKING
 			Goto(target_mob, move_to_delay, minimum_distance)
-	if(target_mob.loc != null && get_dist(src, target_mob.loc) <= vision_range)//We can't see our target, but he's in our vision range still
+	if(target_mob?.loc != null && get_dist(src, target_mob.loc) <= vision_range)//We can't see our target, but he's in our vision range still
 		Goto(target_mob, move_to_delay, minimum_distance)
 
 /mob/living/simple_animal/hostile/proc/Goto(target_mob, delay, minimum_distance)
@@ -132,7 +145,7 @@
 	if(next_move >= world.time)
 		return 0
 	if(ranged)
-		if(get_dist(src, target_mob) >= 2 && ranged_cooldown <= 0)
+		if(get_dist(src, target_mob) >= (pointblank_shooter ? 0 : 2) && ranged_cooldown <= 0)
 			OpenFire(target_mob)
 	if(get_dist(src, target_mob) <= 1)	//Attacking
 		AttackingTarget()
@@ -152,15 +165,21 @@
 		return M
 
 /mob/living/simple_animal/hostile/proc/Aggro()
+	if(stat == DEAD)
+		return 0
 	vision_range = aggro_vision_range
+	return 1
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
+	if(stat == DEAD)
+		return 0
 	stop_automated_movement = 0
 	vision_range = idle_vision_range
+	return 1
 
 /mob/living/simple_animal/hostile/proc/LoseTarget()
 	stance = HOSTILE_STANCE_IDLE
-	target_mob = null
+	set_target_mob(null)
 	walk(src, 0)
 	LoseAggro()
 
@@ -179,10 +198,10 @@
 	return L
 
 /mob/living/simple_animal/hostile/death(gibbed, deathmessage, show_dead_message)
-	LoseAggro()
-	mouse_opacity = 1
-	..(gibbed, deathmessage, show_dead_message)
-	walk(src, 0)
+	. = ..()
+	if(.)
+		LoseAggro()
+		mouse_opacity = 1
 
 /mob/living/simple_animal/hostile/Life()
 	. = ..()
@@ -195,7 +214,7 @@
 		if(!stat)
 			switch(stance)
 				if(HOSTILE_STANCE_IDLE)
-					target_mob = FindTarget()
+					set_target_mob(find_target())
 
 				if(HOSTILE_STANCE_ATTACK)
 					if(destroy_surroundings)
@@ -214,7 +233,7 @@
 		if(stance != HOSTILE_STANCE_INSIDE)
 			stance = HOSTILE_STANCE_INSIDE
 			walk(src, 0)
-			target_mob = null
+			set_target_mob(null)
 	if(!target_mob)
 		LoseAggro()
 
@@ -222,26 +241,27 @@
 	. = ..()
 	var/oldhealth = health
 	if(health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		target_mob = user
+		set_target_mob(user)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	if(M.a_intent == I_HURT && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		target_mob = M
+		set_target_mob(M)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/bullet_act(obj/item/projectile/Proj)
 	. = ..()
 	var/oldhealth = health
 	if(!target_mob && health < oldhealth && !incapacitated(INCAPACITATION_KNOCKOUT) && !client)
-		target_mob = Proj.firer
+		set_target_mob(Proj.firer)
 		MoveToTarget()
 
 /mob/living/simple_animal/hostile/proc/OpenFire(target_mob)
+	ranged_cooldown = ranged_cooldown_cap
 
 	var/target = target_mob
-	visible_message("\red <b>[src]</b> [ranged_message] at [target]!", 1)
+	visible_message("\red <b>[src]</b> [ranged_message] at [target]!")
 
 	if(rapid)
 		spawn(1)
@@ -260,7 +280,6 @@
 		Shoot(target, src.loc, src)
 		if(casingtype)
 			new casingtype
-	ranged_cooldown = ranged_cooldown_cap
 	return
 
 /mob/living/simple_animal/hostile/proc/Shoot(target, start, user, bullet = 0)
@@ -285,7 +304,7 @@
 					obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 					return
 			var/obj/structure/obstacle = locate(/obj/structure, get_step(src, dir))
-			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille))
+			if(istype(obstacle, /obj/structure/window) || istype(obstacle, /obj/structure/closet) || istype(obstacle, /obj/structure/table) || istype(obstacle, /obj/structure/grille) || istype(obstacle, /obj/structure/window_frame))
 				obstacle.attack_generic(src, rand(melee_damage_lower, melee_damage_upper), attacktext)
 
 /mob/living/simple_animal/hostile/on_ghost_possess()

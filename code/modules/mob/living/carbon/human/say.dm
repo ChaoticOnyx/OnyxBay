@@ -10,22 +10,22 @@
 	if(!speaking)
 		speaking = parse_language(message)
 		if (speaking)
-			message = copytext(message,2+length(speaking.key))
+			message = copytext_char(message,2+length(speaking.key))
 		else
 			speaking = get_default_language()
-			
+
 	if(has_chem_effect(CE_VOICELOSS, 1))
-		whispering = TRUE		
+		whispering = TRUE
 
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (speaking && (speaking.flags & NONVERBAL|SIGNLANG)) || (vox && vox.is_usable() && (speaking in vox.assists_languages))
-	if(!isSynthetic() && need_breathe() && failed_last_breath && !snowflake_speak)
+	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
 		if(L.breath_fail_ratio > 0.9)
-			if(world.time < L.last_failed_breath + 2 MINUTES) //if we're in grace suffocation period, give it up for last words
+			if(world.time < L.last_successful_breath + 2 MINUTES) //if we're in grace suffocation period, give it up for last words
 				to_chat(src, "<span class='warning'>You use your remaining air to say something!</span>")
-				L.last_failed_breath = world.time - 2 MINUTES
+				L.last_successful_breath = world.time - 2 MINUTES
 				return ..(message, alt_name = alt_name, speaking = speaking)
 
 			to_chat(src, "<span class='warning'>You don't have enough air in [L] to make a sound!</span>")
@@ -80,7 +80,7 @@
 			return 1
 		if (istype(other, /mob/living/carbon/brain))
 			return 1
-		if (istype(other, /mob/living/carbon/slime))
+		if (istype(other, /mob/living/carbon/metroid))
 			return 1
 
 	//This is already covered by mob/say_understands()
@@ -94,8 +94,8 @@
 /mob/living/carbon/human/GetVoice()
 
 	var/voice_sub
-	if(istype(back,/obj/item/weapon/rig))
-		var/obj/item/weapon/rig/rig = back
+	if(istype(back,/obj/item/rig))
+		var/obj/item/rig/rig = back
 		// todo: fix this shit
 		if(rig.speech && rig.speech.voice_holder && rig.speech.voice_holder.active && rig.speech.voice_holder.voice)
 			voice_sub = rig.speech.voice_holder.voice
@@ -108,7 +108,7 @@
 				voice_sub = changer.voice
 	if(voice_sub)
 		return voice_sub
-	if(mind && mind.changeling && mind.changeling.mimicing)
+	if(mind?.changeling?.mimicing)
 		return mind.changeling.mimicing
 	if(GetSpecialVoice())
 		return GetSpecialVoice()
@@ -222,7 +222,7 @@
 	var/needs_assist = 0
 	var/can_speak_assist = 0
 
-	if(species && speaking.name in species.assisted_langs)
+	if(species && (speaking.name in species.assisted_langs))
 		needs_assist = 1
 		for(var/obj/item/organ/internal/I in src.internal_organs)
 			if((speaking in I.assists_languages) && (I.is_usable()))
@@ -234,16 +234,3 @@
 		return 1
 
 	return ..()
-
-/mob/living/carbon/human/parse_language(message)
-	var/prefix = copytext_char(message,1,2)
-	if(length_char(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
-		return all_languages["Noise"]
-
-	if(length_char(message) >= 2 && is_language_prefix(prefix))
-		var/language_prefix = lowertext(copytext_char(message, 2 ,3))
-		var/datum/language/L = language_keys[language_prefix]
-		if (can_speak(L))
-			return L
-
-	return null

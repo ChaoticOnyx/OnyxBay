@@ -1,7 +1,7 @@
 
 //the researchable camera circuit that can connect to any camera network
 
-/obj/item/weapon/circuitboard/camera
+/obj/item/circuitboard/camera
 	//name = "Circuit board (Camera)"
 	var/secured = 1
 	var/authorised = 0
@@ -72,13 +72,13 @@
 		else
 			t += "<A href='?src=\ref[src];auth=1'>*Authenticate*</A> (Requires an appropriate access ID)<BR>"
 		t += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
-		user << browse(t, "window=camcircuit;size=500x400")
+		show_browser(user, t, "window=camcircuit;size=500x400")
 		onclose(user, "camcircuit")
 
 	Topic(href, href_list)
 		..()
 		if( href_list["close"] )
-			usr << browse(null, "window=camcircuit")
+			close_browser(usr, "window=camcircuit")
 			usr.machine = null
 			return
 		else if(href_list["net"])
@@ -86,7 +86,7 @@
 			authorised = 0
 		else if( href_list["auth"] )
 			var/mob/M = usr
-			var/obj/item/weapon/card/id/I = M.equipped()
+			var/obj/item/card/id/I = M.equipped()
 			if (istype(I, /obj/item/device/pda))
 				var/obj/item/device/pda/pda = I
 				I = pda.id
@@ -95,7 +95,7 @@
 					authorised = 1
 				else if (possibleNets[network] in I.access)
 					authorised = 1
-			if(istype(I,/obj/item/weapon/card/emag))
+			if(istype(I,/obj/item/card/emag))
 				I.resolve_attackby(src, usr)
 		else if( href_list["removeauth"] )
 			authorised = 0
@@ -105,8 +105,9 @@
 		if(istype(src.loc,/mob))
 			attack_self(src.loc)
 
-/obj/item/weapon/circuitboard/camera/emag_act(remaining_charges, mob/user)
+/obj/item/circuitboard/camera/emag_act(remaining_charges, mob/user)
 	if(network)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		authorised = 1
 		to_chat(user, "<span class='notice'>You authorised the circuit network!</span>")
 		updateDialog()

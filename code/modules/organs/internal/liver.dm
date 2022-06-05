@@ -6,13 +6,21 @@
 	organ_tag = BP_LIVER
 	parent_organ = BP_CHEST
 	min_bruised_damage = 25
-	min_broken_damage = 45
+	min_broken_damage = 45 // Also the amount of toxic damage it can store
 	max_damage = 70
 	relative_size = 60
+	var/tox_filtering = 0
 
 /obj/item/organ/internal/liver/robotize()
 	. = ..()
+	SetName("hepatic filter")
 	icon_state = "liver-prosthetic"
+	dead_icon = "liver-prosthetic-br"
+
+/obj/item/organ/internal/liver/proc/store_tox(amount) // Store toxins up to min_broken_damage, return excessive toxins
+	var/cap_toxins = max(0, min_broken_damage - tox_filtering)
+	. = max(0, amount - cap_toxins)
+	tox_filtering += amount - .
 
 /obj/item/organ/internal/liver/Process()
 
@@ -45,9 +53,15 @@
 	// If you're not filtering well, you're going to take damage. Even more if you have alcohol in you.
 	if(filter_effect < 2)
 		owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (1 + owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
+	else
+		// Get rid of some stored toxins.
+		tox_filtering = max(damage, (tox_filtering - filter_effect * 0.1))
+
+	if((tox_filtering > (min_broken_damage * 0.5)) && prob(tox_filtering * 0.1))
+		to_chat(src, SPAN("warning", "You feel nauseous..."))
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
-		take_internal_damage(owner.chem_effects[CE_ALCOHOL_TOXIC], prob(90)) // Chance to warn them
+		take_internal_damage(store_tox(owner.chem_effects[CE_ALCOHOL_TOXIC]/2), prob(90)) // Chance to warn them
 
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !owner.radiation && damage > 0)

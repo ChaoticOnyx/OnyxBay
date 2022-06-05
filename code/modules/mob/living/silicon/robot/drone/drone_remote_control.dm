@@ -6,7 +6,7 @@
 
 /mob/living/silicon/robot/drone/attack_ai(mob/living/silicon/ai/user)
 
-	if(!istype(user) || controlling_ai || !config.allow_drone_spawn)
+	if(!istype(user) || controlling_ai || !config.misc.allow_drone_spawn)
 		return
 
 	if(stat != 2 || client || key)
@@ -23,6 +23,7 @@
 	user.controlling_drone = src
 	controlling_ai = user
 	verbs += /mob/living/silicon/robot/drone/proc/release_ai_control_verb
+	verbs -= /mob/living/proc/ghost
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
@@ -42,7 +43,7 @@
 
 /obj/machinery/drone_fabricator/attack_ai(mob/living/silicon/ai/user)
 
-	if(!istype(user) || user.controlling_drone || !config.allow_drone_spawn)
+	if(!istype(user) || user.controlling_drone || !config.misc.allow_drone_spawn)
 		return
 
 	if(stat & NOPOWER)
@@ -57,7 +58,7 @@
 		to_chat(user, "<span class='warning'>\The [src] is not ready to produce a new drone.</span>")
 		return
 
-	if(count_drones() >= config.max_maint_drones)
+	if(count_drones() >= config.misc.max_maint_drones)
 		to_chat(user, "<span class='warning'>The drone control subsystems are tasked to capacity; they cannot support any more drones.</span>")
 		return
 
@@ -99,6 +100,7 @@
 		controlling_ai = null
 
 	verbs -= /mob/living/silicon/robot/drone/proc/release_ai_control_verb
+	verbs += /mob/living/proc/ghost
 	full_law_reset()
 	updatename()
 	death()

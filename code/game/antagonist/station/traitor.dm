@@ -2,11 +2,18 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
 // Inherits most of its vars from the base datum.
 /datum/antagonist/traitor
+	var/datum/contract_fixer/fixer
 	id = MODE_TRAITOR
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos,
-							/datum/job/merchant, /datum/job/lawyer)
+							/datum/job/merchant, /datum/job/iaa)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
+
+/datum/antagonist/traitor/Initialize()
+	..()
+	fixer = new()
+	if(config.game.traitor_min_age)
+		min_player_age = config.game.traitor_min_age
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"
@@ -17,6 +24,21 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	if(href_list["spawn_uplink"])
 		spawn_uplink(locate(href_list["spawn_uplink"]))
 		return 1
+
+/datum/antagonist/traitor/get_special_objective_text(datum/mind/player)
+	var/contracts_num = player.completed_contracts
+	if(!contracts_num)
+		return "<br>The traitor hasn't completed a single contract. <b>[pick("What a shame", "Loser", "Sorry sight", "Lame duck", "Schlimazel", "Pantywaist", "We will talk about it later")].</b>"
+
+	var/contracts_text = ""
+	for(var/datum/antag_contract/AC in GLOB.all_contracts)
+		if(AC.completed_by == player)
+			contracts_text += "[AC.name], "
+	contracts_text = copytext(contracts_text, 1, length(contracts_text) - 1)
+	if(contracts_num == 1)
+		return "<br>The traitor has completed a single contract: [contracts_text]."
+	else
+		return "<br>The traitor has completed <b>[contracts_num] contracts: [contracts_text]."
 
 /datum/antagonist/traitor/create_objectives(datum/mind/traitor)
 	if(!..())
@@ -37,27 +59,9 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 			block_objective.owner = traitor
 			traitor.objectives += block_objective
 	else
-		switch(rand(1,100))
-			if(1 to 33)
-				var/datum/objective/assassinate/kill_objective = new
-				kill_objective.owner = traitor
-				kill_objective.find_target()
-				traitor.objectives += kill_objective
-			if(34 to 50)
-				var/datum/objective/brig/brig_objective = new
-				brig_objective.owner = traitor
-				brig_objective.find_target()
-				traitor.objectives += brig_objective
-			if(51 to 66)
-				var/datum/objective/harm/harm_objective = new
-				harm_objective.owner = traitor
-				harm_objective.find_target()
-				traitor.objectives += harm_objective
-			else
-				var/datum/objective/steal/steal_objective = new
-				steal_objective.owner = traitor
-				steal_objective.find_target()
-				traitor.objectives += steal_objective
+		var/datum/objective/contracts/C = new
+		C.owner = traitor
+		traitor.objectives += C
 		switch(rand(1,100))
 			if(1 to 100)
 				if (!(locate(/datum/objective/escape) in traitor.objectives))
@@ -83,7 +87,6 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
 	if(!..())
 		return 0
-
 	spawn_uplink(traitor_mob)
 	give_intel(traitor_mob)
 

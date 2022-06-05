@@ -8,6 +8,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/hide_most_verbs,		//hides all our hideable adminverbs,
 	/client/proc/debug_variables,		//allows us to -see- the variables of any instance in the game. +VAREDIT needed to modify,
 	/client/proc/debug_global_variables,//as above but for global variables,
+	/client/proc/debug_glob_variables,
 //	/client/proc/check_antagonists,		//shows all antags,
 	/client/proc/cmd_mentor_check_new_players,
 	/client/proc/checkAccount
@@ -28,7 +29,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/admin_ghost,			//allows us to ghost/reenter body at will,
 	/client/proc/toggle_view_range,		//changes how far we can see,
 	/datum/admins/proc/view_txt_log,	//shows the server log for today,
-	/datum/admins/proc/view_atk_log,	//shows the server combat-log, doesn't do anything presently,
 	/client/proc/cmd_admin_pm_context,	//right-click adminPM interface,
 	/client/proc/cmd_admin_pm_panel,	//admin-pm list,
 	/client/proc/cmd_admin_subtle_message,	//send an message to somebody as a 'voice in their head',
@@ -80,11 +80,11 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_rejuvenate,
 	/client/proc/toggleghostwriters,
 	/client/proc/toggledrones,
-	/datum/admins/proc/show_skills,
 	/client/proc/check_customitem_activity,
 	/client/proc/man_up,
 	/client/proc/global_man_up,
 	/client/proc/response_team, // Response Teams admin verb,
+	/client/proc/edit_traitor_contracts, // for contract interaction verb,
 	/client/proc/response_team_menu, // Response Teams Menu admin verb,
 	/client/proc/toggle_antagHUD_use,
 	/client/proc/toggle_antagHUD_restrictions,
@@ -106,7 +106,8 @@ var/list/admin_verbs_admin = list(
 	/datum/admins/proc/sendFax,
 	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/datum/admins/proc/follow_panel
 	)
 
 var/list/admin_verbs_ban = list(
@@ -167,7 +168,6 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
 	/client/proc/cmd_admin_delete,		// delete an instance/object/mob/etc,
@@ -180,8 +180,7 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage,
-	/client/proc/update_donations_db_credentials
+	/client/proc/nanomapgen_DumpImage
 	)
 
 var/list/admin_verbs_debug = list(
@@ -216,7 +215,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/jumptomob_verb,
 	/client/proc/jumptocoord,
 	/client/proc/dsay,
-	/datum/admins/proc/run_unit_test,
 	/turf/proc/view_chunk,
 	/turf/proc/update_chunk,
 	/datum/admins/proc/capture_map,
@@ -261,7 +259,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/admin_ghost,
 	/client/proc/toggle_view_range,
 	/datum/admins/proc/view_txt_log,
-	/datum/admins/proc/view_atk_log,
 	/client/proc/cmd_admin_subtle_message,
 	/client/proc/cmd_admin_check_contents,
 	/datum/admins/proc/access_news_network,
@@ -295,7 +292,6 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
 	/datum/admins/proc/adrev,
@@ -322,7 +318,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/client/proc/debug_glob_variables
 	)
 
 var/list/admin_verbs_mod = list(
@@ -336,14 +333,14 @@ var/list/admin_verbs_mod = list(
 	/datum/admins/proc/show_player_info,
 	/client/proc/player_panel_new,
 	/client/proc/dsay,
-	/datum/admins/proc/show_skills,
 	/datum/admins/proc/show_player_panel,
 	/client/proc/check_antagonists,
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax,
 	/client/proc/check_fax_history,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/datum/admins/proc/follow_panel
 	)
 
 var/list/admin_verbs_mentor = list(
@@ -367,7 +364,7 @@ var/list/admin_verbs_mentor = list(
 		if(holder.rights & R_SERVER)		verbs += admin_verbs_server
 		if(holder.rights & R_DEBUG)
 			verbs += admin_verbs_debug
-			if(config.debugparanoid && !(holder.rights & R_ADMIN))
+			if(config.admin.debug_paranoid && !(holder.rights & R_ADMIN))
 				verbs.Remove(admin_verbs_paranoid_debug)			//Right now it's just callproc but we can easily add others later on.
 		if(holder.rights & R_POSSESS)		verbs += admin_verbs_possess
 		if(holder.rights & R_PERMISSIONS)	verbs += admin_verbs_permissions
@@ -507,7 +504,7 @@ var/list/admin_verbs_mentor = list(
 	set name = "Display Job bans"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(config.ban.ban_legacy_system)
 			holder.Jobbans()
 		else
 			holder.DB_ban_panel()
@@ -534,7 +531,7 @@ var/list/admin_verbs_mentor = list(
 	set name = "Unban Panel"
 	set category = "Admin"
 	if(holder)
-		if(config.ban_legacy_system)
+		if(config.ban.ban_legacy_system)
 			holder.unbanpanel()
 		else
 			holder.DB_ban_panel()
@@ -585,7 +582,6 @@ var/list/admin_verbs_mentor = list(
 	var/datum/preferences/D
 	var/client/C = GLOB.ckey_directory[warned_ckey]
 	if(C)	D = C.prefs
-	else	D = SScharacter_setup.preferences_datums[warned_ckey]
 
 	if(!D)
 		to_chat(src, "<font color='red'>Error: warn(): No such ckey found.</font>")
@@ -914,12 +910,12 @@ var/list/admin_verbs_mentor = list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.cult_ghostwriter)
-			config.cult_ghostwriter = 0
+		if(config.ghost.allow_cult_ghostwriter)
+			config.ghost.allow_cult_ghostwriter = 0
 			to_chat(src, "<b>Disallowed ghost writers.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled ghost writers.", 1)
 		else
-			config.cult_ghostwriter = 1
+			config.ghost.allow_cult_ghostwriter = 1
 			to_chat(src, "<b>Enabled ghost writers.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled ghost writers.", 1)
 
@@ -928,12 +924,12 @@ var/list/admin_verbs_mentor = list(
 	set category = "Server"
 	if(!holder)	return
 	if(config)
-		if(config.allow_drone_spawn)
-			config.allow_drone_spawn = 0
+		if(config.misc.allow_drone_spawn)
+			config.misc.allow_drone_spawn = 0
 			to_chat(src, "<b>Disallowed maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has disabled maint drones.", 1)
 		else
-			config.allow_drone_spawn = 1
+			config.misc.allow_drone_spawn = 1
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
@@ -956,7 +952,7 @@ var/list/admin_verbs_mentor = list(
 	for(var/client/C in GLOB.clients)
 		to_chat(C, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
 		if(C.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(C, 'sound/voice/ManUp1.ogg')
+			sound_to(C, sound('sound/voice/ManUp1.ogg'))
 
 	log_and_message_admins("told everyone to man up and deal with it.")
 
@@ -964,7 +960,7 @@ var/list/admin_verbs_mentor = list(
 	set category = "Fun"
 	set name = "Give Spell"
 	set desc = "Gives a spell to a mob."
-	var/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") as null|anything in spells
+	var/datum/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") as null|anything in typesof(/datum/spell)
 	if(!S) return
 	T.add_spell(new S)
 	feedback_add_details("admin_verb","GS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -978,7 +974,7 @@ var/list/admin_verbs_mentor = list(
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.projectile_basketball = !(config.projectile_basketball)
+	config.misc.projectile_basketball = !(config.misc.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
 	feedback_add_details("admin_verb","PROBAS")
 

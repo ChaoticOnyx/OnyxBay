@@ -7,12 +7,12 @@
 	desc = "A spike for collecting meat from animals."
 	density = 1
 	anchored = 1
-	
+
 	can_buckle = 1
 	buckle_lying = 0
 	buckle_dir = SOUTH
 	var/unbuckling = FALSE
-	
+
 
 /obj/structure/kitchenspike/attackby(obj/item/I, mob/living/carbon/human/user)
 	if (buckled_mob)
@@ -31,7 +31,7 @@
 		return
 	if (spike(user, G.affecting))
 		qdel(G)
-	
+
 /obj/structure/kitchenspike/Destroy()
 	if (buckled_mob)
 		buckled_mob.hanging = FALSE
@@ -104,7 +104,7 @@
 		M.adjustBruteLoss(30)
 		if(!do_after(M, delay = 600, target = src))
 			if(M && M == buckled_mob)
-				M << "<span class='warning'>You fail to free yourself!</span>"
+				to_chat(M, SPAN("warning", "You fail to free yourself!"))
 			return
 
 	unbuckling = FALSE
@@ -130,13 +130,13 @@
 			return
 		var/slab_name = buckled_mob.name
 		var/slab_count = 3
-		var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+		var/slab_type = /obj/item/reagent_containers/food/meat
 		var/slab_nutrition = 20
 		if (iscarbon(buckled_mob))
 			var/mob/living/carbon/C = buckled_mob
 			slab_nutrition = C.nutrition / 15
 			if (istype(buckled_mob, /mob/living/carbon/alien))
-				slab_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
+				slab_type = /obj/item/reagent_containers/food/meat/xeno
 
 		if (istype(buckled_mob,/mob/living/simple_animal))
 			var/mob/living/simple_animal/critter = buckled_mob
@@ -155,7 +155,7 @@
 			reagent_transfer_amt = round(buckled_mob.reagents.total_volume / slab_count, 1)
 
 		for (var/i=1 to slab_count)
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
+			var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(src, rand(3,8))
 			if (istype(new_meat))
 				new_meat.SetName("[slab_name] [new_meat.name]")
 				new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition)
@@ -190,14 +190,14 @@
 			meat_limbs_left += OC.butchering_capacity
 			continue
 		meat_limbs_left++
-	
+
 	var/slab_name = H.real_name
 	var/slab_type = H.species.meat_type
 	var/slab_nutrition = H.nutrition / meat_limbs_left
 	var/nutrition_transfer_mod = 0.33
 	if (issmall(H))
 		nutrition_transfer_mod *= 0.5
-	
+
 	var/butchered_organ_name = "[organ.name]";
 	user.visible_message(SPAN_WARNING("[user] tries to butcher [H]'s [butchered_organ_name]!"),\
 		SPAN_NOTICE("You try to butcher [H]'s [butchered_organ_name]..."),\
@@ -217,7 +217,7 @@
 		if (H.can_feel_pain())
 			H.emote("scream")
 		H.nutrition -= slab_nutrition
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
+		var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
 		if (istype(new_meat))
 			new_meat.SetName("[slab_name] [new_meat.name]")
 			new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition * nutrition_transfer_mod)

@@ -29,7 +29,7 @@
 			else
 				text += "<br><font color='green'><B>The [role_text] was successful!</B></font>"
 			if(P.was_antag_given_by_storyteller)
-				text += "<br><b>This antagonist was spawned by storyteller.</b>"
+				text += "<br><b>This antagonist was spawned by storyteller at [P.antag_was_given_at].</b>"
 
 	if(global_objectives && global_objectives.len)
 		text += "<BR><FONT size = 2>Their objectives were:</FONT>"
@@ -58,7 +58,7 @@
 	if(ply.current)
 		if(ply.current.stat == DEAD)
 			text += "died"
-		else if(isNotStationLevel(ply.current.z))
+		else if(!isStationLevel(ply.current.z))
 			text += "fled"
 		else
 			text += "survived"

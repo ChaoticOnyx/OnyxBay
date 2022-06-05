@@ -5,14 +5,14 @@
 	icon_state = "goat"
 	icon_living = "goat"
 	icon_dead = "goat_dead"
-	speak = list("EHEHEHEHEH","eh?")
+	speak = list("EHEHEHEHEH", "eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Eh-meeeed..." = 0.001, "Beedaun." = 0.0000001)
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/goat
+	meat_type = /obj/item/reagent_containers/food/meat/goat
 	meat_amount = 4
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
@@ -22,11 +22,14 @@
 	health = 40
 	melee_damage_lower = 1
 	melee_damage_upper = 5
-	var/datum/reagents/udder = null
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
 
-/mob/living/simple_animal/hostile/retaliate/goat/New()
+	var/datum/reagents/udder = null
+	var/isragemode = FALSE
+
+/mob/living/simple_animal/hostile/retaliate/goat/Initialize()
+	. = ..()
 	udder = new(50, src)
-	..()
 
 /mob/living/simple_animal/hostile/retaliate/goat/Destroy()
 	QDEL_NULL(udder)
@@ -42,7 +45,8 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			src.visible_message("<span class='notice'>\The [src] calms down.</span>")
+			visible_message(SPAN("notice", "\The [src] calms down."))
+			isragemode = FALSE
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
@@ -51,13 +55,13 @@
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
 			if(prob(60))
-				src.visible_message("<span class='notice'>\The [src] eats the plants.</span>")
+				src.visible_message(SPAN("notice", "\The [src] eats the plants."))
 				SV.die_off(1)
 				if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
 					var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/SP = locate() in loc
 					qdel(SP)
 			else if(prob(20))
-				src.visible_message("<span class='notice'>\The [src] chews on the plants.</span>")
+				src.visible_message(SPAN("notice", "\The [src] chews on the plants."))
 			return
 
 		if(!pulledby)
@@ -70,21 +74,47 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(50))
-		visible_message("<span class='warning'>\The [src] gets an evil-looking gleam in their eye.</span>")
+		visible_message(SPAN("warning", "\The [src] gets an evil-looking gleam in their eye."))
+	isragemode = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
-	var/obj/item/weapon/reagent_containers/glass/G = O
+	var/obj/item/reagent_containers/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
-		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
-		if(G.reagents.total_volume >= G.volume)
-			to_chat(user, "<span class='warning'>\The [O] is full.</span>")
-		if(!transfered)
-			to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
+		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10) || G.reagents.has_reagent(/datum/reagent/capsaicin, 3))
+			if(isragemode)
+				to_chat(user, SPAN("notice", "\The [src] is already angry."))
+				return
+			G.reagents.remove_any(1)
+			user.visible_message(SPAN("warning", "[user] gives something to \the [src]."))
+			Retaliate()
+		else if(istype(O, /obj/item/reagent_containers/vessel))
+			if(G.reagents.total_volume >= G.volume)
+				to_chat(user, SPAN("notice", "The [O] is full."))
+				return
+			if(isragemode && prob(50))
+				user.visible_message(SPAN("notice", "[user] tries to milk [src], but [src] hits \him."))
+				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
+				return
+			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5, 10))
+			if(!transfered)
+				to_chat(user, SPAN("notice", "The udder is dry. Wait a bit longer..."))
+				return
+			user.visible_message(SPAN("notice", "[user] milks [src] using \the [O]."))
 	else
 		..()
 
-//cow
+/mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
+	. = ..()
+	var/mob/living/L = .
+	if(istype(L))
+		if(prob(15))
+			L.Weaken(3)
+			L.visible_message(SPAN_DANGER("The [src] knocks down \the [L]!"))
+
+/mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
+	new /obj/item/stack/material/animalhide/goat(get_turf(src))
+	..()
+// cow
 /mob/living/simple_animal/cow
 	name = "cow"
 	desc = "Known for their milk, just don't tip them over."
@@ -99,23 +129,24 @@
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/beef
+	meat_type = /obj/item/reagent_containers/food/meat/beef
 	meat_amount = 6
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "kicked"
 	health = 50
+	bodyparts = /decl/simple_animal_bodyparts/quadruped
+
 	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 
 /mob/living/simple_animal/cow/Initialize()
 	. = ..()
-	udder = milktype
 	udder = new(50, src)
 
 /mob/living/simple_animal/cow/attackby(obj/item/O, mob/user)
-	var/obj/item/weapon/reagent_containers/glass/G = O
+	var/obj/item/reagent_containers/vessel/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
 		var/transfered = udder.trans_type_to(G, milktype, rand(5,10))
@@ -156,135 +187,6 @@
 	icon_dead = "cowcownut_dead"
 	emote_see = list("shakes its nuts")
 	health = 100
+	faction = "floral"
 
 	milktype = /datum/reagent/drink/juice/coconut
-
-/mob/living/simple_animal/chick
-	name = "\improper chick"
-	desc = "Adorable! They make such a racket though."
-	icon_state = "chick"
-	icon_living = "chick"
-	icon_dead = "chick_dead"
-	icon_gib = "chick_gib"
-	speak = list("Cherp.","Cherp?","Chirrup.","Cheep!")
-	speak_emote = list("cheeps")
-	emote_hear = list("cheeps")
-	emote_see = list("pecks at the ground","flaps its tiny wings")
-	speak_chance = 2
-	turns_per_move = 2
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
-	meat_amount = 1
-	response_help  = "pets"
-	response_disarm = "gently pushes aside"
-	response_harm   = "kicks"
-	attacktext = "kicked"
-	health = 1
-	var/amount_grown = 0
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
-	mob_size = MOB_MINISCULE
-
-/mob/living/simple_animal/chick/New()
-	..()
-	pixel_x = rand(-6, 6)
-	pixel_y = rand(0, 10)
-
-/mob/living/simple_animal/chick/Life()
-	. =..()
-	if(!.)
-		return
-	if(!stat)
-		amount_grown += rand(1,2)
-		if(amount_grown >= 100)
-			new /mob/living/simple_animal/chicken(src.loc)
-			qdel(src)
-
-var/const/MAX_CHICKENS = 50
-var/global/chicken_count = 0
-
-/mob/living/simple_animal/chicken
-	name = "\improper chicken"
-	desc = "Hopefully the eggs are good this season."
-	icon_state = "chicken"
-	icon_living = "chicken"
-	icon_dead = "chicken_dead"
-	speak = list("Cluck!","BWAAAAARK BWAK BWAK BWAK!","Bwaak bwak.")
-	speak_emote = list("clucks","croons")
-	emote_hear = list("clucks")
-	emote_see = list("pecks at the ground","flaps its wings viciously")
-	speak_chance = 2
-	turns_per_move = 3
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
-	meat_amount = 2
-	response_help  = "pets"
-	response_disarm = "gently pushes aside"
-	response_harm   = "kicks"
-	attacktext = "kicked"
-	health = 10
-	var/eggsleft = 0
-	var/body_color
-	pass_flags = PASS_FLAG_TABLE
-	mob_size = MOB_SMALL
-
-/mob/living/simple_animal/chicken/New()
-	..()
-	if(!body_color)
-		body_color = pick( list("brown","black","white") )
-	icon_state = "chicken_[body_color]"
-	icon_living = "chicken_[body_color]"
-	icon_dead = "chicken_[body_color]_dead"
-	pixel_x = rand(-6, 6)
-	pixel_y = rand(0, 10)
-	chicken_count += 1
-
-/mob/living/simple_animal/chicken/death(gibbed, deathmessage, show_dead_message)
-	..(gibbed, deathmessage, show_dead_message)
-	chicken_count -= 1
-
-/mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
-		if(G.seed && G.seed.kitchen_tag == "wheat")
-			if(!stat && eggsleft < 8)
-				user.visible_message("<span class='notice'>[user] feeds [O] to [name]! It clucks happily.</span>","<span class='notice'>You feed [O] to [name]! It clucks happily.</span>")
-				user.drop_item()
-				qdel(O)
-				eggsleft += rand(1, 4)
-			else
-				to_chat(user, "<span class='notice'>[name] doesn't seem hungry!</span>")
-		else
-			to_chat(user, "[name] doesn't seem interested in that.")
-	else
-		..()
-
-/mob/living/simple_animal/chicken/Life()
-	. =..()
-	if(!.)
-		return
-	if(!stat && prob(3) && eggsleft > 0)
-		visible_message("[src] [pick("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")]")
-		eggsleft--
-		var/obj/item/weapon/reagent_containers/food/snacks/egg/E = new(get_turf(src))
-		E.pixel_x = rand(-6,6)
-		E.pixel_y = rand(-6,6)
-		if(chicken_count < MAX_CHICKENS && prob(10))
-			E.amount_grown = 1
-			START_PROCESSING(SSobj, E)
-
-/obj/item/weapon/reagent_containers/food/snacks/egg
-	var/amount_grown = 0
-
-/obj/item/weapon/reagent_containers/food/snacks/egg/Destroy()
-	if(amount_grown)
-		STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/weapon/reagent_containers/food/snacks/egg/Process()
-	if(isturf(loc))
-		amount_grown += rand(1,2)
-		if(amount_grown >= 100)
-			visible_message("[src] hatches with a quiet cracking sound.")
-			new /mob/living/simple_animal/chick(get_turf(src))
-			STOP_PROCESSING(SSobj, src)
-			qdel(src)
-	else
-		return PROCESS_KILL

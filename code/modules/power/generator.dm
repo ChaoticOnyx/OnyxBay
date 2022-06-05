@@ -22,6 +22,11 @@
 	var/lastgen2 = 0
 	var/effective_gen = 0
 	var/lastgenlev = 0
+	beepsounds = list(
+		'sound/effects/machinery/engineer/turbine1.ogg',
+		'sound/effects/machinery/engineer/turbine2.ogg',
+		'sound/effects/machinery/engineer/turbine3.ogg'
+	)
 
 /obj/machinery/power/generator/New()
 	..()
@@ -69,6 +74,7 @@
 		stored_energy = 0
 		return
 
+	play_beep()
 	updateDialog()
 
 	var/datum/gas_mixture/air1 = circ1.return_transfer_air()
@@ -137,7 +143,7 @@
 /obj/machinery/power/generator/attack_ai(mob/user)
 	attack_hand(user)
 
-/obj/machinery/power/generator/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/power/generator/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 		anchored = !anchored

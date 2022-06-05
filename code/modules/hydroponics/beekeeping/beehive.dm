@@ -34,7 +34,7 @@
 			if(81 to 100)
 				overlays += "bees3"
 
-/obj/machinery/beehive/examine(mob/user)
+/obj/machinery/beehive/_examine_text(mob/user)
 	. = ..()
 	if(!closed)
 		. += "\nThe lid is open."
@@ -163,7 +163,7 @@
 /obj/machinery/beehive/proc/angry_swarm(mob/M)
 	for(var/mob/living/simple_animal/bee/B in owned_bee_swarms)
 		B.feral = 25
-		B.target_mob = M
+		B.set_target_mob(M)
 
 	swarming = 25
 
@@ -173,7 +173,7 @@
 			spawn_strength = 6
 
 		var/mob/living/simple_animal/bee/B = new(get_turf(src), src)
-		B.target_mob = M
+		B.set_target_mob(M)
 		B.strength = spawn_strength
 		B.feral = 25
 		B.mut = mut
@@ -241,7 +241,7 @@
 	recipes = wax_recipes
 
 var/global/list/datum/stack_recipe/wax_recipes = list( \
-	new /datum/stack_recipe("candle", /obj/item/weapon/flame/candle) \
+	new /datum/stack_recipe("candle", /obj/item/flame/candle) \
 )
 
 /obj/item/bee_pack
@@ -283,4 +283,4 @@ var/global/list/datum/stack_recipe/wax_recipes = list( \
 	new /obj/item/honey_frame(src)
 	new /obj/item/honey_frame(src)
 	new /obj/item/bee_pack(src)
-	new /obj/item/weapon/crowbar(src)
+	new /obj/item/crowbar(src)

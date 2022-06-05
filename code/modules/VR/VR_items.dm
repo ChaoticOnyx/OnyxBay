@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/colt_pistol
 	name = "Colt pistol"
-	item = /obj/item/weapon/gun/projectile/revolver/coltpython
+	item = /obj/item/gun/projectile/revolver/coltpython
 	cost = 2
 
 /datum/thunderfield_item/colt_pistol_magazine
@@ -26,8 +26,8 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 	cost = 1
 
 /datum/thunderfield_item/sts_gun
-	name = "STS-35 automatic gun"
-	item = /obj/item/weapon/gun/projectile/automatic/sts35
+	name = "AS-75 automatic gun"
+	item = /obj/item/gun/projectile/automatic/as75
 	cost = 3
 
 /datum/thunderfield_item/sts_gun_magazine
@@ -37,7 +37,7 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/uzi_gun
 	name = "UZI"
-	item = /obj/item/weapon/gun/projectile/automatic/machine_pistol
+	item = /obj/item/gun/projectile/automatic/machine_pistol
 	cost = 5
 
 /datum/thunderfield_item/uzi_gun_magazine
@@ -47,17 +47,17 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/shotgun
 	name = "Shotgun"
-	item = /obj/item/weapon/gun/projectile/shotgun/pump/combat
+	item = /obj/item/gun/projectile/shotgun/pump/combat
 	cost = 6
 
 /datum/thunderfield_item/shotgun_magazine
 	name = "Shotgun ammo"
-	item = /obj/item/weapon/storage/box/shotgun/slugs
+	item = /obj/item/storage/box/shotgun/slugs
 	cost = 4
 
 /datum/thunderfield_item/l6_gun
 	name = "L6 S A W "
-	item = /obj/item/weapon/gun/projectile/automatic/l6_saw/mag
+	item = /obj/item/gun/projectile/automatic/l6_saw/mag
 	cost = 11
 
 /datum/thunderfield_item/l6_gun_magazine
@@ -67,7 +67,7 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/gyro_gun
 	name = "Gyro pystol"
-	item = /obj/item/weapon/gun/projectile/gyropistol
+	item = /obj/item/gun/projectile/pistol/gyropistol
 	cost = 7
 
 /datum/thunderfield_item/gyro_gun_magazine
@@ -77,52 +77,52 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/toolbox
 	name = "Toolbox"
-	item = /obj/item/weapon/storage/toolbox
+	item = /obj/item/storage/toolbox
 	cost = 0
 
 /datum/thunderfield_item/extinguisher
 	name = "Fire extinguisher"
-	item = /obj/item/weapon/extinguisher
+	item = /obj/item/extinguisher
 	cost = 0
 
 /datum/thunderfield_item/hatchet
 	name = "Small hatchet"
-	item = /obj/item/weapon/material/hatchet
+	item = /obj/item/material/hatchet
 	cost = 0
 
 /datum/thunderfield_item/telescopic
 	name = "Telescopic baton"
-	item = /obj/item/weapon/melee/telebaton
+	item = /obj/item/melee/telebaton
 	cost = 1
 
 /datum/thunderfield_item/fireaxe
 	name = "Fire axe"
-	item = /obj/item/weapon/material/twohanded/fireaxe
+	item = /obj/item/material/twohanded/fireaxe
 	cost = 2
 
 /datum/thunderfield_item/medkit
 	name = "Advanced medkit"
-	item = /obj/item/weapon/storage/firstaid/adv
+	item = /obj/item/storage/firstaid/adv
 	cost = 2
 
 /datum/thunderfield_item/backpack
 	name = "Backpack"
-	item = /obj/item/weapon/storage/backpack
+	item = /obj/item/storage/backpack
 	cost = 1
 
 /datum/thunderfield_item/belt
 	name = "Combat belt"
-	item = /obj/item/weapon/storage/belt/military
+	item = /obj/item/storage/belt/military
 	cost = 1
 
 /datum/thunderfield_item/medkit
 	name = "Combat medkit"
-	item = /obj/item/weapon/storage/firstaid/combat
+	item = /obj/item/storage/firstaid/combat
 	cost = 2
 
 /datum/thunderfield_item/thermal
 	name = "Thermal glasses"
-	item = /obj/item/clothing/glasses/thermal/syndi
+	item = /obj/item/clothing/glasses/hud/standard/thermal/syndie
 	cost = 9
 
 /datum/thunderfield_item/armor

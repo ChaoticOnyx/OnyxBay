@@ -15,7 +15,7 @@
 	var/living_antags = 0 //Are antagonists, and currently alive
 	var/dead_antags = 0 //Are antagonists, and have finally met their match
 	var/rights = check_rights(R_INVESTIGATE, FALSE)
-	var/preference = get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
+	var/preference = try_get_preference_value("ADVANCED_WHO") == GLOB.PREF_YES
 
 	if(rights && preference)
 		for(var/client/C in GLOB.clients)
@@ -137,7 +137,7 @@
 		else
 			msg += line
 
-	if(config.admin_irc)
+	if(config.external.admin_irc)
 		to_chat(src, "<span class='info'>Adminhelps are also sent to IRC. If no admins are available in game try anyway and an admin on IRC may see it and respond.</span>")
 	to_chat(src, "<b>Current Staff ([active_staff]/[total_staff]):</b>")
 	to_chat(src, jointext(msg,"\n"))

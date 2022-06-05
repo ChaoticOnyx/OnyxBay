@@ -2,7 +2,7 @@
 //moved these here from code/defines/obj/weapon.dm
 //please preference put stuff where it's easy to find - C
 
-/obj/item/weapon/autopsy_scanner
+/obj/item/autopsy_scanner
 	name = "autopsy scanner"
 	desc = "Used to gather information on wounds."
 	icon = 'icons/obj/autopsy_scanner.dmi'
@@ -37,7 +37,7 @@
 		W.time_inflicted = time_inflicted
 		return W
 
-/obj/item/weapon/autopsy_scanner/proc/add_data(obj/item/organ/external/O)
+/obj/item/autopsy_scanner/proc/add_data(obj/item/organ/external/O)
 	if(!O.autopsy_data.len) return
 
 	for(var/V in O.autopsy_data)
@@ -50,10 +50,7 @@
 			*/
 
 			// Buffing this stuff up for now!
-			if(1)
-				W.pretend_weapon = W.weapon
-			else
-				W.pretend_weapon = pick("mechanical toolbox", "wirecutters", "revolver", "crowbar", "fire extinguisher", "tomato soup", "oxygen tank", "emergency oxygen tank", "laser", "bullet")
+			W.pretend_weapon = W.weapon
 
 
 		var/datum/autopsy_data_scanner/D = wdata[V]
@@ -71,10 +68,20 @@
 		qdel(D.organs_scanned[O.name])
 		D.organs_scanned[O.name] = W.copy()
 
-/obj/item/weapon/autopsy_scanner/verb/print_data()
+/obj/item/autopsy_scanner/verb/print_data()
 	set category = "Object"
 	set src in view(usr, 1)
 	set name = "Print Data"
+
+	if(!(ishuman(usr) || isrobot(usr)))
+		return
+	var/mob/living/L = usr
+	if(L.stat || L.restrained() || L.lying)
+		return
+	THROTTLE(print_cooldown, 3 SECONDS)
+	if(!print_cooldown)
+		to_chat(L, SPAN("notice", "\The [src]'s internal printer is still recharging."))
+		return
 
 	var/scan_data = ""
 
@@ -147,7 +154,7 @@
 
 	sleep(10)
 
-	var/obj/item/weapon/paper/P = new(usr.loc)
+	var/obj/item/paper/P = new(usr.loc)
 	P.SetName("Autopsy Data ([target_name])")
 	P.info = "<tt>[scan_data]</tt>"
 	P.icon_state = "paper_words"
@@ -156,7 +163,7 @@
 		// place the item in the usr's hand if possible
 		usr.put_in_hands(P)
 
-/obj/item/weapon/autopsy_scanner/do_surgery(mob/living/carbon/human/M, mob/living/user)
+/obj/item/autopsy_scanner/do_surgery(mob/living/carbon/human/M, mob/living/user)
 	if(!istype(M))
 		return 0
 
@@ -179,7 +186,7 @@
 	M.visible_message("<span class='notice'>\The [user] scans the wounds on [M]'s [S.name] with [src]</span>")
 
 	src.add_data(S)
-	for(var/T in M.chem_doses)
+	for(var/T in M.chem_traces)
 		var/datum/reagent/R = T
 		chemtraces += initial(R.name)
 

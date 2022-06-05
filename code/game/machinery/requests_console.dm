@@ -28,6 +28,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	anchored = 1
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "req_comp0"
+	layer = ABOVE_WINDOW_LAYER
 	var/department = "Unknown" //The list of all departments on the station (Determined from this variable on each unit) Set this to the same thing if you want several consoles in one department
 	var/list/message_log = list() //List of all messages
 	var/departmentType = 0 		//Bitflag. Zero is reply-only. Map currently uses raw numbers instead of defines.
@@ -50,7 +51,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	var/message = "";
 	var/recipient = ""; //the department which will be receiving the message
 	var/priority = -1 ; //Priority of the message being sent
-	light_range = 0
+	light_outer_range = 0
 	var/datum/announcement/announcement = new
 
 /obj/machinery/requests_console/update_icon()
@@ -193,9 +194,9 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	return
 
 					//err... hacking code, which has no reason for existing... but anyway... it was once supposed to unlock priority 3 messanging on that console (EXTREME priority...), but the code for that was removed.
-/obj/machinery/requests_console/attackby(obj/item/weapon/O as obj, mob/user as mob)
+/obj/machinery/requests_console/attackby(obj/item/O as obj, mob/user as mob)
 	/*
-	if (istype(O, /obj/item/weapon/crowbar))
+	if (istype(O, /obj/item/crowbar))
 		if(open)
 			open = 0
 			icon_state="req_comp0"
@@ -205,7 +206,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				icon_state="req_comp_open"
 			else if(hackState == 1)
 				icon_state="req_comp_rewired"
-	if (istype(O, /obj/item/weapon/screwdriver))
+	if (istype(O, /obj/item/screwdriver))
 		if(open)
 			if(hackState == 0)
 				hackState = 1
@@ -215,14 +216,14 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				icon_state="req_comp_open"
 		else
 			to_chat(user, "You can't do much with that.") */
-	if (istype(O, /obj/item/weapon/card/id))
+	if (istype(O, /obj/item/card/id))
 		if(inoperable(MAINT)) return
 		if(screen == RCS_MESSAUTH)
-			var/obj/item/weapon/card/id/T = O
+			var/obj/item/card/id/T = O
 			msgVerified = text("<font color='green'><b>Verified by [T.registered_name] ([T.assignment])</b></font>")
 			updateUsrDialog()
 		if(screen == RCS_ANNOUNCE)
-			var/obj/item/weapon/card/id/ID = O
+			var/obj/item/card/id/ID = O
 			if (access_RC_announce in ID.GetAccess())
 				announceAuth = 1
 				announcement.announcer = ID.assignment ? "[ID.assignment] [ID.registered_name]" : ID.registered_name
@@ -230,10 +231,10 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				reset_message()
 				to_chat(user, "<span class='warning'>You are not authorized to send announcements.</span>")
 			updateUsrDialog()
-	if (istype(O, /obj/item/weapon/stamp))
+	if (istype(O, /obj/item/stamp))
 		if(inoperable(MAINT)) return
 		if(screen == RCS_MESSAUTH)
-			var/obj/item/weapon/stamp/T = O
+			var/obj/item/stamp/T = O
 			msgStamped = text("<span class='info'><b>Stamped with the [T.name]</b></span>")
 			updateUsrDialog()
 	return

@@ -3,6 +3,9 @@
 #define Clamp(value, low, high) 	(value <= low ? low : (value >= high ? high : value))
 #define CLAMP01(x) 		(Clamp(x, 0, 1))
 
+/// Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
+#define WRAP(val, min, max) ( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) )
+
 #define get_turf(A) get_step(A,0)
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
@@ -31,6 +34,8 @@
 
 #define ishuman(A) istype(A, /mob/living/carbon/human)
 
+#define isabductor(A) (is_species(A, /datum/species/abductor))
+
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
@@ -57,6 +62,8 @@
 
 #define isstack(A) istype(A, /obj/item/stack)
 
+#define isspaceturf(A) istype(A, /turf/space)
+
 #define isspace(A) istype(A, /area/space)
 
 #define ispAI(A) istype(A, /mob/living/silicon/pai)
@@ -65,7 +72,7 @@
 
 #define issilicon(A) istype(A, /mob/living/silicon)
 
-#define isslime(A) istype(A, /mob/living/carbon/slime)
+#define ismetroid(A) istype(A, /mob/living/carbon/metroid)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
@@ -77,31 +84,29 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) istype(A, /obj/item/weapon/wrench)
+#define isWrench(A) (istype(A, /obj/item/wrench) || (istype(A, /obj/item/rpd) && A:interaction_mode == "wrench"))
 
-#define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
+#define isWelder(A) istype(A, /obj/item/weldingtool)
 
 #define isCoil(A) istype(A, /obj/item/stack/cable_coil)
 
-#define isWirecutter(A) istype(A, /obj/item/weapon/wirecutters)
+#define isWirecutter(A) istype(A, /obj/item/wirecutters)
 
-#define isScrewdriver(A) istype(A, /obj/item/weapon/screwdriver)
+#define isScrewdriver(A) istype(A, /obj/item/screwdriver)
 
 #define isMultitool(A) istype(A, /obj/item/device/multitool)
 
-#define isCrowbar(A) istype(A, /obj/item/weapon/crowbar)
+#define isCrowbar(A) istype(A, /obj/item/crowbar)
 
-#define iscapacitor(A) istype(A, /obj/item/weapon/stock_parts/capacitor)
+#define iscapacitor(A) istype(A, /obj/item/stock_parts/capacitor)
 
-#define ismicrolaser(A) istype(A, /obj/item/weapon/stock_parts/micro_laser)
+#define ismicrolaser(A) istype(A, /obj/item/stock_parts/micro_laser)
 
-#define ismatterbin(A) istype(A, /obj/item/weapon/stock_parts/matter_bin)
+#define ismatterbin(A) istype(A, /obj/item/stock_parts/matter_bin)
 
-#define isscanner(A) istype(A, /obj/item/weapon/stock_parts/scanning_module)
+#define isscanner(A) istype(A, /obj/item/stock_parts/scanning_module)
 
-#define ismanipulator(A) istype(A, /obj/item/weapon/stock_parts/manipulator)
-
-#define isovermind(A) istype(A, /mob/blob)
+#define ismanipulator(A) istype(A, /obj/item/stock_parts/manipulator)
 
 #define ismech(A) istype(A, /obj/mecha)
 
@@ -111,13 +116,20 @@
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-#define sound_to(target, sound)                             target << sound
-#define to_file(file_entry, source_var)                     file_entry << source_var
-#define from_file(file_entry, target_var)                   file_entry >> target_var
-#define show_browser(target, browser_content, browser_name) target << browse(browser_content, browser_name)
-#define close_browser(target, browser_name)                 target << browse(null, browser_name)
-#define show_image(target, image)                           target << image
-#define send_rsc(target, rsc_content, rsc_name)             target << browse_rsc(rsc_content, rsc_name)
+/// General I/O helpers
+#define to_target(target, payload)            target << (payload)
+#define from_target(target, receiver)         target >> (receiver)
+
+/// Common use
+#define to_world(message)                     to_chat(world, message)
+#define to_world_log(message)                 to_target(world.log, message)
+#define sound_to(target, sound)               to_target(target, sound)
+#define image_to(target, image)               to_target(target, image)
+#define show_browser(target, content, title)  to_target(target, browse(content, title))
+#define close_browser(target, title)          to_target(target, browse(null, title))
+#define send_rsc(target, content, title)      to_target(target, browse_rsc(content, title))
+#define to_file(handle, value)                to_target(handle, value)
+#define from_file(handle, target_var)         from_target(handle, target_var)
 
 #define MAP_IMAGE_PATH "nano/images/[GLOB.using_map.path]/"
 
@@ -135,12 +147,6 @@
 
 #define CanPhysicallyInteractWith(user, target) CanInteractWith(user, target, GLOB.physical_state)
 
-#define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
-
-#define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
-
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel, item), time, TIMER_STOPPABLE)
-
 #define ARGS_DEBUG log_debug("[__FILE__] - [__LINE__]") ; for(var/arg in args) { log_debug("\t[log_info_line(arg)]") }
 
 // Helper macros to aid in optimizing lazy instantiation of lists.
@@ -156,6 +162,8 @@
 #define LAZYREMOVE(L, I) if(L) { L -= I; if(!L.len) { L = null; } }
 // Adds I to L, initalizing L if necessary
 #define LAZYADD(L, I) if(!L) { L = list(); } L += I;
+// Insert I into L at position X, initalizing L if necessary
+#define LAZYINSERT(L, I, X) if(!L) { L = list(); } L.Insert(X, I);
 // Adds I to L, initalizing L if necessary, if I is not already in L
 #define LAZYDISTINCTADD(L, I) if(!L) { L = list(); } L |= I;
 // Sets L[A] to I, initalizing L if necessary
@@ -175,8 +183,8 @@
 #define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
 
 //Currently used in SDQL2 stuff
-#define send_output(target, msg, control) target << output(msg, control)
-#define send_link(target, url) target << link(url)
+#define send_link(target, url)                to_target(target, link(url))
+#define send_output(target, msg, control)     to_target(target, output(msg, control))
 
 // Spawns multiple objects of the same type
 #define cast_new(type, num, args...) if((num) == 1) { new type(args) } else { for(var/i=0;i<(num),i++) { new type(args) } }
@@ -185,7 +193,7 @@
 
 #define JOINTEXT(X) jointext(X, null)
 
-#define SPAN(class, X)   "<span class='[class]'>[X]</span>"
+#define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 
@@ -206,4 +214,3 @@
 #define FONT_HUGE(X)     SPAN("huge", X)
 
 #define FONT_GIANT(X)    SPAN("giant", X)
-

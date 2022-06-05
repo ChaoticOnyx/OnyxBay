@@ -142,6 +142,27 @@
 	if(response == "Yes")
 		harvest()
 
+/obj/machinery/portable_atmospherics/hydroponics/attack_generic(mob/user)
+	// Why did I ever think this was a good idea. TODO: move this onto the nymph mob.
+	if(istype(user,/mob/living/carbon/alien/diona))
+		var/mob/living/carbon/alien/diona/nymph = user
+
+		if(nymph.stat == DEAD || nymph.paralysis || nymph.weakened || nymph.stunned || nymph.restrained())
+			return
+
+		if(weedlevel > 0)
+			nymph.reagents.add_reagent(/datum/reagent/nutriment/glucose, weedlevel)
+			weedlevel = 0
+			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
+			playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+		else if(nymph.nutrition > 100 && nutrilevel < 10)
+			nymph.nutrition -= ((10-nutrilevel)*5)
+			nutrilevel = 10
+			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src].</span>","<span class='info'>You secrete a trickle of green liquid, refilling [src].</span>")
+		else
+			nymph.visible_message("<span class='info'><b>[nymph]</b> rolls around in [src] for a bit.</span>","<span class='info'>You roll around in [src] for a bit.</span>")
+		return
+
 /obj/machinery/portable_atmospherics/hydroponics/Initialize()
 	. = ..()
 	temp_chem_holder = new()
@@ -185,13 +206,10 @@
 
 	..()
 
-/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return !density
+		return TRUE
+	return !density
 
 /obj/machinery/portable_atmospherics/hydroponics/proc/check_health(icon_update = 1)
 	if(seed && !dead && health <= 0)
@@ -267,7 +285,7 @@
 
 	if(closed_system)
 		if(user) to_chat(user, "You can't harvest from the plant while the lid is shut.")
-		return FALSE
+		return
 
 	if(user)
 		seed.harvest(user,yield_mod)
@@ -286,7 +304,7 @@
 		mutation_mod = 0
 
 	check_health()
-	return TRUE
+	return
 
 //Clears out a dead plant.
 /obj/machinery/portable_atmospherics/hydroponics/proc/remove_dead(mob/user, silent)
@@ -294,7 +312,7 @@
 
 	if(closed_system)
 		to_chat(user, "You can't remove the dead plant while the lid is shut.")
-		return FALSE
+		return
 
 	seed = null
 	dead = 0
@@ -303,11 +321,10 @@
 	yield_mod = 0
 	mutation_mod = 0
 
-	if(!silent)
-		to_chat(user, "You remove the dead plant.")
+	to_chat(user, "You remove the dead plant.")
 	lastproduce = 0
 	check_health()
-	return TRUE
+	return
 
 // If a weed growth is sufficient, this proc is called.
 /obj/machinery/portable_atmospherics/hydroponics/proc/weed_invasion()
@@ -384,7 +401,10 @@
 	var/previous_plant = seed.display_name
 	var/newseed = seed.get_mutant_variant()
 	if(newseed in SSplants.seeds)
-		seed = SSplants.seeds[newseed]
+		var/datum/seed/mut_seed = SSplants.seeds[newseed]
+		if(mut_seed.fun_level > config.misc.fun_hydroponics) // Too fun to be true
+			return
+		seed = mut_seed
 	else
 		return
 
@@ -406,7 +426,7 @@
 	if (O.is_open_container())
 		return 0
 
-	if(isWirecutter(O) || istype(O, /obj/item/weapon/scalpel))
+	if(isWirecutter(O) || istype(O, /obj/item/scalpel))
 
 		if(!seed)
 			to_chat(user, "There is nothing to take a sample from in \the [src].")
@@ -434,11 +454,11 @@
 
 		return
 
-	else if(istype(O, /obj/item/weapon/reagent_containers/syringe))
+	else if(istype(O, /obj/item/reagent_containers/syringe))
 
-		var/obj/item/weapon/reagent_containers/syringe/S = O
+		var/obj/item/reagent_containers/syringe/S = O
 
-		if (S.mode == 1)
+		if (S.mode == SYRINGE_INJECT)
 			if(seed)
 				return ..()
 			else
@@ -453,10 +473,9 @@
 			return 1
 
 	else if (istype(O, /obj/item/seeds))
-
 		plant_seed(user, O)
 
-	else if (istype(O, /obj/item/weapon/material/minihoe))  // The minihoe
+	else if (istype(O, /obj/item/material/minihoe))  // The minihoe
 
 		if(weedlevel > 0)
 			user.visible_message("<span class='danger'>[user] starts uprooting the weeds.</span>", "<span class='danger'>You remove the weeds from the [src].</span>")
@@ -465,19 +484,19 @@
 		else
 			to_chat(user, "<span class='danger'>This plot is completely devoid of weeds. It doesn't need uprooting.</span>")
 
-	else if (istype(O, /obj/item/weapon/storage/plants))
+	else if (istype(O, /obj/item/storage/plants))
 
 		attack_hand(user)
 
-		var/obj/item/weapon/storage/plants/S = O
-		for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
+		var/obj/item/storage/plants/S = O
+		for (var/obj/item/reagent_containers/food/grown/G in locate(user.x,user.y,user.z))
 			if(!S.can_be_inserted(G, user))
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if ( istype(O, /obj/item/weapon/plantspray) )
+	else if ( istype(O, /obj/item/plantspray) )
 
-		var/obj/item/weapon/plantspray/spray = O
+		var/obj/item/plantspray/spray = O
 		user.remove_from_mob(O)
 		toxins += spray.toxicity
 		pestlevel -= spray.pest_kill_str
@@ -500,7 +519,7 @@
 	else if(O.force && seed)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.visible_message("<span class='danger'>\The [seed.display_name] has been attacked by [user] with \the [O]!</span>")
-		playsound(get_turf(src), O.hitsound, 100, 1)
+		playsound(src, O.hitsound, 100, 1)
 		if(!dead)
 			health -= O.force
 			check_health()
@@ -520,6 +539,7 @@
 	to_chat(user, "You plant the [S.seed.seed_name] [S.seed.seed_noun].")
 	lastproduce = 0
 	seed = S.seed //Grab the seed datum.
+	seed.planter_ckey = user.ckey
 	dead = 0
 	age = 1
 
@@ -546,7 +566,7 @@
 	else if(dead)
 		remove_dead(user)
 
-/obj/machinery/portable_atmospherics/hydroponics/examine(mob/user)
+/obj/machinery/portable_atmospherics/hydroponics/_examine_text(mob/user)
 
 	. = ..()
 
@@ -622,3 +642,6 @@
 	lastcycle = world.time
 	qdel(S)
 	check_health()
+
+/obj/machinery/portable_atmospherics/hydroponics/post_attach_label()
+	update_icon()

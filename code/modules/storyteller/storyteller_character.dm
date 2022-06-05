@@ -33,3 +33,6 @@
 
 /datum/storyteller_character/proc/_run_trigger(type)
 	return SSstoryteller.run_trigger(type)
+
+/datum/storyteller_character/proc/get_available_vacancies()
+	return round(round_duration_in_ticks/JOB_VACANCIES_SLOT_PER_TIME) + JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART

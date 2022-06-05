@@ -1,4 +1,4 @@
-/obj/item/weapon/reagent_containers
+/obj/item/reagent_containers
 	name = "Container"
 	desc = "..."
 	icon = 'icons/obj/chemical.dmi'
@@ -9,41 +9,47 @@
 	var/volume = 30
 	var/label_text
 	var/can_be_splashed = FALSE
+	var/list/startswith // List of reagents to start with
 
-/obj/item/weapon/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
+/obj/item/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
 	set category = "Object"
 	set src in usr
-	
+
 	var/N = input("Amount per transfer from this:","[src]") as null|anything in cached_number_list_decode(possible_transfer_amounts)
 	if(N)
 		amount_per_transfer_from_this = N
 
-/obj/item/weapon/reagent_containers/New()
-	..()
+/obj/item/reagent_containers/Initialize()
+	. = ..()
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/item/weapon/reagent_containers/verb/set_APTFT
+		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
 	create_reagents(volume)
+	if(startswith)
+		for(var/thing in startswith)
+			reagents.add_reagent(thing, startswith[thing] ? startswith[thing] : volume)
+		startswith = null // Unnecessary lists bad
+		update_icon()
 
-/obj/item/weapon/reagent_containers/attack_self(mob/user as mob)
+/obj/item/reagent_containers/attack_self(mob/user)
 	return
 
-/obj/item/weapon/reagent_containers/afterattack(obj/target, mob/user, flag)
-	if(can_be_splashed && user.a_intent == I_HURT)
+/obj/item/reagent_containers/afterattack(obj/target, mob/user, flag)
+	if(can_be_splashed && user.a_intent != I_HELP)
 		if(standard_splash_mob(user,target))
 			return
 		if(reagents && reagents.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
+			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) // They are not on help intent, aka wanting to spill it.
 			reagents.splash(target, reagents.total_volume)
 			return
 
-/obj/item/weapon/reagent_containers/proc/reagentlist() // For attack logs
+/obj/item/reagent_containers/proc/reagentlist() // For attack logs
 	if(reagents)
 		return reagents.get_reagents()
 	return "No reagent holder"
 
-/obj/item/weapon/reagent_containers/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/device/flashlight/pen))
+/obj/item/reagent_containers/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/pen) || istype(W, /obj/item/device/flashlight/pen))
 		var/tmp_label = sanitizeSafe(input(user, "Enter a label for [name]", "Label", label_text), MAX_NAME_LEN)
 		if(length(tmp_label) > 10)
 			to_chat(user, "<span class='notice'>The label can be at most 10 characters long.</span>")
@@ -54,13 +60,13 @@
 	else
 		return ..()
 
-/obj/item/weapon/reagent_containers/proc/update_name_label()
+/obj/item/reagent_containers/proc/update_name_label()
 	if(label_text == "")
 		SetName(initial(name))
 	else
 		SetName("[initial(name)] ([label_text])")
 
-/obj/item/weapon/reagent_containers/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target) // This goes into afterattack
+/obj/item/reagent_containers/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target) // This goes into afterattack
 	if(!istype(target))
 		return 0
 
@@ -77,7 +83,7 @@
 	to_chat(user, "<span class='notice'>You fill [src] with [trans] units of the contents of [target].</span>")
 	return 1
 
-/obj/item/weapon/reagent_containers/proc/standard_splash_mob(mob/user, mob/target) // This goes into afterattack
+/obj/item/reagent_containers/proc/standard_splash_mob(mob/user, mob/target) // This goes into afterattack
 	if(!istype(target))
 		return
 
@@ -100,19 +106,19 @@
 	reagents.splash(target, reagents.total_volume)
 	return 1
 
-/obj/item/weapon/reagent_containers/proc/self_feed_message(mob/user)
+/obj/item/reagent_containers/proc/self_feed_message(mob/user)
 	to_chat(user, "<span class='notice'>You eat \the [src]</span>")
 
-/obj/item/weapon/reagent_containers/proc/other_feed_message_start(mob/user, mob/target)
+/obj/item/reagent_containers/proc/other_feed_message_start(mob/user, mob/target)
 	user.visible_message("<span class='warning'>[user] is trying to feed [target] \the [src]!</span>")
 
-/obj/item/weapon/reagent_containers/proc/other_feed_message_finish(mob/user, mob/target)
+/obj/item/reagent_containers/proc/other_feed_message_finish(mob/user, mob/target)
 	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
 
-/obj/item/weapon/reagent_containers/proc/feed_sound(mob/user)
-	playsound(user, "drink", rand(45, 60), TRUE)
+/obj/item/reagent_containers/proc/feed_sound(mob/user)
+	playsound(user, SFX_DRINK, rand(45, 60), TRUE)
 
-/obj/item/weapon/reagent_containers/proc/standard_feed_mob(mob/user, mob/target) // This goes into attack
+/obj/item/reagent_containers/proc/standard_feed_mob(mob/user, mob/target) // This goes into attack
 	if(!istype(target))
 		return 0
 
@@ -167,12 +173,12 @@
 
 	return 0
 
-/obj/item/weapon/reagent_containers/proc/standard_pour_into(mob/user, atom/target) // This goes into afterattack and yes, it's atom-level
+/obj/item/reagent_containers/proc/standard_pour_into(mob/user, atom/target) // This goes into afterattack and yes, it's atom-level
 	if(!target.reagents)
 		return 0
 
 	// Ensure we don't splash beakers and similar containers.
-	if(!target.is_open_container() && istype(target, /obj/item/weapon/reagent_containers))
+	if(!target.is_open_container() && istype(target, /obj/item/reagent_containers))
 		to_chat(user, "<span class='notice'>\The [target] is closed.</span>")
 		return 1
 	// Otherwise don't care about splashing.
@@ -192,18 +198,18 @@
 	to_chat(user, "<span class='notice'>You transfer [trans] unit\s of the solution to \the [target].</span>")
 	return 1
 
-/obj/item/weapon/reagent_containers/do_surgery(mob/living/carbon/M, mob/living/user)
+/obj/item/reagent_containers/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(user.zone_sel.selecting != BP_MOUTH) //in case it is ever used as a surgery tool
 		return ..()
 
-/obj/item/weapon/reagent_containers/AltClick(mob/user)
+/obj/item/reagent_containers/AltClick(mob/user)
 	if(possible_transfer_amounts)
 		if(CanPhysicallyInteract(user))
 			set_APTFT()
 	else
 		return ..()
 
-/obj/item/weapon/reagent_containers/examine(mob/user)
+/obj/item/reagent_containers/_examine_text(mob/user)
 	. = ..()
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\n<span class='notice'>The [src] contains: [reagents.get_reagents()].</span>"

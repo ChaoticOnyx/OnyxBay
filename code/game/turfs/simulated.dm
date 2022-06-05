@@ -18,7 +18,7 @@
 /turf/simulated/post_change()
 	..()
 	var/turf/T = GetAbove(src)
-	if(istype(T,/turf/space) || (density && istype(T,/turf/simulated/open)))
+	if(istype(T,/turf/space) || (density && istype(T, /turf/simulated/open)))
 		var/new_turf_type = density ? (istype(T.loc, /area/space) ? /turf/simulated/floor/plating/airless : /turf/simulated/floor/plating) : /turf/simulated/open
 		T.ChangeTurf(new_turf_type)
 
@@ -53,12 +53,8 @@
 /turf/simulated/New()
 	..()
 	if(istype(loc, /area/chapel))
-		holy = 1
+		holy = TRUE
 	levelupdate()
-
-/turf/simulated/Destroy()
-	deltimer(timer_id)
-	return ..()
 
 /turf/simulated/proc/AddTracks(typepath,bloodDNA,comingdir,goingdir,bloodcolor=COLOR_BLOOD_HUMAN)
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src
@@ -91,11 +87,11 @@
 			var/mob/living/carbon/human/H = M
 			// Tracking blood
 			var/list/bloodDNA = null
-			var/bloodcolor=""
+			var/bloodcolor = ""
 			if(H.shoes)
 				var/obj/item/clothing/shoes/S = H.shoes
 				if(istype(S))
-					S.handle_movement(src,(H.m_intent == "run" ? 1 : 0))
+					S.handle_movement(src,(H.m_intent == M_RUN ? 1 : 0))
 					if(S.track_blood && S.blood_DNA)
 						bloodDNA = S.blood_DNA
 						bloodcolor=S.blood_color
@@ -114,19 +110,19 @@
 
 				bloodDNA = null
 
-		if(src.wet)
+		if(wet)
 
-			if(M.buckled || (M.m_intent == "walk" && prob(min(100, 100/(wet/10))) ) )
+			if(M.buckled || (M.m_intent == M_WALK && prob(min(100, 100/(wet/10))) ) )
 				return
 
 			var/slip_dist = 1
 			var/slip_stun = 3
 			var/floor_type = "wet"
 
-			if(2 <= src.wet) // Lube
+			if(wet >= 2) // Lube
 				floor_type = "slippery"
 				slip_dist = 4
-				slip_stun = 9
+				slip_stun = 6
 
 			if(M.slip("the [floor_type] floor", slip_stun))
 				for(var/i = 1 to slip_dist)

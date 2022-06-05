@@ -8,10 +8,8 @@
 	emergency_controller = evacuation_controller
 	if(!istype(emergency_controller))
 		CRASH("Escape shuttle created without the appropriate controller type.")
-		return
 	if(emergency_controller.shuttle)
 		CRASH("An emergency shuttle has already been created.")
-		return
 	emergency_controller.shuttle = src
 
 /datum/shuttle/autodock/ferry/emergency/arrived()
@@ -130,7 +128,7 @@
 	var/auth_name
 	var/dna_hash
 
-	var/obj/item/weapon/card/id/ID = ident.GetIdCard()
+	var/obj/item/card/id/ID = ident.GetIdCard()
 
 	if(!ID)
 		return
@@ -163,11 +161,12 @@
 
 /obj/machinery/computer/shuttle_control/emergency/emag_act(remaining_charges, mob/user)
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='notice'>You short out \the [src]'s authorization protocols.</span>")
 		emagged = 1
 		return 1
 
-/obj/machinery/computer/shuttle_control/emergency/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/computer/shuttle_control/emergency/attackby(obj/item/W as obj, mob/user as mob)
 	read_authorization(W)
 	..()
 

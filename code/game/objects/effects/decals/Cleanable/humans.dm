@@ -1,4 +1,4 @@
-#define DRYING_TIME 5 * 60*10 //for 1 unit of depth in puddle (amount var)
+#define DRYING_TIME 5 * 60*10 //5 minutes for 1 unit of depth in puddle (amount var)
 
 var/global/list/image/splatter_cache=list()
 
@@ -19,7 +19,6 @@ var/global/list/image/splatter_cache=list()
 	var/basecolor=COLOR_BLOOD_HUMAN // Color when wet.
 	var/list/datum/disease2/disease/virus2 = list()
 	var/amount = 5
-	var/drytime
 
 /obj/effect/decal/cleanable/blood/reveal_blood()
 	if(!fluorescent)
@@ -32,14 +31,13 @@ var/global/list/image/splatter_cache=list()
 	if(invisibility != 100)
 		set_invisibility(100)
 		amount = 0
-		STOP_PROCESSING(SSobj, src)
-	..(ignore=1)
+	..(ignore = 1)
 
 /obj/effect/decal/cleanable/blood/hide()
 	return
 
 /obj/effect/decal/cleanable/blood/Destroy()
-	STOP_PROCESSING(SSobj, src)
+	virus2 = null
 	return ..()
 
 /obj/effect/decal/cleanable/blood/Initialize()
@@ -54,12 +52,8 @@ var/global/list/image/splatter_cache=list()
 					if (B.blood_DNA)
 						blood_DNA |= B.blood_DNA.Copy()
 					qdel(B)
-	drytime = world.time + DRYING_TIME * (amount+1)
-	START_PROCESSING(SSobj, src)
-
-/obj/effect/decal/cleanable/blood/Process()
-	if(world.time > drytime)
-		dry()
+	var/drytime = DRYING_TIME * (max(1, amount))
+	addtimer(CALLBACK(src, .proc/dry), drytime)
 
 /obj/effect/decal/cleanable/blood/update_icon()
 	if(basecolor == "rainbow") basecolor = get_random_colour(1)
@@ -72,7 +66,7 @@ var/global/list/image/splatter_cache=list()
 		desc = initial(desc)
 
 /obj/effect/decal/cleanable/blood/Crossed(mob/living/carbon/human/perp)
-	if (!istype(perp))
+	if(!istype(perp))
 		return
 	if(amount < 1)
 		return
@@ -117,17 +111,17 @@ var/global/list/image/splatter_cache=list()
 	desc = drydesc
 	color = adjust_brightness(color, -50)
 	amount = 0
-	STOP_PROCESSING(SSobj, src)
+	virus2.Cut()
 
 /obj/effect/decal/cleanable/blood/attack_hand(mob/living/carbon/human/user)
 	..()
-	if (amount && istype(user))
-		if (user.gloves)
+	if(amount && istype(user))
+		if(user.gloves)
 			return
-		var/taken = rand(1,amount)
+		var/taken = rand(1, amount)
 		amount -= taken
 		to_chat(user, "<span class='notice'>You get some of \the [src] on your hands.</span>")
-		if (!user.blood_DNA)
+		if(!user.blood_DNA)
 			user.blood_DNA = list()
 		user.blood_DNA |= blood_DNA.Copy()
 		user.bloody_hands = taken
@@ -136,12 +130,17 @@ var/global/list/image/splatter_cache=list()
 		user.verbs += /mob/living/carbon/human/proc/bloody_doodle
 
 /obj/effect/decal/cleanable/blood/splatter
-	random_icon_states = list("mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
+	random_icon_states = list("mfloor3", "mfloor7", "mgibbl1", "mgibbl2", "mgibbl3", "mgibbl4", "mgibbl5")
 	amount = 2
+
+/obj/effect/decal/cleanable/blood/squirt
+	random_icon_states = list("squirt")
+	amount = 1
 
 /obj/effect/decal/cleanable/blood/drip
 	name = "drips of blood"
 	desc = "It's red."
+	dryname = "dried drips of blood"
 	gender = PLURAL
 	icon = 'icons/effects/drip.dmi'
 	icon_state = "1"
@@ -170,7 +169,7 @@ var/global/list/image/splatter_cache=list()
 	else
 		icon_state = "writing1"
 
-/obj/effect/decal/cleanable/blood/writing/examine(mob/user)
+/obj/effect/decal/cleanable/blood/writing/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt reads: <font color='[basecolor]'>\"[message]\"</font>"
 
@@ -238,9 +237,22 @@ var/global/list/image/splatter_cache=list()
 	icon_state = "mucus"
 
 	var/list/datum/disease2/disease/virus2 = list()
-	var/dry=0 // Keeps the lag down
+	var/dried = FALSE
 
-/obj/effect/decal/cleanable/mucus/New()
-	..()
-	spawn(DRYING_TIME * 2)
-		dry=1
+/obj/effect/decal/cleanable/mucus/Initialize()
+	. = ..()
+	pixel_x = rand(-8, 8)
+	pixel_y = rand(-8, 8)
+	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
+	addtimer(CALLBACK(src, .proc/dry), drytime) // Let's not keep these fuckers infectious forever 'kay?
+
+/obj/effect/decal/cleanable/mucus/Destroy()
+	virus2 = null
+	return ..()
+
+/obj/effect/decal/cleanable/mucus/proc/dry()
+	name = "dried mucus"
+	desc = "Disguisting nonetheless."
+	icon_state = "mucus_dry"
+	dried = TRUE
+	virus2.Cut()

@@ -3,6 +3,7 @@
 	name = "Phazon"
 	icon_state = "phazon"
 	initial_icon = "phazon"
+	base_color = "#4D79A0"
 	step_in = 1
 	dir_in = 1 //Facing North.
 	step_energy_drain = 100
@@ -19,7 +20,6 @@
 	var/phasing = 0
 	var/phasing_energy_drain = 5 KILOWATTS
 	max_equip = 4
-
 
 /obj/mecha/combat/phazon/Initialize()
 	. = ..()

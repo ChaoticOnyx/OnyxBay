@@ -8,6 +8,8 @@
 	blood_level = 1
 	shock_level = 40
 	delicate = 1
+	var/obj/item/organ/preselected_organ
+	var/ignore_tool = FALSE
 
 /datum/surgery_step/internal/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
@@ -26,13 +28,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ
 	allowed_tools = list(
-	/obj/item/weapon/organfixer/standard = 100
+	/obj/item/organfixer/standard = 100
 	)
 
 	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
 	if(!..())
@@ -51,23 +53,36 @@
 
 	target.op_stage.current_organ = null
 
-	var/obj/item/organ/internal/list/damaged_organs = list()
+	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in damaged_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
-	if(!organ_to_fix.can_recover())
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
+	if(!surgery_organ.can_recover())
+		to_chat(user, SPAN("notice", "The [surgery_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
-	if(!organ_to_fix.damage && !O.emagged)
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
+	if(!surgery_organ.damage && !O.emagged)
+		to_chat(user, SPAN("notice", "The [surgery_organ.name] is intact and doesn't require any healing."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_fix
-
+	target.op_stage.current_organ = surgery_organ
 	return TRUE
 
 /datum/surgery_step/internal/fix_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -79,12 +94,12 @@
 	user.visible_message("[user] starts repairing [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start repairing [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/fix_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(O.gel_amt != 0)
 		if(!O.emagged)
 			if(affected && affected.damage > 0 && !BP_IS_ROBOTIC(affected) && (affected.surface_accessible || target.get_organ(target_zone).open() >= (target.get_organ(target_zone).encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
@@ -98,7 +113,7 @@
 			user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 			SPAN("warning", "Something goes wrong and \the [O] shreds [target]'s [affected.name] before you have a chance to react!"))
 
-			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150,affecting = target.op_stage.current_organ)
+			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150)
 			target.adjustToxLoss(30)
 			target.get_organ(target_zone).take_external_damage(10, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 			affected.take_internal_damage((affected.max_damage - affected.damage), 0)
@@ -129,13 +144,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ_multiple
 	allowed_tools = list(
-	/obj/item/weapon/organfixer/advanced = 100
+	/obj/item/organfixer/advanced = 100
 	)
 
 	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/internal/fix_organ_multiple/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
 	if(!..())
@@ -159,22 +174,22 @@
 /datum/surgery_step/internal/fix_organ_multiple/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
 		return
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(!affected || affected.open() < 2)
 		return
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I && (I.damage > 0 || O.emagged == 1) && !BP_IS_ROBOTIC(I) && (!I.status & ORGAN_DEAD || I.can_recover()) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
+		if(I && (I.damage > 0 || O.emagged == 1) && !BP_IS_ROBOTIC(I) && (!(I.status & ORGAN_DEAD) || I.can_recover()) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
 			user.visible_message("[user] starts treating damage to [target]'s [I.name] with \the [tool].", \
 			"You start treating damage to [target]'s [I.name] with \the [tool]." )
 
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_multiple/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
 		return
-	var/obj/item/weapon/organfixer/O = tool
+	var/obj/item/organfixer/O = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(!affected || affected.open() < 2)
 		return
@@ -184,13 +199,13 @@
 				if(O.gel_amt == 0)
 					to_chat(user, SPAN("warning", "\The [O] runs out of gel!"))
 					return FALSE
-				if(I.status & ORGAN_DEAD && !I.can_recover())
+				if((I.status & ORGAN_DEAD) && !I.can_recover())
 					to_chat(user, SPAN("notice", "[target]'s [I.name] is destroyed and can't be fixed with \the [O]."))
 					continue
 				user.visible_message(SPAN("notice", "[user] repairs [target]'s [I.name] with \the [O]."), \
 				SPAN("notice", "You repair [target]'s [I.name] with \the [O]."))
 				I.damage = 0
-				if(I.status & ORGAN_DEAD && I.can_recover())
+				if((I.status & ORGAN_DEAD) && I.can_recover())
 					I.status &= ~ORGAN_DEAD
 				I.owner.update_body(1)
 				if(O.gel_amt_max != -1)
@@ -199,7 +214,7 @@
 		user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 		SPAN("warning", "Something goes wrong and \the [O] shreds everything inside [target]'s [affected.name] before you have a chance to react!"))
 
-		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150,affecting = affected)
+		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150)
 		target.adjustToxLoss(30)
 		affected.take_external_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = O)
 		for(var/obj/item/organ/internal/I in affected.internal_organs)
@@ -227,7 +242,7 @@
 	allowed_tools = list(
 	/obj/item/stack/medical/advanced/bruise_pack= 67,		\
 	/obj/item/stack/medical/bruise_pack = 34,	\
-	/obj/item/weapon/tape_roll = 20
+	/obj/item/tape_roll = 20
 	)
 
 	duration = ORGAN_FIX_DURATION * 1.75
@@ -247,26 +262,39 @@
 			to_chat(user, SPAN("warning", "\The [M] is empty!"))
 			return SURGERY_FAILURE
 
-	var/obj/item/organ/internal/list/damaged_organs = list()
+	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in damaged_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(!organ_to_fix.can_recover())
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
+	if(!surgery_organ.can_recover())
+		to_chat(user, SPAN("notice", "The [surgery_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
-	if(!organ_to_fix.damage)
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
+	if(!surgery_organ.damage)
+		to_chat(user, SPAN("notice", "The [surgery_organ.name] is intact and doesn't require any healing."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_fix
-
+	target.op_stage.current_organ = surgery_organ
 	return FALSE
 
 /datum/surgery_step/internal/fix_organ_ghetto/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -283,7 +311,7 @@
 		return
 	user.visible_message("[user] starts treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name]." , \
 			       	         "You start treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/fix_organ_ghetto/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -336,10 +364,10 @@
 /datum/surgery_step/internal/detatch_organ
 
 	allowed_tools = list(
-	/obj/item/weapon/scalpel = 100,	\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/knife = 75,	\
-	/obj/item/weapon/material/shard = 50
+	/obj/item/scalpel = 100,	\
+	/obj/item/material/knife = 75,	\
+	/obj/item/material/kitchen/utensil/knife = 75,	\
+	/obj/item/material/shard = 50
 	)
 
 	duration = CUT_DURATION * 1.75
@@ -360,18 +388,32 @@
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/organ in target.internal_organs)
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
-			attached_organs |= organ
+			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
+			img.overlays = organ.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			attached_organs[organ] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
-	if(!organ_to_remove)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in attached_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, attached_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_remove
+	target.op_stage.current_organ = surgery_organ
 
-	return ..() && organ_to_remove
+	return ..() && surgery_organ
 
 /datum/surgery_step/internal/detatch_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts to separate [target]'s [target.op_stage.current_organ] with \the [tool].", \
@@ -399,10 +441,10 @@
 /datum/surgery_step/internal/remove_organ
 	priority = 2
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,	\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/fork = 20
+	/obj/item/hemostat = 100,	\
+	/obj/item/wirecutters = 75,	\
+	/obj/item/material/knife = 75,	\
+	/obj/item/material/kitchen/utensil/fork = 20
 	)
 
 	duration = CLAMP_DURATION
@@ -422,23 +464,37 @@
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
 		if(I.status & ORGAN_CUT_AWAY)
-			removable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			removable_organs[I] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
-	if(!organ_to_remove)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in removable_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, removable_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_remove
+	target.op_stage.current_organ = surgery_organ
 	return ..()
 
 /datum/surgery_step/internal/remove_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts removing [target]'s [target.op_stage.current_organ] with \the [tool].", \
 	"You start removing [target]'s [target.op_stage.current_organ] with \the [tool].")
-	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	target.custom_pain("The pain in your [affected.name] is living hell!",100)
 	..()
 
 /datum/surgery_step/internal/remove_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -499,7 +555,6 @@
 
 	if(!target.species)
 		CRASH("Target ([target]) of surgery [type] has no species!")
-		return SURGERY_FAILURE
 
 	var/o_is = (O.gender == PLURAL) ? "are" : "is"
 	var/o_a =  (O.gender == PLURAL) ? "" : "a "
@@ -522,7 +577,7 @@
 
 	var/used_volume = 0
 	for(var/obj/item/implant in affected.implants)
-		if(istype(implant, /obj/item/weapon/implant))
+		if(istype(implant, /obj/item/implant))
 			continue
 		used_volume += implant.get_storage_cost()
 	for(var/obj/item/organ in affected.internal_organs)
@@ -537,7 +592,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] starts transplanting \the [tool] into [target]'s [affected.name].", \
 	"You start transplanting \the [tool] into [target]'s [affected.name].")
-	target.custom_pain("Someone's rooting around in your [affected.name]!",100,affecting = affected)
+	target.custom_pain("Someone's rooting around in your [affected.name]!",100)
 	..()
 
 /datum/surgery_step/internal/replace_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -568,9 +623,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
-	/obj/item/weapon/FixOVein = 100,	\
+	/obj/item/FixOVein = 100,	\
 	/obj/item/stack/cable_coil = 75,	\
-	/obj/item/weapon/tape_roll = 50
+	/obj/item/tape_roll = 50
 	)
 
 	duration = CONNECT_DURATION
@@ -591,19 +646,33 @@
 	var/list/attachable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
 		if(I && (I.status & ORGAN_CUT_AWAY))
-			attachable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			attachable_organs[I] = img
 
-	var/obj/item/organ/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in attachable_organs
-	if(!organ_to_replace)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in attachable_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(organ_to_replace.parent_organ != affected.organ_tag)
-		to_chat(user, SPAN("warning", "You can't find anywhere to attach [organ_to_replace] to!"))
+	if(surgery_organ.parent_organ != affected.organ_tag)
+		to_chat(user, SPAN("warning", "You can't find anywhere to attach [surgery_organ] to!"))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_replace
+	target.op_stage.current_organ = surgery_organ
 	return ..()
 
 /datum/surgery_step/internal/attach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -636,11 +705,11 @@
 /datum/surgery_step/internal/treat_necrosis
 	priority = 2
 	allowed_tools = list(
-		/obj/item/weapon/reagent_containers/dropper = 100, 	\
-		/obj/item/weapon/reagent_containers/glass/bottle = 75,	\
-		/obj/item/weapon/reagent_containers/glass/beaker = 75,	\
-		/obj/item/weapon/reagent_containers/spray = 50,	\
-		/obj/item/weapon/reagent_containers/glass/bucket = 50
+		/obj/item/reagent_containers/dropper = 100, 	\
+		/obj/item/reagent_containers/vessel/bottle/chemical = 75,	\
+		/obj/item/reagent_containers/vessel/beaker = 75,	\
+		/obj/item/reagent_containers/spray = 50,	\
+		/obj/item/reagent_containers/vessel/bucket = 50
 	)
 
 	can_infect = 0
@@ -649,7 +718,7 @@
 	duration = ORGAN_FIX_DURATION * 0.75
 
 /datum/surgery_step/internal/treat_necrosis/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 	if(!istype(container) || !container.reagents.has_reagent(/datum/reagent/peridaxon))
 		return 0
 	if (!..())
@@ -664,35 +733,48 @@
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	var/obj/item/organ/internal/list/dead_organs = list()
+	var/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			dead_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			dead_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/surgery_organ = preselected_organ
+
+	if(preselected_organ && !(preselected_organ in dead_organs))
+		return SURGERY_FAILURE
+
+	if(!preselected_organ)
+		surgery_organ = show_radial_menu(user, target, dead_organs, require_near = TRUE)
+
+	preselected_organ = null
+
+	if(!surgery_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return 0
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(!organ_to_fix.can_recover() && istype(organ_to_fix, /obj/item/organ/internal/brain))
-		to_chat(user, SPAN("warning", "The [organ_to_fix.name] is destroyed and can't be saved."))
+	if(!surgery_organ.can_recover() && istype(surgery_organ, /obj/item/organ/internal/brain))
+		to_chat(user, SPAN("warning", "The [surgery_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_fix
-
+	target.op_stage.current_organ = surgery_organ
 	return 1
 
 /datum/surgery_step/internal/treat_necrosis/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start applying medication to the affected tissue in [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50,affecting = target.op_stage.current_organ)
+	target.custom_pain("Something in your [target.op_stage.current_organ] is causing you a lot of pain!",50)
 	..()
 
 /datum/surgery_step/internal/treat_necrosis/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 
 	var/amount = container.amount_per_transfer_from_this
 	var/datum/reagents/temp_reagents = new(amount, GLOB.temp_reagents_holder)
@@ -719,10 +801,10 @@
 /datum/surgery_step/internal/treat_necrosis/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	if (!istype(tool, /obj/item/weapon/reagent_containers))
+	if (!istype(tool, /obj/item/reagent_containers))
 		return
 
-	var/obj/item/weapon/reagent_containers/container = tool
+	var/obj/item/reagent_containers/container = tool
 
 	var/trans = container.reagents.trans_to_mob(target, container.amount_per_transfer_from_this, CHEM_BLOOD)
 

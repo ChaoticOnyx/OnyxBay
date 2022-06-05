@@ -5,8 +5,8 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	role_text = "NanoTrasen Actor"
 	role_text_plural = "NanoTrasen Actors"
 	welcome_text = "You've been hired to entertain people through the power of television!"
-	landmark_id = "ActorSpawn"
-	id_type = /obj/item/weapon/card/id/syndicate
+	landmark_id = "Actor"
+	id_type = /obj/item/card/id/syndicate
 
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
 
@@ -17,6 +17,11 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	show_objectives_on_creation = 0 //actors are not antagonists and do not need the antagonist greet text
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/actor/Initialize()
+	. = ..()
+	if(config.game.actor_min_age)
+		min_player_age = config.game.actor_min_age
 
 /datum/antagonist/actor/greet(datum/mind/player)
 	if(!..())
@@ -29,7 +34,7 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	player.equip_to_slot_or_del(new /obj/item/clothing/under/chameleon(src), slot_w_uniform)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/chameleon(src), slot_shoes)
 	player.equip_to_slot_or_del(new /obj/item/device/radio/headset/entertainment(src), slot_l_ear)
-	var/obj/item/weapon/card/id/centcom/ERT/C = new(player.loc)
+	var/obj/item/card/id/centcom/ERT/C = new(player.loc)
 	C.assignment = "Actor"
 	player.set_id_info(C)
 	player.equip_to_slot_or_del(C,slot_wear_id)

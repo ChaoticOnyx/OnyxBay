@@ -3,7 +3,7 @@
 var/list/whitelist = list()
 
 /hook/startup/proc/loadWhitelist()
-	if(config.usewhitelist)
+	if(config.game.use_whitelist)
 		load_whitelist()
 	return 1
 
@@ -19,13 +19,13 @@ var/list/whitelist = list()
 /var/list/alien_whitelist = list()
 
 /hook/startup/proc/loadAlienWhitelist()
-	if(config.usealienwhitelist)
-		if(config.usealienwhitelistSQL)
-			if(!load_alienwhitelistSQL())
-				world.log << "Could not load alienwhitelist via SQL"
+	if(config.game.use_ingame_alien_whitelist)
+		if(config.game.use_alien_whitelist_sql)
+			load_alienwhitelistSQL()
 		else
 			load_alienwhitelist()
 	return 1
+
 /proc/load_alienwhitelist()
 	var/text = file2text("config/alienwhitelist.txt")
 	if (!text)
@@ -34,20 +34,23 @@ var/list/whitelist = list()
 	else
 		alien_whitelist = splittext(text, "\n")
 		return 1
+
 /proc/load_alienwhitelistSQL()
-	var/DBQuery/query = dbcon_old.NewQuery("SELECT * FROM whitelist")
-	if(!query.Execute())
-		world.log << dbcon_old.ErrorMsg()
-		return 0
-	else
-		while(query.NextRow())
-			var/list/row = query.GetRowData()
-			if(alien_whitelist[row["ckey"]])
-				var/list/A = alien_whitelist[row["ckey"]]
-				A.Add(row["race"])
-			else
-				alien_whitelist[row["ckey"]] = list(row["race"])
-	return 1
+	if(!establish_old_db_connection())
+		error("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
+		log_misc("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
+		config.game.use_alien_whitelist_sql = 0
+		load_alienwhitelist()
+		return FALSE
+	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
+	while(query.NextRow())
+		var/list/row = query.GetRowData()
+		if(alien_whitelist[row["ckey"]])
+			var/list/A = alien_whitelist[row["ckey"]]
+			A.Add(row["race"])
+		else
+			alien_whitelist[row["ckey"]] = list(row["race"])
+	return TRUE
 
 /proc/is_species_whitelisted(mob/M, species_name)
 	var/datum/species/S = all_species[species_name]
@@ -57,7 +60,7 @@ var/list/whitelist = list()
 /proc/is_alien_whitelisted(mob/M, species)
 	if(!M || !species)
 		return 0
-	if(!config.usealienwhitelist)
+	if(!config.game.use_ingame_alien_whitelist)
 		return 1
 
 	var/client/C = M.client
@@ -82,7 +85,7 @@ var/list/whitelist = list()
 	if(!alien_whitelist)
 		return 0
 
-	if(config.usealienwhitelistSQL)
+	if(config.game.use_alien_whitelist_sql)
 		//SQL Whitelist
 		if(!(ckey in alien_whitelist))
 			return 0;

@@ -1,110 +1,102 @@
 /mob/living/carbon/human/movement_delay()
-	var/tally = ..()
+	. = ..()
 
-	if(species.slowdown)
-		tally += species.slowdown
+	. += species.handle_movement_delay_special(src)
 
-	tally += species.handle_movement_delay_special(src)
+	var/human_delay = config.movement.human_delay
 
-	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
+	if(istype(loc, /turf/space))
+		return (. + human_delay) // It's hard to be slowed down in space by... anything. Except for your shitty physical body restrictions.
 
 	if(embedded_flag || (stomach_contents && stomach_contents.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
 
-	if(CE_SPEEDBOOST in chem_effects)
-		return -1
-
-	if(CE_SLOWDOWN in chem_effects)
-		tally += chem_effects[CE_SLOWDOWN]
+	for(var/M in mutations)
+		switch(M)
+			if(mRun)
+				return human_delay
+			if(MUTATION_FAT)
+				. += 1.5
 
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.haste) && M.haste == TRUE)
 			return -1 // Returning -1 will actually result in a slowdown for Teshari.
 		if(!isnull(M.slowdown))
-			tally += M.slowdown
+			. += M.slowdown
 
-	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if(species.slowdown)
+		. += species.slowdown
 
-	if(can_feel_pain())
-		if(get_shock() >= 10)
-			tally += (get_shock() / 10) //pain shouldn't slow you down if you can't even feel it
+	if(aiming)
+		. += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
 
-	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
-		for(var/organ_name in list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM))
-			var/obj/item/organ/external/E = get_organ(organ_name)
-			if(!E || E.is_stump())
-				tally += 4
-			else if(E.splinted)
-				tally += 0.5
-			else if(E.status & ORGAN_BROKEN)
-				tally += 1.5
+	if(bodytemperature < 283.222)
+		. += (283.222 - bodytemperature) / 10 * 1.75
+
+	. += blocking * 1.5
+
+	var/health_deficiency_percent = 100 - (health / maxHealth) * 100
+	if(health_deficiency_percent >= 40)
+		. += (health_deficiency_percent / 25)
+
+	var/shock = get_shock()
+	if(shock >= 10)
+		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
+
+	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
+		var/normalized_nutrition = nutrition / body_build.stomach_capacity
+		var/nut_level = normalized_nutrition / 100
+		switch(normalized_nutrition)
+			if(0 to STOMACH_FULLNESS_LOW)
+				. += 1.25 - nut_level
+			if(STOMACH_FULLNESS_HIGH to INFINITY)
+				. += nut_level - 4.25
+
+	if(body_build.equipment_modifier > 0) // Is our equipment_modifier a good thing?
+		if(equipment_slowdown + 1 > body_build.equipment_modifier)  // Lowering equipment cooldown if it's higher
+			. += equipment_slowdown - body_build.equipment_modifier // than equipment_modifier, ignoring it otherwise
+		else
+			. -= 1 // Since default equipment_slowdown is -1 for some reason
 	else
-		var/total_item_slowdown = -1
-		for(var/slot = slot_first to slot_last)
-			var/obj/item/I = get_equipped_item(slot)
-			if(I)
-				var/item_slowdown = 0
-				item_slowdown += I.slowdown_general
-				item_slowdown += I.slowdown_per_slot[slot]
-				item_slowdown += I.slowdown_accessory
+		if(equipment_slowdown > -1)
+			. += equipment_slowdown - body_build.equipment_modifier
+		else
+			. += equipment_slowdown
 
-				if(item_slowdown >= 0)
-					var/size_mod = 0
-					if(!(mob_size == MOB_MEDIUM))
-						size_mod = log(2, mob_size / MOB_MEDIUM)
-					if(species.strength + size_mod + 1 > 0)
-						item_slowdown = item_slowdown / (species.strength + size_mod + 1)
-					else
-						item_slowdown = item_slowdown - species.strength - size_mod
-				total_item_slowdown += max(item_slowdown, 0)
-		tally += round(total_item_slowdown)
+	. += body_build.slowdown
 
-		for(var/organ_name in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT))
-			var/obj/item/organ/external/E = get_organ(organ_name)
-			if(!E || E.is_stump())
-				tally += 4
-			else if(E.splinted)
-				tally += 0.5
-			else if(E.status & ORGAN_BROKEN)
-				tally += 1.5
+	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
+	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair
+		organ_list = list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
-	if(aiming && aiming.aiming_at)
-		tally += 5 // Iron sights make you slower, it's a well-known fact.
+	for(var/organ_name in organ_list)
+		var/obj/item/organ/external/E = get_organ(organ_name)
+		if(!E)
+			. += 4
+		else
+			. += E.movement_tally
 
-	if(MUTATION_FAT in mutations)
-		tally += 1.5
-	if (bodytemperature < 283.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
+	for(var/E in chem_effects)
+		switch(E)
+			if(CE_SPEEDBOOST)
+				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.movement.run_speed/2))
+			if(CE_SLOWDOWN)
+				. += chem_effects[CE_SLOWDOWN]
 
-	tally += blocking * 1.5
-
-	tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
-
-	if(!isSynthetic(src))	// are you hungry? I think yes
-		var/nut_level = nutrition / 100
-		switch(nutrition)
-			if(0 to 150)
-				tally += 1.5 - nut_level
-			if(450 to INFINITY)
-				tally += nut_level - 4.5
-
-	if(mRun in mutations)
-		tally = 0
-
-	return (tally+config.human_delay)
+	return (. + human_delay)
 
 /mob/living/carbon/human/Allow_Spacemove(check_drift = 0)
 	//Can we act?
-	if(restrained())	return 0
+	if(restrained())
+		return 0
 
 	//Do we have a working jetpack?
-	var/obj/item/weapon/tank/jetpack/thrust
+	var/obj/item/tank/jetpack/thrust
 	if(back)
-		if(istype(back,/obj/item/weapon/tank/jetpack))
+		if(istype(back,/obj/item/tank/jetpack))
 			thrust = back
-		else if(istype(back,/obj/item/weapon/rig))
-			var/obj/item/weapon/rig/rig = back
+		else if(istype(back,/obj/item/rig))
+			var/obj/item/rig/rig = back
 			for(var/obj/item/rig_module/maneuvering_jets/module in rig.installed_modules)
 				thrust = module.jets
 				break

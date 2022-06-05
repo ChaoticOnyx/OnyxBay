@@ -9,7 +9,7 @@
 /obj/item/rig_module/stealth_field
 
 	name = "active camouflage module"
-	desc = "A robust hardsuit-integrated stealth module."
+	desc = "A robust powersuit-integrated stealth module."
 	icon_state = "cloak"
 
 	toggleable = 1
@@ -52,13 +52,13 @@
 		anim(get_turf(H), H, 'icons/effects/effects.dmi', "electricity",null,20,null)
 
 	// We still play the sound, even if not visibly uncloaking. Ninjas are not that stealthy.
-	playsound(get_turf(H), 'sound/effects/stealthoff.ogg', 75, 1)
+	playsound(H, 'sound/effects/stealthoff.ogg', 75, 1)
 
 
 /obj/item/rig_module/teleporter
 
 	name = "teleportation module"
-	desc = "A complex, sleek-looking, hardsuit-integrated teleportation module."
+	desc = "A complex, sleek-looking, powersuit-integrated teleportation module."
 	icon_state = "teleporter"
 	use_power_cost = 25 KILOWATTS
 	redundant = 1
@@ -103,7 +103,7 @@
 		to_chat(H, "<span class='warning'>You cannot teleport into solid walls.</span>")
 		return 0
 
-	if(T.z in GLOB.using_map.admin_levels)
+	if(T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED))
 		to_chat(H, "<span class='warning'>You cannot use your teleporter on this Z-level.</span>")
 		return 0
 
@@ -133,7 +133,7 @@
 /obj/item/rig_module/fabricator/energy_net
 
 	name = "net projector"
-	desc = "Some kind of complex energy projector with a hardsuit mount."
+	desc = "Some kind of complex energy projector with a powersuit mount."
 	icon_state = "enet"
 	module_cooldown = 100
 
@@ -142,7 +142,7 @@
 
 	engage_string = "Fabricate Net"
 
-	fabrication_type = /obj/item/weapon/energy_net
+	fabrication_type = /obj/item/energy_net
 	use_power_cost = 20 KILOWATTS
 	origin_tech = list(TECH_MATERIAL = 5, TECH_POWER = 6, TECH_MAGNET = 5, TECH_ILLEGAL = 4, TECH_ENGINEERING = 6)
 
@@ -203,7 +203,7 @@
 			return
 
 		if(usr == holder.wearer)
-			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>",1)
+			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>")
 			sleep(blink_delay)
 
 	self_destructing = 1
@@ -218,7 +218,7 @@
 	holder.visible_message("<span class='danger'>\The [src.holder] emits a shrill tone!</span>","<span class='danger'> You hear a shrill tone!</span>")
 	sleep(blink_solid_time)
 	src.blink_mode = 0
-	src.holder.set_light(0, 0, "#000000")
+	src.holder.set_light(0, 0, 0, 2, "#000000")
 
 	explosion(get_turf(src), explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
 	if(holder && holder.wearer)
@@ -238,21 +238,21 @@
 
 /obj/item/rig_module/self_destruct/proc/blink()
 	set waitfor = 0
-	switch (blink_mode)
+	switch(blink_mode)
 		if(0)
 			return
 		if(1)
-			src.holder.set_light(1.5, 8.5, "#ff0a00")
+			holder.set_light(1, 1, 8.5, 2, "#ff0a00")
 			sleep(6)
-			src.holder.set_light(0, 0, "#000000")
+			holder.set_light(0, 0, 0, 2, "#000000")
 			spawn(6) .()
 		if(2)
-			src.holder.set_light(1.5, 8.5, "#ff0a00")
+			holder.set_light(1, 1, 8.5, 2, "#ff0a00")
 			sleep(2)
-			src.holder.set_light(0, 0, "#000000")
+			holder.set_light(0, 0, 0, 2, "#000000")
 			spawn(2) .()
 		if(3)
-			src.holder.set_light(1.5, 8.5, "#ff0a00")
+			holder.set_light(1, 1, 8.5, 2, "#ff0a00")
 
 /obj/item/rig_module/grenade_launcher/ninja
 	suit_overlay = null

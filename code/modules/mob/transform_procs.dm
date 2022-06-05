@@ -1,13 +1,12 @@
 /mob/living/carbon/human/proc/monkeyize()
-	if (transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		if (W==w_uniform) // will be torn
+	for(var/obj/item/I in src)
+		if(I == w_uniform) // will be torn
 			continue
-		drop_from_inventory(W)
+		drop_from_inventory(I)
 	regenerate_icons()
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	stunned = 1
 	icon = null
 	set_invisibility(101)
@@ -21,7 +20,7 @@
 	sleep(48)
 	//animation = null
 
-	transforming = 0
+	DEL_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	stunned = 0
 	update_canmove()
 	set_invisibility(initial(invisibility))
@@ -30,8 +29,8 @@
 		gib()
 		return
 
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	set_species(species.primitive_form)
 	dna.SetSEState(GLOB.MONKEYBLOCK,1)
 	dna.SetSEValueRange(GLOB.MONKEYBLOCK,0xDAC, 0xFFF)
@@ -46,7 +45,7 @@
 	return ..()
 
 /mob/living/carbon/human/AIize(move=1) // 'move' argument needs defining here too because BYOND is dumb
-	if (transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	for(var/t in organs)
 		qdel(t)
@@ -54,12 +53,11 @@
 	return ..(move)
 
 /mob/living/carbon/AIize()
-	if (transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
-	transforming = 1
-	canmove = 0
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 	return ..()
@@ -68,33 +66,32 @@
 	if(client)
 		sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// stop the jams for AIs
 
-
 	var/mob/living/silicon/ai/O = new (loc, GLOB.using_map.default_law_type,,1)//No MMI but safety is in effect.
 	O.set_invisibility(0)
 	O.aiRestorePowerRoutine = 0
 	if(mind)
 		mind.transfer_to(O)
-		O.mind.original = O
+		O.mind.original_mob = weakref(O)
 	else
 		O.key = key
 
 	if(move)
 		var/obj/loc_landmark
-		for(var/obj/effect/landmark/start/sloc in landmarks_list)
+		for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 			if (sloc.name != "AI")
 				continue
 			if ((locate(/mob/living) in sloc.loc) || (locate(/obj/structure/AIcore) in sloc.loc))
 				continue
 			loc_landmark = sloc
 		if (!loc_landmark)
-			for(var/obj/effect/landmark/tripai in landmarks_list)
-				if (tripai.name == "tripai")
+			for(var/obj/effect/landmark/tripai in GLOB.landmarks_list)
+				if (tripai.name == "Triple AI")
 					if((locate(/mob/living) in tripai.loc) || (locate(/obj/structure/AIcore) in tripai.loc))
 						continue
 					loc_landmark = tripai
 		if (!loc_landmark)
 			to_chat(O, "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone.")
-			for(var/obj/effect/landmark/start/sloc in landmarks_list)
+			for(var/obj/effect/landmark/start/sloc in GLOB.landmarks_list)
 				if (sloc.name == "AI")
 					loc_landmark = sloc
 		O.forceMove(loc_landmark.loc)
@@ -109,14 +106,13 @@
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize()
-	if (transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 	QDEL_NULL_LIST(worn_underwear)
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 	for(var/t in organs)
@@ -130,8 +126,8 @@
 	if(mind)		//TODO
 		mind.transfer_to(O)
 		if(O.mind.assigned_role == "Cyborg")
-			O.mind.original = O
-		else if(mind && mind.special_role)
+			O.mind.original_mob = weakref(O)
+		else if(mind?.special_role)
 			O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 	else
 		O.key = key
@@ -155,48 +151,46 @@
 		qdel(src)
 	return O
 
-/mob/living/carbon/human/proc/slimeize(adult as num, reproduce as num)
-	if (transforming)
+/mob/living/carbon/human/proc/metroidize(adult as num, reproduce as num)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 	for(var/t in organs)
 		qdel(t)
 
-	var/mob/living/carbon/slime/new_slime
+	var/mob/living/carbon/metroid/new_metroid
 	if(reproduce)
 		var/number = pick(14;2,3,4)	//reproduce (has a small chance of producing 3 or 4 offspring)
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++)
-			var/mob/living/carbon/slime/M = new /mob/living/carbon/slime(loc)
+			var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc)
 			M.nutrition = round(nutrition/number)
 			step_away(M,src)
 			babies += M
-		new_slime = pick(babies)
+		new_metroid = pick(babies)
 	else
-		new_slime = new /mob/living/carbon/slime(loc)
+		new_metroid = new /mob/living/carbon/metroid(loc)
 		if(adult)
-			new_slime.is_adult = 1
+			new_metroid.is_adult = 1
 		else
-	new_slime.key = key
+	new_metroid.key = key
 
-	to_chat(new_slime, "<B>You are now a slime. Skreee!</B>")
+	to_chat(new_metroid, "<B>You are now a metroid. Skreee!</B>")
 	qdel(src)
 	return
 
 /mob/living/carbon/human/proc/corgize()
-	if (transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 	regenerate_icons()
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 	for(var/t in organs)	//this really should not be necessary
@@ -219,14 +213,13 @@
 		to_chat(usr, "<span class='warning'>Sorry but this mob type is currently unavailable.</span>")
 		return
 
-	if(transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
-	for(var/obj/item/W in src)
-		drop_from_inventory(W)
+	for(var/obj/item/I in src)
+		drop_from_inventory(I)
 
 	regenerate_icons()
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 
@@ -336,4 +329,4 @@
 	src.does_not_breathe = TRUE
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume
-	playsound(get_turf(src), 'sound/hallucinations/wail.ogg', 20, 1)
+	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

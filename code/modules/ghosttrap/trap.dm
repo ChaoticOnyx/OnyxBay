@@ -51,7 +51,7 @@ var/list/ghost_traps
 /datum/ghosttrap/proc/request_player(mob/target, request_string, request_timeout)
 	if(request_timeout)
 		request_timeouts[target] = world.time + request_timeout
-		GLOB.destroyed_event.register(target, src, /datum/ghosttrap/proc/unregister_target)
+		register_signal(target, SIGNAL_QDELETING, /datum/ghosttrap/proc/unregister_target)
 	else
 		unregister_target(target)
 
@@ -65,7 +65,7 @@ var/list/ghost_traps
 
 /datum/ghosttrap/proc/unregister_target(target)
 	request_timeouts -= target
-	GLOB.destroyed_event.unregister(target, src, /datum/ghosttrap/proc/unregister_target)
+	unregister_signal(target, SIGNAL_QDELETING)
 
 // Handles a response to request_player().
 /datum/ghosttrap/Topic(href, href_list)
@@ -173,12 +173,12 @@ var/list/ghost_traps
 	minutes_since_death = DRONE_SPAWN_DELAY
 	..()
 
-datum/ghosttrap/drone/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/drone/assess_candidate(mob/observer/ghost/candidate, mob/target)
 	. = ..()
 	if(. && !target.can_be_possessed_by(candidate))
 		return 0
 
-datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
 	if(!assess_candidate(candidate))
 		return 0
 	drone.transfer_personality(candidate.client)
@@ -192,10 +192,10 @@ datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/rob
 	ghost_trap_message = "They are occupying a pAI now."
 	ghost_trap_role = "pAI"
 
-datum/ghosttrap/pai/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/pai/assess_candidate(mob/observer/ghost/candidate, mob/target)
 	return 0
 
-datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
 	return 0
 
 /******************

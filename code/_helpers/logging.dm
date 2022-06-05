@@ -8,11 +8,23 @@
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
 
-/var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
+/var/global/log_end = world.system_type == UNIX ? ascii2text(13) : ""
+
+/proc/log_story(type, message, location)
+	var/static/datum/text_processor/confidential/P = new()
+
+	if(!config.log.story || !GLOB.world_story_log)
+		return
+
+	message = P.process(message)
+	var/turf/T = get_turf(location)
+	var/loc = T && location ? "([T.x],[T.y],[T.z])" : ""
+
+	WRITE_FILE(GLOB.world_story_log, "\[[time_stamp()]] [game_id] [type]: [message] [loc][log_end]")
 
 /proc/log_to_dd(text)
-	world.log << text
-	if(config && config.log_world_output)
+	to_world_log(text)
+	if(config && config.log.world_output)
 		log_debug("\[DD]: [text]")
 
 /proc/error(msg)
@@ -38,7 +50,7 @@
 /proc/testing(msg)
 	log_to_dd("\[[time_stamp()]]\[TESTING] [msg][log_end]")
 
-/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, req_pref = null)
+/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, message_type)
 	var/turf/T = get_turf(location)
 	if(location && T)
 		if(log_to_common)
@@ -49,57 +61,65 @@
 		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
-	if(notify_admin)
+	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
 		for(var/client/C in GLOB.admins)
-			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
-				to_chat(C, rendered)
+			to_chat(C, rendered, message_type)
+
+/proc/log_roundend(text)
+	log_generic("ROUNDEND", text, null, config.log.game)
 
 /proc/log_admin(text, location, notify_admin)
-	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
+	log_generic("ADMIN", text, location, config.log.admin, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
-/proc/log_debug(text, location)
-	log_generic("DEBUG", text, location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
-	if(!config.log_debug || !GLOB.world_debug_log)
+/proc/log_debug(text, location, type = MESSAGE_TYPE_DEBUG)
+	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, type)
+	if(!config.log.debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_debug_verbose(text)
-	if(!config.log_debug_verbose || !GLOB.world_debug_log)
+	if(!config.log.debug_verbose || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
-	log_generic("GAME", text, location, config.log_game, notify_admin)
+	log_generic("GAME", text, location, config.log.game, notify_admin)
 
 /proc/log_vote(text)
-	log_generic("VOTE", text, null, config.log_vote)
+	log_generic("VOTE", text, null, config.log.vote)
 
 /proc/log_access(text, notify_admin)
-	log_generic("ACCESS", text, null, config.log_vote, notify_admin)
+	log_generic("ACCESS", text, null, config.log.access, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_say(text)
-	log_generic("SAY", text, null, config.log_say)
+	log_generic("SAY", text, null, config.log.say)
+	log_story("SAY", text, null)
 
 /proc/log_ooc(text)
-	log_generic("OOC", text, null, config.log_ooc)
+	log_generic("OOC", text, null, config.log.ooc)
+	log_story("OOC", text, null)
 
 /proc/log_whisper(text)
-	log_generic("WHISPER", text, null, config.log_whisper)
+	log_generic("WHISPER", text, null, config.log.whisper)
+	log_story("WHISPER", text, null)
 
 /proc/log_emote(text)
-	log_generic("EMOTE", text, null, config.log_emote)
+	log_generic("EMOTE", text, null, config.log.emote)
+	log_story("EMOTE", text, null)
 
 /proc/log_attack(text, location, notify_admin)
-	log_generic("ATTACK", text, location, config.log_attack, notify_admin, /datum/client_preference/staff/show_attack_logs)
+	log_generic("ATTACK", text, location, config.log.attack, notify_admin, MESSAGE_TYPE_ATTACKLOG)
+	log_story("ATTACK", text, location)
 
 /proc/log_adminsay(text)
-	log_generic("ADMINSAY", text, null, config.log_adminchat)
+	log_generic("ADMINSAY", text, null, config.log.adminchat, FALSE, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_adminwarn(text, location, notify_admin)
-	log_generic("ADMINWARN", text, location, config.log_adminwarn, notify_admin)
+	log_generic("ADMINWARN", text, location, config.log.adminwarn, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_pda(text)
-	log_generic("PDA", text, null, config.log_pda)
+	log_generic("PDA", text, null, config.log.pda)
+	log_story("PDA", text, null)
 
 /proc/log_misc(text) //Replace with log_game ?
 	log_generic("MISC", text)
@@ -110,17 +130,17 @@
 /proc/game_log(category, text)
 	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
-/proc/log_unit_test(text)
-	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
-	log_debug(text)
-
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
 
 /proc/log_href(text)
-	if(!config.log_hrefs)
+	if(!config.log.hrefs)
 		return
 	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
+
+/proc/log_href_exploit(atom/user)
+	WRITE_FILE(GLOB.href_exploit_attempt_log, "HREF: [key_name(user)] has potentially attempted an href exploit.")
+	message_admins("[key_name_admin(user)] has potentially attempted an href exploit.")
 
 /proc/log_error(text)
 	error(text)
@@ -134,10 +154,42 @@
 		return
 	WRITE_FILE(GLOB.world_runtime_log, text)
 
+/proc/log_integrated_circuits(text)
+	WRITE_FILE(GLOB.world_integrated_circuits_log, text)
+
 /* ui logging */
 
-/proc/log_tgui(text)
-	log_debug(text)
+/**
+ * Appends a tgui-related log entry. All arguments are optional.
+ */
+/proc/log_tgui(user, message, context,
+		datum/tgui_window/window,
+		datum/src_object)
+	var/entry = ""
+	// Insert user info
+	if(!user)
+		entry += "<nobody>"
+	else if(istype(user, /mob))
+		var/mob/mob = user
+		entry += "[mob.ckey] (as [mob] at [mob.x], [mob.y], [mob.z])"
+	else if(istype(user, /client))
+		var/client/client = user
+		entry += "[client.ckey]"
+	// Insert context
+	if(context)
+		entry += " in [context]"
+	else if(window)
+		entry += " in [window.id]"
+	// Resolve src_object
+	if(!src_object && window?.locked_by)
+		src_object = window.locked_by.src_object
+	// Insert src_object info
+	if(src_object)
+		entry += "\nUsing: [src_object.type] \ref[src_object]"
+	// Insert message
+	if(message)
+		entry += "\n[message]"
+	log_debug(entry, type = MESSAGE_TYPE_UIDEBUG)
 
 //pretty print a direction bitflag, can be useful for debugging.
 /proc/dir_text(dir)
@@ -184,7 +236,7 @@
 		if(include_link && C)
 			. += "<a href='?priv_msg=\ref[C];ticket=\ref[ticket]'>"
 
-		. += key
+		. += MARK_CKEY(key)
 
 		if(include_link)
 			if(C)	. += "</a>"
@@ -200,6 +252,10 @@
 		else if(M.name)
 			name = M.name
 
+		if(name == key)
+			name = MARK_CKEY(name)
+		else
+			name = MARK_CHARACTER_NAME(name)
 
 		if(include_link && is_special_character(M) && highlight_special_characters)
 			. += "/(<font color='#ffa500'>[name]</font>)" //Orange

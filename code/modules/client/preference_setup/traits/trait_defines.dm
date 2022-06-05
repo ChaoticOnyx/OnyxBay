@@ -185,7 +185,7 @@
 
 /datum/trait/modifier/mental/blennophobe
 	name = "Blennophobia"
-	desc = "Slimes are quite dangerous, but just the aspect of something being slimey is uncomfortable."
+	desc = "Metroid are quite dangerous, but just the aspect of something being metroidy is uncomfortable."
 	modifier_type = /datum/modifier/trait/phobia/blennophobe
 
 /datum/trait/modifier/mental/trypanophobe

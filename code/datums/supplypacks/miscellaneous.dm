@@ -3,7 +3,7 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/wizard
 	name = "Wizard costume"
-	contains = list(/obj/item/weapon/staff,
+	contains = list(/obj/item/staff,
 					/obj/item/clothing/suit/wizrobe,
 					/obj/item/clothing/shoes/sandal,
 					/obj/item/clothing/head/wizard)
@@ -118,8 +118,7 @@
 					/obj/item/clothing/under/redcoat,
 					/obj/item/clothing/under/kilt)
 					///obj/item/clothing/under/savage_hunter,
-					///obj/item/clothing/under/savage_hunter/female,
-					///obj/item/clothing/under/wetsuit)
+					///obj/item/clothing/under/savage_hunter/female)
 	name = "Costumes crate"
 	cost = 10
 	containername = "\improper Actor Costumes"
@@ -147,9 +146,9 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/card_packs
 	num_contained = 5
-	contains = list(/obj/item/weapon/pack/cardemon,
-					/obj/item/weapon/pack/spaceball,
-					/obj/item/weapon/deck/holder)
+	contains = list(/obj/item/pack/cardemon,
+					/obj/item/pack/spaceball,
+					/obj/item/deck/holder)
 	name = "\improper Trading Card Crate"
 	cost = 20
 	containername = "\improper cards crate"
@@ -196,10 +195,10 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/witch
 	name = "Witch costume"
-	contains = list(/obj/item/clothing/suit/wizrobe/marisa,
+	contains = list(/obj/item/clothing/suit/wizrobe/marisa/fake,
 					/obj/item/clothing/shoes/sandal,
-					/obj/item/clothing/head/wizard/marisa,
-					/obj/item/weapon/staff/broom)
+					/obj/item/clothing/head/wizard/marisa/fake,
+					/obj/item/staff/broom)
 	cost = 20
 	containername = "\improper Witch costume"
 	containertype = /obj/structure/closet
@@ -306,42 +305,60 @@
 					/obj/item/clothing/head/chaplain_hood,
 					/obj/item/clothing/suit/holidaypriest,
 					/obj/item/clothing/under/wedding/bride_white,
-					/obj/item/weapon/storage/backpack/cultpack,
-					/obj/item/weapon/storage/fancy/candle_box = 3)
+					/obj/item/storage/backpack/cultpack,
+					/obj/item/storage/fancy/candle_box = 3)
 	cost = 10
 	containername = "\improper Chaplain equipment crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/pigs
+	name = "Box of rubber pigs"
+	contains = list(/obj/item/toy/pig = 3)
+	cost = 100
+	containername = "\improper Rubber Pigs Crate"
+	containertype = /obj/structure/closet/crate/pig
+
 /decl/hierarchy/supply_pack/miscellaneous/mousetrap
 	num_contained = 3
-	contains = list(/obj/item/weapon/storage/box/mousetraps)
+	contains = list(/obj/item/storage/box/mousetraps)
 	name = "\improper Pest Control Crate"
 	cost = 10
 	containername = "\improper Pest Control Crate"
 
-/decl/hierarchy/supply_pack/miscellaneous/tc10
-	name = "Telecrystals - 10"
-	contains = list(/obj/item/stack/telecrystal{amount = 10})
-	cost = 50
-	containername = "\improper crate"
-	hidden = 1
-
-/decl/hierarchy/supply_pack/miscellaneous/tc25
-	name = "Telecrystals - 25"
-	contains = list(/obj/item/stack/telecrystal{amount = 25})
+/decl/hierarchy/supply_pack/miscellaneous/bouquet
+	name = "Box of bouquets"
+	contains = list(/obj/item/storage/bouquet/shotgun = 3)
 	cost = 100
 	containername = "\improper crate"
 	hidden = 1
 
-/decl/hierarchy/supply_pack/miscellaneous/tc60
-	name = "Telecrystals - 60"
-	contains = list(/obj/item/stack/telecrystal{amount = 30} = 2)
-	cost = 200
+/decl/hierarchy/supply_pack/miscellaneous/tc3
+	name = "Telecrystals - 3"
+	contains = list(/obj/item/stack/telecrystal{amount = 3})
+	cost = 150
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
 
-/decl/hierarchy/supply_pack/miscellaneous/tc150
-	name = "Telecrystals - 150"
-	contains = list(/obj/item/stack/telecrystal{amount = 50} = 3)
-	cost = 400
+/decl/hierarchy/supply_pack/miscellaneous/tc6
+	name = "Telecrystals - 6"
+	contains = list(/obj/item/stack/telecrystal{amount = 6})
+	cost = 300
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc9
+	name = "Telecrystals - 9"
+	contains = list(/obj/item/stack/telecrystal{amount = 9})
+	cost = 450
+	containername = "\improper crate"
+	hidden = 1
+	contraband = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc12
+	name = "Telecrystals - 12"
+	contains = list(/obj/item/stack/telecrystal{amount = 12})
+	cost = 600
+	containername = "\improper crate"
+	hidden = 1
+	contraband = 1

@@ -1,12 +1,12 @@
 /datum/design/item/powercell/device
-	category_items = "Device"
+	category_items = list("Device")
 
 /datum/design/item/powercell/device/standard
 	name = "basic device cell"
 	id = "device_cell_standard"
 	req_tech = list(TECH_POWER = 1)
 	materials = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 5)
-	build_path = /obj/item/weapon/cell/device/standard
+	build_path = /obj/item/cell/device/standard
 	sort_string = "DAAAE"
 
 /datum/design/item/powercell/device/high
@@ -15,13 +15,13 @@
 	id = "device_cell_high"
 	req_tech = list(TECH_POWER = 2)
 	materials = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 6)
-	build_path = /obj/item/weapon/cell/device/high
+	build_path = /obj/item/cell/device/high
 	sort_string = "DAAAF"
 
 // Modular computer components
 // Hard drives
 /datum/design/item/modularcomponent
-	category_items = "Device"
+	category_items = list("Device")
 
 /datum/design/item/modularcomponent/disk/normal
 	name = "basic hard drive"
@@ -29,7 +29,7 @@
 	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GLASS = 100)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/
+	build_path = /obj/item/computer_hardware/hard_drive/
 	sort_string = "VBAAA"
 
 /datum/design/item/modularcomponent/disk/advanced
@@ -38,7 +38,7 @@
 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 200)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/advanced
+	build_path = /obj/item/computer_hardware/hard_drive/advanced
 	sort_string = "VBAAB"
 
 /datum/design/item/modularcomponent/disk/super
@@ -47,7 +47,7 @@
 	req_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 1600, MATERIAL_GLASS = 400)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/super
+	build_path = /obj/item/computer_hardware/hard_drive/super
 	sort_string = "VBAAC"
 
 /datum/design/item/modularcomponent/disk/cluster
@@ -56,7 +56,7 @@
 	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 3200, MATERIAL_GLASS = 800)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/cluster
+	build_path = /obj/item/computer_hardware/hard_drive/cluster
 	sort_string = "VBAAD"
 
 /datum/design/item/modularcomponent/disk/micro
@@ -65,7 +65,7 @@
 	req_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GLASS = 100)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/micro
+	build_path = /obj/item/computer_hardware/hard_drive/micro
 	sort_string = "VBAAE"
 
 /datum/design/item/modularcomponent/disk/small
@@ -74,7 +74,7 @@
 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800, MATERIAL_GLASS = 200)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/small
+	build_path = /obj/item/computer_hardware/hard_drive/small
 	sort_string = "VBAAF"
 
 // Data crystals (USB flash drives)
@@ -84,7 +84,7 @@
 	req_tech = list(TECH_DATA = 1)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 800)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable
+	build_path = /obj/item/computer_hardware/hard_drive/portable
 	sort_string = "VBACA"
 
 /datum/design/item/modularcomponent/portabledrive/advanced
@@ -93,7 +93,7 @@
 	req_tech = list(TECH_DATA = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 1600)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/advanced
+	build_path = /obj/item/computer_hardware/hard_drive/portable/advanced
 	sort_string = "VBACB"
 
 /datum/design/item/modularcomponent/portabledrive/super
@@ -102,7 +102,7 @@
 	req_tech = list(TECH_DATA = 4)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_GLASS = 3200)
-	build_path = /obj/item/weapon/computer_hardware/hard_drive/portable/super
+	build_path = /obj/item/computer_hardware/hard_drive/portable/super
 	sort_string = "VBACC"
 
 // Card slot
@@ -112,7 +112,7 @@
 	req_tech = list(TECH_DATA = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600)
-	build_path = /obj/item/weapon/computer_hardware/card_slot
+	build_path = /obj/item/computer_hardware/card_slot
 	sort_string = "VBADA"
 
 // Nano printer
@@ -122,7 +122,7 @@
 	req_tech = list(TECH_DATA = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 600)
-	build_path = /obj/item/weapon/computer_hardware/nano_printer
+	build_path = /obj/item/computer_hardware/nano_printer
 	sort_string = "VBADC"
 
 // Tesla Link
@@ -132,7 +132,7 @@
 	req_tech = list(TECH_DATA = 2, TECH_POWER = 3, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 2000)
-	build_path = /obj/item/weapon/computer_hardware/tesla_link
+	build_path = /obj/item/computer_hardware/tesla_link
 	sort_string = "VBADD"
 
 // Batteries
@@ -142,7 +142,7 @@
 	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400)
-	build_path = /obj/item/weapon/computer_hardware/battery_module
+	build_path = /obj/item/computer_hardware/battery_module
 	sort_string = "VBAEA"
 
 /datum/design/item/modularcomponent/battery/advanced
@@ -151,7 +151,7 @@
 	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 800)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/advanced
+	build_path = /obj/item/computer_hardware/battery_module/advanced
 	sort_string = "VBAEB"
 
 /datum/design/item/modularcomponent/battery/super
@@ -160,7 +160,7 @@
 	req_tech = list(TECH_POWER = 3, TECH_ENGINEERING = 3)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 1600)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/super
+	build_path = /obj/item/computer_hardware/battery_module/super
 	sort_string = "VBAEC"
 
 /datum/design/item/modularcomponent/battery/ultra
@@ -169,7 +169,7 @@
 	req_tech = list(TECH_POWER = 5, TECH_ENGINEERING = 4)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 3200)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/ultra
+	build_path = /obj/item/computer_hardware/battery_module/ultra
 	sort_string = "VBAED"
 
 /datum/design/item/modularcomponent/battery/nano
@@ -178,7 +178,7 @@
 	req_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 1)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 200)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/nano
+	build_path = /obj/item/computer_hardware/battery_module/nano
 	sort_string = "VBAEE"
 
 /datum/design/item/modularcomponent/battery/micro
@@ -187,5 +187,5 @@
 	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 2)
 	build_type = PROTOLATHE
 	materials = list(MATERIAL_STEEL = 400)
-	build_path = /obj/item/weapon/computer_hardware/battery_module/micro
+	build_path = /obj/item/computer_hardware/battery_module/micro
 	sort_string = "VBAEF"

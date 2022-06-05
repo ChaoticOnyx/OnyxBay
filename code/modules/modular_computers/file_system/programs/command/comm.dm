@@ -47,7 +47,7 @@
 
 	if(program)
 		data["emagged"] = program.computer_emagged
-		data["net_comms"] = !!program.get_signal(NTNET_COMMUNICATION) //Double !! is needed to get 1 or 0 answer
+		data["net_comms"] = !!program.get_signal(NTNET_COMMUNICATION) // Double !! is needed to get 1 or 0 answer
 		data["net_syscont"] = !!program.get_signal(NTNET_SYSTEMCONTROL)
 		if(program.computer)
 			data["have_printer"] = !!program.computer.nano_printer
@@ -130,19 +130,20 @@
 			. = 1
 			if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
 				if(user)
-					var/obj/item/weapon/card/id/id_card = user.GetIdCard()
+					var/obj/item/card/id/id_card = user.GetIdCard()
 					crew_announcement.announcer = GetNameAndAssignmentFromId(id_card)
 				else
 					crew_announcement.announcer = "Unknown"
 				if(announcment_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return TRUE
-				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text)
+				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as message|null)
 				if(!input || !can_still_topic())
 					return 1
+				usr.client?.spellcheck(input)
 				crew_announcement.Announce(input, msg_sanitized = TRUE)
 				announcment_cooldown = 1
-				spawn(600)//One minute cooldown
+				spawn(600)// One minute cooldown
 					announcment_cooldown = 0
 		if("message")
 			. = 1
@@ -150,35 +151,36 @@
 				if(program)
 					if(is_autenthicated(user) && program.computer_emagged && !issilicon(usr) && ntn_comm)
 						if(centcomm_message_cooldown)
-							to_chat(usr, "<span class='warning'>Arrays recycling. Please stand by.</span>")
+							to_chat(usr, SPAN("warning", "Arrays recycling. Please stand by."))
 							SSnano.update_uis(src)
 							return
-						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
+						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as message|null)
 						if(!input || !can_still_topic())
 							return 1
+						usr.client?.spellcheck(input)
 						Syndicate_announce(input, usr)
-						to_chat(usr, "<span class='notice'>Message transmitted.</span>")
+						to_chat(usr, SPAN("notice", "Message transmitted."))
 						log_say("[key_name(usr)] has made an illegal announcement: [input]")
 						centcomm_message_cooldown = 1
-						spawn(300)//30 second cooldown
+						spawn(300)// 30 second cooldown
 							centcomm_message_cooldown = 0
 			else if(href_list["target"] == "regular")
 				if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
 					if(centcomm_message_cooldown)
-						to_chat(usr, "<span class='warning'>Arrays recycling. Please stand by.</span>")
+						to_chat(usr, SPAN("warning", "Arrays recycling. Please stand by."))
 						SSnano.update_uis(src)
 						return
-					if(!is_relay_online())//Contact Centcom has a check, Syndie doesn't to allow for Traitor funs.
-						to_chat(usr, "<span class='warning'>No Emergency Bluespace Relay detected. Unable to transmit message.</span>")
+					if(!is_relay_online()) // Contact Centcom has a check, Syndie doesn't to allow for Traitor funs.
+						to_chat(usr, SPAN("warning", "No Emergency Bluespace Relay detected. Unable to transmit message."))
 						return 1
-					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
+					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as message|null)
 					if(!input || !can_still_topic())
 						return 1
 					Centcomm_announce(input, usr)
-					to_chat(usr, "<span class='notice'>Message transmitted.</span>")
+					to_chat(usr, SPAN("notice", "Message transmitted."))
 					log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
 					centcomm_message_cooldown = 1
-					spawn(300) //30 second cooldown
+					spawn(300) // 30 second cooldown
 						centcomm_message_cooldown = 0
 		if("evac")
 			. = 1
@@ -224,7 +226,7 @@
 							for (var/mob/living/silicon/S in GLOB.silicon_mob_list)
 								S.update_protocols(target_level)
 			else
-				to_chat(usr, "You press the button, but a red light flashes and nothing happens.") //This should never happen
+				to_chat(usr, "You press the button, but a red light flashes and nothing happens.") // This should never happen
 
 			current_status = STATE_DEFAULT
 		if("viewmessage")
@@ -245,9 +247,9 @@
 			if(is_autenthicated(user) && ntn_comm)
 				if(program && program.computer && program.computer.nano_printer)
 					if(!program.computer.nano_printer.print_text(current_viewing_message["contents"],current_viewing_message["title"]))
-						to_chat(usr, "<span class='notice'>Hardware Error: Printer was unable to print the selected file.</span>")
+						to_chat(usr, SPAN("notice", "Hardware Error: Printer was unable to print the selected file."))
 					else
-						program.computer.visible_message("<span class='notice'>\The [program.computer] prints out a paper.</span>")
+						program.computer.visible_message(SPAN("notice", "\The [program.computer] prints out a paper."))
 
 #undef STATE_DEFAULT
 #undef STATE_MESSAGELIST
@@ -258,8 +260,8 @@
 /*
 General message handling stuff
 */
-var/list/comm_message_listeners = list() //We first have to initialize list then we can use it.
-var/datum/comm_message_listener/global_message_listener = new //May be used by admins
+var/list/comm_message_listeners = list() // We first have to initialize list then we can use it.
+var/datum/comm_message_listener/global_message_listener = new // May be used by admins
 var/last_message_id = 0
 
 /proc/get_comm_message_id()
@@ -296,7 +298,6 @@ var/last_message_id = 0
 	if(!frequency) return
 
 	var/datum/signal/status_signal = new
-	status_signal.source = src
 	status_signal.transmission_method = 1
 	status_signal.data["command"] = command
 
@@ -304,11 +305,11 @@ var/last_message_id = 0
 		if("message")
 			status_signal.data["msg1"] = data1
 			status_signal.data["msg2"] = data2
-			log_admin("STATUS: [key_name(usr)] set status screen message with [src]: [data1] [data2]")
+			log_admin("STATUS: [key_name(usr)] set status screen message with: [data1] [data2]")
 		if("image")
 			status_signal.data["picture_state"] = data1
 
-	frequency.post_signal(src, status_signal)
+	frequency.post_signal(signal = status_signal)
 
 /proc/cancel_call_proc(mob/user)
 	if (!evacuation_controller)
@@ -322,7 +323,7 @@ var/last_message_id = 0
 
 
 /proc/is_relay_online()
-	for(var/obj/machinery/bluespacerelay/M in SSmachines.machinery)
+	for(var/obj/machinery/bluespacerelay/M in GLOB.machines)
 		if(M.stat == 0)
 			return 1
 	return 0
@@ -335,7 +336,7 @@ var/last_message_id = 0
 		emergency = 1
 
 	if(!GLOB.universe.OnShuttleCall(usr))
-		to_chat(user, "<span class='notice'>Cannot establish a bluespace connection.</span>")
+		to_chat(user, SPAN("notice", "Cannot establish a bluespace connection."))
 		return
 
 	if(GLOB.deathsquad.deployed)
@@ -363,7 +364,7 @@ var/last_message_id = 0
 
 	. = evacuation_controller.call_evacuation(null, _emergency_evac = FALSE, autotransfer = TRUE)
 	if(.)
-		//delay events in case of an autotransfer
+		// delay events in case of an autotransfer
 		var/delay = evacuation_controller.evac_arrival_time - world.time + (2 MINUTES)
 		SSevent.delay_events(EVENT_LEVEL_MODERATE, delay)
 		SSevent.delay_events(EVENT_LEVEL_MAJOR, delay)

@@ -13,9 +13,9 @@
 	desc = "Blue Pride, Galaxy Wide."
 	icon_state = "bluetag"
 	item_state = "bluetag"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO
-	allowed = list (/obj/item/weapon/gun/energy/lasertag/blue)
+	allowed = list (/obj/item/gun/energy/lasertag/blue)
 	siemens_coefficient = 3.0
 
 /obj/item/clothing/suit/redtag
@@ -23,9 +23,9 @@
 	desc = "Reputed to go faster."
 	icon_state = "redtag"
 	item_state = "redtag"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO
-	allowed = list (/obj/item/weapon/gun/energy/lasertag/red)
+	allowed = list (/obj/item/gun/energy/lasertag/red)
 	siemens_coefficient = 3.0
 
 /*
@@ -46,16 +46,6 @@
 	item_state = "hgpirate"
 	flags_inv = HIDEJUMPSUIT
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
-
-
-/obj/item/clothing/suit/cyborg_suit
-	name = "cyborg suit"
-	desc = "Suit for a cyborg costume."
-	icon_state = "death"
-	item_state = "death"
-	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	fire_resist = T0C+5200
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
 
 /obj/item/clothing/suit/greatcoat
@@ -87,7 +77,7 @@
 	icon_state = "judge"
 	item_state = "judge"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
-	allowed = list(/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/spacecash)
+	allowed = list(/obj/item/storage/fancy/cigarettes,/obj/item/spacecash)
 	flags_inv = HIDEJUMPSUIT
 
 
@@ -105,7 +95,7 @@
 	item_state = "space_suit_syndicate"
 	desc = "A plastic replica of the syndicate space suit, you'll look just like a real murderous syndicate agent in this! This is a toy, it is not made for use in space!"
 	w_class = ITEM_SIZE_NORMAL
-	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency,/obj/item/toy)
+	allowed = list(/obj/item/device/flashlight,/obj/item/tank/emergency,/obj/item/toy)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
 
@@ -166,7 +156,8 @@
 
 /obj/item/clothing/suit/cardborg/Initialize()
 	. = ..()
-	set_extension(src, /datum/extension/appearance, /datum/extension/appearance/cardborg)
+
+	AddComponent(/datum/component/cardborg)
 
 /*
  * Misc
@@ -181,12 +172,18 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 
 /obj/item/clothing/suit/straight_jacket/equipped(mob/user, slot)
-	if(slot == slot_wear_suit)
-		if(iscarbon(user))
-			var/mob/living/carbon/C = user
-			C.drop_from_inventory(C.handcuffed)
-		user.drop_l_hand()
-		user.drop_r_hand()
+	..()
+	if(ishuman(user) && slot == slot_wear_suit)
+		var/mob/living/carbon/C = user
+		C.drop_from_inventory(C.handcuffed)
+		C.handcuffed = src
+
+
+/obj/item/clothing/suit/straight_jacket/dropped(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/C = user
+		C.handcuffed = null
+	..()
 
 /obj/item/clothing/suit/ianshirt
 	name = "worn shirt"
@@ -194,6 +191,7 @@
 	icon_state = "ianshirt"
 	item_state = "ianshirt"
 	body_parts_covered = UPPER_TORSO|ARMS
+
 
 //pyjamas
 //originally intended to be pinstripes >.>
@@ -214,23 +212,19 @@
 
 //coats
 
-/obj/item/clothing/suit/leathercoat
+/obj/item/clothing/suit/storage/toggle/leathercoat
 	name = "leather coat"
 	desc = "A long, thick black leather coat."
-	icon_state = "leathercoat"
-	item_state = "leathercoat"
+	icon_state = "leathercoat_open"
+	item_state = "leathercoat_open"
+	icon_open = "leathercoat_open"
+	icon_closed = "leathercoat"
 
 /obj/item/clothing/suit/browncoat
 	name = "brown leather coat"
 	desc = "A long, brown leather coat."
 	icon_state = "browncoat"
 	item_state = "browncoat"
-
-/obj/item/clothing/suit/neocoat
-	name = "black coat"
-	desc = "A flowing, black coat."
-	icon_state = "neocoat"
-	item_state = "neocoat"
 
 //stripper
 /obj/item/clothing/under/stripper
@@ -240,25 +234,28 @@
 	name = "pink swimsuit"
 	desc = "A rather skimpy pink swimsuit."
 	icon_state = "stripper_p_under"
+	item_state = "stripper_p_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/stripper_green
 	name = "green swimsuit"
 	desc = "A rather skimpy green swimsuit."
 	icon_state = "stripper_g_under"
+	item_state = "stripper_g_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_pink
 	name = "pink skimpy dress"
 	desc = "A rather skimpy pink dress."
 	icon_state = "stripper_p_over"
+	item_state = "stripper_p_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_green
 	name = "green skimpy dress"
 	desc = "A rather skimpy green dress."
 	icon_state = "stripper_g_over"
-	//item_state = "stripper_g"
+	item_state = "stripper_g_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/mankini
@@ -351,7 +348,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
-
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity
 	name = "black varsity"
@@ -362,6 +359,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity/blue
 	name = "blue varsity"
@@ -388,6 +386,7 @@
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_long
 	name = "long black jacket"
@@ -395,12 +394,38 @@
 	icon_state = "black_jacket_long"
 	item_state = "black_jacket_long"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_NT
 	name = "black leather jacket NT"
 	desc = "A black leather coat. A corporate logo is proudly displayed on the back."
 	icon_state = "leather_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
+
+/obj/item/clothing/suit/storage/punk_jacket_AC
+	name = "black punk jacket"
+	desc = "A black leather jacket with Atomic Cats emblem on the back."
+	icon_state = "punk_jacket_AC"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_RD
+	name = "raven punk jacket"
+	desc = "A raven leather jacket with Rusty Devils emblem on the back."
+	icon_state = "punk_jacket_RD"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_TS
+	name = "brown punk jacket"
+	desc = "A brown leather jacket with Tunnel Snakes emblem on the back."
+	icon_state = "punk_jacket_TS"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/fashionable_coat
+	name = "fashionable coat"
+	desc = "An expensive coat with a huge lapel."
+	icon_state = "fashionable_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
 
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
@@ -411,6 +436,7 @@
 	icon_open = "brown_jacket_open"
 	icon_closed = "brown_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/brown_jacket_NT
 	name = "brown jacket NT"
@@ -419,6 +445,7 @@
 	icon_open = "brown_jacket_nt_open"
 	icon_closed = "brown_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/marshal_jacket
 	name = "colonial marshal jacket"
@@ -429,6 +456,7 @@
 	icon_closed = "marshal_jacket"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie
 	name = "hoodie"
@@ -437,8 +465,10 @@
 	item_state = "hoodie"
 	icon_open = "hoodie_open"
 	icon_closed = "hoodie"
+	body_parts_covered = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
-	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	cold_protection = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie/cti
 	name = "\improper CTI hoodie"
@@ -478,6 +508,7 @@
 	desc = "A green jacket bearing the logo of Major Bill's Shipping."
 	icon_state = "mbill"
 	item_state = "mbill"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/poncho/roles/security
 	name = "security poncho"
@@ -518,6 +549,7 @@
 	icon_state = "trackjacket"
 	icon_open = "trackjacket_open"
 	icon_closed = "trackjacket"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/track/blue
 	name = "blue track jacket"
@@ -573,3 +605,26 @@
 	name = "unathi suit"
 	desc = "A Unathi suit made out of rubber."
 	icon_state = "lizsuit"
+
+/obj/item/clothing/suit/storage/hooded/goathidecape
+	name = "goat hide cape"
+	desc = "A goat hide. You can put it on to look like a true barbarian."
+	icon_state = "goatskincape"
+	item_state = "goatskincape"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cold_protection = UPPER_TORSO|LOWER_TORSO
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
+	action_button_name = "Toggle hood"
+	hoodtype = /obj/item/clothing/head/goatcapehood
+	siemens_coefficient = 0.6
+
+/obj/item/clothing/head/goatcapehood
+	name = "goat head hood"
+	desc = "A goat head."
+	icon_state = "generic_hood"
+	body_parts_covered = HEAD
+	cold_protection = HEAD
+	flags_inv = HIDEEARS | BLOCKHAIR
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)

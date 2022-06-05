@@ -10,24 +10,24 @@ Note: Must be placed within 3 tiles of the R&D Console
 	name = "destructive analyzer"
 	icon_state = "d_analyzer"
 	layer = BELOW_OBJ_LAYER
-	var/obj/item/weapon/loaded_item = null
+	var/obj/item/loaded_item = null
 	var/decon_mod = 0
 
 	idle_power_usage = 30
 	active_power_usage = 2500
 
-/obj/machinery/r_n_d/destructive_analyzer/New()
-	..()
+/obj/machinery/r_n_d/destructive_analyzer/Initialize()
+	. = ..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/circuitboard/destructive_analyzer(src)
-	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/circuitboard/destructive_analyzer(src)
+	component_parts += new /obj/item/stock_parts/scanning_module(src)
+	component_parts += new /obj/item/stock_parts/manipulator(src)
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
 	RefreshParts()
 
 /obj/machinery/r_n_d/destructive_analyzer/RefreshParts()
 	var/T = 0
-	for(var/obj/item/weapon/stock_parts/S in src)
+	for(var/obj/item/stock_parts/S in src)
 		T += S.rating
 	decon_mod = T * 0.1
 
@@ -40,6 +40,9 @@ Note: Must be placed within 3 tiles of the R&D Console
 		icon_state = "d_analyzer"
 
 /obj/machinery/r_n_d/destructive_analyzer/attackby(obj/item/O as obj, mob/user as mob)
+	if(!user.canUnEquip(O))
+		to_chat(user, "You can't place that item inside \the [src].")
+		return
 	if(busy)
 		to_chat(user, "<span class='notice'>\The [src] is busy right now.</span>")
 		return
@@ -73,8 +76,9 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 		busy = 1
 		loaded_item = O
-		user.drop_item()
-		O.loc = src
+		user.unEquip(O, target = src)
+		if(O.loc != src)
+			return
 		to_chat(user, "<span class='notice'>You add \the [O] to \the [src].</span>")
 		flick("d_analyzer_la", src)
 		spawn(10)

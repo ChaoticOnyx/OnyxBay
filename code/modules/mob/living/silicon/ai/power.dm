@@ -111,7 +111,7 @@
 	if(admin_powered)
 		return 0
 
-	if(istype(loc, /obj/item/weapon/aicard))
+	if(istype(loc, /obj/item/aicard))
 		return 0
 
 	if(self_shutdown)
@@ -192,7 +192,7 @@
 	name="Power Supply"
 	active_power_usage = AI_POWERUSAGE_NORMAL * AI_POWERUSAGE_OXYLOSS_TO_WATTS_MULTIPLIER
 	use_power = POWER_USE_ACTIVE
-	power_channel = EQUIP
+	power_channel = STATIC_EQUIP
 	var/mob/living/silicon/ai/powered_ai = null
 	invisibility = 100
 

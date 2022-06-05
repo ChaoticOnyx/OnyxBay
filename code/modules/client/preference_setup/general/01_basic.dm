@@ -1,4 +1,4 @@
-datum/preferences
+/datum/preferences
 	var/real_name						//our character's name
 	var/be_random_name = 0				//whether we are a random name every round
 	var/gender = MALE					//gender of character (well duh)
@@ -10,26 +10,28 @@ datum/preferences
 /datum/category_item/player_setup_item/general/basic
 	name = "Basic"
 	sort_order = 1
+/datum/category_item/player_setup_item/general/proc/has_flag(datum/species/mob_species, flag)
+	return mob_species && (mob_species.appearance_flags & flag)
 
-/datum/category_item/player_setup_item/general/basic/load_character(savefile/S)
-	S["real_name"]				>> pref.real_name
-	S["name_is_always_random"]	>> pref.be_random_name
-	S["gender"]					>> pref.gender
-	S["body"]					>> pref.body
-	if (!pref.body)
+/datum/category_item/player_setup_item/general/basic/load_character(datum/pref_record_reader/R)
+	pref.real_name =      R.read("real_name")
+	pref.be_random_name = R.read("name_is_always_random")
+	pref.gender =         R.read("gender")
+	pref.body =           R.read("body")
+	if(!pref.body)
 		pref.body = "Default" // fucking crutch for hot fix
-	S["age"]					>> pref.age
-	S["spawnpoint"]				>> pref.spawnpoint
-	S["OOC_Notes"]				>> pref.metadata
+	pref.age =            R.read("age")
+	pref.spawnpoint =     R.read("spawnpoint")
+	pref.metadata =       R.read("OOC_Notes")
 
-/datum/category_item/player_setup_item/general/basic/save_character(savefile/S)
-	S["real_name"]				<< pref.real_name
-	S["name_is_always_random"]	<< pref.be_random_name
-	S["gender"]					<< pref.gender
-	S["body"]					<< pref.body
-	S["age"]					<< pref.age
-	S["spawnpoint"]				<< pref.spawnpoint
-	S["OOC_Notes"]				<< pref.metadata
+/datum/category_item/player_setup_item/general/basic/save_character(datum/pref_record_writer/W)
+	W.write("real_name",             pref.real_name)
+	W.write("name_is_always_random", pref.be_random_name)
+	W.write("gender",                pref.gender)
+	W.write("body",                  pref.body)
+	W.write("age",                   pref.age)
+	W.write("spawnpoint",            pref.spawnpoint)
+	W.write("OOC_Notes",             pref.metadata)
 
 /datum/category_item/player_setup_item/general/basic/proc/sanitize_body()
 	var/datum/species/S = all_species[pref.species]
@@ -59,7 +61,7 @@ datum/preferences
 	. += "<b>Body Build:</b> <a href='?src=\ref[src];body_build=1'><b>[pref.body]</b></a><br>"
 	. += "<b>Age:</b> <a href='?src=\ref[src];age=1'>[pref.age]</a><br>"
 	. += "<b>Spawn Point</b>: <a href='?src=\ref[src];spawnpoint=1'>[pref.spawnpoint]</a><br>"
-	if(config.allow_Metadata)
+	if(config.character_setup.allow_metadata)
 		. += "<b>OOC Notes:</b> <a href='?src=\ref[src];metadata=1'> Edit </a><br>"
 	. = jointext(.,null)
 

@@ -31,13 +31,18 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar/Destroy()
 	unset_control() //remove from control computer
-	..()
+
+	return ..()
 
 //set the control of the panel to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/solar/proc/set_control(obj/machinery/power/solar_control/SC)
 	if(SC && (get_dist(src, SC) > SOLAR_MAX_DIST))
 		return 0
 	control = SC
+
+	if (!is_processing)
+		START_PROCESSING(SSmachines, src)
+
 	return 1
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
@@ -58,7 +63,7 @@ var/list/solars_list = list()
 
 
 
-/obj/machinery/power/solar/attackby(obj/item/weapon/W, mob/user)
+/obj/machinery/power/solar/attackby(obj/item/W, mob/user)
 
 	if(isCrowbar(W))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
@@ -111,11 +116,11 @@ var/list/solars_list = list()
 	sunfrac = cos(p_angle) ** 2
 	//isn't the power recieved from the incoming light proportionnal to cos(p_angle) (Lambert's cosine law) rather than cos(p_angle)^2 ?
 
-/obj/machinery/power/solar/Process()//TODO: remove/add this from machines to save on processing as needed ~Carn PRIORITY
+/obj/machinery/power/solar/Process()
 	if(stat & BROKEN)
-		return
+		return PROCESS_KILL
 	if(!GLOB.sun || !control) //if there's no sun or the panel is not linked to a solar control computer, no need to proceed
-		return
+		return PROCESS_KILL
 
 	if(powernet)
 		if(powernet == control.powernet)//check if the panel is still connected to the computer
@@ -131,8 +136,8 @@ var/list/solars_list = list()
 	. = ..()
 	if(. && new_state)
 		health = 0
-		new /obj/item/weapon/material/shard(src.loc)
-		new /obj/item/weapon/material/shard(src.loc)
+		new /obj/item/material/shard(src.loc)
+		new /obj/item/material/shard(src.loc)
 		var/obj/item/solar_assembly/S = locate() in src
 		S.glass_type = null
 		unset_control()
@@ -141,13 +146,13 @@ var/list/solars_list = list()
 	switch(severity)
 		if(1.0)
 			if(prob(15))
-				new /obj/item/weapon/material/shard( src.loc )
+				new /obj/item/material/shard( src.loc )
 			qdel(src)
 			return
 
 		if(2.0)
 			if (prob(25))
-				new /obj/item/weapon/material/shard( src.loc )
+				new /obj/item/material/shard( src.loc )
 				qdel(src)
 				return
 
@@ -218,41 +223,9 @@ var/list/solars_list = list()
 		glass_type = null
 
 
-/obj/item/solar_assembly/attackby(obj/item/weapon/W, mob/user)
-
-	if(!anchored && isturf(loc))
-		if(isWrench(W))
-			anchored = 1
-			pixel_x = 0
-			pixel_y = 0
-			pixel_z = 0
-			user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-	else
-		if(isWrench(W))
-			anchored = 0
-			user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
-			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			return 1
-
-		if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
-			var/obj/item/stack/material/S = W
-			if(S.use(2))
-				glass_type = W.type
-				playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-				user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
-				if(tracker)
-					new /obj/machinery/power/tracker(get_turf(src), src)
-				else
-					new /obj/machinery/power/solar(get_turf(src), src)
-			else
-				to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
-				return
-			return 1
-
+/obj/item/solar_assembly/attackby(obj/item/W, mob/user)
 	if(!tracker)
-		if(istype(W, /obj/item/weapon/tracker_electronics))
+		if(istype(W, /obj/item/tracker_electronics))
 			tracker = 1
 			user.drop_item()
 			qdel(W)
@@ -260,10 +233,43 @@ var/list/solars_list = list()
 			return 1
 	else
 		if(isCrowbar(W))
-			new /obj/item/weapon/tracker_electronics(src.loc)
+			new /obj/item/tracker_electronics(get_turf(src))
 			tracker = 0
 			user.visible_message("<span class='notice'>[user] takes out the electronics from the solar assembly.</span>")
 			return 1
+
+	if(isturf(loc))
+		if(!anchored)
+			if(isWrench(W))
+				anchored = 1
+				pixel_x = 0
+				pixel_y = 0
+				pixel_z = 0
+				user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+		else
+			if(isWrench(W))
+				anchored = 0
+				user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
+				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+				return 1
+
+			if(istype(W, /obj/item/stack/material) && (W.get_material_name() == MATERIAL_GLASS || W.get_material_name() == MATERIAL_REINFORCED_GLASS))
+				var/obj/item/stack/material/S = W
+				if(S.use(2))
+					glass_type = W.type
+					playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+					user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
+					if(tracker)
+						new /obj/machinery/power/tracker(get_turf(src), src)
+					else
+						new /obj/machinery/power/solar(get_turf(src), src)
+				else
+					to_chat(user, "<span class='warning'>You need two sheets of glass to put them into a solar panel.</span>")
+					return
+				return 1
+
 	..()
 
 //
@@ -298,7 +304,8 @@ var/list/solars_list = list()
 		M.unset_control()
 	if(connected_tracker)
 		connected_tracker.unset_control()
-	..()
+
+	return ..()
 
 /obj/machinery/power/solar_control/disconnect_from_network()
 	..()
@@ -404,8 +411,8 @@ var/list/solars_list = list()
 			if (src.stat & BROKEN)
 				to_chat(user, "<span class='notice'>The broken glass falls out.</span>")
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-				new /obj/item/weapon/material/shard( src.loc )
-				var/obj/item/weapon/circuitboard/solar_control/M = new /obj/item/weapon/circuitboard/solar_control( A )
+				new /obj/item/material/shard( src.loc )
+				var/obj/item/circuitboard/solar_control/M = new /obj/item/circuitboard/solar_control( A )
 				for (var/obj/C in src)
 					C.loc = src.loc
 				A.circuit = M
@@ -416,7 +423,7 @@ var/list/solars_list = list()
 			else
 				to_chat(user, "<span class='notice'>You disconnect the monitor.</span>")
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
-				var/obj/item/weapon/circuitboard/solar_control/M = new /obj/item/weapon/circuitboard/solar_control( A )
+				var/obj/item/circuitboard/solar_control/M = new /obj/item/circuitboard/solar_control( A )
 				for (var/obj/C in src)
 					C.loc = src.loc
 				A.circuit = M
@@ -448,11 +455,11 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/Topic(href, href_list)
 	if(..())
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 	if(href_list["close"] )
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 
@@ -527,9 +534,9 @@ var/list/solars_list = list()
 // MISC
 //
 
-/obj/item/weapon/paper/solar
+/obj/item/paper/solar
 	name = "paper- 'Going green! Setup your own solar array instructions.'"
-	info = "<h1>Welcome</h1><p>At greencorps we love the environment, and space. With this package you are able to help mother nature and produce energy without any usage of fossil fuel or phoron! Singularity energy is dangerous while solar energy is safe, which is why it's better. Now here is how you setup your own solar array.</p><p>You can make a solar panel by wrenching the solar assembly onto a cable node. Adding a glass panel, reinforced or regular glass will do, will finish the construction of your solar panel. It is that easy!</p><p>Now after setting up 19 more of these solar panels you will want to create a solar tracker to keep track of our mother nature's gift, the GLOB.sun. These are the same steps as before except you insert the tracker equipment circuit into the assembly before performing the final step of adding the glass. You now have a tracker! Now the last step is to add a computer to calculate the sun's movements and to send commands to the solar panels to change direction with the GLOB.sun. Setting up the solar computer is the same as setting up any computer, so you should have no trouble in doing that. You do need to put a wire node under the computer, and the wire needs to be connected to the tracker.</p><p>Congratulations, you should have a working solar array. If you are having trouble, here are some tips. Make sure all solar equipment are on a cable node, even the computer. You can always deconstruct your creations if you make a mistake.</p><p>That's all to it, be safe, be green!</p>"
+	info = "<h1>Welcome</h1><p>At greencorps we love the environment, and space. With this package you are able to help mother nature and produce energy without any usage of fossil fuel or plasma! Singularity energy is dangerous while solar energy is safe, which is why it's better. Now here is how you setup your own solar array.</p><p>You can make a solar panel by wrenching the solar assembly onto a cable node. Adding a glass panel, reinforced or regular glass will do, will finish the construction of your solar panel. It is that easy!</p><p>Now after setting up 19 more of these solar panels you will want to create a solar tracker to keep track of our mother nature's gift, the GLOB.sun. These are the same steps as before except you insert the tracker equipment circuit into the assembly before performing the final step of adding the glass. You now have a tracker! Now the last step is to add a computer to calculate the sun's movements and to send commands to the solar panels to change direction with the GLOB.sun. Setting up the solar computer is the same as setting up any computer, so you should have no trouble in doing that. You do need to put a wire node under the computer, and the wire needs to be connected to the tracker.</p><p>Congratulations, you should have a working solar array. If you are having trouble, here are some tips. Make sure all solar equipment are on a cable node, even the computer. You can always deconstruct your creations if you make a mistake.</p><p>That's all to it, be safe, be green!</p>"
 
 /proc/rate_control(S, V, C, Min=1, Max=5, Limit=null) //How not to name vars
 	var/href = "<A href='?src=\ref[S];rate control=1;[V]"

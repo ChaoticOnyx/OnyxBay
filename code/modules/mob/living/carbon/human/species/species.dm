@@ -75,7 +75,7 @@
 	var/additional_langs                      // Any other languages the species always gets.
 
 	// Combat vars.
-	var/total_health = 200                   // Point at which the mob will enter crit.
+	var/total_health = 100                   // Point at which the mob will enter crit.
 	var/list/unarmed_types = list(           // Possible unarmed attacks that the mob will use in combat,
 		/datum/unarmed_attack,
 		/datum/unarmed_attack/bite
@@ -89,9 +89,10 @@
 	var/flash_mod =      1                    // Stun from blindness modifier.
 	var/metabolism_mod = 1                    // Reagent metabolism modifier
 	var/vision_flags = SEE_SELF               // Same flags as glasses.
+	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
-	var/meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+	var/meat_type = /obj/item/reagent_containers/food/meat/human
 	var/remains_type = /obj/item/remains/xeno
 	var/gibbed_anim = "gibbed-h"
 	var/dusted_anim = "dust-h"
@@ -107,7 +108,7 @@
 	var/reagent_tag                                   //Used for metabolizing reagents.
 	var/breath_pressure = 16                          // Minimum partial pressure safe for breathing, kPa
 	var/breath_type = "oxygen"                        // Non-oxygen gas breathed, if any.
-	var/poison_type = "phoron"                        // Poisonous air.
+	var/poison_type = "plasma"                        // Poisonous air.
 	var/exhale_type = "carbon_dioxide"                // Exhaled gas type.
 	var/cold_level_1 = 243                           // Cold damage level 1 below this point. -30 Celsium degrees
 	var/cold_level_2 = 200                            // Cold damage level 2 below this point.
@@ -144,22 +145,23 @@
 	var/grab_type = GRAB_NORMAL		// The species' default grab type.
 
 	// Body/form vars.
-	var/list/inherent_verbs 	  // Species-specific verbs.
-	var/has_fine_manipulation = 1 // Can use small items.
-	var/siemens_coefficient = 1   // The lower, the thicker the skin and better the insulation.
-	var/darksight = 2             // Native darksight distance.
-	var/species_flags = 0         // Various specific features.
-	var/appearance_flags = 0      // Appearance/display related features.
-	var/spawn_flags = 0           // Flags that specify who can spawn as this species
-	var/slowdown = 0              // Passive movement speed malus (or boost, if negative)
-	var/primitive_form            // Lesser form, if any (ie. monkey for humans)
-	var/greater_form              // Greater form, if any, ie. human for monkeys.
+	var/list/inherent_verbs 	       // Species-specific verbs.
+	var/has_fine_manipulation = 1      // Can use small items.
+	var/siemens_coefficient = 1        // The lower, the thicker the skin and better the insulation.
+	var/darksight_range = 2            // Native darksight distance.
+	var/darksight_tint = DARKTINT_NONE // How shadows are tinted.
+	var/species_flags = 0              // Various specific features.
+	var/appearance_flags = 0           // Appearance/display related features.
+	var/spawn_flags = 0                // Flags that specify who can spawn as this species
+	var/slowdown = 0                   // Passive movement speed malus (or boost, if negative)
+	var/primitive_form                 // Lesser form, if any (ie. monkey for humans)
+	var/greater_form                   // Greater form, if any, ie. human for monkeys.
 	var/holder_type
-	var/gluttonous                // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
-	var/stomach_capacity = 5      // How much stuff they can stick in their stomach
-	var/rarity_value = 1          // Relative rarity/collector value for this species.
-	                              // Determines the organs that the species spawns with and
-	var/list/has_organ = list(    // which required-organ checks are conducted.
+	var/gluttonous                     // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
+	var/stomach_capacity = 5           // How much stuff they can stick in their stomach
+	var/rarity_value = 1               // Relative rarity/collector value for this species.
+	                                   // Determines the organs that the species spawns with and
+	var/list/has_organ = list(         // which required-organ checks are conducted.
 		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_STOMACH =  /obj/item/organ/internal/stomach,
 		BP_LUNGS =    /obj/item/organ/internal/lungs,
@@ -209,6 +211,8 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+
+	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify
@@ -257,17 +261,41 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/sanitize_name(name)
 	return sanitizeName(name)
 
-/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H,extendedtank = 1)
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H, boxtype = 0)
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H.back), slot_in_backpack)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H.back), slot_in_backpack)
+			else
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H.back), slot_in_backpack)
 	else
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/security(H), slot_r_hand)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/storage/box/engineer(H), slot_r_hand)
+			else
+				H.equip_to_slot_or_del(new /obj/item/storage/box/survival(H), slot_r_hand)
 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
+	var/list/foreign_organs = list()
+	var/list/implants_from_external_organs = list()
+
+	for(var/obj/item/organ/external/E in H.contents)
+		for(var/obj/item/organ/internal/O in E.internal_organs)
+			if(istype(O) && O.foreign)
+				E.internal_organs.Remove(O)
+				H.internal_organs.Remove(O)
+				foreign_organs |= O
+		if(E.implants.len)
+			implants_from_external_organs[E.organ_tag] = list()
+		for(var/I in E.implants)
+			implants_from_external_organs[E.organ_tag] += I
+
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
 			qdel(organ)
@@ -301,13 +329,24 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	for(var/name in H.internal_organs_by_name)
 		H.internal_organs |= H.internal_organs_by_name[name]
 
+	for(var/obj/item/organ/internal/organ in foreign_organs)
+		organ.owner = H // Let's just make sure, it doesn't hurt
+		organ.rejuvenate()
+		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
+		E.internal_organs |= organ
+		H.internal_organs_by_name[organ.organ_tag] = organ
+		organ.handle_foreign()
+
 	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
 		O.owner = H
 
 	H.sync_organ_dna()
 
-/datum/species/proc/hug(mob/living/carbon/human/H,mob/living/target)
+	for(var/obj/item/organ/external/E in H.contents)
+		if(E.organ_tag in implants_from_external_organs)
+			E.implants += implants_from_external_organs[E.organ_tag]
 
+/datum/species/proc/hug(mob/living/carbon/human/H, mob/living/target)
 	var/mob/living/carbon/human/V
 	if(istype(target,/mob/living/carbon/human))
 		V = target
@@ -341,6 +380,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			if(target.a_intent == I_HELP)
 				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
 								"<span class='notice'>You shake [target]'s hand!</span>")
+				if(istype(H.gloves, /obj/item/clothing/gloves/stun))
+					var/obj/item/clothing/gloves/stun/SG = H.gloves
+					SG.stun_attack(H, target)
 			else
 				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
 								"<span class='warning'>[target] refuses to shake your hand!</span>")
@@ -364,7 +406,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 					if(!actor_cig.lit && target_cig.lit)
 						actor_cig.light(target_cig, H)
 					return
-			
+
 			if(actor_mask)
 				to_chat(H, "\A [actor_mask] is in the way!")
 				return
@@ -385,7 +427,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 							"<span class='notice'>You hug [target]!</span>")
 
 	// Legacy for sum raisin
-	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
+	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>",
 	//				"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
 
 /datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
@@ -471,12 +513,17 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/handle_vision(mob/living/carbon/human/H)
 	H.update_sight()
 	H.set_sight(H.sight|get_vision_flags(H)|H.equipment_vision_flags)
+	H.change_light_color(darksight_tint)
 
 	if(H.stat == DEAD)
 		return 1
 
 	if(!H.druggy)
-		H.set_see_in_dark((H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS)) ? 8 : min(darksight + H.equipment_darkness_modifier, 8))
+		H.set_see_in_dark(max(
+			H.see_in_dark,
+			H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS) ? 8 : H.see_in_dark,
+			darksight_range + H.equipment_darkness_modifier
+		))
 		if(H.equipment_see_invis)
 			H.set_see_invisible(min(H.see_invisible, H.equipment_see_invis))
 
@@ -489,7 +536,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
 	H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 
-	if(config.welder_vision)
+	if(config.misc.welder_vision_allowed)
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)
@@ -506,7 +553,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	if(H.disabilities & NEARSIGHTED)
 		prescriptions += 7
 	if(H.equipment_prescription)
-		prescriptions -= H.equipment_prescription
+		if(H.disabilities & NEARSIGHTED)
+			prescriptions -= H.equipment_prescription
+		else
+			prescriptions += H.equipment_prescription
 
 	var/light = light_sensitive
 	if(light)
@@ -555,10 +605,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	attacker.do_attack_animation(target)
 
 	if(target.parrying)
-		if(attacker.get_parried_w(target,w_atk=null))
+		if(target.handle_parry(attacker, null))
 			return
 	if(target.blocking)
-		if(attacker.get_blocked_h(target))
+		if(target.handle_block_normal(attacker))
 			return
 
 	if(target.w_uniform)
@@ -568,7 +618,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	var/list/holding = list(target.get_active_hand() = 40, target.get_inactive_hand() = 20)
 
 	//See if they have any guns that might go off
-	for(var/obj/item/weapon/gun/W in holding)
+	for(var/obj/item/gun/W in holding)
 		if(W && prob(holding[W]))
 			var/list/turfs = list()
 			for(var/turf/T in view())
@@ -579,7 +629,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return W.afterattack(shoot_to,target)
 
 	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
-	target.poise -= round(4.0+4.0*((100-effective_armor)/100),0.1)
+	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
+	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
+		poisedmg *= 1.75
+	target.damage_poise(poisedmg)
 
 	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 
@@ -589,7 +642,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
-			target.apply_effect(3, WEAKEN, armor_check)
+			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return
@@ -602,8 +655,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 		//Actually disarm them
 		for(var/obj/item/I in holding)
-			if(I && I.canremove)
-				target.drop_from_inventory(I)
+			if(target.unEquip(I))
 				target.visible_message("<span class='danger'>[attacker] has disarmed [target]!</span>")
 				playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				return
@@ -658,3 +710,6 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			facial_hair_style_by_gender[facialhairstyle] = S
 
 	return facial_hair_style_by_gender
+
+/datum/species/proc/is_eligible_for_antag_spawn(antag_id)
+	return TRUE

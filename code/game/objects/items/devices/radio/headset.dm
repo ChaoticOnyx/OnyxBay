@@ -36,7 +36,7 @@
 /obj/item/device/radio/headset/list_channels(mob/user)
 	return list_secure_channels()
 
-/obj/item/device/radio/headset/examine(mob/user)
+/obj/item/device/radio/headset/_examine_text(mob/user)
 	. = ..()
 	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
@@ -78,6 +78,16 @@
 	origin_tech = list(TECH_ILLEGAL = 2)
 	syndie = 1
 	ks1type = /obj/item/device/encryptionkey/raider
+
+/obj/item/device/radio/headset/abductor
+	name = "alien headset"
+	desc = "An advanced alien headset designed to monitor communications of human space stations. Why does it have a microphone? No one knows."
+	origin_tech = list(TECH_ILLEGAL = 2)
+	icon = 'icons/obj/abductor.dmi'
+	icon_state = "abductor_headset"
+	item_state = "headset"
+	syndie = 1
+	var/team_number
 
 /obj/item/device/radio/headset/raider/Initialize()
 	. = ..()
@@ -258,7 +268,33 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/specops
 
-/obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/device/radio/headset/tactical
+	name = "tactical earmuffs"
+	desc = "The earmuffs of the cool."
+	icon_state = "tac_earmuffs"
+	item_state = "tac_earmuffs"
+	slot_flags = SLOT_EARS | SLOT_TWOEARS
+	ear_protection = 0.5 // Worn on both ears, effectively providing 1 ear protection
+
+/obj/item/device/radio/headset/tactical/sec
+	ks2type = /obj/item/device/encryptionkey/headset_sec
+
+/obj/item/device/radio/headset/tactical/hos
+	desc = "These ones seem even more tactical than usual."
+	ks2type = /obj/item/device/encryptionkey/heads/hos
+
+/obj/item/device/radio/headset/tactical/emp_act(severity)
+	if(istype(src.loc, /mob/living/carbon/human))
+		var/mob/living/carbon/human/M = src.loc
+		if(M.l_ear == src || M.r_ear == src)
+			to_chat(M, SPAN("danger", "You hear a loud deafening screech!"))
+			M.Stun(10)
+			M.Weaken(3)
+			M.ear_damage += rand(0, 5)
+			M.ear_deaf = max(M.ear_deaf,15)
+	..()
+
+/obj/item/device/radio/headset/attackby(obj/item/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)
 	if (!( isScrewdriver(W) || (istype(W, /obj/item/device/encryptionkey/ ))))

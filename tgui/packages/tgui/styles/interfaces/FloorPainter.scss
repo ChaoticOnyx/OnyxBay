@@ -1,0 +1,20 @@
+.FloorPainter {
+  &__Button {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.05);
+
+    &:hover,
+    &:focus {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    &.Button--selected {
+      background-color: rgba(0, 255, 42, 0.3);
+    }
+
+    &.Button--disabled {
+      cursor: default;
+      background-color: rgba(255, 255, 255, 0.6) !important;
+    }
+  }
+}

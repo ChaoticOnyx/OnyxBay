@@ -102,8 +102,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	machine.receive_information(signal, src)
 
 /obj/machinery/telecomms/proc/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
-	// receive information from linked machinery
-	..()
+	return	// receive information from linked machinery
 
 /obj/machinery/telecomms/proc/is_freq_listening(datum/signal/signal)
 	// return 1 if found, 0 if not found
@@ -118,6 +117,19 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/New()
 	telecomms_list += src
 	..()
+	component_parts = list()
+	// Let's just do it an easy way instead of manually adding all of that shite spawn in each of the nonsensical telecom machines' New()s
+	if(circuitboard)
+		component_parts += new circuitboard(src)
+		for(var/comp in component_parts[1].req_components)
+			if(comp == /obj/item/stack/cable_coil)
+				var/obj/item/stack/cable_coil/CC = new comp(src)
+				component_parts += CC
+				CC.amount = component_parts[1].req_components[comp]
+				continue
+			for(var/i = 1 to max(1, component_parts[1].req_components[comp]))
+				component_parts += new comp(src)
+	RefreshParts()
 
 /obj/machinery/telecomms/Initialize()
 	//Set the listening_levels if there's none.
@@ -142,7 +154,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	for(var/obj/machinery/telecomms/comm in telecomms_list)
 		comm.links -= src
 	links = list()
-	..()
+
+	return ..()
 
 // Used in auto linking
 /obj/machinery/telecomms/proc/add_link(obj/machinery/telecomms/T)
@@ -172,6 +185,9 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms/Process()
 	update_power()
+
+	if (on)
+		play_beep()
 
 	if(overloaded_for)
 		overloaded_for--
@@ -258,7 +274,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 600
 	machinetype = 1
 	produces_heat = 0
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/receiver
+	circuitboard = /obj/item/circuitboard/telecomms/receiver
 	outage_probability = 10
 
 /obj/machinery/telecomms/receiver/receive_signal(datum/signal/signal)
@@ -314,7 +330,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 1600
 	machinetype = 7
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/hub
+	circuitboard = /obj/item/circuitboard/telecomms/hub
 	long_range_link = 1
 	netspeed = 40
 	outage_probability = 10
@@ -347,7 +363,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	machinetype = 8
 	produces_heat = 0
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/relay
+	circuitboard = /obj/item/circuitboard/telecomms/relay
 	netspeed = 5
 	long_range_link = 1
 	var/broadcasting = 1
@@ -361,7 +377,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 // Relays on ship's Z levels use less power as they don't have to transmit over such large distances.
 /obj/machinery/telecomms/relay/update_power()
 	..()
-	if(z in GLOB.using_map.station_levels)
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 		change_power_consumption(2.5 KILOWATTS, POWER_USE_IDLE)
 	else
 		change_power_consumption(100 KILOWATTS, POWER_USE_IDLE)
@@ -410,7 +426,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 1000
 	machinetype = 2
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/bus
+	circuitboard = /obj/item/circuitboard/telecomms/bus
 	netspeed = 40
 	var/change_frequency = 0
 
@@ -462,7 +478,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	idle_power_usage = 600
 	machinetype = 3
 	delay = 5
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/processor
+	circuitboard = /obj/item/circuitboard/telecomms/processor
 	var/process_mode = 1 // 1 = Uncompress Signals, 0 = Compress Signals
 
 /obj/machinery/telecomms/processor/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
@@ -498,7 +514,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	anchored = 1
 	idle_power_usage = 300
 	machinetype = 4
-	circuitboard = /obj/item/weapon/circuitboard/telecomms/server
+	circuitboard = /obj/item/circuitboard/telecomms/server
 	var/list/log_entries = list()
 	var/list/stored_names = list()
 	var/list/TrafficActions = list()
@@ -506,9 +522,6 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/totaltraffic = 0 // gigabytes (if > 1024, divide by 1024 -> terrabytes)
 
 	var/list/memory = list()	// stored memory
-	var/rawcode = ""	// the code to compile (raw text)
-	var/datum/TCS_Compiler/Compiler	// the compiler that compiles and runs the code
-	var/autoruncode = 0		// 1 if the code is set to run every time a signal is picked up
 
 	var/encryption = "null" // encryption key: ie "password"
 	var/salt = "null"		// encryption salt: ie "123comsat"
@@ -518,8 +531,6 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms/server/New()
 	..()
-	Compiler = new()
-	Compiler.Holder = src
 	server_radio = new()
 
 /obj/machinery/telecomms/server/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
@@ -561,8 +572,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				else if(issilicon(M))
 					race = "Artificial Life"
 					log.parameters["intelligible"] = 1
-				else if(isslime(M))
-					race = "Slime"
+				else if(ismetroid(M))
+					race = "Metroid"
 				else if(isanimal(M))
 					race = "Domestic Animal"
 
@@ -593,22 +604,9 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				var/identifier = num2text( rand(-1000,1000) + world.time )
 				log.name = "data packet ([md5(identifier)])"
 
-				if(Compiler && autoruncode)
-					Compiler.Run(signal)	// execute the code
-
 			var/can_send = relay_information(signal, /obj/machinery/telecomms/hub)
 			if(!can_send)
 				relay_information(signal, /obj/machinery/telecomms/broadcaster)
-
-
-/obj/machinery/telecomms/server/proc/setcode(t)
-	if(t)
-		if(istext(t))
-			rawcode = t
-
-/obj/machinery/telecomms/server/proc/compile()
-	if(Compiler)
-		return Compiler.Compile(rawcode)
 
 /obj/machinery/telecomms/server/proc/update_logs()
 	// start deleting the very first log entry
@@ -629,9 +627,6 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	log_entries.Add(log)
 	update_logs()
 
-
-
-
 // Simple log entry datum
 
 /datum/comm_log_entry
@@ -639,10 +634,3 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/name = "data packet (#)"
 	var/garbage_collector = 1 // if set to 0, will not be garbage collected
 	var/input_type = "Speech File"
-
-
-
-
-
-
-

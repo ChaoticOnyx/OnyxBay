@@ -2,7 +2,7 @@
 	set name = "Convert Bourgeoise"
 	set category = "Abilities"
 
-	if(!M in able_mobs_in_oview(src))
+	if(!(M in able_mobs_in_oview(src)))
 		return
 	if(!M.mind || !M.client)
 		return
@@ -21,18 +21,22 @@
 	if(!faction.faction_verb || !faction.faction_descriptor || !faction.faction_verb)
 		return
 
+	if(faction.is_antagonist(player))
+		to_chat(src, SPAN("notice", "\The [player.current] is already \a [faction.faction_role_text]!"))
+		return
+
 	if(!faction.can_become_antag(player, 1) || player_is_antag(player))
 		to_chat(src, SPAN_WARNING("\The [player.current] cannot be \a [faction.faction_role_text]!"))
 		return
 
 	if(world.time < player.rev_cooldown)
-		to_chat(src, SPAN_DANGER("You must wait five seconds between attempts."))
+		to_chat(src, SPAN_DANGER("You must wait ten seconds between attempts."))
 		return
 
 	to_chat(src, SPAN_DANGER("You are attempting to convert \the [player.current]..."))
 	log_and_message_admins("attempted to convert [player.current] to the [faction.faction_role_text] faction.")
 
-	player.rev_cooldown = world.time + 100
+	player.rev_cooldown = world.time + 10 SECONDS
 	if (!faction.is_antagonist(player))
 		var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
 		if(!(player.current in able_mobs_in_oview(src)))
@@ -48,7 +52,7 @@
 	set name = "Convert Recidivist"
 	set category = "Abilities"
 
-	if(!M in able_mobs_in_oview(src))
+	if(!(M in able_mobs_in_oview(src)))
 		return
 	if(!M.mind || !M.client)
 		return

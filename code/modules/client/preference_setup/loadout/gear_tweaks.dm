@@ -20,6 +20,22 @@
 	return description
 
 /*
+* Custom adjustment
+*/
+
+/datum/gear_tweak/custom
+	var/datum/custom_item/current_data
+
+/datum/gear_tweak/custom/New(datum/custom_item/data)
+	current_data = data
+
+/datum/gear_tweak/custom/tweak_item(obj/item/I, metadata)
+	current_data.apply_to_item(I)
+
+/datum/gear_tweak/custom/tweak_description(description, metadata)
+	return current_data.item_desc ? current_data.item_desc : description
+
+/*
 * Color adjustment
 */
 
@@ -54,6 +70,7 @@
 */
 
 /datum/gear_tweak/path
+	var/check_type = /obj/item
 	var/list/valid_paths
 
 /datum/gear_tweak/path/New(list/valid_paths)
@@ -65,12 +82,16 @@
 	var/list/duplicate_values = duplicates(list_values(valid_paths))
 	if(duplicate_values.len)
 		CRASH("Duplicate types found: [english_list(duplicate_values)]")
+	// valid_paths, but with names sanitized to remove \improper
+	var/list/valid_paths_san = list()
 	for(var/path_name in valid_paths)
 		if(!istext(path_name))
 			CRASH("Expected a text key, was [log_info_line(path_name)]")
 		var/selection_type = valid_paths[path_name]
-		if(!ispath(selection_type, /obj/item))
-			CRASH("Expected an /obj/item path, was [log_info_line(selection_type)]")
+		if(!ispath(selection_type, check_type))
+			CRASH("Expected an [log_info_line(check_type)] path, was [log_info_line(selection_type)]")
+		var/path_name_san = replacetext(path_name, "\improper", "")
+		valid_paths_san[path_name_san] = selection_type
 	src.valid_paths = sortAssoc(valid_paths)
 
 /datum/gear_tweak/path/type/New(type_path)
@@ -81,6 +102,9 @@
 
 /datum/gear_tweak/path/specified_types_list/New(type_paths)
 	..(atomtypes2nameassoclist(type_paths))
+
+/datum/gear_tweak/path/specified_types_list/atoms
+	check_type = /atom
 
 /datum/gear_tweak/path/specified_types_args/New()
 	..(atomtypes2nameassoclist(args))

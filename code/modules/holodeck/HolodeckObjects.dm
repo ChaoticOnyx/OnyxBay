@@ -6,7 +6,7 @@
 /turf/simulated/floor/holofloor
 	thermal_conductivity = 0
 
-/turf/simulated/floor/holofloor/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/turf/simulated/floor/holofloor/attackby(obj/item/W, mob/user)
 	return
 	// HOLOFLOOR DOES NOT GIVE A FUCK
 
@@ -98,10 +98,10 @@
 	base_name = "desert sand"
 	desc = "Uncomfortably gritty for a hologram."
 	base_desc = "Uncomfortably gritty for a hologram."
-	icon_state = "asteroid"
-	base_icon_state = "asteroid"
-	icon = 'icons/turf/flooring/asteroid.dmi'
-	base_icon = 'icons/turf/flooring/asteroid.dmi'
+	icon_state = "sand0"
+	base_icon_state = "sand0"
+	icon = 'icons/turf/flooring/sand.dmi'
+	base_icon = 'icons/turf/flooring/sand.dmi'
 	initial_flooring = null
 
 /turf/simulated/floor/holofloor/desert/New()
@@ -123,17 +123,17 @@
 	item_state = "boxing"
 
 /obj/structure/window/reinforced/holowindow/Destroy()
-	..()
+	return ..()
 
-/obj/structure/window/reinforced/holowindow/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/window/reinforced/holowindow/attackby(obj/item/W, mob/user)
 
 	if(!istype(W) || W.item_flags & ITEM_FLAG_NO_BLUDGEON) return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if(istype(W, /obj/item/screwdriver))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't unfasten it!</span>"))
-	else if(istype(W, /obj/item/weapon/crowbar) && reinf && state <= 1)
+	else if(istype(W, /obj/item/crowbar) && reinf && state <= 1)
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't pry it!</span>"))
-	else if(istype(W, /obj/item/weapon/wrench) && !anchored && (!state || !reinf))
+	else if(istype(W, /obj/item/wrench) && !anchored && (!state || !reinf))
 		to_chat(user, ("<span class='notice'>It's a holowindow, you can't dismantle it!</span>"))
 	else
 		if(W.damtype == BRUTE || W.damtype == BURN)
@@ -143,31 +143,31 @@
 				update_nearby_icons()
 				step(src, get_dir(user, src))
 		else
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
+			playsound(loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		..()
 	return
 
 /obj/structure/window/reinforced/holowindow/shatter(display_message = 1)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
 	return
 
 /obj/structure/window/reinforced/holowindow/disappearing/Destroy()
-	..()
+	return ..()
 
 /obj/machinery/door/window/holowindoor/Destroy()
-	..()
+	return ..()
 
-/obj/machinery/door/window/holowindoor/attackby(obj/item/weapon/I as obj, mob/user as mob)
+/obj/machinery/door/window/holowindoor/attackby(obj/item/I, mob/user)
 
 	if (src.operating == 1)
 		return
 
-	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
+	if(density && user.a_intent == I_HURT && !(istype(I, /obj/item/card) || istype(I, /obj/item/device/pda)))
 		var/aforce = I.force
-		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
+		playsound(src.loc, GET_SFX(SFX_GLASS_HIT), 75, 1)
 		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)
@@ -190,26 +190,66 @@
 
 /obj/machinery/door/window/holowindoor/shatter(display_message = 1)
 	src.set_density(0)
-	playsound(src, "window_breaking", 70, 1)
+	playsound(src, SFX_BREAK_WINDOW, 70, 1)
 	if(display_message)
 		visible_message("[src] fades away as it shatters!")
 	qdel(src)
 
 /obj/structure/bed/chair/holochair/Destroy()
-	..()
+	return ..()
 
-/obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
-		to_chat(user, ("<span class='notice'>It's a holochair, you can't dismantle it!</span>"))
+/obj/structure/bed/chair/holochair/attackby(obj/item/W, mob/user)
+	if(isWrench(W))
+		to_chat(user, SPAN("notice", "It's a holochair, you can't dismantle it!"))
 	return
 
-/obj/item/weapon/holo
+/obj/structure/bed/chair/holochair/fold(mob/user)
+	if(!foldable)
+		return
+
+	var/list/collapse_message = list(SPAN_WARNING("\The [name] has collapsed!"), null)
+
+	if(buckled_mob)
+		collapse_message = list(\
+			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [name]!"),\
+			user ? SPAN_NOTICE("You collapse \the [name] and made [buckled_mob] fall down!") : null)
+
+		var/mob/living/occupant = unbuckle_mob()
+		var/blocked = occupant.run_armor_check(BP_GROIN, "melee")
+
+		occupant.apply_effect(4, STUN, blocked)
+		occupant.apply_effect(4, WEAKEN, blocked)
+		occupant.apply_damage(rand(5,10), BRUTE, BP_GROIN, blocked)
+		playsound(src, 'sound/effects/fighting/punch1.ogg', 50, 1, -1)
+	else if(user)
+		collapse_message = list("[user] collapses \the [name].", "You collapse \the [name].")
+
+	visible_message(collapse_message[1], collapse_message[2])
+	var/obj/item/foldchair/holochair/O = new /obj/item/foldchair/holochair(get_turf(src))
+	if(user)
+		O.add_fingerprint(user)
+	QDEL_IN(src, 0)
+
+/obj/item/foldchair/holochair/attackby(obj/item/W, mob/user)
+	if(isWrench(W))
+		to_chat(user,SPAN("notice", "It's a holochair, you can't dismantle it!"))
+
+/obj/item/foldchair/holochair/attack_self(mob/user)
+	var/obj/structure/bed/chair/holochair/O = new /obj/structure/bed/chair/holochair(user.loc)
+	O.add_fingerprint(user)
+	O.dir = user.dir
+	O.update_icon()
+	visible_message("[user] unfolds \the [O.name].")
+	qdel(src)
+
+/obj/item/holo
 	damtype = PAIN
 	no_attack_log = 1
 
-/obj/item/weapon/holo/esword
+/obj/item/holo/esword
 	name = "holosword"
 	desc = "May the force be within you. Sorta."
+	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	force = 3.0
 	throw_speed = 1
@@ -220,18 +260,18 @@
 	var/active = 0
 	var/item_color
 
-/obj/item/weapon/holo/esword/green
+/obj/item/holo/esword/green
 	New()
 		item_color = "green"
 
-/obj/item/weapon/holo/esword/red
+/obj/item/holo/esword/red
 	New()
 		item_color = "red"
 
-/obj/item/weapon/holo/esword/New()
+/obj/item/holo/esword/New()
 	item_color = pick("red","blue","green","purple")
 
-/obj/item/weapon/holo/esword/attack_self(mob/living/user as mob)
+/obj/item/holo/esword/attack_self(mob/living/user)
 	active = !active
 	if (active)
 		force = 30
@@ -253,7 +293,7 @@
 
 //BASKETBALL OBJECTS
 
-/obj/item/weapon/beach_ball/holoball
+/obj/item/beach_ball/holoball
 	icon = 'icons/obj/basketball.dmi'
 	icon_state = "basketball"
 	name = "basketball"
@@ -270,19 +310,18 @@
 	density = 1
 	throwpass = 1
 
-/obj/structure/holohoop/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (istype(mover,/obj/item) && mover.throwing)
+/obj/structure/holohoop/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover,/obj/item) && mover.throwing)
 		var/obj/item/I = mover
 		if(istype(I, /obj/item/projectile))
-			return
+			return TRUE
 		if(prob(50))
-			I.loc = src.loc
-			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>", 3)
+			I.forceMove(loc)
+			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>")
 		else
-			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>", 3)
-		return 0
-	else
-		return ..(mover, target, height, air_group)
+			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>")
+		return FALSE
+	return ..()
 
 
 /obj/machinery/readybutton
@@ -290,14 +329,15 @@
 	desc = "This device is used to declare ready. If all devices in an area are ready, the event will begin!"
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "auth_off"
+	layer = ABOVE_WINDOW_LAYER
 	var/ready = 0
 	var/area/currentarea = null
 	var/eventstarted = 0
 
 	anchored = 1.0
-	power_channel = ENVIRON
+	power_channel = STATIC_ENVIRON
 
-/obj/machinery/readybutton/attack_ai(mob/user as mob)
+/obj/machinery/readybutton/attack_ai(mob/user)
 	to_chat(user, "The AI is not to interact with these devices!")
 	return
 
@@ -305,10 +345,10 @@
 	..()
 
 
-/obj/machinery/readybutton/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/readybutton/attackby(obj/item/W, mob/user)
 	to_chat(user, "The device is a holographic button, there's nothing you can do with it!")
 
-/obj/machinery/readybutton/attack_hand(mob/user as mob)
+/obj/machinery/readybutton/attack_hand(mob/user)
 
 	if(user.stat)
 		to_chat(src, "You are incapacitated.")
@@ -373,7 +413,7 @@
 
 /mob/living/simple_animal/hostile/carp/holodeck/New()
 	..()
-	set_light(2) //hologram lighting
+	set_light(0.5, 0.1, 2) //hologram lighting
 
 /mob/living/simple_animal/hostile/carp/holodeck/proc/set_safety(safe)
 	if (safe)

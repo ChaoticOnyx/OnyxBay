@@ -1,0 +1,277 @@
+.Layout,
+.Layout * {
+  @at-root .theme-vending-white & {
+    scrollbar-base-color: #f6f8fa;
+    scrollbar-face-color: #f6f8fa;
+    scrollbar-3dlight-color: #f6f8fa;
+    scrollbar-highlight-color: #f6f8fa;
+    scrollbar-track-color: #d9dbdb;
+    scrollbar-arrow-color: #f6f8fa;
+    scrollbar-shadow-color: #d9dbdb;
+  }
+
+  @at-root .theme-vending-dark & {
+    scrollbar-base-color: #2d333b;
+    scrollbar-face-color: #2d333b;
+    scrollbar-3dlight-color: #272b2e;
+    scrollbar-highlight-color: #272b2e;
+    scrollbar-track-color: #272b2e;
+    scrollbar-arrow-color: #2d333b;
+    scrollbar-shadow-color: #2d333b;
+  }
+}
+
+.Layout__content {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    background: none;
+  }
+
+  @at-root .theme-vending-white & {
+    background-color: #eeeeee;
+  }
+
+  @at-root .theme-vending-dark & {
+    background-color: #272b2e;
+  }
+}
+
+.TitleBar {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    border: none;
+    box-shadow: none;
+    user-select: none;
+    -ms-user-select: none;
+  }
+
+  @at-root .theme-vending-white & {
+    background-color: #ffffff;
+    border: none;
+
+    &__title {
+      color: black;
+    }
+
+    &__close {
+      background-color: #ffffff;
+      color: black;
+
+      &:hover {
+        background-color: red;
+        color: white;
+      }
+    }
+  }
+
+  @at-root .theme-vending-dark & {
+    background-color: #2d333b;
+    border: none;
+
+    &__title {
+      color: white;
+    }
+
+    &__close {
+      background-color: #2d333b;
+      color: white;
+
+      &:hover {
+        background-color: red;
+        color: white;
+      }
+    }
+  }
+}
+
+.Payment {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    border-radius: 0.8rem;
+    font-size: 1.2em;
+    margin: auto;
+    animation: fade-out-animation 0.5s linear;
+  }
+
+  @at-root .theme-vending-white & {
+    color: white;
+    background-color: rgb(97, 97, 97);
+  }
+
+  @at-root .theme-vending-dark & {
+    color: white;
+  }
+
+  & h1 {
+    @at-root .theme-vending-white &,
+      .theme-vending-dark & {
+      padding-top: 0;
+      font-size: 1.4em;
+    }
+  }
+}
+
+.VendingProgress {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    border-radius: 0.8rem;
+    font-size: 1.2em;
+    margin: auto;
+    animation: fade-out-animation 0.5s linear;
+
+    padding: {
+      left: 1rem;
+      right: 2rem;
+    }
+  }
+}
+
+@keyframes fade-out-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.LabeledList * {
+  @at-root .theme-vending-white & {
+    color: white !important;
+  }
+
+  @at-root .theme-vending-dark & {
+    color: white !important;
+  }
+}
+
+.Button {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    cursor: pointer;
+    font-size: 1.3em;
+  }
+
+  &--cancel {
+    @at-root .theme-vending-white & {
+      background-color: #e91e63;
+
+      &:focus,
+      &:hover,
+      &--selected {
+        background-color: #ff0055;
+        box-shadow: 0 0 0.7rem 0 #ff0055;
+      }
+    }
+
+    @at-root .theme-vending-dark & {
+      background-color: #e91e63;
+
+      &:focus,
+      &:hover,
+      &--selected {
+        background-color: #ff0055;
+        box-shadow: 0 0 1rem 0 #ff0055;
+      }
+    }
+  }
+
+  &--pay {
+    @at-root .theme-vending-white &,
+      .theme-vending-dark & {
+      text-align: center;
+    }
+
+    @at-root .theme-vending-white & {
+      background: linear-gradient(-45deg, #2196f3, #00bcd4);
+
+      &:focus,
+      &:hover,
+      &--selected {
+        background: linear-gradient(-45deg, #008cff, #00e1ff);
+        box-shadow: 0 0 0.7rem 0 #00bcd4;
+      }
+    }
+
+    @at-root .theme-vending-dark & {
+      background: linear-gradient(-45deg, #2196f3, #00bcd4);
+
+      &:focus,
+      &:hover,
+      &--selected {
+        background: linear-gradient(-45deg, #008cff, #00e1ff);
+        box-shadow: 0 0 1rem 0 #00bcd4;
+      }
+    }
+  }
+
+  &--product {
+    @at-root .theme-vending-white &,
+      .theme-vending-dark & {
+      margin-top: 0.5em;
+      margin-bottom: 0.5em;
+      padding-left: 0;
+      border-radius: 1.5rem 0.2rem 0.2rem 1.5rem;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    @at-root .theme-vending-white & {
+      background: #2196f3;
+
+      &:focus,
+      &:hover,
+      &.Button--selected {
+        background: none;
+        background-color: #e91e63;
+        box-shadow: 0 0 0.7rem 0 #e91e63;
+        text-shadow: 0 0 10px white;
+      }
+
+      &.Button--disabled {
+        cursor: default;
+        background: none;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        background-color: #9e9e9e !important;
+      }
+    }
+
+    @at-root .theme-vending-dark & {
+      background: #3f51b5;
+
+      &:focus,
+      &:hover,
+      &.Button--selected {
+        background: none;
+        background-color: #e91e63;
+        box-shadow: 0 0 2rem 0 #e91e63;
+        text-shadow: 0 0 10px white;
+      }
+
+      &.Button--disabled {
+        cursor: default;
+        background: none;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        background-color: #9e9e9e !important;
+      }
+    }
+  }
+}
+
+.ProductIcon {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    -ms-interpolation-mode: nearest-neighbor;
+    width: 2.5em;
+    height: 2.5em;
+    vertical-align: -0.6rem;
+  }
+}

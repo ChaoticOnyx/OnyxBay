@@ -147,14 +147,18 @@
 
 // On-click handling. Turns on the computer if it's off and opens the GUI.
 /obj/item/modular_computer/attack_self(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			return
 	if(enabled && screen_on)
 		ui_interact(user)
 	else if(!enabled && screen_on)
 		turn_on(user)
 
-/obj/item/modular_computer/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/card/id)) // ID Card, try to insert it.
-		var/obj/item/weapon/card/id/I = W
+/obj/item/modular_computer/attackby(obj/item/W as obj, mob/user as mob)
+	if(istype(W, /obj/item/card/id)) // ID Card, try to insert it.
+		var/obj/item/card/id/I = W
 		if(!card_slot)
 			to_chat(user, "You try to insert \the [I] into \the [src], but it does not have an ID card slot installed.")
 			return
@@ -168,16 +172,16 @@
 		update_uis()
 		to_chat(user, "You insert \the [I] into \the [src].")
 		return
-	if(istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/weapon/paper_bundle))
+	if(istype(W, /obj/item/paper) || istype(W, /obj/item/paper_bundle))
 		if(!nano_printer)
 			return
 		nano_printer.attackby(W, user)
-	if(istype(W, /obj/item/weapon/aicard))
+	if(istype(W, /obj/item/aicard))
 		if(!ai_slot)
 			return
 		ai_slot.attackby(W, user)
-	if(istype(W, /obj/item/weapon/computer_hardware))
-		var/obj/item/weapon/computer_hardware/C = W
+	if(istype(W, /obj/item/computer_hardware))
+		var/obj/item/computer_hardware/C = W
 		if(C.hardware_size <= max_hardware_size)
 			try_install_component(user, C)
 		else
@@ -192,7 +196,7 @@
 		qdel(src)
 		return
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 		if(!WT.isOn())
 			to_chat(user, "\The [W] is off.")
 			return
@@ -213,7 +217,7 @@
 			to_chat(user, "This device doesn't have any components installed.")
 			return
 		var/list/component_names = list()
-		for(var/obj/item/weapon/computer_hardware/H in all_components)
+		for(var/obj/item/computer_hardware/H in all_components)
 			component_names.Add(H.name)
 
 		var/choice = input(usr, "Which component do you want to uninstall?", "Computer maintenance", null) as null|anything in component_names
@@ -224,7 +228,7 @@
 		if(!Adjacent(usr))
 			return
 
-		var/obj/item/weapon/computer_hardware/H = find_hardware_by_name(choice)
+		var/obj/item/computer_hardware/H = find_hardware_by_name(choice)
 
 		if(!H)
 			return

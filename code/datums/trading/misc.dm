@@ -10,10 +10,10 @@
 
 				"trade_complete"    = "Remember to give them attention and food. They are living beings, and you should treat them like so.",
 				"trade_blacklist"   = "Legally I can' do that. Morally, I refuse to do that.",
-				"trade_found_unwanted" = "I want only slime extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
+				"trade_found_unwanted" = "I want only metroid extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
 				"trade_not_enough"   = "I'd give you the animal for free, but I need the money to feed the others. So you must pay in full.",
-				"how_much"          = "This is a fine specimen. I believe it will cost you VALUE thalers.",
-				"what_want"         = "I currently need those slime extracts and seeds:",
+				"how_much"          = "This is a fine specimen. I believe it will cost you VALUE credits.",
+				"what_want"         = "I currently need those metroid extracts and seeds:",
 
 				"compliment_deny"   = "That was almost charming.",
 				"compliment_accept" = "Thank you. I needed that.",
@@ -24,7 +24,7 @@
 				"bribe_accept"      = "Hm. It'll be good for the animals, so sure.",
 				)
 
-	possible_wanted_items = list(/obj/item/slime_extract									= TRADER_SUBTYPES_ONLY,
+	possible_wanted_items = list(/obj/item/metroid_extract									= TRADER_SUBTYPES_ONLY,
 								/obj/item/seeds 											= TRADER_SUBTYPES_ONLY
 								)
 
@@ -49,7 +49,7 @@
 								/mob/living/simple_animal/hostile/carp						= TRADER_THIS_TYPE,
 								/obj/item/device/dociler									= TRADER_THIS_TYPE,
 								/obj/structure/dogbed										= TRADER_THIS_TYPE,
-								/obj/item/device/slime_scanner								= TRADER_THIS_TYPE
+								/obj/item/device/metroid_scanner								= TRADER_THIS_TYPE
 								)
 
 /datum/trader/ship/prank_shop
@@ -66,7 +66,7 @@
 				"trade_complete" = "We thank you for purchasing something. We enjoyed the experience of you doing so and we hope to learn from it.",
 				"trade_blacklist"= "We are not allowed to do such. We are sorry.",
 				"trade_not_enough"="We have sufficiently experienced giving away goods for free. We wish to experience getting money in return.",
-				"how_much"       = "We believe that is worth VALUE thalers.",
+				"how_much"       = "We believe that is worth VALUE credits.",
 				"what_want"      = "We wish only for the experiences you give us, in all else we want",
 
 				"compliment_deny"= "You are attempting to compliment us.",
@@ -82,23 +82,23 @@
 								/obj/item/clothing/shoes/clown_shoes									= TRADER_THIS_TYPE,
 								/obj/item/clothing/under/rank/clown										= TRADER_THIS_TYPE,
 								/obj/item/device/pda/clown												= TRADER_THIS_TYPE,
-								/obj/item/weapon/cartridge/clown										= TRADER_THIS_TYPE,
-								/obj/item/weapon/stamp/clown											= TRADER_THIS_TYPE,
-								/obj/item/weapon/storage/backpack/clown									= TRADER_THIS_TYPE,
-								/obj/item/weapon/bananapeel												= TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/launcher/money										= TRADER_THIS_TYPE,
-								/obj/item/weapon/reagent_containers/food/snacks/pie						= TRADER_THIS_TYPE,
-								/obj/item/weapon/bikehorn												= TRADER_ALL,
-								/obj/item/weapon/reagent_containers/spray/waterflower					= TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/launcher/pneumatic/small							= TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/projectile/revolver/capgun							= TRADER_THIS_TYPE,
+								/obj/item/cartridge/clown										= TRADER_THIS_TYPE,
+								/obj/item/stamp/clown											= TRADER_THIS_TYPE,
+								/obj/item/storage/backpack/clown									= TRADER_THIS_TYPE,
+								/obj/item/bananapeel												= TRADER_THIS_TYPE,
+								/obj/item/gun/launcher/money										= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/food/pie						= TRADER_THIS_TYPE,
+								/obj/item/bikehorn												= TRADER_ALL,
+								/obj/item/reagent_containers/spray/waterflower					= TRADER_THIS_TYPE,
+								/obj/item/gun/launcher/pneumatic/small							= TRADER_THIS_TYPE,
+								/obj/item/gun/projectile/revolver/capgun							= TRADER_THIS_TYPE,
 								/obj/item/clothing/mask/fakemoustache									= TRADER_THIS_TYPE,
-								/obj/item/weapon/grenade/spawnergrenade/fake_carp						= TRADER_THIS_TYPE,
-								/obj/item/weapon/clothingbag											= TRADER_SUBTYPES_ONLY,
-								/obj/item/weapon/reagent_containers/glass/paint/random					= TRADER_THIS_TYPE,
-								/obj/item/weapon/reagent_containers/glass/paint/white					= TRADER_THIS_TYPE,
-								/obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing	= TRADER_THIS_TYPE,
-								/obj/item/weapon/reagent_containers/spray/hair_remover					= TRADER_THIS_TYPE
+								/obj/item/grenade/spawnergrenade/fake_carp						= TRADER_THIS_TYPE,
+								/obj/item/clothingbag											= TRADER_SUBTYPES_ONLY,
+								/obj/item/reagent_containers/vessel/paint/random					= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/paint/white					= TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/vessel/bottle/bottleofnothing      = TRADER_THIS_TYPE,
+								/obj/item/reagent_containers/spray/hair_remover					= TRADER_THIS_TYPE
 								)
 
 /datum/trader/ship/replica_shop
@@ -111,9 +111,9 @@
 				"hail_deny"      = "I shan't palaver with a man who thumbs his nose at the annals of history. Goodbye.",
 
 				"trade_complete" = "Thank you, mighty warrior. And remember - these may be replicas, but their edges are honed to razor sharpness!",
-				"trade_blacklist"= "Nay, we accept only the thaler. Or sovereigns of the king's mint, of course.",
+				"trade_blacklist"= "Nay, we accept only the credits. Or sovereigns of the king's mint, of course.",
 				"trade_not_enough"="Alas, traveler, my fine wares cost more than that.",
-				"how_much"       = "For VALUE thalers, I can part with this finest of goods.",
+				"how_much"       = "For VALUE credits, I can part with this finest of goods.",
 				"what_want"      = "I have ever longed for",
 
 				"compliment_deny"= "Oh ho ho! Aren't you quite the jester.",
@@ -125,7 +125,7 @@
 				"bribe_accept"   = "Mayhaps I could set a spell longer, and rest my weary feet.",
 				)
 	possible_trading_items = list(/obj/item/clothing/head/wizard/magus				= TRADER_THIS_TYPE,
-								/obj/item/weapon/shield/buckler						= TRADER_THIS_TYPE,
+								/obj/item/shield/buckler						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/redcoat						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/powdered_wig				= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/hasturhood					= TRADER_THIS_TYPE,
@@ -143,11 +143,11 @@
 								/obj/item/clothing/under/kilt						= TRADER_THIS_TYPE,
 								/obj/item/clothing/under/redcoat					= TRADER_THIS_TYPE,
 								/obj/item/clothing/under/soviet						= TRADER_THIS_TYPE,
-								/obj/item/weapon/material/harpoon					= TRADER_THIS_TYPE,
-								/obj/item/weapon/material/sword						= TRADER_ALL,
-								/obj/item/weapon/material/scythe					= TRADER_THIS_TYPE,
-								/obj/item/weapon/material/star						= TRADER_THIS_TYPE,
-								/obj/item/weapon/material/twohanded/baseballbat		= TRADER_THIS_TYPE,
-								/obj/item/weapon/material/hatchet					= TRADER_ALL,
-								/obj/item/weapon/material/twohanded/fireaxe			= TRADER_THIS_TYPE
+								/obj/item/material/harpoon					= TRADER_THIS_TYPE,
+								/obj/item/material/sword						= TRADER_ALL,
+								/obj/item/material/scythe					= TRADER_THIS_TYPE,
+								/obj/item/material/star						= TRADER_THIS_TYPE,
+								/obj/item/material/twohanded/baseballbat		= TRADER_THIS_TYPE,
+								/obj/item/material/hatchet					= TRADER_ALL,
+								/obj/item/material/twohanded/fireaxe			= TRADER_THIS_TYPE
 								)

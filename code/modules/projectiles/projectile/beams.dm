@@ -3,13 +3,14 @@
 	icon_state = "laser"
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 40
+	damage = 32.5
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
 	eyeblur = 4
 	hitscan = 1
 	invisibility = 101	//beam projectiles are invisible as they are rendered by the effect engine
+	penetration_modifier = 0.45
 
 	muzzle_type = /obj/effect/projectile/laser/muzzle
 	tracer_type = /obj/effect/projectile/laser/tracer
@@ -25,23 +26,60 @@
 	check_armour = "laser"
 	eyeblur = 2
 
-/obj/item/projectile/beam/smalllaser
-	damage = 25
+/obj/item/projectile/beam/laser
+	name = "laser beam"
+	icon_state = "laser"
+	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 
-/obj/item/projectile/beam/midlaser
-	damage = 50
-	armor_penetration = 10
+/obj/item/projectile/beam/laser/small
+	name = "small laser beam"
+	damage = 27.5
+	armor_penetration = 20
 
-/obj/item/projectile/beam/heavylaser
-	name = "heavy laser"
+	muzzle_type = /obj/effect/projectile/laser/small/muzzle
+	tracer_type = /obj/effect/projectile/laser/small/tracer
+	impact_type = /obj/effect/projectile/laser/small/impact
+
+/obj/item/projectile/beam/laser/lesser
+	damage = 32.5
+	armor_penetration = 22.5
+
+/obj/item/projectile/beam/laser/mid
+	icon_state = "laser"
+	damage = 37.5
+	armor_penetration = 25
+
+/obj/item/projectile/beam/laser/greater
+	name = "large laser beam"
+	damage = 42.5
+	armor_penetration = 27.5
+
+/obj/item/projectile/beam/laser/heavy
+	name = "heavy laser beam"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
-	damage = 60
+	damage = 55.0
 	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
 	impact_type = /obj/effect/projectile/laser/heavy/impact
+
+
+/obj/item/projectile/beam/sniper
+	name = "sniper beam"
+	icon_state = "xray"
+	fire_sound = 'sound/effects/weapons/heavy/fire1.ogg'
+	damage = 50
+	armor_penetration = 50
+	stun = 3
+	weaken = 3
+	stutter = 3
+	penetration_modifier = 1.0
+
+	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
+	tracer_type = /obj/effect/projectile/laser/xray/tracer
+	impact_type = /obj/effect/projectile/laser/xray/impact
 
 /obj/item/projectile/beam/xray
 	name = "x-ray beam"
@@ -49,7 +87,7 @@
 	fire_sound = 'sound/effects/weapons/energy/fire16.ogg'
 	damage = 30
 	armor_penetration = 30
-	penetration_modifier = 0.8
+	penetration_modifier = 0.85
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -64,6 +102,7 @@
 	icon_state = "u_laser"
 	fire_sound='sound/effects/weapons/energy/fire26.ogg'
 	damage = 15 //lower damage, but fires in bursts
+	penetration_modifier = 0.75
 
 	muzzle_type = /obj/effect/projectile/laser/pulse/muzzle
 	tracer_type = /obj/effect/projectile/laser/pulse/tracer
@@ -81,6 +120,7 @@
 	name = "destroyer pulse"
 	damage = 100 //badmins be badmins I don't give a fuck
 	armor_penetration = 100
+	penetration_modifier = 100
 
 /obj/item/projectile/beam/pulse/destroy/on_hit(atom/target, blocked = 0)
 	if(isturf(target))
@@ -115,6 +155,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/red
@@ -131,6 +172,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/omni//A laser tag bolt that stuns EVERYONE
@@ -150,35 +192,29 @@
 		var/mob/living/carbon/human/M = target
 		if((istype(M.wear_suit, /obj/item/clothing/suit/bluetag))||(istype(M.wear_suit, /obj/item/clothing/suit/redtag)))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
-
-/obj/item/projectile/beam/sniper
-	name = "sniper beam"
-	icon_state = "xray"
-	fire_sound = 'sound/effects/weapons/heavy/fire1.ogg'
-	damage = 50
-	armor_penetration = 10
-	stun = 3
-	weaken = 3
-	stutter = 3
-
-	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
-	tracer_type = /obj/effect/projectile/laser/xray/tracer
-	impact_type = /obj/effect/projectile/laser/xray/impact
 
 /obj/item/projectile/beam/stun
 	name = "stun beam"
 	icon_state = "stun"
 	fire_sound = 'sound/effects/weapons/energy/fire1.ogg'
 	check_armour = "energy"
-	sharp = 0 //not a laser
+	damage_type = PAIN
+	armor_penetration = 10
+	nodamage = TRUE
+	sharp = FALSE // not a laser
+	damage = 0
 	agony = 40
-	tasing = 1
-	damage_type = STUN
+	tasing = 6
 
 	muzzle_type = /obj/effect/projectile/stun/muzzle
 	tracer_type = /obj/effect/projectile/stun/tracer
 	impact_type = /obj/effect/projectile/stun/impact
+
+/obj/item/projectile/beam/stun/greater
+	name = "stun beam"
+	agony = 55
 
 /obj/item/projectile/beam/stun/heavy
 	name = "heavy stun beam"
@@ -189,6 +225,9 @@
 	damage_type = ELECTROCUTE
 	damage = 10
 	agony  = 5
+	nodamage = FALSE
+	damage_type = STUN
+	penetration_modifier = 0.1
 	fire_sound='sound/effects/weapons/energy/fire2.ogg'
 
 /obj/item/projectile/beam/stun/shock/heavy
@@ -225,7 +264,7 @@
 /obj/item/projectile/beam/plasmacutter/danger
 	name = "plasma arc"
 	icon_state = "omnilaser"
-	fire_sound = "sound/effects/weapons/energy/fire3.ogg"
+	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
 	damage = 25
 	sharp = 1
 	edge = 1

@@ -8,12 +8,12 @@
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 	var/mob/living/carbon/human/occupant = null
-	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
-										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
+	var/list/possible_chemicals = list(list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Paracetamol" = /datum/reagent/painkiller/paracetamol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Dexalin" = /datum/reagent/dexalin, "Kelotane" = /datum/reagent/kelotane),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Hyronalin" = /datum/reagent/hyronalin, "Dexalin Plus" = /datum/reagent/dexalinp, "Kelotane" = /datum/reagent/kelotane, "Bicaridine" = /datum/reagent/bicaridine),
+										list("Inaprovaline" = /datum/reagent/inaprovaline, "Soporific" = /datum/reagent/soporific, "Tramadol" = /datum/reagent/painkiller/tramadol, "Dylovene" = /datum/reagent/dylovene, "Arithrazine" = /datum/reagent/arithrazine, "Dexalin Plus" = /datum/reagent/dexalinp, "Dermaline" = /datum/reagent/dermaline, "Bicaridine" = /datum/reagent/bicaridine, "Peridaxon" = /datum/reagent/peridaxon))
 	var/available_chemicals = list()
-	var/obj/item/weapon/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/filtering = 0
 	var/pump
 	var/list/possible_stasis = list(list(1, 2, 5),
@@ -29,6 +29,8 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+	beepsounds = SFX_BEEP_MEDICAL
+
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -43,23 +45,23 @@
 /obj/machinery/sleeper/Initialize()
 	. = ..()
 	component_parts = list(
-		new /obj/item/weapon/circuitboard/sleeper(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/capacitor(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/console_screen(src),
-		new /obj/item/weapon/reagent_containers/syringe(src),
-		new /obj/item/weapon/reagent_containers/syringe(src),
-		new /obj/item/weapon/reagent_containers/glass/beaker/large(src))
+		new /obj/item/circuitboard/sleeper(src),
+		new /obj/item/stock_parts/manipulator(src),
+		new /obj/item/stock_parts/capacitor(src),
+		new /obj/item/stock_parts/scanning_module(src),
+		new /obj/item/stock_parts/console_screen(src),
+		new /obj/item/reagent_containers/syringe(src),
+		new /obj/item/reagent_containers/syringe(src),
+		new /obj/item/reagent_containers/vessel/beaker/large(src))
 	RefreshParts()
 
-/obj/machinery/sleeper/examine(mob/user)
+/obj/machinery/sleeper/_examine_text(mob/user)
 	. = ..()
 	if (user.Adjacent(src))
 		if (beaker)
 			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			. += "\n[occupant.examine(user)]"
+			. += "\n[occupant._examine_text(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -67,6 +69,8 @@
 
 	if (!(occupant in src))
 		go_out()
+
+	play_beep()
 
 	if(filtering > 0)
 		if(beaker)
@@ -105,7 +109,7 @@
 	var/drugs = 0
 	var/scanning = 0
 
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismanipulator(P))
 			drugs += P.rating
 		else if(isscanner(P))
@@ -119,7 +123,7 @@
 
 	stasis_settings = possible_stasis[freeze]
 
-	beaker = locate(/obj/item/weapon/reagent_containers/glass/beaker) in component_parts
+	beaker = locate(/obj/item/reagent_containers/vessel/beaker) in component_parts
 
 /obj/machinery/sleeper/attack_hand(mob/user)
 	if(..())
@@ -204,7 +208,7 @@
 				return TOPIC_REFRESH
 	if(href_list["stasis"])
 		var/nstasis = text2num(href_list["stasis"])
-		if(stasis != nstasis && nstasis in stasis_settings)
+		if(stasis != nstasis && (nstasis in stasis_settings))
 			stasis = text2num(href_list["stasis"])
 			return TOPIC_REFRESH
 
@@ -212,7 +216,7 @@
 	return attack_hand(user)
 
 /obj/machinery/sleeper/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/reagent_containers/glass))
+	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_fingerprint(user)
 		if(!beaker)
 			beaker = I
@@ -223,7 +227,7 @@
 		else
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
-	if(occupant && panel_open && istype(I,/obj/item/weapon/crowbar))
+	if(occupant && panel_open && istype(I,/obj/item/crowbar))
 		occupant.loc = get_turf(src)
 		occupant = null
 		update_use_power(1)
@@ -274,9 +278,9 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
 		return FALSE
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return FALSE
 	return TRUE
 
@@ -318,17 +322,18 @@
 	spark_system.set_up(5, 0, src.loc)
 
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 	if(locked)
 		to_chat(user, "<span class='danger'>You short out locking system.</span>")
 		toggle_lock()
 		spark_system.start()
-		playsound(src.loc, "spark", 50, 1)
+		playsound(src.loc, SFX_SPARK, 50, 1)
 		return 1
 
 /obj/machinery/sleeper/proc/toggle_filter()
@@ -408,7 +413,7 @@
 		beaker = null
 		toggle_filter()
 		toggle_pump()
-		for(var/obj/item/weapon/reagent_containers/glass/beaker/A in component_parts)
+		for(var/obj/item/reagent_containers/vessel/beaker/A in component_parts)
 			component_parts -= A
 
 /obj/machinery/sleeper/proc/inject_chemical(mob/living/user, chemical_name, amount)

@@ -36,15 +36,16 @@
 #define ANTAG_RANDOM_EXCEPTED   0x800 // If a game mode randomly selects antag types, antag types with this flag should be excluded.
 
 // Mode/antag template macros.
+#define MODE_ABDUCTOR "abductor"
 #define MODE_BORER "borer"
-#define MODE_XENOMORPH "xeno"
+#define MODE_XENOMORPH "xenomorph"
 #define MODE_LOYALIST "loyalist"
 #define MODE_MUTINEER "mutineer"
 #define MODE_COMMANDO "commando"
 #define MODE_DEATHSQUAD "deathsquad"
 #define MODE_ERT "ert"
 #define MODE_ACTOR "actor"
-#define MODE_MERCENARY "mercenary"
+#define MODE_NUKE "nuke"
 #define MODE_NINJA "ninja"
 #define MODE_RAIDER "raider"
 #define MODE_WIZARD "wizard"
@@ -60,10 +61,10 @@
 #define MODE_MEME "meme"
 #define MODE_DEITY "deity"
 #define MODE_GODCULTIST "god cultist"
-#define MODE_BLOB "blob"
 
-#define DEFAULT_TELECRYSTAL_AMOUNT 130
-#define IMPLANT_TELECRYSTAL_AMOUNT(x) (round(x * 0.49)) // If this cost is ever greater than half of DEFAULT_TELECRYSTAL_AMOUNT then it is possible to buy more TC than you spend
+#define DEFAULT_TELECRYSTAL_AMOUNT 12
+#define NUCLEAR_TELECRYSTAL_AMOUNT 15
+#define IMPLANT_TELECRYSTAL_AMOUNT(x) ((x / 2) - 1) // If this cost is ever greater than half of DEFAULT_TELECRYSTAL_AMOUNT then it is possible to buy more TC than you spend
 
 /////////////////
 ////WIZARD //////
@@ -88,20 +89,20 @@
 #define NO_BUTTON		0x200	//spell won't show up in the HUD with this
 
 //invocation
-#define SpI_SHOUT	"shout"
-#define SpI_WHISPER	"whisper"
-#define SpI_EMOTE	"emote"
-#define SpI_NONE	"none"
+#define SPI_SHOUT	"shout"
+#define SPI_WHISPER	"whisper"
+#define SPI_EMOTE	"emote"
+#define SPI_NONE	"none"
 
 //upgrading
-#define Sp_SPEED	"speed"
-#define Sp_POWER	"power"
-#define Sp_TOTAL	"total"
+#define SP_SPEED	"speed"
+#define SP_POWER	"power"
+#define SP_TOTAL	"total"
 
 //casting costs
-#define Sp_RECHARGE	"recharge"
-#define Sp_CHARGES	"charges"
-#define Sp_HOLDVAR	"holdervar"
+#define SP_RECHARGE	"recharge"
+#define SP_CHARGES	"charges"
+#define SP_HOLDVAR	"holdervar"
 
 //Voting-related
 #define VOTE_PROCESS_ABORT    1

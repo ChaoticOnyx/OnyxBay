@@ -5,8 +5,8 @@
 	maxHealth = 20
 
 	mob_bump_flag = SIMPLE_ANIMAL
-	mob_swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL
-	mob_push_flags = MONKEY|SLIME|SIMPLE_ANIMAL
+	mob_swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
+	mob_push_flags = MONKEY|METROID|SIMPLE_ANIMAL
 
 	var/show_stat_health = 1	//does the percentage health show in the stat panel for the mob
 
@@ -19,6 +19,7 @@
 	var/list/emote_hear = list()	//Hearable emotes
 	var/list/emote_see = list()		//Unlike speak_emote, the list of things in this variable only show by themselves with no spoken text. IE: Ian barks, Ian yaps
 
+	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 	var/turns_per_move = 1
 	var/turns_since_move = 0
 	universal_speak = 0		//No, just no.
@@ -32,9 +33,9 @@
 	var/response_help   = "tries to help"
 	var/response_disarm = "tries to disarm"
 	var/response_harm   = "tries to hurt"
-	var/harm_intent_damage = 3
+	var/harm_intent_damage = 3 // How much damage a human deals upon punching
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
-	var/mob/panic_target = null // shy simple animals run away from humans
+	var/weakref/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
 	var/shy_animal = 0
 
@@ -45,11 +46,11 @@
 	var/cold_damage_per_tick = 2	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	var/fire_alert = 0
 	var/oxygen_alert = 0
-	var/toxins_alert = 0	
-	
-	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
+	var/toxins_alert = 0
+
+	//Atmos effect - Yes, you can make creatures that require plasma or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
-	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
+	var/max_gas = list("plasma" = 1, "carbon_dioxide" = 5)
 	var/unsuitable_atoms_damage = 2	//This damage is taken when atmos doesn't fit all the requirements above
 	var/speed = 0 //LETS SEE IF I CAN SET SPEEDS FOR SIMPLE MOBS WITHOUT DESTROYING EVERYTHING. Higher speed is slower, negative speed is faster
 
@@ -61,9 +62,11 @@
 	var/friendly = "nuzzles"
 	var/environment_smash = 0
 	var/resistance		  = 0	// Damage reduction
+	var/armor_projectile  = 0   // Percentage of projectile damage blocked by a simple animal
 
 	var/damtype = BRUTE
 	var/defense = "melee"
+	var/bodyparts = /decl/simple_animal_bodyparts // Fake bodyparts that can be shown when hit by projectiles.
 
 	//Null rod stuff
 	var/supernatural = 0
@@ -72,97 +75,88 @@
 	// contained in a cage
 	var/in_stasis = 0
 
-/mob/living/simple_animal/Life()
+	var/datum/mob_ai/mob_ai
+	var/is_pet = FALSE
+
+/mob/living/simple_animal/Initialize()
+	. = ..()
+	if(is_pet)
+		mob_ai = new /datum/mob_ai/pet()
+	else
+		mob_ai = new()
+	mob_ai.holder = src
+
+	if(bodyparts)
+		bodyparts = decls_repository.get_decl(bodyparts)
+
+/mob/living/simple_animal/Destroy()
+	QDEL_NULL(mob_ai)
+	panic_target = null
+	. = ..()
+
+/mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	..()
-	if(!living_observers_present(GetConnectedZlevels(z)))
-		return
-	//Health
+	mob_ai.listen(speaker, message)
+
+/mob/living/simple_animal/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
+	..()
+	mob_ai.listen(speaker, message)
+
+/mob/living/simple_animal/Life()
 	if(stat == DEAD)
-		if(health > 0)
-			icon_state = icon_living
-			switch_from_dead_to_living_mob_list()
-			set_stat(CONSCIOUS)
-			set_density(1)
 		return 0
-
-	if(health <= 0)
-		death()
-		return
-
-	if(health > maxHealth)
-		health = maxHealth
+	. = ..()
+	if(!.)
+		walk(src, 0)
+		return 0
 
 	handle_stunned()
 	handle_weakened()
 	handle_paralysed()
 	handle_supernatural()
 
-	if(buckled && can_escape)
-		if(istype(buckled, /obj/effect/energy_net))
-			var/obj/effect/energy_net/Net = buckled
-			Net.escape_net(src)
-		else if(prob(50))
-			escape(src, buckled)
-		else if(prob(50))
-			visible_message("<span class='warning'>\The [src] struggles against \the [buckled]!</span>")
+	mob_ai.attempt_escape()
 
-	//Movement
-	if(!client && !stop_automated_movement && wander && !anchored)
-		if(isturf(src.loc) && !resting && !buckled && canmove)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
-					var/moving_to = 0 // otherwise it always picks 4, fuck if I know.   Did I mention fuck BYOND
-					moving_to = pick(GLOB.cardinal)
-					set_dir(moving_to)			//How about we turn them the direction they are moving, yay.
-					Move(get_step(src,moving_to))
-					turns_since_move = 0
+	mob_ai.process_moving()
 
-	//Speaking
-	if(!client && speak_chance)
-		if(rand(0,200) < speak_chance)
-			var/action = pick(
-				speak.len;      "speak",
-				emote_hear.len; "emote_hear",
-				emote_see.len;  "emote_see"
-				)
+	mob_ai.process_speaking()
 
-			switch(action)
-				if("speak")
-					say(pick(speak))
-				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
-				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+	mob_ai.process_special_actions()
 
 	if(in_stasis)
-		return 1 // return early to skip atmos checks
+		return 1
 
-	//Atmos
+	if(shy_animal)
+		turns_since_scan++
+		if(turns_since_scan > 5)
+			walk_to(src,0)
+			turns_since_scan = 0
+			handle_panic_target()
+
+	return 1
+
+/mob/living/simple_animal/do_check_environment()
+	return !in_stasis
+
+/mob/living/simple_animal/handle_environment(datum/gas_mixture/environment)
 	var/atmos_suitable = 1
 
-	var/atom/A = loc
-	if(!loc)
-		return 1
-	var/datum/gas_mixture/environment = A.return_air()
-
-	if(environment)
-		if( abs(environment.temperature - bodytemperature) > 40 )
-			bodytemperature += (environment.temperature - bodytemperature) / 5
-		if(min_gas)
-			for(var/gas in min_gas)
-				if(environment.gas[gas] < min_gas[gas])
-					atmos_suitable = 0
-					oxygen_alert = 1
-				else
-					oxygen_alert = 0
-		if(max_gas)
-			for(var/gas in max_gas)
-				if(environment.gas[gas] > max_gas[gas])
-					atmos_suitable = 0
-					toxins_alert = 1
-				else
-					toxins_alert = 0					
+	if( abs(environment.temperature - bodytemperature) > 40 )
+		bodytemperature += (environment.temperature - bodytemperature) / 5
+	if(min_gas)
+		for(var/gas in min_gas)
+			if(environment.gas[gas] < min_gas[gas])
+				atmos_suitable = 0
+				oxygen_alert = 1
+			else
+				oxygen_alert = 0
+	if(max_gas)
+		for(var/gas in max_gas)
+			if(environment.gas[gas] > max_gas[gas])
+				atmos_suitable = 0
+				toxins_alert = 1
+			else
+				toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
@@ -176,15 +170,6 @@
 
 	if(!atmos_suitable)
 		adjustBruteLoss(unsuitable_atoms_damage)
-
-	if(shy_animal)
-		turns_since_scan++
-		if(turns_since_scan > 5)
-			walk_to(src,0)
-			turns_since_scan = 0
-			handle_panic_target()
-
-	return 1
 
 /mob/living/simple_animal/proc/escape(mob/living/M, obj/O)
 	O.unbuckle_mob(M)
@@ -207,7 +192,7 @@
 	if(!Proj || Proj.nodamage)
 		return
 
-	var/damage = Proj.damage
+	var/damage = Proj.damage * ((100 - armor_projectile) / 100)
 	if(Proj.damtype == STUN)
 		damage = (Proj.damage / 8)
 
@@ -220,7 +205,7 @@
 	switch(M.a_intent)
 
 		if(I_HELP)
-			if (health > 0)
+			if(health > 0)
 				M.visible_message("<span class='notice'>[M] [response_help] \the [src].</span>")
 
 		if(I_DISARM)
@@ -229,7 +214,7 @@
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
-			adjustBruteLoss(harm_intent_damage)
+			adjustBruteLoss(harm_intent_damage * M.species.generic_attack_mod)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
 
@@ -255,7 +240,7 @@
 			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
 		return
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/material/knife) || istype(O, /obj/item/weapon/material/knife/butch))
+		if(istype(O, /obj/item/material/knife) || istype(O, /obj/item/material/knife/butch))
 			harvest(user)
 	else
 		if(!O.force)
@@ -272,11 +257,11 @@
 		return 2
 
 	var/damage = O.force
-	if (O.damtype == PAIN)
+	if(O.damtype == PAIN)
 		damage = 0
-	if (O.damtype == STUN)
+	if(O.damtype == STUN)
 		damage = (O.force / 8)
-	if(supernatural && istype(O,/obj/item/weapon/nullrod))
+	if(supernatural && istype(O,/obj/item/nullrod))
 		damage *= 2
 		purge = 3
 	adjustBruteLoss(damage)
@@ -292,7 +277,7 @@
 			tally = 1
 		tally *= purge
 
-	return tally+config.animal_delay
+	return tally + config.movement.animal_delay
 
 /mob/living/simple_animal/Stat()
 	. = ..()
@@ -301,24 +286,40 @@
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
-	icon_state = icon_dead
-	density = 0
-	adjustBruteLoss(maxHealth) //Make sure dey dead.
-	walk_to(src,0)
-	return ..(gibbed,deathmessage,show_dead_message)
+	. = ..()
+	if(.)
+		icon_state = icon_dead
+		density = 0
+		health = 0 //Make sure dey dead.
+		walk_to(src, 0)
+
+/mob/living/simple_animal/rejuvenate()
+	..()
+	icon_state = icon_living
+	set_density(1)
+
+/mob/living/simple_animal/updatehealth()
+	if(stat == DEAD)
+		return
+	if(status_flags & GODMODE)
+		health = maxHealth
+		set_stat(CONSCIOUS)
+	else
+		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
+		if(health <= 0)
+			death()
 
 /mob/living/simple_animal/ex_act(severity)
 	if(!blinded)
 		flash_eyes()
 
 	var/damage
-	switch (severity)
-		if (1.0)
+	switch(severity)
+		if(1.0)
 			damage = 500
 			if(!prob(getarmor(null, "bomb")))
 				gib()
-
-		if (2.0)
+		if(2.0)
 			damage = 120
 
 		if(3.0)
@@ -396,15 +397,16 @@
 
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
-	if(panic_target)
-		if (!(panic_target.loc in view(src)))
+	var/mob/M = panic_target?.resolve()
+	if(istype(M))
+		if(M.loc in view(src))
+			stop_automated_movement = 1
+			walk_away(src, M, 7, 4)
+		else
 			panic_target = null
 			stop_automated_movement = 0
-		else
-			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 2)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)
-		panic_target = M
+		panic_target = weakref(M)
 		turns_since_scan = 5

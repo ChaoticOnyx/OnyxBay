@@ -5,7 +5,7 @@ var/global/list/sparring_attack_cache = list()
 	var/attack_verb = list("attack")	// Empty hand hurt intent verb.
 	var/attack_noun = list("fist")
 	var/damage = 0						// Extra empty hand attack damage.
-	var/attack_sound = "punch"
+	var/attack_sound = SFX_FIGHTING_PUNCH
 	var/miss_sound = 'sound/weapons/punchmiss.ogg'
 	var/shredding = 0 // Calls the old attack_alien() behavior on objects/mobs when on harm intent.
 	var/sharp = 0
@@ -50,7 +50,7 @@ var/global/list/sparring_attack_cache = list()
 
 	var/effective_armor = target.getarmor(zone, "melee")
 	attack_damage *= specmod
-	target.poise -= round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1)
+	target.damage_poise(round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1))
 
 	//target.visible_message("Debug \[UNARMED\]: [target] lost [round(attack_damage*0.5 + attack_damage*0.5*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 
@@ -95,7 +95,7 @@ var/global/list/sparring_attack_cache = list()
 					if(prob(50))
 						target.set_dir(GLOB.reverse_dir[target.dir])
 			if(BP_GROIN)
-				target.visible_message("<span class='warning'>[target] looks like \he is in pain!</span>", "<span class='warning'>[(target.gender=="female") ? "Oh god that hurt!" : "Oh no, not your[pick("testicles", "crown jewels", "clockweights", "family jewels", "marbles", "bean bags", "teabags", "sweetmeats", "goolies")]!"]</span>")
+				target.visible_message("<span class='warning'>[target] looks like \he is in pain!</span>", "<span class='warning'>[(target.gender=="female") ? "Oh god that hurt!" : "Oh no, not your [pick("testicles", "crown jewels", "clockweights", "family jewels", "marbles", "bean bags", "teabags", "sweetmeats", "goolies")]!"]</span>")
 				target.apply_effects(stutter = attack_damage * 2, agony = attack_damage* 3, blocked = armor)
 			if(BP_L_LEG, BP_L_FOOT, BP_R_LEG, BP_R_FOOT)
 				if(!target.lying)
@@ -192,7 +192,7 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/kick
 	attack_verb = list("kicked", "kicked", "kicked", "kneed")
 	attack_noun = list("kick", "kick", "kick", "knee strike")
-	attack_sound = "swing_hit"
+	attack_sound = SFX_FIGHTING_SWING
 	damage = 0
 
 /datum/unarmed_attack/kick/is_usable(mob/living/carbon/human/user, mob/living/carbon/human/target, zone)
@@ -229,7 +229,7 @@ var/global/list/sparring_attack_cache = list()
 /datum/unarmed_attack/stomp
 	attack_verb = list("stomped on")
 	attack_noun = list("stomp")
-	attack_sound = "swing_hit"
+	attack_sound = SFX_FIGHTING_SWING
 	damage = 0
 
 /datum/unarmed_attack/stomp/is_usable(mob/living/carbon/human/user, mob/living/carbon/human/target, zone)

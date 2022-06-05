@@ -11,15 +11,15 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead())
+			if (CR.get_name() == M.real_name && !M.is_dead() && !M.ssd_check())
 				personnel++
 
 	for (var/mob/living/silicon/ai/ai in SSmobs.mob_list)
-		if (!ai.is_dead())
+		if (!ai.is_dead() && !ai.ssd_check())
 			AIs++
 
 	for (var/mob/living/silicon/robot/robot in SSmobs.mob_list)
-		if (!robot.is_dead())
+		if (!robot.is_dead() && !robot.ssd_check())
 			cyborgs++
 
 	var/result = personnel + AIs + cyborgs
@@ -47,7 +47,7 @@
 
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
 		for (var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
-			if (CR.get_name() == M.real_name && !M.is_dead())
+			if (CR.get_name() == M.real_name && !M.is_dead()  && !M.ssd_check())
 				var/add_manpower = 0
 				switch (CR.get_job())
 					if ("Captain")          add_manpower = 7
@@ -60,8 +60,8 @@
 					_log_debug("+[add_manpower] for an [CR.get_job()]")
 
 	for (var/mob/living/silicon/robot/robot in GLOB.player_list)
-		if (!robot.is_dead())
-			if (istype(robot.module, /obj/item/weapon/robot_module/security/general) || istype(robot.module, /obj/item/weapon/robot_module/security/combat))
+		if (!robot.is_dead() && !robot.ssd_check())
+			if (istype(robot.module, /obj/item/robot_module/security/general) || istype(robot.module, /obj/item/robot_module/security/combat))
 				var/add_manpower = 3
 				security_manpower += add_manpower
 				_log_debug("+[add_manpower] for a Security Cyborg")
@@ -70,50 +70,50 @@
 	return security_manpower
 
 
+/proc/antagonist_to_danger(antagonist_id)
+	switch(antagonist_id)
+		if(MODE_ERT)           return -6
+		if(MODE_LOYALIST)      return -2
+		if(MODE_BORER)         return 2
+		if(MODE_REVOLUTIONARY) return 2
+		if(MODE_COMMANDO)      return 4
+		if(MODE_TRAITOR)       return 4
+		if(MODE_CULTIST)       return 4
+		if(MODE_RENEGADE)      return 4
+		if(MODE_RAIDER)        return 4
+		if(MODE_NUKE)          return 4
+		if(MODE_DEATHSQUAD)    return 6
+		if(MODE_CHANGELING)    return 8
+		if(MODE_NINJA)         return 12
+		if(MODE_ABDUCTOR)      return 16
+		if(MODE_WIZARD)        return 16
+		if(MODE_MALFUNCTION)   return 24
+	return 0
+
 /storyteller_metric/antagonists_danger
 	name = "Danger by Antagonists"
 
 /storyteller_metric/antagonists_danger/_evaluate()
 	var/antagonists_danger = 0
 
-	for (var/role_id in GLOB.all_antag_types_)
+	for(var/role_id in GLOB.all_antag_types_)
 		var/datum/antagonist/antag = GLOB.all_antag_types_[role_id]
-		var/add_danger = 0
-		switch (role_id)
-			if ("ert")           add_danger = -6
-			if ("loyalist")      add_danger = -2
-			if ("borer")         add_danger = 2
-			if ("revolutionary") add_danger = 2
-			if ("commando")      add_danger = 4
-			if ("traitor")       add_danger = 4
-			if ("cultist")       add_danger = 4
-			if ("renegade")      add_danger = 4
-			if ("raider")        add_danger = 4
-			if ("mercenary")     add_danger = 4
-			if ("deathsquad")    add_danger = 6
-			if ("changeling")    add_danger = 8
-			if ("ninja")         add_danger = 12
-			if ("wizard")        add_danger = 16
-			if ("blob")          add_danger = 24
-			if ("malf")          add_danger = 24
-
-			// if ("god cultist") - /datum/antagonist/godcultist
-			// if ("xeno") - /datum/antagonist/xenos
-			// if ("actor") - /datum/antagonist/actor
-			// if ("deity") - /datum/antagonist/deity
-
+		var/add_danger = antagonist_to_danger(role_id)
 		var/count = 0
-		for (var/datum/mind/M in antag.current_antagonists)
-			if (M.current)
+		for(var/datum/mind/M in antag.current_antagonists)
+			if(M.current)
 				var/mob/living/L = M.current
-				if (L.stat & DEAD)
+				if(L.stat & DEAD)
 					_log_debug("Dead antagonist: [L] ([role_id])")
 					continue
-				if (antag.station_crew_involved && M.is_brigged(0))
+				if(antag.station_crew_involved && M.is_brigged(0))
 					_log_debug("Brigged antagonist: [L] ([role_id])")
 					continue
+				if(L.ssd_check())
+					_log_debug("SSD antagonist: [L] ([role_id])")
+					continue
 				count++
-		if (count)
+		if(count)
 			_log_debug("Add +[add_danger] for each [role_id] ([count] times)")
 			antagonists_danger += count * add_danger
 

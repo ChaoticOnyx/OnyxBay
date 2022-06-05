@@ -19,7 +19,8 @@
 		new /datum/body_build,
 		new /datum/body_build/slim,
 		new /datum/body_build/slim/alt,
-		new /datum/body_build/slim/male
+		new /datum/body_build/slim/male,
+		new /datum/body_build/fat
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -85,7 +86,9 @@
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Tajaran Ears"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
-	darksight = 8
+	generic_attack_mod = 2.0
+	darksight_range = 8
+	darksight_tint = DARKTINT_GOOD
 	slowdown = -0.5
 	brute_mod = 1.15
 	burn_mod =  1.15
@@ -95,6 +98,8 @@
 	additional_langs = list(LANGUAGE_SIIK_MAAS)
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
+
+	passive_temp_gain = 1 // Allow Tajar stabilize at 38-40C at 20C environment, and 47-49 in a spacesuit.
 
 	min_age = 18
 	max_age = 140
@@ -108,7 +113,8 @@
 
 	body_builds = list(
 		new /datum/body_build/tajaran,
-		new /datum/body_build/slim/alt/tajaran
+		new /datum/body_build/slim/alt/tajaran,
+		new /datum/body_build/tajaran/fat
 	)
 
 	cold_level_1 = 200 //Default 260
@@ -142,10 +148,11 @@
 
 	sexybits_location = BP_GROIN
 
+	xenomorph_type = /mob/living/carbon/alien/larva/feral
+
 /datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/tajblind(H),slot_glasses)
 
 /datum/species/skrell
 	name = SPECIES_SKRELL
@@ -162,7 +169,7 @@
 	the secrets of their empire to their allies."
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_SKRELLIAN)
-	name_language = null
+	name_language = LANGUAGE_SKRELLIAN
 	health_hud_intensity = 1.75
 
 	min_age = 18
@@ -186,7 +193,8 @@
 
 	body_temperature = null // cold-blooded, implemented the same way nabbers do it
 
-	darksight = 4
+	darksight_range = 4
+	darksight_tint = DARKTINT_MODERATE
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
@@ -223,11 +231,13 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
 
+	xenomorph_type = /mob/living/carbon/alien/larva/vile
+
 /datum/species/diona
 	name = SPECIES_DIONA
 	name_plural = "Dionaea"
-	icobase = 'icons/mob/human_races/diona/body.dmi'
-	deform = 'icons/mob/human_races/diona/deformed_body.dmi'
+	icobase = 'icons/mob/human_races/r_diona.dmi'
+	deform = 'icons/mob/human_races/r_def_plant.dmi'
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
@@ -243,6 +253,7 @@
 	spawns_with_stack = 0
 	health_hud_intensity = 2
 	hunger_factor = 3
+	eye_icon = "blank_eyes"
 
 	min_age = 1
 	max_age = 300
@@ -271,7 +282,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/diona/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/diona/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/diona),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes/diona),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/diona/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/diona/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/diona/leg),
@@ -283,6 +294,7 @@
 		)
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/diona_split_nymph,
 		/mob/living/carbon/human/proc/diona_heal_toggle
 		)
 
@@ -299,7 +311,7 @@
 
 	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
 
-	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_BLOOD
+	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET
 	appearance_flags = 0
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
@@ -309,14 +321,16 @@
 	reagent_tag = IS_DIONA
 	genders = list(PLURAL)
 
+	xenomorph_type = null
+
 /proc/spawn_diona_nymph(turf/target)
 	if(!istype(target))
-		return 0
+		return
 
 	//This is a terrible hack and I should be ashamed.
 	var/datum/seed/diona = SSplants.seeds["diona"]
 	if(!diona)
-		return 0
+		return
 
 	spawn(1) // So it has time to be thrown about by the gib() proc.
 		var/mob/living/carbon/alien/diona/D = new(target)
@@ -326,29 +340,6 @@
 			if(D)
 				if(!D.ckey || !D.client)
 					D.death()
-		return 1
-
-// Dionaea spawned by hand or by joining will not have any
-// nymphs passed to them. This should take care of that.
-
-/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-	. = ..()
-	addtimer(CALLBACK(src, .proc/fill_with_nymphs, H), 0)
-
-/datum/species/diona/proc/fill_with_nymphs(mob/living/carbon/human/H)
-	if(!H || H.species.name != name)
-		return
-
-	var/nymph_count = 0
-	for(var/mob/living/carbon/alien/diona/nymph in H)
-		nymph_count++
-		if(nymph_count >= 3)
-			return
-
-	while(nymph_count < 3)
-		new /mob/living/carbon/alien/diona/sterile(H)
-		nymph_count++
 
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(mob/living/carbon/human/H)
@@ -369,7 +360,7 @@
 	return 0
 
 /datum/species/diona/equip_survival_gear(mob/living/carbon/human/H)
-	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
+	if(istype(H.get_equipped_item(slot_back), /obj/item/storage/backpack))
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H.back), slot_in_backpack)
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H), slot_r_hand)
@@ -388,7 +379,7 @@
 		H.visible_message("<span class='danger'>\The [H] collapses into parts, revealing a solitary diona nymph at the core.</span>")
 		return
 	else
-		split_into_nymphs(H)
+		H.diona_split_nymph()
 
 /datum/species/diona/get_blood_name()
 	return "sap"
@@ -398,7 +389,7 @@
 		return
 	if(H.nutrition < 10)
 		H.take_overall_damage(2,0)
-	else if (H.innate_heal)
+	else if(H.innate_heal)
 		// Heals normal damage.
 		if(H.getBruteLoss())
 			H.adjustBruteLoss(-4)
@@ -409,7 +400,7 @@
 
 		if(prob(10) && H.nutrition > 200 && !H.getBruteLoss() && !H.getFireLoss())
 			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
-			if (D.status & ORGAN_DISFIGURED)
+			if(D.status & ORGAN_DISFIGURED)
 				D.status &= ~ORGAN_DISFIGURED
 				H.nutrition -= 20
 
@@ -418,9 +409,9 @@
 				I.damage = max(I.damage - 2, 0)
 				H.nutrition -= 2
 				if (prob(5))
-					to_chat(H, "<span class='warning'>You sense your nymphs shifting internally to regenerate your [I.name]...</span>")
+					to_chat(H, SPAN("warning", "You sense your nymphs shifting internally to regenerate your [I.name]..."))
 
-		if (prob(10) && H.nutrition > 70)
+		if(prob(10) && H.nutrition > 70)
 			for(var/limb_type in has_limbs)
 				var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 				if(E && !E.is_usable())
@@ -432,10 +423,13 @@
 					var/limb_path = organ_data["path"]
 					var/obj/item/organ/O = new limb_path(H)
 					organ_data["descriptor"] = O.name
-					to_chat(H, "<span class='warning'>Some of your nymphs split and hurry to reform your [O.name].</span>")
+					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
 					H.nutrition -= 60
 					H.update_body()
 				else
 					for(var/datum/wound/W in E.wounds)
-						if (W.wound_damage() == 0 && prob(50))
+						if(W.wound_damage() == 0 && prob(50))
 							E.wounds -= W
+
+/datum/species/diona/is_eligible_for_antag_spawn(antag_id)
+	return FALSE

@@ -95,8 +95,11 @@ Class Procs:
 /connection_edge/proc/recheck()
 
 /connection_edge/proc/flow(list/movable, differential, repelled)
-	for(var/i = 1; i <= movable.len; i++)
-		var/atom/movable/M = movable[i]
+	for(var/weakref/W in movable)
+		var/atom/movable/M = W.resolve()
+
+		if(!M)
+			return
 
 		//If they're already being tossed, don't do it again.
 		if(M.last_airflow > world.time - vsc.airflow_delay) continue
@@ -162,11 +165,11 @@ Class Procs:
 		var/list/attracted
 		var/list/repelled
 		if(differential > 0)
-			attracted = A.movables()
-			repelled = B.movables()
+			attracted = LAZY_GET(A, movables)
+			repelled = LAZY_GET(B, movables)
 		else
-			attracted = B.movables()
-			repelled = A.movables()
+			attracted = LAZY_GET(B, movables)
+			repelled = LAZY_GET(A, movables)
 
 		flow(attracted, abs(differential), 0)
 		flow(repelled, abs(differential), 1)
@@ -231,7 +234,7 @@ Class Procs:
 
 	var/differential = A.air.return_pressure() - air.return_pressure()
 	if(abs(differential) >= vsc.airflow_lightest_pressure)
-		var/list/attracted = A.movables()
+		var/list/attracted = LAZY_GET(A, movables)
 		flow(attracted, abs(differential), differential < 0)
 
 	if(equiv)
@@ -247,7 +250,7 @@ Class Procs:
 	if(!A.air.compare(air, vacuum_exception = 1))
 		SSair.mark_edge_active(src)
 
-proc/ShareHeat(datum/gas_mixture/A, datum/gas_mixture/B, connecting_tiles)
+/proc/ShareHeat(datum/gas_mixture/A, datum/gas_mixture/B, connecting_tiles)
 	//This implements a simplistic version of the Stefan-Boltzmann law.
 	var/energy_delta = ((A.temperature - B.temperature) ** 4) * STEFAN_BOLTZMANN_CONSTANT * connecting_tiles * 2.5
 	var/maximum_energy_delta = max(0, min(A.temperature * A.heat_capacity() * A.group_multiplier, B.temperature * B.heat_capacity() * B.group_multiplier))

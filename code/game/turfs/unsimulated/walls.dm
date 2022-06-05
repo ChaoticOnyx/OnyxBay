@@ -5,6 +5,7 @@
 	opacity = 1
 	density = 1
 	plane = DEFAULT_PLANE
+	explosion_block = 1
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"
@@ -13,3 +14,8 @@
 
 /turf/unsimulated/wall/other
 	icon_state = "r_wall"
+
+/turf/unsimulated/wall/abductor
+	name = "wall"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "alien1"

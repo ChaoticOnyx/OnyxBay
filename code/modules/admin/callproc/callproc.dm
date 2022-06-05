@@ -6,7 +6,7 @@
 	set name = "Advanced ProcCall"
 
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	var/target = null
 	var/targetselected = 0
@@ -41,7 +41,7 @@
 	set name = "Advanced ProcCall Target"
 
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	callproc_targetpicked(1, A)
 
@@ -51,7 +51,7 @@
 /client/proc/callproc_targetpicked(hastarget, datum/target)
 	// this needs checking again here because VV's 'Call Proc' option directly calls this proc with the target datum
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	if(!holder.callproc)
 		holder.callproc = new(src)
@@ -139,7 +139,11 @@
 				if(isnull(current)) return CANCEL
 
 			if("type")
-				current = input("Select type for [arguments.len+1]\th argument") as null|anything in typesof(/obj, /mob, /area, /turf)
+				var/incurrent = input("Input type for [arguments.len+1]\th argument") as text
+				current = text2path(incurrent)
+				if(!ispath(current))
+					to_chat(usr, "Your type doesn't exist - [incurrent]")
+					current = null
 				if(isnull(current)) return CANCEL
 
 			if("obj reference")
@@ -216,20 +220,25 @@
 /datum/callproc/proc/finalise()
 	var/returnval
 
+	if(is_proc_protected(procname))
+		log_admin("[key_name(usr)] failed to call forbidden [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
+		to_chat(usr, SPAN_WARNING("Failed to call forbidden proc!"))
+		return
+
 	if(hastarget)
 		if(!target)
 			to_chat(usr, "Your callproc target no longer exists.")
 			return
-		log_admin("[key_name(src)] called [target]'s [procname]() with [arguments.len ? "the arguments [list2params(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] called [target]'s [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		if(arguments.len)
 			returnval = call(target, procname)(arglist(arguments))
 		else
 			returnval = call(target, procname)()
 	else
-		log_admin("[key_name(src)] called [procname]() with [arguments.len ? "the arguments [list2params(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] called [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		returnval = call(procname)(arglist(arguments))
 
-	to_chat(usr, "<span class='info'>[procname]() returned: [json_encode(returnval)]</span>")
+	to_chat(usr, SPAN_NOTICE("[procname]() returned: [json_encode(returnval)]"))
 	feedback_add_details("admin_verb","APC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 #undef CANCEL

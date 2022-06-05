@@ -7,26 +7,12 @@
 	dynamic_lighting = 0
 	temperature = T20C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
-	var/static/list/dust_cache
 	var/dirt = 0
-
-/turf/space/proc/build_dust_cache()
-	LAZYINITLIST(dust_cache)
-	for (var/i in 0 to 25)
-		var/image/im = image('icons/turf/space_dust.dmi',"[i]")
-		im.plane = DUST_PLANE
-		im.alpha = 80
-		im.blend_mode = BLEND_ADD
-		dust_cache["[i]"] = im
-
 
 /turf/space/Initialize()
 	. = ..()
 	icon_state = "white"
 	update_starlight()
-	if (!dust_cache)
-		build_dust_cache()
-	overlays += dust_cache["[((x + y) ^ ~(x * y) + z) % 25]"]
 
 	if(!HasBelow(z))
 		return
@@ -57,10 +43,10 @@
 	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
 
 /turf/space/proc/update_starlight()
-	if(!config.starlight)
+	if(!config.misc.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(config.starlight)
+		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
@@ -98,7 +84,7 @@
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
 	if(A && A.loc == src)
-		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE + 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE + 1))
+		if (A.x <= TRANSITION_EDGE || A.x >= (world.maxx - TRANSITION_EDGE + 1) || A.y <= TRANSITION_EDGE || A.y >= (world.maxy - TRANSITION_EDGE + 1))
 			A.touch_map_edge()
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)
@@ -214,8 +200,8 @@
 					A.loc.Entered(A)
 	return
 
-/turf/space/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
-	return ..(N, tell_universe, 1)
+/turf/space/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
+	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
 /turf/space/bluespace

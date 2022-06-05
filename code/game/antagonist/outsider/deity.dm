@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 	role_text_plural = "Deities"
 	mob_path = /mob/living/deity
 	welcome_text = "This is not your world. This is not your reality. But here you exist. Use your powers, feed off the faith of others.<br>You have to click on yourself to choose your form.<br>Everything you say will be heard by your cultists!<br>To get points your cultists need to build!<br>Build Shrine and Construction are the best starting boons!"
-	landmark_id = "DeitySpawn"
+	landmark_id = "Deity"
 
 	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB
 
@@ -16,3 +16,8 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 	initial_spawn_target = 1
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/deity/Initialize()
+	. = ..()
+	if(config.game.deity_min_age)
+		min_player_age = config.game.deity_min_age

@@ -55,7 +55,7 @@
 		else
 			var/obj/item/stack/tile/E = input("Choose remove tile type.", "Tiles") as null|anything in contents
 			if(E)
-				to_chat(user, "<span class='notice'>You remove the [E] from /the [src].</span>")
+				to_chat(user, "<span class='notice'>You remove the [E] from \the [src].</span>")
 				E.loc = src.loc
 				T = null
 		return
@@ -65,7 +65,7 @@
 		return
 	..()
 
-/obj/machinery/floorlayer/examine(mob/user)
+/obj/machinery/floorlayer/_examine_text(mob/user)
 	. = ..()
 	var/dismantle = mode["dismantle"]
 	var/laying = mode["laying"]

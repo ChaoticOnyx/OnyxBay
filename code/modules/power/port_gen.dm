@@ -53,7 +53,7 @@
 		to_chat(usr, "<span class='warning'>The generator needs to be secured first.</span>")
 		return
 
-/obj/machinery/power/port_gen/examine(mob/user)
+/obj/machinery/power/port_gen/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
@@ -92,15 +92,15 @@
 //A power generator that runs on solid plasma sheets.
 /obj/machinery/power/port_gen/pacman
 	name = "\improper P.A.C.M.A.N.-type Portable Generator"
-	desc = "A power generator that runs on solid phoron sheets. Rated for 80 kW max safe output."
+	desc = "A power generator that runs on solid plasma sheets. Rated for 80 kW max safe output."
 
-	var/sheet_name = "Phoron Sheets"
-	var/sheet_path = /obj/item/stack/material/phoron
-	var/board_path = /obj/item/weapon/circuitboard/pacman
+	var/sheet_name = "Plasma Sheets"
+	var/sheet_path = /obj/item/stack/material/plasma
+	var/board_path = /obj/item/circuitboard/pacman
 
 	/*
 		These values were chosen so that the generator can run safely up to 80 kW
-		A full 50 phoron sheet stack should last 20 minutes at power_output = 4
+		A full 50 plasma sheet stack should last 20 minutes at power_output = 4
 		temperature_gain and max_temperature are set so that the max safe power level is 4.
 		Setting to 5 or higher can only be done temporarily before the generator overheats.
 	*/
@@ -126,11 +126,11 @@
 /obj/machinery/power/port_gen/pacman/New()
 	..()
 	component_parts = list()
-	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
-	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
+	component_parts += new /obj/item/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/stock_parts/micro_laser(src)
 	component_parts += new /obj/item/stack/cable_coil(src)
 	component_parts += new /obj/item/stack/cable_coil(src)
-	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
+	component_parts += new /obj/item/stock_parts/capacitor(src)
 	component_parts += new board_path(src)
 	RefreshParts()
 
@@ -140,15 +140,15 @@
 
 /obj/machinery/power/port_gen/pacman/RefreshParts()
 	var/temp_rating = 0
-	for(var/obj/item/weapon/stock_parts/SP in component_parts)
-		if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
+	for(var/obj/item/stock_parts/SP in component_parts)
+		if(istype(SP, /obj/item/stock_parts/matter_bin))
 			max_sheets = SP.rating * SP.rating * 50
-		else if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+		else if(istype(SP, /obj/item/stock_parts/micro_laser) || istype(SP, /obj/item/stock_parts/capacitor))
 			temp_rating += SP.rating
 
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-/obj/machinery/power/port_gen/pacman/examine(mob/user)
+/obj/machinery/power/port_gen/pacman/_examine_text(mob/user)
 	. = ..()
 	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
 	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
@@ -243,13 +243,13 @@
 		explode()
 
 /obj/machinery/power/port_gen/pacman/explode()
-	//Vapourize all the phoron
-	//When ground up in a grinder, 1 sheet produces 20 u of phoron -- Chemistry-Machinery.dm
+	//Vapourize all the plasma
+	//When ground up in a grinder, 1 sheet produces 20 u of plasma -- Chemistry-Machinery.dm
 	//1 mol = 10 u? I dunno. 1 mol of carbon is definitely bigger than a pill
-	var/phoron = (sheets+sheet_left)*20
+	var/plasma = (sheets+sheet_left)*20
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		environment.adjust_gas_temp("phoron", phoron/10, temperature + T0C)
+		environment.adjust_gas_temp("plasma", plasma/10, temperature + T0C)
 
 	sheets = 0
 	sheet_left = 0
@@ -260,6 +260,7 @@
 		explode() //if they're foolish enough to emag while it's running
 
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		return 1
 
@@ -358,7 +359,7 @@
 	if (get_dist(src, user) > 1 )
 		if (!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			user << browse(null, "window=port_gen")
+			close_browser(user, "window=port_gen")
 			return
 
 	user.set_machine(src)
@@ -377,7 +378,7 @@
 	var/tempstr = "Temperature: [temperature]&deg;C<br>"
 	dat += (overheating)? "<span class='danger'>[tempstr]</span>" : tempstr
 	dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-	user << browse("[dat]", "window=port_gen")
+	show_browser(user, "[dat]", "window=port_gen")
 	onclose(user, "port_gen")
 */
 
@@ -412,7 +413,7 @@
 	sheet_path = /obj/item/stack/material/uranium
 	sheet_name = "Uranium Sheets"
 	time_per_sheet = 576 //same power output, but a 50 sheet stack will last 2 hours at max safe power
-	board_path = /obj/item/weapon/circuitboard/pacman/super
+	board_path = /obj/item/circuitboard/pacman/super
 	var/rad_power = 2
 
 /obj/machinery/power/port_gen/pacman/super/UseFuel()
@@ -431,7 +432,7 @@
 		I.blend_mode = BLEND_ADD
 		I.alpha = round(255*power_output/max_power_output)
 		overlays += I
-		set_light(rad_power + power_output - max_safe_output,1,"#3b97ca")
+		set_light(0.7, 0.1, rad_power + power_output - max_safe_output, 2, "#3b97ca")
 	else
 		set_light(0)
 
@@ -456,14 +457,14 @@
 	time_per_sheet = 400
 	rad_power = 6
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	board_path = /obj/item/weapon/circuitboard/pacman/super/potato
+	board_path = /obj/item/circuitboard/pacman/super/potato
 	anchored = 1
 
 /obj/machinery/power/port_gen/pacman/super/potato/New()
 	create_reagents(120)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user)
+/obj/machinery/power/port_gen/pacman/super/potato/_examine_text(mob/user)
 	. = ..()
 	. += "\nAuxilary tank shows [reagents.total_volume]u of liquid in it."
 
@@ -486,15 +487,15 @@
 		icon_state = "potatodanger"
 
 /obj/machinery/power/port_gen/pacman/super/potato/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/weapon/reagent_containers/))
-		var/obj/item/weapon/reagent_containers/R = O
+	if(istype(O, /obj/item/reagent_containers/))
+		var/obj/item/reagent_containers/R = O
 		if(R.standard_pour_into(src,user))
 			if(reagents.has_reagent("vodka"))
 				audible_message("<span class='notice'>[src] blips happily</span>")
-				playsound(get_turf(src),'sound/machines/synth_yes.ogg', 50, 0)
+				playsound(src,'sound/machines/synth_yes.ogg', 50, 0)
 			else
 				audible_message("<span class='warning'>[src] blips in disappointment</span>")
-				playsound(get_turf(src), 'sound/machines/synth_no.ogg', 50, 0)
+				playsound(src, 'sound/machines/synth_no.ogg', 50, 0)
 		return
 	..()
 
@@ -513,7 +514,7 @@
 	time_per_sheet = 576
 	max_temperature = 800
 	temperature_gain = 90
-	board_path = /obj/item/weapon/circuitboard/pacman/mrs
+	board_path = /obj/item/circuitboard/pacman/mrs
 
 /obj/machinery/power/port_gen/pacman/mrs/explode()
 	//no special effects, but the explosion is pretty big (same as a supermatter shard).

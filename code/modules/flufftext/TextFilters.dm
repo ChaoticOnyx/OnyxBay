@@ -1,6 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-proc/Intoxicated(phrase)
+/proc/Intoxicated(phrase)
 	phrase = html_decode(phrase)
 	var/leng=length(phrase)
 	var/counter=length(phrase)
@@ -14,8 +14,8 @@ proc/Intoxicated(phrase)
 			if(lowertext(newletter)=="a")	newletter="ah"
 			if(lowertext(newletter)=="c")	newletter="k"
 		switch(rand(1,7))
-			if(1,3,5,8)	newletter="[lowertext(newletter)]"
-			if(2,4,6,15)	newletter="[uppertext(newletter)]"
+			if(1,3,5)	newletter="[lowertext(newletter)]"
+			if(2,4,6)	newletter="[uppertext(newletter)]"
 			if(7)	newletter+="'"
 			//if(9,10)	newletter="<b>[newletter]</b>"
 			//if(11,12)	newletter="<big>[newletter]</big>"
@@ -24,7 +24,7 @@ proc/Intoxicated(phrase)
 	return newphrase
 
 // This is prolonged effect, often toggled by prefences
-proc/stammer(phrase)
+/proc/stammer(phrase)
 	phrase = html_decode(phrase)
 	var/list/vowels = list(
 		"а", "и", "о", "у", "ы", "э", "е", "ё", "ю", "я",
@@ -65,10 +65,10 @@ proc/stammer(phrase)
 		new_phrase += char
 	return html_encode(new_phrase)
 
-proc/Stagger(mob/M,d) //Technically not a filter, but it relates to drunkenness.
+/proc/Stagger(mob/M,d) //Technically not a filter, but it relates to drunkenness.
 	step(M, pick(d,turn(d,90),turn(d,-90)))
 
-proc/Ellipsis(original_msg, chance = 50)
+/proc/Ellipsis(original_msg, chance = 50)
 	if(chance <= 0) return "..."
 	if(chance >= 100) return original_msg
 
@@ -95,7 +95,7 @@ distortion_speed - multiplier for the chance increase.
 distortion - starting distortion.
 english_only - whether to use traditional english letters only (for use in NanoUI)
 */
-proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_speed = 1, distortion = 1, english_only = 0)
+/proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_speed = 1, distortion = 1, english_only = 0)
 	var/datum/language/language
 	if(user)
 		language = user.get_default_language()
@@ -177,7 +177,7 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 	return new_message
 
 // This is prolonged effect, often toggled by prefences
-proc/burr(phrase)
+/proc/burr(phrase)
 	phrase = html_decode(phrase)
 	var/new_phrase = ""
 	for(var/i = 1, i <= length_char(phrase), i++)
@@ -190,7 +190,7 @@ proc/burr(phrase)
 	return html_encode(new_phrase)
 
 // This is prolonged effect, often toggled by prefences
-proc/lisp(phrase)
+/proc/lisp(phrase)
 	phrase = html_decode(phrase)
 	var/list/hissing = list("ж", "ч", "ш", "щ")
 	var/new_phrase = ""

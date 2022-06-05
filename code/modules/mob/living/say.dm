@@ -3,14 +3,14 @@ var/list/department_radio_keys = list(
 	  ":l" = "left ear",	":д" = "left ear",
 	  ":i" = "intercom",	":ш" = "intercom",
 	  ":h" = "department",	":р" = "department",
-	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
+	  ":+" = "special",		".+" = "special", // activate radio-specific special functions
 	  ":c" = "Command",		":с" = "Command",
 	  ":n" = "Science",		":т" = "Science",
 	  ":m" = "Medical",		":ь" = "Medical",
 	  ":e" = "Engineering", ":у" = "Engineering",
 	  ":s" = "Security",	":ы" = "Security",
 	  ":w" = "whisper",		":ц" = "whisper",
-	  ":t" = "Mercenary",	":е" = "Mercenary",
+	  ":t" = "Syndicate",	":е" = "Syndicate",
 	  ":x" = "Raider",		":ч" = "Raider",
 	  ":u" = "Supply",		":г" = "Supply",
 	  ":v" = "Service",		":м" = "Service",
@@ -28,7 +28,7 @@ var/list/department_radio_keys = list(
 	  ":E" = "Engineering",	":У" = "Engineering",
 	  ":S" = "Security",	":Ы" = "Security",
 	  ":W" = "whisper",		":Ц" = "whisper",
-	  ":T" = "Mercenary",	":Е" = "Mercenary",
+	  ":T" = "Syndicate",	":Е" = "Syndicate",
 	  ":X" = "Raider",		":Ч" = "Raider",
 	  ":U" = "Supply",		":Г" = "Supply",
 	  ":V" = "Service",		":М" = "Service",
@@ -39,7 +39,8 @@ var/list/department_radio_keys = list(
 
 
 var/list/channel_to_radio_key = new
-proc/get_radio_key_from_channel(channel)
+
+/proc/get_radio_key_from_channel(channel)
 	var/key = channel_to_radio_key[channel]
 	if(!key)
 		for(var/radio_key in department_radio_keys)
@@ -54,14 +55,14 @@ proc/get_radio_key_from_channel(channel)
 
 /mob/living/proc/binarycheck()
 
-	if (istype(src, /mob/living/silicon/pai))
+	if(istype(src, /mob/living/silicon/pai))
 		return
 
-	if (!ishuman(src))
+	if(!ishuman(src))
 		return
 
 	var/mob/living/carbon/human/H = src
-	if (H.l_ear || H.r_ear)
+	if(H.l_ear || H.r_ear)
 		var/obj/item/device/radio/headset/dongle
 		if(istype(H.l_ear,/obj/item/device/radio/headset))
 			dongle = H.l_ear
@@ -74,10 +75,10 @@ proc/get_radio_key_from_channel(channel)
 	return default_language
 
 /mob/proc/is_muzzled()
-	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/grenade)))
 
-//Takes a list of the form list(message, verb, whispering) and modifies it as needed
-//Returns 1 if a speech problem was applied, 0 otherwise
+// Takes a list of the form list(message, verb, whispering) and modifies it as needed
+// Returns 1 if a speech problem was applied, 0 otherwise
 /mob/living/proc/handle_speech_problems(list/message_data)
 	var/message = html_decode(message_data[1])
 	var/verb = message_data[2]
@@ -133,7 +134,7 @@ proc/get_radio_key_from_channel(channel)
 		return "asks"
 	return verb
 
-/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering)
+/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering, log_message = TRUE)
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
 			to_chat(src, "<span class='warning'>You cannot speak in IC (Muted).</span>")
@@ -150,17 +151,17 @@ proc/get_radio_key_from_channel(channel)
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
 		return custom_emote(1, copytext_char(message,2))
 
-	//parse the radio code and consume it
+	// parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
-	if (message_mode)
-		if (message_mode == "headset")
-			message = copytext_char(message,2)	//it would be really nice if the parse procs could do this for us.
+	if(message_mode)
+		if(message_mode == "headset")
+			message = copytext_char(message,2)	// it would be really nice if the parse procs could do this for us.
 		else
 			message = copytext_char(message,3)
 
 	message = trim_left(message)
 
-	//parse the language code and consume it
+	// parse the language code and consume it
 	if(!speaking)
 		speaking = parse_language(message)
 		if(speaking)
@@ -178,11 +179,12 @@ proc/get_radio_key_from_channel(channel)
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
-	if (speaking)
+	if(speaking)
 		if(whispering)
 			verb = speaking.whisper_verb ? speaking.whisper_verb : speaking.speech_verb
 		else
 			verb = say_quote(message, speaking)
+	client?.spellcheck(message)
 
 	message = trim_left(message)
 
@@ -212,7 +214,7 @@ proc/get_radio_key_from_channel(channel)
 		italics = 1
 		message_range = 1
 
-	//speaking into radios
+	// speaking into radios
 	if(used_radios.len)
 		italics = 1
 		message_range = 1
@@ -231,27 +233,28 @@ proc/get_radio_key_from_channel(channel)
 	var/list/listening_obj = list()
 	var/turf/T = get_turf(src)
 
-	//handle nonverbal and sign languages here
-	if (speaking)
-		if (speaking.flags & NONVERBAL)
-			if (prob(30))
+	// handle nonverbal and sign languages here
+	if(speaking)
+		if(speaking.flags & NONVERBAL)
+			if(prob(30))
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
-		if (speaking.flags & SIGNLANG)
-			log_say("[name]/[key] : SIGN: [message]")
-			log_message(message, INDIVIDUAL_SAY_LOG)
+		if(speaking.flags & SIGNLANG)
+			if(log_message)
+				log_say("[name]/[key]: SIGN: [message]")
+				log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	if(T)
-		//make sure the air can transmit speech - speaker's side
+		// make sure the air can transmit speech - speaker's side
 		var/datum/gas_mixture/environment = T.return_air()
 		var/pressure = (environment)? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE)
 			message_range = 1
 
-		if (pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
+		if(pressure < ONE_ATMOSPHERE*0.4) // sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
 			italics = 1
-			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
+			sound_vol *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
 
 		get_mobs_and_objs_in_view_fast(T, message_range, listening, listening_obj, /datum/client_preference/ghost_ears)
 
@@ -286,7 +289,7 @@ proc/get_radio_key_from_channel(channel)
 
 	for(var/obj/O in listening_obj)
 		spawn(0)
-			if(O) //It's possible that it could be deleted in the meantime.
+			if(O) // It's possible that it could be deleted in the meantime.
 				O.hear_talk(src, message, verb, speaking)
 
 	if(whispering)
@@ -298,21 +301,22 @@ proc/get_radio_key_from_channel(channel)
 		eavesdroping_obj -= listening_obj
 		for(var/mob/M in eavesdroping)
 			if(M)
-				show_image(M, speech_bubble)
+				image_to(M, speech_bubble)
 				M.hear_say(stars(message), verb, speaking, alt_name, italics, src, speech_sound, sound_vol)
 
 		for(var/obj/O in eavesdroping)
 			spawn(0)
-				if(O) //It's possible that it could be deleted in the meantime.
+				if(O) // It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message), verb, speaking)
 
 
-	if(whispering)
-		log_whisper("[name]/[key] : [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
-	else
-		log_say("[name]/[key] : [message]")
-		log_message(message, INDIVIDUAL_SAY_LOG)
+	if(log_message)
+		if(whispering)
+			log_whisper("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
+		else
+			log_say("[key_name(src)]: [message]")
+			log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 
 /mob/living/proc/say_signlang(message, verb="gestures", datum/language/language)

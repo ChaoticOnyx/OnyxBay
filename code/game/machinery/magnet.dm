@@ -42,7 +42,7 @@
 			magnetic_process()
 
 	// update the invisibility and icon
-	hide(var/intact)
+	hide(intact)
 		set_invisibility(intact ? 101 : 0)
 		update_icon()
 
@@ -70,8 +70,7 @@
 
 
 
-	proc/Cmd(var/command, var/modifier)
-
+	proc/Cmd(command, modifier)
 		if(command)
 			switch(command)
 				if("set-electriclevel")
@@ -192,7 +191,7 @@
 /obj/machinery/magnetic_module/Destroy()
 	if(radio_controller)
 		radio_controller.remove_object(src, freq)
-	..()
+	return ..()
 
 /obj/machinery/magnetic_controller
 	name = "Magnetic Control Console"
@@ -271,7 +270,7 @@
 		dat += "Moving: <a href='?src=\ref[src];operation=togglemoving'>[moving ? "Enabled":"Disabled"]</a>"
 
 
-		user << browse(dat, "window=magnet;size=400x500")
+		show_browser(user, dat, "window=magnet;size=400x500")
 		onclose(user, "magnet")
 
 	Topic(href, href_list)
@@ -403,4 +402,4 @@
 /obj/machinery/magnetic_controller/Destroy()
 	if(radio_controller)
 		radio_controller.remove_object(src, frequency)
-	..()
+	return ..()

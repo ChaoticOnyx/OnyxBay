@@ -116,7 +116,7 @@
 	if(!ghost_ability_check())
 		return
 
-	playsound(loc, "window_breaking", 50, 1)
+	playsound(loc, SFX_BREAK_WINDOW, 50, 1)
 
 	ghost_magic_cd = world.time + 5 SECONDS
 
@@ -146,7 +146,8 @@
 	for(var/obj/item/I in range(1))
 		if(I.w_class <= 2)
 			choices += I
-
+	
+	choices -= ghost_multitool
 	if(!choices.len)
 		to_chat(src, "<span class='warning'>There are no suitable items nearby.</span>")
 		return

@@ -13,8 +13,8 @@
 
 	var/open = FALSE
 	component_types = list(
-		/obj/item/weapon/circuitboard/honey_extractor,
-		/obj/item/weapon/stock_parts/manipulator = 3
+		/obj/item/circuitboard/honey_extractor,
+		/obj/item/stock_parts/manipulator = 3
 	)
 
 /obj/machinery/honey_extractor/attackby(obj/item/I, mob/user)
@@ -39,14 +39,14 @@
 			honey += processing + a_honey
 			processing = 0
 			icon_state = "centrifuge"
-	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
+	else if(istype(I, /obj/item/reagent_containers/vessel))
 		if(open)
 			to_chat(user, "<span class='notice'>\The [src] is currently open.</span>")
 			return
 		if(!honey)
 			to_chat(user, "<span class='notice'>There is no honey in \the [src].</span>")
 			return
-		var/obj/item/weapon/reagent_containers/glass/G = I
+		var/obj/item/reagent_containers/vessel/G = I
 		var/transferred = min(G.reagents.maximum_volume - G.reagents.total_volume, honey)
 		G.reagents.add_reagent(/datum/reagent/nutriment/honey, transferred)
 		honey -= transferred
@@ -68,7 +68,7 @@
 /obj/machinery/honey_extractor/RefreshParts()
 	..()
 	var/man_rating = 0
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
+	for(var/obj/item/stock_parts/P in component_parts)
 		if(ismanipulator(P))
 			man_rating += P.rating
 			time -= 2 * man_rating

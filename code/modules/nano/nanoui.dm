@@ -153,20 +153,20 @@ nanoui is used to open and update nano browser uis
   *
   * @param push_update int (bool) Push an update to the ui to update it's status. This is set to 0/false if an update is going to be pushed anyway (to avoid unnessary updates)
   *
-  * @return nothing
+  * @return 1 if closed, null otherwise.
   */
 /datum/nanoui/proc/update_status(push_update = 0)
 	var/atom/host = src_object && src_object.nano_host()
 	if(!host)
 		close()
-		return
+		return 1
 	var/new_status = host.CanUseTopic(user, state)
 	if(master_ui)
 		new_status = min(new_status, master_ui.status)
 
 	if(new_status == STATUS_CLOSE)
 		close()
-		return
+		return 1
 	set_status(new_status, push_update)
 
  /**
@@ -205,9 +205,9 @@ nanoui is used to open and update nano browser uis
 			"autoUpdateLayout" = auto_update_layout,
 			"autoUpdateContent" = auto_update_content,
 			"showMap" = show_map,
-			"mapName" = GLOB.using_map.path,
+			"mapName" = copytext(GLOB.using_map.path, findlasttext(GLOB.using_map.path, "/") + 1),
 			"mapZLevel" = map_z_level,
-			"mapZLevels" = GLOB.using_map.map_levels,
+			"mapZLevels" = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION),
 			"user" = list("name" = user? user.name : "Unknown")
 		)
 	return config_data
@@ -427,13 +427,12 @@ nanoui is used to open and update nano browser uis
 		close()
 
 	var/window_size = ""
-	if (width && height)
+	if(width && height)
 		window_size = "size=[width]x[height];"
-	update_status(0)
-	if(status == STATUS_CLOSE)
+	if(update_status(0))
 		return // Will be closed by update_status().
 
-	user << browse(get_html(), "window=[window_id];[window_size][window_options]")
+	show_browser(user, get_html(), "window=[window_id];[window_size][window_options]")
 	winset(user, "mapwindow.map", "focus=true") // return keyboard focus to map
 	on_close_winset()
 	//onclose(user, window_id)
@@ -459,7 +458,7 @@ nanoui is used to open and update nano browser uis
 /datum/nanoui/proc/close()
 	is_auto_updating = 0
 	SSnano.ui_closed(src)
-	show_browser(user, null, "window=[window_id]")
+	close_browser(user, "window=[window_id]")
 	for(var/datum/nanoui/child in children)
 		child.close()
 	children.Cut()
@@ -474,12 +473,17 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/on_close_winset()
-	if(!user.client)
+	if(!user || !user.client)
 		return
-	var/params = "\ref[src]"
+	var/param = "null"
+	if(ref)
+		param = "\ref[ref]"
 
-	spawn(2)
-		winset(user, window_id, "on-close=\"nanoclose [params]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_close_winset, window_id, param), 2)
+
+/mob/proc/post_close_winset(window_id, param)
+	if(client)
+		winset(src, window_id, "on-close=\".nanoclose [param]\"")
 
  /**
   * Push data to an already open UI window
@@ -487,15 +491,16 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/push_data(data, force_push = 0)
-	update_status(0)
-	if (status == STATUS_DISABLED && !force_push)
+	if(update_status(0))
+		return // Closed
+	if(status == STATUS_DISABLED && !force_push)
 		return // Cannot update UI, no visibility
 
 	var/list/send_data = get_send_data(data)
 
 //	to_chat(user, list2json_usecache(send_data))// used for debugging //NANO DEBUG HOOK
 
-	user << output(list2params(list(strip_improper(json_encode(send_data)))),"[window_id].browser:receiveUpdateData")
+	send_output(user, list2params(list(strip_improper(json_encode(send_data)))), "[window_id].browser:receiveUpdateData")
 
  /**
   * This Topic() proc is called whenever a user clicks on a link within a Nano UI
@@ -517,7 +522,7 @@ nanoui is used to open and update nano browser uis
 
 	if(href_list["mapZLevel"])
 		var/map_z = text2num(href_list["mapZLevel"])
-		if(map_z in GLOB.using_map.map_levels)
+		if(map_z > 0 && map_z <= length(GLOB.using_map.map_levels))
 			set_map_z_level(map_z)
 			map_update = 1
 		else

@@ -27,10 +27,6 @@
 		update_docking_target(current_location)
 		if(active_docking_controller)
 			set_docking_codes(active_docking_controller.docking_codes)
-		else if(GLOB.using_map.use_overmap)
-			var/obj/effect/overmap/location = map_sectors["[current_location.z]"]
-			if(location && location.docking_codes)
-				set_docking_codes(location.docking_codes)
 	dock()
 
 	//Optional transition area
@@ -182,4 +178,9 @@
 //This can be used by subtypes to do things when the shuttle arrives.
 //Note that this is called when the shuttle leaves the WAIT_FINISHED state, the proc name is a little misleading
 /datum/shuttle/autodock/proc/arrived()
+	SHOULD_CALL_PARENT(TRUE)
+
+	SEND_SIGNAL(src, SIGNAL_SHUTTLE_ARRIVED, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_SHUTTLE_ARRIVED, src)
+
 	return	//do nothing for now

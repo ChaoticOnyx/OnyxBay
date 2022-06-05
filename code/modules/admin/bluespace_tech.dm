@@ -34,23 +34,23 @@
 	var/obj/item/clothing/under/U = new /obj/item/clothing/under/assistantformal/bluespace_tech(bst)
 	bst.equip_to_slot_or_del(U, slot_w_uniform)
 	bst.equip_to_slot_or_del(new /obj/item/device/radio/headset/ert/bluespace_tech(bst), slot_l_ear)
-	bst.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/holding/bluespace_tech(bst), slot_back)
+	bst.equip_to_slot_or_del(new /obj/item/storage/backpack/holding/bluespace_tech(bst), slot_back)
 	bst.equip_to_slot_or_del(new /obj/item/clothing/shoes/black/bluespace_tech(bst), slot_shoes)
 	bst.equip_to_slot_or_del(new /obj/item/clothing/head/beret(bst), slot_head)
 	bst.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/bluespace_tech(bst), slot_glasses)
-	bst.equip_to_slot_or_del(new /obj/item/weapon/storage/belt/utility/full/bluespace_tech(bst), slot_belt)
+	bst.equip_to_slot_or_del(new /obj/item/storage/belt/utility/full/bluespace_tech(bst), slot_belt)
 	bst.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/white/bluespace_tech(bst), slot_gloves)
-	bst.equip_to_slot_or_del(new /obj/item/weapon/storage/box/ids(bst.back), slot_in_backpack)
+	bst.equip_to_slot_or_del(new /obj/item/storage/box/ids(bst.back), slot_in_backpack)
 	bst.equip_to_slot_or_del(new /obj/item/device/t_scanner(bst.back), slot_in_backpack)
 
-	var/obj/item/weapon/storage/box/pills = new /obj/item/weapon/storage/box(null, TRUE)
+	var/obj/item/storage/box/pills = new /obj/item/storage/box(null, TRUE)
 	pills.name = "adminordrazine"
 	for(var/i = 1, i < 12, i++)
-		new /obj/item/weapon/reagent_containers/pill/adminordrazine(pills)
+		new /obj/item/reagent_containers/pill/adminordrazine(pills)
 	bst.equip_to_slot_or_del(pills, slot_in_backpack)
 
 	//Sort out ID
-	var/obj/item/weapon/card/id/bluespace_tech/id = new (bst)
+	var/obj/item/card/id/bluespace_tech/id = new (bst)
 	id.registered_name = bst.real_name
 	id.assignment = "Bluespace Technician"
 	id.name = "[id.assignment]"
@@ -86,6 +86,22 @@
 	status_flags = NO_ANTAG
 	universal_understand = 1
 	var/fall_override = TRUE
+	movement_handlers = list(
+		/datum/movement_handler/mob/relayed_movement,
+		/datum/movement_handler/mob/death,
+		/datum/movement_handler/mob/conscious,
+		/datum/movement_handler/mob/eye,
+		/datum/movement_handler/move_relay,
+		/datum/movement_handler/mob/buckle_relay,
+		/datum/movement_handler/mob/delay,
+		/datum/movement_handler/mob/stop_effect,
+		/datum/movement_handler/mob/physically_capable,
+		/datum/movement_handler/mob/physically_restrained,
+		/datum/movement_handler/mob/space,
+		/datum/movement_handler/mob/multiz,
+		/datum/movement_handler/mob/multiz_connected,
+		/datum/movement_handler/mob/movement
+	)
 
 /mob/living/carbon/human/bluespace_tech/can_inject(mob/user, target_zone)
 	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."))
@@ -135,12 +151,12 @@
 	set category = "BST"
 	set popup_menu = 0
 
-	if(!incorporeal_move)
-		incorporeal_move = 2
-		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
-	else
-		incorporeal_move = 0
+	if(usr.HasMovementHandler(/datum/movement_handler/mob/incorporeal))
+		usr.RemoveMovementHandler(/datum/movement_handler/mob/incorporeal)
 		to_chat(usr, SPAN_NOTICE("You will no-longer phase through solid matter."))
+	else
+		usr.ReplaceMovementHandler(/datum/movement_handler/mob/incorporeal)
+		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
 
 /mob/living/carbon/human/bluespace_tech/verb/bstrecover()
 	set name = "Rejuv"
@@ -177,12 +193,12 @@
 //All items with a /bluespace_tech need the attack_hand() proc overrided to stop people getting overpowered items.
 
 //Bag o Holding
-/obj/item/weapon/storage/backpack/holding/bluespace_tech
+/obj/item/storage/backpack/holding/bluespace_tech
 	canremove = 0
 	storage_slots = 56
 	max_w_class = 400
 
-/obj/item/weapon/storage/backpack/holding/bluespace_tech/attack_hand(mob/user)
+/obj/item/storage/backpack/holding/bluespace_tech/attack_hand(mob/user)
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
@@ -302,15 +318,15 @@
 	return ..()
 
 //ID
-/obj/item/weapon/card/id/bluespace_tech
+/obj/item/card/id/bluespace_tech
 	icon_state = "centcom"
 	desc = "An ID straight from Central Command. This one looks highly classified."
 
-/obj/item/weapon/card/id/bluespace_tech/Initialize()
+/obj/item/card/id/bluespace_tech/Initialize()
 	. = ..()
 	access = get_all_accesses() + get_all_centcom_access() + get_all_syndicate_access()
 
-/obj/item/weapon/card/id/bluespace_tech/attack_hand(mob/user)
+/obj/item/card/id/bluespace_tech/attack_hand(mob/user)
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
@@ -318,36 +334,15 @@
 		return
 	return ..()
 
-/obj/item/weapon/storage/belt/utility/full/bluespace_tech
+/obj/item/storage/belt/utility/full/bluespace_tech
 	canremove = 0
 
-/obj/item/weapon/storage/belt/utility/full/bluespace_tech/New()
+/obj/item/storage/belt/utility/full/bluespace_tech/New()
 	..() //Full set of tools
 	new /obj/item/device/multitool(src)
 
 /mob/living/carbon/human/bluespace_tech/restrained()
 	return 0
 
-//TODO: Refactor zmove to check incorpmove so bsts don't need an override
-/mob/living/carbon/human/bluespace_tech/zMove(direction)
-	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
-	if(destination)
-		forceMove(destination)
-	else
-		to_chat(src, SPAN_NOTICE("There is nothing of interest in this direction."))
-
 /mob/living/carbon/human/bluespace_tech/can_fall()
 	return fall_override ? FALSE : ..()
-
-//These verbs are temporary, in future they should be available to all mobs with appropriate checks
-/mob/living/carbon/human/bluespace_tech/verb/moveup()
-	set name = "Move Upwards"
-	set category = "BST"
-
-	zMove(UP)
-
-/mob/living/carbon/human/bluespace_tech/verb/movedown()
-	set name = "Move Downwards"
-	set category = "BST"
-
-	zMove(DOWN) 

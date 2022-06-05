@@ -218,6 +218,9 @@ macro "borghotkeymode"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "macro"
 	elem 
@@ -388,6 +391,9 @@ macro "macro"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "hotkeymode"
 	elem 
@@ -630,6 +636,9 @@ macro "hotkeymode"
 	elem 
 		name = "."
 		command = "move-down"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "borgmacro"
 	elem 
@@ -794,6 +803,9 @@ macro "borgmacro"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 
 menu "menu"
@@ -894,87 +906,6 @@ menu "menu"
 		command = "hotkeys-help"
 		category = "&Help"
 		saved-params = "is-checked"
-
-
-window "Telecomms IDE"
-	elem "Telecomms IDE"
-		type = MAIN
-		pos = 281,0
-		size = 569x582
-		anchor1 = none
-		anchor2 = none
-		background-color = #ffffff
-		is-visible = false
-		saved-params = "pos;size;is-minimized;is-maximized"
-		title = "TCS IDE"
-		statusbar = false
-		on-close = "exittcs"
-	elem "button5"
-		type = BUTTON
-		pos = 209,464
-		size = 70x20
-		anchor1 = 37,80
-		anchor2 = 49,83
-		saved-params = "is-checked"
-		text = "Clear Memory"
-		command = "tcsclearmem"
-	elem "button4"
-		type = BUTTON
-		pos = 157,464
-		size = 52x20
-		anchor1 = 28,80
-		anchor2 = 37,83
-		saved-params = "is-checked"
-		text = "Revert"
-		command = "tcsrevert"
-	elem "button3"
-		type = BUTTON
-		pos = 105,464
-		size = 52x20
-		anchor1 = 18,80
-		anchor2 = 28,83
-		saved-params = "is-checked"
-		text = "Execute"
-		command = "tcsrun"
-	elem "tcserror"
-		type = OUTPUT
-		pos = 0,488
-		size = 566x94
-		anchor1 = 0,84
-		anchor2 = 99,100
-		font-family = "sans-serif"
-		font-size = 9
-		saved-params = "max-lines"
-	elem "button2"
-		type = BUTTON
-		pos = 53,464
-		size = 52x20
-		anchor1 = 9,80
-		anchor2 = 18,83
-		saved-params = "is-checked"
-		text = "Compile"
-		command = "tcscompile"
-	elem "button1"
-		type = BUTTON
-		pos = 0,464
-		size = 53x20
-		anchor1 = 0,80
-		anchor2 = 9,83
-		saved-params = "is-checked"
-		text = "Apply"
-		command = "tcssave"
-	elem "tcscode"
-		type = INPUT
-		pos = 0,0
-		size = 569x464
-		anchor1 = 0,0
-		anchor2 = 100,80
-		font-family = "Courier"
-		font-size = 10
-		saved-params = ""
-		command = "cancel"
-		multi-line = true
-		no-command = true
 
 window "chemdispenser"
 	elem "chemdispenser"
@@ -1102,10 +1033,10 @@ window "chemdispenser_reagents"
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
-		pos = 372,0
-		size = 1001x739
-		anchor1 = none
-		anchor2 = none
+		pos = 281,0
+		size = 640x440
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		icon = 'icons\\onyxlogo132x32.png'
@@ -1113,16 +1044,16 @@ window "mainwindow"
 		menu = "menu"
 	elem "asset_cache_browser"
 		type = BROWSER
-		pos = 424,208
+		pos = 0,0
 		size = 1x1
-		anchor1 = none
-		anchor2 = none
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		is-visible = false
 		saved-params = ""
 	elem "mainvsplit"
 		type = CHILD
-		pos = 0,0
-		size = 1001x720
+		pos = 3,0
+		size = 640x420
 		anchor1 = 0,0
 		anchor2 = 100,100
 		saved-params = "splitter"
@@ -1130,8 +1061,8 @@ window "mainwindow"
 		is-vert = true
 	elem "input"
 		type = INPUT
-		pos = 2,720
-		size = 878x20
+		pos = 3,420
+		size = 517x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
@@ -1142,20 +1073,20 @@ window "mainwindow"
 		on-blur = ".remove_typing_indicator"
 	elem "saybutton"
 		type = BUTTON
-		pos = 880,720
+		pos = 520,420
 		size = 40x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!Say \\\"\" macrobutton.is-checked=false:input.command=\""
 		button-type = pushbox
 	elem "hotkey_toggle"
 		type = BUTTON
-		pos = 920,720
+		pos = 560,420
 		size = 80x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
@@ -1166,8 +1097,8 @@ window "mapwindow"
 		type = MAIN
 		pos = 281,0
 		size = 640x480
-		anchor1 = none
-		anchor2 = none
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		saved-params = "pos;size;is-minimized;is-maximized"
 		titlebar = false
 		statusbar = false
@@ -1191,7 +1122,7 @@ window "mapwindow"
 window "outputwindow"
 	elem "outputwindow"
 		type = MAIN
-		pos = 372,0
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -1211,7 +1142,6 @@ window "outputwindow"
 		background-color = #ffffff
 		is-visible = false
 		saved-params = ""
-		auto-format = false
 	elem "output"
 		type = OUTPUT
 		pos = 0,0
@@ -1222,19 +1152,19 @@ window "outputwindow"
 		saved-params = ""
 	elem "saybutton_alt"
 		type = BUTTON
-		pos = 519,459
+		pos = 519,460
 		size = 40x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		is-visible = false
 		is-disabled = true
 		saved-params = "is-checked"
 		text = "Chat"
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		command = ".winset \"saybutton_alt.is-checked=true?input_alt.command=\"!say \\\"\" macrobutton.is-checked=false:input_alt.command=\""
 		button-type = pushbox
 	elem "input_alt"
 		type = INPUT
-		pos = 1,459
+		pos = 1,460
 		size = 517x20
 		anchor1 = 0,100
 		anchor2 = 100,100
@@ -1245,15 +1175,15 @@ window "outputwindow"
 		saved-params = "command"
 	elem "hotkey_toggle_alt"
 		type = BUTTON
-		pos = 560,459
+		pos = 560,460
 		size = 80x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		is-visible = false
 		is-disabled = true
 		saved-params = ""
 		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
+		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
 		button-type = pushbox
 
 window "browserwindow"

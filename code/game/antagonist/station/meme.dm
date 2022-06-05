@@ -7,6 +7,11 @@
 	antaghud_indicator = "hudmeme"
 	station_crew_involved = FALSE
 
+/datum/antagonist/meme/Initialize()
+	. = ..()
+	if(config.game.meme_min_age)
+		min_player_age = config.game.meme_min_age
+
 /datum/antagonist/meme/get_special_objective_text(datum/mind/player)
 	return "<br><b>Human indoctrinated:</b> [player.current:indoctrinated.len]"
 

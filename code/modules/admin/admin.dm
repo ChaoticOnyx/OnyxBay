@@ -9,33 +9,33 @@ var/global/floorIsLava = 0
 	log_adminwarn(msg)
 	for(var/client/C in GLOB.admins)
 		if(R_ADMIN & C.holder.rights)
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 /proc/message_staff(msg)
 	msg = "<span class=\"log_message\"><span class=\"prefix\">STAFF LOG:</span> <span class=\"message\">[msg]</span></span>"
 	log_adminwarn(msg)
 	for(var/client/C in GLOB.admins)
 		if(R_INVESTIGATE & C.holder.rights)
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 /proc/msg_admin_attack(text) //Toggleable Attack Messages
 	log_attack(text)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">ATTACK:</span> <span class=\"message\">[text]</span></span>"
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
-			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
-				var/msg = rendered
-				to_chat(C, msg)
+			var/msg = rendered
+			to_chat(C, msg, MESSAGE_TYPE_ATTACKLOG)
+
 /proc/href_exploit(suspect_ckey, href)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
 	log_href(rendered)
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
 			var/msg = rendered
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 
 /proc/admin_notice(message, rights)
 	for(var/mob/M in SSmobs.mob_list)
 		if(check_rights(rights, 0, M))
-			to_chat(M, message)
+			to_chat(M, message, MESSAGE_TYPE_ADMINLOG)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 
@@ -82,6 +82,7 @@ var/global/floorIsLava = 0
 
 	if(M.client)
 		body += "| <A HREF='?src=\ref[src];sendtoprison=\ref[M]'>Prison</A> | "
+		body += "| <A HREF='?src=\ref[src];blind=\ref[M]'>Blind</A> | "
 		var/muted = M.client.prefs.muted
 		body += {"<br><b>Mute: </b>
 			\[<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_IC]'><font color='[(muted & MUTE_IC)?"red":"blue"]'>IC</font></a> |
@@ -93,7 +94,7 @@ var/global/floorIsLava = 0
 			(<A href='?src=\ref[src];mute=\ref[M];mute_type=[MUTE_ALL]'><font color='[(muted & MUTE_ALL)?"red":"blue"]'>toggle all</font></a>)
 		"}
 
-		if(config.sql_enabled)
+		if(config.external.sql_enabled)
 			if (watchlist.Check(M.client.ckey))
 				body += "<A href='?_src_=holder;watchremove=[M.ckey]'>Remove from Watchlist</A> | "
 				body += "<A href='?_src_=holder;watchedit=[M.ckey]'>Edit Watchlist reason</A> "
@@ -141,7 +142,7 @@ var/global/floorIsLava = 0
 				body += {"<A href='?src=\ref[src];makeai=\ref[M]'>Make AI</A> |
 					<A href='?src=\ref[src];makerobot=\ref[M]'>Make Robot</A> |
 					<A href='?src=\ref[src];makealien=\ref[M]'>Make Alien</A> |
-					<A href='?src=\ref[src];makeslime=\ref[M]'>Make slime</A>
+					<A href='?src=\ref[src];makemetroid=\ref[M]'>Make metroid</A>
 				"}
 
 			//Simple Animals
@@ -184,8 +185,8 @@ var/global/floorIsLava = 0
 				<A href='?src=\ref[src];simplemake=human;species=Vox;mob=\ref[M]'>Vox</A> \] | \[
 				<A href='?src=\ref[src];simplemake=nymph;mob=\ref[M]'>Nymph</A>
 				<A href='?src=\ref[src];simplemake=human;species='Diona';mob=\ref[M]'>Diona</A> \] |
-				\[ slime: <A href='?src=\ref[src];simplemake=slime;mob=\ref[M]'>Baby</A>,
-				<A href='?src=\ref[src];simplemake=adultslime;mob=\ref[M]'>Adult</A> \]
+				\[ metroid: <A href='?src=\ref[src];simplemake=metroid;mob=\ref[M]'>Baby</A>,
+				<A href='?src=\ref[src];simplemake=adultmetroid;mob=\ref[M]'>Adult</A> \]
 				<A href='?src=\ref[src];simplemake=monkey;mob=\ref[M]'>Monkey</A> |
 				<A href='?src=\ref[src];simplemake=robot;mob=\ref[M]'>Cyborg</A> |
 				<A href='?src=\ref[src];simplemake=cat;mob=\ref[M]'>Cat</A> |
@@ -229,7 +230,7 @@ var/global/floorIsLava = 0
 		</body></html>
 	"}
 
-	usr << browse(body, "window=adminplayeropts;size=550x515")
+	show_browser(usr, body, "window=adminplayeropts;size=550x515")
 	feedback_add_details("admin_verb","SPP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -254,7 +255,7 @@ var/global/floorIsLava = 0
 	dat += "<B>Player notes</B><HR>"
 	var/savefile/S=new("data/player_notes.sav")
 	var/list/note_keys
-	S >> note_keys
+	from_file(S, note_keys)
 
 	if(filter_term)
 		for(var/t in note_keys)
@@ -281,7 +282,7 @@ var/global/floorIsLava = 0
 /datum/admins/proc/player_has_info(key as text)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	info >> infos
+	from_file(info, infos)
 	if(!infos || !infos.len) return 0
 	else return 1
 
@@ -307,7 +308,7 @@ var/global/floorIsLava = 0
 
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	info >> infos
+	from_file(info, infos)
 	if(!infos)
 		dat += "No information found on the given key.<br>"
 	else
@@ -325,7 +326,8 @@ var/global/floorIsLava = 0
 			if(I.author == usr.key || I.author == "Adminbot" || ishost(usr))
 				dat += "<A href='?src=\ref[src];remove_player_info=[key];remove_index=[i]'>Remove</A>"
 			dat += "<hr></li>"
-		if(update_file) info << infos
+		if(update_file)
+			to_file(info, infos)
 
 	dat += "</ul><br><A href='?src=\ref[src];add_player_info=[key]'>Add Comment</A><br>"
 
@@ -475,7 +477,7 @@ var/global/floorIsLava = 0
 						i++
 						dat+="-[MESSAGE.body] <BR>"
 						if(MESSAGE.img)
-							usr << browse_rsc(MESSAGE.img, "tmp_photo[i].png")
+							send_rsc(usr, MESSAGE.img, "tmp_photo[i].png")
 							dat+="<img src='tmp_photo[i].png' width = '180'><BR><BR>"
 						dat+="<FONT SIZE=1>\[Story by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR>"
 			dat+={"
@@ -588,7 +590,7 @@ var/global/floorIsLava = 0
 				<B>Photo:</B>:
 			"}
 			if(news_network.wanted_issue.img)
-				usr << browse_rsc(news_network.wanted_issue.img, "tmp_photow.png")
+				send_rsc(usr, news_network.wanted_issue.img, "tmp_photow.png")
 				dat+="<BR><img src='tmp_photow.png' width = '180'>"
 			else
 				dat+="None"
@@ -604,7 +606,7 @@ var/global/floorIsLava = 0
 //	log_debug("Channelname: [src.admincaster_feed_channel.channel_name] [src.admincaster_feed_channel.author]")
 //	log_debug("Msg: [src.admincaster_feed_message.author] [src.admincaster_feed_message.body]")
 
-	usr << browse(dat, "window=admincaster_main;size=400x600")
+	show_browser(usr, dat, "window=admincaster_main;size=400x600")
 	onclose(usr, "admincaster_main")
 
 
@@ -619,7 +621,7 @@ var/global/floorIsLava = 0
 			r = copytext( r, 1, findtext(r,"##") )//removes the description
 		dat += text("<tr><td>[t] (<A href='?src=\ref[src];removejobban=[r]'>unban</A>)</td></tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=ban;size=400x400")
+	show_browser(usr, dat, "window=ban;size=400x400")
 
 /datum/admins/proc/Game()
 	if(!check_rights(0))	return
@@ -639,11 +641,11 @@ var/global/floorIsLava = 0
 		<A href='?src=\ref[src];create_turf=1'>Create Turf</A><br>
 		<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>
 		<br><A href='?src=\ref[src];vsc=airflow'>Edit Airflow Settings</A><br>
-		<A href='?src=\ref[src];vsc=phoron'>Edit Phoron Settings</A><br>
+		<A href='?src=\ref[src];vsc=plasma'>Edit Plasma Settings</A><br>
 		<A href='?src=\ref[src];vsc=default'>Choose a default ZAS setting</A><br>
 		"}
 
-	usr << browse(dat, "window=admin2;size=210x280")
+	show_browser(usr, dat, "window=admin2;size=210x280")
 	return
 
 /datum/admins/proc/Secrets(datum/admin_secret_category/active_category = null)
@@ -685,21 +687,27 @@ var/global/floorIsLava = 0
 	set desc="Restarts the world"
 	if (!usr.client.holder)
 		return
-	var/confirm = alert("Restart the game world?", "Restart", "Yes", "Cancel")
-	if(confirm == "Cancel")
-		return
-	if(confirm == "Yes")
-		to_world("<span class='danger'>Restarting world!</span> <span class='notice'>Initiated by [usr.key]!</span>")
-		log_admin("[key_name(usr)] initiated a reboot.")
 
-		feedback_set_details("end_error","admin reboot - by [usr.key]")
+	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)", "Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+
+	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
+	if(result)
+		feedback_set_details("end_error","admin reboot - by [key_name(usr)]")
 		feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-		if(blackbox)
-			blackbox.save_all_data_to_sql()
-
-		sleep(50)
-		world.Reboot()
+		var/init_by = "<span class='notice'>Initiated by [key_name(usr)].</span>"
+		switch(result)
+			if("Regular Restart")
+				to_world("<span class='danger'>Restarting world!</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a reboot.")
+				world.Reboot()
+			if("Hard Restart (Skip MC Shutdown)")
+				to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a hard reboot.")
+				world.Reboot(reboot_hardness = REBOOT_HARD)
+			if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+				to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a hardest reboot.")
+				world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
 
 /datum/admins/proc/end_round()
 	set category = "Server"
@@ -736,8 +744,8 @@ var/global/floorIsLava = 0
 	message = sanitize(message, 500, extra = 0)
 	if(message)
 		message = replacetext(message, "\n", "<br>") // required since we're putting it in a <p> tag
-		to_world("<span class=notice><b>[usr.key] Announces:</b><p style='text-indent: 50px'>[message]</p></span>")
-		log_admin("Announce: [key_name(usr)] : [message]")
+		to_world("<span class=notice><b>[key_name(usr)] Announces:</b><p style='text-indent: 50px'>[message]</p></span>")
+		log_admin("Announce: [key_name(usr)]: [message]")
 	feedback_add_details("admin_verb","A") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggleooc()
@@ -748,11 +756,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.ooc_allowed = !(config.ooc_allowed)
-	if (config.ooc_allowed)
-		to_world("<B>The OOC channel has been globally enabled!</B>")
-	else
-		to_world("<B>The OOC channel has been globally disabled!</B>")
+	toggle_ooc()
 	log_and_message_admins("toggled OOC.")
 	feedback_add_details("admin_verb","TOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -764,8 +768,8 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.aooc_allowed = !(config.aooc_allowed)
-	if (config.aooc_allowed)
+	config.misc.aooc_allowed = !(config.misc.aooc_allowed)
+	if (config.misc.aooc_allowed)
 		to_world("<B>The AOOC channel has been globally enabled!</B>")
 	else
 		to_world("<B>The AOOC channel has been globally disabled!</B>")
@@ -780,11 +784,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.looc_allowed = !(config.looc_allowed)
-	if (config.looc_allowed)
-		to_world("<B>The LOOC channel has been globally enabled!</B>")
-	else
-		to_world("<B>The LOOC channel has been globally disabled!</B>")
+	toggle_looc()
 	log_and_message_admins("toggled LOOC.")
 	feedback_add_details("admin_verb","TLOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -797,8 +797,8 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.dsay_allowed = !(config.dsay_allowed)
-	if (config.dsay_allowed)
+	config.misc.dsay_allowed = !(config.misc.dsay_allowed)
+	if (config.misc.dsay_allowed)
 		to_world("<B>Deadchat has been globally enabled!</B>")
 	else
 		to_world("<B>Deadchat has been globally disabled!</B>")
@@ -813,7 +813,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.dooc_allowed = !( config.dooc_allowed )
+	config.misc.dead_ooc_allowed = !( config.misc.dead_ooc_allowed )
 	log_admin("[key_name(usr)] toggled Dead OOC.")
 	message_admins("[key_name_admin(usr)] toggled Dead OOC.", 1)
 	feedback_add_details("admin_verb","TDOOC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -827,19 +827,18 @@ var/global/floorIsLava = 0
 		return
 
 	world.visibility = !(world.visibility)
-	var/long_message = " toggled hub visibility.  The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
+	var/long_message = "[key_name(src)] toggled hub visibility. The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
 
-	send2adminirc("[key_name(src)]" + long_message)
-	log_and_message_admins("toggled hub visibility.")
+	log_and_message_admins(long_message)
 	feedback_add_details("admin_verb","THUB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc
 
 /datum/admins/proc/toggletraitorscaling()
 	set category = "Server"
 	set desc="Toggle traitor scaling"
 	set name="Toggle Traitor Scaling"
-	config.traitor_scaling = !config.traitor_scaling
-	log_admin("[key_name(usr)] toggled Traitor Scaling to [config.traitor_scaling].")
-	message_admins("[key_name_admin(usr)] toggled Traitor Scaling [config.traitor_scaling ? "on" : "off"].", 1)
+	config.gamemode.traitor_scaling = !config.gamemode.traitor_scaling
+	log_admin("[key_name(usr)] toggled Traitor Scaling to [config.gamemode.traitor_scaling].")
+	message_admins("[key_name_admin(usr)] toggled Traitor Scaling [config.gamemode.traitor_scaling ? "on" : "off"].", 1)
 	feedback_add_details("admin_verb","TTS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/startnow()
@@ -847,11 +846,13 @@ var/global/floorIsLava = 0
 	set desc="Start the round RIGHT NOW"
 	set name="Start Now"
 	if(GAME_STATE < RUNLEVEL_LOBBY)
-		alert("Unable to start the game as it is not set up.")
+		SSticker.auto_start = !SSticker.auto_start
+		message_admins(SPAN("info", "[key_name(src)] set the server start round configuration to [SSticker.auto_start ? "automatically start game as soon as possible" : "start game in normal mode (with a timer)."]"))
+		to_chat(usr, SPAN_NOTICE("Unable to start the game as it is not set up. [SSticker.auto_start ? "It will automatically start game as soon as possible" : "It will start game in normal mode (with a timer)."]"))
 		return 0
 	if(SSticker.start_now())
-		log_admin("[usr.key] has started the game.")
-		message_admins("<span class='info'>[usr.key] has started the game.</span>")
+		log_admin("[key_name(usr)] has started the game.")
+		message_admins("<span class='info'>[key_name(usr)] has started the game.</span>")
 		feedback_add_details("admin_verb","SN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		return 1
 	else
@@ -862,8 +863,8 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="People can't enter"
 	set name="Toggle Entering"
-	config.enter_allowed = !(config.enter_allowed)
-	if (!(config.enter_allowed))
+	config.game.enter_allowed = !(config.game.enter_allowed)
+	if (!(config.game.enter_allowed))
 		to_world("<B>New players may no longer enter the game.</B>")
 	else
 		to_world("<B>New players may now enter the game.</B>")
@@ -875,8 +876,8 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="People can't be AI"
 	set name="Toggle AI"
-	config.allow_ai = !( config.allow_ai )
-	if (!( config.allow_ai ))
+	config.misc.allow_ai = !( config.misc.allow_ai )
+	if (!( config.misc.allow_ai ))
 		to_world("<B>The AI job is no longer chooseable.</B>")
 	else
 		to_world("<B>The AI job is chooseable now.</B>")
@@ -888,12 +889,12 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="Respawn basically"
 	set name="Toggle Respawn"
-	config.abandon_allowed = !(config.abandon_allowed)
-	if(config.abandon_allowed)
+	config.misc.abandon_allowed = !(config.misc.abandon_allowed)
+	if(config.misc.abandon_allowed)
 		to_world("<B>You may now respawn.</B>")
 	else
 		to_world("<B>You may no longer respawn :(</B>")
-	log_and_message_admins("toggled respawn to [config.abandon_allowed ? "On" : "Off"].")
+	log_and_message_admins("toggled respawn to [config.misc.abandon_allowed ? "On" : "Off"].")
 	world.update_status()
 	feedback_add_details("admin_verb","TR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -904,9 +905,9 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.aliens_allowed = !config.aliens_allowed
-	log_admin("[key_name(usr)] toggled Aliens to [config.aliens_allowed].")
-	message_admins("[key_name_admin(usr)] toggled Aliens [config.aliens_allowed ? "on" : "off"].", 1)
+	config.misc.aliens_allowed = !config.misc.aliens_allowed
+	log_admin("[key_name(usr)] toggled Aliens to [config.misc.aliens_allowed].")
+	message_admins("[key_name_admin(usr)] toggled Aliens [config.misc.aliens_allowed ? "on" : "off"].", 1)
 	feedback_add_details("admin_verb","TA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/toggle_alien_eggs()
@@ -916,9 +917,9 @@ var/global/floorIsLava = 0
 
 	if(!check_rights(R_ADMIN))
 		return
-	config.alien_eggs_allowed = !config.alien_eggs_allowed
-	log_admin("[key_name(usr)] toggled Alien Egg Laying to [config.alien_eggs_allowed].")
-	message_admins("[key_name_admin(usr)] toggled Alien Egg Laying [config.alien_eggs_allowed ? "on" : "off"].", 1)
+	config.misc.alien_eggs_allowed = !config.misc.alien_eggs_allowed
+	log_admin("[key_name(usr)] toggled Alien Egg Laying to [config.misc.alien_eggs_allowed].")
+	message_admins("[key_name_admin(usr)] toggled Alien Egg Laying [config.misc.alien_eggs_allowed ? "on" : "off"].", 1)
 	feedback_add_details("admin_verb","AEA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -929,8 +930,8 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_ADMIN))
 		return
 
-	config.ninjas_allowed = !config.ninjas_allowed
-	log_and_message_admins("toggled Space Ninjas [config.ninjas_allowed ? "on" : "off"].")
+	config.misc.ninjas_allowed = !config.misc.ninjas_allowed
+	log_and_message_admins("toggled Space Ninjas [config.misc.ninjas_allowed ? "on" : "off"].")
 	feedback_add_details("admin_verb","TSN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/delay()
@@ -956,49 +957,31 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="Toggle admin jumping"
 	set name="Toggle Jump"
-	config.allow_admin_jump = !(config.allow_admin_jump)
-	log_and_message_admins("Toggled admin jumping to [config.allow_admin_jump].")
+	config.admin.allow_admin_jump = !(config.admin.allow_admin_jump)
+	log_and_message_admins("Toggled admin jumping to [config.admin.allow_admin_jump].")
 	feedback_add_details("admin_verb","TJ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/adspawn()
 	set category = "Server"
 	set desc="Toggle admin spawning"
 	set name="Toggle Spawn"
-	config.allow_admin_spawning = !(config.allow_admin_spawning)
-	log_and_message_admins("toggled admin item spawning to [config.allow_admin_spawning].")
+	config.admin.allow_admin_spawning = !(config.admin.allow_admin_spawning)
+	log_and_message_admins("toggled admin item spawning to [config.admin.allow_admin_spawning].")
 	feedback_add_details("admin_verb","TAS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/adrev()
 	set category = "Server"
 	set desc="Toggle admin revives"
 	set name="Toggle Revive"
-	config.allow_admin_rev = !(config.allow_admin_rev)
-	log_and_message_admins("toggled reviving to [config.allow_admin_rev].")
+	config.admin.allow_admin_rev = !(config.admin.allow_admin_rev)
+	log_and_message_admins("toggled reviving to [config.admin.allow_admin_rev].")
 	feedback_add_details("admin_verb","TAR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/datum/admins/proc/immreboot()
-	set category = "Server"
-	set desc="Reboots the server post haste"
-	set name="Immediate Reboot"
-	if(!usr.client.holder)	return
-	if( alert("Reboot server?",,"Yes","No") == "No")
-		return
-	to_world("<span class='danger'>Rebooting world!</span> <span class='notice'>Initiated by [usr.key]!</span>")
-	log_admin("[key_name(usr)] initiated an immediate reboot.")
-
-	feedback_set_details("end_error","immediate admin reboot - by [usr.key]")
-	feedback_add_details("admin_verb","IR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-	if(blackbox)
-		blackbox.save_all_data_to_sql()
-
-	world.Reboot()
 
 /datum/admins/proc/unprison(mob/M in SSmobs.mob_list)
 	set category = "Admin"
 	set name = "Unprison"
 	if (isAdminLevel(M.z))
-		if (config.allow_admin_jump)
+		if (config.admin.allow_admin_jump)
 			M.forceMove(pick(GLOB.latejoin))
 			message_admins("[key_name_admin(usr)] has unprisoned [key_name_admin(M)]", 1)
 			log_admin("[key_name(usr)] has unprisoned [key_name(M)]")
@@ -1220,7 +1203,7 @@ var/global/floorIsLava = 0
 		out += " None."
 	out += " <a href='?src=\ref[SSticker.mode];add_antag_type=1'>\[+\]</a><br/>"
 
-	usr << browse(out, "window=edit_mode[src]")
+	show_browser(usr, out, "window=edit_mode[src]")
 	feedback_add_details("admin_verb","SGM")
 
 
@@ -1228,8 +1211,8 @@ var/global/floorIsLava = 0
 	set category = "Debug"
 	set desc="Reduces view range when wearing welding helmets"
 	set name="Toggle tinted welding helmets."
-	config.welder_vision = !( config.welder_vision )
-	if (config.welder_vision)
+	config.misc.welder_vision_allowed = !( config.misc.welder_vision_allowed )
+	if (config.misc.welder_vision_allowed)
 		to_world("<B>Reduced welder vision has been enabled!</B>")
 	else
 		to_world("<B>Reduced welder vision has been disabled!</B>")
@@ -1240,13 +1223,13 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set desc="Guests can't enter"
 	set name="Toggle guests"
-	config.guests_allowed = !(config.guests_allowed)
-	if (!(config.guests_allowed))
+	config.game.guests_allowed = !(config.game.guests_allowed)
+	if (!(config.game.guests_allowed))
 		to_world("<B>Guests may no longer enter the game.</B>")
 	else
 		to_world("<B>Guests may now enter the game.</B>")
-	log_admin("[key_name(usr)] toggled guests game entering [config.guests_allowed?"":"dis"]allowed.")
-	log_and_message_admins("toggled guests game entering [config.guests_allowed?"":"dis"]allowed.")
+	log_admin("[key_name(usr)] toggled guests game entering [config.game.guests_allowed?"":"dis"]allowed.")
+	log_and_message_admins("toggled guests game entering [config.game.guests_allowed?"":"dis"]allowed.")
 	feedback_add_details("admin_verb","TGU") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /datum/admins/proc/output_ai_laws()
@@ -1269,24 +1252,6 @@ var/global/floorIsLava = 0
 			S.laws.show_laws(usr)
 	if(!ai_number)
 		to_chat(usr, "<b>No AIs located</b>")//Just so you know the thing is actually working and not just ignoring you.
-
-
-/datum/admins/proc/show_skills()
-	set category = "Admin"
-	set name = "Show Skills"
-
-	if (!istype(src,/datum/admins))
-		src = usr.client.holder
-	if (!istype(src,/datum/admins))
-		to_chat(usr, "Error: you are not an admin!")
-		return
-
-	var/mob/living/carbon/human/M = input("Select mob.", "Select mob.") as null|anything in GLOB.human_mob_list
-	if(!M) return
-
-	show_skill_window(usr, M)
-
-	return
 
 /client/proc/update_mob_sprite(mob/living/carbon/human/H as mob)
 	set category = "Admin"
@@ -1337,15 +1302,15 @@ var/global/floorIsLava = 0
 
 		if(2)	//Admins
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special, ticket)](<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M, src)]) (<A HREF='?_src_=holder;check_antagonist=1'>CA</A>)</b>"
+			return "<b>[key_name(C, link, name, highlight_special, ticket)](<A HREF='?_src_=holder;adminmoreinfo=[ref_mob]'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M)]) (<A HREF='?_src_=holder;check_antagonist=1'>CA</A>)</b>"
 
 		if(3)	//Devs
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special, ticket)](<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>)([admin_jump_link(M, src)])</b>"
+			return "<b>[key_name(C, link, name, highlight_special, ticket)](<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>)([admin_jump_link(M)])</b>"
 
 		if(4)	//Mentors
 			var/ref_mob = "\ref[M]"
-			return "<b>[key_name(C, link, name, highlight_special, ticket)] (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M, src)])</b>"
+			return "<b>[key_name(C, link, name, highlight_special, ticket)] (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>) (<A HREF='?_src_=holder;adminplayeropts=[ref_mob]'>PP</A>) (<A HREF='?_src_=vars;Vars=[ref_mob]'>VV</A>) (<A HREF='?_src_=holder;subtlemessage=[ref_mob]'>SM</A>) ([admin_jump_link(M)])</b>"
 
 
 /proc/ishost(whom)
@@ -1481,7 +1446,7 @@ var/global/floorIsLava = 0
 
 			var/replyorigin = input(src.owner, "Please specify who the fax is coming from", "Origin") as text|null
 
-			var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+			var/obj/item/paper/admin/P = new /obj/item/paper/admin(null) //hopefully the null loc won't cause trouble for us
 			faxreply = P
 
 			P.admindatum = src
@@ -1503,11 +1468,11 @@ var/global/floorIsLava = 0
 	else
 		data += "<center>No faxes yet.</center>"
 
-	usr << browse("<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")
+	show_browser(usr, "<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")
 
-datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies in
+datum/admins/var/obj/item/paper/admin/faxreply // var to hold fax replies in
 
-/datum/admins/proc/faxCallback(obj/item/weapon/paper/admin/P, obj/machinery/photocopier/faxmachine/destination)
+/datum/admins/proc/faxCallback(obj/item/paper/admin/P, obj/machinery/photocopier/faxmachine/destination)
 	var/customname = input(src.owner, "Pick a title for the report", "Title") as text|null
 
 	P.SetName("[P.origin] - [customname]")
@@ -1539,7 +1504,7 @@ datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies
 
 		if(!P.stamped)
 			P.stamped = new
-		P.stamped += /obj/item/weapon/stamp/centcomm
+		P.stamped += /obj/item/stamp/centcomm
 		P.overlays += stampoverlay
 
 	var/obj/item/rcvdcopy
@@ -1570,3 +1535,12 @@ datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies
 		faxreply = null
 	return
 
+/datum/admins/proc/follow_panel()
+	set category = "Admin"
+	set name = "Follow Panel"
+	set desc = "Robust version of 'Follow'"
+
+	if (!istype(src, /datum/admins))
+		src = usr.client.holder
+
+	follow_panel.tgui_interact(usr, null)

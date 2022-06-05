@@ -43,7 +43,7 @@
 	max_ammo = 5
 	multiple_sprites = 1
 
-/obj/item/weapon/gun/projectile/dartgun
+/obj/item/gun/projectile/dartgun
 	name = "dart gun"
 	desc = "Zeng-Hu Pharmaceutical's entry into the arms market, the Z-H P Artemis is a gas-powered dart gun capable of delivering chemical cocktails swiftly across short distances."
 	icon_state = "dartgun-empty"
@@ -65,10 +65,10 @@
 	var/list/mixing = list() //Containers being used for mixing.
 	var/max_beakers = 3
 	var/dart_reagent_amount = 15
-	var/container_type = /obj/item/weapon/reagent_containers/glass/beaker
+	var/container_type = /obj/item/reagent_containers/vessel/beaker
 	var/list/starting_chems = null
 
-/obj/item/weapon/gun/projectile/dartgun/Initialize()
+/obj/item/gun/projectile/dartgun/Initialize()
 	if(starting_chems)
 		for(var/chem in starting_chems)
 			var/obj/B = new container_type(src)
@@ -77,7 +77,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/weapon/gun/projectile/dartgun/update_icon()
+/obj/item/gun/projectile/dartgun/update_icon()
 	if(!ammo_magazine)
 		icon_state = "dartgun-empty"
 		return 1
@@ -90,28 +90,28 @@
 		icon_state = "dartgun-[ammo_magazine.stored_ammo.len]"
 	return 1
 
-/obj/item/weapon/gun/projectile/dartgun/consume_next_projectile()
+/obj/item/gun/projectile/dartgun/consume_next_projectile()
 	. = ..()
 	var/obj/item/projectile/bullet/chemdart/dart = .
 	if(istype(dart))
 		fill_dart(dart)
 
-/obj/item/weapon/gun/projectile/dartgun/examine(mob/user)
+/obj/item/gun/projectile/dartgun/_examine_text(mob/user)
 	. = ..()
 	if (beakers.len)
 		. += "\n<span class='notice'>\The [src] contains:</span>"
-		for(var/obj/item/weapon/reagent_containers/glass/beaker/B in beakers)
+		for(var/obj/item/reagent_containers/vessel/beaker/B in beakers)
 			if(B.reagents && B.reagents.reagent_list.len)
 				for(var/datum/reagent/R in B.reagents.reagent_list)
 					. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 
-/obj/item/weapon/gun/projectile/dartgun/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/reagent_containers/glass))
+/obj/item/gun/projectile/dartgun/attackby(obj/item/I as obj, mob/user as mob)
+	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_beaker(I, user)
 		return 1
 	..()
 
-/obj/item/weapon/gun/projectile/dartgun/proc/add_beaker(obj/item/weapon/reagent_containers/glass/B, mob/user)
+/obj/item/gun/projectile/dartgun/proc/add_beaker(obj/item/reagent_containers/vessel/B, mob/user)
 	if(!istype(B, container_type))
 		to_chat(user, "<span class='warning'>[B] doesn't seem to fit into [src].</span>")
 		return
@@ -122,23 +122,23 @@
 	beakers |= B
 	user.visible_message("\The [user] inserts \a [B] into [src].", "<span class='notice'>You slot [B] into [src].</span>")
 
-/obj/item/weapon/gun/projectile/dartgun/proc/remove_beaker(obj/item/weapon/reagent_containers/glass/B, mob/user)
+/obj/item/gun/projectile/dartgun/proc/remove_beaker(obj/item/reagent_containers/vessel/B, mob/user)
 	mixing -= B
 	beakers -= B
 	user.put_in_hands(B)
 	user.visible_message("\The [user] removes \a [B] from [src].", "<span class='notice'>You remove [B] from [src].</span>")
 
 //fills the given dart with reagents
-/obj/item/weapon/gun/projectile/dartgun/proc/fill_dart(obj/item/projectile/bullet/chemdart/dart)
+/obj/item/gun/projectile/dartgun/proc/fill_dart(obj/item/projectile/bullet/chemdart/dart)
 	if(mixing.len)
 		var/mix_amount = dart.reagent_amount/mixing.len
-		for(var/obj/item/weapon/reagent_containers/glass/beaker/B in mixing)
+		for(var/obj/item/reagent_containers/vessel/beaker/B in mixing)
 			B.reagents.trans_to_obj(dart, mix_amount)
 
-/obj/item/weapon/gun/projectile/dartgun/attack_self(mob/user)
+/obj/item/gun/projectile/dartgun/attack_self(mob/user)
 	Interact(user)
 
-/obj/item/weapon/gun/projectile/dartgun/proc/Interact(mob/user)
+/obj/item/gun/projectile/dartgun/proc/Interact(mob/user)
 	user.set_machine(src)
 	var/list/dat = list("<b>[src] mixing control:</b><br><br>")
 
@@ -146,7 +146,7 @@
 		dat += "There are no beakers inserted!<br><br>"
 	else
 		for(var/i in 1 to beakers.len)
-			var/obj/item/weapon/reagent_containers/glass/beaker/B = beakers[i]
+			var/obj/item/reagent_containers/vessel/beaker/B = beakers[i]
 			if(!istype(B)) continue
 
 			dat += "Beaker [i] contains: "
@@ -174,7 +174,7 @@
 	popup.set_content(jointext(dat,null))
 	popup.open()
 
-/obj/item/weapon/gun/projectile/dartgun/OnTopic(user, href_list)
+/obj/item/gun/projectile/dartgun/OnTopic(user, href_list)
 	if(href_list["stop_mix"])
 		var/index = text2num(href_list["stop_mix"])
 		mixing -= beakers[index]
@@ -194,12 +194,12 @@
 
 	Interact(usr)
 
-/obj/item/weapon/gun/projectile/dartgun/vox
+/obj/item/gun/projectile/dartgun/vox
 	name = "alien dart gun"
 	desc = "A small gas-powered dartgun, fitted for nonhuman hands."
 
-/obj/item/weapon/gun/projectile/dartgun/vox/medical
+/obj/item/gun/projectile/dartgun/vox/medical
 	starting_chems = list(/datum/reagent/kelotane,/datum/reagent/bicaridine,/datum/reagent/dylovene)
 
-/obj/item/weapon/gun/projectile/dartgun/vox/raider
+/obj/item/gun/projectile/dartgun/vox/raider
 	starting_chems = list(/datum/reagent/space_drugs,/datum/reagent/soporific,/datum/reagent/impedrezene)

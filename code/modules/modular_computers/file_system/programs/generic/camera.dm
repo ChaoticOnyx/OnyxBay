@@ -13,7 +13,7 @@
 			return access_cent_specops
 		if(NETWORK_MEDICAL)
 			return access_medical
-		if(NETWORK_MINE)
+		if(NETWORK_MINE, NETWORK_APPARAT_VORON)
 			return access_mailsorting // Cargo office - all cargo staff should have access here.
 		if(NETWORK_RESEARCH)
 			return access_research
@@ -93,6 +93,10 @@
 		if(!(current_network in C.network))
 			return
 
+		THROTTLE(last_sound, 2 SECONDS)
+		if(last_sound)
+			playsound(usr, 'sound/effects/cctv_switch.ogg', 25)
+
 		switch_to_camera(usr, C)
 		apply_visual(usr)
 		return 1
@@ -123,7 +127,7 @@
 		return 1
 
 	set_current(C)
-	user.machine = nano_host()
+	user.set_machine(nano_host())
 	user.reset_view(C)
 	return 1
 

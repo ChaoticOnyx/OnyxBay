@@ -49,7 +49,7 @@
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
 
-/obj/item/ammo_casing/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(!BB)
 			to_chat(user, "<span class='notice'>There is no bullet in the casing to inscribe anything into.</span>")
@@ -65,13 +65,14 @@
 		else
 			to_chat(user, "<span class='notice'>You inscribe \"[label_text]\" into \the [initial(BB.name)].</span>")
 			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
-	else ..()
+	else
+		..()
 
 /obj/item/ammo_casing/update_icon()
 	if(spent_icon && !BB)
 		icon_state = spent_icon
 
-/obj/item/ammo_casing/examine(mob/user)
+/obj/item/ammo_casing/_examine_text(mob/user)
 	. = ..()
 	if (!BB)
 		. += "\nThis one is spent."
@@ -79,6 +80,7 @@
 //Gun loading types
 #define SINGLE_CASING 	1	//The gun only accepts ammo_casings. ammo_magazines should never have this as their mag_type.
 #define SPEEDLOADER 	2	//Transfers casings from the mag to the gun when used.
+#define SINGLE_LOAD		3	//Loads one at a time.
 #define MAGAZINE 		4	//The magazine item itself goes inside the gun
 
 //An item that holds casings and can be used to put them inside guns
@@ -125,7 +127,7 @@
 			stored_ammo += new ammo_type(src)
 	update_icon()
 
-/obj/item/ammo_magazine/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ammo_magazine/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = W
 		if(C.caliber != caliber)
@@ -181,7 +183,7 @@
 				break
 		icon_state = (new_state)? new_state : initial(icon_state)
 
-/obj/item/ammo_magazine/examine(mob/user)
+/obj/item/ammo_magazine/_examine_text(mob/user)
 	. = ..()
 	. += "\nThere [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!"
 
@@ -209,4 +211,3 @@
 
 	magazine_icondata_keys["[M.type]"] = icon_keys
 	magazine_icondata_states["[M.type]"] = ammo_states
-

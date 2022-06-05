@@ -219,11 +219,11 @@ swapmap
 		areas-=defarea
 		InitializeSwapMaps()
 		locked=1
-		S["id"] << id
-		S["z"] << z2-z1+1
-		S["y"] << y2-y1+1
-		S["x"] << x2-x1+1
-		S["areas"] << areas
+		to_file(S["id"],    id)
+		to_file(S["z"],     z2-z1+1)
+		to_file(S["y"],     y2-y1+1)
+		to_file(S["x"],     x2-x1+1)
+		to_file(S["areas"], areas)
 		for(n in 1 to areas.len) areas[areas[n]]=n
 		var/oldcd=S.cd
 		for(z=z1,z<=z2,++z)
@@ -233,8 +233,9 @@ swapmap
 				for(x=x1,x<=x2,++x)
 					S.cd="[x-x1+1]"
 					var/turf/T=locate(x,y,z)
-					S["type"] << T.type
-					if(T.loc!=defarea) S["AREA"] << areas[T.loc]
+					to_file(S["type"], T.type)
+					if(T.loc!=defarea)
+						to_file(S["AREA"], areas[T.loc])
 					T.Write(S)
 					S.cd=".."
 				S.cd=".."
@@ -258,14 +259,14 @@ swapmap
 			z1=locorner.z
 		if(!defarea) defarea=new world.area
 		if(!_id)
-			S["id"] >> id
+			from_file(S["id"], id)
 		else
 			var/dummy
-			S["id"] >> dummy
-		S["z"] >> z2		// these are depth,
-		S["y"] >> y2		//   		 height,
-		S["x"] >> x2		//			 width
-		S["areas"] >> areas
+			from_file(S["id"], dummy)
+		from_file(S["z"],     z2)		// these are depth,
+		from_file(S["y"],     y2)		//   		 height,
+		from_file(S["x"],     x2)		//			 width
+		from_file(S["areas"], areas)
 		locked=1
 		AllocateSwapMap()	// adjust x1,y1,z1 - x2,y2,z2 coords
 		var/oldcd=S.cd
@@ -276,12 +277,12 @@ swapmap
 				for(x=x1,x<=x2,++x)
 					S.cd="[x-x1+1]"
 					var/tp
-					S["type"]>>tp
+					from_file(S["type"], tp)
 					var/turf/T=locate(x,y,z)
 					T.loc.contents-=T
 					T=new tp(locate(x,y,z))
 					if("AREA" in S.dir)
-						S["AREA"]>>n
+						from_file(S["AREA"], n)
 						var/area/A=areas[n]
 						A.contents+=T
 					else defarea.contents+=T
@@ -380,13 +381,15 @@ swapmap
 		qdel(src)
 
 	proc/Save()
-		if(id==src) return 0
-		var/savefile/S=mode?(new):new("map_[id].sav")
-		S << src
-		while(locked) sleep(1)
+		if(id == src)
+			return 0
+		var/savefile/S=mode ? (new) : new("map_[id].sav")
+		to_file(S, src)
+		while(locked)
+			sleep(1)
 		if(mode)
 			fdel("map_[id].txt")
-			S.ExportText("/","map_[id].txt")
+			S.ExportText("/", "map_[id].txt")
 		return 1
 
 	// this will not delete existing savefiles for this map
@@ -459,13 +462,16 @@ atom
 				else S.dir.Remove(V)
 		if(icon!=initial(icon))
 			if(swapmaps_iconcache && swapmaps_iconcache[icon])
-				S["icon"]<<swapmaps_iconcache[icon]
-			else S["icon"]<<icon
+				to_file(S["icon"], swapmaps_iconcache[icon])
+			else
+				to_file(S["icon"], icon)
 		// do not save mobs with keys; do save other mobs
 		var/mob/M
 		for(M in src) if(M.key) break
-		if(overlays.len) S["overlays"]<<overlays
-		if(underlays.len) S["underlays"]<<underlays
+		if(overlays.len)
+			to_file(S["overlays"], overlays)
+		if(underlays.len)
+			to_file(S["underlays"], underlays)
 		if(contents.len && !isarea(src))
 			var/list/l=contents
 			if(M)
@@ -481,7 +487,7 @@ atom
 		// replace it from the cache list
 		if(!icon && ("icon" in S.dir))
 			var/ic
-			S["icon"]>>ic
+			from_file(S["icon"], ic)
 			if(istext(ic)) icon=swapmaps_iconcache[ic]
 		if(l && contents!=l)
 			contents+=l
@@ -489,9 +495,9 @@ atom
 
 
 // set this up (at runtime) as follows:
-// list(\
-//     'player.dmi'="player",\
-//     'monster.dmi'="monster",\
+// list(
+//     'player.dmi'="player",
+//     'monster.dmi'="monster",
 //     ...
 //     'item.dmi'="item")
 var/list/swapmaps_iconcache
@@ -547,21 +553,24 @@ proc/SwapMaps_Load(id)
 		if(text)
 			S=new
 			S.ImportText("/",file("map_[id].txt"))
-		S >> M
-		while(M.locked) sleep(1)
+		to_file(S, M)
+		while(M.locked)
+			sleep(1)
 		M.mode=text
 	return M
 
 proc/SwapMaps_Save(id)
 	InitializeSwapMaps()
 	var/swapmap/M=swapmaps_byname[id]
-	if(M) M.Save()
+	if(M)
+		M.Save()
 	return M
 
 proc/SwapMaps_Save_All()
 	InitializeSwapMaps()
 	for(var/swapmap/M in swapmaps_loaded)
-		if(M) M.Save()
+		if(M)
+			M.Save()
 
 proc/SwapMaps_Unload(id)
 	InitializeSwapMaps()
@@ -585,13 +594,13 @@ proc/SwapMaps_CreateFromTemplate(template_id)
 	else if(swapmaps_mode!=SWAPMAPS_TEXT && fexists("map_[template_id].txt"))
 		text=1
 	else
-		world.log << "SwapMaps error in SwapMaps_CreateFromTemplate(): map_[template_id] file not found."
+		to_world_log("SwapMaps error in SwapMaps_CreateFromTemplate(): map_[template_id] file not found.")
 		return
 	if(text)
 		S=new
 		S.ImportText("/",file("map_[template_id].txt"))
 	/*
-		This hacky workaround is needed because S >> M will create a brand new
+		This hacky workaround is needed because to_file(S, M) will create a brand new
 		M to fill with data. There's no way to control the Read() process
 		properly otherwise. The //.0 path should always match the map, however.
 	 */
@@ -612,13 +621,13 @@ proc/SwapMaps_LoadChunk(chunk_id,turf/locorner)
 	else if(swapmaps_mode!=SWAPMAPS_TEXT && fexists("map_[chunk_id].txt"))
 		text=1
 	else
-		world.log << "SwapMaps error in SwapMaps_LoadChunk(): map_[chunk_id] file not found."
+		to_world_log("SwapMaps error in SwapMaps_LoadChunk(): map_[chunk_id] file not found.")
 		return
 	if(text)
 		S=new
 		S.ImportText("/",file("map_[chunk_id].txt"))
 	/*
-		This hacky workaround is needed because S >> M will create a brand new
+		This hacky workaround is needed because to_file(S, M) will create a brand new
 		M to fill with data. There's no way to control the Read() process
 		properly otherwise. The //.0 path should always match the map, however.
 	 */
@@ -630,9 +639,11 @@ proc/SwapMaps_LoadChunk(chunk_id,turf/locorner)
 
 proc/SwapMaps_SaveChunk(chunk_id,turf/corner1,turf/corner2)
 	if(!corner1 || !corner2)
-		world.log << "SwapMaps error in SwapMaps_SaveChunk():"
-		if(!corner1) world.log << "  corner1 turf is null"
-		if(!corner2) world.log << "  corner2 turf is null"
+		to_world_log("SwapMaps error in SwapMaps_SaveChunk():")
+		if(!corner1)
+			to_world_log("  corner1 turf is null")
+		if(!corner2)
+			to_world_log("  corner2 turf is null")
 		return
 	var/swapmap/M=new
 	M.id=chunk_id
@@ -659,7 +670,7 @@ proc/SwapMaps_GetSize(id)
 	else if(swapmaps_mode!=SWAPMAPS_TEXT && fexists("map_[id].txt"))
 		text=1
 	else
-		world.log << "SwapMaps error in SwapMaps_GetSize(): map_[id] file not found."
+		to_world_log("SwapMaps error in SwapMaps_GetSize(): map_[id] file not found.")
 		return
 	if(text)
 		S=new
@@ -672,7 +683,7 @@ proc/SwapMaps_GetSize(id)
 	var/x
 	var/y
 	var/z
-	S["x"] >> x
-	S["y"] >> y
-	S["z"] >> z
+	to_file(S["x"], x)
+	to_file(S["y"], y)
+	to_file(S["z"], z)
 	return list(x,y,z)

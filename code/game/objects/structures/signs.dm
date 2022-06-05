@@ -95,6 +95,45 @@
 	desc = "Under the painting a plaque reads: 'While the meat grinder may not have spared you, fear not. Not one part of you has gone to waste... You were delicious.'"
 	icon_state = "monkey_painting"
 
+/obj/structure/sign/crime
+	name = "\improper Educational poster"
+	desc = "Or does it?..."
+	icon_state = "crime"
+
+/obj/structure/sign/periodic
+	name = "\improper Periodic table"
+	desc = "Say my name."
+	icon_state = "periodic"
+
+/obj/structure/sign/recruitment
+	name = "\improper Recruitment poster"
+	desc = "No, you don't."
+	icon_state = "you_4_nt"
+
+/obj/structure/sign/highexplosive
+	name = "\improper HIGH EXPLOSIVE"
+	icon_state = "highexplosive"
+
+/obj/structure/sign/eyetest
+	name = "\improper Eye test poster"
+	icon_state = "wall_poster_eyetest"
+
+/obj/structure/sign/firstaid
+	name = "\improper FIRST AID"
+	icon_state = "firstaid"
+
+/obj/structure/sign/colony
+	name = "\improper New Reno Colony sign"
+	icon = 'icons/obj/new-reno-sign.dmi'
+	icon_state = "new_reno_sign"
+	density = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/sign/junglecamo
+	name = "camo netting"
+	icon = 'icons/turf/jungle_turfs.dmi'
+	icon_state = "camo"
+
 /obj/structure/sign/warning
 	name = "\improper WARNING"
 	icon_state = "securearea"
@@ -227,6 +266,10 @@
 /obj/structure/sign/warning/vent_port
 	name = "\improper EJECTION/VENTING PORT"
 
+/obj/structure/sign/warning/out_of_service
+	name = "\improper OUT OF SERVICE"
+	icon_state = "out_of_service"
+
 /obj/structure/sign/redcross
 	name = "medbay"
 	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here."
@@ -284,6 +327,25 @@
 
 /obj/structure/sign/double/maltesefalcon/right
 	icon_state = "maltesefalcon-right"
+
+/obj/structure/sign/double/picturemount/left
+	icon_state = "mountain-left"
+
+/obj/structure/sign/double/picturemount/right
+	icon_state = "mountain-right"
+
+/obj/structure/sign/double/picturesky/left
+	icon_state = "sky-left"
+
+/obj/structure/sign/double/picturesky/right
+	icon_state = "sky-right"
+
+/obj/structure/sign/double/pictureplanet/left
+	icon_state = "planet-left"
+
+/obj/structure/sign/double/pictureplanet/right
+	icon_state = "planet-right"
+
 
 /obj/structure/sign/warning/science
 	name = "\improper SCIENCE!"
@@ -345,6 +407,11 @@
 	desc = "A warning sign which reads 'BOTANY!'."
 	icon_state = "hydro3"
 
+/obj/structure/sign/departments/holy
+	name = "HOLY"
+	desc = "A sign labelling a <b>holy<b> area."
+	icon_state = "holy"
+
 /obj/structure/sign/hydro
 	name = "\improper HYDROPONICS"
 	desc = "A sign labelling an area as a place where plants are grown."
@@ -358,6 +425,26 @@
 /obj/structure/sign/eva
 	name = "\improper EVA"
 	icon_state = "eva"
+
+/obj/structure/sign/cargo
+	name = "\improper CARGO"
+	icon_state = "cargo"
+
+/obj/structure/sign/security
+	name = "\improper SECURITY"
+	icon_state = "sec"
+
+/obj/structure/sign/evac
+	name = "\improper EVAC"
+	icon_state = "evac"
+
+/obj/structure/sign/engineering
+	name = "\improper ENGINEERING"
+	icon_state = "engi"
+
+/obj/structure/sign/custodian
+	name = "\improper CUSTODIAN"
+	icon_state = "custodian"
 
 /obj/structure/sign/directions
 	name = "direction sign"
@@ -438,7 +525,7 @@
 		claimant = user.real_name
 	..()
 
-/obj/item/sign/medipolma/examine(mob/user)
+/obj/item/sign/medipolma/_examine_text(mob/user)
 	. = ..()
 	if(claimant)
 		. += "\nThis one belongs to Dr.[claimant], MD."

@@ -2,11 +2,11 @@
 	uniform = /obj/item/clothing/under/color/lightpurple
 	shoes = /obj/item/clothing/shoes/sandal
 	l_ear = /obj/item/device/radio/headset
-	r_pocket = /obj/item/weapon/teleportation_scroll
-	l_hand = /obj/item/weapon/staff
-	r_hand = /obj/item/weapon/spellbook
-	back = /obj/item/weapon/storage/backpack
-	backpack_contents = list(/obj/item/weapon/storage/box = 1)
+	r_pocket = /obj/item/teleportation_scroll
+	l_hand = /obj/item/staff
+	r_hand = /obj/item/spellbook
+	back = /obj/item/storage/backpack
+	backpack_contents = list(/obj/item/storage/box = 1)
 	hierarchy_type = /decl/hierarchy/outfit/wizard
 	flags = OUTFIT_HAS_BACKPACK|OUTFIT_RESET_EQUIPMENT
 
@@ -24,4 +24,10 @@
 	name = "Wizard - Marisa"
 	head = /obj/item/clothing/head/wizard/marisa
 	suit = /obj/item/clothing/suit/wizrobe/marisa
+	shoes = /obj/item/clothing/shoes/sandal/marisa
+
+/decl/hierarchy/outfit/wizard/violetwizard
+	name = "Wizard - Akko"
+	head = /obj/item/clothing/head/wizard/violetwizard
+	suit = /obj/item/clothing/suit/wizrobe/violetwizard
 	shoes = /obj/item/clothing/shoes/sandal/marisa

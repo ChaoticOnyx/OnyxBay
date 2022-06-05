@@ -11,7 +11,7 @@
 /*
  * Pens
  */
-/obj/item/weapon/pen
+/obj/item/pen
 	desc = "It's a normal black ink pen."
 	name = "pen"
 	icon = 'icons/obj/bureaucracy.dmi'
@@ -25,49 +25,54 @@
 	matter = list(MATERIAL_STEEL = 10)
 	var/colour = COLOR_BLACK	//what colour the ink is!
 	var/color_description = "black ink"
+	var/battlepen = FALSE
 
 
-/obj/item/weapon/pen/blue
+/obj/item/pen/blue
 	desc = "It's a normal blue ink pen."
 	icon_state = "pen_blue"
 	colour = COLOR_BLUE
 	color_description = "blue ink"
 
-/obj/item/weapon/pen/red
+/obj/item/pen/red
 	desc = "It's a normal red ink pen."
 	icon_state = "pen_red"
 	colour = COLOR_RED
 	color_description = "red ink"
 
-/obj/item/weapon/pen/multi
+/obj/item/pen/multi
+	name = "multicolor pen"
 	desc = "It's a pen with multiple colors of ink!"
 	var/selectedColor = 1
 	var/colors = list("black","blue","red")
 	var/colors_code = list(COLOR_BLACK, COLOR_BLUE, COLOR_RED)
 	var/color_descriptions = list("black ink", "blue ink", "red ink")
 
-/obj/item/weapon/pen/multi/attack_self(mob/user)
+/obj/item/pen/multi/attack_self(mob/user)
 	if(++selectedColor > 3)
 		selectedColor = 1
 
+	var/new_color = colors[selectedColor]
 	colour = colors_code[selectedColor]
 	color_description = color_descriptions[selectedColor]
 
-	if(colour == "black")
+	if(new_color == "black")
 		icon_state = "pen"
 	else
-		icon_state = "pen_[colour]"
+		icon_state = "pen_[new_color]"
 
-	to_chat(user, "<span class='notice'>Changed color to '[colour].'</span>")
+	to_chat(user, SPAN("notice", "Changed color to [new_color]."))
 
-/obj/item/weapon/pen/invisible
+/obj/item/pen/invisible
 	desc = "It's an invisble pen marker."
 	icon_state = "pen"
 	colour = COLOR_WHITE
 	color_description = "transluscent ink"
 
 
-/obj/item/weapon/pen/attack(atom/A, mob/user as mob, target_zone)
+/obj/item/pen/attack(atom/A, mob/user, target_zone)
+	if(battlepen)
+		return ..()
 	if(ismob(A))
 		var/mob/M = A
 		if(ishuman(A) && user.a_intent == I_HELP && target_zone == BP_HEAD)
@@ -87,15 +92,15 @@
  * Reagent pens
  */
 
-/obj/item/weapon/pen/reagent
+/obj/item/pen/reagent
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	origin_tech = list(TECH_MATERIAL = 2, TECH_ILLEGAL = 5)
 
-/obj/item/weapon/pen/reagent/New()
+/obj/item/pen/reagent/New()
 	..()
 	create_reagents(30)
 
-/obj/item/weapon/pen/reagent/attack(mob/living/M, mob/user, target_zone)
+/obj/item/pen/reagent/attack(mob/living/M, mob/user, target_zone)
 
 	if(!istype(M))
 		return
@@ -112,19 +117,19 @@
 /*
  * Sleepy Pens
  */
-/obj/item/weapon/pen/reagent/sleepy
+/obj/item/pen/reagent/sleepy
 	desc = "It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\"."
 	origin_tech = list(TECH_MATERIAL = 2, TECH_ILLEGAL = 5)
 
-/obj/item/weapon/pen/reagent/sleepy/New()
+/obj/item/pen/reagent/sleepy/New()
 	..()
 	reagents.add_reagent(/datum/reagent/chloralhydrate, 15)	//Used to be 100 sleep toxin//30 Chloral seems to be fatal, reducing it to 22, reducing it further to 15 because fuck you OD code./N
 
-/obj/item/weapon/pen/reagent/paralytic/
+/obj/item/pen/reagent/paralytic/
 	desc = "It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\"."
 	origin_tech = list(TECH_MATERIAL = 2, TECH_ILLEGAL = 5)
 
-/obj/item/weapon/pen/reagent/paralytic/New()
+/obj/item/pen/reagent/paralytic/New()
 	..()
 	reagents.add_reagent(/datum/reagent/vecuronium_bromide, 15)
 
@@ -132,10 +137,10 @@
 /*
  * Chameleon pen
  */
-/obj/item/weapon/pen/chameleon
+/obj/item/pen/chameleon
 	var/signature = ""
 
-/obj/item/weapon/pen/chameleon/attack_self(mob/user as mob)
+/obj/item/pen/chameleon/attack_self(mob/user as mob)
 	/*
 	// Limit signatures to official crew members
 	var/personnel_list[] = list()
@@ -149,13 +154,13 @@
 	*/
 	signature = sanitize(input("Enter new signature. Leave blank for 'Anonymous'", "New Signature", signature))
 
-/obj/item/weapon/pen/proc/get_signature(mob/user)
+/obj/item/pen/proc/get_signature(mob/user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
-/obj/item/weapon/pen/chameleon/get_signature(mob/user)
+/obj/item/pen/chameleon/get_signature(mob/user)
 	return signature ? signature : "Anonymous"
 
-/obj/item/weapon/pen/chameleon/verb/set_colour()
+/obj/item/pen/chameleon/verb/set_colour()
 	set name = "Change Pen Colour"
 	set category = "Object"
 
@@ -194,11 +199,93 @@
 		to_chat(usr, "<span class='info'>You select the [lowertext(selected_type)] ink container.</span>")
 
 
+/obj/item/pen/energy_dagger
+	name = "pen"
+	desc = "It's a black ink pen with a fancy-looking button."
+	mod_weight = 0.5
+	mod_reach = 0.4
+	mod_handy = 1.25
+	force = 0
+	armor_penetration = 35
+	sharp = TRUE
+	edge = TRUE
+	icon_state = "edagger0"
+	item_state = "edagger0"
+	hitsound = 'sound/effects/fighting/energy1.ogg'
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	check_armour = "laser"
+	var/active_force = 25.0 // Half an esword's force
+	var/active_max_bright = 0.17
+	var/active_outer_range = 1.65
+	var/brightness_color = "#ff5959"
+
+/obj/item/pen/energy_dagger/attack_self(mob/living/user)
+	battlepen = !battlepen
+
+	if(battlepen)
+		if((MUTATION_CLUMSY in user.mutations) && prob(50))
+			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
+								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
+			user.take_organ_damage(5, 5)
+		activate(user)
+	else
+		deactivate(user)
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand()
+		H.update_inv_r_hand()
+
+	add_fingerprint(user)
+
+/obj/item/pen/energy_dagger/proc/activate(mob/living/user)
+	battlepen = TRUE
+	to_chat(user, SPAN("notice", "\The [src] is now energised."))
+	slot_flags |= SLOT_DENYPOCKET
+	name = "energy dagger"
+	desc = "Bureaucracy has never ever been so deadly."
+	force = active_force
+	throwforce = 45
+	throw_speed = 1
+	icon_state = "edagger1"
+	item_state = "edagger1"
+	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
+	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
+
+/obj/item/pen/energy_dagger/proc/deactivate(mob/living/user)
+	battlepen = FALSE
+	to_chat(user, SPAN("notice", "\The [src] deactivates!"))
+	slot_flags = initial(slot_flags)
+	name = initial(name)
+	desc = initial(desc)
+	force = initial(force)
+	throwforce = initial(throwforce)
+	throw_speed = initial(throw_speed)
+	icon_state = initial(icon_state)
+	item_state = initial(item_state)
+	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
+	set_light(0)
+
+/obj/item/pen/energy_dagger/dropped()
+	spawn(9)
+		if(isturf(loc))
+			deactivate()
+
+/obj/item/pen/energy_dagger/get_storage_cost()
+	if(battlepen)
+		return ITEM_SIZE_NO_CONTAINER
+	return ..()
+
+/obj/item/pen/energy_dagger/get_temperature_as_from_ignitor()
+	if(battlepen)
+		return 3500
+	return 0
+
 /*
  * Crayons
  */
 
-/obj/item/weapon/pen/crayon
+/obj/item/pen/crayon
 	name = "crayon"
 	desc = "A colourful crayon. Please refrain from eating it or putting it in your nose."
 	icon = 'icons/obj/crayons.dmi'
@@ -212,11 +299,11 @@
 	var/colourName = "red" //for updateIcon purposes
 	color_description = "red crayon"
 
-/obj/item/weapon/pen/crayon/Initialize()
+/obj/item/pen/crayon/Initialize()
 	name = "[colourName] crayon"
 	. = ..()
 
-/obj/item/weapon/pen/fancy
+/obj/item/pen/fancy
 	name = "fancy pen"
 	desc = "A high quality traditional fountain pen with an internal reservoir and an extra fine gold-platinum nib. Guaranteed never to leak."
 	icon_state = "fancy"

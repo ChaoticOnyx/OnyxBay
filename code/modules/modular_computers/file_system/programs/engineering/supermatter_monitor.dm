@@ -45,8 +45,8 @@
 	var/turf/T = get_turf(nano_host())
 	if(!T)
 		return
-	var/valid_z_levels = (GetConnectedZlevels(T.z) & GLOB.using_map.station_levels)
-	for(var/obj/machinery/power/supermatter/S in SSmachines.machinery)
+	var/valid_z_levels = (GetConnectedZlevels(T.z) & GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
+	for(var/obj/machinery/power/supermatter/S in GLOB.machines)
 		// Delaminating, not within coverage, not on a tile.
 		if(S.grav_pulling || S.exploded || !(S.z in valid_z_levels) || !istype(S.loc, /turf/))
 			continue
@@ -83,14 +83,14 @@
 			data["SM_gas_O2"] = round(100*air.gas["oxygen"]/air.total_moles,0.01)
 			data["SM_gas_CO2"] = round(100*air.gas["carbon_dioxide"]/air.total_moles,0.01)
 			data["SM_gas_N2"] = round(100*air.gas["nitrogen"]/air.total_moles,0.01)
-			data["SM_gas_PH"] = round(100*air.gas["phoron"]/air.total_moles,0.01)
+			data["SM_gas_PL"] = round(100*air.gas["plasma"]/air.total_moles,0.01)
 			data["SM_gas_N2O"] = round(100*air.gas["sleeping_agent"]/air.total_moles,0.01)
 			data["SM_gas_H2"] = round(100*air.gas["hydrogen"]/air.total_moles,0.01)
 		else
 			data["SM_gas_O2"] = 0
 			data["SM_gas_CO2"] = 0
 			data["SM_gas_N2"] = 0
-			data["SM_gas_PH"] = 0
+			data["SM_gas_PL"] = 0
 			data["SM_gas_N2O"] = 0
 			data["SM_gas_H2"] = 0
 	else

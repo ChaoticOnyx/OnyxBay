@@ -1,17 +1,19 @@
-/datum/antagonist/proc/can_become_antag(datum/mind/player, ignore_role)
+/datum/antagonist/proc/can_become_antag(datum/mind/player, ignore_role, max_stat = CONSCIOUS)
 	if(player.current && jobban_isbanned(player.current, id))
-		return 0
-	if(isliving(player.current) && player.current.stat)
-		return 0
+		return FALSE
+
+	if(isliving(player.current) && (player.current.stat > max_stat))
+		return FALSE
+
 	var/datum/job/J = job_master.GetJob(player.assigned_role)
-	if(is_type_in_list(J,blacklisted_jobs))
-		return 0
+	if(is_type_in_list(J, blacklisted_jobs))
+		return FALSE
 
 	if(!ignore_role)
 		if(player.current && player.current.client)
 			var/client/C = player.current.client
 			// Limits antag status to clients above player age, if the age system is being used.
-			if(C && config.use_age_restriction_for_antags && isnum(C.player_age) && isnum(min_player_age) && (C.player_age < min_player_age))
+			if(C && config.game.use_age_restriction_for_antags && isnum(C.player_age) && isnum(min_player_age) && (C.player_age < min_player_age))
 				return 0
 		log_debug("can_become_antag: ckey is [player.current.ckey], mob is [player.current], assigned_role is [player.assigned_role ? player.assigned_role : "NOT EXIST"], assigned_job is [player.assigned_job ? player.assigned_job.type : "NOT EXIST"]")
 		if(is_type_in_list(J,restricted_jobs))

@@ -3,6 +3,7 @@
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
+	var/playable_mob = TRUE
 	var/syndicate = 0
 	var/const/MAIN_CHANNEL = "Main Frequency"
 	var/lawchannel = MAIN_CHANNEL // Default channel on which to state laws
@@ -25,13 +26,14 @@
 	var/next_alarm_notice
 	var/list/datum/alarm/queued_alarms = new()
 	var/list/access_rights
-	var/obj/item/weapon/card/id/idcard = /obj/item/weapon/card/id/synthetic
+	var/obj/item/card/id/idcard = /obj/item/card/id/synthetic
 
 	var/list/avaliable_huds
 	var/active_hud
 
 /mob/living/silicon/New()
-	GLOB.silicon_mob_list += src
+	if(playable_mob)
+		GLOB.silicon_mob_list += src
 	..()
 
 	if(silicon_radio)
@@ -44,6 +46,8 @@
 	init_id()
 	init_subsystems()
 	avaliable_huds = list("Disable", "Security", "Medical")		//("Security", "Medical", "Meson", "Science", "Night Vision", "Material", "Thermal", "X-Ray", "Flash Screen", "Disable")
+
+	AddElement(/datum/element/last_words)
 
 /mob/living/silicon/Destroy()
 	GLOB.silicon_mob_list -= src
@@ -86,7 +90,7 @@
 	to_chat(src, "<span class='danger'>Warning: Electromagnetic pulse detected.</span>")
 	..()
 
-/mob/living/silicon/stun_effect_act(stun_amount, agony_amount)
+/mob/living/silicon/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon = null)
 	return	//immune
 
 /mob/living/silicon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0)
@@ -169,7 +173,7 @@
 	dat += "<h4>Crew Manifest</h4>"
 	dat += html_crew_manifest(1) // make it monochrome
 	dat += "<br>"
-	src << browse(dat, "window=airoster")
+	show_browser(src, dat, "window=airoster")
 	onclose(src, "airoster")
 
 //can't inject synths
@@ -184,7 +188,7 @@
 	return universal_speak || (speaking in src.speech_synthesizer_langs)	//need speech synthesizer support to vocalize a language
 
 /mob/living/silicon/add_language(language, can_speak=1)
-	var/var/datum/language/added_language = all_languages[language]
+	var/datum/language/added_language = all_languages[language]
 	if(!added_language)
 		return
 
@@ -194,7 +198,7 @@
 		return 1
 
 /mob/living/silicon/remove_language(rem_language)
-	var/var/datum/language/removed_language = all_languages[rem_language]
+	var/datum/language/removed_language = all_languages[rem_language]
 	if(!removed_language)
 		return
 
@@ -222,7 +226,7 @@
 			var/synth = (L in speech_synthesizer_langs)
 			dat += "<b>[L.name] ([get_language_prefix()][L.key])</b>[synth ? default_str : null]<br/>Speech Synthesizer: <i>[synth ? "YES" : "NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
 
-	src << browse(dat, "window=checklanguage")
+	show_browser(src, dat, "window=checklanguage")
 	return
 
 /mob/living/silicon/proc/toggle_sensor_mode()
@@ -306,12 +310,12 @@
 
 	updatehealth()
 
-/mob/living/silicon/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if (is_dead())
+/mob/living/silicon/blob_act(damage)
+	if(is_dead())
 		return
 
 	var/protection = blocked_mult(getarmor(null, "bomb"))
-	var/brute = 25
+	var/brute = damage * 2
 
 	brute *= protection
 	adjustBruteLoss(brute)
@@ -338,6 +342,7 @@
 	if(next_alarm_notice && (world.time > next_alarm_notice))
 		next_alarm_notice = 0
 
+		var/text = ""
 		var/alarm_raised = 0
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
@@ -347,8 +352,8 @@
 					alarm_raised = 1
 					if(!reported)
 						reported = 1
-						to_chat(src, "<span class='warning'>--- [AH.category] Detected ---</span>")
-					raised_alarm(A)
+						text += SPAN("warning", "--- [AH.category] Detected ---\n")
+					text += raised_alarm(A)
 
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
@@ -357,24 +362,27 @@
 				if(alarms[A] == -1)
 					if(!reported)
 						reported = 1
-						to_chat(src, "<span class='notice'>--- [AH.category] Cleared ---</span>")
-					to_chat(src, "\The [A.alarm_name()].")
+						text += SPAN("notice", "--- [AH.category] Cleared ---\n")
+					text += "\The [A.alarm_name()].\n"
 
 		if(alarm_raised)
-			to_chat(src, "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>")
+			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
+
+		if(text)
+			to_chat(src, text)
 
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
 			alarms.Cut()
 
 /mob/living/silicon/proc/raised_alarm(datum/alarm/A)
-	to_chat(src, "[A.alarm_name()]!")
+	return "[A.alarm_name()]!\n"
 
 /mob/living/silicon/ai/raised_alarm(datum/alarm/A)
 	var/cameratext = ""
 	for(var/obj/machinery/camera/C in A.cameras())
 		cameratext += "[(cameratext == "")? "" : "|"]<A HREF=?src=\ref[src];switchcamera=\ref[C]>[C.c_tag]</A>"
-	to_chat(src, "[A.alarm_name()]! ([(cameratext)? cameratext : "No Camera"])")
+	return "[A.alarm_name()]! ([(cameratext)? cameratext : "No Camera"])\n"
 
 
 /mob/living/silicon/proc/is_traitor()
@@ -422,13 +430,13 @@
 		switch (alert.name)
 			if ("code green")
 				if (R.module)
-					if (istype(R.module,/obj/item/weapon/robot_module/security/general) && !R.emagged)
-						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+					if (istype(R.module,/obj/item/robot_module/security/general) && !R.emagged)
+						var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/gun/energy/laser/mounted/cyborg) in R.module.modules
 						LC.locked = 1
 						to_chat(src, "<span class='notice'>Security protocols has been changed: Safety locks in place.</span>")
 			if ("code red")
 				if (R.module)
-					if (istype(R.module,/obj/item/weapon/robot_module/security/general))
-						var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/weapon/gun/energy/laser/mounted/cyborg) in R.module.modules
+					if (istype(R.module,/obj/item/robot_module/security/general))
+						var/obj/item/gun/energy/laser/mounted/cyborg/LC = locate(/obj/item/gun/energy/laser/mounted/cyborg) in R.module.modules
 						LC.locked = 0
 						to_chat(src, "<span class='warning'>Security protocols has been changed: Safety locks is now lifted.</span>")

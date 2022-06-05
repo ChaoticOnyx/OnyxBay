@@ -6,11 +6,10 @@
 
 	drop_headbutt = 0
 
-	shift = -10
-
+	shift = 8
 
 	stop_move = 1
-	reverse_facing = 1
+	reverse_moving = TRUE
 	can_absorb = 1
 	shield_assailant = 1
 	point_blank_mult = 1
@@ -31,6 +30,7 @@
 	affecting.drop_r_hand()
 
 	if(affecting.lying)
-		affecting.Weaken(4)
+		affecting.Weaken(2)
+		affecting.Stun(2)
 
 	affecting.adjustOxyLoss(1)

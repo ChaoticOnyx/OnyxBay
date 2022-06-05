@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "robot": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ckey": {
+            "type": "string",
+            "description": "Player's ckey",
+            "pattern": "^[a-z]+$"
+          },
+          "sprite": {
+            "type": "string",
+            "description": "Name of icon state"
+          },
+          "footstep_sound": {
+            "type":"string",
+            "description": "Name of footstep sound\nFor more information see: code\\__defines\\footsteps.dm"
+          }
+        },
+        "required": ["ckey", "sprite"],
+        "additionalProperties": false
+      }
+    },
+    "ai_holo": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ckey": {
+            "type": "string",
+            "description": "Player's ckey",
+            "pattern": "^[a-z]+$"
+          },
+          "sprite": {
+            "type": "string",
+            "description": "Name of icon state"
+          }
+        },
+        "required": ["ckey", "sprite"],
+        "additionalProperties": false
+      }
+    },
+    "ai_core": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ckey": {
+            "type": "string",
+            "description": "Player's ckey",
+            "pattern": "^[a-z]+$"
+          },
+          "sprite": {
+            "type": "string",
+            "pattern": "^.+(?<!(-ai|-ai-crash))$",
+            "description": "Name of icon state without '-ai' and '-ai-crash' at the end"
+          }
+        },
+        "required": ["ckey", "sprite"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["robot", "ai_holo", "ai_core"],
+  "additionalProperties": false
+}

@@ -1,4 +1,4 @@
-obj/item/device/cable_painter
+/obj/item/device/cable_painter
 	name = "cable painter"
 	desc = "A device for repainting cables."
 	description_info = "Use this device to select a preferred cable color. Apply it to a bundle of cables on your person, or use it on installed cabling on the floor to paint it in your chosen color."
@@ -10,16 +10,16 @@ obj/item/device/cable_painter
 	var/list/modes
 	w_class = ITEM_SIZE_SMALL
 
-obj/item/device/cable_painter/New()
+/obj/item/device/cable_painter/New()
 	..()
 	color_selection = pick(possible_cable_coil_colours)
 
-obj/item/device/cable_painter/examine(user)
+/obj/item/device/cable_painter/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nThe color is currently set to [lowertext(color_selection)]."
 
-obj/item/device/cable_painter/attack_self(mob/user)
+/obj/item/device/cable_painter/attack_self(mob/user)
 	var/new_color_selection = input("What color would you like to use?", "Choose a Color", color_selection) as null|anything in possible_cable_coil_colours
 	if(new_color_selection && !user.incapacitated() && (src in user))
 		color_selection = new_color_selection

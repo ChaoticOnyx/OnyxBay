@@ -34,13 +34,13 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 	// We can runtime before config is initialized because BYOND initialize objs/map before a bunch of other stuff happens.
 	// This is a bunch of workaround code for that. Hooray!
 
-	var/configured_error_cooldown = initial(config.error_cooldown)
-	var/configured_error_limit = initial(config.error_limit)
-	var/configured_error_silence_time = initial(config.error_silence_time)
+	var/configured_error_cooldown = initial(config.error.cooldown)
+	var/configured_error_limit = initial(config.error.limit)
+	var/configured_error_silence_time = initial(config.error.silence_time)
 	if(config)
-		configured_error_cooldown = config.error_cooldown
-		configured_error_limit = config.error_limit
-		configured_error_silence_time = config.error_silence_time
+		configured_error_cooldown = config.error.cooldown
+		configured_error_limit = config.error.limit
+		configured_error_silence_time = config.error.silence_time
 
 
 	//Each occurence of an unique error adds to its cooldown time...
@@ -95,5 +95,34 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 	log_runtime("\[[time_stamp()]] Runtime in [E.file],[E.line]: [E]")
 	for(var/line in desclines)
 		log_runtime(line)
+
+// SQL runtime logging
+	if(!config.external.sql_enabled)
+		return
+	if(!establish_don_db_connection())
+		return
+	sql_query({"
+		INSERT INTO runtimes
+			(date,
+			game_id,
+			build_version,
+			file,
+			line,
+			body)
+		VALUES
+			(NOW(),
+			$game_id,
+			$revision,
+			$file,
+			$line,
+			$body)"},
+			dbcon_don,
+			list(
+				game_id = game_id,
+				revision = revdata.revision,
+				file = E.file,
+				line = E.line,
+				body = E.name + "\n" + desclines.Join("\n")
+			))
 
 #endif

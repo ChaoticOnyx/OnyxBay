@@ -50,7 +50,7 @@
 	dat += "<br>"
 	dat += "<hr>"
 	dat += "<a href='?src=\ref[src]'>Refresh</a> <a href='?src=\ref[src];close=1'>Close</a>"
-	user << browse(dat, "window=artanalyser;size=450x500")
+	show_browser(user, dat, "window=artanalyser;size=450x500")
 	user.set_machine(src)
 	onclose(user, "artanalyser")
 
@@ -69,13 +69,15 @@
 		else
 			results = get_scan_info(scanned_object)
 
+
+		var/out = "<b>[src] analysis report #[++report_num]</b><br>"
+		out += "<br>"
+		out += "\icon[scanned_object] [results]"
+
 		src.visible_message("<b>[name]</b> states, \"Scanning complete.\"")
-		var/obj/item/weapon/paper/P = new(src.loc)
-		P.SetName("[src] report #[++report_num]")
-		P.info = "<b>[src] analysis report #[report_num]</b><br>"
-		P.info += "<br>"
-		P.info += "\icon[scanned_object] [results]"
-		P.stamped = list(/obj/item/weapon/stamp)
+
+		var/obj/item/paper/P = new(src.loc, out, "[src] report #[report_num]")
+		P.stamped = list(/obj/item/stamp)
 		P.overlays = list("paper_stamped")
 
 		if(scanned_object && istype(scanned_object, /obj/machinery/artifact))
@@ -89,6 +91,7 @@
 		if(!owned_scanner)
 			reconnect_scanner()
 		if(owned_scanner)
+			playsound(src.loc, 'sound/signals/processing7.ogg', 50)
 			var/artifact_in_use = 0
 			for(var/obj/O in owned_scanner.loc)
 				if(O == owned_scanner)
@@ -132,11 +135,11 @@
 		if(/obj/machinery/auto_cloner)
 			return "Automated cloning pod - appears to rely on an artificial ecosystem formed by semi-organic nanomachines and the contained liquid.<br>The liquid resembles protoplasmic residue supportive of unicellular organism developmental conditions.<br>The structure is composed of a titanium alloy."
 		if(/obj/machinery/power/supermatter)
-			return "Superdense phoron clump - appears to have been shaped or hewn, structure is composed of matter aproximately 20 times denser than ordinary refined phoron."
+			return "Superdense plasma clump - appears to have been shaped or hewn, structure is composed of matter aproximately 20 times denser than ordinary refined plasma."
 		if(/obj/structure/constructshell)
 			return "Tribal idol - subject resembles statues/emblems built by superstitious pre-warp civilisations to honour their gods. Material appears to be a rock/plastcrete composite."
 		if(/obj/machinery/giga_drill)
-			return "Automated mining drill - structure composed of titanium-carbide alloy, with tip and drill lines edged in an alloy of diamond and phoron."
+			return "Automated mining drill - structure composed of titanium-carbide alloy, with tip and drill lines edged in an alloy of diamond and plasma."
 		if(/obj/structure/cult/pylon)
 			return "Tribal pylon - subject resembles statues/emblems built by cargo cult civilisations to honour energy systems from post-warp civilisations."
 		if(/obj/machinery/replicator)
@@ -147,10 +150,10 @@
 			var/obj/machinery/artifact/A = scanned_obj
 			var/out = "Anomalous alien device - composed of an unknown alloy.<br><br>"
 
-			if(A.my_effect)
-				out += A.my_effect.getDescription()
+			if(A.main_effect)
+				out += A.main_effect.getDescription()
 
-			if(A.secondary_effect && A.secondary_effect.activated)
+			if(A.secondary_effect?.activated)
 				out += "<br><br>Internal scans indicate ongoing secondary activity operating independently from primary systems.<br><br>"
 				out += A.secondary_effect.getDescription()
 

@@ -28,7 +28,7 @@
 		F = create_file(filename, loaded_data)
 		return !isnull(F)
 	var/datum/computer_file/data/backup = F.clone()
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD = computer.hard_drive
+	var/obj/item/computer_hardware/hard_drive/HDD = computer.hard_drive
 	if(!HDD)
 		return
 	HDD.remove_file(F)
@@ -143,8 +143,21 @@
 		var/oldtext = html_decode(loaded_data)
 		oldtext = replacetext(oldtext, "\[br\]", "\n")
 
-		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext), "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
+		var/newtext = sanitize(replacetext(input(usr, "Editing file '[open_file]'. You may use most tags used in paper formatting:", "Text Editor", oldtext) as message|null, "\n", "\[br\]"), MAX_TEXTFILE_LENGTH)
 		if(!newtext)
+			return
+		//Count the fields
+		var/laststart = 1
+		var/fields
+		while(1)
+			var/i = findtext_char(newtext, "\[field\]", laststart)
+			if(i==0)
+				break
+			laststart = i+1
+			fields++
+
+		if(fields > 50)
+			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
 		loaded_data = newtext
 		is_edited = 1
@@ -155,7 +168,7 @@
 		if(!computer.nano_printer)
 			error = "Missing Hardware: Your computer does not have the required hardware to complete this operation."
 			return 1
-		if(!computer.nano_printer.print_text(pencode2html(loaded_data)))
+		if(!computer.nano_printer.print_text(loaded_data))
 			error = "Hardware error: Printer was unable to print the file. It may be out of paper."
 			return 1
 
@@ -167,8 +180,8 @@
 	var/datum/computer_file/program/wordprocessor/PRG
 	PRG = program
 
-	var/obj/item/weapon/computer_hardware/hard_drive/HDD
-	var/obj/item/weapon/computer_hardware/hard_drive/portable/RHDD
+	var/obj/item/computer_hardware/hard_drive/HDD
+	var/obj/item/computer_hardware/hard_drive/portable/RHDD
 	if(PRG.error)
 		data["error"] = PRG.error
 	if(PRG.browsing)
@@ -200,9 +213,11 @@
 	else if(PRG.open_file)
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = PRG.is_edited ? "[PRG.open_file]*" : PRG.open_file
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 	else
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = "UNNAMED"
+		data["filedata"] = replacetext(data["filedata"], "<table", "<table class='nword'")
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)

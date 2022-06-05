@@ -20,7 +20,7 @@
 				qdel(src)
 	return
 
-/obj/effect/spider/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/spider/attackby(obj/item/W, mob/user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 	if(W.attack_verb.len)
@@ -31,7 +31,7 @@
 	var/damage = W.force / 4.0
 
 	if(isWelder(W))
-		var/obj/item/weapon/weldingtool/WT = W
+		var/obj/item/weldingtool/WT = W
 
 		if(WT.remove_fuel(0, user))
 			damage = 15
@@ -60,17 +60,16 @@
 		if(prob(50))
 			icon_state = "stickyweb2"
 
-/obj/effect/spider/stickyweb/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/effect/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
-		return 1
+		return TRUE
 	else if(istype(mover, /mob/living))
 		if(prob(50))
 			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
-			return 0
+			return FALSE
 	else if(istype(mover, /obj/item/projectile))
 		return prob(30)
-	return 1
+	return TRUE
 
 /obj/effect/spider/eggcluster
 	name = "egg cluster"
@@ -137,7 +136,7 @@
 		dormant = FALSE
 
 	if(dormant)
-		GLOB.moved_event.register(src, src, /obj/effect/spider/spiderling/proc/disturbed)
+		register_signal(src, SIGNAL_MOVED, /obj/effect/spider/spiderling/proc/disturbed)
 	else
 		START_PROCESSING(SSobj, src)
 
@@ -152,12 +151,11 @@
 
 /obj/effect/spider/spiderling/Destroy()
 	if(dormant)
-		GLOB.moved_event.unregister(src, src, /obj/effect/spider/spiderling/proc/disturbed)
+		unregister_signal(src, SIGNAL_MOVED)
 	STOP_PROCESSING(SSobj, src)
-	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 	. = ..()
 
-/obj/effect/spider/spiderling/attackby(obj/item/weapon/W, mob/user)
+/obj/effect/spider/spiderling/attackby(obj/item/W, mob/user)
 	..()
 	if(health > 0)
 		disturbed()
@@ -171,7 +169,7 @@
 		return
 	dormant = FALSE
 
-	GLOB.moved_event.unregister(src, src, /obj/effect/spider/spiderling/proc/disturbed)
+	unregister_signal(src, SIGNAL_MOVED)
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/spider/spiderling/Bump(atom/user)

@@ -56,22 +56,22 @@
 // Should evaluate metric and return result.
 // Prefer numbers as result of evaluation. If you need to return something more heavy (object?), disable statistics with '_result_is_number'
 /storyteller_metric/proc/_evaluate(time_elapsed)
-	ASSERT("Storyteller metric '[name]' evaluate method is not implemented!")
+	CRASH("Storyteller metric '[name]' evaluate method is not implemented!")
 
 /storyteller_metric/proc/_log_debug(text, verbose = FALSE)
 	if (!__debug)
 		return
 	var/string_to_log = "\[Storyteller Metric [name]]: [text]"
-	if (!verbose)
-		log_debug(string_to_log)
+	if (verbose)
+		log_debug(string_to_log) //print in the debug chat and save in a log file
 	else
-		log_debug_verbose(string_to_log)
+		log_debug_verbose(string_to_log) //only save in a log file
 
 /storyteller_metric/proc/print_statistics(user)
 	if (!user)
 		_log_debug(__build_statistics())
 		return
-	
+
 	var/string_to_log = "\[Storyteller Metric [name]]: "
 	to_chat(user, string_to_log + __build_statistics())
 

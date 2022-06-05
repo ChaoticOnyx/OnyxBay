@@ -7,7 +7,7 @@ var/savefile/Banlistjob
 	var/id = clientvar.computer_id
 	var/key = clientvar.ckey
 	if (guest_jobbans(rank))
-		if(config.guest_jobban && IsGuestKey(key))
+		if(config.game.guest_jobban && IsGuestKey(key))
 			return 1
 	Banlistjob.cd = "/base"
 	if (Banlistjob.dir.Find("[key][id][rank]"))
@@ -146,14 +146,14 @@ var/savefile/Banlistjob
 	else
 		Banlistjob.dir.Add("[ckey][computerid][rank]")
 		Banlistjob.cd = "/base/[ckey][computerid][rank]"
-		Banlistjob["key"] << ckey
-		Banlistjob["id"] << computerid
-		Banlistjob["rank"] << rank
-		Banlistjob["reason"] << reason
-		Banlistjob["bannedby"] << bannedby
-		Banlistjob["temp"] << temp
-		if (temp)
-			Banlistjob["minutes"] << bantimestamp
+		to_file(Banlistjob["key"],      ckey)
+		to_file(Banlistjob["id"],       computerid)
+		to_file(Banlistjob["rank"],     rank)
+		to_file(Banlistjob["reason"],   reason)
+		to_file(Banlistjob["bannedby"], bannedby)
+		to_file(Banlistjob["temp"],     temp)
+		if(temp)
+			to_file(Banlistjob["minutes"], bantimestamp)
 
 	return 1
 
@@ -162,12 +162,13 @@ var/savefile/Banlistjob
 	var/id
 	var/rank
 	Banlistjob.cd = "/base/[foldername]"
-	Banlistjob["key"] >> key
-	Banlistjob["id"] >> id
-	Banlistjob["rank"] >> rank
+	from_file(Banlistjob["key"], key)
+	from_file(Banlistjob["id"], id)
+	from_file(Banlistjob["rank"], rank)
 	Banlistjob.cd = "/base"
 
-	if (!Banlistjob.dir.Remove(foldername)) return 0
+	if(!Banlistjob.dir.Remove(foldername))
+		return 0
 
 	if(!usr)
 		log_admin("Banjob Expired: [key]")
@@ -215,14 +216,14 @@ var/savefile/Banlistjob
 
 	dat += "</table>"
 	dat = "<HR><B>Bans:</B> <FONT COLOR=blue>(U) = Unban , </FONT> - <FONT COLOR=green>([count] Bans)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"
-	usr << browse(dat, "window=unbanp;size=875x400")
+	show_browser(usr, dat, "window=unbanp;size=875x400")
 
 /*/datum/admins/proc/permjobban(ckey, computerid, reason, bannedby, temp, minutes, rank)
 	if(AddBanjob(ckey, computerid, reason, usr.ckey, 0, 0, job))
 		to_chat(M, "<span class='danger'>You have been banned from [job] by [usr.client.ckey].\nReason: [reason].</span>")
 		to_chat(M, "<span class='warning'>This is a ban until appeal.</span>")
-		if(config.banappeals)
-			to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
+		if(config.link.banappeals)
+			to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.link.banappeals]</span>")
 		else
 			to_chat(M, "<span class='warning'>No ban appeals URL has been set.</span>")
 		log_and_message_admins("has banned from [job] [ckey].\nReason: [reason]\nThis is a ban until appeal.")
@@ -230,8 +231,8 @@ var/savefile/Banlistjob
 	if(AddBanjob(ckey, computerid, reason, usr.ckey, 1, mins, job))
 		to_chat(M, "<span class='danger'>You have been jobbanned from [job] by [usr.client.ckey].\nReason: [reason].</span>")
 		to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
-		if(config.banappeals)
-			to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
+		if(config.link.banappeals)
+			to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.link.banappeals]</span>")
 		else
 			to_chat(M, "<span class='warning'>No ban appeals URL has been set.</span>")
 		log_and_message_admins("has banned from [job] [ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")*/
@@ -251,17 +252,17 @@ var/savefile/Banlistjob
 			Banlistjob.cd = "/base"
 			Banlistjob.dir.Add("trash[i]trashid[i]")
 			Banlistjob.cd = "/base/trash[i]trashid[i]"
-			Banlistjob["key"] << "trash[i]"
+			to_file(Banlistjob["key"], "trash[i]")
 		else
 			Banlistjob.cd = "/base"
 			Banlistjob.dir.Add("[last]trashid[i]")
 			Banlistjob.cd = "/base/[last]trashid[i]"
-			Banlistjob["key"] << last
-		Banlistjob["id"] << "trashid[i]"
-		Banlistjob["reason"] << "Trashban[i]."
-		Banlistjob["temp"] << a
-		Banlistjob["minutes"] << CMinutes + rand(1,2000)
-		Banlistjob["bannedby"] << "trashmin"
+			to_file(Banlistjob["key"], last)
+		to_file(Banlistjob["id"],       "trashid[i]")
+		to_file(Banlistjob["reason"],   "Trashban[i].")
+		to_file(Banlistjob["temp"],     a)
+		to_file(Banlistjob["minutes"],  CMinutes + rand(1,2000))
+		to_file(Banlistjob["bannedby"], "trashmin")
 		last = "trash[i]"
 
 	Banlistjob.cd = "/base"

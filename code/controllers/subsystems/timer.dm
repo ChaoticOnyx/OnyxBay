@@ -224,6 +224,7 @@ SUBSYSTEM_DEF(timer)
 	var/list/flags
 	var/spent = FALSE //set to true right before running.
 	var/name //for easy debugging.
+	var/startTime = 0
 
 	//cicular doublely linked list
 	var/datum/timedevent/next
@@ -237,6 +238,7 @@ SUBSYSTEM_DEF(timer)
 	src.timeToRun = timeToRun
 	src.flags = flags
 	src.hash = hash
+	src.startTime = world.time
 
 	if (flags & TIMER_UNIQUE)
 		SStimer.hashes[hash] = src
@@ -357,7 +359,7 @@ SUBSYSTEM_DEF(timer)
 	if (!callback)
 		return
 
-	wait = max(wait, 0)
+	wait = max(CEILING(wait, world.tick_lag), world.tick_lag)
 
 	var/hash
 
@@ -392,6 +394,10 @@ SUBSYSTEM_DEF(timer)
 	var/datum/timedevent/timer = new(callback, timeToRun, flags, hash)
 	if (flags & TIMER_STOPPABLE)
 		return timer.id
+
+/proc/gettimer(id)
+	ASSERT(id)
+	return SStimer.timer_id_dict["timerid[id]"]
 
 /proc/deltimer(id)
 	if (!id)

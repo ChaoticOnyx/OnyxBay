@@ -1,0 +1,26 @@
+{
+  "files.associations": {
+    "*.tmpl": "html"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "/html/changelogs/*.json",
+        "!/html/changelogs/.all_changelog.json"
+      ],
+      "url": "/.vscode/changelog.schema.json"
+    },
+    {
+      "fileMatch": ["/html/changelogs/.all_changelog.json"],
+      "url": "/.vscode/changelog_cache.schema.json"
+    },
+    {
+      "fileMatch": ["/tools/CI/CodeStyleRules.json"],
+      "url": "/.vscode/codestyle.schema.json"
+    }
+  ],
+  "editor.bracketPairColorization.enabled": true,
+  "gitlens.blame.ignoreWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true
+}

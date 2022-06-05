@@ -29,7 +29,7 @@
 		return
 	..()
 
-/obj/item/device/radio/electropack/attackby(obj/item/weapon/W, mob/user)
+/obj/item/device/radio/electropack/attackby(obj/item/W, mob/user)
 	..()
 	if(istype(W, /obj/item/clothing/head/helmet))
 		if(!b_stat)
@@ -84,7 +84,7 @@
 					if(M.client)
 						attack_self(M)
 	else
-		usr << browse(null, "window=radio")
+		close_browser(usr, "window=radio")
 		return
 	return
 
@@ -108,6 +108,7 @@
 		s.start()
 
 		M.Weaken(10)
+		M.Stun(8)
 
 	if(master)
 		master.receive_signal()
@@ -133,6 +134,6 @@ Code:
 <A href='byond://?src=\ref[src];code=1'>+</A>
 <A href='byond://?src=\ref[src];code=5'>+</A><BR>
 </TT>"}
-	user << browse(dat, "window=radio")
+	show_browser(user, dat, "window=radio")
 	onclose(user, "radio")
 	return

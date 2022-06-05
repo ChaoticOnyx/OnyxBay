@@ -31,7 +31,8 @@
 	flash_mod = 1.2
 	brute_mod = 1.1
 	burn_mod =  1.1
-	darksight = 6
+	darksight_range = 6
+	darksight_tint = DARKTINT_MODERATE
 
 	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_SPCR | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 	spawn_flags = SPECIES_IS_RESTRICTED
@@ -45,13 +46,16 @@
 	icobase = 'icons/mob/human_races/subspecies/r_vatgrown.dmi'
 
 	toxins_mod =   1.1
+	brute_mod = 1.1
+	burn_mod =  1.1
 	has_organ = list(
 		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_LUNGS =    /obj/item/organ/internal/lungs,
 		BP_LIVER =    /obj/item/organ/internal/liver,
 		BP_KIDNEYS =  /obj/item/organ/internal/kidneys,
 		BP_BRAIN =    /obj/item/organ/internal/brain,
-		BP_EYES =     /obj/item/organ/internal/eyes
+		BP_EYES =     /obj/item/organ/internal/eyes,
+		BP_STOMACH =  /obj/item/organ/internal/stomach
 		)
 	spawn_flags = SPECIES_IS_RESTRICTED
 

@@ -21,9 +21,10 @@
 
 /obj/item/device/taperecorder/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
+
 	if(ispath(mytape))
 		mytape = new mytape(src)
+
 	GLOB.listening_objects += src
 	update_icon()
 
@@ -157,6 +158,7 @@
 		to_chat(usr, "<span class='notice'>You can't record when playing!</span>")
 		return
 	if(mytape.used_capacity < mytape.max_capacity)
+		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
 		to_chat(usr, "<span class='notice'>Recording started.</span>")
 		recording = 1
 		update_icon()
@@ -197,9 +199,11 @@
 	if(usr.incapacitated())
 		return
 	if(recording)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		stop_recording()
 		return
 	else if(playing)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		playing = 0
 		update_icon()
 		to_chat(usr, "<span class='notice'>Playback stopped.</span>")
@@ -221,6 +225,8 @@
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
 		return
 	else
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
+		playsound(src.loc, 'sound/effects/recorder/wipe1.ogg', 15)
 		if(mytape.storedinfo)	mytape.storedinfo.Cut()
 		if(mytape.timestamp)	mytape.timestamp.Cut()
 		mytape.used_capacity = 0
@@ -246,6 +252,8 @@
 	if(playing)
 		to_chat(usr, "<span class='notice'>You're already playing!</span>")
 		return
+	playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
+	playsound(src.loc, 'sound/effects/recorder/playback1.ogg', 15)
 	playing = 1
 	update_icon()
 	to_chat(usr, "<span class='notice'>Audio playback started.</span>")
@@ -320,15 +328,14 @@
 		return
 
 	to_chat(usr, "<span class='notice'>Transcript printed.</span>")
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
 	var/t1 = "<B>Transcript:</B><BR><BR>"
-	for(var/i=1,mytape.storedinfo.len >= i,i++)
+	for(var/i in 1 to mytape.storedinfo.len)
 		var/printedmessage = mytape.storedinfo[i]
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	P.info = t1
-	P.SetName("Transcript")
+	var/obj/item/paper/P = new /obj/item/paper(get_turf(src))
+	P.set_content(t1, "Transcript", TRUE)
 	canprint = 0
 	sleep(300)
 	canprint = 1
@@ -342,16 +349,14 @@
 
 
 /obj/item/device/taperecorder/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-
 	if(!mytape)
-		icon_state = "[bis.base_icon_state]_empty"
+		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
-		icon_state = "[bis.base_icon_state]_recording"
+		icon_state = "[initial(icon_state)]_recording"
 	else if(playing)
-		icon_state = "[bis.base_icon_state]_playing"
+		icon_state = "[initial(icon_state)]_playing"
 	else
-		icon_state = "[bis.base_icon_state]_idle"
+		icon_state = "[initial(icon_state)]_idle"
 
 /obj/item/device/tape
 	name = "bluespace tape"
@@ -412,7 +417,7 @@
 			to_chat(user, "<span class='notice'>You wound the tape back in.</span>")
 			fix()
 		return
-	else if(istype(I, /obj/item/weapon/pen))
+	else if(istype(I, /obj/item/pen))
 		if(loc == user && !user.incapacitated())
 			var/new_name = sanitize(input(user, "What would you like to label the tape?", "Tape labeling") as null|text)
 			if(isnull(new_name)) return

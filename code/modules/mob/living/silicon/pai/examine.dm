@@ -1,4 +1,4 @@
-/mob/living/silicon/pai/examine(mob/user)
+/mob/living/silicon/pai/_examine_text(mob/user)
 	. = ..(user, infix = ", personal AI")
 
 	var/msg = ""

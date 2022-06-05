@@ -6,23 +6,33 @@
 	icon_state = "tube"
 	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3)
 	amount = 10
+	max_amount = 10
+	w_class = ITEM_SIZE_SMALL
 
+/obj/item/stack/nanopaste/proc/fix_robot(mob/living/silicon/robot/R, mob/user)
+	if(R.getBruteLoss() || R.getFireLoss())
+		R.adjustBruteLoss(-15)
+		R.adjustFireLoss(-15)
+		R.updatehealth()
+		use(1)
+		user.visible_message(SPAN_NOTICE("\The [user] applied some [src] on [R]'s damaged areas."), SPAN_NOTICE("You apply some [src] at [R]'s damaged areas."))
+	else
+		to_chat(user, SPAN_NOTICE("All [R]'s systems are nominal."))
 
-/obj/item/stack/nanopaste/attack(mob/living/M as mob, mob/user as mob)
+/obj/item/stack/nanopaste/attack(mob/living/M, mob/user)
 	if (!istype(M) || !istype(user))
 		return 0
 	if (istype(M,/mob/living/silicon/robot))	//Repairing cyborgs
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		var/mob/living/silicon/robot/R = M
-		if (R.getBruteLoss() || R.getFireLoss() )
-			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-			R.adjustBruteLoss(-15)
-			R.adjustFireLoss(-15)
-			R.updatehealth()
-			use(1)
-			user.visible_message("<span class='notice'>\The [user] applied some [src] on [R]'s damaged areas.</span>",\
-				"<span class='notice'>You apply some [src] at [R]'s damaged areas.</span>")
+		if(user != R)
+			fix_robot(R, user)
 		else
-			to_chat(user, "<span class='notice'>All [R]'s systems are nominal.</span>")
+			if(R.opened)
+				fix_robot(R, user)
+			else
+				if(do_after(user, 10))
+					fix_robot(R, user)
 
 	if (istype(M,/mob/living/carbon/human))		//Repairing robolimbs
 		var/mob/living/carbon/human/H = M
@@ -41,3 +51,6 @@
 				use(1)
 				user.visible_message("<span class='notice'>\The [user] applies some nanite paste on [user != M ? "[M]'s [S.name]" : "[S]"] with [src].</span>",\
 				"<span class='notice'>You apply some nanite paste on [user == M ? "your" : "[M]'s"] [S.name].</span>")
+
+/obj/item/stack/nanopaste/get_storage_cost()
+	return base_storage_cost(w_class)

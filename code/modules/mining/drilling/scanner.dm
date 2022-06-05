@@ -1,6 +1,6 @@
 /turf/simulated/var/surveyed
 
-/obj/item/weapon/mining_scanner
+/obj/item/mining_scanner
 	name = "ore detector"
 	desc = "A complex device used to locate ore deep underground."
 	icon = 'icons/obj/device.dmi'
@@ -10,11 +10,11 @@
 	matter = list(MATERIAL_STEEL = 150)
 	var/survey_data = 0
 
-/obj/item/weapon/mining_scanner/examine(mob/user)
+/obj/item/mining_scanner/_examine_text(mob/user)
 	. = ..()
 	. += "\nTiny indicator shows it holds [survey_data] Good Explorer Points worth of data."
 
-/obj/item/weapon/mining_scanner/attack_self(mob/user as mob)
+/obj/item/mining_scanner/attack_self(mob/user as mob)
 	to_chat(user, "You begin sweeping \the [src] about, scanning for metal deposits.")
 
 	if(!do_after(user, 50,src))
@@ -45,7 +45,7 @@
 				if(MATERIAL_URANIUM)
 					ore_type = "nuclear fuel"
 					data_value = 3
-				if(MATERIAL_PHORON, MATERIAL_OSMIUM, MATERIAL_HYDROGEN)
+				if(MATERIAL_PLASMA, MATERIAL_OSMIUM, MATERIAL_HYDROGEN)
 					ore_type = "exotic matter"
 					data_value = 4
 
@@ -74,7 +74,7 @@
 		playsound(loc, 'sound/machines/ping.ogg', 40, 1)
 		to_chat(user,"<span class='notice'>New survey data stored - [new_data] GEP.</span>")
 
-/obj/item/weapon/mining_scanner/verb/get_data()
+/obj/item/mining_scanner/verb/get_data()
 	set category = "Object"
 	set name = "Get Survey Data"
 	set src in usr
@@ -88,22 +88,22 @@
 		to_chat(M,"<span class='warning'>There is no survey data stored on [src].</span>")
 		return
 	visible_message("<span class='notice'>[src] records [survey_data] GEP worth of the data on the disk and spits it out.</span>")
-	var/obj/item/weapon/disk/survey/D = new(get_turf(src))
+	var/obj/item/disk/survey/D = new(get_turf(src))
 	D.data = survey_data
 	survey_data = 0
 	M.put_in_hands(D)
 
-/obj/item/weapon/disk/survey
+/obj/item/disk/survey
 	name = "survey data disk"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "nucleardisk"
 	var/data
 
-/obj/item/weapon/disk/survey/examine(mob/user)
+/obj/item/disk/survey/_examine_text(mob/user)
 	. = ..()
 	. += "\nTiny indicator shows it holds [data] Good Explorer Points of data."
 
-/obj/item/weapon/disk/survey/Value()
+/obj/item/disk/survey/Value()
 	if(data < 10000)
 		return 0.07*data
 	if(data < 30000)

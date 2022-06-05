@@ -1,17 +1,3 @@
-//Deathsquad suit
-/obj/item/clothing/head/helmet/space/deathsquad
-	name = "deathsquad helmet"
-	desc = "That's not red paint. That's real blood."
-	icon_state = "deathsquad"
-	item_state_slots = list(
-		slot_l_hand_str = "syndicate-helm-black-red",
-		slot_r_hand_str = "syndicate-helm-black-red",
-		)
-	armor = list(melee = 65, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 100, rad = 60)
-	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE | ITEM_FLAG_THICKMATERIAL
-	flags_inv = BLOCKHAIR
-	siemens_coefficient = 0.6
-
 //Space santa outfit suit
 /obj/item/clothing/head/helmet/space/santahat
 	name = "Santa's hat"
@@ -47,7 +33,7 @@
 	desc = "Yarr."
 	icon_state = "pirate"
 	w_class = ITEM_SIZE_NORMAL
-	allowed = list(/obj/item/weapon/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency)
+	allowed = list(/obj/item/gun,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/tank/emergency)
 	armor = list(melee = 60, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 30, rad = 30)
 	siemens_coefficient = 0.9
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -72,3 +58,16 @@
 /obj/item/clothing/suit/space/emergency/New()
 	..()
 	slowdown_per_slot[slot_wear_suit] = 3
+
+//Alpha Goliath's tailplate
+/obj/item/clothing/head/helmet/space/goliath
+	name = "goliath tailplate"
+	desc = "An old goliath's tailplate. It's exceptionally tough, yet quite soft on the inside and, surprisingly, matches a human head's size."
+	icon_state = "goliathhelm"
+	armor = list(melee = 85, bullet = 65, laser = 65, energy = 35, bomb = 65, bio = 85, rad = 50)
+	siemens_coefficient = 0.5
+	flash_protection = FLASH_PROTECTION_MODERATE
+	action_button_name = null
+
+/obj/item/clothing/head/helmet/space/goliath/attack_self(mob/user)
+	return
