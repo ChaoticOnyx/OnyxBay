@@ -610,7 +610,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 				continue
 			candidates -= C.targets
 		for(var/area/area_target in candidates)
-			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) || (area_target.area_flags & AREA_FLAG_NO_STATION))
+			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) || (area_target.area_flags & AREA_FLAG_NO_STATION) || (area_target.area_flags & AREA_FLAG_EXTERNAL))
 				candidates -= area_target
 		while(candidates.len && targets.len < GLOB.contract_recon_target_count)
 			var/area/area_target = pick(candidates)
