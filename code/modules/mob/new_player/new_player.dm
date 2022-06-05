@@ -26,9 +26,6 @@
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	if(!key) // Somebody's disconnected right after restarting
-		return INITIALIZE_HINT_QDEL
-
 	verbs += /mob/proc/toggle_antag_pool
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
