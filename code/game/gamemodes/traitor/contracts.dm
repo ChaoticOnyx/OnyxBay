@@ -432,7 +432,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		H = weakref(_H)
 		target_real_name = _H.real_name
 		name = "[name] [target_real_name]"
-	if(!istype(H) || !istype(_H))
+	if(!istype(H) || !istype(_H) || !target_mind)
 		return
 	var/alternative_message = ""
 	var/obj/item/idcard = _H.get_idcard()
@@ -452,7 +452,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
-	return ..() && target && !QDELETED(target_mind.current)
+	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
 	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
