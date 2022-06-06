@@ -197,6 +197,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/syndicate_mothership/elite_squad
 	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
+	area_flags = AREA_FLAG_NO_STATION
 
 ////////////
 //SHUTTLES//
@@ -207,6 +208,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/shuttle
 	requires_power = 0
 	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_NO_STATION
 
 /*
 * Special Areas
@@ -216,6 +218,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "yellow"
 	requires_power = 0
 	dynamic_lighting = 0
+	area_flags = AREA_FLAG_NO_STATION
 
 /area/beach
 	name = "Keelin's private beach"
@@ -223,6 +226,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
 	var/sound/mysound = null
 
 /area/beach/New()
@@ -277,6 +281,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
 
 //Abductors
 /area/abductor_ship
@@ -286,3 +291,4 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	requires_power = 0
 	dynamic_lighting = 0
 	luminosity = 1
+	area_flags = AREA_FLAG_NO_STATION
