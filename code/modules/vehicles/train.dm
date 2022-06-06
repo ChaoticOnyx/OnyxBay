@@ -8,6 +8,7 @@
 	maxhealth = 100
 	fire_dam_coeff = 0.7
 	brute_dam_coeff = 0.5
+	move_glide_size = 4
 
 	var/passenger_allowed = 1
 
