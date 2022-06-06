@@ -657,14 +657,14 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
  * * notify_suiciders If it should notify suiciders (who do not qualify for many ghost roles)
  * * notify_volume How loud the sound should be to spook the user
  */
-/proc/notify_ghosts(message, ghost_sound = null, enter_link = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
-	if(ignore_mapload && SSatoms.initialized != INITIALIZATION_INNEW_REGULAR) //don't notify for objects created during a map load
+/proc/notify_ghosts(message, ghost_sound = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
+	if(ignore_mapload && SSatoms.init_state != INITIALIZATION_INNEW_REGULAR) //don't notify for objects created during a map load
 		return
 	for(var/mob/observer/ghost/O in GLOB.player_list)
-		var/follow_link
+		var/follow_link = ""
 		if (source && action == NOTIFY_FOLLOW)
 			follow_link = "[create_ghost_link(O, source, "(F)")]"
-		to_chat(O, SPAN_NOTICE("[follow_link][message][(possess_link(O, source)) ? " [enter_link]" : ""]"))
+		to_chat(O, SPAN_NOTICE("[follow_link][message][possess_link(O, source)]"))
 		if(ghost_sound)
 			sound_to(O, sound(ghost_sound, repeat = 0, wait = 0, volume = notify_volume, channel = 1))
 		if(flashwindow)

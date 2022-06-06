@@ -194,7 +194,7 @@
 
 	var/last_time_pointed_at = 0
 
-	/// Contains [/atom/movable/screen/alert] only.
+	/// Contains [/obj/screen/movable/alert] only.
 	///
 	/// On [/mob] so clientless mobs will throw alerts properly.
 	var/list/alerts = list()

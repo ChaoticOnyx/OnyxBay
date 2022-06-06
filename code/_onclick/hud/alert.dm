@@ -68,7 +68,7 @@
 		thealert.timeout = world.time + thealert.timeout - world.tick_lag
 	return thealert
 
-/mob/proc/alert_timeout(/obj/screen/movable/alert/alert, category)
+/mob/proc/alert_timeout(obj/screen/movable/alert/alert, category)
 	if(alert.timeout && alerts[category] == alert && world.time >= alert.timeout)
 		clear_alert(category)
 
