@@ -41,7 +41,9 @@
 		thealert.override_alerts = override
 		if(override)
 			thealert.timeout = null
+
 	thealert.owner = src
+	thealert.register_signal(thealert.owner, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 	if(new_master)
 		var/old_layer = new_master.layer
@@ -89,6 +91,7 @@
 // Proc to check for an alert
 /mob/proc/has_alert(category)
 	return !isnull(alerts[category])
+
 
 /obj/screen/movable/alert
 	icon = 'icons/mob/screen/midnight.dmi'
