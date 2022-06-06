@@ -97,7 +97,10 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 				if(!ispath(outfit_override[outfit_var]) && !isnull(outfit_override[outfit_var]))
 					CRASH("outfit_override var on [mob_name] spawner has incorrect values! it must be an assoc list with outfit \"var\" = path | null")
 				outfit.vars[outfit_var] = outfit_override[outfit_var]
-		outfit.equip(spawned_human)
+
+		var/decl/hierarchy/outfit/O = outfit_by_type(outfit)
+
+		O.equip(spawned_human)
 
 ///these mob spawn subtypes do not trigger until attacked by a ghost.
 /obj/effect/mob_spawn/ghost_role
@@ -236,6 +239,7 @@ GLOBAL_LIST_EMPTY(mob_spawners)
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_1"
 	mob_type = /mob/living/carbon/human
+	outfit = /decl/hierarchy/outfit/death_command
 
 /obj/effect/mob_spawn/corpse/human
 	icon_state = "corpsehuman"

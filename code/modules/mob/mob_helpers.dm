@@ -657,42 +657,58 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
  * * notify_suiciders If it should notify suiciders (who do not qualify for many ghost roles)
  * * notify_volume How loud the sound should be to spook the user
  */
-/proc/notify_ghosts(message, ghost_sound = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
+/proc/notify_ghosts(message, ghost_sound = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, posses_mob = FALSE, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
 	if(ignore_mapload && SSatoms.init_state != INITIALIZATION_INNEW_REGULAR) //don't notify for objects created during a map load
 		return
+
 	for(var/mob/observer/ghost/O in GLOB.player_list)
+
 		var/follow_link = ""
 		if (source && action == NOTIFY_FOLLOW)
-			follow_link = "[create_ghost_link(O, source, "(F)")]"
-		to_chat(O, SPAN_NOTICE("[follow_link][message][possess_link(O, source)]"))
+			follow_link = create_ghost_link(O, source, "(F)")
+
+		var/posses_link = posses_mob ? possess_link(O, source) : ""
+
+		to_chat(O, SPAN_NOTICE("[follow_link][message][posses_link]"))
+
 		if(ghost_sound)
 			sound_to(O, sound(ghost_sound, repeat = 0, wait = 0, volume = notify_volume, channel = 1))
+
 		if(flashwindow)
 			winset(O.client, "mainwindow", "flash=5")
+
 		if(source)
 			var/obj/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /obj/screen/movable/alert/notify_action)
 			if(A)
+
 				var/ui_style = O.client?.prefs?.UI_style
+
 				if(ui_style)
 					A.icon = ui_style2icon(ui_style)
+
 				if (header)
 					A.name = header
+
 				A.desc = message
 				A.action = action
 				A.target = source
+
 				if(!alert_overlay)
 					alert_overlay = new(source)
 					var/icon/size_check = icon(source.icon, source.icon_state)
 					var/scale = 1
 					var/width = size_check.Width()
 					var/height = size_check.Height()
+
 					if(width > world.icon_size || height > world.icon_size)
 						if(width >= height)
 							scale = world.icon_size / width
 						else
 							scale = world.icon_size / height
+
 					alert_overlay.transform = alert_overlay.transform.Scale(scale)
 					alert_overlay.appearance_flags |= TILE_BOUND
+
 				alert_overlay.layer = FLOAT_LAYER
 				alert_overlay.plane = FLOAT_PLANE
 				A.overlays += alert_overlay
