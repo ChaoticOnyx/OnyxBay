@@ -284,3 +284,8 @@
 #define BANK_SECURITY_MINIMUM 0
 #define BANK_SECURITY_MODERATE 1
 #define BANK_SECURITY_MAXIMUM 2
+
+// Notification action types
+#define NOTIFY_JUMP "jump"
+#define NOTIFY_ATTACK "attack"
+#define NOTIFY_FOLLOW "follow"
