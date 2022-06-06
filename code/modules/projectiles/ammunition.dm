@@ -15,14 +15,22 @@
 	var/obj/item/projectile/BB = null	//The loaded bullet - make it so that the projectiles are created only when needed?
 	var/spent_icon = "s-casing-spent"
 
-/obj/item/ammo_casing/New()
-	..()
+/obj/item/ammo_casing/Initialize()
+	. = ..()
 	if(ispath(projectile_type))
 		BB = new projectile_type(src)
+
+/obj/item/ammo_casing/Destroy()
+	QDEL_NULL(BB)
+	return ..()
 
 //removes the projectile from the ammo casing
 /obj/item/ammo_casing/proc/expend()
 	. = BB
+	if(BB.projectile_light)
+		BB.layer = ABOVE_LIGHTING_LAYER
+		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
 	BB = null
 	set_dir(pick(GLOB.alldirs)) //spin spent casings
 
@@ -114,8 +122,8 @@
 /obj/item/ammo_magazine/box
 	w_class = ITEM_SIZE_NORMAL
 
-/obj/item/ammo_magazine/New()
-	..()
+/obj/item/ammo_magazine/Initialize()
+	. = ..()
 	if(multiple_sprites)
 		initialize_magazine_icondata(src)
 
