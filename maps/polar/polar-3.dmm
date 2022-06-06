@@ -4322,7 +4322,7 @@
 "bKm" = (/turf/simulated/mineral,/area/engineering/locker_room)
 "bKn" = (/obj/machinery/door/airlock/maintenance_hatch{frequency = 1379; id_tag = "engine_airlock_interior"; name = "Engine Airlock Interior"; req_access = list(11)},/obj/machinery/door/firedoor,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_airlock)
 "bKo" = (/obj/machinery/light{dir = 4},/obj/machinery/atmospherics/pipe/manifold/visible/cyan{dir = 4},/obj/machinery/alarm{dir = 8; pixel_x = 25},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
-"bKp" = (/obj/structure/window_frame/reinforced/thermal,/obj/machinery/door/blast/regular/polar/open{id = "SupermatterPort"; name = "Reactor Blast Door"ss},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_monitoring)
+"bKp" = (/obj/structure/window_frame/reinforced/thermal,/obj/machinery/door/blast/regular/polar/open{id = "SupermatterPort"; name = "Reactor Blast Door"},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_monitoring)
 "bKq" = (/obj/structure/cable/yellow{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/machinery/alarm{dir = 8; pixel_x = 25},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_smes)
 "bKr" = (/obj/machinery/atmospherics/pipe/simple/visible/fuel{icon_state = "intact"; dir = 8},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
 "bKs" = (/obj/structure/flora/tree/dead/deadtree,/turf/simulated/floor/plating,/area/polarplanet/street)
