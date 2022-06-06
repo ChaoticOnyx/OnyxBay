@@ -112,16 +112,16 @@ meteor_act
 	apply_damage(reduced_power, PAIN, def_zone, 0, used_weapon)
 	damage_poise(reduced_power / 5) // So metazine-filled junkies are still prone to muscular cramps
 
-	var/reduced_tasing = max(tasing * 0.5, tasing * siemens_coeff) // Armor can provide up to 50% stun time reduction
+	var/reduced_tasing = round(max(tasing * 0.5, tasing * siemens_coeff)) // Armor can provide up to 50% stun time reduction
 	apply_effect(STUTTER, reduced_tasing)
 	apply_effect(EYE_BLUR, reduced_tasing)
 
-	if(poise <= 0 || getHalLoss() >= species.total_health)
+	if(poise <= 0 || getHalLoss() >= species.total_health || affected?.pain > species.total_health)
 		if(prob(95)) // May gods decide your destiny
 			if(!stunned)
 				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
-			Stun(tasing)
-			Weaken(tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
+			Stun(reduced_tasing)
+			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
 
 
 //////////////////////

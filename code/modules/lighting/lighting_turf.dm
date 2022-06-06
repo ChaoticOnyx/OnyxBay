@@ -74,7 +74,7 @@
 		return maxlum
 	if(!lighting_overlay)
 		var/area/A = loc
-		if(A.dynamic_lighting)
+		if(A.dynamic_lighting && dynamic_lighting)
 			var/atom/movable/lighting_overlay/O = new /atom/movable/lighting_overlay(src)
 			lighting_overlay = O
 
