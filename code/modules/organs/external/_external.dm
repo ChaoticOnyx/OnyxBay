@@ -903,12 +903,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(DROPLIMB_EDGE)
 			compile_icon()
 			add_blood(victim)
-			var/matrix/M = matrix()
 			if(organ_tag == BP_HEAD)
-				M.Turn(90)
+				SetTransform(rotation = 90)
 			else
-				M.Turn(rand(180))
-			src.transform = M
+				SetTransform(rotation = rand(180))
 			forceMove(victim.loc)
 			update_icon_drop(victim)
 			if(!clean) // Throw limb around.

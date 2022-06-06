@@ -31,7 +31,7 @@
 	var/image/food_image = image(origin.icon, origin.icon_state)
 	food_image.color = origin.color
 	food_image.overlays += origin.overlays
-	food_image.transform *= 0.7
+	food_image.SetTransform(scale = 0.5)
 	food_image.pixel_y = 2
 	product.overlays += food_image
 	return product

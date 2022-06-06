@@ -263,20 +263,13 @@
 		return
 
 	var/offset = Floor(20/cards.len)
-
 	var/matrix/M = matrix()
-	if(direction)
-		switch(direction)
-			if(NORTH)
-				M.Translate( 0,  0)
-			if(SOUTH)
-				M.Translate( 0,  4)
-			if(WEST)
-				M.Turn(90)
-				M.Translate( 3,  0)
-			if(EAST)
-				M.Turn(90)
-				M.Translate(-2,  0)
+	M.Update(
+		rotation = (direction & EAST|WEST) ? 90 : 0,
+		offset_x = (direction == EAST) ? -2 : (direction == WEST) ? 3 : 0,
+		offset_y = direction == SOUTH ? 4 : 0
+	)
+
 	var/i = 0
 	for(var/datum/playingcard/P in cards)
 		var/image/I = new(src.icon, (concealed ? "[P.back_icon]" : "[P.card_icon]") )
@@ -290,7 +283,7 @@
 				I.pixel_y = 8-(offset*i)
 			else
 				I.pixel_x = -7+(offset*i)
-		I.transform = M
+		I.SetTransform(others = M)
 		overlays += I
 		i++
 

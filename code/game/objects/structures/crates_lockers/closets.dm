@@ -744,11 +744,9 @@
 	open()
 	broken = FALSE
 	locked = FALSE
-	var/matrix/M = matrix()
-	M.Turn(90)
-	cdoor.transform = M
+	cdoor.SetTransform(rotation = 90)
 	cdoor.pixel_y = -8
-	cdoor.loc = get_turf(src)
+	cdoor.forceMove(loc)
 	cdoor = null
 
 	setup = CLOSET_CAN_BE_WELDED

@@ -700,10 +700,10 @@
 
 /obj/machinery/vending/proc/update_standing_icon()
 	if(!anchored)
-		transform = turn(transform, -90)
+		SetTransform(rotation = -90)
 		pixel_y = -3
 	else
-		transform = turn(transform, 90)
+		ClearTransform()
 		pixel_y = initial(pixel_y)
 	update_icon()
 
