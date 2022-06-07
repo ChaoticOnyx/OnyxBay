@@ -184,7 +184,7 @@
 	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		var/miss_chance = 15
 		if(O.throw_source)
