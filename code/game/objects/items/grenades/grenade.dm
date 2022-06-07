@@ -89,7 +89,6 @@
 	playsound(loc, arm_sound, 75, 0, -3)
 
 /obj/item/grenade/proc/detonate()
-	if(!active) return
 	var/turf/T = get_turf(src)
 	if(T)
 		T.hotspot_expose(700,125)
@@ -107,7 +106,7 @@
 			broken = TRUE
 			to_chat(user, SPAN("warning", "You broke grenade, while trying to remove detonator!"))
 		if(active) 
-			to_chat(user, SPAN("notice", "You begin to remove [detonator] from grenade chamber."))
+			to_chat(user, SPAN("notice", "You begin to remove detonator from grenade chamber."))
 			if(do_after(usr, 50, src))
 				active = 0
 				update_icon()
@@ -115,9 +114,9 @@
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 				detonate()
 				return
+		to_chat(user, SPAN("notice", "You carefully remove [detonator] from grenade chamber."))
 		user.put_in_hands(detonator)
 		detonator = null;
-		to_chat(user, SPAN("notice", "You carefully remove [detonator] from grenade chamber."))
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && have_pin)
 		if(isnull(safety_pin) && have_pin)
 			if(broken) broken = FALSE

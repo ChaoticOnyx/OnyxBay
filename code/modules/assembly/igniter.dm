@@ -13,7 +13,8 @@
 
 		if(holder && istype(holder.loc,/obj/item/grenade))
 			var/obj/item/grenade/grenade = holder.loc
-			grenade.detonate()
+			if(grenade.active)
+				grenade.detonate()
 		else
 			var/turf/location = get_turf(loc)
 			if(location)
