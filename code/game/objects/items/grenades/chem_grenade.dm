@@ -140,11 +140,10 @@
 
 /obj/item/grenade/chem_grenade/detonate()
 	if(!stage || stage<2) return
-
+	if(!active) return
 	var/has_reagents = 0
 	for(var/obj/item/reagent_containers/vessel/G in beakers)
 		if(G.reagents.total_volume) has_reagents = 1
-	active = 0
 	broken = TRUE
 	if(!has_reagents)
 		update_icon()

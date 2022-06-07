@@ -89,6 +89,7 @@
 	playsound(loc, arm_sound, 75, 0, -3)
 
 /obj/item/grenade/proc/detonate()
+	if(!active) return
 	var/turf/T = get_turf(src)
 	if(T)
 		T.hotspot_expose(700,125)
