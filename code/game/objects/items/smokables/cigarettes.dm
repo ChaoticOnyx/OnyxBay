@@ -204,7 +204,7 @@
 		if(dynamic_icon)
 			die(nomessage = TRUE, nodestroy = TRUE)
 			if(loc == user)
-				transform = turn(transform, round(rand(0, 360), 45))
+				SetTransform(rotation = round(rand(0, 360), 45))
 				pixel_x = rand(-10, 10)
 				pixel_y = rand(-10, 10)
 				user.remove_from_mob(src) // un-equip it so the overlays can update
@@ -214,7 +214,7 @@
 
 /obj/item/clothing/mask/smokable/cigarette/attack_hand(mob/user)
 	if(ishuman(user) && dynamic_icon)
-		transform = matrix()
+		ClearTransform()
 		pixel_x = initial(pixel_x)
 		pixel_y = initial(pixel_y)
 	return ..()
@@ -253,7 +253,7 @@
 
 /obj/item/cigbutt/Initialize()
 	. = ..()
-	transform = turn(transform, round(rand(0, 360), 45))
+	SetTransform(rotation = round(rand(0, 360), 45))
 
 ////////////////
 // CIGARETTES //

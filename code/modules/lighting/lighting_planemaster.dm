@@ -31,10 +31,7 @@
 
 /obj/lighting_general/Initialize()
 	. = ..()
-	var/matrix/M = matrix()
-	M.Scale(world.view*2.2)
-
-	transform = M
+	SetTransform(scale = world.view * 2.2)
 
 /mob
 	var/obj/lighting_plane/l_plane

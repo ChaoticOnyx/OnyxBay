@@ -179,7 +179,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	flick_overlay(I, viewing, 5) // 5 ticks/half a second
 
 	// Scale the icon.
-	I.transform *= 0.75
+	I.SetTransform(scale = 0.75)
 	// Set the direction of the icon animation.
 	var/direction = get_dir(src, A)
 	if(direction & NORTH)
