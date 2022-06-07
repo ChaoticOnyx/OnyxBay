@@ -63,7 +63,7 @@
 			user.remove_from_mob(W)
 			W.forceMove(src)
 			update_icon()
-	if(istype(W,/obj/item/device/assembly_holder) && (stage != STAGE_READY))
+	if(istype(W,/obj/item/device/assembly_holder) && stage != STAGE_READY)
 		var/obj/item/device/assembly_holder/det = W
 		if(istype(det.a_left,det.a_right.type) || (!isigniter(det.a_left) && !isigniter(det.a_right)))
 			to_chat(user, SPAN("warning", "Assembly must contain one igniter."))
@@ -97,7 +97,7 @@
 			stage = STAGE_READY
 			update_icon()
 		else
-			if(isnull(safety_pin) && have_pin && !active)
+			if(isnull(safety_pin) && has_pin && !active)
 				if(prob(5))
 					to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
 					detonate()
@@ -117,7 +117,7 @@
 			SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")
 			stage = STAGE_DETONATOR
 			update_icon()
-	else if(is_type_in_list(W, allowed_containers) && (stage != STAGE_READY))
+	else if(is_type_in_list(W, allowed_containers) && stage != STAGE_READY)
 		if(beakers.len == 2)
 			to_chat(user, SPAN("warning", "The grenade can not hold more containers."))
 			return
