@@ -174,11 +174,11 @@ Please contact me on #coderbus IRC. ~Carn x
 			var/entry = visible_overlays[i]
 			if(istype(entry, /image))
 				var/image/overlay = entry
-				overlay.transform = M
+				overlay.SetTransform(others = M)
 				overlays_to_apply += overlay
 			else if(istype(entry, /list))
 				for(var/image/overlay in entry)
-					overlay.transform = M
+					overlay.SetTransform(others = M)
 					overlays_to_apply += overlay
 		if(species.has_floating_eyes)
 			overlays_to_apply |= species.get_eyes(src)

@@ -37,6 +37,7 @@
 	var/emagged = 0
 	var/powered = 0		//set if vehicle is powered and should use fuel when moving
 	var/move_delay = 1	//set this to limit the speed of the vehicle
+	var/move_glide_size = 4 // Fine VV-wise adjustments are good.
 
 	var/obj/item/cell/cell
 	var/charge_use = 200 //W
@@ -51,6 +52,8 @@
 //-------------------------------------------
 /obj/vehicle/New()
 	..()
+	if(!isnull(move_glide_size))
+		glide_size = move_glide_size
 	//spawn the cell you want in each vehicle
 
 /obj/vehicle/Move()
@@ -71,10 +74,12 @@
 		//Dummy loads do not have to be moved as they are just an overlay
 		//See load_object() proc in cargo_trains.dm for an example
 		if(load && !istype(load, /datum/vehicle_dummy_load))
+			set_glide_size(move_glide_size)
 			if(ismob(load))
 				var/mob/M = load
 				M.forceMove(loc, unbuckle_mob=FALSE)
 			else
+				load.set_glide_size(move_glide_size)
 				load.forceMove(loc)
 			load.set_dir(dir)
 

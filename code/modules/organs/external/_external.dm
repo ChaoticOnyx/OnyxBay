@@ -27,6 +27,7 @@
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
 	var/full_pain = 0                  // Overall pain including damages.
+	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
 	// Movement delay vars.
@@ -120,6 +121,10 @@
 	if(owner)
 		replaced(owner)
 		sync_colour_to_human(owner)
+		if(isnull(max_pain))
+			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
+	else if(isnull(max_pain))
+		max_pain = max_damage * 1.5 // Should not ~probably~ happen
 	get_icon()
 
 	if(food_organ in implants)
@@ -898,12 +903,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(DROPLIMB_EDGE)
 			compile_icon()
 			add_blood(victim)
-			var/matrix/M = matrix()
 			if(organ_tag == BP_HEAD)
-				M.Turn(90)
+				SetTransform(rotation = 90)
 			else
-				M.Turn(rand(180))
-			src.transform = M
+				SetTransform(rotation = rand(180))
 			forceMove(victim.loc)
 			update_icon_drop(victim)
 			if(!clean) // Throw limb around.
@@ -1062,8 +1065,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
-			owner.Weaken(2)
-			owner.Stun(1)
+			owner.Weaken(3)
+			owner.Stun(2)
 
 	broken_description = pick("broken", "fracture", "hairline fracture")
 

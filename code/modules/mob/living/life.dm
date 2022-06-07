@@ -10,7 +10,7 @@
 		return 0
 
 	if(machine && !CanMouseDrop(machine, src))
-		machine = null
+		unset_machine()
 
 	handle_modifiers() // Do this early since it might affect other things later.
 	if (do_check_environment())

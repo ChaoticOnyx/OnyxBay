@@ -363,6 +363,11 @@
 			status_error = TRUE
 			return 0
 
+	if(!currently_vending)
+		status_message = "Item not selected, operation canceled."
+		status_error = TRUE
+		return
+
 	if(currently_vending.price > customer_account.money)
 		status_message = "Insufficient funds in account."
 		status_error = TRUE
@@ -695,10 +700,10 @@
 
 /obj/machinery/vending/proc/update_standing_icon()
 	if(!anchored)
-		transform = turn(transform, -90)
+		SetTransform(rotation = -90)
 		pixel_y = -3
 	else
-		transform = turn(transform, 90)
+		ClearTransform()
 		pixel_y = initial(pixel_y)
 	update_icon()
 

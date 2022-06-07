@@ -96,10 +96,20 @@
 	icon_state = "steel"
 	initial_flooring = /decl/flooring/tiling
 
+/turf/simulated/floor/tiled/mono
+	name = "steel mono floor"
+	icon_state = "steel_mono"
+	initial_flooring = /decl/flooring/tiling/mono
+
 /turf/simulated/floor/tiled/dark
 	name = "dark floor"
 	icon_state = "dark"
 	initial_flooring = /decl/flooring/tiling/dark
+
+/turf/simulated/floor/tiled/dark/mono
+	name = "dark mono floor"
+	icon_state = "dark_mono"
+	initial_flooring = /decl/flooring/tiling/dark/mono
 
 /turf/simulated/floor/tiled/dark/airless
 	initial_gas = null
@@ -108,6 +118,11 @@
 	name = "white floor"
 	icon_state = "white"
 	initial_flooring = /decl/flooring/tiling/white
+
+/turf/simulated/floor/tiled/white/mono
+	name = "white mono floor"
+	icon_state = "white_mono"
+	initial_flooring = /decl/flooring/tiling/white/mono
 
 /turf/simulated/floor/tiled/brown
 	name = "brown tile floor"
@@ -124,7 +139,22 @@
 	icon_state = "steel_dirty"
 	initial_flooring = /decl/flooring/tiling/dirty
 
+/turf/simulated/floor/tiled/techfloor
+	name = "floor"
+	icon_state = "techfloor"
+	initial_flooring = /decl/flooring/tiling/techfloor
 
+/turf/simulated/floor/tiled/techfloor/maint
+	icon_state = "techmaint"
+	initial_flooring = /decl/flooring/tiling/techfloor/maint
+
+/turf/simulated/floor/tiled/techfloor/grid
+	icon_state = "techgrid"
+	initial_flooring = /decl/flooring/tiling/techfloor/grid
+
+/turf/simulated/floor/tiled/techfloor/ridge
+	icon_state = "techridge"
+	initial_flooring = /decl/flooring/tiling/techfloor/ridge
 //ATMOS PREMADES
 
 /turf/simulated/floor/reinforced/airless

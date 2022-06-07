@@ -10,6 +10,7 @@
 /datum/category_item/player_setup_item/general/basic
 	name = "Basic"
 	sort_order = 1
+
 /datum/category_item/player_setup_item/general/proc/has_flag(datum/species/mob_species, flag)
 	return mob_species && (mob_species.appearance_flags & flag)
 

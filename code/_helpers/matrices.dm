@@ -2,13 +2,37 @@
 	. = new_angle - old_angle
 	Turn(.) //BYOND handles cases such as -270, 360, 540 etc. DOES NOT HANDLE 180 TURNS WELL, THEY TWEEN AND LOOK LIKE SHIT
 
+// Clears the matrix's a-f variables to identity.
+/matrix/proc/Clear()
+	a = 1
+	b = 0
+	c = 0
+	d = 0
+	e = 1
+	f = 0
+	return src
+
+// Runs Scale, Turn, and Translate if supplied parameters, then multiplies by others if set.
+/matrix/proc/Update(scale_x, scale_y, rotation, offset_x, offset_y, list/others)
+	var/x_null = isnull(scale_x)
+	var/y_null = isnull(scale_y)
+	if(!x_null || !y_null)
+		Scale(x_null ? 1 : scale_x, y_null ? 1 : scale_y)
+	if(!isnull(rotation))
+		Turn(rotation)
+	if(offset_x || offset_y)
+		Translate(offset_x || 0, offset_y || 0)
+	if(islist(others))
+		for(var/other in others)
+			Multiply(other)
+	else if(others)
+		Multiply(others)
+	return src
 
 /atom/proc/SpinAnimation(speed = 10, loops = -1)
-	var/matrix/m120 = matrix(transform)
-	m120.Turn(120)
-	var/matrix/m240 = matrix(transform)
-	m240.Turn(240)
-	var/matrix/m360 = matrix(transform)
+	var/matrix/m120 = matrix(transform).Update(rotation = 120)
+	var/matrix/m240 = matrix(transform).Update(rotation = 240)
+	var/matrix/m360 = matrix(transform).Update(rotation = 360)
 	speed /= 3      //Gives us 3 equal time segments for our three turns.
 	                //Why not one turn? Because byond will see that the start and finish are the same place and do nothing
 	                //Why not two turns? Because byond will do a flip instead of a turn
@@ -19,8 +43,13 @@
 /atom/proc/shake_animation(intensity = 8, stime = 6)
 	var/init_px = pixel_x
 	var/shake_dir = pick(-1, 1)
-	animate(src, transform=turn(matrix(), intensity*shake_dir), pixel_x=init_px + 2*shake_dir, time=1)
-	animate(transform=null, pixel_x=init_px, time=stime, easing=ELASTIC_EASING)
+	animate(
+		src,
+		transform = matrix().Update(rotation = intensity * shake_dir),
+		pixel_x = init_px + 2 * shake_dir,
+		time = 1
+	)
+	animate(transform = null, pixel_x = init_px, time = stime, easing = ELASTIC_EASING)
 
 //The X pixel offset of this matrix
 /matrix/proc/get_x_shift()
@@ -47,7 +76,7 @@
 /proc/color_rotation(angle)
 	if(angle == 0)
 		return color_identity()
-	angle = Clamp(angle, -180, 180)
+	angle = clamp(angle, -180, 180)
 	var/cos = cos(angle)
 	var/sin = sin(angle)
 
@@ -62,7 +91,7 @@
 
 //Makes everything brighter or darker without regard to existing color or brightness
 /proc/color_brightness(power)
-	power = Clamp(power, -255, 255)
+	power = clamp(power, -255, 255)
 	power = power/255
 
 	return list(1,0,0, 0,1,0, 0,0,1, power,power,power)
@@ -105,7 +134,7 @@
 /proc/color_saturation(value as num)
 	if(value == 0)
 		return color_identity()
-	value = Clamp(value, -100, 100)
+	value = clamp(value, -100, 100)
 	if(value > 0)
 		value *= 3
 	var/x = 1 + value / 100

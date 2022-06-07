@@ -6,6 +6,7 @@
 	var/mod_weight_a
 	var/mod_reach_a
 	var/mod_shield_a = 1.0
+	var/block_tier_a = BLOCK_TIER_ADVANCED
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -30,6 +31,7 @@
 	mod_weight = mod_weight_a
 	mod_reach = mod_reach_a
 	mod_shield = mod_shield_a
+	block_tier = block_tier_a
 	check_armour = "laser"
 	playsound(user, activate_sound, 50, 1)
 
@@ -47,6 +49,7 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
+	block_tier = initial(block_tier)
 	check_armour = "melee"
 
 /obj/item/melee/energy/attack_self(mob/living/user)
@@ -89,7 +92,7 @@
 		return 0
 	if(user.incapacitated(INCAPACITATION_DISABLED))
 		return 0
-	if(mod_shield < 1.3)
+	if(block_tier < BLOCK_TIER_PROJECTILE)
 		return 0 // So energy axes and daggers wielders don't go jedi
 	if(istype(damage_source, /obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
@@ -142,7 +145,8 @@
 	mod_weight_a = 1.5
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
-	mod_shield_a = 1.25 // Still not enough to block projectiles
+	mod_shield_a = 1.25
+	block_tier_a = BLOCK_TIER_MELEE
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 4)

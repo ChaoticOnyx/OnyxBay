@@ -6,6 +6,7 @@
 	energy_drain = 20
 	range = MELEE
 	equip_cooldown = 20
+	equip_slot = BACK
 	var/mob/living/carbon/occupant = null
 	var/datum/global_iterator/pr_mech_sleeper
 	var/inject_amount = 10
@@ -234,6 +235,8 @@
 	equip_cooldown = 10
 	origin_tech = list(TECH_MATERIAL = 3, TECH_BIO = 4, TECH_MAGNET = 4, TECH_DATA = 3)
 	required_type = /obj/mecha/medical
+	need_colorize = FALSE
+	equip_slot = BACK
 
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/New()
 	..()

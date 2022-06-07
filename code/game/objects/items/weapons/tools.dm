@@ -153,8 +153,7 @@
 	update_icon()
 
 /obj/item/screwdriver/update_icon()
-	icon_rotation = istype(loc, /obj/item/storage) ? -90 : 0
-	update_transform()
+	SetTransform(rotation = istype(loc, /obj/item/storage) ? -90 : 0)
 
 /obj/item/screwdriver/old
 	name = "old screwdriver"

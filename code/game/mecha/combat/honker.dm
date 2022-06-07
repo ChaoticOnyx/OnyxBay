@@ -3,6 +3,7 @@
 	name = "H.O.N.K"
 	icon_state = "honker"
 	initial_icon = "honker"
+	base_color = "#BD0F17"
 	step_in = 2
 	health = 200
 	deflect_chance = 60

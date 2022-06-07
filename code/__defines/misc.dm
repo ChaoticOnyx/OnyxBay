@@ -84,6 +84,7 @@
 //Area flags, possibly more to come
 #define AREA_FLAG_RAD_SHIELDED 1 // shielded from radiation, clearly
 #define AREA_FLAG_EXTERNAL     2 // External as in exposed to space, not outside in a nice, green, forest
+#define AREA_FLAG_NO_STATION   3
 
 //Area gravity flags
 #define AREA_GRAVITY_NEVER  -1 // No gravity, never
@@ -157,6 +158,12 @@
 #define PROJECTILE_CONTINUE		-1 //if the projectile should continue flying after calling bullet_act()
 #define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
 #define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+
+// These determine how well one can block things with items
+#define BLOCK_TIER_NONE        0
+#define BLOCK_TIER_MELEE       1
+#define BLOCK_TIER_PROJECTILE  2
+#define BLOCK_TIER_ADVANCED    3
 
 //Camera capture modes
 #define CAPTURE_MODE_REGULAR 0 //Regular polaroid camera mode

@@ -110,9 +110,7 @@
 
 /obj/item/reagent_containers/syringe/update_icon()
 	overlays.Cut()
-
-	icon_rotation = istype(loc, /obj/item/storage) ? 90 : 0
-	update_transform()
+	SetTransform(rotation = istype(loc, /obj/item/storage) ? 90 : 0)
 
 	if(mode == SYRINGE_BROKEN)
 		icon_state = "broken"

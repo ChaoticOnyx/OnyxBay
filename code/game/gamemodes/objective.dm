@@ -452,9 +452,43 @@ var/global/list/all_objectives = list()
 		return FALSE
 
 
-/datum/objective/ert_station_save
+/datum/objective/ert
+	var/save_area_type = /area/rescue_base
+/datum/objective/ert/extract_heads
+	var/list/weakref/extract_heads = list() // for living one
+	var/list/weakref/extract_heads_bodies = list() // for dead one
 
-/datum/objective/ert_station_save/check_completion()
+/datum/objective/ert/extract_heads/check_completion()
+	for(var/weakref/ref in extract_heads)
+		var/mob/living/carbon/human/head = ref.resolve()
+		var/turf/T = get_turf(head)
+		if(!head || head.stat == DEAD || !istype(T?.loc, save_area_type))
+			return FALSE
+	for(var/weakref/ref in extract_heads_bodies)
+		var/mob/living/carbon/human/head = ref.resolve()
+		var/turf/T = get_turf(head)
+		if(!head || !istype(T?.loc, save_area_type))
+			return FALSE
+	return TRUE
+
+/datum/objective/ert/extract_heads/New(text)
+	..()
+	var/list/dead_heads = list()
+	var/list/heads = list()
+	for(var/mob/living/carbon/human/possible_target in sortmobs())
+		if(possible_target.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET)
+			continue
+		if((possible_target.job in GLOB.commandjobs) && !(possible_target.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
+			if(possible_target.stat == DEAD)
+				extract_heads_bodies.Add(weakref(possible_target))
+				dead_heads.Add("[possible_target.real_name] ([possible_target.job])")
+			else
+				extract_heads.Add(weakref(possible_target))
+				heads.Add("[possible_target.real_name] ([possible_target.job])")
+	explanation_text = "[length(heads) ? "You need to evacuate these heads to the base: [english_list(heads)].\n " : ""]\
+						[length(dead_heads) ? "According to our information the following heads are dead, take their bodies back to base: [english_list(dead_heads)]." : ""]"
+
+/datum/objective/ert/resolve_conflict/check_completion()
 	if(GLOB.revs.global_objectives.len > 0)
 		var/completed = 0
 		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
@@ -465,7 +499,7 @@ var/global/list/all_objectives = list()
 
 	return GLOB.ert.is_station_secure
 
-/datum/objective/ert_station_save/New()
+/datum/objective/ert/resolve_conflict/New()
 	..()
 	explanation_text = "Resolve emergency situation you were called for and preserve any [GLOB.using_map.company_name]'s property from being lost."
 

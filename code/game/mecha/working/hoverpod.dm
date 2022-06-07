@@ -3,6 +3,7 @@
 	name = "Hover Pod"
 	icon_state = "engineering_pod"
 	initial_icon = "engineering_pod"
+	base_color = "#F8F8F8"
 	internal_damage_threshold = 80
 	step_in = 4
 	step_energy_drain = 400

@@ -36,8 +36,8 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	..()
 	update_icon()
 
-/obj/item/gun/energy/New()
-	..()
+/obj/item/gun/energy/Initialize()
+	. = ..()
 	if(cell_type)
 		power_supply = new cell_type(src)
 	else
@@ -70,10 +70,18 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	return 1
 
 /obj/item/gun/energy/consume_next_projectile()
-	if(!power_supply) return null
-	if(!ispath(projectile_type)) return null
-	if(!power_supply.checked_use(charge_cost)) return null
-	return new projectile_type(src)
+	if(!power_supply)
+		return null
+	if(!ispath(projectile_type))
+		return null
+	if(!power_supply.checked_use(charge_cost))
+		return null
+	var/obj/item/projectile/BB = new projectile_type(src)
+	if(BB.projectile_light)
+		BB.layer = ABOVE_LIGHTING_LAYER
+		BB.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		BB.set_light(BB.projectile_max_bright, BB.projectile_inner_range, BB.projectile_outer_range, BB.projectile_falloff_curve, BB.projectile_brightness_color)
+	return BB
 
 /obj/item/gun/energy/proc/get_external_power_supply()
 	if(isrobot(src.loc))

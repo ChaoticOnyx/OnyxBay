@@ -252,7 +252,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		return
 
 	if(pain)
-		pain -= owner.lying ? 3 : 1
+		pain -= (pain > max_damage ? 2.5 : 1) * (owner.lying ? 3 : 1) // Over-limit pain decreases faster.
 		pain = max(pain, 0)
 
 	var/lasting_pain = 0
@@ -261,12 +261,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	else if(is_dislocated())
 		lasting_pain += 5
 
-	var/tox_dam = 0
-	for(var/i in internal_organs)
-		var/obj/item/organ/internal/I = i
-		tox_dam += I.getToxLoss()
-
-	full_pain = pain + lasting_pain + min(max_damage, 0.7 * brute_dam + 0.8 * burn_dam) + 0.3 * tox_dam + 0.5 * get_genetic_damage()
+	full_pain = min(pain, max_damage) + lasting_pain + min(max_damage, 0.7 * brute_dam + 0.8 * burn_dam) + 0.5 * get_genetic_damage()
 
 /obj/item/organ/external/proc/get_pain()
 	return pain
@@ -275,9 +270,11 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(!can_feel_pain())
 		return 0
 	var/last_pain = pain
-	pain = clamp(pain + change, 0, max_damage)
+	pain = clamp(pain + change, 0, max_pain)
+	full_pain += pain - last_pain // Updating it without waiting for the next tick for the greater good
 
 	if(change > 0 && owner)
+		owner.full_pain += pain - last_pain
 		if((change > 15 && prob(20)) || (change > 30 && prob(60)))
 			owner.emote("scream")
 
@@ -285,6 +282,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 /obj/item/organ/external/proc/remove_all_pain()
 	pain = 0
+	owner?.full_pain -= full_pain
 	full_pain = 0
 
 /obj/item/organ/external/proc/get_default_pain_message(power)
