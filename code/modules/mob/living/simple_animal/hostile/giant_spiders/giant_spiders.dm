@@ -249,7 +249,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	///How long it takes for a broodmother to lay eggs.
 	var/egg_lay_time = 15 SECONDS
 	///The ability for the spider to wrap targets.
-	var/obj/effect/proc_holder/wrap/wrap
+	var/datum/action/innate/spider/wrap/wrap
 	///The ability for the spider to lay basic eggs.
 	var/datum/action/innate/spider/lay_eggs/lay_eggs
 	///The ability for the spider to lay enriched eggs.
@@ -264,7 +264,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 /mob/living/simple_animal/hostile/giant_spider/midwife/Initialize(mapload)
 	. = ..()
 	wrap = new
-	AddAbility(wrap)
+	wrap.Grant(src)
 	lay_eggs = new
 	lay_eggs.Grant(src)
 	lay_eggs_enriched = new
@@ -284,19 +284,19 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	if(stat == DEAD || !cocoon_target || cocoon_target.anchored)
 		return
 	if(cocoon_target == src)
-		to_chat(src, span_warning("You can't wrap yourself!"))
+		to_chat(src, SPAN_WARNING("You can't wrap yourself!"))
 		return
 	if(istype(cocoon_target, /mob/living/simple_animal/hostile/giant_spider))
-		to_chat(src, span_warning("You can't wrap other spiders!"))
+		to_chat(src, SPAN_WARNING("You can't wrap other spiders!"))
 		return
 	if(!Adjacent(cocoon_target))
-		to_chat(src, span_warning("You can't reach [cocoon_target]!"))
+		to_chat(src, SPAN_WARNING("You can't reach [cocoon_target]!"))
 		return
 	if(is_busy)
-		to_chat(src, span_warning("You're already doing something else!"))
+		to_chat(src, SPAN_WARNING("You're already doing something else!"))
 		return
 	is_busy = TRUE
-	visible_message(span_notice("[src] begins to secrete a sticky substance around [cocoon_target]."),span_notice("You begin wrapping [cocoon_target] into a cocoon."))
+	visible_message(SPAN_NOTICE("[src] begins to secrete a sticky substance around [cocoon_target]."),SPAN_NOTICE("You begin wrapping [cocoon_target] into a cocoon."))
 	stop_automated_movement = TRUE
 	if(do_after(src, 50, target = cocoon_target))
 		if(is_busy)
@@ -306,11 +306,10 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 				if(ishuman(living_target) && (living_target.stat != DEAD || !consumed_mobs[living_target.tag])) //if they're not dead, you can consume them anyway
 					consumed_mobs[living_target.tag] = TRUE
 					fed++
-					lay_eggs_enriched.UpdateButtons(TRUE)
-					visible_message(span_danger("[src] sticks a proboscis into [living_target] and sucks a viscous substance out."),span_notice("You suck the nutriment out of [living_target], feeding you enough to lay a cluster of eggs."))
+					visible_message(SPAN_NOTICE("[src] sticks a proboscis into [living_target] and sucks a viscous substance out."),SPAN_NOTICE("You suck the nutriment out of [living_target], feeding you enough to lay a cluster of eggs."))
 					living_target.death() //you just ate them, they're dead.
 				else
-					to_chat(src, span_warning("[living_target] cannot sate your hunger!"))
+					to_chat(src, SPAN_WARNING("[living_target] cannot sate your hunger!"))
 			cocoon_target.forceMove(casing)
 			if(cocoon_target.density || ismob(cocoon_target))
 				casing.icon_state = pick("cocoon_large1","cocoon_large2","cocoon_large3")
@@ -329,12 +328,10 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/ice
 	name = "giant ice spider"
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = 1500
 	poison_type = /datum/reagent/consumable/frostoil
 	color = rgb(114,228,250)
-	gold_core_spawnable = NO_SPAWN
 	menu_description = "Versatile ice spider variant for frontline combat with high health and damage. Immune to temperature damage."
 
 /**
@@ -346,7 +343,6 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/nurse/ice
 	name = "giant ice spider"
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = 1500
 	poison_type = /datum/reagent/consumable/frostoil
@@ -362,12 +358,10 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/hunter/ice
 	name = "giant ice spider"
-	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_plas" = 0, "max_plas" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = 1500
 	poison_type = /datum/reagent/consumable/frostoil
 	color = rgb(114,228,250)
-	gold_core_spawnable = NO_SPAWN
 	menu_description = "Fast ice spider variant specializing in catching running prey and frost oil injection, but has less health and damage. Immune to temperature damage."
 
 /**
@@ -379,7 +373,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/hunter/scrawny
 	name = "scrawny spider"
-	environment_smash = ENVIRONMENT_SMASH_NONE
+	environment_smash = 0
 	health = 60
 	maxHealth = 60
 	melee_damage_lower = 5
@@ -396,7 +390,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/tarantula/scrawny
 	name = "scrawny tarantula"
-	environment_smash = ENVIRONMENT_SMASH_NONE
+	environment_smash = 0
 	health = 150
 	maxHealth = 150
 	melee_damage_lower = 20
@@ -413,7 +407,7 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
  */
 /mob/living/simple_animal/hostile/giant_spider/nurse/scrawny
 	name = "scrawny nurse spider"
-	environment_smash = ENVIRONMENT_SMASH_NONE
+	environment_smash = 0
 	health = 30
 	maxHealth = 30
 	desc = "Furry and black, it makes you shudder to look at it. This one has brilliant green eyes, and looks abnormally thin and frail."
@@ -442,16 +436,16 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 /mob/living/simple_animal/hostile/giant_spider/hunter/flesh/AttackingTarget()
 	if(is_busy)
 		return
-	if(src == target)
+	if(src == target_mob)
 		if(health >= maxHealth)
-			to_chat(src, span_warning("You're not injured, there's no reason to heal."))
+			to_chat(src, SPAN_WARNING("You're not injured, there's no reason to heal."))
 			return
-		visible_message(span_notice("[src] begins mending themselves..."),span_notice("You begin mending your wounds..."))
+		visible_message(SPAN_NOTICE("[src] begins mending themselves..."),SPAN_NOTICE("You begin mending your wounds..."))
 		is_busy = TRUE
-		if(do_after(src, 20, target = src))
+		if(do_after(src, 20))
 			heal_overall_damage(50, 50)
 			new /obj/effect/temp_visual/heal(get_turf(src), "#80F5FF")
-			visible_message(span_notice("[src]'s wounds mend together."),span_notice("You mend your wounds together."))
+			visible_message(SPAN_NOTICE("[src]'s wounds mend together."),SPAN_NOTICE("You mend your wounds together."))
 		is_busy = FALSE
 		return
 	return ..()
@@ -467,10 +461,5 @@ GLOBAL_LIST_EMPTY(spidermobs) //all sentient spider mobs
 	maxHealth = 80
 	health = 80
 	menu_description = "Stronger assassin spider variant with an unmatched speed, high amount of health and very deadly poison, but deals very low amount of damage. It also has ability to ventcrawl."
-
-/mob/living/simple_animal/hostile/giant_spider/viper/wizard/Initialize(mapload)
-	. = ..()
-	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
-
 /decl/simple_animal_bodyparts/spider
 	hit_zones = list("cephalothorax", "abdomen", "left forelegs", "right forelegs", "left hind legs", "right hind legs", "pedipalp", "mouthparts")

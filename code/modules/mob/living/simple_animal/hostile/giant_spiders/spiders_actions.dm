@@ -166,7 +166,7 @@
 		return TRUE
 
 /datum/action/innate/spider/comm/Trigger(trigger_flags)
-	var/input = tgui_input_text(owner, "Input a command for your legions to follow.", "Command")
+	var/input = input(owner, "Input a command for your legions to follow.", "Command") as text
 	if(QDELETED(src) || !input || !IsAvailable())
 		return FALSE
 	spider_command(owner, input)
@@ -323,7 +323,7 @@
 		for(var/obj/object in next_turf.contents)
 			if(!object.Adjacent(charger))
 				continue
-			if(!istype(/obj/machinery,object) && !istype(/obj/structureobject))
+			if(!istype(/obj/machinery, object) && !istype(/obj/structure, object))
 				continue
 			if(!object.density)
 				continue

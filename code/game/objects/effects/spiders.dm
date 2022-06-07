@@ -56,20 +56,37 @@
 
 /obj/structure/spider/stickyweb
 	icon_state = "stickyweb1"
-	New()
-		if(prob(50))
-			icon_state = "stickyweb2"
+	///Whether or not the web is a sealed web
+	var/sealed = FALSE
+
+/obj/structure/spider/stickyweb/Initialize()
+	..()
+	if(prob(50))
+		icon_state = "stickyweb2"
+
+/obj/structure/spider/stickyweb/sealed
+	name = "sealed web"
+	desc = "A solid thick wall of web, airtight enough to block air flow."
+	icon_state = "sealedweb"
+	sealed = TRUE
+	can_atmos_pass = ATMOS_PASS_NO
 
 /obj/structure/spider/stickyweb/CanPass(atom/movable/mover, turf/target)
+	if(sealed)
+		return FALSE
+
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
 		return TRUE
+
 	else if(istype(mover, /mob/living))
+		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/giant_spider))
+			return TRUE
 		if(prob(50))
 			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
+
 	else if(istype(mover, /obj/item/projectile))
 		return prob(30)
-	return TRUE
 
 /obj/structure/spider/eggcluster
 	name = "egg cluster"
@@ -329,7 +346,7 @@
 	icon_state = pick("cocoon1","cocoon2","cocoon3")
 	. = ..()
 
-/obj/structure/spider/cocoon/mob_breakout(mob/living/user)
+/obj/structure/spider/cocoon/proc/mob_breakout(mob/living/user)// For God's sake, don't make it a closet
 	var/breakout_time = 600
 	user.last_special = world.time + 100
 	to_chat(user, SPAN_NOTICE("You struggle against the tight bonds... (This will take about [time2text(breakout_time)].)"))

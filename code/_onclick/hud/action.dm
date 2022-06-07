@@ -282,9 +282,6 @@
 
 	return .
 
-/datum/action/cooldown/process()
-	UpdateButton(button)
-
 /// Starts a cooldown time to be shared with similar abilities, will use default cooldown time if an override is not specified
 /datum/action/cooldown/proc/StartCooldown(override_cooldown_time)
 	if(shared_cooldown)
@@ -332,10 +329,10 @@
 	. = Activate(target)
 
 /// To be implemented by subtypes
-/datum/action/cooldown/proc/Activate(atom/target)
+/datum/action/cooldown/Activate(atom/target)
 	return
 
-/datum/action/cooldown/UpdateButton(/obj/screen/movable/action_button/button)
+/datum/action/cooldown/proc/UpdateButton(/obj/screen/movable/action_button/button)
 	if(!button)
 		return
 	var/time_left = max(next_use_time - world.time, 0)
@@ -348,11 +345,11 @@
 
 	button.UpdateIcon()
 
-/datum/action/cooldown/process()
+/datum/action/cooldown/Process()
 	var/time_left = max(next_use_time - world.time, 0)
 	if(!owner || time_left == 0)
 		STOP_PROCESSING(SSfastprocess, src)
-	owner.update_action_buttons()
+	UpdateButton(src.button)
 
 /datum/action/cooldown/Grant(mob/M)
 	..()
@@ -362,7 +359,7 @@
 	if(next_use_time > world.time)
 		START_PROCESSING(SSfastprocess, src)
 
-//Mobs cooldown actipn
+// Mobs cooldown action
 /datum/action/cooldown/mob_cooldown
 	name = "Standard Mob Cooldown Ability"
 	button_icon = 'icons/mob/actions.dmi'
