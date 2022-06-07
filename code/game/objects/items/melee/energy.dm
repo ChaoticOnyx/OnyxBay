@@ -136,7 +136,6 @@
 	//throwforce = 25
 	force = 20
 	throwforce = 10
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.5
@@ -174,7 +173,6 @@
 	force = 3
 	throwforce = 5
 	throw_speed = 1
-	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.5
 	mod_reach = 0.3
@@ -268,7 +266,6 @@
 	active_throwforce = 70
 	force = 5
 	throwforce = 10
-	throw_speed = 1
 	throw_range = 10
 	mod_reach = 0.4
 	mod_weight_a = 1.5
@@ -321,7 +318,6 @@
 	check_armour = "laser"
 	anchored = TRUE    // Never spawned outside of inventory, should be fine.
 	throwforce = 1  //Throwing or dropping the item deletes it.
-	throw_speed = 1
 	throw_range = 1
 	w_class = ITEM_SIZE_TINY //technically it's just energy or something, I dunno
 	mod_weight = 1.0

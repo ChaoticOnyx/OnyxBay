@@ -254,12 +254,13 @@
 /obj/item/gun/projectile/proc/ejectCasing()
 	if(istype(chambered, /obj/item/ammo_casing/shotgun))
 		chambered.loc = get_turf(src)
-		chambered.SpinAnimation(4,1)
+		chambered.SpinAnimation(4, 1)
 		playsound(chambered, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
 	else
 		chambered.loc = get_turf(src)
-		chambered.SpinAnimation(4,1)
-		chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
+		chambered.SpinAnimation(4, 1)
+		if(prob(50))
+			chambered.throw_at(get_ranged_target_turf(get_turf(src), turn(loc.dir, 270), 1), 1, 1)
 		playsound(chambered, SFX_CASING_DROP, rand(45, 60), TRUE)
 
 /* Unneeded -- so far.

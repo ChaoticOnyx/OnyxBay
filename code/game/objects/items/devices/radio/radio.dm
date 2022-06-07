@@ -21,7 +21,6 @@
 	var/loud = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 

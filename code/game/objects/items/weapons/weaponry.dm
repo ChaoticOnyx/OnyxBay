@@ -6,7 +6,6 @@
 	item_state = "nullrod"
 	slot_flags = SLOT_BELT
 	force = 11.5
-	throw_speed = 1
 	throw_range = 4
 	throwforce = 10
 	w_class = ITEM_SIZE_NORMAL

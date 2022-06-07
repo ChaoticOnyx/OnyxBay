@@ -9,7 +9,6 @@
 	slot_flags = SLOT_BELT
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 2
 	throw_range = 10
 	amount_per_transfer_from_this = 10
 	unacidable = 1 //plastic

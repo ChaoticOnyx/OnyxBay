@@ -2,7 +2,6 @@
 	name = "arcane tome"
 	icon = 'icons/obj/cult.dmi'
 	icon_state = "tome"
-	throw_speed = 1
 	throw_range = 5
 	w_class = 2
 	unique = 1

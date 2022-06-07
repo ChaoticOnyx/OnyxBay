@@ -13,7 +13,6 @@
 	anchored = 1
 	throwforce = 0 //Just to be on the safe side
 	throw_range = 0
-	throw_speed = 0
 	canremove = FALSE
 	force_drop = TRUE
 	var/mob/living/creator //This is just like ninja swords, needed to make sure dumb shit that removes the sword doesn't make it stay around.

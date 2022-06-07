@@ -39,7 +39,7 @@
 	interface_name = "integrated grenade launcher"
 	interface_desc = "Discharges loaded grenades against the wearer's location."
 
-	var/fire_force = 30
+	var/fire_force = 1
 	var/fire_distance = 10
 
 	charges = list(
@@ -101,7 +101,7 @@
 	H.visible_message("<span class='danger'>[H] launches \a [new_grenade]!</span>")
 	new_grenade.det_time = 10
 	new_grenade.activate(H)
-	new_grenade.throw_at(target,fire_force,fire_distance)
+	new_grenade.throw_at(target, fire_distance, fire_force)
 
 /obj/item/rig_module/grenade_launcher/cleaner
 	name = "mounted cleaning grenade launcher"
@@ -276,7 +276,7 @@
 	interface_desc = "An integrated microfactory that produces poisoned throwing stars from thin air and electricity."
 
 	var/fabrication_type = /obj/item/material/star/ninja
-	var/fire_force = 30
+	var/fire_force = 1
 	var/fire_distance = 10
 
 /obj/item/rig_module/fabricator/engage(atom/target)
@@ -290,7 +290,7 @@
 		var/obj/item/firing = new fabrication_type()
 		firing.forceMove(get_turf(src))
 		H.visible_message("<span class='danger'>[H] launches \a [firing]!</span>")
-		firing.throw_at(target,fire_force,fire_distance)
+		firing.throw_at(target, fire_distance, fire_force)
 	else
 		if(H.l_hand && H.r_hand)
 			to_chat(H, "<span class='danger'>Your hands are full.</span>")

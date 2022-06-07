@@ -4,21 +4,20 @@
 	description_info = "On use, this device will toggle between various types of structures (or their removal). You can examine it to see its current mode. It must be loaded with compressed matter cartridges, which can be obtained from an autolathe. Click an adjacent tile to use the device."
 	description_fluff = "Advents in material printing and synthesis technology have produced everyday miracles, such as the RCD, which in certain industries has single-handedly put entire construction crews out of a job."
 	description_antag = "RCDs can be incredibly dangerous in the wrong hands. Use them to swiftly block off corridors, or instantly breach the ship wherever you want."
-	
+
 	icon = 'icons/obj/items.dmi'
 	icon_state = "rcd-e"
-	
+
 	opacity = 0
 	density = FALSE
 	anchored = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	
+
 	force = 10.0
 	throwforce = 10.0
-	throw_speed = 1
 	throw_range = 5
-	
+
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0
 	mod_reach = 0.75
@@ -26,7 +25,7 @@
 
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 50000)
-	
+
 	var/datum/effect/effect/system/spark_spread/spark_system
 	var/stored_matter = 0
 	var/max_stored_matter = 30
@@ -106,10 +105,10 @@
 /obj/item/rcd/afterattack(atom/A, mob/user, proximity)
 	if(!proximity)
 		return
-	
+
 	if(isrobot(user))
 		return FALSE
-	
+
 	if(istype(get_area(A), /area/shuttle) || istype(get_area(A), /turf/space/transit))
 		return FALSE
 
@@ -139,7 +138,7 @@
 /obj/item/rcd/Destroy()
 	QDEL_LIST(works)
 	QDEL_NULL(spark_system)
-	
+
 	. = ..()
 
 /obj/item/rcd/borg

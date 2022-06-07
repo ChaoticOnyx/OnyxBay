@@ -728,8 +728,7 @@
 			break
 	if(!throw_item)
 		return 0
-	spawn(0)
-		throw_item.throw_at(target, rand(1, 2), 3, src)
+	throw_item.throw_at(target, rand(1, 3), null, src)
 	visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 

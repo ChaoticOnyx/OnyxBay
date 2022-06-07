@@ -11,7 +11,7 @@
 /obj/item/projectile/forcebolt/on_hit(atom/movable/target, blocked = 0)
 	if(istype(target))
 		var/throwdir = get_dir(firer,target)
-		target.throw_at(get_edge_target_turf(target, throwdir),10,10)
+		target.throw_at(get_edge_target_turf(target, throwdir), 10, 1)
 		return 1
 
 /*

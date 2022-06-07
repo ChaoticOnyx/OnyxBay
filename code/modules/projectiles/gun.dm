@@ -43,7 +43,6 @@
 	matter = list(MATERIAL_STEEL = 2000)
 	w_class = ITEM_SIZE_NORMAL
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 5
 	force = 7.5
 	mod_weight = 0.75
