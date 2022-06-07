@@ -9,7 +9,7 @@
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_MASK
-	var/active = 0
+	var/active = FALSE
 	var/broken = FALSE // For if we would like to reuse assembly
 	var/det_time = null
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
@@ -67,17 +67,17 @@
 	if(safety_pin && have_pin)
 		user.put_in_hands(safety_pin)
 		safety_pin = null;
-		playsound(src.loc, 'sound/weapons/pin_pull.ogg', 40, 1)
+		playsound(loc, 'sound/weapons/pin_pull.ogg', 40, 1)
 		to_chat(user, SPAN("warning", "You remove the safety pin!"))
 		update_icon()
 		return
 	if(detonator)
 		if(!isigniter(detonator.a_left))
 			detonator.a_left.activate()
-			active = 1
+			active = TRUE
 		if(!isigniter(detonator.a_right))
 			detonator.a_right.activate()
-			active = 1
+			active = TRUE
 
 	broken = TRUE
 	if(user)
@@ -106,7 +106,7 @@
 		if(active) 
 			to_chat(user, SPAN("notice", "You begin to remove detonator from grenade chamber."))
 			if(do_after(usr, 50, src))
-				active = 0
+				active = FALSE
 				update_icon()
 			else 
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
@@ -119,7 +119,7 @@
 		if(isnull(safety_pin) && have_pin)
 			if(broken) broken = FALSE
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
-			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			safety_pin = W
 			user.remove_from_mob(W)
 			W.forceMove(src)
@@ -135,7 +135,7 @@
 			to_chat(user, SPAN("warning", "Assembly must be secured with screwdriver."))
 			return
 		to_chat(user, SPAN("notice", "You add [W] to the metal casing."))
-		playsound(src.loc, 'sound/items/Screwdriver2.ogg', 25, -3)
+		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, -3)
 		user.remove_from_mob(det)
 		det.loc = src
 		detonator = det
@@ -182,7 +182,7 @@
 		if(!S.have_pin) return
 		if(isnull(S.safety_pin))
 			to_chat(user, SPAN("notice", "You insert [src] in place."))
-			playsound(src.loc, 'sound/weapons/pin_insert.ogg', 40, 1)
+			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			S.safety_pin = src
 			user.remove_from_mob(src)
 			src.forceMove(S)
