@@ -222,6 +222,7 @@
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
 		if(dist_since_sleep >= 1)
+			dist_since_sleep = 0
 			sleep(speed)
 		a = get_area(loc)
 		// and yet it moves
