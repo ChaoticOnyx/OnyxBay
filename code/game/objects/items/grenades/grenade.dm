@@ -11,7 +11,6 @@
 	slot_flags = SLOT_BELT|SLOT_MASK
 	var/active = 0
 	var/broken = FALSE // For if we would like to reuse assembly
-	var/timer_id = null // Timer ID for bomb defusal
 	var/det_time = null
 	var/fail_det_time = 5 // If you are clumsy and fail, you get this time.
 	var/arm_sound = 'sound/weapons/armbomb.ogg'
@@ -74,15 +73,20 @@
 		to_chat(user, SPAN("warning", "You remove the safety pin!"))
 		update_icon()
 		return
+	if(detonator)
+		if(!isigniter(detonator.a_left))
+			detonator.a_left.activate()
+			active = 1
+		if(!isigniter(detonator.a_right))
+			detonator.a_right.activate()
+			active = 1
 
-	active = 1
 	broken = TRUE
 	if(user)
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 	
 	update_icon()
 	playsound(loc, arm_sound, 75, 0, -3)
-	timer_id = addtimer(CALLBACK(src, .proc/detonate), det_time)
 
 /obj/item/grenade/proc/detonate()
 	var/turf/T = get_turf(src)
@@ -105,7 +109,6 @@
 			to_chat(user, SPAN("notice", "You begin to remove [detonator] from grenade chamber."))
 			if(do_after(usr, 50, src))
 				active = 0
-				deltimer(timer_id)
 				update_icon()
 			else 
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))

@@ -103,6 +103,7 @@
 					detonate()
 					return
 				broken = TRUE
+				to_chat(user, SPAN("warning", "You broke grenade, while trying to remove detonator!"))
 			if(active)
 				if(do_after(usr, 50, src))
 					active = 0
@@ -136,29 +137,6 @@
 	. = ..(user)
 	if(detonator)
 		to_chat(user, "With attached [detonator.name]")
-
-/obj/item/grenade/chem_grenade/activate(mob/user)
-	if(active) return 
-	if(broken)
-		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
-		return
-	if(safety_pin) 
-		to_chat(user, SPAN("notice", "You must remove the safety pin first!"))
-		return
-
-	if(detonator)
-		if(!isigniter(detonator.a_left))
-			detonator.a_left.activate()
-			active = 1
-		if(!isigniter(detonator.a_right))
-			detonator.a_right.activate()
-			active = 1
-
-		if(user)
-			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-	playsound(loc, arm_sound, 75, 0, -3)
-	update_icon()
-	return
 
 /obj/item/grenade/chem_grenade/detonate()
 	if(!stage || stage<2) return
