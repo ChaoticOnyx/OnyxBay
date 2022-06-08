@@ -542,6 +542,9 @@
 /obj/item/device/radio/proc/recalculateChannels()
 	return
 
+/obj/item/device/radio/proc/receive()
+	return
+
 ///////////////////////////////
 //////////Borg Radios//////////
 ///////////////////////////////
