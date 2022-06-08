@@ -163,6 +163,7 @@
 
 	var/dist_travelled = 0
 	var/dist_since_sleep = 0
+	var/time_travelled = 0
 	var/tiles_per_tick = speed
 	speed = round(speed)
 	var/area/a = get_area(loc)
@@ -221,8 +222,11 @@
 		hit_check(speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
+		if(throw_spin && !(time_travelled % 4))
+			SpinAnimation(speed = 4, loops = 1)
 		if(dist_since_sleep >= 1)
 			dist_since_sleep = 0
+			time_travelled += speed
 			sleep(speed)
 		a = get_area(loc)
 		// and yet it moves
