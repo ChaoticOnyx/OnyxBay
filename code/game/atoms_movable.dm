@@ -141,7 +141,7 @@
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone)
+/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_mult)
 	set waitfor = FALSE
 
 	if(!target || QDELETED(src))
@@ -151,10 +151,11 @@
 	// src loc check
 	if(thrower && !isturf(thrower.loc))
 		return FALSE
+
 	speed = max(0, (speed || throw_speed))
-	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
+
 	throwing = TRUE
-	thrower = thrower
+	src.thrower = thrower
 	throw_source = get_turf(src)	//store the origin turf
 	pixel_z = 0
 	if(usr)
@@ -166,8 +167,13 @@
 	var/time_travelled = 0
 	var/tiles_per_tick = speed
 	speed = round(speed)
+	var/impact_speed = speed
+	if(launched_mult)
+		impact_speed /= launched_mult
+		pre_launched()
 	var/area/a = get_area(loc)
 
+	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
 	var/dist_x = abs(target.x - src.x)
 	var/dist_y = abs(target.y - src.y)
 
@@ -204,7 +210,7 @@
 	if(throw_spin)
 		SpinAnimation(speed = 4, loops = 1)
 
-	while(!QDELETED(src) && target && src.throwing && isturf(loc) \
+	while(!QDELETED(src) && target && throwing && isturf(loc) \
 			&& ((abs(target.x - src.x) + abs(target.y - src.y) > 0 && dist_travelled < range) \
 			|| !a?.has_gravity \
 			|| isspaceturf(loc)))
@@ -219,7 +225,7 @@
 		if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 			break
 		Move(step)
-		hit_check(speed)
+		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
 		if(throw_spin && !(time_travelled % 4))
@@ -236,11 +242,22 @@
 
 	//done throwing, either because it hit something or it finished moving
 	if(isobj(src))
-		throw_impact(get_turf(src), speed)
+		throw_impact(get_turf(src), impact_speed)
+
+	if(launched_mult)
+		post_launched()
+
 	throwing = FALSE
-	thrower = null
+	src.thrower = null
 	throw_source = null
 	fall()
+
+// Used when the atom's thrown by a launcher-type gun (or by anything that provides a nulln't launcher_mult arg)
+/atom/movable/proc/pre_launched()
+	return
+
+/atom/movable/proc/post_launched()
+	return
 
 //Overlays
 /atom/movable/overlay

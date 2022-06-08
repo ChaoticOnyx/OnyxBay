@@ -278,14 +278,15 @@
 	icon_state = "missile"
 	var/primed = null
 	throwforce = 120
+	throw_spin = FALSE
 
-	throw_impact(atom/hit_atom)
-		if(primed)
-			explosion(hit_atom, 0, 1, 4, 4)
-			qdel(src)
-		else
-			..()
-		return
+/obj/item/missile/throw_impact(atom/hit_atom)
+	if(primed)
+		explosion(hit_atom, 0, 1, 4, 4)
+		qdel(src)
+	else
+		..()
+	return
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang
 	name = "\improper SGL-6 grenade launcher"

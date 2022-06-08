@@ -49,7 +49,7 @@
 	item_state = "spikethrower"
 	fire_sound_text = "a strange noise"
 	fire_sound = 'sound/weapons/towelwhip.ogg'
-	release_force = 6
+	release_force = 2
 	ammo_name = "slug"
 	ammo_type = /obj/item/slugegg
 	max_ammo = 3
