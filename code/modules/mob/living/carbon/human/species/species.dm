@@ -713,3 +713,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/is_eligible_for_antag_spawn(antag_id)
 	return TRUE
+
+/datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
+	if(appearance_flags & HAS_SKIN_COLOR)
+		return H.s_base
+	else
+		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
+		return A

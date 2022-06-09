@@ -1745,3 +1745,6 @@
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
 		updatehealth()
+
+/mob/living/carbon/human/get_runechat_color()
+	return species.get_species_runechat_color(src)

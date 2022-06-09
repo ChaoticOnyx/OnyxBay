@@ -31,10 +31,16 @@
 			if(insults)
 				speak(user, message, TRUE)
 				insults--
+
+				if(user.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !user.is_deaf())
+					user.create_chat_message(user, message, FALSE, "big")
 			else
 				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
 			speak(user, message)
+			if(user.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !user.is_deaf())
+				user.create_chat_message(user, message, FALSE, "big")
+
 		spamcheck = 1
 		spawn(20)
 			spamcheck = 0

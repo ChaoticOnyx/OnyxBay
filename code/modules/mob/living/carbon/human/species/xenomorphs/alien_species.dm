@@ -194,6 +194,9 @@
 /datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
 	return FALSE
 
+/datum/species/xenos/get_species_runechat_color(mob/living/carbon/human/H)
+	return blood_color
+
 
 // Caste species
 /datum/species/xenos/drone
