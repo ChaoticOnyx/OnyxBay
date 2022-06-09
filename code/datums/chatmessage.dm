@@ -98,23 +98,25 @@
 	// Register client who owns this message
 	owned_by = owner.client
 
+	// Remove spans in the message from things like the recorder
+	var/static/regex/span_check = new(@"<\/?span[^>]*>", "gi")
+	text = replacetext(text, span_check, "")
+
+	// Get rid of any URL schemes that might cause BYOND to automatically wrap something in an anchor tag
+	var/static/regex/url_scheme = new(@"[A-Za-z][A-Za-z0-9+-\.]*:\/\/", "g")
+	text = replacetext(text, url_scheme, "")
+
 	// Clip message
 	var/maxlen = CHAT_MESSAGE_MAX_LENGTH
 	if (length_char(text) > maxlen)
 		text = copytext_char(text, 1, maxlen + 1) + "..." // BYOND index moment
-
-	// Remove spans in the message from things like the recorder
-	var/static/regex/span_check = new(@"<\/?span[^>]*>", "gi")
-	text = replacetext(text, span_check, "")
 
 	// Calculate target color if not already present
 	if (!target.chat_color || target.chat_color_name != target.name)
 		target.chat_color = colorize_string(target.name)
 		target.chat_color_name = target.name
 
-	// Get rid of any URL schemes that might cause BYOND to automatically wrap something in an anchor tag
-	var/static/regex/url_scheme = new(@"[A-Za-z][A-Za-z0-9+-\.]*:\/\/", "g")
-	text = replacetext(text, url_scheme, "")
+
 
 	// Reject whitespace
 	var/static/regex/whitespace = new(@"^\s*$")
