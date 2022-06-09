@@ -219,7 +219,7 @@
 
 /obj/structure/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
-	QDEL_NULL_LIST(instruments)
+	QDEL_LIST_ASSOC(instruments)
 	return ..()
 
 /obj/structure/synthesized_instrument/attack_hand(mob/user)
@@ -270,7 +270,7 @@
 
 /obj/item/device/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
-	QDEL_NULL_LIST(instruments)
+	QDEL_LIST_ASSOC(instruments)
 	return ..()
 
 

@@ -836,7 +836,7 @@
 /area/polarplanet/maintenance/exterior
 	name = "\improper Exterior Reinforcements"
 	icon_state = "maint_security_starboard"
-	area_flags = AREA_FLAG_EXTERNAL
+	area_flags = AREA_FLAG_EXTERNAL & AREA_FLAG_NO_STATION
 	has_gravity = FALSE
 	turf_initializer = /decl/turf_initializer/maintenance/space
 

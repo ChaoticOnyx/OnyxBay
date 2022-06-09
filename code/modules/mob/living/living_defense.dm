@@ -184,7 +184,7 @@
 	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		var/miss_chance = 15
 		if(O.throw_source)
@@ -224,7 +224,7 @@
 			var/dir = get_dir(O.throw_source, src)
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src,dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return

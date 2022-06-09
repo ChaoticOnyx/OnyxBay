@@ -9,10 +9,6 @@
 	light_color = "#FF00DC"
 	anchored = 1 // The reason this is here is to stop the curving of emitter shots.
 
-/obj/effect/projectile/proc/set_transform(matrix/M)
-	if(istype(M))
-		transform = M
-
 //----------------------------
 // Laser beam
 //----------------------------

@@ -84,7 +84,7 @@
 	..()
 
 /obj/item/storage/secure/proc/show_lock_menu(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
 		return
 	var/dat = text("<TT>\n\nLock Status: []", (locked ? "<font color=red>LOCKED</font>" : "<font color=green>UNLOCKED</font>"))
 	var/message = "Code"
@@ -110,7 +110,8 @@
 
 /obj/item/storage/secure/attack_self(mob/user)
 	show_lock_menu(user)
-	lock_menu.open()
+	if(lock_menu?.user == user)
+		lock_menu.open()
 
 /obj/item/storage/secure/Topic(href, href_list)
 	..()
@@ -174,7 +175,6 @@
 	item_state = "sec-case"
 	desc = "A large briefcase with a digital locking system."
 	force = 8.0
-	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.5
@@ -239,7 +239,6 @@
 	item_state = "guncase"
 	icon_opened = "guncase0"
 	force = 8.0
-	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.4
@@ -264,10 +263,6 @@
 	add_fingerprint(user)
 	return
 
-/obj/item/storage/secure/guncase/attack_self(mob/user)
-	show_lock_menu(user)
-	lock_menu.open()
-
 /obj/item/storage/secure/guncase/proc/spawn_set(set_name)
 	return
 
@@ -279,7 +274,7 @@
 	guntype = "M1911"
 
 /obj/item/storage/secure/guncase/detective/show_lock_menu(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
 		return
 	user.set_machine(src)
 	var/dat = text("<TT>\n\nLock Status: []", (locked ? "<font color=red>LOCKED</font>" : "<font color=green>UNLOCKED</font>"))
@@ -500,7 +495,7 @@
 	gunspawned = TRUE
 
 /obj/item/storage/secure/guncase/security/show_lock_menu(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated() || !user.Adjacent(src) || !user.client)
 		return
 	user.set_machine(src)
 	var/dat = text("It can be locked and unlocked by swiping your ID card across the lock.<br>")

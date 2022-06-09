@@ -17,7 +17,6 @@
 	mod_weight = 0.25
 	mod_reach = 0.5
 	mod_handy = 0.5
-	throw_speed = 3
 	throw_range = 15
 	attack_verb = list("HONKED")
 	var/spam_flag = 0

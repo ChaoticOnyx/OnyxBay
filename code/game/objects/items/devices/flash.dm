@@ -5,7 +5,6 @@
 	item_state = "flashtool"
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 2, TECH_COMBAT = 1)

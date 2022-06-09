@@ -17,7 +17,6 @@ REAGENT SCANNER
 	slot_flags = SLOT_BELT
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 5
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 200)
 	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
@@ -429,7 +428,6 @@ REAGENT SCANNER
 	slot_flags = SLOT_POCKET
 	throwforce = 3
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 5
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 800)
 	origin_tech = list(TECH_MAGNET = 4, TECH_BIO = 6)
@@ -486,7 +484,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
@@ -533,7 +530,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
@@ -602,7 +598,6 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
@@ -649,7 +644,6 @@ REAGENT SCANNER
 	slot_flags = SLOT_BELT
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
-	throw_speed = 3
 	throw_range = 3
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 25)
 

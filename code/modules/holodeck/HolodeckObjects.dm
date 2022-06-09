@@ -252,7 +252,6 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	force = 3.0
-	throw_speed = 1
 	throw_range = 5
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL

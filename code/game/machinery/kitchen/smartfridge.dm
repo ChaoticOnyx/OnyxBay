@@ -343,9 +343,8 @@
 
 	if(!throw_item)
 		return 0
-	spawn(0)
-		throw_item.throw_at(target,16,3,src)
-	src.visible_message("<span class='warning'>[src] launches [throw_item.name] at [target.name]!</span>")
+	throw_item.throw_at(target, 16, null, src)
+	visible_message(SPAN("warning", "[src] launches [throw_item.name] at [target.name]!"))
 	return 1
 
 /************************

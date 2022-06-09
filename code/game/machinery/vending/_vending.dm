@@ -700,10 +700,10 @@
 
 /obj/machinery/vending/proc/update_standing_icon()
 	if(!anchored)
-		transform = turn(transform, -90)
+		SetTransform(rotation = -90)
 		pixel_y = -3
 	else
-		transform = turn(transform, 90)
+		ClearTransform()
 		pixel_y = initial(pixel_y)
 	update_icon()
 
@@ -728,8 +728,7 @@
 			break
 	if(!throw_item)
 		return 0
-	spawn(0)
-		throw_item.throw_at(target, rand(1, 2), 3, src)
+	throw_item.throw_at(target, rand(1, 3), null, src)
 	visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 

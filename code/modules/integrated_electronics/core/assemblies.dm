@@ -1103,7 +1103,7 @@
 		mount_assembly(T,user)
 
 /obj/item/device/electronic_assembly/pickup()
-	transform = matrix() //Reset the matrix.
+	ClearTransform()
 	..()
 
 /obj/item/device/electronic_assembly/wallmount/proc/mount_assembly(turf/on_wall, mob/user) //Yeah, this is admittedly just an abridged and kitbashed version of the wallframe attach procs.
@@ -1124,21 +1124,21 @@
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
 	if(user.unEquip(src,T))
-		var/matrix/M = matrix()
+		var/rotation = 0
 		switch(ndir)
 			if(NORTH)
+				rotation = 180
 				pixel_y = -32
 				pixel_x = 0
-				M.Turn(180)
 			if(SOUTH)
 				pixel_y = 21
 				pixel_x = 0
 			if(EAST)
+				rotation = 90
 				pixel_x = -27
 				pixel_y = 0
-				M.Turn(270)
 			if(WEST)
+				rotation = 270
 				pixel_x = 27
 				pixel_y = 0
-				M.Turn(90)
-		transform = M
+		SetTransform(rotation = rotation)

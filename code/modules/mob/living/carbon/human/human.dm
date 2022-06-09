@@ -150,7 +150,7 @@
 				return
 			else
 				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
-				throw_at(target, 200, 4)
+				throw_at(target, 200, 1)
 			//return
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
@@ -779,7 +779,7 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
 					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
@@ -787,13 +787,13 @@
 						A.forceMove(get_turf(src))
 						stomach_contents.Remove(a)
 						if(src.species.gluttonous & GLUT_PROJECTILE_VOMIT)
-							A.throw_at(get_edge_target_turf(src,src.dir),7,7,src)
+							A.throw_at(get_edge_target_turf(src, dir), 7, 1, src)
 
 					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
-					if (istype(location, /turf/simulated))
+					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 					nutrition -= 30
 		sleep(350)	//wait 35 seconds before next volley

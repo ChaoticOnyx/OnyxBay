@@ -72,7 +72,7 @@
 
 	var/use_me = 1 //Allows all mobs to use the me verb by default, will have to manually specify they cannot
 	var/damageoverlaytemp = 0
-	var/obj/machinery/machine = null
+	var/obj/machinery/machine = null // Old bay code TOTALLY worth refactoring. For now, set and unset it ONLY by using set_machine(obj) and unset_machine() or GC will come and strangle you in your sleep.
 	var/poll_answer = 0.0
 	var/sdisabilities = 0	//Carbon
 	var/disabilities = 0	//Carbon
@@ -193,3 +193,8 @@
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
 
 	var/last_time_pointed_at = 0
+
+	/// Contains [/obj/screen/movable/alert] only.
+	///
+	/// On [/mob] so clientless mobs will throw alerts properly.
+	var/list/alerts = list()

@@ -297,6 +297,9 @@ use_age_restriction_for_jobs = false
 ## Non-automatic antagonist recruitment, such as being converted to cultism is not affected. Has the same database requirements and notes as USE_AGE_RESTRICTION_FOR_JOBS.
 use_age_restriction_for_antags = false
 
+## Set to true to enable ghost spawners
+ghost_spawners = true
+
 ## Base minimal age in days for a player to play on antags. Depends on use_age_restriction_for_antags.
 ## If not defined with a variable won't be used at all.
 # traitor_min_age = 14

@@ -112,16 +112,16 @@ meteor_act
 	apply_damage(reduced_power, PAIN, def_zone, 0, used_weapon)
 	damage_poise(reduced_power / 5) // So metazine-filled junkies are still prone to muscular cramps
 
-	var/reduced_tasing = max(tasing * 0.5, tasing * siemens_coeff) // Armor can provide up to 50% stun time reduction
+	var/reduced_tasing = round(max(tasing * 0.5, tasing * siemens_coeff)) // Armor can provide up to 50% stun time reduction
 	apply_effect(STUTTER, reduced_tasing)
 	apply_effect(EYE_BLUR, reduced_tasing)
 
-	if(poise <= 0 || getHalLoss() >= species.total_health)
+	if(poise <= 0 || getHalLoss() >= species.total_health || affected?.pain > species.total_health)
 		if(prob(95)) // May gods decide your destiny
 			if(!stunned)
 				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
-			Stun(tasing)
-			Weaken(tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
+			Stun(reduced_tasing)
+			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
 
 
 //////////////////////
@@ -776,7 +776,7 @@ meteor_act
 /mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
 	if(isobj(AM))
 		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
+		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
 					put_in_active_hand(O)
@@ -785,7 +785,7 @@ meteor_act
 					return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		if(blocking)
 			var/obj/item/weapon_def
@@ -893,7 +893,7 @@ meteor_act
 			var/dir = get_dir(O.throw_source, src)
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return

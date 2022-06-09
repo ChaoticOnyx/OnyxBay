@@ -114,7 +114,7 @@
 	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	mod_weight = 1.25
 	mod_reach = 1.15
@@ -278,7 +278,7 @@
 
 		var/def_zone = ran_zone()
 		var/blocked = occupant.run_armor_check(def_zone, "melee")
-		occupant.throw_at(A, 3, propelled)
+		occupant.throw_at(A, 3, 1)
 		occupant.apply_effect(6, STUN, blocked)
 		occupant.apply_effect(6, WEAKEN, blocked)
 		occupant.apply_effect(6, STUTTER, blocked)

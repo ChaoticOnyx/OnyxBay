@@ -258,21 +258,25 @@
 
 	var/old_loc = loc
 
-	pickup(user)
+	// Removing from a storage
 	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
+	// Unequipping from self
+	else if(loc == user && !user.unEquip(src))
+		return
+	// Doing some unintended shit that may cause catastrophical events, aborting
+	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
+	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
+	else if(!isturf(loc))
+		return
 
 	throwing = 0
-	if(loc == user)
-		if(!user.unEquip(src))
-			return
-	else
-		if(isliving(loc))
-			return
 
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
+
+	pickup(user)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -590,15 +594,15 @@ var/list/global/slot_flags_enumeration = list(
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
-	if(src && istype(loc,/turf))
-		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+	if(src && isturf(loc))
+		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
 		H.drop_from_inventory(src)
 		if(src && istype(loc,/turf))
-			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
 			return TRUE

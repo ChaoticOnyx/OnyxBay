@@ -5,7 +5,6 @@
 	icon_state = "staff"
 	force = 7.5
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 1.25

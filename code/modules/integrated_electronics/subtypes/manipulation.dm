@@ -485,7 +485,7 @@
 	assembly.visible_message(SPAN("danger", "[assembly] has thrown [A]!"))
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
-	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
+	A.throw_at(locate(x_abs, y_abs, T.z), range)
 	var/atom/AM = get_object()
 	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 
