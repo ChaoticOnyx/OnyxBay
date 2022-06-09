@@ -260,7 +260,7 @@
 	if(ismob(AM))
 		return
 
-	var/tforce = AM:throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+	var/tforce = AM:throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 	if(tforce < 17.5)
 		if(!nomsg)
 			visible_message("[AM] bounces off \the [src].")

@@ -20,7 +20,6 @@
 	slot_flags = SLOT_BELT | SLOT_EARS
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
-	throw_speed = 7
 	throw_range = 15
 	matter = list(MATERIAL_STEEL = 10)
 	var/colour = COLOR_BLACK	//what colour the ink is!
@@ -246,7 +245,6 @@
 	desc = "Bureaucracy has never ever been so deadly."
 	force = active_force
 	throwforce = 45
-	throw_speed = 1
 	icon_state = "edagger1"
 	item_state = "edagger1"
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
@@ -260,7 +258,6 @@
 	desc = initial(desc)
 	force = initial(force)
 	throwforce = initial(throwforce)
-	throw_speed = initial(throw_speed)
 	icon_state = initial(icon_state)
 	item_state = initial(item_state)
 	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)

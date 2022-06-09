@@ -12,7 +12,6 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 8
-	throw_speed = 2
 
 /obj/item/device/energybarrier/attack_self(mob/living/user)
 	var/obj/structure/energybarrier/E = new /obj/structure/energybarrier(user.loc)

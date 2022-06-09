@@ -17,6 +17,7 @@
 	src.air_contents = tank.remove_air_volume(3)
 	icon_state = "latexballon_blow"
 	item_state = "latexballon"
+	throw_speed = 3
 
 /obj/item/latexballon/proc/burst()
 	if (!air_contents)

@@ -40,4 +40,4 @@
 
 	if(!include_own_turf)
 		turfs -= get_turf(src)
-	src.throw_at(pick(turfs), maxrange, speed, src)
+	throw_at(pick(turfs), maxrange, speed, src)

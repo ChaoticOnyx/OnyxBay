@@ -41,8 +41,7 @@
 					to_chat(M, "<span class='notice'>The mass driver lets out a screech, it mustn't be able to handle any more items.</span>")
 				break
 			use_power_oneoff(500)
-			spawn( 0 )
-				O.throw_at(target, drive_range * power, power)
+			O.throw_at(target, drive_range * power, (1 / power))
 	flick("mass_driver1", src)
 	return
 

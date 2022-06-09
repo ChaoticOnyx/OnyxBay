@@ -16,7 +16,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 20
 
 /obj/item/device/taperecorder/New()

@@ -248,7 +248,7 @@
 	var/mob/M = thrower
 	if(brittle && istype(M) && M.a_intent != I_HELP)
 		var/throw_dist = get_dist(throw_source, loc)
-		if(speed > throw_speed || smash_check(throw_dist)) // not as reliable as smashing directly
+		if(speed < throw_speed || smash_check(throw_dist)) // not as reliable as smashing directly
 			if(reagents)
 				hit_atom.visible_message(SPAN("notice", "The contents of \the [src] splash all over [hit_atom]!"))
 				reagents.splash(hit_atom, reagents.total_volume)
@@ -381,7 +381,7 @@
 			smash(loc)
 		else
 			visible_message(SPAN("warning", "\The [Proj] hits \the [src]!"))
-			throw_at(get_step(src, pick(GLOB.alldirs)), rand(2, 3), 2)
+			throw_at(get_step(src, pick(GLOB.alldirs)), rand(2, 3), 1)
 		return
 	return PROJECTILE_CONTINUE
 
@@ -396,7 +396,6 @@
 	mod_reach = 0.4
 	mod_handy = 0.75
 	throwforce = 5
-	throw_speed = 3
 	throw_range = 5
 	item_state = "beer"
 	w_class = ITEM_SIZE_SMALL

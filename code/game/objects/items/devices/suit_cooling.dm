@@ -16,8 +16,8 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
 	throwforce = 10.0
-	throw_speed = 1
 	throw_range = 4
+	throw_speed = 2
 	action_button_name = "Toggle Heatsink"
 
 	matter = list(MATERIAL_STEEL = 15000, MATERIAL_GLASS = 3500)

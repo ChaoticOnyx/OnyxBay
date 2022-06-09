@@ -19,7 +19,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_SMALL
 	item_state = "electronic"
-	throw_speed = 4
 	throw_range = 20
 	origin_tech = list(TECH_MAGNET = 1)
 	matter = list(MATERIAL_STEEL = 400)
@@ -148,7 +147,6 @@ Frequency:
 	var/emp_prevent_until = 0
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 9, TECH_BLUESPACE = 10, TECH_MAGNET = 8, TECH_POWER = 9, TECH_DATA = 8, TECH_ENGINEERING = 9)
 	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
