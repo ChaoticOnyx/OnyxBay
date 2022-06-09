@@ -32,6 +32,7 @@
 	volume = 180
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = FALSE
+	lid_type = null
 
 /obj/item/reagent_containers/vessel/bucket/full
 	startswith = list(/datum/reagent/water)
