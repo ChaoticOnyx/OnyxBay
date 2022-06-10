@@ -18,7 +18,6 @@
 
 	force = 1
 	throwforce = 1
-	throw_speed = 5
 	throw_range = 20
 	item_flags = 0
 	obj_flags = 0

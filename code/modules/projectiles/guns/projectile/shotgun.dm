@@ -86,7 +86,6 @@
 	item_state = "welder"
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.0

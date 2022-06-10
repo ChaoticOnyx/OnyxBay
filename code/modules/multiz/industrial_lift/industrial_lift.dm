@@ -330,7 +330,7 @@ GLOBAL_LIST_EMPTY(lifts)
 			var/turf/T = get_turf(src)
 			T.add_blood(collided)
 			//if going EAST, will turn to the NORTHEAST or SOUTHEAST and throw the ran over guy away
-			collided.throw_at(throw_target, 200, 4)
+			collided.throw_at(throw_target, 200, 0.5)
 
 	set_glide_size(gliding_amount)
 	forceMove(destination)

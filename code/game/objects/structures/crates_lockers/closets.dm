@@ -59,7 +59,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 10.0
 	throwforce = 10.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.6

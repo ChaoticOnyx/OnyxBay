@@ -1,4 +1,4 @@
-#define EXPLOSION_THROW_SPEED 4
+#define EXPLOSION_THROW_SPEED 0.5
 GLOBAL_LIST_EMPTY(explosions)
 
 SUBSYSTEM_DEF(explosions)

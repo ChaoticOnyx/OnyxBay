@@ -35,6 +35,11 @@
 	var/tf_offset_x // The atom's base transform scale for horizontal offset.
 	var/tf_offset_y // The atom's base transform scale for vertical offset.
 
+	/// Last name used to calculate a color for the chatmessage overlays. Used for caching.
+	var/chat_color_name
+	/// Last color calculated for the the chatmessage overlays. Used for caching.
+	var/chat_color
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -471,6 +476,8 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+		if(M.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
+			M.create_chat_message(src, message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))

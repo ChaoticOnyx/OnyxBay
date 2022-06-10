@@ -90,6 +90,12 @@ var/global/list/_client_preferences_by_type
 /*********************
 * Player Preferences *
 *********************/
+/datum/client_preference/runechat
+	description = "Show Runechat (Above-Head-Speech)"
+	key = "CHAT_RUNECHAT"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+	default_value = GLOB.PREF_YES
+
 /datum/client_preference/play_admin_midis
 	description ="Play admin midis"
 	key = "SOUND_MIDI"

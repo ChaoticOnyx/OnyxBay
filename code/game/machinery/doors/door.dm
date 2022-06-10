@@ -168,7 +168,7 @@
 		take_damage(min(damage, 100))
 
 
-/obj/machinery/door/hitby(atom/movable/AM, speed = 5, nomsg = FALSE)
+/obj/machinery/door/hitby(atom/movable/AM, speed = 1, nomsg = FALSE)
 	..()
 	var/tforce = 0
 	if(ismob(AM))

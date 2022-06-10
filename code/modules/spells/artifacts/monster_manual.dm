@@ -3,7 +3,6 @@
 	desc = "A book detailing various magical creatures."
 	icon = 'icons/obj/library.dmi'
 	icon_state = "bookHacking"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	var/uses = 1

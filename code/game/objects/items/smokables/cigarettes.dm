@@ -3,7 +3,7 @@
 	name = "cigarette"
 	desc = "A small paper cylinder filled with processed tobacco and various fillers."
 	icon_state = "cigoff"
-	throw_speed = 0.5
+	throw_speed = 2
 	item_state = "cigoff"
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS | SLOT_MASK
@@ -383,7 +383,7 @@
 	icon_on = "cigar2on"
 	ember_state = ""
 	type_butt = /obj/item/cigbutt/cigarbutt
-	throw_speed = 0.5
+	throw_speed = 2
 	item_state = "cigaroff"
 	smoketime = 900
 	chem_volume = 22.5

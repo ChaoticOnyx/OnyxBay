@@ -213,7 +213,7 @@
 "eC" = (/turf/simulated/floor/trim/carpet,/area/polarplanet/outpost/research/hallway)
 "eD" = (/obj/machinery/door/airlock{id_tag = "rminingdorm1"; name = "Dorm 1"},/turf/simulated/floor/tiled,/area/polarplanet/outpost/research/hallway)
 "eE" = (/obj/machinery/door/airlock{id_tag = "rbath"; name = "Bathroom"},/turf/simulated/floor/tiled,/area/polarplanet/outpost/research/hallway)
-"eF" = (/obj/effect/floor_decal/rust,/obj/effect/floor_decal/industrial/warning{dir = 9},/obj/machinery/light/small/hl{dir = 1},/turf/simulated/floor/tiled/techfloor/grid,/area/polarplanet/voron/hallway1)
+"eF" = (/obj/effect/floor_decal/rust,/obj/effect/floor_decal/industrial/warning{dir = 9},/obj/machinery/light/small/hl{dir = 1},/obj/machinery/camera/network/voron,/turf/simulated/floor/tiled/techfloor/grid,/area/polarplanet/voron/hallway1)
 "eG" = (/obj/effect/floor_decal/oldflood,/obj/effect/decal/cleanable/dirt,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/cable/green{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/random/trash,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/refinery_line)
 "eJ" = (/obj/structure/table/steel,/obj/machinery/recharger,/obj/item/storage/belt/utility,/obj/effect/floor_decal/rust,/obj/item/reagent_containers/hypospray/autoinjector/antirad/mine,/obj/random/trash,/turf/simulated/floor/tiled/techfloor,/area/polarplanet/voron/mining_warehouse)
 "eK" = (/turf/unsimulated/mask,/area/polarplanet/mine/explored)

@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player
 	name = "music player"
-	desc = "A little device which can be used to play soft tunes. If you see this you're probably should be banned for abuse. Report this situation to dev team."
+	desc = "A little device which can be used to play soft tunes. If you see this, you should probably be banned for abuse. Report this situation to the dev team."
 	icon = 'sprites/object.dmi'
 	icon_state = null
 	item_state = null
@@ -23,7 +23,6 @@ GLOBAL_LIST_EMPTY(music_players)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 10
 
 	matter = list(MATERIAL_STEEL = 75, MATERIAL_GLASS = 30)

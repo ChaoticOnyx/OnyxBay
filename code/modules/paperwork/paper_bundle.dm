@@ -8,7 +8,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL
 	throw_range = 2
-	throw_speed = 1
+	throw_speed = 2
 	layer = ABOVE_OBJ_LAYER
 	attack_verb = list("bapped")
 	var/page = 1    // current page

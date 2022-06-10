@@ -535,7 +535,7 @@
 			R.forceMove(get_turf(src))
 			R.visible_message("<span class='danger'>[R] drops on the [get_turf(src)]!</span>")
 			if(R && istype(R.loc,/turf))
-				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
+				R.throw_at(get_edge_target_turf(R.loc, pick(GLOB.alldirs)), rand(1, 3), 1)
 
 /obj/item/robot_rack/_examine_text(mob/user)
 	. = ..()

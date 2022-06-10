@@ -776,7 +776,7 @@ meteor_act
 /mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
 	if(isobj(AM))
 		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
+		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
 					put_in_active_hand(O)
@@ -785,7 +785,7 @@ meteor_act
 					return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		if(blocking)
 			var/obj/item/weapon_def
@@ -893,7 +893,7 @@ meteor_act
 			var/dir = get_dir(O.throw_source, src)
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return

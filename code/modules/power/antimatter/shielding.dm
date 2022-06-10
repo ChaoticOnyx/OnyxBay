@@ -191,7 +191,7 @@
 	w_class = ITEM_SIZE_HUGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	throwforce = 5
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 2
 	matter = list(MATERIAL_STEEL = 100, MATERIAL_WASTE = 2000)
 

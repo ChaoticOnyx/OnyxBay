@@ -82,7 +82,6 @@
 				type = alt_type
 				if(((type & VISIBLE_MESSAGE) && is_blind()))
 					return
-
 	to_chat(src, msg)
 
 

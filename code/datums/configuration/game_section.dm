@@ -14,6 +14,7 @@
 	var/use_alien_whitelist_sql = FALSE
 	var/use_age_restriction_for_jobs = FALSE
 	var/use_age_restriction_for_antags = FALSE
+	var/ghost_spawners = FALSE
 
 	var/traitor_min_age = 0
 	var/changeling_min_age = 0
@@ -64,6 +65,7 @@
 	CONFIG_LOAD_BOOL(use_alien_whitelist_sql, data["use_alien_whitelist_sql"])
 	CONFIG_LOAD_BOOL(use_age_restriction_for_jobs, data["use_age_restriction_for_jobs"])
 	CONFIG_LOAD_BOOL(use_age_restriction_for_antags, data["use_age_restriction_for_antags"])
+	CONFIG_LOAD_BOOL(ghost_spawners, data["ghost_spawners"])
 
 	CONFIG_LOAD_NUM(traitor_min_age, data["traitor_min_age"])
 	CONFIG_LOAD_NUM(changeling_min_age, data["changeling_min_age"])

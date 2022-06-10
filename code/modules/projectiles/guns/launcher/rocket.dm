@@ -18,7 +18,7 @@
 	fire_sound = 'sound/effects/weapons/gun/fire_rpg.ogg'
 	combustion = 1
 
-	release_force = 20
+	release_force = 2
 	throw_distance = 30
 	var/max_rockets = 1
 	var/list/rockets = new /list()

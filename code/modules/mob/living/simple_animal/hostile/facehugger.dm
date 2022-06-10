@@ -165,7 +165,6 @@
 /obj/item/holder/facehugger
 	origin_tech = list(TECH_BIO = 4)
 	slot_flags = SLOT_MASK | SLOT_HOLSTER
-	throw_speed = 4
 	icon_state = "facehugger"
 	item_state = "facehugger"
 	var/wasted = FALSE
