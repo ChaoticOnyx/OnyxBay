@@ -331,7 +331,7 @@
 
 	var/impact = 1
 
-	if(!ishuman(target))
+	if(ishuman(target))
 		do_sting(target, thrown)
 		do_thorns(target, thrown)
 
