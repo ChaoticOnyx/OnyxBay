@@ -102,11 +102,6 @@
 	var/static/regex/span_check = new(@"<\/?span[^>]*>", "gi")
 	text = replacetext(text, span_check, "")
 
-	// Remove italic in the message because cursed looking
-	var/static/regex/italic_check = new(@"<\/?i>", "gi")
-	if(findtext(text,italic_check))
-		text = replacetext(text, italic_check, "")
-
 	// Get rid of any URL schemes that might cause BYOND to automatically wrap something in an anchor tag
 	var/static/regex/url_scheme = new(@"[A-Za-z][A-Za-z0-9+-\.]*:\/\/", "g")
 	text = replacetext(text, url_scheme, "")
