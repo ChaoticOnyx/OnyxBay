@@ -121,7 +121,7 @@
 	// Calculate target color if not already present
 	if (!target.chat_color || target.chat_color_name != target.name)
 		target.chat_color = colorize_string(target.name)
-		target.chat_color_darkened = colorize_string(target.name, 0.85, 0.85)
+		target.chat_color_darkened = colorize_string(target.name, 0.75, 0.75)
 		target.chat_color_name = target.name
 
 
