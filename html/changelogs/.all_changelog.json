@@ -1,5 +1,16 @@
 [
   {
+    "author": "Zert0X",
+    "date": "2022-06-10T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "RscAdd",
+        "message": "Runechat(текст над головой). Выключается/включается в преференсах",
+        "pr": 8606
+      }
+    ]
+  },
+  {
     "author": "TobyThorne",
     "date": "2022-06-09T00:00:00+03:00",
     "changes": [
