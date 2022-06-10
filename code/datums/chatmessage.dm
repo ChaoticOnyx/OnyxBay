@@ -231,7 +231,7 @@
 	// convert to rgb
 	var/h_int = round(h/60) // mapping each section of H to 60 degree sections
 	var/c = (1 - abs(2 * l - 1)) * s
-	var/x = c * (1 - abs((h / 60) % 2 - 1))
+	var/x = c * (1 - abs((h % 2 - 1)))
 	var/m = l - c * 0.5
 	x = (x + m) * 255
 	c = (c + m) * 255
