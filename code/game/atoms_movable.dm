@@ -257,8 +257,8 @@
 
 	thrown_to = null
 	throw_dir = null
-	src.throwing = FALSE
-	thrower = null
+	throwing = FALSE
+	src.thrower = null
 	throw_source = null
 	fall()
 
