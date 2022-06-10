@@ -318,7 +318,7 @@
 
 	return ..()
 
-/obj/item/projectile/portalgun
+/obj/item/projectile/portal
 	name = "portal sphere"
 	icon_state = "portal"
 	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
@@ -333,11 +333,11 @@
 	var/obj/item/gun/portalgun/parent
 	var/setting = 0
 
-/obj/item/projectile/portalgun/New(loc)
+/obj/item/projectile/portal/New(loc)
 	parent = loc
 	return ..()
 
-/obj/item/projectile/portalgun/on_impact(atom/A)
+/obj/item/projectile/portal/on_impact(atom/A)
 	if(!istype(parent, /obj/item/gun/portalgun))
 		return
 

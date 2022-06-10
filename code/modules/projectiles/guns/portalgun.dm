@@ -21,13 +21,17 @@
 	. = ..()
 	. += "\nIt's current setting is <span style='color: [setting ? COLOR_ORANGE : COLOR_BLUE];'>[setting ? "red" : "blue"]</span>."
 
+/obj/item/gun/portalgun/Initialize()
+	. = ..()
+	update_icon()
+
 /obj/item/gun/portalgun/Destroy()
 	QDEL_NULL(blue_portal)
 	QDEL_NULL(red_portal)
 	..()
 
 /obj/item/gun/portalgun/consume_next_projectile()
-	var/obj/item/projectile/portalgun/P = new /obj/item/projectile/portalgun(src)
+	var/obj/item/projectile/portal/P = new /obj/item/projectile/portal(src)
 	P.color = setting ? COLOR_ORANGE : COLOR_BLUE
 	P.setting = setting
 	return P

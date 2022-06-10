@@ -155,69 +155,72 @@
 /obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
 	if(P.kill_count < 1 || !P.dir || !target)
 		return FALSE
+	// save vars from something
+	var/turf/loc_turf = get_turf(src)
+	var/turf/target_turf = get_turf(P.original)
+	var/target_dist = get_dist(loc_turf, target_turf)
+	var/projectile_dir = get_dir(P, src)
 	// Sometimes a projectile during the "momentum saving"
 	// does not meet any object for impact and hits the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag(1)
-	// get x, y between correct loc and target
-	var/turf/loc_turf = get_turf(src)
-	var/turf/target_turf = get_turf(P.original)
-	var/x_diff = target_turf.x - loc_turf.x
-	var/y_diff = target_turf.y - loc_turf.y
-	// get x, y offset from P.setup_trajectory
-	var/x_offset = round(P.xo - P.original.x + P.starting.x, 1)
-	var/y_offset = round(P.yo - P.original.y + P.starting.y, 1)
+	stoplag()
 	// move projectile to linked portal
-	//P.forceMove(get_turf(target))
+	var/previous_dir = P.dir
+	P.dir = projectile_dir
 	if(!teleport(P, TRUE))
 		return
+	P.dir = previous_dir
 	// get turf of linked portal; get x, y of this turf
 	var/turf/linked_turf = get_turf(target)
-	var/x = linked_turf.x
-	var/y = linked_turf.y
 	// get new target turf
-	target_turf = locate(Clamp(x + x_diff, 1, world.maxx), Clamp(y + y_diff, 1, world.maxy), target.z)
+	target_turf = linked_turf
+	while(TRUE)
+		target_dist -= 1
+		target_turf = get_step(target_turf, projectile_dir)
+		if(!target_dist)
+			break
 	// set new target turf as projectile target
 	P.original = target_turf
 	// rebuild trajectory by calling P.setup_projectory and our work there is done
-	P.setup_trajectory(linked_turf, target_turf, x_offset, y_offset)
+	P.setup_trajectory(linked_turf, target_turf)
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
+	// save throw vars before "sleep"
+	var/atom/thrower = hit_atom.thrower
+	var/throw_range = hit_atom.throwed_dist
+	var/dist_travelled = get_dist(hit_atom.throw_source, src)
+	var/thrown_dir = hit_atom?.throw_dir
+	var/previous_dir = hit_atom.dir
+	var/turf/loc_turf = get_turf(src)
+	var/turf/target_turf = get_turf(hit_atom?.thrown_to)
+	var/speed = hit_atom.throw_speed
 	// sometimes the thrown object during the "momentum saving"
 	// does not meet any object to hit and falls into the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag(1)
-	var/thrown_dir = hit_atom.throw_dir
-	var/previous_dir = hit_atom.dir
-	if(hit_atom.thrown_to?.resolve() == get_turf(src))
+	stoplag()
+	if(hit_atom.thrown_to == loc_turf || !target_turf || !loc_turf)
 		teleport(hit_atom, TRUE)
 		return
-	var/turf/loc_turf = get_turf(src)
-	var/turf/target_turf = get_turf(hit_atom.thrown_to?.resolve())
-	var/x_diff = abs(target_turf.x - loc_turf.x)
-	var/y_diff = abs(target_turf.y - loc_turf.y)
-	if(thrown_dir & SOUTH)
-		y_diff = -y_diff
-	if(thrown_dir & WEST)
-		x_diff = -x_diff
-	var/atom/thrower = hit_atom.thrower
-	var/speed = hit_atom.throw_speed
+	var/target_dist = get_dist(loc_turf, target_turf)
 	hit_atom.dir = thrown_dir
 	var/result = teleport(hit_atom, TRUE)
 	hit_atom.dir = previous_dir
 	if(!result)
 		return
-	var/turf/linked_turf = get_turf(target)
-	var/x = linked_turf.x + x_diff
-	var/y = linked_turf.y + y_diff
-	target_turf = locate(Clamp(x, 1, world.maxx), Clamp(y, 1, world.maxy), target.z)
-	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, get_dist_euclidian(src, target_turf), speed, thrower)
+	throw_dir = reverse_direction(throw_dir)
+	target_turf = get_turf(target)
+	while(TRUE)
+		target_dist -= 1
+		target_turf = get_step(target_turf, thrown_dir)
+		if(!target_dist)
+			break
+	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, throw_range-dist_travelled, speed, thrower)
 
 /obj/effect/portal/linked/teleport(atom/movable/M, ignore_checks = FALSE)
 	if(!target)
 		return
-	if(M.thrown_to?.resolve() && !ignore_checks)
+	if(M?.thrown_to && !ignore_checks)
 		return on_throw_impact(M)
 	return ..()
 
