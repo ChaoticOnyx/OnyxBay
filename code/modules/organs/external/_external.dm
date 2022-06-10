@@ -353,10 +353,12 @@
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
 	..()
 
-	if(istype(owner))
+	if(!QDELETED(owner))
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
+			owner.grasp_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
+			owner.stance_limbs[src] = TRUE
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
