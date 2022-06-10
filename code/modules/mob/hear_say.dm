@@ -109,6 +109,8 @@
 		if(speech_sound && speaker && (dist_speech <= world.view && src.z == speaker.z))
 			var/turf/source = get_turf(speaker)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
+		if(get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
+			create_chat_message(speaker, message, italics)
 
 /mob/proc/on_hear_say(message)
 	to_chat(src, message)
