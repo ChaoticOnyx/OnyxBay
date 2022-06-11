@@ -211,7 +211,7 @@
 			to_chat(user, "<span class='notice'>You cut the airlock wires.!</span>")
 			new /obj/item/stack/cable_coil(src.loc, 1)
 			src.state = 0
-			in_use = FALSE
+		in_use = FALSE
 
 	else if(istype(W, /obj/item/airlock_electronics) && state == 1)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
@@ -244,7 +244,7 @@
 			src.SetName("Wired Airlock Assembly")
 			electronics.loc = src.loc
 			electronics = null
-			in_use = FALSE
+		in_use = FALSE
 
 	else if(istype(W, /obj/item/stack/material) && !glass)
 		var/obj/item/stack/S = W
