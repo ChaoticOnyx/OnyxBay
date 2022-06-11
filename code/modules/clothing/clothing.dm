@@ -578,6 +578,7 @@ BLIND     // can't see anything
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
 		holding.forceMove(get_turf(src))
+		holding = null
 	QDEL_NULL(holding)
 	return ..()
 
