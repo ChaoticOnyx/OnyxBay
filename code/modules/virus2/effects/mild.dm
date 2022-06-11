@@ -148,7 +148,8 @@
 	if(..())
 		return
 	to_chat(mob, DISORIENTATION_EFFECT_WARNING)
-	mob.confused += (rand(1,4) + 2)
+	mob.eye_blurry = max(mob.eye_blurry, 10)
+
 
 
 /datum/disease2/effect/fridge
