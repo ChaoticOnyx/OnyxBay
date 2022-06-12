@@ -124,7 +124,8 @@
 			else
 				for(var/n = ++i; n <= optioncount; n++)
 					dat += "<dd><span class='info'>&#09;[n]. ---------------</span><br></dd>"
-			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (user.mind.special_role && user.mind.original == user))
+			var/mob/living/original_mob = user.mind?.original_mob?.resolve()
+			if((istype(user, /mob/living/silicon/ai) || istype(user, /mob/living/silicon/robot)) && (istype(original_mob) && user.mind.special_role && original_mob == user))
 				//Malf/Traitor AIs can bruteforce into the system to gain the Key.
 				dat += "<dd><A href='?src=\ref[src];hack=1'><i><font color='Red'>*&@#. Bruteforce Key</font></i></font></a><br></dd>"
 			else
@@ -359,7 +360,8 @@
 
 	//Hack the Console to get the password
 	if (href_list["hack"])
-		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (usr.mind.special_role && usr.mind.original == usr))
+		var/mob/living/original_mob = usr.mind?.original_mob?.resolve()
+		if((istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot)) && (istype(original_mob) && usr.mind.special_role && original_mob == usr))
 			src.hacking = 1
 			src.screen = 2
 			update_icon()

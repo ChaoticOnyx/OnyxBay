@@ -1,5 +1,5 @@
 /// # Component
-/// 
+///
 /// A component should be a single standalone unit
 /// of functionality, that works by receiving signals from it's parent
 /// object to provide some single functionality (i.e a slippery component)
@@ -28,7 +28,7 @@
 	var/list/arguments = raw_args.Copy(2)
 
 	if(Initialize(arglist(arguments)) == COMPONENT_INCOMPATIBLE)
-		stack_trace("Incompatible [type] assigned to a [parent.type]! args: [json_encode(arguments)]")
+		crash_with("Incompatible [type] assigned to a [parent.type]! args: [json_encode(arguments)]")
 		qdel(src, TRUE, TRUE)
 
 		return
@@ -145,7 +145,7 @@
 	return
 
 /// Register to listen for a signal from the passed in target.
-/// 
+///
 /// This sets up a listening relationship such that when the target object emits a signal
 /// the source datum this proc is called upon, will receive a callback to the given proctype.
 /// Return values from procs registered must be a bitfield.
@@ -175,7 +175,7 @@
 
 	for(var/sig_type in sig_types)
 		if(!override && procs[target][sig_type])
-			stack_trace("[sig_type] overridden. Use override = TRUE to suppress this warning")
+			crash_with("[sig_type] overridden. Use override = TRUE to suppress this warning")
 
 		procs[target][sig_type] = proctype
 
@@ -216,7 +216,7 @@
 	for(var/sig in sig_type_or_types)
 		if(!signal_procs[target][sig])
 			if(!istext(sig))
-				stack_trace("We're unregistering with something that isn't a valid signal \[[sig]\], you fucked up")
+				crash_with("We're unregistering with something that isn't a valid signal \[[sig]\], you fucked up")
 
 			continue
 
@@ -224,7 +224,7 @@
 			if(2)
 				lookup[sig] = (lookup[sig]-src)[1]
 			if(1)
-				stack_trace("[target] ([target.type]) somehow has single length list inside comp_lookup")
+				crash_with("[target] ([target.type]) somehow has single length list inside comp_lookup")
 
 				if(src in lookup[sig])
 					lookup -= sig
@@ -328,8 +328,8 @@
 /// `datum/component/c_type` - The typepath of the component you want to get a reference to.
 /datum/proc/get_component(datum/component/c_type)
 	if(initial(c_type.dupe_mode) == COMPONENT_DUPE_ALLOWED || initial(c_type.dupe_mode) == COMPONENT_DUPE_SELECTIVE)
-		stack_trace("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
-	
+		crash_with("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
+
 	var/list/dc = datum_components
 
 	if(!dc)
@@ -348,8 +348,8 @@
 /// `datum/component/c_type` - The typepath of the component you want to get a reference to.
 /datum/proc/get_exact_component(datum/component/c_type)
 	if(initial(c_type.dupe_mode) == COMPONENT_DUPE_ALLOWED || initial(c_type.dupe_mode) == COMPONENT_DUPE_SELECTIVE)
-		stack_trace("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
-	
+		crash_with("get_component was called to get a component of which multiple copies could be on an object. This can easily break and should be changed. Type: \[[c_type]\]")
+
 	var/list/dc = datum_components
 
 	if(!dc)
@@ -465,7 +465,7 @@
 
 /// Get existing component of type, or create it and return a reference to it.
 /// Use this if the item needs to exist at the time of this call, but may not have been created before now.
-/// 
+///
 /// `component_type` - The typepath of the component to create or return.
 /// `...` - additional arguments to be passed when creating the component if it does not exist.
 /datum/proc/_load_component(list/arguments)

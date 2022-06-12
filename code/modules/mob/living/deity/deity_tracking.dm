@@ -26,12 +26,12 @@
 	to_chat(src, "<span class='notice'>You begin to follow \the [L].</span>")
 	following = L
 	register_signal(L, SIGNAL_MOVED, /mob/living/deity/proc/keep_following)
-	register_signal(L, SIGNAL_DESTROY, /mob/living/deity/proc/stop_follow)
+	register_signal(L, SIGNAL_QDELETING, /mob/living/deity/proc/stop_follow)
 	register_signal(L, SIGNAL_MOB_DEATH, /mob/living/deity/proc/stop_follow)
 
 /mob/living/deity/proc/stop_follow()
 	unregister_signal(following, SIGNAL_MOVED)
-	unregister_signal(following, SIGNAL_DESTROY)
+	unregister_signal(following, SIGNAL_QDELETING)
 	unregister_signal(following, SIGNAL_MOB_DEATH)
 	to_chat(src, "<span class='notice'>You stop following \the [following].</span>")
 	following = null

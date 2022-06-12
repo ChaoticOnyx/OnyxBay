@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
-import { capitalize } from '../../common/string'
-import { useBackend, useLocalState } from '../backend'
+import { capitalize } from "../../common/string";
+import { useBackend, useLocalState } from "../backend";
 import {
   Box,
   Button,
@@ -9,21 +9,21 @@ import {
   Divider,
   Flex,
   Input,
-  Stack
-} from '../components'
-import { GameIcon } from '../components/GameIcon'
-import { Window } from '../layouts'
-import { escapeRegExp } from '../sanitize'
-import { InfernoNode } from 'inferno'
+  Stack,
+} from "../components";
+import { GameIcon } from "../components/GameIcon";
+import { Window } from "../layouts";
+import { escapeRegExp } from "../sanitize";
+import { InfernoNode } from "inferno";
 
-const PAGE_CLASSES = 0
-const PAGE_SPELLS = 1
-const PAGE_ARTIFACTS = 2
-const PAGE_CHARACTER = 3
+const PAGE_CLASSES = 0;
+const PAGE_SPELLS = 1;
+const PAGE_ARTIFACTS = 2;
+const PAGE_CHARACTER = 3;
 
 enum UpgradeType {
-  PowerLevel = 'power',
-  SpeedLevel = 'speed',
+  PowerLevel = "power",
+  SpeedLevel = "speed",
 }
 interface SpellLevels {
   type: UpgradeType;
@@ -61,9 +61,9 @@ interface SpellFlags {
 }
 
 enum ChargeType {
-  Recharge = 'recharge',
-  Charges = 'charges',
-  Holdvar = 'holdervar',
+  Recharge = "recharge",
+  Charges = "charges",
+  Holdvar = "holdervar",
 }
 
 interface Spell {
@@ -116,13 +116,13 @@ const SpellIcon = (
   return (
     <GameIcon
       title={`${capitalize(props.name)}${
-        showCost && props.cost ? ` (${props.cost} points)` : ''
+        showCost && props.cost ? ` (${props.cost} points)` : ""
       }\n${capitalize(props.description)}`}
-      className={`Icon--spell ${ignored && 'Icon--ignored'}`}
+      className={`Icon--spell ${ignored && "Icon--ignored"}`}
       html={props.icon}
     />
-  )
-}
+  );
+};
 
 const ArtifactIcon = (
   props: Artifact,
@@ -133,13 +133,13 @@ const ArtifactIcon = (
   return (
     <GameIcon
       title={`${capitalize(props.name)}${
-        showCost && props.cost ? ` (${props.cost} points)` : ''
+        showCost && props.cost ? ` (${props.cost} points)` : ""
       }\n${capitalize(props.description)}`}
-      className={`Icon--artifact ${ignored && 'Icon--ignored'}`}
+      className={`Icon--artifact ${ignored && "Icon--ignored"}`}
       html={props.icon}
     />
-  )
-}
+  );
+};
 
 const InspectSpellButton = (
   props: Spell,
@@ -149,20 +149,21 @@ const InspectSpellButton = (
   showCost: boolean = true,
   key: any
 ) => {
-  const { act } = useBackend<InputData>(context)
+  const { act } = useBackend<InputData>(context);
 
   return (
     <Button
-      className='Button--invisible'
+      className="Button--invisible"
       selected={selected}
       onClick={() => {
-        act('set_inspecting', { path: props.path })
-        act('change_page', { page: PAGE_SPELLS })
-      }}>
+        act("set_inspecting", { path: props.path });
+        act("change_page", { page: PAGE_SPELLS });
+      }}
+    >
       {SpellIcon(props, ignored, showCost, key)}
     </Button>
-  )
-}
+  );
+};
 
 const InspectArtifactButton = (
   props: Artifact,
@@ -172,38 +173,39 @@ const InspectArtifactButton = (
   showCost: boolean = true,
   key: any
 ) => {
-  const { act } = useBackend<InputData>(context)
+  const { act } = useBackend<InputData>(context);
 
   return (
     <Button
-      className='Button--invisible'
+      className="Button--invisible"
       selected={selected}
       onClick={() => {
-        act('set_inspecting', { path: props.path })
-        act('change_page', { page: PAGE_ARTIFACTS })
-      }}>
+        act("set_inspecting", { path: props.path });
+        act("change_page", { page: PAGE_ARTIFACTS });
+      }}
+    >
       {ArtifactIcon(props, ignored, showCost, key)}
     </Button>
-  )
-}
+  );
+};
 
 const classCard = (props: Class, context: any, key: any) => {
-  const { data, act } = useBackend<InputData>(context)
-  const isDisabled = !!data.user.class
+  const { data, act } = useBackend<InputData>(context);
+  const isDisabled = !!data.user.class;
 
   return (
-    <Flex key={key} class='Card' direction='column'>
+    <Flex key={key} class="Card" direction="column">
       <Flex.Item>
         <h2>
           <GameIcon html={props.icon} />
-          {props.name}{' '}
-          <Box className='Card__buttons'>
+          {props.name}{" "}
+          <Box className="Card__buttons">
             <Button
               disabled={isDisabled}
-              content='Choose'
+              content="Choose"
               onClick={() => {
-                act('choose_class', { path: props.path })
-                act('change_page', { page: PAGE_CHARACTER })
+                act("choose_class", { path: props.path });
+                act("change_page", { page: PAGE_CHARACTER });
               }}
             />
           </Box>
@@ -213,17 +215,15 @@ const classCard = (props: Class, context: any, key: any) => {
       <Flex.Item>
         <b>Points:</b> {props.points}
         <br />
-        {props.flags.can_make_contracts
-          ? (
-          <span className='Flag Flag--contracts'>Can Make Contracts</span>
-            )
-          : null}
+        {props.flags.can_make_contracts ? (
+          <span className="Flag Flag--contracts">Can Make Contracts</span>
+        ) : null}
       </Flex.Item>
       <Flex.Item>
         <Divider />
         <h3>Spells:</h3>
         {props.spells.map((s) => {
-          return InspectSpellButton(s, context, false, false, true, s.path)
+          return InspectSpellButton(s, context, false, false, true, s.path);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -231,78 +231,78 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a) => {
-          return InspectArtifactButton(a, context, false, false, true, a.path)
+          return InspectArtifactButton(a, context, false, false, true, a.path);
         })}
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const navPanel = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context)
-  const { page } = data
+  const { data, act } = useBackend<InputData>(context);
+  const { page } = data;
 
   return (
-    <Stack width='100%' justify='center'>
+    <Stack width="100%" justify="center">
       <Stack.Item>
         <Button
-          title='List of classes'
+          title="List of classes"
           selected={page === PAGE_CLASSES}
-          onClick={() => act('change_page', { page: PAGE_CLASSES })}
-          content='Classes'
+          onClick={() => act("change_page", { page: PAGE_CLASSES })}
+          content="Classes"
         />
       </Stack.Item>
       <Stack.Item>
         <Button
-          title='List of spells'
+          title="List of spells"
           selected={page === PAGE_SPELLS}
-          onClick={() => act('change_page', { page: PAGE_SPELLS })}
-          content='Spells'
+          onClick={() => act("change_page", { page: PAGE_SPELLS })}
+          content="Spells"
         />
       </Stack.Item>
       <Stack.Item>
         <Button
-          title='List of artifacts'
+          title="List of artifacts"
           selected={page === PAGE_ARTIFACTS}
-          onClick={() => act('change_page', { page: PAGE_ARTIFACTS })}
-          content='Artifacts'
+          onClick={() => act("change_page", { page: PAGE_ARTIFACTS })}
+          content="Artifacts"
         />
       </Stack.Item>
       <Stack.Item>
         <Button
-          title='Your character information'
+          title="Your character information"
           selected={page === PAGE_CHARACTER}
-          onClick={() => act('change_page', { page: PAGE_CHARACTER })}
-          content='Character'
+          onClick={() => act("change_page", { page: PAGE_CHARACTER })}
+          content="Character"
         />
       </Stack.Item>
     </Stack>
-  )
-}
+  );
+};
 
 const classesPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context)
-  const { classes } = data
+  const { data } = useBackend<InputData>(context);
+  const { classes } = data;
 
   return (
-    <Flex direction='column'>
+    <Flex direction="column">
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item mt='0.5rem'>
+      <Flex.Item mt="0.5rem">
         {classes?.map((c, i) => classCard(c, context, c.path))}
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const spellCard = (props: Spell, buttons?: InfernoNode) => {
-  const { flags } = props
+  const { flags } = props;
 
   return (
-    <Flex className='Card' direction='column'>
+    <Flex className="Card" direction="column">
       <Flex.Item>
         <h2>
           {SpellIcon(props, false, false, props.path)} {props.name}
-          <Box className='Card__buttons'>{buttons}</Box>
+          <Box className="Card__buttons">{buttons}</Box>
         </h2>
       </Flex.Item>
       <Flex.Item>{capitalize(props.description)}</Flex.Item>
@@ -316,63 +316,57 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
         <br />
         <b>Duration:</b> {Math.ceil(props.duration / 10)} seconds
         <br />
-        {flags.needs_clothes
-          ? (
+        {flags.needs_clothes ? (
           <>
-            <span className='Flag Flag--needsClothes'>Needs Clothes</span>
+            <span className="Flag Flag--needsClothes">Needs Clothes</span>
             <br />
           </>
-            )
-          : null}
-        {flags.needs_human
-          ? (
+        ) : null}
+        {flags.needs_human ? (
           <>
-            <span className='Flag Flag--needsHuman'>Human Caster</span>
+            <span className="Flag Flag--needsHuman">Human Caster</span>
             <br />
           </>
-            )
-          : null}
-        {flags.no_button
-          ? (
+        ) : null}
+        {flags.no_button ? (
           <>
-            <span className='Flag Flag--noButton'>Passive</span>
+            <span className="Flag Flag--noButton">Passive</span>
             <br />
           </>
-            )
-          : null}
+        ) : null}
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const artifactCard = (props: Artifact, context: any) => {
   return (
-    <Flex className='Card' direction='column'>
+    <Flex className="Card" direction="column">
       <Flex.Item>
         <h2>
-          {ArtifactIcon(props, false, false, props.path)}{' '}
+          {ArtifactIcon(props, false, false, props.path)}{" "}
           {capitalize(props.name)}
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const BuyArtifactCard = (props: Artifact, context: any) => {
-  const { act, data } = useBackend<InputData>(context)
-  const { user } = data
+  const { act, data } = useBackend<InputData>(context);
+  const { user } = data;
 
   return (
-    <Flex className='Card' direction='column'>
+    <Flex className="Card" direction="column">
       <Flex.Item>
         <h2>
-          {ArtifactIcon(props, false, false, props.path)}{' '}
+          {ArtifactIcon(props, false, false, props.path)}{" "}
           {capitalize(props.name)}
-          <Box className='Card__buttons'>
+          <Box className="Card__buttons">
             <Button
               disabled={user.points - props.cost < 0}
-              onClick={() => act('buy_artifact', { path: props.path })}
+              onClick={() => act("buy_artifact", { path: props.path })}
               content={`Buy (${props.cost} points)`}
             />
           </Box>
@@ -380,65 +374,65 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const spellsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context)
+  const { data } = useBackend<InputData>(context);
   const [nameFilter, setNameFilter] = useLocalState(
     context,
-    'spellsNameFilter',
+    "spellsNameFilter",
     null
-  )
+  );
   const [classNameFilter, setClassNameFilter] = useLocalState(
     context,
-    'spellsClassNameFilter',
+    "spellsClassNameFilter",
     null
-  )
+  );
   const [abilityFilter, setAbilityFilter] = useLocalState(
     context,
-    'spellsAbilityFilter',
+    "spellsAbilityFilter",
     null
-  )
+  );
   const [schoolFilter, setSchoolFilter] = useLocalState(
     context,
-    'spellsSchoolFilter',
+    "spellsSchoolFilter",
     null
-  )
+  );
   const allSpells = data.classes.flatMap((c, i) => {
-    return c.spells
-  })
+    return c.spells;
+  });
 
-  let inspectingSpell: Spell = null
-  let spellsToShow: Spell[] = []
-  const abilities: string[] = []
-  const schools: string[] = []
+  let inspectingSpell: Spell = null;
+  let spellsToShow: Spell[] = [];
+  const abilities: string[] = [];
+  const schools: string[] = [];
   const classNames = data.classes.flatMap((c, i) => {
-    return c.name
-  })
+    return c.name;
+  });
 
   for (const spell of allSpells) {
     if (!spellsToShow.find((s, i) => s.path === spell.path)) {
-      spellsToShow.push(spell)
+      spellsToShow.push(spell);
     }
 
     if (!abilities.find((a, i) => a === spell.ability)) {
-      abilities.push(spell.ability)
+      abilities.push(spell.ability);
     }
 
     if (!schools.find((s, i) => s === spell.school)) {
-      schools.push(spell.school)
+      schools.push(spell.school);
     }
 
     if (spell.path === data.inspecting_path) {
-      inspectingSpell = spell
+      inspectingSpell = spell;
     }
   }
 
-  const ignoredSpells: Spell[] = []
+  const ignoredSpells: Spell[] = [];
 
   for (const spell of spellsToShow) {
-    let ignore = false
+    let ignore = false;
 
     if (
       nameFilter &&
@@ -446,47 +440,47 @@ const spellsPage = (props: any, context: any) => {
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
-      ignore = true
+      ignore = true;
     }
 
     if (abilityFilter && spell.ability !== abilityFilter) {
-      ignore = true
+      ignore = true;
     }
 
     if (schoolFilter && spell.school !== schoolFilter) {
-      ignore = true
+      ignore = true;
     }
 
     if (classNameFilter) {
       const wizardClass = data.classes.find(
         (c, i) => c.name === classNameFilter
-      )
+      );
       const hasSpell = !!wizardClass.spells.find(
         (s, i) => s.path === spell.path
-      )
+      );
 
       if (!hasSpell) {
-        ignore = true
+        ignore = true;
       }
     }
 
     if (ignore) {
-      ignoredSpells.push(spell)
+      ignoredSpells.push(spell);
     }
   }
 
-  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name))
+  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <Flex direction='column'>
+    <Flex direction="column">
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item className='Card' pb='1rem' mt='0.5rem'>
+      <Flex.Item className="Card" pb="1rem" mt="0.5rem">
         <h2>Spells</h2>
         <Flex wrap>
           {spellsToShow.map((s, i) => {
             const isIgnored = !!ignoredSpells.find(
               (ignored, k) => ignored.path === s.path
-            )
+            );
             return InspectSpellButton(
               s,
               context,
@@ -494,16 +488,16 @@ const spellsPage = (props: any, context: any) => {
               s.path === inspectingSpell?.path,
               false,
               s.path
-            )
+            );
           })}
         </Flex>
       </Flex.Item>
-      <Flex.Item className='Card'>
+      <Flex.Item className="Card">
         <h2>Filters</h2>
         <b>By Name: </b>
         <Input
           onInput={(e: any) => {
-            setNameFilter(e.target.value)
+            setNameFilter(e.target.value);
           }}
         />
         <Divider />
@@ -516,13 +510,13 @@ const spellsPage = (props: any, context: any) => {
               selected={classNameFilter === n}
               onClick={() => {
                 if (n === classNameFilter) {
-                  setClassNameFilter(null)
+                  setClassNameFilter(null);
                 } else {
-                  setClassNameFilter(n)
+                  setClassNameFilter(n);
                 }
               }}
             />
-          )
+          );
         })}
         <Divider />
         <b>By Ability: </b>
@@ -534,13 +528,13 @@ const spellsPage = (props: any, context: any) => {
               selected={abilityFilter === a}
               onClick={() => {
                 if (a === abilityFilter) {
-                  setAbilityFilter(null)
+                  setAbilityFilter(null);
                 } else {
-                  setAbilityFilter(a)
+                  setAbilityFilter(a);
                 }
               }}
             />
-          )
+          );
         })}
         <Divider />
         <b>By School: </b>
@@ -552,57 +546,57 @@ const spellsPage = (props: any, context: any) => {
               selected={schoolFilter === s}
               onClick={() => {
                 if (s === schoolFilter) {
-                  setSchoolFilter(null)
+                  setSchoolFilter(null);
                 } else {
-                  setSchoolFilter(s)
+                  setSchoolFilter(s);
                 }
               }}
             />
-          )
+          );
         })}
       </Flex.Item>
       <Flex.Item>
         {inspectingSpell ? spellCard(inspectingSpell) : null}
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const artifactsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context)
+  const { data } = useBackend<InputData>(context);
   const [nameFilter, setNameFilter] = useLocalState(
     context,
-    'artifactsNameFilter',
+    "artifactsNameFilter",
     null
-  )
+  );
   const [classNameFilter, setClassNameFilter] = useLocalState(
     context,
-    'artifactsClassNameFilter',
+    "artifactsClassNameFilter",
     null
-  )
+  );
   const allArtifacts = data.classes.flatMap((c, i) => {
-    return c.artifacts
-  })
+    return c.artifacts;
+  });
   const classNames = data.classes.flatMap((c, i) => {
-    return c.name
-  })
+    return c.name;
+  });
 
-  let artifactsToShow: Artifact[] = []
-  let inspectingArtifact: Artifact = null
-  const ignoredArtifacts: Artifact[] = []
+  let artifactsToShow: Artifact[] = [];
+  let inspectingArtifact: Artifact = null;
+  const ignoredArtifacts: Artifact[] = [];
 
   for (const artifact of allArtifacts) {
     if (!artifactsToShow.find((a, i) => a.path === artifact.path)) {
-      artifactsToShow.push(artifact)
+      artifactsToShow.push(artifact);
     }
 
     if (artifact.path === data.inspecting_path) {
-      inspectingArtifact = artifact
+      inspectingArtifact = artifact;
     }
   }
 
   for (const artifact of artifactsToShow) {
-    let ignore = false
+    let ignore = false;
 
     if (
       nameFilter &&
@@ -610,41 +604,41 @@ const artifactsPage = (props: any, context: any) => {
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
-      ignore = true
+      ignore = true;
     }
 
     if (classNameFilter) {
       const wizardClass = data.classes.find(
         (c, i) => c.name === classNameFilter
-      )
+      );
       const hasArtifact = !!wizardClass.artifacts.find(
         (s, i) => s.path === artifact.path
-      )
+      );
 
       if (!hasArtifact) {
-        ignore = true
+        ignore = true;
       }
     }
 
     if (ignore) {
-      ignoredArtifacts.push(artifact)
+      ignoredArtifacts.push(artifact);
     }
   }
 
   artifactsToShow = artifactsToShow.sort((s, b) =>
     s.name.localeCompare(b.name)
-  )
+  );
 
   return (
-    <Flex direction='column'>
+    <Flex direction="column">
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item pb='1rem' mt='0.5rem' className='Card'>
+      <Flex.Item pb="1rem" mt="0.5rem" className="Card">
         <h2>Artifacts</h2>
         <Flex wrap>
           {artifactsToShow.map((a, i) => {
             const isIgnored = !!ignoredArtifacts.find(
               (ignored, k) => ignored.path === a.path
-            )
+            );
             return InspectArtifactButton(
               a,
               context,
@@ -652,16 +646,16 @@ const artifactsPage = (props: any, context: any) => {
               a.path === inspectingArtifact?.path,
               false,
               a.path
-            )
+            );
           })}
         </Flex>
       </Flex.Item>
-      <Flex.Item className='Card'>
+      <Flex.Item className="Card">
         <h2>Filters</h2>
-        <b>By Name: </b>{' '}
+        <b>By Name: </b>{" "}
         <Input
           onInput={(e: any) => {
-            setNameFilter(e.target.value)
+            setNameFilter(e.target.value);
           }}
         />
         <Divider />
@@ -674,66 +668,66 @@ const artifactsPage = (props: any, context: any) => {
               selected={c === classNameFilter}
               onClick={() => {
                 if (c === classNameFilter) {
-                  setClassNameFilter(null)
+                  setClassNameFilter(null);
                 } else {
-                  setClassNameFilter(c)
+                  setClassNameFilter(c);
                 }
               }}
             />
-          )
+          );
         })}
       </Flex.Item>
       <Flex.Item>
         {inspectingArtifact ? artifactCard(inspectingArtifact, context) : null}
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const characterPage = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context)
-  const { user, classes } = data
+  const { data, act } = useBackend<InputData>(context);
+  const { user, classes } = data;
 
-  const userClass = classes.find((c, i) => c.path === user.class)
+  const userClass = classes.find((c, i) => c.path === user.class);
 
   if (!userClass) {
     return (
-      <Flex direction='column'>
+      <Flex direction="column">
         <Flex.Item>{navPanel(props, context)}</Flex.Item>
-        <Flex.Item pb='1rem' mt='0.5rem' align='center'>
+        <Flex.Item pb="1rem" mt="0.5rem" align="center">
           <h2>Choose a class first.</h2>
         </Flex.Item>
       </Flex>
-    )
+    );
   }
 
-  const learnedSpells: Spell[] = []
-  const notLearnedSpells: Spell[] = []
+  const learnedSpells: Spell[] = [];
+  const notLearnedSpells: Spell[] = [];
 
   for (const spell of userClass.spells) {
     if (
       user.spells.find((s, i) => {
-        return s.path === spell.path
+        return s.path === spell.path;
       })
     ) {
-      learnedSpells.push(spell)
+      learnedSpells.push(spell);
     } else {
-      notLearnedSpells.push(spell)
+      notLearnedSpells.push(spell);
     }
   }
 
   return (
-    <Flex direction='column'>
+    <Flex direction="column">
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item mt='0.5rem' className='Card'>
+      <Flex.Item mt="0.5rem" className="Card">
         <h2>
           {user.name}
-          <Box className='Card__buttons'>
+          <Box className="Card__buttons">
             <Button.Confirm
               disabled={!user.can_reset_class}
-              onClick={() => act('reset_class')}
-              content='Reset Class'
-              title='You can reset your class only once.'
+              onClick={() => act("reset_class")}
+              content="Reset Class"
+              title="You can reset your class only once."
             />
           </Box>
         </h2>
@@ -746,56 +740,55 @@ const characterPage = (props: any, context: any) => {
       <Flex.Item>
         <Collapsible
           disabled={!learnedSpells.length}
-          title={`Learned Spells (${learnedSpells.length})`}>
-          <Flex direction='column'>
+          title={`Learned Spells (${learnedSpells.length})`}
+        >
+          <Flex direction="column">
             {learnedSpells.map((s, i) => {
               const spellData = user.spells.find((b, k) => {
-                return b.path === s.path
-              })
+                return b.path === s.path;
+              });
               const powerUpgrade = spellData.levels.find((l) => {
-                return l.type === UpgradeType.PowerLevel
-              })
+                return l.type === UpgradeType.PowerLevel;
+              });
               const speedUpgrade = spellData.levels.find((l) => {
-                return l.type === UpgradeType.SpeedLevel
-              })
+                return l.type === UpgradeType.SpeedLevel;
+              });
 
               return spellCard(
                 s,
                 <>
                   <Button
                     onClick={() =>
-                      act('upgrade_spell', {
+                      act("upgrade_spell", {
                         path: s.path,
-                        type: powerUpgrade.type
+                        type: powerUpgrade.type,
                       })
                     }
                     disabled={!powerUpgrade.can_upgrade}
-                    title='Upgrade the skill by increasing his power.'
+                    title="Upgrade the skill by increasing his power."
                     content={`Empower (${powerUpgrade.level}/${powerUpgrade.max})`}
                   />
                   <Button
                     onClick={() =>
-                      act('upgrade_spell', {
+                      act("upgrade_spell", {
                         path: s.path,
-                        type: speedUpgrade.type
+                        type: speedUpgrade.type,
                       })
                     }
                     disabled={!speedUpgrade.can_upgrade}
-                    title='Upgrade the skill by increasing his speed.'
+                    title="Upgrade the skill by increasing his speed."
                     content={`Quicken (${speedUpgrade.level}/${speedUpgrade.max})`}
                   />
-                  {userClass.flags.can_make_contracts
-                    ? (
+                  {userClass.flags.can_make_contracts ? (
                     <Button
-                      onClick={() => act('contract', { path: s.path })}
+                      onClick={() => act("contract", { path: s.path })}
                       title={`Spend ${s.cost} points to get a contract.`}
                       disabled={user.points < s.cost}
-                      content='Contract'
+                      content="Contract"
                     />
-                      )
-                    : null}
+                  ) : null}
                 </>
-              )
+              );
             })}
           </Flex>
         </Collapsible>
@@ -803,29 +796,28 @@ const characterPage = (props: any, context: any) => {
       <Flex.Item>
         <Collapsible
           disabled={!notLearnedSpells.length}
-          title={`Spells (${notLearnedSpells.length})`}>
-          <Flex direction='column'>
+          title={`Spells (${notLearnedSpells.length})`}
+        >
+          <Flex direction="column">
             {notLearnedSpells.map((s, i) => {
               return spellCard(
                 s,
                 <>
                   <Button
                     disabled={user.points - s.cost < 0}
-                    onClick={() => act('buy_spell', { path: s.path })}
+                    onClick={() => act("buy_spell", { path: s.path })}
                     content={`Buy (${s.cost} points)`}
                   />
-                  {userClass.flags.can_make_contracts
-                    ? (
+                  {userClass.flags.can_make_contracts ? (
                     <Button
-                      onClick={() => act('contract', { path: s.path })}
+                      onClick={() => act("contract", { path: s.path })}
                       title={`Spend ${s.cost} points to get a contract.`}
                       disabled={user.points < s.cost}
-                      content='Contract'
+                      content="Contract"
                     />
-                      )
-                    : null}
+                  ) : null}
                 </>
-              )
+              );
             })}
           </Flex>
         </Collapsible>
@@ -833,42 +825,43 @@ const characterPage = (props: any, context: any) => {
       <Flex.Item>
         <Collapsible
           disabled={!userClass.artifacts.length}
-          title={`Artifacts (${userClass.artifacts.length})`}>
-          <Flex direction='column'>
+          title={`Artifacts (${userClass.artifacts.length})`}
+        >
+          <Flex direction="column">
             {userClass.artifacts.map((a, i) => {
-              return BuyArtifactCard(a, context)
+              return BuyArtifactCard(a, context);
             })}
           </Flex>
         </Collapsible>
       </Flex.Item>
     </Flex>
-  )
-}
+  );
+};
 
 const PAGES = {
   0: {
-    render: classesPage
+    render: classesPage,
   },
   1: {
-    render: spellsPage
+    render: spellsPage,
   },
   2: {
-    render: artifactsPage
+    render: artifactsPage,
   },
   3: {
-    render: characterPage
-  }
-}
+    render: characterPage,
+  },
+};
 
 export const SpellBook = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context)
+  const { data } = useBackend<InputData>(context);
 
   return (
-    <Window theme='spellbook' width={425} height={520}>
-      <link rel='stylesheet' type='text/css' href='reaver.css' />
+    <Window theme="spellbook" width={425} height={520}>
+      <link rel="stylesheet" type="text/css" href="reaver.css" />
       <Window.Content scrollable>
         {PAGES[data.page].render(props, context)}
       </Window.Content>
     </Window>
-  )
-}
+  );
+};

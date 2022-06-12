@@ -61,8 +61,10 @@
 		return FALSE
 
 /mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
+	full_pain = 0
 	for(var/obj/item/organ/external/O in organs)
 		O.update_pain()
+		full_pain += O.full_pain
 
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getToxLoss()

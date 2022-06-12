@@ -16,7 +16,7 @@
 	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 10
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "pokes"

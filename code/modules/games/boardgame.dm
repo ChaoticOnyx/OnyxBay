@@ -9,7 +9,7 @@
 	var/board = list()
 	var/selected = -1
 
-/obj/item/board/examine(mob/user)
+/obj/item/board/_examine_text(mob/user)
 	if(in_range(user,src))
 		user.set_machine(src)
 		interact(user)
@@ -164,7 +164,7 @@
 
 //Checkers
 
-/obj/item/reagent_containers/food/snacks/checker
+/obj/item/reagent_containers/food/checker
 	name = "checker"
 	desc = "It is plastic and shiny."
 	icon = 'icons/obj/pieces.dmi'
@@ -175,56 +175,56 @@
 	nutriment_amt = 1
 	var/piece_color ="black"
 
-/obj/item/reagent_containers/food/snacks/checker/Initialize()
+/obj/item/reagent_containers/food/checker/Initialize()
 	. = ..()
 	icon_state = "[name]_[piece_color]"
 	name = "[piece_color] [name]"
 
-/obj/item/reagent_containers/food/snacks/checker/red
+/obj/item/reagent_containers/food/checker/red
 	piece_color ="red"
 
 //Chess
 
-/obj/item/reagent_containers/food/snacks/checker/pawn
+/obj/item/reagent_containers/food/checker/pawn
 	name = "pawn"
 	desc = "How many pawns will die in your war?"
 
-/obj/item/reagent_containers/food/snacks/checker/pawn/red
+/obj/item/reagent_containers/food/checker/pawn/red
 	piece_color ="red"
 
-/obj/item/reagent_containers/food/snacks/checker/knight
+/obj/item/reagent_containers/food/checker/knight
 	name = "knight"
 	desc = "The piece chess deserves, and needs to actually play."
 
-/obj/item/reagent_containers/food/snacks/checker/knight/red
+/obj/item/reagent_containers/food/checker/knight/red
 	piece_color ="red"
 
-/obj/item/reagent_containers/food/snacks/checker/bishop
+/obj/item/reagent_containers/food/checker/bishop
 	name = "bishop"
 	desc = "What corruption occured, urging holy men to fight?"
 
-/obj/item/reagent_containers/food/snacks/checker/bishop/red
+/obj/item/reagent_containers/food/checker/bishop/red
 	piece_color ="red"
 
-/obj/item/reagent_containers/food/snacks/checker/rook
+/obj/item/reagent_containers/food/checker/rook
 	name = "rook"
 	desc = "Representing ancient moving towers. So powerful and fast they were banned from wars, forever."
 
-/obj/item/reagent_containers/food/snacks/checker/rook/red
+/obj/item/reagent_containers/food/checker/rook/red
 	piece_color ="red"
 
-/obj/item/reagent_containers/food/snacks/checker/queen
+/obj/item/reagent_containers/food/checker/queen
 	name = "queen"
 	desc = "A queen of battle and pain. She dances across the battlefield."
 
-/obj/item/reagent_containers/food/snacks/checker/queen/red
+/obj/item/reagent_containers/food/checker/queen/red
 	piece_color ="red"
 
-/obj/item/reagent_containers/food/snacks/checker/king
+/obj/item/reagent_containers/food/checker/king
 	name = "king"
 	desc = "Why does a chess game end when the king dies?"
 
-/obj/item/reagent_containers/food/snacks/checker/king/red
+/obj/item/reagent_containers/food/checker/king/red
 	piece_color ="red"
 
 /*
@@ -313,7 +313,7 @@ THAT STUPID GAME KIT
 	if (flag)
 		return ..()
 	else
-		user.machine = src
+		user.set_machine(src)
 		if (!( src.data ))
 			update()
 		show_browser(user, src.data, "window=game_kit;size=600x748")

@@ -74,7 +74,7 @@
 	if(loaded)
 		return "<span class='notice'>It has \a [loaded] loaded.</span>"
 
-/obj/item/gun/magnetic/examine(mob/user)
+/obj/item/gun/magnetic/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/ret = show_ammo()

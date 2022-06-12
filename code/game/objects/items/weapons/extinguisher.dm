@@ -12,7 +12,6 @@
 	mod_weight = 1.5
 	mod_reach = 1.0
 	w_class = ITEM_SIZE_LARGE
-	throw_speed = 2
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 900)
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
@@ -48,7 +47,7 @@
 	reagents.add_reagent(ff_reagent, max_volume)
 	..()
 
-/obj/item/extinguisher/examine(mob/user)
+/obj/item/extinguisher/_examine_text(mob/user)
 	. = ..()
 	if((get_dist(src, user) <= 0) && !external_source)
 		. += "\n[text("\icon[] [] contains [] units of reagents left!", src, src.name, src.reagents.total_volume)]"

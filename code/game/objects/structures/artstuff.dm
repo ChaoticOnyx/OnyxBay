@@ -128,7 +128,7 @@
 	.["name"] = painting_name
 	.["finalized"] = finalized
 
-/obj/item/canvas/examine(mob/user)
+/obj/item/canvas/_examine_text(mob/user)
 	. = ..()
 	tgui_interact(user)
 	if(!user.mind || !is_propaganda)
@@ -270,7 +270,7 @@
 			if("red")
 				return COLOR_RED
 		return P.colour
-	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/glass/rag))
+	else if(istype(I, /obj/item/soap) || istype(I, /obj/item/reagent_containers/rag))
 		return canvas_color
 
 /obj/item/canvas/proc/to_json()

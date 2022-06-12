@@ -220,7 +220,7 @@
 
 /obj/item/integrated_circuit/manipulation/seed_extractor/do_work()
 	..()
-	var/obj/item/reagent_containers/food/snacks/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/snacks/grown)
+	var/obj/item/reagent_containers/food/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/grown)
 	if(!check_target(O))
 		push_data()
 		activate_pin(2)
@@ -359,7 +359,7 @@
 					pulling = to_pull
 					acting_object.visible_message("\The [acting_object] starts pulling \the [to_pull] around.")
 					register_signal(to_pull, SIGNAL_MOVED, .proc/check_pull) // Whenever the target moves, make sure we can still pull it!
-					register_signal(to_pull, SIGNAL_DESTROY, .proc/stop_pulling) // Stop pulling if it gets destroyed.
+					register_signal(to_pull, SIGNAL_QDELETING, .proc/stop_pulling) // Stop pulling if it gets destroyed.
 					register_signal(acting_object, SIGNAL_MOVED, .proc/pull) // Make sure we actually pull it.
 					var/atom/A = get_object()
 					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
@@ -402,7 +402,7 @@
 		unregister_signal(pulling, SIGNAL_MOVED)
 		unregister_signal(AM, SIGNAL_MOVED)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
-		unregister_signal(pulling, SIGNAL_DESTROY)
+		unregister_signal(pulling, SIGNAL_QDELETING)
 		var/atom/A = get_object()
 		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null
@@ -485,7 +485,7 @@
 	assembly.visible_message(SPAN("danger", "[assembly] has thrown [A]!"))
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
-	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
+	A.throw_at(locate(x_abs, y_abs, T.z), range)
 	var/atom/AM = get_object()
 	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 

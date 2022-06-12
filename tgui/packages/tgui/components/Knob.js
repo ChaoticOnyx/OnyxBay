@@ -5,17 +5,17 @@
  * @license MIT
  */
 
-import { keyOfMatchingRange, scale } from 'common/math'
-import { classes } from 'common/react'
-import { computeBoxClassName, computeBoxProps } from './Box'
-import { DraggableControl } from './DraggableControl'
-import { NumberInput } from './NumberInput'
+import { keyOfMatchingRange, scale } from "common/math";
+import { classes } from "common/react";
+import { computeBoxClassName, computeBoxProps } from "./Box";
+import { DraggableControl } from "./DraggableControl";
+import { NumberInput } from "./NumberInput";
 
-export const Knob = props => {
+export const Knob = (props) => {
   // IE8: I don't want to support a yet another component on IE8.
   // IE8: It also can't handle SVG.
   if (Byond.IS_LTE_IE8) {
-    return <NumberInput {...props} />
+    return <NumberInput {...props} />;
   }
   const {
     // Draggable props (passthrough)
@@ -41,7 +41,7 @@ export const Knob = props => {
     bipolar,
     children,
     ...rest
-  } = props
+  } = props;
   return (
     <DraggableControl
       dragMatrix={[0, -1]}
@@ -57,82 +57,87 @@ export const Knob = props => {
         stepPixelSize,
         suppressFlicker,
         unit,
-        value
-      }}>
-      {control => {
+        value,
+      }}
+    >
+      {(control) => {
         const {
           dragging,
           value,
           displayValue,
           displayElement,
           inputElement,
-          handleDragStart
-        } = control
+          handleDragStart,
+        } = control;
         const scaledFillValue = scale(
           fillValue ?? displayValue,
           minValue,
           maxValue
-        )
-        const scaledDisplayValue = scale(displayValue, minValue, maxValue)
+        );
+        const scaledDisplayValue = scale(displayValue, minValue, maxValue);
         const effectiveColor =
-          color || keyOfMatchingRange(fillValue ?? value, ranges) || 'default'
-        const rotation = Math.min((scaledDisplayValue - 0.5) * 270, 225)
+          color || keyOfMatchingRange(fillValue ?? value, ranges) || "default";
+        const rotation = Math.min((scaledDisplayValue - 0.5) * 270, 225);
         return (
           <div
             className={classes([
-              'Knob',
-              'Knob--color--' + effectiveColor,
-              bipolar && 'Knob--bipolar',
+              "Knob",
+              "Knob--color--" + effectiveColor,
+              bipolar && "Knob--bipolar",
               className,
-              computeBoxClassName(rest)
+              computeBoxClassName(rest),
             ])}
             {...computeBoxProps({
               style: {
-                'font-size': size + 'em',
-                ...style
+                "font-size": size + "em",
+                ...style,
               },
-              ...rest
+              ...rest,
             })}
-            onMouseDown={handleDragStart}>
-            <div className='Knob__circle'>
+            onMouseDown={handleDragStart}
+          >
+            <div className="Knob__circle">
               <div
-                className='Knob__cursorBox'
+                className="Knob__cursorBox"
                 style={{
-                  transform: `rotate(${rotation}deg)`
-                }}>
-                <div className='Knob__cursor' />
+                  transform: `rotate(${rotation}deg)`,
+                }}
+              >
+                <div className="Knob__cursor" />
               </div>
             </div>
             {dragging && (
-              <div className='Knob__popupValue'>{displayElement}</div>
+              <div className="Knob__popupValue">{displayElement}</div>
             )}
             <svg
-              className='Knob__ring Knob__ringTrackPivot'
-              viewBox='0 0 100 100'>
-              <circle className='Knob__ringTrack' cx='50' cy='50' r='50' />
+              className="Knob__ring Knob__ringTrackPivot"
+              viewBox="0 0 100 100"
+            >
+              <circle className="Knob__ringTrack" cx="50" cy="50" r="50" />
             </svg>
             <svg
-              className='Knob__ring Knob__ringFillPivot'
-              viewBox='0 0 100 100'>
+              className="Knob__ring Knob__ringFillPivot"
+              viewBox="0 0 100 100"
+            >
               <circle
-                className='Knob__ringFill'
+                className="Knob__ringFill"
                 style={{
-                  'stroke-dashoffset': Math.max(
+                  "stroke-dashoffset": Math.max(
                     ((bipolar ? 2.75 : 2.0) - scaledFillValue * 1.5) *
                       Math.PI *
                       50,
                     0
-                  )
+                  ),
                 }}
-                cx='50'
-                cy='50'
-                r='50'
+                cx="50"
+                cy="50"
+                r="50"
               />
             </svg>
             {inputElement}
           </div>
-        )
+        );
       }}
     </DraggableControl>
-  )
-}
+  );
+};

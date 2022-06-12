@@ -25,7 +25,7 @@
 		log_debug("[log_info_line(communicator)] attempted to communicate over the channel [src] but was of an unexpected type.")
 		return FALSE
 
-	if(config_setting && !config.vars[config_setting] && !check_rights(R_INVESTIGATE,0,communicator))
+	if(config_setting && !config.misc.vars[config_setting] && !check_rights(R_INVESTIGATE,0,communicator))
 		to_chat(communicator, "<span class='danger'>[name] is globally muted.</span>")
 		return FALSE
 

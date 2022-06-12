@@ -13,7 +13,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 3
 	layer = ABOVE_OBJ_LAYER
 	slot_flags = SLOT_HEAD
 	body_parts_covered = HEAD
@@ -198,7 +198,7 @@
 			break
 	return !length(strip_html_properly(info)) && !is_visible_html_tag
 
-/obj/item/paper/examine(mob/user)
+/obj/item/paper/_examine_text(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
@@ -260,7 +260,7 @@
 		crumpled = TRUE
 		update_icon()
 		throw_range = 7
-		throw_speed = 2
+		throw_speed = 1
 		return
 	if(taped)
 		name = copytext(name, 1, length(name)-7)
@@ -452,8 +452,8 @@
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
-	else if(istype(P, /obj/item/reagent_containers/food/snacks/grown))
-		var/obj/item/reagent_containers/food/snacks/grown/G = P
+	else if(istype(P, /obj/item/reagent_containers/food/grown))
+		var/obj/item/reagent_containers/food/grown/G = P
 		if(!G.dry)
 			to_chat(user, SPAN_NOTICE("[G] must be dried before you can grind and roll it."))
 			return

@@ -388,7 +388,7 @@ var/bomb_set
 
 /obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
+	if(!T || !isStationLevel(T.z))
 		qdel(src)
 
 /obj/item/disk/nuclear/Destroy()
@@ -414,7 +414,7 @@ var/bomb_set
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/storage/secure/briefcase/nukedisk/examine(user)
+/obj/item/storage/secure/briefcase/nukedisk/_examine_text(user)
 	. = ..()
 	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 

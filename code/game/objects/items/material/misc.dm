@@ -94,7 +94,7 @@
 	thrown_force_divisor = 0.25 // 5 with weight 20 (steel)
 	sharp = 1
 	edge = 1
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 3
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.35

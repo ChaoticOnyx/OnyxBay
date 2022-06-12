@@ -34,7 +34,7 @@
 		return !density
 	return TRUE
 
-/obj/structure/railing/examine(mob/user)
+/obj/structure/railing/_examine_text(mob/user)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)

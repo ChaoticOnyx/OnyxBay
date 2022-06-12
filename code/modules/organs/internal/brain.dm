@@ -8,11 +8,11 @@
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = list(TECH_BIO = 3)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 60
+	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
 	var/can_use_mmi = TRUE
 	var/mob/living/carbon/brain/brainmob = null
@@ -50,7 +50,7 @@
 	..()
 	max_damage = 100
 	if(species)
-		max_damage = species.total_health/2
+		max_damage = species.total_health
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage = max_damage*0.75
 
@@ -83,7 +83,7 @@
 	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just \a [initial(src.name)].</span>")
 	callHook("debrain", list(brainmob))
 
-/obj/item/organ/internal/brain/examine(mob/user) // -- TLE
+/obj/item/organ/internal/brain/_examine_text(mob/user) // -- TLE
 	. = ..()
 	if(brainmob && brainmob.client)//if thar be a brain inside... the brain.
 		. += "\nYou can feel the small spark of life still left in this one."

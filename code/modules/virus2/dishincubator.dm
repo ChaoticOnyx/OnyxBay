@@ -5,7 +5,7 @@
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "incubator"
 	var/obj/item/virusdish/dish
-	var/obj/item/reagent_containers/glass/beaker = null
+	var/obj/item/reagent_containers/vessel/beaker = null
 	var/radiation = 0
 	var/mutagen = 0
 
@@ -16,7 +16,7 @@
 	var/toxins = 0
 
 /obj/machinery/disease2/incubator/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/reagent_containers/glass) || istype(O,/obj/item/reagent_containers/syringe))
+	if(istype(O, /obj/item/reagent_containers/vessel/beaker) || istype(O, /obj/item/reagent_containers/vessel/bottle/chemical) || istype(O,/obj/item/reagent_containers/syringe))
 
 		if(beaker)
 			to_chat(user, "\The [src] is already loaded.")
@@ -84,7 +84,7 @@
 			var/list/virus = B.data["virus2"]
 			for (var/ID in virus)
 				data["blood_already_infected"] = virus[ID]
-			if (dish && dish.analysed)
+			if (dish && dish.analysed && dish.virus2)
 				var/beaker_species = B.data["species"]
 				for (var/S in dish.virus2.affected_species)
 					if (beaker_species == S)

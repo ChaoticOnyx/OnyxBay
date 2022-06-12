@@ -128,7 +128,8 @@
 
 /obj/item/clothing/head/cardborg/Initialize()
 	. = ..()
-	set_extension(src, /datum/extension/appearance, /datum/extension/appearance/cardborg)
+
+	AddComponent(/datum/component/cardborg)
 
 /obj/item/clothing/head/justice
 	name = "justice hat"

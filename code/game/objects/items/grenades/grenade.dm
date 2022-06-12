@@ -5,7 +5,6 @@
 	icon = 'icons/obj/grenade.dmi'
 	icon_state = "grenade"
 	item_state = "grenade"
-	throw_speed = 1
 	throw_range = 20
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_MASK
@@ -23,7 +22,7 @@
 		return 0
 	return 1
 
-/obj/item/grenade/examine(mob/user)
+/obj/item/grenade/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		if(det_time > 1)

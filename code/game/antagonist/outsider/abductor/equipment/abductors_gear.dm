@@ -425,6 +425,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	item_state = "wonderprod"
 
 	hitcost = 0 //YEP
+	agonyforce = 90
 	var/obj/item/handcuffs/handcuffs = new /obj/item/handcuffs/energy()
 	var/mode = BATON_STUN
 	var/sleep_time = 60
@@ -485,7 +486,11 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 				agony *= 0.5
 			target.visible_message(SPAN_DANGER("[user] stuns [target] with [src]!"),
 			SPAN_DANGER("[user] stuns you with [src]!"))
-			target.stun_effect_act(stun, agony, hit_zone, src)
+			if(ishuman(target))
+				var/mob/living/carbon/human/H = target
+				H.handle_tasing(agony, stun, hit_zone, src)
+			else
+				target.stun_effect_act(stun, agony, hit_zone, src)
 		if(BATON_SLEEP)
 			SleepAttack(target,user)
 		if(BATON_CUFF)
@@ -551,7 +556,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	to_chat(user, "[SPAN_NOTICE("Probing result:")][species]")
 	to_chat(user, "[helptext]")
 
-/obj/item/melee/baton/abductor/examine(mob/user)
+/obj/item/melee/baton/abductor/_examine_text(mob/user)
 	. = ..()
 	if(AbductorCheck(user))
 		switch(mode)
@@ -700,7 +705,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	/// Amount to inject per second
 	var/inject_am = 0.5
 
-	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/tramadol)
+	var/static/list/injected_reagents = list(/datum/reagent/inaprovaline, /datum/reagent/dexalinp, /datum/reagent/painkiller/tramadol)
 
 /obj/machinery/optable/abductor/take_victim(mob/living/carbon/C, mob/living/carbon/user)
 	if (C == user)

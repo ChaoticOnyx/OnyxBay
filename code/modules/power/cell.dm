@@ -8,7 +8,6 @@
 	origin_tech = list(TECH_POWER = 1)
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 3
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/c_uid			 // Unique ID
@@ -39,10 +38,7 @@
 	return use(cell_amt) / CELLRATE
 
 /obj/item/cell/proc/add_charge(amount)
-	if(charge + amount > maxcharge)
-		charge = maxcharge
-	else
-		charge += amount
+	charge = between(0, charge + amount, maxcharge)
 
 /obj/item/cell/update_icon()
 	var/new_overlay_state = null
@@ -69,6 +65,9 @@
 
 // use power from a cell, returns the amount actually used
 /obj/item/cell/proc/use(amount)
+	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
+		crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
+		return 0
 	var/used = min(charge, amount)
 	charge -= used
 	update_icon()
@@ -83,6 +82,9 @@
 	return 1
 
 /obj/item/cell/proc/give(amount)
+	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
+		crash_with("Power cell ([src], [c_uid]) called give() with negative amount ([amount]).")
+		return 0
 	if(maxcharge == charge)
 		return 0
 	var/amount_used = min(maxcharge - charge,amount)
@@ -90,7 +92,7 @@
 	update_icon()
 	return amount_used
 
-/obj/item/cell/examine(mob/user)
+/obj/item/cell/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe label states it's capacity is [maxcharge] Wh"
 	. += "\nThe charge meter reads [round(src.percent(), 0.1)]%"
@@ -138,7 +140,6 @@
 	icon_state = "device"
 	w_class = ITEM_SIZE_SMALL
 	force = 0
-	throw_speed = 5
 	throw_range = 7
 	maxcharge = 100
 	matter = list(MATERIAL_STEEL = 70, MATERIAL_GLASS = 5)
@@ -303,7 +304,7 @@
 		if(overlay_state)
 			overlays += image('icons/obj/power.dmi', overlay_state)
 
-/obj/item/cell/quantum/examine(mob/user)
+/obj/item/cell/quantum/_examine_text(mob/user)
 	. = ..()
 	. += "\nIts quantum ID is: #[quantum_id]"
 	if(partner)

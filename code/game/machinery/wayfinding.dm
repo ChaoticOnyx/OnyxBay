@@ -24,7 +24,6 @@
 	desc = "A handheld tracking device that points to useful places."
 	icon_state = "pinpointer_way"
 	var/owner = null
-	var/obj/machinery/navbeacon/wayfinding/way_target
 	var/list/beacons = list()
 
 /obj/item/pinpointer/wayfinding/attack_self(mob/living/user)
@@ -47,24 +46,19 @@
 	if(!A || QDELETED(src) || !user || !src.Adjacent(user) || user.incapacitated())
 		return
 
-	way_target = beacons[A]
-	target = acquire_target()
+	target = acquire_target(beacons[A])
 	..()
 
-/obj/item/pinpointer/wayfinding/toggle()
-	..()
-	if(!active)
-		way_target = null
+/obj/item/pinpointer/wayfinding/acquire_target(way_target)
+	if(!way_target)
+		return
+	return weakref(way_target)
 
-/obj/item/pinpointer/wayfinding/acquire_target()
-	if(way_target)
-		return weakref(way_target)
-
-/obj/item/pinpointer/wayfinding/examine(mob/user)
+/obj/item/pinpointer/wayfinding/_examine_text(mob/user)
 	. = ..()
 	var/msg = " Its tracking indicator reads "
 	if(target)
-		var/obj/machinery/navbeacon/wayfinding/B  = target
+		var/obj/machinery/navbeacon/wayfinding/B  = target.resolve()
 		msg += "\"[B.codes["wayfinding"]]\"."
 	else
 		msg = " Its tracking indicator is blank."

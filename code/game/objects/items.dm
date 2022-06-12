@@ -28,7 +28,8 @@
 	var/mod_reach = 0.25 //Length modifier. i.e. 0.35 - knives, 0.75 - toolboxes, 1.0 - crowbars, 1.25 - batons, 1.5 - spears and mops.
 	var/mod_weight = 0.25 //Weight modifier. i.e. 0.33 - knives, 0.67 - hatchets, 1.0 - crowbars and batons, 1.33 - tanks, 1.66 - toolboxes, 2.0 - axes.
 	var/mod_speed = 1.0 //An artificial attack cooldown multiplier for certain weapons. Applied after the initial processing.
-	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption. Values >= 1.3 allow to absorb bullets. Values >= 2.5 allow to reflect bullets.
+	var/mod_shield = 1.0 //Higher values reduce blocks' poise consumption.
+	var/block_tier = BLOCK_TIER_MELEE // BLOCK_TIER_PROJECTILE allows to absorb bullets. BLOCK_TIER_ADVANCED allows to reflect bullets.
 	var/check_armour = "melee" // Defines what armor to use when it hits things.  Must be set to bullet/laser/energy/bomb/bio/rad
 
 	var/heat_protection = 0 //flags which determine which body parts are protected from heat. Use the HEAD, UPPER_TORSO, LOWER_TORSO, etc. flags. See setup.dm
@@ -100,6 +101,9 @@
 	if(maptext)
 		maptext = ""
 
+	master = null
+	QDEL_NULL(action)
+
 	if(istype(src.loc, /obj/item/storage))
 		var/obj/item/storage/storage = loc // some ui cleanup needs to be done
 		storage.on_item_pre_deletion(src) // must be done before deletion
@@ -166,7 +170,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user)
+/obj/item/_examine_text(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -254,21 +258,25 @@
 
 	var/old_loc = loc
 
-	pickup(user)
-	if (istype(loc, /obj/item/storage))
+	// Removing from a storage
+	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
+	// Unequipping from self
+	else if(loc == user && !user.unEquip(src))
+		return
+	// Doing some unintended shit that may cause catastrophical events, aborting
+	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
+	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
+	else if(!isturf(loc))
+		return
 
 	throwing = 0
-	if (loc == user)
-		if(!user.unEquip(src))
-			return
-	else
-		if(isliving(loc))
-			return
 
-	if(QDELING(src)) // Unequipping may change src gc_destroyed, so must check here
+	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
+
+	pickup(user)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -449,7 +457,7 @@ var/list/global/slot_flags_enumeration = list(
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return 0
 		if(slot_handcuffed)
-			if(!istype(src, /obj/item/handcuffs))
+			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
 				return 0
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
@@ -547,25 +555,33 @@ var/list/global/slot_flags_enumeration = list(
 		var/obj/item/projectile/P = damage_source
 		if(!P.blockable)
 			return 0
-		if(mod_shield >= 1.3)
+		if(block_tier == BLOCK_TIER_PROJECTILE)
 			if(P.armor_penetration > (25 * mod_shield) - 5)
 				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
-			proj_poise_drain(user, P, TRUE)
+			proj_poise_drain(user, P)
 			spawn()
 				shake_camera(user, 1)
 			return PROJECTILE_FORCE_BLOCK
+		else if(block_tier == BLOCK_TIER_ADVANCED)
+			// some effects here
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(3, 0, user.loc)
+			spark_system.start()
+
+			visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
+			proj_poise_drain(user, P)
+			return PROJECTILE_FORCE_BLOCK
 	return 0
 
-/obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P, weak_shield = FALSE)
+/obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P)
 	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		var/poise_dmg = P.damage / (mod_shield * 2.5)
-		if(weak_shield && P.damage_type == BRUTE)
-			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
-		if(src != H.get_active_hand())
-			poise_dmg *= 2
+		if(block_tier != BLOCK_TIER_ADVANCED && P.damage_type == BRUTE)
+			poise_dmg = (P.damage + (P.agony / 1.5)) / (mod_shield * 2.5)
+		poise_dmg *= (src == H.get_active_hand()) ? 1.25 : 2.0
 		H.damage_poise(poise_dmg)
 		if(H.poise < poise_dmg)
 			shot_out(H, P)
@@ -578,15 +594,15 @@ var/list/global/slot_flags_enumeration = list(
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
-	if(src && istype(loc,/turf))
-		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+	if(src && isturf(loc))
+		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
 		H.drop_from_inventory(src)
 		if(src && istype(loc,/turf))
-			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
 			return TRUE
@@ -777,7 +793,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-	register_signal(src, SIGNAL_DESTROY, /obj/item/proc/unzoom)
+	register_signal(src, SIGNAL_QDELETING, /obj/item/proc/unzoom)
 	register_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
 	register_signal(src, SIGNAL_DIR_SET, /obj/item/proc/unzoom)
 	register_signal(src, SIGNAL_ITEM_UNEQUIPPED, /obj/item/proc/zoom_drop)
@@ -796,7 +812,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		return
 	zoom = 0
 
-	unregister_signal(src, SIGNAL_DESTROY)
+	unregister_signal(src, SIGNAL_QDELETING)
 	unregister_signal(src, SIGNAL_MOVED, /obj/item/proc/zoom_move)
 	unregister_signal(src, SIGNAL_DIR_SET)
 	unregister_signal(src, SIGNAL_ITEM_UNEQUIPPED)
@@ -890,9 +906,9 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 /obj/item/proc/get_examine_line()
 	if(blood_DNA)
-		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [src]")
+		. = SPAN("warning", "\icon[src] [gender==PLURAL?"some":"a"] [(blood_color != SYNTH_BLOOD_COLOUR) ? "blood" : "oil"]-stained [SPAN("info", "<em>[src]</em>")]")
 	else
-		. = "\icon[src] \a [src]"
+		. = "\icon[src] \a [SPAN("info", "<em>[src]</em>")]"
 
 //Some explanation here.
 /obj/item/proc/update_attack_cooldown()

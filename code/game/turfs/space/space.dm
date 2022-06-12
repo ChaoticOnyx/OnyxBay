@@ -43,10 +43,10 @@
 	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
 
 /turf/space/proc/update_starlight()
-	if(!config.starlight)
+	if(!config.misc.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(min(0.1*config.starlight, 1), 1, 2.5)
+		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
@@ -84,7 +84,7 @@
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
 	if(A && A.loc == src)
-		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE + 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE + 1))
+		if (A.x <= TRANSITION_EDGE || A.x >= (world.maxx - TRANSITION_EDGE + 1) || A.y <= TRANSITION_EDGE || A.y >= (world.maxy - TRANSITION_EDGE + 1))
 			A.touch_map_edge()
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)

@@ -63,7 +63,7 @@
 	..()
 	overlays.Cut()
 	var/image/I = image(icon, "indicator[opened]")
-	I.appearance_flags = RESET_COLOR
+	I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	var/maxstasis = initial(stasis_power)
 	if(stasis_power > 0.5 * maxstasis)
 		I.color = COLOR_LIME
@@ -103,13 +103,13 @@
 		return airtank
 	..()
 
-/obj/structure/closet/body_bag/cryobag/examine(mob/user)
+/obj/structure/closet/body_bag/cryobag/_examine_text(mob/user)
 	. = ..()
 	. += "\nThe stasis meter shows '[stasis_power]x'."
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
 		. += "\n<span class='info'>You peer into \the [src].</span>"
 		for(var/mob/living/L in contents)
-			L.examine(user)
+			L._examine_text(user)
 
 /obj/item/usedcryobag
 	name = "used stasis bag"

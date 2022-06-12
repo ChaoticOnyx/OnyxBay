@@ -46,13 +46,13 @@ var/global/photo_count = 0
 	overlays.Cut()
 	var/scale = 8/(photo_size*32)
 	var/image/small_img = image(img)
-	small_img.transform *= scale
+	small_img.SetTransform(scale = scale)
 	small_img.pixel_x = -32*(photo_size-1)/2 - 3
 	small_img.pixel_y = -32*(photo_size-1)/2
 	overlays |= small_img
 
 	tiny = image(img)
-	tiny.transform *= 0.5*scale
+	small_img.SetTransform(scale = 0.5 * scale)
 	tiny.underlays += image('icons/obj/bureaucracy.dmi',"photo")
 	tiny.pixel_x = -32*(photo_size-1)/2 - 3
 	tiny.pixel_y = -32*(photo_size-1)/2 + 3
@@ -64,7 +64,7 @@ var/global/photo_count = 0
 			scribble = txt
 	..()
 
-/obj/item/photo/examine(mob/user)
+/obj/item/photo/_examine_text(mob/user)
 	if(in_range(user, src))
 		show(user)
 		. += "\n[desc]"
@@ -153,14 +153,12 @@ var/global/photo_count = 0
 	var/size = 3
 
 /obj/item/device/camera/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
 	if(is_on)
-		icon_state = "[bis.base_icon_state]"
+		icon_state = "[initial(icon_state)]"
 	else
-		icon_state = "[bis.base_icon_state]_off"
+		icon_state = "[initial(icon_state)]_off"
 
 /obj/item/device/camera/Initialize()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 	. = ..()
 
@@ -230,7 +228,7 @@ var/global/photo_count = 0
 
 	update_icon()
 
-/obj/item/device/camera/examine(mob/user)
+/obj/item/device/camera/_examine_text(mob/user)
 	. = ..()
 
 	. += "\nIt has [pictures_left] photo\s left."

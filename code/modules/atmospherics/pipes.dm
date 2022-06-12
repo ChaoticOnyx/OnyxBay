@@ -84,7 +84,7 @@
 	if(air_temporary)
 		loc.assume_air(air_temporary)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
@@ -257,7 +257,8 @@
 	if(node2)
 		node2.disconnect(src)
 		node2 = null
-	. = ..()
+
+	return ..()
 
 /obj/machinery/atmospherics/pipe/simple/pipeline_expansion()
 	return list(node1, node2)
@@ -493,7 +494,7 @@
 		node3.disconnect(src)
 		node3 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -745,7 +746,7 @@
 		node4.disconnect(src)
 		node4 = null
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/manifold4w/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node1)
@@ -1002,7 +1003,7 @@
 	if(node)
 		node.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/cap/disconnect(obj/machinery/atmospherics/reference)
 	if(reference == node)
@@ -1124,7 +1125,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/tank/pipeline_expansion()
 	return list(node1)
@@ -1308,7 +1309,7 @@
 	if(node1)
 		node1.disconnect(src)
 
-	. = ..()
+	return ..()
 
 /obj/machinery/atmospherics/pipe/vent/pipeline_expansion()
 	return list(node1)
@@ -1368,18 +1369,18 @@
 	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
 	underlays.Cut()
 
-	if (node1)
+	if(node1)
 		universal_underlays(node1)
 		if(node2)
 			universal_underlays(node2)
 		else
-			var/node1_dir = get_dir(node1,src)
-			universal_underlays(,node1_dir)
-	else if (node2)
+			var/node1_dir = get_dir(node1, src)
+			universal_underlays(null, node1_dir)
+	else if(node2)
 		universal_underlays(node2)
 	else
-		universal_underlays(,dir)
-		universal_underlays(dir, -180)
+		universal_underlays(null, dir)
+		universal_underlays(null, turn(dir, 180))
 
 /obj/machinery/atmospherics/pipe/simple/visible/universal/update_underlays()
 	..()
@@ -1403,20 +1404,20 @@
 	overlays += icon_manager.get_atmos_icon("pipe", , pipe_color, "universal")
 	underlays.Cut()
 
-	if (node1)
+	if(node1)
 		universal_underlays(node1)
 		if(node2)
 			universal_underlays(node2)
 		else
-			var/node2_dir = turn(get_dir(src,node1),-180)
-			universal_underlays(,node2_dir)
-	else if (node2)
+			var/node2_dir = turn(get_dir(src, node1), -180)
+			universal_underlays(null, node2_dir)
+	else if(node2)
 		universal_underlays(node2)
-		var/node1_dir = turn(get_dir(src,node2),-180)
-		universal_underlays(,node1_dir)
+		var/node1_dir = turn(get_dir(src, node2), -180)
+		universal_underlays(null, node1_dir)
 	else
-		universal_underlays(,dir)
-		universal_underlays(,turn(dir, -180))
+		universal_underlays(null, dir)
+		universal_underlays(null, turn(dir, -180))
 
 /obj/machinery/atmospherics/pipe/simple/hidden/universal/update_underlays()
 	..()

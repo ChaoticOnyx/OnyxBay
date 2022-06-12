@@ -108,8 +108,8 @@
 	can_hold = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/reagent_containers/dropper,
-		/obj/item/reagent_containers/glass/beaker,
-		/obj/item/reagent_containers/glass/bottle,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/syringe,
 		/obj/item/flame/lighter/zippo,
@@ -148,7 +148,7 @@
 		/obj/item/clothing/glasses,
 		/obj/item/ammo_casing/shotgun,
 		/obj/item/ammo_magazine,
-		/obj/item/reagent_containers/food/snacks/donut/,
+		/obj/item/reagent_containers/food/donut/,
 		/obj/item/melee/baton,
 		/obj/item/gun/energy/taser,
 		/obj/item/gun/energy/stunrevolver,
@@ -257,7 +257,7 @@
 		/obj/item/stack/material/animalhide,
 		/obj/item/flame/lighter,
 		/obj/item/storage/fancy/cigarettes,
-		/obj/item/reagent_containers/food/drinks/bottle,
+		/obj/item/reagent_containers/vessel/bottle,
 		/obj/item/stack/medical,
 		/obj/item/reagent_containers/hypospray,
 		/obj/item/device/gps,
@@ -265,7 +265,7 @@
 		/obj/item/reagent_containers/pill,
 		/obj/item/storage/pill_bottle,
 		/obj/item/ore,
-		/obj/item/reagent_containers/food/drinks,
+		/obj/item/reagent_containers/vessel/can,
 		/obj/item/storage/plants
 		)
 

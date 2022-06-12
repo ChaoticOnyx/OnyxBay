@@ -49,7 +49,7 @@
 		else
 			to_chat(usr, "<span class='warning'>There's no more cable on the reel.</span>")
 
-/obj/machinery/cablelayer/examine(mob/user)
+/obj/machinery/cablelayer/_examine_text(mob/user)
 	. = ..()
 	. += "\n\The [src]'s cable reel has [cable.amount] length\s left."
 

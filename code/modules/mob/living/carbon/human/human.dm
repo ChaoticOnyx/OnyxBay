@@ -68,8 +68,14 @@
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
 	worn_underwear = null
-	for(var/organ in organs)
-		qdel(organ)
+	QDEL_NULL_LIST(organs)
+	QDEL_NULL_LIST(stance_limbs)
+	QDEL_NULL_LIST(grasp_limbs)
+	QDEL_NULL_LIST(bad_external_organs)
+
+	QDEL_LIST_ASSOC(hud_list)
+
+	QDEL_NULL(vessel)
 	return ..()
 
 /mob/living/carbon/human/get_ingested_reagents()
@@ -144,7 +150,7 @@
 				return
 			else
 				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
-				throw_at(target, 200, 4)
+				throw_at(target, 200, 1)
 			//return
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
@@ -199,7 +205,7 @@
 	apply_damage(damage, BRUTE, BP_CHEST, blocked)
 
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
-	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
+	if(!config.game.use_loyalty_implants && !override) return // Nuh-uh.
 
 	var/obj/item/implant/loyalty/L = new /obj/item/implant/loyalty(M)
 	L.imp_in = M
@@ -235,7 +241,9 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	if(!user.IsAdvancedToolUser(TRUE))
 		show_inv_reduced(user)
@@ -296,7 +304,9 @@
 
 // Used when the user is not an advanced tool user (i.e. xenomorph)
 /mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
-	if(user.incapacitated() || !user.Adjacent(src))
+	if(user.incapacitated())
+		return
+	if(!(user.Adjacent(src) || (istype(loc, /obj/item/holder) && loc.loc == user)))
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE
@@ -769,7 +779,7 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
 					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
@@ -777,13 +787,13 @@
 						A.forceMove(get_turf(src))
 						stomach_contents.Remove(a)
 						if(src.species.gluttonous & GLUT_PROJECTILE_VOMIT)
-							A.throw_at(get_edge_target_turf(src,src.dir),7,7,src)
+							A.throw_at(get_edge_target_turf(src, dir), 7, 1, src)
 
 					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
-					if (istype(location, /turf/simulated))
+					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 					nutrition -= 30
 		sleep(350)	//wait 35 seconds before next volley
@@ -1195,7 +1205,7 @@
 	if(client)
 		Login()
 
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
+	if(config && config.revival.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
 		create_stack()
 	full_prosthetic = null
 
@@ -1678,7 +1688,7 @@
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
 /mob/living/carbon/human/nervous_system_failure()
-	return getBrainLoss() >= maxHealth * 0.4 // > than 80 brain dmg - ur rekt
+	return getBrainLoss() >= maxHealth * 0.8 // > than 80 brain dmg - ur rekt
 
 /mob/living/carbon/human/verb/useblock()
 	set name = "Block"
@@ -1735,3 +1745,6 @@
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
 		updatehealth()
+
+/mob/living/carbon/human/get_runechat_color()
+	return species.get_species_runechat_color(src)

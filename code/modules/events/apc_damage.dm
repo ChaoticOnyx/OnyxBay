@@ -46,4 +46,4 @@
 
 /datum/event/apc_damage/proc/is_valid_apc(obj/machinery/power/apc/apc)
 	var/turf/T = get_turf(apc)
-	return !apc.is_critical && !apc.emagged && T && (T.z in GLOB.using_map.player_levels)
+	return !apc.is_critical && !apc.emagged && T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))

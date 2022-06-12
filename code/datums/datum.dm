@@ -13,6 +13,10 @@
 #ifdef TESTING
 	var/tmp/running_find_references
 	var/tmp/last_find_references = 0
+	#ifdef REFERENCE_TRACKING_DEBUG
+	/// Stores info about where refs are found, used for sanity checks and testing
+	var/list/found_refs
+	#endif
 #endif
 
 // The following vars cannot be edited by anyone
@@ -25,9 +29,6 @@
 /datum/proc/Destroy(force=FALSE)
 	SHOULD_CALL_PARENT(TRUE)
 
-	SEND_SIGNAL(src, SIGNAL_DESTROY, src)
-	SEND_GLOBAL_SIGNAL(SIGNAL_DESTROY, src)
-
 	tag = null
 	SSnano && SSnano.close_uis(src)
 	var/list/timers = active_timers
@@ -37,7 +38,7 @@
 		if (timer.spent)
 			continue
 		qdel(timer)
-	
+
 	var/list/dc = datum_components
 	if(dc)
 		var/all_components = dc[/datum/component]

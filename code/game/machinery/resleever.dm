@@ -62,7 +62,7 @@
 			update_use_power(POWER_USE_IDLE)
 			eject_occupant()
 			playsound(loc, 'sound/machines/ping.ogg', 100, 1)
-			visible_message("\The [src] pings as it completes its procedure!", 3)
+			visible_message("\The [src] pings as it completes its procedure!")
 			return
 	update_use_power(POWER_USE_OFF)
 	return
@@ -207,7 +207,7 @@
 
 		var/mob/M = grab.affecting
 
-		visible_message("[user] starts putting [grab.affecting:name] into \the [src].", 3)
+		visible_message("[user] starts putting [grab.affecting:name] into \the [src].")
 
 		if(do_after(user, 20, src))
 			if(!M || !grab || !grab.affecting) return
@@ -232,7 +232,7 @@
 	if(!check_occupant_allowed(target))
 		return
 
-	visible_message("[user] starts putting [target] into \the [src].", 3)
+	visible_message("[user] starts putting [target] into \the [src].")
 
 	if(do_after(user, 20, src))
 		if(!target || !(target in range(2, src)))

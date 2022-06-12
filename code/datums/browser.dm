@@ -4,7 +4,7 @@
 	var/window_id // window_id is used as the window name for browse and onclose
 	var/width = 0
 	var/height = 0
-	var/atom/ref = null
+	var/weakref/ref = null
 	var/window_options = "focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=1;titlebar=1;" // window option is set using window_id
 	var/stylesheets[0]
 	var/scripts[0]
@@ -18,6 +18,7 @@
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
 	user = nuser
+	register_signal(user, SIGNAL_QDELETING, /datum/browser/proc/user_deleted)
 	window_id = nwindow_id
 	if(ntitle)
 		title = format_text(ntitle)
@@ -26,11 +27,15 @@
 	if(nheight)
 		height = nheight
 	if(nref)
-		ref = nref
+		ref = weakref(nref)
 	// If a client exists, but they have disabled fancy windowing, disable it!
 	if(user?.client?.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
 		return
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
+
+/datum/browser/proc/user_deleted(datum/source)
+	unregister_signal(user, SIGNAL_QDELETING)
+	user = null
 
 /datum/browser/proc/process_icons(text)
 	//taken from to_chat(), processes all explanded \icon macros since they don't work in minibrowser (they only work in text output)
@@ -120,13 +125,25 @@
 	show_browser(user, get_content(), "window=[window_id];[window_size][window_options]")
 	winset(user, "mapwindow.map", "focus=true")
 	if(use_onclose)
-		onclose(user, window_id, ref)
+		setup_onclose()
 
 /datum/browser/proc/update(force_open = 0, use_onclose = 1)
 	if(force_open)
 		open(use_onclose)
 	else
 		send_output(user, get_content(), "[window_id].browser")
+
+/datum/browser/proc/setup_onclose()
+	set waitfor = 0 // winexists sleeps, so we don't need to.
+	for(var/i in 1 to 10)
+		if(user?.client && winexists(user, window_id))
+			var/atom/send_ref
+			if(ref)
+				send_ref = ref.resolve()
+				if(!send_ref)
+					ref = null
+			onclose(user, window_id, send_ref)
+			break
 
 /datum/browser/proc/close()
 	close_browser(user, "window=[window_id]")
@@ -170,16 +187,13 @@
 // Otherwise, the user mob's machine var will be reset directly.
 //
 /proc/onclose(mob/user, windowid, atom/ref=null)
-	if(!user || !user.client) return
+	if(!user || !user.client)
+		return
 	var/param = "null"
 	if(ref)
 		param = "\ref[ref]"
 
-	addtimer(CALLBACK(user, /mob/proc/post_onclose, windowid, param), 2)
-
-/mob/proc/post_onclose(windowid, param)
-	if(client)
-		winset(src, windowid, "on-close=\".windowclose [param]\"")
+	winset(user, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 
@@ -207,8 +221,6 @@
 
 	// no atomref specified (or not found)
 	// so just reset the user mob's machine var
-	if(src && src.mob)
-//		log_debug("[src] was [src.mob.machine], setting to null")
-
+	if(src?.mob)
 		src.mob.unset_machine()
 	return

@@ -53,7 +53,7 @@
 		to_chat(usr, "<span class='warning'>The generator needs to be secured first.</span>")
 		return
 
-/obj/machinery/power/port_gen/examine(mob/user)
+/obj/machinery/power/port_gen/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
@@ -148,7 +148,7 @@
 
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
-/obj/machinery/power/port_gen/pacman/examine(mob/user)
+/obj/machinery/power/port_gen/pacman/_examine_text(mob/user)
 	. = ..()
 	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
 	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
@@ -464,7 +464,7 @@
 	create_reagents(120)
 	..()
 
-/obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user)
+/obj/machinery/power/port_gen/pacman/super/potato/_examine_text(mob/user)
 	. = ..()
 	. += "\nAuxilary tank shows [reagents.total_volume]u of liquid in it."
 

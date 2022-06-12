@@ -147,14 +147,6 @@
 
 #define CanPhysicallyInteractWith(user, target) CanInteractWith(user, target, GLOB.physical_state)
 
-#define QDEL_NULL_LIST(x) if(x) { for(var/y in x) { qdel(y) } ; x = null }
-
-#define QDEL_LIST(L) if(L) { for(var/I in L) qdel(I); L.Cut(); }
-
-#define QDEL_NULL(x) if(x) { qdel(x) ; x = null }
-
-#define QDEL_IN(item, time) addtimer(CALLBACK(GLOBAL_PROC, .proc/qdel, item), time, TIMER_STOPPABLE)
-
 #define ARGS_DEBUG log_debug("[__FILE__] - [__LINE__]") ; for(var/arg in args) { log_debug("\t[log_info_line(arg)]") }
 
 // Helper macros to aid in optimizing lazy instantiation of lists.
@@ -186,6 +178,11 @@
 #define LAZYCLEARLIST(L) if(L) L.Cut()
 // Reads L or an empty list if L is not a list.  Note: Does NOT assign, L may be an expression.
 #define SANITIZE_LIST(L) ( islist(L) ? L : list() )
+
+// Adds value V to associati list L[K]
+#define LAZYADDASSOC(L, K, V) if(!L) { L = list(); } L[K] += list(V);
+// Removes value V and key K from associative list L
+#define LAZYREMOVEASSOC(L, K, V) if(L) { if(L[K]) { L[K] -= V; if(!length(L[K])) L -= K; } if(!length(L)) L = null; }
 
 // Insert an object A into a sorted list using cmp_proc (/code/_helpers/cmp.dm) for comparison.
 #define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}

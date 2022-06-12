@@ -61,7 +61,7 @@
 		else
 			adminwho += ", [C]"
 
-	ASSERT(config.server_id)
+	ASSERT(config.general.server_id)
 
 	sql_query({"
 		INSERT INTO
@@ -110,7 +110,7 @@
 		computerid = computerid ? computerid : "",
 		ip = ip ? ip : "", a_ckey = a_ckey,
 		a_computer_id = a_computerid ? a_computerid : "",
-		a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
+		a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.general.server_id))
 
 	var/setter = a_ckey
 	if(usr)
@@ -174,9 +174,9 @@
 				(unbanned is null
 				OR
 				unbanned = false)
-			[isnull(config.server_id) ? "" : " AND server_id = $server_id"]
+			[isnull(config.general.server_id) ? "" : " AND server_id = $server_id"]
 			[job ? " AND job = $job" : ""]
-		"}, dbcon, list(ckey = ckey, bantype_str = bantype_str, server_id = config.server_id, job = job))
+		"}, dbcon, list(ckey = ckey, bantype_str = bantype_str, server_id = config.general.server_id, job = job))
 
 	while(query.NextRow())
 		ban_id = query.item[1]
@@ -209,7 +209,7 @@
 		return
 
 	var/DBQuery/query
-	if(isnull(config.server_id))
+	if(isnull(config.general.server_id))
 		query = sql_query("SELECT ckey, duration, reason FROM erro_ban WHERE id = $banid", dbcon, list(banid = banid))
 	else
 		query = sql_query("SELECT ckey, duration, reason, server_id FROM erro_ban WHERE id = $banid", dbcon, list(banid = banid))
@@ -224,7 +224,7 @@
 		pckey = query.item[1]
 		duration = query.item[2]
 		reason = query.item[3]
-		if(!isnull(config.server_id))
+		if(!isnull(config.general.server_id))
 			serverid = query.item[4]
 	else
 		to_chat(usr, "Invalid ban id. Contact the database admin")
@@ -295,7 +295,7 @@
 	if(!check_rights(R_BAN))	return
 
 	var/sql
-	if(isnull(config.server_id))
+	if(isnull(config.general.server_id))
 		sql = "SELECT ckey FROM erro_ban WHERE id = $id"
 	else
 		sql = "SELECT ckey, server_id FROM erro_ban WHERE id = $id"
@@ -307,7 +307,7 @@
 	var/DBQuery/query = sql_query(sql, dbcon, list(id = id))
 	while(query.NextRow())
 		pckey = query.item[1]
-		if(!isnull(config.server_id))
+		if(!isnull(config.general.server_id))
 			serverid = query.item[2]
 		ban_number++;
 
@@ -510,7 +510,7 @@
 				var/ip = select_query.item[14]
 				var/cid = select_query.item[15]
 				var/server_id
-				if(!isnull(config.server_id))
+				if(!isnull(config.general.server_id))
 					server_id = select_query.item[16]
 
 				// true if this ban has expired

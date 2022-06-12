@@ -43,13 +43,13 @@
 	/obj/item/device/camera_film = 2,
 	/obj/item/storage/photo_album,
 	/obj/item/packageWrap,
-	/obj/item/reagent_containers/glass/paint/red,
-	/obj/item/reagent_containers/glass/paint/green,
-	/obj/item/reagent_containers/glass/paint/blue,
-	/obj/item/reagent_containers/glass/paint/yellow,
-	/obj/item/reagent_containers/glass/paint/purple,
-	/obj/item/reagent_containers/glass/paint/black,
-	/obj/item/reagent_containers/glass/paint/white,
+	/obj/item/reagent_containers/vessel/paint/red,
+	/obj/item/reagent_containers/vessel/paint/green,
+	/obj/item/reagent_containers/vessel/paint/blue,
+	/obj/item/reagent_containers/vessel/paint/yellow,
+	/obj/item/reagent_containers/vessel/paint/purple,
+	/obj/item/reagent_containers/vessel/paint/black,
+	/obj/item/reagent_containers/vessel/paint/white,
 	/obj/item/contraband/poster,
 	/obj/item/wrapping_paper = 3)
 	cost = 10
@@ -60,7 +60,7 @@
 	contains = list(/obj/item/seeds/bloodtomatoseed,
 					/obj/item/storage/pill_bottle/zoom,
 					/obj/item/storage/pill_bottle/happy,
-					/obj/item/reagent_containers/food/drinks/bottle/pwine)
+					/obj/item/reagent_containers/vessel/bottle/pwine)
 
 	name = "Contraband crate"
 	cost = 30

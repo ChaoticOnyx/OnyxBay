@@ -15,6 +15,7 @@
 	var/static_environ
 	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
 
+	var/environment_type   = ENVIRONMENT_NONE
 	var/is_station         = FALSE
 	var/importance         = 1
 	var/loyalty            = 0
@@ -374,3 +375,9 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
+
+/area/allow_drop()
+	CRASH("Bad op: area/allow_drop() called")
+
+/area/drop_location()
+	CRASH("Bad op: area/drop_location() called")

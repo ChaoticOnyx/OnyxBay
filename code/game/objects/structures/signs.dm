@@ -266,6 +266,10 @@
 /obj/structure/sign/warning/vent_port
 	name = "\improper EJECTION/VENTING PORT"
 
+/obj/structure/sign/warning/out_of_service
+	name = "\improper OUT OF SERVICE"
+	icon_state = "out_of_service"
+
 /obj/structure/sign/redcross
 	name = "medbay"
 	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here."
@@ -521,7 +525,7 @@
 		claimant = user.real_name
 	..()
 
-/obj/item/sign/medipolma/examine(mob/user)
+/obj/item/sign/medipolma/_examine_text(mob/user)
 	. = ..()
 	if(claimant)
 		. += "\nThis one belongs to Dr.[claimant], MD."

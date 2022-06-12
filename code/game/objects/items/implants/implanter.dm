@@ -3,7 +3,6 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implanter0"
 	item_state = "syringe_0"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 1000)

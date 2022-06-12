@@ -3,7 +3,6 @@
 #define TURF_FLAG_NOJAUNT 1 // This is used in literally one place, turf.dm, to block ethereal jaunt.
 #define TURF_FLAG_NORUINS 2
 
-#define TRANSITIONEDGE 7 // Distance from edge to move to another z-level.
 #define RUIN_MAP_EDGE_PAD 15
 
 // Invisibility constants.
@@ -52,6 +51,10 @@
 #define SHUTTLE_WARMUP    1
 #define SHUTTLE_INTRANSIT 2
 
+// Elevator moving status.
+#define ELEVATOR_IDLE      0
+#define ELEVATOR_INTRANSIT 1
+
 // Autodock shuttle processing status.
 #define IDLE_STATE   0
 #define WAIT_LAUNCH  1
@@ -81,6 +84,7 @@
 //Area flags, possibly more to come
 #define AREA_FLAG_RAD_SHIELDED 1 // shielded from radiation, clearly
 #define AREA_FLAG_EXTERNAL     2 // External as in exposed to space, not outside in a nice, green, forest
+#define AREA_FLAG_NO_STATION   3
 
 //Area gravity flags
 #define AREA_GRAVITY_NEVER  -1 // No gravity, never
@@ -154,6 +158,12 @@
 #define PROJECTILE_CONTINUE		-1 //if the projectile should continue flying after calling bullet_act()
 #define PROJECTILE_FORCE_MISS	-2 //if the projectile should treat the attack as a miss (suppresses attack and admin logs) - only applies to mobs.
 #define PROJECTILE_FORCE_BLOCK	-3 //if the projectile should treat the attack as blocked (supresses attack, but not admin logs) - only applies to humans and human subtypes.
+
+// These determine how well one can block things with items
+#define BLOCK_TIER_NONE        0
+#define BLOCK_TIER_MELEE       1
+#define BLOCK_TIER_PROJECTILE  2
+#define BLOCK_TIER_ADVANCED    3
 
 //Camera capture modes
 #define CAPTURE_MODE_REGULAR 0 //Regular polaroid camera mode
@@ -270,3 +280,13 @@
 #define SYRINGE_INJECT "inject"
 #define SYRINGE_BROKEN "broken"
 #define SYRINGE_PACKAGED "packaged"
+
+// Bank accounts' security levels
+#define BANK_SECURITY_MINIMUM 0
+#define BANK_SECURITY_MODERATE 1
+#define BANK_SECURITY_MAXIMUM 2
+
+// Notification action types
+#define NOTIFY_JUMP "jump"
+#define NOTIFY_ATTACK "attack"
+#define NOTIFY_FOLLOW "follow"

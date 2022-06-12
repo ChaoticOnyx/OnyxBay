@@ -232,7 +232,7 @@
 	entry.real_name = target.real_name
 	entry.name = target.name
 	entry.icon = target.icon
-	entry.examine = target.examine(target)
+	entry.examine = target._examine_text(target)
 	entry.stand_icon = target.stand_icon
 	entry.icon_state = target.icon_state
 	entry.overlays = target.overlays.Copy()

@@ -1,7 +1,7 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
 	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
-	icon_state = "taperecorder_idle"
+	icon_state = "taperecorder"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -16,14 +16,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 20
 
 /obj/item/device/taperecorder/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, "taperecorder")
+
 	if(ispath(mytape))
 		mytape = new mytape(src)
+
 	GLOB.listening_objects += src
 	update_icon()
 
@@ -348,16 +348,14 @@
 
 
 /obj/item/device/taperecorder/update_icon()
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-
 	if(!mytape)
-		icon_state = "[bis.base_icon_state]_empty"
+		icon_state = "[initial(icon_state)]_empty"
 	else if(recording)
-		icon_state = "[bis.base_icon_state]_recording"
+		icon_state = "[initial(icon_state)]_recording"
 	else if(playing)
-		icon_state = "[bis.base_icon_state]_playing"
+		icon_state = "[initial(icon_state)]_playing"
 	else
-		icon_state = "[bis.base_icon_state]_idle"
+		icon_state = "[initial(icon_state)]_idle"
 
 /obj/item/device/tape
 	name = "bluespace tape"

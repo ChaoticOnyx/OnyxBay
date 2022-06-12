@@ -88,7 +88,7 @@
 		T.update_icon()
 	. = ..()
 
-/obj/structure/table/examine(mob/user)
+/obj/structure/table/_examine_text(mob/user)
 	. = ..()
 	if(health < maxhealth)
 		switch(health / maxhealth)
@@ -266,18 +266,18 @@
 	return
 
 /obj/structure/table/proc/throw_contents_around(max_size = ITEM_SIZE_HUGE, dropchance = -1)
-	var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+	var/list/targets = list(get_step(src, dir), get_step(src, turn(dir, 45)), get_step(src, turn(dir, -45)))
 	for(var/atom/movable/A in get_turf(src))
 		if(!A.anchored)
 			if(dropchance == -1)
-				A.throw_at(pick(targets),1,1)
+				A.throw_at(pick(targets), 1)
 			else
 				if(istype(A,/obj))
 					var/obj/O = A
 					if(O.w_class)
-						dropchance = (max_size+1 - O.w_class) * 20
+						dropchance = (max_size + 1 - O.w_class) * 20
 				if(prob(dropchance))
-					A.throw_at(pick(targets),1,1)
+					A.throw_at(pick(targets), 1)
 
 // Returns a list of /obj/item/material/shard objects that were created as a result of this table's breakage.
 // Used for !fun! things such as embedding shards in the faces of tableslammed people.

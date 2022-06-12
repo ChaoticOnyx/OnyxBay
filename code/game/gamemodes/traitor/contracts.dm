@@ -14,13 +14,13 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
  	"the station's blueprints" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
 	"a sample of metroid extract" =                     list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
-	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/snacks/meat/corgi),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/reagent_containers/food/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
 	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
 	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
 	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/reagent_containers/hypospray/vial),
 	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/pinpointer),
 	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/gun/energy/ionrifle/small),
 	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/gun/projectile/automatic/wt550),
@@ -151,6 +151,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/proc/on_container(obj/item/storage/briefcase/std/container)
 	if(check(container))
 		complete(container.uplink)
+		return TRUE
 
 /datum/antag_contract/item/proc/check(obj/item/storage/container)
 	return check_contents(container.GetAllContents())
@@ -221,7 +222,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_explain_text("implant [H.real_name] with a spying implant (don't forget to authorize it first).")
 
 /datum/antag_contract/implant/can_place()
-	return ..() && target_mind
+	return ..() && target_mind && !QDELETED(target_mind.current)
 
 /datum/antag_contract/implant/proc/check(obj/item/implant/spy/implant)
 	if(completed)
@@ -327,7 +328,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/steal_ai/can_place()
-	return ..() && istype(AI)
+	return ..() && !QDELETED(AI)
 
 /datum/antag_contract/item/steal_ai/check_contents(list/contents)
 	var/obj/item/aicard/card = locate() in contents
@@ -338,6 +339,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	unique = TRUE
 	reward = 5
 	intent = CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_SOCIAL
+	var/static/list/samples = list()
 	var/count
 
 /datum/antag_contract/item/blood/New(datum/contract_organization/contract_organization, reason, target)
@@ -354,18 +356,26 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of <b>[count]<b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
+	create_explain_text("send blood samples of <b>[count]</b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
-/datum/antag_contract/item/blood/check_contents(list/contents)
-	var/list/samples = list()
+/datum/antag_contract/item/blood/check_contents(list/contents, add_checked = FALSE)
+	var/current_samples = 0
 	for(var/obj/item/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
-		if(!data || (data["blood_DNA"] in samples))
+		var/datum/species/spec = all_species[data["species"]]
+		if(!data || (data["blood_DNA"] in samples) || (spec?.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 			continue
-		samples += data["blood_DNA"]
-		if(samples.len >= count)
+		if(add_checked)
+			samples += data["blood_DNA"]
+		current_samples += 1
+		if(current_samples >= count)
 			return TRUE
 	return FALSE
+
+/datum/antag_contract/item/blood/on_container(obj/item/storage/briefcase/std/container)
+	. = ..()
+	if(.)
+		return check_contents(container.GetAllContents(), TRUE)
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
@@ -374,10 +384,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/target_real_name
 	var/detected_less_tc = FALSE
 	var/target_detected_in_STD = FALSE
-	var/obj/item/organ/internal/brain/brain
-	var/obj/item/organ/target
-	var/obj/item/alternative_target
-	var/mob/living/carbon/human/H
+	var/weakref/brain // obj/item/organ/internal/brain
+	var/weakref/target // obj/item/organ
+	var/weakref/alternative_target // obj/item
+	var/weakref/H // mob/living/carbon/human
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -397,6 +407,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	else
 		reason = new_reason
 
+	var/mob/living/carbon/human/_H
 	if(!Ctarget)
 		var/list/candidates = SSticker.minds.Copy()
 
@@ -408,15 +419,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			H = candidate_mind.current
-			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
+			_H = candidate_mind.current
+			H = weakref(_H)
+			if(!istype(_H) || _H.stat == DEAD || !is_station_turf(get_turf(_H)))
 				continue
 
-			target_real_name = H.real_name
+			target_real_name = _H.real_name
 			target_mind = candidate_mind
-			if(skip_antag_role() || skip_unwanted_species())
+			if(skip_antag_role() || skip_unwanted_species(_H))
 				target_mind = null
-				H = null
+				_H = null
 				continue
 			name = "[name] [target_real_name]"
 			break
@@ -424,44 +436,55 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target_mind = Ctarget
 		if(!new_reason)
 			skip_antag_role(TRUE)
-		H = target_mind.current
-		if(!istype(H))
+		_H = target_mind.current
+		if(!istype(_H))
 			return
-		target_real_name = H.real_name
+		H = weakref(_H)
+		target_real_name = _H.real_name
 		name = "[name] [target_real_name]"
-	if(!istype(H))
+	if(!istype(H) || !istype(_H) || !target_mind)
 		return
 	var/alternative_message = ""
-	alternative_target = H.get_idcard()
-	if(alternative_target)
-		alternative_message = " <b>[alternative_target], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
-	brain = H.organs_by_name[BP_BRAIN]
-	target = H.organs_by_name[BP_HEAD]
-	if(H.organs_by_name[BP_STACK])
-		target = H.organs_by_name[BP_STACK]
+	var/obj/item/idcard = _H.get_idcard()
+	if(istype(idcard))
+		alternative_target = weakref(idcard)
+		alternative_message = " <b>[idcard], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
+	brain = weakref(_H.internal_organs_by_name[BP_BRAIN])
 
-	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	var/obj/item/organ/_target
+	if(_H.organs_by_name[BP_STACK])
+		_target = _H.internal_organs_by_name[BP_STACK]
+	else
+		_target = _H.organs_by_name[BP_HEAD]
+	target = weakref(_target)
+
+	var/datum/gender/T = gender_datums[_H.get_gender()]
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [_target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
-	return ..() && target
+	return ..() && target && !QDELETED(target_mind) && !QDELETED(target_mind.current)
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
-	var/obj/item/device/mmi/MMI = brain?.loc
-	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (brain in contents))
+	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
+	var/obj/item/device/mmi/MMI = _brain?.loc
+	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (_brain in contents))
 	if(detected_less_tc)
 		target_detected_in_STD = TRUE
-	if(alternative_target in contents)
+	var/obj/item/_alternative_target = alternative_target?.resolve()
+	if(_alternative_target in contents)
 		detected_less_tc = TRUE
 
-	if(target in contents)
+	var/obj/item/organ/_target = target?.resolve()
+	if(_target in contents)
 		detected_less_tc = FALSE
 
-	return ((target in contents) || (MMI in contents) || (alternative_target in contents) || (brain in contents))
+	return ((_target in contents) || (MMI in contents) || (_alternative_target in contents) || (_brain in contents))
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	if(H.stat != DEAD || ((istype(brain?.loc, /obj/item/device/mmi)) && !target_detected_in_STD))
+	var/obj/item/organ/internal/brain/_brain = brain?.resolve()
+	var/mob/living/carbon/human/_H = H?.resolve()
+	if(istype(_H) && _H.stat != DEAD || ((istype(_brain?.loc, /obj/item/device/mmi)) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
@@ -586,12 +609,13 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(C.completed)
 				continue
 			candidates -= C.targets
+		for(var/area/area_target in candidates)
+			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) || (area_target.area_flags & AREA_FLAG_NO_STATION) || (area_target.area_flags & AREA_FLAG_EXTERNAL))
+				candidates -= area_target
 		while(candidates.len && targets.len < GLOB.contract_recon_target_count)
 			var/area/area_target = pick(candidates)
-			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) && (area_target.area_flags & AREA_FLAG_EXTERNAL))
-				candidates -= area_target
-				continue
 			targets += area_target
+			candidates -= area_target
 	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug kit</b> and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
 
 /datum/antag_contract/recon/can_place()

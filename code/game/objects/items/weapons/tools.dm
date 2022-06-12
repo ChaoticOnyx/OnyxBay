@@ -87,7 +87,6 @@
 	mod_reach = 0.3
 	mod_handy = 1.0
 	throwforce = 5.0
-	throw_speed = 3
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 75)
 	attack_verb = list("stabbed")
@@ -153,8 +152,7 @@
 	update_icon()
 
 /obj/item/screwdriver/update_icon()
-	icon_rotation = istype(loc, /obj/item/storage) ? -90 : 0
-	update_transform()
+	SetTransform(rotation = istype(loc, /obj/item/storage) ? -90 : 0)
 
 /obj/item/screwdriver/old
 	name = "old screwdriver"
@@ -185,7 +183,6 @@
 	slot_flags = SLOT_BELT
 	sharp = 1
 	force = 5.5
-	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.45
@@ -252,7 +249,6 @@
 	//Amount of OUCH when it's thrown
 	force = 6.5
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0
@@ -275,7 +271,6 @@
 	if(ispath(tank))
 		tank = new tank
 
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
 
 	. = ..()
@@ -288,7 +283,7 @@
 
 	return ..()
 
-/obj/item/weldingtool/examine(mob/user)
+/obj/item/weldingtool/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		if(tank)
@@ -473,8 +468,7 @@
 /obj/item/weldingtool/update_icon()
 	..()
 
-	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
-	icon_state = welding ? "[bis.base_icon_state]1" : "[bis.base_icon_state]"
+	icon_state = welding ? "[initial(icon_state)]1" : "[initial(icon_state)]"
 	item_state = welding ? "welder1" : "welder"
 
 	underlays.Cut()
@@ -793,7 +787,7 @@
 	var/list/tools = list()
 	var/current_tool = 1
 
-/obj/item/combitool/examine()
+/obj/item/combitool/_examine_text()
 	..()
 	if(loc == usr && tools.len)
 		to_chat(usr, "It has the following fittings:")

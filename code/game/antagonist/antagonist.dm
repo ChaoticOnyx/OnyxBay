@@ -87,7 +87,7 @@
 	cur_max = hard_cap
 	if(!role_text_plural)
 		role_text_plural = role_text
-	if(config.protect_roles_from_antagonist)
+	if(config.gamemode.protect_roles_from_antagonist)
 		restricted_jobs |= additional_restricted_jobs
 	if(antaghud_indicator)
 		if(!GLOB.hud_icon_reference)
@@ -109,7 +109,7 @@
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+		else if(config.game.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
@@ -142,7 +142,7 @@
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+		else if(config.game.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")

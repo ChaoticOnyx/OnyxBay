@@ -168,7 +168,7 @@
 		take_damage(min(damage, 100))
 
 
-/obj/machinery/door/hitby(atom/movable/AM, speed = 5, nomsg = FALSE)
+/obj/machinery/door/hitby(atom/movable/AM, speed = 1, nomsg = FALSE)
 	..()
 	var/tforce = 0
 	if(ismob(AM))
@@ -305,7 +305,7 @@
 	return
 
 
-/obj/machinery/door/examine(mob/user)
+/obj/machinery/door/_examine_text(mob/user)
 	. = ..()
 	if(src.health < src.maxhealth / 4)
 		. += "\n\The [src] looks like it's about to break!"

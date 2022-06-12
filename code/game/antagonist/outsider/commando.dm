@@ -21,8 +21,8 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 
 /datum/antagonist/deathsquad/syndicate/Initialize()
 	. = ..()
-	if(config.commando_min_age)
-		min_player_age = config.commando_min_age
+	if(config.game.commando_min_age)
+		min_player_age = config.game.commando_min_age
 
 /datum/antagonist/deathsquad/syndicate/equip(mob/living/carbon/human/player)
 

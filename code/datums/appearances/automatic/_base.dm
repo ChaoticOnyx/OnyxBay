@@ -10,12 +10,12 @@
 	if(source in appearance_sources)
 		return FALSE
 	appearance_sources[source] = new /datum/appearance_data(images, viewers, priority)
-	register_signal(source, SIGNAL_DESTROY, /decl/appearance_handler/proc/RemoveAltAppearance)
+	register_signal(source, SIGNAL_QDELETING, /decl/appearance_handler/proc/RemoveAltAppearance)
 
 /decl/appearance_handler/proc/RemoveAltAppearance(source)
 	var/datum/appearance_data/ad = appearance_sources[source]
 	if(ad)
-		unregister_signal(source, SIGNAL_DESTROY)
+		unregister_signal(source, SIGNAL_QDELETING)
 		appearance_sources -= source
 		qdel(ad)
 

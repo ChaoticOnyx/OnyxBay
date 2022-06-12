@@ -9,7 +9,6 @@
 	force = 1.0
 	w_class = ITEM_SIZE_NORMAL
 	throwforce = 1.0
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2, TECH_DATA = 4)
 	attack_verb = list("attacked", "slapped", "whacked")
@@ -83,7 +82,7 @@
 		G.transfer_personality(user, brainmob)
 	return
 
-/obj/item/organ/internal/posibrain/examine(mob/user)
+/obj/item/organ/internal/posibrain/_examine_text(mob/user)
 	. = ..()
 
 	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"

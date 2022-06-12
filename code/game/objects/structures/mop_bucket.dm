@@ -15,7 +15,7 @@
 	create_reagents(180)
 	..()
 
-/obj/structure/mopbucket/examine(mob/user)
+/obj/structure/mopbucket/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of water!"

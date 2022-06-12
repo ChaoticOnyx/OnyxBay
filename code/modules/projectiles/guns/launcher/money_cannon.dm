@@ -134,7 +134,7 @@
 	else
 		to_chat(user, SPAN("warning", "That's not going to fit in there."))
 
-/obj/item/gun/launcher/money/examine(mob/user)
+/obj/item/gun/launcher/money/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt is configured to dispense [dispensing] credits at a time."
 

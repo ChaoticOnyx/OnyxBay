@@ -21,6 +21,7 @@
 	head = /obj/item/clothing/head/helmet/facecover
 	mask = /obj/item/clothing/mask/muzzle
 	suit = /obj/item/clothing/suit/straight_jacket
+	flags = OUTFIT_NO_SURVIVAL
 
 /decl/hierarchy/outfit/blank_subject/post_equip(mob/living/carbon/human/H)
 	..()

@@ -181,7 +181,7 @@
 		lock_time = world.time + 35
 		register_signal(owner, SIGNAL_MOVED, /obj/aiming_overlay/proc/update_aiming)
 		register_signal(aiming_at, SIGNAL_MOVED, /obj/aiming_overlay/proc/target_moved)
-		register_signal(aiming_at, SIGNAL_DESTROY, /obj/aiming_overlay/proc/cancel_aiming)
+		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
 	else
 		loc = null
 		STOP_PROCESSING(SSobj, src)
@@ -227,7 +227,7 @@
 	unregister_signal(owner, SIGNAL_MOVED)
 	if(aiming_at)
 		unregister_signal(aiming_at, SIGNAL_MOVED)
-		unregister_signal(aiming_at, SIGNAL_DESTROY)
+		unregister_signal(aiming_at, SIGNAL_QDELETING)
 		aiming_at.aimed -= src
 		aiming_at = null
 		movement_tally = 0

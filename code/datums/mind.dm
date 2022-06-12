@@ -33,7 +33,7 @@
 	var/key
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
-	var/mob/living/original	//TODO: remove.not used in any meaningful way ~Carn. First I'll need to tweak the way silicon-mobs handle minds.
+	var/weakref/original_mob = null // must contain /mob/living
 	var/active = 0
 
 	var/memory
@@ -86,7 +86,21 @@
 
 /datum/mind/Destroy()
 	SSticker.minds -= src
+	set_current(null)
+	original_mob = null
 	. = ..()
+
+/datum/mind/proc/set_current(mob/new_current)
+	if(new_current && QDELETED(new_current))
+		crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
+	if(current)
+		unregister_signal(src, SIGNAL_QDELETING)
+	current = new_current
+	if(current)
+		register_signal(src, SIGNAL_QDELETING, .proc/clear_current)
+
+/datum/mind/proc/clear_current(datum/source)
+	set_current(null)
 
 /datum/mind/proc/transfer_to(mob/living/new_character)
 	if(!istype(new_character))
@@ -100,10 +114,10 @@
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
-		new_character.mind.current = null
+		new_character.mind.set_current(null)
 
-	current = new_character		//link ourself to our new body
-	new_character.mind = src	//and link our new body to ourself
+	set_current(new_character) //link ourself to our new body
+	new_character.mind = src   //and link our new body to ourself
 
 	if(learned_spells && learned_spells.len)
 		restore_spells(new_character)
@@ -524,10 +538,10 @@
 		mind.key = key
 	else
 		mind = new /datum/mind(key)
-		mind.original = src
+		mind.original_mob = weakref(src)
 		SSticker.minds += mind
 	if(!mind.name)	mind.name = real_name
-	mind.current = src
+	mind.set_current(src)
 	if(player_is_antag(mind))
 		src.client.verbs += /client/proc/aooc
 

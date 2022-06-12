@@ -170,3 +170,10 @@
 #define ui_ai_take_picture "SOUTH:6+1,WEST+12"
 #define ui_ai_view_images "SOUTH:6+1,WEST+13"
 #define ui_ai_del_picture "SOUTH:6+1,WEST+14"
+
+//Upper-middle right (alerts)
+#define ui_alert1 "EAST-1:28,CENTER+5:27"
+#define ui_alert2 "EAST-1:28,CENTER+4:25"
+#define ui_alert3 "EAST-1:28,CENTER+3:23"
+#define ui_alert4 "EAST-1:28,CENTER+2:21"
+#define ui_alert5 "EAST-1:28,CENTER+1:19"

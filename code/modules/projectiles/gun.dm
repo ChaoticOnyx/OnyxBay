@@ -43,7 +43,6 @@
 	matter = list(MATERIAL_STEEL = 2000)
 	w_class = ITEM_SIZE_NORMAL
 	throwforce = 5
-	throw_speed = 4
 	throw_range = 5
 	force = 7.5
 	mod_weight = 0.75
@@ -85,8 +84,8 @@
 	var/tmp/told_cant_shoot = 0 //So that it doesn't spam them with the fact they cannot hit them.
 	var/tmp/lock_time = -100
 
-/obj/item/gun/New()
-	..()
+/obj/item/gun/Initialize()
+	. = ..()
 	for(var/i in 1 to firemodes.len)
 		firemodes[i] = new /datum/firemode(src, firemodes[i])
 
@@ -410,6 +409,10 @@
 			user.show_message("<span class = 'warning'>You feel rather silly, trying to commit suicide with a toy.</span>")
 			mouthshoot = 0
 			return
+		if(istype(in_chamber, /obj/item/projectile/energy/floramut))
+			user.show_message(SPAN("warning", "Sorry, you are not a flower."))
+			mouthshoot = 0
+			return
 
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
@@ -508,17 +511,28 @@
 			screen_shake = round(screen_shake*zoom_amount+1) //screen shake is worse when looking through a scope
 
 //make sure accuracy and screen_shake are reset regardless of how the item is unzoomed.
-/obj/item/gun/zoom()
+/obj/item/gun/unzoom()
 	..()
-	if(!zoom)
-		accuracy = initial(accuracy)
-		screen_shake = initial(screen_shake)
+	accuracy = initial(accuracy)
+	screen_shake = initial(screen_shake)
 
-/obj/item/gun/examine(mob/user)
+/obj/item/gun/_examine_text(mob/user)
 	. = ..()
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]
 		. += "\nThe fire selector is set to [current_mode.name]."
+
+// (re)Setting firemodes from the given list
+/obj/item/gun/proc/set_firemodes(list/_firemodes = null)
+	QDEL_LIST(firemodes)
+	if(!length(_firemodes))
+		sel_mode = 1
+		return
+	for(var/i in 1 to _firemodes.len)
+		firemodes |= new /datum/firemode(src, _firemodes[i])
+	sel_mode = 1
+	var/datum/firemode/F = firemodes[1]
+	F.apply_to(src)
 
 /obj/item/gun/proc/switch_firemodes()
 	if(firemodes.len <= 1)

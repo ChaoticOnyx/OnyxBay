@@ -31,11 +31,12 @@
 		/obj/item/stack/material,
 		/obj/item/stack/tile,
 		/obj/item/clamp,
-		/obj/item/frame
+		/obj/item/frame,
+		/obj/item/device/assembly
 		)
 
 	var/list/cant_hold = list(
-		/obj/item/reagent_containers/food/snacks/grown,
+		/obj/item/reagent_containers/food/grown,
 		)
 
 
@@ -78,12 +79,13 @@
 		)
 
 	can_hold = list(
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/ivbag,
 		/obj/item/stack/material/plasma,
 		/obj/item/storage/pill_bottle,
-		/obj/item/reagent_containers/food/snacks/monkeycube,
+		/obj/item/reagent_containers/food/monkeycube,
 		/obj/item/virusdish,
 		/obj/item/paper
 		)
@@ -162,8 +164,9 @@
 		/obj/item/stack/cable_coil,
 		/obj/item/circuitboard,
 		/obj/item/metroid_extract,
-		/obj/item/reagent_containers/glass,
-		/obj/item/reagent_containers/food/snacks/monkeycube,
+		/obj/item/reagent_containers/vessel/beaker,
+		/obj/item/reagent_containers/vessel/bottle/chemical,
+		/obj/item/reagent_containers/food/monkeycube,
 		/obj/item/mecha_parts,
 		/obj/item/computer_hardware,
 		/obj/item/device/transfer_valve,
@@ -190,7 +193,7 @@
 	)
 
 	can_hold = list(
-		/obj/item/reagent_containers/glass,
+		/obj/item/reagent_containers/vessel,
 		/obj/item/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/grown,
@@ -213,16 +216,17 @@
 	can_hold = list(
 	/obj/item/organ,
 	/obj/item/tank/anesthetic,
-	/obj/item/reagent_containers/food/snacks/meat,
+	/obj/item/reagent_containers/food/meat,
 	/obj/item/device/mmi,
 	/obj/item/robot_parts,
 	/obj/item/paper,
-	/obj/item/reagent_containers/glass,
+	/obj/item/reagent_containers/vessel/beaker,
+	/obj/item/reagent_containers/vessel/bottle/chemical,
 	/obj/item/reagent_containers/pill,
 	/obj/item/reagent_containers/ivbag,
 	/obj/item/stack/material/plasma,
 	/obj/item/storage/pill_bottle,
-	/obj/item/reagent_containers/food/snacks/monkeycube,
+	/obj/item/reagent_containers/food/monkeycube,
 	/obj/item/virusdish,
 	)
 
@@ -240,7 +244,7 @@
 		/obj/item/stack/material
 		)
 
-/obj/item/gripper/examine(mob/user)
+/obj/item/gripper/_examine_text(mob/user)
 	. = ..()
 	if(wrapped)
 		. += "\nIt is holding \a [wrapped]."
@@ -582,7 +586,7 @@
 		else if(istype(W,/obj/item/flame/match))
 			if(wood)
 				wood.add_charge(250)
-		else if(istype(W,/obj/item/reagent_containers/food/snacks/grown))
+		else if(istype(W,/obj/item/reagent_containers/food/grown))
 			if(wood)
 				wood.add_charge(4000)
 		else if(istype(W,/obj/item/pipe))

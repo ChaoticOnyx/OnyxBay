@@ -103,9 +103,9 @@
 		/obj/item/clothing/mask/gas/clear,
 		/obj/item/device/flash,
 		/obj/item/shield/riot,
+		/obj/item/gun/energy/egun,
 		/obj/item/melee/telebaton,
 		/obj/item/melee/baton/loaded,
-		/obj/item/gun/energy/egun,
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/storage/box/flashbangs,
 		/obj/item/storage/belt/security,
@@ -139,8 +139,6 @@
 		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/accessory/holster/waist,
-		/obj/item/melee/baton/loaded,
-		/obj/item/gun/energy/egun,
 		/obj/item/reagent_containers/spray/pepper,
 		/obj/item/storage/box/flashbangs,
 		/obj/item/storage/box/teargas,
@@ -168,12 +166,10 @@
 		new /datum/atom_creator/weighted(list(/obj/item/storage/backpack/security, /obj/item/storage/backpack/satchel/sec)),
 		new /datum/atom_creator/simple(/obj/item/storage/backpack/dufflebag/sec, 50),
 		/obj/item/clothing/head/helmet,
-		/obj/item/clothing/head/soft/sec/corp,
+		/obj/item/clothing/head/soft/sec,
 		/obj/item/clothing/suit/armor/vest,
-		/obj/item/clothing/under/rank/security/corp,
+		/obj/item/clothing/under/rank/security,
 		/obj/item/clothing/glasses/hud/aviators/security,
-		/obj/item/gun/energy/classictaser,
-		/obj/item/melee/baton/loaded,
 		/obj/item/storage/belt/security,
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/device/flash,
@@ -236,7 +232,7 @@
 		/obj/item/device/radio/headset/headset_sec,
 		/obj/item/taperoll/police,
 		/obj/item/clothing/accessory/holster/armpit,
-		/obj/item/reagent_containers/food/drinks/flask/detflask,
+		/obj/item/reagent_containers/vessel/flask/detflask,
 		/obj/item/storage/briefcase/crimekit,
 		/obj/item/device/holowarrant,
 		/obj/item/storage/secure/guncase/detective
@@ -247,7 +243,7 @@
 	req_access = list(access_captain)
 
 /obj/structure/closet/secure_closet/injection/WillContain()
-	return list(/obj/item/reagent_containers/syringe/ld50_syringe/choral = 2)
+	return list(/obj/item/reagent_containers/syringe/ld50_syringe/potassium_chlorophoride = 2)
 
 /obj/structure/closet/secure_closet/brig
 	name = "brig locker"

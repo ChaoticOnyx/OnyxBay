@@ -18,11 +18,11 @@
 /obj/machinery/meter/proc/set_target(atom/new_target)
 	clear_target()
 	target = new_target
-	register_signal(target, SIGNAL_DESTROY, .proc/clear_target)
+	register_signal(target, SIGNAL_QDELETING, .proc/clear_target)
 
 /obj/machinery/meter/proc/clear_target()
 	if(target)
-		unregister_signal(target, SIGNAL_DESTROY)
+		unregister_signal(target, SIGNAL_QDELETING)
 		target = null
 
 /obj/machinery/meter/Destroy()
@@ -74,7 +74,7 @@
 		)
 		radio_connection.post_signal(src, signal)
 
-/obj/machinery/meter/examine(mob/user)
+/obj/machinery/meter/_examine_text(mob/user)
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))

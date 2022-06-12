@@ -6,7 +6,7 @@
 	set name = "Advanced ProcCall"
 
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	var/target = null
 	var/targetselected = 0
@@ -41,7 +41,7 @@
 	set name = "Advanced ProcCall Target"
 
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	callproc_targetpicked(1, A)
 
@@ -51,7 +51,7 @@
 /client/proc/callproc_targetpicked(hastarget, datum/target)
 	// this needs checking again here because VV's 'Call Proc' option directly calls this proc with the target datum
 	if(!check_rights(R_DEBUG)) return
-	if(config.debugparanoid && !check_rights(R_ADMIN)) return
+	if(config.admin.debug_paranoid && !check_rights(R_ADMIN)) return
 
 	if(!holder.callproc)
 		holder.callproc = new(src)
@@ -139,7 +139,11 @@
 				if(isnull(current)) return CANCEL
 
 			if("type")
-				current = input("Select type for [arguments.len+1]\th argument") as null|anything in typesof(/obj, /mob, /area, /turf)
+				var/incurrent = input("Input type for [arguments.len+1]\th argument") as text
+				current = text2path(incurrent)
+				if(!ispath(current))
+					to_chat(usr, "Your type doesn't exist - [incurrent]")
+					current = null
 				if(isnull(current)) return CANCEL
 
 			if("obj reference")

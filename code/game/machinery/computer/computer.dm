@@ -30,7 +30,8 @@
 
 /obj/machinery/computer/Destroy()
 	GLOB.computer_list -= src
-	..()
+	
+	return ..()
 
 /obj/machinery/computer/emp_act(severity)
 	if(prob(20/severity)) set_broken(TRUE)

@@ -65,7 +65,7 @@
 		return
 	return ..()
 
-/mob/living/simple_animal/construct/examine(mob/user)
+/mob/living/simple_animal/construct/_examine_text(mob/user)
 	. = ..()
 	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
 	if (src.health < src.maxHealth)
@@ -273,7 +273,7 @@
 	eye_glow.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 	eye_glow.layer = EYE_GLOW_LAYER
 	overlays += eye_glow
-	set_light(-10, 0.1, 3, l_color = "#ffffff")
+	set_light(-2, 0.1, 1.5, l_color = "#ffffff")
 
 ////////////////HUD//////////////////////
 

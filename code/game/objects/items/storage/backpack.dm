@@ -18,10 +18,10 @@
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	use_sound = SFX_SEARCH_CLOTHES
 
-/obj/item/storage/backpack/equipped()
-	if(!has_extension(src, /datum/extension/appearance))
-		set_extension(src, /datum/extension/appearance, /datum/extension/appearance/cardborg)
-	..()
+/obj/item/storage/backpack/Initialize()
+	. = ..()
+
+	AddComponent(/datum/component/cardborg)
 
 /obj/item/storage/backpack/attackby(obj/item/W, mob/user)
 	if(use_sound)

@@ -5,14 +5,14 @@
 	item_state = "clipboard"
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 3
 	throw_range = 10
 	var/obj/item/pen/haspen		//The stored pen.
 	var/obj/item/toppaper	//The topmost piece of paper.
 	slot_flags = SLOT_BELT
 	matter = list(MATERIAL_STEEL = 70)
 
-/obj/item/clipboard/New()
+/obj/item/clipboard/Initialize()
+	. = ..()
 	update_icon()
 
 /obj/item/clipboard/MouseDrop(obj/over_object as obj) //Quick clipboard fix. -Agouri

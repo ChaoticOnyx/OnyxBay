@@ -118,7 +118,7 @@
 		return FALSE
 	sources += source
 	register_signal(source, SIGNAL_MOVED, /datum/visualnet/proc/source_moved)
-	register_signal(source, SIGNAL_DESTROY, /datum/visualnet/proc/remove_source)
+	register_signal(source, SIGNAL_QDELETING, /datum/visualnet/proc/remove_source)
 	for_all_chunks_in_range(source, /datum/chunk/proc/add_source, list(source))
 	if(update_visibility)
 		update_visibility(source, opacity_check)
@@ -129,7 +129,7 @@
 		return FALSE
 
 	unregister_signal(source, SIGNAL_MOVED)
-	unregister_signal(source, SIGNAL_DESTROY)
+	unregister_signal(source, SIGNAL_QDELETING)
 	for_all_chunks_in_range(source, /datum/chunk/proc/remove_source, list(source))
 	if(update_visibility)
 		update_visibility(source, opacity_check)

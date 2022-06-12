@@ -121,6 +121,7 @@
 	icon_state = "skrellsnacks"
 
 /obj/item/trash/cans
+	matter = list(MATERIAL_STEEL = 500)
 	var/base_state = ""
 
 /obj/item/trash/cans/Initialize()

@@ -22,8 +22,8 @@
 	var/force_divisor = 400                             // Force equates to speed. Speed/5 equates to a damage multiplier for whoever you hit.
 	                                                    // For reference, a fully pressurized oxy tank at 50% gas release firing a health
 	                                                    // analyzer with a force_divisor of 10 hit with a damage multiplier of 3000+.
-/obj/item/gun/launcher/pneumatic/New()
-	..()
+/obj/item/gun/launcher/pneumatic/Initialize()
+	. = ..()
 	item_storage = new(src)
 	item_storage.SetName("hopper")
 	item_storage.max_w_class = max_w_class
@@ -70,6 +70,8 @@
 		tank = W
 		user.visible_message("[user] jams [W] into [src]'s valve and twists it closed.","You jam [W] into [src]'s valve and twist it closed.")
 		update_icon()
+	else if(istype(W, /obj/item/holder))
+		to_chat(user, SPAN("warning", "[W] doesn't seem to fit inside."))
 	else if(istype(W) && item_storage.can_be_inserted(W, user))
 		item_storage.handle_item_insertion(W)
 
@@ -99,7 +101,7 @@
 	item_storage.remove_from_storage(launched, src)
 	return launched
 
-/obj/item/gun/launcher/pneumatic/examine(mob/user)
+/obj/item/gun/launcher/pneumatic/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -149,7 +151,7 @@
 /obj/item/cannonframe/update_icon()
 	icon_state = "pneumatic[buildstate]"
 
-/obj/item/cannonframe/examine(mob/user)
+/obj/item/cannonframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a pipe segment installed."

@@ -13,4 +13,7 @@
 	set_dir(pick(GLOB.cardinal))
 	pixel_x = rand(-13, 13)
 	pixel_y = rand(-10, 13)
+
+/obj/effect/effect/cig_smoke/Initialize()
+	. = ..()
 	QDEL_IN(src, time_to_live)

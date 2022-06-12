@@ -12,8 +12,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate = "tasertacticalstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small,            modifystate = "tasertacticalkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode, modifystate = "tasertacticalstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate = "tasertacticalkill")
 		)
 
 /obj/item/gun/energy/secure/gun
@@ -30,9 +30,9 @@
 	authorized_modes = list(ALWAYS_AUTHORIZED, AUTHORIZED)
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate = "tasertacticalstun"),
-		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock,             modifystate = "tasertacticalshock"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small,            modifystate = "tasertacticalkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode, modifystate = "tasertacticalstun"),
+		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock,  modifystate = "tasertacticalshock"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/laser/small, modifystate = "tasertacticalkill")
 		)
 
 /obj/item/gun/energy/gun/small
@@ -89,8 +89,8 @@
 	recharge_time = 8
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/small)
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser)
 		)
 
 	var/fail_counter = 0
@@ -142,7 +142,7 @@
 	else if(fail_counter > 15)
 		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/gun/energy/gun/nuclear/examine(mob/user)
+/obj/item/gun/energy/gun/nuclear/_examine_text(mob/user)
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)
@@ -200,8 +200,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
-		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/small,          modifystate="egunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,    modifystate="egunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/energy/laser/lesser, modifystate="egunkill")
 		)
 
 /obj/item/gun/energy/rifle
@@ -229,9 +229,9 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,              fire_delay = 8,    charge_cost = 20, burst = 1),
-		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/mid,            fire_delay = 8,    charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode, fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/mid,   fire_delay = 8,    charge_cost = 20, burst = 1),
+		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/mid, fire_delay = 8,    charge_cost = 20, burst = 1)
 	)
 
 /obj/item/gun/energy/rifle/update_icon()
@@ -266,7 +266,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser,           fire_delay = 10,   charge_cost = 20, burst = 1),
-		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/lesser,         fire_delay = 10,   charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode,    fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/laser/lesser,   fire_delay = 10,   charge_cost = 20, burst = 1),
+		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/lesser, fire_delay = 10,   charge_cost = 20, burst = 1)
 	)

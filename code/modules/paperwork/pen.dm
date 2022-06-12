@@ -20,7 +20,6 @@
 	slot_flags = SLOT_BELT | SLOT_EARS
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
-	throw_speed = 7
 	throw_range = 15
 	matter = list(MATERIAL_STEEL = 10)
 	var/colour = COLOR_BLACK	//what colour the ink is!
@@ -41,6 +40,7 @@
 	color_description = "red ink"
 
 /obj/item/pen/multi
+	name = "multicolor pen"
 	desc = "It's a pen with multiple colors of ink!"
 	var/selectedColor = 1
 	var/colors = list("black","blue","red")
@@ -51,15 +51,16 @@
 	if(++selectedColor > 3)
 		selectedColor = 1
 
+	var/new_color = colors[selectedColor]
 	colour = colors_code[selectedColor]
 	color_description = color_descriptions[selectedColor]
 
-	if(colour == "black")
+	if(new_color == "black")
 		icon_state = "pen"
 	else
-		icon_state = "pen_[colour]"
+		icon_state = "pen_[new_color]"
 
-	to_chat(user, "<span class='notice'>Changed color to '[colour].'</span>")
+	to_chat(user, SPAN("notice", "Changed color to [new_color]."))
 
 /obj/item/pen/invisible
 	desc = "It's an invisble pen marker."
@@ -203,7 +204,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 1.25
-	force = 25 // Half an esword's force
+	force = 0
 	armor_penetration = 35
 	sharp = TRUE
 	edge = TRUE
@@ -212,6 +213,7 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	check_armour = "laser"
+	var/active_force = 25.0 // Half an esword's force
 	var/active_max_bright = 0.17
 	var/active_outer_range = 1.65
 	var/brightness_color = "#ff5959"
@@ -241,8 +243,8 @@
 	slot_flags |= SLOT_DENYPOCKET
 	name = "energy dagger"
 	desc = "Bureaucracy has never ever been so deadly."
+	force = active_force
 	throwforce = 45
-	throw_speed = 1
 	icon_state = "edagger1"
 	item_state = "edagger1"
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
@@ -254,8 +256,8 @@
 	slot_flags = initial(slot_flags)
 	name = initial(name)
 	desc = initial(desc)
+	force = initial(force)
 	throwforce = initial(throwforce)
-	throw_speed = initial(throw_speed)
 	icon_state = initial(icon_state)
 	item_state = initial(item_state)
 	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)

@@ -247,7 +247,7 @@
 	area.apc = src
 	update_icon()
 
-/obj/machinery/power/apc/examine(mob/user)
+/obj/machinery/power/apc/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)

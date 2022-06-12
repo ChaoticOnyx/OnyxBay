@@ -54,7 +54,6 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15
-	throw_speed = 3
 
 	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 
@@ -175,7 +174,6 @@
 	w_class = ITEM_SIZE_TINY
 	throwforce = 3.5
 	throw_range = 15
-	throw_speed = 3
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 4)
 	matter = list(MATERIAL_STEEL = 25, MATERIAL_GLASS = 20)
 

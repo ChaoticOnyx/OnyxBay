@@ -432,7 +432,7 @@
 	if(isghost(fake))
 		fake_look.invisibility = 0
 	if(fake.lying)
-		fake_look.transform = turn(fake.transform, -90)
+		fake_look.SetTransform(others = fake.transform, rotation = -90)
 	holder.client.images |= fake_look
 	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 

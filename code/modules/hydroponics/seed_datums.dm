@@ -311,7 +311,7 @@
 	seed_name = "egg plant"
 	display_name = "egg plants"
 	mutants = null
-	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
+	has_custom_product = /obj/item/reagent_containers/food/egg/randomcolor
 	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()
@@ -668,7 +668,7 @@
 	seed_name = "somniferum poppy"
 	display_name = "somniferum poppies"
 	mutants = null
-	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol/opium = list(1,10))
+	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/painkiller/opium = list(1,10))
 
 /datum/seed/flower/poppy/opium/New()
 	..()
@@ -1473,9 +1473,11 @@
 	set_trait(TRAIT_MATURATION,4)
 	set_trait(TRAIT_YIELD,3)
 	set_trait(TRAIT_POTENCY,4)
+	set_trait(TRAIT_PRODUCTION,3)
+	set_trait(TRAIT_IDEAL_LIGHT, 7)
 	set_trait(TRAIT_PRODUCT_ICON,"cannabis")
 	set_trait(TRAIT_PLANT_ICON,"cannabis")
 	set_trait(TRAIT_PRODUCT_COLOUR,"#4c7f28")
 	set_trait(TRAIT_PLANT_COLOUR,"#4c7f28")
 	set_trait(TRAIT_WATER_CONSUMPTION, 10)
-	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.20)
+	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.25)

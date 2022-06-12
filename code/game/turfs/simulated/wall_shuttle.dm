@@ -74,7 +74,7 @@
 			tghil_si_ereth = null
 
 	icon = initial(base_type.icon)
-	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon)
+	icon_state = ispath(base_type, /turf/space) ? "white" : initial(base_type.icon_state)
 	plane = initial(base_type.plane)
 
 /turf/simulated/shuttle/wall/corner/generate_missing_corners()
@@ -86,7 +86,7 @@
 	if(corner_overlay)
 		overlays -= corner_overlay
 	else
-		corner_overlay = image(icon, icon_state = corner_overlay_state, dir = src.dir)
+		corner_overlay = image(initial(src.icon), icon_state = corner_overlay_state, dir = src.dir)
 		corner_overlay.plane = initial(src.plane)
 		corner_overlay.layer = initial(src.layer)
 	overlays += corner_overlay

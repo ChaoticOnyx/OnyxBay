@@ -121,7 +121,7 @@
 	else
 		icon_state = "envelope[contents.len > 0]"
 
-/obj/item/folder/envelope/examine(user)
+/obj/item/folder/envelope/_examine_text(user)
 	. = ..()
 	. += "\nThe seal is [sealed ? "intact" : "broken"]."
 

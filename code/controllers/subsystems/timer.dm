@@ -359,7 +359,7 @@ SUBSYSTEM_DEF(timer)
 	if (!callback)
 		return
 
-	wait = max(wait, 0)
+	wait = max(CEILING(wait, world.tick_lag), world.tick_lag)
 
 	var/hash
 

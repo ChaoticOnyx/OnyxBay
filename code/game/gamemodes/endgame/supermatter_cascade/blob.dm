@@ -15,15 +15,10 @@
 
 /turf/unsimulated/wall/supermatter/New()
 	..()
-	START_PROCESSING(SSturf, src)
 
 	// Nom.
 	for(var/atom/movable/A in src)
 		Consume(A)
-
-/turf/unsimulated/wall/supermatter/Destroy()
-	STOP_PROCESSING(SSturf, src)
-	. = ..()
 
 /turf/unsimulated/wall/supermatter/Process(wait, times_fired)
 	// Only check infrequently.

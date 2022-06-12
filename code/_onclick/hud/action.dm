@@ -28,10 +28,10 @@
 	target = Target
 
 /datum/action/Destroy()
-	..()
-
 	if(owner)
 		Remove(owner)
+	target = null
+	return ..()
 
 /datum/action/proc/Grant(mob/living/T)
 	if(owner)
@@ -201,14 +201,12 @@
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:[coord_row_offset]"
 
 /datum/hud/proc/SetButtonCoords(obj/screen/button,number)
-	var/row = round((number-1)/AB_MAX_COLUMNS)
-	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
-	var/x_offset = 32*(col-1) + AB_WEST_OFFSET + 2*col
-	var/y_offset = -32*(row+1) + AB_NORTH_OFFSET
-
-	var/matrix/M = matrix()
-	M.Translate(x_offset,y_offset)
-	button.transform = M
+	var/row = round((number - 1) / AB_MAX_COLUMNS)
+	var/col = ((number - 1) % (AB_MAX_COLUMNS)) + 1
+	button.SetTransform(
+		offset_x = 32 * (col - 1) + AB_WEST_OFFSET + 2 * col,
+		offset_y = -32 * (row + 1) + AB_NORTH_OFFSET
+	)
 
 //Presets for item actions
 /datum/action/item_action

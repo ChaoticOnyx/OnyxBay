@@ -59,13 +59,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 10.0
 	throwforce = 10.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.6
 	mod_reach = 1.4
 	mod_handy = 0.7
 	mod_shield = 1.3
+	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
@@ -123,7 +124,7 @@
 /obj/structure/closet/proc/WillContain()
 	return null
 
-/obj/structure/closet/examine(mob/user)
+/obj/structure/closet/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
@@ -140,6 +141,12 @@
 			. += "\nThere is still some free space."
 		else
 			. += "\nIt is full."
+
+	if(isghost(user) && user.client?.inquisitive_ghost)
+		if(src.opened)
+			return
+
+		. += "\nIt contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
 	if(wall_mounted)
@@ -164,15 +171,17 @@
 	return TRUE
 
 /obj/structure/closet/proc/dump_contents()
+	var/atom/L = drop_location()
+
 	for(var/mob/M in src)
-		M.forceMove(loc)
+		M.forceMove(L)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 
 	for(var/atom/movable/AM in src)
-		if(!istype(AM,/obj/item/shield/closet))
-			AM.forceMove(loc)
+		if(!istype(AM, /obj/item/shield/closet))
+			AM.forceMove(L)
 
 /obj/structure/closet/proc/store_contents()
 	var/stored_units = 0
@@ -513,12 +522,6 @@
 	if(!src.toggle())
 		to_chat(usr, SPAN_NOTICE("It won't budge!"))
 
-/obj/structure/closet/attack_ghost(mob/ghost)
-	if(ghost.client && ghost.client.inquisitive_ghost)
-		ghost.examinate(src)
-		if (!src.opened)
-			to_chat(ghost, "It contains: [english_list(contents)].")
-
 /obj/structure/closet/verb/verb_toggleopen()
 	set src in oview(1)
 	set category = "Object"
@@ -741,11 +744,9 @@
 	open()
 	broken = FALSE
 	locked = FALSE
-	var/matrix/M = matrix()
-	M.Turn(90)
-	cdoor.transform = M
+	cdoor.SetTransform(rotation = 90)
 	cdoor.pixel_y = -8
-	cdoor.loc = get_turf(src)
+	cdoor.forceMove(loc)
 	cdoor = null
 
 	setup = CLOSET_CAN_BE_WELDED
@@ -781,3 +782,6 @@
 	playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 	playsound(src.loc, "spark", 50, 1)
 	open()
+
+/obj/structure/closet/allow_drop()
+	return TRUE

@@ -35,7 +35,7 @@
 				)
 			power_supply.charge = power_supply.maxcharge
 
-/obj/item/gun/energy/kinetic_accelerator/examine(mob/user)
+/obj/item/gun/energy/kinetic_accelerator/_examine_text(mob/user)
 	. = ..()
 	if(max_mod_capacity)
 		. += "\n<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining."
@@ -135,7 +135,7 @@
 	var/cost = 30
 	var/modifier = 1 //For use in any mod kit that has numerical modifiers
 
-/obj/item/borg/upgrade/modkit/examine(mob/user)
+/obj/item/borg/upgrade/modkit/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>Occupies <b>[cost]%</b> of mod capacity.</span>"
 

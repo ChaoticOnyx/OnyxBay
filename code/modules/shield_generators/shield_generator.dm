@@ -27,6 +27,8 @@
 	var/mode_changes_locked = 0			// Whether the control wire is cut, locking out changes.
 	var/ai_control_disabled = 0			// Whether the AI control is disabled.
 	var/list/mode_list = null			// A list of shield_mode datums.
+	var/mode_cooldown = 2 SECONDS       // Hiding performance-heavy things behind a cooldown wall.
+	var/last_mode_toggle = 0
 
 /obj/machinery/power/shield_generator/update_icon()
 	if(running)
@@ -300,6 +302,9 @@
 		return TOPIC_REFRESH
 
 	if(href_list["toggle_mode"])
+		if(world.time < last_mode_toggle + mode_cooldown)
+			to_chat(user, SPAN("notice", "\The [src] is still recalibrating!"))
+			return TOPIC_HANDLED
 		// Toggling hacked-only modes requires the hacked var to be set to 1
 		if((text2num(href_list["toggle_mode"]) & (MODEFLAG_OVERCHARGE)) && !hacked)
 			return TOPIC_HANDLED
@@ -359,6 +364,7 @@
 
 
 /obj/machinery/power/shield_generator/proc/toggle_flag(flag)
+	last_mode_toggle = world.time
 	shield_modes ^= flag
 	update_upkeep_multiplier()
 	for(var/obj/effect/shield/S in field_segments)

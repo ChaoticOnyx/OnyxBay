@@ -24,7 +24,7 @@
 	var/obj/item/airlock_electronics/brace/electronics
 
 
-/obj/item/airlock_brace/examine(mob/user)
+/obj/item/airlock_brace/_examine_text(mob/user)
 	. = ..()
 	. += "\n[examine_health()]"
 

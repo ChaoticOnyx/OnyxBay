@@ -59,8 +59,8 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 
 /datum/antagonist/cultist/Initialize()
 	. = ..()
-	if(config.cultist_min_age)
-		min_player_age = config.cultist_min_age
+	if(config.game.cultist_min_age)
+		min_player_age = config.game.cultist_min_age
 
 /datum/antagonist/cultist/create_global_objectives()
 

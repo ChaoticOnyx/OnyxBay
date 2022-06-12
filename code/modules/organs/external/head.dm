@@ -29,12 +29,21 @@
 
 	var/skull_path = /obj/item/skull
 
+/obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
+	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
+		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
+		if(istype(FBP_brain))
+			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+			FBP_brain.removed()
+			FBP_brain.transfer_and_delete()
+	return ..()
+
 /obj/item/organ/external/head/organ_eaten(mob/user)
 	. = ..()
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))
 	user.put_in_active_hand(SK)
 
-/obj/item/organ/external/head/examine(mob/user)
+/obj/item/organ/external/head/_examine_text(mob/user)
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
@@ -89,7 +98,7 @@
 			can_intake_reagents = R.can_eat
 			eye_icon = R.use_eye_icon
 	. = ..(company, skip_prosthetics, 1)
-	has_lips = null
+	has_lips = FALSE
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
@@ -102,13 +111,20 @@
 	eye_icon = "blank_eyes"
 
 /obj/item/organ/external/head/update_icon()
-
-	..()
+	overlays.Cut()
+	. = ..()
+	if(!.)
+		return
 
 	if(owner)
+		var/datum/body_build/BB = owner.body_build
 		if(eye_icon)
 			var/icon/eyes_icon = new /icon(eye_icon_location, eye_icon)
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[owner.species.vision_organ ? owner.species.vision_organ : BP_EYES]
+			if(!ishuman(loc))
+				for(var/thing in contents)
+					if(istype(thing, /obj/item/organ/internal/eyes))
+						eyes = thing
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
 			else if(owner.should_have_organ(BP_EYES))
@@ -119,10 +135,11 @@
 			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
 			overlays |= eyes_icon
 
-		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
-			var/icon/lip_icon = new /icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
-			overlays |= lip_icon
-			mob_icon.Blend(lip_icon, ICON_OVERLAY)
+			if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
+				var/icon/lip_icon = new /icon(owner.species.icobase, "lips[BB.index]")
+				lip_icon.Blend(owner.lip_style, ICON_ADD)
+				mob_icon.Blend(lip_icon, ICON_OVERLAY)
+				overlays |= lip_icon
 
 		overlays |= get_hair_icon()
 
@@ -224,13 +241,13 @@
 		var/obj/item/stack/M = W
 		if(M.get_material_name() == MATERIAL_STEEL)
 			if(do_after(usr, 10, src))
-				new /obj/item/reagent_containers/food/drinks/skullgoblet(user.loc)
+				new /obj/item/reagent_containers/vessel/skullgoblet(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)
 		else if(M.get_material_name() == MATERIAL_GOLD)
 			if(do_after(usr, 10, src))
-				new /obj/item/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
+				new /obj/item/reagent_containers/vessel/skullgoblet/gold(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)

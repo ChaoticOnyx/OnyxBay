@@ -8,7 +8,7 @@
 			return !density
 
 /turf/simulated/open/CanZPass(atom/A, direction)
-	if(locate(/obj/structure/catwalk, src))
+	if(locate(/obj/structure/catwalk, src)||locate(/obj/structure/industrial_lift, src))
 		if(z == A.z)
 			if(direction == DOWN)
 				return 0
@@ -77,7 +77,7 @@
 
 
 
-/turf/simulated/open/examine(mob/user, infix, suffix)
+/turf/simulated/open/_examine_text(mob/user, infix, suffix)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/depth = 1

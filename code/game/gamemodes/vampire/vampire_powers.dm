@@ -190,7 +190,7 @@
 			continue
 		if (!vampire_can_affect_target(H, 0))
 			continue
-		if (eyecheck() > FLASH_PROTECTION_NONE)
+		if (H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
 		H.Stun(6)
@@ -332,7 +332,7 @@
 		return
 
 	for (var/mob/living/simple_animal/hostile/scarybat/bat in spawned)
-		LAZYADD(bat.friends, src)
+		LAZYADD(bat.friends, weakref(src))
 
 		if (vampire.thralls.len)
 			LAZYADD(bat.friends, vampire.thralls)
@@ -806,8 +806,7 @@
 	var/list/emotes = list("[src] looks trusthworthy.",
 							"You feel as if [src] is a relatively friendly individual.",
 							"You feel yourself paying more attention to what [src] is saying.",
-							"[src] has your best interests at heart, you can feel it.",
-							"A quiet voice tells you that [src] should be considered a friend.")
+							"[src] has your best interests at heart, you can feel it.")
 
 	vampire.use_blood(power_use_cost)
 
@@ -870,7 +869,7 @@
 	vampire.use_blood(power_use_cost)
 
 	T.reagents.add_reagent(/datum/reagent/rezadone, 3)
-	T.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 0.15) //enough to get back onto their feet
+	T.reagents.add_reagent(/datum/reagent/painkiller, 1.0) //enough to get back onto their feet
 
 // Convert a human into a vampire.
 /mob/living/carbon/human/proc/vampire_embrace()

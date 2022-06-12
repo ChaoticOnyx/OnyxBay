@@ -23,17 +23,10 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 	log_and_message_admins("switched [M] possess mode for ghosts to [M.controllable ? "ON" : "OFF"]!", target = M)
 
 	if(M.controllable)
-		ghost_announce(M)
+		notify_ghosts("[capitalize(M.name)] is now available to possess!", source = M, action = NOTIFY_FOLLOW, posses_mob = TRUE)
 		GLOB.available_mobs_for_possess += M
 	else
 		GLOB.available_mobs_for_possess -= M
-
-/proc/ghost_announce(mob/living/M)
-	for(var/mob/observer/ghost/G in GLOB.player_list)
-		if(G.client)
-			if(jobban_isbanned(G, "Animal"))
-				continue
-			to_chat(G, SPAN_DEADSAY("<b>[create_ghost_link(G, M, "(F)")] [capitalize(M.name)] is now available to possess! [possess_link(G, M)]</b>"))
 
 /proc/possess_link(mob/observer/ghost/G, mob/living/M)
 	return "<a href='byond://?src=\ref[G];possess=\ref[M]'>(Occupy)</a>"

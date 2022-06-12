@@ -86,7 +86,7 @@
 
 /obj/item/gun/projectile/pistol/vp78/wood
 	name = "VP78 Special"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
+	desc = "The VP78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
 	accuracy = 0.35
 	fire_delay = 4.5
@@ -284,7 +284,7 @@
 		/obj/item/ammo_casing/a556              = "5.56mm"
 		)
 
-/obj/item/gun/projectile/pirate/New()
+/obj/item/gun/projectile/pirate/Initialize()
 	ammo_type = pick(ammo_types)
 	desc += " Uses [ammo_types[ammo_type]] rounds."
 
@@ -308,7 +308,7 @@
 /obj/item/zipgunframe/update_icon()
 	icon_state = "zipgun[buildstate]"
 
-/obj/item/zipgunframe/examine(mob/user)
+/obj/item/zipgunframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(1) . += "\nIt has a barrel loosely fitted to the stock."

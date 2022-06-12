@@ -6,7 +6,7 @@
 	var/signed_ckey
 	var/signed_name
 
-/obj/item/paper/complaint_form/examine(mob/user)
+/obj/item/paper/complaint_form/_examine_text(mob/user)
 	. = ..()
 	if (signed)
 		. += "\n[SPAN_NOTICE("It appears to be signed. It can't be modified.")]"
@@ -111,7 +111,7 @@
 	name = "Complaint #[id]"
 	main_form = new(src, id)
 
-/obj/item/complaint_folder/examine(mob/user)
+/obj/item/complaint_folder/_examine_text(mob/user)
 	. = ..()
 	if (main_form.signed)
 		. += "\n[SPAN_NOTICE("It is signed by [main_form.signed_name]")]"

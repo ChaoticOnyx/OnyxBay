@@ -18,6 +18,10 @@
           "sprite": {
             "type": "string",
             "description": "Name of icon state"
+          },
+          "footstep_sound": {
+            "type":"string",
+            "description": "Name of footstep sound\nFor more information see: code\\__defines\\footsteps.dm"
           }
         },
         "required": ["ckey", "sprite"],

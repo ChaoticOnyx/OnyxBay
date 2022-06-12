@@ -306,7 +306,7 @@
 	landmark_tag = "nav_rescue_start"
 	docking_controller = "rescue_base"
 	base_area = /area/rescue_base/base
-	base_turf = /turf/unsimulated/floor/rescue_base
+	base_turf = /turf/simulated/open
 
 /obj/effect/shuttle_landmark/rescue/internim
 	name = "In transit"

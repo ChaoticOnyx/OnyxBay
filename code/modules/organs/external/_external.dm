@@ -8,9 +8,9 @@
 	max_damage = 0
 	dir = SOUTH
 	organ_tag = "limb"
-	appearance_flags = PIXEL_SCALE | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
-	food_organ_type = /obj/item/reagent_containers/food/snacks/meat/human
+	food_organ_type = /obj/item/reagent_containers/food/meat/human
 
 	throwforce = 2.5
 	// Strings
@@ -27,6 +27,7 @@
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
 	var/full_pain = 0                  // Overall pain including damages.
+	var/max_pain = null                // Maximum pain the limb can accumulate. The actual effect's capped at max_damage.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
 	// Movement delay vars.
@@ -120,6 +121,10 @@
 	if(owner)
 		replaced(owner)
 		sync_colour_to_human(owner)
+		if(isnull(max_pain))
+			max_pain = min(max_damage * 2.5, owner.species.total_health * 1.5)
+	else if(isnull(max_pain))
+		max_pain = max_damage * 1.5 // Should not ~probably~ happen
 	get_icon()
 
 	if(food_organ in implants)
@@ -130,28 +135,22 @@
 	if(wounds)
 		for(var/datum/wound/wound in wounds)
 			wound.embedded_objects.Cut()
-		wounds.Cut()
+	QDEL_NULL_LIST(wounds)
 
-	if(parent && parent.children)
+	if(parent?.children)
 		parent.children -= src
 		parent = null
 
-	if(children)
-		for(var/obj/item/organ/external/C in children)
-			qdel(C)
+	QDEL_NULL_LIST(children)
 
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	BIO?.change_host(get_turf(src)) // Because we don't want biostructures to get wrecked so easily
 
-	if(internal_organs)
-		for(var/obj/item/organ/O in internal_organs)
-			qdel(O)
-		internal_organs.Cut()
+	QDEL_NULL_LIST(internal_organs)
 
 	applied_pressure = null
 	if(splinted?.loc == src)
-		qdel(splinted)
-	splinted = null
+		QDEL_NULL(splinted)
 
 	if(owner)
 		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs -= src
@@ -161,8 +160,10 @@
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs)
 			owner.organs -= null
+		owner.bad_external_organs.Remove(src)
 
-	if(autopsy_data)    autopsy_data.Cut()
+	if(autopsy_data)
+		autopsy_data.Cut()
 
 	return ..()
 
@@ -216,7 +217,7 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/examine(mob/user)
+/obj/item/organ/external/_examine_text(mob/user)
 	. = ..()
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
@@ -511,7 +512,7 @@ This function completely restores a damaged organ to perfect condition.
 		switch(type)
 			if(BURN)  fluid_loss_severity = FLUIDLOSS_WIDE_BURN
 			if(LASER) fluid_loss_severity = FLUIDLOSS_CONC_BURN
-		var/fluid_loss = (damage/(owner.maxHealth - config.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
+		var/fluid_loss = (damage/(owner.maxHealth - config.health.health_threshold_dead)) * owner.species.blood_volume * fluid_loss_severity
 		owner.remove_blood(fluid_loss)
 
 	// first check whether we can widen an existing wound
@@ -526,7 +527,7 @@ This function completely restores a damaged organ to perfect condition.
 			if(compatible_wounds.len)
 				var/datum/wound/W = pick(compatible_wounds)
 				W.open_wound(damage)
-				if(prob(25))
+				if(owner && prob(25))
 					if(BP_IS_ROBOTIC(src))
 						owner.visible_message("<span class='danger'>The damage to [owner.name]'s [name] worsens.</span>",\
 						"<span class='danger'>The damage to your [name] worsens.</span>",\
@@ -722,7 +723,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		//we only update wounds once in [wound_update_accuracy] ticks so have to emulate realtime
 		heal_amt = heal_amt * wound_update_accuracy
 		//configurable regen speed woo, no-regen hardcore or instaheal hugbox, choose your destiny
-		heal_amt = heal_amt * config.organ_regeneration_multiplier
+		heal_amt = heal_amt * config.health.organ_regeneration_multiplier
 		// amount of healing is spread over all the wounds
 		heal_amt = heal_amt / (wounds.len + 1)
 		// making it look prettier on scanners
@@ -860,6 +861,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
 	if(QDELETED(src))
+		victim.updatehealth()
+		victim.UpdateDamageIcon()
+		victim.regenerate_icons()
 		return
 
 	if(!clean)
@@ -877,6 +881,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
 			stump.adjust_pain(max_damage)
+			if(limb_flags & ORGAN_FLAG_GENDERED_ICON)
+				stump.limb_flags |= ORGAN_FLAG_GENDERED_ICON
 			if(BP_IS_ROBOTIC(src))
 				stump.robotize()
 			stump.wounds |= W
@@ -885,7 +891,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
-	spawn(1)
+			stump.replaced(victim)
+	spawn(1) // Yes, we DO need to wait before regenerating icons since all the stuff takes a literal eternity
 		if(!QDELETED(victim)) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
 			victim.updatehealth()
 			victim.UpdateDamageIcon()
@@ -896,19 +903,16 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(DROPLIMB_EDGE)
 			compile_icon()
 			add_blood(victim)
-			var/matrix/M = matrix()
 			if(organ_tag == BP_HEAD)
-				M.Turn(90)
+				SetTransform(rotation = 90)
 			else
-				M.Turn(rand(180))
-			src.transform = M
-			update_icon_drop(victim)
+				SetTransform(rotation = rand(180))
 			forceMove(victim.loc)
-			if(!clean) // Throw limb around.
-				spawn()
-					if(!QDELETED(src) && isturf(loc))
-						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
-					dir = 2
+			update_icon_drop(victim)
+			if(!clean && !QDELETED(src)) // Throw limb around.
+				if(isturf(loc))
+					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(1, 2))
+				dir = 2
 		if(DROPLIMB_BURN)
 			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
@@ -929,8 +933,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			for(var/obj/item/I in src)
 				I.forceMove(victim.loc)
 				if(isturf(I.loc))
-					spawn()
-						I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
+					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(1, 2))
 
 			qdel(src)
 
@@ -1037,7 +1040,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		movement_tally += broken_tally * damage_multiplier
 
 /obj/item/organ/external/proc/fracture()
-	if(!config.bones_can_break)
+	if(!config.health.bones_can_break)
 		return
 	if(BP_IS_ROBOTIC(src))
 		return	//ORGAN_BROKEN doesn't have the same meaning for robot limbs
@@ -1060,8 +1063,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
-			owner.Weaken(2)
-			owner.Stun(1)
+			owner.Weaken(3)
+			owner.Stun(2)
 
 	broken_description = pick("broken", "fracture", "hairline fracture")
 
@@ -1079,7 +1082,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/mend_fracture(use_damage_check = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return FALSE // ORGAN_BROKEN doesn't have the same meaning for robot limbs
-	if(use_damage_check && (brute_dam > min_broken_damage * config.organ_health_multiplier))
+	if(use_damage_check && (brute_dam > min_broken_damage * config.health.organ_health_multiplier))
 		return FALSE // will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN

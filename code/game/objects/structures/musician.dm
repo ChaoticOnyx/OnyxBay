@@ -264,7 +264,7 @@
 	if(!anchored)
 		return
 
-	usr.machine = src
+	user.set_machine(src)
 	var/dat = "<HEAD><meta charset=\"utf-8\"><TITLE>Piano</TITLE></HEAD><BODY>"
 
 	if(song)

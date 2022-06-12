@@ -20,6 +20,9 @@ var/global/datum/global_init/init = new ()
 
 	qdel(src) //we're done
 
+// This dumb shit must be wiped out of existence as soon as possible
+// Not worth trying to make it properly qdelable since it's not designed to be so, just let it be
+// Maintaining 2015 code in the year 2022 is pure suffering.
 /datum/global_init/Destroy()
-	..()
-	return 1
+	. = ..()
+	return QDEL_HINT_LETMELIVE
