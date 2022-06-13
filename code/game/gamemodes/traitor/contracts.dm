@@ -332,7 +332,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal_ai/check_contents(list/contents)
 	var/obj/item/aicard/card = locate() in contents
-	return card?.carded_ai == AI
+	if(!card || !AI)
+		return FALSE
+	return card.carded_ai == AI
 
 /datum/antag_contract/item/blood
 	name = "Steal blood samples"
