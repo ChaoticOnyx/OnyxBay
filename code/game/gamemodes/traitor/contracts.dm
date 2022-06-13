@@ -321,8 +321,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return
 		for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
 			valid_AIs.Remove(s_AI.AI)
-		if(!length(valid_AIs))
-			return
 		AI = safepick(valid_AIs)
 	if(!AI)
 		return
