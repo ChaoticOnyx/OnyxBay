@@ -323,7 +323,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			valid_AIs.Remove(s_AI.AI)
 		if(!length(valid_AIs))
 			return
-		AI = pick(valid_AIs)
+		AI = safepick(valid_AIs)
 	if(!AI)
 		return
 	target_desc = "[target_desc] [AI.name]"
