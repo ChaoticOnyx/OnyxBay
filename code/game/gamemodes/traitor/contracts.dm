@@ -334,6 +334,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/obj/item/aicard/card = locate() in contents
 	return card?.carded_ai == AI
 
+/datum/antag_contract/item/steal_ai/on_mob_despawned(datum/mind/M)
+	if(!AI || M == AI.mind)
+		remove()
+
 /datum/antag_contract/item/blood
 	name = "Steal blood samples"
 	unique = TRUE

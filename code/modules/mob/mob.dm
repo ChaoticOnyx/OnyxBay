@@ -28,6 +28,10 @@
 	if(mind?.current == src)
 		spellremove(src)
 		mind.set_current(null)
+	if(mind)
+		//Update any existing objectives involving this mob.
+		for(var/datum/antag_contract/AC in GLOB.all_contracts)
+			AC.on_mob_despawned(mind)
 	return ..()
 
 /mob/proc/flash_weak_pain()
