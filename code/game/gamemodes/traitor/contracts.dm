@@ -324,6 +324,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(!length(valid_AIs))
 			return
 		AI = pick(valid_AIs)
+	if(!AI)
+		return
 	target_desc = "[target_desc] [AI.name]"
 	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
 
