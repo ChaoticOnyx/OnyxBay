@@ -12,6 +12,10 @@
 	var/held_alt = 0
 	var/held_alt_desc = ""
 
+/obj/item/clothing/accessory/locket/Destroy()
+	QDEL_NULL(held)
+	return ..()
+
 /obj/item/clothing/accessory/locket/attack_self(mob/user as mob)
 	if(!base_icon)
 		base_icon = icon_state
