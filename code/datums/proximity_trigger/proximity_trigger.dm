@@ -55,7 +55,17 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	turfs_in_range = list()
 	seen_turfs_ = list()
 
+	if(ismovable(holder))
+		register_signal(holder, SIGNAL_MOVED, /datum/proximity_trigger/proc/on_holder_moved)
+
+	register_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs) // Changing direction might alter the relevant turfs.
+
 /datum/proximity_trigger/Destroy()
+	if(ismovable(holder))
+		unregister_signal(holder, SIGNAL_MOVED)
+	
+	unregister_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs)
+
 	unregister_turfs()
 
 	on_turfs_changed = null
@@ -74,11 +84,6 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 		register_turfs()
 
 /datum/proximity_trigger/proc/register_turfs()
-	if(ismovable(holder))
-		register_signal(holder, SIGNAL_MOVED, /datum/proximity_trigger/proc/on_holder_moved)
-
-	register_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs) // Changing direction might alter the relevant turfs.
-
 	var/list/new_turfs = acquire_relevant_turfs()
 	if(listequal(turfs_in_range, new_turfs))
 		return
@@ -92,11 +97,6 @@ var/const/PROXIMITY_EXCLUDE_HOLDER_TURF = 1 // When acquiring turfs to monitor, 
 	on_turf_visibility_changed()
 
 /datum/proximity_trigger/proc/unregister_turfs()
-	if(ismovable(holder))
-		unregister_signal(holder, SIGNAL_MOVED)
-	
-	unregister_signal(holder, SIGNAL_DIR_SET, /datum/proximity_trigger/proc/register_turfs)
-
 	for(var/t in turfs_in_range)
 		unregister_signal(t, SIGNAL_OPACITY_SET)
 	for(var/t in seen_turfs_)
