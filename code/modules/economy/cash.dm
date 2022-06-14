@@ -168,16 +168,19 @@
 /proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user)
 	if(sum in list(1000, 500, 200, 100, 50, 20, 10, 1))
 		var/cash_type = text2path("/obj/item/spacecash/bundle/c[sum]")
-		var/obj/cash = new cash_type (usr.loc)
+		var/obj/cash = new cash_type (spawnloc)
 		if(ishuman(human_user) && !human_user.get_active_hand())
 			human_user.put_in_hands(cash)
+
+		return cash
 	else
 		var/obj/item/spacecash/bundle/bundle = new (spawnloc)
 		bundle.worth = sum
 		bundle.update_icon()
 		if (ishuman(human_user) && !human_user.get_active_hand())
 			human_user.put_in_hands(bundle)
-	return
+
+		return bundle
 
 /obj/item/spacecash/ewallet
 	name = "Charge card"

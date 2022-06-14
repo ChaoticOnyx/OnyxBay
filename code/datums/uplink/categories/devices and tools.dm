@@ -180,3 +180,8 @@
 	item_cost = 8
 	path = /obj/item/circuitboard/teleporter
 	antag_roles = list(MODE_NUKE)
+
+/datum/uplink_item/item/tools/money_drill
+	name = "Money Drill"
+	item_cost = 3
+	path = /obj/item/device/money_drill
