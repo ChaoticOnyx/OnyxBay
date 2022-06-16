@@ -70,7 +70,7 @@
 	if(!reagents.total_volume)
 		to_chat(user, SPAN("danger", "None of [src] left!"))
 		user.drop_from_inventory(src)
-		qdel(src)
+		On_Consume(M)
 		return FALSE
 
 	if(!is_open_container())
