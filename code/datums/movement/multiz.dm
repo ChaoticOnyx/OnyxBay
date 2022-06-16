@@ -9,11 +9,19 @@
 
 	var/turf/start = get_turf(mob)
 	if(!start.CanZPass(mob, direction))
-		to_chat(mob, "<span class='warning'>\The [start] is in the way.</span>")
+		if(locate(/obj/structure/catwalk, start.contents))
+			var/obj/N = new /obj/structure/catwalk
+			to_chat(mob, "<span class='warning'>\The [N.name] is in the way.</span>")
+		else
+			to_chat(mob, "<span class='warning'>\The [start] is in the way.</span>")
 		return MOVEMENT_HANDLED
 
 	if(!destination.CanZPass(mob, direction))
-		to_chat(mob, "<span class='warning'>You bump against \the [destination].</span>")
+		if(locate(/obj/structure/catwalk, destination.contents))
+			var/obj/N = new /obj/structure/catwalk
+			to_chat(mob, "<span class='warning'>\The [N.name] is in the way.</span>")
+		else
+			to_chat(mob, "<span class='warning'>You bump against \the [destination].</span>")
 		return MOVEMENT_HANDLED
 
 	var/area/area = get_area(mob)
