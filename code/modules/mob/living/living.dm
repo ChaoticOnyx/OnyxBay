@@ -444,6 +444,10 @@
 		if (C.handcuffed && !initial(C.handcuffed))
 			C.drop_from_inventory(C.handcuffed)
 		C.handcuffed = initial(C.handcuffed)
+		
+		if(istype(C, /mob/living/carbon/human))
+			var/mob/living/carbon/human/V = C
+			V.full_pain = 0
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)
 	BITSET(hud_updateflag, LIFE_HUD)

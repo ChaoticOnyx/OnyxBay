@@ -90,9 +90,6 @@
 	L.revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
 	L.status_flags &= ~(FAKEDEATH)
 	L.update_canmove()
-	if(istype(L, /mob/living/carbon/human))
-		var/mob/living/carbon/human/V = L
-		V.full_pain = 0
 
 /datum/changeling_power/toggled/stasis/proc/revive_ready()
 	if(QDELETED(src))
