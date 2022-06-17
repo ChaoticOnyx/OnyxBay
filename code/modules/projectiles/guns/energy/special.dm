@@ -288,6 +288,6 @@
 
 /obj/item/gun/energy/shurikens/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
 	..()
-	// Actually if there are 0 shots left 0 - there are no shurikens left
+	// Actually if there are 0 shots left - there are no shurikens left
 	if(!power_supply.charge)
 		qdel(src)
