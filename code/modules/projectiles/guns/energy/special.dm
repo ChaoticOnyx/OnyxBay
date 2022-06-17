@@ -278,9 +278,7 @@
 	return
 
 /obj/item/gun/energy/shurikens/switch_firemodes()
-	sel_mode++
-	if(sel_mode > firemodes.len)
-		sel_mode = 1
+	sel_mode = (sel_mode == 1) ? 2 : 1
 	var/datum/firemode/new_mode = firemodes[sel_mode]
 	new_mode.apply_to(src)
 	update_icon()
