@@ -389,11 +389,11 @@ var/list/global/slot_flags_enumeration = list(
 //Set disable_warning to 1 if you wish it to not give you outputs.
 //Should probably move the bulk of this into mob code some time, as most of it is related to the definition of slots and not item-specific
 //set force to ignore blocking overwear and occupied slots
-/obj/item/proc/mob_can_equip(M, slot, disable_warning = 0, force = 0)
-	if(!slot) return 0
-	if(!M) return 0
+/obj/item/proc/mob_can_equip(M, slot, disable_warning = FALSE, force = FALSE)
+	if(!slot) return FALSE
+	if(!M) return FALSE
 
-	if(!ishuman(M)) return 0
+	if(!ishuman(M)) return FALSE
 
 	var/mob/living/carbon/human/H = M
 	var/list/mob_equip = list()
@@ -401,64 +401,68 @@ var/list/global/slot_flags_enumeration = list(
 		mob_equip = H.species.hud.equip_slots
 
 	if(H.species && !(slot in mob_equip))
-		return 0
+		return FALSE
 
 	//First check if the item can be equipped to the desired slot.
 	if("[slot]" in slot_flags_enumeration)
 		var/req_flags = slot_flags_enumeration["[slot]"]
 		if(!(req_flags & slot_flags))
-			return 0
+			return FALSE
 
 	if(!force)
 		//Next check that the slot is free
 		if(H.get_equipped_item(slot))
-			return 0
+			return FALSE
 
 		//Next check if the slot is accessible.
 		var/mob/_user = disable_warning? null : H
 		if(!H.slot_is_accessible(slot, src, _user))
-			return 0
+			return FALSE
 
 	//Lastly, check special rules for the desired slot.
 	switch(slot)
 		if(slot_l_ear, slot_r_ear)
 			var/slot_other_ear = (slot == slot_l_ear)? slot_r_ear : slot_l_ear
 			if( (w_class > ITEM_SIZE_TINY) && !(slot_flags & SLOT_EARS) )
-				return 0
+				return FALSE
 			if( (slot_flags & SLOT_TWOEARS) && H.get_equipped_item(slot_other_ear) )
-				return 0
+				return FALSE
 		if(slot_belt, slot_wear_id)
 			if(slot == slot_belt && (item_flags & ITEM_FLAG_IS_BELT))
-				return 1
+				return TRUE
 			else if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
+					spawn(0)
 					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
-				return 0
+				return FALSE
 		if(slot_l_store, slot_r_store)
 			if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
+					spawn(0)
 					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
-				return 0
+				return FALSE
 			if(slot_flags & SLOT_DENYPOCKET)
-				return 0
+				return FALSE
 			if( w_class > ITEM_SIZE_SMALL && !(slot_flags & SLOT_POCKET) )
-				return 0
+				return FALSE
 			if(get_storage_cost() == ITEM_SIZE_NO_CONTAINER)
-				return 0 //pockets act like storage and should respect ITEM_SIZE_NO_CONTAINER. Suit storage might be fine as is
+				return FALSE //pockets act like storage and should respect ITEM_SIZE_NO_CONTAINER. Suit storage might be fine as is
 		if(slot_s_store)
 			if(!H.wear_suit && (slot_wear_suit in mob_equip))
 				if(!disable_warning)
+					spawn(0)
 					to_chat(H, SPAN("warning", "You need a suit before you can attach this [name]."))
-				return 0
+				return FALSE
 			if(!H.wear_suit.allowed)
 				if(!disable_warning)
+					spawn(0)
 					to_chat(usr, SPAN("warning", "You somehow have a suit with no defined allowed items for suit storage, stop that."))
-				return 0
+				return FALSE
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
-				return 0
+				return FALSE
 		if(slot_handcuffed)
 			if(!istype(src, /obj/item/handcuffs) || !istype(src, /obj/item/clothing/suit/straight_jacket))
-				return 0
+				return FALSE
 		if(slot_in_backpack) //used entirely for equipping spawned mobs or at round start
 			var/allow = 0
 			if(H.back && istype(H.back, /obj/item/storage/backpack))
@@ -466,26 +470,30 @@ var/list/global/slot_flags_enumeration = list(
 				if(B.can_be_inserted(src,M,1))
 					allow = 1
 			if(!allow)
-				return 0
+				return FALSE
 		if(slot_tie)
-			if((!H.w_uniform && (slot_w_uniform in mob_equip)) && (!H.wear_suit && (slot_wear_suit in mob_equip)))
-				if(!disable_warning)
-					to_chat(H, SPAN("warning", "You need something you can attach \the [src] to."))
-				return 0
-			if(H.w_uniform && (slot_w_uniform in mob_equip))
-				var/obj/item/clothing/under/uniform = H.w_uniform
-				if(uniform && !uniform.can_attach_accessory(src))
-					if (!disable_warning)
-						to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [uniform]."))
-					return 0
+			if(slot_w_uniform in mob_equip)
+				if(H.w_uniform)
+					var/obj/item/clothing/under/uniform = H.w_uniform
+					if(uniform && !uniform.can_attach_accessory(src))
+						if (!disable_warning)
+							spawn(0)
+							to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [uniform]."))
+						return FALSE
+				else if(!H.wear_suit && (slot_wear_suit in mob_equip))
+					if(!disable_warning)
+						spawn(0)
+						to_chat(H, SPAN("warning", "You need something you can attach \the [src] to."))
+					return FALSE
 			if(H.wear_suit && (slot_wear_suit in mob_equip))
 				var/obj/item/clothing/suit/suit = H.wear_suit
 				if(suit && !suit.can_attach_accessory(src))
 					if (!disable_warning)
+						spawn(0)
 						to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [suit]."))
-					return 0
+					return FALSE
 
-	return 1
+	return TRUE
 
 /obj/item/proc/return_item()
 	return src
