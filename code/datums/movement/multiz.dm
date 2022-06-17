@@ -2,7 +2,7 @@
 	var/obj/structure/catwalk/C = locate() in location
 	if(istype(C))
 		return C.name
-	return location
+	return location.name
 
 /datum/movement_handler/mob/multiz/DoMove(direction, mob/mover, is_external)
 	if(!(direction & (UP|DOWN)))
