@@ -10,7 +10,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 3
 	force = 0
 	var/quality = ""
 
@@ -83,7 +83,6 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 1
-	throw_speed = 1
 
 /obj/item/reagent_containers/food/tobacco/Initialize()
 	. = ..()
@@ -143,7 +142,6 @@
 	desc = "A bag of tobacco."
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state ="tobacco_generic"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	max_w_class = ITEM_SIZE_TINY
@@ -273,7 +271,7 @@
 	icon_on = "spliffon"
 	ember_state = ""
 	type_butt = /obj/item/cigbutt/spliffbutt
-	throw_speed = 0.5
+	throw_speed = 2
 	smoketime = 120
 	chem_volume = 15
 	filter_trans = 1.0 // Smoke it all, b1tch!

@@ -29,6 +29,18 @@
 
 	var/list/climbers = list()
 
+	var/tf_scale_x  // The atom's base transform scale for width.
+	var/tf_scale_y  // The atom's base transform scale for height.
+	var/tf_rotation // The atom's base transform scale for rotation.
+	var/tf_offset_x // The atom's base transform scale for horizontal offset.
+	var/tf_offset_y // The atom's base transform scale for vertical offset.
+
+	/// Last name used to calculate a color for the chatmessage overlays. Used for caching.
+	var/chat_color_name
+	/// Last color calculated for the the chatmessage overlays. Used for caching.
+	var/chat_color
+	var/chat_color_darkened
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -465,6 +477,8 @@ its easier to just keep the beam vertical.
 	for(var/m in hearing_mobs)
 		var/mob/M = m
 		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+		if(M.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
+			M.create_chat_message(src, message)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
@@ -722,3 +736,40 @@ its easier to just keep the beam vertical.
 /atom/proc/recursive_dir_set(atom/a, old_dir, new_dir)
 	if(loc != a)
 		set_dir(new_dir)
+
+// Clear the atom's tf_* variables and the current transform state.
+/atom/proc/ClearTransform()
+	tf_scale_x = null
+	tf_scale_y = null
+	tf_rotation = null
+	tf_offset_x = null
+	tf_offset_y = null
+	transform = null
+
+// Sets the atom's tf_* variables and the current transform state, also applying others if supplied.
+/atom/proc/SetTransform(
+	scale,
+	scale_x = tf_scale_x,
+	scale_y = tf_scale_y,
+	rotation = tf_rotation,
+	offset_x = tf_offset_x,
+	offset_y = tf_offset_y,
+	list/others
+)
+	if(!isnull(scale))
+		tf_scale_x = scale
+		tf_scale_y = scale
+	else
+		tf_scale_x = scale_x
+		tf_scale_y = scale_y
+	tf_rotation = rotation
+	tf_offset_x = offset_x
+	tf_offset_y = offset_y
+	transform = matrix().Update(
+		scale_x = tf_scale_x,
+		scale_y = tf_scale_y,
+		rotation = tf_rotation,
+		offset_x = tf_offset_x,
+		offset_y = tf_offset_y,
+		others = others
+	)

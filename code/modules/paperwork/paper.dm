@@ -13,7 +13,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 	throw_range = 1
-	throw_speed = 1
+	throw_speed = 3
 	layer = ABOVE_OBJ_LAYER
 	slot_flags = SLOT_HEAD
 	body_parts_covered = HEAD
@@ -260,7 +260,7 @@
 		crumpled = TRUE
 		update_icon()
 		throw_range = 7
-		throw_speed = 2
+		throw_speed = 1
 		return
 	if(taped)
 		name = copytext(name, 1, length(name)-7)

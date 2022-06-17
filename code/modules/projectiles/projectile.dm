@@ -67,6 +67,7 @@
 	var/fire_sound
 
 	var/vacuum_traversal = 1 //Determines if the projectile can exist in vacuum, if false, the projectile will be deleted if it enters vacuum.
+	var/impact_on_original = FALSE // Allow player to shot at floor and do on_impact stuff
 
 	var/datum/plot_vector/trajectory	// used to plot the path of the projectile
 	var/datum/vector_loc/location		// current location of the projectile in pixel space
@@ -82,18 +83,14 @@
 
 /obj/item/projectile/Initialize()
 	damtype = damage_type //TODO unify these vars properly
-	if(!hitscan)
+	if(hitscan)
+		animate_movement = NO_STEPS // Some fucking clown's put this under the if below and we enjoyed twitching projectiles for good 3 years
+	else
 		animate_movement = SLIDE_STEPS
+
 	if(config.misc.projectile_basketball)
 		anchored = 0
 		mouse_opacity = 1
-	else
-		animate_movement = NO_STEPS
-
-	if(projectile_light)
-		layer = ABOVE_LIGHTING_LAYER
-		plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		set_light(projectile_max_bright, projectile_inner_range, projectile_outer_range, projectile_falloff_curve, projectile_brightness_color)
 	. = ..()
 
 /obj/item/projectile/Destroy()
@@ -108,14 +105,22 @@
 
 //TODO: make it so this is called more reliably, instead of sometimes by bullet_act() and sometimes not
 /obj/item/projectile/proc/on_hit(atom/target, blocked = 0, def_zone = null)
-	if(blocked >= 100)		return 0//Full block
-	if(!isliving(target))	return 0
-	if(isanimal(target))	return 0
+	if(blocked >= 100)
+		return 0 //Full block
+	if(!isliving(target))
+		return 0
+	if(isanimal(target))
+		return 0
 
 	var/mob/living/L = target
 
 	L.apply_effects(0, weaken, paralyze, 0, stutter, eyeblur, drowsy, 0, blocked)
-	L.stun_effect_act(stun, agony, def_zone, src)
+	if(ishuman(L) && tasing)
+		var/mob/living/carbon/human/H = L
+		spawn()
+			H.handle_tasing(agony, tasing, def_zone, src)
+	else
+		L.stun_effect_act(stun, agony, def_zone, src)
 	//radiation protection is handled separately from other armour types.
 	L.apply_effect(irradiate, IRRADIATE, L.getarmor(null, "rad"))
 	return 1
@@ -123,7 +128,7 @@
 //called when the projectile stops flying because it collided with something
 /obj/item/projectile/proc/on_impact(atom/A, use_impact = TRUE)
 	if(use_impact)
-		impact_effect(effect_transform)		// generate impact effect, if projectile is in the same loc as shoot start loc, that will cause bugs.
+		impact_effect()		// generate impact effect, if projectile is in the same loc as shoot start loc, that will cause bugs.
 	if(damage && damage_type == BURN)
 		var/turf/T = get_turf(A)
 		if(T)
@@ -145,7 +150,7 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/check_fire(atom/target as mob, mob/living/user as mob)  //Checks if you can hit them or not.
+/obj/item/projectile/proc/check_fire(atom/target, mob/living/user)  //Checks if you can hit them or not.
 	check_trajectory(target, user, pass_flags, item_flags, obj_flags)
 
 //sets the click point of the projectile using mouse input params
@@ -302,6 +307,13 @@
 	if((bumped && !forced) || (A in permutated))
 		return 0
 
+	if(istype(A, /obj/effect/portal))
+		var/obj/effect/portal/P = A
+		if(P.on_projectile_impact(src, FALSE))
+			bumped = FALSE // reset bumped variable!
+			permutated.Add(P)
+			return
+
 	var/passthrough = 0 //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
@@ -393,17 +405,17 @@
 		previous = loc
 		Move(location.return_turf())
 
-		if(!bumped && !isturf(original))
+		if(!bumped && (!isturf(original) || impact_on_original))
 			if(loc == get_turf(original))
 				if(!(original in permutated))
 					if(Bump(original))
 						return
 
 		if(first_step)
-			muzzle_effect(effect_transform)
+			muzzle_effect()
 			first_step = 0
 		else if(!bumped && kill_count > 0)
-			tracer_effect(effect_transform)
+			tracer_effect()
 		if(!hitscan)
 			sleep(step_delay)    //add delay between movement iterations if it's not a hitscan weapon
 
@@ -424,17 +436,15 @@
 		offset = rand(-radius, radius)
 
 	// plot the initial trajectory
-	trajectory = new()
+	trajectory = new
 	trajectory.setup(starting, original, pixel_x, pixel_y, angle_offset=offset)
+	effect_transform = matrix().Update(
+		scale_x = round(trajectory.return_hypotenuse() + 0.005, 0.001),
+		rotation = round(-trajectory.angle, 0.1)
+	)
+	SetTransform(rotation = -(trajectory.angle + 90))
 
-	// generate this now since all visual effects the projectile makes can use it
-	effect_transform = new()
-	effect_transform.Scale(round(trajectory.return_hypotenuse() + 0.005, 0.001) , 1) //Seems like a weird spot to truncate, but it minimizes gaps.
-	effect_transform.Turn(round(-trajectory.return_angle(), 0.1))		//no idea why this has to be inverted, but it works
-
-	transform = turn(transform, -(trajectory.return_angle() + 90)) //no idea why 90 needs to be added, but it works
-
-/obj/item/projectile/proc/muzzle_effect(matrix/T)
+/obj/item/projectile/proc/muzzle_effect()
 	if(silenced)
 		return
 
@@ -442,33 +452,33 @@
 		var/obj/effect/projectile/M = new muzzle_type(get_turf(src))
 
 		if(istype(M))
-			M.set_transform(T)
+			M.SetTransform(others = effect_transform)
 			M.pixel_x = round(location.pixel_x, 1)
 			M.pixel_y = round(location.pixel_y, 1)
 			if(!hitscan) //Bullets don't hit their target instantly, so we can't link the deletion of the muzzle flash to the bullet's Destroy()
-				QDEL_IN(M,1)
+				QDEL_IN(M, 1)
 			else
 				segments += M
 
-/obj/item/projectile/proc/tracer_effect(matrix/M)
+/obj/item/projectile/proc/tracer_effect()
 	if(ispath(tracer_type))
 		var/obj/effect/projectile/P = new tracer_type(location.loc)
 
 		if(istype(P))
-			P.set_transform(M)
+			P.SetTransform(others = effect_transform)
 			P.pixel_x = round(location.pixel_x, 1)
 			P.pixel_y = round(location.pixel_y, 1)
 			if(!hitscan)
-				QDEL_IN(M,1)
+				QDEL_IN(P, 1)
 			else
 				segments += P
 
-/obj/item/projectile/proc/impact_effect(matrix/M)
+/obj/item/projectile/proc/impact_effect()
 	if(ispath(impact_type))
 		var/obj/effect/projectile/P = new impact_type(location.loc)
 
 		if(istype(P))
-			P.set_transform(M)
+			P.SetTransform(others = effect_transform)
 			P.pixel_x = round(location.pixel_x, 1)
 			P.pixel_y = round(location.pixel_y, 1)
 			segments += P

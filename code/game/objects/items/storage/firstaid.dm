@@ -11,7 +11,6 @@
 	name = "first-aid kit"
 	desc = "It's an emergency medical kit for those serious boo-boos."
 	icon_state = "firstaid"
-	throw_speed = 2
 	throw_range = 8
 	force = 7.0
 	mod_weight = 1.25

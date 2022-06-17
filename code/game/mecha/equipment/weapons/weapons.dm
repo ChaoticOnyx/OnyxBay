@@ -131,6 +131,8 @@
 	energy_drain = 200 KILOWATTS
 	equip_cooldown = 150
 	range = MELEE|RANGED
+	equip_slot = BACK
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/honker/can_attach(obj/mecha/combat/honker/M)
 	if(!istype(M))
@@ -230,8 +232,9 @@
 	projectile_energy_cost = 150 KILOWATTS
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack
-	var/missile_speed = 2
+	var/missile_speed = 1
 	var/missile_range = 30
+	equip_slot = BACK
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/Fire(atom/movable/AM, atom/target)
 	AM.throw_at(target,missile_range, missile_speed, chassis)
@@ -248,6 +251,8 @@
 	missile_speed = 1
 	missile_range = 15
 	required_type = /obj/mecha  //Why restrict it to just mining or combat mechs?
+	equip_slot = HAND
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare/Fire(atom/movable/AM, atom/target, turf/aimloc)
 	var/obj/item/device/flashlight/flare/fired = AM
@@ -273,14 +278,15 @@
 	icon_state = "missile"
 	var/primed = null
 	throwforce = 120
+	throw_spin = FALSE
 
-	throw_impact(atom/hit_atom)
-		if(primed)
-			explosion(hit_atom, 0, 1, 4, 4)
-			qdel(src)
-		else
-			..()
-		return
+/obj/item/missile/throw_impact(atom/hit_atom)
+	if(primed)
+		explosion(hit_atom, 0, 1, 4, 4)
+		qdel(src)
+	else
+		..()
+	return
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang
 	name = "\improper SGL-6 grenade launcher"
@@ -291,6 +297,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 200 KILOWATTS
 	equip_cooldown = 60
+	equip_slot = HAND
 	var/det_time = 20
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/Fire(atom/movable/AM, atom/target)
@@ -318,6 +325,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 20
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/banana_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())
@@ -346,6 +354,7 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100 KILOWATTS
 	equip_cooldown = 10
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/mousetrap_mortar/can_attach(obj/mecha/combat/honker/M)
 	if(..())

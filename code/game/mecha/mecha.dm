@@ -7,6 +7,8 @@
 #define MELEE 1
 #define RANGED 2
 
+#define HAND 1
+#define BACK 2
 
 /obj/mecha
 	name = "Mecha"
@@ -21,6 +23,7 @@
 	anchor_fall = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
+	var/base_color = null // Mecha padding color. Used to paint visible equipment in special color.
 	var/can_move = 1
 	var/mob/living/occupant = null
 	var/list/dropped_items = list()
@@ -105,6 +108,28 @@
 	log_message("[src.name] created.")
 	mechas_list += src //global mech list
 	return
+
+/obj/mecha/update_icon()
+	overlays.Cut()
+	var/hand = 0
+	var/back = 0
+	for(var/obj/item/mecha_parts/mecha_equipment/i in equipment)
+		if(i.has_equip_overlay)
+			if(i.equip_slot == HAND && hand < 2)
+				draw_layer(i, hand)
+				hand++
+			else if(i.equip_slot == BACK && back < 2)
+				draw_layer(i, back)
+				back++
+
+/obj/mecha/proc/draw_layer(obj/item/mecha_parts/mecha_equipment/equip, entry)
+	var/icon_name = "[equip.icon_state][entry ? "_r" : "_l"]"
+	var/icon/weapon = icon("icons/mecha/mecha_overlay.dmi", icon_name)
+	overlays += weapon
+	if(equip.need_colorize)
+		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
+		padding.Blend(base_color, ICON_MULTIPLY)
+		overlays += padding	
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -730,11 +755,13 @@
 
 	if(istype(W, /obj/item/mecha_parts/mecha_equipment))
 		var/obj/item/mecha_parts/mecha_equipment/E = W
+
 		spawn()
 			if(E.can_attach(src))
 				user.drop_item()
 				E.attach(src)
 				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+				update_icon()
 			else
 				to_chat(user, "You were unable to attach [W] to [src]")
 		return
@@ -1559,6 +1586,7 @@
 			src.occupant_message("You switch to [equip]")
 			src.visible_message("[src] raises [equip]")
 			send_byjax(src.occupant,"exosuit.browser","eq_list",src.get_equipment_list())
+			update_icon()
 		return
 	if(href_list["eject"])
 		if(usr != src.occupant)	return

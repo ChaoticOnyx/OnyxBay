@@ -18,7 +18,6 @@
 
 	force = 1
 	throwforce = 1
-	throw_speed = 5
 	throw_range = 20
 	item_flags = 0
 	obj_flags = 0
@@ -97,6 +96,39 @@
 	matter = list(MATERIAL_PLASTEEL = 937.5)
 
 /obj/item/stack/tile/floor_dark/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor
+	name = "tech floor tile"
+	singular_name = "tech floor tile"
+	icon_state = "tile_techfloor"
+	matter = list(MATERIAL_PLASTEEL = 937.5)
+
+/obj/item/stack/tile/techfloor/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/maint
+	name = "tech maint tile"
+	singular_name = "tech maint tile"
+	icon_state = "tile_techmaint"
+
+/obj/item/stack/tile/techfloor/maint/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/grid
+	name = "tech grid tile"
+	singular_name = "tech grid tile"
+	icon_state = "tile_techgrid"
+
+/obj/item/stack/tile/techfloor/grid/fifty
+	amount = 50
+
+/obj/item/stack/tile/techfloor/ridge
+	name = "tech ridge tile"
+	singular_name = "tech ridge tile"
+	icon_state = "tile_techridge"
+
+/obj/item/stack/tile/techfloor/ridge/fifty
 	amount = 50
 
 /obj/item/stack/tile/floor_freezer

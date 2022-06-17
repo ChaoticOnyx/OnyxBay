@@ -243,7 +243,6 @@
 	icon_state = "toolbox_tiles"
 	force = 3.0
 	throwforce = 10.0
-	throw_speed = 2
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/created_name = "Floorbot"
@@ -273,7 +272,6 @@
 	icon_state = "toolbox_tiles_sensor"
 	force = 3.0
 	throwforce = 10.0
-	throw_speed = 2
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/created_name = "Floorbot"

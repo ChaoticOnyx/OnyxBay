@@ -239,12 +239,8 @@
 		lenses.attach_lenses(src)
 
 /obj/item/clothing/glasses/hud/Destroy()
-	if(matrix)
-		qdel(matrix)
-		matrix = null
-	if(lenses)
-		qdel(lenses)
-		lenses = null
+	QDEL_NULL(matrix)
+	QDEL_NULL(lenses)
 	return ..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)

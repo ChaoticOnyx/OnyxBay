@@ -2,6 +2,14 @@
 	var/icon_state = ""
 	var/footstep_sound = null
 
+/datum/robot_hull/custom
+	var/icon
+
+/datum/robot_hull/custom/New(state = "robot", footstep = FOOTSTEP_ROBOT_SPIDER, cstm_icon = CUSTOM_ITEM_ROBOTS)
+	icon_state = state
+	footstep_sound = footstep
+	icon = cstm_icon
+
 /datum/robot_hull/spider
 	footstep_sound = FOOTSTEP_ROBOT_SPIDER
 

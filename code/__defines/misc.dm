@@ -84,6 +84,7 @@
 //Area flags, possibly more to come
 #define AREA_FLAG_RAD_SHIELDED 1 // shielded from radiation, clearly
 #define AREA_FLAG_EXTERNAL     2 // External as in exposed to space, not outside in a nice, green, forest
+#define AREA_FLAG_NO_STATION   3
 
 //Area gravity flags
 #define AREA_GRAVITY_NEVER  -1 // No gravity, never
@@ -284,3 +285,8 @@
 #define BANK_SECURITY_MINIMUM 0
 #define BANK_SECURITY_MODERATE 1
 #define BANK_SECURITY_MAXIMUM 2
+
+// Notification action types
+#define NOTIFY_JUMP "jump"
+#define NOTIFY_ATTACK "attack"
+#define NOTIFY_FOLLOW "follow"

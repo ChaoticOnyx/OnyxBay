@@ -8,7 +8,7 @@
 	desc = "A coruscating, barely visible field of energy. It is shaped like a slightly flattened torus."
 	icon = 'icons/obj/machines/power/fusion.dmi'
 	icon_state = "emfield_s1"
-	alpha = 50
+	alpha = 200
 	layer = 4
 	light_color = COLOR_BLUE
 
@@ -307,11 +307,22 @@
 
 /obj/effect/fusion_em_field/proc/change_size(newsize = 1)
 	var/changed = 0
-
-	if( ((newsize-1)%2==0) && (newsize<=13) )
-		icon = 'icons/obj/machines/power/fusion.dmi'
-		if(newsize>1)
-			icon = "icons/effects/[newsize*32]x[newsize*32].dmi"
+	if(((newsize-1)%2==0) && (newsize<=13))
+		switch(newsize)
+			if(1)
+				icon = 'icons/obj/machines/power/fusion.dmi'
+			if(3)
+				icon = 'icons/effects/96x96.dmi'
+			if(5)
+				icon = 'icons/effects/160x160.dmi'
+			if(7)
+				icon = 'icons/effects/224x224.dmi'
+			if(9)
+				icon = 'icons/effects/288x288.dmi'
+			if(11)
+				icon = 'icons/effects/352x352.dmi'
+			if(13)
+				icon = 'icons/effects/416x416.dmi'
 		icon_state = "emfield_s[newsize]"
 		pixel_x = ((newsize-1) * -16) * PIXEL_MULTIPLIER
 		pixel_y = ((newsize-1) * -16) * PIXEL_MULTIPLIER

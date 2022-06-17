@@ -29,6 +29,15 @@
 
 	var/skull_path = /obj/item/skull
 
+/obj/item/organ/external/head/droplimb(clean, disintegrate = DROPLIMB_EDGE, ignore_children, silent)
+	if(BP_IS_ROBOTIC(src) && disintegrate == DROPLIMB_BURN)
+		var/obj/item/organ/internal/mmi_holder/FBP_brain = owner.internal_organs_by_name[BP_BRAIN]
+		if(istype(FBP_brain))
+			FBP_brain.stored_mmi.visible_message(SPAN_DANGER("You see a bright flash as you get catapulted out of your body. You feel disoriented, which must be normal since you're just a brain in can."), SPAN_NOTICE("[owner]'s head ejects an MMI!"))
+			FBP_brain.removed()
+			FBP_brain.transfer_and_delete()
+	return ..()
+
 /obj/item/organ/external/head/organ_eaten(mob/user)
 	. = ..()
 	var/obj/item/skull/SK = new /obj/item/skull(get_turf(src))

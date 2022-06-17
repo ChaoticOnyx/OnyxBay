@@ -40,14 +40,10 @@
 
 /obj/item/reagent_containers/borghypo/Initialize()
 	. = ..()
-
 	for(var/T in reagent_ids)
 		reagent_volumes[T] = volume
 		var/datum/reagent/R = T
 		reagent_names += initial(R.name)
-
-/obj/item/reagent_containers/borghypo/Initialize()
-	. = ..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/reagent_containers/borghypo/Destroy()
@@ -134,8 +130,8 @@
 /obj/item/reagent_containers/borghypo/service
 	name = "cyborg drink synthesizer"
 	desc = "A portable drink dispencer."
-	icon = 'icons/obj/drinks.dmi'
-	icon_state = "shaker"
+	icon = 'icons/obj/reagent_containers/vessels.dmi'
+	icon_state = "synthesizer"
 	charge_cost = 20
 	recharge_time = 3
 	volume = 60

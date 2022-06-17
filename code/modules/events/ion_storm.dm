@@ -108,7 +108,7 @@
 /datum/event/ionstorm/end()
 	spawn(rand(5000,8000))
 		if(prob(50))
-			ion_storm_announcement()
+			GLOB.using_map.ion_storm_announcement()
 
 
 /datum/event/ionstorm/proc/get_random_humanoid_player_name(default_if_none)

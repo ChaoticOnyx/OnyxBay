@@ -127,7 +127,7 @@
 		return 1
 
 	set_current(C)
-	user.machine = nano_host()
+	user.set_machine(nano_host())
 	user.reset_view(C)
 	return 1
 

@@ -806,8 +806,7 @@
 	var/list/emotes = list("[src] looks trusthworthy.",
 							"You feel as if [src] is a relatively friendly individual.",
 							"You feel yourself paying more attention to what [src] is saying.",
-							"[src] has your best interests at heart, you can feel it.",
-							"A quiet voice tells you that [src] should be considered a friend.")
+							"[src] has your best interests at heart, you can feel it.")
 
 	vampire.use_blood(power_use_cost)
 

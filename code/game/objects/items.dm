@@ -258,21 +258,25 @@
 
 	var/old_loc = loc
 
-	pickup(user)
+	// Removing from a storage
 	if(istype(loc, /obj/item/storage))
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
+	// Unequipping from self
+	else if(loc == user && !user.unEquip(src))
+		return
+	// Doing some unintended shit that may cause catastrophical events, aborting
+	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside
+	// an atom's contents - just go and smack yourself with a brick, it shall not work like this.
+	else if(!isturf(loc))
+		return
 
 	throwing = 0
-	if(loc == user)
-		if(!user.unEquip(src))
-			return
-	else
-		if(isliving(loc))
-			return
 
 	if(QDELETED(src)) // Unequipping may change src gc_destroyed, so must check here
 		return
+
+	pickup(user)
 
 	if(user.put_in_active_hand(src))
 		if(isturf(old_loc))
@@ -551,14 +555,23 @@ var/list/global/slot_flags_enumeration = list(
 		var/obj/item/projectile/P = damage_source
 		if(!P.blockable)
 			return 0
-		if(block_tier >= BLOCK_TIER_PROJECTILE)
+		if(block_tier == BLOCK_TIER_PROJECTILE)
 			if(P.armor_penetration > (25 * mod_shield) - 5)
 				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [name]!"))
-			proj_poise_drain(user, P, TRUE)
+			proj_poise_drain(user, P)
 			spawn()
 				shake_camera(user, 1)
+			return PROJECTILE_FORCE_BLOCK
+		else if(block_tier == BLOCK_TIER_ADVANCED)
+			// some effects here
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(3, 0, user.loc)
+			spark_system.start()
+
+			visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
+			proj_poise_drain(user, P)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 
@@ -567,7 +580,7 @@ var/list/global/slot_flags_enumeration = list(
 		var/mob/living/carbon/human/H = user
 		var/poise_dmg = P.damage / (mod_shield * 2.5)
 		if(block_tier != BLOCK_TIER_ADVANCED && P.damage_type == BRUTE)
-			poise_dmg = P.damage + (P.agony / 1.5) / (mod_shield * 2.5)
+			poise_dmg = (P.damage + (P.agony / 1.5)) / (mod_shield * 2.5)
 		poise_dmg *= (src == H.get_active_hand()) ? 1.25 : 2.0
 		H.damage_poise(poise_dmg)
 		if(H.poise < poise_dmg)
@@ -581,15 +594,15 @@ var/list/global/slot_flags_enumeration = list(
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
-	if(src && istype(loc,/turf))
-		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+	if(src && isturf(loc))
+		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
 		H.drop_from_inventory(src)
 		if(src && istype(loc,/turf))
-			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
 			return TRUE

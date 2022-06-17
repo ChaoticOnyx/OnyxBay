@@ -3,7 +3,7 @@
 	name = "cigarette"
 	desc = "A small paper cylinder filled with processed tobacco and various fillers."
 	icon_state = "cigoff"
-	throw_speed = 0.5
+	throw_speed = 2
 	item_state = "cigoff"
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS | SLOT_MASK
@@ -41,10 +41,15 @@
 		butt.color = color
 		if(brand)
 			butt.desc += " This one is \a [brand]."
-		if(ismob(loc))
-			var/mob/living/M = loc
+		if(iscarbon(loc))
+			var/mob/living/carbon/M = loc
 			if (!nomessage)
 				to_chat(M, SPAN("notice", "Your [name] goes out."))
+			if(!M.stat && (src == M.wear_mask || M.is_item_in_hands(src)) && !M.handcuffed && isturf(M.loc))
+				for(var/obj/item/material/ashtray/A in view(1, M))
+					if(length(A.contents) < A.max_butts)
+						A.attackby(butt, M)
+						break
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
 
@@ -199,7 +204,7 @@
 		if(dynamic_icon)
 			die(nomessage = TRUE, nodestroy = TRUE)
 			if(loc == user)
-				transform = turn(transform, round(rand(0, 360), 45))
+				SetTransform(rotation = round(rand(0, 360), 45))
 				pixel_x = rand(-10, 10)
 				pixel_y = rand(-10, 10)
 				user.remove_from_mob(src) // un-equip it so the overlays can update
@@ -209,7 +214,7 @@
 
 /obj/item/clothing/mask/smokable/cigarette/attack_hand(mob/user)
 	if(ishuman(user) && dynamic_icon)
-		transform = matrix()
+		ClearTransform()
 		pixel_x = initial(pixel_x)
 		pixel_y = initial(pixel_y)
 	return ..()
@@ -248,7 +253,7 @@
 
 /obj/item/cigbutt/Initialize()
 	. = ..()
-	transform = turn(transform, round(rand(0, 360), 45))
+	SetTransform(rotation = round(rand(0, 360), 45))
 
 ////////////////
 // CIGARETTES //
@@ -378,7 +383,7 @@
 	icon_on = "cigar2on"
 	ember_state = ""
 	type_butt = /obj/item/cigbutt/cigarbutt
-	throw_speed = 0.5
+	throw_speed = 2
 	item_state = "cigaroff"
 	smoketime = 900
 	chem_volume = 22.5

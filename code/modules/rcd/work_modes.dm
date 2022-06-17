@@ -64,7 +64,7 @@
 
 	if(T.contains_dense_objects() && locate(/obj/machinery/door/airlock) in T)
 		return FALSE
-	
+
 	return TRUE
 
 /datum/rcd_work_mode/construction_airlock/_do_handle_work(obj/item/rcd/rcd, atom/target)
@@ -81,7 +81,7 @@
 
 /datum/rcd_work_mode/construction_floor/New()
 	preview = image('icons/turf/floors.dmi', "steel")
-	preview.transform *= 0.6
+	preview.SetTransform(scale = 0.6)
 
 /datum/rcd_work_mode/construction_floor/_work_message(atom/target, mob/user, obj/item/rcd/rcd)
 	user.visible_message(SPAN("notice", "\The [user] uses \a [rcd] to construct floor."), SPAN("notice", "You begin construction."))
@@ -106,7 +106,7 @@
 /datum/rcd_work_mode/construction_floor/_do_handle_work(obj/item/rcd/rcd, atom/target)
 	if(!_can_do_handle_work(rcd, target))
 		return
-	
+
 	var/turf/T = get_turf(target)
 
 	T.ChangeTurf(/turf/simulated/floor/tiled)
@@ -117,7 +117,7 @@
 
 /datum/rcd_work_mode/construction_wall/New()
 	preview = image('icons/turf/walls.dmi', "0")
-	preview.transform *= 0.6
+	preview.SetTransform(scale = 0.6)
 
 /datum/rcd_work_mode/construction_wall/_work_message(atom/target, mob/user, obj/item/rcd/rcd)
 	user.visible_message(SPAN("notice", "\The [user] uses \a [rcd] to construct wall."), SPAN("notice", "You begin construction."))
@@ -154,13 +154,13 @@
 /datum/rcd_work_mode/deconstruction/_calculate_delay(atom/target)
 	if(istype(target, /obj/machinery/door/airlock))
 		return 5 SECONDS
-	
+
 	return 2 SECONDS
 
 /datum/rcd_work_mode/deconstruction/_calculate_cost(atom/target)
 	if(istype(target, /obj/machinery/door/airlock))
 		return 10
-	
+
 	return 3
 
 /datum/rcd_work_mode/deconstruction/_work_message(atom/target, mob/user, obj/item/rcd/rcd)
@@ -169,7 +169,7 @@
 /datum/rcd_work_mode/deconstruction/_can_do_handle_work(obj/item/rcd/rcd, atom/target)
 	if(!istype(target, /obj/machinery/door/airlock) && !istype(target, /turf/simulated/wall) && !istype(target, /turf/simulated/floor))
 		return FALSE
-	
+
 	return TRUE
 
 /datum/rcd_work_mode/deconstruction/_do_handle_work(obj/item/rcd/rcd, atom/target)
@@ -181,7 +181,7 @@
 	if(istype(W) && (!W.reinf_material || rcd.can_rwall))
 		W.dismantle_wall()
 		return
-	
+
 	var/turf/simulated/floor/F = target
 	if(istype(F))
 		F.dismantle_floor()

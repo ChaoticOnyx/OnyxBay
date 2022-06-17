@@ -3,7 +3,7 @@
 	desc = "A great gift for your girlfriend. Shotgun to a bouquet should be bought separately."
 	icon_state = "mixedbouquet"
 	item_state = "mixedbouquet"
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 5
 	force = 5
 	w_class = ITEM_SIZE_LARGE

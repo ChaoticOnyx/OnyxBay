@@ -20,7 +20,10 @@ var/can_call_ert
 	if(send_emergency_team)
 		to_chat(usr, "<span class='danger'>[GLOB.using_map.boss_name] has already dispatched an emergency response team!</span>")
 		return
-	if(alert("Do you want to dispatch an Emergency Response Team?",,"Yes","No") != "Yes")
+
+	var/call_reason = sanitize(input(usr, "Enter reason", "Call reason") as message, max_length=MAX_BOOK_MESSAGE_LEN, extra=FALSE)
+
+	if(alert("Do you want to dispatch an Emergency Response Team with following text: [call_reason]?",,"Yes","No") != "Yes")
 		return
 
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
@@ -33,7 +36,7 @@ var/can_call_ert
 		return
 
 	log_admin("[key_name(usr)] used Dispatch Response Team.", notify_admin = TRUE)
-	trigger_armed_response_team(1)
+	trigger_armed_response_team(TRUE, call_reason)
 
 /client/proc/response_team_menu()
 	set name = "Emergency Response Team Mission Menu"
@@ -131,7 +134,7 @@ var/can_call_ert
 		sleep(600 * 3) // Minute * Number of Minutes
 
 
-/proc/trigger_armed_response_team(force = 0)
+/proc/trigger_armed_response_team(force = FALSE, call_reason)
 	if(!can_call_ert && !force)
 		return
 	if(send_emergency_team)
@@ -149,6 +152,9 @@ var/can_call_ert
 		command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. Unfortunately, we were unable to send one at this time.", "[GLOB.using_map.boss_name]")
 		can_call_ert = 0 // Only one call per round, ladies.
 		return
+
+	if(call_reason)
+		GLOB.ert.message_from_station = call_reason
 
 	command_announcement.Announce("It would appear that an emergency response team was requested for [station_name()]. We will prepare and send one as soon as possible.", "[GLOB.using_map.boss_name]")
 	evacuation_controller.add_can_call_predicate(new /datum/evacuation_predicate/ert())

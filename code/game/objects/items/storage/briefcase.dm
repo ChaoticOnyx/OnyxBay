@@ -5,7 +5,6 @@
 	item_state = "briefcase"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 8.0
-	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.5

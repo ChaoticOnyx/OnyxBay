@@ -184,7 +184,7 @@
 	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		var/miss_chance = 15
 		if(O.throw_source)
@@ -224,7 +224,7 @@
 			var/dir = get_dir(O.throw_source, src)
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src,dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return
@@ -342,7 +342,7 @@
 	//once our fire_burn_temperature has reached the temperature of the fire that's giving fire_stacks, stop adding them.
 	//allow fire_stacks to go up to 4 for fires cooler than 700 K, since are being immersed in flame after all.
 	if(fire_stacks <= 4 || fire_burn_temperature() < temperature)
-		adjust_fire_stacks(2)
+		adjust_fire_stacks(4)
 	IgniteMob()
 
 /mob/living/proc/get_cold_protection()

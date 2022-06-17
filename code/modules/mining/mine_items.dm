@@ -315,7 +315,6 @@
 	slot_flags = SLOT_BELT
 	w_class = 2.0
 	item_state = "electronic"
-	throw_speed = 4
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 500)
 	var/turf/simulated/mineral/random/sonar = null
@@ -380,7 +379,6 @@
 	item_state = "hypo"
 	throwforce = 0
 	w_class = 2
-	throw_speed = 3
 	throw_range = 5
 	var/loaded = 1
 	var/malfunctioning = FALSE
