@@ -167,6 +167,8 @@
 
 	if(!..())
 		return 0
+	if(!gun)
+		return
 
 	if(!target)
 		gun.attack_self(holder.wearer)
@@ -218,7 +220,7 @@
 
 	usable = 0
 	selectable = 1
-	toggleable = 1
+	toggleable = 0
 	use_power_cost = 10 KILOWATTS
 	active_power_cost = 500
 	passive_power_cost = 0

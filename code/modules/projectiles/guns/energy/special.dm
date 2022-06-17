@@ -251,8 +251,16 @@
 	icon_state = "shuriken"
 	w_class = ITEM_SIZE_SMALL
 	item_state = "shuriken"
+	canremove = FALSE
+	force_drop = TRUE
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 2, TECH_ILLEGAL = 5)
 	matter = list(MATERIAL_STEEL = 2000)
+	force = 12 // Actually, you can use it as a weapon
+	mod_weight = 0.7
+	mod_reach = 1.0
+	mod_handy = 1.5
+	mod_shield = 0.2
+	sharp = 1
 	silenced = 1
 	fire_sound = 'sound/effects/weapons/misc/shuriken.ogg'
 	projectile_type = /obj/item/projectile/energy/shuriken
@@ -271,6 +279,11 @@
 /obj/item/gun/energy/shurikens/dropped()
 	QDEL_IN(src, 0)
 
+/obj/item/gun/energy/emp_act(severity)
+	if(sel_mode == 2)
+		switch_firemodes()
+	firemodes.Cut()
+
 /obj/item/gun/energy/shurikens/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER
 
@@ -278,6 +291,8 @@
 	return
 
 /obj/item/gun/energy/shurikens/switch_firemodes()
+	if(firemodes.len <= 1)
+		return
 	sel_mode = (sel_mode == 1) ? 2 : 1
 	var/datum/firemode/new_mode = firemodes[sel_mode]
 	new_mode.apply_to(src)

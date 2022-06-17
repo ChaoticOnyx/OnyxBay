@@ -254,6 +254,6 @@
 	armor_penetration = 10
 
 /obj/item/projectile/energy/shuriken/neurotoxin
-	damage = 5
+	damage = 10
 	damage_type = TOX
 	weaken = 5
