@@ -244,3 +244,16 @@
 /obj/item/projectile/energy/plasmastun/on_hit(atom/target)
 	bang(target)
 	. = ..()
+
+/obj/item/projectile/energy/shuriken
+	name = "shuriken"
+	icon_state = "shuriken"
+	damage = 20
+	agony = 20
+	damage_type = BRUTE
+	armor_penetration = 10
+
+/obj/item/projectile/energy/shuriken/neurotoxin
+	damage = 5
+	damage_type = TOX
+	weaken = 5

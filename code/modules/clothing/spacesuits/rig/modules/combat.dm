@@ -64,10 +64,10 @@
 		return 0
 
 	if(accepted_item.charges >= 5)
-		to_chat(user, "<span class='danger'>Another grenade of that type will not fit into the module.</span>")
+		to_chat(user, SPAN("danger","Another grenade of that type will not fit into the module."))
 		return 0
 
-	to_chat(user, "<span class='info'><b>You slot \the [input_device] into the suit module.</b></span>")
+	to_chat(user, SPAN("info","<b>You slot \the [input_device] into the suit module.</b>"))
 	user.drop_from_inventory(input_device)
 	qdel(input_device)
 	accepted_item.charges++
@@ -84,7 +84,7 @@
 	var/mob/living/carbon/human/H = holder.wearer
 
 	if(!charge_selected)
-		to_chat(H, "<span class='danger'>You have not selected a grenade type.</span>")
+		to_chat(H, SPAN("danger","You have not selected a grenade type."))
 		return 0
 
 	var/datum/rig_charge/charge = charges[charge_selected]
@@ -93,12 +93,12 @@
 		return 0
 
 	if(charge.charges <= 0)
-		to_chat(H, "<span class='danger'>Insufficient grenades!</span>")
+		to_chat(H, SPAN("danger","Insufficient grenades!"))
 		return 0
 
 	charge.charges--
 	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H))
-	H.visible_message("<span class='danger'>[H] launches \a [new_grenade]!</span>")
+	H.visible_message(SPAN("danger","[H] launches \a [new_grenade]!"))
 	new_grenade.safety_pin = null
 	new_grenade.det_time = 10
 	new_grenade.activate(H)
@@ -223,7 +223,7 @@
 	active_power_cost = 500
 	passive_power_cost = 0
 
-	gun = /obj/item/gun/energy/crossbow/ninja
+	gun = null
 
 /obj/item/rig_module/mounted/energy_blade/Process()
 
@@ -241,7 +241,7 @@
 	var/mob/living/M = holder.wearer
 
 	if(M.l_hand && M.r_hand)
-		to_chat(M, "<span class='danger'>Your hands are full.</span>")
+		to_chat(M, SPAN("danger","Your hands are full."))
 		deactivate()
 		return
 
@@ -266,49 +266,52 @@
 
 	name = "matter fabricator"
 	desc = "A self-contained microfactory system for powersuit integration."
-	selectable = 1
+	selectable = 0
 	usable = 1
 	use_power_cost = 5 KILOWATTS
 	icon_state = "enet"
 
-	engage_string = "Fabricate Star"
+	engage_string = "Fabricate nothing"
 
-	interface_name = "death blossom launcher"
-	interface_desc = "An integrated microfactory that produces poisoned throwing stars from thin air and electricity."
+	interface_name = "nothing launcher"
+	interface_desc = "An integrated microfactory that produces something thin air and electricity."
 
-	var/fabrication_type = /obj/item/material/star/ninja
-	var/fire_force = 1
-	var/fire_distance = 10
+	var/fabrication_type = /obj/item/gun/energy/shurikens
 
-/obj/item/rig_module/fabricator/engage(atom/target)
+/obj/item/rig_module/fabricator/engage()
 
 	if(!..())
 		return 0
 
 	var/mob/living/H = holder.wearer
-
-	if(target)
-		var/obj/item/firing = new fabrication_type()
-		firing.forceMove(get_turf(src))
-		H.visible_message("<span class='danger'>[H] launches \a [firing]!</span>")
-		firing.throw_at(target, fire_distance, fire_force)
+	if(H.l_hand && H.r_hand)
+		to_chat(H, SPAN("danger","Your hands are full."))
 	else
-		if(H.l_hand && H.r_hand)
-			to_chat(H, "<span class='danger'>Your hands are full.</span>")
-		else
-			var/obj/item/new_weapon = new fabrication_type()
-			new_weapon.forceMove(H)
-			to_chat(H, "<span class='info'><b>You quickly fabricate \a [new_weapon].</b></span>")
-			H.put_in_hands(new_weapon)
+		var/obj/item/new_weapon = new fabrication_type()
+		new_weapon.forceMove(H)
+		to_chat(H, SPAN("info","<b>You quickly fabricate \a [new_weapon].</b>"))
+		H.put_in_hands(new_weapon)
 
 	return 1
+
+/obj/item/rig_module/fabricator/shurikens
+	name = "shurikens fabricator"
+	desc = "A self-contained microfactory system for powersuit integration."
+	use_power_cost = 10 KILOWATTS
+
+	engage_string = "Fabricate shurikens"
+
+	interface_name = "death blossom launcher"
+	interface_desc = "An integrated microfactory that produces poisoned throwing stars from thin air and electricity."
+
+	var/fabrication_type = /obj/item/gun/energy/shurikens
 
 /obj/item/rig_module/fabricator/wf_sign
 	name = "wet floor sign fabricator"
 	use_power_cost = 50 KILOWATTS
 	engage_string = "Fabricate Sign"
 
-	interface_name = "work saftey launcher"
+	interface_name = "work safety launcher"
 	interface_desc = "An integrated microfactory that produces wet floor signs from thin air and electricity."
 
 	fabrication_type = /obj/item/caution

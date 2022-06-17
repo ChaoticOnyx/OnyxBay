@@ -244,3 +244,50 @@
 
 /obj/item/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
 	return 3800
+
+/obj/item/gun/energy/shurikens
+	name = "shurikens"
+	desc = "A pack of shurikens ready to be thrown."
+	icon_state = "shuriken"
+	w_class = ITEM_SIZE_SMALL
+	item_state = "shuriken"
+	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 2, TECH_ILLEGAL = 5)
+	matter = list(MATERIAL_STEEL = 2000)
+	silenced = 1
+	fire_sound = 'sound/effects/weapons/misc/shuriken.ogg'
+	projectile_type = /obj/item/projectile/energy/shuriken
+	max_shots = 3
+	firemodes = list(
+		list(mode_name = "normal", projectile_type = /obj/item/projectile/energy/shuriken),
+		list(mode_name = "neurotox", projectile_type = /obj/item/projectile/energy/shuriken/neurotoxin)
+	)
+
+/obj/item/gun/energy/shurikens/update_icon()
+	if(sel_mode == 1)
+		icon_state = "shuriken"
+	else
+		icon_state = "shuriken_neurotox"
+
+/obj/item/gun/energy/shurikens/dropped()
+	QDEL_IN(src, 0)
+
+/obj/item/gun/energy/shurikens/get_storage_cost()
+	return ITEM_SIZE_NO_CONTAINER
+
+/obj/item/gun/energy/shurikens/attackby()
+	return
+
+/obj/item/gun/energy/shurikens/switch_firemodes()
+	sel_mode++
+	if(sel_mode > firemodes.len)
+		sel_mode = 1
+	var/datum/firemode/new_mode = firemodes[sel_mode]
+	new_mode.apply_to(src)
+	update_icon()
+	playsound(src, 'sound/effects/weapons/misc/shuriken_switch.ogg', rand(50, 75), FALSE)
+
+/obj/item/gun/energy/shurikens/Fire(mob/user, atom/target)
+	..()
+	// Actuallym if there are 0 shots left 0 - there are any shurikens
+	if(!power_supply.charge)
+		qdel(src)
