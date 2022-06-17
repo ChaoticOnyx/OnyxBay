@@ -286,8 +286,8 @@
 	update_icon()
 	playsound(src, 'sound/effects/weapons/misc/shuriken_switch.ogg', rand(50, 75), FALSE)
 
-/obj/item/gun/energy/shurikens/Fire(mob/user, atom/target)
+/obj/item/gun/energy/shurikens/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
 	..()
-	// Actuallym if there are 0 shots left 0 - there are any shurikens
+	// Actually if there are 0 shots left 0 - there are no shurikens left
 	if(!power_supply.charge)
 		qdel(src)
