@@ -433,13 +433,13 @@ var/list/global/slot_flags_enumeration = list(
 			else if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
 					spawn(0)
-					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
+					to_chat(H, SPAN_WARNING("You need a jumpsuit before you can attach this [name]."))
 				return FALSE
 		if(slot_l_store, slot_r_store)
 			if(!H.w_uniform && (slot_w_uniform in mob_equip))
 				if(!disable_warning)
 					spawn(0)
-					to_chat(H, SPAN("warning", "You need a jumpsuit before you can attach this [name]."))
+					to_chat(H, SPAN_WARNING("You need a jumpsuit before you can attach this [name]."))
 				return FALSE
 			if(slot_flags & SLOT_DENYPOCKET)
 				return FALSE
@@ -451,12 +451,12 @@ var/list/global/slot_flags_enumeration = list(
 			if(!H.wear_suit && (slot_wear_suit in mob_equip))
 				if(!disable_warning)
 					spawn(0)
-					to_chat(H, SPAN("warning", "You need a suit before you can attach this [name]."))
+					to_chat(H, SPAN_WARNING("You need a suit before you can attach this [name]."))
 				return FALSE
 			if(!H.wear_suit.allowed)
 				if(!disable_warning)
 					spawn(0)
-					to_chat(usr, SPAN("warning", "You somehow have a suit with no defined allowed items for suit storage, stop that."))
+					to_chat(usr, SPAN_WARNING("You somehow have a suit with no defined allowed items for suit storage, stop that."))
 				return FALSE
 			if( !(istype(src, /obj/item/device/pda) || istype(src, /obj/item/pen) || is_type_in_list(src, H.wear_suit.allowed)) )
 				return FALSE
@@ -478,19 +478,19 @@ var/list/global/slot_flags_enumeration = list(
 					if(uniform && !uniform.can_attach_accessory(src))
 						if (!disable_warning)
 							spawn(0)
-							to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [uniform]."))
+							to_chat(H, SPAN_WARNING("You cannot equip \the [src] to \the [uniform]."))
 						return FALSE
-				else if(!H.wear_suit && (slot_wear_suit in mob_equip))
+				else if(slot_wear_suit in mob_equip)
 					if(!disable_warning)
 						spawn(0)
-						to_chat(H, SPAN("warning", "You need something you can attach \the [src] to."))
+						to_chat(H, SPAN_WARNING("You need something you can attach \the [src] to."))
 					return FALSE
 			if(H.wear_suit && (slot_wear_suit in mob_equip))
 				var/obj/item/clothing/suit/suit = H.wear_suit
 				if(suit && !suit.can_attach_accessory(src))
 					if (!disable_warning)
 						spawn(0)
-						to_chat(H, SPAN("warning", "You cannot equip \the [src] to \the [suit]."))
+						to_chat(H, SPAN_WARNING("You cannot equip \the [src] to \the [suit]."))
 					return FALSE
 
 	return TRUE
