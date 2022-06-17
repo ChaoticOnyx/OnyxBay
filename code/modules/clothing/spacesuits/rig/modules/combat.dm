@@ -276,7 +276,7 @@
 	interface_name = "nothing launcher"
 	interface_desc = "An integrated microfactory that produces something thin air and electricity."
 
-	var/fabrication_type = /obj/item/gun/energy/shurikens
+	var/fabrication_type = null
 
 /obj/item/rig_module/fabricator/engage()
 
@@ -304,7 +304,7 @@
 	interface_name = "death blossom launcher"
 	interface_desc = "An integrated microfactory that produces poisoned throwing stars from thin air and electricity."
 
-	var/fabrication_type = /obj/item/gun/energy/shurikens
+	fabrication_type = /obj/item/gun/energy/shurikens
 
 /obj/item/rig_module/fabricator/wf_sign
 	name = "wet floor sign fabricator"
