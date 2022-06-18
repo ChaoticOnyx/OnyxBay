@@ -331,8 +331,6 @@ var/global/datum/body_build/default_body_build = new
 
 	stomach_capacity   = STOMACH_CAPACITY_LOW
 
-	equipment_modifier = -0.5
-
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
 	genders              = list(MALE, FEMALE, NEUTER)

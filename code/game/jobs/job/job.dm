@@ -11,6 +11,7 @@
 	var/spawn_positions = 0               // How many players can spawn in as this job
 	var/current_positions = 0             // How many players have this job
 	var/availablity_chance = 100          // Percentage chance job is available each round
+	var/no_latejoin = FALSE               // Disables late join for this job
 
 	var/open_vacancies   = 0              // How many vacancies were opened by heads
 	var/filled_vacancies = 0              // How many vacancies were filled

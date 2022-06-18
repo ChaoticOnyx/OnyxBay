@@ -10,7 +10,6 @@
 	uniform = /obj/item/clothing/under/rank/bartender
 	id_type = /obj/item/card/id/civilian/bartender
 	pda_type = /obj/item/device/pda/bar
-	r_pocket = /obj/item/reagent_containers/food/monkeycube/punpuncube
 	suit = /obj/item/clothing/suit/armor/vest
 
 /decl/hierarchy/outfit/job/service/chef
@@ -39,6 +38,37 @@
 	uniform = /obj/item/clothing/under/rank/janitor
 	id_type = /obj/item/card/id/civilian/janitor
 	pda_type = /obj/item/device/pda/janitor
+
+/decl/hierarchy/outfit/job/service/barmonkey
+	name = OUTFIT_JOB_NAME("Bar Monkey")
+	uniform = null
+	shoes = null
+	pda_type = null
+	id_type = /obj/item/card/id/civilian/barmonkey
+	flags = OUTFIT_NO_SURVIVAL
+
+/decl/hierarchy/outfit/job/service/barmonkey/equip_id(mob/living/carbon/human/H, rank, assignment, equip_adjustments)
+	var/obj/item/card/id/W = new id_type(H)
+	if(id_desc)
+		W.desc = id_desc
+	if(rank)
+		W.rank = rank
+	if(assignment)
+		W.assignment = assignment
+	H.set_id_info(W)
+	if(H.equip_to_slot_or_store_or_drop(W, slot_r_store))
+		return W
+
+/decl/hierarchy/outfit/job/service/barmonkey/post_equip(mob/living/carbon/human/H)
+	..()
+	var/obj/item/clothing/C
+	if(prob(50))
+		C = new /obj/item/clothing/under/monkey/punpun(src)
+		H.equip_to_appropriate_slot(C)
+	else
+		C = new /obj/item/clothing/under/monkey/pants(src)
+		C.attach_accessory(null, new /obj/item/clothing/accessory/toggleable/hawaii/random(src))
+		H.equip_to_appropriate_slot(C)
 
 /decl/hierarchy/outfit/job/librarian
 	name = OUTFIT_JOB_NAME("Librarian")

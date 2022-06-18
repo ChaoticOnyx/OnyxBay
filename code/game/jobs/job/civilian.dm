@@ -24,6 +24,28 @@
 	alt_titles = list("Cook")
 	outfit_type = /decl/hierarchy/outfit/job/service/chef
 
+/datum/job/barmonkey
+	title = "Waiter"
+	department = "Service"
+	department_flag = SRV
+	total_positions = 1
+	spawn_positions = 1
+	no_latejoin = TRUE
+	supervisors = "the bartender"
+	selection_color = "#515151"
+	access = list(access_hydroponics, access_bar, access_kitchen)
+	minimal_access = list(access_bar)
+	outfit_type = /decl/hierarchy/outfit/job/service/barmonkey
+	preview_override = list("preview", 'icons/mob/human_races/monkeys/r_monkey.dmi')
+
+/datum/job/barmonkey/equip(mob/living/carbon/human/H)
+	. = ..()
+	if(.)
+		var/new_name = (H.gender == FEMALE ? "Mrs. Deempisi" : "Mr. Deempisi")
+		H.fully_replace_character_name(new_name)
+		H.dna.real_name = new_name
+		H.mind?.name = new_name
+
 /datum/job/hydro
 	title = "Gardener"
 	department = "Service"
