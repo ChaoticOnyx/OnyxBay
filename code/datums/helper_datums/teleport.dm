@@ -9,8 +9,11 @@
 	teleport_target(target, destination, precision)
 
 /decl/teleport/proc/teleport_target(atom/movable/target, atom/destination, precision)
-	var/list/possible_turfs = circlerangeturfs(destination, precision)
+	var/list/possible_turfs = get_turfs(target, destination, precision)
 	destination = safepick(possible_turfs)
+	if(!destination)
+		target.visible_message(SPAN("warning", "\The [target] bounces off the teleporter!"))
+		return
 
 	target.forceMove(destination)
 	if(isliving(target))
@@ -19,6 +22,8 @@
 			var/atom/movable/buckled = L.buckled
 			buckled.forceMove(destination)
 
+/decl/teleport/proc/get_turfs(atom/movable/target, atom/destination, precision)
+	return circlerangeturfs(destination, precision)
 
 /decl/teleport/proc/can_teleport(atom/movable/target, atom/destination)
 	if(!destination || !target || !target.loc)
@@ -53,6 +58,13 @@
 	do_spark(target)
 	..()
 	do_spark(target)
+
+// circlerangeturfs is shit proc created by imbécile (by fr: idiot)
+/decl/teleport/sparks/precision/get_turfs(atom/movable/target, atom/destination, precision)
+	var/turf/T = get_step(destination, target.dir)
+	if(!T || T.density)
+		return ..()
+	return list(T)
 
 /proc/do_teleport(atom/movable/target, atom/destination, precision = 0, type = /decl/teleport/sparks)
 	var/decl/teleport/tele = decls_repository.get_decl(type)

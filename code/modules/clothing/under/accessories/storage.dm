@@ -13,6 +13,10 @@
 	..()
 	create_storage()
 
+/obj/item/clothing/accessory/storage/Destroy()
+	QDEL_NULL(hold)
+	return ..()
+
 /obj/item/clothing/accessory/storage/proc/create_storage()
 	hold = new /obj/item/storage/internal/pockets(src, slots, max_w_class)
 

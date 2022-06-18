@@ -75,9 +75,9 @@
 	has_suit = null
 	if(user)
 		usr.put_in_hands(src)
-		src.add_fingerprint(user)
+		add_fingerprint(user)
 	else
-		src.forceMove(get_turf(src))
+		forceMove(get_turf(src))
 
 //default attackby behaviour
 /obj/item/clothing/accessory/attackby(obj/item/I, mob/user)

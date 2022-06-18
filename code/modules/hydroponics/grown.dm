@@ -161,7 +161,7 @@
 			return
 
 /obj/item/reagent_containers/food/grown/throw_impact(atom/hit_atom)
-	if(seed) seed.thrown_at(src,hit_atom)
+	seed?.thrown_at(src, hit_atom)
 	..()
 
 /obj/item/reagent_containers/food/grown/attackby(obj/item/W, mob/user)
