@@ -5,8 +5,9 @@
 	w_class = ITEM_SIZE_NORMAL
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "maintenance_jack"
-	force = 8 //It has a hammer head, should probably do some more damage. - Cirra
-	throwforce = 10
+	force = 13
+	mod_weight = 1.25
+	throwforce = 12
 
 
 
