@@ -18,4 +18,5 @@
 
 /obj/item/material/star/ninja
 	default_material = MATERIAL_URANIUM
+	name = "Ninja shuriken"
 	desc = "A sharp, perfectly weighted piece of metal."

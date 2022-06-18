@@ -254,6 +254,15 @@
 	armor_penetration = 10
 
 /obj/item/projectile/energy/shuriken/neurotoxin
-	damage = 10
+	damage = 13
 	damage_type = TOX
-	weaken = 5
+	weaken = 3
+
+/obj/item/projectile/energy/shuriken/on_impact(atom/A, use_impact = FALSE)
+	. = ..()
+	var/obj/item/material/star/ninja/star = new(A.loc)
+	if(istype(A, /mob/living))
+		var/mob/living/H = A
+		if(prob(25))
+			H.embed(star)
+			return

@@ -218,9 +218,8 @@
 	interface_name = "spider fang blade"
 	interface_desc = "A lethal energy projector that can shape a blade projected from the hand of the wearer or launch radioactive darts."
 
-	usable = 0
-	selectable = 1
-	toggleable = 0
+	usable = 1
+	selectable = 0
 	use_power_cost = 10 KILOWATTS
 	active_power_cost = 500
 	passive_power_cost = 0
