@@ -214,7 +214,9 @@
 
 	original = new_target
 	if(new_firer)
-		firer = src
+		firer = new_firer
+
+	shot_from = "[firer.name] (projectile redirection, weapon - [shot_from])"
 
 	setup_trajectory(starting_loc, new_target)
 
