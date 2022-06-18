@@ -154,7 +154,7 @@
 // In layman's terms, speedy thing goes in, speedy thing comes out.
 // projectile redirect is not cool, I made my own cool method!
 /obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
-	if(P.kill_count < 1 || !P.dir || !target || P.original == src || P.original == get_turf(src) || P.original == target || QDELETED(P) || (!P.x && !P.y && !P.z))
+	if(QDELETED(P) || P.kill_count < 1 || !P.dir || !target || P.original == src || P.original == get_turf(src) || P.original == target || (!P.x && !P.y && !P.z))
 		return FALSE
 	// save vars from something
 	var/turf/loc_turf = get_turf(src)
