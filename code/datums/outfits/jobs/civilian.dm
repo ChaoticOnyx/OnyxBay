@@ -56,8 +56,8 @@
 	if(assignment)
 		W.assignment = assignment
 	H.set_id_info(W)
-	if(H.equip_to_slot_or_store_or_drop(W, slot_r_store))
-		return W
+	H.put_in_l_hand(W)
+	return W
 
 /decl/hierarchy/outfit/job/service/barmonkey/post_equip(mob/living/carbon/human/H)
 	..()

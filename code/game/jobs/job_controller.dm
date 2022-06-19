@@ -417,6 +417,7 @@ var/global/datum/controller/occupations/job_master
 				H.disabilities = null
 				H.change_species("Monkey")
 				H.revive() // Disabled monkeys are bad
+				QDEL_LIST(H.worn_underwear)
 			// Equip job items.
 			job.setup_account(H)
 			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch, H.char_rank)
