@@ -128,7 +128,7 @@
 	owner.Trigger()
 	return 1
 
-/obj/screen/movable/action_button/proc/UpdateIcon()
+/obj/screen/movable/action_button/proc/UpdateIcon(on = null)
 	if(!owner)
 		return
 	icon = owner.button_icon
@@ -144,6 +144,13 @@
 	img.pixel_x = 0
 	img.pixel_y = 0
 	overlays += img
+
+	if(istype(owner.target, /obj/item/clothing/head))
+		if(!isnull(on) && on)
+			var/obj/item/clothing/head/H = owner.target
+			if(!light_overlay_cache["[H.light_overlay]_icon"])
+				light_overlay_cache["[H.light_overlay]_icon"] = image("icon" = 'icons/obj/light_overlays.dmi', "icon_state" = "[H.light_overlay]")
+			overlays |= light_overlay_cache["[H.light_overlay]_icon"]
 
 	if(!owner.IsAvailable())
 		color = rgb(128,0,0,128)

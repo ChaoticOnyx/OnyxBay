@@ -416,7 +416,7 @@ BLIND     // can't see anything
 		set_light(0)
 		light_applied = 0
 	update_icon(user)
-	user.update_action_buttons()
+	user.update_action_buttons(on)
 
 /obj/item/clothing/head/attack_ai(mob/user)
 	if(!mob_wear_hat(user))

@@ -380,7 +380,7 @@
 			I.action.Grant(src)
 	return
 
-/mob/living/update_action_buttons()
+/mob/living/update_action_buttons(on = null)
 	if(!hud_used) return
 	if(!client) return
 
@@ -414,7 +414,7 @@
 
 		var/obj/screen/movable/action_button/B = A.button
 
-		B.UpdateIcon()
+		B.UpdateIcon(on)
 
 		B.SetName(A.UpdateName())
 
