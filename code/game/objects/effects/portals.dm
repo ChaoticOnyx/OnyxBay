@@ -175,7 +175,7 @@
 	var/turf/linked_turf = get_turf(target)
 	// get new target turf
 	target_turf = linked_turf
-	while(TRUE)
+	while(!QDELING(src))
 		target_dist -= 1
 		target_turf = get_step(target_turf, projectile_dir)
 		if(target_dist <= 0)
@@ -211,7 +211,7 @@
 		return
 	throw_dir = reverse_direction(throw_dir)
 	target_turf = get_turf(target)
-	while(TRUE)
+	while(!QDELING(src))
 		target_dist -= 1
 		target_turf = get_step(target_turf, thrown_dir)
 		if(target_dist <= 0)
