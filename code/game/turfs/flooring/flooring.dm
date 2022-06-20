@@ -212,6 +212,7 @@ var/list/flooring_types
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+	can_paint = TRUE
 
 /decl/flooring/wood/broken0
 	name = "broken wooden floor"
@@ -260,6 +261,7 @@ var/list/flooring_types
 	icon_base = "bcircuit"
 	build_type = null
 	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
+	can_paint = TRUE
 
 /decl/flooring/reinforced/circuit/green
 	icon_base = "gcircuit"
