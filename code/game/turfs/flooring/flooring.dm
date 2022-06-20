@@ -124,7 +124,7 @@ var/list/flooring_types
 	desc = "It's like the 2390's all over again."
 	icon = 'icons/turf/flooring/linoleum.dmi'
 	icon_base = "lino"
-	can_paint = 1
+	can_paint = TRUE
 	build_type = /obj/item/stack/tile/linoleum
 	flags = TURF_REMOVE_SCREWDRIVER
 
@@ -137,7 +137,7 @@ var/list/flooring_types
 	damage_temperature = T0C+1400
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/tiling/dirty
 	icon_base = "steel_dirty"
@@ -200,6 +200,7 @@ var/list/flooring_types
 	descriptor = "dark planks"
 	build_type = /obj/item/stack/tile/darkwood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+	can_paint = TRUE
 
 /decl/flooring/wood
 	name = "wooden floor"
@@ -251,7 +252,7 @@ var/list/flooring_types
 	build_time = 30
 	apply_thermal_conductivity = 0.025
 	apply_heat_capacity = 325000
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/reinforced/circuit
 	name = "processing strata"
@@ -259,7 +260,6 @@ var/list/flooring_types
 	icon_base = "bcircuit"
 	build_type = null
 	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
-	can_paint = 1
 
 /decl/flooring/reinforced/circuit/green
 	icon_base = "gcircuit"
@@ -267,7 +267,6 @@ var/list/flooring_types
 /decl/flooring/reinforced/circuit/red
 	icon_base = "rcircuit"
 	flags = TURF_ACID_IMMUNE
-	can_paint = 0
 
 /decl/flooring/reinforced/cult
 	name = "engraved floor"
@@ -287,7 +286,7 @@ var/list/flooring_types
 	icon = 'icons/turf/shuttle.dmi'
 	build_type = null
 	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/reinforced/shuttle/blue
 	icon_base = "floor"
