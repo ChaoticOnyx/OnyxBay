@@ -70,24 +70,31 @@
 	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
 	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
 	register_signal(T, SIGNAL_OPACITY_SET, .proc/_turf_opacity_set)
+	register_signal(T, SIGNAL_LIGHT_UPDATED, .proc/_light_updated)
 
 /datum/component/sentry_view/proc/_register_not_visible_turf(turf/T)
 	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
 	register_signal(T, SIGNAL_OPACITY_SET, .proc/_turf_opacity_set)
+	register_signal(T, SIGNAL_LIGHT_UPDATED, .proc/_light_updated)
 
 /datum/component/sentry_view/proc/_unregister_visible_turf(turf/T)
 	unregister_signal(T, SIGNAL_ENTERED)
 	unregister_signal(T, SIGNAL_EXITED)
 	unregister_signal(T, SIGNAL_TURF_CHANGED)
 	unregister_signal(T, SIGNAL_OPACITY_SET)
+	unregister_signal(T, SIGNAL_LIGHT_UPDATED)
 
 /datum/component/sentry_view/proc/_unregister_not_visible_turf(turf/T)
 	unregister_signal(T, SIGNAL_TURF_CHANGED)
 	unregister_signal(T, SIGNAL_OPACITY_SET)
+	unregister_signal(T, SIGNAL_LIGHT_UPDATED)
 
 /datum/component/sentry_view/proc/_turf_changed(turf/T, old_density, density, old_opacity, opacity)
 	if(old_opacity != opacity)
 		_recalculate_turfs()
+
+/datum/component/sentry_view/proc/_light_updated()
+	_recalculate_turfs()
 
 /datum/component/sentry_view/proc/_turf_opacity_set()
 	_recalculate_turfs()
