@@ -232,7 +232,10 @@
 			error += major_dist
 		if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 			break
-		Move(step)
+		var/atom/previous = src.loc
+		src.loc = null
+		if (Move(previous))
+			Move(step)
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
