@@ -164,7 +164,8 @@
 	// Sometimes a projectile during the "momentum saving"
 	// does not meet any object for impact and hits the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag(1)
+	if(!P.hitscan)
+		stoplag(1)
 	// move projectile to linked portal
 	var/previous_dir = P.dir
 	P.dir = projectile_dir

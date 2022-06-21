@@ -344,4 +344,6 @@
 	var/obj/item/gun/portalgun/P = parent
 
 	if(!(locate(/obj/effect/portal) in loc))
+		if(!ismob(firer))
+			firer = shot_from
 		P.open_portal(setting,loc,A,firer)
