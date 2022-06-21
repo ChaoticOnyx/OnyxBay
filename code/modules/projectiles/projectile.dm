@@ -357,13 +357,16 @@
 		bumped = 0 //reset bumped variable!
 		return 0
 
-	//stop flying
-	on_impact(A)
-
+	// Effectively cease existing
 	set_density(0)
 	set_invisibility(101)
 
-	qdel(src)
+	spawn
+		// on_impact might take a long time
+		//   so we defer its execution
+		on_impact(A)
+		qdel(src)
+
 	return 1
 
 /obj/item/projectile/ex_act()
@@ -404,6 +407,11 @@
 		before_move()
 		previous = loc
 		Move(location.return_turf())
+
+		if (!src.density)
+			// We are unable to hit anything anymore
+			//   so don't bother moving further
+			break
 
 		if(!bumped && (!isturf(original) || impact_on_original))
 			if(loc == get_turf(original))
