@@ -15,7 +15,17 @@
 		target.visible_message(SPAN("warning", "\The [target] bounces off the teleporter!"))
 		return
 
+	var/turf/start = get_turf(target)
 	target.forceMove(destination)
+	// For projectiles we need to rebuild trajectory
+	var/obj/item/projectile/proj = target
+	if (istype(proj))
+		var/delta_x = start.x - destination.x
+		var/delta_y = start.y - destination.y
+		var/new_x = Clamp(proj.trajectory.target.x + delta_x, 1, world.maxx)
+		var/new_y = Clamp(proj.trajectory.target.y + delta_y, 1, world.maxy)
+		proj.redirect(new_x, new_y, destination)
+
 	if(isliving(target))
 		var/mob/living/L = target
 		if(L.buckled)
@@ -50,9 +60,10 @@
 	if(!target.simulated)
 		return
 	var/turf/T = get_turf(target)
-	spark.set_up(5,1,target)
-	spark.attach(T)
-	spark.start()
+	if (!(locate(/obj/effect/sparks) in T))
+		spark.set_up(5,1,target)
+		spark.attach(T)
+		spark.start()
 
 /decl/teleport/sparks/teleport_target(atom/target, atom/destination, precision)
 	do_spark(target)
