@@ -10,10 +10,7 @@
 	var/m_flag = 1
 	var/throwing = 0
 	var/thrower
-	var/throw_dir
 	var/turf/throw_source = null
-	var/atom/thrown_to
-	var/throwed_dist
 	var/throw_speed = 1 // Number of ticks to travel 1 tile. Values between 0 and 1 allow traveling multiple tiles per tick, though it looks ugly and ain't recommended unless totally needed.
 	var/throw_range = 7
 	var/throw_spin = TRUE // Should the atom spin when thrown.
@@ -43,8 +40,6 @@
 	if(virtual_mob && !ispath(virtual_mob))
 		QDEL_NULL(virtual_mob)
 
-	thrown_to = null
-	throwed_dist = 0
 	throwing = FALSE
 	thrower = null
 	throw_source = null
@@ -163,9 +158,6 @@
 	src.thrower = thrower
 	throw_source = get_turf(src)	//store the origin turf
 	pixel_z = 0
-	thrown_to = target
-	throwed_dist = range
-	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
 			src.throwing = 2 // really strong throw!
@@ -255,8 +247,6 @@
 	if(launched_mult)
 		post_launched()
 
-	thrown_to = null
-	throw_dir = null
 	throwing = FALSE
 	src.thrower = null
 	throw_source = null

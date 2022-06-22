@@ -67,7 +67,6 @@
 	var/fire_sound
 
 	var/vacuum_traversal = 1 //Determines if the projectile can exist in vacuum, if false, the projectile will be deleted if it enters vacuum.
-	var/impact_on_original = FALSE // Allow player to shot at floor and do on_impact stuff
 
 	var/datum/plot_vector/trajectory	// used to plot the path of the projectile
 	var/datum/vector_loc/location		// current location of the projectile in pixel space
@@ -150,7 +149,7 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/check_fire(atom/target, mob/living/user)  //Checks if you can hit them or not.
+/obj/item/projectile/proc/check_fire(atom/target as mob, mob/living/user as mob)  //Checks if you can hit them or not.
 	check_trajectory(target, user, pass_flags, item_flags, obj_flags)
 
 //sets the click point of the projectile using mouse input params
@@ -307,13 +306,6 @@
 	if((bumped && !forced) || (A in permutated))
 		return 0
 
-	if(istype(A, /obj/effect/portal))
-		var/obj/effect/portal/P = A
-		if(P.on_projectile_impact(src, FALSE))
-			bumped = FALSE // reset bumped variable!
-			permutated.Add(P)
-			return
-
 	var/passthrough = 0 //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
@@ -405,7 +397,7 @@
 		previous = loc
 		Move(location.return_turf())
 
-		if(!bumped && (!isturf(original) || impact_on_original))
+		if(!bumped && !isturf(original))
 			if(loc == get_turf(original))
 				if(!(original in permutated))
 					if(Bump(original))
