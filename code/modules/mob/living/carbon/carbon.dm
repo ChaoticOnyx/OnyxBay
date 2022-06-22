@@ -41,7 +41,7 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	nutrition = 400
+	nutrition = 300
 	..()
 
 /mob/living/carbon/Move(NewLoc, direct)

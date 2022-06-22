@@ -462,6 +462,8 @@
 				continue
 			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
+			if(job.no_latejoin)
+				continue
 
 			var/active = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active

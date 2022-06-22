@@ -468,6 +468,11 @@ var/const/NO_EMAG_ACT = -50
 	icon_state = "mime"
 	job_access_type = /datum/job/mime
 
+/obj/item/card/id/civilian/barmonkey
+	desc = "A card issued to a monkey. Aboard a space station."
+	icon_state = "monkey"
+	job_access_type = /datum/job/barmonkey
+
 /obj/item/card/id/civilian/head //This is not the HoP. There's no position that uses this right now.
 	name = "identification card"
 	desc = "A card which represents common sense and responsibility."
