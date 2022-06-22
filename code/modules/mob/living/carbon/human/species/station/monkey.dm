@@ -18,6 +18,7 @@
 	dusted_anim = "dust-m"
 	death_message = "lets out a faint chimper as it collapses and stops moving..."
 	tail = "chimptail"
+	y_shift = -8
 
 	body_builds = list(
 		new /datum/body_build/monkey
