@@ -214,9 +214,7 @@
 
 	original = new_target
 	if(new_firer)
-		firer = new_firer
-
-	shot_from = "[firer.name] (projectile redirection, weapon - [shot_from])"
+		firer = src
 
 	setup_trajectory(starting_loc, new_target)
 
@@ -313,7 +311,7 @@
 		var/obj/effect/portal/P = A
 		if(P.on_projectile_impact(src, FALSE))
 			bumped = FALSE // reset bumped variable!
-			permutated.Cut()
+			permutated.Add(P)
 			return
 
 	var/passthrough = 0 //if the projectile should continue flying

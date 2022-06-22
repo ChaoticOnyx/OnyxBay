@@ -114,7 +114,6 @@
 			portal_creator.red_portal = null
 			portal_creator.sync_portals()
 	target = null
-	log_debug("Portal created by [owner] was deleted, portal ref - \ref[src]")
 	return ..()
 
 /obj/effect/portal/linked/proc/connect_atmospheres()
@@ -154,7 +153,7 @@
 // In layman's terms, speedy thing goes in, speedy thing comes out.
 // projectile redirect is not cool, I made my own cool method!
 /obj/effect/portal/linked/on_projectile_impact(obj/item/projectile/P, use_impact = TRUE)
-	if(QDELETED(P) || P.kill_count < 1 || !P.dir || !target || P.original == src || P.original == get_turf(src) || P.original == target || (!P.x && !P.y && !P.z))
+	if(P.kill_count < 1 || !P.dir || !target)
 		return FALSE
 	// save vars from something
 	var/turf/loc_turf = get_turf(src)
@@ -164,8 +163,7 @@
 	// Sometimes a projectile during the "momentum saving"
 	// does not meet any object for impact and hits the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	if(!P.hitscan)
-		stoplag(1)
+	stoplag()
 	// move projectile to linked portal
 	var/previous_dir = P.dir
 	P.dir = projectile_dir
@@ -176,15 +174,15 @@
 	var/turf/linked_turf = get_turf(target)
 	// get new target turf
 	target_turf = linked_turf
-	while(!QDELING(src))
+	while(TRUE)
 		target_dist -= 1
 		target_turf = get_step(target_turf, projectile_dir)
-		if(target_dist <= 0)
+		if(!target_dist)
 			break
 	// set new target turf as projectile target
 	P.original = target_turf
 	// rebuild trajectory by calling P.setup_projectory and our work there is done
-	P.redirect(P.original.x, P.original.y, linked_turf, target)
+	P.setup_trajectory(linked_turf, target_turf)
 	return TRUE
 
 /obj/effect/portal/linked/proc/on_throw_impact(atom/movable/hit_atom)
@@ -200,7 +198,7 @@
 	// sometimes the thrown object during the "momentum saving"
 	// does not meet any object to hit and falls into the portals over and over again,
 	// which causes the wildest lags, this should fix this bug
-	stoplag(1)
+	stoplag()
 	if(hit_atom.thrown_to == loc_turf || !target_turf || !loc_turf)
 		teleport(hit_atom, TRUE)
 		return
@@ -212,10 +210,10 @@
 		return
 	throw_dir = reverse_direction(throw_dir)
 	target_turf = get_turf(target)
-	while(!QDELING(src))
+	while(TRUE)
 		target_dist -= 1
 		target_turf = get_step(target_turf, thrown_dir)
-		if(target_dist <= 0)
+		if(!target_dist)
 			break
 	INVOKE_ASYNC(hit_atom, /atom/movable/proc/throw_at, target_turf, throw_range-dist_travelled, speed, thrower)
 
