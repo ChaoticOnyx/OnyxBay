@@ -56,7 +56,10 @@
 
 	var/obj/effect/portal/linked/new_portal = new(T, null, 5 MINUTES) // Portal Gun-made portals stay open for 5 minutes by default.
 
-	new_portal.owner = "[firer.real_name]+[firer.ckey]"
+	if(ismob(firer))
+		new_portal.owner = "[firer.real_name]+[firer.ckey]"
+	else
+		new_portal.owner = firer
 	new_portal.portal_creator_weakref = weakref(src)
 	switch(setting)
 		if(BLUE_PORTAL)
