@@ -3,7 +3,7 @@
 	desc = "Looks unstable. Best to test it with the clown."
 	icon = 'icons/obj/portals.dmi'
 	icon_state = "portal"
-	density = TRUE
+	density = FALSE
 	unacidable = TRUE // Can't destroy energy portals.
 	var/atom/target = null
 	var/creator = null
@@ -11,9 +11,6 @@
 	var/dangerous = 0
 	var/failchance = 0
 	var/teleport_type = /decl/teleport/sparks
-
-/obj/effect/portal/Bumped(mob/M)
-	teleport(M)
 
 /obj/effect/portal/Crossed(AM)
 	teleport(AM)
@@ -64,6 +61,9 @@
 	QDEL_IN(src, delete_after)
 
 /obj/effect/portal/proc/teleport(atom/movable/M, ignore_checks = FALSE)
+	if(istype(M, /obj/item/projectile))
+		ignore_checks = TRUE
+
 	if(iseffect(M) && !ignore_checks)
 		return
 	if(M.anchored && !ismech(M) && !ignore_checks)
