@@ -141,7 +141,6 @@
 	desc = "An armored vest with heavy padding to protect against melee attacks."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	item_icons = list(
-		slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi',
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi'
 		)
@@ -157,7 +156,6 @@
 	name = "ballistic vest"
 	desc = "An armored vest with heavy plates to protect against ballistic projectiles."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	item_icons = list(slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi')
 	icon_state = "ballistic"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
@@ -173,7 +171,6 @@
 	name = "ablative vest"
 	desc = "An armored vest with advanced shielding to protect against energy weapons."
 	icon = 'icons/obj/clothing/modular_armor.dmi'
-	item_icons = list(slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi')
 	icon_state = "ablative"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L)
