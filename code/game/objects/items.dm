@@ -390,10 +390,13 @@ var/list/global/slot_flags_enumeration = list(
 //Should probably move the bulk of this into mob code some time, as most of it is related to the definition of slots and not item-specific
 //set force to ignore blocking overwear and occupied slots
 /obj/item/proc/mob_can_equip(M, slot, disable_warning = FALSE, force = FALSE)
-	if(!slot) return FALSE
-	if(!M) return FALSE
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
-	if(!ishuman(M)) return FALSE
+	if(!ishuman(M))
+		return FALSE
 
 	var/mob/living/carbon/human/H = M
 	var/list/mob_equip = list()
