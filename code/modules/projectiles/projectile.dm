@@ -408,7 +408,11 @@
 
 		before_move()
 		previous = loc
-		Move(location.return_turf())
+		// Things may have moved into our current tile if the order of movement is right
+		//   so we want to try to hit things that have moved in
+		src.loc = null
+		if (Move(previous))
+			Move(location.return_turf())
 
 		if (!src.density)
 			// We are unable to hit anything anymore
