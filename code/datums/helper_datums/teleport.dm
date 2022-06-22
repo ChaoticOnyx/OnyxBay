@@ -20,8 +20,8 @@
 	// For projectiles we need to rebuild trajectory
 	var/obj/item/projectile/proj = target
 	if (istype(proj))
-		var/delta_x = start.x - destination.x
-		var/delta_y = start.y - destination.y
+		var/delta_x = destination.x - start.x
+		var/delta_y = destination.y - start.y
 		var/new_x = Clamp(proj.trajectory.target.x + delta_x, 1, world.maxx)
 		var/new_y = Clamp(proj.trajectory.target.y + delta_y, 1, world.maxy)
 		proj.redirect(new_x, new_y, destination)
