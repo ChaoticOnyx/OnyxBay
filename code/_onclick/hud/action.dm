@@ -136,14 +136,17 @@
 
 	overlays.Cut()
 	var/image/img
+	var/list/img_overlays
 	if(owner.action_type == AB_ITEM && owner.target)
 		var/obj/item/I = owner.target
 		img = image(I.icon, src , I.icon_state)
+		img_overlays = I.overlays
 	else if(owner.button_icon && owner.button_icon_state)
 		img = image(owner.button_icon,src,owner.button_icon_state)
 	img.pixel_x = 0
 	img.pixel_y = 0
 	overlays += img
+	overlays += img_overlays
 
 	if(!owner.IsAvailable())
 		color = rgb(128,0,0,128)
