@@ -13,7 +13,7 @@
 	see_in_dark = 6
 	maxHealth = 5
 	health = 5
-	meat_type = /obj/item/reagent_containers/food/snacks/meat
+	meat_type = /obj/item/reagent_containers/food/meat
 	attacktext = "bitten"
 	melee_damage_lower = 1
 	melee_damage_upper = 2

@@ -65,21 +65,31 @@
 /datum/design/item/beaker
 	category_items = list("Medical")
 
+
+
+/datum/design/item/beaker/plass
+	desc = "A beaker made of plasma-based silicate, it doesn't allow radiation to pass through. Can hold up to 60 units."
+	id = "plassbeaker"
+	req_tech = list(TECH_MATERIAL = 2)
+	materials = list(MATERIAL_GLASS = 2500, MATERIAL_PLASMA = 1500)
+	build_path = /obj/item/reagent_containers/vessel/beaker/plass
+	sort_string = "MCAAA"
+
 /datum/design/item/beaker/noreact
-	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
+	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 60 units."
 	id = "splitbeaker"
 	req_tech = list(TECH_MATERIAL = 2)
 	materials = list(MATERIAL_STEEL = 3000)
-	build_path = /obj/item/reagent_containers/glass/beaker/noreact
-	sort_string = "MCAAA"
+	build_path = /obj/item/reagent_containers/vessel/beaker/noreact
+	sort_string = "MCAAB"
 
 /datum/design/item/beaker/bluespace
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
 	id = "bluespacebeaker"
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
 	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000, MATERIAL_DIAMOND = 500)
-	build_path = /obj/item/reagent_containers/glass/beaker/bluespace
-	sort_string = "MCAAB"
+	build_path = /obj/item/reagent_containers/vessel/beaker/bluespace
+	sort_string = "MCAAC"
 
 /datum/design/item/implant
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)

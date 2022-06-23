@@ -47,13 +47,14 @@
 #define SOUND_CHANNEL_AMBIENT       1
 #define SOUND_CHANNEL_AMBIENT_MUSIC 2
 #define SOUND_CHANNEL_HUM           3
+#define SOUND_CHANNEL_WEATHER       4
 
-// Ambient meta tags
-#define META_NORMAL          0
-#define META_MYSTIC          1
-#define META_SPACE           2
-#define META_SPACE_TRAVELING 3
-#define META_CENTCOMM        4
+// Ambient music tags
+#define MUSIC_TAG_NORMAL          0
+#define MUSIC_TAG_MYSTIC          1
+#define MUSIC_TAG_SPACE           2
+#define MUSIC_TAG_SPACE_TRAVELING 3
+#define MUSIC_TAG_CENTCOMM        4
 
 // SFX List
 // FIREARMS SOUND
@@ -102,6 +103,14 @@
 #define SFX_AMBIENT_ATMOSPHERICS        "ambient_atmospherics"
 #define SFX_AMBIENT_MORGUE              "ambient_morgue"
 #define SFX_AMBIENT_JUNGLE              "ambient_jungle"
+
+// AMBIENT WEATHER
+#define SFX_WEATHER_OUT_NORMAL          "weather_out_normal"
+#define SFX_WEATHER_IN_NORMAL           "weather_in_normal"
+#define SFX_WEATHER_OUT_STORM_INCOMING  "weather_out_storm_incoming"
+#define SFX_WEATHER_IN_STORM_INCOMING   "weather_in_storm_incoming"
+#define SFX_WEATHER_OUT_STORM           "weather_out_storm"
+#define SFX_WEATHER_IN_STORM            "weather_in_storm"
 
 // AMBIENT MUSIC
 #define SFX_AMBIENT_MUSIC_NORMAL       "ambient_music_normal"
@@ -171,6 +180,12 @@
 #define SFX_FIGHTING_CRUNCH         "fighting_crunch"
 #define SFX_FIGHTING_PUNCH          "fighting_punch"
 #define SFX_FIGHTING_SWING          "fighting_swing"
+
+// DEVICES
+#define SFX_GEIGER_LOW              "geiger_low"
+#define SFX_GEIGER_MODERATE         "geiger_moderate"
+#define SFX_GEIGER_HIGH             "geiger_high"
+#define SFX_GEIGER_VERY_HIGH        "geiger_very_high"
 
 // MISC
 #define SFX_VENT                    "vent"

@@ -693,7 +693,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/y_pos = null
 	var/z_pos = null
 
-/area/proc/copy_contents_to(area/A , platingRequired = 0 )
+/area/proc/copy_contents_to(area/A, platingRequired = FALSE, ignore_unsimulated = TRUE )
 	//Takes: Area. Optional: If it should copy to areas that don't have plating
 	//Returns: Nothing.
 	//Notes: Attempts to move the contents of one area to another area.
@@ -772,7 +772,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 					for(var/obj/O in T)
 
-						if(!istype(O,/obj) || !O.simulated)
+						if(!istype(O,/obj))
+							continue
+
+						if(ignore_unsimulated && !O.simulated)
 							continue
 
 						objs += O
@@ -787,7 +790,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 					for(var/mob/M in T)
 
-						if(!istype(M,/mob) || !M.simulated) continue // If we need to check for more mobs, I'll add a variable
+						// If we need to check for more mobs, I'll add a variable
+						if(!istype(M,/mob))
+							continue
+
+						if(ignore_unsimulated && !M.simulated)
+							continue
+
 						mobs += M
 
 					for(var/mob/M in mobs)
@@ -1067,6 +1076,7 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 
 /mob/dview/Destroy()
 	crash_with("Prevented attempt to delete dview mob: [log_info_line(src)]")
+	..()
 	return QDEL_HINT_LETMELIVE // Prevents destruction
 
 /atom/proc/get_light_and_color(atom/origin)
@@ -1087,13 +1097,17 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 	return
 
 /proc/animate_speech_bubble(image/I, list/show_to, duration)
-	var/matrix/M = matrix()
-	M.Scale(0,0)
-	I.transform = M
+	I.SetTransform(scale = 0)
 	I.alpha = 0
 	for(var/client/C in show_to)
 		C.images += I
-	animate(I, transform = 0, alpha = 255, time = 0.5 SECONDS, easing = ELASTIC_EASING)
+	animate(
+		I,
+		transform = matrix(),
+		alpha = 255,
+		time = 0.5 SECONDS,
+		easing = ELASTIC_EASING
+	)
 	addtimer(CALLBACK(GLOBAL_PROC, /.proc/fade_out, I), duration - 0.5 SECONDS)
 
 /proc/fade_out(image/I, list/show_to)

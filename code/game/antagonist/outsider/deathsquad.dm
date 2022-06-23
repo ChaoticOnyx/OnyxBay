@@ -24,8 +24,8 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 
 /datum/antagonist/deathsquad/Initialize()
 	. = ..()
-	if(config.deathsquad_min_age)
-		min_player_age = config.deathsquad_min_age
+	if(config.game.deathsquad_min_age)
+		min_player_age = config.game.deathsquad_min_age
 
 /datum/antagonist/deathsquad/attempt_spawn()
 	if(..())

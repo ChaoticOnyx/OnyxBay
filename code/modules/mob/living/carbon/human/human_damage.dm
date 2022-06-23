@@ -9,7 +9,7 @@
 	health = maxHealth - getBrainLoss()
 
 	//TODO: fix husking
-	if(((maxHealth - getFireLoss()) < config.health_threshold_dead) && stat == DEAD)
+	if(((maxHealth - getFireLoss()) < config.health.health_threshold_dead) && stat == DEAD)
 		ChangeToHusk()
 	return
 
@@ -58,10 +58,7 @@
 
 //Straight pain values, not affected by painkillers etc
 /mob/living/carbon/human/getHalLoss()
-	var/amount = 0
-	for(var/obj/item/organ/external/E in organs)
-		amount += E.full_pain
-	return amount
+	return full_pain
 
 /mob/living/carbon/human/setHalLoss(amount)
 	adjustHalLoss(getHalLoss() - amount)
@@ -193,7 +190,7 @@
 	else
 		var/obj/item/organ/internal/lungs/breathe_organ = internal_organs_by_name[species.breathing_organ]
 		if(!breathe_organ)
-			return maxHealth/2
+			return maxHealth
 		return breathe_organ.get_oxygen_deprivation()
 
 /mob/living/carbon/human/setOxyLoss(amount)
@@ -304,9 +301,9 @@
 	if(!species || !dam_type) return FALSE
 
 	if(dam_type == BRUTE)
-		return(getBruteLoss() < species.total_health / 2)
+		return(getBruteLoss() < species.total_health)
 	else if(dam_type == BURN)
-		return(getFireLoss() < species.total_health / 2)
+		return(getFireLoss() < species.total_health)
 	return FALSE
 
 ////////////////////////////////////////////

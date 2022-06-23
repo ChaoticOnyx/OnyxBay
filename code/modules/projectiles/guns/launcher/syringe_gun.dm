@@ -12,6 +12,14 @@
 	w_class = ITEM_SIZE_TINY
 	var/obj/item/reagent_containers/syringe/syringe
 
+/obj/item/syringe_cartridge/pre_launched()
+	..()
+	throw_spin = FALSE
+
+/obj/item/syringe_cartridge/post_launched()
+	..()
+	throw_spin = TRUE
+
 /obj/item/syringe_cartridge/update_icon()
 	underlays.Cut()
 	if(syringe)
@@ -85,7 +93,7 @@
 	fire_sound = 'sound/weapons/empty.ogg'
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
-	release_force = 10
+	release_force = 2
 	throw_distance = 10
 
 	var/list/darts = list()
@@ -163,7 +171,7 @@
 	throw_distance = 7
 	release_force = 7
 
-/obj/item/gun/launcher/syringe/disguised/examine(mob/user)
+/obj/item/gun/launcher/syringe/disguised/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
 		. += "\nThe button is a little stiff."

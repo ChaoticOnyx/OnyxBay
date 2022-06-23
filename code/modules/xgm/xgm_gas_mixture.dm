@@ -136,22 +136,25 @@
 	. = 0
 	for(var/g in gas)
 		. += gas_data.specific_heat[g] * gas[g]
-	. *= group_multiplier
+	. *= max(1, group_multiplier)
 
 
 //Adds or removes thermal energy. Returns the actual thermal energy change, as in the case of removing energy we can't go below TCMB.
 /datum/gas_mixture/proc/add_thermal_energy(thermal_energy)
 
-	if (total_moles == 0)
+	if(total_moles == 0)
 		return 0
 
 	var/heat_capacity = heat_capacity()
-	if (thermal_energy < 0)
-		if (temperature < TCMB)
+	if(heat_capacity <= 0)
+		return 0
+
+	if(thermal_energy < 0)
+		if(temperature < TCMB)
 			return 0
 		var/thermal_energy_limit = -(temperature - TCMB)*heat_capacity	//ensure temperature does not go below TCMB
-		thermal_energy = max( thermal_energy, thermal_energy_limit )	//thermal_energy and thermal_energy_limit are negative here.
-	temperature += thermal_energy/heat_capacity
+		thermal_energy = max(thermal_energy, thermal_energy_limit)	//thermal_energy and thermal_energy_limit are negative here.
+	temperature += thermal_energy / heat_capacity
 	return thermal_energy
 
 //Returns the thermal energy change required to get to a new temperature

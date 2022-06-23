@@ -71,7 +71,7 @@
 	// Good to go.
 	return 1
 
-/obj/item/computer_hardware/examine(mob/user)
+/obj/item/computer_hardware/_examine_text(mob/user)
 	. = ..()
 	if(damage > damage_failure)
 		. += "\n<span class='danger'>It seems to be severely damaged!</span>"
@@ -84,4 +84,3 @@
 /obj/item/computer_hardware/proc/take_damage(amount)
 	damage += round(amount) 					// We want nice rounded numbers here.
 	damage = between(0, damage, max_damage)		// Clamp the value.
-

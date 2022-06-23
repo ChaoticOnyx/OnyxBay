@@ -1,8 +1,11 @@
 /mob/living/carbon/New()
 	//setup reagent holders
-	bloodstr = new /datum/reagents/metabolism(120, src, CHEM_BLOOD)
-	touching = new /datum/reagents/metabolism(1000, src, CHEM_TOUCH)
-	reagents = bloodstr
+	if(!bloodstr)
+		bloodstr = new /datum/reagents/metabolism(120, src, CHEM_BLOOD)
+	if(!reagents)
+		reagents = bloodstr
+	if(!touching)
+		touching = new /datum/reagents/metabolism(1000, src, CHEM_TOUCH)
 
 	if (!default_language && species_language)
 		default_language = all_languages[species_language]
@@ -10,10 +13,20 @@
 
 /mob/living/carbon/Destroy()
 	QDEL_NULL(touching)
-	bloodstr = null // We don't qdel(bloodstr) because it's the same as qdel(reagents)
+	QDEL_NULL(bloodstr)
+
+	reagents = null //We assume reagents is a reference to bloodstr here
+
+	// We assume that, in case of gib, organs and whatever have already done their business escaping the body,
+	// so it's safe to just clean whatever left for reasons.
 	QDEL_NULL_LIST(internal_organs)
+	QDEL_NULL_LIST(organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+
+	QDEL_LIST_ASSOC(organs_by_name)
+	QDEL_LIST_ASSOC(internal_organs_by_name)
+	stasis_sources.Cut()
 	if(loc)
 		for(var/mob/M in contents)
 			M.dropInto(loc)
@@ -28,7 +41,7 @@
 	var/datum/reagents/R = get_ingested_reagents()
 	if(istype(R))
 		R.clear_reagents()
-	nutrition = 400
+	nutrition = 300
 	..()
 
 /mob/living/carbon/Move(NewLoc, direct)

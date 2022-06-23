@@ -1,6 +1,6 @@
 /proc/Christmas_Game_Start()
 	for(var/obj/structure/flora/tree/pine/xmas in world)
-		if(isNotStationLevel(xmas.z))	continue
+		if(!isStationLevel(xmas.z))	continue
 		for(var/turf/simulated/floor/T in orange(1,xmas))
 			for(var/i=1,i<=rand(1,5),i++)
 				new /obj/item/a_gift(T)
@@ -63,4 +63,3 @@
 	flags_inv = 0
 	body_parts_covered = 0
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
-

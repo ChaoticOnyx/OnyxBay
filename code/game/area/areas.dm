@@ -13,7 +13,12 @@
 	var/static_equip
 	var/static_light = 0
 	var/static_environ
-	var/list/ambient_music_meta_tags = list(META_NORMAL)
+	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
+
+	var/environment_type   = ENVIRONMENT_NONE
+	var/is_station         = FALSE
+	var/importance         = 1
+	var/loyalty            = 0
 
 /area/New()
 	icon_state = ""
@@ -46,6 +51,15 @@
 			has_gravity = 0
 		if(AREA_GRAVITY_ALWAYS)
 			has_gravity = 1
+
+	is_station = all_predicates_true(list(src), list(/proc/is_not_space_area, /proc/is_station_area))
+	if(is_station)
+		GLOB.station_areas.Add(src)
+
+/area/Destroy()
+	if(is_station)
+		GLOB.station_areas.Remove(src)
+	. = ..()
 
 /area/proc/get_contents()
 	return contents
@@ -230,6 +244,9 @@
 		L.set_mode(lighting_mode)
 		L.update_power_channel(power_channel)
 
+/area/proc/is_controlled_by_corporation()
+	return loyalty >= 0
+
 var/list/mob/living/forced_ambiance_list = new
 
 /area/Entered(A)
@@ -358,3 +375,9 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
+
+/area/allow_drop()
+	CRASH("Bad op: area/allow_drop() called")
+
+/area/drop_location()
+	CRASH("Bad op: area/drop_location() called")

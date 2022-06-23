@@ -377,7 +377,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 // Relays on ship's Z levels use less power as they don't have to transmit over such large distances.
 /obj/machinery/telecomms/relay/update_power()
 	..()
-	if(z in GLOB.using_map.station_levels)
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 		change_power_consumption(2.5 KILOWATTS, POWER_USE_IDLE)
 	else
 		change_power_consumption(100 KILOWATTS, POWER_USE_IDLE)

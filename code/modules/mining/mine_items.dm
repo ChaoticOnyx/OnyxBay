@@ -315,7 +315,6 @@
 	slot_flags = SLOT_BELT
 	w_class = 2.0
 	item_state = "electronic"
-	throw_speed = 4
 	throw_range = 20
 	matter = list(MATERIAL_STEEL = 500)
 	var/turf/simulated/mineral/random/sonar = null
@@ -380,7 +379,6 @@
 	item_state = "hypo"
 	throwforce = 0
 	w_class = 2
-	throw_speed = 3
 	throw_range = 5
 	var/loaded = 1
 	var/malfunctioning = FALSE
@@ -431,7 +429,7 @@
 	if(!malfunctioning)
 		malfunctioning = TRUE
 
-/obj/item/lazarus_injector/examine(mob/user)
+/obj/item/lazarus_injector/_examine_text(mob/user)
 	. = ..()
 	if(!loaded)
 		. += "\n<span class='info'>[src] is empty.</span>"
@@ -457,7 +455,7 @@
 			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
-/obj/item/card/mining_point_card/examine(mob/user)
+/obj/item/card/mining_point_card/_examine_text(mob/user)
 	. = ..()
 	. += "\nThere's [points] point\s on the card."
 
@@ -707,7 +705,7 @@
 					user.visible_message("<span class='notice'>[user] finishes sculpting their magnum opus!</span>",
 						"<span class='notice'>You finish sculpting a masterpiece.</span>")
 					src.appearance = T
-					appearance_flags = KEEP_TOGETHER
+					appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER
 					src.color = list(
 					    0.35, 0.3, 0.25,
 					    0.35, 0.3, 0.25,
@@ -715,7 +713,7 @@
 					)
 					src.pixel_y += 8
 					var/image/pedestal_underlay = image('icons/obj/mining.dmi', icon_state = "pedestal")
-					pedestal_underlay.appearance_flags = RESET_COLOR
+					pedestal_underlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 					pedestal_underlay.pixel_y -= 8
 					src.underlays += pedestal_underlay
 					var/title = sanitize(input(usr, "If you would like to name your art, do so here.", "Christen Your Sculpture", "") as text|null)

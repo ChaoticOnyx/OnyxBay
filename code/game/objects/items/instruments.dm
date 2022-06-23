@@ -546,6 +546,8 @@
 //				log_debug("beat: [beat]")
 
 				var/list/notes = splittext(beat, "/")
+				if(!length(notes))
+					continue
 				for(var/note in splittext(notes[1], "-"))
 //					log_debug("note: [note]")
 

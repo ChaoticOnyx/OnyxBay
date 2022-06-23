@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(station_areas)
+
 /*
 	List generation helpers
 */
@@ -93,7 +95,7 @@
 	. = !istype(A, /area/shuttle)
 
 /proc/is_not_sealed_area(area/A)
-	. = !(A.z in GLOB.using_map.sealed_levels)
+	. = !(A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED))
 
 /proc/is_area_with_turf(area/A)
 	return A && isnum(A.x)

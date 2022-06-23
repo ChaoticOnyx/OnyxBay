@@ -118,11 +118,11 @@
 		print_book.forceMove(get_turf(src))
 		return
 	src.visible_message("[src] whirs as it prints and binds a new book.")
-	if(istype(print_object, /obj/item/paper))
-		var/obj/item/paper/paper = print_object
+	if(istype(print_book, /obj/item/paper))
+		var/obj/item/paper/paper = print_book
 		print(paper.info, "Print Job #" + "[rand(100, 999)]")
-	if(istype(print_object, /obj/item/book/wiki/template))
-		var/obj/item/book/wiki/template/template = print_object
+	if(istype(print_book, /obj/item/book/wiki/template))
+		var/obj/item/book/wiki/template/template = print_book
 		print_wiki(template.topic, template.censored)
 	qdel(print_book)
 

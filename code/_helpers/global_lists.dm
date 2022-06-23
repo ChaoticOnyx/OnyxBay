@@ -56,7 +56,9 @@ GLOBAL_DATUM_INIT(underwear, /datum/category_collection/underwear, new())
 
 GLOBAL_LIST_EMPTY(bb_clothing_icon_states) //stores /datum/body_build's icon_state lists
 
-var/global/list/exclude_jobs = list(/datum/job/ai,/datum/job/cyborg)
+var/global/list/body_heights = list(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)
+
+var/global/list/exclude_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/barmonkey)
 
 // Visual nets
 var/list/datum/visualnet/visual_nets = list()
@@ -228,10 +230,9 @@ var/global/list/string_slot_flags = list(
 	//Manuals
 	paths = typesof(/obj/item/book/wiki) - /obj/item/book/wiki - /obj/item/book/wiki/template
 	for(var/booktype in paths)
-		var/obj/item/book/wiki/manual = new booktype
+		var/obj/item/book/wiki/manual = new booktype(null, null, null, null, TRUE)
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
-		qdel(manual)
 
 	paths = typesof(/datum/body_build)
 	for(var/T in paths)

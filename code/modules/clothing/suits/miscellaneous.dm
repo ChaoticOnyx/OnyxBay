@@ -156,7 +156,8 @@
 
 /obj/item/clothing/suit/cardborg/Initialize()
 	. = ..()
-	set_extension(src, /datum/extension/appearance, /datum/extension/appearance/cardborg)
+
+	AddComponent(/datum/component/cardborg)
 
 /*
  * Misc
@@ -171,12 +172,18 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 
 /obj/item/clothing/suit/straight_jacket/equipped(mob/user, slot)
-	if(slot == slot_wear_suit)
-		if(iscarbon(user))
-			var/mob/living/carbon/C = user
-			C.drop_from_inventory(C.handcuffed)
-		user.drop_l_hand()
-		user.drop_r_hand()
+	..()
+	if(ishuman(user) && slot == slot_wear_suit)
+		var/mob/living/carbon/C = user
+		C.drop_from_inventory(C.handcuffed)
+		C.handcuffed = src
+
+
+/obj/item/clothing/suit/straight_jacket/dropped(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/C = user
+		C.handcuffed = null
+	..()
 
 /obj/item/clothing/suit/ianshirt
 	name = "worn shirt"
@@ -184,6 +191,7 @@
 	icon_state = "ianshirt"
 	item_state = "ianshirt"
 	body_parts_covered = UPPER_TORSO|ARMS
+
 
 //pyjamas
 //originally intended to be pinstripes >.>
@@ -218,12 +226,6 @@
 	icon_state = "browncoat"
 	item_state = "browncoat"
 
-/obj/item/clothing/suit/neocoat
-	name = "black coat"
-	desc = "A flowing, black coat."
-	icon_state = "neocoat"
-	item_state = "neocoat"
-
 //stripper
 /obj/item/clothing/under/stripper
 	body_parts_covered = 0
@@ -232,25 +234,28 @@
 	name = "pink swimsuit"
 	desc = "A rather skimpy pink swimsuit."
 	icon_state = "stripper_p_under"
+	item_state = "stripper_p_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/stripper_green
 	name = "green swimsuit"
 	desc = "A rather skimpy green swimsuit."
 	icon_state = "stripper_g_under"
+	item_state = "stripper_g_under"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_pink
 	name = "pink skimpy dress"
 	desc = "A rather skimpy pink dress."
 	icon_state = "stripper_p_over"
+	item_state = "stripper_p_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_green
 	name = "green skimpy dress"
 	desc = "A rather skimpy green dress."
 	icon_state = "stripper_g_over"
-	//item_state = "stripper_g"
+	item_state = "stripper_g_over"
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/mankini
@@ -462,7 +467,7 @@
 	icon_closed = "hoodie"
 	body_parts_covered = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
-	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	cold_protection = UPPER_TORSO|ARMS
 	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie/cti

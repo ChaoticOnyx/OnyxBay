@@ -6,7 +6,6 @@ SUBSYSTEM_DEF(ticker)
 	flags = SS_NO_TICK_CHECK | SS_KEEP_TIMING
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 
-	var/pregame_timeleft = 3 MINUTES
 	var/list/gamemode_vote_results  //Will be a list, in order of preference, of form list(config_tag = number of votes).
 	var/bypass_gamemode_vote = TRUE //Intended for use with admin tools. Will avoid voting and ignore any results.
 
@@ -20,7 +19,7 @@ SUBSYSTEM_DEF(ticker)
 	var/end_game_state = END_GAME_NOT_OVER
 	var/delay_end = 0               //Can be set true to postpone restart.
 	var/delay_notified = 0          //Spam prevention.
-	var/restart_timeout = 1 MINUTE
+	var/auto_start = FALSE			// If TRUE it will start round as soon as game initialized
 
 	var/force_end = FALSE
 
@@ -28,7 +27,13 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/pregame_timeleft
+	var/restart_timeout
+
 /datum/controller/subsystem/ticker/Initialize()
+	pregame_timeleft = config.game.pregame_timeleft
+	restart_timeout = config.game.restart_timeout
+
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
 	return ..()
@@ -47,11 +52,12 @@ SUBSYSTEM_DEF(ticker)
 /datum/controller/subsystem/ticker/proc/pregame_tick()
 	if(round_progressing && last_fire)
 		pregame_timeleft -= world.time - last_fire
-	if(pregame_timeleft <= 0)
+	if(pregame_timeleft <= 0 || auto_start)
+		pregame_timeleft = 0
 		Master.SetRunLevel(RUNLEVEL_SETUP)
 		return
 
-	if(!bypass_gamemode_vote && (pregame_timeleft <= config.vote_autogamemode_timeleft SECONDS) && !gamemode_vote_results)
+	if(!bypass_gamemode_vote && (pregame_timeleft <= config.vote.autogamemode_timeleft SECONDS) && !gamemode_vote_results)
 		if(!SSvote.active_vote)
 			SSvote.initiate_vote(/datum/vote/gamemode, automatic = 1)
 
@@ -91,13 +97,17 @@ SUBSYSTEM_DEF(ticker)
 	SSstoryteller.setup()
 
 	callHook("roundstart")
+	SEND_GLOBAL_SIGNAL(SIGNAL_ROUNDSTART)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
 		to_world("<span class='info'><B>Enjoy the game!</B></span>")
 
-		for (var/mob/M in GLOB.player_list)
+		for(var/mob/M in GLOB.player_list)
 			M.playsound_local(M.loc, GLOB.using_map.welcome_sound, 75)
+			if(istype(M, /mob/new_player))
+				var/mob/new_player/player = M
+				player.new_player_panel()
 
 		//Holiday Round-start stuff	~Carn
 		Holiday_Game_Start()
@@ -105,10 +115,10 @@ SUBSYSTEM_DEF(ticker)
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
 
-	if(config.disable_ooc_roundstart)
+	if(config.game.disable_ooc_at_roundstart)
 		disable_ooc()
 
-	if(config.disable_looc_roundstart)
+	if(config.game.disable_looc_at_roundstart)
 		disable_looc()
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
@@ -119,10 +129,10 @@ SUBSYSTEM_DEF(ticker)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, .proc/declare_completion)
-		if(config.allow_map_switching && GLOB.all_maps.len > 1)
-			if (config.auto_map_vote)
+		if(config.game.map_switching && GLOB.all_maps.len > 1)
+			if (config.game.auto_map_vote)
 				SSvote.initiate_vote(/datum/vote/map/end_game, automatic = 1)
-			else if (config.auto_map_switching)
+			else if (config.game.auto_map_switching)
 				// Select random map exclude the current
 				var/datum/map/current_map = GLOB.using_map
 				var/datum/map/next_map = current_map
@@ -249,20 +259,20 @@ Helpers
 		if(player.client && player.ready)
 			totalPlayers++
 	//Find the relevant datum, resolving secret in the process.
-	var/list/base_runnable_modes = config.GetRunnableModesForPlayers(totalPlayers) //format: list(config_tag = weight)
+	var/list/base_runnable_modes = config.get_runnable_modes_for_players(totalPlayers) //format: list(config_tag = weight)
 	if(mode_to_try == "random" || mode_to_try == "secret")
 		var/list/runnable_modes = base_runnable_modes - bad_modes
 		if(secret_force_mode != "secret") // Config option to force secret to be a specific mode.
-			mode_datum = config.pick_mode(secret_force_mode)
+			mode_datum = pick_mode(secret_force_mode)
 		else if(!length(runnable_modes))  // Indicates major issues; will be handled on return.
 			bad_modes += mode_to_try
 			return
 		else
-			mode_datum = config.pick_mode(pickweight(runnable_modes))
+			mode_datum = pick_mode(pickweight(runnable_modes))
 			if(length(runnable_modes) > 1) // More to pick if we fail; we won't tell anyone we failed unless we fail all possibilities, though.
 				. = CHOOSE_GAMEMODE_SILENT_REDO
 	else
-		mode_datum = config.pick_mode(mode_to_try)
+		mode_datum = pick_mode(mode_to_try)
 	if(!istype(mode_datum))
 		bad_modes += mode_to_try
 		return
@@ -367,13 +377,13 @@ Helpers
 /datum/controller/subsystem/ticker/proc/game_finished()
 	if(mode.explosion_in_progress)
 		return 0
-	if(config.continous_rounds)
+	if(config.game.continuous_rounds)
 		return evacuation_controller.round_over() || mode.station_was_nuked
 	else
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
 /datum/controller/subsystem/ticker/proc/mode_finished()
-	if(config.continous_rounds)
+	if(config.game.continuous_rounds)
 		return mode.check_finished()
 	else
 		return game_finished()

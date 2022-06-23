@@ -95,14 +95,18 @@
 	return
 
 /mob/proc/unset_machine()
-	src.machine = null
+	if(!machine)
+		return
+	unregister_signal(machine, SIGNAL_QDELETING)
+	machine = null
 
 /mob/proc/set_machine(obj/O)
-	if(src.machine)
+	if(machine)
 		unset_machine()
-	src.machine = O
+	machine = O
+	register_signal(O, SIGNAL_QDELETING, .proc/unset_machine)
 	if(istype(O))
-		O.in_use = 1
+		O.in_use = TRUE
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc

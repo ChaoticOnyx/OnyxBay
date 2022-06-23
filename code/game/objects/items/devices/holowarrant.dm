@@ -5,14 +5,13 @@
 	item_state = "holowarrant"
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	var/datum/computer_file/data/warrant/active
 
 //look at it
-/obj/item/device/holowarrant/examine(mob/user)
+/obj/item/device/holowarrant/_examine_text(mob/user)
 	. = ..()
 	if(active)
 		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."

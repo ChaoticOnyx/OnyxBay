@@ -277,3 +277,18 @@
 		/obj/item/stack/material/cardboard/ten,
 		/obj/item/device/destTagger,
 		/obj/item/packageWrap)
+
+/obj/structure/closet/survial
+	name = "survival gear closet"
+	desc = "Closet with all that necessary for survival in wilderness."
+	icon_state = "syndicate1"
+	icon_closed = "syndicate1"
+	icon_opened = "syndicate1open"
+
+/obj/structure/closet/survival/New()
+	new /obj/item/material/hatchet(src)
+	if (prob(40))
+		new /obj/item/device/flashlight(src)
+	new /obj/item/device/radio(src)
+	new /obj/item/storage/box/survival
+	new /obj/item/storage/box/survival

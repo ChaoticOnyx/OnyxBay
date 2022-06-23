@@ -6,7 +6,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 3
 	throw_range = 10
 
 	var/secured = 0
@@ -76,7 +75,7 @@
 	if(master)
 		master.update_icon()
 
-/obj/item/device/assembly_holder/examine(mob/user)
+/obj/item/device/assembly_holder/_examine_text(mob/user)
 	. = ..()
 	if ((in_range(src, user) || src.loc == user))
 		if (src.secured)

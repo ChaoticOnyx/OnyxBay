@@ -45,10 +45,13 @@
 /atom/proc/update_light()
 	set waitfor = FALSE
 
-	if(!light_max_bright || !light_outer_range)
+	if(!light_max_bright || !light_outer_range || light_max_bright > 1)
 		if(light)
 			light.destroy()
 			light = null
+		if(light_max_bright > 1)
+			light_max_bright = 1
+			CRASH("Attempted to call update_light() on atom [src] \ref[src] with a light_max_bright value greater than one")
 	else
 		if(!istype(loc, /atom/movable))
 			. = src
@@ -59,6 +62,9 @@
 			light.update(.)
 		else
 			light = new /datum/light_source(src, .)
+	
+	SEND_SIGNAL(src, SIGNAL_LIGHT_UPDATED, src)
+	SEND_GLOBAL_SIGNAL(SIGNAL_LIGHT_UPDATED, src)
 
 /atom/Destroy()
 	if(light)

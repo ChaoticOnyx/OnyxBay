@@ -29,7 +29,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 10.0
 	throwforce = 10.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0
@@ -50,7 +49,7 @@
 	var/activate_sound = 'sound/items/polaroid3.ogg'
 	var/recycling_time = 30
 
-/obj/item/rpd/examine(mob/user)
+/obj/item/rpd/_examine_text(mob/user)
 	. = ..()
 	. += "\n[selected.name] is chosen to be produced."
 

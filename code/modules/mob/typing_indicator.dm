@@ -1,6 +1,6 @@
 /*Typing indicators, when a mob uses the F3/F4 keys to bring the say/emote input boxes up this little buddy is
 made and follows them around until they are done (or something bad happens), helps tell nearby people that 'hey!
-I IS TYPIN'!'
+I AM TYPING!'
 */
 
 /mob
@@ -11,7 +11,7 @@ I IS TYPIN'!'
 	icon_state = "typing"
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 /atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)
@@ -22,19 +22,19 @@ I IS TYPIN'!'
 	src.master = master
 	name = master.name
 	glide_size = master.glide_size
-	GLOB.moved_event.register(master, src, /atom/movable/proc/move_to_turf_or_null)
 
-	GLOB.stat_set_event.register(master, src, /datum/proc/qdel_self) // Making the assumption master is conscious at creation
-	GLOB.logged_out_event.register(master, src, /datum/proc/qdel_self)
-	GLOB.destroyed_event.register(master, src, /datum/proc/qdel_self)
+	register_signal(master, SIGNAL_MOVED, /atom/movable/proc/move_to_turf_or_null)
+	register_signal(master, SIGNAL_STAT_SET, /datum/proc/qdel_self) // Making the assumption master is conscious at creation.
+	register_signal(master, SIGNAL_LOGGED_OUT, /datum/proc/qdel_self)
+	register_signal(master, SIGNAL_QDELETING, /datum/proc/qdel_self)
 
 /atom/movable/overlay/typing_indicator/Destroy()
 	var/mob/M = master
 
-	GLOB.moved_event.unregister(master, src)
-	GLOB.stat_set_event.unregister(master, src)
-	GLOB.logged_out_event.unregister(master, src)
-	GLOB.destroyed_event.unregister(master, src)
+	unregister_signal(master, SIGNAL_MOVED)
+	unregister_signal(master, SIGNAL_STAT_SET)
+	unregister_signal(master, SIGNAL_LOGGED_OUT)
+	unregister_signal(master, SIGNAL_QDELETING)
 
 	M.typing_indicator = null
 	master = null
@@ -58,7 +58,7 @@ I IS TYPIN'!'
 
 /mob/verb/add_typing_indicator(is_sayinput as num|null)
 	set name = ".add_typing_indicator"
-	set hidden = 1
+	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
@@ -72,7 +72,7 @@ I IS TYPIN'!'
 
 /mob/verb/remove_typing_indicator_verb()
 	set name = ".remove_typing_indicator"
-	set hidden = 1
+	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
@@ -80,7 +80,7 @@ I IS TYPIN'!'
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
-	set hidden = 1
+	set hidden = TRUE
 
 	create_typing_indicator()
 	var/message = input("","me (text)") as text

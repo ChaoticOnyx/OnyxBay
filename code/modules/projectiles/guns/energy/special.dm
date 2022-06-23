@@ -225,7 +225,7 @@
 		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
 
-/obj/item/gun/energy/plasmacutter/examine(mob/user)
+/obj/item/gun/energy/plasmacutter/_examine_text(mob/user)
 	. = ..()
 	to_chat(user, "It has a recharge port with a capital letter P.")
 
@@ -241,6 +241,12 @@
 		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
 	else
 		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+
+/obj/item/gun/energy/plasmacutter/afterattack(obj/target, mob/user, adjacent_flag)
+	if(adjacent_flag && istype(target, /obj/item/stack/material/plasma))
+		attackby(target, user)
+		return
+	..()
 
 /obj/item/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
 	return 3800

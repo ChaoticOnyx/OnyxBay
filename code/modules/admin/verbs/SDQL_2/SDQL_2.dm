@@ -91,7 +91,11 @@
 
 				if("delete")
 					for(var/datum/d in objs)
-						qdel(d)
+						if(isturf(d))
+							var/turf/T = d
+							T.ChangeTurf(world.turf)
+						else
+							qdel(d)
 						CHECK_TICK
 
 				if("select")

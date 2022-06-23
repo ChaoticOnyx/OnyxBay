@@ -33,7 +33,7 @@
 		hub.com = src
 		hub.set_dir(dir)
 
-/obj/machinery/computer/teleporter/examine(mob/user)
+/obj/machinery/computer/teleporter/_examine_text(mob/user)
 	. = ..()
 	if(locked)
 		var/turf/T = get_turf(locked)
@@ -104,7 +104,7 @@
 		var/turf/T = get_turf(R)
 		if (!T)
 			continue
-		if(!(T.z in GLOB.using_map.player_levels))
+		if(!(T.z in GLOB.using_map.get_levels_without_trait(ZTRAIT_SEALED)))
 			continue
 		var/tmpname = T.loc.name
 		if(areaindex[tmpname])
@@ -124,7 +124,7 @@
 			var/turf/T = get_turf(M)
 			if(!T)
 				continue
-			if(!(T.z in GLOB.using_map.player_levels))
+			if(!(T.z in GLOB.using_map.get_levels_without_trait(ZTRAIT_SEALED)))
 				continue
 			var/tmpname = M.real_name
 			if(areaindex[tmpname])

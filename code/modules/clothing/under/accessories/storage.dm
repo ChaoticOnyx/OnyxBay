@@ -13,6 +13,10 @@
 	..()
 	create_storage()
 
+/obj/item/clothing/accessory/storage/Destroy()
+	QDEL_NULL(hold)
+	return ..()
+
 /obj/item/clothing/accessory/storage/proc/create_storage()
 	hold = new /obj/item/storage/internal/pockets(src, slots, max_w_class)
 
@@ -161,7 +165,7 @@
 		/obj/item/magnetic_ammo,
 		/obj/item/ammo_magazine,
 		/obj/item/net_shell,
-		/obj/item/reagent_containers/glass/beaker/vial
+		/obj/item/reagent_containers/vessel/beaker/vial
 	)
 
 /obj/item/clothing/accessory/storage/bandolier/safari/New()

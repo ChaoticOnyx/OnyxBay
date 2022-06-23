@@ -3,6 +3,7 @@
 	name = "APLU \"Ripley\""
 	icon_state = "ripley"
 	initial_icon = "ripley"
+	base_color = "#DFD472"
 	step_in = 6
 	max_temperature = 20000
 	health = 200
@@ -46,6 +47,7 @@
 	name = "DEATH-RIPLEY"
 	icon_state = "deathripley"
 	initial_icon = "deathripley"
+	base_color = "#880015"
 	step_in = 2
 	opacity=0
 	lights_power = 60
@@ -75,5 +77,3 @@
 	//Attach hydrolic clamp
 	var/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/HC = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
 	HC.attach(src)
-
-

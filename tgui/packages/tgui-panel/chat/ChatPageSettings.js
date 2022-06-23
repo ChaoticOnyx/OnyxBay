@@ -4,25 +4,25 @@
  * @license MIT
  */
 
-import { useDispatch, useSelector } from 'common/redux'
+import { useDispatch, useSelector } from "common/redux";
 import {
   Button,
   Collapsible,
   Divider,
   Input,
   Section,
-  Stack
-} from 'tgui/components'
-import { removeChatPage, toggleAcceptedType, updateChatPage } from './actions'
-import { MESSAGE_TYPES } from './constants'
-import { selectCurrentChatPage } from './selectors'
+  Stack,
+} from "tgui/components";
+import { removeChatPage, toggleAcceptedType, updateChatPage } from "./actions";
+import { MESSAGE_TYPES } from "./constants";
+import { selectCurrentChatPage } from "./selectors";
 
 export const ChatPageSettings = (props, context) => {
-  const page = useSelector(context, selectCurrentChatPage)
-  const dispatch = useDispatch(context)
+  const page = useSelector(context, selectCurrentChatPage);
+  const dispatch = useDispatch(context);
   return (
     <Section>
-      <Stack align='center'>
+      <Stack align="center">
         <Stack.Item grow={1}>
           <Input
             fluid
@@ -31,7 +31,7 @@ export const ChatPageSettings = (props, context) => {
               dispatch(
                 updateChatPage({
                   pageId: page.id,
-                  name: value
+                  name: value,
                 })
               )
             }
@@ -39,21 +39,22 @@ export const ChatPageSettings = (props, context) => {
         </Stack.Item>
         <Stack.Item>
           <Button
-            icon='times'
-            color='red'
+            icon="times"
+            color="red"
             onClick={() =>
               dispatch(
                 removeChatPage({
-                  pageId: page.id
+                  pageId: page.id,
                 })
               )
-            }>
+            }
+          >
             Remove
           </Button>
         </Stack.Item>
       </Stack>
       <Divider />
-      <Section title='Messages to display' level={2}>
+      <Section title="Messages to display" level={2}>
         {MESSAGE_TYPES.filter(
           (typeDef) => !typeDef.important && !typeDef.admin
         ).map((typeDef) => (
@@ -64,14 +65,15 @@ export const ChatPageSettings = (props, context) => {
               dispatch(
                 toggleAcceptedType({
                   pageId: page.id,
-                  type: typeDef.type
+                  type: typeDef.type,
                 })
               )
-            }>
+            }
+          >
             {typeDef.name}
           </Button.Checkbox>
         ))}
-        <Collapsible mt={1} color='transparent' title='Admin stuff'>
+        <Collapsible mt={1} color="transparent" title="Admin stuff">
           {MESSAGE_TYPES.filter(
             (typeDef) => !typeDef.important && typeDef.admin
           ).map((typeDef) => (
@@ -82,15 +84,16 @@ export const ChatPageSettings = (props, context) => {
                 dispatch(
                   toggleAcceptedType({
                     pageId: page.id,
-                    type: typeDef.type
+                    type: typeDef.type,
                   })
                 )
-              }>
+              }
+            >
               {typeDef.name}
             </Button.Checkbox>
           ))}
         </Collapsible>
       </Section>
     </Section>
-  )
-}
+  );
+};

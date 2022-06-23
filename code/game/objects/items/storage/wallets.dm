@@ -18,7 +18,7 @@
 		/obj/item/device/flashlight/pen,
 		/obj/item/device/flashlight/metroid,
 		/obj/item/seeds,
-		/obj/item/coin,
+		/obj/item/material/coin,
 		/obj/item/dice,
 		/obj/item/disk,
 		/obj/item/implant,
@@ -32,7 +32,7 @@
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/hypospray/autoinjector,
-		/obj/item/reagent_containers/glass/beaker/vial,
+		/obj/item/reagent_containers/vessel/beaker/vial,
 		/obj/item/device/radio/headset,
 		/obj/item/device/paicard,
 		/obj/item/stamp,
@@ -74,7 +74,7 @@
 		if(("id-"+front_id.icon_state) in icon_states(icon))
 			tiny_state = "id-"+front_id.icon_state
 		var/image/tiny_image = new /image(icon, icon_state = tiny_state)
-		tiny_image.appearance_flags = RESET_COLOR
+		tiny_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		overlays += tiny_image
 
 /obj/item/storage/wallet/GetIdCard()
@@ -93,7 +93,7 @@
 	var/item2_type
 	if(prob(50))
 		item2_type = pick( /obj/item/spacecash/bundle/c10,/obj/item/spacecash/bundle/c100,/obj/item/spacecash/bundle/c1000,/obj/item/spacecash/bundle/c20,/obj/item/spacecash/bundle/c200,/obj/item/spacecash/bundle/c50, /obj/item/spacecash/bundle/c500)
-	var/item3_type = pick( /obj/item/coin/silver, /obj/item/coin/silver, /obj/item/coin/gold, /obj/item/coin/iron, /obj/item/coin/iron, /obj/item/coin/iron )
+	var/item3_type = pick( /obj/item/material/coin/silver, /obj/item/material/coin/silver, /obj/item/material/coin/gold, /obj/item/material/coin/iron, /obj/item/material/coin/iron, /obj/item/material/coin/iron )
 
 	spawn(2)
 		if(item1_type)

@@ -27,7 +27,8 @@
 	. = ..()
 	if(mode != SYRINGE_PACKAGED && starting_label)
 		name = "syringe"
-		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+		AddComponent(/datum/component/label, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
+	update_icon()
 
 /obj/item/reagent_containers/syringe/on_reagent_change()
 	update_icon()
@@ -58,7 +59,7 @@
 			if(starting_label)
 				name = "syringe"
 				desc = "A syringe."
-				attach_label(null, null, starting_label)
+				AddComponent(/datum/component/label, starting_label)
 	update_icon()
 
 /obj/item/reagent_containers/syringe/attack_hand()
@@ -109,9 +110,7 @@
 
 /obj/item/reagent_containers/syringe/update_icon()
 	overlays.Cut()
-
-	icon_rotation = istype(loc, /obj/item/storage) ? 90 : 0
-	update_transform()
+	SetTransform(rotation = istype(loc, /obj/item/storage) ? 90 : 0)
 
 	if(mode == SYRINGE_BROKEN)
 		icon_state = "broken"
@@ -412,14 +411,10 @@
 	desc = "Contains inaprovaline - used to slow bleeding and stabilize patients."
 	mode = SYRINGE_INJECT
 	starting_label = "inaprovaline"
+	startswith = list(/datum/reagent/inaprovaline)
 
 /obj/item/reagent_containers/syringe/inaprovaline/packaged
 	mode = SYRINGE_PACKAGED
-
-/obj/item/reagent_containers/syringe/inaprovaline/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/inaprovaline, 15)
-	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/antitoxin
@@ -428,14 +423,10 @@
 	mode = SYRINGE_INJECT
 	starting_label = "dylovene"
 	package_state = "package_tox"
+	startswith = list(/datum/reagent/dylovene)
 
 /obj/item/reagent_containers/syringe/antitoxin/packaged
 	mode = SYRINGE_PACKAGED
-
-/obj/item/reagent_containers/syringe/antitoxin/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/dylovene, 15)
-	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/antiviral
@@ -444,14 +435,10 @@
 	mode = SYRINGE_INJECT
 	starting_label = "spaceacillin"
 	package_state = "package_viro"
+	startswith = list(/datum/reagent/spaceacillin)
 
 /obj/item/reagent_containers/syringe/antiviral/packaged
 	mode = SYRINGE_PACKAGED
-
-/obj/item/reagent_containers/syringe/antiviral/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/spaceacillin, 15)
-	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/drugs
@@ -460,16 +447,13 @@
 	mode = SYRINGE_INJECT
 	starting_label = "drugs"
 	package_state = "package_drugs"
+	startswith = list(
+		/datum/reagent/space_drugs = 5,
+		/datum/reagent/mindbreaker = 5,
+		/datum/reagent/cryptobiolin = 5)
 
 /obj/item/reagent_containers/syringe/drugs/packaged
 	mode = SYRINGE_PACKAGED
-
-/obj/item/reagent_containers/syringe/drugs/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/space_drugs, 5)
-	reagents.add_reagent(/datum/reagent/mindbreaker, 5)
-	reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
-	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/steroid
@@ -478,20 +462,19 @@
 	mode = SYRINGE_INJECT
 	starting_label = "anabolic steroids"
 	package_state = "package_steroid"
+	startswith = list(
+		/datum/reagent/adrenaline = 5,
+		/datum/reagent/hyperzine = 10)
 
 /obj/item/reagent_containers/syringe/steroid/packaged
 	mode = SYRINGE_PACKAGED
-
-/obj/item/reagent_containers/syringe/steroid/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/adrenaline, 5)
-	reagents.add_reagent(/datum/reagent/hyperzine, 10)
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/ld50_syringe
 	name = "Lethal Injection Syringe"
 	desc = "A syringe used for lethal injections."
 	amount_per_transfer_from_this = 60
+	mode = SYRINGE_INJECT
 	volume = 60
 	visible_name = "a giant syringe"
 	time = 300
@@ -507,12 +490,10 @@
 	..()
 
 /obj/item/reagent_containers/syringe/ld50_syringe/choral
-	mode = SYRINGE_INJECT
+	startswith = list(/datum/reagent/chloralhydrate)
 
-/obj/item/reagent_containers/syringe/ld50_syringe/choral/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/chloralhydrate, 60)
-	update_icon()
+/obj/item/reagent_containers/syringe/ld50_syringe/potassium_chlorophoride
+	startswith = list(/datum/reagent/toxin/potassium_chlorophoride)
 
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/syringe/borg

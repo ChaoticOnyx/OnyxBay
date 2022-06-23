@@ -381,7 +381,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 			item_slowdown += I.slowdown_general
 			item_slowdown += I.slowdown_per_slot[slot]
 			item_slowdown += I.slowdown_accessory
-			if(item_slowdown >= 0)
+			if(item_slowdown > 0)
 				var/size_mod = 0
 				if(!(mob_size == MOB_MEDIUM))
 					size_mod = log(2, mob_size / MOB_MEDIUM)

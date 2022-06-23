@@ -103,8 +103,6 @@
 			return global.SStimer;
 		if("SStrade")
 			return global.SStrade;
-		if("SSturf")
-			return global.SSturf;
 		if("SSvines")
 			return global.SSvines;
 		if("SSvote")
@@ -235,6 +233,8 @@
 			return global.blackbox;
 		if("blocked")
 			return global.blocked;
+		if("body_heights")
+			return global.body_heights;
 		if("bomb_set")
 			return global.bomb_set;
 		if("cable_list")
@@ -749,12 +749,6 @@
 			return global.sqladdress;
 		if("sqldb")
 			return global.sqldb;
-		if("sqlfdbkdb")
-			return global.sqlfdbkdb;
-		if("sqlfdbklogin")
-			return global.sqlfdbklogin;
-		if("sqlfdbkpass")
-			return global.sqlfdbkpass;
 		if("sqllogging")
 			return global.sqllogging;
 		if("sqllogin")
@@ -1002,8 +996,6 @@
 			global.SStimer=newval;
 		if("SStrade")
 			global.SStrade=newval;
-		if("SSturf")
-			global.SSturf=newval;
 		if("SSvines")
 			global.SSvines=newval;
 		if("SSvote")
@@ -1138,6 +1130,8 @@
 			global.blackbox=newval;
 		if("blocked")
 			global.blocked=newval;
+		if("body_heights")
+			global.body_heights=newval;
 		if("bomb_set")
 			global.bomb_set=newval;
 		if("cable_list")
@@ -1652,12 +1646,6 @@
 			global.sqladdress=newval;
 		if("sqldb")
 			global.sqldb=newval;
-		if("sqlfdbkdb")
-			global.sqlfdbkdb=newval;
-		if("sqlfdbklogin")
-			global.sqlfdbklogin=newval;
-		if("sqlfdbkpass")
-			global.sqlfdbkpass=newval;
 		if("sqllogging")
 			global.sqllogging=newval;
 		if("sqllogin")
@@ -1853,7 +1841,6 @@
 	"SSticker",
 	"SStimer",
 	"SStrade",
-	"SSturf",
 	"SSvines",
 	"SSvote",
 	"SSwireless",
@@ -1929,6 +1916,7 @@
 	"basic_robolimb",
 	"blackbox",
 	"blocked",
+	"body_heights",
 	"bomb_set",
 	"cable_list",
 	"cached_space",
@@ -2200,9 +2188,6 @@
 	"splatter_cache",
 	"sqladdress",
 	"sqldb",
-	"sqlfdbkdb",
-	"sqlfdbklogin",
-	"sqlfdbkpass",
 	"sqllogging",
 	"sqllogin",
 	"sqlpass",

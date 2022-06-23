@@ -18,6 +18,7 @@
 		slot_r_hand_str = "fire_suit",
 	)
 	w_class = ITEM_SIZE_HUGE//bulky item
+	armor = list(melee = 20, bullet = 10, laser = 15,energy = 5, bomb = 0, bio = 0, rad = 0)
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS

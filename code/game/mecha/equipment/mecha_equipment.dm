@@ -14,6 +14,9 @@
 	var/range = MELEE //bitflags
 	var/salvageable = 1
 	var/required_type = /obj/mecha //may be either a type or a list of allowed types
+	var/has_equip_overlay = TRUE // in case we want our equipment to have a sprite on a mecha
+	var/need_colorize = TRUE // in case we don't have a padding or don't want to color our equipment
+	var/equip_slot = HAND // Used to specify "layer" so we can easily display abstract missile launcher with an abstract laser.
 
 
 /obj/item/mecha_parts/mecha_equipment/proc/do_after_cooldown(target=1)
@@ -118,6 +121,7 @@
 			chassis.selected = null
 		update_chassis_page()
 		chassis.log_message("[src] removed from equipment.")
+		chassis.update_icon()
 		chassis = null
 		set_ready_state(1)
 	return

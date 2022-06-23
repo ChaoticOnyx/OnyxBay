@@ -38,7 +38,6 @@
 	item_state = "corncob"
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
-	throw_speed = 4
 	throw_range = 20
 
 /obj/item/corncob/attackby(obj/item/W as obj, mob/user as mob)
@@ -57,11 +56,10 @@
 	item_state = "banana_peel"
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 0
-	throw_speed = 4
 	throw_range = 20
 
 /obj/item/bananapeel/Crossed(mob/living/M)
 	if(!istype(M))
 		return
-	if(M.m_intent != M_WALK)
+	if(!M.resting && M.m_intent != M_WALK)
 		M.slip_on_obj(src, 2, 2)

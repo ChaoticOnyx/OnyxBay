@@ -8,7 +8,7 @@
 	icon_gib = "pine_1"
 	speak_chance = 0
 	turns_per_move = 5
-	meat_type = /obj/item/reagent_containers/food/snacks/carpmeat
+	meat_type = /obj/item/reagent_containers/food/carpmeat
 	response_help = "brushes"
 	response_disarm = "pushes"
 	response_harm = "hits"
@@ -32,7 +32,7 @@
 
 	faction = "floral"
 
-/mob/living/simple_animal/hostile/tree/FindTarget()
+/mob/living/simple_animal/hostile/tree/find_target()
 	. = ..()
 	if(.)
 		audible_emote("growls at [.]")

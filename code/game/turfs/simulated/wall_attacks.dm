@@ -93,8 +93,6 @@
 
 
 /turf/simulated/wall/attack_hand(mob/user)
-
-	radiate()
 	add_fingerprint(user)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/rotting = (locate(/obj/effect/overlay/wallrot) in src)
@@ -108,8 +106,6 @@
 	try_touch(user, rotting)
 
 /turf/simulated/wall/attack_generic(mob/user, damage, attack_message, wallbreaker)
-
-	radiate()
 	if(!istype(user))
 		return
 
@@ -130,7 +126,6 @@
 	return fail_smash(user)
 
 /turf/simulated/wall/attackby(obj/item/W as obj, mob/user as mob)
-
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
@@ -140,7 +135,6 @@
 	if(!istype(user.loc, /turf))	return	//can't do this stuff whilst inside objects and such
 
 	if(W)
-		radiate()
 		if(W.get_temperature_as_from_ignitor())
 			burn(W.get_temperature_as_from_ignitor())
 
@@ -344,7 +338,7 @@
 					if(!do_after(user,100,src) || !istype(src, /turf/simulated/wall) || !user || !W || !T )	return
 					if(user.loc == T && user.get_active_hand() == W )
 						to_chat(user, "<span class='notice'>You pry off the outer sheath.</span>")
-						dismantle_wall()
+						dismantle_wall(TRUE)
 					return
 
 	if(istype(W,/obj/item/frame))

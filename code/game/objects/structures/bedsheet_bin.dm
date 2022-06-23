@@ -14,7 +14,7 @@ LINEN BINS
 	slot_flags = SLOT_BACK
 	layer = BASE_ABOVE_OBJ_LAYER
 	throwforce = 1
-	throw_speed = 1
+	throw_speed = 3
 	throw_range = 2
 	w_class = ITEM_SIZE_SMALL
 	var/folded = 0
@@ -25,7 +25,7 @@ LINEN BINS
 		if(do_after(user, 50, src))
 			to_chat(user, "<span class='notice'>You cut \the [src] into pieces!</span>")
 			for(var/i in 1 to rand(2,5))
-				new /obj/item/reagent_containers/glass/rag(get_turf(src))
+				new /obj/item/reagent_containers/rag(get_turf(src))
 			qdel(src)
 		return
 	..()
@@ -117,7 +117,7 @@ LINEN BINS
 	var/obj/item/hidden = null
 
 
-/obj/structure/bedsheetbin/examine(mob/user)
+/obj/structure/bedsheetbin/_examine_text(mob/user)
 	. = ..()
 
 	if(amount < 1)

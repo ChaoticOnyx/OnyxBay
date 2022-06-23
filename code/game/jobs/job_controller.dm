@@ -90,7 +90,7 @@ var/global/datum/controller/occupations/job_master
 		if(!job.is_position_available())
 			to_chat(joining, "<span class='warning'>Unfortunately, that job is no longer available.</span>")
 			return FALSE
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(joining, "<span class='warning'>There is an administrative lock on entering the game!</span>")
 			return FALSE
 		if(SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -406,8 +406,12 @@ var/global/datum/controller/occupations/job_master
 		var/list/spawn_in_storage = list()
 
 		if(job)
-
-			//Equip job items.
+			if(rank == "Waiter")
+				H.disabilities = null
+				H.change_species("Monkey")
+				H.revive() // Disabled monkeys are bad
+				QDEL_LIST(H.worn_underwear)
+			// Equip job items.
 			job.setup_account(H)
 			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch, H.char_rank)
 			job.apply_fingerprints(H)
@@ -474,15 +478,17 @@ var/global/datum/controller/occupations/job_master
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
 
-		// If they're head, give them the account info for their department
-		if(H.mind && job.head_position)
+		if(H.mind)
 			var/remembered_info = ""
 			var/datum/money_account/department_account = department_accounts[job.department]
 
 			if(department_account)
-				remembered_info += "<b>Your department's account number is:</b> #[department_account.account_number]<br>"
-				remembered_info += "<b>Your department's account pin is:</b> [department_account.remote_access_pin]<br>"
-				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
+				remembered_info += "<b>Your [job.department] department account:</b><br>"
+				remembered_info += "<b>Number:</b> #[department_account.account_number]<br>"
+			// And if they're head, give them the pin and funds info for their department
+			if(job.head_position || job.title == "Quartermaster" || job.title ==  "Internal Affairs Agent")
+				remembered_info += "<b>Pin:</b> [department_account.remote_access_pin]<br>"
+				remembered_info += "<b>Funds:</b> [department_account.money]cr.<br>"
 
 			H.mind.store_memory(remembered_info)
 
@@ -579,7 +585,7 @@ var/global/datum/controller/occupations/job_master
 		return H
 
 	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
-		if(!config.load_jobs_from_txt)
+		if(!config.misc.load_jobs_from_txt)
 			return 0
 
 		var/list/jobEntries = file2list(jobsfile)
@@ -717,6 +723,8 @@ var/global/datum/controller/occupations/job_master
 
 	var/datum/job/J = GetJob(title)
 	if(!J)
+		return FALSE
+	if(J.no_latejoin)
 		return FALSE
 
 	var/datum/storyteller_character/ST = SSstoryteller.get_character()

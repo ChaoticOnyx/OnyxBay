@@ -7,6 +7,7 @@
 	w_class = ITEM_SIZE_SMALL
 	item_state = "electronic"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
+	slot_flags = SLOT_BELT
 
 /obj/item/device/antibody_scanner/attack(mob/M as mob, mob/user as mob)
 	if(!istype(M,/mob/living/carbon/))
@@ -67,7 +68,7 @@
 					infect_virus2(target, src.virus2)
 		qdel(src)
 
-/obj/item/virusdish/examine(mob/user)
+/obj/item/virusdish/_examine_text(mob/user)
 	. = ..()
 	if(basic_info)
 		. += "\n[basic_info] : <a href='?src=\ref[src];info=1'>More Information</a>"

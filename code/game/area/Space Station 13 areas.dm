@@ -76,7 +76,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	power_environ = 0
 	has_gravity = 0
 	area_flags = AREA_FLAG_EXTERNAL
-	ambient_music_meta_tags = list(META_SPACE)
+	ambient_music_tags = list(MUSIC_TAG_SPACE)
 	ambience_off = list(SFX_AMBIENT_SPACE)
 	ambience_powered = list(SFX_AMBIENT_SPACE)
 
@@ -106,7 +106,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "centcom"
 	requires_power = 0
 	dynamic_lighting = 0
-	ambient_music_meta_tags = list(META_CENTCOMM)
+	ambient_music_tags = list(MUSIC_TAG_CENTCOMM)
 
 /area/centcom/holding
 	name = "\improper Holding Facility"
@@ -151,7 +151,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	turf_initializer = /decl/turf_initializer/maintenance
 	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
-	ambient_music_meta_tags = list(META_MYSTIC)
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC)
 
 /area/rnd
 	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_SCIENCE)
@@ -197,6 +197,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/syndicate_mothership/elite_squad
 	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
+	area_flags = AREA_FLAG_NO_STATION
 
 ////////////
 //SHUTTLES//
@@ -207,6 +208,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/shuttle
 	requires_power = 0
 	sound_env = SMALL_ENCLOSED
+	area_flags = AREA_FLAG_NO_STATION
 
 /*
 * Special Areas
@@ -216,6 +218,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	icon_state = "yellow"
 	requires_power = 0
 	dynamic_lighting = 0
+	area_flags = AREA_FLAG_NO_STATION
 
 /area/beach
 	name = "Keelin's private beach"
@@ -223,6 +226,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
 	var/sound/mysound = null
 
 /area/beach/New()
@@ -265,7 +269,6 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	for(var/mob/living/carbon/human/H in src)
 		if(H.client)
 			mysound.status = SOUND_UPDATE
-			to_chat(H, mysound)
 			if(S)
 				spawn(sound_delay)
 					sound_to(H, S)
@@ -278,3 +281,14 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 1
 	dynamic_lighting = 0
 	requires_power = 0
+	area_flags = AREA_FLAG_NO_STATION
+
+//Abductors
+/area/abductor_ship
+	name = "Abductor Ship"
+	icon_state = "yellow"
+	requires_power = FALSE
+	requires_power = 0
+	dynamic_lighting = 0
+	luminosity = 1
+	area_flags = AREA_FLAG_NO_STATION

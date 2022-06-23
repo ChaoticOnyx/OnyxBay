@@ -116,7 +116,7 @@ var/const/NO_EMAG_ACT = -50
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
 
-/obj/item/card/emag/robot/examine(mob/user)
+/obj/item/card/emag/robot/_examine_text(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It has [uses] uses left.</span>"
 
@@ -158,7 +158,7 @@ var/const/NO_EMAG_ACT = -50
 			assignment = rank
 			access |= j.get_access()
 
-/obj/item/card/id/examine(mob/user)
+/obj/item/card/id/_examine_text(mob/user)
 	if(in_range(user, src))
 		show(user)
 		return desc
@@ -186,14 +186,15 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/card/id/proc/set_id_photo(mob/M)
-	front = getFlatIcon(M, SOUTH, always_use_defdir = 1)
-	side = getFlatIcon(M, WEST, always_use_defdir = 1)
+	front = getFlatIcon(M, SOUTH, always_use_defdir = TRUE)
+	side = getFlatIcon(M, WEST, always_use_defdir = TRUE)
 
 /mob/proc/set_id_info(obj/item/card/id/id_card)
 	id_card.age = 0
 	id_card.registered_name		= real_name
 	id_card.sex 				= capitalize(gender)
-	id_card.set_id_photo(src)
+	spawn(2 SECONDS)
+		id_card.set_id_photo(src)
 
 	if(dna)
 		id_card.blood_type		= dna.b_type
@@ -466,6 +467,11 @@ var/const/NO_EMAG_ACT = -50
 	desc = "A card issued to..."
 	icon_state = "mime"
 	job_access_type = /datum/job/mime
+
+/obj/item/card/id/civilian/barmonkey
+	desc = "A card issued to a monkey. Aboard a space station."
+	icon_state = "monkey"
+	job_access_type = /datum/job/barmonkey
 
 /obj/item/card/id/civilian/head //This is not the HoP. There's no position that uses this right now.
 	name = "identification card"

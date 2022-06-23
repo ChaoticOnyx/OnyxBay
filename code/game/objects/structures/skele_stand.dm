@@ -35,7 +35,7 @@
 /obj/structure/skele_stand/Bumped(atom/thing)
 	rattle_bones(null, thing)
 
-/obj/structure/skele_stand/examine(mob/user)
+/obj/structure/skele_stand/_examine_text(mob/user)
 	. = ..()
 	if(swag.len)
 		var/list/swagnames = list()

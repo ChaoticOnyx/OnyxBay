@@ -6,7 +6,7 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	role_text_plural = "God Cultists"
 	restricted_jobs = list(/datum/job/merchant, /datum/job/iaa, /datum/job/captain, /datum/job/hos)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
-	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
+	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/barmonkey)
 	feedback_tag = "godcult_objective"
 	antag_indicator = "hudcultist"
 	faction_verb = /mob/living/proc/dpray
@@ -24,8 +24,8 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 
 /datum/antagonist/godcultist/Initialize()
 	. = ..()
-	if(config.godcultist_min_age)
-		min_player_age = config.godcultist_min_age
+	if(config.game.godcultist_min_age)
+		min_player_age = config.game.godcultist_min_age
 
 /datum/antagonist/godcultist/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, max_stat, mob/living/deity/specific_god)
 	if(!..())

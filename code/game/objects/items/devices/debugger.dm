@@ -14,7 +14,6 @@
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 5.0
 	throw_range = 15
-	throw_speed = 3
 	desc = "You can use this on airlocks or APCs to try to hack them without cutting wires."
 
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 20)

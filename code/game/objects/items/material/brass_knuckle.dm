@@ -13,3 +13,4 @@
 	hitsound = SFX_FIGHTING_SWING
 	default_material = MATERIAL_STEEL
 	w_class = ITEM_SIZE_SMALL
+	material_amount = 2

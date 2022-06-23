@@ -16,7 +16,7 @@
 	icon_state = "displaced"
 	anchored = 0
 
-/obj/structure/girder/examine(mob/user)
+/obj/structure/girder/_examine_text(mob/user)
 	. = ..()
 	if(health <= 0.4 * max_health)
 		. += "\n[SPAN("warning", "It's heavily damaged!")]"

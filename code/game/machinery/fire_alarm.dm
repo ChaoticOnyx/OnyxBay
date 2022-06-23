@@ -17,7 +17,7 @@
 	var/wiresexposed = 0
 	var/buildstage = 2 // 2 = complete, 1 = no wires,  0 = circuit gone
 
-/obj/machinery/firealarm/examine(mob/user)
+/obj/machinery/firealarm/_examine_text(mob/user)
 	. = ..()
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	. += "\nThe current alert level is [security_state.current_security_level.name]."
@@ -46,7 +46,7 @@
 		if(!src.detecting)
 			icon_state = "fire1"
 			set_light(0.25, 0.5, 1.25, 2, COLOR_RED)
-		else if(z in GLOB.using_map.contact_levels)
+		else if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 			icon_state = "fire0"
 			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 			var/decl/security_level/sl = security_state.current_security_level
@@ -224,7 +224,7 @@
 
 /obj/machinery/firealarm/Initialize()
 	. = ..()
-	if(z in GLOB.using_map.contact_levels)
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CONTACT))
 		update_icon()
 
 /obj/machinery/firealarm/Destroy()

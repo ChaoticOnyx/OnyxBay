@@ -3,7 +3,7 @@
 	description_info = "If your ID has bar access, you may swipe it on this sign to alter its display."
 	icon = 'icons/obj/barsigns.dmi'
 	icon_state = "empty"
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 	anchored = 1
 	var/emagged = FALSE
 
@@ -21,7 +21,7 @@
 	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
 
-/obj/structure/sign/double/barsign/examine(mob/user)
+/obj/structure/sign/double/barsign/_examine_text(mob/user)
 	. = ..()
 	switch(icon_state)
 		if("Off")

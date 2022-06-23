@@ -33,7 +33,7 @@
 
 	// Keeps those who are on the ground down
 	if(affecting.lying)
-		affecting.Weaken(4)
+		affecting.Weaken(2)
 		affecting.Stun(2)
 
 /datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)

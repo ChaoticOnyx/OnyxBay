@@ -10,7 +10,9 @@
 
 /obj/item/organ/internal/kidneys/robotize()
 	. = ..()
+	SetName("renal implants")
 	icon_state = "kidneys-prosthetic"
+	dead_icon = "kidneys-prosthetic-br"
 
 /obj/item/organ/internal/kidneys/Process()
 	..()

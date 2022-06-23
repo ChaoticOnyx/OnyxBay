@@ -5,7 +5,7 @@
  *		Ushanka
  *		Pumpkin head
  *		Kitty ears
- *
+ *		Tinfoil hat
  */
 
 /*
@@ -32,7 +32,7 @@
 	tint = TINT_HEAVY
 	var/obj/item/welding_cover/cover = null
 
-/obj/item/clothing/head/welding/examine(mob/user)
+/obj/item/clothing/head/welding/_examine_text(mob/user)
 	. = ..()
 	if(cover)
 		. += " [cover.cover_desc]"
@@ -46,9 +46,7 @@
 	..()
 
 /obj/item/clothing/head/welding/Destroy()
-	if(cover)
-		qdel(cover)
-		cover = null
+	QDEL_NULL(cover)
 	return ..()
 
 /obj/item/clothing/head/welding/attack_self()
@@ -259,3 +257,12 @@
 	body_parts_covered = HEAD|FACE
 	flags_inv = BLOCKHAIR
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+/*
+ * Tinfoil hat
+ */
+/obj/item/clothing/head/tinfoil
+	name = "Tinfoil hat"
+	desc = "Big brother is watching you!"
+	icon_state = "foilhat"
+	body_parts_covered = 0
+	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0, rad = 0)

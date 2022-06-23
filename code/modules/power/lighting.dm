@@ -44,7 +44,7 @@
 		if(2) icon_state = "tube-construct-stage2"
 		if(3) icon_state = "tube-empty"
 
-/obj/machinery/light_construct/examine(mob/user)
+/obj/machinery/light_construct/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
@@ -138,8 +138,8 @@
 	desc = "A lighting fixture."
 	anchored = 1
 
-	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
-	use_power = POWER_USE_ACTIVE
+	layer = ABOVE_HUMAN_LAYER // They were appearing under mobs which is a little weird - Ostaf
+	use_power = POWER_USE_OFF // It resets during initialization anyway, but using other options may cause some initially-unpowered areas to act silly.
 	idle_power_usage = 2
 	active_power_usage = 20
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
@@ -345,18 +345,18 @@
 	queue_icon_update()
 
 // examine verb
-/obj/machinery/light/examine(mob/user)
+/obj/machinery/light/_examine_text(mob/user)
 	. = ..()
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			. += "\n[desc] It is turned [on? "on" : "off"]."
+			. += "\nIt is turned [on? "on" : "off"]."
 		if(LIGHT_EMPTY)
-			. += "\n[desc] The [fitting] has been removed."
+			. += "\nThe [fitting] has been removed."
 		if(LIGHT_BURNED)
-			. += "\n[desc] The [fitting] is burnt out."
+			. += "\nThe [fitting] is burnt out."
 		if(LIGHT_BROKEN)
-			. += "\n[desc] The [fitting] has been smashed."
+			. += "\nThe [fitting] has been smashed."
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/light/L = light_type
@@ -606,8 +606,7 @@
 
 // called when area power state changes
 /obj/machinery/light/power_change()
-	spawn(10)
-		seton(powered())
+	seton(powered())
 
 // called when on fire
 

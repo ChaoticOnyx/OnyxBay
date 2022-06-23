@@ -384,16 +384,17 @@ var/bomb_set
 	. = ..()
 	// Can never be quite sure that a game mode has been properly initiated or not at this point, so always register
 	nuke_disks += src
-	GLOB.moved_event.register(src, src, /obj/item/disk/nuclear/proc/check_z_level)
+	register_signal(src, SIGNAL_MOVED, /obj/item/disk/nuclear/proc/check_z_level)
 
 /obj/item/disk/nuclear/proc/check_z_level()
 	var/turf/T = get_turf(src)
-	if(!T || isNotStationLevel(T.z))
+	if(!T || !isStationLevel(T.z))
 		qdel(src)
 
 /obj/item/disk/nuclear/Destroy()
-	GLOB.moved_event.unregister(src, src, /obj/item/disk/nuclear/proc/check_z_level)
+	unregister_signal(src, SIGNAL_MOVED)
 	nuke_disks -= src
+
 	if(!nuke_disks.len)
 		var/turf/T = pick_area_turf(pick_area_by_type(/area/maintenance, list(/proc/is_station_area)), list(/proc/not_turf_contains_dense_objects))
 		if(T)
@@ -413,7 +414,7 @@ var/bomb_set
 		/obj/item/modular_computer/laptop/preset/custom_loadout/cheap/
 	)
 
-/obj/item/storage/secure/briefcase/nukedisk/examine(user)
+/obj/item/storage/secure/briefcase/nukedisk/_examine_text(user)
 	. = ..()
 	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 

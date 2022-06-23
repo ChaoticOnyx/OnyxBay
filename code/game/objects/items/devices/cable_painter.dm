@@ -14,7 +14,7 @@
 	..()
 	color_selection = pick(possible_cable_coil_colours)
 
-/obj/item/device/cable_painter/examine(user)
+/obj/item/device/cable_painter/_examine_text(user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nThe color is currently set to [lowertext(color_selection)]."

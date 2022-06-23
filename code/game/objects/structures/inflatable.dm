@@ -94,7 +94,7 @@
 		if(health == round(0.3 * initial(health)))
 			visible_message(SPAN("warning", "\The [src] is barely holding up!"))
 
-/obj/structure/inflatable/examine(mob/user)
+/obj/structure/inflatable/_examine_text(mob/user)
 	. = ..()
 	if(health >= initial(health))
 		. += "\n[SPAN_NOTICE("It's undamaged.")]"

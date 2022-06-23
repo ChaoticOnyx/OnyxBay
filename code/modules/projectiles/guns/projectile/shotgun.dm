@@ -86,7 +86,6 @@
 	item_state = "welder"
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.0
@@ -97,7 +96,7 @@
 /obj/item/boomstickframe/update_icon()
 	icon_state = "boomstick[buildstate]"
 
-/obj/item/boomstickframe/examine(mob/user)
+/obj/item/boomstickframe/_examine_text(mob/user)
 	. = ..()
 	switch(buildstate)
 		if(0) . += "\nIt has a pipe loosely fitted to the welding tool."

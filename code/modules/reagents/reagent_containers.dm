@@ -9,6 +9,7 @@
 	var/volume = 30
 	var/label_text
 	var/can_be_splashed = FALSE
+	var/list/startswith // List of reagents to start with
 
 /obj/item/reagent_containers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -24,16 +25,21 @@
 	if(!possible_transfer_amounts)
 		src.verbs -= /obj/item/reagent_containers/verb/set_APTFT
 	create_reagents(volume)
+	if(startswith)
+		for(var/thing in startswith)
+			reagents.add_reagent(thing, startswith[thing] ? startswith[thing] : volume)
+		startswith = null // Unnecessary lists bad
+		update_icon()
 
-/obj/item/reagent_containers/attack_self(mob/user as mob)
+/obj/item/reagent_containers/attack_self(mob/user)
 	return
 
 /obj/item/reagent_containers/afterattack(obj/target, mob/user, flag)
-	if(can_be_splashed && user.a_intent == I_HURT)
+	if(can_be_splashed && user.a_intent != I_HELP)
 		if(standard_splash_mob(user,target))
 			return
 		if(reagents && reagents.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
+			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) // They are not on help intent, aka wanting to spill it.
 			reagents.splash(target, reagents.total_volume)
 			return
 
@@ -42,7 +48,7 @@
 		return reagents.get_reagents()
 	return "No reagent holder"
 
-/obj/item/reagent_containers/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/reagent_containers/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/pen) || istype(W, /obj/item/device/flashlight/pen))
 		var/tmp_label = sanitizeSafe(input(user, "Enter a label for [name]", "Label", label_text), MAX_NAME_LEN)
 		if(length(tmp_label) > 10)
@@ -203,7 +209,7 @@
 	else
 		return ..()
 
-/obj/item/reagent_containers/examine(mob/user)
+/obj/item/reagent_containers/_examine_text(mob/user)
 	. = ..()
 	if(hasHUD(user, HUD_SCIENCE))
 		. += "\n<span class='notice'>The [src] contains: [reagents.get_reagents()].</span>"

@@ -3,7 +3,7 @@
 	name = "alien"
 	desc = "A viscious little creature, it looks like a connected pair of hands and has a long, muscular tail."
 	icon = 'icons/mob/alien.dmi'
-	icon_state = "facehugger_inactive"
+	icon_state = "facehugger"
 	icon_living = "facehugger"
 	item_state = "facehugger"
 	icon_dead = "facehugger_dead"
@@ -23,8 +23,8 @@
 	mob_size = MOB_MINISCULE
 	can_escape = 1
 	pass_flags = PASS_FLAG_TABLE
-	melee_damage_lower = 5
-	melee_damage_upper = 7.5
+	melee_damage_lower = 2.5
+	melee_damage_upper = 5
 
 	min_gas = null
 	max_gas = null
@@ -165,7 +165,6 @@
 /obj/item/holder/facehugger
 	origin_tech = list(TECH_BIO = 4)
 	slot_flags = SLOT_MASK | SLOT_HOLSTER
-	throw_speed = 4
 	icon_state = "facehugger"
 	item_state = "facehugger"
 	var/wasted = FALSE

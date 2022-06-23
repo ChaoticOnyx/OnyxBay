@@ -22,11 +22,8 @@ SUBSYSTEM_DEF(lighting)
 	var/stat_updates_to_keep = 5
 
 	var/list/light_queue   = list() // lighting sources  queued for update.
-	var/lq_idex = 1
 	var/list/corner_queue  = list() // lighting corners  queued for update.
-	var/cq_idex = 1
 	var/list/overlay_queue = list() // lighting overlays queued for update.
-	var/oq_idex = 1
 
 	var/tmp/processed_lights = 0
 	var/tmp/processed_corners = 0
@@ -79,10 +76,11 @@ SUBSYSTEM_DEF(lighting)
 	if (!no_mc_tick)
 		MC_SPLIT_TICK
 
+	var/list/queue = light_queue
+	var/i = 0
 	// Sources.
-	while (lq_idex <= light_queue.len)
-		var/datum/light_source/L = light_queue[lq_idex]
-		lq_idex += 1
+	for(i in 1 to length(queue))
+		var/datum/light_source/L = queue[i]
 
 		if(L.check() || L.destroyed || L.force_update)
 			L.remove_lum()
@@ -98,56 +96,57 @@ SUBSYSTEM_DEF(lighting)
 
 		processed_lights += 1
 
-		if (no_mc_tick)
+		if(no_mc_tick)
 			CHECK_TICK
-		else if (MC_TICK_CHECK)
+		else if(MC_TICK_CHECK)
 			break
 
-	if (lq_idex > 1)
-		light_queue.Cut(1, lq_idex)
-		lq_idex = 1
+	if(i)
+		queue.Cut(1, i+1)
+		i = 0
 
-	if (!no_mc_tick)
+	if(!no_mc_tick)
 		MC_SPLIT_TICK
 
 	// Corners.
-	while (cq_idex <= corner_queue.len)
-		var/datum/lighting_corner/C = corner_queue[cq_idex]
-		cq_idex += 1
-
-		C.update_overlays()
+	queue = corner_queue
+	for(i in 1 to length(queue))
+		var/datum/lighting_corner/C = queue[i]
 
 		C.needs_update = FALSE
+		C.update_overlays()
 
 		processed_corners += 1
 
-		if (no_mc_tick)
+		if(no_mc_tick)
 			CHECK_TICK
-		else if (MC_TICK_CHECK)
+		else if(MC_TICK_CHECK)
 			break
 
-	if (cq_idex > 1)
-		corner_queue.Cut(1, cq_idex)
-		cq_idex = 1
+	if(i)
+		queue.Cut(1, i+1)
+		i = 0
 
-	if (!no_mc_tick)
+	if(!no_mc_tick)
 		MC_SPLIT_TICK
 
 	// Objects.
-	while (oq_idex <= overlay_queue.len)
-		var/atom/movable/lighting_overlay/O = overlay_queue[oq_idex]
-		oq_idex += 1
+	queue = overlay_queue
+	for(i in 1 to length(queue))
+		var/atom/movable/lighting_overlay/O = queue[i]
+
+		if(QDELETED(O))
+			continue
 
 		O.update_overlay()
-		O.needs_update = 0
+		O.needs_update = FALSE
 
 		processed_overlays += 1
 
-		if (no_mc_tick)
+		if(no_mc_tick)
 			CHECK_TICK
-		else if (MC_TICK_CHECK)
+		else if(MC_TICK_CHECK)
 			break
 
-	if (oq_idex > 1)
-		overlay_queue.Cut(1, oq_idex)
-		oq_idex = 1
+	if(i)
+		queue.Cut(1, i+1)

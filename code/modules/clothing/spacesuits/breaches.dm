@@ -239,7 +239,7 @@
 
 	..()
 
-/obj/item/clothing/suit/space/examine(mob/user)
+/obj/item/clothing/suit/space/_examine_text(mob/user)
 	. = ..()
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)

@@ -1,4 +1,10 @@
-/mob/living/carbon/human/examine(mob/user)
+/mob/living/carbon/human/_examine_text(mob/user)
+
+	if(istype(wear_suit, /obj/item/clothing/suit/armor/abductor/vest))
+		var/obj/item/clothing/suit/armor/abductor/vest/abd_vest = wear_suit
+		if(abd_vest.stealth_active)
+			return abd_vest.disguise.examine
+
 	var/skipgloves = 0
 	var/skipsuitstorage = 0
 	var/skipjumpsuit = 0
@@ -30,7 +36,7 @@
 	if(get_dist(user, src) > 3)
 		skipears = 1
 
-	var/list/msg = list("<span class='info'>*---------*\nThis is ")
+	var/list/msg = list("This is ")
 
 	var/datum/gender/T = gender_datums[get_gender()]
 	if(skipjumpsuit && skipface) // big suits/masks/helmets make it hard to tell their gender
@@ -43,7 +49,7 @@
 		// Just in case someone VVs the gender to something strange. It'll runtime anyway when it hits usages, better to CRASH() now with a helpful message.
 		CRASH("Gender datum was null; key was '[(skipjumpsuit && skipface) ? PLURAL : gender]'")
 
-	msg += "<EM>[src.name]</EM>"
+	msg += SPAN("info", "<em>[src.name]</em>")
 
 	var/is_synth = isSynthetic()
 	if(!(skipjumpsuit && skipface))
@@ -131,9 +137,11 @@
 	// handcuffed?
 	if(handcuffed)
 		if(istype(handcuffed, /obj/item/handcuffs/cable))
-			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with cable!\n")
-		else
+			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with [handcuffed.name]!\n")
+		else if(istype(handcuffed, /obj/item/handcuffs))
 			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] handcuffed!\n")
+		else if(istype(handcuffed, /obj/item/clothing/suit/straight_jacket))
+			msg += SPAN("warning", "[T.He] [T.is] \icon[handcuffed] restrained with a straight jacket!\n")
 
 	// buckled
 	if(buckled)
@@ -318,7 +326,6 @@
 
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
-	msg += "*---------*</span><br>"
 	msg += applying_pressure
 
 	if (pose)
@@ -328,7 +335,7 @@
 
 	return jointext(msg, null)
 
-// Helper procedure. Called by /mob/living/carbon/human/examine() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
+// Helper procedure. Called by /mob/living/carbon/human/_examine_text() and /mob/living/carbon/human/Topic() to determine HUD access to security and medical records.
 /proc/hasHUD(mob/M as mob, hudtype)
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M

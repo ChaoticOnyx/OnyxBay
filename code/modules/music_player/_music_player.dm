@@ -14,7 +14,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player
 	name = "music player"
-	desc = "A little device which can be used to play soft tunes. If you see this you're probably should be banned for abuse. Report this situation to dev team."
+	desc = "A little device which can be used to play soft tunes. If you see this, you should probably be banned for abuse. Report this situation to the dev team."
 	icon = 'sprites/object.dmi'
 	icon_state = null
 	item_state = null
@@ -23,7 +23,6 @@ GLOBAL_LIST_EMPTY(music_players)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
 	throwforce = 2
-	throw_speed = 4
 	throw_range = 10
 
 	matter = list(MATERIAL_STEEL = 75, MATERIAL_GLASS = 30)
@@ -72,7 +71,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	GLOB.music_players -= src
 	. = ..()
 
-/obj/item/music_player/examine(mob/user)
+/obj/item/music_player/_examine_text(mob/user)
 	. = ..()
 	if(tape)
 		. += "\n[SPAN_NOTICE("You can see \a [tape] inside it.")]"
@@ -376,7 +375,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 /obj/item/music_player/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\The [src] blows apart!"), 1)
+	src.visible_message(SPAN_DANGER("\The [src] blows apart!"))
 
 	explosion(src.loc, 1, 1, 1, rand(3, 4), 1)
 

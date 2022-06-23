@@ -146,7 +146,8 @@
 	for(var/obj/item/I in range(1))
 		if(I.w_class <= 2)
 			choices += I
-
+	
+	choices -= ghost_multitool
 	if(!choices.len)
 		to_chat(src, "<span class='warning'>There are no suitable items nearby.</span>")
 		return

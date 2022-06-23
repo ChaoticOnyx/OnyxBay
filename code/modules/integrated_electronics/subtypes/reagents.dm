@@ -7,6 +7,7 @@
 	category_text = "Reagent"
 	unacidable = 1
 	cooldown_per_use = 10
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	var/volume = 0
 
 /obj/item/integrated_circuit/reagent/Initialize()
@@ -632,12 +633,12 @@
 	can_input_object_when_closed = TRUE
 	radial_menu_icon = "beaker_connector"
 
-	var/obj/item/reagent_containers/glass/beaker/current_beaker
+	var/obj/item/reagent_containers/vessel/beaker/current_beaker
 
 
-/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/reagent_containers/glass/beaker/I, mob/living/user)
+/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/reagent_containers/vessel/beaker/I, mob/living/user)
 	//Check if it truly is a reagent container
-	if(!istype(I,/obj/item/reagent_containers/glass/beaker))
+	if(!istype(I,/obj/item/reagent_containers/vessel/beaker))
 		to_chat(user, SPAN("warning", "The [I] doesn't seem to fit in here."))
 		return
 
@@ -692,7 +693,7 @@
 	push_data()
 
 
-/obj/item/reagent_containers/glass/beaker/on_reagent_change()
+/obj/item/reagent_containers/vessel/beaker/on_reagent_change()
 	..()
 	if(istype(loc,/obj/item/integrated_circuit/input/beaker_connector))
 		var/obj/item/integrated_circuit/input/beaker_connector/current_circuit = loc

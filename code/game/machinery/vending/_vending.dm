@@ -72,7 +72,7 @@
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/scan_id = 1
-	var/obj/item/coin/coin
+	var/obj/item/material/coin/coin
 	var/datum/wires/vending/wires = null
 	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
 
@@ -99,7 +99,7 @@
 	power_change()
 	setup_icon_states()
 
-/obj/machinery/vending/examine(mob/user)
+/obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
 	if(.)
 		if(stat & BROKEN)
@@ -237,7 +237,7 @@
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/coin) && premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
@@ -363,6 +363,11 @@
 			status_error = TRUE
 			return 0
 
+	if(!currently_vending)
+		status_message = "Item not selected, operation canceled."
+		status_error = TRUE
+		return
+
 	if(currently_vending.price > customer_account.money)
 		status_message = "Insufficient funds in account."
 		status_error = TRUE
@@ -401,13 +406,13 @@
 		if(shock(user, 100))
 			return
 
-	if(user.a_intent == I_HURT)
+	if(user.a_intent == I_HURT && Adjacent(user))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		take_damage(2)
 		playsound(src, 'sound/effects/vent/vent12.ogg', 40, TRUE)
 		shake_animation(stime = 4)
 		user.do_attack_animation(src)
-		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"), 
+		user.visible_message(SPAN("danger", "\The [user] knock \the [src]!"),
 			SPAN("danger", "You knock \the [src]!"),
 			SPAN("danger", "You hear a knock sound."))
 
@@ -695,10 +700,10 @@
 
 /obj/machinery/vending/proc/update_standing_icon()
 	if(!anchored)
-		transform = turn(transform, -90)
+		SetTransform(rotation = -90)
 		pixel_y = -3
 	else
-		transform = turn(transform, 90)
+		ClearTransform()
 		pixel_y = initial(pixel_y)
 	update_icon()
 
@@ -723,8 +728,7 @@
 			break
 	if(!throw_item)
 		return 0
-	spawn(0)
-		throw_item.throw_at(target, rand(1, 2), 3, src)
+	throw_item.throw_at(target, rand(1, 3), null, src)
 	visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 

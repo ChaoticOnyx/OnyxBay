@@ -43,6 +43,10 @@
 	name = "Bartender"
 	icon_state = "landmark_bar"
 
+/obj/effect/landmark/start/crew/barmonkey
+	name = "Waiter"
+	icon_state = "landmark_monkey"
+
 // Civilian
 /obj/effect/landmark/start/crew/assistant
 	name = "Assistant"
@@ -220,6 +224,19 @@
 /obj/effect/landmark/start/antags/borer
 	name = "Borer"
 	icon_state = "landmark_borer"
+
+// Abductors
+/obj/effect/landmark/abductor
+	var/team_number = 1
+	should_be_added = FALSE
+
+/obj/effect/landmark/abductor/agent
+	icon_state = "landmark_abductor_agent"
+	should_be_added = TRUE
+
+/obj/effect/landmark/abductor/scientist
+	icon_state = "landmark_abductor"
+	should_be_added = TRUE
 
 // Latejoin landmarks.
 /obj/effect/landmark/joinlate

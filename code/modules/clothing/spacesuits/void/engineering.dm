@@ -37,7 +37,7 @@
 	icon_state = "rig0-engineeringalt"
 	item_state = "engalt_helm"
 	armor = list(melee = 40, bullet = 5, laser = 20,energy = 5, bomb = 45, bio = 100, rad = 100)
-	light_overlay = "helmet_light_dual"
+	light_overlay = "helmet_light_dual_low"
 
 /obj/item/clothing/suit/space/void/engineering/alt
 	name = "engineering hardsuit"

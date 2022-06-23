@@ -123,6 +123,8 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 /datum/movement_handler/New(atom/movable/host)
 	if(!istype(host, expected_host_type))
 		CRASH("Invalid host type. Expected [expected_host_type], was [host ? host.type : "*null*"]")
+	if(QDELETED(host))
+		CRASH("Attempted to add a new movement handler to a GC'ed host [host]. Aborting.")
 	src.host = host
 
 /datum/movement_handler/Destroy()
@@ -150,3 +152,9 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 /datum/movement_handler/mob/Destroy()
 	mob = null
 	. = ..()
+
+/proc/register_all_movement(event_source, datum/listener)
+	listener.register_signal(event_source, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)
+
+/proc/unregister_all_movement(event_source, datum/listener)
+	listener.unregister_signal(event_source, SIGNAL_DIR_SET, /atom/proc/recursive_dir_set)

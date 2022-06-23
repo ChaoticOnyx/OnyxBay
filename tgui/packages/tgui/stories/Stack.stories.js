@@ -4,19 +4,19 @@
  * @license MIT
  */
 
-import { Box, Section, Stack } from '../components'
+import { Box, Section, Stack } from "../components";
 
 export const meta = {
-  title: 'Stack',
+  title: "Stack",
   // eslint-disable-next-line react/display-name
-  render: () => <Story />
-}
+  render: () => <Story />,
+};
 
 const Filler = () => (
   <Box inline width={1} height={1}>
     A
   </Box>
-)
+);
 
 const SmallStackItems = () => (
   <>
@@ -28,12 +28,12 @@ const SmallStackItems = () => (
       <Filler />
     </Stack.Item>
   </>
-)
+);
 
 const Story = (props, context) => {
   return (
     <Section fill>
-      <Stack fill className='debug-layout'>
+      <Stack fill className="debug-layout">
         <SmallStackItems />
         <Stack.Item grow={1}>
           <Stack fill vertical>
@@ -52,5 +52,5 @@ const Story = (props, context) => {
         </Stack.Item>
       </Stack>
     </Section>
-  )
-}
+  );
+};

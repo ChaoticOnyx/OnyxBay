@@ -31,7 +31,7 @@
 
 	// If the counter changed and was or became 0 then lift event/reconsider lights
 	if(opaque_counter != old_opaque_counter && (!opaque_counter || !old_opaque_counter))
-		GLOB.opacity_set_event.raise_event(src, !opaque_counter, !!opaque_counter)
+		SEND_SIGNAL(src, SIGNAL_OPACITY_SET, src, !opaque_counter, !!opaque_counter)
 		reconsider_lights()
 		return TRUE
 	return FALSE
@@ -74,7 +74,7 @@
 		return maxlum
 	if(!lighting_overlay)
 		var/area/A = loc
-		if(A.dynamic_lighting)
+		if(A.dynamic_lighting && dynamic_lighting)
 			var/atom/movable/lighting_overlay/O = new /atom/movable/lighting_overlay(src)
 			lighting_overlay = O
 

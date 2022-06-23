@@ -525,7 +525,7 @@
 			$ckey,
 			$address,
 			$adminrank)
-		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address, adminrank = adminrank))
+		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address || "127.0.0.1", adminrank = adminrank))
 
 	to_chat(usr, "<span class='notice'>Vote successful.</span>")
 	close_browser(usr, "window=playerpoll")
@@ -618,7 +618,7 @@
 			$address,
 			$replytext,
 			$adminrank)
-		"}, dbcon, list(pollid = pollid, ckey = usr.ckey, address = usr.client.address, replytext = replytext, adminrank = adminrank))
+		"}, dbcon, list(pollid = pollid, ckey = usr.ckey, address = usr.client.address || "127.0.0.1", replytext = replytext, adminrank = adminrank))
 
 	to_chat(usr, "<span class='notice'>Feedback logging successful.</span>")
 	close_browser(usr, "window=playerpoll")
@@ -725,7 +725,7 @@
 			$address, 
 			$adminrank, 
 			[(isnull(rating)) ? "null" : "$rating"])
-		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address, adminrank = adminrank, rating = rating))
+		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address || "127.0.0.1", adminrank = adminrank, rating = rating))
 
 	to_chat(usr, "<span class='notice'>Vote successful.</span>")
 	close_browser(usr, "window=playerpoll")

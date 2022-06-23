@@ -25,7 +25,7 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 	faction_verb = /mob/living/proc/convert_to_rev
 	faction_welcome = "Help the cause overturn the ruling class. Do not harm your fellow freedom fighters."
 	faction_indicator = "hudrevolutionary"
-	faction_invisible = 1
+	faction_invisible = FALSE
 	faction = "revolutionary"
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg)
@@ -34,8 +34,15 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 
 /datum/antagonist/revolutionary/Initialize()
 	. = ..()
-	if(config.revolutionary_min_age)
-		min_player_age = config.revolutionary_min_age
+	if(config.game.revolutionary_min_age)
+		min_player_age = config.game.revolutionary_min_age
+
+/datum/antagonist/revolutionary/proc/count_score()
+	var/rev_score = 0
+	for(var/area/A in GLOB.station_areas)
+		if(!A.is_controlled_by_corporation())
+			rev_score += A.importance
+	return rev_score
 
 /datum/antagonist/revolutionary/create_global_objectives()
 	if(!..())

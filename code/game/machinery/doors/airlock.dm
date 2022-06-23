@@ -420,7 +420,7 @@ About the new airlock wires panel:
 						shake_animation(2, 2)
 				return
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
-			visible_message(SPAN("danger", "[user] slashes at \the [name]."), 1)
+			visible_message(SPAN("danger", "[user] slashes at \the [name]."))
 			take_damage(10)
 			user.do_attack_animation(src)
 			user.setClickCooldown(5)
@@ -892,7 +892,7 @@ About the new airlock wires panel:
 
 	//wires
 	var/turf/T = get_turf(newloc)
-	if(T && (T.z in GLOB.using_map.admin_levels))
+	if(T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		secured_wires = 1
 	if(secured_wires)
 		wires = new /datum/wires/airlock/secure(src)
@@ -974,7 +974,7 @@ About the new airlock wires panel:
 	else
 		..(amount)
 
-/obj/machinery/door/airlock/examine(mob/user)
+/obj/machinery/door/airlock/_examine_text(mob/user)
 	. = ..()
 	if(lock_cut_state == BOLTS_EXPOSED)
 		. += "\nThe bolt cover has been cut open."

@@ -28,30 +28,11 @@
 	if(!label || !length(label))
 		to_chat(user, SPAN("notice", "No label text set."))
 		return
-	if(has_extension(A, /datum/extension/labels))
-		var/datum/extension/labels/L = get_extension(A, /datum/extension/labels)
-		if(!L.CanAttachLabel(user, label))
-			return
-	A.attach_label(user, src, label)
 
-/atom/proc/attach_label(user, atom/labeler, label_text)
-	to_chat(user, SPAN("notice", "The label refuses to stick to [name]."))
+	user.visible_message(SPAN("notice", "\The [user] attaches a label to \the [A]."),
+		SPAN("notice", "You attach a label, '[label]', to \the [A]."))
 
-/mob/observer/attach_label(user, atom/labeler, label_text)
-	to_chat(user, SPAN("notice", "\The [labeler] passes through \the [src]."))
-
-/obj/machinery/portable_atmospherics/hydroponics/attach_label(user)
-	if(!mechanical)
-		to_chat(user, SPAN("notice", "How are you going to label that?"))
-		return
-	..()
-	update_icon()
-
-/obj/attach_label(user, atom/labeler, label_text)
-	if(!simulated)
-		return
-	var/datum/extension/labels/L = get_or_create_extension(src, /datum/extension/labels, /datum/extension/labels)
-	L.AttachLabel(user, label_text)
+	A.AddComponent(/datum/component/label, label)
 
 /obj/item/hand_labeler/attack_self(mob/user as mob)
 	mode = !mode

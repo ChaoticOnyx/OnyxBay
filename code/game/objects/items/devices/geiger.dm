@@ -24,7 +24,11 @@
 	radiation_count = SSradiation.get_rads_at_turf(get_turf(src))
 	update_icon()
 
-/obj/item/device/geiger/examine(mob/user)
+	THROTTLE(sound_cooldown, 1 SECOND)
+	if(sound_cooldown)
+		play_sound()
+
+/obj/item/device/geiger/_examine_text(mob/user)
 	. = ..()
 	var/msg = "[scanning ? "ambient" : "stored"] Radiation level: [radiation_count ? radiation_count : "0"] Bq."
 	if(radiation_count > RAD_LEVEL_LOW)
@@ -68,3 +72,14 @@
 		if(RAD_LEVEL_VERY_HIGH to INFINITY)
 			icon_state = "geiger_on_5"
 			return
+
+/obj/item/device/geiger/proc/play_sound()
+	switch(radiation_count)
+		if(0.1 to RAD_LEVEL_LOW)
+			playsound(src, GET_SFX(SFX_GEIGER_LOW), 25, FALSE)
+		if(RAD_LEVEL_LOW to RAD_LEVEL_MODERATE)
+			playsound(src, GET_SFX(SFX_GEIGER_MODERATE), 25, FALSE)
+		if(RAD_LEVEL_MODERATE to RAD_LEVEL_HIGH)
+			playsound(src, GET_SFX(SFX_GEIGER_HIGH), 25, FALSE)
+		if(RAD_LEVEL_HIGH to INFINITY)
+			playsound(src, GET_SFX(SFX_GEIGER_VERY_HIGH), 25, FALSE)

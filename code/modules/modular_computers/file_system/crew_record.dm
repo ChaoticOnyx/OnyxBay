@@ -71,15 +71,6 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	GLOB.all_crew_records.Remove(src)
 
 /datum/computer_file/crew_record/proc/load_from_mob(mob/living/carbon/human/H, automatic = FALSE)
-	if(istype(H))
-		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = 1)
-		photo_side = getFlatIcon(H, WEST, always_use_defdir = 1)
-	else
-		var/mob/living/carbon/human/dummy = new()
-		photo_front = getFlatIcon(dummy, SOUTH, always_use_defdir = 1)
-		photo_side = getFlatIcon(dummy, WEST, always_use_defdir = 1)
-		qdel(dummy)
-
 	// Generic record
 	set_name(H ? H.real_name : "Unset")
 	set_job(H ? GetAssignment(H) : "Unset")
@@ -135,6 +126,14 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	// Antag record
 	set_antagRecord((H && H.exploit_record && !jobban_isbanned(H, "Records") ? H.exploit_record : ""))
 
+/datum/computer_file/crew_record/proc/take_mob_photo(mob/living/carbon/human/H)
+	if(istype(H))
+		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = TRUE)
+		photo_side = getFlatIcon(H, WEST, always_use_defdir = TRUE)
+	else
+		photo_front = icon('icons/mob/human_races/r_human.dmi', "preview_m", SOUTH)
+		photo_side = icon('icons/mob/human_races/r_human.dmi', "preview_m", WEST)
+
 // Returns independent copy of this file.
 /datum/computer_file/crew_record/clone(rename = 0)
 	var/datum/computer_file/crew_record/temp = ..()
@@ -157,6 +156,8 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
 	GLOB.all_crew_records.Add(CR)
 	CR.load_from_mob(H, TRUE)
+	spawn(2 SECONDS)
+		CR.take_mob_photo(H)
 	return CR
 
 // Gets crew records filtered by set of positions

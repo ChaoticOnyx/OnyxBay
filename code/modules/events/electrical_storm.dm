@@ -19,7 +19,7 @@
 	valid_apcs = list()
 	for(var/obj/machinery/power/apc/A in GLOB.apc_list)
 		if(A.z in affecting_z)
-			valid_apcs.Add(A)
+			valid_apcs.Add(weakref(A))
 	endWhen = (severity * 60) + startWhen
 
 /datum/event/electrical_storm/tick()
@@ -38,7 +38,7 @@
 		CRASH("No valid APCs found for electrical storm event! This is likely a bug.")
 	var/list/picked_apcs = list()
 	for(var/i=0, i< severity*2, i++) // up to 2/4/6 APCs per tick depending on severity
-		picked_apcs |= pick(valid_apcs)
+		picked_apcs |= pick(valid_apcs).resolve()
 
 	for(var/obj/machinery/power/apc/T in picked_apcs)
 		// Main breaker is turned off. Consider this APC protected.

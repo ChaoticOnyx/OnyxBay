@@ -90,7 +90,7 @@
 		holder.update_icon()
 	if(holder && istype(holder.loc,/obj/item/grenade/chem_grenade))
 		var/obj/item/grenade/chem_grenade/grenade = holder.loc
-		grenade.primed(scanning)
+		grenade.update_icon()
 	return
 
 
@@ -100,7 +100,7 @@
 	return
 
 
-/obj/item/device/assembly/prox_sensor/interact(mob/user as mob)//TODO: Change this to the wires thingy
+/obj/item/device/assembly/prox_sensor/interact(mob/user)//TODO: Change this to the wires thingy
 	if(!secured)
 		user.show_message("<span class='warning'>The [name] is unsecured!</span>")
 		return 0

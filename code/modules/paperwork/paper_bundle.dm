@@ -8,7 +8,7 @@
 	throwforce = 0
 	w_class = ITEM_SIZE_SMALL
 	throw_range = 2
-	throw_speed = 1
+	throw_speed = 2
 	layer = ABOVE_OBJ_LAYER
 	attack_verb = list("bapped")
 	var/page = 1    // current page
@@ -93,7 +93,7 @@
 			else
 				to_chat(user, SPAN_WARNING("You must hold \the [P] steady to burn \the [src]."))
 
-/obj/item/paper_bundle/examine(mob/user)
+/obj/item/paper_bundle/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
@@ -178,6 +178,7 @@
 				var/obj/item/paper/P = src[1]
 				usr.drop_from_inventory(src)
 				usr.put_in_hands(P)
+				usr.unset_machine() // Ensure the bundle GCs
 				qdel(src)
 
 				return

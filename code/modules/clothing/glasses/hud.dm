@@ -218,7 +218,7 @@
 	var/sec_hud = FALSE
 	var/med_hud = FALSE
 
-/obj/item/clothing/glasses/hud/examine(mob/user)
+/obj/item/clothing/glasses/hud/_examine_text(mob/user)
 	. = ..()
 	if(matrix)
 		. += "\nIt has a [matrix.matrix_type] optical matrix installed."
@@ -239,12 +239,8 @@
 		lenses.attach_lenses(src)
 
 /obj/item/clothing/glasses/hud/Destroy()
-	if(matrix)
-		qdel(matrix)
-		matrix = null
-	if(lenses)
-		qdel(lenses)
-		lenses = null
+	QDEL_NULL(matrix)
+	QDEL_NULL(lenses)
 	return ..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)

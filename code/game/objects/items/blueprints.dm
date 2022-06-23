@@ -104,7 +104,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	if(is_type_in_list(A, SPECIALS))
 		return AREA_SPECIAL
 
-	if(A.z in GLOB.using_map.station_levels)
+	if(A.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 		return AREA_STATION
 
 	return AREA_SPECIAL

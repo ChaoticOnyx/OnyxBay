@@ -10,6 +10,8 @@
 	// Large, but inaccurate. Use a chem dispenser or beaker for accuracy.
 	possible_transfer_amounts = "50;100"
 	unacidable = 1
+	// Save the chemists from being bald.
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 	var/spawn_reagent = null
 	var/label = ""
@@ -21,7 +23,7 @@
 		var/datum/reagent/R = spawn_reagent
 		setLabel(initial(R.name))
 
-/obj/item/reagent_containers/chem_disp_cartridge/examine(mob/user)
+/obj/item/reagent_containers/chem_disp_cartridge/_examine_text(mob/user)
 	. = ..()
 	. += "\nIt has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)

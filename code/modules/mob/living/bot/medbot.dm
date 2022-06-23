@@ -11,7 +11,7 @@
 	var/vocal = 1
 
 	//Healing vars
-	var/obj/item/reagent_containers/glass/reagent_glass = null // Can be set to draw from this for reagents.
+	var/obj/item/reagent_containers/vessel/reagent_glass = null // Can be set to draw from this for reagents.
 	var/injection_amount = 15 // How much reagent do we inject at a time?
 	var/heal_threshold = 10 // Start healing when they have this much damage in a category
 	var/use_beaker = 0 // Use reagents in beaker instead of default treatment agents.
@@ -108,12 +108,12 @@
 		icon_state = "medibot[on]"
 
 /mob/living/bot/medbot/attackby(obj/item/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(locked)
-			to_chat(user, "<span class='notice'>You cannot insert a beaker because the panel is locked.</span>")
+			to_chat(user, "<span class='notice'>You cannot insert a container because the panel is locked.</span>")
 			return
 		if(!isnull(reagent_glass))
-			to_chat(user, "<span class='notice'>There is already a beaker loaded.</span>")
+			to_chat(user, "<span class='notice'>There is already a container loaded.</span>")
 			return
 
 		user.drop_item()

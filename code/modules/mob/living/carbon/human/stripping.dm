@@ -106,7 +106,13 @@
 
 		visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [target_slot.name]!</span>")
 	else
-		if(text2num(slot_to_strip_text) == slot_wear_mask && istype(held, /obj/item/grenade))
+		if(istype(held, /obj/item/holder))
+			var/obj/item/holder/IH = held
+			for(var/mob/M in IH.contents)
+				if(M == src)
+					to_chat(user, SPAN("warning", "[src] is way too physical to be fractalized like that."))
+					return
+		else if(istype(held, /obj/item/grenade) && text2num(slot_to_strip_text) == slot_wear_mask)
 			visible_message("<span class='danger'>\The [user] is trying to put \a [held] in \the [src]'s mouth!</span>")
 		else
 			visible_message("<span class='danger'>\The [user] is trying to put \a [held] on \the [src]!</span>")

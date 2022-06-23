@@ -5,15 +5,15 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	var/datum/contract_fixer/fixer
 	id = MODE_TRAITOR
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos,
-							/datum/job/merchant, /datum/job/iaa)
+							/datum/job/merchant, /datum/job/iaa, /datum/job/barmonkey)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 
 /datum/antagonist/traitor/Initialize()
 	..()
 	fixer = new()
-	if(config.traitor_min_age)
-		min_player_age = config.traitor_min_age
+	if(config.game.traitor_min_age)
+		min_player_age = config.game.traitor_min_age
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"

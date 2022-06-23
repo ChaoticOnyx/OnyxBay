@@ -22,7 +22,7 @@
 		if(virusing)
 			to_chat(user, "<b>The pathogen materializer is still recharging..</b>")
 			return
-		var/obj/item/reagent_containers/glass/beaker/product = new(src.loc)
+		var/obj/item/reagent_containers/vessel/beaker/product = new(src.loc)
 
 		var/list/data = list("donor" = null, "blood_DNA" = null, "blood_type" = null, "trace_chem" = null, "virus2" = list(), "antibodies" = list())
 		data["virus2"] |= I:virus2
@@ -42,7 +42,7 @@
 /obj/machinery/computer/curer/attack_hand(mob/user as mob)
 	if(..())
 		return
-	user.machine = src
+	user.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
 		dat += "Antibody production in progress"
@@ -92,7 +92,7 @@
 		attack_hand(user)
 
 /obj/machinery/computer/curer/proc/createcure(obj/item/reagent_containers/container)
-	var/obj/item/reagent_containers/glass/beaker/product = new(src.loc)
+	var/obj/item/reagent_containers/vessel/beaker/product = new(src.loc)
 
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
 

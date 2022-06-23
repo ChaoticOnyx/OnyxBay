@@ -91,9 +91,9 @@ var/global/list/datum/supply_drop_loot/supply_drop
 		/obj/item/storage/firstaid/toxin,
 		/obj/item/storage/firstaid/o2,
 		/obj/item/storage/firstaid/adv,
-		/obj/item/reagent_containers/glass/bottle/antitoxin,
-		/obj/item/reagent_containers/glass/bottle/inaprovaline,
-		/obj/item/reagent_containers/glass/bottle/stoxin,
+		/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin,
+		/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline,
+		/obj/item/reagent_containers/vessel/bottle/chemical/stoxin,
 		/obj/item/storage/box/syringes,
 		/obj/item/storage/box/autoinjectors)
 

@@ -30,7 +30,7 @@
 	matter = list(MATERIAL_STEEL = 2000)
 
 //revolves the magazine, allowing players to choose between multiple grenade types
-/obj/item/gun/launcher/grenade/proc/pump(mob/M as mob)
+/obj/item/gun/launcher/grenade/proc/pump(mob/M)
 	playsound(M, 'sound/effects/weapons/gun/shotgunpump.ogg', 60, 1)
 
 	var/obj/item/grenade/next
@@ -47,7 +47,7 @@
 		to_chat(M, "<span class='warning'>You pump [src], but the magazine is empty.</span>")
 	update_icon()
 
-/obj/item/gun/launcher/grenade/examine(mob/user)
+/obj/item/gun/launcher/grenade/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/grenade_count = grenades.len + (chambered? 1 : 0)
@@ -92,7 +92,7 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
-		chambered.det_time = 10
+		chambered.safety_pin = null
 		chambered.activate(null)
 	return chambered
 
@@ -109,8 +109,8 @@
 	return TRUE
 
 // For uplink purchase, comes loaded with a random assortment of grenades
-/obj/item/gun/launcher/grenade/loaded/New()
-	..()
+/obj/item/gun/launcher/grenade/loaded/Initialize()
+	. = ..()
 
 	var/list/grenade_types = list(
 		/obj/item/grenade/anti_photon = 2,

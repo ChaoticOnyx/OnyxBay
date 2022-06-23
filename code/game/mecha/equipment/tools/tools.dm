@@ -168,6 +168,7 @@
 	energy_drain = 0
 	range = MELEE|RANGED
 	required_type = /obj/mecha/working
+	need_colorize = FALSE
 	var/spray_particles = 5
 	var/spray_amount = 200	//units of liquid per spray
 	var/max_volume = 5000
@@ -359,6 +360,7 @@
 	equip_cooldown = 150
 	energy_drain = 200 KILOWATTS
 	range = RANGED
+	equip_slot = BACK
 
 /obj/item/mecha_parts/mecha_equipment/teleporter/action(atom/target)
 	if(!action_checks(target))
@@ -435,6 +437,7 @@
 	equip_cooldown = 10
 	energy_drain = 10 KILOWATTS
 	range = MELEE|RANGED
+	equip_slot = BACK
 	var/atom/movable/locked
 	var/mode = 1 //1 - gravsling 2 - gravpush
 
@@ -463,7 +466,7 @@
 				return
 			else if(target != locked)
 				if(locked in view(chassis))
-					locked.throw_at(target, 14, 1.5, chassis)
+					locked.throw_at(target, 14, 1, chassis)
 					locked = null
 					send_byjax(chassis.occupant,"exosuit.browser","\ref[src]", src.get_equip_info())
 					set_ready_state(0)
@@ -513,6 +516,7 @@
 	equip_cooldown = 10
 	energy_drain = 5 KILOWATTS
 	range = 0
+	has_equip_overlay = FALSE
 	var/deflect_coeff = 1
 	var/damage_coeff = 1
 	var/melee
@@ -604,6 +608,7 @@
 	equip_cooldown = 20
 	energy_drain = 10 KILOWATTS
 	range = 0
+	has_equip_overlay = FALSE
 	var/health_boost = 2
 	var/datum/global_iterator/pr_repair_droid
 	var/icon/droid_overlay
@@ -696,6 +701,7 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = 0
+	has_equip_overlay = FALSE
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
 	var/list/use_channels = list(STATIC_EQUIP, STATIC_ENVIRON, STATIC_LIGHT)
@@ -776,11 +782,12 @@
 /obj/item/mecha_parts/mecha_equipment/generator
 	name = "plasma generator"
 	desc = "Generates power using solid plasma as fuel. Pollutes the environment."
-	icon_state = "tesla"
+	icon_state = "generator"
 	origin_tech = list(TECH_PLASMA = 2, TECH_POWER = 2, TECH_ENGINEERING = 1)
 	equip_cooldown = 10
 	energy_drain = 0
 	range = MELEE
+	has_equip_overlay = FALSE
 	var/datum/global_iterator/pr_mech_generator
 	var/coeff = 100
 	var/obj/item/stack/material/fuel
@@ -912,12 +919,13 @@
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear
 	name = "\improper ExoNuclear reactor"
 	desc = "Generates power using uranium. Pollutes the environment."
-	icon_state = "tesla"
+	icon_state = "nuclear"
 	origin_tech = list(TECH_POWER = 3, TECH_ENGINEERING = 3)
 	max_fuel = 50000
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30
 	power_per_cycle = 5 KILOWATTS
+	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	var/rad_per_cycle = 0.3
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/init()
@@ -945,6 +953,7 @@
 	var/dam_force = 0
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working/ripley
+	need_colorize = FALSE
 
 /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp/attach(obj/mecha/M as obj)
 	..()
@@ -1009,6 +1018,7 @@
 	energy_drain = 1 KILOWATTS
 	range = MELEE
 	equip_cooldown = 20
+	has_equip_overlay = FALSE
 	var/mob/living/carbon/occupant = null
 	var/door_locked = 1
 	salvageable = 0
@@ -1298,6 +1308,7 @@
 	energy_drain = 2 KILOWATTS
 	range = 0
 	required_type = /obj/mecha/working
+	has_equip_overlay = FALSE
 	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2)
 	var/consumption_coeff_normal = 1.5
 	var/consumption_coeff_turbo = 4.5

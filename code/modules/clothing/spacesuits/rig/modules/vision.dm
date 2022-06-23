@@ -18,6 +18,7 @@
 		glasses = new glasses
 
 /datum/rig_vision/Destroy()
+	..()
 	QDEL_NULL(glasses)
 
 /datum/rig_vision/nvg

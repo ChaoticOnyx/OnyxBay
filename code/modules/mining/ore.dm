@@ -42,6 +42,12 @@
 /obj/item/ore/uranium
 	ore = /ore/uranium
 
+/obj/item/ore/uranium/Initialize()
+	. = ..()
+	
+	create_reagents()
+	reagents.add_reagent(/datum/reagent/uranium, ore.result_amount, null, FALSE)
+
 /obj/item/ore/iron
 	ore = /ore/hematite
 

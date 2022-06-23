@@ -168,7 +168,7 @@ Class Procs:
 				qdel(A)
 			else // Otherwise we assume they were dropped to the ground during deconstruction, and were not removed from the component_parts list by deconstruction code.
 				component_parts -= A
-	. = ..()
+	return ..()
 
 /obj/machinery/Process()
 	return PROCESS_KILL // Only process if you need to.
@@ -421,7 +421,7 @@ Class Procs:
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
-/obj/machinery/examine(mob/user)
+/obj/machinery/_examine_text(mob/user)
 	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
 		. += "\n[display_parts(user)]"

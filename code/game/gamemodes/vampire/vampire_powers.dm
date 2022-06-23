@@ -36,7 +36,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (!istype(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (!istype(T) || T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		//Added this to prevent vampires draining diona and IPCs
 		//Diona have 'blood' but its really green sap and shouldn't help vampires
 		//IPCs leak oil
@@ -190,7 +190,7 @@
 			continue
 		if (!vampire_can_affect_target(H, 0))
 			continue
-		if (eyecheck() > FLASH_PROTECTION_NONE)
+		if (H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
 		H.Stun(6)
@@ -332,7 +332,7 @@
 		return
 
 	for (var/mob/living/simple_animal/hostile/scarybat/bat in spawned)
-		LAZYADD(bat.friends, src)
+		LAZYADD(bat.friends, weakref(src))
 
 		if (vampire.thralls.len)
 			LAZYADD(bat.friends, vampire.thralls)
@@ -748,10 +748,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(is_mechanical(T))
-		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
-		return
-	if (!istype(T))
+	if(!istype(T) || T.isSynthetic())
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can enthrall."))
 		return
 	if (!vampire_can_affect_target(T, 1, 1))
@@ -809,8 +806,7 @@
 	var/list/emotes = list("[src] looks trusthworthy.",
 							"You feel as if [src] is a relatively friendly individual.",
 							"You feel yourself paying more attention to what [src] is saying.",
-							"[src] has your best interests at heart, you can feel it.",
-							"A quiet voice tells you that [src] should be considered a friend.")
+							"[src] has your best interests at heart, you can feel it.")
 
 	vampire.use_blood(power_use_cost)
 
@@ -864,7 +860,7 @@
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if (T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 
@@ -873,7 +869,7 @@
 	vampire.use_blood(power_use_cost)
 
 	T.reagents.add_reagent(/datum/reagent/rezadone, 3)
-	T.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 0.15) //enough to get back onto their feet
+	T.reagents.add_reagent(/datum/reagent/painkiller, 1.0) //enough to get back onto their feet
 
 // Convert a human into a vampire.
 /mob/living/carbon/human/proc/vampire_embrace()
@@ -904,7 +900,7 @@
 	if (T.stat == 2)
 		to_chat(src, SPAN_WARNING("[T]'s body is broken and damaged beyond salvation. You have no use for them."))
 		return
-	if (T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
+	if (T.isSynthetic() || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
 		to_chat(src, SPAN_WARNING("[T] has no blood and can not be affected by your powers!"))
 		return
 	if (vampire.status & VAMP_DRAINING)
@@ -929,8 +925,7 @@
 				return
 
 			GLOB.thralls.remove_antagonist(T.mind, 0, 0)
-			qdel(draining_vamp)
-			draining_vamp = null
+			draining_vamp.status &= ~VAMP_ISTHRALL
 		else
 			to_chat(src, SPAN_WARNING("You feel corruption running in [T]'s blood. Much like yourself, \he[T] is already a spawn of the Veil, and cannot be Embraced."))
 			return
