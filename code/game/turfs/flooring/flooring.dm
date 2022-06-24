@@ -139,8 +139,15 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/floor
 	can_paint = 1
 
+/decl/flooring/tiling/rough
+	icon_base = "steel_rough"
+	build_type = /obj/item/stack/tile/floor_rough
+
 /decl/flooring/tiling/dirty
 	icon_base = "steel_dirty"
+
+/decl/flooring/tiling/dirty/rough
+	icon_base = "steel_dirty_rough"
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
@@ -150,13 +157,12 @@ var/list/flooring_types
 	icon_base = "white"
 	build_type = /obj/item/stack/tile/floor_white
 
-/decl/flooring/tiling/brown
-	desc = "How sterile."
-	icon_base = "brown"
-	build_type = /obj/item/stack/tile/floor_brown
-
 /decl/flooring/tiling/white/mono
 	icon_base = "white_mono"
+
+/decl/flooring/tiling/white/rough
+	icon_base = "white_rough"
+	build_type = /obj/item/stack/tile/floor_white_rough
 
 /decl/flooring/tiling/dark
 	desc = "How ominous."
@@ -165,6 +171,15 @@ var/list/flooring_types
 
 /decl/flooring/tiling/dark/mono
 	icon_base = "dark_mono"
+
+/decl/flooring/tiling/dark/rough
+	icon_base = "dark_rough"
+	build_type = /obj/item/stack/tile/floor_dark_rough
+
+/decl/flooring/tiling/brown
+	desc = "How sterile."
+	icon_base = "brown"
+	build_type = /obj/item/stack/tile/floor_brown
 
 /decl/flooring/tiling/techfloor
 	desc = "How industrial."
