@@ -243,5 +243,5 @@
 				qdel(thing)
 				continue
 			thing.dropInto(loc) // Attempts to drop it onto the turf for throwing.
-			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),100) // Being pelted with bits of meat and bone would hurt.
+			thing.throw_at(get_edge_target_turf(src,gib_throw_dir), rand(0, 3), 0.5) // Being pelted with bits of meat and bone would hurt.
 		update_icon()

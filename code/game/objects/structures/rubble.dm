@@ -3,7 +3,7 @@
 	desc = "One man's garbage is another man's treasure."
 	icon = 'icons/obj/rubble.dmi'
 	icon_state = "base"
-	appearance_flags = PIXEL_SCALE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 	opacity = 1
 	density = 1
 	anchored = 1
@@ -36,12 +36,10 @@
 				I.color = initial(A.color)
 			if(!lootleft)
 				I.color = "#54362e"
-		I.appearance_flags = PIXEL_SCALE
+		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS
 		I.pixel_x = rand(-16,16)
 		I.pixel_y = rand(-16,16)
-		var/matrix/M = matrix()
-		M.Turn(rand(0,360))
-		I.transform = M
+		I.SetTransform(rotation = rand(0, 360))
 		parts += I
 	overlays = parts
 

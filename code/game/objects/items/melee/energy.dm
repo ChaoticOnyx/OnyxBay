@@ -6,6 +6,7 @@
 	var/mod_weight_a
 	var/mod_reach_a
 	var/mod_shield_a = 1.0
+	var/block_tier_a = BLOCK_TIER_ADVANCED
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -30,6 +31,7 @@
 	mod_weight = mod_weight_a
 	mod_reach = mod_reach_a
 	mod_shield = mod_shield_a
+	block_tier = block_tier_a
 	check_armour = "laser"
 	playsound(user, activate_sound, 50, 1)
 
@@ -47,6 +49,7 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
+	block_tier = initial(block_tier)
 	check_armour = "melee"
 
 /obj/item/melee/energy/attack_self(mob/living/user)
@@ -89,7 +92,7 @@
 		return 0
 	if(user.incapacitated(INCAPACITATION_DISABLED))
 		return 0
-	if(mod_shield < 1.3)
+	if(block_tier < BLOCK_TIER_PROJECTILE)
 		return 0 // So energy axes and daggers wielders don't go jedi
 	if(istype(damage_source, /obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
@@ -133,7 +136,6 @@
 	//throwforce = 25
 	force = 20
 	throwforce = 10
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.5
@@ -142,7 +144,8 @@
 	mod_weight_a = 1.5
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
-	mod_shield_a = 1.25 // Still not enough to block projectiles
+	mod_shield_a = 1.25
+	block_tier_a = BLOCK_TIER_MELEE
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 4)
@@ -170,7 +173,6 @@
 	force = 3
 	throwforce = 5
 	throw_speed = 1
-	throw_range = 10
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.5
 	mod_reach = 0.3
@@ -264,7 +266,6 @@
 	active_throwforce = 70
 	force = 5
 	throwforce = 10
-	throw_speed = 1
 	throw_range = 10
 	mod_reach = 0.4
 	mod_weight_a = 1.5
@@ -317,7 +318,6 @@
 	check_armour = "laser"
 	anchored = TRUE    // Never spawned outside of inventory, should be fine.
 	throwforce = 1  //Throwing or dropping the item deletes it.
-	throw_speed = 1
 	throw_range = 1
 	w_class = ITEM_SIZE_TINY //technically it's just energy or something, I dunno
 	mod_weight = 1.0

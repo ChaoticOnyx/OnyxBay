@@ -5,6 +5,8 @@
 	icon_state = "auth_off"
 	var/active = 0 //This gets set to 1 on all devices except the one where the initial request was made.
 	var/event = ""
+	var/event_additional_info = ""
+	var/ert_timer
 	var/screen = 1
 	var/confirmed = 0 //This variable is set by the device that confirms the request.
 	var/confirm_delay = 3 SECONDS
@@ -80,6 +82,7 @@
 		show_browser(user, dat, "window=keycard_auth;size=500x250")
 	if(screen == 2)
 		dat += "Please swipe your card to authorize the following event: <b>[event]</b>"
+		dat += "[event_additional_info ? "<p>Additional info: [event_additional_info]" : ""]"
 		dat += "<p><A href='?src=\ref[src];reset=1'>Back</A>"
 		show_browser(user, dat, "window=keycard_auth;size=500x250")
 	return
@@ -96,11 +99,30 @@
 /obj/machinery/keycard_auth/OnTopic(user, href_list)
 	if(href_list["triggerevent"])
 		event = href_list["triggerevent"]
+		event_additional_info = ""
+		if(event == "Emergency Response Team")
+			event_additional_info = sanitize(input(user, "Enter call reason", "Call reason") as message, extra=FALSE)
+			event = "Emergency Response Team"
 		screen = 2
 		. = TOPIC_REFRESH
 	if(href_list["reset"])
 		reset()
 		. = TOPIC_REFRESH
+
+	if(is_admin(user) && href_list["approve_ert"])
+		if(!ert_timer)
+			// I'm not sure I got the sentence right, please help.
+			to_chat(user, SPAN_NOTICE("There's no ERT timer, notify players to re-create the request."))
+		deltimer(ert_timer)
+		call_ert()
+	if(is_admin(user) && href_list["prohibit_ert"])
+		if(!ert_timer)
+			// I'm not sure I got the sentence right, please help.
+			to_chat(user, SPAN_NOTICE("There's no ERT timer, the ERT may have already been called, next time hurry up with your decision!"))
+		deltimer(ert_timer)
+		ert_timer = null
+		if(!((stat & BROKEN) || (!interact_offline && (stat & NOPOWER))))
+			visible_message(SPAN_DANGER("\The [src] blinks red and displays the message: The request was rejected, contact the corporate supervisors for the reason of the rejection."), range=2)
 
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
@@ -165,12 +187,12 @@
 			revoke_maint_all_access()
 			feedback_inc("alert_keycard_auth_maintRevoke",1)
 		if("Emergency Response Team")
-			if(is_ert_blocked())
-				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."), range=2)
+			if(ert_call_failure())
 				return
-
-			trigger_armed_response_team(1)
-			feedback_inc("alert_keycard_auth_ert",1)
+			if(!ert_timer)
+				visible_message(SPAN_NOTICE("\The [src] displays the message: The request has been created and the process of transferring the request to the emergency response service has been started, the approximate waiting time for processing is 2 minutes."), range=2)
+				ert_timer = addtimer(CALLBACK(src, .proc/call_ert), 2 MINUTES, TIMER_STOPPABLE)
+				message_admins("An ERT call request was created with the reason:\n[event_additional_info].\nThis call will automatically be approved after 2 minutes. <A href='?src=\ref[src];approve_ert=1'>Approve</a>. <A href='?src=\ref[src];prohibit_ert=1'>Reject</a>.")
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 			if(nuke)
@@ -178,6 +200,24 @@
 			else
 				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: No self destruct terminal found."), range=2)
 			feedback_inc("alert_keycard_auth_nukecode",1)
+
+/obj/machinery/keycard_auth/proc/ert_call_failure()
+	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
+	if(security_state.current_security_level_is_lower_than(security_state.high_security_level)) // Allow admins to reconsider if the alert level is below High
+		visible_message(SPAN_WARNING("\The [src] flashes red and displays a message: The emergency response team can only be called if the station is in emergency mode, high security level is mandatory."), range=2)
+		return TRUE
+	if(is_ert_blocked())
+		visible_message(SPAN_WARNING("\The [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."), range=2)
+		return TRUE
+	return FALSE
+
+/obj/machinery/keycard_auth/proc/call_ert()
+	ert_timer = null
+	if(ert_call_failure())
+		return
+	visible_message(SPAN_NOTICE("\The [src] displays the message: The request has been approved, the response team will be on facility shortly."), range=2)
+	trigger_armed_response_team(TRUE, event_additional_info)
+	feedback_inc("alert_keycard_auth_ert",1)
 
 /obj/machinery/keycard_auth/proc/is_ert_blocked()
 	if(config.gamemode.ert_admin_only) return 1

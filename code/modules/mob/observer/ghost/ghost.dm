@@ -6,7 +6,7 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	desc = "It's a g-g-g-g-ghooooost!" //jinkies!
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "ghost"
-	appearance_flags = KEEP_TOGETHER | LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | KEEP_TOGETHER | LONG_GLIDE
 	blinded = 0
 	anchored = 1	//  don't get pushed around
 	universal_speak = 1
@@ -586,7 +586,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	plane = pre_plane
 	layer = pre_layer
 	set_invisibility(pre_invis)
-	transform = null	//make goast stand up
+	ClearTransform()	//make goast stand up
 
 /mob/observer/ghost/verb/respawn()
 	set name = "Respawn"

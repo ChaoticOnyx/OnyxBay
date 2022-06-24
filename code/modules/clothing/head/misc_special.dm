@@ -46,9 +46,7 @@
 	..()
 
 /obj/item/clothing/head/welding/Destroy()
-	if(cover)
-		qdel(cover)
-		cover = null
+	QDEL_NULL(cover)
 	return ..()
 
 /obj/item/clothing/head/welding/attack_self()

@@ -202,8 +202,8 @@
 	var/use_launcher = 0
 	var/obj/item/gun/launcher/grenade/underslung/launcher
 
-/obj/item/gun/projectile/automatic/z8/New()
-	..()
+/obj/item/gun/projectile/automatic/z8/Initialize()
+	. = ..()
 	launcher = new(src)
 
 /obj/item/gun/projectile/automatic/z8/attackby(obj/item/I, mob/user)
@@ -247,7 +247,7 @@
 /obj/item/gun/projectile/automatic/l6_saw
 	name = "light machine gun"
 	desc = "A heavily modified 5.56x45mm light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the reciever below the designation."
-	icon_state = "l6closed100"
+	icon_state = "l6closed5"
 	item_state = "l6closed"
 	wielded_item_state = "l6closed-wielded"
 	w_class = ITEM_SIZE_HUGE

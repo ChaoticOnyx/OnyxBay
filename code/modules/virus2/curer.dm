@@ -42,7 +42,7 @@
 /obj/machinery/computer/curer/attack_hand(mob/user as mob)
 	if(..())
 		return
-	user.machine = src
+	user.set_machine(src)
 	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
 		dat += "Antibody production in progress"

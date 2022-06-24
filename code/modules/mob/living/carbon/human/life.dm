@@ -1007,6 +1007,8 @@
 /mob/living/carbon/human/proc/handle_poise()
 	poise_pool = body_build.poise_pool
 	if(poise >= poise_pool)
+		poise = poise_pool
+		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 		return
 	var/pregen = 5
 
@@ -1016,7 +1018,6 @@
 	if(blocking)
 		pregen -= 2.5
 
-	poise += pregen
 	poise = between(0, poise+pregen, poise_pool)
 
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
@@ -1274,13 +1275,3 @@
 	..()
 	if(MUTATION_XRAY in mutations)
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-
-/mob/living/carbon/human/proc/handle_tase(amount)
-	if(status_flags & GODMODE)
-		return 0	//godmode
-
-	if((getHalLoss() + amount) > 100)
-		if(prob(95))
-			Stun(amount/12)
-			Weaken(amount/10)
-			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))

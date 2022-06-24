@@ -45,7 +45,7 @@
 	connected_zlevels = GetConnectedZlevels(z)
 
 /obj/machinery/portable_atmospherics/hydroponics/soil/invisible/Process()
-	if(z in GLOB.using_map.station_levels) //plants on station always tick
+	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) //plants on station always tick
 		return ..()
 	if(living_observers_present(connected_zlevels))
 		return ..()

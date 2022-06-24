@@ -12,3 +12,6 @@
 
 /// Called on `/mob/Logout` (/mob, /client)
 #define SIGNAL_LOGGED_OUT "!logged_out"
+
+/// Called once upon roundstart
+#define SIGNAL_ROUNDSTART "!roundstart"

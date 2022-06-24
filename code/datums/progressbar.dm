@@ -22,7 +22,7 @@
 		goal = goal_number
 
 	bar = image('icons/effects/progressbar.dmi', target, "prog_bar_0")
-	bar.appearance_flags = APPEARANCE_UI_IGNORE_ALPHA
+	bar.appearance_flags = DEFAULT_APPEARANCE_FLAGS | APPEARANCE_UI_IGNORE_ALPHA
 	bar.plane = HUD_PLANE
 	bar.layer = HUD_ABOVE_ITEM_LAYER
 	src.user = user

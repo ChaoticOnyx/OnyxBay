@@ -69,10 +69,10 @@
 	total_lighting_sources--
 	destroyed = TRUE
 	force_update()
-	if(source_atom && source_atom.light_sources)
+	if(source_atom?.light_sources)
 		source_atom.light_sources -= src
 
-	if(top_atom && top_atom.light_sources)
+	if(top_atom?.light_sources)
 		top_atom.light_sources    -= src
 
 // Call it dirty, I don't care.

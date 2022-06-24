@@ -18,6 +18,8 @@ type InputData = {
   targets: Target[];
 };
 
+type FilterState = "exclude" | "none" | "include";
+
 function TargetStatus(props: { target: Target }, context: any) {
   const { isMob, isGhost, hasClient } = props.target;
 
@@ -30,38 +32,80 @@ function TargetStatus(props: { target: Target }, context: any) {
   );
 }
 
+function FilterButton(
+  props: {
+    state: FilterState;
+    name: string;
+    onClick: (newState: boolean) => void;
+  },
+  context: any
+) {
+  let icon: string;
+
+  if (props.state === "include") {
+    icon = "plus-square-o";
+  } else if (props.state === "exclude") {
+    icon = "minus-square-o";
+  } else {
+    icon = "square-o";
+  }
+
+  return (
+    <Button icon={icon} onClick={props.onClick}>
+      {props.name}
+    </Button>
+  );
+}
+
+function nextFilterState(current: FilterState): FilterState {
+  if (current === "include") {
+    return "exclude";
+  } else if (current === "exclude") {
+    return "none";
+  } else {
+    return "include";
+  }
+}
+
 export function FollowPanel(props: any, context: any) {
   const { getTheme, data, act } = useBackend<InputData>(context);
 
-  const [ghostFilter, setGhostFilter] = useLocalState(
+  const [ghostFilter, setGhostFilter] = useLocalState<FilterState>(
     context,
     "ghostFilter",
-    false
+    "none"
   );
 
-  const [clientFilter, setClientFilter] = useLocalState(
+  const [clientFilter, setClientFilter] = useLocalState<FilterState>(
     context,
     "clientFilter",
-    true
+    "none"
   );
 
-  const [mobFilter, setMobFilter] = useLocalState(context, "mobFilter", true);
-  const [objectFilter, setObjectFilter] = useLocalState(
+  const [mobFilter, setMobFilter] = useLocalState<FilterState>(
     context,
-    "objectFilter",
-    false
+    "mobFilter",
+    "none"
   );
 
   let result = data.targets.filter((t, _) => {
-    let f = false;
+    let f = true;
 
-    f = f || (clientFilter && t.hasClient);
-    f = f || (mobFilter && t.isMob);
-    f = f || (objectFilter && !t.isMob);
-
-    if (!ghostFilter && t.isGhost) {
-      f = false;
-    }
+    f =
+      ((clientFilter === "include" && t.hasClient) ||
+        (clientFilter === "exclude" && !t.hasClient) ||
+        (clientFilter === "none" && f)) &&
+      f;
+    f =
+      ((mobFilter === "include" && t.isMob) ||
+        (mobFilter === "exclude" && !t.isMob) ||
+        (mobFilter === "none" && f)) &&
+      f;
+    f =
+      ((ghostFilter === "include" && t.isGhost) ||
+        (ghostFilter === "exclude" && !t.isGhost) ||
+        (ghostFilter === "none" && f)) &&
+      f;
 
     return f;
   });
@@ -71,30 +115,21 @@ export function FollowPanel(props: any, context: any) {
       <Window.Content scrollable>
         <Flex direction="column">
           <Section title="Filters">
-            <ButtonCheckbox
-              onClick={() => setGhostFilter(!ghostFilter)}
-              checked={ghostFilter}
-            >
-              Include Ghosts
-            </ButtonCheckbox>
-            <ButtonCheckbox
-              onClick={() => setClientFilter(!clientFilter)}
-              checked={clientFilter}
-            >
-              Client
-            </ButtonCheckbox>
-            <ButtonCheckbox
-              onClick={() => setMobFilter(!mobFilter)}
-              checked={mobFilter}
-            >
-              Mob
-            </ButtonCheckbox>
-            <ButtonCheckbox
-              onClick={() => setObjectFilter(!objectFilter)}
-              checked={objectFilter}
-            >
-              Object
-            </ButtonCheckbox>
+            <FilterButton
+              name="Ghosts"
+              state={ghostFilter}
+              onClick={() => setGhostFilter(nextFilterState(ghostFilter))}
+            />
+            <FilterButton
+              name="Client"
+              state={clientFilter}
+              onClick={() => setClientFilter(nextFilterState(clientFilter))}
+            />
+            <FilterButton
+              name="Mob"
+              state={mobFilter}
+              onClick={() => setMobFilter(nextFilterState(mobFilter))}
+            />
           </Section>
           <Table>
             <Table.Row>

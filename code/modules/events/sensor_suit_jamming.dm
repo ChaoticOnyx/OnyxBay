@@ -14,7 +14,7 @@
 
 /datum/event/sensor_suit_jamming/announce()
 	if(prob(75))
-		ion_storm_announcement()
+		GLOB.using_map.ion_storm_announcement()
 
 /datum/event/sensor_suit_jamming/start()
 	jamming_method.enable()

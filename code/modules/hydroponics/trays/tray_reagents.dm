@@ -6,7 +6,6 @@
 	slot_flags = SLOT_BELT
 	throwforce = 4
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 2
 	throw_range = 10
 	var/toxicity = 4
 	var/pest_kill_str = 0

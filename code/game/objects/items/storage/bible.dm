@@ -2,7 +2,6 @@
 	name = "bible"
 	desc = "Apply to head repeatedly."
 	icon_state = "bible"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_SMALL

@@ -152,6 +152,8 @@
 	color = "#ffffff"
 	strength = 10
 	overdose = 20
+	metabolism = REM * 0.5
+	absorbability = 0.75
 
 /datum/reagent/toxin/potassium_chlorophoride/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()

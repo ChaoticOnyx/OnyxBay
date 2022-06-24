@@ -34,6 +34,7 @@
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
 
 /datum/browser/proc/user_deleted(datum/source)
+	unregister_signal(user, SIGNAL_QDELETING)
 	user = null
 
 /datum/browser/proc/process_icons(text)

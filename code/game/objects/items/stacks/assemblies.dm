@@ -10,7 +10,7 @@
 	w_class = ITEM_SIZE_LARGE
 	force = 8.5
 	throwforce = 10.0
-	throw_speed = 5
+	throw_speed = 2
 	throw_range = 7
 	mod_weight = 1.2
 	mod_reach = 0.85

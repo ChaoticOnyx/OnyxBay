@@ -161,6 +161,9 @@
 	#define OBSERVER_LAYER              5.1
 	#define OBFUSCATION_LAYER           5.2
 
+	#define CHAT_LAYER                  12.0001
+	#define CHAT_LAYER_MAX              12.9999
+
 	#define BASE_AREA_LAYER             999
 
 #define MOUSE_INVISIBLE_PLANE			1
@@ -199,8 +202,14 @@
 // This is difference between planes used for atoms and effects
 #define PLANE_DIFFERENCE              3
 
+#define DEFAULT_APPEARANCE_FLAGS (PIXEL_SCALE)
+
 /atom
 	plane = DEFAULT_PLANE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
+
+/image
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 
 /image/proc/plating_decal_layerise()
 	plane = FLOOR_PLANE
@@ -223,7 +232,7 @@
 */
 
 /obj/screen/plane_master
-	appearance_flags = PLANE_MASTER
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS |PLANE_MASTER
 	screen_loc = "CENTER,CENTER"
 	globalscreen = 1
 
@@ -252,7 +261,7 @@
 /obj/screen/plane_master/ghost_dummy
 	// this avoids a bug which means plane masters which have nothing to control get angry and mess with the other plane masters out of spite
 	alpha = 0
-	appearance_flags = 0
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS
 	plane = OBSERVER_PLANE
 
 GLOBAL_LIST_INIT(ghost_master, list(

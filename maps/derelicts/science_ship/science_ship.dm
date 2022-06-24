@@ -1,3 +1,11 @@
+/datum/space_level/science_ship_1
+	path = 'science_ship-1.dmm'
+	travel_chance = 5
+
+/datum/space_level/science_ship_2
+	path = 'science_ship-2.dmm'
+	travel_chance = 5
+
 /area/science_ship
 	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_SPACE)
 	has_gravity = TRUE

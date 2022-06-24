@@ -5,7 +5,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "tape_white"
 	item_state = "analyzer"
-	w_class = ITEM_SIZE_TINY
+	w_class = ITEM_SIZE_SMALL
 	force = 1
 	throwforce = 0
 

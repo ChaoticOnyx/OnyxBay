@@ -66,7 +66,7 @@
 /obj/item/projectile/meteor
 	name = "meteor"
 	icon = 'icons/obj/meteor.dmi'
-	icon_state = "smallf"
+	icon_state = "small"
 	damage = 0
 	damage_type = BRUTE
 	nodamage = 1
@@ -242,8 +242,11 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "facehugger_thrown"
 	embed = 0 // nope nope nope nope nope
+	damage = 5
 	damage_type = PAIN
 	pass_flags = PASS_FLAG_TABLE
+	kill_count = 12
+
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
 /obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
@@ -296,8 +299,51 @@
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null
 
-
 	set_density(0)
 	set_invisibility(101)
 	qdel(src)
 	return TRUE
+
+/obj/item/projectile/facehugger_proj/on_impact(atom/A, use_impact = TRUE)
+	Bump(A)
+
+/obj/item/projectile/facehugger_proj/Destroy()
+	if(kill_count)
+		QDEL_NULL(holder)
+	else
+		var/turf/T = get_turf(loc)
+		if(T)
+			holder.forceMove(T)
+			holder = null
+
+	return ..()
+
+/obj/item/projectile/portal
+	name = "portal sphere"
+	icon_state = "portal"
+	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
+	damage = 0
+	damage_type = CLONE
+	nodamage = TRUE
+	kill_count = 500 // enough to cross a ZLevel...twice!
+	check_armour = "energy"
+	blockable = FALSE
+	impact_on_original = TRUE
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
+	var/obj/item/gun/portalgun/parent
+	var/setting = 0
+
+/obj/item/projectile/portal/New(loc)
+	parent = loc
+	return ..()
+
+/obj/item/projectile/portal/on_impact(atom/A)
+	if(!istype(parent, /obj/item/gun/portalgun))
+		return
+
+	var/obj/item/gun/portalgun/P = parent
+
+	if(!(locate(/obj/effect/portal) in loc))
+		if(!ismob(firer))
+			firer = shot_from
+		P.open_portal(setting,loc,A,firer)

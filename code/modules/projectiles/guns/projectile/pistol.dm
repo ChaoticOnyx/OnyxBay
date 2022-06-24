@@ -284,7 +284,7 @@
 		/obj/item/ammo_casing/a556              = "5.56mm"
 		)
 
-/obj/item/gun/projectile/pirate/New()
+/obj/item/gun/projectile/pirate/Initialize()
 	ammo_type = pick(ammo_types)
 	desc += " Uses [ammo_types[ammo_type]] rounds."
 

@@ -31,7 +31,8 @@
 		/obj/item/stack/material,
 		/obj/item/stack/tile,
 		/obj/item/clamp,
-		/obj/item/frame
+		/obj/item/frame,
+		/obj/item/device/assembly
 		)
 
 	var/list/cant_hold = list(

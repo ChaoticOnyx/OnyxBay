@@ -139,7 +139,6 @@
 	force_divisor = 0.2
 	unwielded_force_divisor = 0.1
 	thrown_force_divisor = 1.2 // 120% of force
-	throw_speed = 3
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 	default_material = MATERIAL_GLASS

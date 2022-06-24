@@ -127,7 +127,6 @@
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "beholder_eye"
 	item_flags = ITEM_FLAG_NO_BLUDGEON
-	throw_speed = 3
 	throw_range = 7
 	throwforce = 10
 	damtype = BURN

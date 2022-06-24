@@ -14,7 +14,7 @@ LINEN BINS
 	slot_flags = SLOT_BACK
 	layer = BASE_ABOVE_OBJ_LAYER
 	throwforce = 1
-	throw_speed = 1
+	throw_speed = 3
 	throw_range = 2
 	w_class = ITEM_SIZE_SMALL
 	var/folded = 0

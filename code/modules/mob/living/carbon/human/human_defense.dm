@@ -36,11 +36,8 @@ meteor_act
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
-	//Tase effect
-	if(P.tasing)
-		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
-
-	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+	// Unobviously, the external damage applies here
+	var/blocked = ..(P, def_zone) // <------------'
 
 	//Internal damage
 	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
@@ -97,6 +94,34 @@ meteor_act
 
 	..(stun_amount, agony_amount, def_zone)
 
+// Less realistic, more combat-friendly stun handling than the proc above. Used by tasers and batons.
+/mob/living/carbon/human/proc/handle_tasing(power, tasing, def_zone, used_weapon = null)
+	if(status_flags & GODMODE)
+		return 0	//godmode
+
+	var/siemens_coeff = 1.0
+	var/obj/item/organ/external/affected = get_organ(check_zone(def_zone))
+	if(affected)
+		siemens_coeff = get_siemens_coefficient_organ(affected)
+	if(siemens_coeff <= 0)
+		return
+	flash_pain()
+	forcesay(GLOB.hit_appends)
+
+	var/reduced_power = power * siemens_coeff
+	apply_damage(reduced_power, PAIN, def_zone, 0, used_weapon)
+	damage_poise(reduced_power / 5) // So metazine-filled junkies are still prone to muscular cramps
+
+	var/reduced_tasing = round(max(tasing * 0.5, tasing * siemens_coeff)) // Armor can provide up to 50% stun time reduction
+	apply_effect(STUTTER, reduced_tasing)
+	apply_effect(EYE_BLUR, reduced_tasing)
+
+	if(poise <= 0 || getHalLoss() >= species.total_health || affected?.pain > species.total_health)
+		if(prob(95)) // May gods decide your destiny
+			if(!stunned)
+				visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
+			Stun(reduced_tasing)
+			Weaken(reduced_tasing + 1) // Getting up after being tased is not instant, adding 1 tick of unstunned crawling
 
 
 //////////////////////
@@ -751,7 +776,7 @@ meteor_act
 /mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
 	if(isobj(AM))
 		var/obj/O = AM
-		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
+		if(in_throw_mode && !get_active_hand() && speed >= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
 					put_in_active_hand(O)
@@ -760,7 +785,7 @@ meteor_act
 					return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce / (speed * THROWFORCE_SPEED_DIVISOR)
 
 		if(blocking)
 			var/obj/item/weapon_def
@@ -814,6 +839,10 @@ meteor_act
 		O.throwing = 0		//it hit, so stop moving
 
 		var/obj/item/organ/external/affecting = get_organ(zone)
+		if(!affecting)
+			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+			return
+
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 
@@ -868,7 +897,7 @@ meteor_act
 			var/dir = get_dir(O.throw_source, src)
 
 			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
-			throw_at(get_edge_target_turf(src, dir), 1, momentum)
+			throw_at(get_edge_target_turf(src, dir), 1, (1 / momentum))
 
 			if(!O || !src)
 				return

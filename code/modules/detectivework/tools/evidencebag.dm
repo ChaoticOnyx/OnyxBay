@@ -68,7 +68,7 @@
 	I.pixel_x = 0		//then remove it so it'll stay within the evidence bag
 	I.pixel_y = 0
 	var/image/img = image(I.icon, I.icon_state, layer = FLOAT_LAYER)	//take a snapshot. (necessary to stop the underlays appearing under our inventory-HUD slots ~Carn
-	img.transform *= 0.7
+	img.SetTransform(scale = 0.7)
 	I.pixel_x = item_x		//and then return it
 	I.pixel_y = item_y
 	overlays.Add(img, "evidence")	//should look nicer for transparent stuff. not really that important, but hey.

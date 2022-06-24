@@ -242,5 +242,11 @@
 	else
 		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
 
+/obj/item/gun/energy/plasmacutter/afterattack(obj/target, mob/user, adjacent_flag)
+	if(adjacent_flag && istype(target, /obj/item/stack/material/plasma))
+		attackby(target, user)
+		return
+	..()
+
 /obj/item/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
 	return 3800

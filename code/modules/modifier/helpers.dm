@@ -22,52 +22,56 @@
 	return hex2num(hex_to_work_on)
 
 
-/mob/living/update_transform()
-	var/matrix/M = matrix()
-	M.Scale(icon_scale)
-	M.Translate(0, 16*(icon_scale-1))
-	if(hanging)
-		M.Turn(180)
-	animate(src, transform = M, time = 10)
+/mob/living/proc/update_transform()
+	animate(
+		src,
+		transform = matrix().Update(
+			scale_x = (tf_scale_x || 1),
+			scale_y = (tf_scale_y || 1),
+			rotation = (tf_rotation || 0) + (hanging ? 180 : 0),
+			offset_x = (tf_offset_x || 0),
+			offset_y = (tf_offset_y || 0) + 16 * ((tf_scale_y || 1) - 1)
+		),
+		time = 10
+	)
 
 /mob/living/carbon/human/update_transform()
-	var/matrix/M = matrix()
 	var/anim_time = 3
+	var/rotate_deg = (tf_rotation || 0)
+	var/translate_x = 0
+	var/translate_y = 16 * ((tf_scale_y || 1) * body_height - 1) + species.y_shift
 
 	//Due to some involuntary means, you're laying now
 	if(lying && !resting && !sleeping)
 		anim_time = 1 //Thud
 
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
-		M.Turn(90)
-		M.Scale(icon_scale)
-		M.Translate(1,-6)
+		rotate_deg += 90
+		translate_x = 1
+		translate_y = -6
 		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
 	else if(hanging && !species.prone_icon)
-		M.Turn(180)
-		M.Scale(icon_scale)
-		M.Translate(0, -16*(icon_scale-1))
+		rotate_deg += 180
+		translate_y = -16 * ((tf_scale_y || 1) * body_height - 1)
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 	else
-		M.Scale(icon_scale)
-		M.Translate(0, 16*(icon_scale-1))
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 
-	animate(src, transform = M, time = anim_time)
+	animate(
+		src,
+		transform = matrix().Update(
+			scale_x = (tf_scale_x || 1),
+			scale_y = (tf_scale_y || 1) * body_height,
+			rotation = (tf_rotation || 0) + rotate_deg,
+			offset_x = (tf_offset_x || 0) + translate_x,
+			offset_y = (tf_offset_y || 0) + translate_y
+		),
+		time = anim_time
+	)
 
 
 /mob/living/proc/update_modifier_visuals()
 	return
-
-/atom/movable
-	var/icon_scale = 1 // Used to scale icons up or down in update_transform().
-	var/icon_rotation = 0 // Used to rotate icons in update_transform()
-
-/atom/movable/proc/update_transform()
-	var/matrix/M = matrix()
-	M.Scale(icon_scale)
-	M.Turn(icon_rotation)
-	src.transform = M
 
 /mob/proc/update_client_color()
 	if(client && client.color)

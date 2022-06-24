@@ -11,7 +11,7 @@ var/global/list/light_overlay_cache = list()
 /proc/overlay_image(icon,icon_state,color,flags)
 	var/image/ret = image(icon,icon_state)
 	ret.color = color
-	ret.appearance_flags = flags | PIXEL_SCALE
+	ret.appearance_flags = DEFAULT_APPEARANCE_FLAGS | flags
 	return ret
 
 	///////////////////////
@@ -170,14 +170,15 @@ Please contact me on #coderbus IRC. ~Carn x
 		if(lying && (species.prone_overlay_offset[1] || species.prone_overlay_offset[2]))
 			M.Translate(species.prone_overlay_offset[1], species.prone_overlay_offset[2])
 
-		for(var/entry in visible_overlays)
+		for(var/i = 1 to LAZYLEN(visible_overlays))
+			var/entry = visible_overlays[i]
 			if(istype(entry, /image))
 				var/image/overlay = entry
-				overlay.transform = M
+				overlay.SetTransform(others = M)
 				overlays_to_apply += overlay
 			else if(istype(entry, /list))
 				for(var/image/overlay in entry)
-					overlay.transform = M
+					overlay.SetTransform(others = M)
 					overlays_to_apply += overlay
 		if(species.has_floating_eyes)
 			overlays_to_apply |= species.get_eyes(src)
@@ -239,6 +240,9 @@ var/global/list/damage_icon_parts = list()
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body(update_icons=1)
+	if(QDELETED(src))
+		return
+
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 
@@ -372,7 +376,7 @@ var/global/list/damage_icon_parts = list()
 	overlays_standing[HO_UNDERWEAR_LAYER] = list()
 	for(var/obj/item/underwear/UW in worn_underwear)
 		var/image/I = image(body_build.get_mob_icon(slot_hidden_str, UW.icon_state), UW.icon_state)
-		I.appearance_flags = RESET_COLOR | PIXEL_SCALE
+		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		I.color = UW.color
 
 		overlays_standing[HO_UNDERWEAR_LAYER] += I
@@ -815,7 +819,7 @@ var/global/list/damage_icon_parts = list()
 		if(!BP_IS_ROBOTIC(E) && E.open())
 			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.open())]", "layer"=-HO_SURGERY_LAYER)
 			total.overlays += I
-	total.appearance_flags = RESET_COLOR | PIXEL_SCALE
+	total.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	overlays_standing[HO_SURGERY_LAYER] = total
 
 	if(update_icons) queue_icon_update()

@@ -145,7 +145,7 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/proc/UpdateMineral()
 	clear_ore_effects()
 	ore_overlay = image('icons/obj/mining.dmi', "rock_[mineral.icon_tag]")
-	ore_overlay.appearance_flags = RESET_COLOR
+	ore_overlay.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 	ore_overlay.turf_decal_layerise()
 	update_icon()
 	if(mineral.icon_tag == "diamond")

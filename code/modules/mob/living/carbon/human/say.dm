@@ -22,6 +22,10 @@
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
 	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
+		if(QDELETED(L) || L.is_broken())
+			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You try to make sounds but you can't exhale."))
+			return
+
 		if(L.breath_fail_ratio > 0.9)
 			if(world.time < L.last_successful_breath + 2 MINUTES) //if we're in grace suffocation period, give it up for last words
 				to_chat(src, "<span class='warning'>You use your remaining air to say something!</span>")

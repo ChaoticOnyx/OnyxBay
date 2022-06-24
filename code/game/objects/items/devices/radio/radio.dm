@@ -21,7 +21,6 @@
 	var/loud = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 
@@ -542,6 +541,9 @@
 /obj/item/device/radio/proc/recalculateChannels()
 	return
 
+/obj/item/device/radio/proc/receive()
+	return
+
 ///////////////////////////////
 //////////Borg Radios//////////
 ///////////////////////////////
@@ -750,7 +752,9 @@
 
 /obj/item/device/radio/announcer/Initialize()
 	. = ..()
-	forceMove(locate(1,1,GLOB.using_map.contact_levels.len ? GLOB.using_map.contact_levels[1] : 1))
+
+	var/list/contact = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION, ZTRAIT_CONTACT)
+	forceMove(locate(1,1, length(contact) ? contact[1] : 1))
 
 /obj/item/device/radio/announcer/subspace
 	subspace_transmission = 1

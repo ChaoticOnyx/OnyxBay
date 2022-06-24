@@ -207,7 +207,7 @@ nanoui is used to open and update nano browser uis
 			"showMap" = show_map,
 			"mapName" = copytext(GLOB.using_map.path, findlasttext(GLOB.using_map.path, "/") + 1),
 			"mapZLevel" = map_z_level,
-			"mapZLevels" = GLOB.using_map.map_levels,
+			"mapZLevels" = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION),
 			"user" = list("name" = user? user.name : "Unknown")
 		)
 	return config_data
@@ -522,7 +522,7 @@ nanoui is used to open and update nano browser uis
 
 	if(href_list["mapZLevel"])
 		var/map_z = text2num(href_list["mapZLevel"])
-		if(map_z in GLOB.using_map.map_levels)
+		if(map_z > 0 && map_z <= length(GLOB.using_map.map_levels))
 			set_map_z_level(map_z)
 			map_update = 1
 		else

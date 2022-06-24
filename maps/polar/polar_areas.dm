@@ -4,6 +4,8 @@
 
 /area/polarplanet/street
 	name = "Polarplanet - street"
+	environment_type = ENVIRONMENT_OUTSIDE
+	always_unpowered = TRUE
 
 // Security
 
@@ -39,8 +41,7 @@
 		/area/polarplanet/shuttle/escape_pod2,
 		/area/polarplanet/shuttle/escape_pod3,
 		/area/polarplanet/shuttle/escape_pod5,
-		/area/polarplanet/shuttle/transport/centcom,
-		/area/polarplanet/shuttle/administration/,
+		/area/polarplanet/shuttle/administration,
 		/area/polarplanet/shuttle/specops/centcom,
 	)
 
@@ -52,14 +53,12 @@
 /area/polarplanet/shuttle/administration/centcom
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered"
+	base_turf = /turf/unsimulated/floor
 
 /area/polarplanet/shuttle/administration/station
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"
-
-/area/polarplanet/shuttle/train/evac
-	name = "Evac Train"
-	icon_state = "shuttle3"
+	base_turf = /turf/simulated/floor/plating
 
 /area/polarplanet/shuttle/supply/elevator/upper
 	name = "Cargo Elevator Upper Deck"
@@ -74,6 +73,7 @@
 
 /area/polarplanet/shuttle/merchant/home
 	name = "\improper Merchant Van - Home"
+	base_turf = /turf/space
 
 /area/polarplanet/shuttle/merchant/transit
 	icon_state = "shuttlegrn"
@@ -81,9 +81,8 @@
 
 /area/polarplanet/shuttle/merchant/dock
 	name = "\improper Merchant Van - Planet Landing Site"
-
-/area/polarplanet/shuttle/merchant/outpost
-	name = "\improper Merchant Van - Outpost"
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 // Command
 /area/polarplanet/crew_quarters/heads/chief
@@ -114,41 +113,19 @@
 
 // Shuttles
 
-/area/polarplanet/shuttle/constructionsite
-	name = "Construction Site Shuttle"
-	icon_state = "yellow"
-
-/area/polarplanet/shuttle/constructionsite/station
-	name = "Construction Site Shuttle"
-
-/area/polarplanet/shuttle/constructionsite/transit
-	name = "Construction Site Shuttle Transit"
-	icon_state = "shuttle"
-
-/area/polarplanet/shuttle/mining
-	name = "\improper Mining Shuttle"
-
-/area/polarplanet/shuttle/mining/outpost
-	icon_state = "shuttle"
-	base_turf = /turf/simulated/floor/asteroid
-
-/area/polarplanet/shuttle/mining/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/mining/transit
-	name = "Mining Shuttle Transit"
-	icon_state = "shuttle"
-
 /area/polarplanet/shuttle/deathsquad/centcom
 	name = "Deathsquad Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
+	base_turf = /turf/space
 
 /area/polarplanet/shuttle/deathsquad/transit
 	name = "Deathsquad Shuttle Internim"
 	area_flags = AREA_FLAG_RAD_SHIELDED
+	base_turf = /turf/space/transit/east
 
 /area/polarplanet/shuttle/deathsquad/station
 	name = "Deathsquad Shuttle Station"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/administration
 	area_flags = AREA_FLAG_RAD_SHIELDED
@@ -156,28 +133,6 @@
 /area/polarplanet/shuttle/syndicate_elite
 	name = "\improper Syndicate Elite Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
-
-/area/polarplanet/shuttle/transport/centcom
-	icon_state = "shuttle"
-	name = "\improper Transport Shuttle Centcom"
-
-/area/polarplanet/shuttle/transport/transit
-	icon_state = "shuttle"
-	name = "\improper Transport Shuttle Transit"
-
-/area/polarplanet/shuttle/transport/station
-	icon_state = "shuttle"
-	name = "\improper Transport Shuttle"
-
-/area/polarplanet/shuttle/alien/mine
-	icon_state = "shuttle"
-	name = "\improper Alien Shuttle Mine"
-	requires_power = 1
-
-/area/polarplanet/shuttle/alien/base
-	icon_state = "shuttle"
-	name = "\improper Alien Shuttle Base"
-	requires_power = 1
 
 /area/polarplanet/shuttle/arrival
 	name = "\improper Arrival Shuttle"
@@ -188,6 +143,7 @@
 /area/polarplanet/shuttle/escape/centcom
 	name = "\improper Emergency Shuttle Centcom"
 	icon_state = "shuttle"
+	base_turf = /turf/space
 
 /area/polarplanet/shuttle/escape
 	name = "\improper Emergency Shuttle"
@@ -196,75 +152,17 @@
 /area/polarplanet/shuttle/escape/station
 	name = "\improper Emergency Shuttle Station"
 	icon_state = "shuttle2"
+	base_turf = /turf/simulated/floor/plating
 
 /area/polarplanet/shuttle/escape/transit // the area/polarplanet to pass through for 3 minute transit
 	name = "\improper Emergency Shuttle Transit"
 	icon_state = "shuttle"
-
-/area/polarplanet/shuttle/escape_pod1
-	name = "\improper Escape Pod One"
-	area_flags = AREA_FLAG_RAD_SHIELDED
-
-/area/polarplanet/shuttle/escape_pod1/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/escape_pod1/transit
-	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
-
-/area/polarplanet/shuttle/escape_pod2
-	name = "\improper Escape Pod Two"
-	area_flags = AREA_FLAG_RAD_SHIELDED
-
-/area/polarplanet/shuttle/escape_pod2/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/escape_pod2/transit
-	icon_state = "shuttle"
-	base_turf = /turf/space/transit/north
-
-/area/polarplanet/shuttle/escape_pod3
-	name = "\improper Escape Pod Three"
-	area_flags = AREA_FLAG_RAD_SHIELDED
-
-/area/polarplanet/shuttle/escape_pod3/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/escape_pod3/transit
-	icon_state = "shuttle"
-	base_turf = /turf/space/transit/east
-
-/area/polarplanet/shuttle/escape_pod5 // Pod 4 was lost to meteors
-	name = "\improper Escape Pod Five"
-	area_flags = AREA_FLAG_RAD_SHIELDED
-
-/area/polarplanet/shuttle/escape_pod5/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/escape_pod5/transit
-	icon_state = "shuttle"
-	base_turf = /turf/space/transit/east
 
 /area/polarplanet/shuttle/administration/transit
 	name = "Administration Shuttle Transit"
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/east
-
-// === Trying to remove these areas:
-
-/area/polarplanet/shuttle/research
-	name = "\improper Research Shuttle"
-
-/area/polarplanet/shuttle/research/station
-	icon_state = "shuttle2"
-
-/area/polarplanet/shuttle/research/outpost
-	icon_state = "shuttle"
-	base_turf = /turf/simulated/floor/asteroid
-
-/area/polarplanet/shuttle/research/transit
-	name = "Research Shuttle Transit"
-	icon_state = "shuttle"
 
 // SYNDICATES
 
@@ -297,34 +195,27 @@
 /area/polarplanet/rescue_base/start
 	name = "\improper Response Team Base"
 	icon_state = "shuttlered"
+	base_turf = /turf/unsimulated/floor
 
 /area/polarplanet/rescue_base/southwest
-	name = "south-west of SS13"
+	name = "south west"
 	icon_state = "southwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/rescue_base/northwest
-	name = "north-west of SS13"
+	name = "north west"
 	icon_state = "northwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/rescue_base/northeast
-	name = "north-east of SS13"
+	name = "north east"
 	icon_state = "northeast"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/rescue_base/southeast
-	name = "south-east of SS13"
+	name = "south east"
 	icon_state = "southeast"
-
-/area/polarplanet/rescue_base/north
-	name = "north of SS13"
-	icon_state = "north"
-
-/area/polarplanet/rescue_base/south
-	name = "south of SS13"
-	icon_state = "south"
-
-/area/polarplanet/rescue_base/arrivals_dock
-	name = "docked with station"
-	icon_state = "shuttle"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/rescue_base/transit
 	name = "\proper bluespace"
@@ -366,30 +257,31 @@
 /area/polarplanet/syndicate_station/start
 	name = "\improper Syndicate Forward Operating Base"
 	icon_state = "yellow"
+	base_turf = /turf/space
 
 /area/polarplanet/syndicate_station/southwest
-	name = "south-west of SS13"
+	name = "south west"
 	icon_state = "southwest"
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/syndicate_station/northwest
-	name = "north-west of SS13"
+	name = "north west"
 	icon_state = "northwest"
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/syndicate_station/northeast
-	name = "north-east of SS13"
+	name = "north east"
 	icon_state = "northeast"
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/syndicate_station/southeast
-	name = "south-east of SS13"
+	name = "south east"
 	icon_state = "southeast"
-
-/area/polarplanet/syndicate_station/north
-	name = "north of SS13"
-	icon_state = "north"
-
-/area/polarplanet/syndicate_station/south
-	name = "south of SS13"
-	icon_state = "south"
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/syndicate_station/transit
 	name = "\proper bluespace"
@@ -398,15 +290,19 @@
 
 /area/polarplanet/shuttle/syndicate_elite/northwest
 	icon_state = "northwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/northeast
 	icon_state = "northeast"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/southwest
 	icon_state = "southwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/southeast
 	icon_state = "southeast"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/shuttle/syndicate_elite/transit
 	name = "\proper bluespace"
@@ -418,22 +314,27 @@
 	icon_state = "yellow"
 	requires_power = 0
 	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_SPACE)
+	base_turf = /turf/space
 
-/area/polarplanet/skipjack_station/southwest_solars
-	name = "aft port solars"
+/area/polarplanet/skipjack_station/southwest
+	name = "south west"
 	icon_state = "southwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
-/area/polarplanet/skipjack_station/northwest_solars
-	name = "fore port solars"
+/area/polarplanet/skipjack_station/northwest
+	name = "north west"
 	icon_state = "northwest"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
-/area/polarplanet/skipjack_station/northeast_solars
-	name = "fore starboard solars"
+/area/polarplanet/skipjack_station/northeast
+	name = "north east"
 	icon_state = "northeast"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
-/area/polarplanet/skipjack_station/southeast_solars
-	name = "aft starboard solars"
+/area/polarplanet/skipjack_station/southeast
+	name = "south east"
 	icon_state = "southeast"
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/skipjack_station/base
 	name = "Raider Base"
@@ -443,11 +344,35 @@
 /area/polarplanet/skipjack_station/start
 	name = "\improper Skipjack"
 	icon_state = "shuttlered"
+	base_turf = /turf/space
 
 /area/polarplanet/skipjack_station/transit
 	name = "Skipjack Transit"
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
+
+// Train
+
+/area/polarplanet/shuttle/train/station
+	name = "Pathos I - Train Station"
+	icon_state = "shuttle2"
+	base_turf = /turf/simulated/open
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
+
+/area/polarplanet/shuttle/train/transit
+	name = "Pathos I - Train Transit"
+	icon_state = "shuttle"
+	base_turf = /turf/simulated/floor/plating
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
+
+/area/polarplanet/shuttle/train/dock
+	name = "Pathos I - Train Dock"
+	icon_state = "shuttle2"
+	base_turf = /turf/simulated/floor/plating
+	environment_type = ENVIRONMENT_ROOM
+	ambient_music_tags = list(MUSIC_TAG_NORMAL, MUSIC_TAG_SPACE)
 
 // SUBSTATIONS (Subtype of maint, that should let them serve as shielded area/polarplanet during radstorm)
 
@@ -911,7 +836,7 @@
 /area/polarplanet/maintenance/exterior
 	name = "\improper Exterior Reinforcements"
 	icon_state = "maint_security_starboard"
-	area_flags = AREA_FLAG_EXTERNAL
+	area_flags = AREA_FLAG_EXTERNAL & AREA_FLAG_NO_STATION
 	has_gravity = FALSE
 	turf_initializer = /decl/turf_initializer/maintenance/space
 
@@ -1016,22 +941,27 @@
 /area/polarplanet/hallway/primary/central_one
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC1"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_two
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC2"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_three
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_fore
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_fife
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/primary/central_six
 	name = "\improper Central Primary Hallway"
@@ -1077,12 +1007,12 @@
 	name = "\improper Dormitory Hallway"
 	icon_state = "Sleep"
 
-
-
-
 /area/polarplanet/hallway/secondary/exit
 	name = "\improper Escape Shuttle Hallway"
 	icon_state = "escape"
+
+/area/polarplanet/hallway/secondary/entry
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/hallway/secondary/entry/pods
 	name = "\improper Arrival Shuttle Hallway - Escape Pods"
@@ -1095,6 +1025,7 @@
 /area/polarplanet/hallway/secondary/entry/port
 	name = "\improper Arrival Shuttle Hallway - Port"
 	icon_state = "entry_2"
+	base_turf = /turf/simulated/open
 
 /area/polarplanet/hallway/secondary/entry/starboard
 	name = "\improper Arrival Shuttle Hallway - Starboard"
@@ -1278,6 +1209,7 @@
 /area/polarplanet/crew_quarters/fitness
 	name = "\improper Fitness Room"
 	icon_state = "fitness"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/crew_quarters/fitness/arcade
 	name = "\improper Arcade"
@@ -1291,6 +1223,7 @@
 	name = "\improper Bar"
 	icon_state = "bar"
 	sound_env = LARGE_SOFTFLOOR
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/crew_quarters/barbackroom
 	name = "\improper Bar Backroom"
@@ -1304,6 +1237,7 @@
 	name = "\improper Mess Hall"
 	icon_state = "cafeteria"
 	sound_env = LARGE_SOFTFLOOR
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/library
  	name = "\improper Library"
@@ -1313,6 +1247,9 @@
 /area/polarplanet/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
+
+/area/polarplanet/chapel
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/chapel/main
 	name = "\improper Chapel"
@@ -1763,6 +1700,7 @@
 /area/polarplanet/quartermaster
 	name = "\improper Quartermasters"
 	icon_state = "quart"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/quartermaster/breakroom
 	name = "\improper Cargo Break Room"
@@ -2393,11 +2331,14 @@
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	requires_power = 0
+	base_turf = /turf/unsimulated/floor
 
 /area/polarplanet/supply/station
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	requires_power = 0
+	environment_type = ENVIRONMENT_OUTSIDE
+	base_turf = /turf/simulated/floor/natural/frozenground
 
 /area/polarplanet/security/armory
 	name = "\improper Security - Armory"
@@ -2512,6 +2453,7 @@
 /area/polarplanet/security/prison
 	name = "\improper Security - Prison Wing"
 	icon_state = "sec_prison"
+	environment_type = ENVIRONMENT_ROOM
 
 /area/polarplanet/maintenance
 	area_flags = AREA_FLAG_RAD_SHIELDED
@@ -2550,13 +2492,10 @@
 
 /area/polarplanet/shuttle/syndicate_elite/mothership
 	icon_state = "shuttlered"
+	base_turf = /turf/space
 
 /area/polarplanet/shuttle/syndicate_elite/station
 	icon_state = "shuttlered2"
-
-/area/polarplanet/skipjack_station/start
-	name = "\improper Skipjack"
-	icon_state = "yellow"
 
 /area/polarplanet/supply
 	name = "Supply Shuttle"
@@ -2565,6 +2504,7 @@
 /area/polarplanet/syndicate_mothership/elite_squad
 	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
+	base_turf = /turf/space
 
 ////////////
 //SHUTTLES//
@@ -2575,6 +2515,9 @@
 /area/polarplanet/shuttle
 	requires_power = 0
 	sound_env = SMALL_ENCLOSED
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE)
+	ambient_music_tags = list(MUSIC_TAG_SPACE, MUSIC_TAG_MYSTIC)
 
 /*
 * Special areas
@@ -2748,3 +2691,101 @@
 	name = "\improper Nuclear Shelter One"
 /area/polarplanet/shelter/nuclear2
 	name = "\improper Nuclear Shelter Two"
+
+// Voron
+/area/polarplanet/voron/
+	name = "\improper Apparat Voron"
+	icon_state = "voron"
+	ambient_music_tags = list(MUSIC_TAG_MYSTIC, MUSIC_TAG_NORMAL)
+	ambience_off = list(SFX_AMBIENT_OFF_GLOBAL, SFX_AMBIENT_OFF_MAINTENANCE)
+	ambience_powered = list(SFX_AMBIENT_POWERED_GLOBAL, SFX_AMBIENT_POWERED_MAINTENANCE, SFX_AMBIENT_OUTPOST)
+
+/area/polarplanet/voron/cargo_bay
+	name = "\improper Apparat Voron - Cargo Bay"
+	icon_state = "voron_cargo_bay"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/hangar
+	name = "\improper Apparat Voron - Hangar"
+	icon_state = "voron_hangar"
+
+/area/polarplanet/voron/dormitory
+	name = "\improper Apparat Voron - Dormitory"
+	icon_state = "voron_dormitory"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/closets
+	name = "\improper Apparat Voron - Closets"
+	icon_state = "voron_closets"
+
+/area/polarplanet/voron/restroom
+	name = "\improper Apparat Voron - Restroom"
+	icon_state = "voron_restroom"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/maintenance
+	name = "\improper Apparat Voron - Maintenance"
+	icon_state = "voron_maintenance"
+
+/area/polarplanet/voron/quartermaster
+	name = "\improper Apparat Voron - Quartermaster"
+	icon_state = "voron_quartermaster"
+
+/area/polarplanet/voron/quartermaster_room
+	name = "\improper Apparat Voron - Quartermaster Room"
+	icon_state = "voron_quartermaster_room"
+
+/area/polarplanet/voron/bridge
+	name = "\improper Apparat Voron - Bridge"
+	icon_state = "voron_bridge"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/cargo_warehouse
+	name = "\improper Apparat Voron - Cargo Warehouse"
+	icon_state = "voron_cargo_warehouse"
+
+/area/polarplanet/voron/entrance
+	name = "\improper Apparat Voron - Entrance"
+	icon_state = "voron_entrance"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/supply_entrance
+	name = "\improper Apparat Voron - Supply Entrance"
+	icon_state = "voron_supply_entrance"
+	environment_type = ENVIRONMENT_ROOM
+
+/area/polarplanet/voron/break_room
+	name = "\improper Apparat Voron - Break Room"
+	icon_state = "voron_break_room"
+
+/area/polarplanet/voron/infirmary
+	name = "\improper Apparat Voron - Infirmary"
+	icon_state = "voron_infirmary"
+
+/area/polarplanet/voron/mining_closets
+	name = "\improper Apparat Voron - Mining Closets"
+	icon_state = "voron_mining_closets"
+
+/area/polarplanet/voron/substation
+	name = "\improper Apparat Voron - Substation"
+	icon_state = "voron_substation"
+
+/area/polarplanet/voron/refinery_line
+	name = "\improper Apparat Voron - Refinery Line"
+	icon_state = "voron_refinery_line"
+
+/area/polarplanet/voron/mech_bay
+	name = "\improper Apparat Voron - Mech Bay"
+	icon_state = "voron_mech_bay"
+
+/area/polarplanet/voron/mining_warehouse
+	name = "\improper Apparat Voron - Mining Warehouse"
+	icon_state = "voron_mining_warehouse"
+
+/area/polarplanet/voron/hallway2
+	name = "\improper Apparat Voron - Hallway Deck 2"
+	icon_state = "voron_hallway2"
+
+/area/polarplanet/voron/hallway1
+	name = "\improper Apparat Voron - Hallway Deck 1"
+	icon_state = "voron_hallway1"

@@ -827,10 +827,9 @@ var/global/floorIsLava = 0
 		return
 
 	world.visibility = !(world.visibility)
-	var/long_message = " toggled hub visibility.  The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
+	var/long_message = "[key_name(src)] toggled hub visibility. The server is now [world.visibility ? "visible" : "invisible"] ([world.visibility])."
 
-	send2adminirc("[key_name(src)]" + long_message)
-	log_and_message_admins("toggled hub visibility.")
+	log_and_message_admins(long_message)
 	feedback_add_details("admin_verb","THUB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc
 
 /datum/admins/proc/toggletraitorscaling()
@@ -847,7 +846,9 @@ var/global/floorIsLava = 0
 	set desc="Start the round RIGHT NOW"
 	set name="Start Now"
 	if(GAME_STATE < RUNLEVEL_LOBBY)
-		alert("Unable to start the game as it is not set up.")
+		SSticker.auto_start = !SSticker.auto_start
+		message_admins(SPAN("info", "[key_name(src)] set the server start round configuration to [SSticker.auto_start ? "automatically start game as soon as possible" : "start game in normal mode (with a timer)."]"))
+		to_chat(usr, SPAN_NOTICE("Unable to start the game as it is not set up. [SSticker.auto_start ? "It will automatically start game as soon as possible" : "It will start game in normal mode (with a timer)."]"))
 		return 0
 	if(SSticker.start_now())
 		log_admin("[key_name(usr)] has started the game.")

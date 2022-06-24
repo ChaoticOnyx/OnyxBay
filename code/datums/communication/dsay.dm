@@ -66,8 +66,9 @@
 		var/realname = C.mob.real_name
 		if(C.mob.mind)
 			mindname = C.mob.mind.name
-			if(C.mob.mind.original && C.mob.mind.original.real_name)
-				realname = C.mob.mind.original.real_name
+			var/mob/living/original_mob = C.mob.mind.original_mob?.resolve()
+			if(istype(original_mob) && original_mob.real_name)
+				realname = original_mob.real_name
 		if(mindname && mindname != realname)
 			name = "[realname] died as [mindname]"
 		else

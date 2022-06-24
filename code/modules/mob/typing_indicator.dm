@@ -11,7 +11,7 @@ I AM TYPING!'
 	icon_state = "typing"
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 /atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)

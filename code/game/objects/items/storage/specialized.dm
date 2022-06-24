@@ -161,21 +161,16 @@
 // -----------------------------
 //    Music Tape Boxes
 // -----------------------------
-/obj/item/storage/box/music_tape
+/obj/item/music_tape_box
 	name = "Music Tape box"
 	desc = "You should not see that."
 	icon = 'icons/obj/tapes.dmi'
+	var/obj/item/music_tape/music_tape = null
 	var/icon_closed
 
-	max_w_class = ITEM_SIZE_SMALL
-	max_storage_space = 1
-	can_hold = list(/obj/item/music_tape)
-
-	var/obj/item/music_tape/random/music_tape
-
-/obj/item/storage/box/music_tape/Initialize()
+/obj/item/music_tape_box/Initialize()
 	..()
-	contents += music_tape
+	music_tape = new music_tape()
 	icon_state = icon_closed
 
 	desc = "A box with [music_tape.name]. It contains following playlist"
@@ -183,82 +178,80 @@
 		desc += "<br>[track.title]"
 	desc += "."
 
-/obj/item/storage/box/music_tape/attackby(obj/item/A, mob/user)
+/obj/item/music_tape_box/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/music_tape))
-		var/obj/item/storage/box/music_tape/C = A
+		var/obj/item/music_tape/C = A
 		if(music_tape)
 			to_chat(user, SPAN("warning", "[src] already has a tape."))
 			return
 
 		user.remove_from_mob(C)
 		C.loc = src
-		music_tape =  C
-		contents = music_tape
-		user.visible_message("[user] inserts \a [C] into [src].", "<span class='notice'>You insert \a [C] into [src].</span>")
+		music_tape = C
+		user.visible_message("[user] inserts \a [C] into [src].", SPAN("notice", "You insert \a [C] into [src]."))
 	else
 		to_chat(user, SPAN("warning", "[A] does not fit in [src]."))
 	update_icon()
 
-/obj/item/storage/box/music_tape/update_icon()
+/obj/item/music_tape_box/update_icon()
 	..()
-	if(music_tape)
-		icon_state = icon_closed
-	else
+	if(!music_tape)
 		icon_state = icon_closed + "_open"
+	else
+		icon_state = icon_closed
 
-/obj/item/storage/box/music_tape/attack_hand(mob/user)
+/obj/item/music_tape_box/attack_hand(mob/user)
 	if(loc != user)
 		..()
 	else
 		if(music_tape)
 			user.put_in_hands(music_tape)
 			music_tape.add_fingerprint(user)
-			music_tape.update_icon()
+			music_tape = null
 
-			src.contents -= music_tape
-			src.music_tape = null
 			user.visible_message("[user] removes the tape from the [src].", "You remove the tape from the [src].")
 			update_icon()
 			add_fingerprint(user)
 
-/obj/item/storage/box/music_tape/AltClick(mob/usr)
+/obj/item/music_tape_box/AltClick(mob/user)
 	if(!canremove)
 		return
 
-	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
-		add_fingerprint(usr)
-		attack_hand(usr)
+	if((ishuman(user) || isrobot(user) || issmall(user)) && !user.incapacitated() && Adjacent(user))
+		add_fingerprint(user)
+		attack_hand(user)
 		return TRUE
-
-/obj/item/storage/box/music_tape/newyear
+/obj/item/music_tape_box/newyear
 	name = "New Year tape box"
 	icon_closed = "box_xmas"
-	music_tape = new /obj/item/music_tape/random/newyear
+	music_tape = /obj/item/music_tape/random/newyear
 
-/obj/item/storage/box/music_tape/jazz
+/obj/item/music_tape_box/jazz
 	name = "Jazz tape box"
 	icon_closed = "box_jazz"
-	music_tape = new /obj/item/music_tape/random/jazz
-/obj/item/storage/box/music_tape/classic
+	music_tape = /obj/item/music_tape/random/jazz
+
+/obj/item/music_tape_box/classic
 	name = "Classic Music tape box"
 	icon_closed = "box_classic"
-	music_tape = new /obj/item/music_tape/random/classic
-/obj/item/storage/box/music_tape/frontier
+	music_tape = /obj/item/music_tape/random/classic
+
+/obj/item/music_tape_box/frontier
 	name = "NSS Frontier tape box"
 	icon_closed = "box_frontier"
-	music_tape = new /obj/item/music_tape/random/frontier
+	music_tape = /obj/item/music_tape/random/frontier
 
-/obj/item/storage/box/music_tape/exodus
+/obj/item/music_tape_box/exodus
 	name = "NSS Exodus tape box"
 	icon_closed = "box_exodus"
-	music_tape = new /obj/item/music_tape/random/exodus
+	music_tape = /obj/item/music_tape/random/exodus
 
-/obj/item/storage/box/music_tape/syndie
+/obj/item/music_tape_box/syndie
 	name = "Unsuspicious tape box"
 	icon_closed = "box_syndi"
-	music_tape = new /obj/item/music_tape/syndie
+	music_tape = /obj/item/music_tape/syndie
 
-/obj/item/storage/box/music_tape/valhalla
+/obj/item/music_tape_box/valhalla
 	name = "Cyber Bar tape box"
 	icon_closed = "box_cyber"
-	music_tape = new /obj/item/music_tape/random/valhalla
+	music_tape = /obj/item/music_tape/random/valhalla

@@ -9,7 +9,7 @@
 	anchored = 0.0
 	force = 1.0
 	throwforce = 1.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 2
 	w_class = ITEM_SIZE_TINY
 	var/access = list()
@@ -77,11 +77,12 @@
 
 	for(var/A in images)
 		var/image/banknote = image('icons/obj/items.dmi', A)
-		var/matrix/M = matrix()
-		M.Translate(rand(-6, 6), rand(-4, 8))
-		M.Turn(pick(-45, -27.5, 0, 0, 0, 0, 0, 0, 0, 27.5, 45))
-		banknote.transform = M
-		src.overlays += banknote
+		banknote.SetTransform(
+			rotation = pick(-45, -27.5, 0, 0, 0, 0, 0, 0, 0, 27.5, 45),
+			offset_x = rand(-6, 6),
+			offset_y = rand(-4, 8)
+		)
+		overlays += banknote
 
 	src.desc = "They are worth [worth] Credit."
 	if(worth in denominations)

@@ -45,7 +45,9 @@
 
 /obj/item/organ/internal/lungs/robotize()
 	. = ..()
+	SetName("gas circulator")
 	icon_state = "lungs-prosthetic"
+	dead_icon = "lungs-prosthetic-br"
 
 /obj/item/organ/internal/lungs/set_dna(datum/dna/new_dna)
 	..()

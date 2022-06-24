@@ -59,13 +59,14 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 10.0
 	throwforce = 10.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 1.6
 	mod_reach = 1.4
 	mod_handy = 0.7
 	mod_shield = 1.3
+	block_tier = BLOCK_TIER_PROJECTILE
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)
 	attack_verb = list("shoved", "bashed")
@@ -144,7 +145,7 @@
 	if(isghost(user) && user.client?.inquisitive_ghost)
 		if(src.opened)
 			return
-		
+
 		. += "\nIt contains: [items_english_list(contents)]."
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target)
@@ -743,11 +744,9 @@
 	open()
 	broken = FALSE
 	locked = FALSE
-	var/matrix/M = matrix()
-	M.Turn(90)
-	cdoor.transform = M
+	cdoor.SetTransform(rotation = 90)
 	cdoor.pixel_y = -8
-	cdoor.loc = get_turf(src)
+	cdoor.forceMove(loc)
 	cdoor = null
 
 	setup = CLOSET_CAN_BE_WELDED

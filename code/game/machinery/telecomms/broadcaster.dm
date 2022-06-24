@@ -244,6 +244,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		for (var/obj/item/device/radio/intercom/R in connection.devices["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
+				R.receive()
 
 	// --- Broadcast only to intercoms and station-bounced radios ---
 
@@ -256,6 +257,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
+				R.receive()
 
 	// --- Broadcast to antag radios! ---
 
@@ -265,6 +267,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 			for (var/obj/item/device/radio/R in antag_connection.devices["[RADIO_CHAT]"])
 				if(R.intercept && R.receive_range(antag_freq, level) > -1)
 					radios += R
+					R.receive()
 
 	// --- Broadcast to ALL radio devices ---
 
@@ -273,6 +276,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
 			if(R.receive_range(display_freq, level) > -1)
 				radios += R
+				R.receive()
 
 	// Get a list of mobs who can hear from the radios we collected.
 	var/list/receive = get_mobs_in_radio_ranges(radios)

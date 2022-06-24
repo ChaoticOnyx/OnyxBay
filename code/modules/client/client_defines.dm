@@ -67,3 +67,6 @@
 
 	/// Settings window.
 	var/datum/player_settings/settings = null
+
+	/// Messages currently seen by this client
+	var/list/seen_messages

@@ -330,8 +330,10 @@
 /datum/seed/proc/apply_special_effect(mob/living/target,obj/item/thrown)
 
 	var/impact = 1
-	do_sting(target,thrown)
-	do_thorns(target,thrown)
+
+	if(ishuman(target))
+		do_sting(target, thrown)
+		do_thorns(target, thrown)
 
 	// Bluespace tomato code copied over from grown.dm.
 	if(get_trait(TRAIT_TELEPORTING))
@@ -828,6 +830,6 @@
 	if(leaves)
 		var/image/I = image(res.icon, "[plant_icon]-[growth_stage]-leaves")
 		I.color = leaves
-		I.appearance_flags = RESET_COLOR
+		I.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		res.overlays += I
 	return res
