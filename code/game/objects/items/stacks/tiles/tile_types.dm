@@ -71,32 +71,22 @@
 	throwforce = 10.5
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-/obj/item/stack/tile/floor/fifty
-	amount = 50
-
-/obj/item/stack/tile/floor_rough
-	name = "steel rough floor tile"
-	singular_name = "steel rough floor tile"
-	icon_state = "tile_rough"
-
-/obj/item/stack/tile/floor_rough/fifty
-	amount = 50
-
 /obj/item/stack/tile/floor_white
 	name = "white floor tile"
 	singular_name = "white floor tile"
 	icon_state = "tile_white"
 	matter = list(MATERIAL_PLASTIC = 937.5)
 
+/obj/item/stack/tile/floor_brown
+	name = "brown floor tile"
+	singular_name = "brown floor tile"
+	icon_state = "tile_brown"
+	matter = list(MATERIAL_PLASTIC = 937.5)
+
 /obj/item/stack/tile/floor_white/fifty
 	amount = 50
 
-/obj/item/stack/tile/floor_white_rough
-	name = "white rough floor tile"
-	singular_name = "white rough floor tile"
-	icon_state = "tile_white_rough"
-
-/obj/item/stack/tile/floor_white_rough/fifty
+/obj/item/stack/tile/floor_brown/fifty
 	amount = 50
 
 /obj/item/stack/tile/floor_dark
@@ -106,23 +96,6 @@
 	matter = list(MATERIAL_PLASTEEL = 937.5)
 
 /obj/item/stack/tile/floor_dark/fifty
-	amount = 50
-
-/obj/item/stack/tile/floor_dark_rough
-	name = "dark rough floor tile"
-	singular_name = "dark rough floor tile"
-	icon_state = "fr_tile_rough"
-
-/obj/item/stack/tile/floor_dark_rough/fifty
-	amount = 50
-
-/obj/item/stack/tile/floor_brown
-	name = "brown floor tile"
-	singular_name = "brown floor tile"
-	icon_state = "tile_brown"
-	matter = list(MATERIAL_PLASTIC = 937.5)
-
-/obj/item/stack/tile/floor_brown/fifty
 	amount = 50
 
 /obj/item/stack/tile/techfloor
