@@ -45,7 +45,7 @@
 
 
 /turf/simulated/open/proc/update()
-	plane = OPENSPACE_PLANE + (src.z * PLANE_DIFFERENCE)
+	plane = OPENSPACE_PLANE
 	below = GetBelow(src)
 	register_signal(below, SIGNAL_TURF_CHANGED, /turf/simulated/open/proc/turf_change)
 	register_signal(below, SIGNAL_EXITED, /turf/simulated/open/proc/handle_move)
@@ -102,12 +102,12 @@
 
 		else
 			var/image/bottom_turf = image(icon = below.icon, icon_state = below.icon_state, dir=below.dir, layer=below.layer)
-			bottom_turf.plane = below.plane + src.plane
+			bottom_turf.plane = src.plane
 			bottom_turf.color = below.color
 			underlays += bottom_turf
 			for(var/image/I in below.overlays)
 				var/image/temp = I
-				temp.plane = I.plane + src.plane
+				temp.plane = src.plane
 				temp.color = I.color
 				overlays += temp
 
@@ -118,9 +118,8 @@
 			if(O.invisibility) continue // Ignore objects that have any form of invisibility
 			if(O.loc != below) continue // Ignore multi-turf objects not directly below
 			var/image/temp2 = image(O, dir = O.dir, layer = O.layer)
-			temp2.plane = O.plane + src.plane
+			temp2.plane = src.plane
 			temp2.color = O.color
-			temp2.overlays += O.overlays
 			// TODO Is pixelx/y needed?
 			o_img += temp2
 
