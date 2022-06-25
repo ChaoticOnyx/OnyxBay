@@ -236,7 +236,7 @@
 /obj/item/gun/projectile/shotgun/doublebarrel/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
 	..()
 	if(silenced)
-		if(prob(75))
+		if(prob(50))
 			if(istype(silenced, /obj/item/holder/cat))
 				for(var/mob/living/simple_animal/cat/A in src)
 					qdel(A)
