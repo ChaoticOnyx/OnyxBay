@@ -33,6 +33,7 @@
 	var/block_air_zones = 1 //If set, air zones cannot merge across the door even when it is opened.
 	//Multi-tile doors
 	var/width = 1
+	var/turf/filler
 	var/tryingToLock = FALSE // for autoclosing
 	// turf animation
 	var/atom/movable/overlay/c_animation = null
@@ -62,9 +63,13 @@
 		if(dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
+			filler = get_step(src,EAST)
+			filler.set_opacity(opacity)
 		else
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
+			filler = get_step(src,NORTH)
+			filler.set_opacity(opacity)
 
 	health = maxhealth
 	update_icon()
@@ -74,6 +79,9 @@
 
 /obj/machinery/door/Destroy()
 	GLOB.all_doors -= src
+	if(filler && width > 1)
+		filler.set_opacity(initial(filler.opacity))
+		filler = null
 	set_density(0)
 	update_nearby_tiles()
 	. = ..()
@@ -379,6 +387,8 @@
 	do_animate("opening")
 	icon_state = "door0"
 	set_opacity(FALSE)
+	if (filler)
+		filler.set_opacity(opacity)
 	sleep(3)
 	set_density(FALSE)
 	update_nearby_tiles()
@@ -388,6 +398,8 @@
 	explosion_resistance = 0
 	update_icon()
 	set_opacity(FALSE)
+	if (filler)
+		filler.set_opacity(opacity)
 	operating = FALSE
 
 	if(autoclose)
@@ -415,6 +427,8 @@
 	update_icon()
 	if(visible && !glass)
 		set_opacity(TRUE) //caaaaarn!
+		if (filler)
+			filler.set_opacity(opacity)
 	operating = FALSE
 
 	shove_everything(shove_mobs = push_mobs, min_w_class = ITEM_SIZE_NORMAL) // Door shields cheesy meta must be gone.
@@ -455,9 +469,15 @@
 		if(dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
+			filler.set_opacity(0)
+			filler = (get_step(src,EAST)) //Find new turf
+			filler.set_opacity(opacity)
 		else
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
+			filler.set_opacity(0)
+			filler = (get_step(src,NORTH)) //Find new turf
+			filler.set_opacity(opacity)
 
 	if(.)
 		deconstruct(null, TRUE)
