@@ -201,7 +201,7 @@
 			to_chat(user, SPAN("notice","You need to hold \the [src] in your hands to do that."))
 			return
 		user.drop_item()
-		to_chat(user, SPAN("warning","You made inhumane decision with [A]."))
+		to_chat(user, SPAN("warning","You make an inhumane decision with [A] and silence your [src]."))
 		silenced = A
 		A.forceMove(src)		//put the silencer into the gun
 		update_icon()
