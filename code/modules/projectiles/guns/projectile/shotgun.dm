@@ -198,7 +198,7 @@
 /obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/holder/cat))
 		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
-			to_chat(user, SPAN("notice","You'll need [src] in your hands to do that."))
+			to_chat(user, SPAN("notice","You need to hold \the [src] in your hands to do that."))
 			return
 		user.drop_item()
 		to_chat(user, SPAN("warning","You made inhumane decision with [A]."))
