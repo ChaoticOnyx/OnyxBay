@@ -191,10 +191,9 @@
 	underlays += image('icons/obj/stationobjs.dmi', icon_state = "tele-wires")
 
 /obj/machinery/teleport/hub/Crossed(M as mob|obj)
-	spawn()
-		if(src.icon_state == "tele1")
-			teleport(M)
-			use_power_oneoff(5000)
+	if(src.icon_state == "tele1")
+		teleport(M)
+		use_power_oneoff(5000)
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
 	if(!com)
