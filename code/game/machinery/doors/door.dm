@@ -469,13 +469,13 @@
 		if(dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
-			filler.set_opacity(0)
+			filler.set_opacity(initial(filler.opacity))
 			filler = (get_step(src,EAST)) //Find new turf
 			filler.set_opacity(opacity)
 		else
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
-			filler.set_opacity(0)
+			filler.set_opacity(initial(filler.opacity))
 			filler = (get_step(src,NORTH)) //Find new turf
 			filler.set_opacity(opacity)
 
