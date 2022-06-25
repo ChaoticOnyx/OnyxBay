@@ -243,7 +243,7 @@
 				gibs(usr.loc)
 				silenced = null
 				fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
-				to_chat(usr, SPAN("warning","Your silencer did not survived that shot!"))
+				to_chat(usr, SPAN("warning","Your silencer did not survive that shot!"))
 				icon_state = initial(icon_state)
 				update_icon()
 
