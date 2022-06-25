@@ -26,12 +26,12 @@
 		return chambered.BB
 	return null
 
-/obj/item/gun/projectile/shotgun/pump/attack_self(mob/living/user as mob)
+/obj/item/gun/projectile/shotgun/pump/attack_self(mob/living/user)
 	if(world.time > recentpump + 10)
 		recentpump = world.time
 		pump(user)
 
-/obj/item/gun/projectile/shotgun/pump/proc/pump(mob/M as mob)
+/obj/item/gun/projectile/shotgun/pump/proc/pump(mob/M)
 	playsound(M, SFX_SHOTGUN_PUMP_IN, rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
@@ -195,13 +195,24 @@
 	..(user, allow_dump=1)
 
 //this is largely hacky and bad :(	-Pete
-/obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A as obj, mob/user as mob)
-	if(w_class > 3 && (istype(A, /obj/item/circular_saw) || istype(A, /obj/item/melee/energy) || istype(A, /obj/item/gun/energy/plasmacutter)))
-		to_chat(user, "<span class='notice'>You begin to shorten the barrel of \the [src].</span>")
+/obj/item/gun/projectile/shotgun/doublebarrel/attackby(obj/item/A, mob/user)
+	if(istype(A, /obj/item/holder/cat))
+		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
+			to_chat(user, SPAN("notice","You'll need [src] in your hands to do that."))
+			return
+		user.drop_item()
+		to_chat(user, SPAN("warning","You made inhumane decision with [A]."))
+		silenced = A
+		A.forceMove(src)		//put the silencer into the gun
+		update_icon()
+		fire_sound = 'sound/effects/weapons/misc/cat_silencer.ogg'
+		return
+	if(w_class > 3 && !silenced && (istype(A, /obj/item/circular_saw) || istype(A, /obj/item/melee/energy) || istype(A, /obj/item/gun/energy/plasmacutter)))
+		to_chat(user, SPAN("notice","You begin to shorten the barrel of \the [src]."))
 		if(loaded.len)
 			for(var/i in 1 to max_shells)
 				Fire(user, user)	//will this work? //it will. we call it twice, for twice the FUN
-			user.visible_message("<span class='danger'>The shotgun goes off!</span>", "<span class='danger'>The shotgun goes off in your face!</span>")
+			user.visible_message(SPAN("danger","The shotgun goes off!"), SPAN("danger","The shotgun goes off in your face!"))
 			return
 		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"
@@ -218,9 +229,45 @@
 			SetName("sawn-off shotgun")
 			desc = "Omar's coming!"
 			fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'
-			to_chat(user, "<span class='warning'>You shorten the barrel of \the [src]!</span>")
+			to_chat(user, SPAN("warning","You shorten the barrel of \the [src]!"))
 	else
 		..()
+
+/obj/item/gun/projectile/shotgun/doublebarrel/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
+	..()
+	if(silenced)
+		if(prob(75))
+			if(istype(silenced, /obj/item/holder/cat))
+				for(var/mob/living/simple_animal/cat/A in src)
+					qdel(A)
+				gibs(usr.loc)
+				silenced = null
+				fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
+				to_chat(usr, SPAN("warning","Your silencer did not survived that shot!"))
+				icon_state = initial(icon_state)
+				update_icon()
+
+/obj/item/gun/projectile/shotgun/doublebarrel/_examine_text()
+	. = ..()
+	if(silenced)
+		. += " There is a <b>CAT</b> attached to it!"
+
+
+/obj/item/gun/projectile/shotgun/doublebarrel/update_icon()
+	if(!silenced)
+		..()
+		return
+	icon_state = initial(icon_state) + "_cat"
+	var/mob/living/M = loc
+	if(istype(M))
+		if(M.can_wield_item(src) && src.is_held_twohanded(M))
+			item_state_slots[slot_l_hand_str] = wielded_item_state + "_cat"
+			item_state_slots[slot_r_hand_str] = wielded_item_state + "_cat"
+		else
+			item_state_slots[slot_l_hand_str] = initial(item_state) + "_cat"
+			item_state_slots[slot_r_hand_str] = initial(item_state) + "_cat"
+	update_held_icon()
+		
 
 /obj/item/gun/projectile/shotgun/doublebarrel/sawn
 	name = "sawn-off shotgun"
