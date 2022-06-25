@@ -254,7 +254,7 @@
 	filters = list()
 
 	if (istype(mymob) && mymob.client)
-		filters += filter(type = "blur", size = 1)
+		filters += filter(type = "blur", size = 0.67)
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
