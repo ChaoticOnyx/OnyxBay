@@ -302,6 +302,6 @@
 		to_chat(usr, "You roll up the sleeves of your [H].")
 		H.icon_state += "_r"
 	else
-		H.to_chat(usr, "You roll down the sleeves of your [H].")
+		to_chat(usr, "You roll down the sleeves of your [H].")
 
 	update_clothing_icon()
