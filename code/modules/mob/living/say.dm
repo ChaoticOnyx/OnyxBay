@@ -84,36 +84,32 @@ var/list/channel_to_radio_key = new
 // Takes a list of the form list(message, verb, whispering) and modifies it as needed
 // Returns TRUE if a speech problem was applied, FALSE otherwise
 /mob/living/proc/handle_speech_problems(list/message_data)
-	var/message = html_decode(message_data["message"])
-
 	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
-		message = "[uppertext(message)]!!!"
+		message_data["message"] = "[uppertext(message_data["message"])]!!!"
 		message_data["verb"] = pick("yells","roars","hollers")
 		. = TRUE
 	if(lisping)
-		message = lisp(message)
+		message_data["message"] = lisp(message_data["message"])
 		message_data["verb"] = pick("lisps","croups")
 		. = TRUE
 	if(burrieng)
-		message = burr(message)
+		message_data["message"] = burr(message_data["message"])
 		message_data["verb"] = pick("burrs","croups")
 		. = TRUE
 	if(slurring)
-		message = slur(message)
+		message_data["message"] = slur(message_data["message"])
 		message_data["verb"] = pick("slobbers","slurs")
 		. = TRUE
 	if(stammering)
-		message = stammer(message)
+		message_data["message"] = stammer(message_data["message"])
 		message_data["verb"] = pick("stammers","stutters")
 		. = TRUE
 	if(stuttering)
-		message = stutter(message)
+		message_data["message"] = stutter(message_data["message"])
 		message_data["verb"] = pick("stammers","stutters")
 		. = TRUE
-
-	message_data["message"] = message
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, language, used_radios, alt_name)
 	if(message_mode == "intercom")
