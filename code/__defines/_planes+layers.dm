@@ -256,6 +256,11 @@
 	if (istype(mymob) && mymob.client)
 		filters += filter(type = "blur", size = 0.67)
 
+/obj/screen/plane_master/over_openspace_darkness
+	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
+	plane = OVER_OPENSPACE_PLANE
+	mouse_opacity = 0
+
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER
 	blend_mode = BLEND_DEFAULT
