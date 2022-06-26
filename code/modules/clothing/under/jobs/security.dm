@@ -131,7 +131,7 @@
 /obj/item/clothing/under/security_pants
 	name = "security officer's trousers"
 	desc = "Red pants made of a slightly sturdier material, to allow for robust protection."
-	icon_state = "jeans"
+	icon_state = "secpants"
 	gender = PLURAL
 	body_parts_covered = LOWER_TORSO|LEGS
 	armor = list(melee = 20, bullet = 20, laser = 20, energy = 0, bomb = 0, bio = 0, rad = 0)

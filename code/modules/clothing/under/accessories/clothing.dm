@@ -297,12 +297,11 @@
 		H = locate() in src
 
 	H.rolled = !H.rolled
-	icon_state = initial(icon_state)
+	H.icon_state = initial(H.icon_state)
 	if(H.rolled)
 		to_chat(usr, "You roll up the sleeves of your [H].")
-		icon_state += "_r"
+		H.icon_state += "_r"
 	else
-		to_chat(usr, "You roll down the sleeves of your [H].")
+		H.to_chat(usr, "You roll down the sleeves of your [H].")
 
-	H.update_icon()
 	update_clothing_icon()
