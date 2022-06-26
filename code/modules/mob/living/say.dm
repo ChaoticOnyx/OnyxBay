@@ -86,7 +86,7 @@ var/list/channel_to_radio_key = new
 /mob/living/proc/handle_speech_problems(list/message_data)
 	. = FALSE
 
-	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
+	if((MUTATION_HULK in mutations) && health >= 25 && length(message_data["message"]))
 		message_data["message"] = "[uppertext(message_data["message"])]!!!"
 		message_data["verb"] = pick("yells","roars","hollers")
 		. = TRUE
