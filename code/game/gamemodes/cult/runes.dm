@@ -820,6 +820,7 @@
 	cultname = "blood boil"
 	strokes = 4
 	var/is_used = FALSE
+	var/uses = 5
 
 /obj/effect/rune/blood_boil/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
@@ -850,7 +851,13 @@
 					to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
 		previous = current.Copy()
 		current.Cut()
-		sleep(10)
+		uses -= 1
+		if(uses <= 0)
+			user.visible_message(SPAN_WARNING("\The [src] dissipates."),
+			                     SPAN_DANGER("\The [src] suddenly dissipates. Seems like all of its power has been used up."))
+			qdel(src)
+			return
+		sleep(40)
 	is_used = FALSE
 
 /* Tier NarNar runes */
