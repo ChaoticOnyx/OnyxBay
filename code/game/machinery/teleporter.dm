@@ -177,6 +177,7 @@
 /obj/machinery/teleport/hub
 	name = "teleporter hub"
 	desc = "It's the hub of a teleporting machine."
+	density = FALSE
 	icon_state = "tele0"
 	dir = 4
 	idle_power_usage = 10
@@ -189,11 +190,10 @@
 	underlays.Cut()
 	underlays += image('icons/obj/stationobjs.dmi', icon_state = "tele-wires")
 
-/obj/machinery/teleport/hub/Bumped(M as mob|obj)
-	spawn()
-		if(src.icon_state == "tele1")
-			teleport(M)
-			use_power_oneoff(5000)
+/obj/machinery/teleport/hub/Crossed(M as mob|obj)
+	if(src.icon_state == "tele1")
+		teleport(M)
+		use_power_oneoff(5000)
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
 	if(!com)
@@ -208,92 +208,6 @@
 		com.one_time_use = 0
 		com.locked = null
 	return
-/*
-/proc/do_teleport(atom/movable/M as mob|obj, atom/destination, precision)
-	if(istype(M, /obj/effect))
-		qdel(M)
-		return
-	if (istype(M, /obj/item/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
-		for(var/mob/O in viewers(M, null))
-			O.show_message(text("<span class='danger'>The [] bounces off of the portal!</span>", M.name), 1)
-		return
-	if (istype(M, /mob/living))
-		var/mob/living/MM = M
-		if(MM.check_contents_for(/obj/item/disk/nuclear))
-			to_chat(MM, "<span class='warning'>Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through.</span>")
-			return
-	var/disky = 0
-	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if (istype(O, /obj/item/storage) || istype(O, /obj/item/gift))
-			for (var/obj/OO in O.contents)
-				if (istype(OO, /obj/item/storage) || istype(OO, /obj/item/gift))
-					for (var/obj/OOO in OO.contents)
-						if (istype(OOO, /obj/item/disk/nuclear))
-							disky = 1
-				if (istype(OO, /obj/item/disk/nuclear))
-					disky = 1
-		if (istype(O, /obj/item/disk/nuclear))
-			disky = 1
-		if (istype(O, /mob/living))
-			var/mob/living/MM = O
-			if(MM.check_contents_for(/obj/item/disk/nuclear))
-				disky = 1
-	if (disky)
-		for(var/mob/P in viewers(M, null))
-			P.show_message(text("<span class='danger'>The [] bounces off of the portal!</span>", M.name), 1)
-		return
-
-//Bags of Holding cause bluespace teleportation to go funky. --NeoFite
-	if (istype(M, /mob/living))
-		var/mob/living/MM = M
-		if(MM.check_contents_for(/obj/item/storage/backpack/holding))
-			to_chat(MM, "<span class='warning'>The Bluespace interface on your Bag of Holding interferes with the teleport!</span>")
-			precision = rand(1,100)
-	if (istype(M, /obj/item/storage/backpack/holding))
-		precision = rand(1,100)
-	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if (istype(O, /obj/item/storage) || istype(O, /obj/item/gift))
-			for (var/obj/OO in O.contents)
-				if (istype(OO, /obj/item/storage) || istype(OO, /obj/item/gift))
-					for (var/obj/OOO in OO.contents)
-						if (istype(OOO, /obj/item/storage/backpack/holding))
-							precision = rand(1,100)
-				if (istype(OO, /obj/item/storage/backpack/holding))
-					precision = rand(1,100)
-		if (istype(O, /obj/item/storage/backpack/holding))
-			precision = rand(1,100)
-		if (istype(O, /mob/living))
-			var/mob/living/MM = O
-			if(MM.check_contents_for(/obj/item/storage/backpack/holding))
-				precision = rand(1,100)
-
-
-	var/turf/destturf = get_turf(destination)
-
-	var/tx = destturf.x + rand(precision * -1, precision)
-	var/ty = destturf.y + rand(precision * -1, precision)
-
-	var/tmploc
-
-	if (ismob(destination.loc)) //If this is an implant.
-		tmploc = locate(tx, ty, destturf.z)
-	else
-		tmploc = locate(tx, ty, destination.z)
-
-	if(tx == destturf.x && ty == destturf.y && (istype(destination.loc, /obj/structure/closet) || istype(destination.loc, /obj/structure/closet/secure_closet)))
-		tmploc = destination.loc
-
-	if(tmploc==null)
-		return
-
-	M.forceMove(tmploc)
-	sleep(2)
-
-	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-	s.set_up(5, 1, M)
-	s.start()
-	return
-*/
 
 /obj/machinery/teleport/station
 	name = "station"

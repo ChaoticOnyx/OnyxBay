@@ -24,7 +24,11 @@
 		var/delta_y = destination.y - start.y
 		var/new_x = Clamp(proj.trajectory.target.x + delta_x, 1, world.maxx)
 		var/new_y = Clamp(proj.trajectory.target.y + delta_y, 1, world.maxy)
-		proj.redirect(new_x, new_y, destination)
+		proj.trajectory.loc_x += delta_x * world.icon_size
+		proj.trajectory.loc_y += delta_y * world.icon_size
+		proj.trajectory.loc_z = destination.z
+		proj.trajectory.target = locate(new_x, new_y, destination.z)
+
 
 	if(isliving(target))
 		var/mob/living/L = target
