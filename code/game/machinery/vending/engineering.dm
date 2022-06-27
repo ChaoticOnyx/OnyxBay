@@ -6,10 +6,6 @@
 	use_vend_state = TRUE
 	vend_delay = 11
 	component_types = list(/obj/item/vending_cartridge/tool)
-
-/obj/item/vending_cartridge/tool
-	name = "youtool"
-	build_path = /obj/machinery/vending/tool
 	legal = list(	/obj/item/stack/cable_coil/random = 10,
 					/obj/item/crowbar = 5,
 					/obj/item/weldingtool = 3,
@@ -24,6 +20,10 @@
 					/obj/item/clothing/gloves/insulated/cheap = 2)
 	premium = list(/obj/item/clothing/gloves/insulated = 1)
 
+/obj/item/vending_cartridge/tool
+	name = "youtool"
+	build_path = /obj/machinery/vending/tool
+
 /obj/machinery/vending/engivend
 	name = "Engi-Vend"
 	desc = "Spare tool vending. What? Did you expect some witty description?"
@@ -32,10 +32,6 @@
 	vend_delay = 21
 	req_one_access = list(access_atmospherics, access_engine_equip)
 	component_types = list(/obj/item/vending_cartridge/engivend)
-
-/obj/item/vending_cartridge/engivend
-	name = "engi"
-	build_path = /obj/machinery/vending/engivend
 	legal = list(	/obj/item/clothing/glasses/hud/standard/meson = 2,
 					/obj/item/device/multitool = 4,
 					/obj/item/device/geiger = 4,
@@ -47,6 +43,10 @@
 	illegal = list(/obj/item/cell/high = 3)
 	premium = list(/obj/item/storage/belt/utility = 3)
 
+/obj/item/vending_cartridge/engivend
+	name = "engi"
+	build_path = /obj/machinery/vending/engivend
+
 //This one's from bay12
 /obj/machinery/vending/engineering
 	name = "Robco Tool Maker"
@@ -57,10 +57,6 @@
 	// There was an incorrect entry (cablecoil/power).  I improvised to cablecoil/heavyduty.
 	// Another invalid entry, /obj/item/circuitry.  I don't even know what that would translate to, removed it.
 	// The original products list wasn't finished.  The ones without given quantities became quantity 5.  -Sayu
-
-/obj/item/vending_cartridge/engineering
-	name = "tool maker"
-	build_path = /obj/machinery/vending/engineering
 	legal = list(	/obj/item/storage/belt/utility = 4,
 					/obj/item/clothing/glasses/hud/standard/meson = 4,
 					/obj/item/clothing/gloves/insulated = 4,
@@ -82,3 +78,7 @@
 					/obj/item/stock_parts/capacitor = 5)
 	illegal = list(	/obj/item/rcd = 1,
 					/obj/item/rcd_ammo = 5)
+
+/obj/item/vending_cartridge/engineering
+	name = "tool maker"
+	build_path = /obj/machinery/vending/engineering

@@ -6,10 +6,6 @@
 	icon_state = "robotics"
 	req_access = list(access_robotics)
 	component_types = list(/obj/item/vending_cartridge/robotics)
-
-/obj/item/vending_cartridge/robotics
-	name = "robotics"
-	build_path = /obj/machinery/vending/robotics
 	legal = list(	/obj/item/stack/cable_coil = 4,
 					/obj/item/device/flash/synthetic = 4,
 					/obj/item/cell = 4,
@@ -22,3 +18,7 @@
 					/obj/item/screwdriver = 2,
 					/obj/item/crowbar = 2)
 	illegal = list(/obj/item/device/flash = 2)
+
+/obj/item/vending_cartridge/robotics
+	name = "robotics"
+	build_path = /obj/machinery/vending/robotics

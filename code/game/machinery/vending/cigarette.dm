@@ -26,10 +26,6 @@
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
 	component_types = list(/obj/item/vending_cartridge/cigarette)
-
-/obj/item/vending_cartridge/cigarette
-	name = "cigarette"
-	build_path = /obj/machinery/vending/cigarette
 	legal = list(/obj/item/storage/fancy/cigarettes = 5,
 					/obj/item/storage/fancy/cigarettes/luckystars = 2,
 					/obj/item/storage/fancy/cigarettes/jerichos = 2,
@@ -95,6 +91,10 @@
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
 
+/obj/item/vending_cartridge/cigarette
+	name = "cigarette"
+	build_path = /obj/machinery/vending/cigarette
+
 /obj/machinery/vending/cigars  //////// cigars midcentury vend
 	name = "Cigars midcentury machine" //OCD had to be uppercase to look nice with the new formating
 	desc = "Classy vending machine designed to contribute to your slow and uncomfortable death with style."
@@ -120,10 +120,6 @@
 	icon_state = "cigars"
 	use_vend_state = TRUE
 	component_types = list(/obj/item/vending_cartridge/cigars)
-
-/obj/item/vending_cartridge/cigars
-	name = "cigars midcentury"
-	build_path = /obj/machinery/vending/cigars
 	legal = list(	/obj/item/storage/fancy/cigarettes = 5,
 					/obj/item/storage/fancy/cigarettes/luckystars = 2,
 					/obj/item/storage/fancy/cigarettes/jerichos = 2,
@@ -188,3 +184,7 @@
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 15,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
+
+/obj/item/vending_cartridge/cigars
+	name = "cigars midcentury"
+	build_path = /obj/machinery/vending/cigars

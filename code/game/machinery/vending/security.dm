@@ -10,10 +10,6 @@
 	vend_delay = 20
 	req_access = list(access_security)
 	component_types = list(/obj/item/vending_cartridge/security)
-
-/obj/item/vending_cartridge/security
-	name = "security"
-	build_path = /obj/machinery/vending/security
 	legal = list(	/obj/item/handcuffs = 8,
 					/obj/item/grenade/flashbang = 4,
 					/obj/item/grenade/chem_grenade/teargas = 4,
@@ -22,3 +18,7 @@
 					/obj/item/storage/box/evidence = 6)
 	illegal = list(	/obj/item/clothing/glasses/sunglasses = 2,
 					/obj/item/storage/box/donut = 2)
+
+/obj/item/vending_cartridge/security
+	name = "security"
+	build_path = /obj/machinery/vending/security

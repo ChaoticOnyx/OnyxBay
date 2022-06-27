@@ -6,10 +6,6 @@
 	icon_state = "dinnerware"
 	use_vend_state = TRUE
 	component_types = list(/obj/item/vending_cartridge/dinnerware)
-
-/obj/item/vending_cartridge/dinnerware
-	name = "dinnerware"
-	build_path = /obj/machinery/vending/dinnerware
 	legal = list(	/obj/item/tray = 8,
 					/obj/item/material/kitchen/utensil/fork = 8,
 					/obj/item/material/kitchen/utensil/knife = 8,
@@ -30,3 +26,7 @@
 					/obj/item/storage/lunchbox/nymph = 3,
 					/obj/item/storage/lunchbox/syndicate = 3)
 	illegal = list(/obj/item/material/knife/butch/kitchen = 2)
+
+/obj/item/vending_cartridge/dinnerware
+	name = "dinnerware"
+	build_path = /obj/machinery/vending/dinnerware

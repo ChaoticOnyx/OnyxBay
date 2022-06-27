@@ -8,10 +8,6 @@
 	vend_reply = "Absolutely smashing!"
 	product_ads = "Impress the love of your life!;Don't look poor, look rich!;100% authentic designers!;All sales are final!;Lowest prices guaranteed!"
 	component_types = list(/obj/item/vending_cartridge/fashionvend)
-
-/obj/item/vending_cartridge/fashionvend
-	name = "fashion"
-	build_path = /obj/machinery/vending/fashionvend
 	legal = list(	/obj/item/mirror = 8,
 					/obj/item/haircomb = 8,
 					/obj/item/clothing/glasses/monocle = 5,
@@ -36,3 +32,7 @@
 					/obj/item/lipstick/jade = 100,
 					/obj/item/storage/bouquet = 800,
 					/obj/item/storage/wallet/poly = 600)
+
+/obj/item/vending_cartridge/fashionvend
+	name = "fashion"
+	build_path = /obj/machinery/vending/fashionvend

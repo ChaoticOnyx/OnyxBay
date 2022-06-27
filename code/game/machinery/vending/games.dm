@@ -7,10 +7,6 @@
 	product_ads = "Elves and dwarves!;Totally not satanic!;Fun times forever!"
 	icon_state = "games"
 	component_types = list(/obj/item/vending_cartridge/games)
-
-/obj/item/vending_cartridge/games
-	name = "games"
-	build_path = /obj/machinery/vending/games
 	legal = list(	/obj/item/toy/blink = 5,
 					/obj/item/toy/spinningtoy = 2,
 					/obj/item/deck/cards = 5,
@@ -37,3 +33,7 @@
 					/obj/item/storage/box/checkers = 10,
 					/obj/item/storage/box/checkers/chess/red = 10,
 					/obj/item/storage/box/checkers/chess = 10)
+
+/obj/item/vending_cartridge/games
+	name = "games"
+	build_path = /obj/machinery/vending/games

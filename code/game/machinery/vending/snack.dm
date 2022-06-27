@@ -8,10 +8,6 @@
 	use_vend_state = TRUE
 	vend_delay = 25
 	component_types = list(/obj/item/vending_cartridge/snack)
-
-/obj/item/vending_cartridge/snack
-	name = "chocolate"
-	build_path = /obj/machinery/vending/snack
 	legal = list(	/obj/item/reagent_containers/food/packaged/tweakers = 6,
 					/obj/item/reagent_containers/food/packaged/sweetroid = 6,
 					/obj/item/reagent_containers/food/packaged/sugarmatter = 6,
@@ -39,15 +35,15 @@
 					/obj/item/reagent_containers/food/packaged/cheesiehonkers = 10,
 					/obj/item/reagent_containers/food/packaged/tastybread = 10)
 
+/obj/item/vending_cartridge/snack
+	name = "chocolate"
+	build_path = /obj/machinery/vending/snack
+
 /obj/machinery/vending/snack/wallsnack
 	name = "Getmore Chocolate Corp"
 	icon_state = "snack_wall"
 	use_vend_state = FALSE
 	component_types = list(/obj/item/vending_cartridge/wallsnack)
-
-/obj/item/vending_cartridge/wallsnack
-	name = "getmore chocolate"
-	build_path = /obj/machinery/vending/snack/wallsnack
 	legal = list(	/obj/item/reagent_containers/food/packaged/tweakers =6,
 					/obj/item/reagent_containers/food/packaged/sweetroid = 6,
 					/obj/item/reagent_containers/food/packaged/sugarmatter = 6,
@@ -75,6 +71,10 @@
 					/obj/item/reagent_containers/food/packaged/cheesiehonkers = 10,
 					/obj/item/reagent_containers/food/packaged/tastybread = 10)
 
+/obj/item/vending_cartridge/wallsnack
+	name = "getmore chocolate"
+	build_path = /obj/machinery/vending/snack/wallsnack
+
 /obj/machinery/vending/snack/medbay
 	name = "Getmore Healthy Snacks"
 	desc = "A snack machine manufactured by Getmore Chocolate Corporation, specifically for hospitals."
@@ -84,10 +84,6 @@
 	use_vend_state = TRUE
 	vend_delay = 25
 	component_types = list(/obj/item/vending_cartridge/medbay)
-
-/obj/item/vending_cartridge/medbay
-	name = "healthy snacks"
-	build_path = /obj/machinery/vending/snack/medbay
 	legal = list(	/obj/item/reagent_containers/food/grown/apple = 10,
 					/obj/item/reagent_containers/food/packaged/hematogen = 10,
 					/obj/item/reagent_containers/food/packaged/nutribar = 10,
@@ -102,3 +98,7 @@
 					/obj/item/reagent_containers/food/packaged/no_raisin = 1,
 					/obj/item/reagent_containers/food/grown/orange = 1,
 					/obj/item/reagent_containers/food/packaged/tastybread = 3)
+
+/obj/item/vending_cartridge/medbay
+	name = "healthy snacks"
+	build_path = /obj/machinery/vending/snack/medbay

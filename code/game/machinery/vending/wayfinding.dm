@@ -17,8 +17,8 @@
 						"Feed me a stray pinpointer.", //American Psycho reference
 						"We need a slogan!") //Liberal Crime Squad reference
     component_types = list(/obj/item/vending_cartridge/wayfinding)
+	legal = list(/obj/item/pinpointer/wayfinding = 10)
 
 /obj/item/vending_cartridge/wayfinding
     name = "wayfinding"
     build_path = /obj/machinery/vending/wayfinding
-    legal = list(/obj/item/pinpointer/wayfinding = 10)

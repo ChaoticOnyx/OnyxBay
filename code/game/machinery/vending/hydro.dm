@@ -9,10 +9,6 @@
 	vend_delay = 26
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/hydronutrients)
-
-/obj/item/vending_cartridge/hydronutrients
-	name = "hydronutrients"
-	build_path = /obj/machinery/vending/hydronutrients
 	legal = list(	/obj/item/reagent_containers/vessel/plastic/eznutrient = 5,
 					/obj/item/reagent_containers/vessel/plastic/left4zed = 5,
 					/obj/item/reagent_containers/vessel/plastic/robustharvest = 5,
@@ -23,6 +19,10 @@
 	premium = list(	/obj/item/reagent_containers/vessel/bottle/chemical/ammonia = 10,
 					/obj/item/reagent_containers/vessel/bottle/chemical/diethylamine = 5)
 
+/obj/item/vending_cartridge/hydronutrients
+	name = "hydronutrients"
+	build_path = /obj/machinery/vending/hydronutrients
+
 /obj/machinery/vending/hydroseeds
 	name = "MegaSeed Servitor"
 	desc = "When you need seeds fast!"
@@ -32,10 +32,6 @@
 	use_vend_state = TRUE
 	vend_delay = 13
 	component_types = list(/obj/item/vending_cartridge/hydroseeds)
-
-/obj/item/vending_cartridge/hydroseeds
-	name = "hydroseeds"
-	build_path = /obj/machinery/vending/hydroseeds
 	legal = list(	/obj/item/seeds/bananaseed = 3, /obj/item/seeds/berryseed = 3, /obj/item/seeds/carrotseed = 3, /obj/item/seeds/chantermycelium = 3, /obj/item/seeds/chiliseed = 3,
 					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3, /obj/item/seeds/soyaseed = 3,
 					/obj/item/seeds/sunflowerseed = 3, /obj/item/seeds/tomatoseed = 3, /obj/item/seeds/towermycelium = 3, /obj/item/seeds/wheatseed = 3, /obj/item/seeds/appleseed = 3,
@@ -45,3 +41,7 @@
 	illegal = list(	/obj/item/seeds/amanitamycelium = 2, /obj/item/seeds/glowshroom = 2, /obj/item/seeds/libertymycelium = 2, /obj/item/seeds/mtearseed = 2,
 					/obj/item/seeds/nettleseed = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/shandseed = 2, )
 	premium = list(/obj/item/reagent_containers/spray/waterflower = 1)
+
+/obj/item/vending_cartridge/hydroseeds
+	name = "hydroseeds"
+	build_path = /obj/machinery/vending/hydroseeds

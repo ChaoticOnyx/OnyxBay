@@ -11,7 +11,7 @@
 	var/list/extra = list()
 	var/list/product_records = list() // Final list used by vending machines.
 
-/obj/item/vending_cartridge/Initialize(mapload)
+/obj/item/vending_cartridge/Initialize()
 	. = ..()
 	name =  "[initial(build_path["name"])] cartridge"
 	build_inventory()
