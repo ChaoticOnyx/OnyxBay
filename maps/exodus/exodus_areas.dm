@@ -535,6 +535,10 @@
 	name = "\improper Ghetto Casino"
 	icon_state = "ghettocasino"
 
+/area/maintenance/ghetto_fight_club
+	name = "\improper Abandoned Fight Club"
+	icon_state = "ghettofightclub"
+
 /area/maintenance/ghetto_syndie
 	name = "\improper Ghetto Syndie"
 	icon_state = "ghettosyndie"
