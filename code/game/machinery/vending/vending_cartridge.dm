@@ -13,11 +13,7 @@
 
 /obj/item/vending_cartridge/Initialize(mapload)
 	. = ..()
-	if(mapload)
-		gen_rand_amount = TRUE
-	else
-		gen_rand_amount = FALSE
-	name =  "[initial(name)] cartridge"
+	name =  "[initial(build_path["name"])] cartridge"
 	build_inventory()
 
 /obj/item/vending_cartridge/proc/build_inventory()
