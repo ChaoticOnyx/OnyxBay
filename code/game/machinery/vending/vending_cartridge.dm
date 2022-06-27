@@ -3,12 +3,12 @@
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "romos1"
 	w_class = ITEM_SIZE_NORMAL
-	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 	var/build_path = /obj/machinery/vending // Determines what kind of vending machine we want to build.
 	var/list/legal = list()
 	var/list/illegal = list()
 	var/list/premium = list()
 	var/list/prices = list()
+	var/list/extra = list()
 	var/list/product_records = list() // Final list used by vending machines.
 
 /obj/item/vending_cartridge/Initialize(mapload)
@@ -16,7 +16,9 @@
 	name =  "[initial(build_path["name"])] cartridge"
 	build_inventory()
 
-/obj/item/vending_cartridge/proc/build_inventory()
+/obj/item/vending_cartridge/proc/build_inventory(gen_rand_amount)
+	if(extra.len)
+		legal |= extra
 	var/list/all_products = list(list(legal, CAT_NORMAL), list(illegal, CAT_HIDDEN), list(premium, CAT_COIN))
 	for(var/current_list in all_products)
 		var/category = current_list[2]
