@@ -64,6 +64,14 @@
 	var/datum/wires/vending/wires = null
 	var/is_stuck = FALSE // If true - `currently_vending` is the thing stuck in the vending.
 
+	// Content-related stuff
+	var/list/products = list() // In case we want to add something extra to our vending machine
+	var/list/legal = list()
+	var/list/illegal = list()
+	var/list/premium = list()
+	var/list/prices = list()
+	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
+
 /obj/machinery/vending/update_icon()
 	overlays.Cut()
 	if(stat & BROKEN)
@@ -89,11 +97,21 @@
 	if(product_ads)
 		ads_list += splittext(product_ads, ";")
 	refresh_cartridge()
+	setup_cartridge()
 	power_change()
 	setup_icon_states()
 
 /obj/machinery/vending/proc/refresh_cartridge()
 	cartridge = locate() in component_parts
+
+/obj/machinery/vending/proc/setup_cartridge()
+	if(cartridge)
+		cartridge.legal = legal
+		cartridge.illegal = illegal
+		cartridge.premium = premium
+		cartridge.prices = prices
+		cartridge.extra = products
+		cartridge.build_inventory(gen_rand_amount)
 
 /obj/machinery/vending/_examine_text(mob/user)
 	. = ..()
