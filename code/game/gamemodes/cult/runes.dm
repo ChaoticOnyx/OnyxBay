@@ -853,8 +853,8 @@
 		current.Cut()
 		uses -= 1
 		if(uses <= 0)
-			user.visible_message(SPAN_WARNING("\The [src] dissipates."),
-			                     SPAN_DANGER("\The [src] suddenly dissipates. Seems like all of its power has been used up."))
+			visible_message(SPAN_WARNING("\The [src] suddenly dissipates."))
+			to_chat(user, SPAN_DANGER("Seems like all of \the [src]'s power has been used up."))
 			qdel(src)
 			return
 		sleep(40)
