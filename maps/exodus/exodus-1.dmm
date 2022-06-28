@@ -3123,7 +3123,7 @@
 "vZb" = (/obj/effect/spider/stickyweb,/turf/simulated/floor/trim/darkwood,/area/maintenance/ghetto_fight_club)
 "wmx" = (/turf/simulated/wall,/area/maintenance/ghetto_fight_club)
 "wye" = (/obj/structure/window_frame/grille,/obj/structure/window/reinforced{dir = 8; health = 1e+006},/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/structure/cable,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/maintenance/ghetto_fight_club)
-"wQY" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 1; name = "Abandoned Fight Club"; pixel_x = null; pixel_y = +25},/turf/simulated/floor/tiled/usedup,/area/maintenance/ghetto_fight_club)
+"wQY" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 1; name = "Abandoned Fight Club"; pixel_x = 0; pixel_y = 25},/turf/simulated/floor/tiled/usedup,/area/maintenance/ghetto_fight_club)
 "xci" = (/obj/item/paper{info = "The first rule about fight club is you don't talk about fight club. The second rule about fight club is you don't talk about fight club. But the most important rule of fight club is: Fuck the rules."; name = "rules of fight club"; pixel_x = 5; taped = 1},/turf/simulated/wall,/area/maintenance/ghetto_fight_club)
 "xgs" = (/obj/structure/largecrate,/turf/simulated/floor/plating,/area/maintenance/underground/locker_room)
 "xmE" = (/obj/structure/table/darkwood_reinforced,/obj/item/reagent_containers/food/boiledpelmeni{pixel_y = 5},/turf/simulated/floor/trim/darkwood,/area/maintenance/ghetto_fight_club)
