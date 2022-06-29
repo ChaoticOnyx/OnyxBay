@@ -361,7 +361,7 @@ Class Procs:
 			update_icon()
 			RefreshParts()
 	else
-		display_parts(user)
+		to_chat(user, get_parts_infotext())
 	return 1
 
 /obj/machinery/proc/dismantle()
@@ -402,7 +402,7 @@ Class Procs:
 	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
-/obj/machinery/proc/display_parts(mob/user)
+/obj/machinery/proc/get_parts_infotext()
 	. = "<span class='notice'>Following parts detected in the machine:</span>"
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
@@ -410,4 +410,4 @@ Class Procs:
 /obj/machinery/examine(mob/user)
 	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		. += "\n[display_parts(user)]"
+		. += "\n[get_parts_infotext()]"
