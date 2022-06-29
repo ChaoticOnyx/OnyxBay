@@ -329,4 +329,5 @@
 	src.does_not_breathe = TRUE
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume
+	remove_language(LANGUAGE_GALCOM)
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

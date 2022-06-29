@@ -64,7 +64,7 @@
 	adjustHalLoss(getHalLoss() - amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
-	if(!amount)
+	if(!amount || no_pain)
 		return
 	var/list/pick_organs = organs.Copy()
 
