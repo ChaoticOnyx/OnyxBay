@@ -3,7 +3,15 @@
 	name = "plating"
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
+	base_icon_state = "plating"
 	layer = PLATING_LAYER
+	var/tile_type = /obj/item/stack/tile/floor
+
+/turf/simulated/floor/plating/rough
+	name = "plating"
+	icon_state = "rough_plating"
+	base_icon_state = "rough_plating"
+	tile_type = /obj/item/stack/tile/floor_rough
 
 
 //GRID FLOORING
@@ -179,6 +187,11 @@
 	temperature = TCMB
 
 /turf/simulated/floor/plating/airless
+	name = "airless plating"
+	initial_gas = null
+	temperature = TCMB
+
+/turf/simulated/floor/plating/rough/airless
 	name = "airless plating"
 	initial_gas = null
 	temperature = TCMB
