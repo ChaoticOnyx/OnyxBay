@@ -14,7 +14,6 @@
 	relative_size = 60
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
-	var/can_use_mmi = TRUE
 	var/mob/living/carbon/brain/brainmob = null
 	var/const/damage_threshold_count = 10
 	var/damage_threshold_value

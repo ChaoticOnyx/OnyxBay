@@ -1,4 +1,21 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+/obj/item/device/mmi
+	name = "\improper Man-Machine Interface"
+	desc = "A complex life support shell that interfaces between a brain and electronic devices."
+	icon = 'icons/mob/human_races/organs/mmi.dmi'
+	icon_state = "mmi-empty"
+	w_class = ITEM_SIZE_NORMAL
+	origin_tech = list(TECH_BIO = 3)
+
+	req_access = list(access_robotics)
+
+	//Revised. Brainmob is now contained directly within object of transfer. MMI in this case.
+
+	var/locked = 0
+	var/mob/living/carbon/brain/brainmob = null //The current occupant.
+	var/obj/item/organ/internal/brain/brainobj = null	//The current brain organ.
+	var/list/whitelisted_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_VOX, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_MONKEY)
+	var/obj/mecha = null //This does not appear to be used outside of reference in mecha.dm.
 
 /obj/item/device/mmi/digital/Initialize()
 	. = ..()
@@ -30,23 +47,6 @@
 		H.mind.transfer_to(brainmob)
 	return
 
-/obj/item/device/mmi
-	name = "\improper Man-Machine Interface"
-	desc = "A complex life support shell that interfaces between a brain and electronic devices."
-	icon = 'icons/mob/human_races/organs/mmi.dmi'
-	icon_state = "mmi-empty"
-	w_class = ITEM_SIZE_NORMAL
-	origin_tech = list(TECH_BIO = 3)
-
-	req_access = list(access_robotics)
-
-	//Revised. Brainmob is now contained directly within object of transfer. MMI in this case.
-
-	var/locked = 0
-	var/mob/living/carbon/brain/brainmob = null //The current occupant.
-	var/obj/item/organ/internal/brain/brainobj = null	//The current brain organ.
-	var/obj/mecha = null //This does not appear to be used outside of reference in mecha.dm.
-
 /obj/item/device/mmi/update_icon()
 	overlays.Cut()
 	if(!brainobj)
@@ -54,11 +54,11 @@
 		return
 
 	icon_state = "mmi-inner"
-	if(brainobj?.species)
-		overlays += "mmi-[lowertext(brainobj.species.name)]"
+	if(!brainobj?.species || !(brainobj?.species in whitelisted_species))
+		overlays += "mmi-error"
 	else
-		overlays += "mmi-human"
-	if(brainmob.stat == DEAD)
+		overlays += "mmi-[lowertext(brainobj.species.name)]"
+	if(brainmob.stat == DEAD || brainmob?.ssd_check() && brainobj?.species.get_ssd(src))
 		overlays += "mmi-outer-dead"
 	else
 		overlays += "mmi-outer"
@@ -70,7 +70,7 @@
 		if(B.damage >= B.max_damage)
 			to_chat(user, SPAN("warning", "That brain is well and truly dead."))
 			return
-		else if(!B.brainmob || !B.can_use_mmi)
+		else if(!B.brainmob || !(B.species in whitelisted_species))
 			to_chat(user, SPAN("notice", "This brain is completely useless to you."))
 			return
 
@@ -107,8 +107,6 @@
 		O.attack(brainmob, user)
 		return
 	..()
-
-	//TODO: ORGAN REMOVAL UPDATE. Make the brain remain in the MMI so it doesn't lose organ data.
 
 /obj/item/device/mmi/attack_self(mob/user as mob)
 	if(!brainmob)
@@ -170,7 +168,7 @@
 	desc = "The Warrior's bland acronym, MMI, obscures the true horror of this monstrosity. This one comes with a built-in radio."
 	origin_tech = list(TECH_BIO = 4)
 
-	var/obj/item/device/radio/radio = null//Let's give it a radio.
+	var/obj/item/device/radio/radio = null // Let's give it a radio.
 
 /obj/item/device/mmi/radio_enabled/Initialize()
 	. = ..()
