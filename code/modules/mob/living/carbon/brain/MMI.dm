@@ -168,7 +168,7 @@
 	desc = "The Warrior's bland acronym, MMI, obscures the true horror of this monstrosity. This one comes with a built-in radio."
 	origin_tech = list(TECH_BIO = 4)
 
-	var/obj/item/device/radio/radio = null // Let's give it a radio.
+	var/obj/item/device/radio/radio // Let's give it a radio.
 
 /obj/item/device/mmi/radio_enabled/Initialize()
 	. = ..()
