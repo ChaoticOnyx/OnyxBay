@@ -334,7 +334,7 @@
 	else
 		item_type = "rough red crystal"
 		new_item.icon_state = "changerock"
-		return new_item
+	return new_item
 
 /obj/item/archaeological_find/blade
 	item_type = "blade"
