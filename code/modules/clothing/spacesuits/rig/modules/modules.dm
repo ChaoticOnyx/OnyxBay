@@ -137,7 +137,7 @@
 
 		charges = processed_charges
 
-	if(timings && timings.len)
+	if(timings?.len)
 		var/list/processed_timings = list()
 		for(var/list/timing in timings)
 			var/datum/rig_timing/timing_dat = new
@@ -381,7 +381,7 @@
 	href_list["timing"] = module.timings[timing_index]
 
 /stat_rig_module/timing/CanUse()
-	if(module.timings && module.timings.len)
+	if(module.timings?.len)
 		var/datum/rig_timing/timing = module.timings[module.timing_selected]
 		name = "Current grenade timing is: [timing.full_name] - Change"
 		return 1
