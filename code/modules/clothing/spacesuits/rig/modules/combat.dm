@@ -111,7 +111,7 @@
 			var/obj/item/device/assembly/timer/timer = det.a_left
 			timer.time = timings[timing_selected].timing
 		if(istimer(det.a_right))
-			var/obj/item/device/assembly/timer/timer = det.a_left
+			var/obj/item/device/assembly/timer/timer = det.a_right
 			timer.time = timings[timing_selected].timing
 
 	new_grenade.activate(H)

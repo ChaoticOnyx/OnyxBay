@@ -384,5 +384,5 @@
 	if(module.timings?.len)
 		var/datum/rig_timing/timing = module.timings[module.timing_selected]
 		name = "Current grenade timing is: [timing.full_name] - Change"
-		return 1
-	return 0
+		return TRUE
+	return FALSE
