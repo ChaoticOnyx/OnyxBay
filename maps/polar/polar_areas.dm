@@ -33,19 +33,6 @@
 	name = "\improper Singularity Generator"
 	icon_state = "engine"
 
-/datum/map/polar
-	post_round_safe_areas = list (
-		/area/polarplanet/centcom,
-		/area/polarplanet/shuttle/escape/centcom,
-		/area/polarplanet/shuttle/escape_pod1,
-		/area/polarplanet/shuttle/escape_pod2,
-		/area/polarplanet/shuttle/escape_pod3,
-		/area/polarplanet/shuttle/escape_pod5,
-		/area/polarplanet/shuttle/administration,
-		/area/polarplanet/shuttle/specops/centcom,
-	)
-
-
 // SHUTTLES
 // Shuttle areas must contain at least two areas in a subgroup if you want to move a shuttle from one place to another.
 // Look at escape shuttle for example.

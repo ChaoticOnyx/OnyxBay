@@ -122,6 +122,18 @@
 		/datum/event/biohazard_outbreak,
 	)
 
+/datum/map/polar
+	post_round_safe_areas = list (
+		/area/polarplanet/centcom,
+		/area/polarplanet/shuttle/escape/centcom,
+		/area/polarplanet/shuttle/escape_pod1,
+		/area/polarplanet/shuttle/escape_pod2,
+		/area/polarplanet/shuttle/escape_pod3,
+		/area/polarplanet/shuttle/escape_pod5,
+		/area/polarplanet/shuttle/administration,
+		/area/polarplanet/shuttle/specops/centcom,
+	)
+
 /datum/map/polar/setup_map()
 	. = ..()
 
