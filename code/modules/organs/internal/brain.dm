@@ -8,12 +8,11 @@
 	force = 1.0
 	w_class = ITEM_SIZE_SMALL
 	throwforce = 1.0
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = list(TECH_BIO = 3)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 60
-	food_organ_type = /obj/item/reagent_containers/food/snacks/organ/brain
+	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
 	var/can_use_mmi = TRUE
 	var/mob/living/carbon/brain/brainmob = null

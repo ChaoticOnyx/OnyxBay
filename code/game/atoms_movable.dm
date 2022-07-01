@@ -1,5 +1,5 @@
 /atom/movable
-	appearance_flags = TILE_BOUND
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | TILE_BOUND
 	glide_size = 8
 
 	var/last_move = null
@@ -10,9 +10,13 @@
 	var/m_flag = 1
 	var/throwing = 0
 	var/thrower
+	var/throw_dir
 	var/turf/throw_source = null
-	var/throw_speed = 2
+	var/atom/thrown_to
+	var/throwed_dist
+	var/throw_speed = 1 // Number of ticks to travel 1 tile. Values between 0 and 1 allow traveling multiple tiles per tick, though it looks ugly and ain't recommended unless totally needed.
 	var/throw_range = 7
+	var/throw_spin = TRUE // Should the atom spin when thrown.
 	var/moved_recently = 0
 	var/mob/pulledby = null
 	var/item_state = null // Used to specify the item state for the on-mob overlays.
@@ -39,6 +43,12 @@
 	if(virtual_mob && !ispath(virtual_mob))
 		QDEL_NULL(virtual_mob)
 
+	thrown_to = null
+	throwed_dist = 0
+	throwing = FALSE
+	thrower = null
+	throw_source = null
+
 	return ..()
 
 /atom/movable/Bump(atom/A, yes)
@@ -49,6 +59,7 @@
 	spawn(0)
 		if (A && yes)
 			A.last_bumped = world.time
+			SEND_SIGNAL(src, SIGNAL_MOVABLE_BUMP, A)
 			A.Bumped(src)
 		return
 	..()
@@ -135,114 +146,131 @@
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, atom/thrower, thrown_with, target_zone)
-	if(!target || !src)
+/atom/movable/proc/throw_at(atom/target, range, speed = throw_speed, atom/thrower, thrown_with, target_zone, launched_mult)
+	set waitfor = FALSE
+
+	if(!target || QDELETED(src))
 		return FALSE
 	if(target.z != src.z)
 		return FALSE
 	// src loc check
 	if(thrower && !isturf(thrower.loc))
 		return FALSE
-	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
-	src.throwing = TRUE
+
+	speed = max(0, (speed || throw_speed))
+
+	throwing = TRUE
 	src.thrower = thrower
-	src.throw_source = get_turf(src)	//store the origin turf
-	src.pixel_z = 0
+	throw_source = get_turf(src)	//store the origin turf
+	pixel_z = 0
+	thrown_to = target
+	throwed_dist = range
+	throw_dir = get_dir(src, target)
 	if(usr)
 		if(MUTATION_HULK in usr.mutations)
 			src.throwing = 2 // really strong throw!
 
+	var/dist_travelled = 0
+	var/dist_since_sleep = 0
+	var/time_travelled = 0
+	var/tiles_per_tick = speed
+	speed = round(speed)
+	var/impact_speed = speed
+	if(launched_mult)
+		impact_speed /= launched_mult
+		pre_launched()
+	var/area/a = get_area(loc)
+
+	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
 	var/dist_x = abs(target.x - src.x)
 	var/dist_y = abs(target.y - src.y)
 
 	var/dx
-	if (target.x > src.x)
+	if(target.x > src.x)
 		dx = EAST
 	else
 		dx = WEST
 
 	var/dy
-	if (target.y > src.y)
+	if(target.y > src.y)
 		dy = NORTH
 	else
 		dy = SOUTH
-	var/dist_travelled = 0
-	var/dist_since_sleep = 0
-	var/area/a = get_area(src.loc)
+
+	var/error
+	var/major_dir
+	var/major_dist
+	var/minor_dir
+	var/minor_dist
 	if(dist_x > dist_y)
-		var/error = dist_x/2 - dist_y
-
-
-
-		while(src && target &&((((src.x < target.x && dx == EAST) || (src.x > target.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
-			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
-			if(error < 0)
-				var/atom/step = get_step(src, dy)
-				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
-					break
-				src.Move(step)
-				hit_check(speed, thrown_with, target_zone)
-				error += dist_x
-				dist_travelled++
-				dist_since_sleep++
-				if(dist_since_sleep >= speed)
-					dist_since_sleep = 0
-					sleep(1)
-			else
-				var/atom/step = get_step(src, dx)
-				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
-					break
-				src.Move(step)
-				hit_check(speed, thrown_with, target_zone)
-				error -= dist_y
-				dist_travelled++
-				dist_since_sleep++
-				if(dist_since_sleep >= speed)
-					dist_since_sleep = 0
-					sleep(1)
-			a = get_area(src.loc)
+		error = dist_x / 2 - dist_y
+		major_dir = dx
+		major_dist = dist_x
+		minor_dir = dy
+		minor_dist = dist_y
 	else
-		var/error = dist_y/2 - dist_x
-		while(src && target &&((((src.y < target.y && dy == NORTH) || (src.y > target.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
-			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
-			if(error < 0)
-				var/atom/step = get_step(src, dx)
-				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
-					break
-				src.Move(step)
-				hit_check(speed, thrown_with, target_zone)
-				error += dist_y
-				dist_travelled++
-				dist_since_sleep++
-				if(dist_since_sleep >= speed)
-					dist_since_sleep = 0
-					sleep(1)
-			else
-				var/atom/step = get_step(src, dy)
-				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
-					break
-				src.Move(step)
-				hit_check(speed, thrown_with, target_zone)
-				error -= dist_x
-				dist_travelled++
-				dist_since_sleep++
-				if(dist_since_sleep >= speed)
-					dist_since_sleep = 0
-					sleep(1)
+		error = dist_y / 2 - dist_x
+		major_dir = dy
+		major_dist = dist_y
+		minor_dir = dx
+		minor_dist = dist_x
 
-			a = get_area(src.loc)
+	if(throw_spin)
+		SpinAnimation(speed = 4, loops = 1)
 
+	while(!QDELETED(src) && target && throwing && isturf(loc) \
+			&& ((abs(target.x - src.x) + abs(target.y - src.y) > 0 && dist_travelled < range) \
+			|| !a?.has_gravity \
+			|| isspaceturf(loc)))
+		// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
+		var/atom/step
+		if(error >= 0)
+			step = get_step(src, major_dir)
+			error -= minor_dist
+		else
+			step = get_step(src, minor_dir)
+			error += major_dist
+		if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
+			break
+		var/atom/previous = src.loc
+		src.loc = null
+		if (Move(previous))
+			Move(step)
+		hit_check(impact_speed)
+		dist_travelled++
+		dist_since_sleep += tiles_per_tick
+		if(throw_spin && !(time_travelled % 4))
+			SpinAnimation(speed = 4, loops = 1)
+		if(dist_since_sleep >= 1)
+			dist_since_sleep = 0
+			time_travelled += speed
+			sleep(speed)
+		a = get_area(loc)
+		// and yet it moves
 
 	if(!src)
 		return
 
 	//done throwing, either because it hit something or it finished moving
 	if(isobj(src))
-		throw_impact(get_turf(src), speed)
-	src.throwing = 0
+		throw_impact(get_turf(src), impact_speed)
+
+	if(launched_mult)
+		post_launched()
+
+	thrown_to = null
+	throw_dir = null
+	throwing = FALSE
 	src.thrower = null
-	src.throw_source = null
+	throw_source = null
 	fall()
+
+// Used when the atom's thrown by a launcher-type gun (or by anything that provides a nulln't launcher_mult arg)
+/atom/movable/proc/pre_launched()
+	return
+
+/atom/movable/proc/post_launched()
+	return
 
 //Overlays
 /atom/movable/overlay
@@ -271,7 +299,7 @@
 	if(!simulated)
 		return
 
-	if(!z || (z in GLOB.using_map.sealed_levels))
+	if(!z || (z in GLOB.using_map.get_levels_with_trait(ZTRAIT_SEALED)))
 		return
 
 	if(!GLOB.universe.OnTouchMapEdge(src))
@@ -281,21 +309,21 @@
 	var/new_y
 	var/new_z = GLOB.using_map.get_transit_zlevel(z)
 	if(new_z)
-		if(x <= TRANSITIONEDGE)
-			new_x = world.maxx - TRANSITIONEDGE - 2
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		if(x <= TRANSITION_EDGE)
+			new_x = world.maxx - TRANSITION_EDGE - 2
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (x >= (world.maxx - TRANSITIONEDGE + 1))
-			new_x = TRANSITIONEDGE + 1
-			new_y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
+		else if (x >= (world.maxx - TRANSITION_EDGE + 1))
+			new_x = TRANSITION_EDGE + 1
+			new_y = rand(TRANSITION_EDGE + 2, world.maxy - TRANSITION_EDGE - 2)
 
-		else if (y <= TRANSITIONEDGE)
-			new_y = world.maxy - TRANSITIONEDGE -2
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y <= TRANSITION_EDGE)
+			new_y = world.maxy - TRANSITION_EDGE -2
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
-		else if (y >= (world.maxy - TRANSITIONEDGE + 1))
-			new_y = TRANSITIONEDGE + 1
-			new_x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
+		else if (y >= (world.maxy - TRANSITION_EDGE + 1))
+			new_y = TRANSITION_EDGE + 1
+			new_x = rand(TRANSITION_EDGE + 2, world.maxx - TRANSITION_EDGE - 2)
 
 		var/turf/T = locate(new_x, new_y, new_z)
 		if(T)

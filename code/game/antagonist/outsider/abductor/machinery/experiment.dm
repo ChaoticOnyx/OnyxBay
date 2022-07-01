@@ -13,7 +13,7 @@
 	var/flash = "Awaiting subject."
 	var/obj/machinery/abductor/console/console
 	var/message_cooldown = 0
-	var/breakout_time = 450
+	var/breakout_time = 45
 	var/atom/movable/occupant = null
 
 /obj/machinery/abductor/experiment/Destroy()

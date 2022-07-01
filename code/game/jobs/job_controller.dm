@@ -93,7 +93,7 @@ var/global/datum/controller/occupations/job_master
 		if(!job.is_position_available())
 			to_chat(joining, "<span class='warning'>Unfortunately, that job is no longer available.</span>")
 			return FALSE
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(joining, "<span class='warning'>There is an administrative lock on entering the game!</span>")
 			return FALSE
 		if(SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -413,8 +413,12 @@ var/global/datum/controller/occupations/job_master
 		var/list/spawn_in_storage = list()
 
 		if(job)
-
-			//Equip job items.
+			if(rank == "Waiter")
+				H.disabilities = null
+				H.change_species("Monkey")
+				H.revive() // Disabled monkeys are bad
+				QDEL_LIST(H.worn_underwear)
+			// Equip job items.
 			job.setup_account(H)
 			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch, H.char_rank)
 			job.apply_fingerprints(H)
@@ -588,7 +592,7 @@ var/global/datum/controller/occupations/job_master
 		return H
 
 	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
-		if(!config.load_jobs_from_txt)
+		if(!config.misc.load_jobs_from_txt)
 			return 0
 
 		var/list/jobEntries = file2list(jobsfile)
@@ -726,6 +730,8 @@ var/global/datum/controller/occupations/job_master
 
 	var/datum/job/J = GetJob(title)
 	if(!J)
+		return FALSE
+	if(J.no_latejoin)
 		return FALSE
 
 	var/datum/storyteller_character/ST = SSstoryteller.get_character()

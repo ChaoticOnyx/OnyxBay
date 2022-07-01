@@ -7,7 +7,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	feedback_tag = "vampire_objective"
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
-							/datum/job/merchant, /datum/job/iaa)
+							/datum/job/merchant, /datum/job/iaa, /datum/job/barmonkey)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
@@ -17,8 +17,8 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 
 /datum/antagonist/vampire/Initialize()
 	. = ..()
-	if(config.vampire_min_age)
-		min_player_age = config.vampire_min_age
+	if(config.game.vampire_min_age)
+		min_player_age = config.game.vampire_min_age
 
 /datum/antagonist/vampire/create_objectives(datum/mind/player)
 	if(!..())

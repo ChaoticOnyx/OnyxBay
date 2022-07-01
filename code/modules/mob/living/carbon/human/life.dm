@@ -4,7 +4,7 @@
 #define HUMAN_MAX_OXYLOSS 1 //Defines how much oxyloss humans can get per tick. A tile with no air at all (such as space) applies this value, otherwise it's a percentage of it.
 
 #define HUMAN_CRIT_TIME_CUSHION (10 MINUTES) //approximate time limit to stabilize someone in crit
-#define HUMAN_CRIT_HEALTH_CUSHION (config.health_threshold_crit - config.health_threshold_dead)
+#define HUMAN_CRIT_HEALTH_CUSHION (config.health_threshold_crit - config.health.health_threshold_dead)
 
 //The amount of damage you'll get when in critical condition. We want this to be a HUMAN_CRIT_TIME_CUSHION long deal.
 //There are HUMAN_CRIT_HEALTH_CUSHION hp to get through, so (HUMAN_CRIT_HEALTH_CUSHION/HUMAN_CRIT_TIME_CUSHION) per tick.
@@ -769,7 +769,9 @@
 				else                pains.icon_state = "pain0"
 		if(healths)
 			healths.overlays.Cut()
-			if(chem_effects[CE_PAINKILLER] > 100)
+			var/painkiller_mult = chem_effects[CE_PAINKILLER] / 100
+
+			if(painkiller_mult > 1)
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
@@ -785,7 +787,7 @@
 				for(var/obj/item/organ/external/E in organs)
 					if(no_damage && (E.brute_dam || E.burn_dam))
 						no_damage = 0
-					health_images += E.get_damage_hud_image()
+					health_images += E.get_damage_hud_image(painkiller_mult)
 
 				// Apply a fire overlay if we're burning.
 				if(on_fire)
@@ -1005,6 +1007,8 @@
 /mob/living/carbon/human/proc/handle_poise()
 	poise_pool = body_build.poise_pool
 	if(poise >= poise_pool)
+		poise = poise_pool
+		poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
 		return
 	var/pregen = 5
 
@@ -1014,7 +1018,6 @@
 	if(blocking)
 		pregen -= 2.5
 
-	poise += pregen
 	poise = between(0, poise+pregen, poise_pool)
 
 	poise_icon?.icon_state = "[round((poise/poise_pool) * 50)]"
@@ -1272,13 +1275,3 @@
 	..()
 	if(MUTATION_XRAY in mutations)
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-
-/mob/living/carbon/human/proc/handle_tase(amount)
-	if(status_flags & GODMODE)
-		return 0	//godmode
-
-	if((getHalLoss() + amount) > 100)
-		if(prob(95))
-			Stun(amount/12)
-			Weaken(amount/10)
-			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))

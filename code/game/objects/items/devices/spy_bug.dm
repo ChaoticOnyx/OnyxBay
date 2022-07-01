@@ -12,7 +12,6 @@
 	slot_flags = SLOT_EARS
 	throwforce = 5.0
 	throw_range = 15
-	throw_speed = 3
 
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1, TECH_ILLEGAL = 3)
 

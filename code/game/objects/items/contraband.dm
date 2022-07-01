@@ -29,18 +29,18 @@
 	new /obj/item/reagent_containers/pill/zoom( src )
 	new /obj/item/reagent_containers/pill/zoom( src )
 
-/obj/item/reagent_containers/glass/beaker/vial/random
+/obj/item/reagent_containers/vessel/beaker/vial/random
 	atom_flags = 0
 	var/list/random_reagent_list = list(list(/datum/reagent/water = 15) = 1, list(/datum/reagent/space_cleaner = 15) = 1)
 
-/obj/item/reagent_containers/glass/beaker/vial/random/toxin
+/obj/item/reagent_containers/vessel/beaker/vial/random/toxin
 	random_reagent_list = list(
 		list(/datum/reagent/mindbreaker = 10, /datum/reagent/space_drugs = 20) = 3,
 		list(/datum/reagent/toxin/carpotoxin = 15)                             = 2,
 		list(/datum/reagent/impedrezene = 15)                                  = 2,
 		list(/datum/reagent/toxin/zombiepowder = 10)                           = 1)
 
-/obj/item/reagent_containers/glass/beaker/vial/random/Initialize()
+/obj/item/reagent_containers/vessel/beaker/vial/random/Initialize()
 	. = ..()
 	if(is_open_container())
 		atom_flags ^= ATOM_FLAG_OPEN_CONTAINER

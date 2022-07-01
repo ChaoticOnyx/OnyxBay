@@ -13,7 +13,7 @@
 	idle_power_usage = 20
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
-	var/obj/item/reagent_containers/glass/beaker
+	var/obj/item/reagent_containers/vessel/beaker
 	var/obj/item/storage/pill_bottle/loaded_pill_bottle
 	var/mode = 0
 	var/condi = 0
@@ -70,7 +70,7 @@
 	if(default_part_replacement(user, W))
 		return
 
-	if(istype(W, /obj/item/reagent_containers/glass))
+	if(istype(W, /obj/item/reagent_containers/vessel/beaker) || istype(W, /obj/item/reagent_containers/vessel/bottle/chemical))
 		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
@@ -227,7 +227,7 @@
 			if(!condi)
 				create_bottle(usr)
 			else
-				var/obj/item/reagent_containers/food/condiment/P = new /obj/item/reagent_containers/food/condiment(src.loc)
+				var/obj/item/reagent_containers/vessel/condiment/P = new /obj/item/reagent_containers/vessel/condiment(src.loc)
 				reagents.trans_to_obj(P, 50)
 
 		else if(href_list["createbottle_small"])
@@ -269,14 +269,14 @@
 		bottle_name = sanitizeSafe(input(user, "Name:", "Name your bottle!", reagents.get_master_reagent_name()), MAX_NAME_LEN)
 	if(!bottle_name)
 		bottle_name = reagents.get_master_reagent_name()
-	var/obj/item/reagent_containers/glass/bottle/B
+	var/obj/item/reagent_containers/vessel/bottle/chemical/B
 	switch(bottle_type)
 		if("small")
-			B = new /obj/item/reagent_containers/glass/bottle/small(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical/small(loc)
 		if("big")
-			B = new /obj/item/reagent_containers/glass/bottle/big(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical/big(loc)
 		else
-			B = new /obj/item/reagent_containers/glass/bottle(loc)
+			B = new /obj/item/reagent_containers/vessel/bottle/chemical(loc)
 	B.AddComponent(/datum/component/label, bottle_name)
 	reagents.trans_to_obj(B, reagent_amount)
 	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
@@ -390,7 +390,7 @@
 /obj/machinery/reagentgrinder/Initialize(mapload)
 	. = ..()
 	if(mapload)
-		beaker = new /obj/item/reagent_containers/glass/beaker/large(src)
+		beaker = new /obj/item/reagent_containers/vessel/beaker/large(src)
 	update_icon()
 
 /obj/machinery/reagentgrinder/update_icon()
@@ -411,10 +411,7 @@
 	if(default_part_replacement(user, O))
 		return
 
-	if(istype(O,/obj/item/reagent_containers/glass) || \
-		istype(O,/obj/item/reagent_containers/food/drinks/glass2) || \
-		istype(O,/obj/item/reagent_containers/food/drinks/shaker))
-
+	if(istype(O, /obj/item/reagent_containers/vessel/beaker))
 		if(beaker)
 			return TRUE
 		else
@@ -600,13 +597,13 @@
 					beaker.reagents.add_reagent(stack.material.reagent_path, (amount_to_take * REAGENTS_PER_MATERIAL_SHEET))
 			continue
 
-		var/obj/item/reagent_containers/food/snacks/internal_snack = null
+		var/obj/item/reagent_containers/food/internal_snack = null
 		if(istype(O, /obj/item/organ/internal))
-			var/obj/item/reagent_containers/food/snacks/organ/organ_snack = locate() in O.contents
+			var/obj/item/reagent_containers/food/organ/organ_snack = locate() in O.contents
 			if(istype(organ_snack))
 				internal_snack = organ_snack
 		else if(istype(O, /obj/item/organ/external))
-			var/obj/item/reagent_containers/food/snacks/meat/meat_snack = locate() in O.contents
+			var/obj/item/reagent_containers/food/meat/meat_snack = locate() in O.contents
 			if(istype(meat_snack))
 				internal_snack = meat_snack
 

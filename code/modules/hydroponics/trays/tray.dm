@@ -154,6 +154,7 @@
 			nymph.reagents.add_reagent(/datum/reagent/nutriment/glucose, weedlevel)
 			weedlevel = 0
 			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
+			playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 		else if(nymph.nutrition > 100 && nutrilevel < 10)
 			nymph.nutrition -= ((10-nutrilevel)*5)
 			nutrilevel = 10
@@ -401,7 +402,7 @@
 	var/newseed = seed.get_mutant_variant()
 	if(newseed in SSplants.seeds)
 		var/datum/seed/mut_seed = SSplants.seeds[newseed]
-		if(mut_seed.fun_level > config.fun_hydroponics) // Too fun to be true
+		if(mut_seed.fun_level > config.misc.fun_hydroponics) // Too fun to be true
 			return
 		seed = mut_seed
 	else
@@ -488,7 +489,7 @@
 		attack_hand(user)
 
 		var/obj/item/storage/plants/S = O
-		for (var/obj/item/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
+		for (var/obj/item/reagent_containers/food/grown/G in locate(user.x,user.y,user.z))
 			if(!S.can_be_inserted(G, user))
 				return
 			S.handle_item_insertion(G, 1)

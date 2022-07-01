@@ -22,7 +22,7 @@
 			if(!isturf(to_throw.loc))
 				to_chat(user, "<span class='warning'>\The [to_throw] is currently not on a turf and cannot be thrown.</span>")
 			else
-				to_throw.throw_at(A, 10, 1)
+				to_throw.throw_at(A, 10)
 				Log("Threw '[log_info_line(to_throw)]' at '[log_info_line(A)]'")
 		else
 			to_chat(user, "<span class='warning'>You have nothing selected to throw.</span>")

@@ -220,7 +220,7 @@
 
 /obj/item/integrated_circuit/manipulation/seed_extractor/do_work()
 	..()
-	var/obj/item/reagent_containers/food/snacks/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/snacks/grown)
+	var/obj/item/reagent_containers/food/grown/O = get_pin_data_as_type(IC_INPUT, 1, /obj/item/reagent_containers/food/grown)
 	if(!check_target(O))
 		push_data()
 		activate_pin(2)
@@ -485,7 +485,7 @@
 	assembly.visible_message(SPAN("danger", "[assembly] has thrown [A]!"))
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
-	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
+	A.throw_at(locate(x_abs, y_abs, T.z), range)
 	var/atom/AM = get_object()
 	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 

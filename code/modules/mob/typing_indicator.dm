@@ -1,6 +1,6 @@
 /*Typing indicators, when a mob uses the F3/F4 keys to bring the say/emote input boxes up this little buddy is
 made and follows them around until they are done (or something bad happens), helps tell nearby people that 'hey!
-I IS TYPIN'!'
+I AM TYPING!'
 */
 
 /mob
@@ -11,7 +11,7 @@ I IS TYPIN'!'
 	icon_state = "typing"
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
-	appearance_flags = LONG_GLIDE
+	appearance_flags = DEFAULT_APPEARANCE_FLAGS | LONG_GLIDE
 
 /atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)
@@ -58,7 +58,7 @@ I IS TYPIN'!'
 
 /mob/verb/add_typing_indicator(is_sayinput as num|null)
 	set name = ".add_typing_indicator"
-	set hidden = 1
+	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
@@ -72,7 +72,7 @@ I IS TYPIN'!'
 
 /mob/verb/remove_typing_indicator_verb()
 	set name = ".remove_typing_indicator"
-	set hidden = 1
+	set hidden = TRUE
 
 	ASSERT(client && src == usr)
 
@@ -80,7 +80,7 @@ I IS TYPIN'!'
 
 /mob/verb/me_wrapper()
 	set name = ".Me"
-	set hidden = 1
+	set hidden = TRUE
 
 	create_typing_indicator()
 	var/message = input("","me (text)") as text

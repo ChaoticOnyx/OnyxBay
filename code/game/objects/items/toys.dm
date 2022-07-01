@@ -25,7 +25,6 @@
 /obj/item/toy
 	icon = 'icons/obj/toy.dmi'
 	throwforce = 0
-	throw_speed = 4
 	throw_range = 20
 	force = 0
 	mod_weight = 0.25
@@ -69,7 +68,7 @@
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
-	if(istype(O, /obj/item/reagent_containers/glass))
+	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
 				to_chat(user, "The [O] is empty.")

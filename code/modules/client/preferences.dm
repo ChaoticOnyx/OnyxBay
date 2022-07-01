@@ -170,8 +170,8 @@
 	if(isliving(user)) return
 
 	if(href_list["preference"] == "open_whitelist_forum")
-		if(config.forumurl)
-			send_link(user, config.forumurl)
+		if(config.link.forum)
+			send_link(user, config.link.forum)
 		else
 			to_chat(user, "<span class='danger'>The forum URL is not set in the server configuration.</span>")
 			return
@@ -223,7 +223,7 @@
 	if(be_random_name)
 		real_name = random_name(gender,species)
 
-	if(config.humans_need_surnames)
+	if(config.character_setup.humans_need_surnames)
 		var/firstspace = findtext(real_name, " ")
 		var/name_length = length(real_name)
 		if(!firstspace)	//we need a surname
@@ -240,6 +240,7 @@
 	character.fix_body_build()
 	character.age = age
 	character.b_type = b_type
+	character.body_height = body_height
 
 	character.r_eyes = r_eyes
 	character.g_eyes = g_eyes
@@ -377,7 +378,7 @@
 	character.religion = religion
 
 	if(!character.isSynthetic())
-		character.nutrition = rand(140,360)
+		character.nutrition = rand(140, 360) * character.body_build.stomach_capacity
 
 	return
 
@@ -388,7 +389,7 @@
 	dat += "<tt><center>"
 
 	dat += "<b>Select a character slot to load</b><hr>"
-	for(var/i = 1, i <= config.character_slots, i++)
+	for(var/i = 1, i <= config.character_setup.character_slots, i++)
 		var/name = (slot_names && slot_names[get_slot_key(i)]) || "Character[i]"
 		if(i == default_slot)
 			name = "<b>[name]</b>"

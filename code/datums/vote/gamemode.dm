@@ -5,7 +5,7 @@
 	win_y = 1100
 
 /datum/vote/gamemode/can_run(mob/creator, automatic)
-	if(!automatic && (!config.allow_vote_mode || !is_admin(creator)))
+	if(!automatic && (!config.vote.allow_vote_mode || !is_admin(creator)))
 		return FALSE // Admins and autovotes bypass the config setting.
 	if(GAME_STATE >= RUNLEVEL_GAME)
 		return FALSE
@@ -19,7 +19,7 @@
 
 /datum/vote/gamemode/setup_vote(mob/creator, automatic)
 	..()
-	choices += config.votable_modes
+	choices += config.get_votable_modes()
 	for (var/F in choices)
 		var/datum/game_mode/M = gamemode_cache[F]
 		if(!M)

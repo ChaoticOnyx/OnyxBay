@@ -58,7 +58,7 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			damaged_organs[I] = img
@@ -267,7 +267,7 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			damaged_organs[I] = img
@@ -390,7 +390,7 @@
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
 			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
 			img.overlays = organ.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			attached_organs[organ] = img
@@ -466,7 +466,7 @@
 		if(I.status & ORGAN_CUT_AWAY)
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			removable_organs[I] = img
@@ -648,7 +648,7 @@
 		if(I && (I.status & ORGAN_CUT_AWAY))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			attachable_organs[I] = img
@@ -706,10 +706,10 @@
 	priority = 2
 	allowed_tools = list(
 		/obj/item/reagent_containers/dropper = 100, 	\
-		/obj/item/reagent_containers/glass/bottle = 75,	\
-		/obj/item/reagent_containers/glass/beaker = 75,	\
+		/obj/item/reagent_containers/vessel/bottle/chemical = 75,	\
+		/obj/item/reagent_containers/vessel/beaker = 75,	\
 		/obj/item/reagent_containers/spray = 50,	\
-		/obj/item/reagent_containers/glass/bucket = 50
+		/obj/item/reagent_containers/vessel/bucket = 50
 	)
 
 	can_infect = 0
@@ -738,7 +738,7 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
-			img.transform *= 1.5
+			img.SetTransform(scale = 1.5)
 			img.pixel_y = -5
 			img.pixel_x = 3
 			dead_organs[I] = img

@@ -33,7 +33,7 @@
 	var/key
 	var/name				//replaces mob/var/original_name
 	var/mob/living/current
-	var/mob/living/original	//TODO: remove.not used in any meaningful way ~Carn. First I'll need to tweak the way silicon-mobs handle minds.
+	var/weakref/original_mob = null // must contain /mob/living
 	var/active = 0
 
 	var/memory
@@ -87,7 +87,7 @@
 /datum/mind/Destroy()
 	SSticker.minds -= src
 	set_current(null)
-	original = null
+	original_mob = null
 	. = ..()
 
 /datum/mind/proc/set_current(mob/new_current)
@@ -538,7 +538,7 @@
 		mind.key = key
 	else
 		mind = new /datum/mind(key)
-		mind.original = src
+		mind.original_mob = weakref(src)
 		SSticker.minds += mind
 	if(!mind.name)	mind.name = real_name
 	mind.set_current(src)

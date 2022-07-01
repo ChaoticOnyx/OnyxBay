@@ -32,7 +32,7 @@
 		/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/pill,
 		/obj/item/reagent_containers/hypospray/autoinjector,
-		/obj/item/reagent_containers/glass/beaker/vial,
+		/obj/item/reagent_containers/vessel/beaker/vial,
 		/obj/item/device/radio/headset,
 		/obj/item/device/paicard,
 		/obj/item/stamp,
@@ -74,7 +74,7 @@
 		if(("id-"+front_id.icon_state) in icon_states(icon))
 			tiny_state = "id-"+front_id.icon_state
 		var/image/tiny_image = new /image(icon, icon_state = tiny_state)
-		tiny_image.appearance_flags = RESET_COLOR
+		tiny_image.appearance_flags = DEFAULT_APPEARANCE_FLAGS | RESET_COLOR
 		overlays += tiny_image
 
 /obj/item/storage/wallet/GetIdCard()

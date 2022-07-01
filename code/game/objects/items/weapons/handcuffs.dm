@@ -15,7 +15,6 @@
 	mod_weight = 0.5
 	mod_reach = 0.5
 	mod_handy = 0.5
-	throw_speed = 2
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 1)
 	matter = list(MATERIAL_STEEL = 500)
@@ -257,5 +256,16 @@ var/last_chew = 0
 	if(countdown)
 		sleep(countdown_time)
 
-	explosion(get_turf(src), 0, 1, 3, 0)
+	if(istype(src.loc, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src.loc
+
+		if(H.get_inventory_slot(src) == slot_handcuffed)
+			var/obj/item/organ/external/l_hand = H.get_organ(BP_L_HAND)
+			var/obj/item/organ/external/r_hand = H.get_organ(BP_R_HAND)
+			if(l_hand)
+				l_hand.droplimb(0, DROPLIMB_BLUNT)
+			if(r_hand)
+				r_hand.droplimb(0, DROPLIMB_BLUNT)
+
+	explosion(get_turf(src), -1, 1, 3, 0)
 	qdel(src)

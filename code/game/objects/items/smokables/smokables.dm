@@ -5,7 +5,9 @@
 	name = "smokable item"
 	desc = "You're not sure what this is. You should probably ahelp it."
 	body_parts_covered = 0
+	icon = 'icons/obj/cigarettes.dmi'
 	var/lit = 0
+	var/ever_lit = FALSE // Has it ever been lit
 	var/icon_on
 	var/type_butt = null
 	var/chem_volume = 10
@@ -43,6 +45,7 @@
 		if((smoke_effect >= 3 || manual) && isturf(smoke_loc))
 			smoke_effect = 0
 			new /obj/effect/effect/cig_smoke(smoke_loc)
+		update_icon()
 	else
 		die()
 
@@ -92,6 +95,7 @@
 		return
 
 	src.lit = TRUE
+	ever_lit = TRUE
 	if(src.atom_flags & ATOM_FLAG_NO_REACT)
 		src.atom_flags &= ~ATOM_FLAG_NO_REACT
 
@@ -158,5 +162,5 @@
 	if(!proximity)
 		return
 
-	if(!lit && can_be_lit_with(W))
+	if(!lit && istype(W, /obj/item) && can_be_lit_with(W))
 		light(W, user)

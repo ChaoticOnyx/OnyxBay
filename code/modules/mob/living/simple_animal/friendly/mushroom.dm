@@ -9,7 +9,7 @@
 	turns_per_move = 1
 	maxHealth = 5
 	health = 5
-	meat_type = /obj/item/reagent_containers/food/snacks/hugemushroomslice
+	meat_type = /obj/item/reagent_containers/food/hugemushroomslice
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "whacks"
@@ -54,7 +54,7 @@
 	. = ..(gibbed, deathmessage, show_dead_message)
 	if(.)
 		total_mushrooms--
-		if(total_mushrooms < config.maximum_mushrooms && prob(30))
+		if(total_mushrooms < config.misc.maximum_mushrooms && prob(30))
 			spore_explode()
 
 /mob/living/simple_animal/mushroom/proc/spore_explode()

@@ -68,8 +68,14 @@
 /mob/living/carbon/human/Destroy()
 	GLOB.human_mob_list -= src
 	worn_underwear = null
-	for(var/organ in organs)
-		qdel(organ)
+	QDEL_NULL_LIST(organs)
+	QDEL_NULL_LIST(stance_limbs)
+	QDEL_NULL_LIST(grasp_limbs)
+	QDEL_NULL_LIST(bad_external_organs)
+
+	QDEL_LIST_ASSOC(hud_list)
+
+	QDEL_NULL(vessel)
 	return ..()
 
 /mob/living/carbon/human/get_ingested_reagents()
@@ -144,7 +150,7 @@
 				return
 			else
 				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
-				throw_at(target, 200, 4)
+				throw_at(target, 200, 1)
 			//return
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
@@ -199,7 +205,7 @@
 	apply_damage(damage, BRUTE, BP_CHEST, blocked)
 
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
-	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
+	if(!config.game.use_loyalty_implants && !override) return // Nuh-uh.
 
 	var/obj/item/implant/loyalty/L = new /obj/item/implant/loyalty(M)
 	L.imp_in = M
@@ -773,7 +779,7 @@
 				sleep(100 / timevomit)	//and you have 10 more for mad dash to the bucket
 				Stun(3)
 				var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW)
+				if(nutrition <= STOMACH_FULLNESS_SUPER_LOW || !istype(stomach))
 					custom_emote(1, "dry heaves.")
 				else
 					for(var/a in stomach_contents)
@@ -781,13 +787,13 @@
 						A.forceMove(get_turf(src))
 						stomach_contents.Remove(a)
 						if(src.species.gluttonous & GLUT_PROJECTILE_VOMIT)
-							A.throw_at(get_edge_target_turf(src,src.dir),7,7,src)
+							A.throw_at(get_edge_target_turf(src, dir), 7, 1, src)
 
 					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
-					if (istype(location, /turf/simulated))
+					if(istype(location, /turf/simulated))
 						location.add_vomit_floor(src, toxvomit, stomach.ingested)
 					nutrition -= 30
 		sleep(350)	//wait 35 seconds before next volley
@@ -1127,7 +1133,7 @@
 			return
 		if(species.language)
 			remove_language(species.language)
-		if(species.icon_scale != 1)
+		if(species.icon_scale != 1 || species.y_shift)
 			update_transform()
 		if(species.default_language)
 			remove_language(species.default_language)
@@ -1199,7 +1205,7 @@
 	if(client)
 		Login()
 
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
+	if(config && config.revival.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
 		create_stack()
 	full_prosthetic = null
 
@@ -1739,3 +1745,6 @@
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
 		updatehealth()
+
+/mob/living/carbon/human/get_runechat_color()
+	return species.get_species_runechat_color(src)

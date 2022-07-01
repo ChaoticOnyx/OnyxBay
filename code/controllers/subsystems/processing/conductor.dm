@@ -15,11 +15,11 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 		processing -= player
 		var/client/C = player.client
 
-		if(!C)
+		if(C?.is_ambience_music_playing())
 			continue
 
-		if(C.is_ambience_music_playing())
-			continue
+		if(!C) // clients may get lost while the proc above is running
+			continue // and they do so way more frequent than you may think
 
 		THROTTLE_SHARED(cooldown, AMBIENT_MUSIC_COOLDOWN, C.last_time_ambient_music_played)
 
@@ -32,7 +32,7 @@ PROCESSING_SUBSYSTEM_DEF(conductor)
 			continue
 
 		if(istype(A, /area/space))
-			if(!(player.loc.z in GLOB.using_map.station_levels) && prob(40))
+			if(!(player.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)) && prob(40))
 				C.play_ambience_music(GET_SFX(SFX_AMBIENT_MUSIC_SPACE_TRAVEL))
 				continue
 

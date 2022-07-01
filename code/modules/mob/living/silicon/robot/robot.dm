@@ -265,26 +265,34 @@ var/global/list/robot_footstep_sounds = list(
 	QDEL_NULL(storage)
 	QDEL_NULL(spark_system)
 	QDEL_NULL(ion_trail)
-	QDEL_NULL_LIST(components)
-	cell = null
+	for(var/i in components)
+		qdel(components[i])
+	components.Cut()
+	QDEL_NULL(cell)
 	return ..()
 
 /mob/living/silicon/robot/proc/set_module_hulls(list/new_sprites)
 	if(length(new_sprites))
 		module_hulls = new_sprites.Copy()
+		if(custom_sprite)
+			custom_sprite = (ckey in GLOB.robot_custom_icons)
 		// Custom_sprite check and entry
 		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
-			var/sprite_state = GLOB.robot_custom_icons[ckey]
+			var/list/customs = GLOB.robot_custom_icons[ckey]
 			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
-			if(sprite_state && (sprite_state in valid_states))
-				module_hulls["Custom"] = sprite_state
-				icon = CUSTOM_ITEM_ROBOTS
-				icontype = "Custom"
-			else
-				icontype = module_hulls[1]
-				icon = original_icon
+			for(var/list/custom_data in customs)
+				var/sprite_state = custom_data["item_state"]
+				var/footstep = custom_data["footstep"]
+				if(sprite_state && (sprite_state in valid_states))
+					if(module_hulls[sprite_state])
+						qdel(module_hulls[sprite_state])
+						module_hulls[sprite_state] = null
+					module_hulls[sprite_state] = new /datum/robot_hull/custom(sprite_state, footstep, CUSTOM_ITEM_ROBOTS)
 		else
 			icontype = module_hulls[1]
+		if(!(icontype in module_hulls))
+			icontype = module_hulls[1]
+			icon = original_icon
 		icon_state = module_hulls[icontype].icon_state
 		footstep_sound = module_hulls[icontype].footstep_sound
 	update_icon()
@@ -357,7 +365,7 @@ var/global/list/robot_footstep_sounds = list(
 	if (camera)
 		camera.c_tag = changed_name
 
-	if(!custom_sprite) //Check for custom sprite
+	if(custom_sprite) //Check for custom sprite
 		set_custom_sprite()
 
 	//Flavour text.
@@ -833,7 +841,7 @@ var/global/list/robot_footstep_sounds = list(
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
+		var/panelprefix = custom_sprite ? module_hulls[icontype] : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)
@@ -1030,7 +1038,8 @@ var/global/list/robot_footstep_sounds = list(
 	set name = "Reset Security Codes"
 	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
 
-	if(!(mind.special_role && mind.original == src))
+	var/mob/living/original_mob = mind?.original_mob?.resolve()
+	if(!(mind.special_role && istype(original_mob) && original_mob == src))
 		to_chat(src, "Access denied.")
 		return
 
@@ -1103,6 +1112,11 @@ var/global/list/robot_footstep_sounds = list(
 		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_hulls
 	footstep_sound = module_hulls[icontype].footstep_sound
 	icon_state = module_hulls[icontype].icon_state
+	if(istype(module_hulls[icontype], /datum/robot_hull/custom))
+		icon = module_hulls[icontype].icon
+		if(!icon)
+			icon = original_icon
+			icontype = module_hulls[1]
 	var/list/valid_states = icon_states(icon)
 	if(!(icon_state in valid_states))
 		icon = original_icon

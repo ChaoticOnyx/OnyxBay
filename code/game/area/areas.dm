@@ -15,6 +15,7 @@
 	var/static_environ
 	var/list/ambient_music_tags = list(MUSIC_TAG_NORMAL)
 
+	var/environment_type   = ENVIRONMENT_NONE
 	var/is_station         = FALSE
 	var/importance         = 1
 	var/loyalty            = 0

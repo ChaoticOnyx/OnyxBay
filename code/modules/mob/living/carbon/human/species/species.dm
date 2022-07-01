@@ -92,7 +92,7 @@
 	var/generic_attack_mod = 1.0              // Damage dealt to simple animals with unarmed attacks multiplier.
 
 	// Death vars.
-	var/meat_type = /obj/item/reagent_containers/food/snacks/meat/human
+	var/meat_type = /obj/item/reagent_containers/food/meat/human
 	var/remains_type = /obj/item/remains/xeno
 	var/gibbed_anim = "gibbed-h"
 	var/dusted_anim = "dust-h"
@@ -211,6 +211,7 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
 	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*
@@ -536,7 +537,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	H.set_fullscreen(H.eye_blind && !H.equipment_prescription, "blind", /obj/screen/fullscreen/blind)
 	H.set_fullscreen(H.stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 
-	if(config.welder_vision)
+	if(config.misc.welder_vision_allowed)
 		H.set_fullscreen(H.equipment_tint_total, "welder", /obj/screen/fullscreen/impaired, H.equipment_tint_total)
 	var/how_nearsighted = get_how_nearsighted(H)
 	H.set_fullscreen(how_nearsighted, "nearsighted", /obj/screen/fullscreen/oxy, how_nearsighted)
@@ -713,3 +714,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/is_eligible_for_antag_spawn(antag_id)
 	return TRUE
+
+/datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
+	if(appearance_flags & HAS_SKIN_COLOR)
+		return H.s_base
+	else
+		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
+		return A

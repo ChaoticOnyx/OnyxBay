@@ -431,10 +431,11 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
-		if(M.current && M.current.client)
+		var/mob/living/original_mob = M.original_mob?.resolve()
+		if(M.current?.client)
 			C = M.current.client
-		else if(M.original && M.original.client)
-			C = M.original.client
+		else if(istype(original_mob) && original_mob.client)
+			C = original_mob.client
 
 	if(C)
 		var/name = key_name(C)
@@ -637,3 +638,77 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 // Checks if the mob is eligible for antag automatic/storyteller spawn. Manual role assignment (i.e. runic convert or badmin magic) bypasses this.
 /mob/proc/is_eligible_for_antag_spawn(antag_id)
 	return FALSE
+
+/**
+ * Fancy notifications for ghosts
+ *
+ * The kitchen sink of notification procs
+ *
+ * Arguments:
+ * * message
+ * * ghost_sound sound to play
+ * * enter_link Href link to enter the ghost role being notified for
+ * * source The source of the notification
+ * * alert_overlay The alert overlay to show in the alert message
+ * * action What action to take upon the ghost interacting with the notification, defaults to NOTIFY_FOLLOW
+ * * flashwindow Flash the byond client window
+ * * ignore_key  Ignore keys if they're in the GLOB.poll_ignore list
+ * * header The header of the notifiaction
+ * * notify_suiciders If it should notify suiciders (who do not qualify for many ghost roles)
+ * * notify_volume How loud the sound should be to spook the user
+ */
+/proc/notify_ghosts(message, ghost_sound = null, atom/source = null, mutable_appearance/alert_overlay = null, action = NOTIFY_JUMP, posses_mob = FALSE, flashwindow = TRUE, ignore_mapload = TRUE, header = null, notify_volume = 75) //Easy notification of ghosts.
+	if(ignore_mapload && SSatoms.init_state != INITIALIZATION_INNEW_REGULAR) //don't notify for objects created during a map load
+		return
+
+	for(var/mob/observer/ghost/O in GLOB.player_list)
+
+		var/follow_link = ""
+		if (source && action == NOTIFY_FOLLOW)
+			follow_link = create_ghost_link(O, source, "(F)")
+
+		var/posses_link = posses_mob ? possess_link(O, source) : ""
+
+		to_chat(O, SPAN_NOTICE("[follow_link][message][posses_link]"))
+
+		if(ghost_sound)
+			sound_to(O, sound(ghost_sound, repeat = 0, wait = 0, volume = notify_volume, channel = 1))
+
+		if(flashwindow)
+			winset(O.client, "mainwindow", "flash=5")
+
+		if(source)
+			var/obj/screen/movable/alert/notify_action/A = O.throw_alert("\ref[source]_notify_action", /obj/screen/movable/alert/notify_action)
+			if(A)
+
+				var/ui_style = O.client?.prefs?.UI_style
+
+				if(ui_style)
+					A.icon = ui_style2icon(ui_style)
+
+				if (header)
+					A.name = header
+
+				A.desc = message
+				A.action = action
+				A.target = source
+
+				if(!alert_overlay)
+					alert_overlay = new(source)
+					var/icon/size_check = icon(source.icon, source.icon_state)
+					var/scale = 1
+					var/width = size_check.Width()
+					var/height = size_check.Height()
+
+					if(width > world.icon_size || height > world.icon_size)
+						if(width >= height)
+							scale = world.icon_size / width
+						else
+							scale = world.icon_size / height
+
+					alert_overlay.transform = alert_overlay.transform.Scale(scale)
+					alert_overlay.appearance_flags |= TILE_BOUND
+
+				alert_overlay.layer = FLOAT_LAYER
+				alert_overlay.plane = FLOAT_PLANE
+				A.overlays += alert_overlay

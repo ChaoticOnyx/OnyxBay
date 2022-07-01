@@ -19,8 +19,9 @@
 
 /obj/item/organ/internal/stomach/robotize()
 	..()
-	name = "prosthetic stomach"
+	SetName("nutrient processor")
 	icon_state = "stomach-prosthetic"
+	dead_icon = "stomach-prosthetic-br"
 
 /obj/item/organ/internal/stomach/removed(mob/living/user, drop_organ = TRUE, detach = TRUE)
 	. = ..()

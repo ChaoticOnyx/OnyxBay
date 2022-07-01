@@ -19,7 +19,6 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 3
 	throw_range = 15
 	var/build_path = null
 	var/board_type = "computer"

@@ -311,7 +311,7 @@
 	seed_name = "egg plant"
 	display_name = "egg plants"
 	mutants = null
-	has_custom_product = /obj/item/reagent_containers/food/snacks/egg/randomcolor
+	has_custom_product = /obj/item/reagent_containers/food/egg/randomcolor
 	fun_level = 1
 
 /datum/seed/eggplant/realeggplant/New()
@@ -1473,9 +1473,11 @@
 	set_trait(TRAIT_MATURATION,4)
 	set_trait(TRAIT_YIELD,3)
 	set_trait(TRAIT_POTENCY,4)
+	set_trait(TRAIT_PRODUCTION,3)
+	set_trait(TRAIT_IDEAL_LIGHT, 7)
 	set_trait(TRAIT_PRODUCT_ICON,"cannabis")
 	set_trait(TRAIT_PLANT_ICON,"cannabis")
 	set_trait(TRAIT_PRODUCT_COLOUR,"#4c7f28")
 	set_trait(TRAIT_PLANT_COLOUR,"#4c7f28")
 	set_trait(TRAIT_WATER_CONSUMPTION, 10)
-	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.20)
+	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.25)

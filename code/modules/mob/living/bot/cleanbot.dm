@@ -84,7 +84,7 @@
 	visible_message("<span class='danger'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/reagent_containers/glass/bucket(Tsec)
+	new /obj/item/reagent_containers/vessel/bucket(Tsec)
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 	if(prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
@@ -162,7 +162,6 @@
 	icon_state = "bucket_proxy"
 	force = 3.0
 	throwforce = 10.0
-	throw_speed = 2
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/created_name = "Cleanbot"

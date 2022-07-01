@@ -144,7 +144,7 @@
 	startedAt = world.time
 
 	if(!affecting_z)
-		affecting_z = GLOB.using_map.station_levels
+		affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	setup()
 	..()

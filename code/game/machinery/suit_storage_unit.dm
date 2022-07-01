@@ -452,7 +452,7 @@
 					tank = null
 				if(mask)
 					mask = null
-				visible_message("<span class='warning'>With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber.</span>", 3)
+				visible_message("<span class='warning'>With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber.</span>")
 				isbroken = 1
 				isopen = 1
 				islocked = 0
@@ -521,7 +521,7 @@
 	if ( (occupant) || (helmet ) || (suit) )
 		to_chat(usr, "<span class='warning'>It's too cluttered inside for you to fit in!</span>")
 		return
-	visible_message("\The [usr] starts squeezing into the suit storage unit!", 3)
+	visible_message("\The [usr] starts squeezing into the suit storage unit!")
 	if(do_after(usr, 10, src))
 		usr.stop_pulling()
 		usr.client.perspective = EYE_PERSPECTIVE
@@ -569,7 +569,7 @@
 		if ( (occupant) || (helmet ) || (suit) || (boots) || (tank) || (mask)) //Unit needs to be absolutely empty
 			to_chat(user, "<span class='warning'>The unit's storage area is too cluttered.</span>")
 			return
-		visible_message("[user] starts putting [G.affecting.name] into the Suit Storage Unit.", 3)
+		visible_message("[user] starts putting [G.affecting.name] into the Suit Storage Unit.")
 		if(do_after(user, 20, src))
 			if(!G || !G.affecting) return //derpcheck
 			var/mob/M = G.affecting
@@ -796,7 +796,7 @@
 			to_chat(user, "<span class='danger'>There is no room inside the cycler for [G.affecting.name].</span>")
 			return
 
-		visible_message("<span class='notice'>[user] starts putting [G.affecting.name] into the suit cycler.</span>", 3)
+		visible_message("<span class='notice'>[user] starts putting [G.affecting.name] into the suit cycler.</span>")
 
 		if(do_after(user, 20, src))
 			if(!G || !G.affecting) return

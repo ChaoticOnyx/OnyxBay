@@ -3,7 +3,7 @@
   "name": "tgui-workspace",
   "version": "4.3.0",
   "scripts": {
-    "dev": "node --experimental-modules packages/tgui-dev-server/index.js",
+    "dev": "node packages/tgui-dev-server/index.esm.js",
     "build": "webpack"
   },
   "workspaces": [

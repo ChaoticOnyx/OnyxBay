@@ -43,10 +43,10 @@
 	return locate(/obj/structure/lattice, src) //counts as solid structure if it has a lattice
 
 /turf/space/proc/update_starlight()
-	if(!config.starlight)
+	if(!config.misc.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(min(0.1*config.starlight, 1), 1, 2.5)
+		set_light(min(0.1*config.misc.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
@@ -63,16 +63,19 @@
 			ReplaceWithLattice()
 		return
 
-	if (istype(C, /obj/item/stack/tile/floor))
+	if(istype(C, /obj/item/stack/tile/floor) || istype(C, /obj/item/stack/tile/floor_rough))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/floor/S = C
-			if (S.get_amount() < 1)
+			if(S.get_amount() < 1)
 				return
 			qdel(L)
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
-			ChangeTurf(/turf/simulated/floor/plating/airless)
+			if(istype(C, /obj/item/stack/tile/floor_rough))
+				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+			else
+				ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")
@@ -84,7 +87,7 @@
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
 	if(A && A.loc == src)
-		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE + 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE + 1))
+		if (A.x <= TRANSITION_EDGE || A.x >= (world.maxx - TRANSITION_EDGE + 1) || A.y <= TRANSITION_EDGE || A.y >= (world.maxy - TRANSITION_EDGE + 1))
 			A.touch_map_edge()
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)

@@ -15,7 +15,7 @@
 	can_be_hired = FALSE
 
 /datum/job/assistant/get_access()
-	if(config.assistant_maint)
+	if(config.game.assistant_maint)
 		return list(access_maint_tunnels)
 	else
 		return list()

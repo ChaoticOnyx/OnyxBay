@@ -200,7 +200,7 @@
 
 
 /obj/structure/closet/crate/freezer/rations/WillContain()
-	return list(/obj/item/reagent_containers/food/snacks/liquidfood = 4)
+	return list(/obj/item/reagent_containers/food/liquidfood = 4)
 
 /obj/structure/closet/crate/bin
 	name = "large bin"

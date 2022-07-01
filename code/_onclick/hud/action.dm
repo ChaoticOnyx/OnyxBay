@@ -30,6 +30,7 @@
 /datum/action/Destroy()
 	if(owner)
 		Remove(owner)
+	target = null
 	return ..()
 
 /datum/action/proc/Grant(mob/living/T)
@@ -135,14 +136,17 @@
 
 	overlays.Cut()
 	var/image/img
+	var/list/img_overlays
 	if(owner.action_type == AB_ITEM && owner.target)
 		var/obj/item/I = owner.target
 		img = image(I.icon, src , I.icon_state)
+		img_overlays = I.overlays
 	else if(owner.button_icon && owner.button_icon_state)
 		img = image(owner.button_icon,src,owner.button_icon_state)
 	img.pixel_x = 0
 	img.pixel_y = 0
 	overlays += img
+	overlays += img_overlays
 
 	if(!owner.IsAvailable())
 		color = rgb(128,0,0,128)
@@ -200,14 +204,12 @@
 	return "WEST[coord_col]:[coord_col_offset],NORTH[coord_row]:[coord_row_offset]"
 
 /datum/hud/proc/SetButtonCoords(obj/screen/button,number)
-	var/row = round((number-1)/AB_MAX_COLUMNS)
-	var/col = ((number - 1)%(AB_MAX_COLUMNS)) + 1
-	var/x_offset = 32*(col-1) + AB_WEST_OFFSET + 2*col
-	var/y_offset = -32*(row+1) + AB_NORTH_OFFSET
-
-	var/matrix/M = matrix()
-	M.Translate(x_offset,y_offset)
-	button.transform = M
+	var/row = round((number - 1) / AB_MAX_COLUMNS)
+	var/col = ((number - 1) % (AB_MAX_COLUMNS)) + 1
+	button.SetTransform(
+		offset_x = 32 * (col - 1) + AB_WEST_OFFSET + 2 * col,
+		offset_y = -32 * (row + 1) + AB_NORTH_OFFSET
+	)
 
 //Presets for item actions
 /datum/action/item_action

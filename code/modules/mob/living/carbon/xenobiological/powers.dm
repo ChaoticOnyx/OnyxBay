@@ -101,11 +101,14 @@
 
 	if(happyWithFood) // This means that the metroid has either drained the victim or let it go
 		if(!client)
-			if(Victim && !rabid && !attacked && Victim.LAssailant && Victim.LAssailant != Victim)
-				if(!(Victim.LAssailant in Friends))
-					Friends[Victim.LAssailant] = 1
-				else
-					++Friends[Victim.LAssailant]
+			var/mob/living/carbon/LA = LAssailant?.resolve()
+			if(Victim && !rabid && !attacked && istype(LA) && LA != Victim)
+				var/mob/living/carbon/VLA = Victim.LAssailant?.resolve()
+				if(istype(VLA))
+					if(!(VLA in Friends))
+						Friends[VLA] = 1
+					else
+						++Friends[VLA]
 
 		else
 			to_chat(src, "<span class='notice'>This subject does not have a strong enough life energy anymore...</span>")

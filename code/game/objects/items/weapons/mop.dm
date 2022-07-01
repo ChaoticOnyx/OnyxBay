@@ -5,7 +5,6 @@
 	icon_state = "mop"
 	force = 9.0
 	throwforce = 10.0
-	throw_speed = 5
 	throw_range = 10
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0

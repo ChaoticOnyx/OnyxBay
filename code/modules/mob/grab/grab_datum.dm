@@ -253,7 +253,7 @@
 	var/mob/living/carbon/human/assailant = G.assailant
 
 	if(affecting.incapacitated(INCAPACITATION_KNOCKOUT | INCAPACITATION_STUNNED))
-		to_chat(G.assailant, "<span class='warning'>You can't resist in your current state!</span>")
+		to_chat(affecting, SPAN("warning", "You can't resist in your current state!"))
 
 	//var/break_strength = breakability + size_difference(affecting, assailant)
 

@@ -186,7 +186,7 @@
 
 	T.Weaken(3)
 
-	if(make_grab(src, T))
+	if(ishuman(T) && make_grab(src, T))
 		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()
@@ -239,7 +239,7 @@
 		src.visible_message("<span class='danger'>[src] hurls out the contents of their stomach!</span>")
 	return
 
-/mob/living/carbon/human/proc/psychic_whisper(mob/M as mob in oview())
+/mob/living/carbon/human/proc/psychic_whisper(mob/M in oview())
 	set name = "Psychic Whisper"
 	set desc = "Whisper silently to someone over a distance."
 	set category = "Abilities"
@@ -375,7 +375,7 @@
 	if(prob(90) && src.make_grab(src, T, GRAB_NAB_SPECIAL))
 		T.Weaken(rand(1,3))
 		visible_message("<span class='danger'>\The [src] suddenly lunges out and grabs \the [T]!</span>")
-		LAssailant = src
+		LAssailant = weakref(src)
 
 		src.do_attack_animation(T)
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)

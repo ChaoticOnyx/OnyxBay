@@ -29,7 +29,7 @@ var/global/list/all_objectives = list()
 /datum/objective/proc/find_target()
 	var/list/possible_targets = list()
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && !(possible_target.current.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(target_is_disallowed(H))
 				continue
@@ -41,7 +41,7 @@ var/global/list/all_objectives = list()
 
 /datum/objective/proc/find_target_by_role(role, role_type = 0) // Option sets either to check assigned role or special role. Default to assigned.
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+		if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role)  && !(possible_target.current.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 			var/mob/living/carbon/human/H = possible_target.current
 			if(!(H.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET))
 				target = possible_target
@@ -240,7 +240,7 @@ var/global/list/all_objectives = list()
 		return 0
 
 	var/area/shuttle/shuttle_area = get_area(owner.current)
-	if(!istype(shuttle_area) || !(shuttle_area.z in GLOB.using_map.admin_levels))
+	if(!istype(shuttle_area) || !(shuttle_area.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
 		return 0
 
 	for(var/mob/living/player in GLOB.player_list)
@@ -347,7 +347,8 @@ var/global/list/all_objectives = list()
 /datum/objective/survive/check_completion()
 	if(!owner.current || owner.current.stat == DEAD || isbrain(owner.current))
 		return FALSE //Brains no longer win survive objectives. --NEO
-	if(issilicon(owner.current) && owner.current != owner.original)
+	var/mob/living/original_mob = owner.original_mob?.resolve()
+	if(issilicon(owner.current) && (istype(original_mob) && owner.current != original_mob))
 		return FALSE
 	return TRUE
 
@@ -451,9 +452,43 @@ var/global/list/all_objectives = list()
 		return FALSE
 
 
-/datum/objective/ert_station_save
+/datum/objective/ert
+	var/save_area_type = /area/rescue_base
+/datum/objective/ert/extract_heads
+	var/list/weakref/extract_heads = list() // for living one
+	var/list/weakref/extract_heads_bodies = list() // for dead one
 
-/datum/objective/ert_station_save/check_completion()
+/datum/objective/ert/extract_heads/check_completion()
+	for(var/weakref/ref in extract_heads)
+		var/mob/living/carbon/human/head = ref.resolve()
+		var/turf/T = get_turf(head)
+		if(!head || head.stat == DEAD || !istype(T?.loc, save_area_type))
+			return FALSE
+	for(var/weakref/ref in extract_heads_bodies)
+		var/mob/living/carbon/human/head = ref.resolve()
+		var/turf/T = get_turf(head)
+		if(!head || !istype(T?.loc, save_area_type))
+			return FALSE
+	return TRUE
+
+/datum/objective/ert/extract_heads/New(text)
+	..()
+	var/list/dead_heads = list()
+	var/list/heads = list()
+	for(var/mob/living/carbon/human/possible_target in sortmobs())
+		if(possible_target.species.species_flags & SPECIES_FLAG_NO_ANTAG_TARGET)
+			continue
+		if((possible_target.job in GLOB.commandjobs) && !(possible_target.loc?.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_CENTCOM)))
+			if(possible_target.stat == DEAD)
+				extract_heads_bodies.Add(weakref(possible_target))
+				dead_heads.Add("[possible_target.real_name] ([possible_target.job])")
+			else
+				extract_heads.Add(weakref(possible_target))
+				heads.Add("[possible_target.real_name] ([possible_target.job])")
+	explanation_text = "[length(heads) ? "You need to evacuate these heads to the base: [english_list(heads)].\n " : ""]\
+						[length(dead_heads) ? "According to our information the following heads are dead, take their bodies back to base: [english_list(dead_heads)]." : ""]"
+
+/datum/objective/ert/resolve_conflict/check_completion()
 	if(GLOB.revs.global_objectives.len > 0)
 		var/completed = 0
 		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
@@ -464,7 +499,7 @@ var/global/list/all_objectives = list()
 
 	return GLOB.ert.is_station_secure
 
-/datum/objective/ert_station_save/New()
+/datum/objective/ert/resolve_conflict/New()
 	..()
 	explanation_text = "Resolve emergency situation you were called for and preserve any [GLOB.using_map.company_name]'s property from being lost."
 
@@ -496,7 +531,7 @@ var/global/list/all_objectives = list()
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/tank,
 		"a sample of metroid extract" = /obj/item/metroid_extract,
-		"a piece of corgi meat" = /obj/item/reagent_containers/food/snacks/meat/corgi,
+		"a piece of corgi meat" = /obj/item/reagent_containers/food/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
 		"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,
@@ -972,7 +1007,7 @@ var/global/list/all_objectives = list()
 		if(target in GLOB.revs.current_antagonists)
 			return 1
 		var/turf/T = get_turf(H)
-		if(T && isNotStationLevel(T.z))			//If they leave the station they count as dead for this
+		if(T && !isStationLevel(T.z))			//If they leave the station they count as dead for this
 			rval = 2
 		return 0
 	return rval

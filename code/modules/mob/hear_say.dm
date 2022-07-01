@@ -1,6 +1,6 @@
 // At minimum every mob has a hear_say proc.
 
-/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = FALSE, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(!client)
 		return
 
@@ -16,12 +16,12 @@
 	var/turf/T = get_turf(src)
 	if(T && !isghost(src)) //Ghosts can hear even in vacuum.
 		var/datum/gas_mixture/environment = T.return_air()
-		var/pressure = (environment)? environment.return_pressure() : 0
+		var/pressure = (environment) ? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE && dist_speech > 1)
 			return
 
 		if (pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
-			italics = 1
+			italics = TRUE
 			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
 
 	if(sleeping || stat == UNCONSCIOUS)
@@ -29,7 +29,7 @@
 		return
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language && (language.flags & NONVERBAL))
+	if (language?.flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !near)
 			message = stars(message)
 
@@ -75,7 +75,7 @@
 
 	var/track = null
 	if(isghost(src))
-		if(speaker_name != speaker.real_name && speaker.real_name)
+		if(speaker?.real_name && speaker_name != speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "([ghost_follow_link(speaker, src)]) "
 		if(get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && near)
@@ -106,9 +106,11 @@
 
 		else
 			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][verb], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
-		if(speech_sound && (dist_speech <= world.view && src.z == speaker.z))
-			var/turf/source = speaker? get_turf(speaker) : T
+		if(speech_sound && speaker && (dist_speech <= world.view && src.z == speaker.z))
+			var/turf/source = get_turf(speaker)
 			src.playsound_local(source, speech_sound, sound_vol, 1)
+		if(get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES)
+			create_chat_message(speaker, message)
 
 /mob/proc/on_hear_say(message)
 	to_chat(src, message)
@@ -122,22 +124,22 @@
 	if(!client)
 		return
 
-	if(sleeping || stat==1) //If unconscious or sleeping
+	if(sleeping || stat == UNCONSCIOUS)
 		hear_sleep(message)
 		return
 
 	var/track = null
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language && (language.flags & NONVERBAL))
+	if (language?.flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
 			message = stars(message)
 
-	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
-		if(!say_understands(speaker,language))
+	if(!(language?.flags & INNATE)) // skip understanding checks for INNATE languages
+		if(!say_understands(speaker, language))
 			if(istype(speaker,/mob/living/simple_animal))
 				var/mob/living/simple_animal/S = speaker
-				if(S.speak && S.speak.len)
+				if(S.speak?.len)
 					message = pick(S.speak)
 				else
 					return
@@ -156,27 +158,27 @@
 	if(copytext_char(message, -2) == "!!")
 		message = "<b>[message]</b>"
 
-	var/speaker_name = vname ? vname : speaker.name
+	var/speaker_name = vname ? vname : speaker?.name
 
-	if(istype(speaker, /mob/living/carbon/human))
+	if(ishuman(speaker))
 		var/mob/living/carbon/human/H = speaker
 		if(H.voice)
 			speaker_name = H.voice
 
 	if(hard_to_hear)
-		speaker_name = "unknown"
+		speaker_name = "Unknown"
 
-	var/changed_voice
+	var/changed_voice = FALSE
 
-	if(istype(src, /mob/living/silicon/ai) && !hard_to_hear)
+	if(isAI(src) && !hard_to_hear)
 		var/jobname // the mob's "job"
 		var/mob/living/carbon/human/impersonating //The crew member being impersonated, if any.
 
-		if (ishuman(speaker))
+		if(ishuman(speaker))
 			var/mob/living/carbon/human/H = speaker
 
-			if(H.wear_mask && istype(H.wear_mask,/obj/item/clothing/mask/chameleon/voice))
-				changed_voice = 1
+			if(H.wear_mask && istype(H.wear_mask, /obj/item/clothing/mask/chameleon/voice))
+				changed_voice = TRUE
 				var/list/impersonated = new()
 				var/mob/living/carbon/human/I = impersonated[speaker_name]
 
@@ -217,7 +219,7 @@
 			track = "<a href='byond://?src=\ref[src];trackname=[html_encode(speaker_name)];track=\ref[speaker]'>[speaker_name] ([jobname])</a>"
 
 	if(isghost(src))
-		if(speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
+		if(speaker?.real_name && speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
@@ -225,7 +227,7 @@
 		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule) //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	var/formatted
 	if(language)
-		if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check if we understand the message. If so, add the language name after the verb. Don't do this for Galactic Common.
+		if(!say_understands(speaker, language) || language.name == LANGUAGE_GALCOM) //Check if we understand the message. If so, add the language name after the verb. Don't do this for Galactic Common.
 			formatted = language.format_message_radio(message, verb)
 		else
 			var/nverb = null
@@ -247,7 +249,7 @@
 		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 
 /proc/say_timestamp()
-	return "<span class='say_quote'>\[[stationtime2text()]\]</span>"
+	return SPAN("say_quote", "\[[stationtime2text()]\]")
 
 /mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
@@ -278,7 +280,7 @@
 		return
 
 	if(sleeping || stat == UNCONSCIOUS)
-		return 0
+		return FALSE
 
 	if(say_understands(speaker, language))
 		var/nverb = null
@@ -322,6 +324,6 @@
 		heard = SPAN("game_say", "...<i>You hear something about</i>... <i>[heardword]</i>...")
 
 	else
-		heard = "<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>"
+		heard = SPAN("game_say", "...<i>You almost hear someone talking</i>...")
 
 	to_chat(src, heard)

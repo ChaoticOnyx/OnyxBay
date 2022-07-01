@@ -137,7 +137,7 @@
 	organ_tag = BP_L_HAND
 	name = "left hand"
 	icon_name = "l_hand"
-	max_damage = 40
+	max_damage = 45
 	min_broken_damage = 20
 	w_class = ITEM_SIZE_SMALL
 	body_part = HAND_LEFT

@@ -35,11 +35,11 @@
 	return
 
 /obj/item/reagent_containers/afterattack(obj/target, mob/user, flag)
-	if(can_be_splashed && user.a_intent == I_HURT)
+	if(can_be_splashed && user.a_intent != I_HELP)
 		if(standard_splash_mob(user,target))
 			return
 		if(reagents && reagents.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
+			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) // They are not on help intent, aka wanting to spill it.
 			reagents.splash(target, reagents.total_volume)
 			return
 

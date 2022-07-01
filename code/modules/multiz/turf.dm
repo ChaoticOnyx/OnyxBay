@@ -8,7 +8,7 @@
 			return !density
 
 /turf/simulated/open/CanZPass(atom/A, direction)
-	if(locate(/obj/structure/catwalk, src))
+	if(locate(/obj/structure/catwalk, src)||locate(/obj/structure/industrial_lift, src))
 		if(z == A.z)
 			if(direction == DOWN)
 				return 0
@@ -165,7 +165,10 @@
 			qdel(L)
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
-			ChangeTurf(/turf/simulated/floor/plating/airless)
+			if(istype(C, /obj/item/stack/tile/floor_rough))
+				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+			else
+				ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")

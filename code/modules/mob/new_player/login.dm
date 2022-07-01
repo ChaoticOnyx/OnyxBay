@@ -18,7 +18,7 @@
 
 	holder.screen += src
 	icon_state = ""
-	icon = config.current_lobbyscreen
+	icon = GLOB.current_lobbyscreen
 
 /obj/screen/splash/proc/Fade(out, qdel_after = TRUE)
 	if(QDELETED(src))
@@ -70,7 +70,7 @@
 
 	to_chat(client, SPAN("info", "You have unread updates in the changelog."))
 
-	if(config.aggressive_changelog)
+	if(config.general.aggressive_changelog)
 		client.changes()
 
 // This is called when the charcter setup system has been sufficiently initialized and prefs are available.

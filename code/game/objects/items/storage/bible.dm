@@ -2,7 +2,6 @@
 	name = "bible"
 	desc = "Apply to head repeatedly."
 	icon_state = "bible"
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	max_w_class = ITEM_SIZE_SMALL
@@ -16,7 +15,7 @@
 	icon_state = "bible"
 
 	startswith = list(
-		/obj/item/reagent_containers/food/drinks/bottle/small/beer,
+		/obj/item/reagent_containers/vessel/bottle/small/beer,
 		/obj/item/spacecash/bundle/c50,
 		/obj/item/spacecash/bundle/c50,
 		)

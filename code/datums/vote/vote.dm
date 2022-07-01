@@ -48,12 +48,12 @@
 /datum/vote/proc/start_vote()
 	start_time = world.time
 	status = VOTE_STATUS_ACTIVE
-	time_remaining = round(config.vote_period/10)
+	time_remaining = round(config.vote.period/10)
 
 	var/text = get_start_text()
 
 	log_vote(text)
-	to_world("<font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='?src=\ref[SSvote];vote_panel=1'>here</a> to place your votes.\nYou have [config.vote_period/10] seconds to vote.</font>")
+	to_world("<font color='purple'><b>[text]</b>\nType <b>vote</b> or click <a href='?src=\ref[SSvote];vote_panel=1'>here</a> to place your votes.\nYou have [config.vote.period/10] seconds to vote.</font>")
 	sound_to(world, sound('sound/misc/vote.ogg', repeat = 0, wait = 0, volume = 50, channel = 3))
 
 /datum/vote/proc/get_start_text()
@@ -61,7 +61,7 @@
 
 //Modifies the vote totals based on non-voting mobs.
 /datum/vote/proc/handle_default_votes()
-	if(!config.vote_no_default)
+	if(!config.vote.default_no_vote)
 		return length(GLOB.clients) - length(voted) //Number of non-voters (might not be active, though; should be revisited if the config option is used. This is legacy code.)
 
 /datum/vote/proc/tally_result()
@@ -122,7 +122,7 @@
 
 // Checks if the mob is participating in the round sufficiently to vote, as per config settings.
 /datum/vote/proc/mob_not_participating(mob/voter)
-	if(config.vote_no_dead && voter.stat == DEAD && !voter.client.holder)
+	if(config.vote.no_dead_vote && voter.stat == DEAD && !voter.client.holder)
 		return 1
 
 //null = no toggle set. This is for UI purposes; a text return will give a link (toggle; currently "return") in the vote panel.
@@ -135,7 +135,7 @@
 /datum/vote/Process()
 	if(status == VOTE_STATUS_ACTIVE)
 		if(time_remaining > 0)
-			time_remaining = round((start_time + config.vote_period - world.time)/10)
+			time_remaining = round((start_time + config.vote.period - world.time)/10)
 			return VOTE_PROCESS_ONGOING
 		else
 			status = VOTE_STATUS_COMPLETE

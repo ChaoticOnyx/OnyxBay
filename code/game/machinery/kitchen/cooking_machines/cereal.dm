@@ -6,7 +6,7 @@
 	cook_type = "cerealized"
 	on_icon = "cereal_on"
 	off_icon = "cereal_off"
-	output_options = list("Cereal" = /obj/item/reagent_containers/food/snacks/variable/cereal)
+	output_options = list("Cereal" = /obj/item/reagent_containers/food/variable/cereal)
 	selected_option = "Cereal"
 
 /obj/machinery/cooker/cereal/change_product_strings(atom/movable/product, atom/movable/origin)
@@ -14,11 +14,11 @@
 	product.SetName("box of [product.name]")
 	return product
 
-/obj/machinery/cooker/cereal/change_product_appearance(obj/item/reagent_containers/food/snacks/variable/cereal/product, atom/movable/origin)
+/obj/machinery/cooker/cereal/change_product_appearance(obj/item/reagent_containers/food/variable/cereal/product, atom/movable/origin)
 	var/icon/background = icon(product.icon, "[product.icon_state]_filling")
 	var/origin_color
-	if(istype(origin, /obj/item/reagent_containers/food/snacks))
-		var/obj/item/reagent_containers/food/snacks/S = origin
+	if(istype(origin, /obj/item/reagent_containers/food))
+		var/obj/item/reagent_containers/food/S = origin
 		origin_color = S.filling_color
 	else
 		origin_color = origin.color
@@ -31,7 +31,7 @@
 	var/image/food_image = image(origin.icon, origin.icon_state)
 	food_image.color = origin.color
 	food_image.overlays += origin.overlays
-	food_image.transform *= 0.7
+	food_image.SetTransform(scale = 0.5)
 	food_image.pixel_y = 2
 	product.overlays += food_image
 	return product

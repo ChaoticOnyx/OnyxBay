@@ -29,6 +29,7 @@
 	I.color = item_color
 	I.SetName("Wizard's Shield")
 	I.mod_shield = mod_shield
+	I.block_tier = BLOCK_TIER_PROJECTILE
 	return I
 
 /datum/spell/targeted/equip_item/shield/empower_spell()

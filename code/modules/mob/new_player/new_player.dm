@@ -134,7 +134,7 @@
 		if (!SSeams.CheckForAccess(client))
 			return
 
-		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
+		if(!config.misc.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.misc.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
 			if(!client)	return 1
 			var/mob/observer/ghost/observer = new()
 
@@ -165,7 +165,7 @@
 				client.prefs.real_name = random_name(client.prefs.gender)
 			observer.real_name = client.prefs.real_name
 			observer.SetName(observer.real_name)
-			if(!client.holder && !config.antag_hud_allowed)           // For new ghosts we remove the verb from even showing up if it's not allowed.
+			if(!client.holder && !config.ghost.allow_antag_hud)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
 			var/obj/screen/splash/S = new(observer.client, TRUE)
@@ -218,7 +218,7 @@
 				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
 				return
 
-		if(!config.enter_allowed)
+		if(!config.game.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
 		if(SSticker && SSticker.mode && SSticker.mode.explosion_in_progress)
@@ -356,7 +356,7 @@
 	if(GAME_STATE != RUNLEVEL_GAME)
 		to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 		return 0
-	if(!config.enter_allowed)
+	if(!config.game.enter_allowed)
 		to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 		return 0
 
@@ -462,6 +462,8 @@
 				continue
 			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
+			if(job.no_latejoin)
+				continue
 
 			var/active = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active
@@ -535,8 +537,8 @@
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
 	if(mind)
-		mind.active = 0					//we wish to transfer the key manually
-		mind.original = new_character
+		mind.active = FALSE // we wish to transfer the key manually
+		mind.original_mob = weakref(new_character)
 		if(client.prefs.memory)
 			mind.store_memory(client.prefs.memory)
 		if(client.prefs.relations.len && mind.may_have_relations())
@@ -569,7 +571,7 @@
 	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
-	if(config && config.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
+	if(config && config.revival.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
 
 	return new_character

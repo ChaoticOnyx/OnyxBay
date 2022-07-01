@@ -31,7 +31,6 @@
 	active_throwforce = 35
 	force = 30
 	throwforce = 25
-	throw_speed = 1
 	throw_range = 10
 	mod_weight_a = 1.25
 	mod_reach_a = 1.35

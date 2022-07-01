@@ -16,8 +16,8 @@
 	mod_handy = 1.45
 	origin_tech = list(TECH_COMBAT = 2)
 	attack_verb = list("beaten")
-	var/stunforce = 0
-	var/agonyforce = 90
+	var/stunforce = 6
+	var/agonyforce = 75
 	var/status = 0		//whether the thing is on or not
 	var/obj/item/cell/bcell
 	var/hitcost = 10
@@ -176,17 +176,14 @@
 
 	//stun effects
 	if(status)
-		if(prob(50))
-			stun = rand(2,5)
-		target.stun_effect_act(stun, agony, hit_zone, src)
-		msg_admin_attack("[key_name(user)] stunned [key_name(target)] with the [src].")
-
-		deductcharge(hitcost)
-
 		if(ishuman(target))
 			var/mob/living/carbon/human/H = target
-			H.forcesay(GLOB.hit_appends)
+			H.handle_tasing(agony, stun, hit_zone, src)
+		else
+			target.stun_effect_act(stun, agony, hit_zone, src)
+		msg_admin_attack("[key_name(user)] prodded [key_name(target)] with the [src].")
 
+		deductcharge(hitcost)
 	return 0
 
 /obj/item/melee/baton/throw_impact(hit_atom, speed)
@@ -268,7 +265,7 @@
 	mod_reach = 1.25
 	mod_handy = 1.0
 	throwforce = 5
-	stunforce = 0
+	stunforce = 4
 	agonyforce = 60	//same force as a stunbaton, but uses way more charge.
 	hitcost = 25
 	attack_verb = list("poked")

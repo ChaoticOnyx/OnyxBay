@@ -266,6 +266,10 @@
 /obj/structure/sign/warning/vent_port
 	name = "\improper EJECTION/VENTING PORT"
 
+/obj/structure/sign/warning/out_of_service
+	name = "\improper OUT OF SERVICE"
+	icon_state = "out_of_service"
+
 /obj/structure/sign/redcross
 	name = "medbay"
 	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here."

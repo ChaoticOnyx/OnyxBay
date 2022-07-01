@@ -6,7 +6,7 @@
 #define BURNED     3
 
 // Tracks precooked food to stop deep fried baked grilled grilled grilled diona nymph cereal.
-/obj/item/reagent_containers/food/snacks
+/obj/item/reagent_containers/food
 	var/list/cooked_types = list()
 
 // Root type for cooking machines. See following files for specific implementations.
@@ -56,8 +56,8 @@
 				. += "\nYou can see \a [thing_inside] inside."
 			if(COOKED)
 				var/smell = "good"
-				if(istype(thing_inside, /obj/item/reagent_containers/food/snacks))
-					var/obj/item/reagent_containers/food/snacks/S = thing_inside
+				if(istype(thing_inside, /obj/item/reagent_containers/food))
+					var/obj/item/reagent_containers/food/S = thing_inside
 					if(islist(S.nutriment_desc) && length(S.nutriment_desc))
 						smell = pick(S.nutriment_desc)
 				. += "\nYou can see \a [thing_inside] inside. It smells [smell]."
@@ -76,22 +76,22 @@
 		return 0
 
 	var/mob/living/inserted_mob
-	var/obj/item/reagent_containers/food/snacks/check
-	if(istype(I, /obj/item/reagent_containers/food/snacks/badrecipe))
+	var/obj/item/reagent_containers/food/check
+	if(istype(I, /obj/item/reagent_containers/food/badrecipe))
 		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
 		return 0
-	else if(istype(I, /obj/item/reagent_containers/food/snacks/slice) && cook_type == "baked")
+	else if(istype(I, /obj/item/reagent_containers/food/slice) && cook_type == "baked")
 		to_chat(user, SPAN_WARNING("\The [I] too small to get [cook_type]."))
 		return 0
-	else if(istype(I.return_item(), /obj/item/reagent_containers/food/snacks))
+	else if(istype(I.return_item(), /obj/item/reagent_containers/food))
 		check = I.return_item()
 		if(cook_type in check.cooked_types)
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
 			return 0
-	else if(istype(I, /obj/item/reagent_containers/food/condiment))
+	else if(istype(I, /obj/item/reagent_containers/vessel/condiment))
 		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
 		return 0
-	else if(istype(I, /obj/item/reagent_containers/glass))
+	else if(istype(I, /obj/item/reagent_containers/vessel))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
 		return 0
 	else if(istype(I, /obj/item/holder))
@@ -168,15 +168,15 @@
 
 				if(selected_option && output_options.len)
 					var/cook_path = output_options[selected_option]
-					var/obj/item/reagent_containers/food/snacks/result = new cook_path(src)
+					var/obj/item/reagent_containers/food/result = new cook_path(src)
 
 					result = change_product_strings(result, product_data["item"])
 					result = change_product_appearance(result, product_data["item"])
 
 					if(product_data["reagents"] && product_data["total_volume"])
 						product_data["reagents"].trans_to(result, product_data["total_volume"])
-					if(istype(product_data["item"], /obj/item/reagent_containers/food/snacks))
-						var/obj/item/reagent_containers/food/snacks/I = product_data["item"]
+					if(istype(product_data["item"], /obj/item/reagent_containers/food))
+						var/obj/item/reagent_containers/food/I = product_data["item"]
 						result.cooked_types = I.cooked_types.Copy()
 
 					qdel(thing_inside)
@@ -185,8 +185,8 @@
 					thing_inside = change_product_strings(thing_inside)
 					thing_inside = change_product_appearance(thing_inside)
 
-				if(istype(product_data["item"], /obj/item/reagent_containers/food/snacks))
-					var/obj/item/reagent_containers/food/snacks/I = product_data["item"]
+				if(istype(product_data["item"], /obj/item/reagent_containers/food))
+					var/obj/item/reagent_containers/food/I = product_data["item"]
 					I.cooked_types |= cook_type
 				cooking_is_done = TRUE
 
@@ -202,7 +202,7 @@
 					next_burn_time += max(Floor(cook_time/5),1)
 					if(prob(burn_chance))
 						qdel(thing_inside)
-						thing_inside = new /obj/item/reagent_containers/food/snacks/badrecipe(src)
+						thing_inside = new /obj/item/reagent_containers/food/badrecipe(src)
 						visible_message(SPAN_DANGER("\The [src] vomits a gout of rancid smoke!"))
 						var/datum/effect/effect/system/smoke_spread/bad/smoke = new /datum/effect/effect/system/smoke_spread/bad()
 						smoke.attach(src)
@@ -216,7 +216,7 @@
 /obj/machinery/cooker/proc/product_status()
 	if(!thing_inside || thing_inside.loc != src)
 		return NO_PRODUCT
-	if(istype(thing_inside, /obj/item/reagent_containers/food/snacks/badrecipe))
+	if(istype(thing_inside, /obj/item/reagent_containers/food/badrecipe))
 		return BURNED
 	if(cooking_is_done)
 		return COOKED
@@ -293,8 +293,8 @@
 			food_item.filling_color = food_color
 	else
 		var/image/I = image(product.icon, "[product.icon_state]_filling")
-		if(istype(origin, /obj/item/reagent_containers/food/snacks))
-			var/obj/item/reagent_containers/food/snacks/S = origin
+		if(istype(origin, /obj/item/reagent_containers/food))
+			var/obj/item/reagent_containers/food/S = origin
 			I.color = S.filling_color
 		if(!I.color)
 			I.color = food_color

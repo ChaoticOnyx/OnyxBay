@@ -9,7 +9,7 @@
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno, /datum/unarmed_attack/bite/strong/xeno)
 	generic_attack_mod = 4.0
 	hud_type = /datum/hud_data/alien
-	meat_type = /obj/item/reagent_containers/food/snacks/meat/xeno
+	meat_type = /obj/item/reagent_containers/food/meat/xeno
 	rarity_value = 3
 
 	has_fine_manipulation = 0
@@ -193,6 +193,9 @@
 
 /datum/species/monkey/is_eligible_for_antag_spawn(antag_id)
 	return FALSE
+
+/datum/species/xenos/get_species_runechat_color(mob/living/carbon/human/H)
+	return blood_color
 
 
 // Caste species
