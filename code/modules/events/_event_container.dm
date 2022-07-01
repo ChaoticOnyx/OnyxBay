@@ -199,7 +199,8 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Electrical Storm",      /datum/event/electrical_storm,      0,     list(ASSIGNMENT_ENGINEER = 10, ASSIGNMENT_JANITOR = 5)),
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Plague Infection",      /datum/event/virus_major,           0,     list(ASSIGNMENT_MEDICAL = 20), is_one_shot = 1),
 		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Xenomorph Infestation", /datum/event/xenomorph_infestation, 0,     list(ASSIGNMENT_SECURITY = 2), is_one_shot = 1),
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Biohazard Outbreak",    /datum/event/biohazard_outbreak,    0,     list(ASSIGNMENT_ANY = 2),      is_one_shot = 1)
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Biohazard Outbreak",    /datum/event/biohazard_outbreak,    0,     list(ASSIGNMENT_ANY = 2),      is_one_shot = 1),
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Mimic Invasion",        /datum/event/mimic_invasion,        0,     list(ASSIGNMENT_ANY = 2),      is_one_shot = 1)
 	)
 
 #undef ASSIGNMENT_ANY
