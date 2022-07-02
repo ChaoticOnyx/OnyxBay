@@ -1,17 +1,3 @@
-/datum/map/exodus
-	post_round_safe_areas = list (
-		/area/centcom,
-		/area/shuttle/escape/centcom,
-		/area/shuttle/escape_pod1,
-		/area/shuttle/escape_pod2,
-		/area/shuttle/escape_pod3,
-		/area/shuttle/escape_pod5,
-		/area/shuttle/transport/centcom,
-		/area/shuttle/administration/,
-		/area/shuttle/specops/centcom,
-	)
-
-
 // SHUTTLES
 // Shuttle areas must contain at least two areas in a subgroup if you want to move a shuttle from one place to another.
 // Look at escape shuttle for example.
