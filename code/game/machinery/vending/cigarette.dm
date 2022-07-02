@@ -20,7 +20,7 @@
 		We understand the depressed, alcoholic cowboy in you. That's why we also smoke Jericho.;\
 		Professionals. Better cigarettes for better people. Yes, better people.;\
 		StarLing - look cool 'till you drool!"
-	vend_delay = 30
+	vend_delay = 30 SECONDS
 	icon_state = "cigs"
 	alt_icons = list("cigs", "cigs_alt")
 	use_alt_icons = TRUE
@@ -116,7 +116,7 @@
 		We understand the depressed, alcoholic cowboy in you. That's why we also smoke Jericho.;\
 		Professionals. Better cigarettes for better people. Yes, better people.;\
 		StarLing - look cool 'till you drool!"
-	vend_delay = 21
+	vend_delay = 21 SECONDS
 	icon_state = "cigars"
 	use_vend_state = TRUE
 	component_types = list(/obj/item/vending_cartridge/cigars)

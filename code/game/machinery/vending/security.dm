@@ -7,7 +7,8 @@
 	alt_icons = list("sec", "sec_alt")
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
-	vend_delay = 20
+	gen_rand_amount = FALSE
+	vend_delay = 20 SECONDS
 	req_access = list(access_security)
 	component_types = list(/obj/item/vending_cartridge/security)
 	legal = list(	/obj/item/handcuffs = 8,

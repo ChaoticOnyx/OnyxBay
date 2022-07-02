@@ -4,7 +4,7 @@
 	desc = "Medical drug dispenser."
 	icon_state = "med"
 	use_vend_state = TRUE
-	vend_delay = 18
+	vend_delay = 18 SECONDS
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	req_access = list(access_medical_equip)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.

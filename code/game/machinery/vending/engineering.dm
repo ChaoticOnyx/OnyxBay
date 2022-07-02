@@ -4,7 +4,8 @@
 	desc = "Tools for tools."
 	icon_state = "tool"
 	use_vend_state = TRUE
-	vend_delay = 11
+	gen_rand_amount = FALSE
+	vend_delay = 11 SECONDS
 	component_types = list(/obj/item/vending_cartridge/tool)
 	legal = list(	/obj/item/stack/cable_coil/random = 10,
 					/obj/item/crowbar = 5,
@@ -29,7 +30,7 @@
 	desc = "Spare tool vending. What? Did you expect some witty description?"
 	icon_state = "engivend"
 	use_vend_state = TRUE
-	vend_delay = 21
+	vend_delay = 21 SECONDS
 	req_one_access = list(access_atmospherics, access_engine_equip)
 	component_types = list(/obj/item/vending_cartridge/engivend)
 	legal = list(	/obj/item/clothing/glasses/hud/standard/meson = 2,

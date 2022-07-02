@@ -6,7 +6,8 @@
 	product_ads = "We like plants!;Don't you want some?;The greenest thumbs ever.;We like big plants.;Soft soil..."
 	icon_state = "nutri"
 	use_vend_state = TRUE
-	vend_delay = 26
+	gen_rand_amount = FALSE
+	vend_delay = 26 SECONDS
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/hydronutrients)
 	legal = list(	/obj/item/reagent_containers/vessel/plastic/eznutrient = 5,
@@ -30,7 +31,8 @@
 	product_ads = "We like plants!;Grow some crops!;Grow, baby, growww!;Aw h'yeah son!"
 	icon_state = "seeds"
 	use_vend_state = TRUE
-	vend_delay = 13
+	gen_rand_amount = FALSE
+	vend_delay = 13 SECONDS
 	component_types = list(/obj/item/vending_cartridge/hydroseeds)
 	legal = list(	/obj/item/seeds/bananaseed = 3, /obj/item/seeds/berryseed = 3, /obj/item/seeds/carrotseed = 3, /obj/item/seeds/chantermycelium = 3, /obj/item/seeds/chiliseed = 3,
 					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3, /obj/item/seeds/soyaseed = 3,
