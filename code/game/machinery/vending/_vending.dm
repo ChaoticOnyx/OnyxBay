@@ -130,12 +130,9 @@
 			set_broken(1)
 
 /obj/machinery/vending/Destroy()
-	qdel(wires)
-	wires = null
-	qdel(coin)
-	coin = null
-	qdel(cartridge)
-	cartridge = null
+	QDEL_NULL(wires)
+	QDEL_NULL(coin)
+	QDEL_NULL(cartridge)
 	. = ..()
 
 /obj/machinery/vending/ex_act(severity)
@@ -241,20 +238,16 @@
 	return
 
 /obj/machinery/vending/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
-	if(stat & POWEROFF)
-		return 0
-	if(!istype(C))
-		return 0
-	if(!panel_open)
-		return 0
-	if(!do_after(user, 40, src) && !(stat & POWEROFF))
-		return 0
+	if(!istype(C) || (stat & POWEROFF) || !panel_open)
+		return FALSE
+	if(!do_after(user, 40, src) || !(stat & POWEROFF)|| !panel_open)
+		return FALSE
 	. = dismantle()
 
 /obj/machinery/vending/dismantle()
 	playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 	var/obj/machinery/vending_frame/V = new /obj/machinery/vending_frame(get_turf(src))
-	V.anchored = 1
+	V.anchored = TRUE
 	V.set_dir(dir)
 	V.state = 3
 	for(var/obj/I in component_parts)
@@ -263,26 +256,24 @@
 	V.update_icon()
 	V.update_desc()
 	qdel(src)
-	return 1
+	return FALSE
 
 /obj/machinery/vending/proc/attempt_to_repair(mob/user, obj/item/weldingtool/W)
-	if(!istype(W))
-		return 0
-	if(!W.isOn())
-		return 0
+	if(!istype(W) || !W.isOn())
+		return FALSE
 	if(health == max_health)
 		to_chat(user, SPAN("notice", "\The [src] is undamaged."))
-		return 0
+		return FALSE
 	if(!W.remove_fuel(0, user))
 		to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
-		return 0
+		return FALSE
 	playsound(src, 'sound/items/Welder.ogg', 100, 1)
 	user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), SPAN("notice", "You start repairing the damage to [src]..."))
 	if(do_after(user, 30, src) && W.isOn())
 		health = max_health
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), SPAN("notice", "You repair \the [src]."))
 		set_broken(0)
-	return 1
+	return TRUE
 
 /obj/machinery/vending/MouseDrop_T(obj/item/I, mob/user)
 	if(!CanMouseDrop(I, user) || (I.loc != user))
@@ -291,12 +282,11 @@
 
 /obj/machinery/vending/proc/attempt_to_stock(obj/item/I, mob/user)
 	if(!cartridge)
-		return 0
+		return FALSE
 	for(var/datum/stored_items/vending_products/R in cartridge.product_records)
 		if(I.type == R.item_path)
 			stock(I, R, user)
-			return 1
-
+			return TRUE
 /**
  *  Receive payment with cashmoney.
  */
@@ -401,7 +391,7 @@
 	return attack_hand(user)
 
 /obj/machinery/vending/attack_hand(mob/user)
-	if(stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN || NOPOWER))
 		return
 
 	if(seconds_electrified != 0)
