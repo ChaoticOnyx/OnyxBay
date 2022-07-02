@@ -28,7 +28,6 @@
 	var/vend_power_usage = 150 //actuators and stuff
 
 	// Vending-related
-	var/active = TRUE // No sales pitches if off!
 	var/vend_ready = TRUE // Are we ready to vend?? Is it time??
 	var/vend_delay = null // How long does it take to vend? Uses random value if set to null.
 	var/categories = CAT_NORMAL // Bitmask of cats we're currently showing
@@ -76,10 +75,10 @@
 	overlays.Cut()
 	if(stat & BROKEN)
 		icon_state = "[base_icon]-broken"
-	else if( !(stat & NOPOWER) )
+	else if(!(stat & (NOPOWER | POWEROFF)))
 		icon_state = base_icon
 	else
-		icon_state = "[base_icon]-off"		
+		icon_state = "[base_icon]-off"
 	if(panel_open)
 		overlays += image(icon, "[base_icon]-panel")
 
@@ -242,13 +241,13 @@
 	return
 
 /obj/machinery/vending/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
-	if(active)
+	if(stat & POWEROFF)
 		return 0
 	if(!istype(C))
 		return 0
 	if(!panel_open)
 		return 0
-	if(!do_after(user, 40, src) && active)
+	if(!do_after(user, 40, src) && !(stat & POWEROFF))
 		return 0
 	. = dismantle()
 
@@ -653,10 +652,7 @@
 		return 1
 
 /obj/machinery/vending/Process()
-	if(stat & (BROKEN|NOPOWER))
-		return
-
-	if(!active)
+	if(stat & (BROKEN|NOPOWER|POWEROFF))
 		return
 
 	if(seconds_electrified > 0)
