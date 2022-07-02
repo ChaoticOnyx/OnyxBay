@@ -115,7 +115,7 @@
 	to_chat(user, SPAN_NOTICE("You start to install display in the frame."))
 	if(do_after(user, 20, src) && state == STAGE_GLASS)
 		if(G.use(5))
-			to_chat(user, SPAN_NOTICE("You install display in the frame."))
+			to_chat(user, SPAN_NOTICE("You have installed display in the frame."))
 			state = STAGE_FINISHING
 			update_icon()
 
