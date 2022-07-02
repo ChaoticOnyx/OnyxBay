@@ -76,7 +76,7 @@
 	to_chat(user, SPAN_NOTICE("You start to add cables to the frame."))
 	if(do_after(user, 20, src) && state == STAGE_CABLE)
 		if(C.use(5))
-			to_chat(user, SPAN_NOTICE("You add cables to the frame."))
+			to_chat(user, SPAN_NOTICE("You have added cables to the frame."))
 			state = STAGE_CARTRIDGE
 			update_icon()
 
