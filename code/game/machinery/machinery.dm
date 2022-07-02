@@ -229,7 +229,7 @@ Class Procs:
 	return !inoperable(additional_flags)
 
 /obj/machinery/proc/inoperable(additional_flags = 0)
-	return (stat & (NOPOWER|BROKEN|additional_flags))
+	return (stat & (POWEROFF|NOPOWER|BROKEN|additional_flags))
 
 /obj/machinery/CanUseTopic(mob/user)
 	if(stat & BROKEN)
