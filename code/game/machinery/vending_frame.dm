@@ -8,7 +8,7 @@
 	icon = 'icons/obj/stock_parts.dmi'
 	icon_state = "vbox_0"
 	density = 1
-	anchored = 0
+	anchored = FALSE
 	use_power = POWER_USE_OFF
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = SFX_PULL_MACHINE

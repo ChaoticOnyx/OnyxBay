@@ -29,7 +29,7 @@ var/const/VENDING_POWER = 16
 
 /datum/wires/vending/UpdatePulsed(index)
 	var/obj/machinery/vending/V = holder
-	if(index != VENDING_POWER && V.stat & POWEROFF)
+	if(V.stat & POWEROFF)
 		return
 	switch(index)
 		if(VENDING_WIRE_THROW)

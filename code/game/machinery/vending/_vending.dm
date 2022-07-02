@@ -213,7 +213,7 @@
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/material/coin) && cartridge.premium.len > 0)
+	else if(istype(W, /obj/item/material/coin) && !coin && cartridge.premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
