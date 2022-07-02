@@ -3,9 +3,9 @@
 	desc = "Studies the emissions of anomalous materials to discover their uses."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "isolator"
-	anchored = 1
+	anchored = TRUE
 	density = 1
-	var/scan_in_progress = 0
+	var/scan_in_progress = FALSE
 	var/scan_num = 0
 	var/obj/scanned_obj
 	var/obj/machinery/artifact_scanpad/owned_scanner = null
@@ -56,7 +56,7 @@
 
 /obj/machinery/artifact_analyser/Process()
 	if(scan_in_progress && world.time > scan_completion_time)
-		scan_in_progress = 0
+		scan_in_progress = FALSE
 		updateDialog()
 
 		var/results = ""
@@ -82,8 +82,8 @@
 
 		if(scanned_object && istype(scanned_object, /obj/machinery/artifact))
 			var/obj/machinery/artifact/A = scanned_object
-			A.anchored = 0
-			A.being_used = 0
+			A.anchored = FALSE
+			A.being_used = FALSE
 			scanned_object = null
 
 /obj/machinery/artifact_analyser/OnTopic(user, href_list)
@@ -92,7 +92,7 @@
 			reconnect_scanner()
 		if(owned_scanner)
 			playsound(src.loc, 'sound/signals/processing7.ogg', 50)
-			var/artifact_in_use = 0
+			var/artifact_in_use = FALSE
 			for(var/obj/O in owned_scanner.loc)
 				if(O == owned_scanner)
 					continue
@@ -101,16 +101,16 @@
 				if(istype(O, /obj/machinery/artifact))
 					var/obj/machinery/artifact/A = O
 					if(A.being_used)
-						artifact_in_use = 1
+						artifact_in_use = TRUE
 					else
-						A.anchored = 1
-						A.being_used = 1
+						A.anchored = TRUE
+						A.being_used = TRUE
 
 				if(artifact_in_use)
 					src.visible_message("<b>[name]</b> states, \"Cannot scan. Too much interference.\"")
 				else
 					scanned_object = O
-					scan_in_progress = 1
+					scan_in_progress = TRUE
 					scan_completion_time = world.time + scan_duration
 					src.visible_message("<b>[name]</b> states, \"Scanning begun.\"")
 				break
@@ -118,7 +118,12 @@
 				src.visible_message("<b>[name]</b> states, \"Unable to isolate scan target.\"")
 		. = TOPIC_REFRESH
 	else if(href_list["halt_scan"])
-		scan_in_progress = 0
+		scan_in_progress = FALSE
+		if(scanned_object && istype(scanned_object, /obj/machinery/artifact))
+			var/obj/machinery/artifact/A = scanned_object
+			A.anchored = FALSE
+			A.being_used = FALSE
+			scanned_object = null
 		src.visible_message("<b>[name]</b> states, \"Scanning halted.\"")
 		. = TOPIC_REFRESH
 
