@@ -112,7 +112,7 @@
 		to_chat(user, SPAN_WARNING("You need at least five sheets of glass to add it to the frame."))
 		return
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-	to_chat(user, SPAN_NOTICE("You start to istall display in the frame."))
+	to_chat(user, SPAN_NOTICE("You start to install display in the frame."))
 	if(do_after(user, 20, src) && state == STAGE_GLASS)
 		if(G.use(5))
 			to_chat(user, SPAN_NOTICE("You install display in the frame."))
