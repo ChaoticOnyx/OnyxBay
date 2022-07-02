@@ -238,7 +238,7 @@
 	return
 
 /obj/machinery/vending/default_deconstruction_crowbar(mob/user, obj/item/crowbar/C)
-	if(!istype(C) || (stat & POWEROFF) || !panel_open)
+	if(!istype(C) || !(stat & (POWEROFF | NOPOWER)) || !panel_open)
 		return FALSE
 	if(!do_after(user, 40, src) || !(stat & (POWEROFF | NOPOWER)) || !panel_open)
 		return FALSE
