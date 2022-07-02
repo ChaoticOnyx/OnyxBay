@@ -391,7 +391,7 @@
 	return attack_hand(user)
 
 /obj/machinery/vending/attack_hand(mob/user)
-	if(stat & (BROKEN || NOPOWER))
+	if(stat & (BROKEN | NOPOWER))
 		return
 
 	if(seconds_electrified != 0)
