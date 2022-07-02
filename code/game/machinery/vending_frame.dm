@@ -76,7 +76,7 @@
 	to_chat(user, SPAN_NOTICE("You start to add cables to the frame."))
 	if(do_after(user, 20, src) && state == STAGE_CABLE)
 		if(C.use(5))
-			to_chat(user, SPAN_NOTICE("You add cables to the frame."))
+			to_chat(user, SPAN_NOTICE("You have added cables to the frame."))
 			state = STAGE_CARTRIDGE
 			update_icon()
 
@@ -109,13 +109,13 @@
 
 /obj/machinery/vending_frame/proc/add_glass(obj/item/stack/material/glass/G, mob/user)
 	if(G.get_amount() < 5)
-		to_chat(user, SPAN_WARNING("You need at least five lengths of cable to add it to the frame."))
+		to_chat(user, SPAN_WARNING("You need at least five sheets of glass to add it to the frame."))
 		return
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-	to_chat(user, SPAN_NOTICE("You start to istall display in the frame."))
+	to_chat(user, SPAN_NOTICE("You start to install display in the frame."))
 	if(do_after(user, 20, src) && state == STAGE_GLASS)
 		if(G.use(5))
-			to_chat(user, SPAN_NOTICE("You install display in the frame."))
+			to_chat(user, SPAN_NOTICE("You have installed display in the frame."))
 			state = STAGE_FINISHING
 			update_icon()
 
