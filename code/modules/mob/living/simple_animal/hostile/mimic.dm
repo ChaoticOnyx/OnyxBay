@@ -1,8 +1,8 @@
-//
-// Abstract Class
-//
+#define WAIT_TO_HEAL 20 SECONDS
+#define WAIT_TO_CRIT 15 SECONDS
+#define CRIT_MULTIPLIER 10
 
-var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate)
+var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate, /obj/structure/window_frame)
 
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
@@ -32,14 +32,18 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	faction = "mimic"
 	move_to_delay = 8
 
+	controllable = TRUE
+
 	var/weakref/copy_of
 	var/weakref/creator // the creator
 	var/destroy_objects = FALSE
 	var/knockdown_people = FALSE
 	var/default_appearance = /obj/structure/closet/crate
+	var/inactive_time = 0
 
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
+
 	o = o || default_appearance
 
 	if(!o)
@@ -49,72 +53,124 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 			valid_targets += O
 
 		o = pick(valid_targets)
+
 	if(ispath(o))
 		o = new o(newloc)
-	CopyObject(o,creator)
+
+	if(creator)
+		set_creator(creator)
+
+	mimicry(o)
+	_add_actions()
+
+	health = maxHealth
+
+	register_signal(src, SIGNAL_MOVED, .proc/_update_inactive_time)
+
+/mob/living/simple_animal/hostile/mimic/proc/_update_inactive_time()
+	inactive_time = world.time
+
+/mob/living/simple_animal/hostile/mimic/attack_hand(mob/user)
+	. = ..()
+	
+	if(user.a_intent != I_HURT)
+		if(world.time > inactive_time + WAIT_TO_CRIT)
+			user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
+
+	_update_inactive_time()
+
+/mob/living/simple_animal/hostile/mimic/Life()
+	. = ..()
+	
+	if(client)
+		update_action_buttons()
+
+	if(world.time > inactive_time + WAIT_TO_HEAL)
+		THROTTLE(heal_cd, 1 SECOND)
+
+		if(heal_cd)
+			var/heal_amount = max(1, maxHealth * 0.1)
+
+			health = clamp(health + heal_amount, 0, maxHealth)
 
 /mob/living/simple_animal/hostile/mimic/find_target()
 	. = ..()
+
 	if(.)
 		audible_emote("growls at [.]")
 
 /mob/living/simple_animal/hostile/mimic/ListTargets()
 	// Return a list of targets that isn't the creator
 	. = ..()
+
 	if(creator)
 		return . - creator.resolve()
 
-/mob/living/simple_animal/hostile/mimic/proc/CopyObject(obj/O, mob/living/creator)
-
-	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
-		O.forceMove(src)
-		copy_of = weakref(O)
-		appearance = O
-		icon_living = icon_state
-
-		if(istype(O, /obj/structure))
-			health = anchored * 50 + 50
-			destroy_objects = TRUE
-			if(O.density && O.anchored)
-				knockdown_people = TRUE
-				melee_damage_lower *= 2
-				melee_damage_upper *= 2
-		else if(istype(O, /obj/item))
-			var/obj/item/I = O
-			health = 15 * I.w_class
-			melee_damage_lower = 2 + I.force
-			melee_damage_upper = 2 + I.force
-			move_to_delay = 2 * I.w_class
-
-		maxHealth = health
-		if(creator)
-			creator = weakref(creator)
-			faction = "\ref[creator]" // very unique
-
-/mob/living/simple_animal/hostile/mimic/death()
-	if(!copy_of)
-		return
+/mob/living/simple_animal/hostile/mimic/proc/_release_copy()
 	var/atom/movable/C = copy_of.resolve()
-	..(null, "dies!")
-	if(C)
-		C.forceMove(src.loc)
 
-		if(istype(C,/obj/structure/closet))
-			for(var/atom/movable/M in src)
-				M.forceMove(C)
+	if(!C)
+		return
 
-		if(istype(C,/obj/item/storage))
-			var/obj/item/storage/S = C
-			for(var/atom/movable/M in src)
-				if(S.can_be_inserted(M,null,1))
-					S.handle_item_insertion(M)
-				else
-					M.forceMove(src.loc)
+	C.forceMove(src.loc)
+
+	if(istype(C, /obj/structure/closet))
+		for(var/atom/movable/M in src)
+			M.forceMove(C)
+
+	if(istype(C, /obj/item/storage))
+		var/obj/item/storage/S = C
 
 		for(var/atom/movable/M in src)
-			M.forceMove(get_turf(src))
-		qdel(src)
+			if(S.can_be_inserted(M, null, 1))
+				S.handle_item_insertion(M)
+			else
+				M.forceMove(src.loc)
 
+	for(var/atom/movable/M in src)
+		M.forceMove(get_turf(src))
+
+/mob/living/simple_animal/hostile/mimic/proc/mimicry(obj/target)
+	if(copy_of)
+		_release_copy()
+
+	if(!is_target_valid_for_mimicry(target))
+		return
+
+	forceMove(get_turf(target))
+	target.forceMove(src)
+	copy_of = weakref(target)
+	appearance = target
+	icon_living = icon_state
+
+	if(istype(target, /obj/structure))
+		maxHealth = anchored * 50 + 50
+		destroy_objects = TRUE
+
+		if(target.density && target.anchored)
+			knockdown_people = TRUE
+			melee_damage_lower *= 2
+			melee_damage_upper *= 2
+	else if(istype(target, /obj/item))
+		var/obj/item/I = target
+
+		maxHealth = 15 * I.w_class
+		melee_damage_lower = 2 + I.force
+		melee_damage_upper = 2 + I.force
+		move_to_delay = 2 * I.w_class
+
+	health = clamp(health, 0, maxHealth)
+
+/mob/living/simple_animal/hostile/mimic/proc/set_creator(mob/living/creator)
+	creator = weakref(creator)
+	faction = "\ref[creator]" // very unique
+
+/mob/living/simple_animal/hostile/mimic/death()
+	if(copy_of)
+		_release_copy()
+
+	..(null, "dies!")
+	qdel(src)
 
 /mob/living/simple_animal/hostile/mimic/DestroySurroundings()
 	if(destroy_objects)
@@ -122,18 +178,60 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/AttackingTarget()
 	. =..()
-	if(knockdown_people)
-		var/mob/living/L = .
-		if(istype(L))
-			if(prob(15))
-				L.Weaken(1)
-				L.visible_message(SPAN_DANGER("\The [src] knocks down \the [L]!"))
+
+	if(!knockdown_people)
+		return
+
+	var/mob/living/L = .
+
+	if(istype(L) && prob(15))
+		L.Weaken(1)
+		L.visible_message(SPAN_DANGER("\The [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/mimic/Destroy()
 	copy_of = null
 	creator = null
 
+	unregister_signal(src, SIGNAL_MOVED)
+
 	return ..()
+
+/mob/living/simple_animal/hostile/mimic/proc/is_target_valid_for_mimicry(obj/O)
+	if(QDELETED(O))
+		return FALSE
+
+	if((!istype(O, /obj/item) && !istype(O, /obj/structure)))
+		return FALSE
+	
+	if(is_type_in_list(O, protected_objects))
+		return FALSE
+	
+	if(get_dist(src, O) > 1)
+		return FALSE
+
+	return TRUE
+
+/mob/living/simple_animal/hostile/mimic/proc/_choose_mimicry_target()
+	var/list/targets = view(1, src)
+
+	for(var/atom/A in targets)
+		if(!is_target_valid_for_mimicry(A))
+			targets -= A
+
+	if(!length(targets))
+		return
+	
+	var/obj/T = input(usr, "Choose target for mimicry", "Mimicry") as null | anything in targets
+
+	if(!is_target_valid_for_mimicry(T))
+		return
+	
+	return T
+
+/mob/living/simple_animal/hostile/mimic/proc/_add_actions()
+	var/datum/action/mimic/mimicry/A = new()
+
+	A.Grant(src)
 
 /mob/living/simple_animal/hostile/mimic/sleeping
 	wander = FALSE
@@ -162,3 +260,61 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 /mob/living/simple_animal/hostile/mimic/sleeping/DestroySurroundings()
 	if(awake)
 		..()
+
+// Player interactions
+
+/mob/living/simple_animal/hostile/mimic/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)
+		if(is_target_valid_for_mimicry(A))
+			mimicry(A)
+
+	..()
+
+/mob/living/simple_animal/hostile/mimic/AltClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_ALT_CLICK)
+		if(is_target_valid_for_mimicry(A))
+			mimicry(A)
+
+	..()
+
+/mob/living/simple_animal/hostile/mimic/CtrlClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_CLICK)
+		if(is_target_valid_for_mimicry(A))
+			mimicry(A)
+
+	..()
+
+/mob/living/simple_animal/hostile/mimic/CtrlShiftClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_SHIFT_CLICK)
+		if(is_target_valid_for_mimicry(A))
+			mimicry(A)
+
+	..()
+
+/mob/living/simple_animal/hostile/mimic/verb/Mimicry()
+	set name = "Mimicry"
+	set category = "Mimic"
+
+	var/obj/T = _choose_mimicry_target()
+
+	if(!T)
+		to_chat(usr, SPAN("warning", "No valid targets to mimicry"))
+		return
+
+	mimicry(T)
+
+/datum/action/mimic/mimicry
+	name = "Mimicry"
+
+	button_icon_state = "mimicry"
+	action_type = AB_GENERIC
+	procname = /mob/living/simple_animal/hostile/mimic/verb/Mimicry
+
+/datum/action/mimic/Grant(mob/living/T)
+	. = ..()
+
+	target = T
+
+#undef WAIT_TO_HEAL
+#undef WAIT_TO_CRIT
+#undef CRIT_MULTIPLIER
