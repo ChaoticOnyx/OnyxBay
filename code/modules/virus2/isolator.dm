@@ -23,7 +23,7 @@
 	var/datum/computer_file/data/virus_record/entry = null
 	var/obj/item/reagent_containers/syringe/sample = null
 
-/obj/machinery/disease2/isolator/RefreshParts()
+/obj/machinery/disease2/isolator/Initialize()
 	. = ..()
 	RefreshParts()
 
@@ -52,7 +52,7 @@
 		return
 	if(default_part_replacement(user, O))
 		return
-	
+
 	if(!istype(O, /obj/item/reagent_containers/syringe))
 		return
 
