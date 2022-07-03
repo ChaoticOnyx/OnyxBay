@@ -19,7 +19,7 @@
 		icon_state = "mmi-empty"
 		return
 	icon_state = "mmi-inner"
-	if(!brainobj?.species || !(brainobj?.species in whitelisted_species))
+	if(!brainobj.species || !(brainobj.species in whitelisted_species))
 		overlays += "mmi-error"
 	else
 		overlays += "mmi-[lowertext(brainobj.species.name)]"
