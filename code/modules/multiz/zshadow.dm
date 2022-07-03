@@ -2,7 +2,7 @@
 	var/mob/zshadow/shadow
 
 /mob/zshadow
-	plane = OVER_OPENSPACE_PLANE
+	plane = OPENSPACE_PLANE
 	name = "shadow"
 	desc = "Z-level shadow"
 	status_flags = GODMODE
