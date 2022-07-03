@@ -28,7 +28,7 @@
 	layer = ABOVE_HUMAN_LAYER
 	var/number = 1
 
-/obj/item/csi_marker/Initialize(mapload)
+/obj/item/csi_marker/Initialize()
 	. = ..()
 	desc += " This one is marked with [number]."
 	icon_state = "card[clamp(number, 1, 7)]"
