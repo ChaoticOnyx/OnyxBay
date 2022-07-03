@@ -42,7 +42,7 @@
 	desc = "A gun that discharges high amounts of controlled radiation to slowly break a target into component elements."
 	icon_state = "decloner"
 	item_state = "decloner"
-	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 7, TECH_POWER = 6)
+	origin_tech = list(TECH_COMBAT = 7, TECH_MATERIAL = 7, TECH_POWER = 6)
 	max_shots = 10
 	projectile_type = /obj/item/projectile/energy/declone
 	combustion = 0
