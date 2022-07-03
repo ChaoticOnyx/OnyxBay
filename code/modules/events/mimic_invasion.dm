@@ -18,7 +18,7 @@
 		var/area/A = pick_area(list(/proc/is_station_area))
 		var/obj/item/O = pick(A.contents)
 
-		if(!istype(O))
+		if(QDELETED(O) || !istype(O))
 			continue
 		
 		var/turf/T = get_turf(O.loc)
