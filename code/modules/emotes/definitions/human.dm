@@ -13,6 +13,30 @@
 /decl/emote/human/deathgasp/get_emote_message_3p(mob/living/carbon/human/user)
 	return "USER [user.species.get_death_message()]"
 
+/decl/emote/human/dance
+	key = "dance"
+	var/dancing = 0
+
+/decl/emote/human/dance/do_emote(mob/living/carbon/human/user)
+	if(dancing)
+		dancing = 0
+		return
+
+	user.pixel_y = initial(user.pixel_y)
+	dancing = 1
+	var/oldpixely = user.pixel_y
+	while(dancing)
+		var/pixely = rand(5, 6)
+		animate(user, pixel_y = pixely, time = 0.5)
+		sleep(1)
+		animate(user, pixel_y = oldpixely, time = 0.7)
+		sleep(2)
+		animate(user, pixel_y = 2, time = 0.2)
+		sleep(1)
+		animate(user, pixel_y = oldpixely, time = 0.2)
+		if(user.resting)
+			dancing = 0
+
 /decl/emote/human/swish
 	key = "swish"
 
