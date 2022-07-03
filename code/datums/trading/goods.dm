@@ -169,7 +169,7 @@
 								/obj/item/clothing/accessory/medal						= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/accessory/storage					= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/gloves								= TRADER_SUBTYPES_ONLY,
-								/obj/item/clothing/gloves/color/white/bluespace_tech	= TRADER_BLACKLIST
+								/obj/item/clothing/gloves/color/white/bluespace_tech	= TRADER_BLACKLIST,
 								/obj/item/clothing/gloves/lightrig						= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/gloves/rig							= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/gloves/chameleon						= TRADER_BLACKLIST,
