@@ -23,7 +23,7 @@
 		overlays += "mmi-error"
 	else
 		overlays += "mmi-[lowertext(brainobj.species.name)]"
-	if(brainmob?.stat == DEAD || brainmob?.ssd_check())
+	if(brainmob?.stat == DEAD)
 		overlays += "mmi-outer-dead"
 	else
 		overlays += "mmi-outer"
@@ -67,6 +67,8 @@
 	desc = initial(desc)
 	update_icon()
 	if(brainmob?.stat == DEAD || brainmob?.ssd_check())
+		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be dead.")
+	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be unconscious.")
 
 /obj/item/device/mmi/proc/add_brain(obj/item/organ/internal/brain/B, mob/user)
@@ -83,6 +85,7 @@
 	SetName("[initial(name)]: ([brainmob.real_name])")
 	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/device/mmi/proc/update_info)
 	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/device/mmi/proc/update_info)
+	register_signal(brainmob, SIGNAL_MOB_DEATH, /obj/item/device/mmi/proc/update_info)
 
 /obj/item/device/mmi/proc/remove_brain()
 	var/obj/item/organ/internal/brain/brain
@@ -94,6 +97,7 @@
 		brain = new(loc)
 	unregister_signal(brainmob, SIGNAL_LOGGED_IN)
 	unregister_signal(brainmob, SIGNAL_LOGGED_OUT)
+	unregister_signal(brainmob, SIGNAL_MOB_DEATH)
 	brainmob.container = null // Reset brainmob mmi var.
 	brainmob.loc = brain // Throw mob into brain.
 	brainmob.remove_from_living_mob_list() // Get outta here!
