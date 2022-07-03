@@ -69,16 +69,16 @@
 	if(brainmob?.stat == DEAD || brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be unconscious.")
 
-/obj/item/device/mmi/proc/add_brain(obj/item/organ/internal/brain/brain, mob/user)
+/obj/item/device/mmi/proc/add_brain(obj/item/organ/internal/brain/B, mob/user)
 	locked = TRUE
-	brainmob = brain.brainmob
-	brain.brainmob = null
+	brainmob = B.brainmob
+	B.brainmob = null
 	brainmob.forceMove(src)
 	brainmob.container = src
 	brainmob.set_stat(CONSCIOUS)
 	brainmob.switch_from_dead_to_living_mob_list() // Update dem lists.
-	user.drop_item()
-	brainobj = brain
+	user.remove_from_mob(B)
+	brainobj = B
 	brainobj.forceMove(src)
 	SetName("[initial(name)]: ([brainmob.real_name])")
 	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/device/mmi/proc/update_info)
@@ -163,7 +163,7 @@
 	name = "radio-enabled man-machine interface"
 	desc = "The Warrior's bland acronym, MMI, obscures the true horror of this monstrosity. This one comes with a built-in radio."
 	origin_tech = list(TECH_BIO = 4)
-	
+
 	var/obj/item/device/radio/radio // Let's give it a radio.
 
 /obj/item/device/mmi/radio_enabled/Initialize()
