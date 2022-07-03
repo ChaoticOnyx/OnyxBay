@@ -202,15 +202,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()
 
-	if(!length(post_round_safe_areas))
-		post_round_safe_areas = list()
-
-		for(var/level = 1; level <= length(map_levels); level++)
-			var/datum/space_level/L = map_levels[level]
-
-			if(L.has_trait(ZTRAIT_CENTCOM))
-				post_round_safe_areas += level
-
 /datum/map/proc/send_welcome()
 	return
 
