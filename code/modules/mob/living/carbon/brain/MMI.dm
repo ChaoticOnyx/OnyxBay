@@ -133,13 +133,13 @@
 // Round-start Cyborg MMI
 /obj/item/device/mmi/digital/Initialize()
 	. = ..()
-	src.brainmob = new(src)
-	src.brainmob.set_stat(CONSCIOUS)
-	src.brainmob.add_language("Robot Talk")
-	src.brainmob.add_language("Encoded Audio Language")
-	src.brainmob.add_language("Galactic Common")
-	src.brainmob.container = src
-	src.brainmob.silent = 0
+	brainmob = new(src)
+	brainmob.set_stat(CONSCIOUS)
+	brainmob.add_language("Robot Talk")
+	brainmob.add_language("Encoded Audio Language")
+	brainmob.add_language("Galactic Common")
+	brainmob.container = src
+	brainmob.silent = 0
 	PickName()
 
 /obj/item/device/mmi/digital/proc/PickName()
