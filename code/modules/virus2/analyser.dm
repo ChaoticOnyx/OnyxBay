@@ -53,8 +53,8 @@
 		return
 
 	if(scanning)
-		scanning -= 1*speed
-		if(scanning <= 0)
+		scanning = max(0, scanning - 1 * speed)
+		if(!scanning)
 			if (dish.virus2.addToDB())
 				ping("\The [src] pings, \"New pathogen added to data bank.\"")
 
