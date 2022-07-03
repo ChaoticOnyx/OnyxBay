@@ -155,8 +155,7 @@
 	brainmob.dna = H.dna
 	brainmob.timeofhostdeath = H.timeofdeath
 	brainmob.set_stat(CONSCIOUS)
-	if(H.mind)
-		H.mind.transfer_to(brainmob)
+	H.mind?.transfer_to(brainmob)
 	return
 
 /obj/item/device/mmi/radio_enabled
