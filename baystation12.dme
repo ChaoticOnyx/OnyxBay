@@ -1669,6 +1669,7 @@
 #include "code\modules\events\infestation.dm"
 #include "code\modules\events\ion_storm.dm"
 #include "code\modules\events\meteors.dm"
+#include "code\modules\events\mimic_invasion.dm"
 #include "code\modules\events\money_hacker.dm"
 #include "code\modules\events\money_lotto.dm"
 #include "code\modules\events\pestilence.dm"

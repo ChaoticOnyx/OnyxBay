@@ -120,6 +120,7 @@
 		/datum/event/virus_major,
 		/datum/event/xenomorph_infestation,
 		/datum/event/biohazard_outbreak,
+		/datum/event/mimic_invasion
 	)
 
 /datum/map/polar

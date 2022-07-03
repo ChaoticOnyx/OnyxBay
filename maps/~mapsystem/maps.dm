@@ -176,7 +176,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		/datum/event/spacevine,
 		/datum/event/virus_major,
 		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak
+		/datum/event/biohazard_outbreak,
+		/datum/event/mimic_invasion
 	)
 
 /datum/map/New()
