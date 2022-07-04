@@ -286,7 +286,7 @@
 			matrix = W
 			cumulative_flash_protection += matrix.flash_protection
 			to_chat(user, SPAN("notice", "You install \the [matrix] into \the [src]."))
-			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+			sound_to(user, sound(deactivation_sound, volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -304,7 +304,7 @@
 			var/obj/item/device/hudlenses/H = W
 			H.attach_lenses(src)
 			to_chat(user, SPAN("notice", "You install \the [H] into \the [src]."))
-			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+			sound_to(user, sound(deactivation_sound, volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -366,7 +366,7 @@
 	else
 		deactivate_matrix()
 		to_chat(user, "You deactivate the optical matrix on \the [src].")
-		sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
+		sound_to(user, sound(deactivation_sound, volume = 50))
 	update_clothing_icon()
 	user.update_action_buttons()
 
@@ -492,3 +492,40 @@
 
 /obj/item/clothing/glasses/hud/plain/update_icon()
 	return
+
+/obj/item/clothing/glasses/hud/psychoscope
+	name = "psychoscope"
+	desc = "An old experimental glasses with a strange design."
+	icon_state = "psychoscope_off"
+	item_state = "psychoscope_off"
+	hud_name = "psychoscope"
+	activation_sound = 'sound/effects/psychoscope/psychoscope_on.ogg'
+	w_class = ITEM_SIZE_NORMAL
+	deactivation_sound = null
+	matrix = /obj/item/device/hudmatrix/science
+	matrix_removable = FALSE
+	use_alt_layer = TRUE
+
+/obj/item/clothing/glasses/hud/psychoscope/update_icon()
+	if(active)
+		icon_state = "psychoscope_on"
+		item_state = "psychoscope_on"
+	else
+		icon_state = "psychoscope_off"
+		item_state = "psychoscope_off"
+
+/obj/item/clothing/glasses/hud/psychoscope/Initialize()
+	. = ..()
+	
+	icon_state = "psychoscope_off"
+	item_state = "psychoscope_off"
+
+/obj/item/clothing/glasses/hud/psychoscope/activate_matrix()
+	. = ..()
+	
+	update_icon()
+
+/obj/item/clothing/glasses/hud/psychoscope/deactivate_matrix()
+	. = ..()
+	
+	update_icon()
