@@ -1,30 +1,26 @@
 /**********************Mineral stacking unit console**************************/
 
-/obj/machinery/mineral/stacking_unit_console
+/obj/machinery/computer/stacking_unit_console
 	name = "stacking machine console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
-	density = 1
-	anchored = 1
+	icon_keyboard = null
+	icon_keyboard = null
 	var/obj/machinery/mineral/stacking_machine/machine = null
-	var/machinedir = SOUTH
 
-/obj/machinery/mineral/stacking_unit_console/New()
-
-	..()
-
-	spawn(7)
-		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, machinedir))
-		if (machine)
+/obj/machinery/computer/stacking_unit_console/Initialize()
+	. = ..()
+	for(var/dir in GLOB.alldirs)
+		machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, dir))
+		if(machine)
 			machine.console = src
-		else
-			qdel(src)
+			break
 
-/obj/machinery/mineral/stacking_unit_console/attack_hand(mob/user)
+/obj/machinery/computer/stacking_unit_console/attack_hand(mob/user)
 	add_fingerprint(user)
 	interact(user)
 
-/obj/machinery/mineral/stacking_unit_console/interact(mob/user)
+/obj/machinery/computer/stacking_unit_console/interact(mob/user)
 	user.set_machine(src)
 
 	var/dat = "<meta charset=\"utf-8\">"
@@ -41,7 +37,7 @@
 	onclose(user, "console_stacking_machine")
 
 
-/obj/machinery/mineral/stacking_unit_console/Topic(href, href_list)
+/obj/machinery/computer/stacking_unit_console/Topic(href, href_list)
 	if(..())
 		return 1
 
@@ -53,19 +49,14 @@
 	if(href_list["release_stack"])
 		if(machine.stack_storage[href_list["release_stack"]] > 0)
 			var/stacktype = machine.stack_paths[href_list["release_stack"]]
-			var/obj/item/stack/material/S = new stacktype (get_turf(machine.output))
+			var/obj/item/stack/material/S = new stacktype(machine.output_turf)
 			S.amount = machine.stack_storage[href_list["release_stack"]]
 			machine.stack_storage[href_list["release_stack"]] = 0
 
-	src.add_fingerprint(usr)
-	src.updateUsrDialog()
+	add_fingerprint(usr)
+	updateUsrDialog()
 
 	return
-
-/obj/machinery/mineral/stacking_unit_console/east
-	name = "stacking machine console"
-	icon_state = "console"
-	machinedir = EAST
 
 /**********************Mineral stacking unit**************************/
 
@@ -74,17 +65,13 @@
 	name = "stacking machine"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "stacker"
-	density = 1
-	anchored = 1.0
-	var/obj/machinery/mineral/stacking_unit_console/console
-	var/obj/machinery/mineral/input = null
-	var/obj/machinery/mineral/output = null
+	var/obj/machinery/computer/stacking_unit_console/console = null
 	var/list/stack_storage[0]
 	var/list/stack_paths[0]
 	var/stack_amt = 50; // Amount to stack before releassing
 
-/obj/machinery/mineral/stacking_machine/New()
-	..()
+/obj/machinery/mineral/stacking_machine/Initialize()
+	. = ..()
 
 	for(var/stacktype in subtypesof(/obj/item/stack/material))
 		var/obj/item/stack/S = stacktype
@@ -99,38 +86,30 @@
 	stack_storage[MATERIAL_PLASTEEL] = 0
 	stack_paths[MATERIAL_PLASTEEL] = /obj/item/stack/material/plasteel
 
-	spawn( 5 )
-		for (var/dir in GLOB.cardinal)
-			src.input = locate(/obj/machinery/mineral/input, get_step(src, dir))
-			if(src.input) break
-		for (var/dir in GLOB.cardinal)
-			src.output = locate(/obj/machinery/mineral/output, get_step(src, dir))
-			if(src.output) break
-		return
 	return
 
 /obj/machinery/mineral/stacking_machine/Process()
-	if (src.output && src.input)
-		var/turf/T = get_turf(input)
-		for(var/obj/item/O in T.contents)
-			if(istype(O,/obj/item/stack/material))
-				var/obj/item/stack/material/S = O
-				if(!isnull(stack_storage[initial(S.name)]))
-					stack_storage[initial(S.name)] += S.amount
-					O.loc = null
-				else
-					O.loc = output.loc
+	if(!input_turf || !output_turf)
+		locate_turfs()
+
+	for(var/obj/item/O in input_turf)
+		if(istype(O,/obj/item/stack/material))
+			var/obj/item/stack/material/S = O
+			if(!isnull(stack_storage[initial(S.name)]))
+				stack_storage[initial(S.name)] += S.amount
+				O.loc = null
 			else
-				O.loc = output.loc
+				O.loc = output_turf
+		else
+			O.loc = output_turf
 
 	//Output amounts that are past stack_amt.
 	for(var/sheet in stack_storage)
 		if(stack_storage[sheet] >= stack_amt)
 			var/stacktype = stack_paths[sheet]
-			var/obj/item/stack/material/S = new stacktype (get_turf(output))
+			var/obj/item/stack/material/S = new stacktype(output_turf)
 			S.amount = stack_amt
 			stack_storage[sheet] -= stack_amt
 
 	console.updateUsrDialog()
 	return
-

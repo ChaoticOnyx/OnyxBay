@@ -5,10 +5,6 @@
 	name = "Coin press"
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "coinpress0"
-	density = 1
-	anchored = 1.0
-	var/obj/machinery/mineral/input = null
-	var/obj/machinery/mineral/output = null
 	var/amt_silver = 0 //amount of silver
 	var/amt_gold = 0   //amount of gold
 	var/amt_diamond = 0
@@ -20,48 +16,41 @@
 	var/chosen //which material will be used to make coins
 	var/coinsToProduce = 10
 
-
-/obj/machinery/mineral/mint/Initialize()
-	. = ..()
-	for (var/dir in GLOB.cardinal)
-		src.input = locate(/obj/machinery/mineral/input, get_step(src, dir))
-		if(src.input) break
-	for (var/dir in GLOB.cardinal)
-		src.output = locate(/obj/machinery/mineral/output, get_step(src, dir))
-		if(src.output) break
-
 /obj/machinery/mineral/mint/Process()
-	if ( src.input)
-		var/obj/item/stack/O
-		O = locate(/obj/item/stack, input.loc)
-		if(O)
-			var/processed = 1
-			switch(O.get_material_name())
-				if(MATERIAL_GOLD)
-					amt_gold += 100 * O.get_amount()
-				if(MATERIAL_SILVER)
-					amt_silver += 100 * O.get_amount()
-				if(MATERIAL_DIAMOND)
-					amt_diamond += 100 * O.get_amount()
-				if(MATERIAL_PLASMA)
-					amt_plasma += 100 * O.get_amount()
-				if(MATERIAL_URANIUM)
-					amt_uranium += 100 * O.get_amount()
-				if(MATERIAL_IRON)
-					amt_iron += 100 * O.get_amount()
-				else
-					processed = 0
-			if(processed)
-				qdel(O)
+
+	if(!input_turf || !output_turf)
+		locate_turfs()
+
+	var/obj/item/stack/O
+	O = locate(/obj/item/stack, input_turf)
+	if(O)
+		var/processed = 1
+		switch(O.get_material_name())
+			if(MATERIAL_GOLD)
+				amt_gold += 100 * O.get_amount()
+			if(MATERIAL_SILVER)
+				amt_silver += 100 * O.get_amount()
+			if(MATERIAL_DIAMOND)
+				amt_diamond += 100 * O.get_amount()
+			if(MATERIAL_PLASMA)
+				amt_plasma += 100 * O.get_amount()
+			if(MATERIAL_URANIUM)
+				amt_uranium += 100 * O.get_amount()
+			if(MATERIAL_IRON)
+				amt_iron += 100 * O.get_amount()
+			else
+				processed = 0
+		if(processed)
+			qdel(O)
 
 /obj/machinery/mineral/mint/attack_hand(user as mob)
 
 	var/dat = "<meta charset=\"utf-8\"><b>Coin Press</b><br>"
 
-	if (!input)
+	if (!input_turf)
 		dat += text("input connection status: ")
 		dat += text("<b><font color='red'>NOT CONNECTED</font></b><br>")
-	if (!output)
+	if (!output_turf)
 		dat += text("<br>output connection status: ")
 		dat += text("<b><font color='red'>NOT CONNECTED</font></b><br>")
 
@@ -123,14 +112,13 @@
 		coinsToProduce = between(0, coinsToProduce + text2num(href_list["chooseAmt"]), 1000)
 	if(href_list["makeCoins"])
 		var/temp_coins = coinsToProduce
-		if (src.output)
+		if (output_turf)
 			processing = 1;
 			icon_state = "coinpress1"
-			var/M = output.loc
 			switch(chosen)
 				if(MATERIAL_IRON)
 					while(amt_iron > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/iron(M)
+						new /obj/item/material/coin/iron(output_turf)
 						amt_iron -= 20
 						coinsToProduce--
 						newCoins++
@@ -138,7 +126,7 @@
 						sleep(5);
 				if(MATERIAL_GOLD)
 					while(amt_gold > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/gold(M)
+						new /obj/item/material/coin/gold(output_turf)
 						amt_gold -= 20
 						coinsToProduce--
 						newCoins++
@@ -146,7 +134,7 @@
 						sleep(5);
 				if(MATERIAL_SILVER)
 					while(amt_silver > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/silver(M)
+						new /obj/item/material/coin/silver(output_turf)
 						amt_silver -= 20
 						coinsToProduce--
 						newCoins++
@@ -154,7 +142,7 @@
 						sleep(5);
 				if(MATERIAL_DIAMOND)
 					while(amt_diamond > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/diamond(M)
+						new /obj/item/material/coin/diamond(output_turf)
 						amt_diamond -= 20
 						coinsToProduce--
 						newCoins++
@@ -162,7 +150,7 @@
 						sleep(5);
 				if(MATERIAL_PLASMA)
 					while(amt_plasma > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/plasma(M)
+						new /obj/item/material/coin/plasma(output_turf)
 						amt_plasma -= 20
 						coinsToProduce--
 						newCoins++
@@ -170,7 +158,7 @@
 						sleep(5);
 				if(MATERIAL_URANIUM)
 					while(amt_uranium > 0 && coinsToProduce > 0)
-						new /obj/item/material/coin/uranium(M)
+						new /obj/item/material/coin/uranium(output_turf)
 						amt_uranium -= 20
 						coinsToProduce--
 						newCoins++
