@@ -78,10 +78,11 @@
 		switch(alert("No connected ore processing units found. Do you wish to rescan?", "Error!","Yes", "No"))
 			if("Yes")
 				locate_processing_unit()
-				return
+				if(!machine)
+					to_chat(user, SPAN("warning", "No ore processing units found.")
+					return
 			if("No")
 				return
-		return
 
 	user.set_machine(src)
 
