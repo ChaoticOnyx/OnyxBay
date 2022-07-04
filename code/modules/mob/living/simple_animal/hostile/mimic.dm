@@ -144,7 +144,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	icon_living = icon_state
 
 	if(istype(target, /obj/structure))
-		maxHealth = anchored * 50 + 50
+		maxHealth = target.anchored * 50 + 50
 		destroy_objects = TRUE
 
 		if(target.density && target.anchored)
