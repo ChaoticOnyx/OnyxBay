@@ -109,20 +109,22 @@
 
 							if(new_machine.component_parts)
 								QDEL_LIST(new_machine.component_parts)
+							else
+								new_machine.component_parts = list()
 
 							src.circuit.construct(new_machine)
 
-							for(var/obj/O in components)
-								if(circuit.contain_parts) // things like disposal don't want their parts in them
+							if(circuit.contain_parts) // things like disposal don't want their parts in them
+								for(var/obj/O in components)
 									O.loc = new_machine
-								else
-									O.loc = null
-								new_machine.component_parts.Add(O)
-
-							if(circuit.contain_parts)
+									new_machine.component_parts.Add(O)
 								circuit.loc = new_machine
 							else
+								for(var/obj/O in components)
+									O.loc = null
+									new_machine.component_parts.Add(O)
 								circuit.loc = null
+
 							new_machine.component_parts.Add(circuit)
 
 							new_machine.RefreshParts()
