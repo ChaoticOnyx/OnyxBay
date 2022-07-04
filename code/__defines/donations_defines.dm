@@ -1,13 +1,13 @@
 
-#define PATREON_NONE      0
-#define PATREON_CARGO     1
-#define PATREON_ENGINEER  2
-#define PATREON_SCIENTIST 3
-#define PATREON_HOS       4
-#define PATREON_CAPTAIN   5
-#define PATREON_WIZARD    6
-#define PATREON_CULTIST   7
-#define PATREON_ASSISTANT 8
+#define PATREON_NONE      "none"
+#define PATREON_CARGO     "cargo"
+#define PATREON_ENGINEER  "engineer"
+#define PATREON_SCIENTIST "scientist"
+#define PATREON_HOS       "hos"
+#define PATREON_CAPTAIN   "captain"
+#define PATREON_WIZARD    "wizard"
+#define PATREON_CULTIST   "cultist"
+#define PATREON_ASSISTANT "assistant"
 
 #define PATREON_ALL_TIERS list(\
 	PATREON_NONE, PATREON_CARGO, PATREON_ENGINEER, \

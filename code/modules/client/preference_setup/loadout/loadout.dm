@@ -133,7 +133,7 @@ var/list/hash_to_gear = list()
 	var/fcolor =  "#3366cc"
 	max_gear_cost = config.character_setup.default_gear_cost
 	var/patron_tier = user.client.donator_info.get_full_patron_tier()
-	if(!isnull(patron_tier) && patron_tier > PATREON_CARGO)
+	if(!isnull(patron_tier) && patron_tier != PATREON_NONE && patron_tier != PATREON_CARGO)
 		max_gear_cost = config.character_setup.donator_gear_cost
 	if(total_cost < max_gear_cost)
 		fcolor = "#e67300"
