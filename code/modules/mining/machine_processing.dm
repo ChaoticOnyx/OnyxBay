@@ -41,7 +41,7 @@
 	name = "ore redemption console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
-	icon_keyboard = null
+	icon_screen = null
 	icon_keyboard = null
 	circuit = /obj/item/circuitboard/processing_unit_console
 
@@ -52,6 +52,9 @@
 
 /obj/machinery/computer/processing_unit_console/Initialize()
 	. = ..()
+	locate_processing_unit()
+
+/obj/machinery/computer/processing_unit_console/proc/locate_processing_unit()
 	for(var/dir in GLOB.alldirs)
 		machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, dir))
 		if(machine)
@@ -69,6 +72,15 @@
 
 	if(!allowed(user))
 		to_chat(user, "<span class='warning'>Access denied.</span>")
+		return
+
+	if(!machine)
+		switch(alert("No connected ore processing units found. Do you wish to rescan?", "Error!","Yes", "No"))
+			if("Yes")
+				locate_processing_unit()
+				return
+			if("No")
+				return
 		return
 
 	user.set_machine(src)
@@ -220,7 +232,7 @@
 		return
 	if(!input_turf || !output_turf)
 		locate_turfs()
-	if(Adjacent(input_turf, src))
+	if(!Adjacent(input_turf, src))
 		return
 
 	//Grab some more ore to process this tick.

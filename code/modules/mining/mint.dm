@@ -19,7 +19,7 @@
 /obj/machinery/mineral/mint/Process()
 	if(!input_turf || !output_turf)
 		locate_turfs()
-	if(Adjacent(input_turf, src))
+	if(!Adjacent(input_turf, src))
 		return
 
 	var/obj/item/stack/O

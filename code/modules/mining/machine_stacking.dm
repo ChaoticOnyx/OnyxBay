@@ -4,12 +4,15 @@
 	name = "stacking machine console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
-	icon_keyboard = null
+	icon_screen = null
 	icon_keyboard = null
 	var/obj/machinery/mineral/stacking_machine/machine = null
 
 /obj/machinery/computer/stacking_unit_console/Initialize()
 	. = ..()
+	locate_stacking_unit()
+
+/obj/machinery/computer/stacking_unit_console/proc/locate_stacking_unit()
 	for(var/dir in GLOB.alldirs)
 		machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, dir))
 		if(machine)
@@ -21,6 +24,15 @@
 	interact(user)
 
 /obj/machinery/computer/stacking_unit_console/interact(mob/user)
+	if(!machine)
+		switch(alert("No connected ore stacking units found. Do you wish to rescan?", "Error!","Yes", "No"))
+			if("Yes")
+				locate_stacking_unit()
+				return
+			if("No")
+				return
+		return
+
 	user.set_machine(src)
 
 	var/dat = "<meta charset=\"utf-8\">"
@@ -91,7 +103,7 @@
 /obj/machinery/mineral/stacking_machine/Process()
 	if(!input_turf || !output_turf)
 		locate_turfs()
-	if(Adjacent(input_turf, src))
+	if(!Adjacent(input_turf, src))
 		return
 	for(var/obj/item/O in input_turf)
 		if(istype(O,/obj/item/stack/material))
