@@ -29,7 +29,7 @@
 			if("Yes")
 				locate_stacking_unit()
 				if(!machine)
- 					to_chat(user, SPAN("warning", "No ore stacking units found."))
+					to_chat(user, SPAN("warning", "No ore stacking units found."))
 					return
 			if("No")
 				return
