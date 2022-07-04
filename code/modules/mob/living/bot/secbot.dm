@@ -308,7 +308,7 @@
 	if(prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 	if(with_nade)
-		var/obj/item/grenade/frag/new_nade = new /obj/item/grenade/frag(Tsec)
+		var/obj/item/grenade/frag/new_nade = new /obj/item/grenade/frag(Tsec, need_pin = FALSE)
 		new_nade.activate()
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread

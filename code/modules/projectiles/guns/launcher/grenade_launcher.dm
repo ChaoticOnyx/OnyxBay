@@ -92,7 +92,6 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
-		chambered.safety_pin = null
 		chambered.activate(null)
 	return chambered
 

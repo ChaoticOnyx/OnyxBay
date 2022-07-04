@@ -48,9 +48,9 @@
 		list("EMP grenade", "EMP grenade", /obj/item/grenade/empgrenade, 3),
 		)
 	timings = list(
-		list("2 seconds", "short",  2),
-		list("3 seconds", "medium", 3),
-		list("5 seconds", "long",	5),
+		list("2 seconds", "short",  20),
+		list("3 seconds", "medium", 30),
+		list("5 seconds", "long",	50),
 		)
 
 /obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
@@ -102,18 +102,9 @@
 		return 0
 
 	charge.charges--
-	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H))
-	new_grenade.safety_pin = null
-
-	if(new_grenade.detonator)
-		var/obj/item/device/assembly_holder/det = new_grenade.detonator
-		if(istimer(det.a_left))
-			var/obj/item/device/assembly/timer/timer = det.a_left
-			timer.time = timings[timing_selected].timing
-		if(istimer(det.a_right))
-			var/obj/item/device/assembly/timer/timer = det.a_right
-			timer.time = timings[timing_selected].timing
-
+	var/obj/item/grenade/new_grenade = new charge.product_type(get_turf(H), need_pin = FALSE)
+	
+	new_grenade.new_timing(timings[timing_selected].timing)
 	new_grenade.activate(H)
 	new_grenade.throw_at(target, fire_distance, fire_force)
 	H.visible_message(SPAN("danger","[H] launches \a [new_grenade]!"))
