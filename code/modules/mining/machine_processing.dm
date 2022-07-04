@@ -216,6 +216,8 @@
 
 /obj/machinery/mineral/processing_unit/Process()
 	var/list/tick_alloys = list()
+	if(!active)
+		return
 	if(!input_turf || !output_turf)
 		locate_turfs()
 	if(Adjacent(input_turf, src))
