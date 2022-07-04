@@ -28,10 +28,11 @@
 		switch(alert("No connected ore stacking units found. Do you wish to rescan?", "Error!","Yes", "No"))
 			if("Yes")
 				locate_stacking_unit()
-				return
+				if(!machine)
+					to_chat(user, SPAN("warning", "No ore stacking units found.")
+					return
 			if("No")
 				return
-		return
 
 	user.set_machine(src)
 
