@@ -79,7 +79,7 @@
 			if("Yes")
 				locate_processing_unit()
 				if(!machine)
- 					to_chat(user, SPAN("warning", "No ore processing units found."))
+					to_chat(user, SPAN("warning", "No ore processing units found."))
 					return
 			if("No")
 				return
