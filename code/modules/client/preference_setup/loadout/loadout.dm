@@ -56,7 +56,6 @@ var/list/hash_to_gear = list()
 	var/hide_unavailable_gear = FALSE
 	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
-	var/max_gear_cost = 20 // If null will reset loadout to default, we don't want it.
 
 /datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
 	pref.gear_list = R.read("gear_list")
@@ -107,7 +106,7 @@ var/list/hash_to_gear = list()
 					gears -= gear_name
 				else
 					var/datum/gear/G = gear_datums[gear_name]
-					if(total_cost + G.cost > max_gear_cost)
+					if(total_cost + G.cost > config.character_setup.max_gear_cost)
 						gears -= gear_name
 					else
 						total_cost += G.cost
@@ -131,11 +130,7 @@ var/list/hash_to_gear = list()
 			total_cost += G.cost
 
 	var/fcolor =  "#3366cc"
-	max_gear_cost = config.character_setup.default_gear_cost
-	var/patron_tier = user.client.donator_info.get_full_patron_tier()
-	if(!isnull(patron_tier) && patron_tier > PATREON_CARGO)
-		max_gear_cost = config.character_setup.donator_gear_cost
-	if(total_cost < max_gear_cost)
+	if(total_cost < config.character_setup.max_gear_cost)
 		fcolor = "#e67300"
 
 	. += "<table style='width: 100%;'><tr>"
@@ -147,8 +142,8 @@ var/list/hash_to_gear = list()
 	. += "<td><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></td>"
 
 	. += "<td style=\"vertical-align: top;\">"
-	if(max_gear_cost < INFINITY)
-		. += "<font color = '[fcolor]'>[total_cost]/[max_gear_cost]</font> loadout points spent.<br>"
+	if(config.character_setup.max_gear_cost < INFINITY)
+		. += "<font color = '[fcolor]'>[total_cost]/[config.character_setup.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
@@ -160,6 +155,7 @@ var/list/hash_to_gear = list()
 
 	. += "<td style='width: 90%; text-align: right; vertical-align: top;'>"
 
+	var/patron_tier = user.client.donator_info.get_full_patron_tier()
 	if(!patron_tier)
 		. += "<b>You are not a Patron yet.</b><br>"
 	else
@@ -555,9 +551,9 @@ var/list/hash_to_gear = list()
 	var/list/pool = new
 	for(var/gear_name in gear_datums)
 		var/datum/gear/G = gear_datums[gear_name]
-		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= max_gear_cost)
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.character_setup.max_gear_cost)
 			pool += G
-	var/points_left = max_gear_cost
+	var/points_left = config.character_setup.max_gear_cost
 	while (points_left > 0 && length(pool))
 		var/datum/gear/chosen = pick(pool)
 		var/list/chosen_tweaks = new
@@ -611,7 +607,7 @@ var/list/hash_to_gear = list()
 		for(var/gear_name in pref.gear_list[pref.gear_slot])
 			var/datum/gear/G = gear_datums[gear_name]
 			if(istype(G)) total_cost += G.cost
-		if((total_cost+TG.cost) <= max_gear_cost)
+		if((total_cost+TG.cost) <= config.character_setup.max_gear_cost)
 			pref.gear_list[pref.gear_slot][TG.display_name] = selected_tweaks.Copy()
 
 
