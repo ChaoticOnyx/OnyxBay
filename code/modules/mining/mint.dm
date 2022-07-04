@@ -17,9 +17,10 @@
 	var/coinsToProduce = 10
 
 /obj/machinery/mineral/mint/Process()
-
 	if(!input_turf || !output_turf)
 		locate_turfs()
+	if(Adjacent(input_turf, src))
+		return
 
 	var/obj/item/stack/O
 	O = locate(/obj/item/stack, input_turf)
@@ -43,7 +44,7 @@
 		if(processed)
 			qdel(O)
 
-/obj/machinery/mineral/mint/attack_hand(user as mob)
+/obj/machinery/mineral/mint/attack_hand(mob/user)
 
 	var/dat = "<meta charset=\"utf-8\"><b>Coin Press</b><br>"
 

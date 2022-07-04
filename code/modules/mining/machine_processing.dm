@@ -158,12 +158,8 @@
 		machine.ores_processing[href_list["toggle_smelting"]] = choice
 
 	if(href_list["toggle_power"])
-
 		machine.active = !machine.active
-		if(machine.active)
-			machine.icon_state = "furnace"
-		else
-			machine.icon_state = "furnace-off"
+		machine.update_icon()
 
 	if(href_list["toggle_ores"])
 
@@ -220,9 +216,10 @@
 
 /obj/machinery/mineral/processing_unit/Process()
 	var/list/tick_alloys = list()
-
 	if(!input_turf || !output_turf)
 		locate_turfs()
+	if(Adjacent(input_turf, src))
+		return
 
 	//Grab some more ore to process this tick.
 	for(var/i = 0, i<sheets_per_tick, i++)
@@ -234,11 +231,6 @@
 			to_world_log("[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!")
 
 		qdel(O)
-
-	if(!active) // This thing kinda works, won't touch. ~ Max
-		if(icon_state != "furnace-off")
-			update_icon()
-		return
 
 	//Process our stored ores and spit out sheets.
 	var/sheets = 0

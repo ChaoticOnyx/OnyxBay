@@ -91,7 +91,8 @@
 /obj/machinery/mineral/stacking_machine/Process()
 	if(!input_turf || !output_turf)
 		locate_turfs()
-
+	if(Adjacent(input_turf, src))
+		return
 	for(var/obj/item/O in input_turf)
 		if(istype(O,/obj/item/stack/material))
 			var/obj/item/stack/material/S = O
