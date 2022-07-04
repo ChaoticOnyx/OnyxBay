@@ -22,7 +22,7 @@
 
 /obj/machinery/mineral/proc/locate_turfs()
 	input_turf = get_turf(get_step(src, dir))
-	output_turf = get_turf(get_step(src, dir + 540))
+	output_turf = get_turf(get_step(src, GLOB.flip_dir[dir]))
 
 /obj/machinery/mineral/proc/toggle_holo()
 	set name = "Toggle holo-helper"
@@ -41,6 +41,8 @@
 	name = "ore redemption console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
+	icon_keyboard = null
+	icon_keyboard = null
 	circuit = /obj/item/circuitboard/processing_unit_console
 
 	var/obj/machinery/mineral/processing_unit/machine = null
@@ -50,7 +52,7 @@
 
 /obj/machinery/computer/processing_unit_console/Initialize()
 	. = ..()
-	for(var/dir in GLOB.cardinal)
+	for(var/dir in GLOB.alldirs)
 		machine = locate(/obj/machinery/mineral/processing_unit, get_step(src, dir))
 		if(machine)
 			machine.console = src

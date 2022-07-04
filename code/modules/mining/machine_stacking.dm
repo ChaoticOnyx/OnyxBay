@@ -4,11 +4,13 @@
 	name = "stacking machine console"
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "console"
+	icon_keyboard = null
+	icon_keyboard = null
 	var/obj/machinery/mineral/stacking_machine/machine = null
 
 /obj/machinery/computer/stacking_unit_console/Initialize()
 	. = ..()
-	for(var/dir in GLOB.cardinal)
+	for(var/dir in GLOB.alldirs)
 		machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, dir))
 		if(machine)
 			machine.console = src
@@ -51,8 +53,8 @@
 			S.amount = machine.stack_storage[href_list["release_stack"]]
 			machine.stack_storage[href_list["release_stack"]] = 0
 
-	src.add_fingerprint(usr)
-	src.updateUsrDialog()
+	add_fingerprint(usr)
+	updateUsrDialog()
 
 	return
 
