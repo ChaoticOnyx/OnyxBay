@@ -22,7 +22,7 @@
 
 /obj/machinery/mineral/proc/locate_turfs()
 	input_turf = get_turf(get_step(src, dir))
-	output_turf = get_turf(get_step(src, GLOB.flip_dir[dir]))
+	output_turf = get_turf(get_step(src, flip_dir[dir]))
 
 /obj/machinery/mineral/proc/toggle_holo()
 	set name = "Toggle holo-helper"
