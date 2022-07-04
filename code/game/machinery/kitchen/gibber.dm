@@ -5,9 +5,9 @@
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "grinder"
 	layer = BELOW_OBJ_LAYER
-	density = TRUE
-	anchored = TRUE
-	req_access = list(access_kitchen, access_morgue)
+	density = 1
+	anchored = 1
+	req_access = list(access_kitchen,access_morgue)
 
 	var/operating = FALSE        // Is it on?
 	var/dirty = FALSE            // Does it need cleaning?
@@ -18,14 +18,36 @@
 	idle_power_usage = 2
 	active_power_usage = 500
 
+//auto-gibs anything that bumps into it
+/obj/machinery/gibber/autogibber
+	var/turf/input_plate
+
+/obj/machinery/gibber/autogibber/New()
+	..()
+	spawn(5)
+		for(var/i in GLOB.cardinal)
+			var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
+			if(input_obj)
+				if(isturf(input_obj.loc))
+					input_plate = input_obj.loc
+					gib_throw_dir = i
+					qdel(input_obj)
+					break
+
+		if(!input_plate)
+			log_misc("a [src] didn't find an input plate.")
+			return
+
 /obj/machinery/gibber/autogibber/Bumped(atom/A)
+	if(!input_plate) return
+
 	if(ismob(A))
 		var/mob/M = A
-		for(var/dir in GLOB.cardinal)
-			if(M.loc == get_step(src, dir))
-				M.forceMove(src)
-				M.gib()
-				break
+
+		if(M.loc == input_plate)
+			M.forceMove(src)
+			M.gib()
+
 
 /obj/machinery/gibber/Initialize()
 	. = ..()

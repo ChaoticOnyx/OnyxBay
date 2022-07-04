@@ -173,20 +173,6 @@
 	build_path = /obj/item/circuitboard/miningdrillbrace
 	sort_string = "KCAAB"
 
-/datum/design/circuit/processing_unit_console
-	name = "ore processor console"
-	id = "ore processor console"
-	req_tech = list(TECH_ENGINEERING = 1)
-	build_path = /obj/item/circuitboard/processing_unit_console
-	sort_string = "KCAAC"
-
-/datum/design/circuit/processing_unit
-	name = "ore processor"
-	id = "ore processor"
-	req_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
-	build_path = /obj/item/circuitboard/processing_unit
-	sort_string = "KCAAD"
-
 /datum/design/circuit/shield_generator
 	name = "Shield Generator"
 	desc = "Allows for the construction of a shield generator circuit board."
