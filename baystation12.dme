@@ -421,6 +421,7 @@
 #include "code\datums\uplink\categories\grenades.dm"
 #include "code\datums\uplink\categories\highly_visible_and_dangerous_weapons.dm"
 #include "code\datums\uplink\categories\implants.dm"
+#include "code\datums\uplink\categories\job.dm"
 #include "code\datums\uplink\categories\medical.dm"
 #include "code\datums\uplink\categories\powersuit_modules.dm"
 #include "code\datums\uplink\categories\services.dm"
