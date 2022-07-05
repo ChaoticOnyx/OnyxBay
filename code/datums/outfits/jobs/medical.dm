@@ -43,7 +43,7 @@
 	suit = /obj/item/clothing/suit/storage/toggle/labcoat/virologist
 	mask = /obj/item/clothing/mask/surgical
 	id_type = /obj/item/card/id/medical/virologist
-/decl/hierarchy/outfit/job/medical/doctor/virologist/New()
+/decl/hierarchy/outfit/job/medical/virologist/New()
 	..()
 	BACKPACK_OVERRIDE_VIROLOGY
 

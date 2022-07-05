@@ -1,3 +1,6 @@
+/// Called on `/atom/proc/update_lighting` (/atom)
+#define SIGNAL_LIGHT_UPDATED "light_updated"
+
 /// Called on `/atom/proc/set_opacity` (/atom, old_opacity, new_opacity)
 #define SIGNAL_OPACITY_SET "opacity_set"
 

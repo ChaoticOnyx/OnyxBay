@@ -58,7 +58,7 @@ GLOBAL_LIST_EMPTY(bb_clothing_icon_states) //stores /datum/body_build's icon_sta
 
 var/global/list/body_heights = list(HUMAN_HEIGHT_TINY, HUMAN_HEIGHT_SMALL, HUMAN_HEIGHT_NORMAL, HUMAN_HEIGHT_LARGE, HUMAN_HEIGHT_HUGE)
 
-var/global/list/exclude_jobs = list(/datum/job/ai,/datum/job/cyborg)
+var/global/list/exclude_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/barmonkey)
 
 // Visual nets
 var/list/datum/visualnet/visual_nets = list()

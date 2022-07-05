@@ -22,6 +22,10 @@
 	var/snowflake_speak = (language?.flags & (NONVERBAL|SIGNLANG)) || (vox?.is_usable() && (language in vox.assists_languages))
 	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
+		if(QDELETED(L) || L.is_broken())
+			visible_message(SPAN("warning", "[src] moves his lips as if trying to say something"), SPAN("danger", "You try to make sounds but you can't exhale."))
+			return
+
 		if(L.breath_fail_ratio > 0.9)
 			if(world.time < L.last_successful_breath + 2 MINUTES) //if we're in grace suffocation period, give it up for last words
 				to_chat(src, "<span class='warning'>You use your remaining air to say something!</span>")
@@ -32,8 +36,8 @@
 			return FALSE
 		else if(L.breath_fail_ratio > 0.7)
 			return whisper_say(length(message) > 5 ? stars(message) : message, language, alt_name)
-		else if(L.breath_fail_ratio > 0.4 && length(message) > 10)
-			return whisper_say(message, language, alt_name)
+		else if(L.breath_fail_ratio > 0.4)
+			return whisper_say(length(message) > 10 ? stars(message) : message, language, alt_name)
 	else
 		return ..(message, alt_name = alt_name, language = language, whispering = whispering)
 
@@ -92,13 +96,14 @@
 		var/obj/item/rig/rig = back
 		if(rig.speech?.voice_holder?.active && rig.speech.voice_holder.voice)
 			voice_sub = rig.speech.voice_holder.voice
-	else
+	if(!voice_sub)
 		for(var/obj/item/gear in list(wear_mask,wear_suit,head))
 			if(!gear)
 				continue
 			var/obj/item/voice_changer/changer = locate() in gear
-			if(changer && changer.active && changer.voice)
+			if(changer?.active)
 				voice_sub = changer.voice
+				break
 	if(voice_sub)
 		return voice_sub
 	if(mind?.changeling?.mimicing)

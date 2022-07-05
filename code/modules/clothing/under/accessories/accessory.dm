@@ -11,8 +11,6 @@
 	var/image/inv_overlay = null	//overlay used when attached to clothing.
 	var/list/mob_overlay = list()
 	var/overlay_state = null
-	var/list/accessory_icons = list(slot_w_uniform_str = 'icons/mob/onmob/ties.dmi', slot_wear_suit_str = 'icons/mob/onmob/ties.dmi')
-	var/list/slim_accessory_icons = list(slot_w_uniform_str = 'icons/mob/onmob/ties_slim.dmi', slot_wear_suit_str = 'icons/mob/onmob/ties_slim.dmi')
 	var/list/on_rolled = list()	//used when jumpsuit sleevels are rolled ("rolled" entry) or it's rolled down ("down"). Set to "none" to hide in those states.
 	var/high_visibility	//if it should appear on examine without detailed view
 	var/slowdown //used when an accessory is meant to slow the wearer down when attached to clothing
@@ -75,9 +73,9 @@
 	has_suit = null
 	if(user)
 		usr.put_in_hands(src)
-		src.add_fingerprint(user)
+		add_fingerprint(user)
 	else
-		src.forceMove(get_turf(src))
+		forceMove(get_turf(src))
 
 //default attackby behaviour
 /obj/item/clothing/accessory/attackby(obj/item/I, mob/user)

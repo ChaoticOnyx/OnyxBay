@@ -176,7 +176,8 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		/datum/event/spacevine,
 		/datum/event/virus_major,
 		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak
+		/datum/event/biohazard_outbreak,
+		/datum/event/mimic_invasion
 	)
 
 /datum/map/New()
@@ -201,15 +202,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/id in antags)
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()
-
-	if(!length(post_round_safe_areas))
-		post_round_safe_areas = list()
-
-		for(var/level = 1; level <= length(map_levels); level++)
-			var/datum/space_level/L = map_levels[level]
-
-			if(L.has_trait(ZTRAIT_CENTCOM))
-				post_round_safe_areas += level
 
 /datum/map/proc/send_welcome()
 	return

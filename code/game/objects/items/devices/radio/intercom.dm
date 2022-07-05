@@ -15,6 +15,9 @@
 /obj/item/device/radio/intercom/get_storage_cost()
 	return ITEM_SIZE_NO_CONTAINER
 
+/obj/item/device/radio/intercom/receive()
+	flick("intercom-r", src)
+
 /obj/item/device/radio/intercom/custom
 	name = "intercom (Custom)"
 	broadcasting = 0

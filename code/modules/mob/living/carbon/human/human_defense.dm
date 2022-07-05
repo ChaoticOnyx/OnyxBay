@@ -839,6 +839,10 @@ meteor_act
 		O.throwing = 0		//it hit, so stop moving
 
 		var/obj/item/organ/external/affecting = get_organ(zone)
+		if(!affecting)
+			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
+			return
+
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 

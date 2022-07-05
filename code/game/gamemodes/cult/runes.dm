@@ -1,9 +1,9 @@
 /obj/effect/rune
 	name = "rune"
 	desc = "A strange collection of symbols drawn in blood."
-	anchored = TRUE
 	icon = 'icons/effects/uristrunes.dmi'
 	icon_state = "blank"
+	anchored = TRUE
 	unacidable = TRUE
 	layer = RUNE_LAYER
 
@@ -120,9 +120,9 @@
 			animate(src)
 
 /obj/effect/rune/_examine_text(mob/user)
-	..()
+	. = ..(user)
 	if(iscultist(user) || isghost(user))
-		to_chat(user, "This is \a [cultname] rune.")
+		. += "This is \a [cultname] rune."
 
 /obj/effect/rune/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/book/tome) && iscultist(user))
@@ -289,9 +289,9 @@
 	return ..()
 
 /obj/effect/rune/teleport/_examine_text(mob/user)
-	. = ..()
+	. = ..(user)
 	if(iscultist(user))
-		to_chat(user, "Its name is [destination].")
+		. += "<br>Its name is [destination]."
 
 /obj/effect/rune/teleport/cast(mob/living/user)
 	if(user.loc == src)
@@ -414,14 +414,14 @@
 	return ..()
 
 /obj/effect/cultwall/_examine_text(mob/user)
-	. = ..()
+	. = ..(user)
 	if(iscultist(user))
 		if(health == max_health)
-			to_chat(user, SPAN_WARNING("It is fully intact."))
+			. += "<br>It is fully intact."
 		else if(health > max_health * 0.5)
-			to_chat(user, SPAN_WARNING("It is damaged."))
+			. += "<br>It is damaged."
 		else
-			to_chat(user, SPAN_DANGER("It is about to dissipate."))
+			. += "<br>It is about to dissipate."
 
 /obj/effect/cultwall/attack_hand(mob/living/user)
 	if(iscultist(user))

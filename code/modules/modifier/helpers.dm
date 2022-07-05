@@ -39,7 +39,7 @@
 	var/anim_time = 3
 	var/rotate_deg = (tf_rotation || 0)
 	var/translate_x = 0
-	var/translate_y = 16 * ((tf_scale_y || 1) * body_height - 1)
+	var/translate_y = 16 * ((tf_scale_y || 1) * body_height - 1) + species.y_shift
 
 	//Due to some involuntary means, you're laying now
 	if(lying && !resting && !sleeping)

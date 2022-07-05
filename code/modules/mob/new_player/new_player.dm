@@ -79,7 +79,7 @@
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
 				var/highjob
-				if(player.client && player.client.prefs && player.client.prefs.job_high)
+				if(player.client?.prefs?.job_high)
 					highjob = " as [player.client.prefs.job_high]"
 				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
 				totalPlayers++
@@ -228,8 +228,8 @@
 		var/datum/species/S = all_species[client.prefs.species]
 		if(!check_species_allowed(S))
 			return 0
-		var/role = job.title
-		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+
+		if(job.title in GLOB.command_positions)
 			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 
 		AttemptLateSpawn(job, client.prefs.spawnpoint)
@@ -342,13 +342,9 @@
 
 	return 1
 
-/mob/new_player/proc/get_branch_pref()
-	if(client)
-		return client.prefs.char_branch
-
 /mob/new_player/proc/get_rank_pref()
 	if(client)
-		return client.prefs.char_rank
+		return "None"
 
 /mob/new_player/proc/AttemptLateSpawn(datum/job/job, spawning_at)
 	if(src != usr)
@@ -461,6 +457,8 @@
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
 			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+				continue
+			if(job.no_latejoin)
 				continue
 
 			var/active = 0

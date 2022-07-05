@@ -18,6 +18,7 @@
 	dusted_anim = "dust-m"
 	death_message = "lets out a faint chimper as it collapses and stops moving..."
 	tail = "chimptail"
+	y_shift = -8
 
 	body_builds = list(
 		new /datum/body_build/monkey
@@ -33,7 +34,7 @@
 	brute_mod = 1.5
 	burn_mod = 1.5
 
-	spawn_flags = SPECIES_IS_RESTRICTED
+	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
@@ -61,6 +62,8 @@
 		/obj/item/paper,
 		/obj/item/device/taperecorder,
 		/obj/item/modular_computer,
+		/obj/item/storage/secure/safe,
+		/obj/item/stool,
 	)
 
 /datum/species/monkey/handle_npc(mob/living/carbon/human/H)
@@ -93,7 +96,7 @@
 	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
 		var/list/touchables = list()
 		for(var/obj/item/O in range(1,get_turf(H)))
-			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && istype(O.loc, /turf/))
+			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && isturf(O.loc))
 				touchables += O
 		if(touchables.len)
 			var/obj/touchy = pick(touchables)
