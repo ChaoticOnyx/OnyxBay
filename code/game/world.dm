@@ -373,7 +373,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		var/ckey = input["ckey"]
+		var/ckey = ckey(input["ckey"])
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
 			message = html_encode(input["ooc"])
@@ -383,7 +383,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return
 		if(!config.misc.ooc_allowed && !input["isadmin"])
 			return "globally muted"
-		if(jobban_keylist.Find("[lowertext(ckey)] - OOC"))
+		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
 		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
