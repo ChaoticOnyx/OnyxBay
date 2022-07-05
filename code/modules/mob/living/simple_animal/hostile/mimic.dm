@@ -89,7 +89,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		THROTTLE(heal_cd, 1 SECOND)
 
 		if(heal_cd)
-			var/heal_amount = max(1, maxHealth * 0.1)
+			var/heal_amount = max(1, maxHealth * 0.01)
 
 			health = clamp(health + heal_amount, 0, maxHealth)
 
