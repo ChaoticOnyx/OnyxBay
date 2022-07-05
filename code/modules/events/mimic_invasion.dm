@@ -1,5 +1,6 @@
 #define MAX_MIMICS 20
 #define MIN_MIMICS 14
+#define PLAYABLE_MIMICS 5
 
 /datum/event/mimic_invasion
 	announceWhen = 40
@@ -20,10 +21,17 @@
 
 		if(QDELETED(O) || !istype(O))
 			continue
-		
+
 		var/turf/T = get_turf(O.loc)
 		var/mob/living/simple_animal/hostile/mimic/M = new(T, O, null)
 		log_and_message_admins("A mimic has spawned", null, T, M)
+
+		if(spawned < PLAYABLE_MIMICS)
+			M.controllable = TRUE
+			notify_ghosts("A new mimic available", null, M, posses_mob = TRUE)
+		else
+			M.controllable = FALSE
+
 		spawned += 1
 
 /datum/event/mimic_invasion/announce()
@@ -31,3 +39,4 @@
 
 #undef MAX_MIMICS
 #undef MIN_MIMICS
+#undef PLAYABLE_MIMICS
