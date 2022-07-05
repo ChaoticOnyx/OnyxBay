@@ -79,7 +79,7 @@ var/datum/uplink/uplink = new()
 	if(job_specific.len && !(U.uplink_owner.assigned_role in job_specific))
 		return FALSE
 
-	if(!antag_roles.len)
+	if(!length(antag_roles))
 		return TRUE
 
 	for(var/antag_role in antag_roles)
