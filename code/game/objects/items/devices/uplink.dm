@@ -206,7 +206,6 @@
 					REC_FIELD(sex),
 					REC_FIELD(age),
 					REC_FIELD(species),
-					REC_FIELD(rank),
 					REC_FIELD(homeSystem),
 					REC_FIELD(citizenship),
 					REC_FIELD(faction),
