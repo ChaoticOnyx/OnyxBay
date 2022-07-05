@@ -41,6 +41,9 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	var/default_appearance = /obj/structure/closet/crate
 	var/inactive_time = 0
 
+	var/_healing = FALSE
+	var/_in_ambush = FALSE
+
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
 
@@ -74,7 +77,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	. = ..()
 	
 	if(user.a_intent != I_HURT)
-		if(world.time > inactive_time + WAIT_TO_CRIT)
+		if(_in_ambush)
 			user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
 
 	_update_inactive_time()
@@ -85,13 +88,37 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	if(client)
 		update_action_buttons()
 
+	_handle_healing()
+	_handle_ambush()
+
+/mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	if(world.time > inactive_time + WAIT_TO_HEAL)
+		if(!_healing)
+			to_chat(src, SPAN("notice", "You begin to heal yourself."))
+			_healing = TRUE
+
 		THROTTLE(heal_cd, 1 SECOND)
 
 		if(heal_cd)
 			var/heal_amount = max(1, maxHealth * 0.1)
 
 			health = clamp(health + heal_amount, 0, maxHealth)
+	else
+		if(_healing)
+			to_chat(src, SPAN("warning", "You stop healing yourself."))
+
+		_healing = FALSE
+
+/mob/living/simple_animal/hostile/mimic/proc/_handle_ambush()
+	if(world.time > inactive_time + WAIT_TO_CRIT)
+		if(!_in_ambush)
+			to_chat(src, SPAN("notice", "You have entered the ambush mode."))
+			_in_ambush = TRUE
+	else
+		if(_in_ambush)
+			to_chat(src, SPAN("warning", "You have exited the ambush mode."))
+
+		_in_ambush = FALSE
 
 /mob/living/simple_animal/hostile/mimic/find_target()
 	. = ..()
