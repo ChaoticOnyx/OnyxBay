@@ -551,6 +551,9 @@ var/global/list/robot_footstep_sounds = list(
 	if (istype(W, /obj/item/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
+	if(user.a_intent == I_HURT)
+		return ..()
+
 	if(opened) // Are they trying to insert something?
 		for(var/V in components)
 			var/datum/robot_component/C = components[V]

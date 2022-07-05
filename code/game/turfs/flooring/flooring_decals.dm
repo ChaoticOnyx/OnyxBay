@@ -564,6 +564,10 @@ var/list/floor_decals = list()
 	icon_state = "steel_grid_diagonal"
 
 /obj/effect/floor_decal/corner_steel_grid/three_quarters
+	name = "corner steel_grid three quarters"
+	icon_state = "steel_grid_three_quarters"
+
+/obj/effect/floor_decal/corner_steel_grid/full
 	name = "corner steel_grid full"
 	icon_state = "steel_grid_full"
 

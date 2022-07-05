@@ -47,9 +47,9 @@ Class Variables:
 		 EMPED:16 -- temporary broken by EMP pulse
 
 Class Procs:
-   New()					 'game/machinery/machine.dm'
+   Initialize()					 'game/machinery/machinery.dm'
 
-   Destroy()					 'game/machinery/machine.dm'
+   Destroy()					 'game/machinery/machinery.dm'
 
    powered(chan = EQUIP)		 'modules/power/power_usage.dm'
 	  Checks to see if area that contains the object has power available for power
@@ -63,21 +63,18 @@ Class Procs:
 	  Called by the area that contains the object when ever that area under goes a
 	  power state change (area runs out of power, or area channel is turned off).
 
-   RefreshParts()			   'game/machinery/machine.dm'
+   RefreshParts()			   'game/machinery/machinery.dm'
 	  Called to refresh the variables in the machine that are contributed to by parts
 	  contained in the component_parts list. (example: glass and material amounts for
 	  the autolathe)
 
 	  Default definition does nothing.
 
-   assign_uid()			   'game/machinery/machine.dm'
+   assign_uid()			   'game/machinery/machinery.dm'
 	  Called by machine to assign a value to the uid variable.
 
-   Process()				  'game/machinery/machine.dm'
+   Process()				  'game/machinery/machinery.dm'
 	  Called by the 'master_controller' once per game tick for each machine that is listed in the 'machines' list.
-
-
-	Compiled by Aygar
 */
 
 #define POWER_USE_DELAY 2
@@ -375,7 +372,7 @@ Class Procs:
 			update_icon()
 			RefreshParts()
 	else
-		display_parts(user)
+		to_chat(user, get_parts_infotext())
 	return 1
 
 /obj/machinery/proc/dismantle()
@@ -416,7 +413,7 @@ Class Procs:
 	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
-/obj/machinery/proc/display_parts(mob/user)
+/obj/machinery/proc/get_parts_infotext()
 	. = "<span class='notice'>Following parts detected in the machine:</span>"
 	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
@@ -424,7 +421,7 @@ Class Procs:
 /obj/machinery/_examine_text(mob/user)
 	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		. += "\n[display_parts(user)]"
+		. += "\n[get_parts_infotext()]"
 
 /obj/machinery/proc/update_power_use()
 	set_power_use(use_power)
