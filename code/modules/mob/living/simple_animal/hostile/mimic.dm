@@ -2,7 +2,7 @@
 #define WAIT_TO_CRIT 15 SECONDS
 #define CRIT_MULTIPLIER 10
 
-var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate, /obj/structure/window_frame)
+var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile, /obj/structure/window_frame)
 
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
@@ -76,9 +76,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 /mob/living/simple_animal/hostile/mimic/attack_hand(mob/user)
 	. = ..()
 	
-	if(user.a_intent != I_HURT)
-		if(_in_ambush)
-			user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
+	if(user.a_intent != I_HURT && _in_ambush)
+		user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
 
 	_update_inactive_time()
 
@@ -90,6 +89,18 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 	_handle_healing()
 	_handle_ambush()
+
+/mob/living/simple_animal/hostile/mimic/proc/update_verbs()
+	verbs.Cut()
+
+	var/obj/item/C = copy_of.resolve()
+
+	if(!is_target_valid_for_mimicry(C))
+		return
+
+	if(C.w_class < ITEM_SIZE_NORMAL)
+		verbs += /mob/living/proc/ventcrawl
+		verbs += /mob/living/proc/hide
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
 	if(world.time > inactive_time + WAIT_TO_HEAL)
@@ -187,6 +198,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		move_to_delay = 2 * I.w_class
 
 	health = clamp(health, 0, maxHealth)
+	update_verbs()
 
 /mob/living/simple_animal/hostile/mimic/proc/set_creator(mob/living/creator)
 	creator = weakref(creator)
@@ -288,8 +300,6 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	if(awake)
 		..()
 
-// Player interactions
-
 /mob/living/simple_animal/hostile/mimic/MiddleClickOn(atom/A)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)
 		if(is_target_valid_for_mimicry(A))
@@ -329,6 +339,9 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		return
 
 	mimicry(T)
+
+/mob/living/simple_animal/hostile/mimic/ventcrawl_carry()
+	return TRUE
 
 /datum/action/mimic/mimicry
 	name = "Mimicry"
