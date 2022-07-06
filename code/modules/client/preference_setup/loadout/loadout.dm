@@ -95,7 +95,7 @@ var/list/hash_to_gear = list()
 	max_gear_cost = config.character_setup.default_gear_cost
 	patron_tier = pref.client.donator_info.get_full_patron_tier()
 	if(!isnull(patron_tier) && patron_tier != PATREON_NONE && patron_tier != PATREON_CARGO)
-		max_gear_cost = config.character_setup.donator_gear_cost
+		max_gear_cost = config.character_setup.patron_gear_cost
 
 	for(var/index = 1 to config.character_setup.loadout_slots)
 		var/list/gears = pref.gear_list[index]

@@ -366,8 +366,8 @@ loadout_slots = 3
 ## How many loadout points are available. Use 0 to disable loadout, and any negative number to indicate infinite points.
 default_gear_cost = 10
 
-## How many loadout points are available if you're a donator.
-donator_gear_cost = 20
+## How many loadout points are available if you're a patron.
+patron_gear_cost = 20
 
 ## Uncomment to prevent character spawn without surname.
 humans_need_surnames = false
