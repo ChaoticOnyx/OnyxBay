@@ -4,7 +4,7 @@
 	icon_state = "voice"
 	origin_tech = list(TECH_MAGNET = 1)
 	matter = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 50, MATERIAL_WASTE = 10)
-	var/listening = 0
+	var/listening = FALSE
 	var/recorded	//the activation message
 
 /obj/item/device/assembly/voice/New()
@@ -15,30 +15,36 @@
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/device/assembly/voice/hear_talk(mob/living/M as mob, msg)
+/obj/item/device/assembly/voice/hear_talk(mob/living/M, msg)
+	if(cooldown > 0)
+		return
 	if(listening)
 		recorded = msg
-		listening = 0
+		listening = FALSE
 		var/turf/T = get_turf(src)	//otherwise it won't work in hand
 		T.visible_message("\icon[src] beeps, \"Activation message is '[recorded]'.\"")
 	else
 		if(findtext(msg, recorded))
 			pulse(0)
+			cooldown = 2
+			spawn(10)
+				process_cooldown()
+
 
 /obj/item/device/assembly/voice/activate()
-	if(secured)
-		if(!holder)
-			listening = !listening
-			var/turf/T = get_turf(src)
-			T.visible_message("\icon[src] beeps, \"[listening ? "Now" : "No longer"] recording input.\"")
+	if(secured && !holder)
+		listening = !listening
+		var/turf/T = get_turf(src)
+		T.visible_message("\icon[src] beeps, \"[listening ? "Now" : "No longer"] recording input.\"")
 
 
 /obj/item/device/assembly/voice/attack_self(mob/user)
-	if(!user)	return 0
+	if(!user)
+		return 0
 	activate()
 	return 1
 
 
 /obj/item/device/assembly/voice/toggle_secure()
 	. = ..()
-	listening = 0
+	listening = FALSE

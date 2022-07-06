@@ -43,8 +43,8 @@
 		user.remove_from_mob(D2)
 	D.holder = src
 	D2.holder = src
-	D.loc = src
-	D2.loc = src
+	D.forceMove(src)
+	D2.forceMove(src)
 	if(D.proximity_monitor)
 		D.proximity_monitor.SetHost(src, D)
 	if(D2.proximity_monitor)
@@ -113,16 +113,23 @@
 			var/obj/item/S = special_assembly
 			S.on_found(finder)
 
-
-/obj/item/device/assembly_holder/Move()
+/obj/item/device/assembly_holder/forceMove(atom/new_loc)
+	if(istype(loc, /atom/movable))
+		if(istype(loc, /obj/item/gripper) && isrobot(loc.loc))
+			unregister_signal(loc.loc, SIGNAL_MOVED)
+		else
+			unregister_signal(loc, SIGNAL_MOVED)
+	if(istype(new_loc, /atom/movable))
+		if(istype(new_loc, /obj/item/gripper) && isrobot(new_loc.loc))
+			register_signal(new_loc.loc, SIGNAL_MOVED, /obj/item/device/assembly_holder/proc/retransmit_moved)
+		else
+			register_signal(new_loc, SIGNAL_MOVED, /obj/item/device/assembly_holder/proc/retransmit_moved)
 	..()
-	if(a_left && a_right)
-		a_left.holder_movement()
-		a_right.holder_movement()
-	return
 
+/obj/item/device/assembly_holder/proc/retransmit_moved(mover, old_loc, new_loc)
+	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, new_loc)
 
-/obj/item/device/assembly_holder/attack_hand()//Perhapse this should be a holder_pickup proc instead, can add if needbe I guess
+/obj/item/device/assembly_holder/attack_hand(mob/user)//Perhapse this should be a holder_pickup proc instead, can add if needbe I guess
 	if(a_left && a_right)
 		a_left.holder_movement()
 		a_right.holder_movement()
@@ -139,9 +146,9 @@
 		a_right.toggle_secure()
 		secured = !secured
 		if(secured)
-			to_chat(user, "<span class='notice'>\The [src] is ready!</span>")
+			to_chat(user, SPAN("notice", "\The [src] is ready!"))
 		else
-			to_chat(user, "<span class='notice'>\The [src] can now be taken apart!</span>")
+			to_chat(user, SPAN("notice", "\The [src] can now be taken apart!"))
 		update_icon()
 		return
 	else if(W.IsSpecialAssembly())
@@ -155,7 +162,7 @@
 	src.add_fingerprint(user)
 	if(src.secured)
 		if(!a_left || !a_right)
-			to_chat(user, "<span class='warning'>Assembly part missing!</span>")
+			to_chat(user, SPAN("warning", "Assembly part missing!"))
 			return
 		if(istype(a_left,a_right.type))//If they are the same type it causes issues due to window code
 			switch(alert("Which side would you like to use?",,"Left","Right"))
