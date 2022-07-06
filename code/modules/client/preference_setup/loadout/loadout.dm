@@ -56,7 +56,8 @@ var/list/hash_to_gear = list()
 	var/hide_unavailable_gear = FALSE
 	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
-	var/max_gear_cost = 20 // If null will reset loadout to default, we don't want it.
+	var/max_gear_cost
+	var/patron_tier
 
 /datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
 	pref.gear_list = R.read("gear_list")
@@ -90,6 +91,11 @@ var/list/hash_to_gear = list()
 
 	if(pref.gear_list.len < config.character_setup.loadout_slots)
 		pref.gear_list.len = config.character_setup.loadout_slots
+
+	max_gear_cost = config.character_setup.default_gear_cost
+	patron_tier = pref.client.donator_info.get_full_patron_tier()
+	if(!isnull(patron_tier) && patron_tier != PATREON_NONE && patron_tier != PATREON_CARGO)
+		max_gear_cost = config.character_setup.donator_gear_cost
 
 	for(var/index = 1 to config.character_setup.loadout_slots)
 		var/list/gears = pref.gear_list[index]
@@ -131,10 +137,7 @@ var/list/hash_to_gear = list()
 			total_cost += G.cost
 
 	var/fcolor =  "#3366cc"
-	max_gear_cost = config.character_setup.default_gear_cost
-	var/patron_tier = user.client.donator_info.get_full_patron_tier()
-	if(!isnull(patron_tier) && patron_tier != PATREON_NONE && patron_tier != PATREON_CARGO)
-		max_gear_cost = config.character_setup.donator_gear_cost
+
 	if(total_cost < max_gear_cost)
 		fcolor = "#e67300"
 
