@@ -121,15 +121,10 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		_healing = FALSE
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_ambush()
-	if(world.time > inactive_time + WAIT_TO_CRIT)
-		if(!_in_ambush)
-			to_chat(src, SPAN("notice", "You have entered the ambush mode."))
-			_in_ambush = TRUE
-	else
-		if(_in_ambush)
-			to_chat(src, SPAN("warning", "You have exited the ambush mode."))
-
-		_in_ambush = FALSE
+	var/ambush_check = world.time > inactive_time + WAIT_TO_CRIT
+	if(_in_ambush != ambush_check)
+		to_chat(src, SPAN(ambush_check ? "notice" : "warning", "You have [ambush_check ? "entered" : "exited"] the ambush mode."))
+		_in_ambush = ambush_check
 
 /mob/living/simple_animal/hostile/mimic/find_target()
 	. = ..()
