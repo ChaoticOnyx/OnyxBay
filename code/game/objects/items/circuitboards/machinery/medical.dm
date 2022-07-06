@@ -4,7 +4,7 @@
 
 /obj/item/circuitboard/resleever
 	name = T_BOARD("neural lace resleever")
-	build_path = /obj/machinery/resleever
+	build_path = /obj/machinery/capsule/resleever
 	board_type = "machine"
 	origin_tech = list(TECH_DATA = 3, TECH_BIO = 3)
 	req_components = list(
@@ -48,7 +48,7 @@
 
 /obj/item/circuitboard/body_scanner
 	name = T_BOARD("body scanner")
-	build_path = /obj/machinery/bodyscanner
+	build_path = /obj/machinery/capsule/bodyscanner
 	board_type = "machine"
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_DATA = 5)
 	req_components = list(
@@ -66,8 +66,7 @@
 
 /obj/item/circuitboard/bodyscanner_console
 	name = T_BOARD("body scanner console")
-	board_type = "machine"
-	build_path = /obj/machinery/body_scanconsole
+	build_path = /obj/machinery/computer/bodyscanner_console
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_DATA = 5)
 
 /obj/item/circuitboard/chemmaster

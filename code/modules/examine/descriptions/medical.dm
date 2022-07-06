@@ -1,4 +1,4 @@
-/obj/machinery/bodyscanner
+/obj/machinery/capsule/bodyscanner
 	description_info = "The advanced scanner detects and reports internal injuries such as bone fractures, internal bleeding, and organ damage. \
 	This is useful if you are about to perform surgery.<br>\
 	<br>\
@@ -29,7 +29,7 @@
 /obj/machinery/computer/operating
 	description_info = "This console gives information on the status of the patient on the adjacent operating table, notably their consciousness."
 
-/obj/machinery/sleeper
+/obj/machinery/capsule/sleeper
 	description_info = "The sleeper allows you to clean the blood by means of dialysis, and to administer medication in a controlled environment.<br>\
 	<br>\
 	Click your target with Grab intent, then click on the sleeper to place them in it. Click the green console, with an empty hand, to open the menu. \

@@ -26,7 +26,7 @@
 /obj/item/circuitboard/sleeper
 	name = T_BOARD("sleeper")
 	desc = "The circuitboard for a sleeper."
-	build_path = /obj/machinery/sleeper
+	build_path = /obj/machinery/capsule/sleeper
 	board_type = "machine"
 	origin_tech = list(TECH_MAGNET = 2, TECH_BIO = 2, TECH_ENGINEERING = 2)
 	req_components = list(

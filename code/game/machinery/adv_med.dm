@@ -1,16 +1,7 @@
-// Pretty much everything here is stolen from the dna scanner FYI
-
-
-/obj/machinery/bodyscanner
-	var/mob/living/carbon/human/occupant
-	var/locked
-	var/obj/machinery/body_scanconsole/BSC
-	name = "Body Scanner"
+/obj/machinery/capsule/bodyscanner
+	name = "body scanner"
 	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scanner_0"
-	density = 1
-	anchored = 1
-
 	component_types = list(
 		/obj/item/circuitboard/body_scanner,
 		/obj/item/device/healthanalyzer,
@@ -21,218 +12,56 @@
 	idle_power_usage = 60
 	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
 
-/obj/machinery/bodyscanner/Destroy()
-	go_out()
+	var/obj/machinery/computer/bodyscanner_console/BSC = null
+
+/obj/machinery/capsule/bodyscanner/Destroy()
 	if(BSC)
 		BSC.connected = null
 		BSC = null
 	..()
 
-/obj/machinery/bodyscanner/Initialize()
+/obj/machinery/capsule/bodyscanner/Initialize()
 	. = ..()
 	for(var/D in GLOB.cardinal)
-		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
+		var/obj/machinery/computer/bodyscanner_console/console = locate() in get_step(src, D)
 		if(!console || console?.connected)
 			continue
 		console.connected = src
 		BSC = console
 		break
-	RefreshParts()
-	update_icon()
 
-/obj/machinery/bodyscanner/relaymove(mob/user as mob)
-	if (user.stat)
-		return
-	src.go_out()
-	return
+/obj/machinery/computer/bodyscanner_console
+	name = "body scanner console"
+	icon = 'icons/obj/cryogenic2.dmi'
+	icon_state = "body_scannerconsole"
+	density = FALSE
+	icon_keyboard = null
+	icon_screen = null
+	circuit = /obj/item/circuitboard/bodyscanner_console
 
-/obj/machinery/bodyscanner/_examine_text(mob/user)
-	. = ..()
-	if (user.Adjacent(src))
-		if(occupant)
-			. += "\n[occupant._examine_text(user)]"
+	var/obj/machinery/capsule/bodyscanner/connected
+	var/delete
+	var/temphtml
 
-/obj/machinery/bodyscanner/verb/eject()
-	set src in oview(1)
-	set category = "Object"
-	set name = "Eject Body Scanner"
+/obj/machinery/computer/bodyscanner_console/Destroy()
+	if(connected)
+		connected.BSC = null
+		connected = null
+	..()
 
-	if (usr.stat != 0)
-		return
-	src.go_out()
-	add_fingerprint(usr)
-	return
-
-/obj/machinery/bodyscanner/verb/move_inside()
-	set src in oview(1)
-	set category = "Object"
-	set name = "Enter Body Scanner"
-
-	if (usr.stat != 0)
-		return
-	if (src.occupant)
-		to_chat(usr, SPAN("warning", "The scanner is already occupied!"))
-		return
-	if (usr.abiotic())
-		to_chat(usr, SPAN("warning", "The subject cannot have abiotic items on."))
-		return
-	usr.pulling = null
-	usr.client.perspective = EYE_PERSPECTIVE
-	usr.client.eye = src
-	usr.forceMove(src)
-	src.occupant = usr
-	update_use_power(POWER_USE_ACTIVE)
-	src.icon_state = "body_scanner_1"
-	for(var/obj/O in src)
-		// O = null
-		if(O in component_parts)
-			continue
-		O.forceMove(get_turf(src))
-		// Foreach goto(124)
-	src.add_fingerprint(usr)
-	return
-
-/obj/machinery/bodyscanner/proc/go_out()
-	if ((!( src.occupant ) || src.locked))
-		return
-	for(var/obj/O in src)
-		if(O in component_parts)
-			continue
-		O.dropInto(loc)
-		//Foreach goto(30)
-	if (src.occupant.client)
-		src.occupant.client.eye = src.occupant.client.mob
-		src.occupant.client.perspective = MOB_PERSPECTIVE
-	if (src.occupant in src)
-		src.occupant.dropInto(loc)
-	src.occupant = null
-	update_use_power(POWER_USE_IDLE)
-	src.icon_state = "body_scanner_0"
-	return
-
-/obj/machinery/bodyscanner/attackby(obj/item/W, mob/user)
-	if(default_deconstruction_screwdriver(user, W))
-		return
-	if(default_deconstruction_crowbar(user, W))
-		return
-	if(default_part_replacement(user, W))
-		return
-	var/obj/item/grab/normal/G = W
-	if(!istype(G))
-		return ..()
-
-	var/mob/M = G.affecting
-	if(!check_compatibility(M, user))
-		return
-	user.visible_message(SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."), SPAN("notice", "You start placing \the [M] into \the [src]."))
-	if(do_after(user, 20, src))
-		if(!check_compatibility(M, user))
-			return
-		M.forceMove(src)
-		src.occupant = M
-		update_use_power(POWER_USE_ACTIVE)
-		src.icon_state = "body_scanner_1"
-		for(var/obj/O in src)
-			if(O in component_parts)
-				continue
-			O.forceMove(loc)
-		src.add_fingerprint(user)
-		qdel(G)
-	else
-		return
-
-/obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
-	if(!istype(user) || !istype(target))
-		return FALSE
-
-	if (!(occupant in src))
-		go_out()
-
-	if(!CanMouseDrop(target, user))
-		return FALSE
-	if(occupant)
-		to_chat(user, SPAN("warning", "The scanner is already occupied!"))
-		return FALSE
-	if(target.abiotic())
-		to_chat(user, SPAN("warning", "The subject cannot have abiotic items on."))
-		return FALSE
-	if(target.buckled)
-		to_chat(user, SPAN("warning", "Unbuckle the subject before attempting to move them."))
-		return FALSE
-	for(var/mob/living/carbon/metroid/M in range(1,target))
-		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the sleeper because they have a metroid latched onto their head.")
-			return FALSE
-	return TRUE
-
-/obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
-	if(!check_compatibility(target, user))
-		return
-	user.visible_message(SPAN("notice", "\The [user] begins placing \the [target] into \the [src]."), SPAN("notice", "You start placing \the [target] into \the [src]."))
-	if(!do_after(user, 20, src))
-		return
-
-	if(!check_compatibility(target, user))
-		return
-
-	var/mob/M = target
-	M.forceMove(src)
-	src.occupant = M
-	update_use_power(POWER_USE_ACTIVE)
-	src.icon_state = "body_scanner_1"
-	for(var/obj/O in src)
-		if(O in component_parts)
-			continue
-		O.forceMove(loc)
-	src.add_fingerprint(user)
-
-/obj/machinery/bodyscanner/ex_act(severity)
+/obj/machinery/computer/bodyscanner_console/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			for(var/atom/movable/A as mob|obj in src)
-				A.dropInto(loc)
-				ex_act(severity)
-				// Foreach goto(35)
-			// SN src = null
 			qdel(src)
 			return
 		if(2.0)
-			if (prob(50))
-				for(var/atom/movable/A as mob|obj in src)
-					A.dropInto(loc)
-					ex_act(severity)
-					// Foreach goto(108)
-				// SN src = null
-				qdel(src)
-				return
-		if(3.0)
-			if (prob(25))
-				for(var/atom/movable/A as mob|obj in src)
-					A.dropInto(loc)
-					ex_act(severity)
-					// Foreach goto(181)
-				// SN src = null
+			if(prob(50))
 				qdel(src)
 				return
 		else
 	return
 
-/obj/machinery/body_scanconsole/ex_act(severity)
-
-	switch(severity)
-		if(1.0)
-			// SN src = null
-			qdel(src)
-			return
-		if(2.0)
-			if (prob(50))
-				// SN src = null
-				qdel(src)
-				return
-		else
-	return
-
-/obj/machinery/body_scanconsole/update_icon()
+/obj/machinery/computer/bodyscanner_console/update_icon()
 	if(stat & BROKEN)
 		icon_state = "body_scannerconsole-p"
 	else if (stat & NOPOWER)
@@ -241,49 +70,21 @@
 	else
 		icon_state = initial(icon_state)
 
-/obj/machinery/body_scanconsole
-	var/obj/machinery/bodyscanner/connected
-	var/delete
-	var/temphtml
-	name = "Body Scanner Console"
-	icon = 'icons/obj/cryogenic2.dmi'
-	icon_state = "body_scannerconsole"
-	density = 0
-	anchored = 1
-
-	component_types = list(
-		/obj/item/circuitboard/bodyscanner_console
-	)
-
-/obj/machinery/body_scanconsole/Destroy()
-	if(connected)
-		connected.BSC = null
-		connected = null
-	..()
-
-/obj/machinery/body_scanconsole/Initialize()
+/obj/machinery/computer/bodyscanner_console/Initialize()
 	for(var/D in GLOB.cardinal)
-		src.connected = locate(/obj/machinery/bodyscanner, get_step(src, D))
+		src.connected = locate(/obj/machinery/capsule/bodyscanner, get_step(src, D))
 		if(src.connected)
-			var/obj/machinery/bodyscanner/BS = src.connected
+			var/obj/machinery/capsule/bodyscanner/BS = src.connected
 			if(BS?.BSC)
 				continue
 			BS.BSC = src
 			break
 	return ..()
 
-/obj/machinery/body_scanconsole/attackby(obj/item/W, mob/user)
-	if(default_deconstruction_screwdriver(user, W))
-		return
-	if(default_deconstruction_crowbar(user, W))
-		return
-	if(default_part_replacement(user, W))
-		return
-
-/obj/machinery/body_scanconsole/attack_ai(user as mob)
+/obj/machinery/computer/bodyscanner_console/attack_ai(mob/user)
 	return src.attack_hand(user)
 
-/obj/machinery/body_scanconsole/tgui_act(action, params)
+/obj/machinery/computer/bodyscanner_console/tgui_act(action, params)
 	. = ..()
 
 	if(.)
@@ -316,7 +117,7 @@
 				connected.eject()
 				return TRUE
 
-/obj/machinery/body_scanconsole/tgui_data(mob/user)
+/obj/machinery/computer/bodyscanner_console/tgui_data(mob/user)
 	var/list/data = list()
 
 	data["connected"] = connected
@@ -327,7 +128,7 @@
 
 	return data
 
-/obj/machinery/body_scanconsole/tgui_interact(mob/user, datum/tgui/ui)
+/obj/machinery/computer/bodyscanner_console/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
@@ -335,7 +136,7 @@
 		ui.open()
 		ui.set_autoupdate(TRUE)
 
-/obj/machinery/body_scanconsole/attack_hand(mob/user)
+/obj/machinery/computer/bodyscanner_console/attack_hand(mob/user)
 	if(..())
 		return
 	if(stat & (NOPOWER|BROKEN))
