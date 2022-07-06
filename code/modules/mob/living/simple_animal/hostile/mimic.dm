@@ -103,22 +103,16 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		verbs += /mob/living/proc/hide
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
-	if(world.time > inactive_time + WAIT_TO_HEAL)
-		if(!_healing)
-			to_chat(src, SPAN("notice", "You begin to heal yourself."))
-			_healing = TRUE
+	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL
+	if(_healing != healing_check)
+		to_chat(src, SPAN(healing_check ? "notice" : "warning", "You [healing_check ? "begin to heal" : "stop healing"] yourself."))
+		_healing = healing_check
 
+	if(_healing)
 		THROTTLE(heal_cd, 1 SECOND)
-
 		if(heal_cd)
-			var/heal_amount = max(1, maxHealth * 0.1)
-
+			var/heal_amount = max(1, maxHealth * 0.01)
 			health = clamp(health + heal_amount, 0, maxHealth)
-	else
-		if(_healing)
-			to_chat(src, SPAN("warning", "You stop healing yourself."))
-
-		_healing = FALSE
 
 /mob/living/simple_animal/hostile/mimic/proc/_handle_ambush()
 	var/ambush_check = world.time > inactive_time + WAIT_TO_CRIT
