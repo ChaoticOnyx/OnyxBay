@@ -1,6 +1,6 @@
-#define MAX_MIMICS 20
-#define MIN_MIMICS 14
-#define PLAYABLE_MIMICS 5
+#define MAX_MIMICS 16
+#define MIN_MIMICS 8
+#define PLAYABLE_MIMICS 4
 
 /datum/event/mimic_invasion
 	announceWhen = 40
