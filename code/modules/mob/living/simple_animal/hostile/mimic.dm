@@ -176,8 +176,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 		if(target.density && target.anchored)
 			knockdown_people = TRUE
-			melee_damage_lower *= 2
-			melee_damage_upper *= 2
+			melee_damage_lower = initial(melee_damage_lower) * 2
+			melee_damage_upper = initial(melee_damage_upper) * 2
 	else if(istype(target, /obj/item))
 		var/obj/item/I = target
 
