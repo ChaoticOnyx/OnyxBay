@@ -172,19 +172,19 @@
 	var/wasted = FALSE
 
 /obj/item/holder/facehugger/proc/kill_holder()
-	var/mob/living/simple_animal/hostile/facehugger/F = mob
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
 	F.death()
 	sync()
 	wasted = TRUE
 
 /obj/item/holder/facehugger/sync()
 	..()
-	var/mob/living/simple_animal/hostile/facehugger/F = mob
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
 	if(F.stat)
 		wasted = TRUE
 
 /obj/item/holder/facehugger/attack(mob/target, mob/user)
-	var/mob/living/simple_animal/hostile/facehugger/F = mob
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
 	if(user && !F.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 20))
@@ -198,7 +198,7 @@
 /obj/item/holder/facehugger/equipped(mob/user, slot)
 	if(slot != slot_wear_mask)
 		return ..()
-	var/mob/living/simple_animal/hostile/facehugger/F = mob
+	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
 	user.drop_from_inventory(src)
 	F.facefuck(user, TRUE, TRUE)
 	..()

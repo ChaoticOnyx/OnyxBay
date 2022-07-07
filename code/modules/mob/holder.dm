@@ -15,32 +15,32 @@ var/list/holder_mob_icon_cache = list()
 		)
 	pixel_y = 8
 
-	var/mob/mob = null
+	var/mob/held_mob = null
 
 	var/last_holder
 
 /obj/item/holder/New(loc, mob_to_hold)
 	..(loc)
 	ASSERT(mob_to_hold)
-	mob = mob_to_hold
+	held_mob = mob_to_hold
 	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/holder/proc/destroy_all()
-	QDEL_NULL(mob)
+	QDEL_NULL(held_mob)
 	qdel(src)
 
 /obj/item/holder/proc/onMobQdeleting()
-	ASSERT(mob)
-	unregister_signal(mob, SIGNAL_QDELETING)
-	mob = null
+	ASSERT(held_mob)
+	unregister_signal(held_mob, SIGNAL_QDELETING)
+	held_mob = null
 	qdel(src)
 
 /obj/item/holder/Destroy()
-	if(mob)
-		unregister_signal(mob, SIGNAL_QDELETING)
-		mob.forceMove(get_turf(src))
-		mob = null
+	if(held_mob)
+		unregister_signal(held_mob, SIGNAL_QDELETING)
+		held_mob.forceMove(get_turf(src))
+		held_mob = null
 	last_holder = null
 	if(ismob(loc))
 		var/mob/M = loc
@@ -57,7 +57,7 @@ var/list/holder_mob_icon_cache = list()
 		check_condition()
 
 /obj/item/holder/proc/check_condition()
-	if(isturf(loc) || !mob)
+	if(isturf(loc) || !held_mob)
 		qdel(src)
 
 /obj/item/holder/onDropInto(atom/movable/AM)
@@ -66,14 +66,14 @@ var/list/holder_mob_icon_cache = list()
 	return ..()
 
 /obj/item/holder/GetIdCard()
-	return mob.GetIdCard()
+	return held_mob.GetIdCard()
 
 /obj/item/holder/GetAccess()
 	var/obj/item/I = GetIdCard()
 	return I ? I.GetAccess() : ..()
 
 /obj/item/holder/attack_self()
-	mob.show_inv(usr)
+	held_mob.show_inv(usr)
 	usr.show_inventory?.open()
 
 /obj/item/holder/attack(mob/target, mob/user)
@@ -86,7 +86,7 @@ var/list/holder_mob_icon_cache = list()
 		if(blocked)
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
 			return 1
-		M.devour(mob)
+		M.devour(held_mob)
 		qdel(src)
 
 	..()
@@ -94,13 +94,13 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/holder/proc/sync()
 	dir = 2
 	overlays.Cut()
-	icon = mob.icon
-	icon_state = mob.icon_state
-	item_state = mob.item_state
-	color = mob.color
-	name = mob.name
-	desc = mob.desc
-	overlays |= mob.overlays
+	icon = held_mob.icon
+	icon_state = held_mob.icon_state
+	item_state = held_mob.item_state
+	color = held_mob.color
+	name = held_mob.name
+	desc = held_mob.desc
+	overlays |= held_mob.overlays
 
 	update_held_icon()
 
@@ -137,7 +137,7 @@ var/list/holder_mob_icon_cache = list()
 	slot_flags = SLOT_HOLSTER
 
 /obj/item/holder/attackby(obj/item/W, mob/user)
-	mob.attackby(W, user)
+	held_mob.attackby(W, user)
 	sync()
 
 //Mob procs and vars for scooping up
@@ -219,7 +219,7 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/holder/human/sync()
 	// Generate appropriate on-mob icons.
-	var/mob/living/carbon/human/owner = mob
+	var/mob/living/carbon/human/owner = held_mob
 	if(istype(owner) && owner.species)
 
 		var/skin_colour = rgb(owner.r_skin, owner.g_skin, owner.b_skin)

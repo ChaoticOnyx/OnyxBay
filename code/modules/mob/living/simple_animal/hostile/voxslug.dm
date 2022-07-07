@@ -78,7 +78,7 @@ Small, little HP, poisonous.
 			R.add_reagent(/datum/reagent/cryptobiolin, 0.5)
 
 /obj/item/holder/voxslug/attack(mob/target, mob/user)
-	var/mob/living/simple_animal/hostile/voxslug/V = mob
+	var/mob/living/simple_animal/hostile/voxslug/V = held_mob
 	if(!V.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 30))
