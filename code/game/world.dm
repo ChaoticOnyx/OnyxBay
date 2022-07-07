@@ -374,7 +374,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
 		var/client_key = input["ckey"]
-		var/client_ckey = ckey(key)
+		var/client_ckey = ckey(client_key)
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
 			message = html_encode(input["ooc"])
