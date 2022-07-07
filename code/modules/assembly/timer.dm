@@ -19,9 +19,6 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")
 	update_icon()
-	cooldown = 2
-	spawn(10)
-		process_cooldown()
 	return
 
 /obj/item/device/assembly/timer/activate()
@@ -29,8 +26,6 @@
 		return FALSE
 	timing = !timing
 	update_icon()
-	spawn(10)
-		process_cooldown()
 	return TRUE
 
 

@@ -27,15 +27,16 @@
 		if(findtext(msg, recorded))
 			pulse(0)
 			cooldown = 2
-			spawn(10)
-				process_cooldown()
+			addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
 
 /obj/item/device/assembly/voice/activate()
-	if(secured && !holder)
-		listening = !listening
-		var/turf/T = get_turf(src)
-		T.visible_message("\icon[src] beeps, \"[listening ? "Now" : "No longer"] recording input.\"")
+	if(!..())
+		return FALSE
+	listening = !listening
+	var/turf/T = get_turf(src)
+	T.visible_message("\icon[src] beeps, \"[listening ? "Now" : "No longer"] recording input.\"")
+	return TRUE
 
 
 /obj/item/device/assembly/voice/attack_self(mob/user)

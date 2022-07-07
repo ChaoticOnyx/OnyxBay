@@ -13,12 +13,11 @@
 	var/airlock_wire = null
 	var/datum/wires/connected = null
 	var/datum/radio_frequency/radio_connection
-	var/deadman = 0
+	var/deadman = FALSE
 
 /obj/item/device/assembly/signaler/New()
 	..()
-	spawn(40)
-		set_frequency(frequency)
+	addtimer(CALLBACK(src, .proc/set_frequency, frequency), 4 SECOND)
 	return
 
 
@@ -26,9 +25,6 @@
 	if(!..())
 		return FALSE
 	signal()
-	cooldown = 2
-	spawn(10)
-		process_cooldown()
 	return TRUE
 
 /obj/item/device/assembly/signaler/update_icon()
@@ -94,8 +90,7 @@
 		src.code = max(1, src.code)
 
 	if(href_list["send"])
-		spawn( 0 )
-			signal()
+		activate()
 
 	if(user)
 		attack_self(user)
@@ -174,12 +169,12 @@
 	set desc = "BOOOOM!"
 
 	if(!deadman)
-		deadman = 1
+		deadman = TRUE
 		START_PROCESSING(SSobj, src)
 		log_and_message_admins("is threatening to trigger a signaler deadman's switch")
 		usr.visible_message(SPAN("danger", "[usr] moves their finger over [src]'s signal button..."))
 	else
-		deadman = 0
+		deadman = FALSE
 		STOP_PROCESSING(SSobj, src)
 		log_and_message_admins("stops threatening to trigger a signaler deadman's switch")
 		usr.visible_message(SPAN("notice", "[usr] moves their finger away from [src]'s signal button."))

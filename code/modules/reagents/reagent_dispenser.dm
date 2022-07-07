@@ -90,7 +90,7 @@
 	desc = "A tank containing fuel."
 	icon_state = "weldtank"
 	amount_per_transfer_from_this = 10
-	var/modded = 0
+	var/modded = FALSE
 	var/obj/item/device/assembly_holder/rig = null
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
@@ -100,9 +100,9 @@
 	if(get_dist(src, user) > 2)
 		return
 	if(modded)
-		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
+		. += "\n" + SPAN("warning", "Fuel faucet is wrenched open, leaking the fuel!")
 	if(rig)
-		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
+		. += "\n" + SPAN("notice", "There is some kind of device rigged to the tank.")
 
 /obj/structure/reagent_dispensers/fueltank/attack_hand(mob/user)
 	if(rig)

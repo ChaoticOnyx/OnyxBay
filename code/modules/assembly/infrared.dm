@@ -49,7 +49,7 @@
 
 /obj/item/device/assembly/infra/toggle_secure()
 	secured = !secured
-	set_active(secured ? FALSE : on)
+	set_active(secured ? on : FALSE)
 	return secured
 
 /obj/item/device/assembly/infra/update_icon()
@@ -127,8 +127,7 @@
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
 	cooldown = 2
-	spawn(10)
-		process_cooldown()
+	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
 /obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs

@@ -28,13 +28,10 @@
 
 //What the device does when turned on
 /obj/item/device/assembly/proc/activate()
-	if(cooldown > 0)
+	if(!secured || cooldown > 0)
 		return FALSE
-	if(!secured || (cooldown > 0))
-		return 0
 	cooldown = 2
-	spawn(10)
-		process_cooldown()
+	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 	return TRUE
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
@@ -74,8 +71,7 @@
 	cooldown--
 	if(cooldown <= 0)
 		return 0
-	spawn(10)
-		process_cooldown()
+	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 	return 1
 
 //Called when the holder is moved

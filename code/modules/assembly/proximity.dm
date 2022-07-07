@@ -51,15 +51,13 @@
 
 /obj/item/device/assembly/prox_sensor/proc/sense()
 	var/turf/mainloc = get_turf(src)
-//		if(scanning && cooldown <= 0)
-//			mainloc.visible_message("\icon[src] *boop* *boop*", "*boop* *boop*")
-	if((!holder && !secured)||(!scanning)||(cooldown > 0))	return 0
+	if((!holder && !secured) || !scanning || cooldown > 0)
+		return 0
 	pulse(0)
 	if(!holder)
 		mainloc.visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")
 	cooldown = 2
-	spawn(10)
-		process_cooldown()
+	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/Process()
 	if(!timing)
@@ -76,7 +74,7 @@
 
 /obj/item/device/assembly/prox_sensor/retransmit_moved(mover, old_loc, new_loc)
 	if(scanning)
-		SEND_SIGNAL(src, SIGNAL_MOVED, old_loc, new_loc)
+		..()
 
 /obj/item/device/assembly/prox_sensor/proc/toggle_scan()
 	if(!secured)
