@@ -30,19 +30,15 @@
 		activate("death")
 
 /obj/item/implant/death_alarm/activate(cause)
-	var/mob/M = imp_in
 	var/location
 	if (cause == "emp" && prob(50))
 		location =  pick(playerlocs)
 	else
+		var/mob/M = imp_in
 		var/area/t = get_area(M)
-		if(!t)
-			var/area/default = world.area
-			location = initial(default.name)
-		else
-			location = t.name
+		location = t?.name
 	var/death_message
-	if(!cause)
+	if(!cause || !location)
 		death_message = "A message from [name] has been received. [mobname] has died-zzzzt in-in-in..."
 	else
 		death_message = "A message from [name] has been received. [mobname] has died in [location]!"
