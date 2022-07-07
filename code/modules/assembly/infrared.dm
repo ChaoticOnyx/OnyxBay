@@ -111,7 +111,7 @@
 
 /obj/item/device/assembly/infra/retransmit_moved(mover, old_loc, new_loc)
 	if(on)
-		SEND_SIGNAL(src, SIGNAL_MOVED, old_loc, new_loc)
+		..()
 
 /obj/item/device/assembly/infra/proc/on_beam_entered(atom/enterer)
 	if(enterer == src)

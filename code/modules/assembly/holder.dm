@@ -158,7 +158,7 @@
 	return
 
 
-/obj/item/device/assembly_holder/attack_self(mob/user as mob)
+/obj/item/device/assembly_holder/attack_self(mob/user)
 	src.add_fingerprint(user)
 	if(src.secured)
 		if(!a_left || !a_right)
