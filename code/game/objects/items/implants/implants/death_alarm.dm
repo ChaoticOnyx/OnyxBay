@@ -31,16 +31,21 @@
 
 /obj/item/implant/death_alarm/activate(cause)
 	var/mob/M = imp_in
-	var/area/t = get_area(M)
-	var/location = t.name
+	var/area/t
+	var/location
 	if (cause == "emp" && prob(50))
 		location =  pick(playerlocs)
-	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
+	else
+		t = get_area(M)
+		location = t.name
+	if(!t?.requires_power) // We assume areas that don't use power are some sort of special zones
 		var/area/default = world.area
 		location = initial(default.name)
-	var/death_message = "A message from [name] has been received. [mobname] has died in [location]!"
-	if(!cause)
+	var/death_message
+	if(!cause || !location)
 		death_message = "A message from [name] has been received. [mobname] has died-zzzzt in-in-in..."
+	else
+		death_message = "A message from [name] has been received. [mobname] has died in [location]!"
 	STOP_PROCESSING(SSobj, src)
 
 	for(var/channel in list("Security", "Medical", "Command"))
