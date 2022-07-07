@@ -36,7 +36,7 @@
 		location =  pick(playerlocs)
 	else
 		var/area/t = get_area(M)
-		if(!t?.requires_power) // We assume areas that don't use power are some sort of special zones
+		if(!t)
 			var/area/default = world.area
 			location = initial(default.name)
 		else
