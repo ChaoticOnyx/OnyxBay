@@ -30,55 +30,23 @@
 /obj/item/device/assembly/proc/activate()
 	if(cooldown > 0)
 		return FALSE
+	if(!secured || (cooldown > 0))
+		return 0
+	cooldown = 2
+	spawn(10)
+		process_cooldown()
 	return TRUE
 
 //Called when another assembly acts on this one, var/radio will determine where it came from for wire calcs
 /obj/item/device/assembly/proc/pulsed(radio = 0)
-	return
-
-//Called when this device attempts to act on another device, var/radio determines if it was sent via radio or direct
-/obj/item/device/assembly/proc/pulse(radio = 0)
-	return
-
-//Code that has to happen when the assembly is un\secured goes here
-/obj/item/device/assembly/proc/toggle_secure()
-	return
-
-//Called when an assembly is attacked by another
-/obj/item/device/assembly/proc/attach_assembly(obj/A, mob/user)
-	return
-
-//Called via spawn(10) to have it count down the cooldown var
-/obj/item/device/assembly/proc/process_cooldown()
-	return
-
-//Called when the holder is moved
-/obj/item/device/assembly/proc/holder_movement()
-	return
-
-//Called when attack_self is called
-/obj/item/device/assembly/interact(mob/user)
-	return
-
-
-/obj/item/device/assembly/process_cooldown()
-	cooldown--
-	if(cooldown <= 0)
-		return 0
-	spawn(10)
-		process_cooldown()
-	return 1
-
-
-/obj/item/device/assembly/pulsed(radio = 0)
 	if(holder && (wires & WIRE_RECEIVE))
 		activate()
 	if(radio && (wires & WIRE_RADIO_RECEIVE))
 		activate()
 	return 1
 
-
-/obj/item/device/assembly/pulse(radio = 0)
+//Called when this device attempts to act on another device, var/radio determines if it was sent via radio or direct
+/obj/item/device/assembly/proc/pulse(radio = 0)
 	if(holder && (wires & WIRE_PULSE))
 		holder.process_activation(src, 1, 0)
 	if(holder && (wires & WIRE_PULSE_SPECIAL))
@@ -87,29 +55,36 @@
 		//Not sure what goes here quite yet send signal?
 	return 1
 
-
-/obj/item/device/assembly/activate()
-	if(!secured || (cooldown > 0))
-		return 0
-	cooldown = 2
-	spawn(10)
-		process_cooldown()
-	return 1
-
-
-/obj/item/device/assembly/toggle_secure()
+//Code that has to happen when the assembly is un\secured goes here
+/obj/item/device/assembly/proc/toggle_secure()
 	secured = !secured
 	update_icon()
 	return secured
 
-
-/obj/item/device/assembly/attach_assembly(obj/item/device/assembly/A, mob/user)
+//Called when an assembly is attacked by another
+/obj/item/device/assembly/proc/attach_assembly(obj/A, mob/user)
 	holder = new /obj/item/device/assembly_holder(get_turf(src))
 	if(holder.attach(A, src, user))
 		to_chat(user, SPAN("notice", "You attach \the [A] to \the [src]!"))
 		return 1
 	return 0
 
+//Called via spawn(10) to have it count down the cooldown var
+/obj/item/device/assembly/proc/process_cooldown()
+	cooldown--
+	if(cooldown <= 0)
+		return 0
+	spawn(10)
+		process_cooldown()
+	return 1
+
+//Called when the holder is moved
+/obj/item/device/assembly/proc/holder_movement()
+	return
+
+//Called when attack_self is called
+/obj/item/device/assembly/interact(mob/user)
+	return
 
 /obj/item/device/assembly/attackby(obj/item/W, mob/user)
 	if(isassembly(W))

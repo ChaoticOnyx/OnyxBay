@@ -13,27 +13,22 @@
 	var/obj/item/device/assembly/a_right = null
 	var/obj/special_assembly = null
 
-/obj/item/device/assembly_holder/proc/attach(obj/item/device/D, obj/item/device/D2, mob/user)
-	CAN_BE_REDEFINED(TRUE)
-	return
+/obj/item/device/assembly_holder/New()
+	..()
+	GLOB.listening_objects += src
 
-/obj/item/device/assembly_holder/proc/attach_special(obj/O, mob/user)
-	CAN_BE_REDEFINED(TRUE)
-	return
-
-/obj/item/device/assembly_holder/proc/process_activation(obj/item/device/D)
-	CAN_BE_REDEFINED(TRUE)
-	return
+/obj/item/device/assembly_holder/Destroy()
+	GLOB.listening_objects -= src
+	return ..()
 
 /obj/item/device/assembly_holder/proc/detached()
-	CAN_BE_REDEFINED(TRUE)
 	return
 
 
 /obj/item/device/assembly_holder/IsAssemblyHolder()
 	return 1
 
-/obj/item/device/assembly_holder/attach(obj/item/device/assembly/D, obj/item/device/assembly/D2, mob/user)
+/obj/item/device/assembly_holder/proc/attach(obj/item/device/assembly/D, obj/item/device/assembly/D2, mob/user)
 	if(!istype(D) || !istype(D2))
 		return FALSE
 	if(D.secured || D2.secured)
@@ -56,7 +51,7 @@
 	user.put_in_hands(src)
 	return 1
 
-/obj/item/device/assembly_holder/attach_special(obj/O, mob/user)
+/obj/item/device/assembly_holder/proc/attach_special(obj/O, mob/user)
 	if(!O)	return
 	if(!O.IsSpecialAssembly())	return 0
 	return
@@ -192,11 +187,12 @@
 	return
 
 
-/obj/item/device/assembly_holder/process_activation(obj/D, normal = 1, special = 1)
-	if(!D)	return 0
+/obj/item/device/assembly_holder/proc/process_activation(obj/D, normal = 1, special = 1)
+	if(!D)
+		return 0
 	if(!secured)
 		visible_message("\icon[src] *beep* *beep*", "*beep* *beep*")
-	if((normal) && (a_right) && (a_left))
+	if(normal && a_right && a_left)
 		if(a_right != D)
 			a_right.pulsed(0)
 		if(a_left != D)
@@ -205,74 +201,65 @@
 		master.receive_signal()
 	return 1
 
-
-/obj/item/device/assembly_holder/New()
-	..()
-	GLOB.listening_objects += src
-
-/obj/item/device/assembly_holder/Destroy()
-	GLOB.listening_objects -= src
-	return ..()
-
-/obj/item/device/assembly_holder/hear_talk(mob/living/M as mob, msg, verb, datum/language/speaking)
+/obj/item/device/assembly_holder/hear_talk(mob/living/M, msg, verb, datum/language/language)
 	if(a_right)
-		a_right.hear_talk(M,msg,verb,speaking)
+		a_right.hear_talk(M,msg, verb, language)
 	if(a_left)
-		a_left.hear_talk(M,msg,verb,speaking)
+		a_left.hear_talk(M,msg, verb, language)
 
 
 /obj/item/device/assembly_holder/timer_igniter
 	name = "timer-igniter assembly"
 
-	New()
-		..()
+/obj/item/device/assembly_holder/timer_igniter/New()
+	..()
 
-		var/obj/item/device/assembly/igniter/ign = new(src)
-		ign.secured = 1
-		ign.holder = src
-		var/obj/item/device/assembly/timer/tmr = new(src)
-		tmr.time=5
-		tmr.secured = 1
-		tmr.holder = src
-		START_PROCESSING(SSobj, tmr)
-		a_left = tmr
-		a_right = ign
-		secured = 1
-		update_icon()
-		SetName(initial(name) + " ([tmr.time] secs)")
+	var/obj/item/device/assembly/igniter/ign = new(src)
+	ign.secured = TRUE
+	ign.holder = src
+	var/obj/item/device/assembly/timer/tmr = new(src)
+	tmr.time = 5
+	tmr.secured = TRUE
+	tmr.holder = src
+	START_PROCESSING(SSobj, tmr)
+	a_left = tmr
+	a_right = ign
+	secured = TRUE
+	update_icon()
+	SetName(initial(name) + " ([tmr.time] secs)")
 
-		loc.verbs += /obj/item/device/assembly_holder/timer_igniter/verb/configure
+	loc.verbs += /obj/item/device/assembly_holder/timer_igniter/verb/configure
 
-	detached()
-		loc.verbs -= /obj/item/device/assembly_holder/timer_igniter/verb/configure
-		..()
+/obj/item/device/assembly_holder/timer_igniter/detached()
+	loc.verbs -= /obj/item/device/assembly_holder/timer_igniter/verb/configure
+	..()
 
-	verb/configure()
-		set name = "Set Timer"
-		set category = "Object"
-		set src in usr
+/obj/item/device/assembly_holder/timer_igniter/verb/configure()
+	set name = "Set Timer"
+	set category = "Object"
+	set src in usr
 
-		if ( !(usr.stat || usr.restrained()) )
-			var/obj/item/device/assembly_holder/holder
-			if(istype(src,/obj/item/grenade/chem_grenade))
-				var/obj/item/grenade/chem_grenade/gren = src
-				holder=gren.detonator
-			var/obj/item/device/assembly/timer/tmr = holder.a_left
-			if(!istype(tmr,/obj/item/device/assembly/timer))
-				tmr = holder.a_right
-			if(!istype(tmr,/obj/item/device/assembly/timer))
-				to_chat(usr, "<span class='notice'>This detonator has no timer.</span>")
-				return
+	if(!(usr.stat || usr.restrained()))
+		var/obj/item/device/assembly_holder/holder
+		if(istype(src,/obj/item/grenade/chem_grenade))
+			var/obj/item/grenade/chem_grenade/gren = src
+			holder=gren.detonator
+		var/obj/item/device/assembly/timer/tmr = holder.a_left
+		if(!istype(tmr,/obj/item/device/assembly/timer))
+			tmr = holder.a_right
+		if(!istype(tmr,/obj/item/device/assembly/timer))
+			to_chat(usr, SPAN("notice", "This detonator has no timer."))
+			return
 
-			if(tmr.timing)
-				to_chat(usr, "<span class='notice'>Clock is ticking already.</span>")
-			else
-				var/ntime = input("Enter desired time in seconds", "Time", "5") as num
-				if (ntime>0 && ntime<1000)
-					tmr.time = ntime
-					SetName(initial(name) + "([tmr.time] secs)")
-					to_chat(usr, "<span class='notice'>Timer set to [tmr.time] seconds.</span>")
-				else
-					to_chat(usr, "<span class='notice'>Timer can't be [ntime<=0?"negative":"more than 1000 seconds"].</span>")
+		if(tmr.timing)
+			to_chat(usr, SPAN("notice", "Clock is ticking already."))
 		else
-			to_chat(usr, "<span class='notice'>You cannot do this while [usr.stat?"unconscious/dead":"restrained"].</span>")
+			var/ntime = input("Enter desired time in seconds", "Time", "5") as num
+			if (ntime > 0 && ntime < 1000)
+				tmr.time = ntime
+				SetName(initial(name) + "([tmr.time] secs)")
+				to_chat(usr, SPAN("notice", "Timer set to [tmr.time] seconds."))
+			else
+				to_chat(usr, SPAN("notice", "Timer can't be [ntime <= 0? "negative" : "more than 1000 seconds"]."))
+	else
+		to_chat(usr, SPAN("notice", "You cannot do this while [usr.stat ? "unconscious/dead" : "restrained"]."))
