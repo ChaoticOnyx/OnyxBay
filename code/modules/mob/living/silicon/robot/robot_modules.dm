@@ -478,6 +478,10 @@ var/global/list/robot_modules = list(
 	S.synths = list(metal)
 	src.modules += S
 
+	var/obj/item/stack/tile/floor_rough/cyborg/SR = new /obj/item/stack/tile/floor_rough/cyborg(src)
+	SR.synths = list(metal)
+	src.modules += SR
+
 	var/obj/item/stack/material/cyborg/glass/reinforced/RG = new (src)
 	RG.synths = list(metal, glass)
 	src.modules += RG
@@ -575,6 +579,10 @@ var/global/list/robot_modules = list(
 	var/obj/item/stack/tile/floor/cyborg/S = new /obj/item/stack/tile/floor/cyborg(src)
 	S.synths = list(metal)
 	src.modules += S
+
+	var/obj/item/stack/tile/floor_rough/cyborg/SR = new /obj/item/stack/tile/floor_rough/cyborg(src)
+	SR.synths = list(metal)
+	src.modules += SR
 
 	var/obj/item/stack/material/cyborg/glass/reinforced/RG = new (src)
 	RG.synths = list(metal, glass)
@@ -1017,6 +1025,10 @@ var/global/list/robot_modules = list(
 	var/obj/item/stack/tile/floor/cyborg/S = new /obj/item/stack/tile/floor/cyborg(src)
 	S.synths = list(metal)
 	src.modules += S
+
+	var/obj/item/stack/tile/floor_rough/cyborg/SR = new /obj/item/stack/tile/floor_rough/cyborg(src)
+	SR.synths = list(metal)
+	src.modules += SR
 
 	var/obj/item/stack/material/cyborg/glass/reinforced/RG = new (src)
 	RG.synths = list(metal, glass)
