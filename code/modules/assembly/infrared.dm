@@ -112,6 +112,7 @@
 /obj/item/device/assembly/infra/retransmit_moved(mover, old_loc, new_loc)
 	if(on)
 		..()
+		update_beams()
 
 /obj/item/device/assembly/infra/proc/on_beam_entered(atom/enterer)
 	if(enterer == src)
@@ -122,7 +123,8 @@
 		return 0
 	if(!isliving(enterer)) // Observers and their ilk don't count even if visible
 		return
-
+	if(!beams.len)
+		return
 	pulse(0)
 	if(!holder)
 		visible_message("\icon[src] *beep* *beep*")
@@ -134,7 +136,23 @@
 	update_beams()
 
 /obj/item/device/assembly/infra/proc/update_beams()
-	create_update_and_delete_beams(on, visible, dir, seen_turfs, beams)
+	if(check_locs(src, stop_on = list(/mob, /turf), checking_proc = /obj/item/device/assembly/infra/proc/check_loc))
+		if(!beams.len)
+			proximity_trigger.register_turfs()
+		create_update_and_delete_beams(on, visible, dir, seen_turfs, beams)
+	else
+		QDEL_LIST(beams)
+
+/obj/item/device/assembly/infra/proc/check_loc(atom/A)
+	var/list/opacity_locs = list(
+	  /obj/item/storage,
+	  /obj/structure/closet,
+	  /obj/machinery
+	)
+	for(var/type in opacity_locs)
+		if(istype(A, type))
+			return FALSE
+	return TRUE
 
 /proc/create_update_and_delete_beams(active, visible, dir, list/seen_turfs, list/existing_beams)
 	if(!active)
