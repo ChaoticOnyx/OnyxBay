@@ -256,7 +256,7 @@
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/water = 1)
 
-/obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/reagent_dispensers/water_cooler/attackby(obj/item/W, mob/user)
 	if (istype(W,/obj/item/wrench))
 		src.add_fingerprint(user)
 		if(anchored)
