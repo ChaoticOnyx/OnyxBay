@@ -2,7 +2,7 @@
 #define WAIT_TO_CRIT 15 SECONDS
 #define CRIT_MULTIPLIER 10
 
-var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate, /obj/structure/window_frame)
+var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile, /obj/structure/window_frame)
 
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
@@ -41,6 +41,9 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	var/default_appearance = /obj/structure/closet/crate
 	var/inactive_time = 0
 
+	var/_healing = FALSE
+	var/_in_ambush = FALSE
+
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
 
@@ -73,9 +76,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 /mob/living/simple_animal/hostile/mimic/attack_hand(mob/user)
 	. = ..()
 	
-	if(user.a_intent != I_HURT)
-		if(world.time > inactive_time + WAIT_TO_CRIT)
-			user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
+	if(user.a_intent != I_HURT && _in_ambush)
+		user.attack_generic(src, rand(melee_damage_lower * CRIT_MULTIPLIER, melee_damage_upper * CRIT_MULTIPLIER), attacktext, environment_smash, damtype, defense)
 
 	_update_inactive_time()
 
@@ -85,13 +87,38 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	if(client)
 		update_action_buttons()
 
-	if(world.time > inactive_time + WAIT_TO_HEAL)
+	_handle_healing()
+	_handle_ambush()
+
+/mob/living/simple_animal/hostile/mimic/proc/update_verbs()
+	verbs.Cut()
+
+	var/obj/item/C = copy_of.resolve()
+
+	if(!is_target_valid_for_mimicry(C))
+		return
+
+	if(C.w_class < ITEM_SIZE_NORMAL)
+		verbs += /mob/living/proc/ventcrawl
+		verbs += /mob/living/proc/hide
+
+/mob/living/simple_animal/hostile/mimic/proc/_handle_healing()
+	var/healing_check = world.time > inactive_time + WAIT_TO_HEAL
+	if(_healing != healing_check)
+		to_chat(src, SPAN(healing_check ? "notice" : "warning", "You [healing_check ? "begin to heal" : "stop healing"] yourself."))
+		_healing = healing_check
+
+	if(_healing)
 		THROTTLE(heal_cd, 1 SECOND)
-
 		if(heal_cd)
-			var/heal_amount = max(1, maxHealth * 0.1)
-
+			var/heal_amount = max(1, maxHealth * 0.01)
 			health = clamp(health + heal_amount, 0, maxHealth)
+
+/mob/living/simple_animal/hostile/mimic/proc/_handle_ambush()
+	var/ambush_check = world.time > inactive_time + WAIT_TO_CRIT
+	if(_in_ambush != ambush_check)
+		to_chat(src, SPAN(ambush_check ? "notice" : "warning", "You have [ambush_check ? "entered" : "exited"] the ambush mode."))
+		_in_ambush = ambush_check
 
 /mob/living/simple_animal/hostile/mimic/find_target()
 	. = ..()
@@ -149,8 +176,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 		if(target.density && target.anchored)
 			knockdown_people = TRUE
-			melee_damage_lower *= 2
-			melee_damage_upper *= 2
+			melee_damage_lower = initial(melee_damage_lower) * 2
+			melee_damage_upper = initial(melee_damage_upper) * 2
 	else if(istype(target, /obj/item))
 		var/obj/item/I = target
 
@@ -160,6 +187,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		move_to_delay = 2 * I.w_class
 
 	health = clamp(health, 0, maxHealth)
+	update_verbs()
 
 /mob/living/simple_animal/hostile/mimic/proc/set_creator(mob/living/creator)
 	creator = weakref(creator)
@@ -261,8 +289,6 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	if(awake)
 		..()
 
-// Player interactions
-
 /mob/living/simple_animal/hostile/mimic/MiddleClickOn(atom/A)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)
 		if(is_target_valid_for_mimicry(A))
@@ -302,6 +328,9 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		return
 
 	mimicry(T)
+
+/mob/living/simple_animal/hostile/mimic/ventcrawl_carry()
+	return TRUE
 
 /datum/action/mimic/mimicry
 	name = "Mimicry"
