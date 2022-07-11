@@ -2,7 +2,13 @@
 #define WAIT_TO_CRIT 15 SECONDS
 #define CRIT_MULTIPLIER 10
 
-var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile, /obj/structure/window_frame)
+var/global/list/protected_objects = list(
+	/obj/structure/table,
+	/obj/structure/cable,
+	/obj/structure/window,
+	/obj/item/projectile,
+	/obj/structure/window_frame
+)
 
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
@@ -171,13 +177,12 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	icon_living = icon_state
 
 	if(istype(target, /obj/structure))
-		maxHealth = target.anchored * 50 + 50
+		maxHealth = 100
 		destroy_objects = TRUE
+		knockdown_people = TRUE
 
-		if(target.density && target.anchored)
-			knockdown_people = TRUE
-			melee_damage_lower = initial(melee_damage_lower) * 2
-			melee_damage_upper = initial(melee_damage_upper) * 2
+		melee_damage_lower = initial(melee_damage_lower) * 2
+		melee_damage_upper = initial(melee_damage_upper) * 2
 	else if(istype(target, /obj/item))
 		var/obj/item/I = target
 
@@ -226,6 +231,9 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/proc/is_target_valid_for_mimicry(obj/O)
 	if(QDELETED(O))
+		return FALSE
+
+	if(O.anchored)
 		return FALSE
 
 	if((!istype(O, /obj/item) && !istype(O, /obj/structure)))
