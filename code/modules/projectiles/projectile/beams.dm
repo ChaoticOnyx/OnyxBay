@@ -137,19 +137,20 @@
 	tracer_type = /obj/effect/projectile/laser/emitter/tracer
 	impact_type = /obj/effect/projectile/laser/emitter/impact
 
-/obj/item/projectile/beam/lastertag
+/obj/item/projectile/beam/lasertag
 	name = "lasertag beam"
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	nodamage = 1
+	damage = 0
+	nodamage = TRUE
 	no_attack_log = 1
-/obj/item/projectile/beam/lastertag/blue
+/obj/item/projectile/beam/lasertag/blue
 	icon_state = "bluelaser"
 
 	muzzle_type = /obj/effect/projectile/laser/blue/muzzle
 	tracer_type = /obj/effect/projectile/laser/blue/tracer
 	impact_type = /obj/effect/projectile/laser/blue/impact
 
-/obj/item/projectile/beam/lastertag/blue/on_hit(atom/target, blocked = 0)
+/obj/item/projectile/beam/lasertag/blue/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
@@ -157,10 +158,10 @@
 			M.Stun(5)
 	return 1
 
-/obj/item/projectile/beam/lastertag/red
+/obj/item/projectile/beam/lasertag/red
 	icon_state = "laser"
 
-/obj/item/projectile/beam/lastertag/red/on_hit(atom/target, blocked = 0)
+/obj/item/projectile/beam/lasertag/red/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
@@ -168,14 +169,14 @@
 			M.Stun(5)
 	return 1
 
-/obj/item/projectile/beam/lastertag/omni//A laser tag bolt that stuns EVERYONE
+/obj/item/projectile/beam/lasertag/omni//A laser tag bolt that stuns EVERYONE
 	icon_state = "omnilaser"
 
 	muzzle_type = /obj/effect/projectile/laser/omni/muzzle
 	tracer_type = /obj/effect/projectile/laser/omni/tracer
 	impact_type = /obj/effect/projectile/laser/omni/impact
 
-/obj/item/projectile/beam/lastertag/omni/on_hit(atom/target, blocked = 0)
+/obj/item/projectile/beam/lasertag/omni/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = target
 		if((istype(M.wear_suit, /obj/item/clothing/suit/bluetag))||(istype(M.wear_suit, /obj/item/clothing/suit/redtag)))
