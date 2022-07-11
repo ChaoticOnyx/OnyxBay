@@ -405,7 +405,6 @@
 	cant_hold = list(/obj/item/storage/backpack/satchel/flat) //muh recursive backpacks
 	startswith = list(
 		/obj/item/stack/tile/floor
-		/obj/item/stack/tile/floor_rough,
 		/obj/item/crowbar
 		)
 	item_state_slots = list(
