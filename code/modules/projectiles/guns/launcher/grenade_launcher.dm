@@ -92,6 +92,7 @@
 
 /obj/item/gun/launcher/grenade/consume_next_projectile()
 	if(chambered)
+		QDEL_NULL(chambered.safety_pin)
 		chambered.activate(null)
 	return chambered
 

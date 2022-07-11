@@ -28,13 +28,8 @@
 	..()
 	if(has_pin && need_pin)
 		safety_pin = new /obj/item/safety_pin
-
-
-/obj/item/grenade/Initialize()
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	new_timing(30)
-	..()
-
 
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
