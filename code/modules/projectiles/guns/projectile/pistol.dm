@@ -231,6 +231,7 @@
 			w_class = initial(w_class)
 			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 			update_icon()
+			screen_shake = initial(screen_shake)
 			return
 	..()
 
@@ -246,6 +247,7 @@
 		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
 		fire_sound = SFX_SILENT_FIRE
+		screen_shake = 0.2
 		return
 	..()
 
