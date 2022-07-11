@@ -40,7 +40,7 @@ var/global/list/protected_objects = list(
 
 	controllable = TRUE
 
-	var/weakref/copy_of
+	var/obj/copy_of
 	var/weakref/creator // the creator
 	var/destroy_objects = FALSE
 	var/knockdown_people = FALSE
@@ -85,6 +85,24 @@ var/global/list/protected_objects = list(
 /mob/living/simple_animal/hostile/mimic/proc/_update_inactive_time()
 	inactive_time = world.time
 
+/mob/living/simple_animal/hostile/mimic/proc/_handle_contents()
+	var/has_mob = FALSE
+
+	for(var/atom/movable/A in contents)
+		if(ismob(A))
+			var/mob/M = A
+
+			if(M.is_dead())
+				M.forceMove(get_turf(src))
+				M.gib()
+			else
+				has_mob = TRUE
+				M.attack_generic(src, rand(melee_damage_lower * (CRIT_MULTIPLIER / 2), melee_damage_upper * (CRIT_MULTIPLIER / 2)), attacktext, environment_smash, damtype, defense)
+		else if(A != copy_of)
+			A.forceMove(get_turf(src))
+
+	anchored = has_mob
+
 /mob/living/simple_animal/hostile/mimic/attack_hand(mob/user)
 	. = ..()
 	
@@ -104,11 +122,12 @@ var/global/list/protected_objects = list(
 
 	_handle_healing()
 	_handle_ambush()
+	_handle_contents()
 
 /mob/living/simple_animal/hostile/mimic/proc/_update_verbs()
 	verbs.Cut()
 
-	var/obj/item/C = copy_of.resolve()
+	var/obj/item/C = copy_of
 
 	if(!is_target_valid_for_mimicry(C))
 		return
@@ -158,7 +177,7 @@ var/global/list/protected_objects = list(
 		return . - creator.resolve()
 
 /mob/living/simple_animal/hostile/mimic/proc/_release_copy()
-	var/atom/movable/C = copy_of.resolve()
+	var/atom/movable/C = copy_of
 
 	if(!C)
 		return
@@ -190,7 +209,7 @@ var/global/list/protected_objects = list(
 
 	forceMove(get_turf(target))
 	target.forceMove(src)
-	copy_of = weakref(target)
+	copy_of = target
 	appearance = target
 	icon_living = icon_state
 
@@ -267,7 +286,7 @@ var/global/list/protected_objects = list(
 	return TRUE
 
 /mob/living/simple_animal/hostile/mimic/proc/can_setup_trap()
-	var/obj/structure/closet/C = copy_of.resolve()
+	var/obj/structure/closet/C = copy_of
 
 	if(QDELETED(C))
 		return FALSE
@@ -365,6 +384,10 @@ var/global/list/protected_objects = list(
 	set name = "Mimicry"
 	set category = "Mimic"
 
+	if(anchored)
+		to_chat(usr, SPAN("warning", "You can't move"))
+		return
+
 	if(_in_trap_mode)
 		to_chat(usr, SPAN("warning", "You can't mimicry while in trap mode"))
 		return
@@ -401,6 +424,10 @@ var/global/list/protected_objects = list(
 		"colt python" = /obj/item/gun/projectile/revolver/coltpython
 	)
 
+	if(anchored)
+		to_chat(usr, SPAN("warning", "You can't move"))
+		return
+
 	if(_in_trap_mode)
 		to_chat(src, SPAN("warning", "You are already in trap mode"))
 		return
@@ -420,7 +447,7 @@ var/global/list/protected_objects = list(
 	_in_trap_mode = TRUE
 
 /mob/living/simple_animal/hostile/mimic/proc/_set_closet_opened_state(state)
-	var/obj/structure/closet/C = copy_of.resolve()
+	var/obj/structure/closet/C = copy_of
 
 	ASSERT(istype(C))
 
@@ -430,22 +457,14 @@ var/global/list/protected_objects = list(
 
 /mob/living/simple_animal/hostile/mimic/proc/_activate_trap(mob/victim)
 	victim.forceMove(src)
-	anchored = TRUE
 	
 	to_chat(victim, SPAN("danger", "\The [src] has stuffed you into itself and is starts tearing you apart!"))
 	to_chat(src, SPAN("notice", "You caught [victim]!"))
 
-	_set_closet_opened_state(FALSE)
-	addtimer(CALLBACK(src, .proc/_deactivate_trap), 10 SECONDS)
+	_deactivate_trap()
 
 /mob/living/simple_animal/hostile/mimic/proc/_deactivate_trap()
 	_set_closet_opened_state(FALSE)
-	anchored = FALSE
-
-	for(var/mob/M in contents)
-		M.forceMove(get_turf(src))
-		M.gib()
-
 	_in_trap_mode = FALSE
 	QDEL_NULL(trap)
 
@@ -505,8 +524,6 @@ var/global/list/protected_objects = list(
 	
 	if(user.a_intent != I_HURT)
 		M._activate_trap(user)
-
-	qdel(src)
 
 #undef WAIT_TO_HEAL
 #undef WAIT_TO_CRIT
