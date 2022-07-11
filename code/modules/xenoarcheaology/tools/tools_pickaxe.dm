@@ -27,8 +27,6 @@
 	icon_state = "pick1"
 	desc = "A miniature excavation tool for precise digging (2 centimetre excavation depth)."
 	excavation_amount = 2
-	drill_sound = 'sound/items/Screwdriver.ogg'
-	drill_verb = "delicately picking"
 
 /obj/item/pickaxe/archeologist/two_pick
 	name = "4cm pick"
