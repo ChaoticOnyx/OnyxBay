@@ -145,7 +145,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 		else
 			M.visible_message(\
 				SPAN_WARNING("[M] struggles to untie the noose over their neck!"),\
-				SPAN_NOTICE("You struggle to untie the noose over your neck."))
+				SPAN_NOTICE("You struggle to untie the noose over [M]'s neck."))
 			if(!do_after(M, 15 SECONDS))
 				if(M?.buckled)
 					to_chat(M, SPAN_WARNING("You fail to untie yourself!"))
@@ -154,7 +154,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 				return
 			M.visible_message(\
 				SPAN_WARNING("[M] unties the noose over their neck!"),\
-				SPAN_NOTICE("You untie the noose over your neck!"))
+				SPAN_NOTICE("You untie the noose over [M]'s neck!"))
 			M.Weaken(3)
 			M.Stun(2)
 		unbuckle_mob()

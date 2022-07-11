@@ -137,14 +137,13 @@
 	tracer_type = /obj/effect/projectile/laser/emitter/tracer
 	impact_type = /obj/effect/projectile/laser/emitter/impact
 
-/obj/item/projectile/beam/lastertag/blue
+/obj/item/projectile/beam/lastertag
 	name = "lasertag beam"
-	icon_state = "bluelaser"
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 0
+	nodamage = 1
 	no_attack_log = 1
-	damage_type = BURN
-	check_armour = "laser"
+/obj/item/projectile/beam/lastertag/blue
+	icon_state = "bluelaser"
 
 	muzzle_type = /obj/effect/projectile/laser/blue/muzzle
 	tracer_type = /obj/effect/projectile/laser/blue/tracer
@@ -159,13 +158,7 @@
 	return 1
 
 /obj/item/projectile/beam/lastertag/red
-	name = "lasertag beam"
 	icon_state = "laser"
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 0
-	no_attack_log = 1
-	damage_type = BURN
-	check_armour = "laser"
 
 /obj/item/projectile/beam/lastertag/red/on_hit(atom/target, blocked = 0)
 	if(istype(target, /mob/living/carbon/human))
@@ -176,12 +169,7 @@
 	return 1
 
 /obj/item/projectile/beam/lastertag/omni//A laser tag bolt that stuns EVERYONE
-	name = "lasertag beam"
 	icon_state = "omnilaser"
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 0
-	damage_type = BURN
-	check_armour = "laser"
 
 	muzzle_type = /obj/effect/projectile/laser/omni/muzzle
 	tracer_type = /obj/effect/projectile/laser/omni/tracer
