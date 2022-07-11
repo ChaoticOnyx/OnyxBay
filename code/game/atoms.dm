@@ -104,7 +104,6 @@
 	..()
 
 	SEND_SIGNAL(src, SIGNAL_ENTERED, src, enterer, old_loc)
-	SEND_SIGNAL(src, SIGNAL_MOVED, enterer, old_loc, enterer.loc)
 
 /atom/Exited(atom/movable/exitee, atom/new_loc)
 	. = ..()
