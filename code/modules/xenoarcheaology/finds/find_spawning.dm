@@ -316,8 +316,6 @@
 	if(prob(25))
 		new_item = new /obj/item/device/soulstone(loc)
 		item_type = "soul stone shard"
-		new_item.icon = 'icons/obj/wizard.dmi'
-		new_item.icon_state = "soulstone"
 		return new_item
 	else
 		new_item = new(loc)
