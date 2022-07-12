@@ -74,7 +74,7 @@
 		update_icon = TRUE // So we don't end up stuck with a borg/AI icon after setting their priority to non-high
 	else if((equip_preview_mob & EQUIP_PREVIEW_JOB) && previewJob)
 		mannequin.job = previewJob.title
-		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title], mannequin.char_branch)
+		previewJob.equip_preview(mannequin, player_alt_titles[previewJob.title])
 		if(!previewJob.preview_override)
 			update_icon = TRUE
 
