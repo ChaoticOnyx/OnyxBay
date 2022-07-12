@@ -114,6 +114,10 @@ var/global/list/protected_objects = list(
 
 	_update_inactive_time()
 
+/mob/living/simple_animal/hostile/mimic/on_pulling_try(mob/user)
+	if(_in_trap_mode)
+		_activate_trap(user)
+
 /mob/living/simple_animal/hostile/mimic/Life()
 	. = ..()
 	
@@ -409,7 +413,7 @@ var/global/list/protected_objects = list(
 		"captain's antique laser gun" = /obj/item/gun/energy/captain,
 		"stunbaton" = /obj/item/melee/baton/loaded,
 		"10 diamonds" = /obj/item/stack/material/diamond/ten,
-		"1000 Credit" = /obj/item/spacecash/bundle/c1000,
+		"1000 credit" = /obj/item/spacecash/bundle/c1000,
 		"rapid construction device" = /obj/item/rcd,
 		"taser pistol" = /obj/item/gun/energy/security/pistol,
 		"crowbar" = /obj/item/crowbar,
@@ -464,6 +468,7 @@ var/global/list/protected_objects = list(
 	_deactivate_trap()
 
 /mob/living/simple_animal/hostile/mimic/proc/_deactivate_trap()
+	_update_inactive_time()
 	_set_closet_opened_state(FALSE)
 	_in_trap_mode = FALSE
 	QDEL_NULL(trap)
@@ -493,6 +498,7 @@ var/global/list/protected_objects = list(
 /obj/item/mimic_trap
 	name = "Unknown"
 	desc = "Unknown"
+	anchored = TRUE
 
 	var/weakref/owner
 
@@ -502,7 +508,6 @@ var/global/list/protected_objects = list(
 	src.owner = weakref(owner)
 
 	ASSERT(src.owner)
-	ASSERT(ispath(object_path))
 
 	var/obj/item/from = new object_path(get_turf(src))
 	from.forceMove(src)
@@ -519,11 +524,11 @@ var/global/list/protected_objects = list(
 
 /obj/item/mimic_trap/attack_hand(mob/user)
 	var/mob/living/simple_animal/hostile/mimic/M = owner.resolve()
-	
-	ASSERT(istype(M))
-	
-	if(user.a_intent != I_HURT)
-		M._activate_trap(user)
+
+	M.attack_hand(user)
+
+/obj/item/mimic_trap/on_pulling_try(mob/user)
+	attack_hand(user)
 
 #undef WAIT_TO_HEAL
 #undef WAIT_TO_CRIT
