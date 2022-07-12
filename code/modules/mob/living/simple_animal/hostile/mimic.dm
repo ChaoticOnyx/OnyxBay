@@ -425,7 +425,8 @@ var/global/list/protected_objects = list(
 		"toy katana" = /obj/item/toy/katana,
 		"hypospray" = /obj/item/reagent_containers/hypospray,
 		"carbon dioxide jetpack" = /obj/item/tank/jetpack/carbondioxide,
-		"colt python" = /obj/item/gun/projectile/revolver/coltpython
+		"colt python" = /obj/item/gun/projectile/revolver/coltpython,
+		"nuclear authentication disk" = /obj/item/disk/nuclear_fake
 	)
 
 	if(anchored)
