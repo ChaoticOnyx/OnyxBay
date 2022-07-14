@@ -243,7 +243,7 @@
 						alert("That is not a valid amount.")
 					else if(transfer_amount <= authenticated_account.money)
 						var/target_account_number = text2num(href_list["target_acc_number"])
-						var/transfer_purpose = href_list["purpose"]
+						var/transfer_purpose = sanitizeSafe(href_list["purpose"])
 						if(charge_to_account(target_account_number, authenticated_account.owner_name, transfer_purpose, machine_id, transfer_amount))
 							to_chat(usr, "\icon[src]<span class='info'>Funds transfer successful.</span>")
 							//create an entry in the account transaction log
