@@ -18,6 +18,16 @@
 /obj/item/arrow/proc/removed() //Helper for metal rods falling apart.
 	return
 
+/obj/item/arrow/pre_launched()
+	..()
+	throw_spin = FALSE
+	icon = 'icons/obj/projectiles.dmi'
+
+/obj/item/arrow/post_launched()
+	..()
+	throw_spin = TRUE
+	icon = 'icons/obj/weapons.dmi'
+
 /obj/item/spike
 	name = "alloy spike"
 	desc = "It's about a foot of weird silver metal with a wicked point."
@@ -31,6 +41,16 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "metal-rod"
 	item_state = "bolt"
+
+/obj/item/spike/pre_launched()
+	..()
+	throw_spin = FALSE
+	icon = 'icons/obj/projectiles.dmi'
+
+/obj/item/spike/post_launched()
+	..()
+	throw_spin = TRUE
+	icon = 'icons/obj/weapons.dmi'
 
 /obj/item/arrow/quill
 	name = "vox quill"
@@ -71,12 +91,11 @@
 	var/obj/item/bolt
 	var/tension = 0                         // Current draw on the bow.
 	var/max_tension = 5                     // Highest possible tension.
-	var/release_speed = 5                   // Speed per unit of tension.
 	var/obj/item/cell/cell = null    // Used for firing superheated rods.
 	var/current_user                        // Used to check if the crossbow has changed hands since being drawn.
 
 /obj/item/gun/launcher/crossbow/update_release_force()
-	release_force = tension*release_speed
+	release_force = max(1, tension)
 
 /obj/item/gun/launcher/crossbow/consume_next_projectile(mob/user=null)
 	if(tension <= 0)

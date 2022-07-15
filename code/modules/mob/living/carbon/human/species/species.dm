@@ -211,6 +211,7 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
 	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*
@@ -713,3 +714,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 /datum/species/proc/is_eligible_for_antag_spawn(antag_id)
 	return TRUE
+
+/datum/species/proc/get_species_runechat_color(mob/living/carbon/human/H)
+	if(appearance_flags & HAS_SKIN_COLOR)
+		return H.s_base
+	else
+		var/list/A = list(max(64, H.r_hair), max(64, H.g_hair), max(64, H.b_hair))
+		return A

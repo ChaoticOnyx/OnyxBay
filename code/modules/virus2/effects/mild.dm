@@ -148,12 +148,8 @@
 	if(..())
 		return
 	to_chat(mob, DISORIENTATION_EFFECT_WARNING)
-	if(mob.client)
-		var/client/C = mob.client
-		if(prob(50))
-			C.dir = turn(C.dir, 90)
-		else
-			C.dir = turn(C.dir, -90)
+	mob.eye_blurry = max(mob.eye_blurry, 10)
+
 
 
 /datum/disease2/effect/fridge

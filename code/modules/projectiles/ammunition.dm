@@ -103,7 +103,6 @@
 	matter = list(MATERIAL_STEEL = 500)
 	throwforce = 5
 	w_class = ITEM_SIZE_SMALL
-	throw_speed = 4
 	throw_range = 10
 
 	var/list/stored_ammo = list()

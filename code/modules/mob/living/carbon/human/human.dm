@@ -150,7 +150,7 @@
 				return
 			else
 				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
-				throw_at(target, 200, 4)
+				throw_at(target, 200, 1)
 			//return
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
@@ -787,7 +787,7 @@
 						A.forceMove(get_turf(src))
 						stomach_contents.Remove(a)
 						if(src.species.gluttonous & GLUT_PROJECTILE_VOMIT)
-							A.throw_at(get_edge_target_turf(src,src.dir),7,7,src)
+							A.throw_at(get_edge_target_turf(src, dir), 7, 1, src)
 
 					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
@@ -1133,7 +1133,7 @@
 			return
 		if(species.language)
 			remove_language(species.language)
-		if(species.icon_scale != 1)
+		if(species.icon_scale != 1 || species.y_shift)
 			update_transform()
 		if(species.default_language)
 			remove_language(species.default_language)
@@ -1745,3 +1745,6 @@
 		log_and_message_admins("has succumbed")
 		adjustBrainLoss(brain.max_damage)
 		updatehealth()
+
+/mob/living/carbon/human/get_runechat_color()
+	return species.get_species_runechat_color(src)

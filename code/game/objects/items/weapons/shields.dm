@@ -52,7 +52,7 @@
 	slot_flags = SLOT_BACK
 	force = 15.0
 	throwforce = 5.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
 	mod_weight = 2.0
@@ -88,7 +88,7 @@
 	slot_flags = SLOT_BACK
 	force = 8
 	throwforce = 8
-	throw_speed = 10
+	throw_speed = 1
 	throw_range = 20
 	w_class = ITEM_SIZE_HUGE
 	origin_tech = list(TECH_MATERIAL = 1)
@@ -112,7 +112,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 5.0
 	throwforce = 5.0
-	throw_speed = 1
+	throw_speed = 2
 	throw_range = 4
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.35

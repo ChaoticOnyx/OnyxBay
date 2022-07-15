@@ -15,7 +15,7 @@
 	if(hud_type)
 		hud_used = new hud_type(src)
 	else
-		hud_used = new /datum/hud
+		hud_used = new /datum/hud(src)
 
 	InitializePlanes()
 	UpdatePlanes()
@@ -26,6 +26,8 @@
 
 	var/list/planes = list(
 		/obj/screen/plane_master/ambient_occlusion,
+		/obj/screen/plane_master/openspace_blur,
+		/obj/screen/plane_master/over_openspace_darkness,
 		/obj/screen/plane_master/mouse_invisible
 	)
 
@@ -238,6 +240,7 @@
 
 	hud_used.hidden_inventory_update()
 	hud_used.persistant_inventory_update()
+	hud_used.reorganize_alerts()
 	update_action_buttons()
 
 //Similar to button_pressed_F12() but keeps zone_sel, gun_setting_icon, and healths.
@@ -276,6 +279,61 @@
 	hud_used.hidden_inventory_update()
 	hud_used.persistant_inventory_update()
 	update_action_buttons()
+
+
+// Re-render all alerts
+/datum/hud/proc/reorganize_alerts(mob/viewmob)
+	var/mob/screenmob = viewmob || mymob
+	if(!screenmob.client)
+		return
+	var/list/alerts = mymob.alerts
+	if(!hud_shown)
+		for(var/i in 1 to alerts.len)
+			screenmob.client.screen -= alerts[alerts[i]]
+		return 1
+	for(var/i in 1 to alerts.len)
+		var/obj/screen/movable/alert/alert = alerts[alerts[i]]
+		if(alert.icon_state == "template")
+			alert.icon = ui_style2icon(screenmob.client.prefs.UI_style)
+		switch(i)
+			if(1)
+				. = ui_alert1
+			if(2)
+				. = ui_alert2
+			if(3)
+				. = ui_alert3
+			if(4)
+				. = ui_alert4
+			if(5)
+				. = ui_alert5 // Right now there's 5 slots
+			else
+				. = ""
+		alert.screen_loc = .
+		screenmob.client.screen |= alert
+	return 1
+
+/obj/screen/movable/alert/Click(location, control, params)
+	if(!usr || !usr.client)
+		return FALSE
+	if(usr != owner)
+		return FALSE
+	if(master && click_master)
+		return usr.client.Click(master, location, control, params)
+
+	return TRUE
+
+/obj/screen/movable/alert/_examine_text(mob/user, infix, suffix)
+	.="[name]"
+	.+=" - [SPAN("info", desc)]"
+	return FALSE
+
+/obj/screen/movable/alert/Destroy()
+	. = ..()
+	severity = 0
+	master = null
+	owner = null
+	screen_loc = ""
+
 
 /mob/proc/add_click_catcher()
 	if(!client.void)

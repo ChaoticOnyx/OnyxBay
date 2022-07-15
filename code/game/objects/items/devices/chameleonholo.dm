@@ -5,7 +5,6 @@
 	slot_flags = SLOT_BELT
 	item_state = "electronic"
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_ILLEGAL = 4, TECH_MAGNET = 4)
@@ -94,7 +93,6 @@
 	item_state = "electronic"
 	throwforce = 5.0
 	throw_speed = 1
-	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	origin_tech = list(TECH_ILLEGAL = 5, TECH_MAGNET = 4)
 	var/bomb_armed = FALSE

@@ -42,6 +42,9 @@
 /datum/uplink_category/services
 	name = "Services"
 
+/datum/uplink_category/job
+	name = "Job Specific"
+
 /datum/uplink_category/badassery
 	name = "Badassery"
 

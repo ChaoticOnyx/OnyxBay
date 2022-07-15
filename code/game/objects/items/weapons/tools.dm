@@ -87,7 +87,6 @@
 	mod_reach = 0.3
 	mod_handy = 1.0
 	throwforce = 5.0
-	throw_speed = 3
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 75)
 	attack_verb = list("stabbed")
@@ -184,7 +183,6 @@
 	slot_flags = SLOT_BELT
 	sharp = 1
 	force = 5.5
-	throw_speed = 2
 	throw_range = 9
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.45
@@ -251,7 +249,6 @@
 	//Amount of OUCH when it's thrown
 	force = 6.5
 	throwforce = 5.0
-	throw_speed = 1
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 1.0

@@ -242,53 +242,66 @@
 	switch(stage)
 		if(0)
 			if(W.sharp)
-				user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-				stage++
-				return
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					if(children?.len)
+						var/obj/item/organ/external/external_child = pick(children)
+						status |= ORGAN_CUT_AWAY
+						children.Remove(external_child)
+						external_child.forceMove(get_turf(src))
+						external_child.SetTransform(rotation = rand(180))
+						external_child.compile_icon()
+						compile_icon()
+						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
+					else
+						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
+						stage++
+					return
 		if(1)
 			if(istype(W))
-				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
-				stage++
-				return
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+					stage++
+					return
 		if(2)
 			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
 				var/list/organs = get_contents_recursive()
-				if(organs.len)
-					var/obj/item/removing = pick(organs)
-					var/obj/item/organ/external/current_child = removing.loc
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					if(organs.len)
+						var/obj/item/removing = pick(organs)
+						var/obj/item/organ/external/current_child = removing.loc
 
-					current_child.implants.Remove(removing)
-					current_child.internal_organs.Remove(removing)
+						current_child.implants.Remove(removing)
+						current_child.internal_organs.Remove(removing)
 
-					status |= ORGAN_CUT_AWAY
-					if(istype(removing, /obj/item/organ/internal/mmi_holder))
-						var/obj/item/organ/internal/mmi_holder/O = removing
-						removing = O.transfer_and_delete()
+						status |= ORGAN_CUT_AWAY
+						if(istype(removing, /obj/item/organ/internal/mmi_holder))
+							var/obj/item/organ/internal/mmi_holder/O = removing
+							removing = O.transfer_and_delete()
 
-					removing.forceMove(get_turf(src))
-					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
-				else
-					if(organ_tag == BP_HEAD && W.sharp)
-						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
-						if(!H.skull_path)
-							user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
-							return
-						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
-						if(istype(H.loc, /turf))
-							new H.skull_path(H.loc)
-							gibs(H.loc)
-						else
-							new H.skull_path(user.loc)
-							gibs(user.loc)
-						H.skull_path = null // So no skulls dupe in case of lags
-						qdel(src)
+						removing.forceMove(get_turf(src))
+						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 					else
-						if(src && !QDELETED(src))
-							food_organ.appearance = food_organ_type
-							food_organ.forceMove(get_turf(loc))
-							food_organ = null
+						if(organ_tag == BP_HEAD && W.sharp)
+							var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+							if(!H.skull_path)
+								user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+								return
+							user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
+							if(istype(H.loc, /turf))
+								new H.skull_path(H.loc)
+								gibs(H.loc)
+							else
+								new H.skull_path(user.loc)
+								gibs(user.loc)
+							H.skull_path = null // So no skulls dupe in case of lags
 							qdel(src)
-						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						else
+							if(src && !QDELETED(src))
+								food_organ.appearance = food_organ_type
+								food_organ.forceMove(get_turf(loc))
+								food_organ = null
+								qdel(src)
+							user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
@@ -353,10 +366,12 @@
 /obj/item/organ/external/replaced(mob/living/carbon/human/target)
 	..()
 
-	if(istype(owner))
+	if(!QDELETED(owner))
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP && length(owner.grasp_limbs))
+			owner.grasp_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_STAND && length(owner.stance_limbs))
+			owner.stance_limbs[src] = TRUE
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
@@ -909,11 +924,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 				SetTransform(rotation = rand(180))
 			forceMove(victim.loc)
 			update_icon_drop(victim)
-			if(!clean) // Throw limb around.
-				spawn()
-					if(!QDELETED(src) && isturf(loc))
-						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
-					dir = 2
+			if(!clean && !QDELETED(src)) // Throw limb around.
+				if(isturf(loc))
+					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(1, 2))
+				dir = 2
 		if(DROPLIMB_BURN)
 			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
@@ -934,8 +948,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			for(var/obj/item/I in src)
 				I.forceMove(victim.loc)
 				if(isturf(I.loc))
-					spawn()
-						I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
+					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(1, 2))
 
 			qdel(src)
 
@@ -1252,7 +1265,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			// let actual implants still inside know they're no longer implanted
 			if(istype(I, /obj/item/implant))
 				var/obj/item/implant/imp_device = I
-				imp_device.removed()
+				imp_device.imp_in = null
 		else
 			implants.Remove(implant)
 			implant.forceMove(get_turf(src))

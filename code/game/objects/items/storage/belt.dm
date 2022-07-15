@@ -125,7 +125,8 @@
 		/obj/item/crowbar,
 		/obj/item/device/flashlight,
 		/obj/item/taperoll,
-		/obj/item/extinguisher/mini
+		/obj/item/extinguisher/mini,
+		/obj/item/device/antibody_scanner
 		)
 
 /obj/item/storage/belt/medical/emt

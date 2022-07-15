@@ -67,6 +67,7 @@
 	var/fire_sound
 
 	var/vacuum_traversal = 1 //Determines if the projectile can exist in vacuum, if false, the projectile will be deleted if it enters vacuum.
+	var/impact_on_original = FALSE // Allow player to shot at floor and do on_impact stuff
 
 	var/datum/plot_vector/trajectory	// used to plot the path of the projectile
 	var/datum/vector_loc/location		// current location of the projectile in pixel space
@@ -149,7 +150,7 @@
 /obj/item/projectile/proc/check_penetrate(atom/A)
 	return 1
 
-/obj/item/projectile/proc/check_fire(atom/target as mob, mob/living/user as mob)  //Checks if you can hit them or not.
+/obj/item/projectile/proc/check_fire(atom/target, mob/living/user)  //Checks if you can hit them or not.
 	check_trajectory(target, user, pass_flags, item_flags, obj_flags)
 
 //sets the click point of the projectile using mouse input params
@@ -213,7 +214,9 @@
 
 	original = new_target
 	if(new_firer)
-		firer = src
+		firer = new_firer
+
+	shot_from = "[firer.name] (projectile redirection, weapon - [shot_from])"
 
 	setup_trajectory(starting_loc, new_target)
 
@@ -306,6 +309,13 @@
 	if((bumped && !forced) || (A in permutated))
 		return 0
 
+	if(istype(A, /obj/effect/portal))
+		var/obj/effect/portal/P = A
+		if(P.on_projectile_impact(src, FALSE))
+			bumped = FALSE // reset bumped variable!
+			permutated.Cut()
+			return
+
 	var/passthrough = 0 //if the projectile should continue flying
 	var/distance = get_dist(starting,loc)
 
@@ -349,13 +359,16 @@
 		bumped = 0 //reset bumped variable!
 		return 0
 
-	//stop flying
-	on_impact(A)
-
+	// Effectively cease existing
 	set_density(0)
 	set_invisibility(101)
 
-	qdel(src)
+	spawn
+		// on_impact might take a long time
+		//   so we defer its execution
+		on_impact(A)
+		qdel(src)
+
 	return 1
 
 /obj/item/projectile/ex_act()
@@ -395,9 +408,18 @@
 
 		before_move()
 		previous = loc
-		Move(location.return_turf())
+		// Things may have moved into our current tile if the order of movement is right
+		//   so we want to try to hit things that have moved in
+		src.loc = null
+		if (Move(previous))
+			Move(location.return_turf())
 
-		if(!bumped && !isturf(original))
+		if (!src.density)
+			// We are unable to hit anything anymore
+			//   so don't bother moving further
+			break
+
+		if(!bumped && (!isturf(original) || impact_on_original))
 			if(loc == get_turf(original))
 				if(!(original in permutated))
 					if(Bump(original))

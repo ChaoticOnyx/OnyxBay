@@ -482,10 +482,8 @@
 
 			AM.forceMove(src.loc)
 			AM.pipe_eject(0)
-			if(!istype(AM,/mob/living/silicon/robot/drone)) //Poor drones kept smashing windows and taking system damage being fired out of disposals. ~Z
-				spawn(1)
-					if(AM)
-						AM.throw_at(target, 5, 1)
+			if(!istype(AM, /mob/living/silicon/robot/drone)) //Poor drones kept smashing windows and taking system damage being fired out of disposals. ~Z
+				AM.throw_at(target, 5, 1)
 
 		H.vent_gas(loc)
 		qdel(H)
@@ -810,9 +808,7 @@
 				for(var/atom/movable/AM in H)
 					AM.forceMove(T)
 					AM.pipe_eject(direction)
-					spawn(1)
-						if(AM)
-							AM.throw_at(target, 100, 1)
+					AM.throw_at(target, 100, 1)
 				H.vent_gas(T)
 				qdel(H)
 
@@ -825,9 +821,7 @@
 
 					AM.forceMove(T)
 					AM.pipe_eject(0)
-					spawn(1)
-						if(AM)
-							AM.throw_at(target, 5, 1)
+					AM.throw_at(target, 5, 1)
 
 				H.vent_gas(T)	// all gas vent to turf
 				qdel(H)
@@ -1667,9 +1661,8 @@
 			for(var/atom/movable/AM in H)
 				AM.forceMove(src.loc)
 				AM.pipe_eject(dir)
-				if(!istype(AM,/mob/living/silicon/robot/drone)) //Drones keep smashing windows from being fired out of chutes. Bad for the station. ~Z
-					spawn(5)
-						AM.throw_at(target, 3, 1)
+				if(!istype(AM, /mob/living/silicon/robot/drone)) //Drones keep smashing windows from being fired out of chutes. Bad for the station. ~Z
+					AM.throw_at(target, 3, 1)
 			H.vent_gas(src.loc)
 			qdel(H)
 

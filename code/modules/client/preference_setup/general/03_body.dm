@@ -355,7 +355,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			reset_limbs() // Safety for species with incompatible manufacturers; easier than trying to do it case by case.
 			pref.body_markings.Cut() // Basically same as above.
 
-			prune_occupation_prefs()
+			prune_job_prefs()
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["hair_color"])
@@ -696,7 +696,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "<small>"
 	if(current_species.spawn_flags & SPECIES_CAN_JOIN)
 		dat += "</br><b>Often present among humans.</b>"
-	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED)
+	if(current_species.spawn_flags & SPECIES_IS_WHITELISTED & config.game.use_ingame_alien_whitelist)
 		dat += "</br><b>Whitelist restricted.</b>"
 	if(!current_species.has_organ[BP_HEART])
 		dat += "</br><b>Does not have blood.</b>"

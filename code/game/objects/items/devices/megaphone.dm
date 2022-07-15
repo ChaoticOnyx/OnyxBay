@@ -35,6 +35,7 @@
 				to_chat(user, SPAN_WARNING("*BZZZZzzzzzt*"))
 		else
 			speak(user, message)
+
 		spamcheck = 1
 		spawn(20)
 			spamcheck = 0
@@ -43,6 +44,8 @@
 /obj/item/device/megaphone/proc/speak(mob/living/user, message, emagged = FALSE)
 	for(var/mob/O in (viewers(user)))
 		O.show_message("<B>[user]</B> broadcasts, [FONT_GIANT("\"[emagged ? pick(insultmsg) : message]\"")]", AUDIBLE_MESSAGE)
+		if(O.get_preference_value(/datum/client_preference/runechat) == GLOB.PREF_YES && !O.is_deaf())
+			O.create_chat_message(O, message, FALSE, "big")
 	for(var/obj/item/device/radio/intercom/I in view(3, user))
 		if(I.broadcasting)
 			I.talk_into(user, message, verb = "shout")

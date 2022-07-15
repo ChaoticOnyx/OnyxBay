@@ -348,20 +348,17 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 		if(inner_pane.tinted)
 			new_opacity = TRUE
 			var/image/I = image(icon, "winframe_tint")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 		if(inner_pane.damage_state)
 			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
@@ -382,20 +379,17 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
 		if(outer_pane.tinted)
 			new_opacity = TRUE
 			var/image/I = image(icon, "winframe_tint")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
 		if(outer_pane.damage_state)
 			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
@@ -412,7 +406,6 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_BORDER_LAYER
 			overlays += I
 

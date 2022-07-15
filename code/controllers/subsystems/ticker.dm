@@ -97,6 +97,7 @@ SUBSYSTEM_DEF(ticker)
 	SSstoryteller.setup()
 
 	callHook("roundstart")
+	SEND_GLOBAL_SIGNAL(SIGNAL_ROUNDSTART)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()

@@ -7,7 +7,6 @@
 	w_class = ITEM_SIZE_SMALL
 	matter = list(MATERIAL_STEEL = 100)
 	throwforce = 2
-	throw_speed = 3
 	throw_range = 10
 	origin_tech = list(TECH_MAGNET = 1)
 

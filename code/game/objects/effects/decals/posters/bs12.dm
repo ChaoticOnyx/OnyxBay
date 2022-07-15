@@ -298,3 +298,8 @@
 	icon_state="bsposter60"
 	name = "RblRware Ltd. logo"
 	desc = "This particular one is of a logo of one of the most famous arcade game studios that made Syndietoads & Zhirozavr."
+
+/datum/poster/bay_61
+	icon_state="bsposter61"
+	name = "funny dragon poster"
+	desc = "This poster depicts a funny-looking dragon face on a crimson background. It looks kinda motivational, yet not spared of a little hint of sadness."
