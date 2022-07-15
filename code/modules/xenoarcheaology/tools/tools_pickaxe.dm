@@ -86,7 +86,7 @@
 	/obj/item/pickaxe/archaeologist/four_pick,
 	/obj/item/pickaxe/archaeologist/five_pick,
 	/obj/item/pickaxe/archaeologist/six_pick,
-	/obj/item/pickaxe/hand)
+	/obj/item/pickaxe/archaeologist/hand)
 	max_storage_space = 18
 	max_w_class = ITEM_SIZE_SMALL
 	use_to_pickup = 1
