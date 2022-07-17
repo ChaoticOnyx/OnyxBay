@@ -26,10 +26,13 @@
 	return
 
 /obj/item/combotool/resolve_attackby(atom/a, mob/user, click_params)
-	if(istype(a, /obj/item/storage))
+	if(istype(a, /obj/item/storage) && user.a_intent != I_DISARM)
 		a.attackby(src, user)
 		return
-	if(istype(a, /obj/structure/table) && user.a_intent == I_DISARM)
+	if(istype(a, /obj/structure/table))
+		a.attackby(src, user)
+		return
+	if(istype(a, /obj/structure/closet) && user.a_intent != I_DISARM)
 		a.attackby(src, user)
 		return
 	a.attackby(tool_u, user)
