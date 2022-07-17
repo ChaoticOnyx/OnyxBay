@@ -351,3 +351,7 @@
 	var/turf/T = get_turf(new_loc)
 	if(T != loc)
 		forceMove(T)
+
+/// Called on `/mob/proc/start_pulling`.
+/atom/movable/proc/on_pulling_try(mob/user)
+	return
