@@ -216,7 +216,7 @@
 			dismantle_sound = "spark"
 			dismantle_verb = "slicing"
 			cut_delay *= 0.5
-		else if(istype(W,/obj/item/pickaxe) && !istype(W,/obj/item/pickaxe/archaeologist))
+		else if(istype(W, /obj/item/pickaxe) && !istype(W, /obj/item/pickaxe/archaeologist))
 			var/obj/item/pickaxe/P = W
 			dismantle_verb = P.drill_verb
 			dismantle_sound = P.drill_sound
