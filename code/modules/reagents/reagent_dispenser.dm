@@ -167,7 +167,7 @@
 				message_admins("[key_name_admin(Proj.firer)] shot a fueltank outside the world.")
 				log_game("[key_name(Proj.firer)] shot a fueltank outside the world.")
 
-		if(!istype(Proj ,/obj/item/projectile/beam/lastertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
+		if(!istype(Proj ,/obj/item/projectile/beam/lasertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
 			explode()
 
 /obj/structure/reagent_dispensers/fueltank/ex_act()
