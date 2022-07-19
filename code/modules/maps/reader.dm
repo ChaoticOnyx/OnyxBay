@@ -470,33 +470,68 @@ GLOBAL_DATUM_INIT(_preloader, /dmm_suite/preloader, new)
 //build a list from variables in text form (e.g {var1="derp"; var2; var3=7} => list(var1="derp", var2, var3=7))
 //return the filled list
 /dmm_suite/proc/readlist(text as text, delimiter=",")
-	var/list/to_return = list()
+	. = list()
+	if (!text)
+		return
 
 	var/position
 	var/old_position = 1
-	var/list_index = 1
-
-	do
-		//find next delimiter that is not within  "..."
-		position = find_next_delimiter_position(text,old_position,delimiter)
-
-		//check if this is a simple variable (as in list(var1, var2)) or an associative one (as in list(var1="foo",var2=7))
-		var/equal_position = findtext(text,"=",old_position, position)
-
-		var/trim_left = trim_text(copytext(text,old_position,(equal_position ? equal_position : position)),1)//the name of the variable, must trim quotes to build a BYOND compliant associatives list
-		old_position = position + 1
-
-		if(equal_position)//associative var, so do the association
-			var/trim_right = trim_text(copytext(text,equal_position+1,position))//the content of the variable
-			to_return[trim_left] = readlistitem(trim_right)
-			list_index++
-		else if (length(trim_left))	//simple var
-			to_return.len++
-			to_return[list_index++] = readlistitem(trim_left)
 
 	while(position != 0)
+		// find next delimiter that is not within  "..."
+		position = find_next_delimiter_position(text,old_position,delimiter)
 
-	return to_return
+		// check if this is a simple variable (as in list(var1, var2)) or an associative one (as in list(var1="foo",var2=7))
+		var/equal_position = findtext(text,"=",old_position, position)
+
+		var/trim_left = trim_text(copytext(text,old_position,(equal_position ? equal_position : position)))
+		var/left_constant = delimiter == ";" ? trim_left : parse_constant(trim_left)
+		if(position)
+			old_position = position + length(text[position])
+
+		if(equal_position && !isnum(left_constant))
+			// Associative var, so do the association.
+			// Note that numbers cannot be keys - the RHS is dropped if so.
+			var/trim_right = trim_text(copytext(text, equal_position + length(text[equal_position]), position))
+			var/right_constant = parse_constant(trim_right)
+			.[left_constant] = right_constant
+
+		else  // simple var
+			. += list(left_constant)
+
+/dmm_suite/proc/parse_constant(text)
+	// number
+	var/num = text2num(text)
+	if(isnum(num))
+		return num
+
+	// string
+	if(text[1] == "\"")
+		return copytext(text, length(text[1]) + 1, findtext(text, "\"", length(text[1]) + 1))
+
+	// list
+	if(copytext(text, 1, 6) == "list(")//6 == length("list(") + 1
+		return readlist(copytext(text, 6, -1))
+
+	// typepath
+	var/path = text2path(text)
+	if(ispath(path))
+		return path
+
+	// file
+	if(text[1] == "'")
+		return file(copytext_char(text, 2, -1))
+
+	// null
+	if(text == "null")
+		return null
+
+	// not parsed:
+	// - pops: /obj{name="foo"}
+	// - new(), newlist(), icon(), matrix(), sound()
+
+	// fallback: string
+	return text
 
 /dmm_suite/Destroy()
 	..()

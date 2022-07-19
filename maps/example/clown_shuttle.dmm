@@ -1,0 +1,16 @@
+"a" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/se,/area/space)
+"m" = (/obj/item/bedsheet/clown,/turf/simulated/floor/shuttle/purple,/area/space)
+"o" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/exoplanet,/area/space)
+"x" = (/turf/simulated/shuttle/wall/corner/merchant/ne,/area/space)
+"z" = (/turf/simulated/shuttle/wall/corner/merchant/nw,/area/space)
+"B" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/sw,/area/space)
+"L" = (/turf/simulated/mineral,/area/space)
+"M" = (/obj/machinery/door/unpowered/shuttle,/turf/simulated/floor/shuttle/purple,/area/space)
+"Z" = (/turf/simulated/shuttle/wall{icon_state = "pwall"; dir = 1},/area/space)
+
+(1,1,1) = {"
+zox
+ZLZ
+ZmZ
+BMa
+"}
