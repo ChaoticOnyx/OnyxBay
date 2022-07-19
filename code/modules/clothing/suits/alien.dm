@@ -27,6 +27,7 @@
 	name = "headscarf"
 	desc = "A scarf of coarse fabric. Seems to have ear-holes."
 	icon_state = "zhan_scarf"
+	flags_inv = HIDEFACE
 	body_parts_covered = HEAD|FACE
 
 /obj/item/clothing/shoes/sandal/tajaran/caligae
