@@ -700,7 +700,7 @@
 	if (!(vampire.status & VAMP_FULLPOWER))
 		to_chat(src, SPAN_NOTICE("You begin peering into [T]'s mind, looking for a way to gain control."))
 
-		if (!do_mob(src, T, 50,incapacitation_flags=INCAPACITATION_DISABLED))//Can dominate while being buckled
+		if (!do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))//Can dominate while being buckled
 			to_chat(src, SPAN_WARNING("Your concentration is broken!"))
 			return
 
