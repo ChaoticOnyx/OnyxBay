@@ -7,27 +7,30 @@
 	var/ev_triggered
 	var/ev_enabled = TRUE
 
-	var/obj/machinery/button/_button
+	var/weakref/_button
 
 /obj/map_ent/trigger_button/Initialize(mapload)
 	. = ..()
 	
+	var/obj/machinery/button/B
 	if(!ev_button_tag)
-		_button = locate(/obj/machinery/button) in get_turf(src)
+		B = locate(/obj/machinery/button) in get_turf(src)
 
-		if(!istype(_button))
+		if(!istype(B))
 			crash_with("button not found")
 			return INITIALIZE_HINT_QDEL
 	else
-		_button = locate(ev_button_tag)
-		if(!istype(_button))
+		B = locate(ev_button_tag)
+		if(!istype(B))
 			crash_with("ev_button_tag is invalid")
 			return INITIALIZE_HINT_QDEL
 
-	register_signal(_button, SIGNAL_BUTTON_ACTIVATED, .proc/_on_button_activate)
+	_button = weakref(B)
+	register_signal(B, SIGNAL_BUTTON_ACTIVATED, .proc/_on_button_activate)
 
 /obj/map_ent/trigger_button/Destroy()
-	unregister_signal(_button, SIGNAL_BUTTON_ACTIVATED)
+	var/obj/machinery/button/B = _button.resolve()
+	unregister_signal(B, SIGNAL_BUTTON_ACTIVATED)
 
 	. = ..()
 
