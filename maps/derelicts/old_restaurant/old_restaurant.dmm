@@ -256,7 +256,7 @@
 "Lw" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/kitchen/utensil/spoon,/obj/item/trash/dish/bowl{pixel_y = 6; pixel_x = -10},/obj/effect/decal/cleanable/dirt,/obj/random/snack,/turf/simulated/floor/trim/carpet/oldred,/area/old_restaurant)
 "Lx" = (/obj/machinery/light{dir = 8},/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/oldred,/area/old_restaurant)
 "LE" = (/obj/effect/decal/cleanable/dirt,/obj/structure/sign/warning/secure_area{pixel_x = -32},/turf/simulated/floor/trim/darkwood,/area/old_restaurant)
-"LQ" = (/obj/effect/floor_decal/rust,/obj/effect/floor_decal/industrial/box,/mob/living/simple_animal/hostile/mimic/sleeping,/turf/simulated/floor/tiled/dirty,/area/old_restaurant)
+"LQ" = (/obj/effect/floor_decal/rust,/obj/effect/floor_decal/industrial/box,/mob/living/simple_animal/hostile/mimic/sleeping{controllable = 0},/turf/simulated/floor/tiled/dirty,/area/old_restaurant)
 "LU" = (/obj/structure/table/darkwood_reinforced,/obj/item/material/kitchen/utensil/spoon,/obj/item/material/kitchen/utensil/fork{pixel_y = -8; pixel_x = -10},/turf/simulated/floor/trim/carpet/blue,/area/old_restaurant)
 "Mi" = (/obj/structure/table/darkwood_reinforced,/obj/machinery/reagentgrinder,/obj/item/reagent_containers/rag,/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/obj/effect/decal/cleanable/dirt,/obj/random/snack,/turf/simulated/floor/trim/carpet/oldred,/area/old_restaurant)
 "Mt" = (/obj/structure/bed/chair/comfy{dir = 8},/obj/effect/floor_decal/spline/fancy/wood{dir = 5},/obj/effect/decal/cleanable/dirt,/turf/simulated/floor/trim/carpet/orange,/area/old_restaurant)
