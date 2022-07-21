@@ -570,7 +570,7 @@
 
 	log_and_message_admins("activated blood heal.")
 
-	while (do_after(src, 20, 0,incapacitation_flags=INCAPACITATION_DISABLED))// Can heal while being buckled
+	while (do_after(src, 20, 0, incapacitation_flags = INCAPACITATION_DISABLED))// Can heal while being buckled
 		if (!(vampire.status & VAMP_HEALING))
 			to_chat(src, SPAN_WARNING("Your concentration is broken! You are no longer regenerating!"))
 			break
