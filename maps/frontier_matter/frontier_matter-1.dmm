@@ -6216,7 +6216,7 @@
 "omQ" = (/obj/machinery/alarm{dir = 4; pixel_x = -25},/obj/machinery/light/small/hl{dir = 8},/turf/simulated/floor/natural/sand/darksand,/area/crew_quarters/sleep/cave)
 "oxd" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 6},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "oWV" = (/obj/structure/extinguisher_cabinet{pixel_x = 0; pixel_y = 30},/obj/machinery/camera/network/engine,/turf/simulated/floor/plating,/area/engineering/engine_room)
-"ppC" = (/obj/structure/table/woodentable,/obj/random/snack,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/trim/carpet,/area/engineering/break_room)
+"ppC" = (/obj/structure/table/woodentable,/obj/random/snack,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/item/paper/eng_wires,/turf/simulated/floor/trim/carpet,/area/engineering/break_room)
 "pEA" = (/obj/structure/window_frame/reinforced/hull,/obj/machinery/atmospherics/pipe/simple/hidden/black,/obj/machinery/door/blast/regular/open{id = "ReactorObserv"; name = "Reactor Observation Blast Doors"},/turf/simulated/floor/plating,/area/engineering/engine_room)
 "pGB" = (/obj/effect/floor_decal/industrial/warning/corner,/turf/simulated/floor/plating/airless,/area/mine/explored)
 "pQc" = (/obj/machinery/atmospherics/binary/pump/high_power{dir = 1; layer = 3},/turf/simulated/floor/plating,/area/engineering/engine_room)
