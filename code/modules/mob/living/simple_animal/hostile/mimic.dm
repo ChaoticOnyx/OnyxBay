@@ -81,6 +81,13 @@ var/global/list/protected_objects = list(
 
 	if(_in_trap_mode)
 		_deactivate_trap()
+	
+	// Hack, `/obj/structure/bed` types have custom logic based on
+	// their self direction and that can significantly change appearance.
+	if(istype(copy_of, /obj/structure/bed))
+		copy_of.set_dir(dir)
+		copy_of.update_icon()
+		appearance = copy_of
 
 /mob/living/simple_animal/hostile/mimic/proc/_update_inactive_time()
 	inactive_time = world.time
