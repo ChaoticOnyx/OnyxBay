@@ -238,7 +238,7 @@
 
 	to_chat(src, SPAN_NOTICE("You begin peering into [T.name]'s mind, looking for a way to render them useless."))
 
-	if (do_mob(src, T, 50,incapacitation_flags=INCAPACITATION_DISABLED)) // Can hypnose while being buckled
+	if (do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED)) // Can hypnose while being buckled
 		to_chat(src, SPAN_DANGER("You dominate [T.name]'s mind and render them temporarily powerless to resist"))
 		to_chat(T, SPAN_DANGER("You are captivated by [src.name]'s gaze, and find yourself unable to move or even speak."))
 		T.Weaken(25)
