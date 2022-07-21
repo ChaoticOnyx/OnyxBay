@@ -24,7 +24,7 @@
 	if(!ev_unique)
 		var/atom/A = new ev_target(arglist(new_args))
 		ev_spawned = "\ref[A]"
-		A.dir = ev_dir
+		A.set_dir(ev_dir)
 		return
 
 	var/atom/A = _instance?.resolve()
@@ -35,6 +35,6 @@
 	ev_spawned = "\ref[A]"
 
 	if(ev_dir)
-		A.dir = ev_dir
+		A.set_dir(ev_dir)
 
 	_instance = weakref(A)
