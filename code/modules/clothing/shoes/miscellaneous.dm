@@ -124,6 +124,22 @@
 	else
 		playsound(src, SFX_CLOWN, 20, 1)
 
+/obj/item/clothing/shoes/clown_shoes/traitorshoes
+	desc = "The prankster's standard-issue clowning shoes. Damn they're huge! Also, it seems like they have extra hole for something."
+	var/steps_to_lube = 0
+
+/obj/item/clothing/shoes/clown_shoes/traitor/handle_movement(turf/walking, running)
+	..()
+	steps_to_lube++
+	if(!running && steps_to_lube >= 4)
+		steps_to_lube = 0
+		var/turf/simulated/loc = get_turf(usr)
+		loc.wet_floor(2) // Lubbing floor for unlucky officers to slip on.
+	else if(running && steps_to_lube >= 7)
+		steps_to_lube = 0
+		var/turf/simulated/loc = get_turf(usr)
+		loc.wet_floor(2)
+
 /obj/item/clothing/shoes/cult
 	name = "boots"
 	desc = "A pair of boots worn by the followers of Nar-Sie."

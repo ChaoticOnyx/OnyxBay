@@ -62,3 +62,17 @@
 	desc = "A polished cutlass issued to chief petty officers of the fleet."
 	icon_state = "pettyofficersword"
 	item_state = "pettyofficersword"
+
+/obj/item/melee/mimesword
+	name = "Baguette"
+	desc = "Bon slashettit! For some reason it looks extremly sharp."
+	icon = 'icons/obj/food.dmi'
+	icon_state = "baguette"
+	slot_flags = SLOT_BELT
+	force = 30
+	throwforce = 7
+	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 0.7
+	mod_reach = 1.2
+	mod_handy = 1.1
+	attack_verb = list("bashed", "mime'd", "baguetted", "slashed")
