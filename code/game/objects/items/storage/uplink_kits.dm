@@ -52,7 +52,7 @@
 
 /obj/item/storage/box/syndie_kit/empty_grenades
 	desc = "A sleek, sturdy box. That one has an explosion warning on it."
-	startswith = list(/obj/item/grenade = 5)
+	startswith = list(/obj/item/grenade/chem_grenade = 5)
 
 
 /obj/item/storage/box/syndie_kit/gland
