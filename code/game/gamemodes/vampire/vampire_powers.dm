@@ -238,7 +238,7 @@
 
 	to_chat(src, SPAN_NOTICE("You begin peering into [T.name]'s mind, looking for a way to render them useless."))
 
-	if (do_mob(src, T, 50))
+	if (do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
 		to_chat(src, SPAN_DANGER("You dominate [T.name]'s mind and render them temporarily powerless to resist"))
 		to_chat(T, SPAN_DANGER("You are captivated by [src.name]'s gaze, and find yourself unable to move or even speak."))
 		T.Weaken(25)
@@ -570,7 +570,7 @@
 
 	log_and_message_admins("activated blood heal.")
 
-	while (do_after(src, 20, 0))
+	while (do_after(src, 20, 0, incapacitation_flags = INCAPACITATION_DISABLED))
 		if (!(vampire.status & VAMP_HEALING))
 			to_chat(src, SPAN_WARNING("Your concentration is broken! You are no longer regenerating!"))
 			break
@@ -700,7 +700,7 @@
 	if (!(vampire.status & VAMP_FULLPOWER))
 		to_chat(src, SPAN_NOTICE("You begin peering into [T]'s mind, looking for a way to gain control."))
 
-		if (!do_mob(src, T, 50))
+		if (!do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
 			to_chat(src, SPAN_WARNING("Your concentration is broken!"))
 			return
 
