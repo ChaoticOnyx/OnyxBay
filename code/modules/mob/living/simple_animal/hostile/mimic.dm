@@ -282,10 +282,10 @@ var/global/list/protected_objects = list(
 	if(QDELETED(O))
 		return FALSE
 
-	if(O.anchored)
+	if((!istype(O, /obj/item) && !istype(O, /obj/structure)))
 		return FALSE
 
-	if((!istype(O, /obj/item) && !istype(O, /obj/structure)))
+	if(O.anchored)
 		return FALSE
 	
 	if(is_type_in_list(O, protected_objects))
