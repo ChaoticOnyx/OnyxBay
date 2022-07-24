@@ -310,6 +310,7 @@
 /obj/item/grenade/chem_grenade/apple 
 	name = "strange apple"
 	desc = "A strange looking apple. It does not look like you can eat it."
+	stage = STAGE_READY
 
 /obj/item/grenade/chem_grenade/apple/Initialize()
 	. = ..()
