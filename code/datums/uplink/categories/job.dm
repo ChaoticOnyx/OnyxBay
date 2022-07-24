@@ -45,3 +45,17 @@
 	item_cost = 5
 	job_specific = list("Chief Medical Officer", "Medical Doctor")
 	path = /obj/item/storage/box/syndie_kit/gland
+
+/datum/uplink_item/item/job/strange_seeds
+	name = "Strange Seeds"
+	desc = "A box of strange seeds. Just put it in tray and watch something horrible grow."
+	item_cost = 2
+	job_specific = list("Xenobotanist", "Gardener")
+	path = /obj/item/storage/box/syndie_kit/strange_seeds
+
+/datum/uplink_item/item/job/applenades
+	name = "Box of applenades"
+	desc = "A box of grenades, that look like apples. Comes with water-pottasium sollution, but you can experiment and change reaction!"
+	item_cost = 5
+	job_specific = list("Xenobotanist", "Gardener")
+	path = /obj/item/storage/box/syndie_kit/applenades

@@ -307,6 +307,29 @@
 	beakers += B2
 	update_icon()
 
+/obj/item/grenade/chem_grenade/apple 
+	name = "strange apple"
+	desc = "A strange looking apple. It does not look like you can eat it."
+
+/obj/item/grenade/chem_grenade/apple/Initialize()
+	. = ..()
+	var/obj/item/reagent_containers/vessel/beaker/B1 = new(src)
+	var/obj/item/reagent_containers/vessel/beaker/B2 = new(src)
+	B1.reagents.add_reagent(/datum/reagent/potassium, 60)
+	B2.reagents.add_reagent(/datum/reagent/water, 60)
+	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
+	beakers += B1
+	beakers += B2
+	update_icon()
+
+/obj/item/grenade/chem_grenade/apple/update_icon()
+	if(active)
+		icon_state = "applenade_active"
+	else if(isnull(safety_pin))
+		icon_state = "applenade_primed"
+	else
+		icon_state = "applenade"
+
 #undef STAGE_READY
 #undef STAGE_DETONATOR
 #undef STAGE_BASIC

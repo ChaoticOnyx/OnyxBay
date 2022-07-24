@@ -73,10 +73,14 @@
 		)
 
 /obj/item/storage/box/syndie_kit/gland/Initialize()
+	contents = list(pickweight(random_gland))
 	. = ..()
-	var/obj/item/organ/internal/heart/gland/new_gland = pickweight(random_gland)
-	contents = new_gland
-	
+
+/obj/item/storage/box/syndie_kit/strange_seeds 
+	startswith = list(/obj/item/seeds/maneaterseed = 3)
+
+/obj/item/storage/box/syndie_kit/applenades
+	startswith = list(/obj/item/grenade/chem_grenade/apple = 4)
 // Space suit uplink kit
 /obj/item/storage/backpack/satchel/syndie_kit/space
 	//name = "\improper EVA gear pack"
