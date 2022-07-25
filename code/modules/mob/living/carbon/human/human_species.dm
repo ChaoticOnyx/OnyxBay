@@ -88,3 +88,6 @@
 
 /mob/living/carbon/human/abductor/New(new_loc)
 	..(new_loc, SPECIES_ABDUCTOR)
+
+/mob/living/carbon/human/vampire/New(new_loc)
+	..(new_loc, SPECIES_VAMPIRE)

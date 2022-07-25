@@ -7,12 +7,15 @@
 	// No powers to thralls. Ew.
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
+	var/mob/living/carbon/human/H = src
+	H.set_species("Vampire")
+
+	H.vessel.remove_reagent(/datum/reagent/blood, H.vessel.get_reagent_amount(/datum/reagent/blood) - 30) 
 
 	if(!vampirepowers.len)
 		for(var/P in vampirepower_types)
 			vampirepowers += new P()
 
-	mind.vampire.blood_usable += 30
 
 	verbs += /datum/game_mode/vampire/verb/vampire_help
 
@@ -24,6 +27,21 @@
 			verbs += P.verbpath
 
 	return TRUE
+
+// Proc to safely remove blood, without resulting in negative amounts of blood.
+/mob/proc/use_blood(blood_to_use)
+	if (!blood_to_use || blood_to_use <= 0)
+		return
+	var/mob/living/carbon/human/H = src
+	H.vessel.remove_reagent(/datum/reagent/blood, min(blood_to_use, H.vessel.get_reagent_amount(/datum/reagent/blood)))
+
+/mob/proc/check_blood()
+	var/mob/living/carbon/human/H = src
+	return H.vessel.get_reagent_amount(/datum/reagent/blood)
+
+/mob/proc/gain_blood(blood_to_get)
+	var/mob/living/carbon/human/H = src
+	H.vessel.add_reagent(/datum/reagent/blood, blood_to_get)
 
 // Checks the vampire's bloodlevel and unlocks new powers based on that.
 /mob/proc/check_vampire_upgrade()
@@ -47,7 +65,7 @@
 		return
 	if (!ishuman(src))
 		return
-
+	var/mob/living/carbon/human/H = src
 	var/datum/vampire/vampire = mind.vampire
 	if (!vampire)
 		log_debug("[src] has a vampire power but is not a vampire.")
@@ -58,7 +76,7 @@
 	if (stat > max_stat)
 		to_chat(src, SPAN_WARNING("You are incapacitated."))
 		return
-	if (required_blood > vampire.blood_usable)
+	if (required_blood > H.vessel.get_reagent_amount(/datum/reagent/blood))
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. [required_blood] needed."))
 		return
 
@@ -225,13 +243,14 @@
 
 /mob/proc/handle_vampire()
 	// Apply frenzy while in the chapel.
+	var/mob/living/carbon/human/H = src
 	if (istype(get_area(loc), /area/chapel))
 		mind.vampire.frenzy += 3
 
-	if (mind.vampire.blood_usable < 10)
+	if (H.vessel.get_reagent_amount(/datum/reagent/blood) < 10)
 		mind.vampire.frenzy += 2
 	else if (mind.vampire.frenzy > 0)
-		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(mind.vampire.blood_usable * 0.1, 1, 10))
+		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(H.vessel.get_reagent_amount(/datum/reagent/blood) * 0.1, 1, 10))
 
 	mind.vampire.frenzy = min(mind.vampire.frenzy, 450)
 

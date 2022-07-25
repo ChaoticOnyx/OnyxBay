@@ -31,10 +31,3 @@
 		to_chat(vampire.current, SPAN_NOTICE("[power.desc]"))
 		if (power.helptext)
 			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
-
-// Proc to safely remove blood, without resulting in negative amounts of blood.
-/datum/vampire/proc/use_blood(blood_to_use)
-	if (!blood_to_use || blood_to_use <= 0)
-		return
-
-	blood_usable = max(0, blood_usable - blood_to_use)

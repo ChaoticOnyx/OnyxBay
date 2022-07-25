@@ -39,6 +39,12 @@ var/list/datum/power/vampire/vampirepowers = list()
 	blood_cost = 50
 	verbpath = /mob/living/carbon/human/proc/vampire_presence
 
+/datum/power/vampire/revitalise
+	name = "Revitalise"
+	desc = "Allows you to hide among your prey."
+	helptext = "Makes the vampire appear alive."	
+	verbpath = /mob/living/carbon/human/proc/vampire_revitalise
+
 /datum/power/vampire/touch_of_life
 	name = "Touch of Life"
 	desc = "You touch the target, transferring healing chemicals to them."

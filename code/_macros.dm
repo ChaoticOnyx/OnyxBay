@@ -36,6 +36,8 @@
 
 #define isabductor(A) (is_species(A, /datum/species/abductor))
 
+#define isvampire(A) (is_species(A, /datum/species/vampire))
+
 #define isitem(A) istype(A, /obj/item)
 
 #define islist(A) istype(A, /list)
