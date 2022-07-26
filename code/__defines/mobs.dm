@@ -14,7 +14,8 @@
 #define FAKEDEATH   0x2000  // Replaces stuff like changeling.changeling_fakedeath.
 #define NO_ANTAG    0x4000  // Players are restricted from gaining antag roles when occupying this mob
 #define XENO_HOST   0x8000  // Tracks whether we're gonna be a baby alien's mummy.
-#define FAKELIVING  0x12000 // For vampire Revitalise()
+#define FAKELIVING  0x10000 // For vampire Revitalise()
+#define UNDEAD      0x20000 // For undead creatures
 
 // Grab Types
 #define GRAB_NORMAL			"normal"

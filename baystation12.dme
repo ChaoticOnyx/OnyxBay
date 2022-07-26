@@ -2032,7 +2032,6 @@
 #include "code\modules\mob\living\carbon\human\species\station\nabber.dm"
 #include "code\modules\mob\living\carbon\human\species\station\prometheans.dm"
 #include "code\modules\mob\living\carbon\human\species\station\station.dm"
-#include "code\modules\mob\living\carbon\human\species\station\vampire.dm"
 #include "code\modules\mob\living\carbon\human\species\station\VR_human.dm"
 #include "code\modules\mob\living\carbon\human\species\VR\vr_human.dm"
 #include "code\modules\mob\living\carbon\human\species\xenomorphs\alien_powers.dm"

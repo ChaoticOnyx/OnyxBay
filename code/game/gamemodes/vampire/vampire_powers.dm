@@ -374,8 +374,8 @@
 
 		victims += T
 
-	for (var/obj/structure/window/W in view(7))
-		W.shatter()
+	for (var/obj/structure/window_frame/W in view(7))
+		W.ex_act(2)
 
 	for (var/obj/machinery/light/L in view(7))
 		L.broken()

@@ -23,7 +23,10 @@
 /obj/item/organ/internal/heart/vampiric_heart/handle_pulse()	
 	if(owner.status_flags & FAKELIVING)
 		pulse = PULSE_NORM
-	pulse = PULSE_NONE
+	else
+		pulse = PULSE_NONE
+	owner.add_chemical_effect(CE_ANTIBIOTIC, 1)
+	owner.add_chemical_effect(CE_ANTIVIRAL, VIRUS_EXOTIC)
 	return
 
 
@@ -39,7 +42,6 @@
 /obj/item/organ/internal/lungs/vampiric_lungs/Process()
 	if(owner.status_flags & FAKELIVING)
 		active_breathing = 1
-		owner.losebreath = 0
 	else
 		active_breathing = 0
 	..()

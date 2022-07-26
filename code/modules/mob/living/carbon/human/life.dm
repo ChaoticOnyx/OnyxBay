@@ -445,7 +445,7 @@
 	if(robolimb_count)
 		bodytemperature += round(robolimb_count/2)
 
-	if(species.body_temperature == null || isSynthetic())
+	if(species.body_temperature == null || isSynthetic() || ((src.status_flags & UNDEAD) && !(src.status_flags & FAKELIVING)))
 		return //this species doesn't have metabolic thermoregulation
 
 	var/body_temperature_difference = species.body_temperature - bodytemperature
@@ -672,7 +672,7 @@
 			adjustToxLoss(total_plasmaloss)
 
 		// nutrition decrease
-		if(nutrition > 0)
+		if(nutrition > 0 && !(src.status_flags & UNDEAD))
 			var/nutrition_reduction = species.hunger_factor * body_build.stomach_capacity
 			for(var/datum/modifier/mod in modifiers)
 				if(!isnull(mod.metabolism_percent))
@@ -794,7 +794,7 @@
 					health_images += image('icons/mob/screen1_health.dmi', "burning")
 
 				// Show a general pain/crit indicator if needed.
-				if(is_asystole())
+				if(is_asystole() && !(status_flags & UNDEAD))
 					health_images += image('icons/mob/screen1_health.dmi', "hardcrit")
 				else if(trauma_val)
 					if(canfeelpain)
@@ -1036,7 +1036,7 @@
 /mob/living/carbon/human/proc/handle_hud_list()
 	if(BITTEST(hud_updateflag, HEALTH_HUD) && hud_list[HEALTH_HUD])
 		var/image/holder = hud_list[HEALTH_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH)
+		if(stat == DEAD || status_flags & FAKEDEATH || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
 			holder.icon_state = "0" 	// X_X
 		else if(is_asystole())
 			holder.icon_state = "flatline"
@@ -1046,7 +1046,7 @@
 
 	if(BITTEST(hud_updateflag, LIFE_HUD) && hud_list[LIFE_HUD])
 		var/image/holder = hud_list[LIFE_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH)
+		if(stat == DEAD || status_flags & FAKEDEATH || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
 			holder.icon_state = "huddead"
 		else
 			holder.icon_state = "hudhealthy"
@@ -1060,7 +1060,7 @@
 				break
 
 		var/image/holder = hud_list[STATUS_HUD]
-		if(stat == DEAD)
+		if(stat == DEAD || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
 			holder.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
@@ -1076,7 +1076,7 @@
 			holder.icon_state = "hudhealthy"
 
 		var/image/holder2 = hud_list[STATUS_HUD_OOC]
-		if(stat == DEAD)
+		if(stat == DEAD || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
 			holder2.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder2.icon_state = "hudxeno"

@@ -91,3 +91,4 @@
 
 /mob/living/carbon/human/vampire/New(new_loc)
 	..(new_loc, SPECIES_VAMPIRE)
+	make_vampire()

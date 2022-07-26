@@ -366,7 +366,7 @@
 			return TRUE
 	else if(should_have_organ(BP_HEART))
 		var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
-		if(!istype(heart) || !heart.is_working())
+		if(!istype(heart) || !heart.is_working() || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
 			return TRUE
 	return FALSE
 

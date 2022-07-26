@@ -8,9 +8,13 @@
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
 	var/mob/living/carbon/human/H = src
-	H.set_species("Vampire")
-
-	H.vessel.remove_reagent(/datum/reagent/blood, H.vessel.get_reagent_amount(/datum/reagent/blood) - 30) 
+	
+	H.replace_vampiric_organs()
+	H.does_not_breathe = 1
+	H.use_blood(H.species.blood_volume - 30)
+	mind.vampire.blood_usable = 30
+	H.status_flags |= UNDEAD
+	H.vessel.maximum_volume = 10000
 
 	if(!vampirepowers.len)
 		for(var/P in vampirepower_types)
@@ -24,9 +28,47 @@
 			if(!P.blood_cost)
 				mind.vampire.add_power(mind, P, 0)
 		else if(P.is_active && P.verbpath)
-			verbs += P.verbpath
-
+			verbs += P.verbpath	
 	return TRUE
+
+/mob/living/carbon/human/proc/replace_vampiric_organs()
+	var/mob/living/carbon/human/H = src
+	var/vamp_organs = list(        
+		BP_HEART =    /obj/item/organ/internal/heart/vampiric_heart,
+		BP_STOMACH =  /obj/item/organ/internal/stomach/vampiric_stomach,
+		BP_LUNGS =    /obj/item/organ/internal/lungs/vampiric_lungs,
+		BP_LIVER =    /obj/item/organ/internal/liver/vampiric_liver,
+		BP_KIDNEYS =  /obj/item/organ/internal/kidneys/vampiric_kidneys,
+		BP_BRAIN =    /obj/item/organ/internal/brain/vampiric_brain,
+		BP_APPENDIX = /obj/item/organ/internal/appendix/vampiric_appendix,
+		BP_EYES =     /obj/item/organ/internal/eyes/vampiric_eyes
+		)
+	
+	for(var/obj/item/organ/internal/organ in H.contents)
+		if((organ in H.internal_organs))
+			qdel(organ)
+	
+	if(H.internal_organs)         H.internal_organs.Cut()
+	if(H.internal_organs_by_name) H.internal_organs_by_name.Cut()
+	H.internal_organs = list()
+	H.internal_organs_by_name = list()
+
+	for(var/organ_tag in vamp_organs)
+		var/organ_type = vamp_organs[organ_tag]
+		var/obj/item/organ/O = new organ_type(H)
+		if(organ_tag != O.organ_tag)
+			warning("[O.type] has a default organ tag \"[O.organ_tag]\" that differs from the species' organ tag \"[organ_tag]\". Updating organ_tag to match.")
+			O.organ_tag = organ_tag
+		H.internal_organs_by_name[organ_tag] = O
+
+	for(var/name in H.internal_organs_by_name)
+		H.internal_organs |= H.internal_organs_by_name[name]
+
+	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
+		O.owner = H
+
+	H.sync_organ_dna()
+	H.update_body()
 
 // Proc to safely remove blood, without resulting in negative amounts of blood.
 /mob/proc/use_blood(blood_to_use)
@@ -34,14 +76,23 @@
 		return
 	var/mob/living/carbon/human/H = src
 	H.vessel.remove_reagent(/datum/reagent/blood, min(blood_to_use, H.vessel.get_reagent_amount(/datum/reagent/blood)))
+	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	return
 
 /mob/proc/check_blood()
 	var/mob/living/carbon/human/H = src
+	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
 	return H.vessel.get_reagent_amount(/datum/reagent/blood)
 
 /mob/proc/gain_blood(blood_to_get)
 	var/mob/living/carbon/human/H = src
+	var/initial_blood_amount = H.check_blood()
 	H.vessel.add_reagent(/datum/reagent/blood, blood_to_get)
+	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	if (initial_blood_amount == 0)
+		H.fixblood()
+	return
+
 
 // Checks the vampire's bloodlevel and unlocks new powers based on that.
 /mob/proc/check_vampire_upgrade()
