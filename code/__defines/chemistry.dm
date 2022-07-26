@@ -28,7 +28,6 @@
 #define IS_METROID 8
 #define IS_NABBER  9
 #define IS_ABDUCTOR 10
-#define IS_VAMPIRE 11
 
 #define CE_STABLE        "stable"       // Inaprovaline
 #define CE_ANTIBIOTIC    "antibiotic"   // Spaceacilin

@@ -8,7 +8,7 @@
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
 	var/mob/living/carbon/human/H = src
-	
+
 	H.replace_vampiric_organs()
 	H.does_not_breathe = 1
 	H.use_blood(H.species.blood_volume - 30)
@@ -127,7 +127,7 @@
 	if (stat > max_stat)
 		to_chat(src, SPAN_WARNING("You are incapacitated."))
 		return
-	if (required_blood > H.vessel.get_reagent_amount(/datum/reagent/blood))
+	if (required_blood > H.check_blood())
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. [required_blood] needed."))
 		return
 
@@ -298,10 +298,10 @@
 	if (istype(get_area(loc), /area/chapel))
 		mind.vampire.frenzy += 3
 
-	if (H.vessel.get_reagent_amount(/datum/reagent/blood) < 10)
+	if (H.check_blood() < 10)
 		mind.vampire.frenzy += 2
 	else if (mind.vampire.frenzy > 0)
-		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(H.vessel.get_reagent_amount(/datum/reagent/blood) * 0.1, 1, 10))
+		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(H.check_blood() * 0.1, 1, 10))
 
 	mind.vampire.frenzy = min(mind.vampire.frenzy, 450)
 
