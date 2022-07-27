@@ -18,7 +18,7 @@
 	name = "Bloodshard"
 	desc = "Lets a follower cause a target's blood to literally explode out of their skin into dangerous projectiles."
 	item_cost = 40
-	path = /datum/spell/hand/charges/blood_shard
+	path = /datum/spell/hand/blood_shard
 
 /datum/uplink_item/deity/boon/ability_dark/drain_blood
 	name = "Drain Blood"
