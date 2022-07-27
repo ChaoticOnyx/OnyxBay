@@ -224,7 +224,7 @@
 	for (var/mob/living/carbon/human/H in view(3))
 		if (H == src)
 			continue
-		if(H.eyecheck() > FLASH_PROTECTION_MODERATE)
+		if(H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		victims += H
 	if (!victims.len)
