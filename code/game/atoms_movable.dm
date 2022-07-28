@@ -177,7 +177,7 @@
 	speed = round(speed)
 	var/impact_speed = speed
 	if(launched_mult)
-		impact_speed /= launched_mult
+		impact_speed *= launched_mult
 		pre_launched()
 	var/area/a = get_area(loc)
 
