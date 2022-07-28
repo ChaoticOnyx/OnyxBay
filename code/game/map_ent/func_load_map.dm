@@ -10,4 +10,9 @@
 		crash_with("func_load_map has invalid ev_map_path: `[ev_map_path]`")
 		return
 
-	maploader.load_map(ev_map_path, loc.x, loc.y, loc.z, FALSE, FALSE, TRUE, ev_clear_conents)
+	var/map_file
+
+	if(istext(ev_map_path))
+		map_file = file(ev_map_path)
+
+	maploader.load_map(map_file, loc.x, loc.y, loc.z, FALSE, FALSE, TRUE, ev_clear_conents)

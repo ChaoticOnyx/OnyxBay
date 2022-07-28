@@ -546,6 +546,10 @@ fun_hydroponics = 1
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
 
+## Which engine should be on map (not all the maps support this).
+## Pick one from: "random", "singularity", "supermatter"
+preferable_engine = "singularity"
+
 [vote]
 ## Allow players to initiate a restart vote.
 allow_vote_restart = true

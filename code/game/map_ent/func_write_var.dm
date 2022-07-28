@@ -6,6 +6,7 @@
 	var/ev_write_tag
 	var/ev_table = list()
 	var/ev_activate_writer = FALSE
+	var/ev_activate_reader = FALSE
 
 /obj/map_ent/func_write_var/activate()
 	var/read_table
@@ -17,6 +18,10 @@
 
 		if(istype(read_atom))
 			read_table = read_atom.vars
+
+		if(ev_activate_reader && istype(read_atom, /obj/map_ent))
+			var/obj/map_ent/E = read_atom
+			E.activate()
 
 	var/write_table
 	var/atom/write_atom
