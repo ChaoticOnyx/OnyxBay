@@ -31,6 +31,8 @@
 /obj/item/paper/talisman/stun/afterattack(atom/target, mob/user, proximity)
 	if(!iscultist(user))
 		return
+	if(!istype(target, /mob/living))
+		return
 	if(!proximity)
 		return
 	user.say("Ra'gh fara[pick("'","`")]ydar fel d'amar det in girdiun!")
