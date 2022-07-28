@@ -136,7 +136,7 @@
 	update_beams()
 
 /obj/item/device/assembly/infra/proc/update_beams()
-	if(check_locs(src, stop_on = list(/mob, /turf), checking_proc = /obj/item/device/assembly/infra/proc/check_loc))
+	if(check_locs(src, stop_on = list(/turf), checking_proc = /obj/item/device/assembly/infra/proc/check_loc))
 		if(!beams.len)
 			proximity_trigger.register_turfs()
 		create_update_and_delete_beams(on, visible, dir, seen_turfs, beams)
