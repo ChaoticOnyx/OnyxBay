@@ -23,3 +23,8 @@
 /// This level has some global dynamic lighting (a star or something).
 /// It's like the starlight but can be changed by time.
 #define ZTRAIT_GLOBAL_DYNAMIC_LIGHTING "lighting"
+
+// Engines
+#define MAP_ENG_RANDOM "random"
+#define MAP_ENG_SINGULARITY "singularity"
+#define MAP_ENG_MATTER "supermatter"
