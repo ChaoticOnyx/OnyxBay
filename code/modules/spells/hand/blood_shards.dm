@@ -28,49 +28,48 @@
 			return "Now bloody fragments cause even more damage and restore blood when they hit you."
 	return FALSE
 
+/obj/item/projectile/blood_shard
+	name = "blood shard"
+	damage = 4
+	color = COLOR_BLOOD_HUMAN
+	check_armour = "melee"
+	icon_state = "blood2"
+	damage_type = BRUTE
+	var/hit_projectile
+	var/required_blood
+
+/obj/item/projectile/blood_shard/New(loc, new_hit_projectile, new_required_blood, new_firer)
+	..(loc)
+	hit_projectile = new_hit_projectile
+	required_blood = new_required_blood
+	firer = new_firer
+
 /datum/spell/hand/blood_shard/cast_hand(atom/A, mob/user)
-	var/obj/item/projectile/blood_shard/B = new(get_turf(user))
-	B.firer = user
+	var/obj/item/projectile/blood_shard/B = new(get_turf(user), hit_projectile, required_blood, user)
 	B.launch(A, BP_CHEST)
 	user.visible_message(SPAN_DANGER("\The [user] shoots out a deep red shard from their hand!"))
 
 /obj/item/projectile/blood_shard/on_hit(atom/movable/target, blocked = 0)
 	if(..())
-		if(istype(target, /mob/living/carbon/human))
-			if(!firer.mind)
-				return
-			for(var/datum/spell/S in firer.mind.learned_spells)
-				if(istype(S, /datum/spell/hand/blood_shard))
-					var/datum/spell/hand/blood_shard/B = S
-					var/mob/living/carbon/human/H = target
-					if(H.vessel.has_reagent(/datum/reagent/blood, B.required_blood))
-						H.vessel.remove_reagent(/datum/reagent/blood, B.required_blood)
-						H.visible_message(SPAN_DANGER("Tiny red shards burst from \the [H]'s skin!"))
-						blood_fragmentate(target, 30, 5, B.hit_projectile)
-					break
+		if(!istype(target, /mob/living/carbon/human))
+			return
+		var/mob/living/carbon/human/H = target
+		if(H.vessel.has_reagent(/datum/reagent/blood, required_blood))
+			H.vessel.remove_reagent(/datum/reagent/blood, required_blood)
+			H.visible_message(SPAN_DANGER("Tiny red shards burst from \the [H]'s skin!"))
+			H.blood_fragmentate(30, 5, hit_projectile)
 
-
-/obj/proc/blood_fragmentate(mob/living/carbon/target, fragment_number = 30, spreading_range = 5, fragment_type)
-	var/turf/T=get_turf(target)
+/mob/living/carbon/human/proc/blood_fragmentate(fragment_number = 30, spreading_range = 5, fragment_type)
+	var/turf/T=get_turf(src)
 	var/list/target_turfs = getcircle(T, spreading_range)
 	var/fragments_per_projectile = round(fragment_number/target_turfs.len)
-	var/datum/species/target_species = target.species
-
 	for(var/turf/O in target_turfs)
 		sleep(0)
 		var/obj/item/projectile/bullet/pellet/blood/P = new fragment_type(T)
-		P.color = target_species.blood_color
+		P.color = species.blood_color
 		P.pellets = fragments_per_projectile
-		P.firer = target
+		P.firer = src
 		P.launch(O)
-
-/obj/item/projectile/blood_shard
-	name = "blood2"
-	damage = 4
-	color = COLOR_BLOOD_HUMAN
-	check_armour = "melee"
-	icon_state = "blood"
-	damage_type = BRUTE
 
 /obj/item/projectile/bullet/pellet/blood
 	name = "blood fragment"
