@@ -40,6 +40,8 @@
 	if(operating || !istype(wifi_sender))
 		return
 
+	SEND_SIGNAL(src, SIGNAL_BUTTON_ACTIVATED, src, user)
+
 	operating = 1
 	active = 1
 	use_power_oneoff(5)
