@@ -31,7 +31,7 @@
 	volume = 120
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60;120"
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	override_lid_state = LID_OPEN
 
 /obj/item/reagent_containers/vessel/beaker/large/get_storage_cost()
 	return ..() * 1.5
@@ -53,7 +53,8 @@
 	brittle = FALSE
 	volume = 60
 	amount_per_transfer_from_this = 10
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_NO_REACT
+	atom_flags = ATOM_FLAG_NO_REACT
+	override_lid_state = LID_OPEN
 	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 
 /obj/item/reagent_containers/vessel/beaker/bluespace
@@ -70,7 +71,7 @@
 	volume = 300
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;25;30;60;120;150;200;250;300"
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	override_lid_state = LID_OPEN
 
 /obj/item/reagent_containers/vessel/beaker/vial
 	name = "vial"
@@ -86,5 +87,5 @@
 	w_class = ITEM_SIZE_TINY //half the volume of a bottle, half the size
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "5;10;15;30"
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	override_lid_state = LID_OPEN
 	lid_type = /datum/vessel_lid/cork
