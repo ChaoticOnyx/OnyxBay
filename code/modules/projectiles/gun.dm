@@ -62,6 +62,7 @@
 	var/fire_anim = null
 	var/screen_shake = 0 //shouldn't be greater than 2 unless zoomed
 	var/silenced = 0
+	var/silenced_coeff = 0 //shaking reduction coefficient in the presence of a silencer. 1 - no shaking, 0.5 - half off screen_shake, 0 - default shaking
 	var/accuracy = 0   //accuracy is measured in tiles. +1 accuracy means that everything is effectively one tile closer for the purpose of miss chance, -1 means the opposite. launchers are not supported, at the moment.
 	var/scoped_accuracy = null
 	var/list/burst_accuracy = list(0) //allows for different accuracies for each shot in a burst. Applied on top of accuracy
@@ -285,7 +286,7 @@
 
 	if(screen_shake)
 		spawn()
-			shake_camera(user, screen_shake+1, screen_shake)
+			shake_camera(user, screen_shake+1, screen_shake - screen_shake * silenced_coeff * silenced)
 
 	if(combustion)
 		var/turf/curloc = get_turf(src)

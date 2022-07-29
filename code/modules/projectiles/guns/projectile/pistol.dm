@@ -206,6 +206,7 @@
 	w_class = ITEM_SIZE_SMALL
 	caliber = "9mm"
 	silenced = 0
+	silenced_coeff = 0.8
 	fire_delay = 1
 	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 	mod_weight = 0.65
@@ -231,7 +232,6 @@
 			w_class = initial(w_class)
 			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 			update_icon()
-			screen_shake = initial(screen_shake)
 			return
 	..()
 
@@ -242,12 +242,11 @@
 			return
 		user.drop_item()
 		to_chat(user, "<span class='notice'>You screw [I] onto [src].</span>")
-		silenced = I	//dodgy?
+		silenced = 1
 		w_class = ITEM_SIZE_NORMAL
 		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
 		fire_sound = SFX_SILENT_FIRE
-		screen_shake = 0.2
 		return
 	..()
 
