@@ -24,4 +24,8 @@
 		qdel(src)
 		return
 
-	T.launch()
+	if(GLOB.using_map.level_has_trait(T.current_location.z, ZTRAIT_BLUESPACE_EXIT))
+		// Wait for the next try.
+		arrived()
+	else
+		T.launch()
