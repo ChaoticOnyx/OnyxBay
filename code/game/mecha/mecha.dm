@@ -107,6 +107,7 @@
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
 	mechas_list += src //global mech list
+	update_icon()
 	return
 
 /obj/mecha/update_icon()
