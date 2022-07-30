@@ -254,9 +254,11 @@
 					if (Leader == who)
 						to_say = "Yes... I'll stay..."
 						Leader = null
+						walk_to(src, 0)
 					else
 						if (Friends[who] > Friends[Leader])
 							Leader = null
+							walk_to(src, 0)
 							to_say = "Yes... I'll stop..."
 						else
 							to_say = "No... I'll keep following..."
