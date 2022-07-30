@@ -96,6 +96,7 @@
 
 	if(T.mind?.changeling)
 		changeling.consume_changeling(T.mind.changeling)
+		T.mind.changeling.true_dead = TRUE
 
 	changeling.absorbedcount++
 	changeling.using_proboscis = FALSE
