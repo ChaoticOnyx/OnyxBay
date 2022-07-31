@@ -69,10 +69,35 @@
 	icon = 'icons/obj/food.dmi'
 	icon_state = "baguette"
 	slot_flags = SLOT_BELT
-	force = 30
+	force = 15
 	throwforce = 7
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 0.7
 	mod_reach = 1.2
 	mod_handy = 1.1
 	attack_verb = list("bashed", "mime'd", "baguetted", "slashed")
+
+	var/times_consumed = 0
+
+/obj/item/melee/mimesword/attack_self(mob/user)
+	if(!ishuman(user))
+		return
+	var/mob/living/carbon/human/mime = user
+	if(I_HELP && !(mime.check_mouth_coverage()))
+		if(prob(force+rand(0,force/2)))
+			to_chat(mime, SPAN("warning", "You accidentally stabbed yourself in the head, while trying to consume [src]!"))
+			mime.apply_damage(force, BRUTE, BP_HEAD, 0, 0, used_weapon = "very, very sharp baguette")
+			mime.embed(src, BP_HEAD)
+			return
+		
+		to_chat(mime, SPAN("notice", "You take a bite of [src], making it even sharper!"))
+		force += rand(5,10)
+		times_consumed += 1
+		playsound(mime.loc, SFX_EAT, rand(45, 60), FALSE)
+	. = ..()
+
+/obj/item/melee/mimesword/_examine_text(mob/user)
+	. = ..()
+	if(times_consumed)
+		.+="\nIt has been sharpened [times_consumed] times."
+	

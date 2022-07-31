@@ -13,7 +13,7 @@
 
 /datum/uplink_item/item/job/mimesword
 	name = "Baguette Sword"
-	desc = "A sword made from a baguette. It's not very sharp, but it's still a good weapon."
+	desc = "A sword made from a baguette. It's not very sharp, but it's still a good weapon. You can sharpen it, if you are brave enough."
 	item_cost = 4
 	job_specific = list("Mime")
 	path = /obj/item/melee/mimesword
