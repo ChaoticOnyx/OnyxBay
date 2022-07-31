@@ -2,7 +2,7 @@
 #define WEATHER_BLUESPACE_CONVERGENCE 1
 #define WEATHER_BLUESPACE_EXIT 2
 
-#define CONVERGENCE_TEMP 213.15 // -70C
+#define CONVERGENCE_TEMP 203.15 // -70C
 #define EXIT_TEMP 153.15 // -120C
 
 /datum/announcement/priority/ams
