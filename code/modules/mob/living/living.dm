@@ -261,7 +261,7 @@
 /mob/living/proc/adjustBruteLoss(amount)
 	if(status_flags & GODMODE)
 		return 0
-	health = max(health-amount, 0)
+	health = Clamp(health-amount, 0, maxHealth)
 
 /mob/living/proc/getOxyLoss()
 	return 0
