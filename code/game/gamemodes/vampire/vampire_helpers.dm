@@ -10,14 +10,13 @@
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
 	var/mob/living/carbon/human/H = src
-	mind.vampire.owner = H	
+	mind.vampire.owner = H
 
 	H.replace_vampiric_organs()
 	H.does_not_breathe = 1
-	mind.vampire.use_blood(H.species.blood_volume - 30)
+	H.remove_blood(H.species.blood_volume)
 	mind.vampire.blood_usable = 30
 	H.status_flags |= UNDEAD
-	H.vessel.maximum_volume = 5000
 	H.oxygen_alert = 0
 	H.add_modifier(/datum/modifier/trait/low_metabolism)
 	H.innate_heal = 0
@@ -292,9 +291,11 @@
 
 /mob/proc/handle_vampire()
 	// Apply frenzy while in the chapel.
-	if (istype(get_area(loc), /area/chapel))
+	if (get_area(loc).holy)
 		mind.vampire.frenzy += 3
 		mind.vampire.owner.adjustFireLoss(2)
+		if(prob(30))
+			to_chat(src, "You feel like you`re burning!")
 
 	if (mind.vampire.check_blood() < 10)
 		mind.vampire.frenzy += 2
