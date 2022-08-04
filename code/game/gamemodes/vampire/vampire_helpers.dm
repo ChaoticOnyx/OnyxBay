@@ -292,9 +292,8 @@
 /mob/proc/handle_vampire()
 	// Apply frenzy while in the chapel.
 	if (get_area(loc).holy)
-		mind.vampire.frenzy += 3
-		mind.vampire.owner.adjustFireLoss(2)
-		if(prob(30))
+		mind.vampire.frenzy += 3		
+		if(prob(10))
 			to_chat(src, "You feel like you`re burning!")
 
 	if (mind.vampire.check_blood() < 10)
