@@ -333,6 +333,13 @@
 
   /* ###### Radio headsets can only broadcast through subspace ###### */
 	if(subspace_transmission)
+		// No one can hear our screams in an area with the unstable bluespace.
+		if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_EXIT))
+			return
+		// The bluespace is less unstable so we can transmit something.
+		else if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_CONVERGENCE))
+			message = stars(message)
+
 		// First, we want to generate a new radio signal
 		var/datum/signal/signal = new
 		signal.transmission_method = 2 // 2 would be a subspace transmission.

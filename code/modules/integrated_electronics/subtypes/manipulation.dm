@@ -520,6 +520,11 @@
 		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
 		return
 
+	// Sorry for no-fly weather!
+	if(GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_BLUESPACE_EXIT) || GLOB.using_map.level_has_trait(rift_location.z, ZTRAIT_BLUESPACE_CONVERGENCE))
+		playsound(src, GET_SFX(SFX_SPARK), 50, 1)
+		return
+
 	if(isnum_safe(step_dir) && (!step_dir || (step_dir in GLOB.cardinal)))
 		rift_location = get_step(rift_location, step_dir) || rift_location
 

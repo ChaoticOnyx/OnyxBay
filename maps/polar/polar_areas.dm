@@ -113,6 +113,7 @@
 /area/polarplanet/shuttle/deathsquad/station
 	name = "Deathsquad Shuttle Station"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/administration
 	area_flags = AREA_FLAG_RAD_SHIELDED
@@ -188,21 +189,25 @@
 	name = "south west"
 	icon_state = "southwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/rescue_base/northwest
 	name = "north west"
 	icon_state = "northwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/rescue_base/northeast
 	name = "north east"
 	icon_state = "northeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/rescue_base/southeast
 	name = "south east"
 	icon_state = "southeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/rescue_base/transit
 	name = "\proper bluespace"
@@ -278,18 +283,22 @@
 /area/polarplanet/shuttle/syndicate_elite/northwest
 	icon_state = "northwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/syndicate_elite/northeast
 	icon_state = "northeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/syndicate_elite/southwest
 	icon_state = "southwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/syndicate_elite/southeast
 	icon_state = "southeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/shuttle/syndicate_elite/transit
 	name = "\proper bluespace"
@@ -307,21 +316,25 @@
 	name = "south west"
 	icon_state = "southwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/skipjack_station/northwest
 	name = "north west"
 	icon_state = "northwest"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/skipjack_station/northeast
 	name = "north east"
 	icon_state = "northeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/skipjack_station/southeast
 	name = "south east"
 	icon_state = "southeast"
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/skipjack_station/base
 	name = "Raider Base"
@@ -2326,6 +2339,7 @@
 	requires_power = 0
 	environment_type = ENVIRONMENT_OUTSIDE
 	base_turf = /turf/simulated/floor/natural/frozenground
+	environment_type = ENVIRONMENT_OUTSIDE
 
 /area/polarplanet/security/armory
 	name = "\improper Security - Armory"

@@ -369,13 +369,13 @@
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "frozen_ground"
-	temperature = 193.15
+	temperature = 243.15 // -30C
 
 /turf/simulated/floor/natural/frozenground/cave
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "wground1"
-	temperature = 243.15
+	temperature = T20C
 
 /turf/simulated/floor/natural/frozenground/ice/shallow
 	icon = 'icons/turf/ice.dmi'
