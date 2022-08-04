@@ -2,20 +2,28 @@
 /mob/proc/make_vampire()
 	if (!mind)
 		return
+	if (!istype(src, /mob/living/carbon/human))
+		return
 	if (!mind.vampire)
 		mind.vampire = new /datum/vampire()
 	// No powers to thralls. Ew.
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
 	var/mob/living/carbon/human/H = src
+	mind.vampire.owner = H	
 
 	H.replace_vampiric_organs()
 	H.does_not_breathe = 1
-	H.use_blood(H.species.blood_volume - 30)
+	mind.vampire.use_blood(H.species.blood_volume - 30)
 	mind.vampire.blood_usable = 30
 	H.status_flags |= UNDEAD
-	H.vessel.maximum_volume = 10000
-
+	H.vessel.maximum_volume = 5000
+	H.oxygen_alert = 0
+	H.add_modifier(/datum/modifier/trait/low_metabolism)
+	H.innate_heal = 0
+	for(var/datum/modifier/mod in H.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
 	if(!vampirepowers.len)
 		for(var/P in vampirepower_types)
 			vampirepowers += new P()
@@ -71,26 +79,17 @@
 	H.update_body()
 
 // Proc to safely remove blood, without resulting in negative amounts of blood.
-/mob/proc/use_blood(blood_to_use)
+/datum/vampire/proc/use_blood(blood_to_use)
 	if (!blood_to_use || blood_to_use <= 0)
 		return
-	var/mob/living/carbon/human/H = src
-	H.vessel.remove_reagent(/datum/reagent/blood, min(blood_to_use, H.vessel.get_reagent_amount(/datum/reagent/blood)))
-	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	blood_usable -= min(blood_to_use, blood_usable)
 	return
 
-/mob/proc/check_blood()
-	var/mob/living/carbon/human/H = src
-	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
-	return H.vessel.get_reagent_amount(/datum/reagent/blood)
+/datum/vampire/proc/check_blood()
+	return blood_usable
 
-/mob/proc/gain_blood(blood_to_get)
-	var/mob/living/carbon/human/H = src
-	var/initial_blood_amount = H.check_blood()
-	H.vessel.add_reagent(/datum/reagent/blood, blood_to_get)
-	mind.vampire.blood_usable = H.vessel.get_reagent_amount(/datum/reagent/blood)
-	if (initial_blood_amount == 0)
-		H.fixblood()
+/datum/vampire/proc/gain_blood(blood_to_get, source)
+	blood_usable += blood_to_get
 	return
 
 
@@ -116,7 +115,6 @@
 		return
 	if (!ishuman(src))
 		return
-	var/mob/living/carbon/human/H = src
 	var/datum/vampire/vampire = mind.vampire
 	if (!vampire)
 		log_debug("[src] has a vampire power but is not a vampire.")
@@ -127,7 +125,7 @@
 	if (stat > max_stat)
 		to_chat(src, SPAN_WARNING("You are incapacitated."))
 		return
-	if (required_blood > H.check_blood())
+	if (required_blood > vampire.check_blood())
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. [required_blood] needed."))
 		return
 
@@ -294,14 +292,14 @@
 
 /mob/proc/handle_vampire()
 	// Apply frenzy while in the chapel.
-	var/mob/living/carbon/human/H = src
 	if (istype(get_area(loc), /area/chapel))
 		mind.vampire.frenzy += 3
+		mind.vampire.owner.adjustFireLoss(2)
 
-	if (H.check_blood() < 10)
+	if (mind.vampire.check_blood() < 10)
 		mind.vampire.frenzy += 2
 	else if (mind.vampire.frenzy > 0)
-		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(H.check_blood() * 0.1, 1, 10))
+		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(mind.vampire.check_blood() * 0.1, 1, 10))
 
 	mind.vampire.frenzy = min(mind.vampire.frenzy, 450)
 

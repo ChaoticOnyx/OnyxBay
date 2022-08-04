@@ -1677,7 +1677,7 @@
 		heart.handle_pulse()
 
 /mob/living/carbon/human/proc/make_adrenaline(amount)
-	if(stat == CONSCIOUS)
+	if(stat == CONSCIOUS && !(status_flags & UNDEAD))
 		var/limit = max(0, reagents.get_overdose(/datum/reagent/adrenaline) - reagents.get_reagent_amount(/datum/reagent/adrenaline))
 		reagents.add_reagent(/datum/reagent/adrenaline, min(amount, limit))
 

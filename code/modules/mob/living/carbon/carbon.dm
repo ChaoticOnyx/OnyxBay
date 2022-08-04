@@ -188,7 +188,7 @@
 		swap_hand()
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
-	if(!is_asystole())
+	if(!is_asystole() || !(status_flags & UNDEAD))
 		if (on_fire)
 			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if (M.on_fire)

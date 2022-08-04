@@ -47,10 +47,10 @@
 				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/blood)/4)
 
 				reagents.remove_reagent(/datum/reagent/blood, blood_taken*4)
-				user.gain_blood(blood_taken)
+				user.mind.vampire.gain_blood(blood_taken)
 
 				if (blood_taken)
-					to_chat(user, SPAN_NOTICE("You have accumulated [user.check_blood()] [user.check_blood() > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
+					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.check_blood()] [user.mind.vampire.check_blood() > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
 
 				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
 					break

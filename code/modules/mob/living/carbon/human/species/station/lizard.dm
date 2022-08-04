@@ -79,7 +79,7 @@
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 
 /datum/species/unathi/handle_environment_special(mob/living/carbon/human/H)
-	if(H.InStasis() || H.stat == DEAD)
+	if(H.InStasis() || H.stat == DEAD || (H.status_flags & UNDEAD))
 		return
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2,0)

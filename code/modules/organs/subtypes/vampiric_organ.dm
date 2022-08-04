@@ -10,7 +10,7 @@
 
 		if(damage < (max_damage / 4))
 			healed_threshold = 1
-
+		owner.nutrition = 400
 		handle_disabilities()
 		handle_damage_effects()            
 
@@ -25,8 +25,7 @@
 		pulse = PULSE_NORM
 	else
 		pulse = PULSE_NONE
-	owner.add_chemical_effect(CE_ANTIBIOTIC, 1)
-	owner.add_chemical_effect(CE_ANTIVIRAL, VIRUS_EXOTIC)
+	owner.add_chemical_effect(CE_ANTIBIOTIC, 5)
 	return
 
 

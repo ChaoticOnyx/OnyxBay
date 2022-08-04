@@ -244,7 +244,7 @@
 		if(radiation > 50)
 			damage = 2
 			radiation -= 2 * RADIATION_SPEED_COEFFICIENT
-			if(!full_prosthetic)
+			if(!full_prosthetic || !(status_flags & UNDEAD))
 				if(prob(5) && prob(100 * RADIATION_SPEED_COEFFICIENT))
 					radiation -= 5 * RADIATION_SPEED_COEFFICIENT
 					to_chat(src, "<span class='warning'>You feel weak.</span>")
@@ -680,7 +680,7 @@
 			nutrition = max (0, nutrition - nutrition_reduction)
 
 		// malnutrition \ obesity
-		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src))
+		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !(src.status_flags & UNDEAD))
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
 			switch(normalized_nutrition)
 				if(0 to STOMACH_FULLNESS_SUPER_LOW)
@@ -822,6 +822,8 @@
 					nutrition_icon.icon_state = "nutrition4"
 				else
 					nutrition_icon.icon_state = "nutrition5"
+			if(status_flags & UNDEAD)
+				nutrition_icon.icon_state = "nutrition2"
 
 		if(full_prosthetic)
 			var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
@@ -950,7 +952,7 @@
 		shock_stage = 0
 		return
 
-	if(is_asystole())
+	if(is_asystole() && !(status_flags & UNDEAD))
 		shock_stage = max(shock_stage, 61)
 	var/traumatic_shock = get_shock()
 	if(traumatic_shock >= max(30, 0.8 * shock_stage))
