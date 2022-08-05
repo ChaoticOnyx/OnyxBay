@@ -383,7 +383,7 @@
 		/obj/item/stock_parts/console_screen,
 	)
 	var/inuse = 0
-	var/obj/item/reagent_containers/beaker
+	var/obj/item/reagent_containers/vessel/beaker/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
 
@@ -568,7 +568,12 @@
 		return
 
 	// Sanity check.
-	if (!beaker || (beaker && beaker.reagents.total_volume >= beaker.reagents.maximum_volume))
+	if(!beaker || beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
+		return
+
+	if(!(beaker.atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+		audible_message(SPAN("warning", "<b>The [src]</b> states, \"The beaker is closed, reagent processing is impossible.\""))
+		playsound(src.loc, 'sound/signals/error28.ogg', 50, 1)
 		return
 
 	playsound(src.loc, 'sound/machines/blender.ogg', 50, 1)
