@@ -651,8 +651,8 @@
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
 				organ_data["descriptor"] = O.name
-				to_chat(H, "<span class='danger'>With a shower of dark blood, a new [O.name] forms.</span>")
-				H.visible_message("<span class='danger'>With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!</span>")
+				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))				
+				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
 				blood_used += 12
 				var/datum/reagent/blood/B = new /datum/reagent/blood
 				blood_splatter(H,B,1)
