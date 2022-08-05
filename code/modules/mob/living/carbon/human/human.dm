@@ -1692,6 +1692,8 @@
 
 //Determine body temperature
 /mob/living/carbon/human/proc/get_body_temperature()
+	if ((status_flags & FAKELIVING) && !(species.body_temperature == null))
+		return species.body_temperature + (species.passive_temp_gain * 3)
 	return bodytemperature
 
 //Point at which you dun breathe no more. Separate from asystole crit, which is heart-related.
