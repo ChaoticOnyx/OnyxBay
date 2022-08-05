@@ -41,7 +41,7 @@
 
 	holodeck_supported_programs = list(
 
-		"ExodusMainPrograms" = list(
+		"FrontierMainPrograms" = list(
 			"Empty Court"       = "emptycourt",
 			"Basketball Court"  = "basketball",
 			"Thunderdome Court" = "thunderdomecourt",
