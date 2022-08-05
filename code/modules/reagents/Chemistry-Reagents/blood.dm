@@ -9,7 +9,7 @@
 		"dose_chem" = null,
 		"virus2" = list(),
 		"antibodies" = list(),
-		"has_oxy" = 1	
+		"has_oxy" = 1
 	)
 	name = "Blood"
 	reagent_state = LIQUID

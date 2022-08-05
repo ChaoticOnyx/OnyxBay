@@ -39,10 +39,6 @@
 
 
 /obj/item/organ/internal/lungs/vampiric_lungs/Process()
-	if(owner.status_flags & FAKELIVING)
-		active_breathing = 1
-	else
-		active_breathing = 0
 	..()
 
     

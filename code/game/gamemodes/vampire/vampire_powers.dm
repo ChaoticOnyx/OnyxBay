@@ -637,26 +637,7 @@
 		for(var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
 			V.cure(src)
-		
-		var/mob/living/carbon/human/H = src
-		for(var/limb_type in species.has_limbs)			
-			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-				E.removed()			//...because no one wants their head to explode to make way for a new one.				
-				qdel(E)
-				E = null
-			if(!E)
-				var/list/organ_data = species.has_limbs[limb_type]
-				var/limb_path = organ_data["path"]
-				var/obj/item/organ/external/O = new limb_path(H)
-				organ_data["descriptor"] = O.name
-				to_chat(H, "<span class='danger'>With a shower of dark blood, a new [O.name] forms.</span>")
-				H.visible_message("<span class='danger'>With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!</span>")
-				blood_used += 12
-				var/datum/reagent/blood/B = new /datum/reagent/blood
-				blood_splatter(H,B,1)
-				O.set_dna(H.dna)
-				H.update_body()
+
 
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[src]'s veins turn black as their damaged flesh regenerates before your eyes!",
@@ -1020,7 +1001,7 @@
 
 	T.Weaken(15)
 	T.Stun(15)
-	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE] // Нужно проверить со вторым игроком
+	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE]
 	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)	
 
 	admin_attack_log(src, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(src)]", "successfully embraced and turned into a vampire")
