@@ -914,7 +914,7 @@
 		vomit_score += 10 * chem_effects[CE_ALCOHOL_TOXIC]
 	if(chem_effects[CE_ALCOHOL])
 		vomit_score += 10
-	if(stat != DEAD && vomit_score > 25 && prob(10))
+	if(stat != DEAD && !(status_flags & UNDEAD) && vomit_score > 25 && prob(10))
 		spawn vomit(1, vomit_score, vomit_score/25)
 
 	//0.1% chance of playing a scary sound to someone who's in complete darkness

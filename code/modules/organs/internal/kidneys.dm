@@ -17,7 +17,7 @@
 /obj/item/organ/internal/kidneys/think()
 	..()
 
-	if(!owner)
+	if(!owner || (owner?.status_flags & UNDEAD))
 		return
 
 	// Coffee is really bad for you with busted kidneys.

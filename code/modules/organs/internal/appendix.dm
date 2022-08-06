@@ -13,7 +13,7 @@
 
 /obj/item/organ/internal/appendix/think()
 	..()
-	if(inflamed && owner)
+	if(inflamed && owner && !(owner?.status_flags & UNDEAD))
 		inflamed++
 		if(prob(5))
 			if(owner.can_feel_pain())

@@ -223,7 +223,7 @@
 	BITSET(hud_updateflag, HEALTH_HUD)
 
 /mob/living/carbon/human/getToxLoss() // In fact, returns internal organs damage. Should be reworked sometime in the future.
-	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
+	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || (status_flags & UNDEAD))
 		return 0
 	var/amount = 0
 	for(var/obj/item/organ/internal/I in internal_organs)
@@ -231,13 +231,13 @@
 	return amount
 
 /mob/living/carbon/human/setToxLoss(amount)
-	if(!(species.species_flags & SPECIES_FLAG_NO_POISON) && !isSynthetic())
+	if(!(species.species_flags & SPECIES_FLAG_NO_POISON) && !isSynthetic() && !(status_flags & UNDEAD))
 		adjustToxLoss(getToxLoss()-amount)
 
 // TODO: better internal organ damage procs.
 /mob/living/carbon/human/adjustToxLoss(amount)
 
-	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
+	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic() || (status_flags & UNDEAD))
 		return
 
 	var/heal = amount < 0

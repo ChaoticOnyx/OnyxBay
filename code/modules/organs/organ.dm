@@ -115,7 +115,7 @@ var/list/organ_cache = list()
 		return
 
 	//Process infections
-	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
+	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT) || (owner?.status_flags & UNDEAD))
 		germ_level = 0
 
 		// If `think()` is called not by the owner in `handle_organs()` but on his own.

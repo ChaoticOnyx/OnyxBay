@@ -25,7 +25,7 @@
 /obj/item/organ/internal/liver/think()
 
 	..()
-	if(!owner)
+	if(!owner || (owner?.status_flags & UNDEAD))
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)

@@ -44,7 +44,7 @@
 /obj/item/organ/internal/stomach/think()
 	..()
 
-	if(owner)
+	if(owner && !(owner?.status_flags & UNDEAD))
 		var/functioning = is_usable()
 		if(damage >= min_bruised_damage && prob((damage / max_damage) * 100))
 			functioning = FALSE
