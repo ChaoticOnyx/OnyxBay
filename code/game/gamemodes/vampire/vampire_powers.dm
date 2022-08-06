@@ -639,8 +639,7 @@
 			V.cure(src)
 		
 		var/mob/living/carbon/human/H = src
-		for(var/limb_type in species.has_limbs)		
-			var/healed = FALSE	
+		for(var/limb_type in species.has_limbs)	
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
 				E.removed()			//...because no one wants their head to explode to make way for a new one.				
@@ -658,8 +657,6 @@
 				blood_splatter(H,B,1)
 				O.set_dna(H.dna)
 				H.update_body()
-				healed = TRUE
-			if (healed)
 				break
 
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
