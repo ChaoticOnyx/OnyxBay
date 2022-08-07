@@ -66,9 +66,6 @@
 	blood_usable -= min(blood_to_use, blood_usable)
 	return
 
-/datum/vampire/proc/check_blood()
-	return blood_usable
-
 /datum/vampire/proc/gain_blood(blood_to_get, source)
 	blood_usable += blood_to_get
 	return
@@ -106,7 +103,7 @@
 	if (stat > max_stat)
 		to_chat(src, SPAN_WARNING("You are incapacitated."))
 		return
-	if (required_blood > vampire.check_blood())
+	if (required_blood > vampire.blood_usable)
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. [required_blood] needed."))
 		return
 
@@ -278,10 +275,10 @@
 		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")
 
-	if (mind.vampire.check_blood() < 10)
+	if (mind.vampire.blood_usable < 10)
 		mind.vampire.frenzy += 2
 	else if (mind.vampire.frenzy > 0)
-		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(mind.vampire.check_blood() * 0.1, 1, 10))
+		mind.vampire.frenzy = max(0, mind.vampire.frenzy - Clamp(mind.vampire.blood_usable * 0.1, 1, 10))
 
 	mind.vampire.frenzy = min(mind.vampire.frenzy, 450)
 

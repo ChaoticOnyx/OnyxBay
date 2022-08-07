@@ -50,7 +50,7 @@
 				user.mind.vampire.gain_blood(blood_taken)
 
 				if (blood_taken)
-					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.check_blood()] [user.mind.vampire.check_blood() > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
+					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
 
 				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
 					break

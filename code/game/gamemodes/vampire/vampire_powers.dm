@@ -88,7 +88,7 @@
 			to_chat(src, SPAN_DANGER("You can't drink even more blood!"))
 			break
 		blood_total = vampire.blood_total
-		blood_usable = vampire.check_blood()
+		blood_usable = vampire.blood_usable
 
 		if (!T.vessel.get_reagent_amount(/datum/reagent/blood))
 			to_chat(src, SPAN_DANGER("[T] has no more blood left to give."))
@@ -114,7 +114,7 @@
 				vampire.frenzy += blood
 
 				// And drain the vampire as well.
-				draining_vamp.use_blood(min(blood, draining_vamp.check_blood()))
+				draining_vamp.use_blood(min(blood, draining_vamp.blood_usable))
 				vampire_check_frenzy()
 
 				frenzy_lower_chance = 0
@@ -131,8 +131,8 @@
 
 		if (blood_total != vampire.blood_total)
 			var/update_msg = SPAN_NOTICE("You have accumulated [vampire.blood_total] [vampire.blood_total > 1 ? "units" : "unit"] of blood")
-			if (blood_usable != vampire.check_blood())
-				update_msg += SPAN_NOTICE(" and have [vampire.check_blood()] left to use.")
+			if (blood_usable != vampire.blood_usable)
+				update_msg += SPAN_NOTICE(" and have [vampire.blood_usable] left to use.")
 			else
 				update_msg += SPAN_NOTICE(".")
 			to_chat(src, update_msg)
@@ -469,20 +469,20 @@
 			deactivate()
 			return
 
-	if (owner_vampire.check_blood() >= 5)
+	if (owner_vampire.blood_usable >= 5)
 		owner_vampire.use_blood(power_use_cost)
 
 		switch (warning_level)
 			if (0)
-				if (owner_vampire.check_blood() <= 5 * 20)
+				if (owner_vampire.blood_usable <= 5 * 20)
 					to_chat(owner_mob, SPAN_NOTICE("Your pool of blood is diminishing. You cannot stay in the veil for too long."))
 					warning_level = 1
 			if (1)
-				if (owner_vampire.check_blood() <= 5 * 10)
+				if (owner_vampire.blood_usable <= 5 * 10)
 					to_chat(owner_mob, SPAN_WARNING("You will be ejected from the veil soon, as your pool of blood is running dry."))
 					warning_level = 2
 			if (2)
-				if (owner_vampire.check_blood() <= 5 * 5)
+				if (owner_vampire.blood_usable <= 5 * 5)
 					to_chat(owner_mob, SPAN_DANGER("You cannot sustain this form for any longer!"))
 					warning_level = 3
 	else
@@ -561,7 +561,7 @@
 	if (vampire.status & VAMP_HEALING)
 		vampire.status &= ~VAMP_HEALING
 		return
-	else if (vampire.check_blood() < 15)
+	else if (vampire.blood_usable < 15)
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 15 needed."))
 		return
 
@@ -638,7 +638,6 @@
 			var/datum/disease2/disease/V = virus2[ID]
 			V.cure(src)
 
-
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[src]'s veins turn black as their damaged flesh regenerates before your eyes!",
 									"[src]'s skin begins to split open. It turns to ash and falls away, revealing the wound to be fully healed.",
@@ -655,7 +654,7 @@
 		if (prob(20))
 			visible_message(SPAN_DANGER("[pick(emotes_lookers)]"), SPAN_NOTICE("[pick(emotes_self)]"))
 
-		if (vampire.check_blood() <= blood_used)
+		if (vampire.blood_usable <= blood_used)
 			vampire.use_blood(blood_used)
 			vampire.status &= ~VAMP_HEALING
 			to_chat(src, SPAN_WARNING("You ran out of blood, and are unable to continue!"))
@@ -796,7 +795,7 @@
 		vampire.status &= ~VAMP_PRESENCE
 		to_chat(src, SPAN_WARNING("You are no longer influencing those weak of mind."))
 		return
-	else if (vampire.check_blood() < 10)
+	else if (vampire.blood_usable < 10)
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 10 needed."))
 		return
 
@@ -840,7 +839,7 @@
 
 		vampire.use_blood(power_use_cost)
 
-		if (vampire.check_blood() < 5)
+		if (vampire.blood_usable < 5)
 			vampire.status &= ~VAMP_PRESENCE
 			to_chat(src, SPAN_WARNING("You are no longer influencing those weak of mind."))
 			break
@@ -860,7 +859,7 @@
 		src.status_flags &= ~FAKELIVING
 		to_chat(src, SPAN_WARNING("You no longer pretend to be prey."))
 		return
-	else if (vampire.check_blood() < 2)
+	else if (vampire.blood_usable < 2)
 		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 10 needed."))
 		return
 
@@ -881,7 +880,7 @@
 
 		vampire.use_blood(power_use_cost)
 
-		if (vampire.check_blood() < 5)
+		if (vampire.blood_usable < 5)
 			src.status_flags &= ~FAKELIVING
 			to_chat(src, SPAN_WARNING("You no longer pretend to be prey."))
 			break
@@ -1009,7 +1008,7 @@
 	to_chat(T, SPAN_DANGER("You awaken. Moments ago, you were dead, your conciousness still forced stuck inside your body. Now you live. You feel different, a strange, dark force now present within you. You have an insatiable desire to drain the blood of mortals, and to grow in power."))
 	to_chat(src, SPAN_WARNING("You have corrupted another mortal with the taint of the Veil. Beware: they will awaken hungry and maddened; not bound to any master."))
 
-	T.mind.vampire.use_blood(T.mind.vampire.check_blood())
+	T.mind.vampire.use_blood(T.mind.vampire.blood_usable)
 	T.mind.vampire.frenzy = 50
 	T.vampire_check_frenzy()
 
