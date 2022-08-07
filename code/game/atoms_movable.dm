@@ -235,7 +235,8 @@
 		var/atom/previous = src.loc
 		src.loc = null
 		if (Move(previous))
-			Move(step)
+			if (!QDELETED(src))
+				Move(step)
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
