@@ -40,42 +40,24 @@
 
 /mob/living/carbon/human/proc/replace_vampiric_organs()
 	var/mob/living/carbon/human/H = src
-	var/vamp_organs = list(        
-		BP_HEART =    /obj/item/organ/internal/heart/vampiric_heart,
-		BP_STOMACH =  /obj/item/organ/internal/stomach/vampiric_stomach,
-		BP_LUNGS =    /obj/item/organ/internal/lungs/vampiric_lungs,
-		BP_LIVER =    /obj/item/organ/internal/liver/vampiric_liver,
-		BP_KIDNEYS =  /obj/item/organ/internal/kidneys/vampiric_kidneys,
-		BP_BRAIN =    /obj/item/organ/internal/brain/vampiric_brain,
-		BP_APPENDIX = /obj/item/organ/internal/appendix/vampiric_appendix,
-		BP_EYES =     /obj/item/organ/internal/eyes/vampiric_eyes
-		)
-	
-	for(var/obj/item/organ/internal/organ in H.contents)
-		if((organ in H.internal_organs))
-			qdel(organ)
-	
-	if(H.internal_organs)         H.internal_organs.Cut()
-	if(H.internal_organs_by_name) H.internal_organs_by_name.Cut()
-	H.internal_organs = list()
-	H.internal_organs_by_name = list()
-
-	for(var/organ_tag in vamp_organs)
-		var/organ_type = vamp_organs[organ_tag]
-		var/obj/item/organ/O = new organ_type(H)
-		if(organ_tag != O.organ_tag)
-			warning("[O.type] has a default organ tag \"[O.organ_tag]\" that differs from the species' organ tag \"[organ_tag]\". Updating organ_tag to match.")
-			O.organ_tag = organ_tag
-		H.internal_organs_by_name[organ_tag] = O
-
-	for(var/name in H.internal_organs_by_name)
-		H.internal_organs |= H.internal_organs_by_name[name]
-
-	for(var/obj/item/organ/O in (H.organs|H.internal_organs))
-		O.owner = H
-
+	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
+	if(O)
+		qdel(O)
+		H.internal_organs_by_name.Remove(BP_HEART)
+		H.internal_organs_by_name -= BP_HEART
+		H.internal_organs.Remove(/obj/item/organ/internal/heart/)
+	var/organ_type = /obj/item/organ/internal/heart/
+	var/obj/item/organ/internal/org = new organ_type(H)
+	H.internal_organs_by_name[BP_HEART] = org
+	H.internal_organs |= H.internal_organs_by_name[BP_HEART]
+	org.owner = H
+	org.max_damage = 150
+	org.min_bruised_damage = 30
+	org.min_broken_damage = 70
+	org.vital = 1
 	H.sync_organ_dna()
 	H.update_body()
+	return
 
 // Proc to safely remove blood, without resulting in negative amounts of blood.
 /datum/vampire/proc/use_blood(blood_to_use)
@@ -293,7 +275,7 @@
 	// Apply frenzy while in the chapel.
 	if (get_area(loc).holy)
 		mind.vampire.frenzy += 3		
-		if(prob(10))
+		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")
 
 	if (mind.vampire.check_blood() < 10)

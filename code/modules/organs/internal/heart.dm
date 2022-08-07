@@ -41,6 +41,13 @@
 	if(BP_IS_ROBOTIC(src))
 		pulse = PULSE_NONE	//that's it, you're dead (or your metal heart is), nothing can influence your pulse
 		return
+	
+	if(owner.status_flags & UNDEAD)
+		if(owner.status_flags & FAKELIVING)
+			pulse = PULSE_NORM
+		else
+			pulse = PULSE_NONE
+		return
 
 	var/pulse_mod = owner.chem_effects[CE_PULSE]
 

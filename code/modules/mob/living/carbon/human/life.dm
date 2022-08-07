@@ -339,6 +339,11 @@
 	//Stuff like the xenomorph's plasma regen happens here.
 	species.handle_environment_special(src)
 
+	//Undead does not eat.
+
+	if (status_flags & UNDEAD)
+		src.nutrition = 300
+
 	//Moved pressure calculations here for use in skip-processing check.
 	var/pressure = environment.return_pressure()
 	var/adjusted_pressure = calculate_affecting_pressure(pressure)
