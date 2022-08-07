@@ -230,6 +230,8 @@
 		return 1
 	if (istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
 		return 1
+	if (!can_use_hands)
+		return 1
 	return 0
 
 /mob/living/carbon/human/proc/grab_restrained()

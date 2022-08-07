@@ -257,9 +257,8 @@
 			return FALSE
 
 	if(istype(user.loc, /obj/effect/dummy/spell_jaunt))
-		if(!istype(src, /datum/spell/targeted/ethereal_jaunt))
-			to_chat(user, SPAN_WARNING("You cannot cast spells in this form"))
-			return FALSE
+		to_chat(user, SPAN_WARNING("You cannot cast spells in this form"))
+		return FALSE
 
 	return TRUE
 
