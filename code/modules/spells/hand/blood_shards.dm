@@ -50,25 +50,26 @@
 	user.visible_message(SPAN_DANGER("\The [user] shoots out a deep red shard from their hand!"))
 
 /obj/item/projectile/blood_shard/on_hit(atom/movable/target, blocked = 0)
-	if(..())
-		if(!istype(target, /mob/living/carbon/human))
-			return
-		var/mob/living/carbon/human/H = target
-		if(H.vessel.has_reagent(/datum/reagent/blood, required_blood))
-			H.vessel.remove_reagent(/datum/reagent/blood, required_blood)
-			H.visible_message(SPAN_DANGER("Tiny red shards burst from \the [H]'s skin!"))
-			H.blood_fragmentate(30, 5, hit_projectile)
+	if(!..())
+		return FALSE
+	if(!istype(target, /mob/living/carbon/human))
+		return
+	var/mob/living/carbon/human/H = target
+	if(H.vessel.has_reagent(/datum/reagent/blood, required_blood))
+		H.vessel.remove_reagent(/datum/reagent/blood, required_blood)
+		H.visible_message(SPAN_DANGER("Tiny red shards burst from \the [H]'s skin!"))
+		blood_fragmentate(target, 30, 5, hit_projectile)
 
-/mob/living/carbon/human/proc/blood_fragmentate(fragment_number = 30, spreading_range = 5, fragment_type)
-	var/turf/T=get_turf(src)
+/obj/item/projectile/blood_shard/proc/blood_fragmentate(mob/living/carbon/human/target, fragment_number = 30, spreading_range = 5, fragment_type)
+	var/turf/T=get_turf(target)
 	var/list/target_turfs = getcircle(T, spreading_range)
 	var/fragments_per_projectile = round(fragment_number/target_turfs.len)
 	for(var/turf/O in target_turfs)
 		sleep(0)
 		var/obj/item/projectile/bullet/pellet/blood/P = new fragment_type(T)
-		P.color = species.blood_color
+		P.color = target.species.blood_color
 		P.pellets = fragments_per_projectile
-		P.firer = src
+		P.firer = target
 		P.launch(O)
 
 /obj/item/projectile/bullet/pellet/blood
@@ -94,9 +95,9 @@
 	blockable = FALSE
 
 /obj/item/projectile/bullet/pellet/blood/power_two/attack_mob(mob/living/target_mob, distance, miss_modifier)
-	if(ishuman(target_mob))
-		var/mob/living/carbon/human/H = target_mob
-		if(H.mind && GLOB.wizards.is_antagonist(H.mind))
-			H.vessel.add_reagent(/datum/reagent/blood, 4)
-			return FALSE
-	. = ..()
+	if(!ishuman(target_mob))
+		return ..()
+	var/mob/living/carbon/human/H = target_mob
+	if(H.mind && GLOB.wizards.is_antagonist(H.mind))
+		H.vessel.add_reagent(/datum/reagent/blood, 4)
+		return FALSE
