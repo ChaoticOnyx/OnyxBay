@@ -2944,6 +2944,7 @@
 #include "maps\exodus\exodus_levels.dm"
 #include "maps\frontier\frontier_areas.dm"
 #include "maps\frontier\frontier_define.dm"
+#include "maps\frontier\frontier_holodecks.dm"
 #include "maps\frontier\frontier_levels.dm"
 #include "maps\genesis\genesis_define.dm"
 #include "maps\genesis\genesis_levels.dm"
