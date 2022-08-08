@@ -31,7 +31,8 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if(thing.client || (thing.loc.z in player_levels) || thing.teleop)
+		var/turf/T = get_turf(thing)
+		if(thing.client || (istype(T) && (T.z in player_levels)) || thing.teleop)
 			thing.Life()
 
 		if(MC_TICK_CHECK)
