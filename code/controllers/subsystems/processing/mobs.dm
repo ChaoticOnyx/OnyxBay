@@ -18,6 +18,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 		player_levels.Cut()
 		for(var/P in GLOB.player_list)
 			var/mob/living/player = P
+			var/turf/T = get_turf(player)
 			if(!istype(player) || (player.loc.z in player_levels))
 				continue
 			player_levels += player.loc.z
