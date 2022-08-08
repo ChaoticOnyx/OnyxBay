@@ -21,7 +21,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			var/turf/T = get_turf(player)
 			if(!istype(player) || !istype(T) || (T.z in player_levels))
 				continue
-			player_levels += player.loc.z
+			player_levels += T.z
 
 	var/mob/thing
 	for(var/i = current_run.len to 1 step -1)
