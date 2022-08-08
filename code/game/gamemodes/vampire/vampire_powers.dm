@@ -860,30 +860,33 @@
 		to_chat(src, SPAN_WARNING("You no longer pretend to be prey."))
 		return
 	else if (vampire.blood_usable < 2)
-		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 10 needed."))
+		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 2 needed."))
 		return
-
+	
 	to_chat(src, SPAN_NOTICE("You begin hiding your true self."))
 	src.status_flags |= FAKELIVING
 	vampire.use_blood(power_use_cost)
-
 	log_and_message_admins("activated revitalise.")
+	addtimer(CALLBACK(src,.proc/handle_revitalise), 20 SECONDS)
+	return
 
-	while (src.status_flags & FAKELIVING)
-		// Run every 20 seconds
-		sleep(200)
-
+/mob/living/carbon/human/proc/handle_revitalise()
+	var/power_use_cost = 1
+	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	if (!vampire)
+		return
+	
+	if (src.status_flags & FAKELIVING)
 		if (stat == 2)
 			to_chat(src, SPAN_WARNING("You cannot appear alive while dead"))
 			src.status_flags &= ~FAKELIVING
-			break
-
+			
 		vampire.use_blood(power_use_cost)
-
 		if (vampire.blood_usable < 5)
 			src.status_flags &= ~FAKELIVING
 			to_chat(src, SPAN_WARNING("You no longer pretend to be prey."))
-			break
+		addtimer(CALLBACK(src,.proc/handle_revitalise), 20 SECONDS)
+	return
 
 /mob/living/carbon/human/proc/vampire_touch_of_life()
 	set category = "Vampire"

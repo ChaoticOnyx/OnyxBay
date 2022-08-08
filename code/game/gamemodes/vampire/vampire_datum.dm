@@ -1,5 +1,7 @@
 // Vampire and thrall datums. Contains the necessary information about a vampire.
 // Must be attached to a /datum/mind.
+#define isfakeliving(A) (A.status_flags & FAKELIVING)
+#define isundead(A) (A.status_flags & UNDEAD)
 /datum/vampire
 	var/list/thralls = list()					// A list of thralls that obey the vamire.
 	var/blood_total = 0							// How much total blood do we have?
