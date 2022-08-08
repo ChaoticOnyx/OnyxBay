@@ -16,6 +16,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 	if(!resumed)
 		current_run = processing.Copy()
 		player_levels.Cut()
+		player_levels += 0
 		for(var/P in GLOB.player_list)
 			var/mob/living/player = P
 			if(!istype(player) || (player.z in player_levels))
