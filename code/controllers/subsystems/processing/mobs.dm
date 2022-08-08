@@ -16,12 +16,11 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 	if(!resumed)
 		current_run = processing.Copy()
 		player_levels.Cut()
-		player_levels += 0
 		for(var/P in GLOB.player_list)
 			var/mob/living/player = P
-			if(!istype(player) || (player.z in player_levels))
+			if(!istype(player) || (player.loc.z in player_levels))
 				continue
-			player_levels += player.z
+			player_levels += player.loc.z
 
 	var/mob/thing
 	for(var/i = current_run.len to 1 step -1)
@@ -31,7 +30,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if(thing.client || (thing.z in player_levels) || thing.teleop)
+		if(thing.client || (thing.loc.z in player_levels) || thing.teleop)
 			thing.Life()
 
 		if(MC_TICK_CHECK)
