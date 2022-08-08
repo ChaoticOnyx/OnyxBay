@@ -65,7 +65,7 @@
 
 	switch(M.a_intent)
 		if(I_HELP)
-			if(istype(H) && ((is_asystole() && !(status_flags & UNDEAD)) || (status_flags & FAKEDEATH)))
+			if(istype(H) && ((is_asystole() && !(isundead(src))) || (status_flags & FAKEDEATH)))
 				if (!cpr_time)
 					return 0
 

@@ -855,7 +855,7 @@
 	if (!vampire)
 		return
 
-	if (src.status_flags & FAKELIVING)
+	if (isfakeliving(src))
 		src.status_flags &= ~FAKELIVING
 		to_chat(src, SPAN_WARNING("You no longer pretend to be prey."))
 		return
@@ -876,11 +876,11 @@
 	if (!vampire)
 		return
 	
-	if (src.status_flags & FAKELIVING)
+	if (isfakeliving(src))
 		if (stat == 2)
 			to_chat(src, SPAN_WARNING("You cannot appear alive while dead"))
 			src.status_flags &= ~FAKELIVING
-			
+
 		vampire.use_blood(power_use_cost)
 		if (vampire.blood_usable < 5)
 			src.status_flags &= ~FAKELIVING

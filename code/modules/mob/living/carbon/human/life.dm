@@ -244,7 +244,7 @@
 		if(radiation > 50)
 			damage = 2
 			radiation -= 2 * RADIATION_SPEED_COEFFICIENT
-			if(!full_prosthetic || !(status_flags & UNDEAD))
+			if(!full_prosthetic || !(isundead(src)))
 				if(prob(5) && prob(100 * RADIATION_SPEED_COEFFICIENT))
 					radiation -= 5 * RADIATION_SPEED_COEFFICIENT
 					to_chat(src, "<span class='warning'>You feel weak.</span>")
@@ -341,7 +341,7 @@
 
 	//Undead does not eat.
 
-	if (status_flags & UNDEAD)
+	if (isundead(src))
 		src.nutrition = 300
 
 	//Moved pressure calculations here for use in skip-processing check.
@@ -450,7 +450,7 @@
 	if(robolimb_count)
 		bodytemperature += round(robolimb_count/2)
 
-	if(species.body_temperature == null || isSynthetic() || (status_flags & UNDEAD))
+	if(species.body_temperature == null || isSynthetic() || (isundead(src)))
 		return //this species doesn't have metabolic thermoregulation
 
 	var/body_temperature_difference = species.body_temperature - bodytemperature
@@ -677,7 +677,7 @@
 			adjustToxLoss(total_plasmaloss)
 
 		// nutrition decrease
-		if(nutrition > 0 && !(src.status_flags & UNDEAD))
+		if(nutrition > 0 && !(isundead(src)))
 			var/nutrition_reduction = species.hunger_factor * body_build.stomach_capacity
 			for(var/datum/modifier/mod in modifiers)
 				if(!isnull(mod.metabolism_percent))
@@ -685,7 +685,7 @@
 			nutrition = max (0, nutrition - nutrition_reduction)
 
 		// malnutrition \ obesity
-		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !(src.status_flags & UNDEAD))
+		if(prob(1) && stat == CONSCIOUS && !isSynthetic(src) && !(isundead(src)))
 			var/normalized_nutrition = nutrition / body_build.stomach_capacity
 			switch(normalized_nutrition)
 				if(0 to STOMACH_FULLNESS_SUPER_LOW)
@@ -799,7 +799,7 @@
 					health_images += image('icons/mob/screen1_health.dmi', "burning")
 
 				// Show a general pain/crit indicator if needed.
-				if(is_asystole() && !(status_flags & UNDEAD))
+				if(is_asystole() && !(isundead(src)))
 					health_images += image('icons/mob/screen1_health.dmi', "hardcrit")
 				else if(trauma_val)
 					if(canfeelpain)
@@ -827,7 +827,7 @@
 					nutrition_icon.icon_state = "nutrition4"
 				else
 					nutrition_icon.icon_state = "nutrition5"
-			if(status_flags & UNDEAD)
+			if(isundead(src))
 				nutrition_icon.icon_state = "nutrition2"
 
 		if(full_prosthetic)
@@ -919,7 +919,7 @@
 		vomit_score += 10 * chem_effects[CE_ALCOHOL_TOXIC]
 	if(chem_effects[CE_ALCOHOL])
 		vomit_score += 10
-	if(stat != DEAD && !(status_flags & UNDEAD) && vomit_score > 25 && prob(10))
+	if(stat != DEAD && !(isundead(src)) && vomit_score > 25 && prob(10))
 		spawn vomit(1, vomit_score, vomit_score/25)
 
 	//0.1% chance of playing a scary sound to someone who's in complete darkness
@@ -957,7 +957,7 @@
 		shock_stage = 0
 		return
 
-	if(is_asystole() && !(status_flags & UNDEAD))
+	if(is_asystole() && !(isundead(src)))
 		shock_stage = max(shock_stage, 61)
 	var/traumatic_shock = get_shock()
 	if(traumatic_shock >= max(30, 0.8 * shock_stage))
@@ -1043,7 +1043,7 @@
 /mob/living/carbon/human/proc/handle_hud_list()
 	if(BITTEST(hud_updateflag, HEALTH_HUD) && hud_list[HEALTH_HUD])
 		var/image/holder = hud_list[HEALTH_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
+		if(stat == DEAD || status_flags & FAKEDEATH || ((isundead(src)) && !(isfakeliving(src))))
 			holder.icon_state = "0" 	// X_X
 		else if(is_asystole())
 			holder.icon_state = "flatline"
@@ -1053,7 +1053,7 @@
 
 	if(BITTEST(hud_updateflag, LIFE_HUD) && hud_list[LIFE_HUD])
 		var/image/holder = hud_list[LIFE_HUD]
-		if(stat == DEAD || status_flags & FAKEDEATH || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
+		if(stat == DEAD || status_flags & FAKEDEATH || ((isundead(src)) && !(isfakeliving(src))))
 			holder.icon_state = "huddead"
 		else
 			holder.icon_state = "hudhealthy"
@@ -1067,7 +1067,7 @@
 				break
 
 		var/image/holder = hud_list[STATUS_HUD]
-		if(stat == DEAD || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
+		if(stat == DEAD || ((isundead(src)) && !(isfakeliving(src))))
 			holder.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder.icon_state = "hudxeno"
@@ -1083,7 +1083,7 @@
 			holder.icon_state = "hudhealthy"
 
 		var/image/holder2 = hud_list[STATUS_HUD_OOC]
-		if(stat == DEAD || ((status_flags & UNDEAD) && !(status_flags & FAKELIVING)))
+		if(stat == DEAD || ((isundead(src)) && !(isfakeliving(src))))
 			holder2.icon_state = "huddead"
 		else if(status_flags & XENO_HOST)
 			holder2.icon_state = "hudxeno"

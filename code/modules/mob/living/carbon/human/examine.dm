@@ -328,7 +328,7 @@
 
 	msg += applying_pressure
 
-	if ((status_flags & UNDEAD) && !(status_flags & FAKELIVING))
+	if ((isundead(src)) && !(isfakeliving(src)))
 		msg += SPAN("warning", "[T.He] looks unhealthy pale.\n")
 
 	if (pose)

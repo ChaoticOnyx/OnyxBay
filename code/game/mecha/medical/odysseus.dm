@@ -106,7 +106,7 @@
 				C.images += holder
 
 			holder = patient.hud_list[STATUS_HUD]
-			if(patient.stat == DEAD || ((patient.status_flags & UNDEAD) && !(patient.status_flags & FAKELIVING)))
+			if(patient.stat == DEAD || ((isundead(patient)) && !(isfakeliving(patient))))
 				holder.icon_state = "huddead"
 			else if(patient.status_flags & XENO_HOST)
 				holder.icon_state = "hudxeno"

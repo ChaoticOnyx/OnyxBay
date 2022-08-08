@@ -154,7 +154,7 @@
 		handle_damage_effects()
 
 		// Brain damage from low oxygenation or lack of blood.
-		if(owner.should_have_organ(BP_HEART) && !(owner.status_flags & UNDEAD))
+		if(owner.should_have_organ(BP_HEART) && !(isundead(owner)))
 
 			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
 			var/blood_volume = owner.get_blood_oxygenation()

@@ -42,8 +42,8 @@
 		pulse = PULSE_NONE	//that's it, you're dead (or your metal heart is), nothing can influence your pulse
 		return
 	
-	if(owner.status_flags & UNDEAD)
-		if(owner.status_flags & FAKELIVING)
+	if(isundead(owner))
+		if(isfakeliving(owner))
 			pulse = PULSE_NORM
 		else
 			pulse = PULSE_NONE

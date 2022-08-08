@@ -1677,13 +1677,13 @@
 		heart.handle_pulse()
 
 /mob/living/carbon/human/proc/make_adrenaline(amount)
-	if(stat == CONSCIOUS && !(status_flags & UNDEAD))
+	if(stat == CONSCIOUS && !(isundead(src)))
 		var/limit = max(0, reagents.get_overdose(/datum/reagent/adrenaline) - reagents.get_reagent_amount(/datum/reagent/adrenaline))
 		reagents.add_reagent(/datum/reagent/adrenaline, min(amount, limit))
 
 //Get fluffy numbers
 /mob/living/carbon/human/proc/get_blood_pressure()
-	if(status_flags & FAKELIVING)
+	if(isfakeliving(src))
 		return "[Floor(120+rand(-5,5))]/[Floor(80+rand(-5,5))]"
 	if(status_flags & FAKEDEATH)
 		return "[Floor(120+rand(-5,5))*0.25]/[Floor(80+rand(-5,5)*0.25)]"
@@ -1692,7 +1692,7 @@
 
 //Determine body temperature
 /mob/living/carbon/human/proc/get_body_temperature()
-	if ((status_flags & FAKELIVING) && !(species.body_temperature == null))
+	if ((isfakeliving(src)) && !(species.body_temperature == null))
 		return species.body_temperature + (species.passive_temp_gain * 3)
 	return bodytemperature
 

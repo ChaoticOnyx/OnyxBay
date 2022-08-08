@@ -68,7 +68,7 @@
 
 /obj/item/organ/internal/lungs/think()
 	..()
-	if(!owner || (owner?.status_flags & UNDEAD))
+	if(!owner || (isundead(owner) && owner))
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE && active_breathing)
