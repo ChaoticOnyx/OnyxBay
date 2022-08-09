@@ -65,12 +65,12 @@
 	var/list/target_turfs = getcircle(T, spreading_range)
 	var/fragments_per_projectile = round(fragment_number/target_turfs.len)
 	for(var/turf/O in target_turfs)
-		sleep(0)
-		var/obj/item/projectile/bullet/pellet/blood/P = new fragment_type(T)
-		P.color = target.species.blood_color
-		P.pellets = fragments_per_projectile
-		P.firer = target
-		P.launch(O)
+		spawn(0)
+			var/obj/item/projectile/bullet/pellet/blood/P = new fragment_type(T)
+			P.color = target.species.blood_color
+			P.pellets = fragments_per_projectile
+			P.firer = target
+			P.launch(O)
 
 /obj/item/projectile/bullet/pellet/blood
 	name = "blood fragment"
