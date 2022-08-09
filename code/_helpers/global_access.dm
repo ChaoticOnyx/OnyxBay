@@ -57,8 +57,6 @@
 			return global.SSevac;
 		if("SSevent")
 			return global.SSevent;
-		if("SSfastprocess")
-			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
 		if("SSicon_update")
@@ -946,8 +944,6 @@
 			global.SSevac=newval;
 		if("SSevent")
 			global.SSevent=newval;
-		if("SSfastprocess")
-			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
@@ -1809,7 +1805,6 @@
 	"SScircuit_components",
 	"SSevac",
 	"SSevent",
-	"SSfastprocess",
 	"SSgarbage",
 	"SSicon_update",
 	"SSinactivity",

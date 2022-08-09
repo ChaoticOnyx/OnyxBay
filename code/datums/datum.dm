@@ -102,7 +102,7 @@
 	if(!_main_think_ctx)
 		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
-		SSthink.next_group_run[_main_think_ctx.group] = SSthink.next_group_run[_main_think_ctx.group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_main_think_ctx.group], _main_think_ctx.next_think)
+		CALC_NEXT_GROUP_RUN(_main_think_ctx)
 
 		return
 
@@ -116,7 +116,7 @@
 		SSthink.contexts_groups[new_group] += _main_think_ctx
 		_main_think_ctx.group = new_group
 
-	SSthink.next_group_run[_main_think_ctx.group] = SSthink.next_group_run[_main_think_ctx.group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_main_think_ctx.group], _main_think_ctx.next_think)
+	CALC_NEXT_GROUP_RUN(_main_think_ctx)
 
 /// Creates a thinking context.
 ///
@@ -134,7 +134,7 @@
 	var/datum/think_context/ctx = _think_ctxs[name]
 
 	SSthink.contexts_groups[ctx.group] += ctx
-	SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
+	CALC_NEXT_GROUP_RUN(ctx)
 
 /// Sets the next time for thinking in a context.
 ///
@@ -156,7 +156,7 @@
 		SSthink.contexts_groups[new_group] += ctx
 		ctx.group = new_group
 
-	SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
+	CALC_NEXT_GROUP_RUN(ctx)
 
 /// Removes self from `SSthink`, deletes all thinking contexts.
 /// Mainly used in `/proc/Destroy`.
