@@ -1,10 +1,11 @@
 SUBSYSTEM_DEF(think)
 	name = "Think"
 	priority = SS_PRIORITY_THINK
-	flags = SS_BACKGROUND | SS_POST_FIRE_TIMING | SS_NO_INIT
-	wait = 1 SECOND
+	flags = SS_TICKER
+	wait = 1
 
-	var/list/next_group_run = list(0, 0, 0, 0, 0)
+	var/list/next_group_run[THINKER_GROUPS]
+	// Lists count should be equal to THINKER_GROUPS.
 	var/list/contexts_groups = list(list(), list(), list(), list(), list())
 	var/list/current_run = list()
 	var/last_group = 1
@@ -54,9 +55,8 @@ SUBSYSTEM_DEF(think)
 			contexts_groups[ctx.group] -= ctx
 			continue
 
-		if(world.time >= ctx.next_think)
-			ctx.callback.Invoke()
-			ctx.last_think = world.time
+		ctx.callback.Invoke()
+		ctx.last_think = world.time
 
 		if (MC_TICK_CHECK)
 			return
