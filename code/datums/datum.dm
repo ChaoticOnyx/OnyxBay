@@ -14,7 +14,6 @@
 	var/is_thinking = FALSE
 	var/list/_think_ctxs = list()
 	var/datum/think_context/_main_think_ctx
-	var/_think_group
 
 #ifdef TESTING
 	var/tmp/running_find_references
@@ -109,18 +108,18 @@
 	if(!is_thinking)
 		is_thinking = TRUE
 
-		ASSIGN_THINK_GROUP(_think_group, time)
-		SSthink.thinkers_groups[_think_group] += src
+		ASSIGN_THINK_GROUP(_main_think_ctx.group, time)
+		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
 	else
 		var/new_group
 		ASSIGN_THINK_GROUP(new_group, time)
 
-		if(_think_group != new_group)
-			SSthink.thinkers_groups[_think_group] -= src
-			SSthink.thinkers_groups[new_group] += src
-			_think_group = new_group
+		if(_main_think_ctx.group != new_group)
+			SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
+			SSthink.contexts_groups[new_group] += _main_think_ctx
+			_main_think_ctx.group = new_group
 
-	SSthink.next_group_run[_think_group] = SSthink.next_group_run[_think_group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_think_group], _main_think_ctx.next_think)
+	SSthink.next_group_run[_main_think_ctx.group] = SSthink.next_group_run[_main_think_ctx.group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_main_think_ctx.group], _main_think_ctx.next_think)
 
 /// Creates a thinking context.
 ///
@@ -131,19 +130,17 @@
 	if(!time)
 		CRASH("Invalid time")
 
-	if(!_think_ctxs[name])
-		_think_ctxs[name] = new /datum/think_context(time, clbk)
+	if(_think_ctxs[name])
+		CRASH("Thinking context [name] is exists")
 
-		if(!is_thinking)
-			is_thinking = TRUE
+	_think_ctxs[name] = new /datum/think_context(time, clbk)
+	var/datum/think_context/ctx = _think_ctxs[name]
 
-			ASSIGN_THINK_GROUP(_think_group, time)
-			SSthink.thinkers_groups[_think_group] += src
-			SSthink.next_group_run[_think_group] = SSthink.next_group_run[_think_group] == 0 ? _think_ctxs[name].next_think : min(SSthink.next_group_run[_think_group], _think_ctxs[name].next_think)
+	if(!is_thinking)
+		is_thinking = TRUE
 
-		return
-
-	CRASH("Thinking context [name] is exists")
+		SSthink.contexts_groups[ctx.group] += ctx
+		SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
 
 /// Sets the next time for thinking in a context.
 ///
@@ -160,20 +157,18 @@
 	var/new_group
 	ASSIGN_THINK_GROUP(new_group, time)
 
-	if(_think_group != new_group)
-		SSthink.thinkers_groups[_think_group] -= src
-		SSthink.thinkers_groups[new_group] += src
-		_think_group = new_group
+	if(ctx.group != new_group)
+		SSthink.contexts_groups[ctx.group] -= ctx
+		SSthink.contexts_groups[new_group] += ctx
+		ctx.group = new_group
 
-	SSthink.next_group_run[_think_group] = SSthink.next_group_run[_think_group] == 0 ? ctx.next_think : min(SSthink.next_group_run[_think_group], ctx.next_think)
+	SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
 
 /// Removes self from `SSthink`, deletes all thinking contexts.
 /// Mainly used in `/proc/Destroy`.
 /datum/proc/clear_think()
 	if(is_thinking)
-		SSthink.thinkers_groups[_think_group] -= src
 		is_thinking = FALSE
-		_think_group = null
 	
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
 	qdel(_main_think_ctx)
