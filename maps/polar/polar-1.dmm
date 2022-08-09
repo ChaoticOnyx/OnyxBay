@@ -721,7 +721,7 @@
 "nS" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9},/turf/simulated/floor/tiled/white/rough,/area/polarplanet/outpost/research/hallway)
 "nT" = (/obj/structure/disposalpipe/segment,/obj/effect/floor_decal/corner/blue,/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/tiled/white/rough,/area/polarplanet/outpost/research/hallway)
 "nU" = (/mob/living/carbon/human/monkey,/turf/simulated/floor/tiled/white/rough,/area/polarplanet/outpost/research/lab)
-"nV" = (/obj/machinery/atmospherics/pipe/simple/visible{color = "blue"; dir = 5; initialize_directions = 6},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/outpost/research/power)
+"nV" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/atmospherics/pipe/simple/visible/blue{dir = 5},/turf/simulated/floor/plating,/area/polarplanet/outpost/research/power)
 "nW" = (/obj/machinery/atmospherics/pipe/manifold/visible/blue{dir = 4},/obj/structure/cable{d1 = 32; d2 = 4; dir = 1; icon_state = "4-8"},/turf/simulated/floor/plating,/area/polarplanet/outpost/research/power)
 "nX" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/machinery/atmospherics/pipe/simple/visible/red{dir = 5},/turf/simulated/floor/plating,/area/polarplanet/outpost/research/power)
 "nY" = (/obj/machinery/atmospherics/pipe/simple/visible/red{dir = 4},/turf/simulated/floor/plating,/area/polarplanet/outpost/research/power)
