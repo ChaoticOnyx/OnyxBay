@@ -51,12 +51,16 @@ SUBSYSTEM_DEF(think)
 		current_run.len--
 		len--
 
+		if(QDELETED(ctx))
+			continue
+
 		if(ctx.next_think <= ctx.last_think)
 			contexts_groups[ctx.group] -= ctx
 			continue
 
-		ctx.callback.Invoke()
-		ctx.last_think = world.time
+		if(world.time >= ctx.next_think)
+			ctx.callback.Invoke()
+			ctx.last_think = world.time
 
 		if (MC_TICK_CHECK)
 			return

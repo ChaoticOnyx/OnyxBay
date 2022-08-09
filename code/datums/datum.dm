@@ -11,7 +11,6 @@
 	var/list/signal_procs = list()
 
 	// Thinking
-	var/is_thinking = FALSE
 	var/list/_think_ctxs = list()
 	var/datum/think_context/_main_think_ctx
 
@@ -94,30 +93,28 @@
 
 /// Schedules the next call of the `/datum/proc/think`.
 ///
-/// * `time` - when to call the "think" proc. Falsy value stops from thinking (including the contexts).
+/// * `time` - when to call the "think" proc. Falsy value stops from thinking.
 /datum/proc/set_next_think(time)
-	if(!_main_think_ctx)
-		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
-	else
-		_main_think_ctx.next_think = time
-
 	if(!time)
 		clear_think()
 		return
 
-	if(!is_thinking)
-		is_thinking = TRUE
-
-		ASSIGN_THINK_GROUP(_main_think_ctx.group, time)
+	if(!_main_think_ctx)
+		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
-	else
-		var/new_group
-		ASSIGN_THINK_GROUP(new_group, time)
+		SSthink.next_group_run[_main_think_ctx.group] = SSthink.next_group_run[_main_think_ctx.group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_main_think_ctx.group], _main_think_ctx.next_think)
 
-		if(_main_think_ctx.group != new_group)
-			SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
-			SSthink.contexts_groups[new_group] += _main_think_ctx
-			_main_think_ctx.group = new_group
+		return
+
+	_main_think_ctx.next_think = time
+
+	var/new_group
+	ASSIGN_THINK_GROUP(new_group, time)
+
+	if(_main_think_ctx.group != new_group)
+		SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
+		SSthink.contexts_groups[new_group] += _main_think_ctx
+		_main_think_ctx.group = new_group
 
 	SSthink.next_group_run[_main_think_ctx.group] = SSthink.next_group_run[_main_think_ctx.group] == 0 ? _main_think_ctx.next_think : min(SSthink.next_group_run[_main_think_ctx.group], _main_think_ctx.next_think)
 
@@ -136,11 +133,8 @@
 	_think_ctxs[name] = new /datum/think_context(time, clbk)
 	var/datum/think_context/ctx = _think_ctxs[name]
 
-	if(!is_thinking)
-		is_thinking = TRUE
-
-		SSthink.contexts_groups[ctx.group] += ctx
-		SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
+	SSthink.contexts_groups[ctx.group] += ctx
+	SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
 
 /// Sets the next time for thinking in a context.
 ///
@@ -167,8 +161,5 @@
 /// Removes self from `SSthink`, deletes all thinking contexts.
 /// Mainly used in `/proc/Destroy`.
 /datum/proc/clear_think()
-	if(is_thinking)
-		is_thinking = FALSE
-	
 	QDEL_LIST_ASSOC_VAL(_think_ctxs)
 	qdel(_main_think_ctx)

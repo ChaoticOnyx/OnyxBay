@@ -12,6 +12,7 @@
 		group = 5;                               \
 	}
 
+#define CALC_NEXT_GROUP_RUN(ctx) SSthink.next_group_run[ctx.group] = SSthink.next_group_run[ctx.group] == 0 ? ctx.next_think : min(SSthink.next_group_run[ctx.group], ctx.next_think)
 #define LAST_THINK _main_think_ctx.last_think
 #define LAST_THINK_CTX(ctx) _think_ctxs[ctx].last_think
 #define NEXT_THINK _main_think_ctx.next_think
