@@ -4608,7 +4608,7 @@
 "bLY" = (/obj/machinery/atmospherics/pipe/simple/visible/fuel,/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
 "bLZ" = (/obj/effect/floor_decal/corner/yellow{icon_state = "warning"; dir = 4},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
 "bMa" = (/obj/machinery/atmospherics/binary/pump/high_power{dir = 1},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
-"bMc" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging{dir = 4},/obj/machinery/power/fusion_core/mapped{id_tag = core1},/obj/structure/cable/yellow,/turf/simulated/floor/reinforced/airless,/area/polarplanet/engineering/engine_room)
+"bMc" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging{dir = 4},/obj/machinery/power/fusion_core/mapped{id_tag = "core1"},/obj/structure/cable/yellow,/turf/simulated/floor/reinforced/airless,/area/polarplanet/engineering/engine_room)
 "bMd" = (/obj/structure/cable/yellow{d2 = 8; icon_state = "0-8"},/obj/machinery/power/terminal{dir = 4},/obj/machinery/power/sensor{name = "Powernet Sensor - Engine Output"; name_tag = "Engine Output"},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
 "bMg" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging,/obj/effect/floor_decal/industrial/standclear/yellow{dir = 8},/obj/effect/floor_decal/corner/yellow{icon_state = "warning"; dir = 8},/turf/simulated/floor/reinforced/airless,/area/polarplanet/engineering/engine_room)
 "bMh" = (/obj/structure/window_frame/reinforced/thermal,/obj/machinery/door/blast/regular/polar/open{id = "SupermatterPort"; name = "Reactor Blast Door"},/turf/simulated/floor/plating,/area/polarplanet/engineering/engine_room)
