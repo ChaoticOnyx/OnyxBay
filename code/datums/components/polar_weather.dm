@@ -26,7 +26,8 @@
 		return COMPONENT_INCOMPATIBLE
 
 	_update_state()
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
+	add_think_ctx("sound", CALLBACK(src, .proc/sound_think), world.time)
 
 /datum/component/polar_weather/proc/_play_sounds()
 	for(var/client/C in GLOB.clients)
@@ -162,7 +163,7 @@
 		if(WEATHER_BLUESPACE_EXIT)
 			AMS.Announce("Weather forecast: Bluespace Exit is expected, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
 
-/datum/component/polar_weather/Process()
+/datum/component/polar_weather/think()
 	if(GAME_STATE < RUNLEVEL_GAME)
 		return
 
@@ -188,16 +189,12 @@
 		next_state_change = null
 		current_state = next_state
 		_update_state()
+	
+	set_next_think(world.time + 1 MINUTE)
 
-	THROTTLE(sound_cd, 10 SECONDS)
-
-	if(sound_cd)
-		_play_sounds()
-
-/datum/component/polar_weather/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
-
-	..()
+/datum/component/polar_weather/proc/sound_think()
+	_play_sounds()
+	set_next_think_ctx("sound", world.time + 10 SECONDS)
 
 #undef WEATHER_NORMAL
 #undef WEATHER_BLUESPACE_CONVERGENCE

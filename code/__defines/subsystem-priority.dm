@@ -42,6 +42,7 @@
 #define SS_PRIORITY_TGUI          20    // Updates to tgui uis.
 #define SS_PRIORITY_TURF          20    // Radioactive walls/blob.
 #define SS_PRIORITY_EVAC          20    // Processes the evac controller.
+#define SS_PRIORITY_THINK         15    // Datums thinking. Maybe it's should be higher later.
 #define SS_PRIORITY_WIRELESS      10    // Wireless connection setup.
 #define SS_PRIORITY_PING          10    // Client ping.
 #define SS_PRIORITY_CONDUCTOR     05    // Conductor.

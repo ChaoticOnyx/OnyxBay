@@ -1,6 +1,7 @@
 /datum/component/train_auto
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 	var/weakref/train
+	var/is_on_station = TRUE
 
 /datum/component/train_auto/Initialize()
 	if(!istype(parent, /datum/shuttle/autodock/ferry/train))
@@ -8,12 +9,9 @@
 
 	train = weakref(parent)
 	register_signal(parent, SIGNAL_SHUTTLE_ARRIVED, .proc/arrived)
-	arrived()
+	set_next_think(world.time)
 
-/datum/component/train_auto/proc/arrived()
-	addtimer(CALLBACK(src, .proc/launch), 10 SECONDS)
-
-/datum/component/train_auto/proc/launch()
+/datum/component/train_auto/think()
 	if(QDELETED(train))
 		qdel(src)
 		return
@@ -24,8 +22,11 @@
 		qdel(src)
 		return
 
-	if(GLOB.using_map.level_has_trait(T.current_location.z, ZTRAIT_BLUESPACE_EXIT))
-		// Wait for the next try.
-		arrived()
-	else
+	if(T.process_state == IDLE_STATE)
 		T.launch()
+	
+	set_next_think(world.time + 30 SECONDS)
+
+/datum/component/train_auto/proc/arrived()
+	is_on_station = !is_on_station
+	set_next_think(world.time + 30 SECONDS)

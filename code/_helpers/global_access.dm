@@ -83,8 +83,6 @@
 			return global.SSopen_space;
 		if("SSplants")
 			return global.SSplants;
-		if("SSprocessing")
-			return global.SSprocessing;
 		if("SSradiation")
 			return global.SSradiation;
 		if("SSshuttle")
@@ -974,8 +972,6 @@
 			global.SSopen_space=newval;
 		if("SSplants")
 			global.SSplants=newval;
-		if("SSprocessing")
-			global.SSprocessing=newval;
 		if("SSradiation")
 			global.SSradiation=newval;
 		if("SSshuttle")
@@ -1827,7 +1823,6 @@
 	"SSobj",
 	"SSopen_space",
 	"SSplants",
-	"SSprocessing",
 	"SSradiation",
 	"SSshuttle",
 	"SSskybox",

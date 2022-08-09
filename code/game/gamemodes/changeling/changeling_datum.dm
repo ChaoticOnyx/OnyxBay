@@ -47,11 +47,10 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	else
 		changelingID = "[rand(1,99)]"
 	reset_my_mob(_M)
-	START_PROCESSING(SSprocessing, src)
-
+	set_next_think(world.time)
 
 // Chemicals and genetic damage regeneration.
-/datum/changeling/Process()
+/datum/changeling/think()
 	if(QDELETED(my_mob)) // Should never happen, but if it does happen we should make sure we don't prevent it from getting GCd.
 		reset_my_mob(null)
 		return
@@ -60,6 +59,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	chem_charges = min(max(0, chem_charges + chem_recharge_rate), chem_storage)
 	geneticdamage = max(0, geneticdamage - 1)
 
+	set_next_think(world.time + 1 SECOND)
 
 /datum/changeling/Destroy()
 	die()
@@ -76,7 +76,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(my_mob)
 		to_chat(my_mob, SPAN("changeling", "That's it. We hunt no more."))
 	true_dead = TRUE
-	STOP_PROCESSING(SSprocessing, src)
 
 
 // Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.

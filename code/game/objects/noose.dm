@@ -104,7 +104,6 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 	current_area = get_area(src)
 
 /obj/structure/noose/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
 	QDEL_NULL(over)
 	QDEL_NULL(coil)
 	current_area = null
@@ -116,9 +115,9 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 		overlays.Add(over)
 		M.pixel_y = initial(M.pixel_y) + 8
 		M.dir = SOUTH
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 	else
-		STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 		layer = initial(layer)
 		overlays.Cut()
 		pixel_x = initial(pixel_x)
@@ -224,11 +223,11 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 			SPAN_WARNING("You fail to tie \the [src] over [M]'s neck!"))
 		return FALSE
 
-/obj/structure/noose/Process()
+/obj/structure/noose/think()
 	if(!buckled_mob || !ishuman(buckled_mob) || !check_head(buckled_mob))
 		if(buckled_mob)
 			unbuckle_mob()
-		return PROCESS_KILL
+		return
 
 	if((is_standing_on_object(buckled_mob) && !buckled_mob.resting) || !current_area.has_gravity)
 		if(pixel_x != initial(pixel_x) || buckled_mob.pixel_x != initial(buckled_mob.pixel_x))
@@ -285,6 +284,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/stool, /obj/structure/toilet, 
 		buckled_mob.silent = max(buckled_mob.silent, 10)
 		if(!(H.silent && H.stat) && prob(10))
 			buckled_mob.emote("gasp")
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/noose/proc/noosed_effect(mob/user)
 	if(manual_triggered)
