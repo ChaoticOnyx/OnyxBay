@@ -40,16 +40,14 @@ SUBSYSTEM_DEF(think)
 
 	// cache for sanic speed (lists are references anyways)
 	var/list/current_run = src.current_run
-	var/len = length(current_run)
 
-	if(len == 0)
+	if(length(current_run) == 0)
 		next_group_run[last_group] = 0
 		return
 
-	while(len)
-		var/datum/think_context/ctx = current_run[len]
+	while(length(current_run))
+		var/datum/think_context/ctx = current_run[length(current_run)]
 		current_run.len--
-		len--
 
 		if(QDELETED(ctx))
 			continue
@@ -59,8 +57,9 @@ SUBSYSTEM_DEF(think)
 			continue
 
 		if(world.time >= ctx.next_think)
+			var/last_think = world.time
 			ctx.callback.Invoke()
-			ctx.last_think = world.time
+			ctx.last_think = last_think
 
 		if (MC_TICK_CHECK)
 			return

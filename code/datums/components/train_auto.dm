@@ -1,7 +1,6 @@
 /datum/component/train_auto
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 	var/weakref/train
-	var/is_on_station = TRUE
 
 /datum/component/train_auto/Initialize()
 	if(!istype(parent, /datum/shuttle/autodock/ferry/train))
@@ -28,5 +27,4 @@
 	set_next_think(world.time + 30 SECONDS)
 
 /datum/component/train_auto/proc/arrived()
-	is_on_station = !is_on_station
 	set_next_think(world.time + 30 SECONDS)
