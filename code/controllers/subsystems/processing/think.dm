@@ -4,11 +4,13 @@ SUBSYSTEM_DEF(think)
 	flags = SS_TICKER
 	wait = 1
 
-	var/list/next_group_run[THINKER_GROUPS]
-	// Lists count should be equal to THINKER_GROUPS.
+	// Length of these lists should be equal to THINKER_GROUPS
+	var/list/next_group_run = list(0, 0, 0, 0, 0)
 	var/list/contexts_groups = list(list(), list(), list(), list(), list())
+
 	var/list/current_run = list()
 	var/last_group = 1
+	var/next_possible_run = 0
 
 /datum/controller/subsystem/think/stat_entry()
 	var/msg = "G:("
@@ -27,6 +29,7 @@ SUBSYSTEM_DEF(think)
 
 /datum/controller/subsystem/think/fire(resumed = 0)
 	if(!resumed)
+		next_possible_run = 0
 		last_group += 1
 
 		if(last_group > length(contexts_groups))
@@ -35,8 +38,8 @@ SUBSYSTEM_DEF(think)
 		if(next_group_run[last_group] >= world.time)
 			return
 
-		next_group_run[last_group] = 0
 		src.current_run = contexts_groups[last_group].Copy()
+		next_group_run[last_group] = 0
 
 	// cache for sanic speed (lists are references anyways)
 	var/list/current_run = src.current_run
@@ -60,6 +63,17 @@ SUBSYSTEM_DEF(think)
 			var/last_think = world.time
 			ctx.callback.Invoke()
 			ctx.last_think = last_think
+		else
+			if(next_possible_run == 0)
+				next_possible_run = ctx.next_think
+			else
+				next_possible_run = min(next_possible_run, ctx.next_think)
 
 		if (MC_TICK_CHECK)
 			return
+	
+	if(next_possible_run != 0)
+		if(next_group_run[last_group] == 0)
+			next_group_run[last_group] = next_possible_run
+		else
+			next_group_run[last_group] = min(next_group_run[last_group], next_possible_run)
