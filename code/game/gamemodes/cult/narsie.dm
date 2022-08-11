@@ -40,7 +40,7 @@ var/global/list/narsie_list = list()
 	narsie_list.Remove(src)
 	..()
 
-/obj/singularity/narsie/Process()
+/obj/singularity/narsie/think()
 	eat()
 
 	if(!target || prob(5))
@@ -50,6 +50,8 @@ var/global/list/narsie_list = list()
 
 	if(prob(25))
 		mezzer()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/narsie/eat()
 	for (var/turf/A in orange(consume_range, src))

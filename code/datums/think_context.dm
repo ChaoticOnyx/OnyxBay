@@ -10,11 +10,16 @@
 	callback = clbk
 	ASSIGN_THINK_GROUP(group, time)
 
-/datum/think_context/Destroy()
-	SSthink.contexts_groups[group] -= src
-	qdel(callback)
+/datum/think_context/proc/stop()
+	if(group)
+		SSthink.contexts_groups[group] -= src
+
 	last_think = 0
 	next_think = 0
 	group = null
+
+/datum/think_context/Destroy()
+	stop()
+	qdel(callback)
 	
 	. = ..()
