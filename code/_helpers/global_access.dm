@@ -57,8 +57,6 @@
 			return global.SSevac;
 		if("SSevent")
 			return global.SSevent;
-		if("SSfastprocess")
-			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
 		if("SSicon_update")
@@ -83,8 +81,6 @@
 			return global.SSopen_space;
 		if("SSplants")
 			return global.SSplants;
-		if("SSprocessing")
-			return global.SSprocessing;
 		if("SSradiation")
 			return global.SSradiation;
 		if("SSshuttle")
@@ -948,8 +944,6 @@
 			global.SSevac=newval;
 		if("SSevent")
 			global.SSevent=newval;
-		if("SSfastprocess")
-			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
@@ -974,8 +968,6 @@
 			global.SSopen_space=newval;
 		if("SSplants")
 			global.SSplants=newval;
-		if("SSprocessing")
-			global.SSprocessing=newval;
 		if("SSradiation")
 			global.SSradiation=newval;
 		if("SSshuttle")
@@ -1813,7 +1805,6 @@
 	"SScircuit_components",
 	"SSevac",
 	"SSevent",
-	"SSfastprocess",
 	"SSgarbage",
 	"SSicon_update",
 	"SSinactivity",
@@ -1827,7 +1818,6 @@
 	"SSobj",
 	"SSopen_space",
 	"SSplants",
-	"SSprocessing",
 	"SSradiation",
 	"SSshuttle",
 	"SSskybox",

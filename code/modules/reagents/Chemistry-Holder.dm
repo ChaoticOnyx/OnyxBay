@@ -19,15 +19,13 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	QDEL_NULL_LIST(reagent_list)
 	my_atom = null
 
-/datum/reagents/Process()
+/datum/reagents/think()
 	if(!my_atom?.loc)
-		return PROCESS_KILL
-
-	THROTTLE(rad_cooldown, 10 SECOND)
+		return
 
 	// Add another update_*_effect procs here.
-	if(rad_cooldown)
-		update_radiation_effect()
+	update_radiation_effect()
+	set_next_think(world.time + CHEM_THINKING)
 
 /* Internal procs */
 /datum/reagents/proc/get_free_space() // Returns free space.
@@ -118,7 +116,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(reaction_occured)
 		process_reactions() // Check again in case the new reagents can react again
 	else
-		update_processing()
+		update_thinking()
 
 	return reaction_occured
 
@@ -245,8 +243,8 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 
 	return radiation
 
-/// Starts processing if reagents has some persistent effects, stop otherwise.
-/datum/reagents/proc/update_processing()
+/// Starts thinking if reagents has some persistent effects, stop otherwise.
+/datum/reagents/proc/update_thinking()
 	var/has_effects = 0
 
 	for(var/datum/reagent/R in reagent_list)
@@ -255,11 +253,9 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 			break
 
 	if(has_effects)
-		if(!is_processing)
-			START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 	else
-		if(is_processing)
-			STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 
 #define CHECK_FLAG_R(target, flag, bool) \
 var/atom/__##target = target;\

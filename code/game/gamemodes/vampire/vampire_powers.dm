@@ -434,8 +434,6 @@
 /obj/effect/dummy/veil_walk/Destroy()
 	eject_all()
 
-	STOP_PROCESSING(SSprocessing, src)
-
 	return ..()
 
 /obj/effect/dummy/veil_walk/proc/eject_all()
@@ -462,7 +460,7 @@
 	can_move = 0
 	addtimer(CALLBACK(src, .proc/unlock_move), 2, TIMER_UNIQUE)
 
-/obj/effect/dummy/veil_walk/Process()
+/obj/effect/dummy/veil_walk/think()
 	if (owner_mob.stat)
 		if (owner_mob.stat == 1)
 			to_chat(owner_mob, SPAN_WARNING("You cannot maintain this form while unconcious."))
@@ -489,6 +487,9 @@
 					warning_level = 3
 	else
 		deactivate()
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/dummy/veil_walk/proc/activate(mob/owner)
 	if (!owner)
@@ -512,11 +513,10 @@
 
 	desc += " Its features look faintly alike [owner.name]'s."
 
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
 
 /obj/effect/dummy/veil_walk/proc/deactivate()
-	STOP_PROCESSING(SSprocessing, src)
-
+	set_next_think(0)
 	can_move = 0
 
 	icon_state = "blank"

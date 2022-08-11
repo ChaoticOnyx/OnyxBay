@@ -19,7 +19,6 @@
 	var/atom/target
 	var/acid_strength = ACID_WEAK
 	var/melt_time = 10 SECONDS
-	var/last_melt = 0
 
 /obj/effect/acid/New(loc, supplied_target)
 	..(loc)
@@ -28,21 +27,24 @@
 	desc += "\n<b>It's melting \the [target]!</b>"
 	pixel_x = target.pixel_x
 	pixel_y = target.pixel_y
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
 
 /obj/effect/acid/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
 	target = null
 	. = ..()
 
-/obj/effect/acid/Process()
+/obj/effect/acid/think()
 	if(QDELETED(target))
 		qdel(src)
-	else if(world.time > last_melt + melt_time)
-		var/done_melt = target.acid_melt()
-		last_melt = world.time
-		if(done_melt)
-			qdel(src)
+		return
+
+	var/done_melt = target.acid_melt()
+
+	if(done_melt)
+		qdel(src)
+		return
+
+	set_next_think(world.time + melt_time)
 
 /atom/var/acid_melted = 0
 

@@ -10,6 +10,10 @@
 	/// Lazy associated list of signals that are run when the datum receives that signal
 	var/list/signal_procs = list()
 
+	// Thinking
+	var/list/_think_ctxs = list()
+	var/datum/think_context/_main_think_ctx
+
 #ifdef TESTING
 	var/tmp/running_find_references
 	var/tmp/last_find_references = 0
@@ -51,6 +55,7 @@
 		dc.Cut()
 
 	clear_signal_refs()
+	clear_think()
 
 	return QDEL_HINT_QUEUE
 
@@ -79,3 +84,82 @@
 // Sometimes you just want to end yourself
 /datum/proc/qdel_self()
 	qdel(src)
+
+// Thinking procs.
+// INTENSIVE COPYPASTA FOR THE SAKE OF SPEED
+
+/datum/proc/think()
+	return
+
+/// Schedules the next call of the `/datum/proc/think`.
+///
+/// * `time` - when to call the "think" proc. Falsy value stops from thinking.
+/datum/proc/set_next_think(time)
+	if(!time)
+		clear_think()
+		return
+
+	if(!_main_think_ctx)
+		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
+		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
+		CALC_NEXT_GROUP_RUN(_main_think_ctx)
+
+		return
+
+	_main_think_ctx.next_think = time
+
+	var/new_group
+	ASSIGN_THINK_GROUP(new_group, time)
+
+	if(_main_think_ctx.group != new_group)
+		SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
+		SSthink.contexts_groups[new_group] += _main_think_ctx
+		_main_think_ctx.group = new_group
+
+	CALC_NEXT_GROUP_RUN(_main_think_ctx)
+
+/// Creates a thinking context.
+///
+/// * `name` - name of the context.
+/// * `clbk` - a proc which should be called.
+/// * `time` - when to call the context.
+/datum/proc/add_think_ctx(name, datum/callback/clbk, time)
+	if(!time)
+		CRASH("Invalid time")
+
+	if(_think_ctxs[name])
+		CRASH("Thinking context [name] is exists")
+
+	_think_ctxs[name] = new /datum/think_context(time, clbk)
+	var/datum/think_context/ctx = _think_ctxs[name]
+
+	SSthink.contexts_groups[ctx.group] += ctx
+	CALC_NEXT_GROUP_RUN(ctx)
+
+/// Sets the next time for thinking in a context.
+///
+/// * `name` - name of the context.
+/// * `time` - when to call the context. Falsy value removes the context.
+/datum/proc/set_next_think_ctx(name, time)
+	if(!time)
+		_think_ctxs -= name
+
+		return
+
+	var/datum/think_context/ctx = _think_ctxs[name]
+	ctx.next_think = time
+	var/new_group
+	ASSIGN_THINK_GROUP(new_group, time)
+
+	if(ctx.group != new_group)
+		SSthink.contexts_groups[ctx.group] -= ctx
+		SSthink.contexts_groups[new_group] += ctx
+		ctx.group = new_group
+
+	CALC_NEXT_GROUP_RUN(ctx)
+
+/// Removes self from `SSthink`, deletes all thinking contexts.
+/// Mainly used in `/proc/Destroy`.
+/datum/proc/clear_think()
+	QDEL_LIST_ASSOC_VAL(_think_ctxs)
+	qdel(_main_think_ctx)
