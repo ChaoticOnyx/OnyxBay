@@ -41,7 +41,7 @@
 
 		if(!C)
 			continue
-		
+
 		var/is_playing_some = FALSE
 
 		for(var/sound/S in sounds)
@@ -91,10 +91,10 @@
 							return
 
 						sfx_to_play = SFX_WEATHER_IN_STORM
-		
+
 		if(!sfx_to_play)
 			continue
-		
+
 		var/sound/S = sound(GET_SFX(sfx_to_play), FALSE, FALSE, SOUND_CHANNEL_WEATHER)
 		C.mob.playsound_local(get_turf(M), S, 20, FALSE)
 
@@ -127,50 +127,59 @@
 	var/list/lighting_levels = GLOB.using_map.get_levels_with_trait(ZTRAIT_POLAR_WEATHER)
 	for(var/level in lighting_levels)
 		log_debug("Updating lighting on level [level] to color [light_color]")
-		for(var/turf/simulated/T in block(locate(1, 1, level), locate(world.maxx, world.maxy, level)))
+		for(var/turf/T in block(locate(1, 1, level), locate(world.maxx, world.maxy, level)))
+
+			if(!istype(T, /turf/simulated) && !istype(T, /turf/unsimulated/floor/frozenground))
+				continue
+
 			var/area/A = get_area(T)
 
 			if(A.environment_type == ENVIRONMENT_OUTSIDE)
 				// Set lighting
-				T.set_light(1, 1, 1.25, l_color = light_color)
+				T.set_light(0.95, 1, 1.25, l_color = light_color)
 
 				// Update temperature
 				var/datum/gas_mixture/M = T.return_air()
 				var/thermal_energy = 0
-				
+				var/new_temperature = 243.15
 				if(current_state == WEATHER_NORMAL)
-					thermal_energy = M.get_thermal_energy_change(initial(T.temperature))
+					new_temperature = initial(T.temperature)
 				else if(current_state == WEATHER_BLUESPACE_CONVERGENCE)
-					thermal_energy = M.get_thermal_energy_change(CONVERGENCE_TEMP)
+					new_temperature = CONVERGENCE_TEMP
 				else
-					thermal_energy = M.get_thermal_energy_change(EXIT_TEMP)
-				
+					new_temperature = EXIT_TEMP
+
+				if(istype(T, /turf/unsimulated))
+					T.temperature = new_temperature
+
+				thermal_energy = M.get_thermal_energy_change(new_temperature)
 				M.add_thermal_energy(thermal_energy)
 
 				// Spawn things
 				if(current_state == WEATHER_BLUESPACE_EXIT && prob(5))
 					var/mob/living/simple_animal/hostile/bluespace_thing/BT = new(T)
 					things_list += BT
-			else if(A.environment_type == ENVIRONMENT_ROOM && istype(T, /turf/simulated/floor/natural/frozenground))
-				T.set_light(1, 1, 1.25, l_color = light_color)
+			else if(A.environment_type == ENVIRONMENT_ROOM && istype(T, /turf/unsimulated/floor/frozenground))
+				T.set_light(0.95, 1, 1.25, l_color = light_color)
 
 /datum/component/polar_weather/proc/_weather_announce()
 	switch(next_state)
 		if(WEATHER_NORMAL)
-			AMS.Announce("Weather forecast: cloudless weather is expected and the temperature is -30 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			AMS.Announce("Weather forecast: cloudless weather is expected in 2 minutes, the temperature is -30 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
 		if(WEATHER_BLUESPACE_CONVERGENCE)
-			AMS.Announce("Weather forecast: Bluespace Convergence is expected, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			AMS.Announce("Weather forecast: Bluespace Convergence is expected in 2 minutes, the temperature will drop to -70 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
 		if(WEATHER_BLUESPACE_EXIT)
-			AMS.Announce("Weather forecast: Bluespace Exit is expected, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE)
+			AMS.Announce("Weather forecast: Bluespace Exit is expected in 2 minutes, the temperature will drop to -120 Celsius.", "Autonomous Meteorological Station", do_newscast = TRUE, new_sound = sound('sound/effects/siren.ogg'))
 
 /datum/component/polar_weather/think()
 	if(GAME_STATE < RUNLEVEL_GAME)
+		set_next_think(world.time + 1 MINUTE)
 		return
 
 	if(next_state_change == null)
 		next_state_change = world.time + rand(10 MINUTES, 14 MINUTES)
 		was_weather_message = FALSE
-		
+
 		if(current_state == WEATHER_NORMAL)
 			if(prob(30))
 				next_state = WEATHER_NORMAL
@@ -181,7 +190,7 @@
 		else
 			next_state = WEATHER_NORMAL
 
-	if(!was_weather_message && world.time >= next_state_change - 4 MINUTES)
+	if(!was_weather_message && world.time >= next_state_change - 2 MINUTES)
 		was_weather_message = TRUE
 		_weather_announce()
 
@@ -189,7 +198,7 @@
 		next_state_change = null
 		current_state = next_state
 		_update_state()
-	
+
 	set_next_think(world.time + 1 MINUTE)
 
 /datum/component/polar_weather/proc/sound_think()
