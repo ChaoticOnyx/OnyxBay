@@ -115,7 +115,7 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 	if(initial_modules && initial_modules.len)
 		for(var/path in initial_modules)
@@ -390,7 +390,7 @@
 			helmet.flags_inv |= HIDEMASK
 	update_icon(1)
 
-/obj/item/rig/Process()
+/obj/item/rig/think()
 
 	// If we've lost any parts, grab them back.
 	var/mob/living/M
@@ -439,6 +439,8 @@
 
 		for(var/obj/item/rig_module/module in installed_modules)
 			cell.use(module.Process() * CELLRATE)
+
+	set_next_think(world.time + 1 SECOND)
 
 //offline should not change outside this proc
 /obj/item/rig/proc/update_offline()

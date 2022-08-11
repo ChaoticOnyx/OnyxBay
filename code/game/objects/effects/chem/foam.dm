@@ -26,7 +26,7 @@
 	addtimer(CALLBACK(src, .proc/remove_foam), 12 SECONDS)
 
 /obj/effect/effect/foam/proc/remove_foam()
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	if(metal)
 		var/obj/structure/foamedmetal/M = new(src.loc)
 		M.metal = metal
@@ -41,7 +41,7 @@
 		for(var/obj/O in T)
 			reagents.touch_obj(O)
 
-/obj/effect/effect/foam/Process()
+/obj/effect/effect/foam/think()
 	if(--amount < 0)
 		return
 
@@ -64,6 +64,8 @@
 			if(reagents)
 				for(var/datum/reagent/R in reagents.reagent_list)
 					F.reagents.add_reagent(R.type, 1, safety = 1) //added safety check since reagents in the foam have already had a chance to react
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/effect/foam/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume) // foam disolves when heated, except metal foams
 	if(!metal && prob(max(0, exposed_temperature - 475)))

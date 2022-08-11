@@ -33,7 +33,7 @@
 
 /obj/item/anodevice/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/anodevice/attackby(obj/I, mob/user)
 	if(istype(I, /obj/item/anobattery))
@@ -77,7 +77,7 @@
 	show_browser(user, dat, "window=anodevice;size=400x500")
 	onclose(user, "anodevice")
 
-/obj/item/anodevice/Process()
+/obj/item/anodevice/think()
 	if(activated)
 		if(inserted_battery && inserted_battery.battery_effect && (inserted_battery.stored_charge > 0) )
 			//make sure the effect is active
@@ -138,6 +138,8 @@
 			shutdown_emission()
 		last_process = world.time
 		update_icon()
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/anodevice/proc/shutdown_emission()
 	if(activated)
@@ -196,11 +198,6 @@
 	var/p = (inserted_battery.stored_charge/inserted_battery.capacity)*100
 	p = min(p, 100)
 	icon_state = "anodev[round(p,25)]"
-
-/obj/item/anodevice/Destroy()
-	STOP_PROCESSING(SSobj, src)
-
-	return ..()
 
 /obj/item/anodevice/attack(mob/living/M, mob/living/user, def_zone)
 	if (!istype(M))

@@ -24,7 +24,7 @@ var/list/holder_mob_icon_cache = list()
 	ASSERT(mob_to_hold)
 	held_mob = mob_to_hold
 	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/holder/proc/destroy_all()
 	QDEL_NULL(held_mob)
@@ -46,11 +46,12 @@ var/list/holder_mob_icon_cache = list()
 	if(ismob(loc))
 		var/mob/M = loc
 		M.drop_from_inventory(src, get_turf(M))
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/holder/Process()
+/obj/item/holder/think()
 	check_condition()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/holder/dropped()
 	..()

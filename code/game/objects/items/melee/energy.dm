@@ -341,10 +341,9 @@
 
 /obj/item/melee/energy/blade/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/melee/energy/blade/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(spark_system)
 	. = ..()
 
@@ -358,7 +357,7 @@
 /obj/item/melee/energy/blade/dropped()
 	QDEL_IN(src, 0)
 
-/obj/item/melee/energy/blade/Process()
+/obj/item/melee/energy/blade/think()
 	var/mob/living/_creator = creator.resolve()
 	if(!_creator || loc != _creator || (_creator.l_hand != src && _creator.r_hand != src))
 		// Tidy up a bit.
@@ -373,6 +372,9 @@
 			host.embedded -= src
 			host.drop_from_inventory(src)
 		QDEL_IN(src, 0)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/melee/energy/sword/robot
 	icon_state = "sword0"

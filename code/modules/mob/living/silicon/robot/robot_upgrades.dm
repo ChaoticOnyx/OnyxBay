@@ -692,13 +692,13 @@
 			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
 	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
-/obj/item/borg/upgrade/death_alarm/Process()
+/obj/item/borg/upgrade/death_alarm/think()
 	if (!installed) return
 
 	if(isnull(host)) // If the mob got gibbed
 		activate()
-		STOP_PROCESSING(SSobj, src)
 		installed = 0
+		return
 	else if (!broken && active && host.stat == DEAD)
 		active = 0
 		activate("death")
@@ -707,6 +707,7 @@
 	else if(host.stat != DEAD)
 		active = 1
 
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/borg/upgrade/death_alarm/emp_act(severity)
 	if(prob(20))
@@ -717,7 +718,7 @@
 			broken = 1
 			name = "melted circuit"
 			desc = "Charred circuit. Wonder what that used to be..."
-			STOP_PROCESSING(SSobj, src)
+			set_next_think(0)
 
 /obj/item/borg/upgrade/death_alarm/action(mob/living/silicon/robot/R)
 	if(..()) return 0
@@ -726,7 +727,7 @@
 	else
 		host = R
 		installed = 1
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 		return 1
 
 /obj/item/borg/upgrade/integrated_circuit_upgrade

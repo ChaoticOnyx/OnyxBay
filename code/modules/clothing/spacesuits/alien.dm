@@ -193,17 +193,15 @@
 
 /obj/item/alien_med_device/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	last_regen = world.time
 
-/obj/item/alien_med_device/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/alien_med_device/Process()
+/obj/item/alien_med_device/think()
 	if((ammo < max_ammo) && (world.time > (last_regen + recharge_time)))
 		ammo++
 		last_regen = world.time
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/head/helmet/space/vox/carapace
 	name = "alien visor"
@@ -348,13 +346,9 @@
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/item/clothing/suit/space/vox/medic/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/clothing/suit/space/vox/medic/Process()
+/obj/item/clothing/suit/space/vox/medic/think()
 	if(!client)
 		return
 	var/mob/living/carbon/human/H = client
@@ -384,6 +378,8 @@
 				V.adjustToxLoss(-2 * config.health.organ_regeneration_multiplier)
 			if(V.reagents.get_reagent_amount(/datum/reagent/painkiller/paracetamol) + 5 <= 20)
 				V.reagents.add_reagent(/datum/reagent/painkiller/paracetamol, 5)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/storage/belt/vox
 	name = "Vox belt"

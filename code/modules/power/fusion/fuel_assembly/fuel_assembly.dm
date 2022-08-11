@@ -38,16 +38,16 @@
 	overlays += list(I, image(icon, "fuel_assembly_bracket"))
 	rod_quantities[fuel_type] = initial_amount
 
-/obj/item/fuel_assembly/Process()
+	set_next_think(world.time)
+
+/obj/item/fuel_assembly/think()
 	if(!radioactivity)
-		return PROCESS_KILL
+		return
 
 	if(istype(loc, /turf))
 		SSradiation.radiate(src, max(1,ceil(radioactivity/30)))
 
-/obj/item/fuel_assembly/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
+	set_next_think(world.time + 1 SECOND)
 
 // Mapper shorthand.
 /obj/item/fuel_assembly/deuterium/New(newloc)

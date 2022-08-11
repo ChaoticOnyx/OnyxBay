@@ -44,7 +44,7 @@
 			qdel(src)
 
 	..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	for(var/obj/machinery/power/singularity_beacon/singubeacon in GLOB.machines)
 		if(singubeacon.active)
 			target = singubeacon
@@ -54,7 +54,6 @@
 		create_childs()
 
 /obj/singularity/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	for(var/obj/singularity/child/SC in childs)
 		childs -= SC
 		if(!QDELETED(SC))
@@ -105,7 +104,7 @@
 	if(old_z != z && create_childs)
 		create_childs()
 
-/obj/singularity/Process()
+/obj/singularity/think()
 	eat()
 	dissipate()
 	check_energy()
@@ -123,6 +122,8 @@
 
 		else if(!target)
 			pick_ghost()
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/proc/pick_ghost()
 	picking_coldown = world.time + 20 SECONDS

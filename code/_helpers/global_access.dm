@@ -75,8 +75,6 @@
 			return global.SSmobs;
 		if("SSnano")
 			return global.SSnano;
-		if("SSobj")
-			return global.SSobj;
 		if("SSopen_space")
 			return global.SSopen_space;
 		if("SSplants")
@@ -962,8 +960,6 @@
 			global.SSmobs=newval;
 		if("SSnano")
 			global.SSnano=newval;
-		if("SSobj")
-			global.SSobj=newval;
 		if("SSopen_space")
 			global.SSopen_space=newval;
 		if("SSplants")
@@ -1815,7 +1811,6 @@
 	"SSmisc_late",
 	"SSmobs",
 	"SSnano",
-	"SSobj",
 	"SSopen_space",
 	"SSplants",
 	"SSradiation",

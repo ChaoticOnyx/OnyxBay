@@ -79,9 +79,9 @@
 		catcher.SetSize((iter*2)+1)
 		particle_catchers.Add(catcher)
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/effect/fusion_em_field/Process()
+/obj/effect/fusion_em_field/think()
 	//make sure the field generator is still intact
 	if(!owned_core || QDELETED(owned_core))
 		qdel(src)
@@ -145,7 +145,8 @@
 	Radiate()
 	if(radiation)
 		SSradiation.radiate(src, round(radiation*0.001))
-	return 1
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/fusion_em_field/proc/check_instability()
 	if(tick_instability > 0)
@@ -453,7 +454,6 @@
 	if(owned_core)
 		owned_core.owned_field = null
 		owned_core = null
-	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/effect/fusion_em_field/bullet_act(obj/item/projectile/Proj)
