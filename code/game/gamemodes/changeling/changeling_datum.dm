@@ -55,7 +55,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		reset_my_mob(null)
 		return
 	if(!my_mob || my_mob.stat == DEAD || my_mob.InStasis())
+		set_next_think(world.time + 1 SECOND)
 		return
+
 	chem_charges = min(max(0, chem_charges + chem_recharge_rate), chem_storage)
 	geneticdamage = max(0, geneticdamage - 1)
 
