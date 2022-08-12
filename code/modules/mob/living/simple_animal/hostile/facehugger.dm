@@ -23,8 +23,8 @@
 	mob_size = MOB_MINISCULE
 	can_escape = 1
 	pass_flags = PASS_FLAG_TABLE
-	melee_damage_lower = 2.5
-	melee_damage_upper = 5
+	melee_damage_lower = 5
+	melee_damage_upper = 7.5
 
 	min_gas = null
 	max_gas = null
@@ -97,9 +97,8 @@
 	var/obj/item/r_ear = H.get_equipped_item(slot_r_ear)
 	r_ear?.knocked_out(H, dist = 0)
 
-	var/obj/item/holder/facehugger/holder = new(get_turf(src), src)
+	var/obj/item/holder/facehugger/holder = new()
 	forceMove(holder)
-
 	if(!silent)
 		H.visible_message(SPAN("warning", "\The [src] latches itself onto [H]'s face!"))
 	holder.sync(src)
@@ -166,24 +165,28 @@
 /obj/item/holder/facehugger
 	origin_tech = list(TECH_BIO = 4)
 	slot_flags = SLOT_MASK | SLOT_HOLSTER
+	throw_speed = 4
 	icon_state = "facehugger"
 	item_state = "facehugger"
 	var/wasted = FALSE
 
 /obj/item/holder/facehugger/proc/kill_holder()
-	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
-	F.death()
-	sync()
-	wasted = TRUE
+	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
+	if(F)
+		F.death()
+		sync(F)
+		wasted = TRUE
 
-/obj/item/holder/facehugger/sync()
+/obj/item/holder/facehugger/sync(mob/living/M)
 	..()
-	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
+	if(!istype(M, /mob/living/simple_animal/hostile/facehugger))
+		return
+	var/mob/living/simple_animal/hostile/facehugger/F = M
 	if(F.stat)
 		wasted = TRUE
 
 /obj/item/holder/facehugger/attack(mob/target, mob/user)
-	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
+	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]
 	if(user && !F.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 20))
@@ -192,14 +195,6 @@
 		if(F.facefuck(H, TRUE, TRUE))
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return
-	..()
-
-/obj/item/holder/facehugger/equipped(mob/user, slot)
-	if(slot != slot_wear_mask)
-		return ..()
-	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
-	user.drop_from_inventory(src)
-	F.facefuck(user, TRUE, TRUE)
 	..()
 
 

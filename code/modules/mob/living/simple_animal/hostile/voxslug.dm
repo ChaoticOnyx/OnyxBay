@@ -55,10 +55,10 @@ Small, little HP, poisonous.
 
 /mob/living/simple_animal/hostile/voxslug/proc/attach(mob/living/carbon/human/H)
 	var/obj/item/organ/external/chest = H.organs_by_name["chest"]
-	var/obj/item/holder/voxslug/holder = new(get_turf(src), src)
+	var/obj/item/holder/voxslug/holder = new(get_turf(src))
 	src.forceMove(holder)
-	chest.embed(holder, 0, "\The [src] latches itself onto \the [H]!")
-	holder.sync()
+	chest.embed(holder,0,"\The [src] latches itself onto \the [H]!")
+	holder.sync(src)
 
 /mob/living/simple_animal/hostile/voxslug/AttackingTarget()
 	. = ..()
@@ -78,14 +78,14 @@ Small, little HP, poisonous.
 			R.add_reagent(/datum/reagent/cryptobiolin, 0.5)
 
 /obj/item/holder/voxslug/attack(mob/target, mob/user)
-	var/mob/living/simple_animal/hostile/voxslug/V = held_mob
+	var/mob/living/simple_animal/hostile/voxslug/V = contents[1]
 	if(!V.stat && istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 30))
 			return
 		user.drop_from_inventory(src)
-		qdel(src)
 		V.attach(H)
+		qdel(src)
 		return
 	..()
 

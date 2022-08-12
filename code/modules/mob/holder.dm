@@ -15,36 +15,23 @@ var/list/holder_mob_icon_cache = list()
 		)
 	pixel_y = 8
 
-	var/mob/held_mob = null
-
-	var/last_holder
-
-/obj/item/holder/New(loc, mob_to_hold)
-	..(loc)
-	ASSERT(mob_to_hold)
-	held_mob = mob_to_hold
-	register_signal(mob_to_hold, SIGNAL_QDELETING, /obj/item/holder/proc/onMobQdeleting)
+/obj/item/holder/New()
+	..()
 	START_PROCESSING(SSobj, src)
 
 /obj/item/holder/proc/destroy_all()
-	QDEL_NULL(held_mob)
-	qdel(src)
-
-/obj/item/holder/proc/onMobQdeleting()
-	ASSERT(held_mob)
-	unregister_signal(held_mob, SIGNAL_QDELETING)
-	held_mob = null
+	for(var/atom/movable/AM in src)
+		qdel(AM)
 	qdel(src)
 
 /obj/item/holder/Destroy()
-	if(held_mob)
-		unregister_signal(held_mob, SIGNAL_QDELETING)
-		held_mob.forceMove(get_turf(src))
-		held_mob = null
-	last_holder = null
 	if(ismob(loc))
 		var/mob/M = loc
 		M.drop_from_inventory(src, get_turf(M))
+	for(var/thing in src)
+		var/mob/M = thing
+		M.dropInto(loc)
+		M.reset_view()
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -57,7 +44,7 @@ var/list/holder_mob_icon_cache = list()
 		check_condition()
 
 /obj/item/holder/proc/check_condition()
-	if(isturf(loc) || !held_mob)
+	if(isturf(loc) || !(contents.len))
 		qdel(src)
 
 /obj/item/holder/onDropInto(atom/movable/AM)
@@ -66,15 +53,20 @@ var/list/holder_mob_icon_cache = list()
 	return ..()
 
 /obj/item/holder/GetIdCard()
-	return held_mob.GetIdCard()
+	for(var/mob/M in contents)
+		var/obj/item/I = M.GetIdCard()
+		if(I)
+			return I
+	return null
 
 /obj/item/holder/GetAccess()
 	var/obj/item/I = GetIdCard()
 	return I ? I.GetAccess() : ..()
 
 /obj/item/holder/attack_self()
-	held_mob.show_inv(usr)
-	usr.show_inventory?.open()
+	for(var/mob/M in contents)
+		M.show_inv(usr)
+		usr.show_inventory?.open()
 
 /obj/item/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
@@ -86,21 +78,23 @@ var/list/holder_mob_icon_cache = list()
 		if(blocked)
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
 			return 1
-		M.devour(held_mob)
-		qdel(src)
+		for(var/mob/victim in src.contents)
+			M.devour(victim)
+
+		check_condition()
 
 	..()
 
-/obj/item/holder/proc/sync()
+/obj/item/holder/proc/sync(mob/living/M)
 	dir = 2
 	overlays.Cut()
-	icon = held_mob.icon
-	icon_state = held_mob.icon_state
-	item_state = held_mob.item_state
-	color = held_mob.color
-	name = held_mob.name
-	desc = held_mob.desc
-	overlays |= held_mob.overlays
+	icon = M.icon
+	icon_state = M.icon_state
+	item_state = M.item_state
+	color = M.color
+	name = M.name
+	desc = M.desc
+	overlays |= M.overlays
 
 	update_held_icon()
 
@@ -136,9 +130,9 @@ var/list/holder_mob_icon_cache = list()
 	origin_tech = list(TECH_BIO = 2)
 	slot_flags = SLOT_HOLSTER
 
-/obj/item/holder/attackby(obj/item/W, mob/user)
-	held_mob.attackby(W, user)
-	sync()
+/obj/item/holder/attackby(obj/item/W as obj, mob/user as mob)
+	for(var/mob/M in src.contents)
+		M.attackby(W,user)
 
 //Mob procs and vars for scooping up
 /mob/living/var/holder_type
@@ -163,12 +157,11 @@ var/list/holder_mob_icon_cache = list()
 			to_chat(grabber, SPAN("warning", "You can't scoop up \the [src] because of [G.assailant]'s grab!"))
 			return
 
-	var/obj/item/holder/H = new holder_type(get_turf(src), src)
+	var/obj/item/holder/H = new holder_type(get_turf(src))
 
 	if(self_grab)
 		if(!grabber.equip_to_slot_if_possible(H, slot_back, del_on_fail = FALSE, disable_warning = TRUE))
 			to_chat(src, SPAN("warning", "You can't climb onto [grabber]!"))
-			qdel(H)
 			return
 
 		to_chat(grabber, SPAN("notice", "\The [src] clambers onto you!"))
@@ -176,7 +169,6 @@ var/list/holder_mob_icon_cache = list()
 	else
 		if(!grabber.put_in_hands(H))
 			to_chat(grabber, SPAN("warning", "Your hands are full!"))
-			qdel(H)
 			return
 
 		to_chat(grabber, SPAN("notice", "You scoop up \the [src]!"))
@@ -186,7 +178,6 @@ var/list/holder_mob_icon_cache = list()
 		qdel(G) // All the checks have been done above, it's safe to murder one (or even two, who knows) of grabber's grab objects
 
 	forceMove(H)
-
 	if(isanimal(src))
 		var/mob/living/simple_animal/SA = src
 		SA.panic_target = null
@@ -194,8 +185,7 @@ var/list/holder_mob_icon_cache = list()
 		SA.turns_since_scan = 5
 
 	grabber.status_flags |= PASSEMOTES
-	H.sync()
-
+	H.sync(src)
 	return H
 
 /mob/living/MouseDrop(mob/living/carbon/human/over_object)
@@ -217,9 +207,9 @@ var/list/holder_mob_icon_cache = list()
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 
-/obj/item/holder/human/sync()
+/obj/item/holder/human/sync(mob/living/M)
 	// Generate appropriate on-mob icons.
-	var/mob/living/carbon/human/owner = held_mob
+	var/mob/living/carbon/human/owner = M
 	if(istype(owner) && owner.species)
 
 		var/skin_colour = rgb(owner.r_skin, owner.g_skin, owner.b_skin)
@@ -248,4 +238,4 @@ var/list/holder_mob_icon_cache = list()
 			item_icons[cache_entry] = holder_mob_icon_cache[cache_key]
 
 	// Handle the rest of sync().
-	..()
+	..(M)
