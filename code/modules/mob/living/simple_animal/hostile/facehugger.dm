@@ -197,9 +197,14 @@
 /obj/item/holder/facehugger/equipped(mob/user, slot)
 	if(slot != slot_wear_mask)
 		return ..()
+
 	var/mob/living/simple_animal/hostile/facehugger/F = held_mob
-	user.drop_from_inventory(src)
-	F.facefuck(user, TRUE, TRUE)
+	if(user && !F.stat && istype(user, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		var/obj/item/organ/external/chest/VC = H.organs_by_name["chest"]
+		if(VC && !BP_IS_ROBOTIC(VC) && F.impregnate(H))
+			kill_holder()
+
 	..()
 
 
