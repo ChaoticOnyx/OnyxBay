@@ -104,7 +104,7 @@
 	return istype(H) && H.organs_by_name["chest"] && H.organs_by_name["head"]
 
 
-/mob/living/simple_animal/hostile/facehugger/proc/try_to_strip_down_human_head(mob/living/carbon/human/H, forced)
+/mob/living/simple_animal/hostile/facehugger/proc/try_to_strip_down_human_head(mob/living/carbon/human/H, forced = FALSE)
 	var/obj/item/helmet = H.get_equipped_item(slot_head)
 	if(helmet && (((helmet.item_flags & ITEM_FLAG_AIRTIGHT) && !forced) || !helmet.knocked_out(H, dist = 0)))
 		H.visible_message(SPAN("notice", "\The [src] [pick("smacks", "smashes", "blops", "bonks")] against [H]'s [helmet] harmlessly!"))
