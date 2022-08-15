@@ -4,10 +4,12 @@
 	desc = "Medical drug dispenser."
 	icon_state = "med"
 	use_vend_state = TRUE
-	vend_delay = 18
+	vend_delay = 18 SECONDS
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	req_access = list(access_medical_equip)
-	products = list(/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin = 4,
+	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	component_types = list(/obj/item/vending_cartridge/medical)
+	legal = list(	/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin = 4,
 					/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline = 4,
 					/obj/item/reagent_containers/vessel/bottle/chemical/stoxin = 4,
 					/obj/item/reagent_containers/vessel/bottle/chemical/toxin = 4,
@@ -20,12 +22,14 @@
 					/obj/item/stack/medical/advanced/ointment = 3,
 					/obj/item/stack/medical/splint = 2,
 					/obj/item/reagent_containers/hypospray/autoinjector/pain = 4)
-	contraband = list(/obj/item/reagent_containers/pill/tox = 3,
-					  /obj/item/reagent_containers/pill/stox = 4,
-					  /obj/item/reagent_containers/pill/dylovene = 6,
-					  /obj/item/reagent_containers/hypospray/autoinjector/combatpain = 2)
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	illegal = list(	/obj/item/reagent_containers/pill/tox = 3,
+					/obj/item/reagent_containers/pill/stox = 4,
+					/obj/item/reagent_containers/pill/dylovene = 6,
+					/obj/item/reagent_containers/hypospray/autoinjector/combatpain = 2)
 
+/obj/item/vending_cartridge/medical
+	name = "medical"
+	build_path = /obj/machinery/vending/medical
 
 /obj/machinery/vending/wallmed1
 	name = "NanoMed"
@@ -33,12 +37,17 @@
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?"
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
-	products = list(/obj/item/stack/medical/bruise_pack = 2,
+	component_types = list(/obj/item/vending_cartridge/wallmed1)
+	legal = list(	/obj/item/stack/medical/bruise_pack = 2,
 					/obj/item/stack/medical/ointment = 2,
 					/obj/item/reagent_containers/hypospray/autoinjector = 4)
-	contraband = list(/obj/item/reagent_containers/syringe/antitoxin/packaged = 4,
-				   	  /obj/item/reagent_containers/syringe/antiviral/packaged = 4,
-				   	  /obj/item/reagent_containers/pill/tox = 1)
+	illegal = list(	/obj/item/reagent_containers/syringe/antitoxin/packaged = 4,
+					/obj/item/reagent_containers/syringe/antiviral/packaged = 4,
+					/obj/item/reagent_containers/pill/tox = 1)
+
+/obj/item/vending_cartridge/wallmed1
+	name = "wallmed1"
+	build_path = /obj/machinery/vending/wallmed1
 
 /obj/machinery/vending/wallmed2
 	name = "NanoMed Mini"
@@ -46,9 +55,14 @@
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?"
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
-	products = list(/obj/item/reagent_containers/hypospray/autoinjector = 5,
+	component_types = list(/obj/item/vending_cartridge/wallmed2)
+	legal = list(	/obj/item/reagent_containers/hypospray/autoinjector = 5,
 					/obj/item/reagent_containers/syringe/antitoxin/packaged = 1,
 					/obj/item/stack/medical/bruise_pack = 3,
 					/obj/item/stack/medical/ointment =3)
-	contraband = list(/obj/item/reagent_containers/pill/tox = 3,
-					  /obj/item/reagent_containers/hypospray/autoinjector/pain = 2)
+	illegal = list(	/obj/item/reagent_containers/pill/tox = 3,
+					/obj/item/reagent_containers/hypospray/autoinjector/pain = 2)
+
+/obj/item/vending_cartridge/wallmed2
+	name = "wallmed2"
+	build_path = /obj/machinery/vending/wallmed2

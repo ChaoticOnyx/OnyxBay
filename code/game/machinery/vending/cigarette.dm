@@ -20,13 +20,13 @@
 		We understand the depressed, alcoholic cowboy in you. That's why we also smoke Jericho.;\
 		Professionals. Better cigarettes for better people. Yes, better people.;\
 		StarLing - look cool 'till you drool!"
-	vend_delay = 30
+	vend_delay = 30 SECONDS
 	icon_state = "cigs"
 	alt_icons = list("cigs", "cigs_alt")
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
-	rand_amount = TRUE
-	products = list(/obj/item/storage/fancy/cigarettes = 5,
+	component_types = list(/obj/item/vending_cartridge/cigarette)
+	legal = list(/obj/item/storage/fancy/cigarettes = 5,
 					/obj/item/storage/fancy/cigarettes/luckystars = 2,
 					/obj/item/storage/fancy/cigarettes/jerichos = 2,
 					/obj/item/storage/fancy/cigarettes/menthols = 2,
@@ -55,16 +55,13 @@
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 5,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 5,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2)
-
-	contraband = list(/obj/item/flame/lighter/zippo = 4,
-					  /obj/item/storage/tobaccopack/contraband = 1)
-
-	premium = list(/obj/item/storage/fancy/cigar = 5,
-				   /obj/item/storage/fancy/cigarettes/killthroat = 5,
-				   /obj/item/storage/tobaccopack/premium = 3,
-				   /obj/item/clothing/mask/smokable/pipe = 1)
-
-	prices = list(/obj/item/storage/fancy/cigarettes = 45,
+	illegal = list(	/obj/item/flame/lighter/zippo = 4,
+						/obj/item/storage/tobaccopack/contraband = 1)
+	premium = list(	/obj/item/storage/fancy/cigar = 5,
+					/obj/item/storage/fancy/cigarettes/killthroat = 5,
+					/obj/item/storage/tobaccopack/premium = 3,
+					/obj/item/clothing/mask/smokable/pipe = 1)
+	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
 					/obj/item/storage/fancy/cigarettes/menthols = 55,
@@ -94,6 +91,9 @@
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
 
+/obj/item/vending_cartridge/cigarette
+	name = "cigarette"
+	build_path = /obj/machinery/vending/cigarette
 
 /obj/machinery/vending/cigars  //////// cigars midcentury vend
 	name = "Cigars midcentury machine" //OCD had to be uppercase to look nice with the new formating
@@ -116,10 +116,11 @@
 		We understand the depressed, alcoholic cowboy in you. That's why we also smoke Jericho.;\
 		Professionals. Better cigarettes for better people. Yes, better people.;\
 		StarLing - look cool 'till you drool!"
-	vend_delay = 21
+	vend_delay = 21 SECONDS
 	icon_state = "cigars"
 	use_vend_state = TRUE
-	products = list(/obj/item/storage/fancy/cigarettes = 5,
+	component_types = list(/obj/item/vending_cartridge/cigars)
+	legal = list(	/obj/item/storage/fancy/cigarettes = 5,
 					/obj/item/storage/fancy/cigarettes/luckystars = 2,
 					/obj/item/storage/fancy/cigarettes/jerichos = 2,
 					/obj/item/storage/fancy/cigarettes/menthols = 2,
@@ -148,16 +149,13 @@
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 5,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 5,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 2)
-
-	contraband = list(/obj/item/flame/lighter/zippo = 4,
-					  /obj/item/storage/tobaccopack/contraband = 1)
-
-	premium = list(/obj/item/storage/fancy/cigar = 5,
-				   /obj/item/storage/fancy/cigarettes/killthroat = 5,
-				   /obj/item/storage/tobaccopack/premium = 3,
-				   /obj/item/clothing/mask/smokable/pipe = 1)
-
-	prices = list(/obj/item/storage/fancy/cigarettes = 45,
+	illegal = list(	/obj/item/flame/lighter/zippo = 4,
+						/obj/item/storage/tobaccopack/contraband = 1)
+	premium = list(	/obj/item/storage/fancy/cigar = 5,
+					/obj/item/storage/fancy/cigarettes/killthroat = 5,
+					/obj/item/storage/tobaccopack/premium = 3,
+					/obj/item/clothing/mask/smokable/pipe = 1)
+	prices = list(	/obj/item/storage/fancy/cigarettes = 45,
 					/obj/item/storage/fancy/cigarettes/luckystars = 50,
 					/obj/item/storage/fancy/cigarettes/jerichos = 65,
 					/obj/item/storage/fancy/cigarettes/menthols = 55,
@@ -186,3 +184,7 @@
 					/obj/item/reagent_containers/ecig_cartridge/lemonlime = 15,
 					/obj/item/reagent_containers/ecig_cartridge/coffee = 15,
 					/obj/item/reagent_containers/ecig_cartridge/blanknico = 15)
+
+/obj/item/vending_cartridge/cigars
+	name = "cigars midcentury"
+	build_path = /obj/machinery/vending/cigars

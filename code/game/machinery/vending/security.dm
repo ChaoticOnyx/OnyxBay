@@ -7,13 +7,19 @@
 	alt_icons = list("sec", "sec_alt")
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
-	vend_delay = 20
+	gen_rand_amount = FALSE
+	vend_delay = 20 SECONDS
 	req_access = list(access_security)
-	products = list(/obj/item/handcuffs = 8,
+	component_types = list(/obj/item/vending_cartridge/security)
+	legal = list(	/obj/item/handcuffs = 8,
 					/obj/item/grenade/flashbang = 4,
 					/obj/item/grenade/chem_grenade/teargas = 4,
 					/obj/item/device/flash = 5,
 					/obj/item/reagent_containers/food/donut/normal = 12,
 					/obj/item/storage/box/evidence = 6)
-	contraband = list(/obj/item/clothing/glasses/sunglasses = 2,
-					  /obj/item/storage/box/donut = 2)
+	illegal = list(	/obj/item/clothing/glasses/sunglasses = 2,
+					/obj/item/storage/box/donut = 2)
+
+/obj/item/vending_cartridge/security
+	name = "security"
+	build_path = /obj/machinery/vending/security
