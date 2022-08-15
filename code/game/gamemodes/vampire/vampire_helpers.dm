@@ -235,7 +235,7 @@
 
 		sight |= SEE_MOBS
 
-		verbs += /mob/living/carbon/human/proc/grapple
+		verbs += /datum/vampire/proc/grapple
 
 /mob/proc/vampire_stop_frenzy(force_stop = 0)
 	var/datum/vampire/vampire = mind.vampire
@@ -253,7 +253,7 @@
 
 		visible_message(SPAN_DANGER("[src.name]'s eyes no longer glow with violent rage, their form reverting to resemble that of a normal person's."), SPAN_DANGER("The beast within you retreats. You gain control over your body once more."))
 
-		verbs -= /mob/living/carbon/human/proc/grapple
+		verbs -= /datum/vampire/proc/grapple
 		regenerate_icons()
 
 // Removes all vampire powers.
@@ -287,8 +287,8 @@
 	return
 
 /mob/living/carbon/human/proc/finish_vamp_timeout(vamp_flags = 0)
-	if (!mind || !mind.vampire)
+	if (!src?.mind || !src?.mind.vampire)
 		return FALSE
-	if (vamp_flags && !(mind.vampire.status & vamp_flags))
+	if (vamp_flags && !(src?.mind.vampire.status & vamp_flags))
 		return FALSE
 	return TRUE
