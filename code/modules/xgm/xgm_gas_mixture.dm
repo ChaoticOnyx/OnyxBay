@@ -345,7 +345,7 @@
 
 
 /datum/gas_mixture/proc/react()
-	zburn(null, force_burn=0, no_check=0) //could probably just call zburn() here with no args but I like being explicit.
+	return zburn(null, force_burn=0, no_check=0) //could probably just call zburn() here with no args but I like being explicit.
 
 
 //Rechecks the gas_mixture and adjusts the graphic list if needed.

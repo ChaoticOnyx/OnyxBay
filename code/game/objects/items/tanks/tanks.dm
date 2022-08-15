@@ -209,6 +209,7 @@ var/list/global/tank_gauge_cache = list()
 				var/new_temperature = total_energy / total_capacity
 
 				src.air_contents.temperature = new_temperature
+				set_next_think(world.time)
 
 		add_fingerprint(user)
 
@@ -294,6 +295,7 @@ var/list/global/tank_gauge_cache = list()
 			var/cp = text2num(href_list["dist_p"])
 			distribute_pressure += cp
 		distribute_pressure = min(max(round(distribute_pressure), 0), TANK_MAX_RELEASE_PRESSURE)
+		set_next_think(world.time)
 		return TOPIC_REFRESH
 
 	if (href_list["stat"])
@@ -326,7 +328,11 @@ var/list/global/tank_gauge_cache = list()
 			else
 				to_chat(user, "<span class='warning'>You need something to connect to \the [src].</span>")
 
+	set_next_think(world.time)
+
 /obj/item/tank/remove_air(amount)
+	set_next_think(world.time)
+
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
@@ -336,6 +342,8 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.merge(giver)
 
 	check_status()
+	set_next_think(world.time)
+
 	return 1
 
 /obj/item/tank/proc/remove_air_volume(volume_to_return)
@@ -347,13 +355,20 @@ var/list/global/tank_gauge_cache = list()
 	var/datum/gas_mixture/removed = remove_air(distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature))
 	if(removed)
 		removed.volume = volume_to_return
+	
+	set_next_think(world.time)
+
 	return removed
 
 /obj/item/tank/think()
 	//Allow for reactions
-	air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
+	var/react_ret = air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
 	update_icon()
-	check_status()
+	var/status_ret = check_status()
+
+	if(!react_ret && !status_ret)
+		return
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/tank/update_icon(override)
@@ -396,7 +411,8 @@ var/list/global/tank_gauge_cache = list()
 		tank_gauge_cache[indicator] = image(icon, indicator)
 	overlays += tank_gauge_cache[indicator]
 
-//Handle exploding, leaking, and rupturing of the tank
+/// Handle exploding, leaking, and rupturing of the tank.
+/// Returns `TRUE` if it should to continue thinking.
 /obj/item/tank/proc/check_status()
 	var/pressure = air_contents.return_pressure()
 
@@ -418,9 +434,10 @@ var/list/global/tank_gauge_cache = list()
 			//tanks appear to be experiencing a reduction on scale of about 0.64 total moles
 
 			var/turf/simulated/T = get_turf(src)
-			T.hotspot_expose(air_contents.temperature, 70, 1)
 			if(!T)
-				return
+				return FALSE
+			if(!T.hotspot_expose(air_contents.temperature, 70, 1))
+				return FALSE
 
 			T.assume_air(air_contents)
 			explosion(
@@ -441,6 +458,8 @@ var/list/global/tank_gauge_cache = list()
 
 			if(src)
 				qdel(src)
+
+			return FALSE
 		else
 			integrity -=7
 	else if(pressure > TANK_RUPTURE_PRESSURE)
@@ -451,7 +470,7 @@ var/list/global/tank_gauge_cache = list()
 		if(integrity <= 0)
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
-				return
+				return FALSE
 			T.assume_air(air_contents)
 			playsound(src, 'sound/effects/weapons/gun/fire_shotgun.ogg', 20, 1)
 			visible_message("\icon[src] <span class='danger'>\The [src] flies apart!</span>", "<span class='warning'>You hear a bang!</span>")
@@ -469,13 +488,15 @@ var/list/global/tank_gauge_cache = list()
 				TTV.remove_tank(src)
 
 			qdel(src)
+
+			return FALSE
 		else
 			integrity-= 5
 	else if((pressure > TANK_LEAK_PRESSURE) || air_contents.temperature - T0C > failure_temp)
 		if((integrity <= 19 || leaking) && !valve_welded)
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
-				return
+				return FALSE
 			var/datum/gas_mixture/environment = loc.return_air()
 			var/env_pressure = environment.return_pressure()
 
@@ -500,6 +521,10 @@ var/list/global/tank_gauge_cache = list()
 				integrity++
 			if(integrity == maxintegrity)
 				leaking = 0
+		else
+			return FALSE
+
+	return TRUE
 
 /////////////////////////////////
 ///Prewelded tanks
@@ -573,18 +598,21 @@ var/list/global/tank_gauge_cache = list()
 	update_icon(TRUE)
 
 /obj/item/tank/proc/ignite()	//This happens when a bomb is told to explode
-	if (src.air_contents)
-		var/const/igniter_temperature = 6000
-		var/const/igniter_mean_energy = 15000
-		var/const/igniter_heat_capacity = igniter_mean_energy / igniter_temperature
+	if (!air_contents)
+		return
 
-		var/current_energy = src.air_contents.heat_capacity() * src.air_contents.temperature
-		var/total_capacity = src.air_contents.heat_capacity() + igniter_heat_capacity
-		var/total_energy = current_energy + igniter_mean_energy
+	var/const/igniter_temperature = 6000
+	var/const/igniter_mean_energy = 15000
+	var/const/igniter_heat_capacity = igniter_mean_energy / igniter_temperature
 
-		var/new_temperature = total_energy / total_capacity
+	var/current_energy = air_contents.heat_capacity() * air_contents.temperature
+	var/total_capacity = air_contents.heat_capacity() + igniter_heat_capacity
+	var/total_energy = current_energy + igniter_mean_energy
 
-		src.air_contents.temperature = new_temperature
+	var/new_temperature = total_energy / total_capacity
+
+	air_contents.temperature = new_temperature
+	set_next_think(world.time)
 
 /obj/item/device/tankassemblyproxy/update_icon()
 	tank.update_icon()
