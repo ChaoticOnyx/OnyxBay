@@ -53,6 +53,7 @@
 	var/temp_adj = min(H.bodytemperature - thermostat, max_cooling)
 
 	if (temp_adj < 0.5)	//only cools, doesn't heat, also we don't need extreme precision
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	var/charge_usage = (temp_adj/max_cooling)*charge_consumption
