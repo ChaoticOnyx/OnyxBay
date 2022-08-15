@@ -376,7 +376,7 @@
 	if(!timing_index)
 		timing_index = 0
 	else
-		timing_index = timing_index == module.timings.len ? 1 : timing_index+1
+		timing_index = (timing_index == module.timings.len) ? 1 : (timing_index + 1)
 
 	href_list["timing"] = module.timings[timing_index]
 
