@@ -34,3 +34,7 @@
 		to_chat(vampire.current, SPAN_NOTICE("[power.desc]"))
 		if (power.helptext)
 			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
+
+/datum/vampire/New(owner)
+	..()
+	src.owner = owner

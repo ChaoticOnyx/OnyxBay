@@ -4,14 +4,12 @@
 		return
 	if (!istype(src, /mob/living/carbon/human))
 		return
+	var/mob/living/carbon/human/H = src
 	if (!mind.vampire)
-		mind.vampire = new /datum/vampire()
+		mind.vampire = new /datum/vampire(H)
 	// No powers to thralls. Ew.
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
-	var/mob/living/carbon/human/H = src
-	mind.vampire.owner = H
-
 	H.replace_vampiric_organs()
 	H.does_not_breathe = 1
 	H.remove_blood(H.species.blood_volume)
