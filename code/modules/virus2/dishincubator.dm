@@ -268,8 +268,9 @@
 		if (!B.data["virus2"])
 			B.data["virus2"] = list()
 
-		var/list/virus = list("[dish.virus2.uniqueID]" = dish.virus2.getcopy())
-		B.data["virus2"] += virus
+		if(!("[dish.virus2.uniqueID]" in B.data["virus2"]))
+			var/list/virus = list("[dish.virus2.uniqueID]" = dish.virus2.getcopy())
+			B.data["virus2"] += virus
 
 		ping("\The [src] pings, \"Injection complete.\"")
 		return TOPIC_REFRESH
