@@ -34,7 +34,7 @@
 		if(B.damage >= B.max_damage)
 			to_chat(user, SPAN("warning", "That brain is well and truly dead."))
 			return
-		else if(!B.brainmob || !(B.species.name in whitelisted_species))
+		else if(!B.brainmob || !(B.species?.name in whitelisted_species))
 			to_chat(user, SPAN("notice", "This brain is completely useless to you."))
 			return
 		user.visible_message(SPAN("notice", "\The [user] sticks \a [B] into \the [src]."))
