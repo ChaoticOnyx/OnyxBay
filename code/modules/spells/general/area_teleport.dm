@@ -34,7 +34,15 @@
 		thearea = pick(teleportlocs)
 	return list(teleportlocs[thearea])
 
-/datum/spell/area_teleport/check_valid_targets()
+/datum/spell/area_teleport/check_valid_targets(list/targets)
+	if(!need_target)
+		return TRUE
+	if(!targets)
+		return FALSE
+	if(!islist(targets))
+		targets = list(targets)
+	else if(!targets.len)
+		return FALSE
 	return TRUE
 
 /datum/spell/area_teleport/cast(area/thearea, mob/user)
