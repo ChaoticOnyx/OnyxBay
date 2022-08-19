@@ -41,7 +41,7 @@
 		return FALSE
 	if(!islist(targets))
 		targets = list(targets)
-	else if(!targets.len)
+	if(!targets.len)
 		return FALSE
 	return TRUE
 
