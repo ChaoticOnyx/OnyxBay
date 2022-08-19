@@ -34,7 +34,7 @@
 		to_chat(src, "<span class='warning'>You can't do that while you're incapacitated!</span>")
 		return
 
-	last_special = world.time + 60 SECONDS
+	last_special = world.time + 5 SECONDS
 
 	var/turf/T = get_turf(src)
 	var/obj/effect/effect/water/chempuff/chem = new(T)
