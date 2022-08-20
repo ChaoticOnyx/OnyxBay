@@ -39,7 +39,8 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/holder/Destroy()
 	if(held_mob)
 		unregister_signal(held_mob, SIGNAL_QDELETING)
-		held_mob.forceMove(get_turf(src))
+		if(held_mob in src)
+			held_mob.forceMove(get_turf(src))
 		held_mob = null
 	last_holder = null
 	if(ismob(loc))
@@ -57,7 +58,7 @@ var/list/holder_mob_icon_cache = list()
 		check_condition()
 
 /obj/item/holder/proc/check_condition()
-	if(isturf(loc) || !held_mob)
+	if(isturf(loc) || !held_mob || !(held_mob in src))
 		qdel(src)
 
 /obj/item/holder/onDropInto(atom/movable/AM)
@@ -87,7 +88,7 @@ var/list/holder_mob_icon_cache = list()
 			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
 			return 1
 		M.devour(held_mob)
-		qdel(src)
+		check_condition()
 
 	..()
 
