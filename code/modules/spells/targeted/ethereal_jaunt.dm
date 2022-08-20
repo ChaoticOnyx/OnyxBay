@@ -61,7 +61,7 @@
 
 /datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/user)
 	if(!user.forceMove(mob_loc))
-		for(var/direction in list(1,2,4,8,5,6,9,10))
+		for(var/direction in GLOB.alldirs)
 			var/turf/T = get_step(mob_loc, direction)
 			if(T && user.forceMove(T))
 				break
