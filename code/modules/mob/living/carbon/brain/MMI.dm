@@ -19,7 +19,7 @@
 		icon_state = "mmi-empty"
 		return
 	icon_state = "mmi-inner"
-	if(!brainobj.species || !(brainobj.species in whitelisted_species))
+	if(!(brainobj.species?.name in whitelisted_species))
 		overlays += "mmi-error"
 	else
 		overlays += "mmi-[lowertext(brainobj.species.name)]"
@@ -34,7 +34,7 @@
 		if(B.damage >= B.max_damage)
 			to_chat(user, SPAN("warning", "That brain is well and truly dead."))
 			return
-		else if(!B.brainmob || !(B.species in whitelisted_species))
+		else if(!B.brainmob || !(B.species?.name in whitelisted_species))
 			to_chat(user, SPAN("notice", "This brain is completely useless to you."))
 			return
 		user.visible_message(SPAN("notice", "\The [user] sticks \a [B] into \the [src]."))
@@ -66,7 +66,7 @@
 /obj/item/device/mmi/proc/update_info()
 	desc = initial(desc)
 	update_icon()
-	if(brainmob?.stat == DEAD || brainmob?.ssd_check())
+	if(brainmob?.stat == DEAD)
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be dead.")
 	else if(brainmob?.ssd_check())
 		desc += SPAN_DEADSAY("\nScans indicate that [brainmob?.name] seems to be unconscious.")
@@ -86,6 +86,7 @@
 	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/device/mmi/proc/update_info)
 	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/device/mmi/proc/update_info)
 	register_signal(brainmob, SIGNAL_MOB_DEATH, /obj/item/device/mmi/proc/update_info)
+	update_info()
 
 /obj/item/device/mmi/proc/remove_brain()
 	var/obj/item/organ/internal/brain/brain
@@ -104,6 +105,7 @@
 	brain.brainmob = brainmob // Set the brain to use the brainmob.
 	brainmob = null // Set mmi brainmob var to null.
 	SetName(initial(name))
+	update_info()
 
 // Same deal as the regular brain proc. Used for human --> robot people.
 /obj/item/device/mmi/proc/transfer_identity(mob/living/carbon/human/H)
@@ -113,7 +115,7 @@
 	brainmob.dna = H.dna
 	brainmob.container = src
 	SetName("[initial(name)]: [brainmob.real_name]")
-	update_icon()
+	update_info()
 	locked = TRUE
 	return
 
