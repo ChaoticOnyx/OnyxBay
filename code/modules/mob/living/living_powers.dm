@@ -31,7 +31,7 @@
 		return
 
 	if (incapacitated(INCAPACITATION_DISABLED))
-		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!S"))
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
 		return
 
 	last_special = world.time + 60 SECONDS
