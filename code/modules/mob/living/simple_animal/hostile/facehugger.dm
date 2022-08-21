@@ -126,9 +126,11 @@
 	var/obj/item/holder/facehugger/holder = loc
 	if(!istype(holder))
 		CRASH("Facehugger try impregnate outside its holder")
-	if(!is_mob_suitable_to_impregnate(H, holder.forced_equip))
+
+	var/forced = isnull(holder.forced_equip) ? TRUE : holder.forced_equip
+	holder.forced_equip = null
+	if(!is_mob_suitable_to_impregnate(H, forced))
 		return FALSE
-	holder.forced_equip = FALSE
 
 	var/continue_impregnation = FALSE
 	var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
