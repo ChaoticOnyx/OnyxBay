@@ -122,6 +122,14 @@
 /proc/dprob(p)
 	return(prob(sqrt(p)) && prob(sqrt(p)))
 
+//Checks if the equipment that covers the mouth has bioprotection
+/mob/living/carbon/human/proc/can_spread_disease()
+	for(var/obj/item/clothing/gear in list(head, wear_mask))
+		if(istype(gear) && (gear.body_parts_covered & FACE))
+			if(gear.armor["bio"] > 0)
+				return FALSE
+	return TRUE
+
 /mob/living/carbon/proc/spread_disease_to(mob/living/carbon/victim, vector = "Airborne")
 	if (src == victim)
 		return "retardation"

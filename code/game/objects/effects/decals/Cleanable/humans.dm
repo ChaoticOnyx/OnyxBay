@@ -234,17 +234,14 @@ var/global/list/image/splatter_cache=list()
 	density = 0
 	anchored = 1
 	icon = 'icons/effects/blood.dmi'
-	icon_state = "mucus"
 
 	var/list/datum/disease2/disease/virus2 = list()
 	var/dried = FALSE
+	var/dry_timer_id
 
 /obj/effect/decal/cleanable/mucus/Initialize()
 	. = ..()
-	pixel_x = rand(-8, 8)
-	pixel_y = rand(-8, 8)
-	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
-	addtimer(CALLBACK(src, .proc/dry), drytime) // Let's not keep these fuckers infectious forever 'kay?
+	update_stats()
 
 /obj/effect/decal/cleanable/mucus/Destroy()
 	virus2 = null
@@ -253,6 +250,19 @@ var/global/list/image/splatter_cache=list()
 /obj/effect/decal/cleanable/mucus/proc/dry()
 	name = "dried mucus"
 	desc = "Disguisting nonetheless."
-	icon_state = "mucus_dry"
 	dried = TRUE
 	virus2.Cut()
+	color = "#2c991a"
+
+/obj/effect/decal/cleanable/mucus/proc/update_stats(list/viruses = list())
+	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
+	if(dry_timer_id)
+		deltimer(dry_timer_id)
+		dry_timer_id = null
+	if(overlays.len <= 20) // We don't want to scare kids with a snotty monster.
+		var/image/mucus_overlay = image(icon = 'icons/effects/blood.dmi', icon_state = "mucus", pixel_x = rand(-8, 8), pixel_y = rand(-8, 8))
+		mucus_overlay.layer = FLOAT_LAYER
+		mucus_overlay.transform = turn(src.transform, rand(0, 359))
+		overlays += mucus_overlay
+	dry_timer_id = addtimer(CALLBACK(src, .proc/dry), drytime, TIMER_STOPPABLE)
+	virus2 |= viruses
