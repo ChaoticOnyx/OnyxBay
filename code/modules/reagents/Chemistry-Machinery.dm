@@ -278,8 +278,9 @@
 		else
 			B = new /obj/item/reagent_containers/vessel/bottle/chemical(loc)
 	B.AddComponent(/datum/component/label, bottle_name)
+	if(B.atom_flags | ATOM_FLAG_OPEN_CONTAINER)
+		B.lid.toggle()
 	reagents.trans_to_obj(B, reagent_amount)
-	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
 	B.update_icon()
 
 /obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user)
