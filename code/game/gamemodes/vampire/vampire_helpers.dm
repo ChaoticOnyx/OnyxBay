@@ -40,7 +40,7 @@
 	var/mob/living/carbon/human/H = src
 	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
 	if(O)
-		O.rejuvenate(TRUE)
+		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
 		O.max_damage = 150
 		O.min_bruised_damage = 30
 		O.min_broken_damage = 70
