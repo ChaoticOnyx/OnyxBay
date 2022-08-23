@@ -5,10 +5,12 @@
 	icon_state = "suspension2"
 	density = 1
 	req_access = list(access_research)
+	use_power = 0
+	active_power_usage = 5 KILOWATTS
+	interact_offline = TRUE
 	var/obj/item/cell/cell
 	var/obj/item/card/id/auth_card
-	var/locked = 1
-	var/power_use = 5 KILOWATTS
+	var/locked = TRUE
 	var/obj/effect/suspension_field/suspension_field
 
 /obj/machinery/suspension_gen/New()
@@ -18,12 +20,12 @@
 /obj/machinery/suspension_gen/Process()
 	set background = 1
 	if(suspension_field)
-		cell.use(power_use * CELLRATE)
+		cell.use(active_power_usage * CELLRATE)
 
 		var/turf/T = get_turf(suspension_field)
 		for(var/mob/living/M in T)
 			M.weakened = max(M.weakened, 3)
-			cell.use(power_use * CELLRATE)
+			cell.use(active_power_usage * CELLRATE)
 			if(prob(5))
 				to_chat(M, SPAN("warning", "[pick("You feel tingly","You feel like floating","It is hard to speak","You can barely move")]."))
 
@@ -111,11 +113,13 @@
 				auth_card = null
 		. = TOPIC_REFRESH
 	else if(href_list["lock"])
-		locked = 1
+		locked = TRUE
 		. = TOPIC_REFRESH
 	else if(href_list["close"])
 		close_browser(user, "window=suspension")
 		return TOPIC_HANDLED
+	else if(href_list["refresh"])
+		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
 		interact(user)
@@ -137,10 +141,7 @@
 		return
 	else if(isWrench(W))
 		if(!suspension_field)
-			if(anchored)
-				anchored = 0
-			else
-				anchored = 1
+			anchored = !anchored
 			to_chat(user, SPAN("info", "You wrench the stabilising legs [anchored ? "into place" : "up against the body"]."))
 			if(anchored)
 				desc = "It is resting securely on four stubby legs."
@@ -163,23 +164,25 @@
 		if(!auth_card)
 			if(attempt_unlock(I, user))
 				to_chat(user, SPAN("info", "You swipe [I], the console flashes \'<i>Access granted.</i>\'"))
+				interact(user)
 			else
 				to_chat(user, SPAN("warning", "You swipe [I], the console flashes \'<i>Access denied.</i>\'"))
 		else
 			to_chat(user, SPAN("warning", "Remove [auth_card] first."))
 
 /obj/machinery/suspension_gen/proc/attempt_unlock(obj/item/card/C, mob/user)
-	if(!panel_open)
-		if(istype(C, /obj/item/card/emag))
-			C.resolve_attackby(src, user)
-		else if(istype(C, /obj/item/card/id) && check_access(C) || istype(C, /obj/item/card/robot))
-			locked = 0
-		if(!locked)
-			return 1
+	if(panel_open)
+		return
+
+	if(istype(C, /obj/item/card/emag))
+		C.resolve_attackby(src, user)
+	else if(istype(C, /obj/item/card/id) && check_access(C) || istype(C, /obj/item/card/robot))
+		locked = FALSE
+	return !locked
 
 /obj/machinery/suspension_gen/emag_act(remaining_charges, mob/user)
 	if(cell.charge > 0 && locked)
-		locked = 0
+		locked = FALSE
 		return 1
 
 //checks for whether the machine can be activated or not should already have occurred by this point
@@ -252,7 +255,7 @@
 /obj/effect/suspension_field
 	name = "energy field"
 	icon = 'icons/effects/effects.dmi'
-	anchored = 1
+	anchored = TRUE
 	density = 1
 
 /obj/effect/suspension_field/Destroy()
