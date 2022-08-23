@@ -258,21 +258,20 @@
 		return
 
 	var/t = ""
-	t += "<h3>[GLOB.using_map.station_name] Supply Requisition Reciept</h3><hr>"
-	t += "INDEX: #[O.ordernum]<br>"
-	t += "REQUESTED BY: [O.orderedby]<br>"
-	t += "RANK: [O.orderedrank]<br>"
-	t += "REASON: [O.reason]<br>"
-	t += "SUPPLY CRATE TYPE: [O.object.name]<br>"
-	t += "ACCESS RESTRICTION: [get_access_desc(O.object.access)]<br>"
-	t += "CONTENTS:<br>"
+	t += "\[large\][GLOB.using_map.station_name] Supply Requisition Reciept\[/large\]\[hr\]"
+	t += "INDEX: #[O.ordernum]\[br\]"
+	t += "REQUESTED BY: [O.orderedby]\[br\]"
+	t += "RANK: [O.orderedrank]\[br\]"
+	t += "REASON: [O.reason]\[br\]"
+	t += "SUPPLY CRATE TYPE: [O.object.name]\[br\]"
+	t += "ACCESS RESTRICTION: [get_access_desc(O.object.access)]\[br\]"
+	t += "CONTENTS:\[br\]"
 	t += O.object.manifest
-	t += "<hr>"
-	print_text(t, user, rawhtml = TRUE)
+	t += "\[hr\]"
+	print_text(t, user)
 
 /datum/nano_module/supply/proc/print_summary(mob/user)
-	var/t = ""
-	t += "<center><BR><b><large>[GLOB.using_map.station_name]</large></b><BR><i>[station_date]</i><BR><i>Export overview<field></i></center><hr>"
+	var/t = "\[center\]\[br\]\[b\]\[large\][GLOB.using_map.station_name]\[/large]\[/b\]\[br\]\[i\][station_date]\[/i\]\[br\]\[i\]Export overview\[field\]\[/i\]\[/center\]\[hr\]"
 	for(var/source in SSsupply.point_source_descriptions)
-		t += "[SSsupply.point_source_descriptions[source]]: [SSsupply.point_sources[source] || 0]<br>"
+		t += "[SSsupply.point_source_descriptions[source]]: [SSsupply.point_sources[source] || 0]\[br\]"
 	print_text(t, user)
