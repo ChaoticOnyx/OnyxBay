@@ -40,21 +40,11 @@
 	var/mob/living/carbon/human/H = src
 	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
 	if(O)
-		qdel(O)
-		H.internal_organs_by_name.Remove(BP_HEART)
-		H.internal_organs_by_name -= BP_HEART
-		H.internal_organs.Remove(/obj/item/organ/internal/heart/)
-	var/organ_type = /obj/item/organ/internal/heart/
-	var/obj/item/organ/internal/org = new organ_type(H)
-	H.internal_organs_by_name[BP_HEART] = org
-	H.internal_organs |= H.internal_organs_by_name[BP_HEART]
-	org.owner = H
-	org.max_damage = 150
-	org.min_bruised_damage = 30
-	org.min_broken_damage = 70
-	org.vital = 1
-	H.sync_organ_dna()
-	H.update_body()
+		O.rejuvenate(TRUE)
+		O.max_damage = 150
+		O.min_bruised_damage = 30
+		O.min_broken_damage = 70
+		O.vital = 1
 	return
 
 // Proc to safely remove blood, without resulting in negative amounts of blood.
