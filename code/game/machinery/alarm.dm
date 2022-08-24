@@ -210,7 +210,6 @@
 			"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
-
 		target_temperature = Clamp(target_temperature, CONV_C2K(MIN_TEMPERATURE), CONV_C2K(MAX_TEMPERATURE))
 
 		var/datum/gas_mixture/gas

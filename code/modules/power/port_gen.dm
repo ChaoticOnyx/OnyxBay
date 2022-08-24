@@ -196,7 +196,7 @@
 	*/
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-	var/outer_temp = CONV_C2K(0.1 * temperature)
+		var/outer_temp = CONV_C2K(0.1 * temperature)
 		if(outer_temp > environment.temperature) //sharing the heat
 			var/heat_transfer = environment.get_thermal_energy_change(outer_temp)
 			if(heat_transfer > 1)
