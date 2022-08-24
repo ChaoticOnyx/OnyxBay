@@ -24,7 +24,8 @@
 /// (3 cm + 100 cm * sin(3deg))/(2*(3+100 cm)). Unitless ratio.
 #define RADIATOR_EXPOSED_SURFACE_AREA_RATIO 0.04 
 /// m^2, surface area of 1.7m (H) x 0.46m (D) cylinder
-#define HUMAN_EXPOSED_SURFACE_AREA          5.2
+#define HUMAN_EXPOSED_SURFACE_AREA 5.2
+/// Cosmic microwave background
 #define TCMB  (-270.45 CELSIUS)
 
 #define ATMOS_PRECISION 0.0001
