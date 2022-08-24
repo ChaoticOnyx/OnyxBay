@@ -210,11 +210,8 @@
 			"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
-		if(target_temperature > (0 CELSIUS) + MAX_TEMPERATURE)
-			target_temperature = (0 CELSIUS) + MAX_TEMPERATURE
 
-		if(target_temperature < (0 CELSIUS) + MIN_TEMPERATURE)
-			target_temperature = (0 CELSIUS) + MIN_TEMPERATURE
+		target_temperature = Clamp(target_temperature, CONV_C2K(MIN_TEMPERATURE), CONV_C2K(MAX_TEMPERATURE))
 
 		var/datum/gas_mixture/gas
 		gas = environment.remove(0.25*environment.total_moles)
