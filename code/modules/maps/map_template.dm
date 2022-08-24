@@ -12,7 +12,7 @@
 
 /datum/map_template/New(list/paths = null, rename = null)
 	if(paths && !islist(paths))
-		crash_with("Non-list paths passed into map template constructor.")
+		util_crash_with("Non-list paths passed into map template constructor.")
 	if(paths)
 		mappaths = paths
 	if(mappaths)

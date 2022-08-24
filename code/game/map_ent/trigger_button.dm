@@ -17,12 +17,12 @@
 		B = locate(/obj/machinery/button) in get_turf(src)
 
 		if(!istype(B))
-			crash_with("button not found")
+			util_crash_with("button not found")
 			return INITIALIZE_HINT_QDEL
 	else
 		B = locate(ev_button_tag)
 		if(!istype(B))
-			crash_with("ev_button_tag is invalid")
+			util_crash_with("ev_button_tag is invalid")
 			return INITIALIZE_HINT_QDEL
 
 	_button = weakref(B)
@@ -41,7 +41,7 @@
 	var/obj/map_ent/E = locate(ev_tag)
 	
 	if(!istype(E))
-		crash_with("ev_tag is invalid")
+		util_crash_with("ev_tag is invalid")
 		return
 
 	ev_triggered = "\ref[M]"

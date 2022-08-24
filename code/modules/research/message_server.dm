@@ -80,7 +80,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	if(message_servers.len >= 1)
 		new /obj/machinery/dead_message_server(src.loc)
 		qdel(src)
-		crash_with("Two or more PDA message servers are placed in the world. Please, replace leftovers with dead ones until one server remains.")
+		util_crash_with("Two or more PDA message servers are placed in the world. Please, replace leftovers with dead ones until one server remains.")
 	name = "[name] ([get_area(src)])"
 	message_servers += src
 	decryptkey = GenerateKey()

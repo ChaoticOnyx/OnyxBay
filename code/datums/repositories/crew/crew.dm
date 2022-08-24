@@ -80,7 +80,7 @@ var/global/datum/repository/crew/crew_repository = new()
 					if(PULSE_THREADY)
 						pulse_span = "bad"
 
-				var/list/crewmemberData = list("sensor_type" = C.sensor_mode, "stat"= H.stat, "span" = pulse_span, "pulse"= H.get_pulse(1), "pressure"= pressure, "bodytemp" = convert_k2c(H.bodytemperature), "area"="", "x"=-1, "y"=-1, "z"=-1, "ref" = "\ref[H]")
+				var/list/crewmemberData = list("sensor_type" = C.sensor_mode, "stat"= H.stat, "span" = pulse_span, "pulse"= H.get_pulse(1), "pressure"= pressure, "bodytemp" = CONV_K2C(H.bodytemperature), "area"="", "x"=-1, "y"=-1, "z"=-1, "ref" = "\ref[H]")
 				if(!(run_queues(H, C, pos, crewmemberData) & MOD_SUIT_SENSORS_REJECTED))
 					crewmembers[++crewmembers.len] = crewmemberData
 

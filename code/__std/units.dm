@@ -8,27 +8,26 @@
 #define HOURS   HOUR
 #define DAYS    DAY
 
-#define WATTS     *1
-#define METERS    *1
-#define KILOGRAMS *1
-#define AMPERES   *1
-#define KELVIN    *1
-#define MOLES     *1
-#define CANDELAS  *1
-#define PASCALS   *1
-#define SIEVERTS  *1
-#define CELSIUS   +273.15
+#define WATT    *1
+#define METER   *1
+#define GRAM    *1
+#define AMPERE  *1
+#define KELVIN  *1
+#define MOLE    *1
+#define CANDELA *1
+#define PASCAL  *1
+#define SIEVERT *1
+#define LITER   *1
+#define CELSIUS +273.15
 
-#define WATT     WATTS
-#define METER    METERS
-#define KILOGRAM KILOGRAMS
-#define AMPERE   AMPERES
-#define AMP      AMPERES
-#define AMPS     AMPERES
-#define MOLE     MOLES
-#define CANDELA  CANDELAS
-#define PASCAL   PASCALS
-#define SIEVERT  SIEVERTS
+#define WATTS    WATT
+#define METERS   METER
+#define GRAMS    GRAM
+#define AMPERES  AMPERE
+#define MOLES    MOLE
+#define CANDELAS CANDELA
+#define PASCALS  PASCAL
+#define SIEVERTS SIEVERT
 #define LITERS   LITER
 
 #define YOTTA *(10 ** 24)

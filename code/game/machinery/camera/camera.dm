@@ -99,7 +99,7 @@
 		)
 		M.machine_visual = null
 	else
-		crash_with("Not all overlays has removed!")
+		util_crash_with("Not all overlays has removed!")
 
 	return 1
 

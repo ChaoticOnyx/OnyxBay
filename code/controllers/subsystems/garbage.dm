@@ -3,7 +3,7 @@
 	if(istype(D, /atom/movable)) {\
 		var/atom/movable/AM = D; \
 		if(AM.loc != null) {\
-			crash_with("QDEL("+hint+"): "+AM.name+" was supposed to be in nullspace but isn't \
+			util_crash_with("QDEL("+hint+"): "+AM.name+" was supposed to be in nullspace but isn't \
 						(LOCATION= "+AM.loc.name+" ("+AM.loc.x+","+AM.loc.y+","+AM.loc.z+") )! Destroy didn't do its job!"); \
 			AM.forceMove(null); \
 		} \
@@ -178,7 +178,7 @@ SUBSYSTEM_DEF(garbage)
 				var/datum/qdel_item/I = items[type]
 
 				if(!I.failures)
-					crash_with("GC: -- \ref[D] | [type] was unable to be GC'd --")
+					util_crash_with("GC: -- \ref[D] | [type] was unable to be GC'd --")
 				I.failures++
 			if(GC_QUEUE_HARDDELETE)
 				if(avoid_harddel)
@@ -320,7 +320,7 @@ SUBSYSTEM_DEF(garbage)
 				// indicates the objects Destroy() does not respect force
 				#ifdef TESTING
 				if(!I.no_respect_force)
-					crash_with("WARNING: [D.type] has been force deleted, but is \
+					util_crash_with("WARNING: [D.type] has been force deleted, but is \
 						returning an immortal QDEL_HINT, indicating it does \
 						not respect the force flag for qdel(). It has been \
 						placed in the queue, further instances of this type \

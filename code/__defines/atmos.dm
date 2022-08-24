@@ -1,11 +1,11 @@
 
-#define CELL_VOLUME        2500 // Liters in a cell.
+#define CELL_VOLUME        (2500 LITERS) // Liters in a cell.
 #define MOLES_CELLSTANDARD (ONE_ATMOSPHERE*CELL_VOLUME/((20 CELSIUS)*R_IDEAL_GAS_EQUATION)) // Moles in a 2.5 m^3 cell at 101.325 kPa and 20 C.
 
 #define O2STANDARD 0.21 // Percentage.
 #define N2STANDARD 0.79
 
-#define MOLES_PLASMA_VISIBLE 0.7 // Moles in a standard cell after which plasma is visible.
+#define MOLES_PLASMA_VISIBLE (0.7 MOLES) // Moles in a standard cell after which plasma is visible.
 #define MOLES_O2STANDARD     (MOLES_CELLSTANDARD * O2STANDARD) // O2 standard value (21%)
 #define MOLES_N2STANDARD     (MOLES_CELLSTANDARD * N2STANDARD) // N2 standard value (79%)
 #define MOLES_O2ATMOS (MOLES_O2STANDARD*50)
@@ -15,7 +15,7 @@
 #define MIN_TOXIN_DAMAGE 1
 #define MAX_TOXIN_DAMAGE 10
 
-#define BREATH_VOLUME       0.5 // Liters in a normal breath.
+#define BREATH_VOLUME       (500 MILLI LITERS) // Liters in a normal breath.
 #define BREATH_MOLES        (ONE_ATMOSPHERE * BREATH_VOLUME / ((20 CELSIUS) * R_IDEAL_GAS_EQUATION)) // Amount of air to take a from a tile
 #define BREATH_PERCENTAGE   (BREATH_VOLUME / CELL_VOLUME)                                    // Amount of air needed before pass out/suffocation commences.
 #define HUMAN_NEEDED_OXYGEN (MOLES_CELLSTANDARD * BREATH_PERCENTAGE * 0.16)
@@ -31,13 +31,13 @@
 #define MINIMUM_AIR_RATIO_TO_SUSPEND 0.05 // Minimum ratio of air that must move to/from a tile to suspend group processing
 #define MINIMUM_AIR_TO_SUSPEND       (MOLES_CELLSTANDARD * MINIMUM_AIR_RATIO_TO_SUSPEND) // Minimum amount of air that has to move before a group processing can be suspended
 #define MINIMUM_MOLES_DELTA_TO_MOVE  (MOLES_CELLSTANDARD * MINIMUM_AIR_RATIO_TO_SUSPEND) // Either this must be active
-#define MINIMUM_TEMPERATURE_TO_MOVE  (393.15 KELVIN)                                     // or this (or both, obviously)
+#define MINIMUM_TEMPERATURE_TO_MOVE  (120 CELSIUS)                                       // or this (or both, obviously)
 
 #define MINIMUM_TEMPERATURE_RATIO_TO_SUSPEND      0.012        // Minimum temperature difference before group processing is suspended.
 #define MINIMUM_TEMPERATURE_DELTA_TO_SUSPEND      4
 #define MINIMUM_TEMPERATURE_DELTA_TO_CONSIDER     0.5          // Minimum temperature difference before the gas temperatures are just set to be equal.
-#define MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION   (303.15 KELVIN)
-#define MINIMUM_TEMPERATURE_START_SUPERCONDUCTION (493.15 KELVIN)
+#define MINIMUM_TEMPERATURE_FOR_SUPERCONDUCTION   (30 CELSIUS)
+#define MINIMUM_TEMPERATURE_START_SUPERCONDUCTION (220 CELSIUS)
 
 // Must be between 0 and 1. Values closer to 1 equalize temperature faster. Should not exceed 0.4, else strange heat flow occurs.
 #define  FLOOR_HEAT_TRANSFER_COEFFICIENT 0.4
@@ -48,12 +48,12 @@
 #define WINDOW_HEAT_TRANSFER_COEFFICIENT 0.1 // A hack for now.
 
 // Fire damage.
-#define CARBON_LIFEFORM_FIRE_RESISTANCE 473.15 KELVIN
+#define CARBON_LIFEFORM_FIRE_RESISTANCE (200 CELSIUS)
 #define CARBON_LIFEFORM_FIRE_DAMAGE     4
 
 // Plasma fire properties.
-#define PLASMA_MINIMUM_BURN_TEMPERATURE    (400 KELVIN) // Autoignite temperature in tanks and canisters - enclosed environments I guess
-#define PLASMA_FLASHPOINT                  (519 KELVIN) // Autoignite temperature in air if that ever gets implemented.
+#define PLASMA_MINIMUM_BURN_TEMPERATURE    (126 CELSIUS) // Autoignite temperature in tanks and canisters - enclosed environments I guess
+#define PLASMA_FLASHPOINT                  (246 CELSIUS) // Autoignite temperature in air if that ever gets implemented.
 
 //These control the mole ratio of oxidizer and fuel used in the combustion reaction
 #define FIRE_REACTION_OXIDIZER_AMOUNT	3 //should be greater than the fuel amount if fires are going to spread much

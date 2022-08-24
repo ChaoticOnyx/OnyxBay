@@ -61,7 +61,7 @@
 				user.show_message("<span class='notice'>\t Components are OK.</span>",1)
 			if(H.emagged && prob(5))
 				user.show_message("<span class='warning'>\t ERROR: INTERNAL SYSTEMS COMPROMISED</span>",1)
-			user.show_message("<span class='notice'>Operating Temperature: [convert_k2c(M.bodytemperature)]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)</span>", 1)
+			user.show_message("<span class='notice'>Operating Temperature: [CONV_K2C(M.bodytemperature)]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)</span>", 1)
 
 		if("prosthetics")
 

@@ -44,7 +44,7 @@
 
 /turf/Destroy()
 	if(!changing_turf)
-		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+		util_crash_with("Improper turf qdel. Do not qdel turfs directly.")
 
 	changing_turf = FALSE
 	remove_cleanables()

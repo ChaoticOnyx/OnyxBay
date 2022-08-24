@@ -17,7 +17,7 @@
 
 	var/atom/A = locate(ev_signal_source)
 	if(!istype(A))
-		crash_with("ev_signal_source is invalid")
+		util_crash_with("ev_signal_source is invalid")
 		return INITIALIZE_HINT_QDEL
 	
 	_source = weakref(A)
@@ -37,7 +37,7 @@
 	var/obj/map_ent/E = locate(ev_tag)
 	
 	if(!istype(E))
-		crash_with("ev_tag is invalid")
+		util_crash_with("ev_tag is invalid")
 		return
 
 	E.activate()

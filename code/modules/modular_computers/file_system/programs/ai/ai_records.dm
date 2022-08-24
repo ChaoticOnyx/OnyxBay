@@ -36,7 +36,7 @@
 	for (var/key in med_fields)
 		if (isnull(med_fields[key]))
 			med_fields_as_array.Add(list(list(editable = FALSE, name = key, val = "**INTERFACE ERROR**")))
-			crash_with("Medical Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
+			util_crash_with("Medical Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
 		else
 			med_fields_as_array.Add(list(med_fields[key]))
 	data["med_fields"] = med_fields_as_array
@@ -44,7 +44,7 @@
 	for (var/key in sec_fields)
 		if (isnull(sec_fields[key]))
 			sec_fields_as_array.Add(list(list(editable = FALSE, name = key, val = "**INTERFACE ERROR**")))
-			crash_with("Security Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
+			util_crash_with("Security Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
 		else
 			sec_fields_as_array.Add(list(sec_fields[key]))
 	data["sec_fields"] = sec_fields_as_array

@@ -23,7 +23,7 @@
 	SHOULD_CALL_PARENT(FALSE)
 
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
-		crash_with("Warning: [src]([type]) initialized multiple times!")
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	verbs += /mob/proc/toggle_antag_pool

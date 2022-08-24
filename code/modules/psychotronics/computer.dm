@@ -212,14 +212,14 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/NeuromodToList(neuromod_type)
 	if (!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 		return
 
 	if (ispath(neuromod_type))
 		neuromod_type = "[neuromod_type]"
 
 	if (!neuromods[neuromod_type])
-		crash_with("trying to get [neuromod_type] but it is not exists")
+		util_crash_with("trying to get [neuromod_type] but it is not exists")
 		return
 
 	return (list("researched" = neuromods[neuromod_type]["researched"]) + GLOB.neuromods.ToList(neuromod_type))
@@ -261,14 +261,14 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/IsNeuromodResearched(neuromod_type)
 	if (!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 		return null
 
 	if (ispath(neuromod_type))
 		neuromod_type = "[neuromod_type]"
 
 	if (!neuromods[neuromod_type])
-		crash_with("trying to get [neuromod_type] but it is not exists")
+		util_crash_with("trying to get [neuromod_type] but it is not exists")
 		return null
 
 	return neuromods[neuromod_type]["researched"]
@@ -295,7 +295,7 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/SaveNeuromodToDisk(neuromod_type)
 	if (!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 
 	var/obj/item/disk/neuromod_disk/neuromod_disk = GetNeuromodDisk()
 
@@ -320,10 +320,10 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/AddNeuromod(neuromod_type, researched)
 	if (!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 
 	if (researched == null)
-		crash_with("researched is null")
+		util_crash_with("researched is null")
 
 	if (ispath(neuromod_type))
 		neuromod_type = "[neuromod_type]"
@@ -349,14 +349,14 @@
 	var/list/lifeform_data = list()
 
 	if (!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return null
 
 	if (ispath(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if (!lifeforms[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return null
 
 	var/list/lifeform = GLOB.lifeforms.ToList(lifeform_type)
@@ -408,11 +408,11 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/AddLifeform(lifeform_type, lifeform_data)
 	if (!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	if (!lifeform_data)
-		crash_with("lifeform_data is null")
+		util_crash_with("lifeform_data is null")
 		return
 
 	if (ispath(lifeform_type))
@@ -444,7 +444,7 @@
 */
 /obj/machinery/computer/neuromod_rnd/proc/SaveLifeformToDisk(lifeform_type)
 	if (!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	var/obj/item/disk/lifeform_disk/lifeform_disk = GetLifeformDisk()
@@ -636,7 +636,7 @@
 	var/obj/item/reagent_containers/vessel/beaker/beaker = GetBeaker()
 
 	if (!beaker)
-		crash_with("beaker is null")
+		util_crash_with("beaker is null")
 
 	beaker.reagents.remove_reagent(/datum/reagent/mutagen, NEUROMODRND_MUTAGEN_NEEDED, TRUE)
 
@@ -803,7 +803,7 @@
 			var/obj/item/reagent_containers/neuromod_shell/N = GetNeuromodShell()
 
 			if (!N)
-				crash_with("Development over with no neuromod shell in the console!")
+				util_crash_with("Development over with no neuromod shell in the console!")
 				return
 
 			N.neuromod = selected_neuromod
