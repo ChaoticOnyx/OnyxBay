@@ -56,7 +56,7 @@ SUBSYSTEM_DEF(think)
 			continue
 
 		if(ctx.next_think <= ctx.last_think)
-			contexts_groups[ctx.group] -= ctx
+			ctx.stop()
 			continue
 
 		if(world.time >= ctx.next_think)

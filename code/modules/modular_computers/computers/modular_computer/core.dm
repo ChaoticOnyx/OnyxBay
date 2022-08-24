@@ -1,11 +1,11 @@
-/obj/item/modular_computer/Process()
+/obj/item/modular_computer/think()
 	if(!enabled) // The computer is turned off
 		last_power_usage = 0
-		return 0
+		return
 
 	if(damage > broken_damage)
 		shutdown_computer()
-		return 0
+		return
 
 	if(active_program && active_program.requires_ntnet && !get_ntnet_status(active_program.requires_ntnet_feature)) // Active program requires NTNet to run but we've just lost connection. Crash.
 		active_program.event_networkfailure(0)
@@ -33,9 +33,13 @@
 	handle_power() // Handles all computer power interaction
 	check_update_ui_need()
 
-	if(enabled && world.time > ambience_last_played + 60 SECONDS && prob(1))
-		ambience_last_played = world.time
+	set_next_think(world.time + 1 SECOND)
+
+/obj/item/modular_computer/proc/ambient_think()
+	if(enabled && prob(1))
 		playsound(src.loc, beepsounds,30,0,10, is_ambiance = 1)
+
+	set_next_think_ctx("ambient", 1 MINUTE)
 
 // Used to perform preset-specific hardware changes.
 /obj/item/modular_computer/proc/install_default_hardware()
@@ -55,7 +59,9 @@
 			hard_drive.store_file(prog_file)
 
 /obj/item/modular_computer/New()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
+	add_think_ctx("ambient", CALLBACK(src, .proc/ambient_think), world.time)
+
 	install_default_hardware()
 	if(hard_drive)
 		install_default_programs()
@@ -65,7 +71,6 @@
 
 /obj/item/modular_computer/Destroy()
 	kill_program(1)
-	STOP_PROCESSING(SSobj, src)
 	for(var/obj/item/computer_hardware/CH in src.get_all_components())
 		uninstall_component(null, CH)
 		qdel(CH)
@@ -158,6 +163,7 @@
 		visible_message("\The [src] shuts down.", range = 1)
 	enabled = 0
 	update_icon()
+	set_next_think(0)
 
 /obj/item/modular_computer/proc/enable_computer(mob/user = null)
 	playsound(src.loc, runsound, 50)
@@ -171,6 +177,8 @@
 
 	if(user)
 		ui_interact(user)
+
+	set_next_think(world.time)
 
 /obj/item/modular_computer/proc/minimize_program(mob/user)
 	if(!active_program || !processor_unit)

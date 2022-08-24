@@ -63,12 +63,10 @@ var/list/global/tank_gauge_cache = list()
 		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*T20C), 0)
 	air_contents.update_values()
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	update_icon(TRUE)
 
 /obj/item/tank/Destroy()
-	STOP_PROCESSING(SSobj, src)
-
 	QDEL_NULL(air_contents)
 	QDEL_NULL(proxyassembly)
 
@@ -351,11 +349,12 @@ var/list/global/tank_gauge_cache = list()
 		removed.volume = volume_to_return
 	return removed
 
-/obj/item/tank/Process()
+/obj/item/tank/think()
 	//Allow for reactions
 	air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
 	update_icon()
 	check_status()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/tank/update_icon(override)
 	var/needs_updating = override

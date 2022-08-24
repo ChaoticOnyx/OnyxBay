@@ -101,12 +101,12 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/die()
 	damage = max_damage
 	status |= ORGAN_DEAD
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	death_time = world.time
 	if(owner && vital)
 		owner.death()
 
-/obj/item/organ/Process()
+/obj/item/organ/think()
 	if(loc != owner)
 		owner = null
 
@@ -117,6 +117,7 @@ var/list/organ_cache = list()
 	//Process infections
 	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	if(!owner)
@@ -145,6 +146,8 @@ var/list/organ_cache = list()
 
 	if(food_organ)
 		update_food_from_organ()
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/organ/proc/cook_organ()
 	die()
@@ -282,7 +285,7 @@ var/list/organ_cache = list()
 	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))
 		var/datum/reagent/blood/organ_blood = locate(/datum/reagent/blood) in reagents.reagent_list //TODO fix this and all other occurences of locate(/datum/reagent/blood) horror

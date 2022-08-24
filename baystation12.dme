@@ -242,7 +242,6 @@
 #include "code\controllers\subsystems\processing\icon_updates.dm"
 #include "code\controllers\subsystems\processing\mobs.dm"
 #include "code\controllers\subsystems\processing\nano.dm"
-#include "code\controllers\subsystems\processing\obj.dm"
 #include "code\controllers\subsystems\processing\processing.dm"
 #include "code\controllers\subsystems\processing\think.dm"
 #include "code\controllers\subsystems\processing\vines.dm"

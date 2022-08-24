@@ -78,23 +78,22 @@
 	var/amount_grown = 0
 
 /obj/effect/spider/eggcluster/Initialize()
-		. = ..()
-		pixel_x = rand(3,-3)
-		pixel_y = rand(3,-3)
-		START_PROCESSING(SSobj, src)
+	. = ..()
+	pixel_x = rand(3,-3)
+	pixel_y = rand(3,-3)
+	set_next_think(world.time)
 
 /obj/effect/spider/eggcluster/New(location, atom/parent)
 	get_light_and_color(parent)
 	..()
 
 /obj/effect/spider/eggcluster/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	if(istype(loc, /obj/item/organ/external))
 		var/obj/item/organ/external/O = loc
 		O.implants -= src
 	. = ..()
 
-/obj/effect/spider/eggcluster/Process()
+/obj/effect/spider/eggcluster/think()
 	amount_grown += rand(0,2)
 	if(amount_grown >= 100)
 		var/num = rand(6,24)
@@ -107,6 +106,9 @@
 			if(O)
 				O.implants += spiderling
 		qdel(src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/spider/spiderling
 	name = "spiderling"
@@ -138,7 +140,7 @@
 	if(dormant)
 		register_signal(src, SIGNAL_MOVED, /obj/effect/spider/spiderling/proc/disturbed)
 	else
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 
 	get_light_and_color(parent)
 	. = ..()
@@ -152,7 +154,6 @@
 /obj/effect/spider/spiderling/Destroy()
 	if(dormant)
 		unregister_signal(src, SIGNAL_MOVED)
-	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
 /obj/effect/spider/spiderling/attackby(obj/item/W, mob/user)
@@ -170,7 +171,7 @@
 	dormant = FALSE
 
 	unregister_signal(src, SIGNAL_MOVED)
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/effect/spider/spiderling/Bump(atom/user)
 	if(istype(user, /obj/structure/table))
@@ -187,7 +188,7 @@
 	if(health <= 0)
 		die()
 
-/obj/effect/spider/spiderling/Process()
+/obj/effect/spider/spiderling/think()
 	if(travelling_in_vent)
 		if(istype(src.loc, /turf))
 			travelling_in_vent = 0
@@ -200,6 +201,8 @@
 					vents.Add(temp_vent)
 				if(!vents.len)
 					entry_vent = null
+
+					set_next_think(world.time + 1 SECOND)
 					return
 				var/obj/machinery/atmospherics/unary/vent_pump/exit_vent = pick(vents)
 				/*if(prob(50))
@@ -213,6 +216,7 @@
 						if(!exit_vent || exit_vent.welded)
 							loc = entry_vent
 							entry_vent = null
+							set_next_think(world.time + 1 SECOND)
 							return
 
 						if(prob(50))
@@ -223,6 +227,7 @@
 						if(!exit_vent || exit_vent.welded)
 							loc = entry_vent
 							entry_vent = null
+							set_next_think(world.time + 1 SECOND)
 							return
 						loc = exit_vent.loc
 						entry_vent = null
@@ -260,6 +265,8 @@
 		if(amount_grown >= 100)
 			new greater_form(src.loc, src)
 			qdel(src)
+			return
+
 	else if(isorgan(loc))
 		if(!amount_grown) amount_grown = 1
 		var/obj/item/organ/external/O = loc
@@ -280,6 +287,8 @@
 
 	if(amount_grown > 0)
 		amount_grown += rand(0,2)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/decal/cleanable/spiderling_remains
 	name = "spiderling remains"

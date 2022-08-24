@@ -25,7 +25,6 @@
 	if (istype(delivery))
 		delivery.wrapped = null
 
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/proc/is_used_on(obj/O, mob/user)

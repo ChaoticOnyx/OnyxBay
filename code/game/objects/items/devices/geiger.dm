@@ -14,19 +14,14 @@
 	var/scanning = 0
 	var/radiation_count = 0
 
-/obj/item/device/geiger/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/device/geiger/Process()
+/obj/item/device/geiger/think()
 	if(!scanning)
 		return
 	radiation_count = SSradiation.get_rads_at_turf(get_turf(src))
 	update_icon()
 
-	THROTTLE(sound_cooldown, 1 SECOND)
-	if(sound_cooldown)
-		play_sound()
+	play_sound()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/geiger/_examine_text(mob/user)
 	. = ..()
@@ -39,9 +34,9 @@
 /obj/item/device/geiger/attack_self(mob/user)
 	scanning = !scanning
 	if(scanning)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	else
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	update_icon()
 	to_chat(user, "<span class='notice'>\icon[src] You switch [scanning ? "on" : "off"] [src].</span>")
 

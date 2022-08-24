@@ -24,13 +24,7 @@
 
 /obj/item/gun/energy/temperature/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
-
-
-/obj/item/gun/energy/temperature/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
+	set_next_think(world.time)
 
 /obj/item/gun/energy/temperature/attack_self(mob/living/user)
 	user.set_machine(src)
@@ -62,7 +56,7 @@
 
 		attack_self(user)
 
-/obj/item/gun/energy/temperature/Process()
+/obj/item/gun/energy/temperature/think()
 	switch(temperature)
 		if(100 to 200) charge_cost = 10
 		if(201 to 200) charge_cost = 20
@@ -82,6 +76,8 @@
 				temperature += 10
 		else
 			temperature = current_temperature
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
 	if(temperature >= 450)

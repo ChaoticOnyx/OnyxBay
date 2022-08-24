@@ -6,14 +6,9 @@
 	arm_sound = 'sound/effects/3.wav'
 	var/implode_at
 
-/obj/item/grenade/supermatter/Destroy()
-	if(implode_at)
-		STOP_PROCESSING(SSobj, src)
-	. = ..()
-
 /obj/item/grenade/supermatter/detonate()
 	..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	implode_at = world.time + 10 SECONDS
 	update_icon()
 	playsound(src, 'sound/effects/weapons/energy/wave.ogg', 100)
@@ -23,7 +18,7 @@
 	if(implode_at)
 		overlays += image(icon = 'icons/obj/machines/power/fusion.dmi', icon_state = "emfield_s1")
 
-/obj/item/grenade/supermatter/Process()
+/obj/item/grenade/supermatter/think()
 	if(!isturf(loc))
 		if(ismob(loc))
 			var/mob/M = loc
@@ -34,3 +29,6 @@
 	if(world.time > implode_at)
 		explosion(loc, 0, 1, 3, 4)
 		qdel(src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)

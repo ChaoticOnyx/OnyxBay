@@ -17,7 +17,6 @@
 	var/base_active_power_usage = 50						// Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
 	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
-	var/ambience_last_played								// Last time sound was played
 	var/beepsounds = SFX_BEEP_COMP
 	var/runsound = 'sound/signals/on1.ogg'
 	var/offsound = 'sound/signals/off1.ogg'

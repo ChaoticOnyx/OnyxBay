@@ -152,9 +152,8 @@
 	body_parts_covered = HEAD
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/head/cakehat/Process()
+/obj/item/clothing/head/cakehat/think()
 	if(!onfire)
-		STOP_PROCESSING(SSobj, src)
 		return
 
 	var/turf/location = src.loc
@@ -165,6 +164,8 @@
 
 	if (istype(location, /turf))
 		location.hotspot_expose(700, 1)
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)
 	src.onfire = !( src.onfire )
@@ -173,7 +174,7 @@
 		src.damtype = "fire"
 		src.icon_state = "cake1"
 		src.item_state = "cake1"
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	else
 		src.force = null
 		src.damtype = "brute"

@@ -44,17 +44,10 @@
 		reagent_volumes[T] = volume
 		var/datum/reagent/R = T
 		reagent_names += initial(R.name)
-	START_PROCESSING(SSobj, src)
+	
+	set_next_think(world.time)
 
-/obj/item/reagent_containers/borghypo/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/reagent_containers/borghypo/Process() //Every [recharge_time] seconds, recharge some reagents for the cyborg+
-	if(++charge_tick < recharge_time)
-		return 0
-	charge_tick = 0
-
+/obj/item/reagent_containers/borghypo/think() //Every [recharge_time] seconds, recharge some reagents for the cyborg+
 	if(isrobot(loc))
 		var/mob/living/silicon/robot/R = loc
 		if(R && R.cell)
@@ -62,7 +55,8 @@
 				if(reagent_volumes[T] < volume)
 					R.cell.use(charge_cost)
 					reagent_volumes[T] = min(reagent_volumes[T] + 5, volume)
-	return 1
+
+	set_next_think(recharge_time)
 
 /obj/item/reagent_containers/borghypo/attack(mob/living/M, mob/user, target_zone)
 	if(!istype(M))

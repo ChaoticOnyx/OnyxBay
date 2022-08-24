@@ -546,8 +546,6 @@
 
 /obj/item/shockpaddles/standalone/Destroy()
 	. = ..()
-	if(fail_counter)
-		STOP_PROCESSING(SSobj, src)
 
 /obj/item/shockpaddles/standalone/check_charge(charge_amt)
 	return 1
@@ -556,11 +554,13 @@
 	SSradiation.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
 	return 1
 
-/obj/item/shockpaddles/standalone/Process()
+/obj/item/shockpaddles/standalone/think()
 	if(fail_counter > 0)
 		SSradiation.radiate(src, fail_counter--)
 	else
-		STOP_PROCESSING(SSobj, src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/shockpaddles/standalone/emp_act(severity)
 	..()
@@ -575,7 +575,7 @@
 				to_chat(loc, "<span class='warning'>\The [src] feel pleasantly warm.</span>")
 
 	if(new_fail && !fail_counter)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	fail_counter = new_fail
 
 /obj/item/shockpaddles/standalone/traitor

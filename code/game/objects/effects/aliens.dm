@@ -76,16 +76,16 @@
 
 /obj/structure/alien/egg/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/structure/alien/egg/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/structure/alien/egg/Process()
+/obj/structure/alien/egg/think()
 	progress++
+
 	if(progress >= progress_max*2)
 		hatch()
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/alien/egg/attack_hand(mob/user)
 	if(progress == -1)
@@ -127,7 +127,7 @@
 	set waitfor = 0
 
 	progress = -1
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 	flick("egg_opening", src)
 	sleep(5)

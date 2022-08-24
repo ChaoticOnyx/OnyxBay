@@ -41,14 +41,14 @@
 /obj/item/device/t_scanner/proc/set_active(active)
 	on = active
 	if(on)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 	else
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		set_user_client(null)
 	update_icon()
 
 //If reset is set, then assume the client has none of our overlays, otherwise we only send new overlays.
-/obj/item/device/t_scanner/Process()
+/obj/item/device/t_scanner/think()
 	if(!on)
 		return
 
@@ -61,6 +61,7 @@
 
 	//no sense processing if no-one is going to see it.
 	if(!user_client)
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	//get all objects in scan range
@@ -78,6 +79,8 @@
 	for(var/obj/O in update_remove)
 		user_client.images -= active_scanned[O]
 		active_scanned -= O
+
+	set_next_think(world.time + 1 SECOND)
 
 //creates a new overlay for a scanned object
 /obj/item/device/t_scanner/proc/get_overlay(atom/movable/scanned)
