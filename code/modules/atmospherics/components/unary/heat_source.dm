@@ -153,7 +153,7 @@
 			bin_rating += P.rating
 
 	max_power_rating = initial(max_power_rating) * cap_rating / 2
-	max_temperature = max(initial(max_temperature) - (-20 CELSIUS), 0) * ((bin_rating * 4 + cap_rating) / 5) + (20 CELSIUS)
+	max_temperature = max(initial(max_temperature) - (20 CELSIUS), 0) * ((bin_rating * 4 + cap_rating) / 5) + (20 CELSIUS)
 	air_contents.volume = max(initial(internal_volume) - 200, 0) + 200 * bin_rating
 	set_power_level(power_setting)
 

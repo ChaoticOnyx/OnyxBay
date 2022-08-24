@@ -196,7 +196,7 @@
 	*/
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		var/outer_temp = 0.1 * temperature + (0 CELSIUS)
+	var/outer_temp = CONV_C2K(0.1 * temperature)
 		if(outer_temp > environment.temperature) //sharing the heat
 			var/heat_transfer = environment.get_thermal_energy_change(outer_temp)
 			if(heat_transfer > 1)
@@ -225,7 +225,7 @@
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
 		var/ratio = min(environment.return_pressure()/ONE_ATMOSPHERE, 1)
-		var/ambient = environment.temperature - (-20 CELSIUS)
+		var/ambient = environment.temperature - (20 CELSIUS)
 		cooling_temperature += ambient*ratio
 
 	if (temperature > cooling_temperature)
@@ -249,7 +249,7 @@
 	var/plasma = (sheets+sheet_left)*20
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		environment.adjust_gas_temp("plasma", plasma/10, temperature + (0 CELSIUS))
+		environment.adjust_gas_temp("plasma", plasma/10, CONV_C2K(temperature))
 
 	sheets = 0
 	sheet_left = 0

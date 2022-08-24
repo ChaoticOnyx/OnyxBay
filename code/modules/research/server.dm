@@ -53,7 +53,7 @@
 /obj/machinery/r_n_d/server/Process()
 	var/datum/gas_mixture/environment = loc.return_air()
 	switch(environment.temperature)
-		if(0 to (0 CELSIUS))
+		if((0 KELVIN) to (0 CELSIUS))
 			health = min(100, health + 1)
 		if((0 CELSIUS) to (40 CELSIUS))
 			health = between(0, health, 100)

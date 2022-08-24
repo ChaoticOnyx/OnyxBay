@@ -165,7 +165,7 @@
 	data["cellTemperatureStatus"] = "good"
 	if(air_contents.temperature > (0 CELSIUS))
 		data["cellTemperatureStatus"] = "bad"
-	else if(air_contents.temperature > 170)
+	else if(air_contents.temperature > (170 KELVIN))
 		data["cellTemperatureStatus"] = "average"
 
 	data["isBeakerLoaded"] = beaker ? 1 : 0
