@@ -148,7 +148,7 @@ REAGENT SCANNER
 
 	var/status_data = list()
 	// Body temperature.
-	status_data += "<span class='notice'>Body temperature: <b>[H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
+	status_data += "<span class='notice'>Body temperature: <b>[convert_k2c(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
 	switch(H.radiation)

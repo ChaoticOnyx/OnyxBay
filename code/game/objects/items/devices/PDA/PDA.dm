@@ -499,7 +499,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					"oxygen" = "[round(o2_level*100,0.1)]",\
 					"carbon_dioxide" = "[round(co2_level*100,0.1)]",\
 					"other" = "[round(unknown_level*100,0.01)]",\
-					"temp" = "[round(environment.temperature-T0C,0.1)]",\
+					"temp" = "[round(convert_k2c(environment.temperature),0.1)]",\
 					"reading" = 1\
 					)
 		if(isnull(data["aircontents"]))

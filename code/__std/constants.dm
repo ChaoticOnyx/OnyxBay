@@ -14,18 +14,12 @@
 
 #define RADIATOR_EXPOSED_SURFACE_AREA_RATIO 0.04 // (3 cm + 100 cm * sin(3deg))/(2*(3+100 cm)). Unitless ratio.
 #define HUMAN_EXPOSED_SURFACE_AREA          5.2 //m^2, surface area of 1.7m (H) x 0.46m (D) cylinder
-
-#define T0C   273.15 //    0.0 degrees celsius
-#define T20C  293.15 //   20.0 degrees celsius
-#define TCMB  2.7    // -270.3 degrees celsius
+#define TCMB  (-270.45 CELSIUS)
 
 #define ATMOS_PRECISION 0.0001
 #define QUANTIZE(variable) (round(variable, ATMOS_PRECISION))
 
 #define INFINITY	1.#INF
-
-#define TICKS_IN_DAY 		24*60*60*10
-#define TICKS_IN_SECOND 	10
 
 #define SIMPLE_SIGN(X) ((X) < 0 ? -1 : 1)
 #define SIGN(X)        ((X) ? SIMPLE_SIGN(X) : 0)

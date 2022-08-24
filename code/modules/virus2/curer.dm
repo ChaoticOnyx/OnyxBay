@@ -4,7 +4,7 @@
 	icon_keyboard = "med_key"
 	icon_screen = "dna"
 	circuit = /obj/item/circuitboard/curefab
-	idle_power_usage = 500
+	idle_power_usage = 500 WATTS
 	var/curing
 	var/virusing
 

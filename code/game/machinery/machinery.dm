@@ -93,8 +93,8 @@ Class Procs:
 		//0 = dont run the auto
 		//1 = run auto, use idle
 		//2 = run auto, use active
-	var/idle_power_usage = 0
-	var/active_power_usage = 0
+	var/idle_power_usage = 0 WATTS
+	var/active_power_usage = 0 WATTS
 	var/power_channel = STATIC_EQUIP //STATIC_EQUIP, STATIC_ENVIRON or STATIC_LIGHT
 	/* List of types that should be spawned as component_parts for this machine.
 		Structure:
@@ -121,7 +121,7 @@ Class Procs:
 	var/beep_last_played = 0
 	var/list/beepsounds = null
 
-	var/current_power_usage = 0 // How much power are we currently using, dont change by hand, change power_usage vars and then use set_power_use
+	var/current_power_usage = 0 WATTS // How much power are we currently using, dont change by hand, change power_usage vars and then use set_power_use
 	var/area/current_power_area // What area are we powering currently
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
@@ -432,7 +432,7 @@ Class Procs:
 		current_power_area.removeStaticPower(current_power_usage, power_channel)
 		current_power_area = null
 
-	current_power_usage = 0
+	current_power_usage = 0 WATTS
 	use_power = new_use_power
 
 	var/area/A = get_area(src)

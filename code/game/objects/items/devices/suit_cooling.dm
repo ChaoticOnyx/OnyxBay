@@ -27,8 +27,8 @@
 	var/cover_open = 0						//is the cover open?
 	var/obj/item/cell/cell
 	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
-	var/charge_consumption = 2 KILOWATTS	// energy usage at full power
-	var/thermostat = T20C
+	var/charge_consumption = 2 KILO WATTS	// energy usage at full power
+	var/thermostat = 20 CELSIUS
 
 /obj/item/device/suit_cooling_unit/ui_action_click()
 	toggle(usr)

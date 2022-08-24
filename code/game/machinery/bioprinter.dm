@@ -10,8 +10,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	idle_power_usage = 40
-	active_power_usage = 300
+	idle_power_usage = 40 WATTS
+	active_power_usage = 300 WATTS
 
 	var/stored_matter = 0
 	var/max_stored_matter = 0

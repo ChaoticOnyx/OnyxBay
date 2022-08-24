@@ -8,7 +8,7 @@
 	desc = "Use to research neuromod's data disks and fill neuromod's shells."
 	icon_keyboard = "telesci_key"
 	icon_screen = "dna"
-	active_power_usage = 800
+	active_power_usage = 800 WATTS
 	clicksound = 'sound/machines/console_click.ogg'
 	circuit = /obj/item/circuitboard/neuromod_rnd
 
@@ -27,8 +27,8 @@
 	var/datum/neuromod/selected_neuromod = null	// Contains path to a neuromod
 
 	// ENERGY CONSUMPTION
-	active_power_usage = 15 KILOWATTS
-	idle_power_usage = 40
+	active_power_usage = 15 KILO WATTS
+	idle_power_usage = 40 WATTS
 
 	// Disks which this console accepts
 	var/list/accepts_disks = list(/obj/item/disk/neuromod_disk, /obj/item/disk/lifeform_disk)

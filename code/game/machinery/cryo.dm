@@ -10,8 +10,8 @@
 	layer = ABOVE_HUMAN_LAYER // this needs to be fairly high so it displays over most things, but it needs to be under lighting
 
 	var/on = 0
-	idle_power_usage = 20
-	active_power_usage = 200
+	idle_power_usage = 20 WATTS
+	active_power_usage = 200 WATTS
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
 
@@ -163,7 +163,7 @@
 
 	data["cellTemperature"] = round(air_contents.temperature)
 	data["cellTemperatureStatus"] = "good"
-	if(air_contents.temperature > T0C) // if greater than 273.15 kelvin (0 celcius)
+	if(air_contents.temperature > (0 CELSIUS))
 		data["cellTemperatureStatus"] = "bad"
 	else if(air_contents.temperature > 170)
 		data["cellTemperatureStatus"] = "average"
@@ -337,7 +337,7 @@
 	var/air_heat_capacity = air_contents.heat_capacity()
 	var/combined_heat_capacity = current_heat_capacity + air_heat_capacity
 	if(combined_heat_capacity > 0)
-		var/combined_energy = T20C*current_heat_capacity + air_heat_capacity*air_contents.temperature
+		var/combined_energy = (20 CELSIUS) * current_heat_capacity + air_heat_capacity * air_contents.temperature
 		air_contents.temperature = combined_energy/combined_heat_capacity
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()

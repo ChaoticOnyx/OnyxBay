@@ -38,7 +38,7 @@
 	var/hatch_open = 0
 
 	power_channel = STATIC_ENVIRON
-	idle_power_usage = 5
+	idle_power_usage = 5 WATTS
 
 	var/list/tile_info[4]
 	var/list/dir_alerts[4] // 4 dirs, bitflags

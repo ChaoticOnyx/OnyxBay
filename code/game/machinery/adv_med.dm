@@ -18,8 +18,8 @@
 		/obj/item/stock_parts/manipulator = 4,
 	)
 
-	idle_power_usage = 60
-	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
+	idle_power_usage = 60 WATTS
+	active_power_usage = 10 KILO WATTS // It's a big all-body scanner.
 
 /obj/machinery/bodyscanner/Destroy()
 	go_out()
@@ -407,7 +407,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = H.bodytemperature - T0C
+	data["body_temperature_c"] = convert_k2c(H.bodytemperature)
 	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
 
 	if(H.nutrition < 150)
@@ -554,7 +554,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [convert_k2c(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
 		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 

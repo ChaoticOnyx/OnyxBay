@@ -135,8 +135,8 @@
 	if(!environment)
 		return
 
-	if(environment.temperature > (T0C+66))
-		adjustFireLoss((environment.temperature - (T0C+66))/5) // Might be too high, check in testing.
+	if(environment.temperature > (66 CELSIUS))
+		adjustFireLoss((environment.temperature - (66 CELSIUS))/5) // Might be too high, check in testing.
 		if(fire)
 			fire.icon_state = "fire2"
 		if(prob(20))

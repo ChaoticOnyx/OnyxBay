@@ -17,8 +17,8 @@
 	var/heat_capacity = 1
 
 	//Properties for both
-	var/temperature = T20C      // Initial turf temperature.
-	var/blocks_air = 0          // Does this turf contain air/let air through?
+	var/temperature = 20 CELSIUS // Initial turf temperature.
+	var/blocks_air = 0           // Does this turf contain air/let air through?
 
 	var/list/explosion_throw_details
 

@@ -92,7 +92,7 @@
 /datum/reagent/toxin/plasma/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("plasma", volume, T20C)
+	T.assume_gas("plasma", volume, 20 CELSIUS)
 	remove_self(volume)
 
 // Produced during deuterium synthesis. Super poisonous, SUPER flammable (doesn't need oxygen to burn).
@@ -105,8 +105,8 @@
 /datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("oxygen", ceil(volume/2), T20C)
-	T.assume_gas("plasma", ceil(volume/2), T20C)
+	T.assume_gas("oxygen", ceil(volume/2), 20 CELSIUS)
+	T.assume_gas("plasma", ceil(volume/2), 20 CELSIUS)
 	remove_self(volume)
 
 /datum/reagent/toxin/cyanide //Fast and Lethal

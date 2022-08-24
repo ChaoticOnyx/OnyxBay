@@ -4,8 +4,8 @@
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "camera"
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 5
-	active_power_usage = 10
+	idle_power_usage = 5 WATTS
+	active_power_usage = 10 WATTS
 
 	layer = CAMERA_LAYER
 

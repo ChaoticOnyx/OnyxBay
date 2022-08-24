@@ -134,7 +134,7 @@
 	desc = "A warm sweatshirt."
 	icon_state = "hoodie"
 	item_state = "hoodie"
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
 	hoodtype = /obj/item/clothing/head/hoodiehood
@@ -144,6 +144,6 @@
 	desc = "A hood attached to a warm sweatshirt."
 	icon_state = "generic_hood"
 	body_parts_covered = HEAD
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR

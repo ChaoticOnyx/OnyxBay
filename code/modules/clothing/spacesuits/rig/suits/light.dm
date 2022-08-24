@@ -81,7 +81,7 @@
 	siemens_coefficient = 0.2 //heavy powersuit level shock protection
 	emp_protection = 40 //change this to 30 if too high.
 	online_slowdown = 0
-	aimove_power_usage = 50
+	aimove_power_usage = 50 WATTS
 	chest_type = /obj/item/clothing/suit/space/rig/light/ninja
 	glove_type = /obj/item/clothing/gloves/rig/light/ninja
 	cell_type =  /obj/item/cell/hyper

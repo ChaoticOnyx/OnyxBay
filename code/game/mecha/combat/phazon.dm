@@ -18,7 +18,7 @@
 	internal_damage_threshold = 25
 	force = 15
 	var/phasing = 0
-	var/phasing_energy_drain = 5 KILOWATTS
+	var/phasing_energy_drain = 5 KILO WATTS
 	max_equip = 4
 
 /obj/mecha/combat/phazon/Initialize()

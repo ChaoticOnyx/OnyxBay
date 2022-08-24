@@ -24,8 +24,8 @@
 	var/alt_icons = list()
 
 	// Power
-	idle_power_usage = 10
-	var/vend_power_usage = 150 //actuators and stuff
+	idle_power_usage = 10 WATTS
+	var/vend_power_usage = 150 WATTS //actuators and stuff
 
 	// Vending-related
 	var/vend_ready = TRUE // Are we ready to vend?? Is it time??

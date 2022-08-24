@@ -1,27 +1,22 @@
-
-//////////////////////
-//PriorityQueue object
-//////////////////////
-
 //an ordered list, using the cmp proc to weight the list elements
-/PriorityQueue
+/datum/priority_queue
 	var/list/L //the actual queue
 	var/cmp //the weight function used to order the queue
 
-/PriorityQueue/New(compare)
+/datum/priority_queue/New(compare)
 	L = new()
 	cmp = compare
 
-/PriorityQueue/proc/IsEmpty()
+/datum/priority_queue/proc/IsEmpty()
 	return !L.len
 
 //add an element in the list,
 //immediatly ordering it to its position using dichotomic search
-/PriorityQueue/proc/Enqueue(atom/A)
+/datum/priority_queue/proc/Enqueue(atom/A)
 	ADD_SORTED(L, A, cmp)
 
 //removes and returns the first element in the queue
-/PriorityQueue/proc/Dequeue()
+/datum/priority_queue/proc/Dequeue()
 	if(!L.len)
 		return 0
 	. = L[1]
@@ -29,29 +24,29 @@
 	Remove(.)
 
 //removes an element
-/PriorityQueue/proc/Remove(atom/A)
+/datum/priority_queue/proc/Remove(atom/A)
 	. = L.Remove(A)
 
 //returns a copy of the elements list
-/PriorityQueue/proc/List()
+/datum/priority_queue/proc/List()
 	. = L.Copy()
 
 //return the position of an element or 0 if not found
-/PriorityQueue/proc/Seek(atom/A)
+/datum/priority_queue/proc/Seek(atom/A)
 	. = L.Find(A)
 
 //return the element at the i_th position
-/PriorityQueue/proc/Get(i)
+/datum/priority_queue/proc/Get(i)
 	if(i > L.len || i < 1)
 		return 0
 	return L[i]
 
 //return the length of the queue
-/PriorityQueue/proc/Length()
+/datum/priority_queue/proc/Length()
 	. = L.len
 
 //replace the passed element at it's right position using the cmp proc
-/PriorityQueue/proc/ReSort(atom/A)
+/datum/priority_queue/proc/ReSort(atom/A)
 	var/i = Seek(A)
 	if(i == 0)
 		return

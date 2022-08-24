@@ -142,9 +142,9 @@
 		return
 
 /obj/item/reagent_containers/rag/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature >= 50 + T0C)
+	if(exposed_temperature >= (50 CELSIUS))
 		ignite()
-	if(exposed_temperature >= 900 + T0C)
+	if(exposed_temperature >= (900 CELSIUS))
 		new /obj/effect/decal/cleanable/ash(get_turf(src))
 		qdel(src)
 

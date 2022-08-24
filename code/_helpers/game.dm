@@ -605,10 +605,10 @@
 	return abs(minp - maxp)
 
 /proc/convert_k2c(temp)
-	return ((temp - T0C))
+	return ((temp - 273.15))
 
 /proc/convert_c2k(temp)
-	return ((temp + T0C))
+	return ((temp + 273.15))
 
 /proc/getCardinalAirInfo(turf/loc, list/stats = list("temperature"))
 	var/list/temps = new /list(4)

@@ -76,8 +76,8 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/main
 	name = "gravitational generator panel"
 	icon_state = "0_8"
-	idle_power_usage = 0
-	active_power_usage = 100000
+	idle_power_usage = 0 WATTS
+	active_power_usage = 100 KILO WATTS
 	power_channel = STATIC_ENVIRON
 	sprite_number = 8
 	use_power = POWER_USE_ACTIVE

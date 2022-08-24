@@ -3,7 +3,7 @@
 	name = "hydraulic clamp"
 	icon_state = "mecha_clamp"
 	equip_cooldown = 15
-	energy_drain = 1 KILOWATTS
+	energy_drain = 1 KILO WATT
 	var/dam_force = 35
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working
@@ -82,7 +82,7 @@
 	desc = "This is the drill that'll pierce the heavens! (Can be attached to: Combat and Engineering Exosuits)"
 	icon_state = "mecha_drill"
 	equip_cooldown = 30
-	energy_drain = 3 KILOWATTS
+	energy_drain = 3 KILO WATTS
 	force = 15
 	required_type = list(/obj/mecha/working/ripley, /obj/mecha/combat)
 	var/drillpower = 1
@@ -155,7 +155,7 @@
 	icon_state = "mecha_resonant_drill"
 	origin_tech = list(TECH_MATERIAL = 6, TECH_POWER = 4, TECH_ENGINEERING = 4, TECH_BLUESPACE = 4)
 	equip_cooldown = 10
-	energy_drain = 10 KILOWATTS
+	energy_drain = 10 KILO WATTS
 	drillpower = 3
 
 
@@ -250,7 +250,7 @@
 	icon_state = "mecha_rcd"
 	origin_tech = list(TECH_MATERIAL = 4, TECH_BLUESPACE = 3, TECH_MAGNET = 4, TECH_POWER = 4)
 	equip_cooldown = 10
-	energy_drain = 25 KILOWATTS
+	energy_drain = 25 KILO WATTS
 	range = MELEE|RANGED
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 	var/disabled = 0 //malf
@@ -358,7 +358,7 @@
 	icon_state = "mecha_teleport"
 	origin_tech = list(TECH_BLUESPACE = 10)
 	equip_cooldown = 150
-	energy_drain = 200 KILOWATTS
+	energy_drain = 200 KILO WATTS
 	range = RANGED
 	equip_slot = BACK
 
@@ -382,7 +382,7 @@
 	icon_state = "mecha_wholegen"
 	origin_tech = list(TECH_BLUESPACE = 3)
 	equip_cooldown = 50
-	energy_drain = 50 KILOWATTS
+	energy_drain = 50 KILO WATTS
 	range = RANGED
 
 /obj/item/mecha_parts/mecha_equipment/wormhole_generator/action(atom/target)
@@ -435,7 +435,7 @@
 	icon_state = "mecha_teleport"
 	origin_tech = list(TECH_BLUESPACE = 2, TECH_MAGNET = 3)
 	equip_cooldown = 10
-	energy_drain = 10 KILOWATTS
+	energy_drain = 10 KILO WATTS
 	range = MELEE|RANGED
 	equip_slot = BACK
 	var/atom/movable/locked
@@ -514,7 +514,7 @@
 	desc = "Powered armor-enhancing mech equipment."
 	icon_state = "mecha_abooster_proj"
 	equip_cooldown = 10
-	energy_drain = 5 KILOWATTS
+	energy_drain = 5 KILO WATTS
 	range = 0
 	has_equip_overlay = FALSE
 	var/deflect_coeff = 1
@@ -606,7 +606,7 @@
 	icon_state = "repair_droid"
 	origin_tech = list(TECH_MAGNET = 3, TECH_DATA = 3)
 	equip_cooldown = 20
-	energy_drain = 10 KILOWATTS
+	energy_drain = 10 KILO WATTS
 	range = 0
 	has_equip_overlay = FALSE
 	var/health_boost = 2
@@ -794,7 +794,7 @@
 	var/max_fuel = 150000
 	var/fuel_per_cycle_idle = 100
 	var/fuel_per_cycle_active = 500
-	var/power_per_cycle = 1 KILOWATTS
+	var/power_per_cycle = 1 KILO WATTS
 
 /obj/item/mecha_parts/mecha_equipment/generator/New()
 	..()
@@ -880,11 +880,11 @@
 		return
 	var/datum/gas_mixture/GM = new
 	if(prob(10))
-		T.assume_gas("plasma", 100, 1500+T0C)
+		T.assume_gas("plasma", 100, 1500 CELSIUS)
 		T.visible_message("The [src] suddenly disgorges a cloud of heated plasma.")
 		destroy()
 	else
-		T.assume_gas("plasma", 5, istype(T) ? T.air.temperature : T20C)
+		T.assume_gas("plasma", 5, istype(T) ? T.air.temperature : (20 CELSIUS))
 		T.visible_message("The [src] suddenly disgorges a cloud of plasma.")
 	T.assume_air(GM)
 	return
@@ -924,7 +924,7 @@
 	max_fuel = 50000
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30
-	power_per_cycle = 5 KILOWATTS
+	power_per_cycle = 5 KILO WATTS
 	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	var/rad_per_cycle = 0.3
 
@@ -1015,7 +1015,7 @@
 	desc = "A mountable passenger compartment for exo-suits. Rather cramped."
 	icon_state = "mecha_passenger"
 	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 1)
-	energy_drain = 1 KILOWATTS
+	energy_drain = 1 KILO WATTS
 	range = MELEE
 	equip_cooldown = 20
 	has_equip_overlay = FALSE
@@ -1305,7 +1305,7 @@
 	icon_state = "servo"
 	equip_cooldown = 10
 	equip_ready = FALSE
-	energy_drain = 2 KILOWATTS
+	energy_drain = 2 KILO WATTS
 	range = 0
 	required_type = /obj/mecha/working
 	has_equip_overlay = FALSE

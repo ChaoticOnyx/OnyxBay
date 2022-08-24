@@ -1,7 +1,7 @@
 /obj/item/modular_computer/think()
 	if(!enabled) // The computer is turned off
-		last_power_usage = 0
-		return
+		last_power_usage = 0 WATTS
+		return 0
 
 	if(damage > broken_damage)
 		shutdown_computer()

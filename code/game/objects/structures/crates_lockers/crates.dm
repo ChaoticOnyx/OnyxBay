@@ -178,7 +178,7 @@
 	icon_state = "freezer"
 	icon_opened = "freezeropen"
 	icon_closed = "freezer"
-	var/target_temp = T0C - 40
+	var/target_temp = -40 CELSIUS
 	var/cooling_power = 40
 
 	return_air()

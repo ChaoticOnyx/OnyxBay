@@ -11,8 +11,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	idle_power_usage = 50
-	active_power_usage = 200
+	idle_power_usage = 50 WATTS
+	active_power_usage = 200 WATTS
 	interact_offline = 1
 	req_access = list()
 

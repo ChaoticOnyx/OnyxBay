@@ -37,9 +37,9 @@
 	. = ..()
 	airtank = new()
 	if(syndi)
-		airtank.temperature = T0C - 25
+		airtank.temperature = -25 CELSIUS
 	else
-		airtank.temperature = T0C
+		airtank.temperature = 0 CELSIUS
 	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
 	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
 	update_icon()

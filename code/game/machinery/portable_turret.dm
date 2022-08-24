@@ -14,8 +14,8 @@
 	anchored = 1
 
 	density = 0
-	idle_power_usage = 50		//when inactive, this turret takes up constant 50 Equipment power
-	active_power_usage = 300	//when active, this turret takes up constant 300 Equipment power
+	idle_power_usage = 50 WATTS		//when inactive, this turret takes up constant 50 Equipment power
+	active_power_usage = 300 WATTS	//when active, this turret takes up constant 300 Equipment power
 	power_channel = STATIC_EQUIP	//drains power from the EQUIPMENT channel
 
 	var/raised = 0			//if the turret cover is "open" and the turret is raised

@@ -8,7 +8,7 @@
 	power_channel = STATIC_ENVIRON
 	var/frequency = 0
 	var/id
-	idle_power_usage = 15
+	idle_power_usage = 15 WATTS
 
 /obj/machinery/meter/Initialize()
 	. = ..()
@@ -86,7 +86,7 @@
 	else if(src.target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
-			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)"
+			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(convert_k2c(environment.temperature), 0.01)]&deg;C)"
 		else
 			. += "\nThe sensor error light is blinking."
 	else

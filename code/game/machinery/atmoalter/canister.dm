@@ -14,7 +14,7 @@
 	var/canister_color = "yellow"
 	var/can_label = 1
 	start_pressure = 45 * ONE_ATMOSPHERE
-	var/temperature_resistance = 1000 + T0C
+	var/temperature_resistance = 1000 CELSIUS
 	volume = 1000
 	interact_offline = 1 // Allows this to be used when not in powered area.
 	var/release_log = ""
