@@ -14,7 +14,7 @@
 	icon_state = "kidneys-prosthetic"
 	dead_icon = "kidneys-prosthetic-br"
 
-/obj/item/organ/internal/kidneys/Process()
+/obj/item/organ/internal/kidneys/think()
 	..()
 
 	if(!owner)
@@ -37,5 +37,3 @@
 				owner.adjustToxLoss(0.5)
 			if(status & ORGAN_DEAD)
 				owner.adjustToxLoss(1)
-
-
