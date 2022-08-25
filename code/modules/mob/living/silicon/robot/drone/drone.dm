@@ -267,6 +267,7 @@ var/list/mob_hat_cache = list()
 	emagged = 1
 	lawupdate = 0
 	connected_ai = null
+	release_ai_control("<b>WARNING: remote system failure. Connection rejected.</b>")
 	clear_supplied_laws()
 	clear_inherent_laws()
 	QDEL_NULL(laws)
