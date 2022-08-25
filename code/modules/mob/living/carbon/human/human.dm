@@ -1692,7 +1692,7 @@
 
 //Determine body temperature
 /mob/living/carbon/human/proc/get_body_temperature()
-	if ((isfakeliving(src)) && !(species.body_temperature == null))
+	if ((isfakeliving(src)) && species.body_temperature != null)
 		return species.body_temperature + (species.passive_temp_gain * 3)
 	return bodytemperature
 
