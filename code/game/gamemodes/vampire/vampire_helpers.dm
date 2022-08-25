@@ -50,9 +50,9 @@
 // Proc to safely remove blood, without resulting in negative amounts of blood.
 /datum/vampire/proc/use_blood(blood_to_use)
 	if (!blood_to_use || blood_to_use <= 0)
-		return
+		return FALSE
 	blood_usable -= min(blood_to_use, blood_usable)
-	return
+	return TRUE
 
 /datum/vampire/proc/gain_blood(blood_to_get, source)
 	blood_usable += blood_to_get
@@ -257,8 +257,8 @@
 		vampire_stop_frenzy(1)
 
 /mob/proc/handle_vampire()
-	// Apply frenzy while in the chapel.
-	if (get_area(loc).holy)
+	// Apply frenzy while in the holy location.
+	if (get_area(loc)?.holy)
 		mind.vampire.frenzy += 3		
 		if(prob(20))
 			to_chat(src, "You feel like you`re burning!")

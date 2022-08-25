@@ -881,7 +881,7 @@
 		return
 	
 	if (isfakeliving(user))
-		if (user.stat == 2)
+		if (user.stat == DEAD)
 			to_chat(user, SPAN_WARNING("You cannot appear alive while dead"))
 			user.status_flags &= ~FAKELIVING
 
@@ -889,6 +889,7 @@
 		if (vampire.blood_usable < 5)
 			user.status_flags &= ~FAKELIVING
 			to_chat(user, SPAN_WARNING("You no longer pretend to be prey."))
+			return
 		addtimer(CALLBACK(vampire, /datum/vampire/proc/handle_revitalise), 20 SECONDS)
 	return
 
