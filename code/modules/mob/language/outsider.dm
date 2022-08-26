@@ -150,7 +150,7 @@
 
 /datum/language/zombie
 	name = LANGUAGE_ZOMBIE
-	desc = "The chants of the occult, the incomprehensible."
+	desc = "The chants of the zombies, the incomprehensible."
 	speech_verb = "burps"
 	ask_verb = "snaps"
 	exclaim_verb = "grumble"
