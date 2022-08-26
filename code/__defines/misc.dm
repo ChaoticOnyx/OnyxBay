@@ -290,3 +290,6 @@
 #define NOTIFY_JUMP "jump"
 #define NOTIFY_ATTACK "attack"
 #define NOTIFY_FOLLOW "follow"
+
+#define and &&
+#define or ||
