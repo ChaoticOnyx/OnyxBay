@@ -154,22 +154,22 @@
 /obj/item/integrated_circuit/logic/binary/not_equals/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data != B.data
 
-/obj/item/integrated_circuit/logic/binary/and
+/obj/item/integrated_circuit/logic/binary/and_gate
 	name = "and gate"
 	desc = "This gate will output TRUE if both inputs evaluate to true."
 	icon_state = "and"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/and/do_compare(datum/integrated_io/A, datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/and_gate/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data && B.data
 
-/obj/item/integrated_circuit/logic/binary/or
+/obj/item/integrated_circuit/logic/binary/or_gate
 	name = "or gate"
 	desc = "This gate will output TRUE if one of the inputs evaluate to true."
 	icon_state = "or"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/or/do_compare(datum/integrated_io/A, datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/or_gate/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data || B.data
 
 /obj/item/integrated_circuit/logic/binary/less_than
