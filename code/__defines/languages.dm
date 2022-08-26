@@ -11,6 +11,7 @@
 #define LANGUAGE_LUNAR "Selenian"
 #define LANGUAGE_GUTTER "Gutter"
 #define LANGUAGE_CULT "Cult"
+#define LANGUAGE_ZOMBIE "Zombie"
 #define LANGUAGE_SIGN "Sign Language"
 #define LANGUAGE_INDEPENDENT "Independent"
 #define LANGUAGE_NABBER "Serpentid"

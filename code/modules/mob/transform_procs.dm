@@ -306,7 +306,7 @@
 	return 0
 
 
-//This is barely a transformation but probably best file for it.
+//This is barely a transformation but probably best file for it.d
 /mob/living/carbon/human/proc/zombify()
 	ChangeToHusk()
 	mutations |= MUTATION_CLUMSY
@@ -330,4 +330,7 @@
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume
 	remove_language(LANGUAGE_GALCOM)
+	add_language(LANGUAGE_ZOMBIE)
+	species_language = LANGUAGE_ZOMBIE
+	default_language = LANGUAGE_ZOMBIE
 	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)

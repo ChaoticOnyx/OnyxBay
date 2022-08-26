@@ -147,3 +147,17 @@
 		if(isabductor(player))
 			if(player.mind.abductor.team.team_number == speaker.mind.abductor.team.team_number)
 				player.hear_broadcast(src, speaker, speaker_mask, message)
+
+/datum/language/zombie
+	name = LANGUAGE_ZOMBIE
+	desc = "The chants of the occult, the incomprehensible."
+	speech_verb = "burps"
+	ask_verb = "snaps"
+	exclaim_verb = "grumble"
+	colour = "rough"
+	key = "z"
+	flags = RESTRICTED
+	space_chance = 100
+	syllables = list("Nghaaaaa...", "Wr-a-a-a-h", "T-a-a-p", "B-u-r-p", "R-a-g-h-r", "H-i-g-e-r")
+	machine_understands = 0
+	shorthand = "ZE"
