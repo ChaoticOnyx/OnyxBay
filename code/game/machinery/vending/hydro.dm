@@ -7,7 +7,7 @@
 	icon_state = "nutri"
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
-	vend_delay = 26 SECONDS
+	vend_delay = 26
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/hydronutrients)
 	legal = list(	/obj/item/reagent_containers/vessel/plastic/eznutrient = 5,
@@ -32,7 +32,7 @@
 	icon_state = "seeds"
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
-	vend_delay = 13 SECONDS
+	vend_delay = 13
 	component_types = list(/obj/item/vending_cartridge/hydroseeds)
 	legal = list(	/obj/item/seeds/bananaseed = 3, /obj/item/seeds/berryseed = 3, /obj/item/seeds/carrotseed = 3, /obj/item/seeds/chantermycelium = 3, /obj/item/seeds/chiliseed = 3,
 					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3, /obj/item/seeds/soyaseed = 3,

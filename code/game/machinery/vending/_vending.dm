@@ -69,7 +69,7 @@
 	var/list/illegal = list()
 	var/list/premium = list()
 	var/list/prices = list()
-	var/gen_rand_amount = TRUE // If we want to generate random amount of items in our cartridge.
+	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
 /obj/machinery/vending/update_icon()
 	overlays.Cut()

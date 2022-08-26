@@ -6,7 +6,7 @@
 	product_ads = "Pain is just weakness leaving the body!;Run! Your fat is catching up to you;Never forget leg day!;Push out!;This is the only break you get today.;Don't cry, sweat!;Healthy is an outfit that looks good on everybody."
 	icon_state = "fitness"
 	use_vend_state = TRUE
-	vend_delay = 6 SECONDS
+	vend_delay = 6
 	component_types = list(/obj/item/vending_cartridge/fitness)
 	legal = list(	/obj/item/reagent_containers/vessel/carton/milk = 8,
 					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 8,

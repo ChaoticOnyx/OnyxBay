@@ -6,7 +6,7 @@
 	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
 	icon_state = "snack"
 	use_vend_state = TRUE
-	vend_delay = 25 SECONDS
+	vend_delay = 25
 	component_types = list(/obj/item/vending_cartridge/snack)
 	legal = list(	/obj/item/reagent_containers/food/packaged/tweakers = 6,
 					/obj/item/reagent_containers/food/packaged/sweetroid = 6,
@@ -82,7 +82,7 @@
 	product_ads = "The healthiest!;Award-winning chocolate bars!;Mmm! So good!;Oh my god it's so juicy!;Have a snack.;Snacks are good for you!;Have some more Getmore!;Best quality snacks straight from mars.;We love chocolate!;Try our new jerky!"
 	icon_state = "snackmed"
 	use_vend_state = TRUE
-	vend_delay = 25 SECONDS
+	vend_delay = 25
 	component_types = list(/obj/item/vending_cartridge/medbay)
 	legal = list(	/obj/item/reagent_containers/food/grown/apple = 10,
 					/obj/item/reagent_containers/food/packaged/hematogen = 10,
