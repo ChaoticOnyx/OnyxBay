@@ -306,7 +306,7 @@
 	return 0
 
 
-//This is barely a transformation but probably best file for it.d
+//This is barely a transformation but probably best file for it.
 /mob/living/carbon/human/proc/zombify()
 	ChangeToHusk()
 	mutations |= MUTATION_CLUMSY
