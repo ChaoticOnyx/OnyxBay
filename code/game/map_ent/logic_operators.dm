@@ -68,7 +68,7 @@
 
 /obj/map_ent/logic_binary/less_than_or_equal
 	name = "less_than_or_equal"
-	icon_state = "less_than_or_equal"
+	icon_state = "logic_less_than_or_equal"
 
 /obj/map_ent/logic_binary/less_than_or_equal/activate()
 	var/obj/map_ent/E = ..()
@@ -78,7 +78,7 @@
 
 /obj/map_ent/logic_binary/greater_than
 	name = "greater_than"
-	icon_state = "greater_than"
+	icon_state = "logic_greater_than"
 
 /obj/map_ent/logic_binary/greater_than/activate()
 	var/obj/map_ent/E = ..()
@@ -88,7 +88,7 @@
 
 /obj/map_ent/logic_binary/greater_than_or_equal
 	name = "greater_than_or_equal"
-	icon_state = "greater_than_or_equal"
+	icon_state = "logic_greater_than_or_equal"
 
 /obj/map_ent/logic_binary/greater_than_or_equal/activate()
 	var/obj/map_ent/E = ..()

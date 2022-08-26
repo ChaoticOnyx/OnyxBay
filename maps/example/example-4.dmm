@@ -61,7 +61,7 @@
 "Lm" = (/turf/simulated/wall/r_wall,/area/engineering/sublevel_access)
 "LM" = (/obj/map_ent/info_maptext{ev_text = "info_counter"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Ml" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/engineering/sublevel_access)
-"MP" = (/obj/map_ent/func_proc_call{tag = env_die_user; ev_proc_name = death; ev_args = list(show_dead_message="You didn't think fast chucklenut")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"MP" = (/obj/map_ent/func_proc_call{tag = "env_die_user"; ev_proc_name = death; ev_args = list(show_dead_message="You didn't think fast chucklenut")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "MX" = (/obj/map_ent/logic_relay{tag = "ent_gib_relay"; ev_tags = list("ent_gibber_wv","ent_cow_gibber","ent_cow_timer")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "Nw" = (/obj/map_ent/func_strcat{tag = "ent_concat"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
 "NE" = (/obj/map_ent/func_load_map{ev_map_path = 'maps/example/clown_shuttle.dmm'; tag = "ent_load_map"},/turf/space,/area/engineering/sublevel_access)
