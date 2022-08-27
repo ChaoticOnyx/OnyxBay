@@ -155,8 +155,7 @@
 	if(!istype(H))
 		return FALSE
 
-	var/obj/item/organ/external/chest/VC = H.organs_by_name["chest"]
-	if(BP_IS_ROBOTIC(VC))
+	if(H.isSynthetic())
 		return FALSE
 
 	return H.species?.xenomorph_type && !is_sterile && (forced || !H.internal_organs_by_name[BP_HIVE])
