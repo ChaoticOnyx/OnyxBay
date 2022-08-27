@@ -189,7 +189,7 @@
 
 /obj/item/projectile/proc/finalize_launch(turf/curloc, turf/targloc, x_offset, y_offset, angle_offset)
 	setup_trajectory(curloc, targloc, x_offset, y_offset, angle_offset) //plot the initial trajectory
-	Process()
+	think()
 	spawn(SEGMENT_DELETION_DELAY) //running this from a proc wasn't working.
 		QDEL_NULL_LIST(segments)
 
@@ -377,7 +377,7 @@
 /obj/item/projectile/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	return 1
 
-/obj/item/projectile/Process()
+/obj/item/projectile/think()
 	var/first_step = 1
 	var/i = 0
 	spawn while(src && src.loc)

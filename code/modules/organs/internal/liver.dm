@@ -22,7 +22,7 @@
 	. = max(0, amount - cap_toxins)
 	tox_filtering += amount - .
 
-/obj/item/organ/internal/liver/Process()
+/obj/item/organ/internal/liver/think()
 
 	..()
 	if(!owner)

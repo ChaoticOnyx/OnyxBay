@@ -117,7 +117,11 @@ var/list/organ_cache = list()
 	//Process infections
 	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
 		germ_level = 0
-		set_next_think(world.time + 1 SECOND)
+
+		// If `think()` is called not by the owner in `handle_organs()` but on his own.
+		if(NEXT_THINK)
+			set_next_think(world.time + 1 SECOND)
+
 		return
 
 	if(!owner)
@@ -147,7 +151,9 @@ var/list/organ_cache = list()
 	if(food_organ)
 		update_food_from_organ()
 	
-	set_next_think(world.time + 1 SECOND)
+	// If `think()` is called not by the owner in `handle_organs()` but on his own.
+	if(NEXT_THINK)
+		set_next_think(world.time + 1 SECOND)
 
 /obj/item/organ/proc/cook_organ()
 	die()

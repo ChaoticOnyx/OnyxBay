@@ -140,7 +140,7 @@
 /obj/item/organ/internal/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
-/obj/item/organ/internal/brain/Process()
+/obj/item/organ/internal/brain/think()
 	if(owner)
 		if(damage > max_damage / 2 && healed_threshold)
 			spawn()

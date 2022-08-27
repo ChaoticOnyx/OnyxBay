@@ -19,7 +19,7 @@
 		SSthink.next_group_run[ctx.group] = min(SSthink.next_group_run[ctx.group], ctx.next_think) \
 	}
 
-#define LAST_THINK _main_think_ctx.last_think
-#define LAST_THINK_CTX(ctx) _think_ctxs[ctx].last_think
-#define NEXT_THINK _main_think_ctx.next_think
-#define NEXT_THINK_CTX(ctx) _think_ctxs[ctx].next_think
+#define LAST_THINK _main_think_ctx?.last_think
+#define LAST_THINK_CTX(ctx) _think_ctxs[ctx]?.last_think
+#define NEXT_THINK _main_think_ctx?.next_think
+#define NEXT_THINK_CTX(ctx) _think_ctxs[ctx]?.next_think

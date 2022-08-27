@@ -51,7 +51,7 @@
 
 
 // Biostructure processing
-/obj/item/organ/internal/biostructure/Process()
+/obj/item/organ/internal/biostructure/think()
 	. = ..()
 	if((damage > (max_damage / 2)) && healing_threshold)
 		if(owner)

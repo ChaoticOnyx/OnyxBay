@@ -41,7 +41,7 @@
 
 #define STOMACH_VOLUME 65
 
-/obj/item/organ/internal/stomach/Process()
+/obj/item/organ/internal/stomach/think()
 	..()
 
 	if(owner)
