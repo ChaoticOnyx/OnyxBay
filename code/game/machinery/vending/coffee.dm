@@ -8,8 +8,8 @@
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
 	vend_delay = 34
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
-	vend_power_usage = 85000 //85 kJ to heat a 250 mL cup of coffee
+	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	vend_power_usage = 85 KILO WATTS //85 kJ to heat a 250 mL cup of coffee
 	component_types = list(/obj/item/vending_cartridge/coffee)
 	legal = list(	/obj/item/reagent_containers/vessel/coffee = 25,
 					/obj/item/reagent_containers/vessel/tea = 25,

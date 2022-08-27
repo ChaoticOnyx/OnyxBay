@@ -66,7 +66,7 @@
 // use power from a cell, returns the amount actually used
 /obj/item/cell/proc/use(amount)
 	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
-		crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
+		util_crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
 		return 0
 	var/used = min(charge, amount)
 	charge -= used
@@ -83,7 +83,7 @@
 
 /obj/item/cell/proc/give(amount)
 	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
-		crash_with("Power cell ([src], [c_uid]) called give() with negative amount ([amount]).")
+		util_crash_with("Power cell ([src], [c_uid]) called give() with negative amount ([amount]).")
 		return 0
 	if(maxcharge == charge)
 		return 0

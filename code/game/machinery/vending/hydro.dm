@@ -8,7 +8,7 @@
 	use_vend_state = TRUE
 	gen_rand_amount = FALSE
 	vend_delay = 26
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/hydronutrients)
 	legal = list(	/obj/item/reagent_containers/vessel/plastic/eznutrient = 5,
 					/obj/item/reagent_containers/vessel/plastic/left4zed = 5,

@@ -27,8 +27,8 @@
 	clickvol = 40
 
 	// Power
-	idle_power_usage = 10
-	active_power_usage = 150
+	idle_power_usage = 10 WATTS
+	active_power_usage = 150 WATTS
 
 /obj/machinery/washing_machine/Destroy()
 	qdel(crayon)

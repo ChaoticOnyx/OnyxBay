@@ -14,7 +14,7 @@
 		return
 
 	if(ev_wait <= 0)
-		crash_with("ev_wait should be greather than zero")
+		util_crash_with("ev_wait should be greather than zero")
 
 	addtimer(CALLBACK(src, .proc/_timer_callback), ev_wait, TIMER_OVERRIDE | TIMER_UNIQUE)
 
@@ -29,7 +29,7 @@
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
-		crash_with("ev_tag is invalid")
+		util_crash_with("ev_tag is invalid")
 		return
 
 	E.activate()

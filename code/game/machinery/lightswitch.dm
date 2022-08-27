@@ -7,7 +7,7 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "light0"
 	anchored = 1.0
-	idle_power_usage = 20
+	idle_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT
 	var/on = 0
 	var/area/connected_area = null

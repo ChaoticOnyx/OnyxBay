@@ -37,8 +37,8 @@
 	icon = 'icons/obj/monitors.dmi'
 	icon_state = "alarm0"
 	anchored = 1
-	idle_power_usage = 80
-	active_power_usage = 1000 //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
+	idle_power_usage = 80 WATTS
+	active_power_usage = 1 KILO WATT //For heating/cooling rooms. 1000 joules equates to about 1 degree every 2 seconds for a single tile of air.
 	power_channel = STATIC_ENVIRON
 	req_one_access = list(access_atmospherics, access_engine_equip)
 	clicksound = SFX_USE_BUTTON
@@ -67,7 +67,7 @@
 	var/area/alarm_area
 	var/buildstage = 2 //2 is built, 1 is building, 0 is frame.
 
-	var/target_temperature = T0C+20
+	var/target_temperature = 20 CELSIUS
 	var/regulating_temperature = 0
 
 	var/datum/radio_frequency/radio_connection
@@ -85,7 +85,7 @@
 	var/report_danger_level = 1
 
 /obj/machinery/alarm/cold
-	target_temperature = T0C+4
+	target_temperature = 4 CELSIUS
 
 /obj/machinery/alarm/nobreach
 	breach_detection = 0
@@ -97,8 +97,8 @@
 /obj/machinery/alarm/server/New()
 	..()
 	req_access = list(access_rd, access_atmospherics, access_engine_equip)
-	TLV["temperature"] =	list(T0C-26, T0C, T0C+30, T0C+40) // K
-	target_temperature = T0C+10
+	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 30 CELSIUS, 40 CELSIUS)
+	target_temperature = 10 CELSIUS
 
 /obj/machinery/alarm/Destroy()
 	GLOB.alarm_list -= src
@@ -141,7 +141,7 @@
 	TLV["carbon dioxide"] = list(-1.0, -1.0, 5, 10) // Partial pressure, kpa
 	TLV["other"] =			list(-1.0, -1.0, 0.2, 0.5) // Partial pressure, kpa
 	TLV["pressure"] =		list(ONE_ATMOSPHERE*0.80,ONE_ATMOSPHERE*0.90,ONE_ATMOSPHERE*1.10,ONE_ATMOSPHERE*1.20) /* kpa */
-	TLV["temperature"] =	list(T0C-26, T0C, T0C+40, T0C+66) // K
+	TLV["temperature"] =	list(-26 CELSIUS, 0 CELSIUS, 40 CELSIUS, 66 CELSIUS)
 
 	for(var/g in gas_data.gases)
 		if(!(g in list("oxygen","nitrogen","carbon_dioxide")))
@@ -210,11 +210,7 @@
 			"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
-		if(target_temperature > T0C + MAX_TEMPERATURE)
-			target_temperature = T0C + MAX_TEMPERATURE
-
-		if(target_temperature < T0C + MIN_TEMPERATURE)
-			target_temperature = T0C + MIN_TEMPERATURE
+		target_temperature = Clamp(target_temperature, CONV_C2K(MIN_TEMPERATURE), CONV_C2K(MAX_TEMPERATURE))
 
 		var/datum/gas_mixture/gas
 		gas = environment.remove(0.25*environment.total_moles)
@@ -230,7 +226,7 @@
 				//Assume the heat is being pumped into the hull which is fixed at 20 C
 				//none of this is really proper thermodynamics but whatever
 
-				var/cop = gas.temperature/T20C	//coefficient of performance -> power used = heat_transfer/cop
+				var/cop = gas.temperature / (20 CELSIUS)	//coefficient of performance -> power used = heat_transfer/cop
 
 				heat_transfer = min(heat_transfer, cop * active_power_usage)	//this ensures that we don't use more than active_power_usage amount of power
 
@@ -527,12 +523,12 @@
 			other_moles += environment.gas[g]
 		environment_data[++environment_data.len] = list("name" = "Other Gases", "value" = other_moles / total * 100, "unit" = "%", "danger_level" = other_dangerlevel)
 
-		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(environment.temperature - T0C, 0.1)]C)", "danger_level" = temperature_dangerlevel)
+		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_K2C(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)
 	data["total_danger"] = danger_level
 	data["environment"] = environment_data
 	data["atmos_alarm"] = alarm_area.atmosalm
 	data["fire_alarm"] = alarm_area.fire != null
-	data["target_temperature"] = "[target_temperature - T0C]C"
+	data["target_temperature"] = "[CONV_K2C(target_temperature)]C"
 
 /obj/machinery/alarm/proc/populate_controls(list/data)
 	switch(screen)
@@ -647,14 +643,14 @@
 
 	if(href_list["temperature"])
 		var/list/selected = TLV["temperature"]
-		var/max_temperature = min(selected[3] - T0C, MAX_TEMPERATURE)
-		var/min_temperature = max(selected[2] - T0C, MIN_TEMPERATURE)
-		var/input_temperature = input(user, "What temperature would you like the system to mantain? (Capped between [min_temperature] and [max_temperature]C)", "Thermostat Controls", target_temperature - T0C) as num|null
+		var/max_temperature = min(CONV_K2C(selected[3]), MAX_TEMPERATURE)
+		var/min_temperature = max(CONV_K2C(selected[2]), MIN_TEMPERATURE)
+		var/input_temperature = input(user, "What temperature would you like the system to mantain? (Capped between [min_temperature] and [max_temperature]C)", "Thermostat Controls", CONV_K2C(target_temperature)) as num|null
 		if(isnum(input_temperature) && CanUseTopic(user, state))
 			if(input_temperature > max_temperature || input_temperature < min_temperature)
 				to_chat(user, "Temperature must be between [min_temperature]C and [max_temperature]C")
 			else
-				target_temperature = input_temperature + T0C
+				target_temperature = CONV_C2K(input_temperature)
 		return TOPIC_REFRESH
 
 	// hrefs that need the AA unlocked -walter0o

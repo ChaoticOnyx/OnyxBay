@@ -13,12 +13,12 @@
 /obj/item/fuel/H
 	name = "Hydrogen storage ring"
 	content = "Hydrogen"
-	fuel = 1e-12		//pico-kilogram
+	fuel = 1 PICO KILOGRAM
 
 /obj/item/fuel/antiH
 	name = "Anti-Hydrogen storage ring"
 	content = "Anti-Hydrogen"
-	fuel = 1e-12		//pico-kilogram
+	fuel = 1 PICO KILOGRAM
 
 /obj/item/fuel/attackby(obj/item/fuel/F, mob/user)
 	..()

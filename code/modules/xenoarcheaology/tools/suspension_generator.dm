@@ -8,7 +8,7 @@
 	var/obj/item/cell/cell
 	var/obj/item/card/id/auth_card
 	var/locked = 1
-	var/power_use = 5 KILOWATTS
+	var/power_use = 5 KILO WATTS
 	var/obj/effect/suspension_field/suspension_field
 
 /obj/machinery/suspension_gen/New()

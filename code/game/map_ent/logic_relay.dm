@@ -9,7 +9,7 @@
 		var/obj/map_ent/E = locate(tag)
 
 		if(!istype(E))
-			crash_with("tag `[tag]` is invalid")
+			util_crash_with("tag `[tag]` is invalid")
 			continue
 		
 		E.activate()

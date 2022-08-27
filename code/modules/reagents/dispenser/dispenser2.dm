@@ -24,7 +24,7 @@
 		/obj/item/stock_parts/console_screen,
 	)
 
-	idle_power_usage = 100
+	idle_power_usage = 100 WATTS
 	density = 1
 	anchored = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE

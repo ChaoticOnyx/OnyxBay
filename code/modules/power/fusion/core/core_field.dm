@@ -302,7 +302,7 @@
 
 	if(owned_core && owned_core.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
-		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
+		if(environment && environment.temperature < (1000 CELSIUS)) // Putting an upper bound on it to stop it being used in a TEG.
 			environment.add_thermal_energy(plasma_temperature*20000)
 	radiation = 0
 

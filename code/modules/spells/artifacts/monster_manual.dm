@@ -53,7 +53,7 @@
 		var/datum/ghosttrap/ghost = get_ghost_trap("wizard familiar")
 		var path = locate(href_list["path"]) in monster
 		if(!ispath(path))
-			crash_with("Invalid mob path in [src]. Contact a coder.")
+			util_crash_with("Invalid mob path in [src]. Contact a coder.")
 			return TOPIC_HANDLED
 
 		var/mob/living/simple_animal/familiar/F = new path(get_turf(src))
@@ -75,4 +75,3 @@
 
 	if(. == TOPIC_REFRESH)
 		interact(user)
-

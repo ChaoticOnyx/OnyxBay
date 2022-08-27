@@ -8,7 +8,7 @@
 	var/mob/M = locate(ev_tag)
 
 	if(!istype(M))
-		crash_with("ev_tag is null or contains invalid object: `[ev_tag]`")
+		util_crash_with("ev_tag is null or contains invalid object: `[ev_tag]`")
 		return
 	
 	M.gib()

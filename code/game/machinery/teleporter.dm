@@ -180,8 +180,8 @@
 	density = FALSE
 	icon_state = "tele0"
 	dir = 4
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	var/obj/machinery/computer/teleporter/com
 
 
@@ -216,8 +216,8 @@
 	dir = 4
 	var/active = 0
 	var/engaged = 0
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	var/obj/machinery/teleport/hub/com
 
 /obj/machinery/teleport/station/New()

@@ -819,7 +819,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 
 	user = user == src ? loc : (user || loc)
 	if(!istype(user))
-		crash_with("[log_info_line(src)]: Zoom user lost]")
+		util_crash_with("[log_info_line(src)]: Zoom user lost]")
 		return
 
 	unregister_signal(user, SIGNAL_STAT_SET)

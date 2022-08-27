@@ -17,7 +17,7 @@ var/global/list/rad_collectors = list()
 	var/drainratio = 1
 
 	var/health = 100
-	var/max_safe_temp = 1000 + T0C
+	var/max_safe_temp = 1000 CELSIUS
 	var/melted
 
 /obj/machinery/power/rad_collector/New()

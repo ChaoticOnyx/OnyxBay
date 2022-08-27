@@ -41,7 +41,7 @@
 		var/turf/heat_turf = get_turf(src)
 		environment_heat_capacity = heat_turf.heat_capacity
 
-	if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
+	if((environment.temperature > (50 CELSIUS)) || (environment.temperature < (10 CELSIUS)))
 		var/transfer_coefficient = 1
 
 		handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)

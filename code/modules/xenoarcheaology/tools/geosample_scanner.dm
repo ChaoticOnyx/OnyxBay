@@ -7,8 +7,8 @@
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "analyser"
 
-	idle_power_usage = 20
-	active_power_usage = 300
+	idle_power_usage = 20 WATTS
+	active_power_usage = 300 WATTS
 
 	//var/obj/item/reagent_containers/glass/coolant_container
 	var/scanning = 0

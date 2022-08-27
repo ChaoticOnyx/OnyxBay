@@ -61,7 +61,7 @@ proc/PathWeightCompare(PathNode/a, PathNode/b)
 	return a.estimated_cost - b.estimated_cost
 
 proc/AStar(start, end, adjacent, dist, max_nodes, max_node_depth = 30, min_target_dist = 0, min_node_dist, id, datum/exclude)
-	var/PriorityQueue/open = new /PriorityQueue(/proc/PathWeightCompare)
+	var/datum/priority_queue/open = new /datum/priority_queue(/proc/PathWeightCompare)
 	var/list/closed = list()
 	var/list/path
 	var/list/path_node_by_position = list()

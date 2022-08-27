@@ -24,7 +24,7 @@
 	var/opacity = FALSE
 
 	var/explosion_block = 0
-	var/max_heat = T0C + 100
+	var/max_heat = 100 CELSIUS
 
 	var/preset_material
 
@@ -76,7 +76,7 @@
 		explosion_block += 1
 		reinforced = TRUE
 
-	if(max_heat >= (T0C + 2000))
+	if(max_heat >= (2000 CELSIUS))
 		explosion_block += 1
 
 /datum/windowpane/proc/take_damage(damage = 0, sound_effect = TRUE)
@@ -919,7 +919,7 @@
 	else if(inner_pane)
 		if(exposed_temperature > inner_pane.max_heat)
 			inner_pane.take_damage(1, FALSE)
-	else if(exposed_temperature > T0C + 1500)
+	else if(exposed_temperature > (1500 CELSIUS))
 		health -= 1
 		healthcheck()
 	..()

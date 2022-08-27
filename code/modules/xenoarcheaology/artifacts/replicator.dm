@@ -5,8 +5,8 @@
 	icon_state = "borgcharger0(old)"
 	density = 1
 
-	idle_power_usage = 100
-	active_power_usage = 1000
+	idle_power_usage = 100 WATTS
+	active_power_usage = 1 KILO WATT
 
 	var/spawn_progress_time = 0
 	var/max_spawn_time = 50

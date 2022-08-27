@@ -12,7 +12,7 @@
 	buckle_pixel_shift = "x=0;y=7"
 
 	var/car_limit = 3		//how many cars an engine can pull before performance degrades
-	charge_use = 1 KILOWATTS
+	charge_use = 1 KILO WATTS
 	active_engines = 1
 	var/obj/item/key/cargo_train/key
 

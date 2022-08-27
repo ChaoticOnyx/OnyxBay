@@ -10,7 +10,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "mixer0"
 	layer = BELOW_OBJ_LAYER
-	idle_power_usage = 20
+	idle_power_usage = 20 WATTS
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 	var/obj/item/reagent_containers/vessel/beaker
@@ -374,8 +374,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 0
 	anchored = 0
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
 	effect_flags = EFFECT_FLAG_RAD_SHIELDED
 	component_types = list(
 		/obj/item/circuitboard/grinder,

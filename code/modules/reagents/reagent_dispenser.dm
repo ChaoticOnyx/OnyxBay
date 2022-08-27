@@ -186,7 +186,7 @@
 /obj/structure/reagent_dispensers/fueltank/fire_act(datum/gas_mixture/air, temperature, volume)
 	if (modded)
 		explode()
-	else if (temperature > T0C+500)
+	else if (temperature > (500 CELSIUS))
 		explode()
 	return ..()
 

@@ -661,7 +661,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 /world/proc/SetupLogs()
 	if (!game_id)
-		crash_with("Unknown game_id!")
+		util_crash_with("Unknown game_id!")
 
 	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
 	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"

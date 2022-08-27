@@ -346,7 +346,7 @@
 	icon_closed = "bomber"
 	body_parts_covered = UPPER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
@@ -357,7 +357,7 @@
 	icon_closed = "varsity_black"
 	body_parts_covered = UPPER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
@@ -466,7 +466,7 @@
 	icon_open = "hoodie_open"
 	icon_closed = "hoodie"
 	body_parts_covered = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|ARMS
 	initial_closed = TRUE
 

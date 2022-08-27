@@ -11,7 +11,7 @@
 	icon = 'icons/obj/terminals.dmi'
 	icon_state = "atm"
 	anchored = TRUE
-	idle_power_usage = 10
+	idle_power_usage = 10 WATTS
 	layer = ABOVE_WINDOW_LAYER
 	var/datum/money_account/authenticated_account
 	var/number_incorrect_tries = 0

@@ -369,7 +369,7 @@
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "wground1"
-	temperature = T20C
+	temperature = 20 CELSIUS
 
 /turf/simulated/floor/natural/lava
 	name = "lava"

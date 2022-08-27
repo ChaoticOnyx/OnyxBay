@@ -73,7 +73,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
-		crash_with("Warning: [src]([type]) initialized multiple times!")
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	if(loc)

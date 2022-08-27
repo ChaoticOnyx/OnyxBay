@@ -58,9 +58,9 @@ var/list/global/tank_gauge_cache = list()
 	proxyassembly = new /obj/item/device/tankassemblyproxy(src)
 	proxyassembly.tank = src
 
-	air_contents = new /datum/gas_mixture(volume, T20C)
+	air_contents = new /datum/gas_mixture(volume, 20 CELSIUS)
 	for(var/gas in starting_pressure)
-		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*T20C), 0)
+		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS)), 0)
 	air_contents.update_values()
 
 	set_next_think(world.time)
@@ -84,7 +84,7 @@ var/list/global/tank_gauge_cache = list()
 		if(air_contents.total_moles == 0)
 			descriptive = "empty"
 		else
-			var/celsius_temperature = air_contents.temperature - T0C
+			var/celsius_temperature = CONV_K2C(air_contents.temperature)
 			switch(celsius_temperature)
 				if(300 to INFINITY)
 					descriptive = "furiously hot"
@@ -169,8 +169,8 @@ var/list/global/tank_gauge_cache = list()
 			to_chat(user, "<span class='notice'>You begin attaching the assembly to \the [src].</span>")
 			if(do_after(user, 50, src))
 				to_chat(user, "<span class='notice'>You finish attaching the assembly to \the [src].</span>")
-				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [air_contents.temperature-T0C]"
-				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [air_contents.temperature-T0C]")
+				GLOB.bombers += "[key_name(user)] attached an assembly to a wired [src]. Temp: [CONV_K2C(air_contents.temperature)]"
+				message_admins("[key_name_admin(user)] attached an assembly to a wired [src]. Temp: [CONV_K2C(air_contents.temperature)]")
 				assemble_bomb(W,user)
 			else
 				to_chat(user, "<span class='notice'>You stop attaching the assembly.</span>")
@@ -187,8 +187,8 @@ var/list/global/tank_gauge_cache = list()
 					valve_welded = 1
 					leaking = 0
 				else
-					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [air_contents.temperature-T0C]"
-					message_admins("[key_name_admin(user)] attempted to weld a [src]. [air_contents.temperature-T0C]")
+					GLOB.bombers += "[key_name(user)] attempted to weld a [src]. [CONV_K2C(air_contents.temperature)]"
+					message_admins("[key_name_admin(user)] attempted to weld a [src]. [CONV_K2C(air_contents.temperature)]")
 					if(WT.welding)
 						to_chat(user, "<span class='danger'>You accidentally rake \the [W] across \the [src]!</span>")
 						maxintegrity -= rand(2,6)
@@ -492,7 +492,7 @@ var/list/global/tank_gauge_cache = list()
 			return FALSE
 		else
 			integrity-= 5
-	else if((pressure > TANK_LEAK_PRESSURE) || air_contents.temperature - T0C > failure_temp)
+	else if((pressure > TANK_LEAK_PRESSURE) || CONV_K2C(air_contents.temperature) > failure_temp)
 		if((integrity <= 19 || leaking) && !valve_welded)
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
