@@ -878,6 +878,8 @@
 #include "code\game\map_ent\map_engine.dm"
 #include "code\game\map_ent\map_ent.dm"
 #include "code\game\map_ent\trigger_button.dm"
+#include "code\game\map_ent\trigger_find_in_range.dm"
+#include "code\game\map_ent\trigger_find_in_view.dm"
 #include "code\game\map_ent\trigger_mob.dm"
 #include "code\game\map_ent\trigger_signal.dm"
 #include "code\game\mecha\mech_bay.dm"
