@@ -363,7 +363,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/tank/think()
 	//Allow for reactions
 	var/react_ret = air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
-	update_icon()
+	update_icon(TRUE)
 	var/status_ret = check_status()
 
 	if(!react_ret && !status_ret)
