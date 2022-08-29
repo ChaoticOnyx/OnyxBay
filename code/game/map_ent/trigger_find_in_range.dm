@@ -5,11 +5,15 @@
 	var/ev_radius = 3
 	var/exclude_center = FALSE
 	var/exclude_self = TRUE
-	var/ev_range_center = src
+	var/ev_range_center
 	var/ev_sort
 	var/ev_verbose = FALSE
 	var/list/ev_out = list()
 	var/ev_tag
+
+/obj/map_ent/trigger_find_in_range/Initialize(...)
+	. = ..()
+	ev_range_center = src
 
 /obj/map_ent/trigger_find_in_range/activate()
 	var/obj/map_ent/E = locate(ev_tag)

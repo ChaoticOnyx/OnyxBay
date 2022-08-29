@@ -1,37 +1,41 @@
-/obj/map_ent/trigger_find_in_range
-	name = "trigger_find_in_range"
-	icon_state = "trigger_find_in_range"
+/obj/map_ent/trigger_find_in_view
+	name = "trigger_find_in_view"
+	icon_state = "trigger_find_in_view"
 
 	var/ev_radius = 3
 	var/exclude_center = FALSE
 	var/exclude_self = TRUE
-	var/ev_range_center = src
+	var/ev_view_center
 	var/ev_sort
 	var/ev_verbose = FALSE
 	var/list/ev_out = list()
 	var/ev_tag
 
-/obj/map_ent/trigger_find_in_range/activate()
+/obj/map_ent/trigger_find_in_view/Initialize(...)
+	. = ..()
+	ev_view_center = src
+
+/obj/map_ent/trigger_find_in_view/activate()
 	var/obj/map_ent/E = locate(ev_tag)
 
 	if(!istype(E))
 		crash_with("Can't locate triggerable map_ent, ev_tag isn't correct.")
 		return
 
-	if(!istype(ev_range_center, /atom))
-		var/try_tag = ev_range_center
-		ev_range_center = locate(try_tag)
-		if(!istype(ev_range_center, /atom))
-			crash_with("Can't locate object with given ev_range_center.")
+	if(!istype(ev_view_center, /atom))
+		var/try_tag = ev_view_center
+		ev_view_center = locate(try_tag)
+		if(!istype(ev_view_center, /atom))
+			crash_with("Can't locate object with given ev_view_center.")
 			return
 
 	if(exclude_center)
-		ev_out = oview(ev_range_center, ev_radius)
+		ev_out = oview(ev_view_center, ev_radius)
 	else
-		ev_out = view(ev_range_center, ev_radius)
+		ev_out = view(ev_view_center, ev_radius)
 
 	if(exclude_self)
-		ev_out.Remove(ev_range_center)
+		ev_out.Remove(ev_view_center)
 
 	var/multiple_finder = islist(ev_sort)
 	if(multiple_finder)
