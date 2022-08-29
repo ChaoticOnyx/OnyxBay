@@ -5,7 +5,7 @@
 	desc = "It's a hat used by chefs to keep hair out of your food. Judging by the food in the mess, they don't work."
 	icon_state = "chefhat"
 	item_state = "chefhat"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 //Captain
 /obj/item/clothing/head/caphat
@@ -16,7 +16,7 @@
 		slot_l_hand_str = "caphat",
 		slot_r_hand_str = "caphat",
 		)
-	armor = list(melee = 15, bullet = 10, laser = 10,energy = 5, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 15, bullet = 10, laser = 10,energy = 5, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/caphat/cap
 	name = "captain's cap"
@@ -36,7 +36,7 @@
 	name = "crew resource's hat"
 	desc = "A stylish hat that both protects you from enraged former-crewmembers and gives you a false sense of authority."
 	icon_state = "hopcap"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 //Chaplain
 /obj/item/clothing/head/chaplain_hood
@@ -45,7 +45,7 @@
 	icon_state = "chaplain_hood"
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 //Chaplain
 /obj/item/clothing/head/nun_hood
@@ -54,7 +54,7 @@
 	icon_state = "nun_hood"
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 //Medical
 /obj/item/clothing/head/surgery
@@ -62,7 +62,7 @@
 	desc = "A cap surgeons wear during operations. Keeps their hair from tickling your internal organs."
 	icon_state = "surgcap"
 	flags_inv = BLOCKHEADHAIR
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/surgery/purple
 	name = "purple surgical cap"
@@ -102,13 +102,13 @@
 	desc = "A beret, an artists favorite headwear."
 	icon_state = "beret"
 	body_parts_covered = 0
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beret/sec
 	name = "corporate security beret"
 	desc = "A beret with the security insignia emblazoned on it. For officers that are more inclined towards style than safety."
 	icon_state = "beret_corporate_red"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beret/sec/navy/officer
 	name = "corporate security officer beret"
@@ -164,14 +164,14 @@
 	name = "Death Squad beret"
 	desc = "An armored red beret adorned with the crest of NanoTrasen's infamous Death Squad. Doesn't sacrifice style or safety."
 	icon_state = "beret_corporate_red"
-	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30)
+	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/beret/guard
 	name = "corporate security beret"
 	desc = "A white beret adorned with the crest of NanoTrasen. For security guards that are more inclined towards style than safety."
 	icon_state = "beret_corporate_whitered"
-	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beret/plaincolor
 	name = "beret"
@@ -192,7 +192,7 @@
 		slot_l_hand_str = "det_hat",
 		slot_r_hand_str = "det_hat",
 		)
-	armor = list(melee = 30, bullet = 25, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 30, bullet = 25, laser = 25,energy = 10, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/det/attack_self(mob/user)
@@ -213,7 +213,7 @@
 	desc = "The hat of the Head of Security, reinforced with a plasteel plate. For showing the officers who's in charge."
 	icon_state = "hoscap"
 	body_parts_covered = HEAD
-	armor = list(melee = 60, bullet = 60, laser = 60,energy = 35, bomb = 45, bio = 0, rad = 0)
+	armor = list(melee = 60, bullet = 60, laser = 60,energy = 35, bomb = 45, bio = 0)
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/head/HoS/dermal

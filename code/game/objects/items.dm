@@ -4,6 +4,13 @@
 	w_class = ITEM_SIZE_NORMAL
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 0.4,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.2
+	)
+
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite
 	var/randpixel = 6
 	var/r_speed = 1.0
@@ -57,7 +64,7 @@
 	var/slowdown_accessory // How much an accessory will slow you down when attached to a worn article of clothing.
 	var/canremove = 1 //Mostly for Ninja code at this point but basically will not allow the item to be removed if set to 0. /N
 	var/force_drop = FALSE // Allows the item to be manually dropped by the wielder even if canremove is set to FALSE.
-	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	var/list/armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	var/list/allowed = null //suit storage stuff.
 	var/obj/item/device/uplink/hidden_uplink = null // All items can have an uplink hidden inside, just remember to add the triggers.
 	var/zoomdevicename = null //name used for message when binoculars/scope is used

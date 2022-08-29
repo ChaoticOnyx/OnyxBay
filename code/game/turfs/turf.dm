@@ -26,6 +26,12 @@
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_RAY = 0.8,
+		RADIATION_BETA_RAY = 0.4,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.1
+	)
 
 	var/list/decals
 

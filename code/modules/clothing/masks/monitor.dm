@@ -42,6 +42,13 @@
 		"rgb" =      "ipc_rgb"
 		)
 
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 0.5,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.1
+	)
+
 /obj/item/clothing/mask/monitor/set_dir()
 	dir = SOUTH
 	return

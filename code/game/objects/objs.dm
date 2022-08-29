@@ -16,6 +16,13 @@
 	var/armor_penetration = 0
 	var/anchor_fall = FALSE
 	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
+	/// Used if the obj is dense.
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_RAY = 0.0,
+		RADIATION_BETA_RAY = 0.0,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.0
+	)
 	hitby_sound = 'sound/effects/metalhit2.ogg'
 
 /obj/Destroy()

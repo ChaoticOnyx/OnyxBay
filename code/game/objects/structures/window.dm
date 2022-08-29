@@ -26,6 +26,12 @@
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.2
+	)
 
 /obj/structure/window/_examine_text(mob/user)
 	. = ..()

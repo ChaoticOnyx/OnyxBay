@@ -55,7 +55,7 @@
 	desc = "A hood worn by the followers of Nar-Sie."
 	flags_inv = HIDEFACE
 	body_parts_covered = HEAD
-	armor = list(melee = 30, bullet = 10, laser = 5,energy = 5, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 30, bullet = 10, laser = 5,energy = 5, bomb = 0, bio = 0)
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.8 //That's a pretty cool opening in the hood. Also: Cloth making physical contact to the skull.
@@ -66,7 +66,7 @@
 	desc = "A helm worn by the followers of Nar-Sie."
 	flags_inv = HIDEFACE | BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
-	armor = list(melee = 50, bullet = 40, laser = 30, energy = 20, bomb = 15, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 40, laser = 30, energy = 20, bomb = 15, bio = 0)
 
 /obj/item/clothing/head/culthood/alt
 	icon_state = "cult_hoodalt"
@@ -77,7 +77,7 @@
 	icon_state = "cultrobes"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/book/tome,/obj/item/melee/cultblade)
-	armor = list(melee = 35, bullet = 30, laser = 25,energy = 20, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 35, bullet = 30, laser = 25,energy = 20, bomb = 25, bio = 10)
 	flags_inv = HIDEJUMPSUIT
 	siemens_coefficient = 0.6
 
@@ -90,7 +90,7 @@
 	icon_state = "magusred"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	armor = list(melee = 75, bullet = 50, laser = 55, energy = 40, bomb = 50, bio = 10, rad = 0)
+	armor = list(melee = 75, bullet = 50, laser = 55, energy = 40, bomb = 50, bio = 10)
 
 /obj/item/clothing/suit/cultrobes/magusred/New()
 	..()
@@ -100,17 +100,29 @@
 	name = "cult helmet"
 	desc = "A space worthy helmet used by the followers of Nar-Sie."
 	icon_state = "cult_helmet"
-	armor = list(melee = 60, bullet = 60, laser = 60,energy = 15, bomb = 30, bio = 100, rad = 30) //Real tanky shit.
+	armor = list(melee = 60, bullet = 60, laser = 60,energy = 15, bomb = 30, bio = 100) //Real tanky shit.
 	siemens_coefficient = 0.3 //Bone is not very conducive to electricity.
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.4,
+		RADIATION_HAWKING_RAY = 0.95
+	)
 
 /obj/item/clothing/suit/space/cult
 	name = "cult armour"
 	icon_state = "cult_armour"
 	desc = "A bulky suit of armour, bristling with spikes. It looks space proof."
 	allowed = list(/obj/item/book/tome,/obj/item/melee/cultblade,/obj/item/tank,/obj/item/device/suit_cooling_unit)
-	armor = list(melee = 60, bullet = 50, laser = 60,energy = 15, bomb = 30, bio = 100, rad = 30)
+	armor = list(melee = 60, bullet = 50, laser = 60,energy = 15, bomb = 30, bio = 100)
 	siemens_coefficient = 0.2
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.4,
+		RADIATION_HAWKING_RAY = 0.95
+	)
 
 /obj/item/clothing/suit/space/cult/New()
 	..()
