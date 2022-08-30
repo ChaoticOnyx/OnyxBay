@@ -2,35 +2,29 @@
 	return
 
 /mob/living/carbon/brain/handle_mutations_and_radiation()
-	if (radiation)
-		if (radiation > 100)
-			radiation = 100
-			if(!container)//If it's not in an MMI
-				to_chat(src, "<span class='notice'>You feel weak.</span>")
-			else//Fluff-wise, since the brain can't detect anything itself, the MMI handles thing like that
-				to_chat(src, "<span class='warning'>STATUS: CRITICAL AMOUNTS OF RADIATION DETECTED.</span>")
-		switch(radiation)
-			if(1 to 49)
-				radiation--
-				if(prob(25))
-					adjustToxLoss(1)
-					updatehealth()
+	radiation -= (0.001 SIEVERT)
+	radiation = Clamp(radiation, SPACE_RADIATION, (3 SIEVERT))
+	
+	if(radiation <= SAFE_RADIATION_DOSE)
+		return
 
-			if(50 to 74)
-				radiation -= 2
-				adjustToxLoss(1)
-				if(prob(5))
-					radiation -= 5
-					if(!container)
-						to_chat(src, "<span class='warning'>You feel weak.</span>")
-					else
-						to_chat(src, "<span class='warning'>STATUS: DANGEROUS LEVELS OF RADIATION DETECTED.</span>")
-				updatehealth()
+	if(radiation >= (3 SIEVERT))
+		if(!container)//If it's not in an MMI
+			to_chat(src, "<span class='notice'>You feel weak.</span>")
+		else//Fluff-wise, since the brain can't detect anything itself, the MMI handles thing like that
+			to_chat(src, "<span class='warning'>STATUS: CRITICAL AMOUNTS OF RADIATION DETECTED.</span>")
 
-			if(75 to 100)
-				radiation -= 3
-				adjustToxLoss(3)
-				updatehealth()
+	var/damage = radiation / (0.05 SIEVERT)
+
+	if(damage)
+		adjustToxLoss(damage)
+		updatehealth()
+	
+		if(prob(5))
+			if(!container)
+				to_chat(src, "<span class='warning'>You feel weak.</span>")
+			else
+				to_chat(src, "<span class='warning'>STATUS: DANGEROUS LEVELS OF RADIATION DETECTED.</span>")
 
 
 /mob/living/carbon/brain/handle_environment(datum/gas_mixture/environment)

@@ -3,7 +3,7 @@
 	desc = "A cheap NT knock-off of an Unathi battle-rig. Looks like a fish, moves like a fish, steers like a cow."
 	suit_type = "NT breacher"
 	icon_state = "breacher_rig_cheap"
-	armor = list(melee = 60, bullet = 60, laser = 60, energy = 60, bomb = 70, bio = 100, rad = 50)
+	armor = list(melee = 60, bullet = 60, laser = 60, energy = 60, bomb = 70, bio = 100)
 	emp_protection = -20
 	online_slowdown = 6
 	offline_slowdown = 10
@@ -20,7 +20,7 @@
 	desc = "An authentic Unathi breacher chassis. Huge, bulky and absurdly heavy. It must be like wearing a tank."
 	suit_type = "breacher chassis"
 	icon_state = "breacher_rig"
-	armor = list(melee = 90, bullet = 90, laser = 90, energy = 90, bomb = 90, bio = 100, rad = 80) //Takes TEN TIMES as much damage to stop someone in a breacher. In exchange, it's slow.
+	armor = list(melee = 90, bullet = 90, laser = 90, energy = 90, bomb = 90, bio = 100) //Takes TEN TIMES as much damage to stop someone in a breacher. In exchange, it's slow.
 	vision_restriction = TINT_NONE //Still blind when offline. It is fully armoured after all
 
 /obj/item/clothing/head/helmet/space/rig/unathi

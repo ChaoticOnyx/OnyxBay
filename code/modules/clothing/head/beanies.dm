@@ -7,7 +7,7 @@
 		slot_r_hand_str = "helmet",
 		)
 	siemens_coefficient = 0.9
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 
 /obj/item/clothing/head/beanie/red
 	name = "red beanie"

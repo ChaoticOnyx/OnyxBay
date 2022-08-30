@@ -551,12 +551,15 @@
 	return 1
 
 /obj/item/shockpaddles/standalone/checked_use(charge_amt)
-	SSradiation.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(50)) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	rad_source.schedule_decay(5 SECONDS)
+	
 	return 1
 
 /obj/item/shockpaddles/standalone/think()
 	if(fail_counter > 0)
-		SSradiation.radiate(src, fail_counter--)
+		var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(20))
+		rad_source.schedule_decay(5 SECONDS)
 	else
 		return
 	

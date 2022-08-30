@@ -44,7 +44,6 @@
 	var/stun = 0
 	var/weaken = 0
 	var/paralyze = 0
-	var/irradiate = 0
 	var/stutter = 0
 	var/eyeblur = 0
 	var/drowsy = 0
@@ -121,8 +120,6 @@
 			H.handle_tasing(agony, tasing, def_zone, src)
 	else
 		L.stun_effect_act(stun, agony, def_zone, src)
-	//radiation protection is handled separately from other armour types.
-	L.apply_effect(irradiate, IRRADIATE, L.getarmor(null, "rad"))
 	return 1
 
 //called when the projectile stops flying because it collided with something
