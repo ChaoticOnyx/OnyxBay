@@ -106,7 +106,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/cult
@@ -121,7 +121,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/cult/New()

@@ -9,7 +9,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/head/helmet/space/skrell/white
@@ -30,7 +30,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/skrell/white
@@ -53,7 +53,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/vox/New()
@@ -69,7 +69,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/head/helmet/space/vox/pressure

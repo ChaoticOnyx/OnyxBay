@@ -27,7 +27,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.99,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)

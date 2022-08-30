@@ -10,7 +10,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 /obj/item/clothing/suit/space/syndicate
@@ -29,7 +29,7 @@
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
 		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.95
+		RADIATION_HAWKING_RAY = 1.0
 	)
 
 //Green syndicate space suit
