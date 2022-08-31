@@ -10,6 +10,8 @@
 	var/scanning = 0
 	var/radiation_dose = 0
 	var/radiation_activity = 0
+	var/average_activity = 0
+	var/average_energy = 0
 	var/list/rays = list()
 
 /obj/item/device/geiger/think()
@@ -19,14 +21,35 @@
 	radiation_dose = 0
 	radiation_activity = 0
 	rays = list()
+	average_activity = 0
+	average_energy = 0
+
+	var/sources_count = 0
 	var/sources = SSradiation.get_sources_in_range(src)
 	for(var/datum/radiation_source/source in sources)
-		var/dose = source.calc_absorbed_dose_rt(src, AVERAGE_HUMAN_WEIGHT)
+		var/energy = source.calc_energy_rt(src, AVERAGE_HUMAN_WEIGHT)
 
-		if(dose > 0)
-			radiation_dose += dose
-			rays += source.info.ray_type
-			radiation_activity += source.info.activity
+		if(energy < INSUFFICIENT_RADIATON_ENERGY)
+			continue
+
+		var/old_energy = source.info.energy
+		source.info.energy = energy
+		var/dose = source.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
+		source.info.energy = old_energy
+		
+		radiation_dose += dose
+		rays += source.info.ray_type
+		radiation_activity += source.info.activity
+		average_activity += source.info.activity
+		average_energy += energy
+		sources_count += 1
+
+	if(sources_count == 0)
+		average_activity = 0
+		average_energy = 0
+	else
+		average_activity /= sources_count
+		average_energy /= sources_count
 
 	update_icon()
 
@@ -36,6 +59,9 @@
 /obj/item/device/geiger/_examine_text(mob/user)
 	. = ..()
 	var/msg = "[scanning ? "Ambient" : "Stored"] Radiation: [fmt_siunit(radiation_dose, "Gy", 3)].<br>"
+
+	msg += "Average Activity: [fmt_siunit(CONV_BECQUEREL_QURIE(average_activity), "Ci", 3)].<br>"
+	msg += "Average Energy: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(average_energy), "eV", 3)].<br>"
 
 	msg += "Detected rays: [length(rays) ? "<br>" : "none"]"
 	var/list/printed_rays = list()
