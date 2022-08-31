@@ -54,7 +54,7 @@
 	blood_usable -= min(blood_to_use, blood_usable)
 	return TRUE
 
-/datum/vampire/proc/gain_blood(blood_to_get, source)
+/datum/vampire/proc/gain_blood(blood_to_get)
 	blood_usable += blood_to_get
 	return
 
@@ -256,7 +256,7 @@
 	if (mind.vampire.status & VAMP_FRENZIED)
 		vampire_stop_frenzy(1)
 
-/mob/proc/handle_vampire()
+/mob/living/carbon/human/proc/handle_vampire()
 	// Apply frenzy while in the holy location.
 	if (get_area(loc)?.holy)
 		mind.vampire.frenzy += 3		
@@ -275,8 +275,10 @@
 	return
 
 /mob/living/carbon/human/proc/finish_vamp_timeout(vamp_flags = 0)
-	if (!src?.mind || !src?.mind.vampire)
+	if (!src)
+		return
+	if (!mind || !mind.vampire)
 		return FALSE
-	if (vamp_flags && !(src?.mind.vampire.status & vamp_flags))
+	if (vamp_flags && !(mind.vampire.status & vamp_flags))
 		return FALSE
 	return TRUE
