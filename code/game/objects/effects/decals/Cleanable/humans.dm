@@ -258,7 +258,6 @@ var/global/list/image/splatter_cache=list()
 	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
 	if(dry_timer_id)
 		deltimer(dry_timer_id)
-		dry_timer_id = null
 	if(overlays.len <= 20) // We don't want to scare kids with a snotty monster.
 		var/image/mucus_overlay = image(icon = 'icons/effects/blood.dmi', icon_state = "mucus", pixel_x = rand(-8, 8), pixel_y = rand(-8, 8))
 		mucus_overlay.layer = FLOAT_LAYER
