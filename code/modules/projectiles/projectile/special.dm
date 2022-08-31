@@ -110,7 +110,7 @@
 		var/mob/living/carbon/human/H = M
 		if((H.species.species_flags & SPECIES_FLAG_IS_PLANT) && (H.nutrition < 500))
 			if(prob(15))
-				H.apply_effect((rand(30,80)),IRRADIATE,blocked = H.getarmor(null, "rad"))
+				M.rad_act(new /datum/radiation_source(new /datum/radiation_info(rand(3.5 TERA BECQUEREL, 4 TERA BECQUEREL), RADIATION_ALPHA_RAY), src))
 				H.Weaken(5)
 				H.Stun(5)
 				for (var/mob/V in viewers(src))

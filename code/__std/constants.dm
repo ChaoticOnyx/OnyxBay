@@ -25,9 +25,21 @@
 #define RADIATOR_EXPOSED_SURFACE_AREA_RATIO 0.04 
 /// m^2, surface area of 1.7m (H) x 0.46m (D) cylinder
 #define HUMAN_EXPOSED_SURFACE_AREA 5.2
+#define AVERAGE_HUMAN_WEIGHT (60 KILO GRAMS)
 /// Cosmic microwave background
 #define TCMB  (-270.45 CELSIUS)
 
 #define ATMOS_PRECISION 0.0001
 
 #define INFINITY	1.#INF
+
+/// Constant radiation background, approximately the same radiation is received by astronauts every day.
+#define SPACE_RADIATION                (0.0006 SIEVERT)
+#define SAFE_RADIATION_DOSE            (0.001 SIEVERT)
+#define INSUFFICIENT_RADIATON_ENERGY   (0.1 MEGA ELECTRONVOLT)
+
+/// Energy
+#define ALPHA_RAY_ENERGY   (10 MEGA ELECTRONVOLT)
+#define BETA_RAY_ENERGY    (18 MEGA ELECTRONVOLT)
+#define GAMMA_RAY_ENERGY   (30 MEGA ELECTRONVOLT)
+#define HAWKING_RAY_ENERGY (6 MEGA ELECTRONVOLT)

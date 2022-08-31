@@ -3,7 +3,7 @@
 	desc = "Used to separate things with different weights. Spin 'em round, round, right round."
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "centrifuge"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	component_types = list(
 		/obj/item/stock_parts/manipulator = 3,
 		/obj/item/circuitboard/centrifuge

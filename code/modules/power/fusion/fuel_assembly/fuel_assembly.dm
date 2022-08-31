@@ -10,7 +10,6 @@
 	var/list/rod_quantities = list()
 	var/fuel_type = "composite"
 	var/fuel_colour
-	var/radioactivity = 0
 	var/const/initial_amount = 300
 
 /obj/item/fuel_assembly/New(newloc, _material, _colour)
@@ -39,15 +38,6 @@
 	rod_quantities[fuel_type] = initial_amount
 
 	set_next_think(world.time)
-
-/obj/item/fuel_assembly/think()
-	if(!radioactivity)
-		return
-
-	if(istype(loc, /turf))
-		SSradiation.radiate(src, max(1,ceil(radioactivity/30)))
-
-	set_next_think(world.time + 1 SECOND)
 
 // Mapper shorthand.
 /obj/item/fuel_assembly/deuterium/New(newloc)

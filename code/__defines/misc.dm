@@ -96,7 +96,6 @@
 #define TEMPLATE_FLAG_SPAWN_GUARANTEED 2 // Makes it ignore away site budget and just spawn (only for away sites)
 #define TEMPLATE_FLAG_CLEAR_CONTENTS   4 // if it should destroy objects it spawns on top of
 #define TEMPLATE_FLAG_NO_RUINS         8 // if it should forbid ruins from spawning on top of it
-#define TEMPLATE_FLAG_NO_RADS          16// Removes all radiation from the template after spawning.
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
@@ -217,13 +216,6 @@
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
-
-#define RAD_LEVEL_LOW 0.5 // Around the level at which radiation starts to become harmful
-#define RAD_LEVEL_MODERATE 5
-#define RAD_LEVEL_HIGH 25
-#define RAD_LEVEL_VERY_HIGH 75
-
-#define RADIATION_THRESHOLD_CUTOFF 0.1	// Radiation will not affect a tile when below this value.
 
 #define LEGACY_RECORD_STRUCTURE(X, Y) GLOBAL_LIST_EMPTY(##X);/datum/computer_file/data/##Y/var/list/fields[0];/datum/computer_file/data/##Y/New(){..();GLOB.##X.Add(src);}/datum/computer_file/data/##Y/Destroy(){..();GLOB.##X.Remove(src);}
 

@@ -270,17 +270,19 @@
 	taste_description = "the color blue, and regret"
 	reagent_state = SOLID
 	color = "#c7c7c7"
-	radiation = 0.15
+	radiation = new /datum/radiation_info/preset/radium_226
 
 /datum/reagent/radium/affect_blood(mob/living/carbon/M, alien, removed)
-	M.apply_effect(10 * removed, IRRADIATE, blocked = 0) // Radium may increase your chances to cure a disease
+	radiation.activity = radiation.specific_activity * volume
+	M.radiation += radiation.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
+
 	if(M.virus2.len)
 		for(var/ID in M.virus2)
 			var/datum/disease2/disease/V = M.virus2[ID]
 			if(prob(5))
 				M.antibodies |= V.antigen
 				if(prob(50))
-					M.apply_effect(50, IRRADIATE, blocked = 0) // curing it that way may kill you instead
+					M.radiation += radiation.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT) * 10 // curing it that way may kill you instead
 					var/absorbed = 0
 					var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in M.internal_organs
 					if(rad_organ && !rad_organ.is_broken())

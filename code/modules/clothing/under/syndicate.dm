@@ -5,7 +5,7 @@
 	item_state = "bl_suit"
 	worn_state = "syndicate"
 	has_sensor = 0
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 0.9
 
 /obj/item/clothing/under/syndicate/combat
@@ -22,7 +22,7 @@
 	icon_state = "tactifool"
 	item_state = "bl_suit"
 	worn_state = "tactifool"
-	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
 	siemens_coefficient = 1
 	has_sensor = SUIT_HAS_SENSORS
 
@@ -32,5 +32,3 @@
 	icon_state = "black"
 	item_state = "BW_uniform_r"
 	worn_state = "BW_uniform_r"
-
-

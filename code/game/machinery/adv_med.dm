@@ -417,8 +417,8 @@
 	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
 	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
 	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
-	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
 	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
+	data["rad_dose"] = H.radiation
 
 	if (H.paralysis)
 		data["warnings"] += list("Paralysis Summary: approx. [H.paralysis/4] seconds left")
@@ -563,7 +563,7 @@
 	dat += "<b>Systematic Organ Failure:</b>\t[get_severity(H.getToxLoss())]"
 	dat += "<b>Oxygen Deprivation:</b>\t[get_severity(H.getOxyLoss())]"
 
-	dat += "<b>Radiation Level:</b>\t[get_severity(H.radiation/5)]"
+	dat += "<b>Radiation dose:</b>\t[fmt_siunit(H.radiation, "Sv", 3)]"
 	dat += "<b>Genetic Tissue Damage:</b>\t[get_severity(H.getCloneLoss())]"
 	if(H.paralysis)
 		dat += "Paralysis Summary: approx. [H.paralysis/4] seconds left"

@@ -100,7 +100,9 @@
 	if(fail_counter > 0)
 		fail_counter--
 		if(fail_counter > 20)
-			SSradiation.radiate(src, fail_counter)
+			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(fail_counter))
+			rad_source.schedule_decay(10 SECONDS)
+
 	return ..()
 
 /obj/item/gun/energy/gun/nuclear/emp_act(severity)
