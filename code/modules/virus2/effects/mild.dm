@@ -57,6 +57,7 @@
 				M.update_stats(virus_copylist(mob.virus2))
 			else
 				M = new(get_turf(mob))
+			return
 		if(!mob.can_spread_disease())
 			return
 		for(var/mob/living/carbon/human/M in oview(1, mob))
