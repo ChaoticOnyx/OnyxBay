@@ -1,7 +1,6 @@
 /datum/artifact_effect/radiate
 	name = "radiation"
 	var/radiation_strength
-	var/radiation_range
 
 /datum/artifact_effect/radiate/New()
 	..()

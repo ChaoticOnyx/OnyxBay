@@ -9,7 +9,6 @@
 	rad_resist = list(
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
 		RADIATION_HAWKING_RAY = 1.0
 	)
 
@@ -28,7 +27,6 @@
 	rad_resist = list(
 		RADIATION_ALPHA_RAY = 1.0,
 		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
 		RADIATION_HAWKING_RAY = 1.0
 	)
 

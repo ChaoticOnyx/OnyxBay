@@ -29,7 +29,6 @@
 	var/list/rad_resist = list(
 		RADIATION_ALPHA_RAY = 0.8,
 		RADIATION_BETA_RAY = 0.4,
-		RADIATION_GAMMA_RAY = 0.1,
 		RADIATION_HAWKING_RAY = 0.1
 	)
 

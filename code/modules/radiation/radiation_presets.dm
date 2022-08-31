@@ -18,8 +18,8 @@
 	ray_type = RADIATION_BETA_RAY
 
 /datum/radiation_info/preset/artifact
-	activity = 5 KILO CURIE
-	ray_type = RADIATION_GAMMA_RAY
+	activity = 15 KILO CURIE
+	ray_type = RADIATION_BETA_RAY
 
 /datum/radiation_info/preset/carbon_14
 	activity = 450 CURIE

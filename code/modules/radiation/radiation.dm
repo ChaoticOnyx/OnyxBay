@@ -20,8 +20,6 @@
 				src.energy = ALPHA_RAY_ENERGY
 			if(RADIATION_BETA_RAY)
 				src.energy = BETA_RAY_ENERGY
-			if(RADIATION_GAMMA_RAY)
-				src.energy = GAMMA_RAY_ENERGY
 			if(RADIATION_HAWKING_RAY)
 				src.energy = HAWKING_RAY_ENERGY
 			else
@@ -35,8 +33,6 @@
 		if(RADIATION_ALPHA_RAY)
 			src.quality_factor = 20
 		if(RADIATION_BETA_RAY)
-			src.quality_factor = 1
-		if(RADIATION_GAMMA_RAY)
 			src.quality_factor = 1
 		if(RADIATION_HAWKING_RAY)
 			src.quality_factor = 5

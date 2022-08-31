@@ -74,8 +74,6 @@
 				msg += "α-rays<br>"
 			if(RADIATION_BETA_RAY)
 				msg += "β-rays<br>"
-			if(RADIATION_GAMMA_RAY)
-				msg += "γ-rays<br>"
 			if(RADIATION_HAWKING_RAY)
 				msg += "Hawking rays<br>"
 		

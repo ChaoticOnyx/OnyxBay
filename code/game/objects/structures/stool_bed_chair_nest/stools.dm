@@ -18,7 +18,6 @@ var/global/list/stool_cache = list() //haha stool
 	rad_resist = list(
 		RADIATION_ALPHA_RAY = 0.05,
 		RADIATION_BETA_RAY = 0.05,
-		RADIATION_GAMMA_RAY = 0.0,
 		RADIATION_HAWKING_RAY = 0.0
 	)
 
