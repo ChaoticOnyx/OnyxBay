@@ -162,6 +162,17 @@
 			return
 	return ..()
 
+/obj/_examine_text(mob/user, infix, suffix)
+	. = ..()
+	
+	if(hasHUD(user, HUD_SCIENCE))
+		. += "\nStopping Power:"
+
+		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
+		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
+	
+	return .
+
 /obj/proc/wrench_floor_bolts(mob/user, delay=20)
 	playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 	if(anchored)
