@@ -167,16 +167,15 @@
 
 	// 1. Simulate ray traverse.
 	var/datum/radiation/R = rad_source.travel(src)
-	var/energy_remain = R.energy
 
 	// 2. If rays have too small energy after traversing - ignore it.
-	if(energy_remain <= (10 ELECTRONVOLT))
+	if(!R.is_ionizing())
 		return
 
 	// 3. Calculate energy resistance from skin.
-	energy_remain -= rad_resist[R.radiation_type]
+	R.energy -= rad_resist[R.radiation_type]
 
-	if(energy_remain <= (10 ELECTRONVOLT))
+	if(!R.is_ionizing())
 		return
 
 	// 4. Calculate the dose and apply
@@ -205,12 +204,12 @@
 
 	// 1. Simulate particle traverse.
 	var/datum/radiation/R = rad_source.travel(src)
-	var/energy_remain = R.energy
-	var/activity_remain = R.activity
 
 	// 2. If particles have too small energy after traversing - ignore it.
-	if(energy_remain <= (10 ELECTRONVOLT))
+	if(!R.is_ionizing())
 		return
+	var/energy_remain = R.energy
+	var/activity_remain = R.activity
 
 	var/slots_resist = list()
 

@@ -178,7 +178,7 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
-		var/power_produced = P.air_contents.gas["plasma"] * (pulse_strength / (1 MICRO JOULE) * 150 WATT)
+		var/power_produced = P.air_contents.gas["plasma"] * (pulse_strength * 150 MEGA WATT)
 		add_avail(power_produced)
 		last_power_new = power_produced
 

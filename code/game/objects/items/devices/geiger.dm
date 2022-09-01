@@ -39,16 +39,13 @@
 		var/dose = R.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
 
 		radiation_dose += dose
-		rays += R.radiation_type
+		rays |= R.radiation_type
 		radiation_activity += R.activity
 		average_activity += R.activity
 		average_energy += energy
 		sources_count += 1
 
-	if(sources_count == 0)
-		average_activity = 0
-		average_energy = 0
-	else
+	if(sources_count != 0)
 		average_activity /= sources_count
 		average_energy /= sources_count
 
