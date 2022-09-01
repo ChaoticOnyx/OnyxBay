@@ -9,14 +9,14 @@
 
 /datum/artifact_effect/radiate/DoEffectAura()
 	if(holder)
-		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation_info/preset/artifact(radiation_strength))
+		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation/preset/artifact(radiation_strength))
 		rad_source.schedule_decay(10 SECONDS)
 
 		return 1
 
 /datum/artifact_effect/radiate/DoEffectPulse()
 	if(holder)
-		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation_info/preset/artifact(rand(5, 10)))
+		var/datum/radiation_source/rad_source = SSradiation.radiate(holder, new /datum/radiation/preset/artifact(rand(5, 10)))
 		rad_source.schedule_decay(10 SECONDS)
 
 		return 1

@@ -268,7 +268,7 @@
 	body_parts_covered = 0
 	armor = list(melee = 0, bullet = 0, laser = 5, energy = 5, bomb = 0, bio = 0)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 30 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)

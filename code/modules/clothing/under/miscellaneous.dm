@@ -554,11 +554,6 @@
 	siemens_coefficient = 0.8
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 20, bio = 0)
 	max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
-	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.05
-	)
 
 /obj/item/clothing/under/sterile
 	name = "sterile jumpsuit"

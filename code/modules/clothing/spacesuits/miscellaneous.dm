@@ -50,9 +50,9 @@
 	desc = "A simple helmet with a built in light, smells like mothballs."
 	flash_protection = FLASH_PROTECTION_NONE
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 31.8 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 5.7 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/emergency
@@ -60,9 +60,9 @@
 	icon_state = "syndicate-orange"
 	desc = "A thin, ungainly softsuit colored in blaze orange for rescuers to easily locate, looks pretty fragile."
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 31.8 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 5.7 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/emergency/New()
@@ -79,9 +79,9 @@
 	flash_protection = FLASH_PROTECTION_MODERATE
 	action_button_name = null
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 40 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/head/helmet/space/goliath/attack_self(mob/user)

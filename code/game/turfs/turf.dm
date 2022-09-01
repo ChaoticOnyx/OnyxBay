@@ -27,9 +27,9 @@
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
 	var/list/rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.8,
-		RADIATION_BETA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 0.1
+		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 365 KILO ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
 	)
 
 	var/list/decals

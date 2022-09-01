@@ -18,9 +18,9 @@
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/lid
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.2
+		RADIATION_ALPHA_PARTICLE = 11.8 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 0.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/reagent_containers/vessel/beaker/large
@@ -47,7 +47,11 @@
 	icon_state = "plass_beaker"
 	matter = list(MATERIAL_PLASS = 2500)
 	brittle = FALSE // Plass be strong
-
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 48 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 22.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/reagent_containers/vessel/beaker/noreact
 	name = "cryostasis beaker"

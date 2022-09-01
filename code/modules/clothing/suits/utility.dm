@@ -67,9 +67,9 @@
 	body_parts_covered = HEAD|FACE|EYES
 	siemens_coefficient = 0
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.5
+		RADIATION_ALPHA_PARTICLE = 19.2 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 8.9 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/bomb_suit
@@ -108,7 +108,11 @@
 	flags_inv = BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60)
-
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 44.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 17.6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/item/clothing/suit/radiation
 	name = "Radiation suit"
@@ -127,9 +131,9 @@
 	flags_inv = HIDEJUMPSUIT|HIDETAIL|HIDEGLOVES|HIDESHOES
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.7
+		RADIATION_ALPHA_PARTICLE = 44.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 17.6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/radiation/New()

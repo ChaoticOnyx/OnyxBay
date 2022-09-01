@@ -7,7 +7,7 @@
 	item_state = "multitool"
 	w_class = ITEM_SIZE_SMALL
 	action_button_name = "Toggle geiger counter"
-	var/scanning = 0
+	var/scanning = FALSE
 	var/radiation_dose = 0
 	var/radiation_activity = 0
 	var/average_activity = 0
@@ -27,20 +27,21 @@
 	var/sources_count = 0
 	var/sources = SSradiation.get_sources_in_range(src)
 	for(var/datum/radiation_source/source in sources)
-		var/energy = source.calc_energy_rt(src, AVERAGE_HUMAN_WEIGHT)
-
-		if(energy < INSUFFICIENT_RADIATON_ENERGY)
+		if(!source.info.is_ionizing())
 			continue
 
-		var/old_energy = source.info.energy
-		source.info.energy = energy
-		var/dose = source.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
-		source.info.energy = old_energy
-		
+		var/datum/radiation/R = source.travel(src)
+		var/energy = R.energy
+
+		if(energy <= 0)
+			continue
+
+		var/dose = R.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
+
 		radiation_dose += dose
-		rays += source.info.ray_type
-		radiation_activity += source.info.activity
-		average_activity += source.info.activity
+		rays += R.radiation_type
+		radiation_activity += R.activity
+		average_activity += R.activity
 		average_energy += energy
 		sources_count += 1
 
@@ -58,24 +59,24 @@
 
 /obj/item/device/geiger/_examine_text(mob/user)
 	. = ..()
-	var/msg = "[scanning ? "Ambient" : "Stored"] Radiation: [fmt_siunit(radiation_dose, "Gy", 3)].<br>"
+	var/msg = "Dose: [fmt_siunit(radiation_dose, "Gy/s", 3)].<br>"
 
 	msg += "Average Activity: [fmt_siunit(CONV_BECQUEREL_QURIE(average_activity), "Ci", 3)].<br>"
 	msg += "Average Energy: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(average_energy), "eV", 3)].<br>"
 
-	msg += "Detected rays: [length(rays) ? "<br>" : "none"]"
+	msg += "Detected ionizing radiation: [length(rays) ? "<br>" : "none"]"
 	var/list/printed_rays = list()
 	for(var/ray in rays)
 		if(ray in printed_rays)
 			continue
 
 		switch(ray)
-			if(RADIATION_ALPHA_RAY)
-				msg += "α-rays<br>"
-			if(RADIATION_BETA_RAY)
-				msg += "β-rays<br>"
-			if(RADIATION_HAWKING_RAY)
-				msg += "Hawking rays<br>"
+			if(RADIATION_ALPHA_PARTICLE)
+				msg += "α-particle<br>"
+			if(RADIATION_BETA_PARTICLE)
+				msg += "β-particle<br>"
+			if(RADIATION_HAWKING)
+				msg += "Hawking ray<br>"
 		
 		printed_rays += ray
 

@@ -15,9 +15,9 @@
 	var/istinted = 0
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.4
+		RADIATION_ALPHA_PARTICLE = 23 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 6.6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/gas/Initialize()

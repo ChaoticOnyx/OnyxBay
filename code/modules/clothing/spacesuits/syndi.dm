@@ -7,9 +7,9 @@
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
 	siemens_coefficient = 0.3
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/syndicate
@@ -25,9 +25,9 @@
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 30)
 	siemens_coefficient = 0.3
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 //Green syndicate space suit

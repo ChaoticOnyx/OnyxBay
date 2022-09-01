@@ -24,9 +24,9 @@
 	w_class = ITEM_SIZE_NO_CONTAINER
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 60 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)

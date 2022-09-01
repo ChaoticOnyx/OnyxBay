@@ -27,9 +27,9 @@
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_HAWKING_RAY = 0.2
+		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/structure/window/_examine_text(mob/user)

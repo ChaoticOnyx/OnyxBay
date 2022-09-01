@@ -50,9 +50,9 @@
 	down_icon_state = "steriledown"
 	pull_mask = 1
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 13.5 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/fakemoustache
@@ -147,9 +147,9 @@
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 14.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.1 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/horsehead
@@ -163,9 +163,9 @@
 	siemens_coefficient = 0.7
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 15 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.14 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/horsehead/New()
@@ -244,9 +244,9 @@
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.1,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 16 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/rubber/trasen
@@ -325,9 +325,9 @@
 	w_class = ITEM_SIZE_SMALL
 	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.8,
-		RADIATION_BETA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/bandana/equipped(mob/user, slot)
@@ -390,9 +390,9 @@
 	icon_state = "bandskull"
 	item_state = "bandskull"
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.1,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 12 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.18 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/bandana/customwhite //Custom item
