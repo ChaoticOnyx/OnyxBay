@@ -207,7 +207,7 @@ update_flag
 	if(valve_open)
 		var/datum/gas_mixture/environment
 		if(holding)
-			environment = holding.air_contents
+			environment = holding.return_air()
 		else
 			environment = loc.return_air()
 

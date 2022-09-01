@@ -336,6 +336,8 @@ var/list/global/tank_gauge_cache = list()
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
+	set_next_think(world.time)
+
 	return air_contents
 
 /obj/item/tank/assume_air(datum/gas_mixture/giver)
