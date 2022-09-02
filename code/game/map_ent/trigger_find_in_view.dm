@@ -40,14 +40,15 @@
 	var/multiple_finder = islist(ev_sort)
 	if(multiple_finder)
 		var/list/old_ev_sort = ev_sort
-		ev_sort.Cut()
+		ev_sort = list()
 		for(var/path in old_ev_sort)
-			if(istext(path) && path = text2path(path))
-				ev_sort.Add(path)
+			if(istext(path))
+				path = text2path(path)
+				ev_sort += path
 				continue
 
 			if(ispath(path))
-				ev_sort.Add(path)
+				ev_sort += path
 			else if(ev_verbose)
 				crash_with("Can't find path ([path]) to find in.")
 				return
