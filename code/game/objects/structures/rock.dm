@@ -17,7 +17,7 @@
 /obj/structure/rock/Destroy()
 	var/mineralSpawnChanceList = list(uranium = 10, osmium = 10, iron = 20, coal = 20, diamond = 2, gold = 10, silver = 10, plasma = 20)
 	if(prob(20))
-		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
+		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
 		var/ore = text2path("/obj/item/ore/[mineral_name]")
 		for(var/i=1,i <= rand(2,6),i++)

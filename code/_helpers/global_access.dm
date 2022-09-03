@@ -117,8 +117,6 @@
 			return global.WALLITEMS;
 		if("_all_globals")
 			return global._all_globals;
-		if("account_hack_attempted")
-			return global.account_hack_attempted;
 		if("additional_antag_types")
 			return global.additional_antag_types;
 		if("admin_datums")
@@ -349,8 +347,6 @@
 			return global.escape_pods_by_name;
 		if("evacuation_controller")
 			return global.evacuation_controller;
-		if("event_last_fired")
-			return global.event_last_fired;
 		if("eventchance")
 			return global.eventchance;
 		if("exclude_jobs")
@@ -731,8 +727,6 @@
 			return global.sortInstance;
 		if("sounds_cache")
 			return global.sounds_cache;
-		if("spacevines_spawned")
-			return global.spacevines_spawned;
 		if("sparring_attack_cache")
 			return global.sparring_attack_cache;
 		if("splatter_cache")
@@ -1002,8 +996,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("account_hack_attempted")
-			global.account_hack_attempted=newval;
 		if("additional_antag_types")
 			global.additional_antag_types=newval;
 		if("admin_datums")
@@ -1238,8 +1230,6 @@
 			global.escape_pods_by_name=newval;
 		if("evacuation_controller")
 			global.evacuation_controller=newval;
-		if("event_last_fired")
-			global.event_last_fired=newval;
 		if("eventchance")
 			global.eventchance=newval;
 		if("exclude_jobs")
@@ -1620,8 +1610,6 @@
 			global.sortInstance=newval;
 		if("sounds_cache")
 			global.sounds_cache=newval;
-		if("spacevines_spawned")
-			global.spacevines_spawned=newval;
 		if("sparring_attack_cache")
 			global.sparring_attack_cache=newval;
 		if("splatter_cache")

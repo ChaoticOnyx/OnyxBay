@@ -58,7 +58,7 @@
 		var/choosen_trigger
 		var/result
 		do
-			choosen_trigger = pickweight(triggers)
+			choosen_trigger = util_pick_weight(triggers)
 			result = _run_trigger(choosen_trigger)
 			triggers.Remove(choosen_trigger)
 		while(!result && length(triggers))

@@ -9,17 +9,6 @@
 /datum/ictus/proc/start()
 	return
 
-/datum/event/virus_minor/start()
-	var/next_outbreak = pick(/datum/ictus/retrovirus, /datum/ictus/cold9,
-							 /datum/ictus/flu, /datum/ictus/vulnerability,
-							 /datum/ictus/xeno, /datum/ictus/hisstarvation,
-							 /datum/ictus/musclerace, /datum/ictus/space_migraine)
-	new next_outbreak
-
-/datum/event/virus_major/start()
-	var/next_outbreak = pick(/datum/ictus/gbs, /datum/ictus/fake_gbs, /datum/ictus/nuclear, /datum/ictus/fluspanish, /datum/ictus/emp)
-	new next_outbreak
-
 /datum/admins/proc/ictus()
 	set category = "Admin"
 	set name = "Spawn Epidemic"

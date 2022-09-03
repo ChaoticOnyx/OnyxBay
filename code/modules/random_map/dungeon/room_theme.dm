@@ -60,7 +60,7 @@
 
 /datum/room_theme/proc/get_a_room_layout()
 	if(room_layouts.len && prob(layout_chance))
-		return pickweight(room_layouts)
+		return util_pick_weight(room_layouts)
 	return null
 
 /datum/room_theme/metal

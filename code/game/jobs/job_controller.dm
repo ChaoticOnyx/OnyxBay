@@ -272,7 +272,7 @@ var/global/datum/controller/occupations/job_master
 							if(candidates.len == 1) weightedCandidates[V] = 1
 
 
-				var/mob/new_player/candidate = pickweight(weightedCandidates)
+				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0

@@ -147,7 +147,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			visible_message("<b>[name]</b> [pick("lays an egg", "squats down and croons", "begins making a huge racket", "begins clucking raucously")].")
 			eggsleft--
 			egg_chance = 0
-			var/egg_type = pickweight(species.egg_type)
+			var/egg_type = util_pick_weight(species.egg_type)
 			var/obj/egg = new egg_type(get_turf(src))
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
