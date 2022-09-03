@@ -26,7 +26,7 @@
 	if(activeFor >= enterBelt && activeFor <= leaveBelt)
 		for(var/datum/radiation_source/rad_source in rad_sources)
 			var/ratio = min(activeFor / (leaveBelt / 2), 1.0)
-			rad_source.info.energy = target_energy * ratio
+			rad_source.info.energy = max(target_energy * ratio, 0)
 
 	else if(activeFor == leaveBelt)
 		command_announcement.Announce("The [location_name()] has passed the beta rays belt. Please allow for up to one minute while radiation levels dissipate, and report to the infirmary if you experience any unusual symptoms. Maintenance will lose all access again shortly.", "[location_name()] Sensor Array", zlevels = affecting_z)
@@ -36,7 +36,7 @@
 	
 	if(activeFor > leaveBelt)
 		for(var/datum/radiation_source/rad_source in rad_sources)
-			rad_source.info.energy -= (rad_source.info.energy * 0.1)
+			rad_source.info.energy = max(rad_source.info.energy - (rad_source.info.energy * 0.1), 0)
 
 /datum/event/radiation_storm/proc/radiate()
 	rad_sources = list()
