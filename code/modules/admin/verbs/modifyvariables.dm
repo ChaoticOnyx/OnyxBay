@@ -133,6 +133,12 @@
 	if(!assoc)
 		names = sortList(L)
 
+	if(clear_null_confirm && assoc)
+		if(alert(src, "The assoc list you're trying to edit may contain null vars in values, do you want to delete null vars in values?", "Null Deletion", "Yes", "No") == "Yes")
+			for(var/key in L)
+				if(L[key] == null)
+					L -= key
+
 	var/variable
 	var/assoc_key
 	if(assoc)
