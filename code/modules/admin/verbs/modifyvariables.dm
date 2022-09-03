@@ -115,6 +115,11 @@
 		if(confirm != "Continue")
 			return
 
+	var/clear_null_confirm = alert(src, "The list you're trying to edit may contain null vars, do you want to delete null vars?", "Null Deletion", "Yes", "No")
+	if(clear_null_confirm == "Yes")
+		while(null in L)
+			L -= null
+
 	var/assoc = 0
 	if(L.len > 0)
 		var/a = L[1]
