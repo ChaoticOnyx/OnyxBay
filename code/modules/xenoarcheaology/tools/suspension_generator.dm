@@ -6,7 +6,7 @@
 	density = 1
 	req_access = list(access_research)
 	use_power = 0
-	active_power_usage = 5 KILOWATTS
+	active_power_usage = 5 KILO WATTS
 	interact_offline = TRUE
 	var/obj/item/cell/cell
 	var/obj/item/card/id/auth_card
