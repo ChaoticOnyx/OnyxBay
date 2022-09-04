@@ -184,7 +184,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
 	if(!shuttle_types)
-		crash_with("[src] has no shuttle_types!")
+		util_crash_with("[src] has no shuttle_types!")
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)

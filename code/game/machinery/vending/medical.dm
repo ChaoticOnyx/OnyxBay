@@ -4,10 +4,10 @@
 	desc = "Medical drug dispenser."
 	icon_state = "med"
 	use_vend_state = TRUE
-	vend_delay = 18 SECONDS
+	vend_delay = 18
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	req_access = list(access_medical_equip)
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	component_types = list(/obj/item/vending_cartridge/medical)
 	legal = list(	/obj/item/reagent_containers/vessel/bottle/chemical/antitoxin = 4,
 					/obj/item/reagent_containers/vessel/bottle/chemical/inaprovaline = 4,

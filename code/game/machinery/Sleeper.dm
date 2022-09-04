@@ -26,8 +26,8 @@
 
 	var/locked = 0
 
-	idle_power_usage = 15
-	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
+	idle_power_usage = 15 WATTS
+	active_power_usage = 200 WATTS //builtin health analyzer, dialysis machine, injectors.
 
 	beepsounds = SFX_BEEP_MEDICAL
 

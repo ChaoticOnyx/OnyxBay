@@ -5,9 +5,16 @@
 	name = "\proper space"
 	icon_state = "on_map"
 	dynamic_lighting = 0
-	temperature = T20C
+	temperature = 20 CELSIUS
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	var/dirt = 0
+
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 0.0,
+		RADIATION_BETA_RAY = 0.0,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.0
+	)
 
 /turf/space/Initialize()
 	. = ..()

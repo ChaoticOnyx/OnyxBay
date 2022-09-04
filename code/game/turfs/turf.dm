@@ -17,8 +17,8 @@
 	var/heat_capacity = 1
 
 	//Properties for both
-	var/temperature = T20C      // Initial turf temperature.
-	var/blocks_air = 0          // Does this turf contain air/let air through?
+	var/temperature = 20 CELSIUS // Initial turf temperature.
+	var/blocks_air = 0           // Does this turf contain air/let air through?
 
 	var/list/explosion_throw_details
 
@@ -26,6 +26,12 @@
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_RAY = 0.8,
+		RADIATION_BETA_RAY = 0.4,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.1
+	)
 
 	var/list/decals
 
@@ -44,7 +50,7 @@
 
 /turf/Destroy()
 	if(!changing_turf)
-		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+		util_crash_with("Improper turf qdel. Do not qdel turfs directly.")
 
 	changing_turf = FALSE
 	remove_cleanables()

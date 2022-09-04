@@ -13,6 +13,13 @@
 	species_restricted = null
 	has_visor = 0
 
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
+	)
+
 /obj/item/clothing/gloves/rig
 	name = "gauntlets"
 	item_flags = ITEM_FLAG_THICKMATERIAL
@@ -22,6 +29,13 @@
 	species_restricted = null
 	gender = PLURAL
 
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
+	)
+
 /obj/item/clothing/shoes/magboots/rig
 	name = "boots"
 	body_parts_covered = FEET
@@ -30,6 +44,13 @@
 	species_restricted = null
 	gender = PLURAL
 	icon_base = null
+
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.9,
+		RADIATION_HAWKING_RAY = 1.0
+	)
 
 /obj/item/clothing/suit/space/rig
 	name = "chestpiece"

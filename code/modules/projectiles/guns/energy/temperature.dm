@@ -4,8 +4,8 @@
 	item_state = "freezegun"
 	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	desc = "A gun that can increase temperatures. It has a small label on the side, 'More extreme temperatures will cost more charge!'"
-	var/temperature = T20C
-	var/current_temperature = T20C
+	var/temperature = 20 CELSIUS
+	var/current_temperature = 20 CELSIUS
 	charge_cost = 10
 	max_shots = 10
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 4, TECH_POWER = 3, TECH_MAGNET = 2)
@@ -20,25 +20,19 @@
 
 /obj/item/gun/energy/temperature/_examine_text(mob/user)
 	. = ..()
-	. += "\nThe temperature sensor shows: [round(temperature-T0C)]&deg;C"
+	. += "\nThe temperature sensor shows: [round(CONV_K2C(temperature))]&deg;C"
 
 /obj/item/gun/energy/temperature/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
-
-
-/obj/item/gun/energy/temperature/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
+	set_next_think(world.time)
 
 /obj/item/gun/energy/temperature/attack_self(mob/living/user)
 	user.set_machine(src)
 	var/temp_text = ""
-	if(temperature > (T0C - 50))
-		temp_text = "<FONT color=black>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+	if(temperature > (-50 CELSIUS))
+		temp_text = "<FONT color=black>[temperature] ([round(CONV_K2C(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 	else
-		temp_text = "<FONT color=blue>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
+		temp_text = "<FONT color=blue>[temperature] ([round(CONV_K2C(temperature))]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 
 	var/dat = {"<meta charset=\"utf-8\"><B>Freeze Gun Configuration: </B><BR>
 	Current output temperature: [temp_text]<BR>
@@ -62,7 +56,7 @@
 
 		attack_self(user)
 
-/obj/item/gun/energy/temperature/Process()
+/obj/item/gun/energy/temperature/think()
 	switch(temperature)
 		if(100 to 200) charge_cost = 10
 		if(201 to 200) charge_cost = 20
@@ -82,6 +76,8 @@
 				temperature += 10
 		else
 			temperature = current_temperature
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/energy/temperature/Fire(atom/target, mob/living/user, clickparams, pointblank, reflex)
 	if(temperature >= 450)

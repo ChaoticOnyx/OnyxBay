@@ -1,9 +1,8 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
 var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
 	name = "Radiation Collector Array"
-	desc = "A device which uses radiation and plasma to produce power."
+	desc = "A device which uses Hawking rays and plasma to produce power. WARNING: Working with doses of 1 Gy/s and higher can broke the device"
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
@@ -17,7 +16,7 @@ var/global/list/rad_collectors = list()
 	var/drainratio = 1
 
 	var/health = 100
-	var/max_safe_temp = 1000 + T0C
+	var/max_safe_temp = 1000 CELSIUS
 	var/melted
 
 /obj/machinery/power/rad_collector/New()
@@ -36,17 +35,33 @@ var/global/list/rad_collectors = list()
 		var/datum/gas_mixture/our_turfs_air = T.return_air()
 		if(our_turfs_air.temperature > max_safe_temp)
 			health -= ((our_turfs_air.temperature - max_safe_temp) / 10)
-			if(health <= 0)
-				collector_break()
 
 	//so that we don't zero out the meter if the SM is processed first.
 	last_power = last_power_new
 	last_power_new = 0
 
 	if(P && active)
-		var/rads = SSradiation.get_rads_at_turf(get_turf(src))
-		if(rads)
-			receive_pulse(rads * 5) //Maths is hard
+		if(health <= 0)
+			collector_break()
+
+		var/total_dose = 0
+		var/list/sources = SSradiation.get_sources_in_range(src)
+		for(var/datum/radiation_source/source in sources)
+			if(source.info.ray_type != RADIATION_HAWKING_RAY)
+				continue
+
+			var/remain_energy = source.calc_energy_rt(src)
+			var/old_energy = source.info.energy
+
+			source.info.energy = remain_energy
+			total_dose += source.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
+			source.info.energy = old_energy
+
+			var/exceed = max(0.0, total_dose - (1 GREY))
+			if(exceed > 0)
+				health -= (exceed * 2)
+
+			receive_pulse((remain_energy * source.info.activity))
 
 	if(P)
 		if(P.air_contents.gas["plasma"] == 0)
@@ -124,7 +139,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/_examine_text(mob/user, distance)
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
-		. += "\nThe meter indicates that \the [src] is collecting [last_power] W."
+		. += "\nThe meter indicates that \the [src] is collecting [fmt_siunit(last_power, "W", 3)]."
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)
@@ -169,7 +184,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
 		var/power_produced = 0
-		power_produced = P.air_contents.gas["plasma"] * pulse_strength * 20
+		power_produced = (P.air_contents.gas["plasma"] * (1 WATT)) * pulse_strength
 		add_avail(power_produced)
 		last_power_new = power_produced
 		return

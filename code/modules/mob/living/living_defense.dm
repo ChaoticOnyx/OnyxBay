@@ -439,3 +439,8 @@
 		if(!isnull(M.evasion))
 			result += M.evasion
 	return result
+
+/mob/living/proc/calc_rad_resist(ray_type)
+	ASSERT(IS_VALID_RAD_RAY(ray_type))
+
+	// TODO: Add code

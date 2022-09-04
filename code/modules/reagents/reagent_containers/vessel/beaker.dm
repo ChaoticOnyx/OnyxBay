@@ -17,6 +17,12 @@
 	label_icon = TRUE
 	overlay_icon = TRUE
 	lid_type = /datum/vessel_lid/lid
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.2
+	)
 
 /obj/item/reagent_containers/vessel/beaker/large
 	name = "large beaker"
@@ -42,7 +48,7 @@
 	icon_state = "plass_beaker"
 	matter = list(MATERIAL_PLASS = 2500)
 	brittle = FALSE // Plass be strong
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 /obj/item/reagent_containers/vessel/beaker/noreact
 	name = "cryostasis beaker"
@@ -55,7 +61,7 @@
 	amount_per_transfer_from_this = 10
 	atom_flags = ATOM_FLAG_NO_REACT
 	override_lid_state = LID_OPEN
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 /obj/item/reagent_containers/vessel/beaker/bluespace
 	name = "bluespace beaker"

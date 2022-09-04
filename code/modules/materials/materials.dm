@@ -342,7 +342,7 @@ var/list/name_to_material
 	for(var/turf/simulated/floor/target_tile in range(2,T))
 		var/plasmaToDeduce = (temperature/30) * effect_multiplier
 		totalPlasma += plasmaToDeduce
-		target_tile.assume_gas("plasma", plasmaToDeduce, 200+T0C)
+		target_tile.assume_gas("plasma", plasmaToDeduce, 200 CELSIUS)
 		spawn (0)
 			target_tile.hotspot_expose(temperature, 400)
 	return round(totalPlasma/100)
@@ -478,7 +478,7 @@ var/list/name_to_material
 	shard_type = SHARD_SHARD
 	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
 	hardness = 50
-	melting_point = T0C + 100
+	melting_point = 100 CELSIUS
 	weight = 14
 	brute_armor = 1
 	burn_armor = 2
@@ -588,7 +588,7 @@ var/list/name_to_material
 	window_icon_base = "rwindow"
 	opacity = 0.3
 	integrity = 100
-	melting_point = T0C + 750
+	melting_point = 750 CELSIUS
 	shard_type = SHARD_SHARD
 	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
 	weight = 17
@@ -611,7 +611,7 @@ var/list/name_to_material
 	integrity = 70
 	brute_armor = 2
 	burn_armor = 5
-	melting_point = T0C + 2000
+	melting_point = 2000 CELSIUS
 	icon_colour = "#d67ac8"
 	window_icon_base = "plasmawindow"
 	resilience = 0
@@ -627,7 +627,7 @@ var/list/name_to_material
 	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
-	melting_point = T0C + 4000
+	melting_point = 4000 CELSIUS
 	window_icon_base = "plasmarwindow"
 	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
@@ -652,7 +652,7 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/rblack
 	window_options = list()
 	opacity = 1.0
-	melting_point = T0C + 150
+	melting_point = 150 CELSIUS
 
 /material/glass/black/reinforced
 	name = MATERIAL_REINFORCED_BLACK_GLASS
@@ -661,7 +661,7 @@ var/list/name_to_material
 	icon_colour = "#060a0a"
 	window_icon_base = "rblackwindow"
 	integrity = 100
-	melting_point = T0C + 850
+	melting_point = 850 CELSIUS
 	shard_type = SHARD_SHARD
 	tableslam_noise = 'sound/effects/breaking/window/break1.ogg'
 	weight = 17
@@ -683,7 +683,7 @@ var/list/name_to_material
 	icon_colour = "#cccccc"
 	hardness = 10
 	weight = 5
-	melting_point = T0C+371 //assuming heat resistant plastic
+	melting_point = 371 CELSIUS //assuming heat resistant plastic
 	resilience = 0
 	reflectance = -20
 	stack_origin_tech = list(TECH_MATERIAL = 3)
@@ -792,8 +792,8 @@ var/list/name_to_material
 	hardness = 15
 	brute_armor = 1
 	weight = 18
-	melting_point = T0C+300 //okay, not melting in this case, but hot enough to destroy wood
-	ignition_point = T0C+288
+	melting_point = 300 CELSIUS //okay, not melting in this case, but hot enough to destroy wood
+	ignition_point = 288 CELSIUS
 	stack_origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	dooropen_noise = 'sound/effects/doorcreaky.ogg'
 	door_icon_base = "wood"
@@ -819,8 +819,8 @@ var/list/name_to_material
 	hardness = 15
 	brute_armor = 1
 	weight = 18
-	melting_point = T0C+300 //okay, not melting in this case, but hot enough to destroy wood
-	ignition_point = T0C+288
+	melting_point = 300 CELSIUS //okay, not melting in this case, but hot enough to destroy wood
+	ignition_point = 288 CELSIUS
 	stack_origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	dooropen_noise = 'sound/effects/doorcreaky.ogg'
 	door_icon_base = "wood"
@@ -850,8 +850,8 @@ var/list/name_to_material
 	hardness = 1
 	brute_armor = 1
 	weight = 1
-	ignition_point = T0C+232 //"the temperature at which book-paper catches fire, and burns." close enough
-	melting_point = T0C+232 //temperature at which cardboard walls would be destroyed
+	ignition_point = 232 CELSIUS //"the temperature at which book-paper catches fire, and burns." close enough
+	melting_point = 232 CELSIUS //temperature at which cardboard walls would be destroyed
 	stack_origin_tech = list(TECH_MATERIAL = 1)
 	door_icon_base = "wood"
 	destruction_desc = "crumples"
@@ -863,8 +863,8 @@ var/list/name_to_material
 	name = MATERIAL_CLOTH
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	door_icon_base = "wood"
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	flags = MATERIAL_PADDING
 	brute_armor = 1
 	conductive = 0
@@ -895,7 +895,7 @@ var/list/name_to_material
 	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
-	melting_point = T0C+300
+	melting_point = 300 CELSIUS
 	sheet_singular_name = "blob"
 	sheet_plural_name = "blobs"
 	conductive = 0
@@ -937,8 +937,8 @@ var/list/name_to_material
 	icon_colour = "#5c4831"
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+300
-	melting_point = T0C+300
+	ignition_point = 300 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 	craft_tool = 1
 
@@ -948,8 +948,8 @@ var/list/name_to_material
 	use_name = "red upholstery"
 	icon_colour = "#da020a"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	sheet_singular_name = "tile"
 	sheet_plural_name = "tiles"
 	conductive = 0
@@ -960,8 +960,8 @@ var/list/name_to_material
 	display_name ="cotton"
 	icon_colour = "#ffffff"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 	craft_tool = 1
 
@@ -971,8 +971,8 @@ var/list/name_to_material
 	use_name = "teal cloth"
 	icon_colour = "#00eafa"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_black
@@ -981,8 +981,8 @@ var/list/name_to_material
 	use_name = "black cloth"
 	icon_colour = "#505050"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_green
@@ -991,8 +991,8 @@ var/list/name_to_material
 	use_name = "green cloth"
 	icon_colour = "#01c608"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_puple
@@ -1001,8 +1001,8 @@ var/list/name_to_material
 	use_name = "purple cloth"
 	icon_colour = "#9c56c4"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_blue
@@ -1011,8 +1011,8 @@ var/list/name_to_material
 	use_name = "blue cloth"
 	icon_colour = "#6b6fe3"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_beige
@@ -1021,8 +1021,8 @@ var/list/name_to_material
 	use_name = "beige cloth"
 	icon_colour = "#e8e7c8"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/cloth_lime
@@ -1031,8 +1031,8 @@ var/list/name_to_material
 	use_name = "lime cloth"
 	icon_colour = "#62e36c"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+232
-	melting_point = T0C+300
+	ignition_point = 232 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 
 /material/goat_hide
@@ -1042,8 +1042,8 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	icon_colour = "#e8e7c8"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+300
-	melting_point = T0C+300
+	ignition_point = 300 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 	craft_tool = 1
 
@@ -1054,7 +1054,7 @@ var/list/name_to_material
 	stack_origin_tech = list(TECH_MATERIAL = 2)
 	icon_colour = "#e8e7c8"
 	flags = MATERIAL_PADDING
-	ignition_point = T0C+300
-	melting_point = T0C+300
+	ignition_point = 300 CELSIUS
+	melting_point = 300 CELSIUS
 	conductive = 0
 	craft_tool = 1

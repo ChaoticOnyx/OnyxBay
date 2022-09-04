@@ -316,7 +316,7 @@
 			var/pres = env.return_pressure() * 10
 			data["pressure"] = "[round(pres/10)].[pres%10]"
 			data["temperature"] = round(env.temperature)
-			data["temperatureC"] = round(env.temperature-T0C)
+			data["temperatureC"] = round(env.temperature-(0 CELSIUS))
 
 			var/t_moles = env.total_moles
 			var/gases[0]

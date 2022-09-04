@@ -499,7 +499,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					"oxygen" = "[round(o2_level*100,0.1)]",\
 					"carbon_dioxide" = "[round(co2_level*100,0.1)]",\
 					"other" = "[round(unknown_level*100,0.01)]",\
-					"temp" = "[round(environment.temperature-T0C,0.1)]",\
+					"temp" = "[round(CONV_K2C(environment.temperature),0.1)]",\
 					"reading" = 1\
 					)
 		if(isnull(data["aircontents"]))
@@ -1283,10 +1283,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s radiation levels!</span>", 1)
 
 				user.show_message("<span class='notice'>Analyzing Results for [C]:</span>")
-				if(C.radiation)
-					user.show_message("<span class='notice'>Radiation Level: [C.radiation] mSv</span>")
-				else
-					user.show_message("<span class='notice'>No radiation detected.</span>")
+				user.show_message("<span class='notice'>Radiation dose: [fmt_siunit(C.radiation, "Sv", 3)]</span>")
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return

@@ -5,8 +5,8 @@
 	icon = 'icons/obj/machines/shielding.dmi'
 	icon_state = "fdiffuser_on"
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 100
-	active_power_usage = 2000
+	idle_power_usage = 100 WATTS
+	active_power_usage = 2 KILO WATTS
 	anchored = 1
 	density = 0
 	level = 1

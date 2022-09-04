@@ -13,29 +13,29 @@
 	icon_state = "smes_coil"			// Just few icons patched together. If someone wants to make better icon, feel free to do so!
 	w_class = ITEM_SIZE_LARGE							// It's LARGE (backpack size)
 	origin_tech = list(TECH_MATERIAL = 7, TECH_POWER = 7, TECH_ENGINEERING = 5)
-	var/ChargeCapacity = 50 KILOWATTS
-	var/IOCapacity = 250 KILOWATTS
+	var/ChargeCapacity = 50 KILO WATTS
+	var/IOCapacity = 250 KILO WATTS
 
 // 20% Charge Capacity, 60% I/O Capacity. Used for substation/outpost SMESs.
 /obj/item/smes_coil/weak
 	name = "basic superconductive magnetic coil"
 	desc = "Cheaper model of standard superconductive magnetic coil. It's capacity and I/O rating are considerably lower."
-	ChargeCapacity = 10 KILOWATTS
-	IOCapacity = 150 KILOWATTS
+	ChargeCapacity = 10 KILO WATTS
+	IOCapacity = 150 KILO WATTS
 
 // 500% Charge Capacity, 40% I/O Capacity. Holds a lot of energy, but charges slowly if not combined with other coils. Ideal for backup storage.
 /obj/item/smes_coil/super_capacity
 	name = "superconductive capacitance coil"
 	desc = "Specialised version of standard superconductive magnetic coil. This one has significantly stronger containment field, allowing for significantly larger power storage. It's IO rating is much lower, however."
-	ChargeCapacity = 250 KILOWATTS
-	IOCapacity = 100 KILOWATTS
+	ChargeCapacity = 250 KILO WATTS
+	IOCapacity = 100 KILO WATTS
 
 // 40% Charge Capacity, 500% I/O Capacity. Technically turns SMES into large super capacitor. Ideal for shields.
 /obj/item/smes_coil/super_io
 	name = "superconductive transmission coil"
 	desc = "Specialised version of standard superconductive magnetic coil. While this one won't store almost any power, it rapidly transfers power, making it useful in systems which require large throughput."
-	ChargeCapacity = 20 KILOWATTS
-	IOCapacity = 1.25 MEGAWATTS
+	ChargeCapacity = 20 KILO WATTS
+	IOCapacity = 1.25 MEGA WATTS
 
 
 // DEPRECATED

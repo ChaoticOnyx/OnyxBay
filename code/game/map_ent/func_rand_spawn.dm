@@ -10,7 +10,7 @@
 	var/to_spawn = pick(ev_paths)
 
 	if(!ispath(to_spawn))
-		crash_with("invalid path in ev_paths: `[to_spawn]`")
+		util_crash_with("invalid path in ev_paths: `[to_spawn]`")
 		return
 
 	new to_spawn(arglist(new_args))

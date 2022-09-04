@@ -346,7 +346,7 @@
 	icon_closed = "bomber"
 	body_parts_covered = UPPER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
@@ -357,7 +357,7 @@
 	icon_closed = "varsity_black"
 	body_parts_covered = UPPER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	siemens_coefficient = 0.7
 	initial_closed = TRUE
 
@@ -466,7 +466,7 @@
 	icon_open = "hoodie_open"
 	icon_closed = "hoodie"
 	body_parts_covered = UPPER_TORSO|ARMS
-	min_cold_protection_temperature = T0C - 20
+	min_cold_protection_temperature = -20 CELSIUS
 	cold_protection = UPPER_TORSO|ARMS
 	initial_closed = TRUE
 
@@ -614,7 +614,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)
 	action_button_name = "Toggle hood"
 	hoodtype = /obj/item/clothing/head/goatcapehood
 	siemens_coefficient = 0.6
@@ -627,4 +627,4 @@
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
-	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10)

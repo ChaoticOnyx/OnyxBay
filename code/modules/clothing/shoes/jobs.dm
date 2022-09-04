@@ -8,7 +8,7 @@
 	species_restricted = null
 	siemens_coefficient = 0.4
 
-	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35, rad = 25)
+	armor = list(melee = 35, bullet = 30, laser = 30,energy = 35, bomb = 25, bio = 35)
 
 /obj/item/clothing/shoes/galoshes/Initialize()
 	. = ..()
@@ -19,7 +19,7 @@
 	desc = "Tall synthleather boots with an artificial shine."
 	icon_state = "jackboots"
 	force = 3
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10, rad = 0)
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10)
 	siemens_coefficient = 0.5
 	can_hold_knife = 1
 	cold_protection = FEET
@@ -28,7 +28,7 @@
 /obj/item/clothing/shoes/jackboots/tactical
 	name = "tactical jackboots"
 	desc = "Tall synthleather boots with an artificial shine. These ones seem to be reinforced with some sort of plating."
-	armor = list(melee = 80, bullet = 60, laser = 60, energy = 25, bomb = 50, bio = 10, rad = 0)
+	armor = list(melee = 80, bullet = 60, laser = 60, energy = 25, bomb = 50, bio = 10)
 	siemens_coefficient = 0.4
 
 /obj/item/clothing/shoes/jackboots/unathi
@@ -42,7 +42,7 @@
 	name = "workboots"
 	desc = "A pair of steel-toed work boots designed for use in industrial settings. Safety first."
 	icon_state = "workboots"
-	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0, rad = 20)
+	armor = list(melee = 45, bullet = 30, laser = 30, energy = 25, bomb = 20, bio = 0)
 	siemens_coefficient = 0.4
 	can_hold_knife = 1
 

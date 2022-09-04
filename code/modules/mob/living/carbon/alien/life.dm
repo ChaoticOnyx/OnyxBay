@@ -38,7 +38,7 @@
 /mob/living/carbon/alien/handle_mutations_and_radiation()
 	if(!radiation)
 		return
-	var/rads = radiation/25
+	var/rads = radiation / (0.05 SIEVERT)
 	radiation -= rads
 	nutrition += rads
 	heal_overall_damage(rads, rads)
@@ -135,8 +135,8 @@
 	if(!environment)
 		return
 
-	if(environment.temperature > (T0C+66))
-		adjustFireLoss((environment.temperature - (T0C+66))/5) // Might be too high, check in testing.
+	if(environment.temperature > (66 CELSIUS))
+		adjustFireLoss((environment.temperature - (66 CELSIUS))/5) // Might be too high, check in testing.
 		if(fire)
 			fire.icon_state = "fire2"
 		if(prob(20))

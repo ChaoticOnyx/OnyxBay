@@ -464,8 +464,8 @@
 	SetWeakened(0)
 
 	// shut down ongoing problems
-	radiation = 0
-	bodytemperature = T20C
+	radiation = SPACE_RADIATION
+	bodytemperature = 20 CELSIUS
 	sdisabilities = 0
 	disabilities = 0
 

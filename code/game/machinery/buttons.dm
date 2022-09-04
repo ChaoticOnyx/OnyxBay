@@ -8,8 +8,8 @@
 	var/active = 0
 	var/operating = 0
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 	var/_wifi_id
 	var/datum/wifi/sender/wifi_sender
 

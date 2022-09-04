@@ -130,7 +130,7 @@
 
 /obj/effect/energy_net/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/effect/energy_net/Destroy()
 	if(istype(captured, /mob/living/carbon))
@@ -138,11 +138,10 @@
 			captured.handcuffed = null
 	if(captured)
 		unbuckle_mob()
-	STOP_PROCESSING(SSobj, src)
 	captured = null
 	return ..()
 
-/obj/effect/energy_net/Process()
+/obj/effect/energy_net/think()
 	if(temporary)
 		countdown--
 	if(captured.buckled != src)
@@ -152,6 +151,8 @@
 	if(countdown <= 0)
 		health = 0
 	healthcheck()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/energy_net/Move()
 	..()

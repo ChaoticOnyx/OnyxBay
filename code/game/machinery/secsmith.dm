@@ -7,8 +7,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = TRUE
 	density = TRUE
-	idle_power_usage = 25
-	active_power_usage = 200
+	idle_power_usage = 25 WATTS
+	active_power_usage = 200 WATTS
 	interact_offline = 1
 	req_access = list(access_security)
 

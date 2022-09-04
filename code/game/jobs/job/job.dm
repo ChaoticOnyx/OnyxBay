@@ -114,7 +114,7 @@
 		return FALSE
 	if(!isnull(preview_override))
 		if(!islist(preview_override) || length(preview_override) != 2)
-			crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
+			util_crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
 			return FALSE
 		H.overlays.Cut()
 		H.update_icon = FALSE

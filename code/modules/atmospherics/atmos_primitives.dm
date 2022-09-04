@@ -467,8 +467,8 @@
 		status.Add("No atmosphere present.")
 
 	// Temperature check
-	if((atmosphere.temperature > (T0C + 50)) || (atmosphere.temperature < (T0C - 10)))
-		status.Add("Temperature too [atmosphere.temperature > (T0C + 50) ? "high" : "low"].")
+	if((atmosphere.temperature > (50 CELSIUS)) || (atmosphere.temperature < (-10 CELSIUS)))
+		status.Add("Temperature too [atmosphere.temperature > (50 CELSIUS) ? "high" : "low"].")
 
 	// Pressure check
 	var/pressure = atmosphere.return_pressure()

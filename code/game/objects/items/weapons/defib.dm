@@ -546,21 +546,24 @@
 
 /obj/item/shockpaddles/standalone/Destroy()
 	. = ..()
-	if(fail_counter)
-		STOP_PROCESSING(SSobj, src)
 
 /obj/item/shockpaddles/standalone/check_charge(charge_amt)
 	return 1
 
 /obj/item/shockpaddles/standalone/checked_use(charge_amt)
-	SSradiation.radiate(src, charge_amt/12) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(50)) //just a little bit of radiation. It's the price you pay for being powered by magic I guess
+	rad_source.schedule_decay(5 SECONDS)
+	
 	return 1
 
-/obj/item/shockpaddles/standalone/Process()
+/obj/item/shockpaddles/standalone/think()
 	if(fail_counter > 0)
-		SSradiation.radiate(src, fail_counter--)
+		var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(20))
+		rad_source.schedule_decay(5 SECONDS)
 	else
-		STOP_PROCESSING(SSobj, src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/shockpaddles/standalone/emp_act(severity)
 	..()
@@ -575,7 +578,7 @@
 				to_chat(loc, "<span class='warning'>\The [src] feel pleasantly warm.</span>")
 
 	if(new_fail && !fail_counter)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	fail_counter = new_fail
 
 /obj/item/shockpaddles/standalone/traitor

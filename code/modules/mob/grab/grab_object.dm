@@ -44,7 +44,7 @@
 	var/obj/item/O = get_targeted_organ()
 	. += "\nA grab on \the [affecting]'s [O.name]."
 
-/obj/item/grab/Process()
+/obj/item/grab/think()
 	current_grab.process(src)
 
 /obj/item/grab/attack_self(mob/user)

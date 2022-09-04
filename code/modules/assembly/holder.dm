@@ -227,7 +227,7 @@
 		tmr.time=5
 		tmr.secured = 1
 		tmr.holder = src
-		START_PROCESSING(SSobj, tmr)
+		tmr.set_next_think(world.time)
 		a_left = tmr
 		a_right = ign
 		secured = 1

@@ -8,9 +8,9 @@
 	desc = "Made by Space Amish using traditional space techniques, this heater is guaranteed not to set anything, or anyone, on fire."
 	var/obj/item/cell/cell
 	var/on = 0
-	var/set_temperature = T0C + 20	//K
+	var/set_temperature = 20 CELSIUS
 	var/active = 0
-	var/heating_power = 40 KILOWATTS
+	var/heating_power = 40 KILO WATTS
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	clicksound = SFX_USE_LARGE_SWITCH
 
@@ -107,7 +107,7 @@
 
 		dat += "<A href='?src=\ref[src];op=temp;val=-5'>-</A>"
 
-		dat += " [set_temperature]K ([set_temperature-T0C]&deg;C)"
+		dat += " [set_temperature]K ([CONV_K2C(set_temperature)]&deg;C)"
 		dat += "<A href='?src=\ref[src];op=temp;val=5'>+</A><BR>"
 
 		var/datum/browser/popup = new(usr, "spaceheater", "Space Heater Control Panel")
@@ -133,7 +133,7 @@
 			var/value = text2num(href_list["val"])
 
 			// limit to 0-90 degC
-			set_temperature = dd_range(T0C, T0C + 90, set_temperature + value)
+			set_temperature = dd_range(0 CELSIUS, 90 CELSIUS, set_temperature + value)
 
 		if("cellremove")
 			if(panel_open && cell && !usr.get_active_hand())
@@ -180,7 +180,7 @@
 						heat_transfer = abs(heat_transfer)
 
 						//Assume the heat is being pumped into the hull which is fixed at 20 C
-						var/cop = removed.temperature/T20C	//coefficient of performance from thermodynamics -> power used = heat_transfer/cop
+						var/cop = removed.temperature/(20 CELSIUS)	//coefficient of performance from thermodynamics -> power used = heat_transfer/cop
 						heat_transfer = min(heat_transfer, cop * heating_power)	//limit heat transfer by available power
 
 						heat_transfer = removed.add_thermal_energy(-heat_transfer)	//get the actual heat transfer

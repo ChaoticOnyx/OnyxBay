@@ -6,7 +6,7 @@
 	req_access = list(access_heads)
 	var/islocked = 0
 
-	active_power_usage = 8000 //8kW for the scenery + 500W per holoitem
+	active_power_usage = 8 KILO WATTS // 8kW for the scenery + 500W per holoitem
 
 	circuit = /obj/item/circuitboard/holodeckcontrol
 

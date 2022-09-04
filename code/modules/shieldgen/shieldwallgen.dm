@@ -14,10 +14,10 @@
 	var/storedpower = 0
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	//There have to be at least two posts, so these are effectively doubled
-	var/power_draw = 30 KILOWATTS //30 kW. How much power is drawn from powernet. Increase this to allow the generator to sustain longer shields, at the cost of more power draw.
-	var/max_stored_power = 50 KILOWATTS //50 kW
+	var/power_draw = 30 KILO WATTS //30 kW. How much power is drawn from powernet. Increase this to allow the generator to sustain longer shields, at the cost of more power draw.
+	var/max_stored_power = 50 KILO WATTS //50 kW
 	use_power = POWER_USE_OFF	//Draws directly from power net. Does not use APC power.
-	active_power_usage = 1200
+	active_power_usage = 1.200 KILO WATTS
 
 /obj/machinery/shieldwallgen/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()

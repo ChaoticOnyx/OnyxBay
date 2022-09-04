@@ -6,6 +6,12 @@
 	density = 1
 	plane = DEFAULT_PLANE
 	explosion_block = 1
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.2,
+		RADIATION_HAWKING_RAY = 0.9
+	)
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"

@@ -105,7 +105,7 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/ProbTechs(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type must be no null")
+		util_crash_with("lifeform_type must be no null")
 		return
 
 	if(!istext(lifeform_type))
@@ -117,7 +117,7 @@
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
 
 	if(!L)
-		crash_with("L must be not null")
+		util_crash_with("L must be not null")
 		return
 
 	for(var/scan = 1, scan <= scanned[lifeform_type]["scan_count"], scan++)
@@ -157,14 +157,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/NeuromodsToList(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	if(!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	if(!scanned[lifeform_type]["opened_neuromods"].len)
@@ -269,14 +269,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/LifeformScanToList(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type must be not null")
+		util_crash_with("lifeform_type must be not null")
 		return
 
 	if(!istext(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	var/datum/lifeform/L = GLOB.lifeforms.Get(lifeform_type)
@@ -305,7 +305,7 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/IsAlreadyScanned(mob/target)
 	if(!target)
-		crash_with("target must be not null")
+		util_crash_with("target must be not null")
 		return
 
 	if(!scanned || !scanned.len)
@@ -330,11 +330,11 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/AddScan(datum/lifeform/lifeform, mob/scan_object)
 	if(!lifeform)
-		crash_with("lifeform must be not null")
+		util_crash_with("lifeform must be not null")
 		return
 
 	if(!scan_object)
-		crash_with("scan_object must be not null")
+		util_crash_with("scan_object must be not null")
 		return
 
 	var/res = IsAlreadyScanned(scan_object)
@@ -389,7 +389,7 @@
 	var/image/icon_scan = target.psychoscope_icons[PSYCHOSCOPE_ICON_SCAN]
 
 	if(!icon_scan)
-		crash_with("icon_scan msut be not null")
+		util_crash_with("icon_scan msut be not null")
 		return
 
 	is_scanning = TRUE
@@ -472,14 +472,14 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveLifeformToDisk(lifeform_type)
 	if(!lifeform_type)
-		crash_with("lifeform_type is null")
+		util_crash_with("lifeform_type is null")
 		return
 
 	if(ispath(lifeform_type))
 		lifeform_type = "[lifeform_type]"
 
 	if(!scanned[lifeform_type])
-		crash_with("trying to get [lifeform_type] but it is not exists")
+		util_crash_with("trying to get [lifeform_type] but it is not exists")
 		return
 
 	var/obj/item/disk/lifeform_disk/lifeform_disk = null
@@ -503,7 +503,7 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveNeuromodToDisk(neuromod_type)
 	if(!neuromod_type)
-		crash_with("neuromod_type is null")
+		util_crash_with("neuromod_type is null")
 		return
 
 	if(istext(neuromod_type))
@@ -530,11 +530,11 @@
 */
 /obj/item/clothing/glasses/psychoscope/proc/SaveTechToDisk(tech_id, tech_level)
 	if(!tech_id)
-		crash_with("tech_id is null")
+		util_crash_with("tech_id is null")
 		return
 
 	if(!tech_level)
-		crash_with("tech_level is null")
+		util_crash_with("tech_level is null")
 		return
 
 	var/obj/item/disk/tech_disk/tech_disk = null

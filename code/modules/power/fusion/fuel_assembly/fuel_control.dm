@@ -3,8 +3,8 @@
 	icon_keyboard = "rd_key"
 	icon_screen = "fuel_screen"
 	light_color = COLOR_ORANGE
-	idle_power_usage = 250
-	active_power_usage = 500
+	idle_power_usage = 250 WATTS
+	active_power_usage = 500 WATTS
 
 	var/id_tag
 	var/scan_range = 25

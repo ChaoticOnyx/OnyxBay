@@ -96,10 +96,10 @@
 /// * `time` - when to call the "think" proc. Falsy value stops from thinking.
 /datum/proc/set_next_think(time)
 	if(!time)
-		clear_think()
+		_main_think_ctx?.stop()
 		return
 
-	if(!_main_think_ctx)
+	if(QDELETED(_main_think_ctx))
 		_main_think_ctx = new(time, CALLBACK(src, .proc/think))
 		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
 		CALC_NEXT_GROUP_RUN(_main_think_ctx)
@@ -108,13 +108,17 @@
 
 	_main_think_ctx.next_think = time
 
-	var/new_group
-	ASSIGN_THINK_GROUP(new_group, time)
+	if(!_main_think_ctx.group)
+		ASSIGN_THINK_GROUP(_main_think_ctx.group, time)
+		SSthink.contexts_groups[_main_think_ctx.group] += _main_think_ctx
+	else
+		var/new_group
+		ASSIGN_THINK_GROUP(new_group, time)
 
-	if(_main_think_ctx.group != new_group)
-		SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
-		SSthink.contexts_groups[new_group] += _main_think_ctx
-		_main_think_ctx.group = new_group
+		if(_main_think_ctx.group != new_group)
+			SSthink.contexts_groups[_main_think_ctx.group] -= _main_think_ctx
+			SSthink.contexts_groups[new_group] += _main_think_ctx
+			_main_think_ctx.group = new_group
 
 	CALC_NEXT_GROUP_RUN(_main_think_ctx)
 
@@ -127,7 +131,7 @@
 	if(!time)
 		CRASH("Invalid time")
 
-	if(_think_ctxs[name])
+	if(!QDELETED(_think_ctxs[name]))
 		CRASH("Thinking context [name] is exists")
 
 	_think_ctxs[name] = new /datum/think_context(time, clbk)
@@ -142,18 +146,23 @@
 /// * `time` - when to call the context. Falsy value removes the context.
 /datum/proc/set_next_think_ctx(name, time)
 	if(!time)
-		_think_ctxs -= name
+		_think_ctxs[name].stop()
 
 		return
 
 	var/datum/think_context/ctx = _think_ctxs[name]
 	ctx.next_think = time
-	var/new_group
-	ASSIGN_THINK_GROUP(new_group, time)
 
-	if(ctx.group != new_group)
-		SSthink.contexts_groups[ctx.group] -= ctx
-		SSthink.contexts_groups[new_group] += ctx
+	if(!ctx.group)
+		ASSIGN_THINK_GROUP(ctx.group, time)
+		SSthink.contexts_groups[ctx.group] += ctx
+	else
+		var/new_group
+		ASSIGN_THINK_GROUP(new_group, time)
+
+		if(ctx.group != new_group)
+			SSthink.contexts_groups[ctx.group] -= ctx
+			SSthink.contexts_groups[new_group] += ctx
 		ctx.group = new_group
 
 	CALC_NEXT_GROUP_RUN(ctx)

@@ -12,16 +12,10 @@
 /obj/effect/force_portal/Initialize()
 	. = ..()
 	boom_time = world.time + 30 SECONDS
-	START_PROCESSING(SSobj, src)
+	set_next_think(boom_time)
 
-/obj/effect/force_portal/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/effect/force_portal/Process()
-	if(boom_time && boom_time < world.time)
-		boom()
-		boom_time = 0
+/obj/effect/force_portal/think()
+	boom()
 
 /obj/effect/force_portal/proc/boom()
 	set waitfor = 0
@@ -43,6 +37,7 @@
 
 /obj/effect/force_portal/onDropInto(atom/movable/AM)
 	boom_time -= 1 SECOND
+	set_next_think(boom_time)
 	src.visible_message("<span class='warning'>\The [src] sucks in \the [AM]!</span>")
 	if(!ismob(AM))
 		var/obj/O = AM

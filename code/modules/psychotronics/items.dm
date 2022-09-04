@@ -30,10 +30,10 @@
 	var/datum/neuromod/N = GLOB.neuromods.Get(neuromod)
 
 	if (!L)
-		crash_with("trying to get [created_for] but it is not exists")
+		util_crash_with("trying to get [created_for] but it is not exists")
 
 	if (!N)
-		crash_with("trying to get [neuromod] but it is not exists")
+		util_crash_with("trying to get [neuromod] but it is not exists")
 
 	desc = initial(desc) + "<br>Contains: [N.name]" + "<br>Created for [L.species]"
 
@@ -56,7 +56,7 @@
 		return
 
 	if (!target || !user)
-		crash_with("target or user is null")
+		util_crash_with("target or user is null")
 
 	if (!ismob(target) || !ismob(user))
 		return
@@ -84,7 +84,7 @@
 		return
 
 	if (!ispath(neuromod))
-		crash_with("neuromod's type must be `path`")
+		util_crash_with("neuromod's type must be `path`")
 
 	if (target == user)
 		visible_message(SPAN_WARNING("[user] trying to inject content of \the [src.name] to self."))

@@ -389,7 +389,7 @@ list(\
 
 	var/mob/living/carbon/human/H = host
 	var/obj/item/organ/external/head = H.get_organ(BP_HEAD)
-	head.implants -= src
+	head?.implants -= src
 
 	src.loc = get_turf(host)
 

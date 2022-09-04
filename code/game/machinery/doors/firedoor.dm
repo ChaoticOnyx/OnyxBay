@@ -38,7 +38,7 @@
 	var/hatch_open = 0
 
 	power_channel = STATIC_ENVIRON
-	idle_power_usage = 5
+	idle_power_usage = 5 WATTS
 
 	var/list/tile_info[4]
 	var/list/dir_alerts[4] // 4 dirs, bitflags
@@ -97,7 +97,7 @@
 			o += "<span class='warning'>DATA UNAVAILABLE</span>"
 			. += "\n[o]"
 			continue
-		var/celsius = convert_k2c(tile_info[index][1])
+		var/celsius = CONV_K2C(tile_info[index][1])
 		var/pressure = tile_info[index][2]
 		o += "<span class='[(dir_alerts[index] & (FIREDOOR_ALERT_HOT|FIREDOOR_ALERT_COLD)) ? "warning" : "color:blue"]'>"
 		o += "[celsius]&deg;C</span> "
@@ -425,7 +425,7 @@
 		var/list/tileinfo=tile_info[index]
 		if(tileinfo==null)
 			continue // Bad data.
-		var/celsius = convert_k2c(tileinfo[1])
+		var/celsius = CONV_K2C(tileinfo[1])
 
 		var/alerts=0
 

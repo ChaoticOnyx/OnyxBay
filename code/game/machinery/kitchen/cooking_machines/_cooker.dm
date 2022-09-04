@@ -16,7 +16,7 @@
 	icon = 'icons/obj/cooking_machines.dmi'
 	density = 1
 	anchored = 1
-	idle_power_usage = 5
+	idle_power_usage = 5 WATTS
 
 	var/on_icon						// Icon state used when cooking.
 	var/off_icon					// Icon state used when not cooking.

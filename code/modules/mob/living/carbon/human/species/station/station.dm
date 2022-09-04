@@ -309,7 +309,7 @@
 	heat_level_2 = 3000
 	heat_level_3 = 4000
 
-	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
+	body_temperature = 15 CELSIUS		//make the plant people have a bit lower body temperature, why not
 
 	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_BLOOD | SPECIES_FLAG_NO_ANTAG_TARGET
 	appearance_flags = 0

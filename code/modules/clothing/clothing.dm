@@ -13,6 +13,15 @@
 	var/blood_overlay_type = "uniformblood"
 	var/visible_name = "Unknown"
 
+	/// How much of rays this clothing can save.
+	/// Value should be in range between 0 and 1.
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 0.9,
+		RADIATION_GAMMA_RAY = 0.0,
+		RADIATION_HAWKING_RAY = 0.3
+	)
+
 // Updates the icons of the mob wearing the clothing item, if any.
 /obj/item/clothing/proc/update_clothing_icon()
 	return
@@ -573,7 +582,7 @@ BLIND     // can't see anything
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
@@ -645,10 +654,10 @@ BLIND     // can't see anything
 /obj/item/clothing/suit
 	icon = 'icons/obj/clothing/suits.dmi'
 	name = "suit"
-	var/fire_resist = T0C+100
+	var/fire_resist = 100 CELSIUS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	slot_flags = SLOT_OCLOTHING
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
@@ -685,7 +694,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)

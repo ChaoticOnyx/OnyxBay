@@ -24,8 +24,8 @@
 	var/alt_icons = list()
 
 	// Power
-	idle_power_usage = 10
-	var/vend_power_usage = 150 //actuators and stuff
+	idle_power_usage = 10 WATTS
+	var/vend_power_usage = 150 WATTS //actuators and stuff
 
 	// Vending-related
 	var/vend_ready = TRUE // Are we ready to vend?? Is it time??
@@ -69,7 +69,7 @@
 	var/list/illegal = list()
 	var/list/premium = list()
 	var/list/prices = list()
-	var/gen_rand_amount = TRUE // If we want to generate random amount of items in our cartridge.
+	var/gen_rand_amount = FALSE // If we want to generate random amount of items in our cartridge.
 
 /obj/machinery/vending/update_icon()
 	overlays.Cut()

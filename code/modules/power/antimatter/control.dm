@@ -6,8 +6,8 @@
 	anchored = 1
 	density = 1
 	use_power = 1
-	idle_power_usage = 100
-	active_power_usage = 1000
+	idle_power_usage = 100 WATTS
+	active_power_usage = 1 KILO WATT
 
 	var/list/obj/machinery/am_shielding/linked_shielding
 	var/list/obj/machinery/am_shielding/linked_cores

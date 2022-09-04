@@ -32,7 +32,7 @@
 		write_atom = locate(ev_write_tag)
 
 		if(!istype(write_atom))
-			crash_with("ev_write_tag is invalid")
+			util_crash_with("ev_write_tag is invalid")
 			return
 
 		write_table = write_atom.vars
@@ -48,7 +48,7 @@
 		var/obj/map_ent/E = write_atom
 
 		if(!istype(E))
-			crash_with("ev_write_tag is not an entity")
+			util_crash_with("ev_write_tag is not an entity")
 			return
 		
 		E.activate()

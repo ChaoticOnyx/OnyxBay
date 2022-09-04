@@ -10,7 +10,7 @@
 	anchored = 1.0
 	atom_flags = ATOM_FLAG_CHECKS_BORDER
 	var/maxhealth = 14.0
-	var/maximal_heat = T0C + 100 		// Maximal heat before this window begins taking damage from fire
+	var/maximal_heat = 100 CELSIUS 		// Maximal heat before this window begins taking damage from fire
 	var/damage_per_fire_tick = 2.0 		// Amount of damage per fire tick. Regular windows are not fireproof so they might as well break quickly.
 	var/health
 	var/ini_dir = null
@@ -26,6 +26,12 @@
 	hitby_sound = SFX_GLASS_HIT
 	hitby_loudness_multiplier = 2.0
 	pull_sound = SFX_PULL_STONE
+	rad_resist = list(
+		RADIATION_ALPHA_RAY = 1.0,
+		RADIATION_BETA_RAY = 1.0,
+		RADIATION_GAMMA_RAY = 0.1,
+		RADIATION_HAWKING_RAY = 0.2
+	)
 
 /obj/structure/window/_examine_text(mob/user)
 	. = ..()
@@ -450,7 +456,7 @@
 	icon_state = "window"
 	basestate = "window"
 	glasstype = /obj/item/stack/material/glass
-	maximal_heat = T0C + 100
+	maximal_heat = 100 CELSIUS
 	damage_per_fire_tick = 2.0
 	maxhealth = 12.0
 
@@ -462,7 +468,7 @@
 	icon_state = "plasmawindow"
 	shardtype = /obj/item/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
-	maximal_heat = T0C + 2000
+	maximal_heat = 2000 CELSIUS
 	damage_per_fire_tick = 1.0
 	maxhealth = 40.0
 
@@ -475,7 +481,7 @@
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	explosion_block = 2
-	maximal_heat = T0C + 4000
+	maximal_heat = 4000 CELSIUS
 	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that plass windows have something like ablative layer that protects them for a while.
 	maxhealth = 80.0
 
@@ -490,7 +496,7 @@
 	basestate = "rwindow"
 	maxhealth = 40.0
 	reinf = 1
-	maximal_heat = T0C + 750
+	maximal_heat = 750 CELSIUS
 	explosion_block = 1
 	damage_per_fire_tick = 2.0
 	glasstype = /obj/item/stack/material/glass/reinforced

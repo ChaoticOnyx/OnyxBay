@@ -6,7 +6,7 @@
 	level = 1
 	density = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 200		//internal circuitry, friction losses and stuff
+	idle_power_usage = 200 WATTS		//internal circuitry, friction losses and stuff
 	power_rating = 10000
 	var/target_pressure = 10*ONE_ATMOSPHERE
 	var/id = null
@@ -128,7 +128,7 @@
 			inner_tank.adjust_gas("carbon_dioxide", -co2_intake, 1)
 			var/datum/gas_mixture/new_oxygen = new
 			new_oxygen.adjust_gas("oxygen",  co2_intake)
-			new_oxygen.temperature = T20C+30 //it's sort of hot after molecular bond breaking
+			new_oxygen.temperature = 50 CELSIUS //it's sort of hot after molecular bond breaking
 			inner_tank.merge(new_oxygen)
 			carbon_stored += co2_intake * carbon_efficiency
 			while (carbon_stored >= carbon_moles_per_piece)
