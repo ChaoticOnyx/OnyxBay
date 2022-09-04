@@ -21,7 +21,7 @@
 	metal = ismetal
 	playsound(src, 'sound/effects/bubbles2.ogg', 80, 1, -3)
 	spawn(3 + metal * 3)
-		Process()
+		set_next_think(world.time)
 		checkReagents()
 	addtimer(CALLBACK(src, .proc/remove_foam), 12 SECONDS)
 
