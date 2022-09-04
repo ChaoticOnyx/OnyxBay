@@ -4,6 +4,7 @@
 	icon_state = "cabinet_closed"
 	icon_closed = "cabinet_closed"
 	icon_opened = "cabinet_open"
+	dremovable = FALSE
 
 /obj/structure/closet/cabinet/update_icon()
 	if(!opened)
