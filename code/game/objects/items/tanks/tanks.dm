@@ -63,7 +63,7 @@ var/list/global/tank_gauge_cache = list()
 		air_contents.adjust_gas(gas, starting_pressure[gas]*volume/(R_IDEAL_GAS_EQUATION*(20 CELSIUS)), 0)
 	air_contents.update_values()
 
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 	update_icon(TRUE)
 
 /obj/item/tank/Destroy()
@@ -209,7 +209,7 @@ var/list/global/tank_gauge_cache = list()
 				var/new_temperature = total_energy / total_capacity
 
 				src.air_contents.temperature = new_temperature
-				set_next_think(world.time)
+				set_next_think(world.time+1)
 
 		add_fingerprint(user)
 
@@ -295,7 +295,7 @@ var/list/global/tank_gauge_cache = list()
 			var/cp = text2num(href_list["dist_p"])
 			distribute_pressure += cp
 		distribute_pressure = min(max(round(distribute_pressure), 0), TANK_MAX_RELEASE_PRESSURE)
-		set_next_think(world.time)
+		set_next_think(world.time+1)
 		return TOPIC_REFRESH
 
 	if (href_list["stat"])
@@ -328,15 +328,15 @@ var/list/global/tank_gauge_cache = list()
 			else
 				to_chat(user, "<span class='warning'>You need something to connect to \the [src].</span>")
 
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /obj/item/tank/remove_air(amount)
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 	return air_contents.remove(amount)
 
 /obj/item/tank/return_air()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 	return air_contents
 
@@ -344,7 +344,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.merge(giver)
 
 	check_status()
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 	return 1
 
@@ -357,8 +357,8 @@ var/list/global/tank_gauge_cache = list()
 	var/datum/gas_mixture/removed = remove_air(distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature))
 	if(removed)
 		removed.volume = volume_to_return
-	
-	set_next_think(world.time)
+
+	set_next_think(world.time+1)
 
 	return removed
 
@@ -614,7 +614,7 @@ var/list/global/tank_gauge_cache = list()
 	var/new_temperature = total_energy / total_capacity
 
 	air_contents.temperature = new_temperature
-	set_next_think(world.time)
+	set_next_think(world.time+1)
 
 /obj/item/device/tankassemblyproxy/update_icon()
 	tank.update_icon()
