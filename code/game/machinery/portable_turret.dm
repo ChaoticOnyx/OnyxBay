@@ -59,13 +59,6 @@
 	var/wrenching = 0
 	var/last_target			//last target fired at, prevents turrets from erratically firing at all valid targets in range
 
-	/// List of primary targets.
-	var/list/targets = list()
-	/// Targets that are least important.
-	var/list/secondary_targets = list()
-
-	var/datum/component/sentry_view/_sentry = null
-
 /obj/machinery/porta_turret/crescent
 	enabled = 0
 	ailock = 1
@@ -92,7 +85,7 @@
 	change_power_consumption(round(initial(active_power_usage) * 5), POWER_USE_ACTIVE)
 	return 1
 
-/obj/machinery/porta_turret/Initialize()
+/obj/machinery/porta_turret/New()
 	..()
 	req_access.Cut()
 	req_one_access = list(access_security, access_heads)
@@ -102,24 +95,9 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	_sentry = AddComponent(/datum/component/sentry_view, .proc/_on_entered, .proc/_on_exited)
-
 	setup()
 
-/obj/machinery/porta_turret/proc/_on_entered(turf/T, mob/living/L)
-	if(!istype(L))
-		return
-
-	assess_and_assign(L)
-
-/obj/machinery/porta_turret/proc/_on_exited(turf/T, mob/living/L)
-	if(!istype(L))
-		return
-
-	targets -= L
-	secondary_targets -= L
-
-/obj/machinery/porta_turret/crescent/Initialize()
+/obj/machinery/porta_turret/crescent/New()
 	..()
 	req_one_access.Cut()
 	req_access = list(access_cent_specops)
@@ -127,7 +105,6 @@
 /obj/machinery/porta_turret/Destroy()
 	qdel(spark_system)
 	spark_system = null
-
 	. = ..()
 
 /obj/machinery/porta_turret/proc/setup()
@@ -464,13 +441,6 @@ var/list/turret_icons
 
 /obj/machinery/porta_turret/Process()
 	//the main machinery process
-	for(var/weakref/W in _sentry.view)
-		if(!ispath(W.ref_type, /mob/living))
-			continue
-
-		var/mob/living/L = W.resolve()
-
-		assess_and_assign(L)
 
 	if(stat & (NOPOWER|BROKEN))
 		//if the turret has no power or is broken, make the turret pop down if it hasn't already
@@ -482,8 +452,14 @@ var/list/turret_icons
 		popDown()
 		return
 
+	var/list/targets = list()			//list of primary targets
+	var/list/secondarytargets = list()	//targets that are least important
+
+	for(var/mob/M in mobs_in_view(world.view, src))
+		assess_and_assign(M, targets, secondarytargets)
+
 	if(!tryToShootAt(targets))
-		if(!tryToShootAt(secondary_targets)) // if no valid targets, go for secondary targets
+		if(!tryToShootAt(secondarytargets)) // if no valid targets, go for secondary targets
 			spawn()
 				popDown() // no valid targets, close the cover
 
@@ -491,18 +467,12 @@ var/list/turret_icons
 		use_power_oneoff(20000)
 		health = min(health+1, maxhealth) // 1HP for 20kJ
 
-/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L)
+/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L, list/targets, list/secondarytargets)
 	switch(assess_living(L))
 		if(TURRET_PRIORITY_TARGET)
-			if(L in targets)
-				return
-
 			targets += L
 		if(TURRET_SECONDARY_TARGET)
-			if(L in secondary_targets)
-				return
-
-			secondary_targets += L
+			secondarytargets += L
 
 /obj/machinery/porta_turret/proc/assess_living(mob/living/L)
 	if(!istype(L))
@@ -521,6 +491,9 @@ var/list/turret_icons
 		return TURRET_NOT_TARGET	//move onto next potential victim!
 
 	if(get_dist(src, L) > 7)	//if it's too far away, why bother?
+		return TURRET_NOT_TARGET
+
+	if(!check_trajectory(L, src))	//check if we have true line of sight
 		return TURRET_NOT_TARGET
 
 	if(emagged)		// If emagged not even the dead get a rest
@@ -549,9 +522,6 @@ var/list/turret_icons
 
 	if(L.lying)		//if the perp is lying down, it's still a target but a less-important target
 		return lethal ? TURRET_SECONDARY_TARGET : TURRET_NOT_TARGET
-
-	if(!check_trajectory(L, src))	//check if we have true line of sight
-		return TURRET_NOT_TARGET
 
 	return TURRET_PRIORITY_TARGET	//if the perp has passed all previous tests, congrats, it is now a "shoot-me!" nominee
 

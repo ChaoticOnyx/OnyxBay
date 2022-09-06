@@ -290,7 +290,6 @@
 #include "code\datums\components\cardborg.dm"
 #include "code\datums\components\label.dm"
 #include "code\datums\components\polar_weather.dm"
-#include "code\datums\components\sentry.dm"
 #include "code\datums\components\train_auto.dm"
 #include "code\datums\configuration\__defines.dm"
 #include "code\datums\configuration\admin_section.dm"
