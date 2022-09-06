@@ -59,12 +59,20 @@
 	var/wrenching = 0
 	var/last_target			//last target fired at, prevents turrets from erratically firing at all valid targets in range
 
+	// TODO: Move turf's things to some kind of a component.
+	// The plan is to have the two type of turf lists:
+	// - We can view
+	// - We can not view
+	// The first type of turfs free us from making "view" test for mobs there.
+	// The second type is the turfs which can be visible some day (remember that the first type can be too).
+
+	var/list/turfs_in_view_range = list()
+	var/list/turfs_not_in_view_range = list()
+
 	/// List of primary targets.
 	var/list/targets = list()
 	/// Targets that are least important.
 	var/list/secondary_targets = list()
-
-	var/datum/component/sentry_view/_sentry = null
 
 /obj/machinery/porta_turret/crescent
 	enabled = 0
@@ -102,22 +110,73 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	_sentry = AddComponent(/datum/component/sentry_view, .proc/_on_entered, .proc/_on_exited)
+	_recalculate_turfs()
 
 	setup()
 
-/obj/machinery/porta_turret/proc/_on_entered(turf/T, mob/living/L)
-	if(!istype(L))
+/obj/machinery/porta_turret/proc/_unregister_all_turfs()
+	for(var/turf/T in turfs_in_view_range)
+		_unregister_visible_turf(T)
+
+	for(var/turf/T in turfs_not_in_view_range)
+		_unregister_not_visible_turf(T)
+
+	turfs_in_view_range = list()
+	turfs_not_in_view_range = list()
+
+/obj/machinery/porta_turret/proc/_recalculate_turfs()
+	_unregister_all_turfs()
+
+	turfs_in_view_range = list()
+	turfs_not_in_view_range = list()
+
+	// Lummox says `view` has caching, anyway lets be sure).
+	var/list/cached_view = view(world.view, src)
+
+	for(var/turf/T in range(world.view, src))
+		if(T in cached_view)
+			_register_visible_turf(T)
+			turfs_in_view_range += T
+		else
+			_register_not_visible_turf(T)
+			turfs_not_in_view_range += T
+
+/obj/machinery/porta_turret/proc/_register_visible_turf(turf/T)
+	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)
+	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
+	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
+
+/obj/machinery/porta_turret/proc/_register_not_visible_turf(turf/T)
+	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
+
+/obj/machinery/porta_turret/proc/_unregister_visible_turf(turf/T)
+	unregister_signal(T, SIGNAL_ENTERED)
+	unregister_signal(T, SIGNAL_EXITED)
+	unregister_signal(T, SIGNAL_TURF_CHANGED)
+
+/obj/machinery/porta_turret/proc/_unregister_not_visible_turf(turf/T)
+	unregister_signal(T, SIGNAL_TURF_CHANGED)
+
+/obj/machinery/porta_turret/proc/_turf_changed(turf/T, old_density, density, old_opacity, opacity)
+	if(old_opacity != opacity)
+		_recalculate_turfs()
+
+/obj/machinery/porta_turret/proc/_on_turf_entered(turf/T, atom/enterer)
+	var/mob/M = enterer
+
+	if(!istype(M))
 		return
 
-	assess_and_assign(L)
+	assess_and_assign(M)
 
-/obj/machinery/porta_turret/proc/_on_exited(turf/T, mob/living/L)
-	if(!istype(L))
+/obj/machinery/porta_turret/proc/_on_turf_exited(turf/T, atom/exitee)
+	var/mob/M = exitee
+
+	if(!istype(M))
 		return
-
-	targets -= L
-	secondary_targets -= L
+	
+	targets -= M
+	secondary_targets -= M
 
 /obj/machinery/porta_turret/crescent/Initialize()
 	..()
@@ -127,6 +186,8 @@
 /obj/machinery/porta_turret/Destroy()
 	qdel(spark_system)
 	spark_system = null
+	
+	_unregister_all_turfs()
 
 	. = ..()
 
@@ -464,8 +525,6 @@ var/list/turret_icons
 
 /obj/machinery/porta_turret/Process()
 	//the main machinery process
-	for(var/mob/living/L in _sentry.view)
-		assess_and_assign(L)
 
 	if(stat & (NOPOWER|BROKEN))
 		//if the turret has no power or is broken, make the turret pop down if it hasn't already
