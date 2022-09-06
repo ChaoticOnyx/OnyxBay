@@ -2,7 +2,7 @@
 	icon_state ="bookEngineering2"
 	author = "Engineering Encyclopedia"
 	title = "Engineering Textbook"
-	topic = "Engineer"
+	topic = "Engineering Items"
 	attack_verb = list("bashed", "whacked", "educated", "constructed", "engineered")
 
 /obj/item/book/wiki/robotics_cyborgs
