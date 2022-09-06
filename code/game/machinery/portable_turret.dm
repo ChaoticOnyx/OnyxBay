@@ -59,21 +59,6 @@
 	var/wrenching = 0
 	var/last_target			//last target fired at, prevents turrets from erratically firing at all valid targets in range
 
-	// TODO: Move turf's things to some kind of a component.
-	// The plan is to have the two type of turf lists:
-	// - We can view
-	// - We can not view
-	// The first type of turfs free us from making "view" test for mobs there.
-	// The second type is the turfs which can be visible some day (remember that the first type can be too).
-
-	var/list/turfs_in_view_range = list()
-	var/list/turfs_not_in_view_range = list()
-
-	/// List of primary targets.
-	var/list/targets = list()
-	/// Targets that are least important.
-	var/list/secondary_targets = list()
-
 /obj/machinery/porta_turret/crescent
 	enabled = 0
 	ailock = 1
@@ -100,7 +85,7 @@
 	change_power_consumption(round(initial(active_power_usage) * 5), POWER_USE_ACTIVE)
 	return 1
 
-/obj/machinery/porta_turret/Initialize()
+/obj/machinery/porta_turret/New()
 	..()
 	req_access.Cut()
 	req_one_access = list(access_security, access_heads)
@@ -110,75 +95,9 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
-	_recalculate_turfs()
-
 	setup()
 
-/obj/machinery/porta_turret/proc/_unregister_all_turfs()
-	for(var/turf/T in turfs_in_view_range)
-		_unregister_visible_turf(T)
-
-	for(var/turf/T in turfs_not_in_view_range)
-		_unregister_not_visible_turf(T)
-
-	turfs_in_view_range = list()
-	turfs_not_in_view_range = list()
-
-/obj/machinery/porta_turret/proc/_recalculate_turfs()
-	_unregister_all_turfs()
-
-	turfs_in_view_range = list()
-	turfs_not_in_view_range = list()
-
-	// Lummox says `view` has caching, anyway lets be sure).
-	var/list/cached_view = view(world.view, src)
-
-	for(var/turf/T in range(world.view, src))
-		if(T in cached_view)
-			_register_visible_turf(T)
-			turfs_in_view_range += T
-		else
-			_register_not_visible_turf(T)
-			turfs_not_in_view_range += T
-
-/obj/machinery/porta_turret/proc/_register_visible_turf(turf/T)
-	register_signal(T, SIGNAL_ENTERED, .proc/_on_turf_entered)
-	register_signal(T, SIGNAL_EXITED, .proc/_on_turf_exited)
-	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
-
-/obj/machinery/porta_turret/proc/_register_not_visible_turf(turf/T)
-	register_signal(T, SIGNAL_TURF_CHANGED, .proc/_turf_changed)
-
-/obj/machinery/porta_turret/proc/_unregister_visible_turf(turf/T)
-	unregister_signal(T, SIGNAL_ENTERED)
-	unregister_signal(T, SIGNAL_EXITED)
-	unregister_signal(T, SIGNAL_TURF_CHANGED)
-
-/obj/machinery/porta_turret/proc/_unregister_not_visible_turf(turf/T)
-	unregister_signal(T, SIGNAL_TURF_CHANGED)
-
-/obj/machinery/porta_turret/proc/_turf_changed(turf/T, old_density, density, old_opacity, opacity)
-	if(old_opacity != opacity)
-		_recalculate_turfs()
-
-/obj/machinery/porta_turret/proc/_on_turf_entered(turf/T, atom/enterer)
-	var/mob/M = enterer
-
-	if(!istype(M))
-		return
-
-	assess_and_assign(M)
-
-/obj/machinery/porta_turret/proc/_on_turf_exited(turf/T, atom/exitee)
-	var/mob/M = exitee
-
-	if(!istype(M))
-		return
-	
-	targets -= M
-	secondary_targets -= M
-
-/obj/machinery/porta_turret/crescent/Initialize()
+/obj/machinery/porta_turret/crescent/New()
 	..()
 	req_one_access.Cut()
 	req_access = list(access_cent_specops)
@@ -186,9 +105,6 @@
 /obj/machinery/porta_turret/Destroy()
 	qdel(spark_system)
 	spark_system = null
-	
-	_unregister_all_turfs()
-
 	. = ..()
 
 /obj/machinery/porta_turret/proc/setup()
@@ -536,8 +452,14 @@ var/list/turret_icons
 		popDown()
 		return
 
+	var/list/targets = list()			//list of primary targets
+	var/list/secondarytargets = list()	//targets that are least important
+
+	for(var/mob/M in mobs_in_view(world.view, src))
+		assess_and_assign(M, targets, secondarytargets)
+
 	if(!tryToShootAt(targets))
-		if(!tryToShootAt(secondary_targets)) // if no valid targets, go for secondary targets
+		if(!tryToShootAt(secondarytargets)) // if no valid targets, go for secondary targets
 			spawn()
 				popDown() // no valid targets, close the cover
 
@@ -545,18 +467,12 @@ var/list/turret_icons
 		use_power_oneoff(20000)
 		health = min(health+1, maxhealth) // 1HP for 20kJ
 
-/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L)
+/obj/machinery/porta_turret/proc/assess_and_assign(mob/living/L, list/targets, list/secondarytargets)
 	switch(assess_living(L))
 		if(TURRET_PRIORITY_TARGET)
-			if(L in targets)
-				return
-
 			targets += L
 		if(TURRET_SECONDARY_TARGET)
-			if(L in secondary_targets)
-				return
-
-			secondary_targets += L
+			secondarytargets += L
 
 /obj/machinery/porta_turret/proc/assess_living(mob/living/L)
 	if(!istype(L))
