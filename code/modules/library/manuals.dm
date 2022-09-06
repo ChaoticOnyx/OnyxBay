@@ -186,11 +186,6 @@
 	style = WIKI_MOBILE
 	attack_verb = list("bashed", "whacked", "educated", "diagnosed", "treated")
 
-/obj/item/book/wiki/ipc
-	topic = "IPC"
-	style = WIKI_MOBILE
-	attack_verb = list("bashed", "whacked", "educated", "positroned", "cybernetized")
-
 /obj/item/book/wiki/syndicate
 	topic = "Syndicate"
 	style = WIKI_MOBILE
