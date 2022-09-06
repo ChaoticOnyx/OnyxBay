@@ -25,7 +25,7 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 100
+	idle_power_usage = 100 WATTS
 
 	var/list/datum/seed_pile/piles = list()
 	var/list/starting_seeds = list()

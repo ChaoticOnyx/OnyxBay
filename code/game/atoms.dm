@@ -73,7 +73,7 @@
 	SHOULD_CALL_PARENT(TRUE)
 
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
-		crash_with("Warning: [src]([type]) initialized multiple times!")
+		util_crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	if(loc)
@@ -104,7 +104,6 @@
 	..()
 
 	SEND_SIGNAL(src, SIGNAL_ENTERED, src, enterer, old_loc)
-	SEND_SIGNAL(src, SIGNAL_MOVED, enterer, old_loc, enterer.loc)
 
 /atom/Exited(atom/movable/exitee, atom/new_loc)
 	. = ..()

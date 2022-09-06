@@ -391,22 +391,6 @@ allow_cult_ghostwriter = false
 ## Sets the minimum number of cultists needed for ghosts to write in blood.
 req_cult_ghostwriter = 6
 
-[radiation]
-## How much radiation levels self-reduce by each tick.
-decay_rate = 1
-
-## The amount of radiation resistance on a turf is multiplied by this value.
-resistance_multiplier = 1.25
-
-## General material radiation resistance is divided by this value.
-material_resistance_divisor = 2
-
-## Below this point, radiation is ignored.
-## Radiation weakens with distance from the source; stop calculating when the strength falls below this value.
-## Lower values mean radiation reaches smaller (with increasingly trivial damage) at the cost of more cpu usage.
-## Max `range = distance^2 * power / radiation_lower_limit`
-lower_limit = 0.35
-
 [health]
 ## level of health at which a mob becomes dead
 health_threshold_dead = -100
@@ -545,6 +529,10 @@ fun_hydroponics = 1
 
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
+
+## Which engine should be on map (not all the maps support this).
+## Pick one from: "random", "singularity", "supermatter"
+preferable_engine = "singularity"
 
 [vote]
 ## Allow players to initiate a restart vote.

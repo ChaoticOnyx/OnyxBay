@@ -10,8 +10,8 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	insert_anim = "faxsend"
 	req_one_access = list(access_iaa, access_heads, access_armory, access_qm)
 
-	idle_power_usage = 30
-	active_power_usage = 200
+	idle_power_usage = 30 WATTS
+	active_power_usage = 200 WATTS
 	layer = BELOW_OBJ_LAYER
 
 	var/obj/item/card/id/scan = null // identification

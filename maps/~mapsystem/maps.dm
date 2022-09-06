@@ -176,14 +176,15 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		/datum/event/spacevine,
 		/datum/event/virus_major,
 		/datum/event/xenomorph_infestation,
-		/datum/event/biohazard_outbreak
+		/datum/event/biohazard_outbreak,
+		/datum/event/mimic_invasion
 	)
 
 /datum/map/New()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
 	if(!shuttle_types)
-		crash_with("[src] has no shuttle_types!")
+		util_crash_with("[src] has no shuttle_types!")
 
 /datum/map/proc/level_has_trait(z, trait)
 	return map_levels[z].has_trait(trait)
@@ -201,15 +202,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	for(var/id in antags)
 		var/datum/antagonist/A = antags[id]
 		A.get_starting_locations()
-
-	if(!length(post_round_safe_areas))
-		post_round_safe_areas = list()
-
-		for(var/level = 1; level <= length(map_levels); level++)
-			var/datum/space_level/L = map_levels[level]
-
-			if(L.has_trait(ZTRAIT_CENTCOM))
-				post_round_safe_areas += level
 
 /datum/map/proc/send_welcome()
 	return
@@ -349,7 +341,7 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 		for(var/T in args)
 			if(L.has_trait(T))
-				result += L
+				result += level
 				break
 	
 	return result
@@ -367,6 +359,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 				break
 		
 		if(ok)
-			result += L
+			result += level
 	
 	return result

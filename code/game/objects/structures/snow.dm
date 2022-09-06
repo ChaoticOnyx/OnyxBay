@@ -12,7 +12,7 @@
 	. = ..()
 	for(var/obj/structure/snow/C in get_turf(src))
 		if(C != src)
-			crash_with("Multiple snow objects on one turf! ([loc.x], [loc.y], [loc.z])")
+			util_crash_with("Multiple snow objects on one turf! ([loc.x], [loc.y], [loc.z])")
 			qdel(C)
 	update_icon()
 	redraw_nearby_snows()

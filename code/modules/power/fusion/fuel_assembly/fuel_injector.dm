@@ -7,8 +7,8 @@ var/list/fuel_injectors = list()
 	density = 1
 	anchored = 0
 	req_access = list(access_engine)
-	idle_power_usage = 10
-	active_power_usage = 500
+	idle_power_usage = 10 WATTS
+	active_power_usage = 500 WATTS
 
 	var/fuel_usage = 0.0001
 	var/id_tag

@@ -255,7 +255,6 @@
 					if(!isnull(selected_CR))
 						id_card.registered_name = selected_CR.get_name()
 						id_card.assignment = selected_CR.get_job()
-						id_card.rank = selected_CR.get_rank()
 						id_card.dna_hash = selected_CR.get_dna()
 						id_card.fingerprint_hash = selected_CR.get_fingerprint()
 						id_card.sex = selected_CR.get_sex()

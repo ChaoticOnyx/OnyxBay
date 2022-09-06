@@ -230,6 +230,8 @@
 		return 1
 	if (istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
 		return 1
+	if (!can_use_hands)
+		return 1
 	return 0
 
 /mob/living/carbon/human/proc/grab_restrained()
@@ -238,7 +240,7 @@
 			return TRUE
 
 /mob/living/carbon/human/var/co2overloadtime = null
-/mob/living/carbon/human/var/temperature_resistance = T0C+75
+/mob/living/carbon/human/var/temperature_resistance = 75 CELSIUS
 
 /mob/living/carbon/human/show_inv(mob/user)
 	if(user.incapacitated())

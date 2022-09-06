@@ -31,7 +31,7 @@
 	for (var/key in sec_fields)
 		if (isnull(sec_fields[key]))
 			sec_fields_as_array.Add(list(list(editable = FALSE, name = key, val = "**INTERFACE ERROR**")))
-			crash_with("Security Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
+			util_crash_with("Security Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
 		else
 			sec_fields_as_array.Add(list(sec_fields[key]))
 	data["sec_fields"] = sec_fields_as_array
@@ -83,5 +83,3 @@
 		return F.set_value("[new_entry]\[br\]\[hr\][prev]")
 
 	return ..()
-
-

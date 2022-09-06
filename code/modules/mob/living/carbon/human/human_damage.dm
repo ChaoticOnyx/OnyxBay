@@ -64,7 +64,7 @@
 	adjustHalLoss(getHalLoss() - amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
-	if(!amount)
+	if(!amount || no_pain)
 		return
 	var/list/pick_organs = organs.Copy()
 
@@ -517,8 +517,3 @@ This function restores all organs.
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
 	return max(0, traumatic_shock)
-
-/mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
-	if(effecttype == IRRADIATE && (effect * blocked_mult(blocked) <= RAD_LEVEL_LOW))
-		return 0
-	return ..()

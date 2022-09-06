@@ -91,7 +91,7 @@
 	SetName("heart")
 	update_gland_hud()
 
-/obj/item/organ/internal/heart/gland/Process()
+/obj/item/organ/internal/heart/gland/think()
 	if(!pulse || pulse != PULSE_NORM)
 		pulse = PULSE_NORM
 	if(!active)

@@ -3,7 +3,15 @@
 	name = "plating"
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
+	base_icon_state = "plating"
 	layer = PLATING_LAYER
+	var/tile_type = /obj/item/stack/tile/floor
+
+/turf/simulated/floor/plating/rough
+	name = "plating"
+	icon_state = "rough_plating"
+	base_icon_state = "rough_plating"
+	tile_type = /obj/item/stack/tile/floor_rough
 
 
 //GRID FLOORING
@@ -183,6 +191,11 @@
 	initial_gas = null
 	temperature = TCMB
 
+/turf/simulated/floor/plating/rough/airless
+	name = "airless plating"
+	initial_gas = null
+	temperature = TCMB
+
 /turf/simulated/floor/tiled/airless
 	name = "airless floor"
 	initial_gas = null
@@ -352,21 +365,11 @@
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
 
-/turf/simulated/floor/natural/frozenground
-	name = "frozen ground"
-	icon = 'icons/turf/flooring/frozenground.dmi'
-	icon_state = "frozen_ground"
-	temperature = 193.15
-
 /turf/simulated/floor/natural/frozenground/cave
 	name = "frozen ground"
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "wground1"
-	temperature = 243.15
-
-/turf/simulated/floor/natural/frozenground/ice/shallow
-	icon = 'icons/turf/ice.dmi'
-	icon_state = "ice1"
+	temperature = 20 CELSIUS
 
 /turf/simulated/floor/natural/lava
 	name = "lava"

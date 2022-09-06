@@ -8,8 +8,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
 	atom_flags = ATOM_FLAG_NO_REACT
 	var/global/max_n_of_items = 999 // Sorry but the BYOND infinite loop detector doesn't look things over 1000.
 	var/icon_on = "smartfridge"

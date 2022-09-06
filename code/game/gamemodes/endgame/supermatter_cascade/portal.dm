@@ -16,16 +16,17 @@
 
 /obj/singularity/narsie/exit/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/singularity/narsie/exit/update_icon()
 	overlays = 0
 
-/obj/singularity/narsie/exit/Process()
+/obj/singularity/narsie/exit/think()
 	for(var/mob/M in GLOB.player_list)
 		if(M.client)
 			M.see_rift(src)
 	eat()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/singularity/narsie/exit/acquire(mob/food)
 	return

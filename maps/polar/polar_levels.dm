@@ -30,16 +30,15 @@
 	traits = list(
 		ZTRAIT_STATION,
 		ZTRAIT_CONTACT,
-		ZTRAIT_GLOBAL_DYNAMIC_LIGHTING
+		ZTRAIT_POLAR_WEATHER
 	)
 
 /datum/space_level/polar_4
 	path = 'polar-4.dmm'
 	travel_chance = 15
 	traits = list(
-		ZTRAIT_STATION,
 		ZTRAIT_CONTACT,
-		ZTRAIT_GLOBAL_DYNAMIC_LIGHTING
+		ZTRAIT_POLAR_WEATHER
 	)
 
 /datum/space_level/polar_5

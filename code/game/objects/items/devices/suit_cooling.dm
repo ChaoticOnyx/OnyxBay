@@ -27,27 +27,25 @@
 	var/cover_open = 0						//is the cover open?
 	var/obj/item/cell/cell
 	var/max_cooling = 12					// in degrees per second - probably don't need to mess with heat capacity here
-	var/charge_consumption = 2 KILOWATTS	// energy usage at full power
-	var/thermostat = T20C
+	var/charge_consumption = 2 KILO WATTS	// energy usage at full power
+	var/thermostat = 20 CELSIUS
 
 /obj/item/device/suit_cooling_unit/ui_action_click()
 	toggle(usr)
 
 /obj/item/device/suit_cooling_unit/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	cell = new /obj/item/cell/high()		// 10K rated cell.
 	cell.forceMove(src)
 
-/obj/item/device/suit_cooling_unit/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/device/suit_cooling_unit/Process()
+/obj/item/device/suit_cooling_unit/think()
 	if (!on || !cell)
+		turn_off(1)
 		return
 
 	if (!is_in_slot())
+		turn_off(1)
 		return
 
 	var/mob/living/carbon/human/H = loc
@@ -55,6 +53,7 @@
 	var/temp_adj = min(H.bodytemperature - thermostat, max_cooling)
 
 	if (temp_adj < 0.5)	//only cools, doesn't heat, also we don't need extreme precision
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	var/charge_usage = (temp_adj/max_cooling)*charge_consumption
@@ -66,6 +65,9 @@
 
 	if(cell.charge <= 0)
 		turn_off(1)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 // Checks whether the cooling unit is being worn on the back/suit slot.
 // That way you can't carry it in your hands while it's running to cool yourself down.
@@ -84,11 +86,13 @@
 
 	on = 1
 	update_icon()
+	set_next_think(world.time)
 
 /obj/item/device/suit_cooling_unit/proc/turn_off(failed)
 	if(failed) visible_message("\The [src] clicks and whines as it powers down.")
 	on = 0
 	update_icon()
+	set_next_think(0)
 
 /obj/item/device/suit_cooling_unit/attack_self(mob/user)
 	if(cover_open && cell)

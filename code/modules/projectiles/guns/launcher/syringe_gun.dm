@@ -63,7 +63,7 @@
 	if(syringe)
 		//check speed to see if we hit hard enough to trigger the rapid injection
 		//incidentally, this means syringe_cartridges can be used with the pneumatic launcher
-		if(speed >= 10 && isliving(hit_atom))
+		if(speed >= 7 && isliving(hit_atom))
 			var/mob/living/L = hit_atom
 			//unfortuately we don't know where the dart will actually hit, since that's done by the parent.
 			if(L.can_inject(null, ran_zone()) && syringe.reagents)
@@ -93,7 +93,7 @@
 	fire_sound = 'sound/weapons/empty.ogg'
 	fire_sound_text = "a metallic thunk"
 	screen_shake = 0
-	release_force = 2
+	release_force = 10
 	throw_distance = 10
 
 	var/list/darts = list()

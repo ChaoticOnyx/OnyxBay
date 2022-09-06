@@ -103,3 +103,54 @@
 		/obj/item/stock_parts/console_screen = 1,
 	)
 	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
+
+// Virology
+/obj/item/circuitboard/centrifuge
+	name = T_BOARD("isolation centrifuge")
+	board_type = "machine"
+	build_path = /obj/machinery/computer/centrifuge
+	req_components = list(
+		/obj/item/stock_parts/manipulator = 3
+	)
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)
+
+/obj/item/circuitboard/dishincubator
+	name = T_BOARD("pathogenic incubator")
+	board_type = "machine"
+	build_path = /obj/machinery/disease2/incubator
+	req_components = list(
+		/obj/item/stock_parts/manipulator = 2,
+		/obj/item/reagent_containers/vessel/beaker = 1,
+		/obj/item/stock_parts/scanning_module  = 1
+	)
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 4, TECH_MAGNET = 2)
+
+/obj/item/circuitboard/isolator
+	name = T_BOARD("pathogenic isolator")
+	board_type = "machine"
+	build_path = /obj/machinery/disease2/isolator
+	req_components = list(
+		/obj/item/stock_parts/micro_laser = 3
+	)
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)
+
+/obj/item/circuitboard/diseasesplicer
+	name = T_BOARD("disease splicer")
+	board_type = "machine"
+	build_path = /obj/machinery/computer/diseasesplicer
+	req_components = list(
+		/obj/item/stock_parts/micro_laser = 2,
+		/obj/item/stock_parts/scanning_module  = 1,
+		/obj/item/stock_parts/manipulator  = 1
+	)
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 5, TECH_DATA = 3, TECH_MAGNET = 4)
+
+/obj/item/circuitboard/analyser
+	name = T_BOARD("disease analyser")
+	board_type = "machine"
+	build_path = /obj/machinery/disease2/diseaseanalyser
+	req_components = list(
+		/obj/item/stock_parts/scanning_module = 2,
+		/obj/item/stock_parts/console_screen  = 1
+	)
+	origin_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2)

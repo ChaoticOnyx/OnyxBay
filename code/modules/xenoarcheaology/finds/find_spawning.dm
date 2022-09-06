@@ -315,6 +315,8 @@
 	var/obj/item/new_item
 	if(prob(25))
 		new_item = new /obj/item/device/soulstone(loc)
+		item_type = "soul stone shard"
+		return new_item
 	else
 		new_item = new(loc)
 	apply_image_decorations = 1
@@ -330,6 +332,7 @@
 	else
 		item_type = "rough red crystal"
 		new_item.icon_state = "changerock"
+	return new_item
 
 /obj/item/archaeological_find/blade
 	item_type = "blade"

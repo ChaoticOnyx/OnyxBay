@@ -18,9 +18,10 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 		player_levels.Cut()
 		for(var/P in GLOB.player_list)
 			var/mob/living/player = P
-			if(!istype(player) || (player.z in player_levels))
+			var/turf/T = get_turf(player)
+			if(!istype(player) || !istype(T) || (T.z in player_levels))
 				continue
-			player_levels += player.z
+			player_levels |= T.z
 
 	var/mob/thing
 	for(var/i = current_run.len to 1 step -1)
@@ -30,7 +31,8 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if(thing.client || (thing.z in player_levels) || thing.teleop)
+		var/turf/T = get_turf(thing)
+		if(thing.client || (istype(T) && (T.z in player_levels)) || thing.teleop)
 			thing.Life()
 
 		if(MC_TICK_CHECK)

@@ -39,13 +39,11 @@
 #define LIFT_WAITING_A 2
 #define LIFT_WAITING_B 3
 
-/datum/turbolift/Process()
-	if(world.time < next_process)
-		return
+/datum/turbolift/think()
 	switch(busy_state)
 		if(LIFT_MOVING)
 			if(!do_move())
-				return PROCESS_KILL
+				return
 			else if(!next_process)
 				next_process = world.time + move_delay
 		if(LIFT_WAITING_A)
@@ -55,7 +53,9 @@
 			busy_state = LIFT_WAITING_B
 		if(LIFT_WAITING_B)
 			busy_state = null
-			return PROCESS_KILL
+			return
+	
+	set_next_think(next_process)
 
 /datum/turbolift/proc/do_move()
 	next_process = null
@@ -134,7 +134,7 @@
 	floor.pending_move(src)
 	queued_floors |= floor
 	busy_state = LIFT_MOVING
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
 
 // TODO: dummy machine ('lift mechanism') in powered area for functionality/blackout checks.
 /datum/turbolift/proc/is_functional()

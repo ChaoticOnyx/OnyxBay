@@ -86,7 +86,7 @@ SUBSYSTEM_DEF(storyteller)
 					triggers_data[type] = trigger.get_params_for_ui()
 			data["triggers"] = triggers_data
 
-		else crash_with("Bad tab key")
+		else util_crash_with("Bad tab key")
 
 	return data
 

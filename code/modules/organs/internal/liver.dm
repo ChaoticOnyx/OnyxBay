@@ -22,7 +22,7 @@
 	. = max(0, amount - cap_toxins)
 	tox_filtering += amount - .
 
-/obj/item/organ/internal/liver/Process()
+/obj/item/organ/internal/liver/think()
 
 	..()
 	if(!owner)
@@ -64,7 +64,7 @@
 		take_internal_damage(store_tox(owner.chem_effects[CE_ALCOHOL_TOXIC]/2), prob(90)) // Chance to warn them
 
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
-	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !owner.radiation && damage > 0)
+	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && owner.radiation <= SAFE_RADIATION_DOSE && damage > 0)
 		if(damage < min_broken_damage)
 			heal_damage(0.2)
 		if(damage < min_bruised_damage)

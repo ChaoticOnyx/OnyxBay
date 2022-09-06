@@ -1,0 +1,8 @@
+#define GET_RANDOM_JOB 0
+#define BE_ASSISTANT 1
+#define RETURN_TO_LOBBY 2
+
+#define JOB_PRIORITY_HIGH   1
+#define JOB_PRIORITY_MIDDLE 2
+#define JOB_PRIORITY_LOW    3
+#define JOB_PRIORITY_NEVER  4
