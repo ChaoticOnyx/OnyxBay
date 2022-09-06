@@ -640,6 +640,27 @@
 		for(var/ID in user.virus2)
 			var/datum/disease2/disease/V = user.virus2[ID]
 			V.cure(user)
+		
+		var/mob/living/carbon/human/H = user
+		for(var/limb_type in H.species.has_limbs)	
+			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+				E.removed()			//...because no one wants their head to explode to make way for a new one.				
+				qdel(E)
+				E = null
+			if(!E)
+				var/list/organ_data = H.species.has_limbs[limb_type]
+				var/limb_path = organ_data["path"]
+				var/obj/item/organ/external/O = new limb_path(H)
+				organ_data["descriptor"] = O.name
+				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))				
+				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
+				blood_used += 12
+				var/datum/reagent/blood/B = new /datum/reagent/blood
+				blood_splatter(H,B,1)
+				O.set_dna(H.dna)
+				H.update_body()
+				break
 
 		var/list/emotes_lookers = list("[user]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[user]'s veins turn black as their damaged flesh regenerates before your eyes!",

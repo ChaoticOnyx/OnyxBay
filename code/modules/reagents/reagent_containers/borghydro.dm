@@ -56,7 +56,7 @@
 					R.cell.use(charge_cost)
 					reagent_volumes[T] = min(reagent_volumes[T] + 5, volume)
 
-	set_next_think(recharge_time)
+	set_next_think(world.time + recharge_time)
 
 /obj/item/reagent_containers/borghypo/attack(mob/living/M, mob/user, target_zone)
 	if(!istype(M))
