@@ -15,15 +15,15 @@
 
 /decl/emote/human/dance
 	key = "dance"
-	var/dancing = 0
+	var/dancing = FALSE
 
 /decl/emote/human/dance/do_emote(mob/living/carbon/human/user)
 	if(dancing)
-		dancing = 0
+		dancing = FALSE
 		return
 
 	user.pixel_y = initial(user.pixel_y)
-	dancing = 1
+	dancing = TRUE
 	var/oldpixely = user.pixel_y
 	while(dancing)
 		var/pixely = rand(5, 6)
@@ -35,7 +35,7 @@
 		sleep(1)
 		animate(user, pixel_y = oldpixely, time = 0.2)
 		if(user.resting)
-			dancing = 0
+			dancing = FALSE
 
 /decl/emote/human/swish
 	key = "swish"

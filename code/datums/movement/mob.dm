@@ -149,7 +149,7 @@
 /datum/movement_handler/mob/delay/DoMove(direction, mover, is_external)
 	if(is_external)
 		return
-	delay = max(1, mob.movement_delay() + GetGrabSlowdown())
+	delay = max(1, mob.movement_delay() + GetGrabSlowdown() + GetEmoteSlowdown())
 	next_move = world.time + delay
 	UpdateGlideSize()
 
@@ -180,6 +180,13 @@
 		if(G.assailant == G.affecting)
 			return
 		. = max(., G.grab_slowdown())
+
+/datum/movement_handler/mob/delay/proc/GetEmoteSlowdown()
+	. = 0
+	if(ishuman(mob))
+		var/mob/living/carbon/human/H = mob
+		var/decl/emote/human/dance/D = H.default_emotes[/decl/emote/human/dance]
+		. = D.dancing * 1.5
 
 // Stop effect
 /datum/movement_handler/mob/stop_effect/DoMove()
