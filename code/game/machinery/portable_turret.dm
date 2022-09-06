@@ -464,12 +464,7 @@ var/list/turret_icons
 
 /obj/machinery/porta_turret/Process()
 	//the main machinery process
-	for(var/weakref/W in _sentry.view)
-		if(!ispath(W.ref_type, /mob/living))
-			continue
-
-		var/mob/living/L = W.resolve()
-
+	for(var/mob/living/L in _sentry.view)
 		assess_and_assign(L)
 
 	if(stat & (NOPOWER|BROKEN))
