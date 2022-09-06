@@ -108,12 +108,6 @@
 	attack_verb = list("bashed", "whacked", "disciplined", "legalized", "juridicated", "justiced")
 	force = 3.5 // Power of justice
 
-/obj/item/book/wiki/hydroponics_pod_people
-	icon_state ="bookHydroponicsPodPeople"
-	author = "Farmer John"
-	title = "The Diona Harvest - From Seed to Market"
-	topic = "Diona Harvest"
-
 /obj/item/book/wiki/research_and_development
 	icon_state = "rdbook"
 	author = "Dr. L. Ight"
