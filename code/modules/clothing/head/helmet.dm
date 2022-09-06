@@ -21,10 +21,9 @@
 	var/has_visor = 1
 	ear_protection = 1
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.2,
-		RADIATION_HAWKING_RAY = 0.4
+		RADIATION_ALPHA_PARTICLE = 25 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 5 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)

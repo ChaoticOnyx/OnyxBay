@@ -8,7 +8,7 @@
 	var/list/data = null
 	var/volume = 0
 
-	var/datum/radiation_info/radiation
+	var/datum/radiation/radiation
 	var/metabolism = REM // This would be 0.2 normally
 	var/ingest_met = 0 // Speeds up/slows down actual metabolism speed, not to be confused with absorbability. When set to default (0), uses metabolism instead.
 	var/touch_met = 0 // When set to default (0), uses metabolism instead.

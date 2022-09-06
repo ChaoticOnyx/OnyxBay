@@ -20,10 +20,9 @@
 
 	light_overlay = "helmet_light"
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/void
@@ -47,10 +46,9 @@
 	)
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 	//Breach thresholds, should ideally be inherited by most (if not all) voidsuits.

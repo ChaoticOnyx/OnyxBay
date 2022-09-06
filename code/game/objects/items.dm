@@ -5,10 +5,9 @@
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.4,
-		RADIATION_GAMMA_RAY = 0.1,
-		RADIATION_HAWKING_RAY = 0.2
+		RADIATION_ALPHA_PARTICLE = 35 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 	var/image/blood_overlay = null //this saves our blood splatter overlay, which will be processed not to go over the edges of the sprite

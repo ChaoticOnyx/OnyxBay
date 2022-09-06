@@ -16,10 +16,9 @@
 	/// How much of rays this clothing can save.
 	/// Value should be in range between 0 and 1.
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.3
+		RADIATION_ALPHA_PARTICLE = 17 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 // Updates the icons of the mob wearing the clothing item, if any.
