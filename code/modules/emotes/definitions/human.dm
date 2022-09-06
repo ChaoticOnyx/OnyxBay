@@ -34,7 +34,7 @@
 		animate(user, pixel_y = 2, time = 0.2)
 		sleep(1)
 		animate(user, pixel_y = oldpixely, time = 0.2)
-		if(user.resting)
+		if(user.resting || user.restrained || !user.stat)
 			dancing = FALSE
 
 /decl/emote/human/swish
