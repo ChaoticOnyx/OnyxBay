@@ -101,7 +101,7 @@
 
 /datum/neuromod/language/Handle(mob/living/user)
 	if (!language)
-		crash_with("empty language neuromod")
+		util_crash_with("empty language neuromod")
 		return
 
 	var/datum/language/L = all_languages[language]

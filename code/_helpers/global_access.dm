@@ -57,8 +57,6 @@
 			return global.SSevac;
 		if("SSevent")
 			return global.SSevent;
-		if("SSfastprocess")
-			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
 		if("SSicon_update")
@@ -77,14 +75,10 @@
 			return global.SSmobs;
 		if("SSnano")
 			return global.SSnano;
-		if("SSobj")
-			return global.SSobj;
 		if("SSopen_space")
 			return global.SSopen_space;
 		if("SSplants")
 			return global.SSplants;
-		if("SSprocessing")
-			return global.SSprocessing;
 		if("SSradiation")
 			return global.SSradiation;
 		if("SSshuttle")
@@ -549,8 +543,6 @@
 			return global.meteors_normal;
 		if("meteors_threatening")
 			return global.meteors_threatening;
-		if("mil_branches")
-			return global.mil_branches;
 		if("minevendor_list")
 			return global.minevendor_list;
 		if("mining_floors")
@@ -950,8 +942,6 @@
 			global.SSevac=newval;
 		if("SSevent")
 			global.SSevent=newval;
-		if("SSfastprocess")
-			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
@@ -970,14 +960,10 @@
 			global.SSmobs=newval;
 		if("SSnano")
 			global.SSnano=newval;
-		if("SSobj")
-			global.SSobj=newval;
 		if("SSopen_space")
 			global.SSopen_space=newval;
 		if("SSplants")
 			global.SSplants=newval;
-		if("SSprocessing")
-			global.SSprocessing=newval;
 		if("SSradiation")
 			global.SSradiation=newval;
 		if("SSshuttle")
@@ -1446,8 +1432,6 @@
 			global.meteors_normal=newval;
 		if("meteors_threatening")
 			global.meteors_threatening=newval;
-		if("mil_branches")
-			global.mil_branches=newval;
 		if("minevendor_list")
 			global.minevendor_list=newval;
 		if("mining_floors")
@@ -1817,7 +1801,6 @@
 	"SScircuit_components",
 	"SSevac",
 	"SSevent",
-	"SSfastprocess",
 	"SSgarbage",
 	"SSicon_update",
 	"SSinactivity",
@@ -1828,10 +1811,8 @@
 	"SSmisc_late",
 	"SSmobs",
 	"SSnano",
-	"SSobj",
 	"SSopen_space",
 	"SSplants",
-	"SSprocessing",
 	"SSradiation",
 	"SSshuttle",
 	"SSskybox",

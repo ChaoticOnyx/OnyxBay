@@ -152,16 +152,17 @@
 
 /obj/item/device/assembly/signaler/Process()
 	if(!deadman)
-		STOP_PROCESSING(SSobj, src)
+		return
 	var/mob/M = src.loc
 	if(!M || !ismob(M))
 		if(prob(5))
 			signal()
 		deadman = 0
-		STOP_PROCESSING(SSobj, src)
+		return
 	else if(prob(5))
 		M.visible_message("[M]'s finger twitches a bit over [src]'s signal button!")
-	return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/signaler/verb/deadman_it()
 	set src in usr
@@ -170,12 +171,12 @@
 
 	if(!deadman)
 		deadman = TRUE
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 		log_and_message_admins("is threatening to trigger a signaler deadman's switch")
 		usr.visible_message(SPAN("danger", "[usr] moves their finger over [src]'s signal button..."))
 	else
 		deadman = FALSE
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		log_and_message_admins("stops threatening to trigger a signaler deadman's switch")
 		usr.visible_message(SPAN("notice", "[usr] moves their finger away from [src]'s signal button."))
 

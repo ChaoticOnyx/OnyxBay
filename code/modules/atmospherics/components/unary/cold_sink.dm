@@ -9,15 +9,15 @@
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_OFF
-	idle_power_usage = 5			// 5 Watts for thermostat related circuitry
+	idle_power_usage = 5 WATTS			  // 5 Watts for thermostat related circuitry
 
-	var/heatsink_temperature = T20C	// The constant temperature reservoir into which the freezer pumps heat. Probably the hull of the station or something.
-	var/internal_volume = 600		// L
+	var/heatsink_temperature = 20 CELSIUS // The constant temperature reservoir into which the freezer pumps heat. Probably the hull of the station or something.
+	var/internal_volume = 600		 // L
 
-	var/max_power_rating = 20000	// Power rating when the usage is turned up to 100
+	var/max_power_rating = 20000	 // Power rating when the usage is turned up to 100
 	var/power_setting = 100
 
-	var/set_temperature = T20C		// Thermostat
+	var/set_temperature = 20 CELSIUS // Thermostat
 	var/cooling = 0
 
 /obj/machinery/atmospherics/unary/freezer/New()
@@ -76,14 +76,14 @@
 	data["gasPressure"] = round(air_contents.return_pressure())
 	data["gasTemperature"] = round(air_contents.temperature)
 	data["minGasTemperature"] = 0
-	data["maxGasTemperature"] = round(T20C+500)
+	data["maxGasTemperature"] = round(520 CELSIUS)
 	data["targetGasTemperature"] = round(set_temperature)
 	data["powerSetting"] = power_setting
 
 	var/temp_class = "good"
-	if(air_contents.temperature > (T0C - 20))
+	if(air_contents.temperature > (-20 CELSIUS))
 		temp_class = "bad"
-	else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
+	else if(air_contents.temperature < (-20 CELSIUS) && air_contents.temperature > (-100 CELSIUS))
 		temp_class = "average"
 	data["gasTemperatureClass"] = temp_class
 

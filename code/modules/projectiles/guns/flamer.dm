@@ -31,7 +31,7 @@
 
 /obj/item/gun/flamer/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
@@ -261,13 +261,14 @@
 	QDEL_NULL(pressure_tank)
 	QDEL_NULL(igniter)
 	QDEL_NULL(gauge)
-	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/gun/flamer/Process()
+/obj/item/gun/flamer/think()
 	if(lit)
 		if(!lited(0.05))
 			lit = FALSE
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank
 	if(!lit && !fuel_tank)

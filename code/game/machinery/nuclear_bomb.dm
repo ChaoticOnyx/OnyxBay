@@ -404,6 +404,14 @@ var/bomb_set
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Failed to respawn disc!")
 	return ..()
 
+/obj/item/disk/nuclear_fake
+	name = "nuclear authentication disk"
+	desc = "Better keep this safe."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "nucleardisk"
+	item_state = "card-id"
+	w_class = ITEM_SIZE_TINY
+
 //====the nuclear football (holds the disk and instructions)====
 /obj/item/storage/secure/briefcase/nukedisk
 	desc = "A large briefcase with a digital locking system."

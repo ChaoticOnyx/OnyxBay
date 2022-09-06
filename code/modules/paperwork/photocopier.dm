@@ -5,8 +5,8 @@
 	var/insert_anim = "bigscanner1"
 	anchored = 1
 	density = 1
-	idle_power_usage = 30
-	active_power_usage = 200
+	idle_power_usage = 30 WATTS
+	active_power_usage = 200 WATTS
 	power_channel = STATIC_EQUIP
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	obj_flags = OBJ_FLAG_ANCHORABLE

@@ -82,7 +82,7 @@
 
 	..()
 
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	target.internal_organs |= src
 	affected.internal_organs |= src
 	target.internal_organs_by_name[organ_tag] = src

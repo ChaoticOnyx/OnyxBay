@@ -29,11 +29,11 @@
 /obj/item/device/assembly/prox_sensor/toggle_secure()
 	secured = !secured
 	if(secured)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	else
 		scanning = FALSE
 		timing = FALSE
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	update_icon()
 	return secured
 
@@ -59,15 +59,15 @@
 	cooldown = 2
 	addtimer(CALLBACK(src, .proc/process_cooldown), 1 SECOND)
 
-/obj/item/device/assembly/prox_sensor/Process()
-	if(!timing)
-		return
-	if(time > 0)
+/obj/item/device/assembly/prox_sensor/think()
+	if(timing && (time >= 0))
 		time--
 	else
 		timing = FALSE
 		toggle_scan()
 		time = 10
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/prox_sensor/dropped()
 	sense()

@@ -23,21 +23,19 @@
 	var/req_admin_notify                  // If this is set to 1, a text is printed to the player when jobs are assigned, telling him that he should let admins know that he has to disconnect.
 	var/minimal_player_age = 0            // If you have use_age_restriction_for_jobs config option enabled and the database set up, this option will add a requirement for players to be at least minimal_player_age days old. (meaning they first signed in at least that many days before.)
 	var/department = null                 // Does this position have a department tag?
-	var/head_position = 0                 // Is this position Command?
+	var/head_position = FALSE             // Is this position Command?
 	var/minimum_character_age = 0
 	var/ideal_character_age = 30
 	var/faction_restricted = FALSE
-	var/create_record = 1                 // Do we announce/make records for people who spawn on this job?
+	var/create_record = TRUE              // Do we announce/make records for people who spawn on this job?
 
-	var/account_allowed = 1               // Does this job type come with a station account?
+	var/account_allowed = TRUE            // Does this job type come with a station account?
 	var/economic_modifier = 2             // With how much does this job modify the initial account amount?
 
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
 	var/list/preview_override             // Overrides the preview mannequin w/ given icon. Must be formatted as 'list(icon_state, icon)'.
 
 	var/loadout_allowed = TRUE            // Whether or not loadout equipment is allowed and to be created when joining.
-	var/list/allowed_branches             // For maps using branches and ranks, also expandable for other purposes
-	var/list/allowed_ranks                // Ditto
 
 	var/announced = TRUE                  //If their arrival is announced on radio
 	var/latejoin_at_spawnpoints           //If this job should use roundstart spawnpoints for latejoin (offstation jobs etc)
@@ -50,28 +48,21 @@
 	if(prob(100-availablity_chance))	//Close positions, blah blah.
 		total_positions = 0
 		spawn_positions = 0
+	if(!hud_icon)
+		hud_icon = "hud[ckey(title)]"
 
 /datum/job/dd_SortValue()
 	return title
 
-/datum/job/New()
-	..()
-	if(!hud_icon)
-		hud_icon = "hud[ckey(title)]"
-
-/datum/job/proc/equip(mob/living/carbon/human/H, alt_title, datum/mil_branch/branch, datum/mil_rank/grade)
-	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title, branch, grade)
+/datum/job/proc/equip(mob/living/carbon/human/H, alt_title)
+	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title)
 	if(!outfit)
 		return FALSE
 	. = outfit.equip(H, title, alt_title)
 
-/datum/job/proc/get_outfit(mob/living/carbon/human/H, alt_title, datum/mil_branch/branch, datum/mil_rank/grade)
+/datum/job/proc/get_outfit(mob/living/carbon/human/H, alt_title)
 	if(alt_title && alt_titles)
 		. = alt_titles[alt_title]
-	if(allowed_branches && branch)
-		. = allowed_branches[branch.type] || .
-	if(allowed_ranks && grade)
-		. = allowed_ranks[grade.type] || .
 	. = . || outfit_type
 	. = outfit_by_type(.)
 
@@ -114,16 +105,16 @@
 
 		H.mind.initial_account = M
 
-	to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b></span>")
+	to_chat(H, SPAN("notice", "<b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b>"))
 
 // overrideable separately so AIs/borgs can have cardborg hats without unneccessary new()/qdel()
-/datum/job/proc/equip_preview(mob/living/carbon/human/H, alt_title, datum/mil_branch/branch)
-	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title, branch)
+/datum/job/proc/equip_preview(mob/living/carbon/human/H, alt_title)
+	var/decl/hierarchy/outfit/outfit = get_outfit(H, alt_title)
 	if(!outfit)
 		return FALSE
 	if(!isnull(preview_override))
 		if(!islist(preview_override) || length(preview_override) != 2)
-			crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
+			util_crash_with("Job [title] uses preview_override and it's broken. Someone's fucked things up.")
 			return FALSE
 		H.overlays.Cut()
 		H.update_icon = FALSE
@@ -145,17 +136,17 @@
 /datum/job/proc/available_in_days(client/C)
 	if(C && config.game.use_age_restriction_for_jobs && isnull(C.holder) && isnum(C.player_age) && isnum(minimal_player_age))
 		return max(0, minimal_player_age - C.player_age)
-	return 0
+	return FALSE
 
 /datum/job/proc/apply_fingerprints(mob/living/carbon/human/target)
 	if(!istype(target))
-		return 0
+		return FALSE
 	for(var/obj/item/item in target.contents)
 		apply_fingerprints_to_item(target, item)
-	return 1
+	return TRUE
 
 /datum/job/proc/apply_fingerprints_to_item(mob/living/carbon/human/holder, obj/item/item)
-	item.add_fingerprint(holder,1)
+	item.add_fingerprint(holder, 1)
 	if(item.contents.len)
 		for(var/obj/item/sub_item in item.contents)
 			apply_fingerprints_to_item(holder, sub_item)
@@ -169,78 +160,10 @@
 /datum/job/proc/is_restricted(datum/preferences/prefs, feedback)
 	var/datum/species/S = all_species[prefs.species]
 	if(!is_species_allowed(S))
-		to_chat(feedback, "<span class='boldannounce'>Restricted species, [S], for [title].</span>")
+		to_chat(feedback, SPAN("boldannounce", "Restricted species, [S], for [title]."))
 		return TRUE
 
 	return FALSE
 
 /datum/job/proc/is_species_allowed(datum/species/S)
 	return !GLOB.using_map.is_species_job_restricted(S, src)
-
-/**
- *  Check if members of the given branch are allowed in the job
- *
- *  This proc should only be used after the global branch list has been initialized.
- *
- *  branch_name - String key for the branch to check
- */
-/datum/job/proc/is_branch_allowed(branch_name)
-	if(!allowed_branches || !GLOB.using_map || !(GLOB.using_map.flags & MAP_HAS_BRANCH))
-		return 1
-	if(branch_name == "None")
-		return 0
-
-	var/datum/mil_branch/branch = mil_branches.get_branch(branch_name)
-
-	if(!branch)
-		crash_with("unknown branch \"[branch_name]\" passed to is_branch_allowed()")
-		return 0
-
-	if(is_type_in_list(branch, allowed_branches))
-		return 1
-	else
-		return 0
-
-/**
- *  Check if people with given rank are allowed in this job
- *
- *  This proc should only be used after the global branch list has been initialized.
- *
- *  branch_name - String key for the branch to which the rank belongs
- *  rank_name - String key for the rank itself
- */
-/datum/job/proc/is_rank_allowed(branch_name, rank_name)
-	if(!allowed_ranks || !GLOB.using_map || !(GLOB.using_map.flags & MAP_HAS_RANK))
-		return 1
-	if(branch_name == "None" || rank_name == "None")
-		return 0
-
-	var/datum/mil_rank/rank = mil_branches.get_rank(branch_name, rank_name)
-
-	if(!rank)
-		crash_with("unknown rank \"[rank_name]\" in branch \"[branch_name]\" passed to is_rank_allowed()")
-		return 0
-
-	if(is_type_in_list(rank, allowed_ranks))
-		return 1
-	else
-		return 0
-
-//Returns human-readable list of branches this job allows.
-/datum/job/proc/get_branches()
-	var/list/res = list()
-	for(var/T in allowed_branches)
-		var/datum/mil_branch/B = mil_branches.get_branch_by_type(T)
-		res += B.name
-	return english_list(res)
-
-//Same as above but ranks
-/datum/job/proc/get_ranks(branch)
-	var/list/res = list()
-	var/datum/mil_branch/B = mil_branches.get_branch(branch)
-	for(var/T in allowed_ranks)
-		var/datum/mil_rank/R = T
-		if(B && !(initial(R.name) in B.ranks))
-			continue
-		res += initial(R.name)
-	return english_list(res)

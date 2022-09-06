@@ -25,7 +25,7 @@
 	icon_state = "heart-prosthetic"
 	dead_icon = "heart-prosthetic-br"
 
-/obj/item/organ/internal/heart/Process()
+/obj/item/organ/internal/heart/think()
 	if(owner)
 		handle_pulse()
 		if(pulse)

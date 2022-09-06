@@ -4,8 +4,8 @@
 	icon = 'icons/obj/power.dmi'
 	icon_state = "ccharger0"
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
+	idle_power_usage = 5 WATTS
+	active_power_usage = 60 KILO WATTS	// This is the power drawn when charging
 	power_channel = STATIC_EQUIP
 	var/obj/item/cell/charging = null
 	var/chargelevel = -1

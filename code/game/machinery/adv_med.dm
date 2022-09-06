@@ -18,8 +18,8 @@
 		/obj/item/stock_parts/manipulator = 4,
 	)
 
-	idle_power_usage = 60
-	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
+	idle_power_usage = 60 WATTS
+	active_power_usage = 10 KILO WATTS // It's a big all-body scanner.
 
 /obj/machinery/bodyscanner/Destroy()
 	go_out()
@@ -407,7 +407,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = H.bodytemperature - T0C
+	data["body_temperature_c"] = CONV_KELVIN_CELSIUS(H.bodytemperature)
 	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
 
 	if(H.nutrition < 150)
@@ -417,8 +417,8 @@
 	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
 	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
 	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
-	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
 	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
+	data["rad_dose"] = H.radiation
 
 	if (H.paralysis)
 		data["warnings"] += list("Paralysis Summary: approx. [H.paralysis/4] seconds left")
@@ -554,7 +554,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
 		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 
@@ -563,7 +563,7 @@
 	dat += "<b>Systematic Organ Failure:</b>\t[get_severity(H.getToxLoss())]"
 	dat += "<b>Oxygen Deprivation:</b>\t[get_severity(H.getOxyLoss())]"
 
-	dat += "<b>Radiation Level:</b>\t[get_severity(H.radiation/5)]"
+	dat += "<b>Radiation dose:</b>\t[fmt_siunit(H.radiation, "Sv", 3)]"
 	dat += "<b>Genetic Tissue Damage:</b>\t[get_severity(H.getCloneLoss())]"
 	if(H.paralysis)
 		dat += "Paralysis Summary: approx. [H.paralysis/4] seconds left"

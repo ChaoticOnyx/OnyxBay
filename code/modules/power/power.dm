@@ -12,8 +12,8 @@
 	anchored = 1.0
 	var/datum/powernet/powernet = null
 	use_power = POWER_USE_OFF
-	idle_power_usage = 0
-	active_power_usage = 0
+	idle_power_usage = 0 WATTS
+	active_power_usage = 0 WATTS
 
 /obj/machinery/power/Initialize()
 	. = ..()

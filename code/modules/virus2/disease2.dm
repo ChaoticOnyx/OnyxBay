@@ -103,7 +103,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		cure()
 		return
 
-	if(infected.radiation > 50)
+	if(infected.radiation > (0.1 SIEVERT))
 		if(prob(4))
 			majormutate()
 
@@ -178,7 +178,8 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/datum/disease2/effect/new_effect = get_mutated_effect(mutating_effect)
 	if(!new_effect)
 		return 0
-	mutating_effect.deactivate()
+	if(infected)
+		mutating_effect.deactivate(infected)
 	effects -= mutating_effect
 	effects += new_effect
 	update_disease()
@@ -192,9 +193,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	for(var/datum/disease2/effect/D in effects)
 		if(D != E)
 			exclude += D.type
-
 	var/effect_stage = E.stage
-	E.deactivate()
+	if(infected)
+		E.deactivate(infected)
 	effects -= E
 	qdel(E)
 

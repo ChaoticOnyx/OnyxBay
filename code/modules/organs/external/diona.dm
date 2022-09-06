@@ -151,8 +151,8 @@
 		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
-/obj/item/organ/internal/diona/Process()
-	return PROCESS_KILL
+/obj/item/organ/internal/diona/think()
+	return
 
 /obj/item/organ/internal/diona/strata
 	name = "neural strata"
@@ -202,7 +202,7 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "claw"
 
-/obj/item/organ/internal/diona/node/Process()
+/obj/item/organ/internal/diona/node/think()
 	..()
 	if(is_broken() || !owner)
 		return

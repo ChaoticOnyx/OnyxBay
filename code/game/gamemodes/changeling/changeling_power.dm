@@ -132,11 +132,11 @@
 
 /datum/changeling_power/passive/activate()
 	if(power_processing)
-		START_PROCESSING(SSprocessing, src) // We just start processing straight away.
+		set_next_think(world.time) // We just start thinking straight away.
 
 /datum/changeling_power/passive/deactivate()
 	if(power_processing)
-		STOP_PROCESSING(SSprocessing, src) // We just start processing straight away.
+		set_next_think(0) // We just start thinking straight away.
 
 
 // Toggle-able powers
@@ -155,7 +155,7 @@
 		return
 	to_chat(my_mob, SPAN("changeling", text_activate))
 	if(power_processing)
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 	update_screen_button()
 
 /datum/changeling_power/toggled/deactivate(no_message = TRUE)
@@ -165,7 +165,7 @@
 	if(!no_message)
 		to_chat(my_mob, SPAN("changeling", text_deactivate))
 	if(power_processing)
-		STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 	update_screen_button()
 
 /datum/changeling_power/toggled/Process()

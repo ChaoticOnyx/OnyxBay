@@ -9,8 +9,8 @@
 	var/time = 10
 	var/timing = 0
 	anchored = 1
-	idle_power_usage = 2
-	active_power_usage = 6
+	idle_power_usage = 2 WATTS
+	active_power_usage = 6 WATTS
 	power_channel = STATIC_ENVIRON
 	layer = ABOVE_WINDOW_LAYER
 	var/last_process = 0
@@ -56,7 +56,7 @@
 
 /obj/machinery/firealarm/fire_act(datum/gas_mixture/air, temperature, volume)
 	if(src.detecting)
-		if(temperature > T0C+200)
+		if(temperature > (200 CELSIUS))
 			src.alarm()			// added check of detector status here
 	return
 

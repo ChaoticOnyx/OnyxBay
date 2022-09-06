@@ -13,14 +13,15 @@
 
 /datum/talking_atom/proc/init()
 	if(holder_atom)
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 
-/datum/talking_atom/Process()
+/datum/talking_atom/think()
 	if(!holder_atom)
-		STOP_PROCESSING(SSprocessing, src)
-
+		return
 	else if(heard_words.len >= 1 && world.time > last_talk_time + talk_interval && prob(talk_chance))
 		SaySomething()
+
+	set_next_think(world.time + talk_interval)
 
 /datum/talking_atom/proc/catchMessage(msg, mob/source)
 	if(!holder_atom)

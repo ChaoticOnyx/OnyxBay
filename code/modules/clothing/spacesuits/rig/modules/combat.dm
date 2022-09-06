@@ -32,7 +32,7 @@
 	desc = "A shoulder-mounted micro-explosive dispenser."
 	selectable = 1
 	icon_state = "grenadelauncher"
-	use_power_cost = 2 KILOWATTS	// 2kJ per shot, a mass driver that propels the grenade?
+	use_power_cost = 2 KILO WATTS	// 2kJ per shot, a mass driver that propels the grenade?
 
 	suit_overlay = "grenade"
 
@@ -219,7 +219,7 @@
 	usable = 0
 	selectable = 1
 	toggleable = 1
-	use_power_cost = 10 KILOWATTS
+	use_power_cost = 10 KILO WATTS
 	active_power_cost = 500
 	passive_power_cost = 0
 
@@ -268,7 +268,7 @@
 	desc = "A self-contained microfactory system for powersuit integration."
 	selectable = 1
 	usable = 1
-	use_power_cost = 5 KILOWATTS
+	use_power_cost = 5 KILO WATTS
 	icon_state = "enet"
 
 	engage_string = "Fabricate Star"
@@ -305,7 +305,7 @@
 
 /obj/item/rig_module/fabricator/wf_sign
 	name = "wet floor sign fabricator"
-	use_power_cost = 50 KILOWATTS
+	use_power_cost = 50 KILO WATTS
 	engage_string = "Fabricate Sign"
 
 	interface_name = "work saftey launcher"

@@ -224,7 +224,7 @@
 	for (var/mob/living/carbon/human/H in view(3))
 		if (H == src)
 			continue
-		if(H.eyecheck() > FLASH_PROTECTION_MODERATE)
+		if(H.eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		victims += H
 	if (!victims.len)
@@ -238,7 +238,7 @@
 
 	to_chat(src, SPAN_NOTICE("You begin peering into [T.name]'s mind, looking for a way to render them useless."))
 
-	if (do_mob(src, T, 50))
+	if (do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
 		to_chat(src, SPAN_DANGER("You dominate [T.name]'s mind and render them temporarily powerless to resist"))
 		to_chat(T, SPAN_DANGER("You are captivated by [src.name]'s gaze, and find yourself unable to move or even speak."))
 		T.Weaken(25)
@@ -434,8 +434,6 @@
 /obj/effect/dummy/veil_walk/Destroy()
 	eject_all()
 
-	STOP_PROCESSING(SSprocessing, src)
-
 	return ..()
 
 /obj/effect/dummy/veil_walk/proc/eject_all()
@@ -462,7 +460,7 @@
 	can_move = 0
 	addtimer(CALLBACK(src, .proc/unlock_move), 2, TIMER_UNIQUE)
 
-/obj/effect/dummy/veil_walk/Process()
+/obj/effect/dummy/veil_walk/think()
 	if (owner_mob.stat)
 		if (owner_mob.stat == 1)
 			to_chat(owner_mob, SPAN_WARNING("You cannot maintain this form while unconcious."))
@@ -489,6 +487,9 @@
 					warning_level = 3
 	else
 		deactivate()
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/dummy/veil_walk/proc/activate(mob/owner)
 	if (!owner)
@@ -512,11 +513,10 @@
 
 	desc += " Its features look faintly alike [owner.name]'s."
 
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
 
 /obj/effect/dummy/veil_walk/proc/deactivate()
-	STOP_PROCESSING(SSprocessing, src)
-
+	set_next_think(0)
 	can_move = 0
 
 	icon_state = "blank"
@@ -570,7 +570,7 @@
 
 	log_and_message_admins("activated blood heal.")
 
-	while (do_after(src, 20, 0))
+	while (do_after(src, 20, 0, incapacitation_flags = INCAPACITATION_DISABLED))
 		if (!(vampire.status & VAMP_HEALING))
 			to_chat(src, SPAN_WARNING("Your concentration is broken! You are no longer regenerating!"))
 			break
@@ -637,6 +637,27 @@
 		for(var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
 			V.cure(src)
+		
+		var/mob/living/carbon/human/H = src
+		for(var/limb_type in species.has_limbs)	
+			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
+				E.removed()			//...because no one wants their head to explode to make way for a new one.				
+				qdel(E)
+				E = null
+			if(!E)
+				var/list/organ_data = species.has_limbs[limb_type]
+				var/limb_path = organ_data["path"]
+				var/obj/item/organ/external/O = new limb_path(H)
+				organ_data["descriptor"] = O.name
+				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))				
+				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
+				blood_used += 12
+				var/datum/reagent/blood/B = new /datum/reagent/blood
+				blood_splatter(H,B,1)
+				O.set_dna(H.dna)
+				H.update_body()
+				break
 
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[src]'s veins turn black as their damaged flesh regenerates before your eyes!",
@@ -700,7 +721,7 @@
 	if (!(vampire.status & VAMP_FULLPOWER))
 		to_chat(src, SPAN_NOTICE("You begin peering into [T]'s mind, looking for a way to gain control."))
 
-		if (!do_mob(src, T, 50))
+		if (!do_mob(src, T, 50, incapacitation_flags = INCAPACITATION_DISABLED))
 			to_chat(src, SPAN_WARNING("Your concentration is broken!"))
 			return
 

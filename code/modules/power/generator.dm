@@ -6,7 +6,7 @@
 	anchored = 0
 
 	use_power = POWER_USE_IDLE
-	idle_power_usage = 100 //Watts, I hope.  Just enough to do the computer and display things.
+	idle_power_usage = 100 WATTS // Just enough to do the computer and display things.
 
 	var/max_power = 500000
 	var/thermal_efficiency = 0.65

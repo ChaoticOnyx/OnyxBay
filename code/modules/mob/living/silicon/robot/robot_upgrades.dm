@@ -532,14 +532,14 @@
 	if(!can_install(src, R))
 		return 0
 	else
-		R.module.modules += new /obj/item/pickaxe/brush(R.module)
-		R.module.modules += new /obj/item/pickaxe/one_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/two_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/three_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/four_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/five_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/six_pick(R.module)
-		R.module.modules += new /obj/item/pickaxe/hand(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/brush(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/one_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/two_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/three_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/four_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/five_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/six_pick(R.module)
+		R.module.modules += new /obj/item/pickaxe/archaeologist/hand(R.module)
 		if (istype(R.module,/obj/item/robot_module/research))
 			R.module.modules += new /obj/item/pickaxe(R.module)
 		R.module.modules += new /obj/item/device/measuring_tape(R.module)
@@ -692,13 +692,13 @@
 			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
 	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
-/obj/item/borg/upgrade/death_alarm/Process()
+/obj/item/borg/upgrade/death_alarm/think()
 	if (!installed) return
 
 	if(isnull(host)) // If the mob got gibbed
 		activate()
-		STOP_PROCESSING(SSobj, src)
 		installed = 0
+		return
 	else if (!broken && active && host.stat == DEAD)
 		active = 0
 		activate("death")
@@ -707,6 +707,7 @@
 	else if(host.stat != DEAD)
 		active = 1
 
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/borg/upgrade/death_alarm/emp_act(severity)
 	if(prob(20))
@@ -717,7 +718,7 @@
 			broken = 1
 			name = "melted circuit"
 			desc = "Charred circuit. Wonder what that used to be..."
-			STOP_PROCESSING(SSobj, src)
+			set_next_think(0)
 
 /obj/item/borg/upgrade/death_alarm/action(mob/living/silicon/robot/R)
 	if(..()) return 0
@@ -726,7 +727,7 @@
 	else
 		host = R
 		installed = 1
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 		return 1
 
 /obj/item/borg/upgrade/integrated_circuit_upgrade

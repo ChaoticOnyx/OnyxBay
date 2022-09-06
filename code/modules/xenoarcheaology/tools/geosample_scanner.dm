@@ -7,8 +7,8 @@
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "analyser"
 
-	idle_power_usage = 20
-	active_power_usage = 300
+	idle_power_usage = 20 WATTS
+	active_power_usage = 300 WATTS
 
 	//var/obj/item/reagent_containers/glass/coolant_container
 	var/scanning = 0
@@ -197,7 +197,8 @@
 					radiation = rand() * 15 + 85
 					if(!rad_shield)
 						//irradiate nearby mobs
-						SSradiation.radiate(src, radiation / 25)
+						var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/carbon_14(radiation))
+						rad_source.schedule_decay(30 SECONDS)
 				else
 					t_left_radspike = pick(10,15,25)
 
