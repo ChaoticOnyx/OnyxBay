@@ -194,7 +194,7 @@
 "dL" = (/obj/effect/decal/cleanable/dirt,/obj/item/modular_computer/console/preset/merchant,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/cargo)
 "dM" = (/obj/effect/decal/cleanable/dirt,/obj/machinery/merchant_pad,/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled/dark,/area/ship/scrap/cargo)
 "dN" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/usedup,/area/ship/scrap/crew/hallway/starboard)
-"dO" = (/obj/machinery/sleeper,/obj/structure/sign/warning/nosmoking_2{pixel_y = 28},/obj/structure/closet/walllocker/emerglocker/west,/turf/simulated/floor/tiled/white/usedup,/area/ship/scrap/crew/medbay)
+"dO" = (/obj/machinery/capsule/sleeper,/obj/structure/sign/warning/nosmoking_2{pixel_y = 28},/obj/structure/closet/walllocker/emerglocker/west,/turf/simulated/floor/tiled/white/usedup,/area/ship/scrap/crew/medbay)
 "dP" = (/obj/item/roller,/turf/simulated/floor/tiled/white/usedup,/area/ship/scrap/crew/medbay)
 "dQ" = (/obj/item/device/radio/intercom{pixel_y = 32},/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/item/bedsheet/medical,/obj/structure/curtain/open/privacy,/obj/structure/bed/padded,/obj/item/clothing/accessory/stethoscope,/turf/simulated/floor/tiled/white/usedup,/area/ship/scrap/crew/medbay)
 "dR" = (/turf/simulated/wall/r_wall,/area/ship/scrap/maintenance/engine/port)

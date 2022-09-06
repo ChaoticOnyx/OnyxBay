@@ -2492,7 +2492,7 @@
 "aVV" = (/obj/structure/table/standard{name = "plastic table frame"},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/obj/random/medical/lite,/obj/random/medical/lite,/obj/effect/floor_decal/spline/plain/grey{dir = 9},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay3/underground)
 "aVW" = (/obj/machinery/vending/snack,/obj/effect/floor_decal/spline/plain/grey{dir = 1},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay3/underground)
 "aVX" = (/obj/machinery/vending/snack/medbay,/obj/effect/floor_decal/spline/plain/grey{dir = 5},/turf/simulated/floor/tiled/white/rough,/area/medical/medbay3/underground)
-"aVY" = (/obj/machinery/sleeper{dir = 8},/obj/effect/floor_decal/corner/paleblue/three_quarters{dir = 4},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1; layer = 2.4; level = 2},/turf/simulated/floor/tiled/freezer,/area/medical/sleeper/underground)
+"aVY" = (/obj/machinery/capsule/sleeper{dir = 8},/obj/effect/floor_decal/corner/paleblue/three_quarters{dir = 4},/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1; layer = 2.4; level = 2},/turf/simulated/floor/tiled/freezer,/area/medical/sleeper/underground)
 "aVZ" = (/obj/machinery/power/apc{dir = 4; name = "east bump"; pixel_x = 24},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/maintenance/underground/research)
 "aWa" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable/green{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/effect/floor_decal/industrial/warning{dir = 4},/turf/simulated/floor/tiled/white/rough,/area/rnd/xenobiology)
 "aWb" = (/turf/space,/area/shuttle/merchant/ghetto)

@@ -11,7 +11,7 @@
 "ak" = (/turf/simulated/floor/plating,/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/se,/area/derelict/ship)
 "al" = (/obj/structure/shuttle/engine/propulsion{icon_state = "burst_r"; dir = 4},/turf/space,/area/derelict/ship)
 "am" = (/turf/simulated/floor/shuttle/white,/area/derelict/ship)
-"an" = (/obj/machinery/sleeper,/obj/machinery/light{dir = 1},/obj/effect/decal/remains{layer = 3},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
+"an" = (/obj/machinery/capsule/sleeper,/obj/machinery/light{dir = 1},/obj/effect/decal/remains{layer = 3},/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "ao" = (/turf/simulated/floor/shuttle/white,/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/ne,/area/derelict/ship)
 "ap" = (/obj/structure/shuttle/engine/heater{icon_state = "heater"; dir = 4},/obj/structure/window/reinforced{dir = 8},/turf/simulated/floor/plating/airless,/area/derelict/ship)
 "aq" = (/obj/structure/shuttle/engine/propulsion{icon_state = "propulsion"; dir = 4},/turf/space,/area/derelict/ship)

@@ -104,7 +104,7 @@
 "bZ" = (/obj/structure/cable/blue,/obj/machinery/power/apc/high/inactive{dir = 2; name = "south bump"; pixel_y = -24},/turf/simulated/floor/plating/airless,/area/constructionsite/atmospherics)
 "ca" = (/turf/simulated/floor/tiled/white/airless,/area/constructionsite/medical)
 "cb" = (/obj/structure/window_frame/grille,/turf/simulated/floor/plating/airless,/area/constructionsite/medical)
-"cc" = (/obj/machinery/sleeper,/turf/simulated/floor/tiled/white/airless,/area/constructionsite/medical)
+"cc" = (/obj/machinery/capsule/sleeper,/turf/simulated/floor/tiled/white/airless,/area/constructionsite/medical)
 "cd" = (/turf/simulated/floor/plating/airless,/area/constructionsite/medical)
 "ce" = (/obj/machinery/door/airlock/glass_medical{name = "Medbay"; req_one_access = list(65,5)},/turf/simulated/floor/tiled/white/airless,/area/constructionsite/medical)
 "cf" = (/obj/machinery/door/airlock/glass_atmos{name = "Atmospherics"; req_access = list(24)},/turf/simulated/floor/plating/airless,/area/constructionsite/hallway/aft)
