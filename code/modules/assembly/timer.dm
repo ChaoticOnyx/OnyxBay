@@ -41,8 +41,8 @@
 
 /obj/item/device/assembly/timer/think()
 	if(!timing)
-  	return
-  if(time > 0)
+		return
+	if(time > 0)
 		time--
 	else
 		timing = FALSE
