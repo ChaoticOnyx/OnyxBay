@@ -3,8 +3,8 @@
 	desc = "A fancy bed with built-in injectors, a dialysis machine, and a limited health scanner."
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	clickvol = 30
-	idle_power_usage = 15
-	active_power_usage = 200
+	idle_power_usage = 15 WATTS
+	active_power_usage = 200 WATTS
 	beepsounds = SFX_BEEP_MEDICAL
 	component_types = list(
 		/obj/item/circuitboard/sleeper,

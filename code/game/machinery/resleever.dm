@@ -1,8 +1,8 @@
 /obj/machinery/capsule/resleever
 	name = "neural lace resleever"
 	desc = "It's a machine that allows neural laces to be sleeved into new bodies."
-	idle_power_usage = 4
-	active_power_usage = 4000
+	idle_power_usage = 4 WATTS
+	active_power_usage = 4 KILO WATTS
 	req_access = list(access_medical)
 
 	component_types = list(
