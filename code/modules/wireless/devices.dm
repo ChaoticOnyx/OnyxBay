@@ -92,6 +92,17 @@
 // Emitter
 // Activates/deactivates the parent emitter.
 //-------------------------------
+
+// Sender procs
+/datum/wifi/sender/emitter/activate(command, mob/user)
+	var/datum/spawn_sync/S = new()
+
+	for(var/datum/wifi/receiver/button/emitter/D in connected_devices)
+		S.start_worker(D, command, user)
+	S.wait_until_done()
+	return
+
+// Receiver procs
 /datum/wifi/receiver/button/emitter/activate(mob/living/user)
 	..()
 	var/obj/machinery/power/emitter/E = parent
@@ -102,6 +113,10 @@
 	var/obj/machinery/power/emitter/E = parent
 	if(istype(E) && E.active)
 		E.activate(user)	//if the emitter is active, trigger the activate proc to toggle it
+
+/datum/wifi/receiver/button/emitter/proc/toggle_lock(mob/living/user)
+	var/obj/machinery/power/emitter/E = parent
+	E.toggle_lock(user)
 
 //-------------------------------
 // Crematorium

@@ -107,6 +107,12 @@
 /obj/machinery/power/emitter/emp_act(severity)
 	return 1
 
+/obj/machinery/power/emitter/proc/toggle_lock(mob/user)
+	if(emagged) // For cases when we are doing it remotely
+		return
+	locked = !locked
+	to_chat(user, "The controls are now [locked ? "locked." : "unlocked."]")
+	
 /obj/machinery/power/emitter/Process()
 	if(stat & (BROKEN))
 		return
@@ -217,8 +223,7 @@
 			to_chat(user, "<span class='warning'>The lock seems to be broken.</span>")
 			return
 		if(allowed(user))
-			locked = !locked
-			to_chat(user, "The controls are now [locked ? "locked." : "unlocked."]")
+			toggle_lock()
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		return

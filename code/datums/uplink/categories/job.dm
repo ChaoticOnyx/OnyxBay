@@ -59,3 +59,10 @@
 	item_cost = 5
 	job_specific = list("Xenobotanist", "Gardener")
 	path = /obj/item/storage/box/syndie_kit/applenades
+
+/datum/uplink_item/item/job/emitter_controller
+	name = "Emitter Controller"
+	desc = "A remote emitter controller, disguised as a T-ray Scanner. It can store in its memory up to 3 emitters."
+	item_cost = 5
+	job_specific = list("Chief Engineer", "Engineer")
+	path = /obj/item/device/t_scanner/emitter_controller
