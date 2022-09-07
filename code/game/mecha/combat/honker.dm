@@ -34,7 +34,7 @@
 						<b>PowerHONK charge: </b>[isnull(cell_charge)?"Someone HONKed powerHonk!!!":"[cell.percent()]%"])<br>
 						<b>Air source: </b>[use_internal_tank?"Internal AirHONK":"EnvironHONK"]<br>
 						<b>AirHONK pressure: </b>[src.return_pressure()]HoNKs<br>
-						<b>Internal HONKature: </b> [src.return_temperature()]&deg;honK|[CONV_K2C(src.return_temperature())]&deg;honCk<br>
+						<b>Internal HONKature: </b> [src.return_temperature()]&deg;honK|[CONV_KELVIN_CELSIUS(src.return_temperature())]&deg;honCk<br>
 						<b>Lights: </b>[lights?"on":"off"]<br>
 					"}
 	return output

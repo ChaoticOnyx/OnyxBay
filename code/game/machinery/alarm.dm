@@ -210,7 +210,7 @@
 			"You hear a click as a faint electronic humming stops.")
 
 	if (regulating_temperature)
-		target_temperature = Clamp(target_temperature, CONV_C2K(MIN_TEMPERATURE), CONV_C2K(MAX_TEMPERATURE))
+		target_temperature = Clamp(target_temperature, CONV_CELSIUS_KELVIN(MIN_TEMPERATURE), CONV_CELSIUS_KELVIN(MAX_TEMPERATURE))
 
 		var/datum/gas_mixture/gas
 		gas = environment.remove(0.25*environment.total_moles)
@@ -523,12 +523,12 @@
 			other_moles += environment.gas[g]
 		environment_data[++environment_data.len] = list("name" = "Other Gases", "value" = other_moles / total * 100, "unit" = "%", "danger_level" = other_dangerlevel)
 
-		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_K2C(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)
+		environment_data[++environment_data.len] = list("name" = "Temperature", "value" = environment.temperature, "unit" = "K ([round(CONV_KELVIN_CELSIUS(environment.temperature), 0.1)]C)", "danger_level" = temperature_dangerlevel)
 	data["total_danger"] = danger_level
 	data["environment"] = environment_data
 	data["atmos_alarm"] = alarm_area.atmosalm
 	data["fire_alarm"] = alarm_area.fire != null
-	data["target_temperature"] = "[CONV_K2C(target_temperature)]C"
+	data["target_temperature"] = "[CONV_KELVIN_CELSIUS(target_temperature)]C"
 
 /obj/machinery/alarm/proc/populate_controls(list/data)
 	switch(screen)
@@ -643,14 +643,14 @@
 
 	if(href_list["temperature"])
 		var/list/selected = TLV["temperature"]
-		var/max_temperature = min(CONV_K2C(selected[3]), MAX_TEMPERATURE)
-		var/min_temperature = max(CONV_K2C(selected[2]), MIN_TEMPERATURE)
-		var/input_temperature = input(user, "What temperature would you like the system to mantain? (Capped between [min_temperature] and [max_temperature]C)", "Thermostat Controls", CONV_K2C(target_temperature)) as num|null
+		var/max_temperature = min(CONV_KELVIN_CELSIUS(selected[3]), MAX_TEMPERATURE)
+		var/min_temperature = max(CONV_KELVIN_CELSIUS(selected[2]), MIN_TEMPERATURE)
+		var/input_temperature = input(user, "What temperature would you like the system to mantain? (Capped between [min_temperature] and [max_temperature]C)", "Thermostat Controls", CONV_KELVIN_CELSIUS(target_temperature)) as num|null
 		if(isnum(input_temperature) && CanUseTopic(user, state))
 			if(input_temperature > max_temperature || input_temperature < min_temperature)
 				to_chat(user, "Temperature must be between [min_temperature]C and [max_temperature]C")
 			else
-				target_temperature = CONV_C2K(input_temperature)
+				target_temperature = CONV_CELSIUS_KELVIN(input_temperature)
 		return TOPIC_REFRESH
 
 	// hrefs that need the AA unlocked -walter0o

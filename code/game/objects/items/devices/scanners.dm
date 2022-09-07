@@ -148,7 +148,7 @@ REAGENT SCANNER
 
 	var/status_data = list()
 	// Body temperature.
-	status_data += "<span class='notice'>Body temperature: <b>[CONV_K2C(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
+	status_data += "<span class='notice'>Body temperature: <b>[CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
 	status_data += SPAN("notice", "Radiation dose: [fmt_siunit(H.radiation, "Sv", 3)]")
