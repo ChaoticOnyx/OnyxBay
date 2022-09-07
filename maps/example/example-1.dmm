@@ -11,7 +11,6 @@
 "k" = (/obj/machinery/light{icon_state = "tube1"; dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "l" = (/obj/effect/landmark{name = "JoinLate"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "m" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"m" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "n" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 5},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "o" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "p" = (/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 8},/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/tiled,/area/engineering/toilet)
