@@ -38,6 +38,8 @@
 
 /mob/living/carbon/human/proc/replace_vampiric_organs()
 	var/mob/living/carbon/human/H = src
+	if (H.mind.vampire?.status & VAMP_ISTHRALL)
+		return
 	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
 	if(O)
 		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
