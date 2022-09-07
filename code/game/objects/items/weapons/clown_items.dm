@@ -21,7 +21,7 @@
 	attack_verb = list("HONKED")
 	var/spam_flag = 0
 
-/obj/item/bikehorn/attack_self(mob/user as mob)
+/obj/item/bikehorn/attack_self(mob/user)
 	if(spam_flag == 0)
 		spam_flag = 1
 		playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
