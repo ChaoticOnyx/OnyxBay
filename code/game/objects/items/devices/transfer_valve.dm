@@ -173,10 +173,13 @@
 /obj/item/device/transfer_valve/proc/merge_gases()
 	if(valve_open)
 		return
-	tank_two.air_contents.volume += tank_one.air_contents.volume
+	
+	var/datum/gas_mixture/mix_one = tank_one.return_air()
+	var/datum/gas_mixture/mix_two = tank_two.return_air()
+	mix_two.volume += mix_one.volume
 	var/datum/gas_mixture/temp
-	temp = tank_one.air_contents.remove_ratio(1)
-	tank_two.air_contents.merge(temp)
+	temp = mix_one.remove_ratio(1)
+	mix_two.merge(temp)
 	valve_open = 1
 
 /obj/item/device/transfer_valve/proc/split_gases()

@@ -56,11 +56,12 @@ var/global/list/rad_collectors = list()
 			receive_pulse(total_energy)
 
 	if(P)
-		if(P.air_contents.gas["plasma"] == 0)
+		var/datum/gas_mixture/M = P.return_air()
+		if(M.gas["plasma"] == 0)
 			investigate_log("<font color='red'>out of fuel</font>.","singulo")
 			eject()
 		else
-			P.air_contents.adjust_gas("plasma", -0.001 * drainratio)
+			M.adjust_gas("plasma", -0.001 * drainratio)
 	return
 
 
@@ -146,7 +147,7 @@ var/global/list/rad_collectors = list()
 	if(P?.air_contents)
 		var/turf/T = get_turf(src)
 		if(T)
-			T.assume_air(P.air_contents)
+			T.assume_air(P.return_air())
 			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"))
 			fragmentate(T, 2, 4, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 3, /obj/item/projectile/bullet/pellet/fragment/tank = 1))
 			explosion(T, -1, -1, 0)
