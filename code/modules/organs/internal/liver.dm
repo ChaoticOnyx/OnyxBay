@@ -27,6 +27,8 @@
 	..()
 	if(!owner)
 		return
+	if(isundead(owner))
+		return
 
 	if (germ_level > INFECTION_LEVEL_ONE)
 		if(prob(1))

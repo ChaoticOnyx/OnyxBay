@@ -96,4 +96,4 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 					if(player.current.client.prefs.organ_data[BP_CHEST] == "cyborg") // Full synthetic.
 						return 0
 					return 1
- 	return 0
+	return 0

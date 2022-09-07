@@ -73,7 +73,7 @@
 		return
 	if(!istype(M))
 		return
-	if(M.status_flags & GODMODE)
+	if((M.status_flags & GODMODE) || (isundead(M)))
 		return
 	if("[disease.uniqueID]" in M.virus2)
 		return
