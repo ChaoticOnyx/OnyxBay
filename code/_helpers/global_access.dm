@@ -55,8 +55,6 @@
 			return global.SScircuit_components;
 		if("SSevac")
 			return global.SSevac;
-		if("SSevent")
-			return global.SSevent;
 		if("SSgarbage")
 			return global.SSgarbage;
 		if("SSicon_update")
@@ -705,12 +703,8 @@
 			return global.secret_force_mode;
 		if("send_emergency_team")
 			return global.send_emergency_team;
-		if("sent_spiders_to_station")
-			return global.sent_spiders_to_station;
 		if("server_name")
 			return global.server_name;
-		if("severity_to_string")
-			return global.severity_to_string;
 		if("side_effects")
 			return global.side_effects;
 		if("skin_styles_female_list")
@@ -934,8 +928,6 @@
 			global.SScircuit_components=newval;
 		if("SSevac")
 			global.SSevac=newval;
-		if("SSevent")
-			global.SSevent=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
 		if("SSicon_update")
@@ -1588,12 +1580,8 @@
 			global.secret_force_mode=newval;
 		if("send_emergency_team")
 			global.send_emergency_team=newval;
-		if("sent_spiders_to_station")
-			global.sent_spiders_to_station=newval;
 		if("server_name")
 			global.server_name=newval;
-		if("severity_to_string")
-			global.severity_to_string=newval;
 		if("side_effects")
 			global.side_effects=newval;
 		if("skin_styles_female_list")
