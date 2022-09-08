@@ -1,11 +1,11 @@
-/datum/event2/mundane_news
+/datum/event/mundane_news
 	id = "mundane_news"
 	name = "Mundane News"
 	description = "Random News"
 
 	mtth = 2 HOURS
 
-/datum/event2/mundane_news/on_fire()
+/datum/event/mundane_news/on_fire()
 	var/datum/trade_destination/affected_dest = util_pick_weight(weighted_mundaneevent_locations)
 	var/event_type = 0
 	if(affected_dest.viable_mundane_events.len)

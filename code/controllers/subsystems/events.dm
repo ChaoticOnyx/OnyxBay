@@ -16,8 +16,8 @@ SUBSYSTEM_DEF(events)
 /datum/controller/subsystem/events/Initialize(start_timeofday)
 	. = ..()
 
-	for(var/path in subtypesof(/datum/event2))
-		var/datum/event2/E = new path()
+	for(var/path in subtypesof(/datum/event))
+		var/datum/event/E = new path()
 
 		if(GLOB.using_map.type in E.blacklisted_maps)
 			qdel(E)
@@ -38,7 +38,7 @@ SUBSYSTEM_DEF(events)
 		event_fired = FALSE
 
 	while(processing_events.len)
-		var/datum/event2/E = processing_events[processing_events.len]
+		var/datum/event/E = processing_events[processing_events.len]
 		processing_events.len--
 
 		if(E.fire_only_once && E.fired)
@@ -83,7 +83,7 @@ SUBSYSTEM_DEF(events)
 
 /datum/controller/subsystem/events/proc/fire_event_with_type(ty)
 	for(var/event_id in total_events)
-		var/datum/event2/E = total_events[event_id]
+		var/datum/event/E = total_events[event_id]
 		
 		if(E.type == ty)
 			E.fire()

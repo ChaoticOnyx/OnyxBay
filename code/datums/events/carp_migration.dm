@@ -1,4 +1,4 @@
-/datum/event2/carp_migration_base
+/datum/event/carp_migration_base
 	id = "carp_migration_base"
 	name = "Carp Migration Incoming"
 	description = "Space carp will appear near the station"
@@ -33,15 +33,15 @@
 		}
 	)
 
-/datum/event2/carp_migration_base/get_mtth()
+/datum/event/carp_migration_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Security"] * (10 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/carp_migration_base/get_conditions_description()
+/datum/event/carp_migration_base/get_conditions_description()
 	. = "<em>Carp Migration</em> should not be <em>running</em>."
 
-/datum/event2/carp_migration_base/check_conditions()
+/datum/event/carp_migration_base/check_conditions()
 	. = SSevents.evars["carp_migration_running"] != TRUE
 
 /datum/event_option/carp_migration_option
@@ -50,7 +50,7 @@
 /datum/event_option/carp_migration_option/on_choose()
 	SSevents.evars["carp_migration_severity"] = severity
 
-/datum/event2/carp_migration
+/datum/event/carp_migration
 	id = "carp_migration"
 	name = "Carp Migration"
 
@@ -59,7 +59,7 @@
 	var/severity = EVENT_LEVEL_MUNDANE
 	var/list/spawned_carp = list()
 
-/datum/event2/carp_migration/on_fire()
+/datum/event/carp_migration/on_fire()
 	SSevents.evars["carp_migration_running"] = TRUE
 	severity = SSevents.evars["carp_migration_severity"]
 
@@ -73,7 +73,7 @@
 	addtimer(CALLBACK(src, .proc/announce), 30 SECONDS)
 	addtimer(CALLBACK(src, .proc/end), 8 MINUTES)
 
-/datum/event2/carp_migration/proc/spawn_fish(num_groups, group_size_min = 3, group_size_max = 5)
+/datum/event/carp_migration/proc/spawn_fish(num_groups, group_size_min = 3, group_size_max = 5)
 	var/list/spawn_locations = list()
 
 	for(var/obj/effect/landmark/C in GLOB.landmarks_list)
@@ -98,7 +98,7 @@
 				spawned_carp.Add(weakref(P))
 			i += group_size
 
-/datum/event2/carp_migration/proc/end()
+/datum/event/carp_migration/proc/end()
 	SSevents.evars["carp_migration_running"] = FALSE
 
 	for(var/weakref/thing in spawned_carp)
@@ -108,7 +108,7 @@
 			if(istype(T, /turf/space))
 				qdel(C)
 
-/datum/event2/carp_migration/proc/announce()
+/datum/event/carp_migration/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	var/announcement = ""
 

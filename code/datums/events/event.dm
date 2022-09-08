@@ -1,4 +1,4 @@
-/datum/event2
+/datum/event
 	var/_mtth_passed = 0
 	var/_waiting_option = 0
 
@@ -15,7 +15,7 @@
 
 	var/list/blacklisted_maps = list()
 
-/datum/event2/New()
+/datum/event/New()
 	ASSERT(id != null)
 	ASSERT(mtth >= 0)
 	
@@ -25,20 +25,20 @@
 	for(var/datum/event_option/O in options)
 		O._event = src
 
-/datum/event2/Destroy()
+/datum/event/Destroy()
 	SSevents.scheduled_events -= src
 	SSevents.total_events -= id
 	QDEL_LIST(options)
 
 	. = ..()
 
-/datum/event2/proc/get_conditions_description()
+/datum/event/proc/get_conditions_description()
 	return
 
-/datum/event2/proc/get_description()
+/datum/event/proc/get_description()
 	return description
 
-/datum/event2/proc/calc_chance()
+/datum/event/proc/calc_chance()
 	var/time = get_mtth()
 
 	if(time == 0)
@@ -46,16 +46,16 @@
 
 	return (1 - 2 ** (-_mtth_passed / time)) * 100
 
-/datum/event2/proc/get_mtth()
+/datum/event/proc/get_mtth()
 	return mtth
 
-/datum/event2/proc/check_conditions()
+/datum/event/proc/check_conditions()
 	return TRUE
 
-/datum/event2/proc/on_fire()
+/datum/event/proc/on_fire()
 	return
 
-/datum/event2/proc/ai_choose()
+/datum/event/proc/ai_choose()
 	var/list/options_weight = list()
 
 	for(var/datum/event_option/O in options)
@@ -66,7 +66,7 @@
 	_waiting_option = 0
 	O.choose()
 
-/datum/event2/proc/fire()
+/datum/event/proc/fire()
 	if(_mtth_passed)
 		_mtth_passed = 0
 	
@@ -85,6 +85,6 @@
 	else
 		after_fire()
 
-/datum/event2/proc/after_fire()
+/datum/event/proc/after_fire()
 	log_debug("After fire event '[name]' ([id])")
 	_waiting_option = 0

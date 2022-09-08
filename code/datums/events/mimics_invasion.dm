@@ -2,7 +2,7 @@
 #define MIN_MIMICS 8
 #define PLAYABLE_MIMICS 3
 
-/datum/event2/mimics_invasion
+/datum/event/mimics_invasion
 	id = "mimics_invasion"
 	name = "Mimics invasion"
 	description = "Some things at the station come to life and become mimics."
@@ -10,12 +10,12 @@
 	fire_only_once = TRUE
 	mtth = 2 HOURS
 
-/datum/event2/mimics_invasion/get_mtth()
+/datum/event/mimics_invasion/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (5 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/mimics_invasion/on_fire()
+/datum/event/mimics_invasion/on_fire()
 	set background = 1
 	set waitfor = 0
 

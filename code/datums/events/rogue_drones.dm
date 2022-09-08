@@ -1,4 +1,4 @@
-/datum/event2/rogue_drones
+/datum/event/rogue_drones
 	id = "rogue_drones"
 	name = "Rogue Drones"
 	description = "A group of hostile drones will fly into the area of the station"
@@ -9,18 +9,18 @@
 	var/list/drones_list = list()
 	var/list/affecting_z = list()
 
-/datum/event2/rogue_drones/get_conditions_description()
+/datum/event/rogue_drones/get_conditions_description()
 	. = "<em>Rogue Drones</em> should not be <em>running</em>.<br>"
 
-/datum/event2/rogue_drones/check_conditions()
+/datum/event/rogue_drones/check_conditions()
 	. = SSevents.evars["rogue_drones_running"] != TRUE
 
-/datum/event2/rogue_drones/get_mtth()
+/datum/event/rogue_drones/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Security"] * (13 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/rogue_drones/on_fire()
+/datum/event/rogue_drones/on_fire()
 	SSevents.evars["rogue_drones_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
@@ -29,7 +29,7 @@
 
 	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
 
-/datum/event2/rogue_drones/proc/spawn_drones()
+/datum/event/rogue_drones/proc/spawn_drones()
 	// Spawn them at the same place as carp
 	var/list/possible_spawns = list()
 	for(var/obj/effect/landmark/C in GLOB.landmarks_list)
@@ -48,7 +48,7 @@
 		if(prob(25))
 			D.disabled = rand(15, 60)
 
-/datum/event2/rogue_drones/proc/announce()
+/datum/event/rogue_drones/proc/announce()
 	var/msg
 	if(prob(33))
 		msg = "Attention: unidentified patrol drones detected within proximity to the [station_name()]"
@@ -59,7 +59,7 @@
 
 	command_announcement.Announce(msg, "[station_name()] Sensor Array", zlevels = affecting_z)
 
-/datum/event2/rogue_drones/proc/end()
+/datum/event/rogue_drones/proc/end()
 	SSevents.evars["rogue_drones_running"] = FALSE
 	for(var/weakref/thing in drones_list)
 		var/mob/living/simple_animal/hostile/retaliate/malf_drone/D = thing.resolve()

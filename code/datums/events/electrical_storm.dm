@@ -1,4 +1,4 @@
-/datum/event2/electrical_storm_base
+/datum/event/electrical_storm_base
 	id = "electrical_storm_base"
 	name = "Electrical Storm Incoming"
 
@@ -33,18 +33,18 @@
 
 	blacklisted_maps = list(/datum/map/polar)
 
-/datum/event2/electrical_storm_base/get_description()
+/datum/event/electrical_storm_base/get_description()
 	return "An electric storm is approaching [station_name()]"
 
-/datum/event2/electrical_storm_base/get_conditions_description()
+/datum/event/electrical_storm_base/get_conditions_description()
 	. = "<em>Electrical Storm</em> should not be <em>running</em>.<br>"
 
-/datum/event2/electrical_storm_base/get_mtth()
+/datum/event/electrical_storm_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (8 MINUTE))
 	. = max(1 HOUR, .)
 
-/datum/event2/electrical_storm_base/check_conditions()
+/datum/event/electrical_storm_base/check_conditions()
 	. = SSevents.evars["electrical_storm_running"] != TRUE
 
 /datum/event_option/electrical_storm_option
@@ -53,7 +53,7 @@
 /datum/event_option/electrical_storm_option/on_choose()
 	SSevents.evars["electrical_storm_severity"] = severity
 
-/datum/event2/electrical_storm
+/datum/event/electrical_storm
 	id = "electrical_storm"
 	name = "Electrical Storm"
 	triggered_only = TRUE
@@ -63,7 +63,7 @@
 	var/list/affecting_z = list()
 	var/ends = 0
 
-/datum/event2/electrical_storm/on_fire()
+/datum/event/electrical_storm/on_fire()
 	SSevents.evars["electrical_storm_running"] = TRUE
 	severity = SSevents.evars["electrical_storm_severity"]
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
@@ -85,11 +85,11 @@
 
 	set_next_think(world.time + 3 SECONDS)
 
-/datum/event2/electrical_storm/proc/end()
+/datum/event/electrical_storm/proc/end()
 	command_announcement.Announce("The [station_name()] has cleared the electrical storm. Please repair any electrical overloads.", "Electrical Storm Alert")
 	SSevents.evars["electrical_storm_running"] = FALSE
 
-/datum/event2/electrical_storm/think()
+/datum/event/electrical_storm/think()
 	if(world.time > ends)
 		end()
 		return

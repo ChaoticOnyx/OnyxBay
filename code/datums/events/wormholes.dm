@@ -1,4 +1,4 @@
-/datum/event2/wormholes
+/datum/event/wormholes
 	id = "wormholes"
 	name = "Wormholes"
 	description = "Womrholes will appear throughout the station"
@@ -10,18 +10,18 @@
 	var/shift_frequency = 3
 	var/number_of_wormholes = 400
 
-/datum/event2/wormholes/get_conditions_description()
+/datum/event/wormholes/get_conditions_description()
 	. = "<em>Wormholes</em> should not be <em>running</em>.<br>"
 
-/datum/event2/wormholes/check_conditions()
+/datum/event/wormholes/check_conditions()
 	. = SSevents.evars["wormholes_running"] != TRUE
 
-/datum/event2/wormholes/get_mtth()
+/datum/event/wormholes/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (6 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/wormholes/on_fire()
+/datum/event/wormholes/on_fire()
 	SSevents.evars["wormholes_running"] = TRUE
 	var/list/areas = area_repository.get_areas_by_z_level()
 	for(var/i in areas)
@@ -48,7 +48,7 @@
 
 	set_next_think(world.time)
 
-/datum/event2/wormholes/think()
+/datum/event/wormholes/think()
 	for(var/obj/effect/portal/wormhole/O in wormholes)
 		var/turf/T = pick(pick_turfs).resolve()
 		if(T)
@@ -56,10 +56,10 @@
 
 	set_next_think(world.time + 3 SECONDS)
 
-/datum/event2/wormholes/proc/announce()
+/datum/event/wormholes/proc/announce()
 	GLOB.using_map.space_time_anomaly_detected_annoncement()
 
-/datum/event2/wormholes/proc/end()
+/datum/event/wormholes/proc/end()
 	SSevents.evars["wormholes_running"] = FALSE
 	set_next_think(0)
 	QDEL_NULL_LIST(wormholes)

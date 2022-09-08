@@ -1,4 +1,4 @@
-/datum/event2/ion_storm
+/datum/event/ion_storm
 	id = "ion_storm"
 	name = "Ion Storm"
 	description = "One of the AI laws will be removed and a new one added"
@@ -7,13 +7,13 @@
 
 	blacklisted_maps = list(/datum/map/polar)
 
-/datum/event2/ion_storm/get_conditions_description()
+/datum/event/ion_storm/get_conditions_description()
 	. = "Count of <em>AI</em> must be higher than <em>1</em>."
 
-/datum/event2/ion_storm/check_conditions()
+/datum/event/ion_storm/check_conditions()
 	. = SSevents.triggers.roles_count["AI"] > 1
 
-/datum/event2/ion_storm/get_mtth()
+/datum/event/ion_storm/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["AI"] * (20 MINUTES))
 	. -= (SSevents.triggers.roles_count["Cyborg"] * (15 MINUTES))
@@ -21,7 +21,7 @@
 	. -= (SSevents.triggers.roles_count["Scientist"] * (6 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/ion_storm/on_fire()
+/datum/event/ion_storm/on_fire()
 	for(var/mob/living/silicon/S in SSmobs.mob_list)
 		if(is_drone(S) || !(isAI(S) || isrobot(S)))
 			continue
@@ -119,10 +119,10 @@
 	if(prob(50))
 		addtimer(CALLBACK(src, .proc/announce), rand(7, 12) MINUTES)
 
-/datum/event2/ion_storm/proc/announce()
+/datum/event/ion_storm/proc/announce()
 	GLOB.using_map.ion_storm_announcement()
 
-/datum/event2/ion_storm/proc/get_random_humanoid_player_name(default_if_none)
+/datum/event/ion_storm/proc/get_random_humanoid_player_name(default_if_none)
 	var/list/players = list()
 
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
@@ -132,7 +132,7 @@
 
 	return safepick(players) || default_if_none
 
-/datum/event2/ion_storm/proc/get_random_species_name(default_if_none = "Humans")
+/datum/event/ion_storm/proc/get_random_species_name(default_if_none = "Humans")
 	var/list/species = list()
 	for(var/S in typesof(/datum/species))
 		var/datum/species/specimen = S
@@ -141,7 +141,7 @@
 
 	return safepick(species) || default_if_none
 
-/datum/event2/ion_storm/proc/get_random_language(mob/living/silicon/S)
+/datum/event/ion_storm/proc/get_random_language(mob/living/silicon/S)
 	var/list/languages = S.speech_synthesizer_langs.Copy()
 	for(var/datum/language/L in languages)
 		// Removing GalCom from the random selection. If you want to be more generic you may instead want to use S.default_language

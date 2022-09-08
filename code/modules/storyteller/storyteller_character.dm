@@ -1,9 +1,23 @@
 /datum/storyteller_character
 	var/name = "Unknown Storyteller character"
 	var/desc = ""
-	var/__metrics
-	
+	var/aggression_ratio = 0.5
+	var/activity_ratio = 0.5
+
+	var/__metrics	
 	var/__debug = TRUE                // print debug logs
+
+/datum/storyteller_character/proc/get_aggression_ratio()
+	return aggression_ratio + 1
+
+/datum/storyteller_character/proc/get_defensive_ratio()
+	return abs(aggression_ratio - 1) + 1
+
+/datum/storyteller_character/proc/get_activity_ratio()
+	return activity_ratio + 1
+
+/datum/storyteller_character/proc/get_passivity_ratio()
+	return abs(aggression_ratio - 1) + 1
 
 // returns time for next cycle
 /datum/storyteller_character/proc/process_round_start()

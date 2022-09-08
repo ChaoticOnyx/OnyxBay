@@ -1,16 +1,16 @@
-/datum/event2/space_cold
+/datum/event/space_cold
 	id = "space_cold"
 	name = "Space Cold Outbreak"
 	description = "An epidemic of the space cold"
 
 	mtth = 2 HOURS
 
-/datum/event2/space_cold/get_mtth()
+/datum/event/space_cold/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Medical"] * (3 MINUTE))
 	. = max(1 HOUR, .)
 
-/datum/event2/space_cold/on_fire()
+/datum/event/space_cold/on_fire()
 	var/list/candidates = list()
 
 	for(var/mob/living/carbon/human/G in GLOB.player_list)

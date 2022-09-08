@@ -1,16 +1,16 @@
-/datum/event2/camera_damage
+/datum/event/camera_damage
 	id = "camera_damage"
 	name = "Camera Damage"
 	description = "Random camera will get damaged"
 
 	mtth = 4 HOURS
 
-/datum/event2/camera_damage/get_mtth()
+/datum/event/camera_damage/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (12 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/camera_damage/on_fire()
+/datum/event/camera_damage/on_fire()
 	var/obj/machinery/camera/C = acquire_random_camera()
 	if(!C)
 		return
@@ -27,7 +27,7 @@
 				if(!cam.wires.IsIndexCut(CAMERA_WIRE_ALARM) && prob(10))
 					cam.wires.CutWireIndex(CAMERA_WIRE_ALARM)
 
-/datum/event2/camera_damage/proc/acquire_random_camera(remaining_attempts = 5)
+/datum/event/camera_damage/proc/acquire_random_camera(remaining_attempts = 5)
 	if(!cameranet.cameras.len)
 		return
 	if(!remaining_attempts)
@@ -38,7 +38,7 @@
 		return C
 	return acquire_random_camera(remaining_attempts - 1)
 
-/datum/event2/camera_damage/proc/is_valid_camera(obj/machinery/camera/C)
+/datum/event/camera_damage/proc/is_valid_camera(obj/machinery/camera/C)
 	// Only return a functional camera, not installed in a silicon, and that exists somewhere players have access
 	var/turf/T = get_turf(C)
 	return T && C.can_use() && !istype(C.loc, /mob/living/silicon) && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))

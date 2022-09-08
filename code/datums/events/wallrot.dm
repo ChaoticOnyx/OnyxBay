@@ -1,17 +1,17 @@
-/datum/event2/wallrot
+/datum/event/wallrot
 	id = "wallrot"
 	name = "Wallrot"
 	description = "Dangerous fungi will appear on some walls destroying the walls"
 
 	mtth = 4 HOURS
 
-/datum/event2/wallrot/get_mtth()
+/datum/event/wallrot/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Gardener"] * (15 MINUTES))
 	. -= (SSevents.triggers.roles_count["Engineer"] * (15 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/wallrot/proc/announce()
+/datum/event/wallrot/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	if(GLOB.using_map.type == /datum/map/polar)
@@ -24,7 +24,7 @@
 	else
 		command_announcement.Announce("Harmful fungi detected on [station_name()]. Structures may be contaminated.", "Biohazard Alert", zlevels = affecting_z)
 
-/datum/event2/wallrot/on_fire()
+/datum/event/wallrot/on_fire()
 	addtimer(CALLBACK(src, .proc/announce), rand(2, 5) MINUTES)
 
 	spawn()

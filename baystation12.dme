@@ -326,7 +326,7 @@
 #include "code\datums\events\communications_blackout.dm"
 #include "code\datums\events\economic_event.dm"
 #include "code\datums\events\electrical_storm.dm"
-#include "code\datums\events\event2.dm"
+#include "code\datums\events\event.dm"
 #include "code\datums\events\event_option.dm"
 #include "code\datums\events\event_triggers.dm"
 #include "code\datums\events\gravity.dm"

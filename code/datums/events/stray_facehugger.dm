@@ -1,4 +1,4 @@
-/datum/event2/stray_facehugger
+/datum/event/stray_facehugger
 	id = "stray_facehugger"
 	name = "Stray Facehugger"
 	description = "Facehugger will appear somewhere in the technical rooms"
@@ -6,12 +6,12 @@
 	mtth = 5 HOURS
 	fire_only_once = TRUE
 
-/datum/event2/stray_facehugger/get_mtth()
+/datum/event/stray_facehugger/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Security"] * (20 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/stray_facehugger/on_fire()
+/datum/event/stray_facehugger/on_fire()
 	var/turf/T = pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
 
 	if(!T)

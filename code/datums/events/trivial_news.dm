@@ -1,11 +1,11 @@
-/datum/event2/trivial_news
+/datum/event/trivial_news
 	id = "trivial_news"
 	name = "Trivial News"
 	description = "Random news about something everyday"
 
 	mtth = 1 HOUR
 
-/datum/event2/trivial_news/on_fire()
+/datum/event/trivial_news/on_fire()
 	var/author = "Editor Mike Hammers"
 	var/channel = "The Gibson Gazette"
 

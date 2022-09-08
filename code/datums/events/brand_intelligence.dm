@@ -1,4 +1,4 @@
-/datum/event2/brand_intelligence
+/datum/event/brand_intelligence
 	id = "brand_intelligence"
 	name = "Brand Intelligence"
 	description = "There will be a virus infecting vending machines"
@@ -12,18 +12,18 @@
 	var/end_timer
 	var/list/affecting_z = list()
 
-/datum/event2/brand_intelligence/get_mtth()
+/datum/event/brand_intelligence/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Janitor"] * (15 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/brand_intelligence/get_conditions_description()
+/datum/event/brand_intelligence/get_conditions_description()
 	. = "<em>Brand Intelligence</em> should not be <em>running</em>.<br>"
 
-/datum/event2/brand_intelligence/check_conditions()
+/datum/event/brand_intelligence/check_conditions()
 	. = SSevents.evars["brand_intelligence_running"] != TRUE
 
-/datum/event2/brand_intelligence/on_fire()
+/datum/event/brand_intelligence/on_fire()
 	GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	for(var/obj/machinery/vending/V in GLOB.machines)
@@ -44,7 +44,7 @@
 	end_timer = addtimer(CALLBACK(src, .proc/announce), 10 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
 	set_next_think(world.time)
 
-/datum/event2/brand_intelligence/think()
+/datum/event/brand_intelligence/think()
 	// If every machine is infected, or if the original vending machine is missing or has it's voice switch flipped or fixed
 	if(!vendingMachines.len || QDELETED(originMachine) || originMachine.shut_up || !originMachine.shoot_inventory)
 		end()
@@ -69,7 +69,7 @@
 
 	set_next_think(world.time + 5 SECONDS)
 
-/datum/event2/brand_intelligence/proc/end()
+/datum/event/brand_intelligence/proc/end()
 	SSevents.evars["brand_intelligence_running"] = FALSE
 	deltimer(end_timer)
 	set_next_think(0)
@@ -96,7 +96,7 @@
 	infectedVendingMachines.Cut()
 	vendingMachines.Cut()
 
-/datum/event2/brand_intelligence/proc/announce()
+/datum/event/brand_intelligence/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	if(GLOB.using_map.type == /datum/map/polar)

@@ -161,7 +161,7 @@
 	service_label = "Radiation Storm Announcement"
 
 /obj/item/device/uplink_service/fake_rad_storm/enable(mob/user = usr)
-	SSevents.fire_event_with_type(/datum/event2/radiation_storm/syndicate)
+	SSevents.fire_event_with_type(/datum/event/radiation_storm/syndicate)
 	. = ..()
 
 /***************************

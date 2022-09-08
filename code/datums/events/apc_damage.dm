@@ -1,4 +1,4 @@
-/datum/event2/apc_damage
+/datum/event/apc_damage
 	id = "apc_damage"
 	name = "APC Damage"
 	description = "Random APC will get damaged"
@@ -7,12 +7,12 @@
 
 	var/apcSelectionRange	= 25
 
-/datum/event2/apc_damage/get_mtth()
+/datum/event/apc_damage/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (12 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/apc_damage/on_fire()
+/datum/event/apc_damage/on_fire()
 	var/obj/machinery/power/apc/A = acquire_random_apc()
 	var/severity_range = pick(0, 7, 15)
 
@@ -21,7 +21,7 @@
 			apc.emagged = 1
 			apc.update_icon()
 
-/datum/event2/apc_damage/proc/acquire_random_apc()
+/datum/event/apc_damage/proc/acquire_random_apc()
 	var/list/possibleEpicentres = list()
 	var/list/apcs = list()
 
@@ -44,6 +44,6 @@
 
 	return safepick(apcs)
 
-/datum/event2/apc_damage/proc/is_valid_apc(obj/machinery/power/apc/apc)
+/datum/event/apc_damage/proc/is_valid_apc(obj/machinery/power/apc/apc)
 	var/turf/T = get_turf(apc)
 	return !apc.is_critical && !apc.emagged && T && (T.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))

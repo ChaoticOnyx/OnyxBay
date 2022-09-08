@@ -1,4 +1,4 @@
-/datum/event2/space_dust_base
+/datum/event/space_dust_base
 	id = "space_dust_base"
 	name = "Space Dust Incoming"
 	description = "Commonish random event that causes small clumps of \"space dust\" to hit the station at high speeds. The \"dust\" will damage the hull of the station causin minor hull breaches."
@@ -26,15 +26,15 @@
 
 	blacklisted_maps = list(/datum/map/polar)
 
-/datum/event2/space_dust_base/get_mtth()
+/datum/event/space_dust_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (5 MINUTE))
 	. = max(1 HOUR, .)
 
-/datum/event2/space_dust_base/get_conditions_description()
+/datum/event/space_dust_base/get_conditions_description()
 	. = "<em>Space Dust</em> should not be <em>running</em>.<br>"
 
-/datum/event2/space_dust_base/check_conditions()
+/datum/event/space_dust_base/check_conditions()
 	. = SSevents.evars["space_dust_running"] != TRUE
 
 /datum/event_option/space_dust_option
@@ -43,14 +43,14 @@
 /datum/event_option/space_dust_option/on_choose()
 	SSevents.evars["space_dust_severity"] = severity
 
-/datum/event2/space_dust
+/datum/event/space_dust
 	id = "space_dust"
 	triggered_only = TRUE
 
 	var/list/affecting_z = list()
 	var/severity = EVENT_LEVEL_MUNDANE
 
-/datum/event2/space_dust/on_fire()
+/datum/event/space_dust/on_fire()
 	severity = SSevents.evars["space_dust_severity"]
 	SSevents.evars["space_dust_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
@@ -60,12 +60,12 @@
 	addtimer(CALLBACK(src, .proc/end), rand(1, 3) MINUTES)
 	set_next_think(world.time)
 
-/datum/event2/space_dust/proc/end()
+/datum/event/space_dust/proc/end()
 	set_next_think(0)
 	SSevents.evars["space_dust_running"] = FALSE
 	command_announcement.Announce("The [station_name()] has now passed through the belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-/datum/event2/space_dust/think()	
+/datum/event/space_dust/think()	
 	if(!prob(10))
 		set_next_think(world.time + (2 SECONDS))
 		return

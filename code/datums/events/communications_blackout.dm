@@ -1,4 +1,4 @@
-/datum/event2/communications_blackout
+/datum/event/communications_blackout
 	id = "communications_blackout"
 	name = "Communications Blackout"
 	description = "For a while telecommunications will be overloaded and not available"
@@ -7,13 +7,13 @@
 
 	var/list/affecting_z = list()
 
-/datum/event2/communications_blackout/get_mtth()
+/datum/event/communications_blackout/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["AI"] * (28 MINUTES))
 	. -= (SSevents.triggers.roles_count["Engineer"] * (13 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/communications_blackout/proc/announce()
+/datum/event/communications_blackout/proc/announce()
 	if(GLOB.using_map.type == /datum/map/polar)
 		var/alert = "Ionospheric anomalies detected. Temporary telecommunication failure imminent. Please contact you*%fj00)`5vc-BZZT"
 
@@ -46,7 +46,7 @@
 		if(prob(80))	//Announce most of the time, just not always to give some wiggle room for possible sabotages.
 			command_announcement.Announce(alert, new_sound = sound('sound/misc/interference.ogg', volume=25), zlevels = affecting_z)
 
-/datum/event2/communications_blackout/on_fire()
+/datum/event/communications_blackout/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 
 	announce()

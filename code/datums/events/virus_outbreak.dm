@@ -1,4 +1,4 @@
-/datum/event2/virus_outbreak_base
+/datum/event/virus_outbreak_base
 	id = "virus_outbreak_base"
 	name = "Virus Outbreak Incoming"
 	description = "An unknown virus appears at the station"
@@ -23,18 +23,18 @@
 		}
 	)
 
-/datum/event2/virus_outbreak_base/get_mtth()
+/datum/event/virus_outbreak_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Medical"] * (12 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/virus_outbreak_minor
+/datum/event/virus_outbreak_minor
 	id = "virus_outbreak_minor"
 	name = "Virus Outbreak (minor)"
 
 	triggered_only = TRUE
 
-/datum/event2/virus_outbreak_minor/on_fire()
+/datum/event/virus_outbreak_minor/on_fire()
 	var/next_outbreak = pick(
 		/datum/ictus/retrovirus,
 		/datum/ictus/cold9,
@@ -47,13 +47,13 @@
 
 	new next_outbreak
 
-/datum/event2/virus_outbreak_major
+/datum/event/virus_outbreak_major
 	id = "virus_outbreak_major"
 	name = "Virus Outbreak (major)"
 
 	triggered_only = TRUE
 
-/datum/event2/virus_outbreak_major/on_fire()
+/datum/event/virus_outbreak_major/on_fire()
 	var/next_outbreak = pick(
 		/datum/ictus/gbs,
 		/datum/ictus/fake_gbs,

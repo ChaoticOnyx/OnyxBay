@@ -1,4 +1,4 @@
-/datum/event2/economic_event
+/datum/event/economic_event
 	id = "economic_event"
 	name = "Economic Event"
 	description = "There will be random news that will affect the prices of some goods"
@@ -10,13 +10,13 @@
 	var/list/dearer_goods = list()
 	var/datum/trade_destination/affected_dest
 
-/datum/event2/economic_event/check_conditions()
+/datum/event/economic_event/check_conditions()
 	. = SSevents.evars["economic_events_running"] != TRUE
 
-/datum/event2/economic_event/get_conditions_description()
+/datum/event/economic_event/get_conditions_description()
 	. = "<em>Economic Event</em> should not be <em>running</em>.<br>"
 
-/datum/event2/economic_event/on_fire()
+/datum/event/economic_event/on_fire()
 	SSevents.evars["economic_events_running"] = TRUE
 	affected_dest = util_pick_weight(weighted_randomevent_locations)
 
@@ -64,7 +64,7 @@
 	addtimer(CALLBACK(src, .proc/announce), 1 MINUTE)
 	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
 
-/datum/event2/economic_event/proc/announce()
+/datum/event/economic_event/proc/announce()
 	var/author = "Nyx Daily"
 	var/channel = author
 
@@ -104,7 +104,7 @@
 
 	news_network.SubmitArticle(body, author, channel, null, 1)
 
-/datum/event2/economic_event/proc/end()
+/datum/event/economic_event/proc/end()
 	SSevents.evars["economic_events_running"] = FALSE
 
 	for(var/good_type in dearer_goods)

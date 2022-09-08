@@ -1,4 +1,4 @@
-/datum/event2/money_lotto
+/datum/event/money_lotto
 	id = "money_lotto"
 	name = "Money Lotto"
 	description = "With some chance, one of the crew members will be able to win the lottery"
@@ -6,12 +6,12 @@
 	mtth = 5 HOURS
 	fire_only_once = TRUE
 
-/datum/event2/money_lotto/get_mtth()
+/datum/event/money_lotto/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (8 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/money_lotto/on_fire()
+/datum/event/money_lotto/on_fire()
 	var/winner_name = "John Smith"
 	var/winner_sum = 0
 	var/deposit_success = 0

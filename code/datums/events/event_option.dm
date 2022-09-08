@@ -1,5 +1,5 @@
 /datum/event_option
-	var/datum/event2/_event
+	var/datum/event/_event
 	var/id = null
 	var/name = "OPTION_NAME"
 	var/description = "OPTION_DESCRIPTION"
@@ -18,7 +18,7 @@
 	return description
 
 /datum/event_option/proc/choose()
-	var/datum/event2/E = SSevents.total_events[event_id]
+	var/datum/event/E = SSevents.total_events[event_id]
 
 	if(event_id != null && E == null)
 		CRASH("option '[name]' ([id]) has invalid event_id: '[event_id]'")

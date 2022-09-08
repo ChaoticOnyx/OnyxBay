@@ -1,4 +1,4 @@
-/datum/event2/xenomorph_infestation
+/datum/event/xenomorph_infestation
 	id = "xenomorph_infestation"
 	name = "Xenomorph Infestation"
 	description = "Xenomorphs someway appears on the station."
@@ -6,13 +6,13 @@
 	fire_only_once = TRUE
 	mtth = 4 HOURS
 
-/datum/event2/xenomorph_infestation/get_mtth()
+/datum/event/xenomorph_infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (3 MINUTES))
 	. -= (SSevents.triggers.roles_count["Security"] * (6 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/xenomorph_infestation/on_fire()
+/datum/event/xenomorph_infestation/on_fire()
 	var/location = pick(GLOB.xenospawn_areas)
 	if(!location)
 		log_debug("Xenomorph infestation failed to find a viable spawn location. Probably, there are no \"Xenomorph\" landmarks on the current map. Aborting.")

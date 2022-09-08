@@ -14,7 +14,7 @@
 #define VERM_SPIDERS 2
 #define VERM_CRABS 3
 
-/datum/event2/infestation
+/datum/event/infestation
 	id = "infestation"
 	name = "Infestation"
 	description = "A large number of vermin will appear at the station"
@@ -26,12 +26,12 @@
 	var/vermstring
 	var/list/affecting_z = list()
 
-/datum/event2/infestation/get_mtth()
+/datum/event/infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Janitor"] * (30 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/infestation/on_fire()
+/datum/event/infestation/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	var/list/vermin_turfs
 	var/attempts = 3
@@ -81,7 +81,7 @@
 
 	addtimer(CALLBACK(src, .proc/announce), 30 SECONDS)
 
-/datum/event2/infestation/proc/announce()
+/datum/event/infestation/proc/announce()
 	if(GLOB.using_map.type == /datum/map/polar)
 		command_announcement.Announce(
 			"Bioscans indicate that [vermstring] have been breeding in \the [location]. Clear them out, before this starts to affect productivity.",
@@ -96,7 +96,7 @@
 			zlevels = affecting_z
 		)
 
-/datum/event2/infestation/proc/set_location_get_infestation_turfs()
+/datum/event/infestation/proc/set_location_get_infestation_turfs()
 	location = pick_area(list(/proc/is_not_space_area, /proc/is_station_area))
 	if(!location)
 		log_debug("Vermin infestation failed to find a viable area. Aborting.")

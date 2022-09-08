@@ -1,4 +1,4 @@
-/datum/event2/prison_break_base
+/datum/event/prison_break_base
 	id = "prison_break_base"
 	name = "Containment Breach"
 	description = "The doors in some areas will be open and the lights will be turned off"
@@ -47,7 +47,7 @@
 		}
 	)
 
-/datum/event2/prison_break_base/get_mtth()
+/datum/event/prison_break_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (2 MINUTES))
 	. = max(1 HOUR, .)
@@ -68,7 +68,7 @@
 	SSevents.evars["prison_break_area_type"] = areaType
 	SSevents.evars["prison_break_area_not_type"] = areaNotType
 
-/datum/event2/prison_break
+/datum/event/prison_break
 	id = "prison_break"
 	name = "Containment Breach"
 
@@ -86,7 +86,7 @@
 	var/list/areaNotType = list()
 	var/list/affecting_z = list()
 
-/datum/event2/prison_break/on_fire()
+/datum/event/prison_break/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	eventDept = SSevents.evars["prison_break_dept"]
 	areaName = SSevents.evars["prison_break_area_name"]
@@ -114,7 +114,7 @@
 	addtimer(CALLBACK(src, .proc/announce), rand(75, 105) SECONDS)
 	addtimer(CALLBACK(src, .proc/release), rand(60, 90) SECONDS)
 
-/datum/event2/prison_break/proc/release()
+/datum/event/prison_break/proc/release()
 	if(areas && areas.len > 0)
 		var/obj/machinery/power/apc/theAPC = null
 		for(var/area/A in areas)
@@ -125,7 +125,7 @@
 			
 			A.prison_break()
 
-/datum/event2/prison_break/proc/announce()
+/datum/event/prison_break/proc/announce()
 	if(areas && areas.len > 0)
 		if(GLOB.using_map.type == /datum/map/polar)
 			command_announcement.Announce(

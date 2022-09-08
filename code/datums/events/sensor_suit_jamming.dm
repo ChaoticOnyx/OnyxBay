@@ -1,4 +1,4 @@
-/datum/event2/sensor_suit_jamming_base
+/datum/event/sensor_suit_jamming_base
 	id = "sensor_suit_jamming_base"
 	name = "Sensor Suit Jamming"
 	description = "For a while, people's sensors will be jammed"
@@ -33,7 +33,7 @@
 		}
 	)
 
-/datum/event2/sensor_suit_jamming/get_mtth()
+/datum/event/sensor_suit_jamming/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (4 MINUTES))
 	. -= (SSevents.triggers.roles_count["Medical"] * (8 MINUTES))
@@ -46,7 +46,7 @@
 /datum/event_option/sensor_suit_jamming_option/on_choose()
 	SSevents.evars["sensor_suit_jamming_severity"] = severity
 
-/datum/event2/sensor_suit_jamming
+/datum/event/sensor_suit_jamming
 	id = "sensor_suit_jamming"
 	name = "Sensor Suit Jamming"
 
@@ -54,7 +54,7 @@
 
 	var/suit_sensor_jammer_method/jamming_method
 
-/datum/event2/sensor_suit_jamming/on_fire()
+/datum/event/sensor_suit_jamming/on_fire()
 	var/severity = SSevents.evars["sensor_suit_jamming_severity"]
 	var/endWhen = (rand(1, 3) * severity) MINUTES
 
@@ -73,7 +73,7 @@
 
 	addtimer(CALLBACK(src, .proc/end), endWhen)
 
-/datum/event2/sensor_suit_jamming/proc/end()
+/datum/event/sensor_suit_jamming/proc/end()
 	jamming_method.disable()
 	qdel(jamming_method)
 	jamming_method = null

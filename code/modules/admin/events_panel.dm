@@ -11,7 +11,7 @@
 		"events" = list(),
 	)
 
-	for(var/datum/event2/E  in SSevents.scheduled_events)
+	for(var/datum/event/E  in SSevents.scheduled_events)
 		if(E.triggered_only || E.fire_only_once && E.fired)
 			continue
 
@@ -57,7 +57,7 @@
 			var/option_id = params["option_id"]
 			var/event_id = params["event_id"]
 
-			var/datum/event2/E = SSevents.total_events[event_id]
+			var/datum/event/E = SSevents.total_events[event_id]
 
 			for(var/datum/event_option/O in E.options)
 				if(O.id == option_id)
@@ -70,7 +70,7 @@
 
 			var/event_id = params["event_id"]
 
-			var/datum/event2/E = SSevents.total_events[event_id]
+			var/datum/event/E = SSevents.total_events[event_id]
 			E.fire()
 
 /datum/events_panel/tgui_state(mob/user)

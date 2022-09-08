@@ -1,16 +1,16 @@
-/datum/event2/shipping_error
+/datum/event/shipping_error
 	id = "shipping_error"
 	name = "Shipping Error"
 	description = "A random parcel will appear in the cargo department"
 
 	mtth = 3 HOURS
 
-/datum/event2/shipping_error/get_mtth()
+/datum/event/shipping_error/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (4 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/shipping_error/on_fire()
+/datum/event/shipping_error/on_fire()
 	var/datum/supply_order/O = new /datum/supply_order()
 	O.ordernum = SSsupply.ordernum
 	O.object = pick(cargo_supply_packs)

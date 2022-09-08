@@ -1,4 +1,4 @@
-/datum/event2/biohazard_outbreak
+/datum/event/biohazard_outbreak
 	id = "biohazard_outbreak"
 	name = "Biohazard Outbreak"
 	description = "A blob appears at a random place at the station"
@@ -6,12 +6,12 @@
 	fire_only_once = TRUE
 	mtth = 3 HOURS
 
-/datum/event2/biohazard_outbreak/get_mtth()
+/datum/event/biohazard_outbreak/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (5 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/biohazard_outbreak/on_fire()
+/datum/event/biohazard_outbreak/on_fire()
 	var/counts = 0
 	var/turf/T = null
 	pick_subarea_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))

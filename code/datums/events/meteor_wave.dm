@@ -1,4 +1,4 @@
-/datum/event2/meteor_wave_base
+/datum/event/meteor_wave_base
 	id = "meteor_wave_base"
 	name = "Meteor Wave Incoming"
 	description = "A group of meteorites is approaching the station"
@@ -27,13 +27,13 @@
 		}
 	)
 
-/datum/event2/meteor_wave_base/get_conditions_description()
+/datum/event/meteor_wave_base/get_conditions_description()
 	. = "<em>Meteor Wave</em> should not be <em>running</em>.<br>"
 
-/datum/event2/meteor_wave_base/check_conditions()
+/datum/event/meteor_wave_base/check_conditions()
 	. = SSevents.evars["meteor_wave_running"] != TRUE
 
-/datum/event2/meteor_wave_base/get_mtth()
+/datum/event/meteor_wave_base/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (15 MINUTES))
 	. = max(1 HOUR, .)
@@ -44,7 +44,7 @@
 /datum/event_option/meteor_wave_option/on_choose()
 	SSevents.evars["meteor_wave_severity"] = severity
 
-/datum/event2/meteor_wave
+/datum/event/meteor_wave
 	id = "meteor_wave"
 	name = "Meteor Wave"
 
@@ -61,7 +61,7 @@
 	var/activeFor = 0
 	var/list/affecting_z = list()
 
-/datum/event2/meteor_wave/on_fire()
+/datum/event/meteor_wave/on_fire()
 	SSevents.evars["meteor_wave_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	severity = SSevents.evars["meteor_wave_severity"]
@@ -78,7 +78,7 @@
 
 	set_next_think(world.time)
 
-/datum/event2/meteor_wave/think()
+/datum/event/meteor_wave/think()
 	activeFor += 1
 	// Begin sending the alarm signals to shield diffusers so the field is already regenerated (if it exists) by the time actual meteors start flying around.
 	if(alarmWhen < activeFor)
@@ -91,7 +91,7 @@
 
 	set_next_think(world.time + 1 SECONDS)
 
-/datum/event2/meteor_wave/proc/send_wave()
+/datum/event/meteor_wave/proc/send_wave()
 	var/pick_side = prob(80) ? start_side : (prob(50) ? turn(start_side, 90) : turn(start_side, -90))
 	spawn()
 		spawn_meteors(get_wave_size(), get_meteors(), pick_side, pick(affecting_z))
@@ -99,17 +99,17 @@
 	next_meteor += rand(next_meteor_lower, next_meteor_upper) / severity
 	waves--
 
-/datum/event2/meteor_wave/proc/get_wave_size()
+/datum/event/meteor_wave/proc/get_wave_size()
 	return severity * rand(2,4)
 
-/datum/event2/meteor_wave/proc/announce()
+/datum/event/meteor_wave/proc/announce()
 	switch(severity)
 		if(EVENT_LEVEL_MAJOR)
 			command_announcement.Announce(replacetext(GLOB.using_map.meteor_detected_message, "%STATION_NAME%", station_name()), "[station_name()] Sensor Array", new_sound = GLOB.using_map.meteor_detected_sound, zlevels = affecting_z)
 		else
 			command_announcement.Announce("The [station_name()] is now in a meteor shower.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-/datum/event2/meteor_wave/proc/end()
+/datum/event/meteor_wave/proc/end()
 	SSevents.evars["meteor_wave_running"] = FALSE
 
 	switch(severity)
@@ -118,10 +118,10 @@
 		else
 			command_announcement.Announce("The [station_name()] has cleared the meteor shower", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-/datum/event2/meteor_wave/proc/worst_case_end()
+/datum/event/meteor_wave/proc/worst_case_end()
 	return 2 MINUTE + ((30 / severity) * waves) + (30 SECONDS)
 
-/datum/event2/meteor_wave/proc/get_meteors()
+/datum/event/meteor_wave/proc/get_meteors()
 	switch(severity)
 		if(EVENT_LEVEL_MAJOR)
 			return meteors_major

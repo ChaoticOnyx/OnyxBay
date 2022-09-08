@@ -1,4 +1,4 @@
-/datum/event2/money_hacker
+/datum/event/money_hacker
 	id = "money_hacker"
 	name = "Money Hacker"
 	description = ""
@@ -6,18 +6,18 @@
 	mtth = 4 HOURS
 	fire_only_once = TRUE
 
-/datum/event2/money_hacker/get_mtth()
+/datum/event/money_hacker/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (6 MINUTES))
 	. = max(1 HOUR, .)
 
-/datum/event2/money_hacker/check_conditions()
+/datum/event/money_hacker/check_conditions()
 	. = SSevents.evars["money_hacker_running"] != TRUE
 
-/datum/event2/money_hacker/get_conditions_description()
+/datum/event/money_hacker/get_conditions_description()
 	. = "<em>Money Hacker</em> should not be <em>running</em>.<br>"
 
-/datum/event2/money_hacker/on_fire()
+/datum/event/money_hacker/on_fire()
 	if(!length(all_money_accounts))
 		return
 
@@ -38,7 +38,7 @@
 
 	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
 
-/datum/event2/money_hacker/proc/end()
+/datum/event/money_hacker/proc/end()
 	SSevents.evars["money_hacker_running"] = FALSE
 
 	var/list/datum/money_account/affected_accounts = list()
