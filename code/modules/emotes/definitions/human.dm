@@ -15,17 +15,17 @@
 
 /decl/emote/human/dance
 	key = "dance"
-	var/dancing = FALSE
+	var/list/mob/living/carbon/human/dancing = list()
 
 /decl/emote/human/dance/do_emote(mob/living/carbon/human/user)
-	if(dancing)
-		dancing = FALSE
+	if(weakref(user) in dancing)
+		dancing.Remove(weakref(user))
 		return
 
+	dancing.Add(weakref(user))
 	user.pixel_y = initial(user.pixel_y)
-	dancing = TRUE
 	var/oldpixely = user.pixel_y
-	while(dancing)
+	while(weakref(user) in dancing)
 		var/pixely = rand(5, 6)
 		animate(user, pixel_y = pixely, time = 0.5)
 		sleep(1)
@@ -34,8 +34,9 @@
 		animate(user, pixel_y = 2, time = 0.2)
 		sleep(1)
 		animate(user, pixel_y = oldpixely, time = 0.2)
-		if(user.resting || user.restrained || !user.stat)
-			dancing = FALSE
+		if(user.resting || user.buckled || user.stat)
+			dancing.Remove(weakref(user))
+			break
 
 /decl/emote/human/swish
 	key = "swish"
