@@ -13,7 +13,6 @@
       "name": "Build & DS Debug",
       "preLaunchTask": "dm: build - ${command:CurrentDME}",
       "dmb": "${workspaceFolder}/${command:CurrentDMB}",
-      "dreamDaemon": true
     },
     {
       "name": "Nano Watch",
