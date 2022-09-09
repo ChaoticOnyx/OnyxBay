@@ -695,17 +695,38 @@
 
 	return
 
-// Dominate a victim, imbed a thought into their mind.
-/datum/vampire/proc/vampire_dominate()
+// Dominate a victim, using single word.
+/datum/vampire/proc/vampire_order()
 	set category = "Vampire"
-	set name = "Dominate (50)"
+	set name = "Order (50)"
+	set desc = "Order the mind of a victim, make them obey your will."
+	var/power_use_cost = 20
+	var/mob/living/carbon/human/user = usr
+	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
+	if (!vampire)
+		return
+	vampire.vampire_dominate_handler(user,"order")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_order
+	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_order, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+
+// Dominate a victim, imbed a thought into their mind.
+/datum/vampire/proc/vampire_suggestion()
+	set category = "Vampire"
+	set name = "Suggestion (50)"
 	set desc = "Dominate the mind of a victim, make them obey your will."
 	var/power_use_cost = 50
 	var/mob/living/carbon/human/user = usr
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
+	vampire.vampire_dominate_handler(user,"suggestion")
+	vampire.use_blood(power_use_cost)
+	user.verbs -= /datum/vampire/proc/vampire_suggestion
+	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_suggestion, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
+/datum/vampire/proc/vampire_dominate_handler(user, ability == "suggestion")
+	var/datum/vampire/vampire = src
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(7))
 		if (H == user)
@@ -748,9 +769,6 @@
 	to_chat(user, SPAN_NOTICE("You command [T], and they will obey."))
 	user.emote("me", 1, "whispers.")
 
-	vampire.use_blood(power_use_cost)
-	user.verbs -= /datum/vampire/proc/vampire_dominate
-	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_dominate, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
 // Enthralls a person, giving the vampire a mortal slave.
 /datum/vampire/proc/vampire_enthrall()
