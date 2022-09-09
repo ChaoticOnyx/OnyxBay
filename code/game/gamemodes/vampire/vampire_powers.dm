@@ -772,13 +772,19 @@
 		if(spaceposition)
 			command = copytext_char(command, 1, spaceposition+1)
 
+	user.say(command)
+
+	if (T.is_deaf() || !T.say_understands(user,user.get_default_language()))
+		to_chat(user, "<span class='alert'>Target does not understand you!</span>")
+		return
+
 	admin_attack_log(user, T, "used dominate on [key_name(T)]", "was dominated by [key_name(user)]", "used dominate and issued the command of '[command]' to")
 
 	show_browser(T, "<HTML><meta charset=\"utf-8\"><center>You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, <b>and are compelled to follow its direction without question or hesitation:</b><br>[command]</center></BODY></HTML>", "window=vampiredominate")
 	to_chat(T, SPAN_NOTICE("You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
 	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
 	to_chat(user, SPAN_NOTICE("You command [T], and they will obey."))
-	user.say(command)
+
 	return
 
 // Enthralls a person, giving the vampire a mortal slave.
