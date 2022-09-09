@@ -698,17 +698,17 @@
 // Dominate a victim, using single word.
 /datum/vampire/proc/vampire_order()
 	set category = "Vampire"
-	set name = "Order (50)"
+	set name = "Order (20)"
 	set desc = "Order the mind of a victim, make them obey your will."
 	var/power_use_cost = 20
 	var/mob/living/carbon/human/user = usr
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
-	vampire.vampire_dominate_handler(user,"order")
+	vampire.vampire_dominate_handler(user, ability = "order")
 	vampire.use_blood(power_use_cost)
 	user.verbs -= /datum/vampire/proc/vampire_order
-	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_order, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
+	ADD_VERB_IN_IF(user, 900, /datum/vampire/proc/vampire_order, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
 // Dominate a victim, imbed a thought into their mind.
 /datum/vampire/proc/vampire_suggestion()
@@ -720,13 +720,14 @@
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
-	vampire.vampire_dominate_handler(user,"suggestion")
+	vampire.vampire_dominate_handler(user, ability = "suggestion")
 	vampire.use_blood(power_use_cost)
 	user.verbs -= /datum/vampire/proc/vampire_suggestion
 	ADD_VERB_IN_IF(user, 1800, /datum/vampire/proc/vampire_suggestion, CALLBACK(user, /mob/living/carbon/human/proc/finish_vamp_timeout))
 
-/datum/vampire/proc/vampire_dominate_handler(user, ability == "suggestion")
+/datum/vampire/proc/vampire_dominate_handler(caster, ability = "suggestion")
 	var/datum/vampire/vampire = src
+	var/mob/living/carbon/human/user = caster
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(7))
 		if (H == user)
@@ -753,13 +754,23 @@
 	else
 		to_chat(user, SPAN_NOTICE("You instantly dominate [T]'s mind, forcing them to obey your command."))
 
-	var/command = input(user, "Command your victim.", "Your command.") as text|null
+	var/command
+	if(ability == "suggestion")
+		command = input(user, "Command your victim.", "Your command.") as text|null
+	else if(ability == "order")
+		command = input(user, "Command your victim with single word.", "Your command.") as text|null
 
 	if (!command)
 		to_chat(user, "<span class='alert'>Cancelled.</span>")
 		return
 
-	command = sanitizeSafe(command, extra = 0)
+	if(ability == "suggestion")
+		command = sanitizeSafe(command, extra = 0)
+	else if(ability == "order")
+		command = sanitizeSafe(command)
+		var/spaceposition = findtext_char(command, " ")
+		if(spaceposition)
+			command = copytext_char(command, 1, spaceposition+1)
 
 	admin_attack_log(user, T, "used dominate on [key_name(T)]", "was dominated by [key_name(user)]", "used dominate and issued the command of '[command]' to")
 
@@ -767,8 +778,8 @@
 	to_chat(T, SPAN_NOTICE("You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
 	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
 	to_chat(user, SPAN_NOTICE("You command [T], and they will obey."))
-	user.emote("me", 1, "whispers.")
-
+	user.say(command)
+	return
 
 // Enthralls a person, giving the vampire a mortal slave.
 /datum/vampire/proc/vampire_enthrall()
