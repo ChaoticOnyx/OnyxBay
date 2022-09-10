@@ -22,6 +22,13 @@
 	infra_luminosity = 15 //byond implementation is bugged.
 	anchor_fall = TRUE
 	w_class = ITEM_SIZE_NO_CONTAINER
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 120 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 60 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/initial_icon = null //Mech type for resetting icon. Only used for reskinning kits (see custom items)
 	var/base_color = null // Mecha padding color. Used to paint visible equipment in special color.
 	var/can_move = 1
@@ -107,6 +114,7 @@
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
 	log_message("[src.name] created.")
 	mechas_list += src //global mech list
+	update_icon()
 	return
 
 /obj/mecha/update_icon()
@@ -203,7 +211,7 @@
 
 /obj/mecha/proc/add_cabin()
 	cabin_air = new
-	cabin_air.temperature = T20C
+	cabin_air.temperature = 20 CELSIUS
 	cabin_air.volume = 200
 	cabin_air.adjust_multi("oxygen", O2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature), "nitrogen", N2STANDARD*cabin_air.volume/(R_IDEAL_GAS_EQUATION*cabin_air.temperature))
 	return cabin_air
@@ -1413,7 +1421,7 @@
 						<b>Airtank pressure: </b>[tank_pressure]kPa<br>
 						<b>Airtank temperature: </b>[tank_temperature]K|[isnum(tank_temperature) ? "tank_temperature - T0C&deg;C" : ""]<br>
 						<b>Cabin pressure: </b>[cabin_pressure>WARNING_HIGH_PRESSURE ? "<font color='red'>[cabin_pressure]</font>": cabin_pressure]kPa<br>
-						<b>Cabin temperature: </b> [return_temperature()]K|[return_temperature() - T0C]&deg;C<br>
+						<b>Cabin temperature: </b> [return_temperature()]K|[CONV_KELVIN_CELSIUS(return_temperature())]&deg;C<br>
 						<b>Lights: </b>[lights?"on":"off"]<br>
 						[src.dna?"<b>DNA-locked:</b><br> <span style='font-size:10px;letter-spacing:-1px;'>[src.dna]</span> \[<a href='?src=\ref[src];reset_dna=1'>Reset</a>\]<br>":null]
 					"}
@@ -1876,7 +1884,7 @@
 
 	process(obj/mecha/mecha)
 		if(mecha.cabin_air && mecha.cabin_air.volume > 0)
-			var/delta = mecha.cabin_air.temperature - T20C
+			var/delta = mecha.cabin_air.temperature - (20 CELSIUS)
 			mecha.cabin_air.temperature -= max(-10, min(10, round(delta/4,0.1)))
 		return
 
@@ -1937,9 +1945,9 @@
 					mecha.setInternalDamage(MECHA_INT_TANK_BREACH)
 				var/datum/gas_mixture/int_tank_air = mecha.internal_tank.return_air()
 				if(int_tank_air && int_tank_air.volume>0) //heat the air_contents
-					int_tank_air.temperature = min(6000+T0C, int_tank_air.temperature+rand(10,15))
+					int_tank_air.temperature = min(6000 CELSIUS, int_tank_air.temperature+rand(10,15))
 			if(mecha.cabin_air && mecha.cabin_air.volume>0)
-				mecha.cabin_air.temperature = min(6000+T0C, mecha.cabin_air.temperature+rand(10,15))
+				mecha.cabin_air.temperature = min(6000 CELSIUS, mecha.cabin_air.temperature+rand(10,15))
 				if(mecha.cabin_air.temperature>mecha.max_temperature/2)
 					mecha.take_damage(4/round(mecha.max_temperature/mecha.cabin_air.temperature,0.1),"fire")
 		if(mecha.hasInternalDamage(MECHA_INT_TEMP_CONTROL)) //stop the mecha_preserve_temp loop datum
@@ -1955,7 +1963,7 @@
 		if(mecha.hasInternalDamage(MECHA_INT_SHORT_CIRCUIT))
 			if(mecha.get_charge())
 				mecha.spark_system.start()
-				mecha.use_power(rand(1 KILOWATTS, 5 KILOWATTS))
+				mecha.use_power(rand(1 KILO WATT, 5 KILO WATTS))
 		return
 
 

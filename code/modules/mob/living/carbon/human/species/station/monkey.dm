@@ -141,7 +141,7 @@
 	icobase = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 	deform = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 
-	greater_form = "Tajaran"
+	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
 	flesh_color = "#afa59e"
 	blood_color = COLOR_BLOOD_TAJARAN

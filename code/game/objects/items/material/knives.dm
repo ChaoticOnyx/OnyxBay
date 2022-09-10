@@ -201,6 +201,7 @@
 	randpixel = 0
 	applies_material_colour = 0
 	hitsound = SFX_FIGHTING_SWING
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/material/shivgrip/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)

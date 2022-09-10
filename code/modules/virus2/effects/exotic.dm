@@ -266,7 +266,9 @@
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)
-		mob.apply_effect(30*multiplier, IRRADIATE, blocked = 0)
+
+		var/datum/radiation/rad_info = new(5 TERA BECQUEREL, RADIATION_ALPHA_PARTICLE, energy = (15 MEGA ELECTRONVOLT))
+		mob.radiation += rad_info.calc_equivalent_dose(AVERAGE_HUMAN_WEIGHT)
 
 ////////////////////////STAGE 4/////////////////////////////////
 

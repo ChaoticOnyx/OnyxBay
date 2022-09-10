@@ -37,8 +37,6 @@
 	icon_state = "mulecrate"
 
 /obj/structure/largecrate/hoverpod/Initialize()
-	. = ..()
-
 	var/obj/item/mecha_parts/mecha_equipment/ME
 	var/obj/mecha/working/hoverpod/H = new (src)
 
@@ -46,7 +44,7 @@
 	ME.attach(H)
 	ME = new /obj/item/mecha_parts/mecha_equipment/tool/passenger
 	ME.attach(H)
-
+	. = ..()
 
 /obj/structure/largecrate/animal
 	icon_state = "mulecrate"

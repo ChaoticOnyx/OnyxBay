@@ -31,7 +31,7 @@
 
 /obj/item/gun/flamer/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 /obj/item/gun/flamer/_examine_text(mob/user)
 	. = ..()
@@ -238,8 +238,9 @@
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
 		return
 
-	if(pressure_tank.air_contents.return_pressure() > 200)
-		pressure_tank.air_contents.remove_ratio(0.02*(pressure_for_shot/100))
+	var/datum/gas_mixture/M = pressure_tank.return_air()
+	if(M.return_pressure() > 200)
+		M.remove_ratio(0.02*(pressure_for_shot/100))
 	else
 		to_chat(user, SPAN_WARNING("Not enough pressure!"))
 		playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
@@ -261,13 +262,14 @@
 	QDEL_NULL(pressure_tank)
 	QDEL_NULL(igniter)
 	QDEL_NULL(gauge)
-	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/gun/flamer/Process()
+/obj/item/gun/flamer/think()
 	if(lit)
 		if(!lited(0.05))
 			lit = FALSE
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/flamer/proc/lited(amount) //remove fuel from fuel_tank
 	if(!lit && !fuel_tank)

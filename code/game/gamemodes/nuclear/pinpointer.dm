@@ -12,7 +12,6 @@
 	var/beeping = 2
 
 /obj/item/pinpointer/Destroy()
-	STOP_PROCESSING(SSobj,src)
 	target = null
 	. = ..()
 
@@ -23,11 +22,11 @@
 	active = !active
 	to_chat(user, "You [active ? "" : "de"]activate [src].")
 	if(!active)
-		STOP_PROCESSING(SSobj,src)
+		set_next_think(0)
 	else
 		if(!target)
 			target = acquire_target()
-		START_PROCESSING(SSobj,src)
+		set_next_think(world.time)
 	update_icon()
 
 /obj/item/pinpointer/advpinpointer/verb/toggle_sound()
@@ -46,7 +45,7 @@
 	var/obj/item/disk/nuclear/the_disk = locate() in nuke_disks
 	return weakref(the_disk)
 
-/obj/item/pinpointer/Process()
+/obj/item/pinpointer/think()
 	update_icon()
 	if(!target)
 		return
@@ -55,6 +54,7 @@
 		return
 
 	if(beeping < 0)
+		set_next_think(world.time + 1 SECOND)
 		return
 	if(beeping == 0)
 		var/turf/here = get_turf(src)
@@ -72,6 +72,8 @@
 			beeping = initial(beeping)
 	else
 		beeping--
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/pinpointer/update_icon()
 	overlays.Cut()
@@ -116,7 +118,7 @@
 /obj/item/pinpointer/nukeop
 	var/locate_shuttle = 0
 
-/obj/item/pinpointer/nukeop/Process()
+/obj/item/pinpointer/nukeop/think()
 	var/new_mode
 	if(!locate_shuttle && bomb_set)
 		locate_shuttle = 1
@@ -128,6 +130,7 @@
 		playsound(loc, 'sound/signals/ping2.ogg', 50, 0)
 		visible_message("<span class='notice'>[new_mode] active.</span>")
 		target = acquire_target()
+
 	..()
 
 /obj/item/pinpointer/nukeop/acquire_target()

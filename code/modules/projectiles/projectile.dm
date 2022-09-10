@@ -44,7 +44,6 @@
 	var/stun = 0
 	var/weaken = 0
 	var/paralyze = 0
-	var/irradiate = 0
 	var/stutter = 0
 	var/eyeblur = 0
 	var/drowsy = 0
@@ -121,8 +120,6 @@
 			H.handle_tasing(agony, tasing, def_zone, src)
 	else
 		L.stun_effect_act(stun, agony, def_zone, src)
-	//radiation protection is handled separately from other armour types.
-	L.apply_effect(irradiate, IRRADIATE, L.getarmor(null, "rad"))
 	return 1
 
 //called when the projectile stops flying because it collided with something
@@ -189,7 +186,7 @@
 
 /obj/item/projectile/proc/finalize_launch(turf/curloc, turf/targloc, x_offset, y_offset, angle_offset)
 	setup_trajectory(curloc, targloc, x_offset, y_offset, angle_offset) //plot the initial trajectory
-	Process()
+	think()
 	spawn(SEGMENT_DELETION_DELAY) //running this from a proc wasn't working.
 		QDEL_NULL_LIST(segments)
 
@@ -377,7 +374,7 @@
 /obj/item/projectile/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	return 1
 
-/obj/item/projectile/Process()
+/obj/item/projectile/think()
 	var/first_step = 1
 	var/i = 0
 	spawn while(src && src.loc)

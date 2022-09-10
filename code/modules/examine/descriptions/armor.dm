@@ -39,8 +39,6 @@
 		. += "[describe_armor("bomb","explosions")] \n"
 	if(armor["bio"])
 		. += "[describe_armor("bio","biohazards")] \n"
-	if(armor["rad"])
-		. += "[describe_armor("rad","radiation")] \n"
 
 	. += "\n"
 

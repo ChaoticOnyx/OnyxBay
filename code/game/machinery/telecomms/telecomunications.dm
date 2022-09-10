@@ -211,13 +211,13 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/datum/gas_mixture/environment = loc.return_air()
 	var/damage_chance = 0                           // Percent based chance of applying 1 integrity damage this tick
 	switch(environment.temperature)
-		if((T0C + 40) to (T0C + 70))                // 40C-70C, minor overheat, 10% chance of taking damage
+		if((40 CELSIUS) to (70 CELSIUS))                // 40C-70C, minor overheat, 10% chance of taking damage
 			damage_chance = 10
-		if((T0C + 70) to (T0C + 130))				// 70C-130C, major overheat, 25% chance of taking damage
+		if((70 CELSIUS) to (130 CELSIUS))				// 70C-130C, major overheat, 25% chance of taking damage
 			damage_chance = 25
-		if((T0C + 130) to (T0C + 200))              // 130C-200C, dangerous overheat, 50% chance of taking damage
+		if((130 CELSIUS) to (200 CELSIUS))              // 130C-200C, dangerous overheat, 50% chance of taking damage
 			damage_chance = 50
-		if((T0C + 200) to INFINITY)					// More than 200C, INFERNO. Takes damage every tick.
+		if((200 CELSIUS) to INFINITY)					// More than 200C, INFERNO. Takes damage every tick.
 			damage_chance = 100
 	if (damage_chance && prob(damage_chance))
 		integrity = between(0, integrity - 1, 100)
@@ -271,7 +271,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	desc = "This machine has a dish-like shape and green lights. It is designed to detect and process subspace radio activity."
 	density = 1
 	anchored = 1
-	idle_power_usage = 600
+	idle_power_usage = 600 WATTS
 	machinetype = 1
 	produces_heat = 0
 	circuitboard = /obj/item/circuitboard/telecomms/receiver
@@ -328,7 +328,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	desc = "A mighty piece of hardware used to send/receive massive amounts of data."
 	density = 1
 	anchored = 1
-	idle_power_usage = 1600
+	idle_power_usage = 1.600 KILO WATTS
 	machinetype = 7
 	circuitboard = /obj/item/circuitboard/telecomms/hub
 	long_range_link = 1
@@ -378,9 +378,9 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/relay/update_power()
 	..()
 	if(z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
-		change_power_consumption(2.5 KILOWATTS, POWER_USE_IDLE)
+		change_power_consumption(2.5 KILO WATTS, POWER_USE_IDLE)
 	else
-		change_power_consumption(100 KILOWATTS, POWER_USE_IDLE)
+		change_power_consumption(100 KILO WATTS, POWER_USE_IDLE)
 
 /obj/machinery/telecomms/relay/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
 
@@ -424,7 +424,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	desc = "A mighty piece of hardware used to send massive amounts of data quickly."
 	density = 1
 	anchored = 1
-	idle_power_usage = 1000
+	idle_power_usage = 1 KILO WATT
 	machinetype = 2
 	circuitboard = /obj/item/circuitboard/telecomms/bus
 	netspeed = 40
@@ -475,7 +475,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	desc = "This machine is used to process large quantities of information."
 	density = 1
 	anchored = 1
-	idle_power_usage = 600
+	idle_power_usage = 600 WATTS
 	machinetype = 3
 	delay = 5
 	circuitboard = /obj/item/circuitboard/telecomms/processor
@@ -512,7 +512,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	desc = "A machine used to store data and network statistics."
 	density = 1
 	anchored = 1
-	idle_power_usage = 300
+	idle_power_usage = 300 WATTS
 	machinetype = 4
 	circuitboard = /obj/item/circuitboard/telecomms/server
 	var/list/log_entries = list()

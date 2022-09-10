@@ -8,6 +8,7 @@
 // SS_TICKER
 #define SS_PRIORITY_ICON_UPDATE    20 // Queued icon updates. Mostly used by APCs and tables.
 #define SS_PRIORITY_CHAT           100
+#define SS_PRIORITY_THINK          90    // Datums thinking.
 
 // Normal
 #define SS_PRIORITY_TICKER         100   // Gameticker.

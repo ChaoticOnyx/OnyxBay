@@ -20,8 +20,8 @@
 	var/icon_state_closed = "emerg"
 
 	power_channel = STATIC_ENVIRON
-	idle_power_usage = 10
-	active_power_usage = 120 // No idea what the realistic amount would be.
+	idle_power_usage = 10 WATTS
+	active_power_usage = 120 WATTS // No idea what the realistic amount would be.
 
 /obj/machinery/oxygen_pump/New()
 	..()

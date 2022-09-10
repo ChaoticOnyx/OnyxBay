@@ -140,8 +140,8 @@
 
 	layer = ABOVE_HUMAN_LAYER // They were appearing under mobs which is a little weird - Ostaf
 	use_power = POWER_USE_OFF // It resets during initialization anyway, but using other options may cause some initially-unpowered areas to act silly.
-	idle_power_usage = 2
-	active_power_usage = 20
+	idle_power_usage = 2 WATTS
+	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off

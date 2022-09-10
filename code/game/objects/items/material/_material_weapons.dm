@@ -71,7 +71,7 @@
 			else
 				color = material.icon_colour
 		if(material.products_need_process())
-			START_PROCESSING(SSobj, src)
+			set_next_think(world.time)
 		if(material.conductive)
 			obj_flags |= OBJ_FLAG_CONDUCTIBLE
 		else
@@ -80,10 +80,6 @@
 			create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
 			reagents.add_reagent(material.reagent_path, material_amount * REAGENTS_PER_MATERIAL_SHEET)
 		update_force()
-
-/obj/item/material/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
 
 /obj/item/material/apply_hit_effect()
 	. = ..()

@@ -45,7 +45,6 @@
 			overlays += "tank_other"
 
 /obj/structure/gas_stand/Destroy()
-	STOP_PROCESSING(SSobj,src)
 	if(breather)
 		breather.internal = null
 		if(breather.internals)
@@ -77,7 +76,7 @@
 		attach_mask(target)
 		src.add_fingerprint(usr)
 		update_icon()
-		START_PROCESSING(SSobj,src)
+		set_next_think(world.time)
 
 /obj/structure/gas_stand/attack_hand(mob/user as mob)
 	if (tank && is_loosen)
@@ -109,7 +108,7 @@
 			valve_opened = TRUE
 			playsound(src, 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
-			START_PROCESSING(SSobj,src)
+			set_next_think(world.time)
 
 /obj/structure/gas_stand/proc/attach_mask(mob/living/carbon/C)
 	if(C && istype(C))
@@ -164,7 +163,7 @@
 			else
 				is_loosen = FALSE
 				if (valve_opened)
-					START_PROCESSING(SSobj,src)
+					set_next_think(world.time)
 			user.visible_message("<span class='notice'>\The [user] [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place.</span>", "<span class='notice'>You [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place.</span>")
 			return
 		else
@@ -195,7 +194,7 @@
 	else
 		. += "\n<span class='warning'>It is missing a tank!</span>"
 
-/obj/structure/gas_stand/Process()
+/obj/structure/gas_stand/think()
 	if(breather)
 		if(!can_apply_to_target(breather))
 			if(tank)
@@ -224,9 +223,11 @@
 		var/datum/gas_mixture/environment = loc.return_air()
 		environment.merge(removed)
 		if (tank.distribute_pressure == 0 && !breather)
-			return PROCESS_KILL
+			return
 	else
-		return PROCESS_KILL
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/gas_stand/anesthetic
 	icon_state = "gas_stand_idle"

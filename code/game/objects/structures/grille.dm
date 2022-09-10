@@ -205,7 +205,7 @@
 
 /obj/structure/grille/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(!destroyed)
-		if(exposed_temperature > T0C + 1500)
+		if(exposed_temperature > (1500 CELSIUS))
 			health -= 1
 			healthcheck()
 	..()

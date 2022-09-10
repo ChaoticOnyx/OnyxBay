@@ -20,28 +20,33 @@
 /obj/item/implant/death_alarm/islegal()
 	return TRUE
 
-/obj/item/implant/death_alarm/Process()
+/obj/item/implant/death_alarm/think()
 	if (!implanted) return
 	var/mob/M = imp_in
 
 	if(isnull(M)) // If the mob got gibbed
 		activate()
+		return
 	else if(M.stat == DEAD)
 		activate("death")
+		return
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/implant/death_alarm/activate(cause)
-	var/mob/M = imp_in
-	var/area/t = get_area(M)
-	var/location = t.name
+	var/location
 	if (cause == "emp" && prob(50))
 		location =  pick(playerlocs)
-	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
-		var/area/default = world.area
-		location = initial(default.name)
-	var/death_message = "A message from [name] has been received. [mobname] has died in [location]!"
-	if(!cause)
+	else
+		var/mob/M = imp_in
+		var/area/t = get_area(M)
+		location = t?.name
+	var/death_message
+	if(!cause || !location)
 		death_message = "A message from [name] has been received. [mobname] has died-zzzzt in-in-in..."
-	STOP_PROCESSING(SSobj, src)
+	else
+		death_message = "A message from [name] has been received. [mobname] has died in [location]!"
+	set_next_think(0)
 
 	for(var/channel in list("Security", "Medical", "Command"))
 		GLOB.global_headset.autosay(death_message, get_announcement_computer("[mobname]'s Death Alarm"), channel)
@@ -58,19 +63,19 @@
 			meltdown()
 		else if (prob(60))	//but more likely it will just quietly die
 			malfunction = MALFUNCTION_PERMANENT
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 
 	spawn(20)
 		malfunction = 0
 
 /obj/item/implant/death_alarm/implanted(mob/source as mob)
 	mobname = source.real_name
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	return TRUE
 
 /obj/item/implant/death_alarm/removed()
 	..()
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 
 /obj/item/implantcase/death_alarm
 	name = "glass case - 'death alarm'"

@@ -28,6 +28,7 @@
 	var/projectile_basketball = FALSE
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
+	var/preferable_engine = MAP_ENG_SINGULARITY
 
 /datum/configuration_section/misc/load_data(list/data)
 	CONFIG_LOAD_BOOL(ooc_allowed, data["ooc_allowed"])
@@ -57,3 +58,7 @@
 	CONFIG_LOAD_BOOL(projectile_basketball, data["projectile_basketball"])
 	CONFIG_LOAD_NUM(fun_hydroponics, data["fun_hydroponics"])
 	CONFIG_LOAD_BOOL(forbid_singulo_following, data["forbid_singulo_following"])
+	CONFIG_LOAD_STR(preferable_engine, data["preferable_engine"])
+
+	if(!(preferable_engine in list(MAP_ENG_RANDOM, MAP_ENG_SINGULARITY, MAP_ENG_MATTER)))
+		preferable_engine = MAP_ENG_SINGULARITY

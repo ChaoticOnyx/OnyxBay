@@ -13,8 +13,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 	var/obj/item/loaded_item = null
 	var/decon_mod = 0
 
-	idle_power_usage = 30
-	active_power_usage = 2500
+	idle_power_usage = 30 WATTS
+	active_power_usage = 2.500 KILO WATTS
 
 /obj/machinery/r_n_d/destructive_analyzer/Initialize()
 	. = ..()

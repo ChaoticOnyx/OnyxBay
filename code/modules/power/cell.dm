@@ -12,7 +12,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	var/c_uid			 // Unique ID
 	var/charge			 // Current charge
-	var/maxcharge = 1000 // Capacity in Wh
+	var/maxcharge = 250 // Capacity in Wh
 	var/overlay_state
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
 
@@ -66,7 +66,7 @@
 // use power from a cell, returns the amount actually used
 /obj/item/cell/proc/use(amount)
 	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
-		crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
+		util_crash_with("Cell ([src], [c_uid]) called use() with negative amount ([amount]).")
 		return 0
 	var/used = min(charge, amount)
 	charge -= used
@@ -83,7 +83,7 @@
 
 /obj/item/cell/proc/give(amount)
 	if(amount < 0) // I can not trust these fuckers to do this properly and actually check what they pass.
-		crash_with("Power cell ([src], [c_uid]) called give() with negative amount ([amount]).")
+		util_crash_with("Power cell ([src], [c_uid]) called give() with negative amount ([amount]).")
 		return 0
 	if(maxcharge == charge)
 		return 0
@@ -173,7 +173,6 @@
 	name = "standard power cell"
 	desc = "A standard and relatively cheap power cell, commonly used."
 	origin_tech = list(TECH_POWER = 0)
-	maxcharge = 250
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 40)
 
 /obj/item/cell/standard/empty

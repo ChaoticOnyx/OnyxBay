@@ -89,6 +89,7 @@
 		/decl/emote/audible/grunt,
 		/decl/emote/human,
 		/decl/emote/human/deathgasp,
+		/decl/emote/human/dance,
 		/decl/emote/audible/giggle,
 		/decl/emote/audible/scream,
 		/decl/emote/audible/long_scream,

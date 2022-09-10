@@ -6,7 +6,7 @@
 	randpixel = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT | SLOT_EARS
-	throwforce = 1
+	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 
 	var/leaves_residue = 1
