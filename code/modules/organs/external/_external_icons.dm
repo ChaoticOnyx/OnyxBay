@@ -99,6 +99,10 @@ var/list/limb_icon_cache = list()
 
 		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
+		if(owner?.mind?.special_role == "Zombie")
+			var/fatness = body_build == "_fat"
+			icon_state = "[icon_name][fatness ? "_m" : gender][body_build][stump_icon]_z"
+
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
 				icon_state += species.base_skin_colours[s_base]
@@ -221,4 +225,3 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
 	return applying
-

@@ -310,7 +310,7 @@ var/global/list/damage_icon_parts = list()
 		else
 			icon_key += "1"
 
-	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0]"
+	icon_key = "[icon_key][husk ? 1 : 0][fat ? 1 : 0][hulk ? 1 : 0][skeleton ? 1 : 0][mind?.special_role == "Zombie" ? 1 : 0]"
 
 	var/icon/base_icon
 	if(human_icon_cache[icon_key])

@@ -308,12 +308,15 @@
 
 //This is barely a transformation but probably best file for it.
 /mob/living/carbon/human/proc/zombify()
-	ChangeToHusk()
+	RemoveHairAndFacials()
+	for(var/obj/item/organ/external/head/h in organs)
+		h.status |= ORGAN_DISFIGURED
 	mutations |= MUTATION_CLUMSY
 	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
 	if (!src.mind || (src.mind && src.mind.special_role == "Zombie"))
 		return
 	src.mind.special_role = "Zombie"
+	update_body(TRUE)
 	log_admin("[key_name(src)] has transformed into a zombie!")
 	Weaken(5)
 	if (should_have_organ(BP_HEART))
