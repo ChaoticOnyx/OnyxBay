@@ -108,7 +108,7 @@
 			  /mob/living/simple_animal/parrot/proc/perch_player)
 
 /mob/living/simple_animal/parrot/Destroy()
-	src.drop_held_item()
+	drop_held_item()
 	QDEL_NULL(ears)
 	QDEL_NULL(held_item)
 	set_interest(null)
