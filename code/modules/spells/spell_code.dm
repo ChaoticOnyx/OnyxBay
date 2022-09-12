@@ -256,6 +256,10 @@
 		if(!user.wearing_wiz_garb())
 			return FALSE
 
+	if(istype(user.loc, /obj/effect/dummy/spell_jaunt))
+		to_chat(user, SPAN_WARNING("You cannot cast spells in this form"))
+		return FALSE
+
 	return TRUE
 
 /datum/spell/proc/check_charge(skipcharge, mob/user)

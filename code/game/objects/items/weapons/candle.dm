@@ -12,7 +12,7 @@
 	var/wax
 
 /obj/item/flame/candle/New()
-	wax = rand(27 MINUTES, 33 MINUTES) / SSobj.wait // Enough for 27-33 minutes. 30 minutes on average, adjusted for subsystem tickrate.
+	wax = rand(27 MINUTES, 33 MINUTES) // Enough for 27-33 minutes. 30 minutes on average.
 	..()
 
 /obj/item/flame/candle/update_icon()
@@ -40,19 +40,23 @@
 		lit = TRUE
 		visible_message(SPAN("notice", "\The [user] lights the [name]."))
 		set_light(0.3, 0.25, 2.0, 4.0)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 
-/obj/item/flame/candle/Process()
+/obj/item/flame/candle/think()
 	if(!lit)
 		return
 	wax--
 	if(!wax)
 		new /obj/item/trash/candle(src.loc)
 		qdel(src)
+		return
+
 	update_icon()
 	if(istype(loc, /turf)) //start a fire if possible
 		var/turf/T = loc
 		T.hotspot_expose(700, 5)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/flame/candle/attack_self(mob/user as mob)
 	if(lit)

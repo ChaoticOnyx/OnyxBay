@@ -6,8 +6,8 @@
 	var/id = null
 	var/on = 0
 	anchored = 1
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 	var/_wifi_id
 	var/datum/wifi/receiver/button/igniter/wifi_receiver
 
@@ -62,8 +62,8 @@
 	var/last_spark = 0
 	var/base_state = "migniter"
 	anchored = 1
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 	var/_wifi_id
 	var/datum/wifi/receiver/button/sparker/wifi_receiver
 

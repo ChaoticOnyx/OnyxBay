@@ -24,23 +24,22 @@
 	var/able_to_overheat = TRUE							       // Changes whether it should or should not overheat.
 
 	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
-	var/power_per_tick                                         // Capacitor charge per process(). Updated based on capacitor rating.
+	var/power_per_tick                                         // Capacitor charge per think(). Updated based on capacitor rating.
 
 /obj/item/gun/magnetic/Initialize()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	if(capacitor)
 		power_per_tick = (power_cost*0.15) * capacitor.rating
 	update_icon()
 	. = ..()
 
 /obj/item/gun/magnetic/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(cell)
 	QDEL_NULL(loaded)
 	QDEL_NULL(capacitor)
 	. = ..()
 
-/obj/item/gun/magnetic/Process()
+/obj/item/gun/magnetic/think()
 	if(capacitor)
 		if(cell)
 			if(capacitor.charge < capacitor.max_charge && cell.checked_use(power_per_tick))
@@ -50,6 +49,8 @@
 	update_icon()
 	if(able_to_overheat && heat_level > 0)
 		heat_level--
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/gun/magnetic/update_icon()
 	var/list/overlays_to_add = list()

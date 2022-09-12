@@ -298,14 +298,16 @@
 	else
 		icon_state = "[initial(icon_state)][fuel ? "" : "-empty"]"
 
-/obj/item/device/flashlight/flare/Process()
+/obj/item/device/flashlight/flare/think()
 	var/turf/pos = get_turf(src)
 	if(pos)
 		pos.hotspot_expose(produce_heat, 5)
 	fuel = max(fuel - 1, 0)
 	if(!fuel || !on)
 		turn_off()
-		STOP_PROCESSING(SSobj, src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
 	force = initial(src.force)
@@ -325,7 +327,7 @@
 		return FALSE
 	force = on_damage
 	damtype = "fire"
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	switch_light(TRUE)
 	return 1
 
@@ -352,16 +354,14 @@
 	brightness_color = color
 	..()
 
-/obj/item/device/flashlight/glowstick/Destroy()
-	. = ..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/device/flashlight/glowstick/Process()
+/obj/item/device/flashlight/glowstick/think()
 	fuel = max(fuel - 1, 0)
 	if(!fuel)
 		turn_off()
-		STOP_PROCESSING(SSobj, src)
 		update_icon()
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/flashlight/glowstick/proc/turn_off()
 	on = 0
@@ -400,7 +400,7 @@
 	. = ..()
 	if(.)
 		user.visible_message("<span class='notice'>[user] cracks and shakes the glowstick.</span>", "<span class='notice'>You crack and shake the glowstick, turning it on!</span>")
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 
 /obj/item/device/flashlight/glowstick/red
 	name = "red glowstick"

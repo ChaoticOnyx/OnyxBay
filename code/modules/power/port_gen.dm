@@ -196,7 +196,7 @@
 	*/
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		var/outer_temp = 0.1 * temperature + T0C
+		var/outer_temp = CONV_CELSIUS_KELVIN(0.1 * temperature)
 		if(outer_temp > environment.temperature) //sharing the heat
 			var/heat_transfer = environment.get_thermal_energy_change(outer_temp)
 			if(heat_transfer > 1)
@@ -205,7 +205,7 @@
 				environment.add_thermal_energy(heat_transfer)
 
 		var/ratio = min(environment.return_pressure()/ONE_ATMOSPHERE, 1)
-		var/ambient = environment.temperature - T20C
+		var/ambient = environment.temperature - (20 CELSIUS)
 		lower_limit += ambient*ratio
 		upper_limit += ambient*ratio
 
@@ -225,7 +225,7 @@
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
 		var/ratio = min(environment.return_pressure()/ONE_ATMOSPHERE, 1)
-		var/ambient = environment.temperature - T20C
+		var/ambient = environment.temperature - (20 CELSIUS)
 		cooling_temperature += ambient*ratio
 
 	if (temperature > cooling_temperature)
@@ -249,7 +249,7 @@
 	var/plasma = (sheets+sheet_left)*20
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		environment.adjust_gas_temp("plasma", plasma/10, temperature + T0C)
+		environment.adjust_gas_temp("plasma", plasma/10, CONV_CELSIUS_KELVIN(temperature))
 
 	sheets = 0
 	sheet_left = 0
@@ -419,7 +419,8 @@
 /obj/machinery/power/port_gen/pacman/super/UseFuel()
 	//produces a tiny amount of radiation when in use
 	if (prob(rad_power*power_output))
-		SSradiation.radiate(src, 2*rad_power)
+		var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(2 * rad_power))
+		rad_source.schedule_decay(5 SECONDS)
 	..()
 
 /obj/machinery/power/port_gen/pacman/super/update_icon()
@@ -440,7 +441,8 @@
 /obj/machinery/power/port_gen/pacman/super/explode()
 	//a nice burst of radiation
 	var/rads = rad_power*25 + (sheets + sheet_left)*1.5
-	SSradiation.radiate(src, (max(20, rads)))
+	var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(rads))
+	rad_source.schedule_decay(5 MINUTES)
 
 	explosion(src.loc, rad_power+1, rad_power+1, rad_power*2, 3)
 	qdel(src)

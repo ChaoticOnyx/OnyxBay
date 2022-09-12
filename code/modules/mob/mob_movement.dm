@@ -61,6 +61,8 @@
 	to_chat(usr, "<span class='warning'>This mob type cannot drop items.</span>")
 
 /mob/living/carbon/hotkey_drop()
+	if(!can_use_hands)
+		return
 	var/obj/item/I = get_active_hand()
 	if(!I)
 		to_chat(usr, SPAN("warning", "You have nothing to drop in your hand."))

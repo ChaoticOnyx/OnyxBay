@@ -26,15 +26,12 @@
 			G.delete_self()
 	else ..()
 
-/obj/structure/deity/altar/Process()
-	if(!target || world.time < next_cycle)
-		return
+/obj/structure/deity/altar/think()
 	if(!linked_god || target.stat)
 		to_chat(linked_god, "<span class='warning'>\The [target] has lost consciousness, breaking \the [src]'s hold on their mind!</span>")
 		remove_target()
 		return
 
-	next_cycle = world.time + 10 SECONDS
 	cycles_before_converted--
 	if(!cycles_before_converted)
 		src.visible_message("For one thundering moment, \the [target] cries out in pain before going limp and broken.")
@@ -53,14 +50,14 @@
 			text = "Can't... resist. ... anymore."
 			to_chat(linked_god, "<span class='warning'>\The [target] is getting close to conversion!</span>")
 	to_chat(target, "<span class='cult'>[text]. <a href='?src=\ref[src];resist=\ref[target]'>Resist Conversion</a></span>")
-
+	set_next_think(world.time + 10 SECONDS)
 
 //Used for force conversion.
 /obj/structure/deity/altar/proc/set_target(mob/living/L)
 	if(target || !linked_god)
 		return
 	cycles_before_converted = initial(cycles_before_converted)
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECOND)
 	target = L
 	update_icon()
 	register_signal(L, SIGNAL_QDELETING, /obj/structure/deity/altar/proc/remove_target)
@@ -68,7 +65,7 @@
 	register_signal(L, SIGNAL_MOB_DEATH, /obj/structure/deity/altar/proc/remove_target)
 
 /obj/structure/deity/altar/proc/remove_target()
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	unregister_signal(target, SIGNAL_QDELETING)
 	unregister_signal(target, SIGNAL_MOVED)
 	unregister_signal(target, SIGNAL_MOB_DEATH)

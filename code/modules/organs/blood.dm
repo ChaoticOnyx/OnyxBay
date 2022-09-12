@@ -271,7 +271,15 @@
 
 //Percentage of maximum blood volume.
 /mob/living/carbon/human/proc/get_blood_volume()
+	if (isfakeliving(src))
+		return 100
 	return round((vessel.get_reagent_amount(/datum/reagent/blood)/species.blood_volume)*100)
+
+//Amount of blood in bloodsystem
+/mob/living/carbon/human/proc/get_blood_volume_abs()
+	if (isfakeliving(src))
+		return species.blood_volume
+	return vessel.get_reagent_amount(/datum/reagent/blood)
 
 //Percentage of maximum blood volume, affected by the condition of circulation organs
 /mob/living/carbon/human/proc/get_blood_circulation()

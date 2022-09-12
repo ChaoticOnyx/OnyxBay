@@ -21,3 +21,11 @@
 		ZTRAIT_CONTACT,
 		ZTRAIT_SEALED
 	)
+
+/datum/space_level/example_4
+	path = 'example-4.dmm'
+	traits = list(
+		ZTRAIT_CENTCOM,
+		ZTRAIT_CONTACT,
+		ZTRAIT_SEALED
+	)

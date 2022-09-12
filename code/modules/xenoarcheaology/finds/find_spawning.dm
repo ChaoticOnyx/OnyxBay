@@ -258,8 +258,9 @@
 /obj/item/archaeological_find/tank/spawn_item()
 	item_type = "[pick("cylinder","tank","chamber")]"
 	var/obj/item/tank/new_item = new /obj/item/tank(loc)
-	new_item.air_contents.gas.Cut()
-	new_item.air_contents.adjust_gas(pick(gas_data.gases),15)
+	var/datum/gas_mixture/M = new_item.return_air()
+	M.gas.Cut()
+	M.adjust_gas(pick(gas_data.gases),15)
 	additional_desc = "It [pick("gloops","sloshes")] slightly when you shake it."
 	return new_item
 
@@ -315,6 +316,8 @@
 	var/obj/item/new_item
 	if(prob(25))
 		new_item = new /obj/item/device/soulstone(loc)
+		item_type = "soul stone shard"
+		return new_item
 	else
 		new_item = new(loc)
 	apply_image_decorations = 1
@@ -330,6 +333,7 @@
 	else
 		item_type = "rough red crystal"
 		new_item.icon_state = "changerock"
+	return new_item
 
 /obj/item/archaeological_find/blade
 	item_type = "blade"

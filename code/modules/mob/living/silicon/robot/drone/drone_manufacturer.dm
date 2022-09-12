@@ -12,8 +12,8 @@
 
 	density = 1
 	anchored = 1
-	idle_power_usage = 20
-	active_power_usage = 5000
+	idle_power_usage = 20 WATTS
+	active_power_usage = 5 KILO WATTS
 
 	var/fabricator_tag = "Exodus"
 	var/drone_progress = 0

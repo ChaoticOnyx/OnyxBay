@@ -21,12 +21,12 @@
 	on = !on
 	if(on)
 		set_light(0.5, 0.1, range, 2, "#007fff")
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 		icon_state = "uv_on"
 	else
 		set_light(0)
 		clear_last_scan()
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		icon_state = "uv_off"
 
 /obj/item/device/uv_light/proc/clear_last_scan()
@@ -46,25 +46,26 @@
 			if(I.fluorescent == 2) I.fluorescent = 1
 		reset_objects.Cut()
 
-/obj/item/device/uv_light/Process()
+/obj/item/device/uv_light/think()
 	clear_last_scan()
-	if(on)
-		step_alpha = round(255/range)
-		var/turf/origin = get_turf(src)
-		if(!origin)
-			return
-		for(var/turf/T in range(range, origin))
-			var/use_alpha = 255 - (step_alpha * get_dist(origin, T))
-			for(var/atom/A in T.contents)
-				if(A.fluorescent == 1)
-					A.fluorescent = 2 //To prevent light crosstalk.
-					if(A.invisibility)
-						scanned[A] = A.invisibility
-						A.set_invisibility(0)
-						stored_alpha[A] = A.alpha
-						A.alpha = use_alpha
-					if(istype(A, /obj/item))
-						var/obj/item/O = A
-						if(O.was_bloodied && !(O.blood_overlay in O.overlays))
-							O.overlays |= O.blood_overlay
-							reset_objects |= O
+	step_alpha = round(255/range)
+	var/turf/origin = get_turf(src)
+	if(!origin)
+		return
+	for(var/turf/T in range(range, origin))
+		var/use_alpha = 255 - (step_alpha * get_dist(origin, T))
+		for(var/atom/A in T.contents)
+			if(A.fluorescent == 1)
+				A.fluorescent = 2 //To prevent light crosstalk.
+				if(A.invisibility)
+					scanned[A] = A.invisibility
+					A.set_invisibility(0)
+					stored_alpha[A] = A.alpha
+					A.alpha = use_alpha
+				if(istype(A, /obj/item))
+					var/obj/item/O = A
+					if(O.was_bloodied && !(O.blood_overlay in O.overlays))
+						O.overlays |= O.blood_overlay
+						reset_objects |= O
+
+	set_next_think(world.time + 1 SECOND)

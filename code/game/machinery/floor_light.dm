@@ -8,8 +8,8 @@ var/list/floor_light_cache = list()
 	layer = ABOVE_TILE_LAYER
 	anchored = 0
 	use_power = POWER_USE_ACTIVE
-	idle_power_usage = 2
-	active_power_usage = 20
+	idle_power_usage = 2 WATTS
+	active_power_usage = 20 WATTS
 	power_channel = STATIC_LIGHT
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 

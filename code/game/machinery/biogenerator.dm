@@ -12,7 +12,7 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 40
+	idle_power_usage = 40 WATTS
 	var/processing = 0
 	var/obj/item/reagent_containers/vessel/beaker = null
 	var/points = 0

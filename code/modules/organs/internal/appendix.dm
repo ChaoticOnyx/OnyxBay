@@ -11,9 +11,11 @@
 		icon_state = "appendix-inflamed"
 		SetName("inflamed appendix")
 
-/obj/item/organ/internal/appendix/Process()
+/obj/item/organ/internal/appendix/think()
 	..()
-	if(inflamed && owner)
+	if(!owner)
+		return
+	if(!isundead(owner) && inflamed)
 		inflamed++
 		if(prob(5))
 			if(owner.can_feel_pain())

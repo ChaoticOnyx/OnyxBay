@@ -7,7 +7,7 @@
 	category_text = "Reagent"
 	unacidable = 1
 	cooldown_per_use = 10
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	var/volume = 0
 
 /obj/item/integrated_circuit/reagent/Initialize()

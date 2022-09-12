@@ -422,8 +422,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 
 	var/turf/t = get_turf(src)
 	if(t)
-		var/rads = SSradiation.get_rads_at_turf(t)
-		to_chat(src, "<span class='notice'>Radiation level: [rads ? rads : "0"] Bq.</span>")
+		var/dose = SSradiation.get_total_absorbed_dose_at_turf(t, AVERAGE_HUMAN_WEIGHT)
+		to_chat(src, SPAN("notice", "Radiation: [fmt_siunit(dose, "Gy/s", 3)]."))
 
 /mob/observer/ghost/verb/view_manfiest()
 	set name = "Show Crew Manifest"

@@ -162,22 +162,26 @@
 				set_method(method)
 				. = TRUE
 
-/obj/item/device/suit_sensor_jammer/Process(wait)
+/obj/item/device/suit_sensor_jammer/think(wait)
 	if(bcell)
 		// With a range of 2 and jammer cost of 3 the default (high capacity) cell will last for almost 14 minutes, give or take
 		// 10000 / (2^2 * 3 / 10) ~= 8333 ticks ~= 13.8 minutes
 		var/deduction = JAMMER_POWER_CONSUMPTION(wait)
 		if(!bcell.use(deduction))
 			disable()
+			return
 	else
 		disable()
+		return
+
 	update_icon()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/suit_sensor_jammer/proc/enable()
 	if(active)
 		return FALSE
 	active = TRUE
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	jammer_method.enable()
 	update_icon()
 	return TRUE
@@ -187,7 +191,7 @@
 		return FALSE
 	active = FALSE
 	jammer_method.disable()
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	update_icon()
 	return TRUE
 

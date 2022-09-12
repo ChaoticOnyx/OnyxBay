@@ -8,19 +8,23 @@
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.10
 	permeability_coefficient = 0.50
-	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 25, rad = 0)
+	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 25)
 	down_gas_transfer_coefficient = 1
 	down_item_flags = ITEM_FLAG_THICKMATERIAL
 	down_icon_state = "breathdown"
 	pull_mask = 1
-
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 16.8 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.6 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 /obj/item/clothing/mask/breath/medical
 	desc = "A close-fitting sterile mask that can be manually connected to an air supply for treatment."
 	name = "medical mask"
 	icon_state = "medical"
 	item_state = "medical"
 	permeability_coefficient = 0.01
-	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35, rad = 0)
+	armor = list(melee = 5, bullet = 3, laser = 3, energy = 0, bomb = 0, bio = 35)
 
 /obj/item/clothing/mask/breath/anesthetic
 	desc = "A close-fitting sterile mask that is used by the anesthetic wallmounted pump."

@@ -19,9 +19,8 @@
 	var/atom/movable/overlay/animation
 	var/start_reappear_timer
 
-
-/datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user)
-	for(var/mob/living/target in targets)
+/datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
+	for(var/mob/living/carbon/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target in jaunt_holder?.contents)
@@ -47,25 +46,27 @@
 			if(target.buckled)
 				target.buckled.unbuckle_mob()
 			jaunt_disappear(animation, target)
+			target.can_use_hands = FALSE
 			jaunt_steam(mobloc)
 			target.forceMove(jaunt_holder)
 			start_reappear_timer = addtimer(CALLBACK(src, .proc/start_reappear, target), duration, TIMER_STOPPABLE)
 
-/datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/user)
+/datum/spell/targeted/ethereal_jaunt/proc/start_reappear(mob/living/carbon/target)
 	var/mob_loc = jaunt_holder.last_valid_turf
 	jaunt_holder.reappearing = TRUE
 	jaunt_steam(mob_loc)
-	jaunt_reappear(animation, user)
+	jaunt_reappear(animation, target)
 	animation.forceMove(mob_loc)
-	addtimer(CALLBACK(src, .proc/reappear, mob_loc, user), reappear_duration)
+	addtimer(CALLBACK(src, .proc/reappear, mob_loc, target), reappear_duration)
 
-/datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/user)
-	if(!user.forceMove(mob_loc))
+/datum/spell/targeted/ethereal_jaunt/proc/reappear(mob_loc, mob/living/carbon/target)
+	if(!target.forceMove(mob_loc))
 		for(var/direction in list(1,2,4,8,5,6,9,10))
 			var/turf/T = get_step(mob_loc, direction)
-			if(T && user.forceMove(T))
+			if(T && target.forceMove(T))
 				break
-	user.client.eye = user
+	target.client.eye = target
+	target.can_use_hands = TRUE
 	QDEL_NULL(animation)
 	QDEL_NULL(jaunt_holder)
 
