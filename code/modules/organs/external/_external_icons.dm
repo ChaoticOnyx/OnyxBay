@@ -97,11 +97,7 @@ var/list/limb_icon_cache = list()
 		if(is_stump())
 			stump_icon = "_s"
 
-		icon_state = "[icon_name][gender][body_build][stump_icon]"
-
-		if(owner?.mind?.special_role == "Zombie")
-			var/fatness = body_build == "_fat" && (limb_flags & ORGAN_FLAG_GENDERED_ICON)
-			icon_state = "[icon_name][fatness ? "_m" : gender][body_build][stump_icon]_z"
+		icon_state = "[icon_name][gender][body_build][stump_icon][owner?.mind?.special_role == "Zombie" ? "_z" : ""]"
 
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
