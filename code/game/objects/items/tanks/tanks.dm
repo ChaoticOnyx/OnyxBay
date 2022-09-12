@@ -22,6 +22,7 @@ var/list/global/tank_gauge_cache = list()
 	mod_reach = 0.75
 	mod_handy = 0.5
 
+	/// DO NOT CHANGE IT DIRECTLY. USE `return_air()`!!!
 	var/datum/gas_mixture/air_contents = null
 	var/distribute_pressure = ONE_ATMOSPHERE
 	var/integrity = 20
