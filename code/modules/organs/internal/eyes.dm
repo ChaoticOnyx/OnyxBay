@@ -53,6 +53,8 @@
 		owner.g_eyes ? owner.g_eyes : 0,
 		owner.b_eyes ? owner.b_eyes : 0
 		)
+	if(target?.mind?.special_role == "Zombie")
+		eye_colour = list(220,220,220)
 
 /obj/item/organ/internal/eyes/take_internal_damage(amount, silent=0)
 	var/oldbroken = is_broken()
