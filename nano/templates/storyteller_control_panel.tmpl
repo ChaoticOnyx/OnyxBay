@@ -10,6 +10,9 @@
     {{if data.current_tab == "StorytellerCPCharacterTab"}}
         {{if data.storyteller.character}}
             <span class='itemLabelWidest'>Current Storyteller Character: </span> <b>{{:data.storyteller.character.name}}</b><br>
+			<b>Aggression:</b> {{:data.storyteller.character.aggression_ratio}}%<br>
+			<b>Events Rarity:</b> {{:data.storyteller.character.rarity_ratio}}%<br>
+			<b>Events Quantity:</b> {{:data.storyteller.character.quantity_ratio}}%<br>
             <i>{{:data.storyteller.character.description}}</i>
         {{else}}
             There is no storyteller yet!

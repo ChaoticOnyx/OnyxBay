@@ -13,7 +13,8 @@
 			id = "option_moderate";
 			name = "Moderate Level";
 			description = "";
-			weight = 2;
+			weight = 80;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			severity = EVENT_LEVEL_MODERATE;
 			event_id = "meteor_wave";
 		},
@@ -21,7 +22,8 @@
 			id = "option_major";
 			name = "Major Level";
 			description = "";
-			weight = 1;
+			weight = 20;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			severity = EVENT_LEVEL_MAJOR;
 			event_id = "meteor_wave";
 		}
@@ -48,6 +50,7 @@
 	id = "meteor_wave"
 	name = "Meteor Wave"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 	var/severity = EVENT_LEVEL_MODERATE

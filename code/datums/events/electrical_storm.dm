@@ -8,7 +8,8 @@
 		/datum/event_option/electrical_storm_option {
 			id = "option_mundane";
 			name = "Mundane Level";
-			weight = 3;
+			weight = 75;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			event_id = "electrical_storm";
 			description = "An electric storm won't be anything unusual";
 			severity = EVENT_LEVEL_MUNDANE;
@@ -16,7 +17,8 @@
 		/datum/event_option/electrical_storm_option {
 			id = "option_moderate";
 			name = "Moderate Level";
-			weight = 2;
+			weight = 15;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "electrical_storm";
 			description = "This storm is clearly not going to be ordinary";
 			severity = EVENT_LEVEL_MODERATE;
@@ -24,7 +26,8 @@
 		/datum/event_option/electrical_storm_option {
 			id = "option_major";
 			name = "Major Level";
-			weight = 1;
+			weight = 10;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "electrical_storm";
 			description = "The crew will have a hard time";
 			severity = EVENT_LEVEL_MAJOR;
@@ -56,6 +59,8 @@
 /datum/event/electrical_storm
 	id = "electrical_storm"
 	name = "Electrical Storm"
+
+	hide = TRUE
 	triggered_only = TRUE
 
 	var/severity = 0

@@ -20,6 +20,7 @@ var/list/admin_datums = list()
 	// UI stuff
 	var/datum/follow_panel/follow_panel = new()
 	var/datum/events_panel/events_panel = new()
+	var/list/events_windows = list()
 
 /datum/admins/proc/marked_datum()
 	if(marked_datum_weak)

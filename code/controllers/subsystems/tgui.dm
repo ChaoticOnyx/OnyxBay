@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(tgui)
 	if(isnull(ui))
 		ui = get_open_ui(user, src_object)
 	// Couldn't find a UI.
-	if(isnull(ui))
+	if(QDELETED(ui))
 		return null
 	ui._process_status()
 	// UI ended up with the closed status

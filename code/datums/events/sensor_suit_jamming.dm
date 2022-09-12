@@ -10,7 +10,8 @@
 		/datum/event_option/sensor_suit_jamming_option {
 			id = "option_mundande";
 			name = "Mundane Level";
-			weight = 3;
+			weight = 75;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			event_id = "sensor_suit_jamming";
 			description = "";
 			severity = EVENT_LEVEL_MUNDANE;
@@ -18,7 +19,8 @@
 		/datum/event_option/sensor_suit_jamming_option {
 			id = "option_moderate";
 			name = "Moderate Level";
-			weight = 2;
+			weight = 15;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "sensor_suit_jamming";
 			description = "";
 			severity = EVENT_LEVEL_MODERATE;
@@ -26,7 +28,8 @@
 		/datum/event_option/sensor_suit_jamming_option {
 			id = "option_major";
 			name = "Major Level";
-			weight = 1;
+			weight = 10;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "sensor_suit_jamming";
 			description = "";
 			severity = EVENT_LEVEL_MAJOR;
@@ -50,6 +53,7 @@
 	id = "sensor_suit_jamming"
 	name = "Sensor Suit Jamming"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 	var/suit_sensor_jammer_method/jamming_method

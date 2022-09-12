@@ -1,7 +1,4 @@
 /datum/controller/subsystem/storyteller/proc/report_wound(mob/victim, type, severity)
-	if(!config.game.storyteller)
-		return
-
 	ASSERT(istype(victim)) 	     // not used yet, keep for the future
 	ASSERT(istext(type) && type) // not used yet, keep for the future
 	ASSERT(isnum(severity) && severity)

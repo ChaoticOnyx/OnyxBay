@@ -12,6 +12,7 @@
 	var/triggered_only = FALSE
 	var/fire_only_once = FALSE
 	var/list/options = list()
+	var/hide = FALSE
 
 	var/list/blacklisted_maps = list()
 
@@ -44,10 +45,10 @@
 	if(time == 0)
 		return 0
 
-	return (1 - 2 ** (-_mtth_passed / time)) * 100
+	return (1 - 2 ** (-_mtth_passed / time))
 
 /datum/event/proc/get_mtth()
-	return mtth
+	return mtth * abs(SSstoryteller.character.rarity_ratio - 1)
 
 /datum/event/proc/check_conditions()
 	return TRUE
@@ -65,6 +66,15 @@
 	log_and_message_admins("AI choosed the option '[O.name]' ([O.id]) for the event '[name]' ([id])")
 	_waiting_option = 0
 	O.choose()
+
+/datum/event/proc/notify_admins()
+	for(var/client/C in GLOB.admins)
+		var/mob/M = C.mob
+
+		if(!C.holder || !M.has_admin_rights() || C.get_preference_value(/datum/client_preference/staff/show_events) != GLOB.PREF_SHOW)
+			continue
+
+		new /datum/event_window(C.holder, src)
 
 /datum/event/proc/fire()
 	if(_mtth_passed)
@@ -84,6 +94,9 @@
 		_waiting_option = world.time + 2 MINUTES
 	else
 		after_fire()
+
+	if(!hide)
+		notify_admins()
 
 /datum/event/proc/after_fire()
 	log_debug("After fire event '[name]' ([id])")

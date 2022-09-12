@@ -260,9 +260,6 @@ auto_map_vote = false
 ## Set to true to give assistants maint access.
 assistant_maint = false
 
-## Set to true to enable storyteller subsystem.
-storyteller = false
-
 ## Set to true to make rounds which end instantly (Rev, Wizard, Malf) to continue until the shuttle is called or the station is nuked.
 ## Malf and Rev will let the shuttle be called when the antags/protags are dead.
 continuous_rounds = false

@@ -9,7 +9,8 @@
 		/datum/event_option/space_dust_option {
 			id = "option_mundande";
 			name = "Mundane Level";
-			weight = 2;
+			weight = 80;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			event_id = "space_dust";
 			description = "The station will face some difficulties";
 			severity = EVENT_LEVEL_MUNDANE;
@@ -17,7 +18,8 @@
 		/datum/event_option/space_dust_option {
 			id = "option_moderate";
 			name = "Moderate Level";
-			weight = 1;
+			weight = 20;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "space_dust";
 			description = "Damage to the hull is guaranteed...";
 			severity = EVENT_LEVEL_MODERATE;
@@ -45,6 +47,8 @@
 
 /datum/event/space_dust
 	id = "space_dust"
+
+	hide = TRUE
 	triggered_only = TRUE
 
 	var/list/affecting_z = list()

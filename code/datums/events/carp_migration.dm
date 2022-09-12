@@ -11,7 +11,8 @@
 			id = "option_mundane";
 			name = "Mundane Level";
 			description = "1 to 6 carp";
-			weight = 3;
+			weight = 75;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			event_id = "carp_migration";
 			severity = EVENT_LEVEL_MUNDANE;
 		},
@@ -19,7 +20,8 @@
 			id = "option_moderate";
 			name = "Moderate Level";
 			description = "12 to 30 carp";
-			weight = 2;
+			weight = 15;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "carp_migration";
 			severity = EVENT_LEVEL_MODERATE;
 		},
@@ -27,7 +29,8 @@
 			id = "option_major";
 			name = "Major Level";
 			description = "There will be no peaceful solution";
-			weight = 1;
+			weight = 10;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "carp_migration";
 			severity = EVENT_LEVEL_MAJOR;
 		}
@@ -54,6 +57,7 @@
 	id = "carp_migration"
 	name = "Carp Migration"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 	var/severity = EVENT_LEVEL_MUNDANE

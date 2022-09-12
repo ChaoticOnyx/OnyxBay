@@ -5,6 +5,7 @@
 	var/description = "OPTION_DESCRIPTION"
 	var/weight = 0
 	var/event_id = null
+	var/weight_ratio = EVENT_OPTION_NORMAL
 
 /datum/event_option/New()
 	ASSERT(id != null)
@@ -34,4 +35,10 @@
 	return
 
 /datum/event_option/proc/get_weight()
-	return weight
+	switch(weight_ratio)
+		if(EVENT_OPTION_NORMAL)
+			return weight
+		if(EVENT_OPTION_AI_AGGRESSION)
+			return weight + (weight * SSstoryteller.character.aggression_ratio)
+		if(EVENT_OPTION_AI_AGGRESSION_R)
+			return weight - (weight * SSstoryteller.character.aggression_ratio)

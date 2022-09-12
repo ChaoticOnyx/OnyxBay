@@ -3,8 +3,8 @@
 	name = "Biohazard Outbreak"
 	description = "A blob appears at a random place at the station"
 
-	fire_only_once = TRUE
 	mtth = 3 HOURS
+	fire_only_once = TRUE
 
 /datum/event/biohazard_outbreak/get_mtth()
 	. = ..()

@@ -58,7 +58,7 @@ SUBSYSTEM_DEF(events)
 				E.fire()
 		else
 			if(event_fired)
-				E._mtth_passed -= (E._mtth_passed * 0.15)
+				E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
 				E._mtth_passed = max(0, E._mtth_passed)
 			else
 				E._mtth_passed += wait

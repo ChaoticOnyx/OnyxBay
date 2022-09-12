@@ -84,6 +84,7 @@
 	id = "radiation_storm_syndicate"
 	name = "Radiation Storm (Fake)"
 
+	hide = TRUE
 	triggered_only = TRUE
 	fire_only_once = FALSE
 

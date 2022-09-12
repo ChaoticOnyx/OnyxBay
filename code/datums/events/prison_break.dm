@@ -9,7 +9,7 @@
 		/datum/event_option/prison_break_option {
 			id = "option_virology";
 			name = "In Virology";
-			weight = 2;
+			weight = 25;
 			event_id = "prison_break";
 			eventDept = "Medical";
 			areaName = list("Virology");
@@ -18,7 +18,7 @@
 		/datum/event_option/prison_break_option {
 			id = "option_xenobiology";
 			name = "In Xenobiology";
-			weight = 2;
+			weight = 25;
 			event_id = "prison_break";
 			eventDept = "Science";
 			areaName = list("Xenobiology");
@@ -28,7 +28,7 @@
 		/datum/event_option/prison_break_option {
 			id = "option_brig";
 			name = "In Brig";
-			weight = 2;
+			weight = 25;
 			event_id = "prison_break";
 			eventDept = "Security";
 			areaName = list("Brig");
@@ -38,7 +38,7 @@
 		/datum/event_option/prison_break_option {
 			id = "option_everywhere";
 			name = "Everywhere";
-			weight = 1;
+			weight = 25;
 			event_id = "prison_break";
 			eventDept = "Local";
 			areaName = list("Brig","Virology", "Xenobiology");
@@ -72,6 +72,7 @@
 	id = "prison_break"
 	name = "Containment Breach"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 	/// List of areas to affect.

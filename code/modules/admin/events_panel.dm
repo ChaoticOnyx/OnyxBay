@@ -12,7 +12,7 @@
 	)
 
 	for(var/datum/event/E  in SSevents.scheduled_events)
-		if(E.triggered_only || E.fire_only_once && E.fired)
+		if(E.triggered_only || E.fire_only_once && E.fired && !E._waiting_option)
 			continue
 
 		var/list/event_data = list(
@@ -51,27 +51,23 @@
 
 	switch(action)
 		if("choose")
-			ASSERT(params["option_id"])
 			ASSERT(params["event_id"])
-			
-			var/option_id = params["option_id"]
-			var/event_id = params["event_id"]
 
+			var/event_id = params["event_id"]
 			var/datum/event/E = SSevents.total_events[event_id]
 
-			for(var/datum/event_option/O in E.options)
-				if(O.id == option_id)
-					O.choose()
-					break
+			new /datum/event_window(usr.client.holder, E)
 
 			return TRUE
 		if("force")
 			ASSERT(params["event_id"])
 
 			var/event_id = params["event_id"]
-
 			var/datum/event/E = SSevents.total_events[event_id]
+
 			E.fire()
+
+			return TRUE
 
 /datum/events_panel/tgui_state(mob/user)
 	return GLOB.tgui_admin_state
@@ -80,7 +76,4 @@
 	set category = "Admin"
 	set name = "Events Panel"
 
-	if (!istype(src, /datum/admins))
-		src = usr.client.holder
-
-	events_panel.tgui_interact(usr, null)
+	usr.client.holder.events_panel.tgui_interact(usr, null)

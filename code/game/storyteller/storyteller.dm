@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(storyteller)
 	var/__was_character_choosen_by_random = FALSE
 
 	var/__storyteller_tick = -1 // updates on every fire
-	var/datum/storyteller_character/__character = null
+	var/datum/storyteller_character/character = null
 
 	var/list/__metrics = new
 	var/list/__triggers = new
@@ -16,31 +16,22 @@ SUBSYSTEM_DEF(storyteller)
 	var/list/__ui_tabs = list("StorytellerCPCharacterTab", "StorytellerCPMetricsTab", "StorytellerCPTriggersTab")
 	var/list/__ckey_to_ui_data = new
 
-/datum/controller/subsystem/storyteller/Initialize(timeofday)
-	if (config.game.storyteller)
-		return ..()
-	flags = SS_NO_FIRE
-
 // called on round setup, after players spawn and mode setup
 /datum/controller/subsystem/storyteller/proc/setup()
-	if (!config.game.storyteller)
-		return
 	_log_debug("Setup called")
 
 	__create_character()
 	__create_all_metrics()
 	__create_all_triggers()
-	_log_debug("Chosen character is '[__character]'")
+	_log_debug("Chosen character is '[character]'")
 
 	_log_debug("Process round start")
-	var/time_to_first_cycle = __character.process_round_start()
+	var/time_to_first_cycle = character.process_round_start()
 	ASSERT(time_to_first_cycle)
 	wait = time_to_first_cycle
 
 // called in the round end
 /datum/controller/subsystem/storyteller/proc/collect_statistics()
-	if (!config.game.storyteller)
-		return
 	_log_debug("ROUND STATISTICS")
 	for (var/M in __metrics)
 		var/storyteller_metric/metric = __metrics[M]
@@ -60,7 +51,7 @@ SUBSYSTEM_DEF(storyteller)
 
 	__storyteller_tick++
 	_log_debug("Process new cycle start")
-	var/time_to_next_cycle = __character.process_new_cycle_start()
+	var/time_to_next_cycle = character.process_new_cycle_start()
 	ASSERT(time_to_next_cycle)
 	wait = time_to_next_cycle
 
@@ -69,7 +60,7 @@ SUBSYSTEM_DEF(storyteller)
 
 	switch (current_tab)
 		if ("StorytellerCPCharacterTab")
-			data["character"] = __character ? __character.get_params_for_ui() : null
+			data["character"] = character ? character.get_params_for_ui() : null
 
 		if ("StorytellerCPMetricsTab")
 			var/list/metrics_data = new
@@ -91,8 +82,6 @@ SUBSYSTEM_DEF(storyteller)
 	return data
 
 /datum/controller/subsystem/storyteller/proc/open_control_panel(mob/user, drop_data = TRUE)
-	if (!config.game.storyteller)
-		return
 	ASSERT(user)
 
 	if (drop_data)
@@ -163,7 +152,7 @@ SUBSYSTEM_DEF(storyteller)
 	return __was_character_choosen_by_random
 
 /datum/controller/subsystem/storyteller/proc/__create_character()
-	__character = new /datum/storyteller_character/support
+	character = new /datum/storyteller_character/support
 
 /datum/controller/subsystem/storyteller/proc/__create_all_metrics()
 	for (var/type in subtypesof(/storyteller_metric))
@@ -172,6 +161,3 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/__create_all_triggers()
 	for (var/type in subtypesof(/storyteller_trigger))
 		__triggers[type] = new type
-
-/datum/controller/subsystem/storyteller/proc/get_character()
-    return __character

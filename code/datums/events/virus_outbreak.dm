@@ -32,6 +32,7 @@
 	id = "virus_outbreak_minor"
 	name = "Virus Outbreak (minor)"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 /datum/event/virus_outbreak_minor/on_fire()
@@ -51,6 +52,7 @@
 	id = "virus_outbreak_major"
 	name = "Virus Outbreak (major)"
 
+	hide = TRUE
 	triggered_only = TRUE
 
 /datum/event/virus_outbreak_major/on_fire()
