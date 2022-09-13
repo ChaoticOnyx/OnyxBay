@@ -48,7 +48,7 @@
 	return (1 - 2 ** (-_mtth_passed / time))
 
 /datum/event/proc/get_mtth()
-	return mtth * abs(SSstoryteller.character.rarity_ratio - 1)
+	return mtth * abs(SSstoryteller.character.rarity_ratio)
 
 /datum/event/proc/check_conditions()
 	return TRUE

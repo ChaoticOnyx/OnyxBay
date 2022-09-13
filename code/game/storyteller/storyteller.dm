@@ -1,11 +1,13 @@
+GLOBAL_LIST_EMPTY(all_storytellers)
+
 SUBSYSTEM_DEF(storyteller)
 	name = "Storyteller"
 	wait = 20 // changes with round story progress
 	priority = SS_PRIORITY_STORYTELLER
 	init_order = SS_INIT_STORYTELLER
-	runlevels = RUNLEVEL_GAME
+	runlevels = RUNLEVEL_GAME | RUNLEVEL_LOBBY
 
-	var/__was_character_choosen_by_random = FALSE
+	var/__was_auto_vote_started = FALSE
 
 	var/__storyteller_tick = -1 // updates on every fire
 	var/datum/storyteller_character/character = null
@@ -16,14 +18,18 @@ SUBSYSTEM_DEF(storyteller)
 	var/list/__ui_tabs = list("StorytellerCPCharacterTab", "StorytellerCPMetricsTab", "StorytellerCPTriggersTab")
 	var/list/__ckey_to_ui_data = new
 
+/datum/controller/subsystem/storyteller/Initialize(start_timeofday)
+	. = ..()
+	
+	__create_all_characters()
+	__create_all_metrics()
+	__create_all_triggers()
+
+	_log_debug("Chosen character is '[character]'")
+
 // called on round setup, after players spawn and mode setup
 /datum/controller/subsystem/storyteller/proc/setup()
 	_log_debug("Setup called")
-
-	__create_character()
-	__create_all_metrics()
-	__create_all_triggers()
-	_log_debug("Chosen character is '[character]'")
 
 	_log_debug("Process round start")
 	var/time_to_first_cycle = character.process_round_start()
@@ -39,6 +45,13 @@ SUBSYSTEM_DEF(storyteller)
 	_log_debug("ROUND STATISTICS END")
 
 /datum/controller/subsystem/storyteller/fire(resumed = FALSE)
+	if(GAME_STATE == RUNLEVEL_LOBBY)
+		if(!__was_auto_vote_started && !SSvote.active_vote)
+			SSvote.initiate_vote(/datum/vote/storyteller, automatic = TRUE)
+			__was_auto_vote_started = TRUE
+
+		return
+
 	if(__storyteller_tick == -1) // first tick is called with default 'wait', we need our tick with our value of 'wait'
 		__storyteller_tick = 0
 		return
@@ -148,11 +161,11 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/get_tick()
 	return __storyteller_tick
 
-/datum/controller/subsystem/storyteller/proc/was_character_choosen_with_random()
-	return __was_character_choosen_by_random
+/datum/controller/subsystem/storyteller/proc/__create_all_characters()
+	for(var/ty in subtypesof(/datum/storyteller_character))
+		GLOB.all_storytellers += new ty
 
-/datum/controller/subsystem/storyteller/proc/__create_character()
-	character = new /datum/storyteller_character/support
+	character = pick(GLOB.all_storytellers)
 
 /datum/controller/subsystem/storyteller/proc/__create_all_metrics()
 	for (var/type in subtypesof(/storyteller_metric))

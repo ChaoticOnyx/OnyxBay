@@ -53,7 +53,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/queue_priority_count_bg = 0 //Same, but for background subsystems
 	var/map_loading = FALSE //!Are we loading in a new map?
 
-	var/current_runlevel //!for scheduling different subsystems for different stages of the round
+	var/current_runlevel = RUNLEVEL_INIT //!for scheduling different subsystems for different stages of the round
 
 
 	var/static/restart_clear = 0

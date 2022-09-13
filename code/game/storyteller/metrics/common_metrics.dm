@@ -120,17 +120,6 @@
 	_log_debug("Total danger: [antagonists_danger]")
 	return antagonists_danger
 
-
-/storyteller_metric/is_storyteller_random
-	name = "Is Storyteller Random"
-	_can_be_used_on_setup = TRUE
-	_const = TRUE
-
-/storyteller_metric/is_storyteller_random/_evaluate()
-	return SSstoryteller.was_character_choosen_with_random()
-
-
-
 /storyteller_metric/time_of_day
 	name = "Time of day"
 	_can_be_used_on_setup = TRUE

@@ -11,7 +11,7 @@
 	. = "Count of <em>AI</em> must be higher than <em>1</em>."
 
 /datum/event/ion_storm/check_conditions()
-	. = SSevents.triggers.roles_count["AI"] > 1
+	. = SSevents.triggers.roles_count["AI"] >= 1
 
 /datum/event/ion_storm/get_mtth()
 	. = ..()
