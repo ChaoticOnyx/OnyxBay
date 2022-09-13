@@ -1,9 +1,9 @@
 /datum/storyteller_character
 	var/name = "Unknown Storyteller character"
 	var/desc = ""
-	var/aggression_ratio = 1.0
+	var/aggression_ratio = 0.5
 	var/rarity_ratio = 0.15
-	var/quantity_ratio = 0.65
+	var/quantity_ratio = 0.50
 
 	var/__metrics
 	var/__debug = TRUE                // print debug logs

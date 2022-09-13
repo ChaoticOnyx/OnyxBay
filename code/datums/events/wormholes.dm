@@ -34,8 +34,8 @@
 			pick_turfs.Add(weakref(T))
 
 	for(var/i in 1 to number_of_wormholes)
-		var/turf/enter = pick(pick_turfs).resolve()
-		var/turf/exit = pick(pick_turfs).resolve()
+		var/turf/enter = safepick(pick_turfs).resolve()
+		var/turf/exit = safepick(pick_turfs).resolve()
 		if(!istype(enter) || !istype(exit))
 			continue
 		pick_turfs -= weakref(enter)

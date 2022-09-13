@@ -61,7 +61,7 @@
 
 	command_announcement.Announce("The [station_name()] is now passing through a belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-	addtimer(CALLBACK(src, .proc/end), rand(1, 3) MINUTES)
+	addtimer(CALLBACK(src, /datum/event/space_dust/proc/end), rand(1, 3) MINUTES)
 	set_next_think(world.time)
 
 /datum/event/space_dust/proc/end()

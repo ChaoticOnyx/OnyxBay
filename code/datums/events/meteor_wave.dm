@@ -113,6 +113,7 @@
 			command_announcement.Announce("The [station_name()] is now in a meteor shower.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
 /datum/event/meteor_wave/proc/end()
+	set_next_think(0)
 	SSevents.evars["meteor_wave_running"] = FALSE
 
 	switch(severity)

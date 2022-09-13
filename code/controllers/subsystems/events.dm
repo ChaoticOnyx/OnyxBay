@@ -50,6 +50,10 @@ SUBSYSTEM_DEF(events)
 			else
 				E.ai_choose()
 
+		if(event_fired)
+			E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
+			E._mtth_passed = max(0, E._mtth_passed)
+
 		if(prob(E.calc_chance()))
 			if(!E.check_conditions())
 				E._mtth_passed = 0
@@ -57,11 +61,7 @@ SUBSYSTEM_DEF(events)
 				event_fired = TRUE
 				E.fire()
 		else
-			if(event_fired)
-				E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
-				E._mtth_passed = max(0, E._mtth_passed)
-			else
-				E._mtth_passed += wait
+			E._mtth_passed += wait
 
 		if(MC_TICK_CHECK)
 			return

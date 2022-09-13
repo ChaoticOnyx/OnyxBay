@@ -8,7 +8,7 @@
 	description = "Some things at the station come to life and become mimics."
 
 	fire_only_once = TRUE
-	mtth = 2 HOURS
+	mtth = 6 HOURS
 
 /datum/event/mimics_invasion/get_mtth()
 	. = ..()

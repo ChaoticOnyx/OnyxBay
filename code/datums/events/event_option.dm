@@ -2,7 +2,7 @@
 	var/datum/event/_event
 	var/id = null
 	var/name = "OPTION_NAME"
-	var/description = "OPTION_DESCRIPTION"
+	var/description = ""
 	var/weight = 0
 	var/event_id = null
 	var/weight_ratio = EVENT_OPTION_NORMAL
