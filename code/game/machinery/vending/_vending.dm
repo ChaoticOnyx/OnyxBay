@@ -252,6 +252,7 @@
 	V.state = 3
 	for(var/obj/I in component_parts)
 		I.forceMove(V)
+	cartridge = null
 	V.refresh_cartridge()
 	V.update_icon()
 	V.update_desc()
