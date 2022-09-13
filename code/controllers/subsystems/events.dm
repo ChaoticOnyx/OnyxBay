@@ -4,8 +4,12 @@ SUBSYSTEM_DEF(events)
 	priority = SS_PRIORITY_EVENT
 
 	var/paused = FALSE
+	/// list(/datum/event)
 	var/list/scheduled_events = list()
+	/// list("id" = /datum/event)
 	var/list/total_events = list()
+	/// list("id" = boolean)
+	var/list/disabled_events = list()
 
 	var/list/evars = list()
 	var/datum/event_triggers/triggers = new
@@ -26,8 +30,9 @@ SUBSYSTEM_DEF(events)
 
 		if(!E.triggered_only)
 			scheduled_events += E
-		
+
 		total_events["[E.id]"] = E
+		disabled_events["[E.id]"] = FALSE
 
 /datum/controller/subsystem/events/fire(resumed)
 	if(GAME_STATE < RUNLEVEL_GAME || paused)
@@ -41,6 +46,9 @@ SUBSYSTEM_DEF(events)
 	while(processing_events.len)
 		var/datum/event/E = processing_events[processing_events.len]
 		processing_events.len--
+
+		if(disabled_events[E.id])
+			continue
 
 		if(E.fire_only_once && E.fired)
 			scheduled_events -= E

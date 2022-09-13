@@ -25,6 +25,7 @@
 			"waiting_option" = E._waiting_option,
 			"fire_conditions" = E.check_conditions(),
 			"conditions_description" = E.get_conditions_description(),
+			"disabled" = SSevents.disabled_events[E.id],
 			"options" = list()
 		)
 
@@ -72,6 +73,13 @@
 		if("toggle_pause")
 			SSevents.paused = !SSevents.paused
 			log_and_message_admins("[key_name(usr)] [SSevents.paused ? "paused" : "resumed"] events.")
+
+			return TRUE
+		if("toggle_disable")
+			ASSERT(params["event_id"])
+
+			var/event_id = params["event_id"]
+			SSevents.disabled_events[event_id] = !SSevents.disabled_events[event_id]
 
 			return TRUE
 

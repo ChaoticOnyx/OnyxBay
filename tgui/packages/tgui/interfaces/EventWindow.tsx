@@ -30,6 +30,7 @@ export type Event = {
   fire_conditions: boolean;
   options: Option[];
   conditions_description: string;
+  disabled: boolean;
 };
 
 type InputData = {

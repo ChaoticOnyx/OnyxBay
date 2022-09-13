@@ -5,7 +5,6 @@ import {
   Divider,
   Icon,
   LabeledList,
-  Modal,
   Section,
   Stack,
 } from "../components";
@@ -45,7 +44,7 @@ function EventButton(props: { event: Event }, context: any) {
 
   return (
     <Stack align="center" mt="5px">
-      <Stack.Item width="100%">
+      <Stack.Item grow={true}>
         <Button
           tooltip={<EventTooltip event={event} />}
           disabled={!event.fire_conditions}
@@ -80,6 +79,11 @@ function EventButton(props: { event: Event }, context: any) {
           tooltip="Force"
           onClick={() => act("force", { event_id: event.id })}
         ></Button>
+        <Button
+          icon={event.disabled ? "toggle-off" : "toggle-on"}
+          tooltip={event.disabled ? "Enable" : "Disable"}
+          onClick={() => act("toggle_disable", { event_id: event.id })}
+        />
       </Stack.Item>
     </Stack>
   );
