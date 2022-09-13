@@ -11,14 +11,16 @@
 			id = "option_minor";
 			name = "Minor Virus";
 			description = "A not too strong virus will appear on the station";
-			weight = 2;
+			weight = 70;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION_R;
 			event_id = "virus_outbreak_minor";
 		},
 		/datum/event_option {
 			id = "option_major";
 			name = "Major Virus";
 			description = "A fairly powerful virus will appear on the station";
-			weight = 1;
+			weight = 30;
+			weight_ratio = EVENT_OPTION_AI_AGGRESSION;
 			event_id = "virus_outbreak_major";
 		}
 	)
