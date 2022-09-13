@@ -4,7 +4,7 @@
 	description = "Xenomorphs someway appears on the station."
 
 	fire_only_once = TRUE
-	mtth = 4 HOURS
+	mtth = 5 HOURS
 
 /datum/event/xenomorph_infestation/get_mtth()
 	. = ..()

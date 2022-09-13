@@ -136,7 +136,6 @@ var/list/admin_verbs_fun = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_add_random_ai_law,
-	/client/proc/toggle_random_events,
 	/client/proc/editappear,
 	/client/proc/roll_dices,
 	/datum/admins/proc/call_supply_drop,
@@ -178,7 +177,6 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_aliens,
 	/datum/admins/proc/toggle_alien_eggs,
 	/datum/admins/proc/toggle_space_ninja,
-	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
 	/client/proc/nanomapgen_DumpImage
 	)
@@ -283,7 +281,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_add_random_ai_law,
 	/client/proc/cmd_admin_create_centcom_report,
-	/client/proc/toggle_random_events,
 	/client/proc/cmd_admin_add_random_ai_law,
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,

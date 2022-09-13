@@ -311,7 +311,6 @@
 #include "code\datums\configuration\misc_section.dm"
 #include "code\datums\configuration\movement_section.dm"
 #include "code\datums\configuration\multiaccount_section.dm"
-#include "code\datums\configuration\random_events_section.dm"
 #include "code\datums\configuration\revival_section.dm"
 #include "code\datums\configuration\server_configuration.dm"
 #include "code\datums\configuration\vote_section.dm"
