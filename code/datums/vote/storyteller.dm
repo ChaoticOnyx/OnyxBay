@@ -14,11 +14,14 @@
 		choices += C
 		display_choices[C] = "[C.name] - [C.desc]"
 
-		if(C == SSstoryteller.character)
-			display_choices[C] += " (current)"
+	choices += "Random"
+	display_choices["Random"] = "Random"
 
 /datum/vote/storyteller/report_result()
 	if(..())
 		return TRUE
+
+	if(result[1] == "Random")
+		return
 
 	SSstoryteller.character = result[1]
