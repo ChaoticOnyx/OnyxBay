@@ -17,6 +17,7 @@
 	max_w_class = ITEM_SIZE_LARGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	use_sound = SFX_SEARCH_CLOTHES
+	var/worn_access = TRUE // Whether it can be opened while worn on back
 
 /obj/item/storage/backpack/Initialize()
 	. = ..()
@@ -31,7 +32,28 @@
 /obj/item/storage/backpack/equipped(mob/user, slot)
 	if(slot == slot_back && use_sound)
 		playsound(loc, use_sound, 50, 1, -5)
+	if(!worn_access && worn_check())
+		close_all()
 	..(user, slot)
+
+/obj/item/storage/backpack/handle_item_insertion(obj/item/W, prevent_warning = FALSE, NoUpdate = FALSE)
+	if(!worn_access && worn_check())
+		to_chat(usr, SPAN("warning", "You can't insert \the [W] while \the [src] is on your back."))
+		return
+	. = ..()
+
+/obj/item/storage/backpack/open(mob/user)
+	if(!worn_access && worn_check())
+		to_chat(user, SPAN("warning", "You can't open \the [src] while it is on your back."))
+		return
+	. = ..()
+
+/obj/item/storage/backpack/proc/worn_check()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(H.get_inventory_slot(src) == slot_back)
+			return TRUE
+	return FALSE
 
 /*
  * Backpack Types
@@ -139,21 +161,12 @@
 	icon_state = "duffle"
 	w_class = ITEM_SIZE_HUGE
 	max_storage_space = DEFAULT_BACKPACK_STORAGE + 14
-
-/obj/item/storage/backpack/dufflebag/New()
-	..()
-	slowdown_per_slot[slot_back] = 3
-	slowdown_per_slot[slot_r_hand] = 1
-	slowdown_per_slot[slot_l_hand] = 1
+	worn_access = FALSE
 
 /obj/item/storage/backpack/dufflebag/syndie
 	name = "black dufflebag"
 	desc = "A large dufflebag for holding extra tactical supplies."
 	icon_state = "duffle_syndie"
-
-/obj/item/storage/backpack/dufflebag/syndie/New()
-	..()
-	slowdown_per_slot[slot_back] = 1
 
 /obj/item/storage/backpack/dufflebag/syndie/med
 	name = "medical dufflebag"
