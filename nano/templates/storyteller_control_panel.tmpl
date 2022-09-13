@@ -19,6 +19,10 @@
             There is no storyteller yet!
         {{/if}}
 
+		<span class='itemLabelWidest'>Storyteller characters:</span><br>
+		{{props data.storyteller.characters :character}}
+			{{:helper.link(character.name, null, {"change_character" : character.type})}}
+		{{/for}}
     {{else data.current_tab == "StorytellerCPMetricsTab"}}
         {{props data.storyteller.metrics :metric :type}}
             <div class="item">

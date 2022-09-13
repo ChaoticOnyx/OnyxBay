@@ -22,6 +22,8 @@
 		return TRUE
 
 	if(result[1] == "Random")
+		SSstoryteller.character = pick(GLOB.all_storytellers)
+		log_and_message_admins("Storyteller's character was changed to [SSstoryteller.character.name].")
 		return
 
 	SSstoryteller.character = result[1]

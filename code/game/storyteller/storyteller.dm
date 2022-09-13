@@ -74,6 +74,10 @@ SUBSYSTEM_DEF(storyteller)
 	switch (current_tab)
 		if ("StorytellerCPCharacterTab")
 			data["character"] = character ? character.get_params_for_ui() : null
+			data["characters"] = list()
+
+			for (var/datum/storyteller_character/C in GLOB.all_storytellers)
+				data["characters"] += list(C.get_params_for_ui())
 
 		if ("StorytellerCPMetricsTab")
 			var/list/metrics_data = new
@@ -146,6 +150,16 @@ SUBSYSTEM_DEF(storyteller)
 		var/result = run_trigger(trigger_type)
 		to_chat(user, SPAN_WARNING("Trigger '[trigger_type]' was [result ? " completed successfuly!" : " failed!"]"))
 		open_control_panel(user, drop_data = FALSE)
+
+	else if (href_list["change_character"])
+		var/character_type = text2path(href_list["change_character"])
+		ASSERT(ispath(character_type, /datum/storyteller_character))
+
+		for(var/datum/storyteller_character/C in GLOB.all_storytellers)
+			if(C.type == character_type)
+				log_and_message_admins("[key_name(usr)] changed storyteller's character from [character.name] to [C.name].")
+				character = C
+				return
 
 	return 0
 

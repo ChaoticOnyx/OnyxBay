@@ -82,6 +82,7 @@
 
 /datum/storyteller_character/proc/get_params_for_ui()
 	var/list/data = list(
+		"type" = type,
 		"name" = name,
 		"description" = desc,
 		"aggression_ratio" = aggression_ratio * 100,
