@@ -9,12 +9,8 @@
 /datum/storyteller_character/chaotic/New()
 	..()
 
-	set_next_think(world.time)
-
-/datum/storyteller_character/chaotic/think()
 	roll_ratio()
-
-	set_next_think(world.time + (rand(1, 5) MINUTES))
+	addtimer(CALLBACK(src, .proc/roll_ratio), rand(1, 5) MINUTES, TIMER_LOOP)
 
 /datum/storyteller_character/chaotic/proc/roll_ratio()
 	if(prob(50))
