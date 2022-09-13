@@ -400,6 +400,11 @@
 	if(stat & (BROKEN | NOPOWER))
 		return
 
+	wires.Interact(user)
+	
+	if(stat & POWEROFF)
+		return
+
 	if(seconds_electrified != 0)
 		if(shock(user, 100))
 			return
@@ -419,7 +424,6 @@
 
 		return
 
-	wires.Interact(user)
 	tgui_interact(user)
 
 /obj/machinery/vending/tgui_interact(mob/user, datum/tgui/ui)
@@ -482,6 +486,9 @@
 	. = ..()
 
 	if(.)
+		return
+	
+	if(stat & POWEROFF)
 		return
 
 	switch(action)
