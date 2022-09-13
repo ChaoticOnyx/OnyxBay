@@ -4,7 +4,7 @@
 	description = "The solar storm will burn everyone out of a station."
 
 	fire_only_once = TRUE
-	mtth = 4 HOURS
+	mtth = 3 HOURS
 	blacklisted_maps = list(/datum/map/polar)
 
 	var/const/temp_incr     = 100

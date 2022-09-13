@@ -3,8 +3,7 @@
 	name = "Meteor Wave Incoming"
 	description = "A group of meteorites is approaching the station"
 
-	mtth = 4 HOURS
-	fire_only_once = TRUE
+	mtth = 2 HOURS
 
 	blacklisted_maps = list(/datum/map/polar)
 

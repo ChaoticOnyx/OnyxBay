@@ -3,7 +3,7 @@
 	name = "Brand Intelligence"
 	description = "There will be a virus infecting vending machines"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 	fire_only_once = TRUE
 
 	var/list/obj/machinery/vending/vendingMachines = list()

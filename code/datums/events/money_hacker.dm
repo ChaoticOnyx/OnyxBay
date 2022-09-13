@@ -3,7 +3,7 @@
 	name = "Money Hacker"
 	description = ""
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 	fire_only_once = TRUE
 
 /datum/event/money_hacker/get_mtth()

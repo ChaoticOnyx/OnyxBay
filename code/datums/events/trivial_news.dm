@@ -3,7 +3,7 @@
 	name = "Trivial News"
 	description = "Random news about something everyday"
 
-	mtth = 1 HOUR
+	mtth = 30 MINUTES
 
 /datum/event/trivial_news/on_fire()
 	var/author = "Editor Mike Hammers"

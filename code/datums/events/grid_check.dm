@@ -3,7 +3,7 @@
 	name = "Grid Check"
 	description = "The station will be de-energized for a while"
 
-	mtth = 4 HOURS
+	mtth = 3 HOURS
 
 /datum/event/grid_check/get_mtth()
 	. = ..()

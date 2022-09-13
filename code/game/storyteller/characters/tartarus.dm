@@ -4,3 +4,4 @@
 	aggression_ratio = 1.0
 	rarity_ratio = 0.20
 	quantity_ratio = 0.80
+	event_chance_multiplier = 10

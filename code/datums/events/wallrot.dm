@@ -3,7 +3,7 @@
 	name = "Wallrot"
 	description = "Dangerous fungi will appear on some walls destroying the walls"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 
 /datum/event/wallrot/get_mtth()
 	. = ..()

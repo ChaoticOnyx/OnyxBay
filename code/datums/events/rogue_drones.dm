@@ -3,7 +3,7 @@
 	name = "Rogue Drones"
 	description = "A group of hostile drones will fly into the area of the station"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 	blacklisted_maps = list(/datum/map/polar)
 
 	var/list/drones_list = list()

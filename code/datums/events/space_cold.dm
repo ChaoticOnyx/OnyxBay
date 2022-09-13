@@ -3,7 +3,7 @@
 	name = "Space Cold Outbreak"
 	description = "An epidemic of the space cold"
 
-	mtth = 2 HOURS
+	mtth = 1 HOURS
 
 /datum/event/space_cold/get_mtth()
 	. = ..()

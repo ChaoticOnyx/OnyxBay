@@ -3,12 +3,12 @@
 	name = "Ion Storm"
 	description = "One of the AI laws will be removed and a new one added"
 
-	mtth = 5 HOURS
+	mtth = 3 HOURS
 
 	blacklisted_maps = list(/datum/map/polar)
 
 /datum/event/ion_storm/get_conditions_description()
-	. = "Count of <em>AI</em> must be higher than <em>1</em>."
+	. = "Count of <em>AI</em> >= <em>1</em>."
 
 /datum/event/ion_storm/check_conditions()
 	. = SSevents.triggers.roles_count["AI"] >= 1

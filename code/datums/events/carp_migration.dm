@@ -3,7 +3,7 @@
 	name = "Carp Migration Incoming"
 	description = "Space carp will appear near the station"
 
-	mtth = 3 HOURS
+	mtth = 1 HOURS
 	blacklisted_maps = list(/datum/map/polar)
 
 	options = newlist(

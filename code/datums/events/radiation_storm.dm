@@ -7,7 +7,7 @@
 	description = "The entire station, with the exception of the technical rooms, will be in beta radiation"
 
 	fire_only_once = TRUE
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 	blacklisted_maps = list(/datum/map/polar)
 
 	var/list/affecting_z = list()

@@ -4,6 +4,7 @@
 	aggression_ratio = 0.50
 	rarity_ratio = 1.0
 	quantity_ratio = 0.50
+	event_chance_multiplier = 5
 
 /datum/storyteller_character/chaotic/New()
 	..()
@@ -31,6 +32,8 @@
 	else
 		rarity_ratio += rand()
 
-	aggression_ratio = Clamp(aggression_ratio, 3.0, 0.0)
-	quantity_ratio = Clamp(quantity_ratio, 3.0, 0.0)
-	rarity_ratio = Clamp(rarity_ratio, 3.0, 0.0)
+	event_chance_multiplier = rand(5, 15)
+
+	aggression_ratio = Clamp(aggression_ratio, 0.0, 3.0)
+	quantity_ratio = Clamp(quantity_ratio, 0.0, 3.0)
+	rarity_ratio = Clamp(rarity_ratio, 0.0, 3.0)

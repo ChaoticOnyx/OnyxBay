@@ -3,7 +3,7 @@
 	name = "Gravity Failure"
 	description = "The gravity generator will be turned off for a while"
 
-	mtth = 3 HOURS
+	mtth = 2 HOURS
 
 	blacklisted_maps = (/datum/map/polar)
 

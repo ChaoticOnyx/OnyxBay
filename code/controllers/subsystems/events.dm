@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(events)
 	name = "Events"
-	wait = 1 MINUTE
+	wait = 30 SECONDS
 	priority = SS_PRIORITY_EVENT
 
 	var/list/scheduled_events = list()
@@ -54,12 +54,13 @@ SUBSYSTEM_DEF(events)
 			E._mtth_passed -= (E._mtth_passed * abs(SSstoryteller.character.quantity_ratio - 1))
 			E._mtth_passed = max(0, E._mtth_passed)
 
-		if(prob(E.calc_chance()))
-			if(!E.check_conditions())
-				E._mtth_passed = 0
-			else
-				event_fired = TRUE
-				E.fire()
+		if(!E.check_conditions())
+			E._mtth_passed = 0
+			continue
+
+		if(prob(E.calc_chance() * SSstoryteller.character.event_chance_multiplier))
+			event_fired = TRUE
+			E.fire()
 		else
 			E._mtth_passed += wait
 

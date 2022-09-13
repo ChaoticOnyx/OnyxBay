@@ -3,7 +3,7 @@
 	name = "Stray Facehugger"
 	description = "Facehugger will appear somewhere in the technical rooms"
 
-	mtth = 5 HOURS
+	mtth = 3 HOURS
 	fire_only_once = TRUE
 
 /datum/event/stray_facehugger/get_mtth()

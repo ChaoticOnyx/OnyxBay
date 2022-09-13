@@ -3,7 +3,7 @@
 	name = "Virus Outbreak Incoming"
 	description = "An unknown virus appears at the station"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 	fire_only_once = TRUE
 
 	options = newlist(

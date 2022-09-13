@@ -3,7 +3,7 @@
 	name = "Mundane News"
 	description = "Random News"
 
-	mtth = 2 HOURS
+	mtth = 1 HOURS
 
 /datum/event/mundane_news/on_fire()
 	var/datum/trade_destination/affected_dest = util_pick_weight(weighted_mundaneevent_locations)

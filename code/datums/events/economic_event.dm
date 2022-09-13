@@ -3,7 +3,7 @@
 	name = "Economic Event"
 	description = "There will be random news that will affect the prices of some goods"
 
-	mtth = 4 HOURS
+	mtth = 1 HOURS
 
 	var/event_type = 0
 	var/list/cheaper_goods = list()

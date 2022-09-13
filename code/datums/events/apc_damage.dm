@@ -3,7 +3,7 @@
 	name = "APC Damage"
 	description = "Random APC will get damaged"
 
-	mtth = 4 HOURS
+	mtth = 1 HOURS
 
 	var/apcSelectionRange	= 25
 

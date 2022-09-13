@@ -3,7 +3,7 @@
 	name = "Camera Damage"
 	description = "Random camera will get damaged"
 
-	mtth = 4 HOURS
+	mtth = 1 HOURS
 
 /datum/event/camera_damage/get_mtth()
 	. = ..()

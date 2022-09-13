@@ -19,7 +19,7 @@
 	name = "Infestation"
 	description = "A large number of vermin will appear at the station"
 
-	mtth = 4 HOURS
+	mtth = 3 HOURS
 
 	var/area/location
 	var/vermin

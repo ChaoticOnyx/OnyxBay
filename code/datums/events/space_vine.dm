@@ -3,7 +3,7 @@
 	name = "Space Vines"
 	description = "The station begins to overgrow with some space vines"
 
-	mtth = 3 HOURS
+	mtth = 2 HOURS
 
 /datum/event/space_vine/get_mtth()
 	. = ..()

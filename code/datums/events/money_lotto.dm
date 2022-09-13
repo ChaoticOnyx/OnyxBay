@@ -3,7 +3,7 @@
 	name = "Money Lotto"
 	description = "With some chance, one of the crew members will be able to win the lottery"
 
-	mtth = 5 HOURS
+	mtth = 2 HOURS
 	fire_only_once = TRUE
 
 /datum/event/money_lotto/get_mtth()

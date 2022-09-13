@@ -2,7 +2,7 @@
 	id = "electrical_storm_base"
 	name = "Electrical Storm Incoming"
 
-	mtth = 2 HOURS
+	mtth = 1 HOURS
 
 	options = newlist(
 		/datum/event_option/electrical_storm_option {

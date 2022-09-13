@@ -3,7 +3,7 @@
 	name = "Containment Breach"
 	description = "The doors in some areas will be open and the lights will be turned off"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 
 	options = newlist(
 		/datum/event_option/prison_break_option {

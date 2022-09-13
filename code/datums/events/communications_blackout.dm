@@ -3,7 +3,7 @@
 	name = "Communications Blackout"
 	description = "For a while telecommunications will be overloaded and not available"
 
-	mtth = 4 HOURS
+	mtth = 2 HOURS
 
 	var/list/affecting_z = list()
 

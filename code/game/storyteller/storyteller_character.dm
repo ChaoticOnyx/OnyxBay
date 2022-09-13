@@ -8,6 +8,7 @@
 	var/rarity_ratio = 0.30
 	/// The higher the value, the more time between events.
 	var/quantity_ratio = 0.50
+	var/event_chance_multiplier = 10
 
 	var/__metrics
 	var/__debug = TRUE                // print debug logs
@@ -85,7 +86,8 @@
 		"description" = desc,
 		"aggression_ratio" = aggression_ratio * 100,
 		"rarity_ratio" = rarity_ratio * 100,
-		"quantity_ratio" = quantity_ratio * 100
+		"quantity_ratio" = quantity_ratio * 100,
+		"event_chance_multiplier" = event_chance_multiplier
 	)
 	return data
 
