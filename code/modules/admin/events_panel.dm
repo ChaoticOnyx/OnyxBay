@@ -9,6 +9,7 @@
 /datum/events_panel/tgui_data(mob/user)
 	var/list/data = list(
 		"events" = list(),
+		"paused" = SSevents.paused
 	)
 
 	for(var/datum/event/E  in SSevents.scheduled_events)
@@ -66,6 +67,11 @@
 			var/datum/event/E = SSevents.total_events[event_id]
 
 			E.fire()
+
+			return TRUE
+		if("toggle_pause")
+			SSevents.paused = !SSevents.paused
+			log_and_message_admins("[key_name(usr)] [SSevents.paused ? "paused" : "resumed"] events.")
 
 			return TRUE
 

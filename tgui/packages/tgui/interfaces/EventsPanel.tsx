@@ -1,11 +1,20 @@
 import { round } from "common/math";
 import { useBackend, useLocalState } from "../backend";
-import { Button, Divider, Icon, Modal, Section, Stack } from "../components";
+import {
+  Button,
+  Divider,
+  Icon,
+  LabeledList,
+  Modal,
+  Section,
+  Stack,
+} from "../components";
 import { Window } from "../layouts";
 import { Event } from "./EventWindow";
 
 type InputData = {
   events: Event[];
+  paused: boolean;
 };
 
 function EventTooltip(props: { event: Event }, context: any) {
@@ -94,6 +103,23 @@ export function EventsPanel(props: any, context: any) {
   return (
     <Window width={400} height={600}>
       <Window.Content scrollable>
+        <Section
+          title="Subsystem"
+          buttons={
+            <Button
+              onClick={() => act("toggle_pause")}
+              icon={data.paused ? "play" : "pause"}
+            >
+              {data.paused ? "Unpause" : "Pause"}
+            </Button>
+          }
+        >
+          <LabeledList>
+            <LabeledList.Item label="Status">
+              {data.paused ? "Paused" : "Running"}
+            </LabeledList.Item>
+          </LabeledList>
+        </Section>
         <Section title="Waiting">
           {waitingEvents.map((e) => {
             return <EventButton event={e} />;

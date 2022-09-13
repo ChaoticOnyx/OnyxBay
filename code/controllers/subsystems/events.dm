@@ -3,6 +3,7 @@ SUBSYSTEM_DEF(events)
 	wait = 30 SECONDS
 	priority = SS_PRIORITY_EVENT
 
+	var/paused = FALSE
 	var/list/scheduled_events = list()
 	var/list/total_events = list()
 
@@ -29,7 +30,7 @@ SUBSYSTEM_DEF(events)
 		total_events["[E.id]"] = E
 
 /datum/controller/subsystem/events/fire(resumed)
-	if(GAME_STATE < RUNLEVEL_GAME)
+	if(GAME_STATE < RUNLEVEL_GAME || paused)
 		return
 
 	if(!resumed)
