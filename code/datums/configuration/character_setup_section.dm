@@ -3,8 +3,8 @@
 
 	var/character_slots = 10
 	var/loadout_slots = 10
-	var/max_loadout_points
-	var/extra_loadout_points
+	var/max_loadout_points = 10
+	var/extra_loadout_points = 0
 	var/humans_need_surnames = FALSE
 	var/allow_metadata = FALSE
 
