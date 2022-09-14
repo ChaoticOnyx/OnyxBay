@@ -503,6 +503,14 @@
 	desc = "A warm, black sweatshirt."
 	color = COLOR_DARK_GRAY
 
+// Custom for celebration of Reform of Russian language
+/obj/item/clothing/suit/storage/toggle/hoodie/trasher
+	name = "Old Magnitka Hoodie"
+	desc = "A warm, black sweatshirt. It has the logo for the popular magnitka fashion brand. It looks like replica."
+	icon_state = "trasher_hoodie"
+	icon_open = "trasher_hoodie_open"
+	icon_closed = "trasher_hoodie"
+
 /obj/item/clothing/suit/storage/mbill
 	name = "shipping jacket"
 	desc = "A green jacket bearing the logo of Major Bill's Shipping."
