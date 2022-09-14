@@ -168,7 +168,7 @@
 		set_next_think(0)
 	update_screen_button()
 
-/datum/changeling_power/toggled/Process()
+/datum/changeling_power/toggled/think()
 	if(check_incapacitated())
 		deactivate()
 		return FALSE
@@ -180,6 +180,7 @@
 				deactivate()
 				update_screen_button()
 				return FALSE
+	set_next_think(world.time + 1 SECOND)
 	return TRUE
 
 
