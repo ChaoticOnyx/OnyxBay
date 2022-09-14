@@ -26,6 +26,11 @@
 	var/vermstring
 	var/list/affecting_z = list()
 
+/datum/event/infestation/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+
 /datum/event/infestation/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Janitor"] * (30 MINUTES))
@@ -79,7 +84,7 @@
 			if(istype(S))
 				S.amount_grown = -1
 
-	addtimer(CALLBACK(src, .proc/announce), 30 SECONDS)
+	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/infestation/proc/announce()
 	if(GLOB.using_map.type == /datum/map/polar)

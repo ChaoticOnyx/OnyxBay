@@ -9,6 +9,11 @@
 	var/list/drones_list = list()
 	var/list/affecting_z = list()
 
+/datum/event/rogue_drones/New()
+	. = ..()
+	
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/rogue_drones/get_conditions_description()
 	. = "<em>Rogue Drones</em> should not be <em>running</em>.<br>"
 
@@ -27,7 +32,7 @@
 	spawn_drones()
 	announce()
 
-	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
+	set_next_think_ctx("end", world.time + (10 MINUTES))
 
 /datum/event/rogue_drones/proc/spawn_drones()
 	// Spawn them at the same place as carp

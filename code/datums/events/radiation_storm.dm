@@ -15,6 +15,13 @@
 	var/state = 0
 	var/list/rad_sources = list()
 
+/datum/event/radiation_storm/New()
+	. = ..()
+
+	add_think_ctx("enter", CALLBACK(src, .proc/enter_belt), 0)
+	add_think_ctx("exit", CALLBACK(src, .proc/exit_belt), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/radiation_storm/get_conditions_description()
 	. = "<em>Radiation Storm</em> should not be <em>running</em>.<br>"
 
@@ -36,14 +43,14 @@
 		A.set_lighting_mode(LIGHTMODE_RADSTORM, TRUE)
 
 	target_energy = BETA_PARTICLE_ENERGY * rand(5, 10)
-	addtimer(CALLBACK(src, .proc/enter_belt), 30 SECONDS)
+	set_next_think_ctx("enter", world.time + (30 SECONDS))
 
 /datum/event/radiation_storm/proc/enter_belt()
 	command_announcement.Announce("The [station_name()] has entered the beta rays belt. Please remain in a sheltered area until we have passed the belt.", "[station_name()] Sensor Array", zlevels = affecting_z)
 	radiate()
 	state = STATE_ENTERED_BELT
 
-	addtimer(CALLBACK(src, .proc/exit_belt), rand(1, 3) MINUTES)
+	set_next_think_ctx("exit", world.time + (rand(1, 3) MINUTES))
 	set_next_think(world.time)
 
 /datum/event/radiation_storm/proc/exit_belt()
@@ -52,7 +59,7 @@
 	for(var/area/A in GLOB.hallway)
 		A.set_lighting_mode(LIGHTMODE_RADSTORM, FALSE)
 
-	addtimer(CALLBACK(src, .proc/end), 1 MINUTE)
+	set_next_think_ctx("end", world.time + (1 MINUTE))
 	state = STATE_EXITED_BELT
 
 /datum/event/radiation_storm/think()

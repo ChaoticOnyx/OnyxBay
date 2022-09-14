@@ -7,6 +7,11 @@
 
 	blacklisted_maps = list(/datum/map/polar)
 
+/datum/event/ion_storm/New()
+	. = ..()
+
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)	
+
 /datum/event/ion_storm/get_conditions_description()
 	. = "Count of <em>AI</em> >= <em>1</em>."
 
@@ -117,7 +122,7 @@
 			bot.emag_act(1)
 
 	if(prob(50))
-		addtimer(CALLBACK(src, .proc/announce), rand(7, 12) MINUTES)
+		set_next_think_ctx("announce", world.time + (rand(7, 12) MINUTES))
 
 /datum/event/ion_storm/proc/announce()
 	GLOB.using_map.ion_storm_announcement()

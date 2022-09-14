@@ -9,8 +9,12 @@
 	var/list/obj/machinery/vending/vendingMachines = list()
 	var/list/obj/machinery/vending/infectedVendingMachines = list()
 	var/obj/machinery/vending/originMachine
-	var/end_timer
 	var/list/affecting_z = list()
+
+/datum/event/brand_intelligence/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
 
 /datum/event/brand_intelligence/get_mtth()
 	. = ..()
@@ -41,7 +45,7 @@
 
 	SSevents.evars["brand_intelligence_running"] = TRUE
 
-	end_timer = addtimer(CALLBACK(src, .proc/announce), 10 SECONDS, TIMER_UNIQUE | TIMER_STOPPABLE)
+	set_next_think_ctx("announce", world.time + (10 SECONDS))
 	set_next_think(world.time)
 
 /datum/event/brand_intelligence/think()
@@ -71,7 +75,7 @@
 
 /datum/event/brand_intelligence/proc/end()
 	SSevents.evars["brand_intelligence_running"] = FALSE
-	deltimer(end_timer)
+	set_next_think_ctx("announce", 0)
 	set_next_think(0)
 
 	originMachine.shut_up = 1

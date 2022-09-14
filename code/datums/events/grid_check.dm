@@ -5,6 +5,11 @@
 
 	mtth = 3 HOURS
 
+/datum/event/grid_check/New()
+	. = ..()
+
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)	
+
 /datum/event/grid_check/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (18 MINUTES))
@@ -13,7 +18,7 @@
 /datum/event/grid_check/on_fire()
 	power_failure(0, EVENT_LEVEL_MODERATE, GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION))
 
-	addtimer(CALLBACK(src, .proc/announce), 30 SECONDS)
+	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 /datum/event/grid_check/proc/announce()
 	GLOB.using_map.grid_check_announcement()

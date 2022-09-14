@@ -10,6 +10,11 @@
 	fire_only_once = TRUE
 	mtth = 4 HOURS
 
+/datum/event/mimics_invasion/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
+
 /datum/event/mimics_invasion/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (5 MINUTES))
@@ -43,7 +48,7 @@
 
 		spawned += 1
 	
-	addtimer(CALLBACK(null, /proc/level_seven_announcement), (30 SECONDS))
+	set_next_think_ctx("announce", world.time + (30 SECONDS))
 
 #undef MAX_MIMICS
 #undef MIN_MIMICS

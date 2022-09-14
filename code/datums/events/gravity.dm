@@ -7,6 +7,11 @@
 
 	blacklisted_maps = (/datum/map/polar)
 
+/datum/event/gravity/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+
 /datum/event/gravity/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Engineer"] * (11 MINUTES))
@@ -19,7 +24,7 @@
 		return
 	
 	GG.set_state(FALSE)
-	addtimer(CALLBACK(src, .proc/announce), rand(30, 60) SECONDS)
+	set_next_think_ctx("announce", world.time + (rand(30, 60) SECONDS))
 
 /datum/event/gravity/proc/announce()
 	var/list/affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)

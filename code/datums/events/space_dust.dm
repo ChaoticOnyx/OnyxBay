@@ -54,6 +54,11 @@
 	var/list/affecting_z = list()
 	var/severity = EVENT_LEVEL_MUNDANE
 
+/datum/event/space_dust/New()
+	. = ..()
+	
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/space_dust/on_fire()
 	severity = SSevents.evars["space_dust_severity"]
 	SSevents.evars["space_dust_running"] = TRUE
@@ -61,7 +66,7 @@
 
 	command_announcement.Announce("The [station_name()] is now passing through a belt of space dust.", "[station_name()] Sensor Array", zlevels = affecting_z)
 
-	addtimer(CALLBACK(src, /datum/event/space_dust/proc/end), rand(1, 3) MINUTES)
+	set_next_think_ctx("end", world.time + (rand(1, 3) MINUTES))
 	set_next_think(world.time)
 
 /datum/event/space_dust/proc/end()

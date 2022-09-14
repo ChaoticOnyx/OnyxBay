@@ -10,6 +10,12 @@
 	var/shift_frequency = 3
 	var/number_of_wormholes = 400
 
+/datum/event/wormholes/New()
+	. = ..()
+
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/wormholes/get_conditions_description()
 	. = "<em>Wormholes</em> should not be <em>running</em>.<br>"
 
@@ -34,8 +40,8 @@
 			pick_turfs.Add(weakref(T))
 
 	for(var/i in 1 to number_of_wormholes)
-		var/turf/enter = safepick(pick_turfs).resolve()
-		var/turf/exit = safepick(pick_turfs).resolve()
+		var/turf/enter = safepick(pick_turfs)?.resolve()
+		var/turf/exit = safepick(pick_turfs)?.resolve()
 		if(!istype(enter) || !istype(exit))
 			continue
 		pick_turfs -= weakref(enter)
@@ -43,14 +49,13 @@
 
 		wormholes += create_wormhole(enter, exit)
 
-	addtimer(CALLBACK(src, .proc/announce), rand(0, 5) SECONDS)
-	addtimer(CALLBACK(src, .proc/end), rand(1, 3) MINUTES)
-
+	set_next_think_ctx("announce", world.time + (rand(0, 5) SECONDS))
+	set_next_think_ctx("end", world.time + (rand(1, 3) MINUTES))
 	set_next_think(world.time)
 
 /datum/event/wormholes/think()
 	for(var/obj/effect/portal/wormhole/O in wormholes)
-		var/turf/T = pick(pick_turfs).resolve()
+		var/turf/T = safepick(pick_turfs)?.resolve()
 		if(T)
 			O.forceMove(T)
 

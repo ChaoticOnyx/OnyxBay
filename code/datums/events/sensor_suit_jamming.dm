@@ -58,6 +58,12 @@
 
 	var/suit_sensor_jammer_method/jamming_method
 
+/datum/event/sensor_suit_jamming/New()
+	. = ..()
+
+	add_think_ctx("announce", CALLBACK(GLOB.using_map, /datum/map/proc/ion_storm_announcement), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/sensor_suit_jamming/on_fire()
 	var/severity = SSevents.evars["sensor_suit_jamming_severity"]
 	var/endWhen = (rand(1, 3) * severity) MINUTES
@@ -73,9 +79,9 @@
 	jamming_method.enable()
 
 	if(prob(75))
-		addtimer(CALLBACK(GLOB.using_map, /datum/map/proc/ion_storm_announcement), 30 SECONDS)
+		set_next_think_ctx("announce", world.time + (30 SECONDS))
 
-	addtimer(CALLBACK(src, .proc/end), endWhen)
+	set_next_think_ctx("end", world.time + endWhen)
 
 /datum/event/sensor_suit_jamming/proc/end()
 	jamming_method.disable()

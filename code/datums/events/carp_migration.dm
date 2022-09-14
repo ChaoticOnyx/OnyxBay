@@ -63,6 +63,12 @@
 	var/severity = EVENT_LEVEL_MUNDANE
 	var/list/spawned_carp = list()
 
+/datum/event/carp_migration/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/carp_migration/on_fire()
 	SSevents.evars["carp_migration_running"] = TRUE
 	severity = SSevents.evars["carp_migration_severity"]
@@ -74,8 +80,8 @@
 	else
 		spawn_fish(rand(1, 3), 1, 2)	// 1 to 6 carp, alone or in pairs
 
-	addtimer(CALLBACK(src, .proc/announce), 30 SECONDS)
-	addtimer(CALLBACK(src, .proc/end), 8 MINUTES)
+	set_next_think_ctx("announce", world.time + (30 SECONDS))
+	set_next_think_ctx("end", world.time + (8 MINUTES))
 
 /datum/event/carp_migration/proc/spawn_fish(num_groups, group_size_min = 3, group_size_max = 5)
 	var/list/spawn_locations = list()

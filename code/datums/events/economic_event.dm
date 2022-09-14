@@ -10,6 +10,12 @@
 	var/list/dearer_goods = list()
 	var/datum/trade_destination/affected_dest
 
+/datum/event/economic_event/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/economic_event/check_conditions()
 	. = SSevents.evars["economic_events_running"] != TRUE
 
@@ -61,8 +67,8 @@
 		for(var/good_type in cheaper_goods)
 			affected_dest.temp_price_change[good_type] = rand(1,100) / 100
 
-	addtimer(CALLBACK(src, .proc/announce), 1 MINUTE)
-	addtimer(CALLBACK(src, .proc/end), 10 MINUTES)
+	set_next_think_ctx("announce", world.time + (1 MINUTE))
+	set_next_think_ctx("end", world.time + (10 MINUTES))
 
 /datum/event/economic_event/proc/announce()
 	var/author = "Nyx Daily"

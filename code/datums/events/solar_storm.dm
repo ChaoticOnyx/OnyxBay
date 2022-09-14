@@ -12,6 +12,12 @@
 	var/base_solar_gen_rate
 	var/list/affecting_z = list()
 
+/datum/event/solar_storm/New()
+	. = ..()
+
+	add_think_ctx("start", CALLBACK(src, .proc/start), 0)
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/solar_storm/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Security"] * (8 MINUTES))
@@ -24,13 +30,13 @@
 	adjust_solar_output(1.5)
 
 	// 2-6 minute duration
-	addtimer(CALLBACK(src, .proc/start), 1 MINUTE)
-	addtimer(CALLBACK(src, .proc/end), rand(2, 6) MINUTES)
+	set_next_think_ctx("start", world.time + (1 MINUTE))
+	set_next_think_ctx("end", world.time + (rand(2, 6) MINUTES))
 
 /datum/event/solar_storm/think()
 	radiate()
 
-	set_next_think(world.time + 2 SECONDS)
+	set_next_think(world.time + (2 SECONDS))
 
 /datum/event/solar_storm/proc/radiate()
 	// Note: Too complicated to be worth trying to use the radiation system for this.  Its only in space anyway, so we make an exception in this case.

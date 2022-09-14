@@ -87,6 +87,12 @@
 	var/list/areaNotType = list()
 	var/list/affecting_z = list()
 
+/datum/event/prison_break/New()
+	. = ..()
+
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+	add_think_ctx("release", CALLBACK(src, .proc/release), 0)
+
 /datum/event/prison_break/on_fire()
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
 	eventDept = SSevents.evars["prison_break_dept"]
@@ -112,8 +118,8 @@
 		to_world_log("ERROR: Could not initate grey-tide. Unable to find suitable containment area.")
 		return
 
-	addtimer(CALLBACK(src, .proc/announce), rand(75, 105) SECONDS)
-	addtimer(CALLBACK(src, .proc/release), rand(60, 90) SECONDS)
+	set_next_think_ctx("announce", world.time + (rand(75, 105) SECONDS))
+	set_next_think_ctx("release", world.time + (rand(60, 90) SECONDS))
 
 /datum/event/prison_break/proc/release()
 	if(areas && areas.len > 0)

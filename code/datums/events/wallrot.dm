@@ -5,6 +5,11 @@
 
 	mtth = 2 HOURS
 
+/datum/event/wallrot/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(src, .proc/announce), 0)
+
 /datum/event/wallrot/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.roles_count["Gardener"] * (15 MINUTES))
@@ -25,7 +30,7 @@
 		command_announcement.Announce("Harmful fungi detected on [station_name()]. Structures may be contaminated.", "Biohazard Alert", zlevels = affecting_z)
 
 /datum/event/wallrot/on_fire()
-	addtimer(CALLBACK(src, .proc/announce), rand(2, 5) MINUTES)
+	set_next_think_ctx("announce", world.time + (rand(2, 5) MINUTES))
 
 	spawn()
 		var/turf/simulated/wall/center = null

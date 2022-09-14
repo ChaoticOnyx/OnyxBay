@@ -6,6 +6,11 @@
 	mtth = 3 HOURS
 	fire_only_once = TRUE
 
+/datum/event/biohazard_outbreak/New()
+	. = ..()
+	
+	add_think_ctx("announce", CALLBACK(null, /proc/level_seven_announcement), 0)
+
 /datum/event/biohazard_outbreak/get_mtth()
 	. = ..()
 	. -= (SSevents.triggers.living_players_count * (5 MINUTES))
@@ -27,4 +32,4 @@
 	new /obj/structure/blob/core(T.loc)
 	log_and_message_admins("Blob spawned in \the [get_area(T)]", location = T.loc)
 
-	addtimer(CALLBACK(null, /proc/level_seven_announcement), 30 SECONDS)
+	set_next_think_ctx("announce", world.time + (30 SECONDS))

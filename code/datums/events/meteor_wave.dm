@@ -63,6 +63,11 @@
 	var/activeFor = 0
 	var/list/affecting_z = list()
 
+/datum/event/meteor_wave/New()
+	. = ..()
+	
+	add_think_ctx("end", CALLBACK(src, .proc/end), 0)
+
 /datum/event/meteor_wave/on_fire()
 	SSevents.evars["meteor_wave_running"] = TRUE
 	affecting_z = GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)
@@ -76,8 +81,8 @@
 	end = worst_case_end()
 
 	announce()
-	addtimer(CALLBACK(src, .proc/end), end)
 
+	set_next_think_ctx("end", world.time + end)
 	set_next_think(world.time)
 
 /datum/event/meteor_wave/think()
