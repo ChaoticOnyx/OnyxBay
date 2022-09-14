@@ -121,12 +121,13 @@ var/global/list/robot_modules = list(
 		else if(F.times_used)
 			F.times_used--
 	var/obj/item/tank/jetpack/carbondioxide/J = locate() in src.modules
-	var/datum/gas_mixture/M = J.return_air()
-	if(J && M.get_total_moles() < (17.4693 MOLES))
-		var/datum/gas_mixture/gas = new /datum/gas_mixture(70, 20 CELSIUS)
-		gas.adjust_gas(list("carbon_dioxide" = ONE_ATMOSPHERE), 2, 0)
-		M.add(gas)
-		qdel(gas)
+	if(J)
+		var/datum/gas_mixture/M = J.return_air()
+		if(M.get_total_moles() < (17.4693 MOLES))
+			var/datum/gas_mixture/gas = new /datum/gas_mixture(70, 20 CELSIUS)
+			gas.adjust_gas(list("carbon_dioxide" = ONE_ATMOSPHERE), 2, 0)
+			M.add(gas)
+			qdel(gas)
 	var/obj/item/packageWrap/PW = locate() in src.modules
 	if (PW)
 		PW.amount = 25
