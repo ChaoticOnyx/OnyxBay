@@ -193,4 +193,11 @@
 /obj/effect/landmark/corpse/nurse
 	name = "Dead Nurse"
 	corpse_outfits = list(/decl/hierarchy/outfit/job/medical/doctor/nurse)
-	spawn_flags = (~(CORPSE_SPAWNER_CUT_ID_PDA|CORPSE_SPAWNER_CUT_SURVIVAL|CORPSE_SPAWNER_PLAIN_HEADSET))
+	spawn_flags = (~(CORPSE_SPAWNER_CUT_SURVIVAL|CORPSE_SPAWNER_PLAIN_HEADSET))
+
+/obj/effect/landmark/corpse/nurse/equip_outfit(mob/living/carbon/human/M)
+	. = ..()
+
+	var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
+	var/obj/item/card/id/ID = new /obj/item/card/id/medical(E)
+	E.implants += ID
