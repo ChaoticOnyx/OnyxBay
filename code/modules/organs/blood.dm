@@ -103,6 +103,8 @@
 		return 0
 	if(!amt)
 		return 0
+	if(!vessel.total_volume) // Oh-oh, nuffin to remove
+		return 0
 	return vessel.remove_reagent(/datum/reagent/blood, amt * (src.mob_size/MOB_MEDIUM))
 
 /****************************************************
