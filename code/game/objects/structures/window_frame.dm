@@ -83,7 +83,8 @@
 /datum/windowpane/proc/apply_silicate(volume)
 	if(health < max_health)
 		health = min(health + volume * 3, max_health)
-		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [src]." : "\the [src] looks fully repaired.")
+		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [my_frame]'s [name]." : 
+														"\The [my_frame]'s [name] looks fully repaired.")
 	else
 		stored_silicate = min(stored_silicate + volume, 100)
 
