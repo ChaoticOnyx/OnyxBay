@@ -17,6 +17,7 @@
 
 	var/max_health = 20 // 40% of the material's integrity
 	var/health = 20
+	var/stored_silicate = 0 // Leftover silicate absorbs a bit of damage done to a windowpane.
 	var/is_inner = FALSE
 	var/state = 2
 	var/tinted = FALSE // Electrochromic tint, not to be confused with the "opacity" variable
@@ -79,8 +80,19 @@
 	if(max_heat >= (2000 CELSIUS))
 		explosion_block += 1
 
+/datum/windowpane/proc/apply_silicate(volume)
+	if(health < max_health)
+		health = min(health + volume * 3, max_health)
+		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [src]." : "\the [src] looks fully repaired.")
+	else
+		stored_silicate = min(stored_silicate + volume, 100)
+
 /datum/windowpane/proc/take_damage(damage = 0, sound_effect = TRUE)
 	var/initialhealth = health
+
+	if(stored_silicate)
+		damage *= (1 - stored_silicate / 200)
+	
 	health = max(0, health - damage)
 
 	if(health <= 0)
