@@ -16,7 +16,8 @@
 	force_divisor = 0
 	thrown_force_divisor = 0
 
-	var/string_attached
+	var/string_attached = FALSE
+	var/string_color = COLOR_RED
 	var/sides = 2
 
 /obj/item/material/coin/set_material(new_material)
@@ -33,9 +34,13 @@
 		if(string_attached)
 			to_chat(user, SPAN("notice", "There already is a string attached to this coin."))
 			return
-		if (CC.use(1))
-			overlays += image('icons/obj/items.dmi',"coin_string_overlay")
-			string_attached = 1
+		var/new_string_color = CC.color
+		if(CC.use(1))
+			var/image/string_overlay = image(icon,"coin_string_overlay")
+			string_overlay.color = new_string_color
+			overlays += string_overlay
+			string_attached = TRUE
+			string_color = new_string_color
 			to_chat(user, SPAN("notice", "You attach a string to the coin."))
 		else
 			to_chat(user, SPAN("notice", "This cable coil appears to be empty."))
@@ -47,6 +52,7 @@
 
 		var/obj/item/stack/cable_coil/CC = new /obj/item/stack/cable_coil(user.loc)
 		CC.amount = 1
+		CC.color = string_color
 		CC.update_icon()
 		overlays.Cut()
 		string_attached = null

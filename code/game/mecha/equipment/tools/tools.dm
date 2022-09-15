@@ -930,7 +930,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/Destroy()
 	qdel(rad_source)
-	
+
 	. = ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/nuclear/init()
