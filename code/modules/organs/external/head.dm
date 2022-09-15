@@ -124,7 +124,7 @@
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
 			else if(owner.should_have_organ(BP_EYES))
-				eyes_icon = new /icon(S.icobase, "eyeless[BB.index]")
+				eyes_icon = new /icon(eye_icon_location, "eyeless[BB.index]")
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
 			else
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
