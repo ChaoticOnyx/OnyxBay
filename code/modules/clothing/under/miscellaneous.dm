@@ -718,3 +718,70 @@
 		var/pipe = user.start_ventcrawl()
 		if(pipe)
 			user.handle_ventcrawl(pipe)
+
+/obj/item/clothing/under/toggle
+	var/icon_open
+	var/icon_closed
+
+/obj/item/clothing/under/toggle/verb/toggle_buttons()
+	set name = "Toggle Suit Buttons"
+	set category = "Object"
+	set src in usr
+	if(!CanPhysicallyInteract(usr))
+		return 0
+
+	if(item_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
+		item_state = icon_closed
+		to_chat(usr, "You button up the suit.")
+	else if(icon_state == icon_closed)
+		item_state = icon_open
+		to_chat(usr, "You unbutton the suit.")
+	else
+		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
+		return
+	update_clothing_icon()	//so our overlays update
+
+// Custom for best kitten of server (B████12)
+
+/obj/item/clothing/under/toggle/tajaran_leather_armor
+	name = "Traditional tajaran armor"
+	desc = "It's traditional tajaran leather armor with spikes on back that's suppose to scare enemy, by design. By now some degenerates calls it's kinky."
+	armor = list(melee = 5, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0)
+	item_state = "tajaranarmor"
+	icon_state = "tajaranarmor"
+	icon_open = "tajaranarmor_open"
+	icon_closed = "tajaranarmor"
+	species_restricted = list(SPECIES_TAJARA) //Only cat can wear this "armor".
+
+/obj/item/clothing/under/toggle/tajaran_leather_armor/equipped(mob/user)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	if(istype(H))
+		var/datum/gender/T = gender_datums[H.get_gender()]
+		if(!istype(T, /datum/gender/female) || !istype(H.body_build, /datum/body_build/slim/alt/tajaran))
+			item_state = icon_open
+
+/obj/item/clothing/under/toggle/tajaran_leather_armor/verb/change_straps()
+	set name = "Change Straps Position"
+	set category = "Object"
+	set src in usr
+	var/mob/living/carbon/human/user = usr
+	if(istype(user) && user.w_uniform == src)
+		var/datum/gender/T = gender_datums[user.get_gender()]
+		if(!istype(T, /datum/gender/female))
+			to_chat(user, SPAN("notice", "You don't understand how to move your straps properly. You're not a girl."))
+			return
+		if(!istype(user.body_build, /datum/body_build/slim/alt/tajaran))
+			to_chat(user, SPAN("notice", "It's too tight to move it. If I wanna move it, I need to lose some weight."))
+			return
+		if(item_state == "tajaranarmor")
+			to_chat(user, SPAN("notice", "I should first unbutton my armor to change straps."))
+			return
+		var/alt_icon = "[icon_open]_alt"
+		// god, forgive my sins to this community.
+		if (item_state == alt_icon)
+			item_state = icon_open
+		else
+			item_state = alt_icon
+		update_clothing_icon()	//so our overlays update
+		to_chat(user, SPAN("notice", "It's feels different"))
