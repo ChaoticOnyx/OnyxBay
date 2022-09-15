@@ -75,7 +75,7 @@
 		MATERIAL_GOLD                       = icon(MATERIALS_ICON, "gold"),
 		MATERIAL_SILVER                     = icon(MATERIALS_ICON, "silver"),
 		MATERIAL_DIAMOND                    = icon(MATERIALS_ICON, "diamond"),
-		MATERIAL_PLASMA                     = icon(MATERIALS_ICON, "plasma"),
+		MATERIAL_PLASMA                     = icon(MATERIALS_ICON, "solid_plasma"),
 		MATERIAL_URANIUM                    = icon(MATERIALS_ICON, "uranium"),
 		MATERIAL_COTTON                     = icon(MATERIALS_ICON, "cotton"),
 		MATERIAL_CARBON                     = icon(MATERIALS_ICON, "carbon"),
