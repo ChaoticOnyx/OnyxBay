@@ -17,6 +17,7 @@
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
 	foreign = TRUE
+	hidden = TRUE
 	max_damage = 600
 
 	var/mob/living/carbon/brain/brainchan = null 	//notice me, biostructure-kun~ (✿˵•́ ‸ •̀˵)

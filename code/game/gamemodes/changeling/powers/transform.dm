@@ -25,7 +25,7 @@
 		return
 
 	use_chems()
-	changeling.geneticdamage += 30
+	changeling.apply_genetic_damage(30)
 
 	var/S_name = chosen_dna.speciesName
 	var/datum/species/S_dat = all_species[S_name]

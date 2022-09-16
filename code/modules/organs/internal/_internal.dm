@@ -12,6 +12,7 @@
 	var/min_bruised_damage = 10       // Damage before considered bruised
 	var/foreign = FALSE 			  // foreign organs shouldn't be removed or recreated on revive
 	var/override_species_icon = FALSE // Should we ignore species-specific icons?
+	var/hidden = FALSE				  // Should this organ be hidden on scanners?
 
 /obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)
