@@ -664,7 +664,13 @@ its easier to just keep the beam vertical.
 		return FALSE
 
 	var/list/valid_turfs = list()
-	for(var/dir_to_test in GLOB.cardinal)
+	var/list/valid_dirs = GLOB.cardinal.Copy()
+
+	for(var/obj/machinery/door/window/slim_door in T.contents)
+		if(slim_door.density)
+			valid_dirs -= slim_door.dir
+
+	for(var/dir_to_test in valid_dirs)
 		var/turf/new_turf = get_step(T, dir_to_test)
 		if(!new_turf.contains_dense_objects(FALSE))
 			valid_turfs.Add("[dir_to_test]")
