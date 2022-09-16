@@ -899,7 +899,7 @@
 	for(var/mob/living/carbon/h in world)
 		creatures += h
 	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in creatures
-	if (isnull(target))
+	if (QDELETED(target))
 		return
 
 	var/say = sanitize(input("What do you wish to say"))

@@ -231,7 +231,7 @@
 
 			for(var/organ_tag in H.species.has_limbs)
 				var/obj/item/organ/external/part = H.organs_by_name[organ_tag]
-				if(isnull(part) || part.is_stump())
+				if(QDELETED(part) || part.is_stump())
 					image_key += "0"
 					continue
 				if(part)
@@ -284,4 +284,3 @@
 	..()
 	H.pulling_punches = TRUE
 	H.nabbing = FALSE
-

@@ -87,7 +87,7 @@
 		data["message_current"] = current_viewing_message
 
 	var/list/processed_evac_options = list()
-	if(!isnull(evacuation_controller))
+	if(!QDELETED(evacuation_controller))
 		for (var/datum/evacuation_option/EO in evacuation_controller.available_evac_options())
 			var/list/option = list()
 			option["option_text"] = EO.option_text
@@ -186,7 +186,7 @@
 			. = 1
 			if(is_autenthicated(user))
 				var/datum/evacuation_option/selected_evac_option = evacuation_controller.evacuation_options[href_list["target"]]
-				if (isnull(selected_evac_option) || !istype(selected_evac_option))
+				if (QDELETED(selected_evac_option) || !istype(selected_evac_option))
 					return
 				if (!selected_evac_option.silicon_allowed && issilicon(user))
 					return

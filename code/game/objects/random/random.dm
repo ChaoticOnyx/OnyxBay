@@ -19,7 +19,7 @@
 	if(prob(spawn_nothing_percentage))
 		return
 
-	if(isnull(loc))
+	if(QDELETED(loc))
 		return
 
 	var/build_path = pickweight(spawn_choices())

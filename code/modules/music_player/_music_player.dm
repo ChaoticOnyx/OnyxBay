@@ -401,7 +401,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(broken)
 		return
 
-	if(isnull(tape))
+	if(QDELETED(tape))
 		return
 
 	if(!tape.CanPlay())

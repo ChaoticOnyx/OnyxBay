@@ -70,7 +70,7 @@
 
 /obj/structure/iv_drip/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/reagent_containers))
-		if(!isnull(src.beaker))
+		if(!QDELETED(src.beaker))
 			to_chat(user, "There is already a reagent container loaded!")
 			return
 		user.drop_item()

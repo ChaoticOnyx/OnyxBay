@@ -199,10 +199,10 @@ field_generator power level display
 
 	var/power_draw = gen_power_draw
 	for(var/obj/machinery/field_generator/FG in connected_gens)
-		if (!isnull(FG))
+		if (!QDELETED(FG))
 			power_draw += gen_power_draw
 	for (var/obj/machinery/containment_field/F in fields)
-		if (!isnull(F))
+		if (!QDELETED(F))
 			power_draw += field_power_draw
 	power_draw /= 2	//because this will be mirrored for both generators
 	if(draw_power(round(power_draw)) >= power_draw)
@@ -269,12 +269,12 @@ field_generator power level display
 					return 0
 		steps += 1
 		G = locate(/obj/machinery/field_generator) in T
-		if(!isnull(G))
+		if(!QDELETED(G))
 			steps -= 1
 			if(!G.active)
 				return 0
 			break
-	if(isnull(G))
+	if(QDELETED(G))
 		return
 	T = src.loc
 	for(var/dist = 0, dist < steps, dist += 1) // creates each field tile
@@ -289,7 +289,7 @@ field_generator power level display
 			CF.set_dir(field_dir)
 	var/listcheck = 0
 	for(var/obj/machinery/field_generator/FG in connected_gens)
-		if (isnull(FG))
+		if (QDELETED(FG))
 			continue
 		if(FG == G)
 			listcheck = 1
@@ -298,7 +298,7 @@ field_generator power level display
 		connected_gens.Add(G)
 	listcheck = 0
 	for(var/obj/machinery/field_generator/FG2 in G.connected_gens)
-		if (isnull(FG2))
+		if (QDELETED(FG2))
 			continue
 		if(FG2 == src)
 			listcheck = 1
