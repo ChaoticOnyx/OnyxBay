@@ -21,7 +21,7 @@
 
 	// Weeds like water and nutrients, there's a chance the weed population will increase.
 	// Bonus chance if the tray is unoccupied.
-	if(waterlevel > 10 && nutrilevel > 2 && prob(isnull(seed) ? 5 : 1))
+	if(waterlevel > 10 && nutrilevel > 2 && prob(QDELETED(seed) ? 5 : 1))
 		weedlevel += 1 * HYDRO_SPEED_MULTIPLIER
 
 	// There's a chance for a weed explosion to happen if the weeds take over.

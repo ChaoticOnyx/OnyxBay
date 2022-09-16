@@ -96,7 +96,7 @@
 
 	if(user.restrained())
 		return 0
-	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
+	if(QDELETED(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0

@@ -171,7 +171,7 @@
 			to_chat(user, "<span class='warning'>You need to remove the occupant first!</span>")
 			return
 	if(istype(W, /obj/item/organ/internal/stack))
-		if(isnull(lace))
+		if(QDELETED(lace))
 			to_chat(user, "<span class='notice'>You insert \the [W] into [src].</span>")
 			user.drop_from_inventory(W)
 			lace = W
@@ -182,7 +182,7 @@
 			to_chat(user, "<span class='warning'>\The [src] already has a neural lace inside it!</span>")
 			return
 	else if(isWrench(W))
-		if(isnull(occupant))
+		if(QDELETED(occupant))
 			if(anchored)
 				anchored = 0
 				user.visible_message("[user] unsecures [src] from the floor.", "You unsecure [src] from the floor.")

@@ -308,7 +308,7 @@
 
 	var/turf/L = loc
 
-	if(isnull(L))		// We have a null turf...something is wrong, stop processing this entity.
+	if(QDELETED(L))		// We have a null turf...something is wrong, stop processing this entity.
 		return PROCESS_KILL
 
 	if(!istype(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.

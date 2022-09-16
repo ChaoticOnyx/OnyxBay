@@ -111,7 +111,7 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 /datum/antagonist/abductor/proc/finalize_abductor(datum/mind/player, datum/team/team)
 	//Equip
 	var/mob/living/carbon/human/H = player.current
-	if(isnull(H.mind.abductor))
+	if(QDELETED(H.mind.abductor))
 		H.mind.abductor=new()
 
 	H.mind.abductor.team=team

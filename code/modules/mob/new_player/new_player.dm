@@ -152,7 +152,7 @@
 				to_chat(src, "<span class='danger'>Could not locate an observer spawn point. Use the Teleport verb to jump to the map.</span>")
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 
-			if(isnull(client.holder))
+			if(QDELETED(client.holder))
 				announce_ghost_joinleave(src)
 
 			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
