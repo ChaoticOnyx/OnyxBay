@@ -201,3 +201,5 @@
 	var/obj/item/organ/external/E = M.organs_by_name[BP_CHEST]
 	var/obj/item/card/id/ID = new /obj/item/card/id/medical(E)
 	E.implants += ID
+
+	M.set_id_info(ID)
