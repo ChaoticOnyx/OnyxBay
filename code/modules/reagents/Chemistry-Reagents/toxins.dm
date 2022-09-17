@@ -702,7 +702,7 @@
 		if(impregnate)
 			AE = new /obj/item/organ/internal/alien_embryo(H)
 			H.internal_organs_by_name[BP_EMBRYO] = AE
-			to_chat(H, SPAN_WARNING("You feel strange tingling in your belly!"))
+			to_chat(H, SPAN("warning", "You feel strange tingling in your belly!"))
 
 /datum/reagent/toxin/hair_remover
 	name = "Hair Remover"
