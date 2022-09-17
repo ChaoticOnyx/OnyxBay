@@ -717,8 +717,7 @@
 				data["impregnated"] = TRUE
 				if(continue_impregnation)
 					to_chat(M, SPAN_DANGER("You start to feel dull pain inside your chest."))
-					AE = new /obj/item/organ/internal/alien_embryo(M)
-					M.internal_organs_by_name[BP_EMBRYO] = AE
+					M.internal_organs_by_name[BP_EMBRYO] = new /obj/item/organ/internal/alien_embryo(M)
 
 /datum/reagent/toxin/hair_remover
 	name = "Hair Remover"
