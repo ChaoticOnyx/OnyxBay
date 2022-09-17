@@ -133,7 +133,7 @@
 
 			if(mind.changeling)
 				stat("Chemical Storage: ", mind.changeling.chem_charges)
-				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
+				stat("Genetic Damage Time: ", mind.changeling.genome_damage)
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)

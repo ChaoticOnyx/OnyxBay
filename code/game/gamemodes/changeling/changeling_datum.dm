@@ -19,7 +19,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/chem_recharge_rate = 0.5
 	var/chem_storage = 100
 
-	var/geneticdamage = 0 // use (set|apply)_genetic_damage
+	var/genome_damage = 0 // use (set|apply)_genome_damage
 	var/geneticpoints = 10
 
 	var/list/purchasedpowers = list() // Purchased instances of /datum/power/changeling; not to be confused with available_powers.
@@ -60,7 +60,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	chem_charges = min(max(0, chem_charges + chem_recharge_rate), chem_storage)
-	apply_genetic_damage(-1)
+	apply_genome_damage(-1)
 
 	set_next_think(world.time + 1 SECOND)
 
@@ -81,25 +81,25 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	true_dead = TRUE
 
 
-/datum/changeling/proc/apply_genetic_damage(damage)
-	set_genetic_damage(geneticdamage + damage)
+/datum/changeling/proc/apply_genome_damage(damage)
+	set_genome_damage(genome_damage + damage)
 
-/datum/changeling/proc/set_genetic_damage(new_damage)
-	new_damage = Clamp(new_damage, 0, 100)
+/datum/changeling/proc/set_genome_damage(new_damage)
+	new_damage = Clamp(new_damage, 0, 200)
 
-	if(new_damage == 0 && geneticdamage > 0 && my_mob) // hide the biosctructure if no gendamage
+	if(new_damage == 0 && genome_damage > 0 && my_mob) // hide the biosctructure if no gendamage
 		to_chat(my_mob, SPAN("changeling", "You feel your genomes have assembled. Your special biostructure cannot be easily seen now."))
 		var/obj/item/organ/internal/biostructure/BIO = locate() in my_mob.contents
 		if(BIO)
 			BIO.hidden = TRUE
 
-	if(new_damage > 0 && geneticdamage == 0 && my_mob) // show the biosctructure if we gain some gendamage
+	if(new_damage > 0 && genome_damage == 0 && my_mob) // show the biosctructure if we gain some gendamage
 		to_chat(my_mob, SPAN("changeling", "You feel your genomes start to disassemble. Your special biostructure can now be easily spotted."))
 		var/obj/item/organ/internal/biostructure/BIO = locate() in my_mob.contents
 		if(BIO)
 			BIO.hidden = FALSE
 
-	geneticdamage = new_damage
+	genome_damage = new_damage
 
 // Transfers us and our biostructure to another mob. Called by /datum/mind/transfer_to() and hopefully we will never need to call it manually.
 /datum/changeling/proc/transfer_to(mob/living/L)
