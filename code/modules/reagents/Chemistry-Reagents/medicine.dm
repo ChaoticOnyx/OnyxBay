@@ -359,6 +359,37 @@
 		var/mob/living/carbon/human/H = M
 		H.update_mutations()
 
+/datum/reagent/ryetalyn/overdose(mob/living/carbon/M, alien)
+	. = ..()
+	if(M.mind?.changeling && world.time - M.mind.changeling.last_transformation_at > 100)
+		// changelings get random appearance, since they don't have an initial one
+		for(var/datum/changeling_power/CP in M.mind.changeling.available_powers)
+			if(CP.type == /datum/changeling_power/transform) // assume they must have a transform power
+				var/datum/changeling_power/transform/TR = CP
+
+				to_chat(M, SPAN_DANGER("You feel your genome is going bananas!"))
+				M.visible_message(SPAN("warning", "[M]'s body begins to twist, changing rapidly!"))
+
+				M.mind.changeling.apply_genome_damage(20)
+
+				var/datum/dna/new_dna = M.dna.Clone()
+				for(var/i=1 to new_dna.UI.len)
+					new_dna.SetUIValue(i,rand(1,4095))
+
+				var/mob/living/carbon/human/H = M
+
+				var/list/new_flavor = list()
+				for(var/thing in H.flavor_texts)
+					new_flavor[thing] = null
+
+				var/datum/absorbed_dna/new_a_dna = new("Unknown", new_dna, M.species.name, M.languages, M.modifiers, new_flavor)
+
+				TR.handle_transformation(new_a_dna)
+
+				M.mind.changeling.last_transformation_at = world.time
+				break
+		return
+
 /datum/reagent/hyperzine
 	name = "Hyperzine"
 	description = "Hyperzine is a highly effective, long lasting, muscle stimulant."
