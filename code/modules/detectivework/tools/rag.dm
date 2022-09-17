@@ -103,8 +103,8 @@
 			if (standard_feed_mob(user, target))
 				user.do_attack_animation(src)
 				user.visible_message(
-					"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
-					"<span class='warning'>You smother [target] with [src]!</span>",
+					SPAN("danger", "\The [user] smothers [target] with [src]!"),
+					SPAN("warning", "You smother [target] with [src]!"),
 					"You hear some struggling and muffled cries of surprise"
 					)
 				update_name()
