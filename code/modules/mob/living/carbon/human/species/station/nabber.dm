@@ -34,9 +34,6 @@
 	icobase = 'icons/mob/human_races/r_nabber.dmi'
 	deform = 'icons/mob/human_races/r_nabber.dmi'
 
-	eye_icon = "eyes_nabber"
-	eye_icon_location = 'icons/mob/nabber_face.dmi'
-
 	limb_blend = ICON_MULTIPLY
 
 	has_floating_eyes = 1
