@@ -97,25 +97,71 @@
 			user.visible_message("\The [user] finishes wiping off the [A]!")
 			A.clean_blood()
 
-/obj/item/reagent_containers/rag/attack(atom/target as obj|turf|area, mob/user as mob , flag)
+/obj/item/reagent_containers/rag/proc/default_attack(atom/target, mob/user)
+	if(!on_fire && reagents.total_volume)
+		if(user.zone_sel.selecting == BP_MOUTH)
+			if (standard_feed_mob(user, target))
+				user.do_attack_animation(src)
+				user.visible_message(
+					"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
+					"<span class='warning'>You smother [target] with [src]!</span>",
+					"You hear some struggling and muffled cries of surprise"
+					)
+				update_name()
+		else
+			wipe_down(target, user)
+
+/obj/item/reagent_containers/rag/attack(atom/target, mob/user)
 	if(isliving(target))
 		var/mob/living/M = target
 		if(on_fire)
 			user.visible_message("<span class='danger'>\The [user] hits [target] with [src]!</span>",)
 			user.do_attack_animation(src)
 			M.IgniteMob()
-		else if(reagents.total_volume)
-			if(user.zone_sel.selecting == BP_MOUTH)
-				if (standard_feed_mob(user, target))
-					user.do_attack_animation(src)
-					user.visible_message(
-						"<span class='danger'>\The [user] smothers [target] with [src]!</span>",
-						"<span class='warning'>You smother [target] with [src]!</span>",
-						"You hear some struggling and muffled cries of surprise"
-						)
-					update_name()
-			else
-				wipe_down(target, user)
+		else if(ishuman(target) && istype(user))
+			var/mob/living/carbon/human/H = target
+			var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
+
+			if(BP_IS_ROBOTIC(affecting))
+				to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
+				default_attack(target, user)
+				return
+
+			if (!(affecting.status & ORGAN_BLEEDING))
+				to_chat(user, SPAN("warning", "Target limbs must be bleeding!"))
+				default_attack(target, user)
+				return
+
+			for(var/obj/item/clothing/C in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
+				if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+					to_chat(user, SPAN("warning", "You need to take of [C] to bondage [target]!"))
+					default_attack(target, user)
+					return
+
+			for (var/datum/wound/W in affecting.wounds)
+				if (!(W.damage_type in list(CUT, PIERCE)))
+					continue
+
+				if (W.bandaged)
+					to_chat(user, SPAN("notice", "The wounds on [H]'s [affecting.name] have already been bandaged."))
+					continue
+
+				user.visible_message(SPAN("notice", "\The [user] starts bandaging [H]'s [affecting.name]."), \
+									SPAN("notice", "You start bandaging [H]'s [affecting.name]."))
+
+				if(!do_mob(user, M, 50))
+					to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
+					default_attack(target, user)
+					return
+
+				W.bandage()
+				reagents.trans_to(target, min(reagents.total_volume, amount_per_transfer_from_this))
+				qdel(src)
+				user.visible_message(SPAN("notice", "\The [user] successfully bandaged [H]'s cut"))
+				return
+
+		default_attack(target, user)
+
 		return
 
 	return ..()
