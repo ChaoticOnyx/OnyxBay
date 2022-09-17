@@ -85,15 +85,15 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set_genome_damage(genome_damage + damage)
 
 /datum/changeling/proc/set_genome_damage(new_damage)
-	new_damage = Clamp(new_damage, 0, 200)
+	new_damage = clamp(new_damage, 0, 200)
 
-	if(new_damage == 0 && genome_damage > 0 && my_mob) // hide the biosctructure if no gendamage
+	if(new_damage == 0 && genome_damage > 0 && my_mob) // hide the biostructure if no gendamage
 		to_chat(my_mob, SPAN("changeling", "You feel your genomes have assembled. Your special biostructure cannot be easily seen now."))
 		var/obj/item/organ/internal/biostructure/BIO = locate() in my_mob.contents
 		if(BIO)
 			BIO.hidden = TRUE
 
-	if(new_damage > 0 && genome_damage == 0 && my_mob) // show the biosctructure if we gain some gendamage
+	if(new_damage > 0 && genome_damage == 0 && my_mob) // show the biostructure if we gain some gendamage
 		to_chat(my_mob, SPAN("changeling", "You feel your genomes start to disassemble. Your special biostructure can now be easily spotted."))
 		var/obj/item/organ/internal/biostructure/BIO = locate() in my_mob.contents
 		if(BIO)
