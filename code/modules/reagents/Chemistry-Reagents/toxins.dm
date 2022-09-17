@@ -680,6 +680,30 @@
 	reagent_state = LIQUID
 	color = "#535e66"
 
+/datum/reagent/xenomicrobes/affect_blood(mob/living/carbon/M, alien, removed)
+	..()
+	
+	if(!ishuman(M))
+		return
+
+	var/mob/living/carbon/human/H = M
+	if(H.isSynthetic())
+		return
+	
+	if(prob(5)) // Let's make embryo appearance a bit more rare and unexpected.
+		var/impregnate = FALSE
+		var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
+		if(!AE)
+			impregnate = TRUE
+		else if(AE.status & ORGAN_DEAD)
+			qdel(AE)
+			impregnate = TRUE
+		
+		if(impregnate)
+			AE = new /obj/item/organ/internal/alien_embryo(H)
+			H.internal_organs_by_name[BP_EMBRYO] = AE
+			to_chat(H, SPAN_WARNING("You feel strange tingling in your belly!"))
+
 /datum/reagent/toxin/hair_remover
 	name = "Hair Remover"
 	description = "An extremely effective chemical depilator. Do not ingest."
