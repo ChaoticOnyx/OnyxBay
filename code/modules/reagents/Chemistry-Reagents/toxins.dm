@@ -686,6 +686,9 @@
 
 /datum/reagent/xenomicrobes/affect_blood(mob/living/carbon/M, alien, removed, affecting_dose)
 	..()
+	if(!ishuman(M))
+		return
+
 	if(!data["ticks"])
 		data["ticks"] = 0
 	data["ticks"]++
@@ -716,8 +719,6 @@
 					to_chat(M, SPAN_DANGER("You start to feel dull pain inside your chest."))
 					AE = new /obj/item/organ/internal/alien_embryo(M)
 					M.internal_organs_by_name[BP_EMBRYO] = AE
-
-
 
 /datum/reagent/toxin/hair_remover
 	name = "Hair Remover"
