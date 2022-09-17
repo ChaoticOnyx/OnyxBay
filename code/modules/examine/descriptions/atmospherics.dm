@@ -97,7 +97,7 @@
 	description_info = "This moves gas from one pipe to another.  A higher target pressure demands more energy.  The side with the red end is the output."
 
 //Vents
-/obj/machinery/atmospherics/unary/vent_pump
+/obj/machinery/atmospherics/unary/vent/pump
 	description_info = "This pumps the contents of the attached pipe out into the atmosphere, if needed.  It can be controlled from an Air Alarm."
 
 //Freezers
@@ -118,7 +118,7 @@
 	A green light on it means it is on."
 
 //Scrubbers
-/obj/machinery/atmospherics/unary/vent_scrubber
+/obj/machinery/atmospherics/unary/vent/scrubber
 	description_info = "This filters the atmosphere of harmful gas.  Filtered gas goes to the pipes connected to it, typically a scrubber pipe. \
 	It can be controlled from an Air Alarm.  It can be configured to drain all air rapidly with a 'panic syphon' from an air alarm."
 
@@ -159,4 +159,3 @@
 /obj/machinery/pipedispenser
 	description_info = "This can be moved by using a wrench.  You will need to wrench it again when you want to use it.  You can put \
 	excess (atmospheric) pipes into the dispenser, as well.  The dispenser requires electricity to function."
-

@@ -49,10 +49,10 @@
 /obj/machinery/atmospherics/proc/can_crawl_through()
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_pump/can_crawl_through()
+/obj/machinery/atmospherics/unary/vent/pump/can_crawl_through()
 	return !welded
 
-/obj/machinery/atmospherics/unary/vent_scrubber/can_crawl_through()
+/obj/machinery/atmospherics/unary/vent/scrubber/can_crawl_through()
 	return !welded
 
 /obj/machinery/atmospherics/proc/findConnecting(direction)

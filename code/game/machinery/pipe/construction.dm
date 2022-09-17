@@ -66,7 +66,7 @@ Buildable meters
 		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold/visible/fuel) || istype(make_from, /obj/machinery/atmospherics/pipe/manifold/hidden/fuel))
 			src.pipe_type = PIPE_FUEL_MANIFOLD
 			src.color = PIPE_COLOR_ORANGE
-		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_pump))
+		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent/pump))
 			src.pipe_type = PIPE_UVENT
 		else if(istype(make_from, /obj/machinery/atmospherics/valve/shutoff))
 			src.pipe_type = PIPE_SVALVE
@@ -88,7 +88,7 @@ Buildable meters
 			src.pipe_type = PIPE_GAS_FILTER
 		else if(istype(make_from, /obj/machinery/atmospherics/trinary/mixer))
 			src.pipe_type = PIPE_GAS_MIXER
-		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_scrubber))
+		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent/scrubber))
 			src.pipe_type = PIPE_SCRUBBER
 		else if(istype(make_from, /obj/machinery/atmospherics/binary/passive_gate))
 			src.pipe_type = PIPE_PASSIVE_GATE
@@ -793,7 +793,7 @@ Buildable meters
 				P.node2.build_network()
 
 		if(PIPE_UVENT)		//unary vent
-			var/obj/machinery/atmospherics/unary/vent_pump/V = new( src.loc )
+			var/obj/machinery/atmospherics/unary/vent/pump/V = new( src.loc )
 			V.set_dir(dir)
 			V.initialize_directions = pipe_dir
 			if (pipename)
@@ -979,7 +979,7 @@ Buildable meters
 				P.node3.build_network()
 
 		if(PIPE_SCRUBBER)		//scrubber
-			var/obj/machinery/atmospherics/unary/vent_scrubber/S = new(src.loc)
+			var/obj/machinery/atmospherics/unary/vent/scrubber/S = new(src.loc)
 			S.set_dir(dir)
 			S.initialize_directions = pipe_dir
 			if (pipename)

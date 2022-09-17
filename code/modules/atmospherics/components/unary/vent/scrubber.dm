@@ -1,52 +1,30 @@
-/obj/machinery/atmospherics/unary/vent_scrubber
+/obj/machinery/atmospherics/unary/vent/scrubber
 	icon = 'icons/atmos/vent_scrubber.dmi'
 	icon_state = "map_scrubber_off"
-	plane = FLOOR_PLANE
-
 	name = "Air Scrubber"
 	desc = "Has a valve and pump attached to it."
-	use_power = POWER_USE_OFF
-	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
-	power_rating = 7500			//7500 W ~ 10 HP
-
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SCRUBBER //connects to regular and scrubber pipes
-
-	level = 1
-
-	var/area/initial_loc
-	var/id_tag = null
-	var/frequency = 1439
-	var/datum/radio_frequency/radio_connection
-
-	var/hibernate = 0 //Do we even process?
 	var/scrubbing = 1 //0 = siphoning, 1 = scrubbing
 	var/list/scrubbing_gas
-
 	var/panic = 0 //is this scrubber panicked?
 
-	var/area_uid
-	var/radio_filter_out
-	var/radio_filter_in
-
-	var/welded = 0
-
-/obj/machinery/atmospherics/unary/vent_scrubber/on
+/obj/machinery/atmospherics/unary/vent/scrubber/on
 	use_power = POWER_USE_IDLE
 	icon_state = "map_scrubber_on"
 
-/obj/machinery/atmospherics/unary/vent_scrubber/New()
+/obj/machinery/atmospherics/unary/vent/scrubber/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_FILTER
 	icon = null
 
-/obj/machinery/atmospherics/unary/vent_scrubber/Destroy()
+/obj/machinery/atmospherics/unary/vent/scrubber/Destroy()
 	unregister_radio(src, frequency)
 	if(initial_loc)
 		initial_loc.air_scrub_info -= id_tag
 		initial_loc.air_scrub_names -= id_tag
 	return ..()
 
-/obj/machinery/atmospherics/unary/vent_scrubber/update_icon(safety = 0)
+/obj/machinery/atmospherics/unary/vent/scrubber/update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 
@@ -68,7 +46,7 @@
 
 	overlays += icon_manager.get_atmos_icon("device", , , scrubber_icon)
 
-/obj/machinery/atmospherics/unary/vent_scrubber/update_underlays()
+/obj/machinery/atmospherics/unary/vent/scrubber/update_underlays()
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
@@ -82,12 +60,12 @@
 			else
 				add_underlay(T,, dir)
 
-/obj/machinery/atmospherics/unary/vent_scrubber/proc/set_frequency(new_frequency)
+/obj/machinery/atmospherics/unary/vent/scrubber/proc/set_frequency(new_frequency)
 	radio_controller.remove_object(src, frequency)
 	frequency = new_frequency
 	radio_connection = radio_controller.add_object(src, frequency, radio_filter_in)
 
-/obj/machinery/atmospherics/unary/vent_scrubber/proc/broadcast_status()
+/obj/machinery/atmospherics/unary/vent/scrubber/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
@@ -118,7 +96,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_scrubber/Initialize()
+/obj/machinery/atmospherics/unary/vent/scrubber/Initialize()
 	. = ..()
 	initial_loc = get_area(loc)
 	area_uid = initial_loc.uid
@@ -136,7 +114,7 @@
 			if(g != "oxygen" && g != "nitrogen")
 				scrubbing_gas += g
 
-/obj/machinery/atmospherics/unary/vent_scrubber/Process()
+/obj/machinery/atmospherics/unary/vent/scrubber/Process()
 	..()
 
 	if (hibernate > world.time)
@@ -177,11 +155,11 @@
 
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_scrubber/hide(i) //to make the little pipe section invisible, the icon changes.
+/obj/machinery/atmospherics/unary/vent/scrubber/hide(i) //to make the little pipe section invisible, the icon changes.
 	update_icon()
 	update_underlays()
 
-/obj/machinery/atmospherics/unary/vent_scrubber/receive_signal(datum/signal/signal)
+/obj/machinery/atmospherics/unary/vent/scrubber/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
@@ -260,7 +238,7 @@
 	update_icon()
 	return
 
-/obj/machinery/atmospherics/unary/vent_scrubber/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/unary/vent/scrubber/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		if (!(stat & NOPOWER) && use_power)
 			to_chat(user, "<span class='warning'>You cannot unwrench \the [src], turn it off first.</span>")
@@ -320,7 +298,7 @@
 
 	return ..()
 
-/obj/machinery/atmospherics/unary/vent_scrubber/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/vent/scrubber/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"

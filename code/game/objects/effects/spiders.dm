@@ -120,7 +120,7 @@
 	var/mob/living/simple_animal/hostile/giant_spider/greater_form
 	var/last_itch = 0
 	var/amount_grown = -1
-	var/obj/machinery/atmospherics/unary/vent_pump/entry_vent
+	var/obj/machinery/atmospherics/unary/vent/pump/entry_vent
 	var/travelling_in_vent = 0
 	var/dormant = FALSE    // If dormant, does not add the spiderling to the process list unless it's also growing
 	var/growth_chance = 50 // % chance of beginning growth, and eventually become a beautiful death machine
@@ -197,14 +197,14 @@
 		if(get_dist(src, entry_vent) <= 1)
 			if(entry_vent.network && entry_vent.network.normal_members.len)
 				var/list/vents = list()
-				for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in entry_vent.network.normal_members)
+				for(var/obj/machinery/atmospherics/unary/vent/pump/temp_vent in entry_vent.network.normal_members)
 					vents.Add(temp_vent)
 				if(!vents.len)
 					entry_vent = null
 
 					set_next_think(world.time + 1 SECOND)
 					return
-				var/obj/machinery/atmospherics/unary/vent_pump/exit_vent = pick(vents)
+				var/obj/machinery/atmospherics/unary/vent/pump/exit_vent = pick(vents)
 				/*if(prob(50))
 					src.visible_message("<B>[src] scrambles into the ventillation ducts!</B>")*/
 
@@ -256,7 +256,7 @@
 					pixel_y = Clamp(pixel_y + rand(min_y, max_y), -shift_range, shift_range)
 		else if(prob(5))
 			//vent crawl!
-			for(var/obj/machinery/atmospherics/unary/vent_pump/v in view(7,src))
+			for(var/obj/machinery/atmospherics/unary/vent/pump/v in view(7,src))
 				if(!v.welded)
 					entry_vent = v
 					walk_to(src, entry_vent, 5)

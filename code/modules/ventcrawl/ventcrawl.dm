@@ -1,6 +1,6 @@
 var/list/ventcrawl_machinery = list(
-	/obj/machinery/atmospherics/unary/vent_scrubber,
-	/obj/machinery/atmospherics/unary/vent_pump
+	/obj/machinery/atmospherics/unary/vent/scrubber,
+	/obj/machinery/atmospherics/unary/vent/pump
 	)
 
 // Vent crawling whitelisted items, whoo

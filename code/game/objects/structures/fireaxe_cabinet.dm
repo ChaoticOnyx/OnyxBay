@@ -4,7 +4,6 @@
 	icon_state = "fireaxe"
 	anchored = 1
 	density = 0
-
 	var/damage_threshold = 15
 	var/open
 	var/unlocked

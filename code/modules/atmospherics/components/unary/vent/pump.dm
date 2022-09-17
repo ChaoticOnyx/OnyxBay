@@ -7,30 +7,15 @@
 #define PRESSURE_CHECK_EXTERNAL 1
 #define PRESSURE_CHECK_INTERNAL 2
 
-/obj/machinery/atmospherics/unary/vent_pump
+/obj/machinery/atmospherics/unary/vent/pump
 	icon = 'icons/atmos/vent_pump.dmi'
 	icon_state = "map_vent"
-	plane = FLOOR_PLANE
-
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it."
-	use_power = POWER_USE_OFF
-	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
-	power_rating = 7500			//7500 W ~ 10 HP
-
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SUPPLY //connects to regular and supply pipes
-
-	var/area/initial_loc
-	level = 1
-	var/area_uid
-	var/id_tag = null
-
-	var/hibernate = 0 //Do we even process?
 	var/pump_direction = 1 //0 = siphoning, 1 = releasing
-
 	var/external_pressure_bound = EXTERNAL_PRESSURE_BOUND
 	var/internal_pressure_bound = INTERNAL_PRESSURE_BOUND
-
 	var/pressure_checks = PRESSURE_CHECKS
 	//1: Do not pass external_pressure_bound
 	//2: Do not pass internal_pressure_bound
@@ -41,26 +26,18 @@
 	var/internal_pressure_bound_default = INTERNAL_PRESSURE_BOUND
 	var/pressure_checks_default = PRESSURE_CHECKS
 
-	var/welded = 0 // Added for aliens -- TLE
-
-	var/frequency = 1439
-	var/datum/radio_frequency/radio_connection
-
-	var/radio_filter_out
-	var/radio_filter_in
-
-/obj/machinery/atmospherics/unary/vent_pump/on
+/obj/machinery/atmospherics/unary/vent/pump/on
 	use_power = POWER_USE_IDLE
 	icon_state = "map_vent_out"
 
-/obj/machinery/atmospherics/unary/vent_pump/siphon
+/obj/machinery/atmospherics/unary/vent/pump/siphon
 	pump_direction = 0
 
-/obj/machinery/atmospherics/unary/vent_pump/siphon/on
+/obj/machinery/atmospherics/unary/vent/pump/siphon/on
 	use_power = POWER_USE_IDLE
 	icon_state = "map_vent_in"
 
-/obj/machinery/atmospherics/unary/vent_pump/siphon/on/atmos
+/obj/machinery/atmospherics/unary/vent/pump/siphon/on/atmos
 	use_power = POWER_USE_IDLE
 	icon_state = "map_vent_in"
 	external_pressure_bound = 0
@@ -70,37 +47,37 @@
 	pressure_checks = 2
 	pressure_checks_default = 2
 
-/obj/machinery/atmospherics/unary/vent_pump/New()
+/obj/machinery/atmospherics/unary/vent/pump/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP
 	icon = null
 
-/obj/machinery/atmospherics/unary/vent_pump/Destroy()
+/obj/machinery/atmospherics/unary/vent/pump/Destroy()
 	unregister_radio(src, frequency)
 	if(initial_loc)
 		initial_loc.air_vent_info -= id_tag
 		initial_loc.air_vent_names -= id_tag
 	. = ..()
 
-/obj/machinery/atmospherics/unary/vent_pump/high_volume
+/obj/machinery/atmospherics/unary/vent/pump/high_volume
 	name = "Large Air Vent"
 	power_channel = STATIC_EQUIP
 	power_rating = 15000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/high_volume/New()
+/obj/machinery/atmospherics/unary/vent/pump/high_volume/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 650
 
-/obj/machinery/atmospherics/unary/vent_pump/engine
+/obj/machinery/atmospherics/unary/vent/pump/engine
 	name = "Engine Core Vent"
 	power_channel = STATIC_EQUIP
 	power_rating = 30000	//15 kW ~ 20 HP
 
-/obj/machinery/atmospherics/unary/vent_pump/engine/New()
+/obj/machinery/atmospherics/unary/vent/pump/engine/New()
 	..()
 	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 350 //meant to match air injector
 
-/obj/machinery/atmospherics/unary/vent_pump/update_icon(safety = 0)
+/obj/machinery/atmospherics/unary/vent/pump/update_icon(safety = 0)
 	if(!check_icon_cache())
 		return
 	if (!node)
@@ -126,7 +103,7 @@
 
 	overlays += icon_manager.get_atmos_icon("device", , , vent_icon)
 
-/obj/machinery/atmospherics/unary/vent_pump/update_underlays()
+/obj/machinery/atmospherics/unary/vent/pump/update_underlays()
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
@@ -140,11 +117,11 @@
 			else
 				add_underlay(T,, dir)
 
-/obj/machinery/atmospherics/unary/vent_pump/hide()
+/obj/machinery/atmospherics/unary/vent/pump/hide()
 	update_icon()
 	update_underlays()
 
-/obj/machinery/atmospherics/unary/vent_pump/proc/can_pump()
+/obj/machinery/atmospherics/unary/vent/pump/proc/can_pump()
 	if(stat & (NOPOWER|BROKEN))
 		return 0
 	if(!use_power)
@@ -153,7 +130,7 @@
 		return 0
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_pump/Process()
+/obj/machinery/atmospherics/unary/vent/pump/Process()
 	..()
 
 	if(hibernate > world.time)
@@ -198,7 +175,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/unary/vent_pump/proc/get_pressure_delta(datum/gas_mixture/environment)
+/obj/machinery/atmospherics/unary/vent/pump/proc/get_pressure_delta(datum/gas_mixture/environment)
 	var/pressure_delta = DEFAULT_PRESSURE_DELTA
 	var/environment_pressure = environment.return_pressure()
 
@@ -215,7 +192,7 @@
 
 	return pressure_delta
 
-/obj/machinery/atmospherics/unary/vent_pump/proc/broadcast_status()
+/obj/machinery/atmospherics/unary/vent/pump/proc/broadcast_status()
 	if(!radio_connection)
 		return 0
 
@@ -249,7 +226,7 @@
 	return 1
 
 
-/obj/machinery/atmospherics/unary/vent_pump/Initialize()
+/obj/machinery/atmospherics/unary/vent/pump/Initialize()
 	. = ..()
 	initial_loc = get_area(loc)
 	area_uid = initial_loc.uid
@@ -263,13 +240,13 @@
 		radio_connection = register_radio(src, frequency, frequency, radio_filter_in)
 		src.broadcast_status()
 
-/obj/machinery/atmospherics/unary/vent_pump/receive_signal(datum/signal/signal)
+/obj/machinery/atmospherics/unary/vent/pump/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
 		return
 
 	hibernate = 0
 
-	//log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent_pump/receive_signal([signal.debug_print()])")
+	//log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent/pump/receive_signal([signal.debug_print()])")
 	if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 		return 0
 
@@ -332,7 +309,7 @@
 	update_icon()
 	return
 
-/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W, mob/user)
+/obj/machinery/atmospherics/unary/vent/pump/attackby(obj/item/W, mob/user)
 	if(isWelder(W))
 
 		var/obj/item/weldingtool/WT = W
@@ -369,7 +346,7 @@
 	else
 		..()
 
-/obj/machinery/atmospherics/unary/vent_pump/_examine_text(mob/user)
+/obj/machinery/atmospherics/unary/vent/pump/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nA small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W"
@@ -378,7 +355,7 @@
 	if(welded)
 		. += "\nIt seems welded shut."
 
-/obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/W as obj, mob/user as mob)
+/obj/machinery/atmospherics/unary/vent/pump/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
 	if (!(stat & NOPOWER) && use_power)

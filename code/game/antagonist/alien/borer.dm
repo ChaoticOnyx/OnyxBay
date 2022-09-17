@@ -59,7 +59,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 
 /datum/antagonist/borer/proc/get_vents()
 	var/list/vents = list()
-	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in GLOB.atmos_machinery)
+	for(var/obj/machinery/atmospherics/unary/vent/pump/temp_vent in GLOB.atmos_machinery)
 		if(!temp_vent.welded && temp_vent.network && (temp_vent.loc.z in GLOB.using_map.get_levels_with_trait(ZTRAIT_STATION)))
 			if(temp_vent.network.normal_members.len > 50)
 				vents += temp_vent

@@ -688,8 +688,8 @@ var/list/worths = list(
 					/obj/machinery/atmospherics/unary/heater = -6000,
 					/obj/machinery/atmospherics/unary/outlet_injector = -2300,
 					/obj/machinery/atmospherics/unary/oxygen_generator = -10000,
-					/obj/machinery/atmospherics/unary/vent_pump = -2000,
-					/obj/machinery/atmospherics/unary/vent_scrubber = -2300,
+					/obj/machinery/atmospherics/unary/vent/pump = -2000,
+					/obj/machinery/atmospherics/unary/vent/scrubber = -2300,
 					/obj/machinery/bodyscanner = -6000,
 					/obj/machinery/body_scanconsole = -1500,
 					/obj/machinery/ai_slipper = -500,
@@ -755,4 +755,3 @@ var/list/worths = list(
 					/obj/machinery/bookbinder = -1200,
 					/obj/machinery = -1000,
 					) //Must be in descending order. Child before parents, otherwise it doesn't work.,
-
