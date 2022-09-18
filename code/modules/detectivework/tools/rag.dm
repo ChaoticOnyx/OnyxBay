@@ -25,6 +25,7 @@
 	item_flags = ITEM_FLAG_NO_BLUDGEON
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = FALSE
+	var/obj/item/stack/medical/bruise_pack/BP
 
 	var/on_fire = 0
 	var/burn_time = 20 //if the rag burns for too long it turns to ashes
@@ -32,6 +33,11 @@
 /obj/item/reagent_containers/rag/Initialize()
 	. = ..()
 	update_name()
+	BP = new()
+
+/obj/item/reagent_containers/rag/Destroy()
+	. = ..()
+	QDEL_NULL(BP)
 
 /obj/item/reagent_containers/rag/attack_self(mob/user as mob)
 	if(on_fire)
@@ -119,46 +125,11 @@
 			user.do_attack_animation(src)
 			M.IgniteMob()
 		else if(ishuman(target) && istype(user))
-			var/mob/living/carbon/human/H = target
-			var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
-
-			if(BP_IS_ROBOTIC(affecting))
-				to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
-				default_attack(target, user)
-				return
-
-			if (!(affecting.status & ORGAN_BLEEDING))
-				to_chat(user, SPAN("warning", "Target limbs must be bleeding!"))
-				default_attack(target, user)
-				return
-
-			for(var/obj/item/clothing/C in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
-				if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-					to_chat(user, SPAN("warning", "You need to take of [C] to bondage [target]!"))
-					default_attack(target, user)
-					return
-
-			for (var/datum/wound/W in affecting.wounds)
-				if (!(W.damage_type in list(CUT, PIERCE)))
-					continue
-
-				if (W.bandaged)
-					to_chat(user, SPAN("notice", "The wounds on [H]'s [affecting.name] have already been bandaged."))
-					continue
-
-				user.visible_message(SPAN("notice", "\The [user] starts bandaging [H]'s [affecting.name]."), \
-									SPAN("notice", "You start bandaging [H]'s [affecting.name]."))
-
-				if(!do_mob(user, M, 50))
-					to_chat(user, SPAN("warning", "You must stand still to bandage wounds."))
-					default_attack(target, user)
-					return
-
-				W.bandage()
-				reagents.trans_to(target, min(reagents.total_volume, amount_per_transfer_from_this))
+			BP.attack(target, user)
+			reagents.trans_to(target, min(reagents.total_volume, amount_per_transfer_from_this))
+			if(!BP.amount)
 				qdel(src)
-				user.visible_message(SPAN("notice", "\The [user] successfully bandaged [H]'s cut"))
-				return
+			return
 
 		default_attack(target, user)
 
