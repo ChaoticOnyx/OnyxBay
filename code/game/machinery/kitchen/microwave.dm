@@ -297,7 +297,7 @@
 			cooked.dropInto(loc)
 			return
 	else
-		var/halftime = round(recipe.time / 5)
+		var/halftime = round(recipe.time / 20)
 		if (!wzhzhzh(halftime))
 			abort()
 			return
@@ -313,7 +313,7 @@
 		return
 
 /obj/machinery/microwave/proc/wzhzhzh(seconds as num) // Whoever named this proc is fucking literally Satan. ~ Z
-	seconds = min(round(seconds / cook_speed), 1)
+	seconds = max(round(seconds / cook_speed), 1)
 	for (var/i = 1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0

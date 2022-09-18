@@ -427,7 +427,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 		if(mode == 0)
 			cartdata["name"] = cartridge.name
-			if(isnull(cartridge.radio))
+			if(QDELETED(cartridge.radio))
 				cartdata["radio"] = 0
 			else
 				if(istype(cartridge.radio, /obj/item/radio/integrated/beepsky))
@@ -581,10 +581,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return
 
 /obj/item/device/pda/Topic(href, href_list)
-	if(href_list["cartmenu"] && !isnull(cartridge))
+	if(href_list["cartmenu"] && !QDELETED(cartridge))
 		cartridge.Topic(href, href_list)
 		return 1
-	if(href_list["radiomenu"] && !isnull(cartridge) && !isnull(cartridge.radio))
+	if(href_list["radiomenu"] && !QDELETED(cartridge) && !QDELETED(cartridge.radio))
 		cartridge.radio.Topic(href, href_list)
 		return 1
 
@@ -660,17 +660,17 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Medical Scan")
 			if(scanmode == 1)
 				scanmode = 0
-			else if((!isnull(cartridge)) && (cartridge.access_medical))
+			else if((!QDELETED(cartridge)) && (cartridge.access_medical))
 				scanmode = 1
 		if("Reagent Scan")
 			if(scanmode == 3)
 				scanmode = 0
-			else if((!isnull(cartridge)) && (cartridge.access_reagent_scanner))
+			else if((!QDELETED(cartridge)) && (cartridge.access_reagent_scanner))
 				scanmode = 3
 		if("Halogen Counter")
 			if(scanmode == 4)
 				scanmode = 0
-			else if((!isnull(cartridge)) && (cartridge.access_engine))
+			else if((!QDELETED(cartridge)) && (cartridge.access_engine))
 				scanmode = 4
 		if("Honk")
 			if ( !(last_honk && world.time < last_honk + 20) )
@@ -679,7 +679,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Gas Scan")
 			if(scanmode == 5)
 				scanmode = 0
-			else if((!isnull(cartridge)) && (cartridge.access_atmos))
+			else if((!QDELETED(cartridge)) && (cartridge.access_atmos))
 				scanmode = 5
 
 //MESSENGER/NOTE FUNCTIONS===================================
@@ -763,7 +763,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Send Honk")//Honk virus
 			if(cartridge && cartridge.access_clown)//Cartridge checks are kind of unnecessary since everything is done through switch.
 				var/obj/item/device/pda/P = locate(href_list["target"])//Leaving it alone in case it may do something useful, I guess.
-				if(!isnull(P))
+				if(!QDELETED(P))
 					if (!P.toff && cartridge.charges > 0)
 						cartridge.charges--
 						U.show_message("<span class='notice'>Virus sent!</span>", 1)
@@ -776,7 +776,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Send Silence")//Silent virus
 			if(cartridge && cartridge.access_mime)
 				var/obj/item/device/pda/P = locate(href_list["target"])
-				if(!isnull(P))
+				if(!QDELETED(P))
 					if (!P.toff && cartridge.charges > 0)
 						cartridge.charges--
 						U.show_message("<span class='notice'>Virus sent!</span>", 1)
@@ -812,7 +812,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(reception.telecomms_reception & TELECOMMS_RECEPTION_RECEIVER == 0) // Does our recepient have a broadcaster on their level?
 					U.show_message("<span class='warning'>An error flashes on your [src]: Recipient unavailable</span>", 1)
 					return
-				if(!isnull(P))
+				if(!QDELETED(P))
 					if (!P.toff && cartridge.charges > 0)
 						cartridge.charges--
 
@@ -988,7 +988,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if (!in_range(src, U) && loc != U)
 		return
 
-	if (isnull(P)||P.toff || toff)
+	if (QDELETED(P) ||P.toff || toff)
 		return
 
 	if (last_text && world.time < last_text + 5)
@@ -1167,7 +1167,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(issilicon(usr))
 		return
 
-	if(isnull(cartridge))
+	if(QDELETED(cartridge))
 		to_chat(usr, "<span class='notice'>\The [src] does not have a cartridge in it.</span>")
 		return
 
@@ -1292,7 +1292,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if(3)
 			if(!isobj(A))
 				return
-			if(!isnull(A.reagents))
+			if(!QDELETED(A.reagents))
 				if(A.reagents.reagent_list.len > 0)
 					var/reagents_length = A.reagents.reagent_list.len
 					to_chat(user, "<span class='notice'>[reagents_length] chemical agent[reagents_length > 1 ? "s" : ""] found.</span>")

@@ -364,7 +364,10 @@ character_slots = 10
 loadout_slots = 3
 
 ## How many loadout points are available. Use 0 to disable loadout, and any negative number to indicate infinite points.
-max_gear_cost = 10
+max_loadout_points = 10
+
+## How many extra pints patrons get.
+extra_loadout_points = 10
 
 ## Uncomment to prevent character spawn without surname.
 humans_need_surnames = false

@@ -32,7 +32,7 @@
 	faction = "scarybat"
 	var/mob/living/owner
 
-	stance = HOSTILE_STANCE_ALERT
+	stance = HOSTILE_STANCE_IDLE
 
 /mob/living/simple_animal/hostile/scarybat/New(loc, mob/living/L as mob)
 	..()

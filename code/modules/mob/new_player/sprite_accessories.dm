@@ -171,6 +171,10 @@
 	name = "Bedhead 3"
 	icon_state = "hair_bedheadv3"
 
+/datum/sprite_accessory/hair/Birdtail
+	name = "Bird Tail"
+	icon_state = "bird_tail"
+
 /datum/sprite_accessory/hair/beehive
 	name = "Beehive"
 	icon_state = "hair_beehive"

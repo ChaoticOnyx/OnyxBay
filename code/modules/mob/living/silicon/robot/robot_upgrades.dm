@@ -695,7 +695,7 @@
 /obj/item/borg/upgrade/death_alarm/think()
 	if (!installed) return
 
-	if(isnull(host)) // If the mob got gibbed
+	if(QDELETED(host)) // If the mob got gibbed
 		activate()
 		installed = 0
 		return
