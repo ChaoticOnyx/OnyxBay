@@ -27,17 +27,16 @@ var/datum/robolimb/basic_robolimb
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"
 	desc = "This limb is made from a cheap polymer."
-	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
 	unavailable_at_fab = FALSE
 
 /datum/robolimb/nanotrasen/tajaran
 	company = "NanoTrasen - Tajaran"
-	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/unbranded_taj.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_taj.dmi'
 	restricted_to = list(SPECIES_TAJARA)
 
 /datum/robolimb/nanotrasen/tajaran
 	company = "NanoTrasen - Unathi"
-	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/unbranded_unathi.dmi'
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
 	restricted_to = list(SPECIES_UNATHI)
 
 /datum/robolimb/bishop
