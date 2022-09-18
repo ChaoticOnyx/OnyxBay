@@ -69,6 +69,7 @@ var/datum/robolimb/basic_robolimb
 /datum/robolimb/xion/alt
 	company = "Xion Alt."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt.dmi'
+	has_eyes_icon = FALSE
 	applies_to_part = list(BP_HEAD)
 
 /datum/robolimb/wardtakahashi
