@@ -2281,6 +2281,14 @@
 	name = "Mine"
 	icon_state = "unexplored"
 
+/area/mine/unexplored/medium
+	name = "Medium mine "
+	icon_state = "unexplored_medium"
+
+/area/mine/unexplored/deep
+	name = "Deep mine"
+	icon_state = "unexplored_deep"
+
 /area/constructionsite
 	name = "\improper Construction Site"
 	icon_state = "yellow"
