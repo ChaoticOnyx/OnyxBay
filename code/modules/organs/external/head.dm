@@ -19,7 +19,6 @@
 	internal_organs_size = 3
 
 	var/can_intake_reagents = 1
-	var/eye_icon_location = 'icons/mob/human_face.dmi'
 
 	var/has_lips = TRUE
 
@@ -82,10 +81,6 @@
 			if(owner)
 				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
-/obj/item/organ/external/head/set_dna(datum/dna/new_dna)
-	..()
-	eye_icon_location = species.icobase
-
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
@@ -94,7 +89,6 @@
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
-			eye_icon_location = R.icon
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = FALSE
 
@@ -113,8 +107,14 @@
 
 	if(owner)
 		var/datum/species/S = owner.species
+		var/has_eyes_overlay = S.has_eyes_icon
+		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
+			var/datum/robolimb/R = all_robolimbs[model]
+			has_eyes_overlay = R.has_eyes_icon
+		
 		var/datum/body_build/BB = owner.body_build
-		if(S.has_eyes_icon)
+		if(has_eyes_overlay)
+			var/eye_icon_location = S.icobase
 			var/icon/eyes_icon = new /icon(eye_icon_location, "eyes[BB.index]")
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[S.vision_organ ? S.vision_organ : BP_EYES]
 			if(!ishuman(loc))
