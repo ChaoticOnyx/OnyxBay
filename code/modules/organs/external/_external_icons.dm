@@ -97,7 +97,7 @@ var/list/limb_icon_cache = list()
 		if(is_stump())
 			stump_icon = "_s"
 
-		icon_state = "[icon_name][gender][body_build][stump_icon][owner?.mind?.special_role == "Zombie" ? "_z" : ""]"
+		icon_state = "[icon_name][gender][body_build][stump_icon][owner?.mind?.special_role == "Zombie" && owner.species != all_species[SPECIES_HUMAN] ? "_z" : ""]"
 
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))

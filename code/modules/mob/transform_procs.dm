@@ -315,6 +315,8 @@
 	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
 	if (!src.mind || (src.mind && src.mind.special_role == "Zombie"))
 		return
+	if(species != all_species[SPECIES_HUMAN])
+		ChangeToHusk()
 	src.mind.special_role = "Zombie"
 	update_body(TRUE)
 	log_admin("[key_name(src)] has transformed into a zombie!")
