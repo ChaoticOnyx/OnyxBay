@@ -16,10 +16,9 @@ var/global/list/stool_cache = list() //haha stool
 	w_class = ITEM_SIZE_HUGE
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 0.05,
-		RADIATION_BETA_RAY = 0.05,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.0
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
 	)
 
 	var/base_icon = "stool"

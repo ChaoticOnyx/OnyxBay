@@ -418,7 +418,7 @@
 	for(i=0,i<4,i++)
 		sleep(50)
 		if(occupant)
-			occupant.rad_act(new /datum/radiation_source(new /datum/radiation_info(4 TERA BECQUEREL, RADIATION_ALPHA_RAY), src))
+			occupant.rad_act(new /datum/radiation_source(new /datum/radiation(4 TERA BECQUEREL, RADIATION_ALPHA_PARTICLE), src))
 			var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in occupant.internal_organs
 			if (!rad_organ)
 				if (occupant.can_feel_pain())
@@ -1034,7 +1034,7 @@
 		if(radiation_level > 1)
 			occupant.take_organ_damage(0,radiation_level + rand(1,3))
 
-		occupant.rad_act(new /datum/radiation_source(new /datum/radiation_info((1250 KILO BECQUEREL) * radiation_level, RADIATION_ALPHA_RAY), src))
+		occupant.rad_act(new /datum/radiation_source(new /datum/radiation((1250 KILO BECQUEREL) * radiation_level, RADIATION_ALPHA_PARTICLE), src))
 
 /obj/machinery/suit_cycler/proc/finished_job()
 	var/turf/T = get_turf(src)

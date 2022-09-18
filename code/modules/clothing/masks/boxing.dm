@@ -12,15 +12,15 @@
 	w_class = ITEM_SIZE_SMALL
 
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.3
+		RADIATION_ALPHA_PARTICLE = 21.6 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.4 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/balaclava/tactical
 	name = "green balaclava"
 	icon_state = "swatclava"
+	item_state = "swatclava"
 	down_icon_state = "swatclava_r"
 
 /obj/item/clothing/mask/luchador
@@ -33,10 +33,9 @@
 	w_class = ITEM_SIZE_SMALL
 	siemens_coefficient = 3.0
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 0.9,
-		RADIATION_GAMMA_RAY = 0.0,
-		RADIATION_HAWKING_RAY = 0.3
+		RADIATION_ALPHA_PARTICLE = 20 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 2.25 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/mask/luchador/tecnicos

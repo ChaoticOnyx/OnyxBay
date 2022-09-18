@@ -1,8 +1,8 @@
 var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
-	name = "Radiation Collector Array"
-	desc = "A device which uses Hawking rays and plasma to produce power. WARNING: Working with doses of 1 Gy/s and higher can broke the device"
+	name = "Hawking Collector Array"
+	desc = "A device which uses Hawking radiation and plasma to produce power. WARNING: Working with temperature 400C and higher can broke the device"
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
@@ -10,13 +10,14 @@ var/global/list/rad_collectors = list()
 	req_access = list(access_engine_equip)
 	var/obj/item/tank/plasma/P = null
 	var/last_power = 0
+	var/last_temp_dif = 0
 	var/last_power_new = 0
 	var/active = 0
 	var/locked = 0
 	var/drainratio = 1
 
 	var/health = 100
-	var/max_safe_temp = 1000 CELSIUS
+	var/max_safe_temp = 400 CELSIUS
 	var/melted
 
 /obj/machinery/power/rad_collector/New()
@@ -44,31 +45,23 @@ var/global/list/rad_collectors = list()
 		if(health <= 0)
 			collector_break()
 
-		var/total_dose = 0
 		var/list/sources = SSradiation.get_sources_in_range(src)
 		for(var/datum/radiation_source/source in sources)
-			if(source.info.ray_type != RADIATION_HAWKING_RAY)
+			if(source.info.radiation_type != RADIATION_HAWKING)
 				continue
 
-			var/remain_energy = source.calc_energy_rt(src)
-			var/old_energy = source.info.energy
+			var/datum/radiation/R = source.travel(src)
+			var/total_energy = R.energy * R.activity
 
-			source.info.energy = remain_energy
-			total_dose += source.calc_absorbed_dose(AVERAGE_HUMAN_WEIGHT)
-			source.info.energy = old_energy
-
-			var/exceed = max(0.0, total_dose - (1 GREY))
-			if(exceed > 0)
-				health -= (exceed * 2)
-
-			receive_pulse((remain_energy * source.info.activity))
+			receive_pulse(total_energy)
 
 	if(P)
-		if(P.air_contents.gas["plasma"] == 0)
+		var/datum/gas_mixture/M = P.return_air()
+		if(M.gas["plasma"] == 0)
 			investigate_log("<font color='red'>out of fuel</font>.","singulo")
 			eject()
 		else
-			P.air_contents.adjust_gas("plasma", -0.001 * drainratio)
+			M.adjust_gas("plasma", -0.001 * drainratio)
 	return
 
 
@@ -139,7 +132,10 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/_examine_text(mob/user, distance)
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
-		. += "\nThe meter indicates that \the [src] is collecting [fmt_siunit(last_power, "W", 3)]."
+		. += "\nSensor readings:"
+		. += "\nPower rate: [fmt_siunit(last_power, "W/s", 3)]"
+		. += "\nTank temperature: [P.air_contents.temperature]K"
+		. += "\nEntropy drift: [last_temp_dif] K/s"
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)
@@ -151,7 +147,7 @@ var/global/list/rad_collectors = list()
 	if(P?.air_contents)
 		var/turf/T = get_turf(src)
 		if(T)
-			T.assume_air(P.air_contents)
+			T.assume_air(P.return_air())
 			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"))
 			fragmentate(T, 2, 4, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 3, /obj/item/projectile/bullet/pellet/fragment/tank = 1))
 			explosion(T, -1, -1, 0)
@@ -183,11 +179,23 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
-		var/power_produced = 0
-		power_produced = (P.air_contents.gas["plasma"] * (1 WATT)) * pulse_strength
+		var/power_produced = P.air_contents.gas["plasma"] * (pulse_strength * 150 MEGA WATT)
 		add_avail(power_produced)
 		last_power_new = power_produced
-		return
+
+		var/turf/T = get_turf(src)
+		var/datum/gas_mixture/air_gas = T.return_air()
+		var/datum/gas_mixture/plasma_gas = P.return_air()
+		last_temp_dif = max((power_produced / (1500000 KELVIN)) - 0.4, 0)
+
+		if(last_temp_dif == 0)
+			return
+
+		plasma_gas.add_thermal_energy(plasma_gas.get_thermal_energy_change(plasma_gas.temperature + last_temp_dif))
+		if(plasma_gas.temperature > air_gas.temperature)
+			var/new_temp = air_gas.temperature + last_temp_dif
+			air_gas.add_thermal_energy(air_gas.get_thermal_energy_change(new_temp))
+
 	return
 
 /obj/machinery/power/rad_collector/update_icon()

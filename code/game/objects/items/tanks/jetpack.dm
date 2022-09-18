@@ -61,11 +61,13 @@
 /obj/item/tank/jetpack/proc/allow_thrust(num, mob/living/user as mob)
 	if(!(src.on))
 		return 0
-	if((num < 0.005 || src.air_contents.total_moles < num))
+
+	var/datum/gas_mixture/M = return_air()
+	if((num < 0.005 || M.total_moles < num))
 		src.ion_trail.stop()
 		return 0
 
-	var/datum/gas_mixture/G = src.air_contents.remove(num)
+	var/datum/gas_mixture/G = M.remove(num)
 
 	var/allgases = G.gas["carbon_dioxide"] + G.gas["nitrogen"] + G.gas["oxygen"] + G.gas["plasma"]
 	if(allgases >= 0.005)

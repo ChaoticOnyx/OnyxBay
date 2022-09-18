@@ -18,7 +18,7 @@
 		return
 	use_chems()
 
-/datum/changeling_power/toggled/regeneration/Process()
+/datum/changeling_power/toggled/regeneration/think()
 	. = ..()
 	if(!.)
 		return

@@ -103,10 +103,9 @@
 	armor = list(melee = 60, bullet = 60, laser = 60,energy = 15, bomb = 30, bio = 100) //Real tanky shit.
 	siemens_coefficient = 0.3 //Bone is not very conducive to electricity.
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 1.0,
+		RADIATION_BETA_PARTICLE = 1.0,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/cult
@@ -118,10 +117,9 @@
 	siemens_coefficient = 0.2
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.4,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 1.0,
+		RADIATION_BETA_PARTICLE = 1.0,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/cult/New()

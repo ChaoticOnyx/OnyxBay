@@ -29,15 +29,24 @@ SUBSYSTEM_DEF(radiation)
 		listeners.Cut()
 
 	while(listeners.len)
-		var/atom/A = listeners[listeners.len]
+		var/mob/A = listeners[listeners.len]
 		listeners.len--
 
 		if(!QDELETED(A))
 			var/turf/T = get_turf(A)
+
+			// TODO: REVERT THIS WHEN WE FIND THE MOTHERFUCKER
+			if(T == null)
+				log_debug("NULLSPACE ALERT: [A.name] | loc: `[A.loc]` | ckey: `[A.ckey]`")
+				continue
+
 			var/list/sources = get_sources_in_range(T)
 			for(var/datum/radiation_source/source in sources)
-				if(source.info.activity <= 0 || source.info.energy < INSUFFICIENT_RADIATON_ENERGY)
+				if(source.info.activity <= 0 || source.info.energy <= 0)
 					qdel(source)
+
+				if(!source.info.is_ionizing())
+					continue
 
 				if(source.flat)
 					A.rad_act(source, get_turf(A))
@@ -55,12 +64,9 @@ SUBSYSTEM_DEF(radiation)
 	var/dose = 0
 
 	for(var/datum/radiation_source/source in sources)
-		var/old_energy = source.info.energy
-		var/new_energy = source.calc_energy_rt(T)
+		var/datum/radiation/R = source.travel(T)
 
-		source.info.energy = new_energy
-		dose += source.calc_absorbed_dose(weight)
-		source.info.energy = old_energy
+		dose += R.calc_absorbed_dose(weight)
 
 	return dose
 
@@ -99,7 +105,7 @@ SUBSYSTEM_DEF(radiation)
 	sources -= S
 
 /// Creates a radiation source and reutrns it.
-/datum/controller/subsystem/radiation/proc/radiate(atom/source, datum/radiation_info/rad_info) // Sends out a radiation pulse, taking walls into account
+/datum/controller/subsystem/radiation/proc/radiate(atom/source, datum/radiation/rad_info) // Sends out a radiation pulse, taking walls into account
 	if(!(source && rad_info)) //Sanity checking
 		return
 	
@@ -112,7 +118,7 @@ SUBSYSTEM_DEF(radiation)
 	return S
 
 /// Sets the radiation in a range to a constant value. Returns source.
-/datum/controller/subsystem/radiation/proc/flat_radiate(atom/source, datum/radiation_info/rad_info, range, respect_maint = FALSE)
+/datum/controller/subsystem/radiation/proc/flat_radiate(atom/source, datum/radiation/rad_info, range, respect_maint = FALSE)
 	if(!(source && rad_info && range))
 		return
 
@@ -128,7 +134,7 @@ SUBSYSTEM_DEF(radiation)
 	return S
 
 /// Irradiates a full Z-level. Hacky way of doing it, but not too expensive. Returns source.
-/datum/controller/subsystem/radiation/proc/z_radiate(atom/source, datum/radiation_info/rad_info, respect_maint = FALSE)
+/datum/controller/subsystem/radiation/proc/z_radiate(atom/source, datum/radiation/rad_info, respect_maint = FALSE)
 	if(!(rad_info && source))
 		return
 	var/turf/epicentre = locate(round(world.maxx / 2), round(world.maxy / 2), source.z)

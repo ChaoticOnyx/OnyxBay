@@ -10,10 +10,9 @@
 	camera = /obj/machinery/camera/network/syndicate
 	light_overlay = "helmet_light_green" //todo: species-specific light overlays
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.8,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/void/syndi
@@ -30,10 +29,9 @@
 	siemens_coefficient = 0.3
 	species_restricted = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_IPC)
 	rad_resist = list(
-		RADIATION_ALPHA_RAY = 1.0,
-		RADIATION_BETA_RAY = 1.0,
-		RADIATION_GAMMA_RAY = 0.8,
-		RADIATION_HAWKING_RAY = 1.0
+		RADIATION_ALPHA_PARTICLE = 59.4 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 13.2 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
 	)
 
 /obj/item/clothing/suit/space/void/syndi/New()

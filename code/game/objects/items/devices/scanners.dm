@@ -100,7 +100,7 @@ REAGENT SCANNER
 	if(H.should_have_organ(BP_BRAIN))
 		if(istype(H.internal_organs_by_name[BP_BRAIN], /obj/item/organ/internal/posibrain))
 			brain_result = SPAN("danger", "ERROR - No organic tissue found")
-		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		else if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			switch(brain.get_current_damage_threshold())
@@ -148,7 +148,7 @@ REAGENT SCANNER
 
 	var/status_data = list()
 	// Body temperature.
-	status_data += "<span class='notice'>Body temperature: <b>[CONV_K2C(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
+	status_data += "<span class='notice'>Body temperature: <b>[CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)</b></span>"
 
 	// Radiation.
 	status_data += SPAN("notice", "Radiation dose: [fmt_siunit(H.radiation, "Sv", 3)]")

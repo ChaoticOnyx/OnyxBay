@@ -42,6 +42,13 @@
 		pulse = PULSE_NONE	//that's it, you're dead (or your metal heart is), nothing can influence your pulse
 		return
 
+	if(isundead(owner))
+		if(isfakeliving(owner))
+			pulse = PULSE_NORM
+		else
+			pulse = PULSE_NONE
+		return
+
 	var/pulse_mod = owner.chem_effects[CE_PULSE]
 
 	if(owner.shock_stage > 30)
@@ -94,12 +101,11 @@
 			heartbeat++
 
 /obj/item/organ/internal/heart/proc/handle_blood()
-
 	if(!owner)
 		return
 
-	//Dead or cryosleep people do not pump the blood.
-	if(!owner || owner.InStasis() || owner.stat == DEAD || owner.bodytemperature < 170)
+	//Dead, cryosleep and bloodless people do not pump the blood.
+	if(owner.InStasis() || owner.stat == DEAD || owner.bodytemperature < 170 || !owner.vessel?.total_volume)
 		return
 
 	if(pulse != PULSE_NONE || BP_IS_ROBOTIC(src))

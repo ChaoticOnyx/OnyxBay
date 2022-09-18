@@ -118,9 +118,9 @@
 		move()
 
 		if(QDELETED(pulse_source))
-			pulse_source = SSradiation.radiate(src, new /datum/radiation_info/preset/hawking(1))
+			pulse_source = SSradiation.radiate(src, new /datum/radiation/preset/hawking)
 		
-		pulse_source.update_energy(max((energy / 50) * HAWKING_RAY_ENERGY, INSUFFICIENT_RADIATON_ENERGY))
+		pulse_source.update_energy((energy / 50) * HAWKING_RAY_ENERGY)
 
 		if(prob(event_chance)) //Chance for it to run a special event TODO: Come up with one or two more that fit.
 			event()
@@ -557,7 +557,7 @@
 			to_chat(M, SPAN("danger", "You don't even have a moment to react as you are reduced to ashes by the intense radiation."))
 			M.dust()
 	
-	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation_info/preset/hawking(2))
+	var/datum/radiation_source/temp_source = SSradiation.radiate(src, new /datum/radiation/preset/singularity_beta)
 	temp_source.schedule_decay(10 SECONDS)
 
 	for(var/obj/singularity/child/SC in childs)

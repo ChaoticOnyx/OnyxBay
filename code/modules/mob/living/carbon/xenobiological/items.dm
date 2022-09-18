@@ -214,7 +214,7 @@
 	name = "extract enhancer"
 	desc = "A potent chemical mix that will give a metroid extract three uses."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle17"
+	icon_state = "potcaeruleum"
 
 /obj/item/metroidsteroid2/afterattack(obj/target, mob/user , flag)
 	if(istype(target, /obj/item/metroid_extract))
@@ -313,7 +313,7 @@
 		icon_state = "golem2"
 	else
 		icon_state = "golem"
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/golemrune/attack_hand(mob/living/user as mob)

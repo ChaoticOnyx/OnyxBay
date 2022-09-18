@@ -149,7 +149,7 @@
 		else
 			t1 = "Unknown"
 	return {"<font color="[occupant.health > 50 ? "blue" : "red"]"><b>Health:</b> [occupant.health]% ([t1])</font><br />
-				<font color="[occupant.bodytemperature > 50 ? "blue" : "red"]"><b>Core Temperature:</b> [CONV_K2C(src.occupant.bodytemperature)]&deg;C ([src.occupant.bodytemperature*1.8-459.67]&deg;F)</font><br />
+				<font color="[occupant.bodytemperature > 50 ? "blue" : "red"]"><b>Core Temperature:</b> [CONV_KELVIN_CELSIUS(src.occupant.bodytemperature)]&deg;C ([src.occupant.bodytemperature*1.8-459.67]&deg;F)</font><br />
 				<font color="[occupant.getBruteLoss() < 60 ? "blue" : "red"]"><b>Brute Damage:</b> [occupant.getBruteLoss()]%</font><br />
 				<font color="[occupant.getOxyLoss() < 60 ? "blue" : "red"]"><b>Respiratory Damage:</b> [occupant.getOxyLoss()]%</font><br />
 				<font color="[occupant.getToxLoss() < 60 ? "blue" : "red"]"><b>Toxin Content:</b> [occupant.getToxLoss()]%</font><br />

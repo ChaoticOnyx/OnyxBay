@@ -55,7 +55,7 @@
 
 /obj/item/grenade/chem_grenade/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && stage == STAGE_READY && !active)
-		if(isnull(safety_pin))
+		if(QDELETED(safety_pin))
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			broken = FALSE
@@ -97,7 +97,7 @@
 			stage = STAGE_READY
 			update_icon()
 		else
-			if(isnull(safety_pin) && has_pin && !active)
+			if(QDELETED(safety_pin) && has_pin && !active)
 				if(prob(5))
 					to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
 					detonate()
@@ -183,7 +183,7 @@
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return
-	if(isnull(safety_pin))
+	if(QDELETED(safety_pin))
 		icon_state = initial(icon_state) + "_primed"
 		return
 	if(stage == STAGE_DETONATOR)

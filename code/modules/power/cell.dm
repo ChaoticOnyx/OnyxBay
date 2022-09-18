@@ -12,7 +12,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	var/c_uid			 // Unique ID
 	var/charge			 // Current charge
-	var/maxcharge = 1000 // Capacity in Wh
+	var/maxcharge = 250 // Capacity in Wh
 	var/overlay_state
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
 
@@ -173,7 +173,6 @@
 	name = "standard power cell"
 	desc = "A standard and relatively cheap power cell, commonly used."
 	origin_tech = list(TECH_POWER = 0)
-	maxcharge = 250
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 40)
 
 /obj/item/cell/standard/empty

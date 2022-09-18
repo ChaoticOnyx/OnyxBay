@@ -100,7 +100,7 @@
 	if(fail_counter > 0)
 		fail_counter--
 		if(fail_counter > 20)
-			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation_info/preset/uranium_238(fail_counter))
+			var/datum/radiation_source/rad_source = SSradiation.radiate(src, new /datum/radiation/preset/uranium_238(fail_counter))
 			rad_source.schedule_decay(10 SECONDS)
 
 	return ..()
