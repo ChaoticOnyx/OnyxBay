@@ -85,3 +85,15 @@
 		NETWORK_TELECOM,
 		NETWORK_MASTER
 	)
+
+	post_round_safe_areas = list (
+		/area/centcom,
+		/area/shuttle/escape/centcom,
+		/area/shuttle/escape_pod1,
+		/area/shuttle/escape_pod2,
+		/area/shuttle/escape_pod3,
+		/area/shuttle/escape_pod5,
+		/area/shuttle/transport/centcom,
+		/area/shuttle/administration/,
+		/area/shuttle/specops/centcom,
+	)

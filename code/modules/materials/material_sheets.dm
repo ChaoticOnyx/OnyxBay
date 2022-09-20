@@ -138,7 +138,7 @@
 
 /obj/item/stack/material/plasma
 	name = "solid plasma"
-	icon_state = "plasma"
+	icon_state = "solid_plasma"
 	default_type = MATERIAL_PLASMA
 
 /obj/item/stack/material/plasma/ten

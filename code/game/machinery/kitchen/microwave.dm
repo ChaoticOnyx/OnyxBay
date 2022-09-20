@@ -6,8 +6,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
 	atom_flags = ATOM_FLAG_NO_REACT
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	var/operating = 0 // Is it on?
@@ -297,7 +297,7 @@
 			cooked.dropInto(loc)
 			return
 	else
-		var/halftime = round(recipe.time / 5)
+		var/halftime = round(recipe.time / 20)
 		if (!wzhzhzh(halftime))
 			abort()
 			return
@@ -313,7 +313,7 @@
 		return
 
 /obj/machinery/microwave/proc/wzhzhzh(seconds as num) // Whoever named this proc is fucking literally Satan. ~ Z
-	seconds = min(round(seconds / cook_speed), 1)
+	seconds = max(round(seconds / cook_speed), 1)
 	for (var/i = 1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0
@@ -426,5 +426,5 @@
 		else if(ismanipulator(P))
 			man_rating += P.rating
 
-	active_power_usage = 100 - ml_rating * 6 // Normally, 72 power usage with 10 max power usage with max micro lasers
+	active_power_usage = (100 WATTS) - ml_rating * 6 // Normally, 72 power usage with 10 max power usage with max micro lasers
 	cook_speed = man_rating // More -> better

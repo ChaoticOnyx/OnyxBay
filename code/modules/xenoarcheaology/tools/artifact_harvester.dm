@@ -7,8 +7,8 @@
 	icon_state = "incubator"	//incubator_on
 	anchored = 1
 	density = 1
-	idle_power_usage = 50
-	active_power_usage = 750
+	idle_power_usage = 50 WATTS
+	active_power_usage = 750 WATTS
 	var/harvesting = 0
 	var/obj/item/anobattery/inserted_battery
 	var/obj/machinery/artifact/cur_artifact

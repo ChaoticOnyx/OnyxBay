@@ -20,6 +20,14 @@
 #define ZTRAIT_EMPTY    "Empty"
 /// This level has radio.
 #define ZTRAIT_CONTACT  "Contact"
-/// This level has some global dynamic lighting (a star or something).
-/// It's like the starlight but can be changed by time.
-#define ZTRAIT_GLOBAL_DYNAMIC_LIGHTING "lighting"
+/// Used for `/datum/component/polar_weather`.
+#define ZTRAIT_POLAR_WEATHER "Weather"
+/// Some bluespace equipment works unstable, radio has noise.
+#define ZTRAIT_BLUESPACE_CONVERGENCE "bs_convergence"
+/// All the bluespace equipment can't work at all.
+#define ZTRAIT_BLUESPACE_EXIT "bs_exit"
+
+// Engines
+#define MAP_ENG_RANDOM "random"
+#define MAP_ENG_SINGULARITY "singularity"
+#define MAP_ENG_MATTER "supermatter"

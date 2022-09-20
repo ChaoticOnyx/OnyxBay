@@ -251,6 +251,7 @@
 	desc = "May the force be within you. Sorta."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
+	hitsound = 'sound/effects/fighting/energy1.ogg'
 	force = 3.0
 	throw_range = 5
 	throwforce = 0

@@ -10,7 +10,7 @@
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "mixer0"
 	layer = BELOW_OBJ_LAYER
-	idle_power_usage = 20
+	idle_power_usage = 20 WATTS
 	clicksound = SFX_USE_BUTTON
 	clickvol = 20
 	var/obj/item/reagent_containers/vessel/beaker
@@ -278,8 +278,9 @@
 		else
 			B = new /obj/item/reagent_containers/vessel/bottle/chemical(loc)
 	B.AddComponent(/datum/component/label, bottle_name)
+	if(B.atom_flags | ATOM_FLAG_OPEN_CONTAINER)
+		B.lid.toggle()
 	reagents.trans_to_obj(B, reagent_amount)
-	B.atom_flags |= ATOM_FLAG_OPEN_CONTAINER // No automatic corking because fuck you chemist
 	B.update_icon()
 
 /obj/machinery/chem_master/proc/spend_material(amount = 0, mob/user)
@@ -373,9 +374,9 @@
 	layer = BELOW_OBJ_LAYER
 	density = 0
 	anchored = 0
-	idle_power_usage = 5
-	active_power_usage = 100
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+	idle_power_usage = 5 WATTS
+	active_power_usage = 100 WATTS
+
 	component_types = list(
 		/obj/item/circuitboard/grinder,
 		/obj/item/stock_parts/scanning_module,
@@ -383,7 +384,7 @@
 		/obj/item/stock_parts/console_screen,
 	)
 	var/inuse = 0
-	var/obj/item/reagent_containers/beaker
+	var/obj/item/reagent_containers/vessel/beaker/beaker
 	var/limit = 10
 	var/list/holdingitems = list()
 
@@ -568,7 +569,12 @@
 		return
 
 	// Sanity check.
-	if (!beaker || (beaker && beaker.reagents.total_volume >= beaker.reagents.maximum_volume))
+	if(!beaker || beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
+		return
+
+	if(!(beaker.atom_flags & ATOM_FLAG_OPEN_CONTAINER))
+		audible_message(SPAN("warning", "<b>The [src]</b> states, \"The beaker is closed, reagent processing is impossible.\""))
+		playsound(src.loc, 'sound/signals/error28.ogg', 50, 1)
 		return
 
 	playsound(src.loc, 'sound/machines/blender.ogg', 50, 1)

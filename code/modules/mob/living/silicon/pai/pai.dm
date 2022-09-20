@@ -375,10 +375,8 @@
 		H.dropInto(get_turf(M))
 
 	// Move us into the card and move the card to the ground.
-	src.loc = card
-	card.loc = get_turf(card)
 	src.forceMove(card)
-	card.forceMove(card.loc)
+	card.forceMove(get_turf(card))
 	resting = 0
 	icon_state = "[chassis]"
 

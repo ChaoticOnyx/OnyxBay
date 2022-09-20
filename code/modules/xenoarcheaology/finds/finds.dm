@@ -29,7 +29,7 @@
 		new T(src)
 
 /obj/item/ore/strangerock/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/pickaxe/brush))
+	if(istype(I, /obj/item/pickaxe/archaeologist/brush))
 		var/obj/item/inside = locate() in src
 		if(inside)
 			inside.forceMove(get_turf(src))

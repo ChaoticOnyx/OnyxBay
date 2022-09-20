@@ -101,12 +101,12 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/die()
 	damage = max_damage
 	status |= ORGAN_DEAD
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 	death_time = world.time
 	if(owner && vital)
 		owner.death()
 
-/obj/item/organ/Process()
+/obj/item/organ/think()
 	if(loc != owner)
 		owner = null
 
@@ -116,8 +116,18 @@ var/list/organ_cache = list()
 
 	//Process infections
 	if(BP_IS_ROBOTIC(src) || (owner?.species?.species_flags & SPECIES_FLAG_IS_PLANT))
-		germ_level = 0
+		germ_level = 0		
+		// If `think()` is called not by the owner in `handle_organs()` but on his own.
+		if(NEXT_THINK)
+			set_next_think(world.time + 1 SECOND)
 		return
+
+	if(owner)
+		if(isundead(owner))
+			germ_level = 0
+			if(NEXT_THINK)
+				set_next_think(world.time + 1 SECOND)
+			return
 
 	if(!owner)
 		if(reagents && !is_preserved())
@@ -145,6 +155,10 @@ var/list/organ_cache = list()
 
 	if(food_organ)
 		update_food_from_organ()
+	
+	// If `think()` is called not by the owner in `handle_organs()` but on his own.
+	if(NEXT_THINK)
+		set_next_think(world.time + 1 SECOND)
 
 /obj/item/organ/proc/cook_organ()
 	die()
@@ -187,7 +201,7 @@ var/list/organ_cache = list()
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
+		owner.bodytemperature += between(0, (fever_temperature - (20 CELSIUS))/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
 
 	if (germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
@@ -282,7 +296,7 @@ var/list/organ_cache = list()
 	playsound(src, SFX_FIGHTING_CRUNCH, rand(65, 80), FALSE)
 
 	// Start processing the organ on his own
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))
 		var/datum/reagent/blood/organ_blood = locate(/datum/reagent/blood) in reagents.reagent_list //TODO fix this and all other occurences of locate(/datum/reagent/blood) horror
@@ -320,7 +334,7 @@ var/list/organ_cache = list()
 	target.attackby(return_item(), user)
 
 /obj/item/organ/proc/can_feel_pain()
-	return (!BP_IS_ROBOTIC(src) && (!species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
+	return (!BP_IS_ROBOTIC(src) && (!owner.no_pain || !species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))
 
 /obj/item/organ/proc/is_usable()
 	return !(status & (ORGAN_CUT_AWAY|ORGAN_MUTATED|ORGAN_DEAD))

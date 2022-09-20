@@ -325,18 +325,19 @@
 	if(!active)
 		active = 1
 		to_chat(usr, SPAN_NOTICE("You activate the pinpointer."))
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 	else
 		active = 0
 		icon_state = "pinoff"
 		to_chat(usr, SPAN_NOTICE("You deactivate the pinpointer."))
-		STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 
-/obj/item/ore_radar/Process()
-	if (active)
-		workdisk()
-	else
-		STOP_PROCESSING(SSprocessing, src)
+/obj/item/ore_radar/think()
+	if(!active)
+		return
+
+	workdisk()
+	set_next_think(world.time + 2 SECONDS)
 
 /obj/item/ore_radar/proc/workdisk()
 	if(!src.loc)
@@ -576,27 +577,28 @@
 		return
 	toggle_on(user)
 
-/obj/item/oremagnet/Process()
+/obj/item/oremagnet/think()
+	if(!on)
+		return
+
 	for(var/obj/item/ore/O in oview(7, loc))
 		if(prob(80))
 			step_to(O, src.loc, 0)
 
 		if (TICK_CHECK)
-			return
+			break
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/oremagnet/proc/toggle_on(mob/user)
 	if (!on)
-		START_PROCESSING(SSprocessing, src)
+		set_next_think(world.time)
 		on = 1
 		to_chat(user, "You turn it on.")
 	else
-		STOP_PROCESSING(SSprocessing, src)
+		set_next_think(0)
 		on = 0
 		to_chat(user, "You turn it off.")
-
-/obj/item/oremagnet/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
-	return ..()
 
 /******************************Ore Summoner*******************************/
 

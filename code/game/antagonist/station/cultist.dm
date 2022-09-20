@@ -28,7 +28,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
 							/datum/job/merchant, /datum/job/iaa)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
-	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
+	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist, /datum/job/barmonkey)
 	feedback_tag = "cult_objective"
 	antag_indicator = "hudcultist"
 	welcome_text = "You have a tome in your possession; one that will help you start the cult. Use it well and remember - there are others."

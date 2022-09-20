@@ -121,7 +121,7 @@
 	toggleable = 0
 	disruptive = 0
 	use_power_cost = 500
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 	engage_string = "Inject"
 
@@ -481,9 +481,9 @@
 	interface_name = "mounted cooling unit"
 	interface_desc = "A heat sink with liquid cooled radiator."
 	module_cooldown = 0 SECONDS //no cd because its critical for a life-support module
-	var/charge_consumption = 0.5 KILOWATTS
+	var/charge_consumption = 0.5 KILO WATTS
 	var/max_cooling = 12
-	var/thermostat = T20C
+	var/thermostat = 20 CELSIUS
 
 /obj/item/rig_module/cooling_unit/Process()
 	if(!active)

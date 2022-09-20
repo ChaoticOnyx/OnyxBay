@@ -14,7 +14,6 @@
 	relative_size = 60
 	food_organ_type = /obj/item/reagent_containers/food/organ/brain
 
-	var/can_use_mmi = TRUE
 	var/mob/living/carbon/brain/brainmob = null
 	var/const/damage_threshold_count = 10
 	var/damage_threshold_value
@@ -141,7 +140,7 @@
 /obj/item/organ/internal/brain/proc/past_damage_threshold(threshold)
 	return (get_current_damage_threshold() > threshold)
 
-/obj/item/organ/internal/brain/Process()
+/obj/item/organ/internal/brain/think()
 	if(owner)
 		if(damage > max_damage / 2 && healed_threshold)
 			spawn()
@@ -155,7 +154,7 @@
 		handle_damage_effects()
 
 		// Brain damage from low oxygenation or lack of blood.
-		if(owner.should_have_organ(BP_HEART))
+		if(owner.should_have_organ(BP_HEART) && !(isundead(owner)))
 
 			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
 			var/blood_volume = owner.get_blood_oxygenation()

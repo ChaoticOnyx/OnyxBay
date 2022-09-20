@@ -122,7 +122,6 @@ var/list/artefact_feedback = list(
 	var/datum/wizard/W = user.mind.wizard
 	var/datum/spell/spell_to_upgrade = null
 
-
 	ASSERT(path in subtypesof(/datum/spell))
 
 	for(var/datum/spell/S in user.mind.learned_spells)
@@ -141,14 +140,16 @@ var/list/artefact_feedback = list(
 		to_chat(user, SPAN("warning", "You don't have enough points to upgrade the spell!"))
 		return
 
+
 	W.spend(1)
+	var/upgrade_message
 	switch(upgrade_type)
 		if(SP_POWER)
-			ASSERT(spell_to_upgrade.empower_spell())
-			to_chat(user, "You empower [spell_to_upgrade]!")
+			upgrade_message = spell_to_upgrade.empower_spell()
+			to_chat(user, (upgrade_message || "You empower [spell_to_upgrade]!"))
 		if(SP_SPEED)
-			ASSERT(spell_to_upgrade.quicken_spell())
-			to_chat(user, "You quicken [spell_to_upgrade]!")
+			upgrade_message = spell_to_upgrade.quicken_spell()
+			to_chat(user, (upgrade_message || "You quicken [spell_to_upgrade]!"))
 		else
 			CRASH("Unknown upgrade type [upgrade_type]")
 

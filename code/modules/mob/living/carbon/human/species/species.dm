@@ -37,8 +37,7 @@
 	var/list/hair_styles
 	var/list/facial_hair_styles
 
-	var/eye_icon = "eyes_s"
-	var/eye_icon_location = 'icons/mob/human_face.dmi'
+	var/has_eyes_icon = TRUE
 
 	var/organs_icon		//species specific internal organs icons
 
@@ -211,6 +210,7 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+	var/y_shift = 0 // Vertically shifts the icon, mostly for monkeys.
 
 	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*

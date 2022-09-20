@@ -333,6 +333,13 @@
 
   /* ###### Radio headsets can only broadcast through subspace ###### */
 	if(subspace_transmission)
+		// No one can hear our screams in an area with the unstable bluespace.
+		if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_EXIT))
+			return
+		// The bluespace is less unstable so we can transmit something.
+		else if(GLOB.using_map.level_has_trait(loc.z, ZTRAIT_BLUESPACE_CONVERGENCE))
+			message = stars(message)
+
 		// First, we want to generate a new radio signal
 		var/datum/signal/signal = new
 		signal.transmission_method = 2 // 2 would be a subspace transmission.
@@ -541,6 +548,9 @@
 /obj/item/device/radio/proc/recalculateChannels()
 	return
 
+/obj/item/device/radio/proc/receive()
+	return
+
 ///////////////////////////////
 //////////Borg Radios//////////
 ///////////////////////////////
@@ -743,7 +753,7 @@
 	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Supply" = 1, "Service" = 1, "Exploration" = 1)
 
 /obj/item/device/radio/announcer/Destroy()
-	crash_with("attempt to delete a [src.type] detected, and prevented.")
+	util_crash_with("attempt to delete a [src.type] detected, and prevented.")
 	..()
 	return QDEL_HINT_LETMELIVE
 

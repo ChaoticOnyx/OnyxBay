@@ -48,7 +48,7 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_base = "grass"
 	has_base_range = 3
-	damage_temperature = T0C+80
+	damage_temperature = 80 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_REMOVE_SHOVEL
 	build_type = /obj/item/stack/tile/grass
 
@@ -66,7 +66,7 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/carpet.dmi'
 	icon_base = "brown"
 	build_type = /obj/item/stack/tile/carpet
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_HAS_CORNERS | TURF_REMOVE_CROWBAR | TURF_CAN_BURN
 
 /decl/flooring/carpet/blue
@@ -124,7 +124,7 @@ var/list/flooring_types
 	desc = "It's like the 2390's all over again."
 	icon = 'icons/turf/flooring/linoleum.dmi'
 	icon_base = "lino"
-	can_paint = 1
+	can_paint = TRUE
 	build_type = /obj/item/stack/tile/linoleum
 	flags = TURF_REMOVE_SCREWDRIVER
 
@@ -134,13 +134,20 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/tiles.dmi'
 	icon_base = "steel"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
-	can_paint = 1
+	can_paint = TRUE
+
+/decl/flooring/tiling/rough
+	icon_base = "steel_rough"
+	build_type = /obj/item/stack/tile/floor_rough
 
 /decl/flooring/tiling/dirty
 	icon_base = "steel_dirty"
+
+/decl/flooring/tiling/dirty/rough
+	icon_base = "steel_dirty_rough"
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
@@ -150,13 +157,12 @@ var/list/flooring_types
 	icon_base = "white"
 	build_type = /obj/item/stack/tile/floor_white
 
-/decl/flooring/tiling/brown
-	desc = "How sterile."
-	icon_base = "brown"
-	build_type = /obj/item/stack/tile/floor_brown
-
 /decl/flooring/tiling/white/mono
 	icon_base = "white_mono"
+
+/decl/flooring/tiling/white/rough
+	icon_base = "white_rough"
+	build_type = /obj/item/stack/tile/floor_white_rough
 
 /decl/flooring/tiling/dark
 	desc = "How ominous."
@@ -165,6 +171,15 @@ var/list/flooring_types
 
 /decl/flooring/tiling/dark/mono
 	icon_base = "dark_mono"
+
+/decl/flooring/tiling/dark/rough
+	icon_base = "dark_rough"
+	build_type = /obj/item/stack/tile/floor_dark_rough
+
+/decl/flooring/tiling/brown
+	desc = "How sterile."
+	icon_base = "brown"
+	build_type = /obj/item/stack/tile/floor_brown
 
 /decl/flooring/tiling/techfloor
 	desc = "How industrial."
@@ -196,10 +211,11 @@ var/list/flooring_types
 	desc = "Polished darwood planks."
 	icon = 'icons/turf/flooring/wood.dmi'
 	icon_base = "darkwood"
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	descriptor = "dark planks"
 	build_type = /obj/item/stack/tile/darkwood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+	can_paint = TRUE
 
 /decl/flooring/wood
 	name = "wooden floor"
@@ -207,10 +223,11 @@ var/list/flooring_types
 	icon = 'icons/turf/flooring/wood.dmi'
 	icon_base = "wood"
 	has_damage_range = 6
-	damage_temperature = T0C+200
+	damage_temperature = 200 CELSIUS
 	descriptor = "planks"
 	build_type = /obj/item/stack/tile/wood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
+	can_paint = TRUE
 
 /decl/flooring/wood/broken0
 	name = "broken wooden floor"
@@ -251,7 +268,7 @@ var/list/flooring_types
 	build_time = 30
 	apply_thermal_conductivity = 0.025
 	apply_heat_capacity = 325000
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/reinforced/circuit
 	name = "processing strata"
@@ -259,7 +276,7 @@ var/list/flooring_types
 	icon_base = "bcircuit"
 	build_type = null
 	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/reinforced/circuit/green
 	icon_base = "gcircuit"
@@ -267,7 +284,6 @@ var/list/flooring_types
 /decl/flooring/reinforced/circuit/red
 	icon_base = "rcircuit"
 	flags = TURF_ACID_IMMUNE
-	can_paint = 0
 
 /decl/flooring/reinforced/cult
 	name = "engraved floor"
@@ -287,7 +303,7 @@ var/list/flooring_types
 	icon = 'icons/turf/shuttle.dmi'
 	build_type = null
 	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
-	can_paint = 1
+	can_paint = TRUE
 
 /decl/flooring/reinforced/shuttle/blue
 	icon_base = "floor"

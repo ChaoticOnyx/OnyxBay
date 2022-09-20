@@ -5,7 +5,7 @@
 	name = "omni gas mixer"
 	icon_state = "map_mixer"
 
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
+	idle_power_usage = 150 WATTS //internal circuitry, friction losses and stuff
 	power_rating = 3700			//3700 W ~ 5 HP
 
 	var/list/inputs = new()

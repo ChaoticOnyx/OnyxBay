@@ -214,7 +214,7 @@
 	name = "extract enhancer"
 	desc = "A potent chemical mix that will give a metroid extract three uses."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle17"
+	icon_state = "potcaeruleum"
 
 /obj/item/metroidsteroid2/afterattack(obj/target, mob/user , flag)
 	if(istype(target, /obj/item/metroid_extract))
@@ -298,9 +298,9 @@
 
 /obj/effect/golemrune/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECOND)
 
-/obj/effect/golemrune/Process()
+/obj/effect/golemrune/think()
 	var/mob/observer/ghost/ghost
 	for(var/mob/observer/ghost/O in src.loc)
 		if(!O.client)
@@ -313,6 +313,8 @@
 		icon_state = "golem2"
 	else
 		icon_state = "golem"
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/golemrune/attack_hand(mob/living/user as mob)
 	var/mob/observer/ghost/ghost
@@ -339,4 +341,3 @@
 			var/area/A = get_area(src)
 			if(A)
 				to_chat(G, "Golem rune created in [A.name].")
-

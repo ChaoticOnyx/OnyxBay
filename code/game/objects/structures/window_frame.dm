@@ -24,7 +24,7 @@
 	var/opacity = FALSE
 
 	var/explosion_block = 0
-	var/max_heat = T0C + 100
+	var/max_heat = 100 CELSIUS
 
 	var/preset_material
 
@@ -76,7 +76,7 @@
 		explosion_block += 1
 		reinforced = TRUE
 
-	if(max_heat >= (T0C + 2000))
+	if(max_heat >= (2000 CELSIUS))
 		explosion_block += 1
 
 /datum/windowpane/proc/take_damage(damage = 0, sound_effect = TRUE)
@@ -161,6 +161,13 @@
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = WINDOW_FRAME_LAYER
 	explosion_resistance = 1
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 664 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 4.8 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 	var/max_health = 8
 	var/health = 8
 	var/pane_melee_mult = 1.0 // Stronger frames protect their windowpanes from some damage.
@@ -348,20 +355,17 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[inner_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 		if(inner_pane.tinted)
 			new_opacity = TRUE
 			var/image/I = image(icon, "winframe_tint")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
 		if(inner_pane.damage_state)
 			var/image/I = image(icon, "winframe_damage[inner_pane.damage_state]")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_INNER_LAYER
 			overlays += I
 
@@ -382,20 +386,17 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[outer_pane.icon_base][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
 		if(outer_pane.tinted)
 			new_opacity = TRUE
 			var/image/I = image(icon, "winframe_tint")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
 		if(outer_pane.damage_state)
 			var/image/I = image(icon, "winframe_damage[outer_pane.damage_state]")
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_OUTER_LAYER
 			overlays += I
 
@@ -412,7 +413,6 @@
 
 		for(var/i = 1 to 4)
 			var/image/I = image(icon, "[icon_border][connections[i]]", dir = 1<<(i-1))
-			I.plane = DEFAULT_PLANE
 			I.layer = WINDOW_BORDER_LAYER
 			overlays += I
 
@@ -926,7 +926,7 @@
 	else if(inner_pane)
 		if(exposed_temperature > inner_pane.max_heat)
 			inner_pane.take_damage(1, FALSE)
-	else if(exposed_temperature > T0C + 1500)
+	else if(exposed_temperature > (1500 CELSIUS))
 		health -= 1
 		healthcheck()
 	..()

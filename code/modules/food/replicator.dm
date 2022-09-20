@@ -5,7 +5,7 @@
 	icon_state = "soda"
 	density = 1
 	anchored = 1
-	idle_power_usage = 40
+	idle_power_usage = 40 WATTS
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	var/biomass = 100
 	var/biomass_max = 100

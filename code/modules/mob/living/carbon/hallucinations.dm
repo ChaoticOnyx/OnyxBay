@@ -321,7 +321,7 @@
 		creatures += C
 	creatures -= usr
 	var/mob/target = input("Who do you want to project your mind to ?") as null|anything in creatures
-	if (isnull(target))
+	if (QDELETED(target))
 		return
 
 	var/msg = sanitize(input(usr, "What do you wish to transmit"))

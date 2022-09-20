@@ -3,7 +3,7 @@
 	desc = "A strange old floor."
 	icon_base = "magnitka1"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE
@@ -13,7 +13,7 @@
 	desc = "A strange old floor."
 	icon_base = "magnitka2"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE
@@ -23,7 +23,7 @@
 	desc = "A strange old floor."
 	icon_base = "magnitka3"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE
@@ -33,7 +33,7 @@
 	desc = "A strange old floor."
 	icon_base = "magnitka4"
 	has_damage_range = 4
-	damage_temperature = T0C+1400
+	damage_temperature = 1400 CELSIUS
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = FALSE

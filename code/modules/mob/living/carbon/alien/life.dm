@@ -26,7 +26,7 @@
 		health = maxHealth
 		set_stat(CONSCIOUS)
 	else
-		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
+		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
 		if(health <= 0)
 			death()
 			return 0
@@ -36,10 +36,10 @@
 // Currently both Dionaea and larvae like to eat radiation, so I'm defining the
 // rad absorbtion here. This will need to be changed if other baby aliens are added.
 /mob/living/carbon/alien/handle_mutations_and_radiation()
-	if(!radiation)
+	if(radiation <= SAFE_RADIATION_DOSE)
 		return
-	var/rads = radiation/25
-	radiation -= rads
+	var/rads = radiation / (0.05 SIEVERT)
+	radiation = max(SPACE_RADIATION, radiation - rads)
 	nutrition += rads
 	heal_overall_damage(rads, rads)
 	adjustOxyLoss(-rads)
@@ -94,7 +94,8 @@
 	update_sight()
 	if(healths)
 		if(stat != 2)
-			switch(health)
+			var/health_ratio = health / maxHealth * 100
+			switch(health_ratio)
 				if(100 to INFINITY)
 					healths.icon_state = "health0"
 				if(80 to 100)
@@ -135,8 +136,8 @@
 	if(!environment)
 		return
 
-	if(environment.temperature > (T0C+66))
-		adjustFireLoss((environment.temperature - (T0C+66))/5) // Might be too high, check in testing.
+	if(environment.temperature > (66 CELSIUS))
+		adjustFireLoss((environment.temperature - (66 CELSIUS))/5) // Might be too high, check in testing.
 		if(fire)
 			fire.icon_state = "fire2"
 		if(prob(20))

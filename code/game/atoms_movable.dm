@@ -24,7 +24,7 @@
 
 /atom/movable/Destroy()
 	if(!(atom_flags & ATOM_FLAG_INITIALIZED))
-		crash_with("Was deleted before initalization")
+		util_crash_with("Was deleted before initalization")
 
 	walk(src, 0) // Because we might have called walk_to, we must stop the walk loop or BYOND keeps an internal reference to us forever.
 
@@ -177,7 +177,7 @@
 	speed = round(speed)
 	var/impact_speed = speed
 	if(launched_mult)
-		impact_speed /= launched_mult
+		impact_speed *= launched_mult
 		pre_launched()
 	var/area/a = get_area(loc)
 
@@ -232,7 +232,10 @@
 			error += major_dist
 		if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 			break
-		Move(step)
+		var/atom/previous = src.loc
+		src.loc = null
+		if (Move(previous))
+			Move(step)
 		hit_check(impact_speed)
 		dist_travelled++
 		dist_since_sleep += tiles_per_tick
@@ -348,3 +351,7 @@
 	var/turf/T = get_turf(new_loc)
 	if(T != loc)
 		forceMove(T)
+
+/// Called on `/mob/proc/start_pulling`.
+/atom/movable/proc/on_pulling_try(mob/user)
+	return

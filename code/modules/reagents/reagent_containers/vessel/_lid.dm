@@ -31,8 +31,8 @@
 			owner.atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 		if(LID_CLOSED, LID_SEALED)
-			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
-			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 
 /datum/vessel_lid/proc/toggle(mob/user)
 	return
@@ -62,11 +62,11 @@
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
-			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put the [name] on \the [owner]."))
-			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -86,11 +86,11 @@
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
-			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You push the [name] into \the [owner]."))
-			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -182,11 +182,11 @@
 			owner.verbs |= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 		if(LID_OPEN)
-			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You put \the [name] on \the [owner]."))
-			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 
@@ -214,11 +214,11 @@
 			return TRUE
 		if(LID_OPEN)
 			playsound(owner.loc, 'sound/effects/flask_lid1.ogg', rand(10, 30), 1)
-			owner.atom_flags ^= ATOM_FLAG_OPEN_CONTAINER
+			owner.atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 			state = LID_CLOSED
 			if(user)
 				to_chat(usr, SPAN("notice", "You close \the [owner]."))
-			owner.verbs ^= /obj/item/reagent_containers/vessel/verb/drink_whole
+			owner.verbs -= /obj/item/reagent_containers/vessel/verb/drink_whole
 			return TRUE
 	return FALSE
 

@@ -37,26 +37,25 @@
 	. = ..()
 	airtank = new()
 	if(syndi)
-		airtank.temperature = T0C - 25
+		airtank.temperature = -25 CELSIUS
 	else
-		airtank.temperature = T0C
+		airtank.temperature = 0 CELSIUS
 	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
 	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
 	update_icon()
 
 /obj/structure/closet/body_bag/cryobag/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	QDEL_NULL(airtank)
 	return ..()
 
 /obj/structure/closet/body_bag/cryobag/Entered(atom/movable/AM)
 	if(ishuman(AM))
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	..()
 
 /obj/structure/closet/body_bag/cryobag/Exited(atom/movable/AM)
 	if(ishuman(AM))
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	. = ..()
 
 /obj/structure/closet/body_bag/cryobag/update_icon()
@@ -82,12 +81,12 @@
 		folded.stasis_power = stasis_power
 		folded.color = color_saturation(get_saturation())
 
-/obj/structure/closet/body_bag/cryobag/Process()
+/obj/structure/closet/body_bag/cryobag/think()
 	if(stasis_power < 2)
-		return PROCESS_KILL
+		return
 	var/mob/living/carbon/human/H = locate() in src
 	if(!H)
-		return PROCESS_KILL
+		return
 	degradation_time--
 	if(degradation_time < 0)
 		degradation_time = initial(degradation_time)
@@ -97,6 +96,8 @@
 
 	if(H.stasis_sources[STASIS_CRYOBAG] != stasis_power)
 		H.SetStasis(stasis_power, STASIS_CRYOBAG)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/closet/body_bag/cryobag/return_air() //Used to make stasis bags protect from vacuum.
 	if(airtank)

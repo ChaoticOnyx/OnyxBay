@@ -12,9 +12,9 @@
 #define SYMBOL_IP_START "" // U+E006
 #define SYMBOL_IP_END   "" // U+E007
 
-#define MARK_CKEY(ckey) SYMBOL_CKEY_START + ckey + SYMBOL_CKEY_END
-#define MARK_CHARACTER_NAME(name) SYMBOL_CHARACTER_NAME_START + name + SYMBOL_CHARACTER_NAME_END
-#define MARK_COMPUTER_ID(id) SYMBOL_COMPUTER_ID_START + id + SYMBOL_COMPUTER_ID_END
-#define MARK_IP(ip) SYMBOL_IP_START + ip + SYMBOL_IP_END
+#define MARK_CKEY(ckey) (SYMBOL_CKEY_START + ckey + SYMBOL_CKEY_END)
+#define MARK_CHARACTER_NAME(name) (SYMBOL_CHARACTER_NAME_START + name + SYMBOL_CHARACTER_NAME_END)
+#define MARK_COMPUTER_ID(id) (SYMBOL_COMPUTER_ID_START + id + SYMBOL_COMPUTER_ID_END)
+#define MARK_IP(ip) (SYMBOL_IP_START + ip + SYMBOL_IP_END)
 
 #define REMOVE_PUA(message) var/static/regex/pua = new("\[\uE000-\uF8FF]", "g"); message = replacetext(message, pua, "");

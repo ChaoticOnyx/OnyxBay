@@ -7,8 +7,8 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	var/obj/machinery/mineral/processing_unit/machine = null
 	var/machinedir = NORTHEAST
@@ -157,8 +157,8 @@
 	var/static/list/alloy_data
 	var/active = 0
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 50
+	idle_power_usage = 15 WATTS
+	active_power_usage = 50 WATTS
 
 	component_types = list(
 			/obj/item/circuitboard/refiner,

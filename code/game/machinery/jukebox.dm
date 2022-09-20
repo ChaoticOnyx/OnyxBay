@@ -23,8 +23,8 @@
 	anchored = 1
 	density = 1
 	power_channel = STATIC_EQUIP
-	idle_power_usage = 10
-	active_power_usage = 100
+	idle_power_usage = 10 WATTS
+	active_power_usage = 100 WATTS
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	req_access = list(access_bar)
 	var/locked = 0

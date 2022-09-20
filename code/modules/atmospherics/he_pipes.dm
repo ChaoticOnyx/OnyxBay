@@ -8,7 +8,7 @@
 	connect_types = CONNECT_TYPE_HE
 	var/initialize_directions_he
 	var/surface = 2	//surface area in m^2
-	var/icon_temperature = T20C //stop small changes in temperature causing an icon refresh
+	var/icon_temperature = 20 CELSIUS //stop small changes in temperature causing an icon refresh
 
 	minimum_temperature_difference = 20
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
