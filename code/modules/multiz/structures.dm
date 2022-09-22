@@ -275,7 +275,7 @@
 				if(SOUTH)
 					new /obj/structure/stairs/mining/south
 				if(EAST)
-					new /obj/structure/stairs/mining/eastB
+					new /obj/structure/stairs/mining/east
 				if(WEST)
 					new /obj/structure/stairs/mining/west
 			qdel_self()
