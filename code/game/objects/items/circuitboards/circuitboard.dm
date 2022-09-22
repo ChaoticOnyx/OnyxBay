@@ -27,12 +27,16 @@
 
 /obj/item/circuitboard/Initialize()
 	. = ..()
+	update_desc()
+
+/obj/item/circuitboard/proc/update_desc()
 	var/struct_name = initial(build_path["name"])
 	desc = "A simple circuit used to construct [struct_name ? struct_name : "heavy machinery"]."
-	if(req_components.len)
-		desc += SPAN("notice", "<br>Required components: ")
+	if(!isnull(req_components) && req_components.len)
+		var/list/comp_list
 		for(var/component in req_components)
-			desc += SPAN("notice", "[initial(component["name"])] x[req_components[component]] ")
+			LAZYADD(comp_list, "[num2text(req_components[component])] [initial(component["name"])]")
+		desc += SPAN("notice", "<br>Required components: [english_list(comp_list)].")
 
 //Called when the circuitboard is used to contruct a new machine.
 /obj/item/circuitboard/proc/construct(obj/machinery/M)
