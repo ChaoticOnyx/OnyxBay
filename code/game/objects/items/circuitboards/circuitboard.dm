@@ -25,6 +25,15 @@
 	var/list/req_components = null
 	var/contain_parts = 1
 
+/obj/item/circuitboard/Initialize()
+	. = ..()
+	var/struct_name = initial(build_path["name"])
+	desc = "A simple circuit used to construct [struct_name ? struct_name : "heavy machinery"]."
+	if(req_components.len)
+		desc += SPAN("notice", "<br>Required components: ")
+		for(var/component in req_components)
+			desc += SPAN("notice", "[initial(component["name"])] x[req_components[component]] ")
+
 //Called when the circuitboard is used to contruct a new machine.
 /obj/item/circuitboard/proc/construct(obj/machinery/M)
 	if (istype(M, build_path))
