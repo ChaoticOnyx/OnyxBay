@@ -31,7 +31,7 @@
 
 /obj/item/circuitboard/proc/update_desc()
 	var/struct_name = initial(build_path["name"])
-	desc = "A simple circuit used to construct [struct_name ? struct_name : "heavy machinery"]."
+	desc = "A simple circuit used to construct \the [struct_name ? struct_name : "heavy machinery"]."
 	if(!isnull(req_components) && req_components.len)
 		var/list/comp_list
 		for(var/component in req_components)
