@@ -537,7 +537,7 @@ var/list/mining_floors = list()
 	var/list/step_overlays = list("n" = NORTH, "s" = SOUTH, "e" = EAST, "w" = WEST)
 	for(var/direction in step_overlays)
 
-		if(istype(get_step(src, step_overlays[direction]), /turf/space) || istype(get_step(src, step_overlays[direction]), /turf/simulated/open))
+		if(istype(get_step(src, step_overlays[direction]), /turf/space))
 			var/image/aster_edge = image('icons/turf/flooring/asteroid.dmi', "asteroid_edges", dir = step_overlays[direction])
 			aster_edge.turf_decal_layerise()
 			overlays += aster_edge
