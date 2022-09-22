@@ -1,19 +1,5 @@
 #define CYBORG_POWER_USAGE_MULTIPLIER 2.5 // Multiplier for amount of power cyborgs use.
 
-var/global/list/robot_footstep_sounds = list(
-	FOOTSTEP_ROBOT_LEGS = list(
-		'sound/effects/robot_footstep/legs01.ogg',
-		'sound/effects/robot_footstep/legs02.ogg',
-		'sound/effects/robot_footstep/legs03.ogg',
-		'sound/effects/robot_footstep/legs04.ogg'
-	),
-	FOOTSTEP_ROBOT_SPIDER = list(
-		'sound/effects/robot_footstep/spider01.ogg',
-		'sound/effects/robot_footstep/spider02.ogg',
-		'sound/effects/robot_footstep/spider03.ogg'
-	)
-)
-
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -1332,11 +1318,11 @@ var/global/list/robot_footstep_sounds = list(
 	return FALSE
 
 /mob/living/silicon/robot/proc/play_footstep_sound()
-	if(!robot_footstep_sounds)
+	if(!footstep_sound)
 		return
 
 	var/range = -(world.view - 2)
 	var/volume = 10
-	var/S = safepick(robot_footstep_sounds[footstep_sound])
+	var/S = safepick(GLOB.sfx_list[footstep_sound])
 
 	playsound(get_turf(src), S, volume, FALSE, range)

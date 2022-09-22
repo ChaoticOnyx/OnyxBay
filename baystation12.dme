@@ -40,7 +40,6 @@
 #include "code\__defines\explosion.dm"
 #include "code\__defines\feedback.dm"
 #include "code\__defines\flags.dm"
-#include "code\__defines\footsteps.dm"
 #include "code\__defines\gamemode.dm"
 #include "code\__defines\hydroponics.dm"
 #include "code\__defines\integrated_circuits.dm"
