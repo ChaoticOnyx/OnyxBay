@@ -266,7 +266,7 @@
 
 /obj/structure/stairs/slope/attackby(obj/item/I, mob/living/carbon/human/user)
 	var/obj/item/autochisel/A = I
-	if(istype(A) && name == "slope")
+	if(istype(A))
 		user.visible_message(SPAN_NOTICE("[user] begins to carve the steps."), SPAN_NOTICE("You begin to cut out the steps."))
 		if(do_after(user,(20)))
 			switch(dir)
