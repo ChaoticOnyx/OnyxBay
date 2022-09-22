@@ -269,9 +269,16 @@
 	if(istype(A) && name == "slope")
 		user.visible_message(SPAN_NOTICE("[user] begins to carve the steps."), SPAN_NOTICE("You begin to cut out the steps."))
 		if(do_after(user,(20)))
-			icon_state = "stairs_mine"
-			name = "stairs"
-			desc = "Somebody went to a lot of trouble to carve these stairs."
+			switch(dir)
+				if(NORTH)
+					new /obj/structure/stairs/mining/north
+				if(SOUTH)
+					new /obj/structure/stairs/mining/south
+				if(EAST)
+					new /obj/structure/stairs/mining/eastB
+				if(WEST)
+					new /obj/structure/stairs/mining/west
+			qdel_self()
 	else ..()
 
 /obj/structure/stairs/slope/north
