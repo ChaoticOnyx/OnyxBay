@@ -42,7 +42,7 @@
 	var/pressure_checks_default = PRESSURE_CHECKS
 
 	var/welded = 0 // Added for aliens -- TLE
-	var/broken = VENT_UNBROKEN
+	var/broken = VENT_UNDAMAGED
 
 	var/frequency = 1439
 	var/datum/radio_frequency/radio_connection
@@ -121,12 +121,12 @@
 
 	if(broken)
 		switch(broken)
-			if(VENT_BROKEN_STAGE_ONE)
-				vent_icon += "broken_1"
-			if(VENT_BROKEN_STAGE_TWO)
-				vent_icon += "broken_2"
-			if(VENT_BROKEN_STAGE_THREE)
-				vent_icon += "broken_3"
+			if(VENT_DAMAGED_STAGE_ONE)
+				vent_icon += "damaged_1"
+			if(VENT_DAMAGED_STAGE_TWO)
+				vent_icon += "damaged_2"
+			if(VENT_DAMAGED_STAGE_THREE)
+				vent_icon += "damaged_3"
 			if(VENT_BROKEN)
 				vent_icon += "broken"
 	else if(welded)
@@ -374,12 +374,12 @@
 				return 1
 
 			switch(broken)
-				if(VENT_BROKEN_STAGE_ONE)
-					broken=VENT_UNBROKEN
-				if(VENT_BROKEN_STAGE_TWO)
-					broken=VENT_BROKEN_STAGE_ONE
-				if(VENT_BROKEN_STAGE_THREE)
-					broken=VENT_BROKEN_STAGE_TWO
+				if(VENT_DAMAGED_STAGE_ONE)
+					broken=VENT_UNDAMAGED
+				if(VENT_DAMAGED_STAGE_TWO)
+					broken=VENT_DAMAGED_STAGE_ONE
+				if(VENT_DAMAGED_STAGE_THREE)
+					broken=VENT_DAMAGED_STAGE_TWO
 				if(VENT_BROKEN)
 					to_chat(user, "<span class='notice'>You can't repair it.</span>")
 					return 1
@@ -420,11 +420,11 @@
 		. += "\nIt seems welded shut."
 	if(broken)
 		switch(broken)
-			if(VENT_BROKEN_STAGE_ONE)
+			if(VENT_DAMAGED_STAGE_ONE)
 				. += "\nIt seems slightly damaged."
-			if(VENT_BROKEN_STAGE_TWO)
+			if(VENT_DAMAGED_STAGE_TWO)
 				. += "\nIt seems pretty damaged."
-			if(VENT_BROKEN_STAGE_THREE)
+			if(VENT_DAMAGED_STAGE_THREE)
 				. += "\nIt seems heavily damaged."
 			if(VENT_BROKEN)
 				. += "\nIt seems absolutely destroyed."

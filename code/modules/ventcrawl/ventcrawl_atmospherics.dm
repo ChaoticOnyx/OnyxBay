@@ -77,20 +77,20 @@
 		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
 		shake_animation(stime=20)
 		switch(broken)
-			if(VENT_UNBROKEN)
+			if(VENT_UNDAMAGED)
 
 				if(do_after(user, 50, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_ONE
+					broken = VENT_DAMAGED_STAGE_ONE
 
-			if(VENT_BROKEN_STAGE_ONE)
+			if(VENT_DAMAGED_STAGE_ONE)
 				if(do_after(user, 50, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_TWO
+					broken = VENT_DAMAGED_STAGE_TWO
 
-			if(VENT_BROKEN_STAGE_TWO)
+			if(VENT_DAMAGED_STAGE_TWO)
 				if(do_after(user, 40, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_THREE
+					broken = VENT_DAMAGED_STAGE_THREE
 
-			if(VENT_BROKEN_STAGE_THREE)
+			if(VENT_DAMAGED_STAGE_THREE)
 				if(do_after(user, 30, src, 1, 1))
 					broken = VENT_BROKEN
 					welded = 0
@@ -103,7 +103,7 @@
 
 /obj/machinery/atmospherics/unary/vent_scrubber/breakout(mob/living/user)
 	if(issmall(user))
-		if(broken >= VENT_BROKEN_STAGE_THREE)
+		if(broken >= VENT_DAMAGED_STAGE_THREE)
 			return 1
 		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
 		to_chat(user,SPAN_NOTICE("We sorry but you to small."))
@@ -118,20 +118,20 @@
 		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
 		shake_animation(stime=20)
 		switch(broken)
-			if(VENT_UNBROKEN)
+			if(VENT_UNDAMAGED)
 
 				if(do_after(user, 50, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_ONE
+					broken = VENT_DAMAGED_STAGE_ONE
 
-			if(VENT_BROKEN_STAGE_ONE)
+			if(VENT_DAMAGED_STAGE_ONE)
 				if(do_after(user, 50, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_TWO
+					broken = VENT_DAMAGED_STAGE_TWO
 
-			if(VENT_BROKEN_STAGE_TWO)
+			if(VENT_DAMAGED_STAGE_TWO)
 				if(do_after(user, 40, src, 1, 1))
-					broken = VENT_BROKEN_STAGE_THREE
+					broken = VENT_DAMAGED_STAGE_THREE
 
-			if(VENT_BROKEN_STAGE_THREE)
+			if(VENT_DAMAGED_STAGE_THREE)
 				if(do_after(user, 30, src, 1, 1))
 					broken = VENT_BROKEN
 					welded = 0

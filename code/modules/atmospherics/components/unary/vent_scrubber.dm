@@ -29,7 +29,7 @@
 	var/radio_filter_in
 
 	var/welded = 0
-	var/broken = VENT_UNBROKEN
+	var/broken = VENT_UNDAMAGED
 
 /obj/machinery/atmospherics/unary/vent_scrubber/on
 	use_power = POWER_USE_IDLE
@@ -61,12 +61,12 @@
 	var/scrubber_icon = "scrubber"
 	if(broken)
 		switch(broken)
-			if(VENT_BROKEN_STAGE_ONE)
-				scrubber_icon += "broken_1"
-			if(VENT_BROKEN_STAGE_TWO)
-				scrubber_icon += "broken_2"
-			if(VENT_BROKEN_STAGE_THREE)
-				scrubber_icon += "broken_3"
+			if(VENT_DAMAGED_STAGE_ONE)
+				scrubber_icon += "damaged_1"
+			if(VENT_DAMAGED_STAGE_TWO)
+				scrubber_icon += "damaged_2"
+			if(VENT_DAMAGED_STAGE_THREE)
+				scrubber_icon += "damaged_3"
 			if(VENT_BROKEN)
 				scrubber_icon += "broken"
 	else if(welded)
@@ -321,12 +321,12 @@
 				return 1
 
 			switch(broken)
-				if(VENT_BROKEN_STAGE_ONE)
-					broken=VENT_UNBROKEN
-				if(VENT_BROKEN_STAGE_TWO)
-					broken=VENT_BROKEN_STAGE_ONE
-				if(VENT_BROKEN_STAGE_THREE)
-					broken=VENT_BROKEN_STAGE_TWO
+				if(VENT_DAMAGED_STAGE_ONE)
+					broken=VENT_UNDAMAGED
+				if(VENT_DAMAGED_STAGE_TWO)
+					broken=VENT_DAMAGED_STAGE_ONE
+				if(VENT_DAMAGED_STAGE_THREE)
+					broken=VENT_DAMAGED_STAGE_TWO
 				if(VENT_BROKEN)
 					to_chat(user, "<span class='notice'>You can't repair it.</span>")
 					return 1
@@ -369,11 +369,11 @@
 		. += "\nIt seems welded shut."
 	if(broken)
 		switch(broken)
-			if(VENT_BROKEN_STAGE_ONE)
+			if(VENT_DAMAGED_STAGE_ONE)
 				. += "\nIt seems slightly damaged."
-			if(VENT_BROKEN_STAGE_TWO)
+			if(VENT_DAMAGED_STAGE_TWO)
 				. += "\nIt seems pretty damaged."
-			if(VENT_BROKEN_STAGE_THREE)
+			if(VENT_DAMAGED_STAGE_THREE)
 				. += "\nIt seems heavily damaged."
 			if(VENT_BROKEN)
 				. += "\nIt seems absolutely destroyed."
