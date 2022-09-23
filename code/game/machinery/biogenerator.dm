@@ -47,6 +47,7 @@
 			/obj/item/clothing/shoes/leather = 400,
 			/obj/item/clothing/shoes/dress = 400,
 			/obj/item/clothing/suit/storage/toggle/leathercoat = 500,
+			/obj/item/clothing/suit/storage/toggle/browncoat = 500,
 			/obj/item/clothing/suit/storage/toggle/brown_jacket = 500,
 			/obj/item/clothing/suit/storage/toggle/bomber = 500,
 			/obj/item/clothing/suit/storage/hooded/wintercoat = 500))

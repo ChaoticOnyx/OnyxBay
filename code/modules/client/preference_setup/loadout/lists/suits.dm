@@ -150,6 +150,7 @@
 	trenchcoats += /obj/item/clothing/suit/storage/civ_trench
 	trenchcoats += /obj/item/clothing/suit/storage/civ_trench/grey
 	trenchcoats += /obj/item/clothing/suit/storage/toggle/leathercoat
+	renchcoats += /obj/item/clothing/suit/storage/toggle/browncoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
 
 //
