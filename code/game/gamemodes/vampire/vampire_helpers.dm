@@ -2,17 +2,29 @@
 /mob/proc/make_vampire()
 	if (!mind)
 		return
+	if (!istype(src, /mob/living/carbon/human))
+		return
+	var/mob/living/carbon/human/H = src
 	if (!mind.vampire)
-		mind.vampire = new /datum/vampire()
+		mind.vampire = new /datum/vampire(H)
 	// No powers to thralls. Ew.
 	if (mind.vampire.status & VAMP_ISTHRALL)
 		return
-
+	H.replace_vampiric_organs()
+	H.does_not_breathe = 1
+	H.remove_blood(H.species.blood_volume)
+	mind.vampire.blood_usable = 30
+	H.status_flags |= UNDEAD
+	H.oxygen_alert = 0
+	H.add_modifier(/datum/modifier/trait/low_metabolism)
+	H.innate_heal = 0
+	for(var/datum/modifier/mod in H.modifiers)
+		if(!isnull(mod.metabolism_percent))
+			mod.metabolism_percent = 0 // Vampire is not affected by chemicals
 	if(!vampirepowers.len)
 		for(var/P in vampirepower_types)
 			vampirepowers += new P()
 
-	mind.vampire.blood_usable += 30
 
 	verbs += /datum/game_mode/vampire/verb/vampire_help
 
@@ -21,9 +33,33 @@
 			if(!P.blood_cost)
 				mind.vampire.add_power(mind, P, 0)
 		else if(P.is_active && P.verbpath)
-			verbs += P.verbpath
-
+			verbs += P.verbpath	
 	return TRUE
+
+/mob/living/carbon/human/proc/replace_vampiric_organs()
+	var/mob/living/carbon/human/H = src
+	if (H.mind.vampire?.status & VAMP_ISTHRALL)
+		return
+	var/obj/item/organ/internal/heart/O = H.internal_organs_by_name[BP_HEART]
+	if(O)
+		O.rejuvenate(ignore_prosthetic_prefs = TRUE)
+		O.max_damage = 150
+		O.min_bruised_damage = 30
+		O.min_broken_damage = 70
+		O.vital = 1
+	return
+
+// Proc to safely remove blood, without resulting in negative amounts of blood.
+/datum/vampire/proc/use_blood(blood_to_use)
+	if (!blood_to_use || blood_to_use <= 0)
+		return FALSE
+	blood_usable -= min(blood_to_use, blood_usable)
+	return TRUE
+
+/datum/vampire/proc/gain_blood(blood_to_get)
+	blood_usable += blood_to_get
+	return
+
 
 // Checks the vampire's bloodlevel and unlocks new powers based on that.
 /mob/proc/check_vampire_upgrade()
@@ -47,7 +83,6 @@
 		return
 	if (!ishuman(src))
 		return
-
 	var/datum/vampire/vampire = mind.vampire
 	if (!vampire)
 		log_debug("[src] has a vampire power but is not a vampire.")
@@ -190,7 +225,7 @@
 
 		sight |= SEE_MOBS
 
-		verbs += /mob/living/carbon/human/proc/grapple
+		verbs += /datum/vampire/proc/grapple
 
 /mob/proc/vampire_stop_frenzy(force_stop = 0)
 	var/datum/vampire/vampire = mind.vampire
@@ -208,7 +243,7 @@
 
 		visible_message(SPAN_DANGER("[src.name]'s eyes no longer glow with violent rage, their form reverting to resemble that of a normal person's."), SPAN_DANGER("The beast within you retreats. You gain control over your body once more."))
 
-		verbs -= /mob/living/carbon/human/proc/grapple
+		verbs -= /datum/vampire/proc/grapple
 		regenerate_icons()
 
 // Removes all vampire powers.
@@ -223,10 +258,12 @@
 	if (mind.vampire.status & VAMP_FRENZIED)
 		vampire_stop_frenzy(1)
 
-/mob/proc/handle_vampire()
-	// Apply frenzy while in the chapel.
-	if (istype(get_area(loc), /area/chapel))
-		mind.vampire.frenzy += 3
+/mob/living/carbon/human/proc/handle_vampire()
+	// Apply frenzy while in the holy location.
+	if (get_area(loc)?.holy)
+		mind.vampire.frenzy += 3		
+		if(prob(20))
+			to_chat(src, "You feel like you`re burning!")
 
 	if (mind.vampire.blood_usable < 10)
 		mind.vampire.frenzy += 2
@@ -240,6 +277,8 @@
 	return
 
 /mob/living/carbon/human/proc/finish_vamp_timeout(vamp_flags = 0)
+	if (!src)
+		return
 	if (!mind || !mind.vampire)
 		return FALSE
 	if (vamp_flags && !(mind.vampire.status & vamp_flags))

@@ -146,9 +146,6 @@ var/const/NO_EMAG_ACT = -50
 
 	var/job_access_type     // Job type to acquire access rights from, if any
 
-	var/datum/mil_branch/military_branch = null //Vars for tracking branches and ranks on multi-crewtype maps
-	var/datum/mil_rank/military_rank = null
-
 /obj/item/card/id/New()
 	..()
 	if(job_access_type)
@@ -162,7 +159,7 @@ var/const/NO_EMAG_ACT = -50
 	if(in_range(user, src))
 		show(user)
 		return desc
-	return "<span class='warning'>It is too far away.</span>"
+	return SPAN("warning", "It is too far away.")
 
 /obj/item/card/id/proc/prevent_tracking()
 	return 0
@@ -179,8 +176,7 @@ var/const/NO_EMAG_ACT = -50
 
 /obj/item/card/id/proc/update_name()
 	var/final_name = "[registered_name]'s ID Card"
-	if(military_rank && military_rank.name_short)
-		final_name = military_rank.name_short + " " + final_name
+
 	if(assignment)
 		final_name = final_name + " ([assignment])"
 	SetName(final_name)
@@ -206,23 +202,11 @@ var/const/NO_EMAG_ACT = -50
 	..()
 	id_card.age = age
 
-	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-		id_card.military_branch = char_branch
-
-	if(GLOB.using_map.flags & MAP_HAS_RANK)
-		id_card.military_rank = char_rank
-
 /obj/item/card/id/proc/dat()
 	var/list/dat = list("<table><tr><td>")
 	dat += text("Name: []</A><BR>", registered_name)
 	dat += text("Sex: []</A><BR>\n", sex)
 	dat += text("Age: []</A><BR>\n", age)
-
-	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-		dat += text("Branch: []</A><BR>\n", military_branch ? military_branch.name : "\[UNSET\]")
-	if(GLOB.using_map.flags & MAP_HAS_RANK)
-		dat += text("Rank: []</A><BR>\n", military_rank ? military_rank.name : "\[UNSET\]")
-
 	dat += text("Assignment: []</A><BR>\n", assignment)
 	dat += text("Fingerprint: []</A><BR>\n", fingerprint_hash)
 	dat += text("Blood Type: []<BR>\n", blood_type)

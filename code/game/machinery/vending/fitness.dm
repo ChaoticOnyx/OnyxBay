@@ -7,8 +7,8 @@
 	icon_state = "fitness"
 	use_vend_state = TRUE
 	vend_delay = 6
-	rand_amount = TRUE
-	products = list(/obj/item/reagent_containers/vessel/carton/milk = 8,
+	component_types = list(/obj/item/vending_cartridge/fitness)
+	legal = list(	/obj/item/reagent_containers/vessel/carton/milk = 8,
 					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 8,
 					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 8,
 					/obj/item/reagent_containers/vessel/fitnessflask = 8,
@@ -16,8 +16,8 @@
 					/obj/item/reagent_containers/food/liquidfood = 8,
 					/obj/item/reagent_containers/pill/diet = 8,
 					/obj/item/towel/random = 8)
-
-	prices = list(/obj/item/reagent_containers/vessel/carton/milk = 3,
+	illegal = list(/obj/item/reagent_containers/syringe/steroid/packaged = 4)
+	prices = list(	/obj/item/reagent_containers/vessel/carton/milk = 3,
 					/obj/item/reagent_containers/vessel/carton/milk/chocolate = 3,
 					/obj/item/reagent_containers/vessel/fitnessflask/proteinshake = 20,
 					/obj/item/reagent_containers/vessel/fitnessflask = 5,
@@ -26,4 +26,6 @@
 					/obj/item/reagent_containers/pill/diet = 25,
 					/obj/item/towel/random = 40)
 
-	contraband = list(/obj/item/reagent_containers/syringe/steroid/packaged = 4)
+/obj/item/vending_cartridge/fitness
+	name = "sweat"
+	build_path = /obj/machinery/vending/fitness

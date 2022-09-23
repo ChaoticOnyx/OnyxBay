@@ -5,8 +5,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
 

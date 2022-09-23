@@ -25,7 +25,7 @@
 	update()
 
 /obj/skybox/proc/update()
-	if(isnull(owner) || isnull(owner.client))
+	if(QDELETED(owner) || !owner.client)
 		qdel(src)
 	else
 		var/view_size = owner.client.view

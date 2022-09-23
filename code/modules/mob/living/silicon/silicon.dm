@@ -31,6 +31,12 @@
 	var/list/avaliable_huds
 	var/active_hud
 
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 41.7 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 23.9 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 /mob/living/silicon/New()
 	if(playable_mob)
 		GLOB.silicon_mob_list += src

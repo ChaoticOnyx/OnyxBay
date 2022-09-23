@@ -4,7 +4,6 @@
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_DATA = 3)
 	var/list/instructions = list("Do your job.", "Respect your superiours.", "Wash you hands after using the toilet.")
 	var/brainwashing = 0
-	var/last_reminder
 
 /obj/item/implant/imprinting/get_data()
 	. = {"
@@ -56,13 +55,10 @@
 	if(M.mind)
 		M.mind.store_memory("<hr>[msg]")
 
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	return TRUE
 
-/obj/item/implant/imprinting/Process()
-	if(world.time < last_reminder + 5 MINUTES)
-		return
-	last_reminder = world.time
+/obj/item/implant/imprinting/think()
 	var/instruction = pick(instructions)
 	if(brainwashing)
 		instruction = "<span class='warning'>You recall one of your beliefs: \"[instruction]\"</span>"
@@ -70,15 +66,13 @@
 		instruction = "<span class='notice'>You remember suddenly: \"[instruction]\"</span>"
 	to_chat(imp_in, instruction)
 
+	set_next_think(world.time + 5 MINUTES)
+
 /obj/item/implant/imprinting/removed()
 	if(brainwashing)
 		to_chat(imp_in,"<span class='notice'>You are no longer so sure of those beliefs you've had...</span>")
 	..()
-	STOP_PROCESSING(SSobj, src)
-
-/obj/item/implant/imprinting/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
+	set_next_think(0)
 
 /obj/item/implanter/imprinting
 	name = "imprinting implanter"

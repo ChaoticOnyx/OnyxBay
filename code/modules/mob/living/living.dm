@@ -261,7 +261,7 @@
 /mob/living/proc/adjustBruteLoss(amount)
 	if(status_flags & GODMODE)
 		return 0
-	health = max(health-amount, 0)
+	health = Clamp(health-amount, 0, maxHealth)
 
 /mob/living/proc/getOxyLoss()
 	return 0
@@ -464,8 +464,8 @@
 	SetWeakened(0)
 
 	// shut down ongoing problems
-	radiation = 0
-	bodytemperature = T20C
+	radiation = SPACE_RADIATION
+	bodytemperature = 20 CELSIUS
 	sdisabilities = 0
 	disabilities = 0
 

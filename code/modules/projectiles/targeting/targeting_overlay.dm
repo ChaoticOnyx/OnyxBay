@@ -78,12 +78,13 @@
 	to_chat(owner, aim_message)
 	if(aiming_at)
 		to_chat(aiming_at, "<span class='[use_span]'>You are [message].</span>")
-/obj/aiming_overlay/Process()
+/obj/aiming_overlay/think()
 	if(!owner)
 		qdel(src)
 		return
-	..()
+
 	update_aiming()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/aiming_overlay/Destroy()
 	cancel_aiming(1)
@@ -165,7 +166,7 @@
 	locked = 0
 	update_icon()
 	forceMove(get_turf(target))
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
 	if(do_after(owner,12,target,progress = 0))
 		to_chat(target, "<span class='danger'>You now have a gun pointed at you. No sudden moves!</span>")
@@ -184,7 +185,7 @@
 		register_signal(aiming_at, SIGNAL_QDELETING, /obj/aiming_overlay/proc/cancel_aiming)
 	else
 		loc = null
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 		return
 
 
@@ -234,7 +235,7 @@
 
 	aiming_with = null
 	loc = null
-	STOP_PROCESSING(SSobj, src)
+	set_next_think(0)
 
 /obj/aiming_overlay/proc/target_moved()
 	update_aiming()

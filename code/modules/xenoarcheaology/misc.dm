@@ -98,7 +98,7 @@
 	new /obj/item/clothing/glasses/hud/standard/meson(src)
 	new /obj/item/pickaxe(src)
 	new /obj/item/device/measuring_tape(src)
-	new /obj/item/pickaxe/hand(src)
+	new /obj/item/pickaxe/archaeologist/hand(src)
 	new /obj/item/storage/bag/fossils(src)
 	new /obj/item/hand_labeler(src)
 	new /obj/item/taperoll/research(src)

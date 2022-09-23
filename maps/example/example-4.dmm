@@ -1,0 +1,117 @@
+"ag" = (/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"bE" = (/obj/map_ent/func_explosion{ev_heavy_impact_range = 0; ev_devastation_range = 0; tag = "ent_explosion"; ev_flash_range = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"cJ" = (/obj/map_ent/func_smoke{tag = "ent_rel_smoke"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"dE" = (/obj/map_ent/info_maptext{ev_text = "logic_timer"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"ef" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"eL" = (/obj/map_ent/info_maptext{ev_text = "COUNTER"; tag = "ent_maptext_text"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"fr" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"fz" = (/obj/map_ent/trigger_button{ev_tag = "ent_load_map"},/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"fC" = (/turf/space,/area/space)
+"fK" = (/obj/map_ent/func_light{ev_color = "#e04040"; tag = "ent_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"gh" = (/obj/map_ent/trigger_button{ev_tag = "ent_timer"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"hA" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_explosion"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"hL" = (/obj/map_ent/info_maptext{ev_text = "func_strcon"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"iH" = (/obj/map_ent/info_maptext{ev_text = "func_explosion"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"iS" = (/obj/map_ent/trigger_button{ev_tag = "ent_concat_relay"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"kK" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_gib_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"lC" = (/obj/map_ent/info_maptext{ev_text = "func_load_map"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"lN" = (/obj/map_ent/func_write_var{tag = "ent_bool_wv"; ev_read_tag = "ent_bool_reg"; ev_write_tag = "ent_bool_text"; ev_table = list("ev_text"="ev_value"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"lS" = (/obj/map_ent/func_write_var{tag = "ent_string_concat_wv"; ev_read_tag = "ent_string"; ev_write_tag = "ent_concat"; ev_table = list("ev_lvalue"="ev_value")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"ma" = (/obj/map_ent/info_maptext{ev_text = "info_bool"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"mf" = (/obj/map_ent/func_spawn{ev_unique = 1; ev_target = /mob/living/simple_animal/cow; ev_activate_at_startup = 1; tag = "ent_cow_spawner"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"nc" = (/obj/map_ent/info_maptext{ev_text = "COUNTER"; tag = "ent_bool_text"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"nn" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"pu" = (/obj/map_ent/func_sparks{tag = "ent_rel_sparks"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"qj" = (/obj/map_ent/func_spawn{tag = "ent_spawn_u"; ev_target = /obj/item/reagent_containers/food/donut; ev_unique = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"qV" = (/obj/map_ent/info_maptext{ev_text = "func_smoke"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"ri" = (/obj/map_ent/info_maptext{ev_text = "func_gib"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"rk" = (/obj/map_ent/func_write_var{tag = "ent_maptext_wv"; ev_read_tag = "ent_concat"; ev_write_tag = "ent_maptext_text"; ev_table = list("ev_text"="ev_result"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"tO" = (/obj/map_ent/trigger_button{ev_tag = "ent_spawn"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"tX" = (/obj/map_ent/logic_relay{tag = "ent_counter_relay"; ev_tags = list("ent_counter","ent_counter_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"vE" = (/obj/map_ent/func_write_var{tag = "ent_counter_wv"; ev_read_tag = "ent_counter"; ev_write_tag = "ent_counter_text"; ev_table = list("ev_text"="ev_value"); ev_activate_writer = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"wa" = (/obj/map_ent/func_gib{tag = "ent_cow_gibber"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"ww" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_sparks"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"wI" = (/obj/map_ent/func_sfx{ev_sound = 'sound/effects/phasein.ogg'; ev_volume = 60; tag = "ent_sfx"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"xS" = (/obj/map_ent/logic_relay{ev_tags = list("ent_rel_sparks","ent_rel_smoke","ent_rel_light"); tag = "ent_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"xU" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"yw" = (/obj/map_ent/func_write_var{tag = "ent_counter_reset_vw"; ev_write_tag = "ent_counter"; ev_table = list("ev_value"= 0)},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"zb" = (/obj/map_ent/trigger_button{ev_tag = "ent_counter_reset_relay"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/obj/map_ent/info_maptext{ev_text = "reset"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"zI" = (/obj/map_ent/logic_timer{ev_tag = "ent_light_timer"; ev_wait = 20; tag = "ent_timer"; ev_activate_at_startup = 0},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"zU" = (/obj/map_ent/logic_relay{tag = "ent_counter_reset_relay"; ev_tags = list("ent_counter_reset_vw","ent_counter_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"zV" = (/obj/map_ent/info_maptext{ev_text = "func_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"BM" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"CC" = (/turf/space,/area/engineering/sublevel_access)
+"Dm" = (/obj/map_ent/logic_relay{tag = "ent_bool_relay"; ev_tags = list("ent_bool_reg","ent_bool_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"EG" = (/obj/map_ent/info_counter{tag = "ent_counter"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"EQ" = (/obj/map_ent/info_maptext{ev_text = "with ev_unique"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Ge" = (/obj/map_ent/func_light{ev_color = "#e04040"; tag = "ent_light_timer"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Gu" = (/obj/map_ent/info_maptext{ev_text = "logic_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"GM" = (/obj/machinery/power/debug_items/infinite_generator,/obj/structure/cable,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"GX" = (/obj/map_ent/func_smoke{tag = "ent_smoke"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Is" = (/obj/map_ent/info_maptext{ev_text = "func_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Iv" = (/obj/map_ent/func_rand_spawn{ev_paths = list(/obj/effect/decal/cleanable/blood/gibs,/obj/item/remains/human); tag = "ent_rand_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Ke" = (/obj/map_ent/trigger_button{ev_tag = "ent_spawn_u"},/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"KM" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_sfx"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"KO" = (/obj/map_ent/func_spawn{tag = "ent_spawn"; ev_target = /obj/item/reagent_containers/food/donut},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Lm" = (/turf/simulated/wall/r_wall,/area/engineering/sublevel_access)
+"LM" = (/obj/map_ent/info_maptext{ev_text = "info_counter"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Ml" = (/obj/structure/window_frame/reinforced/hull,/turf/simulated/floor/plating,/area/engineering/sublevel_access)
+"MX" = (/obj/map_ent/logic_relay{tag = "ent_gib_relay"; ev_tags = list("ent_gibber_wv","ent_cow_gibber","ent_cow_timer")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Nw" = (/obj/map_ent/func_strcat{tag = "ent_concat"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"NE" = (/obj/map_ent/func_load_map{ev_map_path = 'maps/example/clown_shuttle.dmm'; tag = "ent_load_map"},/turf/space,/area/engineering/sublevel_access)
+"PX" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Rj" = (/obj/map_ent/trigger_button{ev_tag = "ent_smoke"},/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"RN" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Sb" = (/obj/machinery/light{dir = 1; tag = "ind_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Tr" = (/obj/machinery/button{pixel_y = 32; _wifi_id = -1},/obj/map_ent/trigger_button{ev_tag = "ent_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"TI" = (/obj/map_ent/info_maptext{ev_text = "func_rand_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Uj" = (/obj/map_ent/logic_timer{tag = "ent_cow_timer"; ev_wait = 40; ev_tag = "ent_cow_spawner"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Uw" = (/obj/map_ent{tag = "ent_showcase_tp_dest"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"UB" = (/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/obj/map_ent/trigger_button{ev_tag = "ent_bool_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Vk" = (/obj/map_ent/info_maptext{ev_text = "COUNTER"; tag = "ent_counter_text"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"VF" = (/obj/map_ent/logic_relay{tag = "ent_concat_relay"; ev_tags = list("ent_string_concat_wv","ent_counter_concat_wv","ent_maptext_wv")},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Wd" = (/obj/map_ent/info_bool{tag = "ent_bool_reg"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"WA" = (/obj/map_ent/func_write_var{ev_read_tag = "ent_cow_spawner"; ev_write_tag = "ent_cow_gibber"; tag = "ent_gibber_wv"; ev_table = list("ev_tag"="ev_spawned")},/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"WP" = (/obj/map_ent/info_maptext{ev_text = "func_sparks"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"WT" = (/obj/map_ent/func_light{ev_color = "#e04040"; tag = "ent_rel_light"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"XO" = (/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/obj/map_ent/trigger_button{ev_tag = "ent_rand_spawn"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"YB" = (/obj/map_ent/info_maptext{ev_text = "func_sfx"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"YJ" = (/obj/map_ent/func_sparks{tag = "ent_sparks"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"YL" = (/obj/machinery/button{pixel_y = -32; _wifi_id = -1; dir = 1},/obj/map_ent/trigger_button{ev_tag = "ent_counter_relay"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"YQ" = (/obj/map_ent/info_string{tag = "ent_string"; ev_value = "hello, world!"},/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+"Zi" = (/obj/map_ent/func_write_var{tag = "ent_counter_concat_wv"; ev_read_tag = "ent_counter"; ev_write_tag = "ent_concat"; ev_table = list("ev_rvalue"="ev_value"); ev_activate_writer = 1},/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/sublevel_access)
+
+(1,1,1) = {"
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmLmMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlCCCCCCMlMlMlMlMlLmLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagMlagPXagMlagPXagMlagSbagMlagagagMlagPXagMlCCCCCCMlagPXagMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmRNMlagYJagMlagGXagMlagbEagMlagfKagMlagwIagMlCCCCCCMlpucJWTMlxULmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagMlagagagMlagagagMlagagagMlagagagMlagagagMlNECCCCMlagagagMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagagagWPwwagagqVRjagagiHhAagagzVBMagagYBKMagaglCfzagxSGuTragagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmRNUwagagagagagagagagagagagagagagagagagagagagagagagagagagagagxULmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagagagIstOagIsEQKeagagTIXOagagdEghagagmaUBagzbLMYLagaghLiSagagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmagMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmnnMlagagagMlagagagMlagagagMlagagagMlDmagagMlzUagtXMlVFagagMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmfrMlagKOagMlagqjagMlagIvagMlagGezIMlWdncagMlEGVkagMlYQeLrkMlxULmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmGMMlagefagMlagagagMlagefagMlagagagMllNefagMlywefvEMllSZiNwMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCLmLmMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlwaWAMXMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlUjmfagMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlagagagMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCMlMlMlMlMlagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmagrikKagagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmagagagagagLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCLmLmLmLmLmLmLmfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+fCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfCfC
+"}

@@ -64,6 +64,7 @@
 	recipes += new /datum/stack_recipe("computer frame", /obj/structure/computerframe, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("wall girder assembly",/obj/item/stack/gassembly, 2, time = 30, one_per_turf = 0, on_floor = 1)
 	recipes += new /datum/stack_recipe("machine frame", /obj/machinery/constructable_frame/machine_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("vending frame", /obj/machinery/vending_frame, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("turret frame", /obj/machinery/porta_turret_construct, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe_list("airlock assemblies", list( \
 		new /datum/stack_recipe("standard airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -109,6 +110,7 @@
 /material/plastic/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("plastic crate", /obj/structure/closet/crate/plastic, 10, time = 30, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("curtain", /obj/structure/curtain/open, 4, time = 30, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("plastic bag", /obj/item/storage/bag/plasticbag, 3, on_floor = 1)
 	recipes += new /datum/stack_recipe("blood pack", /obj/item/reagent_containers/ivbag, 4, on_floor = 0)
 	recipes += new /datum/stack_recipe("reagent dispenser cartridge (large)", /obj/item/reagent_containers/chem_disp_cartridge,        6, on_floor=0) // 500u

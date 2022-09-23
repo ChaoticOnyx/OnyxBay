@@ -201,6 +201,7 @@
 	randpixel = 0
 	applies_material_colour = 0
 	hitsound = SFX_FIGHTING_SWING
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/material/shivgrip/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)
@@ -214,3 +215,65 @@
 	icon_state = "shiv_plastic"
 	color = null
 
+
+/obj/item/material/knife/butch/kitchen/syndie
+	desc = "A huge thing used for chopping and chopping up meat. This includes personnel and personnel-by-products. Made by Waffle Co. Guaranteed to be shinier than your average steel cleaver."
+	icon_state = "butch_syndie"
+	item_state = "butch"
+	force_const = 10.0
+	armor_penetration = 15
+
+/obj/item/material/knife/butch/kitchen/syndie/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
+	if(ishuman(target) && target.stat == DEAD)
+		chopchop(user, target)
+		return 0
+	return ..()
+
+/obj/item/material/knife/butch/kitchen/syndie/proc/chopchop(mob/user, mob/living/carbon/human/victim)
+	user.visible_message(SPAN("danger", "<b>[user]</b> chops [victim] into pieces!"))
+
+	var/slab_name = victim.real_name
+	var/slab_count = 0
+	var/slab_type = victim.species.meat_type
+	var/robotic_slab_count = 0
+	var/robotic_slab_type = /obj/item/stack/material/steel
+	var/slab_nutrition = victim.nutrition / 15
+
+	for(var/obj/item/organ/external/O in victim.organs)
+		if(O.is_stump())
+			continue
+		var/obj/item/organ/external/chest/C = O
+		if(istype(C))
+			if(BP_IS_ROBOTIC(O))
+				robotic_slab_count += C.butchering_capacity
+			else
+				slab_count += C.butchering_capacity
+			continue
+		if(BP_IS_ROBOTIC(O))
+			robotic_slab_count++
+		else
+			slab_count++
+
+	if(slab_count > 0)
+		slab_nutrition /= slab_count
+
+		var/reagent_transfer_amt
+		if(victim.reagents)
+			reagent_transfer_amt = round(victim.reagents.total_volume / slab_count, 1)
+
+		for(var/i = 1 to slab_count)
+			var/obj/item/reagent_containers/food/meat/new_meat = new slab_type(victim.loc, rand(3, 8))
+			if(istype(new_meat))
+				new_meat.SetName("[slab_name] [new_meat.name]")
+				new_meat.reagents.add_reagent(/datum/reagent/nutriment, slab_nutrition)
+				if(victim.reagents)
+					victim.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
+
+	for(var/i = 1 to robotic_slab_count)
+		new robotic_slab_type(victim.loc, rand(3, 5))
+
+	admin_attack_log(user, victim, "Gibbed the victim", "Was gibbed", "gibbed")
+
+	playsound(victim.loc, 'sound/effects/splat.ogg', 50, 1)
+	victim.gib()
+	QDEL_NULL(victim)

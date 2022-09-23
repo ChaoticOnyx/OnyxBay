@@ -56,11 +56,11 @@
 	// 10kW and less - Watts
 	if(amount < 10000)
 		units = "W"
-	// 10MW and less - KiloWatts
+	// 10MW and less - KILO WATTS
 	else if(amount < 10000000)
 		units = "kW"
 		amount = (round(amount/100) / 10)
-	// More than 10MW - MegaWatts
+	// More than 10MW - MEGA WATTS
 	else
 		units = "MW"
 		amount = (round(amount/10000) / 100)
@@ -186,8 +186,3 @@
 		data["load_percentage"] = 100
 	data["alarm"] = powernet.problem ? 1 : 0
 	return data
-
-
-
-
-

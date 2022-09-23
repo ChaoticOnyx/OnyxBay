@@ -64,13 +64,13 @@
 	else if(ishuman(over_object))
 		visible_message("\The [usr] hooks \the [over_object] up to \the [src].")
 		attached = over_object
-		START_PROCESSING(SSobj,src)
+		set_next_think(world.time)
 
 	update_icon()
 
 /obj/structure/iv_drip/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/reagent_containers))
-		if(!isnull(src.beaker))
+		if(!QDELETED(src.beaker))
 			to_chat(user, "There is already a reagent container loaded!")
 			return
 		user.drop_item()
@@ -82,24 +82,24 @@
 		return ..()
 
 /obj/structure/iv_drip/Destroy()
-	STOP_PROCESSING(SSobj,src)
 	attached = null
 	qdel(beaker)
 	beaker = null
 	. = ..()
 
-/obj/structure/iv_drip/Process()
+/obj/structure/iv_drip/think()
 	if(attached)
 		if(!Adjacent(attached))
 			visible_message("The needle is ripped out of [src.attached], doesn't that hurt?")
 			attached.apply_damage(1, BRUTE, pick(BP_R_ARM, BP_L_ARM))
 			attached = null
 			update_icon()
-			return PROCESS_KILL
+			return
 	else
-		return PROCESS_KILL
+		return
 
 	if(!beaker)
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	if(mode) // Give blood
@@ -112,9 +112,11 @@
 
 		if(amount == 0) // If the beaker is full, ping
 			if(prob(5)) visible_message("\The [src] pings.")
+			set_next_think(world.time + 1 SECOND)
 			return
 
 		if(!attached.should_have_organ(BP_HEART))
+			set_next_think(world.time + 1 SECOND)
 			return
 
 		// If the human is losing too much blood, beep.
@@ -123,6 +125,8 @@
 
 		if(attached.take_blood(beaker,amount))
 			update_icon()
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/iv_drip/attack_hand(mob/user as mob)
 	if(beaker)

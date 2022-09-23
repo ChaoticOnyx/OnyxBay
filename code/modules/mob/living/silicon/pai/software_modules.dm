@@ -190,7 +190,7 @@
 		var/mob/living/silicon/pai/P = usr
 		if(!istype(P)) return
 
-		if(!isnull(P.pda))
+		if(!QDELETED(P.pda))
 			if(href_list["toggler"])
 				P.pda.toff = href_list["toggler"] != "1"
 				return 1
@@ -316,7 +316,7 @@
 			var/pres = env.return_pressure() * 10
 			data["pressure"] = "[round(pres/10)].[pres%10]"
 			data["temperature"] = round(env.temperature)
-			data["temperatureC"] = round(env.temperature-T0C)
+			data["temperatureC"] = round(env.temperature-(0 CELSIUS))
 
 			var/t_moles = env.total_moles
 			var/gases[0]

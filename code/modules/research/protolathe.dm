@@ -2,11 +2,11 @@
 	name = "\improper Protolathe"
 	icon_state = "protolathe"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 	layer = BELOW_OBJ_LAYER
 
-	idle_power_usage = 30
-	active_power_usage = 5000
+	idle_power_usage = 30 WATTS
+	active_power_usage = 5 KILO WATTS
 
 	var/max_material_storage = 100000
 

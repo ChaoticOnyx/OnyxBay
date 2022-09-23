@@ -170,17 +170,21 @@
 	OT.master = V
 
 	PT.valve_welded = 1
-	PT.air_contents.gas["plasma"] = plasma_amt
-	PT.air_contents.gas["carbon_dioxide"] = carbon_amt
-	PT.air_contents.total_moles = plasma_amt + carbon_amt
-	PT.air_contents.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
-	PT.air_contents.update_values()
+
+	var/datum/gas_mixture/PM = PT.return_air()
+	var/datum/gas_mixture/OM = OT.return_air()
+
+	PM.gas["plasma"] = plasma_amt
+	PM.gas["carbon_dioxide"] = carbon_amt
+	PM.total_moles = plasma_amt + carbon_amt
+	PM.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
+	PM.update_values()
 
 	OT.valve_welded = 1
-	OT.air_contents.gas["oxygen"] = oxygen_amt
-	OT.air_contents.total_moles = oxygen_amt
-	OT.air_contents.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
-	OT.air_contents.update_values()
+	OM.gas["oxygen"] = oxygen_amt
+	OM.total_moles = oxygen_amt
+	OM.temperature = PLASMA_MINIMUM_BURN_TEMPERATURE+1
+	OM.update_values()
 
 
 	var/obj/item/device/assembly/S = new assembly_type(V)

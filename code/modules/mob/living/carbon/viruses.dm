@@ -32,8 +32,8 @@
 	if(virus2.len)
 		for(var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
-			if(isnull(V)) // Trying to figure out a runtime error that keeps repeating ~UPD: Figure out your ass, A SINGLE DEBUG OUTPUT IS ENOUGH, STOP GENERATING HUNDREDS.
-				crash_with("virus2 [ID] (in [src]) was nulled before calling activate()")
+			if(QDELETED(V)) // Trying to figure out a runtime error that keeps repeating ~UPD: Figure out your ass, A SINGLE DEBUG OUTPUT IS ENOUGH, STOP GENERATING HUNDREDS.
+				util_crash_with("virus2 [ID] (in [src]) was nulled before calling activate()")
 				virus2.Remove(ID)
 				continue
 			else

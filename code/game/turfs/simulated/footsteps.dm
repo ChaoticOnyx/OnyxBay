@@ -193,7 +193,7 @@
 		// Testing it on a local machine is totally pointless.
 		// I'll remove it once things become clear.
 		if(!M.loc)
-			crash_with("[M] was in nullspace trying to receive [src]'s distant footstep sound!")
+			util_crash_with("[M] was in nullspace trying to receive [src]'s distant footstep sound!")
 			return
 
 		if(M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))

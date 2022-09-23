@@ -13,9 +13,8 @@
 	var/obj/item/clothing/glasses/hud/health/mech/hud
 
 /obj/mecha/medical/odysseus/Initialize()
-	. = ..()
 	hud = new /obj/item/clothing/glasses/hud/health/mech(src)
-	return
+	. = ..()
 
 /obj/mecha/medical/odysseus/moved_inside(mob/living/carbon/human/H)
 	if(..())
@@ -107,7 +106,7 @@
 				C.images += holder
 
 			holder = patient.hud_list[STATUS_HUD]
-			if(patient.stat == DEAD)
+			if(patient.stat == DEAD || (isundead(patient) && !isfakeliving(patient)))
 				holder.icon_state = "huddead"
 			else if(patient.status_flags & XENO_HOST)
 				holder.icon_state = "hudxeno"

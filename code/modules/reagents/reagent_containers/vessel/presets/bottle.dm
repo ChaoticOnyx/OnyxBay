@@ -195,7 +195,7 @@
 	desc = "Tastes like a hull breach in your mouth."
 	icon_state = "space-up_bottle"
 	center_of_mass = "x=16;y=6"
-	startswith = list(/datum/reagent/drink/space_cola)
+	startswith = list(/datum/reagent/drink/space_up)
 	rag_underlay = "rag_big"
 
 /obj/item/reagent_containers/vessel/bottle/space_mountain_wind

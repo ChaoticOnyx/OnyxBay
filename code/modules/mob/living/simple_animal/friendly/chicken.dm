@@ -152,7 +152,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
 			if(species.fertile && istype(egg, /obj/item/reagent_containers/food/egg) && GLOB.chicken_count < MAX_CHICKENS)
-				START_PROCESSING(SSobj, egg)
+				egg.set_next_think(world.time)
 	else
 		egg_chance = 0
 
@@ -349,21 +349,18 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 /obj/item/reagent_containers/food/egg
 	var/amount_grown = 0
 
-/obj/item/reagent_containers/food/egg/Destroy()
-	if(amount_grown)
-		STOP_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/reagent_containers/food/egg/Process()
+/obj/item/reagent_containers/food/egg/think()
 	if(isturf(loc) || ismob(loc))
 		amount_grown++
 		if(amount_grown >= 300)
 			visible_message("[src] hatches with a quiet cracking sound.")
 			new /mob/living/simple_animal/chick(get_turf(src))
-			STOP_PROCESSING(SSobj, src)
 			qdel(src)
+			return
 	else
-		return PROCESS_KILL
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 #undef CHICKEN_WHITE
 #undef CHICKEN_BROWN

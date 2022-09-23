@@ -7,8 +7,8 @@
 	icon_state = "mass_driver"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 50
+	idle_power_usage = 2 WATTS
+	active_power_usage = 50 WATTS
 
 	var/power = 1.0
 	var/code = 1.0

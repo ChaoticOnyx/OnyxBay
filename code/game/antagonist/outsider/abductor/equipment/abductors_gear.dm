@@ -16,7 +16,7 @@
 					slot_r_hand_str = "armor",
 				)
 	blood_overlay_type = "armor"
-	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, RAD = 15)
+	armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15)
 	species_restricted = list(SPECIES_ABDUCTOR)
 	allowed = list(
 		/obj/item/abductor,
@@ -32,8 +32,8 @@
 	var/cooldown = 0
 	var/datum/icon_snapshot/disguise
 	action_button_name = "Activate Vest"
-	var/stealth_armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15, RAD = 15)
-	var/combat_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50, RAD = 50)
+	var/stealth_armor = list(MELEE = 15, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 15, BIO = 15)
+	var/combat_armor = list(MELEE = 50, BULLET = 50, LASER = 50, ENERGY = 50, BOMB = 50, BIO = 50)
 
 /obj/item/clothing/suit/armor/abductor/vest/equipped(mob/user)
 	DeactivateStealth()
@@ -723,7 +723,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		O.dropInto(loc)
 	src.add_fingerprint(user)
 	if(ishuman(C))
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 		var/mob/living/carbon/human/H = C
 		src.victim = H
 		to_chat(C, SPAN_DANGER("You feel a series of tiny pricks!"))
@@ -738,24 +738,19 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	src.victim = null
 	return 0
 
-/obj/machinery/optable/abductor/Process()
-	. = PROCESS_KILL
+/obj/machinery/optable/abductor/think()
 	if(locate(/mob/living/carbon/human, src.loc))
 		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
 		if(M.lying)
-			. = TRUE
 			src.victim = M
 			M.adjustBrainLoss(-25)
 			for(var/chemical in injected_reagents)
 				if(M.reagents.get_reagent_amount(chemical) < inject_am )
 					M.reagents.add_reagent(chemical, inject_am )
-			return 1
-	src.victim = null
-	return 0
+			
+			set_next_think(world.time + 1 SECOND)
 
-/obj/machinery/optable/abductor/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
+	src.victim = null
 
 /obj/structure/closet/abductor
 	name = "alien locker"
@@ -848,7 +843,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 	name = "alien jumpsuit"
 	icon_state = "abductor"
 	item_state = "black"
-	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 10, rad = 0)
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 10)
 
 //TOOL BELT
 /obj/item/storage/belt/abductor

@@ -90,8 +90,6 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	assigned_deparment_flags = job_flag
 	set_department(english_list(job_flag_name))
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
-	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
-	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
 
 	// Medical record
 	set_bloodtype(H ? H.b_type : "Unset")
@@ -314,8 +312,6 @@ FIELD_NUM("Age", age, FALSE)
 
 FIELD_SHORT_SECURE("Department", department, FALSE, access_hop)
 FIELD_SHORT("Species",species, FALSE)
-FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
-FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
 
 
 // MEDICAL RECORDS
@@ -439,30 +435,10 @@ FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicat
 FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))
 
 
-//Options builderes
-/record_field/rank/proc/record_ranks()
-	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
-		if(R.uid == record_id)
-			var/datum/mil_branch/branch = mil_branches.get_branch(R.get_branch())
-			if(!branch)
-				return null
-			. = list()
-			. |= "Unset"
-			for(var/rank in branch.ranks)
-				var/datum/mil_rank/RA = branch.ranks[rank]
-				. |= RA.name
-
 /record_field/sex/proc/record_genders()
 	. = list()
 	. |= "Unset"
 	for(var/G in gender_datums)
 		. |= gender2text(G)
-
-/record_field/branch/proc/record_branches()
-	. = list()
-	. |= "Unset"
-	for(var/B in mil_branches.branches)
-		var/datum/mil_branch/BR = mil_branches.branches[B]
-		. |= BR.name
 
 #undef CONTEXT

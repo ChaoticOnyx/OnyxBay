@@ -248,7 +248,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 	matter = list(MATERIAL_STEEL = 2000)
-	projectile_type = /obj/item/projectile/beam/lastertag/blue
+	projectile_type = /obj/item/projectile/beam/lasertag/blue
 	var/required_vest
 	combustion = FALSE
 
@@ -262,11 +262,11 @@
 /obj/item/gun/energy/lasertag/blue
 	icon_state = "bluetag"
 	item_state = "bluetag"
-	projectile_type = /obj/item/projectile/beam/lastertag/blue
+	projectile_type = /obj/item/projectile/beam/lasertag/blue
 	required_vest = /obj/item/clothing/suit/bluetag
 
 /obj/item/gun/energy/lasertag/red
 	icon_state = "redtag"
 	item_state = "redtag"
-	projectile_type = /obj/item/projectile/beam/lastertag/red
+	projectile_type = /obj/item/projectile/beam/lasertag/red
 	required_vest = /obj/item/clothing/suit/redtag

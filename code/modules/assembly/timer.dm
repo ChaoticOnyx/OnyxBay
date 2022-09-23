@@ -32,14 +32,14 @@
 /obj/item/device/assembly/timer/toggle_secure()
 	secured = !secured
 	if(secured)
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time)
 	else
 		timing = FALSE
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 	update_icon()
 	return secured
 
-/obj/item/device/assembly/timer/Process()
+/obj/item/device/assembly/timer/think()
 	if(!timing)
 		return
 	if(time > 0)
@@ -48,8 +48,8 @@
 		timing = FALSE
 		timer_end()
 		time = 10
-	return
 
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/device/assembly/timer/update_icon()
 	overlays.Cut()

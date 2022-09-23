@@ -40,7 +40,7 @@
 		cell.use(amount)
 		return 1
 
-/obj/item/organ/internal/cell/Process()
+/obj/item/organ/internal/cell/think()
 	..()
 	if(!owner)
 		return

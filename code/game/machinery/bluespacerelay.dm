@@ -5,7 +5,7 @@
 	icon_state = "bspacerelay"
 	anchored = 1
 	density = 1
-	idle_power_usage = 15000
+	idle_power_usage = 15 KILO WATTS
 
 /obj/machinery/bluespacerelay/update_icon()
 	if(stat & (BROKEN|NOPOWER))

@@ -11,6 +11,8 @@
 
 - **[Сигналы, компоненты и элементы](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/ces.md)** - информация по используемым в билде сигналам, компонентам и элементам.
 
+- **[Новый процессинг](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/thinking.md)** - информация по новой подсистеме для "процессинга".
+
 - **[База данных](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/db.md)** - база данных и как её поднимать.
 
 ## Списки задач

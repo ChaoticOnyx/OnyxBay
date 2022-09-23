@@ -248,7 +248,7 @@
 /obj/machinery/cryopod/lifepod/Initialize()
 	. = ..()
 	airtank = new()
-	airtank.temperature = T0C
+	airtank.temperature = 0 CELSIUS
 	airtank.adjust_gas("oxygen", MOLES_O2STANDARD, 0)
 	airtank.adjust_gas("nitrogen", MOLES_N2STANDARD)
 

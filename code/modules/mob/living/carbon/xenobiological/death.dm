@@ -2,6 +2,10 @@
 
 	if(stat == DEAD) return
 
+	if(Leader)
+		Leader = null
+		walk_to(src, 0)
+
 	if(!gibbed && is_adult)
 		var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc, colour)
 		M.rabid = 1

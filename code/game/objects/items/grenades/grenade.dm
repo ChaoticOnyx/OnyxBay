@@ -35,7 +35,7 @@
 /obj/item/grenade/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		if(!isnull(safety_pin) && has_pin)
+		if(!QDELETED(safety_pin) && has_pin)
 			. += "\nThe safety pin is in place."
 		else
 			. += "\nThere is no safety pin in place."
@@ -60,7 +60,7 @@
 		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
 		return
 	if(active) return
-	if(isnull(detonator))
+	if(QDELETED(detonator))
 		to_chat(user, SPAN("warning", "The grenade is missing a detonator!"))
 		return
 	if(safety_pin && has_pin)
@@ -92,10 +92,10 @@
 
 /obj/item/grenade/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
-		if(isnull(detonator))
+		if(QDELETED(detonator))
 			to_chat(user, SPAN("notice", "There is no detonator inside."))
 			return 
-		if(isnull(safety_pin) && has_pin && !active)
+		if(QDELETED(safety_pin) && has_pin && !active)
 			if(prob(5))
 				to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
 				detonate()
@@ -115,7 +115,7 @@
 		user.put_in_hands(detonator)
 		detonator = null;
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && has_pin)
-		if(isnull(safety_pin) && has_pin)
+		if(QDELETED(safety_pin) && has_pin)
 			if(broken) broken = FALSE
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
@@ -125,7 +125,7 @@
 			update_icon()
 		else if(has_pin)
 			to_chat(user, SPAN("notice", "There is no need for second pin."))
-	if(istype(W,/obj/item/device/assembly_holder) && isnull(detonator))
+	if(istype(W,/obj/item/device/assembly_holder) && QDELETED(detonator))
 		var/obj/item/device/assembly_holder/det = W
 		if(istype(det.a_left,det.a_right.type) || (!isigniter(det.a_left) && !isigniter(det.a_right)))
 			to_chat(user, SPAN("warning", "Assembly must contain one igniter."))
@@ -153,7 +153,7 @@
 	if(active)
 		icon_state = initial(icon_state) + "_active"
 		return
-	if(isnull(safety_pin) && has_pin)
+	if(QDELETED(safety_pin) && has_pin)
 		icon_state = initial(icon_state) + "_primed"
 		return
 	icon_state = initial(icon_state)
@@ -164,7 +164,7 @@
 
 /obj/item/grenade/dropped()
 	..()
-	if(isnull(safety_pin) && has_pin)
+	if(QDELETED(safety_pin) && has_pin)
 		activate()
 
 /obj/item/safety_pin
@@ -179,7 +179,7 @@
 	if(istype(W, /obj/item/grenade) && user.is_item_in_hands(W))
 		var/obj/item/grenade/S = W
 		if(!S.has_pin) return
-		if(isnull(S.safety_pin))
+		if(QDELETED(S.safety_pin))
 			to_chat(user, SPAN("notice", "You insert [src] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			S.safety_pin = src

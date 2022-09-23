@@ -177,6 +177,16 @@
 	stacktype = /obj/item/stack/tile/floor
 	build_type = /obj/item/stack/tile/floor
 
+/obj/item/stack/tile/floor_rough/cyborg
+	name = "rough floor tile synthesizer"
+	desc = "A device that makes rough floor tiles."
+	gender = NEUTER
+	matter = null
+	uses_charge = 1
+	charge_costs = list(250)
+	stacktype = /obj/item/stack/tile/floor_rough
+	build_type = /obj/item/stack/tile/floor_rough
+
 /obj/item/stack/tile/linoleum
 	name = "linoleum"
 	singular_name = "linoleum"

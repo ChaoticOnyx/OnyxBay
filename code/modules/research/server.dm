@@ -10,7 +10,7 @@
 	var/id_with_download_string = ""
 	var/server_id = 0
 	var/produces_heat = 1
-	idle_power_usage = 800
+	idle_power_usage = 800 WATTS
 	var/delay = 10
 	req_access = list(access_rd) //Only the R&D can change server settings.
 
@@ -53,11 +53,11 @@
 /obj/machinery/r_n_d/server/Process()
 	var/datum/gas_mixture/environment = loc.return_air()
 	switch(environment.temperature)
-		if(0 to T0C)
+		if((0 KELVIN) to (0 CELSIUS))
 			health = min(100, health + 1)
-		if(T0C to (T20C + 20))
+		if((0 CELSIUS) to (40 CELSIUS))
 			health = between(0, health, 100)
-		if((T20C + 20) to (T0C + 70))
+		if((40 CELSIUS) to (70 CELSIUS))
 			health = max(0, health - 1)
 	if(health <= 0)
 		griefProtection() //I dont like putting this in process() but it's the best I can do without re-writing a chunk of rd servers.
