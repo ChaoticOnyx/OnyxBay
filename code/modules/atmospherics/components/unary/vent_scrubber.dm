@@ -29,6 +29,7 @@
 	var/radio_filter_in
 
 	var/welded = 0
+	var/broken = VENT_UNBROKEN
 
 /obj/machinery/atmospherics/unary/vent_scrubber/on
 	use_power = POWER_USE_IDLE
@@ -58,13 +59,22 @@
 		return
 
 	var/scrubber_icon = "scrubber"
-	if(welded)
+	if(broken)
+		switch(broken)
+			if(VENT_BROKEN_STAGE_ONE)
+				scrubber_icon += "broken_1"
+			if(VENT_BROKEN_STAGE_TWO)
+				scrubber_icon += "broken_2"
+			if(VENT_BROKEN_STAGE_THREE)
+				scrubber_icon += "broken_3"
+			if(VENT_BROKEN)
+				scrubber_icon += "broken"
+	else if(welded)
 		scrubber_icon += "weld"
+	else if(!powered())
+		scrubber_icon += "off"
 	else
-		if(!powered())
-			scrubber_icon += "off"
-		else
-			scrubber_icon += "[use_power ? "[scrubbing ? "on" : "in"]" : "off"]"
+		scrubber_icon += "[use_power ? "[scrubbing ? "on" : "in"]" : "off"]"
 
 	overlays += icon_manager.get_atmos_icon("device", , , scrubber_icon)
 
@@ -148,6 +158,8 @@
 	if(!use_power || (stat & (NOPOWER|BROKEN)))
 		return 0
 	if(welded)
+		return 0
+	if(broken)
 		return 0
 
 	var/datum/gas_mixture/environment = loc.return_air()
@@ -297,6 +309,33 @@
 			to_chat(user, "<span class='warning'>You need more welding fuel to complete this task.</span>")
 			return 1
 
+		if(broken)
+			to_chat(user, "<span class='notice'>Now repairing \the [src].</span>")
+			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+
+			if(!do_after(user, 10, src))
+				to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
+				return 1
+			if(!WT.isOn())
+				to_chat(user, "<span class='notice'>The welding tool needs to be on to finish this task.</span>")
+				return 1
+
+			switch(broken)
+				if(VENT_BROKEN_STAGE_ONE)
+					broken=VENT_UNBROKEN
+				if(VENT_BROKEN_STAGE_TWO)
+					broken=VENT_BROKEN_STAGE_ONE
+				if(VENT_BROKEN_STAGE_THREE)
+					broken=VENT_BROKEN_STAGE_TWO
+				if(VENT_BROKEN)
+					to_chat(user, "<span class='notice'>You can't repair it.</span>")
+					return 1
+
+			update_icon()
+			user.visible_message("<span class='notice'>\The [user] repairing \the [src].</span>", \
+				"<span class='notice'>You repaired \the [src].</span>", \
+				"You hear welding.")
+
 		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
 		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
@@ -328,3 +367,13 @@
 		. += "\nYou are too far away to read the gauge."
 	if(welded)
 		. += "\nIt seems welded shut."
+	if(broken)
+		switch(broken)
+			if(VENT_BROKEN_STAGE_ONE)
+				. += "\nIt seems slightly damaged."
+			if(VENT_BROKEN_STAGE_TWO)
+				. += "\nIt seems pretty damaged."
+			if(VENT_BROKEN_STAGE_THREE)
+				. += "\nIt seems heavily damaged."
+			if(VENT_BROKEN)
+				. += "\nIt seems absolutely destroyed."

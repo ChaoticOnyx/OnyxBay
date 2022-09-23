@@ -12,6 +12,7 @@
 	density = 0
 	max_grown = 180
 	see_in_dark = 8
+	mob_size = MOB_SMALL
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()

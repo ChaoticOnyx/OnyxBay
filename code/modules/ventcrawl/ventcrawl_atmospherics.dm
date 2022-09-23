@@ -27,7 +27,10 @@
 
 /obj/machinery/atmospherics/proc/ventcrawl_to(mob/living/user, obj/machinery/atmospherics/target_move, direction)
 	if(target_move)
-		if(is_type_in_list(target_move, ventcrawl_machinery) && target_move.can_crawl_through())
+		if(is_type_in_list(target_move, ventcrawl_machinery))
+			if(!target_move.can_crawl_through())
+				if(!target_move.breakout(user))
+					return
 			user.remove_ventcrawl()
 			user.forceMove(target_move.loc) //handles entering and so on
 			user.visible_message("You hear something squeezing through the ducts.", "You climb out the ventilation system.")
@@ -54,6 +57,90 @@
 
 /obj/machinery/atmospherics/unary/vent_scrubber/can_crawl_through()
 	return !welded
+
+
+/obj/machinery/atmospherics/proc/breakout(mob/living/user)
+	return
+
+/obj/machinery/atmospherics/unary/vent_pump/breakout(mob/living/user)
+	if(issmall(user))
+		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
+		to_chat(user,SPAN_NOTICE("We sorry but you to small."))
+		shake_animation()
+		return 0
+
+	if(isxenomorph(user))
+
+
+		if(broken == VENT_BROKEN)
+			return 1
+		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
+		shake_animation(stime=20)
+		switch(broken)
+			if(VENT_UNBROKEN)
+
+				if(do_after(user, 50, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_ONE
+
+			if(VENT_BROKEN_STAGE_ONE)
+				if(do_after(user, 50, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_TWO
+
+			if(VENT_BROKEN_STAGE_TWO)
+				if(do_after(user, 40, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_THREE
+
+			if(VENT_BROKEN_STAGE_THREE)
+				if(do_after(user, 30, src, 1, 1))
+					broken = VENT_BROKEN
+					welded = 0
+					update_icon()
+					return 1
+
+		update_icon()
+		return 0
+
+
+/obj/machinery/atmospherics/unary/vent_scrubber/breakout(mob/living/user)
+	if(issmall(user))
+		if(broken >= VENT_BROKEN_STAGE_THREE)
+			return 1
+		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
+		to_chat(user,SPAN_NOTICE("We sorry but you to small."))
+		shake_animation()
+		return 0
+
+	if(isxenomorph(user))
+
+
+		if(broken == VENT_BROKEN)
+			return 1
+		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
+		shake_animation(stime=20)
+		switch(broken)
+			if(VENT_UNBROKEN)
+
+				if(do_after(user, 50, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_ONE
+
+			if(VENT_BROKEN_STAGE_ONE)
+				if(do_after(user, 50, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_TWO
+
+			if(VENT_BROKEN_STAGE_TWO)
+				if(do_after(user, 40, src, 1, 1))
+					broken = VENT_BROKEN_STAGE_THREE
+
+			if(VENT_BROKEN_STAGE_THREE)
+				if(do_after(user, 30, src, 1, 1))
+					broken = VENT_BROKEN
+					welded = 0
+					update_icon()
+					return 1
+
+		update_icon()
+		return 0
+
 
 /obj/machinery/atmospherics/proc/findConnecting(direction)
 	for(var/obj/machinery/atmospherics/target in get_step(src,direction))
