@@ -11,7 +11,6 @@
 
 /obj/item/circuitboard/refiner
 	name = T_BOARD("ore processor")
-
 	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
 	board_type = "other" // change this to machine if you want it to be buildable
 	req_components = list(
