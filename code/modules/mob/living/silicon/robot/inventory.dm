@@ -5,6 +5,12 @@
 /mob/living/silicon/robot/get_active_hand()
 	return module_active
 
+/mob/living/silicon/robot/drop_item()
+	if(istype(module_active, /obj/item/gripper))
+		var/obj/item/gripper/G = module_active
+		return G.drop_item()
+	return ..()
+
 /*-------TODOOOOOOOOOO--------*/
 
 //Verbs used by hotkeys.

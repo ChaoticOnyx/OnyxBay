@@ -183,6 +183,7 @@
 			if(a_right.proximity_monitor)
 				a_right.proximity_monitor.SetHost(a_right, a_right)
 		spawn(0)
+			user.drop_item()
 			qdel(src)
 	return
 
