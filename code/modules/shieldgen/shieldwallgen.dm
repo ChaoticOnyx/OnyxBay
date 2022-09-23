@@ -181,7 +181,7 @@
 			G.cleanup(oNSEW)
 			break
 
-	if(isnull(G))
+	if(QDELETED(G))
 		return
 
 	T2 = src.loc

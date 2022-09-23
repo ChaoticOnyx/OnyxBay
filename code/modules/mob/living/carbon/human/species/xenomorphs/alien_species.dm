@@ -2,6 +2,8 @@
 	name = SPECIES_XENO
 	name_plural = "Xenomorphs"
 
+	has_eyes_icon = FALSE
+
 	default_language = "Xenomorph"
 	language = "Hivemind"
 	genders = list(NEUTER)
@@ -47,7 +49,6 @@
 	poison_type = null
 
 	vision_flags = SEE_SELF|SEE_MOBS
-	eye_icon = "blank_eyes"
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD
 

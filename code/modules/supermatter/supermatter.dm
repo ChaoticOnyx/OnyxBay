@@ -308,7 +308,7 @@
 
 	var/turf/L = loc
 
-	if(isnull(L))		// We have a null turf...something is wrong, stop processing this entity.
+	if(QDELETED(L))		// We have a null turf...something is wrong, stop processing this entity.
 		return PROCESS_KILL
 
 	if(!istype(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.
@@ -405,7 +405,7 @@
 		if(rad_source == null)
 			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
 
-		rad_source.info.energy = (power / 100) * (1.2 MEGA ELECTRONVOLT)
+		rad_source.info.energy = power * (1.2 MEGA ELECTRONVOLT)
 	else
 		qdel(rad_source)
 

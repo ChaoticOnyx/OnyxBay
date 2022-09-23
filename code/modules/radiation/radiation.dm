@@ -58,10 +58,10 @@
 
 	if(isobj(current_point))
 		var/obj/current_obj = current_point
-		energy -= current_obj.calc_rad_resistance(src)
+		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
 		current_point = current_point.loc
 	
-	energy = energy / (get_dist(get_turf(source), get_turf(target)) ** 2)
+	energy = max(energy / (get_dist(get_turf(source), get_turf(target)) ** 2), 0)
 
 	if(!is_ionizing())
 		return FALSE
@@ -73,7 +73,7 @@
 			continue
 
 		var/obj/current_obj = current_point
-		energy -= current_obj.calc_rad_resistance(src)
+		energy = max(energy - current_obj.calc_rad_resistance(src), 0)
 
 		if(!is_ionizing())
 			return FALSE
@@ -97,7 +97,7 @@
 					target_parent = target_parent.loc
 					continue
 
-				energy -= target_parent.calc_rad_resistance(src)
+				energy = max(energy - target_parent.calc_rad_resistance(src), 0)
 
 				if(!is_ionizing())
 					return FALSE
@@ -109,7 +109,7 @@
 		else
 			var/turf/current_turf = get_turf(current_point)
 
-			energy -= current_turf.calc_rad_resistance(src)
+			energy = max(energy - current_turf.calc_rad_resistance(src), 0)
 
 			if(!is_ionizing())
 				return FALSE
@@ -117,7 +117,7 @@
 			if(source_turf != current_turf)
 				for(var/obj/O in current_turf)
 					if(O.density)
-						energy -= O.calc_rad_resistance(src)
+						energy = max(energy - O.calc_rad_resistance(src), 0)
 						break
 
 			current_point = get_step_towards(current_turf, target)

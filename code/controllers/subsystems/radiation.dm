@@ -29,11 +29,17 @@ SUBSYSTEM_DEF(radiation)
 		listeners.Cut()
 
 	while(listeners.len)
-		var/atom/A = listeners[listeners.len]
+		var/mob/A = listeners[listeners.len]
 		listeners.len--
 
 		if(!QDELETED(A))
 			var/turf/T = get_turf(A)
+
+			// TODO: REVERT THIS WHEN WE FIND THE MOTHERFUCKER
+			if(T == null)
+				log_debug("NULLSPACE ALERT: [A.name] | loc: `[A.loc]` | ckey: `[A.ckey]`")
+				continue
+
 			var/list/sources = get_sources_in_range(T)
 			for(var/datum/radiation_source/source in sources)
 				if(source.info.activity <= 0 || source.info.energy <= 0)

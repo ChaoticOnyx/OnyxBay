@@ -19,7 +19,7 @@
 	if(prob(spawn_nothing_percentage))
 		return
 
-	if(isnull(loc))
+	if(QDELETED(loc))
 		return
 
 	var/build_path = pickweight(spawn_choices())
@@ -695,7 +695,7 @@
 				/obj/item/reagent_containers/food/packaged/tastybread,
 				/obj/item/reagent_containers/food/packaged/nutribar,
 				/obj/item/reagent_containers/food/packaged/syndicake,
-				/obj/item/reagent_containers/food/donut,
+				/obj/item/reagent_containers/food/donut/normal,
 				/obj/item/reagent_containers/food/donut/cherryjelly,
 				/obj/item/reagent_containers/food/donut/jelly,
 				/obj/item/pizzabox/meat,

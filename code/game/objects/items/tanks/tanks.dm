@@ -22,6 +22,7 @@ var/list/global/tank_gauge_cache = list()
 	mod_reach = 0.75
 	mod_handy = 0.5
 
+	/// DO NOT CHANGE IT DIRECTLY. USE `return_air()`!!!
 	var/datum/gas_mixture/air_contents = null
 	var/distribute_pressure = ONE_ATMOSPHERE
 	var/integrity = 20
@@ -357,13 +358,16 @@ var/list/global/tank_gauge_cache = list()
 	var/datum/gas_mixture/removed = remove_air(distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature))
 	if(removed)
 		removed.volume = volume_to_return
-	
+
 	set_next_think(world.time)
 
 	return removed
 
 /obj/item/tank/think()
 	//Allow for reactions
+	if(!air_contents) // Perhaps, we're already on our way out of existence right now. Or, maybe, truly hollow we are?
+		return
+
 	var/react_ret = air_contents.react() //cooking up air tanks - add plasma and oxygen, then heat above PLASMA_MINIMUM_BURN_TEMPERATURE
 	update_icon(TRUE)
 	var/status_ret = check_status()
@@ -414,7 +418,7 @@ var/list/global/tank_gauge_cache = list()
 	overlays += tank_gauge_cache[indicator]
 
 /// Handle exploding, leaking, and rupturing of the tank.
-/// Returns `TRUE` if it should to continue thinking.
+/// Returns `TRUE` if it should continue thinking.
 /obj/item/tank/proc/check_status()
 	var/pressure = air_contents.return_pressure()
 
@@ -438,8 +442,7 @@ var/list/global/tank_gauge_cache = list()
 			var/turf/simulated/T = get_turf(src)
 			if(!T)
 				return FALSE
-			if(!T.hotspot_expose(air_contents.temperature, 70, 1))
-				return FALSE
+			T.hotspot_expose(air_contents.temperature, 70, 1)
 
 			T.assume_air(air_contents)
 			explosion(

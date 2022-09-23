@@ -110,6 +110,7 @@
 /material/plastic/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("plastic crate", /obj/structure/closet/crate/plastic, 10, time = 30, one_per_turf = 1, on_floor = 1)
+	recipes += new /datum/stack_recipe("curtain", /obj/structure/curtain/open, 4, time = 30, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("plastic bag", /obj/item/storage/bag/plasticbag, 3, on_floor = 1)
 	recipes += new /datum/stack_recipe("blood pack", /obj/item/reagent_containers/ivbag, 4, on_floor = 0)
 	recipes += new /datum/stack_recipe("reagent dispenser cartridge (large)", /obj/item/reagent_containers/chem_disp_cartridge,        6, on_floor=0) // 500u

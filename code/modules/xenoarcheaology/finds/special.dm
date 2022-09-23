@@ -122,9 +122,9 @@
 			wight_check_index = 1
 
 		var/obj/effect/shadow_wight/W = shadow_wights[wight_check_index]
-		if(isnull(W))
+		if(QDELETED(W))
 			shadow_wights.Remove(wight_check_index)
-		else if(isnull(W.loc))
+		else if(QDELETED(W.loc))
 			shadow_wights.Remove(wight_check_index)
 		else if(get_dist(W, src) > 10)
 			shadow_wights.Remove(wight_check_index)

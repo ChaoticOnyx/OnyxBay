@@ -174,7 +174,7 @@
 
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			data["brain_activity"] = 0
 		else if (H.stat != DEAD)
 			if (!brain.damage)
@@ -193,7 +193,7 @@
 		data["pulse"] = null
 
 	data["blood_volume"] = H.get_blood_volume()
-	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	data["blood_volume_abs"] = H.get_blood_volume_abs()
 	data["blood_volume_max"] = H.species.blood_volume
 
 	data["blood_type"] = null
@@ -208,8 +208,8 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = CONV_KELVIN_CELSIUS(H.bodytemperature)
-	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
+	data["body_temperature_c"] = CONV_KELVIN_CELSIUS(H.get_body_temperature())
+	data["body_temperature_f"] = H.get_body_temperature()*1.8-459.67
 
 	if(H.nutrition < 150)
 		data["warnings"] += list("Warning: Very low nutrition value detected")
@@ -327,7 +327,7 @@
 	var/brain_result = "normal"
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
+		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH) || (isundead(H) && !isfakeliving(H)))
 			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
 			brain_result = "[round(max(0, (1 - brain.damage/brain.max_damage) * 100))]%"
@@ -351,11 +351,11 @@
 	if(H.b_type)
 		dat += "<b>Blood type:</b> [H.b_type]"
 	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
-	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
+	dat += "<b>Blood volume:</b> [H.get_blood_volume_abs()]/[H.species.blood_volume]u"
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [CONV_KELVIN_CELSIUS(H.bodytemperature)]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [CONV_KELVIN_CELSIUS(H.get_body_temperature())]&deg;C ([H.get_body_temperature()*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
 		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 
