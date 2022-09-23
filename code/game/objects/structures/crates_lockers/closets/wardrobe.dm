@@ -29,6 +29,12 @@
 	new /obj/item/clothing/head/beret/sec/corporate/officer(src)
 	new /obj/item/clothing/head/beret/sec/corporate/officer(src)
 	new /obj/item/clothing/head/beret/sec/corporate/officer(src)
+	new /obj/item/clothing/head/soft/sec/corp(src)
+	new /obj/item/clothing/head/soft/sec/corp(src)
+	new /obj/item/clothing/head/soft/sec/corp(src)
+	new /obj/item/clothing/under/rank/security/corp(src)
+	new /obj/item/clothing/under/rank/security/corp(src)
+	new /obj/item/clothing/under/rank/security/corp(src)
 	return
 
 
