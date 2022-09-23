@@ -127,7 +127,7 @@
 /obj/machinery/capsule/resleever/attackby(obj/item/I, mob/user)
 	..()
 	if(istype(I, /obj/item/organ/internal/stack))
-		if(isnull(lace))
+		if(QDELETED(lace))
 			to_chat(user, SPAN_NOTICE("You insert \the [I] into \the [src]."))
 			user.drop_from_inventory(I)
 			lace = I
