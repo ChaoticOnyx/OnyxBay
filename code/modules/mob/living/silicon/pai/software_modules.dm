@@ -190,7 +190,7 @@
 		var/mob/living/silicon/pai/P = usr
 		if(!istype(P)) return
 
-		if(!isnull(P.pda))
+		if(!QDELETED(P.pda))
 			if(href_list["toggler"])
 				P.pda.toff = href_list["toggler"] != "1"
 				return 1

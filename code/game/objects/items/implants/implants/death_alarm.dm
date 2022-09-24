@@ -24,7 +24,7 @@
 	if (!implanted) return
 	var/mob/M = imp_in
 
-	if(isnull(M)) // If the mob got gibbed
+	if(QDELETED(M)) // If the mob got gibbed
 		activate()
 		return
 	else if(M.stat == DEAD)

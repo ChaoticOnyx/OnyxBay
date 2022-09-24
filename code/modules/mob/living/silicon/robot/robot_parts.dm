@@ -105,6 +105,9 @@
 	name = "endoskeleton"
 	desc = "A complex metal backbone with standard limb sockets and pseudomuscle anchors."
 	icon_state = "robo_suit"
+	force = 8.0
+	throw_range = 4
+	w_class = ITEM_SIZE_HUGE
 	var/parts = list()
 	var/created_name = ""
 

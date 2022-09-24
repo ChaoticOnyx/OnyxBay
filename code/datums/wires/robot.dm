@@ -15,7 +15,7 @@ var/const/BORG_WIRE_CAMERA = 16
 	var/mob/living/silicon/robot/R = holder
 	. += text("<br>\n[(R.lawupdate ? "The LawSync light is on." : "The LawSync light is off.")]")
 	. += text("<br>\n[(R.connected_ai ? "The AI link light is on." : "The AI link light is off.")]")
-	. += text("<br>\n[((!isnull(R.camera) && R.camera.status == 1) ? "The Camera light is on." : "The Camera light is off.")]")
+	. += text("<br>\n[((!QDELETED(R.camera) && R.camera.status == 1) ? "The Camera light is on." : "The Camera light is off.")]")
 	. += text("<br>\n[(R.lockcharge ? "The lockdown light is on." : "The lockdown light is off.")]")
 	return .
 
@@ -37,7 +37,7 @@ var/const/BORG_WIRE_CAMERA = 16
 				R.disconnect_from_ai()
 
 		if (BORG_WIRE_CAMERA)
-			if(!isnull(R.camera) && !R.scrambledcodes)
+			if(!QDELETED(R.camera) && !R.scrambledcodes)
 				R.camera.status = mended
 
 		if(BORG_WIRE_LAWCHECK)	//Forces a law update if the borg is set to receive them. Since an update would happen when the borg checks its laws anyway, not much use, but eh
@@ -57,7 +57,7 @@ var/const/BORG_WIRE_CAMERA = 16
 				R.connect_to_ai(new_ai)
 
 		if (BORG_WIRE_CAMERA)
-			if(!isnull(R.camera) && R.camera.can_use() && !R.scrambledcodes)
+			if(!QDELETED(R.camera) && R.camera.can_use() && !R.scrambledcodes)
 				R.visible_message("[R]'s camera lense focuses loudly.")
 				to_chat(R, "Your camera lense focuses loudly.")
 

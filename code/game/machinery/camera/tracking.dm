@@ -137,7 +137,7 @@
 	if(!target_name)
 		src.cameraFollow = null
 
-	var/mob/target = (isnull(track.humans[target_name]) ? track.others[target_name] : track.humans[target_name])
+	var/mob/target = (QDELETED(track.humans[target_name]) ? track.others[target_name] : track.humans[target_name])
 	src.track = null
 	ai_actual_track(target)
 
