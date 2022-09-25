@@ -29,6 +29,7 @@
 	var/fun_hydroponics = 1
 	var/forbid_singulo_following = FALSE
 	var/preferable_engine = MAP_ENG_SINGULARITY
+	var/preferable_biodome = MAP_BIO_FOREST
 
 /datum/configuration_section/misc/load_data(list/data)
 	CONFIG_LOAD_BOOL(ooc_allowed, data["ooc_allowed"])

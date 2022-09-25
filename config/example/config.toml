@@ -533,9 +533,14 @@ fun_hydroponics = 1
 ## Set to false to allow singularities to follow ghosts.
 forbid_singulo_following = true
 
+[mapping]
 ## Which engine should be on map (not all the maps support this).
 ## Pick one from: "random", "singularity", "supermatter"
 preferable_engine = "singularity"
+
+## Which biodome should be spawned on NSS Frontier
+## Pick one from: "random", "forest", "winter", "beach", "concert"
+preferable_biodome = "forest"
 
 [vote]
 ## Allow players to initiate a restart vote.
