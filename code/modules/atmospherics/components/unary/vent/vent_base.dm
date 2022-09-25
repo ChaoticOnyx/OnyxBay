@@ -13,9 +13,8 @@
 	var/radio_filter_out
 	var/radio_filter_in
 	var/hibernate = 0 //Do we even process?
+	var/error_msg
 	
 	// Added for aliens
-	var/welded = 0
-	var/weld_break_status = 0
+	var/welded = FALSE
 	
-/obj/machinery/atmospherics/unary/vent/proc/brake_weld()

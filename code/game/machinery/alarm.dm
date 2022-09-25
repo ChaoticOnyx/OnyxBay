@@ -547,7 +547,9 @@
 						"power"		= info["power"],
 						"checks"	= info["checks"],
 						"direction"	= info["direction"],
-						"external"	= info["external"]
+						"external"	= info["external"],
+						"blocked"   = info["blocked"],
+						"error_msg"	= info["error_msg"],
 					)
 			data["vents"] = vents
 		if(AALARM_SCREEN_SCRUB)

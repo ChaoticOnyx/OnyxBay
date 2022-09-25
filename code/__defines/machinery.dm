@@ -25,11 +25,15 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define ACTIVE_POWER_USE 2
 
 // Bitflags for machine stat variable.
-#define BROKEN   0x1
-#define NOPOWER  0x2
-#define POWEROFF 0x4  // Machine is manually switched off.
-#define MAINT    0x8  // Under maintenance.
-#define EMPED    0x10 // Temporary broken by EMP pulse.
+#define BROKEN          0x1
+#define NOPOWER         0x2
+#define POWEROFF        0x4  // Machine is manually switched off.
+#define MAINT           0x8  // Under maintenance.
+#define EMPED           0x10 // Temporary broken by EMP pulse.
+// Used for vents
+#define NOCONTROL               0x20    // Used to manually disable control
+#define BROKEN_CONTROL          0x40
+#define BROKEN_GRATE            0x80    // Used to display a broken grate
 
 // Used by firelocks
 #define FIREDOOR_OPEN 1

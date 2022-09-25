@@ -96,6 +96,8 @@
 
 	if(welded)
 		vent_icon += "weld"
+	else if(stat & BROKEN_GRATE)
+		vent_icon += "broken"
 	else if(!powered())
 		vent_icon += "off"
 	else
@@ -213,6 +215,8 @@
 		"sigtype" = "status",
 		"power_draw" = last_power_draw,
 		"flow_rate" = last_flow_rate,
+		"blocked" = (stat & NOCONTROL|BROKEN_CONTROL),
+		"error_msg" = error_msg,
 	)
 
 	if(!initial_loc.air_vent_names[id_tag])
@@ -241,9 +245,9 @@
 		src.broadcast_status()
 
 /obj/machinery/atmospherics/unary/vent/pump/receive_signal(datum/signal/signal)
-	if(stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN|BROKEN_CONTROL))
 		return
-
+	
 	hibernate = 0
 
 	//log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent/pump/receive_signal([signal.debug_print()])")
@@ -324,9 +328,11 @@
 
 		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
 		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+		in_use = TRUE
 
 		if(!do_after(user, 20, src))
 			to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
+			in_use = FALSE
 			return 1
 
 		if(!src)
@@ -337,14 +343,22 @@
 			return 1
 
 		welded = !welded
+		in_use = FALSE
 		update_icon()
 		user.visible_message("<span class='notice'>\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"].</span>", \
 			"<span class='notice'>You [welded ? "weld \the [src] shut" : "unweld \the [src]"].</span>", \
 			"You hear welding.")
 		return 1
 
-	else
-		..()
+	if(isWirecutter(W))
+		if(!(stat & BROKEN_GRATE))
+			to_chat(user, SPAN_NOTICE("You must open the grille to have direct access to the electronics."))
+			return TRUE
+		playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1)
+		new /obj/item/stack/cable_coil(get_turf(src), 1, COLOR_RED)
+	//придумтаь нормальный ремонт
+
+	..()
 
 /obj/machinery/atmospherics/unary/vent/pump/_examine_text(mob/user)
 	. = ..()
@@ -358,6 +372,7 @@
 /obj/machinery/atmospherics/unary/vent/pump/attackby(obj/item/W as obj, mob/user as mob)
 	if(!isWrench(W))
 		return ..()
+	//предусмотреть демонтаж/ремонт поломанной вентиляции
 	if (!(stat & NOPOWER) && use_power)
 		to_chat(user, "<span class='warning'>You cannot unwrench \the [src], turn it off first.</span>")
 		return 1
@@ -369,16 +384,24 @@
 	var/datum/gas_mixture/env_air = loc.return_air()
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 	to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
+	in_use = TRUE
 	if (do_after(user, 40, src))
 		user.visible_message( \
 			"<span class='notice'>\The [user] unfastens \the [src].</span>", \
 			"<span class='notice'>You have unfastened \the [src].</span>", \
 			"You hear a ratchet.")
+		in_use = FALSE
+		// что-то должно спавнится при демонтаже поломанной хуйни поломке
 		var/obj/item/pipe/P = new(loc, make_from=src)
 		if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
 			to_chat(user, "<span class='warning'>\the [src] flies off because of the overpressure in it!</span>")
 			P.throw_at_random(0, round((int_air.return_pressure()-env_air.return_pressure()) / 100), 30)
 		qdel(src)
+	in_use = FALSE
+
+/obj/machinery/atmospherics/unary/vent/pump/break_weld(mob/living/user)
+	. = ..()
+	broadcast_status()
 
 #undef DEFAULT_PRESSURE_DELTA
 

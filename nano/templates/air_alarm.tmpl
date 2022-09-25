@@ -120,7 +120,7 @@ Used In File(s): \code\game\machinery\alarm.dm
 					Operating:
 				</div>
 				<div class="itemContent">
-					{{:helper.link(value.power ? 'On' : 'Off', null, { 'id_tag' : value.id_tag, 'command' : 'power', 'val' : value.power ? 0 : 1}, null, value.power ? null : 'redButton')}}
+					{{:helper.link(value.power ? 'On' : 'Off', null, { 'id_tag' : value.id_tag, 'command' : 'power', 'val' : value.power ? 0 : 1}, value.blocked ? 'disabled' : null, value.power ? null : 'redButton')}}
 				</div>
 			</div>
 			<div class="item">
@@ -128,7 +128,11 @@ Used In File(s): \code\game\machinery\alarm.dm
 					Operation Mode:
 				</div>
 				<div class="itemContent">
-					{{:value.direction == "siphon" ? 'Siphoning' : 'Pressurizing'}}
+					{{if value.error_msg}}
+						<span class='bad'>{{:value.error_msg}}</span>
+					{{else}}
+						{{:value.direction == "siphon" ? 'Siphoning' : 'Pressurizing'}}
+					{{/if}}		
 				</div>
 			</div>
 			<div class="item">
@@ -136,8 +140,8 @@ Used In File(s): \code\game\machinery\alarm.dm
 					Pressure Checks:
 				</div>
 				<div class="itemContent">
-					{{:helper.link('External', null, { 'id_tag' : value.id_tag, 'command' : 'checks', 'val' : value.checks^1}, null, value.checks&1 ? 'selected' : null)}}
-					{{:helper.link('Internal', null, { 'id_tag' : value.id_tag, 'command' : 'checks', 'val' : value.checks^2}, null, value.checks&2 ? 'selected' : null)}}
+					{{:helper.link('External', null, { 'id_tag' : value.id_tag, 'command' : 'checks', 'val' : value.checks^1}, value.blocked ? 'disabled' : null, value.checks&1 ? 'selected' : null)}}
+					{{:helper.link('Internal', null, { 'id_tag' : value.id_tag, 'command' : 'checks', 'val' : value.checks^2}, value.blocked ? 'disabled' : null, value.checks&2 ? 'selected' : null)}}
 				</div>
 			</div>
 			<div class="item">
@@ -145,8 +149,8 @@ Used In File(s): \code\game\machinery\alarm.dm
 					External Pressure Bound:
 				</div>
 				<div class="itemContent">
-					{{:helper.link(helper.fixed(value.external,2), null, { 'id_tag' : value.id_tag, 'command' : 'set_external_pressure'})}}
-					{{:helper.link('Reset', null, { 'id_tag' : value.id_tag, 'command' : 'reset_external_pressure'})}}
+					{{:helper.link(helper.fixed(value.external,2), null, { 'id_tag' : value.id_tag, 'command' : 'set_external_pressure'}, value.blocked ? 'disabled' : null)}}
+					{{:helper.link('Reset', null, { 'id_tag' : value.id_tag, 'command' : 'reset_external_pressure'}, value.blocked ? 'disabled' : null)}}
 				</div>
 			</div>			
 			<HR>

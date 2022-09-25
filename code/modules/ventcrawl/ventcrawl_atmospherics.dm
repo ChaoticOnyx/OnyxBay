@@ -27,10 +27,16 @@
 
 /obj/machinery/atmospherics/proc/ventcrawl_to(mob/living/user, obj/machinery/atmospherics/target_move, direction)
 	if(target_move)
-		if(is_type_in_list(target_move, ventcrawl_machinery) && target_move.can_crawl_through())
-			user.remove_ventcrawl()
-			user.forceMove(target_move.loc) //handles entering and so on
-			user.visible_message("You hear something squeezing through the ducts.", "You climb out the ventilation system.")
+		if(istype(target_move, /obj/machinery/atmospherics/unary/vent))
+			var/obj/machinery/atmospherics/unary/vent/vent_move = target_move
+			if(vent_move.can_crawl_through())
+				user.remove_ventcrawl()
+				user.forceMove(vent_move.loc) //handles entering and so on
+				user.visible_message("You hear something squeezing through the ducts.", "You climb out the ventilation system.")
+			else if(!vent_move.in_use && vent_move.can_break_weld(user))
+				if(vent_move.break_weld(user, target_move))
+					user.remove_ventcrawl()
+					user.forceMove(vent_move.loc)
 		else if(target_move.can_crawl_through())
 			if(target_move.return_network(target_move) != return_network(src))
 				user.remove_ventcrawl()
@@ -47,13 +53,13 @@
 			user.visible_message("You hear something squeezing through the pipes.", "You climb out the ventilation system.")
 
 /obj/machinery/atmospherics/proc/can_crawl_through()
-	return 1
+	return TRUE
 
-/obj/machinery/atmospherics/unary/vent/pump/can_crawl_through()
+/obj/machinery/atmospherics/unary/vent/can_crawl_through()
 	return !welded
 
-/obj/machinery/atmospherics/unary/vent/scrubber/can_crawl_through()
-	return !welded
+/obj/machinery/atmospherics/unary/vent/proc/can_break_weld(user)
+	return isxenomorph(user)
 
 /obj/machinery/atmospherics/proc/findConnecting(direction)
 	for(var/obj/machinery/atmospherics/target in get_step(src,direction))
@@ -87,3 +93,29 @@
 
 /obj/machinery/atmospherics/valve/isConnectable()
 	return (open && ..())
+
+/obj/machinery/atmospherics/unary/vent/proc/break_weld(mob/living/user)
+	to_chat(user, SPAN_WARNING("You start breaking through \the [src] in an attempt to break through"))
+	in_use = TRUE
+	for(var/i in 1 to 3)
+		if(!do_after(user, 2 SECOND, src, incapacitation_flags = INCAPACITATION_DEFAULT & ~INCAPACITATION_RESTRAINED)) //5 seconds
+			in_use = FALSE
+			return FALSE
+		if(can_crawl_through())
+			in_use = FALSE
+			return TRUE
+		playsound(loc, 'sound/effects/fighting/smash.ogg', 65, 1)
+		visible_message(SPAN_DANGER("\The [src] begins to shake violently!"))
+		shake_animation()
+	in_use = FALSE
+	welded = FALSE
+	stat |= BROKEN_CONTROL
+	stat |= BROKEN_GRATE
+	error_msg = pick(prob(70); "Hardware Error: Control system failure", prob(20); "Hardware Error: Short circuit detected", prob(10); "Hardware Error: Unknown")
+	update_icon()
+	to_chat(user, SPAN_WARNING("You successfully break out!"))
+	visible_message(SPAN_DANGER("\The [user] successfully broke out of \the [src]!"))
+	playsound(loc, 'sound/effects/fighting/smash.ogg', 1, 1)
+	playsound(src.loc, 'sound/effects/grillehit.ogg', 65, 1)
+	shake_animation()
+	return TRUE

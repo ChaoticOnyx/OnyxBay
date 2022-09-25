@@ -155,6 +155,10 @@
 			. |= DAM_LASER
 
 /obj/attackby(obj/item/O as obj, mob/user as mob)
+	if(in_use)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return
+
 	if(obj_flags & OBJ_FLAG_ANCHORABLE)
 		if(isWrench(O))
 			wrench_floor_bolts(user)
