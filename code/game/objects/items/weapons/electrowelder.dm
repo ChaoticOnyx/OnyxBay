@@ -3,6 +3,7 @@
 	desc = ""
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "exwelder"
+	item_state = "exwelder"
 	item_flags = ITEM_FLAG_IS_BELT
 	tank = null
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
@@ -63,8 +64,10 @@
 
 /obj/item/weldingtool/electrowelder/update_icon()
 	overlays.Cut()
+	item_state = "[initial(icon_state)]"
 	if(welding)
 		overlays += "exwelder-on"
+		item_state = "[initial(icon_state)]-on"
 	if(cell)
 		if(cell.charge > 0)
 			overlays += "charge[ceil(cell.charge / (cell.maxcharge / 3))]"
