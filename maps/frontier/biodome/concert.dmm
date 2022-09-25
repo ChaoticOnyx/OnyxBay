@@ -43,6 +43,7 @@
 "yf" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 1},/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/structure/cable/yellow{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "yz" = (/obj/machinery/alarm{dir = 8; pixel_x = 24},/obj/structure/disposalpipe/trunk{dir = 1},/obj/machinery/disposal,/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "zw" = (/obj/effect/floor_decal/corner/green{dir = 5},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
+"zx" = (/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 5},/obj/machinery/navbeacon/frontier/DOME_NW,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "zF" = (/obj/effect/floor_decal/corner/green/three_quarters,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "Ai" = (/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/glass{name = "Central Biodome"; req_access = list()},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/sandfloordec,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "BG" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled/dark/mono,/area/hydroponics/biodome)
@@ -67,6 +68,7 @@
 "PG" = (/obj/effect/floor_decal/corner/green{dir = 8},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
 "Qo" = (/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "QE" = (/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
+"Rf" = (/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; pixel_y = 0},/obj/machinery/navbeacon/frontier/DOME_NE,/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "RB" = (/turf/simulated/floor/tiled/mono,/area/hydroponics/biodome)
 "SK" = (/obj/effect/floor_decal/sandfloordec,/obj/effect/floor_decal/oldflood,/obj/structure/disposalpipe/segment{dir = 2; icon_state = "pipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/turf/simulated/floor/tiled/rough,/area/hydroponics/biodome)
 "SR" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
@@ -95,7 +97,7 @@ KIwlcLQofMCZphphphphphCZcLQowlcLKI
 iokUvRQESKsephCZphCZphphwpaJvCWJio
 XJxAFblHQESKphphphsephwpaJLqXMyzXJ
 KIseETFblHQESKfMuKphwpaJLqXMphphKI
-KIKIWSseFblHQEsdsdsdaJvCXMphpgKIKI
+KIKIWSsezxlHQEsdsdsdaJvCRfphpgKIKI
 dOKIfMrxphFbNhNhNhNhNhXMphsephKItC
 voKIKIETphsemdTgKJmdTgphiVphKIKIXy
 DbyfKIKIKIfMcLphKJphfMrxKIKIKISRsp
