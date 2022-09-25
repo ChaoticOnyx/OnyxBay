@@ -280,13 +280,18 @@
 
 	return ..()
 
+/obj/item/weldingtool/proc/gen_desc() // It's better to have a specific method to overwrite in future. - Max
+	var/desc_text
+	if(tank)
+		desc_text += "\n\icon[tank] \The [tank] contains [get_fuel()]/[get_max_fuel()] units of fuel!"
+	else
+		desc_text += "\nThere is no tank attached."
+	return desc_text
+
 /obj/item/weldingtool/_examine_text(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		if(tank)
-			. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
-		else
-			. += "\nThere is no tank attached."
+		. += gen_desc()
 
 /obj/item/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
 	if(ishuman(M))
@@ -370,7 +375,7 @@
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/afterattack(obj/O, mob/user, proximity)
@@ -416,6 +421,9 @@
 /obj/item/weldingtool/proc/get_fuel()
 	return tank ? tank.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
+// Returns max amount of fuel welder can contain. And also method above is a bit cringe without method below, bruh. - Max
+/obj/item/weldingtool/proc/get_max_fuel()
+	return tank ? tank.max_fuel : 0
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
 /obj/item/weldingtool/proc/remove_fuel(amount = 1, mob/M = null)
@@ -675,7 +683,7 @@
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/old

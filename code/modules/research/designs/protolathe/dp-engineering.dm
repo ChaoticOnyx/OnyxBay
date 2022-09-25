@@ -157,3 +157,33 @@
 	req_tech = list(TECH_MATERIAL = 7, TECH_POWER = 8, TECH_ENGINEERING = 6)
 	build_path = /obj/item/smes_coil/super_io
 	sort_string = "VAXAC"
+
+/datum/design/item/tool/hand_drill
+	name = "hand drill"
+	desc = "An electronic high-tech combined tool capable of wrenching and screwing."
+	id = "hand_drill"
+	req_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 500)
+	build_path = /obj/item/combotool/hand_drill
+	sort_string = "VAXAD"
+	category_items = list("Engineering")
+
+/datum/design/item/tool/jaws
+	name = "jaws of life"
+	desc = "A jaws of life which can force open airlocks or cut wires."
+	id = "jaws"
+	req_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3)
+	materials = list(MATERIAL_STEEL = 1000, MATERIAL_GLASS = 200)
+	build_path = /obj/item/combotool/jaws_of_life
+	sort_string = "VAXAE"
+	category_items = list("Engineering")
+
+/datum/design/item/tool/electrowelder
+	name = "electronic welding tool"
+	desc = "An upgraded version of beloved welding tool which uses powercell to generate heat and weld metals."
+	id = "electrowelder"
+	req_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3)
+	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 500)
+	build_path = /obj/item/weldingtool/electrowelder
+	sort_string = "VAXAF"
+	category_items = list("Engineering")

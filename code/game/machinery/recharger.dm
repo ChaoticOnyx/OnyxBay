@@ -9,7 +9,7 @@
 	idle_power_usage = 4 WATTS
 	active_power_usage = 30 KILO WATTS
 	var/obj/item/charging = null
-	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier)
+	var/list/allowed_devices = list(/obj/item/gun/energy, /obj/item/gun/magnetic/railgun, /obj/item/melee/baton, /obj/item/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/computer_hardware/battery_module, /obj/item/shield_diffuser, /obj/item/clothing/mask/smokable/ecig, /obj/item/shield/barrier, /obj/item/weldingtool/electrowelder)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
@@ -58,6 +58,11 @@
 			var/obj/item/shield/barrier/SB = G
 			if(!SB.cell)
 				to_chat(user, "This device does not have a battery installed.")
+				return
+		if(istype(G, /obj/item/weldingtool/electrowelder))
+			var/obj/item/weldingtool/electrowelder/EW = G
+			if(!EW.cell)
+				to_chat(user, "\The [EW] does not have a battery installed.")
 				return
 
 		if(user.unEquip(G))
@@ -132,6 +137,9 @@
 		else if(istype(charging, /obj/item/shield/barrier))
 			var/obj/item/shield/barrier/SB = charging
 			cell = SB.cell
+		else if(istype(charging, /obj/item/weldingtool/electrowelder))
+			var/obj/item/weldingtool/electrowelder/EW = charging
+			cell = EW.cell
 
 		if(istype(cell, /obj/item/cell))
 			var/obj/item/cell/C = cell
