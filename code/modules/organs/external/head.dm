@@ -111,11 +111,12 @@
 		if(BP_IS_ROBOTIC(src)) // Robolimbs don't always have eye icon.
 			var/datum/robolimb/R = all_robolimbs[model]
 			has_eyes_overlay = R.has_eyes_icon
-		
+
 		var/datum/body_build/BB = owner.body_build
+		var/icon/eyes_icon
 		if(has_eyes_overlay)
 			var/eye_icon_location = S.icobase
-			var/icon/eyes_icon = new /icon(eye_icon_location, "eyes[BB.index]")
+			eyes_icon = new /icon(eye_icon_location, "eyes[BB.index]")
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[S.vision_organ ? S.vision_organ : BP_EYES]
 			if(!ishuman(loc))
 				for(var/thing in contents)
@@ -128,8 +129,10 @@
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
 			else
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
-			mob_icon.Blend(eyes_icon, ICON_OVERLAY)
-			overlays |= eyes_icon
+		else
+			eyes_icon = new /icon('icons/mob/human_races/r_human.dmi', "eyes_blank")
+		mob_icon.Blend(eyes_icon, ICON_OVERLAY)
+		overlays |= eyes_icon
 
 		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
 			var/icon/lip_icon = new /icon(S.icobase, "lips[BB.index]")
