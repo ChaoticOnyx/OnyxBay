@@ -470,11 +470,10 @@
 			skin_state = SKIN_NORMAL
 	update_skin(1)
 
-/mob/living/carbon/human/consume()
+/mob/living/carbon/human/proc/consume()
 	set name = "Consume"
 	set desc = "Regain life by consuming it from others."
 	set category = "Abilities"
-
 	if (last_special > world.time)
 		to_chat(src, "<span class='warning'>You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds.</span>")
 		return
