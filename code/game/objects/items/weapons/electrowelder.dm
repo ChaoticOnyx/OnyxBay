@@ -63,16 +63,19 @@
 	return desc_text
 
 /obj/item/weldingtool/electrowelder/update_icon()
+	item_state = welding ? "[initial(item_state)]-on" : "[initial(item_state)]"
 	overlays.Cut()
-	item_state = "[initial(icon_state)]"
 	if(welding)
 		overlays += "exwelder-on"
-		item_state = "[initial(icon_state)]-on"
 	if(cell)
 		if(cell.charge > 0)
 			overlays += "charge[ceil(cell.charge / (cell.maxcharge / 3))]"
 		else
 			overlays += "charge0"
+	var/mob/M = loc
+	if(istype(M))
+		M.update_inv_l_hand()
+		M.update_inv_r_hand()
 
 /obj/item/weldingtool/electrowelder/get_fuel()
 	return cell ? cell.charge : 0

@@ -10,7 +10,7 @@
 	hitsound = 'sound/items/drill_hit.ogg'
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "drill"
-	item_state = "drill"
+	item_state = "hdrill"
 	sharp = TRUE
 	item_flags = ITEM_FLAG_IS_BELT
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
@@ -44,7 +44,7 @@
 /obj/item/combotool/hand_drill/sindi
 	desc = "wzhzhzh"
 	icon_state = "drill_sindi"
-	item_state = "drill_sindi"
+	item_state = "hdrill_sindi"
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 2)
 
 #undef DRILL_SCREW
