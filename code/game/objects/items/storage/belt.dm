@@ -66,7 +66,10 @@
 		/obj/item/combotool/advtool,
 		/obj/item/device/geiger,
 		/obj/item/device/lightreplacer,
-		/obj/item/device/robotanalyzer
+		/obj/item/device/robotanalyzer,
+		/obj/item/weldingtool/electrowelder,
+		/obj/item/combotool/jaws_of_life,
+		/obj/item/combotool/hand_drill
 		)
 
 
@@ -267,7 +270,10 @@
 		/obj/item/storage/pill_bottle,
 		/obj/item/ore,
 		/obj/item/reagent_containers/vessel/can,
-		/obj/item/storage/plants
+		/obj/item/storage/plants,
+		/obj/item/weldingtool/electrowelder,
+		/obj/item/combotool/jaws_of_life,
+		/obj/item/combotool/hand_drill
 		)
 
 /obj/item/storage/belt/military
