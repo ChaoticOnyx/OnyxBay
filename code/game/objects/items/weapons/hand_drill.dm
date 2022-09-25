@@ -43,6 +43,7 @@
 /obj/item/combotool/hand_drill/sindi
 	desc = "wzhzhzh"
 	icon_state = "drill_sindi"
+	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 2)
 
 #undef DRILL_SCREW
 #undef DRILL_WRENCH

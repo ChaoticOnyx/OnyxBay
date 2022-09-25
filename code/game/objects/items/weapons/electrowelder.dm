@@ -114,3 +114,4 @@
 
 /obj/item/weldingtool/electrowelder/sindi
 	icon_state = "exwelder_sindi"
+	origin_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_ILLEGAL = 2)

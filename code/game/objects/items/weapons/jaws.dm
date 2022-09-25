@@ -40,6 +40,8 @@
 
 /obj/item/combotool/jaws_of_life/sindi
 	desc = "It looks kinda SUS."
+	icon_state = "jaws_sindi"
+	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 2)
 
 #undef JAWS_CROWBAR
 #undef JAWS_CUTTERS
