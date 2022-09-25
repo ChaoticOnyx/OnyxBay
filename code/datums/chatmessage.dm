@@ -61,7 +61,7 @@
 	if (!istype(target))
 		CRASH("Invalid target given for chatmessage")
 	if(QDELETED(owner) || !istype(owner) || !owner.client)
-		log_debug("/datum/chatmessage created with [QDELETED(owner) ? "null" : "invalid"] mob owner")
+		util_crash_with("/datum/chatmessage created with [QDELETED(owner) ? "null" : "invalid"] mob owner ([owner?.name], [owner?.type], [owner?.loc])")
 		qdel(src)
 		return
 	INVOKE_ASYNC(src, .proc/generate_image, text, target, owner, lifespan, italics, size)
