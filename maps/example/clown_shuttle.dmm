@@ -1,6 +1,6 @@
 "a" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/se,/area/space)
 "m" = (/obj/item/bedsheet/clown,/turf/simulated/floor/shuttle/purple,/area/space)
-"o" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/exoplanet,/area/space)
+"o" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/asteroid,/area/space)
 "x" = (/turf/simulated/shuttle/wall/corner/merchant/ne,/area/space)
 "z" = (/turf/simulated/shuttle/wall/corner/merchant/nw,/area/space)
 "B" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall/corner/merchant/sw,/area/space)
