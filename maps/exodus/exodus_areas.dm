@@ -2282,7 +2282,7 @@
 	icon_state = "unexplored"
 
 /area/mine/unexplored/medium
-	name = "Medium mine "
+	name = "Medium mine"
 	icon_state = "unexplored_medium"
 
 /area/mine/unexplored/deep
