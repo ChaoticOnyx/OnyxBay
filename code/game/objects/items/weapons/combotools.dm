@@ -29,7 +29,7 @@
 	if(istype(a, /obj/item/storage) && user.a_intent != I_DISARM)
 		a.attackby(src, user)
 		return
-	if(istype(a, /obj/structure/table))
+	if(istype(a, /obj/structure/table) && user.a_intent == I_DISARM)
 		a.attackby(src, user)
 		return
 	if(istype(a, /obj/structure/closet) && user.a_intent != I_DISARM)
