@@ -147,6 +147,7 @@
 	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
 	flesh_color = "#afa59e"
+	blood_color = COLOR_BLOOD_TAJARAN
 	base_color = "#333333"
 	tail = "farwatail"
 
@@ -161,7 +162,7 @@
 	greater_form = SPECIES_SKRELL
 	default_language = "Neaera"
 	flesh_color = "#8cd7a3"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	reagent_tag = IS_SKRELL
 	tail = null
 
@@ -177,5 +178,6 @@
 	greater_form = SPECIES_UNATHI
 	default_language = "Stok"
 	flesh_color = "#34af10"
+	blood_color = COLOR_BLOOD_UNATHI
 	base_color = "#066000"
 	reagent_tag = IS_UNATHI
