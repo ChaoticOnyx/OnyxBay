@@ -141,7 +141,13 @@
 		return
 	else if(isWrench(W))
 		if(!suspension_field)
-			anchored = !anchored
+			if(anchored)
+				anchored = 0
+			else
+				if(istype(loc, /turf) && !isfloor(loc))
+					to_chat(user, SPAN_WARNING("\The [name] must be constructed on the floor!"))
+					return
+				anchored = 1
 			to_chat(user, SPAN("info", "You wrench the stabilising legs [anchored ? "into place" : "up against the body"]."))
 			if(anchored)
 				desc = "It is resting securely on four stubby legs."
