@@ -439,6 +439,7 @@ var/list/mining_floors = list()
 	var/dug = 0       //0 = has not yet been dug, 1 = has already been dug
 	var/overlay_detail
 	has_resources = 1
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/asteroid/Initialize()
 	. = ..()
