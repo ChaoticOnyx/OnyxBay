@@ -44,7 +44,7 @@
 		target_up = null
 	return ..()
 
-/obj/structure/ladder/attackby(obj/item/C as obj, mob/user as mob)
+/obj/structure/ladder/attackby(obj/item/C, mob/user)
 	climb(user)
 
 /obj/structure/ladder/attack_hand(mob/user)
