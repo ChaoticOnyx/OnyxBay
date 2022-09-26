@@ -197,6 +197,8 @@
   * * size - Size of the message
   */
 /mob/proc/create_chat_message(atom/movable/speaker, raw_message, italics=FALSE, size)
+	if(!client)
+		return
 
 	if(isobserver(speaker))
 		return
