@@ -7,7 +7,7 @@
 
 	spells = list(
 		SPELL_DATA(/datum/spell/targeted/projectile/magic_missile,     1),
-		SPELL_DATA(/datum/spell/hand/charges/blood_shard,              1),
+		SPELL_DATA(/datum/spell/blood_shard,                      1),
 		SPELL_DATA(/datum/spell/acid_spray,                            1),
 		SPELL_DATA(/datum/spell/hand/slippery_surface,                 1),
 		SPELL_DATA(/datum/spell/targeted/projectile/dumbfire/fireball, 1),

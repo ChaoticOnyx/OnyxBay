@@ -211,8 +211,7 @@
 				speaker_coverage[T] = R
 
 	// Try to find all the players who can hear the message
-	for(var/i = 1; i <= GLOB.player_list.len; i++)
-		var/mob/M = GLOB.player_list[i]
+	for(var/mob/M in GLOB.player_list)
 		if(M.can_hear_radio(speaker_coverage))
 			. += M
 

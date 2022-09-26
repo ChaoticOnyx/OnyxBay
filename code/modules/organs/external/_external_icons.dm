@@ -107,7 +107,7 @@ var/list/limb_icon_cache = list()
 		if(force_icon)
 			icon = force_icon
 		else if (BP_IS_ROBOTIC(src))
-			icon = 'icons/mob/human_races/robotic.dmi'
+			icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'
 		else if (!dna)
 			icon = 'icons/mob/human_races/r_human.dmi'
 		else if (status & ORGAN_MUTATED)
@@ -221,4 +221,3 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 
 	return applying
-

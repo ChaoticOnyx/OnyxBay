@@ -350,6 +350,16 @@
 	..()
 	icon_state = "firstbush_[rand(1, 4)]"
 
+/obj/structure/flora/ausbushes/glowshroom
+	name = "glowshroom"
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "glowshroom_1"
+
+/obj/structure/flora/ausbushes/glowshroom/New()
+	..()
+	icon_state = "glowshroom_[rand(1, 4)]"
+	set_light(1, 0.6, 1, "#99FF66")
+
 /obj/structure/flora/ausbushes/reedbush
 	icon_state = "reedbush_1"
 
@@ -1022,3 +1032,23 @@
 	name = "potted monkey plant"
 	desc = "Perhaps, this is why we no longer have a genetics lab?"
 	icon_state = "monkeyplant"
+
+// Misc Stuff
+/obj/structure/flora/log
+	name = "log"
+	desc = "It's a log. It's not very interesting."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "log"
+	layer = BELOW_DOOR_LAYER
+	anchored = 1
+
+/obj/effect/firefly
+	name = "firefly"
+	desc = "A small, bioluminescent insect."
+	icon = 'icons/obj/flora/misc.dmi'
+	icon_state = "firefly"
+	layer = BELOW_DOOR_LAYER
+
+/obj/effect/firefly/Initialize()
+	. = ..()
+	set_light(0.4, 0.1, 2, 2, "#ffc233")

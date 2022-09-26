@@ -220,11 +220,13 @@
 	icon_open = "leathercoat_open"
 	icon_closed = "leathercoat"
 
-/obj/item/clothing/suit/browncoat
+/obj/item/clothing/suit/storage/toggle/browncoat
 	name = "brown leather coat"
 	desc = "A long, brown leather coat."
-	icon_state = "browncoat"
-	item_state = "browncoat"
+	icon_state = "browncoat_open"
+	item_state = "browncoat_open"
+	icon_open = "browncoat_open"
+	icon_closed = "browncoat"
 
 //stripper
 /obj/item/clothing/under/stripper

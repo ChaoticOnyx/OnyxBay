@@ -1376,11 +1376,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	QDEL_NULL(src.pai)
 	return ..()
 
-/obj/item/device/pda/clown/Crossed(AM as mob|obj) //Clown PDA is slippery.
+/obj/item/device/pda/clown/Crossed(AM) //Clown PDA is slippery.
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-
-		if(M.slip_on_obj(src, 3, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
+		if(M.slip_on_obj(src, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
 			if(cartridge.charges < 5)
 				cartridge.charges++
 
