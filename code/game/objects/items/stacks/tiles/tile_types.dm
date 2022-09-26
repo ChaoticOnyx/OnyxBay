@@ -103,7 +103,7 @@
 	name = "dark floor tile"
 	singular_name = "dark floor tile"
 	icon_state = "fr_tile"
-	matter = list(MATERIAL_PLASTEEL = 937.5)
+	matter = list(MATERIAL_STEEL = 937.5)
 
 /obj/item/stack/tile/floor_dark/fifty
 	amount = 50
