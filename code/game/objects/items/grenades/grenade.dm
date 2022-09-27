@@ -24,9 +24,9 @@
 		return 0
 	return 1
 
-/obj/item/grenade/New(need_pin = TRUE)
+/obj/item/grenade/Initialize()
 	..()
-	if(has_pin && need_pin)
+	if(has_pin)
 		safety_pin = new /obj/item/safety_pin
 	detonator = new /obj/item/device/assembly_holder/timer_igniter(src)
 	new_timing(30)
