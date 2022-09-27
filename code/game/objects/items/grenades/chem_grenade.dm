@@ -10,7 +10,7 @@
 	force = 2.0
 	det_time = null
 	unacidable = 1
-	var/stage = 0
+	var/stage = STAGE_BASIC
 	var/state = 0
 	var/list/beakers = new /list()
 	var/list/allowed_containers = list(/obj/item/reagent_containers/vessel/beaker, /obj/item/reagent_containers/vessel/bottle/chemical)
@@ -18,6 +18,8 @@
 
 /obj/item/grenade/chem_grenade/Initialize()
 	. = ..()
+	if(stage != STAGE_READY)
+		QDELL_NULL(detonator) // Yea, we surely don't need it, if chemnade is not ready.
 	create_reagents(1000)
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
