@@ -60,8 +60,6 @@
 	recipes += new /datum/stack_recipe("rough floor tile", /obj/item/stack/tile/floor_rough, 1, 4, 20)
 	recipes += new /datum/stack_recipe("dark floor tile", /obj/item/stack/tile/floor_dark, 1, 4, 20)
 	recipes += new /datum/stack_recipe("dark rough floor tile", /obj/item/stack/tile/floor_dark_rough, 1, 4, 20)
-	recipes += new /datum/stack_recipe("mono floor tile", /obj/item/stack/tile/floor_mono, 1, 4, 20)
-	recipes += new /datum/stack_recipe("dark mono floor tile", /obj/item/stack/tile/floor_mono_dark, 1, 4, 20)
 	recipes += new /datum/stack_recipe("metal rod", /obj/item/stack/rods, 1, 2, 60)
 	recipes += new /datum/stack_recipe("computer frame", /obj/structure/computerframe, 5, time = 25, one_per_turf = 1, on_floor = 1)
 	recipes += new /datum/stack_recipe("wall girder assembly",/obj/item/stack/gassembly, 2, time = 30, one_per_turf = 0, on_floor = 1)
@@ -104,10 +102,6 @@
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
 	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
-	recipes += new /datum/stack_recipe("techfloor tile", /obj/item/stack/tile/techfloor, 1, 4, 20)
-	recipes += new /datum/stack_recipe("maint techfloor tile", /obj/item/stack/tile/techfloor/maint, 1, 4, 20)
-	recipes += new /datum/stack_recipe("grid techfloor tile", /obj/item/stack/tile/techfloor/grid, 1, 4, 20)
-	recipes += new /datum/stack_recipe("ridge techfloor tile", /obj/item/stack/tile/techfloor/ridge, 1, 4, 20)
 
 /material/stone/generate_recipes()
 	..()
@@ -124,7 +118,6 @@
 	recipes += new /datum/stack_recipe("reagent dispenser cartridge (small)", /obj/item/reagent_containers/chem_disp_cartridge/small,  2, on_floor=0) // 100u
 	recipes += new /datum/stack_recipe("white floor tile", /obj/item/stack/tile/floor_white, 1, 4, 20)
 	recipes += new /datum/stack_recipe("white rough floor tile", /obj/item/stack/tile/floor_white_rough, 1, 4, 20)
-	recipes += new /datum/stack_recipe("white mono floor tile", /obj/item/stack/tile/floor_mono_white, 1, 4, 20)
 	recipes += new /datum/stack_recipe("brown floor tile", /obj/item/stack/tile/floor_brown, 1, 4, 20)   ////new
 	recipes += new /datum/stack_recipe("freezer floor tile", /obj/item/stack/tile/floor_freezer, 1, 4, 20)
 	recipes += new /datum/stack_recipe("hazard cone", /obj/item/caution/cone, 2, on_floor = 1)
