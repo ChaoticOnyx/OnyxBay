@@ -405,23 +405,38 @@
 	body_parts_covered = UPPER_TORSO|ARMS
 	initial_closed = TRUE
 
-/obj/item/clothing/suit/storage/punk_jacket_AC
+/obj/item/clothing/suit/storage/toggle/punk_jacket_AC
 	name = "black punk jacket"
 	desc = "A black leather jacket with Atomic Cats emblem on the back."
 	icon_state = "punk_jacket_AC"
+	item_state = "punk_jacket_AC"
+	icon_open = "punk_jacket_AC_open"
+	icon_closed = "punk_jacket_AC"
 	body_parts_covered = UPPER_TORSO|ARMS
+	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
-/obj/item/clothing/suit/storage/punk_jacket_RD
+/obj/item/clothing/suit/storage/toggle/punk_jacket_RD
 	name = "raven punk jacket"
 	desc = "A raven leather jacket with Rusty Devils emblem on the back."
 	icon_state = "punk_jacket_RD"
+	item_state = "punk_jacket_RD"
+	icon_open = "punk_jacket_RD_open"
+	icon_closed = "punk_jacket_RD"
 	body_parts_covered = UPPER_TORSO|ARMS
+	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
-/obj/item/clothing/suit/storage/punk_jacket_TS
+/obj/item/clothing/suit/storage/toggle/punk_jacket_TS
 	name = "brown punk jacket"
 	desc = "A brown leather jacket with Tunnel Snakes emblem on the back."
 	icon_state = "punk_jacket_TS"
+	item_state = "punk_jacket_TS"
+	icon_open = "punk_jacket_TS_open"
+	icon_closed = "punk_jacket_TS"
 	body_parts_covered = UPPER_TORSO|ARMS
+	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/fashionable_coat
 	name = "fashionable coat"

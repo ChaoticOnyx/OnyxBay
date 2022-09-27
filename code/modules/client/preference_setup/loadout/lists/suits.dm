@@ -219,17 +219,17 @@
 
 /datum/gear/suit/punk_jacket_AC
 	display_name = "punk jacket black"
-	path = /obj/item/clothing/suit/storage/punk_jacket_AC
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_AC
 	price = 20
 
 /datum/gear/suit/punk_jacket_RD
 	display_name = "punk jacket raven"
-	path = /obj/item/clothing/suit/storage/punk_jacket_RD
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_RD
 	price = 20
 
 /datum/gear/suit/punk_jacket_TS
 	display_name = "punk jacket brown"
-	path = /obj/item/clothing/suit/storage/punk_jacket_TS
+	path = /obj/item/clothing/suit/storage/toggle/punk_jacket_TS
 	price = 20
 
 /datum/gear/suit/fashionable_coat
