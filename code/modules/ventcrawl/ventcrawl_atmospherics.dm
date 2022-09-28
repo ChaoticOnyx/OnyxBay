@@ -63,15 +63,8 @@
 	return
 
 /obj/machinery/atmospherics/unary/vent_pump/breakout(mob/living/user)
-	if(issmall(user))
-		user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
-		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
-		shake_animation()
-		return 0
-
-	if(isxenomorph(user))
-
-
+	var/datum/modifier/trait/vent_breaker/vent_breaker = locate(/datum/modifier/trait/vent_breaker) in user.modifiers
+	if(vent_breaker && (vent_breaker?.ignore_size_restrictions || !issmall(user)))
 		if(broken == VENT_BROKEN)
 			return 1
 		user.visible_message(SPAN_WARNING("You hear something start break the ducts."), SPAN_NOTICE("You start breaking out the ventilation system."))
@@ -100,17 +93,16 @@
 		update_icon()
 		return 0
 
+	if(issmall(user))
+		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
+
+	user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
+	shake_animation()
+	return 0
 
 /obj/machinery/atmospherics/unary/vent_scrubber/breakout(mob/living/user)
-	if(issmall(user))
-		user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
-		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
-		shake_animation()
-		return 0
-
-	if(isxenomorph(user))
-
-
+	var/datum/modifier/trait/vent_breaker/vent_breaker = locate(/datum/modifier/trait/vent_breaker) in user.modifiers
+	if(vent_breaker && (vent_breaker?.ignore_size_restrictions || !issmall(user)))
 		if(broken == VENT_BROKEN)
 			return 1
 		user.visible_message(SPAN_WARNING("You hear something start break the ducts."), SPAN_NOTICE("You start breaking out the ventilation system."))
@@ -138,6 +130,13 @@
 
 		update_icon()
 		return 0
+
+	if(issmall(user))
+		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
+
+	user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
+	shake_animation()
+	return 0
 
 
 /obj/machinery/atmospherics/proc/findConnecting(direction)
