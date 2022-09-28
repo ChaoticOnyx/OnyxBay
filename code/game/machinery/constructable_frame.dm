@@ -141,7 +141,7 @@
 			if(istype(I, /obj/item/stack)) // Let's make this piece of code a bit more universal. What if i want to add uranium there?! - Max
 				var/obj/item/stack/PS = I // PS AKA parent stack. - Max
 				if(PS.get_amount() > 1)
-					var/samt = min(PS.amount, req_components[component]) // Amount of "satck" to take, idealy amount required, but limited by amount provided. - Max
+					var/samt = min(PS.amount, req_components[component]) // Amount of "stack" to take, idealy amount required, but limited by amount provided. - Max
 					var/obj/item/stack/CS = new PS(src, samt) // CS AKA child stack. - Max
 					CS.update_icon()
 					PS.use(samt)
