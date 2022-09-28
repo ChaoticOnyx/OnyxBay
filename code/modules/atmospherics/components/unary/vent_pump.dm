@@ -381,7 +381,7 @@
 				if(VENT_DAMAGED_STAGE_THREE)
 					broken=VENT_DAMAGED_STAGE_TWO
 				if(VENT_BROKEN)
-					to_chat(user, "<span class='notice'>You can't repair it.</span>")
+					to_chat(user, SPAN("warning", "\The [src] is ruined! You can't repair it!"))
 					return 1
 
 			update_icon()
