@@ -367,7 +367,7 @@
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
 			if(!do_after(user, 10, src))
-				to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
+				to_chat(user, SAPN("warning", "You must remain still to finish this task!"))
 				return 1
 			if(!WT.isOn())
 				to_chat(user, "<span class='notice'>The welding tool needs to be on to finish this task.</span>")
