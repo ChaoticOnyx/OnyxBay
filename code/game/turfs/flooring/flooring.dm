@@ -155,6 +155,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
+	build_type = /obj/item/stack/tile/floor_mono
 
 /decl/flooring/tiling/white
 	desc = "How sterile."
@@ -163,6 +164,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/white/mono
 	icon_base = "white_mono"
+	build_type = /obj/item/stack/tile/floor_mono_white
 
 /decl/flooring/tiling/white/rough
 	icon_base = "white_rough"
@@ -175,6 +177,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/dark/mono
 	icon_base = "dark_mono"
+	build_type = /obj/item/stack/tile/floor_mono_dark
 
 /decl/flooring/tiling/dark/rough
 	icon_base = "dark_rough"
