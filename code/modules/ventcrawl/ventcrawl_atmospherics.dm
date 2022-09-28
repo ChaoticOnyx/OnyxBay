@@ -65,7 +65,7 @@
 /obj/machinery/atmospherics/unary/vent_pump/breakout(mob/living/user)
 	if(issmall(user))
 		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
-		to_chat(user,SPAN_NOTICE("We sorry but you to small."))
+		to_chat(user,SPAN("notice", "We are sorry but you are too small."))
 		shake_animation()
 		return 0
 
