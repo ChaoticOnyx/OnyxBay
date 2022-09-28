@@ -775,7 +775,7 @@
 	user.say(command)
 
 	if (T.is_deaf() || !T.say_understands(user,user.get_default_language()))
-		to_chat(user, "<span class='alert'>Target does not understand you!</span>")
+		to_chat(user, SPAN("warning", "Target does not understand you!"))
 		return
 
 	admin_attack_log(user, T, "used dominate on [key_name(T)]", "was dominated by [key_name(user)]", "used dominate and issued the command of '[command]' to")
