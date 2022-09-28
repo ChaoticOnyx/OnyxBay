@@ -369,7 +369,7 @@
 				to_chat(user, SPAN_NOTICE("You must remain still to finish this task!"))
 				return 1
 			if(!WT.isOn())
-				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task.")
+				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task."))
 				return 1
 
 			switch(broken)
