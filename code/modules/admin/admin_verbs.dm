@@ -89,7 +89,6 @@ var/list/admin_verbs_admin = list(
 	/client/proc/toggle_antagHUD_use,
 	/client/proc/toggle_antagHUD_restrictions,
 	/client/proc/allow_character_respawn,    // Allows a ghost to respawn ,
-	/client/proc/event_manager_panel,
 	/client/proc/empty_ai_core_toggle_latejoin,
 	/client/proc/empty_ai_core_toggle_latejoin,
 	/client/proc/aooc,
@@ -107,7 +106,8 @@ var/list/admin_verbs_admin = list(
 	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
 	/client/proc/delbook,
-	/datum/admins/proc/follow_panel
+	/datum/admins/proc/follow_panel,
+	/datum/admins/proc/events_panel
 	)
 
 var/list/admin_verbs_ban = list(
@@ -136,7 +136,6 @@ var/list/admin_verbs_fun = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_add_random_ai_law,
-	/client/proc/toggle_random_events,
 	/client/proc/editappear,
 	/client/proc/roll_dices,
 	/datum/admins/proc/call_supply_drop,
@@ -178,7 +177,6 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_aliens,
 	/datum/admins/proc/toggle_alien_eggs,
 	/datum/admins/proc/toggle_space_ninja,
-	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
 	/client/proc/nanomapgen_DumpImage
 	)
@@ -283,7 +281,6 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/cmd_admin_add_freeform_ai_law,
 	/client/proc/cmd_admin_add_random_ai_law,
 	/client/proc/cmd_admin_create_centcom_report,
-	/client/proc/toggle_random_events,
 	/client/proc/cmd_admin_add_random_ai_law,
 	/client/proc/Set_Holiday,
 	/datum/admins/proc/startnow,
@@ -340,7 +337,8 @@ var/list/admin_verbs_mod = list(
 	/datum/admins/proc/sendFax,
 	/client/proc/check_fax_history,
 	/client/proc/delbook,
-	/datum/admins/proc/follow_panel
+	/datum/admins/proc/follow_panel,
+	/datum/admins/proc/events_panel
 	)
 
 var/list/admin_verbs_mentor = list(

@@ -47,6 +47,7 @@
 @include meta.load-css('./interfaces/ListInput.scss');
 @include meta.load-css('./interfaces/MechaFabricator.scss');
 @include meta.load-css('./interfaces/FloorPainter.scss');
+@include meta.load-css('./interfaces/EventsPanel.scss');
 
 // Layouts
 @include meta.load-css('./layouts/Layout.scss');

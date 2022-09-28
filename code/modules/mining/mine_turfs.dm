@@ -407,7 +407,7 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/random/Initialize()
 	. = ..()
 	if (prob(mineralChance) && !mineral)
-		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
+		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
 		if (mineral_name && (mineral_name in ore_data))
 			mineral = ore_data[mineral_name]

@@ -12,7 +12,7 @@
 /obj/item/fossil/base/New()
 	var/list/l = list(/obj/item/fossil/bone=9,/obj/item/fossil/skull=3,
 	/obj/item/fossil/skull/horned=2)
-	var/t = pickweight(l)
+	var/t = util_pick_weight(l)
 	var/obj/item/W = new t(src.loc)
 	var/turf/T = get_turf(src)
 	if(istype(T, /turf/simulated/mineral))

@@ -87,7 +87,7 @@
 	var/list/equipment = new
 	var/obj/item/mecha_parts/mecha_equipment/selected
 	var/max_equip = 3
-	var/datum/events/events
+	var/datum/legacy_events/events
 
 /obj/mecha/drain_power(drain_check)
 
