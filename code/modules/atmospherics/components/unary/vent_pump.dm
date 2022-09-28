@@ -363,7 +363,7 @@
 		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
 		if(broken)
-			to_chat(user, "<span class='notice'>Now repairing \the [src].</span>")
+			to_chat(user, SPAN("notice", "Now repairing \the [src]."))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 
 			if(!do_after(user, 10, src))
