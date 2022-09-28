@@ -310,14 +310,16 @@
 			return 1
 
 		if(broken)
-			to_chat(user, "<span class='notice'>Now repairing \the [src].</span>")
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+			user.visible_message(SPAN_NOTICE("\The [user] repairing \the [src]."), \
+				SPAN_NOTICE("Now repairing \the [src]."), \
+				"You hear welding.")
 
 			if(!do_after(user, 10, src))
-				to_chat(user, "<span class='notice'>You must remain close to finish this task.</span>")
+				to_chat(user, SPAN_NOTICE("You must remain still to finish this task!"))
 				return 1
 			if(!WT.isOn())
-				to_chat(user, "<span class='notice'>The welding tool needs to be on to finish this task.</span>")
+				to_chat(user, SPAN_NOTICE("The welding tool needs to be on to finish this task.")
 				return 1
 
 			switch(broken)
@@ -328,13 +330,11 @@
 				if(VENT_DAMAGED_STAGE_THREE)
 					broken=VENT_DAMAGED_STAGE_TWO
 				if(VENT_BROKEN)
-					to_chat(user, "<span class='notice'>You can't repair it.</span>")
+					to_chat(user, SPAN_NOTICE("\The [src] is ruined! You can't repair it!"))
 					return 1
 
 			update_icon()
-			user.visible_message("<span class='notice'>\The [user] repairing \the [src].</span>", \
-				"<span class='notice'>You repaired \the [src].</span>", \
-				"You hear welding.")
+			return
 
 		to_chat(user, "<span class='notice'>Now welding \the [src].</span>")
 		playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)

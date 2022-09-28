@@ -64,8 +64,8 @@
 
 /obj/machinery/atmospherics/unary/vent_pump/breakout(mob/living/user)
 	if(issmall(user))
-		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
-		to_chat(user,SPAN("notice", "We are sorry but you are too small."))
+		user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
+		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
 		shake_animation()
 		return 0
 
@@ -74,7 +74,7 @@
 
 		if(broken == VENT_BROKEN)
 			return 1
-		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
+		user.visible_message(SPAN_WARNING("You hear something start break the ducts."), SPAN_NOTICE("You start breaking out the ventilation system."))
 		shake_animation(stime=20)
 		switch(broken)
 			if(VENT_UNDAMAGED)
@@ -103,10 +103,8 @@
 
 /obj/machinery/atmospherics/unary/vent_scrubber/breakout(mob/living/user)
 	if(issmall(user))
-		if(broken >= VENT_DAMAGED_STAGE_THREE)
-			return 1
-		user.visible_message("You hear something bumped into the ducts.", "You bumped into the ventilation system.")
-		to_chat(user,SPAN_NOTICE("We sorry but you to small."))
+		user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
+		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
 		shake_animation()
 		return 0
 
@@ -115,7 +113,7 @@
 
 		if(broken == VENT_BROKEN)
 			return 1
-		user.visible_message("You hear something start break the ducts.", "You start breaking out the ventilation system.")
+		user.visible_message(SPAN_WARNING("You hear something start break the ducts."), SPAN_NOTICE("You start breaking out the ventilation system."))
 		shake_animation(stime=20)
 		switch(broken)
 			if(VENT_UNDAMAGED)
