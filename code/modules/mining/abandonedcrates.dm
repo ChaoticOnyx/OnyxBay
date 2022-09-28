@@ -91,7 +91,7 @@
 		if(75 to 76)
 			new /obj/item/pickaxe/diamond(src)
 		if(77 to 78)
-			new /obj/item/pickaxe/diamonddrill(src)
+			new /obj/item/pickaxe/drill/diamonddrill(src)
 		if(79 to 80)
 			new /obj/item/pickaxe/gold(src)
 		if(81 to 82)

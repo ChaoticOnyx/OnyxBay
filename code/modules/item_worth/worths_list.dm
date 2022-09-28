@@ -114,7 +114,7 @@ var/list/worths = list(
 					/obj/item/pickaxe/gold = 400,
 					/obj/item/gun/energy/plasmacutter = 100,
 					/obj/item/pickaxe/diamond = 600,
-					/obj/item/pickaxe/diamonddrill = 700,
+					/obj/item/pickaxe/drill/diamonddrill = 700,
 					/obj/item/pickaxe = 30,
 					/obj/item/shovel/spade = 20,
 					/obj/item/metroidpotion = 200,
@@ -755,4 +755,3 @@ var/list/worths = list(
 					/obj/machinery/bookbinder = -1200,
 					/obj/machinery = -1000,
 					) //Must be in descending order. Child before parents, otherwise it doesn't work.,
-
