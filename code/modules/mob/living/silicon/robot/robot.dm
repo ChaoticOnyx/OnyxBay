@@ -726,8 +726,8 @@
 		else if(U.locked)
 			to_chat(usr, "The upgrade is locked and cannot be used yet!")
 		else
-			if(U.action(src) && usr.drop(U, src))
-				to_chat(usr, "You apply the upgrade to [src]!")
+			if(U.action(src) && user.drop(U, src))
+				to_chat(user, "You apply the upgrade to [src]!")
 				to_chat(src, "Detected new component - [U].")
 				handle_selfinsert(W, user)
 			else

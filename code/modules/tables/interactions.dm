@@ -164,7 +164,7 @@
 		return
 
 	// Placing stuff on tables
-	if(user.drop(W, target = loc))
+	if(user.drop(W, loc))
 		auto_align(W, click_params)
 		return 1
 

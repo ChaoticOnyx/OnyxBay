@@ -109,14 +109,14 @@ var/global/list/stool_cache = list() //haha stool
 		user.visible_message("<span class='danger'>[user] breaks [src] over [target]'s back!</span>")
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.do_attack_animation(target)
-		user.drop(src, force = TRUE)
-		dismantle()
-		qdel(src)
 
 		var/blocked = target.run_armor_check(hit_zone, "melee")
 		target.Weaken(10 * blocked_mult(blocked))
 		target.Stun(8 * blocked_mult(blocked))
 		target.apply_damage(20, BRUTE, hit_zone, blocked, src)
+
+		dismantle()
+		qdel(src)
 		return
 
 	..()

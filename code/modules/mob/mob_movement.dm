@@ -71,7 +71,7 @@
 		to_chat(usr, SPAN("warning", "\The [I] cannot be dropped."))
 		return
 	else
-		drop_active_hand()
+		drop_active_hand(force = TRUE)
 
 //This gets called when you press the delete button.
 /client/verb/delete_key_pressed()

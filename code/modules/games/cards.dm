@@ -173,7 +173,11 @@
 	var/list/cards = list()
 
 
-/obj/item/pack/attack_self(mob/user as mob)
+/obj/item/pack/attack_self(mob/user)
+	if(!length(cards))
+		user.visible_message("[user] whines as they reveal \the [src] to be empty!")
+		qdel(src)
+		return
 	user.visible_message("[user] rips open \the [src]!")
 	var/obj/item/hand/H = new()
 

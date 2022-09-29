@@ -163,6 +163,7 @@ var/list/slot_equipment_priority = list( \
 	if(!drop(old_item, null, force))
 		return FALSE
 	if(delete_old)
+		new_item.forceMove(old_item.loc) // ABSOLUTELY DISGUISTING
 		qdel(old_item)
 	equip_to_slot_if_possible(new_item, slot, del_on_fail = FALSE, disable_warning = TRUE, redraw_mob = TRUE)
 	return TRUE
@@ -171,7 +172,7 @@ var/list/slot_equipment_priority = list( \
 // If canremove or other conditions must be ignored then use 'force = TRUE'.
 // Returns TRUE if an item's removed from inventory AND still exists.
 /mob/proc/drop(obj/item/I, atom/target = null, force = FALSE)
-	if(QDELETED(I))
+	if(!I)
 		return FALSE
 
 	if(I.loc != src)
