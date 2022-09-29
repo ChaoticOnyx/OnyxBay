@@ -2,10 +2,9 @@
 "b" = (/turf/simulated/floor/tiled,/area/engineering/toilet)
 "c" = (/turf/simulated/wall/r_wall,/area/space)
 "d" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"e" = (/obj/machinery/atmospherics/pipe/simple/hidden/black,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "f" = (/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "g" = (/turf/simulated/wall,/area/engineering/toilet)
-"h" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{icon_state = "intact"; dir = 6},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"h" = (/obj/machinery/light_switch{on = 1; pixel_x = 25},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "i" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "j" = (/obj/structure/ladder/up,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "k" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
@@ -35,15 +34,7 @@
 "I" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "J" = (/turf/space,/area/space)
 "K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{pixel_x = -7; ev_tag = "ent_tp_wv"; tag = "ent_tp_trigger"},/obj/map_ent/func_teleport{pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"; tag = "ent_tp_src"},/obj/map_ent/func_write_var{pixel_y = 9; ev_activate_writer = 1; ev_read_tag = "ent_tp_trigger"; ev_table = list("ev_tag" = "ev_triggered"); ev_write_tag = "ent_tp_src"; tag = "ent_tp_wv"},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"L" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right{color = null; dir = 1; icon_state = "intact"; pixel_y = 13},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"M" = (/obj/machinery/light{dir = 1},/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left{dir = 1; pixel_y = 13; color = null},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"N" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{icon_state = "intact"; dir = 5},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"O" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{icon_state = "intact"; dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"Q" = (/obj/machinery/light_switch{on = 1; pixel_x = 25},/obj/machinery/atmospherics/pipe/manifold/hidden/black{icon_state = "map"; dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"R" = (/obj/machinery/atmospherics/pipe/simple/hidden/black{dir = 10},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"S" = (/obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator{dir = 1; pixel_y = 13; color = null},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"T" = (/obj/machinery/light{dir = 4},/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "X" = (/obj/effect/landmark/joinlate,/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
@@ -57,10 +48,10 @@ JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabbbdbbbbhMSLRacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabbbbbfgfebbbeacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabbbbbfffNOOOQacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaibbbjfffbbbbTacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbdbbbbbdbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbfgfbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbfffbbbbhacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbbbbbbbbmbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJyyyJcabbbbbbXbbbnopacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJzAzccaqbbbbbrlbbbbbacJJJJJJJJJJJJJJJ
