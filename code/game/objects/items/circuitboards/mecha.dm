@@ -10,6 +10,8 @@
 	item_state = "electronic"
 	board_type = "other"
 
+/obj/item/circuitboard/mecha/update_desc()
+	desc = "A simple circuit used in mecha construction."
 
 /obj/item/circuitboard/mecha/ripley
 	origin_tech = list(TECH_DATA = 3)

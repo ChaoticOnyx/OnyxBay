@@ -76,10 +76,9 @@
 	if(!is_open_container())
 		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return
-	if(user.unEquip(R))
+	if(user.drop(R, src))
 		to_chat(user, SPAN("notice", "You stuff \the [R] into \the [src]."))
 		rag = R
-		rag.forceMove(src)
 		atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 		update_icon()
 
@@ -97,10 +96,9 @@
 	if(!is_open_container())
 		to_chat(user, SPAN("notice", "You need to open \the [src] first."))
 		return
-	if(user.unEquip(P))
+	if(user.drop(P, src))
 		to_chat(user, SPAN("notice", "You stuff [P] into [src]."))
 		pourer = P
-		pourer.forceMove(src)
 		possible_transfer_amounts = "0.5;1;2;3;4;5;10"
 		update_icon()
 

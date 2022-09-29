@@ -34,8 +34,8 @@
 	if(D.secured || D2.secured)
 		return FALSE
 	if(user)
-		user.remove_from_mob(D)
-		user.remove_from_mob(D2)
+		user.drop(D, src)
+		user.drop(D2, src)
 	D.holder = src
 	D2.holder = src
 	D.forceMove(src)

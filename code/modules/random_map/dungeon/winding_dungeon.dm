@@ -99,7 +99,7 @@
 				sleep(-1)
 			var/datum/room/R = pick(rooms)
 			var/list/loot_list = get_appropriate_list(loot_common, loot_uncommon, loot_rare, round(R.x+R.width/2), round(R.y+R.height/2))
-			if(!loot_list || !loot_list.len || R.add_loot(origin_x,origin_y,origin_z,pickweight(loot_list)))
+			if(!loot_list || !loot_list.len || R.add_loot(origin_x,origin_y,origin_z,util_pick_weight(loot_list)))
 				num_of_loot--
 				sanity -= 10 //we hahve success so more tries
 				continue
@@ -130,7 +130,7 @@
 		monster_available -= T
 		var/list/monster_list = get_appropriate_list(monsters_common, monsters_uncommon, monsters_rare, T.x, T.y)
 		if(monster_list && monster_list.len)
-			var/type = pickweight(monster_list)
+			var/type = util_pick_weight(monster_list)
 			logging("Generating a monster of type [type] at position ([T.x],[T.y],[origin_z])")
 			var/mob/M = new type(T)
 			if(monster_faction)
@@ -307,7 +307,7 @@
 
 /datum/random_map/winding_dungeon/proc/create_room_features(rox,roy,width,height)
 	var/list/room_list = get_appropriate_list(room_theme_common, room_theme_uncommon, room_theme_rare, round(rox+width/2), round(roy+height/2))
-	var/theme_type = pickweight(room_list)
+	var/theme_type = util_pick_weight(room_list)
 	if(!theme_type)
 		return 0
 	var/room_theme = new theme_type(origin_x,origin_y,origin_z)

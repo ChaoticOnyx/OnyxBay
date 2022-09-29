@@ -248,10 +248,9 @@
 	if(bcell)
 		to_chat(user, "<span class='notice'>[src] already has the [bcell] installed.</span>")
 		return
-	if(user.unEquip(B))
+	if(user.drop(B, src))
 		to_chat(user, "<span class='notice'>You install the [B] into your [src].</span>")
 		bcell = B
-		bcell.forceMove(src)
 		chargemode = 1
 		update_icon()
 

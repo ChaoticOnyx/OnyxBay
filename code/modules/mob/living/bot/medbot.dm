@@ -115,9 +115,8 @@
 		if(!isnull(reagent_glass))
 			to_chat(user, "<span class='notice'>There is already a container loaded.</span>")
 			return
-
-		user.drop_item()
-		O.loc = src
+		if(!user.drop(O, src))
+			return
 		reagent_glass = O
 		to_chat(user, "<span class='notice'>You insert [O].</span>")
 		return
@@ -307,7 +306,7 @@
 	qdel(S)
 	user.put_in_hands(A)
 	to_chat(user, "<span class='notice'>You add the robot arm to the first aid kit.</span>")
-	user.drop_from_inventory(src)
+	user.drop(src)
 	qdel(src)
 
 /obj/item/firstaid_arm_assembly
@@ -339,7 +338,8 @@
 		switch(build_step)
 			if(0)
 				if(istype(W, /obj/item/device/healthanalyzer))
-					user.drop_item()
+					if(!user.drop(W))
+						return
 					qdel(W)
 					build_step++
 					to_chat(user, "<span class='notice'>You add the health sensor to [src].</span>")
@@ -348,7 +348,8 @@
 
 			if(1)
 				if(isprox(W))
-					user.drop_item()
+					if(!user.drop(W))
+						return
 					qdel(W)
 					to_chat(user, "<span class='notice'>You complete the Medibot! Beep boop.</span>")
 					var/turf/T = get_turf(src)
@@ -356,5 +357,5 @@
 					S.skin = skin
 					S.SetName(created_name)
 					S.update_icons() // apply the skin
-					user.drop_from_inventory(src)
+					user.drop(src)
 					qdel(src)

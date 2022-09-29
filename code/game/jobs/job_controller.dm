@@ -272,7 +272,7 @@ var/global/datum/controller/occupations/job_master
 							if(candidates.len == 1) weightedCandidates[V] = 1
 
 
-				var/mob/new_player/candidate = pickweight(weightedCandidates)
+				var/mob/new_player/candidate = util_pick_weight(weightedCandidates)
 				if(AssignRole(candidate, command_position))
 					return 1
 		return 0
@@ -708,7 +708,7 @@ var/global/datum/controller/occupations/job_master
 	if(J.no_latejoin)
 		return FALSE
 
-	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/datum/storyteller_character/ST = SSstoryteller.character
 	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 	if(length(GLOB.vacancies) >= available_vacancies)
 		return FALSE

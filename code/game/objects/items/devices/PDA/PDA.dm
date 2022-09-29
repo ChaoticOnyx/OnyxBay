@@ -1195,15 +1195,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return 1
 		else
 			var/obj/item/I = user.get_active_hand()
-			if (istype(I, /obj/item/card/id) && user.unEquip(I))
-				I.loc = src
+			if(istype(I, /obj/item/card/id) && user.drop(I, src))
 				id = I
 			return 1
 	else
 		var/obj/item/card/I = user.get_active_hand()
-		if (istype(I, /obj/item/card/id) && I:registered_name && user.unEquip(I))
+		if (istype(I, /obj/item/card/id) && I:registered_name && user.drop(I, src))
 			var/obj/old_id = id
-			I.loc = src
 			id = I
 			user.put_in_hands(old_id)
 			return 1
@@ -1213,9 +1211,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/attackby(obj/item/C as obj, mob/user as mob)
 	..()
 	if(istype(C, /obj/item/cartridge) && !cartridge)
+		if(!user.drop(C, src))
+			return
 		cartridge = C
-		user.drop_item()
-		cartridge.loc = src
 		to_chat(user, "<span class='notice'>You insert [cartridge] into [src].</span>")
 		SSnano.update_uis(src) // update all UIs attached to src
 		if(cartridge.radio)
@@ -1239,8 +1237,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return	//Return in case of failed check or when successful.
 		updateSelfDialog()//For the non-input related code.
 	else if(istype(C, /obj/item/device/paicard) && !src.pai)
-		user.drop_item()
-		C.loc = src
+		if(!user.drop(C, src))
+			return
 		pai = C
 		to_chat(user, "<span class='notice'>You slot \the [C] into [src].</span>")
 		SSnano.update_uis(src) // update all UIs attached to src
@@ -1248,9 +1246,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		var/obj/item/pen/O = locate() in src
 		if(O)
 			to_chat(user, "<span class='notice'>There is already a pen in \the [src].</span>")
-		else
-			user.drop_item()
-			C.loc = src
+		else if(user.drop(C, src))
 			to_chat(user, "<span class='notice'>You slide \the [C] into \the [src].</span>")
 	return
 
@@ -1376,11 +1372,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	QDEL_NULL(src.pai)
 	return ..()
 
-/obj/item/device/pda/clown/Crossed(AM as mob|obj) //Clown PDA is slippery.
+/obj/item/device/pda/clown/Crossed(AM) //Clown PDA is slippery.
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-
-		if(M.slip_on_obj(src, 3, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
+		if(M.slip_on_obj(src, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
 			if(cartridge.charges < 5)
 				cartridge.charges++
 

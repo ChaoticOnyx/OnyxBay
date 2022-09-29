@@ -405,12 +405,13 @@
 				return FALSE
 			if(cdoor)
 				return FALSE
+			if(!user.drop(C))
+				return
 			user.visible_message(SPAN_NOTICE("[user] connected [C] to [src]."))
-			user.drop_item()
 			attach_door(C)
 			return
 
-		if(usr.unEquip(W, target = loc))
+		if(usr.drop(W, loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0

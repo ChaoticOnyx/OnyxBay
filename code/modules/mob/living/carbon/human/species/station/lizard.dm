@@ -50,7 +50,7 @@
 
 	reagent_tag = IS_UNATHI
 	base_color = "#066000"
-	blood_color = "#f24b2e"
+	blood_color = COLOR_BLOOD_UNATHI
 	organs_icon = 'icons/mob/human_races/organs/unathi.dmi'
 
 	move_trail = /obj/effect/decal/cleanable/blood/tracks/claw

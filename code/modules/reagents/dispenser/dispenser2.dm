@@ -61,10 +61,11 @@
 		return
 
 	if(user)
-		user.drop_from_inventory(C)
+		if(!user.drop(C, src))
+			return
 		to_chat(user, "<span class='notice'>You add \the [C] to \the [src].</span>")
-
-	C.loc = src
+	else
+		C.forceMove(src)
 	cartridges[C.label] = C
 	cartridges = sortAssoc(cartridges)
 	SSnano.update_uis(src)
@@ -112,9 +113,9 @@
 			to_chat(user, "<span class='warning'>You don't see how \the [src] could dispense reagents into \the [RC].</span>")
 			return
 
+		if(!user.drop(RC, src))
+			return
 		container =  RC
-		user.drop_from_inventory(RC)
-		RC.loc = src
 		update_icon()
 		to_chat(user, "<span class='notice'>You set \the [RC] on \the [src].</span>")
 		SSnano.update_uis(src) // update all UIs attached to src

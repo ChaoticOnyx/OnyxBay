@@ -16,6 +16,9 @@
 
 	var/list/wizardy_spells = list()
 
+/mob/living/simple_animal/familiar/wearing_wiz_garb()
+	return 1
+
 /mob/living/simple_animal/familiar/New()
 	..()
 	add_language(LANGUAGE_GALCOM)

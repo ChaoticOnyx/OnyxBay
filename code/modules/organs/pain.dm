@@ -67,7 +67,10 @@
 		if(maxdam > 10 && paralysis)
 			paralysis = max(0, paralysis - round(maxdam/10))
 		if(maxdam > 50 && prob(maxdam / 5))
-			drop_item()
+			if(prob(50))
+				drop_active_hand()
+			else
+				drop_inactive_hand()
 		custom_pain(null, maxdam, prob(10), damaged_organ, TRUE)
 
 	// Damage to internal organs hurts a lot.

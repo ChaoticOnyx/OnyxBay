@@ -34,7 +34,8 @@
 /obj/machinery/food_replicator/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/reagent_containers/food))
 		var/obj/item/reagent_containers/food/S = O
-		user.drop_item(O)
+		if(!user.drop(O))
+			return
 		for(var/datum/reagent/nutriment/N in S.reagents.reagent_list)
 			biomass = Clamp(biomass + round(N.volume*deconstruct_eff),1,biomass_max)
 		qdel(O)

@@ -12,7 +12,7 @@
 			var/turf/T = locate(truex+i,truey+j,zorigin)
 			if(!T)
 				return 0
-			var/type = pickweight(available_mobs)
+			var/type = util_pick_weight(available_mobs)
 			var/mob/M = new type
 			M.loc = T
 	return 1

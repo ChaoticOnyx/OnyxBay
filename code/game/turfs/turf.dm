@@ -38,6 +38,8 @@
 
 	var/changing_turf
 
+	var/footstep_sound = SFX_FOOTSTEP_PLATING
+
 /turf/Initialize(mapload, ...)
 	. = ..()
 	if(dynamic_lighting)
@@ -297,3 +299,7 @@ var/const/enterloopsanity = 100
 		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
 	
 	return .
+
+/turf/proc/get_footstep_sound()
+	if(footstep_sound)
+		return pick(GLOB.sfx_list[footstep_sound])

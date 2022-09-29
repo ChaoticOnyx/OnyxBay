@@ -157,10 +157,8 @@
 		  "You begin rigging [W] to \the [src]"
 		)
 		if(do_after(user, 20, src))
-			user.visible_message(
-			  SPAN("notice", "The [user] rigs [W] to \the [src]."),
-			  SPAN("notice", "You rig [W] to \the [src].")
-			)
+			if(!user.drop(W, src))
+				return
 
 			var/obj/item/device/assembly_holder/H = W
 			if(istype(H.a_left, /obj/item/device/assembly/igniter) || istype(H.a_right, /obj/item/device/assembly/igniter))
@@ -168,8 +166,11 @@
 				log_game("[key_name(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion.")
 
 			rig = W
-			user.drop_item()
-			W.forceMove(src)
+      
+      user.visible_message(
+			  SPAN("notice", "The [user] rigs [W] to \the [src]."),
+			  SPAN("notice", "You rig [W] to \the [src].")
+			)
 			update_icon()
 	else if(W.get_temperature_as_from_ignitor())
 		log_and_message_admins("triggered a fueltank explosion with [W].")

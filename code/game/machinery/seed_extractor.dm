@@ -13,8 +13,8 @@
 /obj/machinery/seed_extractor/attackby(obj/item/O, mob/user)
 	// Fruits and vegetables.
 	if(istype(O, /obj/item/reagent_containers/food/grown) || istype(O, /obj/item/grown))
-
-		user.remove_from_mob(O)
+		if(!user.drop(O))
+			return
 
 		var/datum/seed/new_seed_type
 		if(istype(O, /obj/item/grown))

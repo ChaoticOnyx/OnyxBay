@@ -22,7 +22,7 @@
 	if(QDELETED(loc))
 		return
 
-	var/build_path = pickweight(spawn_choices())
+	var/build_path = util_pick_weight(spawn_choices())
 
 	var/atom/A = new build_path(src.loc)
 	if(pixel_x || pixel_y)
@@ -695,7 +695,7 @@
 				/obj/item/reagent_containers/food/packaged/tastybread,
 				/obj/item/reagent_containers/food/packaged/nutribar,
 				/obj/item/reagent_containers/food/packaged/syndicake,
-				/obj/item/reagent_containers/food/donut,
+				/obj/item/reagent_containers/food/donut/normal,
 				/obj/item/reagent_containers/food/donut/cherryjelly,
 				/obj/item/reagent_containers/food/donut/jelly,
 				/obj/item/pizzabox/meat,
@@ -1218,7 +1218,7 @@ var/list/multi_point_spawns
 /hook/roundstart/proc/generate_multi_spawn_items()
 	for(var/id in multi_point_spawns)
 		var/list/spawn_points = multi_point_spawns[id]
-		var/obj/random_multi/rm = pickweight(spawn_points)
+		var/obj/random_multi/rm = util_pick_weight(spawn_points)
 		rm.generate_items()
 		for(var/entry in spawn_points)
 			qdel(entry)

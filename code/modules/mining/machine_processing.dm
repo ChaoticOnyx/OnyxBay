@@ -105,10 +105,10 @@
 		else if(href_list["choice"] == "insert")
 			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
-				usr.drop_item()
-				I.loc = src
-				inserted_id = I
-			else to_chat(usr, "<span class='warning'>No valid ID.</span>")
+				if(usr.drop(I, src))
+					inserted_id = I
+			else
+				to_chat(usr, "<span class='warning'>No valid ID.</span>")
 
 	if(href_list["toggle_smelting"])
 

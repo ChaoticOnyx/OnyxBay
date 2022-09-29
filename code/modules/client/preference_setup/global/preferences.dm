@@ -353,6 +353,13 @@ var/global/list/_client_preferences_by_type
 	category = PREF_CATEGORY_STAFF
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
+/datum/client_preference/staff/show_events
+	description ="Show Events"
+	key = "SHOW_EVENTS"
+	category = PREF_CATEGORY_STAFF
+	default_value = GLOB.PREF_HIDE
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
+
 /********************
 * Misc Preferences *
 ********************/

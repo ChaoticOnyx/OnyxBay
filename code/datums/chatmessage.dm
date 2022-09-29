@@ -1,25 +1,27 @@
 /// How long the chat message's spawn-in animation will occur for
-#define CHAT_MESSAGE_SPAWN_TIME		0.2 SECONDS
+#define CHAT_MESSAGE_SPAWN_TIME     0.2 SECONDS
 /// How long the chat message will exist prior to any exponential decay
-#define CHAT_MESSAGE_LIFESPAN		5 SECONDS
+#define CHAT_MESSAGE_LIFESPAN       5 SECONDS
 /// How long the chat message's end of life fading animation will occur for
-#define CHAT_MESSAGE_EOL_FADE		0.7 SECONDS
+#define CHAT_MESSAGE_EOL_FADE       0.7 SECONDS
 /// Factor of how much the message index (number of messages) will account to exponential decay
-#define CHAT_MESSAGE_EXP_DECAY		0.7
+#define CHAT_MESSAGE_EXP_DECAY      0.7
 /// Factor of how much height will account to exponential decay
-#define CHAT_MESSAGE_HEIGHT_DECAY	0.9
+#define CHAT_MESSAGE_HEIGHT_DECAY   0.9
 /// Approximate height in pixels of an 'average' line, used for height decay
-#define CHAT_MESSAGE_APPROX_LHEIGHT	11
+#define CHAT_MESSAGE_APPROX_LHEIGHT 11
 /// Max width of chat message in pixels
-#define CHAT_MESSAGE_WIDTH			96
+#define CHAT_MESSAGE_WIDTH          96
 /// Max length of chat message in characters
-#define CHAT_MESSAGE_MAX_LENGTH		40
+#define CHAT_MESSAGE_MAX_LENGTH     40
 /// Maximum precision of float before rounding errors occur (in this context)
-#define CHAT_LAYER_Z_STEP			0.0001
+#define CHAT_LAYER_Z_STEP           0.0001
 /// The number of z-layer 'slices' usable by the chat message layering
-#define CHAT_LAYER_MAX_Z			(CHAT_LAYER_MAX - CHAT_LAYER) / CHAT_LAYER_Z_STEP
+#define CHAT_LAYER_MAX_Z            ((CHAT_LAYER_MAX - CHAT_LAYER) / CHAT_LAYER_Z_STEP)
 /// Macro from Lummox used to get height from a MeasureText proc
-#define WXH_TO_HEIGHT(x)			text2num(copytext(x, findtextEx(x, "x") + 1))
+#define WXH_TO_HEIGHT(x)            text2num(copytext(x, findtextEx(x, "x") + 1))
+#define CHAT_MESSAGE_APPEAR_STATE   1
+#define CHAT_MESSAGE_FADEOUT_STATE  2
 
 /**
   * # Chat Message Overlay
@@ -41,10 +43,7 @@
 	var/approx_lines
 	/// The current index used for adjusting the layer of each sequential chat message such that recent messages will overlay older ones
 	var/static/current_z_idx = 0
-	/// Contains the reference to the next chatmessage in the bucket, used by runechat subsystem
-	var/datum/chatmessage/next
-	/// Contains the reference to the previous chatmessage in the bucket, used by runechat subsystem
-	var/datum/chatmessage/prev
+	var/state = CHAT_MESSAGE_APPEAR_STATE
 
 /**
   * Constructs a chat message overlay
@@ -61,10 +60,19 @@
 	if (!istype(target))
 		CRASH("Invalid target given for chatmessage")
 	if(QDELETED(owner) || !istype(owner) || !owner.client)
-		log_debug("/datum/chatmessage created with [QDELETED(owner) ? "null" : "invalid"] mob owner")
+		util_crash_with("/datum/chatmessage created with [QDELETED(owner) ? "null" : "invalid"] mob owner ([owner?.name], [owner?.type], [owner?.loc])")
 		qdel(src)
 		return
+
+	add_think_ctx("next_state", CALLBACK(src, .proc/next_state), 0)
 	INVOKE_ASYNC(src, .proc/generate_image, text, target, owner, lifespan, italics, size)
+
+/datum/chatmessage/proc/next_state()
+	if(state == CHAT_MESSAGE_APPEAR_STATE)
+		state = CHAT_MESSAGE_FADEOUT_STATE
+		end_of_life()
+	else if(state == CHAT_MESSAGE_FADEOUT_STATE)
+		qdel(src)
 
 /datum/chatmessage/Destroy()
 	if (owned_by)
@@ -74,7 +82,6 @@
 	owned_by = null
 	message_loc = null
 	message = null
-	leave_subsystem()
 	return ..()
 
 /**
@@ -153,7 +160,7 @@
 			var/sched_remaining = m.scheduled_destruction - world.time
 			if (!m.eol_complete)
 				var/remaining_time = (sched_remaining) * (CHAT_MESSAGE_EXP_DECAY ** idx++) * (CHAT_MESSAGE_HEIGHT_DECAY ** combined_height)
-				m.enter_subsystem(world.time + remaining_time) // push updated time to runechat SS
+				m.set_next_think_ctx("next_state", world.time + remaining_time) // push updated time to runechat SS
 
 	// Reset z index if relevant
 	if (current_z_idx >= CHAT_LAYER_MAX_Z)
@@ -177,7 +184,7 @@
 
 	// Prepare for destruction
 	scheduled_destruction = world.time + (lifespan - CHAT_MESSAGE_EOL_FADE)
-	enter_subsystem()
+	set_next_think_ctx("next_state", scheduled_destruction)
 
 /**
   * Applies final animations to overlay CHAT_MESSAGE_EOL_FADE deciseconds prior to message deletion
@@ -185,7 +192,7 @@
 /datum/chatmessage/proc/end_of_life(fadetime = CHAT_MESSAGE_EOL_FADE)
 	eol_complete = scheduled_destruction + fadetime
 	animate(message, alpha = 0, time = fadetime, flags = ANIMATION_PARALLEL)
-	enter_subsystem(eol_complete) // re-enter the runechat SS with the EOL completion time to QDEL self
+	set_next_think_ctx("next_state", eol_complete)
 
 /**
   * Creates a message overlay at a defined location for a given speaker
@@ -197,6 +204,8 @@
   * * size - Size of the message
   */
 /mob/proc/create_chat_message(atom/movable/speaker, raw_message, italics=FALSE, size)
+	if(!client)
+		return
 
 	if(isobserver(speaker))
 		return
@@ -283,3 +292,6 @@
   */
 /atom/proc/get_runechat_color()
 	return chat_color
+
+#undef CHAT_MESSAGE_APPEAR_STATE
+#undef CHAT_MESSAGE_FADEOUT_STATE

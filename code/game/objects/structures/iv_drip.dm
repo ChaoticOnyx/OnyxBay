@@ -73,8 +73,8 @@
 		if(!QDELETED(src.beaker))
 			to_chat(user, "There is already a reagent container loaded!")
 			return
-		user.drop_item()
-		W.forceMove(src)
+		if(!user.drop(W, src))
+			return
 		beaker = W
 		to_chat(user, "You attach \the [W] to \the [src].")
 		update_icon()

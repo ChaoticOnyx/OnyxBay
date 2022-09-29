@@ -94,9 +94,8 @@
 	if(istype(W,/obj/item/pen/crayon) || istype(W,/obj/item/stamp))
 		if( state in list(	1, 3, 6 ) )
 			if(!crayon)
-				user.drop_item()
-				crayon = W
-				crayon.forceMove(src)
+				if(user.drop(W, src))
+					crayon = W
 			else
 				..()
 		else
@@ -156,10 +155,9 @@
 			return
 
 		if(contents.len < 5)
-			if ( state in list(1, 3) )
-				user.drop_item()
-				W.loc = src
-				state = 3
+			if(state in list(1, 3))
+				if(user.drop(W, src))
+					state = 3
 			else
 				to_chat(user, SPAN("notice", "You can't put the item in right now."))
 		else

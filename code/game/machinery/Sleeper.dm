@@ -219,9 +219,9 @@
 	if(istype(I, /obj/item/reagent_containers/vessel))
 		add_fingerprint(user)
 		if(!beaker)
+			if(!user.drop(I, src))
+				return
 			beaker = I
-			user.drop_item()
-			I.forceMove(src)
 			component_parts += I
 			user.visible_message("<span class='notice'>\The [user] adds \a [I] to \the [src].</span>", "<span class='notice'>You add \a [I] to \the [src].</span>")
 		else
