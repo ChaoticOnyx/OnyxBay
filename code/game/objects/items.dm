@@ -269,7 +269,7 @@
 		var/obj/item/storage/S = loc
 		S.remove_from_storage(src)
 	// Unequipping from self
-	else if(loc == user && !user.unEquip(src))
+	else if(loc == user && !user.drop(src))
 		return
 	// Doing some unintended shit that may cause catastrophical events, aborting
 	// If you'll ever want to implement something that intentionally allows direct clicking on an item while it's inside

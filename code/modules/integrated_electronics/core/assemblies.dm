@@ -1118,11 +1118,11 @@
 	if(gotwallitem(T, ndir))
 		to_chat(user, SPAN_WARNING("There's already an item on this wall!"))
 		return
-	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
+	playsound(loc, 'sound/machines/click.ogg', 75, 1)
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
-	if(user.unEquip(src,T))
+	if(user.drop(src, T))
 		var/rotation = 0
 		switch(ndir)
 			if(NORTH)

@@ -54,7 +54,7 @@
 
 /obj/item/clothing/head/welding/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/welding_cover))
-		if(!cover && user.unEquip(W))
+		if(!cover && user.drop(W))
 			attach_cover(user, W)
 		else
 			to_chat(user, SPAN("notice", "[src] already has a cover attached."))
@@ -164,7 +164,7 @@
 
 	if (istype(location, /turf))
 		location.hotspot_expose(700, 1)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)

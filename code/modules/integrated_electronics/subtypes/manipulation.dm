@@ -465,7 +465,7 @@
 	// If the item is in mob's inventory, try to remove it from there.
 	if(ismob(A.loc))
 		var/mob/living/M = A.loc
-		if(!M.unEquip(A))
+		if(!M.drop(A))
 			return
 
 	// If the item is in a grabber circuit we'll update the grabber's outputs after we've thrown it.

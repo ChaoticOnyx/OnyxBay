@@ -207,7 +207,7 @@
 		SPAN_NOTICE("You hear clicking."))
 	is_mount = TRUE
 	area_manipulation()
-	if(user.unEquip(src,T))
+	if(user.drop(src, T))
 		switch(ndir)
 			if(NORTH)
 				pixel_y = -32

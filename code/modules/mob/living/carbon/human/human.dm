@@ -1215,7 +1215,7 @@
 	for(var/slot in slot_first to slot_last)
 		var/obj/item/C = get_equipped_item(slot)
 		if(istype(C) && !C.mob_can_equip(src, slot, 1))
-			unEquip(C)
+			drop(C, force = TRUE)
 
 	return 1
 

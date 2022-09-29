@@ -234,8 +234,7 @@
 		update_icon()
 		return
 	if(istype(I, /obj/item/cell/device))
-		if(!cell && user.unEquip(I))
-			I.forceMove(src)
+		if(!cell && user.drop(I, src))
 			cell = I
 			to_chat(user, SPAN("notice", "You install a cell into \the the [src]."))
 			update_icon()

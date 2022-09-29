@@ -323,7 +323,7 @@
 	if(!thing)
 		return
 
-	if(!unEquip(thing))
+	if(!drop(thing))
 		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))

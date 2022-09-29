@@ -623,8 +623,8 @@ BLIND     // can't see anything
 		if(holding)
 			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
 			return
-		user.unEquip(I)
-		I.forceMove(src)
+		if(!user.drop(I, src))
+			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
 		verbs |= /obj/item/clothing/shoes/proc/draw_knife

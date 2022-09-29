@@ -74,9 +74,8 @@ var/bomb_set
 
 	if(extended)
 		if(istype(O, /obj/item/disk/nuclear))
-			if(!user.unEquip(O, src))
+			if(!user.drop(O, src))
 				return
-			O.forceMove(src)
 			auth = O
 			add_fingerprint(user)
 			return attack_hand(user)
@@ -491,9 +490,8 @@ var/bomb_set
 	if(isWrench(O))
 		return
 	if(istype(O, /obj/item/disk/nuclear))
-		if(!user.unEquip(O, src))
+		if(!user.drop(O, src))
 			return
-		O.forceMove(src)
 		auth = O
 		add_fingerprint(user)
 		return attack_hand(user)

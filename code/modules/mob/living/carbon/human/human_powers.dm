@@ -365,8 +365,10 @@
 
 	last_special = world.time + 50
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 	to_chat(src, "<span class='warning'>You drop everything as you spring out to nab someone!.</span>")
 
 	playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
@@ -407,8 +409,10 @@
 	if(!hidden)
 		visible_message("[src] shifts \his arms.")
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 
 	if(do_after(src, 30))
 		hidden = is_cloaked()

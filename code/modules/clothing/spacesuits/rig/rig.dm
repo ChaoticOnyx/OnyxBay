@@ -666,9 +666,9 @@
 		M.visible_message("<span class='info'>[M] starts putting on \the [src]...</span>", "<span class='info'>You start putting on \the [src]...</span>")
 		if(!do_after(M,seal_delay,src))
 			if(M && M.back == src)
-				if(!M.unEquip(src))
+				if(!M.drop(src))
 					return
-			src.forceMove(get_turf(src))
+			forceMove(get_turf(src))
 			return
 
 	if(istype(M) && M.back == src)

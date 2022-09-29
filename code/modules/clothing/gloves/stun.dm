@@ -69,9 +69,8 @@
 		if(bcell)
 			to_chat(user, SPAN("notice", "The [src] already have \the [bcell] installed."))
 			return
-		if(user.unEquip(W))
+		if(user.drop(W, src))
 			bcell = W
-			bcell.forceMove(src)
 			update_icon(TRUE)
 			to_chat(user, SPAN("notice", "You connect \the [bcell] to the wires on \the [src]."))
 			return

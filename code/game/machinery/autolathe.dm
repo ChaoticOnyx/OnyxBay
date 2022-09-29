@@ -160,7 +160,7 @@
 		to_chat(user, "\The [eating] does not contain significant amounts of useful materials and cannot be accepted.")
 		return
 	if(!istype(eating, /obj/item/stack))
-		user.unEquip(eating, target = loc)
+		user.drop(eating, loc)
 		if(eating.loc != loc)
 			return
 

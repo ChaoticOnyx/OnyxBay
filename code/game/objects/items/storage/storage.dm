@@ -48,8 +48,8 @@
 		if(!usr.contains(src))
 			return
 
-		src.add_fingerprint(usr)
-		if(usr.unEquip(src))
+		add_fingerprint(usr)
+		if(usr.drop(src))
 			switch(over_object.name)
 				if(BP_R_HAND)
 					usr.put_in_r_hand(src)
@@ -194,9 +194,8 @@
 		return 0
 	if(ismob(W.loc))
 		var/mob/M = W.loc
-		if(!M.unEquip(W))
+		if(!M.drop(W, src))
 			return
-	W.forceMove(src)
 	W.on_enter_storage(src)
 	if(usr)
 		add_fingerprint(usr)
@@ -305,7 +304,7 @@
 				to_chat(user, "<span class='warning'>The tray won't fit in [src].</span>")
 				return
 			else
-				if(user.unEquip(W))
+				if(user.drop(W))
 					to_chat(user, "<span class='warning'>God damnit!</span>")
 	W.add_fingerprint(user)
 	return handle_item_insertion(W)

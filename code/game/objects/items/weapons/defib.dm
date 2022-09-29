@@ -74,9 +74,9 @@
 		if(!CanMouseDrop(src))
 			return
 		var/mob/M = src.loc
-		if(!M.unEquip(src))
+		if(!M.drop(src))
 			return
-		src.add_fingerprint(usr)
+		add_fingerprint(usr)
 		M.put_in_hands(src)
 
 
@@ -87,9 +87,8 @@
 		if(bcell)
 			to_chat(user, "<span class='notice'>\the [src] already has a cell.</span>")
 		else
-			if(!user.unEquip(W))
+			if(!user.drop(W, src))
 				return
-			W.forceMove(src)
 			bcell = W
 			to_chat(user, "<span class='notice'>You install a cell in \the [src].</span>")
 			update_icon()

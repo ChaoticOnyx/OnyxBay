@@ -117,13 +117,13 @@
 		..()
 
 /obj/item/backwear/MouseDrop()
-	if(ismob(src.loc))
+	if(ismob(loc))
 		if(!CanMouseDrop(src))
 			return
-		var/mob/M = src.loc
-		if(!M.unEquip(src))
+		var/mob/M = loc
+		if(!M.drop(src))
 			return
-		src.add_fingerprint(usr)
+		add_fingerprint(usr)
 		M.put_in_hands(src)
 
 
@@ -160,9 +160,8 @@
 		if(bcell)
 			to_chat(user, SPAN("notice", "\The [src] already has a cell."))
 		else
-			if(!user.unEquip(W))
+			if(!user.drop(W, src))
 				return
-			W.forceMove(src)
 			bcell = W
 			to_chat(user, SPAN("notice", "You install \the [W] into \the [src]."))
 			update_icon()

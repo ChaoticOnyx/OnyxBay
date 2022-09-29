@@ -76,7 +76,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 		busy = 1
 		loaded_item = O
-		user.unEquip(O, target = src)
+		if(!user.drop(O, src))
+			return
 		if(O.loc != src)
 			return
 		to_chat(user, "<span class='notice'>You add \the [O] to \the [src].</span>")

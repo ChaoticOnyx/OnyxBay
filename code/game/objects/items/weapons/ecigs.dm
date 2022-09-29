@@ -112,7 +112,7 @@
 				to_chat(C,"<span class='notice'>Battery in \the [src] ran out and it powered down.</span>")
 				return
 			ec_cartridge.reagents.trans_to_mob(C, REM, CHEM_INGEST, 0.4) // Most of it is not inhaled... balance reasons.
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/smokable/ecig/update_icon()
@@ -156,8 +156,7 @@
 			to_chat(user, "<span class='notice'>There is no powercell in \the [src].</span>")
 
 	if(istype(I, /obj/item/cell/device))
-		if(!cigcell && user.unEquip(I))
-			I.forceMove(src)
+		if(!cigcell && user.drop(I, src))
 			cigcell = I
 			to_chat(user, "<span class='notice'>You install a powercell into the [src].</span>")
 			update_icon()

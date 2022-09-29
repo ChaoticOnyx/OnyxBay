@@ -646,7 +646,7 @@
  * calling. W is the item being inserted, R is the associated vending_product entry.
  */
 /obj/machinery/vending/proc/stock(obj/item/W, datum/stored_items/vending_products/R, mob/user)
-	if(!user.unEquip(W))
+	if(!user.drop(W))
 		return
 
 	if(R.add_product(W))

@@ -116,7 +116,7 @@
 		for(var/obj/item/clothing/C in victim.contents)
 			if(istype(C, /obj/item/clothing/mask/breath/anesthetic))
 				continue
-			victim.unEquip(C)
+			victim.drop(C)
 			use_power_oneoff(100)
 		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
 							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
