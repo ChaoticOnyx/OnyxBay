@@ -29,7 +29,17 @@ Buildable meters
 			is_bent = 0
 		else
 			is_bent = 1
-		if     (istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction))
+
+		if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left))
+			src.pipe_type = PIPE_JUNCTION_WALL_RADIATOR_LEFT
+			connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_HE
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right))
+			src.pipe_type = PIPE_JUNCTION_WALL_RADIATOR_RIGHT
+			connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_HE
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator))
+			src.pipe_type = PIPE_HE_WALL_RADIATOR
+			connect_types = CONNECT_TYPE_HE
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction))
 			src.pipe_type = PIPE_JUNCTION
 			connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_HE
 		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
@@ -236,6 +246,9 @@ Buildable meters
 		"fuel pipe up",\
 		"fuel down",\
 		"fuel pipe cap",\
+		"wall radiator junction",\
+		"wall radiator junction",\
+		"wall radiator",\
 	)
 	SetName(nlist[pipe_type+1] + " fitting")
 	var/list/islist = list( \
@@ -295,6 +308,9 @@ Buildable meters
 		"cap", \
 		"cap", \
 		"cap", \
+		"wall_radiator_junction_left",\
+		"wall_radiator_junction_right",\
+		"wall_radiator",\
 	)
 	icon_state = islist[pipe_type + 1]
 
@@ -783,6 +799,141 @@ Buildable meters
 			if (QDELETED(P))
 				to_chat(usr, pipefailtext)//"There's nothing to connect this pipe to! (with how the pipe code works, at least one end needs to be connected to something, otherwise the game deletes the segment)"
 
+				return 1
+			P.build_network()
+			if (P.node1)
+				P.node1.atmos_init()
+				P.node1.build_network()
+			if (P.node2)
+				P.node2.atmos_init()
+				P.node2.build_network()
+
+		if(PIPE_JUNCTION_WALL_RADIATOR_LEFT)
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left/P = new ( src.loc )
+			P.set_dir(src.dir)
+			switch (P.dir)
+				if (SOUTH)
+					P.initialize_directions_he = WEST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=-13
+				if (NORTH)
+					P.initialize_directions_he = WEST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=13
+				if (EAST)
+					P.initialize_directions_he = SOUTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=-2
+				if (WEST)
+					P.initialize_directions_he = SOUTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=2
+			P.atmos_init()
+			//I CANT MAKE IT BETTER
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/HE
+			if(istype(P.node1, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node1
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if(istype(P.node2, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node2
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if (QDELETED(P))
+				to_chat(usr, pipefailtext)
+				return 1
+
+			P.build_network()
+			if (P.node1)
+				P.node1.atmos_init()
+				P.node1.build_network()
+			if (P.node2)
+				P.node2.atmos_init()
+				P.node2.build_network()
+
+		if(PIPE_JUNCTION_WALL_RADIATOR_RIGHT)
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right/P = new ( src.loc )
+			P.set_dir(src.dir)
+			switch (P.dir)
+				if (SOUTH)
+					P.initialize_directions_he = EAST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=-13
+				if (NORTH)
+					P.initialize_directions_he = EAST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=13
+				if (EAST)
+					P.initialize_directions_he = NORTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=-2
+				if (WEST)
+					P.initialize_directions_he = NORTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=2
+			P.atmos_init()
+			//I CANT MAKE IT BETTER
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/HE
+			if(istype(P.node1, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node1
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if(istype(P.node2, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node2
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if (QDELETED(P))
+				to_chat(usr, pipefailtext)
+				return 1
+
+			P.build_network()
+			if (P.node1)
+				P.node1.atmos_init()
+				P.node1.build_network()
+			if (P.node2)
+				P.node2.atmos_init()
+				P.node2.build_network()
+
+		if(PIPE_HE_WALL_RADIATOR)
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator/P = new ( src.loc )
+			P.set_dir(src.dir)
+			switch (P.dir)
+				if (SOUTH)
+					P.initialize_directions_he = WEST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=-13
+				if (NORTH)
+					P.initialize_directions_he = WEST
+					P.initialize_directions = EAST|WEST
+					P.pixel_y=13
+				if (EAST)
+					P.initialize_directions_he = SOUTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=-2
+				if (WEST)
+					P.initialize_directions_he = SOUTH
+					P.initialize_directions = SOUTH|NORTH
+					P.pixel_x=2
+			P.atmos_init()
+
+			//I CANT MAKE IT BETTER
+			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/HE
+			if(istype(P.node1, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node1
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if(istype(P.node2, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+				HE = P.node2
+				if(!HE.is_wall_radiator)
+					qdel(P)
+
+			if (QDELETED(P))
+				to_chat(usr, pipefailtext)
 				return 1
 			P.build_network()
 			if (P.node1)
@@ -1328,3 +1479,6 @@ Buildable meters
 #undef PIPE_SCRUBBERS_MANIFOLD
 #undef PIPE_UNIVERSAL
 #undef PIPE_MANIFOLD4W
+#undef PIPE_HE_WALL_RADIATOR
+#undef PIPE_JUNCTION_WALL_RADIATOR_RIGHT
+#undef PIPE_JUNCTION_WALL_RADIATOR_LEFT
