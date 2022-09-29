@@ -94,7 +94,7 @@
 	if(!ishuman(victim))
 		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
 		return
-	if(istype(victim.back, /obj/item/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
+	if(istype(victim.back, /obj/item/rig) && !victim.back.can_be_unequipped_by(victim, slot_back, TRUE))
 		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)

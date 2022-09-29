@@ -371,17 +371,17 @@
 		return 1
 	return
 
-/mob/living/carbon/u_equip(obj/item/W as obj)
-	if(!W)	return 0
+/mob/living/carbon/__unequip(obj/W)
+	if(!W)
+		return
 
-	else if (W == handcuffed)
+	if(W == handcuffed)
 		handcuffed = null
 		update_inv_handcuffed()
-		if(buckled && buckled.buckle_require_restraints)
+		if(buckled?.buckle_require_restraints)
 			buckled.unbuckle_mob()
 	else
-	 ..()
-
+		..()
 	return
 
 /mob/living/carbon/verb/mob_sleep()

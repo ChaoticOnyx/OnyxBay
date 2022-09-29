@@ -100,7 +100,7 @@
 	if(stripping)
 		if(!istype(target_slot))  // They aren't holding anything valid and there's nothing to remove, why are we even here?
 			return
-		if(!target_slot.mob_can_unequip(src, text2num(slot_to_strip_text), disable_warning=1))
+		if(!target_slot.can_be_unequipped_by(src, text2num(slot_to_strip_text), disable_warning=1))
 			to_chat(user, "<span class='warning'>You cannot remove \the [src]'s [target_slot.name].</span>")
 			return
 

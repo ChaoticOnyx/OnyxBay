@@ -117,8 +117,9 @@ This saves us from having to call add_fingerprint() any time something is put in
 		if(slot_tie)
 			return 1
 
-/mob/living/carbon/human/u_equip(obj/W as obj)
-	if(!W)	return 0
+/mob/living/carbon/human/__unequip(obj/W)
+	if(!W)
+		return
 
 	if (W == wear_suit)
 		if(s_store)
@@ -215,12 +216,11 @@ This saves us from having to call add_fingerprint() any time something is put in
 			update_inv_l_hand()
 		update_inv_l_hand()
 	else
-		return 0
+		return
 
 	update_equipment_slowdown()
 	update_action_buttons()
-	return 1
-
+	return
 
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()

@@ -73,7 +73,7 @@
 	if(istype(G))
 		if(attached_grenade)
 			to_chat(user, SPAN("warning", "There is already a grenade attached!"))
-		else if(user.canUnEquip(G))
+		else if(user.can_unequip(G))
 			user.drop_item(G)
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 			attach_grenade(G)

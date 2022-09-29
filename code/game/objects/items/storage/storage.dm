@@ -126,7 +126,7 @@
 	if(!istype(W))
 		return //Not an item
 
-	if(user && user.isEquipped(W) && !user.canUnEquip(W))
+	if(user && user.is_equipped(W) && !user.can_unequip(W))
 		return 0
 
 	if(src.loc == W)

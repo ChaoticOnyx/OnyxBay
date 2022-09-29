@@ -194,33 +194,34 @@ var/list/slot_equipment_priority = list( \
 	As far as I can tell the proc exists so that mobs with different inventory slots can override
 	the search through all the slots, without having to duplicate the rest of the item dropping.
 */
-/mob/proc/u_equip(obj/W as obj)
-	if (W == r_hand)
+/mob/proc/__unequip(obj/W)
+	if(!W)
+		return
+
+	if(W == r_hand)
 		r_hand = null
 		update_inv_r_hand(0)
-	else if (W == l_hand)
+	else if(W == l_hand)
 		l_hand = null
 		update_inv_l_hand(0)
-	else if (W == back)
+	else if(W == back)
 		back = null
 		update_inv_back(0)
-	else if (W == wear_mask)
+	else if(W == wear_mask)
 		wear_mask = null
 		update_inv_wear_mask(0)
 	return
 
-/mob/proc/isEquipped(obj/item/I)
-	if(!I)
-		return 0
-	return get_inventory_slot(I) != 0
+/mob/proc/is_equipped(obj/item/I)
+	return I && !!get_inventory_slot(I)
 
-/mob/proc/canUnEquip(obj/item/I)
+/mob/proc/can_unequip(obj/item/I)
 	if(!I) //If there's nothing to drop, the drop is automatically successful.
 		return TRUE
 	var/slot = get_inventory_slot(I)
 	if(!slot)
 		return FALSE
-	return I.mob_can_unequip(src, slot)
+	return I.can_be_unequipped_by(src, slot)
 
 /mob/proc/get_inventory_slot(obj/item/I)
 	var/slot = 0
@@ -230,21 +231,21 @@ var/list/slot_equipment_priority = list( \
 			break
 	return slot
 
-//This differs from remove_from_mob() in that it checks if the item can be unequipped first.
-/mob/proc/unEquip(obj/item/I, force = FALSE, atom/target = null) // Force overrides NODROP for things like wizarditis and admin undress.
+//This differs from drop_from_inventory() in that it checks if the item can be unequipped first.
+/mob/proc/unequip(obj/item/I, force = FALSE, atom/target = null) // Force overrides NODROP for things like wizarditis and admin undress.
 	if(QDELETED(I))
-		return
-	if(force || canUnEquip(I))
+		return FALSE
+	if(force || can_unequip(I))
 		return drop_from_inventory(I, target) && !QDELETED(I)
 	return FALSE
 
-//Attemps to remove an object on a mob.
+// Removes an object from a mob.
+// Moves the object to 'target' if specified, otherwise tries to drop it into src's loc.
 /mob/proc/remove_from_mob(obj/O, atom/target)
 	if(!O) // Nothing to remove, so we succeed.
 		return 1
-	src.u_equip(O)
-	if (src.client)
-		src.client.screen -= O
+	__unequip(O)
+	client?.screen -= O
 	O.reset_plane_and_layer()
 	O.screen_loc = null
 	if(istype(O, /obj/item))

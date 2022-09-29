@@ -67,7 +67,7 @@
 	if(!I)
 		to_chat(usr, SPAN("warning", "You have nothing to drop in your hand."))
 		return
-	if(!(I.force_drop || canUnEquip(I)))
+	if(!(I.force_drop || can_unequip(I)))
 		to_chat(usr, SPAN("warning", "\The [I] cannot be dropped."))
 		return
 	else
@@ -115,7 +115,7 @@
 	set hidden = 1
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
 		var/obj/item/I = mob.get_active_hand()
-		if(I?.can_be_dropped_by_client(mob))
+		if(I && mob.can_unequip(I))
 			mob.drop_item()
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
@@ -181,7 +181,7 @@
 			src.last_move = get_dir(A, src.loc)
 
 	SEND_SIGNAL(src, SIGNAL_MOVED, src, old_loc, loc)
-	
+
 	return
 
 /proc/step_glide(atom/movable/am, dir, glide_size_override)

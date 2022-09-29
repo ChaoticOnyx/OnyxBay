@@ -153,7 +153,7 @@
 
 	//Resources are being loaded.
 	var/obj/item/eating = O
-	if(!issilicon(user) && !user.canUnEquip(eating))
+	if(!issilicon(user) && !user.can_unequip(eating))
 		to_chat(user, "You can't place that item inside \the [src].")
 		return
 	if(!eating.matter)

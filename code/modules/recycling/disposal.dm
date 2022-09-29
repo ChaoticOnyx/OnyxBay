@@ -139,7 +139,7 @@
 
 	if(isrobot(user))
 		return
-	if(!user.canUnEquip(I))
+	if(!user.can_unequip(I))
 		to_chat(user, "You can't place that item inside \the [src].")
 		return
 

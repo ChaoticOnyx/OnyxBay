@@ -720,7 +720,7 @@
 			return
 
 	if(istype(I, /obj/item/integrated_circuit))
-		if(!user.canUnEquip(I))
+		if(!user.can_unequip(I))
 			return FALSE
 		if(try_add_component(I, user))
 			return TRUE

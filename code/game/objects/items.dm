@@ -496,18 +496,20 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/return_item()
 	return src
 
-/obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
-	if(!slot) return 0
-	if(!M) return 0
+/obj/item/proc/can_be_unequipped_by(mob/M, slot, disable_warning = 0)
+	if(!slot)
+		return FALSE
+	if(!M)
+		return FALSE
 
 	if(!canremove)
-		return 0
+		return FALSE
 	if(!M.slot_is_accessible(slot, src, disable_warning? null : M))
-		return 0
-	return 1
+		return FALSE
+	return TRUE
 
 /obj/item/proc/can_be_dropped_by_client(mob/M)
-	return M.canUnEquip(src)
+	return M.can_unequip(src)
 
 /obj/item/verb/verb_pickup()
 	set src in oview(1)
