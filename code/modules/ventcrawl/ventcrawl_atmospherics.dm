@@ -94,7 +94,7 @@
 		return 0
 
 	if(issmall(user))
-		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
+		to_chat(user, SPAN_NOTICE("Sorry but you are too small."))
 
 	user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
 	shake_animation()
@@ -132,7 +132,7 @@
 		return 0
 
 	if(issmall(user))
-		to_chat(user, SPAN_NOTICE("We are sorry but you are too small."))
+		to_chat(user, SPAN_NOTICE("Sorry but you are too small."))
 
 	user.visible_message(SPAN_WARNING("You hear something bumped into the ducts."), SPAN_NOTICE("You bumped into the ventilation system."))
 	shake_animation()
