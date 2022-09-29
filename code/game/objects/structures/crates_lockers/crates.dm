@@ -55,10 +55,8 @@
 			rigged = TRUE
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
-		if(rigged)
+		if(rigged && user.drop(W, src))
 			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
-			user.drop_item()
-			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)

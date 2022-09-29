@@ -73,8 +73,7 @@
 	if(istype(G))
 		if(attached_grenade)
 			to_chat(user, SPAN("warning", "There is already a grenade attached!"))
-		else if(user.can_unequip(G))
-			user.drop_item(G)
+		else if(user.drop(G))
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 			attach_grenade(G)
 	else
@@ -111,8 +110,7 @@
 // These procs do not relocate the grenade, that's the callers responsibility
 /obj/item/integrated_circuit/manipulation/grenade/proc/attach_grenade(obj/item/grenade/G, mob/user)
 	if(istype(G) && !grenade_activated)
-		if(user)
-			user.drop_item(G)
+		if(user?.drop(G))
 			user.visible_message(SPAN("warning", "\The [user] attaches \a [G] to \the [src]!"), SPAN("notice", "You attach \the [G] to \the [src]."))
 		attached_grenade = G
 		G.forceMove(src)

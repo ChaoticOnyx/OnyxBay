@@ -133,7 +133,6 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
 				new_species = CHICKEN_RAINBOW
 			change_species(new_species)
-		user.drop_item()
 		qdel(G)
 		eggsleft = min((eggsleft + rand(1, 3)), MAX_EGGS_PER_CHICKEN)
 
@@ -359,7 +358,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			return
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 #undef CHICKEN_WHITE

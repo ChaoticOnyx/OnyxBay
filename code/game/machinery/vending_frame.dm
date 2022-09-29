@@ -102,9 +102,9 @@
 	update_icon()
 
 /obj/machinery/vending_frame/proc/add_cartridge(obj/item/vending_cartridge/C, mob/user)
+	if(!user.drop(C, src)
+		return
 	cartridge = C
-	user.drop_item()
-	C.forceMove(src)
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 	to_chat(user, SPAN_NOTICE("You add the [C.name] to the frame."))
 	state = STAGE_GLASS

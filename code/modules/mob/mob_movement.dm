@@ -71,7 +71,7 @@
 		to_chat(usr, SPAN("warning", "\The [I] cannot be dropped."))
 		return
 	else
-		drop_item()
+		drop_active_hand()
 
 //This gets called when you press the delete button.
 /client/verb/delete_key_pressed()
@@ -116,7 +116,7 @@
 	if(!isrobot(mob) && mob.stat == CONSCIOUS && isturf(mob.loc))
 		var/obj/item/I = mob.get_active_hand()
 		if(I && mob.can_unequip(I))
-			mob.drop_item()
+			mob.drop_active_hand()
 
 /atom/movable/proc/set_glide_size(glide_size_override = 0, min = 0.9, max = world.icon_size / 2)
 	if (!glide_size_override || glide_size_override > max)

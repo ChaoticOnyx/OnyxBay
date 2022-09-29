@@ -108,7 +108,7 @@
 				if(do_after(usr, 50, src))
 					active = FALSE
 					update_icon()
-				else 
+				else
 					to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 					detonate()
 					return
@@ -123,9 +123,9 @@
 			return
 		else
 			if(W.reagents.total_volume)
+				if(!user.drop(W, src))
+					return
 				to_chat(user, SPAN("notice", "You add \the [W] to the assembly."))
-				user.drop_item()
-				W.loc = src
 				beakers += W
 				stage = STAGE_DETONATOR
 				SetName("unsecured grenade with [beakers.len] containers[detonator?" and detonator":""]")

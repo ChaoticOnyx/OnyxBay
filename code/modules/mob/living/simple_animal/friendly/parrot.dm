@@ -219,58 +219,58 @@
 					if(ears)
 						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
 						return
-					else
-						var/obj/item/item_to_add = usr.get_active_hand()
-						if(!item_to_add)
-							return
 
-						if( !istype(item_to_add,  /obj/item/device/radio/headset) )
-							to_chat(usr, "<span class='warning'>This object won't fit.</span>")
-							return
+					var/obj/item/item_to_add = usr.get_active_hand()
+					if(!item_to_add)
+						return
 
-						var/obj/item/device/radio/headset/headset_to_add = item_to_add
+					if(!istype(item_to_add, /obj/item/device/radio/headset))
+						to_chat(usr, "<span class='warning'>This object won't fit.</span>")
+						return
 
+					if(!usr.drop(item_to_add, src))
+						return
 
-						usr.drop_item()
-						headset_to_add.loc = src
-						src.ears = headset_to_add
-						to_chat(usr, "You fit the headset onto [src].")
+					var/obj/item/device/radio/headset/headset_to_add = item_to_add
+					ears = headset_to_add
+					to_chat(usr, "You fit the headset onto [src].")
 
-						clearlist(available_channels)
-						for(var/ch in headset_to_add.channels)
-							switch(ch)
-								if("Engineering")
-									available_channels.Add(":e")
-								if("Command")
-									available_channels.Add(":c")
-								if("Security")
-									available_channels.Add(":s")
-								if("Science")
-									available_channels.Add(":n")
-								if("Medical")
-									available_channels.Add(":m")
-								if("Mining")
-									available_channels.Add(":d")
-								if("Cargo")
-									available_channels.Add(":q")
+					clearlist(available_channels)
+					for(var/ch in headset_to_add.channels)
+						switch(ch)
+							if("Engineering")
+								available_channels.Add(":e")
+							if("Command")
+								available_channels.Add(":c")
+							if("Security")
+								available_channels.Add(":s")
+							if("Science")
+								available_channels.Add(":n")
+							if("Medical")
+								available_channels.Add(":m")
+							if("Mining")
+								available_channels.Add(":d")
+							if("Cargo")
+								available_channels.Add(":q")
 				if("claws")
 					if(held_item)
 						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
 						return
-					else
-						var/obj/item/item_to_add = usr.get_active_hand()
-						if(!item_to_add)
-							return
+
+					var/obj/item/item_to_add = usr.get_active_hand()
+					if(!item_to_add)
+						return
+
+					if(!usr.drop(item_to_add, src))
+						return
+
+					held_item = item_to_add
+					to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
+					if(istype(src, /mob/living/simple_animal/parrot/Poly))
+						if(prob(50))
+							say("Поли нравится!")
 						else
-							usr.drop_item()
-							item_to_add.loc = src
-							src.held_item = item_to_add
-							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
-							if(istype(src, /mob/living/simple_animal/parrot/Poly))
-								if(prob(50))
-									say("Поли нравится!")
-								else
-									say("Поли недоволен!")
+							say("Поли недоволен!")
 		else
 			..()
 

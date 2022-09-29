@@ -47,11 +47,8 @@
 	if(!istype(O, /obj/item/card/id))
 		return ..()
 
-	if(!held_card)
-		user.drop_item()
-		O.loc = src
+	if(!held_card && user.drop(O, src))
 		held_card = O
-
 		SSnano.update_uis(src)
 
 	attack_hand(user)
@@ -168,10 +165,8 @@
 
 				else
 					var/obj/item/I = usr.get_active_hand()
-					if (istype(I, /obj/item/card/id))
+					if(istype(I, /obj/item/card/id) && user.drop(I, src))
 						var/obj/item/card/id/C = I
-						usr.drop_item()
-						C.loc = src
 						held_card = C
 
 			if("view_account_detail")

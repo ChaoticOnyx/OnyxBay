@@ -406,7 +406,7 @@
 		if(prob(50))
 			if(affecting.stat != 2)
 				to_chat(affecting, "<span class='warning'>You drop what you're holding and clutch at your eyes!</span>")
-				affecting.drop_item()
+				affecting.drop_active_hand()
 			affecting.eye_blurry += 10
 			affecting.Paralyse(1)
 			affecting.Weaken(4)

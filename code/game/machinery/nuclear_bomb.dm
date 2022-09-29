@@ -246,9 +246,7 @@ var/bomb_set
 			auth = null
 		else
 			var/obj/item/I = usr.get_active_hand()
-			if(istype(I, /obj/item/disk/nuclear))
-				usr.drop_item()
-				I.forceMove(src)
+			if(istype(I, /obj/item/disk/nuclear) && usr.drop(I, src))
 				auth = I
 	if(is_auth(usr))
 		if(href_list["type"])

@@ -185,9 +185,9 @@
 
 	if(istype(W, /obj/item/cell))
 		if(!cell)
-			user.drop_item()
+			if(!user.drop(W, src))
+				return
 			cell = W
-			cell.loc = src
 			to_chat(user, "<span class='notice'>You jam [cell] into [src] and wire it to the firing coil.</span>")
 			superheat_rod(user)
 		else

@@ -132,11 +132,11 @@
 			if(4) icon_state = "gift2"
 			if(5) icon_state = "gift3"
 
-/obj/item/gift/attack_self(mob/user as mob)
-	user.drop_item()
-	if(src.gift)
+/obj/item/gift/attack_self(mob/user)
+	user.drop(src)
+	if(gift)
 		user.put_in_active_hand(gift)
-		src.gift.add_fingerprint(user)
+		gift.add_fingerprint(user)
 	else
 		to_chat(user, "<span class='warning'>The gift was empty!</span>")
 	qdel(src)

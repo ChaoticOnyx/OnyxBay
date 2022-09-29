@@ -79,8 +79,8 @@
 	if(istype(I, /obj/item/paper))
 		if(istype(I, /obj/item/paper/talisman))
 			return
-		user.drop_item()
-		I.forceMove(src)
+		if(!user.drop(I, src))
+			return
 		to_chat(user, SPAN("notice", "You put [I] in [src]."))
 		papers.Add(I)
 		update_icon()

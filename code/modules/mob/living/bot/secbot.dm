@@ -376,7 +376,8 @@
 			to_chat(user, "You weld a hole in \the [src].")
 
 	else if(isprox(O) && (build_step == 1))
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 2
 		to_chat(user, "You add \the [O] to [src].")
 		overlays += image('icons/obj/aibots.dmi', "hs_eye")
@@ -384,7 +385,8 @@
 		qdel(O)
 
 	else if((istype(O, /obj/item/robot_parts/l_arm) || istype(O, /obj/item/robot_parts/r_arm)) && build_step == 2)
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		build_step = 3
 		to_chat(user, "You add \the [O] to [src].")
 		SetName("helmet/signaler/prox sensor/robot arm assembly")
@@ -392,7 +394,8 @@
 		qdel(O)
 
 	else if(istype(O, /obj/item/melee/baton) && build_step == 3)
-		user.drop_item()
+		if(!user.drop(O))
+			return
 		to_chat(user, "You complete the Securitron! Beep boop.")
 		var/mob/living/bot/secbot/S = new /mob/living/bot/secbot(get_turf(src))
 		S.SetName(created_name)

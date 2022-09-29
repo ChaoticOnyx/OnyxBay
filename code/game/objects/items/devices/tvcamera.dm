@@ -110,18 +110,13 @@ Using robohead because of restricting to roboticist */
 /obj/item/TVAssembly/attackby(W, mob/user)
 	switch(buildstep)
 		if(0)
-			if(istype(W, /obj/item/robot_parts/robot_component/camera))
-				var/obj/item/robot_parts/robot_component/camera/CA = W
+			if(istype(W, /obj/item/robot_parts/robot_component/camera) && user.drop(W))
 				to_chat(user, "<span class='notice'>You add the camera module to [src]</span>")
-				user.drop_item()
-				qdel(CA)
 				desc = "This TV camera assembly has a camera module."
 				buildstep++
+				qdel(CA)
 		if(1)
-			if(istype(W, /obj/item/device/taperecorder))
-				var/obj/item/device/taperecorder/T = W
-				user.drop_item()
-				qdel(T)
+			if(istype(W, /obj/item/device/taperecorder) && user.drop(W))
 				buildstep++
 				to_chat(user, "<span class='notice'>You add the tape recorder to [src]</span>")
 				desc = "This TV camera assembly has a camera and audio module."
@@ -151,8 +146,9 @@ Using robohead because of restricting to roboticist */
 				S.use(1)
 				to_chat(user, "<span class='notice'>You encase the assembly.</span>")
 				var/turf/T = get_turf(src)
-				new /obj/item/device/tvcamera(T)
-				user.drop_from_inventory(src)
+				var/obj/item/device/tvcamera/TVC = new /obj/item/device/tvcamera(T)
+				if(loc == user)
+					user.replace_item(W, TVC)
 				qdel(src)
 				return
 

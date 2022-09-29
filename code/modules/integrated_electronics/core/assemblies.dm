@@ -581,7 +581,7 @@
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	user.drop_item(IC)
+	user.drop(IC)
 	add_component(IC)
 	IC.create_moved_event()
 	return TRUE
@@ -756,8 +756,7 @@
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
-		user.drop_item(I)
-		I.forceMove(src)
+		user.drop(I, src)
 		battery = I
 		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))

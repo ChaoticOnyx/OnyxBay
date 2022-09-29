@@ -217,10 +217,11 @@
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 		user.visible_message("[user] installs the electronics into the airlock assembly.", "You start to install electronics into the airlock assembly.")
 
-		if(do_after(user, 40,src))
-			if(!src) return
-			user.drop_item()
-			W.loc = src
+		if(do_after(user, 40, src))
+			if(!src)
+				return
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "<span class='notice'>You installed the airlock electronics!</span>")
 			src.state = 2
 			src.SetName("Near finished Airlock Assembly")

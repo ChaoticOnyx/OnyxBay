@@ -239,11 +239,11 @@
 		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
 			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
 			return
-		user.drop_item()
+		if(!user.drop(W, src))
+			return
 		to_chat(user, "<span class='notice'>You screw [I] onto [src].</span>")
 		silenced = I	//dodgy?
 		w_class = ITEM_SIZE_NORMAL
-		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
 		fire_sound = SFX_SILENT_FIRE
 		return

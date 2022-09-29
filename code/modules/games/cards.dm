@@ -179,12 +179,10 @@
 	var/obj/item/hand/H = new()
 
 	H.cards += cards
-	cards.Cut();
-	user.drop_item()
-	qdel(src)
+	cards.Cut()
 
 	H.update_icon()
-	user.put_in_active_hand(H)
+	user.replace_item(src, H, TRUE)
 
 /obj/item/hand
 	name = "hand of cards"

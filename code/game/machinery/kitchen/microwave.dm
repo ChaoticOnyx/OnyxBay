@@ -140,18 +140,17 @@
 		if(istype(O, /obj/item/stack)) // This is bad, but I can't think of how to change it
 			var/obj/item/stack/S = O
 			if(S.get_amount() > 1)
-				new O.type (src)
+				new O.type(src)
 				S.use(1)
-			else
-				user.drop_item(src)
+			else if(!user.drop(O, src))
+				return
 			user.visible_message( \
 					SPAN("notice", "\The [user] has added one of [O] to \the [src]."), \
 					SPAN("notice", "You add one of [O] to \the [src]."))
 			return
 		else
-			if(!user.drop_from_inventory(O))
+			if(!user.drop(O, src))
 				return
-			O.forceMove(src)
 			user.visible_message( \
 				SPAN("notice", "\The [user] has added \the [O] to \the [src]."), \
 				SPAN("notice", "You add \the [O] to \the [src]."))

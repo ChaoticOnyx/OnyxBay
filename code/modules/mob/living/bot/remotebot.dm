@@ -69,7 +69,7 @@
 	I.forceMove(src)
 	holding = I
 
-/mob/living/bot/remotebot/proc/drop()
+/mob/living/bot/remotebot/proc/drop_holding()
 	if(working || !holding)
 		return
 	holding.forceMove(loc)
@@ -127,7 +127,7 @@
 		return
 
 	if(href_list["drop"])
-		bot.drop()
+		bot.drop_holding()
 	if(href_list["look"])
 		if(href_list["look"] == "1")
 			usr.reset_view(usr)

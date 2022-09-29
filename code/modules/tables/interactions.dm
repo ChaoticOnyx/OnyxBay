@@ -67,8 +67,9 @@
 		return ..()
 	if(isrobot(user))
 		return
-	user.drop_item()
-	if(O.loc != src.loc)
+	if(!user.drop(O))
+		return
+	if(O.loc != loc)
 		step(O, get_dir(O, src))
 	return
 

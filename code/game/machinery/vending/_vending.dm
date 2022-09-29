@@ -214,8 +214,8 @@
 			power_change()
 		return
 	else if(istype(W, /obj/item/material/coin) && !coin && cartridge.premium.len > 0)
-		user.drop_item()
-		W.forceMove(src)
+		if(!user.drop(W, src)
+			return
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
@@ -401,7 +401,7 @@
 		return
 
 	wires.Interact(user)
-	
+
 	if(stat & POWEROFF)
 		return
 
@@ -487,7 +487,7 @@
 
 	if(.)
 		return
-	
+
 	if(stat & POWEROFF)
 		return
 

@@ -43,11 +43,8 @@
 	overlays += "clipboard_over"
 	return
 
-/obj/item/clipboard/attackby(obj/item/W as obj, mob/user as mob)
-
-	if(istype(W, /obj/item/paper) || istype(W, /obj/item/photo))
-		user.drop_item()
-		W.loc = src
+/obj/item/clipboard/attackby(obj/item/W, mob/user)
+	if((istype(W, /obj/item/paper) || istype(W, /obj/item/photo)) && user.drop(W, src))
 		if(istype(W, /obj/item/paper))
 			toppaper = W
 		to_chat(user, "<span class='notice'>You clip the [W] onto \the [src].</span>")
@@ -99,9 +96,7 @@
 		else if(href_list["addpen"])
 			if(!haspen)
 				var/obj/item/pen/W = usr.get_active_hand()
-				if(istype(W, /obj/item/pen))
-					usr.drop_item()
-					W.loc = src
+				if(istype(W, /obj/item/pen) && usr.drop(W, src))
 					haspen = W
 					to_chat(usr, "<span class='notice'>You slot the pen into \the [src].</span>")
 

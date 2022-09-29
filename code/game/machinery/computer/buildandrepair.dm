@@ -42,12 +42,12 @@
 			if(istype(P, /obj/item/circuitboard) && !circuit)
 				var/obj/item/circuitboard/B = P
 				if(B.board_type == "computer")
-					playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+					if(!user.drop(P, src)
+						return
+					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 					to_chat(user, "<span class='notice'>You place the circuit board inside the frame.</span>")
-					src.icon_state = "1"
-					src.circuit = P
-					user.drop_item()
-					P.loc = src
+					icon_state = "1"
+					circuit = P
 				else
 					to_chat(user, "<span class='warning'>This frame does not accept circuit boards of this type!</span>")
 			if(isScrewdriver(P) && circuit)

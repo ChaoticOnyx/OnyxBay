@@ -137,7 +137,7 @@
 	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
-		overlays += padding	
+		overlays += padding
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -765,8 +765,7 @@
 		var/obj/item/mecha_parts/mecha_equipment/E = W
 
 		spawn()
-			if(E.can_attach(src))
-				user.drop_item()
+			if(E.can_attach(src) && user.drop(E))
 				E.attach(src)
 				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
 				update_icon()
@@ -843,9 +842,9 @@
 	else if(istype(W, /obj/item/cell))
 		if(state==4)
 			if(!src.cell)
+				if(!user.drop(W, src))
+					return
 				to_chat(user, "You install the powercell")
-				user.drop_item()
-				W.forceMove(src)
 				src.cell = W
 				src.log_message("Powercell installed")
 			else

@@ -74,9 +74,9 @@
 		if(beaker)
 			to_chat(user, "A beaker is already loaded into the machine.")
 			return
+		if(!user.drop(W, src))
+			return
 		beaker = W
-		user.drop_item()
-		W.forceMove(src)
 		to_chat(user, "You add \the [W] to the machine!")
 		updateUsrDialog()
 		icon_state = "mixer1"
@@ -85,9 +85,9 @@
 		if(loaded_pill_bottle)
 			to_chat(user, "A pill bottle is already loaded into the machine.")
 			return
+		if(!user.drop(W, src))
+			return
 		loaded_pill_bottle = W
-		user.drop_item()
-		W.forceMove(src)
 		to_chat(user, "You add \the [W] into the dispenser slot!")
 		updateUsrDialog()
 
@@ -415,12 +415,10 @@
 	if(istype(O, /obj/item/reagent_containers/vessel/beaker))
 		if(beaker)
 			return TRUE
-		else
-			src.beaker =  O
-			user.drop_item()
-			O.loc = src
+		else if(user.drop(O, src))
+			beaker =  O
 			update_icon()
-			src.updateUsrDialog()
+			updateUsrDialog()
 			return FALSE
 
 	if(holdingitems && holdingitems.len >= limit)

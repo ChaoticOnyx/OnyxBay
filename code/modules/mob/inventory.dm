@@ -153,33 +153,64 @@ var/list/slot_equipment_priority = list( \
 	drop_from_inventory(W)
 	return 0
 
-// Removes an item from inventory and places it in the target atom.
-// If canremove or other conditions need to be checked then use unEquip instead.
-/mob/proc/drop_from_inventory(obj/item/W, atom/target = null)
-	if(!W)
+// Replaces 'old_item' w/ 'new_item', putting it in the same slot.
+// May optionally qdel 'old_item'.
+// Drops 'new_item' to wherever it wants if can't equip it in the given slot, use carefully.
+/mob/proc/replace_item(obj/item/old_item, /obj/item/new_item, delete_old = FALSE, force = FALSE)
+	if(!old_item || !new_item)
 		return FALSE
-	remove_from_mob(W, target)
+	var/slot = get_inventory_slot(old_item)
+	if(!drop(old_item, null, force))
+		return FALSE
+	if(delete_old)
+		qdel(old_item)
+	equip_to_slot_if_possible(new_item, slot, del_on_fail = FALSE, disable_warning = TRUE, redraw_mob = TRUE)
+	return TRUE
+
+// Removes an item from inventory and places it in the target atom.
+// If canremove or other conditions must be ignored then use 'force = TRUE'.
+// Returns TRUE if an item's removed from inventory AND still exists.
+/mob/proc/drop(obj/item/I, atom/target = null, force = FALSE)
+	if(QDELETED(I))
+		return FALSE
+
+	if(I.loc != src)
+		crash_with("Called [src]'s ([type]) proc/drop(I = [I], target = [target], force = [force]) while the item isn't located inside the mob.") // This may save us someday.
+		return FALSE
+
+	if(!(force || can_unequip(I)))
+		return FALSE
+
+	__unequip(O)
+	client?.screen -= O
+	O.reset_plane_and_layer()
+	O.screen_loc = null
+	if(target)
+		I.forceMove(target)
+	else
+		I.dropInto(loc)
+	I.dropped(src)
+
 	if(!W?.loc)
-		return TRUE // self destroying objects (tk, grabs)
+		return FALSE // self destroying objects (tk, grabs)
 	update_icons()
 	return TRUE
 
-//Drops the item in our left hand
+// Drops the item in our left hand
 /mob/proc/drop_l_hand(atom/Target, force)
 	return drop_from_inventory(l_hand, Target, force)
 
-//Drops the item in our right hand
+// Drops the item in our right hand
 /mob/proc/drop_r_hand(atom/Target,force)
 	return drop_from_inventory(r_hand, Target, force)
 
-//Drops the item in our active hand. TODO: rename this to drop_active_hand or something
-/mob/proc/drop_item(atom/Target, force = 0)
-	if(hand)	return drop_l_hand(Target, force)
-	else		return drop_r_hand(Target, force)
+// Drops the item in our active hand.
+/mob/proc/drop_active_hand(atom/Target, force = 0)
+	return hand ? drop_l_hand(Target, force) : drop_r_hand(Target, force)
 
+// Drops the item in our inactive hand.
 /mob/proc/drop_item_inactive_hand(atom/Target, force = 0)
-	if(hand)	return drop_r_hand(Target, force)
-	else		return drop_l_hand(Target, force)
+	return hand ? drop_r_hand(Target, force) : drop_l_hand(Target, force)
 
 /*
 	Removes the object from any slots the mob might have, calling the appropriate icon update proc.
@@ -189,7 +220,7 @@ var/list/slot_equipment_priority = list( \
 
 	It is meant to be called only by other inventory procs.
 	It's probably okay to use it if you are transferring the item between slots on the same mob,
-	but chances are you're safer calling remove_from_mob() or drop_from_inventory() anyways.
+	but chances are you're safer calling drop() anyways.
 
 	As far as I can tell the proc exists so that mobs with different inventory slots can override
 	the search through all the slots, without having to duplicate the rest of the item dropping.
@@ -231,33 +262,6 @@ var/list/slot_equipment_priority = list( \
 			break
 	return slot
 
-//This differs from drop_from_inventory() in that it checks if the item can be unequipped first.
-/mob/proc/unequip(obj/item/I, force = FALSE, atom/target = null) // Force overrides NODROP for things like wizarditis and admin undress.
-	if(QDELETED(I))
-		return FALSE
-	if(force || can_unequip(I))
-		return drop_from_inventory(I, target) && !QDELETED(I)
-	return FALSE
-
-// Removes an object from a mob.
-// Moves the object to 'target' if specified, otherwise tries to drop it into src's loc.
-/mob/proc/remove_from_mob(obj/O, atom/target)
-	if(!O) // Nothing to remove, so we succeed.
-		return 1
-	__unequip(O)
-	client?.screen -= O
-	O.reset_plane_and_layer()
-	O.screen_loc = null
-	if(istype(O, /obj/item))
-		var/obj/item/I = O
-		if(target)
-			I.forceMove(target)
-		else
-			I.dropInto(loc)
-		I.dropped(src)
-	return 1
-
-
 //Returns the item equipped to the specified slot, if any.
 /mob/proc/get_equipped_item(slot)
 	switch(slot)
@@ -278,7 +282,6 @@ var/list/slot_equipment_priority = list( \
 
 /mob/proc/delete_inventory(include_carried = FALSE)
 	for(var/entry in get_equipped_items(include_carried))
-		drop_from_inventory(entry)
 		qdel(entry)
 
 // Returns all currently covered body parts

@@ -36,8 +36,8 @@
 			to_chat(user, "<span class='warning'>There are already two tanks attached, remove one first.</span>")
 			return
 
-		user.drop_item()
-		item.forceMove(src)
+		if(!user.drop(item, src))
+			return
 		if(!tank_one)
 			tank_one = item
 		else
@@ -173,7 +173,7 @@
 /obj/item/device/transfer_valve/proc/merge_gases()
 	if(valve_open)
 		return
-	
+
 	var/datum/gas_mixture/mix_one = tank_one.return_air()
 	var/datum/gas_mixture/mix_two = tank_two.return_air()
 	mix_two.volume += mix_one.volume

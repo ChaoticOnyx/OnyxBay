@@ -184,9 +184,9 @@ var/global/photo_count = 0
 		if(pictures_left)
 			to_chat(user, "<span class='notice'>[src] still has some film in it!</span>")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
-		user.drop_item()
-		qdel(I)
 		// TODO [V] That's kinda strange: pictures_left should be stored in film rather than in camera
 		pictures_left = pictures_max
 		return

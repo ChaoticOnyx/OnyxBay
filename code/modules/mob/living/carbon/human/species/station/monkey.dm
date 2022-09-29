@@ -7,7 +7,7 @@
 	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
-	
+
 	has_eyes_icon = FALSE
 
 	language = null
@@ -95,7 +95,7 @@
 			else
 				H.throw_item(T)
 		else
-			H.drop_item()
+			H.drop_active_hand()
 	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
 		var/list/touchables = list()
 		for(var/obj/item/O in range(1,get_turf(H)))

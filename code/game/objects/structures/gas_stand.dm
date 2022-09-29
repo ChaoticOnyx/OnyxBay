@@ -175,12 +175,10 @@
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else if(!is_loosen)
 			to_chat(user, "<span class='warning'>Loosen the nut with a wrench first.</span>")
-		else
-			user.drop_item()
-			W.forceMove(src)
+		else if(user.drop(W, src))
 			tank = W
 			user.visible_message("<span class='notice'>\The [user] attaches \the [tank] to \the [src].</span>", "<span class='notice'>You attach \the [tank] to \the [src].</span>")
-			src.add_fingerprint(user)
+			add_fingerprint(user)
 			update_icon()
 
 /obj/structure/gas_stand/_examine_text(mob/user)
@@ -226,7 +224,7 @@
 			return
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/gas_stand/anesthetic

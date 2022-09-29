@@ -246,33 +246,30 @@ else if(##equipment_var) {\
 		else
 			to_chat(user, "\The [src] does not have anything installed.")
 		return
-	else if(istype(W,/obj/item/clothing/head/helmet/space))
+
+	else if(istype(W, /obj/item/clothing/head/helmet/space))
 		if(helmet)
 			to_chat(user, "\The [src] already has a helmet installed.")
-		else
+		else if(user.drop(W, src))
 			to_chat(user, "You attach \the [W] to \the [src]'s helmet mount.")
-			user.drop_item()
-			W.forceMove(src)
-			src.helmet = W
+			helmet = W
 		return
-	else if(istype(W,/obj/item/clothing/shoes/magboots))
+
+	else if(istype(W, /obj/item/clothing/shoes/magboots))
 		if(boots)
 			to_chat(user, "\The [src] already has magboots installed.")
-		else
+		else if(user.drop(W, src))
 			to_chat(user, "You attach \the [W] to \the [src]'s boot mounts.")
-			user.drop_item()
-			W.forceMove(src)
 			boots = W
 		return
-	else if(istype(W,/obj/item/tank))
+
+	else if(istype(W, /obj/item/tank))
 		if(tank)
 			to_chat(user, "\The [src] already has an airtank installed.")
-		else if(istype(W,/obj/item/tank/plasma))
+		else if(istype(W, /obj/item/tank/plasma))
 			to_chat(user, "\The [W] cannot be inserted into \the [src]'s storage compartment.")
-		else
+		else if(user.drop(W, src))
 			to_chat(user, "You insert \the [W] into \the [src]'s storage compartment.")
-			user.drop_item()
-			W.forceMove(src)
 			tank = W
 		return
 

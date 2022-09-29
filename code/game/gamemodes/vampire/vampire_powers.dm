@@ -105,7 +105,7 @@
 		if (T.check_drain_target_state(T))
 			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_total += blood
-			vampire.gain_blood(blood) 
+			vampire.gain_blood(blood)
 			blood_drained += blood
 
 			frenzy_lower_chance = 40
@@ -640,12 +640,12 @@
 		for(var/ID in user.virus2)
 			var/datum/disease2/disease/V = user.virus2[ID]
 			V.cure(user)
-		
+
 		var/mob/living/carbon/human/H = user
-		for(var/limb_type in H.species.has_limbs)	
+		for(var/limb_type in H.species.has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
-				E.removed()			//...because no one wants their head to explode to make way for a new one.				
+				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				qdel(E)
 				E = null
 			if(!E)
@@ -653,7 +653,7 @@
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
 				organ_data["descriptor"] = O.name
-				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))				
+				to_chat(H, SPAN_DANGER("With a shower of dark blood, a new [O.name] forms."))
 				H.visible_message(SPAN_DANGER("With a shower of dark blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!"))
 				blood_used += 12
 				var/datum/reagent/blood/B = new /datum/reagent/blood
@@ -886,7 +886,7 @@
 	else if (vampire.blood_usable < 2)
 		to_chat(user, SPAN_WARNING("You do not have enough usable blood. 2 needed."))
 		return
-	
+
 	to_chat(user, SPAN_NOTICE("You begin hiding your true self."))
 	user.status_flags |= FAKELIVING
 	vampire.use_blood(power_use_cost)
@@ -900,7 +900,7 @@
 	var/datum/vampire/vampire = user.vampire_power(power_use_cost, 0)
 	if (!vampire)
 		return
-	
+
 	if (isfakeliving(user))
 		if (user.stat == DEAD)
 			to_chat(user, SPAN_WARNING("You cannot appear alive while dead"))
@@ -1030,7 +1030,7 @@
 	T.Weaken(15)
 	T.Stun(15)
 	var/datum/antagonist/vampire/VAMP = GLOB.all_antag_types_[MODE_VAMPIRE]
-	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)	
+	VAMP.add_antagonist(T.mind, 1, 1, 0, 0, 1)
 
 	admin_attack_log(user, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(user)]", "successfully embraced and turned into a vampire")
 
@@ -1068,7 +1068,7 @@
 	var/mob/living/carbon/human/T = pick(targets)
 
 	user.visible_message(SPAN_DANGER("[user] leaps at [T]!"))
-	user.drop_item()
+	user.drop_active_hand()
 	user.throw_at(get_step(get_turf(T), get_turf(user)), 4, 1, user)
 	user.status_flags |= LEAPING
 
