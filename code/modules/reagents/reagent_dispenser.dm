@@ -166,8 +166,8 @@
 				log_game("[key_name(user)] rigged fueltank at [loc.loc.name] ([loc.x],[loc.y],[loc.z]) for explosion.")
 
 			rig = W
-      
-      user.visible_message(
+
+			user.visible_message(
 			  SPAN("notice", "The [user] rigs [W] to \the [src]."),
 			  SPAN("notice", "You rig [W] to \the [src].")
 			)
