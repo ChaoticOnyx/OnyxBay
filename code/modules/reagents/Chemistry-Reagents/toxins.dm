@@ -671,6 +671,10 @@
 	else
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
+			if(jobban_isbanned(H, job_master.occupations_by_type[/datum/job/cyborg]))
+				to_chat(H, SPAN_WARNING("You feel that something is broken inside."))
+				H.gib()
+				return
 			H.Robotize()
 
 /datum/reagent/xenomicrobes
