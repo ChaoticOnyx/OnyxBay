@@ -10,7 +10,7 @@
 		return
 
 	for(var/obj/item/I in M)
-		M.drop_from_inventory(I)
+		M.drop(I)
 
 	log_admin("[key_name(usr)] made [key_name(M)] drop everything!")
 	message_admins("[key_name_admin(usr)] made [key_name_admin(M)] drop everything!", 1)
@@ -28,7 +28,7 @@
 			return
 		//strip their stuff before they teleport into a cell :downs:
 		for(var/obj/item/I in M)
-			M.drop_from_inventory(I)
+			M.drop(I)
 		//teleport person to cell
 		M.Paralyse(5)
 		sleep(5)	//so they black out before warping

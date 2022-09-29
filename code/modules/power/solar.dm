@@ -225,10 +225,8 @@ var/list/solars_list = list()
 
 /obj/item/solar_assembly/attackby(obj/item/W, mob/user)
 	if(!tracker)
-		if(istype(W, /obj/item/tracker_electronics))
+		if(istype(W, /obj/item/tracker_electronics) && user.drop(W))
 			tracker = 1
-			user.drop_item()
-			qdel(W)
 			user.visible_message("<span class='notice'>[user] inserts the electronics into the solar assembly.</span>")
 			return 1
 	else

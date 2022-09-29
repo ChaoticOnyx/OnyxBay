@@ -136,12 +136,11 @@
 	H.throw_at(get_step(target, target.dir), 10, 1, H)
 
 /obj/item/hand/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O,/obj/item/hand))
+	if(istype(O, /obj/item/hand))
 		var/obj/item/hand/H = O
 		for(var/datum/playingcard/P in cards)
 			H.cards += P
 		H.concealed = src.concealed
-		user.drop_from_inventory(src)
 		qdel(src)
 		H.update_icon()
 		return
@@ -174,17 +173,19 @@
 	var/list/cards = list()
 
 
-/obj/item/pack/attack_self(mob/user as mob)
+/obj/item/pack/attack_self(mob/user)
+	if(!length(cards))
+		user.visible_message("[user] whines as they reveal \the [src] to be empty!")
+		qdel(src)
+		return
 	user.visible_message("[user] rips open \the [src]!")
 	var/obj/item/hand/H = new()
 
 	H.cards += cards
-	cards.Cut();
-	user.drop_item()
-	qdel(src)
+	cards.Cut()
 
 	H.update_icon()
-	user.put_in_active_hand(H)
+	user.replace_item(src, H, TRUE)
 
 /obj/item/hand
 	name = "hand of cards"

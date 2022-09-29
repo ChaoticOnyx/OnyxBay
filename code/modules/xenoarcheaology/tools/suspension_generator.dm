@@ -93,8 +93,8 @@
 				attackby(I, user)
 				interact(user)
 				return TOPIC_REFRESH
-			user.drop_item()
-			I.forceMove(src)
+			if(!user.drop(I, src))
+				return
 			auth_card = I
 			if(attempt_unlock(I, user))
 				to_chat(user, SPAN("info", "You insert [I], the console flashes \'<i>Access granted.</i>\'"))
@@ -159,9 +159,7 @@
 		if(panel_open)
 			if(cell)
 				to_chat(user, SPAN("warning", "There is a power cell already installed."))
-			else
-				user.drop_item()
-				W.forceMove(src)
+			else if(user.drop(W, src))
 				cell = W
 				to_chat(user, SPAN("info", "You insert the power cell."))
 				icon_state = "suspension1"

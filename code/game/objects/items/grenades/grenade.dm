@@ -56,7 +56,7 @@
 				C.throw_mode_on()
 
 /obj/item/grenade/proc/activate(mob/user)
-	if(broken) 
+	if(broken)
 		to_chat(user, SPAN("notice", "You need to reinsert safety pin to use it one more time!"))
 		return
 	if(active) return
@@ -81,7 +81,7 @@
 	broken = TRUE
 	if(user)
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
-	
+
 	update_icon()
 	playsound(loc, arm_sound, 75, 0, -3)
 
@@ -94,7 +94,7 @@
 	if(isScrewdriver(W))
 		if(QDELETED(detonator))
 			to_chat(user, SPAN("notice", "There is no detonator inside."))
-			return 
+			return
 		if(QDELETED(safety_pin) && has_pin && !active)
 			if(prob(5))
 				to_chat(user, SPAN("warning", "Your hand slips off the lever, triggering grenade!"))
@@ -102,12 +102,12 @@
 				return
 			broken = TRUE
 			to_chat(user, SPAN("warning", "You broke grenade, while trying to remove detonator!"))
-		if(active) 
+		if(active)
 			to_chat(user, SPAN("notice", "You begin to remove detonator from grenade chamber."))
 			if(do_after(usr, 50, src))
 				active = FALSE
 				update_icon()
-			else 
+			else
 				to_chat(user, SPAN("warning", "You fail to fix assembly, and activate it instead."))
 				detonate()
 				return
@@ -120,8 +120,7 @@
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			safety_pin = W
-			user.remove_from_mob(W)
-			W.forceMove(src)
+			user.drop(W, src)
 			update_icon()
 		else if(has_pin)
 			to_chat(user, SPAN("notice", "There is no need for second pin."))
@@ -135,8 +134,7 @@
 			return
 		to_chat(user, SPAN("notice", "You add [W] to the metal casing."))
 		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, -3)
-		user.remove_from_mob(det)
-		det.loc = src
+		user.drop(det, src)
 		detonator = det
 		if(istimer(detonator.a_left))
 			var/obj/item/device/assembly/timer/T = detonator.a_left
@@ -144,7 +142,7 @@
 		else if(istimer(detonator.a_right))
 			var/obj/item/device/assembly/timer/T = detonator.a_right
 			det_time = 10*T.time
-		else 
+		else
 			det_time = null
 	add_fingerprint(user)
 	..()
@@ -183,8 +181,7 @@
 			to_chat(user, SPAN("notice", "You insert [src] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			S.safety_pin = src
-			user.remove_from_mob(src)
-			src.forceMove(S)
+			user.drop(src, S)
 			S.update_icon()
 		else
 			to_chat(user, SPAN("notice", "There is no need for second pin."))

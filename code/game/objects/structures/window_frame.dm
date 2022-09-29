@@ -83,7 +83,7 @@
 /datum/windowpane/proc/apply_silicate(volume)
 	if(health < max_health)
 		health = min(health + volume * 3, max_health)
-		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [my_frame]'s [name]." : 
+		my_frame.visible_message(health == max_health ? "Silicate mended some cracks on \the [my_frame]'s [name]." :
 														"\The [my_frame]'s [name] looks fully repaired.")
 	else
 		stored_silicate = min(stored_silicate + volume, 100)
@@ -93,7 +93,7 @@
 
 	if(stored_silicate)
 		damage *= (1 - stored_silicate / 200)
-	
+
 	health = max(0, health - damage)
 
 	if(health <= 0)
@@ -776,7 +776,7 @@
 			to_chat(user, SPAN("notice", "\The [src] already has another [signaler] attached."))
 			return
 		to_chat(user, SPAN("notice", "You've attached \the [W] to \the [src]."))
-		user.unEquip(W, target = src)
+		user.drop(W, src)
 		signaler = W
 		update_icon()
 		return

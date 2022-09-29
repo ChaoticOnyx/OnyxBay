@@ -147,10 +147,9 @@
 		if (!check_signed())
 			to_chat(user, SPAN_WARNING("Sign [src] first!"))
 			return
-		if (id == CF.id)
-			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
-			user.drop_item()
-			CF.forceMove(src)
+		if(id == CF.id)
+			if(user.drop(CF, src))
+				to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
 			return
 		to_chat(user, SPAN_WARNING("IDs don't match!"))
 		return
