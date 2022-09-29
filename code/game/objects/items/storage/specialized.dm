@@ -106,8 +106,7 @@
 				inserted = 1
 				break
 
-		if(!inserted || !S.amount)
-			usr.drop_from_inventory(S, src)
+		if((!inserted || !S.amount) && user.drop(S, src))
 			if(!S.amount)
 				qdel(S)
 			usr.update_icons()	//update our overlays

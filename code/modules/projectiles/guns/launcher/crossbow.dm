@@ -167,7 +167,7 @@
 /obj/item/gun/launcher/crossbow/attackby(obj/item/W as obj, mob/user as mob)
 	if(!bolt)
 		if (istype(W,/obj/item/arrow))
-			user.drop_from_inventory(W, src)
+			user.drop(W, src)
 			bolt = W
 			user.visible_message("[user] slides [bolt] into [src].","You slide [bolt] into [src].")
 			update_icon()

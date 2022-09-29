@@ -337,7 +337,7 @@
 	else
 		itemsize = I.w_class
 
-	drop_from_inventory(item)
+	drop(item)
 	if(!item || !isturf(item.loc))
 		return
 

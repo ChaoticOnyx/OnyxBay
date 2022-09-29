@@ -297,9 +297,9 @@
 	if(do_after(user, 20, src))
 		if(!stored_item)
 			if(W.w_class <= ITEM_SIZE_NORMAL)
-				user.drop_from_inventory(W, src)
-				stored_item = W
-				to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
+				if(user.drop(W, src))
+					stored_item = W
+					to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
 			else
 				to_chat(user, SPAN("notice", "\The [W] can't be hidden in \the [src], it's too big."))
 		else

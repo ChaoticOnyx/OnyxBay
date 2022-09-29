@@ -136,12 +136,11 @@
 	H.throw_at(get_step(target, target.dir), 10, 1, H)
 
 /obj/item/hand/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O,/obj/item/hand))
+	if(istype(O, /obj/item/hand))
 		var/obj/item/hand/H = O
 		for(var/datum/playingcard/P in cards)
 			H.cards += P
 		H.concealed = src.concealed
-		user.drop_from_inventory(src)
 		qdel(src)
 		H.update_icon()
 		return

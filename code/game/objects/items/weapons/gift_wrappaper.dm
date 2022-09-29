@@ -172,11 +172,11 @@
 				if(istype(W, /obj/item/smallDelivery) || istype(W, /obj/item/gift)) //No gift wrapping gifts!
 					return
 
-				if(user.drop_from_inventory(W))
-					var/obj/item/gift/G = new /obj/item/gift( src.loc, W )
+				if(user.drop(W))
+					var/obj/item/gift/G = new /obj/item/gift(loc, W)
 					G.add_fingerprint(user)
 					W.add_fingerprint(user)
-					src.amount -= a_used
+					amount -= a_used
 
 			if (src.amount <= 0)
 				new /obj/item/c_tube( src.loc )

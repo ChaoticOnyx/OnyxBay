@@ -869,9 +869,8 @@
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
-		user.drop_from_inventory(W)
-		W.forceMove(src)
-		user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
+		if(user.drop(W, src))
+			user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
 		return
 
 	else
@@ -1202,12 +1201,11 @@
 	if(!brainmob)
 		return FALSE
 
-	user.drop_from_inventory(I)
+	user.drop(I, src)
 	brainmob.reset_view(src)
 	occupant = brainmob
 	brainmob.loc = src // should allow relaymove
 	//brainmob.canmove = TRUE
-	I.loc = src
 	//mmi_as_oc.mecha = src
 	verbs -= /obj/mecha/verb/eject
 	Entered(I)

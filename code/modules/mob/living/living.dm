@@ -441,8 +441,8 @@
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
 
-		if (C.handcuffed && !initial(C.handcuffed))
-			C.drop_from_inventory(C.handcuffed)
+		if(C.handcuffed && !initial(C.handcuffed))
+			C.drop(C.handcuffed, force = TRUE)
 		C.handcuffed = initial(C.handcuffed)
 	BITSET(hud_updateflag, HEALTH_HUD)
 	BITSET(hud_updateflag, STATUS_HUD)
@@ -684,7 +684,7 @@
 	var/mob/M = H.loc //Get our mob holder (if any).
 
 	if(istype(M))
-		M.drop_from_inventory(H)
+		M.drop(H)
 		to_chat(M, "<span class='warning'>\The [H] wriggles out of your grip!</span>")
 		to_chat(src, "<span class='warning'>You wriggle out of \the [M]'s grip!</span>")
 
@@ -758,7 +758,7 @@
 /mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
-/mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/drop(obj/item/W, atom/Target = null, force = null)
 	if(W in internal_organs)
 		return
 	. = ..()

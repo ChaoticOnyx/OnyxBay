@@ -100,7 +100,7 @@
 		to_chat(user, SPAN("notice", "Kill or maim the victim first."))
 		return
 	for(var/obj/item/I in M)
-		M.drop_from_inventory(I)
+		M.drop(I, force = TRUE)
 	M.dust()
 	set_full(SOULSTONE_ESSENCE)
 

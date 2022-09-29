@@ -57,8 +57,7 @@ var/list/fuel_injectors = list()
 		else
 			visible_message("<span class='notice'>\The [user] inserts \a [W] into \the [src].</span>")
 
-		user.drop_from_inventory(W)
-		W.forceMove(src)
+		user.drop(W, src)
 		if(cur_assembly)
 			cur_assembly.forceMove(get_turf(src))
 			user.put_in_hands(cur_assembly)

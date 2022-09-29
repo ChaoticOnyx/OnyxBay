@@ -72,9 +72,10 @@
 	if(engine)
 		return
 	if(user)
-		user.drop_from_inventory(E)
+		user.drop(E, src)
+	else
+		E.forceMove(src)
 	engine = E
-	engine.forceMove(src)
 	if(trail)
 		qdel(trail)
 	trail = engine.get_trail()

@@ -601,15 +601,13 @@ var/list/global/slot_flags_enumeration = list(
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
-	H.drop_from_inventory(src)
-	if(src && isturf(loc))
+	if(H.drop(src))
 		throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, dist), 1)
 
 /obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
 	H.useblock_off()
 	if(canremove)
-		H.drop_from_inventory(src)
-		if(src && istype(loc,/turf))
+		if(H.drop(src))
 			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)), rand(1, dist), 1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))

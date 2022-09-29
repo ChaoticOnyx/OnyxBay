@@ -139,11 +139,10 @@
 
 	if(isrobot(user))
 		return
-	if(!user.can_unequip(I))
-		to_chat(user, "You can't place that item inside \the [src].")
+	if(!user.drop(I, src))
+		to_chat(user, "You can't place that into \the [src].")
 		return
 
-	user.drop_from_inventory(I, src)
 	if(I.loc != src)
 		return
 

@@ -100,7 +100,6 @@
 				bundleitem.reset_plane_and_layer()
 		update_icon()
 		bundle.pages.Cut()
-		user.drop_from_inventory(bundle)
 		qdel(bundle)
 		if(was_there_a_photo)
 			to_chat(user, SPAN("notice", "The photo cannot go into \the [src]."))

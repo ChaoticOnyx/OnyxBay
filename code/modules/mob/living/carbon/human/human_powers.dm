@@ -302,7 +302,7 @@
 	S.set_last_nymph(L)
 
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I, force = TRUE)
 
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
 

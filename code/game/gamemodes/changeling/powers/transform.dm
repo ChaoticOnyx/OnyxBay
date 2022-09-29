@@ -65,7 +65,7 @@
 		if(H.mob_size != newS_dat.mob_size)
 			for (var/obj/item/underwear/U in H.worn_underwear)
 				H.worn_underwear -= U
-				H.drop_from_inventory(U)
+				H.drop(U, force = TRUE)
 			H.update_underwear()
 		H.set_species(newSpecies, 1)
 		H.b_type = chosen_dna.dna.b_type

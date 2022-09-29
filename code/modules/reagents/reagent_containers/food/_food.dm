@@ -65,7 +65,6 @@
 /obj/item/reagent_containers/food/attack(mob/M, mob/user, def_zone)
 	if(!reagents.total_volume)
 		to_chat(user, SPAN("danger", "The empty shell of [src] crumbles in your hands!"))
-		user.drop_from_inventory(src)
 		qdel(src)
 		return FALSE
 
@@ -224,9 +223,10 @@
 			if(length(contents) > 3)
 				to_chat(user, SPAN_WARNING("There's too much stuff inside!"))
 				return
+			if(!user.drop(W, src))
+				return
 
 			to_chat(user, SPAN("warning", "You slip \the [W] inside \the [src]."))
-			user.drop_from_inventory(W, src)
 			add_fingerprint(user)
 			contents += W
 			return

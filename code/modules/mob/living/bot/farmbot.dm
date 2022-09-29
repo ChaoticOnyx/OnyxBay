@@ -302,12 +302,12 @@
 
 
 /obj/structure/reagent_dispensers/watertank/attackby(obj/item/robot_parts/S, mob/user as mob)
-	if ((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
+	if((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
 		..()
 		return
-
+	if(!user.drop(S))
+		return
 	to_chat(user, "You add the robot arm to [src].")
-	user.drop_from_inventory(S)
 	qdel(S)
 	new /obj/item/farmbot_arm_assembly(loc, src)
 

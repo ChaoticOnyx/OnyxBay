@@ -163,8 +163,7 @@
 
 /obj/item/device/bot_kit/attack_self(mob/living/user)
 	to_chat(user, "You quickly dismantle the box and retrieve the controller and the remote bot itself.")
-	var/turf/T = get_turf(src.loc)
+	var/turf/T = get_turf(loc)
 	new /mob/living/bot/remotebot(T)
 	new /obj/item/device/bot_controller(T)
-	user.drop_from_inventory(src)
 	qdel(src)

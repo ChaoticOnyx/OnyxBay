@@ -306,7 +306,7 @@
 	qdel(S)
 	user.put_in_hands(A)
 	to_chat(user, "<span class='notice'>You add the robot arm to the first aid kit.</span>")
-	user.drop_from_inventory(src)
+	user.drop(src)
 	qdel(src)
 
 /obj/item/firstaid_arm_assembly
@@ -357,5 +357,5 @@
 					S.skin = skin
 					S.SetName(created_name)
 					S.update_icons() // apply the skin
-					user.drop_from_inventory(src)
+					user.drop(src)
 					qdel(src)

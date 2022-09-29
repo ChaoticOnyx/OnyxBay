@@ -34,7 +34,7 @@
 	if(hat)
 		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
 
-/mob/living/carbon/alien/diona/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null)
 	. = ..()
 	if(W == hat)
 		hat = null

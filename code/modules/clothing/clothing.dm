@@ -318,9 +318,8 @@ BLIND     // can't see anything
 			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
-	if(istype(W, /obj/item/tape_roll) && wired)
+	if(istype(W, /obj/item/tape_roll) && wired && user.drop(src))
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
-		user.drop_from_inventory(src)
 		new /obj/item/clothing/gloves/stun(loc, src)
 		return
 
@@ -348,8 +347,7 @@ BLIND     // can't see anything
 			to_chat(user, "You are unable to wear \the [src] as \the [R] are in the way.")
 			ring = null
 			return FALSE
-		H.drop_from_inventory(R)	//Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
-		R.forceMove(src)
+		H.drop(R, src, TRUE) // Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
 
 	if(!..())
 		var/obj/item/clothing/ring/R = ring?.resolve()

@@ -170,9 +170,9 @@
 			if( A == src ) continue
 			src.reagents.touch(A)
 
-	if(istype(loc, /mob/living/carbon))		//drop dat grenade if it goes off in your hand
+	if(istype(loc, /mob/living/carbon)) // drop dat grenade if it goes off in your hand
 		var/mob/living/carbon/C = loc
-		C.drop_from_inventory(src)
+		C.drop(src)
 		C.throw_mode_off()
 
 	set_invisibility(INVISIBILITY_MAXIMUM) //Why am i doing this?

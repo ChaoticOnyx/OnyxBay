@@ -166,7 +166,7 @@
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', rand(50, 75), FALSE)
 	if(ammo_magazine)
 		if(allow_dump)
-			user.drop_from_inventory(ammo_magazine)
+			user.drop(ammo_magazine)
 			user.visible_message("[user] ejects [ammo_magazine] from [src].",
 			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
 		else

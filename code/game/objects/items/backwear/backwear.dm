@@ -63,7 +63,7 @@
 
 	if(ismob(gear.loc))
 		var/mob/M = gear.loc
-		M.drop_from_inventory(gear, src)
+		M.drop(gear, src)
 	else
 		gear.forceMove(src)
 	if(user)

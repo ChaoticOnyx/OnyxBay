@@ -153,7 +153,6 @@ var/global/list/stool_cache = list() //haha stool
 			return
 		var/obj/item/stack/C = W
 		if(C.get_amount() < 1) // How??
-			user.drop_from_inventory(C)
 			qdel(C)
 			return
 		var/padding_type //This is awful but it needs to be like this until tiles are given a material var.
@@ -168,8 +167,7 @@ var/global/list/stool_cache = list() //haha stool
 			return
 		C.use(1)
 		if(!istype(src.loc, /turf))
-			user.drop_from_inventory(src)
-			src.dropInto(loc)
+			user.drop(src, loc)
 		to_chat(user, "You add padding to \the [src].")
 		add_padding(padding_type)
 		return

@@ -144,19 +144,19 @@ else if(##equipment_var) {\
 		H = helmet.loc
 		if(istype(H))
 			if(helmet && H.head == helmet)
-				H.drop_from_inventory(helmet)
-				helmet.forceMove(src)
+				H.drop(helmet, src, TRUE)
 
 	if(boots)
 		boots.canremove = 1
 		H = boots.loc
 		if(istype(H))
 			if(boots && H.shoes == boots)
-				H.drop_from_inventory(boots)
-				boots.forceMove(src)
+				H.drop(boots, src, TRUE)
 
 	if(tank)
 		tank.canremove = 1
+		if(istype(H))
+			H.drop(boots, src, TRUE)
 		tank.forceMove(src)
 
 /obj/item/clothing/suit/space/void/verb/toggle_helmet()

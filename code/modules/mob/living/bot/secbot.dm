@@ -348,11 +348,12 @@
 		return
 
 	if(S.secured)
+		if(!user.drop(S))
+			return
 		qdel(S)
 		var/obj/item/secbot_assembly/A = new /obj/item/secbot_assembly
 		user.put_in_hands(A)
 		to_chat(user, "You add the signaler to the helmet.")
-		user.drop_from_inventory(src)
 		qdel(src)
 	else
 		return

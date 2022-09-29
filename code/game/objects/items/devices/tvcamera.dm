@@ -89,11 +89,12 @@
 	if ((!istype(S, /obj/item/device/assembly/infra)))
 		..()
 		return
+	if(!user.drop(S))
+		return
 	var/obj/item/TVAssembly/A = new(user)
 	qdel(S)
 	user.put_in_hands(A)
 	to_chat(user, "<span class='notice'>You add the infrared sensor to the robot head.</span>")
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /* Using camcorder icon as I can't sprite.
