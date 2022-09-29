@@ -165,7 +165,7 @@
 
 				else
 					var/obj/item/I = usr.get_active_hand()
-					if(istype(I, /obj/item/card/id) && user.drop(I, src))
+					if(istype(I, /obj/item/card/id) && usr.drop(I, src))
 						var/obj/item/card/id/C = I
 						held_card = C
 

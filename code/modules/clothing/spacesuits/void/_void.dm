@@ -179,16 +179,15 @@ else if(##equipment_var) {\
 
 	if(H.head == helmet)
 		to_chat(H, "<span class='notice'>You retract your suit helmet.</span>")
-		helmet.canremove = 1
-		H.drop_from_inventory(helmet)
-		helmet.forceMove(src)
+		helmet.canremove = TRUE
+		H.drop(helmet, src)
 	else
 		if(H.head)
 			to_chat(H, "<span class='danger'>You cannot deploy your helmet while wearing \the [H.head].</span>")
 			return
 		if(H.equip_to_slot_if_possible(helmet, slot_head))
 			helmet.pickup(H)
-			helmet.canremove = 0
+			helmet.canremove = FALSE
 			to_chat(H, "<span class='info'>You deploy your suit helmet, sealing you off from the world.</span>")
 	helmet.update_light(H)
 
@@ -211,8 +210,8 @@ else if(##equipment_var) {\
 	if(H.wear_suit != src) return
 
 	to_chat(H, "<span class='info'>You press the emergency release, ejecting \the [tank] from your suit.</span>")
-	tank.canremove = 1
-	H.drop_from_inventory(tank)
+	tank.canremove = TRUE
+	H.drop(tank)
 	src.tank = null
 
 /obj/item/clothing/suit/space/void/attackby(obj/item/W as obj, mob/user as mob)

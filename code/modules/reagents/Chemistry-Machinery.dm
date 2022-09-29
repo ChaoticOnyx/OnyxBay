@@ -465,10 +465,10 @@
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 
-	user.remove_from_mob(O)
-	O.loc = src
+	if(!user.drop(O, src))
+		return
 	holdingitems += O
-	src.updateUsrDialog()
+	updateUsrDialog()
 	return 0
 
 /obj/machinery/reagentgrinder/attack_ai(mob/user as mob)

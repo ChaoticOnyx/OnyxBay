@@ -314,24 +314,27 @@
 /obj/item/farmbot_arm_assembly/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if((istype(W, /obj/item/device/analyzer/plant_analyzer)) && (build_step == 0))
+		if(!user.drop(W))
+			return
 		build_step++
 		to_chat(user, "You add the plant analyzer to [src].")
 		SetName("farmbot assembly")
-		user.remove_from_mob(W)
 		qdel(W)
 
 	else if((istype(W, /obj/item/reagent_containers/vessel/bucket)) && (build_step == 1))
+		if(!user.drop(W))
+			return
 		build_step++
 		to_chat(user, "You add a bucket to [src].")
 		SetName("farmbot assembly with bucket")
-		user.remove_from_mob(W)
 		qdel(W)
 
 	else if((istype(W, /obj/item/material/minihoe)) && (build_step == 2))
+		if(!user.drop(W))
+			return
 		build_step++
 		to_chat(user, "You add a minihoe to [src].")
 		SetName("farmbot assembly with bucket and minihoe")
-		user.remove_from_mob(W)
 		qdel(W)
 
 	else if((isprox(W)) && (build_step == 3))
@@ -339,7 +342,6 @@
 		to_chat(user, "You complete the Farmbot! Beep boop.")
 		var/mob/living/bot/farmbot/S = new /mob/living/bot/farmbot(get_turf(src), tank)
 		S.SetName(created_name)
-		user.remove_from_mob(W)
 		qdel(W)
 		qdel(src)
 

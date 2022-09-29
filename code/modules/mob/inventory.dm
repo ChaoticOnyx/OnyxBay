@@ -209,7 +209,7 @@ var/list/slot_equipment_priority = list( \
 	return hand ? drop_l_hand(Target, force) : drop_r_hand(Target, force)
 
 // Drops the item in our inactive hand.
-/mob/proc/drop_item_inactive_hand(atom/Target, force = 0)
+/mob/proc/drop_inactive_hand(atom/Target, force = 0)
 	return hand ? drop_r_hand(Target, force) : drop_l_hand(Target, force)
 
 /*

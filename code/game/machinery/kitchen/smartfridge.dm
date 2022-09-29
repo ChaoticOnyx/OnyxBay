@@ -219,7 +219,7 @@
 		return
 
 	if(accept_check(O))
-		if(!user.remove_from_mob(O))
+		if(!user.drop(O))
 			return
 		stock_item(O)
 		user.visible_message("<span class='notice'>\The [user] has added \the [O] to \the [src].</span>", "<span class='notice'>You add \the [O] to \the [src].</span>")

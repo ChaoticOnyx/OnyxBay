@@ -398,7 +398,7 @@
 		if(piece.loc != src && !(wearer && piece.loc == wearer))
 			M = piece.loc
 			if(istype(M))
-				M.drop_from_inventory(piece, src, TRUE)
+				M.drop(piece, src, TRUE)
 			else
 				piece.forceMove(src)
 

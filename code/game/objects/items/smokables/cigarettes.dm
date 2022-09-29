@@ -50,7 +50,6 @@
 					if(length(A.contents) < A.max_butts)
 						A.attackby(butt, M)
 						break
-			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
 
 /obj/item/clothing/mask/smokable/cigarette/get_temperature_as_from_ignitor()
@@ -207,7 +206,7 @@
 				SetTransform(rotation = round(rand(0, 360), 45))
 				pixel_x = rand(-10, 10)
 				pixel_y = rand(-10, 10)
-				user.remove_from_mob(src) // un-equip it so the overlays can update
+				user.drop(src) // un-equip it so the overlays can update
 		else
 			die(nomessage = TRUE, nodestroy = FALSE)
 	return ..()

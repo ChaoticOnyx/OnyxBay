@@ -139,9 +139,7 @@
 	if(istype(I, /obj/item/reagent_containers/ecig_cartridge))
 		if (ec_cartridge)//can't add second one
 			to_chat(user, "<span class='notice'>A cartridge has already been installed.</span> ")
-		else//fits in new one
-			user.remove_from_mob(I)
-			I.forceMove(src)//I.loc=src
+		else if(user.drop(I, src)) // fits in new one
 			ec_cartridge = I
 			update_icon()
 			to_chat(user, "<span class='notice'>You insert [I] into [src].</span> ")

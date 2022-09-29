@@ -229,9 +229,9 @@
 	if(damage >= 0.5*max_damage && prob(1) && owner.get_active_hand())
 		to_chat(owner, "<span class='danger'>Your hand won't respond properly, and you drop what you are holding!</span>")
 		if(prob(50))
-			drop_active_hand()
+			owner.drop_active_hand()
 		else
-			drop_inactive_hand()
+			owner.drop_inactive_hand()
 	if(damage >= 0.6*max_damage)
 		owner.slurring = max(owner.slurring, 2)
 	if(is_broken())

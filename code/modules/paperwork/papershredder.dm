@@ -121,7 +121,6 @@
 	FireBurn()
 
 /obj/item/shreddedp/proc/FireBurn()
-	var/mob/living/M = loc
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	qdel(src)
 

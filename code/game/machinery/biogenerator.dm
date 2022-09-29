@@ -81,9 +81,7 @@
 	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, "<span class='notice'>]The [src] is already loaded.</span>")
-		else
-			user.remove_from_mob(O)
-			O.forceMove(src)
+		else if(user.drop(O, src))
 			beaker = O
 			state = BG_READY
 			updateUsrDialog()
@@ -119,9 +117,7 @@
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is full! Activate it.</span>")
-		else
-			user.remove_from_mob(O)
-			O.forceMove(src)
+		else if(user.drop(O, src))
 			to_chat(user, "<span class='notice'>You put \the [O] in \the [src]</span>")
 	update_icon()
 	return

@@ -673,10 +673,8 @@
 		if(C.r_hand && C.r_hand.w_class <= ITEM_SIZE_SMALL)
 			stolen_item = C.r_hand
 
-		if(stolen_item)
-			C.remove_from_mob(stolen_item)
+		if(stolen_item && C.drop(stolen_item, src))
 			held_item = stolen_item
-			stolen_item.loc = src
 			visible_message("[src] grabs the [held_item] out of [C]'s hand!", "<span class='warning'>You snag the [held_item] out of [C]'s hand!</span>", "You hear the sounds of wings flapping furiously.")
 			return held_item
 

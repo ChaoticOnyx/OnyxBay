@@ -115,7 +115,7 @@ Using robohead because of restricting to roboticist */
 				to_chat(user, "<span class='notice'>You add the camera module to [src]</span>")
 				desc = "This TV camera assembly has a camera module."
 				buildstep++
-				qdel(CA)
+				qdel(W)
 		if(1)
 			if(istype(W, /obj/item/device/taperecorder) && user.drop(W))
 				buildstep++

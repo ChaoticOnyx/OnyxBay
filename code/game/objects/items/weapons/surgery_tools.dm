@@ -198,6 +198,7 @@
 /obj/item/circular_saw/plasmasaw/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/material/wirerod) && improved == 0)
 		if(!user.drop(W))
+			return
 		qdel(W)
 		name = "plasma spear"
 		desc = "For The Heaviest-Dutiest cutting in glory of The Emperor and The Imperium."

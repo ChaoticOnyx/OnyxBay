@@ -66,9 +66,8 @@
 			return
 		if(A.proximity_monitor)
 			A.proximity_monitor.SetHost(src, A)
-		user.remove_from_mob(item)
+		user.drop(item, src)
 		attached_device = A
-		A.forceMove(src)
 		to_chat(user, "<span class='notice'>You attach the [item] to the valve controls and secure it.</span>")
 		A.holder = src
 		A.toggle_secure()	//this calls update_icon(), which calls update_icon() on the holder (i.e. the bomb).

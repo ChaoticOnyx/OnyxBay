@@ -60,8 +60,7 @@
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			broken = FALSE
 			safety_pin = W
-			user.remove_from_mob(W)
-			W.forceMove(src)
+			user.drop(W, src)
 			update_icon()
 	if(istype(W,/obj/item/device/assembly_holder) && stage != STAGE_READY)
 		var/obj/item/device/assembly_holder/det = W
@@ -73,8 +72,7 @@
 			return
 		to_chat(user, SPAN("notice", "You add [W] to the metal casing."))
 		playsound(loc, 'sound/items/Screwdriver2.ogg', 25, -3)
-		user.remove_from_mob(det)
-		det.loc = src
+		user.drop(det, src)
 		detonator = det
 		if(istimer(detonator.a_left))
 			var/obj/item/device/assembly/timer/T = detonator.a_left

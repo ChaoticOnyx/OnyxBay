@@ -52,8 +52,8 @@
 	if(tank)
 		qdel(tank)
 	if(breather)
-		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
+		breather.drop(contained)
+		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
 	qdel(contained)
 	contained = null
 	breather = null
@@ -197,12 +197,11 @@
 		if(!can_apply_to_target(breather))
 			if(tank)
 				tank.forceMove(src)
-			if (breather.wear_mask==contained)
-				breather.remove_from_mob(contained)
-				contained.forceMove(src)
+			if(breather.wear_mask == contained)
+				breather.drop(contained, src)
 			else
 				qdel(contained)
-				contained=new mask_type (src)
+				contained = new mask_type(src)
 			src.visible_message("<span class='notice'>\The [contained] slips to \the [src]!</span>")
 			breather = null
 			update_icon()

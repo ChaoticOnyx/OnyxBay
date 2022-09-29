@@ -106,7 +106,7 @@
 				inserted = 1
 				break
 
-		if((!inserted || !S.amount) && user.drop(S, src))
+		if((!inserted || !S.amount) && usr.drop(S, src))
 			if(!S.amount)
 				qdel(S)
 			usr.update_icons()	//update our overlays
@@ -184,8 +184,7 @@
 			to_chat(user, SPAN("warning", "[src] already has a tape."))
 			return
 
-		user.remove_from_mob(C)
-		C.loc = src
+		user.drop(C, src)
 		music_tape = C
 		user.visible_message("[user] inserts \a [C] into [src].", SPAN("notice", "You insert \a [C] into [src]."))
 	else
