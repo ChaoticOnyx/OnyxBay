@@ -214,7 +214,7 @@
 			power_change()
 		return
 	else if(istype(W, /obj/item/material/coin) && !coin && cartridge.premium.len > 0)
-		if(!user.drop(W, src)
+		if(!user.drop(W, src))
 			return
 		coin = W
 		categories |= CAT_COIN

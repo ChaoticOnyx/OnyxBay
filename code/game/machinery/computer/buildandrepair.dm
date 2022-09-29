@@ -42,7 +42,7 @@
 			if(istype(P, /obj/item/circuitboard) && !circuit)
 				var/obj/item/circuitboard/B = P
 				if(B.board_type == "computer")
-					if(!user.drop(P, src)
+					if(!user.drop(P, src))
 						return
 					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 					to_chat(user, "<span class='notice'>You place the circuit board inside the frame.</span>")

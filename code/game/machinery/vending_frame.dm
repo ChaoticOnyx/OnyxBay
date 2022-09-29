@@ -102,7 +102,7 @@
 	update_icon()
 
 /obj/machinery/vending_frame/proc/add_cartridge(obj/item/vending_cartridge/C, mob/user)
-	if(!user.drop(C, src)
+	if(!user.drop(C, src))
 		return
 	cartridge = C
 	playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)

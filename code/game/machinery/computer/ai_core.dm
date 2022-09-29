@@ -57,7 +57,7 @@
 					anchored = FALSE
 					state = AI_STAGE_FRAME
 			if(istype(P, /obj/item/circuitboard/aicore) && !circuit)
-				if(!user.drop(P, src)
+				if(!user.drop(P, src))
 					return
 				playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 				to_chat(user, SPAN("notice", "You place the circuit board inside the frame."))
@@ -159,7 +159,7 @@
 					to_chat(user, SPAN("warning", "This [P] does not seem to fit."))
 					return
 
-				if(!user.drop(P, src)
+				if(!user.drop(P, src))
 					return
 
 				if(B.mind)

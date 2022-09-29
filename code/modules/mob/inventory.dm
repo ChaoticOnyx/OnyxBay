@@ -156,7 +156,7 @@ var/list/slot_equipment_priority = list( \
 // Replaces 'old_item' w/ 'new_item', putting it in the same slot.
 // May optionally qdel 'old_item'.
 // Drops 'new_item' to wherever it wants if can't equip it in the given slot, use carefully.
-/mob/proc/replace_item(obj/item/old_item, /obj/item/new_item, delete_old = FALSE, force = FALSE)
+/mob/proc/replace_item(obj/item/old_item, obj/item/new_item, delete_old = FALSE, force = FALSE)
 	if(!old_item || !new_item)
 		return FALSE
 	var/slot = get_inventory_slot(old_item)
@@ -175,23 +175,23 @@ var/list/slot_equipment_priority = list( \
 		return FALSE
 
 	if(I.loc != src)
-		crash_with("Called [src]'s ([type]) proc/drop(I = [I], target = [target], force = [force]) while the item isn't located inside the mob.") // This may save us someday.
+		util_crash_with("Called [src]'s ([type]) proc/drop(I = [I], target = [target], force = [force]) while the item isn't located inside the mob.") // This may save us someday.
 		return FALSE
 
 	if(!(force || can_unequip(I)))
 		return FALSE
 
-	__unequip(O)
-	client?.screen -= O
-	O.reset_plane_and_layer()
-	O.screen_loc = null
+	__unequip(I)
+	client?.screen -= I
+	I.reset_plane_and_layer()
+	I.screen_loc = null
 	if(target)
 		I.forceMove(target)
 	else
 		I.dropInto(loc)
 	I.dropped(src)
 
-	if(!W?.loc)
+	if(!I?.loc)
 		return FALSE // self destroying objects (tk, grabs)
 	update_icons()
 	return TRUE

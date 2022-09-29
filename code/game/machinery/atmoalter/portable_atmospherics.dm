@@ -156,7 +156,7 @@
 		if(cell)
 			to_chat(user, "There is already a power cell installed.")
 			return
-		if(!user.drop(I, src)
+		if(!user.drop(I, src))
 			return
 		var/obj/item/cell/C = I
 		C.add_fingerprint(user)

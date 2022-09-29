@@ -103,7 +103,7 @@
 
 /obj/machinery/pipedispenser/attackby(obj/item/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/pipe) || istype(W, /obj/item/pipe_meter))
-		if(!user.drop(W)
+		if(!user.drop(W))
 			return
 		to_chat(usr, "<span class='notice'>You put \the [W] back into \the [src].</span>")
 		add_fingerprint(usr)
