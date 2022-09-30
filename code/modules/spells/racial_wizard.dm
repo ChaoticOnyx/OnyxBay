@@ -30,7 +30,7 @@
 		if(istype(S,reward))
 			to_chat(user, "\The [src] can do no more for you.")
 			return
-	user.drop_from_inventory(src)
+	user.drop(src)
 	var/a = new reward()
 	if(ispath(reward, /datum/spell))
 		H.add_spell(a)

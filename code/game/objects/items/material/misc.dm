@@ -43,7 +43,6 @@
 	mod_handy = 1.25
 	attack_verb = list("stabbed", "chopped", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'
-	applies_material_colour = 1
 
 /obj/item/material/hatchet/machete
 	name = "machete"

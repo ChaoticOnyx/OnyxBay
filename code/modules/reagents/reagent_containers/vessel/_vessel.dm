@@ -267,7 +267,7 @@
 /obj/item/reagent_containers/vessel/proc/smash(newloc, atom/against = null)
 	if(ismob(loc))
 		var/mob/M = loc
-		M.drop_from_inventory(src)
+		M.drop(src, force = TRUE)
 
 	//Creates a shattering noise and replaces the vessel with a broken_bottle
 	var/obj/item/broken_bottle/B = new /obj/item/broken_bottle(newloc)

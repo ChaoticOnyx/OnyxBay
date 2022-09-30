@@ -133,7 +133,6 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
 				new_species = CHICKEN_RAINBOW
 			change_species(new_species)
-		user.drop_item()
 		qdel(G)
 		eggsleft = min((eggsleft + rand(1, 3)), MAX_EGGS_PER_CHICKEN)
 
@@ -147,7 +146,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			visible_message("<b>[name]</b> [pick("lays an egg", "squats down and croons", "begins making a huge racket", "begins clucking raucously")].")
 			eggsleft--
 			egg_chance = 0
-			var/egg_type = pickweight(species.egg_type)
+			var/egg_type = util_pick_weight(species.egg_type)
 			var/obj/egg = new egg_type(get_turf(src))
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
@@ -359,7 +358,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			return
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 #undef CHICKEN_WHITE

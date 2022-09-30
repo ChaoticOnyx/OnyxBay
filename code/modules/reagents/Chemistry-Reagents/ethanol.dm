@@ -541,7 +541,7 @@
 	color = "#997650"
 	strength = 12
 
-	glass_required = "vodkaglass"
+	glass_required = "vodka"
 	glass_icon_state = "b52"
 	glass_name = "B-52"
 	glass_desc = "Kahlua, Irish cream, and congac. You will get bombed."
@@ -1029,7 +1029,7 @@
 	color = "#4c3100"
 	strength = 15
 
-	glass_required = "vodkaglass"
+	glass_required = "vodka"
 	glass_icon_state = "irishcoffee"
 	glass_name = "Irish coffee"
 	glass_desc = "Coffee and alcohol. More fun than a Mimosa to drink in the morning."
@@ -1414,7 +1414,7 @@
 	color = "#00a86b"
 	strength = 100
 
-	glass_required = "dpint"
+	glass_required = "hurricane"
 	glass_icon_state = "suidream"
 	glass_name = "Sui Dream"
 	glass_desc = "A froofy, fruity, and sweet mixed drink. Understanding the name only brings shame."

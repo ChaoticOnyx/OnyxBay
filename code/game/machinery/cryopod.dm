@@ -381,9 +381,7 @@
 	despawning_now = TRUE
 	//Drop all items into the pod.
 	for(var/obj/item/I in occupant)
-		occupant.drop_from_inventory(I)
-		I.forceMove(src)
-
+		occupant.drop(I, src)
 		if(I.contents.len) //Make sure we catch anything not handled by qdel() on the items.
 			for(var/obj/item/O in I.contents)
 				if(istype(O, /obj/item/storage/internal)) //Stop eating pockets, you fuck!

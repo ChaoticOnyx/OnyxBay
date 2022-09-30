@@ -145,20 +145,19 @@
 			B.loc = get_turf(src)
 			to_chat(user, "<span class='notice'>You armed the robot frame.</span>")
 			if (user.get_inactive_hand()==src)
-				user.remove_from_mob(src)
+				user.drop(src)
 				user.put_in_inactive_hand(B)
 			qdel(src)
 		else
 			to_chat(user, "<span class='warning'>You need one sheet of metal to arm the robot frame.</span>")
 
-	if (istype(W, /obj/item/robot_parts))
+	if(istype(W, /obj/item/robot_parts))
 		var/obj/item/robot_parts/part = W
-		if(src.parts[part.bp_tag])	return
-		if(part.can_install(user))
-			user.drop_item()
-			part.loc = src
-			src.parts[part.bp_tag] = part
-			src.update_icon()
+		if(parts[part.bp_tag])
+			return
+		if(part.can_install(user) && user.drop(part, src))
+			parts[part.bp_tag] = part
+			update_icon()
 
 	if(istype(W, /obj/item/device/mmi) || istype(W, /obj/item/organ/internal/posibrain))
 		var/mob/living/carbon/brain/B
@@ -195,10 +194,11 @@
 				return
 
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(loc), unfinished = 1)
-			if(!O)	return
+			if(!O)
+				return
 
-			user.drop_item()
-
+			if(!user.drop(W))
+				return
 			O.mmi = W
 			O.set_invisibility(0)
 			O.custom_name = created_name
@@ -206,7 +206,7 @@
 
 			B.mind.transfer_to(O)
 
-			if(O.mind && O.mind.special_role)
+			if(O.mind?.special_role)
 				O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 
 			O.job = "Cyborg"
@@ -214,7 +214,7 @@
 			var/obj/item/robot_parts/chest/chest = parts[BP_CHEST]
 			O.cell = chest.cell
 			O.cell.loc = O
-			W.loc = O//Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
+			W.forceMove(O) // Should fix cybros run time erroring when blown up. It got deleted before, along with the frame.
 
 			// Since we "magically" installed a cell, we also have to update the correct component.
 			if(O.cell)
@@ -241,17 +241,15 @@
 
 	return
 
-/obj/item/robot_parts/chest/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/robot_parts/chest/attackby(obj/item/W, mob/user)
 	..()
 	if(istype(W, /obj/item/cell))
-		if(src.cell)
+		if(cell)
 			to_chat(user, "<span class='warning'>You have already inserted a cell!</span>")
 			return
-		else
-			user.drop_item()
-			W.loc = src
-			src.cell = W
-			to_chat(user, "<span class='notice'>You insert the cell!</span>")
+		else if(user.drop(W, src))
+			cell = W
+			to_chat(user, "<span class='notice'>You insert \the [W]!</span>")
 	if(isCoil(W))
 		if(src.wires)
 			to_chat(user, "<span class='warning'>You have already inserted wire!</span>")
@@ -338,27 +336,28 @@
 		else
 			add_flashes(W,user)
 	else if(istype(W, /obj/item/stock_parts/manipulator))
+		if(!user.drop(W))
+			return
 		to_chat(user, "<span class='notice'>You install some manipulators and modify the head, creating a functional spider-bot!</span>")
 		new /mob/living/simple_animal/spiderbot(get_turf(loc))
-		user.drop_item()
 		qdel(W)
 		qdel(src)
 		return
 	return
 
 /obj/item/robot_parts/head/proc/add_flashes(obj/item/W as obj, mob/user as mob) //Made into a seperate proc to avoid copypasta
-	if(src.flash1 && src.flash2)
+	if(flash1 && flash2)
 		to_chat(user, "<span class='notice'>You have already inserted the eyes!</span>")
 		return
-	else if(src.flash1)
-		user.drop_item()
-		W.loc = src
-		src.flash2 = W
+
+	if(!user.drop(W, src))
+		return
+
+	if(flash1)
+		flash2 = W
 		to_chat(user, "<span class='notice'>You insert the flash into the eye socket!</span>")
 	else
-		user.drop_item()
-		W.loc = src
-		src.flash1 = W
+		flash1 = W
 		to_chat(user, "<span class='notice'>You insert the flash into the eye socket!</span>")
 
 

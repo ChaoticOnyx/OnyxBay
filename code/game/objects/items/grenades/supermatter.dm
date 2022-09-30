@@ -22,7 +22,7 @@
 	if(!isturf(loc))
 		if(ismob(loc))
 			var/mob/M = loc
-			M.drop_from_inventory(src)
+			M.drop(src)
 		forceMove(get_turf(src))
 	playsound(src, 'sound/effects/supermatter.ogg', 100)
 	supermatter_pull(src, world.view, STAGE_THREE)
@@ -30,5 +30,5 @@
 		explosion(loc, 0, 1, 3, 4)
 		qdel(src)
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)

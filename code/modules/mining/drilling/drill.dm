@@ -156,9 +156,7 @@
 	if(istype(O, /obj/item/cell))
 		if(cell)
 			to_chat(user, "The drill already has a cell installed.")
-		else
-			user.drop_item()
-			O.loc = src
+		else if(user.drop(O, src))
 			cell = O
 			component_parts += O
 			to_chat(user, "You install \the [O].")

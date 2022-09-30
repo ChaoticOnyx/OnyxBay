@@ -87,7 +87,7 @@
 	var/list/equipment = new
 	var/obj/item/mecha_parts/mecha_equipment/selected
 	var/max_equip = 3
-	var/datum/events/events
+	var/datum/legacy_events/events
 
 /obj/mecha/drain_power(drain_check)
 
@@ -137,7 +137,7 @@
 	if(equip.need_colorize)
 		var/icon/padding = icon("icons/mecha/mecha_overlay.dmi", "[icon_name]_padding")
 		padding.Blend(base_color, ICON_MULTIPLY)
-		overlays += padding	
+		overlays += padding
 
 /obj/mecha/Destroy()
 	src.go_out()
@@ -765,8 +765,7 @@
 		var/obj/item/mecha_parts/mecha_equipment/E = W
 
 		spawn()
-			if(E.can_attach(src))
-				user.drop_item()
+			if(E.can_attach(src) && user.drop(E))
 				E.attach(src)
 				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
 				update_icon()
@@ -843,9 +842,9 @@
 	else if(istype(W, /obj/item/cell))
 		if(state==4)
 			if(!src.cell)
+				if(!user.drop(W, src))
+					return
 				to_chat(user, "You install the powercell")
-				user.drop_item()
-				W.forceMove(src)
 				src.cell = W
 				src.log_message("Powercell installed")
 			else
@@ -870,9 +869,8 @@
 		return
 
 	else if(istype(W, /obj/item/mecha_parts/mecha_tracking))
-		user.drop_from_inventory(W)
-		W.forceMove(src)
-		user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
+		if(user.drop(W, src))
+			user.visible_message("[user] attaches [W] to [src].", "You attach [W] to [src]")
 		return
 
 	else
@@ -1203,12 +1201,11 @@
 	if(!brainmob)
 		return FALSE
 
-	user.drop_from_inventory(I)
+	user.drop(I, src)
 	brainmob.reset_view(src)
 	occupant = brainmob
 	brainmob.loc = src // should allow relaymove
 	//brainmob.canmove = TRUE
-	I.loc = src
 	//mmi_as_oc.mecha = src
 	verbs -= /obj/mecha/verb/eject
 	Entered(I)

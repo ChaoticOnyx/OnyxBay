@@ -42,10 +42,10 @@
 		to_chat(user, SPAN("notice", "\The [src] is already loaded."))
 		return
 
-	dish = O
-	user.drop_item()
-	O.forceMove(src)
+	if(!user.drop(O, src))
+		return
 
+	dish = O
 	user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 
 /obj/machinery/disease2/diseaseanalyser/Process()

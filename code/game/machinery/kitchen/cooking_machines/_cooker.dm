@@ -115,7 +115,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!istype(I, /obj/item/grab) && !user.drop_from_inventory(I))
+	if(!istype(I, /obj/item/grab) && !user.drop(I))
 		return
 
 	if(inserted_mob)

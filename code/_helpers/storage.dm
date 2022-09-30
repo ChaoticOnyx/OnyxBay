@@ -36,7 +36,7 @@
 
 /datum/atom_creator/weighted
 	var/list/paths
-	var/selection_method = /proc/pickweight
+	var/selection_method = /proc/util_pick_weight
 
 /datum/atom_creator/weighted/New(list/paths)
 	if(args.len != 1)

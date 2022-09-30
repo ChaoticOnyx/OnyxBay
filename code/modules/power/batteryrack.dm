@@ -163,7 +163,7 @@
 
 	if(internal_cells.len >= max_cells)
 		return 0
-	if(user && !user.drop_from_inventory(C))
+	if(user && !user.drop(C))
 		return 0
 	internal_cells.Add(C)
 	C.forceMove(src)

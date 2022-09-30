@@ -38,6 +38,7 @@ var/list/flooring_types
 	var/descriptor = "tiles"
 	var/flags
 	var/can_paint
+	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
 /decl/flooring/proc/on_remove()
 	return
@@ -68,6 +69,7 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/carpet
 	damage_temperature = 200 CELSIUS
 	flags = TURF_HAS_EDGES | TURF_HAS_CORNERS | TURF_REMOVE_CROWBAR | TURF_CAN_BURN
+	footstep_sound = SFX_FOOTSTEP_CARPET
 
 /decl/flooring/carpet/blue
 	name = "blue carpet"
@@ -127,6 +129,7 @@ var/list/flooring_types
 	can_paint = TRUE
 	build_type = /obj/item/stack/tile/linoleum
 	flags = TURF_REMOVE_SCREWDRIVER
+	footstep_sound = SFX_FOOTSTEP_TILES
 
 /decl/flooring/tiling
 	name = "floor"
@@ -138,6 +141,7 @@ var/list/flooring_types
 	flags = TURF_REMOVE_CROWBAR | TURF_CAN_BREAK | TURF_CAN_BURN
 	build_type = /obj/item/stack/tile/floor
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_TILES
 
 /decl/flooring/tiling/rough
 	icon_base = "steel_rough"
@@ -151,6 +155,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
+	build_type = /obj/item/stack/tile/floor_mono
 
 /decl/flooring/tiling/white
 	desc = "How sterile."
@@ -159,6 +164,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/white/mono
 	icon_base = "white_mono"
+	build_type = /obj/item/stack/tile/floor_mono_white
 
 /decl/flooring/tiling/white/rough
 	icon_base = "white_rough"
@@ -171,6 +177,7 @@ var/list/flooring_types
 
 /decl/flooring/tiling/dark/mono
 	icon_base = "dark_mono"
+	build_type = /obj/item/stack/tile/floor_mono_dark
 
 /decl/flooring/tiling/dark/rough
 	icon_base = "dark_rough"
@@ -216,6 +223,7 @@ var/list/flooring_types
 	build_type = /obj/item/stack/tile/darkwood
 	flags = TURF_CAN_BREAK | TURF_IS_FRAGILE | TURF_REMOVE_SCREWDRIVER
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_WOOD
 
 /decl/flooring/wood
 	name = "wooden floor"
@@ -269,6 +277,7 @@ var/list/flooring_types
 	apply_thermal_conductivity = 0.025
 	apply_heat_capacity = 325000
 	can_paint = TRUE
+	footstep_sound = SFX_FOOTSTEP_PLATING
 
 /decl/flooring/reinforced/circuit
 	name = "processing strata"
