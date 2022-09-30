@@ -58,10 +58,10 @@
 		if(rigged)
 			if(istype(W.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
 				var/obj/item/gripper/G = W.loc
-				if(!W.wrapped)
+				if(!G.wrapped)
 					return
-				W.wrapped.forceMove(src)
-				W.wrapped = null
+				G.wrapped.forceMove(src)
+				G.wrapped = null
 			else if(!user.drop(W, src))
 				return
 			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
