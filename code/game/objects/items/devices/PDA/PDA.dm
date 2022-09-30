@@ -1175,8 +1175,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		to_chat(usr, SPAN("notice", "You cannot do this."))
 		return
 
-	var/turf/T = get_turf(src)
-	O.forceMove(get_turf(src))
+	cartridge.forceMove(get_turf(src))
 	if(ismob(loc))
 		var/mob/M = loc
 		M.put_in_hands(cartridge)
