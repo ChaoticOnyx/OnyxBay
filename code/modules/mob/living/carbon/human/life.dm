@@ -195,7 +195,10 @@
 	..()
 	if(stat != DEAD)
 		if((disabilities & COUGHING) && prob(5) && paralysis <= 1)
-			drop_item()
+			if(prob(50))
+				drop_active_hand()
+			else
+				drop_inactive_hand()
 			spawn(0)
 				emote("cough")
 

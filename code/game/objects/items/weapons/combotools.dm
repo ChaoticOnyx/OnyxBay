@@ -139,9 +139,8 @@
 	if(istype(I, /obj/item/screwdriver/advpart))
 		var/obj/item/screwdriver/advpart/SD = I
 		if(!screwdriver)
-			src.contents += SD
-			user.remove_from_mob(SD)
-			SD.loc = src
+			contents += SD
+			user.drop(SD, src)
 			screwdriver = SD
 			to_chat(user, "<span class=notice>You insert \the [SD] into \the [src].</span>")
 			update_icon()
@@ -150,9 +149,8 @@
 	else if(istype(I, /obj/item/wirecutters/advpart))
 		var/obj/item/screwdriver/advpart/WC = I
 		if(!wirecutters)
-			src.contents += WC
-			user.remove_from_mob(WC)
-			WC.loc = src
+			contents += WC
+			user.drop(WC, src)
 			wirecutters = WC
 			to_chat(user, "<span class=notice>You insert \the [WC] into \the [src].</span>")
 			update_icon()

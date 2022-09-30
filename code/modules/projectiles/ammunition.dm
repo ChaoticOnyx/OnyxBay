@@ -143,8 +143,8 @@
 		if(stored_ammo.len >= max_ammo)
 			to_chat(user, "<span class='warning'>[src] is full!</span>")
 			return
-		user.remove_from_mob(C)
-		C.forceMove(src)
+		if(!user.drop(C, src))
+			return
 		stored_ammo.Add(C)
 
 		playsound(user, "bullet_insert", rand(45, 60), FALSE)

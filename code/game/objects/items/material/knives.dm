@@ -160,7 +160,6 @@
 			unbreakable = 1
 			to_chat(user, "<span class='notice'>You insert [src] into [W].</span>")
 			overlays += image("icon" = 'icons/obj/weapons.dmi', "icon_state" = "[W.icon_state]")
-			user.drop_from_inventory(W)
 			qdel(W)
 			return
 		if(isCoil(W))

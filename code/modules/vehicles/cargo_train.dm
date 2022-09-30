@@ -90,9 +90,7 @@
 
 /obj/vehicle/train/cargo/engine/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/key/cargo_train))
-		if(!key)
-			user.drop_item()
-			W.forceMove(src)
+		if(!key && user.drop(W, src))
 			key = W
 			verbs += /obj/vehicle/train/cargo/engine/verb/remove_key
 		return

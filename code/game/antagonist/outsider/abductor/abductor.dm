@@ -4,8 +4,8 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 
 /datum/antagonist/abductor
 	id = MODE_ABDUCTOR
-	role_text = "\improper Abductor"
-	role_text_plural = "\improper Abductors"
+	role_text = "Abductor"
+	role_text_plural = "Abductors"
 	landmark_id = "Abductor"
 	leader_welcome_text = "You are the leader of the Syndicate Operatives; hail to the chief. Use :t to speak to your underlings."
 	welcome_text = "To speak on the strike team's private channel use :t."
@@ -24,7 +24,7 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 
 /datum/antagonist/abductor/agent
 	id = "Abductor Agent"
-	role_text = "\improper Abductor Agent"
+	role_text = "Abductor Agent"
 	agent = TRUE
 	landmark_id = "abductor_agent"
 	outfit = /decl/hierarchy/outfit/abductor/agent
@@ -32,7 +32,7 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 
 /datum/antagonist/abductor/scientist
 	id = "Abductor Scientist"
-	role_text = "\improper Abductor Scientist"
+	role_text = "Abductor Scientist"
 	scientist = TRUE
 	landmark_id = "abductor"
 	outfit = /decl/hierarchy/outfit/abductor/scientist
@@ -40,7 +40,7 @@ GLOBAL_DATUM_INIT(abductor, /datum/antagonist/abductor, new)
 
 /datum/antagonist/abductor/scientist/onemanteam
 	id = "Abductor Solo"
-	role_text = "\improper Abductor Solo"
+	role_text = "Abductor Solo"
 	agent = TRUE
 	scientist = TRUE
 	outfit = /decl/hierarchy/outfit/abductor/scientist/onemanteam

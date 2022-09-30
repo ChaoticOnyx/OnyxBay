@@ -15,9 +15,8 @@
 	var/list/stored_ore = list()
 
 /obj/structure/ore_box/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/ore))
-		user.remove_from_mob(W)
-		src.contents += W
+	if(istype(W, /obj/item/ore))
+		user.drop(W, src)
 	if (istype(W, /obj/item/storage))
 		var/obj/item/storage/S = W
 		S.hide_from(usr)

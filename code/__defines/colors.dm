@@ -92,3 +92,6 @@
 #define	PIPE_COLOR_ORANGE      "#b95a00"
 
 #define COLOR_BLOOD_HUMAN "#a10808"
+#define COLOR_BLOOD_UNATHI "#f24b2e"
+#define COLOR_BLOOD_TAJARAN "#862a51"
+#define COLOR_BLOOD_SKRELL "#1d2cbf"

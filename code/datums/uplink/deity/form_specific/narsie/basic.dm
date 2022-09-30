@@ -16,9 +16,9 @@
 
 /datum/uplink_item/deity/boon/ability_dark/blood_shard
 	name = "Bloodshard"
-	desc = "Lets a follower cause a target's blood to literally explode out of their skin into dangerous projectiles."
+	desc = "Lets a caster blood to literally explode out of their skin into dangerous projectiles."
 	item_cost = 40
-	path = /datum/spell/hand/charges/blood_shard
+	path = /datum/spell/blood_shard
 
 /datum/uplink_item/deity/boon/ability_dark/drain_blood
 	name = "Drain Blood"

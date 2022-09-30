@@ -37,10 +37,8 @@
 
 /obj/item/anodevice/attackby(obj/I, mob/user)
 	if(istype(I, /obj/item/anobattery))
-		if(!inserted_battery)
+		if(!inserted_battery && user.drop(I, src))
 			to_chat(user, "<span class='notice'>You insert the battery.</span>")
-			user.drop_item()
-			I.loc = src
 			inserted_battery = I
 			update_icon()
 	else
@@ -138,7 +136,7 @@
 			shutdown_emission()
 		last_process = world.time
 		update_icon()
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/anodevice/proc/shutdown_emission()

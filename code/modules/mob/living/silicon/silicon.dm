@@ -77,7 +77,10 @@
 /mob/living/silicon/proc/show_laws()
 	return
 
-/mob/living/silicon/drop_item(user)
+/mob/living/silicon/can_unequip(obj/item/I)
+	return FALSE // Let's just not
+
+/mob/living/silicon/drop_active_hand(user)
 	if(isrobot(user))
 		var/mob/living/silicon/robot/R = user
 		R.hud_used.update_robot_modules_display()

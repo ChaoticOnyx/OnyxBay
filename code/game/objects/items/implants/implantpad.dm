@@ -50,9 +50,8 @@
 			C.imp = imp
 			imp = null
 		C.update_icon()
-	else if(istype(I, /obj/item/implant))
+	else if(istype(I, /obj/item/implant) && user.drop(I, src))
 		imp = I
-		user.drop_from_inventory(I,src)
 	update_icon()
 
 /obj/item/implantpad/attack_self(mob/user)

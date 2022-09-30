@@ -968,7 +968,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		holder.visible_message(\
 			"\The [holder.handcuffed.name] falls off of [holder.name].",\
 			"\The [holder.handcuffed.name] falls off you.")
-		holder.drop_from_inventory(holder.handcuffed)
+		holder.drop(holder.handcuffed, force = TRUE)
 
 // checks if all wounds on the organ are bandaged
 /obj/item/organ/external/proc/is_bandaged()
@@ -1223,8 +1223,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 	W.add_blood(owner)
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc
-		H.drop_from_inventory(W)
-	W.loc = owner
+		H.drop(W, owner, force = TRUE)
+	else
+		W.forceMove(owner)
 
 /obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
@@ -1235,19 +1236,19 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
-			owner.drop_from_inventory(owner.shoes)
+			owner.drop(owner.shoes, force = TRUE)
 		if(HAND_LEFT)
-			owner.drop_from_inventory(owner.gloves)
-			owner.drop_l_hand()
+			owner.drop(owner.gloves, force = TRUE)
+			owner.drop_l_hand(force = TRUE)
 		if(HAND_RIGHT)
-			owner.drop_from_inventory(owner.gloves)
-			owner.drop_r_hand()
+			owner.drop(owner.gloves, force = TRUE)
+			owner.drop_r_hand(force = TRUE)
 		if(HEAD)
-			owner.drop_from_inventory(owner.glasses)
-			owner.drop_from_inventory(owner.head)
-			owner.drop_from_inventory(owner.l_ear)
-			owner.drop_from_inventory(owner.r_ear)
-			owner.drop_from_inventory(owner.wear_mask)
+			owner.drop(owner.glasses, force = TRUE)
+			owner.drop(owner.head, force = TRUE)
+			owner.drop(owner.l_ear, force = TRUE)
+			owner.drop(owner.r_ear, force = TRUE)
+			owner.drop(owner.wear_mask, force = TRUE)
 
 	var/mob/living/carbon/human/victim = owner
 

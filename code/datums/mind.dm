@@ -437,7 +437,7 @@
 		switch(href_list["common"])
 			if("undress")
 				for(var/obj/item/I in current)
-					current.drop_from_inventory(I)
+					current.drop(I)
 			if("takeuplink")
 				take_uplink()
 				memory = null//Remove any memory they may have had.

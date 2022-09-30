@@ -103,7 +103,7 @@
 	name = "dark floor tile"
 	singular_name = "dark floor tile"
 	icon_state = "fr_tile"
-	matter = list(MATERIAL_PLASTEEL = 937.5)
+	matter = list(MATERIAL_STEEL = 937.5)
 
 /obj/item/stack/tile/floor_dark/fifty
 	amount = 50
@@ -123,6 +123,33 @@
 	matter = list(MATERIAL_PLASTIC = 937.5)
 
 /obj/item/stack/tile/floor_brown/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_mono
+	name = "steel mono tile"
+	singular_name = "steel mono tile"
+	icon_state = "tile_rough"
+	matter = list(MATERIAL_STEEL = 937.5)
+
+/obj/item/stack/tile/floor_mono/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_mono_dark
+	name = "dark mono tile"
+	singular_name = "dark mono tile"
+	icon_state = "fr_tile_rough"
+	matter = list(MATERIAL_STEEL = 937.5)
+
+/obj/item/stack/tile/floor_mono_dark/fifty
+	amount = 50
+
+/obj/item/stack/tile/floor_mono_white
+	name = "white mono tile"
+	singular_name = "white mono tile"
+	icon_state = "tile_white_rough"
+	matter = list(MATERIAL_PLASTIC = 937.5)
+
+/obj/item/stack/tile/floor_mono_white/fifty
 	amount = 50
 
 /obj/item/stack/tile/techfloor

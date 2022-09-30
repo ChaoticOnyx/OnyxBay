@@ -19,24 +19,23 @@
 
 	var/sandwich_limit = 4
 	for(var/obj/item/O in ingredients)
-		if(istype(O,/obj/item/reagent_containers/food/slice/bread))
+		if(istype(O, /obj/item/reagent_containers/food/slice/bread))
 			sandwich_limit += 4
 
-	if(src.contents.len > sandwich_limit)
+	if(contents.len > sandwich_limit)
 		to_chat(user, "<span class='wwarning'>If you put anything else on \the [src] it's going to collapse.</span>")
 		return
-	else if(istype(W,/obj/item/material/shard))
-		to_chat(user, "<span class='warning'>You hide [W] in \the [src].</span>")
-		user.drop_item()
-		W.loc = src
-		update()
+	else if(istype(W, /obj/item/material/shard))
+		if(user.drop(W, src))
+			to_chat(user, "<span class='warning'>You hide [W] in \the [src].</span>")
+			update()
 		return
-	else if(istype(W,/obj/item/reagent_containers/food))
+	else if(istype(W, /obj/item/reagent_containers/food))
+		if(!user.drop(W, src))
+			return
 		to_chat(user, "<span class='warning'>You layer [W] over \the [src].</span>")
 		var/obj/item/reagent_containers/F = W
 		F.reagents.trans_to_obj(src, F.reagents.total_volume)
-		user.drop_item()
-		W.loc = src
 		ingredients += W
 		update()
 		return

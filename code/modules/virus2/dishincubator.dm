@@ -32,35 +32,27 @@
 
 /obj/machinery/disease2/incubator/attackby(obj/O, mob/user)
 	if(istype(O, /obj/item/reagent_containers/vessel/beaker) || istype(O, /obj/item/reagent_containers/vessel/bottle/chemical) || istype(O,/obj/item/reagent_containers/syringe))
-
 		if(beaker)
 			to_chat(user, "\The [src] is already loaded.")
 			return
-
+		if(!user.drop(O, src))
+			return
 		beaker = O
-		user.drop_item()
-		O.loc = src
-
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 		SSnano.update_uis(src)
-
-		src.attack_hand(user)
+		attack_hand(user)
 		return
 
 	if(istype(O, /obj/item/virusdish))
-
 		if(dish)
 			to_chat(user, "The dish tray is aleady full!")
 			return
-
+		if(!user.drop(O, src))
+			return
 		dish = O
-		user.drop_item()
-		O.loc = src
-
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
 		SSnano.update_uis(src)
-
-		src.attack_hand(user)
+		attack_hand(user)
 
 	if(on)
 		to_chat(user, SPAN("notice", "\The [src] is busy. Please wait for completion of previous operation."))

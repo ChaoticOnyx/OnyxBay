@@ -747,7 +747,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 			for(var/chemical in injected_reagents)
 				if(M.reagents.get_reagent_amount(chemical) < inject_am )
 					M.reagents.add_reagent(chemical, inject_am )
-			
+
 			set_next_think(world.time + 1 SECOND)
 
 	src.victim = null
@@ -832,7 +832,7 @@ Congratulations! You are now trained for invasive xenobiology research!"}
 		return
 
 	// Placing stuff on tables
-	if(user.unEquip(W, target = loc))
+	if(user.drop(W, loc))
 		auto_align(W, click_params)
 		return 1
 	return

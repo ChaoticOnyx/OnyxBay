@@ -957,14 +957,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		M.show_message(message, 1)
 
 /obj/item/device/pda/proc/remove_id()
-	if (id)
-		if (ismob(loc))
-			var/mob/M = loc
-			M.put_in_hands(id)
-			to_chat(usr, "<span class='notice'>You remove the ID from the [name].</span>")
-		else
-			id.loc = get_turf(src)
-		id = null
+	if(!id)
+		return
+	id.forceMove(get_turf(src))
+	if(ismob(loc))
+		var/mob/M = loc
+		M.put_in_hands(id)
+	to_chat(usr, SPAN("notice", "You remove the ID from the [name]."))
+	id = null
 
 /obj/item/device/pda/AltClick()
 	if(Adjacent(usr))
@@ -1127,14 +1127,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(issilicon(usr))
 		return
 
-	if ( can_use(usr) )
-		if(id)
-			remove_id()
-		else
-			to_chat(usr, "<span class='notice'>\The [src] does not have an ID in it.</span>")
-	else
+	if(!can_use(usr))
 		to_chat(usr, "<span class='notice'>You cannot do this.</span>")
+		return
 
+	if(id)
+		remove_id()
+	else
+		to_chat(usr, "<span class='notice'>\The [src] does not have an ID in it.</span>")
 
 /obj/item/device/pda/verb/verb_remove_pen()
 	set category = "Object"
@@ -1144,20 +1144,20 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(issilicon(usr))
 		return
 
-	if ( can_use(usr) )
-		var/obj/item/pen/O = locate() in src
-		if(O)
-			if (istype(loc, /mob))
-				var/mob/M = loc
-				if(M.get_active_hand() == null)
-					M.put_in_hands(O)
-					to_chat(usr, "<span class='notice'>You remove \the [O] from \the [src].</span>")
-					return
-			O.loc = get_turf(src)
-		else
-			to_chat(usr, "<span class='notice'>\The [src] does not have a pen in it.</span>")
-	else
+	if(!can_use(usr))
 		to_chat(usr, "<span class='notice'>You cannot do this.</span>")
+		return
+
+	var/obj/item/pen/O = locate() in src
+	if(!O)
+		to_chat(usr, SPAN("notice", "\The [src] does not have a pen in it."))
+		return
+
+	O.forceMove(get_turf(src))
+	if(ismob(loc))
+		var/mob/M = loc
+		M.put_in_hands(O)
+	to_chat(usr, SPAN("notice", "You remove \the [O] from \the [src]."))
 
 /obj/item/device/pda/verb/verb_remove_cartridge()
 	set category = "Object"
@@ -1168,25 +1168,23 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		return
 
 	if(QDELETED(cartridge))
-		to_chat(usr, "<span class='notice'>\The [src] does not have a cartridge in it.</span>")
+		to_chat(usr, SPAN("notice", "\The [src] does not have a cartridge in it."))
 		return
 
-	if (can_use(usr))
-		var/turf/T = get_turf(src)
-		cartridge.loc = T
-		if (ismob(loc))
-			var/mob/M = loc
-			M.put_in_hands(cartridge)
-		else
-			cartridge.loc = get_turf(src)
-		mode = 0
-		scanmode = 0
-		if (cartridge.radio)
-			cartridge.radio.hostpda = null
-		to_chat(usr, "<span class='notice'>You remove \the [cartridge] from the [name].</span>")
-		cartridge = null
-	else
-		to_chat(usr, "<span class='notice'>You cannot do this.</span>")
+	if(!can_use(usr))
+		to_chat(usr, SPAN("notice", "You cannot do this."))
+		return
+
+	cartridge.forceMove(get_turf(src))
+	if(ismob(loc))
+		var/mob/M = loc
+		M.put_in_hands(cartridge)
+	mode = 0
+	scanmode = 0
+	if(cartridge.radio)
+		cartridge.radio.hostpda = null
+	to_chat(usr, SPAN("notice", "You remove \the [cartridge] from the [name]."))
+	cartridge = null
 
 /obj/item/device/pda/proc/id_check(mob/user as mob, choice as num)//To check for IDs; 1 for in-pda use, 2 for out of pda use.
 	if(choice == 1)
@@ -1195,15 +1193,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return 1
 		else
 			var/obj/item/I = user.get_active_hand()
-			if (istype(I, /obj/item/card/id) && user.unEquip(I))
-				I.loc = src
+			if(istype(I, /obj/item/card/id) && user.drop(I, src))
 				id = I
 			return 1
 	else
 		var/obj/item/card/I = user.get_active_hand()
-		if (istype(I, /obj/item/card/id) && I:registered_name && user.unEquip(I))
+		if (istype(I, /obj/item/card/id) && I:registered_name && user.drop(I, src))
 			var/obj/old_id = id
-			I.loc = src
 			id = I
 			user.put_in_hands(old_id)
 			return 1
@@ -1213,9 +1209,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/attackby(obj/item/C as obj, mob/user as mob)
 	..()
 	if(istype(C, /obj/item/cartridge) && !cartridge)
+		if(!user.drop(C, src))
+			return
 		cartridge = C
-		user.drop_item()
-		cartridge.loc = src
 		to_chat(user, "<span class='notice'>You insert [cartridge] into [src].</span>")
 		SSnano.update_uis(src) // update all UIs attached to src
 		if(cartridge.radio)
@@ -1239,8 +1235,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return	//Return in case of failed check or when successful.
 		updateSelfDialog()//For the non-input related code.
 	else if(istype(C, /obj/item/device/paicard) && !src.pai)
-		user.drop_item()
-		C.loc = src
+		if(!user.drop(C, src))
+			return
 		pai = C
 		to_chat(user, "<span class='notice'>You slot \the [C] into [src].</span>")
 		SSnano.update_uis(src) // update all UIs attached to src
@@ -1248,9 +1244,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		var/obj/item/pen/O = locate() in src
 		if(O)
 			to_chat(user, "<span class='notice'>There is already a pen in \the [src].</span>")
-		else
-			user.drop_item()
-			C.loc = src
+		else if(user.drop(C, src))
 			to_chat(user, "<span class='notice'>You slide \the [C] into \the [src].</span>")
 	return
 
@@ -1376,11 +1370,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	QDEL_NULL(src.pai)
 	return ..()
 
-/obj/item/device/pda/clown/Crossed(AM as mob|obj) //Clown PDA is slippery.
+/obj/item/device/pda/clown/Crossed(AM) //Clown PDA is slippery.
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-
-		if(M.slip_on_obj(src, 3, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
+		if(M.slip_on_obj(src, 3) && M.real_name != owner && istype(cartridge, /obj/item/cartridge/clown))
 			if(cartridge.charges < 5)
 				cartridge.charges++
 

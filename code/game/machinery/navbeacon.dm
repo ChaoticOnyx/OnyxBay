@@ -184,7 +184,7 @@ Transponder Codes:<UL>"}
 
 // Box station patrol beacons.
 
-/obj/machinery/navbeacon/box/ROBOTICS
+/obj/machinery/navbeacon/box/robotics
 	location = "ROBOTICS"
 	codes = list("patrol" = 1, "next_patrol" = "CH_EAST2")
 

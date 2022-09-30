@@ -373,7 +373,7 @@
 /obj/machinery/seed_storage/proc/add(obj/item/seeds/O as obj)
 	if (istype(O.loc, /mob))
 		var/mob/user = O.loc
-		user.remove_from_mob(O)
+		user.drop(O)
 	else if(istype(O.loc,/obj/item/storage))
 		var/obj/item/storage/S = O.loc
 		S.remove_from_storage(O, src)

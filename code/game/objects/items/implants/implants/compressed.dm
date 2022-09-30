@@ -82,9 +82,10 @@
 				to_chat(user, "<span class='warning'>The matter compressor safeties prevent you from doing that.</span>")
 			return
 		c.scanned = A
-		if(istype(A.loc,/mob/living/carbon/human))
+		if(istype(A.loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = A.loc
-			H.remove_from_mob(A)
+			if(!H.drop(A))
+				return
 		else if(istype(A.loc,/obj/item/storage))
 			var/obj/item/storage/S = A.loc
 			S.remove_from_storage(A)

@@ -43,9 +43,8 @@
 		user.visible_message("<span class='notice'>[usr] has set \the [src] [m] mode [!O?"off":"on"].</span>", "<span class='notice'>You set \the [src] [m] mode [!O?"off":"on"].</span>")
 		return
 
-	if(istype(W, /obj/item/stack/tile))
+	if(istype(W, /obj/item/stack/tile) && user.drop(T))
 		to_chat(user, "<span class='notice'>\The [W] successfully loaded.</span>")
-		user.drop_item(T)
 		TakeTile(T)
 		return
 

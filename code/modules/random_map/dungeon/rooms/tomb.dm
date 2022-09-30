@@ -19,7 +19,7 @@
 		if(check.density && !T1.density && !T1.contents.len)
 			var/obj/structure/closet/coffin/C1 = new(T1)
 			if(prob(chance_of_corpse))
-				var/type = pickweight(corpses)
+				var/type = util_pick_weight(corpses)
 				var/mob/M
 				if(istext(type))
 					M = new /mob/living/carbon/human()
@@ -35,7 +35,7 @@
 		if(check.density && !T2.density && !T2.contents.len)
 			var/obj/structure/closet/coffin/C2 = new(T2)
 			if(prob(chance_of_corpse))
-				var/type = pickweight(corpses)
+				var/type = util_pick_weight(corpses)
 				var/mob/M
 				if(istext(type))
 					M = new /mob/living/carbon/human()

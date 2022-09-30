@@ -39,8 +39,8 @@
 /obj/item/implant/freedom/proc/remove_cuffs_and_unbuckle(mob/living/carbon/user)
 	if(!user.handcuffed)
 		return 0
-	. = user.unEquip(user.handcuffed)
-	if(. && user.buckled && user.buckled.buckle_require_restraints)
+	. = user.drop(user.handcuffed, force = TRUE)
+	if(. && user.buckled?.buckle_require_restraints)
 		user.buckled.unbuckle_mob()
 	return
 

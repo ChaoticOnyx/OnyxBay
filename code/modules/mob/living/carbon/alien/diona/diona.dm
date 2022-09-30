@@ -34,7 +34,7 @@
 	if(hat)
 		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
 
-/mob/living/carbon/alien/diona/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
+/mob/living/carbon/alien/diona/drop(obj/item/W, atom/Target = null, force = null)
 	. = ..()
 	if(W == hat)
 		hat = null
@@ -80,7 +80,7 @@
 
 /mob/living/carbon/alien/diona/hotkey_drop()
 	if(holding_item)
-		drop_item()
+		drop_active_hand()
 	else
 		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
 
@@ -124,7 +124,7 @@
 		return
 
 	if(holding_item)
-		drop_item()
+		drop_active_hand()
 	else
 		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
 
@@ -144,7 +144,7 @@
 		update_icons()
 		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
 
-/mob/living/carbon/alien/diona/drop_item()
+/mob/living/carbon/alien/diona/drop_active_hand()
 	if(holding_item)
 		visible_message(SPAN("notice", "\The [src] regurgitates \the [holding_item]."))
 		holding_item.forceMove(get_turf(src))

@@ -79,8 +79,8 @@
 	if(istype(I, /obj/item/paper))
 		if(istype(I, /obj/item/paper/talisman))
 			return
-		user.drop_item()
-		I.forceMove(src)
+		if(!user.drop(I, src))
+			return
 		to_chat(user, SPAN("notice", "You put [I] in [src]."))
 		papers.Add(I)
 		update_icon()
@@ -100,7 +100,6 @@
 				bundleitem.reset_plane_and_layer()
 		update_icon()
 		bundle.pages.Cut()
-		user.drop_from_inventory(bundle)
 		qdel(bundle)
 		if(was_there_a_photo)
 			to_chat(user, SPAN("notice", "The photo cannot go into \the [src]."))

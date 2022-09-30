@@ -177,7 +177,6 @@
 	attackby(obj/item/I, mob/user)
 		if(istype(I, /obj/item/toy/ammo/crossbow))
 			if(bullets <= 4)
-				user.drop_item()
 				qdel(I)
 				bullets++
 				to_chat(user, "<span class='notice'>You load the foam dart into the crossbow.</span>")
@@ -966,7 +965,7 @@
 			if(very_dangerous)
 				H.ChangeToSkeleton()
 			for(var/obj/item/I in H)
-				H.drop_from_inventory(I)
+				H.drop(I)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
 
 /obj/item/toy/banbanana
@@ -984,7 +983,6 @@
 				var/mob/living/carbon/human/H = M
 				H.eye_blind += 1
 	playsound(user.loc, 'sound/effects/adminhelp.ogg', 100)
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /obj/item/toy/pig

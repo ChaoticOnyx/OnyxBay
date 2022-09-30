@@ -38,10 +38,6 @@
 /obj/item/reagent_containers/food/proc/On_Consume(mob/M)
 	if(!reagents.total_volume)
 		M.visible_message(SPAN("notice", "[M] finishes eating \the [src]."), SPAN("notice", "You finish eating \the [src]."))
-		var/is_held = (M == loc)
-		if(is_held)
-			M.drop_item()
-
 		if(trash)
 			var/obj/item/trash_item
 			if(ispath(trash, /obj/item))
@@ -51,8 +47,8 @@
 
 			if(trash_item)
 				trash_item.forceMove(get_turf(src))
-				if(is_held)
-					M.put_in_hands(trash_item)
+				if(M.is_equipped(src))
+					M.replace_item(src, trash_item, force = TRUE)
 
 		if(istype(loc, /obj/item/organ))
 			var/obj/item/organ/O = loc
@@ -69,7 +65,6 @@
 /obj/item/reagent_containers/food/attack(mob/M, mob/user, def_zone)
 	if(!reagents.total_volume)
 		to_chat(user, SPAN("danger", "The empty shell of [src] crumbles in your hands!"))
-		user.drop_from_inventory(src)
 		qdel(src)
 		return FALSE
 
@@ -228,9 +223,10 @@
 			if(length(contents) > 3)
 				to_chat(user, SPAN_WARNING("There's too much stuff inside!"))
 				return
+			if(!user.drop(W, src))
+				return
 
 			to_chat(user, SPAN("warning", "You slip \the [W] inside \the [src]."))
-			user.drop_from_inventory(W, src)
 			add_fingerprint(user)
 			contents += W
 			return

@@ -82,17 +82,17 @@
 			to_chat(user, "<span class='warning'>\The [O] does not seem to fit.</span>")
 			return
 
+		if(!user.drop(O, src))
+			return
+
 		to_chat(user, "<span class='notice'>You install \the [O] in \the [src]!</span>")
 		if(istype(O, /obj/item/organ/internal/posibrain))
 			positronic = 1
 			add_language("Robot Talk")
 
-		user.drop_item()
-		src.mmi = O
-		src.transfer_personality(O)
-
-		O.loc = src
-		src.update_icon()
+		mmi = O
+		transfer_personality(O)
+		update_icon()
 		return 1
 
 	if(isWelder(O))
