@@ -82,7 +82,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb is simple and functional; no effort has been made to make it look human."
 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_main.dmi'
 
-/datum/robolimb/morpheus
+/datum/robolimb/morpheus/alt
 	company = "Morpheus Alt"
 	desc = "This limb is simple and functional; no effort has been made to make it look human."
 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_alt.dmi'
