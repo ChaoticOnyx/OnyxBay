@@ -64,8 +64,9 @@
 		to_chat(user, SPAN("warning", "The grenade is missing a detonator!"))
 		return
 	if(safety_pin && has_pin)
-		user.put_in_hands(safety_pin)
-		safety_pin = null;
+		if(!user.put_in_hands(safety_pin))
+			safety_pin.forceMove(user.loc)
+		safety_pin = null
 		playsound(loc, 'sound/weapons/pin_pull.ogg', 40, 1)
 		to_chat(user, SPAN("warning", "You remove the safety pin!"))
 		update_icon()
@@ -112,11 +113,13 @@
 				detonate()
 				return
 		to_chat(user, SPAN("notice", "You carefully remove [detonator] from grenade chamber."))
-		user.put_in_hands(detonator)
-		detonator = null;
+		if(!user.put_in_hands(detonator))
+			detonator.forceMove(user.loc)
+		detonator = null
 	if(istype(W, /obj/item/safety_pin) && user.is_item_in_hands(W) && has_pin)
 		if(QDELETED(safety_pin) && has_pin)
-			if(broken) broken = FALSE
+			if(broken)
+				broken = FALSE
 			to_chat(user, SPAN("notice", "You insert [W] in place."))
 			playsound(loc, 'sound/weapons/pin_insert.ogg', 40, 1)
 			safety_pin = W
