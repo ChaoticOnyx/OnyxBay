@@ -39,8 +39,12 @@
 	if(D.secured || D2.secured)
 		return FALSE
 	if(user)
-		user.drop(D, src)
-		user.drop(D2, src)
+		if(D.loc == user)
+			user.drop(D)
+		if(D2.loc == user)
+			user.drop(D2)
+	D.forceMove(src)
+	D2.forceMove(src)
 	D.holder = src
 	D2.holder = src
 	if(D.proximity_monitor)
