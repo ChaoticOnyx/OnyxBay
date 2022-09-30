@@ -89,7 +89,7 @@ var/global/list/rad_collectors = list()
 		if(P)
 			to_chat(user, "<span class='warning'>There's already a plasma tank loaded.</span>")
 			return 1
-		if(!user.drop(P, src))
+		if(!user.drop(W, src))
 			return 1
 		P = W
 		update_icon()
