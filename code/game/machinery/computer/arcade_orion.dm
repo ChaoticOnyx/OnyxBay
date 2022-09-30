@@ -310,7 +310,7 @@
 		if(prob(20*num_traitors))
 			specific = ORION_TRAIL_MUTINY_ATTACK
 		else
-			specific = pickweight(events)
+			specific = util_pick_weight(events)
 
 	switch(specific)
 		if(ORION_TRAIL_RAIDERS)

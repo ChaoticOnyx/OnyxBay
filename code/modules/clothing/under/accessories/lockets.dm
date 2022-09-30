@@ -46,10 +46,8 @@
 			return
 		if(held)
 			to_chat(usr, "\The [src] already has something inside it.")
-		else
+		else if(user.drop(O, src))
 			to_chat(usr, "You slip [O] into [src].")
-			user.drop_item()
-			O.loc = src
 			src.held = O
 			src.held_alt = 1
 		return

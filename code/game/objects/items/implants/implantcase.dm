@@ -63,8 +63,9 @@
 		update_icon()
 		M.update_icon()
 	else if (istype(I, /obj/item/implant))
+		if(!user.drop(I, src))
+			return
 		to_chat(usr, "<span class='notice'>You slide \the [I] into \the [src].</span>")
-		user.drop_from_inventory(I,src)
 		imp = I
 		update_description()
 		update_icon()

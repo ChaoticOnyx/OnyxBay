@@ -117,23 +117,24 @@ This saves us from having to call add_fingerprint() any time something is put in
 		if(slot_tie)
 			return 1
 
-/mob/living/carbon/human/u_equip(obj/W as obj)
-	if(!W)	return 0
+/mob/living/carbon/human/__unequip(obj/W)
+	if(!W)
+		return
 
 	if (W == wear_suit)
 		if(s_store)
-			drop_from_inventory(s_store)
+			drop(s_store, force = TRUE)
 		wear_suit = null
 		update_inv_wear_suit()
-	else if (W == w_uniform)
-		if (r_store)
-			drop_from_inventory(r_store)
-		if (l_store)
-			drop_from_inventory(l_store)
-		if (wear_id)
-			drop_from_inventory(wear_id)
-		if (belt)
-			drop_from_inventory(belt)
+	else if(W == w_uniform)
+		if(r_store)
+			drop(r_store, force = TRUE)
+		if(l_store)
+			drop(l_store, force = TRUE)
+		if(wear_id)
+			drop(wear_id, force = TRUE)
+		if(belt)
+			drop(belt, force = TRUE)
 		w_uniform = null
 		update_inv_w_uniform()
 	else if (W == gloves)
@@ -215,12 +216,11 @@ This saves us from having to call add_fingerprint() any time something is put in
 			update_inv_l_hand()
 		update_inv_l_hand()
 	else
-		return 0
+		return
 
 	update_equipment_slowdown()
 	update_action_buttons()
-	return 1
-
+	return
 
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
@@ -338,8 +338,8 @@ This saves us from having to call add_fingerprint() any time something is put in
 			W.equipped(src, slot)
 			update_inv_s_store(redraw_mob)
 		if(slot_in_backpack)
-			if(src.get_active_hand() == W)
-				src.remove_from_mob(W)
+			if(get_active_hand() == W)
+				drop(W)
 			W.forceMove(src.back)
 		if(slot_tie)
 			var/obj/item/clothing/under/uniform = src.w_uniform

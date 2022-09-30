@@ -36,8 +36,8 @@
 			to_chat(user, "<span class='warning'>There are already two tanks attached, remove one first.</span>")
 			return
 
-		user.drop_item()
-		item.forceMove(src)
+		if(!user.drop(item, src))
+			return
 		if(!tank_one)
 			tank_one = item
 		else
@@ -66,9 +66,8 @@
 			return
 		if(A.proximity_monitor)
 			A.proximity_monitor.SetHost(src, A)
-		user.remove_from_mob(item)
+		user.drop(item, src)
 		attached_device = A
-		A.forceMove(src)
 		to_chat(user, "<span class='notice'>You attach the [item] to the valve controls and secure it.</span>")
 		A.holder = src
 		A.toggle_secure()	//this calls update_icon(), which calls update_icon() on the holder (i.e. the bomb).
@@ -173,7 +172,7 @@
 /obj/item/device/transfer_valve/proc/merge_gases()
 	if(valve_open)
 		return
-	
+
 	var/datum/gas_mixture/mix_one = tank_one.return_air()
 	var/datum/gas_mixture/mix_two = tank_two.return_air()
 	mix_two.volume += mix_one.volume

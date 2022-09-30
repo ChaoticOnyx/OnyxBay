@@ -401,11 +401,12 @@
 		if(!istype(W, light_type))
 			to_chat(user, "This type of light requires a [get_fitting_name()].")
 			return
+		if(!user.drop(W))
+			return
 
 		to_chat(user, "You insert [W].")
-		user.drop_item()
 		insert_bulb(W)
-		src.add_fingerprint(user)
+		add_fingerprint(user)
 
 		// attempt to break the light
 		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
@@ -442,7 +443,7 @@
 						wrong_choice = FALSE
 				if(wrong_choice)
 					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
-					user.drop_item()
+					user.drop_active_hand()
 					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
 					return
 		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))

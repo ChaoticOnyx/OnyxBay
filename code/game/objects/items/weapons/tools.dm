@@ -321,7 +321,6 @@
 		if(tank)
 			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
 			return
-		user.drop_from_inventory(W)
 		qdel(W)
 
 		if(istype(src.loc,/turf))
@@ -342,7 +341,8 @@
 			to_chat(user, "\The [W] is too large to fit in \the [src].")
 			return
 
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		tank = W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()
@@ -370,7 +370,7 @@
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/afterattack(obj/O, mob/user, proximity)
@@ -675,7 +675,7 @@
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/item/weldingtool/old

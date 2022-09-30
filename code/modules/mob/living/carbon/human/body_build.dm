@@ -86,8 +86,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
-
 	index                = "_slim_alt"
+	roboindex            = "_slim_alt"
 	genders              = list(FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
@@ -113,7 +113,6 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/slim/male
 	name                 = "Slim"
-
 	index                = "_slim"
 	roboindex            = "_slim"
 	genders              = list(MALE)
@@ -141,8 +140,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/fat
 	name                 = "Fat"
-
 	index                = "_fat"
+	roboindex            = "_fat"
 	genders              = list(MALE, FEMALE)
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
@@ -228,8 +227,8 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/tajaran/fat
 	name                 = "Fat Tajaran"
-
 	index                = "_fat"
+	roboindex            = "_fat"
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_fat.dmi',
 		"slot_suit"      = 'icons/inv_slots/suits/mob_fat.dmi',

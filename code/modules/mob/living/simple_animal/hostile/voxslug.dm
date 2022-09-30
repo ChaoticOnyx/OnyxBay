@@ -83,7 +83,6 @@ Small, little HP, poisonous.
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 30))
 			return
-		user.drop_from_inventory(src)
 		qdel(src)
 		V.attach(H)
 		return

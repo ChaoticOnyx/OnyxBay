@@ -18,10 +18,9 @@
 	for (var/T in allowed)
 		if(istype(W,T))
 			can_hang = 1
-	if (can_hang && !my_hat)
+	if(can_hang && !my_hat && user.drop(my_hat, src))
 		user.visible_message("[user] puts [W] on \the [src].", "You put [W] on \the [src]")
 		my_hat = W
-		user.drop_from_inventory(my_hat, src)
 		update_icon()
 	else
 		to_chat(user, "<span class='notice'>You cannot put [W] on [src]</span>")

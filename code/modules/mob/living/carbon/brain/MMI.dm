@@ -79,9 +79,8 @@
 	brainmob.container = src
 	brainmob.set_stat(CONSCIOUS)
 	brainmob.switch_from_dead_to_living_mob_list() // Update dem lists.
-	user.remove_from_mob(B)
+	user.drop(B, src)
 	brainobj = B
-	brainobj.forceMove(src)
 	SetName("[initial(name)]: ([brainmob.real_name])")
 	register_signal(brainmob, SIGNAL_LOGGED_IN, /obj/item/device/mmi/proc/update_info)
 	register_signal(brainmob, SIGNAL_LOGGED_OUT, /obj/item/device/mmi/proc/update_info)

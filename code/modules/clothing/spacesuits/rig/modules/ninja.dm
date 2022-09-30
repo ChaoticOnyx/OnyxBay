@@ -221,8 +221,7 @@
 	src.holder.set_light(0, 0, 0, 2, "#000000")
 
 	explosion(get_turf(src), explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
-	if(holder && holder.wearer)
-		holder.wearer.drop_from_inventory(src)
+	if(holder?.wearer)
 		qdel(holder)
 	qdel(src)
 

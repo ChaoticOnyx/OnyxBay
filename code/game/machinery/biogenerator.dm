@@ -47,6 +47,7 @@
 			/obj/item/clothing/shoes/leather = 400,
 			/obj/item/clothing/shoes/dress = 400,
 			/obj/item/clothing/suit/storage/toggle/leathercoat = 500,
+			/obj/item/clothing/suit/storage/toggle/browncoat = 500,
 			/obj/item/clothing/suit/storage/toggle/brown_jacket = 500,
 			/obj/item/clothing/suit/storage/toggle/bomber = 500,
 			/obj/item/clothing/suit/storage/hooded/wintercoat = 500))
@@ -80,9 +81,7 @@
 	if(istype(O, /obj/item/reagent_containers/vessel))
 		if(beaker)
 			to_chat(user, "<span class='notice'>]The [src] is already loaded.</span>")
-		else
-			user.remove_from_mob(O)
-			O.forceMove(src)
+		else if(user.drop(O, src))
 			beaker = O
 			state = BG_READY
 			updateUsrDialog()
@@ -118,9 +117,7 @@
 			i++
 		if(i >= 10)
 			to_chat(user, "<span class='notice'>\The [src] is full! Activate it.</span>")
-		else
-			user.remove_from_mob(O)
-			O.forceMove(src)
+		else if(user.drop(O, src))
 			to_chat(user, "<span class='notice'>You put \the [O] in \the [src]</span>")
 	update_icon()
 	return

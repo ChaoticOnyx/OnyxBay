@@ -4,7 +4,7 @@
 	if(!(appearance_flags & Z) || !random_##Y.len){\
 		return;\
 	}\
-	var/decl/color_generator/CG = decls_repository.get_decl(pickweight(random_##Y));\
+	var/decl/color_generator/CG = decls_repository.get_decl(util_pick_weight(random_##Y));\
 	return CG && CG.GenerateRGB();\
 }
 

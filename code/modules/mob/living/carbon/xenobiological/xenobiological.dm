@@ -193,7 +193,7 @@
 	updatehealth()
 
 
-/mob/living/carbon/metroid/u_equip(obj/item/W)
+/mob/living/carbon/metroid/__unequip(obj/W)
 	return
 
 /mob/living/carbon/metroid/attack_ui(slot)

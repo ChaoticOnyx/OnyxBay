@@ -628,9 +628,7 @@
 			to_chat(user, "The radio can't hold another key!")
 			return
 
-		if(!keyslot)
-			user.drop_item()
-			W.loc = src
+		if(!keyslot && user.drop(W, src))
 			keyslot = W
 
 		recalculateChannels()

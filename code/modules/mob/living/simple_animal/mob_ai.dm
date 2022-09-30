@@ -52,11 +52,11 @@
 
 			switch(action)
 				if("speak")
-					holder.say(pickweight(holder.speak))
+					holder.say(util_pick_weight(holder.speak))
 				if("emote_hear")
-					holder.audible_emote("[pickweight(holder.emote_hear)].")
+					holder.audible_emote("[util_pick_weight(holder.emote_hear)].")
 				if("emote_see")
-					holder.visible_emote("[pickweight(holder.emote_see)].")
+					holder.visible_emote("[util_pick_weight(holder.emote_see)].")
 
 /datum/mob_ai/proc/process_special_actions()
 	return

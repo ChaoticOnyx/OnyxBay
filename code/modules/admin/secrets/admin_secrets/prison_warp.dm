@@ -29,7 +29,7 @@
 				if(istype(I, /obj/item/organ/external))
 					continue
 					//don't strip organs
-				H.drop_from_inventory(I)
+				H.drop(I)
 			//teleport person to cell
 			H.forceMove(pick(GLOB.prisonwarp))
 			H.equip_to_slot_or_del(new /obj/item/clothing/under/color/orange(H), slot_w_uniform)
