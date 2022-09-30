@@ -91,13 +91,13 @@
 				if (evacuation_controller.waiting_to_leave())
 					message2 = "Launch"
 				else
-					message2 = get_shuttle_timer()
+					message2 = get_evac_shuttle_timer()
 					if(length(message2) > CHARS_PER_LINE)
 						message2 = "Error"
 				update_display(message1, message2)
 			else if(evacuation_controller.has_eta())
 				message1 = "-ETA-"
-				message2 = get_shuttle_timer()
+				message2 = get_evac_shuttle_timer()
 				if(length(message2) > CHARS_PER_LINE)
 					message2 = "Error"
 				update_display(message1, message2)
@@ -185,14 +185,13 @@
 		maptext = new_text
 	set_light(0.5, 0.1, 1, 2, COLOR_WHITE)
 
-/obj/machinery/status_display/proc/get_shuttle_timer()
+/obj/machinery/status_display/proc/get_evac_shuttle_timer()
 	var/timeleft = evacuation_controller.get_eta()
 	if(timeleft < 0)
 		return ""
 	return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 
-/obj/machinery/status_display/proc/get_supply_shuttle_timer()
-	var/datum/shuttle/autodock/ferry/supply/shuttle = SSsupply.shuttle
+/obj/machinery/status_display/proc/get_shuttle_timer(datum/shuttle/autodock/ferry/supply/shuttle)
 	if (!shuttle)
 		return "Error"
 
