@@ -201,7 +201,7 @@
 						if(istype(item_to_add, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
 							to_chat(usr, SPAN_WARNING("[name] cannot wear \the [item_to_add]!"))
 							return
-						usr.unEquip(item_to_add)
+						usr.drop(item_to_add)
 						wear_hat(item_to_add)
 						usr.visible_message(SPAN_WARNING("[usr] puts \the [item_to_add] on [name]."))
 
@@ -219,7 +219,7 @@
 		if(hat)
 			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
 			return
-		user.unEquip(O)
+		user.drop(O)
 		wear_hat(O)
 		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
 		return

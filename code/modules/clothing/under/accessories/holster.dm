@@ -28,9 +28,11 @@
 
 	if(istype(user))
 		user.stop_aiming(no_message=1)
+
+	if(!user.drop(I, src))
+		return
+
 	holstered = I
-	user.drop_from_inventory(holstered)
-	holstered.loc = src
 	holstered.add_fingerprint(user)
 	w_class = max(w_class, holstered.w_class)
 	user.visible_message(SPAN("notice", "[user] holsters \the [holstered]."), SPAN("notice", "You holster \the [holstered]."))

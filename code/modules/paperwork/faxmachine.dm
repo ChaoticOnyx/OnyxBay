@@ -143,8 +143,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				scan = null
 		else
 			var/obj/item/I = usr.get_active_hand()
-			if (istype(I, /obj/item/card/id) && usr.unEquip(I))
-				I.loc = src
+			if (istype(I, /obj/item/card/id) && usr.drop(I, src))
 				scan = I
 		authenticated = 0
 

@@ -137,13 +137,10 @@
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
 		return
 
-	if(isrobot(user))
-		return
-	if(!user.canUnEquip(I))
-		to_chat(user, "You can't place that item inside \the [src].")
+	if(!user.drop(I, src))
+		to_chat(user, "You can't place that into \the [src].")
 		return
 
-	user.drop_from_inventory(I, src)
 	if(I.loc != src)
 		return
 

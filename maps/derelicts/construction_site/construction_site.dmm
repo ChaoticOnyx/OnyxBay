@@ -177,7 +177,7 @@
 "du" = (/obj/structure/flora/ausbushes/ppflowers,/turf/simulated/floor/natural/jungle/grasscorner1{icon_state = "grassdirt_corner"; dir = 1},/area/space)
 "dv" = (/obj/effect/overlay/coconut,/obj/item/reagent_containers/food/grown/coconut,/turf/simulated/floor/natural/jungle/grasscorner1,/area/space)
 "dw" = (/turf/simulated/floor/natural/jungle/sandgrassedge{icon_state = "grasssand_edge"; dir = 4},/area/space)
-"dx" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/exoplanet,/area/space)
+"dx" = (/obj/structure/window_frame/broken,/obj/structure/window/reinforced{dir = 4},/obj/item/stack/rods,/turf/simulated/floor/asteroid,/area/space)
 "dy" = (/obj/item/stack/rods,/turf/space,/area/space)
 "dz" = (/obj/item/material/shard,/turf/simulated/floor/natural/jungle/sand,/area/space)
 "dA" = (/turf/simulated/floor/natural/jungle/sand,/area/space)

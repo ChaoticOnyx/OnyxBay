@@ -69,7 +69,7 @@ var/list/mining_floors = list()
 		if(update_neighbors && istype(turf_to_check,/turf/simulated/floor/asteroid))
 			var/turf/simulated/floor/asteroid/T = turf_to_check
 			T.updateMineralOverlays()
-		else if(istype(turf_to_check,/turf/space) || istype(turf_to_check,/turf/simulated/floor))
+		else if(istype(turf_to_check,/turf/space) || istype(turf_to_check,/turf/simulated/floor) || istype(turf_to_check, /turf/simulated/open))
 			var/image/rock_side = image('icons/turf/walls.dmi', "rock_side", dir = turn(direction, 180))
 			rock_side.turf_decal_layerise()
 			switch(direction)
@@ -407,7 +407,7 @@ var/list/mining_floors = list()
 /turf/simulated/mineral/random/Initialize()
 	. = ..()
 	if (prob(mineralChance) && !mineral)
-		var/mineral_name = pickweight(mineralSpawnChanceList) //temp mineral name
+		var/mineral_name = util_pick_weight(mineralSpawnChanceList) //temp mineral name
 		mineral_name = lowertext(mineral_name)
 		if (mineral_name && (mineral_name in ore_data))
 			mineral = ore_data[mineral_name]
@@ -439,6 +439,7 @@ var/list/mining_floors = list()
 	var/dug = 0       //0 = has not yet been dug, 1 = has already been dug
 	var/overlay_detail
 	has_resources = 1
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/asteroid/Initialize()
 	. = ..()

@@ -22,10 +22,8 @@
 	if(current_item)
 		to_chat(user, SPAN_NOTICE("\The [src] already has something inside!"))
 		return
-	if(istype(O, /obj/item/book) || istype(O, /obj/item/canvas))
-		user.drop_item()
+	if((istype(O, /obj/item/book) || istype(O, /obj/item/canvas)) && user.drop(O, src))
 		current_item = O
-		O.forceMove(src)
 
 /obj/machinery/libraryscanner/attack_hand(mob/user)
 	usr.set_machine(src)
@@ -95,16 +93,12 @@
 			..()
 			to_chat(user, "\The [src] already has item inside.")
 			return
-		if(istype(O, /obj/item/paper) || istype(O, /obj/item/book/wiki/template))
-			user.drop_item()
-			O.forceMove(src)
+		if((istype(O, /obj/item/paper) || istype(O, /obj/item/book/wiki/template)) && user.drop(O, src))
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
-			src.visible_message("[src] begins to hum as it warms up its printing drums.")
+			visible_message("[src] begins to hum as it warms up its printing drums.")
 			addtimer(CALLBACK(src, .proc/handle_paper, O), rand(200,400))
-		else if(istype(O, /obj/item/canvas))
+		else if(istype(O, /obj/item/canvas) && user.drop(O, src))
 			print_object = O
-			user.drop_item()
-			O.forceMove(src)
 			user.visible_message("[user] loads \the [O] into [src].", "You load \the [O] into [src].")
 		else
 			..()

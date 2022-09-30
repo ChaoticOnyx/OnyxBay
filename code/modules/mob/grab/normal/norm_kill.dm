@@ -24,8 +24,10 @@
 /datum/grab/normal/kill/process_effect(obj/item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting
 
-	affecting.drop_l_hand()
-	affecting.drop_r_hand()
+	if(affecting.can_unequip(affecting.l_hand))
+		affecting.drop_l_hand()
+	if(affecting.can_unequip(affecting.r_hand))
+		affecting.drop_r_hand()
 
 	if(affecting.lying)
 		affecting.Weaken(3)

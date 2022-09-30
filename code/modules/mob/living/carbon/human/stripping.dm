@@ -100,7 +100,7 @@
 	if(stripping)
 		if(!istype(target_slot))  // They aren't holding anything valid and there's nothing to remove, why are we even here?
 			return
-		if(!target_slot.mob_can_unequip(src, text2num(slot_to_strip_text), disable_warning=1))
+		if(!target_slot.can_be_unequipped_by(src, text2num(slot_to_strip_text), disable_warning=1))
 			to_chat(user, "<span class='warning'>You cannot remove \the [src]'s [target_slot.name].</span>")
 			return
 
@@ -121,13 +121,13 @@
 		return
 
 	if(stripping)
-		if(unEquip(target_slot))
+		if(drop(target_slot))
 			admin_attack_log(user, src, "Stripped \a [target_slot]", "Was stripped of \a [target_slot].", "stripped \a [target_slot] from")
 			if(!isAggresiveStrip(user) && user.IsAdvancedToolUser(TRUE))
 				user.put_in_active_hand(target_slot)
 		else
 			admin_attack_log(user, src, "Attempted to strip \a [target_slot]", "Target of a failed strip of \a [target_slot].", "attempted to strip \a [target_slot] from")
-	else if(user.unEquip(held))
+	else if(user.drop(held))
 		var/obj/item/clothing/C = get_equipped_item(text2num(slot_to_strip_text))
 		if(istype(C) && C.can_attach_accessory(held))
 			C.attach_accessory(user, held)
@@ -142,13 +142,13 @@
 		to_chat(user, "<span class='warning'>\The [src] has nothing in their pockets.</span>")
 		return
 	if(r_store)
-		unEquip(r_store)
+		drop(r_store)
 	if(l_store)
-		unEquip(l_store)
+		drop(l_store)
 	visible_message("<span class='danger'>\The [user] empties [src]'s pockets!</span>")
 
 /mob/living/carbon/human/proc/place_in_pockets(obj/item/I, mob/living/user)
-	if(!user.unEquip(I))
+	if(I.loc == user && !user.drop(I))
 		return
 	if(!r_store)
 		if(equip_to_slot_if_possible(I, slot_r_store, del_on_fail=0, disable_warning=1, redraw_mob=1))

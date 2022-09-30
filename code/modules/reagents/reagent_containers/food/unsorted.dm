@@ -233,7 +233,6 @@
 		return
 	to_chat(user, "You crack \the [src] into \the [O].")
 	reagents.trans_to(O, reagents.total_volume)
-	user.drop_from_inventory(src)
 	qdel(src)
 
 /obj/item/reagent_containers/food/egg/throw_impact(atom/hit_atom)

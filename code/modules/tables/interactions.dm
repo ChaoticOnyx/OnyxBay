@@ -67,8 +67,9 @@
 		return ..()
 	if(isrobot(user))
 		return
-	user.drop_item()
-	if(O.loc != src.loc)
+	if(!user.drop(O))
+		return
+	if(O.loc != loc)
 		step(O, get_dir(O, src))
 	return
 
@@ -163,7 +164,7 @@
 		return
 
 	// Placing stuff on tables
-	if(user.unEquip(W, target = loc))
+	if(user.drop(W, loc))
 		auto_align(W, click_params)
 		return 1
 

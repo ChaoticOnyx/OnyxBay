@@ -366,7 +366,7 @@
 /datum/reagent/ethanol/whiskeysoda
 	value = 0.15
 
-/datum/reagent/ethanol/specialwhiskey
+/datum/reagent/ethanol/whiskey/specialwhiskey
 	value = 0.3
 
 /datum/reagent/inaprovaline

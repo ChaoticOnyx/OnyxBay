@@ -751,7 +751,7 @@ var/list/turret_icons
 				if(isrobot(user))
 					return
 				var/obj/item/gun/energy/E = I //typecasts the item to an energy gun
-				if(!user.unEquip(I))
+				if(!user.drop(I))
 					to_chat(user, "<span class='notice'>\the [I] is stuck to your hand, you cannot put it in \the [src]</span>")
 					return
 				installation = I.type //installation becomes I.type
@@ -772,7 +772,7 @@ var/list/turret_icons
 		if(4)
 			if(isprox(I))
 				build_step = 5
-				if(!user.unEquip(I))
+				if(!user.drop(I))
 					to_chat(user, "<span class='notice'>\the [I] is stuck to your hand, you cannot put it in \the [src]</span>")
 					return
 				to_chat(user, "<span class='notice'>You add the prox sensor to the turret.</span>")

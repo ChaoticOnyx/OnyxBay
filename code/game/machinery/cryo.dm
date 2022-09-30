@@ -240,10 +240,9 @@
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
 			return
-
-		beaker =  G
-		user.drop_item()
-		G.forceMove(src)
+		if(!user.drop(G, src))
+			return
+		beaker = G
 		user.visible_message("[user] adds \a [G] to \the [src]!", "You add \a [G] to \the [src]!")
 	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))

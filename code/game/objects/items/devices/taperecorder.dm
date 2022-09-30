@@ -43,9 +43,8 @@
 		if(mytape)
 			to_chat(user, "<span class='notice'>There's already a tape inside.</span>")
 			return
-		if(!user.unEquip(I))
+		if(!user.drop(I, src))
 			return
-		I.forceMove(src)
 		mytape = I
 		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		update_icon()

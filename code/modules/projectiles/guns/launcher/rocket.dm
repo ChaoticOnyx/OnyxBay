@@ -32,8 +32,8 @@
 /obj/item/gun/launcher/rocket/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/ammo_casing/rocket))
 		if(rockets.len < max_rockets)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			rockets += I
 			to_chat(user, "<span class='notice'>You put the rocket in [src].</span>")
 			playsound(usr.loc, 'sound/effects/weapons/gun/rpg_reload.ogg', 25, 1)

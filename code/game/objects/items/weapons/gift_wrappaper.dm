@@ -93,13 +93,12 @@
 		/obj/item/storage/belt/utility/full,
 		/obj/item/clothing/accessory/horrible)
 
-	if(!ispath(gift_type,/obj/item))	return
+	if(!ispath(gift_type,/obj/item))
+		return
 
 	var/obj/item/I = new gift_type(M)
-	M.remove_from_mob(src)
-	M.put_in_hands(I)
 	I.add_fingerprint(M)
-	qdel(src)
+	M.replace_item(src, I, TRUE, TRUE)
 	return
 
 /*
@@ -132,11 +131,11 @@
 			if(4) icon_state = "gift2"
 			if(5) icon_state = "gift3"
 
-/obj/item/gift/attack_self(mob/user as mob)
-	user.drop_item()
-	if(src.gift)
+/obj/item/gift/attack_self(mob/user)
+	user.drop(src)
+	if(gift)
 		user.put_in_active_hand(gift)
-		src.gift.add_fingerprint(user)
+		gift.add_fingerprint(user)
 	else
 		to_chat(user, "<span class='warning'>The gift was empty!</span>")
 	qdel(src)
@@ -172,11 +171,11 @@
 				if(istype(W, /obj/item/smallDelivery) || istype(W, /obj/item/gift)) //No gift wrapping gifts!
 					return
 
-				if(user.drop_from_inventory(W))
-					var/obj/item/gift/G = new /obj/item/gift( src.loc, W )
+				if(user.drop(W))
+					var/obj/item/gift/G = new /obj/item/gift(loc, W)
 					G.add_fingerprint(user)
 					W.add_fingerprint(user)
-					src.amount -= a_used
+					amount -= a_used
 
 			if (src.amount <= 0)
 				new /obj/item/c_tube( src.loc )

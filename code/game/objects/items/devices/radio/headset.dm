@@ -333,20 +333,13 @@
 		if(keyslot1 && keyslot2)
 			to_chat(user, "The headset can't hold another key!")
 			return
-
+		if(!user.drop(W, src))
+			return
 		if(!keyslot1)
-			user.drop_item()
-			W.loc = src
 			keyslot1 = W
-
 		else
-			user.drop_item()
-			W.loc = src
 			keyslot2 = W
-
-
 		recalculateChannels()
-
 	return
 
 /obj/item/device/radio/headset/MouseDrop(obj/over_object)

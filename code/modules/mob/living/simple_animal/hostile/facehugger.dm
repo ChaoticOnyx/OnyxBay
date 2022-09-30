@@ -201,7 +201,7 @@
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 20))
 			return
-		user.drop_from_inventory(src)
+		user.drop(src)
 		if(F.facefuck(H, TRUE, TRUE))
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return

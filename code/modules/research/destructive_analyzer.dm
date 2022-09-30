@@ -40,7 +40,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 		icon_state = "d_analyzer"
 
 /obj/machinery/r_n_d/destructive_analyzer/attackby(obj/item/O as obj, mob/user as mob)
-	if(!user.canUnEquip(O))
+	if(!user.can_unequip(O))
 		to_chat(user, "You can't place that item inside \the [src].")
 		return
 	if(busy)
@@ -76,7 +76,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 		busy = 1
 		loaded_item = O
-		user.unEquip(O, target = src)
+		if(!user.drop(O, src))
+			return
 		if(O.loc != src)
 			return
 		to_chat(user, "<span class='notice'>You add \the [O] to \the [src].</span>")

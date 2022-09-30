@@ -90,7 +90,8 @@
 	switch(build_step)
 		if(0, 1)
 			if(istype(W, /obj/item/robot_parts/l_leg) || istype(W, /obj/item/robot_parts/r_leg))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the robot leg to [src].</span>")
@@ -108,7 +109,8 @@
 					if(!locate(/obj/item/clothing/accessory/armorplate) in W.contents)
 						to_chat(user, "There's no armor plates on this [W].")
 						return
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
@@ -125,7 +127,8 @@
 					to_chat(user, "<span class='notice'>You welded the vest to [src].</span>")
 		if(4)
 			if(istype(W, /obj/item/clothing/head/helmet))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the helmet to [src].</span>")
@@ -135,7 +138,8 @@
 
 		if(5)
 			if(isprox(W))
-				user.drop_item()
+				if(!user.drop(W))
+					return
 				qdel(W)
 				build_step++
 				to_chat(user, "<span class='notice'>You add the prox sensor to [src].</span>")
@@ -159,12 +163,13 @@
 
 		if(7)
 			if(istype(W, /obj/item/gun/energy/taser) || istype(W, /obj/item/gun/energy/classictaser))
+				if(!user.drop(W))
+					return
 				SetName("taser ED-209 assembly")
 				build_step++
 				to_chat(user, "<span class='notice'>You add [W] to [src].</span>")
 				item_state = "ed209_taser"
 				icon_state = "ed209_taser"
-				user.drop_item()
 				qdel(W)
 
 		if(8)
@@ -180,11 +185,10 @@
 
 		if(9)
 			if(istype(W, /obj/item/cell))
+				if(!user.drop(W))
+					return
 				build_step++
 				to_chat(user, "<span class='notice'>You complete the ED-209.</span>")
-				var/turf/T = get_turf(src)
-				new /mob/living/bot/secbot/ed209(T,created_name,lasercolor)
-				user.drop_item()
+				new /mob/living/bot/secbot/ed209(get_turf(src), created_name, lasercolor)
 				qdel(W)
-				user.drop_from_inventory(src)
 				qdel(src)

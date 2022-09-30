@@ -494,10 +494,8 @@
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if ( istype(O, /obj/item/plantspray) )
-
+	else if(istype(O, /obj/item/plantspray))
 		var/obj/item/plantspray/spray = O
-		user.remove_from_mob(O)
 		toxins += spray.toxicity
 		pestlevel -= spray.pest_kill_str
 		weedlevel -= spray.weed_kill_str

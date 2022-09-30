@@ -33,6 +33,8 @@
 		new /datum/space_level/exodus_2,
 		new /datum/space_level/exodus_3,
 		new /datum/space_level/exodus_4,
+		new /datum/space_level/exodus_5,
+		new /datum/space_level/exodus_6,
 		new /datum/space_level/null_space,
 		new /datum/space_level/telecomms,
 		new /datum/space_level/construction_site,
@@ -87,16 +89,4 @@
 		NETWORK_THUNDER,
 		NETWORK_TELECOM,
 		NETWORK_MASTER
-	)
-
-	post_round_safe_areas = list (
-		/area/centcom,
-		/area/shuttle/escape/centcom,
-		/area/shuttle/escape_pod1,
-		/area/shuttle/escape_pod2,
-		/area/shuttle/escape_pod3,
-		/area/shuttle/escape_pod5,
-		/area/shuttle/transport/centcom,
-		/area/shuttle/administration/,
-		/area/shuttle/specops/centcom,
 	)

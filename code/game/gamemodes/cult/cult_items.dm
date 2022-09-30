@@ -35,7 +35,7 @@
 	user.Weaken(5)
 	user.Stun(3)
 
-	user.drop_from_inventory(src)
+	user.drop(src, force = TRUE)
 	throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3))
 
 	var/spooky = pick('sound/hallucinations/growl1.ogg', 'sound/hallucinations/growl2.ogg', 'sound/hallucinations/growl3.ogg', 'sound/hallucinations/wail.ogg')

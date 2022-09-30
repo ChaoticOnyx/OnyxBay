@@ -11,7 +11,7 @@
 
 /obj/structure/undies_wardrobe/attackby(obj/item/underwear/underwear, mob/user)
 	if(istype(underwear))
-		if(!user.unEquip(underwear))
+		if(!user.drop(underwear))
 			return
 		qdel(underwear)
 		user.visible_message("<span class='notice'>\The [user] inserts \their [underwear.name] into \the [src].</span>", "<span class='notice'>You insert your [underwear.name] into \the [src].</span>")

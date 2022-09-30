@@ -246,6 +246,7 @@
 	icon_state = "darkwood"
 	icon = 'icons/turf/flooring/wood.dmi'
 	initial_flooring = /decl/flooring/darkwood
+	footstep_sound = SFX_FOOTSTEP_WOOD
 
 /turf/simulated/floor/trim/wood/broken0
 	name = "wooden floor"
@@ -348,22 +349,26 @@
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = null
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/grass
 	name = "grass patch"
 	icon = 'icons/turf/flooring/grass.dmi'
 	icon_state = "grass0"
 	initial_flooring = /decl/flooring/grass
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/natural/ice
 	name = "ice"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "ice"
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/simulated/floor/natural/snow
 	name = "snow"
 	icon = 'icons/turf/snow.dmi'
 	icon_state = "snow"
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/simulated/floor/natural/frozenground/cave
 	name = "frozen ground"
@@ -421,6 +426,7 @@
 	name = "grass"
 	icon = 'icons/turf/jungle_turfs.dmi'
 	icon_state = "grass1"
+	footstep_sound = SFX_FOOTSTEP_GRASS
 
 /turf/simulated/floor/natural/jungle/grasscorner1
 	name = "grass"
@@ -445,6 +451,7 @@
 /turf/simulated/floor/natural/jungle/sandgrasscorner2
 	name = "grass"
 	icon_state = "grasssand_corner2"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/jungle/dirt
 	name = "dirt"
@@ -456,6 +463,7 @@
 	desc = "Looks wet."
 	icon = 'icons/misc/beach.dmi'
 	icon_state = "seashallow"
+	footstep_sound = SFX_FOOTSTEP_WATER
 	var/overlay = TRUE
 
 /turf/simulated/floor/natural/jungle/water/New()
@@ -469,6 +477,7 @@
 /turf/simulated/floor/natural/jungle/water/corner
 	icon_state = "beachcorner"
 	overlay = FALSE
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 
 /turf/simulated/floor/natural/jungle/sand
 	name = "sand"
@@ -479,6 +488,7 @@
 	base_desc = "Looks sandy."
 	base_icon = 'icons/misc/beach.dmi'
 	base_icon_state = "desert0"
+	footstep_sound = SFX_FOOTSTEP_ASTEROID
 	var/rand_state = TRUE
 
 /turf/simulated/floor/natural/jungle/sand/New()
