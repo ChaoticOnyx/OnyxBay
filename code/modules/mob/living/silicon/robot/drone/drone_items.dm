@@ -276,16 +276,17 @@
 		//There's some weirdness with items being lost inside the arm. Trying to fix all cases. ~Z
 		for(var/obj/item/thing in src.contents)
 			thing.forceMove(get_turf(src))
-		return
+		return FALSE
 
-	if(wrapped.loc != src)
+	if(wrapped.loc != src && wrapped.loc != src.loc)
 		wrapped = null
-		return
+		return FALSE
 
 	to_chat(src.loc, SPAN("warning", "You drop \the [wrapped]."))
 	wrapped.forceMove(get_turf(src))
 	wrapped = null
-	//update_icon()
+
+	return TRUE
 
 /obj/item/gripper/attack(mob/living/carbon/M, mob/living/carbon/user)
 	// Don't fall through and smack people with gripper, instead just no-op

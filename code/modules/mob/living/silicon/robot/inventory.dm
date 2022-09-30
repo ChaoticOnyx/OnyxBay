@@ -5,10 +5,14 @@
 /mob/living/silicon/robot/get_active_hand()
 	return module_active
 
-/mob/living/silicon/robot/drop_item()
+/mob/living/silicon/robot/drop(obj/item/I, atom/target = null, force = FALSE)
 	if(istype(module_active, /obj/item/gripper))
 		var/obj/item/gripper/G = module_active
-		return G.drop_item()
+		if(G.wrapped == I)
+			var/result = G.drop_item()
+			if(result && target)
+				I.forceMove(target)
+			return result
 	return ..()
 
 /*-------TODOOOOOOOOOO--------*/
