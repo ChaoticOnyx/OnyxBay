@@ -220,7 +220,7 @@
 	var/obj/item/card/id/id_card = null
 
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
-	id_card = I.GetIdCard()
+	id_card = I.get_id_card()
 	if(istype(id_card))
 		to_chat(user, SPAN("notice", "Card saved!"))
 

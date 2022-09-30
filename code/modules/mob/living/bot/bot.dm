@@ -96,7 +96,7 @@
 	explode()
 
 /mob/living/bot/attackby(obj/item/O, mob/user)
-	if(O.GetIdCard())
+	if(O.get_id_card())
 		if(access_scanner.allowed(user) && !open)
 			locked = !locked
 			to_chat(user, "<span class='notice'>Controls are now [locked ? "locked." : "unlocked."]</span>")

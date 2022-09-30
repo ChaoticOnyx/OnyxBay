@@ -602,7 +602,7 @@ About the new airlock wires panel:
 		return ..()
 
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
-	if(brace && (istype(C.GetIdCard(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
+	if(brace && (istype(C.get_id_card(), /obj/item/card/id/) || istype(C, /obj/item/crowbar/brace_jack)))
 		return brace.attackby(C, user)
 
 	if(!brace && istype(C, /obj/item/airlock_brace))

@@ -449,7 +449,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!istype(H) || !istype(_H) || !target_mind)
 		return
 	var/alternative_message = ""
-	var/obj/item/idcard = _H.get_idcard()
+	var/obj/item/idcard = _H.get_id_card()
 	if(istype(idcard))
 		alternative_target = weakref(idcard)
 		alternative_message = " <b>[idcard], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"

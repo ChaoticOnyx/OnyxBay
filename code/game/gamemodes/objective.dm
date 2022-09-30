@@ -335,7 +335,7 @@ var/global/list/all_objectives = list()
 	if(!target)
 		return TRUE
 
-	var/obj/item/card/id/id_card = owner.current.GetIdCard()
+	var/obj/item/card/id/id_card = owner.current.get_id_card()
 	if(id_card?.registered_name == target && owner.current.real_name == target && owner.changeling?.last_transformation_at + 3 MINUTES <= world.time)
 		return TRUE
 	return FALSE

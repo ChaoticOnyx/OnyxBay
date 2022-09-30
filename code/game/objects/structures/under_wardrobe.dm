@@ -16,7 +16,7 @@
 		qdel(underwear)
 		user.visible_message("<span class='notice'>\The [user] inserts \their [underwear.name] into \the [src].</span>", "<span class='notice'>You insert your [underwear.name] into \the [src].</span>")
 
-		var/id = user.GetIdCard()
+		var/id = user.get_id_card()
 		var/message
 		if(id)
 			message = "ID card detected. Your underwear quota for this shift as been increased, if applicable."
@@ -46,7 +46,7 @@
 	interact(user)
 
 /obj/structure/undies_wardrobe/interact(mob/living/carbon/human/H)
-	var/id = H.GetIdCard()
+	var/id = H.get_id_card()
 
 	var/dat = list()
 	dat += "<b>Underwear</b><br><hr>"
@@ -92,7 +92,7 @@
 		if(!CanInteract(H, state))
 			return
 
-		var/id = H.GetIdCard()
+		var/id = H.get_id_card()
 		if(!id)
 			audible_message("No ID card detected. Unable to acquire your underwear quota for this shift.", WARDROBE_BLIND_MESSAGE(H))
 			return

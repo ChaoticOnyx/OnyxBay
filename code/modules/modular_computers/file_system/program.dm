@@ -134,7 +134,7 @@
 	if(computer && computer.computer_emagged)
 		return 1
 
-	var/obj/item/card/id/I = user.GetIdCard()
+	var/obj/item/card/id/I = user.get_id_card()
 	if(!I)
 		if(loud)
 			to_chat(user, "<span class='notice'>\The [computer] flashes an \"RFID Error - Unable to scan ID\" warning.</span>")

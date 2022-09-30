@@ -142,7 +142,7 @@
 		return 1
 
 	var/mob/user = usr
-	var/obj/item/card/id/user_id_card = user.GetIdCard()
+	var/obj/item/card/id/user_id_card = user.get_id_card()
 	var/obj/item/card/id/id_card
 	if (computer.card_slot)
 		id_card = computer.card_slot.stored_card
