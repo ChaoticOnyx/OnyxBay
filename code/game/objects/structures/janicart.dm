@@ -111,30 +111,45 @@
 		switch(href_list["take"])
 			if("garbage")
 				if(mybag)
-					user.put_in_hands(mybag)
-					to_chat(user, "<span class='notice'>You take [mybag] from [src].</span>")
+					mybag.forceMove(loc)
+					if(user.put_in_hands(mybag))
+						to_chat(user, SPAN("notice", "You take [mybag] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [mybag] from [src]."))
 					mybag = null
 			if("mop")
 				if(mymop)
-					user.put_in_hands(mymop)
-					to_chat(user, "<span class='notice'>You take [mymop] from [src].</span>")
+					mymop.forceMove(loc)
+					if(user.put_in_hands(mymop))
+						to_chat(user, SPAN("notice", "You take [mymop] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [mymop] from [src]."))
 					mymop = null
 			if("spray")
 				if(myspray)
-					user.put_in_hands(myspray)
-					to_chat(user, "<span class='notice'>You take [myspray] from [src].</span>")
+					myspray.forceMove(loc)
+					if(user.put_in_hands(myspray))
+						to_chat(user, SPAN("notice", "You take [myspray] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [myspray] from [src]."))
 					myspray = null
 			if("replacer")
 				if(myreplacer)
-					user.put_in_hands(myreplacer)
-					to_chat(user, "<span class='notice'>You take [myreplacer] from [src].</span>")
+					myreplacer.forceMove(loc)
+					if(user.put_in_hands(myreplacer))
+						to_chat(user, SPAN("notice", "You take [myreplacer] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [myreplacer] from [src]."))
 					myreplacer = null
 			if("sign")
 				if(signs)
 					var/obj/item/caution/Sign = locate() in src
 					if(Sign)
-						user.put_in_hands(Sign)
-						to_chat(user, "<span class='notice'>You take \a [Sign] from [src].</span>")
+						Sign.forceMove(loc)
+						if(user.put_in_hands(Sign))
+							to_chat(user, SPAN("notice", "You take \a [Sign] from [src]."))
+						else
+							to_chat(user, SPAN("notice", "You drop \a [Sign] from [src]."))
 						signs--
 					else
 						warning("[src] signs ([signs]) didn't match contents")

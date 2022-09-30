@@ -29,8 +29,9 @@
 	if(istype(user))
 		user.stop_aiming(no_message=1)
 
-	if(!user.drop(holstered, src))
+	if(!user.drop(I, src))
 		return
+
 	holstered = I
 	holstered.add_fingerprint(user)
 	w_class = max(w_class, holstered.w_class)

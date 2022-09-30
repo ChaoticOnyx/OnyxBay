@@ -55,7 +55,13 @@
 			rigged = TRUE
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
-		if(rigged && user.drop(W, src))
+		if(rigged)
+			if(istype(W.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
+				var/obj/item/gripper/G = W.loc
+				G.wrapped.forceMove(src)
+				G.wrapped = null
+			else if(!user.drop(W, src))
+				return
 			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
 			return
 	else if(isWirecutter(W))
