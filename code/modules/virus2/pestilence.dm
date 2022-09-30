@@ -595,3 +595,49 @@
 
 	if(candidate.species.name in D.affected_species)
 		infect_virus2(candidate,D,1)
+
+// ####################################################################
+// ###########################ZOMBIE VIRUS#############################
+// ####################################################################
+
+/datum/disease2/disease/zombievirus
+	infectionchance = 55
+	speed = 4
+	spreadtype = "Contact"
+	max_stage = 4
+	affected_species = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_DIONA, SPECIES_UNATHI)
+
+/datum/disease2/disease/zombievirus/New()
+	..()
+	antigen = list(pick(ALL_ANTIGENS))
+	var/datum/disease2/effect/concealment/E1 = new()
+	E1.stage = 1
+	E1.chance = 100
+	effects += E1
+	var/datum/disease2/effect/aggressive/E2 = new()
+	E2.stage = 2
+	E2.chance = 50
+	effects += E2
+	var/datum/disease2/effect/click/E3 = new()
+	E3.stage = 3
+	E3.chance = 35
+	effects += E3
+	var/datum/disease2/effect/zombie/E4 = new()
+	E4.stage = 4
+	E4.chance = 80
+	effects += E4
+
+/datum/ictus/zombievirus/start()
+	var/list/candidates = list()	//list of candidate keys
+	for(var/mob/living/carbon/human/G in GLOB.player_list)
+		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))
+			candidates += G
+
+	if(!candidates.len)
+		return
+
+	var/datum/disease2/disease/zombievirus/D = new
+	var/mob/living/carbon/human/candidate = pick_n_take(candidates)
+
+	if(candidate.species.name in D.affected_species)
+		infect_virus2(candidate,D,1)

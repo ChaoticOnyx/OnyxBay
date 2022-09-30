@@ -63,6 +63,7 @@
 		/datum/ictus/fake_gbs,
 		/datum/ictus/nuclear,
 		/datum/ictus/fluspanish,
-		/datum/ictus/emp)
+		/datum/ictus/emp,
+		/datum/ictus/zombievirus)
 
 	new next_outbreak

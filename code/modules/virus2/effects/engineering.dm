@@ -21,6 +21,26 @@
 	mob.visible_message(SPAN_WARNING("Bees fly out of [mob]'s throat when [G.he] coughs!"),
 						SPAN_DANGER("Bees fly out of your throat when you cough!"))
 
+/datum/disease2/effect/concealment
+	name = "Сoncealment syndrome"
+	stage = 1
+	badness = VIRUS_ENGINEERED
+
+/datum/disease2/effect/concealment/generate(c_data)
+	if(c_data)
+		data = c_data
+	else
+		data = pick(ALL_ANTIGENS)
+
+/datum/disease2/effect/concealment/change_parent()
+	parent_disease.antigen = list()
+
+/datum/disease2/effect/concealment/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
+	var/list/antibodies_in_common = mob.antibodies & data
+	if(antibodies_in_common.len)
+		parent_disease.cure()
 
 ////////////////////////STAGE 2/////////////////////////////////
 
@@ -334,3 +354,14 @@
 	infect_virus2(mob, D, 1)
 	if(parent_disease) // what the fuck? If virus must be changed and you created a new one, THAN DELETE OLD VIRUS, BIGOTS!
 		QDEL_NULL(parent_disease)
+
+/datum/disease2/effect/zombie
+	name = "HQ41"
+	stage = 4
+	badness = VIRUS_ENGINEERED
+	oneshot = 1
+
+/datum/disease2/effect/zombie/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
+	mob.zombify()
