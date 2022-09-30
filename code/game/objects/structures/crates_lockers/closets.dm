@@ -411,6 +411,18 @@
 			attach_door(C)
 			return
 
+		if(istype(W.loc, /obj/item/gripper)) // It's kinda tricky, see drone_items.dm L#313 for grippers' resolve_attackby().
+			var/obj/item/gripper/G = W.loc
+			if(!W.wrapped)
+				return
+			W.wrapped.forceMove(loc)
+			W.wrapped = null
+			W.pixel_x = 0
+			W.pixel_y = 0
+			W.pixel_z = 0
+			W.pixel_w = 0
+			return
+
 		if(usr.drop(W, loc))
 			W.pixel_x = 0
 			W.pixel_y = 0

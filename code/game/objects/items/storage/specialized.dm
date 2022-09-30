@@ -64,89 +64,87 @@
 
 	allow_quick_empty = 1 // this function is superceded
 	use_to_pickup = 1
-	New()
-		..()
-		//verbs -= /obj/item/storage/verb/quick_empty
-		//verbs += /obj/item/storage/sheetsnatcher/quick_empty
 
-	can_be_inserted(obj/item/W, mob/user, stop_messages = 0)
-		if(!istype(W,/obj/item/stack/material))
-			if(!stop_messages)
-				to_chat(user, "The snatcher does not accept [W].")
-			return 0
-		var/current = 0
-		for(var/obj/item/stack/material/S in contents)
-			current += S.amount
-		if(capacity == current)//If it's full, you're done
-			if(!stop_messages)
-				to_chat(user, "<span class='warning'>The snatcher is full.</span>")
-			return 0
-		return 1
+/obj/item/storage/sheetsnatcher/can_be_inserted(obj/item/W, mob/user, stop_messages = 0)
+	if(!istype(W,/obj/item/stack/material))
+		if(!stop_messages)
+			to_chat(user, "The snatcher does not accept [W].")
+		return 0
+	var/current = 0
+	for(var/obj/item/stack/material/S in contents)
+		current += S.amount
+	if(capacity == current)//If it's full, you're done
+		if(!stop_messages)
+			to_chat(user, "<span class='warning'>The snatcher is full.</span>")
+		return 0
+	return 1
 
 
 // Modified handle_item_insertion.  Would prefer not to, but...
-	handle_item_insertion(obj/item/W, prevent_warning = 0)
-		var/obj/item/stack/material/S = W
-		if(!istype(S)) return 0
+/obj/item/storage/sheetsnatcher/handle_item_insertion(obj/item/W, prevent_warning = 0)
+	var/obj/item/stack/material/S = W
+	if(!istype(S))
+		return 0
 
-		var/amount
-		var/inserted = 0
-		var/current = 0
-		for(var/obj/item/stack/material/S2 in contents)
-			current += S2.amount
-		if(capacity < current + S.amount)//If the stack will fill it up
-			amount = capacity - current
-		else
-			amount = S.amount
+	var/amount
+	var/inserted = 0
+	var/current = 0
+	for(var/obj/item/stack/material/S2 in contents)
+		current += S2.amount
+	if(capacity < current + S.amount)//If the stack will fill it up
+		amount = capacity - current
+	else
+		amount = S.amount
 
-		for(var/obj/item/stack/material/sheet in contents)
-			if(S.type == sheet.type) // we are violating the amount limitation because these are not sane objects
-				sheet.amount += amount	// they should only be removed through procs in this file, which split them up.
-				S.amount -= amount
-				inserted = 1
-				break
+	for(var/obj/item/stack/material/sheet in contents)
+		if(S.type == sheet.type) // we are violating the amount limitation because these are not sane objects
+			sheet.amount += amount	// they should only be removed through procs in this file, which split them up.
+			S.amount -= amount
+			inserted = 1
+			break
 
-		if((!inserted || !S.amount) && usr.drop(S, src))
-			if(!S.amount)
-				qdel(S)
-			usr.update_icons()	//update our overlays
+	if((!inserted || !S.amount) && usr.drop(S, src))
+		if(!S.amount)
+			qdel(S)
+		usr.update_icons()	//update our overlays
 
-		prepare_ui(usr)
-		update_icon()
-		return 1
+	prepare_ui(usr)
+	update_icon()
+	return 1
 
 // Modified quick_empty verb drops appropriate sized stacks
-	quick_empty()
-		var/location = get_turf(src)
-		for(var/obj/item/stack/material/S in contents)
-			while(S.amount)
-				var/obj/item/stack/material/N = new S.type(location)
-				var/stacksize = min(S.amount,N.max_amount)
-				N.amount = stacksize
-				S.amount -= stacksize
-			if(!S.amount)
-				qdel(S) // todo: there's probably something missing here
-		prepare_ui()
-		if(usr.s_active)
-			usr.s_active.show_to(usr)
-		update_icon()
+/obj/item/storage/sheetsnatcher/quick_empty()
+	var/location = get_turf(src)
+	for(var/obj/item/stack/material/S in contents)
+		while(S.amount)
+			var/obj/item/stack/material/N = new S.type(location)
+			var/stacksize = min(S.amount,N.max_amount)
+			N.amount = stacksize
+			S.amount -= stacksize
+		if(!S.amount)
+			qdel(S) // todo: there's probably something missing here
+	prepare_ui()
+	if(usr.s_active)
+		usr.s_active.show_to(usr)
+	update_icon()
 
 // Instead of removing
-	remove_from_storage(obj/item/W as obj, atom/new_location)
-		var/obj/item/stack/material/S = W
-		if(!istype(S)) return 0
+/obj/item/storage/sheetsnatcher/remove_from_storage(obj/item/W as obj, atom/new_location)
+	var/obj/item/stack/material/S = W
+	if(!istype(S))
+		return 0
 
-		//I would prefer to drop a new stack, but the item/attack_hand code
-		// that calls this can't recieve a different object than you clicked on.
-		//Therefore, make a new stack internally that has the remainder.
-		// -Sayu
+	//I would prefer to drop a new stack, but the item/attack_hand code
+	// that calls this can't recieve a different object than you clicked on.
+	//Therefore, make a new stack internally that has the remainder.
+	// -Sayu
 
-		if(S.amount > S.max_amount)
-			var/obj/item/stack/material/temp = new S.type(src)
-			temp.amount = S.amount - S.max_amount
-			S.amount = S.max_amount
+	if(S.amount > S.max_amount)
+		var/obj/item/stack/material/temp = new S.type(src)
+		temp.amount = S.amount - S.max_amount
+		S.amount = S.max_amount
 
-		return ..(S,new_location)
+	return ..(S,new_location)
 
 // -----------------------------
 //    Sheet Snatcher (Cyborg)
