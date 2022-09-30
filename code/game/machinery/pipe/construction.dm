@@ -811,23 +811,7 @@ Buildable meters
 		if(PIPE_JUNCTION_WALL_RADIATOR_LEFT)
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/left/P = new ( src.loc )
 			P.set_dir(src.dir)
-			switch (P.dir)
-				if (SOUTH)
-					P.initialize_directions_he = WEST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=-13
-				if (NORTH)
-					P.initialize_directions_he = WEST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=13
-				if (EAST)
-					P.initialize_directions_he = SOUTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=-2
-				if (WEST)
-					P.initialize_directions_he = SOUTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=2
+			P.set_wall_radiator_dirs()
 			P.atmos_init()
 			//I CANT MAKE IT BETTER
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/HE
@@ -856,23 +840,7 @@ Buildable meters
 		if(PIPE_JUNCTION_WALL_RADIATOR_RIGHT)
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/wall_radiator/right/P = new ( src.loc )
 			P.set_dir(src.dir)
-			switch (P.dir)
-				if (SOUTH)
-					P.initialize_directions_he = EAST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=-13
-				if (NORTH)
-					P.initialize_directions_he = EAST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=13
-				if (EAST)
-					P.initialize_directions_he = NORTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=-2
-				if (WEST)
-					P.initialize_directions_he = NORTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=2
+			P.set_wall_radiator_dirs()
 			P.atmos_init()
 			//I CANT MAKE IT BETTER
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/HE
@@ -901,23 +869,7 @@ Buildable meters
 		if(PIPE_HE_WALL_RADIATOR)
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/wall_radiator/P = new ( src.loc )
 			P.set_dir(src.dir)
-			switch (P.dir)
-				if (SOUTH)
-					P.initialize_directions_he = WEST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=-13
-				if (NORTH)
-					P.initialize_directions_he = WEST
-					P.initialize_directions = EAST|WEST
-					P.pixel_y=13
-				if (EAST)
-					P.initialize_directions_he = SOUTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=-2
-				if (WEST)
-					P.initialize_directions_he = SOUTH
-					P.initialize_directions = SOUTH|NORTH
-					P.pixel_x=2
+			P.set_wall_radiator_dirs()
 			P.atmos_init()
 
 			//I CANT MAKE IT BETTER
