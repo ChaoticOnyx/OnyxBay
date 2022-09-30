@@ -506,11 +506,11 @@
 	set category = "Abilities"
 
 	if (last_special > world.time)
-		to_chat(src, "<span class='warning'>You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds.</span>")
+		to_chat(src, SPAN_WARNING("You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
 		return
 
 	if (incapacitated())
-		to_chat(src, "<span class='warning'>You can't do that while you're incapacitated!</span>")
+		to_chat(src, SPAN_WARNING("You can't do that while you're incapacitated!"))
 		return
 
 	var/mob/living/target
@@ -519,15 +519,15 @@
 			target = L
 			break
 	if (!target)
-		to_chat(src, "<span class='warning'>You aren't on top of a victim!</span>")
+		to_chat(src, SPAN_WARNING("You aren't on top of a victim!"))
 		return
 
 	last_special = world.time + 5 SECONDS
 
-	src.visible_message("<span class='danger'>\The [src] hunkers down over \the [target], tearing into their flesh.</span>")
+	src.visible_message(SPAN_DANGER("\The [src] hunkers down over \the [target], tearing into their flesh."))
 	if(do_mob(src, target, 5 SECONDS))
-		to_chat(target,"<span class='danger'>\The [src] scrapes your flesh from your bones!</span>")
-		to_chat(src,"<span class='danger'>You feed hungrily off \the [target]'s flesh.</span>")
+		to_chat(target, SPAN_DANGER("\The [src] scrapes your flesh from your bones!"))
+		to_chat(src, SPAN_DANGER("You feed hungrily off \the [target]'s flesh."))
 		target.adjustBruteLoss(25)
 		if(ishuman(target))
 			for(var/ID in src.virus2)
