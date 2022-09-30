@@ -190,16 +190,16 @@
 //The stop_warning parameter will stop the insertion message from being displayed. It is intended for cases where you are inserting multiple items at once,
 //such as when picking up all the items on a tile with one click.
 /obj/item/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, NoUpdate = 0)
-	if(!istype(W))
-		return 0
+	if(QDELETED(W))
+		return FALSE
 	if(ismob(W.loc))
 		var/mob/M = W.loc
-		if(!M.drop(W, src))
-			return
+		if(!M.drop(W))
+			return FALSE
+	W.forceMove(src)
 	W.on_enter_storage(src)
 	if(usr)
 		add_fingerprint(usr)
-
 		if(!prevent_warning)
 			for(var/mob/M in viewers(usr, null))
 				if (M == usr)
@@ -212,11 +212,11 @@
 		if(!NoUpdate)
 			update_ui_after_item_insertion()
 
-	if(src.use_sound)
-		playsound(src.loc, src.use_sound, 50, 1, -5)
+	if(use_sound)
+		playsound(loc, use_sound, 50, 1, -5)
 
 	update_icon()
-	return 1
+	return TRUE
 
 /obj/item/storage/proc/update_ui_after_item_insertion()
 	prepare_ui()
