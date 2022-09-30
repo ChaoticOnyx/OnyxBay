@@ -405,7 +405,11 @@
 				return FALSE
 			if(cdoor)
 				return FALSE
-			if(!user.drop(C))
+			if(istype(C.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
+				var/obj/item/gripper/G = C.loc
+				G.wrapped.forceMove(get_turf(src))
+				G.wrapped = null
+			else if(!user.drop(C))
 				return
 			user.visible_message(SPAN_NOTICE("[user] connected [C] to [src]."))
 			attach_door(C)

@@ -58,8 +58,6 @@
 		if(rigged)
 			if(istype(W.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
 				var/obj/item/gripper/G = W.loc
-				if(!G.wrapped)
-					return
 				G.wrapped.forceMove(src)
 				G.wrapped = null
 			else if(!user.drop(W, src))
