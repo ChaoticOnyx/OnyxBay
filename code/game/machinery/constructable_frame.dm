@@ -106,9 +106,9 @@
 
 /obj/machinery/constructable_frame/machine_frame/proc/add_board(obj/item/circuitboard/C, mob/user)
 	if(C.board_type == "machine")
+		if(!user.drop(C, src))
+			return
 		circuit = C
-		user.drop_item()
-		C.forceMove(src)
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN("notice"," You add \the [C] to \the [src]."))
 		state = STAGE_COMPONENTS
@@ -149,12 +149,11 @@
 					req_components[component] -= samt
 					update_desc()
 					break
-			user.drop_item()
-			I.forceMove(src)
-			LAZYADD(components, I)
-			req_components[component] -= 1 // TO-DO: add an ability to add components via RPED. - Max
-			update_desc()
-			break
+			if(user.drop(I, src))
+				LAZYADD(components, I)
+				req_components[component] -= 1 // TO-DO: add an ability to add components via RPED. - Max
+				update_desc()
+				break
 	to_chat(user, desc)
 	if(I && I.loc != src && !istype(I, /obj/item/stack))
 		to_chat(user, SPAN("warning", "You cannot add \the [I] to \the [src]!"))
