@@ -3,10 +3,7 @@
 
 /obj/item/combotool/hand_drill
 	name = "hand drill"
-	desc = ""
-	description_info = ""
-	description_fluff = ""
-	description_antag = ""
+	desc = "Light industrial tool used to screw and wrench stuff. Just don't stick it into someones eye!"
 	hitsound = 'sound/items/drill_hit.ogg'
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "drill"
@@ -42,10 +39,13 @@
 	return
 
 /obj/item/combotool/hand_drill/sindi
-	desc = "wzhzhzh"
 	icon_state = "drill_sindi"
 	item_state = "hdrill_sindi"
-	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 2)
+
+/obj/item/combotool/hand_drill/sindi/Initialize()
+	. = ..()
+	desc += SPAN("danger", "\nwzhzhzh")
+	LAZYADDASSOC(origin_tech, TECH_ILLEGAL, 2)
 
 #undef DRILL_SCREW
 #undef DRILL_WRENCH

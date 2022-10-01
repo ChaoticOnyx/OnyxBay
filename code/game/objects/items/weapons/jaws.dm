@@ -3,10 +3,7 @@
 
 /obj/item/combotool/jaws_of_life
 	name = "jaws of life"
-	desc = ""
-	description_info = ""
-	description_fluff = ""
-	description_antag = ""
+	desc = "Heavy-duty tool with beak-like tip, which can be used as wirecutters or crowbar."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "jaws"
 	item_state = "jaws"
@@ -39,10 +36,13 @@
 	return
 
 /obj/item/combotool/jaws_of_life/sindi
-	desc = "It looks kinda SUS."
 	icon_state = "jaws_sindi"
 	item_state = "jaws_sindi"
-	origin_tech = list(TECH_ENGINEERING = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 2)
+
+/obj/item/combotool/jaws_of_life/sindi/Initialize()
+	. = ..()
+	desc += SPAN("danger", "\nIt looks kinda SUS.")
+	LAZYADDASSOC(origin_tech, TECH_ILLEGAL, 2)
 
 #undef JAWS_CROWBAR
 #undef JAWS_CUTTERS

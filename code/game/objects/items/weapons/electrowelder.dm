@@ -1,6 +1,6 @@
 /obj/item/weldingtool/electrowelder
 	name = "electronic welding tool"
-	desc = ""
+	desc = "A heavy but portable welding gun with its own interchangeable powercell. Can be charged in nearest recharger."
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "exwelder"
 	item_state = "exwelder"
@@ -120,4 +120,8 @@
 
 /obj/item/weldingtool/electrowelder/sindi
 	icon_state = "exwelder_sindi"
-	origin_tech = list(TECH_ENGINEERING = 4, TECH_POWER = 3, TECH_ILLEGAL = 2)
+
+/obj/item/weldingtool/electrowelder/sindi/Initialize()
+	. = ..()
+	desc += SPAN("danger", "\nS-shaped logo on \the handle of this tool looks a bit suspicious!")
+	LAZYADDASSOC(origin_tech, TECH_ILLEGAL, 2)
