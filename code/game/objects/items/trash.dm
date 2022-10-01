@@ -215,8 +215,8 @@
 			dishestoadd += i
 
 		if((length(stack) + length(dishestoadd)) < max_stack)
-			user.drop_item()
-			dish.forceMove(src)
+			if(!user.drop(dish, src))
+				return
 			dish.stack.Cut()
 			dish.update_icon()
 			stack += dishestoadd

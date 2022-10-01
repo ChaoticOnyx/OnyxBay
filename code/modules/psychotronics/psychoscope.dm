@@ -672,10 +672,8 @@
 		if(cell_panel_opened && !bcell)
 			if(!do_after(user, 10, user, FALSE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
 				return
-
 			visible_message("[user] inserts \the [I] in \the [src]")
-			user.unEquip(I)
-			I.forceMove(src)
+			user.drop(I, src)
 			bcell = I
 		else
 			to_chat(user, SPAN_NOTICE("Open the battery panel before."))

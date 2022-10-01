@@ -28,10 +28,8 @@
 
 
 /obj/structure/janitorialcart/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/storage/bag/trash) && !mybag)
-		user.drop_item()
+	if(istype(I, /obj/item/storage/bag/trash) && !mybag && user.drop(I, src))
 		mybag = I
-		I.loc = src
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
@@ -45,34 +43,28 @@
 				to_chat(user, "<span class='notice'>You wet [I] in [src].</span>")
 				playsound(loc, 'sound/effects/slosh.ogg', 25, 1)
 				return
-		if(!mymop)
-			user.drop_item()
+		if(!mymop && user.drop(I, src))
 			mymop = I
-			I.loc = src
 			update_icon()
 			updateUsrDialog()
 			to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
-	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray)
-		user.drop_item()
+	else if(istype(I, /obj/item/reagent_containers/spray) && !myspray && user.drop(I, src))
 		myspray = I
-		I.loc = src
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
-	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer)
-		user.drop_item()
+	else if(istype(I, /obj/item/device/lightreplacer) && !myreplacer && user.drop(I, src))
 		myreplacer = I
-		I.loc = src
 		update_icon()
 		updateUsrDialog()
 		to_chat(user, "<span class='notice'>You put [I] into [src].</span>")
 
 	else if(istype(I, /obj/item/caution))
 		if(signs < 4)
-			user.drop_item()
-			I.loc = src
+			if(!user.drop(I, src))
+				return
 			signs++
 			update_icon()
 			updateUsrDialog()
@@ -119,30 +111,45 @@
 		switch(href_list["take"])
 			if("garbage")
 				if(mybag)
-					user.put_in_hands(mybag)
-					to_chat(user, "<span class='notice'>You take [mybag] from [src].</span>")
+					mybag.forceMove(loc)
+					if(user.put_in_hands(mybag))
+						to_chat(user, SPAN("notice", "You take [mybag] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [mybag] from [src]."))
 					mybag = null
 			if("mop")
 				if(mymop)
-					user.put_in_hands(mymop)
-					to_chat(user, "<span class='notice'>You take [mymop] from [src].</span>")
+					mymop.forceMove(loc)
+					if(user.put_in_hands(mymop))
+						to_chat(user, SPAN("notice", "You take [mymop] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [mymop] from [src]."))
 					mymop = null
 			if("spray")
 				if(myspray)
-					user.put_in_hands(myspray)
-					to_chat(user, "<span class='notice'>You take [myspray] from [src].</span>")
+					myspray.forceMove(loc)
+					if(user.put_in_hands(myspray))
+						to_chat(user, SPAN("notice", "You take [myspray] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [myspray] from [src]."))
 					myspray = null
 			if("replacer")
 				if(myreplacer)
-					user.put_in_hands(myreplacer)
-					to_chat(user, "<span class='notice'>You take [myreplacer] from [src].</span>")
+					myreplacer.forceMove(loc)
+					if(user.put_in_hands(myreplacer))
+						to_chat(user, SPAN("notice", "You take [myreplacer] from [src]."))
+					else
+						to_chat(user, SPAN("notice", "You drop [myreplacer] from [src]."))
 					myreplacer = null
 			if("sign")
 				if(signs)
 					var/obj/item/caution/Sign = locate() in src
 					if(Sign)
-						user.put_in_hands(Sign)
-						to_chat(user, "<span class='notice'>You take \a [Sign] from [src].</span>")
+						Sign.forceMove(loc)
+						if(user.put_in_hands(Sign))
+							to_chat(user, SPAN("notice", "You take \a [Sign] from [src]."))
+						else
+							to_chat(user, SPAN("notice", "You drop \a [Sign] from [src]."))
 						signs--
 					else
 						warning("[src] signs ([signs]) didn't match contents")
@@ -205,16 +212,14 @@
 			to_chat(user, "<span class='notice'>This [callme] is out of water!</span>")
 	else if(istype(I, /obj/item/key))
 		to_chat(user, "Hold [I] in one of your hands while you drive this [callme].")
-	else if(istype(I, /obj/item/storage/bag/trash))
+	else if(istype(I, /obj/item/storage/bag/trash) && !mybag && user.drop(I, src))
 		to_chat(user, "<span class='notice'>You hook the trashbag onto the [callme].</span>")
-		user.drop_item()
-		I.loc = src
 		mybag = I
 
 
 /obj/structure/bed/chair/janicart/attack_hand(mob/user)
 	if(mybag)
-		mybag.loc = get_turf(user)
+		mybag.forceMove(get_turf(user))
 		user.put_in_hands(mybag)
 		mybag = null
 	else

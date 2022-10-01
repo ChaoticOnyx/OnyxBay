@@ -88,9 +88,9 @@
 		move_into_gibber(user, G.affecting)
 		G.delete_self()
 	else if(istype(W, /obj/item/organ))
-		user.drop_from_inventory(W)
-		qdel(W)
-		user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
+		if(user.drop(W))
+			qdel(W)
+			user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
 	else
 		return ..()
 

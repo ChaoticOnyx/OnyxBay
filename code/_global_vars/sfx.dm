@@ -1272,28 +1272,6 @@ GLOBAL_LIST_INIT(sfx_list, list(
 		'sound/effects/throwing/swoosh3.ogg',
 		'sound/effects/throwing/swoosh4.ogg'
 	),
-	SFX_DISTANT_MOVEMENT = list(
-		'sound/effects/footstep/distant/distant1.ogg',
-		'sound/effects/footstep/distant/distant2.ogg',
-		'sound/effects/footstep/distant/distant3.ogg',
-		'sound/effects/footstep/distant/distant4.ogg',
-		'sound/effects/footstep/distant/distant5.ogg',
-		'sound/effects/footstep/distant/distant6.ogg',
-		'sound/effects/footstep/distant/distant7.ogg',
-		'sound/effects/footstep/distant/distant8.ogg',
-		'sound/effects/footstep/distant/distant9.ogg',
-		'sound/effects/footstep/distant/distant10.ogg',
-		'sound/effects/footstep/distant/distant11.ogg',
-		'sound/effects/footstep/distant/distant12.ogg',
-		'sound/effects/footstep/distant/distant13.ogg',
-		'sound/effects/footstep/distant/distant14.ogg',
-		'sound/effects/footstep/distant/distant15.ogg',
-		'sound/effects/footstep/distant/distant16.ogg',
-		'sound/effects/footstep/distant/distant17.ogg',
-		'sound/effects/footstep/distant/distant18.ogg',
-		'sound/effects/footstep/distant/distant19.ogg',
-		'sound/effects/footstep/distant/distant20.ogg'
-	),
 	SFX_DISPOSAL = list(
 		'sound/effects/using/disposal/drop1.ogg',
 		'sound/effects/using/disposal/drop2.ogg',
@@ -1316,5 +1294,97 @@ GLOBAL_LIST_INIT(sfx_list, list(
 	SFX_GEIGER_VERY_HIGH = list(
 		'sound/effects/geiger/geiger_very_high_1.ogg',
 		'sound/effects/geiger/geiger_very_high_2.ogg'
+	),
+	// FOOTSTEPS
+	SFX_DISTANT_MOVEMENT = list(
+		'sound/effects/footstep/distant/distant1.ogg',
+		'sound/effects/footstep/distant/distant2.ogg',
+		'sound/effects/footstep/distant/distant3.ogg',
+		'sound/effects/footstep/distant/distant4.ogg',
+		'sound/effects/footstep/distant/distant5.ogg',
+		'sound/effects/footstep/distant/distant6.ogg',
+		'sound/effects/footstep/distant/distant7.ogg',
+		'sound/effects/footstep/distant/distant8.ogg',
+		'sound/effects/footstep/distant/distant9.ogg',
+		'sound/effects/footstep/distant/distant10.ogg',
+		'sound/effects/footstep/distant/distant11.ogg',
+		'sound/effects/footstep/distant/distant12.ogg',
+		'sound/effects/footstep/distant/distant13.ogg',
+		'sound/effects/footstep/distant/distant14.ogg',
+		'sound/effects/footstep/distant/distant15.ogg',
+		'sound/effects/footstep/distant/distant16.ogg',
+		'sound/effects/footstep/distant/distant17.ogg',
+		'sound/effects/footstep/distant/distant18.ogg',
+		'sound/effects/footstep/distant/distant19.ogg',
+		'sound/effects/footstep/distant/distant20.ogg'
+	),
+	SFX_FOOTSTEP_WOOD = list(
+		'sound/effects/footstep/wood1.ogg',
+		'sound/effects/footstep/wood2.ogg',
+		'sound/effects/footstep/wood3.ogg',
+		'sound/effects/footstep/wood4.ogg',
+		'sound/effects/footstep/wood5.ogg'
+	),
+	SFX_FOOTSTEP_TILES = list(
+		'sound/effects/footstep/floor1.ogg',
+		'sound/effects/footstep/floor2.ogg',
+		'sound/effects/footstep/floor3.ogg',
+		'sound/effects/footstep/floor4.ogg',
+		'sound/effects/footstep/floor5.ogg'
+	),
+	SFX_FOOTSTEP_PLATING = list(
+		'sound/effects/footstep/plating1.ogg',
+		'sound/effects/footstep/plating2.ogg',
+		'sound/effects/footstep/plating3.ogg',
+		'sound/effects/footstep/plating4.ogg',
+		'sound/effects/footstep/plating5.ogg'
+	),
+	SFX_FOOTSTEP_CARPET = list(
+		'sound/effects/footstep/carpet1.ogg',
+		'sound/effects/footstep/carpet2.ogg',
+		'sound/effects/footstep/carpet3.ogg',
+		'sound/effects/footstep/carpet4.ogg',
+		'sound/effects/footstep/carpet5.ogg'
+	),
+	SFX_FOOTSTEP_ASTEROID = list(
+		'sound/effects/footstep/asteroid1.ogg',
+		'sound/effects/footstep/asteroid2.ogg',
+		'sound/effects/footstep/asteroid3.ogg',
+		'sound/effects/footstep/asteroid4.ogg',
+		'sound/effects/footstep/asteroid5.ogg'
+	),
+	SFX_FOOTSTEP_SNOW = list(
+		'sound/effects/footstep/snow1.ogg',
+		'sound/effects/footstep/snow2.ogg',
+		'sound/effects/footstep/snow3.ogg',
+		'sound/effects/footstep/snow4.ogg',
+		'sound/effects/footstep/snow5.ogg',
+		'sound/effects/footstep/snow6.ogg'
+	),
+	SFX_FOOTSTEP_GRASS = list(
+		'sound/effects/footstep/grass1.ogg',
+		'sound/effects/footstep/grass2.ogg',
+		'sound/effects/footstep/grass3.ogg',
+		'sound/effects/footstep/grass4.ogg'
+	),
+	SFX_FOOTSTEP_WATER = list(
+		'sound/effects/footstep/water1.ogg',
+		'sound/effects/footstep/water2.ogg',
+		'sound/effects/footstep/water3.ogg',
+		'sound/effects/footstep/water4.ogg'
+	),
+	SFX_FOOTSTEP_BLANK = list(
+		'sound/effects/footstep/blank.ogg'
+	),
+	SFX_FOOTSTEP_ROBOT_LEGS = list(
+		'sound/effects/robot_footstep/legs01.ogg',
+		'sound/effects/robot_footstep/legs02.ogg',
+		'sound/effects/robot_footstep/legs03.ogg',
+		'sound/effects/robot_footstep/legs04.ogg'
+	),
+	SFX_FOOTSTEP_ROBOT_SPIDER = list(
+		'sound/effects/robot_footstep/spider01.ogg',
+		'sound/effects/robot_footstep/spider02.ogg',
+		'sound/effects/robot_footstep/spider03.ogg'
 	)
 ))

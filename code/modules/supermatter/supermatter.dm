@@ -416,7 +416,7 @@
 
 /obj/machinery/power/supermatter/Destroy()
 	qdel(rad_source)
-	
+
 	. = ..()
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
@@ -487,7 +487,7 @@
 		"<span class=\"danger\">You touch \the [W] to \the [src] when everything suddenly goes silent.\"</span>\n<span class=\"notice\">\The [W] flashes into dust as you flinch away from \the [src].</span>",\
 		"<span class=\"warning\">Everything suddenly goes silent.</span>")
 
-	user.drop_from_inventory(W)
+	user.drop(W, force = TRUE)
 	Consume(W)
 
 	user.rad_act(new /datum/radiation_source(new /datum/radiation/preset/supermatter(4), src))

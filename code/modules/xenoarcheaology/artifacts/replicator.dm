@@ -122,11 +122,11 @@
 
 	show_browser(user, dat, "window=alien_replicator")
 
-/obj/machinery/replicator/attackby(obj/item/W as obj, mob/living/user as mob)
-	user.drop_item()
-	W.forceMove(src)
+/obj/machinery/replicator/attackby(obj/item/W, mob/living/user)
+	if(!user.drop(W, src))
+		return
 	stored_materials.Add(W)
-	src.visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
+	visible_message("<span class='notice'>\The [user] inserts \the [W] into \the [src].</span>")
 
 /obj/machinery/replicator/OnTopic(user, href_list)
 	if(href_list["activate"])

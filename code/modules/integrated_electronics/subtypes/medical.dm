@@ -99,10 +99,8 @@
 		return
 
 	for(var/itype in surgery_items_type_list)
-		if(istype(O, itype))
+		if(istype(O, itype) && user.drop(O, src))
 			instrument = O
-			user.drop_item(O)
-			instrument.forceMove(src)
 			break
 	on_item_insert(instrument)
 	set_pin_data(IC_OUTPUT, 1, weakref(instrument))

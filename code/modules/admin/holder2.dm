@@ -16,7 +16,11 @@ var/list/admin_datums = list()
 	var/datum/feed_message/admincaster_feed_message = new /datum/feed_message   //These two will act as holders.
 	var/datum/feed_channel/admincaster_feed_channel = new /datum/feed_channel
 	var/admincaster_signature	//What you'll sign the newsfeeds as
+
+	// UI stuff
 	var/datum/follow_panel/follow_panel = new()
+	var/datum/events_panel/events_panel = new()
+	var/list/events_windows = list()
 
 /datum/admins/proc/marked_datum()
 	if(marked_datum_weak)

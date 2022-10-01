@@ -29,10 +29,9 @@
 			var/obj/item/new_item = summon_item(to_create)
 			var/obj/item/old_item = L.get_equipped_item(slot_id)
 			if(old_item)
-				L.drop_from_inventory(old_item, get_turf(L))
-				if(delete_old)
-					qdel(old_item)
-			L.equip_to_slot(new_item, slot_id)
+				user.replace_item(old_item, new_item, delete_old, TRUE)
+			else
+				L.equip_to_slot(new_item, slot_id)
 
 			summoned_items += new_item //we store it in a list to remove later
 	if(duration)
@@ -40,7 +39,7 @@
 			for(var/obj/item/to_remove in summoned_items)
 				if(istype(to_remove.loc, /mob))
 					var/mob/M = to_remove.loc
-					M.remove_from_mob(to_remove)
+					M.drop(to_remove)
 				qdel(to_remove)
 
 /datum/spell/targeted/equip_item/proc/summon_item(newtype)

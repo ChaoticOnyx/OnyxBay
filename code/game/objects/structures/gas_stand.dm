@@ -52,8 +52,8 @@
 	if(tank)
 		qdel(tank)
 	if(breather)
-		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
+		breather.drop(contained)
+		visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
 	qdel(contained)
 	contained = null
 	breather = null
@@ -175,12 +175,10 @@
 			to_chat(user, "<span class='warning'>\The [src] already has a tank installed!</span>")
 		else if(!is_loosen)
 			to_chat(user, "<span class='warning'>Loosen the nut with a wrench first.</span>")
-		else
-			user.drop_item()
-			W.forceMove(src)
+		else if(user.drop(W, src))
 			tank = W
 			user.visible_message("<span class='notice'>\The [user] attaches \the [tank] to \the [src].</span>", "<span class='notice'>You attach \the [tank] to \the [src].</span>")
-			src.add_fingerprint(user)
+			add_fingerprint(user)
 			update_icon()
 
 /obj/structure/gas_stand/_examine_text(mob/user)
@@ -199,12 +197,11 @@
 		if(!can_apply_to_target(breather))
 			if(tank)
 				tank.forceMove(src)
-			if (breather.wear_mask==contained)
-				breather.remove_from_mob(contained)
-				contained.forceMove(src)
+			if(breather.wear_mask == contained)
+				breather.drop(contained, src)
 			else
 				qdel(contained)
-				contained=new mask_type (src)
+				contained = new mask_type(src)
 			src.visible_message("<span class='notice'>\The [contained] slips to \the [src]!</span>")
 			breather = null
 			update_icon()
@@ -226,7 +223,7 @@
 			return
 	else
 		return
-	
+
 	set_next_think(world.time + 1 SECOND)
 
 /obj/structure/gas_stand/anesthetic

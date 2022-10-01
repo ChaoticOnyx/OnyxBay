@@ -27,7 +27,6 @@
 		return
 
 	if(istype(thing, /obj/item/pipe) && construction_stage == 3)
-		user.drop_from_inventory(thing)
 		qdel(thing)
 		user.visible_message("<span class='notice'>\The [user] jams \the [thing] into \the [src].</span>")
 		increment_construction_stage()
@@ -61,7 +60,6 @@
 
 	if(istype(thing, /obj/item/smes_coil) && construction_stage >= 6 && construction_stage <= 8)
 		user.visible_message("<span class='notice'>\The [user] installs \a [thing] into \the [src].</span>")
-		user.drop_from_inventory(thing)
 		qdel(thing)
 		increment_construction_stage()
 		return
@@ -74,7 +72,7 @@
 		var/mob/M = src.loc
 		if(istype(M))
 			put_in_hands = M == user
-			M.drop_from_inventory(src)
+			M.drop(src)
 		if(put_in_hands)
 			user.put_in_hands(coilgun)
 		qdel(src)

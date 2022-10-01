@@ -67,7 +67,7 @@
 			"<span class='danger'>\The [src] manages to remove \the [handcuffed]!</span>",
 			"<span class='notice'>You successfully remove \the [handcuffed].</span>"
 			)
-		drop_from_inventory(handcuffed)
+		drop(handcuffed, force = TRUE)
 
 /mob/living/carbon/proc/can_break_cuffs()
 	if(MUTATION_HULK in mutations)

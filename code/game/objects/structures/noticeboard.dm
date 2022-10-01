@@ -20,9 +20,10 @@
 /obj/structure/noticeboard/attackby(obj/item/O as obj, mob/user as mob)
 	if(istype(O, /obj/item/paper) || istype(O, /obj/item/photo))
 		if(notices < 5)
+			if(!user.drop(O, src))
+				return
 			O.add_fingerprint(user)
 			add_fingerprint(user)
-			user.drop_from_inventory(O,src)
 			notices++
 			icon_state = "nboard0[notices]"	//update sprite
 			to_chat(user, "<span class='notice'>You pin the paper to the noticeboard.</span>")

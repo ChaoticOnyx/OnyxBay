@@ -3,6 +3,7 @@
 	icon = 'icons/turf/flooring/frozenground.dmi'
 	icon_state = "frozen_ground"
 	temperature = 243.15 // -30C
+	footstep_sound = SFX_FOOTSTEP_SNOW
 
 /turf/unsimulated/floor/frozenground/is_plating()
 	return 1

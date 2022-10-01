@@ -18,7 +18,7 @@
 	return ..()
 
 /obj/item/slugegg/attack_self(mob/living/user)
-	user.drop_from_inventory(src)
+	user.drop(src)
 	squish()
 
 /obj/item/slugegg/HasProximity(atom/movable/AM)

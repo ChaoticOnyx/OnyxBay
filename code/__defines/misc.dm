@@ -76,6 +76,13 @@
 #define EVENT_LEVEL_MODERATE 2
 #define EVENT_LEVEL_MAJOR    3
 
+/// Weight as is.
+#define EVENT_OPTION_NORMAL          1
+/// Higher weight by `aggression_ratio` of storyteller character.
+#define EVENT_OPTION_AI_AGGRESSION   2
+/// Reverse of `EVENT_OPTION_AI_AGGRESSION`
+#define EVENT_OPTION_AI_AGGRESSION_R 3
+
 //General-purpose life speed define for plants.
 #define HYDRO_SPEED_MULTIPLIER 1
 

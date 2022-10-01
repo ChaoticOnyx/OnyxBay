@@ -581,7 +581,7 @@
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	user.drop_item(IC)
+	user.drop(IC)
 	add_component(IC)
 	IC.create_moved_event()
 	return TRUE
@@ -720,7 +720,7 @@
 			return
 
 	if(istype(I, /obj/item/integrated_circuit))
-		if(!user.canUnEquip(I))
+		if(!user.can_unequip(I))
 			return FALSE
 		if(try_add_component(I, user))
 			return TRUE
@@ -756,8 +756,7 @@
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
-		user.drop_item(I)
-		I.forceMove(src)
+		user.drop(I, src)
 		battery = I
 		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))
@@ -1119,11 +1118,11 @@
 	if(gotwallitem(T, ndir))
 		to_chat(user, SPAN_WARNING("There's already an item on this wall!"))
 		return
-	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
+	playsound(loc, 'sound/machines/click.ogg', 75, 1)
 	user.visible_message("[user.name] attaches [src] to the wall.",
 		SPAN_NOTICE("You attach [src] to the wall."),
 		SPAN_NOTICE("You hear clicking."))
-	if(user.unEquip(src,T))
+	if(user.drop(src, T))
 		var/rotation = 0
 		switch(ndir)
 			if(NORTH)

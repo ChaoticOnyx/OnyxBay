@@ -52,11 +52,11 @@
 				if(istype(P, /obj/item/circuitboard))
 					var/obj/item/circuitboard/B = P
 					if(B.board_type == "machine")
-						playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+						if(!user.drop(P, src))
+							return
+						playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 						to_chat(user, "<span class='notice'>You add the circuit board to the frame.</span>")
 						circuit = P
-						user.drop_item()
-						P.loc = src
 						icon_state = "box_2"
 						state = 3
 						components = list()
@@ -146,12 +146,11 @@
 											req_components[I] -= camt
 											update_desc()
 											break
-									user.drop_item()
-									P.loc = src
-									components.Add(P)
-									req_components[I]--
-									update_desc()
-									break
+									if(user.drop(P, src))
+										components.Add(P)
+										req_components[I]--
+										update_desc()
+										break
 							to_chat(user, desc)
 							if(P && P.loc != src && !istype(P, /obj/item/stack/cable_coil))
 								to_chat(user, "<span class='warning'>You cannot add that component to the machine!</span>")

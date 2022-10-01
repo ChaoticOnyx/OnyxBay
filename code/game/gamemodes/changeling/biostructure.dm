@@ -155,7 +155,7 @@
 				affected.internal_organs.Remove(src)
 				status |= ORGAN_CUT_AWAY
 		else
-			H.drop_from_inventory(src)
+			H.drop(src, force = TRUE)
 
 	else if(istype(source, /obj/item/organ/external))
 		var/obj/item/organ/external/E = source

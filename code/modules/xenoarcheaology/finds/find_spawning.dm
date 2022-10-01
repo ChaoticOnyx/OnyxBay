@@ -465,7 +465,7 @@
 /obj/item/archaeological_find/fossil/spawn_item()
 	var/list/candidates = list(/obj/item/fossil/bone=9,/obj/item/fossil/skull=3,
 	/obj/item/fossil/skull/horned=2)
-	var/spawn_type = pickweight(candidates)
+	var/spawn_type = util_pick_weight(candidates)
 	return new spawn_type(loc)
 
 /obj/item/archaeological_find/shell

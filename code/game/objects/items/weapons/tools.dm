@@ -326,7 +326,6 @@
 		if(tank)
 			to_chat(user, "<span class='notice'>You should detach \the [tank] first.</span>")
 			return
-		user.drop_from_inventory(W)
 		qdel(W)
 
 		if(istype(src.loc,/turf))
@@ -347,7 +346,8 @@
 			to_chat(user, "\The [W] is too large to fit in \the [src].")
 			return
 
-		user.drop_from_inventory(W, src)
+		if(!user.drop(W, src))
+			return
 		tank = W
 		user.visible_message("[user] slots \a [W] into \the [src].", "You slot \a [W] into \the [src].")
 		update_icon()

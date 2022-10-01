@@ -198,7 +198,20 @@
 #define SFX_TRR                     "trr"
 #define SFX_RADIO                   "radio"
 #define SFX_THROWING                "throwing"
-#define SFX_DISTANT_MOVEMENT        "distant_movement"
 #define SFX_DISPOSAL                "disposal"
+
+// FOOTSTEPS
+#define SFX_DISTANT_MOVEMENT        "distant_movement"
+#define SFX_FOOTSTEP_WOOD           "footstep_wood"
+#define SFX_FOOTSTEP_TILES          "footstep_tiles"
+#define SFX_FOOTSTEP_PLATING        "footstep_plating"
+#define SFX_FOOTSTEP_CARPET         "footstep_carpet"
+#define SFX_FOOTSTEP_ASTEROID       "footstep_asteroid"
+#define SFX_FOOTSTEP_SNOW           "footstep_snow"
+#define SFX_FOOTSTEP_GRASS          "footstep_grass"
+#define SFX_FOOTSTEP_WATER          "footstep_water"
+#define SFX_FOOTSTEP_BLANK          "footstep_blank"
+#define SFX_FOOTSTEP_ROBOT_LEGS     "footstep_robot_legs"
+#define SFX_FOOTSTEP_ROBOT_SPIDER   "footstep_robot_spider"
 
 #define GET_SFX(name) pick(GLOB.sfx_list[name])

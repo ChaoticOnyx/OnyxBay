@@ -158,8 +158,7 @@
 			to_chat(user, "<span class='warning'>There is already a [fueljar] inside!</span>")
 			return
 		fueljar = W
-		user.remove_from_mob(W)
-		W.loc = src
+		user.drop(W, src)
 		user.update_icons()
 		user.visible_message("[user.name] loads an [W.name] into the [src.name].", \
 				"You load an [W.name].", \
