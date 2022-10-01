@@ -19,7 +19,7 @@
 /obj/item/grenade/chem_grenade/Initialize()
 	. = ..()
 	if(stage != STAGE_READY)
-		QDELL_NULL(detonator) // Yea, we surely don't need it, if chemnade is not ready.
+		QDEL_NULL(detonator) // Yea, we surely don't need it, if chemnade is not ready.
 	create_reagents(1000)
 
 /obj/item/grenade/chem_grenade/attack_self(mob/user)
