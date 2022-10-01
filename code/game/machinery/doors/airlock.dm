@@ -682,7 +682,13 @@ About the new airlock wires panel:
 				return
 
 		else if(arePowerSystemsOn())
-			to_chat(user, SPAN("notice", "The airlock's motors resist your efforts to force it."))
+			if(!istype(C.loc, /obj/item/combotool/jaws_of_life))
+				to_chat(user, SPAN("notice", "The airlock's motors resist your efforts to force it."))
+			else // It's jaws then! Let's force this dumb airlock open! - Max
+				playsound(src, 'sound/items/jaws_pry.ogg', 100, 1)
+				if(do_after(user, 60, src) && !locked && !brace && density)
+					user.visible_message(SPAN("warning", "[user] forces \the [src] open!"), SPAN("notice", "You forced \the [src] open."))
+					open(1)
 		else if(locked)
 			to_chat(user, SPAN("notice", ">The airlock's bolts prevent it from being forced."))
 		else if(brace)
@@ -701,15 +707,6 @@ About the new airlock wires panel:
 			set_broken(TRUE)
 		else
 			return ..()
-
-	else if(istype(C, /obj/item/combotool/jaws_of_life) && !(stat & BROKEN) && user.a_intent != I_HURT) // We can't force open broken or bolted airlock. - Max
-		if(locked)
-			to_chat(user, SPAN("notice", "The airlock's bolts prevent it from being forced."))
-		else if(C:tool_c == "crowbar")
-			playsound(src, 'sound/items/jaws_pry.ogg', 100, 1)
-			if(do_after(user, 30, src) && !locked)
-				user.visible_message(SPAN("warning", "[user] forces \the [src] open!"), SPAN("notice", "You forced \the [src] open."))
-				density ? open(1) : close(1)
 
 	else if(istype(C, /obj/item/material/twohanded/fireaxe) && !arePowerSystemsOn())
 		if(locked)
