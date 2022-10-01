@@ -86,7 +86,7 @@
 "SR" = (/obj/effect/floor_decal/corner/green/three_quarters{dir = 8},/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_south)
 "TD" = (/obj/item/clothing/mask/snorkel,/obj/item/clothing/shoes/swimmingfins,/turf/simulated/floor/natural/jungle/water,/area/hydroponics/biodome)
 "TN" = (/obj/machinery/light{dir = 4; icon_state = "tube1"},/turf/simulated/floor/natural/jungle/water/edge{dir = 9},/area/hydroponics/biodome)
-"Ud" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/structure/disposalpipe/junction{dir = 8; icon_state = "pipe-j2"},/obj/effect/floor_decal/spline/plain/corner/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
+"Ud" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/structure/disposalpipe/junction{dir = 8; icon_state = "pipe-j2"},/obj/effect/floor_decal/spline/plain/corner/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "Ut" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/floor_decal/spline/plain/yellow{dir = 8},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "UD" = (/obj/structure/disposalpipe/segment{dir = 2; icon_state = "conpipe-c"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 10},/obj/effect/floor_decal/spline/plain/yellow{dir = 5},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "UO" = (/obj/effect/floor_decal/corner/green{dir = 9},/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/rough,/area/hallway/primary/frontier/ring_north)
@@ -100,7 +100,7 @@
 "XH" = (/obj/structure/disposalpipe/segment{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/obj/effect/floor_decal/spline/plain/yellow,/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 "XJ" = (/turf/simulated/wall,/area/hydroponics/biodome)
 "XM" = (/turf/simulated/floor/natural/jungle/water/corner{dir = 4},/area/hydroponics/biodome)
-"Zo" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 4},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
+"Zo" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/obj/structure/disposalpipe/segment{dir = 8},/obj/effect/floor_decal/spline/plain/corner/yellow{dir = 4},/obj/structure/cable/white{icon_state = "1-4"},/turf/simulated/floor/sand_floor,/area/hydroponics/biodome)
 
 (1,1,1) = {"
 lCIXKIKIKIblUXskskskfvoqKIKIKIzFPG
