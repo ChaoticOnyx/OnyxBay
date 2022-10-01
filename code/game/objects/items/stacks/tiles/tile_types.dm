@@ -82,6 +82,11 @@
 /obj/item/stack/tile/floor_rough/fifty
 	amount = 50
 
+/obj/item/stack/tile/floor_rough_old
+	name = "old steel rough floor tile"
+	singular_name = "old steel rough floor tile"
+	icon_state = "tile_rough"
+
 /obj/item/stack/tile/floor_white
 	name = "white floor tile"
 	singular_name = "white floor tile"
@@ -98,6 +103,11 @@
 
 /obj/item/stack/tile/floor_white_rough/fifty
 	amount = 50
+
+/obj/item/stack/tile/floor_white_rough_old
+	name = "old white rough floor tile"
+	singular_name = "old white rough floor tile"
+	icon_state = "tile_white_rough"
 
 /obj/item/stack/tile/floor_dark
 	name = "dark floor tile"
@@ -116,6 +126,11 @@
 /obj/item/stack/tile/floor_dark_rough/fifty
 	amount = 50
 
+/obj/item/stack/tile/floor_dark_rough_old
+	name = "old dark rough floor tile"
+	singular_name = "old dark rough floor tile"
+	icon_state = "fr_tile_rough"
+
 /obj/item/stack/tile/floor_brown
 	name = "brown floor tile"
 	singular_name = "brown floor tile"
@@ -131,6 +146,11 @@
 	icon_state = "tile_rough"
 	matter = list(MATERIAL_STEEL = 937.5)
 
+/obj/item/stack/tile/floor_mono_old
+	name = "old steel mono tile"
+	singular_name = "old steel mono tile"
+	icon_state = "tile_rough"
+
 /obj/item/stack/tile/floor_mono/fifty
 	amount = 50
 
@@ -143,6 +163,11 @@
 /obj/item/stack/tile/floor_mono_dark/fifty
 	amount = 50
 
+/obj/item/stack/tile/floor_mono_dark_old
+	name = "old dark mono tile"
+	singular_name = "old dark mono tile"
+	icon_state = "fr_tile_rough"
+
 /obj/item/stack/tile/floor_mono_white
 	name = "white mono tile"
 	singular_name = "white mono tile"
@@ -151,6 +176,11 @@
 
 /obj/item/stack/tile/floor_mono_white/fifty
 	amount = 50
+
+/obj/item/stack/tile/floor_mono_white_old
+	name = "old white mono tile"
+	singular_name = "oldwhite mono tile"
+	icon_state = "tile_white_rough"
 
 /obj/item/stack/tile/techfloor
 	name = "tech floor tile"

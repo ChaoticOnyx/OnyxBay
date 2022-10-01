@@ -147,6 +147,10 @@ var/list/flooring_types
 	icon_base = "steel_rough"
 	build_type = /obj/item/stack/tile/floor_rough
 
+/decl/flooring/tiling/rough_old
+	icon_base = "steel_rough_old"
+	build_type = /obj/item/stack/tile/floor_rough_old
+
 /decl/flooring/tiling/dirty
 	icon_base = "steel_dirty"
 
@@ -155,6 +159,10 @@ var/list/flooring_types
 
 /decl/flooring/tiling/mono
 	icon_base = "steel_mono"
+	build_type = /obj/item/stack/tile/floor_mono
+
+/decl/flooring/tiling/mono_old
+	icon_base = "steel_mono_old"
 	build_type = /obj/item/stack/tile/floor_mono
 
 /decl/flooring/tiling/white
@@ -166,9 +174,17 @@ var/list/flooring_types
 	icon_base = "white_mono"
 	build_type = /obj/item/stack/tile/floor_mono_white
 
+/decl/flooring/tiling/white/mono_old
+	icon_base = "white_mono_old"
+	build_type = /obj/item/stack/tile/floor_mono_white_old
+
 /decl/flooring/tiling/white/rough
 	icon_base = "white_rough"
 	build_type = /obj/item/stack/tile/floor_white_rough
+
+/decl/flooring/tiling/white/rough_old
+	icon_base = "white_rough_old"
+	build_type = /obj/item/stack/tile/floor_white_rough_old
 
 /decl/flooring/tiling/dark
 	desc = "How ominous."
@@ -179,9 +195,17 @@ var/list/flooring_types
 	icon_base = "dark_mono"
 	build_type = /obj/item/stack/tile/floor_mono_dark
 
+/decl/flooring/tiling/dark/mono_old
+	icon_base = "dark_mono_old"
+	build_type = /obj/item/stack/tile/floor_mono_dark_old
+
 /decl/flooring/tiling/dark/rough
 	icon_base = "dark_rough"
 	build_type = /obj/item/stack/tile/floor_dark_rough
+
+/decl/flooring/tiling/dark/rough_old
+	icon_base = "dark_rough_old"
+	build_type = /obj/item/stack/tile/floor_dark_rough_old
 
 /decl/flooring/tiling/brown
 	desc = "How sterile."

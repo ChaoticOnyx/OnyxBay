@@ -110,10 +110,21 @@
 	icon_state = "steel_rough"
 	initial_flooring = /decl/flooring/tiling/rough
 
+/turf/simulated/floor/tiled/rough_old
+	name = "old steel rough floor"
+	icon = 'icons/turf/flooring/tiles.dmi'
+	icon_state = "steel_rough_old"
+	initial_flooring = /decl/flooring/tiling/rough_old
+
 /turf/simulated/floor/tiled/mono
 	name = "steel mono floor"
 	icon_state = "steel_mono"
 	initial_flooring = /decl/flooring/tiling/mono
+
+/turf/simulated/floor/tiled/mono_old
+	name = "old steel mono floor"
+	icon_state = "steel_mono_old"
+	initial_flooring = /decl/flooring/tiling/mono_old
 
 /turf/simulated/floor/tiled/dark
 	name = "dark floor"
@@ -125,10 +136,20 @@
 	icon_state = "dark_rough"
 	initial_flooring = /decl/flooring/tiling/dark/rough
 
+/turf/simulated/floor/tiled/dark/rough_old
+	name = "old dark rough floor"
+	icon_state = "dark_rough_old"
+	initial_flooring = /decl/flooring/tiling/dark/rough_old
+
 /turf/simulated/floor/tiled/dark/mono
 	name = "dark mono floor"
 	icon_state = "dark_mono"
 	initial_flooring = /decl/flooring/tiling/dark/mono
+
+/turf/simulated/floor/tiled/dark/mono_old
+	name = "old dark mono floor"
+	icon_state = "dark_mono_old"
+	initial_flooring = /decl/flooring/tiling/dark/mono_old
 
 /turf/simulated/floor/tiled/dark/airless
 	initial_gas = null
@@ -143,10 +164,20 @@
 	icon_state = "white_rough"
 	initial_flooring = /decl/flooring/tiling/white/rough
 
+/turf/simulated/floor/tiled/white/rough_old
+	name = "old white rough floor"
+	icon_state = "white_rough_old"
+	initial_flooring = /decl/flooring/tiling/white/rough_old
+
 /turf/simulated/floor/tiled/white/mono
 	name = "white mono floor"
 	icon_state = "white_mono"
 	initial_flooring = /decl/flooring/tiling/white/mono
+
+/turf/simulated/floor/tiled/white/mono_old
+	name = "old white mono floor"
+	icon_state = "white_mono_old"
+	initial_flooring = /decl/flooring/tiling/white/mono_old
 
 /turf/simulated/floor/tiled/brown
 	name = "brown tile floor"
