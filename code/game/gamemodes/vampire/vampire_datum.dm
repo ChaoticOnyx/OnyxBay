@@ -1,5 +1,7 @@
 // Vampire and thrall datums. Contains the necessary information about a vampire.
 // Must be attached to a /datum/mind.
+#define isfakeliving(A) (A.status_flags & FAKELIVING)
+#define isundead(A) (A.status_flags & UNDEAD)
 /datum/vampire
 	var/list/thralls = list()					// A list of thralls that obey the vamire.
 	var/blood_total = 0							// How much total blood do we have?
@@ -12,6 +14,7 @@
 	var/list/datum/power/vampire/purchased_powers = list()			// List of power datums available for use.
 	var/obj/effect/dummy/veil_walk/holder = null					// The veil_walk dummy.
 	var/mob/living/carbon/human/master = null	// The vampire/thrall's master.
+	var/mob/living/carbon/human/owner = null    // Vampire mob
 
 /datum/vampire/thrall
 	status = VAMP_ISTHRALL
@@ -32,9 +35,6 @@
 		if (power.helptext)
 			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
 
-// Proc to safely remove blood, without resulting in negative amounts of blood.
-/datum/vampire/proc/use_blood(blood_to_use)
-	if (!blood_to_use || blood_to_use <= 0)
-		return
-
-	blood_usable = max(0, blood_usable - blood_to_use)
+/datum/vampire/New(owner)
+	..()
+	src.owner = owner

@@ -12,6 +12,12 @@
 	
 	traits = traits_map
 
+/datum/space_level/proc/remove_trait(trait)
+	traits["[trait]"] = FALSE
+
+/datum/space_level/proc/add_trait(trait)
+	traits["[trait]"] = TRUE
+
 /datum/space_level/proc/has_trait(trait)
 	return traits[trait]
 

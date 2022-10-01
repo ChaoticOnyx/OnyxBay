@@ -5,8 +5,8 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 10 WATTS
+	active_power_usage = 2 KILO WATTS
 	clicksound = 'sound/effects/using/console/press2.ogg'
 	clickvol = 30
 
@@ -153,14 +153,14 @@
 
 	//Resources are being loaded.
 	var/obj/item/eating = O
-	if(!issilicon(user) && !user.canUnEquip(eating))
+	if(!issilicon(user) && !user.can_unequip(eating))
 		to_chat(user, "You can't place that item inside \the [src].")
 		return
 	if(!eating.matter)
 		to_chat(user, "\The [eating] does not contain significant amounts of useful materials and cannot be accepted.")
 		return
 	if(!istype(eating, /obj/item/stack))
-		user.unEquip(eating, target = loc)
+		user.drop(eating, loc)
 		if(eating.loc != loc)
 			return
 

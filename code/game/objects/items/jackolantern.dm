@@ -12,7 +12,7 @@
 		lit_up = TRUE
 		set_light(0.5, 0.1, 2, 2, COLOR_ORANGE)
 		icon_state = "[initial(icon_state)]_lit_up"
-		START_PROCESSING(SSobj, src)
+		set_next_think(world.time + 1 SECOND)
 
 /obj/item/jackolantern/attack_self(mob/user)
 	if(lit_up)
@@ -20,11 +20,13 @@
 		lit_up = FALSE
 		set_light(0)
 		icon_state = "[initial(icon_state)]"
-		STOP_PROCESSING(SSobj, src)
+		set_next_think(0)
 
-/obj/item/jackolantern/Process()
+/obj/item/jackolantern/think()
 	var/turf/place = get_turf(src)
 	place.hotspot_expose(700, 5)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/jackolantern/get_temperature_as_from_ignitor()
 	if(lit_up)

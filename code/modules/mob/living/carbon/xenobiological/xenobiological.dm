@@ -45,7 +45,7 @@
 
 	var/AIproc = 0 // If it's 0, we need to launch an AI proc
 
-	var/hurt_temperature = T0C-50 // metroid keeps taking damage when its bodytemperature is below this
+	var/hurt_temperature = -50 CELSIUS // metroid keeps taking damage when its bodytemperature is below this
 	var/die_temperature = 50 // metroid dies instantly when its bodytemperature is below this
 
 	var/colour = "green"
@@ -193,7 +193,7 @@
 	updatehealth()
 
 
-/mob/living/carbon/metroid/u_equip(obj/item/W)
+/mob/living/carbon/metroid/__unequip(obj/W)
 	return
 
 /mob/living/carbon/metroid/attack_ui(slot)
@@ -292,7 +292,7 @@
 	return 0
 
 /mob/living/carbon/metroid/var/co2overloadtime = null
-/mob/living/carbon/metroid/var/temperature_resistance = T0C+75
+/mob/living/carbon/metroid/var/temperature_resistance = 75 CELSIUS
 
 /mob/living/carbon/metroid/toggle_throw_mode()
 	return

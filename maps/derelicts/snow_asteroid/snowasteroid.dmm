@@ -129,7 +129,7 @@
 "cz" = (/obj/effect/floor_decal/asteroid,/obj/effect/decal/cleanable/generic,/turf/simulated/floor/natural/snow,/area/derelict/snowasteroid)
 "cA" = (/obj/effect/floor_decal/snow,/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/tiled,/area/derelict/snowasteroid)
 "cB" = (/obj/effect/floor_decal/snow,/turf/simulated/floor/tiled,/area/derelict/snowasteroid)
-"cC" = (/obj/effect/floor_decal/snow,/obj/machinery/access_button{command = "cycle_interior"; frequency = 1222; master_tag = "snow_asteroid_airlock"; name = "interior access button"; pixel_x = -25; pixel_y = -25; req_access = newlist()},/turf/simulated/floor/tiled,/area/derelict/snowasteroid)
+"cC" = (/obj/effect/floor_decal/snow,/obj/machinery/access_button{command = "cycle_interior"; frequency = 1222; master_tag = "snow_asteroid_airlock"; name = "interior access button"; pixel_x = -25; pixel_y = -25; req_access = list()},/turf/simulated/floor/tiled,/area/derelict/snowasteroid)
 "cD" = (/obj/machinery/light/small,/turf/simulated/floor/natural/snow,/area/derelict/snowasteroid)
 "cE" = (/obj/machinery/door/airlock/external{frequency = 1222; icon_state = "door_locked"; id_tag = "snow_asteroid_internal"; locked = 1; name = "Abandoned Airlock"},/obj/structure/catwalk,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
 "cF" = (/obj/machinery/atmospherics/portables_connector{dir = 4},/obj/effect/floor_decal/industrial/warning{dir = 4},/obj/machinery/portable_atmospherics/canister/air/airlock,/obj/effect/decal/cleanable/cobweb,/turf/simulated/floor/plating,/area/derelict/snowasteroid)

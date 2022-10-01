@@ -566,9 +566,10 @@
 			pullin.icon_state = "pull0"
 
 /mob/proc/start_pulling(atom/movable/AM)
-
 	if ( !AM || !usr || src==AM || !isturf(src.loc) )	//if there's no person pulling OR the person is pulling themself OR the object being pulled is inside something: abort!
 		return
+
+	AM.on_pulling_try(src)
 
 	if (AM.anchored)
 		to_chat(src, "<span class='warning'>It won't budge!</span>")
@@ -576,7 +577,6 @@
 
 	var/mob/M = AM
 	if(ismob(AM))
-
 		if(!can_pull_mobs || !can_pull_size)
 			to_chat(src, "<span class='warning'>It won't budge!</span>")
 			return
@@ -727,9 +727,9 @@
 	if(lying)
 		set_density(0)
 		if(l_hand)
-			unEquip(l_hand)
+			drop_l_hand()
 		if(r_hand)
-			unEquip(r_hand)
+			drop_r_hand()
 	else
 		set_density(initial(density))
 	reset_layer()

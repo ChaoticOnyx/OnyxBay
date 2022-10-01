@@ -11,10 +11,9 @@
 	var/alert_pressure = 0
 
 /datum/pipeline/New()
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
 
 /datum/pipeline/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
 	QDEL_NULL(network)
 
 	if(air && air.volume)
@@ -27,7 +26,7 @@
 	edges.Cut()
 	. = ..()
 
-/datum/pipeline/Process()//This use to be called called from the pipe networks
+/datum/pipeline/think()//This use to be called called from the pipe networks
 	//Check to see if pressure is within acceptable limits
 	var/pressure = air.return_pressure()
 	if(pressure > alert_pressure)
@@ -35,6 +34,8 @@
 			if(!member.check_pressure(pressure))
 				members.Remove(member)
 				break //Only delete 1 pipe per process
+
+	set_next_think(world.time + 1 SECOND)
 
 /datum/pipeline/proc/temporarily_store_air()
 	//Update individual gas_mixtures by volume ratio

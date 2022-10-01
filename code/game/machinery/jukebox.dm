@@ -23,8 +23,8 @@
 	anchored = 1
 	density = 1
 	power_channel = STATIC_EQUIP
-	idle_power_usage = 10
-	active_power_usage = 100
+	idle_power_usage = 10 WATTS
+	active_power_usage = 100 WATTS
 	clicksound = 'sound/machines/buttonbeep.ogg'
 	req_access = list(access_bar)
 	var/locked = 0
@@ -213,15 +213,15 @@
 			to_chat(user, SPAN_WARNING("\The [D] is ruined, you can't use it."))
 			return
 
-		if(user.drop_item())
-			visible_message(SPAN_NOTICE("[usr] inserts \a [D] into \the [src]."))
-			D.forceMove(src)
-			tape = D
-			if(istype(tape, /obj/item/music_tape/random))
-				tracks += tape.tracks
-			else
-				tracks += tape.track
-			verbs += /obj/machinery/media/jukebox/verb/eject
+		if(!user.drop(D, src))
+			return
+		visible_message(SPAN_NOTICE("[usr] inserts \a [D] into \the [src]."))
+		tape = D
+		if(istype(tape, /obj/item/music_tape/random))
+			tracks += tape.tracks
+		else
+			tracks += tape.track
+		verbs += /obj/machinery/media/jukebox/verb/eject
 		return
 	return ..()
 
@@ -275,7 +275,7 @@
 
 	if(!CanPhysicallyInteract(usr))
 		return
-		
+
 	if(locked)
 		to_chat(usr, SPAN_WARNING("Tape holder is locked, you can't use it."))
 		return

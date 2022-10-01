@@ -52,11 +52,11 @@
 				if(istype(P, /obj/item/circuitboard))
 					var/obj/item/circuitboard/B = P
 					if(B.board_type == "machine")
-						playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+						if(!user.drop(P, src))
+							return
+						playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 						to_chat(user, "<span class='notice'>You add the circuit board to the frame.</span>")
 						circuit = P
-						user.drop_item()
-						P.loc = src
 						icon_state = "box_2"
 						state = 3
 						components = list()
@@ -109,20 +109,22 @@
 
 							if(new_machine.component_parts)
 								QDEL_LIST(new_machine.component_parts)
+							else
+								new_machine.component_parts = list()
 
 							src.circuit.construct(new_machine)
 
-							for(var/obj/O in components)
-								if(circuit.contain_parts) // things like disposal don't want their parts in them
+							if(circuit.contain_parts) // things like disposal don't want their parts in them
+								for(var/obj/O in components)
 									O.loc = new_machine
-								else
-									O.loc = null
-								new_machine.component_parts.Add(O)
-
-							if(circuit.contain_parts)
+									new_machine.component_parts.Add(O)
 								circuit.loc = new_machine
 							else
+								for(var/obj/O in components)
+									O.loc = null
+									new_machine.component_parts.Add(O)
 								circuit.loc = null
+
 							new_machine.component_parts.Add(circuit)
 
 							new_machine.RefreshParts()
@@ -144,12 +146,11 @@
 											req_components[I] -= camt
 											update_desc()
 											break
-									user.drop_item()
-									P.loc = src
-									components.Add(P)
-									req_components[I]--
-									update_desc()
-									break
+									if(user.drop(P, src))
+										components.Add(P)
+										req_components[I]--
+										update_desc()
+										break
 							to_chat(user, desc)
 							if(P && P.loc != src && !istype(P, /obj/item/stack/cable_coil))
 								to_chat(user, "<span class='warning'>You cannot add that component to the machine!</span>")

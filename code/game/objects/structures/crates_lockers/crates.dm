@@ -56,9 +56,13 @@
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
 		if(rigged)
+			if(istype(W.loc, /obj/item/gripper)) // Snowflaaaaakeeeeey
+				var/obj/item/gripper/G = W.loc
+				G.wrapped.forceMove(src)
+				G.wrapped = null
+			else if(!user.drop(W, src))
+				return
 			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
-			user.drop_item()
-			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)
@@ -178,7 +182,7 @@
 	icon_state = "freezer"
 	icon_opened = "freezeropen"
 	icon_closed = "freezer"
-	var/target_temp = T0C - 40
+	var/target_temp = -40 CELSIUS
 	var/cooling_power = 40
 
 	return_air()
@@ -215,7 +219,11 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 808 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 24 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
 
 /obj/structure/closet/crate/science
 	name = "science crate"
@@ -237,7 +245,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 /obj/structure/closet/crate/radiation_gear/WillContain()
 	return list(/obj/item/clothing/suit/radiation = 8)
@@ -390,7 +398,7 @@
 	icon_state = "radiation"
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
-	effect_flags = EFFECT_FLAG_RAD_SHIELDED
+
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)

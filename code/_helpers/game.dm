@@ -211,8 +211,7 @@
 				speaker_coverage[T] = R
 
 	// Try to find all the players who can hear the message
-	for(var/i = 1; i <= GLOB.player_list.len; i++)
-		var/mob/M = GLOB.player_list[i]
+	for(var/mob/M in GLOB.player_list)
 		if(M.can_hear_radio(speaker_coverage))
 			. += M
 
@@ -276,7 +275,7 @@
 		if(Y1 == Y2)
 			return 1 // Light cannot be blocked on same tile
 		else
-			var/s = SIMPLE_SIGN(Y2 - Y1)
+			var/s = MATH_SIGN(Y2 - Y1)
 			Y1 += s
 			while(Y1 != Y2)
 				T = locate(X1, Y1, Z)
@@ -286,8 +285,8 @@
 	else
 		var/m = (32 * (Y2 - Y1) + (PY2 - PY1)) / (32 * (X2 - X1) + (PX2 - PX1))
 		var/b = (Y1 + PY1 / 32 - 0.015625) - m * (X1 + PX1 / 32 - 0.015625) // In tiles
-		var/signX = SIMPLE_SIGN(X2 - X1)
-		var/signY = SIMPLE_SIGN(Y2 - Y1)
+		var/signX = MATH_SIGN(X2 - X1)
+		var/signY = MATH_SIGN(Y2 - Y1)
 		if(X1 < X2)
 			b += m
 		while(X1!=X2 || Y1!=Y2)
@@ -603,12 +602,6 @@
 		if(cp < minp)minp = cp
 		if(cp > maxp)maxp = cp
 	return abs(minp - maxp)
-
-/proc/convert_k2c(temp)
-	return ((temp - T0C))
-
-/proc/convert_c2k(temp)
-	return ((temp + T0C))
 
 /proc/getCardinalAirInfo(turf/loc, list/stats = list("temperature"))
 	var/list/temps = new /list(4)

@@ -20,7 +20,7 @@
 
 /obj/machinery/computer/elevator_control/proc/get_ui_data()
 	var/elevator_state = "unknown"
-	if(isnull(elevator_master))
+	if(QDELETED(elevator_master))
 		for(var/obj/structure/industrial_lift/L in GLOB.lifts)
 			if(L.id == elevator_tag)
 				elevator_master = L.lift_master_datum

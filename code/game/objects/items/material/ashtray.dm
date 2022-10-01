@@ -42,8 +42,6 @@
 		if(contents.len >= max_butts)
 			to_chat(user, "\The [src] is full.")
 			return
-		user.remove_from_mob(W)
-		W.forceMove(src)
 
 		if(istype(W,/obj/item/clothing/mask/smokable/cigarette))
 			var/obj/item/clothing/mask/smokable/cigarette/cig = W
@@ -55,7 +53,7 @@
 		else
 			visible_message("[user] places [W] in [src].")
 
-		user.remove_from_mob(W, src)
+		user.drop(W, src)
 
 		user.update_inv_l_hand()
 		user.update_inv_r_hand()

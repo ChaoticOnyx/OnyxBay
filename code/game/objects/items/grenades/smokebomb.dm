@@ -10,7 +10,6 @@
 
 /obj/item/grenade/smokebomb/Destroy()
 	QDEL_NULL(smoke)
-	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/grenade/smokebomb/detonate()
@@ -18,12 +17,14 @@
 	smoke = new /datum/effect/effect/system/smoke_spread/bad
 	smoke.attach(src)
 	smoke.set_up(10, 0, get_turf(src))
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECOND)
 	QDEL_IN(src, 8 SECONDS)
 
-/obj/item/grenade/smokebomb/Process()
+/obj/item/grenade/smokebomb/think()
 	if(!QDELETED(smoke) && (smoke_times > 0))
 		smoke_times--
 		smoke.start()
+		set_next_think(world.time + 1 SECOND)
 		return
-	return PROCESS_KILL
+	
+	return

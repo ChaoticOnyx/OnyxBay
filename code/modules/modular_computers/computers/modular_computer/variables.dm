@@ -8,16 +8,15 @@
 	var/screen_on = 1										// Whether the computer is active/opened/it's screen is on.
 	var/datum/computer_file/program/active_program = null	// A currently active program running on the computer.
 	var/hardware_flag = 0									// A flag that describes this device type
-	var/last_power_usage = 0								// Last tick power usage of this computer
+	var/last_power_usage = 0 WATTS							// Last tick power usage of this computer
 	var/last_battery_percent = 0							// Used for deciding if battery percentage has chandged
 	var/last_world_time = "00:00"
 	var/list/last_header_icons
 	var/computer_emagged = FALSE							// Whether the computer is emagged.
 	var/apc_powered = FALSE									// Set automatically. Whether the computer used APC power last tick.
-	var/base_active_power_usage = 50						// Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
-	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
+	var/base_active_power_usage = 50 WATTS					// Power usage when the computer is open (screen is active) and can be interacted with. Remember hardware can use power too.
+	var/base_idle_power_usage = 5 WATTS						// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
-	var/ambience_last_played								// Last time sound was played
 	var/beepsounds = SFX_BEEP_COMP
 	var/runsound = 'sound/signals/on1.ogg'
 	var/offsound = 'sound/signals/off1.ogg'

@@ -17,8 +17,8 @@
 	var/heat_capacity = 1
 
 	//Properties for both
-	var/temperature = T20C      // Initial turf temperature.
-	var/blocks_air = 0          // Does this turf contain air/let air through?
+	var/temperature = 20 CELSIUS // Initial turf temperature.
+	var/blocks_air = 0           // Does this turf contain air/let air through?
 
 	var/list/explosion_throw_details
 
@@ -26,12 +26,19 @@
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?
 	var/blessed = 0             // Has the turf been blessed?
+	var/list/rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 38 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 365 KILO ELECTRONVOLT,
+		RADIATION_HAWKING = 81 MILLI ELECTRONVOLT
+	)
 
 	var/list/decals
 
 	var/movement_delay
 
 	var/changing_turf
+
+	var/footstep_sound = SFX_FOOTSTEP_PLATING
 
 /turf/Initialize(mapload, ...)
 	. = ..()
@@ -44,7 +51,7 @@
 
 /turf/Destroy()
 	if(!changing_turf)
-		crash_with("Improper turf qdel. Do not qdel turfs directly.")
+		util_crash_with("Improper turf qdel. Do not qdel turfs directly.")
 
 	changing_turf = FALSE
 	remove_cleanables()
@@ -91,7 +98,7 @@
 
 	if(user.restrained())
 		return 0
-	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
+	if(QDELETED(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0
@@ -281,3 +288,18 @@ var/const/enterloopsanity = 100
 
 /turf/allow_drop()
 	return TRUE
+
+/turf/_examine_text(mob/user, infix, suffix)
+	. = ..()
+	
+	if(hasHUD(user, HUD_SCIENCE))
+		. += "\nStopping Power:"
+
+		. += "\nα-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_ALPHA_PARTICLE]), "eV", 3)]"
+		. += "\nβ-particle: [fmt_siunit(CONV_JOULE_ELECTRONVOLT(rad_resist[RADIATION_BETA_PARTICLE]), "eV", 3)]"
+	
+	return .
+
+/turf/proc/get_footstep_sound()
+	if(footstep_sound)
+		return pick(GLOB.sfx_list[footstep_sound])

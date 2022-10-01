@@ -6,7 +6,7 @@
 	randpixel = 10
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT | SLOT_EARS
-	throwforce = 1
+	throwforce = 0
 	w_class = ITEM_SIZE_TINY
 
 	var/leaves_residue = 1
@@ -143,8 +143,8 @@
 		if(stored_ammo.len >= max_ammo)
 			to_chat(user, "<span class='warning'>[src] is full!</span>")
 			return
-		user.remove_from_mob(C)
-		C.forceMove(src)
+		if(!user.drop(C, src))
+			return
 		stored_ammo.Add(C)
 
 		playsound(user, "bullet_insert", rand(45, 60), FALSE)

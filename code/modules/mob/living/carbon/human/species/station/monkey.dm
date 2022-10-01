@@ -7,6 +7,9 @@
 	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
+
+	has_eyes_icon = FALSE
+
 	language = null
 	default_language = "Chimpanzee"
 	greater_form = SPECIES_HUMAN
@@ -18,6 +21,7 @@
 	dusted_anim = "dust-m"
 	death_message = "lets out a faint chimper as it collapses and stops moving..."
 	tail = "chimptail"
+	y_shift = -8
 
 	body_builds = list(
 		new /datum/body_build/monkey
@@ -33,7 +37,7 @@
 	brute_mod = 1.5
 	burn_mod = 1.5
 
-	spawn_flags = SPECIES_IS_RESTRICTED
+	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	bump_flag = MONKEY
 	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
@@ -45,7 +49,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/leg),
@@ -61,6 +65,8 @@
 		/obj/item/paper,
 		/obj/item/device/taperecorder,
 		/obj/item/modular_computer,
+		/obj/item/storage/secure/safe,
+		/obj/item/stool,
 	)
 
 /datum/species/monkey/handle_npc(mob/living/carbon/human/H)
@@ -89,11 +95,11 @@
 			else
 				H.throw_item(T)
 		else
-			H.drop_item()
+			H.drop_active_hand()
 	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
 		var/list/touchables = list()
 		for(var/obj/item/O in range(1,get_turf(H)))
-			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && istype(O.loc, /turf/))
+			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && isturf(O.loc))
 				touchables += O
 		if(touchables.len)
 			var/obj/touchy = pick(touchables)
@@ -138,9 +144,10 @@
 	icobase = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 	deform = 'icons/mob/human_races/monkeys/r_farwa.dmi'
 
-	greater_form = "Tajaran"
+	greater_form = SPECIES_TAJARA
 	default_language = "Farwa"
 	flesh_color = "#afa59e"
+	blood_color = COLOR_BLOOD_TAJARAN
 	base_color = "#333333"
 	tail = "farwatail"
 
@@ -155,7 +162,7 @@
 	greater_form = SPECIES_SKRELL
 	default_language = "Neaera"
 	flesh_color = "#8cd7a3"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	reagent_tag = IS_SKRELL
 	tail = null
 
@@ -171,5 +178,6 @@
 	greater_form = SPECIES_UNATHI
 	default_language = "Stok"
 	flesh_color = "#34af10"
+	blood_color = COLOR_BLOOD_UNATHI
 	base_color = "#066000"
 	reagent_tag = IS_UNATHI

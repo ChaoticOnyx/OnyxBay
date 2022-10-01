@@ -19,7 +19,6 @@
 	var/mob/living/carbon/human/attached
 
 /obj/item/reagent_containers/ivbag/Destroy()
-	STOP_PROCESSING(SSobj,src)
 	attached = null
 	. = ..()
 
@@ -48,7 +47,7 @@
 				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/blood)/4)
 
 				reagents.remove_reagent(/datum/reagent/blood, blood_taken*4)
-				user.mind.vampire.blood_usable += blood_taken
+				user.mind.vampire.gain_blood(blood_taken)
 
 				if (blood_taken)
 					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
@@ -91,31 +90,34 @@
 		if(do_after(usr, 30))
 			to_chat(usr, "You hook \the [over_object] up to \the [src].")
 			attached = over_object
-			START_PROCESSING(SSobj,src)
+			set_next_think(world.time)
 	update_icon()
 
-/obj/item/reagent_containers/ivbag/Process()
+/obj/item/reagent_containers/ivbag/think()
 	if(!ismob(loc))
-		return PROCESS_KILL
+		return
 
 	if(attached)
 		if(!loc.Adjacent(attached))
 			attached = null
 			visible_message("\The [attached] detaches from \the [src]")
 			update_icon()
-			return PROCESS_KILL
+			return
 	else
-		return PROCESS_KILL
+		return
 
 	var/mob/M = loc
 	if(M.l_hand != src && M.r_hand != src)
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	if(!reagents.total_volume)
+		set_next_think(world.time + 1 SECOND)
 		return
 
 	reagents.trans_to_mob(attached, amount_per_transfer_from_this, CHEM_BLOOD)
 	update_icon()
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/reagent_containers/ivbag/nanoblood/Initialize()
 	. = ..()

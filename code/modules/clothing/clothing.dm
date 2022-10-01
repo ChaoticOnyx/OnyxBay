@@ -13,6 +13,14 @@
 	var/blood_overlay_type = "uniformblood"
 	var/visible_name = "Unknown"
 
+	/// How much of rays this clothing can save.
+	/// Value should be in range between 0 and 1.
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 17 MEGA ELECTRONVOLT,
+		RADIATION_BETA_PARTICLE = 3 MEGA ELECTRONVOLT,
+		RADIATION_HAWKING = 1 ELECTRONVOLT
+	)
+
 // Updates the icons of the mob wearing the clothing item, if any.
 /obj/item/clothing/proc/update_clothing_icon()
 	return
@@ -310,9 +318,8 @@ BLIND     // can't see anything
 			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [src]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
 
-	if(istype(W, /obj/item/tape_roll) && wired)
+	if(istype(W, /obj/item/tape_roll) && wired && user.drop(src))
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
-		user.drop_from_inventory(src)
 		new /obj/item/clothing/gloves/stun(loc, src)
 		return
 
@@ -340,8 +347,7 @@ BLIND     // can't see anything
 			to_chat(user, "You are unable to wear \the [src] as \the [R] are in the way.")
 			ring = null
 			return FALSE
-		H.drop_from_inventory(R)	//Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
-		R.forceMove(src)
+		H.drop(R, src, TRUE) // Remove the ring (or other under-glove item in the hand slot?) so you can put on the gloves.
 
 	if(!..())
 		var/obj/item/clothing/ring/R = ring?.resolve()
@@ -573,7 +579,7 @@ BLIND     // can't see anything
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "shoeblood"
 
-	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10, rad = 0)
+	armor = list(melee = 25, bullet = 25, laser = 25,energy = 15, bomb = 25, bio = 10)
 
 /obj/item/clothing/shoes/Destroy()
 	if(holding)
@@ -617,8 +623,8 @@ BLIND     // can't see anything
 		if(holding)
 			to_chat(user, "<span class='warning'>\The [src] is already holding \a [holding].</span>")
 			return
-		user.unEquip(I)
-		I.forceMove(src)
+		if(!user.drop(I, src))
+			return
 		holding = I
 		user.visible_message("<span class='notice'>\The [user] shoves \the [I] into \the [src].</span>", range = 1)
 		verbs |= /obj/item/clothing/shoes/proc/draw_knife
@@ -645,10 +651,10 @@ BLIND     // can't see anything
 /obj/item/clothing/suit
 	icon = 'icons/obj/clothing/suits.dmi'
 	name = "suit"
-	var/fire_resist = T0C+100
+	var/fire_resist = 100 CELSIUS
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	allowed = list(/obj/item/tank/emergency)
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	slot_flags = SLOT_OCLOTHING
 	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
@@ -685,7 +691,7 @@ BLIND     // can't see anything
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)

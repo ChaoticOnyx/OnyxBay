@@ -13,8 +13,8 @@
 	*/
 
 	anchored = 1.0
-	idle_power_usage = 2
-	active_power_usage = 4
+	idle_power_usage = 2 WATTS
+	active_power_usage = 4 WATTS
 
 /obj/machinery/button/remote/attack_ai(mob/user as mob)
 	if(wires & 2)

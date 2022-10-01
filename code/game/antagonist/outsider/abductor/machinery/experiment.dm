@@ -202,7 +202,7 @@
  */
 /obj/machinery/abductor/experiment/proc/send_back(mob/living/carbon/human/H)
 	H.Sleeping(10)
-	H.unEquip(H.handcuffed)
+	H.drop(H.handcuffed, force = TRUE)
 	if(console && console.pad && console.pad.teleport_target)
 		H.forceMove(console.pad.teleport_target)
 		return

@@ -2,26 +2,25 @@
 "b" = (/turf/simulated/floor/tiled,/area/engineering/toilet)
 "c" = (/turf/simulated/wall/r_wall,/area/space)
 "d" = (/obj/machinery/light{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"e" = (/obj/effect/landmark{name = "tdome1"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "f" = (/obj/effect/floor_decal/industrial/hatch/yellow,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "g" = (/turf/simulated/wall,/area/engineering/toilet)
 "h" = (/obj/machinery/light_switch{on = 1; pixel_x = 25},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"i" = (/obj/machinery/light{icon_state = "tube1"; dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"i" = (/obj/machinery/light{dir = 8},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "j" = (/obj/structure/ladder/up,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"k" = (/obj/machinery/light{icon_state = "tube1"; dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"l" = (/obj/effect/landmark{name = "JoinLate"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"k" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"l" = (/obj/effect/landmark/start/crew,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "m" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"n" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 5},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"o" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"p" = (/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 8},/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"n" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 5},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"o" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 4},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"p" = (/obj/machinery/atmospherics/portables_connector{dir = 8},/obj/machinery/portable_atmospherics/canister/air,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "q" = (/obj/machinery/light_switch{on = 1; pixel_x = -25},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "r" = (/obj/effect/landmark/start,/turf/simulated/floor/tiled,/area/engineering/toilet)
-"s" = (/obj/machinery/atmospherics/pipe/simple/visible{icon_state = "intact"; dir = 6},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"t" = (/obj/machinery/atmospherics/portables_connector{icon_state = "map_connector"; dir = 8},/obj/machinery/portable_atmospherics/canister/empty,/turf/simulated/floor/tiled,/area/engineering/toilet)
+"s" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 6},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"t" = (/obj/machinery/atmospherics/portables_connector{dir = 8},/obj/machinery/portable_atmospherics/canister/empty,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "u" = (/obj/machinery/door/airlock/external/bolted{frequency = 1379; id_tag = "lower_level_dock_hatch"},/turf/simulated/floor,/area/engineering/toilet)
 "v" = (/obj/machinery/embedded_controller/radio/simple_docking_controller{id_tag = "lower_level_dock"; pixel_x = -8; pixel_y = -25},/turf/simulated/floor,/area/engineering/toilet)
 "w" = (/turf/simulated/floor,/area/engineering/toilet)
-"x" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{icon_state = "map_scrubber_on"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"x" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 1},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "y" = (/turf/simulated/wall/iron,/area/shuttle/escape)
 "z" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/shuttle/escape)
 "A" = (/obj/machinery/computer/shuttle_control{shuttle_tag = "Example"},/turf/simulated/floor/plating,/area/shuttle/escape)
@@ -29,11 +28,14 @@
 "C" = (/obj/machinery/light,/turf/simulated/floor/plating,/area/shuttle/escape)
 "D" = (/obj/machinery/door/airlock/external/bolted{frequency = 1379; id_tag = "example_shuttle_port_hatch"},/turf/simulated/floor/plating,/area/shuttle/escape)
 "E" = (/obj/machinery/door/airlock/external/bolted{frequency = 1379; id_tag = "example_shuttle_starboard_hatch"},/turf/simulated/floor/plating,/area/shuttle/escape)
-"F" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled,/area/engineering/toilet)
-"G" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"F" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"G" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/engineering/toilet)
 "H" = (/obj/structure/cable,/obj/machinery/power/debug_items/infinite_generator,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "I" = (/obj/machinery/light,/turf/simulated/floor/tiled,/area/engineering/toilet)
 "J" = (/turf/space,/area/space)
+"K" = (/obj/effect/floor_decal/industrial/hatch/yellow,/obj/map_ent/trigger_mob{pixel_x = -7; ev_tag = "ent_tp_wv"; tag = "ent_tp_trigger"},/obj/map_ent/func_teleport{pixel_x = 14; ev_dest_tag = "ent_showcase_tp_dest"; tag = "ent_tp_src"},/obj/map_ent/func_write_var{pixel_y = 9; ev_activate_writer = 1; ev_read_tag = "ent_tp_trigger"; ev_table = list("ev_tag" = "ev_triggered"); ev_write_tag = "ent_tp_src"; tag = "ent_tp_wv"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"P" = (/obj/map_ent/info_maptext{ev_text = "Map entities showcase"},/turf/simulated/floor/tiled,/area/engineering/toilet)
+"X" = (/obj/effect/landmark/joinlate,/turf/simulated/floor/tiled,/area/engineering/toilet)
 
 (1,1,1) = {"
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
@@ -47,18 +49,18 @@ JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcabbbdbbbbbdbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabeeebfgfbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabeeebfffbbbbhacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaieeejfffbbbbkacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcabblllbbbbbmbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJyyyJcabblllbbbbbnopacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJzAzccaqblllbrbbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbfgfbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbfffbbbbhacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaibbbjfffbbbbkacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcabbbbbbbbbbmbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJyyyJcabbbbbbXbbbnopacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJzAzccaqbbbbbrlbbbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJzBzaaabbbbbbbbbbsotacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJDCEuvwbbbbbbbbbbxbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJyyyaaaibbbbbbbbbbbkacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJccaFbbbbbbbbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaGbbbbbbbbbbbbacJJJJJJJJJJJJJJJ
-JJJJJJJJJJJJJJJJcaHbbIbbbbbIbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaGbbbbbPbbbbbbacJJJJJJJJJJJJJJJ
+JJJJJJJJJJJJJJJJcaHbbIbbKbbIbbbacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcaaaaaaaaaaaaaaacJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJcccccccccccccccccJJJJJJJJJJJJJJJ
 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ

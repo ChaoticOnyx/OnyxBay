@@ -218,7 +218,7 @@ meteor_act
 		if(I.mod_shield > shield_mod_shield)
 			shield = I
 			shield_mod_shield = I.mod_shield
-	if(isnull(shield))
+	if(QDELETED(shield))
 		return 0
 	. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
 	return
@@ -371,7 +371,7 @@ meteor_act
 						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 						for(var/obj/item/D in holding)
-							unEquip(D)
+							drop(D)
 						playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 		//Apply blood
@@ -457,7 +457,7 @@ meteor_act
 					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 					var/list/holding = list(get_active_hand() = 40, get_inactive_hand() = 20)
 					for(var/obj/item/D in holding)
-						unEquip(D)
+						drop(D)
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
 				if(!stat && (poise <= effective_force/3*I.mod_weight))

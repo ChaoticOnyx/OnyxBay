@@ -8,12 +8,12 @@
 /obj/item/reagent_containers/vessel/replenishing/Initialize()
 	. = ..()
 	spawning_id = pick(/datum/reagent/blood,/datum/reagent/water/holywater,/datum/reagent/lube,/datum/reagent/soporific,/datum/reagent/ethanol,/datum/reagent/drink/ice,/datum/reagent/glycerol,/datum/reagent/fuel,/datum/reagent/space_cleaner)
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/item/reagent_containers/vessel/replenishing/Process()
+/obj/item/reagent_containers/vessel/replenishing/think()
 	reagents.add_reagent(spawning_id, 0.3)
 
-
+	set_next_think(world.time + 1 SECOND)
 
 //a talking gas mask!
 /obj/item/clothing/mask/gas/poltergeist
@@ -22,19 +22,20 @@
 	var/max_stored_messages = 100
 
 /obj/item/clothing/mask/gas/poltergeist/Initialize()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 	GLOB.listening_objects += src
 	. = ..()
 
 /obj/item/clothing/mask/gas/poltergeist/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/clothing/mask/gas/poltergeist/Process()
+/obj/item/clothing/mask/gas/poltergeist/think()
 	if(heard_talk.len && istype(src.loc, /mob/living) && prob(10))
 		var/mob/living/M = src.loc
 		M.say(pick(heard_talk))
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/clothing/mask/gas/poltergeist/hear_talk(mob/M as mob, text)
 	..()
@@ -63,15 +64,14 @@
 
 /obj/item/vampiric/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time + 1 SECOND)
 	GLOB.listening_objects += src
 
 /obj/item/vampiric/Destroy()
-	STOP_PROCESSING(SSobj, src)
 	GLOB.listening_objects -= src
 	return ..()
 
-/obj/item/vampiric/Process()
+/obj/item/vampiric/think()
 	//see if we've identified anyone nearby
 	if(world.time - last_bloodcall > bloodcall_interval && nearby_mobs.len)
 		var/mob/living/carbon/human/M = pop(nearby_mobs)
@@ -122,12 +122,14 @@
 			wight_check_index = 1
 
 		var/obj/effect/shadow_wight/W = shadow_wights[wight_check_index]
-		if(isnull(W))
+		if(QDELETED(W))
 			shadow_wights.Remove(wight_check_index)
-		else if(isnull(W.loc))
+		else if(QDELETED(W.loc))
 			shadow_wights.Remove(wight_check_index)
 		else if(get_dist(W, src) > 10)
 			shadow_wights.Remove(wight_check_index)
+
+	set_next_think(world.time + 1 SECOND)
 
 /obj/item/vampiric/hear_talk(mob/M as mob, text)
 	..()
@@ -157,13 +159,9 @@
 /obj/effect/decal/cleanable/blood/splatter/animated/Initialize()
 	. = ..()
 	loc_last_process = src.loc
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/effect/decal/cleanable/blood/splatter/animated/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/effect/decal/cleanable/blood/splatter/animated/Process()
+/obj/effect/decal/cleanable/blood/splatter/animated/think()
 	if(target_turf && src.loc != target_turf)
 		step_towards(src,target_turf)
 		if(src.loc == loc_last_process)
@@ -180,8 +178,8 @@
 				if(prob(50))
 					D = new(src.loc)
 					D.blood_DNA = src.blood_DNA.Copy()
-	else
-		..()
+
+	set_next_think(world.time)
 
 /obj/effect/shadow_wight
 	name = "shadow wight"
@@ -191,13 +189,9 @@
 
 /obj/effect/shadow_wight/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj, src)
+	set_next_think(world.time)
 
-/obj/effect/shadow_wight/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/effect/shadow_wight/Process()
+/obj/effect/shadow_wight/think()
 	if(src.loc)
 		src.loc = get_turf(pick(orange(1,src)))
 		var/mob/living/carbon/M = locate() in src.loc
@@ -219,7 +213,9 @@
 			M.sleeping = max(M.sleeping,rand(5,10))
 			src.loc = null
 	else
-		STOP_PROCESSING(SSobj, src)
+		return
+	
+	set_next_think(world.time + 1 SECOND)
 
 /obj/effect/shadow_wight/Bump(atom/obstacle)
 	to_chat(obstacle, "<span class='warning'>You feel a chill run down your spine!</span>")

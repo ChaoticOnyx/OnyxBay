@@ -28,7 +28,7 @@
 		return
 	ticks_left = 0
 
-/datum/changeling_power/toggled/rapid_heal/Process()
+/datum/changeling_power/toggled/rapid_heal/think()
 	if(!..())
 		return
 

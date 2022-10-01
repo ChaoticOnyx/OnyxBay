@@ -96,10 +96,12 @@
 	if(target.mind)
 		target.mind.store_memory("<hr>[msg]")
 
-	START_PROCESSING(SSprocessing, src)
+	set_next_think(world.time)
+	add_think_ctx("reminder", CALLBACK(src, .proc/remind_think), world.time + 5 MINUTES)
+
 	return TRUE
 
-/datum/magical_imprint/Process()
+/datum/magical_imprint/think()
 	if(QDELETED(implanted_in))
 		return
 	else if(implanted_in.reagents.has_reagent(/datum/reagent/water/holywater))
@@ -113,17 +115,16 @@
 		qdel(src)
 		return
 
-	if(world.time < last_reminder + 5 MINUTES)
-		return
+	set_next_think(world.time + 5 SECONDS)
+
+/datum/magical_imprint/proc/remind_think()
 	last_reminder = world.time
 	var/instruction = pick(instructions)
 
 	instruction = "<span class='warning'>You recall one of your beliefs: \"[instruction]\"</span>"
 	to_chat(implanted_in, instruction)
 
-/datum/magical_imprint/Destroy()
-	STOP_PROCESSING(SSprocessing, src)
-	return ..()
+	set_next_think_ctx("reminder", world.time + 5 MINUTES)
 
 /datum/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
 	if(ishuman(M))

@@ -10,8 +10,8 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	insert_anim = "faxsend"
 	req_one_access = list(access_iaa, access_heads, access_armory, access_qm)
 
-	idle_power_usage = 30
-	active_power_usage = 200
+	idle_power_usage = 30 WATTS
+	active_power_usage = 200 WATTS
 	layer = BELOW_OBJ_LAYER
 
 	var/obj/item/card/id/scan = null // identification
@@ -143,8 +143,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				scan = null
 		else
 			var/obj/item/I = usr.get_active_hand()
-			if (istype(I, /obj/item/card/id) && usr.unEquip(I))
-				I.loc = src
+			if (istype(I, /obj/item/card/id) && usr.drop(I, src))
 				scan = I
 		authenticated = 0
 

@@ -27,14 +27,14 @@
 	set category = "Abilities"
 
 	if (last_special > world.time)
-		to_chat(src, "<span class='warning'>You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds.</span>")
+		to_chat(src, SPAN("warning", "You aren't ready to do that! Wait [round(last_special - world.time) / 10] seconds."))
 		return
 
-	if (incapacitated())
-		to_chat(src, "<span class='warning'>You can't do that while you're incapacitated!</span>")
+	if (incapacitated(INCAPACITATION_DISABLED))
+		to_chat(src, SPAN("warning", "You can't do that while you're incapacitated!"))
 		return
 
-	last_special = world.time + 60 SECONDS
+	last_special = world.time + 5 SECONDS
 
 	var/turf/T = get_turf(src)
 	var/obj/effect/effect/water/chempuff/chem = new(T)

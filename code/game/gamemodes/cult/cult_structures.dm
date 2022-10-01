@@ -151,7 +151,7 @@
 				if(istype(I, /obj/item/implant))
 					qdel(I)
 					continue
-				M.drop_from_inventory(I)
+				M.drop(I, force = TRUE)
 
 		var/mob/living/new_mob = new /mob/living/simple_animal/corgi(A.loc)
 		new_mob.a_intent = I_HURT

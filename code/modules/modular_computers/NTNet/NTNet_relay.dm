@@ -3,8 +3,8 @@
 	name = "NTNet Quantum Relay"
 	desc = "A very complex router and transmitter capable of connecting electronic devices together. Looks fragile."
 	use_power = POWER_USE_ACTIVE
-	active_power_usage = 20000 //20kW, apropriate for machine that keeps massive cross-Zlevel wireless network operational.
-	idle_power_usage = 100
+	active_power_usage = 20 KILO WATTS // Apropriate for machine that keeps massive cross-Zlevel wireless network operational.
+	idle_power_usage = 100 WATTS
 	icon_state = "bus"
 	anchored = 1
 	density = 1

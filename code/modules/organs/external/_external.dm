@@ -242,53 +242,66 @@
 	switch(stage)
 		if(0)
 			if(W.sharp)
-				user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
-				stage++
-				return
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					if(children?.len)
+						var/obj/item/organ/external/external_child = pick(children)
+						status |= ORGAN_CUT_AWAY
+						children.Remove(external_child)
+						external_child.forceMove(get_turf(src))
+						external_child.SetTransform(rotation = rand(180))
+						external_child.compile_icon()
+						compile_icon()
+						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [external_child] from [src] with [W]!"))
+					else
+						user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
+						stage++
+					return
 		if(1)
 			if(istype(W))
-				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
-				stage++
-				return
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
+					stage++
+					return
 		if(2)
 			if(W.sharp || istype(W, /obj/item/hemostat) || isWirecutter(W))
 				var/list/organs = get_contents_recursive()
-				if(organs.len)
-					var/obj/item/removing = pick(organs)
-					var/obj/item/organ/external/current_child = removing.loc
+				if(do_mob(user, src, DEFAULT_ATTACK_COOLDOWN))
+					if(organs.len)
+						var/obj/item/removing = pick(organs)
+						var/obj/item/organ/external/current_child = removing.loc
 
-					current_child.implants.Remove(removing)
-					current_child.internal_organs.Remove(removing)
+						current_child.implants.Remove(removing)
+						current_child.internal_organs.Remove(removing)
 
-					status |= ORGAN_CUT_AWAY
-					if(istype(removing, /obj/item/organ/internal/mmi_holder))
-						var/obj/item/organ/internal/mmi_holder/O = removing
-						removing = O.transfer_and_delete()
+						status |= ORGAN_CUT_AWAY
+						if(istype(removing, /obj/item/organ/internal/mmi_holder))
+							var/obj/item/organ/internal/mmi_holder/O = removing
+							removing = O.transfer_and_delete()
 
-					removing.forceMove(get_turf(src))
-					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
-				else
-					if(organ_tag == BP_HEAD && W.sharp)
-						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
-						if(!H.skull_path)
-							user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
-							return
-						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
-						if(istype(H.loc, /turf))
-							new H.skull_path(H.loc)
-							gibs(H.loc)
-						else
-							new H.skull_path(user.loc)
-							gibs(user.loc)
-						H.skull_path = null // So no skulls dupe in case of lags
-						qdel(src)
+						removing.forceMove(get_turf(src))
+						user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 					else
-						if(src && !QDELETED(src))
-							food_organ.appearance = food_organ_type
-							food_organ.forceMove(get_turf(loc))
-							food_organ = null
+						if(organ_tag == BP_HEAD && W.sharp)
+							var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+							if(!H.skull_path)
+								user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+								return
+							user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
+							if(istype(H.loc, /turf))
+								new H.skull_path(H.loc)
+								gibs(H.loc)
+							else
+								new H.skull_path(user.loc)
+								gibs(user.loc)
+							H.skull_path = null // So no skulls dupe in case of lags
 							qdel(src)
-						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						else
+							if(src && !QDELETED(src))
+								food_organ.appearance = food_organ_type
+								food_organ.forceMove(get_turf(loc))
+								food_organ = null
+								qdel(src)
+							user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
@@ -582,7 +595,7 @@ This function completely restores a damaged organ to perfect condition.
 		return 1
 	return 0
 
-/obj/item/organ/external/Process()
+/obj/item/organ/external/think()
 	if(owner)
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
@@ -955,7 +968,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		holder.visible_message(\
 			"\The [holder.handcuffed.name] falls off of [holder.name].",\
 			"\The [holder.handcuffed.name] falls off you.")
-		holder.drop_from_inventory(holder.handcuffed)
+		holder.drop(holder.handcuffed, force = TRUE)
 
 // checks if all wounds on the organ are bandaged
 /obj/item/organ/external/proc/is_bandaged()
@@ -1210,8 +1223,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 	W.add_blood(owner)
 	if(ismob(W.loc))
 		var/mob/living/H = W.loc
-		H.drop_from_inventory(W)
-	W.loc = owner
+		H.drop(W, owner, force = TRUE)
+	else
+		W.forceMove(owner)
 
 /obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
@@ -1222,19 +1236,19 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	switch(body_part)
 		if(FOOT_LEFT, FOOT_RIGHT)
-			owner.drop_from_inventory(owner.shoes)
+			owner.drop(owner.shoes, force = TRUE)
 		if(HAND_LEFT)
-			owner.drop_from_inventory(owner.gloves)
-			owner.drop_l_hand()
+			owner.drop(owner.gloves, force = TRUE)
+			owner.drop_l_hand(force = TRUE)
 		if(HAND_RIGHT)
-			owner.drop_from_inventory(owner.gloves)
-			owner.drop_r_hand()
+			owner.drop(owner.gloves, force = TRUE)
+			owner.drop_r_hand(force = TRUE)
 		if(HEAD)
-			owner.drop_from_inventory(owner.glasses)
-			owner.drop_from_inventory(owner.head)
-			owner.drop_from_inventory(owner.l_ear)
-			owner.drop_from_inventory(owner.r_ear)
-			owner.drop_from_inventory(owner.wear_mask)
+			owner.drop(owner.glasses, force = TRUE)
+			owner.drop(owner.head, force = TRUE)
+			owner.drop(owner.l_ear, force = TRUE)
+			owner.drop(owner.r_ear, force = TRUE)
+			owner.drop(owner.wear_mask, force = TRUE)
 
 	var/mob/living/carbon/human/victim = owner
 
@@ -1252,7 +1266,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			// let actual implants still inside know they're no longer implanted
 			if(istype(I, /obj/item/implant))
 				var/obj/item/implant/imp_device = I
-				imp_device.removed()
+				imp_device.imp_in = null
 		else
 			implants.Remove(implant)
 			implant.forceMove(get_turf(src))

@@ -77,9 +77,7 @@
 		var/obj/item/seeds/S =W
 		if(S.seed && S.seed.get_trait(TRAIT_IMMUTABLE) > 0)
 			to_chat(user, "That seed is not compatible with our genetics technology.")
-		else
-			user.drop_from_inventory(W)
-			W.loc = src
+		else if(user.drop(W, src))
 			seed = W
 			to_chat(user, "You load [W] into [src].")
 		return
@@ -105,9 +103,9 @@
 				if(!B.genes || !B.genes.len)
 					to_chat(user, "That disk does not have any gene data loaded.")
 					return
+			if(!user.drop(W, src))
+				return
 
-			user.drop_from_inventory(W)
-			W.loc = src
 			loaded_disk = W
 			to_chat(user, "You load [W] into [src].")
 

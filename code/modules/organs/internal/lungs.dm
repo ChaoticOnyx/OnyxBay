@@ -66,9 +66,11 @@
 	poison_type = species.poison_type ? species.poison_type : "plasma"
 	exhale_type = species.exhale_type ? species.exhale_type : "carbon_dioxide"
 
-/obj/item/organ/internal/lungs/Process()
+/obj/item/organ/internal/lungs/think()
 	..()
 	if(!owner)
+		return
+	if(isundead(owner))
 		return
 
 	if (germ_level > INFECTION_LEVEL_ONE && active_breathing)

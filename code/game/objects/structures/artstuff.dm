@@ -14,10 +14,10 @@
 //Adding canvases
 /obj/structure/easel/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/canvas))
+		if(!user.drop(I, get_turf(src)))
+			return
 		var/obj/item/canvas/canvas = I
-		user.drop_item(canvas)
 		painting = canvas
-		canvas.forceMove(get_turf(src))
 		canvas.layer = layer+0.1
 		user.visible_message(SPAN("notice", "[user] puts \the [canvas] on \the [src]."), SPAN("notice", "You place \the [canvas] on \the [src]."))
 	else
@@ -207,7 +207,7 @@
 		SPAN_NOTICE("You hear clicking."))
 	is_mount = TRUE
 	area_manipulation()
-	if(user.unEquip(src,T))
+	if(user.drop(src, T))
 		switch(ndir)
 			if(NORTH)
 				pixel_y = -32

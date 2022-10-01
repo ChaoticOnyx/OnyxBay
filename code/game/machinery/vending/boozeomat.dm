@@ -4,7 +4,14 @@
 	desc = "A refrigerated vending unit for alcoholic beverages and alcoholic beverage accessories."
 	icon_state = "boozeomat"
 	use_vend_state = TRUE
-	products = list(/obj/item/reagent_containers/vessel/glass/vodkaglass = 10,
+	gen_rand_amount = FALSE
+	vend_delay = 15
+	idle_power_usage = 211 WATTS //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	product_slogans = "I hope nobody asks me for a bloody cup o' tea...;Alcohol is humanity's friend. Would you abandon a friend?;Quite delighted to serve you!;Is nobody thirsty on this station?"
+	product_ads = "Drink up!;Booze is good for you!;Alcohol is humanity's best friend.;Quite delighted to serve you!;Care for a nice, cold beer?;Nothing cures you like booze!;Have a sip!;Have a drink!;Have a beer!;Beer is good for you!;Only the finest alcohol!;Best quality booze since 2053!;Award-winning wine!;Maximum alcohol!;Man loves beer.;A toast for progress!"
+	req_access = list(access_bar)
+	component_types = list(/obj/item/vending_cartridge/boozeomat)
+	legal = list(/obj/item/reagent_containers/vessel/glass/vodkaglass = 10,
 					/obj/item/reagent_containers/vessel/glass/shot = 10,
 					/obj/item/reagent_containers/vessel/glass/dshot = 10,
 					/obj/item/reagent_containers/vessel/glass/cocktail = 10,
@@ -64,12 +71,11 @@
 					/obj/item/reagent_containers/vessel/can/colacherry =15,
 					/obj/item/reagent_containers/vessel/tea = 15,
 					/obj/item/reagent_containers/vessel/ice = 10)
-	contraband = list(/obj/item/reagent_containers/vessel/bottle/premiumwine = 2,
-					  /obj/item/reagent_containers/vessel/bottle/premiumvodka = 2,
-				      /obj/item/reagent_containers/vessel/can/dopecola = 5,
-					  /obj/item/glass_extra/glassholder = 10)
-	vend_delay = 15
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
-	product_slogans = "I hope nobody asks me for a bloody cup o' tea...;Alcohol is humanity's friend. Would you abandon a friend?;Quite delighted to serve you!;Is nobody thirsty on this station?"
-	product_ads = "Drink up!;Booze is good for you!;Alcohol is humanity's best friend.;Quite delighted to serve you!;Care for a nice, cold beer?;Nothing cures you like booze!;Have a sip!;Have a drink!;Have a beer!;Beer is good for you!;Only the finest alcohol!;Best quality booze since 2053!;Award-winning wine!;Maximum alcohol!;Man loves beer.;A toast for progress!"
-	req_access = list(access_bar)
+	illegal = list(	/obj/item/reagent_containers/vessel/bottle/premiumwine = 2,
+					/obj/item/reagent_containers/vessel/bottle/premiumvodka = 2,
+					/obj/item/reagent_containers/vessel/can/dopecola = 5,
+					/obj/item/glass_extra/glassholder = 10)
+
+/obj/item/vending_cartridge/boozeomat
+	name = "booze"
+	build_path = /obj/machinery/vending/boozeomat

@@ -266,3 +266,42 @@
 	name = "tangzhuang jacket"
 	desc = "A traditional Chinese coat tied together with straight, symmetrical knots."
 	icon_state = "tangzhuang"  //This was originally intended to have the ability to roll sleeves. I can't into code. Will be done later (hopefully.)
+
+/obj/item/clothing/accessory/security_shirt
+	name = "security officer's shirt"
+	desc = "For the most fashionable security officers out there."
+	icon_state = "secshirt"
+	var/rolled = FALSE
+
+/obj/item/clothing/accessory/security_shirt/on_attached(obj/item/clothing/under/S, mob/user)
+	..()
+	has_suit.verbs += /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves
+
+/obj/item/clothing/accessory/security_shirt/on_removed(mob/user)
+	if(has_suit)
+		has_suit.verbs -= /obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves
+	..()
+
+/obj/item/clothing/accessory/security_shirt/verb/roll_up_sleeves()
+	set name = "Roll Shirt Sleeves"
+	set category = "Object"
+	set src in usr
+
+	if(usr.incapacitated())
+		return
+
+	var/obj/item/clothing/accessory/security_shirt/H = null
+	if(istype(src, /obj/item/clothing/accessory/security_shirt))
+		H = src
+	else
+		H = locate() in src
+
+	H.rolled = !H.rolled
+	H.icon_state = initial(H.icon_state)
+	if(H.rolled)
+		to_chat(usr, "You roll up the sleeves of your [H].")
+		H.icon_state += "_r"
+	else
+		to_chat(usr, "You roll down the sleeves of your [H].")
+
+	update_clothing_icon()

@@ -14,6 +14,13 @@ var/global/list/stool_cache = list() //haha stool
 	mod_handy = 0.85
 	throwforce = 10
 	w_class = ITEM_SIZE_HUGE
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
+	)
+
 	var/base_icon = "stool"
 	var/material/material
 	var/material/padding_material
@@ -102,14 +109,14 @@ var/global/list/stool_cache = list() //haha stool
 		user.visible_message("<span class='danger'>[user] breaks [src] over [target]'s back!</span>")
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.do_attack_animation(target)
-		user.remove_from_mob(src)
-		dismantle()
-		qdel(src)
 
 		var/blocked = target.run_armor_check(hit_zone, "melee")
 		target.Weaken(10 * blocked_mult(blocked))
 		target.Stun(8 * blocked_mult(blocked))
 		target.apply_damage(20, BRUTE, hit_zone, blocked, src)
+
+		dismantle()
+		qdel(src)
 		return
 
 	..()
@@ -146,7 +153,6 @@ var/global/list/stool_cache = list() //haha stool
 			return
 		var/obj/item/stack/C = W
 		if(C.get_amount() < 1) // How??
-			user.drop_from_inventory(C)
 			qdel(C)
 			return
 		var/padding_type //This is awful but it needs to be like this until tiles are given a material var.
@@ -161,8 +167,7 @@ var/global/list/stool_cache = list() //haha stool
 			return
 		C.use(1)
 		if(!istype(src.loc, /turf))
-			user.drop_from_inventory(src)
-			src.dropInto(loc)
+			user.drop(src, loc)
 		to_chat(user, "You add padding to \the [src].")
 		add_padding(padding_type)
 		return

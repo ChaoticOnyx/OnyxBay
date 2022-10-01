@@ -1,19 +1,5 @@
 #define CYBORG_POWER_USAGE_MULTIPLIER 2.5 // Multiplier for amount of power cyborgs use.
 
-var/global/list/robot_footstep_sounds = list(
-	FOOTSTEP_ROBOT_LEGS = list(
-		'sound/effects/robot_footstep/legs01.ogg',
-		'sound/effects/robot_footstep/legs02.ogg',
-		'sound/effects/robot_footstep/legs03.ogg',
-		'sound/effects/robot_footstep/legs04.ogg'
-	),
-	FOOTSTEP_ROBOT_SPIDER = list(
-		'sound/effects/robot_footstep/spider01.ogg',
-		'sound/effects/robot_footstep/spider02.ogg',
-		'sound/effects/robot_footstep/spider03.ogg'
-	)
-)
-
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -551,15 +537,16 @@ var/global/list/robot_footstep_sounds = list(
 	if (istype(W, /obj/item/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
+	if(user.a_intent == I_HURT)
+		return ..()
+
 	if(opened) // Are they trying to insert something?
 		for(var/V in components)
 			var/datum/robot_component/C = components[V]
-			if(!C.installed && istype(W, C.external_type))
+			if(!C.installed && istype(W, C.external_type) && user.drop(W, src))
 				C.installed = 1
 				C.wrapped = W
 				C.install()
-				user.drop_item()
-				W.loc = null
 
 				var/obj/item/robot_parts/robot_component/WC = W
 				if(istype(WC))
@@ -647,7 +634,7 @@ var/global/list/robot_footstep_sounds = list(
 					I.brute = C.brute_damage
 					I.burn = C.electronics_damage
 
-				I.loc = src.loc
+				I.forceMove(loc)
 
 				if(C.installed == 1)
 					C.uninstall()
@@ -664,15 +651,15 @@ var/global/list/robot_footstep_sounds = list(
 					update_icon()
 
 	else if (istype(W, /obj/item/stock_parts/matter_bin) && opened) // Installing/swapping a matter bin
+		if(!user.drop(W, src))
+			return
 		if(storage)
 			to_chat(user, "You replace \the [storage] with \the [W]")
 			storage.forceMove(get_turf(src))
 			storage = null
 		else
 			to_chat(user, "You install \the [W]")
-		user.drop_item()
 		storage = W
-		W.forceMove(src)
 		handle_selfinsert(W, user)
 		recalculate_synth_capacities()
 
@@ -684,9 +671,7 @@ var/global/list/robot_footstep_sounds = list(
 			to_chat(user, "There is a power cell already installed.")
 		else if(W.w_class != ITEM_SIZE_NORMAL)
 			to_chat(user, "\The [W] is too [W.w_class < ITEM_SIZE_NORMAL? "small" : "large"] to fit here.")
-		else
-			user.drop_item()
-			W.loc = src
+		else if(user.drop(W, src))
 			cell = W
 			handle_selfinsert(W, user) //Just in case.
 			to_chat(user, "You insert the power cell.")
@@ -741,11 +726,9 @@ var/global/list/robot_footstep_sounds = list(
 		else if(U.locked)
 			to_chat(usr, "The upgrade is locked and cannot be used yet!")
 		else
-			if(U.action(src))
-				to_chat(usr, "You apply the upgrade to [src]!")
+			if(U.action(src) && user.drop(U, src))
+				to_chat(user, "You apply the upgrade to [src]!")
 				to_chat(src, "Detected new component - [U].")
-				usr.drop_item()
-				U.loc = src
 				handle_selfinsert(W, user)
 			else
 				to_chat(usr, "Upgrade error!")
@@ -1329,11 +1312,11 @@ var/global/list/robot_footstep_sounds = list(
 	return FALSE
 
 /mob/living/silicon/robot/proc/play_footstep_sound()
-	if(!robot_footstep_sounds)
+	if(!footstep_sound)
 		return
 
 	var/range = -(world.view - 2)
 	var/volume = 10
-	var/S = safepick(robot_footstep_sounds[footstep_sound])
+	var/S = safepick(GLOB.sfx_list[footstep_sound])
 
 	playsound(get_turf(src), S, volume, FALSE, range)

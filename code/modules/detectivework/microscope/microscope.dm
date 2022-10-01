@@ -18,8 +18,7 @@
 
 	if(istype(W, /obj/item/forensics/swab)|| istype(W, /obj/item/sample/fibers) || istype(W, /obj/item/sample/print))
 		to_chat(user, "<span class='notice'>You insert \the [W] into the microscope.</span>")
-		user.unEquip(W)
-		W.forceMove(src)
+		user.drop(W, src)
 		sample = W
 		update_icon()
 		return

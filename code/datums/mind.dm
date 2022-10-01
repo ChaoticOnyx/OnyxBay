@@ -92,7 +92,7 @@
 
 /datum/mind/proc/set_current(mob/new_current)
 	if(new_current && QDELETED(new_current))
-		crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
+		util_crash_with("Tried to set a mind's current var to a qdeleted mob, what the fuck")
 	if(current)
 		unregister_signal(src, SIGNAL_QDELETING)
 	current = new_current
@@ -437,7 +437,7 @@
 		switch(href_list["common"])
 			if("undress")
 				for(var/obj/item/I in current)
-					current.drop_from_inventory(I)
+					current.drop(I)
 			if("takeuplink")
 				take_uplink()
 				memory = null//Remove any memory they may have had.

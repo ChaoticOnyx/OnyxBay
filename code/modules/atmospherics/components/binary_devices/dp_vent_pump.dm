@@ -21,8 +21,8 @@
 	level = 1
 
 	use_power = POWER_USE_OFF
-	idle_power_usage = 150		//internal circuitry, friction losses and stuff
-	power_rating = 7500			//7500 W ~ 10 HP
+	idle_power_usage = 150 WATTS		//internal circuitry, friction losses and stuff
+	power_rating = 7.500 KILO WATTS		//7500 W ~ 10 HP
 
 	connect_types = CONNECT_TYPE_REGULAR|CONNECT_TYPE_SUPPLY|CONNECT_TYPE_SCRUBBER //connects to regular, supply and scrubbers pipes
 

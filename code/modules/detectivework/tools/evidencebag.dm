@@ -58,6 +58,9 @@
 		to_chat(user, SPAN_NOTICE("[src] already has something inside it."))
 		return FALSE
 
+	if(!user.drop(I, src))
+		return
+
 	user.visible_message("[user] puts [I] into [src]", "You put [I] inside [src].",\
 	"You hear a rustle as someone puts something into a plastic bag.")
 
@@ -74,8 +77,6 @@
 	overlays.Add(img, "evidence")	//should look nicer for transparent stuff. not really that important, but hey.
 
 	desc = "An evidence bag containing [I]."
-	user.drop_item()
-	I.forceMove(src)
 	stored_item = I
 	w_class = I.w_class
 

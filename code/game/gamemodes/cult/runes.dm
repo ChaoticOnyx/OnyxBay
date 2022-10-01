@@ -1,17 +1,17 @@
 /obj/effect/rune
 	name = "rune"
 	desc = "A strange collection of symbols drawn in blood."
-	anchored = 1
 	icon = 'icons/effects/uristrunes.dmi'
 	icon_state = "blank"
-	unacidable = 1
+	anchored = TRUE
+	unacidable = TRUE
 	layer = RUNE_LAYER
 
 	var/blood
 	var/bcolor
 	var/strokes = 2 // IF YOU EVER SET THIS TO MORE THAN TEN, EVERYTHING WILL BREAK
 	var/cultname = ""
-	var/animated = 0 //Whether the rune is pulsating
+	var/animated = FALSE //Whether the rune is pulsating
 
 /obj/effect/rune/New(loc, blcolor = "#c80000", nblood = "blood")
 	..()
@@ -42,7 +42,7 @@
 
 	desc = "A strange collection of symbols drawn in [blood]."
 
-/obj/effect/rune/proc/make_uristword(word as text, animated = FALSE as num)
+/obj/effect/rune/proc/make_uristword(word, animated = FALSE)
 	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
 	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
 	var/finalblood = bcolor
@@ -113,24 +113,24 @@
 	animate(color = list(1.125,0.06,0,0,0,1.125,0.06,0,0.06,0,1.125,0,0,0,0,1,0,0,0,0), time = 0.25)
 	animate(color = list(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0), time = 1)
 
-	spawn (10)
+	spawn(10)
 		if(animated)
 			idle_pulse()
 		else
 			animate(src)
 
 /obj/effect/rune/_examine_text(mob/user)
-	..()
+	. = ..(user)
 	if(iscultist(user) || isghost(user))
-		to_chat(user, "This is \a [cultname] rune.")
+		. += "This is \a [cultname] rune."
 
 /obj/effect/rune/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/book/tome) && iscultist(user))
-		user.visible_message("<span class='notice'>[user] rubs \the [src] with \the [I], and \the [src] is absorbed by it.</span>", "You retrace your steps, carefully undoing the lines of \the [src].")
+		user.visible_message(SPAN_NOTICE("\The [user] rubs \the [src] with \the [I], and \the [src] is absorbed by it."), "You retrace your steps, carefully undoing the lines of \the [src].")
 		qdel(src)
 		return
 	else if(istype(I, /obj/item/nullrod))
-		user.visible_message("<span class='notice'>[user] hits \the [src] with \the [I], and it disappears, fizzling.</span>", "<span class='notice'>You disrupt the vile magic with the deadening field of \the [I].</span>", "You hear a fizzle.")
+		user.visible_message(SPAN_NOTICE("[user] hits \the [src] with \the [I], and it disappears, fizzling."), SPAN_NOTICE("You disrupt the vile magic with the deadening field of \the [I]."), "You hear a fizzle.")
 		qdel(src)
 		return
 
@@ -163,7 +163,7 @@
 			. += M
 
 /obj/effect/rune/proc/fizzle(mob/living/user)
-	visible_message("<span class='warning'>The markings pulse with a small burst of light, then fall dark.</span>", "You hear a fizzle.")
+	visible_message(SPAN_WARNING("The markings pulse with a small burst of light, then fall dark."), "You hear a fizzle.")
 
 //Makes the speech a proc so all verbal components can be easily manipulated as a whole, or individually easily
 /obj/effect/rune/proc/speak_incantation(mob/living/user, incantation)
@@ -175,7 +175,38 @@
 
 /obj/effect/rune/convert
 	cultname = "convert"
-	var/spamcheck = 0
+	var/spamcheck = FALSE
+
+/obj/effect/rune/convert/proc/antag_check(mob/living/target, list/mob/living/cultists)
+	if(!target || !target.mind)
+		return FALSE
+
+	if(iscultist(target))
+		return FALSE
+
+	if(!cultists.len)
+		return FALSE
+
+	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
+		to_chat(target, SPAN_DANGER("<b>You feel your newfound belief enter your mind as your previous power aggressively channels itself to your new partners' heads. Seems like your initiation cost them their lives.</b>"))
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("<b>You feel a mighty mental force break into your mind as it clashes with your faith, the discord of their struggle tearing your mind apart and frying your brain. Trying to persist is no use. Seems like this conversion was your greatest and final one.</b>"))
+			if(!ishuman(M))
+				M.gib()
+				continue
+			var/mob/living/carbon/human/H = M
+			H.apply_damage(666, BURN, BP_HEAD, 0, 0, used_weapon = "fourth degree burns with no apparent cause")
+			H.death()
+		return TRUE
+
+	var/datum/antagonist/antag
+	for(var/antag_type in GLOB.all_antag_types_)
+		antag = GLOB.all_antag_types_[antag_type]
+		if(antag.is_antagonist(target.mind))
+			to_chat(target, SPAN_DANGER("<b>As your newfound belief takes over your mind, you distantly notice your previous values fade away entirely...</b>"))
+			antag.remove_antagonist(target.mind, TRUE, FALSE)
+
+	return TRUE
 
 /obj/effect/rune/convert/cast(mob/living/user)
 	if(spamcheck)
@@ -193,19 +224,31 @@
 	speak_incantation(user, "Mah[pick("'","`")]weyh pleggh at e'ntrath!")
 	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red."))
 
-	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
 	var/list/mob/living/cultists = get_cultists()
+	if((GLOB.changelings && (target.mind in GLOB.changelings.current_antagonists)) || isalien(target) || istype(target, /mob/living/carbon/human/diona) || istype(target, /mob/living/carbon/human/xenos) || istype(target, /mob/living/carbon/human/abductor))
+		to_chat(target, SPAN("changeling", "You feel a slight buzz in your head as a foreign mental force makes futile attempts at invading your mind."))
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("You feel a strong mental force blocking your belief from entering their mind.<br>Seems like you won't be able to convert \the [target]..."))
+		return
+
+	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
 	if(cultists.len < 2)
 		if(!GLOB.cult.can_become_antag(target.mind, 1))
 			to_chat(target, SPAN_DANGER("Are you going insane?"))
 		else
-			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
+			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore the offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
 
-	spamcheck = 1
+	if(GLOB.wizards && (target.mind in GLOB.wizards.current_antagonists))
+		to_chat(target, SPAN_DANGER("<b>Yet you still sense your true powers angrily lurking inside you. Seems like your initiation will cost these adherents a great deal...</b>"))
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("<b>You feel a strong mental force coming from \the [target]'s mind.<br>Seems like their conversion can only be done at the cost of your lives. If you're unwilling to make that sacrifice, you better stop now.</b>"))
+
+	spamcheck = TRUE
 	spawn(30)
-		spamcheck = 0
-		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1) && cultists.len >= 2)
-			GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
+		spamcheck = FALSE
+		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, TRUE) && cultists.len >= 2)
+			if(antag_check(target, cultists))
+				GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
 		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
 				target.take_overall_damage(10, 0)
@@ -225,8 +268,8 @@
 /obj/effect/rune/convert/Topic(href, href_list)
 	var/list/mob/living/cultists = get_cultists()
 	if(href_list["join"] && cultists.len)
-		if(usr.loc == loc && !iscultist(usr))
-			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
+		if(usr.loc == loc && !iscultist(usr) && antag_check(usr, cultists))
+			GLOB.cult.add_antagonist(usr.mind, ignore_role = TRUE, do_not_equip = TRUE)
 
 /obj/effect/rune/teleport
 	cultname = "teleport"
@@ -246,9 +289,9 @@
 	return ..()
 
 /obj/effect/rune/teleport/_examine_text(mob/user)
-	. = ..()
+	. = ..(user)
 	if(iscultist(user))
-		to_chat(user, "Its name is [destination].")
+		. += "<br>Its name is [destination]."
 
 /obj/effect/rune/teleport/cast(mob/living/user)
 	if(user.loc == src)
@@ -256,24 +299,26 @@
 	else if(user.loc == get_turf(src))
 		speak_incantation(user, "Sas[pick("'","`")]so c'arta forbici!")
 		if(do_after(user, 30))
-			user.visible_message("<span class='warning'>\The [user] disappears in a flash of red light!</span>", "<span class='warning'>You feel as your body gets dragged into the dimension of Nar-Sie!</span>", "You hear a sickening crunch.")
+			user.visible_message(SPAN_WARNING("\The [user] disappears in a flash of red light!"),
+			                     SPAN_WARNING("You feel your body get dragged into the dimension of Nar-Sie!"),
+			                     "You hear a sickening crunch.")
 			user.forceMove(src)
 			showOptions(user)
 			var/warning = 0
 			while(user.loc == src)
 				user.take_organ_damage(0, 2)
 				if(user.getFireLoss() > 50)
-					to_chat(user, "<span class='danger'>Your body can't handle the heat anymore!</span>")
+					to_chat(user, SPAN_DANGER("Your body can't handle the heat anymore!"))
 					leaveRune(user)
 					return
 				if(warning == 0)
-					to_chat(user, "<span class='warning'>You feel the immerse heat of the realm of Nar-Sie...</span>")
+					to_chat(user, SPAN_WARNING("You feel the immense heat of the realm of Nar-Sie..."))
 					++warning
 				if(warning == 1 && user.getFireLoss() > 15)
-					to_chat(user, "<span class='warning'>Your burns are getting worse. You should return to your realm soon...</span>")
+					to_chat(user, SPAN_WARNING("Your burns are getting worse. You should return to your realm soon..."))
 					++warning
 				if(warning == 2 && user.getFireLoss() > 35)
-					to_chat(user, "<span class='warning'>The heat! It burns!</span>")
+					to_chat(user, SPAN_WARNING("The heat! It burns!"))
 					++warning
 				sleep(10)
 	else
@@ -305,7 +350,9 @@
 	if(user.loc != src)
 		return
 	user.forceMove(get_turf(src))
-	user.visible_message("<span class='warning'>\The [user] appears in a flash of red light!</span>", "<span class='warning'>You feel as your body gets thrown out of the dimension of Nar-Sie!</span>", "You hear a pop.")
+	user.visible_message(SPAN_WARNING("\The [user] appears in a flash of red light!"),
+	                     SPAN_WARNING("You feel your body get thrown out of the dimension of Nar-Sie!"),
+	                     "You hear a pop.")
 
 /obj/effect/rune/tome
 	cultname = "summon tome"
@@ -313,7 +360,7 @@
 /obj/effect/rune/tome/cast(mob/living/user)
 	new /obj/item/book/tome(get_turf(src))
 	speak_incantation(user, "N[pick("'","`")]ath reth sh'yro eth d'raggathnor!")
-	visible_message("<span class='notice'>\The [src] disappears with a flash of red light, and in its place now a book lies.</span>", "You hear a pop.")
+	visible_message(SPAN_NOTICE("\The [src] disappears with a flash of red light, and in its place now a book lies."), "You hear a pop.")
 	qdel(src)
 
 /obj/effect/rune/wall
@@ -329,7 +376,7 @@
 	var/t
 	if(wall)
 		if(wall.health >= wall.max_health)
-			to_chat(user, "<span class='notice'>The wall doesn't need mending.</span>")
+			to_chat(user, SPAN_NOTICE("The wall doesn't need mending."))
 			return
 		t = wall.max_health - wall.health
 		wall.health += t
@@ -339,7 +386,7 @@
 		t = wall.health
 	user.pay_for_rune(t / 50)
 	speak_incantation(user, "Khari[pick("'","`")]d! Eske'te tannin!")
-	to_chat(user, "<span class='warning'>Your blood flows into the rune, and you feel that the very space over the rune thickens.</span>")
+	to_chat(user, SPAN_WARNING("Your blood flows into the rune, and you feel that the very space over the rune thickens."))
 
 /obj/effect/cultwall
 	name = "red mist"
@@ -347,9 +394,9 @@
 	icon = 'icons/effects/effects.dmi'//TODO: better icon
 	icon_state = "smoke"
 	color = "#ff0000"
-	anchored = 1
-	density = 1
-	unacidable = 1
+	anchored = TRUE
+	density = TRUE
+	unacidable = TRUE
 	var/obj/effect/rune/wall/rune
 	var/health
 	var/max_health = 200
@@ -367,28 +414,31 @@
 	return ..()
 
 /obj/effect/cultwall/_examine_text(mob/user)
-	. = ..()
+	. = ..(user)
 	if(iscultist(user))
 		if(health == max_health)
-			to_chat(user, "<span class='notice'>It is fully intact.</span>")
+			. += "<br>It is fully intact."
 		else if(health > max_health * 0.5)
-			to_chat(user, "<span class='warning'>It is damaged.</span>")
+			. += "<br>It is damaged."
 		else
-			to_chat(user, "<span class='danger'>It is about to dissipate.</span>")
+			. += "<br>It is about to dissipate."
 
 /obj/effect/cultwall/attack_hand(mob/living/user)
 	if(iscultist(user))
-		user.visible_message("<span class='notice'>\The [user] touches \the [src], and it fades.</span>", "<span class='notice'>You touch \the [src], whispering the old ritual, making it disappear.</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] touches \the [src], and it fades."),
+		                     SPAN_NOTICE("You touch \the [src], whispering the old ritual, making it disappear."))
 		qdel(src)
 	else
-		to_chat(user, "<span class='notice'>You touch \the [src]. It feels wet and becomes harder the further you push your arm.</span>")
+		to_chat(user, SPAN_NOTICE("You touch \the [src]. It feels wet and becomes harder the further you push your arm."))
 
 /obj/effect/cultwall/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/nullrod))
-		user.visible_message("<span class='notice'>\The [user] touches \the [src] with \the [I], and it disappears.</span>", "<span class='notice'>You disrupt the vile magic with the deadening field of \the [I].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] touches \the [src] with \the [I], and it disappears."),
+		                     SPAN_NOTICE("You disrupt the vile magic with the deadening field of \the [I]."))
 		qdel(src)
 	else if(I.force)
-		user.visible_message("<span class='notice'>\The [user] hits \the [src] with \the [I].</span>", "<span class='notice'>You hit \the [src] with \the [I].</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] hits \the [src] with \the [I]."),
+		                     SPAN_NOTICE("You hit \the [src] with \the [I]."))
 		take_damage(I.force)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.do_attack_animation(src)
@@ -402,7 +452,7 @@
 /obj/effect/cultwall/proc/take_damage(amount)
 	health -= amount
 	if(health <= 0)
-		visible_message("<span class='warning'>\The [src] dissipates.</span>")
+		visible_message(SPAN_WARNING("\The [src] dissipates."))
 		qdel(src)
 
 /obj/effect/rune/ajorney
@@ -413,8 +463,10 @@
 	if(user.loc != get_turf(src))
 		return
 	speak_incantation(user, "Fwe[pick("'","`")]sh mah erl nyag r'ya!")
-	user.visible_message("<span class='warning'>\The [user]'s eyes glow blue as \he freezes in place, absolutely motionless.</span>", "<span class='warning'>The shadow that is your spirit separates itself from your body. You are now in the realm beyond. While this is a great sight, being here strains your mind and body. Hurry...</span>", "You hear only complete silence for a moment.")
-	announce_ghost_joinleave(user.ghostize(1), 1, "You feel that they had to use some [pick("dark", "black", "blood", "forgotten", "forbidden")] magic to [pick("invade", "disturb", "disrupt", "infest", "taint", "spoil", "blight")] this place!")
+	user.visible_message(SPAN_WARNING("\The [user]'s eyes glow blue as \he freezes in place, absolutely motionless."),
+	                     SPAN_WARNING("The shadow that is your spirit separates itself from your body. You are now in the realm beyond. While this is a great sight, being here strains your mind and body. Hurry..."),
+	                                  "You hear only complete silence for a moment.")
+	announce_ghost_joinleave(user.ghostize(TRUE), TRUE, "You feel that they had to use some [pick("dark", "black", "blood", "forgotten", "forbidden")] magic to [pick("invade", "disturb", "disrupt", "infest", "taint", "spoil", "blight")] this place!")
 	var/mob/observer/ghost/soul
 	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
 		if(O.key == tmpkey)
@@ -450,7 +502,7 @@
 	if(A && !isspace(A))
 		A.holy = FALSE
 
-	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
+	visible_message(SPAN_WARNING("\The [src] embeds into the floor and walls around it, changing them!"), "You hear liquid flow.")
 	qdel(src)
 
 /* Tier 2 runes */
@@ -462,17 +514,17 @@
 
 /obj/effect/rune/armor/cast(mob/living/user)
 	speak_incantation(user, "N'ath reth sh'yro eth d[pick("'","`")]raggathnor!")
-	visible_message("<span class='warning'>\The [src] disappears with a flash of red light, and a set of armor appears on \the [user].</span>", "<span class='warning'>You are blinded by the flash of red light. After you're able to see again, you see that you are now wearing a set of armor.</span>")
+	visible_message(SPAN_WARNING("\The [src] disappears with a flash of red light, and a set of armor appears on \the [user]."), SPAN_WARNING("You are blinded by the flash of red light. After you're able to see again, you see that you are now wearing a set of armor."))
 
 	var/obj/O = user.get_equipped_item(slot_head) // This will most likely kill you if you are wearing a spacesuit, and it's 100% intended
 	if(O && !istype(O, /obj/item/clothing/head/culthood))
-		user.unEquip(O)
+		user.drop(O)
 	O = user.get_equipped_item(slot_wear_suit)
 	if(O && !istype(O, /obj/item/clothing/suit/cultrobes))
-		user.unEquip(O)
+		user.drop(O)
 	O = user.get_equipped_item(slot_shoes)
 	if(O && !istype(O, /obj/item/clothing/shoes/cult))
-		user.unEquip(O)
+		user.drop(O)
 
 	user.equip_to_slot_or_del(new /obj/item/clothing/head/culthood/alt(user), slot_head)
 	user.equip_to_slot_or_del(new /obj/item/clothing/suit/cultrobes/alt(user), slot_wear_suit)
@@ -480,7 +532,7 @@
 
 	O = user.get_equipped_item(slot_back)
 	if(istype(O, /obj/item/storage) && !istype(O, /obj/item/storage/backpack/cultpack)) // We don't want to make the vox drop their nitrogen tank, though
-		user.unEquip(O)
+		user.drop(O)
 		var/obj/item/storage/backpack/cultpack/C = new /obj/item/storage/backpack/cultpack(user)
 		user.equip_to_slot_or_del(C, slot_back)
 		if(C)
@@ -502,10 +554,10 @@
 /obj/effect/rune/offering/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(victim)
-		to_chat(user, "<span class='warning'>You are already sarcificing \the [victim] on this rune.</span>")
+		to_chat(user, SPAN_WARNING("You are already sacrificing \the [victim] on this rune."))
 		return
 	if(cultists.len < 3)
-		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
+		to_chat(user, SPAN_WARNING("You need three cultists around this rune to make it work."))
 		return fizzle(user)
 	var/turf/T = get_turf(src)
 	for(var/mob/living/M in T)
@@ -535,13 +587,13 @@
 		GLOB.cult.add_cultiness(CULTINESS_PER_SACRIFICE)
 		var/obj/item/device/soulstone/full/F = new(get_turf(src))
 		for(var/mob/M in cultists | get_cultists())
-			to_chat(M, "<span class='warning'>The Geometer of Blood accepts this offering.</span>")
-		visible_message("<span class='notice'>\The [F] appears over \the [src].</span>")
+			to_chat(M, SPAN_WARNING("The Geometer of Blood accepts this offering."))
+		visible_message(SPAN_NOTICE("\The [F] appears over \the [src]."))
 		GLOB.cult.sacrificed += victim.mind
 		if(victim.mind == GLOB.cult.sacrifice_target)
 			for(var/datum/mind/H in GLOB.cult.current_antagonists)
 				if(H.current)
-					to_chat(H.current, "<span class='cult'>Your objective is now complete.</span>")
+					to_chat(H.current, SPAN_OCCULT("Your objective is now complete."))
 		//TODO: other rewards?
 		/* old sac code - left there in case someone wants to salvage it
 		var/worth = 0
@@ -562,7 +614,7 @@
 		to_chat(usr, "<span class='warning'>The Geometer of blood accepts this sacrifice.</span>")
 		to_chat(usr, "<span class='warning'>However, a mere dead body is not enough to satisfy Him.</span>")
 		*/
-		to_chat(victim, "<span class='cult'>The Geometer of Blood claims your body.</span>")
+		to_chat(victim, SPAN_OCCULT("The Geometer of Blood claims your body."))
 		victim.dust()
 	if(victim)
 		victim.ExtinguishMob() // Technically allows them to put the fire out by sacrificing them and stopping immediately, but I don't think it'd have much effect
@@ -582,12 +634,14 @@
 	if(!victim)
 		return fizzle(user)
 	if(!victim.vessel.has_reagent(/datum/reagent/blood, 20))
-		to_chat(user, "<span class='warning'>This body has no blood in it.</span>")
+		to_chat(user, SPAN_WARNING("This body has no blood in it."))
 		return fizzle(user)
 	victim.vessel.remove_reagent(/datum/reagent/blood, 20)
 	admin_attack_log(user, victim, "Used a blood drain rune.", "Was victim of a blood drain rune.", "used a blood drain rune on")
 	speak_incantation(user, "Yu[pick("'","`")]gular faras desdae. Havas mithum javara. Umathar uf'kal thenar!")
-	user.visible_message("<span class='warning'>Blood flows from \the [src] into \the [user]!</span>", "<span class='cult'>The blood starts flowing from \the [src] into your frail mortal body. [capitalize(english_list(heal_user(user), nothing_text = "you feel no different"))].</span>", "You hear liquid flow.")
+	user.visible_message(SPAN_WARNING("Blood flows from \the [src] into \the [user]!"),
+	                     SPAN_OCCULT("The blood starts flowing from \the [src] into your frail mortal body. [capitalize(english_list(heal_user(user), nothing_text = "you feel no different"))]."),
+	                     "You hear liquid flow.")
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 /obj/effect/rune/drain/proc/heal_user(mob/living/carbon/human/user)
@@ -683,7 +737,7 @@
 /obj/effect/rune/emp/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 2)
-		to_chat(user, "<span class='warning'>You need two cultists around this rune to make it work.</span>")
+		to_chat(user, SPAN_WARNING("You need two cultists around this rune to make it work."))
 		return fizzle(user)
 	empulse(get_turf(src), 4, 2, 1)
 	speak_incantation(user, "Ta'gh fara[pick("'","`")]qha fel d'amar det!")
@@ -698,7 +752,7 @@
 		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
 		return
 	if(cultists.len < 3)
-		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
+		to_chat(user, SPAN_WARNING("You need three cultists around this rune to make it work."))
 		return fizzle(user)
 	else
 		for(var/mob/living/M in cultists)
@@ -713,7 +767,7 @@
 	if(A && !isspace(A))
 		A.holy = FALSE
 
-	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
+	visible_message(SPAN_WARNING("\The [src] embeds into the floor and walls around it, changing them!"), "You hear liquid flow.")
 	qdel(src)
 
 /* Tier 3 runes */
@@ -724,11 +778,11 @@
 
 /obj/effect/rune/weapon/cast(mob/living/user)
 	if(!istype(user.get_equipped_item(slot_head), /obj/item/clothing/head/culthood) || !istype(user.get_equipped_item(slot_wear_suit), /obj/item/clothing/suit/cultrobes) || !istype(user.get_equipped_item(slot_shoes), /obj/item/clothing/shoes/cult))
-		to_chat(user, "<span class='warning'>You need to be wearing your robes to use this rune.</span>")
+		to_chat(user, SPAN_WARNING("You need to be wearing your robes to use this rune."))
 		return fizzle(user)
 	var/turf/T = get_turf(src)
 	if(T.icon_state != "cult" && T.icon_state != "cult-narsie")
-		to_chat(user, "<span class='warning'>This rune needs to be placed on the defiled ground.</span>")
+		to_chat(user, SPAN_WARNING("This rune needs to be placed on defiled ground."))
 		return fizzle(user)
 	speak_incantation(user, "N'ath reth sh'yro eth d[pick("'","`")]raggathnor!")
 	user.put_in_hands(new /obj/item/melee/cultblade(user))
@@ -741,7 +795,7 @@
 /obj/effect/rune/shell/cast(mob/living/user)
 	var/turf/T = get_turf(src)
 	if(T.icon_state != "cult" && T.icon_state != "cult-narsie")
-		to_chat(user, "<span class='warning'>This rune needs to be placed on the defiled ground.</span>")
+		to_chat(user, SPAN_WARNING("This rune needs to be placed on defiled ground."))
 		return fizzle(user)
 
 	var/obj/item/stack/material/steel/target
@@ -757,7 +811,7 @@
 	speak_incantation(user, "Da A[pick("'","`")]ig Osk!")
 	target.use(10)
 	var/obj/O = new /obj/structure/constructshell/cult(get_turf(src))
-	visible_message("<span class='warning'>The metal bends into \the [O], and \the [src] imbues into it.</span>", "You hear a metallic sound.")
+	visible_message(SPAN_WARNING("The metal bends into \the [O], and \the [src] imbues into it."), "You hear a metallic sound.")
 	qdel(src)
 
 /obj/effect/rune/confuse
@@ -767,10 +821,10 @@
 /obj/effect/rune/confuse/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 3)
-		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
+		to_chat(user, SPAN_WARNING("You need three cultists around this rune to make it work."))
 		return fizzle(user)
 	speak_incantation(user, "Fuu ma[pick("'","`")]jin!")
-	visible_message("<span class='danger'>\The [src] explodes in a bright flash.</span>")
+	visible_message(SPAN_DANGER("\The [src] explodes in a bright flash."))
 	var/list/mob/affected = list()
 	for(var/mob/living/M in viewers(src))
 		if(iscultist(M))
@@ -814,12 +868,15 @@
 	target.rejuvenate()
 	source.set_full(0)
 	speak_incantation(user, "Pasnar val'keriam usinar. Savrae ines amutan. Yam'toth remium il'tarat!")
-	target.visible_message("<span class='warning'>\The [target]'s eyes glow with a faint red as \he stands up, slowly starting to breathe again.</span>", "<span class='warning'>Life... I'm alive again...</span>", "You hear liquid flow.")
+	target.visible_message(SPAN_WARNING("\The [target]'s eyes glow with a faint red as \he stands up, slowly starting to breathe again."),
+	                       SPAN_WARNING("Life... I'm alive again..."),
+	                       "You hear liquid flow.")
 
 /obj/effect/rune/blood_boil
 	cultname = "blood boil"
 	strokes = 4
 	var/is_used = FALSE
+	var/uses = 5
 
 /obj/effect/rune/blood_boil/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
@@ -845,12 +902,18 @@
 			M.take_overall_damage(5, 5)
 			if(!(M in previous))
 				if(M.should_have_organ(BP_HEART))
-					to_chat(M, "<span class='danger'>Your blood boils!</span>")
+					to_chat(M, SPAN_DANGER("Your blood boils!"))
 				else
-					to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
+					to_chat(M, SPAN_DANGER("You feel searing heat inside!"))
 		previous = current.Copy()
 		current.Cut()
-		sleep(10)
+		uses -= 1
+		if(uses <= 0)
+			visible_message(SPAN_WARNING("\The [src] suddenly dissipates."))
+			to_chat(user, SPAN_DANGER("Seems like all of \the [src]'s power has been used up."))
+			qdel(src)
+			return
+		sleep(40)
 	is_used = FALSE
 
 /* Tier NarNar runes */
@@ -866,17 +929,17 @@
 	if(!GLOB.cult.allow_narsie)
 		return
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN("cult", "Our Deity does not have enough influence on this place to be summoned there!"))
+		to_chat(user, SPAN_OCCULT("Our Deity does not have enough influence on this place to be summoned here!"))
 		return
 	if(the_end_comes)
-		to_chat(user, "<span class='cult'>You are already summoning! Be patient!</span>")
+		to_chat(user, SPAN_OCCULT("You are already summoning! Be patient!"))
 		return
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 5)
 		return fizzle()
 	for(var/mob/living/M in cultists)
 		M.say("Tok-lyr rqa'nap g[pick("'","`")]lt-ulotf!")
-		to_chat(M, "<span class='cult'>You are staring to tear the reality to bring Him back... stay around the rune!</span>")
+		to_chat(M, SPAN_OCCULT("You are starting to tear the reality to bring Him back... stay around the rune!"))
 	log_and_message_admins_many(cultists, "started summoning Nar-sie.")
 
 	var/area/A = get_area(src)
@@ -913,15 +976,15 @@
 		if(input != "Yes")
 			return
 		speak_incantation(user, "Uhrast ka'hfa heldsagen ver[pick("'","`")]lot!")
-		to_chat(user, "<span class='warning'>In the last moment of your humble life, you feel an immense pain as fabric of reality mends... with your blood.</span>")
+		to_chat(user, SPAN_WARNING("In the last moment of your humble life, you feel an immense pain as fabric of reality mends... with your blood."))
 		for(var/mob/M in GLOB.living_mob_list_)
 			if(iscultist(M))
-				to_chat(M, "You see a vision of \the [user] keeling over dead, his blood glowing blue as it escapes \his body and dissipates into thin air; you hear an otherwordly scream and feel that a great disaster has just been averted.")
+				to_chat(M, "You see a vision of \the [user] keeling over dead, their blood glowing blue as it escapes their body and dissipates into thin air; you hear an otherwordly scream and feel that a great disaster has just been averted.")
 			else
-				to_chat(M, "You see a vision of [name] keeling over dead, his blood glowing blue as it escapes his body and dissipates into thin air; you hear an otherwordly scream and feel very weak for a moment.")
+				to_chat(M, "You see a vision of [name] keeling over dead, their blood glowing blue as it escapes their body and dissipates into thin air; you hear an otherwordly scream and feel very weak for a moment.")
 		log_and_message_admins("mended reality with the greatest sacrifice", user)
 		user.dust()
-		GLOB.cult.powerless = 1
+		GLOB.cult.powerless = TRUE
 		qdel(HECOMES)
 		qdel(src)
 		return
@@ -939,19 +1002,19 @@
 
 /obj/effect/rune/imbue/cast(mob/living/user)
 	var/obj/item/paper/target
-	var/tainted = 0
+	var/tainted = FALSE
 	for(var/obj/item/paper/P in get_turf(src))
 		if(P.is_clean())
 			target = P
 			break
 		else
-			tainted = 1
+			tainted = TRUE
 	if(!target)
 		if(tainted)
-			to_chat(user, "<span class='warning'>The blank is tainted. It is unsuitable.</span>")
+			to_chat(user, SPAN_WARNING("The blank is tainted. It is unsuitable."))
 		return fizzle(user)
 	speak_incantation(user, "H'drak v[pick("'","`")]loso, mir'kanas verbot!")
-	visible_message("<span class='warning'>The rune forms into an arcane image on the paper.</span>")
+	visible_message(SPAN_WARNING("The rune forms into an arcane image on the paper."))
 	new papertype(get_turf(src))
 	qdel(target)
 	qdel(src)

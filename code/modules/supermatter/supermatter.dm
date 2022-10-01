@@ -24,7 +24,7 @@
 
 // Base variants are applied to everyone on the same Z level
 // Range variants are applied on per-range basis: numbers here are on point blank, it scales with the map size (assumes square shaped Z levels)
-#define DETONATION_RADS 20
+#define DETONATION_RADS (100 KILO CURIE)
 #define DETONATION_MOB_CONCUSSION 4			// Value that will be used for Weaken() for mobs.
 
 // Base amount of ticks for which a specific type of machine will be offline for. +- 20% added by RNG.
@@ -103,6 +103,8 @@
 	var/aw_emerg = FALSE
 	var/aw_delam = FALSE
 	var/aw_EPR = FALSE
+
+	var/datum/radiation_source/rad_source = null
 
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
@@ -196,7 +198,8 @@
 
 	// Effect 1: Radiation, weakening to all mobs on Z level
 	for(var/z in affected_z)
-		SSradiation.z_radiate(locate(1, 1, z), DETONATION_RADS, 1)
+		var/datum/radiation_source/rad_explode = SSradiation.z_radiate(locate(1, 1, z), new /datum/radiation(DETONATION_RADS, RADIATION_BETA_PARTICLE, BETA_PARTICLE_ENERGY * 5), 1)
+		rad_explode.schedule_decay(6 MINUTES)
 
 	for(var/mob/living/mob in GLOB.living_mob_list_)
 		var/turf/TM = get_turf(mob)
@@ -305,7 +308,7 @@
 
 	var/turf/L = loc
 
-	if(isnull(L))		// We have a null turf...something is wrong, stop processing this entity.
+	if(QDELETED(L))		// We have a null turf...something is wrong, stop processing this entity.
 		return PROCESS_KILL
 
 	if(!istype(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.
@@ -372,7 +375,7 @@
 		//Release reaction gasses
 		var/heat_capacity = removed.heat_capacity()
 		removed.adjust_multi("plasma", max(device_energy / PLASMA_RELEASE_MODIFIER, 0), \
-		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
+		                     "oxygen", max(CONV_KELVIN_CELSIUS(device_energy + removed.temperature) / OXYGEN_RELEASE_MODIFIER, 0))
 
 		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
 		if (debug)
@@ -392,17 +395,29 @@
 			if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/meson))
 				continue
 			var/obj/item/rig/R = H.back
+
 			if(istype(R) && istype(R.visor, /obj/item/rig_module/vision/meson) && R.visor.active)
 				continue
 			var/effect = max(0, min(200, power * config_hallucination_power * sqrt(1 / max(1, get_dist(H, src)))))
 			H.adjust_hallucination(effect, 0.25 * effect)
 
-	SSradiation.radiate(src, power * 1.5) //Better close those shutters!
+	if(power > 0)
+		if(rad_source == null)
+			rad_source = SSradiation.radiate(src, new /datum/radiation/preset/supermatter)
+
+		rad_source.info.energy = power * (1.2 MEGA ELECTRONVOLT)
+	else
+		qdel(rad_source)
+
 	power -= (power/DECAY_FACTOR)**3		//energy losses due to radiation
 	handle_admin_warnings()
 
 	return 1
 
+/obj/machinery/power/supermatter/Destroy()
+	qdel(rad_source)
+
+	. = ..()
 
 /obj/machinery/power/supermatter/bullet_act(obj/item/projectile/Proj)
 	var/turf/L = loc
@@ -472,10 +487,10 @@
 		"<span class=\"danger\">You touch \the [W] to \the [src] when everything suddenly goes silent.\"</span>\n<span class=\"notice\">\The [W] flashes into dust as you flinch away from \the [src].</span>",\
 		"<span class=\"warning\">Everything suddenly goes silent.</span>")
 
-	user.drop_from_inventory(W)
+	user.drop(W, force = TRUE)
 	Consume(W)
 
-	user.apply_effect(150, IRRADIATE, blocked = user.getarmor(null, "rad"))
+	user.rad_act(new /datum/radiation_source(new /datum/radiation/preset/supermatter(4), src))
 
 /obj/machinery/power/supermatter/Bumped(atom/AM)
 	if(istype(AM, /obj/effect))
@@ -506,9 +521,9 @@
 				"<span class=\"warning\">The unearthly ringing subsides and you notice you have new radiation burns.</span>", 2)
 		else
 			l.show_message("<span class=\"warning\">You hear an uneartly ringing and notice your skin is covered in fresh radiation burns.</span>", 2)
-	var/rads = 500
-	SSradiation.radiate(src, rads)
 
+	var/datum/radiation_source/temp_src = SSradiation.radiate(src, new /datum/radiation/preset/supermatter(10))
+	temp_src.schedule_decay(20 SECONDS)
 
 /proc/supermatter_pull(atom/target, pull_range = 255, pull_power = STAGE_FIVE)
 	var/list/movable_atoms = list()

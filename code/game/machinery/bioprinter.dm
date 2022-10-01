@@ -10,8 +10,8 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
-	idle_power_usage = 40
-	active_power_usage = 300
+	idle_power_usage = 40 WATTS
+	active_power_usage = 300 WATTS
 
 	var/stored_matter = 0
 	var/max_stored_matter = 0
@@ -265,8 +265,9 @@
 			if(max_stored_matter == stored_matter)
 				to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
 				return
+			if(!user.drop(W))
+				return
 			stored_matter += min(amount_list[path], max_stored_matter - stored_matter)
-			user.drop_item()
 			to_chat(user, "<span class='info'>\The [src] processes \the [W]. Levels of stored biomass now: [stored_matter]</span>")
 			qdel(W)
 			return

@@ -5,9 +5,15 @@
 	name = "\proper space"
 	icon_state = "on_map"
 	dynamic_lighting = 0
-	temperature = T20C
+	temperature = 20 CELSIUS
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
 	var/dirt = 0
+
+	rad_resist = list(
+		RADIATION_ALPHA_PARTICLE = 0,
+		RADIATION_BETA_PARTICLE = 0,
+		RADIATION_HAWKING = 0
+	)
 
 /turf/space/Initialize()
 	. = ..()
@@ -63,16 +69,19 @@
 			ReplaceWithLattice()
 		return
 
-	if (istype(C, /obj/item/stack/tile/floor))
+	if(istype(C, /obj/item/stack/tile/floor) || istype(C, /obj/item/stack/tile/floor_rough))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/floor/S = C
-			if (S.get_amount() < 1)
+			if(S.get_amount() < 1)
 				return
 			qdel(L)
 			playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 			S.use(1)
-			ChangeTurf(/turf/simulated/floor/plating/airless)
+			if(istype(C, /obj/item/stack/tile/floor_rough))
+				ChangeTurf(/turf/simulated/floor/plating/rough/airless)
+			else
+				ChangeTurf(/turf/simulated/floor/plating/airless)
 			return
 		else
 			to_chat(user, "<span class='warning'>The plating is going to need some support.</span>")

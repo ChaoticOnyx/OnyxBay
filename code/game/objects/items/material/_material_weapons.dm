@@ -71,7 +71,7 @@
 			else
 				color = material.icon_colour
 		if(material.products_need_process())
-			START_PROCESSING(SSobj, src)
+			set_next_think(world.time)
 		if(material.conductive)
 			obj_flags |= OBJ_FLAG_CONDUCTIBLE
 		else
@@ -80,10 +80,6 @@
 			create_reagents(material_amount * REAGENTS_PER_MATERIAL_SHEET)
 			reagents.add_reagent(material.reagent_path, material_amount * REAGENTS_PER_MATERIAL_SHEET)
 		update_force()
-
-/obj/item/material/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	. = ..()
 
 /obj/item/material/apply_hit_effect()
 	. = ..()
@@ -102,11 +98,9 @@
 /obj/item/material/proc/shatter(consumed)
 	var/turf/T = get_turf(src)
 	T.visible_message("<span class='danger'>\The [src] [material.destruction_desc]!</span>")
-	if(istype(loc, /mob/living))
-		var/mob/living/M = loc
-		M.drop_from_inventory(src)
-	playsound(src, SFX_BREAK_WINDOW, 70, 1)
-	if(!consumed && drops_debris) material.place_shard(T)
+	playsound(T, SFX_BREAK_WINDOW, 70, 1)
+	if(!consumed && drops_debris)
+		material.place_shard(T)
 	qdel(src)
 /*
 Commenting this out pending rebalancing of radiation based on small objects.
