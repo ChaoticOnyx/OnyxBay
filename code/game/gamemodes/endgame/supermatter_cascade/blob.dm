@@ -77,7 +77,7 @@
 
 	playsound(src, 'sound/effects/supermatter.ogg', 50, 1)
 
-	user.drop_from_inventory(W)
+	user.drop(W, force = TRUE)
 	Consume(W)
 
 #define MayConsume(A) (istype(A) && A.simulated && !isobserver(A))

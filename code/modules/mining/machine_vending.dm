@@ -143,10 +143,10 @@ var/global/list/minevendor_list = list( //keep in order of price
 		else if(href_list["choice"] == "insert")
 			var/obj/item/card/id/I = usr.get_active_hand()
 			if(istype(I))
-				usr.drop_item()
-				I.loc = src
-				inserted_id = I
-			else to_chat(usr, "<span class='danger'>No valid ID.</span>")
+				if(usr.drop(I, src))
+					inserted_id = I
+			else
+				to_chat(usr, "<span class='danger'>No valid ID.</span>")
 	if(href_list["purchase"])
 		if(istype(inserted_id))
 			var/datum/data/mining_equipment/prize = locate(href_list["purchase"])
@@ -168,9 +168,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 /obj/machinery/mineral/equipment_vendor/attackby(obj/item/I, mob/user, params)
 	if(istype(I,/obj/item/card/id))
 		var/obj/item/card/id/C = usr.get_active_hand()
-		if(istype(C) && !istype(inserted_id))
-			usr.drop_item()
-			C.loc = src
+		if(istype(C) && !istype(inserted_id) && usr.drop(C, src))
 			inserted_id = C
 			interact(user)
 		return

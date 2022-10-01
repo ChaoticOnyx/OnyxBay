@@ -958,6 +958,10 @@
 	icon_state = "hallC3"
 	environment_type = ENVIRONMENT_ROOM
 
+/area/polarplanet/hallway/primary/central_fore/lobby
+	name = "\improper Central Primary Hallway Lobby"
+	icon_state = "cave"
+
 /area/polarplanet/hallway/primary/central_fife
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
@@ -1476,6 +1480,9 @@
 	name = "\improper Teleporter"
 	icon_state = "teleporter"
 	ambient_music_tags = list(MUSIC_TAG_SPACE)
+
+/area/polarplanet/teleporter/maintenance
+	name = "\improper Teleporter Maintenance"
 
 /area/polarplanet/gateway
 	name = "\improper Gateway"

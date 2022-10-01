@@ -62,7 +62,6 @@
 		else if(user.zone_sel.selecting == BP_R_HAND || user.zone_sel.selecting == BP_L_HAND)
 			var/obj/item/handcuffs/cable/tape/T = new(user)
 			if(!T.place_handcuffs(H, user))
-				user.unEquip(T)
 				qdel(T)
 
 		else if(user.zone_sel.selecting == BP_CHEST)

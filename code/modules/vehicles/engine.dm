@@ -36,10 +36,8 @@
 	if(istype(I,/obj/item/cell))
 		if(cell)
 			to_chat(user, "<span class='warning'>There is already a cell in \the [src].</span>")
-		else
+		else if(user.drop(I, src))
 			cell = I
-			user.drop_from_inventory(I)
-			I.forceMove(src)
 		return 1
 	else if(isCrowbar(I))
 		if(cell)

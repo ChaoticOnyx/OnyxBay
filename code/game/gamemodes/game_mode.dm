@@ -32,9 +32,6 @@ var/global/list/additional_antag_types = list()
 	var/station_was_nuked = 0                // See nuclearbomb.dm and malfunction.dm.
 	var/explosion_in_progress = 0            // Sit back and relax
 
-	var/event_delay_mod_moderate             // Modifies the timing of random events.
-	var/event_delay_mod_major                // As above.
-
 	var/waittime_l = 60 SECONDS				 // Lower bound on time before start of shift report
 	var/waittime_h = 180 SECONDS		     // Upper bounds on time before start of shift report
 
@@ -86,18 +83,6 @@ var/global/list/additional_antag_types = list()
 				if(isnull(choice) || choice < 0 || choice > 100)
 					return
 				antag_scaling_coeff = choice
-			if("event_modifier_moderate")
-				choice = input("Enter a new moderate event time modifier.") as num
-				if(isnull(choice) || choice < 0 || choice > 100)
-					return
-				event_delay_mod_moderate = choice
-				refresh_event_modifiers()
-			if("event_modifier_severe")
-				choice = input("Enter a new moderate event time modifier.") as num
-				if(isnull(choice) || choice < 0 || choice > 100)
-					return
-				event_delay_mod_major = choice
-				refresh_event_modifiers()
 		message_admins("Admin [key_name_admin(usr)] set game mode option '[href_list["set"]]' to [choice].")
 	else if(href_list["debug_antag"])
 		if(href_list["debug_antag"] == "self")
@@ -191,16 +176,6 @@ var/global/list/additional_antag_types = list()
 	else
 		return TRUE
 
-/datum/game_mode/proc/refresh_event_modifiers()
-	if(event_delay_mod_moderate || event_delay_mod_major)
-		SSevent.report_at_round_end = 1
-		if(event_delay_mod_moderate)
-			var/datum/event_container/EModerate = SSevent.event_containers[EVENT_LEVEL_MODERATE]
-			EModerate.delay_modifier = event_delay_mod_moderate
-		if(event_delay_mod_moderate)
-			var/datum/event_container/EMajor = SSevent.event_containers[EVENT_LEVEL_MAJOR]
-			EMajor.delay_modifier = event_delay_mod_major
-
 /datum/game_mode/proc/pre_setup()
 	for(var/datum/antagonist/antag in antag_templates)
 		antag.update_current_antag_max(src)
@@ -214,8 +189,6 @@ var/global/list/additional_antag_types = list()
 /datum/game_mode/proc/post_setup()
 
 	next_spawn = world.time + rand(min_autotraitor_delay, max_autotraitor_delay)
-
-	refresh_event_modifiers()
 
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()

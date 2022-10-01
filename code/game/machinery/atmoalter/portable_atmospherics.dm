@@ -103,12 +103,10 @@
 
 /obj/machinery/portable_atmospherics/attackby(obj/item/W as obj, mob/user as mob)
 	if ((istype(W, /obj/item/tank) && !( src.destroyed )))
-		if (src.holding)
+		if(holding || !user.drop(W, src))
 			return
 		var/obj/item/tank/T = W
-		user.drop_item()
-		T.forceMove(src)
-		src.holding = T
+		holding = T
 		update_icon()
 		return
 
@@ -158,13 +156,11 @@
 		if(cell)
 			to_chat(user, "There is already a power cell installed.")
 			return
-
+		if(!user.drop(I, src))
+			return
 		var/obj/item/cell/C = I
-
-		user.drop_item()
 		C.add_fingerprint(user)
 		cell = C
-		C.forceMove(src)
 		user.visible_message("<span class='notice'>[user] opens the panel on [src] and inserts [C].</span>", "<span class='notice'>You open the panel on [src] and insert [C].</span>")
 		power_change()
 		return

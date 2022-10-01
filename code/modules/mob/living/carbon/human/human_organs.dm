@@ -108,7 +108,10 @@
 			//Moving around with fractured ribs won't do you any good
 				if(prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
 					custom_pain("Pain jolts through your broken [E.encased ? E.encased : E.name], staggering you!", 50, affecting = E)
-					drop_item(loc)
+					if(prob(50))
+						drop_active_hand()
+					else
+						drop_inactive_hand()
 					Stun(2)
 
 				//Moving makes open wounds get infected much faster
@@ -274,13 +277,13 @@
 		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-			drop_from_inventory(l_hand)
+			drop_l_hand(force = TRUE)
 
 	if(r_hand)
 		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
 		if(!E)
 			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-			drop_from_inventory(r_hand)
+			drop_r_hand(force = TRUE)
 
 	// Check again...
 	if(!l_hand && !r_hand)
@@ -320,7 +323,7 @@
 	if(!thing)
 		return
 
-	if(!unEquip(thing))
+	if(!drop(thing))
 		return // Failed to drop, don't spam messages.
 
 	if(BP_IS_ROBOTIC(affected))

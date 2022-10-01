@@ -132,7 +132,7 @@
 
 	flesh_color = "#663300"
 	base_color = "#333333"
-	blood_color = "#862a51"
+	blood_color = COLOR_BLOOD_TAJARAN
 	organs_icon = 'icons/mob/human_races/organs/tajaran.dmi'
 	reagent_tag = IS_TAJARA
 
@@ -199,7 +199,7 @@
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
 
 	flesh_color = "#339966"
-	blood_color = "#1d2cbf"
+	blood_color = COLOR_BLOOD_SKRELL
 	base_color = "#006666"
 	organs_icon = 'icons/mob/human_races/organs/skrell.dmi'
 

@@ -7,8 +7,6 @@
 	config_tag = "calamity"
 	required_players = 1
 	votable = 0
-	event_delay_mod_moderate = 0.5
-	event_delay_mod_major = 0.75
 
 /datum/game_mode/calamity/create_antagonists()
 	var/list/antag_candidates = all_random_antag_types()

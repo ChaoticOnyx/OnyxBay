@@ -256,9 +256,8 @@
 		return
 	if(!istype(C))
 		return
-
-	H.drop_from_inventory(C)
-	C.forceMove(src)
+	if(!H.drop(C, src))
+		return
 	cell = C
 	powercheck()
 	to_chat(usr, "<span class='notice'>You install [C] in [src].</span>")

@@ -637,7 +637,7 @@
 		if(istype(I, /obj/item/implant)) //TODO: Carn. give implants a dropped() or something
 			qdel(I)
 			continue
-		M.drop_from_inventory(I)
+		M.drop(I, force = TRUE)
 	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1

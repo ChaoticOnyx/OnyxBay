@@ -30,7 +30,8 @@
 			return
 		usr.visible_message("[usr] begins to carefully place [W] onto the Inserter.", "You begin to carefully place [W] onto the Inserter.")
 		if(do_after(usr, 80, src))
-			usr.drop_from_inventory(W, src)
+			if(!usr.drop(W, src))
+				return
 			cylinder = W
 			density = 1
 			usr.visible_message("[usr] places [W] onto the Inserter.", "You place [W] onto the Inserter.")

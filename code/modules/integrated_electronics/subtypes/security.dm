@@ -48,8 +48,9 @@
 		if(installed_gun)
 			to_chat(user, SPAN("warning", "There's already a weapon installed."))
 			return
-		user.drop_item(gun)
-		gun.forceMove(src)
+		if(!user.drop(gun, src))
+			to_chat(user, SPAN("warning", "It doesn't seem to be possible."))
+			return
 		installed_gun = gun
 		to_chat(user, SPAN("notice", "You slide \the [gun] into the firing mechanism."))
 		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)

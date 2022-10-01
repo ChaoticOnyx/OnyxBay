@@ -204,8 +204,6 @@ GLOBAL_LIST_EMPTY(common_report)
 	//Antagonists
 	parts += antag_report()
 
-	parts += SSevent.RoundEnd()
-
 	parts += _last_words_report()
 
 	listclearnulls(parts)

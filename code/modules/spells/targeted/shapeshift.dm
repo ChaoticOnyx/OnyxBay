@@ -39,7 +39,7 @@
 			for(var/obj/item/I in M.contents)
 				if(istype(I,/obj/item/organ))
 					continue
-				M.drop_from_inventory(I)
+				M.drop(I, force = TRUE)
 		if(M.mind)
 			M.mind.transfer_to(trans)
 		else

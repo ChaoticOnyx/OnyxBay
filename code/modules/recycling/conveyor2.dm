@@ -88,10 +88,14 @@
 		to_chat(user, "<span class='notice'>You remove the conveyor belt.</span>")
 		qdel(src)
 		return
-	if(isrobot(user))	return //Carn: fix for borgs dropping their modules on conveyor belts
-	if(I.loc != user)	return // This should stop mounted modules ending up outside the module.
-
-	user.drop_item(get_turf(src))
+	if(istype(I, /obj/item/gripper))
+		var/obj/item/gripper/G = I
+		var/obj/item/wrapped = G.wrapped
+		if(wrapped)
+			G.drop_item()
+			wrapped.forceMove(get_turf(src))
+		return
+	user.drop(I, get_turf(src))
 	return
 
 // attack with hand, move pulled object onto conveyor

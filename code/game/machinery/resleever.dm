@@ -172,10 +172,10 @@
 			return
 	if(istype(W, /obj/item/organ/internal/stack))
 		if(QDELETED(lace))
+			if(!user.drop(W, src))
+				return
 			to_chat(user, "<span class='notice'>You insert \the [W] into [src].</span>")
-			user.drop_from_inventory(W)
 			lace = W
-			W.forceMove(src)
 			if(lace.backup)
 				lace_name = lace.backup.name
 		else

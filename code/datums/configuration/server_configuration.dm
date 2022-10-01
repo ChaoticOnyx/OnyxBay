@@ -19,10 +19,10 @@ GLOBAL_REAL(config, /datum/server_configuration) = new
 	var/datum/configuration_section/revival/revival = new
 	var/datum/configuration_section/movement/movement = new
 	var/datum/configuration_section/misc/misc = new
+	var/datum/configuration_section/mapping/mapping = new
 	var/datum/configuration_section/vote/vote = new
 	var/datum/configuration_section/link/link = new
 	var/datum/configuration_section/external/external = new
-	var/datum/configuration_section/random_events/random_events = new
 	var/datum/configuration_section/error/error = new
 	var/datum/configuration_section/donations/donations = new
 

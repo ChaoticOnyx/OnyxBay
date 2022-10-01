@@ -30,9 +30,9 @@
 		if(taser)
 			to_chat(user, "[src] already contains a taser!")
 			return
+		if(!user.drop(I, src))
+			return
 		to_chat(user, "You insert \the [I] into [src].")
-		user.drop_item()
-		I.forceMove(src)
 		taser = I
 		update_icon()
 		updateUsrDialog()

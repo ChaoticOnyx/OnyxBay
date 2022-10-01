@@ -32,7 +32,8 @@
 		/obj/item/stack/tile,
 		/obj/item/clamp,
 		/obj/item/frame,
-		/obj/item/device/assembly
+		/obj/item/device/assembly,
+		/obj/item/shield/closet
 		)
 
 	var/list/cant_hold = list(
@@ -310,12 +311,15 @@
 			AS.try_add_component(wrapped, user, AS)
 			wrapped = null
 			return
-		if(istype(target,/obj/structure/table)) //Putting item on the table if any
+		if(istype(target, /obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
 			wrapped.loc = get_turf(target)
 			T.auto_align(wrapped,params)
 			wrapped = null
+			return
+		if(istype(target, /obj/structure/closet))
+			target.attackby(wrapped, loc)
 			return
 		//Already have an item.
 		//Temporary put wrapped into user so target's attackby() checks pass.

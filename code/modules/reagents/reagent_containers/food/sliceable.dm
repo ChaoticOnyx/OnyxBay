@@ -861,13 +861,11 @@
 			for(var/obj/item/pizzabox/i in box.boxes)
 				boxestoadd += i
 
-			if( (boxes.len+1) + boxestoadd.len <= 5 )
-				user.drop_item()
-
-				box.loc = src
+			if((boxes.len + 1) + boxestoadd.len <= 5)
+				if(!user.drop(box, src))
+					return
 				box.boxes = list() // Clear the box boxes so we don't have boxes inside boxes. - Xzibit
-				src.boxes.Add( boxestoadd )
-
+				boxes.Add(boxestoadd)
 				box.update_icon()
 				update_icon()
 
@@ -879,15 +877,12 @@
 
 		return
 
-	if( istype(I, /obj/item/reagent_containers/food/sliceable/pizza/) ) // Long ass fucking object name
-
-		if( src.open )
-			user.drop_item()
-			I.loc = src
-			src.pizza = I
-
+	if(istype(I, /obj/item/reagent_containers/food/sliceable/pizza)) // Long ass fucking object name
+		if(open)
+			if(!user.drop(I, src))
+				return
+			pizza = I
 			update_icon()
-
 			to_chat(user, "<span class='warning'>You put \the [I] in \the [src]!</span>")
 		else
 			to_chat(user, "<span class='warning'>You try to push \the [I] through the lid but it doesn't work!</span>")

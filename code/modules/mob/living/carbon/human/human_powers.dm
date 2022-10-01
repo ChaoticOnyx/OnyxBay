@@ -302,7 +302,7 @@
 	S.set_last_nymph(L)
 
 	for(var/obj/item/I in src)
-		drop_from_inventory(I)
+		drop(I, force = TRUE)
 
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
 
@@ -365,8 +365,10 @@
 
 	last_special = world.time + 50
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 	to_chat(src, "<span class='warning'>You drop everything as you spring out to nab someone!.</span>")
 
 	playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
@@ -407,8 +409,10 @@
 	if(!hidden)
 		visible_message("[src] shifts \his arms.")
 
-	if(l_hand) unEquip(l_hand)
-	if(r_hand) unEquip(r_hand)
+	if(l_hand)
+		drop_l_hand()
+	if(r_hand)
+		drop_r_hand()
 
 	if(do_after(src, 30))
 		hidden = is_cloaked()

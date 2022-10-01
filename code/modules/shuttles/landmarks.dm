@@ -107,7 +107,7 @@
 	mark.SetName("Beacon signal ([T.x],[T.y])")
 	if(ismob(loc))
 		var/mob/M = loc
-		M.drop_from_inventory(src,T)
+		M.drop(src)
 	anchored = 1
 	T.hotspot_expose(1500, 5)
 	update_icon()

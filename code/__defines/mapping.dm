@@ -31,3 +31,11 @@
 #define MAP_ENG_RANDOM "random"
 #define MAP_ENG_SINGULARITY "singularity"
 #define MAP_ENG_MATTER "supermatter"
+
+// Biodomes
+
+#define MAP_BIO_RANDOM  "random"
+#define MAP_BIO_FOREST  "forest"
+#define MAP_BIO_WINTER  "winter"
+#define MAP_BIO_BEACH   "beach"
+#define MAP_BIO_CONCERT "concert"

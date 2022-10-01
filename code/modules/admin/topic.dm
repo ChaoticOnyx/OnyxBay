@@ -1091,7 +1091,7 @@
 
 		//strip their stuff and stick it in the crate
 		for(var/obj/item/I in M)
-			M.drop_from_inventory(I, locker)
+			M.drop(I, locker, force = TRUE)
 		M.update_icons()
 
 		//so they black out before warping
@@ -1134,7 +1134,7 @@
 			return
 
 		for(var/obj/item/I in M)
-			M.drop_from_inventory(I)
+			M.drop(I)
 
 		M.Paralyse(5)
 		sleep(5)
@@ -1159,7 +1159,7 @@
 			return
 
 		for(var/obj/item/I in M)
-			M.drop_from_inventory(I)
+			M.drop(I)
 
 		M.Paralyse(5)
 		sleep(5)
@@ -1206,7 +1206,7 @@
 			return
 
 		for(var/obj/item/I in M)
-			M.drop_from_inventory(I)
+			M.drop(I)
 
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/observer = M

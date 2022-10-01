@@ -103,7 +103,7 @@
 	if(dispenser)
 		cuffs = new(get_turf(user))
 	else
-		user.drop_from_inventory(cuffs)
+		user.drop(cuffs, force = TRUE)
 	target.equip_to_slot(cuffs, slot_handcuffed)
 	on_restraint_apply(src)
 	return 1

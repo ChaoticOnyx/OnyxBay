@@ -5,8 +5,7 @@
 		var/obj/item/glass_extra/GE = I
 		if(can_add_extra(GE))
 			extras += GE
-			user.remove_from_mob(GE)
-			GE.loc = src
+			user.drop(GE, src)
 			to_chat(user, "<span class=notice>You add \the [GE] to \the [src].</span>")
 			update_icon()
 		else
@@ -17,10 +16,9 @@
 			return
 		var/obj/item/reagent_containers/food/fruit_slice/FS = I
 		extras += FS
-		user.remove_from_mob(FS)
+		user.drop(FS, src)
 		FS.pixel_x = 0 // Reset its pixel offsets so the icons work!
 		FS.pixel_y = 0
-		FS.loc = src
 		to_chat(user, "<span class=notice>You add \the [FS] to \the [src].</span>")
 		update_icon()
 	else
