@@ -28,14 +28,14 @@
 		..()
 
 /obj/item/clothing/head/helmet/proc/togglevisor(mob/user)
-	if(icon_state == initial(icon_state))
-		src.icon_state = "[icon_state]_up"
+	if(!(body_parts_covered & FACE))
+		icon_state = "[initial(icon_state)]_up"
 		body_parts_covered &= ~FACE
-		to_chat(user, "You raise the visor on the [src].")
+		to_chat(user, "You raise the visor on \the [src].")
 	else
 		icon_state = initial(icon_state)
 		body_parts_covered |= FACE
-		to_chat(user, "You lower the visor on the [src].")
+		to_chat(user, "You lower the visor on \the [src].")
 	add_fingerprint(user)
 	update_clothing_icon()
 
